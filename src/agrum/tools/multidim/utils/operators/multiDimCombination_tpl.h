@@ -51,6 +51,19 @@ namespace gum {
     GUM_DESTRUCTOR(MultiDimCombination);
   }
 
+  // add to a given schedule the set of operations needed to perform the combination
+  template < typename GUM_SCALAR, template < typename > class TABLE >
+  INLINE const IScheduleMultiDim<>*
+     MultiDimCombination< GUM_SCALAR, TABLE >::schedule(
+     Schedule<>& schedule, const Set< const IScheduleMultiDim<>* >& set) const {
+    auto ops_plus_res = operations(set);
+    for (const auto op: ops_plus_res.first) {
+      schedule.insertOperation(*op);
+    }
+
+    return ops_plus_res.second;
+  }
+
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

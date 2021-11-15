@@ -89,6 +89,16 @@ namespace gum {
        execute(Set< const TABLE< GUM_SCALAR >* > set, Set< const DiscreteVariable* >    del_vars)
           final;
 
+
+  // returns the set of operations to perform to make all the combinations
+  // and projections
+  std::pair< std::vector< ScheduleOperation<>* >,
+             Set< const IScheduleMultiDim<>* > >
+     operations(
+        const Set< const IScheduleMultiDim<>* >& original_tables,
+        Set< const DiscreteVariable* >           del_vars) const;
+
+
     /// changes the function used for combining two TABLES
     void setCombinationFunction(TABLE< GUM_SCALAR > (*combine)(const TABLE< GUM_SCALAR >&,
                                                                const TABLE< GUM_SCALAR >&)) final;

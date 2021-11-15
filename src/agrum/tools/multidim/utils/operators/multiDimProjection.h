@@ -31,6 +31,8 @@
 
 #include <agrum/tools/core/sequence.h>
 #include <agrum/tools/core/set.h>
+#include <agrum/tools/graphicalModels/inference/scheduler/schedule.h>
+#include <agrum/tools/graphicalModels/inference/scheduler/scheduleProjection.h>
 #include <agrum/tools/variables/discreteVariable.h>
 
 namespace gum {
@@ -128,11 +130,22 @@ namespace gum {
      * result is an empty table.
      */
     TABLE< GUM_SCALAR >* execute(const TABLE< GUM_SCALAR >&            table,
-                                 const Set< const DiscreteVariable* >& del_vars);
-
+                                 const Set< const DiscreteVariable* >& del_vars) const;
     void execute(TABLE< GUM_SCALAR >&                     container,
                  const TABLE< GUM_SCALAR >&               table,
-                 const Set< const TABLE< GUM_SCALAR >* >& del_vars);
+                 const Set< const TABLE< GUM_SCALAR >* >& del_vars) const;
+
+    /// returns the set of operations to perform as well as the result of the projection
+    std::pair< ScheduleOperation<>*, const IScheduleMultiDim<>* >
+       operations(const IScheduleMultiDim<>*            table,
+                  const Set< const DiscreteVariable* >& del_vars) const;
+
+    /// add to a given schedule the set of operations needed to perform the projection
+    /** @warning whenever this method is executed, it is assumed that the
+     * ScheduleMultiDim already belongs to the schedule. */
+    const IScheduleMultiDim<>*
+       schedule(Schedule<>& schedule, const IScheduleMultiDim<>* table,
+                const Set< const DiscreteVariable* >& del_vars) const;
 
     /// Changes the function used for projecting TABLES
     void setProjectionFunction(

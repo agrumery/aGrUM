@@ -145,7 +145,7 @@ namespace gum {
   /// execute all the operations of a given schedule
   template < template < typename > class ALLOC >
   void SchedulerSequential< ALLOC >::execute(Schedule< ALLOC >& schedule) {
-    // if we do not have the right set of operations stored into _operations_,
+    // if we do not have the right set of operations stored into operations,
     // then recompute it
     _setSchedule_(schedule);
 

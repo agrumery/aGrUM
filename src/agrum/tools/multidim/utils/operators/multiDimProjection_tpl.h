@@ -70,7 +70,7 @@ namespace gum {
   template < typename GUM_SCALAR, template < typename > class TABLE >
   INLINE TABLE< GUM_SCALAR >* MultiDimProjection< GUM_SCALAR, TABLE >::execute(
      const TABLE< GUM_SCALAR >&            table,
-     const Set< const DiscreteVariable* >& del_vars) {
+     const Set< const DiscreteVariable* >& del_vars) const {
     return new TABLE< GUM_SCALAR >(proj_(table, del_vars));
   }
 
@@ -79,9 +79,33 @@ namespace gum {
   INLINE void MultiDimProjection< GUM_SCALAR, TABLE >::execute(
      TABLE< GUM_SCALAR >&                     container,
      const TABLE< GUM_SCALAR >&               table,
-     const Set< const TABLE< GUM_SCALAR >* >& del_vars) {
+     const Set< const TABLE< GUM_SCALAR >* >& del_vars) const {
     container = proj_(table, del_vars);
   }
+
+  /// returns the set of operations to perform as well as the result of the projection
+  template < typename GUM_SCALAR, template < typename > class TABLE >
+  INLINE std::pair< ScheduleOperation<>*, const IScheduleMultiDim<>* >
+     MultiDimProjection< GUM_SCALAR, TABLE >::operations(
+        const IScheduleMultiDim<>*            table,
+        const Set< const DiscreteVariable* >& del_vars) const {
+    auto op = new ScheduleProjection< TABLE< GUM_SCALAR > >(*table, del_vars, proj_);
+    return { op, op->result() };
+  }
+
+  /// add to a given schedule the set of operations needed to perform the projection
+  template < typename GUM_SCALAR, template < typename > class TABLE >
+  INLINE const IScheduleMultiDim<>*
+     MultiDimProjection< GUM_SCALAR, TABLE >::schedule(
+                  Schedule<>& schedule,
+                  const IScheduleMultiDim<>* table,
+                  const Set< const DiscreteVariable* >& del_vars) const {
+    const ScheduleMultiDim< TABLE< GUM_SCALAR > >& xtable =
+       dynamic_cast< const ScheduleMultiDim< TABLE< GUM_SCALAR > >& > (*table);
+    const auto& op = schedule.template emplaceProjection(xtable, del_vars, proj_);
+    return op.results()[0];
+  }
+
 
   /// changes the function used for projecting TABLES
   template < typename GUM_SCALAR, template < typename > class TABLE >

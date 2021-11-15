@@ -257,7 +257,7 @@ namespace gum {
 
     /** @brief returns the set of ScheduleOperations that are ready to be executed
      *
-     * The scheduleOperations that can be executed at once are those that
+     * The operations that can be executed at once are those that
      * have no parent or whose parents have already been executed. */
     NodeSet availableOperations() const;
 

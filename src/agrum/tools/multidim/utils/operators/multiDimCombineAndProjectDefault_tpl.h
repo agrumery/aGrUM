@@ -883,6 +883,260 @@ namespace gum {
     return memoryUsage(var_set, del_vars);
   }
 
+
+
+
+
+
+
+
+
+
+
+
+
+  // returns the set of operations to perform to make all the combinations
+  // and projections
+  template < typename GUM_SCALAR, template < typename > class TABLE >
+  std::pair< std::vector< ScheduleOperation<>* >,
+             Set< const IScheduleMultiDim<>* > >
+     MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::operations(
+        const Set< const IScheduleMultiDim<>* >& original_tables,
+        Set< const DiscreteVariable* >           del_vars) const {
+    // check if we need to combine and/or project something
+    const Size tabsize = original_tables.size();
+    if ((tabsize < 2) && (del_vars.empty())) {
+      return std::pair< std::vector< ScheduleOperation<>* >,
+             Set< const IScheduleMultiDim<>* > >();
+    }
+
+    // we copy the set of tables to be combined because we will modify
+    // it during the combination/projection process
+    Set< const IScheduleMultiDim<>* > tables = original_tables;
+
+    // when we remove a variable, we need to combine all the tables containing
+    // this variable in order to produce a new unique table containing this
+    // variable. Removing a variable is then performed by marginalizing it out of
+    // the table. In the combineAndProjectDefault algorithm, we wish to remove
+    // first variables that would produce small tables. This should speed up the
+    // whole marginalizing process.
+
+    Size nb_vars;
+    {
+      // determine the set of all the variables involved in the tables.
+      // this should help sizing correctly the hashtables used hereafter
+      Set< const DiscreteVariable* > all_vars;
+
+      for (const auto table: tables) {
+        for (const auto ptrVar: table->variablesSequence()) {
+          all_vars.insert(ptrVar);
+        }
+      }
+
+      nb_vars = all_vars.size();
+    }
+
+    // the tables containing a given variable
+    HashTable< const DiscreteVariable*,
+               Set< const IScheduleMultiDim<>* > > tables_per_var(nb_vars);
+
+    // for a given variable X to be deleted, the list of all the variables of
+    // the tables containing X (actually, we also count the number of tables
+    // containing the variable. This is more efficient for computing and
+    // updating the product_size priority queue (see below) when some tables
+    // are removed)
+    HashTable< const DiscreteVariable*, HashTable< const DiscreteVariable*, unsigned int > >
+       tables_vars_per_var(nb_vars);
+
+    // initialize tables_vars_per_var and tables_per_var
+    {
+      Set< const IScheduleMultiDim<>* >                  empty_set(tables.size());
+      HashTable< const DiscreteVariable*, unsigned int > empty_hash(nb_vars);
+
+      for (const auto ptrVar: del_vars) {
+        tables_per_var.insert(ptrVar, empty_set);
+        tables_vars_per_var.insert(ptrVar, empty_hash);
+      }
+
+      // update properly tables_per_var and tables_vars_per_var
+      for (const auto ptrTab: tables) {
+        const auto& vars = ptrTab->variablesSequence();
+
+        for (const auto ptrVar: vars) {
+          if (del_vars.contains(ptrVar)) {
+            // add the table to the set of tables related to vars[i]
+            tables_per_var[ptrVar].insert(ptrTab);
+
+            // add the variables of the table to tables_vars_per_var[vars[i]]
+            auto& iter_vars = tables_vars_per_var[ptrVar];
+            for (const auto xptrVar: vars) {
+              try {
+                ++iter_vars[xptrVar];
+              } catch (const NotFound&) { iter_vars.insert(xptrVar, 1); }
+            }
+          }
+        }
+      }
+    }
+
+    // create the set of operations to execute to perform the combinations and
+    // projections
+    std::vector< ScheduleOperation<>* > ops;
+    ops.reserve(2 * tables.size() + del_vars.size());
+
+    // the sizes of the tables produced when removing a given discrete variable
+    PriorityQueue< const DiscreteVariable*, double > product_size;
+
+    // initialize properly product_size
+    for (const auto& elt: tables_vars_per_var) {
+      double      size     = 1.0;
+      const auto  ptrVar   = elt.first;
+      const auto& hashvars = elt.second;   // HashTable<DiscreteVariable*, int>
+
+      if (hashvars.size()) {
+        for (const auto& xelt: hashvars) {
+          size *= (double)xelt.first->domainSize();
+        }
+
+        product_size.insert(ptrVar, size);
+      }
+    }
+
+    // now, remove all the variables in del_vars, starting from those that
+    // produce the smallest tables
+    while (!product_size.empty()) {
+      // get the best variable to remove
+      const DiscreteVariable* del_var = product_size.pop();
+      del_vars.erase(del_var);
+
+      // get the set of tables to combine
+      auto& tables_to_combine = tables_per_var[del_var];
+
+      // if there is no tables to combine, do nothing
+      if (tables_to_combine.size() == 0) continue;
+
+      // compute the combination of all the tables: if there is only one table,
+      // there is nothing to do, else we shall use the MultiDimCombination
+      // to perform the combination
+      const IScheduleMultiDim<>* joint = nullptr;
+      bool joint_to_delete;
+      if (tables_to_combine.size() == 1) {
+        joint = *(tables_to_combine.begin());
+        joint_to_delete = false;
+      }
+      else {
+        // get the operations to perform to make the combination
+        auto comb_ops = _combination_->operations(tables_to_combine);
+        for (auto op: comb_ops) { ops.push_back(op); }
+
+        // get the table resulting from the combination: this is the result of
+        // the last combination
+        for (auto iter=comb_ops.rbegin(), end=comb_ops.rend(); iter != end; ++iter) {
+          if ((*iter)->type() == ScheduleOperationType::COMBINE_MULTIDIM) {
+            joint = (*iter)->result();
+            joint_to_delete = true;
+            break;
+          }
+        }
+      }
+
+      // compute the table resulting from marginalizing out del_var from joint
+      Set< const DiscreteVariable* > del_one_var;
+      del_one_var << del_var;
+      auto proj_ops = _projection_->operations(joint, del_one_var);
+      const IScheduleMultiDim<>* marginal = proj_ops[0]->result();
+
+      // remove the temporary joint if needed
+      if (joint_to_delete) {
+        auto deletion = new ScheduleDeletion< TABLE< GUM_SCALAR > >(
+           static_cast< const ScheduleMultiDim< TABLE< GUM_SCALAR > >& >(*joint));
+        ops.push_back(deletion);
+      }
+
+      // update tables_vars_per_var : remove the variables of the tables we
+      // combined from this hashtable
+      // update accordingly tables_per_vars : remove these tables
+      // update accordingly product_size : when a variable is no more used by
+      // any table, divide product_size by its domain size
+      for (const auto ptrTab: tables_to_combine) {
+        const auto& table_vars    = ptrTab->variablesSequence();
+        const Size  tab_vars_size = table_vars.size();
+
+        for (Size i = 0; i < tab_vars_size; ++i) {
+          if (del_vars.contains(table_vars[i])) {
+            // here we have a variable that needed to be removed => update
+            // product_size, tables_per_var and tables_vars_per_var: here,
+            // the update corresponds to removing table PtrTab
+            auto& table_vars_of_var_i = tables_vars_per_var[table_vars[i]];
+            double div_size = 1.0;
+
+            for (Size j = 0; j < tab_vars_size; ++j) {
+              unsigned int k = --table_vars_of_var_i[table_vars[j]];
+
+              if (k == 0) {
+                div_size *= table_vars[j]->domainSize();
+                table_vars_of_var_i.erase(table_vars[j]);
+              }
+            }
+
+            tables_per_var[table_vars[i]].erase(ptrTab);
+
+            if (div_size != 1.0) {
+              product_size.setPriority(table_vars[i],
+                                       product_size.priority(table_vars[i]) / div_size);
+            }
+          }
+        }
+
+        // if ptrTab is a table resulting from preceding combinations/projections,
+        // it is temporary and, therefore, it should be deleted
+        if (!original_tables.contains(ptrTab)) {
+          auto deletion = new ScheduleDeletion< TABLE< GUM_SCALAR > >(
+           static_cast< const ScheduleMultiDim< TABLE< GUM_SCALAR > >& >(ptrTab));
+          ops.push_back(deletion);
+        }
+
+        tables.erase(ptrTab);
+      }
+
+      tables_per_var.erase(del_var);
+
+      // add the new projected marginal to the list of tables
+      const auto& marginal_vars = marginal->variablesSequence();
+      for (const auto mvar: marginal_vars) {
+        if (del_vars.contains(mvar)) {
+          // add the new marginal table to the set of tables of mvar
+          tables_per_var[mvar].insert(marginal);
+
+          // add the variables of the table to tables_vars_per_var[mvar]
+          auto&  iter_vars = tables_vars_per_var[mvar];
+          double mult_size = 1.0;
+          for (const auto var: marginal_vars) {
+            try {
+              ++iter_vars[var];
+            } catch (const NotFound&) {
+              iter_vars.insert(var, 1);
+              mult_size *= (double)var->domainSize();
+            }
+          }
+
+          if (mult_size != 1.0) {
+            product_size.setPriority(mvar, product_size.priority(mvar) * mult_size);
+          }
+        }
+      }
+
+      tables.insert(marginal);
+    }
+
+    // here, Set "tables" contains the list of the tables resulting from
+    // marginalizing out of del_vars of the combination of the tables
+    // of original_tables. Note in particular that it will contain all the
+    // potentials with no dimension (constants)
+    return {ops, tables};
+  }
+
+
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
