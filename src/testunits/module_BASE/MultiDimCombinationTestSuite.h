@@ -146,6 +146,26 @@ namespace gum_tests {
         } while (not_completed);
         TS_ASSERT(ptrResS->variablesSequence().size() == 7)
 
+        gum::Schedule<> scheduleV;
+        for (const auto pot: sched_set) scheduleV.insertScheduleMultiDim(*pot);
+        const auto ptrResV = xxx.schedule(scheduleV,sched_vect);
+        not_completed = true;
+        do {
+          auto avail_nodes = scheduleV.availableOperations();
+          if (avail_nodes.empty())
+            not_completed = false;
+          else {
+            for (const auto node: avail_nodes) {
+              auto& op = scheduleV.operation(node);
+              const_cast< gum::ScheduleOperation<>& >(op).execute();
+              std::vector< gum::NodeId > new_avail;
+              scheduleV.updateAfterExecution(node, new_avail);
+              break;
+            }
+          }
+        } while (not_completed);
+        TS_ASSERT(ptrResV->variablesSequence().size() == 7)
+
         for (const auto pot: sched_set) delete pot;
 
         delete t4;

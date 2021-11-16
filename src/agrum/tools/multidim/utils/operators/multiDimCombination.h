@@ -159,6 +159,8 @@ namespace gum {
      * ScheduleMultiDim already belong to the schedule. */
     const IScheduleMultiDim<>*
        schedule(Schedule<>& schedule, const Set< const IScheduleMultiDim<>* >& set) const;
+    const IScheduleMultiDim<>*
+       schedule(Schedule<>& schedule, const std::vector< const IScheduleMultiDim<>* >& set) const;
 
     /// changes the function used for combining two TABLES
     virtual void setCombinationFunction(TABLE< GUM_SCALAR > (*combine)(const TABLE< GUM_SCALAR >&,
