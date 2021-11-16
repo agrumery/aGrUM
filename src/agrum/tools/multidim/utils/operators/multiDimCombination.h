@@ -148,7 +148,7 @@ namespace gum {
 
     /// returns the set of operations to perform as well as the result of the combination
     /** Executing sequentially the set of operations returned is guaranteed to
-     * produce the right result. */
+     * produce the right result. The latter is contained within the IScheduleMultiDim */
     virtual std::pair< std::vector< ScheduleOperation<>* >, const IScheduleMultiDim<>* >
        operations(const std::vector< const IScheduleMultiDim<>* >& set) const = 0;
     virtual std::pair< std::vector< ScheduleOperation<>* >, const IScheduleMultiDim<>* >
