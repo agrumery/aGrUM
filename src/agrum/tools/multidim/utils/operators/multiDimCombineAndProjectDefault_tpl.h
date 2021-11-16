@@ -968,11 +968,11 @@ namespace gum {
             tables_per_var[ptrVar].insert(ptrTab);
 
             // add the variables of the table to tables_vars_per_var[vars[i]]
-            auto& iter_vars = tables_vars_per_var[ptrVar];
+            auto& comb_vars = tables_vars_per_var[ptrVar];
             for (const auto xptrVar: vars) {
               try {
-                ++iter_vars[xptrVar];
-              } catch (const NotFound&) { iter_vars.insert(xptrVar, 1); }
+                ++comb_vars[xptrVar];
+              } catch (const NotFound&) { comb_vars.insert(xptrVar, 1); }
             }
           }
         }
@@ -993,7 +993,7 @@ namespace gum {
       const auto  ptrVar   = elt.first;
       const auto& hashvars = elt.second;   // HashTable<DiscreteVariable*, int>
 
-      if (hashvars.size()) {
+      if (!hashvars.empty()) {
         for (const auto& xelt: hashvars) {
           size *= (double)xelt.first->domainSize();
         }
@@ -1025,26 +1025,21 @@ namespace gum {
         joint_to_delete = false;
       }
       else {
-        // get the operations to perform to make the combination
+        // get the operations to perform to make the combination as well as
+        // the result of the combination
         auto comb_ops = _combination_->operations(tables_to_combine);
-        for (auto op: comb_ops) { ops.push_back(op); }
-
-        // get the table resulting from the combination: this is the result of
-        // the last combination
-        for (auto iter=comb_ops.rbegin(), end=comb_ops.rend(); iter != end; ++iter) {
-          if ((*iter)->type() == ScheduleOperationType::COMBINE_MULTIDIM) {
-            joint = (*iter)->result();
-            joint_to_delete = true;
-            break;
-          }
-        }
+        ops.insert(ops.cend(), comb_ops.first.begin(), comb_ops.first.end());
+        joint           = comb_ops.second;
+        joint_to_delete = true;
       }
 
       // compute the table resulting from marginalizing out del_var from joint
+      // and add the projection to the set of operations
       Set< const DiscreteVariable* > del_one_var;
       del_one_var << del_var;
       auto proj_ops = _projection_->operations(joint, del_one_var);
-      const IScheduleMultiDim<>* marginal = proj_ops[0]->result();
+      ops.push_back(proj_ops.first);
+      const IScheduleMultiDim<>* marginal = proj_ops.second;
 
       // remove the temporary joint if needed
       if (joint_to_delete) {
@@ -1092,7 +1087,7 @@ namespace gum {
         // it is temporary and, therefore, it should be deleted
         if (!original_tables.contains(ptrTab)) {
           auto deletion = new ScheduleDeletion< TABLE< GUM_SCALAR > >(
-           static_cast< const ScheduleMultiDim< TABLE< GUM_SCALAR > >& >(ptrTab));
+           static_cast< const ScheduleMultiDim< TABLE< GUM_SCALAR > >& >(*ptrTab));
           ops.push_back(deletion);
         }
 
