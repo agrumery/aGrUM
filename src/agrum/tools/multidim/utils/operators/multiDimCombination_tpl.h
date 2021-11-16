@@ -53,9 +53,9 @@ namespace gum {
 
   // add to a given schedule the set of operations needed to perform the combination
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  INLINE const IScheduleMultiDim<>*
+  const IScheduleMultiDim<>*
      MultiDimCombination< GUM_SCALAR, TABLE >::schedule(
-     Schedule<>& schedule, const Set< const IScheduleMultiDim<>* >& set) const {
+     Schedule<>& schedule, const std::vector< const IScheduleMultiDim<>* >& set) const {
     // compute the set of operations and store it into the schedule
     auto ops_plus_res = operations(set);
     for (const auto op: ops_plus_res.first) {
@@ -65,11 +65,27 @@ namespace gum {
     // get the result of the schedule
     const IScheduleMultiDim<>* table = schedule.scheduleMultiDim(ops_plus_res.second->id());
 
-    // free the operations
+    // free the operations: they are no more necessary since we already copied
+    // them into the schedule
     for (auto op: ops_plus_res.first) delete op;
 
     return table;
   }
+
+
+  // add to a given schedule the set of operations needed to perform the combination
+  template < typename GUM_SCALAR, template < typename > class TABLE >
+  INLINE const IScheduleMultiDim<>*
+     MultiDimCombination< GUM_SCALAR, TABLE >::schedule(
+     Schedule<>& schedule, const Set< const IScheduleMultiDim<>* >& set) const {
+    std::vector< const IScheduleMultiDim<>* > vect;
+    vect.reserve(set.size());
+    for (const auto elt: set) {
+      vect.push_back(elt);
+    }
+    return this->schedule(schedule, vect);
+  }
+
 
 } /* namespace gum */
 
