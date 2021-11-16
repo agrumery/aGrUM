@@ -303,6 +303,12 @@ namespace gum {
                               std::vector<NodeId>& new_available_nodes,
                               const bool check = false);
 
+    /// returns the ScheduleMultiDim corresponding to a given id
+    const IScheduleMultiDim< ALLOC >* scheduleMultiDim(const NodeId id) const;
+
+    /// returns the id of a given IScheduleMultiDim
+    NodeId scheduleMultiDimId(const IScheduleMultiDim< ALLOC >* multidim) const;
+
     /// empty the schedule, i.e., remove its content
     void clear();
 
