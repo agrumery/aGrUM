@@ -79,7 +79,7 @@ namespace gum {
   INLINE void MultiDimProjection< GUM_SCALAR, TABLE >::execute(
      TABLE< GUM_SCALAR >&                     container,
      const TABLE< GUM_SCALAR >&               table,
-     const Set< const TABLE< GUM_SCALAR >* >& del_vars) const {
+     const Set< const DiscreteVariable* >& del_vars) const {
     container = proj_(table, del_vars);
   }
 
@@ -89,8 +89,10 @@ namespace gum {
      MultiDimProjection< GUM_SCALAR, TABLE >::operations(
         const IScheduleMultiDim<>*            table,
         const Set< const DiscreteVariable* >& del_vars) const {
-    auto op = new ScheduleProjection< TABLE< GUM_SCALAR > >(*table, del_vars, proj_);
-    return { op, op->result() };
+    auto op = new ScheduleProjection< TABLE< GUM_SCALAR > >(
+       dynamic_cast< const ScheduleMultiDim< TABLE< GUM_SCALAR > >&>(*table),
+       del_vars, proj_);
+    return { op, &op->result() };
   }
 
   /// add to a given schedule the set of operations needed to perform the projection

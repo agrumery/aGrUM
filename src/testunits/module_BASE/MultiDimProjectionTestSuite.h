@@ -932,6 +932,37 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(t2, *t3)
         delete (t3);
       }
+      {
+        gum::Potential< double > t3;
+        auto t2 = t1.margMaxOut(proj_set);
+        Proj.execute(t3, t1, proj_set);
+        TS_ASSERT_EQUALS(t2, t3)
+      }
+
+      {
+        gum::Schedule<> schedule;
+        auto& xt1 = schedule.insertTable(t1, false);
+        const auto ptrRes = Proj.schedule(schedule, &xt1, proj_set);
+
+        auto avail_nodes = schedule.availableOperations();
+        const auto node = *(avail_nodes.begin());
+        auto& op = schedule.operation(node);
+        const_cast< gum::ScheduleOperation<>& >(op).execute();
+
+        auto t2 = t1.margMaxOut(proj_set);
+        TS_ASSERT(dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(
+                     ptrRes)->multiDim() == t2)
+      }
+
+      {
+        gum::ScheduleMultiDim< gum::Potential< double > > xt1(t1, false);
+        const auto ops_plus_res = Proj.operations(&xt1, proj_set);
+        ops_plus_res.first->execute();
+        auto t2 = t1.margMaxOut(proj_set);
+        TS_ASSERT(dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(
+           ops_plus_res.second)->multiDim() == t2)
+        delete ops_plus_res.first;
+      }
 
       proj_set.insert(vars[0]);
       proj_set.insert(vars[9]);

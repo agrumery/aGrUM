@@ -133,16 +133,20 @@ namespace gum {
                                  const Set< const DiscreteVariable* >& del_vars) const;
     void execute(TABLE< GUM_SCALAR >&                     container,
                  const TABLE< GUM_SCALAR >&               table,
-                 const Set< const TABLE< GUM_SCALAR >* >& del_vars) const;
+                 const Set< const DiscreteVariable* >& del_vars) const;
 
-    /// returns the set of operations to perform as well as the result of the projection
+    /// returns operation to perform as well as the result of the projection
     std::pair< ScheduleOperation<>*, const IScheduleMultiDim<>* >
        operations(const IScheduleMultiDim<>*            table,
                   const Set< const DiscreteVariable* >& del_vars) const;
 
     /// add to a given schedule the set of operations needed to perform the projection
-    /** @warning whenever this method is executed, it is assumed that the
-     * ScheduleMultiDim already belongs to the schedule. */
+    /**
+     * @param schedule the schedule to which we add the new projection
+     * @param table the table which is projected
+     * @param del_vars the set of variables to remove from the table
+     * @return the IScheduleMultiDim resulting from the projection
+     */
     const IScheduleMultiDim<>*
        schedule(Schedule<>& schedule, const IScheduleMultiDim<>* table,
                 const Set< const DiscreteVariable* >& del_vars) const;
