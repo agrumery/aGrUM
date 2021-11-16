@@ -841,6 +841,22 @@ namespace gum {
   }
 
 
+  /// returns the ScheduleMultiDim corresponding to a given id
+  template < template < typename > class ALLOC >
+  INLINE const IScheduleMultiDim< ALLOC >*
+     Schedule< ALLOC >::scheduleMultiDim(const NodeId id) const {
+    return _multidim2id_.first(id);
+  }
+
+
+  /// returns the id of a given IScheduleMultiDim
+  template < template < typename > class ALLOC >
+  INLINE NodeId
+     Schedule< ALLOC >::scheduleMultiDimId(const IScheduleMultiDim< ALLOC >* multidim) const {
+    return _multidim2id_.second(multidim);
+  }
+
+
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

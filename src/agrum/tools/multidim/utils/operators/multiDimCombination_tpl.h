@@ -56,12 +56,19 @@ namespace gum {
   INLINE const IScheduleMultiDim<>*
      MultiDimCombination< GUM_SCALAR, TABLE >::schedule(
      Schedule<>& schedule, const Set< const IScheduleMultiDim<>* >& set) const {
+    // compute the set of operations and store it into the schedule
     auto ops_plus_res = operations(set);
     for (const auto op: ops_plus_res.first) {
       schedule.insertOperation(*op);
     }
 
-    return ops_plus_res.second;
+    // get the result of the schedule
+    const IScheduleMultiDim<>* table = schedule.scheduleMultiDim(ops_plus_res.second->id());
+
+    // free the operations
+    for (auto op: ops_plus_res.first) delete op;
+
+    return table;
   }
 
 } /* namespace gum */
