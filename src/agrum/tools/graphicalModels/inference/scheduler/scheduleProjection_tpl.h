@@ -444,10 +444,9 @@ namespace gum {
   template < typename TABLE, template < typename > class ALLOC >
   std::pair< double, double >
      ScheduleProjection< TABLE, ALLOC >::memoryUsage() const {
-    return {
-      double(_arg_->domainSize()) * _arg_->sizeOfContent(),
-      double(_result_->domainSize()) * _result_->sizeOfContent()
-    };
+    const double domsize =
+       double(_result_->domainSize()) * _result_->sizeOfContent();
+    return {domsize, domsize};
   }
 
 
