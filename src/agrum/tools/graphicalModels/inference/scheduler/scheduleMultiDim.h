@@ -326,7 +326,7 @@ namespace gum {
     Sequence< const DiscreteVariable* > _var_sequence_;
 
     /// the domain size of the table
-    Size _domain_size_{Size(0)};
+    Size _domain_size_{Size(1)};
 
 
     /// remove the table if it is contained in the ScheduleMultiDim
