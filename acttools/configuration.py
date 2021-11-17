@@ -207,7 +207,7 @@ def configureOptions(current):
   cfg.parser.add_option("", "--windows",
                         help="windows compilers : {mvsc19|mvsc19_32|mvsc17|mvsc17_32|mvsc15|mvsc15_32|mingw64}.",
                         type="choice",
-                        choices=["mvsc19", "mvsc19_32",
+                        choices=["mvsc22","mvsc22_32","mvsc19", "mvsc19_32",
                                  "mvsc17", "mvsc17_32", "mvsc15", "mvsc15_32", "mingw64"],
                         dest="windows",
                         default="mvsc19")

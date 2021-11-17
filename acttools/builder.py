@@ -82,7 +82,11 @@ def getCmake(current, target):
     line += " -DPYTHON_INCLUDE_DIR=" + current["python3include"]
 
   if platform.system() == "Windows":
-    if current["windows"] == "mvsc19":
+    if current["windows"] == "mvsc22":
+      line += ' -G "Visual Studio 17 2022" -A x64'
+    elif current["windows"] == "mvsc22_32":
+      line += ' -G "Visual Studio 17 2022" -A Win32'
+    elif current["windows"] == "mvsc19":
       line += ' -G "Visual Studio 16 2019" -A x64'
     elif current["windows"] == "mvsc19_32":
       line += ' -G "Visual Studio 16 2019" -A Win32'

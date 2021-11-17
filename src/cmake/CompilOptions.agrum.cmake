@@ -1,20 +1,23 @@
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+#find_package (CXX17)
+#if (CXX17_FOUND)
+#	if (MSVC)
+		# looks like it is not needed for visual C++
+#	else()
+		#set (AGRUM_CXX_FLAGS "${CXX14_FLAGS} ${AGRUM_CXX_FLAGS}" )
+	#endif ()
+#else ()
+  #message(FATAL_ERROR "** aGrUM error: aGrUM is now using C++17. Please find a compiler (for instance GCC) C++17 compliant")
+#endif ()
 
 include (CheckCXXCompilerFlag)
 set (WARNING_FLAGS "-Wall -pedantic")
 check_cxx_compiler_flag("${WARNING_FLAGS}" _SUPPORT_WARNING_FLAGS)
 if (_SUPPORT_WARNING_FLAGS)
   set (CMAKE_CXX_FLAGS "${WARNING_FLAGS} ${CMAKE_CXX_FLAGS}")
-endif ()
-
-find_package (CXX14)
-if (CXX14_FOUND)
-	if (MSVC)
-		# looks like it is not needed for visual C++
-	else()
-		set (AGRUM_CXX_FLAGS "${CXX14_FLAGS} ${AGRUM_CXX_FLAGS}" )
-	endif ()
-else ()
-  message(FATAL_ERROR "** aGrUM error: aGrUM is now using C++14. Please find a compiler (for instance GCC) C++14 compliant")
 endif ()
 
 
