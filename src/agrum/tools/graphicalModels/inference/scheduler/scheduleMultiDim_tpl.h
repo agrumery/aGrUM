@@ -116,7 +116,6 @@ namespace gum {
     if (!_var_sequence_.empty()) {
       // compute and store the domain size
       _domain_size_ = Size(1);
-
       for (const auto var: vars)
         _domain_size_ *= var->domainSize();
     }

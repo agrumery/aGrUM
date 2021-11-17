@@ -257,6 +257,28 @@ namespace gum_tests {
       for (unsigned int i = 0; i < vars.size(); ++i)
         delete vars[i];
     }
+
+    void testConstants() {
+      gum::Potential< double > pot;
+      pot.fillWith({42.42});
+
+      gum::ScheduleMultiDim< gum::Potential< double > > f1(pot, false);
+      TS_ASSERT(!f1.containsMultiDim());
+      TS_ASSERT(f1.domainSize() == 1);
+
+      gum::ScheduleMultiDim< gum::Potential< double > > f2(pot, true);
+      TS_ASSERT(f2.containsMultiDim());
+      TS_ASSERT(f2.domainSize() == 1);
+      gum::Potential< double > pot2 = f2.exportMultiDim();
+      TS_ASSERT(pot2.max() == pot2.min());
+      TS_ASSERT(pot2.min() == 42.42);
+
+      gum::Sequence< const gum::DiscreteVariable* > seq;
+      gum::ScheduleMultiDim< gum::Potential< double > > f3(seq, 0);
+      TS_ASSERT(!f3.containsMultiDim());
+      TS_ASSERT(f3.domainSize() == 1);
+      TS_ASSERT(f3.isAbstract());
+    }
   };
 
 } /* namespace gum_tests */
