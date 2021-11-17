@@ -253,6 +253,78 @@ namespace gum_tests {
         delete vars[i];
     }
 
+    void testConstants() {
+      gum::IScheduleMultiDim<>::resetIdGenerator();
+
+      gum::Potential< double > p1;
+      p1.fillWith({3.0});
+      gum::Potential< double > p2;
+      p2.fillWith({5.5});
+
+      gum::ScheduleMultiDim< gum::Potential< double > > f1(p1, false);
+      gum::ScheduleMultiDim< gum::Potential< double > > f2(p2, false);
+      gum::ScheduleBinaryCombination< gum::Potential< double >,
+                                      gum::Potential< double >,
+                                      gum::Potential< double > > comb1(f1, f2, myadd);
+      const gum::ScheduleMultiDim< gum::Potential< double > >& result1 =
+         comb1.result();
+      TS_ASSERT(result1.isAbstract());
+
+      comb1.execute();
+      TS_ASSERT(comb1.isExecuted());
+      TS_ASSERT(!result1.isAbstract());
+      TS_ASSERT(result1.multiDim().max() == 8.5);
+      TS_ASSERT(result1.multiDim().min() == 8.5);
+      TS_ASSERT(result1.domainSize() == 1);
+      TS_ASSERT(result1.multiDim().domainSize() == 1)
+
+
+      std::vector< gum::LabelizedVariable* > vars(10);
+      for (unsigned int i = 0; i < 10; ++i) {
+        std::stringstream str;
+        str << "x" << i;
+        std::string s = str.str();
+        vars[i] = new gum::LabelizedVariable(s, s, 2);
+      }
+
+      gum::Potential< double > p3;
+      p3 << *(vars[0]);
+      randomInit(p3);
+      gum::ScheduleMultiDim< gum::Potential< double > > f3(p3, false);
+
+      gum::Potential< double > p4;
+      p4 << *(vars[1]) << *(vars[2]);
+      randomInit(p4);
+      gum::ScheduleMultiDim< gum::Potential< double > > f4(p4, true);
+
+      gum::ScheduleBinaryCombination< gum::Potential< double >,
+                                      gum::Potential< double >,
+                                      gum::Potential< double > > comb2(f1, f3, myadd);
+      comb2.execute();
+      const gum::Potential< double >& result2 = comb2.result().multiDim();
+      TS_ASSERT(result2.domainSize() == 2)
+      TS_ASSERT(comb2.result().domainSize() == 2)
+      gum::Instantiation i2(result2);
+      for (i2.setFirst(); ! i2.end(); ++i2) {
+        TS_ASSERT(result2[i2] == p3[i2] + 3.0)
+      }
+
+      gum::ScheduleBinaryCombination< gum::Potential< double >,
+                                      gum::Potential< double >,
+                                      gum::Potential< double > > comb3(f1, f4, myadd);
+      comb3.execute();
+      const gum::Potential< double >& result3 = comb3.result().multiDim();
+      TS_ASSERT(result3.domainSize() == 4)
+      TS_ASSERT(comb3.result().domainSize() == 4)
+      gum::Instantiation i3(result3);
+      for (i3.setFirst(); ! i3.end(); ++i3) {
+        TS_ASSERT(result3[i3] == p4[i3] + 3.0)
+      }
+
+      for (unsigned int i = 0; i < vars.size(); ++i)
+        delete vars[i];
+    }
+
     private:
       static gum::Potential< double > myadd(const gum::Potential< double >& f1,
                                             const gum::Potential< double >& f2) {
