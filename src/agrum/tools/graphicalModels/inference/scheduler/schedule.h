@@ -140,9 +140,8 @@ namespace gum {
      * contains a table with the same id
      */
     template < typename TABLE >
-    const IScheduleMultiDim< ALLOC >& insertTable(const TABLE& table,
-                                                  const bool   copy,
-                                                  const Idx    id = 0);
+    const IScheduleMultiDim< ALLOC >*
+       insertTable(const TABLE& table, const bool copy, const Idx id = 0);
 
     /** @brief inserts a new table as a source operation's input, i.e., this
      * table is not computed by any ScheduleOperation
@@ -163,7 +162,7 @@ namespace gum {
       * @throws DuplicateScheduleMultiDim is thrown if the schedule already
      * contains a table with the same id
      */
-    const IScheduleMultiDim< ALLOC >&
+    const IScheduleMultiDim< ALLOC >*
        insertScheduleMultiDim(const IScheduleMultiDim< ALLOC >& multidim);
 
     /// inserts an operation into the schedule
@@ -177,7 +176,7 @@ namespace gum {
      * already been performed but other operations use some of these arguments
      * and they have not been executed yet.
      * @warning operations are inserted by cloning */
-    const ScheduleOperation< ALLOC >&
+    const ScheduleOperation< ALLOC >*
        insertOperation(const ScheduleOperation< ALLOC >& op);
 
     /// emplace a new schedule binary combination operation
@@ -190,8 +189,8 @@ namespace gum {
      * and they have not been executed yet.
      */
     template < typename TABLE1, typename TABLE2, typename TABLE_RES >
-    const ScheduleOperation< ALLOC >&
-    emplaceBinaryCombination(const ScheduleMultiDim< TABLE1, ALLOC >& table1,
+    const ScheduleOperation< ALLOC >*
+       emplaceBinaryCombination(const ScheduleMultiDim< TABLE1, ALLOC >& table1,
                              const ScheduleMultiDim< TABLE2, ALLOC >& table2,
                              TABLE_RES (*combine)( const TABLE1&, const TABLE2&));
 
@@ -205,8 +204,8 @@ namespace gum {
      * and they have not been executed yet.
      */
     template < typename TABLE >
-    const ScheduleOperation< ALLOC >&
-    emplaceProjection(
+    const ScheduleOperation< ALLOC >*
+       emplaceProjection(
           const ScheduleMultiDim< TABLE, ALLOC >& table,
           const Set< const DiscreteVariable* >&   del_vars,
           TABLE (*project)(const TABLE&, const Set< const DiscreteVariable* >&));
@@ -221,7 +220,7 @@ namespace gum {
      * and they have not been executed yet.
      */
     template < typename TABLE >
-    const ScheduleOperation< ALLOC >&
+    const ScheduleOperation< ALLOC >*
     emplaceDeletion(const ScheduleMultiDim< TABLE, ALLOC >& table);
 
      /// emplace a new schedule storage operation
@@ -236,7 +235,7 @@ namespace gum {
     template < typename TABLE,
                template < typename, typename... > class CONTAINER,
                typename... CONTAINER_PARAMS >
-     const ScheduleOperation< ALLOC >&
+     const ScheduleOperation< ALLOC >*
      emplaceStorage(const IScheduleMultiDim< ALLOC >& table,
                     CONTAINER<TABLE, CONTAINER_PARAMS...>& container);
 
