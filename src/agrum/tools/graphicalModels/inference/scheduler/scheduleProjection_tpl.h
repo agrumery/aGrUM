@@ -43,18 +43,29 @@ namespace gum {
       _arg_(&table), _del_vars_(del_vars), _project_(project) {
     // compute the variables that shall belong to the result of the projection
     Sequence< const DiscreteVariable* > vars = table.variablesSequence();
-    for (const auto var: del_vars)
-      vars.erase(var);
+    bool has_del_vars = false;
+    for (const auto var: del_vars) {
+      if (vars.exists(var)) {
+        vars.erase(var);
+        has_del_vars = true;
+      }
+    }
 
-    // create the scheduleMultiDim that should result from the projection
-    ALLOC< ScheduleMultiDim< TABLE, ALLOC > > allocator(this->get_allocator());
-    _result_ = allocator.allocate(1);
-    try {
-      new ((void*)_result_)
-         ScheduleMultiDim< TABLE, ALLOC >(vars, Idx(0), allocator);
-    } catch (...) {
-      allocator.deallocate(_result_, 1);
-      throw;
+    // if has_del_vars is equal to false, the projection just amounts to copying
+    // the pointer of _arg_
+    if (!has_del_vars) {
+      _result_ = const_cast< ScheduleMultiDim< TABLE, ALLOC >* >(_arg_);
+    }
+    else {
+      // create the scheduleMultiDim that should result from the projection
+      ALLOC< ScheduleMultiDim< TABLE, ALLOC > > allocator(this->get_allocator());
+      _result_ = allocator.allocate(1);
+      try {
+        new ((void*)_result_) ScheduleMultiDim< TABLE, ALLOC >(vars, Idx(0), allocator);
+      } catch (...) {
+        allocator.deallocate(_result_, 1);
+        throw;
+      }
     }
 
     // save the args and result into _args_ and _results_
@@ -73,15 +84,19 @@ namespace gum {
      const typename ScheduleProjection< TABLE, ALLOC >::allocator_type& alloc) :
       ScheduleOperation< ALLOC >(from, alloc),
       _arg_(from._arg_), _del_vars_(from._del_vars_), _project_(from._project_) {
-    // copy the result of the from operation
-    ALLOC< ScheduleMultiDim< TABLE, ALLOC > > allocator(this->get_allocator());
-    _result_ = allocator.allocate(1);
-    try {
-      new ((void*)_result_)
-         ScheduleMultiDim< TABLE, ALLOC >(*(from._result_), allocator);
-    } catch (...) {
-      allocator.deallocate(_result_, 1);
-      throw;
+    if (from._result_ == from._arg_) {
+      _result_ = const_cast< ScheduleMultiDim< TABLE, ALLOC >* >(_arg_);
+    }
+    else {
+      // copy the result of the from operation
+      ALLOC< ScheduleMultiDim< TABLE, ALLOC > > allocator(this->get_allocator());
+      _result_ = allocator.allocate(1);
+      try {
+        new ((void*)_result_) ScheduleMultiDim< TABLE, ALLOC >(*(from._result_), allocator);
+      } catch (...) {
+        allocator.deallocate(_result_, 1);
+        throw;
+      }
     }
 
     // save the args and result into _args_ and _results_
@@ -108,15 +123,20 @@ namespace gum {
       ScheduleOperation< ALLOC >(std::move(from), alloc),
       _arg_(from._arg_), _del_vars_(std::move(from._del_vars_)),
       _project_(from._project_) {
-    // move the result of the from operation
-    ALLOC< ScheduleMultiDim< TABLE, ALLOC > > allocator(this->get_allocator());
-    _result_ = allocator.allocate(1);
-    try {
-      new ((void*)_result_)
-         ScheduleMultiDim< TABLE, ALLOC >(std::move(*(from._result_)), allocator);
-    } catch (...) {
-      allocator.deallocate(_result_, 1);
-      throw;
+    if (from._result_ == from._arg_) {
+      _result_ = const_cast< ScheduleMultiDim< TABLE, ALLOC >* >(_arg_);
+    }
+    else {
+      // move the result of the from operation
+      ALLOC< ScheduleMultiDim< TABLE, ALLOC > > allocator(this->get_allocator());
+      _result_ = allocator.allocate(1);
+      try {
+        new ((void*)_result_)
+           ScheduleMultiDim< TABLE, ALLOC >(std::move(*(from._result_)), allocator);
+      } catch (...) {
+        allocator.deallocate(_result_, 1);
+        throw;
+      }
     }
 
     // save the args and result into _args_ and _results_
@@ -164,9 +184,11 @@ namespace gum {
   /// destructor
   template < typename TABLE, template < typename > class ALLOC >
   ScheduleProjection< TABLE, ALLOC >::~ScheduleProjection() {
-    ALLOC< ScheduleMultiDim< TABLE, ALLOC > > allocator(this->get_allocator());
-    _result_->~ScheduleMultiDim< TABLE, ALLOC >();
-    allocator.deallocate(_result_, 1);
+    if (_result_ != _arg_) {
+      ALLOC< ScheduleMultiDim< TABLE, ALLOC > > allocator(this->get_allocator());
+      _result_->~ScheduleMultiDim< TABLE, ALLOC >();
+      allocator.deallocate(_result_, 1);
+    }
 
     // for debugging purposes
     GUM_DESTRUCTOR(ScheduleProjection);
@@ -180,25 +202,46 @@ namespace gum {
         const ScheduleProjection< TABLE, ALLOC >& from) {
     // avoid self assignment
     if (this != &from) {
-      // store the old values, in case something goes wrong
-      const ScheduleMultiDim< TABLE, ALLOC > old_result = std::move(*_result_);
-      const Set< const DiscreteVariable* >   old_del_vars = std::move(_del_vars_);
+      // copy the set of variables to delete in a temporary variable, just
+      // in case something goes wrong below
+      const Set< const DiscreteVariable* > new_del_vars = from._del_vars_;
 
-      // compute the new result and del variables. Here, there is no need
-      // to update _results_ because we just modify the content of _result_,
-      // not the pointer to _result_ itself.
-      try {
-        *_result_ = *(from._result_);
-        _del_vars_ = from._del_vars_;
-      } catch (...) {
-        // restore the old values
-        *_result_ = std::move(old_result);
-        _del_vars_ = std::move(old_del_vars);
-
-        throw;
+      // copy the result
+      if (from._arg_ == from._result_) {
+        // free _result_ if necessary
+        if (_arg_ != _result_) {
+          ALLOC< ScheduleMultiDim< TABLE, ALLOC > > allocator(this->get_allocator());
+          _result_->~ScheduleMultiDim< TABLE, ALLOC >();
+          allocator.deallocate(_result_, 1);
+        }
+        _result_ = const_cast< ScheduleMultiDim< TABLE, ALLOC >* >(from._arg_);
+        _results_.clear();
+        _results_ << _result_;
+      }
+      else {
+        // if _result_ equals _arg_, we should allocate a new _result_
+        if (_arg_ == _result_) {
+          ALLOC< ScheduleMultiDim< TABLE, ALLOC > > allocator(this->get_allocator());
+          ScheduleMultiDim< TABLE, ALLOC >*         new_result = allocator.allocate(1);
+          try {
+            new ((void*)new_result) ScheduleMultiDim< TABLE, ALLOC >(*(from._result_), allocator);
+          } catch (...) {
+            allocator.deallocate(new_result, 1);
+            throw;
+          }
+          _result_ = new_result;
+          _results_.clear();
+          _results_ << _result_;
+        }
+        else {
+          // copy in a temporary variable, in case something goes wrong
+          const ScheduleMultiDim< TABLE, ALLOC > new_result = *from._result_;
+          *_result_                                         = std::move(new_result);
+        }
       }
 
-      _arg_ = from._arg_;
+      _del_vars_ = std::move(new_del_vars);
+      _arg_      = from._arg_;
       _args_.clear();
       _args_ << _arg_;
       _project_ = from._project_;
@@ -215,28 +258,43 @@ namespace gum {
         ScheduleProjection< TABLE, ALLOC >&& from) {
     // avoid self assignment
     if (this != &from) {
-      // store the old values, in case something goes wrong
-      const ScheduleMultiDim< TABLE, ALLOC > old_result = std::move(*_result_);
-      const Set< const DiscreteVariable* >   old_del_vars = std::move(_del_vars_);
-
-      // compute the new result and del variables. Here, there is no need
-      // to update _results_ because we just modify the content of _result_,
-      // not the pointer to _result_ itself.
-      try {
-        *_result_ = std::move(*(from._result_));
-        _del_vars_ = std::move(from._del_vars_);
-      } catch (...) {
-        // restore the old values
-        *_result_ = std::move(old_result);
-        _del_vars_ = std::move(old_del_vars);
-
-        throw;
+      // move the result
+      if (from._arg_ == from._result_) {
+        // free _result_ if necessary
+        if (_arg_ != _result_) {
+          ALLOC< ScheduleMultiDim< TABLE, ALLOC > > allocator(this->get_allocator());
+          _result_->~ScheduleMultiDim< TABLE, ALLOC >();
+          allocator.deallocate(_result_, 1);
+        }
+        _result_ = const_cast< ScheduleMultiDim< TABLE, ALLOC >* >(from._arg_);
+        _results_.clear();
+        _results_ << _result_;
+      }
+      else {
+        // if _result_ equals _arg_, we should allocate a new _result_
+        if (_arg_ == _result_) {
+          ALLOC< ScheduleMultiDim< TABLE, ALLOC > > allocator(this->get_allocator());
+          ScheduleMultiDim< TABLE, ALLOC >*         new_result = allocator.allocate(1);
+          try {
+            new ((void*)new_result)
+               ScheduleMultiDim< TABLE, ALLOC >(std::move(*from._result_), allocator);
+          } catch (...) {
+            allocator.deallocate(new_result, 1);
+            throw;
+          }
+          _result_ = new_result;
+          _results_.clear();
+          _results_ << _result_;
+        } else {
+          *_result_ = std::move(*(from._result_));
+        }
       }
 
-      _project_ = from._project_;
+      _del_vars_ = std::move(from._del_vars_);
       _arg_ = from._arg_;
       _args_.clear();
       _args_ << _arg_;
+      _project_ = from._project_;
       ScheduleOperation< ALLOC >::operator=(std::move(from));
     }
     return *this;
@@ -397,13 +455,54 @@ namespace gum {
                    << "the ScheduleOperation expects");
     }
 
-    // save the new argument
+    // get the variables remaining after the projection
+    Sequence< const DiscreteVariable* > vars = arg->variablesSequence();
+    bool has_del_vars = false;
+    for (const auto var: _del_vars_) {
+      if (vars.exists(var)) {
+        vars.erase(var);
+        has_del_vars = true;
+      }
+    }
+
+    // update the result. If arg has no variable to delete, then result should
+    // now be equal to arg
+    if (!has_del_vars) {
+      if (_arg_ != _result_) {
+        // delete the current _result_, which is no more necessary
+        ALLOC< ScheduleMultiDim< TABLE, ALLOC > > allocator(this->get_allocator());
+        _result_->~ScheduleMultiDim< TABLE, ALLOC >();
+        allocator.deallocate(_result_, 1);
+      }
+
+      // assign the new result
+      _result_ = const_cast< ScheduleMultiDim< TABLE, ALLOC >* >(arg);
+      _results_.clear();
+      _results_ << _result_;
+    }
+    else {
+      if (_arg_ == _result_) {
+        // here we should allocate the new result
+        ALLOC< ScheduleMultiDim< TABLE, ALLOC > > allocator(this->get_allocator());
+        ScheduleMultiDim< TABLE, ALLOC >*         new_result = allocator.allocate(1);
+        try {
+          new ((void*)new_result) ScheduleMultiDim< TABLE, ALLOC >(vars, Idx(0), allocator);
+        } catch (...) {
+          allocator.deallocate(new_result, 1);
+          throw;
+        }
+        _result_ = new_result;
+        _results_.clear();
+        _results_ << _result_;
+      }
+      else {
+        *_result_ = std::move(ScheduleMultiDim< TABLE, ALLOC >(vars, _result_->id()));
+      }
+    }
+
     _arg_ = arg;
     _args_.clear();
     _args_ << _arg_;
-
-    // now the result is obsolete, so make it abstract
-    _result_->makeAbstract();
   }
 
 
@@ -417,7 +516,7 @@ namespace gum {
   /// executes the operation
   template < typename TABLE, template < typename > class ALLOC >
   void ScheduleProjection< TABLE, ALLOC >::execute() {
-    if (_result_->isAbstract()) {
+    if ((_result_ != _arg_) && _result_->isAbstract()) {
       const TABLE& tab = _arg_->multiDim();
       TABLE        res = _project_(tab, _del_vars_);
       _result_->setMultiDim(std::move(res));
@@ -428,7 +527,8 @@ namespace gum {
   /// undo a previous execution, if any
   template < typename TABLE, template < typename > class ALLOC >
   void ScheduleProjection< TABLE, ALLOC >::undo() {
-    _result_->makeAbstract();
+    if (_result_ != _arg_)
+      _result_->makeAbstract();
   }
 
 
@@ -436,7 +536,7 @@ namespace gum {
    * needed to perform the ScheduleOperation */
   template < typename TABLE, template < typename > class ALLOC >
   INLINE double ScheduleProjection< TABLE, ALLOC >::nbOperations() const {
-    return double(_arg_->domainSize());
+    return _arg_ == _result_ ? 0.0 : double(_arg_->domainSize());
   }
 
 
@@ -444,7 +544,7 @@ namespace gum {
   template < typename TABLE, template < typename > class ALLOC >
   std::pair< double, double >
      ScheduleProjection< TABLE, ALLOC >::memoryUsage() const {
-    const double domsize =
+    const double domsize = _arg_ == _result_ ? 0.0 :
        double(_result_->domainSize()) * _result_->sizeOfContent();
     return {domsize, domsize};
   }
@@ -463,7 +563,8 @@ namespace gum {
   void ScheduleProjection< TABLE, ALLOC >::setProjectionFunction(
      TABLE (*project)(const TABLE&, const Set< const DiscreteVariable* >&)) {
     _project_ = project;
-    _result_->makeAbstract();
+    if (_result_ != _arg_)
+      _result_->makeAbstract();
   }
 
 
