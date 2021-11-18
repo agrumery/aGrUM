@@ -467,7 +467,7 @@ namespace gum {
   /// inserts a new table as a source multidim
   template < template < typename > class ALLOC >
   template < typename TABLE >
-  const IScheduleMultiDim< ALLOC >&
+  const IScheduleMultiDim< ALLOC >*
      Schedule< ALLOC >::insertTable(const TABLE& table,
                                     const bool   copy,
                                     const Idx    id) {
@@ -496,13 +496,14 @@ namespace gum {
        std::pair< ScheduleOperation< ALLOC >*, Idx >(nullptr, Idx(0)));
     _multidim2id_.insert(new_multidim, new_multidim->id());
 
-    return *new_multidim;
+    return new_multidim;
   }
 
 
   /// inserts an already constructed ScheduleMultiDim
   template < template < typename > class ALLOC >
-  const IScheduleMultiDim< ALLOC >& Schedule< ALLOC >::insertScheduleMultiDim(
+  const IScheduleMultiDim< ALLOC >*
+     Schedule< ALLOC >::insertScheduleMultiDim(
      const IScheduleMultiDim< ALLOC>& multidim) {
     // check that the ScheduleMultiDim neither already belongs to the schedule
     // nor contains an abstract table: since it is a source multidim, it will
@@ -528,7 +529,7 @@ namespace gum {
        std::pair< ScheduleOperation< ALLOC >*, Idx >(nullptr, Idx(0)));
     _multidim2id_.insert(new_multidim, new_multidim->id());
 
-    return *new_multidim;
+    return new_multidim;
   }
 
 
@@ -547,8 +548,12 @@ namespace gum {
 
   /// inserts an operation into the schedule
   template < template < typename > class ALLOC >
-  const ScheduleOperation< ALLOC >&
+  const ScheduleOperation< ALLOC >*
      Schedule< ALLOC >::insertOperation(const ScheduleOperation< ALLOC >& op) {
+    // check if the operation does something. If this is not the case, then
+    // do not insert any operation
+    if (op.nbOperations() == 0.0) return nullptr;
+
     // check that the parameters of the operation already belong to the schedule.
     // to do so, it is sufficient to check that their ids belong to the schedule
     const Sequence< const IScheduleMultiDim< ALLOC >* >& op_args = op.args();
@@ -655,7 +660,7 @@ namespace gum {
     // _dag_ and no other update is needed
     if (new_op->isExecuted()) {
       _dag_.eraseNode(new_node);
-      return *new_op;
+      return new_op;
     }
 
 
@@ -699,15 +704,14 @@ namespace gum {
       }
     }
 
-    return *new_op;
+    return new_op;
   }
 
 
   /// emplace a new schedule binary combination operator
   template < template < typename > class ALLOC >
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
-  const ScheduleOperation< ALLOC >&
-     Schedule< ALLOC >::emplaceBinaryCombination(
+  const ScheduleOperation< ALLOC >* Schedule< ALLOC >::emplaceBinaryCombination(
         const ScheduleMultiDim< TABLE1, ALLOC >& table1,
         const ScheduleMultiDim< TABLE2, ALLOC >& table2,
         TABLE_RES (*combine)( const TABLE1&, const TABLE2&)) {
@@ -722,8 +726,7 @@ namespace gum {
   /// emplace a new schedule projection operator
   template < template < typename > class ALLOC >
   template < typename TABLE >
-  const ScheduleOperation< ALLOC >&
-     Schedule< ALLOC >::emplaceProjection(
+  const ScheduleOperation< ALLOC >* Schedule< ALLOC >::emplaceProjection(
           const ScheduleMultiDim< TABLE, ALLOC >& table,
           const Set< const DiscreteVariable* >&   del_vars,
           TABLE (*project)(const TABLE&, const Set< const DiscreteVariable* >&)) {
@@ -732,6 +735,35 @@ namespace gum {
     return insertOperation(
        ScheduleProjection< TABLE, ALLOC >
           (table, del_vars, project, get_allocator()));
+  }
+
+
+  /// emplace a new schedule deletion operation
+  template < template < typename > class ALLOC >
+  template < typename TABLE >
+  const ScheduleOperation< ALLOC >*
+     Schedule< ALLOC >::emplaceDeletion(const ScheduleMultiDim< TABLE, ALLOC >& table) {
+    // note that the insertOperation will check that table already belongs
+    // to the schedule
+    return insertOperation(
+       ScheduleDeletion< TABLE, ALLOC >(table, get_allocator()));
+  }
+
+
+  /// emplace a new schedule storage operation
+  template < template < typename > class ALLOC >
+  template < typename TABLE,
+             template < typename, typename... > class CONTAINER,
+             typename... CONTAINER_PARAMS >
+  const ScheduleOperation< ALLOC >*
+     Schedule< ALLOC >::emplaceStorage(
+        const IScheduleMultiDim< ALLOC >& table,
+        CONTAINER<TABLE, CONTAINER_PARAMS...>& container) {
+    // note that the insertOperation will check that table already belongs
+    // to the schedule
+    return insertOperation(
+       ScheduleStorage< TABLE, CONTAINER, ALLOC, CONTAINER_PARAMS... >(
+          table, container, get_allocator()));
   }
 
 
