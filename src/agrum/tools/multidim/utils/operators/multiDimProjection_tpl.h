@@ -71,7 +71,9 @@ namespace gum {
   INLINE TABLE< GUM_SCALAR >* MultiDimProjection< GUM_SCALAR, TABLE >::execute(
      const TABLE< GUM_SCALAR >&            table,
      const Set< const DiscreteVariable* >& del_vars) const {
-    return new TABLE< GUM_SCALAR >(proj_(table, del_vars));
+    return nbOperations(table, del_vars) != 0.0
+       ? new TABLE< GUM_SCALAR >(proj_(table, del_vars))
+          : const_cast< TABLE< GUM_SCALAR >* >(&table);
   }
 
   /// creates and returns the projection of the table over a subset of its vars
@@ -80,7 +82,8 @@ namespace gum {
      TABLE< GUM_SCALAR >&                     container,
      const TABLE< GUM_SCALAR >&               table,
      const Set< const DiscreteVariable* >& del_vars) const {
-    container = proj_(table, del_vars);
+    container = nbOperations(table, del_vars) != 0.0
+       ? proj_(table, del_vars) : table;
   }
 
   /// returns the set of operations to perform as well as the result of the projection
@@ -104,8 +107,8 @@ namespace gum {
                   const Set< const DiscreteVariable* >& del_vars) const {
     const ScheduleMultiDim< TABLE< GUM_SCALAR > >& xtable =
        dynamic_cast< const ScheduleMultiDim< TABLE< GUM_SCALAR > >& > (*table);
-    const auto& op = schedule.template emplaceProjection(xtable, del_vars, proj_);
-    return op.results()[0];
+    const auto op = schedule.template emplaceProjection(xtable, del_vars, proj_);
+    return op->results()[0];
   }
 
 
@@ -130,7 +133,15 @@ namespace gum {
   INLINE double MultiDimProjection< GUM_SCALAR, TABLE >::nbOperations(
      const TABLE< GUM_SCALAR >&            table,
      const Set< const DiscreteVariable* >& del_vars) const {
-    return double(table.domainSize());
+    bool has_del_vars = false;
+    const auto& vars = table.variablesSequence();
+    for (const auto var: del_vars) {
+      if (vars.exists(var)) {
+        has_del_vars = true;
+        break;
+      }
+    }
+    return has_del_vars ? double(table.domainSize()) : 0.0;
   }
 
   /** @brief returns a rough estimate of the number of operations that will be
@@ -140,12 +151,14 @@ namespace gum {
      const Sequence< const DiscreteVariable* >& vars,
      const Set< const DiscreteVariable* >&      del_vars) const {
     double res = 1.0;
+    bool has_del_vars = false;
 
     for (const auto var: vars) {
       res *= var->domainSize();
+      if (del_vars.exists(var)) has_del_vars = true;
     }
 
-    return res;
+    return has_del_vars ? res : 0.0;
   }
 
   /// returns the memory consumption used during the projection
@@ -154,7 +167,7 @@ namespace gum {
      const Sequence< const DiscreteVariable* >& vars,
      const Set< const DiscreteVariable* >&      del_vars) const {
     double res = 1.0;
-
+    bool has_del_vars = false;
     for (const auto var: vars) {
       if (!del_vars.contains(var)) {
         if (std::numeric_limits< double >::max() / var->domainSize() < res) {
@@ -163,9 +176,15 @@ namespace gum {
 
         res *= var->domainSize();
       }
+      else {
+        has_del_vars = true;
+      }
     }
 
-    res *= sizeof(GUM_SCALAR);
+    if (has_del_vars)
+      res *= sizeof(GUM_SCALAR);
+    else
+      res = 0.0;
     return {res, res};
   }
 

@@ -941,8 +941,8 @@ namespace gum_tests {
 
       {
         gum::Schedule<> schedule;
-        auto& xt1 = schedule.insertTable(t1, false);
-        const auto ptrRes = Proj.schedule(schedule, &xt1, proj_set);
+        auto xt1 = schedule.insertTable(t1, false);
+        const auto ptrRes = Proj.schedule(schedule, xt1, proj_set);
 
         auto avail_nodes = schedule.availableOperations();
         const auto node = *(avail_nodes.begin());
