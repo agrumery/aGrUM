@@ -232,7 +232,7 @@ def get_tags():
   except:
     arch = pep.safer_name(pep.get_platform())
   if arch == "linux_x86_64":
-    arch = 'manylinux2010_x86_64'
+    arch = 'manylinux2014_x86_64'
   elif arch == "linux_i686":
     arch = 'manylinux2010_i686'
   elif arch == "linux_aarch64":
@@ -243,7 +243,7 @@ def get_tags():
   return tags
 
 def clean_up(install_dir):
-  """Remone unescessary files in isntall_dir (for now, only th egg-info
+  """Remove unnecessary files in install_dir (for now, only th egg-info
   file)."""
   filelist = [f for f in listdir(install_dir) if f.endswith("egg-info")]
   for f in filelist:
