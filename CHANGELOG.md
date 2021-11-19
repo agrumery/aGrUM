@@ -1,5 +1,20 @@
 # aGrUM Changelog
 
+## Changelog for 0.22.4
+
+This release aims to provide a number of new configurations for aGrUM and pyAgrum:
+
+* aGrUM
+
+  * builder for windows using mcvc2022 (act option)
+  * aGrUM is now compiled using c++17
+
+* pyAgrum 
+
+  * package for MacOS arm64
+  * package for python 3.10 (limited to 64 bits)
+  * customization tile of plots in `pyAgrum.lib.dynamicBN`
+
 ## Changelog for 0.22.3
 
 * pyAgrum
