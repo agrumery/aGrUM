@@ -110,12 +110,11 @@ namespace gum_tests {
       TS_ASSERT(!f2.isAbstract());
       TS_ASSERT(!xf2->isAbstract());
 
-      const auto xcomb1 = schedule.insertOperation(comb1);
-      TS_ASSERT(xcomb1 != nullptr);
+      const auto& xcomb1 = schedule.insertOperation(comb1);
       gum::NodeSet available_operations = schedule.availableOperations();
       TS_ASSERT(available_operations.size() == 1);
       TS_ASSERT(available_operations.contains(gum::NodeId(1)));
-      TS_ASSERT(schedule.nodeId(*xcomb1) == gum::NodeId(1));
+      TS_ASSERT(schedule.nodeId(xcomb1) == gum::NodeId(1));
       const gum::DAG& dag = schedule.dag();
       TS_ASSERT(dag.sizeNodes() == 1);
 
@@ -403,65 +402,58 @@ namespace gum_tests {
 
       gum::ScheduleBinaryCombination< gum::Potential< double >,
                                       gum::Potential< double >,
-                                      gum::Potential< double > > comb(f1, f2, myadd);
-      const gum::ScheduleMultiDim< gum::Potential< double > >&   result1 = comb.result();
+                                      gum::Potential< double > >
+                                                               comb(f1, f2, myadd);
+      const gum::ScheduleMultiDim< gum::Potential< double > >& result1 = comb.result();
 
       gum::ScheduleDeletion< gum::Potential< double > > del(result1);
 
       gum::Set< const gum::DiscreteVariable* > del_vars;
       del_vars << vars[2] << vars[1];
-      gum::ScheduleProjection< gum::Potential< double > >      myproj(result1, del_vars, myProjectSum);
+      gum::ScheduleProjection< gum::Potential< double > > myproj(result1, del_vars, myProjectSum);
       const gum::ScheduleMultiDim< gum::Potential< double > >& result2 = myproj.result();
 
-      std::vector< gum::Potential< double > > vect;
-      gum::ScheduleStorage< gum::Potential< double >, std::vector > store(result2,vect);
+      std::vector< gum::Potential< double > >                       vect;
+      gum::ScheduleStorage< gum::Potential< double >, std::vector > store(result2, vect);
 
       gum::Schedule<> schedule;
       TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertScheduleMultiDim(f1));
       TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertScheduleMultiDim(f2));
+      TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertScheduleMultiDim(f3));
       TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertOperation(comb));
       TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertOperation(myproj));
       TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertOperation(del));
       TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertOperation(store));
 
-      TS_ASSERT(schedule.dag().sizeNodes() == 4)
-      gum::ScheduleProjection< gum::Potential< double > > myproj2(f3, del_vars, myProjectSum);
-      TS_ASSERT(schedule.insertOperation(myproj2) == nullptr);
-      TS_ASSERT(schedule.dag().sizeNodes() == 4)
-
-      gum::NodeSet available_operations = schedule.availableOperations();
-      std::vector<gum::NodeId> available_nodes;
+      gum::NodeSet               available_operations = schedule.availableOperations();
+      std::vector< gum::NodeId > available_nodes;
       TS_ASSERT(available_operations.size() == 1)
-      gum::ScheduleOperation<>& op1 =
-         const_cast<gum::ScheduleOperation<>&>(
-            schedule.operation(*available_operations.begin()));
+      gum::ScheduleOperation<>& op1 = const_cast< gum::ScheduleOperation<>& >(
+         schedule.operation(*available_operations.begin()));
       op1.execute();
       TS_ASSERT(op1.isExecuted())
-      schedule.updateAfterExecution(op1,available_nodes, true);
+      schedule.updateAfterExecution(op1, available_nodes, true);
 
       available_operations = schedule.availableOperations();
       TS_ASSERT(available_operations.size() == 1)
-      gum::ScheduleOperation<>& op2 =
-         const_cast<gum::ScheduleOperation<>&>(
-            schedule.operation(*available_operations.begin()));
+      gum::ScheduleOperation<>& op2 = const_cast< gum::ScheduleOperation<>& >(
+         schedule.operation(*available_operations.begin()));
       op2.execute();
       TS_ASSERT(op2.isExecuted())
-      schedule.updateAfterExecution(op2,available_nodes, false);
+      schedule.updateAfterExecution(op2, available_nodes, false);
 
       available_operations = schedule.availableOperations();
       TS_ASSERT(available_operations.size() == 2)
-      gum::ScheduleOperation<>& op3 =
-         const_cast<gum::ScheduleOperation<>&>(
-            schedule.operation(*available_operations.begin()));
+      gum::ScheduleOperation<>& op3 = const_cast< gum::ScheduleOperation<>& >(
+         schedule.operation(*available_operations.begin()));
       op3.execute();
       TS_ASSERT(op3.isExecuted())
-      schedule.updateAfterExecution(op3,available_nodes, false);
+      schedule.updateAfterExecution(op3, available_nodes, false);
 
       available_operations = schedule.availableOperations();
       TS_ASSERT(available_operations.size() == 1);
-      gum::ScheduleOperation<>& op4 =
-         const_cast<gum::ScheduleOperation<>&>(
-            schedule.operation(*available_operations.begin()));
+      gum::ScheduleOperation<>& op4 = const_cast< gum::ScheduleOperation<>& >(
+         schedule.operation(*available_operations.begin()));
       op4.execute();
       TS_ASSERT(op4.isExecuted())
 
@@ -474,54 +466,46 @@ namespace gum_tests {
       gum::Schedule<> schedule2;
       schedule2.insertScheduleMultiDim(f1);
       schedule2.insertScheduleMultiDim(f2);
-      const auto xcomb = schedule2.emplaceBinaryCombination(f1,f2,myadd);
-      const auto xres1 =
-         static_cast<const gum::ScheduleMultiDim< gum::Potential< double > >* >(
-            xcomb->results()[0]);
-      const auto xproj = schedule2.emplaceProjection(*xres1, del_vars, myProjectSum);
-      const auto xres2 =
-         static_cast<const gum::ScheduleMultiDim< gum::Potential< double > >* >(
-            xproj->results()[0]);
+      schedule2.insertScheduleMultiDim(f3);
+      const auto& xcomb = schedule2.emplaceBinaryCombination(f1, f2, myadd);
+      const auto  xres1 = static_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(
+         xcomb.results()[0]);
+      const auto& xproj = schedule2.emplaceProjection(*xres1, del_vars, myProjectSum);
+      const auto  xres2 = static_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(
+         xproj.results()[0]);
       schedule2.emplaceDeletion(*xres1);
       schedule2.emplaceStorage(*xres2, vect);
 
       TS_ASSERT(schedule2.dag().sizeNodes() == 4)
-      gum::ScheduleProjection< gum::Potential< double > > myproj3(f3, del_vars, myProjectSum);
-      TS_ASSERT(schedule2.insertOperation(myproj3) == nullptr);
-      TS_ASSERT(schedule2.dag().sizeNodes() == 4)
 
       available_operations = schedule2.availableOperations();
       TS_ASSERT(available_operations.size() == 1)
-      gum::ScheduleOperation<>& xop1 =
-         const_cast<gum::ScheduleOperation<>&>(
-            schedule2.operation(*available_operations.begin()));
+      gum::ScheduleOperation<>& xop1 = const_cast< gum::ScheduleOperation<>& >(
+         schedule2.operation(*available_operations.begin()));
       xop1.execute();
       TS_ASSERT(xop1.isExecuted())
-      schedule2.updateAfterExecution(xop1,available_nodes, true);
+      schedule2.updateAfterExecution(xop1, available_nodes, true);
 
       available_operations = schedule2.availableOperations();
       TS_ASSERT(available_operations.size() == 1)
-      gum::ScheduleOperation<>& xop2 =
-         const_cast<gum::ScheduleOperation<>&>(
-            schedule2.operation(*available_operations.begin()));
+      gum::ScheduleOperation<>& xop2 = const_cast< gum::ScheduleOperation<>& >(
+         schedule2.operation(*available_operations.begin()));
       xop2.execute();
       TS_ASSERT(xop2.isExecuted())
-      schedule2.updateAfterExecution(xop2,available_nodes, false);
+      schedule2.updateAfterExecution(xop2, available_nodes, false);
 
       available_operations = schedule2.availableOperations();
       TS_ASSERT(available_operations.size() == 2)
-      gum::ScheduleOperation<>& xop3 =
-         const_cast<gum::ScheduleOperation<>&>(
-            schedule2.operation(*available_operations.begin()));
+      gum::ScheduleOperation<>& xop3 = const_cast< gum::ScheduleOperation<>& >(
+         schedule2.operation(*available_operations.begin()));
       xop3.execute();
       TS_ASSERT(xop3.isExecuted())
-      schedule2.updateAfterExecution(xop3,available_nodes, false);
+      schedule2.updateAfterExecution(xop3, available_nodes, false);
 
       available_operations = schedule2.availableOperations();
       TS_ASSERT(available_operations.size() == 1);
-      gum::ScheduleOperation<>& xop4 =
-         const_cast<gum::ScheduleOperation<>&>(
-            schedule2.operation(*available_operations.begin()));
+      gum::ScheduleOperation<>& xop4 = const_cast< gum::ScheduleOperation<>& >(
+         schedule2.operation(*available_operations.begin()));
       xop4.execute();
       TS_ASSERT(xop4.isExecuted())
 

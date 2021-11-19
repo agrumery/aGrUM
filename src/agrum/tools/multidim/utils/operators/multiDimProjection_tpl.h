@@ -71,9 +71,11 @@ namespace gum {
   INLINE TABLE< GUM_SCALAR >* MultiDimProjection< GUM_SCALAR, TABLE >::execute(
      const TABLE< GUM_SCALAR >&            table,
      const Set< const DiscreteVariable* >& del_vars) const {
-    return nbOperations(table, del_vars) != 0.0
-       ? new TABLE< GUM_SCALAR >(proj_(table, del_vars))
-          : const_cast< TABLE< GUM_SCALAR >* >(&table);
+    // projected constants are equal to the same constant
+    if (table.variablesSequence().empty())
+      return new TABLE< GUM_SCALAR >(table);
+    else
+      return new TABLE< GUM_SCALAR >(proj_(table, del_vars));
   }
 
   /// creates and returns the projection of the table over a subset of its vars
@@ -82,13 +84,15 @@ namespace gum {
      TABLE< GUM_SCALAR >&                     container,
      const TABLE< GUM_SCALAR >&               table,
      const Set< const DiscreteVariable* >& del_vars) const {
-    container = nbOperations(table, del_vars) != 0.0
-       ? proj_(table, del_vars) : table;
+    if (table.variablesSequence().empty())
+      container = table;
+    else
+      container = proj_(table, del_vars);
   }
 
   /// returns the set of operations to perform as well as the result of the projection
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  INLINE std::pair< ScheduleOperation<>*, const IScheduleMultiDim<>* >
+  std::pair< ScheduleOperation<>*, const IScheduleMultiDim<>* >
      MultiDimProjection< GUM_SCALAR, TABLE >::operations(
         const IScheduleMultiDim<>*            table,
         const Set< const DiscreteVariable* >& del_vars) const {
@@ -107,10 +111,9 @@ namespace gum {
                   const Set< const DiscreteVariable* >& del_vars) const {
     const ScheduleMultiDim< TABLE< GUM_SCALAR > >& xtable =
        dynamic_cast< const ScheduleMultiDim< TABLE< GUM_SCALAR > >& > (*table);
-    const auto op = schedule.template emplaceProjection(xtable, del_vars, proj_);
-    return op->results()[0];
+    const auto& op = schedule.template emplaceProjection(xtable, del_vars, proj_);
+    return op.results()[0];
   }
-
 
   /// changes the function used for projecting TABLES
   template < typename GUM_SCALAR, template < typename > class TABLE >
@@ -133,58 +136,31 @@ namespace gum {
   INLINE double MultiDimProjection< GUM_SCALAR, TABLE >::nbOperations(
      const TABLE< GUM_SCALAR >&            table,
      const Set< const DiscreteVariable* >& del_vars) const {
-    bool has_del_vars = false;
-    const auto& vars = table.variablesSequence();
-    for (const auto var: del_vars) {
-      if (vars.exists(var)) {
-        has_del_vars = true;
-        break;
-      }
-    }
-    return has_del_vars ? double(table.domainSize()) : 0.0;
+    return double(table.domainSize());
   }
 
   /** @brief returns a rough estimate of the number of operations that will be
    * performed to compute the projection */
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  double MultiDimProjection< GUM_SCALAR, TABLE >::nbOperations(
+  INLINE double MultiDimProjection< GUM_SCALAR, TABLE >::nbOperations(
      const Sequence< const DiscreteVariable* >& vars,
      const Set< const DiscreteVariable* >&      del_vars) const {
     double res = 1.0;
-    bool has_del_vars = false;
-
-    for (const auto var: vars) {
-      res *= var->domainSize();
-      if (del_vars.exists(var)) has_del_vars = true;
-    }
-
-    return has_del_vars ? res : 0.0;
+    for (const auto var: vars) { res *= var->domainSize(); }
+    return res;
   }
 
   /// returns the memory consumption used during the projection
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  std::pair< double, double > MultiDimProjection< GUM_SCALAR, TABLE >::memoryUsage(
+  INLINE std::pair< double, double > MultiDimProjection< GUM_SCALAR, TABLE >::memoryUsage(
      const Sequence< const DiscreteVariable* >& vars,
      const Set< const DiscreteVariable* >&      del_vars) const {
-    double res = 1.0;
-    bool has_del_vars = false;
-    for (const auto var: vars) {
-      if (!del_vars.contains(var)) {
-        if (std::numeric_limits< double >::max() / var->domainSize() < res) {
-          GUM_ERROR(OutOfBounds, "memory usage too high")
-        }
+    double res = double(sizeof(GUM_SCALAR));
 
-        res *= var->domainSize();
-      }
-      else {
-        has_del_vars = true;
-      }
+    for (const auto var: vars) {
+      if (!del_vars.contains(var)) res *= var->domainSize();
     }
 
-    if (has_del_vars)
-      res *= sizeof(GUM_SCALAR);
-    else
-      res = 0.0;
     return {res, res};
   }
 
