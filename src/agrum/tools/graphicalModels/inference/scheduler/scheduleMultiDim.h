@@ -319,7 +319,7 @@ namespace gum {
     /// the multidimensional table stored into the ScheduleMultiDim
     TABLE* _table_{nullptr};
 
-    /// indicates whether __table is contained or referenced
+    /// indicates whether _table_ is contained or referenced
     bool _table_contained_{false};
 
     /// returns the sequence of variables of the table

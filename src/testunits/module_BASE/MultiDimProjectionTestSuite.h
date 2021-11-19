@@ -977,6 +977,59 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(yyy.first, 2187 * sizeof(double))
       yyy = Proj.memoryUsage(t1.variablesSequence(), del_vars);
 
+      gum::Potential< double > t6;
+      randomInitP(t6);
+      TS_ASSERT(t6.domainSize() == 1)
+      TS_ASSERT(Proj.nbOperations(t6, del_vars) == 1.0)
+      TS_ASSERT(Proj.nbOperations(t6.variablesSequence(), del_vars) == 1.0)
+      auto mem_usage = Proj.memoryUsage(t6.variablesSequence(), del_vars);
+      TS_ASSERT(mem_usage.first == 1.0 * sizeof(double))
+      TS_ASSERT(mem_usage.second == 1.0 * sizeof(double))
+      gum::ScheduleMultiDim< gum::Potential< double > > t6multi(t6, false);
+      auto xxx1 = Proj.operations(&t6multi, del_vars);
+      delete xxx1.first;
+
+      gum::Schedule<> schedule;
+      schedule.insertScheduleMultiDim(t6multi);
+      const auto t6sched = Proj.schedule(schedule, &t6multi, del_vars);
+      gum::Set< gum::NodeId > avail = schedule.availableOperations();
+      // here, there is no operation available because the projections of constants
+      // are performed immediately
+      TS_ASSERT(avail.size() == 0)
+      const gum::ScheduleMultiDim< gum::Potential< double > >& xt6sched =
+         dynamic_cast<const gum::ScheduleMultiDim< gum::Potential< double > >&>(*t6sched);
+      TS_ASSERT(xt6sched.multiDim() == t6multi.multiDim())
+      TS_ASSERT(schedule.dag().sizeNodes() == 0)
+
+      gum::Potential< double > t7;
+      t7 << *(vars[2]);
+      randomInitP(t7);
+      TS_ASSERT(t7.domainSize() == 3)
+      TS_ASSERT(Proj.nbOperations(t7, del_vars) == 3.0)
+      TS_ASSERT(Proj.nbOperations(t7.variablesSequence(), del_vars) == 3.0)
+      gum::ScheduleMultiDim< gum::Potential< double > > t7multi(t7, false);
+      mem_usage = Proj.memoryUsage(t7, del_vars);
+      TS_ASSERT(mem_usage.first == 3.0 * sizeof(double))
+      TS_ASSERT(mem_usage.second == 3.0 * sizeof(double))
+      auto xxx2 = Proj.operations(&t7multi, del_vars);
+      delete xxx2.first;
+
+      schedule.insertScheduleMultiDim(t7multi);
+      const auto t7sched = Proj.schedule(schedule, &t7multi, del_vars);
+      TS_ASSERT(t7sched->isAbstract())
+      avail = schedule.availableOperations();
+      TS_ASSERT(avail.size() == 1)
+      const gum::NodeId node = *avail.begin();
+      auto& proj_ops =
+         const_cast< gum::ScheduleOperation<>& >(schedule.operation(node));
+      proj_ops.execute();
+      std::vector< gum::NodeId > xavail;
+      schedule.updateAfterExecution(node, xavail, false);
+      TS_ASSERT(schedule.dag().sizeNodes() == 0)
+      const gum::ScheduleMultiDim< gum::Potential< double > >& xt7sched =
+         dynamic_cast<const gum::ScheduleMultiDim< gum::Potential< double > >&>(*t7sched);
+      TS_ASSERT(xt7sched.multiDim() == t7)
+
       for (gum::Idx i = 0; i < vars.size(); ++i)
         delete vars[i];
     }

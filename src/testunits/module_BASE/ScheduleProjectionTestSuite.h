@@ -259,13 +259,30 @@ namespace gum_tests {
       gum::Set< const gum::DiscreteVariable* > del_vars1;
       gum::ScheduleProjection< gum::Potential< double > > myproj1(f1, del_vars1, myProjectMax);
       TS_ASSERT(myproj1.result().domainSize() == 16)
-      TS_ASSERT(myproj1.nbOperations() == 0.0)
-      auto mem_usage = std::pair< double, double >(0.0, 0.0);
+      TS_ASSERT(myproj1.nbOperations() == 16.0)
+      auto mem_usage = std::pair< double, double >(16.0 * sizeof(double), 16.0 * sizeof(double));
       TS_ASSERT(myproj1.memoryUsage() == mem_usage)
-      TS_ASSERT(!myproj1.result().isAbstract())
+      TS_ASSERT(myproj1.result().isAbstract())
       myproj1.execute();
       TS_ASSERT(myproj1.result().multiDim() == pot1);
+      TS_ASSERT(&myproj1.result().multiDim() != &pot1);
 
+      del_vars1 << vars[0] << vars[2] << vars[3] << vars[4];
+      gum::ScheduleProjection< gum::Potential< double > > myproj1b(f1, del_vars1, myProjectMax);
+      TS_ASSERT(myproj1b.result().domainSize() == 1)
+      TS_ASSERT(myproj1b.nbOperations() == 16.0)
+      mem_usage = std::pair< double, double >(1.0 * sizeof(double), 1.0 * sizeof(double));
+      TS_ASSERT(myproj1b.memoryUsage() == mem_usage)
+      TS_ASSERT(myproj1b.result().isAbstract())
+      myproj1b.execute();
+      TS_ASSERT(!myproj1b.result().isAbstract())
+      TS_ASSERT(myproj1b.result().multiDim().domainSize() == 1);
+      gum::Potential< double > pot1b =
+         const_cast< gum::ScheduleMultiDim< gum::Potential<double> >& >(
+            myproj1b.result()).exportMultiDim();
+      TS_ASSERT(pot1b.domainSize() == 1);
+
+      del_vars1.clear();
       del_vars1 << vars[0];
       gum::ScheduleProjection< gum::Potential< double > > myproj2(f1, del_vars1, myProjectMax);
       TS_ASSERT(myproj2.result().domainSize() == 8)
@@ -277,9 +294,10 @@ namespace gum_tests {
       seq << &xpot2;
       myproj2.updateArgs(seq);
       TS_ASSERT(myproj2.result().domainSize() == 8)
-      TS_ASSERT(myproj2.nbOperations() == 0.0)
+      TS_ASSERT(myproj2.nbOperations() == 8.0)
+      mem_usage = std::pair< double, double >(8.0 * sizeof(double), 8.0 * sizeof(double));
       TS_ASSERT(myproj2.memoryUsage() == mem_usage)
-      TS_ASSERT(!myproj2.result().isAbstract())
+      TS_ASSERT(myproj2.result().isAbstract())
       myproj2.execute();
       TS_ASSERT(myproj2.result().multiDim() == pot2);
 
@@ -290,8 +308,8 @@ namespace gum_tests {
       seq.clear();
       seq << &f3;
       myproj2.updateArgs(seq);
+      myproj2.execute();
       TS_ASSERT(myproj2.result().multiDim() == pot3)
-
 
       gum::Potential< double > pot4;
       pot4.fillWith({3.0});
@@ -300,28 +318,31 @@ namespace gum_tests {
       seq << &f4;
       myproj2.updateArgs(seq);
       TS_ASSERT(!myproj2.result().isAbstract())
+      myproj2.execute();
+      TS_ASSERT(!myproj2.result().isAbstract())
       TS_ASSERT(myproj2.result().multiDim() == pot4)
       TS_ASSERT(myproj2.result().domainSize() == 1)
-      TS_ASSERT(myproj2.nbOperations() == 0.0)
+      mem_usage = std::pair< double, double >(1.0 * sizeof(double), 1.0 * sizeof(double));
+      TS_ASSERT(myproj2.nbOperations() == 1.0)
       TS_ASSERT(myproj2.memoryUsage() == mem_usage)
       myproj2.execute();
       TS_ASSERT(!myproj2.result().isAbstract())
       TS_ASSERT(myproj2.result().multiDim() == pot4)
       TS_ASSERT(myproj2.result().domainSize() == 1)
-      TS_ASSERT(myproj2.nbOperations() == 0.0)
+      TS_ASSERT(myproj2.nbOperations() == 1.0)
       TS_ASSERT(myproj2.memoryUsage() == mem_usage)
 
       gum::ScheduleProjection< gum::Potential< double > > myproj3(f4, del_vars1, myProjectMax);
       TS_ASSERT(!myproj3.result().isAbstract())
       TS_ASSERT(myproj3.result().multiDim() == pot4)
       TS_ASSERT(myproj3.result().domainSize() == 1)
-      TS_ASSERT(myproj3.nbOperations() == 0.0)
+      TS_ASSERT(myproj3.nbOperations() == 1.0)
       TS_ASSERT(myproj3.memoryUsage() == mem_usage)
       myproj3.execute();
       TS_ASSERT(!myproj3.result().isAbstract())
       TS_ASSERT(myproj3.result().multiDim() == pot4)
       TS_ASSERT(myproj3.result().domainSize() == 1)
-      TS_ASSERT(myproj3.nbOperations() == 0.0)
+      TS_ASSERT(myproj3.nbOperations() == 1.0)
       TS_ASSERT(myproj3.memoryUsage() == mem_usage)
 
       del_vars1.clear();
@@ -329,13 +350,13 @@ namespace gum_tests {
       TS_ASSERT(!myproj4.result().isAbstract())
       TS_ASSERT(myproj4.result().multiDim() == pot4)
       TS_ASSERT(myproj4.result().domainSize() == 1)
-      TS_ASSERT(myproj4.nbOperations() == 0.0)
+      TS_ASSERT(myproj4.nbOperations() == 1.0)
       TS_ASSERT(myproj4.memoryUsage() == mem_usage)
       myproj3.execute();
       TS_ASSERT(!myproj4.result().isAbstract())
       TS_ASSERT(myproj4.result().multiDim() == pot4)
       TS_ASSERT(myproj4.result().domainSize() == 1)
-      TS_ASSERT(myproj4.nbOperations() == 0.0)
+      TS_ASSERT(myproj4.nbOperations() == 1.0)
       TS_ASSERT(myproj4.memoryUsage() == mem_usage)
 
       for (unsigned int i = 0; i < vars.size(); ++i)
