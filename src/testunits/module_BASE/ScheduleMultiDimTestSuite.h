@@ -52,7 +52,7 @@ namespace gum_tests {
 
       gum::ScheduleMultiDim< gum::Potential< double > > f1(seq);
       TS_ASSERT(f1.isAbstract());
-      TS_ASSERT_THROWS(f1.multiDim(), gum::NotFound);
+      TS_ASSERT_THROWS(f1.multiDim(), gum::NullElement);
       TS_ASSERT(f1.id() == gum::Idx(1));
 
       std::string       s1 = f1.toString();
@@ -61,7 +61,7 @@ namespace gum_tests {
       TS_ASSERT(s2.str() == s1);
 
       gum::ScheduleMultiDim< gum::Potential< double > > f1bis(seq, 10);
-      TS_ASSERT_THROWS(f1bis.multiDim(), gum::NotFound);
+      TS_ASSERT_THROWS(f1bis.multiDim(), gum::NullElement);
       TS_ASSERT(f1.variablesSequence() == f1bis.variablesSequence());
       TS_ASSERT(f1bis.id() == gum::Idx(10));
       TS_ASSERT(f1bis.domainSize() == gum::Size(1000));
@@ -79,7 +79,7 @@ namespace gum_tests {
       gum::ScheduleMultiDim< gum::Potential< double > > f2(f1);
       TS_ASSERT(f2.isAbstract());
       TS_ASSERT(f2.containsMultiDim() == false);
-      TS_ASSERT_THROWS(f2.multiDim(), gum::NotFound);
+      TS_ASSERT_THROWS(f2.multiDim(), gum::NullElement);
       TS_ASSERT(f1 == f2);
       TS_ASSERT(!(f1 != f2));
       TS_ASSERT(f1 == dynamic_cast< gum::IScheduleMultiDim<>& >(f2));

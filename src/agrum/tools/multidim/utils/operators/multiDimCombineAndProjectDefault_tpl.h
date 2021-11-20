@@ -89,10 +89,19 @@ namespace gum {
       tables.push_back(new ScheduleMultiDim< TABLE< GUM_SCALAR > >(*table, false));
     }
 
+    for (const auto table: tables) {
+      std::cout << "is abs: " << (ulong)table << " : " << table->isAbstract() << std::endl;
+    }
+
     // get the set of operations to perform and execute them
     auto ops_plus_res = operations(tables, del_vars);
     for (auto op: ops_plus_res.first) {
       op->execute();
+    }
+
+    std::cout << "ops second : " << ops_plus_res.second.size() << std::endl;
+    for (const auto table: ops_plus_res.second) {
+      std::cout << "after is abs: " << (ulong)table << " : " << table->isAbstract() << std::endl;
     }
 
     // get the schedule multidims resulting from the computations and save them
@@ -101,7 +110,7 @@ namespace gum {
       auto& schedule_result = const_cast< ScheduleMultiDim< TABLE< GUM_SCALAR > >& >(
          static_cast< const ScheduleMultiDim< TABLE< GUM_SCALAR > >& >(*pot));
       try {
-        auto potres = new TABLE< GUM_SCALAR >(std::move(schedule_result.exportMultiDim()));
+        auto potres = new TABLE< GUM_SCALAR >(std::move(schedule_result.multiDim()));
         result.insert(potres);
       } catch (Exception& e) {
         std::cout << " not ok = " << (ulong) &(schedule_result) << std::endl;

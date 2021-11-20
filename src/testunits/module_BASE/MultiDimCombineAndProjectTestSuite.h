@@ -39,7 +39,7 @@ namespace gum_tests {
 
   class MultiDimCombineAndProjectTestSuite: public CxxTest::TestSuite {
     public:
-    void testDouble() {
+    void xtestDouble() {
       gum::IScheduleMultiDim<>::resetIdGenerator();
       std::vector< gum::LabelizedVariable* > vars(11);
 
@@ -73,8 +73,10 @@ namespace gum_tests {
       del_vars << vars[1] << vars[4] << vars[5] << vars[6] << vars[9] << vars[10];
 
       try {
+        std::cout << "=====================" << std::endl;
         gum::Set< const gum::Potential< double >* > res
            = projcomb.execute(to_comb, del_vars);
+        std::cout << "#####################" << std::endl;
 
         double nb_ops = projcomb.nbOperations(to_comb, del_vars);
 
@@ -186,7 +188,7 @@ namespace gum_tests {
     }
 
 
-    void testFloat() {
+    void xtestFloat() {
       std::vector< gum::LabelizedVariable* > vars(11);
 
       for (gum::Idx i = 0; i < 11; ++i) {
@@ -219,8 +221,10 @@ namespace gum_tests {
       del_vars << vars[1] << vars[4] << vars[5] << vars[6] << vars[9] << vars[10];
 
       try {
+        std::cout << "///////////////////////////" << std::endl;
         gum::Set< const gum::Potential< float >* > res
            = projcomb.execute(to_comb, del_vars);
+        std::cout << "----------------------------" << std::endl;
 
         float nb_ops = projcomb.nbOperations(to_comb, del_vars);
 
@@ -317,8 +321,10 @@ namespace gum_tests {
       del_vars << vars[0] << vars[2];
 
       try {
+        std::cout << "&&&&&&&&&&&&&&&&&&&&&&&" << std::endl;
         gum::Set< const gum::Potential< float >* > res
            = projcomb.execute(to_comb, del_vars);
+        std::cout << "|||||||||||||||||||||||" << std::endl;
         TS_ASSERT_EQUALS(res.size(), (gum::Size)3)
 
         int   nb_empty = 0;
@@ -341,6 +347,7 @@ namespace gum_tests {
       {
         gum::Set< const gum::Potential< float >* > res
            = projcomb.execute(to_comb, del_vars);
+
         TS_ASSERT_EQUALS(res.size(), (gum::Size)3)
 
         int   nb_empty = 0;

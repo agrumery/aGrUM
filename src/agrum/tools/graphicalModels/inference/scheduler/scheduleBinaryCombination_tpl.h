@@ -63,7 +63,7 @@ namespace gum {
     _result_ = allocator.allocate(1);
     try {
       new ((void*)_result_)
-         ScheduleMultiDim< TABLE_RES, ALLOC >(vars, 0, allocator);
+         ScheduleMultiDim< TABLE_RES, ALLOC >(vars, Idx(0), allocator);
     } catch (...) {
       allocator.deallocate(_result_, 1);
       throw;
