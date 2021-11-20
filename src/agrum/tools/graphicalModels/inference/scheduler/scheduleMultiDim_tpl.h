@@ -394,7 +394,7 @@ namespace gum {
   template < typename TABLE, template < typename > class ALLOC >
   INLINE const TABLE& ScheduleMultiDim< TABLE, ALLOC >::multiDim() const {
     if (_table_ == nullptr) {
-      GUM_ERROR(NotFound,
+      GUM_ERROR(NullElement,
                 "the ScheduleMultiDim is abstract, so its table "
                    << "cannot be returned");
     }
@@ -431,14 +431,10 @@ namespace gum {
                 "The ScheduleMultiDim being abstract, "
                    << "it is impossible to export its table");
     }
-    if (!_table_contained_) {
-      GUM_ERROR(OperationNotAllowed,
-                "The ScheduleMultiDim only references its table, it "
-                   << "does not contain it. So the latter cannot be exported");
-    }
 
-    // save the table
-    TABLE table = std::move(*_table_);
+    // if the ScheduleMultiDim only references the table, we should copy it
+    TABLE table = _table_contained_ ? std::move(*_table_) : *_table_;
+
     makeAbstract();
     return table;
   }

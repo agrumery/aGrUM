@@ -376,7 +376,7 @@ namespace gum {
     }
 
     // if the new table is a constant, just copy it
-    if (new_table->variablesSequence().empty()) {
+    if (new_table->variablesSequence().empty() && !new_table->isAbstract()) {
       *_result_ = std::move(ScheduleMultiDim< TABLE, ALLOC >(new_table->multiDim(),
                                                              true,
                                                              _result_->id()));

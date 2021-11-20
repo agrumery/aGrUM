@@ -75,7 +75,7 @@ namespace gum {
    * // that indicates which operations we wish to do. So, for the moment,
    * // result1 and result2 do not contain real Potentials.
    * // As such, they are called abstract and trying to get their "real"
-   * // Potential (using method multiDim()) would throw a NotFound exception.
+   * // Potential (using method multiDim()) would throw a NullElement exception.
    * std::cout << result1.isAbstract ();
    * std::cout << result2.isAbstract ();
    * std::cout << ! f1.isAbstract ();
@@ -99,6 +99,7 @@ namespace gum {
   class ScheduleMultiDim: public IScheduleMultiDim< ALLOC > {
     public:
     using allocator_type = ALLOC< Idx >;
+
 
     // ############################################################################
     /// @name Constructors / Destructors
@@ -276,13 +277,13 @@ namespace gum {
      * the ScheduleMultiDim abstract
      *
      * @throws NullElement is raised if the ScheduleMultiDim is abstract
-     * @throws OperationNotAllowed is raised if the ScheduleMultiDim is not
-     * abstract but it only references a MultiDim, it does not contain it */
+     * @warning if the ScheduleMultiDim only references an outside MultiDim, the
+     * method copies it before returning it. */
     TABLE exportMultiDim();
 
     /** @brief returns the table actually contained in the ScheduleMultiDim
      *
-     * @throws NotFound exception is thrown if the table does not exist
+     * @throws NullElement exception is thrown if the table does not exist
      * yet (because it has not been computed yet) */
     const TABLE& multiDim() const;
 
