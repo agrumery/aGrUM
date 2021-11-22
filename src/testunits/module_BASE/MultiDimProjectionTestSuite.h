@@ -954,6 +954,8 @@ namespace gum_tests {
                      ptrRes)->multiDim() == t2)
       }
 
+      std::cout << "wwww" << std::endl;
+
       {
         gum::ScheduleMultiDim< gum::Potential< double > > xt1(t1, false);
         const auto ops_plus_res = Proj.operations(&xt1, proj_set);
@@ -974,8 +976,10 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(Proj.nbOperations(t1.variablesSequence(), proj_set), 59049)
 
       std::pair< double, double > yyy = Proj.memoryUsage(t1, del_vars);
-      TS_ASSERT_EQUALS(yyy.first, 2187 * sizeof(double))
+      TS_ASSERT_EQUALS(yyy.first, 2187 * sizeof(double) + sizeof(gum::Potential< double >))
       yyy = Proj.memoryUsage(t1.variablesSequence(), del_vars);
+
+      std::cout << "wwww" << std::endl;
 
       gum::Potential< double > t6;
       randomInitP(t6);
@@ -983,8 +987,8 @@ namespace gum_tests {
       TS_ASSERT(Proj.nbOperations(t6, del_vars) == 1.0)
       TS_ASSERT(Proj.nbOperations(t6.variablesSequence(), del_vars) == 1.0)
       auto mem_usage = Proj.memoryUsage(t6.variablesSequence(), del_vars);
-      TS_ASSERT(mem_usage.first == 1.0 * sizeof(double))
-      TS_ASSERT(mem_usage.second == 1.0 * sizeof(double))
+      TS_ASSERT(mem_usage.first == 1.0 * sizeof(double) + sizeof(gum::Potential< double >))
+      TS_ASSERT(mem_usage.second == 1.0 * sizeof(double) + sizeof(gum::Potential< double >))
       gum::ScheduleMultiDim< gum::Potential< double > > t6multi(t6, false);
       auto xxx1 = Proj.operations(&t6multi, del_vars);
       delete xxx1.first;
@@ -996,7 +1000,7 @@ namespace gum_tests {
       // here, there is no operation available because the projections of constants
       // are performed immediately
       TS_ASSERT(avail.size() == 0)
-      const gum::ScheduleMultiDim< gum::Potential< double > >& xt6sched =
+      const auto& xt6sched =
          dynamic_cast<const gum::ScheduleMultiDim< gum::Potential< double > >&>(*t6sched);
       TS_ASSERT(xt6sched.multiDim() == t6multi.multiDim())
       TS_ASSERT(schedule.dag().sizeNodes() == 0)
@@ -1013,6 +1017,7 @@ namespace gum_tests {
       TS_ASSERT(mem_usage.second == 3.0 * sizeof(double))
       auto xxx2 = Proj.operations(&t7multi, del_vars);
       delete xxx2.first;
+      std::cout << "wwww" << std::endl;
 
       schedule.insertScheduleMultiDim(t7multi);
       const auto t7sched = Proj.schedule(schedule, &t7multi, del_vars);

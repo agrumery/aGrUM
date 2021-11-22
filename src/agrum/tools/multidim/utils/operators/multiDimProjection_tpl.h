@@ -109,7 +109,7 @@ namespace gum {
                   Schedule<>& schedule,
                   const IScheduleMultiDim<>* table,
                   const Set< const DiscreteVariable* >& del_vars) const {
-    const ScheduleMultiDim< TABLE< GUM_SCALAR > >& xtable =
+    const auto& xtable =
        dynamic_cast< const ScheduleMultiDim< TABLE< GUM_SCALAR > >& > (*table);
     const auto& op = schedule.template emplaceProjection(xtable, del_vars, proj_);
     return op.results()[0];
@@ -146,7 +146,7 @@ namespace gum {
      const Sequence< const DiscreteVariable* >& vars,
      const Set< const DiscreteVariable* >&      del_vars) const {
     double res = 1.0;
-    for (const auto var: vars) { res *= var->domainSize(); }
+    for (const auto var: vars) { res *= double(var->domainSize()); }
     return res;
   }
 
@@ -155,12 +155,13 @@ namespace gum {
   INLINE std::pair< double, double > MultiDimProjection< GUM_SCALAR, TABLE >::memoryUsage(
      const Sequence< const DiscreteVariable* >& vars,
      const Set< const DiscreteVariable* >&      del_vars) const {
-    double res = double(sizeof(GUM_SCALAR));
+    auto res = double(sizeof(GUM_SCALAR));
 
     for (const auto var: vars) {
-      if (!del_vars.contains(var)) res *= var->domainSize();
+      if (!del_vars.contains(var)) res *= double(var->domainSize());
     }
 
+    res += double(sizeof(TABLE< GUM_SCALAR >));
     return {res, res};
   }
 

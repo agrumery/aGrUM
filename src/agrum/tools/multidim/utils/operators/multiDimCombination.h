@@ -54,7 +54,9 @@ namespace gum {
    * op T2 op T3 op .... op Tn, where the Ti's are the multidimensional objects
    * and op is an operator or a function taking in argument two such objects
    * and producing a new (combined) Ti object. By default, the combination
-   * operation "op" is assumed to be COMMUTATIVE and ASSOCIATIVE.
+   * operation "op" is assumed to be COMMUTATIVE and ASSOCIATIVE. Note that
+   * MultiDimCombinations always produce a new freshly allocated table as the
+   * result of the combinations.
    *
    * By multidimensional objects, we mean of course MultiDimImplementations,
    * but also more complex objects such as, for instance, pairs of
