@@ -48,7 +48,8 @@ namespace gum {
    * and producing a new (combined) Ti object. Note that the
    * MultiDimCombinationDefault determines itself in which order the objects
    * should be combined. As such, the combination operation to perform should
-   * thus be COMMUTATIVE and ASSOCIATIVE.
+   * thus be COMMUTATIVE and ASSOCIATIVE. Note also that MultiDimCombinationDefault
+   * always produce a new freshly allocated table as the result of the combinations.
    *
    * By multidimensional objects, we mean of course MultiDimImplementations,
    * but also more complex objects such as, for instance, pairs of
@@ -85,7 +86,7 @@ namespace gum {
    *
    *
    * Potential<float> t1, t2, t3;
-   * Set<const Potential<float>*> set;
+   * Set< const Potential< float >* > set;
    * set << &table1 << &table2 << &table3;
    * MultiDimCombinationDefault<float,Potential> Comb ( addPotential );
    * Potential<float>* combined_table = Comb.execute ( set );
@@ -151,7 +152,9 @@ namespace gum {
 
     /// returns the set of operations to perform to make the combination
     /** Executing sequentially the set of operations returned is guaranteed to
-     * produce the right result. */
+     * produce the right result.
+     * @warning MultiDimCombinations always produce a new freshly allocated resulting table
+     */
     std::pair< std::vector< ScheduleOperation<>* >, const IScheduleMultiDim<>* >
        operations(const std::vector< const IScheduleMultiDim<>* >& set) const final;
     std::pair< std::vector< ScheduleOperation<>* >, const IScheduleMultiDim<>* >

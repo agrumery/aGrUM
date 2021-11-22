@@ -126,13 +126,11 @@ namespace gum {
     for (auto op: ops_plus_res.first) { op->execute(); }
 
     // get the schedule multidim of the last combination and save it
-    ScheduleMultiDim< TABLE< GUM_SCALAR > >& schedule_result =
-       const_cast<ScheduleMultiDim< TABLE< GUM_SCALAR > >&>(
-          static_cast<const ScheduleMultiDim< TABLE< GUM_SCALAR > >&>(
-             *ops_plus_res.second));
+    auto& schedule_result = const_cast<ScheduleMultiDim< TABLE< GUM_SCALAR > >&>(
+       static_cast<const ScheduleMultiDim< TABLE< GUM_SCALAR > >&>(
+          *ops_plus_res.second));
 
-    TABLE< GUM_SCALAR >* result = new TABLE< GUM_SCALAR >(
-       std::move(schedule_result.exportMultiDim()));
+    auto* result = new TABLE< GUM_SCALAR >(std::move(schedule_result.exportMultiDim()));
 
     // delete all the operations created as well as all the schedule tables
     _freeData_(tables, ops_plus_res.first);
@@ -157,9 +155,7 @@ namespace gum {
 
     // get the set of operations to perform and compute their number of operations
     auto ops_plus_res = operations(tables);
-
     double nb_operations = 0.0;
-
     for (const auto op: ops_plus_res.first) {
       nb_operations += op->nbOperations();
     }
@@ -247,11 +243,11 @@ namespace gum {
      const IScheduleMultiDim<>& table1,
      const IScheduleMultiDim<>& table2) const {
 
-    double size = table1.domainSize();
+    auto size = double(table1.domainSize());
     const auto& vars1 = table1.variablesSequence();
     const auto& vars2 = table2.variablesSequence();
     for (const auto ptrVar: vars2)
-      if (!vars1.exists(ptrVar)) size *= ptrVar->domainSize();
+      if (!vars1.exists(ptrVar)) size *= double(ptrVar->domainSize());
 
     return size;
   }

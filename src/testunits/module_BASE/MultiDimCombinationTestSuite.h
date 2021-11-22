@@ -97,8 +97,8 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS(xxx.nbOperations(set), 16641)
         auto yyy = xxx.memoryUsage(set);
-        TS_ASSERT_EQUALS(yyy.first, 16640 * sizeof(double))
-        TS_ASSERT_EQUALS(yyy.second, 16384 * sizeof(double))
+        TS_ASSERT_EQUALS(yyy.first, 16640 * sizeof(double) + 2 * sizeof(gum::Potential< double >))
+        TS_ASSERT_EQUALS(yyy.second, 16384 * sizeof(double) + sizeof(gum::Potential< double >))
 
         t4 = new gum::Potential< double >(t1 * t2);
         t5 = new gum::Potential< double >(t3 * (*t4));
