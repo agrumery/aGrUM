@@ -47,7 +47,9 @@ namespace gum {
    * of its variables
    *
    * MultiDimProjection is a generic wrapper designed to project efficiently a
-   * multidimensional object over a subset of its variables.
+   * multidimensional object over a subset of its variables. Note that
+   * MultiDimProjections always produce a new freshly allocated table as the
+   * result of the projections.
    *
    * By multidimensional objects, we mean of course MultiDimImplementations,
    * but also more complex objects such as, for instance, pairs of
@@ -136,6 +138,9 @@ namespace gum {
                  const Set< const DiscreteVariable* >& del_vars) const;
 
     /// returns operation to perform as well as the result of the projection
+    /** @warning MultiDimProjections always produce a new freshly allocated
+     * resulting table
+     */
     std::pair< ScheduleOperation<>*, const IScheduleMultiDim<>* >
        operations(const IScheduleMultiDim<>*            table,
                   const Set< const DiscreteVariable* >& del_vars) const;
@@ -146,6 +151,8 @@ namespace gum {
      * @param table the table which is projected
      * @param del_vars the set of variables to remove from the table
      * @return the IScheduleMultiDim resulting from the projection
+     * @warning MultiDimProjections always produce a new freshly allocated
+     * resulting table
      */
     const IScheduleMultiDim<>*
        schedule(Schedule<>& schedule, const IScheduleMultiDim<>* table,

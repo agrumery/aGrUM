@@ -130,6 +130,8 @@ namespace gum {
        static_cast<const ScheduleMultiDim< TABLE< GUM_SCALAR > >&>(
           *ops_plus_res.second));
 
+    // note that, as ScheduleCombinations always produce new freshly allocated
+    // tables, we can safely export the multiDims of their results
     auto* result = new TABLE< GUM_SCALAR >(std::move(schedule_result.exportMultiDim()));
 
     // delete all the operations created as well as all the schedule tables
