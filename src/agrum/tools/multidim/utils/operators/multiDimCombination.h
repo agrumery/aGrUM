@@ -148,7 +148,9 @@ namespace gum {
 
     /// returns the set of operations to perform as well as the result of the combination
     /** Executing sequentially the set of operations returned is guaranteed to
-     * produce the right result. The latter is contained within the IScheduleMultiDim */
+     * produce the right result. The latter is contained within the IScheduleMultiDim.
+     * @warning MultiDimCombinations always produce a new freshly allocated resulting table
+     */
     virtual std::pair< std::vector< ScheduleOperation<>* >, const IScheduleMultiDim<>* >
        operations(const std::vector< const IScheduleMultiDim<>* >& set) const = 0;
     virtual std::pair< std::vector< ScheduleOperation<>* >, const IScheduleMultiDim<>* >
@@ -156,7 +158,9 @@ namespace gum {
 
     /// add to a given schedule the set of operations needed to perform the combination
     /** @warning whenever this method is executed, it is assumed that the
-     * ScheduleMultiDim already belong to the schedule. */
+     * ScheduleMultiDim already belong to the schedule.
+     * @warning MultiDimCombinations always produce a new freshly allocated resulting table
+     */
     const IScheduleMultiDim<>*
        schedule(Schedule<>& schedule, const Set< const IScheduleMultiDim<>* >& set) const;
     const IScheduleMultiDim<>*
