@@ -52,7 +52,8 @@ namespace gum {
    *
    * To be quite generic, the ScheduleProjection takes in argument the function
    * that produces the result of the projection of the object contained inside
-   * the ScheduleMultiDim.
+   * the ScheduleMultiDim. Note that executing a ScheduleProjection will always
+   * produce a freshly allocated table.
    * The following code gives an example of the usage of ScheduleProjection:
    * @code
    * // two functions used to project a Potential<float>:
@@ -257,6 +258,8 @@ namespace gum {
     bool isExecuted() const final;
 
     /// executes the operation
+    /** This method guarantees that the result of the combination is a stored
+     * into a newly allocated table */
     void execute() final;
 
     /// undo a previous execution, if any

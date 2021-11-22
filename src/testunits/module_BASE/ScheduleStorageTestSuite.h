@@ -140,12 +140,12 @@ namespace gum_tests {
 
       TS_ASSERT(store2.nbOperations() == 1.0);
       const std::pair< double, double > xxx2 = store2.memoryUsage();
-      TS_ASSERT(xxx2.first == -4.0 * sizeof(double));
-      TS_ASSERT(xxx2.second == -4.0 * sizeof(double));
+      TS_ASSERT(xxx2.first == -4.0 * sizeof(double) - sizeof(gum::Potential< double >*));
+      TS_ASSERT(xxx2.second == -4.0 * sizeof(double) - sizeof(gum::Potential< double >*));
 
       const std::pair< double, double > xxx1 = store1.memoryUsage();
-      TS_ASSERT(xxx1.first == -16.0 * sizeof(double));
-      TS_ASSERT(xxx1.second == -16.0 * sizeof(double));
+      TS_ASSERT(xxx1.first == -16.0 * sizeof(double) - sizeof(gum::Potential< double >));
+      TS_ASSERT(xxx1.second == -16.0 * sizeof(double) - sizeof(gum::Potential< double >));
 
       gum::ScheduleMultiDim< gum::Potential< double > > f1c(pot1, true);
       gum::ScheduleStorage< gum::Potential< double >, std::vector > store4(f1c, v1);

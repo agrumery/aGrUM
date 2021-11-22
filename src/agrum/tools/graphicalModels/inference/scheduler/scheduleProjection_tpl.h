@@ -435,7 +435,8 @@ namespace gum {
   std::pair< double, double >
      ScheduleProjection< TABLE, ALLOC >::memoryUsage() const {
     const double domsize =
-       double(_result_->domainSize()) * _result_->sizeOfContent();
+       double(_result_->domainSize()) * _result_->sizeOfContent()
+       + sizeof(TABLE);
     return {domsize, domsize};
   }
 

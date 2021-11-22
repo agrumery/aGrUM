@@ -110,12 +110,12 @@ namespace gum_tests {
 
       TS_ASSERT(del2.nbOperations() == 1.0);
       const std::pair< double, double > xxx2 = del2.memoryUsage();
-      TS_ASSERT(xxx2.first == -4.0 * sizeof(double));
-      TS_ASSERT(xxx2.second == -4.0 * sizeof(double));
+      TS_ASSERT(xxx2.first == -4.0 * sizeof(double) - sizeof(gum::Potential< double >));
+      TS_ASSERT(xxx2.second == -4.0 * sizeof(double) - sizeof(gum::Potential< double >));
 
       const std::pair< double, double > xxx1 = del1.memoryUsage();
-      TS_ASSERT(xxx1.first == -16.0 * sizeof(double));
-      TS_ASSERT(xxx1.second == -16.0 * sizeof(double));
+      TS_ASSERT(xxx1.first == -16.0 * sizeof(double) - sizeof(gum::Potential< double >));
+      TS_ASSERT(xxx1.second == -16.0 * sizeof(double) - sizeof(gum::Potential< double >));
 
       gum::ScheduleDeletion< gum::Potential< double > > del4(del2);
       TS_ASSERT(del4.implyDeletion());

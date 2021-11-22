@@ -45,7 +45,8 @@ namespace gum {
    *
    * To be quite generic, the ScheduleBinaryCombination takes in argument the
    * function that produces the result of the combination of the "real" tables
-   * contained within the ScheduleMultiDims to be combined.
+   * contained within the ScheduleMultiDims to be combined. Note that executing
+   * a ScheduleBinaryCombination will always produce a freshly allocated table.
    * The following code gives an example of the usage of ScheduleBinaryCombination:
    * @code
    * // the combination function over "true" Potentials
@@ -258,6 +259,8 @@ namespace gum {
     bool isExecuted() const final;
 
     /// executes the operation
+    /** This method guarantees that the result of the combination is a stored
+     * into a newly allocated table */
     void execute() final;
 
     /// undo a previous execution, if any
