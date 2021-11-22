@@ -143,9 +143,10 @@ namespace gum_tests {
 
       scheduler.setMaxMemory(2.5 * sizeof(double));
       TS_GUM_ASSERT_THROWS_NOTHING(scheduler.execute(schedule3));
-
-      TS_ASSERT_DELTA(scheduler.memoryUsage(schedule4).first, 2100000.0 * sizeof(double), 10);
-      TS_ASSERT_DELTA(scheduler.memoryUsage(schedule4).second, 1000000.0 * sizeof(double), 10);
+      TS_ASSERT_DELTA(scheduler.memoryUsage(schedule4).first,
+                      2100000.0 * sizeof(double) + 3 * sizeof(gum::Potential< double >), 10);
+      TS_ASSERT_DELTA(scheduler.memoryUsage(schedule4).second,
+                      1000000.0 * sizeof(double) + 1 * sizeof(gum::Potential< double >), 10);
 
       for (unsigned int i = 0; i < vars.size(); ++i)
         delete vars[i];

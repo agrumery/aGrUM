@@ -80,8 +80,8 @@ namespace gum_tests {
 
       TS_ASSERT(comb1.nbOperations() == 32.0);
       std::pair< double, double > xxx = comb1.memoryUsage();
-      TS_ASSERT(xxx.first == 32.0 * sizeof(double));
-      TS_ASSERT(xxx.second == 32.0 * sizeof(double));
+      TS_ASSERT(xxx.first == 32.0 * sizeof(double) + sizeof(gum::Potential< double >));
+      TS_ASSERT(xxx.second == 32.0 * sizeof(double) + sizeof(gum::Potential< double >));
 
       std::stringstream s1;
       s1 << result1.toString() << " = combine ( " << f1.toString() << " , "

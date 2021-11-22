@@ -636,7 +636,8 @@ namespace gum {
      ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::memoryUsage()
         const {
     const double domsize =
-       double(_result_->domainSize()) * _result_->sizeOfContent();
+       double(_result_->domainSize()) * _result_->sizeOfContent()
+       + sizeof(TABLE_RES);
     return {domsize, domsize};
   }
 
