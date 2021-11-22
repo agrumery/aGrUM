@@ -954,8 +954,6 @@ namespace gum_tests {
                      ptrRes)->multiDim() == t2)
       }
 
-      std::cout << "wwww" << std::endl;
-
       {
         gum::ScheduleMultiDim< gum::Potential< double > > xt1(t1, false);
         const auto ops_plus_res = Proj.operations(&xt1, proj_set);
@@ -979,8 +977,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(yyy.first, 2187 * sizeof(double) + sizeof(gum::Potential< double >))
       yyy = Proj.memoryUsage(t1.variablesSequence(), del_vars);
 
-      std::cout << "wwww" << std::endl;
-
       gum::Potential< double > t6;
       randomInitP(t6);
       TS_ASSERT(t6.domainSize() == 1)
@@ -995,7 +991,9 @@ namespace gum_tests {
 
       gum::Schedule<> schedule;
       schedule.insertScheduleMultiDim(t6multi);
+
       const auto t6sched = Proj.schedule(schedule, &t6multi, del_vars);
+
       gum::Set< gum::NodeId > avail = schedule.availableOperations();
       // here, there is no operation available because the projections of constants
       // are performed immediately
@@ -1013,11 +1011,10 @@ namespace gum_tests {
       TS_ASSERT(Proj.nbOperations(t7.variablesSequence(), del_vars) == 3.0)
       gum::ScheduleMultiDim< gum::Potential< double > > t7multi(t7, false);
       mem_usage = Proj.memoryUsage(t7, del_vars);
-      TS_ASSERT(mem_usage.first == 3.0 * sizeof(double))
-      TS_ASSERT(mem_usage.second == 3.0 * sizeof(double))
+      TS_ASSERT(mem_usage.first == 3.0 * sizeof(double) + sizeof(gum::Potential< double >))
+      TS_ASSERT(mem_usage.second == 3.0 * sizeof(double) + sizeof(gum::Potential< double >))
       auto xxx2 = Proj.operations(&t7multi, del_vars);
       delete xxx2.first;
-      std::cout << "wwww" << std::endl;
 
       schedule.insertScheduleMultiDim(t7multi);
       const auto t7sched = Proj.schedule(schedule, &t7multi, del_vars);
@@ -1104,7 +1101,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(Proj.nbOperations(t1.variablesSequence(), proj_set), 59049)
 
       std::pair< double, double > yyy = Proj.memoryUsage(t1, del_vars);
-      TS_ASSERT_EQUALS(yyy.first, 2187 * sizeof(double))
+      TS_ASSERT_EQUALS(yyy.first, 2187 * sizeof(double) + sizeof(gum::Potential< double >))
       yyy = Proj.memoryUsage(t1.variablesSequence(), del_vars);
 
       for (gum::Idx i = 0; i < vars.size(); ++i)

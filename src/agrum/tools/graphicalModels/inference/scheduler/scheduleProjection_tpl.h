@@ -52,10 +52,13 @@ namespace gum {
     _result_ = allocator.allocate(1);
     try {
       // if table is a constant, just copy it
-      if (table.variablesSequence().empty())
-        new ((void*)_result_) ScheduleMultiDim< TABLE, ALLOC >(table, allocator);
+      if (table.variablesSequence().empty() && !table.isAbstract())
+        new ((void*)_result_)
+           ScheduleMultiDim< TABLE, ALLOC >(table.multiDim(), true,
+                                            Idx(0), allocator);
       else
-        new ((void*)_result_) ScheduleMultiDim< TABLE, ALLOC >(vars, Idx(0), allocator);
+        new ((void*)_result_)
+           ScheduleMultiDim< TABLE, ALLOC >(vars, Idx(0), allocator);
     } catch (...) {
       allocator.deallocate(_result_, 1);
       throw;
@@ -81,7 +84,8 @@ namespace gum {
     ALLOC< ScheduleMultiDim< TABLE, ALLOC > > allocator(this->get_allocator());
     _result_ = allocator.allocate(1);
     try {
-      new ((void*)_result_) ScheduleMultiDim< TABLE, ALLOC >(*(from._result_), allocator);
+      new ((void*)_result_)
+         ScheduleMultiDim< TABLE, ALLOC >(*(from._result_), allocator);
     } catch (...) {
       allocator.deallocate(_result_, 1);
       throw;
@@ -409,8 +413,13 @@ namespace gum {
   void ScheduleProjection< TABLE, ALLOC >::execute() {
     if (_result_->isAbstract()) {
       const TABLE& tab = _arg_->multiDim();
-      TABLE        res = _project_(tab, _del_vars_);
-      _result_->setMultiDim(std::move(res));
+      if (_arg_->domainSize() > 1) {
+        TABLE res = _project_(tab, _del_vars_);
+        _result_->setMultiDim(std::move(res));
+     }
+     else {
+       _result_->setMultiDim(tab, true);
+     }
     }
   }
 
