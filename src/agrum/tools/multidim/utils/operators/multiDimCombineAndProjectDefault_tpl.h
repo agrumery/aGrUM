@@ -89,19 +89,10 @@ namespace gum {
       tables.push_back(new ScheduleMultiDim< TABLE< GUM_SCALAR > >(*table, false));
     }
 
-    for (const auto table: tables) {
-      std::cout << "is abs: " << (ulong)table << " : " << table->isAbstract() << std::endl;
-    }
-
     // get the set of operations to perform and execute them
     auto ops_plus_res = operations(tables, del_vars);
     for (auto op: ops_plus_res.first) {
       op->execute();
-    }
-
-    std::cout << "ops second : " << ops_plus_res.second.size() << std::endl;
-    for (const auto table: ops_plus_res.second) {
-      std::cout << "after is abs: " << (ulong)table << " : " << table->isAbstract() << std::endl;
     }
 
     // get the schedule multidims resulting from the computations and save them
@@ -109,14 +100,8 @@ namespace gum {
     for (const auto pot: ops_plus_res.second) {
       auto& schedule_result = const_cast< ScheduleMultiDim< TABLE< GUM_SCALAR > >& >(
          static_cast< const ScheduleMultiDim< TABLE< GUM_SCALAR > >& >(*pot));
-      try {
         auto potres = new TABLE< GUM_SCALAR >(std::move(schedule_result.multiDim()));
         result.insert(potres);
-      } catch (Exception& e) {
-        std::cout << " not ok = " << (ulong) &(schedule_result) << std::endl;
-        std::cout << schedule_result.variablesSequence() << std::endl;
-        GUM_SHOWERROR(e);
-      }
     }
 
     // delete all the operations created as well as all the schedule tables
@@ -423,14 +408,6 @@ namespace gum {
         ops.insert(ops.cend(), comb_ops.first.begin(), comb_ops.first.end());
         joint           = comb_ops.second;
         joint_to_delete = true;
-
-        const IScheduleMultiDim<>* xxx = nullptr;
-        for (auto op: comb_ops.first)
-          if (op->type() == gum::ScheduleOperationType::COMBINE_MULTIDIM)
-            xxx = op->results()[0];
-        std::cout << "comb (";
-        for(auto pot: tables_to_combine) std::cout << (ulong)pot << " ";
-        std::cout << ") -> " << (ulong) joint << " = " << (xxx == joint) << std::endl;
       }
 
       // compute the table resulting from marginalizing out del_var from joint
@@ -441,9 +418,6 @@ namespace gum {
       auto proj_ops = _projection_->operations(joint, del_one_var);
       ops.push_back(proj_ops.first);
       const IScheduleMultiDim<>* marginal = proj_ops.second;
-
-      std::cout << "proj (" << (ulong) joint << ") -> "
-         << (ulong) marginal << " = " << (proj_ops.first->results()[0] == marginal) << std::endl;
 
       // remove the temporary joint if needed
       if (joint_to_delete) {
