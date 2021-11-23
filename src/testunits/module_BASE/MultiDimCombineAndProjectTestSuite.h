@@ -316,6 +316,7 @@ namespace gum_tests {
           prod *= (*ptrPot)[I];
           nb_empty++;
         }
+        delete ptrPot;
       }
 
       TS_ASSERT_EQUALS(nb_empty, 2)
@@ -336,12 +337,12 @@ namespace gum_tests {
             prod *= (*ptrPot)[I];
             nb_empty++;
           }
+          delete ptrPot;
         }
 
         TS_ASSERT_EQUALS(nb_empty, 3)
         TS_ASSERT_DELTA(prod, 15.0, 1e-6)
       }
-
 
       to_comb.clear();
       to_comb << &t2 << &t3;
@@ -358,11 +359,15 @@ namespace gum_tests {
             prod *= (*ptrPot)[I];
             nb_empty++;
           }
+          delete ptrPot;
         }
 
         TS_ASSERT_EQUALS(nb_empty, 2)
         TS_ASSERT_DELTA(prod, 15.0, 1e-6)
       }
+
+      for (gum::Idx i = 0; i < vars.size(); ++i)
+        delete vars[i];
     }
 
 
