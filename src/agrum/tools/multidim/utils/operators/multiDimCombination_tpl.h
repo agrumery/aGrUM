@@ -33,28 +33,28 @@
 namespace gum {
 
   // Constructor
-  template < typename GUM_SCALAR, template < typename > class TABLE >
-  MultiDimCombination< GUM_SCALAR, TABLE >::MultiDimCombination() {
+  template < class TABLE >
+  MultiDimCombination< TABLE >::MultiDimCombination() {
     GUM_CONSTRUCTOR(MultiDimCombination);
   }
 
   // Copy constructor
-  template < typename GUM_SCALAR, template < typename > class TABLE >
-  MultiDimCombination< GUM_SCALAR, TABLE >::MultiDimCombination(
-     const MultiDimCombination< GUM_SCALAR, TABLE >& from) {
+  template < class TABLE >
+  MultiDimCombination< TABLE >::MultiDimCombination(
+     const MultiDimCombination< TABLE >& from) {
     GUM_CONS_CPY(MultiDimCombination);
   }
 
   // Destructor
-  template < typename GUM_SCALAR, template < typename > class TABLE >
-  MultiDimCombination< GUM_SCALAR, TABLE >::~MultiDimCombination() {
+  template < class TABLE >
+  MultiDimCombination< TABLE >::~MultiDimCombination() {
     GUM_DESTRUCTOR(MultiDimCombination);
   }
 
   // add to a given schedule the set of operations needed to perform the combination
-  template < typename GUM_SCALAR, template < typename > class TABLE >
+  template < class TABLE >
   const IScheduleMultiDim<>*
-     MultiDimCombination< GUM_SCALAR, TABLE >::schedule(
+     MultiDimCombination< TABLE >::schedule(
      Schedule<>& schedule, const std::vector< const IScheduleMultiDim<>* >& set) const {
     // compute the set of operations and store it into the schedule
     auto ops_plus_res = operations(set);
@@ -74,9 +74,9 @@ namespace gum {
 
 
   // add to a given schedule the set of operations needed to perform the combination
-  template < typename GUM_SCALAR, template < typename > class TABLE >
+  template < class TABLE >
   INLINE const IScheduleMultiDim<>*
-     MultiDimCombination< GUM_SCALAR, TABLE >::schedule(
+     MultiDimCombination< TABLE >::schedule(
      Schedule<>& schedule, const Set< const IScheduleMultiDim<>* >& set) const {
     std::vector< const IScheduleMultiDim<>* > vect;
     vect.reserve(set.size());

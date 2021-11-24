@@ -139,9 +139,9 @@ namespace gum {
           for (i.setFirst(), j.setFirst(); !i.end(); i.inc(), j.inc())
             m.set(j, pot->get(i));
         } else {
-          MultiDimCombinationDefault< GUM_SCALAR, Potential > Comb(multPotential);
-          Potential< GUM_SCALAR >*                            tmp = Comb.execute(pots);
-          Instantiation                                       i(m), j(*tmp);
+          MultiDimCombinationDefault< Potential< GUM_SCALAR > > Comb(multPotential);
+          Potential< GUM_SCALAR >*                              tmp = Comb.execute(pots);
+          Instantiation                                         i(m), j(*tmp);
 
           for (i.setFirst(), j.setFirst(); !i.end(); i.inc(), j.inc())
             m.set(i, tmp->get(j));
@@ -926,21 +926,21 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE std::string
            StructuredInference< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
-                                                const PRMAttribute< GUM_SCALAR >* a) const {
+                                                    const PRMAttribute< GUM_SCALAR >* a) const {
       return i->name() + _dot_ + a->safeName();
     }
 
     template < typename GUM_SCALAR >
     INLINE std::string
            StructuredInference< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
-                                                const PRMAttribute< GUM_SCALAR >& a) const {
+                                                    const PRMAttribute< GUM_SCALAR >& a) const {
       return i->name() + _dot_ + a.safeName();
     }
 
     template < typename GUM_SCALAR >
     INLINE std::string
            StructuredInference< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
-                                                const PRMSlotChain< GUM_SCALAR >& a) const {
+                                                    const PRMSlotChain< GUM_SCALAR >& a) const {
       return i->name() + _dot_ + a.lastElt().safeName();
     }
 

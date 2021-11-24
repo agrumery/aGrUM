@@ -86,7 +86,7 @@ namespace gum_tests {
         gum::Set< const gum::Potential< double >* > set;
         set << &t1 << &t2 << &t3;
 
-        gum::MultiDimCombinationDefault< double, gum::Potential > xxx(addPotential);
+        gum::MultiDimCombinationDefault< gum::Potential< double > > xxx(addPotential);
         t6 = xxx.execute(set);
         TS_ASSERT(t6)
         TS_ASSERT_EQUALS(*t6, *t5)
@@ -107,11 +107,10 @@ namespace gum_tests {
         TS_ASSERT(t6)
         TS_ASSERT_EQUALS(*t6, *t5)
 
-        gum::Set< const gum::IScheduleMultiDim<>* > sched_set;
+        gum::Set< const gum::IScheduleMultiDim<>* >    sched_set;
         std::vector< const gum::IScheduleMultiDim<>* > sched_vect;
         for (const auto pot: set) {
-          auto new_sched =
-             new gum::ScheduleMultiDim< gum::Potential< double > >(*pot, false);
+          auto new_sched = new gum::ScheduleMultiDim< gum::Potential< double > >(*pot, false);
           sched_set.insert(new_sched);
           sched_vect.push_back(new_sched);
         }
@@ -123,13 +122,16 @@ namespace gum_tests {
         TS_ASSERT(ops_plus_resV.first.size() == 3)
         TS_ASSERT(ops_plus_resV.second->variablesSequence().size() == 7)
 
-        for(auto op: ops_plus_resS.first) delete op;
-        for(auto op: ops_plus_resV.first) delete op;
+        for (auto op: ops_plus_resS.first)
+          delete op;
+        for (auto op: ops_plus_resV.first)
+          delete op;
 
         gum::Schedule<> scheduleS;
-        for (const auto pot: sched_set) scheduleS.insertScheduleMultiDim(*pot);
-        const auto ptrResS = xxx.schedule(scheduleS,sched_set);
-        bool not_completed = true;
+        for (const auto pot: sched_set)
+          scheduleS.insertScheduleMultiDim(*pot);
+        const auto ptrResS       = xxx.schedule(scheduleS, sched_set);
+        bool       not_completed = true;
         do {
           auto avail_nodes = scheduleS.availableOperations();
           if (avail_nodes.empty())
@@ -147,9 +149,10 @@ namespace gum_tests {
         TS_ASSERT(ptrResS->variablesSequence().size() == 7)
 
         gum::Schedule<> scheduleV;
-        for (const auto pot: sched_set) scheduleV.insertScheduleMultiDim(*pot);
-        const auto ptrResV = xxx.schedule(scheduleV,sched_vect);
-        not_completed = true;
+        for (const auto pot: sched_set)
+          scheduleV.insertScheduleMultiDim(*pot);
+        const auto ptrResV = xxx.schedule(scheduleV, sched_vect);
+        not_completed      = true;
         do {
           auto avail_nodes = scheduleV.availableOperations();
           if (avail_nodes.empty())
@@ -166,7 +169,8 @@ namespace gum_tests {
         } while (not_completed);
         TS_ASSERT(ptrResV->variablesSequence().size() == 7)
 
-        for (const auto pot: sched_set) delete pot;
+        for (const auto pot: sched_set)
+          delete pot;
 
         delete t4;
         delete t5;
@@ -184,8 +188,8 @@ namespace gum_tests {
       t1.set(inst1, 3.0);
       t2.set(inst2, 4.0);
 
-      gum::MultiDimCombinationDefault< double, gum::Potential > xxx(multPotential);
-      gum::Set< const gum::Potential< double >* >               set;
+      gum::MultiDimCombinationDefault< gum::Potential< double > > xxx(multPotential);
+      gum::Set< const gum::Potential< double >* >                 set;
       set << &t1 << &t2;
 
       gum::Potential< double >* t3 = xxx.execute(set);

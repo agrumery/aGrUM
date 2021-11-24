@@ -37,32 +37,32 @@
 namespace gum {
 
   // default constructor
-  template < typename GUM_SCALAR, template < typename > class TABLE >
-  MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::MultiDimCombineAndProjectDefault(
-     TABLE< GUM_SCALAR > (*combine)(const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&),
-     TABLE< GUM_SCALAR > (*project)(const TABLE< GUM_SCALAR >&,
+  template < class TABLE >
+  MultiDimCombineAndProjectDefault< TABLE >::MultiDimCombineAndProjectDefault(
+     TABLE (*combine)(const TABLE&, const TABLE&),
+     TABLE (*project)(const TABLE&,
                                     const Set< const DiscreteVariable* >&)) :
-      MultiDimCombineAndProject< GUM_SCALAR, TABLE >(),
-      _combination_(new MultiDimCombinationDefault< GUM_SCALAR, TABLE >(combine)),
-      _projection_(new MultiDimProjection< GUM_SCALAR, TABLE >(project)) {
+      MultiDimCombineAndProject< TABLE >(),
+      _combination_(new MultiDimCombinationDefault< TABLE >(combine)),
+      _projection_(new MultiDimProjection< TABLE >(project)) {
     // for debugging purposes
     GUM_CONSTRUCTOR(MultiDimCombineAndProjectDefault);
   }
 
   // copy constructor
-  template < typename GUM_SCALAR, template < typename > class TABLE >
-  MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::MultiDimCombineAndProjectDefault(
-     const MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >& from) :
-      MultiDimCombineAndProject< GUM_SCALAR, TABLE >(),
-      _combination_(from._combination_->newFactory()),
-      _projection_(from._projection_->newFactory()) {
+  template < class TABLE >
+  MultiDimCombineAndProjectDefault< TABLE >::MultiDimCombineAndProjectDefault(
+     const MultiDimCombineAndProjectDefault< TABLE >& from) :
+      MultiDimCombineAndProject< TABLE >(),
+      _combination_(from._combination_->clone()),
+      _projection_(from._projection_->clone()) {
     // for debugging purposes
     GUM_CONS_CPY(MultiDimCombineAndProjectDefault);
   }
 
   // destructor
-  template < typename GUM_SCALAR, template < typename > class TABLE >
-  MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::~MultiDimCombineAndProjectDefault() {
+  template < class TABLE >
+  MultiDimCombineAndProjectDefault< TABLE >::~MultiDimCombineAndProjectDefault() {
     // for debugging purposes
     GUM_DESTRUCTOR(MultiDimCombineAndProjectDefault);
     delete _combination_;
@@ -70,23 +70,23 @@ namespace gum {
   }
 
   // virtual constructor
-  template < typename GUM_SCALAR, template < typename > class TABLE >
-  MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >*
-     MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::newFactory() const {
-    return new MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >(*this);
+  template < class TABLE >
+  MultiDimCombineAndProjectDefault< TABLE >*
+     MultiDimCombineAndProjectDefault< TABLE >::clone() const {
+    return new MultiDimCombineAndProjectDefault< TABLE >(*this);
   }
 
   // combine and project
-  template < typename GUM_SCALAR, template < typename > class TABLE >
-  Set< const TABLE< GUM_SCALAR >* >
-     MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::execute(
-        Set< const TABLE< GUM_SCALAR >* > table_set,
+  template < class TABLE >
+  Set< const TABLE* >
+     MultiDimCombineAndProjectDefault< TABLE >::execute(
+        Set< const TABLE* > table_set,
         Set< const DiscreteVariable* >    del_vars) {
     // create a vector with all the tables stored as multidims
     std::vector< const IScheduleMultiDim<>* > tables;
     tables.reserve(table_set.size());
     for (const auto table: table_set) {
-      tables.push_back(new ScheduleMultiDim< TABLE< GUM_SCALAR > >(*table, false));
+      tables.push_back(new ScheduleMultiDim< TABLE >(*table, false));
     }
 
     // get the set of operations to perform and execute them
@@ -96,11 +96,11 @@ namespace gum {
     }
 
     // get the schedule multidims resulting from the computations and save them
-    Set< const TABLE< GUM_SCALAR >* > result;
+    Set< const TABLE* > result;
     for (const auto pot: ops_plus_res.second) {
-      auto& schedule_result = const_cast< ScheduleMultiDim< TABLE< GUM_SCALAR > >& >(
-         static_cast< const ScheduleMultiDim< TABLE< GUM_SCALAR > >& >(*pot));
-        auto potres = new TABLE< GUM_SCALAR >(std::move(schedule_result.multiDim()));
+      auto& schedule_result = const_cast< ScheduleMultiDim< TABLE >& >(
+         static_cast< const ScheduleMultiDim< TABLE >& >(*pot));
+        auto potres = new TABLE(std::move(schedule_result.multiDim()));
         result.insert(potres);
     }
 
@@ -112,65 +112,65 @@ namespace gum {
 
 
   // changes the function used for combining two TABLES
-  template < typename GUM_SCALAR, template < typename > class TABLE >
-  INLINE void MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setCombinationFunction(
-     TABLE< GUM_SCALAR > (*combine)(const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&)) {
+  template < class TABLE >
+  INLINE void MultiDimCombineAndProjectDefault< TABLE >::setCombinationFunction(
+     TABLE (*combine)(const TABLE&, const TABLE&)) {
     _combination_->setCombinationFunction(combine);
   }
 
   // returns the current combination function
-  template < typename GUM_SCALAR, template < typename > class TABLE >
-  INLINE TABLE< GUM_SCALAR > (
-     *MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::combinationFunction())(
-     const TABLE< GUM_SCALAR >&,
-     const TABLE< GUM_SCALAR >&) {
+  template < class TABLE >
+  INLINE TABLE (
+     *MultiDimCombineAndProjectDefault< TABLE >::combinationFunction())(
+     const TABLE&,
+     const TABLE&) {
     return _combination_->combinationFunction();
   }
 
   // changes the class that performs the combinations
-  template < typename GUM_SCALAR, template < typename > class TABLE >
-  INLINE void MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setCombinationClass(
-     const MultiDimCombination< GUM_SCALAR, TABLE >& comb_class) {
+  template < class TABLE >
+  INLINE void MultiDimCombineAndProjectDefault< TABLE >::setCombinationClass(
+     const MultiDimCombination< TABLE >& comb_class) {
     delete _combination_;
-    _combination_ = comb_class.newFactory();
+    _combination_ = comb_class.clone();
   }
 
   // changes the function used for projecting TABLES
-  template < typename GUM_SCALAR, template < typename > class TABLE >
-  INLINE void MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setProjectionFunction(
-     TABLE< GUM_SCALAR > (*proj)(const TABLE< GUM_SCALAR >&,
+  template < class TABLE >
+  INLINE void MultiDimCombineAndProjectDefault< TABLE >::setProjectionFunction(
+     TABLE (*proj)(const TABLE&,
                                  const Set< const DiscreteVariable* >&)) {
     _projection_->setProjectionFunction(proj);
   }
 
   // returns the current projection function
-  template < typename GUM_SCALAR, template < typename > class TABLE >
-  INLINE TABLE< GUM_SCALAR > (
-     *MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::projectionFunction())(
-     const TABLE< GUM_SCALAR >&,
+  template < class TABLE >
+  INLINE TABLE (
+     *MultiDimCombineAndProjectDefault< TABLE >::projectionFunction())(
+     const TABLE&,
      const Set< const DiscreteVariable* >&) {
     return _projection_->projectionFunction();
   }
 
   // changes the class that performs the projections
-  template < typename GUM_SCALAR, template < typename > class TABLE >
-  INLINE void MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setProjectionClass(
-     const MultiDimProjection< GUM_SCALAR, TABLE >& proj_class) {
+  template < class TABLE >
+  INLINE void MultiDimCombineAndProjectDefault< TABLE >::setProjectionClass(
+     const MultiDimProjection< TABLE >& proj_class) {
     delete _projection_;
-    _projection_ = proj_class.newFactory();
+    _projection_ = proj_class.clone();
   }
 
   /** @brief returns a rough estimate of the number of operations that will be
    * performed to compute the combination */
-  template < typename GUM_SCALAR, template < typename > class TABLE >
-  double MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::nbOperations(
+  template < class TABLE >
+  double MultiDimCombineAndProjectDefault< TABLE >::nbOperations(
      const Set< const Sequence< const DiscreteVariable* >* >& table_set,
      Set< const DiscreteVariable* >                           del_vars) const {
     // create a vector with all the tables stored as multidims
     std::vector< const IScheduleMultiDim<>* > tables;
     tables.reserve(table_set.size());
     for (const auto vars: table_set) {
-      tables.push_back(new ScheduleMultiDim< TABLE< GUM_SCALAR > >(*vars, false));
+      tables.push_back(new ScheduleMultiDim< TABLE >(*vars, false));
     }
 
     // get the set of operations to perform and compute their number of operations
@@ -186,9 +186,9 @@ namespace gum {
 
   /** @brief returns a rough estimate of the number of operations that will be
    * performed to compute the combination */
-  template < typename GUM_SCALAR, template < typename > class TABLE >
-  double MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::nbOperations(
-     const Set< const TABLE< GUM_SCALAR >* >& set,
+  template < class TABLE >
+  double MultiDimCombineAndProjectDefault< TABLE >::nbOperations(
+     const Set< const TABLE* >& set,
      const Set< const DiscreteVariable* >&    del_vars) const {
     // create the set of sets of discrete variables involved in the tables
     Set< const Sequence< const DiscreteVariable* >* > var_set(set.size());
@@ -202,15 +202,15 @@ namespace gum {
 
   // returns the memory consumption used during the combinations and
   // projections
-  template < typename GUM_SCALAR, template < typename > class TABLE >
-  std::pair< double, double > MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::memoryUsage(
+  template < class TABLE >
+  std::pair< double, double > MultiDimCombineAndProjectDefault< TABLE >::memoryUsage(
      const Set< const Sequence< const DiscreteVariable* >* >& table_set,
      Set< const DiscreteVariable* >                           del_vars) const {
     // create a vector with all the tables stored as multidims
     std::vector< const IScheduleMultiDim<>* > tables;
     tables.reserve(table_set.size());
     for (const auto vars: table_set) {
-      tables.push_back(new ScheduleMultiDim< TABLE< GUM_SCALAR > >(*vars, false));
+      tables.push_back(new ScheduleMultiDim< TABLE >(*vars, false));
     }
 
     // get the set of operations to perform and compute their number of operations
@@ -233,9 +233,9 @@ namespace gum {
 
   // returns the memory consumption used during the combinations and
   // projections
-  template < typename GUM_SCALAR, template < typename > class TABLE >
-  std::pair< double, double > MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::memoryUsage(
-     const Set< const TABLE< GUM_SCALAR >* >& set,
+  template < class TABLE >
+  std::pair< double, double > MultiDimCombineAndProjectDefault< TABLE >::memoryUsage(
+     const Set< const TABLE* >& set,
      const Set< const DiscreteVariable* >&    del_vars) const {
     // create the set of sets of discrete variables involved in the tables
     Set< const Sequence< const DiscreteVariable* >* > var_set(set.size());
@@ -250,10 +250,10 @@ namespace gum {
 
   /// returns the set of operations to perform to make all the combinations
   /// and projections
-  template < typename GUM_SCALAR, template < typename > class TABLE >
+  template < class TABLE >
   std::pair< std::vector< ScheduleOperation<>* >,
              Set< const IScheduleMultiDim<>* > >
-     MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::operations(
+     MultiDimCombineAndProjectDefault< TABLE >::operations(
         const std::vector< const IScheduleMultiDim<>* >& original_tables,
         const Set< const DiscreteVariable* >&            del_vars) const {
     Set< const IScheduleMultiDim<>* > tables_set(original_tables.size());
@@ -264,10 +264,10 @@ namespace gum {
 
   /// returns the set of operations to perform to make all the combinations
   /// and projections
-  template < typename GUM_SCALAR, template < typename > class TABLE >
+  template < class TABLE >
   std::pair< std::vector< ScheduleOperation<>* >,
              Set< const IScheduleMultiDim<>* > >
-     MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::operations(
+     MultiDimCombineAndProjectDefault< TABLE >::operations(
         const Set< const IScheduleMultiDim<>* >& original_tables,
         const Set< const DiscreteVariable* >&    original_del_vars) const {
     // check if we need to combine and/or project something
@@ -421,8 +421,8 @@ namespace gum {
 
       // remove the temporary joint if needed
       if (joint_to_delete) {
-        auto deletion = new ScheduleDeletion< TABLE< GUM_SCALAR > >(
-           static_cast< const ScheduleMultiDim< TABLE< GUM_SCALAR > >& >(*joint));
+        auto deletion = new ScheduleDeletion< TABLE >(
+           static_cast< const ScheduleMultiDim< TABLE >& >(*joint));
         ops.push_back(deletion);
       }
 
@@ -464,8 +464,8 @@ namespace gum {
         // if ptrTab is a table resulting from preceding combinations/projections,
         // it is temporary and, therefore, it should be deleted
         if (!original_tables.contains(ptrTab)) {
-          auto deletion = new ScheduleDeletion< TABLE< GUM_SCALAR > >(
-           static_cast< const ScheduleMultiDim< TABLE< GUM_SCALAR > >& >(*ptrTab));
+          auto deletion = new ScheduleDeletion< TABLE >(
+           static_cast< const ScheduleMultiDim< TABLE >& >(*ptrTab));
           ops.push_back(deletion);
         }
 
@@ -511,8 +511,8 @@ namespace gum {
 
 
   /// free scheduing memory
-  template < typename GUM_SCALAR, template < typename > class TABLE >
-  INLINE void MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::_freeData_(
+  template < class TABLE >
+  INLINE void MultiDimCombineAndProjectDefault< TABLE >::_freeData_(
      std::vector< const IScheduleMultiDim<>* >& tables,
      std::vector< ScheduleOperation<>* >& operations) const {
     for (auto op: operations)

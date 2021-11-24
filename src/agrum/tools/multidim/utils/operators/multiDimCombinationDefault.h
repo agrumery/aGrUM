@@ -88,7 +88,7 @@ namespace gum {
    * Potential<float> t1, t2, t3;
    * Set< const Potential< float >* > set;
    * set << &table1 << &table2 << &table3;
-   * MultiDimCombinationDefault<float,Potential> Comb ( addPotential );
+   * MultiDimCombinationDefault< Potential< float > > Comb ( addPotential );
    * Potential<float>* combined_table = Comb.execute ( set );
    *
    * // change the operator to apply
@@ -98,8 +98,8 @@ namespace gum {
    * @endcode
    */
   // clang-format on
-  template < typename GUM_SCALAR, template < typename > class TABLE >
-  class MultiDimCombinationDefault: public MultiDimCombination< GUM_SCALAR, TABLE > {
+  template < class TABLE >
+  class MultiDimCombinationDefault: public MultiDimCombination< TABLE > {
     public:
     // ========================================================================
     /// @name Constructors / Destructors
@@ -113,11 +113,10 @@ namespace gum {
      * new table which is the result of the combination of the two tables
      * passed in argument.
      */
-    MultiDimCombinationDefault(TABLE< GUM_SCALAR > (*combine)(const TABLE< GUM_SCALAR >&,
-                                                              const TABLE< GUM_SCALAR >&));
+    MultiDimCombinationDefault(TABLE (*combine)(const TABLE&, const TABLE&));
 
     /// Copy constructor
-    MultiDimCombinationDefault(const MultiDimCombinationDefault< GUM_SCALAR, TABLE >&);
+    MultiDimCombinationDefault(const MultiDimCombinationDefault< TABLE >&);
 
     /// Destructor
     virtual ~MultiDimCombinationDefault();
@@ -128,7 +127,7 @@ namespace gum {
      * @return A new fresh MultiDimCombinator with the same combination
      * function.
      */
-    virtual MultiDimCombinationDefault< GUM_SCALAR, TABLE >* newFactory() const;
+    virtual MultiDimCombinationDefault< TABLE >* clone() const;
 
     /// @}
     // ========================================================================
@@ -146,9 +145,8 @@ namespace gum {
      * @throws InvalidArgumentsNumber exception is thrown if the set passed in
      * argument contains less than two elements.
      */
-    TABLE< GUM_SCALAR >* execute(const Set< const TABLE< GUM_SCALAR >* >& set) const final;
-    void                 execute(TABLE< GUM_SCALAR >&                     container,
-                                 const Set< const TABLE< GUM_SCALAR >* >& set) const final;
+    TABLE* execute(const Set< const TABLE* >& set) const final;
+    void   execute(TABLE& container, const Set< const TABLE* >& set) const final;
 
     /// returns the set of operations to perform to make the combination
     /** Executing sequentially the set of operations returned is guaranteed to
@@ -161,22 +159,19 @@ namespace gum {
        operations(const Set< const IScheduleMultiDim<>* >& set) const final;
 
     /// add to a given schedule the set of operations needed to perform the combination
-    using MultiDimCombination< GUM_SCALAR, TABLE >::schedule;
+    using MultiDimCombination< TABLE >::schedule;
 
     /// Changes the function used for combining two TABLES.
-    void setCombinationFunction(
-       TABLE< GUM_SCALAR > (*combine)(const TABLE< GUM_SCALAR >&,
-          const TABLE< GUM_SCALAR >&)) final;
+    void setCombinationFunction(TABLE (*combine)(const TABLE&, const TABLE&)) final;
 
     /// Returns the combination function currently used by the combinator.
-    TABLE< GUM_SCALAR > (*combinationFunction())(const TABLE< GUM_SCALAR >&,
-                                                 const TABLE< GUM_SCALAR >&) final;
+    TABLE (*combinationFunction())(const TABLE&, const TABLE&) final;
 
     /**
      * @brief returns a rough estimate of the number of operations that will be
      * performed to compute the combination.
      */
-    double nbOperations(const Set< const TABLE< GUM_SCALAR >* >& set) const final;
+    double nbOperations(const Set< const TABLE* >& set) const final;
     double nbOperations(const Set< const Sequence< const DiscreteVariable* >* >& set) const final;
 
     /**
@@ -190,7 +185,7 @@ namespace gum {
      * the combination and the second one is the amount of memory still used at
      * the end of the function ( the memory used by the resulting table ).
      */
-    std::pair< double, double > memoryUsage(const Set< const TABLE< GUM_SCALAR >* >& set) const final;
+    std::pair< double, double > memoryUsage(const Set< const TABLE* >& set) const final;
     std::pair< double, double >
        memoryUsage(const Set< const Sequence< const DiscreteVariable* >* >& set) const final;
 
@@ -198,7 +193,7 @@ namespace gum {
 
     private:
     /// The function used to combine two tables.
-    TABLE< GUM_SCALAR > (*_combine_)(const TABLE< GUM_SCALAR >& t1, const TABLE< GUM_SCALAR >& t2);
+    TABLE (*_combine_)(const TABLE& t1, const TABLE& t2);
 
     /**
      * @brief returns the domain size of the Cartesian product of the union of

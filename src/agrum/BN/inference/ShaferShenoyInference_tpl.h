@@ -125,9 +125,8 @@ namespace gum {
 
   /// sets the operator for performing the projections
   template < typename GUM_SCALAR >
-  INLINE void ShaferShenoyInference< GUM_SCALAR >::_setProjectionFunction_(
-     Potential< GUM_SCALAR > (*proj)(const Potential< GUM_SCALAR >&,
-                                     const Set< const DiscreteVariable* >&)) {
+  INLINE void ShaferShenoyInference< GUM_SCALAR >::_setProjectionFunction_(Potential< GUM_SCALAR > (
+     *proj)(const Potential< GUM_SCALAR >&, const Set< const DiscreteVariable* >&)) {
     _projection_op_ = proj;
   }
 
@@ -670,11 +669,10 @@ namespace gum {
             }
 
             // perform the combination of those potentials and their projection
-            MultiDimCombineAndProjectDefault< GUM_SCALAR, Potential > combine_and_project(
+            MultiDimCombineAndProjectDefault< Potential< GUM_SCALAR > > combine_and_project(
                _combination_op_,
                SSNewprojPotential);
-            _PotentialSet_ new_cpt_list
-               = combine_and_project.execute(marg_cpt_set, hard_variables);
+            _PotentialSet_ new_cpt_list = combine_and_project.execute(marg_cpt_set, hard_variables);
 
             // there should be only one potential in new_cpt_list
             if (new_cpt_list.size() != 1) {
@@ -705,7 +703,7 @@ namespace gum {
     // potential stored into the clique. So, perform this combination and
     // store the result in  _clique_ss_potential_
     _clique_ss_potential_.clear();
-    MultiDimCombinationDefault< GUM_SCALAR, Potential > fast_combination(_combination_op_);
+    MultiDimCombinationDefault< Potential< GUM_SCALAR > > fast_combination(_combination_op_);
     for (const auto& xpotset: _clique_potentials_) {
       const auto& potset = xpotset.second;
       if (potset.size() > 0) {
@@ -920,11 +918,10 @@ namespace gum {
       }
 
       // perform the combination of those potentials and their projection
-      MultiDimCombineAndProjectDefault< GUM_SCALAR, Potential > combine_and_project(
+      MultiDimCombineAndProjectDefault< Potential< GUM_SCALAR > > combine_and_project(
          _combination_op_,
          SSNewprojPotential);
-      _PotentialSet_ new_cpt_list
-         = combine_and_project.execute(marg_cpt_set, hard_variables);
+      _PotentialSet_ new_cpt_list = combine_and_project.execute(marg_cpt_set, hard_variables);
 
       // there should be only one potential in new_cpt_list
       if (new_cpt_list.size() != 1) {
@@ -944,7 +941,7 @@ namespace gum {
     // here, the list of potentials stored in the invalidated cliques have
     // been updated. So, now, we can combine them to produce the Shafer-Shenoy
     // potential stored into the clique
-    MultiDimCombinationDefault< GUM_SCALAR, Potential > fast_combination(_combination_op_);
+    MultiDimCombinationDefault< Potential< GUM_SCALAR > > fast_combination(_combination_op_);
     for (const auto clique: invalidated_cliques) {
       const auto& potset = _clique_potentials_[clique];
 
@@ -1095,8 +1092,8 @@ namespace gum {
     // for each potential with barren variables, marginalize them.
     // if the potential has only barren variables, simply remove them from the
     // set of potentials, else just project the potential
-    MultiDimProjection< GUM_SCALAR, Potential > projector(SSNewprojPotential);
-    _PotentialSet_                              projected_pots;
+    MultiDimProjection< Potential< GUM_SCALAR > > projector(SSNewprojPotential);
+    _PotentialSet_                                projected_pots;
     for (auto elt: pot2barren_var) {
       // remove the current potential from pot_list as, anyway, we will change
       // it
@@ -1131,8 +1128,9 @@ namespace gum {
 
     // create a combine and project operator that will perform the
     // marginalization
-    MultiDimCombineAndProjectDefault< GUM_SCALAR, Potential > combine_and_project(_combination_op_,
-                                                                                  _projection_op_);
+    MultiDimCombineAndProjectDefault< Potential< GUM_SCALAR > > combine_and_project(
+       _combination_op_,
+       _projection_op_);
     _PotentialSet_ new_pot_list = combine_and_project.execute(pot_list, del_vars);
 
     // remove all the potentials that were created due to projections of
@@ -1232,7 +1230,7 @@ namespace gum {
         }
       } else {
         // create the message in the separator
-        MultiDimCombinationDefault< GUM_SCALAR, Potential > fast_combination(_combination_op_);
+        MultiDimCombinationDefault< Potential< GUM_SCALAR > > fast_combination(_combination_op_);
         auto joint = fast_combination.execute(new_pot_list);
         _separator_potentials_[arc].insert(joint);
         if (!_created_potentials_.exists(arc)) _created_potentials_.insert(arc, _PotentialSet_());
@@ -1324,7 +1322,7 @@ namespace gum {
         new_pot_list.clear();
       }
     } else {
-      MultiDimCombinationDefault< GUM_SCALAR, Potential > fast_combination(_combination_op_);
+      MultiDimCombinationDefault< Potential< GUM_SCALAR > > fast_combination(_combination_op_);
       joint = fast_combination.execute(new_pot_list);
     }
 
@@ -1395,7 +1393,7 @@ namespace gum {
         auto pot = new Potential< GUM_SCALAR >(**(pot_list.begin()));
         return pot;
       } else {
-        MultiDimCombinationDefault< GUM_SCALAR, Potential > fast_combination(_combination_op_);
+        MultiDimCombinationDefault< Potential< GUM_SCALAR > > fast_combination(_combination_op_);
         return fast_combination.execute(pot_list);
       }
     }
@@ -1495,7 +1493,7 @@ namespace gum {
       for (const auto node: hard_ev_nodes) {
         new_new_pot_list.insert(evidence[node]);
       }
-      MultiDimCombinationDefault< GUM_SCALAR, Potential > fast_combination(_combination_op_);
+      MultiDimCombinationDefault< Potential< GUM_SCALAR > > fast_combination(_combination_op_);
       joint = fast_combination.execute(new_new_pot_list);
     }
 

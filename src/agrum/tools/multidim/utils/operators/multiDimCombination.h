@@ -92,7 +92,7 @@ namespace gum {
    * Potential<float> t1, t2, t3;
    * Set<const Potential<float>*> set;
    * set << &table1 << &table2 << &table3;
-   * MultiDimCombinationDefault<float,Potential> Comb ( addPotential );
+   * MultiDimCombinationDefault< Potential< float > > Comb ( addPotential );
    * Potential<float>* combined_table = Comb.execute ( set );
    *
    * // change the operator to apply
@@ -101,9 +101,22 @@ namespace gum {
    *
    * @endcode
    */
-  template < typename GUM_SCALAR, template < typename > class TABLE >
+  template < class TABLE >
   class MultiDimCombination {
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+    // class to get the types of the TABLE's values using metaprogramming
+    template<typename T>
+    struct TableType { using value_type = T; };
+
+    template< template< typename, typename ... > class CONTAINER,
+              typename T, typename ...Args >
+    struct TableType< CONTAINER< T, Args... > > { using value_type = T; };
+#endif // DOXYGEN_SHOULD_SKIP_THIS
+
     public:
+    /// the type of the values contained into TABLE
+    using value_type = typename TableType<TABLE>::value_type;
+
     // =========================================================================
     /// @name Constructors / Destructors
     // =========================================================================
@@ -113,7 +126,7 @@ namespace gum {
     MultiDimCombination();
 
     /// copy constructor
-    MultiDimCombination(const MultiDimCombination< GUM_SCALAR, TABLE >&);
+    MultiDimCombination(const MultiDimCombination< TABLE >&);
 
     /// destructor
     virtual ~MultiDimCombination();
@@ -124,7 +137,7 @@ namespace gum {
      * @return a new fresh MultiDimCombinator with the same combination
      * function.
      */
-    virtual MultiDimCombination< GUM_SCALAR, TABLE >* newFactory() const = 0;
+    virtual MultiDimCombination< TABLE >* clone() const = 0;
 
     /// @}
     // =========================================================================
@@ -142,11 +155,8 @@ namespace gum {
      * @throws InvalidArgumentsNumber exception is thrown if the set passed in
      * argument contains less than two elements.
      */
-    virtual TABLE< GUM_SCALAR >* execute(const Set< const TABLE< GUM_SCALAR >* >& set)
-       const = 0;
-    virtual void                 execute(TABLE< GUM_SCALAR >&                     container,
-                                         const Set< const TABLE< GUM_SCALAR >* >& set)
-       const = 0;
+    virtual TABLE* execute(const Set< const TABLE* >& set) const = 0;
+    virtual void execute(TABLE& container, const Set< const TABLE* >& set) const = 0;
 
     /// returns the set of operations to perform as well as the result of the combination
     /** Executing sequentially the set of operations returned is guaranteed to
@@ -169,20 +179,16 @@ namespace gum {
        schedule(Schedule<>& schedule, const std::vector< const IScheduleMultiDim<>* >& set) const;
 
     /// changes the function used for combining two TABLES
-    virtual void setCombinationFunction(TABLE< GUM_SCALAR > (*combine)(const TABLE< GUM_SCALAR >&,
-                                                                       const TABLE< GUM_SCALAR >&))
-       = 0;
+    virtual void setCombinationFunction(TABLE (*combine)(const TABLE&, const TABLE&)) = 0;
 
     /// returns the combination function currently used by the combinator
-    virtual TABLE< GUM_SCALAR > (*combinationFunction())(const TABLE< GUM_SCALAR >&,
-                                                         const TABLE< GUM_SCALAR >&)
-       = 0;
+    virtual TABLE (*combinationFunction())(const TABLE&, const TABLE&)= 0;
 
     /**
      * @brief returns a rough estimate of the number of operations that will be
      * performed to compute the combination.
      */
-    virtual double nbOperations(const Set< const TABLE< GUM_SCALAR >* >& set) const = 0;
+    virtual double nbOperations(const Set< const TABLE* >& set) const = 0;
     virtual double
        nbOperations(const Set< const Sequence< const DiscreteVariable* >* >& set) const = 0;
 
@@ -199,14 +205,13 @@ namespace gum {
      * by the resulting table ).
      */
     virtual std::pair< double, double >
-       memoryUsage(const Set< const TABLE< GUM_SCALAR >* >& set) const = 0;
+       memoryUsage(const Set< const TABLE* >& set) const = 0;
     virtual std::pair< double, double >
        memoryUsage(const Set< const Sequence< const DiscreteVariable* >* >& set) const = 0;
 
     private:
     /// forbid copy operators
-    MultiDimCombination< GUM_SCALAR, TABLE >&
-       operator=(const MultiDimCombination< GUM_SCALAR, TABLE >&);
+    MultiDimCombination< TABLE >& operator=(const MultiDimCombination< TABLE >&);
 
     /// @}
   };

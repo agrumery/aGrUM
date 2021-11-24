@@ -78,15 +78,15 @@ namespace gum_tests {
 
     gum::Potential< double >* joint;
 
-    gum::MultiDimCombinationDefault< double, gum::Potential >* combination;
-    gum::MultiDimProjection< double, gum::Potential >*         proj;
+    gum::MultiDimCombinationDefault< gum::Potential< double > >* combination;
+    gum::MultiDimProjection< gum::Potential< double > >*         proj;
 
 
     LazyPropagationIncrementalTestSuite() {
       combination
-         = new gum::MultiDimCombinationDefault< double, gum::Potential >(LPIncrmultiPotential);
+         = new gum::MultiDimCombinationDefault< gum::Potential< double > >(LPIncrmultiPotential);
 
-      proj = new gum::MultiDimProjection< double, gum::Potential >(LPIncrprojPotential);
+      proj = new gum::MultiDimProjection< gum::Potential< double > >(LPIncrprojPotential);
 
       BN_variable_set = new gum::Set< const gum::DiscreteVariable* >;
 

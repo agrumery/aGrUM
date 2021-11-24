@@ -918,7 +918,7 @@ namespace gum_tests {
       del_vars.insert(vars[0]);
       del_vars.insert(vars[9]);
       del_vars.insert(vars[1]);
-      gum::MultiDimProjection< double, gum::Potential > Proj(myMax);
+      gum::MultiDimProjection< gum::Potential< double > > Proj(myMax);
 
       {
         auto t2 = t1.margMaxOut(del_vars);
@@ -934,24 +934,25 @@ namespace gum_tests {
       }
       {
         gum::Potential< double > t3;
-        auto t2 = t1.margMaxOut(proj_set);
+        auto                     t2 = t1.margMaxOut(proj_set);
         Proj.execute(t3, t1, proj_set);
         TS_ASSERT_EQUALS(t2, t3)
       }
 
       {
         gum::Schedule<> schedule;
-        auto xt1 = schedule.insertTable(t1, false);
-        const auto ptrRes = Proj.schedule(schedule, xt1, proj_set);
+        auto            xt1    = schedule.insertTable(t1, false);
+        const auto      ptrRes = Proj.schedule(schedule, xt1, proj_set);
 
-        auto avail_nodes = schedule.availableOperations();
-        const auto node = *(avail_nodes.begin());
-        auto& op = schedule.operation(node);
+        auto       avail_nodes = schedule.availableOperations();
+        const auto node        = *(avail_nodes.begin());
+        auto&      op          = schedule.operation(node);
         const_cast< gum::ScheduleOperation<>& >(op).execute();
 
         auto t2 = t1.margMaxOut(proj_set);
-        TS_ASSERT(dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(
-                     ptrRes)->multiDim() == t2)
+        TS_ASSERT(dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(ptrRes)
+                     ->multiDim()
+                  == t2)
       }
 
       {
@@ -960,7 +961,9 @@ namespace gum_tests {
         ops_plus_res.first->execute();
         auto t2 = t1.margMaxOut(proj_set);
         TS_ASSERT(dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(
-           ops_plus_res.second)->multiDim() == t2)
+                     ops_plus_res.second)
+                     ->multiDim()
+                  == t2)
         delete ops_plus_res.first;
       }
 
@@ -986,7 +989,7 @@ namespace gum_tests {
       TS_ASSERT(mem_usage.first == 1.0 * sizeof(double) + sizeof(gum::Potential< double >))
       TS_ASSERT(mem_usage.second == 1.0 * sizeof(double) + sizeof(gum::Potential< double >))
       gum::ScheduleMultiDim< gum::Potential< double > > t6multi(t6, false);
-      auto xxx1 = Proj.operations(&t6multi, del_vars);
+      auto                                              xxx1 = Proj.operations(&t6multi, del_vars);
       delete xxx1.first;
 
       gum::Schedule<> schedule;
@@ -998,8 +1001,8 @@ namespace gum_tests {
       // here, there is no operation available because the projections of constants
       // are performed immediately
       TS_ASSERT(avail.size() == 0)
-      const auto& xt6sched =
-         dynamic_cast<const gum::ScheduleMultiDim< gum::Potential< double > >&>(*t6sched);
+      const auto& xt6sched
+         = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >& >(*t6sched);
       TS_ASSERT(xt6sched.multiDim() == t6multi.multiDim())
       TS_ASSERT(schedule.dag().sizeNodes() == 0)
 
@@ -1022,14 +1025,13 @@ namespace gum_tests {
       avail = schedule.availableOperations();
       TS_ASSERT(avail.size() == 1)
       const gum::NodeId node = *avail.begin();
-      auto& proj_ops =
-         const_cast< gum::ScheduleOperation<>& >(schedule.operation(node));
+      auto& proj_ops         = const_cast< gum::ScheduleOperation<>& >(schedule.operation(node));
       proj_ops.execute();
       std::vector< gum::NodeId > xavail;
       schedule.updateAfterExecution(node, xavail, false);
       TS_ASSERT(schedule.dag().sizeNodes() == 0)
-      const gum::ScheduleMultiDim< gum::Potential< double > >& xt7sched =
-         dynamic_cast<const gum::ScheduleMultiDim< gum::Potential< double > >&>(*t7sched);
+      const gum::ScheduleMultiDim< gum::Potential< double > >& xt7sched
+         = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >& >(*t7sched);
       TS_ASSERT(xt7sched.multiDim() == t7)
 
       for (gum::Idx i = 0; i < vars.size(); ++i)
@@ -1070,7 +1072,7 @@ namespace gum_tests {
       del_vars.insert(vars[0]);
       del_vars.insert(vars[9]);
       del_vars.insert(vars[1]);
-      gum::MultiDimProjection< double, gum::Potential > Proj(mySum);
+      gum::MultiDimProjection< gum::Potential< double > > Proj(mySum);
       {
         auto t2 = t1.margSumOut(del_vars);
         auto t3 = Proj.execute(t1, del_vars);

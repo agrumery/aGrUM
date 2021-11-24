@@ -118,7 +118,7 @@ namespace gum {
         tmp = const_cast< Potential< GUM_SCALAR >* >(*pots.begin());
         pot = new Potential< GUM_SCALAR >(tmp->margSumOut(var_set));
       } else {
-        MultiDimCombinationDefault< GUM_SCALAR, Potential > Comb(multPotential);
+        MultiDimCombinationDefault< Potential< GUM_SCALAR > > Comb(multPotential);
         tmp = Comb.execute(pots);
         pot = new Potential< GUM_SCALAR >(tmp->margSumOut(var_set));
         delete tmp;
