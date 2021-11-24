@@ -86,8 +86,8 @@ namespace gum {
      * @throws InvalidArgumentsNumber exception is thrown if the set passed in
      * argument contains less than two elements.
      */
-    Set< const TABLE* > execute(Set< const TABLE* >            set,
-                                Set< const DiscreteVariable* > del_vars) final;
+    Set< const TABLE* > execute(const Set< const TABLE* >&            set,
+                                const Set< const DiscreteVariable* >& del_vars) final;
 
 
     /** @brief returns the set of operations to perform to make all the combinations
@@ -98,8 +98,7 @@ namespace gum {
                   const Set< const DiscreteVariable* >&    del_vars) const final;
     std::pair< std::vector< ScheduleOperation<>* >, Set< const IScheduleMultiDim<>* > >
        operations(const std::vector< const IScheduleMultiDim<>* >& original_tables,
-                  const Set< const DiscreteVariable* >&            del_vars)
-          const final;
+                  const Set< const DiscreteVariable* >&            del_vars) const final;
 
     /** @brief add to a given schedule the set of operations needed to perform all
      * the combinations and projections
@@ -155,7 +154,7 @@ namespace gum {
      * performed to compute the combination.
      */
     double nbOperations(const Set< const Sequence< const DiscreteVariable* >* >& set,
-                        Set< const DiscreteVariable* > del_vars) const final;
+                        const Set< const DiscreteVariable* >& del_vars) const final;
 
     /**
      * @brief returns the memory consumption used during the combinations and
@@ -189,7 +188,7 @@ namespace gum {
      */
     std::pair< double, double >
        memoryUsage(const Set< const Sequence< const DiscreteVariable* >* >& set,
-                   Set< const DiscreteVariable* >                           del_vars) const final;
+                   const Set< const DiscreteVariable* >&                    del_vars) const final;
 
     /// @}
 

@@ -59,22 +59,19 @@ namespace gum {
      Schedule<>&                              schedule,
      const Set< const IScheduleMultiDim<>* >& original_tables,
      const Set< const DiscreteVariable* >&    del_vars) const {
-    // add the ScheduleMultiDims to the schedule if necessary
-    for (const auto pot: original_tables) {
-      try {
-        schedule.insertScheduleMultiDim(*pot);
-      } catch (DuplicateScheduleMultiDim&) {}
-    }
-
     // compute the set of operations to perform and insert them into the schedule
     auto ops_res = operations(original_tables, del_vars);
-    for (const auto op: ops_res.first)
-      schedule.insertOperation(*op);
+    for (const auto op: ops_res.first) schedule.insertOperation(*op);
 
-    for (const auto op: ops_res.first)
-      delete op;
+    // get the results
+    Set< const IScheduleMultiDim<>* > result (ops_res.second.size());
+    for (const auto pot: ops_res.second)
+      result.insert(schedule.scheduleMultiDim(pot->id()));
 
-    return ops_res.second;
+    // free memory
+    for (const auto op: ops_res.first) delete op;
+
+    return result;
   }
 
 } /* namespace gum */

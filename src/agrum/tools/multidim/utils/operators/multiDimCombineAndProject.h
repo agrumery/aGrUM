@@ -52,17 +52,20 @@ namespace gum {
   class MultiDimCombineAndProject {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
     // class to get the types of the TABLE's values using metaprogramming
-    template<typename T>
-    struct TableType { using value_type = T; };
+    template < typename T >
+    struct TableType {
+      using value_type = T;
+    };
 
-    template< template< typename, typename ... > class CONTAINER,
-              typename T, typename ...Args >
-    struct TableType< CONTAINER< T, Args... > > { using value_type = T; };
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+    template < template < typename, typename... > class CONTAINER, typename T, typename... Args >
+    struct TableType< CONTAINER< T, Args... > > {
+      using value_type = T;
+    };
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
     public:
     /// the type of the values contained into TABLE
-    using value_type = typename TableType<TABLE>::value_type;
+    using value_type = typename TableType< TABLE >::value_type;
 
     // ========================================================================
     /// @name Constructors / Destructors
@@ -102,19 +105,17 @@ namespace gum {
      * @throws InvalidArgumentsNumber exception is thrown if the set passed in
      * argument contains less than two elements
      */
-    virtual Set< const TABLE* > execute(Set< const TABLE* >            set,
-                                        Set< const DiscreteVariable* > del_vars)
+    virtual Set< const TABLE* > execute(const Set< const TABLE* >&            set,
+                                        const Set< const DiscreteVariable* >& del_vars)
        = 0;
 
     /** @brief returns the set of operations to perform to make all the combinations
      * and projections
      */
-    virtual std::pair< std::vector< ScheduleOperation<>* >,
-                       Set< const IScheduleMultiDim<>* > >
+    virtual std::pair< std::vector< ScheduleOperation<>* >, Set< const IScheduleMultiDim<>* > >
        operations(const Set< const IScheduleMultiDim<>* >& original_tables,
                   const Set< const DiscreteVariable* >&    del_vars) const = 0;
-    virtual std::pair< std::vector< ScheduleOperation<>* >,
-                       Set< const IScheduleMultiDim<>* > >
+    virtual std::pair< std::vector< ScheduleOperation<>* >, Set< const IScheduleMultiDim<>* > >
        operations(const std::vector< const IScheduleMultiDim<>* >& original_tables,
                   const Set< const DiscreteVariable* >&            del_vars) const = 0;
 
@@ -122,14 +123,12 @@ namespace gum {
      * the combinations and projections
      */
     Set< const IScheduleMultiDim<>* >
-       schedule(Schedule<>& schedule,
+       schedule(Schedule<>&                              schedule,
                 const Set< const IScheduleMultiDim<>* >& original_tables,
                 const Set< const DiscreteVariable* >&    del_vars) const;
 
     /// changes the function used for combining two TABLES
-    virtual void
-       setCombinationFunction(TABLE (*combine)(const TABLE&, const TABLE&))
-       = 0;
+    virtual void setCombinationFunction(TABLE (*combine)(const TABLE&, const TABLE&)) = 0;
 
     /**f
      * @brief changes the class that performs the combinations
@@ -145,23 +144,18 @@ namespace gum {
      * be used. Function setCombinationClass allows to change the
      * combinationClass and, thus, the way all those tables will be combined.
      */
-    virtual void
-       setCombinationClass(const MultiDimCombination< TABLE >& comb_class) = 0;
+    virtual void setCombinationClass(const MultiDimCombination< TABLE >& comb_class) = 0;
 
     /// returns the current combination function
-    virtual TABLE (*combinationFunction())(const TABLE&, const TABLE&)
-       = 0;
+    virtual TABLE (*combinationFunction())(const TABLE&, const TABLE&) = 0;
 
     /// changes the function used for projecting TABLES
-    virtual void
-       setProjectionFunction(TABLE (*proj)(const TABLE&,
-                                           const Set< const DiscreteVariable* >&))
+    virtual void setProjectionFunction(TABLE (*proj)(const TABLE&,
+                                                     const Set< const DiscreteVariable* >&))
        = 0;
 
     /// returns the current projection function
-    virtual TABLE (*projectionFunction())(const TABLE&,
-                                          const Set< const DiscreteVariable* >&)
-       = 0;
+    virtual TABLE (*projectionFunction())(const TABLE&, const Set< const DiscreteVariable* >&) = 0;
 
     /**
      * @brief Changes the class that performs the projections.
@@ -183,7 +177,7 @@ namespace gum {
      * performed to compute the combination.
      */
     virtual double nbOperations(const Set< const Sequence< const DiscreteVariable* >* >& set,
-                                Set< const DiscreteVariable* > del_vars) const = 0;
+                                const Set< const DiscreteVariable* >& del_vars) const = 0;
 
     /**
      * @brief returns the memory consumption used during the combinations and
@@ -215,16 +209,15 @@ namespace gum {
      * performed, and the second one is the amount of memory still used at the
      * end of the function ( the memory used by the resulting tables )
      */
-     virtual std::pair< double, double > memoryUsage(
-       const Set< const Sequence< const DiscreteVariable* >* >& set,
-       Set< const DiscreteVariable* >                           del_vars) const = 0;
+    virtual std::pair< double, double >
+       memoryUsage(const Set< const Sequence< const DiscreteVariable* >* >& set,
+                   const Set< const DiscreteVariable* >&                    del_vars) const = 0;
 
     /// @}
 
     private:
     /// forbid copy operators
-    MultiDimCombineAndProject< TABLE >&
-       operator=(const MultiDimCombineAndProject< TABLE >&);
+    MultiDimCombineAndProject< TABLE >& operator=(const MultiDimCombineAndProject< TABLE >&);
   };
 
 } /* namespace gum */

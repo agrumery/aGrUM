@@ -203,8 +203,45 @@ namespace gum {
 
   /// virtual copy constructor
   template < typename TABLE, template < typename > class ALLOC >
-  ScheduleMultiDim< TABLE, ALLOC >* ScheduleMultiDim< TABLE, ALLOC >::clone() const {
+  INLINE ScheduleMultiDim< TABLE, ALLOC >* ScheduleMultiDim< TABLE, ALLOC >::clone() const {
     return clone(this->get_allocator());
+  }
+
+
+  /// virtual copy constructor enabling to forcing a copy of the content
+  template < typename TABLE, template < typename > class ALLOC >
+  INLINE ScheduleMultiDim< TABLE, ALLOC >*
+         ScheduleMultiDim< TABLE, ALLOC >::clone(bool force_copy) const {
+    return clone(force_copy, this->get_allocator());
+  }
+
+
+  /// virtual copy constructor enabling to forcing a copy of the content
+  template < typename TABLE, template < typename > class ALLOC >
+  ScheduleMultiDim< TABLE, ALLOC >* ScheduleMultiDim< TABLE, ALLOC >::clone(
+     bool                                                             force_copy,
+     const typename ScheduleMultiDim< TABLE, ALLOC >::allocator_type& alloc) const {
+    ALLOC< ScheduleMultiDim< TABLE, ALLOC > > allocator(alloc);
+    ScheduleMultiDim< TABLE, ALLOC >*         new_sched = allocator.allocate(1);
+    try {
+      if (!force_copy)
+        new ((void*)new_sched) ScheduleMultiDim< TABLE, ALLOC >(*this, alloc);
+      else {
+        if (!isAbstract())
+          new ((void*)new_sched)
+             ScheduleMultiDim< TABLE, ALLOC >(*_table_, true, this->id(), alloc);
+        else {
+          new ((void*)new_sched)
+             ScheduleMultiDim< TABLE, ALLOC >(_var_sequence_, this->id(), alloc);
+          new_sched->_table_contained_ = true;
+        }
+      }
+    } catch (...) {
+      allocator.deallocate(new_sched, 1);
+      throw;
+    }
+
+    return new_sched;
   }
 
 

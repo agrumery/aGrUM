@@ -167,9 +167,18 @@ namespace gum {
     /// virtual copy constructor
     virtual ScheduleMultiDim< TABLE, ALLOC >* clone() const;
 
+    /// virtual copy constructor enabling to force a copy of the content
+    virtual ScheduleMultiDim< TABLE, ALLOC >* clone(bool force_copy) const;
+
     /// virtual copy constructor with a given allocator
     virtual ScheduleMultiDim< TABLE, ALLOC >*
        clone(const allocator_type& alloc) const;
+
+    /** @brief virtual copy constructor with a given allocator enabling to force
+     * a copy of the content
+     */
+    virtual ScheduleMultiDim< TABLE, ALLOC >*
+       clone(bool force_copy, const allocator_type& alloc) const;
 
     /// destructor
     virtual ~ScheduleMultiDim();

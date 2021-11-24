@@ -76,9 +76,9 @@ namespace gum {
 
   // combine and project
   template < class TABLE >
-  Set< const TABLE* >
-     MultiDimCombineAndProjectDefault< TABLE >::execute(Set< const TABLE* >            table_set,
-                                                        Set< const DiscreteVariable* > del_vars) {
+  Set< const TABLE* > MultiDimCombineAndProjectDefault< TABLE >::execute(
+     const Set< const TABLE* >&            table_set,
+     const Set< const DiscreteVariable* >& del_vars) {
     // create a vector with all the tables stored as multidims
     std::vector< const IScheduleMultiDim<>* > tables;
     tables.reserve(table_set.size());
@@ -158,7 +158,7 @@ namespace gum {
   template < class TABLE >
   double MultiDimCombineAndProjectDefault< TABLE >::nbOperations(
      const Set< const Sequence< const DiscreteVariable* >* >& table_set,
-     Set< const DiscreteVariable* >                           del_vars) const {
+     const Set< const DiscreteVariable* >&                    del_vars) const {
     // create a vector with all the tables stored as multidims
     std::vector< const IScheduleMultiDim<>* > tables;
     tables.reserve(table_set.size());
@@ -200,7 +200,7 @@ namespace gum {
   template < class TABLE >
   std::pair< double, double > MultiDimCombineAndProjectDefault< TABLE >::memoryUsage(
      const Set< const Sequence< const DiscreteVariable* >* >& table_set,
-     Set< const DiscreteVariable* >                           del_vars) const {
+     const Set< const DiscreteVariable* >&                    del_vars) const {
     // create a vector with all the tables stored as multidims
     std::vector< const IScheduleMultiDim<>* > tables;
     tables.reserve(table_set.size());
