@@ -40,8 +40,7 @@ namespace gum {
 
   // Copy constructor
   template < class TABLE >
-  MultiDimCombination< TABLE >::MultiDimCombination(
-     const MultiDimCombination< TABLE >& from) {
+  MultiDimCombination< TABLE >::MultiDimCombination(const MultiDimCombination< TABLE >& from) {
     GUM_CONS_CPY(MultiDimCombination);
   }
 
@@ -53,9 +52,9 @@ namespace gum {
 
   // add to a given schedule the set of operations needed to perform the combination
   template < class TABLE >
-  const IScheduleMultiDim<>*
-     MultiDimCombination< TABLE >::schedule(
-     Schedule<>& schedule, const std::vector< const IScheduleMultiDim<>* >& set) const {
+  const IScheduleMultiDim<>* MultiDimCombination< TABLE >::schedule(
+     Schedule<>&                                      schedule,
+     const std::vector< const IScheduleMultiDim<>* >& set) const {
     // compute the set of operations and store it into the schedule
     auto ops_plus_res = operations(set);
     for (const auto op: ops_plus_res.first) {
@@ -67,7 +66,8 @@ namespace gum {
 
     // free the operations: they are no more necessary since we already copied
     // them into the schedule
-    for (auto op: ops_plus_res.first) delete op;
+    for (auto op: ops_plus_res.first)
+      delete op;
 
     return table;
   }
@@ -76,8 +76,8 @@ namespace gum {
   // add to a given schedule the set of operations needed to perform the combination
   template < class TABLE >
   INLINE const IScheduleMultiDim<>*
-     MultiDimCombination< TABLE >::schedule(
-     Schedule<>& schedule, const Set< const IScheduleMultiDim<>* >& set) const {
+               MultiDimCombination< TABLE >::schedule(Schedule<>&                              schedule,
+                                                      const Set< const IScheduleMultiDim<>* >& set) const {
     std::vector< const IScheduleMultiDim<>* > vect;
     vect.reserve(set.size());
     for (const auto elt: set) {

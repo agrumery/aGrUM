@@ -66,8 +66,7 @@ namespace gum {
       ALLOC< Idx >(alloc),
       id_(id == Idx(0) ? IScheduleMultiDim< ALLOC >::_newId_() : id) {
     // make sure that we won't get several IScheduleMultiDim with the same Id
-    if (id_ > ScheduleMultiDimSpace::_multidim_id_)
-      ScheduleMultiDimSpace::_multidim_id_ = id_;
+    if (id_ > ScheduleMultiDimSpace::_multidim_id_) ScheduleMultiDimSpace::_multidim_id_ = id_;
 
     // for debugging purposes
     GUM_CONSTRUCTOR(IScheduleMultiDim);
@@ -88,8 +87,7 @@ namespace gum {
 
   /// copy constructor
   template < template < typename > class ALLOC >
-  INLINE IScheduleMultiDim< ALLOC >::IScheduleMultiDim(
-     const IScheduleMultiDim< ALLOC >& from) :
+  INLINE IScheduleMultiDim< ALLOC >::IScheduleMultiDim(const IScheduleMultiDim< ALLOC >& from) :
       IScheduleMultiDim< ALLOC >(from, from.get_allocator()) {}
 
 
@@ -107,8 +105,7 @@ namespace gum {
 
   /// move constructor
   template < template < typename > class ALLOC >
-  INLINE IScheduleMultiDim< ALLOC >::IScheduleMultiDim(
-     IScheduleMultiDim< ALLOC >&& from) :
+  INLINE IScheduleMultiDim< ALLOC >::IScheduleMultiDim(IScheduleMultiDim< ALLOC >&& from) :
       IScheduleMultiDim< ALLOC >(std::move(from), from.get_allocator()) {}
 
 
@@ -122,8 +119,8 @@ namespace gum {
 
   /// copy operator
   template < template < typename > class ALLOC >
-  INLINE IScheduleMultiDim< ALLOC >& IScheduleMultiDim< ALLOC >::operator=(
-     const IScheduleMultiDim< ALLOC >& from) {
+  INLINE IScheduleMultiDim< ALLOC >&
+     IScheduleMultiDim< ALLOC >::operator=(const IScheduleMultiDim< ALLOC >& from) {
     id_ = from.id_;
     return *this;
   }
@@ -132,8 +129,7 @@ namespace gum {
   /// move operator
   template < template < typename > class ALLOC >
   INLINE IScheduleMultiDim< ALLOC >&
-     IScheduleMultiDim< ALLOC >::operator=(IScheduleMultiDim< ALLOC >&& from)
-        {
+     IScheduleMultiDim< ALLOC >::operator=(IScheduleMultiDim< ALLOC >&& from) {
     id_ = from.id_;
     return *this;
   }
@@ -141,16 +137,14 @@ namespace gum {
 
   /// operator ==
   template < template < typename > class ALLOC >
-  INLINE bool IScheduleMultiDim< ALLOC >::operator==(
-     const IScheduleMultiDim< ALLOC >&m) const {
+  INLINE bool IScheduleMultiDim< ALLOC >::operator==(const IScheduleMultiDim< ALLOC >& m) const {
     return id_ == m.id_;
   }
 
 
   /// operator !=
   template < template < typename > class ALLOC >
-  INLINE bool IScheduleMultiDim< ALLOC >::operator!=(
-     const IScheduleMultiDim< ALLOC >&m) const {
+  INLINE bool IScheduleMultiDim< ALLOC >::operator!=(const IScheduleMultiDim< ALLOC >& m) const {
     return id_ != m.id_;
   }
 

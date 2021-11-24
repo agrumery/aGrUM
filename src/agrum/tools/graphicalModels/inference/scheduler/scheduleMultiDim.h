@@ -321,7 +321,7 @@ namespace gum {
     TABLE* _table_{nullptr};
 
     /// indicates whether _table_ is contained or referenced
-    bool _table_contained_{false};
+    bool _table_contained_{true};
 
     /// returns the sequence of variables of the table
     Sequence< const DiscreteVariable* > _var_sequence_;

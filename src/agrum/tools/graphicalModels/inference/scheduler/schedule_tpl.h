@@ -361,7 +361,7 @@ namespace gum {
     return *this;
   }
 
-  
+
   /// operator ==
   template < template < typename > class ALLOC >
   bool Schedule< ALLOC >::operator==(const Schedule< ALLOC >& from) const {
@@ -650,6 +650,7 @@ namespace gum {
       _multidim2id_.insert(new_results[i], new_results[i]->id());
       _multidim2nodes_.insert(new_results[i], NodeSet());
     }
+
 
     // now we should try to update Graph _dag_.
     // if the new operation has already been executed, we should remove it from

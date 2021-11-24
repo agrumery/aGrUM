@@ -95,11 +95,16 @@ namespace gum {
      */
     std::pair< std::vector< ScheduleOperation<>* >, Set< const IScheduleMultiDim<>* > >
        operations(const Set< const IScheduleMultiDim<>* >& original_tables,
-                  const Set< const DiscreteVariable* >&    del_vars) const;
+                  const Set< const DiscreteVariable* >&    del_vars) const final;
     std::pair< std::vector< ScheduleOperation<>* >, Set< const IScheduleMultiDim<>* > >
        operations(const std::vector< const IScheduleMultiDim<>* >& original_tables,
-                  const Set< const DiscreteVariable* >&            del_vars) const;
+                  const Set< const DiscreteVariable* >&            del_vars)
+          const final;
 
+    /** @brief add to a given schedule the set of operations needed to perform all
+     * the combinations and projections
+     */
+    using MultiDimCombineAndProject< TABLE >::schedule;
 
     /// changes the function used for combining two TABLES
     void setCombinationFunction(TABLE (*combine)(const TABLE&, const TABLE&)) final;

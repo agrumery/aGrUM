@@ -106,12 +106,32 @@ namespace gum {
                                         Set< const DiscreteVariable* > del_vars)
        = 0;
 
+    /** @brief returns the set of operations to perform to make all the combinations
+     * and projections
+     */
+    virtual std::pair< std::vector< ScheduleOperation<>* >,
+                       Set< const IScheduleMultiDim<>* > >
+       operations(const Set< const IScheduleMultiDim<>* >& original_tables,
+                  const Set< const DiscreteVariable* >&    del_vars) const = 0;
+    virtual std::pair< std::vector< ScheduleOperation<>* >,
+                       Set< const IScheduleMultiDim<>* > >
+       operations(const std::vector< const IScheduleMultiDim<>* >& original_tables,
+                  const Set< const DiscreteVariable* >&            del_vars) const = 0;
+
+    /** @brief add to a given schedule the set of operations needed to perform all
+     * the combinations and projections
+     */
+    Set< const IScheduleMultiDim<>* >
+       schedule(Schedule<>& schedule,
+                const Set< const IScheduleMultiDim<>* >& original_tables,
+                const Set< const DiscreteVariable* >&    del_vars) const;
+
     /// changes the function used for combining two TABLES
     virtual void
        setCombinationFunction(TABLE (*combine)(const TABLE&, const TABLE&))
        = 0;
 
-    /**
+    /**f
      * @brief changes the class that performs the combinations
      *
      * Combinations are performed by pair, the CombineFunction being the

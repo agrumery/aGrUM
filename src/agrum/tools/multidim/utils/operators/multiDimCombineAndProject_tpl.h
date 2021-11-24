@@ -53,6 +53,30 @@ namespace gum {
     GUM_DESTRUCTOR(MultiDimCombineAndProject);
   }
 
+  // add to a given schedule the set of operations needed
+  template < class TABLE >
+  Set< const IScheduleMultiDim<>* > MultiDimCombineAndProject< TABLE >::schedule(
+     Schedule<>&                              schedule,
+     const Set< const IScheduleMultiDim<>* >& original_tables,
+     const Set< const DiscreteVariable* >&    del_vars) const {
+    // add the ScheduleMultiDims to the schedule if necessary
+    for (const auto pot: original_tables) {
+      try {
+        schedule.insertScheduleMultiDim(*pot);
+      } catch (DuplicateScheduleMultiDim&) {}
+    }
+
+    // compute the set of operations to perform and insert them into the schedule
+    auto ops_res = operations(original_tables, del_vars);
+    for (const auto op: ops_res.first)
+      schedule.insertOperation(*op);
+
+    for (const auto op: ops_res.first)
+      delete op;
+
+    return ops_res.second;
+  }
+
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
