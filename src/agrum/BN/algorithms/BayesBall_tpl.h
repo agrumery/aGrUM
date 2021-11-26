@@ -29,12 +29,12 @@ namespace gum {
 
   // update a set of potentials, keeping only those d-connected with
   // query variables
-  template < typename GUM_SCALAR, template < typename > class TABLE >
+  template < typename GUM_SCALAR, class TABLE >
   void BayesBall::relevantPotentials(const IBayesNet< GUM_SCALAR >&     bn,
                                      const NodeSet&                     query,
                                      const NodeSet&                     hardEvidence,
                                      const NodeSet&                     softEvidence,
-                                     Set< const TABLE< GUM_SCALAR >* >& potentials) {
+                                     Set< const TABLE* >&               potentials) {
     const DAG& dag = bn.dag();
 
     // create the marks (top = first and bottom = second)
@@ -44,13 +44,13 @@ namespace gum {
 
     /// for relevant potentials: indicate which tables contain a variable
     /// (nodeId)
-    HashTable< NodeId, Set< const TABLE< GUM_SCALAR >* > > node2potentials;
+    HashTable< NodeId, Set< const TABLE* > > node2potentials;
     for (const auto pot: potentials) {
       const Sequence< const DiscreteVariable* >& vars = pot->variablesSequence();
       for (const auto var: vars) {
         const NodeId id = bn.nodeId(*var);
         if (!node2potentials.exists(id)) {
-          node2potentials.insert(id, Set< const TABLE< GUM_SCALAR >* >());
+          node2potentials.insert(id, Set< const TABLE* >());
         }
         node2potentials[id].insert(pot);
       }
