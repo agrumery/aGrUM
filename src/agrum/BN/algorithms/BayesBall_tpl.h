@@ -38,9 +38,8 @@ namespace gum {
     const DAG& dag = bn.dag();
 
     // create the marks (top = first and bottom = second)
-    NodeProperty< std::pair< bool, bool > > marks;
-    marks.resize(dag.size());
-    const std::pair< bool, bool > empty_mark(false, false);
+    NodeProperty< std::pair< bool, bool > > marks(dag.size());
+    const std::pair< bool, bool >           empty_mark(false, false);
 
     /// for relevant potentials: indicate which tables contain a variable
     /// (nodeId)

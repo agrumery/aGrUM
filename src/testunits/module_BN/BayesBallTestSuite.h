@@ -28,6 +28,8 @@
 
 #include <agrum/BN/algorithms/BayesBall.h>
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
+#include <agrum/BN/io/BIF/BIFReader.h>
+#include <agrum/tools/graphicalModels/inference/scheduler/scheduleMultiDim.h>
 
 namespace gum_tests {
 
@@ -36,7 +38,6 @@ namespace gum_tests {
     void setUp() {}
 
     void tearDown() {}
-
 
     void testRequisiteNodes() {
       gum::SimpleBayesNetGenerator< double > gen(50, 200, 2);
@@ -60,5 +61,74 @@ namespace gum_tests {
 
       TS_ASSERT(requisite.size() >= 5)
     }
+
+    void testRelevantPotentials() {
+      std::string file = GET_RESSOURCES_PATH("bif/asia.bif");
+
+      gum::BayesNet< double > bn;
+      gum::BIFReader< double > reader(&bn, file);
+      gum::Size nbrErr = reader.proceed();
+      TS_ASSERT(nbrErr == gum::Size(0))
+
+      gum::Sequence< gum::NodeId > nodes_seq;
+      gum::Set< const gum::Potential< double >* > potentials;
+
+      for (const auto node: bn.nodes()) {
+        nodes_seq.insert(node);
+        potentials.insert(&bn.cpt(node));
+        //std::cout << node << " : " << bn.variable(node).name() << std::endl;
+      }
+
+      gum::Set< gum::NodeId > requisite;
+      gum::Set< gum::NodeId > query, hardEvidence, softEvidence;
+
+      query.insert(gum::NodeId(1));          // tuberculosis
+      hardEvidence.insert(gum::NodeId(5));   // smoking
+
+      TS_ASSERT_THROWS_NOTHING(
+       gum::BayesBall::requisiteNodes(bn.dag(), query, hardEvidence, softEvidence, requisite));
+      TS_ASSERT_THROWS_NOTHING(
+         gum::BayesBall::relevantPotentials(bn, query, hardEvidence, softEvidence, potentials));
+
+      TS_ASSERT(potentials.size() == 5)
+    }
+
+    void testRelevantScheduleMultiDims() {
+      std::string file = GET_RESSOURCES_PATH("bif/asia.bif");
+
+      gum::BayesNet< double > bn;
+      gum::BIFReader< double > reader(&bn, file);
+      gum::Size nbrErr = reader.proceed();
+      TS_ASSERT(nbrErr == gum::Size(0))
+
+      gum::Sequence< gum::NodeId > nodes_seq;
+      gum::Set< const gum::ScheduleMultiDim< gum::Potential< double > >* > potentials;
+
+      for (const auto node: bn.nodes()) {
+        nodes_seq.insert(node);
+        auto sched = new gum::ScheduleMultiDim< gum::Potential< double > >(bn.cpt(node), false, node);
+        potentials.insert(sched);
+        //std::cout << node << " : " << bn.variable(node).name() << std::endl;
+      }
+      gum::Set< const gum::ScheduleMultiDim< gum::Potential< double > >* > pots = potentials;
+
+      gum::Set< gum::NodeId > requisite;
+      gum::Set< gum::NodeId > query, hardEvidence, softEvidence;
+
+      query.insert(gum::NodeId(1));          // tuberculosis
+      hardEvidence.insert(gum::NodeId(5));   // smoking
+
+      TS_ASSERT_THROWS_NOTHING(
+       gum::BayesBall::requisiteNodes(bn.dag(), query, hardEvidence, softEvidence, requisite));
+      TS_ASSERT_THROWS_NOTHING(
+         gum::BayesBall::relevantPotentials(bn, query, hardEvidence, softEvidence, potentials));
+
+      TS_ASSERT(potentials.size() == 5)
+
+      for (const auto pot: pots)
+        delete pot;
+    }
+
+
   };
 }   // namespace gum_tests

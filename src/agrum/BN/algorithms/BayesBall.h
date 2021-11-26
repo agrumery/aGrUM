@@ -37,6 +37,7 @@
 #include <agrum/tools/core/hashTable.h>
 #include <agrum/tools/core/list.h>
 #include <agrum/tools/core/sequence.h>
+#include <agrum/tools/core/set.h>
 
 #include <agrum/BN/IBayesNet.h>
 
@@ -83,11 +84,11 @@ namespace gum {
     /** @brief update a set of potentials, keeping only those d-connected with
      * query variables given evidence */
     template < typename GUM_SCALAR, class TABLE >
-    static void relevantPotentials(const IBayesNet< GUM_SCALAR >&     bn,
-                                   const NodeSet&                     query,
-                                   const NodeSet&                     hardEvidence,
-                                   const NodeSet&                     softEvidence,
-                                   Set< const TABLE* >&               potentials);
+    static void relevantPotentials(const IBayesNet< GUM_SCALAR >& bn,
+                                   const NodeSet&                 query,
+                                   const NodeSet&                 hardEvidence,
+                                   const NodeSet&                 softEvidence,
+                                   Set< const TABLE* >&           potentials);
 
     /// @}
   };

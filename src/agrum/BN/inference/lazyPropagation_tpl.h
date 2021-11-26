@@ -1005,12 +1005,17 @@ namespace gum {
 
   // performs the collect phase of Lazy Propagation
   template < typename GUM_SCALAR >
-  INLINE void LazyPropagation< GUM_SCALAR >::_collectMessage_(NodeId id, NodeId from) {
+  INLINE void LazyPropagation< GUM_SCALAR >::_collectMessage_(NodeId id,
+                                                              NodeId from,
+                                                              Schedule<>& schedule) {
     for (const auto other: _JT_->neighbours(id)) {
-      if ((other != from) && !_messages_computed_[Arc(other, id)]) _collectMessage_(other, id);
+      if ((other != from) && !_messages_computed_[Arc(other, id)])
+        _collectMessage_(other, id, schedule);
     }
 
-    if ((id != from) && !_messages_computed_[Arc(id, from)]) { _produceMessage_(id, from); }
+    if ((id != from) && !_messages_computed_[Arc(id, from)]) {
+      _produceMessage_(id, from, schedule);
+    }
   }
 
 
@@ -1241,9 +1246,15 @@ namespace gum {
 
   // creates the message sent by clique from_id to clique to_id
   template < typename GUM_SCALAR >
-  void LazyPropagation< GUM_SCALAR >::_produceMessage_(NodeId from_id, NodeId to_id) {
-    // get the potentials of the clique.
+  void LazyPropagation< GUM_SCALAR >::_produceMessage_(NodeId from_id,
+                                                       NodeId to_id,
+                                                       Schedule<>& schedule) {
+    // get the potentials of the clique and add them to the schedule if necessary
     _PotentialSet_ pot_list = _clique_potentials_[from_id];
+    for (const auto pot: pot_list) {
+      try { schedule.template insertTable(*pot, false, Idx(0)); }
+      catch(DuplicateScheduleMultiDim&) {}
+    }
 
     // add the messages sent by adjacent nodes to from_id
     for (const auto other_id: _JT_->neighbours(from_id))
@@ -1321,13 +1332,15 @@ namespace gum {
   // performs a whole inference
   template < typename GUM_SCALAR >
   INLINE void LazyPropagation< GUM_SCALAR >::makeInference_() {
+    Schedule<> schedule;
+
     // collect messages for all single targets
     for (const auto node: this->targets()) {
       // perform only collects in the join tree for nodes that have
       // not received hard evidence (those that received hard evidence were
       // not included into the join tree for speed-up reasons)
       if (_graph_.exists(node)) {
-        _collectMessage_(_node_to_clique_[node], _node_to_clique_[node]);
+        _collectMessage_(_node_to_clique_[node], _node_to_clique_[node], schedule);
       }
     }
 
@@ -1336,7 +1349,11 @@ namespace gum {
     // are referenced belong to the join tree (even if some of the nodes in
     // their associated joint_target do not belong to  _graph_)
     for (const auto& set: _joint_target_to_clique_)
-      _collectMessage_(set.second, set.second);
+      _collectMessage_(set.second, set.second, schedule);
+
+    // really perform the computations
+    //SchedulerSequential<> scheduler;
+    //scheduler.execute(schedule);
   }
 
 
@@ -1351,10 +1368,12 @@ namespace gum {
       return new Potential< GUM_SCALAR >(*(this->evidence()[id]));
     }
 
+    Schedule<> schedule;
+
     // if we still need to perform some inference task, do it (this should
     // already have been done by makeInference_)
     NodeId clique_of_id = _node_to_clique_[id];
-    _collectMessage_(clique_of_id, clique_of_id);
+    _collectMessage_(clique_of_id, clique_of_id, schedule);
 
     // now we just need to create the product of the potentials of the clique
     // containing id with the messages received by this clique and
@@ -1515,7 +1534,8 @@ namespace gum {
     }
 
     // now perform a collect on the clique
-    _collectMessage_(clique_of_set, clique_of_set);
+    Schedule<> schedule;
+    _collectMessage_(clique_of_set, clique_of_set, schedule);
 
     // now we just need to create the product of the potentials of the clique
     // containing set with the messages received by this clique and

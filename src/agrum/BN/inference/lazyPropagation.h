@@ -39,6 +39,10 @@
 #include <agrum/agrum.h>
 #include <agrum/tools/graphs/algorithms/triangulations/defaultTriangulation.h>
 
+#include <agrum/tools/graphicalModels/inference/scheduler/schedule.h>
+#include <agrum/tools/graphicalModels/inference/scheduler/schedulerSequential.h>
+
+
 namespace gum {
 
 
@@ -405,20 +409,17 @@ namespace gum {
     void _computeJoinTreeRoots_();
 
     /** @brief update a set of potentials: the remaining are those to be
-     * combined
-     * to produce a message on a separator */
+     * combined to produce a message on a separator */
     void _findRelevantPotentialsWithdSeparation_(_PotentialSet_&                 pot_list,
                                                  Set< const DiscreteVariable* >& kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
-     * combined
-     * to produce a message on a separator */
+     * combined to produce a message on a separator */
     void _findRelevantPotentialsWithdSeparation2_(_PotentialSet_&                 pot_list,
                                                   Set< const DiscreteVariable* >& kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
-     * combined
-     * to produce a message on a separator */
+     * combined to produce a message on a separator */
     void _findRelevantPotentialsWithdSeparation3_(_PotentialSet_&                 pot_list,
                                                   Set< const DiscreteVariable* >& kept_vars);
 
@@ -445,10 +446,10 @@ namespace gum {
                                     Set< const DiscreteVariable* >& kept_vars);
 
     /// creates the message sent by clique from_id to clique to_id
-    void _produceMessage_(NodeId from_id, NodeId to_id);
+    void _produceMessage_(NodeId from_id, NodeId to_id, Schedule<>& schedule);
 
     /// actually perform the collect phase
-    void _collectMessage_(NodeId id, NodeId from);
+    void _collectMessage_(NodeId id, NodeId from, Schedule<>& schedule);
   };
 
 
