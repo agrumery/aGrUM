@@ -845,6 +845,20 @@ namespace gum {
     return _multidim2id_.second(multidim);
   }
 
+  /// returns the operation, if any, that created a given scheduleMultiDim
+  template < template < typename > class ALLOC >
+  INLINE const ScheduleOperation< ALLOC >*
+     Schedule< ALLOC >::scheduleMultiDimCreator(const IScheduleMultiDim< ALLOC >* multidim) const {
+    return _multidim_location_[multidim].first;
+  }
+
+  /// returns the operation, if any, that created a given scheduleMultiDim
+  template < template < typename > class ALLOC >
+  INLINE const ScheduleOperation< ALLOC >*
+               Schedule< ALLOC >::scheduleMultiDimCreator(const NodeId id) const {
+    return scheduleMultiDimCreator(_multidim2id_.first(id));
+  }
+
 
 } /* namespace gum */
 

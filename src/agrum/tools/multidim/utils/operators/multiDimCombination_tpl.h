@@ -52,17 +52,25 @@ namespace gum {
 
   // add to a given schedule the set of operations needed to perform the combination
   template < class TABLE >
-  const IScheduleMultiDim<>* MultiDimCombination< TABLE >::schedule(
-     Schedule<>&                                      schedule,
-     const std::vector< const IScheduleMultiDim<>* >& set) const {
+  const IScheduleMultiDim<>*
+     MultiDimCombination< TABLE >::schedule(Schedule<>& schedule,
+                                            const std::vector< const IScheduleMultiDim<>* >& set,
+                                            const bool is_result_persistent) const {
     // compute the set of operations and store it into the schedule
-    auto ops_plus_res = operations(set);
+    auto ops_plus_res = operations(set, false);
     for (const auto op: ops_plus_res.first) {
       schedule.insertOperation(*op);
     }
 
-    // get the result of the schedule
+    // get the result of the schedule and, if required, make it persistent in the
+    // operation that created it
     const IScheduleMultiDim<>* table = schedule.scheduleMultiDim(ops_plus_res.second->id());
+    if (is_result_persistent) {
+      const auto creating_op = schedule.scheduleMultiDimCreator(table);
+      if (creating_op != nullptr) {
+        const_cast< ScheduleOperation<>* >(creating_op)->makeResultsPersistent(true);
+      }
+    }
 
     // free the operations: they are no more necessary since we already copied
     // them into the schedule
@@ -77,13 +85,14 @@ namespace gum {
   template < class TABLE >
   INLINE const IScheduleMultiDim<>*
                MultiDimCombination< TABLE >::schedule(Schedule<>&                              schedule,
-                                                      const Set< const IScheduleMultiDim<>* >& set) const {
+                                                      const Set< const IScheduleMultiDim<>* >& set,
+                                                      const bool is_result_persistent) const {
     std::vector< const IScheduleMultiDim<>* > vect;
     vect.reserve(set.size());
     for (const auto elt: set) {
       vect.push_back(elt);
     }
-    return this->schedule(schedule, vect);
+    return this->schedule(schedule, vect, is_result_persistent);
   }
 
 

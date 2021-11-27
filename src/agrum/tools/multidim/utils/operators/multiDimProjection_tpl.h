@@ -45,8 +45,7 @@ namespace gum {
 
   /// copy constructor
   template < class TABLE >
-  MultiDimProjection< TABLE >::MultiDimProjection(
-     const MultiDimProjection< TABLE >& from) :
+  MultiDimProjection< TABLE >::MultiDimProjection(const MultiDimProjection< TABLE >& from) :
       proj_(from.proj_) {
     // for debugging purposes
     GUM_CONS_CPY(MultiDimProjection);
@@ -61,16 +60,15 @@ namespace gum {
 
   /// virtual constructor
   template < class TABLE >
-  MultiDimProjection< TABLE >*
-     MultiDimProjection< TABLE >::clone() const {
+  MultiDimProjection< TABLE >* MultiDimProjection< TABLE >::clone() const {
     return new MultiDimProjection< TABLE >(*this);
   }
 
   /// creates and returns the projection of the table over a subset of its vars
   template < class TABLE >
-  INLINE TABLE* MultiDimProjection< TABLE >::execute(
-     const TABLE&                          table,
-     const Set< const DiscreteVariable* >& del_vars) const {
+  INLINE TABLE*
+     MultiDimProjection< TABLE >::execute(const TABLE&                          table,
+                                          const Set< const DiscreteVariable* >& del_vars) const {
     // projected constants are equal to the same constant
     if (table.variablesSequence().empty())
       return new TABLE(table);
@@ -80,10 +78,10 @@ namespace gum {
 
   /// creates and returns the projection of the table over a subset of its vars
   template < class TABLE >
-  INLINE void MultiDimProjection< TABLE >::execute(
-     TABLE&                                container,
-     const TABLE&                          table,
-     const Set< const DiscreteVariable* >& del_vars) const {
+  INLINE void
+     MultiDimProjection< TABLE >::execute(TABLE&                                container,
+                                          const TABLE&                          table,
+                                          const Set< const DiscreteVariable* >& del_vars) const {
     if (table.variablesSequence().empty())
       container = table;
     else
@@ -93,25 +91,27 @@ namespace gum {
   /// returns the set of operations to perform as well as the result of the projection
   template < class TABLE >
   std::pair< ScheduleOperation<>*, const IScheduleMultiDim<>* >
-     MultiDimProjection< TABLE >::operations(
-        const IScheduleMultiDim<>*            table,
-        const Set< const DiscreteVariable* >& del_vars) const {
-    auto op = new ScheduleProjection< TABLE >(
-       dynamic_cast< const ScheduleMultiDim< TABLE >&>(*table),
-       del_vars, proj_);
-    return { op, &op->result() };
+     MultiDimProjection< TABLE >::operations(const IScheduleMultiDim<>*            table,
+                                             const Set< const DiscreteVariable* >& del_vars,
+                                             const bool is_result_persistent) const {
+    auto op
+       = new ScheduleProjection< TABLE >(dynamic_cast< const ScheduleMultiDim< TABLE >& >(*table),
+                                         del_vars,
+                                         proj_,
+                                         is_result_persistent);
+    return {op, &op->result()};
   }
 
   /// add to a given schedule the set of operations needed to perform the projection
   template < class TABLE >
   INLINE const IScheduleMultiDim<>*
-     MultiDimProjection< TABLE >::schedule(
-                  Schedule<>& schedule,
-                  const IScheduleMultiDim<>* table,
-                  const Set< const DiscreteVariable* >& del_vars) const {
-    const auto& xtable =
-       dynamic_cast< const ScheduleMultiDim< TABLE >& > (*table);
-    const auto& op = schedule.template emplaceProjection(xtable, del_vars, proj_);
+               MultiDimProjection< TABLE >::schedule(Schedule<>&                           schedule,
+                                                     const IScheduleMultiDim<>*            table,
+                                                     const Set< const DiscreteVariable* >& del_vars,
+                                                     const bool is_result_persistent) const {
+    const auto& xtable = dynamic_cast< const ScheduleMultiDim< TABLE >& >(*table);
+    const auto& op
+       = schedule.template emplaceProjection(xtable, del_vars, proj_, is_result_persistent);
     return op.results()[0];
   }
 
@@ -146,7 +146,9 @@ namespace gum {
      const Sequence< const DiscreteVariable* >& vars,
      const Set< const DiscreteVariable* >&      del_vars) const {
     double res = 1.0;
-    for (const auto var: vars) { res *= double(var->domainSize()); }
+    for (const auto var: vars) {
+      res *= double(var->domainSize());
+    }
     return res;
   }
 
@@ -168,7 +170,7 @@ namespace gum {
   /// returns the memory consumption used during the projection
   template < class TABLE >
   INLINE std::pair< double, double > MultiDimProjection< TABLE >::memoryUsage(
-     const TABLE&            table,
+     const TABLE&                          table,
      const Set< const DiscreteVariable* >& del_vars) const {
     return memoryUsage(table.variablesSequence(), del_vars);
   }

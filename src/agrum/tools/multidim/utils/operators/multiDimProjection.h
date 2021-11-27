@@ -92,17 +92,20 @@ namespace gum {
   class MultiDimProjection {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
     // class to get the types of the TABLE's values using metaprogramming
-    template<typename T>
-    struct TableType { using value_type = T; };
+    template < typename T >
+    struct TableType {
+      using value_type = T;
+    };
 
-    template< template< typename, typename ... > class CONTAINER,
-              typename T, typename ...Args >
-    struct TableType< CONTAINER< T, Args... > > { using value_type = T; };
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+    template < template < typename, typename... > class CONTAINER, typename T, typename... Args >
+    struct TableType< CONTAINER< T, Args... > > {
+      using value_type = T;
+    };
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
     public:
     /// the type of the values contained into TABLE
-    using value_type = typename TableType<TABLE>::value_type;
+    using value_type = typename TableType< TABLE >::value_type;
 
     // ========================================================================
     /// @name Constructors / Destructors
@@ -110,8 +113,7 @@ namespace gum {
     /// @{
 
     /// Default constructor
-    MultiDimProjection(TABLE (*proj)(const TABLE&,
-                                     const Set< const DiscreteVariable* >&));
+    MultiDimProjection(TABLE (*proj)(const TABLE&, const Set< const DiscreteVariable* >&));
 
     /// Copy constructor
     MultiDimProjection(const MultiDimProjection< TABLE >&);
@@ -144,11 +146,10 @@ namespace gum {
      * @warning If del_vars is precisely equal to the variables of table, the
      * result is an empty table.
      */
-    TABLE* execute(const TABLE& table,
+    TABLE* execute(const TABLE& table, const Set< const DiscreteVariable* >& del_vars) const;
+    void   execute(TABLE&                                container,
+                   const TABLE&                          table,
                    const Set< const DiscreteVariable* >& del_vars) const;
-    void execute(TABLE&           container,
-                 const TABLE&     table,
-                 const Set< const DiscreteVariable* >& del_vars) const;
 
     /// returns operation to perform as well as the result of the projection
     /** @warning MultiDimProjections always produce a new freshly allocated
@@ -156,35 +157,37 @@ namespace gum {
      */
     std::pair< ScheduleOperation<>*, const IScheduleMultiDim<>* >
        operations(const IScheduleMultiDim<>*            table,
-                  const Set< const DiscreteVariable* >& del_vars) const;
+                  const Set< const DiscreteVariable* >& del_vars,
+                  const bool                            is_result_persistent = false) const;
 
     /// add to a given schedule the set of operations needed to perform the projection
     /**
      * @param schedule the schedule to which we add the new projection
      * @param table the table which is projected
      * @param del_vars the set of variables to remove from the table
+     * @param is_result_persistent this boolean indicates whether the result of
+     * the projection is persistent, i.e., whether it should be kept in
+     * memory when the operation itself is deleted from memory.
      * @return the IScheduleMultiDim resulting from the projection
      * @warning MultiDimProjections always produce a new freshly allocated
      * resulting table
      */
-    const IScheduleMultiDim<>*
-       schedule(Schedule<>& schedule, const IScheduleMultiDim<>* table,
-                const Set< const DiscreteVariable* >& del_vars) const;
+    const IScheduleMultiDim<>* schedule(Schedule<>&                           schedule,
+                                        const IScheduleMultiDim<>*            table,
+                                        const Set< const DiscreteVariable* >& del_vars,
+                                        const bool is_result_persistent = false) const;
 
     /// Changes the function used for projecting TABLES
-    void setProjectionFunction(
-       TABLE (*proj)(const TABLE&, const Set< const DiscreteVariable* >&));
+    void setProjectionFunction(TABLE (*proj)(const TABLE&, const Set< const DiscreteVariable* >&));
 
     /// Returns the projection function currently used by the projector
-    TABLE (*projectionFunction())(const TABLE&,
-     const Set< const DiscreteVariable* >&);
+    TABLE (*projectionFunction())(const TABLE&, const Set< const DiscreteVariable* >&);
 
     /**
      * @brief returns a rough estimate of the number of operations that will be
      * performed to compute the projection.
      */
-    double nbOperations(const TABLE&                          table,
-                        const Set< const DiscreteVariable* >& del_vars) const;
+    double nbOperations(const TABLE& table, const Set< const DiscreteVariable* >& del_vars) const;
 
     /**
      * @brief returns a rough estimate of the number of operations that will be
@@ -205,9 +208,8 @@ namespace gum {
      * amount of memory still used at the end of the function ( the memory used
      * by the resulting table )
      */
-    std::pair< double, double > memoryUsage(
-       const TABLE&                          table,
-       const Set< const DiscreteVariable* >& del_vars) const;
+    std::pair< double, double > memoryUsage(const TABLE&                          table,
+                                            const Set< const DiscreteVariable* >& del_vars) const;
 
     /**
      * @brief Returns the memory consumption used during the projection.
@@ -221,9 +223,8 @@ namespace gum {
      * amount of memory still used at the end of the function ( the memory used
      * by the resulting table )
      */
-    std::pair< double, double > memoryUsage(
-       const Sequence< const DiscreteVariable* >& vars,
-       const Set< const DiscreteVariable* >&      del_vars) const;
+    std::pair< double, double > memoryUsage(const Sequence< const DiscreteVariable* >& vars,
+                                            const Set< const DiscreteVariable* >& del_vars) const;
 
     /// @}
 

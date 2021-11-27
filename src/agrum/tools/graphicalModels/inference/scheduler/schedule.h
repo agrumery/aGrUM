@@ -323,6 +323,19 @@ namespace gum {
     /// returns the id of a given IScheduleMultiDim
     NodeId scheduleMultiDimId(const IScheduleMultiDim< ALLOC >* multidim) const;
 
+    /// returns the operation, if any, that created a given scheduleMultiDim
+    /** @returns a pointer to the ScheduleOperation that created (as a result)
+     * a given ScheduleMultiDim. If no operation created it, the method
+     * returns nullptr. */
+    const ScheduleOperation< ALLOC >* scheduleMultiDimCreator(const NodeId id) const;
+
+    /// returns the operation, if any, that created a given scheduleMultiDim
+    /** @returns a pointer to the ScheduleOperation that created (as a result)
+     * a given ScheduleMultiDim. If no operation created it, the method
+     * returns nullptr. */
+    const ScheduleOperation< ALLOC >*
+       scheduleMultiDimCreator(const IScheduleMultiDim< ALLOC >* multidim) const;
+
     /// empty the schedule, i.e., remove its content
     void clear();
 

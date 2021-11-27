@@ -253,7 +253,8 @@ namespace gum {
   template < class TABLE >
   std::pair< std::vector< ScheduleOperation<>* >, const IScheduleMultiDim<>* >
      MultiDimCombinationDefault< TABLE >::operations(
-        const std::vector< const IScheduleMultiDim<>* >& original_tables) const {
+        const std::vector< const IScheduleMultiDim<>* >& original_tables,
+                  const bool is_result_persistent) const {
     // check if the set passed in argument is empty.
     const Size tabsize = original_tables.size();
     if (tabsize < 2) return {};
@@ -287,8 +288,10 @@ namespace gum {
       }
     }
 
-    // keep track of the result of the last combination performed
+    // keep track of the result of the last combination performed as well as of
+    // the operation that created it
     const IScheduleMultiDim<>* resulting_table = nullptr;
+    ScheduleOperation<>*       resulting_op = nullptr;
 
     // now parse the priority queue: the top element (i,j) gives the combination
     // to perform. When the operations R has been computed,substitute i by R,
@@ -307,6 +310,7 @@ namespace gum {
          _combine_);
       operations.push_back(combination);
       resulting_table = &combination->result();
+      resulting_op    = combination;
 
       // add operations to remove the temporary tables
       if (is_t_new[ti]) {
@@ -361,6 +365,11 @@ namespace gum {
       }
     }
 
+    // if necessary, make the resulting table persistent
+    if (is_result_persistent) {
+      resulting_op->makeResultsPersistent(true);
+    }
+
     return {operations, resulting_table};
   }
 
@@ -369,13 +378,14 @@ namespace gum {
   template < class TABLE >
   std::pair< std::vector< ScheduleOperation<>* >, const IScheduleMultiDim<>* >
      MultiDimCombinationDefault< TABLE >::operations(
-        const Set< const IScheduleMultiDim<>* >& set) const {
+        const Set< const IScheduleMultiDim<>* >& set,
+                  const bool is_result_persistent) const {
     std::vector< const IScheduleMultiDim<>* > vect;
     vect.reserve(set.size());
     for (const auto elt: set) {
       vect.push_back(elt);
     }
-    return operations(vect);
+    return operations(vect, is_result_persistent);
   }
 
 

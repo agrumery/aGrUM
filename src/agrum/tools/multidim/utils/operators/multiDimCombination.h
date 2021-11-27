@@ -105,17 +105,20 @@ namespace gum {
   class MultiDimCombination {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
     // class to get the types of the TABLE's values using metaprogramming
-    template<typename T>
-    struct TableType { using value_type = T; };
+    template < typename T >
+    struct TableType {
+      using value_type = T;
+    };
 
-    template< template< typename, typename ... > class CONTAINER,
-              typename T, typename ...Args >
-    struct TableType< CONTAINER< T, Args... > > { using value_type = T; };
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+    template < template < typename, typename... > class CONTAINER, typename T, typename... Args >
+    struct TableType< CONTAINER< T, Args... > > {
+      using value_type = T;
+    };
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
     public:
     /// the type of the values contained into TABLE
-    using value_type = typename TableType<TABLE>::value_type;
+    using value_type = typename TableType< TABLE >::value_type;
 
     // =========================================================================
     /// @name Constructors / Destructors
@@ -155,8 +158,8 @@ namespace gum {
      * @throws InvalidArgumentsNumber exception is thrown if the set passed in
      * argument contains less than two elements.
      */
-    virtual TABLE* execute(const Set< const TABLE* >& set) const = 0;
-    virtual void execute(TABLE& container, const Set< const TABLE* >& set) const = 0;
+    virtual TABLE* execute(const Set< const TABLE* >& set) const                   = 0;
+    virtual void   execute(TABLE& container, const Set< const TABLE* >& set) const = 0;
 
     /// returns the set of operations to perform as well as the result of the combination
     /** Executing sequentially the set of operations returned is guaranteed to
@@ -164,25 +167,29 @@ namespace gum {
      * @warning MultiDimCombinations always produce a new freshly allocated resulting table
      */
     virtual std::pair< std::vector< ScheduleOperation<>* >, const IScheduleMultiDim<>* >
-       operations(const std::vector< const IScheduleMultiDim<>* >& set) const = 0;
+       operations(const std::vector< const IScheduleMultiDim<>* >& set,
+                  const bool is_result_persistent = false) const = 0;
     virtual std::pair< std::vector< ScheduleOperation<>* >, const IScheduleMultiDim<>* >
-       operations(const Set< const IScheduleMultiDim<>* >& set) const = 0;
+       operations(const Set< const IScheduleMultiDim<>* >& set,
+                  const bool                               is_result_persistent = false) const = 0;
 
     /// add to a given schedule the set of operations needed to perform the combination
     /** @warning whenever this method is executed, it is assumed that the
      * ScheduleMultiDim already belong to the schedule.
      * @warning MultiDimCombinations always produce a new freshly allocated resulting table
      */
-    const IScheduleMultiDim<>*
-       schedule(Schedule<>& schedule, const Set< const IScheduleMultiDim<>* >& set) const;
-    const IScheduleMultiDim<>*
-       schedule(Schedule<>& schedule, const std::vector< const IScheduleMultiDim<>* >& set) const;
+    const IScheduleMultiDim<>* schedule(Schedule<>&                              schedule,
+                                        const Set< const IScheduleMultiDim<>* >& set,
+                                        const bool is_result_persistent = false) const;
+    const IScheduleMultiDim<>* schedule(Schedule<>&                                      schedule,
+                                        const std::vector< const IScheduleMultiDim<>* >& set,
+                                        const bool is_result_persistent = false) const;
 
     /// changes the function used for combining two TABLES
     virtual void setCombinationFunction(TABLE (*combine)(const TABLE&, const TABLE&)) = 0;
 
     /// returns the combination function currently used by the combinator
-    virtual TABLE (*combinationFunction())(const TABLE&, const TABLE&)= 0;
+    virtual TABLE (*combinationFunction())(const TABLE&, const TABLE&) = 0;
 
     /**
      * @brief returns a rough estimate of the number of operations that will be
@@ -204,8 +211,7 @@ namespace gum {
      * amount of memory still used at the end of the function ( the memory used
      * by the resulting table ).
      */
-    virtual std::pair< double, double >
-       memoryUsage(const Set< const TABLE* >& set) const = 0;
+    virtual std::pair< double, double > memoryUsage(const Set< const TABLE* >& set) const = 0;
     virtual std::pair< double, double >
        memoryUsage(const Set< const Sequence< const DiscreteVariable* >* >& set) const = 0;
 
