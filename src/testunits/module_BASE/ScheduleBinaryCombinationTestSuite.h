@@ -249,6 +249,7 @@ namespace gum_tests {
       TS_ASSERT(!comb1.implyDeletion());
       TS_ASSERT(! comb1.isSameOperation(comb7))
 
+
       for (unsigned int i = 0; i < vars.size(); ++i)
         delete vars[i];
     }

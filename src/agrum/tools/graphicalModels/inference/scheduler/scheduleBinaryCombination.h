@@ -96,11 +96,15 @@ namespace gum {
      * @param table2 the second table involved in the combination
      * @param combine a function taking two (real) tables in argument and
      * returning the result of their combination
+     * @param is_result_persistent this boolean indicates whether the result of
+     * the binary combination is persistent, i.e., whether it should be kept in
+     * memory when the operation itself is deleted from memory.
      * @warning tables 1 and 2 are stored only by reference within the
      * ScheduleBinaryCombination. */
     ScheduleBinaryCombination(const ScheduleMultiDim< TABLE1, ALLOC >& table1,
                               const ScheduleMultiDim< TABLE2, ALLOC >& table2,
                               TABLE_RES (*combine)(const TABLE1&, const TABLE2&),
+                              const bool is_result_persistent = false,
                               const allocator_type& alloc = allocator_type());
 
     /// copy constructor

@@ -38,8 +38,9 @@ namespace gum {
      const ScheduleMultiDim< TABLE, ALLOC >& table,
      const Set< const DiscreteVariable* >&   del_vars,
      TABLE (*project)(const TABLE&, const Set< const DiscreteVariable* >&),
+     const bool is_result_persistent,
      const typename ScheduleProjection< TABLE, ALLOC >::allocator_type& alloc) :
-      ScheduleOperation< ALLOC >(ScheduleOperationType::PROJECT_MULTIDIM, false, alloc),
+      ScheduleOperation< ALLOC >(ScheduleOperationType::PROJECT_MULTIDIM, false, is_result_persistent, alloc),
       _arg_(&table), _del_vars_(del_vars), _project_(project) {
     // compute the variables that shall belong to the result of the projection
     Sequence< const DiscreteVariable* > vars = table.variablesSequence();
@@ -110,17 +111,11 @@ namespace gum {
      ScheduleProjection< TABLE, ALLOC >&&                               from,
      const typename ScheduleProjection< TABLE, ALLOC >::allocator_type& alloc) :
       ScheduleOperation< ALLOC >(std::move(from), alloc),
-      _arg_(from._arg_), _del_vars_(std::move(from._del_vars_)), _project_(from._project_) {
-    // move the result of the from operation
-    ALLOC< ScheduleMultiDim< TABLE, ALLOC > > allocator(this->get_allocator());
-    _result_ = allocator.allocate(1);
-    try {
-      new ((void*)_result_)
-         ScheduleMultiDim< TABLE, ALLOC >(std::move(*(from._result_)), allocator);
-    } catch (...) {
-      allocator.deallocate(_result_, 1);
-      throw;
-    }
+      _arg_(from._arg_), _result_(from._result_),
+      _del_vars_(std::move(from._del_vars_)), _project_(from._project_) {
+    // indicate that from does not contain anything anymore
+    from.makeResultsPersistent(true); // prevent deleting nullptr
+    from._result_ = nullptr;
 
     // save the args and result into _args_ and _results_
     _args_ << _arg_;
@@ -165,9 +160,11 @@ namespace gum {
   /// destructor
   template < typename TABLE, template < typename > class ALLOC >
   ScheduleProjection< TABLE, ALLOC >::~ScheduleProjection() {
-    ALLOC< ScheduleMultiDim< TABLE, ALLOC > > allocator(this->get_allocator());
-    _result_->~ScheduleMultiDim< TABLE, ALLOC >();
-    allocator.deallocate(_result_, 1);
+    if (!this->hasPersistentResults()) {
+      ALLOC< ScheduleMultiDim< TABLE, ALLOC > > allocator(this->get_allocator());
+      _result_->~ScheduleMultiDim< TABLE, ALLOC >();
+      allocator.deallocate(_result_, 1);
+    }
 
     // for debugging purposes
     GUM_DESTRUCTOR(ScheduleProjection);
@@ -184,16 +181,15 @@ namespace gum {
       // in case something goes wrong below
       const Set< const DiscreteVariable* > new_del_vars = from._del_vars_;
 
-      // copy in a temporary variable, in case something goes wrong
-      const ScheduleMultiDim< TABLE, ALLOC > new_result = *from._result_;
-      *_result_                                         = std::move(new_result);
+      // try to copy result (no need to update _results_)
+      *_result_ = *(from._result_);
+      ScheduleOperation< ALLOC >::operator=(from);
 
       _del_vars_ = std::move(new_del_vars);
       _arg_      = from._arg_;
       _args_.clear();
       _args_ << _arg_;
-      _project_                           = from._project_;
-      ScheduleOperation< ALLOC >::operator=(from);
+      _project_ = from._project_;
     }
     return *this;
   }
@@ -205,13 +201,18 @@ namespace gum {
      ScheduleProjection< TABLE, ALLOC >::operator=(ScheduleProjection< TABLE, ALLOC >&& from) {
     // avoid self assignment
     if (this != &from) {
-      *_result_  = std::move(*(from._result_));
+      if (!this->hasPersistentResults()) delete _result_;
+      _result_                            = from._result_;
+      ScheduleOperation< ALLOC >::operator=(std::move(from));
+
       _del_vars_ = std::move(from._del_vars_);
       _arg_      = from._arg_;
       _args_.clear();
       _args_ << _arg_;
-      _project_                           = from._project_;
-      ScheduleOperation< ALLOC >::operator=(std::move(from));
+      _project_ = from._project_;
+
+      from.makeResultsPersistent(true); // prevent deleting nullptr
+      from._result_ = nullptr;
     }
     return *this;
   }

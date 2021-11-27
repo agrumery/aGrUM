@@ -40,7 +40,7 @@ namespace gum {
                typename... CONTAINER_PARAMS >
     INLINE void Execution< TABLE, TABLE*, Set, ALLOC, CONTAINER_PARAMS... >::
        execute(TABLE& table,
-               Set<TABLE*, CONTAINER_PARAMS...>& container) {
+               Set< TABLE*, CONTAINER_PARAMS... >& container) {
       container.insert(&table);
     }
 
@@ -50,7 +50,7 @@ namespace gum {
                typename... CONTAINER_PARAMS >
     INLINE void Execution<TABLE, TABLE, std::vector, ALLOC, CONTAINER_PARAMS... >::
        execute(TABLE& table,
-               std::vector<TABLE, CONTAINER_PARAMS...>& container) {
+               std::vector< TABLE, CONTAINER_PARAMS... >& container) {
       container.push_back(std::move(table));
     }
 
@@ -67,7 +67,7 @@ namespace gum {
      const IScheduleMultiDim< ALLOC >& table,
      CONTAINER<TABLE, CONTAINER_PARAMS...>&  container,
      const typename ScheduleStorage< TABLE, CONTAINER, ALLOC, CONTAINER_PARAMS... >::allocator_type& alloc) :
-      ScheduleOperation< ALLOC >(ScheduleOperationType::STORE_MULTIDIM, true, alloc),
+      ScheduleOperation< ALLOC >(ScheduleOperationType::STORE_MULTIDIM, true, false, alloc),
       _container_(&container) {
     // checks that table is a ScheduleMultiDim<T,ALLOC>, where either TABLE=T or
     // TABLE = T*. If this is not the case, then we won't be able to perform the

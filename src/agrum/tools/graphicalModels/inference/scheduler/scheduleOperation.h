@@ -79,11 +79,16 @@ namespace gum {
      * @param type The type of operation to be scheduled (projection, etc)
      * @param imply_deletion A Boolean indicating whether the operation, when
      * performed, will delete some ScheduleMultiDims passed as its arguments
+     * @param are_results_persistent if the operation produces some
+     * ScheduleMultiDims, this boolean indicates whether these results are
+     * persistent, i.e., whether they should be kept in memory when the operation
+     * itself is deleted from memory.
      * @param alloc the allocator used to allocate the operation and its
      * ScheduleMultiDims
      */
     explicit ScheduleOperation(const ScheduleOperationType type,
                                const bool                  imply_deletion,
+                               const bool                  are_results_persistent,
                                const allocator_type&       alloc);
 
     /// virtual copy constructor
@@ -181,6 +186,15 @@ namespace gum {
     virtual const Sequence< const IScheduleMultiDim< ALLOC >* >&
        results() const = 0;
 
+    /// makes the results of the operation persistent or not
+    /** Unlike non-persistent results, a persistent one is not destroyed when the
+      * operation itself is destroyed
+      */
+    void makeResultsPersistent(const bool is_persistent);
+
+    /// shows whether the operation has persistent results
+    bool hasPersistentResults() const;
+
     /** @brief returns an estimation of the number of elementary operations
      * needed to perform the ScheduleOperation */
     virtual double nbOperations() const = 0;
@@ -237,6 +251,9 @@ namespace gum {
     /** @brief indicates whether the operation will delete some of the
      * ScheduleMultiDim passed as its arguments */
     bool _imply_deletion_;
+
+    /// is the result persistent
+    bool _result_persistent_;
 
   };
 

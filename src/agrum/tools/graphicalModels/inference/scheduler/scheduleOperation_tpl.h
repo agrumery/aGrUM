@@ -44,9 +44,11 @@ namespace gum {
   ScheduleOperation< ALLOC >::ScheduleOperation(
      const ScheduleOperationType                                type,
      const bool                                                 imply_deletion,
+     const bool                                                 are_results_persistent,
      const typename ScheduleOperation< ALLOC >::allocator_type& alloc) :
       ALLOC< Idx >(alloc),
-      _op_type_(type), _imply_deletion_(imply_deletion) {
+      _op_type_(type), _imply_deletion_(imply_deletion),
+      _result_persistent_(are_results_persistent) {
     // for debugging purposes
     GUM_CONSTRUCTOR(ScheduleOperation);
   }
@@ -58,7 +60,8 @@ namespace gum {
      const ScheduleOperation< ALLOC >&                          from,
      const typename ScheduleOperation< ALLOC >::allocator_type& alloc) :
       ALLOC< Idx >(alloc),
-      _op_type_(from._op_type_), _imply_deletion_(from._imply_deletion_) {
+      _op_type_(from._op_type_), _imply_deletion_(from._imply_deletion_),
+      _result_persistent_(from._result_persistent_) {
     // for debugging purposes
     GUM_CONS_CPY(ScheduleOperation);
   }
@@ -66,8 +69,7 @@ namespace gum {
 
   /// copy constructor
   template < template < typename > class ALLOC >
-  INLINE ScheduleOperation< ALLOC >::ScheduleOperation(
-     const ScheduleOperation< ALLOC >& from) :
+  INLINE ScheduleOperation< ALLOC >::ScheduleOperation(const ScheduleOperation< ALLOC >& from) :
       ScheduleOperation< ALLOC >(from, from.get_allocator()) {}
 
 
@@ -77,7 +79,8 @@ namespace gum {
      ScheduleOperation< ALLOC >&&                               from,
      const typename ScheduleOperation< ALLOC >::allocator_type& alloc) :
       ALLOC< Idx >(alloc),
-      _op_type_(from._op_type_), _imply_deletion_(from._imply_deletion_) {
+      _op_type_(from._op_type_), _imply_deletion_(from._imply_deletion_),
+      _result_persistent_(from._result_persistent_) {
     // for debugging purposes
     GUM_CONS_MOV(ScheduleOperation);
   }
@@ -85,8 +88,7 @@ namespace gum {
 
   /// move constructor
   template < template < typename > class ALLOC >
-  INLINE ScheduleOperation< ALLOC >::ScheduleOperation(
-     ScheduleOperation< ALLOC >&& from) :
+  INLINE ScheduleOperation< ALLOC >::ScheduleOperation(ScheduleOperation< ALLOC >&& from) :
       ScheduleOperation< ALLOC >(std::move(from), from.get_allocator()) {}
 
 
@@ -100,10 +102,11 @@ namespace gum {
 
   /// copy operator
   template < template < typename > class ALLOC >
-  ScheduleOperation< ALLOC >& ScheduleOperation< ALLOC >::operator=(
-     const ScheduleOperation< ALLOC >& from) {
-    _op_type_ = from._op_type_;
-    _imply_deletion_ = from._imply_deletion_;
+  ScheduleOperation< ALLOC >&
+     ScheduleOperation< ALLOC >::operator=(const ScheduleOperation< ALLOC >& from) {
+    _op_type_           = from._op_type_;
+    _imply_deletion_    = from._imply_deletion_;
+    _result_persistent_ = from._result_persistent_;
     return *this;
   }
 
@@ -112,24 +115,23 @@ namespace gum {
   template < template < typename > class ALLOC >
   ScheduleOperation< ALLOC >&
      ScheduleOperation< ALLOC >::operator=(ScheduleOperation< ALLOC >&& from) {
-    _op_type_ = from._op_type_;
-    _imply_deletion_ = from._imply_deletion_;
+    _op_type_           = from._op_type_;
+    _imply_deletion_    = from._imply_deletion_;
+    _result_persistent_ = from._result_persistent_;
     return *this;
   }
 
 
   /// operator ==
   template < template < typename > class ALLOC >
-  INLINE bool ScheduleOperation< ALLOC >::operator==(
-     const ScheduleOperation< ALLOC >& op) const {
+  INLINE bool ScheduleOperation< ALLOC >::operator==(const ScheduleOperation< ALLOC >& op) const {
     return (_op_type_ == op._op_type_);
   }
 
 
   /// operator !=
   template < template < typename > class ALLOC >
-  INLINE bool ScheduleOperation< ALLOC >::operator!=(
-     const ScheduleOperation< ALLOC >& op) const {
+  INLINE bool ScheduleOperation< ALLOC >::operator!=(const ScheduleOperation< ALLOC >& op) const {
     return !ScheduleOperation< ALLOC >::operator==(op);
   }
 
@@ -137,8 +139,7 @@ namespace gum {
   /// checks whether two ScheduleOperation are similar
   template < template < typename > class ALLOC >
   INLINE bool
-     ScheduleOperation< ALLOC >::isSameOperation(
-        const ScheduleOperation< ALLOC >& op) const {
+     ScheduleOperation< ALLOC >::isSameOperation(const ScheduleOperation< ALLOC >& op) const {
     return (_op_type_ == op._op_type_);
   }
 
@@ -154,6 +155,20 @@ namespace gum {
   template < template < typename > class ALLOC >
   INLINE bool ScheduleOperation< ALLOC >::implyDeletion() const {
     return _imply_deletion_;
+  }
+
+
+  /// makes the results of the operation persistent or not
+  template < template < typename > class ALLOC >
+  INLINE void ScheduleOperation< ALLOC >::makeResultsPersistent(const bool is_persistent) {
+    _result_persistent_ = is_persistent;
+  }
+
+
+  /// shows whether the operation has persistent results
+  template < template < typename > class ALLOC >
+  INLINE bool ScheduleOperation< ALLOC >::hasPersistentResults() const {
+    return _result_persistent_;
   }
 
 

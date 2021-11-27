@@ -98,6 +98,9 @@ namespace gum {
      * Note that variables in del_vars that do not belong to table are simply
      * not taken into account. They do not raise any exception.
      * @param project the function that will actually perform the projection
+     * @param is_result_persistent this boolean indicates whether the result of
+     * the projection is persistent, i.e., whether it should be kept in
+     * memory when the operation itself is deleted from memory.
      * @param alloc the allocator used for memory allocations
      * @warning table is stored only by reference within the ScheduleProjection.
      * But the set of variables to remove (del_vars) is stored by copy
@@ -106,6 +109,7 @@ namespace gum {
        const ScheduleMultiDim< TABLE, ALLOC >& table,
        const Set< const DiscreteVariable* >&   del_vars,
        TABLE (*project)(const TABLE&, const Set< const DiscreteVariable* >&),
+       const bool is_result_persistent = false,
        const allocator_type& alloc = allocator_type());
 
     /// copy constructor

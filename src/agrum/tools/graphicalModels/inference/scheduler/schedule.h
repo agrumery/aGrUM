@@ -60,8 +60,8 @@ namespace gum {
    * insert new operations into the schedule (at a specific location) and to
    * remove some operations.
    */
-  template < template < typename > class ALLOC = std::allocator  >
-  class Schedule : private ALLOC< Idx > {
+  template < template < typename > class ALLOC = std::allocator >
+  class Schedule: private ALLOC< Idx > {
     public:
     using allocator_type = ALLOC< Idx >;
 
@@ -77,22 +77,20 @@ namespace gum {
     Schedule(const Schedule< ALLOC >& from);
 
     /// copy constructor with a given allocator
-    Schedule(const Schedule< ALLOC >& from,
-             const allocator_type&    alloc);
+    Schedule(const Schedule< ALLOC >& from, const allocator_type& alloc);
 
     /// move constructor
     Schedule(Schedule< ALLOC >&& from);
 
     /// move constructor with a given allocator
-    Schedule(Schedule< ALLOC >&&   from,
-             const allocator_type& alloc);
+    Schedule(Schedule< ALLOC >&& from, const allocator_type& alloc);
 
     /// virtual copy constructor
     virtual Schedule< ALLOC >* clone() const;
 
     /// virtual copy constructor with a given allocator
     virtual Schedule< ALLOC >* clone(const allocator_type& alloc) const;
-    
+
     /// destructor
     virtual ~Schedule();
 
@@ -116,9 +114,9 @@ namespace gum {
 
     /// operator !=
     bool operator!=(const Schedule< ALLOC >&) const;
-    
+
     /// @}
-    
+
 
     // ############################################################################
     /// @name Accessors/Modifiers
@@ -159,7 +157,7 @@ namespace gum {
      * with method insertTable are not computed by any schedule operations,
      * hence they should never be abstract, else the schedule may not be
      * executable.
-      * @throws DuplicateScheduleMultiDim is thrown if the schedule already
+     * @throws DuplicateScheduleMultiDim is thrown if the schedule already
      * contains a table with the same id
      */
     const IScheduleMultiDim< ALLOC >*
@@ -176,11 +174,17 @@ namespace gum {
      * already been performed but other operations use some of these arguments
      * and they have not been executed yet.
      * @warning operations are inserted by cloning */
-    const ScheduleOperation< ALLOC >&
-       insertOperation(const ScheduleOperation< ALLOC >& op);
+    const ScheduleOperation< ALLOC >& insertOperation(const ScheduleOperation< ALLOC >& op);
 
     /// emplace a new schedule binary combination operation
-    /** @throws UnknownScheduleMultiDim if some of the arguments of op do not
+    /** @param table1 the first ScheduleMultiDim to combine with the other table
+     * @param table2 the second table involved in the combination
+     * @param combine a function taking two (real) tables in argument and
+     * returning the result of their combination
+     * @param is_result_persistent this boolean indicates whether the result of
+     * the binary combination is persistent, i.e., whether it should be kept in
+     * memory when the operation itself is deleted from memory.
+     * @throws UnknownScheduleMultiDim if some of the arguments of op do not
      * already belong to the schedule. Such arguments would indeed prevent the
      * schedule to be performed.
      * @throws OperationNotAllowed if the operation deletes its arguments and
@@ -191,11 +195,21 @@ namespace gum {
     template < typename TABLE1, typename TABLE2, typename TABLE_RES >
     const ScheduleOperation< ALLOC >&
        emplaceBinaryCombination(const ScheduleMultiDim< TABLE1, ALLOC >& table1,
-                             const ScheduleMultiDim< TABLE2, ALLOC >& table2,
-                             TABLE_RES (*combine)( const TABLE1&, const TABLE2&));
+                                const ScheduleMultiDim< TABLE2, ALLOC >& table2,
+                                TABLE_RES (*combine)(const TABLE1&, const TABLE2&),
+                                const bool is_result_persistent = false);
 
     /// emplace a new schedule projection operation
-    /** @throws UnknownScheduleMultiDim if some of the arguments of op do not
+    /** @param table the ScheduleMultiDim containing the table that will
+     * be projected
+     * @param del_vars the set of variables that will be removed from table.
+     * Note that variables in del_vars that do not belong to table are simply
+     * not taken into account. They do not raise any exception.
+     * @param project the function that will actually perform the projection
+     * @param is_result_persistent this boolean indicates whether the result of
+     * the projection is persistent, i.e., whether it should be kept in
+     * memory when the operation itself is deleted from memory.
+     * @throws UnknownScheduleMultiDim if some of the arguments of op do not
      * already belong to the schedule. Such arguments would indeed prevent the
      * schedule to be performed.
      * @throws OperationNotAllowed if the operation deletes its arguments and
@@ -205,10 +219,10 @@ namespace gum {
      */
     template < typename TABLE >
     const ScheduleOperation< ALLOC >&
-       emplaceProjection(
-          const ScheduleMultiDim< TABLE, ALLOC >& table,
-          const Set< const DiscreteVariable* >&   del_vars,
-          TABLE (*project)(const TABLE&, const Set< const DiscreteVariable* >&));
+       emplaceProjection(const ScheduleMultiDim< TABLE, ALLOC >& table,
+                         const Set< const DiscreteVariable* >&   del_vars,
+                         TABLE (*project)(const TABLE&, const Set< const DiscreteVariable* >&),
+                         const bool is_result_persistent = false);
 
     /// emplace a new schedule deletion operation
     /** @throws UnknownScheduleMultiDim if some of the arguments of op do not
@@ -221,23 +235,24 @@ namespace gum {
      */
     template < typename TABLE >
     const ScheduleOperation< ALLOC >&
-    emplaceDeletion(const ScheduleMultiDim< TABLE, ALLOC >& table);
+       emplaceDeletion(const ScheduleMultiDim< TABLE, ALLOC >& table);
 
-     /// emplace a new schedule storage operation
-     /** @throws UnknownScheduleMultiDim if some of the arguments of op do not
-      * already belong to the schedule. Such arguments would indeed prevent the
-      * schedule to be performed.
-      * @throws OperationNotAllowed if the operation deletes its arguments and
-      * either another operation also deletes some of them or the operation has
-      * already been performed but other operations use some of these arguments
-      * and they have not been executed yet.
-      */
+    /// emplace a new schedule storage operation
+    /** @throws UnknownScheduleMultiDim if some of the arguments of op do not
+     * already belong to the schedule. Such arguments would indeed prevent the
+     * schedule to be performed.
+     * @throws OperationNotAllowed if the operation deletes its arguments and
+     * either another operation also deletes some of them or the operation has
+     * already been performed but other operations use some of these arguments
+     * and they have not been executed yet.
+     */
     template < typename TABLE,
-               template < typename, typename... > class CONTAINER,
+               template < typename, typename... >
+               class CONTAINER,
                typename... CONTAINER_PARAMS >
-     const ScheduleOperation< ALLOC >&
-     emplaceStorage(const IScheduleMultiDim< ALLOC >& table,
-                    CONTAINER<TABLE, CONTAINER_PARAMS...>& container);
+    const ScheduleOperation< ALLOC >&
+       emplaceStorage(const IScheduleMultiDim< ALLOC >&        table,
+                      CONTAINER< TABLE, CONTAINER_PARAMS... >& container);
 
     /// returns a DAG indicating in which order the operations can be performed
     /** In this DAG, each node corresponds to an operation and an operation
@@ -277,9 +292,9 @@ namespace gum {
      * @throws UnexecutedScheduleOperation exception is thrown in check mode if
      * the operation has not yet been executed. This should never happen.
      */
-    void updateAfterExecution(const NodeId exec_node,
-                              std::vector<NodeId>& new_available_nodes,
-                              const bool check = false);
+    void updateAfterExecution(const NodeId           exec_node,
+                              std::vector< NodeId >& new_available_nodes,
+                              const bool             check = false);
 
     /// updates the schedule after executing a given operation
     /** @warning Parallel schedulers should use this method only in critical
@@ -299,8 +314,8 @@ namespace gum {
      * the operation has not yet been executed. This should never happen.
      */
     void updateAfterExecution(const ScheduleOperation< ALLOC >& exec_op,
-                              std::vector<NodeId>& new_available_nodes,
-                              const bool check = false);
+                              std::vector< NodeId >&            new_available_nodes,
+                              const bool                        check = false);
 
     /// returns the ScheduleMultiDim corresponding to a given id
     const IScheduleMultiDim< ALLOC >* scheduleMultiDim(const NodeId id) const;
@@ -317,7 +332,7 @@ namespace gum {
     /// @}
 
 
-  private:
+    private:
     /// the DAG of the operations to perform
     /** Operations can be scheduled as a DAG: nodes without parents can be
      * executed directly. The other nodes need their parents to be executed to
@@ -325,7 +340,7 @@ namespace gum {
     DAG _dag_;
 
     /// the highest node id in the graph
-    NodeId _newId_ {NodeId(0)};
+    NodeId _newId_{NodeId(0)};
 
     /// a mapping between the ids of the operations and their pointer
     Bijection< NodeId, ScheduleOperation< ALLOC >* > _node2op_;
@@ -343,8 +358,7 @@ namespace gum {
      * std::pair indicates the index of the ScheduleMultiDim in the sequence
      * of results of the ScheduleOperation.
      */
-    HashTable< const IScheduleMultiDim< ALLOC >*,
-               std::pair< ScheduleOperation< ALLOC >*, Idx > >
+    HashTable< const IScheduleMultiDim< ALLOC >*, std::pair< ScheduleOperation< ALLOC >*, Idx > >
        _multidim_location_;
 
     /// a bijection between pointers to IScheduleMultiDim and their Ids
@@ -367,7 +381,6 @@ namespace gum {
     Bijection< const IScheduleMultiDim< ALLOC >*, NodeId > _deleted_multidim2node_;
 
 
-
     /// a function to copy the content of a schedule into another one
     /** @warning this method assumes that "this" is an empty schedule. If this
      * is not the case, then we should first remove everything from "this" */
@@ -381,7 +394,6 @@ namespace gum {
 
     /// returns the adjective corresponding to a parameter index (1st, 2nd, etc.)
     std::string _paramString_(Idx i) const;
-
   };
 
 } /* namespace gum */

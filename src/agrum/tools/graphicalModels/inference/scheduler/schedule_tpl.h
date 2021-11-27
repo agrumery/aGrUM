@@ -31,8 +31,7 @@ namespace gum {
 
   /// returns the allocator used by the schedule
   template < template < typename > class ALLOC >
-  INLINE typename Schedule< ALLOC >::allocator_type
-     Schedule< ALLOC >::get_allocator() const {
+  INLINE typename Schedule< ALLOC >::allocator_type Schedule< ALLOC >::get_allocator() const {
     return *this;
   }
 
@@ -41,18 +40,17 @@ namespace gum {
   template < template < typename > class ALLOC >
   DAG Schedule< ALLOC >::_fullDAG_() const {
     // if no operation has been performed yet, return _dag_
-    if (_dag_.sizeNodes() == _node2op_.size())
-      return _dag_;
+    if (_dag_.sizeNodes() == _node2op_.size()) return _dag_;
 
     // now, we should reconstruct the graph. First, we add all the nodes
     DAG dag;
-    for (auto iter=_node2op_.cbegin(); iter != _node2op_.cend(); ++iter) {
+    for (auto iter = _node2op_.cbegin(); iter != _node2op_.cend(); ++iter) {
       dag.addNodes(iter.first());
     }
 
     // add the arcs toward node or from node if another node deletes one of its
     // arguments
-    for (auto iter=_node2op_.cbegin(); iter != _node2op_.cend(); ++iter) {
+    for (auto iter = _node2op_.cbegin(); iter != _node2op_.cend(); ++iter) {
       const NodeId node = iter.first();
       const auto   op   = iter.second();
 
@@ -78,9 +76,7 @@ namespace gum {
         // but do not delete it, hence they should be executed before node/op
         if (op->implyDeletion()) {
           for (const auto other_node: _multidim2nodes_[arg]) {
-            if (other_node != node) {
-              dag.addArc(other_node, node);
-            }
+            if (other_node != node) { dag.addArc(other_node, node); }
           }
         }
       }
@@ -92,24 +88,22 @@ namespace gum {
 
   /// a function to copy the content of a schedule into another one
   template < template < typename > class ALLOC >
-  void Schedule< ALLOC >::_copy_(
-     const Schedule< ALLOC >& from,
-     const typename Schedule< ALLOC >::allocator_type& alloc) {
+  void Schedule< ALLOC >::_copy_(const Schedule< ALLOC >&                          from,
+                                 const typename Schedule< ALLOC >::allocator_type& alloc) {
     // copy the dag-related structures
     _dag_   = from._dag_;
     _newId_ = from._newId_;
 
     // here, we create the mapping from all the ScheduleMultiDims contained into
     // from to those contained into this
-    HashTable< const IScheduleMultiDim< ALLOC >*,
-               const IScheduleMultiDim< ALLOC >* >
-       multidim_from2this (from._multidim2id_.size());
+    HashTable< const IScheduleMultiDim< ALLOC >*, const IScheduleMultiDim< ALLOC >* >
+       multidim_from2this(from._multidim2id_.size());
 
     // we copy the source multidims, i.e., those that are not the result of any
     // operation, and we store the mapping from these IScheduleMultiDim contained
     // into from to those contained into this
-    for (const auto& source : from._multidim_location_) {
-      if (source.second.first == nullptr) { // here, this is a source
+    for (const auto& source: from._multidim_location_) {
+      if (source.second.first == nullptr) {   // here, this is a source
         IScheduleMultiDim< ALLOC >* new_multidim = source.first->clone(alloc);
         multidim_from2this.insert(source.first, new_multidim);
         _multidim_location_.insert(new_multidim, source.second);
@@ -123,17 +117,17 @@ namespace gum {
     // all the operations of that schedule, as if those had not been executed.
     // This is the order in which we will reconstruct all the operations. This
     // will allow us to construct the ScheduleMultiDims in the right order.
-    const Sequence< NodeId > nodes_sequence =
-       (from._dag_.sizeNodes() == from._node2op_.size())
-          ? from._dag_.topologicalOrder() : from._fullDAG_().topologicalOrder();
+    const Sequence< NodeId > nodes_sequence = (from._dag_.sizeNodes() == from._node2op_.size())
+                                               ? from._dag_.topologicalOrder()
+                                               : from._fullDAG_().topologicalOrder();
 
     // we can now create all the operations contained in this in the same
     // topological order as from: this enables to create all the ScheduleMultiDims
     // needed by a ScheduleOperation before creating the ScheduleOperation itself
-    for (const auto node : nodes_sequence) {
+    for (const auto node: nodes_sequence) {
       // get the "from" operation and clone it
       const ScheduleOperation< ALLOC >* from_op = from._node2op_.second(node);
-      ScheduleOperation< ALLOC >* new_op = from_op->clone(alloc);
+      ScheduleOperation< ALLOC >*       new_op  = from_op->clone(alloc);
       _node2op_.insert(node, new_op);
 
       // we get the ScheduleMultiDims passed as parameters to from_op and we
@@ -141,9 +135,8 @@ namespace gum {
       // and we update accordingly the parameters of new_op. In addition,
       // we store the information that the ScheduleMultiDims are used by our
       // new operation
-      const Sequence< const IScheduleMultiDim< ALLOC >* >
-         from_args = from_op->args();
-      Sequence< const IScheduleMultiDim< ALLOC >* > new_args (from_args.size());
+      const Sequence< const IScheduleMultiDim< ALLOC >* > from_args = from_op->args();
+      Sequence< const IScheduleMultiDim< ALLOC >* >       new_args(from_args.size());
       for (auto from_arg: from_args) {
         const auto& new_arg = multidim_from2this[from_arg];
         new_args << new_arg;
@@ -161,15 +154,12 @@ namespace gum {
       // we get the ScheduleMultiDims resulting from from_op and we compute their
       // mapping with those resulting from new_op. We also store the location and
       // id of the new results
-      const Sequence< const IScheduleMultiDim< ALLOC >* >
-         from_res = from_op->results();
-      const Sequence< const IScheduleMultiDim< ALLOC >* >
-         new_res = new_op->results();
+      const Sequence< const IScheduleMultiDim< ALLOC >* > from_res = from_op->results();
+      const Sequence< const IScheduleMultiDim< ALLOC >* > new_res  = new_op->results();
       for (Idx i = Idx(0), end = from_res.size(); i < end; ++i) {
         multidim_from2this.insert(from_res[i], new_res[i]);
-        _multidim_location_.insert(
-           new_res[i],
-           std::pair<ScheduleOperation< ALLOC >*, Idx >(new_op, i));
+        _multidim_location_.insert(new_res[i],
+                                   std::pair< ScheduleOperation< ALLOC >*, Idx >(new_op, i));
         _multidim2id_.insert(new_res[i], new_res[i]->id());
         _multidim2nodes_.insert(new_res[i], NodeSet());
       }
@@ -182,8 +172,7 @@ namespace gum {
   void Schedule< ALLOC >::_destroy_() {
     // remove all the operations of the schedule
     ALLOC< ScheduleOperation< ALLOC > > op_alloc(this->get_allocator());
-    for (auto iter = _node2op_.begin(), end = _node2op_.end();
-         iter != end; ++iter) {
+    for (auto iter = _node2op_.begin(), end = _node2op_.end(); iter != end; ++iter) {
       iter.second()->~ScheduleOperation< ALLOC >();
       op_alloc.deallocate(iter.second(), 1);
     }
@@ -192,8 +181,8 @@ namespace gum {
     ALLOC< IScheduleMultiDim< ALLOC > > multidim_alloc(this->get_allocator());
     for (auto& source: _multidim_location_) {
       if (source.second.first == nullptr) {
-        IScheduleMultiDim< ALLOC >* multidim =
-           const_cast< IScheduleMultiDim< ALLOC >* > (source.first);
+        IScheduleMultiDim< ALLOC >* multidim
+           = const_cast< IScheduleMultiDim< ALLOC >* >(source.first);
         multidim->~IScheduleMultiDim< ALLOC >();
         multidim_alloc.deallocate(multidim, 1);
       }
@@ -220,8 +209,7 @@ namespace gum {
 
   /// default constructor (construct an empty set of operations)
   template < template < typename > class ALLOC >
-  Schedule< ALLOC >::Schedule(
-     const typename Schedule< ALLOC >::allocator_type& alloc):
+  Schedule< ALLOC >::Schedule(const typename Schedule< ALLOC >::allocator_type& alloc) :
       ALLOC< Idx >(alloc) {
     // for debugging purposes
     GUM_CONSTRUCTOR(Schedule);
@@ -230,31 +218,28 @@ namespace gum {
 
   /// copy constructor with a given allocator
   template < template < typename > class ALLOC >
-  Schedule< ALLOC >::Schedule(
-     const Schedule< ALLOC >&                          from,
-     const typename Schedule< ALLOC >::allocator_type& alloc) {
+  Schedule< ALLOC >::Schedule(const Schedule< ALLOC >&                          from,
+                              const typename Schedule< ALLOC >::allocator_type& alloc) {
     // really perform the copy
     _copy_(from, alloc);
 
     // for debugging purposes
     GUM_CONS_CPY(Schedule);
-   }
+  }
 
 
   /// copy constructor
   template < template < typename > class ALLOC >
   INLINE Schedule< ALLOC >::Schedule(const Schedule< ALLOC >& from) :
-     Schedule< ALLOC >(from, from.get_allocator()) {}
+      Schedule< ALLOC >(from, from.get_allocator()) {}
 
 
   /// move constructor with a given allocator
   template < template < typename > class ALLOC >
-  Schedule< ALLOC >::Schedule(
-     Schedule< ALLOC >&& from,
-     const typename Schedule< ALLOC >::allocator_type& alloc) :
+  Schedule< ALLOC >::Schedule(Schedule< ALLOC >&&                               from,
+                              const typename Schedule< ALLOC >::allocator_type& alloc) :
       _dag_(std::move(from._dag_)),
-      _newId_(from._newId_),
-      _node2op_(std::move(from._node2op_)),
+      _newId_(from._newId_), _node2op_(std::move(from._node2op_)),
       _multidim_location_(std::move(from._multidim_location_)),
       _multidim2id_(std::move(from._multidim2id_)),
       _multidim2nodes_(std::move(from._multidim2nodes_)),
@@ -281,11 +266,10 @@ namespace gum {
 
   /// virtual copy constructor with a given allocator
   template < template < typename > class ALLOC >
-  Schedule< ALLOC >* Schedule< ALLOC >::clone(
-     const typename Schedule< ALLOC >::allocator_type& alloc)
-     const {
+  Schedule< ALLOC >*
+     Schedule< ALLOC >::clone(const typename Schedule< ALLOC >::allocator_type& alloc) const {
     ALLOC< Schedule< ALLOC > > allocator(alloc);
-    Schedule< ALLOC >* new_sched = allocator.allocate(1);
+    Schedule< ALLOC >*         new_sched = allocator.allocate(1);
     try {
       new ((void*)new_sched) Schedule< ALLOC >(*this, alloc);
     } catch (...) {
@@ -367,58 +351,48 @@ namespace gum {
   bool Schedule< ALLOC >::operator==(const Schedule< ALLOC >& from) const {
     // check if both schedules have the same graph and the same set of
     // operation ids
-    if ((_dag_ != from._dag_) || (_node2op_.size() != from._node2op_.size()))
-      return false;
+    if ((_dag_ != from._dag_) || (_node2op_.size() != from._node2op_.size())) return false;
     for (auto iter = _node2op_.cbegin(); iter != _node2op_.cend(); ++iter)
-      if (! from._node2op_.existsFirst(iter.first()))
-        return false;
+      if (!from._node2op_.existsFirst(iter.first())) return false;
 
     // map "this"'s operations and source multidims to those of "from"
-    HashTable< const ScheduleOperation< ALLOC >*,
-               const ScheduleOperation< ALLOC >* >
-       this_op2from(_node2op_.size());
-    Bijection< const IScheduleMultiDim< ALLOC >*,
-               const IScheduleMultiDim< ALLOC >* >
+    HashTable< const ScheduleOperation< ALLOC >*, const ScheduleOperation< ALLOC >* > this_op2from(
+       _node2op_.size());
+    Bijection< const IScheduleMultiDim< ALLOC >*, const IScheduleMultiDim< ALLOC >* >
        this_multidim2from(_multidim2nodes_.size());
 
     // get a topological order of the full graph. We will use it to compare the
     // parameters of the operations. This order enforces that the parameters are
     // already known before we examine them in the operations.
-    const Sequence< NodeId > order =
-       (_dag_.sizeNodes() == _node2op_.size())
-        ? _dag_.topologicalOrder() : _fullDAG_().topologicalOrder();
+    const Sequence< NodeId > order = (_dag_.sizeNodes() == _node2op_.size())
+                                      ? _dag_.topologicalOrder()
+                                      : _fullDAG_().topologicalOrder();
 
     // check if all the operations have the same type and the same parameters
-    for (const auto node : order) {
+    for (const auto node: order) {
       // get the operations corresponding to node
       const ScheduleOperation< ALLOC >* this_op = _node2op_.second(node);
       const ScheduleOperation< ALLOC >* from_op = from._node2op_.second(node);
 
       // check if they perform the same operations
-      if (!this_op->isSameOperation(*from_op))
-        return false;
+      if (!this_op->isSameOperation(*from_op)) return false;
 
       // check that the content of their parameters are the same
-      const Sequence< const IScheduleMultiDim< ALLOC >* >
-         this_args = this_op->args();
-      const Sequence< const IScheduleMultiDim< ALLOC >* >
-         from_args = from_op->args();
-      if (this_args.size() != from_args.size())
-        return false;
+      const Sequence< const IScheduleMultiDim< ALLOC >* > this_args = this_op->args();
+      const Sequence< const IScheduleMultiDim< ALLOC >* > from_args = from_op->args();
+      if (this_args.size() != from_args.size()) return false;
 
-      for(Idx i = 0, end = this_args.size(); i < end; ++i) {
+      for (Idx i = 0, end = this_args.size(); i < end; ++i) {
         const auto& this_location = _multidim_location_[this_args[i]];
         const auto& from_location = from._multidim_location_[from_args[i]];
 
         if (this_location.first != nullptr) {
           // here, this's and from's locations are the same if they correspond
           // to the same operation, with the same argument's index
-          if ((from_location.first == nullptr) ||
-              (this_location.second != from_location.second) ||
-              (from_location.first != this_op2from[this_location.first]))
+          if ((from_location.first == nullptr) || (this_location.second != from_location.second)
+              || (from_location.first != this_op2from[this_location.first]))
             return false;
-        }
-        else {
+        } else {
           // here, this_args[i] and from_args[i] should both be source multidims
           if (from_location.first != nullptr) return false;
 
@@ -468,22 +442,18 @@ namespace gum {
   template < template < typename > class ALLOC >
   template < typename TABLE >
   const IScheduleMultiDim< ALLOC >*
-     Schedule< ALLOC >::insertTable(const TABLE& table,
-                                    const bool   copy,
-                                    const Idx    id) {
+     Schedule< ALLOC >::insertTable(const TABLE& table, const bool copy, const Idx id) {
     // if the schedule already contains the id, throw an error
     if (_multidim2id_.existsSecond(id)) {
       GUM_ERROR(DuplicateScheduleMultiDim,
-                "A table with Id "
-                   << id << " already exists in the schedule");
+                "A table with Id " << id << " already exists in the schedule");
     }
 
     // allocate the new table within the schedule
-    ALLOC< ScheduleMultiDim< TABLE, ALLOC > > alloc = get_allocator();
-    ScheduleMultiDim< TABLE, ALLOC >* new_multidim = alloc.allocate(1);
+    ALLOC< ScheduleMultiDim< TABLE, ALLOC > > alloc        = get_allocator();
+    ScheduleMultiDim< TABLE, ALLOC >*         new_multidim = alloc.allocate(1);
     try {
-      new ((void*)new_multidim)
-         ScheduleMultiDim< TABLE, ALLOC >(table, copy, id, get_allocator());
+      new ((void*)new_multidim) ScheduleMultiDim< TABLE, ALLOC >(table, copy, id, get_allocator());
     } catch (...) {
       alloc.deallocate(new_multidim, 1);
       throw;
@@ -491,9 +461,8 @@ namespace gum {
 
     // keep track that this is a source multidim
     _multidim2nodes_.insert(new_multidim, NodeSet());
-    _multidim_location_.insert(
-       new_multidim,
-       std::pair< ScheduleOperation< ALLOC >*, Idx >(nullptr, Idx(0)));
+    _multidim_location_.insert(new_multidim,
+                               std::pair< ScheduleOperation< ALLOC >*, Idx >(nullptr, Idx(0)));
     _multidim2id_.insert(new_multidim, new_multidim->id());
 
     return new_multidim;
@@ -503,16 +472,15 @@ namespace gum {
   /// inserts an already constructed ScheduleMultiDim
   template < template < typename > class ALLOC >
   const IScheduleMultiDim< ALLOC >*
-     Schedule< ALLOC >::insertScheduleMultiDim(
-     const IScheduleMultiDim< ALLOC>& multidim) {
+     Schedule< ALLOC >::insertScheduleMultiDim(const IScheduleMultiDim< ALLOC >& multidim) {
     // check that the ScheduleMultiDim neither already belongs to the schedule
     // nor contains an abstract table: since it is a source multidim, it will
     // never be computed by the schedule. Hence if it is abstract, it will not
     // be possible to execute the schedule
     if (_multidim2id_.existsSecond(multidim.id())) {
-       GUM_ERROR(DuplicateScheduleMultiDim,
-                "A ScheduleMultiDim with Id "
-                   << multidim.id() << " already exists in the schedule");
+      GUM_ERROR(DuplicateScheduleMultiDim,
+                "A ScheduleMultiDim with Id " << multidim.id()
+                                              << " already exists in the schedule");
     }
     if (multidim.isAbstract()) {
       GUM_ERROR(AbstractScheduleMultiDim,
@@ -524,9 +492,8 @@ namespace gum {
     // into the schedule
     IScheduleMultiDim< ALLOC >* new_multidim = multidim.clone(get_allocator());
     _multidim2nodes_.insert(new_multidim, NodeSet());
-    _multidim_location_.insert(
-       new_multidim,
-       std::pair< ScheduleOperation< ALLOC >*, Idx >(nullptr, Idx(0)));
+    _multidim_location_.insert(new_multidim,
+                               std::pair< ScheduleOperation< ALLOC >*, Idx >(nullptr, Idx(0)));
     _multidim2id_.insert(new_multidim, new_multidim->id());
 
     return new_multidim;
@@ -536,12 +503,15 @@ namespace gum {
   /// returns the adjective corresponding to a parameter index (1st, 2nd, etc.)
   template < template < typename > class ALLOC >
   std::string Schedule< ALLOC >::_paramString_(Idx i) const {
-    if (i == 0) return "1st";
-    else if (i == 1) return "2nd";
-    else if (i == 2) return "3rd";
+    if (i == 0)
+      return "1st";
+    else if (i == 1)
+      return "2nd";
+    else if (i == 2)
+      return "3rd";
 
     std::stringstream str;
-    str << (i+1) << "th";
+    str << (i + 1) << "th";
     return str.str();
   }
 
@@ -557,7 +527,7 @@ namespace gum {
       if (!_multidim2id_.existsSecond(op_args[i]->id())) {
         GUM_ERROR(UnknownScheduleMultiDim,
                   "Schedule::insertOperation: the "
-                     << _paramString_(i+1) << " (id: " << op_args[i]->id()
+                     << _paramString_(i + 1) << " (id: " << op_args[i]->id()
                      << " operation's argument does not already belong to"
                      << " the schedule");
       }
@@ -570,13 +540,12 @@ namespace gum {
     // its parameters (else those would be deleted twice)
     for (Idx i = Idx(0), end = op_args.size(); i < end; ++i) {
       const IScheduleMultiDim< ALLOC >* arg = op_args[i];
-      if (_deleted_multidim2node_.existsFirst(arg) &&
-          (_node2op_.second(_deleted_multidim2node_.second(arg))->isExecuted() ||
-           op.implyDeletion())) {
+      if (_deleted_multidim2node_.existsFirst(arg)
+          && (_node2op_.second(_deleted_multidim2node_.second(arg))->isExecuted()
+              || op.implyDeletion())) {
         GUM_ERROR(OperationNotAllowed,
-                "Schedule::insertOperation: The operation deletes its "
-                     << _paramString_(i+1)
-                     << " argument, already deleted by another operation.");
+                  "Schedule::insertOperation: The operation deletes its "
+                     << _paramString_(i + 1) << " argument, already deleted by another operation.");
       }
     }
 
@@ -590,8 +559,7 @@ namespace gum {
           if (!_node2op_.second(using_node)->isExecuted()) {
             GUM_ERROR(OperationNotAllowed,
                       "Schedule::insertOperation: the operation has"
-                         << " deleted its "
-                         << _paramString_(i+1)
+                         << " deleted its " << _paramString_(i + 1)
                          << " argument, which is used by another operation"
                          << " not executed yet.");
           }
@@ -605,7 +573,7 @@ namespace gum {
     // ScheduleOperations are pointers to ScheduleMultiDim. Therefore, we need
     // to map the pointers of op_args to pointers of the corresponding
     // ScheduleMultiDim in our new operation
-    ScheduleOperation< ALLOC >* new_op = op.clone();
+    ScheduleOperation< ALLOC >*                   new_op = op.clone();
     Sequence< const IScheduleMultiDim< ALLOC >* > new_args(op_args.size());
     for (Idx i = Idx(0), end = op_args.size(); i < end; ++i) {
       try {
@@ -617,8 +585,7 @@ namespace gum {
         alloc.deallocate(new_op, 1);
 
         GUM_ERROR(UnknownScheduleMultiDim,
-                  "the " << _paramString_(i+1)
-                         << " argument of the operation is not known by"
+                  "the " << _paramString_(i + 1) << " argument of the operation is not known by"
                          << " the schedule");
       }
     }
@@ -642,11 +609,10 @@ namespace gum {
     }
 
     // keep track of the locations and ids of new_op's results
-    const Sequence< const IScheduleMultiDim< ALLOC >* > new_results =
-       new_op->results();
+    const Sequence< const IScheduleMultiDim< ALLOC >* > new_results = new_op->results();
     for (Idx i = Idx(0), end = new_results.size(); i < end; ++i) {
-      _multidim_location_.insert(
-         new_results[i], std::pair< ScheduleOperation< ALLOC >*, Idx >(new_op, i));
+      _multidim_location_.insert(new_results[i],
+                                 std::pair< ScheduleOperation< ALLOC >*, Idx >(new_op, i));
       _multidim2id_.insert(new_results[i], new_results[i]->id());
       _multidim2nodes_.insert(new_results[i], NodeSet());
     }
@@ -671,9 +637,7 @@ namespace gum {
       // executed before the argument is deleted).
       if (_deleted_multidim2node_.existsFirst(arg)) {
         const NodeId other_node = _deleted_multidim2node_.second(arg);
-        if (other_node != new_node) {
-          _dag_.addArc(new_node, other_node);
-        }
+        if (other_node != new_node) { _dag_.addArc(new_node, other_node); }
       }
 
       // if Parameter arg has been created by another operation, then new_node
@@ -692,8 +656,7 @@ namespace gum {
       // before new_op
       if (new_op->implyDeletion()) {
         for (const auto other_node: _multidim2nodes_[arg]) {
-          if ((other_node != new_node)
-              && !_dag_.existsArc(other_node, new_node)
+          if ((other_node != new_node) && !_dag_.existsArc(other_node, new_node)
               && !_node2op_.second(other_node)->isExecuted()) {
             _dag_.addArc(other_node, new_node);
           }
@@ -708,15 +671,19 @@ namespace gum {
   /// emplace a new schedule binary combination operator
   template < template < typename > class ALLOC >
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
-  const ScheduleOperation< ALLOC >& Schedule< ALLOC >::emplaceBinaryCombination(
-        const ScheduleMultiDim< TABLE1, ALLOC >& table1,
-        const ScheduleMultiDim< TABLE2, ALLOC >& table2,
-        TABLE_RES (*combine)( const TABLE1&, const TABLE2&)) {
+  const ScheduleOperation< ALLOC >&
+     Schedule< ALLOC >::emplaceBinaryCombination(const ScheduleMultiDim< TABLE1, ALLOC >& table1,
+                                                 const ScheduleMultiDim< TABLE2, ALLOC >& table2,
+                                                 TABLE_RES (*combine)(const TABLE1&, const TABLE2&),
+                                                 const bool is_result_persistent) {
     // note that the insertOperation will check that table1 and table2
     // already belong to the schedule
     return insertOperation(
-      ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >
-         (table1, table2, combine, get_allocator()));
+       ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >(table1,
+                                                                     table2,
+                                                                     combine,
+                                                                     is_result_persistent,
+                                                                     get_allocator()));
   }
 
 
@@ -724,14 +691,17 @@ namespace gum {
   template < template < typename > class ALLOC >
   template < typename TABLE >
   const ScheduleOperation< ALLOC >& Schedule< ALLOC >::emplaceProjection(
-          const ScheduleMultiDim< TABLE, ALLOC >& table,
-          const Set< const DiscreteVariable* >&   del_vars,
-          TABLE (*project)(const TABLE&, const Set< const DiscreteVariable* >&)) {
+     const ScheduleMultiDim< TABLE, ALLOC >& table,
+     const Set< const DiscreteVariable* >&   del_vars,
+     TABLE (*project)(const TABLE&, const Set< const DiscreteVariable* >&),
+     const bool is_result_persistent) {
     // note that the insertOperation will check that table already belongs
     // to the schedule
-    return insertOperation(
-       ScheduleProjection< TABLE, ALLOC >
-          (table, del_vars, project, get_allocator()));
+    return insertOperation(ScheduleProjection< TABLE, ALLOC >(table,
+                                                              del_vars,
+                                                              project,
+                                                              is_result_persistent,
+                                                              get_allocator()));
   }
 
 
@@ -742,25 +712,25 @@ namespace gum {
      Schedule< ALLOC >::emplaceDeletion(const ScheduleMultiDim< TABLE, ALLOC >& table) {
     // note that the insertOperation will check that table already belongs
     // to the schedule
-    return insertOperation(
-       ScheduleDeletion< TABLE, ALLOC >(table, get_allocator()));
+    return insertOperation(ScheduleDeletion< TABLE, ALLOC >(table, get_allocator()));
   }
 
 
   /// emplace a new schedule storage operation
   template < template < typename > class ALLOC >
   template < typename TABLE,
-             template < typename, typename... > class CONTAINER,
+             template < typename, typename... >
+             class CONTAINER,
              typename... CONTAINER_PARAMS >
   const ScheduleOperation< ALLOC >&
-     Schedule< ALLOC >::emplaceStorage(
-        const IScheduleMultiDim< ALLOC >& table,
-        CONTAINER<TABLE, CONTAINER_PARAMS...>& container) {
+     Schedule< ALLOC >::emplaceStorage(const IScheduleMultiDim< ALLOC >&        table,
+                                       CONTAINER< TABLE, CONTAINER_PARAMS... >& container) {
     // note that the insertOperation will check that table already belongs
     // to the schedule
     return insertOperation(
-       ScheduleStorage< TABLE, CONTAINER, ALLOC, CONTAINER_PARAMS... >(
-          table, container, get_allocator()));
+       ScheduleStorage< TABLE, CONTAINER, ALLOC, CONTAINER_PARAMS... >(table,
+                                                                       container,
+                                                                       get_allocator()));
   }
 
 
@@ -774,15 +744,14 @@ namespace gum {
   /// returns the scheduleOperation corresponding to an id in the DAG
   template < template < typename > class ALLOC >
   INLINE const ScheduleOperation< ALLOC >&
-  Schedule< ALLOC >::operation(const NodeId node_id) const {
+               Schedule< ALLOC >::operation(const NodeId node_id) const {
     return *(_node2op_.second(node_id));
   }
 
 
   /// returns the id associated to a given operation
   template < template < typename > class ALLOC >
-  INLINE NodeId Schedule< ALLOC >::nodeId(
-     const ScheduleOperation< ALLOC >& op) const {
+  INLINE NodeId Schedule< ALLOC >::nodeId(const ScheduleOperation< ALLOC >& op) const {
     return _node2op_.first(const_cast< ScheduleOperation< ALLOC >* >(&op));
   }
 
@@ -792,9 +761,7 @@ namespace gum {
   INLINE NodeSet Schedule< ALLOC >::availableOperations() const {
     NodeSet available_nodes;
     for (const auto node: _dag_) {
-      if (_dag_.parents(node).empty()) {
-        available_nodes.insert(node);
-      }
+      if (_dag_.parents(node).empty()) { available_nodes.insert(node); }
     }
     return available_nodes;
   }
@@ -802,16 +769,15 @@ namespace gum {
 
   /// updates the DAG after a given operation has been executed
   template < template < typename > class ALLOC >
-  void Schedule< ALLOC >::updateAfterExecution(
-     const NodeId exec_node, std::vector<NodeId>& new_available_nodes,
-     const bool check) {
+  void Schedule< ALLOC >::updateAfterExecution(const NodeId           exec_node,
+                                               std::vector< NodeId >& new_available_nodes,
+                                               const bool             check) {
     if (check) {
       // check that the node exists
       if (!_dag_.existsNode(exec_node)) {
         GUM_ERROR(UnknownScheduleOperation,
                   "the schedule cannot be updated because Operation of Id "
-                     << exec_node
-                     << " that has been executed does not belong to its DAG.");
+                     << exec_node << " that has been executed does not belong to its DAG.");
       }
 
       // before performing the update, check that the operation was available
@@ -819,16 +785,14 @@ namespace gum {
       if (!_dag_.parents(exec_node).empty()) {
         GUM_ERROR(UnavailableScheduleOperation,
                   "the schedule cannot be updated because Operation of Id "
-                     << exec_node
-                     << " is not available yet and should not have been executed.");
+                     << exec_node << " is not available yet and should not have been executed.");
       }
 
       // check that the operation has really been executed
       if (!_node2op_.second(exec_node)->isExecuted()) {
         GUM_ERROR(UnexecutedScheduleOperation,
                   "the schedule cannot be updated because Operation of Id "
-                     << exec_node
-                     << " has not been executed yet.");
+                     << exec_node << " has not been executed yet.");
       }
     }
 
@@ -836,7 +800,7 @@ namespace gum {
     // is exec_node), then these children are new available operations
     new_available_nodes.clear();
     for (const auto child_node: _dag_.children(exec_node)) {
-      if (_dag_.parents(child_node).size() == 1) { // only exec_node is a parent
+      if (_dag_.parents(child_node).size() == 1) {   // only exec_node is a parent
         new_available_nodes.push_back(child_node);
       }
     }
@@ -848,32 +812,28 @@ namespace gum {
 
   /// updates the DAG after a given operation has been executed
   template < template < typename > class ALLOC >
-  INLINE void
-  Schedule< ALLOC >::updateAfterExecution(
-        const ScheduleOperation< ALLOC >& op,
-        std::vector<NodeId>& new_available_nodes,
-        const bool check) {
+  INLINE void Schedule< ALLOC >::updateAfterExecution(const ScheduleOperation< ALLOC >& op,
+                                                      std::vector< NodeId >& new_available_nodes,
+                                                      const bool             check) {
     /// check that the node belongs to the schedule
     if (check) {
-      if (!_node2op_.existsSecond(const_cast<ScheduleOperation< ALLOC >*>(&op))) {
+      if (!_node2op_.existsSecond(const_cast< ScheduleOperation< ALLOC >* >(&op))) {
         GUM_ERROR(UnknownScheduleOperation,
                   "the schedule cannot be updated because Operation "
-                     << op.toString()
-                     << " that has been executed does not belong to its DAG.");
+                     << op.toString() << " that has been executed does not belong to its DAG.");
       }
     }
 
-    updateAfterExecution(
-       _node2op_.first(const_cast< ScheduleOperation< ALLOC >* >(&op)),
-       new_available_nodes,
-       check);
+    updateAfterExecution(_node2op_.first(const_cast< ScheduleOperation< ALLOC >* >(&op)),
+                         new_available_nodes,
+                         check);
   }
 
 
   /// returns the ScheduleMultiDim corresponding to a given id
   template < template < typename > class ALLOC >
   INLINE const IScheduleMultiDim< ALLOC >*
-     Schedule< ALLOC >::scheduleMultiDim(const NodeId id) const {
+               Schedule< ALLOC >::scheduleMultiDim(const NodeId id) const {
     return _multidim2id_.first(id);
   }
 

@@ -39,16 +39,17 @@ namespace gum {
              typename TABLE_RES,
              template < typename >
              class ALLOC >
-  ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::
-     ScheduleBinaryCombination(
-        const ScheduleMultiDim< TABLE1, ALLOC >& table1,
-        const ScheduleMultiDim< TABLE2, ALLOC >& table2,
-        TABLE_RES (*combine)(const TABLE1&, const TABLE2&),
-        const typename ScheduleBinaryCombination< TABLE1,
-                                                  TABLE2,
-                                                  TABLE_RES,
-                                                  ALLOC >::allocator_type& alloc) :
-      ScheduleOperation< ALLOC >(ScheduleOperationType::COMBINE_MULTIDIM, false, alloc),
+  ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::ScheduleBinaryCombination(
+     const ScheduleMultiDim< TABLE1, ALLOC >& table1,
+     const ScheduleMultiDim< TABLE2, ALLOC >& table2,
+     TABLE_RES (*combine)(const TABLE1&, const TABLE2&),
+     const bool is_result_persistent,
+     const typename ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::allocator_type&
+        alloc) :
+      ScheduleOperation< ALLOC >(ScheduleOperationType::COMBINE_MULTIDIM,
+                                 false,
+                                 is_result_persistent,
+                                 alloc),
       _arg1_(&table1), _arg2_(&table2), _combine_(combine) {
     // compute the variables of the resulting table
     Sequence< const DiscreteVariable* >        vars  = table1.variablesSequence();
@@ -62,8 +63,7 @@ namespace gum {
     ALLOC< ScheduleMultiDim< TABLE_RES, ALLOC > > allocator(this->get_allocator());
     _result_ = allocator.allocate(1);
     try {
-      new ((void*)_result_)
-         ScheduleMultiDim< TABLE_RES, ALLOC >(vars, Idx(0), allocator);
+      new ((void*)_result_) ScheduleMultiDim< TABLE_RES, ALLOC >(vars, Idx(0), allocator);
     } catch (...) {
       allocator.deallocate(_result_, 1);
       throw;
@@ -84,13 +84,10 @@ namespace gum {
              typename TABLE_RES,
              template < typename >
              class ALLOC >
-  ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::
-     ScheduleBinaryCombination(
-        const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >& from,
-        const typename ScheduleBinaryCombination< TABLE1,
-                                                  TABLE2,
-                                                  TABLE_RES,
-                                                  ALLOC >::allocator_type& alloc) :
+  ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::ScheduleBinaryCombination(
+     const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >& from,
+     const typename ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::allocator_type&
+        alloc) :
       ScheduleOperation< ALLOC >(from, alloc),
       _arg1_(from._arg1_), _arg2_(from._arg2_), _combine_(from._combine_) {
     // copy the result of the from operation
@@ -111,12 +108,9 @@ namespace gum {
              typename TABLE_RES,
              template < typename >
              class ALLOC >
-  INLINE ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::
-     ScheduleBinaryCombination(
-        const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >&
-           from) :
-      ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >(
-         from, from.get_allocator()) {}
+  INLINE ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::ScheduleBinaryCombination(
+     const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >& from) :
+      ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >(from, from.get_allocator()) {}
 
 
   /// move constructor with a given allocator
@@ -125,25 +119,15 @@ namespace gum {
              typename TABLE_RES,
              template < typename >
              class ALLOC >
-  ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::
-     ScheduleBinaryCombination(
-        ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >&&    from,
-        const typename ScheduleBinaryCombination< TABLE1,
-                                                  TABLE2,
-                                                  TABLE_RES,
-                                                  ALLOC >::allocator_type& alloc) :
+  ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::ScheduleBinaryCombination(
+     ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >&& from,
+     const typename ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::allocator_type&
+        alloc) :
       ScheduleOperation< ALLOC >(std::move(from), alloc),
-      _arg1_(from._arg1_), _arg2_(from._arg2_), _combine_(from._combine_) {
-    // move the result of the from operation
-    ALLOC< ScheduleMultiDim< TABLE_RES, ALLOC > > allocator(this->get_allocator());
-    _result_ = allocator.allocate(1);
-    try {
-      new ((void*)_result_) ScheduleMultiDim< TABLE_RES, ALLOC >(
-         std::move(*(from._result_)), allocator);
-    } catch (...) {
-      allocator.deallocate(_result_, 1);
-      throw;
-    }
+      _arg1_(from._arg1_), _arg2_(from._arg2_), _result_(from._result_), _combine_(from._combine_) {
+    // indicate that from does not contain anything anymore
+    from.makeResultsPersistent(true); // prevent deleting nullptr
+    from._result_ = nullptr;
 
     // save the args and result into _args_ and _results_
     _args_ = std::move(from._args_);
@@ -160,11 +144,10 @@ namespace gum {
              typename TABLE_RES,
              template < typename >
              class ALLOC >
-  INLINE ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::
-     ScheduleBinaryCombination(
-        ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >&& from) :
-      ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >(
-         std::move(from), from.get_allocator()) {}
+  INLINE ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::ScheduleBinaryCombination(
+     ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >&& from) :
+      ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >(std::move(from),
+                                                                    from.get_allocator()) {}
 
 
   /// virtual copy constructor with a given allocator
@@ -175,19 +158,13 @@ namespace gum {
              class ALLOC >
   ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >*
      ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::clone(
-        const typename ScheduleBinaryCombination< TABLE1,
-                                                  TABLE2,
-                                                  TABLE_RES,
-                                                  ALLOC >::allocator_type& alloc)
-        const {
-    ALLOC< ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC > >
-                                                                   allocator(alloc);
-    ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >* new_comb =
-       allocator.allocate(1);
+        const typename ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::
+           allocator_type& alloc) const {
+    ALLOC< ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC > > allocator(alloc);
+    ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >* new_comb = allocator.allocate(1);
     try {
       new ((void*)new_comb)
-         ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >(*this,
-                                                                       alloc);
+         ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >(*this, alloc);
     } catch (...) {
       allocator.deallocate(new_comb, 1);
       throw;
@@ -215,11 +192,13 @@ namespace gum {
              typename TABLE_RES,
              template < typename >
              class ALLOC >
-  ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::
-     ~ScheduleBinaryCombination() {
-    ALLOC< ScheduleMultiDim< TABLE_RES, ALLOC > > allocator(this->get_allocator());
-    _result_->~ScheduleMultiDim< TABLE_RES, ALLOC >();
-    allocator.deallocate(_result_, 1);
+  ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::~ScheduleBinaryCombination() {
+    // if the result is not persistent, we should remove it
+    if (!this->hasPersistentResults()) {
+      ALLOC< ScheduleMultiDim< TABLE_RES, ALLOC > > allocator(this->get_allocator());
+      _result_->~ScheduleMultiDim< TABLE_RES, ALLOC >();
+      allocator.deallocate(_result_, 1);
+    }
 
     // for debugging purposes
     GUM_DESTRUCTOR(ScheduleBinaryCombination);
@@ -234,18 +213,16 @@ namespace gum {
              class ALLOC >
   ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >&
      ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::operator=(
-        const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >&
-           from) {
+        const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >& from) {
     if (this != &from) {
       // try to copy result (no need to update _results_)
-      *_result_ = *(from._result_);
-
-      _arg1_ = from._arg1_;
-      _arg2_ = from._arg2_;
-      _args_ = from._args_;
-      _combine_ = from._combine_;
-
+      *_result_                           = *(from._result_);
       ScheduleOperation< ALLOC >::operator=(from);
+
+      _arg1_    = from._arg1_;
+      _arg2_    = from._arg2_;
+      _args_    = from._args_;
+      _combine_ = from._combine_;
     }
     return *this;
   }
@@ -261,13 +238,17 @@ namespace gum {
      ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::operator=(
         ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >&& from) {
     if (this != &from) {
-      *_result_ = std::move(*(from._result_));
-
-      _arg1_ = from._arg1_;
-      _arg2_ = from._arg2_;
-      _args_ = std::move(from._args_);
-      _combine_ = from._combine_;
+      if (!this->hasPersistentResults()) delete _result_;
+      _result_                            = from._result_;
       ScheduleOperation< ALLOC >::operator=(std::move(from));
+
+      _arg1_    = from._arg1_;
+      _arg2_    = from._arg2_;
+      _args_    = std::move(from._args_);
+      _combine_ = from._combine_;
+
+      from.makeResultsPersistent(true); // prevent deleting nullptr
+      from._result_ = nullptr;
     }
     return *this;
   }
@@ -279,12 +260,9 @@ namespace gum {
              typename TABLE_RES,
              template < typename >
              class ALLOC >
-  INLINE bool
-     ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::operator==(
-        const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >& op)
-        const {
-      return (_combine_ == op._combine_) &&
-           (*_arg1_ == *op._arg1_) && (*_arg2_ == *op._arg2_);
+  INLINE bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::operator==(
+     const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >& op) const {
+    return (_combine_ == op._combine_) && (*_arg1_ == *op._arg1_) && (*_arg2_ == *op._arg2_);
   }
 
 
@@ -299,12 +277,9 @@ namespace gum {
     if (ScheduleOperation< ALLOC >::operator!=(op)) return false;
 
     try {
-      const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >&
-         real_op = dynamic_cast<
-            const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >& >(
-            op);
-      return ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::
-            operator==(real_op);
+      const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >& real_op
+         = dynamic_cast< const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >& >(op);
+      return ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::operator==(real_op);
     } catch (std::bad_cast&) { return false; }
   }
 
@@ -315,11 +290,9 @@ namespace gum {
              typename TABLE_RES,
              template < typename >
              class ALLOC >
-  INLINE bool
-     ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::operator!=(
-        const ScheduleOperation< ALLOC >& op) const {
-    return !ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::
-       operator==(op);
+  INLINE bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::operator!=(
+     const ScheduleOperation< ALLOC >& op) const {
+    return !ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::operator==(op);
   }
 
 
@@ -329,12 +302,9 @@ namespace gum {
              typename TABLE_RES,
              template < typename >
              class ALLOC >
-  INLINE bool
-     ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::operator!=(
-        const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >& op)
-        const {
-    return !ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::
-       operator==(op);
+  INLINE bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::operator!=(
+     const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >& op) const {
+    return !ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::operator==(op);
   }
 
 
@@ -344,18 +314,10 @@ namespace gum {
              typename TABLE_RES,
              template < typename >
              class ALLOC >
-  INLINE bool
-     ScheduleBinaryCombination< TABLE1,
-                                TABLE2,
-                                TABLE_RES,
-                                ALLOC >::
-     hasSameArguments(
-        const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >& op)
-        const {
-      return (_arg1_->hasSameVariables(*op._arg1_) &&
-              _arg2_->hasSameVariables(*op._arg2_) &&
-              _arg1_->hasSameContent(*op._arg1_) &&
-              _arg2_->hasSameContent(*op._arg2_));
+  INLINE bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::hasSameArguments(
+     const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >& op) const {
+    return (_arg1_->hasSameVariables(*op._arg1_) && _arg2_->hasSameVariables(*op._arg2_)
+            && _arg1_->hasSameContent(*op._arg1_) && _arg2_->hasSameContent(*op._arg2_));
   }
 
 
@@ -365,20 +327,13 @@ namespace gum {
              typename TABLE_RES,
              template < typename >
              class ALLOC >
-  bool
-     ScheduleBinaryCombination< TABLE1,
-                                TABLE2,
-                                TABLE_RES,
-                                ALLOC >::
-     hasSameArguments(
+  bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::hasSameArguments(
      const ScheduleOperation< ALLOC >& op) const {
     try {
-      const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >&
-         real_op = dynamic_cast<
-            const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >& >(
-            op);
-      return ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::
-         hasSameArguments(real_op);
+      const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >& real_op
+         = dynamic_cast< const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >& >(op);
+      return ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::hasSameArguments(
+         real_op);
     } catch (std::bad_cast&) { return false; }
   }
 
@@ -389,16 +344,9 @@ namespace gum {
              typename TABLE_RES,
              template < typename >
              class ALLOC >
-  INLINE bool
-     ScheduleBinaryCombination< TABLE1,
-                                TABLE2,
-                                TABLE_RES,
-                                ALLOC >::
-     hasSimilarArguments(
-        const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >& op)
-        const {
-      return (_arg1_->hasSameVariables(*op._arg1_) &&
-              _arg2_->hasSameVariables(*op._arg2_));
+  INLINE bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::hasSimilarArguments(
+     const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >& op) const {
+    return (_arg1_->hasSameVariables(*op._arg1_) && _arg2_->hasSameVariables(*op._arg2_));
   }
 
 
@@ -408,20 +356,13 @@ namespace gum {
              typename TABLE_RES,
              template < typename >
              class ALLOC >
-  bool
-     ScheduleBinaryCombination< TABLE1,
-                                TABLE2,
-                                TABLE_RES,
-                                ALLOC >::
-     hasSimilarArguments(
+  bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::hasSimilarArguments(
      const ScheduleOperation< ALLOC >& op) const {
     try {
-      const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >&
-         real_op = dynamic_cast<
-            const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >& >(
-            op);
-      return ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::
-         hasSimilarArguments(real_op);
+      const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >& real_op
+         = dynamic_cast< const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >& >(op);
+      return ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::hasSimilarArguments(
+         real_op);
     } catch (std::bad_cast&) { return false; }
   }
 
@@ -432,11 +373,8 @@ namespace gum {
              typename TABLE_RES,
              template < typename >
              class ALLOC >
-  bool ScheduleBinaryCombination< TABLE1,
-                                TABLE2,
-                                TABLE_RES,
-                                ALLOC >::isSameOperation(
-       const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >& op) const {
+  bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::isSameOperation(
+     const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >& op) const {
     return _combine_ == op._combine_;
   }
 
@@ -447,18 +385,13 @@ namespace gum {
              typename TABLE_RES,
              template < typename >
              class ALLOC >
-  bool ScheduleBinaryCombination< TABLE1,
-                                TABLE2,
-                                TABLE_RES,
-                                ALLOC >::isSameOperation(
+  bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::isSameOperation(
      const ScheduleOperation< ALLOC >& op) const {
     try {
-      const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >&
-         real_op = dynamic_cast<
-            const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >& >(
-            op);
-      return ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::
-            isSameOperation(real_op);
+      const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >& real_op
+         = dynamic_cast< const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >& >(op);
+      return ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::isSameOperation(
+         real_op);
     } catch (std::bad_cast&) { return false; }
   }
 
@@ -482,7 +415,7 @@ namespace gum {
              template < typename >
              class ALLOC >
   INLINE const ScheduleMultiDim< TABLE2, ALLOC >&
-     ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::arg2() const {
+               ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::arg2() const {
     return *_arg2_;
   }
 
@@ -494,7 +427,7 @@ namespace gum {
              template < typename >
              class ALLOC >
   INLINE const Sequence< const IScheduleMultiDim< ALLOC >* >&
-     ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::args() const {
+               ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::args() const {
     return _args_;
   }
 
@@ -506,8 +439,7 @@ namespace gum {
              template < typename >
              class ALLOC >
   INLINE const ScheduleMultiDim< TABLE_RES, ALLOC >&
-     ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::result()
-        const {
+               ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::result() const {
     return *_result_;
   }
 
@@ -519,8 +451,7 @@ namespace gum {
              template < typename >
              class ALLOC >
   INLINE const Sequence< const IScheduleMultiDim< ALLOC >* >&
-     ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::results()
-        const {
+               ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::results() const {
     return _results_;
   }
 
@@ -575,9 +506,7 @@ namespace gum {
              typename TABLE_RES,
              template < typename >
              class ALLOC >
-  INLINE bool
-     ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::isExecuted()
-        const {
+  INLINE bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::isExecuted() const {
     return !_result_->isAbstract();
   }
 
@@ -619,9 +548,7 @@ namespace gum {
              typename TABLE_RES,
              template < typename >
              class ALLOC >
-  double
-     ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::nbOperations()
-        const {
+  double ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::nbOperations() const {
     return double(_result_->domainSize());
   }
 
@@ -633,11 +560,9 @@ namespace gum {
              template < typename >
              class ALLOC >
   INLINE std::pair< double, double >
-     ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::memoryUsage()
-        const {
-    const double domsize =
-       double(_result_->domainSize()) * _result_->sizeOfContent()
-       + sizeof(TABLE_RES);
+         ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::memoryUsage() const {
+    const double domsize
+       = double(_result_->domainSize()) * _result_->sizeOfContent() + sizeof(TABLE_RES);
     return {domsize, domsize};
   }
 
@@ -648,11 +573,9 @@ namespace gum {
              typename TABLE_RES,
              template < typename >
              class ALLOC >
-  std::string
-     ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::toString()
-        const {
-    return _result_->toString() + " = combine ( " + _arg1_->toString() + " , "
-           + _arg2_->toString() + " )";
+  std::string ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::toString() const {
+    return _result_->toString() + " = combine ( " + _arg1_->toString() + " , " + _arg2_->toString()
+         + " )";
   }
 
 
@@ -662,8 +585,8 @@ namespace gum {
              typename TABLE_RES,
              template < typename >
              class ALLOC >
-  void ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::
-     setCombinationFunction(TABLE_RES (*combine)(const TABLE1&, const TABLE2&)) {
+  void ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >::setCombinationFunction(
+     TABLE_RES (*combine)(const TABLE1&, const TABLE2&)) {
     _combine_ = combine;
     _result_->makeAbstract();
   }

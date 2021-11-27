@@ -38,7 +38,7 @@ namespace gum {
   ScheduleDeletion< TABLE, ALLOC >::ScheduleDeletion(
      const ScheduleMultiDim< TABLE, ALLOC >&                          table,
      const typename ScheduleDeletion< TABLE, ALLOC >::allocator_type& alloc) :
-      ScheduleOperation< ALLOC >(ScheduleOperationType::DELETE_MULTIDIM, true, alloc),
+      ScheduleOperation< ALLOC >(ScheduleOperationType::DELETE_MULTIDIM, true, false, alloc),
       _arg_(const_cast< ScheduleMultiDim< TABLE, ALLOC >* >(&table)) {
     // save the arg into _args_ (no need to update _results_)
     _args_ << _arg_;

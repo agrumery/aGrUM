@@ -163,7 +163,8 @@ namespace gum_tests {
 
       TS_ASSERT(myproj4b != myproj3);
       TS_ASSERT(myproj4b == myproj);
-      myproj4b = std::move(myproj3);
+      gum::ScheduleProjection< gum::Potential< double > > myproj3x(myproj3);
+      myproj4b = std::move(myproj3x);
       TS_ASSERT(!myproj4b.implyDeletion());
       TS_ASSERT(myproj4b != myproj);
       myproj4b.execute();
@@ -235,6 +236,7 @@ namespace gum_tests {
      TS_ASSERT(myproj9.isSameOperation(myproj7));
      TS_ASSERT(!myproj9.hasSameArguments(myproj7));
      TS_ASSERT(!myproj9.hasSimilarArguments(myproj7));
+
 
       for (unsigned int i = 0; i < vars.size(); ++i)
         delete vars[i];
