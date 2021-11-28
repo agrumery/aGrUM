@@ -519,7 +519,8 @@ namespace gum {
   /// inserts an operation into the schedule
   template < template < typename > class ALLOC >
   const ScheduleOperation< ALLOC >&
-     Schedule< ALLOC >::insertOperation(const ScheduleOperation< ALLOC >& op) {
+     Schedule< ALLOC >::insertOperation(const ScheduleOperation< ALLOC >& op,
+                                        const bool are_results_persistent) {
     // check that the parameters of the operation already belong to the schedule.
     // to do so, it is sufficient to check that their ids belong to the schedule
     const Sequence< const IScheduleMultiDim< ALLOC >* >& op_args = op.args();
@@ -590,6 +591,7 @@ namespace gum {
       }
     }
     new_op->updateArgs(new_args);
+    new_op->makeResultsPersistent(are_results_persistent);
 
     // everything is ok, so we should add the operation to the data structures
     const NodeId new_node = ++_newId_;
@@ -682,8 +684,9 @@ namespace gum {
        ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >(table1,
                                                                      table2,
                                                                      combine,
-                                                                     is_result_persistent,
-                                                                     get_allocator()));
+                                                                     false,
+                                                                     get_allocator()),
+       is_result_persistent);
   }
 
 
@@ -700,8 +703,9 @@ namespace gum {
     return insertOperation(ScheduleProjection< TABLE, ALLOC >(table,
                                                               del_vars,
                                                               project,
-                                                              is_result_persistent,
-                                                              get_allocator()));
+                                                              false,
+                                                              get_allocator()),
+                           is_result_persistent);
   }
 
 
@@ -712,7 +716,7 @@ namespace gum {
      Schedule< ALLOC >::emplaceDeletion(const ScheduleMultiDim< TABLE, ALLOC >& table) {
     // note that the insertOperation will check that table already belongs
     // to the schedule
-    return insertOperation(ScheduleDeletion< TABLE, ALLOC >(table, get_allocator()));
+    return insertOperation(ScheduleDeletion< TABLE, ALLOC >(table, get_allocator()), false);
   }
 
 
@@ -730,7 +734,7 @@ namespace gum {
     return insertOperation(
        ScheduleStorage< TABLE, CONTAINER, ALLOC, CONTAINER_PARAMS... >(table,
                                                                        container,
-                                                                       get_allocator()));
+                                                                       get_allocator()), false);
   }
 
 

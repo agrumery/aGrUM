@@ -229,6 +229,134 @@ namespace gum_tests {
       for (gum::Idx i = 0; i < vars.size(); ++i)
         delete vars[i];
     }
+
+    void test_op_persitence() {
+      try {
+        std::vector< gum::LabelizedVariable* > vars(10);
+
+        for (gum::Idx i = 0; i < 10; ++i) {
+          std::stringstream str;
+          str << "x" << i;
+          std::string s = str.str();
+          vars[i]       = new gum::LabelizedVariable(s, s, 4);
+        }
+
+        gum::Potential< double > t1, t2, t3;
+
+        t1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
+        t2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
+        t3 << *(vars[6]) << *(vars[4]) << *(vars[3]);
+
+        randomInitP(t1);
+        randomInitP(t2);
+        randomInitP(t3);
+
+        gum::Potential< double >*t4, *t5, *t6;
+        t4 = new gum::Potential< double >(t1 + t2);
+        t5 = new gum::Potential< double >(t3 + *t4);
+
+        gum::Set< const gum::Potential< double >* > set;
+        set << &t1 << &t2 << &t3;
+
+        gum::MultiDimCombinationDefault< gum::Potential< double > > xxx(addPotential);
+        t6 = xxx.execute(set);
+        TS_ASSERT(t6)
+        TS_ASSERT_EQUALS(*t6, *t5)
+
+        delete t4;
+        delete t5;
+        delete t6;
+
+        TS_ASSERT_EQUALS(xxx.nbOperations(set), 16641)
+        auto yyy = xxx.memoryUsage(set);
+        TS_ASSERT_EQUALS(yyy.first, 16640 * sizeof(double) + 2 * sizeof(gum::Potential< double >))
+        TS_ASSERT_EQUALS(yyy.second, 16384 * sizeof(double) + sizeof(gum::Potential< double >))
+
+        t4 = new gum::Potential< double >(t1 * t2);
+        t5 = new gum::Potential< double >(t3 * (*t4));
+        xxx.setCombinationFunction(multPotential);
+        t6 = xxx.execute(set);
+        TS_ASSERT(t6)
+        TS_ASSERT_EQUALS(*t6, *t5)
+
+        gum::Set< const gum::IScheduleMultiDim<>* >    sched_set;
+        std::vector< const gum::IScheduleMultiDim<>* > sched_vect;
+        for (const auto pot: set) {
+          auto new_sched = new gum::ScheduleMultiDim< gum::Potential< double > >(*pot, false);
+          sched_set.insert(new_sched);
+          sched_vect.push_back(new_sched);
+        }
+
+        const auto ops_plus_resS = xxx.operations(sched_set, true);
+        TS_ASSERT(ops_plus_resS.first.size() == 3)
+        TS_ASSERT(ops_plus_resS.second->variablesSequence().size() == 7)
+        const auto ops_plus_resV = xxx.operations(sched_vect, true);
+        TS_ASSERT(ops_plus_resV.first.size() == 3)
+        TS_ASSERT(ops_plus_resV.second->variablesSequence().size() == 7)
+
+        for (auto op: ops_plus_resS.first)
+          delete op;
+        for (auto op: ops_plus_resV.first)
+          delete op;
+        delete ops_plus_resS.second;
+        delete ops_plus_resV.second;
+
+        gum::Schedule<> scheduleS;
+        for (const auto pot: sched_set)
+          scheduleS.insertScheduleMultiDim(*pot);
+        const auto ptrResS       = xxx.schedule(scheduleS, sched_set, true);
+        bool       not_completed = true;
+        do {
+          auto avail_nodes = scheduleS.availableOperations();
+          if (avail_nodes.empty())
+            not_completed = false;
+          else {
+            for (const auto node: avail_nodes) {
+              auto& op = scheduleS.operation(node);
+              const_cast< gum::ScheduleOperation<>& >(op).execute();
+              std::vector< gum::NodeId > new_avail;
+              scheduleS.updateAfterExecution(node, new_avail);
+              break;
+            }
+          }
+        } while (not_completed);
+        TS_ASSERT(ptrResS->variablesSequence().size() == 7)
+
+        gum::Schedule<> scheduleV;
+        for (const auto pot: sched_set)
+          scheduleV.insertScheduleMultiDim(*pot);
+        const auto ptrResV = xxx.schedule(scheduleV, sched_vect, true);
+        not_completed      = true;
+        do {
+          auto avail_nodes = scheduleV.availableOperations();
+          if (avail_nodes.empty())
+            not_completed = false;
+          else {
+            for (const auto node: avail_nodes) {
+              auto& op = scheduleV.operation(node);
+              const_cast< gum::ScheduleOperation<>& >(op).execute();
+              std::vector< gum::NodeId > new_avail;
+              scheduleV.updateAfterExecution(node, new_avail);
+              break;
+            }
+          }
+        } while (not_completed);
+        TS_ASSERT(ptrResV->variablesSequence().size() == 7)
+
+        for (const auto pot: sched_set)
+          delete pot;
+
+        delete ptrResS;
+        delete ptrResV;
+
+        delete t4;
+        delete t5;
+        delete t6;
+
+        for (gum::Idx i = 0; i < vars.size(); ++i)
+          delete vars[i];
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
+    }
   };
 
 } /* namespace gum_tests */

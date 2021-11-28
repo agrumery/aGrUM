@@ -166,6 +166,10 @@ namespace gum {
     /// inserts an operation into the schedule
     /** The Schedule class is able to determine by itself when the operation
      * can be performed.
+     * @param op the operation that will be copied into the schedule
+     * @param are_results_persistent this boolean indicates whether the results of
+     * the operation are persistent, i.e., whether they should be kept in
+     * memory when the operation itself is deleted from memory.
      * @throws UnknownScheduleMultiDim if some of the arguments of op do not
      * already belong to the schedule. Such arguments would indeed prevent the
      * schedule to be performed.
@@ -174,7 +178,8 @@ namespace gum {
      * already been performed but other operations use some of these arguments
      * and they have not been executed yet.
      * @warning operations are inserted by cloning */
-    const ScheduleOperation< ALLOC >& insertOperation(const ScheduleOperation< ALLOC >& op);
+    const ScheduleOperation< ALLOC >& insertOperation(const ScheduleOperation< ALLOC >& op,
+                                                      const bool are_results_persistent = false);
 
     /// emplace a new schedule binary combination operation
     /** @param table1 the first ScheduleMultiDim to combine with the other table
