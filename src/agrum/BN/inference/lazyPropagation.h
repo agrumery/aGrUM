@@ -138,6 +138,7 @@ namespace gum {
      * tree, before optimizations
      **/
     const JunctionTree* junctionTree();
+
     /// returns the probability of evidence
     GUM_SCALAR evidenceProbability() final;
 
@@ -241,8 +242,9 @@ namespace gum {
 
 
     private:
-    typedef Set< const Potential< GUM_SCALAR >* >             _PotentialSet_;
-    typedef SetIteratorSafe< const Potential< GUM_SCALAR >* > _PotentialSetIterator_;
+    using _PotentialSet_ = Set< const Potential< GUM_SCALAR >* >;
+
+    using _ScheduleMultiDimSet_ = Set< const IScheduleMultiDim<>* >;
 
 
     /// the type of relevant potential finding algorithm to be used
@@ -251,8 +253,8 @@ namespace gum {
     /** @brief update a set of potentials: the remaining are those to be
      * combined to produce a message on a separator */
     void (LazyPropagation< GUM_SCALAR >::*_findRelevantPotentials_)(
-       Set< const Potential< GUM_SCALAR >* >& pot_list,
-       Set< const DiscreteVariable* >&        kept_vars);
+       Set< const IScheduleMultiDim<>* >& pot_list,
+       Set< const DiscreteVariable* >&    kept_vars);
 
     /// the type of barren nodes computation we wish
     FindBarrenNodesType _barren_nodes_type_;
@@ -315,12 +317,12 @@ namespace gum {
      * the entry for the clique does exist. Note that clique potentials
      * contain also soft evidence and the CPTs that were projected to
      * remove their variables that received hard evidence. */
-    NodeProperty< _PotentialSet_ > _clique_potentials_;
+    NodeProperty< _ScheduleMultiDimSet_ > _clique_potentials_;
 
     /// the list of all potentials stored in the separators after inferences
     /** This structure contains all the arcs of the join tree (edges in both
      * directions) whether the arc received any potential or not. */
-    ArcProperty< _PotentialSet_ > _separator_potentials_;
+    ArcProperty< _ScheduleMultiDimSet_ > _separator_potentials_;
 
     /// the set of potentials created for the last inference messages
     /** This structure contains only the arcs on which potentials have
@@ -328,7 +330,7 @@ namespace gum {
      * @warning Note that the CPTs that were projected due to hard
      * evidence do not belong to this structure, they are kept in
      *  _hard_ev_projected_CPTs_. */
-    ArcProperty< _PotentialSet_ > _created_potentials_;
+    ArcProperty< _ScheduleMultiDimSet_ > _created_potentials_;
 
     /// the set of single posteriors computed during the last inference
     /** the posteriors are owned by LazyPropagation. */
@@ -358,14 +360,14 @@ namespace gum {
      * @warning These potentials are not owned by LazyPropagation, they are only
      * referenced by it. Only the cliques that contain evidence are
      * filled in this structure. */
-    NodeProperty< const Potential< GUM_SCALAR >* > _node_to_soft_evidence_;
+    NodeProperty< const IScheduleMultiDim<>* > _node_to_soft_evidence_;
 
     /// the CPTs that were projected due to hard evidence nodes
     /** For each node whose CPT is defined over some nodes that contain some
      * hard evidence, assigns a new projected CPT that does not contain
      * these nodes anymore.
      * @warning These potentials are owned by LayPropagation. */
-    NodeProperty< const Potential< GUM_SCALAR >* > _hard_ev_projected_CPTs_;
+    NodeProperty< const IScheduleMultiDim<>* > _hard_ev_projected_CPTs_;
 
     /// the hard evidence nodes which were projected in CPTs
     NodeSet _hard_ev_nodes_;
@@ -410,46 +412,48 @@ namespace gum {
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined to produce a message on a separator */
-    void _findRelevantPotentialsWithdSeparation_(_PotentialSet_&                 pot_list,
+    void _findRelevantPotentialsWithdSeparation_(_ScheduleMultiDimSet_&          pot_list,
                                                  Set< const DiscreteVariable* >& kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined to produce a message on a separator */
-    void _findRelevantPotentialsWithdSeparation2_(_PotentialSet_&                 pot_list,
+    void _findRelevantPotentialsWithdSeparation2_(_ScheduleMultiDimSet_&          pot_list,
                                                   Set< const DiscreteVariable* >& kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined to produce a message on a separator */
-    void _findRelevantPotentialsWithdSeparation3_(_PotentialSet_&                 pot_list,
+    void _findRelevantPotentialsWithdSeparation3_(_ScheduleMultiDimSet_&          pot_list,
                                                   Set< const DiscreteVariable* >& kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void _findRelevantPotentialsGetAll_(_PotentialSet_&                 pot_list,
+    void _findRelevantPotentialsGetAll_(_ScheduleMultiDimSet_&          pot_list,
                                         Set< const DiscreteVariable* >& kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void _findRelevantPotentialsXX_(_PotentialSet_&                 pot_list,
+    void _findRelevantPotentialsXX_(_ScheduleMultiDimSet_&          pot_list,
                                     Set< const DiscreteVariable* >& kept_vars);
 
     // remove barren variables and return the newly created projected potentials
-    _PotentialSet_ _removeBarrenVariables_(_PotentialSet_&                 pot_list,
-                                           Set< const DiscreteVariable* >& del_vars);
+    _ScheduleMultiDimSet_ _removeBarrenVariables_(Schedule<>&                     schedule,
+                                                  _ScheduleMultiDimSet_&          pot_list,
+                                                  Set< const DiscreteVariable* >& del_vars);
 
     /** @brief removes variables del_vars from a list of potentials and
      * returns the resulting list */
-    _PotentialSet_ _marginalizeOut_(_PotentialSet_                  pot_list,
-                                    Set< const DiscreteVariable* >& del_vars,
-                                    Set< const DiscreteVariable* >& kept_vars);
+    _ScheduleMultiDimSet_ _marginalizeOut_(Schedule<>&                     schedule,
+                                           _ScheduleMultiDimSet_           pot_list,
+                                           Set< const DiscreteVariable* >& del_vars,
+                                           Set< const DiscreteVariable* >& kept_vars);
 
     /// creates the message sent by clique from_id to clique to_id
-    void _produceMessage_(NodeId from_id, NodeId to_id, Schedule<>& schedule);
+    void _produceMessage_(Schedule<>& schedule, NodeId from_id, NodeId to_id);
 
     /// actually perform the collect phase
-    void _collectMessage_(NodeId id, NodeId from, Schedule<>& schedule);
+    void _collectMessage_(Schedule<>& schedule, NodeId id, NodeId from);
   };
 
 
