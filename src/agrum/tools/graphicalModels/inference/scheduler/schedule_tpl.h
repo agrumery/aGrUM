@@ -529,7 +529,7 @@ namespace gum {
         GUM_ERROR(UnknownScheduleMultiDim,
                   "Schedule::insertOperation: the "
                      << _paramString_(i + 1) << " (id: " << op_args[i]->id()
-                     << " operation's argument does not already belong to"
+                     << ") operation's argument does not already belong to"
                      << " the schedule");
       }
     }
