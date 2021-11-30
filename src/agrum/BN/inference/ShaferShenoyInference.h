@@ -302,7 +302,7 @@ namespace gum {
      * been created.
      * @warning Note that the CPTs that were projected due to hard
      * evidence do not belong to this structure, they are kept in
-     *  _hard_ev_projected_CPTs_. */
+     *  _node_to_hard_ev_projected_CPTs_. */
     ArcProperty< _PotentialSet_ > _created_potentials_;
 
     /// the set of single posteriors computed during the last inference

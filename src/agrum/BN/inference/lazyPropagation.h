@@ -329,8 +329,8 @@ namespace gum {
      * been created.
      * @warning Note that the CPTs that were projected due to hard
      * evidence do not belong to this structure, they are kept in
-     *  _hard_ev_projected_CPTs_. */
-    ArcProperty< _ScheduleMultiDimSet_ > _created_potentials_;
+     *  _node_to_hard_ev_projected_CPTs_. */
+    ArcProperty< _ScheduleMultiDimSet_ > _arc_to_created_potentials_;
 
     /// the set of single posteriors computed during the last inference
     /** the posteriors are owned by LazyPropagation. */
@@ -367,7 +367,7 @@ namespace gum {
      * hard evidence, assigns a new projected CPT that does not contain
      * these nodes anymore.
      * @warning These potentials are owned by LayPropagation. */
-    NodeProperty< const IScheduleMultiDim<>* > _hard_ev_projected_CPTs_;
+    NodeProperty< const IScheduleMultiDim<>* > _node_to_hard_ev_projected_CPTs_;
 
     /// the hard evidence nodes which were projected in CPTs
     NodeSet _hard_ev_nodes_;

@@ -63,14 +63,14 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE LazyPropagation< GUM_SCALAR >::~LazyPropagation() {
     // remove all the potentials created during the last message passing
-    for (const auto& pots: _created_potentials_)
+    for (const auto& pots: _arc_to_created_potentials_)
       for (const auto pot: pots.second)
         delete pot;
 
-    // remove the potentials created after removing the nodes that received
-    // hard evidence
-    for (const auto& pot: _hard_ev_projected_CPTs_)
-      delete pot.second;
+    // remove all the potentials stored into the cliques
+    for (const auto& pots: _clique_potentials_)
+      for (const auto pot: pots.second)
+        delete pot;
 
     // remove all the posteriors computed
     for (const auto& pot: _target_posteriors_)
@@ -100,7 +100,7 @@ namespace gum {
   /// returns the current join (or junction) tree used
   template < typename GUM_SCALAR >
   INLINE const JoinTree* LazyPropagation< GUM_SCALAR >::joinTree() {
-    _createNewJT_();
+    if (_is_new_jt_needed_) _createNewJT_();
 
     return _JT_;
   }
@@ -108,7 +108,7 @@ namespace gum {
   /// returns the current junction tree
   template < typename GUM_SCALAR >
   INLINE const JunctionTree* LazyPropagation< GUM_SCALAR >::junctionTree() {
-    _createNewJT_();
+    if (_is_new_jt_needed_) _createNewJT_();
 
     return _junctionTree_;
   }
@@ -179,8 +179,8 @@ namespace gum {
     for (auto& mess_computed: _messages_computed_)
       mess_computed.second = false;
 
-    // remove all the created potentials
-    for (const auto& potset: _created_potentials_)
+    // remove all the created potentials kept on the arcs
+    for (const auto& potset: _arc_to_created_potentials_)
       for (const auto pot: potset.second)
         delete pot;
 
@@ -365,11 +365,11 @@ namespace gum {
     // we know that we need to create a new join tree
     if ((_JT_ == nullptr) || _is_new_jt_needed_) return true;
 
-    // if some some targets do not belong to the join tree and, consequently,
-    // to the undigraph that was used to construct the join tree, then we need
+    // if some targets do not belong to the join tree and, consequently, to the
+    // undirected graph that was used to construct the join tree, then we need
     // to create a new JT. This situation may occur if we constructed the
-    // join tree after pruning irrelevant/barren nodes from the BN)
-    // however, note that the nodes that received hard evidence do not belong to
+    // join tree after pruning irrelevant/barren nodes from the BN.
+    // However, note that the nodes that received hard evidence do not belong to
     // the graph and, therefore, should not be taken into account
     const auto& hard_ev_nodes = this->hardEvidenceNodes();
     for (const auto node: this->targets()) {
@@ -546,7 +546,7 @@ namespace gum {
     }
 
     // do the same for the nodes that received evidence. Here, we only store
-    // the nodes for which at least one parent belongs to  _graph_ (otherwise
+    // the nodes for which at least one parent belongs to _graph_ (otherwise
     // their CPT is just a constant real number).
     for (const auto node: _hard_ev_nodes_) {
       // get the set of parents of the node that belong to  _graph_
@@ -605,27 +605,25 @@ namespace gum {
     // compute the roots of  _JT_'s connected components
     _computeJoinTreeRoots_();
 
-    // remove all the potentials stored into the cliques
+    // remove all the potentials stored into the cliques. Note that these include
+    // the CPTs resulting from the projections of hard evidence as well as the
+    // CPTs of the soft evidence
     for (const auto& potlist: _clique_potentials_)
       for (const auto pot: potlist.second)
         delete pot;
     _clique_potentials_.clear();
 
     // remove all the potentials created during the last inference
-    for (const auto& potlist: _created_potentials_)
+    for (const auto& potlist: _arc_to_created_potentials_)
       for (const auto pot: potlist.second)
         delete pot;
-    _created_potentials_.clear();
+    _arc_to_created_potentials_.clear();
 
     // remove all the potentials created to take into account hard evidence
-    // during the last inference. Note that the ScheduleMultiDims in this
-    // set also belong to _clique_potentials_ and have therefore already been
-    // deleted
-    _hard_ev_projected_CPTs_.clear();
+    // during the last inference.
+    _node_to_hard_ev_projected_CPTs_.clear();
 
-    // remove all the soft evidence. Note that the ScheduleMultiDims in this
-    // set also belong to _clique_potentials_ and have therefore already been
-    // deleted
+    // remove all the soft evidence.
     _node_to_soft_evidence_.clear();
 
     // create empty potential lists into the cliques of the joint tree as well
@@ -660,8 +658,7 @@ namespace gum {
       delete pot.second;
     _joint_target_posteriors_.clear();
 
-
-    // put all the CPT's of the Bayes net nodes into the cliques
+    // put all the CPTs of the Bayes net nodes into the cliques
     // here, beware: all the potentials that are defined over some nodes
     // including hard evidence must be projected so that these nodes are
     // removed from the potential
@@ -704,7 +701,7 @@ namespace gum {
             Set< const DiscreteVariable* > hard_variables;
             Schedule<>                     schedule;
             _ScheduleMultiDimSet_          marg_cpt_set;
-            const auto sched_cpt = schedule.template insertTable(cpt, false);
+            const auto                     sched_cpt = schedule.template insertTable(cpt, false);
             marg_cpt_set.insert(sched_cpt);
 
             for (const auto xnode: hard_nodes) {
@@ -718,7 +715,8 @@ namespace gum {
                _combination_op_,
                LPNewprojPotential);
 
-            auto new_cpt_list = combine_and_project.schedule(schedule, marg_cpt_set, hard_variables);
+            auto new_cpt_list
+               = combine_and_project.schedule(schedule, marg_cpt_set, hard_variables);
 
             // there should be only one potential in new_cpt_list
             if (new_cpt_list.size() != 1) {
@@ -728,13 +726,13 @@ namespace gum {
             }
             SchedulerSequential<> scheduler;
             scheduler.execute(schedule);
-            auto sched_pot =
-               const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
-                  static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(*new_cpt_list.begin()));
-            auto projected_pot = new ScheduleMultiDim< Potential< GUM_SCALAR > >(
-                     sched_pot->exportMultiDim(), true, Idx(0));
+            auto projected_pot = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
+               static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
+                  *new_cpt_list.begin()));
+            const_cast< ScheduleOperation<>* >(schedule.scheduleMultiDimCreator(projected_pot))
+               ->makeResultsPersistent(true);
             _clique_potentials_[_node_to_clique_[node]].insert(projected_pot);
-            _hard_ev_projected_CPTs_.insert(node, projected_pot);
+            _node_to_hard_ev_projected_CPTs_.insert(node, projected_pot);
           }
         }
       }
@@ -782,8 +780,8 @@ namespace gum {
     if (message_computed) {
       message_computed = false;
       _separator_potentials_[arc].clear();
-      if (_created_potentials_.exists(arc)) {
-        auto& arc_created_potentials = _created_potentials_[arc];
+      if (_arc_to_created_potentials_.exists(arc)) {
+        auto& arc_created_potentials = _arc_to_created_potentials_[arc];
         for (const auto pot: arc_created_potentials)
           delete pot;
         arc_created_potentials.clear();
@@ -814,15 +812,15 @@ namespace gum {
 
     NodeSet     nodes_with_projected_CPTs_changed;
     const auto& bn = this->BN();
-    for (auto pot_iter = _hard_ev_projected_CPTs_.beginSafe();
-         pot_iter != _hard_ev_projected_CPTs_.endSafe();
+    for (auto pot_iter = _node_to_hard_ev_projected_CPTs_.beginSafe();
+         pot_iter != _node_to_hard_ev_projected_CPTs_.endSafe();
          ++pot_iter) {
       for (const auto var: bn.cpt(pot_iter.key()).variablesSequence()) {
         if (hard_nodes_changed.contains(bn.nodeId(*var))) {
           nodes_with_projected_CPTs_changed.insert(pot_iter.key());
           delete pot_iter.val();
           _clique_potentials_[_node_to_clique_[pot_iter.key()]].erase(pot_iter.val());
-          _hard_ev_projected_CPTs_.erase(pot_iter);
+          _node_to_hard_ev_projected_CPTs_.erase(pot_iter);
           break;
         }
       }
@@ -860,7 +858,7 @@ namespace gum {
 
     // now we shall remove all the posteriors that belong to the
     // invalidated cliques. First, cope only with the nodes that did not
-    // received hard evidence since the other nodes do not belong to the
+    // receive hard evidence since the other nodes do not belong to the
     // join tree
     for (auto iter = _target_posteriors_.beginSafe(); iter != _target_posteriors_.endSafe();
          ++iter) {
@@ -891,7 +889,7 @@ namespace gum {
     }
 
 
-    // remove all the evidence that were entered into  _node_to_soft_evidence_
+    // remove all the evidence that were entered into _node_to_soft_evidence_
     // and _clique_potentials_ and add the new soft ones
     for (const auto& pot_pair: _node_to_soft_evidence_) {
       delete pot_pair.second;
@@ -902,7 +900,7 @@ namespace gum {
     const auto& evidence = this->evidence();
     for (const auto node: this->softEvidenceNodes()) {
       auto ev_pot = new ScheduleMultiDim< Potential< GUM_SCALAR > >(*evidence[node], false);
-      _node_to_soft_evidence_.insert(node,ev_pot);
+      _node_to_soft_evidence_.insert(node, ev_pot);
       _clique_potentials_[_node_to_clique_[node]].insert(ev_pot);
     }
 
@@ -912,14 +910,14 @@ namespace gum {
     // set of nodes that received hard evidence has not changed, only
     // their instantiations can have changed. So, if there is an entry
     // for node in  _constants_, there will still be such an entry after
-    // performing the new projections. Idem for  _hard_ev_projected_CPTs_
+    // performing the new projections. Idem for  _node_to_hard_ev_projected_CPTs_
     for (const auto node: nodes_with_projected_CPTs_changed) {
       // perform the projection with a combine and project instance
       const Potential< GUM_SCALAR >& cpt       = bn.cpt(node);
       const auto&                    variables = cpt.variablesSequence();
       Schedule<>                     schedule;
       _ScheduleMultiDimSet_          marg_cpt_set;
-      const auto sched_cpt = schedule.template insertTable(cpt, false);
+      const auto                     sched_cpt = schedule.template insertTable(cpt, false);
       marg_cpt_set.insert(sched_cpt);
 
       Set< const DiscreteVariable* > hard_variables;
@@ -947,13 +945,12 @@ namespace gum {
       }
       SchedulerSequential<> scheduler;
       scheduler.execute(schedule);
-      auto sched_pot =
-         const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
-            static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(*new_cpt_list.begin()));
-      auto projected_pot = new ScheduleMultiDim< Potential< GUM_SCALAR > >(
-               sched_pot->exportMultiDim(), true, Idx(0));
+      auto projected_pot = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
+         static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(*new_cpt_list.begin()));
+      const_cast< ScheduleOperation<>* >(schedule.scheduleMultiDimCreator(projected_pot))
+               ->makeResultsPersistent(true);
       _clique_potentials_[_node_to_clique_[node]].insert(projected_pot);
-      _hard_ev_projected_CPTs_.insert(node, projected_pot);
+      _node_to_hard_ev_projected_CPTs_.insert(node, projected_pot);
     }
 
     // update the constants
@@ -1162,7 +1159,7 @@ namespace gum {
     }
 
     // assign to each random variable the set of potentials that contain it
-    HashTable< const DiscreteVariable*, _ScheduleMultiDimSet_ > var2pots;
+    HashTable< const DiscreteVariable*, _ScheduleMultiDimSet_ > var2pots(the_del_vars.size());
     _ScheduleMultiDimSet_                                       empty_pot_set;
     for (const auto pot: pot_list) {
       const auto& vars = pot->variablesSequence();
@@ -1192,8 +1189,7 @@ namespace gum {
     MultiDimProjection< Potential< GUM_SCALAR > > projector(LPNewprojPotential);
     _ScheduleMultiDimSet_                         projected_pots;
     for (const auto& elt: pot2barren_var) {
-      // remove the current potential from pot_list as, anyway, we will change
-      // it
+      // remove the current potential from pot_list as, anyway, we will change it
       const IScheduleMultiDim<>* pot = elt.first;
       pot_list.erase(pot);
 
@@ -1239,7 +1235,7 @@ namespace gum {
     // belong to the schedule
     for (const auto pot: pot_list) {
       try {
-        schedule.insertScheduleMultiDim(*pot);
+        schedule.emplaceScheduleMultiDim(*pot);
       } catch (DuplicateScheduleMultiDim&) {}
     }
 
@@ -1323,8 +1319,8 @@ namespace gum {
     // same computation results but speeds-up these computations)
     const Arc arc(from_id, to_id);
 
-    if (!_created_potentials_.exists(arc))
-      _created_potentials_.insert(arc, _ScheduleMultiDimSet_());
+    if (!_arc_to_created_potentials_.exists(arc))
+      _arc_to_created_potentials_.insert(arc, _ScheduleMultiDimSet_());
 
     for (auto iter = new_pot_list.beginSafe(); iter != new_pot_list.endSafe(); ++iter) {
       const auto pot = *iter;
@@ -1353,14 +1349,14 @@ namespace gum {
           Instantiation new_inst(new_pot);
           new_pot->set(new_inst, first_val);
           new_pot_list.insert (new_pot);
-           _created_potentials_[arc].insert(new_pot);
+           _arc_to_created_potentials_[arc].insert(new_pot);
           continue;
         }
       }
       */
 
       if (!pot_list.exists(pot)) {
-        _created_potentials_[arc].insert(pot);
+        _arc_to_created_potentials_[arc].insert(pot);
 
         // do not forget to make the ScheduleMultiDim persistent
         auto op = schedule.scheduleMultiDimCreator(pot);
@@ -1400,7 +1396,7 @@ namespace gum {
     scheduler.execute(schedule);
   }
 
-  
+
   /// returns a fresh potential equal to P(1st arg,evidence)
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >* LazyPropagation< GUM_SCALAR >::unnormalizedJointPosterior_(NodeId id) {
@@ -1412,7 +1408,7 @@ namespace gum {
       return new Potential< GUM_SCALAR >(*(this->evidence()[id]));
     }
 
-    Schedule<> schedule;
+    Schedule<>            schedule;
     SchedulerSequential<> scheduler;
 
     // if we still need to perform some inference task, do it (this should
@@ -1440,15 +1436,14 @@ namespace gum {
     // pot_list now contains all the potentials to multiply and marginalize
     // => combine the messages
     _ScheduleMultiDimSet_ new_pot_list = _marginalizeOut_(schedule, pot_list, del_vars, kept_vars);
-    Potential< GUM_SCALAR >* joint     = nullptr;
+    Potential< GUM_SCALAR >*                     joint         = nullptr;
     ScheduleMultiDim< Potential< GUM_SCALAR > >* resulting_pot = nullptr;
 
     if (new_pot_list.size() == 1) {
       scheduler.execute(schedule);
       resulting_pot = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
          static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(*new_pot_list.begin()));
-    }
-    else {
+    } else {
       MultiDimCombinationDefault< Potential< GUM_SCALAR > > fast_combination(_combination_op_);
       const auto pot = fast_combination.schedule(schedule, new_pot_list);
       scheduler.execute(schedule);
@@ -1465,8 +1460,8 @@ namespace gum {
     }
 
     // remove the potentials that were created in new_pot_list
-    for (const auto pot: new_pot_list)
-      if (!pot_list.exists(pot)) delete pot;
+    // for (const auto pot: new_pot_list)
+    //  if (!pot_list.exists(pot)) delete pot;
 
     // check that the joint posterior is different from a 0 vector: this would
     // indicate that some hard evidence are not compatible (their joint
@@ -1519,7 +1514,7 @@ namespace gum {
       }
     }
 
-    Schedule<> schedule;
+    Schedule<>            schedule;
     SchedulerSequential<> scheduler;
 
     // if all the nodes have received hard evidence, then compute the
@@ -1537,9 +1532,9 @@ namespace gum {
 
         // combine all the potentials of the nodes in set
         MultiDimCombinationDefault< Potential< GUM_SCALAR > > fast_combination(_combination_op_);
-        const auto pot = fast_combination.schedule(schedule, pot_list);
-        auto schedule_pot = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
-         static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(pot));
+        const auto pot          = fast_combination.schedule(schedule, pot_list);
+        auto       schedule_pot = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
+           static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(pot));
         scheduler.execute(schedule);
         auto result = new Potential< GUM_SCALAR >(schedule_pot->exportMultiDim());
 
@@ -1603,18 +1598,17 @@ namespace gum {
     // marginalize out all variables except set
     _ScheduleMultiDimSet_ pot_list;
     for (const auto pot: _clique_potentials_[clique_of_set]) {
-      const auto sched_pot = schedule.insertScheduleMultiDim(*pot);
-      pot_list.insert(sched_pot);
+      schedule.emplaceScheduleMultiDim(*pot);
+      pot_list.insert(pot);
     }
 
     // add the messages sent by adjacent nodes to targetClique
     for (const auto other: _JT_->neighbours(clique_of_set)) {
       for (const auto pot: _separator_potentials_[Arc(other, clique_of_set)]) {
-        try { pot_list.insert(schedule.scheduleMultiDim(pot->id())); }
-        catch(NotFound&){
-          const auto sched_pot = schedule.insertScheduleMultiDim(*pot);
-          pot_list.insert(sched_pot);
-        }
+        try {
+          schedule.emplaceScheduleMultiDim(*pot);
+          pot_list.insert(pot);
+        } catch (DuplicateScheduleMultiDim&) {}
       }
     }
 
@@ -1644,13 +1638,12 @@ namespace gum {
     } else {
       // combine all the potentials in new_pot_list with all the hard evidence
       // of the nodes in set
-      _ScheduleMultiDimSet_ new_new_pot_list = new_pot_list;
       for (const auto node: hard_ev_nodes) {
         auto new_pot_ev = schedule.template insertTable(*evidence[node], false);
-        new_new_pot_list.insert(new_pot_ev);
+        new_pot_list.insert(new_pot_ev);
       }
       MultiDimCombinationDefault< Potential< GUM_SCALAR > > fast_combination(_combination_op_);
-      const auto pot = fast_combination.schedule(schedule, new_new_pot_list);
+      const auto pot = fast_combination.schedule(schedule, new_pot_list);
       scheduler.execute(schedule);
       resulting_pot = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
          static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(pot));

@@ -902,7 +902,7 @@ namespace gum {
     // set of nodes that received hard evidence has not been changed, only
     // their instantiations can have been changed. So, if there is an entry
     // for node in  _constants_, there will still be such an entry after
-    // performing the new projections. Idem for  _hard_ev_projected_CPTs_
+    // performing the new projections. Idem for  _node_to_hard_ev_projected_CPTs_
     for (const auto node: nodes_with_projected_CPTs_changed) {
       // perform the projection with a combine and project instance
       const Potential< GUM_SCALAR >& cpt       = bn.cpt(node);

@@ -104,13 +104,17 @@ namespace gum {
     // into from to those contained into this
     for (const auto& source: from._multidim_location_) {
       if (source.second.first == nullptr) {   // here, this is a source
-        IScheduleMultiDim< ALLOC >* new_multidim = source.first->clone(alloc);
+        IScheduleMultiDim< ALLOC >* new_multidim =
+           from._emplaced_multidims_.exists(source.first)
+              ? const_cast< IScheduleMultiDim< ALLOC >* >(source.first)
+              : source.first->clone(alloc);
         multidim_from2this.insert(source.first, new_multidim);
         _multidim_location_.insert(new_multidim, source.second);
         _multidim2id_.insert(new_multidim, new_multidim->id());
         _multidim2nodes_.insert(new_multidim, NodeSet());
       }
     }
+    _emplaced_multidims_ = from._emplaced_multidims_;
 
 
     // get a topological order of from's full dag, i.e. the dag corresponding to
@@ -180,7 +184,7 @@ namespace gum {
     // remove all the source ScheduleMultiDims
     ALLOC< IScheduleMultiDim< ALLOC > > multidim_alloc(this->get_allocator());
     for (auto& source: _multidim_location_) {
-      if (source.second.first == nullptr) {
+      if ((source.second.first == nullptr) && !_emplaced_multidims_.exists(source.first)) {
         IScheduleMultiDim< ALLOC >* multidim
            = const_cast< IScheduleMultiDim< ALLOC >* >(source.first);
         multidim->~IScheduleMultiDim< ALLOC >();
@@ -202,6 +206,7 @@ namespace gum {
     _node2op_.clear();
     _multidim_location_.clear();
     _multidim2id_.clear();
+    _emplaced_multidims_.clear();
     _multidim2nodes_.clear();
     _deleted_multidim2node_.clear();
   }
@@ -242,6 +247,7 @@ namespace gum {
       _newId_(from._newId_), _node2op_(std::move(from._node2op_)),
       _multidim_location_(std::move(from._multidim_location_)),
       _multidim2id_(std::move(from._multidim2id_)),
+      _emplaced_multidims_(std::move(from._emplaced_multidims_)),
       _multidim2nodes_(std::move(from._multidim2nodes_)),
       _deleted_multidim2node_(std::move(from._deleted_multidim2node_)) {
     // empty properly from
@@ -250,6 +256,7 @@ namespace gum {
     from._node2op_.clear();
     from._multidim_location_.clear();
     from._multidim2id_.clear();
+    from._emplaced_multidims_.clear();
     from._multidim2nodes_.clear();
     from._deleted_multidim2node_.clear();
 
@@ -329,6 +336,7 @@ namespace gum {
       _node2op_               = std::move(from._node2op_);
       _multidim_location_     = std::move(from._multidim_location_);
       _multidim2id_           = std::move(from._multidim2id_);
+      _emplaced_multidims_    = std::move(from._emplaced_multidims_);
       _multidim2nodes_        = std::move(from._multidim2nodes_);
       _deleted_multidim2node_ = std::move(from._deleted_multidim2node_);
 
@@ -338,6 +346,7 @@ namespace gum {
       from._node2op_.clear();
       from._multidim_location_.clear();
       from._multidim2id_.clear();
+      from._emplaced_multidims_.clear();
       from._multidim2nodes_.clear();
       from._deleted_multidim2node_.clear();
     }
@@ -497,6 +506,34 @@ namespace gum {
     _multidim2id_.insert(new_multidim, new_multidim->id());
 
     return new_multidim;
+  }
+
+
+  /// inserts an already constructed ScheduleMultiDim
+  template < template < typename > class ALLOC >
+  void Schedule< ALLOC >::emplaceScheduleMultiDim(const IScheduleMultiDim< ALLOC >& multidim) {
+    // check that the ScheduleMultiDim neither already belongs to the schedule
+    // nor contains an abstract table: since it is a source multidim, it will
+    // never be computed by the schedule. Hence, if it is abstract, it will not
+    // be possible to execute the schedule
+    if (_multidim2id_.existsSecond(multidim.id())) {
+      GUM_ERROR(DuplicateScheduleMultiDim,
+                "A ScheduleMultiDim with Id " << multidim.id()
+                                              << " already exists in the schedule");
+    }
+    if (multidim.isAbstract()) {
+      GUM_ERROR(AbstractScheduleMultiDim,
+                "It is impossible to insert an abstract ScheduleMultiDim "
+                   << "into a Schedule");
+    }
+
+    // now, everything is ok, so we should insert the ScheduleMultiDim
+    // into the schedule
+    _multidim2nodes_.insert(&multidim, NodeSet());
+    _multidim_location_.insert(&multidim,
+                               std::pair< ScheduleOperation< ALLOC >*, Idx >(nullptr, Idx(0)));
+    _multidim2id_.insert(&multidim, multidim.id());
+    _emplaced_multidims_.insert(&multidim);
   }
 
 

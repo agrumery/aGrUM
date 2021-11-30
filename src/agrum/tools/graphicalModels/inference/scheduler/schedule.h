@@ -141,7 +141,7 @@ namespace gum {
     const IScheduleMultiDim< ALLOC >*
        insertTable(const TABLE& table, const bool copy, const Idx id = 0);
 
-    /** @brief inserts a new table as a source operation's input, i.e., this
+    /** @brief inserts a copy of a table as a source operation's input, i.e., this
      * table is not computed by any ScheduleOperation
      *
      * ScheduleOperations produce new tables that can be passed as arguments to
@@ -149,7 +149,7 @@ namespace gum {
      * are the sources of the DAG (they are the first to be computed), need
      * arguments/tables that have been created before the Schedule. These tables
      * can be inserted into the schedule using this insert method
-     * @param multidim the ScheduleMultiDim to be inserted into the schedule. Note
+     * @param multidim the ScheduleMultiDim inserted into the schedule. Note
      * that this clones the ScheduleMultiDim passed in argument if it does not
      * already belong to the schedule, or it returns it otherwise.
      * @throws AbstractScheduleMultiDim is thrown if the ScheduleMultiDim is
@@ -162,6 +162,26 @@ namespace gum {
      */
     const IScheduleMultiDim< ALLOC >*
        insertScheduleMultiDim(const IScheduleMultiDim< ALLOC >& multidim);
+
+    /** @brief inserts without copying it a table as a source operation's input,
+     * i.e., this table is not computed by any ScheduleOperation
+     *
+     * ScheduleOperations produce new tables that can be passed as arguments to
+     * other ScheduleOperations. However source operations, i.e., those that
+     * are the sources of the DAG (they are the first to be computed), need
+     * arguments/tables that have been created before the Schedule. These tables
+     * can be inserted as is (without copy) into the schedule using this emplace method
+     * @param multidim the ScheduleMultiDim inserted into the schedule without
+     * copying it.
+     * @throws AbstractScheduleMultiDim is thrown if the ScheduleMultiDim is
+     * abstract, i.e., it does not contain a true table. The tables we insert
+     * with method insertTable are not computed by any schedule operations,
+     * hence they should never be abstract, else the schedule may not be
+     * executable.
+     * @throws DuplicateScheduleMultiDim is thrown if the schedule already
+     * contains a table with the same id
+     */
+     void emplaceScheduleMultiDim(const IScheduleMultiDim< ALLOC >& multidim);
 
     /// inserts an operation into the schedule
     /** The Schedule class is able to determine by itself when the operation
@@ -381,6 +401,9 @@ namespace gum {
 
     /// a bijection between pointers to IScheduleMultiDim and their Ids
     Bijection< const IScheduleMultiDim< ALLOC >*, Idx > _multidim2id_;
+
+    /// indicates which ScheduleMultiDims were emplaced
+    Set< const IScheduleMultiDim< ALLOC >* > _emplaced_multidims_;
 
     /// maps the multidims to the set of operations that use them
     HashTable< const IScheduleMultiDim< ALLOC >*, NodeSet > _multidim2nodes_;
