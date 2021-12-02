@@ -701,11 +701,12 @@ namespace gum {
             Set< const DiscreteVariable* > hard_variables;
             Schedule<>                     schedule;
             _ScheduleMultiDimSet_          marg_cpt_set;
-            const auto                     sched_cpt = schedule.template insertTable(cpt, false);
+            const auto sched_cpt = schedule.insertTable< Potential< GUM_SCALAR > >(cpt, false);
             marg_cpt_set.insert(sched_cpt);
 
             for (const auto xnode: hard_nodes) {
-              const auto pot = schedule.template insertTable(*evidence[xnode], false);
+              const auto pot
+                 = schedule.insertTable< Potential< GUM_SCALAR > >(*evidence[xnode], false);
               marg_cpt_set.insert(pot);
               hard_variables.insert(&(bn.variable(xnode)));
             }
@@ -917,14 +918,14 @@ namespace gum {
       const auto&                    variables = cpt.variablesSequence();
       Schedule<>                     schedule;
       _ScheduleMultiDimSet_          marg_cpt_set;
-      const auto                     sched_cpt = schedule.template insertTable(cpt, false);
+      const auto sched_cpt = schedule.insertTable< Potential< GUM_SCALAR > >(cpt, false);
       marg_cpt_set.insert(sched_cpt);
 
       Set< const DiscreteVariable* > hard_variables;
       for (const auto var: variables) {
         NodeId xnode = bn.nodeId(*var);
         if (_hard_ev_nodes_.exists(xnode)) {
-          const auto pot = schedule.template insertTable(*evidence[xnode], false);
+          const auto pot = schedule.insertTable< Potential< GUM_SCALAR > >(*evidence[xnode], false);
           marg_cpt_set.insert(pot);
           hard_variables.insert(var);
         }
@@ -948,7 +949,7 @@ namespace gum {
       auto projected_pot = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
          static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(*new_cpt_list.begin()));
       const_cast< ScheduleOperation<>* >(schedule.scheduleMultiDimCreator(projected_pot))
-               ->makeResultsPersistent(true);
+         ->makeResultsPersistent(true);
       _clique_potentials_[_node_to_clique_[node]].insert(projected_pot);
       _node_to_hard_ev_projected_CPTs_.insert(node, projected_pot);
     }
@@ -1526,7 +1527,7 @@ namespace gum {
       } else {
         _ScheduleMultiDimSet_ pot_list;
         for (const auto node: set) {
-          auto new_pot_ev = schedule.template insertTable(*evidence[node], false);
+          auto new_pot_ev = schedule.insertTable< Potential< GUM_SCALAR > >(*evidence[node], false);
           pot_list.insert(new_pot_ev);
         }
 
@@ -1639,7 +1640,7 @@ namespace gum {
       // combine all the potentials in new_pot_list with all the hard evidence
       // of the nodes in set
       for (const auto node: hard_ev_nodes) {
-        auto new_pot_ev = schedule.template insertTable(*evidence[node], false);
+        auto new_pot_ev = schedule.insertTable< Potential< GUM_SCALAR > >(*evidence[node], false);
         new_pot_list.insert(new_pot_ev);
       }
       MultiDimCombinationDefault< Potential< GUM_SCALAR > > fast_combination(_combination_op_);
