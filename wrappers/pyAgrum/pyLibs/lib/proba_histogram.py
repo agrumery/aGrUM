@@ -121,8 +121,6 @@ def _getProbaLine(p, scale=1.0, txtcolor="black"):
   ax.fill_between(ra, v, color=gum.config['notebook', 'histogram_color'])
 
   ax.set_ylim(bottom=0, top=1.05 * p.max())
-  # ax.set_xticks(ra)
-  # ax.set_xticklabels(lv, color=txtcolor)
   ax.set_title(_getTitleHisto(p, True), color=txtcolor)
 
   ax.get_xaxis().grid(True)
@@ -130,6 +128,9 @@ def _getProbaLine(p, scale=1.0, txtcolor="black"):
   ax.margins(0)
 
   ax.set_facecolor('w')
+  llv = [lv[int(i)] for i in ax.get_xticks() if i in ra]
+  ax.set_xticks(ax.get_xticks()) # to avoid a warning...
+  ax.set_xticklabels(llv, color=txtcolor)
 
   return fig
 
