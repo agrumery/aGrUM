@@ -1245,21 +1245,20 @@ namespace gum {
          = rangesProcessingThreads_(nb_threads);
 
       // perform the assignment:
-      // launch the threads
-      // here we use openMP for launching the threads because, experimentally,
-      // it seems to provide results that are twice as fast as the results
-      // with the std::thread
-#  pragma omp parallel num_threads(int(nb_threads))
-      {
-        // get the number of the thread
-        const std::size_t this_thread = getThreadNumber();
+      // we create the lambda that will be executed by all the threads
+      auto threadedAssign = [this, &ranges, new_weight]
+        (const std::size_t this_thread,
+         const std::size_t nb_threads) -> void {
         const std::size_t begin_index = ranges[this_thread].first;
         const std::size_t end_index   = ranges[this_thread].second;
 
         for (std::size_t i = begin_index; i < end_index; ++i) {
-          rows_[i].setWeight(new_weight);
+          this->rows_[i].setWeight(new_weight);
         }
-      }
+      };
+
+      // launch the threads
+      ThreadExecutor::execute(nb_threads, threadedAssign);
     }
 
     /// assigns a given weight to the ith row of the database

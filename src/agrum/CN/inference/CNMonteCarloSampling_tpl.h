@@ -149,7 +149,7 @@ namespace gum {
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     inline void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_threadUpdate_() {
-      int tId = getThreadNumber();
+      int tId = threadsOMP::getThreadNumber();
       // bool keepSample = false;
 
       if (this->l_inferenceEngine_[tId]->evidenceProbability() > 0) {
@@ -176,7 +176,7 @@ namespace gum {
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     inline void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_threadInference_() {
-      int tId = getThreadNumber();
+      int tId = threadsOMP::getThreadNumber();
       _verticesSampling_();
 
       this->l_inferenceEngine_[tId]->eraseAllEvidence();
@@ -204,7 +204,7 @@ namespace gum {
       int num_threads;
 #pragma omp parallel
       {
-        int this_thread = getThreadNumber();
+        int this_thread = threadsOMP::getThreadNumber();
 
 // implicit wait clause (don't put nowait)
 #pragma omp single
@@ -212,7 +212,7 @@ namespace gum {
           // should we ask for max threads instead ( no differences here in
           // practice
           // )
-          num_threads = getNumberOfRunningThreads();
+          num_threads = threadsOMP::getNumberOfRunningThreads();
 
           this->initThreadsData_(num_threads, _infEs_::storeVertices_, _infEs_::storeBNOpt_);
           this->l_inferenceEngine_.resize(num_threads, nullptr);
@@ -285,7 +285,7 @@ namespace gum {
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     inline void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_verticesSampling_() {
-      int                      this_thread = getThreadNumber();
+      int                      this_thread = threadsOMP::getThreadNumber();
       IBayesNet< GUM_SCALAR >* working_bn  = this->workingSet_[this_thread];
 
       const auto cpt = &this->credalNet_->credalNet_currentCpt();
@@ -392,7 +392,7 @@ namespace gum {
     inline void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_insertEvidence_() {
       if (this->evidence_.size() == 0) { return; }
 
-      int this_thread = getThreadNumber();
+      int this_thread = threadsOMP::getThreadNumber();
 
       BNInferenceEngine* inference_engine = this->l_inferenceEngine_[this_thread];
 

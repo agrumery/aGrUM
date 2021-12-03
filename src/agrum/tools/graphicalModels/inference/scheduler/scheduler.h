@@ -32,7 +32,7 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/core/thread.h>
+#include <agrum/tools/core/threads.h>
 #include <agrum/tools/graphicalModels/inference/scheduler/schedule.h>
 
 namespace gum {
@@ -131,7 +131,7 @@ namespace gum {
     
     protected:
     /// the max number of threads
-    Size _max_nb_threads{thread::getMaxNumberOfThreads()};
+    Size _max_nb_threads{gum::getMaxNumberOfThreads()};
 
     /// the max memory usage possible (in bytes)
     double _max_memory {0.0};

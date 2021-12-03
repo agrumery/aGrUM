@@ -26,7 +26,6 @@
 #include <iostream>
 #include <string>
 
-#include <agrum/tools/core/thread.h>
 #include <agrum/tools/database/DBTranslator4ContinuousVariable.h>
 
 namespace gum_tests {

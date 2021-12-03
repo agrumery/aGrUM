@@ -101,6 +101,11 @@ def getCmake(current, target):
     elif current["windows"] == "mingw64":
       line += ' -G "MinGW Makefiles"'
 
+  if current["threads"] == 'omp':
+    line += " -DCMAKE_GUM_THREADS=omp"
+  else:
+    line += " -DCMAKE_GUM_THREADS=std"
+
   return line
 
 

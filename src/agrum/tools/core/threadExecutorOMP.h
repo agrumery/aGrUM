@@ -1,7 +1,7 @@
 /**
  *
- *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
- *   {prenom.nom}_at_lip6.fr
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
+ *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -33,7 +33,7 @@
 #include <functional>
 
 #include <agrum/agrum.h>
-#include <agrum/core/threadsOMP.h>
+#include <agrum/tools/core/threadsOMP.h>
 
 namespace gum {
 
@@ -51,7 +51,7 @@ namespace gum {
      * the main thread.
      *
      * @warning This class is not intended to be used explicitly by the user.
-     * It is preferrable to use class ThreadExecutor, which will point to the
+     * It is preferable to use class ThreadExecutor, which will point to the
      * threadsOMP::ThreadExecutorImpl class if the threads infrastructure to
      * use is openMP.
      *
@@ -82,6 +82,6 @@ namespace gum {
 
 
 /// always include the templated implementations
-#include <agrum/core/threadExecutorOMP_tpl.h>
+#include <agrum/tools/core/threadExecutorOMP_tpl.h>
 
 #endif /* GUM_THREAD_EXECUTOR_OMP_H */

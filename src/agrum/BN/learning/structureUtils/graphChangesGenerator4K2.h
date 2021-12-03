@@ -61,7 +61,8 @@
 #define GUM_LEARNING_GRAPH_CHANGES_GENERATOR_4_K2_H
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/OMPThreads.h>
+#include <agrum/tools/core/threads.h>
+#include <agrum/tools/core/threadExecutor.h>
 #include <agrum/tools/core/sequence.h>
 #include <agrum/tools/core/set.h>
 
@@ -232,12 +233,8 @@ namespace gum {
       void createChanges_();
 
       private:
-/// the max number of threads authorized
-#if defined(_OPENMP) && !defined(GUM_DEBUG_MODE)
-      Size _max_threads_number_{getMaxNumberOfThreads()};
-#else
-      Size _max_threads_number_{1};
-#endif /* GUM_DEBUG_MODE */
+      /// the max number of threads authorized
+      Size _max_threads_number_{gum::getMaxNumberOfThreads()};
     };
 
   } /* namespace learning */

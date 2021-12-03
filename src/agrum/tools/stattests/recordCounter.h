@@ -38,7 +38,8 @@
 #include <agrum/agrum.h>
 #include <agrum/tools/core/bijection.h>
 #include <agrum/tools/core/sequence.h>
-#include <agrum/tools/core/OMPThreads.h>
+#include <agrum/tools/core/threads.h>
+#include <agrum/tools/core/threadExecutor.h>
 #include <agrum/tools/core/threadData.h>
 #include <agrum/tools/graphs/DAG.h>
 #include <agrum/tools/database/DBRowGeneratorParser.h>
@@ -376,14 +377,6 @@ namespace gum {
       /// parse the database to produce new countings
       std::vector< double, ALLOC< double > >& _countFromDatabase_(const IdCondSet< ALLOC >& ids);
 
-      /// the method used by threads to produce countings by parsing the database
-      void _threadedCount_(
-         const std::size_t                                                    range_begin,
-         const std::size_t                                                    range_end,
-         DBRowGeneratorParser< ALLOC >&                                       parser,
-         const std::vector< std::pair< std::size_t, std::size_t >,
-                            ALLOC< std::pair< std::size_t, std::size_t > > >& cols_and_offsets,
-         std::vector< double, ALLOC< double > >&                              countings);
 
       /// checks that the ranges passed in argument are ok or raise an exception
       /** A range is ok if its upper bound is strictly higher than its lower

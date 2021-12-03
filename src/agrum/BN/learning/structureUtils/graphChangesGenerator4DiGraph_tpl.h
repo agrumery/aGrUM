@@ -99,49 +99,47 @@ namespace gum {
       legal_changes_.clear();
 
       // for all the pairs of nodes, consider adding, reverse and removing arcs
-      std::vector< Set< GraphChange > > legal_changes;
-#  pragma omp parallel num_threads(int(_max_threads_number_))
-      {
-        int num_threads = getNumberOfRunningThreads();
+      // do it for each thread
+      const Size nb_threads = _max_threads_number_;
+      std::vector< Set< GraphChange > > legal_changes (nb_threads);
 
-#  pragma omp single
-        {
-          // resize the change vectors so that each thread can write to its
-          // own vector
-          legal_changes.resize(num_threads);
-        }
-
-        const Size this_thread = getThreadNumber();
-
+      // create the lambda that will be used to fill the legal changes
+      auto threadedLegalSet = [this, &legal_changes] (
+           const std::size_t this_thread,
+           const std::size_t nb_threads) -> void {
         Idx i = 0;
-        for (const auto node1: graph_) {
+        for (const auto node1: this->graph_) {
           if (i == this_thread) {
-            for (const auto node2: graph_) {
+            for (const auto node2: this->graph_) {
               if (node1 != node2) {
                 // try arc additions
                 ArcAddition arc_add(node1, node2);
-                if (!constraint_->isAlwaysInvalid(arc_add)) {
+                if (!this->constraint_->isAlwaysInvalid(arc_add)) {
                   legal_changes[this_thread].insert(std::move(arc_add));
                 }
 
                 // try arc deletion
                 ArcDeletion arc_del(node1, node2);
-                if (!constraint_->isAlwaysInvalid(arc_del)) {
+                if (!this->constraint_->isAlwaysInvalid(arc_del)) {
                   legal_changes[this_thread].insert(std::move(arc_del));
                 }
 
                 // try arc reversal
                 ArcReversal arc_rev(node1, node2);
-                if (!constraint_->isAlwaysInvalid(arc_rev)) {
+                if (!this->constraint_->isAlwaysInvalid(arc_rev)) {
                   legal_changes[this_thread].insert(std::move(arc_rev));
                 }
               }
             }
           }
           ++i;
-          i %= num_threads;
+          i %= nb_threads;
         }
-      }
+      };
+      
+      // launch the threads
+      ThreadExecutor::execute(nb_threads, threadedLegalSet);
+      
 
       // now store the changes into the protected vectors of the
       // GraphChangesGenerator4DiGraph
@@ -212,12 +210,8 @@ namespace gum {
     template < typename STRUCT_CONSTRAINT >
     INLINE void
        GraphChangesGenerator4DiGraph< STRUCT_CONSTRAINT >::setMaxNbThreads(Size nb) noexcept {
-#  if defined(_OPENMP) && !defined(GUM_DEBUG_MODE)
-      if (nb == 0) nb = getMaxNumberOfThreads();
+      if (nb == 0) nb = gum::getMaxNumberOfThreads();
       _max_threads_number_ = nb;
-#  else
-      _max_threads_number_ = 1;
-#  endif /* _OPENMP && GUM_DEBUG_MODE */
     }
 
     /// returns the constraint that is used by the generator

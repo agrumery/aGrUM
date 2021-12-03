@@ -226,7 +226,7 @@ namespace gum {
     /// changes the max number of threads used to parse the database
     template < template < typename > class ALLOC >
     void RecordCounter< ALLOC >::setMaxNbThreads(const std::size_t nb) const {
-      if (nb == std::size_t(0) || !isOMP())
+      if (nb == std::size_t(0))
         _max_nb_threads_ = std::size_t(1);
       else
         _max_nb_threads_ = nb;
@@ -663,42 +663,50 @@ namespace gum {
          thread_countings(nb_threads,
                           ThreadData< std::vector< double, ALLOC< double > > >(counting_vect));
 
-      // launch the threads
-      // here we use openMP for launching the threads because, experimentally,
-      // it seems to provide results that are twice as fast as the results
-      // with the std::thread
-      for (std::size_t i = std::size_t(0); i < nb_ranges; i += nb_threads) {
-#  pragma omp parallel num_threads(int(nb_threads))
-        {
-          // get the number of the thread
-          const std::size_t this_thread = getThreadNumber();
-          if (this_thread + i < nb_ranges) {
-            DBRowGeneratorParser< ALLOC >& parser = _parsers_[this_thread].data;
-            parser.setRange(_thread_ranges_[this_thread + i].first,
-                            _thread_ranges_[this_thread + i].second);
-            std::vector< double, ALLOC< double > >& countings = thread_countings[this_thread].data;
 
-            // parse the database
-            try {
-              while (parser.hasRows()) {
-                // get the observed rows
-                const DBRow< DBTranslatedValue >& row = parser.row();
+      // here, we create a lambda that will be executed by all the threads
+      // to perform the countings in a parallel manner
+      auto threadedCount = [this, nb_ranges, ids_size,
+                            &thread_countings, &cols_offsets] (
+           const std::size_t   this_thread,
+           const std::size_t   nb_threads,
+           const std::size_t   nb_loop)
+        -> void {
+        if (this_thread + nb_loop < nb_ranges) {
+          // get the database parser and the contingency table to fill
+          DBRowGeneratorParser< ALLOC >& parser =
+            this->_parsers_[this_thread].data;
+          parser.setRange(this->_thread_ranges_[this_thread + nb_loop].first,
+                          this->_thread_ranges_[this_thread + nb_loop].second);
+          std::vector< double, ALLOC< double > >& countings =
+          thread_countings[this_thread].data;
 
-                // fill the counts for the current row
-                std::size_t offset = std::size_t(0);
-                for (std::size_t i = std::size_t(0); i < ids_size; ++i) {
-                  offset += row[cols_offsets[i].first].discr_val * cols_offsets[i].second;
-                }
+          // parse the database
+          try {
+            while (parser.hasRows()) {
+              // get the observed rows
+              const DBRow< DBTranslatedValue >& row = parser.row();
 
-                countings[offset] += row.weight();
+              // fill the counts for the current row
+              std::size_t offset = std::size_t(0);
+              for (std::size_t i = std::size_t(0); i < ids_size; ++i) {
+                offset +=
+                  row[cols_offsets[i].first].discr_val * cols_offsets[i].second;
               }
-            } catch (NotFound&) {}   // this exception is raised by the row filter
-                                     // if the row generators create no output row
-                                     // from the last rows of the database
-          }
-        }
-      }
 
+              countings[offset] += row.weight();
+            }
+          } catch (NotFound&) {}   // this exception is raised by the row filter
+                                   // if the row generators create no output row
+                                   // from the last rows of the database
+        }
+      };
+
+      
+      // launch the threads
+      for (std::size_t i = std::size_t(0); i < nb_ranges; i += nb_threads) {
+        ThreadExecutor::execute(nb_threads, threadedCount, i);
+      }
 
       // add the counts to counting_vect
       for (std::size_t k = std::size_t(0); k < nb_threads; ++k) {
@@ -713,37 +721,6 @@ namespace gum {
       _last_DB_countings_ = std::move(counting_vect);
 
       return _last_DB_countings_;
-    }
-
-
-    /// the method used by threads to produce countings by parsing the database
-    template < template < typename > class ALLOC >
-    void RecordCounter< ALLOC >::_threadedCount_(
-       const std::size_t                                                    begin,
-       const std::size_t                                                    end,
-       DBRowGeneratorParser< ALLOC >&                                       parser,
-       const std::vector< std::pair< std::size_t, std::size_t >,
-                          ALLOC< std::pair< std::size_t, std::size_t > > >& cols_offsets,
-       std::vector< double, ALLOC< double > >&                              countings) {
-      parser.setRange(begin, end);
-
-      try {
-        const std::size_t nb_columns = cols_offsets.size();
-        while (parser.hasRows()) {
-          // get the observed filtered rows
-          const DBRow< DBTranslatedValue >& row = parser.row();
-
-          // fill the counts for the current row
-          std::size_t offset = std::size_t(0);
-          for (std::size_t i = std::size_t(0); i < nb_columns; ++i) {
-            offset += row[cols_offsets[i].first].discr_val * cols_offsets[i].second;
-          }
-
-          countings[offset] += row.weight();
-        }
-      } catch (NotFound&) {}   // this exception is raised by the row filter if the
-                               // row generators create no output row from the last
-                               // rows of the database
     }
 
 

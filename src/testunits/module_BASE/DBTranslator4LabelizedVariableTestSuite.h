@@ -25,7 +25,6 @@
 #include <ressources/include/poolAlloc.h>
 #include <iostream>
 
-#include <agrum/tools/core/thread.h>
 #include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
 
 namespace gum_tests {

@@ -31,7 +31,7 @@
 
 #include <agrum/agrum.h>
 #include <agrum/tools/core/math/math_utils.h>
-#include <agrum/tools/core/OMPThreads.h>
+#include <agrum/tools/core/threads.h>
 
 #include <agrum/tools/stattests/recordCounter.h>
 #include <agrum/BN/learning/aprioris/apriori.h>

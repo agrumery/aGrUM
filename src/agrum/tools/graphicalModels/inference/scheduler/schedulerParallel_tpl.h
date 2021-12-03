@@ -131,7 +131,7 @@ namespace gum {
   /// sets the number max of threads that can be used
   template < template < typename > class ALLOC >
   INLINE void SchedulerParallel< ALLOC >::setMaxNbThreads(Size nb) {
-    if (nb == Size(0)) nb = thread::getMaxNumberOfThreads();
+    if (nb == Size(0)) nb = gum::getMaxNumberOfThreads();
 
     Scheduler< ALLOC >::setMaxNbThreads(nb);
     _sequential_scheduler_.setMaxNbThreads(nb);
@@ -203,8 +203,9 @@ namespace gum {
     std::vector<NodeId> new_available_nodes; // nodes available after an execution
     std::condition_variable is_not_empty;
 
+    /*
 #pragma omp parallel num_threads(int(this->_max_nb_threads))
-    const Idx this_thread = getThreadNumber();
+    const Idx this_thread = gum::getThreadNumber();
 
     std::vector< UnexecutedOperation > unexecuted_deletions;
     std::vector< UnexecutedOperation > unexecuted_operations;
@@ -296,24 +297,11 @@ namespace gum {
 
     _memory_usage_ = {max_memory_used, memory_used};
     _operations_up_to_date_ = true;
-  }
+     */
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // execute the schedule
+    /*
+       // execute the schedule
     for (const auto node : _operations_) {
       // try to execute the operation. If this raises an exception, then
       // we do not try to catch it
@@ -326,6 +314,25 @@ namespace gum {
       _operations_up_to_date_ = false;
     }
   }
+     */
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   /// the comparison function used to sort unexecutable operations
   template < template < typename > class ALLOC >
@@ -429,6 +436,7 @@ namespace gum {
      DAG&                        dag,
      List<NodeId>&               available_nodes,
      std::vector<NodeId>&        new_available_nodes) {
+    /*
     // save the fact that operation node/op is to be executed
     _operations_.push_back(node);
 
@@ -446,12 +454,14 @@ namespace gum {
         if (_schedule_->operation(new_node).implyDeletion())
           available_nodes.pushFront(new_node);
     }
+      */
   }
 
 
   /// returns the memory consumption used during the execution of a schedule
   template < template < typename > class ALLOC >
   void SchedulerParallel< ALLOC >::_simulateExecution_() {
+/*
     // if we have already computed the sequence of operations, do not do it again
     if (_operations_up_to_date_) return;
 
@@ -571,6 +581,7 @@ namespace gum {
 
     _memory_usage_ = {max_memory_used, memory_used};
     _operations_up_to_date_ = true;
+    */
   }
 
 } /* namespace gum */

@@ -434,11 +434,7 @@ namespace gum_tests {
       gum::learning::RecordCounter<> counter2(counter);
       TS_ASSERT_EQUALS(counter2.nbThreads(), gum::getMaxNumberOfThreads())
       counter2.setMaxNbThreads(std::size_t(2));
-      if (gum::isOMP()) {
-        TS_ASSERT_EQUALS(counter2.nbThreads(), std::size_t(2))
-      } else {
-        TS_ASSERT_EQUALS(counter2.nbThreads(), std::size_t(1))
-      }
+      TS_ASSERT_EQUALS(counter2.nbThreads(), std::size_t(2))
       counts = counter2.counts(ids7);
       TS_ASSERT_EQUALS(counts.size(), std::size_t(9))
       TS_ASSERT_EQUALS(counts[0], double(0));     // A=0, B=0

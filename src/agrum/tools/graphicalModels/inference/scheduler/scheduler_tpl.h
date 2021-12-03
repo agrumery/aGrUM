@@ -133,7 +133,7 @@ namespace gum {
     if (nb != Size(0))
       _max_nb_threads = nb;
     else
-      _max_nb_threads = thread::getMaxNumberOfThreads();
+      _max_nb_threads = gum::getMaxNumberOfThreads();
   }
 
 

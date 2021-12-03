@@ -1664,8 +1664,8 @@ namespace gum {
 
 #pragma omp parallel
         {
-          int this_thread = getThreadNumber();
-          int num_threads = getNumberOfRunningThreads();
+          int this_thread = threadsOMP::getThreadNumber();
+          int num_threads = threadsOMP::getNumberOfRunningThreads();
 
           auto begin_pos = (this_thread + 0) * v_rep.size() / num_threads;
           auto end_pos   = (this_thread + 1) * v_rep.size() / num_threads;

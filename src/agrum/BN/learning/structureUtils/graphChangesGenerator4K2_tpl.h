@@ -102,32 +102,29 @@ namespace gum {
       legal_changes_.clear();
 
       // for all the pairs of nodes, consider adding, reverse and removing arcs
-      std::vector< Set< GraphChange > > legal_changes;
-#  pragma omp parallel num_threads(int(_max_threads_number_))
-      {
-        int num_threads = getNumberOfRunningThreads();
-
-#  pragma omp single
-        {
-          // resize the change vectors so that each thread can write to its
-          // own vector
-          legal_changes.resize(num_threads);
-        }
-
-        const Size this_thread = getThreadNumber();
-
-        for (Idx i = 0, j = 0; j < order_.size(); i = (i + 1) % num_threads, ++j) {
+      const Size nb_threads = _max_threads_number_;
+      std::vector< Set< GraphChange > > legal_changes (nb_threads);
+ 
+      // create the lambda that will be used to fill the legal changes
+      auto threadedLegalSet = [this, &legal_changes] (
+           const std::size_t this_thread,
+           const std::size_t nb_threads) -> void {
+        for (Idx i = 0, j = 0; j < this->order_.size();
+             i = (i + 1) % nb_threads, ++j) {
           if (i == this_thread) {
-            for (Idx k = j + 1; k < order_.size(); ++k) {
+            for (Idx k = j + 1; k < this->order_.size(); ++k) {
               // try arc additions
               ArcAddition arc_add(order_[j], order_[k]);
-              if (!constraint_->isAlwaysInvalid(arc_add)) {
+              if (!this->constraint_->isAlwaysInvalid(arc_add)) {
                 legal_changes[this_thread].insert(std::move(arc_add));
               }
             }
           }
         }
-      }
+      };
+        
+      // launch the threads
+      ThreadExecutor::execute(nb_threads, threadedLegalSet);
 
       // now store the changes into the protected vectors of the
       // GraphChangesGenerator4K2
@@ -224,12 +221,9 @@ namespace gum {
     /// sets the maximum number of threads used to perform countings
     template < typename STRUCT_CONSTRAINT >
     INLINE void GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::setMaxNbThreads(Size nb) noexcept {
-#  if defined(_OPENMP) && !defined(GUM_DEBUG_MODE)
-      if (nb == 0) nb = getMaxNumberOfThreads();
+      if (nb == 0) nb = gum::getMaxNumberOfThreads();
       _max_threads_number_ = nb;
-#  else
-      _max_threads_number_ = 1;
-#  endif /* _OPENMP && GUM_DEBUG_MODE */
+
     }
 
     /// returns the constraint that is used by the generator

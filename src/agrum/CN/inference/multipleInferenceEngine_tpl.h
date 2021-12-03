@@ -86,7 +86,7 @@ namespace gum {
        const NodeId&                    id,
        const std::vector< GUM_SCALAR >& vertex,
        const bool&                      elimRedund) {
-      int tId = getThreadNumber();
+      int tId = threadsOMP::getThreadNumber();
 
       // save E(X) if we don't save vertices
       if (!_infE_::storeVertices_ && !l_modal_[tId].empty()) {
@@ -189,7 +189,7 @@ namespace gum {
        const NodeId&                    id,
        const std::vector< GUM_SCALAR >& vertex,
        const bool&                      elimRedund) {
-      int   tId           = getThreadNumber();
+      int   tId           = threadsOMP::getThreadNumber();
       auto& nodeCredalSet = l_marginalSets_[tId][id];
       Size  dsize         = Size(vertex.size());
 
@@ -267,7 +267,7 @@ namespace gum {
     inline void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::updateMarginals_() {
 #pragma omp parallel
       {
-        int  threadId = getThreadNumber();
+        int  threadId = threadsOMP::getThreadNumber();
         long nsize    = long(workingSet_[threadId]->size());
 
 #pragma omp for
@@ -300,7 +300,7 @@ namespace gum {
         GUM_SCALAR tEps = 0;
         GUM_SCALAR delta;
 
-        int  tId   = getThreadNumber();
+        int  tId   = threadsOMP::getThreadNumber();
         long nsize = long(workingSet_[tId]->size());
 
 #pragma omp for
@@ -338,7 +338,7 @@ namespace gum {
     void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::updateOldMarginals_() {
 #pragma omp parallel
       {
-        int  threadId = getThreadNumber();
+        int  threadId = threadsOMP::getThreadNumber();
         long nsize    = long(workingSet_[threadId]->size());
 
 #pragma omp for
@@ -369,7 +369,7 @@ namespace gum {
 
 #pragma omp parallel
       {
-        int  threadId = getThreadNumber();
+        int  threadId = threadsOMP::getThreadNumber();
         Size nsize    = Size(workingSet_[threadId]->size());
 
 #pragma omp for
@@ -405,7 +405,7 @@ namespace gum {
       if (_infE_::storeVertices_) {
 #pragma omp parallel
         {
-          int threadId = getThreadNumber();
+          int threadId = threadsOMP::getThreadNumber();
 
           if (!this->l_modal_[threadId].empty()) {
             Size nsize = Size(workingSet_[threadId]->size());
@@ -439,7 +439,7 @@ namespace gum {
 
 #pragma omp parallel
       {
-        int threadId = getThreadNumber();
+        int threadId = threadsOMP::getThreadNumber();
 
         if (!this->l_modal_[threadId].empty()) {
           Size nsize = Size(workingSet_[threadId]->size());

@@ -293,12 +293,8 @@ namespace gum {
         /// a bijection assigning to each variable name its NodeId
         Bijection< NodeId, std::size_t > _nodeId2cols_;
 
-/// the max number of threads authorized
-#if defined(_OPENMP) && !defined(GUM_DEBUG_MODE)
-        Size _max_threads_number_{getMaxNumberOfThreads()};
-#else
-        Size _max_threads_number_{1};
-#endif /* GUM_DEBUG_MODE */
+        /// the max number of threads authorized
+        Size _max_threads_number_{gum::getMaxNumberOfThreads()};
 
         /// the minimal number of rows to parse (on average) by thread
         Size _min_nb_rows_per_thread_{100};

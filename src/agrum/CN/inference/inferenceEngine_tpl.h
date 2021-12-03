@@ -991,7 +991,7 @@ namespace gum {
         GUM_SCALAR tEps = 0;
         GUM_SCALAR delta;
 
-        /// int tId = getThreadNumber();
+        /// int tId = threadsOMP::ggetThreadNumber();
         int nsize = int(marginalMin_.size());
 
 #pragma omp for

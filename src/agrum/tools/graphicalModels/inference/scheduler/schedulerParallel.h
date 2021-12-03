@@ -36,8 +36,8 @@
 
 #include <agrum/agrum.h>
 #include <agrum/tools/core/list.h>
-#include <agrum/tools/core/OMPThreads.h>
-#include <agrum/tools/core/thread.h>
+#include <agrum/tools/core/threads.h>
+#include <agrum/tools/core/threadExecutor.h>
 #include <agrum/tools/graphicalModels/inference/scheduler/scheduler.h>
 #include <agrum/tools/graphicalModels/inference/scheduler/schedulerSequential.h>
 

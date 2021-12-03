@@ -24,7 +24,7 @@
 #include <ressources/include/countedAlloc.h>
 #include <iostream>
 
-#include <agrum/tools/core/thread.h>
+#include <agrum/tools/core/threads.h>
 #include <agrum/tools/database/rawDatabaseTable.h>
 
 namespace gum_tests {
@@ -515,7 +515,7 @@ namespace gum_tests {
       gum::learning::DBRow< gum::learning::DBCell > row4(3, gum::learning::DBCell(5), 1.0f);
       database.insertRows({row3, row4}, is_miss);
 
-      const unsigned int num_threads = gum::thread::getMaxNumberOfThreads();
+      const unsigned int num_threads = gum::getMaxNumberOfThreads();
 
       std::vector< gum::learning::RawDatabaseTable<>::Handler* > handlers(num_threads);
       std::vector< std::thread* >                                threads(num_threads);
@@ -569,7 +569,7 @@ namespace gum_tests {
       gum::learning::DBRow< gum::learning::DBCell > row4(3, gum::learning::DBCell(5), 1.0f);
       database.insertRows({row3, row4}, is_miss);
 
-      const unsigned int num_threads = gum::thread::getMaxNumberOfThreads();
+      const unsigned int num_threads = gum::getMaxNumberOfThreads();
 
       std::vector< gum::learning::RawDatabaseTable<>::HandlerSafe* > handlers(num_threads);
       std::vector< std::thread* >                                    threads(num_threads);

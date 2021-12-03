@@ -82,6 +82,7 @@ def initParams():
   cfg.default['python'] = "3"
   cfg.default['python3lib'] = ""
   cfg.default['python3include'] = ""
+  cfg.default['threads'] = "omp"
   cfg.default['dry_run'] = False
   cfg.default['coverage'] = False
   cfg.default['withSQL'] = True
@@ -194,6 +195,12 @@ def configureOptions(current):
                         metavar="FOLDER",
                         dest="python3include",
                         default=current['python3include'])
+  cfg.parser.add_option("", "--threads",
+                        help="defines the preferred kind of threads used by aGrUM: {omp|std}.",
+                        type="choice",
+                        choices=["omp", "std"],
+                        dest="threads",
+                        default="omp")
   cfg.parser.add_option("", "--dry-run",
                         help="dry run and prints cmake invocation with the current options.",
                         action="store_true",
