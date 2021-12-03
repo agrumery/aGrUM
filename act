@@ -75,6 +75,11 @@ def main():
 
   #
   # from now, current contains the specification
+  if current['verbose']:
+    print()
+    notif("Invocation :")
+    print(getInvocation(current))
+    print()
 
   # looking at special commands (clean/show/etc.)
   gc = gm = gb = 0

@@ -85,7 +85,7 @@ def initParams():
   cfg.default['dry_run'] = False
   cfg.default['coverage'] = False
   cfg.default['withSQL'] = True
-  cfg.default['windows'] = "mvsc19"
+  cfg.default['windows'] = "mvsc22"
   cfg.default['build'] = "all"
   cfg.default['noSaveParams'] = False
   cfg.default['correction'] = False
@@ -205,12 +205,12 @@ def configureOptions(current):
                         dest="coverage",
                         default=False)
   cfg.parser.add_option("", "--windows",
-                        help="windows compilers : {mvsc19|mvsc19_32|mvsc17|mvsc17_32|mvsc15|mvsc15_32|mingw64}.",
+                        help="windows compilers : {msvc22|msvc_32|mvsc19|mvsc19_32|mvsc17|mvsc17_32|mvsc15|mvsc15_32|mingw64}.",
                         type="choice",
                         choices=["mvsc22","mvsc22_32","mvsc19", "mvsc19_32",
                                  "mvsc17", "mvsc17_32", "mvsc15", "mvsc15_32", "mingw64"],
                         dest="windows",
-                        default="mvsc19")
+                        default="mvsc22")
   cfg.parser.add_option("", "--build",
                         help="build options : {all|no-cmake|no-make|doc-only}.",
                         type="choice",

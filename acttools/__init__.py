@@ -27,3 +27,4 @@ from .checkargs import getCurrent, parseCommandLine, checkCurrent
 from .utils import safe_cd, about
 from .builder import buildCmake, buildMake, buildPost
 from .specials import specialActions
+from .invocation import getInvocation

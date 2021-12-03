@@ -50,8 +50,8 @@ def is_tool(prog, longpath=False):
 def check_tools(options):
   exe_py = sys.executable
 
-  version, subversion = cmdline(
-    exe_py + ' -c "from distutils import sysconfig;print((sysconfig.get_python_version()))"').split(".")
+  version, subversion, _ = cmdline(
+    exe_py + ' -c "import platform;print(platform.python_version())"').split(".")
 
   if version == "2":
     critic('python2 is not supported anymore. Please use pyAgrum 0.21.x.')
