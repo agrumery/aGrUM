@@ -179,7 +179,7 @@ class GraphicalBNComparator:
     return ret
 
   def dotDiff(self):
-    """ Return a pydotplus graph that compares the arcs of _bn1 (reference) with those of self._bn2.
+    """ Return a pydot graph that compares the arcs of _bn1 (reference) with those of self._bn2.
     full black line: the arc is common for both
     full red line: the arc is common but inverted in _bn2
     dotted black line: the arc is added in _bn2
@@ -187,18 +187,18 @@ class GraphicalBNComparator:
 
     Warning
     -------
-    if pydotplus is not installed, this function just returns None
+    if pydot is not installed, this function just returns None
 
     Returns
     -------
-    pydotplus.Dot
-      the result dot graph or None if pydotplus can not be imported
+    pydot.Dot
+      the result dot graph or None if pydot can not be imported
     """
 
     try:
-      # pydotplus is optional
+      # pydot is optional
       # pylint: disable=import-outside-toplevel
-      import pydotplus as dot
+      import pydot as dot
     except ImportError:
       return False
 

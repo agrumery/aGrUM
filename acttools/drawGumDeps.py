@@ -22,7 +22,7 @@
 # ***************************************************************************
 from pathlib import Path
 import re
-import pydotplus as pdp
+import pydot as pdp
 
 
 def _filter(tab):

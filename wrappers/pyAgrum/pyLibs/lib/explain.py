@@ -215,7 +215,7 @@ def _reprInformation(bn, evs, size, cmap, asString):
 
   # dynamic member makes pylink unhappy
   # pylint: disable=no-member
-  gsvg = IPython.display.SVG(gr.create_svg())
+  gsvg = IPython.display.SVG(gr.create_svg(encoding="utf-8"))
 
   sss = "<div align='center'>" + gsvg.data + "</div>"
   sss += "<div align='center'>"
@@ -728,7 +728,7 @@ class ShapValues:
 
     Returns
     -------
-      a pydotplus.graph
+      a pydot.graph
     """
     norm_color = {}
     raw = list(results.values())

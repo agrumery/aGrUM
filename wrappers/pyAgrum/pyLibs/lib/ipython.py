@@ -25,7 +25,7 @@ import IPython.display
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
-import pydotplus as dot
+import pydot as dot
 
 from IPython.display import Image, display
 
@@ -81,7 +81,7 @@ def showGraph(gr, size=None):
 
 
 def _from_dotstring(dotstring):
-  g = dot.graph_from_dot_data(dotstring)
+  g = dot.graph_from_dot_data(dotstring)[0]
 
   # workaround for some badly parsed graph (pyparsing>=3.03)
   g.del_node('"\\n"')

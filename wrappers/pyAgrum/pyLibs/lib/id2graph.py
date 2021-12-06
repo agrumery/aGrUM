@@ -29,7 +29,7 @@ import math
 import hashlib
 from tempfile import mkdtemp
 
-import pydotplus as dot
+import pydot as dot
 
 import pyAgrum as gum
 import pyAgrum.lib._colors as gumcols
@@ -37,7 +37,7 @@ from pyAgrum.lib.proba_histogram import saveFigProba
 
 def ID2dot(diag, size=None):
   """
-  create a pydotplus representation of the influence diagram
+  create a pydot representation of the influence diagram
 
   :param diag: the influence diagram
   :param size: the size of the visualization
@@ -90,7 +90,7 @@ def ID2dot(diag, size=None):
       res += ";\n"
   res += "}"
 
-  g = dot.graph_from_dot_data(res)
+  g = dot.graph_from_dot_data(res)[0]
 
   # workaround for some badly parsed graph (pyparsing>=3.03)
   g.del_node('"\\n"')
@@ -103,7 +103,7 @@ def ID2dot(diag, size=None):
 
 def LIMIDinference2dot(diag, size, engine, evs, targets):
   """
-  create a pydotplus representation of an inference in a influence diagram
+  create a pydot representation of an inference in a influence diagram
 
   :param pyAgrum.InfluenceDiagram diag: influence diagram
   :param string size: size of the rendered graph
@@ -205,7 +205,7 @@ def LIMIDinference2dot(diag, size, engine, evs, targets):
       dotstr += ";\n"
   dotstr += "}"
 
-  g = dot.graph_from_dot_data(dotstr)
+  g = dot.graph_from_dot_data(dotstr)[0]
 
   # workaround for some badly parsed graph (pyparsing>=3.03)
   g.del_node('"\\n"')

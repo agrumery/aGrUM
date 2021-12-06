@@ -45,7 +45,7 @@ except ImportError:  # because of python 2.7, matplotlib-inline cannot be part o
     print("** pyAgrum** For better visualizations, please install matplotlib-inline.")
 
 import numpy as np
-import pydotplus as dot
+import pydot as dot
 
 import IPython.core.display
 import IPython.core.pylabtools
@@ -207,7 +207,7 @@ def _reprGraph(gr, size, asString, format=None):
     format = gum.config["notebook", "graph_format"]
 
   if format == "svg":
-    gsvg = IPython.display.SVG(prepareLinksForSVG(gr.create_svg().decode('utf-8')))
+    gsvg = IPython.display.SVG(prepareLinksForSVG(gr.create_svg(encoding="utf-8").decode('utf-8')))
     if asString:
       return gsvg.data
     else:
@@ -249,7 +249,7 @@ def getGraph(gr, size=None):
 
 
 def _from_dotstring(dotstring):
-  g = dot.graph_from_dot_data(dotstring)
+  g = dot.graph_from_dot_data(dotstring)[0]
 
   # workaround for some badly parsed graph (pyparsing>=3.03)
   g.del_node('"\\n"')
@@ -263,7 +263,6 @@ def _from_dotstring(dotstring):
       n.set_color(getBlackInTheme())
     if n.get_fontcolor() is None:
       n.set_fontcolor(getBlackInTheme())
-
   return g
 
 
@@ -1181,7 +1180,7 @@ def show(model, **kwargs):
   elif isinstance(model, gum.Potential):
     showPotential(model)
   elif hasattr(model, "toDot"):
-    g=dot.graph_from_dot_data(model.toDot())
+    g=dot.graph_from_dot_data(model.toDot())[0]
 
     # workaround for some badly parsed graph (pyparsing>=3.03)
     g.del_node('"\\n"')

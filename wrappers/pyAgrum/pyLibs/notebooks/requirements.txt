@@ -3,7 +3,7 @@
 ################################
 matplotlib
 matplotlib-inline
-pydotplus
+pydot
 numpy
 
 #### optional requirements #####

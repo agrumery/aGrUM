@@ -31,7 +31,7 @@ import hashlib
 from tempfile import mkdtemp
 import matplotlib.pyplot as plt
 import pyAgrum as gum
-import pydotplus as dot
+import pydot as dot
 
 from pyAgrum.lib import proba_histogram
 import pyAgrum.lib._colors as gumcols
@@ -39,7 +39,7 @@ import pyAgrum.lib._colors as gumcols
 
 def BN2dot(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None, cmapArc=None, showMsg=None):
   """
-  create a pydotplus representation of the BN
+  create a pydot representation of the BN
 
   Parameters
   ----------
@@ -139,7 +139,7 @@ def BNinference2dot(bn, size=None, engine=None, evs=None, targets=None, nodeColo
                     cmapNode=None, cmapArc=None, dag=None
                     ):
   """
-  create a pydotplus representation of an inference in a BN
+  create a pydot representation of an inference in a BN
 
   Parameters
   ----------
@@ -268,7 +268,7 @@ def BNinference2dot(bn, size=None, engine=None, evs=None, targets=None, nodeColo
 
   dotstr += '}'
 
-  g = dot.graph_from_dot_data(dotstr)
+  g = dot.graph_from_dot_data(dotstr)[0]
 
   # workaround for some badly parsed graph (pyparsing>=3.03)
   g.del_node('"\\n"')

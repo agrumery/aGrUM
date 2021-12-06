@@ -61,7 +61,7 @@ setup(
     long_description=README,
     include_package_data=True,
     ext_modules=[my_ext],
-    install_requires=['numpy','matplotlib','pydotplus'],
+    install_requires=['numpy','matplotlib','pydot'],
     classifiers=[
     'Development Status :: 5 - Production/Stable', 
     'License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)',

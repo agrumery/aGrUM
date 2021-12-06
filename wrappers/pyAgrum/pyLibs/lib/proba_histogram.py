@@ -106,12 +106,12 @@ def _getProbaLine(p, scale=1.0, txtcolor="black"):
   """
 
   var = p.variable(0)
-  if gum.config['notebook', 'histogram_mode'] == "compact":
-    ra, v, lv = __limits(p)
-  else:
-    lv = [var.label(int(i)) for i in np.arange(var.domainSize())]
-    v = p.tolist()
-    ra = range(len(v))
+  #if gum.config['notebook', 'histogram_mode'] == "compact":
+  #  ra, v, lv = __limits(p)
+  #else:
+  lv = [var.label(int(i)) for i in np.arange(var.domainSize())]
+  v = p.tolist()
+  ra = range(len(v))
 
   fig = plt.figure()
   fig.set_figwidth(min(scale * 6, scale * len(v) / 4.0))
@@ -128,9 +128,19 @@ def _getProbaLine(p, scale=1.0, txtcolor="black"):
   ax.margins(0)
 
   ax.set_facecolor('w')
-  llv = [lv[int(i)] for i in ax.get_xticks() if i in ra]
-  ax.set_xticks(ax.get_xticks())  # to avoid a warning...
-  ax.set_xticklabels(llv, color=txtcolor)
+
+  #do we show all the ticks (lv) or do we choose some of them (llv)
+  #we decide to show all the ticks if they are less than the double of ticks computed by matplotlib.
+  # if len(ax.get_xticks())*2>len(ra):
+  #   ax.set_xticks(ra)
+  #  ax.set_xticklabels(lv, color=txtcolor)
+  #else:
+  #  print(f"{ra=}")
+  #  print(f"{lv=}")
+  #  print(f"{ax.get_xticks()=}")
+  #  llv = [lv[int(i)] if i in ra else i for i in ax.get_xticks()]
+  #  ax.set_xticks(ax.get_xticks())
+  #  ax.set_xticklabels(llv, color=txtcolor)
 
   return fig
 
