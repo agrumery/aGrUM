@@ -28,7 +28,7 @@
 #define GUM_THREAD_EXECUTOR_H
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/threadExecutorSTD.h>
+#include <agrum/tools/core/threadExecutorSTL.h>
 #include <agrum/tools/core/threadExecutorOMP.h>
 
 namespace gum {

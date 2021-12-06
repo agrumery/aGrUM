@@ -27,12 +27,12 @@
 
 // to ease automatic parsers
 #include <agrum/agrum.h>
-#include <agrum/tools/core/threadsSTD.h>
+#include <agrum/tools/core/threadsSTL.h>
 
 
 namespace gum {
 
-  namespace threadsSTD {
+  namespace threadsSTL {
 
 
     // returns the maximum number of threads possible
@@ -47,6 +47,6 @@ namespace gum {
     }
     
     
-  } /* namespace threadsSTD */
+  } /* namespace threadsSTL */
 
 } /* namespace gum */

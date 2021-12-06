@@ -41,6 +41,7 @@
 
 #include <agrum/tools/graphicalModels/inference/scheduler/schedule.h>
 #include <agrum/tools/graphicalModels/inference/scheduler/schedulerSequential.h>
+#include <agrum/tools/graphicalModels/inference/scheduler/schedulerParallel.h>
 
 
 namespace gum {

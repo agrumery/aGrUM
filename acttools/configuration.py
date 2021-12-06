@@ -196,9 +196,9 @@ def configureOptions(current):
                         dest="python3include",
                         default=current['python3include'])
   cfg.parser.add_option("", "--threads",
-                        help="defines the preferred kind of threads used by aGrUM: {omp|std}.",
+                        help="defines the preferred kind of threads used by aGrUM: {omp|stl}.",
                         type="choice",
-                        choices=["omp", "std"],
+                        choices=["omp", "stl"],
                         dest="threads",
                         default="omp")
   cfg.parser.add_option("", "--dry-run",

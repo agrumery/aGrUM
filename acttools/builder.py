@@ -104,7 +104,7 @@ def getCmake(current, target):
   if current["threads"] == 'omp':
     line += " -DCMAKE_GUM_THREADS=omp"
   else:
-    line += " -DCMAKE_GUM_THREADS=std"
+    line += " -DCMAKE_GUM_THREADS=stl"
 
   return line
 

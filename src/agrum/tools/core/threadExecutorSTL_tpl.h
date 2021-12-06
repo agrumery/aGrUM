@@ -23,7 +23,7 @@
  * @brief A class to execute several threads by exploiting std::thread
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#include <agrum/tools/core/threadExecutorSTD.h>
+#include <agrum/tools/core/threadExecutorSTL.h>
 
 #include <thread>
 #include <vector>
@@ -37,7 +37,7 @@
 
 namespace gum {
 
-  namespace threadsSTD {
+  namespace threadsSTL {
       
     /// executes a function using several threads
     template <typename FUNCTION, typename... ARGS>
@@ -166,7 +166,7 @@ namespace gum {
     }
 
 
-  } /* namespace threadsSTD */ 
+  } /* namespace threadsSTL */
 
 } /* namespace gum */
 

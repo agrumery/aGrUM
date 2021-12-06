@@ -26,15 +26,15 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/tools/graphicalModels/inference/scheduler/schedulerParallel.h>
+#  include <agrum/tools/graphicalModels/inference/scheduler/schedulerParallel.h>
 
 namespace gum {
 
   /// default constructor
   template < template < typename > class ALLOC >
   SchedulerParallel< ALLOC >::SchedulerParallel(
-     Size max_nb_threads,
-     double max_megabyte_memory,
+     Size                                                       max_nb_threads,
+     double                                                     max_megabyte_memory,
      const typename SchedulerParallel< ALLOC >::allocator_type& alloc) :
       Scheduler< ALLOC >(max_nb_threads, max_megabyte_memory, alloc),
       _sequential_scheduler_(max_nb_threads, max_megabyte_memory, alloc) {
@@ -49,7 +49,7 @@ namespace gum {
      const SchedulerParallel< ALLOC >&                          from,
      const typename SchedulerParallel< ALLOC >::allocator_type& alloc) :
       Scheduler< ALLOC >(from, alloc),
-         _sequential_scheduler_(from._sequential_scheduler_, alloc) {
+      _sequential_scheduler_(from._sequential_scheduler_, alloc) {
     // for debugging purposes
     GUM_CONS_CPY(SchedulerParallel);
   }
@@ -57,8 +57,7 @@ namespace gum {
 
   /// copy constructor
   template < template < typename > class ALLOC >
-  SchedulerParallel< ALLOC >::SchedulerParallel(
-     const SchedulerParallel< ALLOC >& from) :
+  SchedulerParallel< ALLOC >::SchedulerParallel(const SchedulerParallel< ALLOC >& from) :
       SchedulerParallel< ALLOC >(from, from.get_allocator()) {
     // for debugging purposes
     GUM_CONS_CPY(SchedulerParallel);
@@ -70,8 +69,8 @@ namespace gum {
   SchedulerParallel< ALLOC >::SchedulerParallel(
      SchedulerParallel< ALLOC >&&                               from,
      const typename SchedulerParallel< ALLOC >::allocator_type& alloc) :
-     Scheduler< ALLOC >(std::move(from), alloc),
-        _sequential_scheduler_(std::move(from._sequential_scheduler_, alloc)) {
+      Scheduler< ALLOC >(std::move(from), alloc),
+      _sequential_scheduler_(std::move(from._sequential_scheduler_, alloc)) {
     // for debugging purposes
     GUM_CONS_MOV(SchedulerParallel);
   }
@@ -79,9 +78,8 @@ namespace gum {
 
   /// move constructor
   template < template < typename > class ALLOC >
-  SchedulerParallel< ALLOC >::SchedulerParallel(
-     SchedulerParallel< ALLOC >&& from) :
-     SchedulerParallel< ALLOC >(std::move(from), from.get_allocator()) {
+  SchedulerParallel< ALLOC >::SchedulerParallel(SchedulerParallel< ALLOC >&& from) :
+      SchedulerParallel< ALLOC >(std::move(from), from.get_allocator()) {
     // for debugging purposes
     GUM_CONS_MOV(SchedulerParallel);
   }
@@ -92,7 +90,7 @@ namespace gum {
   SchedulerParallel< ALLOC >* SchedulerParallel< ALLOC >::clone(
      const typename SchedulerParallel< ALLOC >::allocator_type& alloc) const {
     ALLOC< SchedulerParallel< ALLOC > > allocator(alloc);
-    SchedulerParallel< ALLOC >* new_sched = allocator.allocate(1);
+    SchedulerParallel< ALLOC >*         new_sched = allocator.allocate(1);
     try {
       new ((void*)new_sched) SchedulerParallel< ALLOC >(*this, alloc);
     } catch (...) {
@@ -106,8 +104,7 @@ namespace gum {
 
   /// virtual copy constructor with a given allocator
   template < template < typename > class ALLOC >
-  INLINE SchedulerParallel< ALLOC >*
-     SchedulerParallel< ALLOC >::clone() const {
+  INLINE SchedulerParallel< ALLOC >* SchedulerParallel< ALLOC >::clone() const {
     return clone(this->get_allocator());
   }
 
@@ -141,8 +138,7 @@ namespace gum {
   /** @bried returns an estimation of the number of elementary operations needed
    * to perform a given schedule */
   template < template < typename > class ALLOC >
-  INLINE double SchedulerParallel< ALLOC >::nbOperations(
-     const Schedule< ALLOC >& schedule) {
+  INLINE double SchedulerParallel< ALLOC >::nbOperations(const Schedule< ALLOC >& schedule) {
     return _sequential_scheduler_.nbOperations(schedule);
   }
 
@@ -150,8 +146,7 @@ namespace gum {
   /// returns the memory consumption used during the execution of a schedule
   template < template < typename > class ALLOC >
   INLINE std::pair< double, double >
-     SchedulerParallel< ALLOC >::memoryUsage(
-        const Schedule< ALLOC >& schedule) {
+         SchedulerParallel< ALLOC >::memoryUsage(const Schedule< ALLOC >& schedule) {
     return _sequential_scheduler_.memoryUsage(schedule);
   }
 
@@ -163,27 +158,42 @@ namespace gum {
     // If this is not the case, then we should raise an exception before even
     // trying to execute any operation of the schedule
     {
-      SchedulerSequential< ALLOC > basic_scheduler(this->maxNbThreads(), this->maxMemory());
-      auto                         memory_usage = basic_scheduler.memoryUsage(schedule);
+      SchedulerSequential< ALLOC > seq_scheduler(this->maxNbThreads(), this->maxMemory());
+      auto                         memory_usage = seq_scheduler.memoryUsage(schedule);
       if ((this->_max_memory != 0.0) && memory_usage.first > this->_max_memory) {
         throw std::bad_alloc();
       }
     }
 
     // get the DAG of the operations to perform
-    DAG dag = schedule.dag();
+    DAG  dag                     = schedule.dag();
     Size nb_remaining_operations = dag.sizeNodes();
 
-    // the list of available_nodes nodes to perform
-    List<NodeId> available_nodes;
+
+    // the comparison function used to sort the available operations
+    auto cmp
+       = [](const std::pair< double, double >& a, const std::pair< double, double >& b) -> bool {
+      if (a.second < 0.0) {
+        if (b.second < 0.0)
+          return a.first < b.first;
+        else
+          return true;
+      } else {
+        if (b.second < 0)
+          return false;
+        else
+          return a.second < b.second;
+      }
+    };
+
+    PriorityQueue< NodeId, std::pair< double, double >, decltype(cmp) > available_nodes(
+       cmp,
+       nb_remaining_operations);
 
     // fill available_nodes by inserting at the front the deletions and at the
     // back the other nodes. This will enable to free memory as soon as possible
-    for (const auto node : schedule.availableOperations()) {
-      if (schedule.operation(node).implyDeletion())
-        available_nodes.pushFront(node);
-      else
-        available_nodes.pushBack(node);
+    for (const auto node: schedule.availableOperations()) {
+      available_nodes.insert(node, schedule.operation(node).memoryUsage());
     }
 
     // if there is nothing to do, don't do it
@@ -192,396 +202,132 @@ namespace gum {
     // prepare keeping information about memory usage. This is useful if the user
     // added constraints on memory usage. When operations cannot be performed
     // due to memory shortage, they will be temporarily stored into ordered vectors
-    double memory_used = 0;                 // the current memory used
-    double max_memory_used = 0;             // max memory used so far
-    double max_memory  = this->_max_memory; // max memory allowed
-
-
+    double overall_memory_used = 0;   // the current memory used by all the threads
 
     // create the mutex needed for threads synchronization
-    std::mutex mutex;
-    std::vector<NodeId> new_available_nodes; // nodes available after an execution
+    std::mutex              mutex;
     std::condition_variable is_not_empty;
 
-    /*
-#pragma omp parallel num_threads(int(this->_max_nb_threads))
-    const Idx this_thread = gum::getThreadNumber();
+    // the number of threads currently active
+    Size nb_active_threads = Size(0);
 
-    std::vector< UnexecutedOperation > unexecuted_deletions;
-    std::vector< UnexecutedOperation > unexecuted_operations;
-    bool unexecuted_deletions_sorted  = true;
-    bool unexecuted_operations_sorted = true;
+    // here, we create a lambda that will be executed by all the threads
+    // to execute the operations in a parallel manner
+    auto opExecute = [this,
+                      &schedule,
+                      &dag,
+                      &mutex,
+                      &is_not_empty,
+                      &available_nodes,
+                      &nb_remaining_operations,
+                      &nb_active_threads,
+                      &overall_memory_used](const std::size_t this_thread,
+                                            const std::size_t nb_threads) -> void {
+      // the next operations/nodes to execute
+      std::vector< NodeId > nodes_to_execute;
+      double                nb_instructions_to_execute;
 
-    std::unique_lock<std::mutex> lock(mutex);
-    is_not_empty.wait(lock, [] {
-      return !available_nodes.empty() || (nb_remaining_operations == 0);
-    });
+      while (true) {
+        {
+          nodes_to_execute.clear();
+          nb_instructions_to_execute = 0.0;
 
-    if (nb_remaining_operations == 0) { is_not_empty.notify_all(); }
-    else {
-      // get the first operation available_nodes
-      const NodeId node = available_nodes.front();
-        available_nodes.popFront();
-        auto& op =
-           const_cast< ScheduleOperation< ALLOC >& >(schedule.operation(node));
+          // wait until some operations are available or all the operations have
+          // been executed
+          std::unique_lock< std::mutex > lock(mutex);
+          is_not_empty.wait(lock, [&available_nodes, &nb_remaining_operations] {
+            return !available_nodes.empty() || (nb_remaining_operations == Size(0));
+          });
 
-        // if scheduling under memory budget, check that we do not consume too
-        // much memory.
-        std::pair< double, double > op_mem = op.memoryUsage();
-        if (max_memory != 0.0) {
-          if (memory_used + op_mem.first > max_memory) {
-            // here, we cannot execute the operation due to memory shortage
-            // so we should put the node to the unexecuted operations vectors.
-            // Hopefully, we will be able to execute them later on.
-            if (op_mem.second > 0) {
-              unexecuted_operations.push_back({op_mem.first, op_mem.second, node});
-              unexecuted_operations_sorted = false;
-            } else {
-              unexecuted_deletions.push_back({op_mem.first, op_mem.second, node});
-              unexecuted_deletions_sorted = false;
-            }
-
-            continue;
+          // if all the operations have been executed, stop the thread
+          if (nb_remaining_operations == Size(0)) {
+            is_not_empty.notify_all();
+            return;
           }
-        }
 
-        // here, we remain under the memory limit, if any, so we execute
-        // the operation
-        op.execute();
-
-        
-
-        _simulateExecuteOneOperation_(
-           node, op, dag, available_nodes, new_available_nodes);
-        if (memory_used + op_mem.first > max_memory_used)
-          max_memory_used = memory_used + op_mem.first;
-        memory_used += op_mem.second;
-      }
-
-      // if scheduling under memory limitations, try to see if we can execute
-      // some operations that were previously unexecutable
-      if (!unexecuted_operations.empty() || !unexecuted_deletions.empty()) {
-        const Size nb_new_ops =
-           const_cast< SchedulerParallel< ALLOC >* >(this)->_addExecutableOps_(
-              unexecuted_deletions,
-              unexecuted_operations,
-              unexecuted_deletions_sorted,
-              unexecuted_operations_sorted,
-              memory_used,
-              max_memory,
-              available_nodes);
-
-        if (nb_new_ops == 0) {
-          // here, there exists no more operation that can be executed given the
-          // current memory constraints. But there may remain some unexecuted
-          // operations. In this case, try to increment the memory budget.
-          if (!unexecuted_deletions.empty())
-            max_memory = memory_used + unexecuted_deletions[0].max_memory_usage;
-          else if (!unexecuted_operations.empty())
-            max_memory = memory_used + unexecuted_operations[0].max_memory_usage;
-
-          const_cast< SchedulerParallel< ALLOC >* >(this)->_addExecutableOps_(
-             unexecuted_deletions,
-             unexecuted_operations,
-             unexecuted_deletions_sorted,
-             unexecuted_operations_sorted,
-             memory_used,
-             max_memory,
-             available_nodes);
-        }
-      }
-      else {
-        schedule_fully_performed = true;
-      }
-    } while (!schedule_fully_performed);
-
-    _memory_usage_ = {max_memory_used, memory_used};
-    _operations_up_to_date_ = true;
-     */
-
-
-    /*
-       // execute the schedule
-    for (const auto node : _operations_) {
-      // try to execute the operation. If this raises an exception, then
-      // we do not try to catch it
-      auto& op =
-         const_cast< ScheduleOperation< ALLOC >& >(schedule.operation(node));
-      op.execute();
-
-      // if we succeeded to execute the operation, indicate that the set of all
-      // the operations of the schedule is no more up to date
-      _operations_up_to_date_ = false;
-    }
-  }
-     */
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  /// the comparison function used to sort unexecutable operations
-  template < template < typename > class ALLOC >
-  bool SchedulerParallel< ALLOC >::_cmp_(const UnexecutedOperation& a,
-                                           const UnexecutedOperation& b) {
-    if (a.max_memory_usage < b.max_memory_usage) return true;
-    if (b.max_memory_usage < a.max_memory_usage) return false;
-    return (a.end_memory_usage < b.end_memory_usage);
-  }
-
-
-
-  /// add the currently executable operations into the set of available operations
-  template < template < typename > class ALLOC >
-  Size SchedulerParallel< ALLOC >::_addExecutableOps_(
-     std::vector< UnexecutedOperation >& unexecuted_deletions,
-     std::vector< UnexecutedOperation >& unexecuted_operations,
-     bool&                               unexecuted_deletions_sorted,
-     bool&                               unexecuted_operations_sorted,
-     double                              memory_used,
-     double                              max_memory,
-     List<NodeId>&                       available_nodes) const {
-    double added_mem = 0.0;
-
-    // sort the vectors by increasing memory usage
-    if (!unexecuted_deletions_sorted) {
-      std::sort(unexecuted_deletions.begin(), unexecuted_deletions.end(), _cmp_);
-      unexecuted_deletions_sorted = true;
-    }
-    if (!unexecuted_operations_sorted) {
-      std::sort(unexecuted_operations.begin(), unexecuted_operations.end(), _cmp_);
-      unexecuted_operations_sorted = true;
-    }
-
-
-    // get the index of the last executable deletion
-    std::size_t i_del = 0;
-    for (std::size_t end = unexecuted_deletions.size(); i_del < end; ++i_del) {
-      if (memory_used + added_mem + unexecuted_deletions[i_del].max_memory_usage
-          > max_memory) break;
-      added_mem += unexecuted_deletions[i_del].end_memory_usage;
-    }
-
-    // get the index of the last executable operation (that does not imply
-    // any deletion
-    std::size_t i_op = 0;
-    for (std::size_t end = unexecuted_operations.size(); i_op < end; ++i_op) {
-      if (memory_used + added_mem + unexecuted_operations[i_op].max_memory_usage
-          > max_memory) break;
-      added_mem += unexecuted_operations[i_op].end_memory_usage;
-    }
-
-
-    // insert the executable operations (not deletions) into available_nodes
-    if (i_op != 0) {
-      for (std::size_t j = i_op - 1, i = i_op; i > 0; --j, --i)
-        available_nodes.pushFront(unexecuted_operations[j].node);
-
-      unexecuted_operations.erase(unexecuted_operations.begin(),
-                                  unexecuted_operations.begin() + i_op);
-    }
-
-    // insert the executable deletions into available_nodes
-    if (i_del != 0) {
-      for (std::size_t j = i_del - 1, i = 0; i > 0; --j, --i)
-        available_nodes.pushFront(unexecuted_deletions[j].node);
-
-      unexecuted_deletions.erase(unexecuted_deletions.begin(),
-                                 unexecuted_deletions.begin() + i_del);
-    }
-
-    return i_op + i_del;
-  }
-
-
-  /// simulate the update of the schedule's DAG resulting from the execution
-  /// of an operation
-  template < template < typename > class ALLOC >
-  void SchedulerParallel< ALLOC >::_simulateDAGUpdate_(
-     DAG&                 dag,
-     const NodeId         node,
-     std::vector<NodeId>& new_available_nodes) const {
-    new_available_nodes.clear();
-
-    for (const auto child_node: dag.children(node)) {
-      if (dag.parents(child_node).size() == 1) { // only node is a parent
-        new_available_nodes.push_back(child_node);
-      }
-    }
-
-    // remove node_exec
-    dag.eraseNode(node);
-  }
-
-
-  /// execute one operation
-  template < template < typename > class ALLOC >
-  void SchedulerParallel< ALLOC >::_simulateExecuteOneOperation_(
-     const NodeId                node,
-     ScheduleOperation< ALLOC >& op,
-     DAG&                        dag,
-     List<NodeId>&               available_nodes,
-     std::vector<NodeId>&        new_available_nodes) {
-    /*
-    // save the fact that operation node/op is to be executed
-    _operations_.push_back(node);
-
-    // whenever an operation has been executed, update the schedule
-    _simulateDAGUpdate_(dag, node, new_available_nodes);
-
-    // add the new available_nodes nodes to List available_nodes: make it so
-    // that the operations that imply deletions are first (hence, they should
-    // decrease the stress on memory usage)
-    for (const auto new_node: new_available_nodes) {
-        if (!_schedule_->operation(new_node).implyDeletion())
-          available_nodes.pushFront(new_node);
-    }
-    for (const auto new_node: new_available_nodes) {
-        if (_schedule_->operation(new_node).implyDeletion())
-          available_nodes.pushFront(new_node);
-    }
-      */
-  }
-
-
-  /// returns the memory consumption used during the execution of a schedule
-  template < template < typename > class ALLOC >
-  void SchedulerParallel< ALLOC >::_simulateExecution_() {
-/*
-    // if we have already computed the sequence of operations, do not do it again
-    if (_operations_up_to_date_) return;
-
-    // get the DAG of the operations to perform
-    DAG dag = _schedule_->dag();
-
-    _operations_.clear();
-    _operations_.reserve(dag.sizeNodes());
-
-    // the list of available_nodes nodes to perform
-    List<NodeId> available_nodes;
-    std::vector<NodeId> new_available_nodes; // nodes available after an execution
-
-    // fill available_nodes by inserting at the front the deletions and at the
-    // back the other nodes. This will enable to free memory as soon as possible
-    for (const auto node : _schedule_->availableOperations()) {
-      if (_schedule_->operation(node).implyDeletion())
-        available_nodes.pushFront(node);
-      else
-        available_nodes.pushBack(node);
-    }
-
-    // if there is nothing to do, don't do it
-    if (available_nodes.empty()) {
-      _memory_usage_ = {0.0, 0.0};
-      _operations_up_to_date_ = true;
-      return;
-    }
-
-
-    // prepare keeping information about memory usage. This is useful if the user
-    // added constraints on memory usage. When operations cannot be performed
-    // due to memory shortage, they will be temporarily stored into ordered vectors
-    double memory_used = 0;                 // the current memory used
-    double max_memory_used = 0;             // max memory used so far
-    double max_memory  = this->_max_memory; // max memory allowed
-    std::vector< UnexecutedOperation > unexecuted_deletions;
-    std::vector< UnexecutedOperation > unexecuted_operations;
-    bool unexecuted_deletions_sorted  = true;
-    bool unexecuted_operations_sorted = true;
-
-    // perform the schedule
-    bool schedule_fully_performed = false;
-    do {
-      while (!available_nodes.empty()) {
-        // get the first operation available_nodes
-        const NodeId node = available_nodes.front();
-        available_nodes.popFront();
-        auto& op =
-           const_cast< ScheduleOperation< ALLOC >& >(_schedule_->operation(node));
-
-        // if scheduling under memory budget, check that we do not consume too
-        // much memory.
-        std::pair< double, double > op_mem = op.memoryUsage();
-        if (max_memory != 0.0) {
-          if (memory_used + op_mem.first > max_memory) {
-            // here, we cannot execute the operation due to memory shortage
-            // so we should put the node to the unexecuted operations vectors.
-            // Hopefully, we will be able to execute them later on.
-            if (op_mem.second > 0) {
-              unexecuted_operations.push_back({op_mem.first, op_mem.second, node});
-              unexecuted_operations_sorted = false;
-            } else {
-              unexecuted_deletions.push_back({op_mem.first, op_mem.second, node});
-              unexecuted_deletions_sorted = false;
+          // here, we found some operations to execute. So, get the first operation
+          // in available_nodes
+          if (this->_max_memory == 0.0) {
+            while ((nb_instructions_to_execute < _max_instruction_number_)
+                   && !available_nodes.empty()) {
+              // get the next node to execute
+              const NodeId node = available_nodes.pop();
+              nodes_to_execute.push_back(node);
+              nb_instructions_to_execute += schedule.operation(node).nbOperations();
             }
+          } else {
+            while ((nb_instructions_to_execute < _max_instruction_number_)
+                   && !available_nodes.empty()) {
+              // get the next node to execute
+              const auto  node = available_nodes.top();
+              const auto& op   = schedule.operation(node);
 
-            continue;
+              // if scheduling under memory budget, check that we do not consume too
+              // much memory.
+              std::pair< double, double > op_mem = op.memoryUsage();
+              if (overall_memory_used + op_mem.first > this->_max_memory) {
+                // here, we cannot execute the operation due to memory shortage
+                // so we should put the node back into the set of available_nodes:
+                // if other threads are active, they may execute some deletions that
+                // will provide sufficient memory to execute op later on.
+                if ((nb_active_threads > Size(0)) || !nodes_to_execute.empty()) {
+                  break;
+                } else {
+                  // here, we cannot do anything. Let's abort the inference
+                  is_not_empty.notify_all();
+                  return;
+                }
+              } else {
+                nodes_to_execute.push_back(node);
+                available_nodes.pop();
+                overall_memory_used += op_mem.first;
+                nb_instructions_to_execute += op.nbOperations();
+              }
+            }
           }
+
+          // here, we remain under the memory limit, so we execute the operation.
+          // so, let's indicate that the the tread is active
+          ++nb_active_threads;
         }
 
-        // here, we remain under the memory limit, if any, so we should try to
-        // execute the operation
-        _simulateExecuteOneOperation_(
-           node, op, dag, available_nodes, new_available_nodes);
-        if (memory_used + op_mem.first > max_memory_used)
-          max_memory_used = memory_used + op_mem.first;
-        memory_used += op_mem.second;
-      }
 
-      // if scheduling under memory limitations, try to see if we can execute
-      // some operations that were previously unexecutable
-      if (!unexecuted_operations.empty() || !unexecuted_deletions.empty()) {
-        const Size nb_new_ops =
-           const_cast< SchedulerParallel< ALLOC >* >(this)->_addExecutableOps_(
-             unexecuted_deletions,
-             unexecuted_operations,
-             unexecuted_deletions_sorted,
-             unexecuted_operations_sorted,
-             memory_used,
-             max_memory,
-             available_nodes);
-
-        if (nb_new_ops == 0) {
-          // here, there exists no more operation that can be executed given the
-          // current memory constraints. But there may remain some unexecuted
-          // operations. In this case, try to increment the memory budget.
-          if (!unexecuted_deletions.empty())
-            max_memory = memory_used + unexecuted_deletions[0].max_memory_usage;
-          else if (!unexecuted_operations.empty())
-            max_memory = memory_used + unexecuted_operations[0].max_memory_usage;
-
-          const_cast< SchedulerParallel< ALLOC >* >(this)->_addExecutableOps_(
-             unexecuted_deletions,
-             unexecuted_operations,
-             unexecuted_deletions_sorted,
-             unexecuted_operations_sorted,
-             memory_used,
-             max_memory,
-             available_nodes);
+        // now, actually execute the operations
+        for (const auto node: nodes_to_execute) {
+          const_cast< ScheduleOperation< ALLOC >& >(schedule.operation(node)).execute();
         }
-      }
-      else {
-        schedule_fully_performed = true;
-      }
-    } while (!schedule_fully_performed);
 
-    _memory_usage_ = {max_memory_used, memory_used};
-    _operations_up_to_date_ = true;
-    */
+        // lock the next shared memory operations
+        std::lock_guard< std::mutex > new_lock(mutex);
+
+        // now the thread is no more active and the operation has been performed
+        --nb_active_threads;
+        nb_remaining_operations -= nodes_to_execute.size();
+
+        // update the set of available operations
+        for (const auto node: nodes_to_execute) {
+          for (const auto child_node: dag.children(node)) {
+            if (dag.parents(child_node).size() == 1) {   // only node is a parent
+              available_nodes.insert(child_node, schedule.operation(node).memoryUsage());
+            }
+          }
+
+          // remove node from the dag since it has been executed
+          dag.eraseNode(node);
+        }
+
+        is_not_empty.notify_all();
+      }
+    };
+
+
+    // launch the threads
+    const Size nb_threads = this->maxNbThreads() < nb_remaining_operations
+                             ? this->maxNbThreads()
+                             : nb_remaining_operations;
+
+    // std::cout << "nb threads = " << nb_threads << std::endl;
+    ThreadExecutor::execute(nb_threads, opExecute);
   }
 
 } /* namespace gum */

@@ -24,5 +24,5 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/tools/core/threadExecutorSTD.h>
+#include <agrum/tools/core/threadExecutorSTL.h>
 

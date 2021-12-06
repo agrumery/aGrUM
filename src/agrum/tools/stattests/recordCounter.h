@@ -334,7 +334,7 @@ namespace gum {
       // the ranges actually used by the threads: there is a hopefully clever
       // algorithm that split the rows ranges into another set of ranges that
       // are assigned to the threads. For instance, if the database has 1000
-      // rows and there are 10 threads, each one will be assed a set of 100
+      // rows and there are 10 threads, each one will be assigned a set of 100
       // rows. These sets are precisely what are stored in the field below
       mutable std::vector< std::pair< std::size_t, std::size_t >,
                            ALLOC< std::pair< std::size_t, std::size_t > > >

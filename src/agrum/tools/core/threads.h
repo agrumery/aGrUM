@@ -28,7 +28,7 @@
 #define GUM_THREADS_H
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/threadsSTD.h>
+#include <agrum/tools/core/threadsSTL.h>
 #include <agrum/tools/core/threadsOMP.h>
 
 namespace gum {

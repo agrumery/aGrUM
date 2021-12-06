@@ -25,8 +25,8 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#ifndef GUM_THREADS_STD_H
-#define GUM_THREADS_STD_H
+#ifndef GUM_THREADS_STL_H
+#define GUM_THREADS_STL_H
 
 
 #include <thread>
@@ -35,7 +35,7 @@
 
 namespace gum {
 
-  namespace threadsSTD {
+  namespace threadsSTL {
 
     /**
      * @brief Returns the maximum number of threads at any time.
@@ -56,15 +56,15 @@ namespace gum {
     unsigned int getNumberOfLogicalProcessors();
     
 
-  }   // namespace threadsSTD
+  }   // namespace threadsSTL
 
 } /* namespace gum */
 
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#  include <agrum/tools/core/threadsSTD_inl.h>
+#  include <agrum/tools/core/threadsSTL_inl.h>
 #endif /* GUM_NO_INLINE */
 
 
-#endif /* GUM_THREADS_STD */
+#endif /* GUM_THREADS_STL */

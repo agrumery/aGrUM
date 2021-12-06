@@ -38,6 +38,9 @@
 #  include <agrum/tools/multidim/utils/operators/multiDimCombineAndProjectDefault.h>
 #  include <agrum/tools/multidim/utils/operators/multiDimProjection.h>
 
+#define MY_SCHEDULER SchedulerParallel<>
+//#define MY_SCHEDULER SchedulerSequential<>
+
 
 namespace gum {
   // default constructor
@@ -725,7 +728,7 @@ namespace gum {
                         "the projection of a potential containing "
                            << "hard evidence is empty!");
             }
-            SchedulerSequential<> scheduler;
+            MY_SCHEDULER scheduler;
             scheduler.execute(schedule);
             auto projected_pot = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
                static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
@@ -944,7 +947,7 @@ namespace gum {
                   "the projection of a potential containing "
                      << "hard evidence is empty!");
       }
-      SchedulerSequential<> scheduler;
+      MY_SCHEDULER scheduler;
       scheduler.execute(schedule);
       auto projected_pot = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
          static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(*new_cpt_list.begin()));
@@ -1393,7 +1396,7 @@ namespace gum {
       _collectMessage_(schedule, set.second, set.second);
 
     // really perform the computations
-    SchedulerSequential<> scheduler;
+    MY_SCHEDULER scheduler;
     scheduler.execute(schedule);
   }
 
@@ -1410,7 +1413,7 @@ namespace gum {
     }
 
     Schedule<>            schedule;
-    SchedulerSequential<> scheduler;
+    MY_SCHEDULER scheduler;
 
     // if we still need to perform some inference task, do it (this should
     // already have been done by makeInference_)
@@ -1516,7 +1519,7 @@ namespace gum {
     }
 
     Schedule<>            schedule;
-    SchedulerSequential<> scheduler;
+    MY_SCHEDULER scheduler;
 
     // if all the nodes have received hard evidence, then compute the
     // joint posterior directly by multiplying the hard evidence potentials

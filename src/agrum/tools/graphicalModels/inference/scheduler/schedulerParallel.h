@@ -36,6 +36,7 @@
 
 #include <agrum/agrum.h>
 #include <agrum/tools/core/list.h>
+#include <agrum/tools/core/priorityQueue.h>
 #include <agrum/tools/core/threads.h>
 #include <agrum/tools/core/threadExecutor.h>
 #include <agrum/tools/graphicalModels/inference/scheduler/scheduler.h>
@@ -123,52 +124,11 @@ namespace gum {
 
 
     private:
-    // a scheduler used for computing the number of operations and memory usage
+    /// a scheduler used for computing the number of operations and memory usage
     SchedulerSequential< ALLOC > _sequential_scheduler_;
 
-
-    /** @brief a structure to keep informations about operations that could not be
-     * executed due to memory usage limitations */
-    struct UnexecutedOperation {
-      double max_memory_usage;
-      double end_memory_usage;
-      NodeId node;
-    };
-
-
-    /// sets a schedule and updates the set of operations if necessary
-    void _setSchedule_(const Schedule< ALLOC >& schedule);
-
-    /** @brief add the currently executable deletions into the set of
-     * available operations
-     */
-    Size _addExecutableOps_(std::vector< UnexecutedOperation >& unexecuted_deletions,
-                            std::vector< UnexecutedOperation >& unexecuted_operations,
-                            bool&                               unexecuted_deletions_sorted,
-                            bool&                               unexecuted_operations_sorted,
-                            double                              memory_used,
-                            double                              max_memory,
-                            List< NodeId >&                     available_nodes) const;
-
-    /** @brief simulate the update of the schedule's DAG resulting from the
-     * execution of an operation
-     */
-    void _simulateDAGUpdate_(DAG&                   dag,
-                             const NodeId           node,
-                             std::vector< NodeId >& new_available_nodes) const;
-
-    /// simulate the execution of one operation
-    void _simulateExecuteOneOperation_(const NodeId                node,
-                                       ScheduleOperation< ALLOC >& op,
-                                       DAG&                        dag,
-                                       List< NodeId >&             available_nodes,
-                                       std::vector< NodeId >&      new_available_nodes);
-
-    /// simulate the execution of the whole schedule
-    void _simulateExecution_();
-
-    /// the comparison function used to sort unexecutable operations
-    static bool _cmp_(const UnexecutedOperation& a, const UnexecutedOperation& b);
+    /// the max cumulative number of instructions allowed for a given thread
+    double _max_instruction_number_ {2000};
 
     /// friendship for allowing std::sort to use _cmp_
     template < typename ITER, typename CMP >

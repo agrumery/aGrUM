@@ -24,20 +24,20 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#ifndef GUM_THREAD_EXECUTOR_STD_H
-#define GUM_THREAD_EXECUTOR_STD_H
+#ifndef GUM_THREAD_EXECUTOR_STL_H
+#define GUM_THREAD_EXECUTOR_STL_H
 
 #include <agrum/agrum.h>
 
 namespace gum {
 
-  namespace threadsSTD {
+  namespace threadsSTL {
 
-    /** @class threadsSTD::ThreadExecutorImpl
+    /** @class threadsSTL::ThreadExecutorImpl
      * @brief The class enables to launch std::threads to execute callables in
      * parallel.
      *
-     * The threadsSTD::ThreadExecutor class is intended to easily parallelize
+     * The threadsSTL::ThreadExecutor class is intended to easily parallelize
      * algorithms by providing a simple interface to launch the threads. The
      * class also catches exceptions raised by the threads, so that those do
      * not terminate prematurely the program. It can then rethrow one such
@@ -46,8 +46,8 @@ namespace gum {
      *
      * @warning This class is not intended to be used explicitly by the user.
      * It is preferable to use class ThreadExecutor, which will point to the
-     * threadsSTD::ThreadExecutorImpl class if the threads infrastructure to
-     * use is openMP.
+     * threadsSTL::ThreadExecutorImpl class if the threads infrastructure to
+     * use is STL.
      *
      * @par Usage example:
      * @code
@@ -70,12 +70,12 @@ namespace gum {
                                   ARGS&&...   func_args );
     };
 
-  } /* namespace threadsSTD */ 
+  } /* namespace threadsSTL */
   
 } /* namespace gum */
 
 
 /// always include the templated implementations
-#include <agrum/tools/core/threadExecutorSTD_tpl.h>
+#include <agrum/tools/core/threadExecutorSTL_tpl.h>
 
-#endif /* GUM_THREAD_EXECUTOR_STD_H */
+#endif /* GUM_THREAD_EXECUTOR_STL_H */
