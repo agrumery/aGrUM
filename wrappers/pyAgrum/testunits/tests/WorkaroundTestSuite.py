@@ -36,10 +36,9 @@ class WorkaroundTestCase(pyAgrumTestCase):
   A;B;
   A--B;
 }''')
-    self.assertEqual(len(g.get_node_list()), 3)  # should be 2 if no bug while parsing.
 
-    # workaround
-    # cf. pyAgrum.lib.notebook.py:255
+    # g should have 2 nodes if no bug while parsing but 3 with the bug.
+    # workaround : cf. pyAgrum.lib.notebook.py:255 and everywhere using dot.graph_from_dot_data
     g.del_node('"\\n"')
     self.assertEqual(len(g.get_node_list()), 2)
     # if we try to remove a non-existing node : no problem
