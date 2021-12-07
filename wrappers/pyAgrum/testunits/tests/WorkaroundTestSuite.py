@@ -20,7 +20,7 @@
 # OR PERFORMANCE OF THIS SOFTWARE!
 import unittest
 
-import pydot as dot
+import pydotplus as dot
 
 from pyAgrumTestSuite import pyAgrumTestCase, addTests
 
@@ -35,7 +35,7 @@ class WorkaroundTestCase(pyAgrumTestCase):
     g = dot.graph_from_dot_data('''graph G {
   A;B;
   A--B;
-}''')[0]
+}''')
     self.assertEqual(len(g.get_node_list()), 3)  # should be 2 if no bug while parsing.
 
     # workaround
