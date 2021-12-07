@@ -311,6 +311,9 @@ def MNinference2UGdot(mn, size=None, engine=None, evs=None, targets=None, nodeCo
 
   g = dot.graph_from_dot_data(dotstr)
 
+  # workaround for some badly parsed graph (pyparsing>=3.03)
+  g.del_node('"\\n"')
+
   if size is None:
     size = gum.config["notebook", "default_graph_inference_size"]
   g.set_size(size)
@@ -412,6 +415,9 @@ def MNinference2FactorGraphdot(mn, size=None, engine=None, evs=None, targets=Non
   dotstr += '}'
 
   g = dot.graph_from_dot_data(dotstr)
+
+  # workaround for some badly parsed graph (pyparsing>=3.03)
+  g.del_node('"\\n"')
 
   if size is None:
     size = gum.config["notebook", "default_graph_inference_size"]

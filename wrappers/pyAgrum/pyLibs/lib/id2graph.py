@@ -92,6 +92,9 @@ def ID2dot(diag, size=None):
 
   g = dot.graph_from_dot_data(res)
 
+  # workaround for some badly parsed graph (pyparsing>=3.03)
+  g.del_node('"\\n"')
+
   if size is None:
     size = gum.config["influenceDiagram", "default_id_size"]
   g.set_size(size)
@@ -170,7 +173,7 @@ def LIMIDinference2dot(diag, size, engine, evs, targets):
         filename = temp_dir + \
                    hashlib.md5(name.encode()).hexdigest() + "." + \
                    gum.config["notebook", "graph_format"]
-        saveFigProba(ie.posterior(name), filename, bgcol=bgcolor, util=ie.posteriorUtility(nid), txtcolor=fgcolor)
+        saveFigProba(ie.posterior(name), filename, bgcolor=bgcolor, util=ie.posteriorUtility(nid), txtcolor=fgcolor)
         dotstr += f' "{name}" [shape=rectangle,image="{filename}",label="", {colorattribute}];\n'
       else:
         dotstr += f' "{name}" [{colorattribute},shape={shape},{styleattribute}]'
@@ -203,6 +206,9 @@ def LIMIDinference2dot(diag, size, engine, evs, targets):
   dotstr += "}"
 
   g = dot.graph_from_dot_data(dotstr)
+
+  # workaround for some badly parsed graph (pyparsing>=3.03)
+  g.del_node('"\\n"')
 
   if size is None:
     size = gum.config["influenceDiagram", "default_id_inference_size"]

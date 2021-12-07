@@ -60,8 +60,14 @@ def export(model, filename, **kwargs):
     fig = CN2dot(model, **kwargs)
   elif hasattr(model, "toDot"):
     fig = dot.graph_from_dot_data(model.toDot(), **kwargs)
+
+    # workaround for some badly parsed graph (pyparsing>=3.03)
+    fig.del_node('"\\n"')
   elif isinstance(model,str):
     fig = dot.graph_from_dot_data(model)
+
+    # workaround for some badly parsed graph (pyparsing>=3.03)
+    fig.del_node('"\\n"')
   else:
     raise gum.InvalidArgument(
       "Argument model should be a PGM (BayesNet, MarkovNet or Influence Diagram) or has a method `toDot()` or is a string"

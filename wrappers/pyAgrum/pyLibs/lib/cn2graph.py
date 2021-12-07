@@ -239,7 +239,7 @@ def CNinference2dot(cn, size=None, engine=None, evs=None, targets=None, nodeColo
       filename = temp_dir + \
                  hashlib.md5(name.encode()).hexdigest() + "." + \
                  gum.config["notebook", "graph_format"]
-      saveFigProbaMinMax(ie.marginalMin(name), ie.marginalMax(name), filename, bgcol=bgcol)
+      saveFigProbaMinMax(ie.marginalMin(name), ie.marginalMax(name), filename, bgcolor=bgcol)
       dotstr += f' "{name}" [shape=rectangle,image="{filename}",label="", {colorattribute}];\n'
     else:
       dotstr += f' "{name}" [shape=polygon,sides=7,peripheries=1,{colorattribute}]'
@@ -272,6 +272,9 @@ def CNinference2dot(cn, size=None, engine=None, evs=None, targets=None, nodeColo
   dotstr += '}'
 
   g = dot.graph_from_dot_data(dotstr)
+
+  # workaround for some badly parsed graph (pyparsing>=3.03)
+  g.del_node('"\\n"')
 
   if size is None:
     size = gum.config["notebook", "default_graph_inference_size"]

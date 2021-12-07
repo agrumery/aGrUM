@@ -235,7 +235,7 @@ def BNinference2dot(bn, size=None, engine=None, evs=None, targets=None, nodeColo
       filename = temp_dir + \
                  hashlib.md5(name.encode()).hexdigest() + "." + \
                  gum.config["notebook", "graph_format"]
-      proba_histogram.saveFigProba(ie.posterior(name), filename, bgcol=bgcol)
+      proba_histogram.saveFigProba(ie.posterior(name), filename, bgcolor=bgcol)
       dotstr += f' "{name}" [shape=rectangle,image="{filename}",label="", {colorattribute}];\n'
     else:
       dotstr += f' "{name}" [{colorattribute}]'
@@ -269,6 +269,9 @@ def BNinference2dot(bn, size=None, engine=None, evs=None, targets=None, nodeColo
   dotstr += '}'
 
   g = dot.graph_from_dot_data(dotstr)
+
+  # workaround for some badly parsed graph (pyparsing>=3.03)
+  g.del_node('"\\n"')
 
   if size is None:
     size = gum.config["notebook", "default_graph_inference_size"]

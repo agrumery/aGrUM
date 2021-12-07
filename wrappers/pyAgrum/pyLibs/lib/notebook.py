@@ -1181,7 +1181,12 @@ def show(model, **kwargs):
   elif isinstance(model, gum.Potential):
     showPotential(model)
   elif hasattr(model, "toDot"):
-    showDot(dot.graph_from_dot_data(model.toDot()), **kwargs)
+    g=dot.graph_from_dot_data(model.toDot())
+
+    # workaround for some badly parsed graph (pyparsing>=3.03)
+    g.del_node('"\\n"')
+
+    showDot(g, **kwargs)
   else:
     raise gum.InvalidArgument(
       "Argument model should be a PGM (BayesNet, MarkovNet, Influence Diagram or Potential or ..."
