@@ -27,8 +27,7 @@ class pyAgrumTestCase(unittest.TestCase):
     self.nbLoopForApproximatedTest = 10
 
   def agrumSrcDir(self, s):
-    t = s.split("ressources/")
-    return os.path.dirname(__file__) + "/resources/" + t[1]
+    return os.path.dirname(__file__) + "/resources/" + s
 
   def assertListsAlmostEqual(self, seq1, seq2, places=7, delta=None):
     sequence = (tuple, list, ndarray)

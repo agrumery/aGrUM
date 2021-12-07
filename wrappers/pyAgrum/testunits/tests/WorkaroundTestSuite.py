@@ -22,7 +22,7 @@ import unittest
 
 import pydotplus as dot
 
-from pyAgrumTestSuite import pyAgrumTestCase, addTests
+from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 
 class WorkaroundTestCase(pyAgrumTestCase):

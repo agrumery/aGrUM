@@ -23,7 +23,7 @@ import unittest
 import numpy
 import math
 import pyAgrum as gum
-from pyAgrumTestSuite import pyAgrumTestCase, addTests
+from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 
 class BayesNetFragmentTestCase(pyAgrumTestCase):

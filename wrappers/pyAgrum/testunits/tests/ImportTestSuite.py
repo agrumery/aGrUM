@@ -22,7 +22,7 @@ import unittest
 import logging
 import sys
 
-from pyAgrumTestSuite import pyAgrumTestCase, addTests
+from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 try:
   import sklearn

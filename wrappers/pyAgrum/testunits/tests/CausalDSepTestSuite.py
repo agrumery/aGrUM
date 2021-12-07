@@ -22,7 +22,7 @@ import unittest
 from typing import Set, List
 
 import pyAgrum as gum
-from pyAgrumTestSuite import pyAgrumTestCase, addTests
+from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 import pyAgrum.causal as csl
 
 import logging

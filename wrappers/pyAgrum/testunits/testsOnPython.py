@@ -1,6 +1,22 @@
-#! /usr/bin/env python
-# -*- coding: utf-8 -*-
-# -*- encoding: UTF-8 -*-
+# (c) Copyright by Pierre-Henri Wuillemin, UPMC, 2017
+# (pierre-henri.wuillemin@lip6.fr)
+# Permission to use, copy, modify, and distribute this
+# software and its documentation for any purpose and
+# without fee or royalty is hereby granted, provided
+# that the above copyright notice appear in all copies
+# and that both that copyright notice and this permission
+# notice appear in supporting documentation or portions
+# thereof, including modifications, that you make.
+# THE AUTHOR P.H. WUILLEMIN  DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE, INCLUDING ALL IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT
+# SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, INDIRECT
+# OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER
+# RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER
+# IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
+# ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
+# OR PERFORMANCE OF THIS SOFTWARE!
+
 from __future__ import print_function
 
 import os
@@ -81,38 +97,38 @@ from tests import WorkaroundTestSuite
 import time
 
 tl = list()
-#tl.append(AggregatorsForBNTestSuite.ts)
-#tl.append(AllIncrementalInferenceTestSuite.ts)
-#tl.append(BayesNetTestSuite.ts)
-#tl.append(BayesNetFragmentTestSuite.ts)
-#
-#if pandasFound and sklearnFound:
-#  tl.append(BNClassifierTestSuite.ts)
-#
-#tl.append(BNDatabaseGeneratorTestSuite.ts)
-#tl.append(BNLearnerTestSuite.ts)
-#tl.append(BNListenerTestSuite.ts)
-#tl.append(ConfigTestSuite.ts)
-#tl.append(EssentialGraphTestSuite.ts)
-#tl.append(GraphTestSuite.ts)
-#tl.append(ICIModelsForBNTestSuite.ts)
-#tl.append(ImportTestSuite.ts)
-#tl.append(InfluenceDiagramTestSuite.ts)
-#tl.append(InstantiationTestSuite.ts)
-#tl.append(JTInferenceTestSuite.ts)
-#tl.append(JunctionTreeTestSuite.ts)
-#tl.append(LazyPropagationTestSuite.ts)
-#tl.append(LoopyBeliefPropagationTestSuite.ts)
-#tl.append(MarkovBlanketTestSuite.ts)
-#tl.append(MarkovNetTestSuite.ts)
-#tl.append(PotentialTestSuite.ts)
-#tl.append(PRMexplorerTestSuite.ts)
-#tl.append(SamplingTestSuite.ts)
-#tl.append(VariablesTestSuite.ts)
-#tl.append(CausalASTTestSuite.ts)
-#tl.append(CausalDSepTestSuite.ts)
-#tl.append(CausalModelTestSuite.ts)
-#tl.append(CausalNonRegressionTestSuite.ts)
+tl.append(AggregatorsForBNTestSuite.ts)
+tl.append(AllIncrementalInferenceTestSuite.ts)
+tl.append(BayesNetTestSuite.ts)
+tl.append(BayesNetFragmentTestSuite.ts)
+
+if pandasFound and sklearnFound:
+  tl.append(BNClassifierTestSuite.ts)
+
+tl.append(BNDatabaseGeneratorTestSuite.ts)
+tl.append(BNLearnerTestSuite.ts)
+tl.append(BNListenerTestSuite.ts)
+tl.append(ConfigTestSuite.ts)
+tl.append(EssentialGraphTestSuite.ts)
+tl.append(GraphTestSuite.ts)
+tl.append(ICIModelsForBNTestSuite.ts)
+tl.append(ImportTestSuite.ts)
+tl.append(InfluenceDiagramTestSuite.ts)
+tl.append(InstantiationTestSuite.ts)
+tl.append(JTInferenceTestSuite.ts)
+tl.append(JunctionTreeTestSuite.ts)
+tl.append(LazyPropagationTestSuite.ts)
+tl.append(LoopyBeliefPropagationTestSuite.ts)
+tl.append(MarkovBlanketTestSuite.ts)
+tl.append(MarkovNetTestSuite.ts)
+tl.append(PotentialTestSuite.ts)
+tl.append(PRMexplorerTestSuite.ts)
+tl.append(SamplingTestSuite.ts)
+tl.append(VariablesTestSuite.ts)
+tl.append(CausalASTTestSuite.ts)
+tl.append(CausalDSepTestSuite.ts)
+tl.append(CausalModelTestSuite.ts)
+tl.append(CausalNonRegressionTestSuite.ts)
 tl.append(WorkaroundTestSuite.ts)
 
 tests = unittest.TestSuite(tl)

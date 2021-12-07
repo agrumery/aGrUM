@@ -23,14 +23,14 @@ import unittest
 import numpy
 import pandas as pd
 import pyAgrum as gum
-from pyAgrumTestSuite import pyAgrumTestCase, addTests
+from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 import pyAgrum.skbn as bnc
 
 
 class BNCLassifierTestCase(pyAgrumTestCase):
   def testFitFromCsv(self):
-    csvfile = self.agrumSrcDir('src/testunits/ressources/miniasia.csv')
+    csvfile = self.agrumSrcDir('miniasia.csv')
 
     asia_target_column = 'lung_cancer'
 
@@ -44,7 +44,7 @@ class BNCLassifierTestCase(pyAgrumTestCase):
     self.assertGreater(classif1.MarkovBlanket.size(), 0)
 
   def testClassifierFromDf(self):
-    csvfile = self.agrumSrcDir('src/testunits/ressources/miniasia.csv')
+    csvfile = self.agrumSrcDir('miniasia.csv')
 
     df_asia = pd.read_csv(csvfile)
     asia_target_column = 'lung_cancer'

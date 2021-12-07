@@ -22,7 +22,7 @@ import unittest
 
 import numpy
 import pyAgrum as gum
-from pyAgrumTestSuite import pyAgrumTestCase, addTests
+from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 
 class InfluenceDiagramTestCase(pyAgrumTestCase):

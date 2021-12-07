@@ -25,7 +25,7 @@ import sys
 import numpy as np
 import pyAgrum as gum
 import unittest
-from pyAgrumTestSuite import pyAgrumTestCase, addTests
+from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 
 class PotentialTestCase(pyAgrumTestCase):
