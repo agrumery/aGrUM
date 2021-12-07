@@ -250,6 +250,10 @@ def getGraph(gr, size=None):
 
 def _from_dotstring(dotstring):
   g = dot.graph_from_dot_data(dotstring)
+
+  # workaround for some badly parsed graph (pyparsing>=3.03)
+  g.del_node('"\\n"')
+
   g.set_bgcolor("transparent")
   for e in g.get_edges():
     if e.get_color() is None:
@@ -259,6 +263,7 @@ def _from_dotstring(dotstring):
       n.set_color(getBlackInTheme())
     if n.get_fontcolor() is None:
       n.set_fontcolor(getBlackInTheme())
+
   return g
 
 

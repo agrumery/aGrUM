@@ -33,12 +33,12 @@ def _stats(pot):
     x = v.numerical(i)
     mu += p * x
     mu2 += p * x * x
-  return (mu, math.sqrt(mu2 - mu * mu))
+  return mu, math.sqrt(mu2 - mu * mu)
 
 
-def _getTitleHisto(p, showMuSigma=True):
+def _getTitleHisto(p, show_mu_sigma=True):
   var = p.variable(0)
-  if var.varType() == 1 or not showMuSigma:  # Labelized
+  if var.varType() == 1 or not show_mu_sigma:  # type=1 is for gum.LabelizedVariable
     return var.name()
 
   (mu, std) = _stats(p)
@@ -129,7 +129,7 @@ def _getProbaLine(p, scale=1.0, txtcolor="black"):
 
   ax.set_facecolor('w')
   llv = [lv[int(i)] for i in ax.get_xticks() if i in ra]
-  ax.set_xticks(ax.get_xticks()) # to avoid a warning...
+  ax.set_xticks(ax.get_xticks())  # to avoid a warning...
   ax.set_xticklabels(llv, color=txtcolor)
 
   return fig
@@ -194,7 +194,7 @@ def _getProbaV(p, scale=1.0, util=None, txtcolor="black"):
   ax.set_ylim(bottom=0, top=p.max())
   ax.set_xticks(ra)
   ax.set_xticklabels(lv, rotation='vertical', color=txtcolor)
-  # if utility, we do not show the mean/sigma of the proba.
+  # if utility, we do not show the mean/sigma of the distribution.
   ax.set_title(_getTitleHisto(p, util is None), color=txtcolor)
   ax.get_yaxis().grid(True)
   ax.margins(0)
@@ -205,12 +205,13 @@ def _getProbaV(p, scale=1.0, util=None, txtcolor="black"):
 
 def _getProbaH(p, scale=1.0, util=None, txtcolor="black"):
   """
-  compute the representation of an horizontal histogram for a mono-dim Potential
+  compute the representation of a horizontal histogram for a mono-dim Potential
 
   Parameters
   ----------
     p : pyAgrum.Potential
       the mono-dimensional Potential
+    scale : scale for the size of the graph
     util : pyAgrum.Potential
       an (optional) secondary Potential (values in labels)
     txtcolor : str
@@ -266,7 +267,7 @@ def _getProbaH(p, scale=1.0, util=None, txtcolor="black"):
   ax.set_yticklabels(vx, color=txtcolor)
   ax.set_xticklabels([])
   # ax.set_xlabel('Probability')
-  # if utility, we do not show the mean/sigma of the proba.
+  # if utility, we do not show the mean/sigma of the distribution.
   ax.set_title(_getTitleHisto(p, util is None), color=txtcolor)
   ax.get_xaxis().grid(True)
   ax.margins(0)
@@ -276,12 +277,14 @@ def _getProbaH(p, scale=1.0, util=None, txtcolor="black"):
 
 def proba2histo(p, scale=1.0, util=None, txtcolor="Black"):
   """
-  compute the representation of an histogram for a mono-dim Potential
+  compute the representation of a histogram for a mono-dim Potential
 
   Parameters
   ----------
     p : pyAgrum.Potential
       the mono-dimensional Potential
+    scale : float
+      scale for the size of the graph
     util : pyAgrum.Potential
       an (optional) secondary Potential (values in labels)
     txtcolor : str
@@ -304,14 +307,16 @@ def proba2histo(p, scale=1.0, util=None, txtcolor="Black"):
   return _getProbaH(p, scale, util=util, txtcolor=txtcolor)
 
 
-def saveFigProba(p, filename, util=None, bgcol=None, txtcolor="Black"):
+def saveFigProba(p, filename, util=None, bgcolor=None, txtcolor="Black"):
   """
-  save a figure  which is the representation of an histogram for a mono-dim Potential
+  save a figure  which is the representation of a histogram for a mono-dim Potential
 
   Parameters
   ----------
     p : pyAgrum.Potential
       the mono-dimensional Potential
+    filename: str
+      the name of the saved file
     util : pyAgrum.Potential
       an (optional) secondary Potential (values in labels)
     bgcolor: str
@@ -321,10 +326,10 @@ def saveFigProba(p, filename, util=None, bgcol=None, txtcolor="Black"):
   """
   fig = proba2histo(p, util=util, txtcolor=txtcolor)
 
-  if bgcol is None:
+  if bgcolor is None:
     fc = gum.config["notebook", "figure_facecolor"]
   else:
-    fc = bgcol
+    fc = bgcolor
 
   fig.savefig(filename, bbox_inches='tight', transparent=False, facecolor=fc,
               pad_inches=0.05, dpi=fig.dpi, format=gum.config["notebook", "graph_format"])
@@ -333,12 +338,14 @@ def saveFigProba(p, filename, util=None, bgcol=None, txtcolor="Black"):
 
 def probaMinMaxH(pmin, pmax, scale=1.0, txtcolor="black"):
   """
-  compute the representation of an horizontal histogram for a mono-dim Potential
+  compute the representation of a horizontal histogram for a mono-dim Potential
 
   Parameters
   ----------
     pmin,pmax : pyAgrum.Potential
       two mono-dimensional Potential
+    scale : float
+      scale for the size of the graph
     txtcolor : str
       color for text
 
@@ -396,9 +403,9 @@ def probaMinMaxH(pmin, pmax, scale=1.0, txtcolor="black"):
   return fig
 
 
-def saveFigProbaMinMax(pmin, pmax, filename, bgcol=None, txtcolor="Black"):
+def saveFigProbaMinMax(pmin, pmax, filename, bgcolor=None, txtcolor="Black"):
   """
-  save a figure  which is the representation of an histogram for a bi-Potential (min,max)
+  save a figure  which is the representation of a histogram for a bi-Potential (min,max)
 
   Parameters
   ----------
@@ -406,6 +413,8 @@ def saveFigProbaMinMax(pmin, pmax, filename, bgcol=None, txtcolor="Black"):
       the mono-dimensional Potential for min values
     pmax : pyAgrum.Potential
       the mono-dimensional Potential for max value
+    filename : str
+      the name of the saved file
     bgcolor: str
       color for background (transparent if None)
     txtcolor : str
@@ -413,10 +422,10 @@ def saveFigProbaMinMax(pmin, pmax, filename, bgcol=None, txtcolor="Black"):
   """
   fig = probaMinMaxH(pmin, pmax, txtcolor=txtcolor)
 
-  if bgcol is None:
+  if bgcolor is None:
     fc = gum.config["notebook", "figure_facecolor"]
   else:
-    fc = bgcol
+    fc = bgcolor
 
   fig.savefig(filename, bbox_inches='tight', transparent=False, facecolor=fc,
               pad_inches=0.05, dpi=fig.dpi, format=gum.config["notebook", "graph_format"])

@@ -76,41 +76,44 @@ from tests import CausalDSepTestSuite
 from tests import CausalModelTestSuite
 from tests import CausalNonRegressionTestSuite
 
+from tests import WorkaroundTestSuite
+
 import time
 
 tl = list()
-tl.append(AggregatorsForBNTestSuite.ts)
-tl.append(AllIncrementalInferenceTestSuite.ts)
-tl.append(BayesNetTestSuite.ts)
-tl.append(BayesNetFragmentTestSuite.ts)
-
-if pandasFound and sklearnFound:
-  tl.append(BNClassifierTestSuite.ts)
-
-tl.append(BNDatabaseGeneratorTestSuite.ts)
-tl.append(BNLearnerTestSuite.ts)
-tl.append(BNListenerTestSuite.ts)
-tl.append(ConfigTestSuite.ts)
-tl.append(EssentialGraphTestSuite.ts)
-tl.append(GraphTestSuite.ts)
-tl.append(ICIModelsForBNTestSuite.ts)
-tl.append(ImportTestSuite.ts)
-tl.append(InfluenceDiagramTestSuite.ts)
-tl.append(InstantiationTestSuite.ts)
-tl.append(JTInferenceTestSuite.ts)
-tl.append(JunctionTreeTestSuite.ts)
-tl.append(LazyPropagationTestSuite.ts)
-tl.append(LoopyBeliefPropagationTestSuite.ts)
-tl.append(MarkovBlanketTestSuite.ts)
-tl.append(MarkovNetTestSuite.ts)
-tl.append(PotentialTestSuite.ts)
-tl.append(PRMexplorerTestSuite.ts)
-tl.append(SamplingTestSuite.ts)
-tl.append(VariablesTestSuite.ts)
-tl.append(CausalASTTestSuite.ts)
-tl.append(CausalDSepTestSuite.ts)
-tl.append(CausalModelTestSuite.ts)
-tl.append(CausalNonRegressionTestSuite.ts)
+#tl.append(AggregatorsForBNTestSuite.ts)
+#tl.append(AllIncrementalInferenceTestSuite.ts)
+#tl.append(BayesNetTestSuite.ts)
+#tl.append(BayesNetFragmentTestSuite.ts)
+#
+#if pandasFound and sklearnFound:
+#  tl.append(BNClassifierTestSuite.ts)
+#
+#tl.append(BNDatabaseGeneratorTestSuite.ts)
+#tl.append(BNLearnerTestSuite.ts)
+#tl.append(BNListenerTestSuite.ts)
+#tl.append(ConfigTestSuite.ts)
+#tl.append(EssentialGraphTestSuite.ts)
+#tl.append(GraphTestSuite.ts)
+#tl.append(ICIModelsForBNTestSuite.ts)
+#tl.append(ImportTestSuite.ts)
+#tl.append(InfluenceDiagramTestSuite.ts)
+#tl.append(InstantiationTestSuite.ts)
+#tl.append(JTInferenceTestSuite.ts)
+#tl.append(JunctionTreeTestSuite.ts)
+#tl.append(LazyPropagationTestSuite.ts)
+#tl.append(LoopyBeliefPropagationTestSuite.ts)
+#tl.append(MarkovBlanketTestSuite.ts)
+#tl.append(MarkovNetTestSuite.ts)
+#tl.append(PotentialTestSuite.ts)
+#tl.append(PRMexplorerTestSuite.ts)
+#tl.append(SamplingTestSuite.ts)
+#tl.append(VariablesTestSuite.ts)
+#tl.append(CausalASTTestSuite.ts)
+#tl.append(CausalDSepTestSuite.ts)
+#tl.append(CausalModelTestSuite.ts)
+#tl.append(CausalNonRegressionTestSuite.ts)
+tl.append(WorkaroundTestSuite.ts)
 
 tests = unittest.TestSuite(tl)
 

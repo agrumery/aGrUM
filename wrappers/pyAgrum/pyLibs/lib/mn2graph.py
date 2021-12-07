@@ -277,7 +277,7 @@ def MNinference2UGdot(mn, size=None, engine=None, evs=None, targets=None, nodeCo
       filename = temp_dir + \
                  hashlib.md5(name.encode()).hexdigest() + "." + \
                  gum.config["notebook", "graph_format"]
-      saveFigProba(ie.posterior(name), filename, bgcol=bgcol)
+      saveFigProba(ie.posterior(name), filename, bgcolor=bgcol)
       dotstr += f' "{name}" [shape=rectangle,image="{filename}",label="", {colorattribute}];\n'
     else:
       dotstr += f' "{name}" [{colorattribute}]'
@@ -390,7 +390,7 @@ def MNinference2FactorGraphdot(mn, size=None, engine=None, evs=None, targets=Non
       filename = temp_dir + \
                  hashlib.md5(name.encode()).hexdigest() + "." + \
                  gum.config["notebook", "graph_format"]
-      saveFigProba(ie.posterior(name), filename, bgcol=bgcol)
+      saveFigProba(ie.posterior(name), filename, bgcolor=bgcol)
       dotstr += f' "{name}" [shape=rectangle,image="{filename}",label="", {colorattribute}];\n'
     else:
       dotstr += f' "{name}" [shape=rectangle,margin=0.04,width=0,height=0,{colorattribute}];\n'

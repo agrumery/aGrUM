@@ -20,16 +20,32 @@
 # OR PERFORMANCE OF THIS SOFTWARE!
 import unittest
 
-import pyAgrum as gum
+import pydot as dot
+
 from pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 
-class TestConfig(pyAgrumTestCase):
-  def testReadOnlyConfigurationStructure(self):
-    with self.assertRaises(SyntaxError):
-      gum.config["gogo", "gaga"] = 0
-    with self.assertRaises(SyntaxError):
-      gum.config["theme", "gaga"] = 0
+class WorkaroundTestCase(pyAgrumTestCase):
+  """
+  Those tests will hopefully failed one day : they check bugs that did need workarounds in pyAgrum's code
+  """
+
+  def testExtraNodeBecauseDotParser(self):
+    # pydot (and pydot) creates an extra-node with newline as content.
+    g = dot.graph_from_dot_data('''graph G {
+  A;B;
+  A--B;
+}''')[0]
+    self.assertEqual(len(g.get_node_list()), 3)  # should be 2 if no bug while parsing.
+
+    # workaround
+    # cf. pyAgrum.lib.notebook.py:255
+    g.del_node('"\\n"')
+    self.assertEqual(len(g.get_node_list()), 2)
+    # if we try to remove a non-existing node : no problem
+    g.del_node('"\\n"')
+    self.assertEqual(len(g.get_node_list()), 2)
+
 
 ts = unittest.TestSuite()
-addTests(ts, TestConfig)
+addTests(ts, WorkaroundTestCase)
