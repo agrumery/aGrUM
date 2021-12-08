@@ -1,5 +1,15 @@
 # aGrUM Changelog
 
+## Changelog for 0.22.5
+
+This release mainly deals with providing a workaround to a pydotplus/pyparsing bug affecting several graph visualizations in pyAgrum. 
+
+* pyAgrum
+
+  * workaround to the pydotplus/pyparsing bug : "adding an empty node".
+  * remove the use of deprecated distutils in act.
+  * (approximate) fix labels in x-axis for lined-histogram.
+
 ## Changelog for 0.22.4
 
 This release aims to provide a number of new configurations for aGrUM and pyAgrum:
