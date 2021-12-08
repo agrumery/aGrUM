@@ -90,6 +90,7 @@ def initParams():
   cfg.default['build'] = "all"
   cfg.default['noSaveParams'] = False
   cfg.default['correction'] = False
+  cfg.default['profiling'] = False
 
   cfg.actions = set(
       "lib test install doc clean show uninstall package guideline wheel nightly_wheel".split())
@@ -234,7 +235,11 @@ def configureOptions(current):
                         action="store_true",
                         dest="correction",
                         default=False)
-
+  cfg.parser.add_option("", "--profiling",
+                        help="act will add options for profiling",
+                        action="store_true",
+                        dest="profiling",
+                        default=False)
 
 def configureColors(no_fun=False):
   if no_fun or not cfg.withColour:

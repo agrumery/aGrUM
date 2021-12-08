@@ -106,6 +106,11 @@ def getCmake(current, target):
   else:
     line += " -DCMAKE_GUM_THREADS=stl"
 
+  if current["profiling"]:
+    line += " -DUSE_PROFILE=ON"
+  else:
+    line += " -DUSE_PROFILE=OFF"
+
   return line
 
 

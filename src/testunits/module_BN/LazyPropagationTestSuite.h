@@ -111,7 +111,7 @@ namespace gum_tests {
     }
 
     // Testing when there is no evidence
-    void xtestCreationAndInference() {
+    void testCreationAndInference() {
       fill(*bn);
       // Testing the inference
       gum::LazyPropagation< double >* inf = nullptr;
@@ -133,7 +133,7 @@ namespace gum_tests {
       inf.makeInference();
     }
 
-    void xtestMarginal() {
+    void testMarginal() {
       fill(*bn);
       gum::LazyPropagation< double >       inf(bn);
       gum::ShaferShenoyInference< double > inf2(bn);
@@ -155,7 +155,7 @@ namespace gum_tests {
       TS_ASSERT(equalPotentials(inf.posterior(i5), inf2.posterior(i5)))
     }
 
-    void xtestMarginalWithEvidence() {
+    void testMarginalWithEvidence() {
       fill(*bn);
       gum::List< const gum::Potential< double >* > e_list;
       e_list.insert(e_i1);
@@ -214,7 +214,7 @@ namespace gum_tests {
     }
 
     // Testing when there is no evidence
-    void xtestJoint() {
+    void testJoint() {
       fill(*bn);
       // Testing the inference
       gum::LazyPropagation< double > inf(bn);
@@ -227,7 +227,7 @@ namespace gum_tests {
     }
 
     // Testing when there is no evidence
-    void xtestJoint2() {
+    void testJoint2() {
       fill(*bn);
       // Testing the inference
       gum::LazyPropagation< double > inf(bn);
@@ -248,7 +248,7 @@ namespace gum_tests {
     }
 
     // testing information methods
-    void xtestInformationMethods() {
+    void testInformationMethods() {
       fill(*bn);
 
       gum::LazyPropagation< double > inf(bn);
@@ -277,7 +277,7 @@ namespace gum_tests {
 
       //@TODO : test computations and not only good behaviour
     }
-    void xtestInformationMethodsWithNames() {
+    void testInformationMethodsWithNames() {
       fill(*bn);
 
       gum::LazyPropagation< double > inf(bn);
@@ -308,7 +308,7 @@ namespace gum_tests {
       //@TODO : test computations and not only good behaviour
     }
 
-    void xtestSmartManagementOfJointTarget() {
+    void testSmartManagementOfJointTarget() {
       fill(*bn);
 
       gum::LazyPropagation< double > inf(bn);
@@ -325,7 +325,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(inf.nbrJointTargets(), (gum::Size)2)
     }
 
-    void xtestEvidenceProbability() {
+    void testEvidenceProbability() {
       fill(*bn);
       gum::LazyPropagation< double > inf(bn);
       inf.setRelevantPotentialsFinderType(gum::RelevantPotentialsFinderType::FIND_ALL);
@@ -341,7 +341,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(proba, proba2, TS_GUM_SMALL_ERROR)
     }
 
-    void xtestEvidenceProbability2() {
+    void testEvidenceProbability2() {
       fill(*bn);
       gum::LazyPropagation< double > inf(bn);
       inf.makeInference();
@@ -356,7 +356,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(proba, proba2, TS_GUM_SMALL_ERROR)
     }
 
-    void xtestEvidenceProbabilityAsia() {
+    void testEvidenceProbabilityAsia() {
       std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
@@ -382,7 +382,7 @@ namespace gum_tests {
     }
 
 
-    void xtestAsia() {
+    void testAsia() {
       std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
@@ -418,7 +418,7 @@ namespace gum_tests {
       }
     }
 
-    void xtestAlarm() {
+    void testAlarm() {
       std::string              file = GET_RESSOURCES_PATH("bif/alarm.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
@@ -498,7 +498,7 @@ namespace gum_tests {
         delete pot;
     }
 
-    void xtestAsia2() {
+    void testAsia2() {
       std::string              file = GET_RESSOURCES_PATH("bif/asia3.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
@@ -554,7 +554,7 @@ namespace gum_tests {
       }
     }
 
-    void xtestAsia3() {
+    void testAsia3() {
       std::string              file = GET_RESSOURCES_PATH("bif/asia3.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
@@ -612,7 +612,7 @@ namespace gum_tests {
       }
     }
 
-    void xtestAsia4() {
+    void testAsia4() {
       std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
