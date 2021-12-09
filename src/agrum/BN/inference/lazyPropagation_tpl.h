@@ -38,9 +38,6 @@
 #  include <agrum/tools/multidim/utils/operators/multiDimCombineAndProjectDefault.h>
 #  include <agrum/tools/multidim/utils/operators/multiDimProjection.h>
 
-#define MY_SCHEDULER SchedulerParallel<>
-//#define MY_SCHEDULER SchedulerSequential<>
-
 
 namespace gum {
   // default constructor
@@ -667,6 +664,7 @@ namespace gum {
     // removed from the potential
     const auto& evidence      = this->evidence();
     const auto& hard_evidence = this->hardEvidence();
+    Schedule<>  schedule;
     for (const auto node: dag) {
       if (_graph_.exists(node) || _hard_ev_nodes_.contains(node)) {
         const Potential< GUM_SCALAR >& cpt = bn.cpt(node);
@@ -702,7 +700,7 @@ namespace gum {
           } else {
             // perform the projection with a combine and project instance
             Set< const DiscreteVariable* > hard_variables;
-            Schedule<>                     schedule;
+
             _ScheduleMultiDimSet_          marg_cpt_set;
             const auto sched_cpt = schedule.insertTable< Potential< GUM_SCALAR > >(cpt, false);
             marg_cpt_set.insert(sched_cpt);
@@ -728,8 +726,6 @@ namespace gum {
                         "the projection of a potential containing "
                            << "hard evidence is empty!");
             }
-            MY_SCHEDULER scheduler;
-            scheduler.execute(schedule);
             auto projected_pot = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
                static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
                   *new_cpt_list.begin()));
@@ -741,6 +737,7 @@ namespace gum {
         }
       }
     }
+    this->scheduler().execute(schedule);
 
     // we shall now add all the potentials of the soft evidence
     for (const auto node: this->softEvidenceNodes()) {
@@ -915,11 +912,11 @@ namespace gum {
     // their instantiations can have changed. So, if there is an entry
     // for node in  _constants_, there will still be such an entry after
     // performing the new projections. Idem for  _node_to_hard_ev_projected_CPTs_
+    Schedule<> schedule;
     for (const auto node: nodes_with_projected_CPTs_changed) {
       // perform the projection with a combine and project instance
       const Potential< GUM_SCALAR >& cpt       = bn.cpt(node);
       const auto&                    variables = cpt.variablesSequence();
-      Schedule<>                     schedule;
       _ScheduleMultiDimSet_          marg_cpt_set;
       const auto sched_cpt = schedule.insertTable< Potential< GUM_SCALAR > >(cpt, false);
       marg_cpt_set.insert(sched_cpt);
@@ -947,8 +944,6 @@ namespace gum {
                   "the projection of a potential containing "
                      << "hard evidence is empty!");
       }
-      MY_SCHEDULER scheduler;
-      scheduler.execute(schedule);
       auto projected_pot = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
          static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(*new_cpt_list.begin()));
       const_cast< ScheduleOperation<>* >(schedule.scheduleMultiDimCreator(projected_pot))
@@ -956,6 +951,7 @@ namespace gum {
       _clique_potentials_[_node_to_clique_[node]].insert(projected_pot);
       _node_to_hard_ev_projected_CPTs_.insert(node, projected_pot);
     }
+    this->scheduler().execute(schedule);
 
     // update the constants
     const auto& hard_evidence = this->hardEvidence();
@@ -1396,8 +1392,7 @@ namespace gum {
       _collectMessage_(schedule, set.second, set.second);
 
     // really perform the computations
-    MY_SCHEDULER scheduler;
-    scheduler.execute(schedule);
+    this->scheduler().execute(schedule);
   }
 
 
@@ -1412,8 +1407,8 @@ namespace gum {
       return new Potential< GUM_SCALAR >(*(this->evidence()[id]));
     }
 
-    Schedule<>            schedule;
-    MY_SCHEDULER scheduler;
+    Schedule<> schedule;
+    auto&      scheduler = this->scheduler();
 
     // if we still need to perform some inference task, do it (this should
     // already have been done by makeInference_)
@@ -1518,8 +1513,8 @@ namespace gum {
       }
     }
 
-    Schedule<>            schedule;
-    MY_SCHEDULER scheduler;
+    Schedule<> schedule;
+    auto&      scheduler = this->scheduler();
 
     // if all the nodes have received hard evidence, then compute the
     // joint posterior directly by multiplying the hard evidence potentials

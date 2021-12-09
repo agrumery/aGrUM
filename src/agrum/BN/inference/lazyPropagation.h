@@ -40,8 +40,7 @@
 #include <agrum/tools/graphs/algorithms/triangulations/defaultTriangulation.h>
 
 #include <agrum/tools/graphicalModels/inference/scheduler/schedule.h>
-#include <agrum/tools/graphicalModels/inference/scheduler/schedulerSequential.h>
-#include <agrum/tools/graphicalModels/inference/scheduler/schedulerParallel.h>
+#include <agrum/tools/graphicalModels/inference/scheduler/scheduledInference.h>
 
 
 namespace gum {
@@ -73,7 +72,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   class LazyPropagation:
       public JointTargetedInference< GUM_SCALAR >,
-      public EvidenceInference< GUM_SCALAR > {
+      public EvidenceInference< GUM_SCALAR >,
+      public ScheduledInference {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
