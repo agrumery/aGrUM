@@ -71,7 +71,8 @@ namespace gum {
     /// @{
 
     /// default constructor (construct an empty sequence)
-    explicit Schedule(const allocator_type& alloc = allocator_type());
+    explicit Schedule(const Size nb_ops = 100,
+                      const allocator_type& alloc = allocator_type());
 
     /// copy constructor
     Schedule(const Schedule< ALLOC >& from);
@@ -344,6 +345,9 @@ namespace gum {
 
     /// returns the ScheduleMultiDim corresponding to a given id
     const IScheduleMultiDim< ALLOC >* scheduleMultiDim(const NodeId id) const;
+
+    /// indicates whether the schedule contains a given ScheduleMultiDim
+    bool existsScheduleMultiDim(const NodeId id) const;
 
     /// returns the id of a given IScheduleMultiDim
     NodeId scheduleMultiDimId(const IScheduleMultiDim< ALLOC >* multidim) const;

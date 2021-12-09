@@ -156,6 +156,8 @@ namespace gum {
       throw std::bad_alloc();
     }
 
+    std::cout << "nb ops : " << _operations_.size() << std::endl;
+
     // execute the schedule
     for (const auto node : _operations_) {
       // try to execute the operation. If this raises an exception, then

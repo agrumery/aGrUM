@@ -1234,9 +1234,8 @@ namespace gum {
     // now, let's guarantee that all the potentials to be combined and projected
     // belong to the schedule
     for (const auto pot: pot_list) {
-      try {
+      if (!schedule.existsScheduleMultiDim(pot->id()))
         schedule.emplaceScheduleMultiDim(*pot);
-      } catch (DuplicateScheduleMultiDim&) {}
     }
 
     // remove the potentials corresponding to barren variables if we want

@@ -29,10 +29,12 @@
 
 #include <vector>
 #include <algorithm>
+#include <memory>
 #include <thread>
 #include <mutex>
 #include <atomic>
 #include <condition_variable>
+#include <chrono>
 
 #include <agrum/agrum.h>
 #include <agrum/tools/core/list.h>

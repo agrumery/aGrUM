@@ -43,7 +43,7 @@ namespace gum {
     if (_dag_.sizeNodes() == _node2op_.size()) return _dag_;
 
     // now, we should reconstruct the graph. First, we add all the nodes
-    DAG dag;
+    DAG dag (_node2op_.size(), true, 2 * _node2op_.size(), true); // estimated default size
     for (auto iter = _node2op_.cbegin(); iter != _node2op_.cend(); ++iter) {
       dag.addNodes(iter.first());
     }
@@ -214,8 +214,9 @@ namespace gum {
 
   /// default constructor (construct an empty set of operations)
   template < template < typename > class ALLOC >
-  Schedule< ALLOC >::Schedule(const typename Schedule< ALLOC >::allocator_type& alloc) :
-      ALLOC< Idx >(alloc) {
+  Schedule< ALLOC >::Schedule(const Size nb_ops,
+                              const typename Schedule< ALLOC >::allocator_type& alloc) :
+      ALLOC< Idx >(alloc), _dag_(nb_ops, true, 2 * nb_ops, true) {
     // for debugging purposes
     GUM_CONSTRUCTOR(Schedule);
   }
@@ -409,12 +410,12 @@ namespace gum {
           // already examined these multidims, we have already put the mapping
           // between this's and from's multidim into Bijection this_multidim2from
           bool found = false;
-          try {
+          if (this_multidim2from.existsFirst(this_args[i])) {
             if (this_multidim2from.second(this_args[i]) != from_args[i])
               return false;
             else
               found = true;
-          } catch (NotFound&) {}
+          }
 
           if (!found) {
             // here, this is the first time we encounter both multidims. Hence,
@@ -622,6 +623,7 @@ namespace gum {
         new_op->~ScheduleOperation< ALLOC >();
         alloc.deallocate(new_op, 1);
 
+        std::cout << "toto" << std::endl;
         GUM_ERROR(UnknownScheduleMultiDim,
                   "the " << _paramString_(i + 1) << " argument of the operation is not known by"
                          << " the schedule");
@@ -878,6 +880,11 @@ namespace gum {
     return _multidim2id_.first(id);
   }
 
+  /// indicates whether the schedule contains a given ScheduleMultiDim
+  template < template < typename > class ALLOC >
+  INLINE bool Schedule< ALLOC >::existsScheduleMultiDim(const NodeId id) const {
+    return _multidim2id_.existsSecond(id);
+  }
 
   /// returns the id of a given IScheduleMultiDim
   template < template < typename > class ALLOC >
