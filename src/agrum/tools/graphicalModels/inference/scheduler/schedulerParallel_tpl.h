@@ -160,15 +160,13 @@ namespace gum {
     if (this->_max_memory != 0.0) {
       SchedulerSequential< ALLOC > seq_scheduler(this->maxNbThreads(), this->maxMemory());
       auto                         memory_usage = seq_scheduler.memoryUsage(schedule);
-      if (memory_usage.first > this->_max_memory) {
-        throw std::bad_alloc();
-      }
+      if (memory_usage.first > this->_max_memory) { throw std::bad_alloc(); }
     }
 
     // compute the set of operations to perform
-    List< NodeId> available_nodes;
-    const DAG& dag = schedule.dag();
-    NodeSet nodes_to_execute (dag.sizeNodes());
+    List< NodeId > available_nodes;
+    const DAG&     dag = schedule.dag();
+    NodeSet        nodes_to_execute(dag.sizeNodes());
     {
       for (const auto node: schedule.availableOperations()) {
         available_nodes.insert(node);
@@ -178,38 +176,39 @@ namespace gum {
       while (!nodes.empty()) {
         const NodeId node = nodes.front();
         nodes.popFront();
-        nodes_to_execute.insert(node);
-        for (const auto child: dag.children(node))
-          nodes.insert(child);
+        if (!nodes_to_execute.exists(node)) {
+          nodes_to_execute.insert(node);
+          for (const auto child: dag.children(node))
+            nodes.insert(child);
+        }
       }
     }
     if (nodes_to_execute.empty()) return;
 
-    std::cout << "nb operations to execute = " << nodes_to_execute.size() << std::endl;
-
     // indicate for each node, the number of parents remaining to execute
-    std::atomic< Size > nb_remaining_operations(nodes_to_execute.size());
+    std::atomic< Size >                 nb_remaining_operations(nodes_to_execute.size());
     NodeProperty< std::atomic< Size > > nb_parents_to_execute(nb_remaining_operations);
     for (const auto node: nodes_to_execute) {
       Size nb_unexecuted_parents = dag.parents(node).size();
       for (const auto parent: dag.parents(node))
-        if (schedule.operation(parent).isExecuted())
-          --nb_unexecuted_parents;
+        if (schedule.operation(parent).isExecuted()) --nb_unexecuted_parents;
       nb_parents_to_execute.emplace(node, nb_unexecuted_parents);
     }
+    nodes_to_execute.clear();
 
     // compute the number of threads to execute
     const Size nb_threads = nb_remaining_operations.load() < this->maxNbThreads()
                              ? nb_remaining_operations.load()
                              : this->maxNbThreads();
-    std::cout << "nb threads = " << nb_threads << std::endl;
 
     // indicate which threads are active
     std::vector< std::atomic< bool > > active_threads(nb_remaining_operations.load());
-    for (auto& thread: active_threads) thread = false;
+    for (auto& thread: active_threads)
+      thread = false;
 
     // assign the available nodes to the threads
-    std::vector< NodeId > thread2node(nb_remaining_operations.load(), NodeId(0));
+    std::vector< std::atomic< NodeId > > thread2node(nb_remaining_operations.load());
+    for (auto& node: thread2node) node = 0;
     {
       Idx thread_index = Idx(0);
       while (!available_nodes.empty()) {
@@ -217,10 +216,10 @@ namespace gum {
         available_nodes.popFront();
         thread2node[thread_index]    = node;
         active_threads[thread_index] = true;
-        if (++thread_index >= nb_threads) break;
+        ++thread_index;
+        if (thread_index >= nb_threads) break;
       }
     }
-
 
     // prepare keeping information about memory usage. This is useful if the user
     // added constraints on memory usage. When operations cannot be performed
@@ -228,17 +227,9 @@ namespace gum {
     double overall_memory_used = 0.0;   // the current memory used by all the threads
 
     // create the mutexes needed for threads synchronization
-    std::vector< std::mutex* > thread2mutex;
-    thread2mutex.reserve(nb_threads);
-    for (Idx i = 0; i < nb_threads; ++i)
-      thread2mutex.push_back(new std::mutex());
-    std::vector< std::condition_variable* > thread2not_empty;
-    thread2not_empty.reserve(nb_threads);
-    for (Idx i = 0; i < nb_threads; ++i)
-      thread2not_empty.push_back(new std::condition_variable());
-    std::mutex overall_mutex;
-    std::mutex aff_mutex;
-    std::cout << "init remain : " << nb_remaining_operations.load() << std::endl;
+    std::vector< std::mutex >              thread2mutex(nb_threads);
+    std::vector< std::condition_variable > thread2not_empty(nb_threads);
+    std::mutex                             overall_mutex;
 
     // here, we create a lambda that will be executed by all the threads
     // to execute the operations in a parallel manner
@@ -246,7 +237,6 @@ namespace gum {
                       &schedule,
                       &nb_parents_to_execute,
                       &overall_mutex,
-                      &aff_mutex,
                       &thread2mutex,
                       &thread2not_empty,
                       &active_threads,
@@ -258,173 +248,150 @@ namespace gum {
       const DAG& dag = schedule.dag();
 
       // get the synchronization objects
-      auto& this_mutex     = *thread2mutex[this_thread];
-      auto& this_not_empty = *thread2not_empty[this_thread];
+      auto& this_mutex         = thread2mutex[this_thread];
+      auto& this_not_empty     = thread2not_empty[this_thread];
+      auto& this_active_thread = active_threads[this_thread];
 
       // get the operation to execute
-      auto& node_to_execute = thread2node[this_thread];
-
-
-std::chrono::steady_clock::time_point begin, end1, end2;
-size_t nb1 = 0, nb2 = 0;
-int nb_exec = 0;
+      auto&  node_to_execute = thread2node[this_thread];
+      Size   nb_remaining;
 
       while (true) {
-        {
-/*
-          aff_mutex.lock();
-          std::cout << "thread " << this_thread << " enter wait" << std::endl;
-          aff_mutex.unlock();
-
-*/
+        { // use brace for unique_lock's scope
 
           // wait until some operation is available or all the operations have
           // been executed
-          Size nb_remaining = Size(0);
           std::unique_lock< std::mutex > lock(this_mutex);
-          this_not_empty.wait(lock, [this_thread, &aff_mutex, &node_to_execute, &nb_remaining_operations, &nb_remaining] {
-            nb_remaining = nb_remaining_operations.load();
-            return !node_to_execute.empty() || (nb_remaining == Size(0));
-          });
+          this_not_empty.wait(lock,
+                              [&node_to_execute,
+                               &nb_remaining_operations,
+                               &nb_remaining] {
+                                nb_remaining = nb_remaining_operations.load();
+                                return (node_to_execute != NodeId(0))
+                                    || (nb_remaining == Size(0));
+                              });
 
           // if all the operations have been executed, stop the thread
           if (nb_remaining == Size(0)) {
-            thread2not_empty[(this_thread+1) % nb_threads]->notify_one();
-            std::cout << "timing : " << nb1 << " vs " << nb2 << " ex " << nb_exec
-                      << " = " << schedule.dag().sizeNodes() << std::endl;
+            thread2not_empty[(this_thread + 1) % nb_threads].notify_one();
             return;
           }
 
-
-/*
-          aff_mutex.lock();
-          std::cout << "thread " << this_thread << " passed wait2" << std::endl;
-          aff_mutex.unlock();
-*/
+          this_active_thread = true;
         }
-begin = std::chrono::steady_clock::now();
-        // now, actually execute the operations
-        for (const auto node: nodes_to_execute) {
-          const_cast< ScheduleOperation< ALLOC >& >(schedule.operation(node)).execute();
+
+        // now, actually execute the operation
+        const_cast< ScheduleOperation< ALLOC >& >(schedule.operation(node_to_execute))
+           .execute();
+        nb_remaining_operations.fetch_sub(1);
+
+        // compute the next operations available to be executed
+        std::vector< NodeId > new_available_nodes;
+        new_available_nodes.reserve(nb_remaining);
+        for (const auto child_node: dag.children(node_to_execute)) {
+          // indicate that node has been executed and get the set of nodes
+          // without parents yet to execute. Note that nb_parents_to_execute[child_node]
+          // is an atomic<Size>. Hence, the --operation is atomic and only one thread
+          // can pass the if statement below
+          if (--nb_parents_to_execute[child_node] == Size(0)) {
+            new_available_nodes.push_back(child_node);
+          }
         }
-        end1 = std::chrono::steady_clock::now();
-          nb1 += std::chrono::duration_cast<std::chrono::microseconds>(end1 - begin).count();
 
-begin = std::chrono::steady_clock::now();
-        //std::cout << "has been executed" << std::endl;
+        // get a list of threads that seem inactive. As we do not guard the reads of
+        // inactive_threads, some threads might seem to be currently inactive but can
+        // become active before we try to assign them some operations to perform
+        std::vector<Idx> inactive_threads;
+        inactive_threads.reserve(nb_threads);
+        for (Idx i = 0; i < nb_threads; ++i) {
+          if (!active_threads[i]) inactive_threads.push_back(i);
+        }
+        inactive_threads.push_back(this_thread);
 
-        // compute the next operations to execute
-        std::vector< std::pair< NodeId, double > > new_available_nodes;
-        new_available_nodes.reserve(dag.sizeNodes());
+        // now, indicate that the current thread can be assigned a new operation
+        this_active_thread = false;
+        node_to_execute = 0;
 
+        // try to assign the nodes in new_available_nodes to inactive threads. Here, we
+        // guard what we do with mutexes in order to get really inactive threads
+        // performing operations that are guaranteed to be different.
+        bool no_more_inactive_threads = false;
+        {
+          Idx i = inactive_threads.size() - 1;
+          Idx thread;
+          while (!new_available_nodes.empty()) {
+            while (!no_more_inactive_threads) {
+              thread = inactive_threads[i];
+              std::lock_guard< std::mutex > lock(thread2mutex[thread]);
+              if (!active_threads[thread]) {
+                active_threads[thread] = true;
+                thread2node[thread]    = new_available_nodes.back();
+                thread2not_empty[thread].notify_one();
+                new_available_nodes.pop_back();
+
+                if (i != Idx(0))
+                  --i;
+                else
+                  no_more_inactive_threads = true;
+                break;
+              } else {
+                if (i != Idx(0))
+                  --i;
+                else
+                  no_more_inactive_threads = true;
+              }
+            }
+            if (no_more_inactive_threads) break;
+          }
+
+          // do not take anymore into account the threads we have assigned
+          // operations to
+          if (no_more_inactive_threads)
+            inactive_threads.clear();
+          else
+            inactive_threads.resize(i+1);
+        }
+
+        // add the remaining elements of new_available_nodes to available_nodes and
+        // try to assign the nodes in available_nodes to inactive threads. Here, we
+        // guard what we do with mutexes in order to get really inactive threads
+        // performing operations that are guaranteed to be different.
         {
           // lock the next shared memory operations
           std::lock_guard< std::mutex > overall_lock(overall_mutex);
 
-          //std::cout << schedule.dag() << std::endl;
+          for (const auto node : new_available_nodes)
+            available_nodes.insert(node);
 
-          // update the set of available operations
-          for (const auto node: nodes_to_execute) {
-/*
-            aff_mutex.lock();
-            std::cout << "executed " << node << std::endl;
-            aff_mutex.unlock();
-*/
-            for (const auto child_node: dag.children(node)) {
-              // indicate that node has been executed
-              --nb_parents_to_execute[child_node];
-              const Size nb_pars_to_execute = nb_parents_to_execute[child_node].load();
-/*
-              aff_mutex.lock();
-              std::cout << " child: " << child_node << " : " << nb_pars_executed << std::endl;
-              aff_mutex.unlock();
-*/
+          Idx i = inactive_threads.size() - 1;
+          Idx thread;
+          while (!available_nodes.empty()) {
+            while (!no_more_inactive_threads) {
+              thread = inactive_threads[i];
+              std::lock_guard< std::mutex > lock(thread2mutex[thread]);
+              if (!active_threads[thread]) {
+                active_threads[thread] = true;
+                thread2node[thread]    = available_nodes.front();
+                thread2not_empty[thread].notify_one();
+                available_nodes.popFront();
 
-              // check if all parents have been executed
-              if (nb_pars_to_execute == Size(0)) {
-                new_available_nodes.push_back(std::pair< NodeId, double >(child_node, 0.0));
+                if (i != Idx(0))
+                  --i;
+                else
+                  no_more_inactive_threads = true;
+                break;
+              } else {
+                if (i != Idx(0))
+                  --i;
+                else
+                  no_more_inactive_threads = true;
               }
             }
-          }
-
-          // update the number of instruction of the current thread in thread2nb_instructions
-          for (auto& elt: thread2nb_instructions) {
-            if (elt->first == this_thread) {
-              elt->second = 0.0;
-              break;
-            }
-          }
-
-          // sort the threads by increasing number of operations to perform
-          std::sort(thread2nb_instructions.begin(), thread2nb_instructions.end(),
-                    [](const std::unique_ptr< std::pair< Idx, double > >& a,
-                       const std::unique_ptr< std::pair< Idx, double > >& b) -> bool {
-                      return a->second < b->second;
-                    });
-
-          // store the order of the threads in thread_order
-          {
-            Idx i = Idx(0);
-            for(const auto& elt: thread2nb_instructions) {
-              thread_order[i] = elt->first;
-              ++i;
-            }
+            if (no_more_inactive_threads) break;
           }
         }
-
-        // now the operations have been performed
-        nb_exec += nodes_to_execute.size();
-        nb_remaining_operations.fetch_sub(nodes_to_execute.size());
-
-        this_mutex.lock();
-        nodes_to_execute.clear();
-        this_mutex.unlock();
-
-
-        // sort the number of instructions of the new_available_nodes by
-        // decreasing order
-        for (auto& avail: new_available_nodes)
-          avail.second = schedule.operation(avail.first).nbOperations();
-        std::sort(new_available_nodes.begin(), new_available_nodes.end(),
-                  [](const std::pair< NodeId, double >& a,
-                     const std::pair< NodeId, double >& b) -> bool {
-                    return b.second < a.second;
-                  });
-
-
-        // assign the new available operations to the thread
-        Idx  thread_index = 0;
-        bool had_no_ops;
-        std::vector<Idx> to_wake_up;
-        to_wake_up.reserve(new_available_nodes.size() < nb_threads ? new_available_nodes.size() : nb_threads);
-        for (const auto& avail: new_available_nodes) {
-          const Idx thread = thread_order[thread_index];
-          thread_index = (thread_index + 1) % nb_threads;
-          thread2mutex[thread]->lock();
-          had_no_ops = thread2available_nodes[thread].empty();
-          thread2available_nodes[thread].insert(avail.first);
-          thread2mutex[thread]->unlock();
-
-          if (had_no_ops) to_wake_up.push_back(thread);
-        }
-
-        for (auto thread: to_wake_up)
-          thread2not_empty[thread]->notify_all();
-
-        // std::cout << "fin du loop" << std::endl;
-end2 = std::chrono::steady_clock::now();
-          nb2 += std::chrono::duration_cast<std::chrono::microseconds>(end2 - begin).count();
-/*
-        aff_mutex.lock();
-        std::cout << "thread " << this_thread << " remaining ops: "
-                  << nb_remaining_operations.load() << std::endl;
-        std::cout << "thread " << this_thread << " ended loop" << std::endl;
-        aff_mutex.unlock();
-*/
       }
     };
-
-    std::cout << "real nb: " << nb_threads << std::endl;
 
     // launch the threads
     ThreadExecutor::execute(nb_threads, opExecute);
