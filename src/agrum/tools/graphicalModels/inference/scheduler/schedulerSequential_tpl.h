@@ -129,16 +129,12 @@ namespace gum {
 
   /// sets a new schedule
   template < template < typename > class ALLOC >
-  void SchedulerSequential< ALLOC >::_setSchedule_(
+  INLINE void SchedulerSequential< ALLOC >::_setSchedule_(
      const Schedule< ALLOC >& schedule) {
     if (&schedule != _schedule_) {
       _schedule_ = const_cast< Schedule< ALLOC >* > (&schedule);
-      _operations_up_to_date_ = false;
     }
-
-    if (!_operations_up_to_date_) {
-      _simulateExecution_();
-    }
+    _simulateExecution_();
   }
 
 
@@ -155,8 +151,6 @@ namespace gum {
     if ((this->_max_memory != 0.0) && _memory_usage_.first > this->_max_memory) {
       throw std::bad_alloc();
     }
-
-    std::cout << "nb ops : " << _operations_.size() << std::endl;
 
     // execute the schedule
     for (const auto node : _operations_) {
@@ -325,9 +319,6 @@ namespace gum {
   /// returns the memory consumption used during the execution of a schedule
   template < template < typename > class ALLOC >
   void SchedulerSequential< ALLOC >::_simulateExecution_() {
-    // if we have already computed the sequence of operations, do not do it again
-    if (_operations_up_to_date_) return;
-
     // get the DAG of the operations to perform
     DAG dag = _schedule_->dag();
 

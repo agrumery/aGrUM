@@ -47,6 +47,13 @@
 
 namespace gum {
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+  // the version numbers help to identify the changes in schedules
+  namespace ScheduleSpace {
+    extern Idx _version_number_;
+  }
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
+
   /**
    * @class Schedule
    * @brief Class containing a schedule of operations to perform on multidims
@@ -365,6 +372,9 @@ namespace gum {
     const ScheduleOperation< ALLOC >*
        scheduleMultiDimCreator(const IScheduleMultiDim< ALLOC >* multidim) const;
 
+    /// returns the version number of the schedule
+    Idx versionNumber() const;
+
     /// empty the schedule, i.e., remove its content
     void clear();
 
@@ -425,6 +435,10 @@ namespace gum {
      */
     Bijection< const IScheduleMultiDim< ALLOC >*, NodeId > _deleted_multidim2node_;
 
+    /// a number that identifies the current version of the schedule
+    /** schedules' versions change whenever new ScheduleMultiDims or ScheduleOperations
+     * are inserted */
+    Idx _version_number_;
 
     /// a function to copy the content of a schedule into another one
     /** @warning this method assumes that "this" is an empty schedule. If this
@@ -439,6 +453,9 @@ namespace gum {
 
     /// returns the adjective corresponding to a parameter index (1st, 2nd, etc.)
     std::string _paramString_(Idx i) const;
+
+    /// returns a new distinct version for each schedule
+    static Idx _newVersionNumber_();
   };
 
 } /* namespace gum */

@@ -138,7 +138,7 @@ namespace gum_tests {
         inf.setScheduler(sched);
       }
       else {
-        inf.setMaxNbThreads(64);
+        inf.setMaxNbThreads(4);
       }
 
       inf.makeInference();
@@ -149,8 +149,14 @@ namespace gum_tests {
       gum::LazyPropagation< double >       inf(bn);
       gum::ShaferShenoyInference< double > inf2(bn);
 
-      gum::SchedulerSequential<> sched;
-      inf.setScheduler(sched);
+      //gum::SchedulerSequential<> sched;
+      //inf.setScheduler(sched);
+
+      const gum::Size size = 1000000;
+      gum::NodeProperty< std::atomic<int> > my(size);
+      for (gum::Idx i = 0; i < size; ++i)
+        my.emplace(gum::NodeId(i), 0);
+
 
       TS_ASSERT_THROWS_NOTHING(inf.makeInference())
       TS_ASSERT_THROWS_NOTHING(inf.posterior(i1))

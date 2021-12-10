@@ -27,3 +27,10 @@
  */
 
 #include <agrum/tools/graphicalModels/inference/scheduler/schedule.h>
+
+namespace gum {
+  namespace ScheduleSpace {
+    // the version number of the schedules
+    Idx _version_number_ = Idx(0);
+  }   // namespace ScheduleSpace
+} // namespace gum

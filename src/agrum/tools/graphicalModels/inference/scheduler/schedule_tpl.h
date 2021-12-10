@@ -29,6 +29,13 @@
 
 namespace gum {
 
+  /// returns a new distinct Schedule version
+  template < template < typename > class ALLOC >
+  INLINE Idx Schedule< ALLOC >::_newVersionNumber_() {
+    return ++ScheduleSpace::_version_number_;
+  }
+
+
   /// returns the allocator used by the schedule
   template < template < typename > class ALLOC >
   INLINE typename Schedule< ALLOC >::allocator_type Schedule< ALLOC >::get_allocator() const {
@@ -91,10 +98,11 @@ namespace gum {
   void Schedule< ALLOC >::_copy_(const Schedule< ALLOC >&                          from,
                                  const typename Schedule< ALLOC >::allocator_type& alloc) {
     // copy the dag-related structures
-    _dag_   = from._dag_;
-    _newId_ = from._newId_;
+    _dag_     = from._dag_;
+    _newId_   = from._newId_;
+    _version_number_ = from._version_number_;
 
-    // here, we create the mapping from all the ScheduleMultiDims contained into
+       // here, we create the mapping from all the ScheduleMultiDims contained into
     // from to those contained into this
     HashTable< const IScheduleMultiDim< ALLOC >*, const IScheduleMultiDim< ALLOC >* >
        multidim_from2this(from._multidim2id_.size());
@@ -209,6 +217,9 @@ namespace gum {
     _emplaced_multidims_.clear();
     _multidim2nodes_.clear();
     _deleted_multidim2node_.clear();
+
+    // indicate that the version of the schedule has changed
+    _version_number_ = _newVersionNumber_();
   }
 
 
@@ -216,7 +227,9 @@ namespace gum {
   template < template < typename > class ALLOC >
   Schedule< ALLOC >::Schedule(const Size nb_ops,
                               const typename Schedule< ALLOC >::allocator_type& alloc) :
-      ALLOC< Idx >(alloc), _dag_(nb_ops, true, 2 * nb_ops, true) {
+      ALLOC< Idx >(alloc),
+         _dag_(nb_ops, true, 2 * nb_ops, true),
+  _version_number_(_newVersionNumber_()) {
     // for debugging purposes
     GUM_CONSTRUCTOR(Schedule);
   }
@@ -250,7 +263,8 @@ namespace gum {
       _multidim2id_(std::move(from._multidim2id_)),
       _emplaced_multidims_(std::move(from._emplaced_multidims_)),
       _multidim2nodes_(std::move(from._multidim2nodes_)),
-      _deleted_multidim2node_(std::move(from._deleted_multidim2node_)) {
+      _deleted_multidim2node_(std::move(from._deleted_multidim2node_)),
+      _version_number_(from._version_number_) {
     // empty properly from
     from._newId_ = NodeId(0);
     from._dag_.clear();
@@ -340,6 +354,7 @@ namespace gum {
       _emplaced_multidims_    = std::move(from._emplaced_multidims_);
       _multidim2nodes_        = std::move(from._multidim2nodes_);
       _deleted_multidim2node_ = std::move(from._deleted_multidim2node_);
+      _version_number_        = from._version_number_;
 
       // empty properly from
       from._new_Id_ = NodeId(0);
@@ -475,6 +490,9 @@ namespace gum {
                                std::pair< ScheduleOperation< ALLOC >*, Idx >(nullptr, Idx(0)));
     _multidim2id_.insert(new_multidim, new_multidim->id());
 
+    // indicate that the schedule has been modified
+    ++_version_number_;
+
     return new_multidim;
   }
 
@@ -506,6 +524,9 @@ namespace gum {
                                std::pair< ScheduleOperation< ALLOC >*, Idx >(nullptr, Idx(0)));
     _multidim2id_.insert(new_multidim, new_multidim->id());
 
+    // indicate that the schedule has been modified
+    ++_version_number_;
+
     return new_multidim;
   }
 
@@ -535,6 +556,10 @@ namespace gum {
                                std::pair< ScheduleOperation< ALLOC >*, Idx >(nullptr, Idx(0)));
     _multidim2id_.insert(&multidim, multidim.id());
     _emplaced_multidims_.insert(&multidim);
+
+    // indicate that the schedule has been modified
+    ++_version_number_;
+
   }
 
 
@@ -705,6 +730,9 @@ namespace gum {
       }
     }
 
+    // indicate that the schedule has been modified
+    ++_version_number_;
+
     return *new_op;
   }
 
@@ -777,6 +805,13 @@ namespace gum {
   }
 
 
+  /// returns the version number of the schedule
+  template < template < typename > class ALLOC >
+  INLINE Idx Schedule< ALLOC >::versionNumber() const {
+    return _version_number_;
+  }
+
+
   /// returns a DAG indicating in which order the operations can be performed
   template < template < typename > class ALLOC >
   INLINE const DAG& Schedule< ALLOC >::dag() const {
@@ -801,10 +836,20 @@ namespace gum {
 
   /// returns the set of ScheduleOperations that can be executed at once
   template < template < typename > class ALLOC >
-  INLINE NodeSet Schedule< ALLOC >::availableOperations() const {
+  NodeSet Schedule< ALLOC >::availableOperations() const {
     NodeSet available_nodes;
     for (const auto node: _dag_) {
-      if (_dag_.parents(node).empty()) { available_nodes.insert(node); }
+      if (!this->operation(node).isExecuted()) {
+        bool all_parents_executed = true;
+        for (const auto par: _dag_.parents(node)) {
+          if (!this->operation(par).isExecuted()) {
+            all_parents_executed = false;
+            break;
+          }
+        }
+        if (all_parents_executed)
+          available_nodes.insert(node);
+      }
     }
     return available_nodes;
   }
@@ -850,6 +895,8 @@ namespace gum {
 
     // remove node_exec
     _dag_.eraseNode(exec_node);
+
+    _version_number_ = _newVersionNumber_();
   }
 
 

@@ -165,76 +165,62 @@ namespace gum {
       }
     }
 
-    // get the DAG of the operations to perform
-    std::atomic< Size > nb_remaining_operations(schedule.dag().sizeNodes());
-    if (nb_remaining_operations == Size(0)) return;
-    NodeProperty< Size > nb_parents_executed(nb_remaining_operations);
-    for (const auto node: schedule.dag()) {
-      nb_parents_executed.insert(node, Size(0));
+    // compute the set of operations to perform
+    List< NodeId> available_nodes;
+    const DAG& dag = schedule.dag();
+    NodeSet nodes_to_execute (dag.sizeNodes());
+    {
+      for (const auto node: schedule.availableOperations()) {
+        available_nodes.insert(node);
+      }
+
+      List< NodeId > nodes = available_nodes;
+      while (!nodes.empty()) {
+        const NodeId node = nodes.front();
+        nodes.popFront();
+        nodes_to_execute.insert(node);
+        for (const auto child: dag.children(node))
+          nodes.insert(child);
+      }
+    }
+    if (nodes_to_execute.empty()) return;
+
+    std::cout << "nb operations to execute = " << nodes_to_execute.size() << std::endl;
+
+    // indicate for each node, the number of parents remaining to execute
+    std::atomic< Size > nb_remaining_operations(nodes_to_execute.size());
+    NodeProperty< std::atomic< Size > > nb_parents_to_execute(nb_remaining_operations);
+    for (const auto node: nodes_to_execute) {
+      Size nb_unexecuted_parents = dag.parents(node).size();
+      for (const auto parent: dag.parents(node))
+        if (schedule.operation(parent).isExecuted())
+          --nb_unexecuted_parents;
+      nb_parents_to_execute.emplace(node, nb_unexecuted_parents);
     }
 
     // compute the number of threads to execute
-    const Size nb_threads = nb_remaining_operations < this->maxNbThreads()
+    const Size nb_threads = nb_remaining_operations.load() < this->maxNbThreads()
                              ? nb_remaining_operations.load()
                              : this->maxNbThreads();
-    Size nb_active_threads = Size(0); // the number of threads currently active
     std::cout << "nb threads = " << nb_threads << std::endl;
 
-    // the list of operations each thread has to execute, as well as their
-    // cumulative number of instructions
-    std::vector< List< NodeId > > thread2available_nodes(
-       nb_threads, List< NodeId >());
-    std::vector< std::unique_ptr< std::pair< Idx, double > > > thread2nb_instructions;
-    thread2nb_instructions.reserve(nb_threads);
-    for (Idx i = 0; i < nb_threads; ++i)
-      thread2nb_instructions.push_back(std::unique_ptr< std::pair< Idx, double > >(
-         new std::pair< Idx, double >(i, 0.0)));
+    // indicate which threads are active
+    std::vector< std::atomic< bool > > active_threads(nb_remaining_operations.load());
+    for (auto& thread: active_threads) thread = false;
 
     // assign the available nodes to the threads
+    std::vector< NodeId > thread2node(nb_remaining_operations.load(), NodeId(0));
     {
-      // get the available operations and sort them by increasing number of
-      // instructions
-      const auto available_nodes = schedule.availableOperations();
-      if (available_nodes.empty()) return; // if there is nothing to do, don't do it
-      const Size                                 nb_available_nodes = available_nodes.size();
-      std::vector< std::pair< NodeId, double > > sorted_available_nodes;
-      sorted_available_nodes.reserve(nb_available_nodes);
-      double nb_all_inst = 0.0; // the number of instructions needed to perform all
-                                // the available operations
-      for (const auto node: schedule.availableOperations()) {
-        const double nb_inst_node = schedule.operation(node).nbOperations();
-        nb_all_inst += nb_inst_node;
-        sorted_available_nodes.push_back(std::pair< NodeId, double >(node, nb_inst_node));
-      }
-      std::sort(sorted_available_nodes.begin(),
-                sorted_available_nodes.end(),
-                [](const std::pair< NodeId, double >& a,
-                   const std::pair< NodeId, double >& b) -> bool {
-                  return a.second < b.second;
-                });
-
-      // assign the operations to the threads
-      const double nb_inst_per_thread = nb_all_inst / nb_threads;
-      double thread_nb_inst = 0.0;
-      Idx thread = Idx(0);
-      for(Idx i = 0; i < nb_available_nodes; ++i) {
-        const double nb_inst = sorted_available_nodes[i].second;
-        if ((nb_inst >= nb_inst_per_thread) ||
-            (thread_nb_inst + nb_inst < nb_inst_per_thread)) {
-          thread2available_nodes[thread].insert(sorted_available_nodes[i].first);
-          thread2nb_instructions[thread]->second += nb_inst;
-        }
-        else {
-          --i;
-        }
-
-        thread_nb_inst += nb_inst;
-        if (thread_nb_inst >= nb_inst_per_thread) {
-          thread_nb_inst = 0.0;
-          thread         = (thread + 1) % nb_threads;
-        }
+      Idx thread_index = Idx(0);
+      while (!available_nodes.empty()) {
+        const NodeId node = available_nodes.front();
+        available_nodes.popFront();
+        thread2node[thread_index]    = node;
+        active_threads[thread_index] = true;
+        if (++thread_index >= nb_threads) break;
       }
     }
+
 
     // prepare keeping information about memory usage. This is useful if the user
     // added constraints on memory usage. When operations cannot be performed
@@ -258,28 +244,27 @@ namespace gum {
     // to execute the operations in a parallel manner
     auto opExecute = [this,
                       &schedule,
-                      &nb_parents_executed,
+                      &nb_parents_to_execute,
                       &overall_mutex,
                       &aff_mutex,
                       &thread2mutex,
                       &thread2not_empty,
-                      &thread2available_nodes,
-                      &thread2nb_instructions,
+                      &active_threads,
+                      &thread2node,
+                      &available_nodes,
                       &nb_remaining_operations,
-                      &nb_active_threads,
                       &overall_memory_used](const std::size_t this_thread,
                                             const std::size_t nb_threads) -> void {
       const DAG& dag = schedule.dag();
 
       // get the synchronization objects
-      auto& this_mutex = *thread2mutex[this_thread];
+      auto& this_mutex     = *thread2mutex[this_thread];
       auto& this_not_empty = *thread2not_empty[this_thread];
 
-      // get the list of operations to execute
-      auto& nodes_to_execute = thread2available_nodes[this_thread];
+      // get the operation to execute
+      auto& node_to_execute = thread2node[this_thread];
 
-      // to sort the threads by increasing number of instructions
-      std::vector< Idx > thread_order(nb_threads, Idx(0));
+
 std::chrono::steady_clock::time_point begin, end1, end2;
 size_t nb1 = 0, nb2 = 0;
 int nb_exec = 0;
@@ -293,13 +278,13 @@ int nb_exec = 0;
 
 */
 
-          // wait until some operations are available or all the operations have
+          // wait until some operation is available or all the operations have
           // been executed
           Size nb_remaining = Size(0);
           std::unique_lock< std::mutex > lock(this_mutex);
-          this_not_empty.wait(lock, [this_thread,&aff_mutex,&nodes_to_execute, &nb_remaining_operations, &nb_remaining] {
+          this_not_empty.wait(lock, [this_thread, &aff_mutex, &node_to_execute, &nb_remaining_operations, &nb_remaining] {
             nb_remaining = nb_remaining_operations.load();
-            return !nodes_to_execute.empty() || (nb_remaining == Size(0));
+            return !node_to_execute.empty() || (nb_remaining == Size(0));
           });
 
           // if all the operations have been executed, stop the thread
@@ -347,8 +332,8 @@ begin = std::chrono::steady_clock::now();
 */
             for (const auto child_node: dag.children(node)) {
               // indicate that node has been executed
-              ++nb_parents_executed[child_node];
-              const Size nb_pars_executed = nb_parents_executed[child_node];
+              --nb_parents_to_execute[child_node];
+              const Size nb_pars_to_execute = nb_parents_to_execute[child_node].load();
 /*
               aff_mutex.lock();
               std::cout << " child: " << child_node << " : " << nb_pars_executed << std::endl;
@@ -356,7 +341,7 @@ begin = std::chrono::steady_clock::now();
 */
 
               // check if all parents have been executed
-              if (dag.parents(child_node).size() == nb_pars_executed) {
+              if (nb_pars_to_execute == Size(0)) {
                 new_available_nodes.push_back(std::pair< NodeId, double >(child_node, 0.0));
               }
             }

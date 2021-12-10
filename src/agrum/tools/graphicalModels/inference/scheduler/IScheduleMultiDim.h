@@ -220,7 +220,7 @@ namespace gum {
 
 
     private:
-    /// returns a new distinct ID for each abtract scheduleMultiDim
+    /// returns a new distinct ID for each abstract scheduleMultiDim
     static Idx _newId_();
   };
 
