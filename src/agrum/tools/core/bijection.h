@@ -48,9 +48,9 @@ namespace gum {
   class BijectionIteratorSafe;
   template < typename T1, typename T2 >
   class BijectionIterator;
-  template < typename T1, typename T2, typename Alloc, bool >
+  template < typename T1, typename T2, bool >
   class BijectionImplementation;
-  template < typename T1, typename T2, typename Alloc >
+  template < typename T1, typename T2 >
   class Bijection;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
@@ -76,11 +76,10 @@ namespace gum {
    *
    * @tparam T1 The first type of elements in the gum::Bjection.
    * @tparam T2 The second type of elements in the gum::Bjection.
-   * @tparam Alloc The allocator used for allocating memory.
    * @tparam Gen If true, this will be replaced by a implementation omptimized
    * for non-scalar types.
    */
-  template < typename T1, typename T2, typename Alloc, bool Gen >
+  template < typename T1, typename T2, bool Gen >
   class BijectionImplementation {
     public:
     /// types for STL compliance
@@ -97,13 +96,10 @@ namespace gum {
     using type2_const_pointer   = const T2*;
     using size_type             = std::size_t;
     using difference_type       = std::ptrdiff_t;
-    using allocator_type        = Alloc;
     using iterator              = BijectionIterator< T1, T2 >;
     using const_iterator        = BijectionIterator< T1, T2 >;
     using iterator_safe         = BijectionIteratorSafe< T1, T2 >;
     using const_iterator_safe   = BijectionIteratorSafe< T1, T2 >;
-    using allocator12_type      = typename Alloc::template rebind< std::pair< T1, T2* > >::other;
-    using allocator21_type      = typename Alloc::template rebind< std::pair< T2, T1* > >::other;
     /// @}
 
     private:
@@ -126,20 +122,13 @@ namespace gum {
      * @brief Copy constructor.
      * @param toCopy Bijection to copy.
      */
-    BijectionImplementation(const BijectionImplementation< T1, T2, Alloc, Gen >& toCopy);
-
-    /**
-     * @brief Generalized copy constructor.
-     * @param toCopy Bijection to copy.
-     */
-    template < typename OtherAlloc >
-    BijectionImplementation(const BijectionImplementation< T1, T2, OtherAlloc, Gen >& toCopy);
+    BijectionImplementation(const BijectionImplementation< T1, T2, Gen >& toCopy);
 
     /**
      * @brief Move constructor.
      * @param from Bijection to move.
      */
-    BijectionImplementation(BijectionImplementation< T1, T2, Alloc, Gen >&& from) noexcept;
+    BijectionImplementation(BijectionImplementation< T1, T2, Gen >&& from) noexcept;
 
     public:
     // ============================================================================
@@ -160,25 +149,16 @@ namespace gum {
      * @param toCopy Bijection to copy.
      * @return Returns the gum::Bijection in which the copy was made.
      */
-    BijectionImplementation< T1, T2, Alloc, Gen >&
-       operator=(const BijectionImplementation< T1, T2, Alloc, Gen >& toCopy);
-
-    /**
-     * @brief Generalized copy operator.
-     * @param toCopy Bijection to copy.
-     * @return Returns the gum::Bijection in which the copy was made.
-     */
-    template < typename OtherAlloc >
-    BijectionImplementation< T1, T2, Alloc, Gen >&
-       operator=(const BijectionImplementation< T1, T2, OtherAlloc, Gen >& toCopy);
-
+    BijectionImplementation< T1, T2, Gen >&
+       operator=(const BijectionImplementation< T1, T2, Gen >& toCopy);
+    
     /**
      * @brief Move operator.
      * @param toCopy Bijection to move
      * @return Returns the moved gum::Bijection in which the move was made.
      */
-    BijectionImplementation< T1, T2, Alloc, Gen >&
-       operator=(BijectionImplementation< T1, T2, Alloc, Gen >&& toCopy);
+    BijectionImplementation< T1, T2, Gen >&
+       operator=(BijectionImplementation< T1, T2, Gen >&& toCopy);
 
     public:
     // ============================================================================
@@ -632,16 +612,16 @@ namespace gum {
     private:
     /// Alias for more readable code
     /// @{
-    using HashTable12 = HashTable< T1, T2*, allocator12_type >;
-    using HashTable21 = HashTable< T2, T1*, allocator21_type >;
+    using HashTable12 = HashTable< T1, T2* >;
+    using HashTable21 = HashTable< T2, T1* >;
     /// @}
 
     /// a friend to speed-up accesses
     /// @{
     friend class BijectionIteratorSafe< T1, T2 >;
     friend class BijectionIterator< T1, T2 >;
-    friend class Bijection< T1, T2, Alloc >;
-    template < typename TT1, typename TT2, typename A, bool >
+    friend class Bijection< T1, T2 >;
+    template < typename TT1, typename TT2, bool >
     friend class BijectionImplementation;
     /// @}
 
@@ -663,10 +643,8 @@ namespace gum {
      * If it is not the case, use function clear() before calling  _copy_.
      *
      * @param source The source from copied into this gum::Bijection.
-     * @tparam OtherAlloc The allocator used by source.
      */
-    template < typename OtherAlloc >
-    void _copy_(const HashTable< T1, T2*, OtherAlloc >& source);
+    void _copy_(const HashTable< T1, T2* >& source);
 
     /**
      * @brief Inserts a new association into the gum::Bijection.
@@ -710,12 +688,11 @@ namespace gum {
    *
    * @tparam T1 The first type of elements in the gum::Bjection.
    * @tparam T2 The second type of elements in the gum::Bjection.
-   * @tparam Alloc The allocator used for allocating memory.
    * @tparam Gen If true, this will be replaced by a implementation omptimized
    * for non-scalar types.
    */
-  template < typename T1, typename T2, typename Alloc >
-  class BijectionImplementation< T1, T2, Alloc, true > {
+  template < typename T1, typename T2 >
+  class BijectionImplementation< T1, T2, true > {
     public:
     /// types for STL compliance
     /// @{
@@ -731,14 +708,10 @@ namespace gum {
     using type2_const_pointer   = const T2*;
     using size_type             = std::size_t;
     using difference_type       = std::ptrdiff_t;
-    using allocator_type        = Alloc;
     using iterator              = BijectionIterator< T1, T2 >;
     using const_iterator        = BijectionIterator< T1, T2 >;
     using iterator_safe         = BijectionIteratorSafe< T1, T2 >;
     using const_iterator_safe   = BijectionIteratorSafe< T1, T2 >;
-
-    using allocator12_type = typename Alloc::template rebind< std::pair< T1, T2 > >::other;
-    using allocator21_type = typename Alloc::template rebind< std::pair< T2, T1 > >::other;
     /// @}
 
     private:
@@ -761,20 +734,13 @@ namespace gum {
      * @brief Copy constructor.
      * @param toCopy Bijection to copy.
      */
-    BijectionImplementation(const BijectionImplementation< T1, T2, Alloc, true >& toCopy);
-
-    /**
-     * @brief Generalized copy constructor.
-     * @param toCopy Bijection to copy.
-     */
-    template < typename OtherAlloc >
-    BijectionImplementation(const BijectionImplementation< T1, T2, OtherAlloc, true >& toCopy);
-
+    BijectionImplementation(const BijectionImplementation< T1, T2, true >& toCopy);
+    
     /**
      * @brief Move constructor.
      * @param from Bijection to move.
      */
-    BijectionImplementation(BijectionImplementation< T1, T2, Alloc, true >&& from) noexcept;
+    BijectionImplementation(BijectionImplementation< T1, T2, true >&& from) noexcept;
 
     public:
     // ============================================================================
@@ -795,25 +761,16 @@ namespace gum {
      * @param toCopy Bijection to copy.
      * @return Returns the gum::Bijection in which the copy was made.
      */
-    BijectionImplementation< T1, T2, Alloc, true >&
-       operator=(const BijectionImplementation< T1, T2, Alloc, true >& toCopy);
-
-    /**
-     * @brief Generalized copy operator.
-     * @param toCopy Bijection to copy.
-     * @return Returns the gum::Bijection in which the copy was made.
-     */
-    template < typename OtherAlloc >
-    BijectionImplementation< T1, T2, Alloc, true >&
-       operator=(const BijectionImplementation< T1, T2, OtherAlloc, true >& toCopy);
+    BijectionImplementation< T1, T2, true >&
+       operator=(const BijectionImplementation< T1, T2, true >& toCopy);
 
     /**
      * @brief Move operator.
      * @param toCopy Bijection to move
      * @return Returns the moved gum::Bijection in which the move was made.
      */
-    BijectionImplementation< T1, T2, Alloc, true >&
-       operator=(BijectionImplementation< T1, T2, Alloc, true >&& from);
+    BijectionImplementation< T1, T2, true >&
+       operator=(BijectionImplementation< T1, T2, true >&& from);
 
     public:
     // ============================================================================
@@ -1256,16 +1213,16 @@ namespace gum {
     private:
     /// Alias for more readable code
     /// @{
-    using HashTable12 = HashTable< T1, T2, allocator12_type >;
-    using HashTable21 = HashTable< T2, T1, allocator21_type >;
+    using HashTable12 = HashTable< T1, T2 >;
+    using HashTable21 = HashTable< T2, T1 >;
     /// @}
 
     /// a friend to speed-up accesses
     /// @{
     friend class BijectionIteratorSafe< T1, T2 >;
     friend class BijectionIterator< T1, T2 >;
-    friend class Bijection< T1, T2, Alloc >;
-    template < typename TT1, typename TT2, typename A, bool >
+    friend class Bijection< T1, T2 >;
+    template < typename TT1, typename TT2, bool >
     friend class BijectionImplementation;
     /// @}
 
@@ -1287,10 +1244,8 @@ namespace gum {
      * If it is not the case, use function clear() before calling  _copy_.
      *
      * @param source The source from copied into this gum::Bijection.
-     * @tparam OtherAlloc The allocator used by source.
      */
-    template < typename OtherAlloc >
-    void _copy_(const HashTable< T1, T2, OtherAlloc >& f2s);
+    void _copy_(const HashTable< T1, T2 >& f2s);
 
     /**
      * @brief Inserts a new association into the gum::Bijection.
@@ -1315,7 +1270,7 @@ namespace gum {
    */
   class BijectionIteratorStaticEnd {
     /// Friends that have access to the iterator
-    template < typename T1, typename T2, typename Alloc, bool >
+    template < typename T1, typename T2, bool >
     friend class BijectionImplementation;
 
     private:
@@ -1398,7 +1353,7 @@ namespace gum {
    */
   template < typename T1, typename T2 >
   class BijectionIteratorSafe {
-    template < typename TT1, typename TT2, typename Alloc, bool >
+    template < typename TT1, typename TT2, bool >
     friend class BijectionImplementation;
 
     public:
@@ -1432,8 +1387,8 @@ namespace gum {
      * gum::Bijection.
      * @param bijection The gum::Bijection to iterate onto.
      */
-    template < typename Alloc, bool Gen >
-    BijectionIteratorSafe(const BijectionImplementation< T1, T2, Alloc, Gen >& bijection);
+    template < bool Gen >
+    BijectionIteratorSafe(const BijectionImplementation< T1, T2, Gen >& bijection);
 
     public:
     // ============================================================================
@@ -1447,11 +1402,12 @@ namespace gum {
     BijectionIteratorSafe() noexcept;
 
     /**
-     * @brief Genereliazed default constructor.
-     * @tparam Alloc The gum::Bijection allocator's type.
+     * @brief Begin constructor.
+     * By default, the iterator points to the starting point of the
+     * gum::Bijection.
+     * @param bijection The gum::Bijection to iterate onto.
      */
-    template < typename Alloc >
-    BijectionIteratorSafe(const Bijection< T1, T2, Alloc >& bijection);
+    BijectionIteratorSafe(const Bijection< T1, T2 >& bijection);
 
     /**
      * @brief Copy constructor.
@@ -1566,8 +1522,8 @@ namespace gum {
     /// Alias for one of the internal gum::HashTable of the gum::Bijection.
     using HashTable12 = typename std::conditional<
        std::is_scalar< T1 >::value && std::is_scalar< T2 >::value,
-       HashTable< T1, T2, std::allocator< std::pair< T1, T2 > > >,
-       HashTable< T1, T2*, std::allocator< std::pair< T1, T2* > > > >::type;
+       HashTable< T1, T2 >,
+       HashTable< T1, T2* > >::type;
 
     /// Alias for one of the internal gum::HastTableIterator of the
     /// gum::Bijection.
@@ -1591,7 +1547,7 @@ namespace gum {
    */
   template < typename T1, typename T2 >
   class BijectionIterator {
-    template < typename TT1, typename TT2, typename Alloc, bool >
+    template < typename TT1, typename TT2, bool >
     friend class BijectionImplementation;
 
     public:
@@ -1623,8 +1579,8 @@ namespace gum {
      * @brief Begin constructor.
      * By default, the iterator points to the starting point of the bijection.
      */
-    template < typename Alloc, bool Gen >
-    BijectionIterator(const BijectionImplementation< T1, T2, Alloc, Gen >& bijection);
+    template < bool Gen >
+    BijectionIterator(const BijectionImplementation< T1, T2, Gen >& bijection);
 
     public:
     // ============================================================================
@@ -1641,8 +1597,7 @@ namespace gum {
      * @brief Default constructor.
      * @param bijection The gum::Bijection to iterate onto.
      */
-    template < typename Alloc >
-    BijectionIterator(const Bijection< T1, T2, Alloc >& bijection);
+    BijectionIterator(const Bijection< T1, T2 >& bijection);
 
     /**
      * @brief Copy constructor.
@@ -1755,8 +1710,8 @@ namespace gum {
     /// Alias for one of the internal gum::HashTable of the gum::Bijection.
     using HashTable12 = typename std::conditional<
        std::is_scalar< T1 >::value && std::is_scalar< T2 >::value,
-       HashTable< T1, T2, std::allocator< std::pair< T1, T2 > > >,
-       HashTable< T1, T2*, std::allocator< std::pair< T1, T2* > > > >::type;
+       HashTable< T1, T2 >,
+       HashTable< T1, T2* > >::type;
     using HashIter = typename HashTable12::const_iterator;
 
     /// The hashTable iterator that actually does all the job.
@@ -1780,13 +1735,11 @@ namespace gum {
    *
    * @tparam T1 The first type of elements in the gum::Bjection.
    * @tparam T2 The second type of elements in the gum::Bjection.
-   * @tparam Alloc The allocator used for allocating memory.
    */
-  template < typename T1, typename T2, typename Alloc = std::allocator< T2 > >
+  template < typename T1, typename T2 >
   class Bijection:
       public BijectionImplementation< T1,
                                       T2,
-                                      Alloc,
                                       std::is_scalar< T1 >::value && std::is_scalar< T2 >::value > {
     public:
     /// types for STL compliance
@@ -1803,21 +1756,16 @@ namespace gum {
     using type2_const_pointer   = const T2*;
     using size_type             = std::size_t;
     using difference_type       = std::ptrdiff_t;
-    using allocator_type        = Alloc;
     using iterator              = BijectionIterator< T1, T2 >;
     using const_iterator        = BijectionIterator< T1, T2 >;
     using iterator_safe         = BijectionIteratorSafe< T1, T2 >;
     using const_iterator_safe   = BijectionIteratorSafe< T1, T2 >;
-
-    using allocator1_type = typename Alloc::template rebind< T1* >::other;
-    using allocator2_type = typename Alloc::template rebind< T2* >::other;
     /// @}
 
     /// The Implementation of this gum::Bijection.
     using Implementation
        = BijectionImplementation< T1,
                                   T2,
-                                  Alloc,
                                   std::is_scalar< T1 >::value && std::is_scalar< T2 >::value >;
 
     // ============================================================================
@@ -1845,21 +1793,13 @@ namespace gum {
      * @brief Copy constructor.
      * @param toCopy The gum::Bijection to copy.
      */
-    Bijection(const Bijection< T1, T2, Alloc >& toCopy);
-
-    /**
-     * @brief Generalized copy constructor.
-     * @param toCopy The gum::Bijection to copy.
-     * @tparam The gum::Bijection to copy allocator's type.
-     */
-    template < typename OtherAlloc >
-    Bijection(const Bijection< T1, T2, OtherAlloc >& toCopy);
+    Bijection(const Bijection< T1, T2 >& toCopy);
 
     /**
      * @brief Move constructor.
      * @param from The gum::Bijection to move from.
      */
-    Bijection(Bijection< T1, T2, Alloc >&& from) noexcept;
+    Bijection(Bijection< T1, T2 >&& from) noexcept;
 
     /**
      * @brief Class destructor.
@@ -1877,21 +1817,13 @@ namespace gum {
      * @param toCopy The gum::Bijection to copy.
      * @return Returns this gum::Bijection.
      */
-    Bijection< T1, T2, Alloc >& operator=(const Bijection< T1, T2, Alloc >& toCopy);
-
-    /**
-     * @brief Generalized copy operator.
-     * @param toCopy The gum::Bijection to copy.
-     * @tparam OtherAlloc The gum::Bijection to copy allocator's type.
-     */
-    template < typename OtherAlloc >
-    Bijection< T1, T2, Alloc >& operator=(const Bijection< T1, T2, OtherAlloc >& toCopy);
+    Bijection< T1, T2 >& operator=(const Bijection< T1, T2 >& toCopy);
 
     /**
      * @brief Move operator.
      * @param bij The gum::Bijection to move from.
      */
-    Bijection< T1, T2, Alloc >& operator=(Bijection< T1, T2, Alloc >&& bij);
+    Bijection< T1, T2 >& operator=(Bijection< T1, T2 >&& bij);
 
     /// @}
   };
@@ -1902,24 +1834,17 @@ namespace gum {
    * @param bijection The gum::Bijection to display.
    * @tparam T1 The first type of elements in the gum::Bjection.
    * @tparam T2 The second type of elements in the gum::Bjection.
-   * @tparam Alloc The allocator used for allocating memory.
    * @return The stream in which the gum::Bijection is displayed.
    */
-  template < typename T1, typename T2, typename Alloc >
-  std::ostream& operator<<(std::ostream&, const Bijection< T1, T2, Alloc >& bijection);
+  template < typename T1, typename T2 >
+  std::ostream& operator<<(std::ostream&, const Bijection< T1, T2 >& bijection);
 
 } /* namespace gum */
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::Bijection< int, int >;
-#  endif
-#endif
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::Bijection< std::string, std::string >;
-#  endif
 #endif
 
 

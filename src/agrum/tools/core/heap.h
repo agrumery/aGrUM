@@ -43,10 +43,10 @@ namespace gum {
 
   // templates provided by this file
 
-  template < typename Val, typename Cmp, typename Alloc >
+  template < typename Val, typename Cmp >
   class Heap;
-  template < typename Val, typename Cmp, typename Alloc >
-  std::ostream& operator<<(std::ostream&, const Heap< Val, Cmp, Alloc >&);
+  template < typename Val, typename Cmp >
+  std::ostream& operator<<(std::ostream&, const Heap< Val, Cmp >&);
 
   // ===========================================================================
   // ===                      SIMPLE HEAP DATA STRUCTURE                     ===
@@ -115,9 +115,8 @@ namespace gum {
    *
    * @tparam Val The gum::Heap values type.
    * @tparam Cmp The comperator used to sort elements in the gum::Heap.
-   * @tparam Alloc The allocator of elements stored in the gum::Heap.
    */
-  template < typename Val, typename Cmp = std::less< Val >, typename Alloc = std::allocator< Val > >
+  template < typename Val, typename Cmp = std::less< Val > >
   class Heap {
     public:
     /// Types for STL compliance
@@ -129,7 +128,6 @@ namespace gum {
     using const_pointer   = const Val*;
     using size_type       = std::size_t;
     using difference_type = std::ptrdiff_t;
-    using allocator_type  = Alloc;
     /// @}
 
     // ============================================================================
@@ -157,21 +155,13 @@ namespace gum {
      * @brief Copy constructor.
      * @param from The gum::Heap to copy.
      */
-    Heap(const Heap< Val, Cmp, Alloc >& from);
-
-    /**
-     * @brief Generalized copy constructor.
-     * @tparam OtherAlloc The other gum::Heap allocator.
-     * @param from The gum::Heap to copy.
-     */
-    template < typename OtherAlloc >
-    Heap(const Heap< Val, Cmp, OtherAlloc >& from);
+    Heap(const Heap< Val, Cmp >& from);
 
     /**
      * @brief Move constructor.
      * @param from The gum::Heap to move.
      */
-    Heap(Heap< Val, Cmp, Alloc >&& from) noexcept;
+    Heap(Heap< Val, Cmp >&& from) noexcept;
 
     /**
      * @brief Class destructor.
@@ -194,21 +184,7 @@ namespace gum {
      *
      * @param from The gum::Heap to copy.
      */
-    Heap< Val, Cmp, Alloc >& operator=(const Heap< Val, Cmp, Alloc >& from);
-
-    /**
-     * @brief Generalized copy operator.
-     *
-     * When a problem occurs during the copy (for instance when not enough
-     * memory is available), the operator guarantees that the heap stays in a
-     * coherent state. Actually, the heap becomes empty. An exception is then
-     * thrown.
-     *
-     * @tparam OtherAlloc The other gum::Heap allocator.
-     * @param from The gum::Heap to copy.
-     */
-    template < typename OtherAlloc >
-    Heap< Val, Cmp, Alloc >& operator=(const Heap< Val, Cmp, OtherAlloc >& from);
+    Heap< Val, Cmp >& operator=(const Heap< Val, Cmp >& from);
 
     /**
      * @brief Move operator.
@@ -220,7 +196,7 @@ namespace gum {
      *
      * @param from The gum::Heap to move.
      */
-    Heap< Val, Cmp, Alloc >& operator=(Heap< Val, Cmp, Alloc >&& from) noexcept;
+    Heap< Val, Cmp >& operator=(Heap< Val, Cmp >&& from) noexcept;
 
     /**
      * @brief Returns the element at index index_elt from the heap.
@@ -368,7 +344,7 @@ namespace gum {
 
     private:
     /// An array storing all the elements of the heap.
-    std::vector< Val, Alloc > _heap_;
+    std::vector< Val > _heap_;
 
     /// The number of elements in the heap.
     Size _nb_elements_{0};
@@ -384,26 +360,9 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::Heap< int >;
-#    endif
-#  endif
-#endif
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::Heap< long >;
-#    endif
-#  endif
-#endif
-
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::Heap< double >;
-#    endif
-#  endif
 #endif
 
 
