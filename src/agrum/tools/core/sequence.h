@@ -41,9 +41,9 @@
 namespace gum {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-  template < typename Key, typename Alloc, bool >
+  template < typename Key, bool >
   class SequenceImplementation;
-  template < typename Key, typename Alloc >
+  template < typename Key >
   class Sequence;
   template < typename Key >
   class SequenceIteratorSafe;
@@ -62,8 +62,8 @@ namespace gum {
    * @brief The internal class for storing (ordered) sequences of objects.
    * @ingroup sequence_group
    *
-   * A SequenceImplementation<Key,Alloc,bool Gen> is a specialized version of
-   * of a Sequence<Key,Alloc>. It shall not be used by itself but rather
+   * A SequenceImplementation<Key,bool Gen> is a specialized version of
+   * of a Sequence<Key>. It shall not be used by itself but rather
    * through the Sequence class. A SequenceImplementation is quite similar to a
    * vector<Key> in that it stores an ordered set of elements. The main
    * difference between these two data structures lies in the fact that, given
@@ -82,17 +82,14 @@ namespace gum {
    * developper but is determined by the compiler itself at compile time.
    *
    * @tparam Key The elements type stored in the sequence.
-   * @tparam Alloc The values allocator.
    * @tparam Gen Used for meta-programation.
    */
-  template < typename Key, typename Alloc, bool Gen >
+  template < typename Key, bool Gen >
   class SequenceImplementation {
     /// Friends to speed up access
     /// @{
-    template < typename K, typename A, bool >
-    friend class SequenceImplementation;
     friend class SequenceIteratorSafe< Key >;
-    friend class Sequence< Key, Alloc >;
+    friend class Sequence< Key >;
     /// @}
 
     public:
@@ -105,7 +102,6 @@ namespace gum {
     using const_pointer       = const Key*;
     using size_type           = std::size_t;
     using difference_type     = std::ptrdiff_t;
-    using allocator_type      = Alloc;
     using iterator            = SequenceIterator< Key >;
     using const_iterator      = SequenceIterator< Key >;
     using iterator_safe       = SequenceIteratorSafe< Key >;
@@ -136,24 +132,13 @@ namespace gum {
      * @warning The elements of the newly constructed sequence are copies of
      * those in aSeq.
      */
-    SequenceImplementation(const SequenceImplementation< Key, Alloc, Gen >& aSeq);
-
-    /**
-     * @brief Generalised copy constructor.
-     *
-     * @tparam OtherAlloc The other gum::SequenceImplementation allocator.
-     * @param aSeq The sequence the elements of which will be copied.
-     * @warning The elements of the newly constructed sequence are copies of
-     * those in aSeq.
-     */
-    template < typename OtherAlloc >
-    SequenceImplementation(const SequenceImplementation< Key, OtherAlloc, Gen >& aSeq);
+    SequenceImplementation(const SequenceImplementation< Key, Gen >& aSeq);
 
     /**
      * @brief Move constructor.
      * @param aSeq The gum::SequenceImplementation to move/
      */
-    SequenceImplementation(SequenceImplementation< Key, Alloc, Gen >&& aSeq);
+    SequenceImplementation(SequenceImplementation< Key, Gen >&& aSeq);
 
     /// @}
 
@@ -235,26 +220,14 @@ namespace gum {
      * @param aSeq The sequence to copy.
      * @return Returns a ref to this.
      */
-    SequenceImplementation< Key, Alloc, Gen >&
-       operator=(const SequenceImplementation< Key, Alloc, Gen >& aSeq);
-
-    /**
-     * @brief Generalized opy operator.
-     * @tparam OtherAlloc The other gum::SequenceImplementation allocator.
-     * @param aSeq The sequence to copy.
-     * @return Returns a ref to this.
-     */
-    template < typename OtherAlloc >
-    SequenceImplementation< Key, Alloc, Gen >&
-       operator=(const SequenceImplementation< Key, OtherAlloc, Gen >& aSeq);
+    SequenceImplementation< Key, Gen >& operator=(const SequenceImplementation< Key, Gen >& aSeq);
 
     /**
      * @brief Move operator.
      * @param aSeq The sequence to move.
      * @return Returns a ref to this.
      */
-    SequenceImplementation< Key, Alloc, Gen >&
-       operator=(SequenceImplementation< Key, Alloc, Gen >&& aSeq);
+    SequenceImplementation< Key, Gen >& operator=(SequenceImplementation< Key, Gen >&& aSeq);
 
     /// @}
 
@@ -270,7 +243,7 @@ namespace gum {
      * @return Returns this gum::SequenceImplementation.
      * @throw DuplicateElement Raised if the sequence contains already k.
      */
-    SequenceImplementation< Key, Alloc, Gen >& operator<<(const Key& k);
+    SequenceImplementation< Key, Gen >& operator<<(const Key& k);
 
     /**
      * @brief Insert k at the end of the sequence (synonym for insert).
@@ -278,7 +251,7 @@ namespace gum {
      * @return Returns this gum::SequenceImplementation.
      * @throw DuplicateElement Raised if the sequence contains already k.
      */
-    SequenceImplementation< Key, Alloc, Gen >& operator<<(Key&& k);
+    SequenceImplementation< Key, Gen >& operator<<(Key&& k);
 
     /**
      * @brief Remove k in the sequence (synonym for erase).
@@ -289,7 +262,7 @@ namespace gum {
      * @param k The key we wish to remove.
      * @return Returns this gum::SequenceImplementation.
      */
-    SequenceImplementation< Key, Alloc, Gen >& operator>>(const Key& k);
+    SequenceImplementation< Key, Gen >& operator>>(const Key& k);
 
     /**
      * @brief Returns the element at position i (synonym for atPos).
@@ -305,12 +278,10 @@ namespace gum {
      * Note that two sequences are equal if and only if they contain the same
      * Keys (using Key::operator==) in the same order.
      *
-     * @tparam OtherAlloc The other gum::SequenceImplementation allocator.
      * @param k The other gum::SequenceImplementation.
      * @brief Returns true if both gum::SequenceImplementation are equal.
      */
-    template < typename OtherAlloc >
-    bool operator==(const SequenceImplementation< Key, OtherAlloc, Gen >& k) const;
+    bool operator==(const SequenceImplementation< Key, Gen >& k) const;
 
     /**
      * @brief Returns true if the content of k is different from that of *this.
@@ -318,12 +289,10 @@ namespace gum {
      * Note that two sequences are equal if and only if they contain the same
      * variables (using Key::operator==) in the same order.
      *
-     * @tparam OtherAlloc The other gum::SequenceImplementation allocator.
      * @param k The other gum::SequenceImplementation.
      * @brief Returns true if both gum::SequenceImplementation are not equal.
      */
-    template < typename OtherAlloc >
-    bool operator!=(const SequenceImplementation< Key, OtherAlloc, Gen >& k) const;
+    bool operator!=(const SequenceImplementation< Key, Gen >& k) const;
 
     /// @}
     // ============================================================================
@@ -495,10 +464,10 @@ namespace gum {
 
     private:
     /// Keep track of the position of the element in v (for fast retrieval).
-    HashTable< Key, Idx, Alloc > _h_;
+    HashTable< Key, Idx > _h_;
 
     /// The set of the elements stored into the sequence.
-    std::vector< Key*, typename Alloc::template rebind< Key* >::other > _v_;
+    std::vector< Key* > _v_;
 
     // Note that, using Key* in  _v_, we actually store the Key only once in the
     // sequence (that is, within  _h_). This enables storing big objects within
@@ -519,11 +488,9 @@ namespace gum {
     /**
      * @brief Clears the current sequence and fill it with copies the element
      * of aSeq.
-     * @tparam OtherAlloc The other gum::SequenceImplementation allocator.
      * @param aSeq The gum::SequenceImplementation to copy.
      */
-    template < typename OtherAlloc >
-    void _copy_(const SequenceImplementation< Key, OtherAlloc, Gen >& aSeq);
+    void _copy_(const SequenceImplementation< Key, Gen >& aSeq);
 
     /**
      * @brief Insert an element at the end of the sequence.
@@ -552,17 +519,14 @@ namespace gum {
    * sequence, that is, all the Keys must be different.
    *
    * @tparam Key The elements type stored in the sequence.
-   * @tparam Alloc The values allocator.
    * @tapram Gen Used for meta-programation.
    */
-  template < typename Key, typename Alloc >
-  class SequenceImplementation< Key, Alloc, true > {
+  template < typename Key >
+  class SequenceImplementation< Key, true > {
     /// Friends to speed up access
     /// @{
-    template < typename K, typename A, bool >
-    friend class SequenceImplementation;
     friend class SequenceIteratorSafe< Key >;
-    friend class Sequence< Key, Alloc >;
+    friend class Sequence< Key >;
     /// @}
 
     public:
@@ -571,7 +535,6 @@ namespace gum {
     using value_type          = Key;
     using size_type           = std::size_t;
     using difference_type     = std::ptrdiff_t;
-    using allocator_type      = Alloc;
     using iterator            = SequenceIterator< Key >;
     using const_iterator      = SequenceIterator< Key >;
     using iterator_safe       = SequenceIteratorSafe< Key >;
@@ -602,24 +565,13 @@ namespace gum {
      * @warning The elements of the newly constructed sequence are copies of
      * those in aSeq.
      */
-    SequenceImplementation(const SequenceImplementation< Key, Alloc, true >& aSeq);
-
-    /**
-     * @brief Generalised copy constructor.
-     *
-     * @tparam OtherAlloc The other gum::SequenceImplementation allocator.
-     * @param aSeq The sequence the elements of which will be copied.
-     * @warning The elements of the newly constructed sequence are copies of
-     * those in aSeq.
-     */
-    template < typename OtherAlloc >
-    SequenceImplementation(const SequenceImplementation< Key, OtherAlloc, true >& aSeq);
+    SequenceImplementation(const SequenceImplementation< Key, true >& aSeq);
 
     /**
      * @brief Move constructor.
      * @param aSeq The gum::SequenceImplementation to move/
      */
-    SequenceImplementation(SequenceImplementation< Key, Alloc, true >&& aSeq);
+    SequenceImplementation(SequenceImplementation< Key, true >&& aSeq);
 
     /// @}
     public:
@@ -700,26 +652,14 @@ namespace gum {
      * @param aSeq The sequence to copy.
      * @return Returns a ref to this.
      */
-    SequenceImplementation< Key, Alloc, true >&
-       operator=(const SequenceImplementation< Key, Alloc, true >& aSeq);
-
-    /**
-     * @brief generalized opy operator.
-     * @tparam otheralloc the other gum::sequenceimplementation allocator.
-     * @param aseq the sequence to copy.
-     * @return returns a ref to this.
-     */
-    template < typename OtherAlloc >
-    SequenceImplementation< Key, Alloc, true >&
-       operator=(const SequenceImplementation< Key, OtherAlloc, true >& aSeq);
+    SequenceImplementation< Key, true >& operator=(const SequenceImplementation< Key, true >& aSeq);
 
     /**
      * @brief Move operator.
      * @param aSeq The sequence to move.
      * @return Returns a ref to this.
      */
-    SequenceImplementation< Key, Alloc, true >&
-       operator=(SequenceImplementation< Key, Alloc, true >&& aSeq);
+    SequenceImplementation< Key, true >& operator=(SequenceImplementation< Key, true >&& aSeq);
 
     /// @}
 
@@ -735,7 +675,7 @@ namespace gum {
      * @return Returns this gum::SequenceImplementation.
      * @throw DuplicateElement Raised if the sequence contains already k.
      */
-    SequenceImplementation< Key, Alloc, true >& operator<<(Key k);
+    SequenceImplementation< Key, true >& operator<<(Key k);
 
     /**
      * @brief Remove k in the sequence (synonym for erase).
@@ -746,7 +686,7 @@ namespace gum {
      * @param k The key we wish to remove.
      * @return Returns this gum::SequenceImplementation.
      */
-    SequenceImplementation< Key, Alloc, true >& operator>>(Key k);
+    SequenceImplementation< Key, true >& operator>>(Key k);
 
     /**
      * @brief Returns the element at position i (synonym for atPos).
@@ -762,12 +702,10 @@ namespace gum {
      * Note that two sequences are equal if and only if they contain the same
      * Keys (using Key::operator==) in the same order.
      *
-     * @tparam OtherAlloc The other gum::SequenceImplementation allocator.
      * @param k The other gum::SequenceImplementation.
      * @brief Returns true if both gum::SequenceImplementation are equal.
      */
-    template < typename OtherAlloc >
-    bool operator==(const SequenceImplementation< Key, OtherAlloc, true >& k) const;
+    bool operator==(const SequenceImplementation< Key, true >& k) const;
 
     /**
      * @brief Returns true if the content of k is different from that of *this.
@@ -775,12 +713,10 @@ namespace gum {
      * Note that two sequences are equal if and only if they contain the same
      * variables (using Key::operator==) in the same order.
      *
-     * @tparam OtherAlloc The other gum::SequenceImplementation allocator.
      * @param k The other gum::SequenceImplementation.
      * @brief Returns true if both gum::SequenceImplementation are not equal.
      */
-    template < typename OtherAlloc >
-    bool operator!=(const SequenceImplementation< Key, OtherAlloc, true >& k) const;
+    bool operator!=(const SequenceImplementation< Key, true >& k) const;
 
     /// @}
     // ============================================================================
@@ -932,10 +868,10 @@ namespace gum {
 
     private:
     /// Keep track of the position of the element in v (for fast retrieval).
-    HashTable< Key, Idx, Alloc > _h_;
+    HashTable< Key, Idx > _h_;
 
     /// The set of the elements stored into the sequence.
-    std::vector< Key, Alloc > _v_;
+    std::vector< Key > _v_;
 
     /// Stores the end iterator for fast access.
     SequenceIteratorSafe< Key > _end_safe_;
@@ -952,11 +888,9 @@ namespace gum {
     /**
      * @brief Clears the current sequence and fill it with copies the element
      * of aSeq.
-     * @tparam OtherAlloc The other gum::SequenceImplementation allocator.
      * @para aSeq The gum::SequenceImplementation to copy.
      */
-    template < typename OtherAlloc >
-    void _copy_(const SequenceImplementation< Key, OtherAlloc, true >& aSeq);
+    void _copy_(const SequenceImplementation< Key, true >& aSeq);
 
     /**
      * @brief Insert an element at the end of the sequence.
@@ -1011,10 +945,9 @@ namespace gum {
    * @endcode
    *
    * @tparam Key The elements type stored in the sequence.
-   * @tparam Alloc The values allocator.
    */
-  template < typename Key, typename Alloc = std::allocator< Key > >
-  class Sequence: public SequenceImplementation< Key, Alloc, std::is_scalar< Key >::value > {
+  template < typename Key >
+  class Sequence: public SequenceImplementation< Key, std::is_scalar< Key >::value > {
     public:
     /// Types for STL compliance.
     /// @{
@@ -1025,7 +958,6 @@ namespace gum {
     using const_pointer       = const Key*;
     using size_type           = std::size_t;
     using difference_type     = std::ptrdiff_t;
-    using allocator_type      = Alloc;
     using iterator            = SequenceIterator< Key >;
     using const_iterator      = SequenceIterator< Key >;
     using iterator_safe       = SequenceIteratorSafe< Key >;
@@ -1033,7 +965,7 @@ namespace gum {
     /// @}
 
     /// The gum::Sequence implementation.
-    using Implementation = SequenceImplementation< Key, Alloc, std::is_scalar< Key >::value >;
+    using Implementation = SequenceImplementation< Key, std::is_scalar< Key >::value >;
 
     // ============================================================================
     /// @name Constructors / Destructors
@@ -1059,24 +991,13 @@ namespace gum {
      * @warning The elements of the newly constructed sequence are copies of
      * those in aSeq.
      */
-    Sequence(const Sequence< Key, Alloc >& aSeq);
-
-    /**
-     * @brief Generalised copy constructor.
-     *
-     * @tparam OtherAlloc The other gum::Sequence allocator.
-     * @param aSeq The sequence the elements of which will be copied.
-     * @warning The elements of the newly constructed sequence are copies of
-     * those in aSeq.
-     */
-    template < typename OtherAlloc >
-    Sequence(const Sequence< Key, OtherAlloc >& aSeq);
+    Sequence(const Sequence< Key >& aSeq);
 
     /**
      * @brief Move constructor.
      * @param aSeq The gum::Sequence to move/
      */
-    Sequence(Sequence< Key, Alloc >&& aSeq);
+    Sequence(Sequence< Key >&& aSeq);
 
     /**
      * @brief Class destructor.
@@ -1094,23 +1015,14 @@ namespace gum {
      * @param aSeq The sequence to copy.
      * @return Returns a ref to this.
      */
-    Sequence< Key, Alloc >& operator=(const Sequence< Key, Alloc >& aSeq);
-
-    /**
-     * @brief Generalized opy operator.
-     * @tparam otheralloc The other gum::sequenceimplementation allocator.
-     * @param aSeq The sequence to copy.
-     * @return Returns a ref to this.
-     */
-    template < typename OtherAlloc >
-    Sequence< Key, Alloc >& operator=(const Sequence< Key, OtherAlloc >& aSeq);
+    Sequence< Key >& operator=(const Sequence< Key >& aSeq);
 
     /**
      * @brief Move operator.
      * @param aSeq The sequence to move.
      * @return Returns a ref to this.
      */
-    Sequence< Key, Alloc >& operator=(Sequence< Key, Alloc >&& aSeq);
+    Sequence< Key >& operator=(Sequence< Key >&& aSeq);
 
     /// @}
     // ============================================================================
@@ -1124,8 +1036,7 @@ namespace gum {
      * @param seq The gum::Sequence to substract of this.
      * @return Returns the set difference : *this \ seq.
      */
-    template < typename OtherAlloc >
-    Set< Key, Alloc > diffSet(const Sequence< Key, OtherAlloc >& seq) const;
+    Set< Key > diffSet(const Sequence< Key >& seq) const;
 
     /// @}
   };
@@ -1198,7 +1109,7 @@ namespace gum {
   template < typename Key >
   class SequenceIteratorSafe {
     /// Friend to speed up access.
-    template < typename K, typename A, bool >
+    template < typename K, bool >
     friend class SequenceImplementation;
 
     public:
@@ -1225,15 +1136,13 @@ namespace gum {
      * @warning if pos is greater than the size of the sequence, the iterator
      * is made pointing to end().
      *
-     * @tparam Alloc The sequence allocator.
      * @tparam Gen Used for meta-programation.
      * @param seq The sequence.
      * @param pos Indicates to which position of the sequence the iterator
      * should be pointing. By default, the iterator points to begin().
      */
-    template < typename Alloc, bool Gen >
-    SequenceIteratorSafe(const SequenceImplementation< Key, Alloc, Gen >& seq,
-                         Idx                                              pos = 0) noexcept;
+    template < bool Gen >
+    SequenceIteratorSafe(const SequenceImplementation< Key, Gen >& seq, Idx pos = 0) noexcept;
 
     public:
     // ============================================================================
@@ -1252,10 +1161,8 @@ namespace gum {
      * @param seq the sequence
      * @param pos indicates to which position of the sequence the iterator
      * should be pointing. By default, the iterator points to begin()
-     * @tparam Alloc The sequence allocator.
      */
-    template < typename Alloc >
-    SequenceIteratorSafe(const Sequence< Key, Alloc >& seq, Idx pos = 0) noexcept;
+    SequenceIteratorSafe(const Sequence< Key >& seq, Idx pos = 0) noexcept;
 
     /**
      * @brief Copy constructor.
@@ -1408,7 +1315,7 @@ namespace gum {
     Idx _iterator_;
 
     /// The sequence pointed to by the iterator (by default, key is a scalar).
-    const SequenceImplementation< Key, std::allocator< Key >, std::is_scalar< Key >::value >* _seq_;
+    const SequenceImplementation< Key, std::is_scalar< Key >::value >* _seq_;
 
     /// The iterator points to the posth element (0 = beginning of the
     /// sequence).
@@ -1422,8 +1329,8 @@ namespace gum {
   };
 
   /// @brief A << operator for displaying the content of the Sequence.
-  template < typename Key, typename Alloc >
-  std::ostream& operator<<(std::ostream& stream, const Sequence< Key, Alloc >& s);
+  template < typename Key >
+  std::ostream& operator<<(std::ostream& stream, const Sequence< Key >& s);
 
 } /* namespace gum */
 

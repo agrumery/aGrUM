@@ -45,7 +45,7 @@ namespace gum {
   class SetIteratorSafe;
   template < typename Key >
   class SetIterator;
-  template < typename Key, typename Alloc >
+  template < typename Key >
   class Set;
 
   template < typename Key >
@@ -104,7 +104,7 @@ namespace gum {
     static const SetIterator< int >* constEnd4Statics();
 
     /// Friends that have access to the iterator.
-    template < typename Key, typename Alloc >
+    template < typename Key >
     friend class Set;
   };
 
@@ -158,9 +158,8 @@ namespace gum {
    * @endcode
    *
    * @tparam Key The elements type.
-   * @tparam Alloc The elements allocator.
    */
-  template < typename Key, typename Alloc = std::allocator< Key > >
+  template < typename Key >
   class Set {
     public:
     /// Types for STL compliance.
@@ -172,7 +171,6 @@ namespace gum {
     using const_pointer       = const Key*;
     using size_type           = std::size_t;
     using difference_type     = std::ptrdiff_t;
-    using allocator_type      = Alloc;
     using iterator            = SetIterator< Key >;
     using const_iterator      = SetIterator< Key >;
     using iterator_safe       = SetIteratorSafe< Key >;
@@ -208,21 +206,13 @@ namespace gum {
      * @brief Copy constructor.
      * @param aHT The gum::Set to copy.
      */
-    Set(const Set< Key, Alloc >& aHT);
-
-    /**
-     * @brief Generalized copy constructor.
-     * @param aHT The gum::Set to copy.
-     * @tparam OtherAlloc The other gum::Set allocator.
-     */
-    template < typename OtherAlloc >
-    Set(const Set< Key, OtherAlloc >& aHT);
+    Set(const Set< Key >& aHT);
 
     /**
      * @brief Move constructor.
      * @param aHT The gum::Set to move.
      */
-    Set(Set< Key, Alloc >&& aHT);
+    Set(Set< Key >&& aHT);
 
     /**
      * @brief Class destructor.
@@ -240,113 +230,90 @@ namespace gum {
      * @param from The gum::Set to copy.
      * @return Returns this gum::Set.
      */
-    Set< Key, Alloc >& operator=(const Set< Key, Alloc >& from);
-
-    /**
-     * @brief Generalized copy operator.
-     * @param from The gum::Set to copy.
-     * @tparam OtherAlloc The other gum::Set allocator.
-     * @return Returns this gum::Set.
-     */
-    template < typename OtherAlloc >
-    Set< Key, Alloc >& operator=(const Set< Key, OtherAlloc >& from);
+    Set< Key >& operator=(const Set< Key >& from);
 
     /**
      * @brief Move operator.
      * @param from The gum::Set to move.
      * @return Returns this gum::Set.
      */
-    Set< Key, Alloc >& operator=(Set< Key, Alloc >&& from);
+    Set< Key >& operator=(Set< Key >&& from);
 
     /**
      * @brief Mathematical equality between two sets.
      * @param s2 The gum::Set to test for equality.
-     * @tparam OtherAlloc The other gum::Set allocator.
      * @return Returns true if both gum::Set are equal.
      */
-    template < typename OtherAlloc >
-    bool operator==(const Set< Key, OtherAlloc >& s2) const;
+    bool operator==(const Set< Key >& s2) const;
 
     /**
      * @brief Mathematical inequality between two sets.
      * @param s2 The gum::Set to test for inequality.
-     * @tparam OtherAlloc The other gum::Set allocator.
      * @return Returns true if both gum::Set are not equal.
      */
-    template < typename OtherAlloc >
-    bool operator!=(const Set< Key, OtherAlloc >& s2) const;
+    bool operator!=(const Set< Key >& s2) const;
 
     /**
      * @brief Intersection update operator
-     * @tparam OtherAlloc The other gum::Set allocator.
      * @param s2 The gum::Set to intersect.
      * @return Returns this. Now this contains the elements belonging
      * both to this and s2.
      */
-    template < typename OtherAlloc >
-    const Set< Key, Alloc >& operator*=(const Set< Key, OtherAlloc >& s2);
+    const Set< Key >& operator*=(const Set< Key >& s2);
 
     /**
      * @brief Intersection operator.
-     * @tparam OtherAlloc The other gum::Set allocator.
      * @param s2 The gum::Set to intersect.
      * @return Returns a Set containing the elements belonging both to this and
      * s2.
      */
-    template < typename OtherAlloc >
-    Set< Key, Alloc > operator*(const Set< Key, OtherAlloc >& s2) const;
+    Set< Key > operator*(const Set< Key >& s2) const;
 
     /**
      * @brief Union update operator
-     * @tparam OtherAlloc The other gum::Set allocator.
      * @param s2 The gum::Set to update
      * @return Returns this. Now this contains the elements belonging
      * both to this or to s2.
      */
-    template < typename OtherAlloc >
-    const Set< Key, Alloc >& operator+=(const Set< Key, OtherAlloc >& s2);
+    const Set< Key >& operator+=(const Set< Key >& s2);
 
     /**
      * @brief Union operator.
-     * @tparam OtherAlloc The other gum::Set allocator.
      * @param s2 The gum::Set to union.
      * @return Returns a new Set containing the union of the elements of this
      * and s2.
      */
-    template < typename OtherAlloc >
-    Set< Key, Alloc > operator+(const Set< Key, OtherAlloc >& s2) const;
+    Set< Key > operator+(const Set< Key >& s2) const;
 
 
     /**
      * @brief Disjunction operator.
-     * @tparam OtherAlloc The other gum::Set allocator.
      * @param s2 The gum::Set to disjunct.
      * @return Returns a Set whose elements belong to this but not to s2.
      * @warning Unlike + and *, the - operator is not commutative!
      */
-    template < typename OtherAlloc >
-    Set< Key, Alloc > operator-(const Set< Key, OtherAlloc >& s2) const;
+    Set< Key > operator-(const Set< Key >& s2) const;
 
     /**
      * @brief Adds a new element to the set (alias for insert).
      * @param k The new element to add.
      * @return Returns this gum::Set.
      */
-    Set< Key, Alloc >& operator<<(const Key& k);
+    Set< Key >& operator<<(const Key& k);
 
     /**
      * @brief Adds a new element to the set (alias for insert).
      * @param k The new element to add.
      * @return Returns this gum::Set.
      */
-    Set< Key, Alloc >& operator<<(Key&& k);
+    Set< Key >& operator<<(Key&& k);
 
     /**
      * @brief Removes an element from the set (alias for erase).
      * @param k The element to remove.
      * @return Return this gum::Set.
      */
-    Set< Key, Alloc >& operator>>(const Key& k);
+    Set< Key >& operator>>(const Key& k);
 
     /// @}
     // ============================================================================
@@ -420,26 +387,22 @@ namespace gum {
     /**
      * @return Returns true if *this is a proper subset of s
      */
-    template < typename OtherAlloc >
-    bool isProperSubsetOf(const Set< Key, OtherAlloc >& s) const;
+    bool isProperSubsetOf(const Set< Key >& s) const;
 
     /**
      * @return Returns true if *this is a proper superset of s
      */
-    template < typename OtherAlloc >
-    bool isProperSupersetOf(const Set< Key, OtherAlloc >& s) const;
+    bool isProperSupersetOf(const Set< Key >& s) const;
 
     /**
      * @return Returns true if *this is a subset of s (or equal to s)
      */
-    template < typename OtherAlloc >
-    bool isSubsetOrEqual(const Set< Key, OtherAlloc >& s) const;
+    bool isSubsetOrEqual(const Set< Key >& s) const;
 
     /**
      * @return Returns true if *this is a superset of s (or equal to s)
      */
-    template < typename OtherAlloc >
-    bool isSupersetOrEqual(const Set< Key, OtherAlloc >& s) const;
+    bool isSupersetOrEqual(const Set< Key >& s) const;
 
     /**
      * @brief Indicates whether a given elements belong to the set.
@@ -724,9 +687,8 @@ namespace gum {
      * default size is computed that is a good trade-off between space
      * consumption and efficiency of new elements insertions.
      */
-    template < typename NewKey,
-               typename NewAlloc = typename Alloc::template rebind< NewKey >::other >
-    HashTable< Key, NewKey, NewAlloc > hashMap(NewKey (*f)(const Key&), Size capacity = 0) const;
+    template < typename NewKey >
+    HashTable< Key, NewKey > hashMap(NewKey (*f)(const Key&), Size capacity = 0) const;
 
     /**
      * @brief Creates a hash table of NewKey from the set.
@@ -741,9 +703,8 @@ namespace gum {
      * default size is computed that is a good trade-off between space
      * consumption and efficiency of new elements insertions.
      */
-    template < typename NewKey,
-               typename NewAlloc = typename Alloc::template rebind< NewKey >::other >
-    HashTable< Key, NewKey, NewAlloc > hashMap(const NewKey& val, Size size = 0) const;
+    template < typename NewKey >
+    HashTable< Key, NewKey > hashMap(const NewKey& val, Size size = 0) const;
 
     /**
      * @brief A method to create a List of NewKey from the set.
@@ -753,9 +714,8 @@ namespace gum {
      *
      * @param f A function that maps a Key into a NewKey
      */
-    template < typename NewKey,
-               typename NewAlloc = typename Alloc::template rebind< NewKey >::other >
-    List< NewKey, NewAlloc > listMap(NewKey (*f)(const Key&)) const;
+    template < typename NewKey >
+    List< NewKey > listMap(NewKey (*f)(const Key&)) const;
 
     /// @}
 
@@ -764,15 +724,13 @@ namespace gum {
     /// @{
     friend class SetIterator< Key >;
     friend class SetIteratorSafe< Key >;
-    template < typename K, typename A >
-    friend class Set;
     /// @}
 
     /// A set of X's is actually a hash table whose keys are the X's.
-    HashTable< Key, bool, Alloc > _inside_;
+    HashTable< Key, bool > _inside_;
 
     /// Convert a hash table into a set of keys.
-    Set(const HashTable< Key, bool, Alloc >& h);
+    Set(const HashTable< Key, bool >& h);
   };
 
 
@@ -852,12 +810,10 @@ namespace gum {
      * By default, the iterator points to the beginning of the set, but, using
      * optional argument pos, you can make it point to end().
      *
-     * @tparam Alloc The gum::Set allocator.
      * @param from The gum::Set to iterate over.
      * @param pos Where to start iterating.
      */
-    template < typename Alloc >
-    SetIteratorSafe(const Set< Key, Alloc >& from, Position pos = BEGIN);
+    SetIteratorSafe(const Set< Key >& from, Position pos = BEGIN);
 
     /**
      * @brief Copy constructor.
@@ -983,8 +939,7 @@ namespace gum {
 
     private:
     /// For efficiency, Set should be able to modify the hash table iterator.
-    template < typename K, typename A >
-    friend class Set;
+    friend class Set< Key >;
 
     /// The underlying iterator for the set's hash table containing the data.
     HashTableConstIteratorSafe< Key, bool > _ht_iter_;
@@ -1070,12 +1025,10 @@ namespace gum {
      * By default, the iterator points to the beginning of the set, but, using
      * optional argument pos, you can make it point to end().
      *
-     * @tparam Alloc The gum::Set allocator.
      * @param from The gum::Set to iterator over.
      * @param pos Where to start iterating.
      */
-    template < typename Alloc >
-    SetIterator(const Set< Key, Alloc >& from, Position pos = BEGIN);
+    SetIterator(const Set< Key >& from, Position pos = BEGIN);
 
     /**
      * @brief Copy constructor.
@@ -1188,8 +1141,7 @@ namespace gum {
 
     private:
     /// For efficiency, Set should be able to modify the hash table iterator.
-    template < typename K, typename A >
-    friend class Set;
+    friend class Set< Key >;
     friend class SetIteratorSafe< Key >;
 
     /// The underlying iterator for the set's hash table containing the data.
@@ -1198,23 +1150,23 @@ namespace gum {
 
 
   /// @brief A << operator for HashTableList.
-  template < typename Key, typename Alloc >
-  std::ostream& operator<<(std::ostream&, const Set< Key, Alloc >&);
+  template < typename Key >
+  std::ostream& operator<<(std::ostream&, const Set< Key >&);
 
 
   /// the hash function for sets of int
-  template < typename T, typename Alloc >
-  class HashFunc< Set< T, Alloc > >: public HashFuncBase< Set< T, Alloc > > {
+  template < typename T >
+  class HashFunc< Set< T > >: public HashFuncBase< Set< T > > {
     public:
     /**
      * @brief Returns the value of a key as a Size.
      * @param key The value to return as a Size.
      * @return Returns the value of a key as a Size.
      */
-    static Size castToSize(const Set< T, Alloc >& key);
+    static Size castToSize(const Set< T >& key);
 
     /// computes the hashed value of a key
-    virtual Size operator()(const Set< T, Alloc >& key) const override final;
+    virtual Size operator()(const Set< T >& key) const override final;
   };
 
 } /* namespace gum */

@@ -58,15 +58,15 @@ namespace gum {
   class ListIteratorSafe;
   template < typename Val >
   class ListConstIteratorSafe;
-  template < typename Val, typename Alloc >
+  template < typename Val >
   class List;
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 #ifndef SWIG   // SWIG cannot read these lines
   /// an << operator for List
-  template < typename Val, typename Alloc >
-  std::ostream& operator<<(std::ostream& stream, const List< Val, Alloc >& list);
+  template < typename Val >
+  std::ostream& operator<<(std::ostream& stream, const List< Val >& list);
 #endif   // SWIG
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -234,8 +234,7 @@ namespace gum {
     private:
     /// All the list containers and iterators should be able to access the
     /// buckets.
-    template < typename T, typename A >
-    friend class List;
+    friend class List< Val >;
     friend class ListIterator< Val >;
     friend class ListConstIterator< Val >;
     friend class ListIteratorSafe< Val >;
@@ -368,9 +367,8 @@ namespace gum {
    * @endcode
    *
    * @tparam Val The values type stored in the gum::List.
-   * @tparam Alloc The allocator for the values stored in the gum::List.
    */
-  template < typename Val, typename Alloc = std::allocator< Val > >
+  template < typename Val >
   class List {
     public:
     /// Types for STL compliance.
@@ -382,15 +380,11 @@ namespace gum {
     using const_pointer       = const Val*;
     using size_type           = Size;
     using difference_type     = std::ptrdiff_t;
-    using allocator_type      = Alloc;
     using iterator            = ListIterator< Val >;
     using const_iterator      = ListConstIterator< Val >;
     using iterator_safe       = ListIteratorSafe< Val >;
     using const_iterator_safe = ListConstIteratorSafe< Val >;
     /// @}
-
-    /// Type of the allocator for ListBuckets.
-    using BucketAllocator = typename Alloc::template rebind< ListBucket< Val > >::other;
 
     /// Locations around iterators where insertions of new elements can take /
     /// place.
@@ -420,27 +414,13 @@ namespace gum {
      *
      * @param src the list the contents of which is copied into the current one.
      */
-    List(const List< Val, Alloc >& src);
-
-    /**
-     * @brief Ceneralized copy constructor.
-     *
-     * The new list and that which is copied do not share their elements: the
-     * new list contains new instances of the values stored in the list to be
-     * copied.  Of course if these values are pointers, the new values point
-     * toward the same elements. This constructor runs in linear time.
-     *
-     * @param src the list the contents of which is copied into the current one.
-     * @tparam OtherAlloc The other allocator.
-     */
-    template < typename OtherAlloc >
-    List(const List< Val, OtherAlloc >& src);
+    List(const List< Val >& src);
 
     /**
      * @brief Move constructor.
      * @param src The gum::List to move.
      */
-    List(List< Val, Alloc >&& src);
+    List(List< Val >&& src);
 
     /**
      * @brief Initializer_list constructor.
@@ -1122,30 +1102,27 @@ namespace gum {
      * @param f A function that maps any Val element into a Mount
      * @return Returns a lsit of mountains.
      * @tparam Mount The type of mountains.
-     * @tparam OtherAlloc The mountains type allocator.
      */
-    template < typename Mount, typename OtherAlloc = std::allocator< Mount > >
-    List< Mount, OtherAlloc > map(Mount (*f)(Val)) const;
+    template < typename Mount >
+    List< Mount > map(Mount (*f)(Val)) const;
 
     /**
      * @brief Creates a list of mountains from a list of val.
      * @param f A function that maps any Val element into a Mount
      * @return Returns a lsit of mountains.
      * @tparam Mount The type of mountains.
-     * @tparam OtherAlloc The mountains type allocator.
      */
-    template < typename Mount, typename OtherAlloc = std::allocator< Mount > >
-    List< Mount, OtherAlloc > map(Mount (*f)(Val&)) const;
+    template < typename Mount >
+    List< Mount > map(Mount (*f)(Val&)) const;
 
     /**
      * @brief Creates a list of mountains from a list of val.
      * @param f A function that maps any Val element into a Mount
      * @return Returns a lsit of mountains.
      * @tparam Mount The type of mountains.
-     * @tparam OtherAlloc The mountains type allocator.
      */
-    template < typename Mount, typename OtherAlloc = std::allocator< Mount > >
-    List< Mount, OtherAlloc > map(Mount (*f)(const Val&)) const;
+    template < typename Mount >
+    List< Mount > map(Mount (*f)(const Val&)) const;
 
     /**
      * @brief Creates a list of mountains with a given value from a list of
@@ -1153,10 +1130,9 @@ namespace gum {
      * @param mount the value taken by all the elements of the resulting list
      * @return Returns a lsit of mountains.
      * @tparam Mount The type of mountains.
-     * @tparam OtherAlloc The mountains type allocator.
      */
-    template < typename Mount, typename OtherAlloc = std::allocator< Mount > >
-    List< Mount, OtherAlloc > map(const Mount& mount) const;
+    template < typename Mount >
+    List< Mount > map(const Mount& mount) const;
 
     /// @}
     // ============================================================================
@@ -1182,27 +1158,7 @@ namespace gum {
      * List.
      * @return Returns this gum::List.
      */
-    List< Val, Alloc >& operator=(const List< Val, Alloc >& src);
-
-    /**
-     * @brief Generalized copy operator.
-     *
-     * The new list and that which is copied do not share the elements: the new
-     * list contains new instances of the values stored in the list to be
-     * copied. Of course if these values are pointers, the new values point
-     * toward the same elements. The List on which the operator is applied
-     * keeps its iterator's list. Of course, if it previously contained some
-     * elements, those are removed prior to the copy. This operator runs in
-     * linear time.
-     *
-     * @warning If the current List previously contained iterators, those will
-     * be resetted to end()/rend().
-     * @param src the list the content of which will be copied into the current
-     * List.
-     * @return Returns this gum::List.
-     */
-    template < typename OtherAlloc >
-    List< Val, Alloc >& operator=(const List< Val, OtherAlloc >& src);
+    List< Val >& operator=(const List< Val >& src);
 
     /**
      * @brief Move operator.
@@ -1210,7 +1166,7 @@ namespace gum {
      * @param src The gum::List to move.
      * @return Returns this gum::List.
      */
-    List< Val, Alloc >& operator=(List< Val, Alloc >&& src);
+    List< Val >& operator=(List< Val >&& src);
 
     /**
      * @brief Inserts a new element at the end of the list (alias of pushBack).
@@ -1247,10 +1203,8 @@ namespace gum {
      * This method runs in time linear in the number of elements of the list.
      *
      * @return Returns true if src and this gum::List are identical.
-     * @tparam OtherAlloc The other allocator.
      */
-    template < typename OtherAlloc >
-    bool operator==(const List< Val, OtherAlloc >& src) const;
+    bool operator==(const List< Val >& src) const;
 
     /**
      * @brief Checks whether two lists are different (different elements or
@@ -1259,10 +1213,8 @@ namespace gum {
      * This method runs in time linear in the number of elements of the list.
      *
      * @return Returns true if src and this gum::List are identical.
-     * @tparam OtherAlloc The other allocator.
      */
-    template < typename OtherAlloc >
-    bool operator!=(const List< Val, OtherAlloc >& src) const;
+    bool operator!=(const List< Val >& src) const;
 
     /**
      * @brief Returns the ith element in the current chained list.
@@ -1307,20 +1259,15 @@ namespace gum {
     /// The list of "safe" iterators attached to the list.
     mutable std::vector< const_iterator_safe* > _safe_iterators_;
 
-    /// The allocator for the buckets.
-    mutable BucketAllocator _alloc_bucket_;
-
     /**
      * @brief A function used to perform copies of elements of Lists.
      *
      * Before performing the copy, we assume in this function that the current
      * list (this) is empty (else there would be memory leak).
      *
-     * @tparam OtherAlloc The other allocator.
      * @param src The gum::List to copy.
      */
-    template < typename OtherAlloc >
-    void _copy_elements_(const List< Val, OtherAlloc >& src);
+    void _copy_elements_(const List< Val >& src);
 
     /**
      * @brief Returns the bucket corresponding to the ith position in the list.
@@ -1524,10 +1471,8 @@ namespace gum {
 
     /**
      * @brief Constructor for a begin.
-     * @tparam Alloc The gum::List allocator.
      */
-    template < typename Alloc >
-    ListConstIterator(const List< Val, Alloc >& theList) noexcept;
+    ListConstIterator(const List< Val >& theList) noexcept;
 
     /**
      * @brief Copy constructor.
@@ -1712,8 +1657,7 @@ namespace gum {
      * @brief Class List must be a friend because it uses the getBucket method
      * to speed up some processes.
      */
-    template < typename T, typename A >
-    friend class List;
+    friend class List< Val >;
 
     /// The bucket in the chained list pointed to by the iterator.
     ListBucket< Val >* _bucket_{nullptr};
@@ -1808,11 +1752,9 @@ namespace gum {
 
     /**
      * @brief Constructor for a begin.
-     * @tparam Alloc The gum::List allocator.
      * @param theList The list to iterate over.
      */
-    template < typename Alloc >
-    ListIterator(const List< Val, Alloc >& theList) noexcept;
+    ListIterator(const List< Val >& theList) noexcept;
 
     /**
      * @brief Copy constructor.
@@ -2044,10 +1986,8 @@ namespace gum {
 
     /**
      * @brief Constructor for a begin.
-     * @tparam Alloc The gum::List allocator.
      */
-    template < typename Alloc >
-    ListConstIteratorSafe(const List< Val, Alloc >& theList);
+    ListConstIteratorSafe(const List< Val >& theList);
 
     /**
      * @brief Copy constructor.
@@ -2063,8 +2003,7 @@ namespace gum {
      * @throw UndefinedIteratorValue Raised if the element does not exist in
      * the list.
      */
-    template < typename Alloc >
-    ListConstIteratorSafe(const List< Val, Alloc >& theList, Size ind_elt);
+    ListConstIteratorSafe(const List< Val >& theList, Size ind_elt);
 
     /**
      * @brief Move constructor.
@@ -2233,13 +2172,12 @@ namespace gum {
     /// class List must be a friend because it uses the getBucket method to
     /// speed up some processes.
     /// @{
-    template < typename T, typename A >
-    friend class List;
+    friend class List< Val >;
     friend class ListConstIterator< Val >;
     /// @}
 
     /// The list the iterator is pointing to.
-    const List< Val, std::allocator< Val > >* _list_{nullptr};
+    const List< Val >* _list_{nullptr};
 
     /// The bucket in the chained list pointed to by the iterator.
     ListBucket< Val >* _bucket_{nullptr};
@@ -2355,10 +2293,8 @@ namespace gum {
 
     /**
      * @brief Constructor for a begin.
-     * @tparam Alloc The gum::List allocator.
      */
-    template < typename Alloc >
-    ListIteratorSafe(const List< Val, Alloc >& theList);
+    ListIteratorSafe(const List< Val >& theList);
 
     /**
      * @brief Copy constructor.
@@ -2374,8 +2310,7 @@ namespace gum {
      * @throw UndefinedIteratorValue Raised if the element does not exist in
      * the list.
      */
-    template < typename Alloc >
-    ListIteratorSafe(const List< Val, Alloc >& theList, Size ind_elt);
+    ListIteratorSafe(const List< Val >& theList, Size ind_elt);
 
     /**
      * @brief Move constructor.
