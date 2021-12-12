@@ -50,10 +50,9 @@ namespace gum {
      * DBRow are specified as template parameters of the DBRow.
      *
      * @ingroup learning_database */
-    template < typename T_DATA, template < typename > class ALLOC = std::allocator >
+    template < typename T_DATA >
     class DBRow {
       public:
-      using allocator_type = ALLOC< T_DATA >;
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -64,53 +63,35 @@ namespace gum {
       /// default constructor
       DBRow();
 
-      /// default constructor with specific allocator
-      DBRow(const ALLOC< T_DATA >& alloc);
-
       /// constructs a row of a given size with missing values
       DBRow(const std::size_t      size,
-            const double           weight = 1.0,
-            const ALLOC< T_DATA >& alloc  = ALLOC< T_DATA >());
+            const double           weight = 1.0);
 
       /// constructor with a given size for the row
       DBRow(const std::size_t      size,
             const T_DATA           default_value,
-            const double           weight,
-            const ALLOC< T_DATA >& alloc = ALLOC< T_DATA >());
+            const double           weight);
 
       /// initializer list constructor
       DBRow(std::initializer_list< T_DATA > list,
-            const double                    weight = 1.0,
-            const ALLOC< T_DATA >&          alloc  = ALLOC< T_DATA >());
+            const double                    weight = 1.0);
 
       /// initializer from a vector of cells
-      template < template < typename > class OTHER_ALLOC >
-      DBRow(const std::vector< T_DATA, OTHER_ALLOC< T_DATA > >& cells,
-            const double                                        weight = 1.0,
-            const ALLOC< T_DATA >&                              alloc  = ALLOC< T_DATA >());
+      DBRow(const std::vector< T_DATA >& cells,
+            const double                 weight = 1.0);
 
       /// initializer with a move from a vector of cells
-      DBRow(std::vector< T_DATA, ALLOC< T_DATA > >&& cells,
-            const double                             weight = 1.0,
-            const ALLOC< T_DATA >&                   alloc  = ALLOC< T_DATA >());
+      DBRow(std::vector< T_DATA >&& cells,
+            const double            weight = 1.0);
 
       /// copy constructor
-      DBRow(const DBRow< T_DATA, ALLOC >& from);
-
-      /// copy constructor with a given allocator
-      DBRow(const DBRow< T_DATA, ALLOC >& from, const ALLOC< T_DATA >& alloc);
+      DBRow(const DBRow< T_DATA >& from);
 
       /// move constructor
-      DBRow(DBRow< T_DATA, ALLOC >&& from);
-
-      /// move constructor with a given allocator
-      DBRow(DBRow< T_DATA, ALLOC >&& from, const ALLOC< T_DATA >& alloc);
+      DBRow(DBRow< T_DATA >&& from);
 
       /// virtual copy constructor
-      DBRow< T_DATA, ALLOC >* clone() const;
-
-      /// virtual copy constructor with a given allocator
-      DBRow< T_DATA, ALLOC >* clone(const ALLOC< T_DATA >& alloc) const;
+      DBRow< T_DATA >* clone() const;
 
       /// destructor
       ~DBRow();
@@ -125,10 +106,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBRow< T_DATA, ALLOC >& operator=(const DBRow< T_DATA, ALLOC >& from);
+      DBRow< T_DATA >& operator=(const DBRow< T_DATA >& from);
 
       /// move operator
-      DBRow< T_DATA, ALLOC >& operator=(DBRow< T_DATA, ALLOC >&& from);
+      DBRow< T_DATA >& operator=(DBRow< T_DATA >&& from);
 
       /// returns the ith content of the row
       /** @warning This method does not check that there are at least i+1
@@ -152,10 +133,10 @@ namespace gum {
       /// @{
 
       /// returns the current row (without the weight)
-      const std::vector< T_DATA, ALLOC< T_DATA > >& row() const noexcept;
+      const std::vector< T_DATA >& row() const noexcept;
 
       /// returns the current row (without the weight)
-      std::vector< T_DATA, ALLOC< T_DATA > >& row() noexcept;
+      std::vector< T_DATA >& row() noexcept;
 
       /// returns the weight assigned to the DBRow
       const double& weight() const noexcept;
@@ -164,11 +145,10 @@ namespace gum {
       double& weight() noexcept;
 
       /// sets a new row (without changing the weight)
-      template < template < typename > class OTHER_ALLOC >
-      void setRow(const std::vector< T_DATA, OTHER_ALLOC< T_DATA > >& new_row);
+      void setRow(const std::vector< T_DATA >& new_row);
 
       /// sets a new row (without changing the weight)
-      void setRow(std::vector< T_DATA, ALLOC< T_DATA > >&& new_row);
+      void setRow(std::vector< T_DATA >&& new_row);
 
       /// sets a new weight
       void setWeight(const double new_weight);
@@ -188,22 +168,15 @@ namespace gum {
       /// adds a new element at the end of the row
       void pushBack(T_DATA&& elt);
 
-      /// returns the allocator used by the DBRow
-      ALLOC< T_DATA > getAllocator() const;
-
       /// @}
 
 
       protected:
       /// the row itself
-      std::vector< T_DATA, ALLOC< T_DATA > > row_;
+      std::vector< T_DATA > row_;
 
       /// the weight of the row
       double weight_{1.0f};
-
-      // used for constructors and operators
-      template < typename TX_DATA, template < typename > class OTHER_ALLOC >
-      friend class DBRow;
     };
 
   } /* namespace learning */

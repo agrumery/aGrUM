@@ -75,11 +75,9 @@ namespace gum {
      * }
      * @endcode
      */
-    template < typename GUM_SCALAR = double, template < typename > class ALLOC = std::allocator >
-    class DBRowGeneratorEM: public DBRowGeneratorWithBN< GUM_SCALAR, ALLOC > {
+    template < typename GUM_SCALAR = double >
+    class DBRowGeneratorEM: public DBRowGeneratorWithBN< GUM_SCALAR > {
       public:
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC< DBTranslatedValue >;
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -89,31 +87,19 @@ namespace gum {
 
       /// default constructor
       DBRowGeneratorEM(
-         const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > > column_types,
+         const std::vector< DBTranslatedValueType< DBTranslatedValueType > > column_types,
          const BayesNet< GUM_SCALAR >&                                              bn,
-         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&              nodeId2columns
-         = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-         const allocator_type& alloc = allocator_type());
+         const Bijection< NodeId, std::size_t< std::size_t > >&              nodeId2columns
+         = Bijection< NodeId, std::size_t< std::size_t > >());
 
       /// copy constructor
-      DBRowGeneratorEM(const DBRowGeneratorEM< GUM_SCALAR, ALLOC >& from);
-
-      /// copy constructor with a given allocator
-      DBRowGeneratorEM(const DBRowGeneratorEM< GUM_SCALAR, ALLOC >& from,
-                       const allocator_type&                        alloc);
+      DBRowGeneratorEM(const DBRowGeneratorEM< GUM_SCALAR >& from);
 
       /// move constructor
-      DBRowGeneratorEM(DBRowGeneratorEM< GUM_SCALAR, ALLOC >&& from);
-
-      /// move constructor with a given allocator
-      DBRowGeneratorEM(DBRowGeneratorEM< GUM_SCALAR, ALLOC >&& from, const allocator_type& alloc);
+      DBRowGeneratorEM(DBRowGeneratorEM< GUM_SCALAR >&& from);
 
       /// virtual copy constructor
-      virtual DBRowGeneratorEM< GUM_SCALAR, ALLOC >* clone() const override final;
-
-      /// virtual copy constructor with a given allocator
-      virtual DBRowGeneratorEM< GUM_SCALAR, ALLOC >*
-         clone(const allocator_type& alloc) const override final;
+      virtual DBRowGeneratorEM< GUM_SCALAR >* clone() const override final;
 
       /// destructor
       ~DBRowGeneratorEM();
@@ -128,12 +114,12 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBRowGeneratorEM< GUM_SCALAR, ALLOC >&
-         operator=(const DBRowGeneratorEM< GUM_SCALAR, ALLOC >& from);
+      DBRowGeneratorEM< GUM_SCALAR >&
+         operator=(const DBRowGeneratorEM< GUM_SCALAR >& from);
 
       /// move operator
-      DBRowGeneratorEM< GUM_SCALAR, ALLOC >&
-         operator=(DBRowGeneratorEM< GUM_SCALAR, ALLOC >&& from);
+      DBRowGeneratorEM< GUM_SCALAR >&
+         operator=(DBRowGeneratorEM< GUM_SCALAR >&& from);
 
       /// @}
 
@@ -145,30 +131,27 @@ namespace gum {
       /// @{
 
       /// generates one ouput DBRow for each DBRow passed to method setInputRow
-      virtual const DBRow< DBTranslatedValue, ALLOC >& generate() override final;
+      virtual const DBRow< DBTranslatedValue >& generate() override final;
 
       /// assign a new Bayes net to the generator
       virtual void setBayesNet(const BayesNet< GUM_SCALAR >& new_bn) override final;
-
-      /// returns the allocator used
-      allocator_type getAllocator() const;
 
       /// @}
 
 
       protected:
       /// computes the rows it will provide as output
-      virtual std::size_t computeRows_(const DBRow< DBTranslatedValue, ALLOC >& row) override final;
+      virtual std::size_t computeRows_(const DBRow< DBTranslatedValue >& row) override final;
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
       private:
       /// the row used as input to generate the output DBRows
-      const DBRow< DBTranslatedValue, ALLOC >* _input_row_{nullptr};
+      const DBRow< DBTranslatedValue >* _input_row_{nullptr};
 
       /// the set of missing columns of the current row
-      std::vector< std::size_t, ALLOC< std::size_t > > _missing_cols_;
+      std::vector< std::size_t< std::size_t > > _missing_cols_;
 
       /// the number of missing values in the current row
       std::size_t _nb_miss_;
@@ -186,10 +169,10 @@ namespace gum {
        * be used for the first row returned and one for the next one. Hence
        *  _filled_row1_ and  _filled_row2_, which are filled alternatively by
        * the content of the probabilities computed. */
-      DBRow< DBTranslatedValue, ALLOC > _filled_row1_;
+      DBRow< DBTranslatedValue > _filled_row1_;
 
       /// the row that we return if there are missing values
-      DBRow< DBTranslatedValue, ALLOC > _filled_row2_;
+      DBRow< DBTranslatedValue > _filled_row2_;
 
       /// indicates whether we should return filled_row1 or filled_row2
       bool _use_filled_row1_{true};
