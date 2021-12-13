@@ -20,7 +20,7 @@
 # OR PERFORMANCE OF THIS SOFTWARE!
 import unittest
 
-import pydotplus as dot
+import pydot as dot
 
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
