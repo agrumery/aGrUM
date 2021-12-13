@@ -52,10 +52,10 @@ namespace gum {
      * The standard usage of a DBRowGenerator is the following:
      * @code
      * // create a DatabaseTable and fill it
-     * gum::learning::DBTranslatorSet<> set;
+     * gum::learning::DBTranslatorSet set;
      * for ( int i = 0; i < 10; ++i )
-     *   set.insertTranslator(gum::learning::DBTranslator4LabelizedVariable<>(),i);
-     * gum::learning::DatabaseTable<> database ( set );
+     *   set.insertTranslator(gum::learning::DBTranslator4LabelizedVariable(),i);
+     * gum::learning::DatabaseTable database ( set );
      * // fill the database
      *
      * // keep in a vector the types of the columns in the database
@@ -63,7 +63,7 @@ namespace gum {
      *   column_types ( 10, gum::learning::DBTranslatedValueType::DISCRETE );
      *
      * // create the generator
-     * gum::learning::DBRowGenerator4CompleteRows<> generator ( col_types );
+     * gum::learning::DBRowGenerator4CompleteRows generator ( col_types );
      *
      * // parse the database and produce output rows
      * for ( auto dbrow : database ) {
@@ -75,12 +75,8 @@ namespace gum {
      * }
      * @endcode
      */
-    template < template < typename > class ALLOC = std::allocator >
-    class DBRowGenerator4CompleteRows: public DBRowGenerator< ALLOC > {
+    class DBRowGenerator4CompleteRows: public DBRowGenerator {
       public:
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC< DBTranslatedValue >;
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -88,30 +84,16 @@ namespace gum {
       /// @{
 
       /// default constructor
-      DBRowGenerator4CompleteRows(
-         const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > > column_types,
-         const allocator_type& alloc = allocator_type());
+      DBRowGenerator4CompleteRows(const std::vector< DBTranslatedValueType >& column_types);
 
       /// copy constructor
-      DBRowGenerator4CompleteRows(const DBRowGenerator4CompleteRows< ALLOC >& from);
-
-      /// copy constructor with a given allocator
-      DBRowGenerator4CompleteRows(const DBRowGenerator4CompleteRows< ALLOC >& from,
-                                  const allocator_type&                       alloc);
+      DBRowGenerator4CompleteRows(const DBRowGenerator4CompleteRows& from);
 
       /// move constructor
-      DBRowGenerator4CompleteRows(DBRowGenerator4CompleteRows< ALLOC >&& from);
-
-      /// move constructor with a given allocator
-      DBRowGenerator4CompleteRows(DBRowGenerator4CompleteRows< ALLOC >&& from,
-                                  const allocator_type&                  alloc);
+      DBRowGenerator4CompleteRows(DBRowGenerator4CompleteRows&& from);
 
       /// virtual copy constructor
-      virtual DBRowGenerator4CompleteRows< ALLOC >* clone() const override final;
-
-      /// virtual copy constructor with a given allocator
-      virtual DBRowGenerator4CompleteRows< ALLOC >*
-         clone(const allocator_type& alloc) const override final;
+      DBRowGenerator4CompleteRows* clone() const final;
 
       /// destructor
       ~DBRowGenerator4CompleteRows();
@@ -126,11 +108,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBRowGenerator4CompleteRows< ALLOC >&
-         operator=(const DBRowGenerator4CompleteRows< ALLOC >& from);
+      DBRowGenerator4CompleteRows& operator=(const DBRowGenerator4CompleteRows& from);
 
       /// move operator
-      DBRowGenerator4CompleteRows< ALLOC >& operator=(DBRowGenerator4CompleteRows< ALLOC >&& from);
+      DBRowGenerator4CompleteRows& operator=(DBRowGenerator4CompleteRows&& from);
 
       /// @}
 
@@ -145,24 +126,21 @@ namespace gum {
       /** @warning if this method is applied while the row it should return is
        * incomplete w.r.t. the nodes of interest, its behavior is uncertain
        * and will certainly result in a segmentation fault */
-      virtual const DBRow< DBTranslatedValue, ALLOC >& generate() final;
-
-      /// returns the allocator used
-      allocator_type getAllocator() const;
+      const DBRow< DBTranslatedValue >& generate() final;
 
       /// @}
 
 
       protected:
       /// computes the rows it will provide as output
-      virtual std::size_t computeRows_(const DBRow< DBTranslatedValue, ALLOC >& row) final;
+      std::size_t computeRows_(const DBRow< DBTranslatedValue >& row) final;
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
       private:
       /// the row used as input to generate the output DBRows
-      const DBRow< DBTranslatedValue, ALLOC >* _input_row_{nullptr};
+      const DBRow< DBTranslatedValue >* _input_row_{nullptr};
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
@@ -172,7 +150,9 @@ namespace gum {
 } /* namespace gum */
 
 
-// always include the template implementation
-#include <agrum/tools/database/DBRowGenerator4CompleteRows_tpl.h>
+// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#  include <agrum/tools/database/DBRowGenerator4CompleteRows_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_DBROW_GENERATOR_4_COMPLETE_ROWS_H */

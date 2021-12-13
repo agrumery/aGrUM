@@ -18,29 +18,44 @@
  *
  */
 
+
 /** @file
- * @brief The class for parsing DatabaseTable rows and generating output rows
+ * @brief The class for initializing DatabaseTable and RawDatabaseTable
+ * instances from SQL databases
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#include <agrum/tools/database/DBRowGeneratorParser.h>
+#ifdef ODBC_
+#  include <clocale>
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+#  ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+#    include <agrum/tools/database/DBInitializerFromSQL.h>
+
 
 namespace gum {
 
   namespace learning {
 
-    /// assign a new Bayes net to all the generators that depend on a BN
-    template < typename GUM_SCALAR >
-    INLINE void DBRowGeneratorParser::setBayesNet (
-                const BayesNet<GUM_SCALAR>& new_bn) {
-       _generator_set_.setBayesNet(new_bn);
+    /// returns the names of the variables
+    INLINE std::vector< std::string > DBInitializerFromSQL::variableNames_() { return _var_names_; }
+
+
+    /// returns the content of the current row using strings
+    INLINE const std::vector< std::string >& DBInitializerFromSQL::currentStringRow_() {
+      return _parser_.current();
     }
+
+
+    /// indicates whether there is a next row to read (and point on it)
+    INLINE bool DBInitializerFromSQL::nextRow_() { return _parser_.next(); }
+
 
   } /* namespace learning */
 
 } /* namespace gum */
 
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+#  endif /* DOXYGEN_SHOULD_SKIP_THIS */
+
+#endif /* ODBC_ */

@@ -33,124 +33,63 @@ namespace gum {
 
   namespace learning {
 
-    /// returns the allocator used
-    template < template < typename > class ALLOC >
-    INLINE typename DBRowGeneratorIdentity< ALLOC >::allocator_type
-       DBRowGeneratorIdentity< ALLOC >::getAllocator() const {
-      return DBRowGenerator< ALLOC >::getAllocator();
-    }
-
-
     /// default constructor
-    template < template < typename > class ALLOC >
-    DBRowGeneratorIdentity< ALLOC >::DBRowGeneratorIdentity(
-       const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > > column_types,
-       const typename DBRowGeneratorIdentity< ALLOC >::allocator_type&            alloc) :
-        DBRowGenerator< ALLOC >(column_types,
-                                DBRowGeneratorGoal::OTHER_THINGS_THAN_REMOVE_MISSING_VALUES,
-                                alloc) {
+    DBRowGeneratorIdentity::DBRowGeneratorIdentity(
+       const std::vector< DBTranslatedValueType >& column_types) :
+        DBRowGenerator(column_types, DBRowGeneratorGoal::OTHER_THINGS_THAN_REMOVE_MISSING_VALUES) {
       GUM_CONSTRUCTOR(DBRowGeneratorIdentity);
     }
 
 
-    /// copy constructor with a given allocator
-    template < template < typename > class ALLOC >
-    DBRowGeneratorIdentity< ALLOC >::DBRowGeneratorIdentity(
-       const DBRowGeneratorIdentity< ALLOC >&                          from,
-       const typename DBRowGeneratorIdentity< ALLOC >::allocator_type& alloc) :
-        DBRowGenerator< ALLOC >(from, alloc),
-        _input_row_(from._input_row_) {
+    /// copy constructor
+    DBRowGeneratorIdentity::DBRowGeneratorIdentity(const DBRowGeneratorIdentity& from) :
+        DBRowGenerator(from), _input_row_(from._input_row_) {
       GUM_CONS_CPY(DBRowGeneratorIdentity);
     }
 
 
-    /// copy constructor
-    template < template < typename > class ALLOC >
-    DBRowGeneratorIdentity< ALLOC >::DBRowGeneratorIdentity(
-       const DBRowGeneratorIdentity< ALLOC >& from) :
-        DBRowGeneratorIdentity< ALLOC >(from, from.getAllocator()) {}
-
-
-    /// move constructor with a given allocator
-    template < template < typename > class ALLOC >
-    DBRowGeneratorIdentity< ALLOC >::DBRowGeneratorIdentity(
-       DBRowGeneratorIdentity< ALLOC >&&                               from,
-       const typename DBRowGeneratorIdentity< ALLOC >::allocator_type& alloc) :
-        DBRowGenerator< ALLOC >(std::move(from), alloc),
-        _input_row_(from._input_row_) {
+    /// move constructor
+    DBRowGeneratorIdentity::DBRowGeneratorIdentity(DBRowGeneratorIdentity&& from) :
+        DBRowGenerator(std::move(from)), _input_row_(from._input_row_) {
       GUM_CONS_MOV(DBRowGeneratorIdentity);
     }
 
 
-    /// move constructor
-    template < template < typename > class ALLOC >
-    DBRowGeneratorIdentity< ALLOC >::DBRowGeneratorIdentity(
-       DBRowGeneratorIdentity< ALLOC >&& from) :
-        DBRowGeneratorIdentity< ALLOC >(std::move(from), from.getAllocator()) {}
-
-
-    /// virtual copy constructor with a given allocator
-    template < template < typename > class ALLOC >
-    DBRowGeneratorIdentity< ALLOC >* DBRowGeneratorIdentity< ALLOC >::clone(
-       const typename DBRowGeneratorIdentity< ALLOC >::allocator_type& alloc) const {
-      ALLOC< DBRowGeneratorIdentity< ALLOC > > allocator(alloc);
-      DBRowGeneratorIdentity< ALLOC >*         generator = allocator.allocate(1);
-      try {
-        allocator.construct(generator, *this, alloc);
-      } catch (...) {
-        allocator.deallocate(generator, 1);
-        throw;
-      }
-      return generator;
-    }
-
-
     /// virtual copy constructor
-    template < template < typename > class ALLOC >
-    DBRowGeneratorIdentity< ALLOC >* DBRowGeneratorIdentity< ALLOC >::clone() const {
-      return clone(this->getAllocator());
+    DBRowGeneratorIdentity* DBRowGeneratorIdentity::clone() const {
+      return new DBRowGeneratorIdentity(*this);
     }
 
 
     /// destructor
-    template < template < typename > class ALLOC >
-    DBRowGeneratorIdentity< ALLOC >::~DBRowGeneratorIdentity() {
-      GUM_DESTRUCTOR(DBRowGeneratorIdentity);
-    }
+    DBRowGeneratorIdentity::~DBRowGeneratorIdentity() { GUM_DESTRUCTOR(DBRowGeneratorIdentity); }
 
 
     /// copy operator
-    template < template < typename > class ALLOC >
-    DBRowGeneratorIdentity< ALLOC >&
-       DBRowGeneratorIdentity< ALLOC >::operator=(const DBRowGeneratorIdentity< ALLOC >& from) {
-      DBRowGenerator< ALLOC >::operator=(from);
-      _input_row_                      = from._input_row_;
+    DBRowGeneratorIdentity& DBRowGeneratorIdentity::operator=(const DBRowGeneratorIdentity& from) {
+      DBRowGenerator::operator=(from);
+      _input_row_             = from._input_row_;
       return *this;
     }
 
 
     /// move operator
-    template < template < typename > class ALLOC >
-    DBRowGeneratorIdentity< ALLOC >&
-       DBRowGeneratorIdentity< ALLOC >::operator=(DBRowGeneratorIdentity< ALLOC >&& from) {
-      DBRowGenerator< ALLOC >::operator=(std::move(from));
-      _input_row_                      = from._input_row_;
+    DBRowGeneratorIdentity& DBRowGeneratorIdentity::operator=(DBRowGeneratorIdentity&& from) {
+      DBRowGenerator::operator=(std::move(from));
+      _input_row_             = from._input_row_;
       return *this;
     }
 
 
     /// generates new lines from those the generator gets in input
-    template < template < typename > class ALLOC >
-    INLINE const DBRow< DBTranslatedValue, ALLOC >& DBRowGeneratorIdentity< ALLOC >::generate() {
+    INLINE const DBRow< DBTranslatedValue >& DBRowGeneratorIdentity::generate() {
       this->decreaseRemainingRows();
       return *_input_row_;
     }
 
 
     /// computes the rows it will provide in output
-    template < template < typename > class ALLOC >
-    INLINE std::size_t
-       DBRowGeneratorIdentity< ALLOC >::computeRows_(const DBRow< DBTranslatedValue, ALLOC >& row) {
+    INLINE std::size_t DBRowGeneratorIdentity::computeRows_(const DBRow< DBTranslatedValue >& row) {
       _input_row_ = &row;
       return std::size_t(1);
     }

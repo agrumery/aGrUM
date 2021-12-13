@@ -52,9 +52,9 @@ namespace gum {
      * The standard usage of a DBRowGenerator is the following:
      * @code
      * // create a DatabaseTable and fill it
-     * gum::learning::DBTranslatorSet<> set;
+     * gum::learning::DBTranslatorSet set;
      * for ( int i = 0; i < 10; ++i )
-     *   set.insertTranslator(gum::learning::DBTranslator4LabelizedVariable<>(),i);
+     *   set.insertTranslator(gum::learning::DBTranslator4LabelizedVariable(),i);
      * gum::learning::DatabaseTable<> database ( set );
      * // fill the database
      *
@@ -78,7 +78,6 @@ namespace gum {
     template < typename GUM_SCALAR = double >
     class DBRowGeneratorEM: public DBRowGeneratorWithBN< GUM_SCALAR > {
       public:
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -86,11 +85,10 @@ namespace gum {
       /// @{
 
       /// default constructor
-      DBRowGeneratorEM(
-         const std::vector< DBTranslatedValueType< DBTranslatedValueType > > column_types,
-         const BayesNet< GUM_SCALAR >&                                              bn,
-         const Bijection< NodeId, std::size_t< std::size_t > >&              nodeId2columns
-         = Bijection< NodeId, std::size_t< std::size_t > >());
+      DBRowGeneratorEM(const std::vector< DBTranslatedValueType >& column_types,
+                       const BayesNet< GUM_SCALAR >&               bn,
+                       const Bijection< NodeId, std::size_t >&     nodeId2columns
+                       = Bijection< NodeId, std::size_t >());
 
       /// copy constructor
       DBRowGeneratorEM(const DBRowGeneratorEM< GUM_SCALAR >& from);
@@ -99,7 +97,7 @@ namespace gum {
       DBRowGeneratorEM(DBRowGeneratorEM< GUM_SCALAR >&& from);
 
       /// virtual copy constructor
-      virtual DBRowGeneratorEM< GUM_SCALAR >* clone() const override final;
+      DBRowGeneratorEM< GUM_SCALAR >* clone() const final;
 
       /// destructor
       ~DBRowGeneratorEM();
@@ -114,12 +112,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBRowGeneratorEM< GUM_SCALAR >&
-         operator=(const DBRowGeneratorEM< GUM_SCALAR >& from);
+      DBRowGeneratorEM< GUM_SCALAR >& operator=(const DBRowGeneratorEM< GUM_SCALAR >& from);
 
       /// move operator
-      DBRowGeneratorEM< GUM_SCALAR >&
-         operator=(DBRowGeneratorEM< GUM_SCALAR >&& from);
+      DBRowGeneratorEM< GUM_SCALAR >& operator=(DBRowGeneratorEM< GUM_SCALAR >&& from);
 
       /// @}
 
@@ -151,7 +147,7 @@ namespace gum {
       const DBRow< DBTranslatedValue >* _input_row_{nullptr};
 
       /// the set of missing columns of the current row
-      std::vector< std::size_t< std::size_t > > _missing_cols_;
+      std::vector< std::size_t > _missing_cols_;
 
       /// the number of missing values in the current row
       std::size_t _nb_miss_;

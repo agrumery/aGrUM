@@ -27,3 +27,74 @@
  */
 
 #include <agrum/tools/database/DBRowGenerator4CompleteRows.h>
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+/// include the inlined functions if necessary
+#  ifdef GUM_NO_INLINE
+#    include <agrum/tools/database/DBRowGenerator4CompleteRows_inl.h>
+#  endif /* GUM_NO_INLINE */
+
+namespace gum {
+
+  namespace learning {
+
+    /// default constructor
+    DBRowGenerator4CompleteRows::DBRowGenerator4CompleteRows(
+       const std::vector< DBTranslatedValueType >& column_types) :
+        DBRowGenerator(column_types, DBRowGeneratorGoal::ONLY_REMOVE_MISSING_VALUES) {
+      GUM_CONSTRUCTOR(DBRowGenerator4CompleteRows);
+    }
+
+
+    /// copy constructor
+    DBRowGenerator4CompleteRows::DBRowGenerator4CompleteRows(
+       const DBRowGenerator4CompleteRows& from) :
+        DBRowGenerator(from),
+        _input_row_(from._input_row_) {
+      GUM_CONS_CPY(DBRowGenerator4CompleteRows);
+    }
+
+
+    /// move constructor
+    DBRowGenerator4CompleteRows::DBRowGenerator4CompleteRows(DBRowGenerator4CompleteRows&& from) :
+        DBRowGenerator(std::move(from)), _input_row_(from._input_row_) {
+      GUM_CONS_MOV(DBRowGenerator4CompleteRows);
+    }
+
+
+    /// virtual copy constructor
+    DBRowGenerator4CompleteRows* DBRowGenerator4CompleteRows::clone() const {
+      return new DBRowGenerator4CompleteRows(*this);
+    }
+
+
+    /// destructor
+    DBRowGenerator4CompleteRows::~DBRowGenerator4CompleteRows() {
+      GUM_DESTRUCTOR(DBRowGenerator4CompleteRows);
+    }
+
+
+    /// copy operator
+    DBRowGenerator4CompleteRows&
+       DBRowGenerator4CompleteRows::operator=(const DBRowGenerator4CompleteRows& from) {
+      DBRowGenerator::operator=(from);
+      _input_row_             = from._input_row_;
+      return *this;
+    }
+
+
+    /// move operator
+    DBRowGenerator4CompleteRows&
+       DBRowGenerator4CompleteRows::operator=(DBRowGenerator4CompleteRows&& from) {
+      DBRowGenerator::operator=(std::move(from));
+      _input_row_             = from._input_row_;
+      return *this;
+    }
+
+
+  } /* namespace learning */
+
+} /* namespace gum */
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */

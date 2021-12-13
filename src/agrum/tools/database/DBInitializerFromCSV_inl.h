@@ -20,47 +20,29 @@
 
 
 /** @file
- * @brief The base class for initializing DatabaseTables and RawDatabaseTables
- * from files or sql databases
+ * @brief The class for initializing DatabaseTables and RawDatabaseTables
+ * from CSV files
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
-
-#include <agrum/tools/database/IDBInitializer.h>
-
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-
-/// include the inlined functions if necessary
-#  ifdef GUM_NO_INLINE
-#    include <agrum/tools/database/IDBInitializer_inl.h>
-#  endif /* GUM_NO_INLINE */
 
 namespace gum {
 
   namespace learning {
 
-    // destructor
-    IDBInitializer::~IDBInitializer() { GUM_DESTRUCTOR(IDBInitializer); }
+    // ask the child class for the names of the variables
+    INLINE std::vector< std::string > DBInitializerFromCSV::variableNames_() { return _var_names_; }
 
-    // copy operator
-    IDBInitializer& IDBInitializer::operator=(const IDBInitializer& from) {
-      if (this != &from) {
-        _var_names_             = from._var_names_;
-        _input_type_            = from._input_type_;
-        _last_insertion_failed_ = false;
-      }
-      return *this;
+
+    // asks the child class for the content of the current row using strings
+    INLINE const std::vector< std::string >& DBInitializerFromCSV::currentStringRow_() {
+      return _parser_.current();
     }
 
-    // move constructor
-    IDBInitializer& IDBInitializer::operator=(IDBInitializer&& from) {
-      if (this != &from) {
-        _var_names_             = std::move(from._var_names_);
-        _input_type_            = from._input_type_;
-        _last_insertion_failed_ = false;
-      }
-      return *this;
-    }
+
+    // indicates whether there is a next row to read (and point on it)
+    INLINE bool DBInitializerFromCSV::nextRow_() { return _parser_.next(); }
 
   } /* namespace learning */
 

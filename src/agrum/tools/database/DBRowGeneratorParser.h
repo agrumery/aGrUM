@@ -59,7 +59,7 @@ namespace gum {
      * gum::learning::DatabaseTable<> database ( ... );
      * .....
      *
-     * // create a vector with the types of the columns of database 
+     * // create a vector with the types of the columns of database
      * const std::vector<gum::learning::DBTranslatedValueType>
      *   col_types ( 10, gum::learning::DBTranslatedValueType::DISCRETE );
      *
@@ -82,13 +82,8 @@ namespace gum {
      * }
      * @endcode
      */
-    template <template<typename> class ALLOC = std::allocator>
     class DBRowGeneratorParser {
       public:
-      
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC<DBTranslatedValue>;
-      
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -96,30 +91,17 @@ namespace gum {
       /// @{
 
       /// default constructor
-      DBRowGeneratorParser( const typename DatabaseTable<ALLOC>::Handler& handler,
-                            const DBRowGeneratorSet<ALLOC>& generator_set,
-                            const allocator_type& alloc = allocator_type () );
+      DBRowGeneratorParser(const typename DatabaseTable::Handler& handler,
+                           const DBRowGeneratorSet&               generator_set);
 
       /// copy constructor
-      DBRowGeneratorParser( const DBRowGeneratorParser<ALLOC>& from );
-
-      /// copy constructor with a given allocator
-      DBRowGeneratorParser( const DBRowGeneratorParser<ALLOC>& from,
-                            const allocator_type& alloc );
+      DBRowGeneratorParser(const DBRowGeneratorParser& from);
 
       /// move constructor
-      DBRowGeneratorParser(DBRowGeneratorParser<ALLOC>&& filter);
-
-      /// move constructor with a given allocator
-      DBRowGeneratorParser(DBRowGeneratorParser<ALLOC>&& filter,
-                           const allocator_type& alloc );
+      DBRowGeneratorParser(DBRowGeneratorParser&& filter);
 
       /// virtual copy constructor
-      virtual DBRowGeneratorParser<ALLOC>* clone () const;
-
-      /// virtual copy constructor with a given allocator
-      virtual DBRowGeneratorParser<ALLOC>*
-      clone (const allocator_type& alloc) const;
+      virtual DBRowGeneratorParser* clone() const;
 
       /// destructor
       virtual ~DBRowGeneratorParser();
@@ -133,12 +115,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBRowGeneratorParser<ALLOC>&
-      operator=(const DBRowGeneratorParser<ALLOC>& from );
+      DBRowGeneratorParser& operator=(const DBRowGeneratorParser& from);
 
       /// move operator
-      DBRowGeneratorParser<ALLOC>&
-      operator=(DBRowGeneratorParser<ALLOC>&& from );
+      DBRowGeneratorParser& operator=(DBRowGeneratorParser&& from);
 
       /// @}
 
@@ -200,25 +180,25 @@ namespace gum {
        * catch ( NotFound& ) { // stop, there are no more rows to process }
        * @endcode
        */
-      const DBRow<DBTranslatedValue,ALLOC>& row ();
+      const DBRow< DBTranslatedValue >& row();
 
       /// resets the parser
       void reset();
 
       /// returns the handler used by the parser
-      typename DatabaseTable<ALLOC>::Handler& handler();
+      typename DatabaseTable::Handler& handler();
 
       /// returns the handler used by the parser
-      const typename DatabaseTable<ALLOC>::Handler& handler() const;
+      const typename DatabaseTable::Handler& handler() const;
 
       /// returns a reference on the database
-      const DatabaseTable<ALLOC>& database () const;
+      const DatabaseTable& database() const;
 
       /// returns the generator set that is actually used
-      DBRowGeneratorSet<ALLOC>& generatorSet();
+      DBRowGeneratorSet& generatorSet();
 
       /// returns the generator set that is actually used
-      const DBRowGeneratorSet<ALLOC>& generatorSet() const;
+      const DBRowGeneratorSet& generatorSet() const;
 
       /// sets the area in the database the handler will handle
       /** In addition to setting the area that will be parsed by the handler,
@@ -233,7 +213,7 @@ namespace gum {
        * rows of the database */
       void setRange(std::size_t begin, std::size_t end);
 
-      /** @brief sets the columns of interest: the output DBRow needs only 
+      /** @brief sets the columns of interest: the output DBRow needs only
        * contain values fot these columns
        *
        * This method is useful, e.g., for EM-like algorithms that need to know
@@ -243,10 +223,9 @@ namespace gum {
        * started generating output rows and is currently in a state where the
        * generation is not completed yet (i.e., we still need to call the
        * generate() method to complete it). */
-      void setColumnsOfInterest (
-        const std::vector<std::size_t,ALLOC<std::size_t>>& cols_of_interest );
+      void setColumnsOfInterest(const std::vector< std::size_t >& cols_of_interest);
 
-      /** @brief sets the columns of interest: the output DBRow needs only 
+      /** @brief sets the columns of interest: the output DBRow needs only
        * contain values fot these columns
        *
        * This method is useful, e.g., for EM-like algorithms that need to know
@@ -256,8 +235,7 @@ namespace gum {
        * started generating output rows and is currently in a state where the
        * generation is not completed yet (i.e., we still need to call the
        * generate() method to complete it). */
-      void setColumnsOfInterest (
-        std::vector<std::size_t,ALLOC<std::size_t>>&& cols_of_interest );
+      void setColumnsOfInterest(std::vector< std::size_t >&& cols_of_interest);
 
       /// assign a new Bayes net to all the generators that depend on a BN
       /** Typically, generators based on EM or K-means depend on a model to
@@ -266,25 +244,20 @@ namespace gum {
        * @warning if one generator that relies on Bayes nets cannot be assigned
        * new_bn, then no generator is updated and an exception is raised. */
       template < typename GUM_SCALAR >
-      void setBayesNet (const BayesNet<GUM_SCALAR>& new_bn);
-
-      /// returns the allocator used
-      allocator_type getAllocator () const;
+      void setBayesNet(const BayesNet< GUM_SCALAR >& new_bn);
 
       /// @}
 
-      
-    private:
-      
+
+      private:
       /// the handler that is really used to parse the database
-      typename DatabaseTable<ALLOC>::Handler  _handler_;
+      typename DatabaseTable::Handler _handler_;
 
       /// the set of DBRow generators (might be empty)
-      DBRowGeneratorSet<ALLOC>  _generator_set_;
+      DBRowGeneratorSet _generator_set_;
 
       /// the size of the generator set
-      std::size_t  _generator_size_;
-
+      std::size_t _generator_size_;
     };
 
   } /* namespace learning */
@@ -293,5 +266,10 @@ namespace gum {
 
 // always include the template implementation
 #include <agrum/tools/database/DBRowGeneratorParser_tpl.h>
+
+/// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/tools/database/DBRowGeneratorParser_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_DB_ROW_GENERATOR_PARSER_H */

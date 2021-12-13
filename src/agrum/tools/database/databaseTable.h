@@ -182,31 +182,29 @@ namespace gum {
      * database.clear ();
      * @endcode
      */
-    template < template < typename > class ALLOC = std::allocator >
-    class DatabaseTable: public IDatabaseTable< DBTranslatedValue, ALLOC > {
+    class DatabaseTable: public IDatabaseTable< DBTranslatedValue > {
       public:
       /// the type for the vectors used in the DatabaseTable
       template < typename TX_DATA >
-      using DBVector = std::vector< TX_DATA, ALLOC< TX_DATA > >;
+      using DBVector = std::vector< TX_DATA >;
 
       /// a row of the database
       template < typename TX_DATA >
-      using Row = DBRow< TX_DATA, ALLOC >;
+      using Row = DBRow< TX_DATA >;
 
       /// the type for the matrices stored into the database
       template < typename TX_DATA >
-      using Matrix = std::vector< DBRow< TX_DATA, ALLOC >, ALLOC< DBRow< TX_DATA, ALLOC > > >;
+      using Matrix = std::vector< DBRow< TX_DATA > >;
 
-      template < template < typename > class XALLOC >
-      using MissingValType = std::vector< std::string, XALLOC< std::string > >;
+      using MissingValType = std::vector< std::string >;
 
       /// the unsafe handler type
-      using Handler = typename IDatabaseTable< DBTranslatedValue, ALLOC >::Handler;
+      using Handler = typename IDatabaseTable< DBTranslatedValue >::Handler;
 
       /// the safe handler type
-      using HandlerSafe = typename IDatabaseTable< DBTranslatedValue, ALLOC >::HandlerSafe;
+      using HandlerSafe = typename IDatabaseTable< DBTranslatedValue >::HandlerSafe;
 
-      using IsMissing = typename IDatabaseTable< DBTranslatedValue, ALLOC >::IsMissing;
+      using IsMissing = typename IDatabaseTable< DBTranslatedValue >::IsMissing;
 
       /// Types for STL compliance.
       /// @{
@@ -219,7 +217,6 @@ namespace gum {
       using difference_type = std::ptrdiff_t;
       using iterator        = Handler;
       using iterator_safe   = HandlerSafe;
-      using allocator_type  = ALLOC< DBTranslatedValue >;
       /// @}
 
 
@@ -229,32 +226,20 @@ namespace gum {
       /// @{
 
       /// default constructor
-      template < template < typename > class XALLOC >
-      DatabaseTable(const MissingValType< XALLOC >& missing_symbols,
-                    const DBTranslatorSet< ALLOC >& translators = DBTranslatorSet< ALLOC >(),
-                    const allocator_type&           alloc       = allocator_type());
+      DatabaseTable(const MissingValType&  missing_symbols,
+                    const DBTranslatorSet& translators = DBTranslatorSet());
 
       /// default constructor
-      DatabaseTable(const DBTranslatorSet< ALLOC >& translators = DBTranslatorSet< ALLOC >(),
-                    const allocator_type&           alloc       = allocator_type());
+      DatabaseTable(const DBTranslatorSet& translators = DBTranslatorSet());
 
       /// copy constructor
-      DatabaseTable(const DatabaseTable< ALLOC >& from);
-
-      /// copy constructor with a given allocator
-      DatabaseTable(const DatabaseTable< ALLOC >& from, const allocator_type& alloc);
+      DatabaseTable(const DatabaseTable& from);
 
       /// move constructor
-      DatabaseTable(DatabaseTable< ALLOC >&& from);
-
-      /// move constructor with a given allocator
-      DatabaseTable(DatabaseTable< ALLOC >&& from, const allocator_type& alloc);
+      DatabaseTable(DatabaseTable&& from);
 
       /// virtual copy constructor
-      virtual DatabaseTable< ALLOC >* clone() const final;
-
-      /// virtual copy constructor with a given allocator
-      virtual DatabaseTable< ALLOC >* clone(const allocator_type& alloc) const final;
+      virtual DatabaseTable* clone() const final;
 
       /// destructor
       virtual ~DatabaseTable();
@@ -267,10 +252,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DatabaseTable< ALLOC >& operator=(const DatabaseTable< ALLOC >& from);
+      DatabaseTable& operator=(const DatabaseTable& from);
 
       /// move constructor
-      DatabaseTable< ALLOC >& operator=(DatabaseTable< ALLOC >&& from);
+      DatabaseTable& operator=(DatabaseTable&& from);
 
       /// @}
 
@@ -295,9 +280,9 @@ namespace gum {
        * all the column of the database corresponding to the new translator is
        * filled with missing values.
        */
-      std::size_t insertTranslator(const DBTranslator< ALLOC >& translator,
-                                   const std::size_t            input_column,
-                                   const bool                   unique_column = true);
+      std::size_t insertTranslator(const DBTranslator& translator,
+                                   const std::size_t   input_column,
+                                   const bool          unique_column = true);
 
       /// insert a new translator into the database table
       /** @param var the variable that will be contained into the translator
@@ -375,9 +360,9 @@ namespace gum {
        * @warning if the translator does not exists, nothing is done. In
        * particular, no exception is raised.
        */
-      void changeTranslator(DBTranslator< ALLOC >& new_translator,
-                            const std::size_t      k,
-                            const bool             k_is_input_col = false);
+      void changeTranslator(DBTranslator&     new_translator,
+                            const std::size_t k,
+                            const bool        k_is_input_col = false);
 
       /// change the translator of a database column
       /**
@@ -412,7 +397,7 @@ namespace gum {
                             = std::numeric_limits< std::size_t >::max());
 
       /// returns the set of translators
-      const DBTranslatorSet< ALLOC >& translatorSet() const;
+      const DBTranslatorSet& translatorSet() const;
 
       /** @brief returns either the kth translator of the database table or the
        * first one reading the kth column of the input database
@@ -427,8 +412,7 @@ namespace gum {
        * is the first one that parses the kth column of the input database.
        * @throw UndefinedElement is raised if there is no translator
        * corresponding to k. */
-      const DBTranslator< ALLOC >& translator(const std::size_t k,
-                                              const bool        k_is_input_col = false) const;
+      const DBTranslator& translator(const std::size_t k, const bool k_is_input_col = false) const;
 
       /// propose a set with translators better suited for the content of the database
       /**
@@ -436,8 +420,7 @@ namespace gum {
        * better translator than the current one can be used, this better
        * translator.
        */
-      std::vector< std::pair< Idx, std::shared_ptr< DBTranslator< ALLOC > > > >
-         betterTranslators() const;
+      std::vector< std::pair< Idx, std::shared_ptr< DBTranslator > > > betterTranslators() const;
 
       /** @brief returns either the kth variable of the database table or the
        * first one corresponding to the kth column of the input database
@@ -746,7 +729,7 @@ namespace gum {
 
       private:
       /// the set of translators used to convert the strings into floats
-      DBTranslatorSet< ALLOC > _translators_;
+      DBTranslatorSet _translators_;
 
       /// the set of ignored columns asked by the user
       Set< std::size_t, ALLOC< std::size_t > > _ignored_cols_;

@@ -48,7 +48,7 @@ namespace gum {
      * for a RawDatabaseTable:
      * @code
      * // create the database
-     * gum::learning::RawDatabaseTable<> database;
+     * gum::learning::RawDatabaseTable database;
      * database.setVariableNames( std::vector<std::string> { "v1", "v2", "v3" } );
      *
      * // add one row to the database
@@ -57,8 +57,8 @@ namespace gum {
      * database.insertRow( row );
      *
      * // create a safe and an unsafe handler. Those inherit from DBHandler
-     * typename gum::learning::RawDatabaseTable<>::HandlerSafe handler( database );
-     * typename gum::learning::RawDatabaseTable<>::Handler uhandler( database );
+     * typename gum::learning::RawDatabaseTable::HandlerSafe handler( database );
+     * typename gum::learning::RawDatabaseTable::Handler uhandler( database );
      * // by default, the handlers range over the whole database, which
      * // currently contains only one row
      *
