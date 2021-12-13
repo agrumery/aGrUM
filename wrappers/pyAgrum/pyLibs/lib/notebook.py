@@ -253,6 +253,7 @@ def _from_dotstring(dotstring):
 
   # workaround for some badly parsed graph (pyparsing>=3.03)
   g.del_node('"\\n"')
+  g.del_node('"\\n\\n"')
 
   g.set_bgcolor("transparent")
   for e in g.get_edges():

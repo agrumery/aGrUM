@@ -19,9 +19,11 @@
 # ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 # OR PERFORMANCE OF THIS SOFTWARE!
 import math
+import numpy as np
 
 import matplotlib.pyplot as plt
-import numpy as np
+from matplotlib.ticker import MaxNLocator
+
 import pyAgrum as gum
 
 
@@ -111,13 +113,14 @@ def _getProbaLine(p, scale=1.0, txtcolor="black"):
   #else:
   lv = [var.label(int(i)) for i in np.arange(var.domainSize())]
   v = p.tolist()
-  ra = range(len(v))
+  ra = range(int(lv[0]),1+int(lv[-1]))
 
   fig = plt.figure()
   fig.set_figwidth(min(scale * 6, scale * len(v) / 4.0))
   fig.set_figheight(scale * 2)
 
   ax = fig.add_subplot(111)
+  ax.get_xaxis().set_major_locator(MaxNLocator(integer=True))
   ax.fill_between(ra, v, color=gum.config['notebook', 'histogram_color'])
 
   ax.set_ylim(bottom=0, top=1.05 * p.max())
@@ -128,20 +131,6 @@ def _getProbaLine(p, scale=1.0, txtcolor="black"):
   ax.margins(0)
 
   ax.set_facecolor('w')
-
-  #do we show all the ticks (lv) or do we choose some of them (llv)
-  #we decide to show all the ticks if they are less than the double of ticks computed by matplotlib.
-  # if len(ax.get_xticks())*2>len(ra):
-  #   ax.set_xticks(ra)
-  #  ax.set_xticklabels(lv, color=txtcolor)
-  #else:
-  #  print(f"{ra=}")
-  #  print(f"{lv=}")
-  #  print(f"{ax.get_xticks()=}")
-  #  llv = [lv[int(i)] if i in ra else i for i in ax.get_xticks()]
-  #  ax.set_xticks(ax.get_xticks())
-  #  ax.set_xticklabels(llv, color=txtcolor)
-
   return fig
 
 
