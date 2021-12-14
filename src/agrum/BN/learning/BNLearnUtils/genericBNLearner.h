@@ -447,10 +447,8 @@ namespace gum {
        * performing cross validation tasks, in which part of the database should
        * be ignored. An empty set of ranges is equivalent to an interval [X,Y)
        * ranging over the whole database. */
-      template < template < typename > class XALLOC >
       void useDatabaseRanges(
-         const std::vector< std::pair< std::size_t, std::size_t >,
-                            XALLOC< std::pair< std::size_t, std::size_t > > >& new_ranges);
+         const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges);
 
       /// reset the ranges to the one range corresponding to the whole database
       void clearDatabaseRanges();

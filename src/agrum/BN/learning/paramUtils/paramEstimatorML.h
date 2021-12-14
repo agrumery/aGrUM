@@ -41,12 +41,8 @@ namespace gum {
      * @headerfile paramEstimatorML.h <agrum/BN/learning/paramUtils/paramEstimatorML.h>
      * @ingroup learning_param_utils
      */
-    template < template < typename > class ALLOC = std::allocator >
-    class ParamEstimatorML: public ParamEstimator< ALLOC > {
+    class ParamEstimatorML: public ParamEstimator {
       public:
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC< NodeId >;
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -71,19 +67,15 @@ namespace gum {
        * in which variable A has a NodeId of 5. An empty nodeId2Columns
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
-       * @param alloc the allocator used to allocate the structures within the
-       * Score.
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      ParamEstimatorML(const DBRowGeneratorParser< ALLOC >& parser,
-                       const Apriori< ALLOC >&              external_apriori,
-                       const Apriori< ALLOC >&              _score_internal_apriori,
-                       const std::vector< std::pair< std::size_t, std::size_t >,
-                                          ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
-                       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
-                       = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-                       const allocator_type& alloc = allocator_type());
+      ParamEstimatorML(const DBRowGeneratorParser& parser,
+                       const Apriori&              external_apriori,
+                       const Apriori&              _score_internal_apriori,
+                       const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
+                       const Bijection< NodeId, std::size_t >&                     nodeId2columns
+                       = Bijection< NodeId, std::size_t >());
 
       /// default constructor
       /** @param parser the parser used to parse the database
@@ -98,35 +90,23 @@ namespace gum {
        * in which variable A has a NodeId of 5. An empty nodeId2Columns
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
-       * @param alloc the allocator used to allocate the structures within the
-       * Score.
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      ParamEstimatorML(const DBRowGeneratorParser< ALLOC >& parser,
-                       const Apriori< ALLOC >&              external_apriori,
-                       const Apriori< ALLOC >&              _score_internal_apriori,
-                       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
-                       = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-                       const allocator_type& alloc = allocator_type());
+      ParamEstimatorML(const DBRowGeneratorParser&             parser,
+                       const Apriori&                          external_apriori,
+                       const Apriori&                          _score_internal_apriori,
+                       const Bijection< NodeId, std::size_t >& nodeId2columns
+                       = Bijection< NodeId, std::size_t >());
 
       /// copy constructor
-      ParamEstimatorML(const ParamEstimatorML< ALLOC >& from);
-
-      /// copy constructor with a given allocator
-      ParamEstimatorML(const ParamEstimatorML< ALLOC >& from, const allocator_type& alloc);
+      ParamEstimatorML(const ParamEstimatorML& from);
 
       /// move constructor
-      ParamEstimatorML(ParamEstimatorML< ALLOC >&& from);
-
-      /// move constructor with a given allocator
-      ParamEstimatorML(ParamEstimatorML< ALLOC >&& from, const allocator_type& alloc);
+      ParamEstimatorML(ParamEstimatorML&& from);
 
       /// virtual copy constructor
-      virtual ParamEstimatorML< ALLOC >* clone() const;
-
-      /// virtual copy constructor with a given allocator
-      virtual ParamEstimatorML< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual ParamEstimatorML* clone() const;
 
       /// destructor
       virtual ~ParamEstimatorML();
@@ -141,10 +121,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      ParamEstimatorML< ALLOC >& operator=(const ParamEstimatorML< ALLOC >& from);
+      ParamEstimatorML& operator=(const ParamEstimatorML& from);
 
       /// move operator
-      ParamEstimatorML< ALLOC >& operator=(ParamEstimatorML< ALLOC >&& from);
+      ParamEstimatorML& operator=(ParamEstimatorML&& from);
 
       /// @}
 
@@ -154,7 +134,7 @@ namespace gum {
       // ##########################################################################
       /// @{
 
-      using ParamEstimator< ALLOC >::parameters;
+      using ParamEstimator::parameters;
 
       /// returns the CPT's parameters corresponding to a given nodeset
       /** The vector contains the parameters of an n-dimensional CPT. The
@@ -164,9 +144,8 @@ namespace gum {
        * order in which they were specified).
        * @throw DatabaseError is raised if some values of the conditioning sets
        * were not observed in the database. */
-      virtual std::vector< double, ALLOC< double > >
-         parameters(const NodeId                                  target_node,
-                    const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes);
+      virtual std::vector< double > parameters(const NodeId                 target_node,
+                                               const std::vector< NodeId >& conditioning_nodes);
 
       /// @}
     };
@@ -175,7 +154,9 @@ namespace gum {
 
 } /* namespace gum */
 
-/// include the template implementation
-#include <agrum/BN/learning/paramUtils/paramEstimatorML_tpl.h>
+// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#  include <agrum/BN/learning/paramUtils/paramEstimatorML_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_PARAM_ESTIMATOR_ML_H */

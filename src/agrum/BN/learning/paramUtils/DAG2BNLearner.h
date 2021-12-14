@@ -28,6 +28,8 @@
 #ifndef GUM_LEARNING_DAG_2_BN_LEARNER_H
 #define GUM_LEARNING_DAG_2_BN_LEARNER_H
 
+#include <algorithm>
+#include <string>
 #include <vector>
 
 #include <agrum/agrum.h>
@@ -47,37 +49,24 @@ namespace gum {
      * @headerfile DAG2BNLearner.h <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
      * @ingroup learning_param_utils
      */
-    template < template < typename > class ALLOC = std::allocator >
-    class DAG2BNLearner: public ApproximationScheme, private ALLOC< NodeId > {
+    class DAG2BNLearner: public ApproximationScheme {
       public:
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC< NodeId >;
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      DAG2BNLearner(const allocator_type& alloc = allocator_type());
+      DAG2BNLearner();
 
       /// copy constructor
-      DAG2BNLearner(const DAG2BNLearner< ALLOC >& from);
-
-      /// copy constructor with a given allocator
-      DAG2BNLearner(const DAG2BNLearner< ALLOC >& from, const allocator_type& alloc);
+      DAG2BNLearner(const DAG2BNLearner& from);
 
       /// move constructor
-      DAG2BNLearner(DAG2BNLearner< ALLOC >&& from);
-
-      /// move constructor with a given allocator
-      DAG2BNLearner(DAG2BNLearner< ALLOC >&& from, const allocator_type& alloc);
+      DAG2BNLearner(DAG2BNLearner&& from);
 
       /// virtual copy constructor
-      virtual DAG2BNLearner< ALLOC >* clone() const;
-
-      /// virtual copy constructor with a given allocator
-      virtual DAG2BNLearner< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual DAG2BNLearner* clone() const;
 
       /// destructor
       virtual ~DAG2BNLearner();
@@ -92,10 +81,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DAG2BNLearner< ALLOC >& operator=(const DAG2BNLearner< ALLOC >& from);
+      DAG2BNLearner& operator=(const DAG2BNLearner& from);
 
       /// move operator
-      DAG2BNLearner< ALLOC >& operator=(DAG2BNLearner< ALLOC >&& from);
+      DAG2BNLearner& operator=(DAG2BNLearner&& from);
 
       /// @}
 
@@ -107,7 +96,7 @@ namespace gum {
 
       /// create a BN from a DAG using a one pass generator (typically ML)
       template < typename GUM_SCALAR = double >
-      static BayesNet< GUM_SCALAR > createBN(ParamEstimator< ALLOC >& estimator, const DAG& dag);
+      static BayesNet< GUM_SCALAR > createBN(ParamEstimator& estimator, const DAG& dag);
 
       /// create a BN from a DAG using a two pass generator (typically EM)
       /** The bootstrap estimator is used once to provide an inital BN. This
@@ -115,15 +104,12 @@ namespace gum {
        * until the stopping condition is met (max of relative error on every
        * parameter<epsilon) */
       template < typename GUM_SCALAR = double >
-      BayesNet< GUM_SCALAR > createBN(ParamEstimator< ALLOC >& bootstrap_estimator,
-                                      ParamEstimator< ALLOC >& general_estimator,
-                                      const DAG&               dag);
+      BayesNet< GUM_SCALAR > createBN(ParamEstimator& bootstrap_estimator,
+                                      ParamEstimator& general_estimator,
+                                      const DAG&      dag);
 
       /// returns the approximation policy of the learning algorithm
       ApproximationScheme& approximationScheme();
-
-      /// returns the allocator used by the score
-      allocator_type getAllocator() const;
 
       /// @}
 
@@ -146,5 +132,10 @@ namespace gum {
 
 /// always include templated methods
 #include <agrum/BN/learning/paramUtils/DAG2BNLearner_tpl.h>
+
+// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#  include <agrum/BN/learning/paramUtils/DAG2BNLearner_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_DAG_2_BN_LEARNER_H */
