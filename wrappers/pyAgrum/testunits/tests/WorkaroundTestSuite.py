@@ -35,7 +35,7 @@ class WorkaroundTestCase(pyAgrumTestCase):
     g = dot.graph_from_dot_data('''graph G {
   A;B;
   A--B;
-}''')
+}''')[0]
 
     # g should have 2 nodes if no bug while parsing but 3 with the bug.
     # workaround : cf. pyAgrum.lib.notebook.py:255 and everywhere using dot.graph_from_dot_data
