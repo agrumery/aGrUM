@@ -112,12 +112,8 @@ namespace gum {
      *
      * @ingroup learning_database
      */
-    template < template < typename > class ALLOC = std::allocator >
-    class DBTranslator: private ALLOC< DBTranslatedValue > {
+    class DBTranslator {
       public:
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC< DBTranslatedValue >;
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -136,16 +132,12 @@ namespace gum {
        * @param max_dico_entries the max number of entries that the dictionary
        * can contain. If we try to add new entries in the dictionary, this will
        * be considered as an error and a SizeError exception will be raised
-       * @param alloc The allocator used to allocate memory for all the
-       * fields of the DBTranslator
        */
-      template < template < typename > class XALLOC >
-      DBTranslator(DBTranslatedValueType                                    val_type,
-                   const bool                                               is_lossless,
-                   const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
-                   const bool  editable_dictionary = true,
-                   std::size_t max_dico_entries    = std::numeric_limits< std::size_t >::max(),
-                   const allocator_type& alloc     = allocator_type());
+      DBTranslator(DBTranslatedValueType             val_type,
+                   const bool                        is_lossless,
+                   const std::vector< std::string >& missing_symbols,
+                   const bool                        editable_dictionary = true,
+                   std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max());
 
       /// default constructor without missing symbols
       /** @param val_type indicates whether the DBTranslator deals with discrete
@@ -157,32 +149,20 @@ namespace gum {
        * @param max_dico_entries the max number of entries that the dictionary
        * can contain. If we try to add new entries in the dictionary, this will
        * be considered as an error and a SizeError exception will be raised
-       * @param alloc The allocator used to allocate memory for all the
-       * fields of the DBTranslator
        */
       DBTranslator(DBTranslatedValueType val_type,
                    const bool            is_lossless,
                    const bool            editable_dictionary = true,
-                   std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
-                   const allocator_type& alloc  = allocator_type());
+                   std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max());
 
       /// copy constructor
-      DBTranslator(const DBTranslator< ALLOC >& from);
-
-      /// copy constructor with a given allocator
-      DBTranslator(const DBTranslator< ALLOC >& from, const allocator_type& alloc);
+      DBTranslator(const DBTranslator& from);
 
       /// move constructor
-      DBTranslator(DBTranslator< ALLOC >&& from);
-
-      /// move constructor with a given allocator
-      DBTranslator(DBTranslator< ALLOC >&& from, const allocator_type& alloc);
+      DBTranslator(DBTranslator&& from);
 
       /// virtual copy constructor
-      virtual DBTranslator< ALLOC >* clone() const = 0;
-
-      /// virtual copy constructor with a given allocator
-      virtual DBTranslator< ALLOC >* clone(const allocator_type& alloc) const = 0;
+      virtual DBTranslator* clone() const = 0;
 
       /// destructor
       virtual ~DBTranslator();
@@ -284,10 +264,7 @@ namespace gum {
       virtual void setEditableDictionaryMode(bool new_mode);
 
       /// returns the translation from database indices to input strings
-      virtual const Bijection< std::size_t,
-                               std::string,
-                               ALLOC< std::pair< std::size_t, std::string > > >&
-         getDictionary() const;
+      virtual const Bijection< std::size_t, std::string >& getDictionary() const;
 
       /** @brief indicates whether a reordering is needed to make the
        * translations sorted
@@ -323,11 +300,10 @@ namespace gum {
        * reordered, those for continuous random variables are identity mappings.
        * @warning If there is no reordering to perform, the method returns
        * an empty hashtable. */
-      virtual HashTable< std::size_t, std::size_t, ALLOC< std::pair< std::size_t, std::size_t > > >
-         reorder() = 0;
+      virtual HashTable< std::size_t, std::size_t > reorder() = 0;
 
       /// returns the set of missing symbols taken into account by the translator
-      const Set< std::string, ALLOC< std::string > >& missingSymbols() const;
+      const Set< std::string >& missingSymbols() const;
 
       /// indicates whether a string corresponds to a missing symbol
       bool isMissingSymbol(const std::string& str) const;
@@ -358,9 +334,6 @@ namespace gum {
        * any information or not. */
       bool isLossless() const;
 
-      /// returns the allocator used by the translator
-      allocator_type getAllocator() const;
-
       /// indicates whether a translated value corresponds to a missing value
       bool isMissingValue(const DBTranslatedValue& val) const;
 
@@ -378,10 +351,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBTranslator< ALLOC >& operator=(const DBTranslator< ALLOC >& from);
+      DBTranslator& operator=(const DBTranslator& from);
 
       /// move operator
-      DBTranslator< ALLOC >& operator=(DBTranslator< ALLOC >&& from);
+      DBTranslator& operator=(DBTranslator&& from);
 
       /// @}
 
@@ -395,7 +368,7 @@ namespace gum {
       std::size_t max_dico_entries_;
 
       /// the set of missing symbols
-      Set< std::string, ALLOC< std::string > > missing_symbols_;
+      Set< std::string > missing_symbols_;
 
       /// the bijection relating back translated values and their original strings.
       /** Note that the translated values considered here are of type std::size_t
@@ -403,8 +376,7 @@ namespace gum {
        * for continuous variables are actually identity mappings.
        * @warning only the values of the random variable are stored into this
        * bijection. Missing values are not considered here. */
-      mutable Bijection< std::size_t, std::string, ALLOC< std::pair< std::size_t, std::string > > >
-         back_dico_;
+      mutable Bijection< std::size_t, std::string > back_dico_;
 
       /// the type of the values translated by the translator
       DBTranslatedValueType val_type_;
@@ -415,7 +387,9 @@ namespace gum {
 
 } /* namespace gum */
 
-// always include the template implementation
-#include <agrum/tools/database/DBTranslator_tpl.h>
+/// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/tools/database/DBTranslator_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_DB_TRANSLATOR_H */

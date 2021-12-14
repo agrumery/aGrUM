@@ -35,7 +35,7 @@ include_directories(BEFORE ${AGRUM_BINARY_DIR})
 include_directories(BEFORE ${AGRUM_SOURCE_DIR})
 link_directories(${AGRUM_BINARY_DIR}/lib)
 
-set(AGRUM_FILES ${AGRUM_SOURCES} ${AGRUM_C_SOURCES} ${AGRUM_INLINES} ${AGRUM_INCLUDES} ${AGRUM_TEMPLATES})
+set(AGRUM_FILES ${AGRUM_SOURCES} ${AGRUM_C_SOURCES} ${AGRUM_INLINES} ${AGRUM_INCLUDES} ${AGRUM_TEMPLATES} agrum/tools/database/DBRowGeneratorSet_inl.h agrum/tools/database/DBTranslator_inl.h agrum/tools/database/DBTranslator4ContinuousVariable_inl.h agrum/tools/database/DBTranslator4DiscretizedVariable_inl.h agrum/tools/database/DBTranslator4IntegerVariable_inl.h agrum/tools/database/DBTranslatorSet_inl.h)
 
 #needed for some IDE (such as jetbrain's)
 set(SOURCE_FILES ${AGRUM_FILES})

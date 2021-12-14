@@ -61,7 +61,7 @@ namespace gum {
      * // i.e., each time the translator reads a "N/A" or a "???" string, it
      * // won't translate it into a number but into a missing value.
      * std::vector<std::string> missing { "N/A", "???" };
-     * gum::learning::DBTranslator4RangeVariable<> translator ( missing );
+     * gum::learning::DBTranslator4RangeVariable translator ( missing );
      *
      * // gets the DBTranslatedValue corresponding to some strings
      * auto val1 = translator.translate("5");
@@ -113,7 +113,7 @@ namespace gum {
      * // constructor of the translator, or using the setEditableDictionaryMode
      * // method. Here, we create a range variable whose domain is {-2,...,10}
      * gum::RangeVariable var ( "X", "", -2, 10 );
-     * gum::learning::DBTranslator4RangeVariable<> translator2 ( var, missing );
+     * gum::learning::DBTranslator4RangeVariable translator2 ( var, missing );
      *
      * auto xval1 = translator2.translate ( "-1" ).discr_val; // xval1 = 1
      * auto xval2 = translator2.translate ( "7" ).discr_val;  // xval2 = 9
@@ -128,13 +128,8 @@ namespace gum {
      *
      * @ingroup learning_database
      */
-    template < template < typename > class ALLOC = std::allocator >
-    class DBTranslator4RangeVariable: public DBTranslator< ALLOC > {
+    class DBTranslator4RangeVariable: public DBTranslator {
       public:
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = typename DBTranslator< ALLOC >::allocator_type;
-
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -152,14 +147,10 @@ namespace gum {
        * @param max_dico_entries the max number of entries that the dictionary
        * can contain. If we try to add new entries in the dictionary, this will
        * be considered as an error and a SizeError exception will be raised
-       * @param alloc The allocator used to allocate memory for all the
-       * fields of the DBTranslator4RangeVariable
        */
-      template < template < typename > class XALLOC >
-      DBTranslator4RangeVariable(
-         const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
-         std::size_t           max_dico_entries = std::numeric_limits< std::size_t >::max(),
-         const allocator_type& alloc            = allocator_type());
+      DBTranslator4RangeVariable(const std::vector< std::string >& missing_symbols,
+                                 std::size_t                       max_dico_entries
+                                 = std::numeric_limits< std::size_t >::max());
 
       /// default constructor without any initial variable nor missing symbols
       /** When using this constructor, it is assumed implicitly that the
@@ -170,12 +161,9 @@ namespace gum {
        * @param max_dico_entries the max number of entries that the dictionary
        * can contain. If we try to add new entries in the dictionary, this will
        * be considered as an error and a SizeError exception will be raised
-       * @param alloc The allocator used to allocate memory for all the
-       * fields of the DBTranslator4RangeVariable
        */
       DBTranslator4RangeVariable(std::size_t max_dico_entries
-                                 = std::numeric_limits< std::size_t >::max(),
-                                 const allocator_type& alloc = allocator_type());
+                                 = std::numeric_limits< std::size_t >::max());
 
       /// default constructor with a range variable as translator
       /** @param var a range variable which will be used for translations.
@@ -191,19 +179,15 @@ namespace gum {
        * @param max_dico_entries the max number of entries that the dictionary
        * can contain. If we try to add new entries in the dictionary, this will
        * be considered as an error and a SizeError exception will be raised
-       * @param alloc The allocator used to allocate memory for all the
-       * fields of the DBTranslator4RangeVariable
        * @warning If the variable contained into the translator has a value in
        * the range that is equal to a missing value symbol, the range value will
        * be taken into account in the translations, not the missing value.
        */
-      template < template < typename > class XALLOC >
-      DBTranslator4RangeVariable(
-         const RangeVariable&                                     var,
-         const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
-         const bool                                               editable_dictionary = false,
-         std::size_t           max_dico_entries = std::numeric_limits< std::size_t >::max(),
-         const allocator_type& alloc            = allocator_type());
+      DBTranslator4RangeVariable(const RangeVariable&              var,
+                                 const std::vector< std::string >& missing_symbols,
+                                 const bool                        editable_dictionary = false,
+                                 std::size_t                       max_dico_entries
+                                 = std::numeric_limits< std::size_t >::max());
 
       /** @brief default constructor with a range variable as translator
        * but without missing symbols
@@ -219,8 +203,6 @@ namespace gum {
        * @param max_dico_entries the max number of entries that the dictionary
        * can contain. If we try to add new entries in the dictionary, this will
        * be considered as an error and a SizeError exception will be raised
-       * @param alloc The allocator used to allocate memory for all the
-       * fields of the DBTranslator4RangeVariable
        * @warning If the variable contained into the translator has a value in
        * the range that is equal to a missing value symbol, the range value will
        * be taken into account in the translations, not the missing value.
@@ -228,28 +210,16 @@ namespace gum {
       DBTranslator4RangeVariable(const RangeVariable& var,
                                  const bool           editable_dictionary = false,
                                  std::size_t          max_dico_entries
-                                 = std::numeric_limits< std::size_t >::max(),
-                                 const allocator_type& alloc = allocator_type());
+                                 = std::numeric_limits< std::size_t >::max());
 
       /// copy constructor
-      DBTranslator4RangeVariable(const DBTranslator4RangeVariable< ALLOC >& from);
-
-      /// copy constructor with a given translator
-      DBTranslator4RangeVariable(const DBTranslator4RangeVariable< ALLOC >& from,
-                                 const allocator_type&                      alloc);
+      DBTranslator4RangeVariable(const DBTranslator4RangeVariable& from);
 
       /// move constructor
-      DBTranslator4RangeVariable(DBTranslator4RangeVariable< ALLOC >&& from);
-
-      /// move constructor with a given allocator
-      DBTranslator4RangeVariable(DBTranslator4RangeVariable< ALLOC >&& from,
-                                 const allocator_type&                 alloc);
+      DBTranslator4RangeVariable(DBTranslator4RangeVariable&& from);
 
       /// virtual copy constructor
-      virtual DBTranslator4RangeVariable< ALLOC >* clone() const;
-
-      /// virtual copy constructor with a given allocator
-      virtual DBTranslator4RangeVariable< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual DBTranslator4RangeVariable* clone() const;
 
       /// destructor
       virtual ~DBTranslator4RangeVariable();
@@ -264,11 +234,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBTranslator4RangeVariable< ALLOC >&
-         operator=(const DBTranslator4RangeVariable< ALLOC >& from);
+      DBTranslator4RangeVariable& operator=(const DBTranslator4RangeVariable& from);
 
       /// move operator
-      DBTranslator4RangeVariable< ALLOC >& operator=(DBTranslator4RangeVariable< ALLOC >&& from);
+      DBTranslator4RangeVariable& operator=(DBTranslator4RangeVariable&& from);
 
       /// @}
 
@@ -357,8 +326,7 @@ namespace gum {
        * changed. It updates accordingly the dictionary and returns the mapping
        * that enables changing the old dictionary values into the new ones.
        */
-      virtual HashTable< std::size_t, std::size_t, ALLOC< std::pair< std::size_t, std::size_t > > >
-         reorder() final;
+      virtual HashTable< std::size_t, std::size_t > reorder() final;
 
       /// returns the variable stored into the translator
       virtual const RangeVariable* variable() const final;
@@ -378,11 +346,10 @@ namespace gum {
       // assign to each integer missing symbol a Boolean indicating whether
       // we already translated it or not. If we translated it, then we cannot
       // change the range of the variable so that this range contains the symbol.
-      HashTable< std::string, bool, ALLOC< std::pair< std::string, bool > > >
-         _status_int_missing_symbols_;
+      HashTable< std::string, bool > _status_int_missing_symbols_;
 
       // the set of translations of the integer missing symbols found so far
-      Set< long, ALLOC< long > > _translated_int_missing_symbols_;
+      Set< long > _translated_int_missing_symbols_;
 
       // a string containing a non int missing symbol
       // (useful for back translations)
@@ -397,7 +364,9 @@ namespace gum {
 } /* namespace gum */
 
 
-// always include the template implementation
-#include <agrum/tools/database/DBTranslator4RangeVariable_tpl.h>
+/// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#  include <agrum/tools/database/DBTranslator4RangeVariable_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_DB_TRANSLATOR_4_RANGE_VARIABLE_H */

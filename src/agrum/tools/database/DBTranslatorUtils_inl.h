@@ -18,20 +18,30 @@
  *
  */
 
-
 /** @file
- * @brief The base class for all the tabular databases' cell translators
+ * @brief Utilities for DBTranslators
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
-
-#include <agrum/tools/database/DBTranslator.h>
-
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-// include the inlined functions if necessary
-#ifdef GUM_NO_INLINE
-#include <agrum/tools/database/DBTranslator_inl.h>
-#endif /* GUM_NO_INLINE */
+namespace gum {
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+  namespace learning {
+
+    namespace DBTranslators {
+
+      /// named constructor using dynamic allocation
+      INLINE DBTranslator*
+         create(const Variable& var, const bool editable_dictionary, std::size_t max_dico_entries) {
+        return create(var, std::vector< std::string >(), editable_dictionary, max_dico_entries);
+      }
+
+    }   // namespace DBTranslators
+
+  }   // namespace learning
+
+}   // namespace gum
+
+
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
