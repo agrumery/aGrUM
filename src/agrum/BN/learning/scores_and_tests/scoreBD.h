@@ -60,12 +60,8 @@ namespace gum {
      * the two aprioris into the score.
      *
      */
-    template < template < typename > class ALLOC = std::allocator >
-    class ScoreBD: public Score< ALLOC > {
+    class ScoreBD: public Score {
       public:
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC< NodeId >;
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -87,18 +83,14 @@ namespace gum {
        * in which variable A has a NodeId of 5. An empty nodeId2Columns
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
-       * @param alloc the allocator used to allocate the structures within the
-       * Score.
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      ScoreBD(const DBRowGeneratorParser< ALLOC >&                                 parser,
-              const Apriori< ALLOC >&                                              apriori,
-              const std::vector< std::pair< std::size_t, std::size_t >,
-                                 ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
-              const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&        nodeId2columns
-              = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-              const allocator_type& alloc = allocator_type());
+      ScoreBD(const DBRowGeneratorParser&                                 parser,
+              const Apriori&                                              apriori,
+              const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
+              const Bijection< NodeId, std::size_t >&                     nodeId2columns
+              = Bijection< NodeId, std::size_t >());
 
 
       /// default constructor
@@ -111,34 +103,22 @@ namespace gum {
        * in which variable A has a NodeId of 5. An empty nodeId2Columns
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
-       * @param alloc the allocator used to allocate the structures within the
-       * Score.
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      ScoreBD(const DBRowGeneratorParser< ALLOC >&                          parser,
-              const Apriori< ALLOC >&                                       apriori,
-              const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
-              = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-              const allocator_type& alloc = allocator_type());
+      ScoreBD(const DBRowGeneratorParser&             parser,
+              const Apriori&                          apriori,
+              const Bijection< NodeId, std::size_t >& nodeId2columns
+              = Bijection< NodeId, std::size_t >());
 
       /// copy constructor
-      ScoreBD(const ScoreBD< ALLOC >& from);
-
-      /// copy constructor with a given allocator
-      ScoreBD(const ScoreBD< ALLOC >& from, const allocator_type& alloc);
+      ScoreBD(const ScoreBD& from);
 
       /// move constructor
-      ScoreBD(ScoreBD< ALLOC >&& from);
-
-      /// move constructor with a given allocator
-      ScoreBD(ScoreBD< ALLOC >&& from, const allocator_type& alloc);
+      ScoreBD(ScoreBD&& from);
 
       /// virtual copy constructor
-      virtual ScoreBD< ALLOC >* clone() const;
-
-      /// virtual copy constructor with a given allocator
-      virtual ScoreBD< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual ScoreBD* clone() const;
 
       /// destructor
       virtual ~ScoreBD();
@@ -153,10 +133,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      ScoreBD< ALLOC >& operator=(const ScoreBD< ALLOC >& from);
+      ScoreBD& operator=(const ScoreBD& from);
 
       /// move operator
-      ScoreBD< ALLOC >& operator=(ScoreBD< ALLOC >&& from);
+      ScoreBD& operator=(ScoreBD&& from);
 
       /// @}
 
@@ -189,7 +169,7 @@ namespace gum {
        * note that, to be meaningful, a structure + parameter learning requires
        * that the same aprioris are taken into account during structure learning
        * and parameter learning. */
-      virtual const Apriori< ALLOC >& internalApriori() const final;
+      virtual const Apriori& internalApriori() const final;
 
       /// @}
 
@@ -201,7 +181,7 @@ namespace gum {
 
       /// indicates whether the apriori is compatible (meaningful) with the score
       /** a non empty string if the apriori is compatible with the score. */
-      static std::string isAprioriCompatible(const Apriori< ALLOC >& apriori);
+      static std::string isAprioriCompatible(const Apriori& apriori);
 
 
       protected:
@@ -209,14 +189,14 @@ namespace gum {
       /** @throws OperationNotAllowed is raised if the score does not support
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
-      virtual double score_(const IdCondSet< ALLOC >& idset) final;
+      virtual double score_(const IdCondSet& idset) final;
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
       private:
       /// the internal apriori of the score
-      AprioriNoApriori< ALLOC > _internal_apriori_;
+      AprioriNoApriori _internal_apriori_;
 
       /// the log(gamma (n)) function: generalizes log((n-1)!)
       GammaLog2 _gammalog2_;
@@ -228,13 +208,9 @@ namespace gum {
 
 } /* namespace gum */
 
-
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-extern template class gum::learning::ScoreBD<>;
-#endif
-
-
-// always include the template implementation
-#include <agrum/BN/learning/scores_and_tests/scoreBD_tpl.h>
+// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/BN/learning/scores_and_tests/scoreBD_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_SCORE_BD_H */

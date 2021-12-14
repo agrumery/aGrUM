@@ -47,12 +47,8 @@ namespace gum {
      * @headerfile score.h <agrum/BN/learning/scores_and_tests/score.h>
      * @ingroup learning_scores
      */
-    template < template < typename > class ALLOC = std::allocator >
     class Score {
       public:
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC< NodeId >;
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -75,18 +71,14 @@ namespace gum {
        * in which variable A has a NodeId of 5. An empty nodeId2Columns
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
-       * @param alloc the allocator used to allocate the structures within the
-       * Score.
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      Score(const DBRowGeneratorParser< ALLOC >&                                 parser,
-            const Apriori< ALLOC >&                                              external_apriori,
-            const std::vector< std::pair< std::size_t, std::size_t >,
-                               ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
-            const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&        nodeId2columns
-            = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-            const allocator_type& alloc = allocator_type());
+      Score(const DBRowGeneratorParser&                                 parser,
+            const Apriori&                                              external_apriori,
+            const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
+            const Bijection< NodeId, std::size_t >&                     nodeId2columns
+            = Bijection< NodeId, std::size_t >());
 
 
       /// default constructor
@@ -100,22 +92,16 @@ namespace gum {
        * in which variable A has a NodeId of 5. An empty nodeId2Columns
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
-       * @param alloc the allocator used to allocate the structures within the
-       * Score.
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      Score(const DBRowGeneratorParser< ALLOC >&                          parser,
-            const Apriori< ALLOC >&                                       external_apriori,
-            const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
-            = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-            const allocator_type& alloc = allocator_type());
+      Score(const DBRowGeneratorParser&             parser,
+            const Apriori&                          external_apriori,
+            const Bijection< NodeId, std::size_t >& nodeId2columns
+            = Bijection< NodeId, std::size_t >());
 
       /// virtual copy constructor
-      virtual Score< ALLOC >* clone() const = 0;
-
-      /// virtual copy constructor with a given allocator
-      virtual Score< ALLOC >* clone(const allocator_type& alloc) const = 0;
+      virtual Score* clone() const = 0;
 
       /// destructor
       virtual ~Score();
@@ -155,18 +141,13 @@ namespace gum {
        * cross validation tasks, in which part of the database should be ignored.
        * An empty set of ranges is equivalent to an interval [X,Y) ranging over
        * the whole database. */
-      template < template < typename > class XALLOC >
-      void setRanges(
-         const std::vector< std::pair< std::size_t, std::size_t >,
-                            XALLOC< std::pair< std::size_t, std::size_t > > >& new_ranges);
+      void setRanges(const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges);
 
       /// reset the ranges to the one range corresponding to the whole database
       void clearRanges();
 
       /// returns the current ranges
-      const std::vector< std::pair< std::size_t, std::size_t >,
-                         ALLOC< std::pair< std::size_t, std::size_t > > >&
-         ranges() const;
+      const std::vector< std::pair< std::size_t, std::size_t > >& ranges() const;
 
       /// returns the score of a single node
       double score(const NodeId var);
@@ -175,7 +156,7 @@ namespace gum {
       /** @param var the variable on the left side of the conditioning bar
        * @param rhs_ids the set of variables on the right side of the
        * conditioning bar */
-      double score(const NodeId var, const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids);
+      double score(const NodeId var, const std::vector< NodeId >& rhs_ids);
 
       /// clears all the data structures from memory, including the cache
       void clear();
@@ -193,10 +174,10 @@ namespace gum {
       /** @warning An empty nodeId2Columns bijection means that the mapping is
        * an identity, i.e., the value of a NodeId is equal to the index of the
        * column in the DatabaseTable. */
-      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2Columns() const;
+      const Bijection< NodeId, std::size_t >& nodeId2Columns() const;
 
       /// return the database used by the score
-      const DatabaseTable< ALLOC >& database() const;
+      const DatabaseTable& database() const;
 
       /// indicates whether the apriori is compatible (meaningful) with the score
       /** The combination of some scores and aprioris can be meaningless. For
@@ -219,10 +200,7 @@ namespace gum {
        * note that, to be meaningful, a structure + parameter learning requires
        * that the same aprioris are taken into account during structure learning
        * and parameter learning. */
-      virtual const Apriori< ALLOC >& internalApriori() const = 0;
-
-      /// returns the allocator used by the score
-      allocator_type getAllocator() const;
+      virtual const Apriori& internalApriori() const = 0;
 
       /// @}
 
@@ -232,65 +210,55 @@ namespace gum {
       const double one_log2_{M_LOG2E};
 
       /// the expert knowledge a priori we add to the score
-      Apriori< ALLOC >* apriori_{nullptr};
+      Apriori* apriori_{nullptr};
 
       /// the record counter used for the countings over discrete variables
-      RecordCounter< ALLOC > counter_;
+      RecordCounter counter_;
 
       /// the scoring cache
-      ScoringCache< ALLOC > cache_;
+      ScoringCache cache_;
 
       /// a Boolean indicating whether we wish to use the cache
       bool use_cache_{true};
 
       /// an empty vector
-      const std::vector< NodeId, ALLOC< NodeId > > empty_ids_;
+      const std::vector< NodeId > empty_ids_;
 
 
       /// copy constructor
-      Score(const Score< ALLOC >& from);
-
-      /// copy constructor with a given allocator
-      Score(const Score< ALLOC >& from, const allocator_type& alloc);
+      Score(const Score& from);
 
       /// move constructor
-      Score(Score< ALLOC >&& from);
-
-      /// move constructor with a given allocator
-      Score(Score< ALLOC >&& from, const allocator_type& alloc);
+      Score(Score&& from);
 
       /// copy operator
-      Score< ALLOC >& operator=(const Score< ALLOC >& from);
+      Score& operator=(const Score& from);
 
       /// move operator
-      Score< ALLOC >& operator=(Score< ALLOC >&& from);
+      Score& operator=(Score&& from);
 
       /// returns the score for a given IdCondSet
       /** @throws OperationNotAllowed is raised if the score does not support
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
-      virtual double score_(const IdCondSet< ALLOC >& idset) = 0;
+      virtual double score_(const IdCondSet& idset) = 0;
 
       /// returns a counting vector where variables are marginalized from N_xyz
       /** @param X_id the id of the variable to marginalize (this is the first
        * variable in table N_xyz
        * @param N_xyz a counting vector of dimension X * cond_vars (in this order)
        */
-      std::vector< double, ALLOC< double > >
-         marginalize_(const NodeId X_id, const std::vector< double, ALLOC< double > >& N_xyz) const;
+      std::vector< double > marginalize_(const NodeId                 X_id,
+                                         const std::vector< double >& N_xyz) const;
     };
 
   } /* namespace learning */
 
 } /* namespace gum */
 
-
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-extern template class gum::learning::Score<>;
-#endif
-
-
-/// include the template implementation
-#include <agrum/BN/learning/scores_and_tests/score_tpl.h>
+// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/BN/learning/scores_and_tests/score_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_SCORE_H */

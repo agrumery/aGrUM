@@ -28,6 +28,11 @@
 
 #include <agrum/BN/learning/scores_and_tests/scoreAIC.h>
 
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::learning::ScoreAIC<>;
-#endif
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+/// include the inlined functions if necessary
+#  ifdef GUM_NO_INLINE
+#    include <agrum/BN/learning/scores_and_tests/scoreAIC_inl.h>
+#  endif /* GUM_NO_INLINE */
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */

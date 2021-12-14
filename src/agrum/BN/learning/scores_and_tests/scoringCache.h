@@ -55,37 +55,24 @@ namespace gum {
      * provides an efficient cache that can significantly alleviate the
      * learning computational burden.
      */
-    template < template < typename > class ALLOC = std::allocator >
-    class ScoringCache: private ALLOC< NodeId > {
+    class ScoringCache {
       public:
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC< NodeId >;
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      ScoringCache(const allocator_type& alloc = allocator_type());
+      ScoringCache();
 
       /// copy constructor
-      ScoringCache(const ScoringCache< ALLOC >& from);
-
-      /// copy constructor with a given allocator
-      ScoringCache(const ScoringCache< ALLOC >& from, const allocator_type& alloc);
+      ScoringCache(const ScoringCache& from);
 
       /// move constructor
-      ScoringCache(ScoringCache< ALLOC >&& from);
-
-      /// move constructor with a given allocator
-      ScoringCache(ScoringCache< ALLOC >&& from, const allocator_type& alloc);
+      ScoringCache(ScoringCache&& from);
 
       /// virtual copy constructor
-      virtual ScoringCache< ALLOC >* clone() const;
-
-      /// virtual copy constructor with a given allocator
-      virtual ScoringCache< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual ScoringCache* clone() const;
 
       /// destructor
       virtual ~ScoringCache();
@@ -99,10 +86,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      ScoringCache< ALLOC >& operator=(const ScoringCache< ALLOC >& from);
+      ScoringCache& operator=(const ScoringCache& from);
 
       /// move operator
-      ScoringCache< ALLOC >& operator=(ScoringCache< ALLOC >&& from);
+      ScoringCache& operator=(ScoringCache&& from);
 
       /// @}
 
@@ -117,38 +104,35 @@ namespace gum {
        * @param score the score assigned to the IdCondSet
        * @throws DuplicateElement exception is raised if a score for the same
        * variables already exists */
-      void insert(const IdCondSet< ALLOC >& idset, double score);
+      void insert(const IdCondSet& idset, double score);
 
       /// insert a new score into the cache
       /** @param idset the IdCondSet storing the sets of variables
        * @param score the score assigned to the IdCondSet
        * @throws DuplicateElement exception is raised if a score for the same
        * variables already exists */
-      void insert(IdCondSet< ALLOC >&& idset, double score);
+      void insert(IdCondSet&& idset, double score);
 
       /// removes a score (if it exists)
       /** @param idset the IdCondSet storing the sets of variables
        * @warning If the score does not exist, nothing is done. In particular,
        * no exception is raised */
-      void erase(const IdCondSet< ALLOC >& idset);
+      void erase(const IdCondSet& idset);
 
       /// indicates whether a given score exists
       /** @param idset the IdCondSet storing the sets of variables */
-      bool exists(const IdCondSet< ALLOC >& idset);
+      bool exists(const IdCondSet& idset);
 
       /// returns a given score
       /** @param idset the IdCondSet storing the sets of variables
        * @throws NotFound is raised if the score is not cached */
-      double score(const IdCondSet< ALLOC >& idset);
+      double score(const IdCondSet& idset);
 
       /// removes all the stored scores
       void clear();
 
       /// returns the number of scores saved in the cache
       std::size_t size() const;
-
-      /// returns the allocator used by the translator
-      allocator_type getAllocator() const;
 
       /// @}
 
@@ -157,8 +141,7 @@ namespace gum {
 
       private:
       /// the scores stored into the cache
-      HashTable< IdCondSet< ALLOC >, double, ALLOC< std::pair< IdCondSet< ALLOC >, double > > >
-         _scores_;
+      HashTable< IdCondSet, double > _scores_;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
@@ -167,9 +150,9 @@ namespace gum {
 
 } /* namespace gum */
 
-
-// always include the template implementation
-#include <agrum/BN/learning/scores_and_tests/scoringCache_tpl.h>
-
+// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#  include <agrum/BN/learning/scores_and_tests/scoringCache_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_SCORING_CACHE_H */
