@@ -124,7 +124,7 @@ namespace gum {
 
 
     /// returns the current set of columns of interest
-    INLINE const std::vector< std::size_t< std::size_t > >&
+    INLINE const std::vector< std::size_t >&
                  DBRowGeneratorSet::columnsOfInterest() const {
       if (_nb_generators_ == std::size_t(0)) {
         GUM_ERROR(UndefinedElement,

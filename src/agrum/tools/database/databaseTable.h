@@ -326,11 +326,10 @@ namespace gum {
        * all the column of the database corresponding to the new translator is
        * filled with missing values.
        */
-      template < template < typename > class XALLOC >
       std::size_t
          insertTranslator(const Variable&                                   var,
                           const std::size_t                                 input_column,
-                          std::vector< std::string, XALLOC< std::string > > missing_symbols,
+                          std::vector< std::string > missing_symbols,
                           const bool                                        unique_column = true);
 
       /** @brief erases either the kth translator or all those parsing the kth
@@ -386,12 +385,11 @@ namespace gum {
        * @warning if the translator does not exists, nothing is done. In
        * particular, no exception is raised.
        */
-      template < template < typename > class XALLOC = ALLOC >
       void changeTranslator(const Variable&   var,
                             const std::size_t k,
                             const bool        k_is_input_col = false,
-                            const std::vector< std::string, XALLOC< std::string > >& missing_symbols
-                            = std::vector< std::string, XALLOC< std::string > >(),
+                            const std::vector< std::string >& missing_symbols
+                            = std::vector< std::string >(),
                             const bool        editable_dictionary = false,
                             const std::size_t max_dico_entries
                             = std::numeric_limits< std::size_t >::max());
@@ -438,7 +436,7 @@ namespace gum {
       const Variable& variable(const std::size_t k, const bool k_is_input_col = false) const;
 
       /// sets the names of the variables
-      using IDatabaseTable< DBTranslatedValue, ALLOC >::setVariableNames;
+      using IDatabaseTable< DBTranslatedValue >::setVariableNames;
 
       /// sets the names of the variables
       /** This method can be called in two different ways: either the names
@@ -466,7 +464,7 @@ namespace gum {
        * @throw SizeError is raised if the names passed in arguments cannot be
        * assigned to the columns of the DatabaseTable because the size of their
        * vector is inadequate. */
-      virtual void setVariableNames(const std::vector< std::string, ALLOC< std::string > >& names,
+      virtual void setVariableNames(const std::vector< std::string >& names,
                                     const bool from_external_object = true) final;
 
       /** @brief makes the database table ignore from now on the kth column of
@@ -595,7 +593,7 @@ namespace gum {
       void reorder();
 
       /// insert a new row at the end of the database
-      using IDatabaseTable< DBTranslatedValue, ALLOC >::insertRow;
+      using IDatabaseTable< DBTranslatedValue >::insertRow;
 
       /// insert a new row at the end of the database
       /** The new_row passed in argument is supposed to come from an external
@@ -620,7 +618,7 @@ namespace gum {
        * dictionary fails due to str being impossible to be converted into an
        * appropriate type.
        */
-      virtual void insertRow(const std::vector< std::string, ALLOC< std::string > >& new_row) final;
+      virtual void insertRow(const std::vector< std::string >& new_row) final;
 
       /// insert a new DBRow at the end of the database
       /** Unlike methods insertRow for data whose type is different from
@@ -732,7 +730,7 @@ namespace gum {
       DBTranslatorSet _translators_;
 
       /// the set of ignored columns asked by the user
-      Set< std::size_t, ALLOC< std::size_t > > _ignored_cols_;
+      Set< std::size_t > _ignored_cols_;
 
       /** @brief check that a row's values are compatible with those of the
        * translators' variables */
@@ -784,5 +782,11 @@ namespace gum {
 
 /// always include the templated implementations
 #include <agrum/tools/database/databaseTable_tpl.h>
+
+/// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#  include <agrum/tools/database/databaseTable_inl.h>
+#endif /* GUM_NO_INLINE */
+
 
 #endif /* GUM_DATABASE_TABLE_H */

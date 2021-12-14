@@ -188,7 +188,7 @@ namespace gum {
 
     /// virtual copy constructor
     DBTranslator4RangeVariable* DBTranslator4RangeVariable::clone() const {
-      return DBTranslator4RangeVariable(*this);
+      return new DBTranslator4RangeVariable(*this);
     }
 
 

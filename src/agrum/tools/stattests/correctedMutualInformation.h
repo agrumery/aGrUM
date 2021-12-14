@@ -52,11 +52,8 @@ namespace gum {
      *
      * @ingroup learning_scores
      */
-    template < template < typename > class ALLOC = std::allocator >
     class CorrectedMutualInformation {
       public:
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC< NodeId >;
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -81,19 +78,15 @@ namespace gum {
        * in which variable A has a NodeId of 5. An empty nodeId2Columns
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
-       * @param alloc the allocator used to allocate the structures within the
-       * Score.
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       CorrectedMutualInformation(
-         const DBRowGeneratorParser< ALLOC >&                                 parser,
-         const Apriori< ALLOC >&                                              apriori,
-         const std::vector< std::pair< std::size_t, std::size_t >,
-                            ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
-         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&        nodeId2columns
-         = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-         const allocator_type& alloc = allocator_type());
+         const DBRowGeneratorParser&                                 parser,
+         const Apriori&                                              apriori,
+         const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
+         const Bijection< NodeId, std::size_t >&        nodeId2columns
+         = Bijection< NodeId, std::size_t >());
 
       /// default constructor
       /** @param parser the parser used to parse the database
@@ -113,31 +106,31 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       CorrectedMutualInformation(
-         const DBRowGeneratorParser< ALLOC >&                          parser,
-         const Apriori< ALLOC >&                                       apriori,
+         const DBRowGeneratorParser&                          parser,
+         const Apriori&                                       apriori,
          const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
          = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
          const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      CorrectedMutualInformation(const CorrectedMutualInformation< ALLOC >& from);
+      CorrectedMutualInformation(const CorrectedMutualInformation& from);
 
       /// copy constructor with a given allocator
-      CorrectedMutualInformation(const CorrectedMutualInformation< ALLOC >& from,
+      CorrectedMutualInformation(const CorrectedMutualInformation& from,
                                  const allocator_type&                      alloc);
 
       /// move constructor
-      CorrectedMutualInformation(CorrectedMutualInformation< ALLOC >&& from);
+      CorrectedMutualInformation(CorrectedMutualInformation&& from);
 
       /// move constructor with a given allocator
-      CorrectedMutualInformation(CorrectedMutualInformation< ALLOC >&& from,
+      CorrectedMutualInformation(CorrectedMutualInformation&& from,
                                  const allocator_type&                 alloc);
 
       /// virtual copy constructor
-      virtual CorrectedMutualInformation< ALLOC >* clone() const;
+      virtual CorrectedMutualInformation* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual CorrectedMutualInformation< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual CorrectedMutualInformation* clone(const allocator_type& alloc) const;
 
       /// destructor
       virtual ~CorrectedMutualInformation();
@@ -152,11 +145,11 @@ namespace gum {
       /// @{
 
       /// copy operator
-      CorrectedMutualInformation< ALLOC >&
-         operator=(const CorrectedMutualInformation< ALLOC >& from);
+      CorrectedMutualInformation&
+         operator=(const CorrectedMutualInformation& from);
 
       /// move operator
-      CorrectedMutualInformation< ALLOC >& operator=(CorrectedMutualInformation< ALLOC >&& from);
+      CorrectedMutualInformation& operator=(CorrectedMutualInformation&& from);
 
       /// @}
 
@@ -318,14 +311,14 @@ namespace gum {
       private:
       /// The object to compute N times Entropy H used by mutual information I
       /* Note that the log2-likelihood is equal to N times the entropy H */
-      ScoreLog2Likelihood< ALLOC > _NH_;
+      ScoreLog2Likelihood _NH_;
 
       /// the object computing the NML k score
-      KNML< ALLOC > _k_NML_;
+      KNML _k_NML_;
 
       /** @brief a score MDL used to compute the size N of the database,
        * including the a priori */
-      ScoreMDL< ALLOC > _score_MDL_;
+      ScoreMDL _score_MDL_;
 
       /// the mode used for the correction
       KModeTypes _kmode_{KModeTypes::MDL};
@@ -357,10 +350,10 @@ namespace gum {
 
 
       /// the ICache
-      ScoringCache< ALLOC > _ICache_;
+      ScoringCache _ICache_;
 
       /// the KCache
-      ScoringCache< ALLOC > _KCache_;
+      ScoringCache _KCache_;
 
 
       /// an empty conditioning set

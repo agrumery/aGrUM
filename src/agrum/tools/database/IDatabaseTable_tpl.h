@@ -436,10 +436,9 @@ namespace gum {
     // create the end iterators
     template < typename T_DATA >
     void IDatabaseTable< T_DATA >::_createEndIterators_() {
-      const IDatabaseTable< T_DATA >& db = *this;
-      _end_                              = new iterator(_end_, db);
+      _end_ = new iterator(*this);
       try {
-        _end_safe_ = new iterator_safe(_end_safe_, *this);
+        _end_safe_ = new iterator_safe(*this);
       } catch (...) {
         delete _end_;
         throw;
@@ -1018,8 +1017,7 @@ namespace gum {
 
     // returns the set of symbols for the missing values
     template < typename T_DATA >
-    INLINE const std::vector< std::string >&
-                 IDatabaseTable< T_DATA >::missingSymbols() const {
+    INLINE const std::vector< std::string >& IDatabaseTable< T_DATA >::missingSymbols() const {
       return missing_symbols_;
     }
 

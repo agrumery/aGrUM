@@ -45,12 +45,8 @@ namespace gum {
      * @headerfile apriori.h <agrum/tools/database/apriori.h>
      * @ingroup learning_apriori
      */
-    template < template < typename > class ALLOC = std::allocator >
-    class Apriori: private ALLOC< NodeId > {
+    class Apriori {
       public:
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC< NodeId >;
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -66,18 +62,13 @@ namespace gum {
        * NodeId of 5. An empty nodeId2Columns bijection means that the mapping
        * is an identity, i.e., the value of a NodeId is equal to the index of
        * the column in the DatabaseTable.
-       * @param alloc the allocator used to allocate the structures within the
-       * RecordCounter.*/
-      Apriori(const DatabaseTable< ALLOC >&                                 database,
-              const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
-              = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-              const allocator_type& alloc = allocator_type());
+       */
+      Apriori(const DatabaseTable&                    database,
+              const Bijection< NodeId, std::size_t >& nodeId2columns
+              = Bijection< NodeId, std::size_t >());
 
       /// virtual copy constructor
-      virtual Apriori< ALLOC >* clone() const = 0;
-
-      /// virtual copy constructor with a given allocator
-      virtual Apriori< ALLOC >* clone(const allocator_type& alloc) const = 0;
+      virtual Apriori* clone() const = 0;
 
       /// destructor
       virtual ~Apriori();
@@ -117,21 +108,15 @@ namespace gum {
        * conditioning bar of the idset.
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint variables set. */
-      virtual void addAllApriori(const IdCondSet< ALLOC >&               idset,
-                                 std::vector< double, ALLOC< double > >& counts)
-         = 0;
+      virtual void addAllApriori(const IdCondSet& idset, std::vector< double >& counts) = 0;
 
       /** @brief adds the apriori to a counting vectordefined over the right
        * hand side of the idset
        *
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint RHS variables of the idset. */
-      virtual void addConditioningApriori(const IdCondSet< ALLOC >&               idset,
-                                          std::vector< double, ALLOC< double > >& counts)
+      virtual void addConditioningApriori(const IdCondSet& idset, std::vector< double >& counts)
          = 0;
-
-      /// returns the allocator used by the internal apriori
-      allocator_type getAllocator() const;
 
       /// @}
 
@@ -141,37 +126,33 @@ namespace gum {
       double weight_{1.0};
 
       /// a reference to the database in order to have access to its variables
-      const DatabaseTable< ALLOC >* database_;
+      const DatabaseTable* database_;
 
       /** @brief a mapping from the NodeIds of the variables to the indices of
        * the columns in the database */
-      Bijection< NodeId, std::size_t, ALLOC< std::size_t > > nodeId2columns_;
+      Bijection< NodeId, std::size_t > nodeId2columns_;
 
 
       /// copy constructor
-      Apriori(const Apriori< ALLOC >& from);
-
-      /// copy constructor with a given allocator
-      Apriori(const Apriori< ALLOC >& from, const allocator_type& alloc);
+      Apriori(const Apriori& from);
 
       /// move constructor
-      Apriori(Apriori< ALLOC >&& from);
-
-      /// move constructor with a given allocator
-      Apriori(Apriori< ALLOC >&& from, const allocator_type& alloc);
+      Apriori(Apriori&& from);
 
       /// copy operator
-      Apriori< ALLOC >& operator=(const Apriori< ALLOC >& from);
+      Apriori& operator=(const Apriori& from);
 
       /// move operator
-      Apriori< ALLOC >& operator=(Apriori< ALLOC >&& from);
+      Apriori& operator=(Apriori&& from);
     };
 
   } /* namespace learning */
 
 } /* namespace gum */
 
-/// include the template implementation
-#include <agrum/BN/learning/aprioris/apriori_tpl.h>
+// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/BN/learning/aprioris/apriori_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_A_PRIORI_H */

@@ -48,11 +48,8 @@ namespace gum {
      * @headerfile PseudoCount.h <agrum/BN/learning/pseudo-counts_and_tests/PseudoCount.h>
      * @ingroup learning_pseudo-counts
      */
-    template < template < typename > class ALLOC = std::allocator >
-    class PseudoCount {
+     class PseudoCount {
       public:
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC< NodeId >;
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -77,18 +74,14 @@ namespace gum {
        * in which variable A has a NodeId of 5. An empty nodeId2Columns
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
-       * @param alloc the allocator used to allocate the structures within the
-       * PseudoCount.
        * @warning If nodeId2columns is not empty, then only the pseudo-counts over
        * the ids belonging to this bijection can be computed: applying method
        * pseudo-count() over other ids will raise exception NotFound. */
-      PseudoCount(const DBRowGeneratorParser< ALLOC >& parser,
-                  const Apriori< ALLOC >&              external_apriori,
-                  const std::vector< std::pair< std::size_t, std::size_t >,
-                                     ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
-                  const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
-                  = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-                  const allocator_type& alloc = allocator_type());
+      PseudoCount(const DBRowGeneratorParser& parser,
+                  const Apriori&              external_apriori,
+                  const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
+                  const Bijection< NodeId, std::size_t >& nodeId2columns
+                  = Bijection< NodeId, std::size_t >());
 
 
       /// default constructor
@@ -108,8 +101,8 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the pseudo-counts over
        * the ids belonging to this bijection can be computed: applying method
        * pseudo-count() over other ids will raise exception NotFound. */
-      PseudoCount(const DBRowGeneratorParser< ALLOC >&                          parser,
-                  const Apriori< ALLOC >&                                       external_apriori,
+      PseudoCount(const DBRowGeneratorParser&                          parser,
+                  const Apriori&                                       external_apriori,
                   const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
                   = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
                   const allocator_type& alloc = allocator_type());
@@ -119,22 +112,22 @@ namespace gum {
 
 
       /// copy constructor
-      PseudoCount(const PseudoCount< ALLOC >& from);
+      PseudoCount(const PseudoCount& from);
 
       /// copy constructor with a given allocator
-      PseudoCount(const PseudoCount< ALLOC >& from, const allocator_type& alloc);
+      PseudoCount(const PseudoCount& from, const allocator_type& alloc);
 
       /// move constructor
-      PseudoCount(PseudoCount< ALLOC >&& from);
+      PseudoCount(PseudoCount&& from);
 
       /// move constructor with a given allocator
-      PseudoCount(PseudoCount< ALLOC >&& from, const allocator_type& alloc);
+      PseudoCount(PseudoCount&& from, const allocator_type& alloc);
 
       /// copy operator
-      PseudoCount< ALLOC >& operator=(const PseudoCount< ALLOC >& from);
+      PseudoCount& operator=(const PseudoCount& from);
 
       /// move operator
-      PseudoCount< ALLOC >& operator=(PseudoCount< ALLOC >&& from);
+      PseudoCount& operator=(PseudoCount&& from);
       /// @}
 
 
@@ -200,7 +193,7 @@ namespace gum {
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2Columns() const;
 
       /// return the database used by the pseudo-count
-      const DatabaseTable< ALLOC >& database() const;
+      const DatabaseTable& database() const;
 
       /// returns the allocator used by the pseudo-count
       allocator_type getAllocator() const;
@@ -210,10 +203,10 @@ namespace gum {
 
       protected:
       /// the expert knowledge a priori we add to the contingency tables
-      Apriori< ALLOC >* apriori_{nullptr};
+      Apriori* apriori_{nullptr};
 
       /// the record counter used for the countings over discrete variables
-      RecordCounter< ALLOC > counter_;
+      RecordCounter counter_;
 
       /// an empty vector
       const std::vector< NodeId, ALLOC< NodeId > > empty_ids_;

@@ -26,17 +26,17 @@
 
 #ifdef ODBC_
 
-#ifndef GUM_NANODBC_PARSER_H
-#define GUM_NANODBC_PARSER_H
+#  ifndef GUM_NANODBC_PARSER_H
+#    define GUM_NANODBC_PARSER_H
 
-#include <string>
-#include <cstdlib>
-#include <vector>
-#include <stdexcept>
-#include <sql.h>
+#    include <string>
+#    include <cstdlib>
+#    include <vector>
+#    include <stdexcept>
+#    include <sql.h>
 
-#include <agrum/agrum.h>
-#include <agrum/tools/external/nanodbc/nanodbc.h>
+#    include <agrum/agrum.h>
+#    include <agrum/tools/external/nanodbc/nanodbc.h>
 
 namespace gum {
 
@@ -50,30 +50,21 @@ namespace gum {
      * by Class DBInitializerFromSQL.
      * @ingroup learning_database
      */
-    template <template<typename> class ALLOC = std::allocator>
     class NanodbcParser {
-    public:
-
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC<std::string>;
-
-
+      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// Default constructor: create a parser without being connected
-      NanodbcParser( const ALLOC<std::string>& alloc = ALLOC<std::string>() );
+      NanodbcParser();
 
       /// constructor that executes an SQL query if the connection is active
       /** @param connection a nanODBC connection to a SQL database
        * @param query a string containing an SQL query
-       * @param alloc The allocator that will be used by all methods
        */
-      NanodbcParser( nanodbc::connection&      connection,
-                     const std::string&        query,
-                     const ALLOC<std::string>& alloc = ALLOC<std::string> () );
+      NanodbcParser(nanodbc::connection& connection, const std::string& query);
 
       /// destructor
       virtual ~NanodbcParser();
@@ -92,47 +83,47 @@ namespace gum {
 
       /// returns the current parsed line.
       /** @throw NullElement is raised if there is no data. */
-      const std::vector<std::string,ALLOC<std::string>>& current() const;
+      const std::vector< std::string >& current() const;
 
       /// returns the current line number within the query
       std::size_t nbLine() const;
 
       /// returns the number of columns in the query result
-      std::size_t nbColumns () const;
+      std::size_t nbColumns() const;
 
       /// returns the name of the ith column
-      std::string columnName ( const std::size_t i ) const;
+      std::string columnName(const std::size_t i) const;
 
       /// start a new query
-      void useNewQuery ( nanodbc::connection& connexion,
-                         const std::string&   query );
+      void useNewQuery(nanodbc::connection& connexion, const std::string& query);
 
       /// @}
 
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+#    ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-    private:
-
+      private:
       // the result of the last SQL query performed
-      nanodbc::result  _result_;
+      nanodbc::result _result_;
 
       // the line number within the current query
-      std::size_t  _nb_line_ { std::size_t(0) };
+      std::size_t _nb_line_{std::size_t(0)};
 
       // a vector that will contain the content of the current line of result
-      std::vector<std::string,ALLOC<std::string>>  _data_;
+      std::vector< std::string > _data_;
 
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
-
+#    endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
-  }  // namespace learning
+  }   // namespace learning
 
-}  // namespace gum
+}   // namespace gum
 
-#include <agrum/tools/database/nanodbcParser_tpl.h>
+// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#    include <agrum/tools/database/nanodbcParser_inl.h>
+#endif /* GUM_NO_INLINE */
 
-#endif  // GUM_NANODBC_PARSER_H
+#  endif   // GUM_NANODBC_PARSER_H
 
-#endif  // ODBC_
+#endif   // ODBC_

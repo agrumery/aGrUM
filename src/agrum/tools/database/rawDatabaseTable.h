@@ -111,31 +111,29 @@ namespace gum {
      * database.clear ();
      * @endcode
      */
-    template < template < typename > class ALLOC = std::allocator >
-    class RawDatabaseTable: public IDatabaseTable< DBCell, ALLOC > {
+    class RawDatabaseTable: public IDatabaseTable< DBCell > {
       public:
       /// the type for the vectors used in the RawDatabaseTable
       template < typename TX_DATA >
-      using DBVector = std::vector< TX_DATA, ALLOC< TX_DATA > >;
+      using DBVector = std::vector< TX_DATA >;
 
       /// a row of the database
       template < typename TX_DATA >
-      using Row = DBRow< TX_DATA, ALLOC >;
+      using Row = DBRow< TX_DATA >;
 
       /// the type for the matrices stored into the database
       template < typename TX_DATA >
       using Matrix = DBVector< Row< TX_DATA > >;
 
-      template < template < typename > class XALLOC >
-      using MissingValType = std::vector< std::string, XALLOC< std::string > >;
+      using MissingValType = std::vector< std::string >;
 
       /// the unsafe handler type
-      using Handler = typename IDatabaseTable< DBCell, ALLOC >::Handler;
+      using Handler = typename IDatabaseTable< DBCell >::Handler;
 
       /// the safe handler type
-      using HandlerSafe = typename IDatabaseTable< DBCell, ALLOC >::HandlerSafe;
+      using HandlerSafe = typename IDatabaseTable< DBCell >::HandlerSafe;
 
-      using IsMissing = typename IDatabaseTable< DBCell, ALLOC >::IsMissing;
+      using IsMissing = typename IDatabaseTable< DBCell >::IsMissing;
 
       /// Types for STL compliance.
       /// @{
@@ -148,7 +146,6 @@ namespace gum {
       using difference_type = std::ptrdiff_t;
       using iterator        = Handler;
       using iterator_safe   = HandlerSafe;
-      using allocator_type  = ALLOC< DBCell >;
       /// @}
 
 
@@ -158,36 +155,23 @@ namespace gum {
       /// @{
 
       /// default constructor
-      template < template < typename > class VARALLOC, template < typename > class MISSALLOC >
-      RawDatabaseTable(const MissingValType< MISSALLOC >&                         missing_symbols,
-                       const std::vector< std::string, VARALLOC< std::string > >& var_names,
-                       const allocator_type& alloc = allocator_type());
+      RawDatabaseTable(const MissingValType&             missing_symbols,
+                       const std::vector< std::string >& var_names);
 
       /// default constructor
-      template < template < typename > class MISSALLOC >
-      RawDatabaseTable(const MissingValType< MISSALLOC >& missing_symbols,
-                       const allocator_type&              alloc = allocator_type());
+      RawDatabaseTable(const MissingValType& missing_symbols);
 
       /// default constructor
-      RawDatabaseTable(const allocator_type& alloc = allocator_type());
+      RawDatabaseTable();
 
       /// copy constructor
-      RawDatabaseTable(const RawDatabaseTable< ALLOC >& from);
-
-      /// copy constructor with a given allocator
-      RawDatabaseTable(const RawDatabaseTable< ALLOC >& from, const allocator_type& alloc);
+      RawDatabaseTable(const RawDatabaseTable& from);
 
       /// move constructor
-      RawDatabaseTable(RawDatabaseTable< ALLOC >&& from);
-
-      /// move constructor with a given allocator
-      RawDatabaseTable(RawDatabaseTable< ALLOC >&& from, const allocator_type& alloc);
+      RawDatabaseTable(RawDatabaseTable&& from);
 
       /// virtual copy constructor
-      virtual RawDatabaseTable< ALLOC >* clone() const final;
-
-      /// virtual copy constructor with a given allocator
-      virtual RawDatabaseTable< ALLOC >* clone(const allocator_type& alloc) const final;
+      virtual RawDatabaseTable* clone() const final;
 
       /// destructor
       virtual ~RawDatabaseTable();
@@ -201,10 +185,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      RawDatabaseTable< ALLOC >& operator=(const RawDatabaseTable< ALLOC >& from);
+      RawDatabaseTable& operator=(const RawDatabaseTable& from);
 
       /// move constructor
-      RawDatabaseTable< ALLOC >& operator=(RawDatabaseTable< ALLOC >&& from);
+      RawDatabaseTable& operator=(RawDatabaseTable&& from);
 
       /// @}
 
@@ -214,7 +198,7 @@ namespace gum {
       // ##########################################################################
       /// @{
 
-      using IDatabaseTable< DBCell, ALLOC >::setVariableNames;
+      using IDatabaseTable< DBCell >::setVariableNames;
 
       /// sets the names of the variables
       /** This method can be called in two different ways: either the names
@@ -242,8 +226,8 @@ namespace gum {
        * @throw SizeError is raised if the names passed in arguments cannot be
        * assigned to the columns of the RawDatabaseTable because the size of their
        * vector is inadequate. */
-      virtual void setVariableNames(const std::vector< std::string, ALLOC< std::string > >& names,
-                                    const bool from_external_object = true) final;
+      void setVariableNames(const std::vector< std::string >& names,
+                            const bool                        from_external_object = true) final;
 
       /// makes the database table ignore from now on the kth column
       /** This method can be called in two different ways: either k refers to
@@ -275,16 +259,16 @@ namespace gum {
        * @param from_external_object indicates whether k refers to the kth
        * column of an original external database (true) or to the current kth
        * column of the RawDatabaseTable. */
-      virtual void ignoreColumn(const std::size_t k, const bool from_external_object = true) final;
+      void ignoreColumn(const std::size_t k, const bool from_external_object = true) final;
 
       /// returns  the set of columns of the original dataset that are ignored
-      virtual const DBVector< std::size_t > ignoredColumns() const final;
+      const DBVector< std::size_t > ignoredColumns() const final;
 
       /** @brief returns the set of columns of the original dataset that are
        * present in the RawDatabaseTable */
-      virtual const DBVector< std::size_t > inputColumns() const final;
+      const DBVector< std::size_t > inputColumns() const final;
 
-      using IDatabaseTable< DBCell, ALLOC >::insertRow;
+      using IDatabaseTable< DBCell >::insertRow;
 
       /// insert a new row at the end of the database
       /** The new_row passed in argument is supposed to come from an external
@@ -293,7 +277,7 @@ namespace gum {
        * in the RawDatabaseTable because its size does not allow a matching with
        * the columns of the RawDatabaseTable (taking into account the ignored
        * columns) */
-      virtual void insertRow(const std::vector< std::string, ALLOC< std::string > >& new_row) final;
+      void insertRow(const std::vector< std::string >& new_row) final;
 
       /// erase the content of the database, including the names of the variables
       virtual void clear() final;
@@ -317,7 +301,9 @@ namespace gum {
 
 } /* namespace gum */
 
-/// always include the templated implementations
-#include <agrum/tools/database/rawDatabaseTable_tpl.h>
+// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/tools/database/rawDatabaseTable_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_RAW_DATABASE_TABLE_H */

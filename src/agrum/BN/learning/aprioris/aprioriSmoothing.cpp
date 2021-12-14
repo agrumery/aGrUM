@@ -27,3 +27,46 @@
  */
 
 #include <agrum/BN/learning/aprioris/aprioriSmoothing.h>
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+/// include the inlined functions if necessary
+#  ifdef GUM_NO_INLINE
+#    include <agrum/BN/learning/aprioris/aprioriSmoothing_inl.h>
+#  endif /* GUM_NO_INLINE */
+
+namespace gum {
+
+  namespace learning {
+
+    /// returns the apriori vector over only the conditioning set of an idset
+    void AprioriSmoothing::addConditioningApriori(const IdCondSet&       idset,
+                                                  std::vector< double >& counts) {
+      // if the conditioning set is empty or the weight is equal to zero,
+      // the apriori is also empty
+      if ((idset.size() == idset.nbLHSIds()) || (this->weight_ == 0.0)
+          || (idset.nbLHSIds() == std::size_t(0)))
+        return;
+
+      // compute the weight of the conditioning set
+      double weight = this->weight_;
+      if (this->nodeId2columns_.empty()) {
+        for (std::size_t i = std::size_t(0); i < idset.nbLHSIds(); ++i) {
+          weight *= this->database_->domainSize(idset[i]);
+        }
+      } else {
+        for (std::size_t i = std::size_t(0); i < idset.nbLHSIds(); ++i) {
+          weight *= this->database_->domainSize(this->nodeId2columns_.second(idset[i]));
+        }
+      }
+
+      // add the weight to the counting vector
+      for (auto& count: counts)
+        count += weight;
+    }
+
+  } /* namespace learning */
+
+} /* namespace gum */
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */

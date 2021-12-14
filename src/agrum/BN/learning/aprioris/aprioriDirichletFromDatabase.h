@@ -42,14 +42,10 @@ namespace gum {
      * @headerfile aprioriDirichletFromDatabase.h <agrum/tools/database/aprioriDirichletFromDatabase.h>
      * @ingroup learning_apriori
      */
-    template < template < typename > class ALLOC = std::allocator >
-    class AprioriDirichletFromDatabase: public Apriori< ALLOC > {
+    class AprioriDirichletFromDatabase: public Apriori {
       public:
       /// the type of the a priori
       using type = AprioriDirichletType;
-
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC< NodeId >;
 
 
       // ##########################################################################
@@ -68,8 +64,6 @@ namespace gum {
        * NodeId of 5. An empty nodeId2Columns bijection means that the mapping
        * is an identity, i.e., the value of a NodeId is equal to the index of
        * the column in the DatabaseTable.
-       * @param alloc the allocator used to allocate the structures within the
-       * RecordCounter.
        *
        * @throws DatabaseError The apriori database may differ from the learning
        * database, i.e., the apriori may have more nodes than the learning one.
@@ -77,32 +71,19 @@ namespace gum {
        * apriori database that correspond to those in the learning database
        * (they have the same names) are exactly identical. If this is not the
        * case, then a DatabaseError exception is raised. */
-      AprioriDirichletFromDatabase(
-         const DatabaseTable< ALLOC >&                                 learning_db,
-         const DBRowGeneratorParser< ALLOC >&                          apriori_parser,
-         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
-         = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-         const allocator_type& alloc = allocator_type());
+      AprioriDirichletFromDatabase(const DatabaseTable&                    learning_db,
+                                   const DBRowGeneratorParser&             apriori_parser,
+                                   const Bijection< NodeId, std::size_t >& nodeId2columns
+                                   = Bijection< NodeId, std::size_t >());
 
       /// copy constructor
-      AprioriDirichletFromDatabase(const AprioriDirichletFromDatabase< ALLOC >& from);
-
-      /// copy constructor with a given allocator
-      AprioriDirichletFromDatabase(const AprioriDirichletFromDatabase< ALLOC >& from,
-                                   const allocator_type&                        alloc);
+      AprioriDirichletFromDatabase(const AprioriDirichletFromDatabase& from);
 
       /// move constructor
-      AprioriDirichletFromDatabase(AprioriDirichletFromDatabase< ALLOC >&& from);
-
-      /// move constructor with a given allocator
-      AprioriDirichletFromDatabase(AprioriDirichletFromDatabase< ALLOC >&& from,
-                                   const allocator_type&                   alloc);
+      AprioriDirichletFromDatabase(AprioriDirichletFromDatabase&& from);
 
       /// virtual copy constructor
-      virtual AprioriDirichletFromDatabase< ALLOC >* clone() const;
-
-      /// virtual copy constructor with a given allocator
-      virtual AprioriDirichletFromDatabase< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual AprioriDirichletFromDatabase* clone() const;
 
       /// destructor
       virtual ~AprioriDirichletFromDatabase();
@@ -116,12 +97,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      AprioriDirichletFromDatabase< ALLOC >&
-         operator=(const AprioriDirichletFromDatabase< ALLOC >& from);
+      AprioriDirichletFromDatabase& operator=(const AprioriDirichletFromDatabase& from);
 
       /// move operator
-      AprioriDirichletFromDatabase< ALLOC >&
-         operator=(AprioriDirichletFromDatabase< ALLOC >&& from);
+      AprioriDirichletFromDatabase& operator=(AprioriDirichletFromDatabase&& from);
 
       /// @}
 
@@ -156,16 +135,15 @@ namespace gum {
        * conditioning bar of the idset.
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint variables set. */
-      virtual void addAllApriori(const IdCondSet< ALLOC >&               idset,
-                                 std::vector< double, ALLOC< double > >& counts) final;
+      virtual void addAllApriori(const IdCondSet& idset, std::vector< double >& counts) final;
 
       /** @brief adds the apriori to a counting vectordefined over the right
        * hand side of the idset
        *
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint RHS variables of the idset. */
-      virtual void addConditioningApriori(const IdCondSet< ALLOC >&               idset,
-                                          std::vector< double, ALLOC< double > >& counts) final;
+      virtual void addConditioningApriori(const IdCondSet&       idset,
+                                          std::vector< double >& counts) final;
 
       /// @}
 
@@ -174,7 +152,7 @@ namespace gum {
 
       private:
       // the record counter used to parse the apriori database
-      RecordCounter< ALLOC > _counter_;
+      RecordCounter _counter_;
 
       // the internal weight is equal to weight_ / nb rows of apriori database
       // this internal weight is used to ensure that assigning a weight of 1
@@ -189,7 +167,9 @@ namespace gum {
 
 } /* namespace gum */
 
-/// include the template implementation
-#include <agrum/BN/learning/aprioris/aprioriDirichletFromDatabase_tpl.h>
+// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/BN/learning/aprioris/aprioriDirichletFromDatabase_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_A_PRIORI_DIRICHLET_FROM_DATABASE_H */

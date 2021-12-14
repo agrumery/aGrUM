@@ -27,3 +27,12 @@
  */
 
 #include <agrum/BN/learning/aprioris/aprioriK2.h>
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+/// include the inlined functions if necessary
+#  ifdef GUM_NO_INLINE
+#    include <agrum/BN/learning/aprioris/aprioriK2_inl.h>
+#  endif /* GUM_NO_INLINE */
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
