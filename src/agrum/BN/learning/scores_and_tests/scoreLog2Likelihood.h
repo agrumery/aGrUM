@@ -47,12 +47,8 @@ namespace gum {
      * @warning If you pass an apriori to the score, this one will be added
      * into the log-likelihood part of the score.
      */
-    template < template < typename > class ALLOC = std::allocator >
-    class ScoreLog2Likelihood: public Score< ALLOC > {
+    class ScoreLog2Likelihood: public Score {
       public:
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC< NodeId >;
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -74,19 +70,14 @@ namespace gum {
        * in which variable A has a NodeId of 5. An empty nodeId2Columns
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
-       * @param alloc the allocator used to allocate the structures within the
-       * Score.
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      ScoreLog2Likelihood(
-         const DBRowGeneratorParser< ALLOC >&                                 parser,
-         const Apriori< ALLOC >&                                              apriori,
-         const std::vector< std::pair< std::size_t, std::size_t >,
-                            ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
-         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&        nodeId2columns
-         = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-         const allocator_type& alloc = allocator_type());
+      ScoreLog2Likelihood(const DBRowGeneratorParser&                                 parser,
+                          const Apriori&                                              apriori,
+                          const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
+                          const Bijection< NodeId, std::size_t >&                     nodeId2columns
+                          = Bijection< NodeId, std::size_t >());
 
 
       /// default constructor
@@ -99,35 +90,22 @@ namespace gum {
        * in which variable A has a NodeId of 5. An empty nodeId2Columns
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
-       * @param alloc the allocator used to allocate the structures within the
-       * Score.
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      ScoreLog2Likelihood(
-         const DBRowGeneratorParser< ALLOC >&                          parser,
-         const Apriori< ALLOC >&                                       apriori,
-         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
-         = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-         const allocator_type& alloc = allocator_type());
+      ScoreLog2Likelihood(const DBRowGeneratorParser&             parser,
+                          const Apriori&                          apriori,
+                          const Bijection< NodeId, std::size_t >& nodeId2columns
+                          = Bijection< NodeId, std::size_t >());
 
       /// copy constructor
-      ScoreLog2Likelihood(const ScoreLog2Likelihood< ALLOC >& from);
-
-      /// copy constructor with a given allocator
-      ScoreLog2Likelihood(const ScoreLog2Likelihood< ALLOC >& from, const allocator_type& alloc);
+      ScoreLog2Likelihood(const ScoreLog2Likelihood& from);
 
       /// move constructor
-      ScoreLog2Likelihood(ScoreLog2Likelihood< ALLOC >&& from);
-
-      /// move constructor with a given allocator
-      ScoreLog2Likelihood(ScoreLog2Likelihood< ALLOC >&& from, const allocator_type& alloc);
+      ScoreLog2Likelihood(ScoreLog2Likelihood&& from);
 
       /// virtual copy constructor
-      virtual ScoreLog2Likelihood< ALLOC >* clone() const;
-
-      /// virtual copy constructor with a given allocator
-      virtual ScoreLog2Likelihood< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual ScoreLog2Likelihood* clone() const;
 
       /// destructor
       virtual ~ScoreLog2Likelihood();
@@ -142,10 +120,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      ScoreLog2Likelihood< ALLOC >& operator=(const ScoreLog2Likelihood< ALLOC >& from);
+      ScoreLog2Likelihood& operator=(const ScoreLog2Likelihood& from);
 
       /// move operator
-      ScoreLog2Likelihood< ALLOC >& operator=(ScoreLog2Likelihood< ALLOC >&& from);
+      ScoreLog2Likelihood& operator=(ScoreLog2Likelihood&& from);
 
       /// @}
 
@@ -178,15 +156,15 @@ namespace gum {
        * note that, to be meaningful, a structure + parameter learning requires
        * that the same aprioris are taken into account during structure learning
        * and parameter learning. */
-      virtual const Apriori< ALLOC >& internalApriori() const final;
+      virtual const Apriori& internalApriori() const final;
 
-      using Score< ALLOC >::score;
+      using Score::score;
 
       /// returns the score for a given IdCondSet
       /** @throws OperationNotAllowed is raised if the score does not support
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
-      double score(const IdCondSet< ALLOC >& idset);
+      double score(const IdCondSet& idset);
 
       /// @}
 
@@ -198,7 +176,7 @@ namespace gum {
 
       /// indicates whether the apriori is compatible (meaningful) with the score
       /** a non empty string if the apriori is compatible with the score. */
-      static std::string isAprioriCompatible(const Apriori< ALLOC >& apriori);
+      static std::string isAprioriCompatible(const Apriori& apriori);
 
 
       protected:
@@ -206,14 +184,14 @@ namespace gum {
       /** @throws OperationNotAllowed is raised if the score does not support
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
-      virtual double score_(const IdCondSet< ALLOC >& idset) final;
+      virtual double score_(const IdCondSet& idset) final;
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
       private:
       /// the internal apriori of the score
-      AprioriNoApriori< ALLOC > _internal_apriori_;
+      AprioriNoApriori _internal_apriori_;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
@@ -222,13 +200,9 @@ namespace gum {
 
 } /* namespace gum */
 
-
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-extern template class gum::learning::ScoreLog2Likelihood<>;
-#endif
-
-
-// always include the template implementation
-#include <agrum/BN/learning/scores_and_tests/scoreLog2Likelihood_tpl.h>
+// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#  include <agrum/BN/learning/scores_and_tests/scoreLog2Likelihood_tpl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_SCORE_LOG2_LIKELIHOOD_H */

@@ -1,0 +1,99 @@
+/**
+ *
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
+ *   info_at_agrum_dot_org
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public License
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+
+/** @file
+ * @brief the class for computing BIC scores
+ *
+ * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
+ */
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+#  include <agrum/BN/learning/scores_and_tests/scoreBIC.h>
+#  include <sstream>
+
+namespace gum {
+
+  namespace learning {
+
+    /// default constructor
+    INLINE ScoreBIC::ScoreBIC(const DBRowGeneratorParser&                                 parser,
+                              const Apriori&                                              apriori,
+                              const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
+                              const Bijection< NodeId, std::size_t >& nodeId2columns) :
+        Score(parser, apriori, ranges, nodeId2columns),
+        _internal_apriori_(parser.database(), nodeId2columns) {
+      GUM_CONSTRUCTOR(ScoreBIC);
+    }
+
+
+    /// default constructor
+    INLINE ScoreBIC::ScoreBIC(const DBRowGeneratorParser&             parser,
+                              const Apriori&                          apriori,
+                              const Bijection< NodeId, std::size_t >& nodeId2columns) :
+        Score(parser, apriori, nodeId2columns),
+        _internal_apriori_(parser.database(), nodeId2columns) {
+      GUM_CONSTRUCTOR(ScoreBIC);
+    }
+
+
+    /// copy constructor
+    INLINE ScoreBIC::ScoreBIC(const ScoreBIC& from) :
+        Score(from), _internal_apriori_(from._internal_apriori_) {
+      GUM_CONS_CPY(ScoreBIC);
+    }
+
+
+    /// move constructor
+    INLINE ScoreBIC::ScoreBIC(ScoreBIC&& from, ) :
+        Score(std::move(from)), _internal_apriori_(std::move(from._internal_apriori_)) {
+      GUM_CONS_MOV(ScoreBIC);
+    }
+
+
+    /// virtual copy constructor
+    INLINE ScoreBIC* ScoreBIC::clone() const { return new ScoreBIC(*this); }
+
+
+    /// destructor
+    INLINE ScoreBIC::~ScoreBIC() { GUM_DESTRUCTOR(ScoreBIC); }
+
+
+    /// indicates whether the apriori is compatible (meaningful) with the score
+    INLINE std::string ScoreBIC::isAprioriCompatible(const Apriori& apriori) {
+      return isAprioriCompatible(apriori.getType(), apriori.weight());
+    }
+
+
+    /// indicates whether the apriori is compatible (meaningful) with the score
+    INLINE std::string ScoreBIC::isAprioriCompatible() const {
+      return isAprioriCompatible(*(this->apriori_));
+    }
+
+
+    /// returns the internal apriori of the score
+    INLINE const Apriori& ScoreBIC::internalApriori() const { return _internal_apriori_; }
+
+  } /* namespace learning */
+
+} /* namespace gum */
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
