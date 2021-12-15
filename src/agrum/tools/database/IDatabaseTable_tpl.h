@@ -778,6 +778,28 @@ namespace gum {
     }
 
 
+    // insert a new row at the end of the database
+    template < typename T_DATA >
+    void IDatabaseTable< T_DATA >::insertRow(
+       const std::vector< std::string >& new_row) {
+      const std::size_t          size = new_row.size();
+      std::vector< std::string > good_typed_row(size);
+      for (std::size_t i = 0; i < size; ++i)
+        good_typed_row[i] = new_row[i];
+      this->insertRow(good_typed_row);
+    }
+
+
+    // insert a new DBRow at the end of the database
+    template < typename T_DATA >
+    INLINE void IDatabaseTable< T_DATA >::insertRow(
+       const typename IDatabaseTable< T_DATA >::template Row< T_DATA >& row,
+       const typename IDatabaseTable< T_DATA >::IsMissing               contains_missing) {
+      this->insertRow(typename IDatabaseTable< T_DATA >::template Row< T_DATA >(row),
+                      contains_missing);
+    }
+
+
     // insert a new DBRow at the end of the database
     template < typename T_DATA >
     void IDatabaseTable< T_DATA >::insertRow(
