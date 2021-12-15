@@ -67,8 +67,7 @@ namespace gum {
        * NodeId of 5. An empty nodeId2Columns bijection means that the mapping
        * is an identity, i.e., the value of a NodeId is equal to the index of
        * the column in the DatabaseTable.
-       * @param alloc the allocator used to allocate the structures within the
-       * RecordCounter.*/
+       */
       AprioriK2(const DatabaseTable&                    database,
                 const Bijection< NodeId, std::size_t >& nodeId2columns
                 = Bijection< NodeId, std::size_t >());

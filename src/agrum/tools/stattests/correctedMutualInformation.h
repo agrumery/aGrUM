@@ -54,7 +54,6 @@ namespace gum {
      */
     class CorrectedMutualInformation {
       public:
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -81,12 +80,11 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      CorrectedMutualInformation(
-         const DBRowGeneratorParser&                                 parser,
-         const Apriori&                                              apriori,
-         const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
-         const Bijection< NodeId, std::size_t >&        nodeId2columns
-         = Bijection< NodeId, std::size_t >());
+      CorrectedMutualInformation(const DBRowGeneratorParser& parser,
+                                 const Apriori&              apriori,
+                                 const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
+                                 const Bijection< NodeId, std::size_t >& nodeId2columns
+                                 = Bijection< NodeId, std::size_t >());
 
       /// default constructor
       /** @param parser the parser used to parse the database
@@ -100,37 +98,22 @@ namespace gum {
        * in which variable A has a NodeId of 5. An empty nodeId2Columns
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
-       * @param alloc the allocator used to allocate the structures within the
-       * Score.
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      CorrectedMutualInformation(
-         const DBRowGeneratorParser&                          parser,
-         const Apriori&                                       apriori,
-         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
-         = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-         const allocator_type& alloc = allocator_type());
+      CorrectedMutualInformation(const DBRowGeneratorParser&             parser,
+                                 const Apriori&                          apriori,
+                                 const Bijection< NodeId, std::size_t >& nodeId2columns
+                                 = Bijection< NodeId, std::size_t >());
 
       /// copy constructor
       CorrectedMutualInformation(const CorrectedMutualInformation& from);
 
-      /// copy constructor with a given allocator
-      CorrectedMutualInformation(const CorrectedMutualInformation& from,
-                                 const allocator_type&                      alloc);
-
       /// move constructor
       CorrectedMutualInformation(CorrectedMutualInformation&& from);
 
-      /// move constructor with a given allocator
-      CorrectedMutualInformation(CorrectedMutualInformation&& from,
-                                 const allocator_type&                 alloc);
-
       /// virtual copy constructor
       virtual CorrectedMutualInformation* clone() const;
-
-      /// virtual copy constructor with a given allocator
-      virtual CorrectedMutualInformation* clone(const allocator_type& alloc) const;
 
       /// destructor
       virtual ~CorrectedMutualInformation();
@@ -145,8 +128,7 @@ namespace gum {
       /// @{
 
       /// copy operator
-      CorrectedMutualInformation&
-         operator=(const CorrectedMutualInformation& from);
+      CorrectedMutualInformation& operator=(const CorrectedMutualInformation& from);
 
       /// move operator
       CorrectedMutualInformation& operator=(CorrectedMutualInformation&& from);
@@ -220,18 +202,16 @@ namespace gum {
       double score(NodeId var1, NodeId var2);
 
       /// returns the 2-point mutual information corresponding to a given nodeset
-      double score(NodeId                                        var1,
-                   NodeId                                        var2,
-                   const std::vector< NodeId, ALLOC< NodeId > >& conditioning_ids);
+      double score(NodeId var1, NodeId var2, const std::vector< NodeId >& conditioning_ids);
 
       /// returns the 3-point mutual information corresponding to a given nodeset
       double score(NodeId var1, NodeId var2, NodeId var3);
 
       /// returns the 3-point mutual information corresponding to a given nodeset
-      double score(NodeId                                        var1,
-                   NodeId                                        var2,
-                   NodeId                                        var3,
-                   const std::vector< NodeId, ALLOC< NodeId > >& conditioning_ids);
+      double score(NodeId                       var1,
+                   NodeId                       var2,
+                   NodeId                       var3,
+                   const std::vector< NodeId >& conditioning_ids);
 
       /// @}
 
@@ -277,29 +257,19 @@ namespace gum {
        * cross validation tasks, in which part of the database should be ignored.
        * An empty set of ranges is equivalent to an interval [X,Y) ranging over
        * the whole database. */
-      template < template < typename > class XALLOC >
-      void setRanges(
-         const std::vector< std::pair< std::size_t, std::size_t >,
-                            XALLOC< std::pair< std::size_t, std::size_t > > >& new_ranges);
+      void setRanges(const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges);
 
       /// reset the ranges to the one range corresponding to the whole database
       void clearRanges();
 
       /// returns the current ranges
-      const std::vector< std::pair< std::size_t, std::size_t >,
-                         ALLOC< std::pair< std::size_t, std::size_t > > >&
-         ranges() const;
-
-
-      /// returns the allocator used by the score
-      allocator_type getAllocator() const;
+      const std::vector< std::pair< std::size_t, std::size_t > >& ranges() const;
 
       /// @}
 
 
       /// the description type for the complexity correction
-      enum class KModeTypes
-      {
+      enum class KModeTypes {
         MDL,
         NML,
         NoCorr
@@ -357,33 +327,25 @@ namespace gum {
 
 
       /// an empty conditioning set
-      const std::vector< NodeId, ALLOC< NodeId > > _empty_conditioning_set_;
+      const std::vector< NodeId > _empty_conditioning_set_;
 
       /// a constant used to prevent numerical instabilities
       const double _threshold_{1e-10};
 
 
       /// returns the 2-point mutual information corresponding to a given nodeset
-      double _NI_score_(NodeId                                        var_x,
-                        NodeId                                        var_y,
-                        const std::vector< NodeId, ALLOC< NodeId > >& vars_z);
+      double _NI_score_(NodeId var_x, NodeId var_y, const std::vector< NodeId >& vars_z);
 
       /// returns the 3-point mutual information corresponding to a given nodeset
-      double _NI_score_(NodeId                                        var_x,
-                        NodeId                                        var_y,
-                        NodeId                                        var_z,
-                        const std::vector< NodeId, ALLOC< NodeId > >& vars_ui);
+      double
+         _NI_score_(NodeId var_x, NodeId var_y, NodeId var_z, const std::vector< NodeId >& vars_ui);
 
       /// computes the complexity correction for the mutual information
-      double _K_score_(NodeId                                        var_x,
-                       NodeId                                        var_y,
-                       const std::vector< NodeId, ALLOC< NodeId > >& vars_z);
+      double _K_score_(NodeId var_x, NodeId var_y, const std::vector< NodeId >& vars_z);
 
       /// computes the complexity correction for the mutual information
-      double _K_score_(NodeId                                        var_x,
-                       NodeId                                        var_y,
-                       NodeId                                        var_z,
-                       const std::vector< NodeId, ALLOC< NodeId > >& vars_ui);
+      double
+         _K_score_(NodeId var_x, NodeId var_y, NodeId var_z, const std::vector< NodeId >& vars_ui);
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
@@ -392,13 +354,9 @@ namespace gum {
 
 } /* namespace gum */
 
-
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-extern template class gum::learning::CorrectedMutualInformation<>;
-#endif
-
-
-// always include the template implementation
-#include <agrum/tools/stattests/correctedMutualInformation_tpl.h>
+// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#  include <agrum/tools/stattests/correctedMutualInformation_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_CORRECTED_MUTUAL_INFORMATION_H */

@@ -131,19 +131,17 @@ namespace gum {
 
       /// returns the number of threads used to parse the database
       virtual std::size_t nbThreads() const;
-      s
 
-         /** @brief changes the number min of rows a thread should process in a
-          * multithreading context
-          *
-          * When computing score, several threads are used by record counters to
-          * perform countings on the rows of the database, the MinNbRowsPerThread
-          * method indicates how many rows each thread should at least process.
-          * This is used to compute the number of threads actually run. This number
-          * is equal to the min between the max number of threads allowed and the
-          * number of records in the database divided by nb. */
-         virtual void
-         setMinNbRowsPerThread(const std::size_t nb) const;
+      /** @brief changes the number min of rows a thread should process in a
+       * multithreading context
+       *
+       * When computing score, several threads are used by record counters to
+       * perform countings on the rows of the database, the MinNbRowsPerThread
+       * method indicates how many rows each thread should at least process.
+       * This is used to compute the number of threads actually run. This number
+       * is equal to the min between the max number of threads allowed and the
+       * number of records in the database divided by nb. */
+      virtual void setMinNbRowsPerThread(const std::size_t nb) const;
 
       /// returns the minimum of rows that each thread should process
       virtual std::size_t minNbRowsPerThread() const;

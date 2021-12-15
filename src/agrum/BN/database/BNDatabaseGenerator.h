@@ -109,7 +109,7 @@ namespace gum {
                  bool               checkOnAppend = false) const;
 
       /// generates a DatabaseVectInRAM
-      DatabaseTable<> toDatabaseTable(bool useLabels = true) const;
+      DatabaseTable toDatabaseTable(bool useLabels = true) const;
 
       /// generates database according to bn into a std::vector
       /// @warning: makes a copy of the whole database

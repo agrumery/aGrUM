@@ -33,54 +33,6 @@ namespace gum {
 
   namespace learning {
 
-    /// default constructor
-    DBRowGeneratorIdentity::DBRowGeneratorIdentity(
-       const std::vector< DBTranslatedValueType >& column_types) :
-        DBRowGenerator(column_types, DBRowGeneratorGoal::OTHER_THINGS_THAN_REMOVE_MISSING_VALUES) {
-      GUM_CONSTRUCTOR(DBRowGeneratorIdentity);
-    }
-
-
-    /// copy constructor
-    DBRowGeneratorIdentity::DBRowGeneratorIdentity(const DBRowGeneratorIdentity& from) :
-        DBRowGenerator(from), _input_row_(from._input_row_) {
-      GUM_CONS_CPY(DBRowGeneratorIdentity);
-    }
-
-
-    /// move constructor
-    DBRowGeneratorIdentity::DBRowGeneratorIdentity(DBRowGeneratorIdentity&& from) :
-        DBRowGenerator(std::move(from)), _input_row_(from._input_row_) {
-      GUM_CONS_MOV(DBRowGeneratorIdentity);
-    }
-
-
-    /// virtual copy constructor
-    DBRowGeneratorIdentity* DBRowGeneratorIdentity::clone() const {
-      return new DBRowGeneratorIdentity(*this);
-    }
-
-
-    /// destructor
-    DBRowGeneratorIdentity::~DBRowGeneratorIdentity() { GUM_DESTRUCTOR(DBRowGeneratorIdentity); }
-
-
-    /// copy operator
-    DBRowGeneratorIdentity& DBRowGeneratorIdentity::operator=(const DBRowGeneratorIdentity& from) {
-      DBRowGenerator::operator=(from);
-      _input_row_             = from._input_row_;
-      return *this;
-    }
-
-
-    /// move operator
-    DBRowGeneratorIdentity& DBRowGeneratorIdentity::operator=(DBRowGeneratorIdentity&& from) {
-      DBRowGenerator::operator=(std::move(from));
-      _input_row_             = from._input_row_;
-      return *this;
-    }
-
-
     /// generates new lines from those the generator gets in input
     INLINE const DBRow< DBTranslatedValue >& DBRowGeneratorIdentity::generate() {
       this->decreaseRemainingRows();

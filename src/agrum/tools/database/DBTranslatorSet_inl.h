@@ -46,7 +46,7 @@ namespace gum {
 
 
     /// virtual copy constructor
-    DBTranslatorSet* DBTranslatorSet::clone() const { return new DBTranslatorSet(*this); }
+    INLINE DBTranslatorSet* DBTranslatorSet::clone() const { return new DBTranslatorSet(*this); }
 
 
     /// destructor

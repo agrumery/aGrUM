@@ -207,10 +207,10 @@ namespace gum {
 
     /// generates a DatabaseVectInRAM
     template < typename GUM_SCALAR >
-    DatabaseTable<> BNDatabaseGenerator< GUM_SCALAR >::toDatabaseTable(bool useLabels) const {
+    DatabaseTable BNDatabaseGenerator< GUM_SCALAR >::toDatabaseTable(bool useLabels) const {
       if (!_drawnSamples_) GUM_ERROR(OperationNotAllowed, "proceed() must be called first.")
 
-      DatabaseTable<>            db;
+      DatabaseTable              db;
       std::vector< std::string > varNames;
       varNames.reserve(_nbVars_);
       for (const auto& i: _varOrder_) {
@@ -242,7 +242,7 @@ namespace gum {
           translatorType[i] = db.translator(i).getValType();
         }
         DBRow< DBTranslatedValue > xrow(_nbVars_);
-        const auto                 xmiss = gum::learning::DatabaseTable<>::IsMissing::False;
+        const auto                 xmiss = gum::learning::DatabaseTable::IsMissing::False;
         for (const auto& row: _database_) {
           for (Idx i = 0; i < _nbVars_; ++i) {
             Idx j = _varOrder_.at(i);

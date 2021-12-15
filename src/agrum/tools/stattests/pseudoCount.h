@@ -48,9 +48,8 @@ namespace gum {
      * @headerfile PseudoCount.h <agrum/BN/learning/pseudo-counts_and_tests/PseudoCount.h>
      * @ingroup learning_pseudo-counts
      */
-     class PseudoCount {
+    class PseudoCount {
       public:
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -77,10 +76,10 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the pseudo-counts over
        * the ids belonging to this bijection can be computed: applying method
        * pseudo-count() over other ids will raise exception NotFound. */
-      PseudoCount(const DBRowGeneratorParser& parser,
-                  const Apriori&              external_apriori,
+      PseudoCount(const DBRowGeneratorParser&                                 parser,
+                  const Apriori&                                              external_apriori,
                   const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
-                  const Bijection< NodeId, std::size_t >& nodeId2columns
+                  const Bijection< NodeId, std::size_t >&                     nodeId2columns
                   = Bijection< NodeId, std::size_t >());
 
 
@@ -96,16 +95,13 @@ namespace gum {
        * in which variable A has a NodeId of 5. An empty nodeId2Columns
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
-       * @param alloc the allocator used to allocate the structures within the
-       * PseudoCount.
        * @warning If nodeId2columns is not empty, then only the pseudo-counts over
        * the ids belonging to this bijection can be computed: applying method
        * pseudo-count() over other ids will raise exception NotFound. */
-      PseudoCount(const DBRowGeneratorParser&                          parser,
-                  const Apriori&                                       external_apriori,
-                  const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
-                  = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-                  const allocator_type& alloc = allocator_type());
+      PseudoCount(const DBRowGeneratorParser&             parser,
+                  const Apriori&                          external_apriori,
+                  const Bijection< NodeId, std::size_t >& nodeId2columns
+                  = Bijection< NodeId, std::size_t >());
 
       /// destructor
       virtual ~PseudoCount();
@@ -114,14 +110,8 @@ namespace gum {
       /// copy constructor
       PseudoCount(const PseudoCount& from);
 
-      /// copy constructor with a given allocator
-      PseudoCount(const PseudoCount& from, const allocator_type& alloc);
-
       /// move constructor
       PseudoCount(PseudoCount&& from);
-
-      /// move constructor with a given allocator
-      PseudoCount(PseudoCount&& from, const allocator_type& alloc);
 
       /// copy operator
       PseudoCount& operator=(const PseudoCount& from);
@@ -163,25 +153,20 @@ namespace gum {
        * cross validation tasks, in which part of the database should be ignored.
        * An empty set of ranges is equivalent to an interval [X,Y) ranging over
        * the whole database. */
-      template < template < typename > class XALLOC >
-      void setRanges(
-         const std::vector< std::pair< std::size_t, std::size_t >,
-                            XALLOC< std::pair< std::size_t, std::size_t > > >& new_ranges);
+      void setRanges(const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges);
 
       /// reset the ranges to the one range corresponding to the whole database
       void clearRanges();
 
       /// returns the current ranges
-      const std::vector< std::pair< std::size_t, std::size_t >,
-                         ALLOC< std::pair< std::size_t, std::size_t > > >&
-         ranges() const;
+      const std::vector< std::pair< std::size_t, std::size_t > >& ranges() const;
 
       /// returns the pseudo-count of a pair of nodes given some other nodes
       /** @param var1 the first variable on the left side of the conditioning bar
        * @param var2 the second variable on the left side of the conditioning bar
        * @param rhs_ids the set of variables on the right side of the
        * conditioning bar */
-      std::vector< double, ALLOC< double > > get(const std::vector< NodeId, ALLOC< NodeId > >& ids);
+      std::vector< double > get(const std::vector< NodeId >& ids);
 
       /// clears all the data structures from memory, including the cache
       virtual void clear();
@@ -190,13 +175,10 @@ namespace gum {
       /** @warning An empty nodeId2Columns bijection means that the mapping is
        * an identity, i.e., the value of a NodeId is equal to the index of the
        * column in the DatabaseTable. */
-      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2Columns() const;
+      const Bijection< NodeId, std::size_t >& nodeId2Columns() const;
 
       /// return the database used by the pseudo-count
       const DatabaseTable& database() const;
-
-      /// returns the allocator used by the pseudo-count
-      allocator_type getAllocator() const;
 
       /// @}
 
@@ -209,18 +191,14 @@ namespace gum {
       RecordCounter counter_;
 
       /// an empty vector
-      const std::vector< NodeId, ALLOC< NodeId > > empty_ids_;
+      const std::vector< NodeId > empty_ids_;
     }; /* namespace learning */
   }    // namespace learning
 } /* namespace gum */
 
-
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-extern template class gum::learning::PseudoCount<>;
-#endif
-
-
-/// include the template implementation
-#include <agrum/tools/stattests/pseudoCount_tpl.h>
+// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#  include <agrum/tools/stattests/pseudoCount_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_PSEUDO_COUNT_H */

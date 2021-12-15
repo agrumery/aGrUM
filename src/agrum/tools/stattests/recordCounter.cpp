@@ -30,7 +30,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 /// include the inlined functions if necessary
-#  ifndef GUM_NO_INLINE
+#  ifdef GUM_NO_INLINE
 #    include <agrum/tools/stattests/recordCounter_inl.h>
 #  endif /* GUM_NO_INLINE */
 

@@ -63,7 +63,7 @@ namespace gum {
 
 
     /// move constructor
-    INLINE ScoreBIC::ScoreBIC(ScoreBIC&& from, ) :
+    INLINE ScoreBIC::ScoreBIC(ScoreBIC&& from) :
         Score(std::move(from)), _internal_apriori_(std::move(from._internal_apriori_)) {
       GUM_CONS_MOV(ScoreBIC);
     }

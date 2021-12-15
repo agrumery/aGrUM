@@ -34,12 +34,9 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    template < typename STRUCTURAL_CONSTRAINT,
-               typename GRAPH_CHANGES_GENERATOR,
-               template < typename >
-               class ALLOC >
-    INLINE GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >::
-       GraphChangesSelector4DiGraph(Score< ALLOC >&          score,
+    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
+    INLINE GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::
+       GraphChangesSelector4DiGraph(Score&                   score,
                                     STRUCTURAL_CONSTRAINT&   constraint,
                                     GRAPH_CHANGES_GENERATOR& changes_generator) :
         _score_(score.clone()),
@@ -49,14 +46,11 @@ namespace gum {
     }
 
     /// copy constructor
-    template < typename STRUCTURAL_CONSTRAINT,
-               typename GRAPH_CHANGES_GENERATOR,
-               template < typename >
-               class ALLOC >
-    GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >::
-       GraphChangesSelector4DiGraph(const GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                                                        GRAPH_CHANGES_GENERATOR,
-                                                                        ALLOC >& from) :
+    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
+    GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::
+       GraphChangesSelector4DiGraph(
+          const GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >&
+             from) :
         _score_(from._score_ != nullptr ? from._score_->clone() : nullptr),
         _constraint_(from._constraint_), _changes_generator_(from._changes_generator_),
         _changes_(from._changes_), _change_scores_(from._change_scores_),
@@ -68,15 +62,12 @@ namespace gum {
       GUM_CONS_CPY(GraphChangesSelector4DiGraph);
     }
 
+
     /// move constructor
-    template < typename STRUCTURAL_CONSTRAINT,
-               typename GRAPH_CHANGES_GENERATOR,
-               template < typename >
-               class ALLOC >
-    GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >::
+    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
+    GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::
        GraphChangesSelector4DiGraph(
-          GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >&&
-             from) :
+          GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >&& from) :
         _score_(from._score_),
         _constraint_(std::move(from._constraint_)),
         _changes_generator_(std::move(from._changes_generator_)),
@@ -92,40 +83,27 @@ namespace gum {
       GUM_CONS_MOV(GraphChangesSelector4DiGraph);
     }
 
-    /// destructor
-    template < typename STRUCTURAL_CONSTRAINT,
-               typename GRAPH_CHANGES_GENERATOR,
-               template < typename >
-               class ALLOC >
-    INLINE GraphChangesSelector4DiGraph<
 
-       STRUCTURAL_CONSTRAINT,
-       GRAPH_CHANGES_GENERATOR,
-       ALLOC >::~GraphChangesSelector4DiGraph() {
-      if (_score_ != nullptr) {
-        ALLOC< Score< ALLOC > > allocator(_score_->getAllocator());
-        allocator.destroy(_score_);
-        allocator.deallocate(_score_, 1);
-      }
+    /// destructor
+    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
+    INLINE
+       GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
+                                     GRAPH_CHANGES_GENERATOR >::~GraphChangesSelector4DiGraph() {
+      if (_score_ != nullptr) delete _score_;
       GUM_DESTRUCTOR(GraphChangesSelector4DiGraph);
     }
 
+
     /// copy operator
-    template < typename STRUCTURAL_CONSTRAINT,
-               typename GRAPH_CHANGES_GENERATOR,
-               template < typename >
-               class ALLOC >
-    GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >&
-          GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >::
-          operator=(const GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                                        GRAPH_CHANGES_GENERATOR,
-                                                        ALLOC >& from) {
+    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
+    GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >&
+       GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::operator=(
+          const GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >&
+             from) {
       if (this != &from) {
         // remove the old score
         if (_score_ != nullptr) {
-          ALLOC< Score< ALLOC > > allocator(_score_->getAllocator());
-          allocator.destroy(_score_);
-          allocator.deallocate(_score_, 1);
+          delete _score_;
           _score_ = nullptr;
         }
 
@@ -147,15 +125,10 @@ namespace gum {
     }
 
     /// move operator
-    template < typename STRUCTURAL_CONSTRAINT,
-               typename GRAPH_CHANGES_GENERATOR,
-               template < typename >
-               class ALLOC >
-    GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >&
-          GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >::
-          operator=(
-             GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >&&
-                from) {
+    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
+    GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >&
+       GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::operator=(
+          GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >&& from) {
       if (this != &from) {
         _score_      = from._score_;
         from._score_ = nullptr;
@@ -178,39 +151,28 @@ namespace gum {
 
 
     /// indicates whether a given change is valid or not
-    template < typename STRUCTURAL_CONSTRAINT,
-               typename GRAPH_CHANGES_GENERATOR,
-               template < typename >
-               class ALLOC >
-    INLINE bool
-       GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >::
-          isChangeValid(const GraphChange& change) const {
+    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
+    INLINE bool GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::
+       isChangeValid(const GraphChange& change) const {
       return _constraint_->checkModification(change);
     }
 
 
     /// indicates whether a given change is valid or not
-    template < typename STRUCTURAL_CONSTRAINT,
-               typename GRAPH_CHANGES_GENERATOR,
-               template < typename >
-               class ALLOC >
-    INLINE bool
-       GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >::
-          _isChangeValid_(const std::size_t index) const {
+    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
+    INLINE bool GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::
+       _isChangeValid_(const std::size_t index) const {
       return isChangeValid(_changes_[index]);
     }
 
 
     /// sets the graph from which scores are computed
-    template < typename STRUCTURAL_CONSTRAINT,
-               typename GRAPH_CHANGES_GENERATOR,
-               template < typename >
-               class ALLOC >
-    void GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >::
-       setGraph(DiGraph& graph) {
+    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
+    void GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::setGraph(
+       DiGraph& graph) {
       // fill the DAG with all the missing nodes
-      const DatabaseTable< ALLOC >& database       = _score_->database();
-      const auto&                   nodeId2Columns = _score_->nodeId2Columns();
+      const DatabaseTable& database       = _score_->database();
+      const auto&          nodeId2Columns = _score_->nodeId2Columns();
 
       if (nodeId2Columns.empty()) {
         const NodeId nb_nodes = NodeId(database.nbVariables());
@@ -260,7 +222,7 @@ namespace gum {
       // computations of the scores)
       const std::size_t nb_nodes = graph.size();
       {
-        const std::vector< NodeId, ALLOC< NodeId > > empty_pars;
+        const std::vector< NodeId > empty_pars;
         _parents_.clear();
         _parents_.resize(nb_nodes);
         for (const auto node: graph) {
@@ -399,11 +361,8 @@ namespace gum {
 
 
     /// put a change into the illegal set
-    template < typename STRUCTURAL_CONSTRAINT,
-               typename GRAPH_CHANGES_GENERATOR,
-               template < typename >
-               class ALLOC >
-    void GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >::
+    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
+    void GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::
        _invalidateChange_(const std::size_t change_index) {
       const GraphChange& change = _changes_[change_index];
       if (change.type() == GraphChangeType::ARC_REVERSAL) {
@@ -434,12 +393,8 @@ namespace gum {
 
 
     /// indicates whether the selector still contain graph changes
-    template < typename STRUCTURAL_CONSTRAINT,
-               typename GRAPH_CHANGES_GENERATOR,
-               template < typename >
-               class ALLOC >
-    bool GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >::
-       empty() {
+    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
+    bool GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::empty() {
       // put into the illegal change set all the top elements of the different
       // queues that are not valid anymore
       if (!_queues_valid_) {
@@ -458,13 +413,9 @@ namespace gum {
 
     /// indicates whether the selector still contain graph changes
     /// in the ith queue
-    template < typename STRUCTURAL_CONSTRAINT,
-               typename GRAPH_CHANGES_GENERATOR,
-               template < typename >
-               class ALLOC >
-    bool
-       GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >::empty(
-          const NodeId node) {
+    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
+    bool GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::empty(
+       const NodeId node) {
       // put into the illegal change set all the top elements of the different
       // queues that are not valid anymore
       if (!_queues_valid_) {
@@ -482,13 +433,10 @@ namespace gum {
 
 
     /// returns the best graph change to examine
-    template < typename STRUCTURAL_CONSTRAINT,
-               typename GRAPH_CHANGES_GENERATOR,
-               template < typename >
-               class ALLOC >
-    INLINE const GraphChange& GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                                            GRAPH_CHANGES_GENERATOR,
-                                                            ALLOC >::bestChange() {
+    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
+    INLINE const GraphChange&
+       GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
+                                     GRAPH_CHANGES_GENERATOR >::bestChange() {
       if (!empty())
         return _changes_[_change_queue_per_node_[_node_queue_.top()].top()];
       else
@@ -497,13 +445,10 @@ namespace gum {
 
 
     /// returns the best graph change to examine in the ith queue
-    template < typename STRUCTURAL_CONSTRAINT,
-               typename GRAPH_CHANGES_GENERATOR,
-               template < typename >
-               class ALLOC >
-    INLINE const GraphChange& GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                                            GRAPH_CHANGES_GENERATOR,
-                                                            ALLOC >::bestChange(const NodeId node) {
+    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
+    INLINE const GraphChange&
+       GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::bestChange(
+          const NodeId node) {
       if (!empty(node))
         return _changes_[_change_queue_per_node_[node].top()];
       else
@@ -512,13 +457,9 @@ namespace gum {
 
 
     /// return the score of the best graph change
-    template < typename STRUCTURAL_CONSTRAINT,
-               typename GRAPH_CHANGES_GENERATOR,
-               template < typename >
-               class ALLOC >
-    INLINE double GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                                GRAPH_CHANGES_GENERATOR,
-                                                ALLOC >::bestScore() {
+    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
+    INLINE double
+       GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::bestScore() {
       if (!empty())
         return _change_queue_per_node_[_node_queue_.top()].topPriority();
       else
@@ -527,13 +468,10 @@ namespace gum {
 
 
     /// return the score of the best graph change in the ith queue
-    template < typename STRUCTURAL_CONSTRAINT,
-               typename GRAPH_CHANGES_GENERATOR,
-               template < typename >
-               class ALLOC >
-    INLINE double GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                                GRAPH_CHANGES_GENERATOR,
-                                                ALLOC >::bestScore(const NodeId node) {
+    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
+    INLINE double
+       GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::bestScore(
+          const NodeId node) {
       if (!empty(node))
         return _change_queue_per_node_[node].topPriority();
       else
@@ -542,11 +480,8 @@ namespace gum {
 
 
     /// remove the now legal changes from the illegal set
-    template < typename STRUCTURAL_CONSTRAINT,
-               typename GRAPH_CHANGES_GENERATOR,
-               template < typename >
-               class ALLOC >
-    void GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >::
+    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
+    void GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::
        _illegal2LegalChanges_(Set< std::size_t >& changes_to_recompute) {
       for (auto iter = _illegal_changes_.beginSafe(); iter != _illegal_changes_.endSafe(); ++iter) {
         if (_isChangeValid_(*iter)) {
@@ -566,11 +501,8 @@ namespace gum {
 
 
     /// finds the changes that are affected by a given node modification
-    template < typename STRUCTURAL_CONSTRAINT,
-               typename GRAPH_CHANGES_GENERATOR,
-               template < typename >
-               class ALLOC >
-    void GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >::
+    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
+    void GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::
        _findLegalChangesNeedingUpdate_(Set< std::size_t >& changes_to_recompute,
                                        const NodeId        target_node) {
       const HashTable< std::size_t, Size >& changes
@@ -588,11 +520,8 @@ namespace gum {
 
 
     /// perform the necessary updates of the scores
-    template < typename STRUCTURAL_CONSTRAINT,
-               typename GRAPH_CHANGES_GENERATOR,
-               template < typename >
-               class ALLOC >
-    void GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >::
+    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
+    void GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::
        _updateScores_(const Set< std::size_t >& changes_to_recompute) {
       Set< NodeId > modified_nodes(changes_to_recompute.size());
 
@@ -695,12 +624,9 @@ namespace gum {
 
 
     /// get from the graph change generator a new set of changes
-    template < typename STRUCTURAL_CONSTRAINT,
-               typename GRAPH_CHANGES_GENERATOR,
-               template < typename >
-               class ALLOC >
-    void GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >::
-       _getNewChanges_() {
+    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
+    void GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
+                                       GRAPH_CHANGES_GENERATOR >::_getNewChanges_() {
       // ask the graph change generator for all its available changes
       for (const auto& change: *_changes_generator_) {
         // check that the change does not already exist
@@ -722,12 +648,10 @@ namespace gum {
 
 
     /// indicate to the selector that its best score has been applied
-    template < typename STRUCTURAL_CONSTRAINT,
-               typename GRAPH_CHANGES_GENERATOR,
-               template < typename >
-               class ALLOC >
-    void GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >::
-       applyChange(const GraphChange& change) {
+    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
+    void
+       GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::applyChange(
+          const GraphChange& change) {
       // first, we get the index of the change
       const std::size_t change_index = _changes_.pos(change);
 
@@ -837,11 +761,8 @@ namespace gum {
 
 
     /// applies several changes at a time
-    template < typename STRUCTURAL_CONSTRAINT,
-               typename GRAPH_CHANGES_GENERATOR,
-               template < typename >
-               class ALLOC >
-    void GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >::
+    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
+    void GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::
        applyChangeWithoutScoreUpdate(const GraphChange& change) {
       // first, we get the index of the change
       const std::size_t change_index = _changes_.pos(change);
@@ -953,12 +874,10 @@ namespace gum {
 
 
     /// applies several changes at a time
-    template < typename STRUCTURAL_CONSTRAINT,
-               typename GRAPH_CHANGES_GENERATOR,
-               template < typename >
-               class ALLOC >
-    void GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >::
-       updateScoresAfterAppliedChanges() {
+    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
+    void
+       GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
+                                     GRAPH_CHANGES_GENERATOR >::updateScoresAfterAppliedChanges() {
       // determine which changes in the illegal set are now legal
       Set< std::size_t > new_legal_changes;
       for (auto iter = _illegal_changes_.beginSafe(); iter != _illegal_changes_.endSafe(); ++iter) {
@@ -996,13 +915,10 @@ namespace gum {
 
 
     /// returns the set of queues sorted by decreasing top priority
-    template < typename STRUCTURAL_CONSTRAINT,
-               typename GRAPH_CHANGES_GENERATOR,
-               template < typename >
-               class ALLOC >
+    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
     std::vector< std::pair< NodeId, double > >
-       GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >::
-          nodesSortedByBestScore() const {
+       GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
+                                     GRAPH_CHANGES_GENERATOR >::nodesSortedByBestScore() const {
       std::vector< std::pair< NodeId, double > > result(_node_queue_.size());
       for (std::size_t i = std::size_t(0); i < _node_queue_.size(); ++i) {
         result[i].first  = _node_queue_[i];
@@ -1019,13 +935,10 @@ namespace gum {
 
 
     /// returns the set of queues sorted by decreasing top priority
-    template < typename STRUCTURAL_CONSTRAINT,
-               typename GRAPH_CHANGES_GENERATOR,
-               template < typename >
-               class ALLOC >
+    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
     std::vector< std::pair< NodeId, double > >
-       GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >::
-          nodesUnsortedWithScore() const {
+       GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
+                                     GRAPH_CHANGES_GENERATOR >::nodesUnsortedWithScore() const {
       std::vector< std::pair< NodeId, double > > result(_node_queue_.size());
       for (std::size_t i = std::size_t(0); i < _node_queue_.size(); ++i) {
         result[i].first  = _node_queue_[i];
@@ -1037,15 +950,12 @@ namespace gum {
 
 
     /// returns the generator used by the selector
-    template < typename STRUCTURAL_CONSTRAINT,
-               typename GRAPH_CHANGES_GENERATOR,
-               template < typename >
-               class ALLOC >
+    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
     INLINE typename GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                                  GRAPH_CHANGES_GENERATOR,
-                                                  ALLOC >::GeneratorType&
-       GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >::
-          graphChangeGenerator() const noexcept {
+                                                  GRAPH_CHANGES_GENERATOR >::GeneratorType&
+       GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
+                                     GRAPH_CHANGES_GENERATOR >::graphChangeGenerator()
+          const noexcept {
       return *_changes_generator_;
     }
 

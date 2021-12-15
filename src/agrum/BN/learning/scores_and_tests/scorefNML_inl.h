@@ -69,7 +69,7 @@ namespace gum {
 
 
     /// virtual copy constructor
-    INLINE ScorefNML* ScorefNML::clone() const { return ScorefNML(*this); }
+    INLINE ScorefNML* ScorefNML::clone() const { return new ScorefNML(*this); }
 
 
     /// destructor

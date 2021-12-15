@@ -26,3 +26,67 @@
  */
 
 #include <agrum/tools/database/DBRowGeneratorIdentity.h>
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+/// include the inlined functions if necessary
+#  ifdef GUM_NO_INLINE
+#    include <agrum/tools/database/DBRowGeneratorIdentity_inl.h>
+#  endif /* GUM_NO_INLINE */
+
+namespace gum {
+
+  namespace learning {
+
+    /// default constructor
+    DBRowGeneratorIdentity::DBRowGeneratorIdentity(
+       const std::vector< DBTranslatedValueType >& column_types) :
+        DBRowGenerator(column_types, DBRowGeneratorGoal::OTHER_THINGS_THAN_REMOVE_MISSING_VALUES) {
+      GUM_CONSTRUCTOR(DBRowGeneratorIdentity);
+    }
+
+
+    /// copy constructor
+    DBRowGeneratorIdentity::DBRowGeneratorIdentity(const DBRowGeneratorIdentity& from) :
+        DBRowGenerator(from), _input_row_(from._input_row_) {
+      GUM_CONS_CPY(DBRowGeneratorIdentity);
+    }
+
+
+    /// move constructor
+    DBRowGeneratorIdentity::DBRowGeneratorIdentity(DBRowGeneratorIdentity&& from) :
+        DBRowGenerator(std::move(from)), _input_row_(from._input_row_) {
+      GUM_CONS_MOV(DBRowGeneratorIdentity);
+    }
+
+
+    /// virtual copy constructor
+    DBRowGeneratorIdentity* DBRowGeneratorIdentity::clone() const {
+      return new DBRowGeneratorIdentity(*this);
+    }
+
+
+    /// destructor
+    DBRowGeneratorIdentity::~DBRowGeneratorIdentity() { GUM_DESTRUCTOR(DBRowGeneratorIdentity); }
+
+
+    /// copy operator
+    DBRowGeneratorIdentity& DBRowGeneratorIdentity::operator=(const DBRowGeneratorIdentity& from) {
+      DBRowGenerator::operator=(from);
+      _input_row_             = from._input_row_;
+      return *this;
+    }
+
+
+    /// move operator
+    DBRowGeneratorIdentity& DBRowGeneratorIdentity::operator=(DBRowGeneratorIdentity&& from) {
+      DBRowGenerator::operator=(std::move(from));
+      _input_row_             = from._input_row_;
+      return *this;
+    }
+
+  } /* namespace learning */
+
+} /* namespace gum */
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */

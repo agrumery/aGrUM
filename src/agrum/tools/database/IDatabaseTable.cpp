@@ -26,3 +26,32 @@
  */
 
 #include <agrum/tools/database/IDatabaseTable.h>
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+namespace gum {
+
+  namespace learning {
+
+    /// insert new rows at the end of the database
+    void IDatabaseTableInsert4DBCell< true >::insertRows(
+       const typename IDatabaseTableInsert4DBCell< true >::template DBVector<
+          DBVector< std::string > >& new_rows) {
+      for (const auto& new_row: new_rows)
+        this->insertRow(new_row);
+    }
+
+
+    /// insert new rows at the end of the database
+    void IDatabaseTableInsert4DBCell< false >::insertRows(
+       const typename IDatabaseTableInsert4DBCell< false >::template DBVector<
+          DBVector< std::string > >& new_rows) {
+      for (const auto& new_row: new_rows)
+        this->insertRow(new_row);
+    }
+
+  } /* namespace learning */
+
+} /* namespace gum */
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */

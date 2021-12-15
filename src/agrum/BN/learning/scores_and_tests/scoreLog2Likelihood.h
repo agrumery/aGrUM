@@ -202,7 +202,7 @@ namespace gum {
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#  include <agrum/BN/learning/scores_and_tests/scoreLog2Likelihood_tpl.h>
+#  include <agrum/BN/learning/scores_and_tests/scoreLog2Likelihood_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_SCORE_LOG2_LIKELIHOOD_H */

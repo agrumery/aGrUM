@@ -47,9 +47,7 @@ namespace gum {
      * directed structure learning search algorithms.
      * @ingroup learning_group
      */
-    template < typename STRUCTURAL_CONSTRAINT,
-               typename GRAPH_CHANGES_GENERATOR,
-               template < typename > class ALLOC = std::allocator >
+    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
     class GraphChangesSelector4DiGraph {
       public:
       /// the type of the generator
@@ -61,19 +59,18 @@ namespace gum {
       /// @{
 
       /// default constructor
-      GraphChangesSelector4DiGraph(Score< ALLOC >&          score,
+      GraphChangesSelector4DiGraph(Score&                   score,
                                    STRUCTURAL_CONSTRAINT&   constraint,
                                    GRAPH_CHANGES_GENERATOR& changes_generator);
 
       /// copy constructor
-      GraphChangesSelector4DiGraph(const GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                                                       GRAPH_CHANGES_GENERATOR,
-                                                                       ALLOC >& from);
+      GraphChangesSelector4DiGraph(
+         const GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >&
+            from);
 
       /// move constructor
       GraphChangesSelector4DiGraph(
-         GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >&&
-            from);
+         GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >&& from);
 
       /// destructor
       ~GraphChangesSelector4DiGraph();
@@ -86,16 +83,13 @@ namespace gum {
       /// @{
 
       /// copy operator
-      GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >&
+      GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >&
          operator=(const GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                                       GRAPH_CHANGES_GENERATOR,
-                                                       ALLOC >& from);
+                                                       GRAPH_CHANGES_GENERATOR >& from);
 
       /// move operator
-      GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >&
-         operator=(
-            GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR, ALLOC >&&
-               from);
+      GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >& operator=(
+         GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >&& from);
 
       /// @}
 
@@ -174,7 +168,7 @@ namespace gum {
 
       private:
       /// the scoring function
-      Score< ALLOC >* _score_;
+      Score* _score_;
 
       /// the set of constraints used to determine valid changes
       STRUCTURAL_CONSTRAINT* _constraint_;
@@ -207,7 +201,7 @@ namespace gum {
       NodeProperty< double > _node_current_scores_;
 
       /// the set of parents of each node (speeds-up score computations)
-      NodeProperty< std::vector< NodeId, ALLOC< NodeId > > > _parents_;
+      NodeProperty< std::vector< NodeId > > _parents_;
 
       /// indicates whether we need to recompute whether the queue is empty or not
       bool _queues_valid_{false};

@@ -88,7 +88,7 @@ namespace gum {
        * @param db an already initialized database table that is used to
        * fill the Database
        */
-      BNLearner(const DatabaseTable<>& db);
+      BNLearner(const DatabaseTable& db);
 
       /**
        * Wrapper for BNLearner (filename,modalities,parse_database) using a bn

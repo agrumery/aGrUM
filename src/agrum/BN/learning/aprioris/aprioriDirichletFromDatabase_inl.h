@@ -132,8 +132,8 @@ namespace gum {
 
 
     /// returns the apriori vector over only the conditioning set of an idset
-    void AprioriDirichletFromDatabase::addConditioningApriori(const IdCondSet&       idset,
-                                                              std::vector< double >& counts) {
+    INLINE void AprioriDirichletFromDatabase::addConditioningApriori(const IdCondSet&       idset,
+                                                                     std::vector< double >& counts) {
       if (_internal_weight_ == 0.0) return;
 
       const auto&       apriori = _counter_.counts(idset.conditionalIdCondSet());

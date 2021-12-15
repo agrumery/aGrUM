@@ -37,7 +37,7 @@ namespace gum {
   namespace learning {
 
     // returns the row filter
-    INLINE DBRowGeneratorParser<>& genericBNLearner::Database::parser() { return *_parser_; }
+    INLINE DBRowGeneratorParser& genericBNLearner::Database::parser() { return *_parser_; }
 
     // returns the modalities of the variables
     INLINE const std::vector< std::size_t >& genericBNLearner::Database::domainSizes() const {
@@ -80,7 +80,7 @@ namespace gum {
 
 
     /// returns the internal database table
-    INLINE const DatabaseTable<>& genericBNLearner::Database::databaseTable() const {
+    INLINE const DatabaseTable& genericBNLearner::Database::databaseTable() const {
       return _database_;
     }
 
@@ -212,17 +212,17 @@ namespace gum {
 
     /// indicate that we wish to use the NML correction for 3off2
     INLINE void genericBNLearner::useNMLCorrection() {
-      kmode3Off2_ = CorrectedMutualInformation<>::KModeTypes::NML;
+      kmode3Off2_ = CorrectedMutualInformation::KModeTypes::NML;
     }
 
     /// indicate that we wish to use the MDL correction for 3off2
     INLINE void genericBNLearner::useMDLCorrection() {
-      kmode3Off2_ = CorrectedMutualInformation<>::KModeTypes::MDL;
+      kmode3Off2_ = CorrectedMutualInformation::KModeTypes::MDL;
     }
 
     /// indicate that we wish to use the NoCorr correction for 3off2
     INLINE void genericBNLearner::useNoCorrection() {
-      kmode3Off2_ = CorrectedMutualInformation<>::KModeTypes::NoCorr;
+      kmode3Off2_ = CorrectedMutualInformation::KModeTypes::NoCorr;
     }
 
     /// get the list of arcs hiding latent variables
@@ -447,16 +447,16 @@ namespace gum {
     INLINE const std::string& genericBNLearner::getAprioriType_() const {
       switch (aprioriType_) {
         case AprioriType::NO_APRIORI:
-          return AprioriNoApriori<>::type::type;
+          return AprioriNoApriori::type::type;
 
         case AprioriType::SMOOTHING:
-          return AprioriSmoothing<>::type::type;
+          return AprioriSmoothing::type::type;
 
         case AprioriType::DIRICHLET_FROM_DATABASE:
-          return AprioriDirichletFromDatabase<>::type::type;
+          return AprioriDirichletFromDatabase::type::type;
 
         case AprioriType::BDEU:
-          return AprioriBDeu<>::type::type;
+          return AprioriBDeu::type::type;
 
         default:
           GUM_ERROR(OperationNotAllowed,
@@ -494,7 +494,7 @@ namespace gum {
     INLINE void genericBNLearner::clearDatabaseRanges() { ranges_.clear(); }
 
     /// returns the database used by the BNLearner
-    INLINE const DatabaseTable<>& genericBNLearner::database() const {
+    INLINE const DatabaseTable& genericBNLearner::database() const {
       return scoreDatabase_.databaseTable();
     }
 

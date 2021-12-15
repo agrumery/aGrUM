@@ -44,8 +44,7 @@ namespace gum {
      * @warning If you pass an apriori to the score, this one will be added
      * into the log-likelihood part of the score.
      */
-    template < template < typename > class ALLOC = std::allocator >
-    using ScoreMDL = ScoreBIC< ALLOC >;
+    using ScoreMDL = ScoreBIC;
 
 
   } /* namespace learning */

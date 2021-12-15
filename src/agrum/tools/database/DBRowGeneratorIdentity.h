@@ -144,8 +144,9 @@ namespace gum {
 
 } /* namespace gum */
 
-
-// always include the template implementation
-#include <agrum/tools/database/DBRowGeneratorIdentity_tpl.h>
+// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/tools/database/DBRowGeneratorIdentity_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_DBROW_GENERATOR_IDENTITY_H */
