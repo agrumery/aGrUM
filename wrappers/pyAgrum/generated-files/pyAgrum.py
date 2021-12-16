@@ -24421,7 +24421,7 @@ class BNDatabaseGenerator(object):
     def toCSV(self, *args) -> None:
         return _pyAgrum.BNDatabaseGenerator_toCSV(self, *args)
 
-    def toDatabaseTable(self, useLabels: bool=True) -> "pyAgrum.YetUnWrapped":
+    def toDatabaseTable(self, useLabels: bool=True) -> "gum::learning::DatabaseTable":
         return _pyAgrum.BNDatabaseGenerator_toDatabaseTable(self, useLabels)
 
     def database(self) -> "pyAgrum.YetUnWrapped":
