@@ -34,46 +34,33 @@ namespace gum {
 
   namespace learning {
 
-    template <template<typename> class ALLOC = std::allocator>
-    class EvenDebugGenerator : public DBRowGenerator<ALLOC> {
+    class EvenDebugGenerator : public DBRowGenerator {
     public:
 
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC<DBTranslatedValue>;
-      
       // ##########################################################################
       // @name Constructors / Destructors
       // ##########################################################################
 
       /// default constructor
-      EvenDebugGenerator( const std::vector<DBTranslatedValueType,
-                                     ALLOC<DBTranslatedValueType>> column_types,
-                   const std::size_t nb_duplicates,
-                   const allocator_type& alloc  = allocator_type () )
-        : DBRowGenerator<ALLOC> ( column_types, DBRowGeneratorGoal::OTHER_THINGS_THAN_REMOVE_MISSING_VALUES, alloc )
+      EvenDebugGenerator( const std::vector< DBTranslatedValueType > column_types,
+                   const std::size_t nb_duplicates)
+        : DBRowGenerator ( column_types, DBRowGeneratorGoal::OTHER_THINGS_THAN_REMOVE_MISSING_VALUES)
         ,  _nb_duplicates_ ( nb_duplicates ) {
         GUM_CONSTRUCTOR( EvenDebugGenerator );
       }
 
-      /// copy constructor with a given allocator
-      EvenDebugGenerator( const EvenDebugGenerator<ALLOC>& from,
-                   const allocator_type& alloc )
-        : DBRowGenerator<ALLOC>( from, alloc )
+      /// copy constructor
+      EvenDebugGenerator( const EvenDebugGenerator& from)
+        : DBRowGenerator(from)
         ,  _input_row_( from. _input_row_ )
         ,  _nb_duplicates_ ( from. _nb_duplicates_ )
         ,  _even_setInputRow_ ( from. _even_setInputRow_ ) {
         GUM_CONS_CPY( EvenDebugGenerator );
       }
 
-      /// copy constructor
-      EvenDebugGenerator( const EvenDebugGenerator<ALLOC>& from )
-         : EvenDebugGenerator<ALLOC> ( from, from.getAllocator () ) {}
-        
-
-      /// move constructor with a given allocator
-      EvenDebugGenerator( EvenDebugGenerator<ALLOC>&& from,
-                   const allocator_type& alloc )
-        : DBRowGenerator<ALLOC> ( std::move( from ), alloc )
+      /// move constructor
+      EvenDebugGenerator( EvenDebugGenerator&& from)
+        : DBRowGenerator ( std::move( from ))
         ,  _input_row_( from. _input_row_ )
         ,  _nb_duplicates_ ( from. _nb_duplicates_ )
         ,  _even_setInputRow_ ( from. _even_setInputRow_ ) {
@@ -81,29 +68,9 @@ namespace gum {
       }
 
 
-      /// move constructor
-      EvenDebugGenerator( EvenDebugGenerator<ALLOC>&& from )
-        : EvenDebugGenerator<ALLOC> ( std::move( from ), from.getAllocator () ) {}
-
-      
-      /// virtual copy constructor with a given allocator
-      virtual EvenDebugGenerator<ALLOC>* clone ( const allocator_type& alloc ) const {
-        ALLOC<EvenDebugGenerator<ALLOC>> allocator ( alloc );
-        EvenDebugGenerator<ALLOC>* generator = allocator.allocate(1);
-        try {
-          allocator.construct ( generator, *this, alloc );
-        }
-        catch ( ... ) {
-          allocator.deallocate ( generator, 1 );
-          throw;
-        }
-        return generator;
-      }
-
-      
       /// virtual copy constructor
-      virtual EvenDebugGenerator<ALLOC>* clone () const {
-        return clone ( this->getAllocator () );
+      virtual EvenDebugGenerator* clone () const {
+        return new EvenDebugGenerator(*this);
       }
 
 
@@ -120,8 +87,8 @@ namespace gum {
       /// @{
 
       /// copy operator
-      EvenDebugGenerator<ALLOC>& operator=( const EvenDebugGenerator<ALLOC>& from ) {
-        DBRowGenerator<ALLOC>::operator=( from );
+      EvenDebugGenerator& operator=( const EvenDebugGenerator& from ) {
+        DBRowGenerator::operator=( from );
          _input_row_ = from. _input_row_;
          _nb_duplicates_ = from. _nb_duplicates_;
          _even_setInputRow_ = from. _even_setInputRow_;
@@ -130,8 +97,8 @@ namespace gum {
     
 
       /// move operator
-      EvenDebugGenerator<ALLOC>& operator=( EvenDebugGenerator<ALLOC>&& from ) {
-        DBRowGenerator<ALLOC>::operator=( std::move( from ) );
+      EvenDebugGenerator& operator=( EvenDebugGenerator&& from ) {
+        DBRowGenerator::operator=( std::move( from ) );
          _input_row_ = from. _input_row_;
          _nb_duplicates_ = from. _nb_duplicates_;
          _even_setInputRow_ = from. _even_setInputRow_;
@@ -144,7 +111,7 @@ namespace gum {
       // ##########################################################################
 
       /// generates new lines from those the generator gets in input
-      virtual const DBRow<DBTranslatedValue,ALLOC>& generate() final {
+      virtual const DBRow<DBTranslatedValue>& generate() final {
         this->decreaseRemainingRows();
         return * _input_row_;
       }
@@ -154,7 +121,7 @@ namespace gum {
 
       /// computes the rows it will provide in output
       virtual std::size_t
-      computeRows_( const DBRow<DBTranslatedValue,ALLOC>& row ) final {
+      computeRows_( const DBRow<DBTranslatedValue>& row ) final {
          _even_setInputRow_ = !  _even_setInputRow_;
         if (  _even_setInputRow_ ) {
            _input_row_ = &row;
@@ -169,7 +136,7 @@ namespace gum {
     private:
      
       /// the row used as input to generate the output DBRows
-      const DBRow<DBTranslatedValue,ALLOC>*  _input_row_ { nullptr };
+      const DBRow<DBTranslatedValue>*  _input_row_ { nullptr };
 
       /// the number of times we return each input row
       std::size_t  _nb_duplicates_ { std::size_t(1) };

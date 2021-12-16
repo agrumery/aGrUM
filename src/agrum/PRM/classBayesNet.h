@@ -66,16 +66,16 @@ namespace gum {
       /// Default constructor.
       /// @param c The Class<GUM_SCALAR> decorated by this
       /// ClassBayesNet<GUM_SCALAR>.
-      ClassBayesNet< GUM_SCALAR >(const PRMClass< GUM_SCALAR >& c);
+      ClassBayesNet(const PRMClass< GUM_SCALAR >& c);
 
       /// Copy constructor.
-      ClassBayesNet< GUM_SCALAR >(const ClassBayesNet< GUM_SCALAR >& from);
+      ClassBayesNet(const ClassBayesNet< GUM_SCALAR >& from);
 
       /// Copy operator.
       ClassBayesNet< GUM_SCALAR >& operator=(const ClassBayesNet< GUM_SCALAR >& from);
 
       /// Destructor.
-      virtual ~ClassBayesNet< GUM_SCALAR >();
+      virtual ~ClassBayesNet();
 
       /// @}
       // ===========================================================================

@@ -25,8 +25,6 @@
 #include <vector>
 #include <string>
 #include <algorithm>
-#include <ressources/include/countedAlloc.h>
-#include <ressources/include/poolAlloc.h>
 
 #include <agrum/tools/database/DBInitializerFromCSV.h>
 #include <agrum/tools/database/databaseTable.h>
@@ -40,27 +38,27 @@ namespace gum_tests {
   class DBInitializerFromCSVTestSuite: public CxxTest::TestSuite {
     public:
     void test_init1() {
-      gum::learning::DBInitializerFromCSV<> initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
 
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars   = var_names.size();
       TS_ASSERT_EQUALS(nb_vars, std::size_t(8))
 
-      gum::learning::DBTranslatorSet<>                 translator_set;
-      gum::learning::DBTranslator4ContinuousVariable<> translator;
+      gum::learning::DBTranslatorSet                 translator_set;
+      gum::learning::DBTranslator4ContinuousVariable translator;
       for (std::size_t i = 0; i < nb_vars; ++i) {
         translator_set.insertTranslator(translator, i);
       }
 
-      gum::learning::DatabaseTable<> database(translator_set);
+      gum::learning::DatabaseTable database(translator_set);
 
       database.setVariableNames(initializer.variableNames());
       TS_ASSERT_EQUALS(database.size(), std::size_t(0))
       initializer.fillDatabase(database);
       TS_ASSERT_EQUALS(database.size(), std::size_t(10000))
 
-      gum::learning::DBInitializerFromCSV<> initializer2(initializer);
-      gum::learning::DatabaseTable<>        database2;
+      gum::learning::DBInitializerFromCSV initializer2(initializer);
+      gum::learning::DatabaseTable        database2;
       database2.insertTranslator(translator, 1);
       database2.insertTranslator(translator, 3);
       database2.insertTranslator(translator, 4);
@@ -86,9 +84,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(row1[1].cont_val, 1.0f)
       TS_ASSERT_EQUALS(row1[2].cont_val, 1.0f)
 
-      gum::learning::DBInitializerFromCSV<> initializer3(initializer,
-                                                         std::allocator< std::string >());
-      gum::learning::DatabaseTable<>        database3;
+      gum::learning::DBInitializerFromCSV initializer3(initializer);
+      gum::learning::DatabaseTable        database3;
       database3.ignoreColumn(0);
       database3.ignoreColumn(2);
       database3.ignoreColumn(5);
@@ -130,9 +127,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(row31[3].cont_val, 0.0f)
       TS_ASSERT_EQUALS(row31[4].cont_val, 1.0f)
 
-      gum::learning::DBInitializerFromCSV<> initializer4(std::move(initializer),
-                                                         std::allocator< std::string >());
-      gum::learning::DatabaseTable<>        database4;
+      gum::learning::DBInitializerFromCSV initializer4(std::move(initializer));
+      gum::learning::DatabaseTable        database4;
       database4.insertTranslator(translator, 1);
       database4.insertTranslator(translator, 3);
       database4.insertTranslator(translator, 4);
@@ -141,8 +137,8 @@ namespace gum_tests {
       initializer4.fillDatabase(database4);
       TS_ASSERT_EQUALS(database4.size(), std::size_t(10000))
 
-      gum::learning::DBInitializerFromCSV<> initializer5(std::move(initializer));
-      gum::learning::DatabaseTable<>        database5;
+      gum::learning::DBInitializerFromCSV initializer5(std::move(initializer));
+      gum::learning::DatabaseTable        database5;
       database5.insertTranslator(translator, 1);
       database5.insertTranslator(translator, 3);
       database5.insertTranslator(translator, 4);
@@ -151,8 +147,8 @@ namespace gum_tests {
       initializer5.fillDatabase(database5);
       TS_ASSERT_EQUALS(database5.size(), std::size_t(10000))
 
-      gum::learning::DBInitializerFromCSV<>* initializer6 = initializer4.clone();
-      gum::learning::DatabaseTable<>         database6;
+      gum::learning::DBInitializerFromCSV* initializer6 = initializer4.clone();
+      gum::learning::DatabaseTable         database6;
       database6.insertTranslator(translator, 1);
       database6.insertTranslator(translator, 3);
       database6.insertTranslator(translator, 4);
@@ -163,8 +159,8 @@ namespace gum_tests {
 
       delete initializer6;
 
-      gum::learning::DBInitializerFromCSV<>* initializer7 = initializer4.clone();
-      gum::learning::DatabaseTable<>         database7;
+      gum::learning::DBInitializerFromCSV* initializer7 = initializer4.clone();
+      gum::learning::DatabaseTable         database7;
       database7.insertTranslator(translator, 1);
       database7.insertTranslator(translator, 3);
       database7.insertTranslator(translator, 4);
@@ -176,7 +172,7 @@ namespace gum_tests {
       delete initializer7;
 
       initializer = initializer5;
-      gum::learning::DatabaseTable<> database8;
+      gum::learning::DatabaseTable database8;
       database8.insertTranslator(translator, 1);
       database8.insertTranslator(translator, 3);
       database8.insertTranslator(translator, 4);
@@ -186,7 +182,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(database8.size(), std::size_t(10000))
 
       initializer = std::move(initializer5);
-      gum::learning::DatabaseTable<> database9;
+      gum::learning::DatabaseTable database9;
       database9.insertTranslator(translator, 1);
       database9.insertTranslator(translator, 3);
       database9.insertTranslator(translator, 4);

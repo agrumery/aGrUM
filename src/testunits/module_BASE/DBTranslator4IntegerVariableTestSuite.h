@@ -21,8 +21,6 @@
 
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/testsuite_utils.h>
-#include <ressources/include/countedAlloc.h>
-#include <ressources/include/poolAlloc.h>
 #include <iostream>
 
 #include <agrum/tools/core/thread.h>
@@ -39,7 +37,7 @@ namespace gum_tests {
       var.addValue(10);
       var.addValue(12);
 
-      gum::learning::DBTranslator4IntegerVariable< DebugCountedAlloc > translator(var);
+      gum::learning::DBTranslator4IntegerVariable translator(var);
       TS_ASSERT(translator.isLossless())
       TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("1"));
       TS_ASSERT_EQUALS(translator.translate("1").discr_val, (std::size_t)0)
@@ -69,8 +67,8 @@ namespace gum_tests {
       } catch (std::bad_cast&) { good = 0; }
       TS_ASSERT_EQUALS(good, 1)
 
-      std::vector< std::string >                    missing{"?", "N/A", "???"};
-      gum::learning::DBTranslator4IntegerVariable<> translator2(var, missing);
+      std::vector< std::string >                  missing{"?", "N/A", "???"};
+      gum::learning::DBTranslator4IntegerVariable translator2(var, missing);
       TS_GUM_ASSERT_THROWS_NOTHING(translator2.translate("1"));
       TS_GUM_ASSERT_THROWS_NOTHING(translator2.translate("12"));
       TS_ASSERT_EQUALS(translator2.translate("1").discr_val, (std::size_t)0)
@@ -87,7 +85,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
                        "10");
 
-      gum::learning::DBTranslator4IntegerVariable< DebugCountedAlloc > translator3(var, missing, 4);
+      gum::learning::DBTranslator4IntegerVariable translator3(var, missing, 4);
       TS_GUM_ASSERT_THROWS_NOTHING(translator3.translate("1"));
       TS_GUM_ASSERT_THROWS_NOTHING(translator3.translate("10"));
       TS_ASSERT_EQUALS(translator3.translate("1").discr_val, (std::size_t)0)
@@ -111,7 +109,7 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(translator3.domainSize(), (gum::Size)4)
 
-      TS_ASSERT_THROWS(gum::learning::DBTranslator4IntegerVariable<> translator4(var, missing, 1),
+      TS_ASSERT_THROWS(gum::learning::DBTranslator4IntegerVariable translator4(var, missing, 1),
                        gum::SizeError);
 
       TS_ASSERT_EQUALS(translator3.variable()->toString(), "X1:Integer(<1,3,10,12>)")
@@ -132,7 +130,7 @@ namespace gum_tests {
         var.addValue(10);
         var.addValue(12);
 
-        gum::learning::DBTranslator4IntegerVariable<> translator(var);
+        gum::learning::DBTranslator4IntegerVariable translator(var);
         TS_ASSERT_EQUALS(translator.translate("1").discr_val, (std::size_t)0)
         TS_ASSERT_EQUALS(translator.translate("12").discr_val, (std::size_t)3)
         TS_ASSERT_EQUALS(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
@@ -153,7 +151,7 @@ namespace gum_tests {
         var2.addValue(3);
         var2.addValue(4);
 
-        gum::learning::DBTranslator4IntegerVariable< DebugCountedAlloc > translator2(var2);
+        gum::learning::DBTranslator4IntegerVariable translator2(var2);
         TS_ASSERT_EQUALS(translator2.translate("1").discr_val, (std::size_t)0)
         TS_ASSERT_EQUALS(translator2.translate("2").discr_val, (std::size_t)1)
         TS_ASSERT_EQUALS(translator2.translate("4").discr_val, (std::size_t)3)
@@ -168,7 +166,7 @@ namespace gum_tests {
            "3");
         TS_ASSERT_EQUALS(translator2.variable()->toString(), "X2:Integer(<1,2,3,4>)")
 
-        gum::learning::DBTranslator4IntegerVariable<> translator3(translator);
+        gum::learning::DBTranslator4IntegerVariable translator3(translator);
         TS_ASSERT_EQUALS(translator3.translate("1").discr_val, (std::size_t)0)
         TS_ASSERT_EQUALS(translator3.translate("10").discr_val, (std::size_t)2)
         TS_ASSERT_EQUALS(translator3.translate("12").discr_val, (std::size_t)3)
@@ -183,7 +181,7 @@ namespace gum_tests {
            "10");
         TS_ASSERT_EQUALS(translator3.variable()->toString(), "X1:Integer(<1,3,10,12>)")
 
-        gum::learning::DBTranslator4IntegerVariable< DebugCountedAlloc > translator4(translator2);
+        gum::learning::DBTranslator4IntegerVariable translator4(translator2);
         TS_ASSERT_EQUALS(translator4.translate("1").discr_val, (std::size_t)0)
         TS_ASSERT_EQUALS(translator4.translate("2").discr_val, (std::size_t)1)
         TS_ASSERT_EQUALS(translator4.translate("4").discr_val, (std::size_t)3)
@@ -198,7 +196,7 @@ namespace gum_tests {
            "3");
         TS_ASSERT_EQUALS(translator4.variable()->toString(), "X2:Integer(<1,2,3,4>)")
 
-        gum::learning::DBTranslator4IntegerVariable<> translator5(std::move(translator3));
+        gum::learning::DBTranslator4IntegerVariable translator5(std::move(translator3));
         TS_ASSERT_EQUALS(translator5.translate("1").discr_val, (std::size_t)0)
         TS_ASSERT_EQUALS(translator5.translate("10").discr_val, (std::size_t)2)
         TS_ASSERT_EQUALS(translator5.translate("12").discr_val, (std::size_t)3)
@@ -213,8 +211,7 @@ namespace gum_tests {
            "10");
         TS_ASSERT_EQUALS(translator5.variable()->toString(), "X1:Integer(<1,3,10,12>)")
 
-        gum::learning::DBTranslator4IntegerVariable< DebugCountedAlloc > translator6(
-           std::move(translator4));
+        gum::learning::DBTranslator4IntegerVariable translator6(std::move(translator4));
         TS_ASSERT_EQUALS(translator6.translate("1").discr_val, (std::size_t)0)
         TS_ASSERT_EQUALS(translator6.translate("2").discr_val, (std::size_t)1)
         TS_ASSERT_EQUALS(translator6.translate("4").discr_val, (std::size_t)3)
@@ -229,8 +226,7 @@ namespace gum_tests {
            "3");
         TS_ASSERT_EQUALS(translator6.variable()->toString(), "X2:Integer(<1,2,3,4>)")
 
-        gum::learning::DBTranslator4IntegerVariable< DebugCountedAlloc >* translator7
-           = translator6.clone();
+        gum::learning::DBTranslator4IntegerVariable* translator7 = translator6.clone();
         TS_ASSERT_EQUALS(translator7->translate("1").discr_val, (std::size_t)0)
         TS_ASSERT_EQUALS(translator7->translate("2").discr_val, (std::size_t)1)
         TS_ASSERT_EQUALS(translator7->translate("4").discr_val, (std::size_t)3)
@@ -245,12 +241,9 @@ namespace gum_tests {
            "3");
         TS_ASSERT_EQUALS(translator7->variable()->toString(), "X2:Integer(<1,2,3,4>)")
 
-        DebugCountedAlloc< gum::learning::DBTranslator4IntegerVariable< DebugCountedAlloc > >
-           allocator(translator7->getAllocator());
-        allocator.destroy(translator7);
-        allocator.deallocate(translator7, 1);
+        delete translator7;
 
-        gum::learning::DBTranslator4IntegerVariable< DebugCountedAlloc > translator8(var);
+        gum::learning::DBTranslator4IntegerVariable translator8(var);
         translator8 = translator6;
         TS_ASSERT_EQUALS(translator8.translate("1").discr_val, (std::size_t)0)
         TS_ASSERT_EQUALS(translator8.translate("2").discr_val, (std::size_t)1)
@@ -266,8 +259,8 @@ namespace gum_tests {
            "3");
         TS_ASSERT_EQUALS(translator8.variable()->toString(), "X2:Integer(<1,2,3,4>)")
 
-        gum::learning::DBTranslator4IntegerVariable< DebugCountedAlloc > translator8bis(var);
-        gum::learning::DBTranslator4IntegerVariable< DebugCountedAlloc > translator9(var2);
+        gum::learning::DBTranslator4IntegerVariable translator8bis(var);
+        gum::learning::DBTranslator4IntegerVariable translator9(var2);
         translator9 = translator8bis;
         TS_ASSERT_EQUALS(translator9.translate("1").discr_val, (std::size_t)0)
         TS_ASSERT_EQUALS(translator9.translate("3").discr_val, (std::size_t)1)
@@ -298,8 +291,6 @@ namespace gum_tests {
            "10");
         TS_ASSERT_EQUALS(translator8.variable()->toString(), "X1:Integer(<1,3,10,12>)")
       }
-
-      TS_ASSERT_EQUALS(CountedAlloc::hasMemoryLeak(), false)
     }
   };
 

@@ -97,38 +97,6 @@ namespace gum {
     }
 
 
-    /// default constructor with a discretized variable as translator
-    template < typename GUM_SCALAR >
-    DBTranslator4DiscretizedVariable::DBTranslator4DiscretizedVariable(
-       const DiscretizedVariable< GUM_SCALAR >& var,
-       std::size_t                              max_dico_entries) :
-        DBTranslator(DBTranslatedValueType::DISCRETE, false, false, max_dico_entries),
-        _variable_(var.name(), var.description()) {
-      // check that the variable has not too many entries
-      if (var.domainSize() > max_dico_entries) {
-        GUM_ERROR(SizeError, "the dictionary induced by the variable is too large")
-      }
-
-      // copy the ticks of var into our internal variable
-      const auto& ticks = var.ticks();
-      for (const auto tick: ticks) {
-        _variable_.addTick((float)tick);
-      }
-
-      // add the content of the variable into the back dictionary
-      std::size_t size = 0;
-      for (const auto& label: var.labels()) {
-        this->back_dico_.insert(size, label);
-        ++size;
-      }
-
-      // store a copy of the variable, that should be used by method variable ()
-      _real_variable_ = var.clone();
-
-      GUM_CONSTRUCTOR(DBTranslator4DiscretizedVariable);
-    }
-
-
     /// default constructor with a IDiscretized variable as translator
     DBTranslator4DiscretizedVariable::DBTranslator4DiscretizedVariable(
        const IDiscretizedVariable& var,

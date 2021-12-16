@@ -30,42 +30,6 @@ namespace gum {
 
   namespace learning {
 
-    /// inserts a new translator at the end of the translator set
-    template < class Translator >
-    std::size_t DBTranslatorSet::insertTranslator(const Translator& translator,
-                                                  const std::size_t column,
-                                                  const bool        unique_column) {
-      // if the unique_column parameter is set to true and there exists already
-      // another translator that parses the column, raise a DuplicateElement
-      // exception
-      const std::size_t size = _translators_.size();
-      if (unique_column) {
-        for (std::size_t i = std::size_t(0); i < size; ++i) {
-          if (_columns_[i] == column)
-            GUM_ERROR(DuplicateElement,
-                      "There already exists a DBTranslator that parses Column" << column)
-        }
-      }
-
-      // reserve some place for the new translator
-      _translators_.reserve(size + 1);
-      _columns_.reserve(size + 1);
-
-      // create and add the new translator
-      DBTranslator* new_translator = translator.clone();
-
-      _translators_.resize(size + 1);
-      _columns_.resize(size + 1);
-      _translators_[size] = new_translator;
-      _columns_[size]     = column;
-
-      // update the highest column
-      if (column > _highest_column_) _highest_column_ = column;
-
-      return size;
-    }
-
-
     /// substitute a translator by another one
     template < class Translator >
     void DBTranslatorSet::changeTranslator(const Translator& new_translator,

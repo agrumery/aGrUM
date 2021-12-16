@@ -67,12 +67,12 @@ namespace gum_tests {
          gum::learning::DBTranslatedValueType::CONTINUOUS,
          gum::learning::DBTranslatedValueType::DISCRETE};
 
-      gum::learning::SimpleDebugGenerator<> generator1(col_types, 3);
+      gum::learning::SimpleDebugGenerator generator1(col_types, 3);
       TS_ASSERT(!generator1.hasRows())
-      gum::learning::SimpleDebugGenerator<> generator2(col_types, 4);
+      gum::learning::SimpleDebugGenerator generator2(col_types, 4);
       TS_ASSERT(!generator2.hasRows())
 
-      gum::learning::DBRowGeneratorSet<> genset;
+      gum::learning::DBRowGeneratorSet genset;
       genset.insertGenerator(generator1);
       genset.insertGenerator(std::move(generator2));
       TS_ASSERT_EQUALS(genset.nbGenerators(), std::size_t(2))
@@ -141,7 +141,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(cols[2], std::size_t(3))
 
 
-      gum::learning::DBRowGeneratorSet<> genset2(genset);
+      gum::learning::DBRowGeneratorSet genset2(genset);
       genset2.setInputRow(input_row1);
       nb_dup = std::size_t(0);
       while (genset2.hasRows()) {
@@ -158,7 +158,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(cols2[1], std::size_t(2))
       TS_ASSERT_EQUALS(cols2[2], std::size_t(3))
 
-      gum::learning::DBRowGeneratorSet<> genset3(std::move(genset2));
+      gum::learning::DBRowGeneratorSet genset3(std::move(genset2));
       genset3.setInputRow(input_row1);
       nb_dup = std::size_t(0);
       while (genset3.hasRows()) {
@@ -175,7 +175,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(cols3[1], std::size_t(2))
       TS_ASSERT_EQUALS(cols3[2], std::size_t(3))
 
-      gum::learning::DBRowGeneratorSet<>* genset4 = genset3.clone();
+      gum::learning::DBRowGeneratorSet* genset4 = genset3.clone();
       genset4->setInputRow(input_row1);
       nb_dup = std::size_t(0);
       while (genset4->hasRows()) {
@@ -194,7 +194,7 @@ namespace gum_tests {
 
       delete genset4;
 
-      gum::learning::DBRowGeneratorSet<> genset5;
+      gum::learning::DBRowGeneratorSet genset5;
       TS_ASSERT_EQUALS(genset5.nbGenerators(), std::size_t(0))
       genset5 = genset;
       TS_ASSERT_EQUALS(genset5.nbGenerators(), std::size_t(2))
@@ -214,7 +214,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(cols5[1], std::size_t(2))
       TS_ASSERT_EQUALS(cols5[2], std::size_t(3))
 
-      gum::learning::DBRowGeneratorSet<> genset6;
+      gum::learning::DBRowGeneratorSet genset6;
       TS_ASSERT_EQUALS(genset6.nbGenerators(), std::size_t(0))
       genset6 = std::move(genset5);
       TS_ASSERT_EQUALS(genset6.nbGenerators(), std::size_t(2))
@@ -234,8 +234,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(cols6[1], std::size_t(2))
       TS_ASSERT_EQUALS(cols6[2], std::size_t(3))
 
-      gum::learning::SimpleDebugGenerator<>& gen1
-         = dynamic_cast< gum::learning::SimpleDebugGenerator<>& >(genset6[0]);
+      auto& gen1 = dynamic_cast< gum::learning::SimpleDebugGenerator& >(genset6[0]);
       TS_ASSERT_EQUALS(gen1.columnsOfInterest().size(), std::size_t(3))
 
       genset.setInputRow(input_row1);
@@ -250,12 +249,12 @@ namespace gum_tests {
          gum::learning::DBTranslatedValueType::CONTINUOUS,
          gum::learning::DBTranslatedValueType::DISCRETE};
 
-      gum::learning::EvenDebugGenerator<> generator1(col_types, 5);
+      gum::learning::EvenDebugGenerator generator1(col_types, 5);
       TS_ASSERT(!generator1.hasRows())
-      gum::learning::EvenDebugGenerator<> generator2(col_types, 4);
+      gum::learning::EvenDebugGenerator generator2(col_types, 4);
       TS_ASSERT(!generator2.hasRows())
 
-      gum::learning::DBRowGeneratorSet<> genset;
+      gum::learning::DBRowGeneratorSet genset;
       genset.insertGenerator(generator1);
       genset.insertGenerator(std::move(generator2));
       TS_ASSERT_EQUALS(genset.nbGenerators(), std::size_t(2))
@@ -306,10 +305,10 @@ namespace gum_tests {
          gum::learning::DBTranslatedValueType::CONTINUOUS,
          gum::learning::DBTranslatedValueType::DISCRETE};
 
-      gum::learning::DBRowGeneratorIdentity<>      generator1(col_types);
-      gum::learning::DBRowGenerator4CompleteRows<> generator2(col_types);
+      gum::learning::DBRowGeneratorIdentity      generator1(col_types);
+      gum::learning::DBRowGenerator4CompleteRows generator2(col_types);
 
-      gum::learning::DBRowGeneratorSet<> genset;
+      gum::learning::DBRowGeneratorSet genset;
       genset.insertGenerator(generator1);
       genset.insertGenerator(std::move(generator2));
       TS_ASSERT_EQUALS(genset.nbGenerators(), std::size_t(2))
@@ -405,14 +404,14 @@ namespace gum_tests {
          gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()}};
 
 
-      gum::learning::DBRowGeneratorIdentity<> generator1(col_types);
-      gum::learning::DBRowGeneratorEM<>       generator2(col_types, bn0);
-      gum::learning::DBRowGenerator<>&        gen2 = generator2;   // fix for g++-4.8
-      gum::learning::DBRowGeneratorIdentity<> generator3(col_types);
-      gum::learning::DBRowGeneratorEM<>       generator4(col_types, bn0);
-      gum::learning::DBRowGenerator<>&        gen4 = generator4;   // fix for g++-4.8
+      gum::learning::DBRowGeneratorIdentity generator1(col_types);
+      gum::learning::DBRowGeneratorEM       generator2(col_types, bn0);
+      gum::learning::DBRowGenerator&        gen2 = generator2;   // fix for g++-4.8
+      gum::learning::DBRowGeneratorIdentity generator3(col_types);
+      gum::learning::DBRowGeneratorEM       generator4(col_types, bn0);
+      gum::learning::DBRowGenerator&        gen4 = generator4;   // fix for g++-4.8
 
-      gum::learning::DBRowGeneratorSet<> genset;
+      gum::learning::DBRowGeneratorSet genset;
       genset.insertGenerator(generator1);
       genset.insertGenerator(gen2);
       genset.insertGenerator(generator3);
@@ -428,12 +427,10 @@ namespace gum_tests {
 
       genset.setBayesNet(bn);
 
-      gum::learning::DBRowGeneratorEM<>& genEM1
-         = dynamic_cast< gum::learning::DBRowGeneratorEM<>& >(genset[1]);
+      auto& genEM1 = dynamic_cast< gum::learning::DBRowGeneratorEM<>& >(genset[1]);
       TS_ASSERT_EQUALS(&(genEM1.getBayesNet()), &bn)
 
-      gum::learning::DBRowGeneratorEM<>& genEM3
-         = dynamic_cast< gum::learning::DBRowGeneratorEM<>& >(genset[3]);
+      auto& genEM3 = dynamic_cast< gum::learning::DBRowGeneratorEM<>& >(genset[3]);
       TS_ASSERT_EQUALS(&(genEM3.getBayesNet()), &bn)
 
       TS_ASSERT_EQUALS(genset.nbGenerators(), std::size_t(4))

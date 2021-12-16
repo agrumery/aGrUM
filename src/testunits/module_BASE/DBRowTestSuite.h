@@ -21,8 +21,6 @@
 
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/testsuite_utils.h>
-#include <ressources/include/countedAlloc.h>
-#include <ressources/include/poolAlloc.h>
 #include <iostream>
 
 #include <agrum/tools/database/DBRow.h>
@@ -57,8 +55,7 @@ namespace gum_tests {
         gum::learning::DBRow< double > row2(row);
         TS_ASSERT_EQUALS(row2.size(), (gum::Size)3)
 
-        std::allocator< double >       alloc;
-        gum::learning::DBRow< double > row2bis(row, alloc);
+        gum::learning::DBRow< double > row2bis(row);
         TS_ASSERT_EQUALS(row2bis.size(), (gum::Size)3)
 
         gum::learning::DBRow< double > row3(std::move(row2));
@@ -72,18 +69,18 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(row2.size(), (gum::Size)5)
         TS_ASSERT_EQUALS(row3.row(), row2.row())
 
-        gum::learning::DBRow< double, DebugCountedAlloc > row4(4, 1, 2);
+        gum::learning::DBRow< double > row4(4, 1, 2);
         TS_ASSERT_EQUALS(row4.size(), (gum::Size)4)
         TS_ASSERT_EQUALS(row4[3], 1)
         TS_ASSERT_EQUALS(row4.weight(), 2)
 
-        gum::learning::DBRow< double, DebugCountedAlloc > row5{2, 3, 1, 4};
+        gum::learning::DBRow< double > row5{2, 3, 1, 4};
         TS_ASSERT_EQUALS(row5.size(), (gum::Size)4)
         TS_ASSERT_EQUALS(row5[2], 1)
         TS_ASSERT_EQUALS(row5.weight(), 1)
 
-        std::vector< double >                             vect{1, 2, 3};
-        gum::learning::DBRow< double, DebugCountedAlloc > row6(vect, 4);
+        std::vector< double >          vect{1, 2, 3};
+        gum::learning::DBRow< double > row6(vect, 4);
         TS_ASSERT_EQUALS(row6.size(), (gum::Size)3)
         TS_ASSERT_EQUALS(row6[1], 2)
         TS_ASSERT_EQUALS(row6.weight(), 4)
@@ -98,7 +95,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(row8[1], 2)
         TS_ASSERT_EQUALS(row8.weight(), 4)
 
-        gum::learning::DBRow< double, DebugCountedAlloc > row9(row4, DebugCountedAlloc< double >());
+        gum::learning::DBRow< double > row9(row4);
         TS_ASSERT_EQUALS(row9.size(), (gum::Size)4)
         TS_ASSERT_EQUALS(row9[3], 1)
         TS_ASSERT_EQUALS(row9.weight(), 2)
@@ -121,8 +118,6 @@ namespace gum_tests {
         row2.resize(10);
         TS_ASSERT_EQUALS(row2.size(), (gum::Size)10)
       }
-
-      TS_ASSERT_EQUALS(CountedAlloc::hasMemoryLeak(), false)
     }
 
 
@@ -164,27 +159,23 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(row2.size(), (gum::Size)5)
         TS_ASSERT_EQUALS(row3.row(), row2.row())
 
-        gum::learning::DBRow< gum::learning::DBCell, DebugCountedAlloc > row4(
-           4,
-           gum::learning::DBCell(1),
-           2);
+        gum::learning::DBRow< gum::learning::DBCell > row4(4, gum::learning::DBCell(1), 2);
         TS_ASSERT_EQUALS(row4.size(), (gum::Size)4)
         TS_ASSERT_EQUALS(row4[3], gum::learning::DBCell(1))
         TS_ASSERT_EQUALS(row4.weight(), 2)
 
-        gum::learning::DBRow< gum::learning::DBCell, DebugCountedAlloc > row5{
-           gum::learning::DBCell(2),
-           gum::learning::DBCell(3),
-           gum::learning::DBCell(1),
-           gum::learning::DBCell(4)};
+        gum::learning::DBRow< gum::learning::DBCell > row5{gum::learning::DBCell(2),
+                                                           gum::learning::DBCell(3),
+                                                           gum::learning::DBCell(1),
+                                                           gum::learning::DBCell(4)};
         TS_ASSERT_EQUALS(row5.size(), (gum::Size)4)
         TS_ASSERT_EQUALS(row5[2], gum::learning::DBCell(1))
         TS_ASSERT_EQUALS(row5.weight(), 1)
 
-        std::vector< gum::learning::DBCell > vect{gum::learning::DBCell(1),
+        std::vector< gum::learning::DBCell >          vect{gum::learning::DBCell(1),
                                                   gum::learning::DBCell(2),
                                                   gum::learning::DBCell(3)};
-        gum::learning::DBRow< gum::learning::DBCell, DebugCountedAlloc > row6(vect, 4);
+        gum::learning::DBRow< gum::learning::DBCell > row6(vect, 4);
         TS_ASSERT_EQUALS(row6.size(), (gum::Size)3)
         TS_ASSERT_EQUALS(row6[1], gum::learning::DBCell(2))
         TS_ASSERT_EQUALS(row6.weight(), 4)
@@ -203,9 +194,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(row8[1], gum::learning::DBCell(2))
         TS_ASSERT_EQUALS(row8.weight(), 4)
 
-        gum::learning::DBRow< gum::learning::DBCell, DebugCountedAlloc > row9(
-           row6,
-           DebugCountedAlloc< gum::learning::DBCell >());
+        gum::learning::DBRow< gum::learning::DBCell > row9(row6);
         TS_ASSERT_EQUALS(row9.size(), (gum::Size)3)
         TS_ASSERT_EQUALS(row9[1], gum::learning::DBCell(2))
         TS_ASSERT_EQUALS(row9.weight(), 4)
@@ -223,75 +212,51 @@ namespace gum_tests {
         row2.resize(10);
         TS_ASSERT_EQUALS(row2.size(), (gum::Size)10)
       }
-
-      TS_ASSERT_EQUALS(CountedAlloc::hasMemoryLeak(), false)
     }
 
     void test_row3() {
-      LearningAlloc< gum::learning::DBCell > alloc(1000);
-
-      gum::learning::DBRow< gum::learning::DBCell, LearningAlloc > row1(4,
-                                                                        gum::learning::DBCell(1),
-                                                                        2,
-                                                                        alloc);
+      gum::learning::DBRow< gum::learning::DBCell > row1(4, gum::learning::DBCell(1), 2);
       TS_ASSERT_EQUALS(row1.size(), (gum::Size)4)
       TS_ASSERT_EQUALS(row1[3], gum::learning::DBCell(1))
       TS_ASSERT_EQUALS(row1.weight(), 2)
-      TS_ASSERT_EQUALS(alloc.allocatedSize(), (gum::Size)1)
 
-      gum::learning::DBRow< gum::learning::DBCell, LearningAlloc > row2(4, 2, alloc);
+      gum::learning::DBRow< gum::learning::DBCell > row2(4, 2);
       TS_ASSERT_EQUALS(row2.size(), (gum::Size)4)
       TS_ASSERT_EQUALS(row2.weight(), 2)
-      TS_ASSERT_EQUALS(alloc.allocatedSize(), (gum::Size)2)
 
-      gum::learning::DBRow< gum::learning::DBCell, LearningAlloc > row3(row2);
+      gum::learning::DBRow< gum::learning::DBCell > row3(row2);
       TS_ASSERT_EQUALS(row3.size(), (gum::Size)4)
       TS_ASSERT_EQUALS(row3.weight(), 2)
-      TS_ASSERT_EQUALS(alloc.allocatedSize(), (gum::Size)3)
 
-      gum::learning::DBRow< gum::learning::DBCell, LearningAlloc > row4(alloc);
-      TS_ASSERT_EQUALS(alloc.allocatedSize(), (gum::Size)3)
+      gum::learning::DBRow< gum::learning::DBCell > row4;
       row4 = row3;
-      TS_ASSERT_EQUALS(alloc.allocatedSize(), (gum::Size)4)
 
-      gum::learning::DBRow< gum::learning::DBCell, LearningAlloc > row5;
-      TS_ASSERT_EQUALS(alloc.allocatedSize(), (gum::Size)4)
+      gum::learning::DBRow< gum::learning::DBCell > row5;
 
       gum::learning::DBRow< gum::learning::DBCell > row6(4, gum::learning::DBCell(1), 2);
-      gum::learning::DBRow< gum::learning::DBCell, LearningAlloc > row7(row4, alloc);
-      TS_ASSERT_EQUALS(alloc.allocatedSize(), (gum::Size)5)
+      gum::learning::DBRow< gum::learning::DBCell > row7(row4);
       TS_ASSERT_EQUALS(row7.size(), (gum::Size)4)
       TS_ASSERT_EQUALS(row7.weight(), 2)
 
-      gum::learning::DBRow< gum::learning::DBCell, LearningAlloc > row8(std::move(row7));
-      TS_ASSERT_EQUALS(alloc.allocatedSize(), (gum::Size)6)
+      gum::learning::DBRow< gum::learning::DBCell > row8(std::move(row7));
       TS_ASSERT_EQUALS(row8.size(), (gum::Size)4)
       TS_ASSERT_EQUALS(row8[3], gum::learning::DBCell())
       TS_ASSERT_EQUALS(row8.weight(), 2)
 
-      gum::learning::DBRow< gum::learning::DBCell, LearningAlloc > row9(row8);
-      TS_ASSERT_EQUALS(alloc.allocatedSize(), (gum::Size)7)
+      gum::learning::DBRow< gum::learning::DBCell > row9(row8);
 
-      gum::learning::DBRow< gum::learning::DBCell, LearningAlloc > row10(
+      gum::learning::DBRow< gum::learning::DBCell > row10(
          {gum::learning::DBCell(1), gum::learning::DBCell(2), gum::learning::DBCell(3)},
-         1.0,
-         alloc);
-      TS_ASSERT_EQUALS(alloc.allocatedSize(), (gum::Size)8)
+         1.0);
 
-      std::vector< gum::learning::DBCell >                         vect{gum::learning::DBCell(1),
+      std::vector< gum::learning::DBCell >          vect{gum::learning::DBCell(1),
                                                 gum::learning::DBCell(2),
                                                 gum::learning::DBCell(3)};
-      gum::learning::DBRow< gum::learning::DBCell, LearningAlloc > row11(vect, 1.0, alloc);
-      TS_ASSERT_EQUALS(alloc.allocatedSize(), (gum::Size)9)
+      gum::learning::DBRow< gum::learning::DBCell > row11(vect, 1.0);
 
-      std::vector< gum::learning::DBCell, LearningAlloc< gum::learning::DBCell > > vect2(
-         {gum::learning::DBCell(1), gum::learning::DBCell(2), gum::learning::DBCell(3)},
-         alloc);
-      TS_ASSERT_EQUALS(alloc.allocatedSize(), (gum::Size)10)
-      gum::learning::DBRow< gum::learning::DBCell, LearningAlloc > row12(std::move(vect2),
-                                                                         1.0,
-                                                                         alloc);
-      TS_ASSERT_EQUALS(alloc.allocatedSize(), (gum::Size)10)
+      std::vector< gum::learning::DBCell > vect2(
+         {gum::learning::DBCell(1), gum::learning::DBCell(2), gum::learning::DBCell(3)});
+      gum::learning::DBRow< gum::learning::DBCell > row12(std::move(vect2), 1.0);
     }
   };
 

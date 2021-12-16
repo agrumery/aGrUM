@@ -174,10 +174,9 @@ namespace gum {
        * @throw DuplicateElement is raised if there already exists a translator
        * reading the column passed in argument and the unique_column
        * argument is set to true. */
-      template < class Translator >
-      std::size_t insertTranslator(const Translator& translator,
-                                   const std::size_t column,
-                                   const bool        unique_column = true);
+      std::size_t insertTranslator(const DBTranslator& translator,
+                                   const std::size_t   column,
+                                   const bool          unique_column = true);
 
       /** @brief inserts a new translator for a given variable at the end of
        * the translator set

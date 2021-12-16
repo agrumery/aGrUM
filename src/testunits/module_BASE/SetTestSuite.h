@@ -24,7 +24,6 @@
 
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/testsuite_utils.h>
-#include <ressources/include/countedAlloc.h>
 
 #include <agrum/tools/core/list.h>
 #include <agrum/tools/core/set.h>
@@ -43,7 +42,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(*set, set2)
       delete set;
 
-      gum::Set< int, DebugCountedAlloc< int > > set3{1, 2, 3};
+      gum::Set< int > set3{1, 2, 3};
       set = new gum::Set< int >(set3);
       TS_ASSERT_EQUALS(*set, set3)
       delete set;
@@ -134,7 +133,7 @@ namespace gum_tests {
       TS_ASSERT_DIFFERS(t2, t3)
       TS_ASSERT_DIFFERS(t3, t2)
 
-      gum::Set< int, DebugCountedAlloc< int > > t4, t5;
+      gum::Set< int > t4, t5;
       fill(t4);
       TS_ASSERT_EQUALS(t1, t4)
       TS_ASSERT_DIFFERS(t2, t4)
@@ -172,38 +171,38 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(set.size(), (gum::Size)1)
 
-      gum::Set< int, DebugCountedAlloc< int > > set2;
+      gum::Set< int > set2;
       fill(set2);
       TS_GUM_ASSERT_THROWS_NOTHING(set2 >> 4);
     }
 
     void testIterator() {
-      gum::Set< int, DebugCountedAlloc< int > > set;
+      gum::Set< int > set;
       fill(set);
 
-      gum::Set< int, DebugCountedAlloc< int > >::iterator iter1 = set.begin();
-      gum::SetIterator< int >                             iter2 = set.begin();
+      gum::Set< int >::iterator iter1 = set.begin();
+      gum::SetIterator< int >   iter2 = set.begin();
       TS_ASSERT_EQUALS(iter1, iter2)
       TS_ASSERT_EQUALS(*iter1, 3)
       TS_ASSERT_DIFFERS(iter1, set.end())
       TS_ASSERT_DIFFERS(iter2, set.end())
 
-      gum::Set< int, DebugCountedAlloc< int > >::iterator iter3 = set.begin();
-      gum::SetIterator< int >                             iter4 = set.begin();
+      gum::Set< int >::iterator iter3 = set.begin();
+      gum::SetIterator< int >   iter4 = set.begin();
       TS_ASSERT_EQUALS(iter3, iter4)
       TS_ASSERT_EQUALS(*iter3, 3)
       TS_ASSERT_DIFFERS(iter3, set.end())
       TS_ASSERT_DIFFERS(iter4, set.end())
 
-      gum::Set< int, DebugCountedAlloc< int > >::const_iterator iter5 = set.cbegin();
-      gum::SetConstIterator< int >                              iter6 = set.cbegin();
+      gum::Set< int >::const_iterator iter5 = set.cbegin();
+      gum::SetConstIterator< int >    iter6 = set.cbegin();
       TS_ASSERT_EQUALS(iter5, iter6)
       TS_ASSERT_EQUALS(*iter5, 3)
       TS_ASSERT_DIFFERS(iter5, set.end())
       TS_ASSERT_DIFFERS(iter6, set.end())
 
-      gum::Set< int, DebugCountedAlloc< int > >::const_iterator iter7 = set.cbegin();
-      gum::SetConstIterator< int >                              iter8 = set.cbegin();
+      gum::Set< int >::const_iterator iter7 = set.cbegin();
+      gum::SetConstIterator< int >    iter8 = set.cbegin();
       TS_ASSERT_EQUALS(iter7, iter8)
       TS_ASSERT_EQUALS(*iter8, 3)
       TS_ASSERT_DIFFERS(iter7, set.cend())
@@ -232,7 +231,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(set.erase(iter));
       TS_ASSERT_EQUALS(set.size(), (gum::Size)3)
 
-      gum::Set< int, DebugCountedAlloc< int > > set2;
+      gum::Set< int > set2;
       fill(set2);
       TS_ASSERT_EQUALS(set2.size(), (gum::Size)6)
       iter = set2.beginSafe();   // safe iterator needed here
@@ -591,8 +590,7 @@ namespace gum_tests {
     }
 
     private:
-    template < typename Alloc = std::allocator< int > >
-    void fill(gum::Set< int, Alloc >& set) {
+    void fill(gum::Set< int >& set) {
       set.insert(1);
       set.insert(2);
       set.insert(3);
