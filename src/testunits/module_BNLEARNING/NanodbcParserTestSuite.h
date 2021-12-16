@@ -25,8 +25,6 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/testsuite_utils.h>
 
-#include <ressources/include/countedAlloc.h>
-
 
 namespace gum_tests {
 
@@ -34,7 +32,7 @@ namespace gum_tests {
     public:
     void testSimpleSQL() {
 
-#ifdef _ODBC
+#ifdef ODBC_
 
       try {
         const std::string dataSource = "PostgreSQL";
@@ -59,7 +57,7 @@ namespace gum_tests {
         nanodbc::connection connection(dataSource, login, password, 0);
         std::setlocale(LC_NUMERIC, current_locale.c_str());
 
-        gum::learning::NanodbcParser<> parser(connection, query);
+        gum::learning::NanodbcParser parser(connection, query);
         TS_ASSERT_EQUALS(parser.nbColumns(), std::size_t(8))
 
         parser.next();
@@ -163,12 +161,12 @@ namespace gum_tests {
         // no database. see e.what()
         std::cout << "[PostgreSQL error]";
       }
-#endif  // _ODBC
+#endif  // ODBC_
     }
 
     
     void testAlarmSQL() {
-#ifdef _ODBC
+#ifdef ODBC_
       const std::string driver_name = "SQLite3";
 #ifdef _WIN32
       driver_name += " ODBC Driver";
@@ -188,7 +186,7 @@ namespace gum_tests {
         std::cout << "[SQLite error]" << e.what();
       }
       
-#endif  // _ODBC
+#endif  // ODBC_
     }
 
 
@@ -239,7 +237,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(row.get< std::string >(6), "toto titi")
         TS_ASSERT_EQUALS(row.get< double >(7), -1.2)
         
-        gum::learning::NanodbcParser<> parser(connection, query);
+        gum::learning::NanodbcParser parser(connection, query);
         TS_ASSERT_EQUALS(parser.nbColumns(), std::size_t(8))
 
         parser.next();

@@ -26,7 +26,7 @@
 
 #include <agrum/tools/database/nanodbcParser.h>
 
-#ifdef ODBC_
+#ifdef _ODBC
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -117,4 +117,4 @@ namespace gum {
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
-#endif // ODBC_
+#endif // _ODBC

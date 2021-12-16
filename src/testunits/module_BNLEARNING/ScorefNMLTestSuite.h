@@ -112,11 +112,11 @@ namespace gum_tests {
       var.addLabel("1");
       var.addLabel("2");
 
-      gum::learning::DBTranslatorSet<> trans_set;
+      gum::learning::DBTranslatorSet trans_set;
       {
-        const std::vector< std::string >                miss;
-        gum::learning::DBTranslator4LabelizedVariable<> translator(var, miss);
-        std::vector< std::string >                      names{"A", "B", "C", "D", "E", "F"};
+        const std::vector< std::string >              miss;
+        gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
+        std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
 
         for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
           translator.setVariableName(names[i]);
@@ -125,12 +125,12 @@ namespace gum_tests {
       }
 
       // create the database
-      gum::learning::DatabaseTable<> database(trans_set);
-      std::vector< std::string >     row0{"0", "1", "0", "2", "1", "1"};
-      std::vector< std::string >     row1{"1", "2", "0", "1", "2", "2"};
-      std::vector< std::string >     row2{"2", "1", "0", "1", "1", "0"};
-      std::vector< std::string >     row3{"1", "0", "0", "0", "0", "0"};
-      std::vector< std::string >     row4{"0", "0", "0", "1", "1", "1"};
+      gum::learning::DatabaseTable database(trans_set);
+      std::vector< std::string >   row0{"0", "1", "0", "2", "1", "1"};
+      std::vector< std::string >   row1{"1", "2", "0", "1", "2", "2"};
+      std::vector< std::string >   row2{"2", "1", "0", "1", "1", "0"};
+      std::vector< std::string >   row3{"1", "0", "0", "0", "0", "0"};
+      std::vector< std::string >   row4{"0", "0", "0", "1", "1", "1"};
       for (int i = 0; i < 1000; ++i)
         database.insertRow(row0);
       for (int i = 0; i < 50; ++i)
@@ -143,17 +143,17 @@ namespace gum_tests {
         database.insertRow(row4);
 
       // create the parser
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
 
-      gum::learning::AprioriSmoothing<> apriori(database);
-      gum::learning::ScorefNML<>        score(parser, apriori);
+      gum::learning::AprioriSmoothing apriori(database);
+      gum::learning::ScorefNML        score(parser, apriori);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScorefNML<>::isAprioriCompatible(
-         gum::learning::AprioriSmoothing<>::type::type));
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScorefNML<>::isAprioriCompatible(apriori));
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScorefNML::isAprioriCompatible(
+         gum::learning::AprioriSmoothing::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScorefNML::isAprioriCompatible(apriori));
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score.isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+         score.isAprioriCompatible(gum::learning::AprioriSmoothing::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score.isAprioriCompatible(apriori));
 
       gum::NodeId                node0 = 0;
@@ -163,9 +163,9 @@ namespace gum_tests {
       std::vector< gum::NodeId > cond2{node1};
       std::vector< gum::NodeId > cond3{node3};
 
-      gum::learning::IdCondSet<> idset1(node0, cond_empty);    // #3,#0
-      gum::learning::IdCondSet<> idset2(node0, cond2, true);   // #9,#3
-      gum::learning::IdCondSet<> idset3(node0, cond3, true);   // #9,#3
+      gum::learning::IdCondSet idset1(node0, cond_empty);    // #3,#0
+      gum::learning::IdCondSet idset2(node0, cond2, true);   // #9,#3
+      gum::learning::IdCondSet idset3(node0, cond3, true);   // #9,#3
 
       // idset1: node0 | emptyset
       std::vector< double > N_ijk_1{1201.0, 126.0, 76.0};
@@ -186,27 +186,27 @@ namespace gum_tests {
       TS_ASSERT(_equal_(xscore_3, score.score(node0, cond3)))
 
 
-      gum::learning::ScorefNML<> score2(score);
+      gum::learning::ScorefNML score2(score);
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score2.isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+         score2.isAprioriCompatible(gum::learning::AprioriSmoothing::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score2.isAprioriCompatible(apriori));
 
       TS_ASSERT(_equal_(xscore_1, score2.score(node0)))
       TS_ASSERT(_equal_(xscore_2, score2.score(node0, cond2)))
       TS_ASSERT(_equal_(xscore_3, score2.score(node0, cond3)))
 
-      gum::learning::ScorefNML<> score3(std::move(score2));
+      gum::learning::ScorefNML score3(std::move(score2));
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score3.isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+         score3.isAprioriCompatible(gum::learning::AprioriSmoothing::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score3.isAprioriCompatible(apriori));
 
       TS_ASSERT(_equal_(xscore_1, score3.score(node0)))
       TS_ASSERT(_equal_(xscore_2, score3.score(node0, cond2)))
       TS_ASSERT(_equal_(xscore_3, score3.score(node0, cond3)))
 
-      gum::learning::ScorefNML<>* score4 = score3.clone();
+      gum::learning::ScorefNML* score4 = score3.clone();
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score4->isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+         score4->isAprioriCompatible(gum::learning::AprioriSmoothing::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node0)))
@@ -215,7 +215,7 @@ namespace gum_tests {
 
       score4->operator=(score);
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score4->isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+         score4->isAprioriCompatible(gum::learning::AprioriSmoothing::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node0)))
@@ -224,7 +224,7 @@ namespace gum_tests {
 
       score4->operator=(std::move(score));
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score4->isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+         score4->isAprioriCompatible(gum::learning::AprioriSmoothing::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node0)))
@@ -242,11 +242,11 @@ namespace gum_tests {
       var.addLabel("1");
       var.addLabel("2");
 
-      gum::learning::DBTranslatorSet<> trans_set;
+      gum::learning::DBTranslatorSet trans_set;
       {
-        const std::vector< std::string >                miss;
-        gum::learning::DBTranslator4LabelizedVariable<> translator(var, miss);
-        std::vector< std::string >                      names{"A", "B", "C", "D", "E", "F"};
+        const std::vector< std::string >              miss;
+        gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
+        std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
 
         for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
           translator.setVariableName(names[i]);
@@ -255,12 +255,12 @@ namespace gum_tests {
       }
 
       // create the database
-      gum::learning::DatabaseTable<> database(trans_set);
-      std::vector< std::string >     row0{"0", "1", "0", "2", "1", "1"};
-      std::vector< std::string >     row1{"1", "2", "0", "1", "2", "2"};
-      std::vector< std::string >     row2{"2", "1", "0", "1", "1", "0"};
-      std::vector< std::string >     row3{"1", "0", "0", "0", "0", "0"};
-      std::vector< std::string >     row4{"0", "0", "0", "1", "1", "1"};
+      gum::learning::DatabaseTable database(trans_set);
+      std::vector< std::string >   row0{"0", "1", "0", "2", "1", "1"};
+      std::vector< std::string >   row1{"1", "2", "0", "1", "2", "2"};
+      std::vector< std::string >   row2{"2", "1", "0", "1", "1", "0"};
+      std::vector< std::string >   row3{"1", "0", "0", "0", "0", "0"};
+      std::vector< std::string >   row4{"0", "0", "0", "1", "1", "1"};
       for (int i = 0; i < 1000; ++i)
         database.insertRow(row0);
       for (int i = 0; i < 50; ++i)
@@ -273,8 +273,8 @@ namespace gum_tests {
         database.insertRow(row4);
 
       // create the parser
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
 
       gum::Bijection< gum::NodeId, std::size_t > nodeId2columns;
       gum::NodeId                                node0 = 0;
@@ -290,23 +290,23 @@ namespace gum_tests {
       nodeId2columns.insert(node4, std::size_t(5));
       nodeId2columns.insert(node5, std::size_t(1));
 
-      gum::learning::AprioriSmoothing<> apriori(database, nodeId2columns);
-      gum::learning::ScorefNML<>        score(parser, apriori, nodeId2columns);
+      gum::learning::AprioriSmoothing apriori(database, nodeId2columns);
+      gum::learning::ScorefNML        score(parser, apriori, nodeId2columns);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScorefNML<>::isAprioriCompatible(
-         gum::learning::AprioriSmoothing<>::type::type));
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScorefNML<>::isAprioriCompatible(apriori));
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScorefNML::isAprioriCompatible(
+         gum::learning::AprioriSmoothing::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScorefNML::isAprioriCompatible(apriori));
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score.isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+         score.isAprioriCompatible(gum::learning::AprioriSmoothing::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score.isAprioriCompatible(apriori));
 
       std::vector< gum::NodeId > cond_empty;
       std::vector< gum::NodeId > cond2{node5};
       std::vector< gum::NodeId > cond3{node1};
 
-      gum::learning::IdCondSet<> idset1(node2, cond_empty);    // #3,#0
-      gum::learning::IdCondSet<> idset2(node2, cond2, true);   // #9,#3
-      gum::learning::IdCondSet<> idset3(node2, cond3, true);   // #9,#3
+      gum::learning::IdCondSet idset1(node2, cond_empty);    // #3,#0
+      gum::learning::IdCondSet idset2(node2, cond2, true);   // #9,#3
+      gum::learning::IdCondSet idset3(node2, cond3, true);   // #9,#3
 
       // idset1: node2 | emptyset
       std::vector< double > N_ijk_1{1201.0, 126.0, 76.0};
@@ -328,27 +328,27 @@ namespace gum_tests {
       TS_ASSERT(_equal_(xscore_3, score.score(node2, cond3)))
 
 
-      gum::learning::ScorefNML<> score2(score);
+      gum::learning::ScorefNML score2(score);
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score2.isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+         score2.isAprioriCompatible(gum::learning::AprioriSmoothing::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score2.isAprioriCompatible(apriori));
 
       TS_ASSERT(_equal_(xscore_1, score2.score(node2)))
       TS_ASSERT(_equal_(xscore_2, score2.score(node2, cond2)))
       TS_ASSERT(_equal_(xscore_3, score2.score(node2, cond3)))
 
-      gum::learning::ScorefNML<> score3(std::move(score2));
+      gum::learning::ScorefNML score3(std::move(score2));
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score3.isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+         score3.isAprioriCompatible(gum::learning::AprioriSmoothing::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score3.isAprioriCompatible(apriori));
 
       TS_ASSERT(_equal_(xscore_1, score3.score(node2)))
       TS_ASSERT(_equal_(xscore_2, score3.score(node2, cond2)))
       TS_ASSERT(_equal_(xscore_3, score3.score(node2, cond3)))
 
-      gum::learning::ScorefNML<>* score4 = score3.clone();
+      gum::learning::ScorefNML* score4 = score3.clone();
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score4->isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+         score4->isAprioriCompatible(gum::learning::AprioriSmoothing::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node2)))
@@ -357,7 +357,7 @@ namespace gum_tests {
 
       score4->operator=(score);
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score4->isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+         score4->isAprioriCompatible(gum::learning::AprioriSmoothing::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node2)))
@@ -366,7 +366,7 @@ namespace gum_tests {
 
       score4->operator=(std::move(score));
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score4->isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+         score4->isAprioriCompatible(gum::learning::AprioriSmoothing::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node2)))
@@ -384,11 +384,11 @@ namespace gum_tests {
       var.addLabel("1");
       var.addLabel("2");
 
-      gum::learning::DBTranslatorSet<> trans_set;
+      gum::learning::DBTranslatorSet trans_set;
       {
-        const std::vector< std::string >                miss;
-        gum::learning::DBTranslator4LabelizedVariable<> translator(var, miss);
-        std::vector< std::string >                      names{"A", "B", "C", "D", "E", "F"};
+        const std::vector< std::string >              miss;
+        gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
+        std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
 
         for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
           translator.setVariableName(names[i]);
@@ -397,12 +397,12 @@ namespace gum_tests {
       }
 
       // create the database
-      gum::learning::DatabaseTable<> database(trans_set);
-      std::vector< std::string >     row0{"0", "1", "0", "2", "1", "1"};
-      std::vector< std::string >     row1{"1", "2", "0", "1", "2", "2"};
-      std::vector< std::string >     row2{"2", "1", "0", "1", "1", "0"};
-      std::vector< std::string >     row3{"1", "0", "0", "0", "0", "0"};
-      std::vector< std::string >     row4{"0", "0", "0", "1", "1", "1"};
+      gum::learning::DatabaseTable database(trans_set);
+      std::vector< std::string >   row0{"0", "1", "0", "2", "1", "1"};
+      std::vector< std::string >   row1{"1", "2", "0", "1", "2", "2"};
+      std::vector< std::string >   row2{"2", "1", "0", "1", "1", "0"};
+      std::vector< std::string >   row3{"1", "0", "0", "0", "0", "0"};
+      std::vector< std::string >   row4{"0", "0", "0", "1", "1", "1"};
       for (int i = 0; i < 1000; ++i)
         database.insertRow(row0);
       for (int i = 0; i < 50; ++i)
@@ -415,19 +415,19 @@ namespace gum_tests {
         database.insertRow(row4);
 
       // create the parser
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
 
       std::vector< std::pair< std::size_t, std::size_t > > ranges{{800, 1000}, {1050, 1400}};
 
-      gum::learning::AprioriSmoothing<> apriori(database);
-      gum::learning::ScorefNML<>        score(parser, apriori, ranges);
+      gum::learning::AprioriSmoothing apriori(database);
+      gum::learning::ScorefNML        score(parser, apriori, ranges);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScorefNML<>::isAprioriCompatible(
-         gum::learning::AprioriSmoothing<>::type::type));
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScorefNML<>::isAprioriCompatible(apriori));
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScorefNML::isAprioriCompatible(
+         gum::learning::AprioriSmoothing::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScorefNML::isAprioriCompatible(apriori));
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score.isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+         score.isAprioriCompatible(gum::learning::AprioriSmoothing::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score.isAprioriCompatible(apriori));
 
       gum::NodeId                node0 = 0;
@@ -437,9 +437,9 @@ namespace gum_tests {
       std::vector< gum::NodeId > cond2{node1};
       std::vector< gum::NodeId > cond3{node3};
 
-      gum::learning::IdCondSet<> idset1(node0, cond_empty);    // #3,#0
-      gum::learning::IdCondSet<> idset2(node0, cond2, true);   // #9,#3
-      gum::learning::IdCondSet<> idset3(node0, cond3, true);   // #9,#3
+      gum::learning::IdCondSet idset1(node0, cond_empty);    // #3,#0
+      gum::learning::IdCondSet idset2(node0, cond2, true);   // #9,#3
+      gum::learning::IdCondSet idset3(node0, cond3, true);   // #9,#3
 
       // idset1: node0 | emptyset
       std::vector< double > N_ijk_1{401.0, 76.0, 76.0};
@@ -460,27 +460,27 @@ namespace gum_tests {
       TS_ASSERT(_equal_(xscore_3, score.score(node0, cond3)))
 
 
-      gum::learning::ScorefNML<> score2(score);
+      gum::learning::ScorefNML score2(score);
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score2.isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+         score2.isAprioriCompatible(gum::learning::AprioriSmoothing::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score2.isAprioriCompatible(apriori));
 
       TS_ASSERT(_equal_(xscore_1, score2.score(node0)))
       TS_ASSERT(_equal_(xscore_2, score2.score(node0, cond2)))
       TS_ASSERT(_equal_(xscore_3, score2.score(node0, cond3)))
 
-      gum::learning::ScorefNML<> score3(std::move(score2));
+      gum::learning::ScorefNML score3(std::move(score2));
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score3.isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+         score3.isAprioriCompatible(gum::learning::AprioriSmoothing::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score3.isAprioriCompatible(apriori));
 
       TS_ASSERT(_equal_(xscore_1, score3.score(node0)))
       TS_ASSERT(_equal_(xscore_2, score3.score(node0, cond2)))
       TS_ASSERT(_equal_(xscore_3, score3.score(node0, cond3)))
 
-      gum::learning::ScorefNML<>* score4 = score3.clone();
+      gum::learning::ScorefNML* score4 = score3.clone();
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score4->isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+         score4->isAprioriCompatible(gum::learning::AprioriSmoothing::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node0)))
@@ -489,7 +489,7 @@ namespace gum_tests {
 
       score4->operator=(score);
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score4->isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+         score4->isAprioriCompatible(gum::learning::AprioriSmoothing::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node0)))
@@ -498,7 +498,7 @@ namespace gum_tests {
 
       score4->operator=(std::move(score));
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score4->isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+         score4->isAprioriCompatible(gum::learning::AprioriSmoothing::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node0)))
@@ -516,11 +516,11 @@ namespace gum_tests {
       var.addLabel("1");
       var.addLabel("2");
 
-      gum::learning::DBTranslatorSet<> trans_set;
+      gum::learning::DBTranslatorSet trans_set;
       {
-        const std::vector< std::string >                miss;
-        gum::learning::DBTranslator4LabelizedVariable<> translator(var, miss);
-        std::vector< std::string >                      names{"A", "B", "C", "D", "E", "F"};
+        const std::vector< std::string >              miss;
+        gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
+        std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
 
         for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
           translator.setVariableName(names[i]);
@@ -529,12 +529,12 @@ namespace gum_tests {
       }
 
       // create the database
-      gum::learning::DatabaseTable<> database(trans_set);
-      std::vector< std::string >     row0{"0", "1", "0", "2", "1", "1"};
-      std::vector< std::string >     row1{"1", "2", "0", "1", "2", "2"};
-      std::vector< std::string >     row2{"2", "1", "0", "1", "1", "0"};
-      std::vector< std::string >     row3{"1", "0", "0", "0", "0", "0"};
-      std::vector< std::string >     row4{"0", "0", "0", "1", "1", "1"};
+      gum::learning::DatabaseTable database(trans_set);
+      std::vector< std::string >   row0{"0", "1", "0", "2", "1", "1"};
+      std::vector< std::string >   row1{"1", "2", "0", "1", "2", "2"};
+      std::vector< std::string >   row2{"2", "1", "0", "1", "1", "0"};
+      std::vector< std::string >   row3{"1", "0", "0", "0", "0", "0"};
+      std::vector< std::string >   row4{"0", "0", "0", "1", "1", "1"};
       for (int i = 0; i < 1000; ++i)
         database.insertRow(row0);
       for (int i = 0; i < 50; ++i)
@@ -547,8 +547,8 @@ namespace gum_tests {
         database.insertRow(row4);
 
       // create the parser
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
 
       std::vector< std::pair< std::size_t, std::size_t > > ranges{{800, 1000}, {1050, 1400}};
 
@@ -566,23 +566,23 @@ namespace gum_tests {
       nodeId2columns.insert(node4, std::size_t(5));
       nodeId2columns.insert(node5, std::size_t(1));
 
-      gum::learning::AprioriSmoothing<> apriori(database, nodeId2columns);
-      gum::learning::ScorefNML<>        score(parser, apriori, ranges, nodeId2columns);
+      gum::learning::AprioriSmoothing apriori(database, nodeId2columns);
+      gum::learning::ScorefNML        score(parser, apriori, ranges, nodeId2columns);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScorefNML<>::isAprioriCompatible(
-         gum::learning::AprioriSmoothing<>::type::type));
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScorefNML<>::isAprioriCompatible(apriori));
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScorefNML::isAprioriCompatible(
+         gum::learning::AprioriSmoothing::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScorefNML::isAprioriCompatible(apriori));
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score.isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+         score.isAprioriCompatible(gum::learning::AprioriSmoothing::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score.isAprioriCompatible(apriori));
 
       std::vector< gum::NodeId > cond_empty;
       std::vector< gum::NodeId > cond2{node5};
       std::vector< gum::NodeId > cond3{node1};
 
-      gum::learning::IdCondSet<> idset1(node2, cond_empty);    // #3,#0
-      gum::learning::IdCondSet<> idset2(node2, cond2, true);   // #9,#3
-      gum::learning::IdCondSet<> idset3(node2, cond3, true);   // #9,#3
+      gum::learning::IdCondSet idset1(node2, cond_empty);    // #3,#0
+      gum::learning::IdCondSet idset2(node2, cond2, true);   // #9,#3
+      gum::learning::IdCondSet idset3(node2, cond3, true);   // #9,#3
 
       // idset1: node2 | emptyset
       std::vector< double > N_ijk_1{401.0, 76.0, 76.0};
@@ -604,27 +604,27 @@ namespace gum_tests {
       TS_ASSERT(_equal_(xscore_3, score.score(node2, cond3)))
 
 
-      gum::learning::ScorefNML<> score2(score);
+      gum::learning::ScorefNML score2(score);
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score2.isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+         score2.isAprioriCompatible(gum::learning::AprioriSmoothing::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score2.isAprioriCompatible(apriori));
 
       TS_ASSERT(_equal_(xscore_1, score2.score(node2)))
       TS_ASSERT(_equal_(xscore_2, score2.score(node2, cond2)))
       TS_ASSERT(_equal_(xscore_3, score2.score(node2, cond3)))
 
-      gum::learning::ScorefNML<> score3(std::move(score2));
+      gum::learning::ScorefNML score3(std::move(score2));
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score3.isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+         score3.isAprioriCompatible(gum::learning::AprioriSmoothing::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score3.isAprioriCompatible(apriori));
 
       TS_ASSERT(_equal_(xscore_1, score3.score(node2)))
       TS_ASSERT(_equal_(xscore_2, score3.score(node2, cond2)))
       TS_ASSERT(_equal_(xscore_3, score3.score(node2, cond3)))
 
-      gum::learning::ScorefNML<>* score4 = score3.clone();
+      gum::learning::ScorefNML* score4 = score3.clone();
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score4->isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+         score4->isAprioriCompatible(gum::learning::AprioriSmoothing::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node2)))
@@ -633,7 +633,7 @@ namespace gum_tests {
 
       score4->operator=(score);
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score4->isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+         score4->isAprioriCompatible(gum::learning::AprioriSmoothing::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node2)))
@@ -642,7 +642,7 @@ namespace gum_tests {
 
       score4->operator=(std::move(score));
       TS_GUM_ASSERT_THROWS_NOTHING(
-         score4->isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+         score4->isAprioriCompatible(gum::learning::AprioriSmoothing::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node2)))
@@ -660,11 +660,11 @@ namespace gum_tests {
       var.addLabel("1");
       var.addLabel("2");
 
-      gum::learning::DBTranslatorSet<> trans_set;
+      gum::learning::DBTranslatorSet trans_set;
       {
-        const std::vector< std::string >                miss;
-        gum::learning::DBTranslator4LabelizedVariable<> translator(var, miss);
-        std::vector< std::string >                      names{"A", "B", "C", "D", "E", "F"};
+        const std::vector< std::string >              miss;
+        gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
+        std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
 
         for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
           translator.setVariableName(names[i]);
@@ -673,12 +673,12 @@ namespace gum_tests {
       }
 
       // create the database
-      gum::learning::DatabaseTable<> database(trans_set);
-      std::vector< std::string >     row0{"0", "1", "0", "2", "1", "1"};
-      std::vector< std::string >     row1{"1", "2", "0", "1", "2", "2"};
-      std::vector< std::string >     row2{"2", "1", "0", "1", "1", "0"};
-      std::vector< std::string >     row3{"1", "0", "0", "0", "0", "0"};
-      std::vector< std::string >     row4{"0", "0", "0", "1", "1", "1"};
+      gum::learning::DatabaseTable database(trans_set);
+      std::vector< std::string >   row0{"0", "1", "0", "2", "1", "1"};
+      std::vector< std::string >   row1{"1", "2", "0", "1", "2", "2"};
+      std::vector< std::string >   row2{"2", "1", "0", "1", "1", "0"};
+      std::vector< std::string >   row3{"1", "0", "0", "0", "0", "0"};
+      std::vector< std::string >   row4{"0", "0", "0", "1", "1", "1"};
       for (int i = 0; i < 1000; ++i)
         database.insertRow(row0);
       for (int i = 0; i < 50; ++i)
@@ -691,22 +691,22 @@ namespace gum_tests {
         database.insertRow(row4);
 
       // create the parser
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
 
       std::vector< std::pair< std::size_t, std::size_t > > ranges{{800, 1000}, {1050, 1400}};
 
-      gum::learning::AprioriSmoothing<> apriori(database);
+      gum::learning::AprioriSmoothing apriori(database);
 
       for (std::size_t i = std::size_t(1); i < std::size_t(24); ++i) {
-        gum::learning::ScorefNML<> score(parser, apriori, ranges);
+        gum::learning::ScorefNML score(parser, apriori, ranges);
         score.setMaxNbThreads(i);
 
-        TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScorefNML<>::isAprioriCompatible(
-           gum::learning::AprioriSmoothing<>::type::type));
-        TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScorefNML<>::isAprioriCompatible(apriori));
+        TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScorefNML::isAprioriCompatible(
+           gum::learning::AprioriSmoothing::type::type));
+        TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScorefNML::isAprioriCompatible(apriori));
         TS_GUM_ASSERT_THROWS_NOTHING(
-           score.isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+           score.isAprioriCompatible(gum::learning::AprioriSmoothing::type::type));
         TS_GUM_ASSERT_THROWS_NOTHING(score.isAprioriCompatible(apriori));
 
         gum::NodeId                node0 = 0;
@@ -716,9 +716,9 @@ namespace gum_tests {
         std::vector< gum::NodeId > cond2{node1};
         std::vector< gum::NodeId > cond3{node3};
 
-        gum::learning::IdCondSet<> idset1(node0, cond_empty);    // #3,#0
-        gum::learning::IdCondSet<> idset2(node0, cond2, true);   // #9,#3
-        gum::learning::IdCondSet<> idset3(node0, cond3, true);   // #9,#3
+        gum::learning::IdCondSet idset1(node0, cond_empty);    // #3,#0
+        gum::learning::IdCondSet idset2(node0, cond2, true);   // #9,#3
+        gum::learning::IdCondSet idset3(node0, cond3, true);   // #9,#3
 
         // idset1: node0 | emptyset
         std::vector< double > N_ijk_1{401.0, 76.0, 76.0};
@@ -739,27 +739,27 @@ namespace gum_tests {
         TS_ASSERT(_equal_(xscore_3, score.score(node0, cond3)))
 
 
-        gum::learning::ScorefNML<> score2(score);
+        gum::learning::ScorefNML score2(score);
         TS_GUM_ASSERT_THROWS_NOTHING(
-           score2.isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+           score2.isAprioriCompatible(gum::learning::AprioriSmoothing::type::type));
         TS_GUM_ASSERT_THROWS_NOTHING(score2.isAprioriCompatible(apriori));
 
         TS_ASSERT(_equal_(xscore_1, score2.score(node0)))
         TS_ASSERT(_equal_(xscore_2, score2.score(node0, cond2)))
         TS_ASSERT(_equal_(xscore_3, score2.score(node0, cond3)))
 
-        gum::learning::ScorefNML<> score3(std::move(score2));
+        gum::learning::ScorefNML score3(std::move(score2));
         TS_GUM_ASSERT_THROWS_NOTHING(
-           score3.isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+           score3.isAprioriCompatible(gum::learning::AprioriSmoothing::type::type));
         TS_GUM_ASSERT_THROWS_NOTHING(score3.isAprioriCompatible(apriori));
 
         TS_ASSERT(_equal_(xscore_1, score3.score(node0)))
         TS_ASSERT(_equal_(xscore_2, score3.score(node0, cond2)))
         TS_ASSERT(_equal_(xscore_3, score3.score(node0, cond3)))
 
-        gum::learning::ScorefNML<>* score4 = score3.clone();
+        gum::learning::ScorefNML* score4 = score3.clone();
         TS_GUM_ASSERT_THROWS_NOTHING(
-           score4->isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+           score4->isAprioriCompatible(gum::learning::AprioriSmoothing::type::type));
         TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
         TS_ASSERT(_equal_(xscore_1, score4->score(node0)))
@@ -768,7 +768,7 @@ namespace gum_tests {
 
         score4->operator=(score);
         TS_GUM_ASSERT_THROWS_NOTHING(
-           score4->isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+           score4->isAprioriCompatible(gum::learning::AprioriSmoothing::type::type));
         TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
         TS_ASSERT(_equal_(xscore_1, score4->score(node0)))
@@ -777,7 +777,7 @@ namespace gum_tests {
 
         score4->operator=(std::move(score));
         TS_GUM_ASSERT_THROWS_NOTHING(
-           score4->isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+           score4->isAprioriCompatible(gum::learning::AprioriSmoothing::type::type));
         TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
         TS_ASSERT(_equal_(xscore_1, score4->score(node0)))

@@ -24,7 +24,7 @@
  * @author Lionel TORTI, Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#ifdef ODBC_
+#ifdef _ODBC
 
 #  ifndef GUM_NANODBC_PARSER_H
 #    define GUM_NANODBC_PARSER_H
@@ -126,4 +126,4 @@ namespace gum {
 
 #  endif   // GUM_NANODBC_PARSER_H
 
-#endif   // ODBC_
+#endif   // _ODBC

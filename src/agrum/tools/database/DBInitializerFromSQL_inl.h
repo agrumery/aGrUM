@@ -26,7 +26,8 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#ifdef ODBC_
+#ifdef _ODBC
+
 #  include <clocale>
 
 #  ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -58,4 +59,4 @@ namespace gum {
 
 #  endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
-#endif /* ODBC_ */
+#endif /* _ODBC */

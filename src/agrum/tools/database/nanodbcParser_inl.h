@@ -24,7 +24,7 @@
  * @author Lionel TORTI, Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#ifdef ODBC_
+#ifdef _ODBC
 
 #  ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -42,7 +42,7 @@ namespace gum {
 
     // returns the current parsed line.
     INLINE
-    const std::vector< std::string, ALLOC< std::string > >& NanodbcParser::current() const {
+    const std::vector< std::string >& NanodbcParser::current() const {
       if (!_data_.empty()) { return _data_; }
 
       GUM_ERROR(NullElement, "No parsed data")
@@ -65,4 +65,4 @@ namespace gum {
 
 #  endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
-#endif   // ODBC_
+#endif   // _ODBC

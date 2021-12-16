@@ -28,7 +28,8 @@
 
 #include <agrum/tools/database/DBInitializerFromSQL.h>
 
-#ifdef ODBC_
+#ifdef _ODBC
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 /// include the inlined functions if necessary
@@ -199,4 +200,4 @@ namespace gum {
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
-#endif // ODBC_
+#endif // _ODBC

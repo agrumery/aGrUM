@@ -54,7 +54,7 @@ namespace gum_tests {
             const std::pair< gum::NodeId, double >& b) -> bool { return a.second > b.second; });
     }
 
-    void _compute_scores_(gum::learning::ScoreK2<>&             score,
+    void _compute_scores_(gum::learning::ScoreK2&               score,
                           const gum::DAG&                       graph,
                           std::vector< std::vector< double > >& all_scores,
                           std::vector< gum::NodeId >&           best_nodes,
@@ -115,11 +115,11 @@ namespace gum_tests {
       var.addLabel("1");
       var.addLabel("2");
 
-      gum::learning::DBTranslatorSet<> trans_set;
+      gum::learning::DBTranslatorSet trans_set;
       {
-        const std::vector< std::string >                miss;
-        gum::learning::DBTranslator4LabelizedVariable<> translator(var, miss);
-        std::vector< std::string >                      names{"A", "B", "C", "D", "E", "F"};
+        const std::vector< std::string >              miss;
+        gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
+        std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
 
         for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
           translator.setVariableName(names[i]);
@@ -128,12 +128,12 @@ namespace gum_tests {
       }
 
       // create the database
-      gum::learning::DatabaseTable<> database(trans_set);
-      std::vector< std::string >     row0{"0", "1", "0", "2", "1", "1"};
-      std::vector< std::string >     row1{"1", "2", "0", "1", "2", "2"};
-      std::vector< std::string >     row2{"2", "1", "0", "1", "1", "0"};
-      std::vector< std::string >     row3{"1", "0", "0", "0", "0", "0"};
-      std::vector< std::string >     row4{"0", "0", "0", "1", "1", "1"};
+      gum::learning::DatabaseTable database(trans_set);
+      std::vector< std::string >   row0{"0", "1", "0", "2", "1", "1"};
+      std::vector< std::string >   row1{"1", "2", "0", "1", "2", "2"};
+      std::vector< std::string >   row2{"2", "1", "0", "1", "1", "0"};
+      std::vector< std::string >   row3{"1", "0", "0", "0", "0", "0"};
+      std::vector< std::string >   row4{"0", "0", "0", "1", "1", "1"};
       for (int i = 0; i < 1000; ++i)
         database.insertRow(row0);
       for (int i = 0; i < 50; ++i)
@@ -146,11 +146,11 @@ namespace gum_tests {
         database.insertRow(row4);
 
       // create the parser
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
 
-      gum::learning::AprioriSmoothing<> apriori(database);
-      gum::learning::ScoreK2<>          score(parser, apriori);
+      gum::learning::AprioriSmoothing apriori(database);
+      gum::learning::ScoreK2          score(parser, apriori);
 
       gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDiGraph >
          struct_constraint;

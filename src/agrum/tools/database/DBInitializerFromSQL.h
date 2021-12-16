@@ -25,7 +25,7 @@
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
-#ifdef ODBC_
+#ifdef _ODBC
 
 #  ifndef GUM_LEARNING_DB_INITILIALIZER_FROM_SQL_H
 #    define GUM_LEARNING_DB_INITILIALIZER_FROM_SQL_H
@@ -257,4 +257,4 @@ namespace gum {
 
 #  endif /* GUM_LEARNING_DB_INITILIALIZER_FROM_SQL_H */
 
-#endif /* ODBC_ */
+#endif /* _ODBC */
