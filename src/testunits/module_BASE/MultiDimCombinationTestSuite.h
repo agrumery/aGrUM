@@ -107,8 +107,8 @@ namespace gum_tests {
         TS_ASSERT(t6)
         TS_ASSERT_EQUALS(*t6, *t5)
 
-        gum::Set< const gum::IScheduleMultiDim<>* >    sched_set;
-        std::vector< const gum::IScheduleMultiDim<>* > sched_vect;
+        gum::Set< const gum::IScheduleMultiDim* >    sched_set;
+        std::vector< const gum::IScheduleMultiDim* > sched_vect;
         for (const auto pot: set) {
           auto new_sched = new gum::ScheduleMultiDim< gum::Potential< double > >(*pot, false);
           sched_set.insert(new_sched);
@@ -127,7 +127,7 @@ namespace gum_tests {
         for (auto op: ops_plus_resV.first)
           delete op;
 
-        gum::Schedule<> scheduleS;
+        gum::Schedule scheduleS;
         for (const auto pot: sched_set)
           scheduleS.insertScheduleMultiDim(*pot);
         const auto ptrResS       = xxx.schedule(scheduleS, sched_set);
@@ -139,7 +139,7 @@ namespace gum_tests {
           else {
             for (const auto node: avail_nodes) {
               auto& op = scheduleS.operation(node);
-              const_cast< gum::ScheduleOperation<>& >(op).execute();
+              const_cast< gum::ScheduleOperation& >(op).execute();
               std::vector< gum::NodeId > new_avail;
               scheduleS.updateAfterExecution(node, new_avail);
               break;
@@ -148,7 +148,7 @@ namespace gum_tests {
         } while (not_completed);
         TS_ASSERT(ptrResS->variablesSequence().size() == 7)
 
-        gum::Schedule<> scheduleV;
+        gum::Schedule scheduleV;
         for (const auto pot: sched_set)
           scheduleV.insertScheduleMultiDim(*pot);
         const auto ptrResV = xxx.schedule(scheduleV, sched_vect);
@@ -160,7 +160,7 @@ namespace gum_tests {
           else {
             for (const auto node: avail_nodes) {
               auto& op = scheduleV.operation(node);
-              const_cast< gum::ScheduleOperation<>& >(op).execute();
+              const_cast< gum::ScheduleOperation& >(op).execute();
               std::vector< gum::NodeId > new_avail;
               scheduleV.updateAfterExecution(node, new_avail);
               break;
@@ -279,8 +279,8 @@ namespace gum_tests {
         TS_ASSERT(t6)
         TS_ASSERT_EQUALS(*t6, *t5)
 
-        gum::Set< const gum::IScheduleMultiDim<>* >    sched_set;
-        std::vector< const gum::IScheduleMultiDim<>* > sched_vect;
+        gum::Set< const gum::IScheduleMultiDim* >    sched_set;
+        std::vector< const gum::IScheduleMultiDim* > sched_vect;
         for (const auto pot: set) {
           auto new_sched = new gum::ScheduleMultiDim< gum::Potential< double > >(*pot, false);
           sched_set.insert(new_sched);
@@ -301,7 +301,7 @@ namespace gum_tests {
         delete ops_plus_resS.second;
         delete ops_plus_resV.second;
 
-        gum::Schedule<> scheduleS;
+        gum::Schedule scheduleS;
         for (const auto pot: sched_set)
           scheduleS.insertScheduleMultiDim(*pot);
         const auto ptrResS       = xxx.schedule(scheduleS, sched_set, true);
@@ -313,7 +313,7 @@ namespace gum_tests {
           else {
             for (const auto node: avail_nodes) {
               auto& op = scheduleS.operation(node);
-              const_cast< gum::ScheduleOperation<>& >(op).execute();
+              const_cast< gum::ScheduleOperation& >(op).execute();
               std::vector< gum::NodeId > new_avail;
               scheduleS.updateAfterExecution(node, new_avail);
               break;
@@ -322,7 +322,7 @@ namespace gum_tests {
         } while (not_completed);
         TS_ASSERT(ptrResS->variablesSequence().size() == 7)
 
-        gum::Schedule<> scheduleV;
+        gum::Schedule scheduleV;
         for (const auto pot: sched_set)
           scheduleV.insertScheduleMultiDim(*pot);
         const auto ptrResV = xxx.schedule(scheduleV, sched_vect, true);
@@ -334,7 +334,7 @@ namespace gum_tests {
           else {
             for (const auto node: avail_nodes) {
               auto& op = scheduleV.operation(node);
-              const_cast< gum::ScheduleOperation<>& >(op).execute();
+              const_cast< gum::ScheduleOperation& >(op).execute();
               std::vector< gum::NodeId > new_avail;
               scheduleV.updateAfterExecution(node, new_avail);
               break;

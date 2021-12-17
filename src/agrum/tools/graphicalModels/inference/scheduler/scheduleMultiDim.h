@@ -306,6 +306,14 @@ namespace gum {
     /// remove the table if it is contained in the ScheduleMultiDim
     void _removeTable_();
 
+    /** @brief metaprogramming to get the types of the elements stored into the
+     * ScheduleMultidims */
+    template<typename T>
+    struct ElementType { using value_type = T; };
+    template< template< typename, typename ... > class CONTAINER,
+              typename T, typename ...Args >
+    struct ElementType< CONTAINER< T, Args... > > { using value_type = T; };
+
   };
 
 } /* namespace gum */

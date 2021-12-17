@@ -381,7 +381,7 @@ namespace gum {
   /// returns the sizeof of the elements stored into the ScheduleMultiDim
   template < typename TABLE >
   INLINE double ScheduleMultiDim< TABLE >::sizeOfContent() const {
-    return double(sizeof(TABLE));
+    return double(sizeof(typename ElementType< TABLE >::value_type));
   }
 
 

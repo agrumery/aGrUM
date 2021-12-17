@@ -940,14 +940,14 @@ namespace gum_tests {
       }
 
       {
-        gum::Schedule<> schedule;
-        auto            xt1    = schedule.insertTable(t1, false);
-        const auto      ptrRes = Proj.schedule(schedule, xt1, proj_set);
+        gum::Schedule schedule;
+        auto          xt1    = schedule.insertTable(t1, false);
+        const auto    ptrRes = Proj.schedule(schedule, xt1, proj_set);
 
         auto       avail_nodes = schedule.availableOperations();
         const auto node        = *(avail_nodes.begin());
         auto&      op          = schedule.operation(node);
-        const_cast< gum::ScheduleOperation<>& >(op).execute();
+        const_cast< gum::ScheduleOperation& >(op).execute();
 
         auto t2 = t1.margMaxOut(proj_set);
         TS_ASSERT(dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(ptrRes)
@@ -992,7 +992,7 @@ namespace gum_tests {
       auto                                              xxx1 = Proj.operations(&t6multi, del_vars);
       delete xxx1.first;
 
-      gum::Schedule<> schedule;
+      gum::Schedule schedule;
       schedule.insertScheduleMultiDim(t6multi);
 
       const auto t6sched = Proj.schedule(schedule, &t6multi, del_vars);
@@ -1024,8 +1024,8 @@ namespace gum_tests {
       TS_ASSERT(t7sched->isAbstract())
       avail = schedule.availableOperations();
       TS_ASSERT(avail.size() == 1)
-      const gum::NodeId node = *avail.begin();
-      auto& proj_ops         = const_cast< gum::ScheduleOperation<>& >(schedule.operation(node));
+      const gum::NodeId node     = *avail.begin();
+      auto&             proj_ops = const_cast< gum::ScheduleOperation& >(schedule.operation(node));
       proj_ops.execute();
       std::vector< gum::NodeId > xavail;
       schedule.updateAfterExecution(node, xavail, false);
@@ -1068,14 +1068,14 @@ namespace gum_tests {
       gum::MultiDimProjection< gum::Potential< double > > Proj(myMax);
 
       {
-        gum::Schedule<> schedule;
-        auto            xt1    = schedule.insertTable(t1, false);
-        const auto      ptrRes = Proj.schedule(schedule, xt1, proj_set, true);
+        gum::Schedule schedule;
+        auto          xt1    = schedule.insertTable(t1, false);
+        const auto    ptrRes = Proj.schedule(schedule, xt1, proj_set, true);
 
         auto       avail_nodes = schedule.availableOperations();
         const auto node        = *(avail_nodes.begin());
         auto&      op          = schedule.operation(node);
-        const_cast< gum::ScheduleOperation<>& >(op).execute();
+        const_cast< gum::ScheduleOperation& >(op).execute();
 
         auto t2 = t1.margMaxOut(proj_set);
         TS_ASSERT(dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(ptrRes)
@@ -1120,11 +1120,11 @@ namespace gum_tests {
       TS_ASSERT(mem_usage.first == 1.0 * sizeof(double) + sizeof(gum::Potential< double >))
       TS_ASSERT(mem_usage.second == 1.0 * sizeof(double) + sizeof(gum::Potential< double >))
       gum::ScheduleMultiDim< gum::Potential< double > > t6multi(t6, false);
-      auto                                              xxx1 = Proj.operations(&t6multi, del_vars, true);
+      auto xxx1 = Proj.operations(&t6multi, del_vars, true);
       delete xxx1.first;
       delete xxx1.second;
 
-      gum::Schedule<> schedule;
+      gum::Schedule schedule;
       schedule.insertScheduleMultiDim(t6multi);
 
       const auto t6sched = Proj.schedule(schedule, &t6multi, del_vars, true);
@@ -1157,8 +1157,8 @@ namespace gum_tests {
       TS_ASSERT(t7sched->isAbstract())
       avail = schedule.availableOperations();
       TS_ASSERT(avail.size() == 1)
-      const gum::NodeId node = *avail.begin();
-      auto& proj_ops         = const_cast< gum::ScheduleOperation<>& >(schedule.operation(node));
+      const gum::NodeId node     = *avail.begin();
+      auto&             proj_ops = const_cast< gum::ScheduleOperation& >(schedule.operation(node));
       proj_ops.execute();
       std::vector< gum::NodeId > xavail;
       schedule.updateAfterExecution(node, xavail, false);

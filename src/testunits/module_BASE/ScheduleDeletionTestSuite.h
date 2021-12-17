@@ -33,11 +33,11 @@
 namespace gum_tests {
 
   class ScheduleDeletionTestSuite: public CxxTest::TestSuite {
-   public:
+    public:
     void test_construct() {
       // reset the ids of the ScheduleMultiDim to avoid conflicts with other
       // testunits
-      gum::IScheduleMultiDim<>::resetIdGenerator();
+      gum::IScheduleMultiDim::resetIdGenerator();
 
       std::vector< gum::LabelizedVariable* > vars(10);
 
@@ -45,7 +45,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable(s, s, 2);
+        vars[i]       = new gum::LabelizedVariable(s, s, 2);
       }
 
       gum::Potential< double > pot1, pot2;
@@ -71,21 +71,19 @@ namespace gum_tests {
       TS_ASSERT(del1.hasSimilarArguments(del1b));
       TS_ASSERT(del1.hasSameArguments(del1b));
 
-      const gum::ScheduleOperation<>& del1const = del1;
+      const gum::ScheduleOperation& del1const = del1;
       TS_ASSERT(del1const.implyDeletion());
       TS_ASSERT(del1 == del1const);
       TS_ASSERT(!(del1 != del1const));
       TS_ASSERT(del1.isSameOperation(del1const));
       TS_ASSERT(del1.hasSimilarArguments(del1const));
-     TS_ASSERT(del1.hasSameArguments(del1const));
+      TS_ASSERT(del1.hasSameArguments(del1const));
 
-      const gum::Sequence< const gum::IScheduleMultiDim<>* >& res1 =
-        del1.results();
+      const gum::Sequence< const gum::IScheduleMultiDim* >& res1 = del1.results();
       TS_ASSERT(res1.empty());
-      const gum::ScheduleDeletion< gum::Potential< double > > xdel1const (del1);
+      const gum::ScheduleDeletion< gum::Potential< double > > xdel1const(del1);
       TS_ASSERT(xdel1const.implyDeletion());
-      const gum::Sequence< const gum::IScheduleMultiDim<>* >&
-         xres1 = xdel1const.results();
+      const gum::Sequence< const gum::IScheduleMultiDim* >& xres1 = xdel1const.results();
       TS_ASSERT(xres1.empty());
 
       const auto& arg1 = del1.arg();
@@ -97,7 +95,7 @@ namespace gum_tests {
       TS_ASSERT(arg1 == *args1[0]);
 
       del1b.execute();
-      TS_ASSERT(! f1.isAbstract());
+      TS_ASSERT(!f1.isAbstract());
       TS_ASSERT(del1b.arg().isAbstract());
       TS_ASSERT(del1b.implyDeletion());
 
@@ -119,11 +117,11 @@ namespace gum_tests {
 
       gum::ScheduleDeletion< gum::Potential< double > > del4(del2);
       TS_ASSERT(del4.implyDeletion());
-      TS_ASSERT(! del4.arg().isAbstract());
+      TS_ASSERT(!del4.arg().isAbstract());
 
       gum::ScheduleDeletion< gum::Potential< double > > del5(std::move(del4));
       TS_ASSERT(del5.implyDeletion());
-      TS_ASSERT(! del5.arg().isAbstract());
+      TS_ASSERT(!del5.arg().isAbstract());
       del5.execute();
       TS_ASSERT(del5.arg().isAbstract());
 
@@ -131,7 +129,7 @@ namespace gum_tests {
       TS_ASSERT(del1.isExecuted());
       del1.updateArgs({&f3});
       TS_ASSERT(!del1.arg().isAbstract());
-      TS_ASSERT(! del1.isExecuted());
+      TS_ASSERT(!del1.isExecuted());
       TS_ASSERT(del1.implyDeletion());
 
       gum::ScheduleMultiDim< gum::Potential< double > > f4(pot2, true);
@@ -161,8 +159,7 @@ namespace gum_tests {
 
       gum::Set< const gum::DiscreteVariable* > del_vars1;
       del_vars1 << vars[0] << vars[3];
-      gum::ScheduleProjection< gum::Potential< double > > myproj(
-         f1b, del_vars1, myProjectMax);
+      gum::ScheduleProjection< gum::Potential< double > > myproj(f1b, del_vars1, myProjectMax);
       TS_ASSERT(!del2.isSameOperation(myproj));
       TS_ASSERT(!del2.hasSimilarArguments(myproj));
 
@@ -177,7 +174,7 @@ namespace gum_tests {
       return gum::Potential< double >(gum::projectMax(*(pot.content()), del_vars));
     }
 
-     // ==========================================================================
+    // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
     void randomInit(gum::Potential< double >& t) {

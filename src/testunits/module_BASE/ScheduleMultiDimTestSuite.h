@@ -23,7 +23,6 @@
 
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/testsuite_utils.h>
-#include <ressources/include/countedAlloc.h>
 
 #include <agrum/tools/graphicalModels/inference/scheduler/scheduleMultiDim.h>
 #include <agrum/tools/multidim/potential.h>
@@ -36,7 +35,7 @@ namespace gum_tests {
     void test_construct() {
       // reset the ids of the ScheduleMultiDim to avoid conflicts with other
       // testunits
-      gum::IScheduleMultiDim<>::resetIdGenerator();
+      gum::IScheduleMultiDim::resetIdGenerator();
 
       std::vector< gum::LabelizedVariable* > vars(10);
 
@@ -44,7 +43,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable(s, s, 10);
+        vars[i]       = new gum::LabelizedVariable(s, s, 10);
       }
 
       gum::Sequence< const gum::DiscreteVariable* > seq;
@@ -66,12 +65,12 @@ namespace gum_tests {
       TS_ASSERT(f1bis.id() == gum::Idx(10));
       TS_ASSERT(f1bis.domainSize() == gum::Size(1000));
 
-      gum::ScheduleMultiDim< gum::Potential< double >, DebugCountedAlloc > f1ter(seq, 10);
+      gum::ScheduleMultiDim< gum::Potential< double > > f1ter(seq, 10);
       TS_ASSERT(f1.variablesSequence() == f1ter.variablesSequence());
       TS_ASSERT(f1ter.id() == gum::Idx(10));
       TS_ASSERT(f1ter.domainSize() == gum::Size(1000));
 
-      gum::ScheduleMultiDim< gum::Potential< double >, DebugCountedAlloc > f1quart(seq);
+      gum::ScheduleMultiDim< gum::Potential< double > > f1quart(seq);
       TS_ASSERT(f1.variablesSequence() == f1quart.variablesSequence());
       TS_ASSERT(f1quart.id() == gum::Idx(11));
       TS_ASSERT(f1quart.domainSize() == gum::Size(1000));
@@ -82,8 +81,8 @@ namespace gum_tests {
       TS_ASSERT_THROWS(f2.multiDim(), gum::NullElement);
       TS_ASSERT(f1 == f2);
       TS_ASSERT(!(f1 != f2));
-      TS_ASSERT(f1 == dynamic_cast< gum::IScheduleMultiDim<>& >(f2));
-      TS_ASSERT(!(f1 != dynamic_cast< gum::IScheduleMultiDim<>& >(f2)));
+      TS_ASSERT(f1 == dynamic_cast< gum::IScheduleMultiDim& >(f2));
+      TS_ASSERT(!(f1 != dynamic_cast< gum::IScheduleMultiDim& >(f2)));
       TS_ASSERT(f1.id() == f2.id());
       TS_ASSERT(f1.variablesSequence() == f2.variablesSequence());
       TS_ASSERT(f2.domainSize() == gum::Size(1000));
@@ -98,8 +97,8 @@ namespace gum_tests {
       TS_ASSERT(f1 != f3);
       TS_ASSERT(f1.hasSameVariables(f3));
       TS_ASSERT(f1.hasSameContent(f3));
-      TS_ASSERT(f1.hasSameVariables(dynamic_cast< gum::IScheduleMultiDim<>& >(f3)));
-      TS_ASSERT(f1.hasSameContent(dynamic_cast< gum::IScheduleMultiDim<>& >(f3)));
+      TS_ASSERT(f1.hasSameVariables(dynamic_cast< gum::IScheduleMultiDim& >(f3)));
+      TS_ASSERT(f1.hasSameContent(dynamic_cast< gum::IScheduleMultiDim& >(f3)));
       TS_ASSERT(f1.variablesSequence() == f3.variablesSequence());
       TS_ASSERT(f3.domainSize() == gum::Size(1000));
 
@@ -118,7 +117,7 @@ namespace gum_tests {
       TS_ASSERT(!f4.isAbstract());
       TS_ASSERT(f1 != f4);
       TS_ASSERT(f1.hasSameVariables(f4));
-      TS_ASSERT(! f1.hasSameContent(f4));
+      TS_ASSERT(!f1.hasSameContent(f4));
       const gum::Potential< double >& res_pot = f4.multiDim();
       TS_ASSERT(pot == res_pot);
       TS_ASSERT(f4.containsMultiDim());
@@ -135,8 +134,7 @@ namespace gum_tests {
       TS_ASSERT(f4bis.id() == gum::Idx(13));
       TS_ASSERT(f4bis.domainSize() == gum::Size(1000));
 
-      gum::ScheduleMultiDim< gum::Potential< double >, DebugCountedAlloc > f4ter(
-         pot, true, 2);
+      gum::ScheduleMultiDim< gum::Potential< double > > f4ter(pot, true, 2);
       TS_ASSERT(!f4ter.isAbstract());
       const gum::Potential< double >& res_pot_ter = f4ter.multiDim();
       TS_ASSERT(res_pot == res_pot_ter);
@@ -152,9 +150,8 @@ namespace gum_tests {
       TS_ASSERT(f4b.id() == gum::Idx(14));
       TS_ASSERT(f4b.domainSize() == gum::Size(1000));
 
-      gum::Potential< double >                                   xxpot = res_pot;
-      gum::ScheduleMultiDim< gum::Potential< double >, DebugCountedAlloc > f4bt(
-         xxpot, false, 5);
+      gum::Potential< double >                          xxpot = res_pot;
+      gum::ScheduleMultiDim< gum::Potential< double > > f4bt(xxpot, false, 5);
       TS_ASSERT(!f4bt.isAbstract());
       TS_ASSERT(f4bt.multiDim() == f4.multiDim());
       TS_ASSERT(f4ter.hasSameVariables(f4bt));
@@ -273,7 +270,7 @@ namespace gum_tests {
       TS_ASSERT(pot2.max() == pot2.min());
       TS_ASSERT(pot2.min() == 42.42);
 
-      gum::Sequence< const gum::DiscreteVariable* > seq;
+      gum::Sequence< const gum::DiscreteVariable* >     seq;
       gum::ScheduleMultiDim< gum::Potential< double > > f3(seq, 0);
       TS_ASSERT(!f3.containsMultiDim());
       TS_ASSERT(f3.domainSize() == 1);

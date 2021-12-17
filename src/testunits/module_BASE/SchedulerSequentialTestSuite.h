@@ -36,7 +36,7 @@ namespace gum_tests {
     void test_construct1() {
       // reset the ids of the ScheduleMultiDim to avoid conflicts with other
       // testunits
-      gum::IScheduleMultiDim<>::resetIdGenerator();
+      gum::IScheduleMultiDim::resetIdGenerator();
 
       std::vector< gum::LabelizedVariable* > vars(10);
 
@@ -44,7 +44,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable(s, s, 10);
+        vars[i]       = new gum::LabelizedVariable(s, s, 10);
       }
 
       gum::Potential< double > pot1;
@@ -69,29 +69,33 @@ namespace gum_tests {
 
       gum::ScheduleBinaryCombination< gum::Potential< double >,
                                       gum::Potential< double >,
-                                      gum::Potential< double > > comb1(f1, f2, myadd);
-      const gum::ScheduleMultiDim< gum::Potential< double > >&   result1 = comb1.result();
+                                      gum::Potential< double > >
+                                                               comb1(f1, f2, myadd);
+      const gum::ScheduleMultiDim< gum::Potential< double > >& result1 = comb1.result();
 
       gum::ScheduleBinaryCombination< gum::Potential< double >,
                                       gum::Potential< double >,
-                                      gum::Potential< double > > comb2(f2, f3, myadd);
-      const gum::ScheduleMultiDim< gum::Potential< double > >&   result2 = comb2.result();
+                                      gum::Potential< double > >
+                                                               comb2(f2, f3, myadd);
+      const gum::ScheduleMultiDim< gum::Potential< double > >& result2 = comb2.result();
 
       gum::ScheduleBinaryCombination< gum::Potential< double >,
                                       gum::Potential< double >,
-                                      gum::Potential< double > > comb3(result2, f4, myadd);
-      const gum::ScheduleMultiDim< gum::Potential< double > >&   result3 = comb3.result();
+                                      gum::Potential< double > >
+                                                               comb3(result2, f4, myadd);
+      const gum::ScheduleMultiDim< gum::Potential< double > >& result3 = comb3.result();
 
       gum::ScheduleBinaryCombination< gum::Potential< double >,
                                       gum::Potential< double >,
-                                      gum::Potential< double > > comb4(result1, result3, myadd);
-      const gum::ScheduleMultiDim< gum::Potential< double > >&   result4 = comb4.result();
+                                      gum::Potential< double > >
+                                                               comb4(result1, result3, myadd);
+      const gum::ScheduleMultiDim< gum::Potential< double > >& result4 = comb4.result();
 
       gum::ScheduleDeletion< gum::Potential< double > > del1(result1);
       gum::ScheduleDeletion< gum::Potential< double > > del2(result2);
       gum::ScheduleDeletion< gum::Potential< double > > del3(result3);
 
-      gum::Schedule<> schedule;
+      gum::Schedule schedule;
 
       schedule.insertScheduleMultiDim(f1);
       schedule.insertScheduleMultiDim(f2);
@@ -114,19 +118,18 @@ namespace gum_tests {
       del2.execute();
       del3.execute();
 
-      gum::Schedule<> schedule2 = schedule;
-      gum::Schedule<> schedule3 = schedule;
-      gum::Schedule<> schedule4 = schedule;
+      gum::Schedule schedule2 = schedule;
+      gum::Schedule schedule3 = schedule;
+      gum::Schedule schedule4 = schedule;
 
-      gum::SchedulerSequential<> scheduler;
+      gum::SchedulerSequential scheduler;
       TS_ASSERT_DELTA(scheduler.nbOperations(schedule), 2200000.0, 10);
       scheduler.execute(schedule);
 
-      gum::ScheduleOperation<>& op4 =
-         const_cast<gum::ScheduleOperation<>&>(
-            schedule.operation(gum::NodeId(4)));
-      const gum::ScheduleMultiDim< gum::Potential< double > >& op4_res =
-         dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >& >(
+      gum::ScheduleOperation& op4
+         = const_cast< gum::ScheduleOperation& >(schedule.operation(gum::NodeId(4)));
+      const gum::ScheduleMultiDim< gum::Potential< double > >& op4_res
+         = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >& >(
             *op4.results()[0]);
       TS_ASSERT(result4.hasSameVariables(op4_res));
       TS_ASSERT(result4.hasSameContent(op4_res));
@@ -137,16 +140,19 @@ namespace gum_tests {
       TS_ASSERT_DELTA(scheduler.nbOperations(schedule2), 2200000.0, 10);
 
       bool fail = false;
-      try { scheduler.execute(schedule2); }
-      catch (std::bad_alloc&) { fail = true; }
+      try {
+        scheduler.execute(schedule2);
+      } catch (std::bad_alloc&) { fail = true; }
       TS_ASSERT(!fail);
 
       scheduler.setMaxMemory(2.5 * sizeof(double));
       TS_GUM_ASSERT_THROWS_NOTHING(scheduler.execute(schedule3));
       TS_ASSERT_DELTA(scheduler.memoryUsage(schedule4).first,
-                      2100000.0 * sizeof(double) + 3 * sizeof(gum::Potential< double >), 10);
+                      2100000.0 * sizeof(double) + 3 * sizeof(gum::Potential< double >),
+                      10);
       TS_ASSERT_DELTA(scheduler.memoryUsage(schedule4).second,
-                      1000000.0 * sizeof(double) + 1 * sizeof(gum::Potential< double >), 10);
+                      1000000.0 * sizeof(double) + 1 * sizeof(gum::Potential< double >),
+                      10);
 
       for (unsigned int i = 0; i < vars.size(); ++i)
         delete vars[i];
@@ -158,7 +164,7 @@ namespace gum_tests {
       return f1 + f2;
     }
 
-     // ==========================================================================
+    // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
     void randomInit(gum::Potential< double >& t) {

@@ -40,7 +40,7 @@ namespace gum_tests {
   class MultiDimCombineAndProjectTestSuite: public CxxTest::TestSuite {
     public:
     void testDouble() {
-      gum::IScheduleMultiDim<>::resetIdGenerator();
+      gum::IScheduleMultiDim::resetIdGenerator();
       std::vector< gum::LabelizedVariable* > vars(11);
 
       for (gum::Idx i = 0; i < 11; ++i) {
@@ -132,25 +132,25 @@ namespace gum_tests {
       for (const auto pot: res)
         delete pot;
 
-      gum::IScheduleMultiDim<>::resetIdGenerator();
+      gum::IScheduleMultiDim::resetIdGenerator();
       gum::ScheduleMultiDim< gum::Potential< double > > xt1(t1, false);
       gum::ScheduleMultiDim< gum::Potential< double > > xt2(t2, false);
       gum::ScheduleMultiDim< gum::Potential< double > > xt3(t3, false);
       gum::ScheduleMultiDim< gum::Potential< double > > xt4(t4, false);
       gum::ScheduleMultiDim< gum::Potential< double > > xt5(t5, false);
       gum::ScheduleMultiDim< gum::Potential< double > > xt6(t6, false);
-      gum::Set< const gum::IScheduleMultiDim<>* > sched_to_comb{&xt1, &xt2, &xt3, &xt4, &xt5, &xt6};
+      gum::Set< const gum::IScheduleMultiDim* > sched_to_comb{&xt1, &xt2, &xt3, &xt4, &xt5, &xt6};
 
       auto ops_plus_res = projcomb.operations(sched_to_comb, del_vars);
       for (auto op: ops_plus_res.first) {
-        const_cast< gum::ScheduleOperation<>* >(op)->execute();
+        const_cast< gum::ScheduleOperation* >(op)->execute();
       }
 
       gum::Potential< double > result1;
       if (ops_plus_res.second.size() > 1) {
         auto comb_ops_plus_res = comb.operations(ops_plus_res.second);
         for (auto op: comb_ops_plus_res.first) {
-          const_cast< gum::ScheduleOperation<>* >(op)->execute();
+          const_cast< gum::ScheduleOperation* >(op)->execute();
         }
         result1 = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(
                      comb_ops_plus_res.second)
@@ -178,7 +178,7 @@ namespace gum_tests {
     }
 
     void testSchedules() {
-      gum::IScheduleMultiDim<>::resetIdGenerator();
+      gum::IScheduleMultiDim::resetIdGenerator();
       std::vector< gum::LabelizedVariable* > vars(11);
 
       for (gum::Idx i = 0; i < 11; ++i) {
@@ -222,10 +222,10 @@ namespace gum_tests {
       gum::ScheduleMultiDim< gum::Potential< double > > xt6(t6, false);
       gum::ScheduleMultiDim< gum::Potential< double > > xt7(t7, false);
       gum::ScheduleMultiDim< gum::Potential< double > > xt8(t8, false);
-      gum::Set< const gum::IScheduleMultiDim<>* >
+      gum::Set< const gum::IScheduleMultiDim* >
          sched_to_comb{&xt1, &xt2, &xt3, &xt4, &xt5, &xt6, &xt7, &xt8};
 
-      gum::Schedule<> schedule;
+      gum::Schedule schedule;
       schedule.insertScheduleMultiDim(xt1);
       schedule.insertScheduleMultiDim(xt2);
       schedule.insertScheduleMultiDim(xt3);
@@ -242,8 +242,8 @@ namespace gum_tests {
       if (!available_operations.empty()) {
         do {
           gum::NodeId               node = *available_operations.begin();
-          gum::ScheduleOperation<>& op
-             = const_cast< gum::ScheduleOperation<>& >(schedule.operation(node));
+          gum::ScheduleOperation& op
+             = const_cast< gum::ScheduleOperation& >(schedule.operation(node));
           op.execute();
 
           for (const auto res: op.results())
@@ -294,7 +294,7 @@ namespace gum_tests {
     }
 
     void testOpPersistence() {
-      gum::IScheduleMultiDim<>::resetIdGenerator();
+      gum::IScheduleMultiDim::resetIdGenerator();
       std::vector< gum::LabelizedVariable* > vars(11);
 
       for (gum::Idx i = 0; i < 11; ++i) {
@@ -329,25 +329,25 @@ namespace gum_tests {
       gum::MultiDimCombinationDefault< gum::Potential< double > > comb(multPot);
       gum::MultiDimProjection< gum::Potential< double > >         proj(mySum);
 
-      gum::IScheduleMultiDim<>::resetIdGenerator();
+      gum::IScheduleMultiDim::resetIdGenerator();
       gum::ScheduleMultiDim< gum::Potential< double > > xt1(t1, false);
       gum::ScheduleMultiDim< gum::Potential< double > > xt2(t2, false);
       gum::ScheduleMultiDim< gum::Potential< double > > xt3(t3, false);
       gum::ScheduleMultiDim< gum::Potential< double > > xt4(t4, false);
       gum::ScheduleMultiDim< gum::Potential< double > > xt5(t5, false);
       gum::ScheduleMultiDim< gum::Potential< double > > xt6(t6, false);
-      gum::Set< const gum::IScheduleMultiDim<>* > sched_to_comb{&xt1, &xt2, &xt3, &xt4, &xt5, &xt6};
+      gum::Set< const gum::IScheduleMultiDim* > sched_to_comb{&xt1, &xt2, &xt3, &xt4, &xt5, &xt6};
 
       auto ops_plus_res = projcomb.operations(sched_to_comb, del_vars, true);
       for (auto op: ops_plus_res.first) {
-        const_cast< gum::ScheduleOperation<>* >(op)->execute();
+        const_cast< gum::ScheduleOperation* >(op)->execute();
       }
 
       gum::Potential< double > result1;
       if (ops_plus_res.second.size() > 1) {
         auto comb_ops_plus_res = comb.operations(ops_plus_res.second);
         for (auto op: comb_ops_plus_res.first) {
-          const_cast< gum::ScheduleOperation<>* >(op)->execute();
+          const_cast< gum::ScheduleOperation* >(op)->execute();
         }
         result1 = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(
                      comb_ops_plus_res.second)
@@ -380,7 +380,7 @@ namespace gum_tests {
     }
 
     void testSchedulesPersistence() {
-      gum::IScheduleMultiDim<>::resetIdGenerator();
+      gum::IScheduleMultiDim::resetIdGenerator();
       std::vector< gum::LabelizedVariable* > vars(11);
 
       for (gum::Idx i = 0; i < 11; ++i) {
@@ -424,10 +424,10 @@ namespace gum_tests {
       gum::ScheduleMultiDim< gum::Potential< double > > xt6(t6, false);
       gum::ScheduleMultiDim< gum::Potential< double > > xt7(t7, false);
       gum::ScheduleMultiDim< gum::Potential< double > > xt8(t8, false);
-      gum::Set< const gum::IScheduleMultiDim<>* >
+      gum::Set< const gum::IScheduleMultiDim* >
          sched_to_comb{&xt1, &xt2, &xt3, &xt4, &xt5, &xt6, &xt7, &xt8};
 
-      gum::Schedule<> schedule;
+      gum::Schedule schedule;
       auto xxt1 = schedule.insertScheduleMultiDim(xt1);
       auto xxt2 = schedule.insertScheduleMultiDim(xt2);
       auto xxt3 = schedule.insertScheduleMultiDim(xt3);
@@ -436,7 +436,7 @@ namespace gum_tests {
       auto xxt6 = schedule.insertScheduleMultiDim(xt6);
       auto xxt7 = schedule.insertScheduleMultiDim(xt7);
       auto xxt8 = schedule.insertScheduleMultiDim(xt8);
-      gum::Set< const gum::IScheduleMultiDim<>* >
+      gum::Set< const gum::IScheduleMultiDim* >
          xxsched_to_comb{xxt1, xxt2, xxt3, xxt4, xxt5, xxt6, xxt7, xxt8};
 
       auto                       xxres = projcomb.schedule(schedule, sched_to_comb, del_vars, true);
@@ -446,8 +446,8 @@ namespace gum_tests {
       if (!available_operations.empty()) {
         do {
           gum::NodeId               node = *available_operations.begin();
-          gum::ScheduleOperation<>& op
-             = const_cast< gum::ScheduleOperation<>& >(schedule.operation(node));
+          gum::ScheduleOperation& op
+             = const_cast< gum::ScheduleOperation& >(schedule.operation(node));
           op.execute();
 
           for (const auto res: op.results())

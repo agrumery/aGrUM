@@ -38,7 +38,7 @@ namespace gum_tests {
     void test_construct() {
       // reset the ids of the ScheduleMultiDim to avoid conflicts with other
       // testunits
-      gum::IScheduleMultiDim<>::resetIdGenerator();
+      gum::IScheduleMultiDim::resetIdGenerator();
 
       std::vector< gum::LabelizedVariable* > vars(10);
 
@@ -46,7 +46,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable(s, s, 2);
+        vars[i]       = new gum::LabelizedVariable(s, s, 2);
       }
 
       gum::Potential< double > pot1, pot2;
@@ -59,13 +59,13 @@ namespace gum_tests {
       gum::ScheduleMultiDim< gum::Potential< double > > f2(pot2, true);
       gum::ScheduleMultiDim< gum::Potential< double > > f2b(pot2, false);
 
-      std::vector< gum::Potential< double > > v1;
+      std::vector< gum::Potential< double > >                       v1;
       gum::ScheduleStorage< gum::Potential< double >, std::vector > store1(f1, v1);
       gum::ScheduleStorage< gum::Potential< double >, std::vector > store1bis(f1b, v1);
 
-      gum::Set< gum::Potential< double >* > set2;
+      gum::Set< gum::Potential< double >* >                       set2;
       gum::ScheduleStorage< gum::Potential< double >*, gum::Set > store2(f2, set2);
-      gum::Set< gum::Potential< double >* > set2b;
+      gum::Set< gum::Potential< double >* >                       set2b;
       gum::ScheduleStorage< gum::Potential< double >*, gum::Set > store2bis(f2, set2b);
       gum::ScheduleStorage< gum::Potential< double >*, gum::Set > store2ter(f2b, set2b);
 
@@ -87,7 +87,7 @@ namespace gum_tests {
       TS_ASSERT(store2.hasSimilarArguments(store2bis));
       TS_ASSERT(!store2.hasSameArguments(store2bis));
 
-      const gum::ScheduleOperation<>& store1const = store1;
+      const gum::ScheduleOperation& store1const = store1;
       TS_ASSERT(store1const.implyDeletion());
       TS_ASSERT(store1 == store1const);
       TS_ASSERT(!(store1 != store1const));
@@ -95,12 +95,10 @@ namespace gum_tests {
       TS_ASSERT(store1.hasSimilarArguments(store1const));
       TS_ASSERT(store1.hasSameArguments(store1const));
 
-      const gum::Sequence< const gum::IScheduleMultiDim<>* >& res1 =
-         store1.results();
+      const gum::Sequence< const gum::IScheduleMultiDim* >& res1 = store1.results();
       TS_ASSERT(res1.empty());
       TS_ASSERT(store1const.implyDeletion());
-      const gum::Sequence< const gum::IScheduleMultiDim<>* >&
-         xres1 = store1const.results();
+      const gum::Sequence< const gum::IScheduleMultiDim* >& xres1 = store1const.results();
       TS_ASSERT(xres1.empty());
 
       const auto& arg1 = store1.arg();
@@ -147,15 +145,15 @@ namespace gum_tests {
       TS_ASSERT(xxx1.first == -16.0 * sizeof(double) - sizeof(gum::Potential< double >));
       TS_ASSERT(xxx1.second == -16.0 * sizeof(double) - sizeof(gum::Potential< double >));
 
-      gum::ScheduleMultiDim< gum::Potential< double > > f1c(pot1, true);
+      gum::ScheduleMultiDim< gum::Potential< double > >             f1c(pot1, true);
       gum::ScheduleStorage< gum::Potential< double >, std::vector > store4(f1c, v1);
       gum::ScheduleStorage< gum::Potential< double >, std::vector > store4b(store4);
       TS_ASSERT(store4b.implyDeletion());
-      TS_ASSERT(! store4b.arg().isAbstract());
+      TS_ASSERT(!store4b.arg().isAbstract());
 
       gum::ScheduleStorage< gum::Potential< double >, std::vector > store5(std::move(store4));
       TS_ASSERT(store5.implyDeletion());
-      TS_ASSERT(! store5.arg().isAbstract());
+      TS_ASSERT(!store5.arg().isAbstract());
       store5.execute();
       TS_ASSERT(store5.arg().isAbstract());
 
@@ -163,7 +161,7 @@ namespace gum_tests {
       TS_ASSERT(store1.isExecuted());
       store1.updateArgs({&f3});
       TS_ASSERT(!store1.arg().isAbstract());
-      TS_ASSERT(! store1.isExecuted());
+      TS_ASSERT(!store1.isExecuted());
       TS_ASSERT(store1.implyDeletion());
 
       gum::ScheduleMultiDim< gum::Potential< double > > f4(pot2, true);
@@ -172,13 +170,13 @@ namespace gum_tests {
 
       store2bis.updateArgs({&f4});
       gum::ScheduleStorage< gum::Potential< double >*, gum::Set > store3bis = store2bis;
-      store3bis = store2ter;
+      store3bis                                                             = store2ter;
       TS_ASSERT(store3bis.implyDeletion());
       TS_ASSERT(store3bis == store2ter);
       TS_ASSERT(store3bis != store2bis);
 
       gum::ScheduleStorage< gum::Potential< double >*, gum::Set > store6 = store2bis;
-      store3bis = std::move(store2bis);
+      store3bis                                                          = std::move(store2bis);
       TS_ASSERT(store6 == store3bis);
 
       gum::ScheduleStorage< gum::Potential< double >*, gum::Set >* store7 = store6.clone();
@@ -192,8 +190,7 @@ namespace gum_tests {
 
       gum::Set< const gum::DiscreteVariable* > del_vars1;
       del_vars1 << vars[0] << vars[3];
-      gum::ScheduleProjection< gum::Potential< double > > myproj(
-         f1b, del_vars1, myProjectMax);
+      gum::ScheduleProjection< gum::Potential< double > > myproj(f1b, del_vars1, myProjectMax);
       TS_ASSERT(!store1bis.isSameOperation(myproj));
       TS_ASSERT(!store1bis.hasSimilarArguments(myproj));
 

@@ -134,7 +134,7 @@ namespace gum_tests {
       //const bool seq = true;
       const bool seq = false;
       if (seq) {
-        gum::SchedulerSequential<> sched;
+        gum::SchedulerSequential sched;
         inf.setScheduler(sched);
       }
       else {
@@ -149,7 +149,7 @@ namespace gum_tests {
       gum::LazyPropagation< double >       inf(bn);
       gum::ShaferShenoyInference< double > inf2(bn);
 
-      gum::SchedulerSequential<> sched;
+      gum::SchedulerSequential sched;
       inf.setScheduler(sched);
 
       TS_ASSERT_THROWS_NOTHING(inf.makeInference())
