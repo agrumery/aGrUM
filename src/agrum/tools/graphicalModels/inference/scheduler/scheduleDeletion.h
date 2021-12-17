@@ -61,11 +61,9 @@ namespace gum {
    * // contained only a reference on p2, the latter remains unchanged.
    * @encode
    */
-  template < typename TABLE, template < typename > class ALLOC = std::allocator >
-  class ScheduleDeletion: public ScheduleOperation< ALLOC > {
+  template < typename TABLE >
+  class ScheduleDeletion: public ScheduleOperation {
     public:
-    using allocator_type = ALLOC< Idx >;
-
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -76,29 +74,16 @@ namespace gum {
      * be deleted.
      * @warning table is stored only by reference within the ScheduleDeletion.
      */
-    explicit ScheduleDeletion(const ScheduleMultiDim< TABLE, ALLOC >& table,
-                              const allocator_type& alloc = allocator_type());
+    explicit ScheduleDeletion(const ScheduleMultiDim< TABLE >& table);
 
     /// copy constructor
-    ScheduleDeletion(const ScheduleDeletion< TABLE, ALLOC >& from);
-
-    /// copy constructor with a given allocator
-    ScheduleDeletion(const ScheduleDeletion< TABLE, ALLOC >& from,
-                     const allocator_type&                   alloc);
+    ScheduleDeletion(const ScheduleDeletion< TABLE >& from);
 
     /// move constructor
-    ScheduleDeletion(ScheduleDeletion< TABLE, ALLOC >&& from);
-
-    /// move constructor with a given allocator
-    ScheduleDeletion(ScheduleDeletion< TABLE, ALLOC >&& from,
-                     const allocator_type&              alloc);
+    ScheduleDeletion(ScheduleDeletion< TABLE >&& from);
 
     /// virtual copy constructor
-    ScheduleDeletion< TABLE, ALLOC >* clone() const final;
-
-    /// virtual copy constructor with a given allocator
-    ScheduleDeletion< TABLE, ALLOC >*
-       clone(const allocator_type& alloc) const final;
+    ScheduleDeletion< TABLE >* clone() const final;
 
     /// destructor
     virtual ~ScheduleDeletion();
@@ -112,36 +97,34 @@ namespace gum {
     /// @{
 
     /// copy operator
-    ScheduleDeletion< TABLE, ALLOC >&
-       operator=(const ScheduleDeletion< TABLE, ALLOC >&);
+    ScheduleDeletion< TABLE >& operator=(const ScheduleDeletion< TABLE >&);
 
     /// move operator
-    ScheduleDeletion< TABLE, ALLOC >&
-       operator=(ScheduleDeletion< TABLE, ALLOC >&&);
+    ScheduleDeletion< TABLE >& operator=(ScheduleDeletion< TABLE >&&);
 
     /// operator ==
     /** Two operations are identical if and only if they have equal (==)
      * ScheduleMultiDim arguments. By Equal arguments, we stress that we mean
      * that these ScheduleMultiDims have the same IDs*/
-    bool operator==(const ScheduleOperation< ALLOC >&m) const final;
+    bool operator==(const ScheduleOperation& m) const final;
 
     /// operator !=
     /** Two operations are identical if and only if they have equal (==)
      * ScheduleMultiDim arguments. By Equal arguments, we stress that we mean
      * that these ScheduleMultiDims have the same IDs*/
-    bool operator!=(const ScheduleOperation< ALLOC >&m) const final;
+    bool operator!=(const ScheduleOperation& m) const final;
 
     /// operator ==
     /** Two operations are identical if and only if they have equal (==)
      * ScheduleMultiDim arguments. By Equal arguments, we stress that we mean
      * that these ScheduleMultiDims have the same IDs*/
-    virtual bool operator==(const ScheduleDeletion< TABLE, ALLOC >&) const;
+    virtual bool operator==(const ScheduleDeletion< TABLE >&) const;
 
     /// operator !=
     /** Two operations are identical if and only if they have equal (==)
      * ScheduleMultiDim arguments. By Equal arguments, we stress that we mean
      * that these ScheduleMultiDims have the same IDs*/
-    virtual bool operator!=(const ScheduleDeletion< TABLE, ALLOC >&) const;
+    virtual bool operator!=(const ScheduleDeletion< TABLE >&) const;
 
     /// @}
 
@@ -158,7 +141,7 @@ namespace gum {
      * are essentially identical but they may have different Ids (so that they
      * may not be ==).
      */
-    bool hasSameArguments(const ScheduleOperation< ALLOC >&) const final;
+    bool hasSameArguments(const ScheduleOperation&) const final;
 
     /** @brief checks whether two ScheduleDeletion have the same parameters
      * (same variables and same content)
@@ -167,32 +150,32 @@ namespace gum {
      * are essentially identical but they may have different Ids (so that they
      * may not be ==).
      */
-    bool hasSameArguments(const ScheduleDeletion< TABLE, ALLOC >&) const;
+    bool hasSameArguments(const ScheduleDeletion< TABLE >&) const;
 
     /** @brief checks whether two ScheduleProjection have similar parameters
      * (same variables but not necessarily the same content)
      */
-    bool hasSimilarArguments(const ScheduleOperation< ALLOC >&) const final;
+    bool hasSimilarArguments(const ScheduleOperation&) const final;
 
     /** @brief checks whether two ScheduleProjection have similar parameters
      * (same variables but not necessarily the same content)
      */
-    bool hasSimilarArguments(const ScheduleDeletion< TABLE, ALLOC >&) const;
+    bool hasSimilarArguments(const ScheduleDeletion< TABLE >&) const;
 
     /// checks whether two ScheduleOperation perform the same operation
-    bool isSameOperation(const ScheduleOperation< ALLOC >&) const final;
+    bool isSameOperation(const ScheduleOperation&) const final;
 
     /// checks whether two ScheduleOperation perform the same operation
-    bool isSameOperation(const ScheduleDeletion< TABLE, ALLOC >&) const;
+    bool isSameOperation(const ScheduleDeletion< TABLE >&) const;
 
     /// returns the argument of the projection
-    const ScheduleMultiDim< TABLE, ALLOC >& arg() const;
+    const ScheduleMultiDim< TABLE >& arg() const;
 
     /// returns the sequence of arguments passed to the operation
-    const Sequence< const IScheduleMultiDim< ALLOC >* >& args() const final;
+    const Sequence< const IScheduleMultiDim* >& args() const final;
 
     /// returns the sequence of ScheduleMultidim output by the operation
-    const Sequence< const IScheduleMultiDim< ALLOC >* >& results() const final;
+    const Sequence< const IScheduleMultiDim* >& results() const final;
 
     /// modifies the arguments of the operation
     /** @throws SizeError is raised if the number of elements in new_args
@@ -201,8 +184,7 @@ namespace gum {
      * @throws TypeError is raised if at least one element of new_args does
      * not have a type compatible with what the ScheduleOperation expects.
      */
-    void updateArgs(
-       const Sequence< const IScheduleMultiDim< ALLOC >* >& new_args) final;
+    void updateArgs(const Sequence< const IScheduleMultiDim* >& new_args) final;
 
     /// indicates whether the operation has been executed
     bool isExecuted() const final;
@@ -241,19 +223,19 @@ namespace gum {
 
     private:
     /// the table to delete, i.e., to make abstract
-    ScheduleMultiDim< TABLE, ALLOC >* _arg_{nullptr};
+    ScheduleMultiDim< TABLE >* _arg_{nullptr};
 
     /// the sequence of arguments passed to the operation
     /** This method is convenient when using ScheduleOperation rather than
      * directly using ScheduleBinaryCombination */
-    Sequence< const IScheduleMultiDim< ALLOC >* > _args_;
+    Sequence< const IScheduleMultiDim* > _args_;
 
     /// the sequence of ScheduleMultidim output by the operation
     /** @warning Note that the Operation has always some output, even if
      * it has not been executed. In this case, the outputs are abstract
      * ScheduleMultiDim.
      */
-    Sequence< const IScheduleMultiDim< ALLOC >* > _results_;
+    Sequence< const IScheduleMultiDim* > _results_;
 
     /// indicates whether the operation has been performed or not
     bool _is_executed_{false};

@@ -155,8 +155,8 @@ namespace gum {
     /** @warning MultiDimProjections always produce a new freshly allocated
      * resulting table
      */
-    std::pair< ScheduleOperation<>*, const IScheduleMultiDim<>* >
-       operations(const IScheduleMultiDim<>*            table,
+    std::pair< ScheduleOperation*, const IScheduleMultiDim* >
+       operations(const IScheduleMultiDim*              table,
                   const Set< const DiscreteVariable* >& del_vars,
                   const bool                            is_result_persistent = false) const;
 
@@ -172,10 +172,10 @@ namespace gum {
      * @warning MultiDimProjections always produce a new freshly allocated
      * resulting table
      */
-    const IScheduleMultiDim<>* schedule(Schedule<>&                           schedule,
-                                        const IScheduleMultiDim<>*            table,
-                                        const Set< const DiscreteVariable* >& del_vars,
-                                        const bool is_result_persistent = false) const;
+    const IScheduleMultiDim* schedule(Schedule&                             schedule,
+                                      const IScheduleMultiDim*              table,
+                                      const Set< const DiscreteVariable* >& del_vars,
+                                      const bool is_result_persistent = false) const;
 
     /// Changes the function used for projecting TABLES
     void setProjectionFunction(TABLE (*proj)(const TABLE&, const Set< const DiscreteVariable* >&));

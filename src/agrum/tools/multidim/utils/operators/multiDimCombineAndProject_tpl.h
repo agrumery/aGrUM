@@ -55,27 +55,27 @@ namespace gum {
 
   // add to a given schedule the set of operations needed
   template < class TABLE >
-  Set< const IScheduleMultiDim<>* > MultiDimCombineAndProject< TABLE >::schedule(
-     Schedule<>&                              schedule,
-     const Set< const IScheduleMultiDim<>* >& original_tables,
-     const Set< const DiscreteVariable* >&    del_vars,
-     const bool                               is_result_persistent) const {
+  Set< const IScheduleMultiDim* > MultiDimCombineAndProject< TABLE >::schedule(
+     Schedule&                              schedule,
+     const Set< const IScheduleMultiDim* >& original_tables,
+     const Set< const DiscreteVariable* >&  del_vars,
+     const bool                             is_result_persistent) const {
     // compute the set of operations to perform and insert them into the schedule
     auto ops_res = operations(original_tables, del_vars, false);
     for (const auto op: ops_res.first)
       schedule.insertOperation(*op);
 
     // get the results actually stored into the schedule
-    Set< const IScheduleMultiDim<>* > result(ops_res.second.size());
+    Set< const IScheduleMultiDim* > result(ops_res.second.size());
     if (!is_result_persistent) {
       for (const auto pot: ops_res.second)
         result.insert(schedule.scheduleMultiDim(pot->id()));
     } else {
       for (const auto pot: ops_res.second) {
-        const IScheduleMultiDim<>* table       = schedule.scheduleMultiDim(pot->id());
-        const auto                 creating_op = schedule.scheduleMultiDimCreator(table);
+        const IScheduleMultiDim* table       = schedule.scheduleMultiDim(pot->id());
+        const auto               creating_op = schedule.scheduleMultiDimCreator(table);
         if (creating_op != nullptr) {
-          const_cast< ScheduleOperation<>* >(creating_op)->makeResultsPersistent(true);
+          const_cast< ScheduleOperation* >(creating_op)->makeResultsPersistent(true);
         }
         result.insert(table);
       }

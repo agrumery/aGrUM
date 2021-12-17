@@ -23,7 +23,7 @@
 namespace gum {
 
   // returns the current scheduler
-  INLINE Scheduler<>& ScheduledInference::scheduler() const {
+  INLINE Scheduler& ScheduledInference::scheduler() const {
     return *_scheduler_;
   }
 

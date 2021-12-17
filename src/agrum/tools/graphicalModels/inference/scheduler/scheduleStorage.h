@@ -56,7 +56,6 @@ namespace gum {
     template < typename TABLE,
                typename CONTAINER_TABLE,
                template < typename, typename... > class CONTAINER,
-               template < typename > class ALLOC,
                typename... CONTAINER_PARAMS >
     struct Execution {
       void execute(TABLE& table,
@@ -68,9 +67,8 @@ namespace gum {
      * tables inserted into it, i.e., upon destruction, it will take care of
      * deallocating the pointers it contains. */
     template < typename TABLE,
-               template < typename > class ALLOC,
                typename... CONTAINER_PARAMS >
-    struct Execution< TABLE, TABLE*, Set, ALLOC, CONTAINER_PARAMS... > {
+    struct Execution< TABLE, TABLE*, Set, CONTAINER_PARAMS... > {
       void execute(TABLE& table,
                    Set< TABLE*, CONTAINER_PARAMS... >& container);
     };
@@ -80,9 +78,8 @@ namespace gum {
      * tables inserted into it, i.e., the tables are supposed to be inserted
      * into the container by moves. */
      template < typename TABLE,
-               template < typename > class ALLOC,
                typename... CONTAINER_PARAMS >
-    struct Execution< TABLE, TABLE, std::vector, ALLOC, CONTAINER_PARAMS... > {
+    struct Execution< TABLE, TABLE, std::vector, CONTAINER_PARAMS... > {
       void execute(TABLE& table,
                    std::vector< TABLE, CONTAINER_PARAMS... >& container);
     };
@@ -99,15 +96,13 @@ namespace gum {
    */
   template < typename TABLE,
              template < typename, typename... > class CONTAINER,
-             template < typename > class ALLOC = std::allocator,
              typename... CONTAINER_PARAMS >
   class ScheduleStorage:
-      public ScheduleOperation< ALLOC >,
+      public ScheduleOperation,
       private ScheduleStorageMethod::Execution< typename std::remove_pointer<TABLE>::type,
-                                                TABLE, CONTAINER, ALLOC,
+                                                TABLE, CONTAINER,
                                                 CONTAINER_PARAMS... > {
     public:
-    using allocator_type = ALLOC< Idx >;
     using SCHED_TABLE = typename std::remove_pointer<TABLE>::type;
 
 
@@ -121,35 +116,20 @@ namespace gum {
      * eventually be stored.
      * @warning table is stored only by reference within the ScheduleStorage.
      */
-    explicit ScheduleStorage(const IScheduleMultiDim< ALLOC >& table,
-                             CONTAINER<TABLE, CONTAINER_PARAMS...>& container,
-                             const allocator_type& alloc = allocator_type());
+    explicit ScheduleStorage(const IScheduleMultiDim& table,
+                             CONTAINER<TABLE, CONTAINER_PARAMS...>& container);
 
     /// copy constructor
     ScheduleStorage(
-       const ScheduleStorage< TABLE, CONTAINER, ALLOC, CONTAINER_PARAMS... >& from);
-
-    /// copy constructor with a given allocator
-    ScheduleStorage(
-       const ScheduleStorage< TABLE, CONTAINER, ALLOC, CONTAINER_PARAMS... >& from,
-       const allocator_type&                                                  alloc);
+       const ScheduleStorage< TABLE, CONTAINER, CONTAINER_PARAMS... >& from);
 
     /// move constructor
     ScheduleStorage(
-       ScheduleStorage< TABLE, CONTAINER, ALLOC, CONTAINER_PARAMS... >&& from);
-
-    /// move constructor with a given allocator
-    ScheduleStorage(
-       ScheduleStorage< TABLE, CONTAINER, ALLOC, CONTAINER_PARAMS... >&& from,
-       const allocator_type&                                             alloc);
+       ScheduleStorage< TABLE, CONTAINER, CONTAINER_PARAMS... >&& from);
 
     /// virtual copy constructor
-    ScheduleStorage< TABLE, CONTAINER, ALLOC, CONTAINER_PARAMS... >*
+    ScheduleStorage< TABLE, CONTAINER, CONTAINER_PARAMS... >*
        clone() const final;
-
-    /// virtual copy constructor with a given allocator
-    ScheduleStorage< TABLE, CONTAINER, ALLOC, CONTAINER_PARAMS... >*
-       clone(const allocator_type& alloc) const final;
 
     /// destructor
     virtual ~ScheduleStorage();
@@ -163,28 +143,28 @@ namespace gum {
     /// @{
 
     /// copy operator
-    ScheduleStorage< TABLE, CONTAINER, ALLOC, CONTAINER_PARAMS... >&
+    ScheduleStorage< TABLE, CONTAINER, CONTAINER_PARAMS... >&
        operator=(
-          const ScheduleStorage< TABLE, CONTAINER, ALLOC, CONTAINER_PARAMS... >&);
+          const ScheduleStorage< TABLE, CONTAINER, CONTAINER_PARAMS... >&);
 
     /// move operator
-    ScheduleStorage< TABLE, CONTAINER, ALLOC, CONTAINER_PARAMS... >&
+    ScheduleStorage< TABLE, CONTAINER, CONTAINER_PARAMS... >&
        operator=(
-       ScheduleStorage< TABLE, CONTAINER, ALLOC, CONTAINER_PARAMS... >&&);
+       ScheduleStorage< TABLE, CONTAINER, CONTAINER_PARAMS... >&&);
 
     /// operator ==
     /** Two ScheduleStorage are identical if and only if they have equal (==)
      * ScheduleMultiDim arguments and the same containers to store their tables
      * into. By Equal arguments, we stress that we mean that these
      * ScheduleMultiDims have the same IDs*/
-    bool operator==(const ScheduleOperation< ALLOC >&) const final;
+    bool operator==(const ScheduleOperation&) const final;
 
     /// operator !=
     /** Two ScheduleStorage are identical if and only if they have equal (==)
      * ScheduleMultiDim arguments and the same containers to store their tables
      * into. By Equal arguments, we stress that we mean that these
      * ScheduleMultiDims have the same IDs*/
-    bool operator!=(const ScheduleOperation< ALLOC >&) const final;
+    bool operator!=(const ScheduleOperation&) const final;
 
     /// operator ==
     /** Two ScheduleStorage are identical if and only if they have equal (==)
@@ -192,7 +172,7 @@ namespace gum {
      * into. By Equal arguments, we stress that we mean that these
      * ScheduleMultiDims have the same IDs*/
     virtual bool operator==(
-       const ScheduleStorage< TABLE, CONTAINER, ALLOC, CONTAINER_PARAMS... >&) const;
+       const ScheduleStorage< TABLE, CONTAINER, CONTAINER_PARAMS... >&) const;
 
     /// operator !=
     /** Two ScheduleStorage are identical if and only if they have equal (==)
@@ -200,7 +180,7 @@ namespace gum {
      * into. By Equal arguments, we stress that we mean that these
      * ScheduleMultiDims have the same IDs*/
     virtual bool operator!=(
-       const ScheduleStorage< TABLE, CONTAINER, ALLOC, CONTAINER_PARAMS... >&) const;
+       const ScheduleStorage< TABLE, CONTAINER, CONTAINER_PARAMS... >&) const;
 
     /// @}
 
@@ -217,7 +197,7 @@ namespace gum {
      * are essentially identical but they may have different Ids (so that they
      * may not be ==).
      */
-    bool hasSameArguments(const ScheduleOperation< ALLOC >&) const final;
+    bool hasSameArguments(const ScheduleOperation&) const final;
 
     /** @brief checks whether two ScheduleDeletion have the same parameters
      * (same variables and same content, and same container)
@@ -227,34 +207,34 @@ namespace gum {
      * may not be ==).
      */
     bool hasSameArguments(
-       const ScheduleStorage< TABLE, CONTAINER, ALLOC, CONTAINER_PARAMS... >&) const;
+       const ScheduleStorage< TABLE, CONTAINER, CONTAINER_PARAMS... >&) const;
 
     /** @brief checks whether two ScheduleProjection have similar parameters
      * (same variables but not necessarily the same content)
      */
-    bool hasSimilarArguments(const ScheduleOperation< ALLOC >&) const final;
+    bool hasSimilarArguments(const ScheduleOperation&) const final;
 
     /** @brief checks whether two ScheduleProjection have similar parameters
      * (same variables but not necessarily the same content)
      */
     bool hasSimilarArguments(
-       const ScheduleStorage< TABLE, CONTAINER, ALLOC, CONTAINER_PARAMS... >&) const;
+       const ScheduleStorage< TABLE, CONTAINER, CONTAINER_PARAMS... >&) const;
 
     /// checks whether two ScheduleOperation perform the same operation
-    bool isSameOperation(const ScheduleOperation< ALLOC >&) const final;
+    bool isSameOperation(const ScheduleOperation&) const final;
 
     /// checks whether two ScheduleOperation perform the same operation
     bool isSameOperation(
-       const ScheduleStorage< TABLE, CONTAINER, ALLOC, CONTAINER_PARAMS... >&) const;
+       const ScheduleStorage< TABLE, CONTAINER, CONTAINER_PARAMS... >&) const;
 
     /// returns the argument of the storing function
-    const ScheduleMultiDim< SCHED_TABLE, ALLOC >& arg() const;
+    const ScheduleMultiDim< SCHED_TABLE >& arg() const;
 
     /// returns the sequence of arguments passed to the operation
-    const Sequence< const IScheduleMultiDim< ALLOC >* >& args() const final;
+    const Sequence< const IScheduleMultiDim* >& args() const final;
 
     /// returns the sequence of ScheduleMultidim output by the operation
-    const Sequence< const IScheduleMultiDim< ALLOC >* >& results() const final;
+    const Sequence< const IScheduleMultiDim* >& results() const final;
 
     /// really executes the operation
     void execute() final;
@@ -275,7 +255,7 @@ namespace gum {
      * not have a type compatible with what the ScheduleOperation expects.
      */
     void updateArgs(
-       const Sequence< const IScheduleMultiDim< ALLOC >* >& new_args) final;
+       const Sequence< const IScheduleMultiDim* >& new_args) final;
 
     /** @brief returns an estimation of the number of elementary operations
      * needed to perform the ScheduleOperation */
@@ -303,19 +283,19 @@ namespace gum {
 
     private:
     /// the table to store
-    ScheduleMultiDim< SCHED_TABLE, ALLOC >* _arg_;
+    ScheduleMultiDim< SCHED_TABLE >* _arg_;
 
     /// the sequence of arguments passed to the operation
     /** This method is convenient when using ScheduleOperation rather than
      * directly using ScheduleBinaryCombination */
-    Sequence< const IScheduleMultiDim< ALLOC >* > _args_;
+    Sequence< const IScheduleMultiDim* > _args_;
 
     /// the sequence of ScheduleMultidim output by the operation
     /** @warning Note that the Operation has always some output, even if
      * it has not been executed. In this case, the outputs are abstract
      * ScheduleMultiDim.
      */
-    Sequence< const IScheduleMultiDim< ALLOC >* > _results_;
+    Sequence< const IScheduleMultiDim* > _results_;
 
     /// the container into which the table is stored
     CONTAINER<TABLE, CONTAINER_PARAMS...>* _container_;

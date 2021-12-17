@@ -47,13 +47,6 @@
 
 namespace gum {
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-  // the version numbers help to identify the changes in schedules
-  namespace ScheduleSpace {
-    extern Idx _version_number_;
-  }
-#endif   // DOXYGEN_SHOULD_SKIP_THIS
-
   /**
    * @class Schedule
    * @brief Class containing a schedule of operations to perform on multidims
@@ -67,10 +60,8 @@ namespace gum {
    * insert new operations into the schedule (at a specific location) and to
    * remove some operations.
    */
-  template < template < typename > class ALLOC = std::allocator >
-  class Schedule: private ALLOC< Idx > {
+  class Schedule {
     public:
-    using allocator_type = ALLOC< Idx >;
 
     // ############################################################################
     /// @name Constructors / Destructors
@@ -78,26 +69,16 @@ namespace gum {
     /// @{
 
     /// default constructor (construct an empty sequence)
-    explicit Schedule(const Size nb_ops = 100,
-                      const allocator_type& alloc = allocator_type());
+    explicit Schedule(const Size nb_ops = 100);
 
     /// copy constructor
-    Schedule(const Schedule< ALLOC >& from);
-
-    /// copy constructor with a given allocator
-    Schedule(const Schedule< ALLOC >& from, const allocator_type& alloc);
+    Schedule(const Schedule& from);
 
     /// move constructor
-    Schedule(Schedule< ALLOC >&& from);
-
-    /// move constructor with a given allocator
-    Schedule(Schedule< ALLOC >&& from, const allocator_type& alloc);
+    Schedule(Schedule&& from);
 
     /// virtual copy constructor
-    virtual Schedule< ALLOC >* clone() const;
-
-    /// virtual copy constructor with a given allocator
-    virtual Schedule< ALLOC >* clone(const allocator_type& alloc) const;
+    virtual Schedule* clone() const;
 
     /// destructor
     virtual ~Schedule();
@@ -112,16 +93,16 @@ namespace gum {
     /// @{
 
     /// copy operator
-    Schedule< ALLOC >& operator=(const Schedule< ALLOC >&);
+    Schedule& operator=(const Schedule&);
 
     /// move operator
-    Schedule< ALLOC >& operator=(Schedule< ALLOC >&&);
+    Schedule& operator=(Schedule&&);
 
     /// operator ==
-    bool operator==(const Schedule< ALLOC >&) const;
+    bool operator==(const Schedule&) const;
 
     /// operator !=
-    bool operator!=(const Schedule< ALLOC >&) const;
+    bool operator!=(const Schedule&) const;
 
     /// @}
 
@@ -146,7 +127,7 @@ namespace gum {
      * contains a table with the same id
      */
     template < typename TABLE >
-    const IScheduleMultiDim< ALLOC >*
+    const IScheduleMultiDim*
        insertTable(const TABLE& table, const bool copy, const Idx id = 0);
 
     /** @brief inserts a copy of a table as a source operation's input, i.e., this
@@ -168,8 +149,8 @@ namespace gum {
      * @throws DuplicateScheduleMultiDim is thrown if the schedule already
      * contains a table with the same id
      */
-    const IScheduleMultiDim< ALLOC >*
-       insertScheduleMultiDim(const IScheduleMultiDim< ALLOC >& multidim);
+    const IScheduleMultiDim*
+       insertScheduleMultiDim(const IScheduleMultiDim& multidim);
 
     /** @brief inserts without copying it a table as a source operation's input,
      * i.e., this table is not computed by any ScheduleOperation
@@ -189,7 +170,7 @@ namespace gum {
      * @throws DuplicateScheduleMultiDim is thrown if the schedule already
      * contains a table with the same id
      */
-     void emplaceScheduleMultiDim(const IScheduleMultiDim< ALLOC >& multidim);
+     void emplaceScheduleMultiDim(const IScheduleMultiDim& multidim);
 
     /// inserts an operation into the schedule
     /** The Schedule class is able to determine by itself when the operation
@@ -206,7 +187,7 @@ namespace gum {
      * already been performed but other operations use some of these arguments
      * and they have not been executed yet.
      * @warning operations are inserted by cloning */
-    const ScheduleOperation< ALLOC >& insertOperation(const ScheduleOperation< ALLOC >& op,
+    const ScheduleOperation& insertOperation(const ScheduleOperation& op,
                                                       const bool are_results_persistent = false);
 
     /// emplace a new schedule binary combination operation
@@ -226,9 +207,9 @@ namespace gum {
      * and they have not been executed yet.
      */
     template < typename TABLE1, typename TABLE2, typename TABLE_RES >
-    const ScheduleOperation< ALLOC >&
-       emplaceBinaryCombination(const ScheduleMultiDim< TABLE1, ALLOC >& table1,
-                                const ScheduleMultiDim< TABLE2, ALLOC >& table2,
+    const ScheduleOperation&
+       emplaceBinaryCombination(const ScheduleMultiDim< TABLE1 >& table1,
+                                const ScheduleMultiDim< TABLE2 >& table2,
                                 TABLE_RES (*combine)(const TABLE1&, const TABLE2&),
                                 const bool is_result_persistent = false);
 
@@ -251,8 +232,8 @@ namespace gum {
      * and they have not been executed yet.
      */
     template < typename TABLE >
-    const ScheduleOperation< ALLOC >&
-       emplaceProjection(const ScheduleMultiDim< TABLE, ALLOC >& table,
+    const ScheduleOperation&
+       emplaceProjection(const ScheduleMultiDim< TABLE >& table,
                          const Set< const DiscreteVariable* >&   del_vars,
                          TABLE (*project)(const TABLE&, const Set< const DiscreteVariable* >&),
                          const bool is_result_persistent = false);
@@ -267,8 +248,8 @@ namespace gum {
      * and they have not been executed yet.
      */
     template < typename TABLE >
-    const ScheduleOperation< ALLOC >&
-       emplaceDeletion(const ScheduleMultiDim< TABLE, ALLOC >& table);
+    const ScheduleOperation&
+       emplaceDeletion(const ScheduleMultiDim< TABLE >& table);
 
     /// emplace a new schedule storage operation
     /** @throws UnknownScheduleMultiDim if some of the arguments of op do not
@@ -283,8 +264,8 @@ namespace gum {
                template < typename, typename... >
                class CONTAINER,
                typename... CONTAINER_PARAMS >
-    const ScheduleOperation< ALLOC >&
-       emplaceStorage(const IScheduleMultiDim< ALLOC >&        table,
+    const ScheduleOperation&
+       emplaceStorage(const IScheduleMultiDim&        table,
                       CONTAINER< TABLE, CONTAINER_PARAMS... >& container);
 
     /// returns a DAG indicating in which order the operations can be performed
@@ -295,12 +276,12 @@ namespace gum {
     /// returns the scheduleOperation corresponding to an id in the DAG
     /** @throws NotFound exception is raised if the DAG does not contain the id
      */
-    const ScheduleOperation< ALLOC >& operation(const NodeId id) const;
+    const ScheduleOperation& operation(const NodeId id) const;
 
     /// returns the id of the node corresponding to a given ScheduleOperation
     /** @throws NotFound exception is raised the operation does not belong to
      * the Schedule */
-    NodeId nodeId(const ScheduleOperation< ALLOC >&) const;
+    NodeId nodeId(const ScheduleOperation&) const;
 
     /** @brief returns the set of ScheduleOperations that are ready to be executed
      *
@@ -346,40 +327,37 @@ namespace gum {
      * @throws UnexecutedScheduleOperation exception is thrown in check mode if
      * the operation has not yet been executed. This should never happen.
      */
-    void updateAfterExecution(const ScheduleOperation< ALLOC >& exec_op,
+    void updateAfterExecution(const ScheduleOperation& exec_op,
                               std::vector< NodeId >&            new_available_nodes,
                               const bool                        check = false);
 
     /// returns the ScheduleMultiDim corresponding to a given id
-    const IScheduleMultiDim< ALLOC >* scheduleMultiDim(const NodeId id) const;
+    const IScheduleMultiDim* scheduleMultiDim(const NodeId id) const;
 
     /// indicates whether the schedule contains a given ScheduleMultiDim
     bool existsScheduleMultiDim(const NodeId id) const;
 
     /// returns the id of a given IScheduleMultiDim
-    NodeId scheduleMultiDimId(const IScheduleMultiDim< ALLOC >* multidim) const;
+    NodeId scheduleMultiDimId(const IScheduleMultiDim* multidim) const;
 
     /// returns the operation, if any, that created a given scheduleMultiDim
     /** @returns a pointer to the ScheduleOperation that created (as a result)
      * a given ScheduleMultiDim. If no operation created it, the method
      * returns nullptr. */
-    const ScheduleOperation< ALLOC >* scheduleMultiDimCreator(const NodeId id) const;
+    const ScheduleOperation* scheduleMultiDimCreator(const NodeId id) const;
 
     /// returns the operation, if any, that created a given scheduleMultiDim
     /** @returns a pointer to the ScheduleOperation that created (as a result)
      * a given ScheduleMultiDim. If no operation created it, the method
      * returns nullptr. */
-    const ScheduleOperation< ALLOC >*
-       scheduleMultiDimCreator(const IScheduleMultiDim< ALLOC >* multidim) const;
+    const ScheduleOperation*
+       scheduleMultiDimCreator(const IScheduleMultiDim* multidim) const;
 
     /// returns the version number of the schedule
     Idx versionNumber() const;
 
     /// empty the schedule, i.e., remove its content
     void clear();
-
-    /// returns the allocator used by the operation
-    allocator_type get_allocator() const;
 
     /// @}
 
@@ -395,7 +373,7 @@ namespace gum {
     NodeId _newId_{NodeId(0)};
 
     /// a mapping between the ids of the operations and their pointer
-    Bijection< NodeId, ScheduleOperation< ALLOC >* > _node2op_;
+    Bijection< NodeId, ScheduleOperation* > _node2op_;
 
     /// a structure to indicate precisely where a ScheduleMultiDim comes from
     /** ScheduleMultiDims can either result from the execution of some
@@ -410,17 +388,17 @@ namespace gum {
      * std::pair indicates the index of the ScheduleMultiDim in the sequence
      * of results of the ScheduleOperation.
      */
-    HashTable< const IScheduleMultiDim< ALLOC >*, std::pair< ScheduleOperation< ALLOC >*, Idx > >
+    HashTable< const IScheduleMultiDim*, std::pair< ScheduleOperation*, Idx > >
        _multidim_location_;
 
     /// a bijection between pointers to IScheduleMultiDim and their Ids
-    Bijection< const IScheduleMultiDim< ALLOC >*, Idx > _multidim2id_;
+    Bijection< const IScheduleMultiDim*, Idx > _multidim2id_;
 
     /// indicates which ScheduleMultiDims were emplaced
-    Set< const IScheduleMultiDim< ALLOC >* > _emplaced_multidims_;
+    Set< const IScheduleMultiDim* > _emplaced_multidims_;
 
     /// maps the multidims to the set of operations that use them
-    HashTable< const IScheduleMultiDim< ALLOC >*, NodeSet > _multidim2nodes_;
+    HashTable< const IScheduleMultiDim*, NodeSet > _multidim2nodes_;
 
     /** @brief A bijection mapping ScheduleMultiDims to be deleted with the
      * operations that will delete them
@@ -433,7 +411,7 @@ namespace gum {
      * @warning at most one operation is allowed to delete a ScheduleMultiDim
      * (else, we would free it several times from memory, which is bad, very bad)
      */
-    Bijection< const IScheduleMultiDim< ALLOC >*, NodeId > _deleted_multidim2node_;
+    Bijection< const IScheduleMultiDim*, NodeId > _deleted_multidim2node_;
 
     /// a number that identifies the current version of the schedule
     /** schedules' versions change whenever new ScheduleMultiDims or ScheduleOperations
@@ -443,7 +421,7 @@ namespace gum {
     /// a function to copy the content of a schedule into another one
     /** @warning this method assumes that "this" is an empty schedule. If this
      * is not the case, then we should first remove everything from "this" */
-    void _copy_(const Schedule< ALLOC >& from, const allocator_type& alloc);
+    void _copy_(const Schedule& from);
 
     /// a function to delete from memory the content of a schedule
     void _destroy_();
@@ -456,11 +434,20 @@ namespace gum {
 
     /// returns a new distinct version for each schedule
     static Idx _newVersionNumber_();
+
+    // the version numbers help to identify the changes in schedules
+    static Idx _overall_version_number_;
+
   };
 
 } /* namespace gum */
 
 // always include the template implementation
 #include <agrum/tools/graphicalModels/inference/scheduler/schedule_tpl.h>
+
+#ifndef GUM_NO_INLINE
+#include <agrum/tools/graphicalModels/inference/scheduler/schedule_inl.h>
+#endif /* GUM_NO_INLINE */
+
 
 #endif /* GUM_SCHEDULE_H */

@@ -166,24 +166,24 @@ namespace gum {
      * produce the right result. The latter is contained within the IScheduleMultiDim.
      * @warning MultiDimCombinations always produce a new freshly allocated resulting table
      */
-    virtual std::pair< std::vector< ScheduleOperation<>* >, const IScheduleMultiDim<>* >
-       operations(const std::vector< const IScheduleMultiDim<>* >& set,
+    virtual std::pair< std::vector< ScheduleOperation* >, const IScheduleMultiDim* >
+       operations(const std::vector< const IScheduleMultiDim* >& set,
                   const bool is_result_persistent = false) const = 0;
-    virtual std::pair< std::vector< ScheduleOperation<>* >, const IScheduleMultiDim<>* >
-       operations(const Set< const IScheduleMultiDim<>* >& set,
-                  const bool                               is_result_persistent = false) const = 0;
+    virtual std::pair< std::vector< ScheduleOperation* >, const IScheduleMultiDim* >
+       operations(const Set< const IScheduleMultiDim* >& set,
+                  const bool                             is_result_persistent = false) const = 0;
 
     /// add to a given schedule the set of operations needed to perform the combination
     /** @warning whenever this method is executed, it is assumed that the
      * ScheduleMultiDim already belong to the schedule.
      * @warning MultiDimCombinations always produce a new freshly allocated resulting table
      */
-    const IScheduleMultiDim<>* schedule(Schedule<>&                              schedule,
-                                        const Set< const IScheduleMultiDim<>* >& set,
-                                        const bool is_result_persistent = false) const;
-    const IScheduleMultiDim<>* schedule(Schedule<>&                                      schedule,
-                                        const std::vector< const IScheduleMultiDim<>* >& set,
-                                        const bool is_result_persistent = false) const;
+    const IScheduleMultiDim* schedule(Schedule&                              schedule,
+                                      const Set< const IScheduleMultiDim* >& set,
+                                      const bool is_result_persistent = false) const;
+    const IScheduleMultiDim* schedule(Schedule&                                      schedule,
+                                      const std::vector< const IScheduleMultiDim* >& set,
+                                      const bool is_result_persistent = false) const;
 
     /// changes the function used for combining two TABLES
     virtual void setCombinationFunction(TABLE (*combine)(const TABLE&, const TABLE&)) = 0;

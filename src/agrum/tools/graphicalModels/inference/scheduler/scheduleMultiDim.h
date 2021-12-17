@@ -95,12 +95,9 @@ namespace gum {
    * as argument to these operations. But nothing is actually computed until
    * the execute() methods of the scheduled operations are executed.
    */
-  template < typename TABLE, template < typename > class ALLOC = std::allocator >
-  class ScheduleMultiDim: public IScheduleMultiDim< ALLOC > {
+  template < typename TABLE >
+  class ScheduleMultiDim: public IScheduleMultiDim {
     public:
-    using allocator_type = ALLOC< Idx >;
-
-
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -115,13 +112,8 @@ namespace gum {
      * @param id if specified and different from 0, this will be the id of the
      * constructed ScheduleMultiDim, else an Id is automatically provided to the
      * ScheduleMultiDim.
-     * @param alloc the allocator used to allocated the tables within the
-     * ScheduleMultiDim.
      */
-    explicit ScheduleMultiDim(const TABLE&          table,
-                              const bool            copy,
-                              const Idx             id = 0,
-                              const allocator_type& alloc = allocator_type());
+    explicit ScheduleMultiDim(const TABLE& table, const bool copy, const Idx id = 0);
 
     /// constructs a ScheduleMultiDim by moving a table inside it
     /** @param table the multidimensional table that we wish to be contained
@@ -129,12 +121,8 @@ namespace gum {
      * @param id if specified and different from 0, this will be the id of the
      * constructed ScheduleMultiDim, else an Id is automatically provided to the
      * ScheduleMultiDim.
-     * @param alloc the allocator used to allocated the tables within the
-     * ScheduleMultiDim.
      */
-    explicit ScheduleMultiDim(TABLE&&               table,
-                              const Idx             id = 0,
-                              const allocator_type& alloc = allocator_type());
+    explicit ScheduleMultiDim(TABLE&& table, const Idx id = 0);
 
     /// construct a ScheduleMultiDim for a multidimensional table yet to be built
     /** The ScheduleMultiDim created is abstract, i.e., it does not contain a
@@ -143,42 +131,20 @@ namespace gum {
      * @param id if specified and different from 0, this will be the id of the
      * constructed ScheduleMultiDim, else an Id is automatically provided to the
      * ScheduleMultiDim.
-     * @param alloc the allocator used to allocated the tables within the
-     * ScheduleMultiDim.
      * @warning the sequence of variables is copied into the MultiDim. */
-    explicit ScheduleMultiDim(const Sequence< const DiscreteVariable* >& vars,
-                              const Idx                                  id = 0,
-                              const allocator_type& alloc = allocator_type());
+    explicit ScheduleMultiDim(const Sequence< const DiscreteVariable* >& vars, const Idx id = 0);
 
     /// copy constructor
-    ScheduleMultiDim(const ScheduleMultiDim< TABLE, ALLOC >& from);
-
-    /// copy constructor with a given allocator
-    ScheduleMultiDim(const ScheduleMultiDim< TABLE, ALLOC >& from,
-                     const allocator_type&                   alloc);
+    ScheduleMultiDim(const ScheduleMultiDim< TABLE >& from);
 
     /// move constructor
-    ScheduleMultiDim(ScheduleMultiDim< TABLE, ALLOC >&& from);
-
-    /// move constructor with a given allocator
-    ScheduleMultiDim(ScheduleMultiDim< TABLE, ALLOC >&& from,
-                     const allocator_type&              alloc);
+    ScheduleMultiDim(ScheduleMultiDim< TABLE >&& from);
 
     /// virtual copy constructor
-    virtual ScheduleMultiDim< TABLE, ALLOC >* clone() const;
+    virtual ScheduleMultiDim< TABLE >* clone() const;
 
     /// virtual copy constructor enabling to force a copy of the content
-    virtual ScheduleMultiDim< TABLE, ALLOC >* clone(bool force_copy) const;
-
-    /// virtual copy constructor with a given allocator
-    virtual ScheduleMultiDim< TABLE, ALLOC >*
-       clone(const allocator_type& alloc) const;
-
-    /** @brief virtual copy constructor with a given allocator enabling to force
-     * a copy of the content
-     */
-    virtual ScheduleMultiDim< TABLE, ALLOC >*
-       clone(bool force_copy, const allocator_type& alloc) const;
+    virtual ScheduleMultiDim< TABLE >* clone(bool force_copy) const;
 
     /// destructor
     virtual ~ScheduleMultiDim();
@@ -193,32 +159,30 @@ namespace gum {
     /// @{
 
     /// copy operator
-    ScheduleMultiDim< TABLE, ALLOC >&
-       operator=(const ScheduleMultiDim< TABLE, ALLOC >& from);
+    ScheduleMultiDim< TABLE >& operator=(const ScheduleMultiDim< TABLE >& from);
 
     /// move operator
-    ScheduleMultiDim< TABLE, ALLOC >&
-       operator=(ScheduleMultiDim< TABLE, ALLOC >&& from);
+    ScheduleMultiDim< TABLE >& operator=(ScheduleMultiDim< TABLE >&& from);
 
     /// checks whether two ScheduleMultiDim have exactly the same ID
     /** Two ScheduleMultiDim having the same ID should imply that they also
      * contain the same sequences of variables and the same tables. */
-    virtual bool operator==(const ScheduleMultiDim< TABLE, ALLOC >&) const;
+    virtual bool operator==(const ScheduleMultiDim< TABLE >&) const;
 
     /// checks whether two ScheduleMultiDim have the same ID and type
     /** Two ScheduleMultiDim having the same ID should imply that they also
      * contain the same sequences of variables and the same tables. */
-    virtual bool operator==(const IScheduleMultiDim< ALLOC >&) const;
+    virtual bool operator==(const IScheduleMultiDim&) const;
 
     /// checks whether two ScheduleMultiDim have different IDs
     /** Two ScheduleMultiDim having different IDs should mean that they either
      * contain the different sequences of variables and/or different tables. */
-    virtual bool operator!=(const ScheduleMultiDim< TABLE, ALLOC >&) const;
+    virtual bool operator!=(const ScheduleMultiDim< TABLE >&) const;
 
     /// checks whether two ScheduleMultiDim have different IDs or types
     /** Two ScheduleMultiDim having different IDs should mean that they either
      * contain the different sequences of variables and/or different tables. */
-    virtual bool operator!=(const IScheduleMultiDim< ALLOC >&) const;
+    virtual bool operator!=(const IScheduleMultiDim&) const;
 
     /// @}
 
@@ -234,7 +198,7 @@ namespace gum {
      * we do not check for the ScheduleMultiDim's ID nor for the content of
      * the table stored into the IScheduleMultiDim, if any.
      * @param m the ScheduleMultiDim with which we test similarity. */
-    virtual bool hasSameVariables(const IScheduleMultiDim< ALLOC >& m) const;
+    virtual bool hasSameVariables(const IScheduleMultiDim& m) const;
 
     /// checks whether two ScheduleMultiDim have the same variables
     /** Method hasSameVariables tests whether two ScheduleMultiDim contain the same
@@ -242,21 +206,21 @@ namespace gum {
      * we do not check for the ScheduleMultiDim's ID nor for the content of
      * the table stored into the IScheduleMultiDim, if any.
      * @param m the ScheduleMultiDim with which we test similarity. */
-    virtual bool hasSameVariables(const ScheduleMultiDim< TABLE, ALLOC >& m) const;
+    virtual bool hasSameVariables(const ScheduleMultiDim< TABLE >& m) const;
 
     /// checks whether two ScheduleMultiDim contain precisely the same table
     /** By "contain precisely the same table", we mean that the actual tables
      * pointed to by the ScheduleMultiDim are the same (i.e., either they are
      * both not yet allocated but have the same sequences of variables or they
      * have the same content) */
-    virtual bool hasSameContent(const IScheduleMultiDim< ALLOC >&) const;
+    virtual bool hasSameContent(const IScheduleMultiDim&) const;
 
-     /// checks whether two ScheduleMultiDim contain precisely the same table
+    /// checks whether two ScheduleMultiDim contain precisely the same table
     /** By "contain precisely the same table", we mean that the actual tables
      * pointed to by the ScheduleMultiDim are the same (i.e., either they are
      * both not yet allocated but have the same sequences of variables or they
      * have the same content) */
-    virtual bool hasSameContent(const ScheduleMultiDim< TABLE, ALLOC >&) const;
+    virtual bool hasSameContent(const ScheduleMultiDim< TABLE >&) const;
 
     /// returns whether the ScheduleMultiDim contains a real table or not
     /** @returns true if the ScheduleMultiDim is abstract, i.e., it is does not
@@ -341,15 +305,6 @@ namespace gum {
 
     /// remove the table if it is contained in the ScheduleMultiDim
     void _removeTable_();
-
-
-    /** @brief metaprogramming to get the types of the elements stored into the
-     * ScheduleMultidims */
-     template<typename T>
-     struct ElementType { using value_type = T; };
-     template< template< typename, typename ... > class CONTAINER,
-               typename T, typename ...Args >
-     struct ElementType< CONTAINER< T, Args... > > { using value_type = T; };
 
   };
 

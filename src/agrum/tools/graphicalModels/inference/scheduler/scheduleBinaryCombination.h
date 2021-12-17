@@ -78,14 +78,9 @@ namespace gum {
    *
    * @endcode
    */
-  template < typename TABLE1,
-             typename TABLE2,
-             typename TABLE_RES,
-             template < typename > class ALLOC = std::allocator >
-  class ScheduleBinaryCombination: public ScheduleOperation< ALLOC > {
+  template < typename TABLE1, typename TABLE2, typename TABLE_RES >
+  class ScheduleBinaryCombination: public ScheduleOperation {
     public:
-    using allocator_type = ALLOC< Idx >;
-
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -101,37 +96,19 @@ namespace gum {
      * memory when the operation itself is deleted from memory.
      * @warning tables 1 and 2 are stored only by reference within the
      * ScheduleBinaryCombination. */
-    ScheduleBinaryCombination(const ScheduleMultiDim< TABLE1, ALLOC >& table1,
-                              const ScheduleMultiDim< TABLE2, ALLOC >& table2,
+    ScheduleBinaryCombination(const ScheduleMultiDim< TABLE1 >& table1,
+                              const ScheduleMultiDim< TABLE2 >& table2,
                               TABLE_RES (*combine)(const TABLE1&, const TABLE2&),
-                              const bool is_result_persistent = false,
-                              const allocator_type& alloc = allocator_type());
+                              const bool is_result_persistent = false);
 
     /// copy constructor
-    ScheduleBinaryCombination(
-       const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >& from);
-
-    /// copy constructor with a given allocator
-    ScheduleBinaryCombination(
-       const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >& from,
-       const allocator_type&                                                alloc);
+    ScheduleBinaryCombination(const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >& from);
 
     /// move constructor
-    ScheduleBinaryCombination(
-       ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >&& from);
-
-    /// move constructor with a given allocator
-    ScheduleBinaryCombination(
-       ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >&& from,
-       const allocator_type&                                           alloc);
+    ScheduleBinaryCombination(ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >&& from);
 
     /// virtual copy constructor
-    ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >*
-       clone() const final;
-
-    /// virtual copy constructor with a given allocator
-    ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >*
-       clone(const allocator_type& alloc) const final;
+    ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >* clone() const final;
 
     /// destructor
     /** @warning If the ScheduleOperation has created some output
@@ -147,42 +124,40 @@ namespace gum {
     /// @{
 
     /// copy operator
-    ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >& operator=(
-       const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >&);
+    ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >&
+       operator=(const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >&);
 
     /// move operator
-    ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >&
-       operator=(ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >&&);
+    ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >&
+       operator=(ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >&&);
 
     /// operator ==
     /** Two operations are identical if and only if they have equal (==)
      * arguments and they perform the same operation (e.g., both perform
      * additions). By Equal arguments, we mean that these ScheduleMultiDims have
      * the same IDs */
-    bool operator==(const ScheduleOperation< ALLOC >&) const final;
+    bool operator==(const ScheduleOperation&) const final;
 
     /// operator !=
     /** Two operations are different if and only if they either have different
      * ScheduleMultiDim arguments or they perform different operations
      * (e.g., one performs an addition and another one a subtraction). different
      * ScheduleMultiDim arguments means that the latter differ by their Ids. */
-    bool operator!=(const ScheduleOperation< ALLOC >&) const final;
+    bool operator!=(const ScheduleOperation&) const final;
 
     /// operator ==
     /** Two operations are identical if and only if they have equal
      * arguments and they perform the same operation (e.g., both perform
      * additions). By Equal arguments, we mean that these ScheduleMultiDims have
      * the same IDs */
-    bool operator==(
-       const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >&) const;
+    bool operator==(const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >&) const;
 
     /// operator !=
     /** Two operations are different if and only if they either have different
      * ScheduleMultiDim arguments or they perform different operations
      * (e.g., one performs an addition and another one a subtraction). Different
      * ScheduleMultiDim arguments means that the latter differ by their Ids. */
-    bool operator!=(
-       const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >&) const;
+    bool operator!=(const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >&) const;
 
     /// @}
 
@@ -198,7 +173,7 @@ namespace gum {
      * Parameters having the same variables and the same content are essentially
      * identical but they may have different Ids (so that they may not be ==).
      */
-    bool hasSameArguments(const ScheduleOperation< ALLOC >&) const final;
+    bool hasSameArguments(const ScheduleOperation&) const final;
 
     /** @brief checks whether two ScheduleCombination have the same parameters
      * (same variables and same content)
@@ -206,39 +181,36 @@ namespace gum {
      * Parameters having the same variables and the same content are essentially
      * identical but they may have different Ids (so that they may not be ==).
      */
-    bool hasSameArguments(
-       const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >&) const;
+    bool hasSameArguments(const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >&) const;
 
     /** @brief checks whether two ScheduleCombination have similar parameters
      * (same variables) */
-    bool hasSimilarArguments(const ScheduleOperation< ALLOC >&) const final;
+    bool hasSimilarArguments(const ScheduleOperation&) const final;
 
     /** @brief checks whether two ScheduleCombination have similar parameters
      * (same variables) */
-    bool hasSimilarArguments(
-       const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >&) const;
+    bool hasSimilarArguments(const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >&) const;
 
     /// checks whether two ScheduleOperation perform the same operation
-    bool isSameOperation(const ScheduleOperation< ALLOC >&) const final;
+    bool isSameOperation(const ScheduleOperation&) const final;
 
     /// checks whether two ScheduleOperation perform the same operation
-    bool isSameOperation(
-       const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES, ALLOC >&) const;
+    bool isSameOperation(const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >&) const;
 
     /// returns the first argument of the combination
-    const ScheduleMultiDim< TABLE1, ALLOC >& arg1() const;
+    const ScheduleMultiDim< TABLE1 >& arg1() const;
 
     /// returns the first argument of the combination
-    const ScheduleMultiDim< TABLE2, ALLOC >& arg2() const;
+    const ScheduleMultiDim< TABLE2 >& arg2() const;
 
     /// returns the sequence of arguments passed to the operation
-    const Sequence< const IScheduleMultiDim< ALLOC >* >& args() const final;
+    const Sequence< const IScheduleMultiDim* >& args() const final;
 
     /// returns the result of the combination
     /** @return the ScheduleMultiDim resulting from the combination. It is
      * abstract if the combination has not been performed yet.
      */
-    const ScheduleMultiDim< TABLE_RES, ALLOC >& result() const;
+    const ScheduleMultiDim< TABLE_RES >& result() const;
 
     /// returns the ScheduleMultidim resulting from the operation
     /** @warning Note that the Operation always returns its outputs, even if
@@ -247,7 +219,7 @@ namespace gum {
      * @return the sequence of ScheduleMultiDim resulting from the operation.
      * Those can be abstract if the operation has not been performed yet.
      */
-    const Sequence< const IScheduleMultiDim< ALLOC >* >& results() const final;
+    const Sequence< const IScheduleMultiDim* >& results() const final;
 
     /// modifies the arguments of the operation
     /** @throws SizeError is raised if the number of elements in new_args
@@ -256,8 +228,7 @@ namespace gum {
      * @throws TypeError is raised if at least one element of new_args does
      * not have a type compatible with what the ScheduleOperation expects.
      */
-    void updateArgs(
-       const Sequence< const IScheduleMultiDim< ALLOC >* >& new_args) final;
+    void updateArgs(const Sequence< const IScheduleMultiDim* >& new_args) final;
 
     /// indicates whether the operation has been executed
     bool isExecuted() const final;
@@ -289,37 +260,35 @@ namespace gum {
     std::string toString() const final;
 
     /// use a new combination function
-    void setCombinationFunction(TABLE_RES (*combine)(const TABLE1&,
-                                                     const TABLE2&));
+    void setCombinationFunction(TABLE_RES (*combine)(const TABLE1&, const TABLE2&));
 
     /// @}
 
 
     private:
     /// the first argument of the combination
-    const ScheduleMultiDim< TABLE1, ALLOC >* _arg1_{nullptr};
+    const ScheduleMultiDim< TABLE1 >* _arg1_{nullptr};
 
     /// the second argument of the combination
-    const ScheduleMultiDim< TABLE2, ALLOC >* _arg2_{nullptr};
+    const ScheduleMultiDim< TABLE2 >* _arg2_{nullptr};
 
     /// the sequence of arguments passed to the operation
     /** This method is convenient when using ScheduleOperation rather than
      * directly using ScheduleBinaryCombination */
-    Sequence< const IScheduleMultiDim< ALLOC >* > _args_;
+    Sequence< const IScheduleMultiDim* > _args_;
 
     /// the result of the combination
-    ScheduleMultiDim< TABLE_RES, ALLOC >* _result_{nullptr};
+    ScheduleMultiDim< TABLE_RES >* _result_{nullptr};
 
     /// the sequence of ScheduleMultidim output by the operation
     /** @warning Note that the Operation has always some output, even if
      * it has not been executed. In this case, the outputs are abstract
      * ScheduleMultiDim.
      */
-    Sequence< const IScheduleMultiDim< ALLOC >* > _results_;
+    Sequence< const IScheduleMultiDim* > _results_;
 
     /// the function actually used to perform the combination
     TABLE_RES (*_combine_)(const TABLE1&, const TABLE2&);
-
   };
 
 } /* namespace gum */

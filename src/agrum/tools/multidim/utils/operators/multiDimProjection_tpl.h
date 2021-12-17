@@ -90,8 +90,8 @@ namespace gum {
 
   /// returns the set of operations to perform as well as the result of the projection
   template < class TABLE >
-  std::pair< ScheduleOperation<>*, const IScheduleMultiDim<>* >
-     MultiDimProjection< TABLE >::operations(const IScheduleMultiDim<>*            table,
+  std::pair< ScheduleOperation*, const IScheduleMultiDim* >
+     MultiDimProjection< TABLE >::operations(const IScheduleMultiDim*              table,
                                              const Set< const DiscreteVariable* >& del_vars,
                                              const bool is_result_persistent) const {
     auto op
@@ -104,11 +104,11 @@ namespace gum {
 
   /// add to a given schedule the set of operations needed to perform the projection
   template < class TABLE >
-  INLINE const IScheduleMultiDim<>*
-               MultiDimProjection< TABLE >::schedule(Schedule<>&                           schedule,
-                                                     const IScheduleMultiDim<>*            table,
-                                                     const Set< const DiscreteVariable* >& del_vars,
-                                                     const bool is_result_persistent) const {
+  INLINE const IScheduleMultiDim*
+     MultiDimProjection< TABLE >::schedule(Schedule&                             schedule,
+                                           const IScheduleMultiDim*              table,
+                                           const Set< const DiscreteVariable* >& del_vars,
+                                           const bool is_result_persistent) const {
     const auto& xtable = dynamic_cast< const ScheduleMultiDim< TABLE >& >(*table);
     const auto& op
        = schedule.template emplaceProjection(xtable, del_vars, proj_, is_result_persistent);

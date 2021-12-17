@@ -37,10 +37,8 @@
 
 namespace gum {
 
-  template < template < typename > class ALLOC = std::allocator  >
-  class SchedulerSequential: public Scheduler< ALLOC > {
+  class SchedulerSequential : public Scheduler {
     public:
-    using allocator_type = ALLOC< Idx >;
 
     // ############################################################################
     /// @name Constructors / Destructors
@@ -49,28 +47,16 @@ namespace gum {
 
     /// default constructor
     explicit SchedulerSequential(Size max_nb_threads = 0,
-                                 double max_megabyte_memory = 0.0,
-                                 const allocator_type& alloc = allocator_type());
+                                 double max_megabyte_memory = 0.0);
 
     /// copy constructor
-    SchedulerSequential(const SchedulerSequential< ALLOC >& from);
-
-    /// copy constructor with a given allocator
-    SchedulerSequential(const SchedulerSequential< ALLOC >& from,
-                        const allocator_type&               alloc);
+    SchedulerSequential(const SchedulerSequential& from);
 
     /// move constructor
-    SchedulerSequential(SchedulerSequential< ALLOC >&& from);
-
-    /// move constructor with a given allocator
-    SchedulerSequential(SchedulerSequential< ALLOC >&&  from,
-                        const allocator_type&           alloc);
+    SchedulerSequential(SchedulerSequential&& from);
 
     /// virtual copy constructor
-    SchedulerSequential< ALLOC >* clone() const final;
-
-    /// virtual copy constructor with a given allocator
-    SchedulerSequential< ALLOC >* clone(const allocator_type& alloc) const final;
+    SchedulerSequential* clone() const final;
 
     /// destructor
     virtual ~SchedulerSequential();
@@ -91,11 +77,11 @@ namespace gum {
     void setMaxMemory(double megabytes) final;
 
     /// execute all the operations of a given schedule
-    void execute(Schedule< ALLOC >&) final;
+    void execute(Schedule&) final;
 
     /** @brief returns an estimation of the number of elementary operations
      * needed to perform a given schedule */
-    double nbOperations(const Schedule< ALLOC >&) final;
+    double nbOperations(const Schedule&) final;
 
     /// returns the memory consumption used during the execution of a schedule
     /** Actually, this function does not return a precise account of the memory
@@ -105,17 +91,17 @@ namespace gum {
      * amount of memory used during the execution of the Schedule and the second
      * one is the amount of memory still used at the end of the execution of
      * the schedule */
-    std::pair< double, double > memoryUsage(const Schedule< ALLOC >&) final;
+    std::pair< double, double > memoryUsage(const Schedule&) final;
 
     /// @}
 
 
     private:
     /// the schedule we wish to execute
-    Schedule< ALLOC >* _schedule_ {nullptr};
+    Schedule* _schedule_ {nullptr};
 
     /// the sequence of operations to perform
-    std::vector< NodeId, ALLOC< NodeId > > _operations_;
+    std::vector< NodeId > _operations_;
 
     /// the memory usage for the sequence of operations;
     std::pair< double, double > _memory_usage_ {0.0, 0.0};
@@ -134,7 +120,7 @@ namespace gum {
 
 
     /// sets a schedule and updates the set of operations if necessary
-    void _setSchedule_(const Schedule< ALLOC >& schedule);
+    void _setSchedule_(const Schedule& schedule);
 
     /** @brief add the currently executable deletions into the set of
      * available operations
@@ -158,7 +144,7 @@ namespace gum {
     /// simulate the execution of one operation
     void _simulateExecuteOneOperation_(
        const NodeId                node,
-       ScheduleOperation< ALLOC >& op,
+       ScheduleOperation& op,
        DAG&                        dag,
        List<NodeId>&               available_nodes,
        std::vector<NodeId>&        new_available_nodes);
@@ -177,7 +163,9 @@ namespace gum {
 
 } /* namespace gum */
 
-// always include the template implementation
-#include <agrum/tools/graphicalModels/inference/scheduler/schedulerSequential_tpl.h>
+// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/tools/graphicalModels/inference/scheduler/schedulerSequential_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_SCHEDULER_SEQUENTIAL_H */

@@ -46,38 +46,24 @@
 
 namespace gum {
 
-  template < template < typename > class ALLOC = std::allocator >
-  class SchedulerParallel: public Scheduler< ALLOC > {
+  class SchedulerParallel: public Scheduler {
     public:
-    using allocator_type = ALLOC< Idx >;
-
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
 
     /// default constructor
-    explicit SchedulerParallel(Size                  max_nb_threads      = 0,
-                               double                max_megabyte_memory = 0.0,
-                               const allocator_type& alloc               = allocator_type());
+    explicit SchedulerParallel(Size max_nb_threads = 0, double max_megabyte_memory = 0.0);
 
     /// copy constructor
-    SchedulerParallel(const SchedulerParallel< ALLOC >& from);
-
-    /// copy constructor with a given allocator
-    SchedulerParallel(const SchedulerParallel< ALLOC >& from, const allocator_type& alloc);
+    SchedulerParallel(const SchedulerParallel& from);
 
     /// move constructor
-    SchedulerParallel(SchedulerParallel< ALLOC >&& from);
-
-    /// move constructor with a given allocator
-    SchedulerParallel(SchedulerParallel< ALLOC >&& from, const allocator_type& alloc);
+    SchedulerParallel(SchedulerParallel&& from);
 
     /// virtual copy constructor
-    SchedulerParallel< ALLOC >* clone() const final;
-
-    /// virtual copy constructor with a given allocator
-    SchedulerParallel< ALLOC >* clone(const allocator_type& alloc) const final;
+    SchedulerParallel* clone() const final;
 
     /// destructor
     virtual ~SchedulerParallel();
@@ -106,11 +92,11 @@ namespace gum {
     void setMaxMemory(double megabytes) final;
 
     /// execute all the operations of a given schedule
-    void execute(Schedule< ALLOC >&) final;
+    void execute(Schedule&) final;
 
     /** @brief returns an estimation of the number of elementary operations
      * needed to perform a given schedule */
-    double nbOperations(const Schedule< ALLOC >&) final;
+    double nbOperations(const Schedule&) final;
 
     /// returns the memory consumption used during the execution of a schedule
     /** Actually, this function does not return a precise account of the memory
@@ -120,17 +106,17 @@ namespace gum {
      * amount of memory used during the execution of the Schedule and the second
      * one is the amount of memory still used at the end of the execution of
      * the schedule */
-    std::pair< double, double > memoryUsage(const Schedule< ALLOC >&) final;
+    std::pair< double, double > memoryUsage(const Schedule&) final;
 
     /// @}
 
 
     private:
     /// a scheduler used for computing the number of operations and memory usage
-    SchedulerSequential< ALLOC > _sequential_scheduler_;
+    SchedulerSequential _sequential_scheduler_;
 
     /// the max cumulative number of instructions allowed for a given thread
-    double _max_instruction_number_ {2000};
+    double _max_instruction_number_{2000};
 
     /// friendship for allowing std::sort to use _cmp_
     template < typename ITER, typename CMP >
@@ -139,7 +125,9 @@ namespace gum {
 
 } /* namespace gum */
 
-// always include the template implementation
-#include <agrum/tools/graphicalModels/inference/scheduler/schedulerParallel_tpl.h>
+// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/tools/graphicalModels/inference/scheduler/schedulerParallel_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_SCHEDULER_PARALLEL_H */

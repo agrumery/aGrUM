@@ -37,35 +37,20 @@ namespace gum {
 
 
   /// remove the table if it is contained in th ScheduleMultiDim
-  template < typename TABLE, template < typename > class ALLOC >
-  void ScheduleMultiDim< TABLE, ALLOC >::_removeTable_() {
-    if (_table_contained_ && (_table_ != nullptr)) {
-      ALLOC< TABLE > allocator(this->get_allocator());
-      _table_->~TABLE();
-      allocator.deallocate(_table_, 1);
-    }
+  template < typename TABLE >
+  INLINE void ScheduleMultiDim< TABLE >::_removeTable_() {
+    if (_table_contained_ && (_table_ != nullptr)) delete _table_;
     _table_ = nullptr;
   }
 
 
   /// constructs a ScheduleMultiDim containing an already built table
-  template < typename TABLE, template < typename > class ALLOC >
-  ScheduleMultiDim< TABLE, ALLOC >::ScheduleMultiDim(
-     const TABLE&                                                     table,
-     const bool                                                       copy,
-     const Idx                                                        id,
-     const typename ScheduleMultiDim< TABLE, ALLOC >::allocator_type& alloc) :
-      IScheduleMultiDim< ALLOC >(id, alloc) {
+  template < typename TABLE >
+  ScheduleMultiDim< TABLE >::ScheduleMultiDim(const TABLE& table, const bool copy, const Idx id) :
+      IScheduleMultiDim(id) {
     if (copy) {
       // copy the table
-      ALLOC< TABLE > allocator(alloc);
-      _table_ = allocator.allocate(1);
-      try {
-        new ((void*)_table_) TABLE(table);
-      } catch (...) {
-        allocator.deallocate(_table_, 1);
-        throw;
-      }
+      _table_           = new TABLE(table);
       _table_contained_ = true;
     } else {
       _table_           = const_cast< TABLE* >(&table);
@@ -81,22 +66,10 @@ namespace gum {
 
 
   /// constructs a ScheduleMultiDim containing an already built table
-  template < typename TABLE, template < typename > class ALLOC >
-  ScheduleMultiDim< TABLE, ALLOC >::ScheduleMultiDim(
-     TABLE&&                                                          table,
-     const Idx                                                        id,
-     const typename ScheduleMultiDim< TABLE, ALLOC >::allocator_type& alloc) :
-      IScheduleMultiDim< ALLOC >(id, alloc) {
+  template < typename TABLE >
+  ScheduleMultiDim< TABLE >::ScheduleMultiDim(TABLE&& table, const Idx id) : IScheduleMultiDim(id) {
     // move the table
-    ALLOC< TABLE > allocator(alloc);
-    _table_ = allocator.allocate(1);
-    try {
-      new ((void*)_table_) TABLE(std::move(table));
-    } catch (...) {
-      allocator.deallocate(_table_, 1);
-      throw;
-    }
-
+    _table_        = new TABLE(std::move(table));
     _var_sequence_ = _table_->variablesSequence();
     _domain_size_  = _table_->domainSize();
 
@@ -106,12 +79,10 @@ namespace gum {
 
 
   /// constructs a ScheduleMultiDim containing an already built table
-  template < typename TABLE, template < typename > class ALLOC >
-  ScheduleMultiDim< TABLE, ALLOC >::ScheduleMultiDim(
-     const Sequence< const DiscreteVariable* >&                       vars,
-     const Idx                                                        id,
-     const typename ScheduleMultiDim< TABLE, ALLOC >::allocator_type& alloc) :
-      IScheduleMultiDim< ALLOC >(id, alloc),
+  template < typename TABLE >
+  ScheduleMultiDim< TABLE >::ScheduleMultiDim(const Sequence< const DiscreteVariable* >& vars,
+                                              const Idx                                  id) :
+      IScheduleMultiDim(id),
       _var_sequence_(vars) {
     if (!_var_sequence_.empty()) {
       // compute and store the domain size
@@ -125,25 +96,15 @@ namespace gum {
   }
 
 
-  /// copy constructor with a given allocator
-  template < typename TABLE, template < typename > class ALLOC >
-  ScheduleMultiDim< TABLE, ALLOC >::ScheduleMultiDim(
-     const ScheduleMultiDim< TABLE, ALLOC >&                          from,
-     const typename ScheduleMultiDim< TABLE, ALLOC >::allocator_type& alloc) :
-      IScheduleMultiDim< ALLOC >(from, alloc),
-      _table_contained_(from._table_contained_), _var_sequence_(from._var_sequence_),
-      _domain_size_(from._domain_size_) {
+  /// copy constructor
+  template < typename TABLE >
+  ScheduleMultiDim< TABLE >::ScheduleMultiDim(const ScheduleMultiDim< TABLE >& from) :
+      IScheduleMultiDim(from), _table_contained_(from._table_contained_),
+      _var_sequence_(from._var_sequence_), _domain_size_(from._domain_size_) {
     if (from._table_ != nullptr) {
       if (from._table_contained_) {
         // copy the table
-        ALLOC< TABLE > allocator(alloc);
-        _table_ = allocator.allocate(1);
-        try {
-          new ((void*)_table_) TABLE(*(from._table_));
-        } catch (...) {
-          allocator.deallocate(_table_, 1);
-          throw;
-        }
+        _table_ = new TABLE(*(from._table_));
       } else {
         _table_ = from._table_;
       }
@@ -154,20 +115,11 @@ namespace gum {
   }
 
 
-  /// copy constructor
-  template < typename TABLE, template < typename > class ALLOC >
-  ScheduleMultiDim< TABLE, ALLOC >::ScheduleMultiDim(const ScheduleMultiDim< TABLE, ALLOC >& from) :
-      ScheduleMultiDim< TABLE, ALLOC >(from, from.get_allocator()) {}
-
-
-  /// move constructor with a given allocator
-  template < typename TABLE, template < typename > class ALLOC >
-  ScheduleMultiDim< TABLE, ALLOC >::ScheduleMultiDim(
-     ScheduleMultiDim< TABLE, ALLOC >&&                               from,
-     const typename ScheduleMultiDim< TABLE, ALLOC >::allocator_type& alloc) :
-      IScheduleMultiDim< ALLOC >(from, alloc),
-      _table_contained_(from._table_contained_), _var_sequence_(from._var_sequence_),
-      _domain_size_(from._domain_size_) {
+  /// move constructor
+  template < typename TABLE >
+  ScheduleMultiDim< TABLE >::ScheduleMultiDim(ScheduleMultiDim< TABLE >&& from) :
+      IScheduleMultiDim(from), _table_contained_(from._table_contained_),
+      _var_sequence_(from._var_sequence_), _domain_size_(from._domain_size_) {
     if (from._table_ != nullptr) {
       _table_      = from._table_;
       from._table_ = nullptr;
@@ -178,67 +130,27 @@ namespace gum {
   }
 
 
-  /// move constructor
-  template < typename TABLE, template < typename > class ALLOC >
-  ScheduleMultiDim< TABLE, ALLOC >::ScheduleMultiDim(ScheduleMultiDim< TABLE, ALLOC >&& from) :
-      ScheduleMultiDim< TABLE, ALLOC >(std::move(from), from.get_allocator()) {}
-
-
-  /// virtual copy constructor with a given allocator
-  template < typename TABLE, template < typename > class ALLOC >
-  ScheduleMultiDim< TABLE, ALLOC >* ScheduleMultiDim< TABLE, ALLOC >::clone(
-     const typename ScheduleMultiDim< TABLE, ALLOC >::allocator_type& alloc) const {
-    ALLOC< ScheduleMultiDim< TABLE, ALLOC > > allocator(alloc);
-    ScheduleMultiDim< TABLE, ALLOC >*         new_sched = allocator.allocate(1);
-    try {
-      new ((void*)new_sched) ScheduleMultiDim< TABLE, ALLOC >(*this, alloc);
-    } catch (...) {
-      allocator.deallocate(new_sched, 1);
-      throw;
-    }
-
-    return new_sched;
-  }
-
-
   /// virtual copy constructor
-  template < typename TABLE, template < typename > class ALLOC >
-  INLINE ScheduleMultiDim< TABLE, ALLOC >* ScheduleMultiDim< TABLE, ALLOC >::clone() const {
-    return clone(this->get_allocator());
+  template < typename TABLE >
+  INLINE ScheduleMultiDim< TABLE >* ScheduleMultiDim< TABLE >::clone() const {
+    return new ScheduleMultiDim< TABLE >(*this);
   }
 
 
   /// virtual copy constructor enabling to forcing a copy of the content
-  template < typename TABLE, template < typename > class ALLOC >
-  INLINE ScheduleMultiDim< TABLE, ALLOC >*
-         ScheduleMultiDim< TABLE, ALLOC >::clone(bool force_copy) const {
-    return clone(force_copy, this->get_allocator());
-  }
+  template < typename TABLE >
+  ScheduleMultiDim< TABLE >* ScheduleMultiDim< TABLE >::clone(bool force_copy) const {
+    ScheduleMultiDim< TABLE >* new_sched;
 
-
-  /// virtual copy constructor enabling to forcing a copy of the content
-  template < typename TABLE, template < typename > class ALLOC >
-  ScheduleMultiDim< TABLE, ALLOC >* ScheduleMultiDim< TABLE, ALLOC >::clone(
-     bool                                                             force_copy,
-     const typename ScheduleMultiDim< TABLE, ALLOC >::allocator_type& alloc) const {
-    ALLOC< ScheduleMultiDim< TABLE, ALLOC > > allocator(alloc);
-    ScheduleMultiDim< TABLE, ALLOC >*         new_sched = allocator.allocate(1);
-    try {
-      if (!force_copy)
-        new ((void*)new_sched) ScheduleMultiDim< TABLE, ALLOC >(*this, alloc);
+    if (!force_copy)
+      new_sched = new ScheduleMultiDim< TABLE >(*this);
+    else {
+      if (!isAbstract())
+        new_sched = new ScheduleMultiDim< TABLE >(*_table_, true, this->id());
       else {
-        if (!isAbstract())
-          new ((void*)new_sched)
-             ScheduleMultiDim< TABLE, ALLOC >(*_table_, true, this->id(), alloc);
-        else {
-          new ((void*)new_sched)
-             ScheduleMultiDim< TABLE, ALLOC >(_var_sequence_, this->id(), alloc);
-          new_sched->_table_contained_ = true;
-        }
+        new_sched                    = new ScheduleMultiDim< TABLE >(_var_sequence_, this->id());
+        new_sched->_table_contained_ = true;
       }
-    } catch (...) {
-      allocator.deallocate(new_sched, 1);
-      throw;
     }
 
     return new_sched;
@@ -246,8 +158,8 @@ namespace gum {
 
 
   /// destructor
-  template < typename TABLE, template < typename > class ALLOC >
-  ScheduleMultiDim< TABLE, ALLOC >::~ScheduleMultiDim() {
+  template < typename TABLE >
+  ScheduleMultiDim< TABLE >::~ScheduleMultiDim() {
     _removeTable_();
 
     // for debugging purposes
@@ -256,9 +168,9 @@ namespace gum {
 
 
   /// copy operator
-  template < typename TABLE, template < typename > class ALLOC >
-  ScheduleMultiDim< TABLE, ALLOC >&
-     ScheduleMultiDim< TABLE, ALLOC >::operator=(const ScheduleMultiDim< TABLE, ALLOC >& from) {
+  template < typename TABLE >
+  ScheduleMultiDim< TABLE >&
+     ScheduleMultiDim< TABLE >::operator=(const ScheduleMultiDim< TABLE >& from) {
     // avoid self assignment
     if (this != &from) {
       // assign the table of from
@@ -270,18 +182,9 @@ namespace gum {
           if (!_table_contained_) _table_ = nullptr;
 
           if (_table_ == nullptr) {
-            ALLOC< TABLE > allocator(this->get_allocator());
             try {
-              _table_ = allocator.allocate(1);
+              _table_ = new TABLE(*(from._table_));
             } catch (...) {
-              _table_ = old_table;
-              throw;
-            }
-
-            try {
-              new ((void*)_table_) TABLE(*(from._table_));
-            } catch (...) {
-              allocator.deallocate(_table_, 1);
               _table_ = old_table;
               throw;
             }
@@ -303,9 +206,9 @@ namespace gum {
         _table_contained_ = from._table_contained_;
       }
 
-      _var_sequence_                      = from._var_sequence_;
-      _domain_size_                       = from._domain_size_;
-      IScheduleMultiDim< ALLOC >::operator=(from);
+      _var_sequence_             = from._var_sequence_;
+      _domain_size_              = from._domain_size_;
+      IScheduleMultiDim::operator=(from);
     }
 
     return *this;
@@ -313,9 +216,9 @@ namespace gum {
 
 
   /// move operator
-  template < typename TABLE, template < typename > class ALLOC >
-  ScheduleMultiDim< TABLE, ALLOC >&
-     ScheduleMultiDim< TABLE, ALLOC >::operator=(ScheduleMultiDim< TABLE, ALLOC >&& from) {
+  template < typename TABLE >
+  ScheduleMultiDim< TABLE >&
+     ScheduleMultiDim< TABLE >::operator=(ScheduleMultiDim< TABLE >&& from) {
     // avoid self assignment
     if (this != &from) {
       // assign the table of from
@@ -324,9 +227,9 @@ namespace gum {
       from._table_      = nullptr;
       _table_contained_ = from._table_contained_;
 
-      _var_sequence_                      = from._var_sequence_;
-      _domain_size_                       = from._domain_size_;
-      IScheduleMultiDim< ALLOC >::operator=(std::move(from));
+      _var_sequence_             = from._var_sequence_;
+      _domain_size_              = from._domain_size_;
+      IScheduleMultiDim::operator=(std::move(from));
     }
 
     return *this;
@@ -334,64 +237,57 @@ namespace gum {
 
 
   /// checks whether two ScheduleMultiDim have exactly the same ID
-  template < typename TABLE, template < typename > class ALLOC >
-  INLINE bool
-     ScheduleMultiDim< TABLE, ALLOC >::operator==(const ScheduleMultiDim< TABLE, ALLOC >& m) const {
-    return IScheduleMultiDim< ALLOC >::operator==(m);
+  template < typename TABLE >
+  INLINE bool ScheduleMultiDim< TABLE >::operator==(const ScheduleMultiDim< TABLE >& m) const {
+    return IScheduleMultiDim::operator==(m);
   }
 
 
   /// checks whether two ScheduleMultiDim have the same ID and type
-  template < typename TABLE, template < typename > class ALLOC >
-  bool ScheduleMultiDim< TABLE, ALLOC >::operator==(const IScheduleMultiDim< ALLOC >& m) const {
+  template < typename TABLE >
+  bool ScheduleMultiDim< TABLE >::operator==(const IScheduleMultiDim& m) const {
     try {
-      const ScheduleMultiDim< TABLE, ALLOC >& real_m
-         = dynamic_cast< const ScheduleMultiDim< TABLE, ALLOC >& >(m);
-      return ScheduleMultiDim< TABLE, ALLOC >::operator==(real_m);
+      const ScheduleMultiDim< TABLE >& real_m = dynamic_cast< const ScheduleMultiDim< TABLE >& >(m);
+      return ScheduleMultiDim< TABLE >::operator==(real_m);
     } catch (std::bad_cast&) { return false; }
   }
 
 
   /// checks whether two ScheduleMultiDim have different IDs
-  template < typename TABLE, template < typename > class ALLOC >
-  INLINE bool
-     ScheduleMultiDim< TABLE, ALLOC >::operator!=(const ScheduleMultiDim< TABLE, ALLOC >& m) const {
-    return !ScheduleMultiDim< TABLE, ALLOC >::operator==(m);
+  template < typename TABLE >
+  INLINE bool ScheduleMultiDim< TABLE >::operator!=(const ScheduleMultiDim< TABLE >& m) const {
+    return !ScheduleMultiDim< TABLE >::operator==(m);
   }
 
 
   /// checks whether two ScheduleMultiDim have different IDs or types
-  template < typename TABLE, template < typename > class ALLOC >
-  INLINE bool
-     ScheduleMultiDim< TABLE, ALLOC >::operator!=(const IScheduleMultiDim< ALLOC >& m) const {
-    return !ScheduleMultiDim< TABLE, ALLOC >::operator==(m);
+  template < typename TABLE >
+  INLINE bool ScheduleMultiDim< TABLE >::operator!=(const IScheduleMultiDim& m) const {
+    return !ScheduleMultiDim< TABLE >::operator==(m);
   }
 
 
   /// checks whether two ScheduleMultiDim have the same variables
-  template < typename TABLE, template < typename > class ALLOC >
-  INLINE bool ScheduleMultiDim< TABLE, ALLOC >::hasSameVariables(
-     const ScheduleMultiDim< TABLE, ALLOC >& m) const {
+  template < typename TABLE >
+  INLINE bool
+     ScheduleMultiDim< TABLE >::hasSameVariables(const ScheduleMultiDim< TABLE >& m) const {
     return ((_domain_size_ == m._domain_size_) && (_var_sequence_ == m._var_sequence_));
   }
 
 
   /// checks whether two ScheduleMultiDim have the same variables and types
-  template < typename TABLE, template < typename > class ALLOC >
-  bool
-     ScheduleMultiDim< TABLE, ALLOC >::hasSameVariables(const IScheduleMultiDim< ALLOC >& m) const {
+  template < typename TABLE >
+  bool ScheduleMultiDim< TABLE >::hasSameVariables(const IScheduleMultiDim& m) const {
     try {
-      const ScheduleMultiDim< TABLE, ALLOC >& real_m
-         = dynamic_cast< const ScheduleMultiDim< TABLE, ALLOC >& >(m);
-      return ScheduleMultiDim< TABLE, ALLOC >::hasSameVariables(real_m);
+      const ScheduleMultiDim< TABLE >& real_m = dynamic_cast< const ScheduleMultiDim< TABLE >& >(m);
+      return ScheduleMultiDim< TABLE >::hasSameVariables(real_m);
     } catch (std::bad_cast&) { return false; }
   }
 
 
   /// checks whether two ScheduleMultiDim contain the same table
-  template < typename TABLE, template < typename > class ALLOC >
-  bool ScheduleMultiDim< TABLE, ALLOC >::hasSameContent(
-     const ScheduleMultiDim< TABLE, ALLOC >& m) const {
+  template < typename TABLE >
+  bool ScheduleMultiDim< TABLE >::hasSameContent(const ScheduleMultiDim< TABLE >& m) const {
     if (!hasSameVariables(m)) return false;
 
     if (_table_ == nullptr)
@@ -407,20 +303,19 @@ namespace gum {
 
 
   /// checks whether two IScheduleMultiDim are related to the same table
-  template < typename TABLE, template < typename > class ALLOC >
-  bool ScheduleMultiDim< TABLE, ALLOC >::hasSameContent(const IScheduleMultiDim< ALLOC >& m) const {
+  template < typename TABLE >
+  bool ScheduleMultiDim< TABLE >::hasSameContent(const IScheduleMultiDim& m) const {
     try {
-      const ScheduleMultiDim< TABLE, ALLOC >& real_m
-         = dynamic_cast< const ScheduleMultiDim< TABLE, ALLOC >& >(m);
-      return ScheduleMultiDim< TABLE, ALLOC >::hasSameContent(real_m);
+      const ScheduleMultiDim< TABLE >& real_m = dynamic_cast< const ScheduleMultiDim< TABLE >& >(m);
+      return ScheduleMultiDim< TABLE >::hasSameContent(real_m);
     } catch (std::bad_cast&) { return false; }
   }
 
 
   /// returns the multiDimImplementation actually contained in the
   /// ScheduleMultiDim
-  template < typename TABLE, template < typename > class ALLOC >
-  INLINE const TABLE& ScheduleMultiDim< TABLE, ALLOC >::multiDim() const {
+  template < typename TABLE >
+  INLINE const TABLE& ScheduleMultiDim< TABLE >::multiDim() const {
     if (_table_ == nullptr) {
       GUM_ERROR(NullElement,
                 "the ScheduleMultiDim is abstract, so its table "
@@ -431,29 +326,29 @@ namespace gum {
 
 
   /// returns whether the ScheduleMultiDim contains a real table
-  template < typename TABLE, template < typename > class ALLOC >
-  INLINE bool ScheduleMultiDim< TABLE, ALLOC >::isAbstract() const {
+  template < typename TABLE >
+  INLINE bool ScheduleMultiDim< TABLE >::isAbstract() const {
     return (_table_ == nullptr);
   }
 
 
   /// indicates whether the ScheduleMultiDim contains a table and possess it
-  template < typename TABLE, template < typename > class ALLOC >
-  INLINE bool ScheduleMultiDim< TABLE, ALLOC >::containsMultiDim() const {
+  template < typename TABLE >
+  INLINE bool ScheduleMultiDim< TABLE >::containsMultiDim() const {
     return _table_contained_ && (_table_ != nullptr);
   }
 
 
   /// if the ScheduleMultiDim is not abstract, make it abstract again
-  template < typename TABLE, template < typename > class ALLOC >
-  INLINE void ScheduleMultiDim< TABLE, ALLOC >::makeAbstract() {
+  template < typename TABLE >
+  INLINE void ScheduleMultiDim< TABLE >::makeAbstract() {
     _removeTable_();
   }
 
 
   /// returns the contained table and make the ScheduleMultiDim abstract
-  template < typename TABLE, template < typename > class ALLOC >
-  TABLE ScheduleMultiDim< TABLE, ALLOC >::exportMultiDim() {
+  template < typename TABLE >
+  TABLE ScheduleMultiDim< TABLE >::exportMultiDim() {
     if (_table_ == nullptr) {
       GUM_ERROR(NullElement,
                 "The ScheduleMultiDim being abstract, "
@@ -469,30 +364,30 @@ namespace gum {
 
 
   /// returns the set of variables involved in the multidim
-  template < typename TABLE, template < typename > class ALLOC >
+  template < typename TABLE >
   INLINE const Sequence< const DiscreteVariable* >&
-               ScheduleMultiDim< TABLE, ALLOC >::variablesSequence() const {
+               ScheduleMultiDim< TABLE >::variablesSequence() const {
     return _var_sequence_;
   }
 
 
   /// returns the domain size of the multidim
-  template < typename TABLE, template < typename > class ALLOC >
-  INLINE Size ScheduleMultiDim< TABLE, ALLOC >::domainSize() const {
+  template < typename TABLE >
+  INLINE Size ScheduleMultiDim< TABLE >::domainSize() const {
     return _domain_size_;
   }
 
 
   /// returns the sizeof of the elements stored into the ScheduleMultiDim
-  template < typename TABLE, template < typename > class ALLOC >
-  INLINE double ScheduleMultiDim< TABLE, ALLOC >::sizeOfContent() const {
-    return double(sizeof(typename ElementType< TABLE >::value_type));
+  template < typename TABLE >
+  INLINE double ScheduleMultiDim< TABLE >::sizeOfContent() const {
+    return double(sizeof(TABLE));
   }
 
 
   /// sets a new table inside the wrapper
-  template < typename TABLE, template < typename > class ALLOC >
-  void ScheduleMultiDim< TABLE, ALLOC >::setMultiDim(const TABLE& table, const bool copy) {
+  template < typename TABLE >
+  void ScheduleMultiDim< TABLE >::setMultiDim(const TABLE& table, const bool copy) {
     if (copy) {
       // if the ScheduleMultiDim does not contain its table, then make
       // _table_ point to nullptr, so that we will allocate it
@@ -500,18 +395,9 @@ namespace gum {
       if (!_table_contained_) _table_ = nullptr;
 
       if (_table_ == nullptr) {
-        ALLOC< TABLE > allocator(this->get_allocator());
         try {
-          _table_ = allocator.allocate(1);
+          _table_ = new TABLE(table);
         } catch (...) {
-          _table_ = old_table;
-          throw;
-        }
-
-        try {
-          new ((void*)_table_) TABLE(table);
-        } catch (...) {
-          allocator.deallocate(_table_, 1);
           _table_ = old_table;
           throw;
         }
@@ -538,26 +424,17 @@ namespace gum {
 
 
   /// sets a new table inside the wrapper
-  template < typename TABLE, template < typename > class ALLOC >
-  void ScheduleMultiDim< TABLE, ALLOC >::setMultiDim(TABLE&& table) {
+  template < typename TABLE >
+  void ScheduleMultiDim< TABLE >::setMultiDim(TABLE&& table) {
     // if the ScheduleMultiDim does not contain its table, then make
     // _table_ point to nullptr, so that we will allocate it
     TABLE* old_table = _table_;
     if (!_table_contained_) _table_ = nullptr;
 
     if (_table_ == nullptr) {
-      ALLOC< TABLE > allocator(this->get_allocator());
       try {
-        _table_ = allocator.allocate(1);
+        _table_ = new TABLE(std::move(table));
       } catch (...) {
-        _table_ = old_table;
-        throw;
-      }
-
-      try {
-        new ((void*)_table_) TABLE(std::move(table));
-      } catch (...) {
-        allocator.deallocate(_table_, 1);
         _table_ = old_table;
         throw;
       }
@@ -578,8 +455,8 @@ namespace gum {
 
 
   /// displays the content of the multidim
-  template < typename TABLE, template < typename > class ALLOC >
-  std::string ScheduleMultiDim< TABLE, ALLOC >::toString() const {
+  template < typename TABLE >
+  std::string ScheduleMultiDim< TABLE >::toString() const {
     std::stringstream str;
     str << "<id: " << this->id() << ", table: ";
     if (_table_ == nullptr)

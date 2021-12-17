@@ -41,16 +41,15 @@ namespace gum {
    */
   class ScheduledInference {
     public:
-
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
 
     /// default constructor
-    ScheduledInference(const Scheduler<>& scheduler = SchedulerParallel<>(),
-                       Size   max_nb_threads = 0,
-                       double max_megabyte_memory = 0.0);
+    ScheduledInference(const Scheduler& scheduler           = SchedulerParallel(),
+                       Size             max_nb_threads      = 0,
+                       double           max_megabyte_memory = 0.0);
 
     /// copy constructor
     ScheduledInference(const ScheduledInference& from);
@@ -61,7 +60,7 @@ namespace gum {
     /// virtual copy constructor
     virtual ScheduledInference* clone() const;
 
-    ///destructor
+    /// destructor
     virtual ~ScheduledInference();
 
     /// @}
@@ -73,10 +72,10 @@ namespace gum {
     /// @{
 
     /// returns the current scheduler
-    Scheduler<>& scheduler() const;
+    Scheduler& scheduler() const;
 
     /// sets a new scheduler
-    void setScheduler(const Scheduler<>& scheduler);
+    void setScheduler(const Scheduler& scheduler);
 
     /// sets the number max of threads that can be used
     /**
@@ -109,7 +108,7 @@ namespace gum {
 
     private:
     // the scheduler to be used by inferences
-    Scheduler<>* _scheduler_{nullptr};
+    Scheduler* _scheduler_{nullptr};
 
     // the max number to be used by _scheduler_
     Size _max_nb_threads_;
@@ -118,10 +117,10 @@ namespace gum {
     double _max_megabyte_memory_;
   };
 
-} // namespace gum
+}   // namespace gum
 
 #ifndef GUM_NO_INLINE
-#include <agrum/tools/graphicalModels/inference/scheduler/scheduledInference_inl.h>
+#  include <agrum/tools/graphicalModels/inference/scheduler/scheduledInference_inl.h>
 #endif   // GUM_NO_INLINE
 
 #endif   // GUM_SCHEDULED_INFERENCE_H

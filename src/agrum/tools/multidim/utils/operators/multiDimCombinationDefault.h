@@ -153,12 +153,12 @@ namespace gum {
      * produce the right result.
      * @warning MultiDimCombinations always produce a new freshly allocated resulting table
      */
-    std::pair< std::vector< ScheduleOperation<>* >, const IScheduleMultiDim<>* >
-       operations(const std::vector< const IScheduleMultiDim<>* >& set,
+    std::pair< std::vector< ScheduleOperation* >, const IScheduleMultiDim* >
+       operations(const std::vector< const IScheduleMultiDim* >& set,
                   const bool is_result_persistent = false) const final;
-    std::pair< std::vector< ScheduleOperation<>* >, const IScheduleMultiDim<>* >
-       operations(const Set< const IScheduleMultiDim<>* >& set,
-                  const bool is_result_persistent = false) const final;
+    std::pair< std::vector< ScheduleOperation* >, const IScheduleMultiDim* >
+       operations(const Set< const IScheduleMultiDim* >& set,
+                  const bool                             is_result_persistent = false) const final;
 
     /// add to a given schedule the set of operations needed to perform the combination
     using MultiDimCombination< TABLE >::schedule;
@@ -201,13 +201,11 @@ namespace gum {
      * @brief returns the domain size of the Cartesian product of the union of
      * all the variables in seq1 and seq2.
      */
-    double _combinedSize_(const IScheduleMultiDim<>& table1,
-                          const IScheduleMultiDim<>& table2) const;
+    double _combinedSize_(const IScheduleMultiDim& table1, const IScheduleMultiDim& table2) const;
 
     /// free the scheduling memory
-    void _freeData_(std::vector< const IScheduleMultiDim<>* >& tables,
-                    std::vector< ScheduleOperation<>* >& operations) const;
-
+    void _freeData_(std::vector< const IScheduleMultiDim* >& tables,
+                    std::vector< ScheduleOperation* >&       operations) const;
   };
 
 } /* namespace gum */

@@ -63,11 +63,8 @@ namespace gum {
    * @headerfile scheduleOperation.h <agrum/tools/graphicalModels/inference/scheduler/scheduleOperation.h>
    * @ingroup inference_schedule
    */
-  template < template < typename > class ALLOC = std::allocator >
-  class ScheduleOperation: private ALLOC< Idx > {
+  class ScheduleOperation {
     public:
-    using allocator_type = ALLOC< Idx >;
-
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -83,20 +80,14 @@ namespace gum {
      * ScheduleMultiDims, this boolean indicates whether these results are
      * persistent, i.e., whether they should be kept in memory when the operation
      * itself is deleted from memory.
-     * @param alloc the allocator used to allocate the operation and its
      * ScheduleMultiDims
      */
     explicit ScheduleOperation(const ScheduleOperationType type,
                                const bool                  imply_deletion,
-                               const bool                  are_results_persistent,
-                               const allocator_type&       alloc);
+                               const bool                  are_results_persistent);
 
     /// virtual copy constructor
-    virtual ScheduleOperation< ALLOC >* clone() const = 0;
-
-    /// virtual copy constructor with a given allocator
-    virtual ScheduleOperation< ALLOC >*
-       clone(const allocator_type& alloc) const = 0;
+    virtual ScheduleOperation* clone() const = 0;
 
     /// destructor
     /** @warning If the ScheduleOperation has created an output ScheduleMultiDim,
@@ -115,13 +106,13 @@ namespace gum {
     /** Two operations are identical if and only if they have equal
      * arguments and they perform the same operation. By Equal arguments,
      * we mean that these ScheduleMultiDims have the same IDs */
-    virtual bool operator==(const ScheduleOperation< ALLOC >&) const;
+    virtual bool operator==(const ScheduleOperation&) const;
 
     /// operator !=
     /** Two operations are identical if and only if they have the same
      * arguments and they perform the same operation. By Equal arguments,
      * we mean that these ScheduleMultiDims have the same IDs */
-    virtual bool operator!=(const ScheduleOperation< ALLOC >&) const;
+    virtual bool operator!=(const ScheduleOperation&) const;
 
     /// @}
 
@@ -137,14 +128,14 @@ namespace gum {
      * Parameters having the same variables and the same content are essentially
      * identical but they may have different Ids (so that they may not be ==).
      */
-    virtual bool hasSameArguments(const ScheduleOperation< ALLOC >&) const = 0;
+    virtual bool hasSameArguments(const ScheduleOperation&) const = 0;
 
     /** @brief checks whether two ScheduleCombination have similar parameters
      * (same variables) */
-    virtual bool hasSimilarArguments(const ScheduleOperation< ALLOC >&) const = 0;
+    virtual bool hasSimilarArguments(const ScheduleOperation&) const = 0;
 
     /// checks whether two ScheduleOperation perform the same operation
-    virtual bool isSameOperation(const ScheduleOperation< ALLOC >&) const;
+    virtual bool isSameOperation(const ScheduleOperation&) const;
 
     /// returns the type of the operation
     ScheduleOperationType type() const;
@@ -170,11 +161,10 @@ namespace gum {
      * @throws TypeError is raised if at least one element of new_args does
      * not have a type compatible with what the ScheduleOperation expects.
      */
-    virtual void updateArgs(
-       const Sequence< const IScheduleMultiDim< ALLOC >* >& new_args) = 0;
+    virtual void updateArgs(const Sequence< const IScheduleMultiDim* >& new_args) = 0;
 
     /// returns the sequence of arguments passed to the operation
-    virtual const Sequence< const IScheduleMultiDim< ALLOC >* >& args() const = 0;
+    virtual const Sequence< const IScheduleMultiDim* >& args() const = 0;
 
     /// returns the sequence of ScheduleMultidim output by the operation
     /** @warning Note that the Operation always returns its outputs, even if
@@ -183,13 +173,12 @@ namespace gum {
      * @return the sequence of ScheduleMultiDim resulting from the operation.
      * Those can be abstract if the operation has not been performed yet.
      */
-    virtual const Sequence< const IScheduleMultiDim< ALLOC >* >&
-       results() const = 0;
+    virtual const Sequence< const IScheduleMultiDim* >& results() const = 0;
 
     /// makes the results of the operation persistent or not
     /** Unlike non-persistent results, a persistent one is not destroyed when the
-      * operation itself is destroyed
-      */
+     * operation itself is destroyed
+     */
     void makeResultsPersistent(const bool is_persistent);
 
     /// shows whether the operation has persistent results
@@ -212,36 +201,24 @@ namespace gum {
     /// displays the content of the operation
     virtual std::string toString() const = 0;
 
-    /// returns the allocator used by the operation
-    allocator_type get_allocator() const;
-
     /// @}
 
     protected:
     /// copy constructor
-    ScheduleOperation(const ScheduleOperation< ALLOC >& from);
-
-    /// copy constructor with a given allocator
-    ScheduleOperation(const ScheduleOperation< ALLOC >& from,
-                      const allocator_type&             alloc);
+    ScheduleOperation(const ScheduleOperation& from);
 
     /// move constructor
-    ScheduleOperation(ScheduleOperation< ALLOC >&& from);
-
-    /// move constructor with a given allocator
-    ScheduleOperation(ScheduleOperation< ALLOC >&& from,
-                      const allocator_type&        alloc);
+    ScheduleOperation(ScheduleOperation&& from);
 
     /// copy operator
     /** @warning if the operation contained some output ScheduleMultiDims,
      * then those are removed from memory before assigning the content of from */
-    ScheduleOperation< ALLOC >& operator=(const ScheduleOperation< ALLOC >& from);
+    ScheduleOperation& operator=(const ScheduleOperation& from);
 
     /// move operator
     /** @warning if the operation contained some output ScheduleMultiDims,
      * then those are removed from memory before assigning the content of from */
-    ScheduleOperation< ALLOC >&
-       operator=(ScheduleOperation< ALLOC >&& from);
+    ScheduleOperation& operator=(ScheduleOperation&& from);
 
 
     private:
@@ -254,12 +231,12 @@ namespace gum {
 
     /// is the result persistent
     bool _result_persistent_;
-
   };
 
 } /* namespace gum */
 
-// always include the template implementation
-#include <agrum/tools/graphicalModels/inference/scheduler/scheduleOperation_tpl.h>
+#ifndef GUM_NO_INLINE
+#include <agrum/tools/graphicalModels/inference/scheduler/scheduleOperation_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_SCHEDULE_OPERATION_H */

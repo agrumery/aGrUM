@@ -664,7 +664,7 @@ namespace gum {
     // removed from the potential
     const auto& evidence      = this->evidence();
     const auto& hard_evidence = this->hardEvidence();
-    Schedule<>  schedule;
+    Schedule    schedule;
     for (const auto node: dag) {
       if (_graph_.exists(node) || _hard_ev_nodes_.contains(node)) {
         const Potential< GUM_SCALAR >& cpt = bn.cpt(node);
@@ -701,7 +701,7 @@ namespace gum {
             // perform the projection with a combine and project instance
             Set< const DiscreteVariable* > hard_variables;
 
-            _ScheduleMultiDimSet_          marg_cpt_set;
+            _ScheduleMultiDimSet_ marg_cpt_set;
             const auto sched_cpt = schedule.insertTable< Potential< GUM_SCALAR > >(cpt, false);
             marg_cpt_set.insert(sched_cpt);
 
@@ -729,7 +729,7 @@ namespace gum {
             auto projected_pot = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
                static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
                   *new_cpt_list.begin()));
-            const_cast< ScheduleOperation<>* >(schedule.scheduleMultiDimCreator(projected_pot))
+            const_cast< ScheduleOperation* >(schedule.scheduleMultiDimCreator(projected_pot))
                ->makeResultsPersistent(true);
             _clique_potentials_[_node_to_clique_[node]].insert(projected_pot);
             _node_to_hard_ev_projected_CPTs_.insert(node, projected_pot);
@@ -912,7 +912,7 @@ namespace gum {
     // their instantiations can have changed. So, if there is an entry
     // for node in  _constants_, there will still be such an entry after
     // performing the new projections. Idem for  _node_to_hard_ev_projected_CPTs_
-    Schedule<> schedule;
+    Schedule schedule;
     for (const auto node: nodes_with_projected_CPTs_changed) {
       // perform the projection with a combine and project instance
       const Potential< GUM_SCALAR >& cpt       = bn.cpt(node);
@@ -946,7 +946,7 @@ namespace gum {
       }
       auto projected_pot = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
          static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(*new_cpt_list.begin()));
-      const_cast< ScheduleOperation<>* >(schedule.scheduleMultiDimCreator(projected_pot))
+      const_cast< ScheduleOperation* >(schedule.scheduleMultiDimCreator(projected_pot))
          ->makeResultsPersistent(true);
       _clique_potentials_[_node_to_clique_[node]].insert(projected_pot);
       _node_to_hard_ev_projected_CPTs_.insert(node, projected_pot);
@@ -1033,15 +1033,15 @@ namespace gum {
   // find the potentials d-connected to a set of variables
   template < typename GUM_SCALAR >
   void LazyPropagation< GUM_SCALAR >::_findRelevantPotentialsGetAll_(
-     Set< const IScheduleMultiDim<>* >& pot_list,
-     Set< const DiscreteVariable* >&    kept_vars) {}
+     Set< const IScheduleMultiDim* >& pot_list,
+     Set< const DiscreteVariable* >&  kept_vars) {}
 
 
   // find the potentials d-connected to a set of variables
   template < typename GUM_SCALAR >
   void LazyPropagation< GUM_SCALAR >::_findRelevantPotentialsWithdSeparation_(
-     Set< const IScheduleMultiDim<>* >& pot_list,
-     Set< const DiscreteVariable* >&    kept_vars) {
+     Set< const IScheduleMultiDim* >& pot_list,
+     Set< const DiscreteVariable* >&  kept_vars) {
     // find the node ids of the kept variables
     NodeSet     kept_ids;
     const auto& bn = this->BN();
@@ -1074,8 +1074,8 @@ namespace gum {
   // find the potentials d-connected to a set of variables
   template < typename GUM_SCALAR >
   void LazyPropagation< GUM_SCALAR >::_findRelevantPotentialsWithdSeparation2_(
-     Set< const IScheduleMultiDim<>* >& pot_list,
-     Set< const DiscreteVariable* >&    kept_vars) {
+     Set< const IScheduleMultiDim* >& pot_list,
+     Set< const DiscreteVariable* >&  kept_vars) {
     // find the node ids of the kept variables
     NodeSet     kept_ids;
     const auto& bn = this->BN();
@@ -1095,8 +1095,8 @@ namespace gum {
   // find the potentials d-connected to a set of variables
   template < typename GUM_SCALAR >
   void LazyPropagation< GUM_SCALAR >::_findRelevantPotentialsWithdSeparation3_(
-     Set< const IScheduleMultiDim<>* >& pot_list,
-     Set< const DiscreteVariable* >&    kept_vars) {
+     Set< const IScheduleMultiDim* >& pot_list,
+     Set< const DiscreteVariable* >&  kept_vars) {
     // find the node ids of the kept variables
     NodeSet     kept_ids;
     const auto& bn = this->BN();
@@ -1117,8 +1117,8 @@ namespace gum {
   // find the potentials d-connected to a set of variables
   template < typename GUM_SCALAR >
   void LazyPropagation< GUM_SCALAR >::_findRelevantPotentialsXX_(
-     Set< const IScheduleMultiDim<>* >& pot_list,
-     Set< const DiscreteVariable* >&    kept_vars) {
+     Set< const IScheduleMultiDim* >& pot_list,
+     Set< const DiscreteVariable* >&  kept_vars) {
     switch (_find_relevant_potential_type_) {
       case RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS:
         _findRelevantPotentialsWithdSeparation2_(pot_list, kept_vars);
@@ -1144,8 +1144,8 @@ namespace gum {
 
   // remove barren variables
   template < typename GUM_SCALAR >
-  Set< const IScheduleMultiDim<>* > LazyPropagation< GUM_SCALAR >::_removeBarrenVariables_(
-     Schedule<>&                     schedule,
+  Set< const IScheduleMultiDim* > LazyPropagation< GUM_SCALAR >::_removeBarrenVariables_(
+     Schedule&                       schedule,
      _ScheduleMultiDimSet_&          pot_list,
      Set< const DiscreteVariable* >& del_vars) {
     // remove from del_vars the variables that received some evidence:
@@ -1173,11 +1173,11 @@ namespace gum {
 
     // each variable with only one potential is a barren variable
     // assign to each potential with barren nodes its set of barren variables
-    HashTable< const IScheduleMultiDim<>*, Set< const DiscreteVariable* > > pot2barren_var;
-    Set< const DiscreteVariable* >                                          empty_var_set;
+    HashTable< const IScheduleMultiDim*, Set< const DiscreteVariable* > > pot2barren_var;
+    Set< const DiscreteVariable* >                                        empty_var_set;
     for (const auto& elt: var2pots) {
       if (elt.second.size() == 1) {   // here we have a barren variable
-        const IScheduleMultiDim<>* pot = *(elt.second.begin());
+        const IScheduleMultiDim* pot = *(elt.second.begin());
         if (!pot2barren_var.exists(pot)) { pot2barren_var.insert(pot, empty_var_set); }
         pot2barren_var[pot].insert(elt.first);   // insert the barren variable
       }
@@ -1190,7 +1190,7 @@ namespace gum {
     _ScheduleMultiDimSet_                         projected_pots;
     for (const auto& elt: pot2barren_var) {
       // remove the current potential from pot_list as, anyway, we will change it
-      const IScheduleMultiDim<>* pot = elt.first;
+      const IScheduleMultiDim* pot = elt.first;
       pot_list.erase(pot);
 
       // check whether we need to add a projected new potential or not (i.e.,
@@ -1209,7 +1209,7 @@ namespace gum {
   // performs the collect phase of Lazy Propagation
   template < typename GUM_SCALAR >
   INLINE void
-     LazyPropagation< GUM_SCALAR >::_collectMessage_(Schedule<>& schedule, NodeId id, NodeId from) {
+     LazyPropagation< GUM_SCALAR >::_collectMessage_(Schedule& schedule, NodeId id, NodeId from) {
     for (const auto other: _JT_->neighbours(id)) {
       if ((other != from) && !_messages_computed_[Arc(other, id)])
         _collectMessage_(schedule, other, id);
@@ -1223,19 +1223,18 @@ namespace gum {
 
   // remove variables del_vars from the list of potentials pot_list
   template < typename GUM_SCALAR >
-  Set< const IScheduleMultiDim<>* >
-     LazyPropagation< GUM_SCALAR >::_marginalizeOut_(Schedule<>&                       schedule,
-                                                     Set< const IScheduleMultiDim<>* > pot_list,
-                                                     Set< const DiscreteVariable* >&   del_vars,
-                                                     Set< const DiscreteVariable* >&   kept_vars) {
+  Set< const IScheduleMultiDim* >
+     LazyPropagation< GUM_SCALAR >::_marginalizeOut_(Schedule&                       schedule,
+                                                     Set< const IScheduleMultiDim* > pot_list,
+                                                     Set< const DiscreteVariable* >& del_vars,
+                                                     Set< const DiscreteVariable* >& kept_vars) {
     // use d-separation analysis to check which potentials shall be combined
     _findRelevantPotentialsXX_(pot_list, kept_vars);
 
     // now, let's guarantee that all the potentials to be combined and projected
     // belong to the schedule
     for (const auto pot: pot_list) {
-      if (!schedule.existsScheduleMultiDim(pot->id()))
-        schedule.emplaceScheduleMultiDim(*pot);
+      if (!schedule.existsScheduleMultiDim(pot->id())) schedule.emplaceScheduleMultiDim(*pot);
     }
 
     // remove the potentials corresponding to barren variables if we want
@@ -1281,9 +1280,9 @@ namespace gum {
 
   // creates the message sent by clique from_id to clique to_id
   template < typename GUM_SCALAR >
-  void LazyPropagation< GUM_SCALAR >::_produceMessage_(Schedule<>& schedule,
-                                                       NodeId      from_id,
-                                                       NodeId      to_id) {
+  void LazyPropagation< GUM_SCALAR >::_produceMessage_(Schedule& schedule,
+                                                       NodeId    from_id,
+                                                       NodeId    to_id) {
     // get the potentials of the clique
     _ScheduleMultiDimSet_ pot_list = _clique_potentials_[from_id];
 
@@ -1359,7 +1358,7 @@ namespace gum {
 
         // do not forget to make the ScheduleMultiDim persistent
         auto op = schedule.scheduleMultiDimCreator(pot);
-        if (op != nullptr) const_cast< ScheduleOperation<>* >(op)->makeResultsPersistent(true);
+        if (op != nullptr) const_cast< ScheduleOperation* >(op)->makeResultsPersistent(true);
       }
     }
 
@@ -1371,7 +1370,7 @@ namespace gum {
   // performs a whole inference
   template < typename GUM_SCALAR >
   INLINE void LazyPropagation< GUM_SCALAR >::makeInference_() {
-    Schedule<> schedule;
+    Schedule schedule;
 
     // collect messages for all single targets
     for (const auto node: this->targets()) {
@@ -1406,8 +1405,8 @@ namespace gum {
       return new Potential< GUM_SCALAR >(*(this->evidence()[id]));
     }
 
-    Schedule<> schedule;
-    auto&      scheduler = this->scheduler();
+    Schedule schedule;
+    auto&    scheduler = this->scheduler();
 
     // if we still need to perform some inference task, do it (this should
     // already have been done by makeInference_)
@@ -1512,8 +1511,8 @@ namespace gum {
       }
     }
 
-    Schedule<> schedule;
-    auto&      scheduler = this->scheduler();
+    Schedule schedule;
+    auto&    scheduler = this->scheduler();
 
     // if all the nodes have received hard evidence, then compute the
     // joint posterior directly by multiplying the hard evidence potentials

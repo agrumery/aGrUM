@@ -110,7 +110,7 @@ namespace gum {
     }
 
     // create a vector with all the tables stored as multidims
-    std::vector< const IScheduleMultiDim<>* > tables;
+    std::vector< const IScheduleMultiDim* > tables;
     tables.reserve(set.size());
     for (const auto table: set) {
       tables.push_back(new ScheduleMultiDim< TABLE >(*table, false));
@@ -145,7 +145,7 @@ namespace gum {
     if (set.size() < 2) return 0.0;
 
     // create a vector with all the tables stored as multidims
-    std::vector< const IScheduleMultiDim<>* > tables;
+    std::vector< const IScheduleMultiDim* > tables;
     tables.reserve(set.size());
     for (const auto ptrVars: set) {
       tables.push_back(new ScheduleMultiDim< TABLE >(*ptrVars));
@@ -190,7 +190,7 @@ namespace gum {
     if (set.size() < 2) return {0.0, 0.0};
 
     // create a vector with all the tables stored as multidims
-    std::vector< const IScheduleMultiDim<>* > tables;
+    std::vector< const IScheduleMultiDim* > tables;
     tables.reserve(set.size());
     for (const auto ptrVars: set) {
       tables.push_back(new ScheduleMultiDim< TABLE >(*ptrVars));
@@ -237,8 +237,8 @@ namespace gum {
   // variables in seq1 and seq2
   template < class TABLE >
   INLINE double
-     MultiDimCombinationDefault< TABLE >::_combinedSize_(const IScheduleMultiDim<>& table1,
-                                                         const IScheduleMultiDim<>& table2) const {
+     MultiDimCombinationDefault< TABLE >::_combinedSize_(const IScheduleMultiDim& table1,
+                                                         const IScheduleMultiDim& table2) const {
     auto        size  = double(table1.domainSize());
     const auto& vars1 = table1.variablesSequence();
     const auto& vars2 = table2.variablesSequence();
@@ -251,24 +251,24 @@ namespace gum {
 
   // returns the set of operations to perform to make the combination
   template < class TABLE >
-  std::pair< std::vector< ScheduleOperation<>* >, const IScheduleMultiDim<>* >
+  std::pair< std::vector< ScheduleOperation* >, const IScheduleMultiDim* >
      MultiDimCombinationDefault< TABLE >::operations(
-        const std::vector< const IScheduleMultiDim<>* >& original_tables,
-                  const bool is_result_persistent) const {
+        const std::vector< const IScheduleMultiDim* >& original_tables,
+        const bool                                     is_result_persistent) const {
     // check if the set passed in argument is empty.
     const Size tabsize = original_tables.size();
     if (tabsize < 2) return {};
 
     // we copy the vector of tables to be combined because we will modify
     // it during the combination process
-    std::vector< const IScheduleMultiDim<>* > tables = original_tables;
+    std::vector< const IScheduleMultiDim* > tables = original_tables;
 
     // create the resulting set of operations to execute to perform the combination
-    std::vector< ScheduleOperation<>* > operations;
+    std::vector< ScheduleOperation* > operations;
     operations.reserve(2 * tables.size());
 
     // create a vector indicating whether the elements in Vector tables are
-    // freshly created ScheduleMultiDim<>* resulting from the combination of
+    // freshly created ScheduleMultiDim* resulting from the combination of
     // some tables or if they were added by the user into the set of tables
     // to combine
     std::vector< bool > is_t_new(tabsize, false);
@@ -290,8 +290,8 @@ namespace gum {
 
     // keep track of the result of the last combination performed as well as of
     // the operation that created it
-    const IScheduleMultiDim<>* resulting_table = nullptr;
-    ScheduleOperation<>*       resulting_op = nullptr;
+    const IScheduleMultiDim* resulting_table = nullptr;
+    ScheduleOperation*       resulting_op    = nullptr;
 
     // now parse the priority queue: the top element (i,j) gives the combination
     // to perform. When the operations R has been computed,substitute i by R,
@@ -366,9 +366,7 @@ namespace gum {
     }
 
     // if necessary, make the resulting table persistent
-    if (is_result_persistent) {
-      resulting_op->makeResultsPersistent(true);
-    }
+    if (is_result_persistent) { resulting_op->makeResultsPersistent(true); }
 
     return {operations, resulting_table};
   }
@@ -376,11 +374,10 @@ namespace gum {
 
   /// returns the set of operations to perform to make the combination
   template < class TABLE >
-  std::pair< std::vector< ScheduleOperation<>* >, const IScheduleMultiDim<>* >
-     MultiDimCombinationDefault< TABLE >::operations(
-        const Set< const IScheduleMultiDim<>* >& set,
-                  const bool is_result_persistent) const {
-    std::vector< const IScheduleMultiDim<>* > vect;
+  std::pair< std::vector< ScheduleOperation* >, const IScheduleMultiDim* >
+     MultiDimCombinationDefault< TABLE >::operations(const Set< const IScheduleMultiDim* >& set,
+                                                     const bool is_result_persistent) const {
+    std::vector< const IScheduleMultiDim* > vect;
     vect.reserve(set.size());
     for (const auto elt: set) {
       vect.push_back(elt);
@@ -392,8 +389,8 @@ namespace gum {
   /// free scheduing memory
   template < class TABLE >
   INLINE void MultiDimCombinationDefault< TABLE >::_freeData_(
-     std::vector< const IScheduleMultiDim<>* >& tables,
-     std::vector< ScheduleOperation<>* >&       operations) const {
+     std::vector< const IScheduleMultiDim* >& tables,
+     std::vector< ScheduleOperation* >&       operations) const {
     for (auto op: operations)
       delete op;
 

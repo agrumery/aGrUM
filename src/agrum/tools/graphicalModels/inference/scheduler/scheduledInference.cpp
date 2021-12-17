@@ -22,15 +22,15 @@
 #include <agrum/tools/graphicalModels/inference/scheduler/scheduledInference.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/tools/graphicalModels/inference/scheduler/scheduledInference_inl.h>
+#  include <agrum/tools/graphicalModels/inference/scheduler/scheduledInference_inl.h>
 #endif   // GUM_NO_INLINE
 
 namespace gum {
 
   // default constructor
-  ScheduledInference::ScheduledInference(const Scheduler<>& scheduler,
-                                         Size   max_nb_threads,
-                                         double max_megabyte_memory):
+  ScheduledInference::ScheduledInference(const Scheduler& scheduler,
+                                         Size             max_nb_threads,
+                                         double           max_megabyte_memory) :
       _scheduler_(scheduler.clone()) {
     setMaxNbThreads(max_nb_threads);
     setMaxMemory(max_megabyte_memory);
@@ -41,9 +41,8 @@ namespace gum {
 
 
   // copy constructor
-  ScheduledInference::ScheduledInference(const ScheduledInference& from):
-      _scheduler_(from._scheduler_->clone()),
-      _max_nb_threads_(from._max_nb_threads_),
+  ScheduledInference::ScheduledInference(const ScheduledInference& from) :
+      _scheduler_(from._scheduler_->clone()), _max_nb_threads_(from._max_nb_threads_),
       _max_megabyte_memory_(from._max_megabyte_memory_) {
     // for debugging purposes
     GUM_CONS_CPY(ScheduledInference);
@@ -51,9 +50,8 @@ namespace gum {
 
 
   // move constructor
-  ScheduledInference::ScheduledInference(ScheduledInference&& from):
-      _scheduler_(from._scheduler_),
-      _max_nb_threads_(from._max_nb_threads_),
+  ScheduledInference::ScheduledInference(ScheduledInference&& from) :
+      _scheduler_(from._scheduler_), _max_nb_threads_(from._max_nb_threads_),
       _max_megabyte_memory_(from._max_megabyte_memory_) {
     from._scheduler_ = nullptr;
 
@@ -63,12 +61,10 @@ namespace gum {
 
 
   // virtual copy constructor
-  ScheduledInference* ScheduledInference::clone() const {
-    return new ScheduledInference(*this);
-  }
+  ScheduledInference* ScheduledInference::clone() const { return new ScheduledInference(*this); }
 
 
-  //destructor
+  // destructor
   ScheduledInference::~ScheduledInference() {
     if (_scheduler_ != nullptr) delete _scheduler_;
 
@@ -78,11 +74,11 @@ namespace gum {
 
 
   // sets a new scheduler
-  void ScheduledInference::setScheduler(const Scheduler<>& scheduler) {
+  void ScheduledInference::setScheduler(const Scheduler& scheduler) {
     delete _scheduler_;
     _scheduler_ = scheduler.clone();
     _scheduler_->setMaxNbThreads(_max_nb_threads_);
     _scheduler_->setMaxMemory(_max_megabyte_memory_);
   }
 
-}
+}   // namespace gum

@@ -245,7 +245,7 @@ namespace gum {
     private:
     using _PotentialSet_ = Set< const Potential< GUM_SCALAR >* >;
 
-    using _ScheduleMultiDimSet_ = Set< const IScheduleMultiDim<>* >;
+    using _ScheduleMultiDimSet_ = Set< const IScheduleMultiDim* >;
 
 
     /// the type of relevant potential finding algorithm to be used
@@ -254,8 +254,8 @@ namespace gum {
     /** @brief update a set of potentials: the remaining are those to be
      * combined to produce a message on a separator */
     void (LazyPropagation< GUM_SCALAR >::*_findRelevantPotentials_)(
-       Set< const IScheduleMultiDim<>* >& pot_list,
-       Set< const DiscreteVariable* >&    kept_vars);
+       Set< const IScheduleMultiDim* >& pot_list,
+       Set< const DiscreteVariable* >&  kept_vars);
 
     /// the type of barren nodes computation we wish
     FindBarrenNodesType _barren_nodes_type_;
@@ -361,21 +361,20 @@ namespace gum {
      * @warning These potentials are not owned by LazyPropagation, they are only
      * referenced by it. Only the cliques that contain evidence are
      * filled in this structure. */
-    NodeProperty< const IScheduleMultiDim<>* > _node_to_soft_evidence_;
+    NodeProperty< const IScheduleMultiDim* > _node_to_soft_evidence_;
 
     /// the CPTs that were projected due to hard evidence nodes
     /** For each node whose CPT is defined over some nodes that contain some
      * hard evidence, assigns a new projected CPT that does not contain
      * these nodes anymore.
      * @warning These potentials are owned by LayPropagation. */
-    NodeProperty< const IScheduleMultiDim<>* > _node_to_hard_ev_projected_CPTs_;
+    NodeProperty< const IScheduleMultiDim* > _node_to_hard_ev_projected_CPTs_;
 
     /// the hard evidence nodes which were projected in CPTs
     NodeSet _hard_ev_nodes_;
 
     /// the possible types of evidence changes
-    enum EvidenceChangeType
-    {
+    enum EvidenceChangeType {
       EVIDENCE_ADDED,
       EVIDENCE_ERASED,
       EVIDENCE_MODIFIED
@@ -439,22 +438,22 @@ namespace gum {
                                     Set< const DiscreteVariable* >& kept_vars);
 
     // remove barren variables and return the newly created projected potentials
-    _ScheduleMultiDimSet_ _removeBarrenVariables_(Schedule<>&                     schedule,
+    _ScheduleMultiDimSet_ _removeBarrenVariables_(Schedule&                       schedule,
                                                   _ScheduleMultiDimSet_&          pot_list,
                                                   Set< const DiscreteVariable* >& del_vars);
 
     /** @brief removes variables del_vars from a list of potentials and
      * returns the resulting list */
-    _ScheduleMultiDimSet_ _marginalizeOut_(Schedule<>&                     schedule,
+    _ScheduleMultiDimSet_ _marginalizeOut_(Schedule&                       schedule,
                                            _ScheduleMultiDimSet_           pot_list,
                                            Set< const DiscreteVariable* >& del_vars,
                                            Set< const DiscreteVariable* >& kept_vars);
 
     /// creates the message sent by clique from_id to clique to_id
-    void _produceMessage_(Schedule<>& schedule, NodeId from_id, NodeId to_id);
+    void _produceMessage_(Schedule& schedule, NodeId from_id, NodeId to_id);
 
     /// actually perform the collect phase
-    void _collectMessage_(Schedule<>& schedule, NodeId id, NodeId from);
+    void _collectMessage_(Schedule& schedule, NodeId id, NodeId from);
   };
 
 

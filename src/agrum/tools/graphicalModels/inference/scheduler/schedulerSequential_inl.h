@@ -1,7 +1,7 @@
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN(@LIP6) et Christophe GONZALES(@AMU)
- *  info_at_agrum_dot_org
+ *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
+ *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -18,28 +18,33 @@
  *
  */
 
-
-/**
- * @file
- * @brief The Table-agnostic base class of scheduleMultiDim
+/** @file
+ * @brief a scheduler that executes any available operation (chosen aribtrarily)
  *
  * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
-#include <agrum/tools/graphicalModels/inference/scheduler/IScheduleMultiDim.h>
-
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-/// include the inlined functions if necessary
-#  ifdef GUM_NO_INLINE
-#    include <agrum/tools/graphicalModels/inference/scheduler/IScheduleMultiDim_inl.h>
-#  endif /* GUM_NO_INLINE */
+#  include <agrum/tools/graphicalModels/inference/scheduler/schedulerSequential.h>
 
 namespace gum {
 
-    // the id used whenever any ScheduleMultiDim of any type asks for a new id
-    Idx IScheduleMultiDim::_multidim_id_ = Idx(0);
+  /// sets an upper bound on the memory consumption admissible
+  INLINE void SchedulerSequential::setMaxMemory(double megabytes) {
+    if (megabytes != this->maxMemory()) {
+      Scheduler::setMaxMemory(megabytes);
+      _operations_up_to_date_ = false;
+    }
+  }
 
-}   // namespace gum
+
+  /// sets a new schedule
+  INLINE void SchedulerSequential::_setSchedule_(const Schedule& schedule) {
+    if (&schedule != _schedule_) { _schedule_ = const_cast< Schedule* >(&schedule); }
+    _simulateExecution_();
+  }
+
+} /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

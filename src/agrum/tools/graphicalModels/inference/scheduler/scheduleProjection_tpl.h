@@ -33,14 +33,13 @@
 namespace gum {
 
   /// default constructor
-  template < typename TABLE, template < typename > class ALLOC >
-  ScheduleProjection< TABLE, ALLOC >::ScheduleProjection(
-     const ScheduleMultiDim< TABLE, ALLOC >& table,
-     const Set< const DiscreteVariable* >&   del_vars,
+  template < typename TABLE >
+  ScheduleProjection< TABLE >::ScheduleProjection(
+     const ScheduleMultiDim< TABLE >&      table,
+     const Set< const DiscreteVariable* >& del_vars,
      TABLE (*project)(const TABLE&, const Set< const DiscreteVariable* >&),
-     const bool is_result_persistent,
-     const typename ScheduleProjection< TABLE, ALLOC >::allocator_type& alloc) :
-      ScheduleOperation< ALLOC >(ScheduleOperationType::PROJECT_MULTIDIM, false, is_result_persistent, alloc),
+     const bool is_result_persistent) :
+      ScheduleOperation(ScheduleOperationType::PROJECT_MULTIDIM, false, is_result_persistent),
       _arg_(&table), _del_vars_(del_vars), _project_(project) {
     // compute the variables that shall belong to the result of the projection
     Sequence< const DiscreteVariable* > vars = table.variablesSequence();
@@ -49,19 +48,11 @@ namespace gum {
     }
 
     // create the scheduleMultiDim that should result from the projection
-    ALLOC< ScheduleMultiDim< TABLE, ALLOC > > allocator(this->get_allocator());
-    _result_ = allocator.allocate(1);
-    try {
-      // if table is a constant, just copy it
-      if (table.variablesSequence().empty() && !table.isAbstract())
-        new ((void*)_result_)
-           ScheduleMultiDim< TABLE, ALLOC >(table.multiDim(), true, Idx(0), allocator);
-      else
-        new ((void*)_result_) ScheduleMultiDim< TABLE, ALLOC >(vars, Idx(0), allocator);
-    } catch (...) {
-      allocator.deallocate(_result_, 1);
-      throw;
-    }
+    // if table is a constant, just copy it
+    if (table.variablesSequence().empty() && !table.isAbstract())
+      _result_ = new ScheduleMultiDim< TABLE >(table.multiDim(), true, Idx(0));
+    else
+      _result_ = new ScheduleMultiDim< TABLE >(vars, Idx(0));
 
     // save the args and result into _args_ and _results_
     _args_ << _arg_;
@@ -72,22 +63,13 @@ namespace gum {
   }
 
 
-  /// copy constructor with a given allocator
-  template < typename TABLE, template < typename > class ALLOC >
-  ScheduleProjection< TABLE, ALLOC >::ScheduleProjection(
-     const ScheduleProjection< TABLE, ALLOC >&                          from,
-     const typename ScheduleProjection< TABLE, ALLOC >::allocator_type& alloc) :
-      ScheduleOperation< ALLOC >(from, alloc),
-      _arg_(from._arg_), _del_vars_(from._del_vars_), _project_(from._project_) {
+  /// copy constructor
+  template < typename TABLE >
+  ScheduleProjection< TABLE >::ScheduleProjection(const ScheduleProjection< TABLE >& from) :
+      ScheduleOperation(from), _arg_(from._arg_), _del_vars_(from._del_vars_),
+      _project_(from._project_) {
     // copy the result of the from operation
-    ALLOC< ScheduleMultiDim< TABLE, ALLOC > > allocator(this->get_allocator());
-    _result_ = allocator.allocate(1);
-    try {
-      new ((void*)_result_) ScheduleMultiDim< TABLE, ALLOC >(*(from._result_), allocator);
-    } catch (...) {
-      allocator.deallocate(_result_, 1);
-      throw;
-    }
+    _result_ = new ScheduleMultiDim< TABLE >(*(from._result_));
 
     // save the args and result into _args_ and _results_
     _args_ << _arg_;
@@ -98,23 +80,13 @@ namespace gum {
   }
 
 
-  /// copy constructor
-  template < typename TABLE, template < typename > class ALLOC >
-  INLINE ScheduleProjection< TABLE, ALLOC >::ScheduleProjection(
-     const ScheduleProjection< TABLE, ALLOC >& from) :
-      ScheduleProjection< TABLE, ALLOC >(from, from.get_allocator()) {}
-
-
-  /// move constructor with a given allocator
-  template < typename TABLE, template < typename > class ALLOC >
-  ScheduleProjection< TABLE, ALLOC >::ScheduleProjection(
-     ScheduleProjection< TABLE, ALLOC >&&                               from,
-     const typename ScheduleProjection< TABLE, ALLOC >::allocator_type& alloc) :
-      ScheduleOperation< ALLOC >(std::move(from), alloc),
-      _arg_(from._arg_), _result_(from._result_),
+  /// move constructor
+  template < typename TABLE >
+  ScheduleProjection< TABLE >::ScheduleProjection(ScheduleProjection< TABLE >&& from) :
+      ScheduleOperation(std::move(from)), _arg_(from._arg_), _result_(from._result_),
       _del_vars_(std::move(from._del_vars_)), _project_(from._project_) {
     // indicate that from does not contain anything anymore
-    from.makeResultsPersistent(true); // prevent deleting nullptr
+    from.makeResultsPersistent(true);   // prevent deleting nullptr
     from._result_ = nullptr;
 
     // save the args and result into _args_ and _results_
@@ -126,45 +98,17 @@ namespace gum {
   }
 
 
-  /// move constructor
-  template < typename TABLE, template < typename > class ALLOC >
-  INLINE ScheduleProjection< TABLE, ALLOC >::ScheduleProjection(
-     ScheduleProjection< TABLE, ALLOC >&& from) :
-      ScheduleProjection< TABLE, ALLOC >(std::move(from), from.get_allocator()) {}
-
-
-  /// virtual copy constructor with a given allocator
-  template < typename TABLE, template < typename > class ALLOC >
-  ScheduleProjection< TABLE, ALLOC >* ScheduleProjection< TABLE, ALLOC >::clone(
-     const typename ScheduleProjection< TABLE, ALLOC >::allocator_type& alloc) const {
-    ALLOC< ScheduleProjection< TABLE, ALLOC > > allocator(alloc);
-    ScheduleProjection< TABLE, ALLOC >*         new_proj = allocator.allocate(1);
-    try {
-      new ((void*)new_proj) ScheduleProjection< TABLE, ALLOC >(*this, alloc);
-    } catch (...) {
-      allocator.deallocate(new_proj, 1);
-      throw;
-    }
-
-    return new_proj;
-  }
-
-
   /// virtual copy constructor
-  template < typename TABLE, template < typename > class ALLOC >
-  INLINE ScheduleProjection< TABLE, ALLOC >* ScheduleProjection< TABLE, ALLOC >::clone() const {
-    return clone(this->get_allocator());
+  template < typename TABLE >
+  INLINE ScheduleProjection< TABLE >* ScheduleProjection< TABLE >::clone() const {
+    return new ScheduleProjection< TABLE >(*this);
   }
 
 
   /// destructor
-  template < typename TABLE, template < typename > class ALLOC >
-  ScheduleProjection< TABLE, ALLOC >::~ScheduleProjection() {
-    if (!this->hasPersistentResults()) {
-      ALLOC< ScheduleMultiDim< TABLE, ALLOC > > allocator(this->get_allocator());
-      _result_->~ScheduleMultiDim< TABLE, ALLOC >();
-      allocator.deallocate(_result_, 1);
-    }
+  template < typename TABLE >
+  ScheduleProjection< TABLE >::~ScheduleProjection() {
+    if (!this->hasPersistentResults()) { delete _result_; }
 
     // for debugging purposes
     GUM_DESTRUCTOR(ScheduleProjection);
@@ -172,9 +116,9 @@ namespace gum {
 
 
   /// copy operator
-  template < typename TABLE, template < typename > class ALLOC >
-  ScheduleProjection< TABLE, ALLOC >&
-     ScheduleProjection< TABLE, ALLOC >::operator=(const ScheduleProjection< TABLE, ALLOC >& from) {
+  template < typename TABLE >
+  ScheduleProjection< TABLE >&
+     ScheduleProjection< TABLE >::operator=(const ScheduleProjection< TABLE >& from) {
     // avoid self assignment
     if (this != &from) {
       // copy the set of variables to delete in a temporary variable, just
@@ -182,8 +126,8 @@ namespace gum {
       const Set< const DiscreteVariable* > new_del_vars = from._del_vars_;
 
       // try to copy result (no need to update _results_)
-      *_result_ = *(from._result_);
-      ScheduleOperation< ALLOC >::operator=(from);
+      *_result_                  = *(from._result_);
+      ScheduleOperation::operator=(from);
 
       _del_vars_ = std::move(new_del_vars);
       _arg_      = from._arg_;
@@ -196,14 +140,14 @@ namespace gum {
 
 
   /// move operator
-  template < typename TABLE, template < typename > class ALLOC >
-  ScheduleProjection< TABLE, ALLOC >&
-     ScheduleProjection< TABLE, ALLOC >::operator=(ScheduleProjection< TABLE, ALLOC >&& from) {
+  template < typename TABLE >
+  ScheduleProjection< TABLE >&
+     ScheduleProjection< TABLE >::operator=(ScheduleProjection< TABLE >&& from) {
     // avoid self assignment
     if (this != &from) {
       if (!this->hasPersistentResults()) delete _result_;
-      _result_                            = from._result_;
-      ScheduleOperation< ALLOC >::operator=(std::move(from));
+      _result_                   = from._result_;
+      ScheduleOperation::operator=(std::move(from));
 
       _del_vars_ = std::move(from._del_vars_);
       _arg_      = from._arg_;
@@ -211,7 +155,7 @@ namespace gum {
       _args_ << _arg_;
       _project_ = from._project_;
 
-      from.makeResultsPersistent(true); // prevent deleting nullptr
+      from.makeResultsPersistent(true);   // prevent deleting nullptr
       from._result_ = nullptr;
     }
     return *this;
@@ -219,138 +163,129 @@ namespace gum {
 
 
   /// operator ==
-  template < typename TABLE, template < typename > class ALLOC >
-  INLINE bool ScheduleProjection< TABLE, ALLOC >::operator==(
-     const ScheduleProjection< TABLE, ALLOC >& op) const {
+  template < typename TABLE >
+  INLINE bool ScheduleProjection< TABLE >::operator==(const ScheduleProjection< TABLE >& op) const {
     return (_project_ == op._project_) && (*_arg_ == *op._arg_) && (_del_vars_ == op._del_vars_);
   }
 
 
   /// operator ==
-  template < typename TABLE, template < typename > class ALLOC >
-  bool ScheduleProjection< TABLE, ALLOC >::operator==(const ScheduleOperation< ALLOC >& op) const {
-    if (ScheduleOperation< ALLOC >::operator!=(op)) return false;
+  template < typename TABLE >
+  bool ScheduleProjection< TABLE >::operator==(const ScheduleOperation& op) const {
+    if (ScheduleOperation::operator!=(op)) return false;
 
     try {
-      const ScheduleProjection< TABLE, ALLOC >& real_op
-         = dynamic_cast< const ScheduleProjection< TABLE, ALLOC >& >(op);
-      return ScheduleProjection< TABLE, ALLOC >::operator==(real_op);
+      const ScheduleProjection< TABLE >& real_op
+         = dynamic_cast< const ScheduleProjection< TABLE >& >(op);
+      return ScheduleProjection< TABLE >::operator==(real_op);
     } catch (std::bad_cast&) { return false; }
   }
 
 
   /// operator !=
-  template < typename TABLE, template < typename > class ALLOC >
-  INLINE bool
-     ScheduleProjection< TABLE, ALLOC >::operator!=(const ScheduleOperation< ALLOC >& op) const {
-    return !ScheduleProjection< TABLE, ALLOC >::operator==(op);
+  template < typename TABLE >
+  INLINE bool ScheduleProjection< TABLE >::operator!=(const ScheduleOperation& op) const {
+    return !ScheduleProjection< TABLE >::operator==(op);
   }
 
 
   /// operator !=
-  template < typename TABLE, template < typename > class ALLOC >
-  INLINE bool ScheduleProjection< TABLE, ALLOC >::operator!=(
-     const ScheduleProjection< TABLE, ALLOC >& op) const {
-    return !ScheduleProjection< TABLE, ALLOC >::operator==(op);
+  template < typename TABLE >
+  INLINE bool ScheduleProjection< TABLE >::operator!=(const ScheduleProjection< TABLE >& op) const {
+    return !ScheduleProjection< TABLE >::operator==(op);
   }
 
 
   /// checks whether two ScheduleOperation have similar parameters
-  template < typename TABLE, template < typename > class ALLOC >
-  INLINE bool ScheduleProjection< TABLE, ALLOC >::hasSimilarArguments(
-     const ScheduleProjection< TABLE, ALLOC >& op) const {
+  template < typename TABLE >
+  INLINE bool
+     ScheduleProjection< TABLE >::hasSimilarArguments(const ScheduleProjection< TABLE >& op) const {
     return (_arg_->hasSameVariables(*op._arg_) && (_del_vars_ == op._del_vars_));
   }
 
 
   /// checks whether two ScheduleOperation have similar parameters
-  template < typename TABLE, template < typename > class ALLOC >
-  bool ScheduleProjection< TABLE, ALLOC >::hasSimilarArguments(
-     const ScheduleOperation< ALLOC >& op) const {
+  template < typename TABLE >
+  bool ScheduleProjection< TABLE >::hasSimilarArguments(const ScheduleOperation& op) const {
     try {
-      const ScheduleProjection< TABLE, ALLOC >& real_op
-         = dynamic_cast< const ScheduleProjection< TABLE, ALLOC >& >(op);
-      return ScheduleProjection< TABLE, ALLOC >::hasSimilarArguments(real_op);
+      const ScheduleProjection< TABLE >& real_op
+         = dynamic_cast< const ScheduleProjection< TABLE >& >(op);
+      return ScheduleProjection< TABLE >::hasSimilarArguments(real_op);
     } catch (std::bad_cast&) { return false; }
   }
 
 
   /// checks whether two ScheduleOperation have the same parameters
-  template < typename TABLE, template < typename > class ALLOC >
-  INLINE bool ScheduleProjection< TABLE, ALLOC >::hasSameArguments(
-     const ScheduleProjection< TABLE, ALLOC >& op) const {
+  template < typename TABLE >
+  INLINE bool
+     ScheduleProjection< TABLE >::hasSameArguments(const ScheduleProjection< TABLE >& op) const {
     return (_arg_->hasSameVariables(*op._arg_) && _arg_->hasSameContent(*op._arg_)
             && (_del_vars_ == op._del_vars_));
   }
 
 
   /// checks whether two ScheduleOperation have the same parameters
-  template < typename TABLE, template < typename > class ALLOC >
-  bool ScheduleProjection< TABLE, ALLOC >::hasSameArguments(
-     const ScheduleOperation< ALLOC >& op) const {
+  template < typename TABLE >
+  bool ScheduleProjection< TABLE >::hasSameArguments(const ScheduleOperation& op) const {
     try {
-      const ScheduleProjection< TABLE, ALLOC >& real_op
-         = dynamic_cast< const ScheduleProjection< TABLE, ALLOC >& >(op);
-      return ScheduleProjection< TABLE, ALLOC >::hasSameArguments(real_op);
+      const ScheduleProjection< TABLE >& real_op
+         = dynamic_cast< const ScheduleProjection< TABLE >& >(op);
+      return ScheduleProjection< TABLE >::hasSameArguments(real_op);
     } catch (std::bad_cast&) { return false; }
   }
 
 
   /// checks whether two ScheduleOperation perform the same operation
-  template < typename TABLE, template < typename > class ALLOC >
-  INLINE bool ScheduleProjection< TABLE, ALLOC >::isSameOperation(
-     const ScheduleProjection< TABLE, ALLOC >& op) const {
+  template < typename TABLE >
+  INLINE bool
+     ScheduleProjection< TABLE >::isSameOperation(const ScheduleProjection< TABLE >& op) const {
     return _project_ == op._project_;
   }
 
 
   /// checks whether two ScheduleOperation perform the same operation
-  template < typename TABLE, template < typename > class ALLOC >
-  bool ScheduleProjection< TABLE, ALLOC >::isSameOperation(
-     const ScheduleOperation< ALLOC >& op) const {
+  template < typename TABLE >
+  bool ScheduleProjection< TABLE >::isSameOperation(const ScheduleOperation& op) const {
     try {
-      const ScheduleProjection< TABLE, ALLOC >& real_op
-         = dynamic_cast< const ScheduleProjection< TABLE, ALLOC >& >(op);
-      return ScheduleProjection< TABLE, ALLOC >::isSameOperation(real_op);
+      const ScheduleProjection< TABLE >& real_op
+         = dynamic_cast< const ScheduleProjection< TABLE >& >(op);
+      return ScheduleProjection< TABLE >::isSameOperation(real_op);
     } catch (std::bad_cast&) { return false; }
   }
 
 
   /// returns the argument of the projection
-  template < typename TABLE, template < typename > class ALLOC >
-  INLINE const ScheduleMultiDim< TABLE, ALLOC >& ScheduleProjection< TABLE, ALLOC >::arg() const {
+  template < typename TABLE >
+  INLINE const ScheduleMultiDim< TABLE >& ScheduleProjection< TABLE >::arg() const {
     return *_arg_;
   }
 
 
   /// returns the sequence of arguments passed to the operation
-  template < typename TABLE, template < typename > class ALLOC >
-  INLINE const Sequence< const IScheduleMultiDim< ALLOC >* >&
-               ScheduleProjection< TABLE, ALLOC >::args() const {
+  template < typename TABLE >
+  INLINE const Sequence< const IScheduleMultiDim* >& ScheduleProjection< TABLE >::args() const {
     return _args_;
   }
 
 
   /// returns the result of the projection
-  template < typename TABLE, template < typename > class ALLOC >
-  INLINE const ScheduleMultiDim< TABLE, ALLOC >&
-               ScheduleProjection< TABLE, ALLOC >::result() const {
+  template < typename TABLE >
+  INLINE const ScheduleMultiDim< TABLE >& ScheduleProjection< TABLE >::result() const {
     return *_result_;
   }
 
 
   /// returns the result of the projection
-  template < typename TABLE, template < typename > class ALLOC >
-  INLINE const Sequence< const IScheduleMultiDim< ALLOC >* >&
-               ScheduleProjection< TABLE, ALLOC >::results() const {
+  template < typename TABLE >
+  INLINE const Sequence< const IScheduleMultiDim* >& ScheduleProjection< TABLE >::results() const {
     return _results_;
   }
 
 
   /// modifies the arguments of the operation
-  template < typename TABLE, template < typename > class ALLOC >
-  void ScheduleProjection< TABLE, ALLOC >::updateArgs(
-     const Sequence< const IScheduleMultiDim< ALLOC >* >& new_args) {
+  template < typename TABLE >
+  void
+     ScheduleProjection< TABLE >::updateArgs(const Sequence< const IScheduleMultiDim* >& new_args) {
     // check that there is exactly one argument in new_args and that its type
     // is compatible with TABLE
     if (new_args.size() != Size(1)) {
@@ -358,9 +293,9 @@ namespace gum {
                 "Method ScheduleProjection::updateArgs expects 1 new "
                    << "argument, but " << new_args.size() << " were passed.");
     }
-    const ScheduleMultiDim< TABLE, ALLOC >* new_table;
+    const ScheduleMultiDim< TABLE >* new_table;
     try {
-      new_table = dynamic_cast< const ScheduleMultiDim< TABLE, ALLOC >* >(new_args[0]);
+      new_table = dynamic_cast< const ScheduleMultiDim< TABLE >* >(new_args[0]);
     } catch (std::bad_cast&) {
       GUM_ERROR(TypeError,
                 "The type of the argument passed to "
@@ -370,8 +305,7 @@ namespace gum {
 
     // if the new table is a constant, just copy it
     if (new_table->variablesSequence().empty() && !new_table->isAbstract()) {
-      *_result_
-         = std::move(ScheduleMultiDim< TABLE, ALLOC >(new_table->multiDim(), true, _result_->id()));
+      *_result_ = std::move(ScheduleMultiDim< TABLE >(new_table->multiDim(), true, _result_->id()));
     } else {
       // get the variables remaining after the projection
       Sequence< const DiscreteVariable* > vars = new_table->variablesSequence();
@@ -379,7 +313,7 @@ namespace gum {
         if (vars.exists(var)) vars.erase(var);
       }
 
-      *_result_ = std::move(ScheduleMultiDim< TABLE, ALLOC >(vars, _result_->id()));
+      *_result_ = std::move(ScheduleMultiDim< TABLE >(vars, _result_->id()));
     }
 
     _arg_ = new_table;
@@ -389,15 +323,15 @@ namespace gum {
 
 
   /// indicates whether the operation has been executed
-  template < typename TABLE, template < typename > class ALLOC >
-  bool ScheduleProjection< TABLE, ALLOC >::isExecuted() const {
+  template < typename TABLE >
+  bool ScheduleProjection< TABLE >::isExecuted() const {
     return !_result_->isAbstract();
   }
 
 
   /// executes the operation
-  template < typename TABLE, template < typename > class ALLOC >
-  void ScheduleProjection< TABLE, ALLOC >::execute() {
+  template < typename TABLE >
+  void ScheduleProjection< TABLE >::execute() {
     if (_result_->isAbstract()) {
       const TABLE& tab = _arg_->multiDim();
       if (_arg_->domainSize() > 1) {
@@ -411,23 +345,23 @@ namespace gum {
 
 
   /// undo a previous execution, if any
-  template < typename TABLE, template < typename > class ALLOC >
-  void ScheduleProjection< TABLE, ALLOC >::undo() {
+  template < typename TABLE >
+  void ScheduleProjection< TABLE >::undo() {
     _result_->makeAbstract();
   }
 
 
   /** @brief returns an estimation of the number of elementary operations
    * needed to perform the ScheduleOperation */
-  template < typename TABLE, template < typename > class ALLOC >
-  INLINE double ScheduleProjection< TABLE, ALLOC >::nbOperations() const {
+  template < typename TABLE >
+  INLINE double ScheduleProjection< TABLE >::nbOperations() const {
     return double(_arg_->domainSize());
   }
 
 
   /// returns the memory consumption used during the operation
-  template < typename TABLE, template < typename > class ALLOC >
-  std::pair< double, double > ScheduleProjection< TABLE, ALLOC >::memoryUsage() const {
+  template < typename TABLE >
+  std::pair< double, double > ScheduleProjection< TABLE >::memoryUsage() const {
     const double domsize
        = double(_result_->domainSize()) * _result_->sizeOfContent() + sizeof(TABLE);
     return {domsize, domsize};
@@ -435,16 +369,16 @@ namespace gum {
 
 
   /// displays the content of the operation
-  template < typename TABLE, template < typename > class ALLOC >
-  std::string ScheduleProjection< TABLE, ALLOC >::toString() const {
+  template < typename TABLE >
+  std::string ScheduleProjection< TABLE >::toString() const {
     return _result_->toString() + " = project ( " + _arg_->toString() + " , "
          + _del_vars_.toString() + " )";
   }
 
 
   /// use a new projection function
-  template < typename TABLE, template < typename > class ALLOC >
-  void ScheduleProjection< TABLE, ALLOC >::setProjectionFunction(
+  template < typename TABLE >
+  void ScheduleProjection< TABLE >::setProjectionFunction(
      TABLE (*project)(const TABLE&, const Set< const DiscreteVariable* >&)) {
     _project_ = project;
     _result_->makeAbstract();

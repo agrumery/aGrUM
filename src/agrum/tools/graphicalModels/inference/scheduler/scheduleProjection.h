@@ -81,11 +81,9 @@ namespace gum {
    * @endcode
    *
    */
-  template < typename TABLE, template < typename > class ALLOC = std::allocator >
-  class ScheduleProjection: public ScheduleOperation< ALLOC > {
+  template < typename TABLE >
+  class ScheduleProjection: public ScheduleOperation {
     public:
-    using allocator_type = ALLOC< Idx >;
-
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -101,37 +99,23 @@ namespace gum {
      * @param is_result_persistent this boolean indicates whether the result of
      * the projection is persistent, i.e., whether it should be kept in
      * memory when the operation itself is deleted from memory.
-     * @param alloc the allocator used for memory allocations
      * @warning table is stored only by reference within the ScheduleProjection.
      * But the set of variables to remove (del_vars) is stored by copy
      * within the ScheduleProjection */
-    explicit ScheduleProjection(
-       const ScheduleMultiDim< TABLE, ALLOC >& table,
-       const Set< const DiscreteVariable* >&   del_vars,
-       TABLE (*project)(const TABLE&, const Set< const DiscreteVariable* >&),
-       const bool is_result_persistent = false,
-       const allocator_type& alloc = allocator_type());
+    explicit ScheduleProjection(const ScheduleMultiDim< TABLE >&      table,
+                                const Set< const DiscreteVariable* >& del_vars,
+                                TABLE (*project)(const TABLE&,
+                                                 const Set< const DiscreteVariable* >&),
+                                const bool is_result_persistent = false);
 
     /// copy constructor
-    ScheduleProjection(const ScheduleProjection< TABLE, ALLOC >& from);
-
-    /// copy constructor with a given allocator
-    ScheduleProjection(const ScheduleProjection< TABLE, ALLOC >& from,
-                       const allocator_type&                     alloc);
+    ScheduleProjection(const ScheduleProjection< TABLE >& from);
 
     /// move constructor
-    ScheduleProjection(ScheduleProjection< TABLE, ALLOC >&& from);
-
-    /// move constructor with a given allocator
-    ScheduleProjection(ScheduleProjection< TABLE, ALLOC >&& from,
-                       const allocator_type&                alloc);
+    ScheduleProjection(ScheduleProjection< TABLE >&& from);
 
     /// virtual copy constructor
-    ScheduleProjection< TABLE, ALLOC >* clone() const final;
-
-    /// virtual copy constructor with a given allocator
-    ScheduleProjection< TABLE, ALLOC >*
-       clone(const allocator_type& alloc) const final;
+    ScheduleProjection< TABLE >* clone() const final;
 
     /// destructor
     /** @warning If the ScheduleProjection has created some output
@@ -147,12 +131,10 @@ namespace gum {
     /// @{
 
     /// copy operator
-    ScheduleProjection< TABLE, ALLOC >&
-       operator=(const ScheduleProjection< TABLE, ALLOC >&);
+    ScheduleProjection< TABLE >& operator=(const ScheduleProjection< TABLE >&);
 
     /// move operator
-    ScheduleProjection< TABLE, ALLOC >&
-       operator=(ScheduleProjection< TABLE, ALLOC >&&);
+    ScheduleProjection< TABLE >& operator=(ScheduleProjection< TABLE >&&);
 
     /// operator ==
     /** Two operations are identical if and only if they have equal (==)
@@ -160,7 +142,7 @@ namespace gum {
      * they perform exactly the same operation (e.g., both perform a max
      * projection). By Equal arguments, we stress that we mean that these
      * ScheduleMultiDims have the same IDs*/
-    bool operator==(const ScheduleOperation< ALLOC >&) const final;
+    bool operator==(const ScheduleOperation&) const final;
 
     /// operator !=
     /** Two operations are different if and only if they either have different
@@ -168,7 +150,7 @@ namespace gum {
      * to project on, or they perform different operations (e.g., one performs a
      * max projection and the other a min projection). Different
      * ScheduleMultiDim arguments means that the latter differ by their Ids. */
-    bool operator!=(const ScheduleOperation< ALLOC >&) const final;
+    bool operator!=(const ScheduleOperation&) const final;
 
     /// operator ==
     /** Two operations are identical if and only if they have equal (==)
@@ -176,7 +158,7 @@ namespace gum {
      * they perform exactly the same operation (e.g., both perform a max
      * projection). By Equal arguments, we mean that these ScheduleMultiDims have
      * the same IDs */
-    virtual bool operator==(const ScheduleProjection< TABLE, ALLOC >&) const;
+    virtual bool operator==(const ScheduleProjection< TABLE >&) const;
 
     /// operator !=
     /** Two operations are different if and only if they either have different
@@ -184,7 +166,7 @@ namespace gum {
      * to project on, or they perform different operations (e.g., one performs a
      * max projection and the other a min projection). Different
      * ScheduleMultiDim arguments means that the latter differ by their Ids. */
-    virtual bool operator!=(const ScheduleProjection< TABLE, ALLOC >&) const;
+    virtual bool operator!=(const ScheduleProjection< TABLE >&) const;
 
     /// @}
 
@@ -201,7 +183,7 @@ namespace gum {
      * are essentially identical but they may have different Ids (so that they
      * may not be ==).
      */
-    bool hasSameArguments(const ScheduleOperation< ALLOC >&) const final;
+    bool hasSameArguments(const ScheduleOperation&) const final;
 
     /** @brief checks whether two ScheduleProjection have the same parameters
      * (same variables, including the set of variables to delete, and same content)
@@ -210,7 +192,7 @@ namespace gum {
      * are essentially identical but they may have different Ids (so that they
      * may not be ==).
      */
-    bool hasSameArguments(const ScheduleProjection< TABLE, ALLOC >&) const;
+    bool hasSameArguments(const ScheduleProjection< TABLE >&) const;
 
     /** @brief checks whether two ScheduleProjection have similar parameters
      * (same variables, including the set of variables to delete)
@@ -219,7 +201,7 @@ namespace gum {
      * are essentially identical but they may have different Ids (so that they
      * may not be ==).
      */
-    bool hasSimilarArguments(const ScheduleOperation< ALLOC >&) const final;
+    bool hasSimilarArguments(const ScheduleOperation&) const final;
 
     /** @brief checks whether two ScheduleProjection have similar parameters
      * (same variables, including the set of variables to delete)
@@ -228,25 +210,25 @@ namespace gum {
      * are essentially identical but they may have different Ids (so that they
      * may not be ==).
      */
-    bool hasSimilarArguments(const ScheduleProjection< TABLE, ALLOC >&) const;
+    bool hasSimilarArguments(const ScheduleProjection< TABLE >&) const;
 
     /// checks whether two ScheduleOperation perform the same projection
-    bool isSameOperation(const ScheduleOperation< ALLOC >&) const final;
+    bool isSameOperation(const ScheduleOperation&) const final;
 
     /// checks whether two ScheduleOperation perform the same projection
-    bool isSameOperation(const ScheduleProjection< TABLE, ALLOC >&) const;
+    bool isSameOperation(const ScheduleProjection< TABLE >&) const;
 
     /// returns the argument of the projection
-    const ScheduleMultiDim< TABLE, ALLOC >& arg() const;
+    const ScheduleMultiDim< TABLE >& arg() const;
 
     /// returns the sequence of arguments passed to the operation
-    const Sequence< const IScheduleMultiDim< ALLOC >* >& args() const final;
+    const Sequence< const IScheduleMultiDim* >& args() const final;
 
     /// returns the result of the projection
-    const ScheduleMultiDim< TABLE, ALLOC >& result() const;
+    const ScheduleMultiDim< TABLE >& result() const;
 
     /// returns the sequence of ScheduleMultidim output by the operation
-    const Sequence< const IScheduleMultiDim< ALLOC >* >& results() const final;
+    const Sequence< const IScheduleMultiDim* >& results() const final;
 
     /// modifies the arguments of the operation
     /** @throws SizeError is raised if the number of elements in new_args
@@ -255,8 +237,7 @@ namespace gum {
      * @throws TypeError is raised if at least one element of new_args does
      * not have a type compatible with what the ScheduleOperation expects.
      */
-    void updateArgs(const Sequence< const IScheduleMultiDim< ALLOC >* >&
-                               new_args) final;
+    void updateArgs(const Sequence< const IScheduleMultiDim* >& new_args) final;
 
     /// indicates whether the operation has been executed
     bool isExecuted() const final;
@@ -287,29 +268,29 @@ namespace gum {
     std::string toString() const final;
 
     /// use a new projection function
-    void setProjectionFunction(
-       TABLE (*project)(const TABLE&, const Set< const DiscreteVariable* >&));
+    void setProjectionFunction(TABLE (*project)(const TABLE&,
+                                                const Set< const DiscreteVariable* >&));
 
     /// @}
 
     private:
     /// the argument to be projected
-    const ScheduleMultiDim< TABLE, ALLOC >* _arg_{nullptr};
+    const ScheduleMultiDim< TABLE >* _arg_{nullptr};
 
     /// the sequence of arguments passed to the operation
     /** This method is convenient when using ScheduleOperation rather than
      * directly using ScheduleBinaryCombination */
-    Sequence< const IScheduleMultiDim< ALLOC >* > _args_;
+    Sequence< const IScheduleMultiDim* > _args_;
 
     /// the result of the projection
-    ScheduleMultiDim< TABLE, ALLOC >* _result_{nullptr};
+    ScheduleMultiDim< TABLE >* _result_{nullptr};
 
     /// the sequence of ScheduleMultidim output by the operation
     /** @warning Note that the Operation has always some output, even if
      * it has not been executed. In this case, the outputs are abstract
      * ScheduleMultiDim.
      */
-    Sequence< const IScheduleMultiDim< ALLOC >* > _results_;
+    Sequence< const IScheduleMultiDim* > _results_;
 
     /// the set of variables that should be removed from the _arg_ table
     Set< const DiscreteVariable* > _del_vars_;

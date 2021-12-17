@@ -37,10 +37,8 @@
 
 namespace gum {
 
-  template < template < typename > class ALLOC = std::allocator  >
-  class Scheduler : private ALLOC< Idx > {
+  class Scheduler {
     public:
-    using allocator_type = ALLOC< Idx >;
 
     // ############################################################################
     /// @name Constructors / Destructors
@@ -57,17 +55,12 @@ namespace gum {
      * means an infinite memory available (the default).
      * @param max_nb_threads the number max of threads to use to execute in
      * parallel the operations of a schedule. 0 = use aGrUM's default.
-     * @param alloc the allocator used to allocate all the structures
      */
     Scheduler(Size   max_nb_threads = 0,
-              double max_megabyte_memory = 0.0,
-              const  allocator_type& alloc = allocator_type());
+              double max_megabyte_memory = 0.0);
 
     /// virtual copy constructor
-    virtual Scheduler< ALLOC >* clone() const = 0;
-
-    /// virtual copy constructor with a given allocator
-    virtual Scheduler< ALLOC >* clone(const allocator_type& alloc) const = 0;
+    virtual Scheduler* clone() const = 0;
 
     /// destructor
     virtual ~Scheduler();
@@ -107,11 +100,11 @@ namespace gum {
     virtual double maxMemory() const;
 
     /// execute all the operations of a given schedule
-    virtual void execute(Schedule< ALLOC >&) = 0;
+    virtual void execute(Schedule&) = 0;
 
     /** @brief returns an estimation of the number of elementary operations
      * needed to perform a given schedule */
-    virtual double nbOperations(const Schedule< ALLOC >&) = 0;
+    virtual double nbOperations(const Schedule&) = 0;
 
     /// returns the memory consumption used during the execution of a schedule
     /** Actually, this function does not return a precise account of the memory
@@ -121,10 +114,7 @@ namespace gum {
      * amount of memory used during the execution of the Schedule and the second
      * one is the amount of memory still used at the end of the execution of
      * the schedule */
-    virtual std::pair< double, double > memoryUsage(const Schedule< ALLOC >&) = 0;
-
-    /// returns the allocator used by the scheduler
-    allocator_type get_allocator() const;
+    virtual std::pair< double, double > memoryUsage(const Schedule&) = 0;
 
     /// @}
 
@@ -138,30 +128,24 @@ namespace gum {
 
 
     /// copy constructor
-    Scheduler(const Scheduler< ALLOC >& from);
-
-    /// copy constructor with a given allocator
-    Scheduler(const Scheduler< ALLOC >& from,
-              const allocator_type&     alloc);
+    Scheduler(const Scheduler& from);
 
     /// move constructor
-    Scheduler(Scheduler< ALLOC >&& from);
-
-    /// move constructor with a given allocator
-    Scheduler(Scheduler< ALLOC >&&  from,
-              const allocator_type& alloc);
+    Scheduler(Scheduler&& from);
 
     /// copy operator
-    Scheduler< ALLOC >& operator=(const Scheduler< ALLOC >& from);
+    Scheduler& operator=(const Scheduler& from);
 
     /// move operator
-    Scheduler< ALLOC >& operator=(Scheduler< ALLOC >&& from);
+    Scheduler& operator=(Scheduler&& from);
 
   };
 
 } /* namespace gum */
 
-// always include the template implementation
-#include <agrum/tools/graphicalModels/inference/scheduler/scheduler_tpl.h>
+// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/tools/graphicalModels/inference/scheduler/scheduler_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_SCHEDULER_H */

@@ -36,25 +36,14 @@
 
 namespace gum {
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-  // the id used whenever any ScheduleMultiDim of any type asks for a new id
-  namespace ScheduleMultiDimSpace {
-    extern Idx _multidim_id_;
-  }
-#endif   // DOXYGEN_SHOULD_SKIP_THIS
-
-
   /**
    * @class IScheduleMultiDim
    * @brief The Table-agnostic base class of scheduleMultiDim
    * @headerfile IScheduleMultiDim.h <agrum/tools/graphicalModels/inference/scheduler/IScheduleMultiDim.h>
    * @ingroup inference_schedule
    */
-  template < template < typename > class ALLOC = std::allocator >
-  class IScheduleMultiDim: private ALLOC< Idx > {
+  class IScheduleMultiDim {
     public:
-    using allocator_type = ALLOC< Idx >;
-
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -64,31 +53,14 @@ namespace gum {
     /** @param id if specified and different from 0, the id of the constructed
      * ScheduleMultiDim, else an Id is automatically provided to the
      * ScheduleMultiDim.
-     * @param alloc the allocator used to allocated the tables within the
-     * ScheduleMultiDim. */
-    explicit IScheduleMultiDim(const Idx             id = 0,
-                               const allocator_type& alloc = allocator_type());
+     */
+    explicit IScheduleMultiDim(const Idx id = 0);
 
     /// virtual copy constructor
-    virtual IScheduleMultiDim< ALLOC >* clone() const = 0;
+    virtual IScheduleMultiDim* clone() const = 0;
 
     /// virtual copy constructor enabling to force a copy of the content
-    virtual IScheduleMultiDim< ALLOC >* clone(bool force_copy) const = 0;
-
-    /// virtual copy constructor with a given allocator
-    /** @param alloc the allocator used to allocated the tables within the
-     * ScheduleMultiDim.
-     * */
-    virtual IScheduleMultiDim< ALLOC >*
-       clone(const allocator_type& alloc) const = 0;
-
-    /** @brief virtual copy constructor with a given allocator enabling to force
-     * a copy of the content
-     * @param alloc the allocator used to allocated the tables within the
-     * ScheduleMultiDim.
-     * */
-    virtual IScheduleMultiDim< ALLOC >*
-       clone(bool force_copy, const allocator_type& alloc) const = 0;
+    virtual IScheduleMultiDim* clone(bool force_copy) const = 0;
 
     /// destructor
     virtual ~IScheduleMultiDim();
@@ -105,12 +77,12 @@ namespace gum {
     /// checks whether two IScheduleMultiDim have exactly the same ID
     /** Two IScheduleMultiDim having the same ID should imply that they also
      * contain the same sequences of variables and the same tables. */
-    virtual bool operator==(const IScheduleMultiDim< ALLOC >&) const;
+    virtual bool operator==(const IScheduleMultiDim&) const;
 
     /// checks whether two IScheduleMultiDim have different IDs
     /** Two IScheduleMultiDim having different IDs should mean that they either
      * contain the different sequences of variables and/or different tables. */
-    virtual bool operator!=(const IScheduleMultiDim< ALLOC >&) const;
+    virtual bool operator!=(const IScheduleMultiDim&) const;
 
     /// @}
 
@@ -126,14 +98,14 @@ namespace gum {
      * we do not check for the IScheduleMultiDim's ID nor for the content of
      * the table stored into the IScheduleMultiDim, if any.
      * @param m the IScheduleMultiDim with which we test similarity. */
-    virtual bool hasSameVariables(const IScheduleMultiDim< ALLOC >& m) const = 0;
+    virtual bool hasSameVariables(const IScheduleMultiDim& m) const = 0;
 
     /// checks whether two IScheduleMultiDim contain precisely the same table
     /** By "contain precisely the same table", we mean that the actual tables
      * pointed to by the IScheduleMultiDim are the same (i.e., either they are
      * both not yet allocated but have the same sequences of variables or they
      * have the same content) */
-    virtual bool hasSameContent(const IScheduleMultiDim< ALLOC >&) const = 0;
+    virtual bool hasSameContent(const IScheduleMultiDim&) const = 0;
 
     /// returns whether the ScheduleMultiDim contains a real table or not
     /** @returns true if the ScheduleMultiDim is abstract, i.e., it does not
@@ -165,8 +137,7 @@ namespace gum {
     Idx id() const;
 
     /// returns the set of variables involved in the ScheduleMultiDim
-    virtual const Sequence< const DiscreteVariable* >&
-       variablesSequence() const = 0;
+    virtual const Sequence< const DiscreteVariable* >& variablesSequence() const = 0;
 
     /// returns the domain size the table would have after its creation
     virtual Size domainSize() const = 0;
@@ -180,9 +151,6 @@ namespace gum {
     /// displays the content of the ScheduleMultiDim
     virtual std::string toString() const = 0;
 
-    /// return the allocator
-    allocator_type get_allocator() const;
-
     /// reset the id generator to 0
     /** This method is essentially useful for performing aGrUM's testunits
      * (depending on the order in which they are executed, the results could
@@ -194,25 +162,16 @@ namespace gum {
 
     protected:
     /// copy operator
-    IScheduleMultiDim< ALLOC >& operator=(const IScheduleMultiDim< ALLOC >& from);
+    IScheduleMultiDim& operator=(const IScheduleMultiDim& from);
 
     /// move operator
-    IScheduleMultiDim< ALLOC >&
-       operator=(IScheduleMultiDim< ALLOC >&& from);
+    IScheduleMultiDim& operator=(IScheduleMultiDim&& from);
 
     /// copy constructor
-    IScheduleMultiDim(const IScheduleMultiDim< ALLOC >& from);
-
-    /// copy constructor with a given allocator
-    IScheduleMultiDim(const IScheduleMultiDim< ALLOC >& from,
-                      const allocator_type&             alloc);
+    IScheduleMultiDim(const IScheduleMultiDim& from);
 
     /// move constructor
-    IScheduleMultiDim(IScheduleMultiDim< ALLOC >&& from);
-
-    /// move constructor with a given allocator
-    IScheduleMultiDim(IScheduleMultiDim< ALLOC >&& from,
-                      const allocator_type&        alloc);
+    IScheduleMultiDim(IScheduleMultiDim&& from);
 
 
     /// the unique Id of the ScheduleMultiDim
@@ -222,11 +181,16 @@ namespace gum {
     private:
     /// returns a new distinct ID for each abstract scheduleMultiDim
     static Idx _newId_();
+
+    // the id used whenever any ScheduleMultiDim of any type asks for a new id
+    static Idx _multidim_id_;
   };
 
 } /* namespace gum */
 
-// always include the template implementation
-#include <agrum/tools/graphicalModels/inference/scheduler/IScheduleMultiDim_tpl.h>
+/// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#  include <agrum/tools/graphicalModels/inference/scheduler/IScheduleMultiDim_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_ISCHEDULE_MULTI_DIM_H */
