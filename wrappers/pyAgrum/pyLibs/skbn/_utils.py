@@ -122,8 +122,7 @@ def _ImplementPrior(aPriori, learner, aPrioriWeight, DirichletCsv):
     learner.useAprioriSmoothing(aPrioriWeight)
   elif aPriori == 'Dirichlet':
     if DirichletCsv == None:
-      raise ValueError("Must specify file for dirichlet prior as a parameter to the classifier if using a dirichlet prior. \
-                             DirichletCsv cannot be set to none if aPriori is set to Dirichlet")
+      raise ValueError("Must specify file for dirichlet prior as a parameter to the classifier if using a dirichlet prior. DirichletCsv cannot be set to none if aPriori is set to Dirichlet")
     learner.useAprioriDirichlet(DirichletCsv, aPrioriWeight)
   elif aPriori == 'BDeu':
     learner.useAprioriBDeu(aPrioriWeight)
@@ -145,8 +144,7 @@ def _ImplementConstraints(constraints, learner):
           the keys of the dictionary should be the strings "PossibleEdges" , "MandatoryArcs" and  "ForbiddenArcs".
           The format of the values should be a tuple of strings (tail,head) which designates the string arc from tail to head.
           For example if we put the value ("x0"."y") in MandatoryArcs the network will surely have an arc going from x0 to y.
-          Note: PossibleEdges allows for both (tail,head) and (head,tail) to be added to the Bayesian network,
-          while the others are not symmetric.
+          Note: PossibleEdge between nodes x and y allows for either (x,y) or (y,x) (or none of them) to be added to the Bayesian network, while the others are not symmetric.
       learner:
           learner object from pyAgrum to apply the score
   returns:
