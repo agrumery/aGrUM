@@ -1,5 +1,3 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2015 by Pierre-Henri WUILLEMIN                          *
 # *   {prenom.nom}_at_lip6.fr                                               *
@@ -19,7 +17,10 @@
 # *   Free Software Foundation, Inc.,                                       *
 # *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 # **************************************************************************
-from optparse import OptionParser
+"""
+Specification of options and default values for the configuration of act
+"""
+from argparse import ArgumentParser
 from sys import platform
 
 from . import const as cfg
@@ -114,115 +115,112 @@ def initParams():
 
 
 def configureOptions(current):
-  us = "%prog [options] [" + "|".join(sorted(cfg.actions)) + "] [" + "|".join(cfg.modes) + "] [" + "|".join(
-      cfg.targets) + "]"
-  cfg.parser = OptionParser(usage=us, description="Compilation tools for aGrUM and wrappers",
-                            version="%prog v" + cfg.act_version)
-  cfg.parser.add_option("", "--no-fun",
+  us = "%(prog)" # [options] [" + "|".join(sorted(cfg.actions)) + "] [" + "|".join(cfg.modes) + "] [" + "|".join(cfg.targets) + "]"
+  cfg.parser = ArgumentParser(description="Compilation tools for aGrUM and wrappers",epilog="[v"+cfg.act_version+']')
+  cfg.parser.add_argument("cmds",default=f"{current['action']} {current['targets']} {current['mode']}",
+                          help=f"Specify among the action ({'|'.join(sorted(cfg.actions))}), the targets (in [{','.join(cfg.targets)}]) and the mode ({'|'.join(sorted(cfg.modes))}).")
+  cfg.parser.add_argument("--no-fun",
                         help="no fancy output parser.",
                         action="store_true",
                         dest="no_fun",
                         default=False)
-  cfg.parser.add_option("-v", "--verbose",
+  cfg.parser.add_argument("-v", "--verbose",
                         help="more message on what is happening.",
                         action="store_true",
                         dest="verbose",
                         default=current['verbose'])
-  cfg.parser.add_option("-q", "--quiet",
+  cfg.parser.add_argument("-q", "--quiet",
                         help="please be quiet.",
                         action="store_false",
                         dest="verbose",
                         default=current['verbose'])
-  cfg.parser.add_option("", "--withSQL",
+  cfg.parser.add_argument("--withSQL",
                         help="connection to SQL datasource via ODBC.",
                         action="store_true",
                         dest="withSQL",
                         default=current['withSQL'])
-  cfg.parser.add_option("", "--withoutSQL",
+  cfg.parser.add_argument("--withoutSQL",
                         help="no connection to SQL datasource via ODBC.",
                         action="store_false",
                         dest="withSQL",
                         default=current['withSQL'])
-  cfg.parser.add_option("", "--fixed_seed",
+  cfg.parser.add_argument("--fixed_seed",
                         help="random seed is fixed once for all. Hence random algorithms should be time-normalized.",
                         action="store_true",
                         dest="fixed_seed",
                         default=False)
-  cfg.parser.add_option("", "--stats",
+  cfg.parser.add_argument("--stats",
                         help="consolidation on " +
                         str(cfg.nbr_tests_for_stats) + " runs.",
                         action="store_true",
                         dest="stats",
                         default=False)
-  cfg.parser.add_option("", "--oneByOne",
+  cfg.parser.add_argument("--oneByOne",
                         help="aGrUM debug tests one by one (searching leaks).",
                         action="store_true",
                         dest="oneByOne",
                         default=False)
-  cfg.parser.add_option("-d", "--destination",
+  cfg.parser.add_argument("-d", "--destination",
                         help="destination folder when installing.",
                         metavar="FOLDER",
                         dest="destination",
                         default=current['destination'])
-  cfg.parser.add_option("-j", "--jobs",
+  cfg.parser.add_argument("-j", "--jobs",
                         help="number of jobs : {half|halfexcept1|all|except1|1|2|...}.",
-                        type='string',
                         dest="jobs",
                         default=current['jobs'])
-  cfg.parser.add_option("-t", "--tests",
+  cfg.parser.add_argument("-t", "--tests",
                         help="tests management : {show|all|test1+test2+test3}.",
                         metavar="TESTS-COMMAND",
                         dest="tests",
                         default=current['tests'])
-  cfg.parser.add_option("-m", "--modules",
+  cfg.parser.add_argument("-m", "--modules",
                         help="module management : {show|all|module1+module2+module3}.",
                         metavar="MODULES-COMMAND",
                         dest="modules",
                         default=current['modules'])
-  cfg.parser.add_option("", "--static_lib",
+  cfg.parser.add_argument("--static_lib",
                         help="build static library.",
                         action="store_true",
                         dest="static_lib",
                         default=False)
-  cfg.parser.add_option("", "--python3lib",
+  cfg.parser.add_argument("--python3lib",
                         help="root folder for lib python3.",
                         metavar="FOLDER",
                         dest="python3lib",
                         default=current['python3lib'])
-  cfg.parser.add_option("", "--python3include",
+  cfg.parser.add_argument("--python3include",
                         help="root folder for include python3.",
                         metavar="FOLDER",
                         dest="python3include",
                         default=current['python3include'])
-  cfg.parser.add_option("", "--dry-run",
+  cfg.parser.add_argument("--dry-run",
                         help="dry run and prints cmake invocation with the current options.",
                         action="store_true",
                         dest="dry_run",
                         default=False)
-  cfg.parser.add_option("", "--coverage",
+  cfg.parser.add_argument("--coverage",
                         help="build with code coverage options enable (debug only).",
                         action="store_true",
                         dest="coverage",
                         default=False)
-  cfg.parser.add_option("", "--windows",
+  cfg.parser.add_argument("--windows",
                         help="windows compilers : {msvc22|msvc_32|mvsc19|mvsc19_32|mvsc17|mvsc17_32|mvsc15|mvsc15_32|mingw64}.",
-                        type="choice",
                         choices=["mvsc22","mvsc22_32","mvsc19", "mvsc19_32",
                                  "mvsc17", "mvsc17_32", "mvsc15", "mvsc15_32", "mingw64"],
                         dest="windows",
                         default="mvsc22")
-  cfg.parser.add_option("", "--build",
+  cfg.parser.add_argument("--build",
                         help="build options : {all|no-cmake|no-make|doc-only}.",
-                        type="choice",
                         choices=["all", "no-cmake", "no-make", "doc-only"],
                         dest="build",
                         default="all")
-  cfg.parser.add_option("", "--no-saveParams",
+  cfg.parser.add_argument("--no-saveParams",
                         help="act will not save as default the parameters of this invocation.",
                         action="store_true",
                         dest="noSaveParams",
                         default=False)
-  cfg.parser.add_option("", "--correction",
+  cfg.parser.add_argument("--correction",
                         help="act guideline will change the files instead of only show them",
                         action="store_true",
                         dest="correction",
