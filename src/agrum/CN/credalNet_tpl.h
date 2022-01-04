@@ -1689,6 +1689,7 @@ namespace gum {
             if (thread_redund) {
               is_redund = true;
 #pragma omp flush(is_redund)
+              int i=0; // this line to work around a weird syntax error with msvc
             }
           }   // end of : each thread for
         }     // end of : parallel

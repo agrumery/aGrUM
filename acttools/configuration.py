@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2015 by Pierre-Henri WUILLEMIN                          *
 # *   {prenom.nom}_at_lip6.fr                                               *

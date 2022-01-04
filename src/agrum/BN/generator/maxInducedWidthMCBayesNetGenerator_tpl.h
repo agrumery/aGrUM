@@ -29,13 +29,9 @@
 #include <agrum/BN/generator/maxInducedWidthMCBayesNetGenerator.h>
 
 namespace gum {
-#ifdef _MSC_VER
-#  define MCBG MCBayesNetGenerator
-#  define IBNG IBayesNetGenerator
-#else
-#  define MCBG MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >
-#  define IBNG IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >
-#endif
+#define MCBG MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >
+#define IBNG IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >
+
   // Default constructor.
   // Use the SimpleCPTGenerator for generating the BNs CPT.
   template < typename GUM_SCALAR,

@@ -114,7 +114,7 @@ void Parser::NUMBER() {
 			quartets.push_back(std::make_tuple(coco_atof(t->val),-1               ,t->line,t->col)); 
 		} else if (la->kind == _integer) {
 			Get();
-			quartets.push_back(std::make_tuple(-1.0             ,coco_atoi(t->val),t->line,t->col)); 
+			quartets.push_back(std::make_tuple(-1.0f             ,coco_atoi(t->val),t->line,t->col));
 		} else SynErr(6);
 }
 

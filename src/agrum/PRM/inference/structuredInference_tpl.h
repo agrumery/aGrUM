@@ -490,7 +490,7 @@ namespace gum {
        const Sequence< PRMInstance< GUM_SCALAR >* >&      match) {
 #ifdef DEBUG
 
-      for (GSpan< GUM_SCALAR >::MatchedInstances::const_iterator iter = data.matches.begin();
+      for (const auto iter = data.matches.begin();
            iter != data.matches.end();
            ++iter) {
         GUM_ASSERT((**iter).size() == match.size());

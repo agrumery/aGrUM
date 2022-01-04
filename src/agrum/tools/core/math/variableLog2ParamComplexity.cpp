@@ -158,6 +158,7 @@ namespace gum {
       }
 
       // const double logCn2 = (double) std::log2 ( cn2 );
+
       cn2_table[n] = cn2;
     }
 
