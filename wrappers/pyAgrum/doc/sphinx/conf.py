@@ -17,8 +17,6 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-from __future__ import annotations
-
 # General information about the project.
 project = 'pyAgrum'
 copyright = '2018-21, aGrUM/pyAgrum Team'
@@ -582,10 +580,10 @@ def skip(app, what, name, obj, skip, options):
 
 autodoc_default_options = {'members' : None,
                           'undoc-members':None,
-                          # 'private-members', 
-                          # 'special-members', 
-                          'inherited-members':None, 
-                          #'show-inheritance':None, 
+                          # 'private-members',
+                          # 'special-members',
+                          'inherited-members':None,
+                          #'show-inheritance':None,
                           #'ignore-module-all',
                           'exclude-members' : 'thisown',
                          }

@@ -116,8 +116,10 @@ def initParams():
 
 def configureOptions(current):
   us = "%(prog)" # [options] [" + "|".join(sorted(cfg.actions)) + "] [" + "|".join(cfg.modes) + "] [" + "|".join(cfg.targets) + "]"
-  cfg.parser = ArgumentParser(description="Compilation tools for aGrUM and wrappers",epilog="[v"+cfg.act_version+']')
-  cfg.parser.add_argument("cmds",default=f"{current['action']} {current['targets']} {current['mode']}",
+  cfg.parser = ArgumentParser(prog='act',
+                              description="Compilation tools for aGrUM and wrappers",
+                              epilog="[%(prog)s v"+cfg.act_version+']')
+  cfg.parser.add_argument("cmds",nargs='*',default="",
                           help=f"Specify among the action ({'|'.join(sorted(cfg.actions))}), the targets (in [{','.join(cfg.targets)}]) and the mode ({'|'.join(sorted(cfg.modes))}).")
   cfg.parser.add_argument("--no-fun",
                         help="no fancy output parser.",

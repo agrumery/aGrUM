@@ -18,13 +18,9 @@
 # *   Free Software Foundation, Inc.,                                       *
 # *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 # **************************************************************************
-from __future__ import print_function
-
-import glob
 import os
 import shutil
 import sys
-from subprocess import call
 
 from .configuration import cfg
 from .oneByOne import checkAgrumMemoryLeaks

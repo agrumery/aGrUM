@@ -20,8 +20,6 @@
 # *   Free Software Foundation, Inc.,                                       *
 # *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 # ***************************************************************************
-from __future__ import print_function
-
 from .configuration import cfg, configureOptions, configureOutputs, initParams, configureTools
 from .checkargs import getCurrent, parseCommandLine, checkCurrent
 from .utils import safe_cd, about

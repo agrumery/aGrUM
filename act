@@ -1,8 +1,7 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # ***************************************************************************
-# *   Copyright (C) 2015 by Pierre-Henri WUILLEMIN (@LIP6)                          *
-# *   info_at_agrum_dot_org                                               *
+# *   Copyright (C) 2015 by Pierre-Henri WUILLEMIN (@LIP6)                  *
+# *   info_at_agrum_dot_org                                                 *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU General Public License as published by  *
@@ -19,7 +18,6 @@
 # *   Free Software Foundation, Inc.,                                       *
 # *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 # ***************************************************************************
-from __future__ import print_function
 import sys
 import traceback
 import time
