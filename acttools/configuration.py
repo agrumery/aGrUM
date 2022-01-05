@@ -207,7 +207,7 @@ def configureOptions(current):
                         dest="coverage",
                         default=False)
   cfg.parser.add_argument("--windows",
-                        help="windows compilers : {msvc22|msvc_32|mvsc19|mvsc19_32|mvsc17|mvsc17_32|mvsc15|mvsc15_32|mingw64}.",
+                        help="windows compilers : {mvsc22|mvsc22_32|mvsc19|mvsc19_32|mvsc17|mvsc17_32|mvsc15|mvsc15_32|mingw64}.",
                         choices=["mvsc22","mvsc22_32","mvsc19", "mvsc19_32",
                                  "mvsc17", "mvsc17_32", "mvsc15", "mvsc15_32", "mingw64"],
                         dest="windows",

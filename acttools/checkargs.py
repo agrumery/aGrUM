@@ -31,7 +31,6 @@ from .utils import error, notif, critic, setifyString
 
 def parseCommandLine(current):
   a=cfg.parser.parse_args()
-  print(a)
   return a,a.cmds
 
 
