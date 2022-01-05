@@ -159,7 +159,7 @@ namespace gum {
 
       // const double logCn2 = (double) std::log2 ( cn2 );
 
-      cn2_table[n] = cn2;
+      cn2_table[int(n)] = cn2;
     }
 
     // write the header of the output file
