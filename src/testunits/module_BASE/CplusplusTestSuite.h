@@ -21,6 +21,7 @@
 
 #include <iostream>
 #include <string>
+#include <limits>
 
 #include <gumtest/AgrumTestSuite.h>
 
@@ -31,17 +32,23 @@ namespace gum_tests {
     void test_CPP17_binding_array() {
       int arry[3]    = {3, 4, 5};
       auto [a, b, c] = arry;
+      TS_ASSERT_EQUALS(a, 3);
+      TS_ASSERT_EQUALS(b, 4);
+      TS_ASSERT_EQUALS(c, 5);
     }
 
     void test_CPP17_autobinding() {
       std::tuple tplex(1, 'a', 3.14);
       auto [a, b, c] = tplex;
+      TS_ASSERT_EQUALS(a, 1);
+      TS_ASSERT_EQUALS(b, 'a');
+      TS_ASSERT_EQUALS(c, 3.14);
     }
 
     void test_CPP17_enumInit() {
       enum byte : unsigned char {};
-      byte b0{0};
-      byte b1 = byte{255};
+      byte b0 [[maybe_unused]]{0};
+      byte b1 [[maybe_unused]] = byte{255};
     }
 
     void test_CPP17_ifWithInit() {
@@ -68,7 +75,7 @@ namespace gum_tests {
          i1 <<= 1,
          -2)   // left-shift for signed negative integers(previously undefined behavior)
 
-      int i2 = INT_MAX;
+      int i2 = std::numeric_limits< int >::max();
       TS_ASSERT_EQUALS(
          i2 <<= 1,
          -2)   // "unrepresentable" left-shift for signed integers(previously undefined behavior)
