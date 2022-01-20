@@ -6,8 +6,8 @@ stages:
 # Linux / gcc
 ################################################################################
 
-linux_agrum_11:
-  image: agrumery/ubuntu-11
+linux_agrum:
+  image: agrumery/manylinux2014_x86_64
   tags:
     - docker
     - linux
@@ -21,7 +21,7 @@ linux_agrum_11:
     - python3 act --no-fun test release aGrUM -j halfexcept1
 
 linux_pyagrum:
-  image: agrumery/ubuntu
+  image: agrumery/manylinux2014_x86_64
   tags:
     - docker
     - linux
@@ -38,24 +38,9 @@ linux_pyagrum:
 ################################################################################
 # Linux / gcc merge requests
 ################################################################################
-linux_agrum_merge_requests:
-  image: agrumery/ubuntu
-  only:
-    - merge_requests
-  tags:
-    - docker
-    - linux
-  cache:
-    key: linux
-    paths:
-      - build/
-  stage: build
-  script:
-    - python3 act clean
-    - python3 act --no-fun test release aGrUM -j halfexcept1
 
-linux_agrum_merge_requests_11:
-  image: agrumery/ubuntu-11
+linux_agrum_merge_requests:
+  image: agrumery/manylinux2014_x86_64
   only:
     - merge_requests
   tags:
@@ -90,6 +75,7 @@ linux_pyagrum_merge_requests:
 ################################################################################
 # MacOS / clang
 ################################################################################
+
 macos_agrum:
   only:
     - master@agrumery/aGrUM
@@ -305,6 +291,7 @@ windows_pyagrum_2022:
 ################################################################################
 # Deploy  wheels
 ################################################################################
+
 linux_build:
   image: agrumery/ubuntu
   only:
