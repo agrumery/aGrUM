@@ -7,10 +7,11 @@ stages:
 ################################################################################
 
 linux_agrum:
-  image: agrumery/manylinux2014_x86_64
+  image: agrumery/ubuntu_py310
   tags:
     - docker
     - linux
+    - triskele
   cache:
     key: linux
     paths:
@@ -25,6 +26,7 @@ linux_pyagrum:
   tags:
     - docker
     - linux
+    - triskele
   cache:
     key: linux
     paths:
@@ -40,12 +42,13 @@ linux_pyagrum:
 ################################################################################
 
 linux_agrum_merge_requests:
-  image: agrumery/manylinux2014_x86_64
+  image: agrumery/ubuntu_py310
   only:
     - merge_requests
   tags:
     - docker
     - linux
+    - triskele
   cache:
     key: linux
     paths:
@@ -62,6 +65,7 @@ linux_pyagrum_merge_requests:
   tags:
     - docker
     - linux
+    - triskele
   cache:
     key: linux
     paths:
