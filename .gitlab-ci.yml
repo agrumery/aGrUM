@@ -181,7 +181,7 @@ windows_agrum_2019_64:
       - build/
   stage: build
   script:
-    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.7
+    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.8
     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
     - call conda.bat install -y -c conda-forge --file wrappers\pyAgrum\testunits\requirements.txt
     - call pip install cmake
@@ -208,7 +208,7 @@ windows_agrum_2019_32:
       - build/
   stage: build
   script:
-    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.7
+    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.8
     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
     - call conda.bat install -y -c conda-forge --file wrappers\pyAgrum\testunits\requirements.txt
     - call pip install cmake
@@ -235,7 +235,7 @@ windows_agrum_2022_64:
       - build/
   stage: build
   script:
-    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.7
+    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.8
     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
     - call conda.bat install -y -c conda-forge --file wrappers\pyAgrum\testunits\requirements.txt
     - call pip install cmake
@@ -262,7 +262,7 @@ windows_agrum_2022_32:
       - build/
   stage: build
   script:
-    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.7
+    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.8
     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
     - call conda.bat install -y -c conda-forge --file wrappers\pyAgrum\testunits\requirements.txt
     - call pip install cmake
