@@ -57,7 +57,7 @@ def check_tools(options):
     critic('python2 is not supported anymore. Please use pyAgrum 0.21.x.')
   else:
     if int(subversion) < 7:
-      critic('python<3.7 is not supported anymore. Please use pyAgrum 0.21.x.')
+      critic('python<3.8 is not supported anymore. Please use pyAgrum 0.22.x.')
   cfg.python_version = f"{version}.{subversion}"
 
   exe_cmake = is_tool("cmake")

@@ -27,8 +27,8 @@ if __name__ == "__main__":
   print("[pyAgrum] Please use 'act test -t quick|all pyAgrum release'.")
   sys.exit(0)
 
-if sys.version_info < (3, 7):
-  print("[pyAgrum] python>=3.7 needed.")
+if sys.version_info < (3, 8):
+  print("[pyAgrum] python>=3.8 needed.")
   sys.exit(0)
 
 if len(sys.argv) > 1:
