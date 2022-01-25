@@ -89,7 +89,7 @@ In [wrappers](/wrappers) you can find the following folders:
 
 # Building
 
-It is strongly recommended to use ACT to build aGrUM. Act requires Python (>=3.7)
+It is strongly recommended to use ACT to build aGrUM. Act requires Python (>=3.8)
 and you will need, depending of your platform, the following tools:
 - Linux:
     - Python
