@@ -743,37 +743,6 @@ namespace gum_tests {
       TS_ASSERT_DELTA(meu.second, m2 - m * m, TS_GUM_SMALL_ERROR)
     }
 
-    void testNonRegressionFromMikailo() {
-      auto diag   = gum::InfluenceDiagram< double >::fastPrototype("*D->L2->L3->$U");
-      auto iediag = gum::ShaferShenoyLIMIDInference< double >(&diag);
-      iediag.addEvidence("D", 0);
 
-      // ie.addNoForgettingAssumption(std::vector< std::string >{"D"});
-      iediag.makeInference();
-
-      gum::BayesNet< double > bn;
-      for (const auto n: diag.nodes())
-        if (!diag.isUtilityNode(n)) bn.add(diag.variable(n));
-      for (const auto& arc: diag.arcs())
-        if (!diag.isUtilityNode(arc.head())) bn.addArc(arc.tail(), arc.head());
-      for (const auto n: diag.nodes())
-        if (diag.isChanceNode(n))
-          bn.cpt(n).fillWith(diag.cpt(n));
-        else if (diag.isDecisionNode(n))
-          bn.cpt(n).fillWith(1).normalize();
-
-      auto ie = gum::LazyPropagation< double >(&bn);
-      ie.addEvidence("D", 0);
-      ie.makeInference();
-
-      TS_GUM_POTENTIAL_DELTA(
-         iediag.posterior("L2"),
-         (gum::Potential< double >() << diag.variableFromName("L2")).fillWith(ie.posterior("L2")),
-         TS_GUM_SMALL_ERROR);
-      TS_GUM_POTENTIAL_DELTA(
-         iediag.posterior("L3"),
-         (gum::Potential< double >() << diag.variableFromName("L3")).fillWith(ie.posterior("L3")),
-         TS_GUM_SMALL_ERROR);
-    }
   };
 }   // namespace gum_tests
