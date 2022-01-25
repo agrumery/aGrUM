@@ -21,8 +21,8 @@ linux_agrum:
     - python3 act clean
     - python3 act --no-fun test release aGrUM -j halfexcept1
 
-linux_pyagrum_py37:
-  image: agrumery/ubuntu_py37
+linux_pyagrum_py38:
+  image: agrumery/ubuntu_py38
   tags:
     - docker
     - linux
@@ -74,10 +74,10 @@ linux_agrum_merge_requests:
     - python3 act clean
     - python3 act --no-fun test release aGrUM -j halfexcept1
 
-linux_pyagrum_merge_requests_py37:
+linux_pyagrum_merge_requests_py38:
   only:
     - merge_requests
-  image: agrumery/ubuntu_py37
+  image: agrumery/ubuntu_py38
   tags:
     - docker
     - linux
