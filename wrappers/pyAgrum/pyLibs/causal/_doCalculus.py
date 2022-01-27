@@ -38,7 +38,7 @@ from pyAgrum.causal._CausalFormula import CausalFormula
 # pylint: disable=unused-import
 import pyAgrum.causal  # for annotations
 
-def doCalculusWithObservation(cm: CausalModel, on: str, doing: NameSet,
+def doCalculusWithObservation(cm: CausalModel, on: Set[str], doing: NameSet,
                               knowing: Optional[NameSet] = None) -> CausalFormula:
   """
   Compute the CausalFormula for an impact analysis given the causal model, the observed variables and the

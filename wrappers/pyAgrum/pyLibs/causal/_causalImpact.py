@@ -261,15 +261,21 @@ def counterfactualModel(cm: CausalModel, profile: Union[Dict[str, int], type(Non
 def counterfactual(cm: CausalModel, profile: Union[Dict[str, int], type(None)], on: Union[str, Set[str]],
                    whatif: Union[str, Set[str]],
                    values: Union[Dict[str, int], type(None)] = None) -> "pyAgrum.Potential":
-  """Determines the estimation of a counterfactual query following the the three steps algorithm from "The Book Of Why" (Pearl 2018) chapter 8 page 253.
+  """Determines the estimation of a counterfactual query following the the three steps algorithm from "The Book Of Why"
+  (Pearl 2018) chapter 8 page 253.
 
-  Determines the estimation of the counterfactual query: Given the "profile" (dictionary <variable name>:<value>),what would variables in "on" (single or list of variables) be if variables in "whatif" (single or list of variables) had been as specified in "values" (dictionary <variable name>:<value>)(optional).
+  Determines the estimation of the counterfactual query: Given the "profile" (dictionary <variable name>:<value>),what
+  would variables in "on" (single or list of variables) be if variables in "whatif" (single or list of variables) had
+  been as specified in "values" (dictionary <variable name>:<value>)(optional).
 
   This is done according to the following algorithm:
       -Step 1-2: compute the twin causal model
-      -Step 3 : determine the causal impact of the interventions specified in  "whatif" on the single or list of variables "on" in the causal model.
+      -Step 3 : determine the causal impact of the interventions specified in  "whatif" on the single or list of
+      variables "on" in the causal model.
 
-  This function returns the potential calculated in step 3, representing the probability distribution of  "on" given the interventions  "whatif", if it had been as specified in "values" (if "values" is omitted, every possible value of "whatif")
+  This function returns the potential calculated in step 3, representing the probability distribution of  "on" given
+  the interventions  "whatif", if it had been as specified in "values" (if "values" is omitted, every possible value of
+  "whatif")
 
   :param cm: CausalModel
   :param profile: Dictionary
