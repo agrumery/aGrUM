@@ -1072,17 +1072,16 @@ def getInferenceEngine(ie, inferenceCaption):
 def getJT(jt, size=None):
   if gum.config["notebook", "junctiontree_with_names"] == "True":
     def cliqlabels(c):
-      return " ".join(
+      labels=",".join(
         sorted([model.variable(n).name() for n in jt.clique(c)])
       )
+      return f"({c}):{labels}"
 
-    def cliqnames(
-       c
-    ):
+    def cliqnames(c):
       return "-".join(sorted([model.variable(n).name() for n in jt.clique(c)]))
 
     def seplabels(c1, c2):
-      return " ".join(
+      return ",".join(
         sorted([model.variable(n).name() for n in jt.separator(c1, c2)])
       )
 
@@ -1090,13 +1089,14 @@ def getJT(jt, size=None):
       return cliqnames(c1) + '+' + cliqnames(c2)
   else:
     def cliqlabels(c):
-      return " ".join([str(n) for n in sorted(jt.clique(c))])
+      ids=",".join([str(n) for n in sorted(jt.clique(c))])
+      return f"({c}):{ids}"
 
     def cliqnames(c):
       return "-".join([str(n) for n in sorted(jt.clique(c))])
 
     def seplabels(c1, c2):
-      return " ".join(
+      return ",".join(
         [str(n) for n in sorted(jt.separator(c1, c2))]
       )
 

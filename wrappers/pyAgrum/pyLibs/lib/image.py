@@ -196,7 +196,6 @@ def dot_as_svg_string(gr, size):
   repr a pydot graph in a notebook
 
   :param string size : size of the rendered graph
-  :param boolean asString : display the graph or return a string containing the corresponding HTML fragment
   """
   if size is not None:
     gr.set_size(size)
