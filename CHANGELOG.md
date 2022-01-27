@@ -1,5 +1,23 @@
 # aGrUM Changelog
 
+## Changelog for 0.22.6
+
+* aGrUM
+
+  * aGrum is now compiled using c++20 (updating cmake)
+  * Fix 'distribute' phase in some cases for `gum::ShaferShenoyLIMIDInference` (Thanks to Michael Kontoulis)
+  * Remove a lot of allocator as template parameters
+  * Improve `act` architecture 
+  * Use of `argparse`  instead of the obsolete `optparse`
+  * Working on CI : removing some obsolete platform, adding some new
+
+* pyAgrum
+
+  * Drop support for python 3.7 (following [NEP29](https://numpy.org/neps/nep-0029-deprecation_policy.html))
+  * Use of `pydot` instead of `pydotplus`
+  * Several typos in code and documentation of `gum.lib` (thanks to Benjamin Datko).
+  * Improve notebooks
+
 ## Changelog for 0.22.5
 
 This release mainly deals with providing a workaround to a pydotplus/pyparsing bug affecting several graph visualizations in pyAgrum. 
