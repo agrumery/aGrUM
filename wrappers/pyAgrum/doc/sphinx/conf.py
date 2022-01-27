@@ -66,7 +66,6 @@ extensions = [
   'sphinx.ext.inheritance_diagram',
   'sphinx.ext.napoleon',
   'sphinx_autodoc_typehints',
-  # todo 'sphinx_autodoc_typehints', # may be error prone (with python<3.7)
   #'sphinx.ext.todo',
   #'sphinx.ext.viewcode',
   #'sphinx.ext.coverage'
