@@ -504,7 +504,7 @@ namespace gum {
        * @return Returns \c TRUE if this CredalNet is separately and interval
        * specified, \c FALSE otherwise.
        */
-      const bool isSeparatelySpecified() const;
+      bool isSeparatelySpecified() const;
 
       /**
        * @return Returns \c TRUE if this CredalNet has called
@@ -512,7 +512,7 @@ namespace gum {
        * L2U. This needs to be reworked as it is too easy to forget to call it and
        * it can't be called within the inference engine (constness).
        */
-      const bool hasComputedBinaryCPTMinMax() const;
+      bool hasComputedBinaryCPTMinMax() const;
 
       /**
        * Used with binary networks to speed-up L2U inference.

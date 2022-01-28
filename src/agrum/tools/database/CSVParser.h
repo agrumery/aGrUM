@@ -117,7 +117,7 @@ namespace gum {
       const std::vector< std::string >& current() const;
 
       /// returns the current line number within the stream
-      const std::size_t nbLine() const;
+      std::size_t nbLine() const;
 
       /// reopens a new input stream to parse
       void useNewStream(std::istream&      in,

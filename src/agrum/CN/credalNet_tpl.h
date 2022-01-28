@@ -1250,12 +1250,12 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    const bool CredalNet< GUM_SCALAR >::isSeparatelySpecified() const {
+    bool CredalNet< GUM_SCALAR >::isSeparatelySpecified() const {
       return _separatelySpecified_;
     }
 
     template < typename GUM_SCALAR >
-    const bool CredalNet< GUM_SCALAR >::hasComputedBinaryCPTMinMax() const {
+    bool CredalNet< GUM_SCALAR >::hasComputedBinaryCPTMinMax() const {
       return _hasComputedBinaryCPTMinMax_;
     }
 

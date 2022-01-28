@@ -77,7 +77,7 @@ namespace gum {
 
 
     // returns the current nbLine of parser line
-    INLINE const std::size_t CSVParser::nbLine() const {
+    INLINE std::size_t CSVParser::nbLine() const {
       if (_nbLine_ == 0) GUM_ERROR(NullElement, "No parsed data")
 
       return _nbLine_;

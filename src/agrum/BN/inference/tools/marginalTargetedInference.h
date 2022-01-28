@@ -155,7 +155,7 @@ namespace gum {
     virtual bool isTarget(const std::string& nodeName) const final;
 
     /// returns the number of marginal targets
-    virtual const Size nbrTargets() const noexcept final;
+    virtual Size nbrTargets() const noexcept final;
 
     /// returns the list of marginal targets
     virtual const NodeSet& targets() const noexcept final;
