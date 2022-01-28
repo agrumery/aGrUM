@@ -116,7 +116,7 @@ namespace gum {
             for (std::vector< std::string >::iterator g = l[lvl].g.begin(); g != l[lvl].g.end();
                  ++g) {
               std::stringstream s;
-              s << l[lvl].r << "." << l[lvl - 1].a[std::rand() % l[lvl - 1].a.size()];
+              s << l[lvl].r << "." << l[lvl - 1].a[randomValue(l[lvl - 1].a.size())];
               std::vector< std::string > chain(1, s.str()), param(1, "1");
               f.addAggregator(*g, "exists", chain, param);
             }
@@ -164,7 +164,7 @@ namespace gum {
        DAG&                                                          dag,
        Bijection< std::string, NodeId >&                             names,
        std::vector< typename LayerGenerator< GUM_SCALAR >::MyData >& l) {
-      float                 density = _layers_[lvl].inner_density * RAND_MAX;
+      float                 density = _layers_[lvl].inner_density;
       std::vector< NodeId > nodes;
       NodeId                id = 0;
 
@@ -181,7 +181,7 @@ namespace gum {
         names.insert(attr, id);
 
         for (const auto node: nodes)
-          if (std::rand() < density) dag.addArc(node, names.second(attr));
+          if (randomProba() < density) dag.addArc(node, names.second(attr));
 
         nodes.push_back(id);
       }
@@ -197,7 +197,7 @@ namespace gum {
             v.push_back(par);
 
           while (dag.parents(node).size() > getMaxParents()) {
-            size_t idx = std::rand() % v.size();
+            size_t idx = randomValue(v.size());
             Arc    arc(v[idx], node);
             GUM_ASSERT(dag.existsArc(arc));
             dag.eraseArc(arc);
@@ -218,11 +218,11 @@ namespace gum {
       size_t                                    idx = 0;
 
       for (size_t lvl = 0; lvl < _layers_.size(); ++lvl) {
-        float density = _layers_[lvl].outter_density * RAND_MAX;
+        float density = _layers_[lvl].outter_density;
 
         for (size_t count = 0; count < _layers_[lvl].o; ++count) {
           name = this->name_gen_.nextName(PRMObject::prm_type::PRM_INTERFACE);
-          factory.addInstance(l[lvl].c[std::rand() % l[lvl].c.size()], name);
+          factory.addInstance(l[lvl].c[randomValue(l[lvl].c.size())], name);
           o[lvl].push_back(name);
 
           if (lvl) {
@@ -233,13 +233,13 @@ namespace gum {
             for (std::vector< std::string >::iterator iter = o[lvl - 1].begin();
                  iter != o[lvl - 1].end();
                  ++iter)
-              if (std::rand() <= density) ref2add.push_back(*iter);
+              if (randomProba() <= density) ref2add.push_back(*iter);
 
             if (ref2add.empty())
-              factory.setReferenceSlot(chain.str(), o[lvl - 1][std::rand() % o[lvl - 1].size()]);
+              factory.setReferenceSlot(chain.str(), o[lvl - 1][randomValue(o[lvl - 1].size())]);
 
             while (ref2add.size() > getMaxParents()) {
-              idx          = std::rand() % ref2add.size();
+              idx          = randomValue(ref2add.size());
               ref2add[idx] = ref2add.back();
               ref2add.pop_back();
             }

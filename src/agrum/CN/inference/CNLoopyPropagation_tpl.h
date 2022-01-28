@@ -771,7 +771,7 @@ namespace gum {
 
       do {
         for (Size j = 0, theEnd = nbrArcs / 2; j < theEnd; j++) {
-          auto w1 = rand() % nbrArcs, w2 = rand() % nbrArcs;
+          auto w1 = randomValue(nbrArcs), w2 = randomValue(nbrArcs);
 
           if (w1 == w2) { continue; }
 

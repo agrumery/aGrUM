@@ -309,7 +309,7 @@ namespace gum {
           Size pconfs = Size((*cpt)[elt.first].size());
 
           for (Size pconf = 0; pconf < pconfs; pconf++) {
-            Size choosen_vertex = rand() % (*cpt)[elt.first][pconf].size();
+            Size choosen_vertex = randomValue((*cpt)[elt.first][pconf].size());
 
             if (_infEs_::storeBNOpt_) { _binaryRep_(sample[elt.first][pconf], choosen_vertex); }
 
@@ -338,7 +338,7 @@ namespace gum {
           std::vector< GUM_SCALAR > var_cpt(potential->domainSize());
 
           for (Size pconf = 0; pconf < (*cpt)[elt.first].size(); pconf++) {
-            Idx choosen_vertex = Idx(rand() % (*cpt)[elt.first][pconf].size());
+            Idx choosen_vertex = randomValue((*cpt)[elt.first][pconf].size());
 
             if (_infEs_::storeBNOpt_) { _binaryRep_(sample[elt.first][pconf], choosen_vertex); }
 
@@ -372,7 +372,7 @@ namespace gum {
 
           for (decltype(pConfs) pconf = 0; pconf < pConfs; pconf++) {
             Size nVertices      = Size((*cpt)[node][pconf].size());
-            Idx  choosen_vertex = Idx(rand() % nVertices);
+            Idx  choosen_vertex = randomValue(nVertices);
 
             if (_infEs_::storeBNOpt_) { _binaryRep_(sample[node][pconf], choosen_vertex); }
 

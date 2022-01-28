@@ -26,6 +26,7 @@
  * GONZALES(_at_AMU)
  *
  */
+#include <agrum/tools/core/utils_random.h>
 #include <agrum/ID/generator/influenceDiagramGenerator.h>
 
 namespace gum {
@@ -107,12 +108,12 @@ namespace gum {
 
     for (Idx i = 0; i < nbrNodes; ++i) {
       strBuff << i;
-      nb_mod = (max_modality == 2) ? 2 : 2 + rand() % (max_modality - 1);
+      nb_mod = (max_modality == 2) ? 2 : 2 + randomValue(max_modality - 1);
 
-      GUM_SCALAR cnd = chanceNodeDensity * (GUM_SCALAR)RAND_MAX;
-      GUM_SCALAR und = utilityNodeDensity * (GUM_SCALAR)RAND_MAX;
+      GUM_SCALAR cnd = chanceNodeDensity;
+      GUM_SCALAR und = utilityNodeDensity;
 
-      GUM_SCALAR d = (GUM_SCALAR)rand();
+      GUM_SCALAR d = (GUM_SCALAR)randomProba();
 
       if (d < cnd)
         map.insert(i,
@@ -127,12 +128,12 @@ namespace gum {
     }
 
     // We add arcs
-    GUM_SCALAR p = arcDensity * (GUM_SCALAR)RAND_MAX;
+    GUM_SCALAR p = arcDensity;
 
     for (Size i = 0; i < nbrNodes; ++i)
       if (!influenceDiagram->isUtilityNode(map[i]))
         for (Size j = i + 1; j < nbrNodes; ++j)
-          if (((GUM_SCALAR)rand()) < p) { influenceDiagram->addArc(map[i], map[j]); }
+          if (((GUM_SCALAR)randomProba()) < p) { influenceDiagram->addArc(map[i], map[j]); }
 
     // And fill the CPTs and UTs
     for (Size i = 0; i < nbrNodes; ++i)

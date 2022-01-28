@@ -32,6 +32,7 @@
 #include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/core/multiPriorityQueue.h>
 #include <agrum/tools/core/types.h>
+#include <agrum/tools/core/utils_random.h>
 // =======================================================
 #include <agrum/FMDP/learning/core/chiSquare.h>
 #include <agrum/FMDP/learning/datastructure/incrementalGraphLearner.h>
@@ -182,7 +183,7 @@ namespace gum {
     }
 
     // In any other case we have to install variable as best test
-    Idx randy = (Idx)(std::rand() / RAND_MAX) * varsOfInterest.size(), basc = 0;
+    Idx randy = randomValue(varsOfInterest.size()), basc = 0;
     SetConstIteratorSafe< const DiscreteVariable* > varIter;
     for (varIter = varsOfInterest.cbeginSafe(), basc = 0;
          varIter != varsOfInterest.cendSafe() && basc < randy;

@@ -75,7 +75,7 @@ namespace gum {
       retState.add(**varIter);
       retState.chgVal(
          *varIter,
-         (Idx)(((double)std::rand() / (double)RAND_MAX) * (double)(*varIter)->domainSize()));
+         randomValue((*varIter)->domainSize()));
     }
     return retState;
   }
