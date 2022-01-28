@@ -234,7 +234,7 @@ def get_tags():
   if arch == "linux_x86_64":
     arch = 'manylinux2014_x86_64'
   elif arch == "linux_i686":
-    arch = 'manylinux2010_i686'
+    arch = 'manylinux2014_i686'
   elif arch == "linux_aarch64":
     arch = 'manylinux2014_aarch64'
   if 'macosx' in arch:
