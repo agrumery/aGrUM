@@ -28,20 +28,33 @@
 
 // to ease IDE parser
 #include <agrum/tools/core/utils_random.h>
+#include <random>
+
 namespace gum {
 
-  INLINE
-  Idx randomValue(const Size max) { return (Idx)(rand() % max); }
+  namespace {
+    static std::mt19937 Generator_;
+  }
 
   INLINE
-  double randomProba() { return ((double)rand()) / ((double)RAND_MAX); }
+  Idx randomValue(const Size max) {
+    std::uniform_int_distribution<Idx> uni_int(0, max - 1);
+    return uni_int(Generator_);
+  }
+
+  INLINE
+  double randomProba() {
+    std::uniform_real_distribution<> uni_real(0.0, 1.0);
+    return uni_real(Generator_);
+  }
+
 
   INLINE
   void initRandom(unsigned int seed) {
     if (seed) {
-      srand(seed);
+      Generator_ = std::mt19937(seed);
     } else {
-      srand(randomGeneratorSeed());
+      Generator_ = std::mt19937(randomGeneratorSeed());
     }
   }
 
