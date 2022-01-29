@@ -68,10 +68,6 @@ namespace gum {
     std::vector< std::string > labels;
     std::vector< GUM_SCALAR >  ticks;
 
-    //@todo : remove these 2 lines (only historical c++20 test)
-    int* p2 = new int[]{1, 2, 3};
-    delete[] p2;
-
     if (*(node.rbegin()) == ']') {
       auto posBrack = node.find('[');
       if (posBrack != std::string::npos) {
