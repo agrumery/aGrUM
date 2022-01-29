@@ -4,19 +4,21 @@
 
 * aGrUM
 
-  * aGrum is now compiled using c++20 (updating cmake)
-  * Fix 'distribute' phase in some cases for `gum::ShaferShenoyLIMIDInference` (Thanks to Michael Kontoulis)
-  * Remove a lot of allocator as template parameters
-  * Improve `act` architecture 
-  * Use of `argparse`  instead of the obsolete `optparse`
-  * Working on CI : removing some obsolete platform, adding some new
+  * aGrum is now compiled using c++20 (updating cmake).
+  * Fix 'distribute' phase in some cases for `gum::ShaferShenoyLIMIDInference` (Thanks to Michael Kontoulis).
+  * Remove a lot of allocators as template parameters.
+  * `act`: Improve architecture.
+  * `act`: Use of `argparse`  instead of the obsolete `optparse`.
+  * Working on CI : Working on CI : removing some obsolete platform (`MSVC 15`), adding some new (`MSVC 22`)
+  * use `std::mt19937` instead of `rand()` (thanks to Julien Schueller).
 
 * pyAgrum
 
-  * Drop support for python 3.7 (following [NEP29](https://numpy.org/neps/nep-0029-deprecation_policy.html))
-  * Use of `pydot` instead of `pydotplus`
+  * Drop support for python 3.7 (following [NEP29](https://numpy.org/neps/nep-0029-deprecation_policy.html)).
+  * Drop support for 32bits architectures (following [numpy](https://numpy.org/devdocs/release/1.22.0-notes.html)).
+  * Use of `pydot` instead of `pydotplus`.
   * Several typos in code and documentation of `gum.lib` (thanks to Benjamin Datko).
-  * Improve notebooks
+  * Improve notebooks (thanks to Clara Charon).
 
 ## Changelog for 0.22.5
 
