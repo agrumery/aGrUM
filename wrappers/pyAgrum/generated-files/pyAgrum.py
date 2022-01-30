@@ -861,7 +861,7 @@ class PRMexplorer(object):
         Raises
         ------
         pyAgrum.OperationNotAllowed
-        	If the class element doesn't have any pyAgrum.Potential (like a gum::PRMReferenceSlot). 
+        	If the class element doesn't have any pyAgrum.Potentia (like a gum::PRMReferenceSlot). 
         pyAgrum.IndexError
         	If the class is not in the PRM
         pyAgrum.IndexError
@@ -8600,7 +8600,7 @@ class BayesNet(IBayesNet):
 
         Remove a variable from the pyAgrum.BayesNet.
 
-        Removes the corresponding variable from the pyAgrum.BayesNet and from all of it's children pyAgrum.Potential.
+        Removes the corresponding variable from the pyAgrum.BayesNet and from all of it's children pyAgrum.Potentia.
 
         If no variable matches the given id, then nothing is done.
 
@@ -10525,7 +10525,7 @@ class MarkovNet(IMarkovNet):
 
         Remove a variable from the pyAgrum.MarkovNet.
 
-        Removes the corresponding variable from the pyAgrum.MarkovNet and from all of it's children pyAgrum.Potential.
+        Removes the corresponding variable from the pyAgrum.MarkovNet and from all of it's children pyAgrum.Potentia.
 
         If no variable matches the given id, then nothing is done.
 
@@ -24421,7 +24421,7 @@ class BNDatabaseGenerator(object):
     def toCSV(self, *args) -> None:
         return _pyAgrum.BNDatabaseGenerator_toCSV(self, *args)
 
-    def toDatabaseTable(self, useLabels: bool=True) -> "gum::learning::DatabaseTable":
+    def toDatabaseTable(self, useLabels: bool=True) -> "pyAgrum.YetUnWrapped":
         return _pyAgrum.BNDatabaseGenerator_toDatabaseTable(self, useLabels)
 
     def database(self) -> "pyAgrum.YetUnWrapped":

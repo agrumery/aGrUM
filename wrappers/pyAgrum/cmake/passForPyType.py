@@ -151,9 +151,9 @@ def doTheJob(target, resultat, backup, debugmode):
 
     # keep correct comment with template
     ("< float >", "< double >"),
-    ("gum::BayesNet", '"pyAgrum.BayesNet"'),
-    ("gum::Potential", '"pyAgrum.Potential"'),
-    ("gum::MarkovNet", '"pyAgrum.MarkovNet"'),
+    ("gum::BayesNet", 'pyAgrum.BayesNet'),
+    ("gum::Potential", 'pyAgrum.Potentia'),
+    ("gum::MarkovNet", 'pyAgrum.MarkovNet'),
   ]
 
   rules = {f"R{i + 1}": cpl for i, cpl in enumerate(list_rules)}
