@@ -22,7 +22,6 @@ import math
 import numpy as np
 
 import matplotlib.pyplot as plt
-from matplotlib.ticker import MaxNLocator
 
 import pyAgrum as gum
 
@@ -113,14 +112,19 @@ def _getProbaLine(p, scale=1.0, txtcolor="black"):
   #else:
   lv = [var.label(int(i)) for i in np.arange(var.domainSize())]
   v = p.tolist()
-  ra = range(int(lv[0]),1+int(lv[-1]))
+  ra=range(var.domainSize())
+  if var.domainSize()>15:
+    step=int(var.domainSize()/15)
+  else:
+    step=1
 
   fig = plt.figure()
   fig.set_figwidth(min(scale * 6, scale * len(v) / 4.0))
   fig.set_figheight(scale * 2)
 
   ax = fig.add_subplot(111)
-  ax.get_xaxis().set_major_locator(MaxNLocator(integer=True))
+  ax.set_xticks(ra[::step])
+  ax.set_xticklabels(lv[::step],rotation='vertical')
   ax.fill_between(ra, v, color=gum.config['notebook', 'histogram_color'])
 
   ax.set_ylim(bottom=0, top=1.05 * p.max())
