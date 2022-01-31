@@ -1,11 +1,11 @@
-%feature("dosctring") gum::MarkovBlanket
+%feature("docstring") gum::MarkovBlanket
 "
 Class building the Markov blanket of a node in a graph.
 
 MarkovBlanket(m,n) -> MarkovBlanket
     Parameters:
         * **m** (*pyAgrum.DAGmodel*) -- a DAGmodel
-        * **n** (*int*) -- a node id
+        * **n** (int) -- a node id
 
 MarkovBlanket(m,name) -> MarkovBlanket
     Parameters:
@@ -13,7 +13,7 @@ MarkovBlanket(m,name) -> MarkovBlanket
         * **name** (*str*) -- a node name
 "
 
-%feature("docstring") gum::MarkovBlanket::dag 
+%feature("docstring") gum::MarkovBlanket::dag
 "
 Returns
 -------
@@ -26,7 +26,7 @@ pyAgrum.DAG
 Returns
 -------
 str
-    a friendly display of the graph in DOT format 
+    a friendly display of the graph in DOT format
 "
 
 %feature("docstring") gum::MarkovBlanket::parents
@@ -105,5 +105,5 @@ pyAgrum.DAGmodel
 Returns
 -------
 bool
-    True if all the named node are the same and all the named arcs are the same 
+    True if all the named node are the same and all the named arcs are the same
 "

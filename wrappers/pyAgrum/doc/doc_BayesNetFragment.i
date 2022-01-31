@@ -24,7 +24,7 @@ boolean
 
 Raises
 ------
-pyAgrum.NotFound
+  pyAgrum.NotFound
   if the node is not found.
 "
 
@@ -39,7 +39,7 @@ n : int, str
 
 Raises
 ------
-pyAgrum.NotFound
+  pyAgrum.NotFound
   if the node is not found.
 "
 
@@ -80,7 +80,7 @@ pyAgrum.NotFound
 %feature("docstring") gum::BayesNetFragment::installNode
 "
 Add a node to the fragment. The arcs that can be added between installed nodes are created.
-No specific CPT are created. Then either the parents of the node are already in the fragment 
+No specific CPT are created. Then either the parents of the node are already in the fragment
 and the node is consistant, or the parents are not in the fragment and the node is not consistant.
 
 Parameters

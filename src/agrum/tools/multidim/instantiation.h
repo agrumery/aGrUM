@@ -359,7 +359,7 @@ namespace gum {
      *
      * @throw NotFound Raised if variable v does not belong to the
      * instantiation.
-     * @throw OutOfBound Raised if newval is not a possible value for v.
+     * @throw OutOfBounds Raised if newval is not a possible value for v.
      */
     Instantiation& chgVal(const DiscreteVariable& v, Idx newval);
 
@@ -380,7 +380,7 @@ namespace gum {
      *
      * @throw NotFound Raised if variable v does not belong to the
      * instantiation.
-     * @throw OutOfBound Raised if newval is not a possible value for v.
+     * @throw OutOfBounds Raised if newval is not a possible value for v.
      */
     Instantiation& chgVal(const DiscreteVariable* v, Idx newval);
 
@@ -401,7 +401,7 @@ namespace gum {
      * @return A reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if the variable does not belong to this
-     * @throw OutOfBound Raised if newval is not a possible value for the
+     * @throw OutOfBounds Raised if newval is not a possible value for the
      * variable
      */
     Instantiation& chgVal(Idx varPos, Idx newval);
@@ -445,7 +445,7 @@ namespace gum {
      * @return A reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if the variable does not belong to this
-     * @throw OutOfBound Raised if newval is not a possible value for the
+     * @throw OutOfBounds Raised if newval is not a possible value for the
      * variable
      */
     Instantiation& chgVal(const std::string& var, const std::string& newval);

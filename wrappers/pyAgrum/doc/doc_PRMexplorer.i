@@ -20,7 +20,7 @@ list
 
 Raises
 ------
-pyAgrum.IndexError
+  pyAgrum.IndexError
 	If the class is not in the PRM
 "
 
@@ -38,7 +38,7 @@ list
 
 Raises
 ------
-pyAgrum.IndexError
+  pyAgrum.IndexError
 	If the class is not in the PRM
 "
 
@@ -56,7 +56,7 @@ tuple
 
 Raises
 ------
-pyAgrum.IndexError
+  pyAgrum.IndexError
 	If the class is not in the PRM
 "
 
@@ -87,7 +87,7 @@ list
 
 Raises
 ------
-pyAgrum.IndexError
+  pyAgrum.IndexError
 	If the class is not in the PRM
 "
 
@@ -153,11 +153,11 @@ pyAgrum.Potential
 Raises
 ------
 pyAgrum.OperationNotAllowed
-	If the class element doesn't have any gum::Potential (like a gum::PRMReferenceSlot). 
+	If the class element doesn't have any gum::Potential (like a gum::PRMReferenceSlot).
 pyAgrum.IndexError
 	If the class is not in the PRM
 pyAgrum.IndexError
-	If the attribute in parameters does not exist 
+	If the attribute in parameters does not exist
 "
 
 %feature("docstring") PRMexplorer::getDirectSubClass
@@ -224,7 +224,7 @@ interface_name : str
 Returns
 -------
 str
-	the list of classes implementing the interface 
+	the list of classes implementing the interface
 
 Raises
 ------
@@ -242,7 +242,7 @@ type_name : str
 Returns
 -------
 dict
-	a dict containing pairs of label and their values 
+	a dict containing pairs of label and their values
 
 Raises
 ------
@@ -374,7 +374,7 @@ pyAgrum.IndexError
 Returns
 -------
 list
-	the list of interfaces in the PRM 
+	the list of interfaces in the PRM
 "
 
 %feature("docstring") PRMexplorer::isAttribute
@@ -460,7 +460,7 @@ pyAgrum.FatalError
 Returns
 -------
 list
-	the list of the custom types in the PRM 
+	the list of the custom types in the PRM
 "
 
 %feature("docstring") PRMexplorer::aggType

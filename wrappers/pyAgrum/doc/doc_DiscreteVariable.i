@@ -7,7 +7,7 @@ DiscreteVariable is the (abstract) base class for discrete random variables.
 "
 Returns
 -------
-pyAgrum.DiscreteVariable
+  pyAgrum.DiscreteVariable
 	a copy of the DiscreteVariable
 "
 
@@ -62,7 +62,7 @@ str
 
 Raises
 ------
-pyAgrum.OutOfBound
+pyAgrum.OutOfBounds
 	If the variable does not contain the label
 "
 

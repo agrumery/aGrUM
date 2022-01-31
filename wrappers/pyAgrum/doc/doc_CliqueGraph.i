@@ -12,7 +12,7 @@ CliqueGraph(src) -> CliqueGraph
 
 %feature("docstring") gum::CliqueGraph::addToClique
 "
-Change the set of nodes included into a given clique and returns the new set 
+Change the set of nodes included into a given clique and returns the new set
 
 Parameters
 ----------
@@ -23,15 +23,15 @@ node_id : int
 
 Raises
 ------
-pyAgrum.NotFound
+  pyAgrum.NotFound
   If clique_id does not exist
-pyAgrum.DuplicateElement
+  pyAgrum.DuplicateElement
   If clique_id set already contains the ndoe
 "
 
 %feature("docstring") gum::CliqueGraph::clearEdges
 "
-Remove all edges and their separators 
+Remove all edges and their separators
 "
 
 %feature("docstring") gum::CliqueGraph::clique
@@ -56,9 +56,9 @@ pyAgrum.NotFound
 "
         Parameters
         ----------
-        clique1 : int 
+        clique1 : int
           one extremity of the edge
-        clique : int 
+        clique : int
           the other extremity of the edge
 
         Returns
@@ -87,7 +87,7 @@ int
 Raises
 ------
 pyAgrum.NotFound
-  If no clique contains idNode  
+  If no clique contains idNode
 "
 
 %feature("docstring") gum::CliqueGraph::containerPath
@@ -132,7 +132,7 @@ pyAgrum.NotFound
 Returns
 -------
 bool
-  True if the running intersection property holds 
+  True if the running intersection property holds
 "
 
 %feature("docstring") gum::CliqueGraph::isJoinTree
@@ -140,7 +140,7 @@ bool
 Returns
 -------
 bool
-  True if the graph is a join tree 
+  True if the graph is a join tree
 "
 
 %feature("docstring") gum::CliqueGraph::separator
@@ -149,9 +149,9 @@ Parameters
 ----------
 edge : pyAgrum.Edge
   the edge to be checked
-clique1 : int 
+clique1 : int
   one extremity of the edge
-clique : int 
+clique : int
   the other extremity of the edge
 
 Returns

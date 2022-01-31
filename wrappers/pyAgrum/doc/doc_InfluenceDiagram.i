@@ -25,17 +25,17 @@ id : int
 
 Warnings
 --------
-give an id (not 0) should be reserved for rare and specific situations !!! 
+give an id (not 0) should be reserved for rare and specific situations !!!
 
 Returns
 -------
 int
-    the id of the added variable. 
+    the id of the added variable.
 
 Raises
 ------
-pyAgrum.DuplicateElement
-	If id(<>0) is already used 
+  pyAgrum.DuplicateElement
+	If id(<>0) is already used
 "
 
 %feature("docstring") gum::InfluenceDiagram::addArc
@@ -51,10 +51,10 @@ head : int
 
 Raises
 ------
-pyAgrum.InvalidEdge
+  pyAgrum.InvalidEdge
 	If arc.tail and/or arc.head are not in the ID.
-pyAgrum.InvalidEdge
-	If tail is a utility node 
+  pyAgrum.InvalidEdge
+	If tail is a utility node
 "
 
 %feature("docstring") gum::InfluenceDiagram::addChanceNode
@@ -72,17 +72,17 @@ id : int
 
 Warnings
 --------
-give an id (not 0) should be reserved for rare and specific situations !!! 
+give an id (not 0) should be reserved for rare and specific situations !!!
 
 Returns
 -------
 int
-    the id of the added variable. 
+    the id of the added variable.
 
 Raises
 ------
 pyAgrum.DuplicateElement
-	If id(<>0) is already used 
+	If id(<>0) is already used
 "
 
 %feature("docstring") gum::InfluenceDiagram::addDecisionNode
@@ -100,22 +100,22 @@ id : int
 
 Warnings
 --------
-give an id (not 0) should be reserved for rare and specific situations !!! 
+give an id (not 0) should be reserved for rare and specific situations !!!
 
 Returns
 -------
 int
-    the id of the added variable. 
+    the id of the added variable.
 
 Raises
 ------
 pyAgrum.DuplicateElement
-	If id(<>0) is already used 
+	If id(<>0) is already used
 "
 
 %feature("docstring") gum::InfluenceDiagram::addUtilityNode
 "
-Add a utility variable, it's associate node and it's UT. 
+Add a utility variable, it's associate node and it's UT.
 
 The id of the new variable is automatically generated.
 
@@ -128,19 +128,19 @@ id : int
 
 Warnings
 --------
-give an id (not 0) should be reserved for rare and specific situations !!! 
+give an id (not 0) should be reserved for rare and specific situations !!!
 
 Returns
 -------
 int
-    the id of the added variable. 
+    the id of the added variable.
 
 Raises
 ------
 pyAgrum.InvalidArgument
 	If variable has more than one label
 pyAgrum.DuplicateElement
-	If id(<>0) is already used 
+	If id(<>0) is already used
 "
 
 %feature("docstring") gum::InfluenceDiagram::arcs
@@ -156,7 +156,7 @@ list:
 Returns
 -------
 int
-	the number of chance nodes. 
+	the number of chance nodes.
 "
 
 %feature("docstring") gum::InfluenceDiagram::changeVariableName
@@ -166,14 +166,14 @@ Parameters
 id : int
 	the node Id
 new_name : str
-	the name of the variable 
+	the name of the variable
 
 Raises
 ------
 pyAgrum.DuplicateLabel
 	If this name already exists
 pyAgrum.NotFound
-	If no nodes matches id. 
+	If no nodes matches id.
 "
 
 %feature("docstring") gum::InfluenceDiagram::children
@@ -201,12 +201,12 @@ VarId : int
 Returns
 -------
 pyAgrum.Potential
-	The variable's CPT. 
+	The variable's CPT.
 
 Raises
 ------
 pyAgrum.NotFound
-	If no variable's id matches varId. 
+	If no variable's id matches varId.
 "
 
 %feature("docstring") gum::InfluenceDiagram::decisionNodeSize
@@ -236,7 +236,7 @@ Parameters
 id : int
 	The id of the variable to erase.
 var : pyAgrum.DiscreteVariable
-	The reference on the variable to remove. 
+	The reference on the variable to remove.
 "
 
 %feature("docstring") gum::InfluenceDiagram::eraseArc
@@ -260,7 +260,7 @@ head : int
 Returns
 -------
 bool
-	true if a path exists between two nodes. 
+	true if a path exists between two nodes.
 "
 
 %feature("docstring") gum::InfluenceDiagram::getDecisionGraph
@@ -268,7 +268,7 @@ bool
 Returns
 -------
 pyAgrum.DAG
-	the temporal Graph. 
+	the temporal Graph.
 "
 
 %feature("docstring") gum::InfluenceDiagram::getDecisionOrder
@@ -281,7 +281,7 @@ list
 Raises
 ------
 NotFound
-	If such a path does not exist 
+	If such a path does not exist
 "
 
 %feature("docstring") gum::InfluenceDiagram::idFromName
@@ -296,12 +296,12 @@ name : str
 Returns
 -------
 int
-	the variable's node id. 
+	the variable's node id.
 
 Raises
 ------
 pyAgrum.NotFound
-	If no such name exists in the graph. 
+	If no such name exists in the graph.
 "
 
 %feature("docstring") gum::InfluenceDiagram::ids
@@ -322,7 +322,7 @@ set
 "
 Parameters
 ----------
-varId : int 
+varId : int
 	the tested node id.
 
 Returns
@@ -335,7 +335,7 @@ bool
 "
 Parameters
 ----------
-varId : int 
+varId : int
 	the tested node id.
 
 Returns
@@ -348,7 +348,7 @@ bool
 "
 Parameters
 ----------
-varId : int 
+varId : int
 	the tested node id.
 
 Returns
@@ -436,7 +436,7 @@ str
 "
 Parameters
 ----------
-varId : int 
+varId : int
 	the tested node id.
 
 Returns
@@ -473,7 +473,7 @@ pyAgrum.DiscreteVariable
 Raises
 ------
 pyAgrum.NotFound
-	If no variable's id matches the parameter 
+	If no variable's id matches the parameter
 "
 
 %feature("docstring") gum::InfluenceDiagram::variableFromName
@@ -518,12 +518,12 @@ Create an Influence Diagram with a dot-like syntax which specifies:
       - with `'a{top|middle|bottom}'`, the variable is a pyAgrum.LabelizedVariable using the given labels.
       - with 'a{-1|5|0|3}', the variable is a pyAgrum.IntegerVariable using the sorted given values.
 
-Note 
+Note
 ----
   - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
   - the potentials (probabilities, utilities) are randomly generated.
   - see also pyAgrum.fastID.
-    
+
 Examples
 --------
 >>> import pyAgrum as gum

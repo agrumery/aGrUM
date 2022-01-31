@@ -152,7 +152,7 @@ def doTheJob(target, resultat, backup, debugmode):
     # keep correct comment with template
     ("< float >", "< double >"),
     ("gum::BayesNet", 'pyAgrum.BayesNet'),
-    ("gum::Potential", 'pyAgrum.Potentia'),
+    ("gum::Potential", 'pyAgrum.Potential'),
     ("gum::MarkovNet", 'pyAgrum.MarkovNet'),
   ]
 
@@ -191,6 +191,8 @@ def doTheJob(target, resultat, backup, debugmode):
           elif line.strip() == '# Import the low-level C/C++ module':  # we add annotation module
             print("## added by passForType (pyAgrum)", file=dst)
             print("from typing import List,Set,Dict,Tuple", file=dst)
+            print("# recursive import for typehints annotation", file=dst)
+            print("import pyAgrum", file=dst)
             print("## end of added by passForType (pyAgrum)\n", file=dst)
             typing_added = True
         print(line, file=dst)

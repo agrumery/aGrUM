@@ -189,7 +189,7 @@ namespace gum {
      * @brief Returns the element stored in the multidimArray at a given
      * offset.
      *
-     * @throws OutOfBound Raised if the referenced element does not belong to
+     * @throws OutOfBounds Raised if the referenced element does not belong to
      * the MultiDimArray.
      */
     const GUM_SCALAR& getByOffset(Idx offset) const;
@@ -229,7 +229,7 @@ namespace gum {
      * @param offset The offset where to store the value.
      * @param val The value to store.
      *
-     * @throws OutOfBound Raised if the referenced element does not belong to
+     * @throws OutOfBounds Raised if the referenced element does not belong to
      * the MultiDimArray.
      */
     void setByOffset(Idx offset, const GUM_SCALAR& val);

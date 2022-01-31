@@ -1,4 +1,4 @@
-%feature("dosctring") gum::EssentialGraph
+%feature("docstring") gum::EssentialGraph
 "
 Class building the essential graph from a BN.
 
@@ -44,12 +44,12 @@ name : str
 Returns
 -------
 pyAgrum.Potential
-	The variable's CPT. 
+	The variable's CPT.
 
 Raises
 ------
 pyAgrum.NotFound
-	If no variable's id matches varId. 
+	If no variable's id matches varId.
 "
 
 %feature("docstring") gum::EssentialGraph::parents
@@ -70,7 +70,7 @@ Set
 Returns
 -------
 str
-    a friendly display of the graph in DOT format 
+    a friendly display of the graph in DOT format
 "
 
 %feature("docstring") gum::EssentialGraph::sizeEdges
@@ -99,7 +99,7 @@ id : int
 Returns
 -------
 Set
-    The set of edges adjacent to the given node 
+    The set of edges adjacent to the given node
 "
 
 %feature("docstring") gum::EssentialGraph::sizeArcs

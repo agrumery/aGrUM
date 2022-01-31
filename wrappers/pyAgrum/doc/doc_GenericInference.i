@@ -8,8 +8,8 @@ pyAgrum.IBayesNet
 
 Raises
 ------
-pyAgrum.UndefinedElement
-  If no Bayes net has been assigned to the inference.
+  pyAgrum.UndefinedElement
+    If no Bayes net has been assigned to the inference.
 "
 
 %feature("docstring") gum::classname::H
@@ -80,16 +80,16 @@ vals : list
 
 Raises
 ------
-pyAgrum.InvalidArgument
-  If the node already has an evidence
-pyAgrum.InvalidArgument
-  If val is not a value for the node
-pyAgrum.InvalidArgument
-  If the size of vals is different from the domain side of the node
-pyAgrum.FatalError
-  If vals is a vector of 0s
-pyAgrum.UndefinedElement
-  If the node does not belong to the Bayesian network
+  pyAgrum.InvalidArgument
+    If the node already has an evidence
+  pyAgrum.InvalidArgument
+    If val is not a value for the node
+  pyAgrum.InvalidArgument
+    If the size of vals is different from the domain side of the node
+  pyAgrum.FatalError
+    If vals is a vector of 0s
+  pyAgrum.UndefinedElement
+    If the node does not belong to the Bayesian network
 "
 
 %feature("docstring") gum::classname::addJointTarget

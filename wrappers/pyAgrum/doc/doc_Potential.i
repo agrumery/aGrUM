@@ -26,10 +26,10 @@ float
 
 Raises
 ------
-pyAgrum.InvalidArgument
-  If p is not compatible with the potential (dimension, variables)
-pyAgrum.FatalError
-  If a zero is found in p or the potential and not in the other. 
+  pyAgrum.InvalidArgument
+    If p is not compatible with the potential (dimension, variables)
+  pyAgrum.FatalError
+    If a zero is found in p or the potential and not in the other.
 "
 
 %feature("docstring") gum::Potential::abs
@@ -82,7 +82,7 @@ bool
 Returns
 -------
 bool
-    Returns true if no variable is in the potential. 
+    Returns true if no variable is in the potential.
 "
 
 %feature("docstring") gum::Potential::entropy
@@ -131,7 +131,7 @@ pyAgrum.Potential
 Raises
 ------
 pyAgrum.SizeError
-  If v size's does not matches the domain size. 
+  If v size's does not matches the domain size.
 "
 
 %feature("docstring") gum::Potential::fillWith
@@ -156,7 +156,7 @@ pyAgrum.Potential
 Raises
 ------
 pyAgrum.SizeError
-  If v size's does not matches the domain size. 
+  If v size's does not matches the domain size.
 "
 
 %feature("docstring") gum::Potential::populate
@@ -374,7 +374,7 @@ pyAgrum.NotFound
 Returns
 -------
 int
-  the number of vars in the multidimensional container. 
+  the number of vars in the multidimensional container.
 "
 
 %feature("docstring") gum::Potential::newFactory
@@ -421,12 +421,12 @@ v : pyAgrum.DiscreteVariable
 
 Returns
 -------
-    Returns the index of a variable. 
+    Returns the index of a variable.
 
 Raises
 ------
 pyAgrum.NotFound
-  If v is not in this multidimensional matrix. 
+  If v is not in this multidimensional matrix.
 "
 
 %feature("docstring") gum::Potential::product
@@ -452,7 +452,7 @@ pyAgrum.Potential
 Raises
 ------
 pyAgrum.InvalidArgument
-  If the var is not in the potential 
+  If the var is not in the potential
 "
 
 %feature("docstring") gum::Potential::remove
@@ -469,7 +469,7 @@ pyAgrum.Potential
 
 Warnings
 --------
-IndexError raised if the var is not in the potential 
+IndexError raised if the var is not in the potential
 "
 
 %feature("docstring") gum::Potential::reorganize
@@ -553,17 +553,17 @@ Returns
 "
 Parameters
 ----------
-i : int 
+i : int
   An index of this multidimensional matrix.
 
 Returns
 -------
-  the varible at the ith index 
+  the varible at the ith index
 
 Raises
 ------
 pyAgrum.NotFound
-  If i does not reference a variable in this multidimensional matrix. 
+  If i does not reference a variable in this multidimensional matrix.
 "
 
 

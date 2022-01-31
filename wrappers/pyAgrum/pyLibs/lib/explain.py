@@ -276,15 +276,6 @@ class ShapValues:
 
   The main implementation is based on Conditional Shap values [3]_, but the Interventional calculation method proposed in [2]_ is also present. In addition, a new causal method, based on [1]_, is implemented which is well suited for Bayesian networks.
 
-  Parameters
-  ----------
-  bn : gum.BayesNet
-    The Bayesian network
-
-  target : str
-    the name of the target node
-
-
 .. [1] Heskes, T., Sijben, E., Bucur, I., & Claassen, T. (2020). Causal Shapley Values: Exploiting Causal Knowledge. 34th Conference on Neural Information Processing Systems. Vancouver, Canada.
 
 .. [2] Janzing, D., Minorics, L., & Blöbaum, P. (2019). Feature relevance quantification in explainable AI: A causality problem. arXiv: Machine Learning. Retrieved 6 24, 2021, from https://arxiv.org/abs/1910.13413
@@ -305,6 +296,19 @@ class ShapValues:
     return math.factorial(n)
 
   def __init__(self, bn, target):
+    """
+The ShapValue class implements the calculation of Shap values in Bayesian networks.
+
+The main implementation is based on Conditional Shap values [3]_, but the Interventional calculation method proposed in [2]_ is also present. In addition, a new causal method, based on [1]_, is implemented which is well suited for Bayesian networks.
+
+Parameters
+----------
+bn : gum.BayesNet
+  The Bayesian network
+
+target : str
+  the name of the target node
+    """
     self.bn = bn
     self.target = target
     self.feats_names = self._get_feats_name(bn, target)

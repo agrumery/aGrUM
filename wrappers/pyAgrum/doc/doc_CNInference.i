@@ -11,7 +11,7 @@ varName : str
 Returns
 -------
 double
-    a constant reference to the variable upper expectation over all time steps. 
+    a constant reference to the variable upper expectation over all time steps.
 "
 
 %feature("docstring") gum::credal::classname::dynamicExpMin
@@ -26,7 +26,7 @@ varName : str
 Returns
 -------
 double
-    a constant reference to the variable lower expectation over all time steps. 
+    a constant reference to the variable lower expectation over all time steps.
 "
 
 %feature("docstring") gum::credal::classname::eraseAllEvidence
@@ -43,7 +43,7 @@ Insert evidence from file.
 Parameters
 ----------
 path : str
-	the path to the evidence file. 
+	the path to the evidence file.
 "
 
 %feature("docstring") gum::credal::classname::insertModalsFile
@@ -53,7 +53,7 @@ Insert variables modalities from file to compute expectations.
 Parameters
 ----------
 path : str
-	The path to the modalities file. 
+	The path to the modalities file.
 "
 
 %feature("docstring") gum::credal::classname::makeInference
@@ -70,7 +70,7 @@ Parameters
 id : int
 	the node id which upper marginals we want.
 varName : str
-	the variable name which upper marginals we want. 
+	the variable name which upper marginals we want.
 
 Returns
 -------
@@ -79,7 +79,7 @@ list
 
 Raises
 ------
-pyAgrum.IndexError
+  pyAgrum.IndexError
 	If the node does not belong to the Credal network
 "
 
@@ -92,7 +92,7 @@ Parameters
 id : int
 	the node id which lower marginals we want.
 varName : str
-	the variable name which lower marginals we want. 
+	the variable name which lower marginals we want.
 
 Returns
 -------
@@ -101,7 +101,7 @@ list
 
 Raises
 ------
-pyAgrum.IndexError
+  pyAgrum.IndexError
 	If the node does not belong to the Credal network
 "
 
@@ -112,7 +112,7 @@ Saves marginals.
 Parameters
 ----------
 path : str
-	The path to the file to save marginals. 
+	The path to the file to save marginals.
 "
 
 %feature("docstring") gum::credal::classname::setRepetitiveInd
@@ -120,7 +120,7 @@ path : str
 Parameters
 ----------
 flag : bool
-	True if repetitive independence is to be used, false otherwise. Only usefull with dynamic networks. 
+	True if repetitive independence is to be used, false otherwise. Only usefull with dynamic networks.
 "
 
 %feature("docstring") gum::credal::classname::inferenceType
