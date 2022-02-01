@@ -197,17 +197,23 @@ namespace gum {
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
      JointTargetedMNInference< GUM_SCALAR >::jointPosterior(const NodeSet& nodes) {
+    NodeSet real_nodes;
+    for(const auto& node: nodes) {
+      if (! this->hasHardEvidence(node)) {
+        real_nodes.insert(node);
+      }
+    }
     // try to get the smallest set of targets that contains "nodes"
     bool    found_exact_target = false;
     NodeSet super_target;
 
-    if (isExactJointComputable_(nodes)) {
+    if (isExactJointComputable_(real_nodes)) {
       found_exact_target = true;
     } else {
-      super_target = superForJointComputable_(nodes);
+      super_target = superForJointComputable_(real_nodes);
       if (super_target.empty()) {
         GUM_ERROR(UndefinedElement,
-                  "No joint target containing " << nodes << " could be found among "
+                  "No joint target containing " << real_nodes << " could be found among "
                                                 << _joint_targets_);
       }
     }
@@ -215,9 +221,9 @@ namespace gum {
     if (!this->isInferenceDone()) { this->makeInference(); }
 
     if (found_exact_target)
-      return jointPosterior_(nodes);
+      return jointPosterior_(real_nodes);
     else
-      return jointPosterior_(nodes, super_target);
+      return jointPosterior_(real_nodes, super_target);
   }
 
 

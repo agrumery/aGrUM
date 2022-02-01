@@ -413,7 +413,7 @@ list :
 
 Warnings
 --------
-The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used bu the Potential.
+The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used by the Potential.
 
 Returns
 -------

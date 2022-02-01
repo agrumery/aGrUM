@@ -82,7 +82,9 @@ namespace gum {
      * nodes.
      * @param nodes the set of nodes whose posterior joint probability is wanted
      *
-     * @warning for efficiency reasons, the potential is stored into the
+     * @warning the node with hard evidence are removed from nodes.
+     *
+     * @warning For efficiency reasons, the potential is stored into the
      * inference engine and is returned by reference. In order to ensure
      * that the potential may still exist even if the Inference object is
      * destroyed, the user has to copy it explicitly.
