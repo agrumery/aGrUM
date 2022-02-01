@@ -1,5 +1,23 @@
 # aGrUM Changelog
 
+## Changelog for 0.22.7
+
+Mostly several quick fixes.
+
+* aGrUM
+
+  * Small bugfix on Markov Network with only one factor.
+  * Better behavior for ordering nodes when `gum::MarkovNetwork::addFactor`.
+  * Better behavior for `gum::ShaferShenoyMNInference::jointPosterior` when a node of the joint is hard-observed.
+
+* pyAgrum
+
+  * Update and fix documentation (mostly for readthedocs and typehints).
+  * Fix and improve ticks when plotting distribution with large domainSize.
+  * Better behavior for ordering nodes when `pyAgrum.MarkovNetwork.addFactor`.
+  * Better behavior for `pyAgrum.ShaferShenoyMNInference.jointPosterior` when a node of the joint is hard-observed.
+
+
 ## Changelog for 0.22.6
 
 * aGrUM

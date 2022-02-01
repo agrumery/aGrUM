@@ -11108,13 +11108,9 @@ class ShaferShenoyMNInference(object):
 
         Parameters
         ----------
-        list :
+        targets :
           the list of nodes whose posterior joint probability is wanted
 
-
-        Warnings
-        --------
-        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used bu the Potential.
 
         Returns
         -------
@@ -11125,6 +11121,12 @@ class ShaferShenoyMNInference(object):
         ------
         pyAgrum.UndefinedElement
           If an element of nodes is not in targets
+
+
+        Warnings
+        --------
+        - The order of the variables given by the targets here or when the jointTarget is declared can not be assumed to be used by the Potential.
+        - The nodes with hard evidence are removed fom the targets.
 
         """
         return _pyAgrum.ShaferShenoyMNInference_jointPosterior(self, targets)
@@ -11913,7 +11915,7 @@ class LazyPropagation(object):
 
         Warnings
         --------
-        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used bu the Potential.
+        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used by the Potential.
 
         Returns
         -------
@@ -12700,7 +12702,7 @@ class ShaferShenoyInference(object):
 
         Warnings
         --------
-        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used bu the Potential.
+        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used by the Potential.
 
         Returns
         -------
@@ -13517,7 +13519,7 @@ class VariableElimination(object):
 
         Warnings
         --------
-        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used bu the Potential.
+        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used by the Potential.
 
         Returns
         -------
