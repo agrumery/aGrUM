@@ -124,7 +124,35 @@ namespace gum_tests {
       TS_ASSERT_DIFFERS(mn1, mn2)
     }
 
-    void testInsertion() {
+    void testOrderInsertion() {
+      gum::MarkovNet< double > mn;
+      mn.add("V0", 2);
+      mn.add("V1", 2);
+      mn.add("V2", 2);
+      mn.add("V3", 2);
+
+      // V0 should be the first
+      mn.addFactor({"V0", "V1"});
+      TS_ASSERT_EQUALS(mn.factor({"V0", "V1"}).variable(0).name(), "V0")
+      TS_ASSERT_EQUALS(mn.factor({"V1", "V0"}).variable(0).name(), "V0")
+
+      // V2 should be the first
+      mn.addFactor({"V2", "V1"});
+      TS_ASSERT_EQUALS(mn.factor({"V2", "V1"}).variable(0).name(), "V2")
+      TS_ASSERT_EQUALS(mn.factor({"V1", "V2"}).variable(0).name(), "V2")
+
+      // 2 should be the first
+      gum::NodeSet s1{2, 3};
+      mn.addFactor(s1);
+      TS_ASSERT_EQUALS(mn.factor(s1).variable(0).name(), mn.variable(2).name())
+
+      // 1 should be the first
+      gum::NodeSet s2{3, 1};
+      mn.addFactor(s2);
+      TS_ASSERT_EQUALS(mn.factor(s2).variable(0).name(), mn.variable(1).name())
+    }
+
+    void testInsertionFromPotential() {
       gum::MarkovNet< double > mn;
       _fill(mn);
       TS_ASSERT_THROWS(mn.addFactor(gum::Potential< double >()),
@@ -151,8 +179,8 @@ namespace gum_tests {
         pot.randomDistribution();
         TS_GUM_ASSERT_THROWS_NOTHING(mn1.addFactor(pot));
 
-        // should be different because of the sorting by order of the vars in pot.
-        TS_ASSERT_DIFFERS(pot.toString(), mn1.factor({"11", "21"}).toString())
+        // should be equal because no sorting by order of the vars in pot.
+        TS_ASSERT_EQUALS(pot.toString(), mn1.factor({"11", "21"}).toString())
 
         // but the data should be the same
         gum::Instantiation I(pot);
@@ -315,6 +343,11 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(mn.variable("a").varType(), gum::VarType::Integer)
       TS_ASSERT_EQUALS(mn.variable("b").varType(), gum::VarType::Integer)
       TS_ASSERT_EQUALS(mn.variable("c").varType(), gum::VarType::Labelized)
+    }
+
+    void testMonoClique() {
+      auto mn2 = gum::MarkovNet< float >::fastPrototype("A--B");
+      TS_GUM_ASSERT_THROWS_NOTHING(mn2.factor({"A", "B"}));
     }
   };
 

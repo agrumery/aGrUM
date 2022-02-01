@@ -115,8 +115,8 @@ class MarkovNetTestCase(pyAgrumTestCase):
     pot.randomDistribution()
     mn1.addFactor(pot)
 
-    # should be different because of the sorting by order of the vars in pot.
-    self.assertNotEqual(pot.__str__(), mn1.factor({"11", "21"}).__str__())
+    # should be equal : does not depend of the order of vars in the MarkonNet
+    self.assertEqual(pot.__str__(), mn1.factor({"11", "21"}).__str__())
 
     # but the data should be the same
     I = gum.Instantiation(pot)
@@ -254,6 +254,49 @@ class MarkovNetTestCase(pyAgrumTestCase):
     self.assertFalse(mn.isIndependent("G", "A", {"C","F"}))
     self.assertTrue(mn.isIndependent("G", "A", {"D","E"}))
 
+
+
+  def testOrderInsertion(self):
+    mn=gum.fastMN("V0;V1;V2;V3")
+
+    # V0 should be the first
+    mn.addFactor(["V0", "V1"])
+    self.assertEquals(mn.factor({"V0", "V1"}).variable(0).name(), "V0")
+    self.assertEquals(mn.factor({"V1", "V0"}).variable(0).name(), "V0")
+
+    # V2 should be the first
+    mn.addFactor(["V2", "V1"])
+    self.assertEquals(mn.factor({"V2", "V1"}).variable(0).name(), "V2")
+    self.assertEquals(mn.factor({"V1", "V2"}).variable(0).name(), "V2")
+
+    # 2 should be the first
+    mn.addFactor({"V2", "V3"})
+    self.assertEquals(mn.factor({"V3", "V2"}).variable(0).name(), "V2")
+
+    # 1 should be the first
+    mn.addFactor({"V2","V0"})
+    self.assertEquals(mn.factor({"V2","V0"}).variable(0).name(), "V0")
+
+  def testOrderInsertionWithId(self):
+    mn=gum.fastMN("V0;V1;V2;V3")
+
+    # V0 should be the first
+    mn.addFactor([0,1])
+    self.assertEquals(mn.factor({0,1}).variable(0).name(), "V0")
+    self.assertEquals(mn.factor({1,0}).variable(0).name(), "V0")
+
+    # V2 should be the first
+    mn.addFactor([2,1])
+    self.assertEquals(mn.factor({2,1}).variable(0).name(), "V2")
+    self.assertEquals(mn.factor({1,2}).variable(0).name(), "V2")
+
+    # 2 should be the first
+    mn.addFactor({2,3})
+    self.assertEquals(mn.factor({2,3}).variable(0).name(), mn.variable(2).name())
+
+    # 1 should be the first
+    mn.addFactor({2,0})
+    self.assertEquals(mn.factor({2,0}).variable(0).name(), mn.variable(0).name())
 
 ts = unittest.TestSuite()
 addTests(ts, MarkovNetTestCase)

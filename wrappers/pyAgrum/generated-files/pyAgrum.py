@@ -10487,7 +10487,7 @@ class MarkovNet(IMarkovNet):
         Returns
         -------
         pyAgrum.MarkovNet
-                the resulting Markov network 
+                the resulting Markov network
 
         """
         return _pyAgrum.MarkovNet_fastPrototype(dotlike, domainSize)
@@ -10512,13 +10512,13 @@ class MarkovNet(IMarkovNet):
     def add(self, *args) -> int:
         r"""
 
-        Add a variable to the pyAgrum.MarkovNet. 
+        Add a variable to the pyAgrum.MarkovNet.
 
         Parameters
         ----------
         variable : pyAgrum.DiscreteVariable
         	the variable added
-        name : str 
+        name : str
         	the variable name
         nbrmod : int
         	the number of modalities for the new variable
@@ -10527,7 +10527,7 @@ class MarkovNet(IMarkovNet):
 
         Returns
         -------
-        int 
+        int
         	the id of the new node
 
         Raises
@@ -10545,7 +10545,7 @@ class MarkovNet(IMarkovNet):
     def clear(self) -> None:
         r"""
 
-        Clear the whole MarkovNet  
+        Clear the whole MarkovNet
 
         """
         return _pyAgrum.MarkovNet_clear(self)
@@ -10562,11 +10562,11 @@ class MarkovNet(IMarkovNet):
         Parameters
         ----------
         id : int
-        	The variable's id to remove. 
+        	The variable's id to remove.
         name : str
         	The variable's name to remove.
         var : pyAgrum.DiscreteVariable
-        	A reference on the variable to remove. 
+        	A reference on the variable to remove.
 
         """
         return _pyAgrum.MarkovNet_erase(self, *args)
@@ -10650,7 +10650,7 @@ class MarkovNet(IMarkovNet):
         ----------
         node : int
         	The variable's id.
-        name : str 
+        name : str
         	The variable's name.
 
         """
@@ -10757,7 +10757,7 @@ class MarkovNet(IMarkovNet):
         Returns
         -------
         pyAgrum.Potential
-        	The factor of the set of nodes. 
+        	The factor of the set of nodes.
 
         Raises
         ------
@@ -10812,6 +10812,16 @@ class MarkovNet(IMarkovNet):
         return _pyAgrum.MarkovNet___str__(self)
 
     def addFactor(self, *args) -> "pyAgrum.Potential":
+        r"""
+
+        Add a factor from a list or a set of id or str. If the argument is a set, the order is the order of the IDs of the variables
+
+        Parameters
+        ----------
+        seq : sequence (list or set) of int or string
+        	The sequence (ordered or not) of node id or names
+
+        """
         return _pyAgrum.MarkovNet_addFactor(self, *args)
 
     def eraseFactor(self, *args) -> None:
@@ -10876,7 +10886,7 @@ def MarkovNet_fastPrototype(dotlike: str, domainSize: int=2) -> "pyAgrum.MarkovN
     Returns
     -------
     pyAgrum.MarkovNet
-            the resulting Markov network 
+            the resulting Markov network
 
     """
     return _pyAgrum.MarkovNet_fastPrototype(dotlike, domainSize)

@@ -13,13 +13,13 @@ MarkovNet(source) -> MarkovNet
 
 %feature("docstring") gum::MarkovNet::add
 "
-Add a variable to the pyAgrum.MarkovNet. 
+Add a variable to the pyAgrum.MarkovNet.
 
 Parameters
 ----------
 variable : pyAgrum.DiscreteVariable
 	the variable added
-name : str 
+name : str
 	the variable name
 nbrmod : int
 	the number of modalities for the new variable
@@ -28,7 +28,7 @@ id : int
 
 Returns
 -------
-int 
+int
 	the id of the new node
 
 Raises
@@ -39,6 +39,16 @@ pyAgrum.NotAllowed
     If nbrmod is less than 2
 pyAgrum.DuplicateElement
     If id is already used.
+"
+
+%feature("docstring") gum::MarkovNet::addFactor
+"
+Add a factor from a list or a set of id or str. If the argument is a set, the order is the order of the IDs of the variables
+
+Parameters
+----------
+seq : sequence (list or set) of int or string
+	The sequence (ordered or not) of node id or names
 "
 
 %feature("docstring") gum::MarkovNet::changeVariableName
@@ -97,7 +107,7 @@ pyAgrum.MarkovNet
 
 %feature("docstring") gum::MarkovNet::clear
 "
-Clear the whole MarkovNet  
+Clear the whole MarkovNet
 "
 
 %feature("docstring") gum::MarkovNet::erase
@@ -111,11 +121,11 @@ If no variable matches the given id, then nothing is done.
 Parameters
 ----------
 id : int
-	The variable's id to remove. 
+	The variable's id to remove.
 name : str
 	The variable's name to remove.
 var : pyAgrum.DiscreteVariable
-	A reference on the variable to remove. 
+	A reference on the variable to remove.
 "
 
 %feature("docstring") gum::MarkovNet::eraseArc
@@ -126,7 +136,7 @@ If (tail, head) doesn't exist, the nothing happens.
 
 Parameters
 ----------
-arc : pyAgrum.Arc 
+arc : pyAgrum.Arc
 	The arc to be removed.
 head :
 	a variable's id (int)
@@ -159,7 +169,7 @@ domainSize : int
 Returns
 -------
 pyAgrum.MarkovNet
-        the resulting Markov network 
+        the resulting Markov network
 "
 
 %feature("docstring") gum::MarkovNet::generateFactor
@@ -170,7 +180,7 @@ Parameters
 ----------
 node : int
 	The variable's id.
-name : str 
+name : str
 	The variable's name.
 "
 
@@ -222,7 +232,7 @@ name : Set[str]
 Returns
 -------
 pyAgrum.Potential
-	The factor of the set of nodes. 
+	The factor of the set of nodes.
 
 Raises
 ------

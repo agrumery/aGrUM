@@ -181,6 +181,46 @@ namespace PyAgrumHelper {
     }
   }
 
+  std::string nameFromNameOrIndex(PyObject* n, const gum::VariableNodeMap& map) {
+    const std::string name = PyAgrumHelper::stringFromPyObject(n);
+    if (name != "") {
+      return name;
+    } else if (PyInt_Check(n)) {
+      return map.name(gum::NodeId(PyInt_AsLong(n)));
+    } else if (PyLong_Check(n)) {
+      return map.name(gum::NodeId(PyLong_AsLong(n)));
+    } else {
+      GUM_ERROR(gum::InvalidArgument,
+                "A value is neither a node name nor an node id");
+    }
+  }
+
+  void populateStrVectorFromPySequenceOfIntOrString(std::vector<std::string>& names, PyObject* seq, const gum::VariableNodeMap& map) {
+    // if seq is just a string
+    const std::string name = PyAgrumHelper::stringFromPyObject(seq);
+    if (name != "") {
+      names.push_back(name);
+      return;
+    }
+
+    // if seq is just a nodeId
+    if (PyInt_Check(seq) || PyLong_Check(seq)) {
+      names.push_back(map.name(gum::NodeId(PyLong_AsLong(seq))));
+      return;
+    }
+
+    // seq really is a sequence
+    PyObject* iter = PyObject_GetIter(seq);
+    if (iter != NULL) {
+      PyObject* item;
+      while ((item = PyIter_Next(iter))) {
+        names.push_back(nameFromNameOrIndex(item, map));
+      }
+    } else {
+      GUM_ERROR(gum::InvalidArgument, "Argument <seq> is not a list nor a set")
+    }
+  }
+
   void populateNodeSetFromPySequenceOfIntOrString(
      gum::NodeSet& nodeset, PyObject* seq, const gum::VariableNodeMap& map) {
     // if seq is just a string
