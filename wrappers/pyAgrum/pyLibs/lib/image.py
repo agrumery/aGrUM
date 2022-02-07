@@ -72,11 +72,13 @@ def export(model, filename=None, **kwargs):
 
     # workaround for some badly parsed graph (pyparsing>=3.03)
     fig.del_node('"\\n"')
+    fig.del_node('"\\n\\n"')
   elif isinstance(model,str):
     fig = dot.graph_from_dot_data(model)[0]
 
     # workaround for some badly parsed graph (pyparsing>=3.03)
     fig.del_node('"\\n"')
+    fig.del_node('"\\n\\n"')
   else:
     raise gum.InvalidArgument(
       "Argument model should be a PGM (BayesNet, MarkovNet or Influence Diagram) or has a method `toDot()` or is a string"
