@@ -20,7 +20,10 @@
 """
 tools for exporting model and infernece as image
 """
+import os
+import tempfile
 import re
+import matplotlib.image as mpimg
 import pydot as dot
 
 import pyAgrum as gum
@@ -30,16 +33,23 @@ from pyAgrum.lib.id2graph import ID2dot, LIMIDinference2dot
 from pyAgrum.lib.mn2graph import MN2UGdot, MNinference2UGdot
 from pyAgrum.lib.mn2graph import MN2FactorGraphdot, MNinference2FactorGraphdot
 
-def export(model, filename, **kwargs):
+def export(model, filename=None, **kwargs):
   """
   export the graphical representation of the model in filename (png, pdf,etc.)
 
   :param GraphicalModel model: the model to show (pyAgrum.BayesNet, pyAgrum.MarkovNet, pyAgrum.InfluenceDiagram or pyAgrum.Potential)
-  :param str filename: the name of the resulting file (suffix in ['pdf', 'png', 'fig', 'jpg', 'svg', 'ps'])
+  :param str filename: the name of the resulting file (suffix in ['pdf', 'png', 'fig', 'jpg', 'svg', 'ps']). If filename is None, the result is a np.array ready to be used with imshow().
 
   .. warning::
     Model can also just possess a method `toDot()` or even be a simple string in dot syntax.
   """
+  if filename is None:
+    tmp = tempfile.NamedTemporaryFile(suffix='.png', delete=False)
+    export(model, tmp.name,**kwargs)
+    img = mpimg.imread(tmp.name)
+    os.remove(tmp.name)
+    return img
+
   fmt_image = filename.split(".")[-1]
   if fmt_image not in ['pdf', 'png', 'fig', 'jpg', 'svg', 'ps']:
     raise Exception(
@@ -204,13 +214,13 @@ def dot_as_svg_string(gr, size):
   return gsvg
 
 
-def exportInference(model, filename, **kwargs):
+def exportInference(model, filename=None, **kwargs):
   """
   the graphical representation of an inference in a notebook
 
   :param GraphicalModel model: the model in which to infer (pyAgrum.BayesNet, pyAgrum.MarkovNet or
           pyAgrum.InfluenceDiagram)
-  :param str filename: the name of the resulting file (suffix in ['pdf', 'png', 'ps'])
+  :param str filename: the name of the resulting file (suffix in ['pdf', 'png', 'ps']). If filename is None, the result is a np.array ready to be used with imshow().
   :param gum.Inference engine: inference algorithm used. If None, gum.LazyPropagation will be used for BayesNet,
           gum.ShaferShenoy for gum.MarkovNet and gum.ShaferShenoyLIMIDInference for gum.InfluenceDiagram.
   :param dictionnary evs: map of evidence
@@ -226,6 +236,13 @@ def exportInference(model, filename, **kwargs):
   :param view: graph | factorgraph | None (default) for Markov network
   :return: the desired representation of the inference
   """
+  if filename is None:
+    tmp = tempfile.NamedTemporaryFile(suffix='.png', delete=False)
+    exportInference(model, tmp.name,**kwargs)
+    img = mpimg.imread(tmp.name)
+    os.remove(tmp.name)
+    return img
+
   fmt_image = filename.split(".")[-1]
   if fmt_image not in ['pdf', 'png', 'ps']:
     raise Exception(
