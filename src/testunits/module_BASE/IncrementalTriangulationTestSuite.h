@@ -166,23 +166,23 @@ namespace gum_tests {
         gum::IncrementalTriangulation triang(tr);
 
         for (gum::Idx i = 0; i < 100; ++i) {
-          gum::Size nb = (gum::Size)(((float)rand() / RAND_MAX) * 100);
+          gum::Size nb = (gum::Size)(((float)rand() / float(RAND_MAX)) * 100);
 
           // ===================================================
           // remove some node
           if ((nb >= 10) && (nb < 30)) {
             triang.addNode(triang.graph().bound(), 10);
           } else if (nb < 50) {
-            gum::NodeId id1 = (gum::NodeId)(((float)rand() / RAND_MAX) * triang.graph().bound());
-            gum::NodeId id2 = (gum::NodeId)(((float)rand() / RAND_MAX) * triang.graph().bound());
+            gum::NodeId id1 = (gum::NodeId)(((float)rand() / float(RAND_MAX)) * triang.graph().bound());
+            gum::NodeId id2 = (gum::NodeId)(((float)rand() / float(RAND_MAX)) * triang.graph().bound());
             triang.eraseEdge(gum::Edge(id1, id2));
           } else {
-            gum::NodeId id1 = (gum::NodeId)(((float)rand() / RAND_MAX) * triang.graph().bound());
-            gum::NodeId id2 = (gum::NodeId)(((float)rand() / RAND_MAX) * triang.graph().bound());
+            gum::NodeId id1 = (gum::NodeId)(((float)rand() / float(RAND_MAX)) * triang.graph().bound());
+            gum::NodeId id2 = (gum::NodeId)(((float)rand() / float(RAND_MAX)) * triang.graph().bound());
             triang.addEdge(id1, id2);
           }
 
-          nb = (gum::Size)(((float)rand() / RAND_MAX) * 20);
+          nb = (gum::Size)(((float)rand() / float(RAND_MAX)) * 20);
 
           if (nb <= 3) {
             triang.updateTriangulation();

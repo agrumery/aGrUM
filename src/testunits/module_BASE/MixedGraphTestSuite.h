@@ -104,7 +104,7 @@ namespace gum_tests {
 
       gum::MixedGraph* mixed_graph = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING((mixed_graph = new gum::MixedGraph(ug)));
-      TS_GUM_ASSERT_THROWS_NOTHING((*mixed_graph == mg));
+      TS_GUM_ASSERT_THROWS_NOTHING(TS_ASSERT(*mixed_graph == mg));
       TS_GUM_ASSERT_THROWS_NOTHING(delete (mixed_graph));
     }
 
@@ -131,7 +131,7 @@ namespace gum_tests {
 
       gum::MixedGraph* mixed_graph = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING((mixed_graph = new gum::MixedGraph(dg)));
-      TS_GUM_ASSERT_THROWS_NOTHING((*mixed_graph == mg));
+      TS_GUM_ASSERT_THROWS_NOTHING(TS_ASSERT(*mixed_graph == mg));
       TS_GUM_ASSERT_THROWS_NOTHING(delete (mixed_graph));
     }
 

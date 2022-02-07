@@ -157,11 +157,13 @@ namespace gum {
        * Equality operator.
        */
       bool operator==(const PRMObject& from) const;
+      bool operator==(const PRMType& from) const;
 
       /**
        * Difference operator.
        */
       bool operator!=(const PRMObject& from) const;
+      bool operator!=(const PRMType& from) const;
 
       /// @}
       // ==========================================================================

@@ -222,6 +222,7 @@ namespace gum_tests {
       }
 
       TS_ASSERT_EQUALS(nb, (gum::Size)13)
+      TS_ASSERT(nb2 > gum::Size(0))
     }
 
     void testBigNodeGraphPart() { TS_GUM_ASSERT_THROWS_NOTHING(_privateTestBigNodeGraphPart_()); }

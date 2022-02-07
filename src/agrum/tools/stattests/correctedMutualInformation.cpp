@@ -271,7 +271,7 @@ namespace gum {
       // If using the K cache, verify whether the set isn't already known
       IdCondSet idset;
       if (_use_KCache_) {
-        idset = std::move(IdCondSet(var1, var2, conditioning_ids, false));
+        idset = IdCondSet(var1, var2, conditioning_ids, false);
         try {
           return _KCache_.score(idset);
         } catch (const NotFound&) {}
@@ -301,7 +301,7 @@ namespace gum {
           }
 
           // compute the size of the database, including the a priori
-          if (!_use_KCache_) { idset = std::move(IdCondSet(var1, var2, conditioning_ids, false)); }
+          if (!_use_KCache_) { idset = IdCondSet(var1, var2, conditioning_ids, false); }
           const double N = _score_MDL_.N(idset);
 
           score = 0.5 * (rx - 1) * (ry - 1) * rui * std::log2(N);

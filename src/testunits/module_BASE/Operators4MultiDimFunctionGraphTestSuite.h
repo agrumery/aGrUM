@@ -387,6 +387,8 @@ namespace gum_tests {
         std::fflush(stdout);
       }
 
+      TS_ASSERT(tempsGene > 0.0)
+
 
       // Then we try with random structure
       //        gum::Idx i = 5;

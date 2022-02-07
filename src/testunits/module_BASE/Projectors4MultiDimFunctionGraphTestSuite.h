@@ -398,6 +398,8 @@ namespace gum_tests {
 
         if (!evalRes) return;
       }
+
+      TS_ASSERT(tempsGene > 0)
     }
 
 

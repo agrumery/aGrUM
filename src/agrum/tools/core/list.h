@@ -1883,13 +1883,34 @@ namespace gum {
      */
     ListIterator< Val > operator-(difference_type i) noexcept;
 
-    /// Adding gum::ListConstIterator operator support.
-    /// @{
-    using ListConstIterator< Val >::operator==;
-    using ListConstIterator< Val >::operator!=;
-    using ListConstIterator< Val >::operator*;
-    using ListConstIterator< Val >::operator->;
-    /// @}
+    /**
+     * @brief Checks whether two iterators point toward the same elements.
+     *
+     * @warning the end and rend iterators are always equal, whatever the list
+     * they belong to, i.e., \c list1.end() == \c list2.rend().
+     *
+     * @param src The gum::ListIterator to test for equality.
+     * @return Returns true if src and this are equal.
+     */
+    bool operator==(const ListIterator< Val >& src) const noexcept;
+
+    /**
+     * @brief Checks whether two iterators point toward different elements.
+     *
+     * @warning the end and rend iterators are always equal, whatever the list
+     * they belong to, i.e., \c list1.end() == \c list2.rend().
+     *
+     * @param src The gum::ListIterator to test for inequality.
+     * @return Returns true if src and this are equal.
+     */
+    bool operator!=(const ListIterator< Val >& src) const noexcept;
+
+   /**
+     * @brief Gives access to the content of the iterator.
+     * @throw UndefinedIteratorValue Raised if the iterator points to nothing.
+     * @return Returns the content of the iterator.
+     */
+    const Val& operator*() const;
 
     /**
      * @brief Gives access to the iterator's content.
@@ -1898,6 +1919,13 @@ namespace gum {
      * nothing.
      */
     Val& operator*();
+
+    /**
+     * @brief Dereferences the value pointed to by the iterator.
+     * @throw UndefinedIteratorValue Raised if the iterator points to nothing.
+     * @return Returns the value pointed to by the iterator.
+     */
+    const Val* operator->() const;
 
     /**
      * @brief Dereferences the value pointed to by the iterator.
@@ -2432,13 +2460,42 @@ namespace gum {
      */
     Val* operator->();
 
-    /// Adding gum::ListConstIteratorSafe operator support.
-    /// @{
-    using ListConstIteratorSafe< Val >::operator!=;
-    using ListConstIteratorSafe< Val >::operator==;
-    using ListConstIteratorSafe< Val >::operator*;
-    using ListConstIteratorSafe< Val >::operator->;
-    /// @}
+    /**
+     * @brief Checks whether two iterators point toward different elements.
+     *
+     * @warning the end and rend iterators are always equal, whatever the list
+     * they belong to, i.e., \c list1.end() == \c list2.rend().
+     *
+     * @param src The gum::ListIteratorSafe to test for inequality.
+     * @return Returns true if src and this are equal.
+     */
+    bool operator!=(const ListIteratorSafe< Val >& src) const;
+
+    /**
+     * @brief Checks whether two iterators point toward the same elements.
+     *
+     * @warning the end and rend iterators are always equal, whatever the list
+     * they belong to, i.e., \c list1.end() == \c list2.rend().
+     *
+     * @param src The gum::ListIteratorSafe to test for equality.
+     * @return Returns true if src and this are equal.
+     */
+    bool operator==(const ListIteratorSafe< Val >& src) const;
+
+    /**
+     * @brief Gives access to the content of the iterator.
+     * @throw UndefinedIteratorValue Raised if the iterator points to nothing.
+     * @return Returns the content of the iterator.
+     */
+    const Val& operator*() const;
+
+    /**
+     * @brief Dereferences the value pointed to by the iterator.
+     * @throw UndefinedIteratorValue Raised if the iterator points to nothing.
+     * @return Returns the value pointed to by the iterator.
+     */
+    const Val* operator->() const;
+
   };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
