@@ -98,9 +98,14 @@ namespace gum {
     return *this;
   }
 
+  /// equality operator
+  INLINE bool IntegerVariable::operator==(const IntegerVariable& var) const {
+      return Variable::operator==(var) && (var._domain_ == _domain_);
+  }
 
   /// inequality operator
   INLINE bool IntegerVariable::operator!=(const Variable& var) const { return !operator==(var); }
+  INLINE bool IntegerVariable::operator!=(const IntegerVariable& var) const { return !operator==(var); }
 
 
   /// returns the domain size of the discrete random variable
