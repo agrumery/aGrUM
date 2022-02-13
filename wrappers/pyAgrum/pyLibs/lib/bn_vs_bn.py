@@ -194,60 +194,7 @@ class GraphicalBNComparator:
     pydot.Dot
       the result dot graph or None if pydot can not be imported
     """
-
-    try:
-      # pydot is optional
-      # pylint: disable=import-outside-toplevel
-      import pydot as dot
-    except ImportError:
-      return False
-
-    graph = dot.Dot(graph_type='digraph', bgcolor="transparent")
-
-    # Nodes
-    for n in self._bn1.names():
-      node = dot.Node('"' + n + '"', style="filled",
-                      bgcol="#444444",
-                      fgcol="#FFFFFF",
-                      tooltip=f'"({self._bn1.idFromName(n)}) {n}"')
-      graph.add_node(node)
-
-    # Arcs
-    for n1 in self._bn2.names():
-      for n2 in self._bn2.names():
-        id1in2 = self._bn2.idFromName(n1)
-        id2in2 = self._bn2.idFromName(n2)
-        id1in1 = self._bn1.idFromName(n1)
-        id2in1 = self._bn1.idFromName(n2)
-
-        if self._bn1.dag().existsArc(id1in1, id2in1):
-          if self._bn2.dag().existsArc(id1in2, id2in2):
-            # If present in both
-            edge = dot.Edge('"' + n1 + '"', '"' + n2 + '"')
-            graph.add_edge(edge)
-          elif self._bn2.dag().existsArc(id2in2, id1in2):
-            # If inversed in _bn2
-            edge = dot.Edge('"' + n2 + '"', '"' + n1 + '"')
-
-            # dynamic member makes pylink unhappy
-            # pylint: disable=no-member
-            edge.set_color("red")
-            graph.add_edge(edge)
-          else:
-            # If removed from _bn2
-            edge = dot.Edge('"' + n1 + '"', '"' + n2 + '"', style='dashed')
-
-            # dynamic member makes pylink unhappy
-            # pylint: disable=no-member
-            edge.set_color("red")
-            graph.add_edge(edge)
-        else:
-          if not self._bn1.dag().existsArc(id2in1, id1in1) and self._bn2.dag().existsArc(id1in2, id2in2):
-            # If added to _bn2
-            edge = dot.Edge('"' + n1 + '"', '"' + n2 + '"', style='dashed')
-            graph.add_edge(edge)
-
-    return graph
+    return graphDiff(self._bn1,self._bn2)
 
   def skeletonScores(self):
     """
@@ -446,3 +393,86 @@ class GraphicalBNComparator:
         hamming_dico["hamming"] += 1
 
     return hamming_dico
+
+
+def graphDiff(bnref,bncmp):
+  """ Return a pydot graph that compares the arcs of bnref to bncmp.
+  full black line: the arc is common for both
+  full red line: the arc is common but inverted in _bn2
+  dotted black line: the arc is added in _bn2
+  dotted red line: the arc is removed in _bn2
+
+  Warning
+  -------
+  if pydot is not installed, this function just returns None
+
+  Returns
+  -------
+  pydot.Dot
+    the result dot graph or None if pydot can not be imported
+  """
+
+  try:
+    # pydot is optional
+    # pylint: disable=import-outside-toplevel
+    import pydot as dot
+    import csv
+    import pyAgrum.lib.bn2graph as ggr
+  except ImportError:
+    return None
+
+  g = ggr.BN2dot(bnref)
+  positions = {l[1]: f"{l[2]},{l[3]}!"
+               for l in csv.reader(g.create(format="plain")
+                                   .decode("utf8")
+                                   .split("\n")
+                                   , delimiter=' ', quotechar='"')
+               if len(l) > 3 and l[0] == "node"}
+
+  res = dot.Dot(graph_type='digraph', bgcolor="transparent", layout="fdp", splines=True)
+  for i1 in bnref.nodes():
+    res.add_node(dot.Node(f'"{bnref.variable(i1).name()}"', style="filled",
+                          bgcol="#444444",
+                          fgcol="#FFFFFF",
+                          pos=positions[bnref.variable(i1).name()]
+                          )
+                 )
+  for (i1, i2) in bnref.arcs():
+    n1 = bnref.variable(i1).name()
+    n2 = bnref.variable(i2).name()
+    if bncmp.existsArc(n1, n2):  # arc is OK in BN2
+      color = "black"
+      style = "plain"
+    elif bncmp.existsArc(n2, n1):  # arc is reversed in BN2
+      color = "red"
+      style = "plain"
+    else:  # arc does not exist in BN2
+      color = "black"
+      style = "dashed"
+    res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"', color=color, style=style))
+
+  for (i1, i2) in bncmp.arcs():
+    n1 = bncmp.variable(i1).name()
+    n2 = bncmp.variable(i2).name()
+    if not bnref.existsArc(n1, n2) and not bnref.existsArc(n2, n1):  # arc only exists in BN2
+      res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"', color="red", style="dashed", constraint="false"))
+
+  return res
+
+def graphDiffLegend():
+  try:
+    # pydot is optional
+    # pylint: disable=import-outside-toplevel
+    import pydot as dot
+  except ImportError:
+    return None
+
+  res = dot.Dot(graph_type='digraph', bgcolor="transparent", rankdir="LR")
+  for i in "abcdefgh":
+    res.add_node(dot.Node(i,style="invis"))
+  res.add_edge(dot.Edge("a","b",label="overflow",style="dashed",color="red"))
+  res.add_edge(dot.Edge("c","d",label="Missing",style="dashed"))
+  res.add_edge(dot.Edge("e","f",label="Reverted",color="red"))
+  res.add_edge(dot.Edge("g","h",label="Correct"))
+
+  return res

@@ -1233,3 +1233,5 @@ else:
   gum.DAG._repr_html_ = lambda self: getDot(self.toDot())
   gum.EssentialGraph._repr_html_ = lambda self: getDot(self.toDot())
   gum.MarkovBlanket._repr_html_ = lambda self: getDot(self.toDot())
+
+  dot.Dot._repr_html_ = lambda self: getGraph(self)
