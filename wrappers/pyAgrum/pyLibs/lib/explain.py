@@ -173,17 +173,22 @@ def _normalizeVals(vals, hilightExtrema=False):
 
   return {name: vmi + (val - mi) * (vma - vmi) / (ma - mi) for name, val in vals.items()}
 
-
-def _reprInformation(bn, evs, size, cmap, asString):
+def getInformationGraph(bn, evs=None, size=None, cmap=_INFOcmap,withMinMax=False):
   """
-    repr a bn annoted with results from inference : Information and mutual informations
+  Create a dot representation of the information graph for this BN
 
-    :param bn: the BN
-    :param evs: map of evidence
-    :param size:  size of the graph
-    :param cmap: colour map used
-    :return: the HTML string
-    """
+  :param bn: the BN
+  :param evs: map of evidence
+  :param size:  size of the graph
+  :param cmap: colour map used
+  :param withMinMax: min and max in the return values ?
+  :return: dot representation, min_information_value, max_information_value
+  """
+  if size is None:
+    size = gum.config["notebook", "default_graph_size"]
+
+  if evs is None:
+    evs = {}
 
   ie = gum.LazyPropagation(bn)
   ie.setEvidence(evs)
@@ -201,7 +206,39 @@ def _reprInformation(bn, evs, size, cmap, asString):
   mi = min(nodevals.values())
   ma = max(nodevals.values())
 
-  fig = mpl.figure.Figure(figsize=(8, 3))
+  if withMinMax:
+    return gr,mi,ma
+  else:
+    return gr
+
+def _reprInformation(bn, evs=None, size=None, cmap=_INFOcmap, asString=False):
+  """
+    repr a bn annoted with results from inference : Information and mutual informations
+
+    :param bn: the BN
+    :param evs: map of evidence
+    :param size:  size of the graph
+    :param cmap: colour map used
+    :param asString: result in string or displayed
+    :return: the HTML string or displayed
+    """
+  if size is None:
+    size = gum.config["notebook", "default_graph_size"]
+
+  if evs is None:
+    evs = {}
+
+  gr,mi,ma = getInformationGraph(bn,evs,size,cmap,withMinMax=True)
+  # dynamic member makes pylink unhappy
+  # pylint: disable=no-member
+  gsvg = IPython.display.SVG(gr.create_svg(encoding="utf-8"))
+  width = int(gsvg.data.split("width=")[1].split('"')[1].split("pt")[0]) / mpl.pyplot.rcParams[
+    'figure.dpi']  # pixel in inches
+  if width<5:
+    width=5
+
+  fig = mpl.figure.Figure(figsize=(width, 1))
+  fig.patch.set_alpha(0)
   canvas = fc(fig)
   ax1 = fig.add_axes([0.05, 0.80, 0.9, 0.15])
   norm = mpl.colors.Normalize(vmin=mi, vmax=ma)
@@ -210,21 +247,12 @@ def _reprInformation(bn, evs, size, cmap, asString):
                                   orientation='horizontal'
                                   )
   cb1.set_label('Entropy')
+  cb1.ax.text(mi,-2,f"{mi:.4f}", ha='left', va='top',color=gumcols.proba2bgcolor(0.01, cmap))
+  cb1.ax.text(ma,-2,f"{ma:.4f}", ha='right', va='top',color=gumcols.proba2bgcolor(0.99, cmap))
   png = IPython.core.pylabtools.print_figure(canvas.figure, "png")  # from IPython.core.pylabtools
   png_legend = f"<img style='vertical-align:middle' src='data:image/png;base64,{encodebytes(png).decode('ascii')}'>"
 
-  # dynamic member makes pylink unhappy
-  # pylint: disable=no-member
-  gsvg = IPython.display.SVG(gr.create_svg(encoding="utf-8"))
-
-  sss = "<div align='center'>" + gsvg.data + "</div>"
-  sss += "<div align='center'>"
-  sss += "<font color='" + \
-         gumcols.proba2bgcolor(0.01, cmap) + "'>" + str(mi) + "</font>"
-  sss += png_legend
-  sss += "<font color='" + \
-         gumcols.proba2bgcolor(0.99, cmap) + "'>" + str(ma) + "</font>"
-  sss += "</div>"
+  sss = f"<div align='center'>{gsvg.data}<br/>{png_legend}</div>"
 
   if asString:
     return sss

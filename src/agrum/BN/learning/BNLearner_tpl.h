@@ -43,12 +43,12 @@ namespace gum {
     BNLearner< GUM_SCALAR >::BNLearner(const std::string&                filename,
                                        const bool                        induceTypes,
                                        const std::vector< std::string >& missingSymbols) :
-        genericBNLearner(filename, missingSymbols, induceTypes) {
+        GenericBNLearner(filename, missingSymbols, induceTypes) {
       GUM_CONSTRUCTOR(BNLearner);
     }
 
     template < typename GUM_SCALAR >
-    BNLearner< GUM_SCALAR >::BNLearner(const DatabaseTable& db) : genericBNLearner(db) {
+    BNLearner< GUM_SCALAR >::BNLearner(const DatabaseTable& db) : GenericBNLearner(db) {
       GUM_CONSTRUCTOR(BNLearner);
     }
 
@@ -56,19 +56,19 @@ namespace gum {
     BNLearner< GUM_SCALAR >::BNLearner(const std::string&                 filename,
                                        const gum::BayesNet< GUM_SCALAR >& bn,
                                        const std::vector< std::string >&  missing_symbols) :
-        genericBNLearner(filename, bn, missing_symbols) {
+        GenericBNLearner(filename, bn, missing_symbols) {
       GUM_CONSTRUCTOR(BNLearner);
     }
 
     /// copy constructor
     template < typename GUM_SCALAR >
-    BNLearner< GUM_SCALAR >::BNLearner(const BNLearner< GUM_SCALAR >& src) : genericBNLearner(src) {
+    BNLearner< GUM_SCALAR >::BNLearner(const BNLearner< GUM_SCALAR >& src) : GenericBNLearner(src) {
       GUM_CONSTRUCTOR(BNLearner);
     }
 
     /// move constructor
     template < typename GUM_SCALAR >
-    BNLearner< GUM_SCALAR >::BNLearner(BNLearner< GUM_SCALAR >&& src) : genericBNLearner(src) {
+    BNLearner< GUM_SCALAR >::BNLearner(BNLearner< GUM_SCALAR >&& src) : GenericBNLearner(src) {
       GUM_CONSTRUCTOR(BNLearner);
     }
 
@@ -89,14 +89,14 @@ namespace gum {
     template < typename GUM_SCALAR >
     BNLearner< GUM_SCALAR >&
        BNLearner< GUM_SCALAR >::operator=(const BNLearner< GUM_SCALAR >& src) {
-      genericBNLearner::operator=(src);
+      GenericBNLearner::operator=(src);
       return *this;
     }
 
     /// move operator
     template < typename GUM_SCALAR >
     BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::operator=(BNLearner< GUM_SCALAR >&& src) {
-      genericBNLearner::operator=(std::move(src));
+      GenericBNLearner::operator=(std::move(src));
       return *this;
     }
 

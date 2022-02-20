@@ -29,7 +29,9 @@
 //320 : Explicit template instantiation ignored.
 //325 : Nested class not currently supported (Database ignored)
 //509 : Overloaded method effectively ignore
-#pragma SWIG nowarn=320,317,325,509
+//401 : not wrapped class
+///327 : extern template effectively ignored
+#pragma SWIG nowarn=320,317,325,509,401,327
 
 //#pragma SWIG nowarn=341,342 // The 'using' keyword in type aliasing is not fully supported yet.
 

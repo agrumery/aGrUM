@@ -93,42 +93,83 @@ class FlowLayout(object):
       }
       </style>
       """
+    return self
 
-  def _getTitle(self, title):
-    if title == "":
+  def _getCaption(self, caption):
+    if caption == "":
       return ""
-    return f"<br><center><small><em>{title}</em></small></center>"
+    return f"<br><center><small><em>{caption}</em></small></center>"
 
-  def add_html(self, html, title=""):
+  def add_html(self, html, caption=None, title=None):
     """
-    add an html element in the row
+    add an html element in the row (title is an obsolete parameter)
     """
-    self.sHtml += f'<div class="floating-box">{html}{self._getTitle(title)}</div>'
+    if caption is None:
+      if title is None:
+        cap=""
+      else:
+        cap=title
+    else:
+      cap=caption
+
+    self.sHtml += f'<div class="floating-box">{html}{self._getCaption(cap)}</div>'
+    return self
+
+  def add(self,obj, caption=None, title=None):
+    """
+    add an element in the row by trying to convert it to html if possible.
+    (title is an obsolete parameter)
+    """
+    if caption is None:
+      if title is None:
+        cap=""
+      else:
+        cap=title
+    else:
+      cap=caption
+
+    if hasattr(obj,"_repr_html_"):
+      self.add_html(obj._repr_html_(),cap)
+    else:
+      self.add_html(obj,cap)
+    return self
 
   def add_separator(self, size=3):
     """
     add a (poor) separation between elements in a row
     """
     self.add_html("&nbsp;" * size)
+    return self
 
-  def add_plot(self, oAxes, title=""):
+  def add_plot(self, oAxes, caption=None, title=None):
     """
     Add a PNG representation of a Matplotlib Axes object
+    (title is an obsolete parameter)
     """
+    if caption is None:
+      if title is None:
+        cap=""
+      else:
+        cap=title
+    else:
+      cap=caption
+
     Bio = io.BytesIO()  # bytes buffer for the plot
     fig = oAxes.get_figure()
     fig.canvas.print_png(Bio)  # make a png of the plot in the buffer
 
     # encode the bytes as string using base 64
     sB64Img = base64.b64encode(Bio.getvalue()).decode()
-    self.sHtml += f'<div class="floating-box"><img src="data:image/png;base64,{sB64Img}\n">{self._getTitle(title)}</div>'
+    self.sHtml += f'<div class="floating-box"><img src="data:image/png;base64,{sB64Img}\n">{self._getCaption(cap)}</div>'
     plt.close()
+    return self
 
   def new_line(self):
     """
     add a breakline (a new row)
     """
     self.sHtml += '<br/>'
+    return self
 
   def html(self):
     """
@@ -152,11 +193,11 @@ class FlowLayout(object):
         t = captions[i]
 
       if hasattr(arg, "get_figure"):
-        self.add_plot(arg, title=t)
+        self.add_plot(arg, caption=t)
       elif hasattr(arg, "_repr_html_"):
-        self.add_html(arg._repr_html_(), title=t)
+        self.add_html(arg._repr_html_(), caption=t)
       else:
-        self.add_html(arg, title=t)
+        self.add_html(arg, caption=t)
 
     self.display()
 
@@ -962,16 +1003,24 @@ def getPotential(pot, digits=None, withColors=None, varnames=None):
 
   return _reprPotential(pot, digits, withColors, varnames, asString=True)
 
+def showCPTs(bn):
+  flow.clear()
+  for i in bn.names():
+    flow.add_html(getPotential(bn.cpt(i)))
+  flow.display()
+
 
 def getSideBySide(*args, **kwargs):
   """
   create an HTML table for args as string (using string, _repr_html_() or str())
 
   :param args: HMTL fragments as string arg, arg._repr_html_() or str(arg)
-  :param captions: list of strings (captions)
+  :param captions: list of strings (optional)
+  :param valign: vertical position in the row (top|middle|bottom, middle by default)
+  :param ncols: number of columns (infinite by default)
   :return: a string representing the table
   """
-  vals = {'captions', 'valign'}
+  vals = {'captions', 'valign','ncols'}
   if not set(kwargs.keys()).issubset(vals):
     raise TypeError(f"sideBySide() got unexpected keyword argument(s) : '{set(kwargs.keys()).difference(vals)}'")
 
@@ -980,12 +1029,16 @@ def getSideBySide(*args, **kwargs):
   else:
     captions = None
 
-  if 'valign' in kwargs:
-    v_align = 'vertical-align:' + kwargs['valign'] + ';'
+  if 'valign' in kwargs and kwargs['valign'] in ['top','middle','bottom'] :
+    v_align = f"vertical-align:{kwargs['valign']};"
   else:
-    v_align = ""
+    v_align = f"vertical-align:middle;"
 
-  s = '<table style="border-style: hidden; border-collapse: collapse;" width="100%">'
+  ncols=None
+  if 'ncols' in kwargs:
+    ncols=int(kwargs['ncols'])
+    if ncols<1:
+      ncols=1
 
   def reprHTML(s):
     if isinstance(s, str):
@@ -995,24 +1048,16 @@ def getSideBySide(*args, **kwargs):
     else:
       return str(s)
 
-  s += '<tr><td style="border-top:hidden;border-bottom:hidden;' + v_align + '"><div align="center" style="' + v_align \
-       + '">'
-  s += (
-     '</div></td><td style="border-top:hidden;border-bottom:hidden;' + v_align + '"><div align="center" style="' +
-     v_align + '">').join(
-    [reprHTML(arg)
-     for arg in args]
-  )
-  s += '</div></td></tr>'
-
-  if captions is not None:
-    s += '<tr><td style="border-top:hidden;border-bottom:hidden;"><div align="center"><small>'
-    s += '</small></div></td><td style="border-top:hidden;border-bottom:hidden;"><div align="center"><small>'.join(
-      captions
-    )
-    s += '</small></div></td></tr>'
-
-  s += '</table>'
+  s = '<table style="border-style: hidden; border-collapse: collapse;" width="100%"><tr>'
+  for i in range(len(args)):
+    s += f'<td style="border-top:hidden;border-bottom:hidden;{v_align}"><div align="center" style="{v_align}">'
+    s+=reprHTML(args[i])
+    if captions is not None:
+      s+=f'<br><small><i>{captions[i]}</i></small>'
+    s+='</div></td>'
+    if ncols is not None and (i+1)%ncols==0:
+      s+='</tr><tr>'
+  s += '</tr></table>'
   return s
 
 
@@ -1031,7 +1076,7 @@ def getInferenceEngine(ie, inferenceCaption):
   display an inference as a BN+ lists of hard/soft evidence and list of targets
 
   :param gum.InferenceEngine ie: inference engine
-  :param string inferenceCaption: title for caption
+  :param string inferenceCaption: caption for the inference
 
   """
   t = '<div align="left"><ul>'

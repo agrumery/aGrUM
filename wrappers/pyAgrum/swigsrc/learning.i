@@ -31,8 +31,61 @@
 %ignore gum::learning::BNLearner::addMandatoryArc(const gum::Arc& arc);
 %ignore gum::learning::BNLearner::eraseMandatoryArc(const gum::Arc& arc);
 %ignore gum::learning::BNLearner::learnParameters(const gum::DAG& dag);
-%ignore gum::learning::BNLearner::learnParameters(const gum::DAG& dag);
 %ignore gum::learning::BNLearner::state() const;
+
+
+
+%define SETPROP_THEN_RETURN_SELF(methodname)
+%pythonappend gum::learning::BNLearner<double>::methodname %{
+        return self
+%}
+%enddef
+SETPROP_THEN_RETURN_SELF(setInitialDAG)
+SETPROP_THEN_RETURN_SELF(useEM)
+SETPROP_THEN_RETURN_SELF(useScoreAIC)
+SETPROP_THEN_RETURN_SELF(useScoreBD)
+SETPROP_THEN_RETURN_SELF(useScoreBDeu)
+SETPROP_THEN_RETURN_SELF(useScoreBIC)
+SETPROP_THEN_RETURN_SELF(useScoreK2)
+SETPROP_THEN_RETURN_SELF(useScoreLog2Likelihood)
+SETPROP_THEN_RETURN_SELF(useNoApriori)
+SETPROP_THEN_RETURN_SELF(useAprioriBDeu)
+SETPROP_THEN_RETURN_SELF(useAprioriSmoothing)
+SETPROP_THEN_RETURN_SELF(useAprioriDirichlet)
+SETPROP_THEN_RETURN_SELF(useGreedyHillClimbing)
+SETPROP_THEN_RETURN_SELF(useLocalSearchWithTabuList)
+SETPROP_THEN_RETURN_SELF(useK2)
+SETPROP_THEN_RETURN_SELF(useK2)
+SETPROP_THEN_RETURN_SELF(use3off2)
+SETPROP_THEN_RETURN_SELF(useMIIC)
+SETPROP_THEN_RETURN_SELF(useNMLCorrection)
+SETPROP_THEN_RETURN_SELF(useMDLCorrection)
+SETPROP_THEN_RETURN_SELF(useNoCorrection)
+SETPROP_THEN_RETURN_SELF(setMaxIndegree)
+SETPROP_THEN_RETURN_SELF(setSliceOrder)
+SETPROP_THEN_RETURN_SELF(setSliceOrder)
+SETPROP_THEN_RETURN_SELF(setForbiddenArcs)
+SETPROP_THEN_RETURN_SELF(addForbiddenArc)
+SETPROP_THEN_RETURN_SELF(addForbiddenArc)
+SETPROP_THEN_RETURN_SELF(addForbiddenArc)
+SETPROP_THEN_RETURN_SELF(eraseForbiddenArc)
+SETPROP_THEN_RETURN_SELF(eraseForbiddenArc)
+SETPROP_THEN_RETURN_SELF(eraseForbiddenArc)
+SETPROP_THEN_RETURN_SELF(addMandatoryArc)
+SETPROP_THEN_RETURN_SELF(addMandatoryArc)
+SETPROP_THEN_RETURN_SELF(addMandatoryArc)
+SETPROP_THEN_RETURN_SELF(eraseMandatoryArc)
+SETPROP_THEN_RETURN_SELF(eraseMandatoryArc)
+SETPROP_THEN_RETURN_SELF(eraseMandatoryArc)
+SETPROP_THEN_RETURN_SELF(addPossibleEdge)
+SETPROP_THEN_RETURN_SELF(addPossibleEdge)
+SETPROP_THEN_RETURN_SELF(addPossibleEdge)
+SETPROP_THEN_RETURN_SELF(erasePossibleEdge)
+SETPROP_THEN_RETURN_SELF(erasePossibleEdge)
+SETPROP_THEN_RETURN_SELF(erasePossibleEdge)
+SETPROP_THEN_RETURN_SELF(setMandatoryArcs)
+SETPROP_THEN_RETURN_SELF(setPossibleEdges)
+SETPROP_THEN_RETURN_SELF(setPossibleSkeleton)
 
 %extend gum::learning::BNLearner< double > {
   PyObject *chi2(const std::string& var1,const std::string& var2,const std::vector<std::string>& knw={}) {
@@ -44,13 +97,13 @@
     return Py_BuildValue("(dd)",res.first,res.second);
   }
 
-  void setSliceOrder(PyObject * l) {
+  gum::learning::BNLearner< double >& setSliceOrder(PyObject * l) {
     gum::NodeProperty< gum::Size > ranks;
 
     if (PyList_Check(l) == 0) {
       PyErr_SetString(PyExc_TypeError,
                       "arg must be a sequence (of sequences of int or string)");
-      return;
+      return  *$self;
     }
 
     for (Py_ssize_t i = 0; i < PySequence_Size(l); i++) {
@@ -58,7 +111,7 @@
       if (PyList_Check(rows) == 0) {
         PyErr_SetString(PyExc_TypeError,
                         "arg must be a sequence of sequences (of int or string)");
-        return;
+        return  *$self;
       }
 
       for (Py_ssize_t j = 0; j < PySequence_Size(rows); j++) {
@@ -75,30 +128,32 @@
 
         PyErr_SetString(PyExc_TypeError,
                         "arg must be a sequence of sequence of int or string");
-        return;
+        return  *$self;
       }
     }
     $self->setSliceOrder(ranks);
+    return  *$self;
   }
 
-  void useK2(PyObject * l) {
+  gum::learning::BNLearner< double >& useK2(PyObject * l) {
     std::vector< gum::NodeId > v;
 
     if (PyList_Check(l) == 0) {
       PyErr_SetString(PyExc_TypeError, "arg must be a sequence");
-      return;
+      return  *$self;
     }
 
     for (Py_ssize_t i = 0; i < PySequence_Size(l); i++) {
       PyObject* row = PyList_GetItem(l, i);
       if (PyInt_Check(row) == 0) {
         PyErr_SetString(PyExc_TypeError, "arg must be a sequence of int");
-        return;
+        return  *$self;
       }
       v.push_back((gum::NodeId)PyInt_AsLong(row));
     }
 
     $self->useK2(v);
+    return *$self;
   }
 
   PyObject* latentVariables() {
@@ -141,6 +196,38 @@ def pseudoCount(self,vars):
         lv.append(name)
     p.fillWith(self.rawPseudoCount(lv))
     return p
+
+def fitParameters(self,bn):
+  """
+  Easy shortcut to LearnParameters method. fitParameters uses self to direcuptly populate the CPTs of bn.0
+
+  Parameters
+  ----------
+  bn : pyAgrum.BayesNet
+    a BN which will directly have its parameters learned.
+
+  """
+  if set(self.names())!=bn.names():
+    raise Exception("Not the same variable names in the database and in the BN")
+
+  d=DAG()
+  for n in bn.names():
+    d.addNodeWithId(self.idFromName(n))
+  for i1,i2 in bn.arcs():
+    d.addArc(self.idFromName(bn.variable(i1).name()),self.idFromName(bn.variable(i2).name()))
+  tmp=self.learnParameters(d)
+  for n in tmp.names():
+    bn.cpt(n).fillWith(tmp.cpt(n))
+  return self
+
+def learnEssentialGraph(self):
+  bn=BayesNet()
+  for i in range(len(self.names())):
+    bn.add(self.nameFromId(i),2)
+  ge=EssentialGraph(bn,self.learnMixedStructure())
+  ge._bn=bn
+  return ge
+
   }
 };
 
@@ -153,4 +240,3 @@ def pseudoCount(self,vars):
         ge._bn=bn
         return ge
 %}
-

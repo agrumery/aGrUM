@@ -56,7 +56,7 @@ namespace gum {
      * @ingroup learning_group
      */
     template < typename GUM_SCALAR >
-    class BNLearner: public genericBNLearner {
+    class BNLearner: public GenericBNLearner {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -83,7 +83,7 @@ namespace gum {
 
       /// default constructor
       /**
-       * ²read the database file for the score / parameter estimation and var
+       * read the database file for the score / parameter estimation and var
        * names
        * @param db an already initialized database table that is used to
        * fill the Database
@@ -162,6 +162,195 @@ namespace gum {
 
       /// @return a representation of the state of the learner in the form vector<key,value,comment>
       std::vector< std::tuple< std::string, std::string, std::string > > state() const;
+
+      //=== === add return to certain methods in order to chain command
+      BNLearner< GUM_SCALAR >& setInitialDAG(const DAG& dag) {
+        GenericBNLearner::setInitialDAG(dag);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& useEM(const double epsilon) {
+        GenericBNLearner::useEM(epsilon);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& useScoreAIC() {
+        GenericBNLearner::useScoreAIC();
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& useScoreBD() {
+        GenericBNLearner::useScoreBD();
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& useScoreBDeu() {
+        GenericBNLearner::useScoreBDeu();
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& useScoreBIC() {
+        GenericBNLearner::useScoreBIC();
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& useScoreK2() {
+        GenericBNLearner::useScoreK2();
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& useScoreLog2Likelihood() {
+        GenericBNLearner::useScoreLog2Likelihood();
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& useNoApriori() {
+        GenericBNLearner::useNoApriori();
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& useAprioriBDeu(double weight = 1.0) {
+        GenericBNLearner::useAprioriBDeu(weight);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& useAprioriSmoothing(double weight = 1) {
+        GenericBNLearner::useAprioriSmoothing(weight);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& useAprioriDirichlet(const std::string& filename, double weight = 1) {
+        GenericBNLearner::useAprioriDirichlet(filename, weight);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& useGreedyHillClimbing() {
+        GenericBNLearner::useGreedyHillClimbing();
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& useLocalSearchWithTabuList(Size tabu_size   = 100,
+                                                          Size nb_decrease = 2) {
+        GenericBNLearner::useLocalSearchWithTabuList(tabu_size, nb_decrease);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& useK2(const Sequence< NodeId >& order) {
+        GenericBNLearner::useK2(order);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& useK2(const std::vector< NodeId >& order) {
+        GenericBNLearner::useK2(order);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& use3off2() {
+        GenericBNLearner::use3off2();
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& useMIIC() {
+        GenericBNLearner::useMIIC();
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& useNMLCorrection() {
+        GenericBNLearner::useNMLCorrection();
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& useMDLCorrection() {
+        GenericBNLearner::useMDLCorrection();
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& useNoCorrection() {
+        GenericBNLearner::useNoCorrection();
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& setMaxIndegree(Size max_indegree) {
+        GenericBNLearner::setMaxIndegree(max_indegree);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& setSliceOrder(const NodeProperty< NodeId >& slice_order) {
+        GenericBNLearner::setSliceOrder(slice_order);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >&
+         setSliceOrder(const std::vector< std::vector< std::string > >& slices) {
+        GenericBNLearner::setSliceOrder(slices);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& setForbiddenArcs(const ArcSet& set) {
+        GenericBNLearner::setForbiddenArcs(set);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& addForbiddenArc(const Arc& arc) {
+        GenericBNLearner::addForbiddenArc(arc);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& addForbiddenArc(const NodeId tail, const NodeId head) {
+        GenericBNLearner::addForbiddenArc(tail, head);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& addForbiddenArc(const std::string& tail, const std::string& head) {
+        GenericBNLearner::addForbiddenArc(tail, head);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& eraseForbiddenArc(const Arc& arc) {
+        GenericBNLearner::eraseForbiddenArc(arc);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& eraseForbiddenArc(const NodeId tail, const NodeId head) {
+        GenericBNLearner::eraseForbiddenArc(tail, head);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& eraseForbiddenArc(const std::string& tail, const std::string& head) {
+        GenericBNLearner::eraseForbiddenArc(tail, head);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& addMandatoryArc(const Arc& arc) {
+        GenericBNLearner::addMandatoryArc(arc);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& addMandatoryArc(const NodeId tail, const NodeId head) {
+        GenericBNLearner::addMandatoryArc(tail, head);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& addMandatoryArc(const std::string& tail, const std::string& head) {
+        GenericBNLearner::addMandatoryArc(tail, head);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& eraseMandatoryArc(const Arc& arc) {
+        GenericBNLearner::eraseMandatoryArc(arc);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& eraseMandatoryArc(const NodeId tail, const NodeId head) {
+        GenericBNLearner::eraseMandatoryArc(tail, head);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& eraseMandatoryArc(const std::string& tail, const std::string& head) {
+        GenericBNLearner::eraseMandatoryArc(tail, head);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& addPossibleEdge(const Edge& edge) {
+        GenericBNLearner::addPossibleEdge(edge);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& addPossibleEdge(const NodeId tail, const NodeId head) {
+        GenericBNLearner::addPossibleEdge(tail, head);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& addPossibleEdge(const std::string& tail, const std::string& head) {
+        GenericBNLearner::addPossibleEdge(tail, head);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& erasePossibleEdge(const Edge& edge) {
+        GenericBNLearner::erasePossibleEdge(edge);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& erasePossibleEdge(const NodeId tail, const NodeId head) {
+        GenericBNLearner::erasePossibleEdge(tail, head);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& erasePossibleEdge(const std::string& tail, const std::string& head) {
+        GenericBNLearner::erasePossibleEdge(tail, head);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& setMandatoryArcs(const ArcSet& set) {
+        GenericBNLearner::setMandatoryArcs(set);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& setPossibleEdges(const EdgeSet& set) {
+        GenericBNLearner::setPossibleEdges(set);
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& setPossibleSkeleton(const UndiGraph& skeleton) {
+        GenericBNLearner::setPossibleSkeleton(skeleton);
+        return *this;
+      }
+
 
       private:
       /// read the first line of a file to find column names

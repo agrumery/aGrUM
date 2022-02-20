@@ -49,7 +49,7 @@ namespace gum {
   namespace learning {
 
 
-    genericBNLearner::Database::Database(const DatabaseTable& db) : _database_(db) {
+    GenericBNLearner::Database::Database(const DatabaseTable& db) : _database_(db) {
       // get the variables names
       const auto&       var_names = _database_.variableNames();
       const std::size_t nb_vars   = var_names.size();
@@ -64,10 +64,10 @@ namespace gum {
     }
 
 
-    genericBNLearner::Database::Database(const std::string&                filename,
+    GenericBNLearner::Database::Database(const std::string&                filename,
                                          const std::vector< std::string >& missing_symbols,
                                          const bool                        induceTypes) :
-        Database(genericBNLearner::readFile_(filename, missing_symbols)) {
+        Database(GenericBNLearner::readFile_(filename, missing_symbols)) {
       // if the usr wants the best translators to be inferred, just do it
       if (induceTypes) {
         for (const auto& new_trans: _database_.betterTranslators()) {
@@ -81,11 +81,11 @@ namespace gum {
     }
 
 
-    genericBNLearner::Database::Database(const std::string&                CSV_filename,
+    GenericBNLearner::Database::Database(const std::string&                CSV_filename,
                                          Database&                         score_database,
                                          const std::vector< std::string >& missing_symbols) {
       // assign to each column name in the CSV file its column
-      genericBNLearner::isCSVFileName_(CSV_filename);
+      GenericBNLearner::isCSVFileName_(CSV_filename);
       DBInitializerFromCSV                  initializer(CSV_filename);
       const auto&                           apriori_names   = initializer.variableNames();
       std::size_t                           apriori_nb_vars = apriori_names.size();
@@ -139,7 +139,7 @@ namespace gum {
     }
 
 
-    genericBNLearner::Database::Database(const Database& from) :
+    GenericBNLearner::Database::Database(const Database& from) :
         _database_(from._database_), _domain_sizes_(from._domain_sizes_),
         _nodeId2cols_(from._nodeId2cols_) {
       // create the parser
@@ -147,7 +147,7 @@ namespace gum {
     }
 
 
-    genericBNLearner::Database::Database(Database&& from) :
+    GenericBNLearner::Database::Database(Database&& from) :
         _database_(std::move(from._database_)), _domain_sizes_(std::move(from._domain_sizes_)),
         _nodeId2cols_(std::move(from._nodeId2cols_)) {
       // create the parser
@@ -155,9 +155,9 @@ namespace gum {
     }
 
 
-    genericBNLearner::Database::~Database() { delete _parser_; }
+    GenericBNLearner::Database::~Database() { delete _parser_; }
 
-    genericBNLearner::Database& genericBNLearner::Database::operator=(const Database& from) {
+    GenericBNLearner::Database& GenericBNLearner::Database::operator=(const Database& from) {
       if (this != &from) {
         delete _parser_;
         _database_     = from._database_;
@@ -171,7 +171,7 @@ namespace gum {
       return *this;
     }
 
-    genericBNLearner::Database& genericBNLearner::Database::operator=(Database&& from) {
+    GenericBNLearner::Database& GenericBNLearner::Database::operator=(Database&& from) {
       if (this != &from) {
         delete _parser_;
         _database_     = std::move(from._database_);
@@ -188,7 +188,7 @@ namespace gum {
 
     // ===========================================================================
 
-    genericBNLearner::genericBNLearner(const std::string&                filename,
+    GenericBNLearner::GenericBNLearner(const std::string&                filename,
                                        const std::vector< std::string >& missing_symbols,
                                        const bool                        induceTypes) :
         scoreDatabase_(filename, missing_symbols, induceTypes) {
@@ -196,20 +196,20 @@ namespace gum {
       noApriori_    = new AprioriNoApriori(scoreDatabase_.databaseTable());
       inducedTypes_ = induceTypes;
 
-      GUM_CONSTRUCTOR(genericBNLearner);
+      GUM_CONSTRUCTOR(GenericBNLearner);
     }
 
 
-    genericBNLearner::genericBNLearner(const DatabaseTable& db) : scoreDatabase_(db) {
+    GenericBNLearner::GenericBNLearner(const DatabaseTable& db) : scoreDatabase_(db) {
       filename_     = "-";
       noApriori_    = new AprioriNoApriori(scoreDatabase_.databaseTable());
       inducedTypes_ = false;
 
-      GUM_CONSTRUCTOR(genericBNLearner);
+      GUM_CONSTRUCTOR(GenericBNLearner);
     }
 
 
-    genericBNLearner::genericBNLearner(const genericBNLearner& from) :
+    GenericBNLearner::GenericBNLearner(const GenericBNLearner& from) :
         inducedTypes_(from.inducedTypes_), scoreType_(from.scoreType_),
         paramEstimatorType_(from.paramEstimatorType_), epsilonEM_(from.epsilonEM_),
         aprioriType_(from.aprioriType_), aprioriWeight_(from.aprioriWeight_),
@@ -226,10 +226,10 @@ namespace gum {
         filename_(from.filename_), nbDecreasingChanges_(from.nbDecreasingChanges_) {
       noApriori_ = new AprioriNoApriori(scoreDatabase_.databaseTable());
 
-      GUM_CONS_CPY(genericBNLearner);
+      GUM_CONS_CPY(GenericBNLearner);
     }
 
-    genericBNLearner::genericBNLearner(genericBNLearner&& from) :
+    GenericBNLearner::GenericBNLearner(GenericBNLearner&& from) :
         inducedTypes_(from.inducedTypes_), scoreType_(from.scoreType_),
         paramEstimatorType_(from.paramEstimatorType_), epsilonEM_(from.epsilonEM_),
         aprioriType_(from.aprioriType_), aprioriWeight_(from.aprioriWeight_),
@@ -248,10 +248,10 @@ namespace gum {
         nbDecreasingChanges_(std::move(from.nbDecreasingChanges_)) {
       noApriori_ = new AprioriNoApriori(scoreDatabase_.databaseTable());
 
-      GUM_CONS_MOV(genericBNLearner)
+      GUM_CONS_MOV(GenericBNLearner)
     }
 
-    genericBNLearner::~genericBNLearner() {
+    GenericBNLearner::~GenericBNLearner() {
       if (score_) delete score_;
 
       if (apriori_) delete apriori_;
@@ -262,10 +262,10 @@ namespace gum {
 
       if (mutualInfo_) delete mutualInfo_;
 
-      GUM_DESTRUCTOR(genericBNLearner);
+      GUM_DESTRUCTOR(GenericBNLearner);
     }
 
-    genericBNLearner& genericBNLearner::operator=(const genericBNLearner& from) {
+    GenericBNLearner& GenericBNLearner::operator=(const GenericBNLearner& from) {
       if (this != &from) {
         if (score_) {
           delete score_;
@@ -315,7 +315,7 @@ namespace gum {
       return *this;
     }
 
-    genericBNLearner& genericBNLearner::operator=(genericBNLearner&& from) {
+    GenericBNLearner& GenericBNLearner::operator=(GenericBNLearner&& from) {
       if (this != &from) {
         if (score_) {
           delete score_;
@@ -372,7 +372,7 @@ namespace gum {
 
       if (filename_size < 4) {
         GUM_ERROR(FormatNotFound,
-                  "genericBNLearner could not determine the "
+                  "GenericBNLearner could not determine the "
                   "file type of the database '"
                      << filename << "'");
       }
@@ -382,7 +382,7 @@ namespace gum {
 
       if (extension != ".csv") {
         GUM_ERROR(OperationNotAllowed,
-                  "genericBNLearner does not support yet this type ('" << extension
+                  "GenericBNLearner does not support yet this type ('" << extension
                                                                        << "')"
                                                                           "of database file");
       }
@@ -406,13 +406,13 @@ namespace gum {
     }
 
 
-    void genericBNLearner::isCSVFileName_(const std::string& filename) {
+    void GenericBNLearner::isCSVFileName_(const std::string& filename) {
       // get the extension of the file
       Size filename_size = Size(filename.size());
 
       if (filename_size < 4) {
         GUM_ERROR(FormatNotFound,
-                  "genericBNLearner could not determine the "
+                  "GenericBNLearner could not determine the "
                   "file type of the database");
       }
 
@@ -421,12 +421,12 @@ namespace gum {
 
       if (extension != ".csv") {
         GUM_ERROR(OperationNotAllowed,
-                  "genericBNLearner does not support yet this type of database file");
+                  "GenericBNLearner does not support yet this type of database file");
       }
     }
 
 
-    DatabaseTable genericBNLearner::readFile_(const std::string&                filename,
+    DatabaseTable GenericBNLearner::readFile_(const std::string&                filename,
                                               const std::vector< std::string >& missing_symbols) {
       // get the extension of the file
       isCSVFileName_(filename);
@@ -452,7 +452,7 @@ namespace gum {
     }
 
 
-    void genericBNLearner::createApriori_() {
+    void GenericBNLearner::createApriori_() {
       // first, save the old apriori, to be delete if everything is ok
       Apriori* old_apriori = apriori_;
 
@@ -498,7 +498,7 @@ namespace gum {
       if (old_apriori != nullptr) delete old_apriori;
     }
 
-    void genericBNLearner::createScore_() {
+    void GenericBNLearner::createScore_() {
       // first, save the old score, to be delete if everything is ok
       Score* old_score = score_;
 
@@ -547,14 +547,14 @@ namespace gum {
           break;
 
         default:
-          GUM_ERROR(OperationNotAllowed, "genericBNLearner does not support yet this score")
+          GUM_ERROR(OperationNotAllowed, "GenericBNLearner does not support yet this score")
       }
 
       // remove the old score, if any
       if (old_score != nullptr) delete old_score;
     }
 
-    ParamEstimator* genericBNLearner::createParamEstimator_(DBRowGeneratorParser& parser,
+    ParamEstimator* GenericBNLearner::createParamEstimator_(DBRowGeneratorParser& parser,
                                                             bool take_into_account_score) {
       ParamEstimator* param_estimator = nullptr;
 
@@ -579,7 +579,7 @@ namespace gum {
 
         default:
           GUM_ERROR(OperationNotAllowed,
-                    "genericBNLearner does not support "
+                    "GenericBNLearner does not support "
                        << "yet this parameter estimator");
       }
 
@@ -590,7 +590,7 @@ namespace gum {
     }
 
     /// prepares the initial graph for 3off2 or miic
-    MixedGraph genericBNLearner::prepareMiic3Off2_() {
+    MixedGraph GenericBNLearner::prepareMiic3Off2_() {
       // Initialize the mixed graph to the fully connected graph
       MixedGraph mgraph;
       for (Size i = 0; i < scoreDatabase_.databaseTable().nbVariables(); ++i) {
@@ -620,7 +620,7 @@ namespace gum {
       return mgraph;
     }
 
-    MixedGraph genericBNLearner::learnMixedStructure() {
+    MixedGraph GenericBNLearner::learnMixedStructure() {
       if (selectedAlgo_ != AlgoType::MIIC && selectedAlgo_ != AlgoType::THREE_OFF_TWO) {
         GUM_ERROR(OperationNotAllowed, "Must be using the miic/3off2 algorithm")
       }
@@ -638,7 +638,7 @@ namespace gum {
       return algoMiic3off2_.learnMixedStructure(*mutualInfo_, mgraph);
     }
 
-    DAG genericBNLearner::learnDAG() {
+    DAG GenericBNLearner::learnDAG() {
       // create the score and the apriori
       createApriori_();
       createScore_();
@@ -646,7 +646,7 @@ namespace gum {
       return learnDag_();
     }
 
-    void genericBNLearner::createCorrectedMutualInformation_() {
+    void GenericBNLearner::createCorrectedMutualInformation_() {
       if (mutualInfo_ != nullptr) delete mutualInfo_;
 
       mutualInfo_ = new CorrectedMutualInformation(scoreDatabase_.parser(),
@@ -673,7 +673,7 @@ namespace gum {
       }
     }
 
-    DAG genericBNLearner::learnDag_() {
+    DAG GenericBNLearner::learnDag_() {
       // check that the database does not contain any missing value
       if (scoreDatabase_.databaseTable().hasMissingValues()
           || ((aprioriDatabase_ != nullptr)
@@ -841,7 +841,7 @@ namespace gum {
       }
     }
 
-    std::string genericBNLearner::checkScoreAprioriCompatibility() const {
+    std::string GenericBNLearner::checkScoreAprioriCompatibility() const {
       const std::string& apriori = getAprioriType_();
 
       switch (scoreType_) {
@@ -864,14 +864,14 @@ namespace gum {
           return ScoreLog2Likelihood::isAprioriCompatible(apriori, aprioriWeight_);
 
         default:
-          return "genericBNLearner does not support yet this score";
+          return "GenericBNLearner does not support yet this score";
       }
     }
 
 
     /// sets the ranges of rows to be used for cross-validation learning
     std::pair< std::size_t, std::size_t >
-       genericBNLearner::useCrossValidationFold(const std::size_t learning_fold,
+       GenericBNLearner::useCrossValidationFold(const std::size_t learning_fold,
                                                 const std::size_t k_fold) {
       if (k_fold == 0) { GUM_ERROR(OutOfBounds, "K-fold cross validation with k=0 is forbidden") }
 
@@ -910,7 +910,7 @@ namespace gum {
     }
 
 
-    std::pair< double, double > genericBNLearner::chi2(const NodeId                 id1,
+    std::pair< double, double > GenericBNLearner::chi2(const NodeId                 id1,
                                                        const NodeId                 id2,
                                                        const std::vector< NodeId >& knowing) {
       createApriori_();
@@ -919,7 +919,7 @@ namespace gum {
       return chi2score.statistics(id1, id2, knowing);
     }
 
-    std::pair< double, double > genericBNLearner::chi2(const std::string&                name1,
+    std::pair< double, double > GenericBNLearner::chi2(const std::string&                name1,
                                                        const std::string&                name2,
                                                        const std::vector< std::string >& knowing) {
       std::vector< NodeId > knowingIds;
@@ -930,7 +930,7 @@ namespace gum {
       return chi2(idFromName(name1), idFromName(name2), knowingIds);
     }
 
-    std::pair< double, double > genericBNLearner::G2(const NodeId                 id1,
+    std::pair< double, double > GenericBNLearner::G2(const NodeId                 id1,
                                                      const NodeId                 id2,
                                                      const std::vector< NodeId >& knowing) {
       createApriori_();
@@ -938,7 +938,7 @@ namespace gum {
       return g2score.statistics(id1, id2, knowing);
     }
 
-    std::pair< double, double > genericBNLearner::G2(const std::string&                name1,
+    std::pair< double, double > GenericBNLearner::G2(const std::string&                name1,
                                                      const std::string&                name2,
                                                      const std::vector< std::string >& knowing) {
       std::vector< NodeId > knowingIds;
@@ -949,7 +949,7 @@ namespace gum {
       return G2(idFromName(name1), idFromName(name2), knowingIds);
     }
 
-    double genericBNLearner::logLikelihood(const std::vector< NodeId >& vars,
+    double GenericBNLearner::logLikelihood(const std::vector< NodeId >& vars,
                                            const std::vector< NodeId >& knowing) {
       createApriori_();
       gum::learning::ScoreLog2Likelihood ll2score(scoreDatabase_.parser(),
@@ -967,7 +967,7 @@ namespace gum {
       }
     }
 
-    double genericBNLearner::logLikelihood(const std::vector< std::string >& vars,
+    double GenericBNLearner::logLikelihood(const std::vector< std::string >& vars,
                                            const std::vector< std::string >& knowing) {
       std::vector< NodeId > ids;
       std::vector< NodeId > knowingIds;
@@ -982,7 +982,7 @@ namespace gum {
       return logLikelihood(ids, knowingIds);
     }
 
-    std::vector< double > genericBNLearner::rawPseudoCount(const std::vector< NodeId >& vars) {
+    std::vector< double > GenericBNLearner::rawPseudoCount(const std::vector< NodeId >& vars) {
       Potential< double > res;
 
       createApriori_();
@@ -991,7 +991,7 @@ namespace gum {
     }
 
 
-    std::vector< double > genericBNLearner::rawPseudoCount(const std::vector< std::string >& vars) {
+    std::vector< double > GenericBNLearner::rawPseudoCount(const std::vector< std::string >& vars) {
       std::vector< NodeId > ids;
 
       auto mapper = [this](const std::string& c) -> NodeId {
@@ -1005,7 +1005,7 @@ namespace gum {
 
 
     /// use a new set of database rows' ranges to perform learning
-    void genericBNLearner::useDatabaseRanges(
+    void GenericBNLearner::useDatabaseRanges(
        const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges) {
       // use a score to detect whether the ranges are ok
       ScoreLog2Likelihood score(scoreDatabase_.parser(), *noApriori_);

@@ -47,7 +47,10 @@ def export(model, filename=None, **kwargs):
     tmp = tempfile.NamedTemporaryFile(suffix='.png', delete=False)
     export(model, tmp.name,**kwargs)
     img = mpimg.imread(tmp.name)
-    os.remove(tmp.name)
+    try:
+      os.remove(tmp.name)
+    except PermissionError: # probably windows error : file still 'used' ... grrr...
+      pass
     return img
 
   fmt_image = filename.split(".")[-1]
@@ -67,6 +70,8 @@ def export(model, filename=None, **kwargs):
     fig = ID2dot(model, **kwargs)
   elif isinstance(model, gum.CredalNet):
     fig = CN2dot(model, **kwargs)
+  elif isinstance(model,dot.Dot):
+    fig=model
   elif hasattr(model, "toDot"):
     fig = dot.graph_from_dot_data(model.toDot())[0]
 
@@ -242,7 +247,10 @@ def exportInference(model, filename=None, **kwargs):
     tmp = tempfile.NamedTemporaryFile(suffix='.png', delete=False)
     exportInference(model, tmp.name,**kwargs)
     img = mpimg.imread(tmp.name)
-    os.remove(tmp.name)
+    try:
+      os.remove(tmp.name)
+    except PermissionError: # probably windows error : file still 'used' ... grrr...
+      pass
     return img
 
   fmt_image = filename.split(".")[-1]

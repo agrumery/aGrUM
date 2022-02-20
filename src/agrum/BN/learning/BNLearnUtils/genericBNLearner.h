@@ -50,6 +50,8 @@
 #include <agrum/tools/database/DBRowGeneratorEM.h>
 #include <agrum/tools/database/DBRowGeneratorSet.h>
 
+#include <agrum/BN/algorithms/essentialGraph.h>
+
 #include <agrum/BN/learning/scores_and_tests/scoreAIC.h>
 #include <agrum/BN/learning/scores_and_tests/scoreBD.h>
 #include <agrum/BN/learning/scores_and_tests/scoreBDeu.h>
@@ -96,14 +98,15 @@ namespace gum {
 
     class BNLearnerListener;
 
-    /** @class genericBNLearner
+    /** @class GenericBNLearner
      * @brief A pack of learning algorithms that can easily be used
      *
      * The pack currently contains K2, GreedyHillClimbing and
      * LocalSearchWithTabuList also 3off2/miic
      * @ingroup learning_group
      */
-    class genericBNLearner: public gum::IApproximationSchemeConfiguration {
+    class GenericBNLearner: public gum::IApproximationSchemeConfiguration {
+      
       // private:
       public:
       /// an enumeration enabling to select easily the score we wish to use
@@ -325,11 +328,11 @@ namespace gum {
        * precisely what the BNLearner will do. If inducedTypes is false, all the values in
        * the dataset are interpreted as "labels", i.e., as categorical values.
        */
-      genericBNLearner(const std::string&                filename,
+      GenericBNLearner(const std::string&                filename,
                        const std::vector< std::string >& missingSymbols,
                        bool                              induceTypes = true);
 
-      genericBNLearner(const DatabaseTable& db);
+      GenericBNLearner(const DatabaseTable& db);
 
       /**
        * read the database file for the score / parameter estimation and var
@@ -349,18 +352,18 @@ namespace gum {
        * be interpreted as missing values
        */
       template < typename GUM_SCALAR >
-      genericBNLearner(const std::string&                 filename,
+      GenericBNLearner(const std::string&                 filename,
                        const gum::BayesNet< GUM_SCALAR >& src,
                        const std::vector< std::string >&  missing_symbols);
 
       /// copy constructor
-      genericBNLearner(const genericBNLearner&);
+      GenericBNLearner(const GenericBNLearner&);
 
       /// move constructor
-      genericBNLearner(genericBNLearner&&);
+      GenericBNLearner(GenericBNLearner&&);
 
       /// destructor
-      virtual ~genericBNLearner();
+      virtual ~GenericBNLearner();
 
       /// @}
 
@@ -369,11 +372,11 @@ namespace gum {
       // ##########################################################################
       /// @{
 
-      /// copy operator
-      genericBNLearner& operator=(const genericBNLearner&);
+      /// copy operator                                                                                                       
+      GenericBNLearner& operator=(const GenericBNLearner&);
 
       /// move operator
-      genericBNLearner& operator=(genericBNLearner&&);
+      GenericBNLearner& operator=(GenericBNLearner&&);
 
       /// @}
 
@@ -611,11 +614,11 @@ namespace gum {
       /** The BDeu apriori adds weight to all the cells of the countings
        * tables. In other words, it adds weight rows in the database with
        * equally probable values. */
-      void useAprioriBDeu(double weight = 1);
+      void useAprioriBDeu(double weight = 1.0);
 
       /// use the apriori smoothing
       /** @param weight pass in argument a weight if you wish to assign a weight
-       * to the smoothing, else the current weight of the genericBNLearner will
+       * to the smoothing, else the current weight of the GenericBNLearner will
        * be used. */
       void useAprioriSmoothing(double weight = 1);
 
@@ -887,7 +890,7 @@ namespace gum {
       /// @name redistribute signals AND implementation of interface
       /// IApproximationSchemeConfiguration
       // ##########################################################################
-      // in order to not pollute the proper code of genericBNLearner, we
+      // in order to not pollute the proper code of GenericBNLearner, we
       // directly
       // implement those
       // very simples methods here.

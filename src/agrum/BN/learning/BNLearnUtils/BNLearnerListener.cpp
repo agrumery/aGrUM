@@ -42,7 +42,7 @@ s
 
 namespace gum {
   namespace learning {
-    BNLearnerListener::BNLearnerListener(genericBNLearner* bnl, ApproximationScheme& sch) :
+    BNLearnerListener::BNLearnerListener(GenericBNLearner* bnl, ApproximationScheme& sch) :
         ApproximationSchemeListener(sch), _bnlearner_(bnl) {
       bnl->setCurrentApproximationScheme(&sch);
       GUM_CONSTRUCTOR(BNLearnerListener);

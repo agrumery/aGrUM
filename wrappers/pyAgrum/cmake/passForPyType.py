@@ -111,6 +111,7 @@ def doTheJob(target, resultat, backup, debugmode):
     ('gum::Variable', '"pyAgrum.Variable"'),
     ('gum::IDiscretizedVariable', '"pyAgrum.DiscretizedVariable"'),
     ('gum::DAG', '"pyAgrum.DAG"'),
+    ('gum::learning::BNLearner< double >','"pyAgrum.BNLearner"'),
 
     # enum
     ('gum::RelevantPotentialsFinderType', "int"),
