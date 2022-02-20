@@ -108,30 +108,12 @@ class FlowLayout(object):
       if title is None:
         cap=""
       else:
+        print("`title` is obsolete since `0.22.8`. Please use `caption`.")
         cap=title
     else:
       cap=caption
 
     self.sHtml += f'<div class="floating-box">{html}{self._getCaption(cap)}</div>'
-    return self
-
-  def add(self,obj, caption=None, title=None):
-    """
-    add an element in the row by trying to convert it to html if possible.
-    (title is an obsolete parameter)
-    """
-    if caption is None:
-      if title is None:
-        cap=""
-      else:
-        cap=title
-    else:
-      cap=caption
-
-    if hasattr(obj,"_repr_html_"):
-      self.add_html(obj._repr_html_(),cap)
-    else:
-      self.add_html(obj,cap)
     return self
 
   def add_separator(self, size=3):
@@ -150,6 +132,7 @@ class FlowLayout(object):
       if title is None:
         cap=""
       else:
+        print("`title` is obsolete since `0.22.8`. Please use `caption`.")
         cap=title
     else:
       cap=caption
@@ -184,20 +167,39 @@ class FlowLayout(object):
     IPython.display.display(self.html())
     self.clear()
 
+  def add(self,obj, caption=None, title=None):
+    """
+    add an element in the row by trying to treat it as plot or html if possible.
+    (title is an obsolete parameter)
+    """
+    if caption is None:
+      if title is None:
+        cap=""
+      else:
+        print("`title` is obsolete since `0.22.8`. Please use `caption`.")
+        cap=title
+    else:
+      cap=caption
+
+    if hasattr(obj, "get_figure"):
+      self.add_plot(arg, cap)
+    elif hasattr(obj,"_repr_html_"):
+      self.add_html(obj._repr_html_(),cap)
+    else:
+      self.add_html(obj,cap)
+
+    return self
+
   def row(self, *args, captions=None):
+    """
+    Create a row with flow with the same syntax as `pyAgrum.lib.notebook.sideBySide`.
+    """
     self.clear()
     for i, arg in enumerate(args):
       if captions is None:
-        t = ""
+        self.add(arg)
       else:
-        t = captions[i]
-
-      if hasattr(arg, "get_figure"):
-        self.add_plot(arg, caption=t)
-      elif hasattr(arg, "_repr_html_"):
-        self.add_html(arg._repr_html_(), caption=t)
-      else:
-        self.add_html(arg, caption=t)
+        self.add(arg,captions[i])
 
     self.display()
 
@@ -217,11 +219,12 @@ def configuration():
   packages["OS"] = "%s [%s]" % (os.name, sys.platform)
   packages["Python"] = sys.version
   packages["IPython"] = IPython.__version__
-  packages["MatPlotLib"] = mpl.__version__
+  packages["Matplotlib"] = mpl.__version__
   packages["Numpy"] = np.__version__
+  packages["pyDot"] = dot.__version__
   packages["pyAgrum"] = gum.__version__
 
-  res = "<table width='100%'><tr><th>Library</th><th>Version</th></tr>"
+  res = "<table><tr><th>Library</th><th>Version</th></tr>"
 
   for name in packages:
     res += "<tr><td>%s</td><td>%s</td></tr>" % (name, packages[name])
