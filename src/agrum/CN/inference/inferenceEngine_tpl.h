@@ -24,6 +24,9 @@
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
+
+#include <algorithm>
+
 #include <agrum/CN/inference/inferenceEngine.h>
 #include <agrum/agrum.h>
 
@@ -985,7 +988,51 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     inline const GUM_SCALAR InferenceEngine< GUM_SCALAR >::computeEpsilon_() {
+      auto nsize = (unsigned int)(marginalMin_.size());
+
+      // compute the number of threads and prepare for the result
+      const auto nb_threads = std::min(nsize, gum::getCurrentNumberOfThreads());
+      const auto ranges = gum::dispatchRangeToThreads(0, nsize, nb_threads);
+      std::vector< GUM_SCALAR > tEps(nb_threads, std::numeric_limits<GUM_SCALAR>::max());
+
+      // create the function to be executed by the threads
+      auto threadedEps = [this, ranges, &tEps] (const std::size_t this_thread,
+                                               const std::size_t nb_threads) {
+        auto& this_tEps = tEps[this_thread];
+
+        for (Idx i = ranges[this_thread].first, end=ranges[this_thread].second;
+             i < end; i++) {
+          const auto dSize = this->marginalMin_[i].size();
+
+          for (Size j = 0; j < dSize; j++) {
+            // on min
+            GUM_SCALAR delta = this->marginalMin_[i][j] - this->oldMarginalMin_[i][j];
+            delta = (delta < 0) ? (-delta) : delta;
+            this_tEps = (this_tEps < delta) ? delta : this_tEps;
+
+            // on max
+            delta = this->marginalMax_[i][j] - this->oldMarginalMax_[i][j];
+            delta = (delta < 0) ? (-delta) : delta;
+            this_tEps  = (this_tEps < delta) ? delta : this_tEps;
+
+            oldMarginalMin_[i][j] = marginalMin_[i][j];
+            oldMarginalMax_[i][j] = marginalMax_[i][j];
+          }
+        }   // end of : all variables
+      };
+
+      // launch the threads
+      ThreadExecutor::execute(nb_threads, threadedEps);
+
+      // aggregate all the results
+      GUM_SCALAR eps = tEps[0];
+      for (const auto nb: tEps)
+        eps = (eps < nb) ? nb : eps;
+
+
+      /*
       GUM_SCALAR eps = 0;
+
 #pragma omp parallel
       {
         GUM_SCALAR tEps = 0;
@@ -1021,6 +1068,7 @@ namespace gum {
           eps = (eps < tEps) ? tEps : eps;
         }
       }
+       */
 
       return eps;
     }

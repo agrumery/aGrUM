@@ -33,8 +33,53 @@
 
 namespace gum {
 
+  /**
+   * @brief Returns the maximum number of threads at any time.
+   * @ingroup basicstruct_group
+   *
+   * Call this from anywhere (parallel region or not). By default, it is the
+   * number of threads launched in any parallel region.
+   *
+   * @return Returns the maximum number of threads at any time.
+   */
   using gum::GUM_THREADS::getMaxNumberOfThreads;
+
+   /**
+   * @brief Get the number of logical processors.
+   * @ingroup basicstruct_group
+   * @return The number of logical processors.
+   */
   using gum::GUM_THREADS::getNumberOfLogicalProcessors;
+
+  /**
+   * @brief Set the number of threads to be used.
+   * @ingroup basicstruct_group
+   *
+   * To avoid spare cycles (less then 100% CPU occupied), use more threads than
+   * logical processors (x2 is a good all-around value).
+   * @param number The number of threads to be used.
+   */
+  void setNumberOfThreads(unsigned int number);
+
+  /**
+   * @brief returns the number of threads used by default when entering the next
+   * parallel region
+   * @return the number of threads used by default the next time we enter into
+   * a parallel region
+   */
+  unsigned int getCurrentNumberOfThreads();
+
+  /** returns a vector equally splitting elements of a range among threads
+   * @brief
+   * @param beg the beginning of the range (included)
+   * @param end the end of the range (excluded)
+   * @param nb_threads the number of threads over which we would like performing
+   * the splitting
+   * @return a vector containing the range [beginning,end) that each thread should
+   * work on
+   */
+  std::vector< std::pair< Idx, Idx > >
+     dispatchRangeToThreads(Idx beg, Idx end, unsigned int nb_threads);
   
 } /* namespace gum */
 

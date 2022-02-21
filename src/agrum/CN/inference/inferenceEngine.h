@@ -36,6 +36,10 @@
 #include <agrum/tools/core/math/pow.h>
 #include <agrum/tools/core/math/rational.h>
 
+#include <agrum/tools/core/threads.h>
+#include <agrum/tools/core/threadExecutor.h>
+#include <agrum/tools/core/threadData.h>
+
 namespace gum {
   namespace credal {
 
