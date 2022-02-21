@@ -65,19 +65,19 @@ namespace gum {
      * @par The following codes show the details of this process:
      * @code
      * // 1/ use the initializer to parse all the columns/rows of a CSV file
-     * gum::learning::DBInitializerFromCSV<> initializer ( "asia.csv" );
+     * gum::learning::DBInitializerFromCSV initializer ( "asia.csv" );
      * const auto& var_names = initializer.variableNames ();
      * const std::size_t nb_vars = var_names.size ();
      *
      * // we create as many translators as there are variables
-     * gum::learning::DBTranslator4LabelizedVariable<> translator;
-     * gum::learning::DBTranslatorSet<> translator_set;
+     * gum::learning::DBTranslator4LabelizedVariable translator;
+     * gum::learning::DBTranslatorSet translator_set;
      * for ( std::size_t i = 0; i < nb_vars; ++i )
      *   translator_set.insertTranslator ( translator, i );
 
      * // create a DatabaseTable with these translators. For the moment, the
      * // DatabaseTable will be empty, i.e., it will contain no row
-     * gum::learning::DatabaseTable<> database ( translator_set );
+     * gum::learning::DatabaseTable database ( translator_set );
      * database.setVariableNames( initializer.variableNames () );
      *
      * // use the DBInitializerFromCSV to fill the rows:
@@ -87,8 +87,8 @@ namespace gum {
      *
      * // 2/ use an IDBInitializer to initialize a DatabaseTable, but ignore
      * // some columns.
-     * gum::learning::DBInitializerFromCSV<> initializer2 ( "asia.csv" );
-     * gum::learning::DatabaseTable<> database2; // empty database
+     * gum::learning::DBInitializerFromCSV initializer2 ( "asia.csv" );
+     * gum::learning::DatabaseTable database2; // empty database
      *
      * // indicate which columns of the CSV file should be read
      * database2.insertTranslator ( translator, 1 );
@@ -106,8 +106,8 @@ namespace gum {
      *
      * // 3/ another possibility to initialize a DatabaseTable, ignoring
      * // some columns:
-     * gum::learning::DBInitializerFromCSV<> initializer3 ( "asia.csv" );
-     * gum::learning::DatabaseTable<> database3 ( translator_set );
+     * gum::learning::DBInitializerFromCSV initializer3 ( "asia.csv" );
+     * gum::learning::DatabaseTable database3 ( translator_set );
      * // here, database3 is an empty database but it contains already
      * // translators for all the columns of the CSV file. We shall now remove
      * // the columns/translators that are not wanted anymore
@@ -127,11 +127,8 @@ namespace gum {
      * // but only columns 1, 3 and 4 of the CSV file have been kept.
      * @endcode
      */
-    template < template < typename > class ALLOC = std::allocator >
-    class DBInitializerFromCSV: public IDBInitializer< ALLOC > {
+    class DBInitializerFromCSV: public IDBInitializer {
       public:
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC< std::string >;
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -147,36 +144,23 @@ namespace gum {
        * @param commentmarker the character that marks the beginning of a comment
        * @param quoteMarker the character that is used to quote the sentences
        * in the CSV file
-       * @param alloc the allocator used by all the methods
        */
       DBInitializerFromCSV(const std::string     filename,
                            bool                  fileContainsNames = true,
                            const std::string     delimiter         = ",",
                            const char            commentmarker     = '#',
-                           const char            quoteMarker       = '"',
-                           const allocator_type& alloc             = allocator_type());
+                           const char            quoteMarker       = '"');
 
       /// copy constructor
       /** the new initializer points to the same file as from, but it reparses
        * it from scratch. */
-      DBInitializerFromCSV(const DBInitializerFromCSV< ALLOC >& from);
-
-      /// copy constructor with a given allocator
-      /** the new initializer points to the same file as from, but it reparses
-       * it from scratch. */
-      DBInitializerFromCSV(const DBInitializerFromCSV< ALLOC >& from, const allocator_type& alloc);
+      DBInitializerFromCSV(const DBInitializerFromCSV& from);
 
       /// move constructor
-      DBInitializerFromCSV(DBInitializerFromCSV< ALLOC >&& from);
-
-      /// move constructor with a given allocator
-      DBInitializerFromCSV(DBInitializerFromCSV< ALLOC >&& from, const allocator_type& alloc);
+      DBInitializerFromCSV(DBInitializerFromCSV&& from);
 
       /// virtual copy constructor
-      virtual DBInitializerFromCSV< ALLOC >* clone() const;
-
-      /// virtual copy constructor with a given allocator
-      virtual DBInitializerFromCSV< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual DBInitializerFromCSV* clone() const;
 
       /// destructor
       virtual ~DBInitializerFromCSV();
@@ -193,22 +177,22 @@ namespace gum {
       /// copy operator
       /** the initializer points to the same file as from, but it reparses
        * it from scratch. */
-      DBInitializerFromCSV< ALLOC >& operator=(const DBInitializerFromCSV< ALLOC >& from);
+      DBInitializerFromCSV& operator=(const DBInitializerFromCSV& from);
 
       /// move operator
       /** the initializer points to the same file as from, but it reparses
        * it from scratch. */
-      DBInitializerFromCSV< ALLOC >& operator=(DBInitializerFromCSV< ALLOC >&& from);
+      DBInitializerFromCSV& operator=(DBInitializerFromCSV&& from);
 
       /// @}
 
 
       protected:
       /// returns the names of the variables
-      virtual std::vector< std::string, ALLOC< std::string > > variableNames_() final;
+      virtual std::vector< std::string > variableNames_() final;
 
       /// returns the content of the current row using strings
-      virtual const std::vector< std::string, ALLOC< std::string > >& currentStringRow_() final;
+      virtual const std::vector< std::string >& currentStringRow_() final;
 
       /// indicates whether there is a next row to read (and point on it)
       virtual bool nextRow_() final;
@@ -236,10 +220,10 @@ namespace gum {
       std::ifstream _input_stream_;
 
       // the CSV parser used for the reading the CSV file
-      CSVParser< ALLOC > _parser_;
+      CSVParser _parser_;
 
       // the variables names, if the first row has names
-      std::vector< std::string, ALLOC< std::string > > _var_names_;
+      std::vector< std::string > _var_names_;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
@@ -248,8 +232,9 @@ namespace gum {
 
 } /* namespace gum */
 
-// always include the template implementation
-#include <agrum/tools/database/DBInitializerFromCSV_tpl.h>
-
+/// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/tools/database/DBInitializerFromCSV_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_DB_INITILIALIZER_FROM_CSV_H */

@@ -4,9 +4,9 @@ LabelizedVariable is a discrete random variable with a customizable sequence of 
 
 LabelizedVariable(aName, aDesc='', nbrLabel=2) -> LabelizedVariable
     Parameters:
-        * **aName** (*str*) -- the name of the variable
-        * **aDesc** (*str*) -- the (optional) description of the variable
-        * **nbrLabel** (*int*) -- the number of labels to create (2 by default)
+        * **aName** (str) -- the name of the variable
+        * **aDesc** (str) -- the (optional) description of the variable
+        * **nbrLabel** (int) -- the number of labels to create (2 by default)
 
 LabelizedVariable(aLDRV) -> LabelizedVariable
     Parameters:
@@ -51,7 +51,7 @@ aLabel : str
 
 Raises
 ------
-pyAgrum.DuplicatedElement
+pyAgrum.DuplicateElement
   If the variable already contains the new label
 pyAgrum.OutOfBounds
   If the index is greater than the size of the variable

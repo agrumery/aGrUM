@@ -394,8 +394,8 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
       TS_ASSERT_THROWS(dbgen->toDatabaseTable(), gum::OperationNotAllowed)
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
-      gum::learning::DatabaseTable<> db;
-      bool                           useLabels = true;
+      gum::learning::DatabaseTable db;
+      bool                         useLabels = true;
       TS_ASSERT_THROWS_NOTHING(db = dbgen->toDatabaseTable(useLabels))
 
       auto handler = db.handler();

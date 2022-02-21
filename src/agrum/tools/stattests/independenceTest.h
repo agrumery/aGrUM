@@ -48,12 +48,8 @@ namespace gum {
      * @headerfile independenceTest.h <agrum/BN/learning/scores_and_tests/independenceTest.h>
      * @ingroup learning_scores
      */
-    template < template < typename > class ALLOC = std::allocator >
     class IndependenceTest {
       public:
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC< NodeId >;
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -77,18 +73,14 @@ namespace gum {
        * in which variable A has a NodeId of 5. An empty nodeId2Columns
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
-       * @param alloc the allocator used to allocate the structures within the
-       * IndependenceTest.
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      IndependenceTest(const DBRowGeneratorParser< ALLOC >& parser,
-                       const Apriori< ALLOC >&              external_apriori,
-                       const std::vector< std::pair< std::size_t, std::size_t >,
-                                          ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
-                       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
-                       = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-                       const allocator_type& alloc = allocator_type());
+      IndependenceTest(const DBRowGeneratorParser&                                 parser,
+                       const Apriori&                                              external_apriori,
+                       const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
+                       const Bijection< NodeId, std::size_t >&                     nodeId2columns
+                       = Bijection< NodeId, std::size_t >());
 
 
       /// default constructor
@@ -103,22 +95,16 @@ namespace gum {
        * in which variable A has a NodeId of 5. An empty nodeId2Columns
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
-       * @param alloc the allocator used to allocate the structures within the
-       * IndependenceTest.
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      IndependenceTest(const DBRowGeneratorParser< ALLOC >& parser,
-                       const Apriori< ALLOC >&              external_apriori,
-                       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
-                       = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-                       const allocator_type& alloc = allocator_type());
+      IndependenceTest(const DBRowGeneratorParser&             parser,
+                       const Apriori&                          external_apriori,
+                       const Bijection< NodeId, std::size_t >& nodeId2columns
+                       = Bijection< NodeId, std::size_t >());
 
       /// virtual copy constructor
-      virtual IndependenceTest< ALLOC >* clone() const = 0;
-
-      /// virtual copy constructor with a given allocator
-      virtual IndependenceTest< ALLOC >* clone(const allocator_type& alloc) const = 0;
+      virtual IndependenceTest* clone() const = 0;
 
       /// destructor
       virtual ~IndependenceTest();
@@ -158,18 +144,13 @@ namespace gum {
        * cross validation tasks, in which part of the database should be ignored.
        * An empty set of ranges is equivalent to an interval [X,Y) ranging over
        * the whole database. */
-      template < template < typename > class XALLOC >
-      void setRanges(
-         const std::vector< std::pair< std::size_t, std::size_t >,
-                            XALLOC< std::pair< std::size_t, std::size_t > > >& new_ranges);
+      void setRanges(const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges);
 
       /// reset the ranges to the one range corresponding to the whole database
       void clearRanges();
 
       /// returns the current ranges
-      const std::vector< std::pair< std::size_t, std::size_t >,
-                         ALLOC< std::pair< std::size_t, std::size_t > > >&
-         ranges() const;
+      const std::vector< std::pair< std::size_t, std::size_t > >& ranges() const;
 
 
       /// returns the score of a pair of nodes
@@ -180,9 +161,7 @@ namespace gum {
        * @param var2 the second variable on the left side of the conditioning bar
        * @param rhs_ids the set of variables on the right side of the
        * conditioning bar */
-      double score(const NodeId                                  var1,
-                   const NodeId                                  var2,
-                   const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids);
+      double score(const NodeId var1, const NodeId var2, const std::vector< NodeId >& rhs_ids);
 
       /// clears all the data structures from memory, including the cache
       virtual void clear();
@@ -197,13 +176,10 @@ namespace gum {
       /** @warning An empty nodeId2Columns bijection means that the mapping is
        * an identity, i.e., the value of a NodeId is equal to the index of the
        * column in the DatabaseTable. */
-      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2Columns() const;
+      const Bijection< NodeId, std::size_t >& nodeId2Columns() const;
 
       /// return the database used by the score
-      const DatabaseTable< ALLOC >& database() const;
-
-      /// returns the allocator used by the score
-      allocator_type getAllocator() const;
+      const DatabaseTable& database() const;
 
       /// @}
 
@@ -213,44 +189,38 @@ namespace gum {
       const double one_log2_{M_LOG2E};
 
       /// the expert knowledge a priori we add to the contingency tables
-      Apriori< ALLOC >* apriori_{nullptr};
+      Apriori* apriori_{nullptr};
 
       /// the record counter used for the countings over discrete variables
-      RecordCounter< ALLOC > counter_;
+      RecordCounter counter_;
 
       /// the scoring cache
-      ScoringCache< ALLOC > cache_;
+      ScoringCache cache_;
 
       /// a Boolean indicating whether we wish to use the cache
       bool use_cache_{true};
 
       /// an empty vector
-      const std::vector< NodeId, ALLOC< NodeId > > empty_ids_;
+      const std::vector< NodeId > empty_ids_;
 
 
       /// copy constructor
-      IndependenceTest(const IndependenceTest< ALLOC >& from);
-
-      /// copy constructor with a given allocator
-      IndependenceTest(const IndependenceTest< ALLOC >& from, const allocator_type& alloc);
+      IndependenceTest(const IndependenceTest& from);
 
       /// move constructor
-      IndependenceTest(IndependenceTest< ALLOC >&& from);
-
-      /// move constructor with a given allocator
-      IndependenceTest(IndependenceTest< ALLOC >&& from, const allocator_type& alloc);
+      IndependenceTest(IndependenceTest&& from);
 
       /// copy operator
-      IndependenceTest< ALLOC >& operator=(const IndependenceTest< ALLOC >& from);
+      IndependenceTest& operator=(const IndependenceTest& from);
 
       /// move operator
-      IndependenceTest< ALLOC >& operator=(IndependenceTest< ALLOC >&& from);
+      IndependenceTest& operator=(IndependenceTest&& from);
 
       /// returns the score for a given IdCondSet
       /** @throws OperationNotAllowed is raised if the score does not support
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
-      virtual double score_(const IdCondSet< ALLOC >& idset) = 0;
+      virtual double score_(const IdCondSet& idset) = 0;
 
       /// returns a counting vector where variables are marginalized from N_xyz
       /** @param node_2_marginalize indicates which node(s) shall be marginalized:
@@ -262,25 +232,20 @@ namespace gum {
        * @param Z_size the domain size of the set of conditioning variables Z
        * @param N_xyz a counting vector of dimension X * Y * Z (in this order)
        */
-      std::vector< double, ALLOC< double > >
-         marginalize_(const std::size_t                             node_2_marginalize,
-                      const std::size_t                             X_size,
-                      const std::size_t                             Y_size,
-                      const std::size_t                             Z_size,
-                      const std::vector< double, ALLOC< double > >& N_xyz) const;
+      std::vector< double > marginalize_(const std::size_t            node_2_marginalize,
+                                         const std::size_t            X_size,
+                                         const std::size_t            Y_size,
+                                         const std::size_t            Z_size,
+                                         const std::vector< double >& N_xyz) const;
     };
 
   } /* namespace learning */
 
 } /* namespace gum */
 
-
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-extern template class gum::learning::IndependenceTest<>;
-#endif
-
-
-/// include the template implementation
-#include <agrum/tools/stattests/independenceTest_tpl.h>
+// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#  include <agrum/tools/stattests/independenceTest_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_INDEPENDENCE_TEST_H */

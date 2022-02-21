@@ -109,12 +109,8 @@ namespace gum {
      * const std::vector< double >& counts2 = counter.counts ( ids );
      * @endcode
      */
-    template < template < typename > class ALLOC = std::allocator >
     class RecordCounter {
       public:
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC< NodeId >;
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -135,17 +131,13 @@ namespace gum {
        * in which variable A has a NodeId of 5. An empty nodeId2Columns
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
-       * @param alloc the allocator used to allocate the structures within the
-       * RecordCounter.
        * @warning If nodeId2columns is not empty, then only the counts over the
        * ids belonging to this bijection can be computed: applying method
        * counts() over other ids will raise exception NotFound. */
-      RecordCounter(const DBRowGeneratorParser< ALLOC >&                                 parser,
-                    const std::vector< std::pair< std::size_t, std::size_t >,
-                                       ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
-                    const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
-                    = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-                    const allocator_type& alloc = allocator_type());
+      RecordCounter(const DBRowGeneratorParser&                                 parser,
+                    const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
+                    const Bijection< NodeId, std::size_t >&                     nodeId2columns
+                    = Bijection< NodeId, std::size_t >());
 
       /// default constructor
       /** @param parser the parser used to parse the database
@@ -156,33 +148,21 @@ namespace gum {
        * in which variable A has a NodeId of 5. An empty nodeId2Columns
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
-       * @param alloc the allocator used to allocate the structures within the
-       * RecordCounter.
        * @warning If nodeId2columns is not empty, then only the counts over the
        * ids belonging to this bijection can be computed: applying method
        * counts() over other ids will raise exception NotFound. */
-      RecordCounter(const DBRowGeneratorParser< ALLOC >&                          parser,
-                    const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
-                    = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-                    const allocator_type& alloc = allocator_type());
+      RecordCounter(const DBRowGeneratorParser&             parser,
+                    const Bijection< NodeId, std::size_t >& nodeId2columns
+                    = Bijection< NodeId, std::size_t >());
 
       /// copy constructor
-      RecordCounter(const RecordCounter< ALLOC >& from);
-
-      /// copy constructor with a given allocator
-      RecordCounter(const RecordCounter< ALLOC >& from, const allocator_type& alloc);
+      RecordCounter(const RecordCounter& from);
 
       /// move constructor
-      RecordCounter(RecordCounter< ALLOC >&& from);
-
-      /// move constructor with a given allocator
-      RecordCounter(RecordCounter< ALLOC >&& from, const allocator_type& alloc);
+      RecordCounter(RecordCounter&& from);
 
       /// virtual copy constructor
-      virtual RecordCounter< ALLOC >* clone() const;
-
-      /// virtual copy constructor with a given allocator
-      virtual RecordCounter< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual RecordCounter* clone() const;
 
       /// destructor
       virtual ~RecordCounter();
@@ -197,10 +177,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      RecordCounter< ALLOC >& operator=(const RecordCounter< ALLOC >& from);
+      RecordCounter& operator=(const RecordCounter& from);
 
       /// move operator
-      RecordCounter< ALLOC >& operator=(RecordCounter< ALLOC >&& from);
+      RecordCounter& operator=(RecordCounter&& from);
 
       /// @}
 
@@ -255,7 +235,7 @@ namespace gum {
        * @warning The vector returned by the function may differ from one
        * call to another. So, care must be taken. E,g. a code like:
        * @code
-       * const std::vector< double, ALLOC<double> >&
+       * const std::vector< double >&
        * counts = counter.counts(ids);
        * counts = counter.counts(other_ids);
        * @endcode
@@ -263,17 +243,17 @@ namespace gum {
        * return references to different vectors. The correct way of using method
        * counts() is always to call it declaring a new reference variable:
        * @code
-       * const std::vector< double, ALLOC<double> >& counts =
+       * const std::vector< double >& counts =
        *   counter.counts(ids);
-       * const std::vector< double, ALLOC<double> >& other_counts =
+       * const std::vector< double >& other_counts =
        *   counter.counts(other_ids);
        * @endcode
        * @throw TypeError is raised if check_discrete_vars is set to true (i.e.,
        * we check that all variables in the IdCondSet are discrete) and if at least
        * one variable is not of a discrete nature.
        */
-      const std::vector< double, ALLOC< double > >& counts(const IdCondSet< ALLOC >& ids,
-                                                           const bool check_discrete_vars = false);
+      const std::vector< double >& counts(const IdCondSet& ids,
+                                          const bool       check_discrete_vars = false);
 
       /// sets new ranges to perform the countings
       /** @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
@@ -282,18 +262,13 @@ namespace gum {
        * cross validation tasks, in which part of the database should be ignored.
        * An empty set of ranges is equivalent to an interval [X,Y) ranging over
        * the whole database. */
-      template < template < typename > class XALLOC >
-      void setRanges(
-         const std::vector< std::pair< std::size_t, std::size_t >,
-                            XALLOC< std::pair< std::size_t, std::size_t > > >& new_ranges);
+      void setRanges(const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges);
 
       /// reset the ranges to the one range corresponding to the whole database
       void clearRanges();
 
       /// returns the current ranges
-      const std::vector< std::pair< std::size_t, std::size_t >,
-                         ALLOC< std::pair< std::size_t, std::size_t > > >&
-         ranges() const;
+      const std::vector< std::pair< std::size_t, std::size_t > >& ranges() const;
 
       /// assign a new Bayes net to all the counter's generators depending on a BN
       /** Typically, generators based on EM or K-means depend on a model to
@@ -302,17 +277,14 @@ namespace gum {
       template < typename GUM_SCALAR >
       void setBayesNet(const BayesNet< GUM_SCALAR >& new_bn);
 
-      /// returns the allocator used
-      allocator_type getAllocator() const;
-
       /// returns the mapping from ids to column positions in the database
       /** @warning An empty nodeId2Columns bijection means that the mapping is
        * an identity, i.e., the value of a NodeId is equal to the index of the
        * column in the DatabaseTable. */
-      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2Columns() const;
+      const Bijection< NodeId, std::size_t >& nodeId2Columns() const;
 
       /// returns the database on which we perform the counts
-      const DatabaseTable< ALLOC >& database() const;
+      const DatabaseTable& database() const;
 
       /// @}
 
@@ -321,40 +293,34 @@ namespace gum {
 
       private:
       // the parsers used by the threads
-      std::vector< ThreadData< DBRowGeneratorParser< ALLOC > >,
-                   ALLOC< ThreadData< DBRowGeneratorParser< ALLOC > > > >
-         _parsers_;
+      std::vector< ThreadData< DBRowGeneratorParser > > _parsers_;
 
       // the set of ranges of the database's rows indices over which the user
       // wishes to perform the countings
-      std::vector< std::pair< std::size_t, std::size_t >,
-                   ALLOC< std::pair< std::size_t, std::size_t > > >
-         _ranges_;
+      std::vector< std::pair< std::size_t, std::size_t > > _ranges_;
 
       // the ranges actually used by the threads: there is a hopefully clever
       // algorithm that split the rows ranges into another set of ranges that
       // are assigned to the threads. For instance, if the database has 1000
-      // rows and there are 10 threads, each one will be assigned a set of 100
+      // rows and there are 10 threads, each one will be assed a set of 100
       // rows. These sets are precisely what are stored in the field below
-      mutable std::vector< std::pair< std::size_t, std::size_t >,
-                           ALLOC< std::pair< std::size_t, std::size_t > > >
-         _thread_ranges_;
+      mutable std::vector< std::pair< std::size_t, std::size_t > > _thread_ranges_;
 
       // the mapping from the NodeIds of the variables to the indices of the
       // columns in the database
-      Bijection< NodeId, std::size_t, ALLOC< std::size_t > > _nodeId2columns_;
+      Bijection< NodeId, std::size_t > _nodeId2columns_;
 
       // the last database-parsed countings
-      std::vector< double, ALLOC< double > > _last_DB_countings_;
+      std::vector< double > _last_DB_countings_;
 
       // the ids of the nodes for the last database-parsed countings
-      IdCondSet< ALLOC > _last_DB_ids_;
+      IdCondSet _last_DB_ids_;
 
       // the last countings deduced from  _last_DB_countings_
-      std::vector< double, ALLOC< double > > _last_nonDB_countings_;
+      std::vector< double > _last_nonDB_countings_;
 
       // the ids of the nodes of last countings deduced from  _last_DB_countings_
-      IdCondSet< ALLOC > _last_nonDB_ids_;
+      IdCondSet _last_nonDB_ids_;
 
       // the maximal number of threads that the record counter can use
       mutable std::size_t _max_nb_threads_{std::size_t(gum::getMaxNumberOfThreads())};
@@ -366,38 +332,33 @@ namespace gum {
       // returns a mapping from the nodes ids to the columns of the database
       // for a given sequence of ids. This is especially convenient when
       //  _nodeId2columns_ is empty (which means that there is an identity mapping)
-      HashTable< NodeId, std::size_t > _getNodeIds2Columns_(const IdCondSet< ALLOC >& ids) const;
+      HashTable< NodeId, std::size_t > _getNodeIds2Columns_(const IdCondSet& ids) const;
 
       /// extracts some new countings from previously computed ones
-      std::vector< double, ALLOC< double > >&
-         _extractFromCountings_(const IdCondSet< ALLOC >&                     subset_ids,
-                                const IdCondSet< ALLOC >&                     superset_ids,
-                                const std::vector< double, ALLOC< double > >& superset_vect);
+      std::vector< double >& _extractFromCountings_(const IdCondSet&             subset_ids,
+                                                    const IdCondSet&             superset_ids,
+                                                    const std::vector< double >& superset_vect);
 
       /// parse the database to produce new countings
-      std::vector< double, ALLOC< double > >& _countFromDatabase_(const IdCondSet< ALLOC >& ids);
-
+      std::vector< double >& _countFromDatabase_(const IdCondSet& ids);
 
       /// checks that the ranges passed in argument are ok or raise an exception
       /** A range is ok if its upper bound is strictly higher than its lower
        * bound and the latter is also lower than or equal to the number of rows
        * in the database. */
-      template < template < typename > class XALLOC >
       void _checkRanges_(
-         const std::vector< std::pair< std::size_t, std::size_t >,
-                            XALLOC< std::pair< std::size_t, std::size_t > > >& new_ranges) const;
+         const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges) const;
 
       /// check that the variables at indices [beg,end) of an idset are discrete
       /** @throw TypeError is raised if at least one variable in ids is
        * of a continuous nature. */
-      void _checkDiscreteVariables_(const IdCondSet< ALLOC >& ids) const;
+      void _checkDiscreteVariables_(const IdCondSet& ids) const;
 
       /// compute and raise the exception when some variables are continuous
       /** This method is used by  _checkDiscreteVariables_ to determine the
        * appropriate message to include in the TypeError exception raised when
        * some variables over which we should perform countings are continuous. */
-      void _raiseCheckException_(
-         const std::vector< std::string, ALLOC< std::string > >& bad_vars) const;
+      void _raiseCheckException_(const std::vector< std::string >& bad_vars) const;
 
       /// sets the ranges within which each thread will perform its computations
       void _dispatchRangesToThreads_();
@@ -411,5 +372,10 @@ namespace gum {
 
 /// always include the templated implementations
 #include <agrum/tools/stattests/recordCounter_tpl.h>
+
+/// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/tools/stattests/recordCounter_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_RECORD_COUNTER_H */

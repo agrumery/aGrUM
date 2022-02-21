@@ -1,10 +1,29 @@
-# -*- encoding: UTF-8 -*-
+# (c) Copyright by Pierre-Henri Wuillemin, UPMC, 2017
+# (pierre-henri.wuillemin@lip6.fr)
+
+# Permission to use, copy, modify, and distribute this
+# software and its documentation for any purpose and
+# without fee or royalty is hereby granted, provided
+# that the above copyright notice appear in all copies
+# and that both that copyright notice and this permission
+# notice appear in supporting documentation or portions
+# thereof, including modifications, that you make.
+
+# THE AUTHOR P.H. WUILLEMIN  DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE, INCLUDING ALL IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT
+# SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, INDIRECT
+# OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER
+# RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER
+# IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
+# ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
+# OR PERFORMANCE OF THIS SOFTWARE!
 import pyAgrum.lib.bn_vs_bn as bvb
 import unittest
 
 import numpy
 import pyAgrum as gum
-from pyAgrumTestSuite import pyAgrumTestCase, addTests
+from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 
 class BayesNetTestCase(pyAgrumTestCase):
@@ -157,7 +176,7 @@ class TestFeatures(BayesNetTestCase):
   def testChangeLabel(self):
     bn = gum.BayesNet()
 
-    res = bn.loadBIF(self.agrumSrcDir('src/testunits/ressources/alarm.bif'))
+    res = bn.loadBIF(self.agrumSrcDir('alarm.bif'))
 
     self.assertEqual(str(bn.variable(0)), "HISTORY:Labelized(<TRUE,FALSE>)")
     bn.variable(0).toLabelizedVar().changeLabel(0, "toto")
@@ -484,7 +503,7 @@ class TestLoadBN(BayesNetTestCase):
     self.bufferecoute = ""
     bn = gum.BayesNet()
     res = bn.loadBIF(self.agrumSrcDir(
-        'src/testunits/ressources/alarm.bif'), self.listen)
+        'alarm.bif'), self.listen)
     self.assertEqual(self.bufferlisten, "##########")
     self.assertEqual(self.bufferecoute, "")
     self.assertTrue(res == "")
@@ -498,7 +517,7 @@ class TestLoadBN(BayesNetTestCase):
     self.bufferlisten = ""
     self.bufferecoute = ""
     bn = gum.BayesNet()
-    res = bn.loadBIF(self.agrumSrcDir('src/testunits/ressources/alarm.bif'))
+    res = bn.loadBIF(self.agrumSrcDir('alarm.bif'))
     self.assertEqual(self.bufferlisten, "")
     self.assertEqual(self.bufferecoute, "")
     self.assertTrue(res == "")
@@ -513,7 +532,7 @@ class TestLoadBN(BayesNetTestCase):
     self.bufferecoute = ""
     bn = gum.BayesNet()
     res = bn.loadBIF(self.agrumSrcDir(
-        'src/testunits/ressources/alarm.bif'), [self.listen, self.ecoute])
+        'alarm.bif'), [self.listen, self.ecoute])
     self.assertEqual(self.bufferlisten, "##########")
     self.assertEqual(self.bufferecoute, "FINI")
     self.assertTrue(res == "")
@@ -528,7 +547,7 @@ class TestLoadBN(BayesNetTestCase):
     self.bufferecoute = ""
     bn = gum.BayesNet()
     res = bn.loadBIF(self.agrumSrcDir(
-        'src/testunits/ressources/alarm.bif'), (self.ecoute, self.listen))
+        'alarm.bif'), (self.ecoute, self.listen))
     self.assertEqual(self.bufferlisten, "##########")
     self.assertEqual(self.bufferecoute, "FINI")
     self.assertTrue(res == "")
@@ -543,7 +562,7 @@ class TestLoadBN(BayesNetTestCase):
     self.bufferecoute = ""
     bn = gum.BayesNet()
     res = bn.loadNET(self.agrumSrcDir(
-        'src/testunits/ressources/test1.net'), self.listen)
+        'test1.net'), self.listen)
     self.assertEqual(self.bufferlisten, "##########")
     self.assertEqual(self.bufferecoute, "")
     self.assertTrue(res == "")
@@ -553,7 +572,7 @@ class TestLoadBN(BayesNetTestCase):
     self.bufferecoute = ""
     bn = gum.BayesNet()
     res = bn.loadDSL(self.agrumSrcDir(
-        'src/testunits/ressources/DSL/alarm.dsl'), self.listen)
+        'DSL/alarm.dsl'), self.listen)
     self.assertEqual(self.bufferlisten, "##########")
     self.assertEqual(self.bufferecoute, "")
     self.assertTrue(res == "")
@@ -568,7 +587,7 @@ class TestLoadBN(BayesNetTestCase):
     self.bufferecoute = ""
     bn = gum.BayesNet()
     res = bn.loadDSL(self.agrumSrcDir(
-        'src/testunits/ressources/DSL/alarm.dsl'))
+        'DSL/alarm.dsl'))
     self.assertEqual(self.bufferlisten, "")
     self.assertEqual(self.bufferecoute, "")
     self.assertTrue(res == "")
@@ -583,7 +602,7 @@ class TestLoadBN(BayesNetTestCase):
     self.bufferecoute = ""
     bn = gum.BayesNet()
     res = bn.loadDSL(self.agrumSrcDir(
-        'src/testunits/ressources/DSL/alarm.dsl'), [self.listen, self.ecoute])
+        'DSL/alarm.dsl'), [self.listen, self.ecoute])
     self.assertEqual(self.bufferlisten, "##########")
     self.assertEqual(self.bufferecoute, "FINI")
     self.assertTrue(res == "")
@@ -598,7 +617,7 @@ class TestLoadBN(BayesNetTestCase):
     self.bufferecoute = ""
     bn = gum.BayesNet()
     res = bn.loadDSL(self.agrumSrcDir(
-        'src/testunits/ressources/DSL/alarm.dsl'), (self.ecoute, self.listen))
+        'DSL/alarm.dsl'), (self.ecoute, self.listen))
     self.assertEqual(self.bufferlisten, "##########")
     self.assertEqual(self.bufferecoute, "FINI")
     self.assertTrue(res == "")
@@ -609,17 +628,17 @@ class TestLoadBN(BayesNetTestCase):
                                 [0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
 
   def testO3PRMLoad(self):
-    bn = gum.loadBN(self.agrumSrcDir('src/testunits/ressources/o3prm/Asia.o3prm'), [],
+    bn = gum.loadBN(self.agrumSrcDir('o3prm/Asia.o3prm'), [],
                     verbose=False)  # verbose=False : don't want to see the warnings
     self.assertEqual(bn.size(), 8)
 
   def testUAILoad(self):
-    bn = gum.loadBN(self.agrumSrcDir('src/testunits/ressources/uai/BNUAIReader_file2.uai'), [],
+    bn = gum.loadBN(self.agrumSrcDir('uai/BNUAIReader_file2.uai'), [],
                     verbose=False)  # verbose=False : don't want to see the warnings
     self.assertEqual(bn.size(), 5)
 
   def testBIFXMLLoad(self):
-    bn = gum.loadBN(self.agrumSrcDir('src/testunits/ressources/dog.bifxml'), [],
+    bn = gum.loadBN(self.agrumSrcDir('dog.bifxml'), [],
                     verbose=False)  # verbose=False : don't want to see the warnings
     self.assertEqual(bn.size(), 5)
 
@@ -650,10 +669,10 @@ class TestSaveBN(BayesNetTestCase):
                           0.5, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0])
 
     gum.saveBN(bn, self.agrumSrcDir(
-        "src/testunits/ressources/o3prm/BNO3PRMIO_file.o3prm"))
+        "o3prm/BNO3PRMIO_file.o3prm"))
 
     bn2 = gum.loadBN(self.agrumSrcDir(
-        "src/testunits/ressources/o3prm/BNO3PRMIO_file.o3prm"), system="bayesnet")
+        "o3prm/BNO3PRMIO_file.o3prm"), system="bayesnet")
 
     self.assertEqual(bn.dim(), bn2.dim())
     self.assertEqual(bn.log10DomainSize(), bn2.log10DomainSize())

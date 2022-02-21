@@ -107,8 +107,7 @@ namespace gum {
       // private:
       public:
       /// an enumeration enabling to select easily the score we wish to use
-      enum class ScoreType
-      {
+      enum class ScoreType {
         AIC,
         BD,
         BDeu,
@@ -119,14 +118,10 @@ namespace gum {
 
       /// an enumeration to select the type of parameter estimation we shall
       /// apply
-      enum class ParamEstimatorType
-      {
-        ML
-      };
+      enum class ParamEstimatorType { ML };
 
       /// an enumeration to select the apriori
-      enum class AprioriType
-      {
+      enum class AprioriType {
         NO_APRIORI,
         SMOOTHING,
         DIRICHLET_FROM_DATABASE,
@@ -134,8 +129,7 @@ namespace gum {
       };
 
       /// an enumeration to select easily the learning algorithm to use
-      enum class AlgoType
-      {
+      enum class AlgoType {
         K2,
         GREEDY_HILL_CLIMBING,
         LOCAL_SEARCH_WITH_TABU_LIST,
@@ -171,7 +165,7 @@ namespace gum {
         /** @param db an already initialized database table that is used to
          * fill the Database
          */
-        explicit Database(const DatabaseTable<>& db);
+        explicit Database(const DatabaseTable& db);
 
         /// constructor for the aprioris
         /** We must ensure that the variables of the Database are identical to
@@ -230,7 +224,7 @@ namespace gum {
         /// @{
 
         /// returns the parser for the database
-        DBRowGeneratorParser<>& parser();
+        DBRowGeneratorParser& parser();
 
         /// returns the domain sizes of the variables
         const std::vector< std::size_t >& domainSizes() const;
@@ -245,7 +239,7 @@ namespace gum {
         const std::string& nameFromId(NodeId id) const;
 
         /// returns the internal database table
-        const DatabaseTable<>& databaseTable() const;
+        const DatabaseTable& databaseTable() const;
 
         /** @brief assign a weight to all the rows of the database so
          * that the sum of their weights is equal to new_weight */
@@ -282,10 +276,10 @@ namespace gum {
 
         protected:
         /// the database itself
-        DatabaseTable<> _database_;
+        DatabaseTable _database_;
 
         /// the parser used for reading the database
-        DBRowGeneratorParser<>* _parser_{nullptr};
+        DBRowGeneratorParser* _parser_{nullptr};
 
         /// the domain sizes of the variables (useful to speed-up computations)
         std::vector< std::size_t > _domain_sizes_;
@@ -331,7 +325,7 @@ namespace gum {
                        const std::vector< std::string >& missingSymbols,
                        bool                              induceTypes = true);
 
-      genericBNLearner(const DatabaseTable<>& db);
+      genericBNLearner(const DatabaseTable& db);
 
       /**
        * read the database file for the score / parameter estimation and var
@@ -413,7 +407,7 @@ namespace gum {
       NodeId idFromName(const std::string& var_name) const;
 
       /// returns the database used by the BNLearner
-      const DatabaseTable<>& database() const;
+      const DatabaseTable& database() const;
 
       /** @brief assign a weight to all the rows of the learning database so
        * that the sum of their weights is equal to new_weight */
@@ -443,10 +437,8 @@ namespace gum {
        * performing cross validation tasks, in which part of the database should
        * be ignored. An empty set of ranges is equivalent to an interval [X,Y)
        * ranging over the whole database. */
-      template < template < typename > class XALLOC >
-      void useDatabaseRanges(
-         const std::vector< std::pair< std::size_t, std::size_t >,
-                            XALLOC< std::pair< std::size_t, std::size_t > > >& new_ranges);
+      void
+         useDatabaseRanges(const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges);
 
       /// reset the ranges to the one range corresponding to the whole database
       void clearDatabaseRanges();
@@ -769,7 +761,7 @@ namespace gum {
       ScoreType scoreType_{ScoreType::BDeu};
 
       /// the score used
-      Score<>* score_{nullptr};
+      Score* score_{nullptr};
 
       /// the type of the parameter estimator
       ParamEstimatorType paramEstimatorType_{ParamEstimatorType::ML};
@@ -778,15 +770,15 @@ namespace gum {
       double epsilonEM_{0.0};
 
       /// the selected correction for 3off2 and miic
-      CorrectedMutualInformation<>* mutualInfo_{nullptr};
+      CorrectedMutualInformation* mutualInfo_{nullptr};
 
       /// the a priori selected for the score and parameters
       AprioriType aprioriType_{AprioriType::NO_APRIORI};
 
       /// the apriori used
-      Apriori<>* apriori_{nullptr};
+      Apriori* apriori_{nullptr};
 
-      AprioriNoApriori<>* noApriori_{nullptr};
+      AprioriNoApriori* noApriori_{nullptr};
 
       /// the weight of the apriori
       double aprioriWeight_{1.0f};
@@ -819,11 +811,11 @@ namespace gum {
       Miic algoMiic3off2_;
 
       /// the penalty used in 3off2
-      typename CorrectedMutualInformation<>::KModeTypes kmode3Off2_{
-         CorrectedMutualInformation<>::KModeTypes::MDL};
+      typename CorrectedMutualInformation::KModeTypes kmode3Off2_{
+         CorrectedMutualInformation::KModeTypes::MDL};
 
       /// the parametric EM
-      DAG2BNLearner<> Dag2BN_;
+      DAG2BNLearner Dag2BN_;
 
       /// the greedy hill climbing algorithm
       GreedyHillClimbing greedyHillClimbing_;
@@ -857,8 +849,8 @@ namespace gum {
       const ApproximationScheme* currentAlgorithm_{nullptr};
 
       /// reads a file and returns a databaseVectInRam
-      static DatabaseTable<> readFile_(const std::string&                filename,
-                                       const std::vector< std::string >& missing_symbols);
+      static DatabaseTable readFile_(const std::string&                filename,
+                                     const std::vector< std::string >& missing_symbols);
 
       /// checks whether the extension of a CSV filename is correct
       static void isCSVFileName_(const std::string& filename);
@@ -870,8 +862,8 @@ namespace gum {
       void createScore_();
 
       /// create the parameter estimator used for learning
-      ParamEstimator<>* createParamEstimator_(DBRowGeneratorParser<>& parser,
-                                              bool take_into_account_score = true);
+      ParamEstimator* createParamEstimator_(DBRowGeneratorParser& parser,
+                                            bool                  take_into_account_score = true);
 
       /// returns the DAG learnt
       DAG learnDag_();

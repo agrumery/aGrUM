@@ -408,13 +408,9 @@ Compute the joint posterior of a set of nodes.
 
 Parameters
 ----------
-list :
+targets :
   the list of nodes whose posterior joint probability is wanted
 
-
-Warnings
---------
-The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used bu the Potential.
 
 Returns
 -------
@@ -425,6 +421,12 @@ Raises
 ------
 pyAgrum.UndefinedElement
   If an element of nodes is not in targets
+
+
+Warnings
+--------
+- The order of the variables given by the targets here or when the jointTarget is declared can not be assumed to be used by the Potential.
+- The nodes with hard evidence are removed fom the targets.
 "
 
 %feature("docstring") gum::classname::jointTargets

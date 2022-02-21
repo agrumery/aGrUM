@@ -23,7 +23,6 @@
 
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/testsuite_utils.h>
-#include <ressources/include/countedAlloc.h>
 
 #include <agrum/tools/core/hashFunc.h>
 #include <agrum/tools/core/multiPriorityQueue.h>
@@ -109,13 +108,13 @@ namespace gum_tests {
                                        std::pair< int, int >(2, 1),
                                        std::pair< int, int >(3, 10)};
 
-      gum::PriorityQueue< int, int, std::less< int >, DebugCountedAlloc< int > > queue3;
+      gum::PriorityQueue< int, int, std::less< int > > queue3;
       queue3 = queue1;
       TS_ASSERT_EQUALS(queue3.top(), 2)
       TS_ASSERT_EQUALS(queue3.topPriority(), 1)
       TS_ASSERT_EQUALS(queue3.size(), (gum::Size)3)
 
-      gum::PriorityQueue< int, int, std::less< int >, DebugCountedAlloc< int > > queue4(queue1);
+      gum::PriorityQueue< int, int, std::less< int > > queue4(queue1);
       TS_ASSERT_EQUALS(queue4.top(), 2)
       TS_ASSERT_EQUALS(queue4.topPriority(), 1)
       TS_ASSERT_EQUALS(queue4.size(), (gum::Size)3)
@@ -125,8 +124,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(queue2.topPriority(), 1)
       TS_ASSERT_EQUALS(queue2.size(), (gum::Size)3)
 
-      gum::PriorityQueue< int, int, std::less< int >, DebugCountedAlloc< int > > queue5(
-         std::move(queue4));
+      gum::PriorityQueue< int, int, std::less< int > > queue5(std::move(queue4));
       TS_ASSERT_EQUALS(queue5.top(), 2)
       TS_ASSERT_EQUALS(queue5.topPriority(), 1)
       TS_ASSERT_EQUALS(queue5.size(), (gum::Size)3)
@@ -143,14 +141,13 @@ namespace gum_tests {
                                                std::pair< std::string, int >("b", 1),
                                                std::pair< std::string, int >("c", 10)};
 
-      gum::PriorityQueue< std::string, int, std::less< int >, DebugCountedAlloc< int > > queue3;
+      gum::PriorityQueue< std::string, int, std::less< int > > queue3;
       queue3 = queue1;
       TS_ASSERT_EQUALS(queue3.top(), "b")
       TS_ASSERT_EQUALS(queue3.topPriority(), 1)
       TS_ASSERT_EQUALS(queue3.size(), (gum::Size)3)
 
-      gum::PriorityQueue< std::string, int, std::less< int >, DebugCountedAlloc< int > > queue4(
-         queue1);
+      gum::PriorityQueue< std::string, int, std::less< int > > queue4(queue1);
       TS_ASSERT_EQUALS(queue4.top(), "b")
       TS_ASSERT_EQUALS(queue4.topPriority(), 1)
       TS_ASSERT_EQUALS(queue4.size(), (gum::Size)3)
@@ -160,8 +157,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(queue2.topPriority(), 1)
       TS_ASSERT_EQUALS(queue2.size(), (gum::Size)3)
 
-      gum::PriorityQueue< std::string, int, std::less< int >, DebugCountedAlloc< int > > queue5(
-         std::move(queue4));
+      gum::PriorityQueue< std::string, int, std::less< int > > queue5(std::move(queue4));
       TS_ASSERT_EQUALS(queue5.top(), "b")
       TS_ASSERT_EQUALS(queue5.topPriority(), 1)
       TS_ASSERT_EQUALS(queue5.size(), (gum::Size)3)
@@ -564,14 +560,13 @@ namespace gum_tests {
                                             std::pair< int, int >(2, 1),
                                             std::pair< int, int >(3, 10)};
 
-      gum::MultiPriorityQueue< int, int, std::less< int >, DebugCountedAlloc< int > > queue3;
+      gum::MultiPriorityQueue< int, int, std::less< int > > queue3;
       queue3 = queue1;
       TS_ASSERT_EQUALS(queue3.top(), 2)
       TS_ASSERT_EQUALS(queue3.topPriority(), 1)
       TS_ASSERT_EQUALS(queue3.size(), (gum::Size)3)
 
-      gum::MultiPriorityQueue< int, int, std::less< int >, DebugCountedAlloc< int > > queue4(
-         queue1);
+      gum::MultiPriorityQueue< int, int, std::less< int > > queue4(queue1);
       TS_ASSERT_EQUALS(queue4.top(), 2)
       TS_ASSERT_EQUALS(queue4.topPriority(), 1)
       TS_ASSERT_EQUALS(queue4.size(), (gum::Size)3)
@@ -581,8 +576,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(queue2.topPriority(), 1)
       TS_ASSERT_EQUALS(queue2.size(), (gum::Size)3)
 
-      gum::MultiPriorityQueue< int, int, std::less< int >, DebugCountedAlloc< int > > queue5(
-         std::move(queue4));
+      gum::MultiPriorityQueue< int, int, std::less< int > > queue5(std::move(queue4));
       TS_ASSERT_EQUALS(queue5.top(), 2)
       TS_ASSERT_EQUALS(queue5.topPriority(), 1)
       TS_ASSERT_EQUALS(queue5.size(), (gum::Size)3)

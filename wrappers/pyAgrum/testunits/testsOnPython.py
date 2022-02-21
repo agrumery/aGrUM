@@ -1,7 +1,21 @@
-#! /usr/bin/env python
-# -*- coding: utf-8 -*-
-# -*- encoding: UTF-8 -*-
-from __future__ import print_function
+# (c) Copyright by Pierre-Henri Wuillemin, UPMC, 2017
+# (pierre-henri.wuillemin@lip6.fr)
+# Permission to use, copy, modify, and distribute this
+# software and its documentation for any purpose and
+# without fee or royalty is hereby granted, provided
+# that the above copyright notice appear in all copies
+# and that both that copyright notice and this permission
+# notice appear in supporting documentation or portions
+# thereof, including modifications, that you make.
+# THE AUTHOR P.H. WUILLEMIN  DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE, INCLUDING ALL IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT
+# SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, INDIRECT
+# OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER
+# RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER
+# IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
+# ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
+# OR PERFORMANCE OF THIS SOFTWARE!
 
 import os
 import platform
@@ -11,10 +25,6 @@ import logging
 
 if __name__ == "__main__":
   print("[pyAgrum] Please use 'act test -t quick|all pyAgrum release'.")
-  sys.exit(0)
-
-if sys.version_info < (3, 7):
-  print("[pyAgrum] python>=3.7 needed.")
   sys.exit(0)
 
 if len(sys.argv) > 1:
@@ -76,6 +86,8 @@ from tests import CausalDSepTestSuite
 from tests import CausalModelTestSuite
 from tests import CausalNonRegressionTestSuite
 
+from tests import WorkaroundTestSuite
+
 import time
 
 tl = list()
@@ -111,6 +123,7 @@ tl.append(CausalASTTestSuite.ts)
 tl.append(CausalDSepTestSuite.ts)
 tl.append(CausalModelTestSuite.ts)
 tl.append(CausalNonRegressionTestSuite.ts)
+tl.append(WorkaroundTestSuite.ts)
 
 tests = unittest.TestSuite(tl)
 

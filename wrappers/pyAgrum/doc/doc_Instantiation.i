@@ -64,7 +64,7 @@ Raises
 ------
 NotFound
   If variable v does not belong to the instantiation.
-OutOfBound
+OutOfBounds
   If newval is not a possible value for the variable.
 "
 

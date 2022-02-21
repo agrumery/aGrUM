@@ -33,7 +33,7 @@ namespace gum {
                                          const std::vector< std::string >& missing_symbols) {
       // assign to each column name in the database its position
       genericBNLearner::isCSVFileName_(filename);
-      DBInitializerFromCSV<>                initializer(filename);
+      DBInitializerFromCSV                  initializer(filename);
       const auto&                           xvar_names = initializer.variableNames();
       std::size_t                           nb_vars    = xvar_names.size();
       HashTable< std::string, std::size_t > var_names(nb_vars);
@@ -65,7 +65,7 @@ namespace gum {
         _domain_sizes_.push_back(dom);
 
       // create the parser
-      _parser_ = new DBRowGeneratorParser<>(_database_.handler(), DBRowGeneratorSet<>());
+      _parser_ = new DBRowGeneratorParser(_database_.handler(), DBRowGeneratorSet());
     }
 
 
@@ -88,21 +88,11 @@ namespace gum {
                                        const std::vector< std::string >&  missing_symbols) :
         scoreDatabase_(filename, bn, missing_symbols) {
       filename_     = filename;
-      noApriori_    = new AprioriNoApriori<>(scoreDatabase_.databaseTable());
+      noApriori_    = new AprioriNoApriori(scoreDatabase_.databaseTable());
       inducedTypes_ = false;
       GUM_CONSTRUCTOR(genericBNLearner);
     }
 
 
-    /// use a new set of database rows' ranges to perform learning
-    template < template < typename > class XALLOC >
-    void genericBNLearner::useDatabaseRanges(
-       const std::vector< std::pair< std::size_t, std::size_t >,
-                          XALLOC< std::pair< std::size_t, std::size_t > > >& new_ranges) {
-      // use a score to detect whether the ranges are ok
-      ScoreLog2Likelihood<> score(scoreDatabase_.parser(), *noApriori_);
-      score.setRanges(new_ranges);
-      ranges_ = score.ranges();
-    }
   }   // namespace learning
 }   // namespace gum

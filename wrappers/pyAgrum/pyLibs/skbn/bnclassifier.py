@@ -87,8 +87,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
                 The format of the values should be a tuple of strings (tail,head) which designates the string arc from
                 tail to head. For example if we put the value ("x0"."y") in MandatoryArcs the network will surely have
                 an arc going from x0 to y.
-                Note: PossibleEdges allows for both (tail,head) and (head,tail) to be added to the Bayesian network,
-                while the others are not symmetric.
+                Note: PossibleEdge allows between nodes x and y allows for either (x,y) or (y,x) (or none of them) to be added to the Bayesian network, while the others are not symmetric.
 
             aPrioriWeight: double
                 The weight used for a priori smoothing.

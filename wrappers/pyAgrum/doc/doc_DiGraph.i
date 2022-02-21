@@ -23,7 +23,7 @@ head : int
 
 Raises
 ------
-pyAgrum.InvalidNode
+  pyAgrum.InvalidNode
   If head or tail does not belong to the graph nodes.
 "
 
@@ -61,7 +61,7 @@ id : int
 
 Raises
 ------
-pyAgrum.DuplicateElement
+  pyAgrum.DuplicateElement
   If the given id is already used
 "
 
@@ -232,7 +232,7 @@ int
 Returns
 -------
 str
-    a friendly display of the graph in DOT format 
+    a friendly display of the graph in DOT format
 "
 
 %feature("docstring") gum::DiGraph::topologicalOrder

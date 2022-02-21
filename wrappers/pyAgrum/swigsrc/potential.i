@@ -159,18 +159,18 @@ CHANGE_THEN_RETURN_SELF(fillWith)
 
     def __rdiv__(self,other):
       return Potential(self).inverse().scale(other)
- 
+
     def __neg__(self):
       return -1*self
-    
+
     def __abs__(self):
       return Potential(self).abs()
-      
+
     def loopIn(self):
       """
-      Generator to iterate inside a Potential. 
+      Generator to iterate inside a Potential.
 
-      Yield an gum.Instantiation that iterates over all the possible values for the gum.Potential
+      Yield an pyAgrum.Instantiation that iterates over all the possible values for the pyAgrum.Potential
 
       Examples
       --------
@@ -179,7 +179,7 @@ CHANGE_THEN_RETURN_SELF(fillWith)
       >>> for i in bn.cpt("B").loopIn():
             print(i)
             print(bn.cpt("B").get(i))
-            bn.cpt("B").set(i,0.3) 
+            bn.cpt("B").set(i,0.3)
       """
       i=Instantiation(self)
       i.setFirst()
@@ -220,7 +220,7 @@ CHANGE_THEN_RETURN_SELF(fillWith)
 
       Raises
       ------
-      gum.InvalidArgument
+        pyAgrum.InvalidArgument
         If the first variable is Labelized or Integer, or if the len of the noise is not odd.
       """
       if self.variable(0).varType()==VarType_Labelized:
@@ -276,11 +276,11 @@ CHANGE_THEN_RETURN_SELF(fillWith)
 
     def __prepareIndices__(self,ind):
       """
-      From an indice (dict or tuple), returns a pair of gum.Instantiation to loop in a part of the Potential.
+      From an indice (dict or tuple), returns a pair of pyAgrum.Instantiation to loop in a part of the Potential.
       """
       loopvars=Instantiation(self)
       loopvars.setMutable()
-      
+
       inst=Instantiation(self)
       inst.setFirst()
 
@@ -288,10 +288,10 @@ CHANGE_THEN_RETURN_SELF(fillWith)
         i = tuple([ind])
       else:
         i = ind
-                      
+
       vn=self.var_names
       if isinstance(i,dict):
-          for nam in vn:        
+          for nam in vn:
               if nam in i:
                   inst.chgVal(nam,i[nam])
                   loopvars.erase(nam)
@@ -310,9 +310,9 @@ CHANGE_THEN_RETURN_SELF(fillWith)
     def __getitem__(self, id):
       if isinstance(id,Instantiation):
           return self.get(id)
-      
+
       inst,loopvars=self.__prepareIndices__(id)
-      
+
       if loopvars.nbrDim()==0:
           return self.get(inst)
 
@@ -321,12 +321,12 @@ CHANGE_THEN_RETURN_SELF(fillWith)
 
         inst=Instantiation(self)
         while not inst.end():
-            content.append(self.get(inst)) 
+            content.append(self.get(inst))
             inst.inc()
         tab=numpy.array(content,dtype=numpy.float64)
         tab.shape=tuple(self.var_dims)
         return tab
-      
+
       names=[loopvars.variable(i-1).name() for i in range(loopvars.nbrDim(),0,-1)]
       tab=numpy.zeros(tuple([loopvars.variable(i-1).domainSize() for i in range(loopvars.nbrDim(),0,-1)]))
       while not inst.end():
@@ -339,13 +339,13 @@ CHANGE_THEN_RETURN_SELF(fillWith)
       if isinstance(id,Instantiation):
           self.set(id,value)
           return
-      
+
       inst,loopvars=self.__prepareIndices__(id)
-      
+
       if loopvars.nbrDim()==0:
           self.set(inst,value)
           return
-          
+
       if isinstance(value,Number):
         while not inst.end():
             self.set(inst,value)

@@ -46,26 +46,26 @@ namespace gum_tests {
   class ThreeOffTwoTestSuite: public CxxTest::TestSuite {
     public:
     void test_3off2_asia_nocorr() {
-      gum::learning::DBInitializerFromCSV<> initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
-      const auto&                           var_names = initializer.variableNames();
-      const std::size_t                     nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+      const auto&                         var_names = initializer.variableNames();
+      const std::size_t                   nb_vars   = var_names.size();
 
-      gum::learning::DBTranslatorSet<>                translator_set;
-      gum::learning::DBTranslator4LabelizedVariable<> translator;
+      gum::learning::DBTranslatorSet                translator_set;
+      gum::learning::DBTranslator4LabelizedVariable translator;
       for (std::size_t i = 0; i < nb_vars; ++i) {
         translator_set.insertTranslator(translator, i);
       }
 
-      gum::learning::DatabaseTable<> database(translator_set);
+      gum::learning::DatabaseTable database(translator_set);
       database.setVariableNames(initializer.variableNames());
       initializer.fillDatabase(database);
 
       database.reorder();
 
-      gum::learning::DBRowGeneratorSet<>          genset;
-      gum::learning::DBRowGeneratorParser<>       parser(database.handler(), genset);
-      gum::learning::AprioriNoApriori<>           apriori(database);
-      gum::learning::CorrectedMutualInformation<> I(parser, apriori);
+      gum::learning::DBRowGeneratorSet          genset;
+      gum::learning::DBRowGeneratorParser       parser(database.handler(), genset);
+      gum::learning::AprioriNoApriori           apriori(database);
+      gum::learning::CorrectedMutualInformation I(parser, apriori);
       I.useNoCorr();
 
 
@@ -84,30 +84,30 @@ namespace gum_tests {
     }
 
     void test_3off2_asia_MDLcorr() {
-      gum::learning::DBInitializerFromCSV<> initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
-      const auto&                           var_names = initializer.variableNames();
-      const std::size_t                     nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+      const auto&                         var_names = initializer.variableNames();
+      const std::size_t                   nb_vars   = var_names.size();
 
-      gum::learning::DBTranslatorSet<> translator_set;
-      gum::LabelizedVariable           var_lab("x", "", 0);
+      gum::learning::DBTranslatorSet translator_set;
+      gum::LabelizedVariable         var_lab("x", "", 0);
       var_lab.addLabel("0");
       var_lab.addLabel("1");
-      gum::learning::DBTranslator4LabelizedVariable<> translator(var_lab);
+      gum::learning::DBTranslator4LabelizedVariable translator(var_lab);
       for (std::size_t i = 0; i < nb_vars; ++i) {
         translator_set.insertTranslator(translator, i);
       }
 
-      gum::learning::DatabaseTable<> database(translator_set);
+      gum::learning::DatabaseTable database(translator_set);
       database.setVariableNames(initializer.variableNames());
       initializer.fillDatabase(database);
 
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::AprioriNoApriori<>           apriori(database);
-      gum::learning::CorrectedMutualInformation<> cI(parser, apriori);
+      gum::learning::AprioriNoApriori           apriori(database);
+      gum::learning::CorrectedMutualInformation cI(parser, apriori);
       cI.useMDL();
       // cI.useCache( false );
 
@@ -128,30 +128,30 @@ namespace gum_tests {
     }
 
     void test_3off2_asia_NMLcorr() {
-      gum::learning::DBInitializerFromCSV<> initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
-      const auto&                           var_names = initializer.variableNames();
-      const std::size_t                     nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+      const auto&                         var_names = initializer.variableNames();
+      const std::size_t                   nb_vars   = var_names.size();
 
-      gum::learning::DBTranslatorSet<> translator_set;
-      gum::LabelizedVariable           var_lab("x", "", 0);
+      gum::learning::DBTranslatorSet translator_set;
+      gum::LabelizedVariable         var_lab("x", "", 0);
       var_lab.addLabel("0");
       var_lab.addLabel("1");
-      gum::learning::DBTranslator4LabelizedVariable<> translator(var_lab);
+      gum::learning::DBTranslator4LabelizedVariable translator(var_lab);
       for (std::size_t i = 0; i < nb_vars; ++i) {
         translator_set.insertTranslator(translator, i);
       }
 
-      gum::learning::DatabaseTable<> database(translator_set);
+      gum::learning::DatabaseTable database(translator_set);
       database.setVariableNames(initializer.variableNames());
       initializer.fillDatabase(database);
 
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::AprioriNoApriori<>           apriori(database);
-      gum::learning::CorrectedMutualInformation<> cI(parser, apriori);
+      gum::learning::AprioriNoApriori           apriori(database);
+      gum::learning::CorrectedMutualInformation cI(parser, apriori);
       cI.useNML();
       // cI.useCache( false );
 
@@ -174,30 +174,30 @@ namespace gum_tests {
     }
 
     void test_3off2_asia_dag() {
-      gum::learning::DBInitializerFromCSV<> initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
-      const auto&                           var_names = initializer.variableNames();
-      const std::size_t                     nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+      const auto&                         var_names = initializer.variableNames();
+      const std::size_t                   nb_vars   = var_names.size();
 
-      gum::learning::DBTranslatorSet<> translator_set;
-      gum::LabelizedVariable           var_lab("x", "", 0);
+      gum::learning::DBTranslatorSet translator_set;
+      gum::LabelizedVariable         var_lab("x", "", 0);
       var_lab.addLabel("0");
       var_lab.addLabel("1");
-      gum::learning::DBTranslator4LabelizedVariable<> translator(var_lab);
+      gum::learning::DBTranslator4LabelizedVariable translator(var_lab);
       for (std::size_t i = 0; i < nb_vars; ++i) {
         translator_set.insertTranslator(translator, i);
       }
 
-      gum::learning::DatabaseTable<> database(translator_set);
+      gum::learning::DatabaseTable database(translator_set);
       database.setVariableNames(initializer.variableNames());
       initializer.fillDatabase(database);
 
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::AprioriNoApriori<>           apriori(database);
-      gum::learning::CorrectedMutualInformation<> cI(parser, apriori);
+      gum::learning::AprioriNoApriori           apriori(database);
+      gum::learning::CorrectedMutualInformation cI(parser, apriori);
       cI.useNML();
 
       gum::learning::Miic search;
@@ -238,7 +238,7 @@ namespace gum_tests {
 
       std::vector< gum::Idx > modalities = filter.modalities();
 
-      gum::learning::CorrectedMutualInformation<> cI(filter, modalities);
+      gum::learning::CorrectedMutualInformation cI(filter, modalities);
       cI.useNML();
       // cI.useMDL();
       // cI.useNoCorr();
@@ -265,30 +265,30 @@ namespace gum_tests {
     }
 
     void test_3off2_asia_constraints() {
-      gum::learning::DBInitializerFromCSV<> initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
-      const auto&                           var_names = initializer.variableNames();
-      const std::size_t                     nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+      const auto&                         var_names = initializer.variableNames();
+      const std::size_t                   nb_vars   = var_names.size();
 
-      gum::learning::DBTranslatorSet<> translator_set;
-      gum::LabelizedVariable           var_lab("x", "", 0);
+      gum::learning::DBTranslatorSet translator_set;
+      gum::LabelizedVariable         var_lab("x", "", 0);
       var_lab.addLabel("0");
       var_lab.addLabel("1");
-      gum::learning::DBTranslator4LabelizedVariable<> translator(var_lab);
+      gum::learning::DBTranslator4LabelizedVariable translator(var_lab);
       for (std::size_t i = 0; i < nb_vars; ++i) {
         translator_set.insertTranslator(translator, i);
       }
 
-      gum::learning::DatabaseTable<> database(translator_set);
+      gum::learning::DatabaseTable database(translator_set);
       database.setVariableNames(initializer.variableNames());
       initializer.fillDatabase(database);
 
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::AprioriNoApriori<>           apriori(database);
-      gum::learning::CorrectedMutualInformation<> cI(parser, apriori);
+      gum::learning::AprioriNoApriori           apriori(database);
+      gum::learning::CorrectedMutualInformation cI(parser, apriori);
       cI.useNML();
       // cI.useCache( false );
 
@@ -319,30 +319,30 @@ namespace gum_tests {
     }
 
     void test_MIIC_asia_NMLcorr() {
-      gum::learning::DBInitializerFromCSV<> initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
-      const auto&                           var_names = initializer.variableNames();
-      const std::size_t                     nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+      const auto&                         var_names = initializer.variableNames();
+      const std::size_t                   nb_vars   = var_names.size();
 
-      gum::learning::DBTranslatorSet<> translator_set;
-      gum::LabelizedVariable           var_lab("x", "", 0);
+      gum::learning::DBTranslatorSet translator_set;
+      gum::LabelizedVariable         var_lab("x", "", 0);
       var_lab.addLabel("0");
       var_lab.addLabel("1");
-      gum::learning::DBTranslator4LabelizedVariable<> translator(var_lab);
+      gum::learning::DBTranslator4LabelizedVariable translator(var_lab);
       for (std::size_t i = 0; i < nb_vars; ++i) {
         translator_set.insertTranslator(translator, i);
       }
 
-      gum::learning::DatabaseTable<> database(translator_set);
+      gum::learning::DatabaseTable database(translator_set);
       database.setVariableNames(initializer.variableNames());
       initializer.fillDatabase(database);
 
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::AprioriNoApriori<>           apriori(database);
-      gum::learning::CorrectedMutualInformation<> cI(parser, apriori);
+      gum::learning::AprioriNoApriori           apriori(database);
+      gum::learning::CorrectedMutualInformation cI(parser, apriori);
       cI.useMDL();
       // cI.useCache( false );
 
@@ -368,30 +368,30 @@ namespace gum_tests {
     }
 
     void test_MIIC_asia_constraints() {
-      gum::learning::DBInitializerFromCSV<> initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
-      const auto&                           var_names = initializer.variableNames();
-      const std::size_t                     nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+      const auto&                         var_names = initializer.variableNames();
+      const std::size_t                   nb_vars   = var_names.size();
 
-      gum::learning::DBTranslatorSet<> translator_set;
-      gum::LabelizedVariable           var_lab("x", "", 0);
+      gum::learning::DBTranslatorSet translator_set;
+      gum::LabelizedVariable         var_lab("x", "", 0);
       var_lab.addLabel("0");
       var_lab.addLabel("1");
-      gum::learning::DBTranslator4LabelizedVariable<> translator(var_lab);
+      gum::learning::DBTranslator4LabelizedVariable translator(var_lab);
       for (std::size_t i = 0; i < nb_vars; ++i) {
         translator_set.insertTranslator(translator, i);
       }
 
-      gum::learning::DatabaseTable<> database(translator_set);
+      gum::learning::DatabaseTable database(translator_set);
       database.setVariableNames(initializer.variableNames());
       initializer.fillDatabase(database);
 
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::AprioriNoApriori<>           apriori(database);
-      gum::learning::CorrectedMutualInformation<> cI(parser, apriori);
+      gum::learning::AprioriNoApriori           apriori(database);
+      gum::learning::CorrectedMutualInformation cI(parser, apriori);
       cI.useMDL();
       // cI.useCache( false );
 

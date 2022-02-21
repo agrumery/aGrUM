@@ -25,7 +25,7 @@
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
-#ifdef ODBC_
+#ifdef _ODBC
 
 #  ifndef GUM_LEARNING_DB_INITILIALIZER_FROM_SQL_H
 #    define GUM_LEARNING_DB_INITILIALIZER_FROM_SQL_H
@@ -65,20 +65,20 @@ namespace gum {
      * const std::string login      = "gonzales";
      * const std::string password   = "agrum";
      * const std::string query      = "SELECT * FROM testunit.asia";
-     * gum::learning::DBInitializerFromSQL<>
+     * gum::learning::DBInitializerFromSQL
      *   initializer ( dataSource, login, password, query );
      * const auto& var_names = initializer.variableNames ();
      * const std::size_t nb_vars = var_names.size ();
      *
      * // we create as many translators as there are variables
-     * gum::learning::DBTranslator4LabelizedVariable<> translator;
-     * gum::learning::DBTranslatorSet<> translator_set;
+     * gum::learning::DBTranslator4LabelizedVariable translator;
+     * gum::learning::DBTranslatorSet translator_set;
      * for ( std::size_t i = 0; i < nb_vars; ++i )
      *   translator_set.insertTranslator ( translator, i );
 
      * // create a DatabaseTable with these translators. For the moment, the
      * // DatabaseTable will be empty, i.e., it will contain no row
-     * gum::learning::DatabaseTable<> database ( translator_set );
+     * gum::learning::DatabaseTable database ( translator_set );
      * database.setVariableNames( initializer.variableNames () );
      *
      * // use the DBInitializerFromSQL to fill the rows:
@@ -88,9 +88,9 @@ namespace gum {
      *
      * // 2/ use an IDBInitializer to initialize a DatabaseTable, but ignore
      * // some columns.
-     * gum::learning::DBInitializerFromSQL<>
+     * gum::learning::DBInitializerFromSQL
      *   initializer2 ( dataSource, login, password, query );
-     * gum::learning::DatabaseTable<> database2; // empty database
+     * gum::learning::DatabaseTable database2; // empty database
      *
      * // indicate which columns of the SQL result should be read
      * database2.insertTranslator ( translator, 1 );
@@ -109,9 +109,9 @@ namespace gum {
      *
      * // 3/ another possibility to initialize a DatabaseTable, ignoring
      * // some columns:
-     * gum::learning::DBInitializerFromSQL<>
+     * gum::learning::DBInitializerFromSQL
      *   initializer3 ( dataSource, login, password, query );
-     * gum::learning::DatabaseTable<> database3 ( translator_set );
+     * gum::learning::DatabaseTable database3 ( translator_set );
      * // here, database3 is an empty database but it contains already
      * // translators for all the columns of the SQL result. We shall now
      * // remove the columns/translators that are not wanted anymore
@@ -132,11 +132,8 @@ namespace gum {
      * // been kept.
      * @endcode
      */
-    template < template < typename > class ALLOC = std::allocator >
-    class DBInitializerFromSQL: public IDBInitializer< ALLOC > {
+    class DBInitializerFromSQL: public IDBInitializer {
       public:
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC< std::string >;
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -153,14 +150,12 @@ namespace gum {
        * @param query The SQL query used as a database.
        * @param timeout Defines a timeout for accessing the SQL database, if 0
        * then no timeout is set.
-       * @param alloc the allocator used to allocate all the data structures
        */
       DBInitializerFromSQL(const std::string&    dataSource,
                            const std::string&    login,
                            const std::string&    password,
                            const std::string&    query,
-                           long                  timeout = 0L,
-                           const allocator_type& alloc   = allocator_type());
+                           long                  timeout = 0L);
 
       /// default constructor, especially for sqlite databases
       /** This will read the result of query and load it in memory.
@@ -170,34 +165,21 @@ namespace gum {
        * @param query The SQL query used as a database.
        * @param timeout Defines a timeout for accessing the SQL database, if 0
        * then no timeout is set.
-       * @param alloc the allocator used to allocate all the data structures
        */
       DBInitializerFromSQL(const std::string&    connection_string,
                            const std::string&    query,
-                           long                  timeout = 0L,
-                           const allocator_type& alloc   = allocator_type());
+                           long                  timeout = 0L);
 
       /// copy constructor
       /** the new initializer points to the same SQL query as from, but
        * it reparses the result it from scratch. */
-      DBInitializerFromSQL(const DBInitializerFromSQL< ALLOC >& from);
-
-      /// copy constructor with a given allocator
-      /** the new initializer points to the same SQL query as from, but
-       * it reparses the result from scratch. */
-      DBInitializerFromSQL(const DBInitializerFromSQL< ALLOC >& from, const allocator_type& alloc);
+      DBInitializerFromSQL(const DBInitializerFromSQL& from);
 
       /// move constructor
-      DBInitializerFromSQL(DBInitializerFromSQL< ALLOC >&& from);
-
-      /// move constructor with a given allocator
-      DBInitializerFromSQL(DBInitializerFromSQL< ALLOC >&& from, const allocator_type& alloc);
+      DBInitializerFromSQL(DBInitializerFromSQL&& from);
 
       /// virtual copy constructor
-      virtual DBInitializerFromSQL< ALLOC >* clone() const;
-
-      /// virtual copy constructor with a given allocator
-      virtual DBInitializerFromSQL< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual DBInitializerFromSQL* clone() const;
 
       /// destructor
       virtual ~DBInitializerFromSQL();
@@ -214,22 +196,22 @@ namespace gum {
       /// copy operator
       /** the new initializer points to the same SQL query as from, but
        * it reparses the result from scratch. */
-      DBInitializerFromSQL< ALLOC >& operator=(const DBInitializerFromSQL< ALLOC >& from);
+      DBInitializerFromSQL& operator=(const DBInitializerFromSQL& from);
 
       /// move operator
       /** the new initializer points to the same SQL query as from, but
        * it reparses the result from scratch. */
-      DBInitializerFromSQL< ALLOC >& operator=(DBInitializerFromSQL< ALLOC >&& from);
+      DBInitializerFromSQL& operator=(DBInitializerFromSQL&& from);
 
       /// @}
 
 
       protected:
       /// returns the names of the variables
-      virtual std::vector< std::string, ALLOC< std::string > > variableNames_() final;
+      virtual std::vector< std::string > variableNames_() final;
 
       /// returns the content of the current row using strings
-      virtual const std::vector< std::string, ALLOC< std::string > >& currentStringRow_() final;
+      virtual const std::vector< std::string >& currentStringRow_() final;
 
       /// indicates whether there is a next row to read (and point on it)
       virtual bool nextRow_() final;
@@ -248,13 +230,13 @@ namespace gum {
       long _timeout_;
 
       // the names of the columns in the query result
-      std::vector< std::string, ALLOC< std::string > > _var_names_;
+      std::vector< std::string > _var_names_;
 
       // the nanodbc connection to the database
       nanodbc::connection _connection_;
 
       // the parser used for parsing the query results
-      NanodbcParser< ALLOC > _parser_;
+      NanodbcParser _parser_;
 
       /// perform a connection from a connection string
       void _connect_(const std::string& connection_string, long timeout);
@@ -267,9 +249,12 @@ namespace gum {
 
 } /* namespace gum */
 
-// always include the template implementation
-#    include <agrum/tools/database/DBInitializerFromSQL_tpl.h>
+
+// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/tools/database/DBInitializerFromSQL_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #  endif /* GUM_LEARNING_DB_INITILIALIZER_FROM_SQL_H */
 
-#endif /* ODBC_ */
+#endif /* _ODBC */

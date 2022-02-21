@@ -24,8 +24,8 @@ n2 : int
 
 Raises
 ------
-pyAgrum.InvalidNode
-  If n1 or n2 does not belong to the graph nodes.
+  pyAgrum.InvalidNode
+    If n1 or n2 does not belong to the graph nodes.
 "
 
 %feature("docstring") gum::UndiGraph::addNode
@@ -62,8 +62,8 @@ id : int
 
 Raises
 ------
-pyAgrum.DuplicateElement
-  If the given id is already used
+  pyAgrum.DuplicateElement
+    If the given id is already used
 "
 
 %feature("docstring") gum::UndiGraph::clear

@@ -24,7 +24,6 @@
 
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/testsuite_utils.h>
-#include <ressources/include/countedAlloc.h>
 
 #include <agrum/tools/core/hashTable.h>
 #include <agrum/tools/core/list.h>
@@ -42,7 +41,7 @@ namespace gum_tests {
       table = new gum::HashTable< int, int >(t2);
       TS_ASSERT_EQUALS(*table, t2)
 
-      gum::HashTable< int, int, DebugCountedAlloc< std::pair< int, int > > > t3(t2);
+      gum::HashTable< int, int > t3(t2);
       TS_ASSERT_EQUALS(t3, t2)
 
       gum::HashTable< int, int > t4(t3);
@@ -361,8 +360,8 @@ namespace gum_tests {
     }
 
     void testGenCopyOperator() {
-      gum::HashTable< int, std::string, DebugCountedAlloc< std::pair< int, std::string > > > t2;
-      gum::HashTable< int, std::string >                                                     t1, t3;
+      gum::HashTable< int, std::string > t2;
+      gum::HashTable< int, std::string > t1, t3;
       fill(t1);
 
       TS_GUM_ASSERT_THROWS_NOTHING(t2 = t1);
@@ -473,7 +472,7 @@ namespace gum_tests {
       }
     }
 
-    void testMapAlloc() {
+    void testMap2() {
       gum::HashTable< int, std::string > t1, map1, map2, map4;
       gum::HashTable< int, int >         map3, map5;
       fill(t1);
@@ -621,114 +620,9 @@ namespace gum_tests {
       }
     }
 
-    void testAllocator() {
-      {
-        gum::HashTable< int, std::string, DebugCountedAlloc< std::string > > table;
-        table.insert(1, "a");
-        table.insert(2, "b");
-        table.insert(3, "c");
-        table.insert(4, "d");
-        table.insert(5, "e");
-        table.insert(6, "f");
-      }
-
-      TS_ASSERT_EQUALS(CountedAlloc::hasMemoryLeak(), false)
-
-      {
-        gum::HashTable< int, std::string, DebugCountedAlloc< std::string > > table;
-        table.insert(1, "a");
-        table.insert(2, "b");
-        table.insert(3, "c");
-        table.insert(4, "d");
-        table.insert(5, "e");
-        table.insert(6, "f");
-        table.erase(2);
-        table.eraseByVal("a");
-        table.erase(4);
-        table.eraseAllVal("c");
-      }
-
-      TS_ASSERT_EQUALS(CountedAlloc::hasMemoryLeak(), false)
-
-      {
-        gum::HashTable< int, std::string, DebugCountedAlloc< std::string > > table;
-        table.insert(1, "a");
-        table.insert(2, "b");
-        table.insert(3, "c");
-        table.insert(4, "d");
-        table.insert(5, "e");
-        table.insert(6, "f");
-
-        std::string s;
-        int         k = 0;
-
-        for (auto iter = table.cbeginSafe(); iter != table.cendSafe();
-             ++iter) {   // safe iterator needed here
-          s = iter.val();
-          k += iter.key();
-        }
-
-        TS_ASSERT_EQUALS(k, 21)
-
-        k = 0;
-
-        for (auto iter = table.beginSafe(); iter != table.endSafe();
-             ++iter) {   // safe iterator needed here
-          s = iter.val();
-          k += iter.key();
-        }
-
-        TS_ASSERT_EQUALS(k, 21)
-
-        k = 0;
-
-        for (auto iter = table.begin(); iter != table.end(); ++iter) {
-          s = iter.val();
-          k += iter.key();
-        }
-
-        TS_ASSERT_EQUALS(k, 21)
-
-        k = 0;
-
-        for (auto iter = table.cbegin(); iter != table.cend(); ++iter) {
-          s = iter.val();
-          k += iter.key();
-        }
-
-        TS_ASSERT_EQUALS(k, 21)
-
-        k = 0;
-
-        for (const auto& elt: table) {
-          s = elt.second;
-          k += elt.first;
-        }
-
-        TS_ASSERT_EQUALS(k, 21)
-
-        gum::HashTableConstIterator< int, std::string >     iter1 = table.cbegin();
-        gum::HashTableIterator< int, std::string >          iter2 = table.begin();
-        gum::HashTableConstIteratorSafe< int, std::string > iter3
-           = table.cbeginSafe();   // safe iterator needed here
-        gum::HashTableIteratorSafe< int, std::string > iter4
-           = table.beginSafe();   // safe iterator needed here
-
-        // TS_ASSERT ( *iter1 == *iter2 )
-        // TS_ASSERT ( *iter3 == *iter4 )
-      }
-
-      TS_ASSERT_EQUALS(CountedAlloc::hasMemoryLeak(), false)
-
-      // gum::HashTable<int, int> t2 { 10, false, false };
-      // gum::HashTable<int, int> t3 ( t2 );
-      // gum::HashTable<int, int> t4 ( gum::HashTable<int, int> { 10 } );
-    }
-
     void testInitializer_list() {
-      gum::HashTable< unsigned int, std::string, DebugCountedAlloc< std::string > > table{
-         std::make_pair(3U, "a"),
-         std::make_pair(2U, "b")};
+      gum::HashTable< unsigned int, std::string > table{std::make_pair(3U, "a"),
+                                                        std::make_pair(2U, "b")};
 
       TS_ASSERT_EQUALS(table.size(), (gum::Size)(gum::Size)2)
       TS_ASSERT_EQUALS(table.exists(3U), true)

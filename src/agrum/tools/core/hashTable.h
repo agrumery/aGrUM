@@ -46,9 +46,9 @@ namespace gum {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
   // the templates used by this file
-  template < typename Key, typename Val, typename Alloc >
+  template < typename Key, typename Val >
   class HashTable;
-  template < typename Key, typename Val, typename Alloc >
+  template < typename Key, typename Val >
   class HashTableList;
   template < typename Key, typename Val >
   class HashTableIterator;
@@ -58,7 +58,7 @@ namespace gum {
   class HashTableIteratorSafe;
   template < typename Key, typename Val >
   class HashTableConstIteratorSafe;
-  template < typename T1, typename T2, typename Alloc >
+  template < typename T1, typename T2 >
   class Bijection;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
@@ -109,14 +109,13 @@ namespace gum {
   // @return Returns the std::ostream s.
   // @tparam Key The type of keys in the gum::HashTableList.
   // @tparam Val The type of values in the gum::HashTableList.
-  // @tparam Alloc The gum::HashTableList allocator.
 
   /**
    * @brief Prints the content of a gum::HashTableList in the stream.
    * @ingroup hashtable_group
    */
-  template < typename Key, typename Val, typename Alloc >
-  std::ostream& operator<<(std::ostream& s, const HashTableList< Key, Val, Alloc >& list);
+  template < typename Key, typename Val >
+  std::ostream& operator<<(std::ostream& s, const HashTableList< Key, Val >& list);
 
   // Doxygen raises warning with the following comment bloc
   // @brief Prints the content of a gum::HashTableList with pointers key in the
@@ -127,7 +126,6 @@ namespace gum {
   // @return Returns the std::ostream s.
   // @tparam Key The type of keys in the gum::HashTableList.
   // @tparam Val The type of values in the gum::HashTableList.
-  // @tparam Alloc The gum::HashTableList allocator.
   //
 
   /**
@@ -135,8 +133,8 @@ namespace gum {
    * the stream.
    * @ingroup hashtable_group
    */
-  template < typename Key, typename Val, typename Alloc >
-  std::ostream& operator<<(std::ostream& s, const HashTableList< Key*, Val, Alloc >& list);
+  template < typename Key, typename Val >
+  std::ostream& operator<<(std::ostream& s, const HashTableList< Key*, Val >& list);
 
   // Doxygen raises warning with the following comment bloc
   // @brief Prints the content of a gum::HashTable in the stream.
@@ -146,14 +144,13 @@ namespace gum {
   // @return Returns the std::ostream s.
   // @tparam Key The type of keys in the gum::HashTable.
   // @tparam Val The type of values in the gum::HashTable.
-  // @tparam Alloc The gum::HashTable allocator.
 
   /**
    * @brief Prints the content of a gum::HashTable in the stream.
    * @ingroup hashtable_group
    */
-  template < typename Key, typename Val, typename Alloc >
-  std::ostream& operator<<(std::ostream& s, const HashTable< Key, Val, Alloc >& table);
+  template < typename Key, typename Val >
+  std::ostream& operator<<(std::ostream& s, const HashTable< Key, Val >& table);
 
   // Doxygen raises warning with the following comment bloc
   // @brief Prints the content of a gum::HashTable with pointers key in the
@@ -164,15 +161,14 @@ namespace gum {
   // @return Returns the std::ostream s.
   // @tparam Key The type of keys in the gum::HashTable.
   // @tparam Val The type of values in the gum::HashTable.
-  // @tparam Alloc The gum::HashTable allocator.
 
   /**
    * @brief Prints the content of a gum::HashTable with pointers key in the
    * stream.
    * @ingroup hashtable_group
    */
-  template < typename Key, typename Val, typename Alloc >
-  std::ostream& operator<<(std::ostream& s, const HashTable< Key*, Val, Alloc >& table);
+  template < typename Key, typename Val >
+  std::ostream& operator<<(std::ostream& s, const HashTable< Key*, Val >& table);
 
   // ===========================================================================
   // ===          LISTS SPECIFIC FOR SAVING ELEMENTS IN HASHTABLES           ===
@@ -297,9 +293,8 @@ namespace gum {
    *
    * @tparam Key The type for keys in a gum::HashTable.
    * @tparam Val The type for values in a gum::HashTable.
-   * @tparam Alloc The gum::HashTable allocator.
    */
-  template < typename Key, typename Val, typename Alloc >
+  template < typename Key, typename Val >
   class HashTableList {
     public:
     /// types for STL compliance
@@ -312,12 +307,8 @@ namespace gum {
     using pointer         = value_type*;
     using const_pointer   = const value_type*;
     using size_type       = Size;
-    using allocator_type  = Alloc;
     using Bucket          = HashTableBucket< Key, Val >;
     /// @}
-
-    /// The Bucket allocator.
-    using BucketAllocator = typename Alloc::template rebind< Bucket >::other;
 
     // ============================================================================
     /// @name Constructors / Destructors
@@ -328,12 +319,8 @@ namespace gum {
      * @brief Basic constructor that creates an empty list.
      *
      * This is what is used basically by gum::HashTable.
-     *
-     * @warning If the allocator is not passed in argument, do not forget to
-     * use method setAllocator after the creation.
-     * @param allocator The gum::HashTableBucket allocator.
      */
-    HashTableList(BucketAllocator* allocator = nullptr) noexcept;
+    HashTableList() noexcept;
 
     /**
      * @brief Copy constructor.
@@ -343,16 +330,15 @@ namespace gum {
      * list. Of course, if these values are pointers, the new values point
      * toward the same elements.
      *
-     * @warning Both from and this will share the same allocator.
      * @param from The gum::HashTableList to copy.
      */
-    HashTableList(const HashTableList< Key, Val, Alloc >& from);
+    HashTableList(const HashTableList< Key, Val >& from);
 
     /**
      * @brief Move constructor.
      * @param from The gum::HashTableList to move.
      */
-    HashTableList(HashTableList< Key, Val, Alloc >&& from) noexcept;
+    HashTableList(HashTableList< Key, Val >&& from) noexcept;
 
     /**
      * @brief Class destructor.
@@ -378,39 +364,17 @@ namespace gum {
      * function guarantees that no memory leak occurs and that the list is kept
      * in a coherent state (that of an empty list).
      *
-     * @warning operator= does not change the current allocator of *this
      * @param from The gum::HashTableList to copy.
      * @return Returns this gum::HashTableList.
      */
-    HashTableList< Key, Val, Alloc >& operator=(const HashTableList< Key, Val, Alloc >& from);
-
-    /**
-     * @brief Generalized assignment operator.
-     *
-     * The new list and that which is copied do not share elements: the new
-     * list contains new instances of the keys and values stored in the copied
-     * list. Of course, if these values are pointers, the new values point
-     * toward the same elements.
-     *
-     * If some allocation problem occurs or if copying the Val elements cannot
-     * be performed properly, exceptions may be raised. In this case, the
-     * function guarantees that no memory leak occurs and that the list is kept
-     * in a coherent state (that of an empty list).
-     *
-     * @warning operator= does not change the current allocator of *this
-     * @param from The gum::HashTableList to copy.
-     * @return Returns this gum::HashTableList.
-     */
-    template < typename OtherAlloc >
-    HashTableList< Key, Val, Alloc >& operator=(const HashTableList< Key, Val, OtherAlloc >& from);
+    HashTableList< Key, Val >& operator=(const HashTableList< Key, Val >& from);
 
     /**
      * @brief Move operator.
-     * @warning operator= does not change the current allocator of *this
      * @param from The gum::HashTableList to copy.
      * @return Returns this gum::HashTableList.
      */
-    HashTableList< Key, Val, Alloc >& operator=(HashTableList< Key, Val, Alloc >&& from) noexcept;
+    HashTableList< Key, Val >& operator=(HashTableList< Key, Val >&& from) noexcept;
 
     /// @}
     // ============================================================================
@@ -497,28 +461,20 @@ namespace gum {
      */
     Bucket* bucket(const Key& key) const;
 
-    /**
-     * @brief Sets a new allocator.
-     * @param alloc The new allocator.
-     */
-    void setAllocator(BucketAllocator& alloc);
-
     /// @}
 
     private:
     /// Friend for faster access.
     /// @{
-    template < typename K, typename V, typename A >
-    friend class HashTableList;
-    friend class HashTable< Key, Val, Alloc >;
+    friend class HashTable< Key, Val >;
     friend class HashTableIterator< Key, Val >;
     friend class HashTableConstIterator< Key, Val >;
     friend class HashTableIteratorSafe< Key, Val >;
     friend class HashTableConstIteratorSafe< Key, Val >;
-    friend std::ostream& operator<<<>(std::ostream&, const HashTableList< Key, Val, Alloc >&);
-    friend std::ostream& operator<<<>(std::ostream&, const HashTableList< Key*, Val, Alloc >&);
-    friend std::ostream& operator<<<>(std::ostream&, const HashTable< Key, Val, Alloc >&);
-    friend std::ostream& operator<<<>(std::ostream&, const HashTable< Key*, Val, Alloc >&);
+    friend std::ostream& operator<<<>(std::ostream&, const HashTableList< Key, Val >&);
+    friend std::ostream& operator<<<>(std::ostream&, const HashTableList< Key*, Val >&);
+    friend std::ostream& operator<<<>(std::ostream&, const HashTable< Key, Val >&);
+    friend std::ostream& operator<<<>(std::ostream&, const HashTable< Key*, Val >&);
     /// @}
 
     /// A pointer on the first element of the chained list.
@@ -530,9 +486,6 @@ namespace gum {
     /// The number of elements in the chained list.
     Size _nb_elements_{Size(0)};
 
-    /// The allocator of the containing hashTable.
-    mutable BucketAllocator* _alloc_bucket_;
-
     /**
      * @brief A function used to perform copies of HashTableLists.
      *
@@ -541,10 +494,8 @@ namespace gum {
      * list is set to the empty list.
      *
      * @param from The gum::HashTableList to copy.
-     * @tparam OtherAlloc The other gum::HashTableList allocator.
      */
-    template < typename OtherAlloc >
-    void _copy_(const HashTableList< Key, Val, OtherAlloc >& from);
+    void _copy_(const HashTableList< Key, Val >& from);
   };
 
   // ===========================================================================
@@ -662,9 +613,8 @@ namespace gum {
    *
    * @tparam Key The type for keys in a gum::HashTable.
    * @tparam Val The type for values in a gum::HashTable.
-   * @tparam Alloc The gum::HashTable allocator.
    */
-  template < typename Key, typename Val, typename Alloc = std::allocator< std::pair< Key, Val > > >
+  template < typename Key, typename Val >
   class HashTable {
     public:
     /// Types for STL compliance.
@@ -678,7 +628,6 @@ namespace gum {
     using const_pointer       = const value_type*;
     using size_type           = Size;
     using difference_type     = std::ptrdiff_t;
-    using allocator_type      = Alloc;
     using iterator            = HashTableIterator< Key, Val >;
     using const_iterator      = HashTableConstIterator< Key, Val >;
     using iterator_safe       = HashTableIteratorSafe< Key, Val >;
@@ -687,9 +636,6 @@ namespace gum {
 
     /// The buckets where data are stored.
     using Bucket = HashTableBucket< Key, Val >;
-
-    /// The Bucket allocator.
-    using BucketAllocator = typename Alloc::template rebind< Bucket >::other;
 
     // ============================================================================
     /// @name Constructors / Destructors
@@ -735,28 +681,13 @@ namespace gum {
      *
      * @param from The gum::HashTable to copy.
      */
-    HashTable(const HashTable< Key, Val, Alloc >& from);
-
-    /**
-     * @brief Generalized copy constructor.
-     *
-     * This creates a new hashtable the content of which is similar to that of
-     * the table passed in argument. Beware: similar does not mean that both
-     * tables share the same objects, but rather that the objects stored in the
-     * newly created table are copies of those of the table passed in argument.
-     * In particular, the new hash table inherits the parameters (resize
-     * policy, uniqueness policy) of table 'table'
-     *
-     * @param from The gum::HashTable to copy.
-     */
-    template < typename OtherAlloc >
-    HashTable(const HashTable< Key, Val, OtherAlloc >& from);
+    HashTable(const HashTable< Key, Val >& from);
 
     /**
      * @brief Move constructor.
      * @param from The gum::HashTable to move.
      */
-    HashTable(HashTable< Key, Val, Alloc >&& from);
+    HashTable(HashTable< Key, Val >&& from);
 
     /**
      * @brief Class destructor.
@@ -1101,22 +1032,7 @@ namespace gum {
      * @param from The gum::HashTable to copy.
      * @return Returns this gum::HashTable.
      */
-    HashTable< Key, Val, Alloc >& operator=(const HashTable< Key, Val, Alloc >& from);
-
-    /**
-     * @brief Generalized copy operator.
-     *
-     * The copy operators ensures that whenever a memory allocation problem
-     * occurs, no memory leak occurs as well and it also guarantees that in
-     * this case the hashtable returned is in a coherent state (it is an empty
-     * hashtable). Note that the copy not only involves copying pairs
-     * (key,value) but also the copy of the resize and key uniqueness policies.
-     *
-     * @param from The gum::HashTable to copy.
-     * @return Returns this gum::HashTable.
-     */
-    template < typename OtherAlloc >
-    HashTable< Key, Val, Alloc >& operator=(const HashTable< Key, Val, OtherAlloc >& from);
+    HashTable< Key, Val >& operator=(const HashTable< Key, Val >& from);
 
     /**
      * Move operator.
@@ -1124,7 +1040,7 @@ namespace gum {
      * @param from The gum::HashTable to move.
      * @return Returns this gum::HashTable.
      */
-    HashTable< Key, Val, Alloc >& operator=(HashTable< Key, Val, Alloc >&& from);
+    HashTable< Key, Val >& operator=(HashTable< Key, Val >&& from);
 
     /**
      * @brief Returns a reference on the value the key of which is passed in
@@ -1156,8 +1072,7 @@ namespace gum {
      * @param from The gum::HashTable to test for equality.
      * @return True if this and from are equal.
      */
-    template < typename OtherAlloc >
-    bool operator==(const HashTable< Key, Val, OtherAlloc >& from) const;
+    bool operator==(const HashTable< Key, Val >& from) const;
 
     ///
     /**
@@ -1171,8 +1086,7 @@ namespace gum {
      * @param from The gum::HashTable to test for inequality.
      * @return True if this and from are not equal.
      */
-    template < typename OtherAlloc >
-    bool operator!=(const HashTable< Key, Val, OtherAlloc >& from) const;
+    bool operator!=(const HashTable< Key, Val >& from) const;
 
     /// @}
     // ============================================================================
@@ -1577,14 +1491,12 @@ namespace gum {
      *
      * @return Returns the gum::HashTable of mountains.
      */
-    template < typename Mount,
-               typename OtherAlloc
-               = typename Alloc::template rebind< std::pair< Key, Mount > >::other >
-    HashTable< Key, Mount, OtherAlloc > map(Mount (*f)(Val),
-                                            Size size       = Size(0),
-                                            bool resize_pol = HashTableConst::default_resize_policy,
-                                            bool key_uniqueness_pol
-                                            = HashTableConst::default_uniqueness_policy) const;
+    template < typename Mount >
+    HashTable< Key, Mount > map(Mount (*f)(Val),
+                                Size size       = Size(0),
+                                bool resize_pol = HashTableConst::default_resize_policy,
+                                bool key_uniqueness_pol
+                                = HashTableConst::default_uniqueness_policy) const;
 
     /**
      * @brief Transforms a hashtable of vals into a hashtable of mountains.
@@ -1606,14 +1518,12 @@ namespace gum {
      *
      * @return Returns the gum::HashTable of mountains.
      */
-    template < typename Mount,
-               typename OtherAlloc
-               = typename Alloc::template rebind< std::pair< Key, Mount > >::other >
-    HashTable< Key, Mount, OtherAlloc > map(Mount (*f)(Val&),
-                                            Size size       = Size(0),
-                                            bool resize_pol = HashTableConst::default_resize_policy,
-                                            bool key_uniqueness_pol
-                                            = HashTableConst::default_uniqueness_policy) const;
+    template < typename Mount >
+    HashTable< Key, Mount > map(Mount (*f)(Val&),
+                                Size size       = Size(0),
+                                bool resize_pol = HashTableConst::default_resize_policy,
+                                bool key_uniqueness_pol
+                                = HashTableConst::default_uniqueness_policy) const;
 
     /**
      * @brief Transforms a hashtable of vals into a hashtable of mountains.
@@ -1635,14 +1545,12 @@ namespace gum {
      *
      * @return Returns the gum::HashTable of mountains.
      */
-    template < typename Mount,
-               typename OtherAlloc
-               = typename Alloc::template rebind< std::pair< Key, Mount > >::other >
-    HashTable< Key, Mount, OtherAlloc > map(Mount (*f)(const Val&),
-                                            Size size       = Size(0),
-                                            bool resize_pol = HashTableConst::default_resize_policy,
-                                            bool key_uniqueness_pol
-                                            = HashTableConst::default_uniqueness_policy) const;
+    template < typename Mount >
+    HashTable< Key, Mount > map(Mount (*f)(const Val&),
+                                Size size       = Size(0),
+                                bool resize_pol = HashTableConst::default_resize_policy,
+                                bool key_uniqueness_pol
+                                = HashTableConst::default_uniqueness_policy) const;
 
     /**
      * @brief Creates a hashtable of mounts with a given value from a hashtable
@@ -1666,32 +1574,28 @@ namespace gum {
      *
      * @return Returns the gum::HashTable of mountains.
      */
-    template < typename Mount,
-               typename OtherAlloc
-               = typename Alloc::template rebind< std::pair< Key, Mount > >::other >
-    HashTable< Key, Mount, OtherAlloc > map(const Mount& val,
-                                            Size         size = Size(0),
-                                            bool resize_pol = HashTableConst::default_resize_policy,
-                                            bool key_uniqueness_pol
-                                            = HashTableConst::default_uniqueness_policy) const;
+    template < typename Mount >
+    HashTable< Key, Mount > map(const Mount& val,
+                                Size         size       = Size(0),
+                                bool         resize_pol = HashTableConst::default_resize_policy,
+                                bool         key_uniqueness_pol
+                                = HashTableConst::default_uniqueness_policy) const;
 
     /// @}
 
     private:
     /// Friends to optimize the access to data, iterators must be friends
     /// @{
-    template < typename K, typename V, typename A >
-    friend class HashTable;
     friend class HashTableIterator< Key, Val >;
     friend class HashTableConstIterator< Key, Val >;
     friend class HashTableIteratorSafe< Key, Val >;
     friend class HashTableConstIteratorSafe< Key, Val >;
 
-    friend std::ostream& operator<<<>(std::ostream&, const HashTable< Key, Val, Alloc >&);
-    friend std::ostream& operator<<<>(std::ostream& s, const HashTable< Key*, Val, Alloc >& table);
+    friend std::ostream& operator<<<>(std::ostream&, const HashTable< Key, Val >&);
+    friend std::ostream& operator<<<>(std::ostream& s, const HashTable< Key*, Val >& table);
 
     /// For bijections to quickly access data.
-    template < typename T1, typename T2, typename A >
+    template < typename T1, typename T2 >
     friend class Bijection;
     /// @}
 
@@ -1699,7 +1603,7 @@ namespace gum {
      * The hash table is represented as a vector of chained lists.  ' __nodes'
      * is this very vector.
      */
-    std::vector< HashTableList< Key, Val, Alloc > > _nodes_;
+    std::vector< HashTableList< Key, Val > > _nodes_;
 
     /// The number of nodes in vector ' __nodes'.
     Size _size_;
@@ -1735,15 +1639,6 @@ namespace gum {
     /// The list of safe iterators pointing to the hash table.
     mutable std::vector< HashTableConstIteratorSafe< Key, Val >* > _safe_iterators_;
 
-    /**
-     * @brief The allocator for the buckets.
-     *
-     * @warning the allocator field should compulsorily be the last of field of
-     * the class. As such, for K and V fixed, all hashTable<K,V,A> are the same
-     * (up to the allocator) for all allocators A. This feature proves useful
-     * to avoid passing the allocator as a template parameter to iterators.
-     */
-    BucketAllocator _alloc_;
 
     /// Erases a given bucket.
     void _erase_(HashTableBucket< Key, Val >* bucket, Size index);
@@ -1761,10 +1656,8 @@ namespace gum {
      * the same size.
      *
      * @param table The gum::HashTable to copy.
-     * @tparam OtherAlloc The other gum::HashTable allocator.
      */
-    template < typename OtherAlloc >
-    void _copy_(const HashTable< Key, Val, OtherAlloc >& table);
+    void _copy_(const HashTable< Key, Val >& table);
 
     /**
      * @brief Used by all default constructors (general and specialized).
@@ -1846,7 +1739,7 @@ namespace gum {
     static const HashTableConstIteratorSafe< int, int >* constEndSafe4Statics();
 
     /// Friends that have access to the iterator.
-    template < typename Key, typename Val, typename Alloc >
+    template < typename Key, typename Val >
     friend class HashTable;
   };
 
@@ -1926,11 +1819,9 @@ namespace gum {
     /**
      * @brief Constructor for an iterator pointing to the first element of a
      * hashtable.
-     * @tparam Alloc The gum::HashTable allocator.
      * @param tab A gum::HashTable to iterate over.
      */
-    template < typename Alloc >
-    HashTableConstIteratorSafe(const HashTable< Key, Val, Alloc >& tab);
+    HashTableConstIteratorSafe(const HashTable< Key, Val >& tab);
 
     ///
     /**
@@ -1939,14 +1830,12 @@ namespace gum {
      *
      * The method runs in time linear to ind_elt.
      *
-     * @tparam Alloc The gum::HashTable allocator.
      * @param tab the hash table to which the so-called element belongs
      * @param ind_elt the position of the element in the hash table (0 means
      * the first element).
      * @throw UndefinedIteratorValue Raised if the element cannot be found.
      */
-    template < typename Alloc >
-    HashTableConstIteratorSafe(const HashTable< Key, Val, Alloc >& tab, Size ind_elt);
+    HashTableConstIteratorSafe(const HashTable< Key, Val >& tab, Size ind_elt);
 
     /**
      * @brief Copy constructor.
@@ -2098,8 +1987,7 @@ namespace gum {
      * allocated. Thus, proper initialization can only take place within the
      * constructor's code of the hashtable.
      */
-    template < typename K, typename V, typename A >
-    friend class HashTable;
+    friend class HashTable< Key, Val >;
 
     /// The hash table the iterator is pointing to.
     const HashTable< Key, Val >* _table_{nullptr};
@@ -2224,10 +2112,8 @@ namespace gum {
     /**
      * @brief Constructor for an iterator pointing to the first element of a
      * hashtable.
-     * @tparam Alloc The gum::HashTable allocator.
      */
-    template < typename Alloc >
-    HashTableIteratorSafe(const HashTable< Key, Val, Alloc >& tab);
+    HashTableIteratorSafe(const HashTable< Key, Val >& tab);
 
     /**
      * @brief Constructor for an iterator pointing to the nth element of a
@@ -2238,11 +2124,9 @@ namespace gum {
      * @param tab the hash table to which the so-called element belongs
      * @param ind_elt the position of the element in the hash table (0 means
      * the first element).
-     * @tparam Alloc The gum::HashTable allocator.
      * @throw UndefinedIteratorValue Raised if the element cannot be found
      */
-    template < typename Alloc >
-    HashTableIteratorSafe(const HashTable< Key, Val, Alloc >& tab, Size ind_elt);
+    HashTableIteratorSafe(const HashTable< Key, Val >& tab, Size ind_elt);
 
     /**
      * @brief Copy constructor.
@@ -2467,10 +2351,8 @@ namespace gum {
      * @brief Constructor for an iterator pointing to the first element of a
      * hashtable.
      * @param tab The gum::HashTable to iterate over.
-     * @tparam Alloc The gum::HashTable allocator.
      */
-    template < typename Alloc >
-    HashTableConstIterator(const HashTable< Key, Val, Alloc >& tab) noexcept;
+    HashTableConstIterator(const HashTable< Key, Val >& tab) noexcept;
 
     /**
      * @brief Constructor for an iterator pointing to the nth element of a
@@ -2483,8 +2365,7 @@ namespace gum {
      * the first element).
      * @throw UndefinedIteratorValue Raised if the element cannot be found.
      */
-    template < typename Alloc >
-    HashTableConstIterator(const HashTable< Key, Val, Alloc >& tab, Size ind_elt);
+    HashTableConstIterator(const HashTable< Key, Val >& tab, Size ind_elt);
 
     /**
      * @brief Copy constructor.
@@ -2632,13 +2513,8 @@ namespace gum {
      * one can be properly initialized only when the hashtable has been fully
      * allocated. Thus, proper initialization can only take place within the
      * constructor's code of the hashtable.
-     *
-     * @tparam K The gum::HashTable keys type.
-     * @tparam V The gum::HashTable values type.
-     * @tparam A The gum::HashTable allocator.
      */
-    template < typename K, typename V, typename A >
-    friend class HashTable;
+    friend class HashTable< Key, Val >;
 
     /// For the safe copy constructor and operator.
     friend class HashTableConstIteratorSafe< Key, Val >;
@@ -2750,11 +2626,9 @@ namespace gum {
     /**
      * @brief Constructor for an iterator pointing to the first element of a
      * hashtable.
-     * @tparam Alloc The gum::HashTable allocator.
      * @param tab The gum::HashTable to iterate over.
      */
-    template < typename Alloc >
-    HashTableIterator(const HashTable< Key, Val, Alloc >& tab) noexcept;
+    HashTableIterator(const HashTable< Key, Val >& tab) noexcept;
 
     ///
     /**
@@ -2763,14 +2637,12 @@ namespace gum {
      *
      * The method runs in time linear to ind_elt.
      *
-     * @tparam Alloc The gum::HashTable allocator.
      * @param tab The hash table to which the so-called element belongs.
      * @param ind_elt The position of the element in the hash table (0 means
      * the first element).
      * @throw UndefinedIteratorValue Raised if the element cannot be found.
      */
-    template < typename Alloc >
-    HashTableIterator(const HashTable< Key, Val, Alloc >& tab, Size ind_elt);
+    HashTableIterator(const HashTable< Key, Val >& tab, Size ind_elt);
 
     /**
      * @brief Copy constructor.

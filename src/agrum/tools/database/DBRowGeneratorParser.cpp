@@ -26,3 +26,54 @@
  */
 
 #include <agrum/tools/database/DBRowGeneratorParser.h>
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+/// include the inlined functions if necessary
+#  ifdef GUM_NO_INLINE
+#    include <agrum/tools/database/DBRowGeneratorParser_inl.h>
+#  endif /* GUM_NO_INLINE */
+
+namespace gum {
+
+  namespace learning {
+
+    /// default constructor
+    DBRowGeneratorParser::DBRowGeneratorParser(const typename DatabaseTable::Handler& handler,
+                                               const DBRowGeneratorSet& generator_set) :
+        _handler_(handler),
+        _generator_set_(generator_set), _generator_size_(generator_set.size()) {
+      GUM_CONSTRUCTOR(DBRowGeneratorParser);
+    }
+
+
+    /// copy constructor
+    DBRowGeneratorParser::DBRowGeneratorParser(const DBRowGeneratorParser& from) :
+        _handler_(from._handler_), _generator_set_(from._generator_set_),
+        _generator_size_(from._generator_size_) {
+      GUM_CONS_CPY(DBRowGeneratorParser);
+    }
+
+
+    /// move constructor
+    DBRowGeneratorParser::DBRowGeneratorParser(DBRowGeneratorParser&& from) :
+        _handler_(std::move(from._handler_)), _generator_set_(std::move(from._generator_set_)),
+        _generator_size_(from._generator_size_) {
+      GUM_CONS_MOV(DBRowGeneratorParser);
+    }
+
+
+    /// virtual copy constructor
+    DBRowGeneratorParser* DBRowGeneratorParser::clone() const {
+      return new DBRowGeneratorParser(*this);
+    }
+
+
+    /// destructor
+    DBRowGeneratorParser::~DBRowGeneratorParser() { GUM_DESTRUCTOR(DBRowGeneratorParser); }
+
+  } /* namespace learning */
+
+} /* namespace gum */
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */

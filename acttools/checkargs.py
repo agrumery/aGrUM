@@ -30,7 +30,8 @@ from .utils import error, notif, critic, setifyString
 
 
 def parseCommandLine(current):
-  return cfg.parser.parse_args()
+  a=cfg.parser.parse_args()
+  return a,a.cmds
 
 
 def getCurrent():
@@ -72,6 +73,8 @@ def checkCurrent(current, options, args):
 
   # fixing options
   for opt, value in options.__dict__.items():
+    if opt=='cmds': # cmds are not options
+      continue
     if opt not in current:
       error(f"Options not known : {opt} in {current.keys()}")
 

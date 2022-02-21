@@ -205,7 +205,7 @@ namespace gum {
 
   // returns the list of single targets
   template < typename GUM_SCALAR >
-  INLINE const Size MarginalTargetedMNInference< GUM_SCALAR >::nbrTargets() const noexcept {
+  INLINE Size MarginalTargetedMNInference< GUM_SCALAR >::nbrTargets() const noexcept {
     return _targets_.size();
   }
 

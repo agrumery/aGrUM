@@ -38,11 +38,11 @@ namespace gum_tests {
       var.addLabel("1");
       var.addLabel("2");
 
-      gum::learning::DBTranslatorSet<> trans_set;
+      gum::learning::DBTranslatorSet trans_set;
       {
-        const std::vector< std::string >                miss;
-        gum::learning::DBTranslator4LabelizedVariable<> translator(var, miss);
-        std::vector< std::string >                      names{"A", "B", "C", "D", "E", "F"};
+        const std::vector< std::string >              miss;
+        gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
+        std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
 
         for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
           translator.setVariableName(names[i]);
@@ -51,12 +51,12 @@ namespace gum_tests {
       }
 
       // create the database
-      gum::learning::DatabaseTable<> database(trans_set);
-      std::vector< std::string >     row0{"0", "1", "0", "2", "1", "1"};
-      std::vector< std::string >     row1{"1", "2", "0", "1", "2", "2"};
-      std::vector< std::string >     row2{"2", "1", "0", "1", "1", "0"};
-      std::vector< std::string >     row3{"1", "0", "0", "0", "0", "0"};
-      std::vector< std::string >     row4{"0", "0", "0", "1", "1", "1"};
+      gum::learning::DatabaseTable database(trans_set);
+      std::vector< std::string >   row0{"0", "1", "0", "2", "1", "1"};
+      std::vector< std::string >   row1{"1", "2", "0", "1", "2", "2"};
+      std::vector< std::string >   row2{"2", "1", "0", "1", "1", "0"};
+      std::vector< std::string >   row3{"1", "0", "0", "0", "0", "0"};
+      std::vector< std::string >   row4{"0", "0", "0", "1", "1", "1"};
       for (int i = 0; i < 1000; ++i)
         database.insertRow(row0);
       for (int i = 0; i < 50; ++i)
@@ -70,11 +70,11 @@ namespace gum_tests {
       const std::size_t db_size = database.nbRows();
 
       // create the parser
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
 
 
-      gum::learning::AprioriDirichletFromDatabase<> apriori(database, parser);
+      gum::learning::AprioriDirichletFromDatabase apriori(database, parser);
 
       TS_ASSERT_EQUALS(apriori.weight(), 1.0)
       apriori.setWeight(2.0 * db_size);
@@ -90,9 +90,9 @@ namespace gum_tests {
       std::vector< gum::NodeId > cond_empty;
       std::vector< gum::NodeId > cond1{node3};
 
-      gum::learning::IdCondSet<> idset1(node0, cond_empty);                // #3,#0
-      gum::learning::IdCondSet<> idset2(node0, node1, cond_empty, true);   // #9,#0
-      gum::learning::IdCondSet<> idset3(node0, cond1, true);               // #9,#0
+      gum::learning::IdCondSet idset1(node0, cond_empty);                // #3,#0
+      gum::learning::IdCondSet idset2(node0, node1, cond_empty, true);   // #9,#0
+      gum::learning::IdCondSet idset3(node0, cond1, true);               // #9,#0
 
 
       std::vector< double > vect(3, 1.0);
@@ -141,7 +141,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(vect[2], 2001.0)
 
 
-      gum::learning::AprioriDirichletFromDatabase<> apriori2(apriori);
+      gum::learning::AprioriDirichletFromDatabase apriori2(apriori);
       TS_ASSERT_EQUALS(apriori2.weight(), 2.0 * db_size)
       apriori2.setWeight(1.0 * db_size);
       TS_ASSERT_EQUALS(apriori2.weight(), db_size)
@@ -197,7 +197,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(vect[2], 1001.0)
 
 
-      gum::learning::AprioriDirichletFromDatabase<> apriori3(std::move(apriori2));
+      gum::learning::AprioriDirichletFromDatabase apriori3(std::move(apriori2));
       TS_ASSERT_EQUALS(apriori3.weight(), db_size)
       apriori3.setWeight(2.0 * db_size);
       TS_ASSERT_EQUALS(apriori3.weight(), 2.0 * db_size)
@@ -249,7 +249,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(vect[2], 2001.0)
 
 
-      gum::learning::AprioriDirichletFromDatabase<>* apriori4 = apriori3.clone();
+      gum::learning::AprioriDirichletFromDatabase* apriori4 = apriori3.clone();
       TS_ASSERT_EQUALS(apriori4->weight(), 2.0 * db_size)
       apriori4->setWeight(1.0 * db_size);
       TS_ASSERT_EQUALS(apriori4->weight(), 1.0 * db_size)
@@ -428,11 +428,11 @@ namespace gum_tests {
       var.addLabel("1");
       var.addLabel("2");
 
-      gum::learning::DBTranslatorSet<> trans_set;
+      gum::learning::DBTranslatorSet trans_set;
       {
-        const std::vector< std::string >                miss;
-        gum::learning::DBTranslator4LabelizedVariable<> translator(var, miss);
-        std::vector< std::string >                      names{"A", "B", "C", "D", "E", "F"};
+        const std::vector< std::string >              miss;
+        gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
+        std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
 
         for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
           translator.setVariableName(names[i]);
@@ -441,12 +441,12 @@ namespace gum_tests {
       }
 
       // create the database
-      gum::learning::DatabaseTable<> database(trans_set);
-      std::vector< std::string >     row0{"0", "1", "0", "2", "1", "1"};
-      std::vector< std::string >     row1{"1", "2", "0", "1", "2", "2"};
-      std::vector< std::string >     row2{"2", "1", "0", "1", "1", "0"};
-      std::vector< std::string >     row3{"1", "0", "0", "0", "0", "0"};
-      std::vector< std::string >     row4{"0", "0", "0", "1", "1", "1"};
+      gum::learning::DatabaseTable database(trans_set);
+      std::vector< std::string >   row0{"0", "1", "0", "2", "1", "1"};
+      std::vector< std::string >   row1{"1", "2", "0", "1", "2", "2"};
+      std::vector< std::string >   row2{"2", "1", "0", "1", "1", "0"};
+      std::vector< std::string >   row3{"1", "0", "0", "0", "0", "0"};
+      std::vector< std::string >   row4{"0", "0", "0", "1", "1", "1"};
       for (int i = 0; i < 1000; ++i)
         database.insertRow(row0);
       for (int i = 0; i < 50; ++i)
@@ -461,8 +461,8 @@ namespace gum_tests {
       const std::size_t db_size = database.nbRows();
 
       // create the parser
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
 
       gum::Bijection< gum::NodeId, std::size_t > nodeId2columns;
       gum::NodeId                                node0 = 0;
@@ -478,7 +478,7 @@ namespace gum_tests {
       nodeId2columns.insert(node4, std::size_t(5));
       nodeId2columns.insert(node5, std::size_t(1));
 
-      gum::learning::AprioriDirichletFromDatabase<> apriori(database, parser, nodeId2columns);
+      gum::learning::AprioriDirichletFromDatabase apriori(database, parser, nodeId2columns);
 
       TS_ASSERT_EQUALS(apriori.weight(), 1.0)
       apriori.setWeight(2.0 * db_size);
@@ -491,9 +491,9 @@ namespace gum_tests {
       std::vector< gum::NodeId > cond_empty;
       std::vector< gum::NodeId > cond1{node1};
 
-      gum::learning::IdCondSet<> idset1(node2, cond_empty);                // #3,#0
-      gum::learning::IdCondSet<> idset2(node2, node5, cond_empty, true);   // #9,#0
-      gum::learning::IdCondSet<> idset3(node2, cond1, true);               // #9,#0
+      gum::learning::IdCondSet idset1(node2, cond_empty);                // #3,#0
+      gum::learning::IdCondSet idset2(node2, node5, cond_empty, true);   // #9,#0
+      gum::learning::IdCondSet idset3(node2, cond1, true);               // #9,#0
 
 
       std::vector< double > vect(3, 1.0);
@@ -542,7 +542,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(vect[2], 2001.0)
 
 
-      gum::learning::AprioriDirichletFromDatabase<> apriori2(apriori);
+      gum::learning::AprioriDirichletFromDatabase apriori2(apriori);
       TS_ASSERT_EQUALS(apriori2.weight(), 2.0 * db_size)
       apriori2.setWeight(1.0 * db_size);
       TS_ASSERT_EQUALS(apriori2.weight(), 1.0 * db_size)
@@ -598,7 +598,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(vect[2], 1001.0)
 
 
-      gum::learning::AprioriDirichletFromDatabase<> apriori3(std::move(apriori2));
+      gum::learning::AprioriDirichletFromDatabase apriori3(std::move(apriori2));
       TS_ASSERT_EQUALS(apriori3.weight(), 1.0 * db_size)
       apriori3.setWeight(2.0 * db_size);
       TS_ASSERT_EQUALS(apriori3.weight(), 2.0 * db_size)
@@ -651,7 +651,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(vect[2], 2001.0)
 
 
-      gum::learning::AprioriDirichletFromDatabase<>* apriori4 = apriori3.clone();
+      gum::learning::AprioriDirichletFromDatabase* apriori4 = apriori3.clone();
       TS_ASSERT_EQUALS(apriori4->weight(), 2.0 * db_size)
       apriori4->setWeight(1.0 * db_size);
       TS_ASSERT_EQUALS(apriori4->weight(), 1.0 * db_size)

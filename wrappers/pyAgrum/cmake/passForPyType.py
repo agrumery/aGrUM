@@ -50,7 +50,7 @@ def doTheJob(target, resultat, backup, debugmode):
       '"pyAgrum.YetUnWrapped"'),
     ("gum::IApproximationSchemeConfiguration::ApproximationSchemeSTATE", "int"),
     ("gum::IApproximationSchemeConfiguration", '"pyAgrum.YetUnWrapped"'),
-    ("gum::learning::DatabaseTable< >", '"pyAgrum.YetUnWrapped"'),
+    ("gum::learning::DatabaseTable", '"pyAgrum.YetUnWrapped"'),
     ("std::vector< gum::NodeId,std::allocator< gum::NodeId > >", '"pyAgrum.YetUnWrapped"'),
     ("std::vector< gum::Idx,std::allocator< gum::Idx > >", '"pyAgrum.YetUnWrapped"'),
     ("std::vector< gum::NodeSet,std::allocator< gum::NodeSet > >", '"pyAgrum.YetUnWrapped"'),
@@ -151,9 +151,9 @@ def doTheJob(target, resultat, backup, debugmode):
 
     # keep correct comment with template
     ("< float >", "< double >"),
-    ("gum::BayesNet", "pyAgrum.BayesNet"),
-    ("gum::Potential", "pyAgrum.Potential"),
-    ("gum::MarkovNet", "pyAgrum.MarkovNet"),
+    ("gum::BayesNet", 'pyAgrum.BayesNet'),
+    ("gum::Potential", 'pyAgrum.Potential'),
+    ("gum::MarkovNet", 'pyAgrum.MarkovNet'),
   ]
 
   rules = {f"R{i + 1}": cpl for i, cpl in enumerate(list_rules)}
@@ -191,6 +191,8 @@ def doTheJob(target, resultat, backup, debugmode):
           elif line.strip() == '# Import the low-level C/C++ module':  # we add annotation module
             print("## added by passForType (pyAgrum)", file=dst)
             print("from typing import List,Set,Dict,Tuple", file=dst)
+            print("# recursive import for typehints annotation", file=dst)
+            print("import pyAgrum", file=dst)
             print("## end of added by passForType (pyAgrum)\n", file=dst)
             typing_added = True
         print(line, file=dst)

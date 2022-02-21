@@ -12,6 +12,8 @@ if _swig_python_version_info < (3, 0):
 
 ## added by passForType (pyAgrum)
 from typing import List,Set,Dict,Tuple
+# recursive import for typehints annotation
+import pyAgrum
 ## end of added by passForType (pyAgrum)
 
 # Import the low-level C/C++ module
@@ -418,7 +420,7 @@ class BNGenerator(object):
     def generate(self, n_nodes: int=10, n_arcs: int=15, n_modmax: int=4) -> "pyAgrum.BayesNet":
         r"""
 
-        Generate a new Bayesian network 
+        Generate a new Bayesian network
 
         Parameters
         ----------
@@ -436,9 +438,9 @@ class BNGenerator(object):
 
         Raises
         ------
-        pyAgrum.OperationNotAllowed
+          pyAgrum.OperationNotAllowed
         	If n_modmax < 2
-        pyAgrum.OperationNotAllowed
+          pyAgrum.OperationNotAllowed
         	If n_arcs is incompatible with n_nodes (not enough arcs)
 
         """
@@ -632,7 +634,7 @@ class PRMexplorer(object):
 
         Raises
         ------
-        pyAgrum.IndexError
+          pyAgrum.IndexError
         	If the class is not in the PRM
 
         """
@@ -699,7 +701,7 @@ class PRMexplorer(object):
 
         Raises
         ------
-        pyAgrum.IndexError
+          pyAgrum.IndexError
         	If the class is not in the PRM
 
         """
@@ -741,7 +743,7 @@ class PRMexplorer(object):
 
         Raises
         ------
-        pyAgrum.IndexError
+          pyAgrum.IndexError
         	If the class is not in the PRM
 
         """
@@ -783,7 +785,7 @@ class PRMexplorer(object):
 
         Raises
         ------
-        pyAgrum.IndexError
+          pyAgrum.IndexError
         	If the class is not in the PRM
 
         """
@@ -861,11 +863,11 @@ class PRMexplorer(object):
         Raises
         ------
         pyAgrum.OperationNotAllowed
-        	If the class element doesn't have any pyAgrum.Potential (like a gum::PRMReferenceSlot). 
+        	If the class element doesn't have any pyAgrum.Potential (like a gum::PRMReferenceSlot).
         pyAgrum.IndexError
         	If the class is not in the PRM
         pyAgrum.IndexError
-        	If the attribute in parameters does not exist 
+        	If the attribute in parameters does not exist
 
         """
         return _pyAgrum.PRMexplorer_cpf(self, class_name, attribute)
@@ -876,7 +878,7 @@ class PRMexplorer(object):
         Returns
         -------
         list
-        	the list of the custom types in the PRM 
+        	the list of the custom types in the PRM
 
         """
         return _pyAgrum.PRMexplorer_types(self)
@@ -955,7 +957,7 @@ class PRMexplorer(object):
         Returns
         -------
         dict
-        	a dict containing pairs of label and their values 
+        	a dict containing pairs of label and their values
 
         Raises
         ------
@@ -971,7 +973,7 @@ class PRMexplorer(object):
         Returns
         -------
         list
-        	the list of interfaces in the PRM 
+        	the list of interfaces in the PRM
 
         """
         return _pyAgrum.PRMexplorer_interfaces(self)
@@ -1074,7 +1076,7 @@ class PRMexplorer(object):
         Returns
         -------
         str
-        	the list of classes implementing the interface 
+        	the list of classes implementing the interface
 
         Raises
         ------
@@ -2238,7 +2240,7 @@ class DiscreteVariable(Variable):
 
         Returns
         -------
-        pyAgrum.DiscreteVariable
+          pyAgrum.DiscreteVariable
         	a copy of the DiscreteVariable
 
         """
@@ -2343,7 +2345,7 @@ class DiscreteVariable(Variable):
 
         Raises
         ------
-        pyAgrum.OutOfBound
+        pyAgrum.OutOfBounds
         	If the variable does not contain the label
 
         """
@@ -2448,9 +2450,9 @@ class LabelizedVariable(DiscreteVariable):
 
     LabelizedVariable(aName, aDesc='', nbrLabel=2) -> LabelizedVariable
         Parameters:
-            * **aName** (*str*) -- the name of the variable
-            * **aDesc** (*str*) -- the (optional) description of the variable
-            * **nbrLabel** (*int) -- the number of labels to create (2 by default)
+            * **aName** (str) -- the name of the variable
+            * **aDesc** (str) -- the (optional) description of the variable
+            * **nbrLabel** (int) -- the number of labels to create (2 by default)
 
     LabelizedVariable(aLDRV) -> LabelizedVariable
         Parameters:
@@ -2550,7 +2552,7 @@ class LabelizedVariable(DiscreteVariable):
 
         Raises
         ------
-        gum.DuplicateElement
+          pyAgrum.DuplicateElement
             If the variable already contains the label
         """
         _pyAgrum.LabelizedVariable_addLabel(self,*args)
@@ -2572,7 +2574,7 @@ class LabelizedVariable(DiscreteVariable):
 
         Raises
         ------
-        pyAgrum.DuplicatedElement
+        pyAgrum.DuplicateElement
           If the variable already contains the new label
         pyAgrum.OutOfBounds
           If the index is greater than the size of the variable
@@ -2603,7 +2605,7 @@ class LabelizedVariable(DiscreteVariable):
 
         Raises
         ------
-        pyAgrum.OutOfBound
+        pyAgrum.OutOfBounds
         	If the variable does not contain the label
 
         """
@@ -2684,8 +2686,8 @@ class RangeVariable(DiscreteVariable):
         Parameters:
             * **aName** (*str*) -- the name of the variable
             * **aDesc** (*str*) -- the description of the variable
-            * **minVal** (*int) -- the minimal integer of the interval
-            * **maxVal** (*int) -- the maximal integer of the interval
+            * **minVal** (int) -- the minimal integer of the interval
+            * **maxVal** (int) -- the maximal integer of the interval
 
     RangeVariable(aName, aDesc='') -> RangeVariable
         Parameters:
@@ -2772,7 +2774,7 @@ class RangeVariable(DiscreteVariable):
 
         Raises
         ------
-        pyAgrum.OutOfBound
+        pyAgrum.OutOfBounds
           If the variable does not contain the label
 
         """
@@ -2916,7 +2918,7 @@ class IntegerVariable(DiscreteVariable):
 
         Returns
         -------
-        pyAgrum.DiscreteVariable
+          pyAgrum.DiscreteVariable
         	a copy of the DiscreteVariable
 
         """
@@ -2984,7 +2986,7 @@ class IntegerVariable(DiscreteVariable):
 
         Raises
         ------
-        pyAgrum.OutOfBound
+        pyAgrum.OutOfBounds
         	If the variable does not contain the label
 
         """
@@ -3057,7 +3059,7 @@ class IDiscretizedVariable(DiscreteVariable):
 
         Returns
         -------
-        pyAgrum.DiscreteVariable
+          pyAgrum.DiscreteVariable
         	a copy of the DiscreteVariable
 
         """
@@ -3073,8 +3075,8 @@ class Edge(object):
 
     Edge(aN1,aN2) -> Edge
         Parameters:
-            * **aN1** (*int) -- the nodeId of the first node
-            * **aN2** (*int) -- the nodeId of the secondnode
+            * **aN1** (int) -- the nodeId of the first node
+            * **aN2** (int) -- the nodeId of the secondnode
 
     Edge(src) -> Edge
         Parameters:
@@ -3144,8 +3146,8 @@ class Arc(object):
 
     Arc(tail, head) -> Arc
         Parameters:
-            * **tail** (*int) -- the tail
-            * **head** (*int) -- the head
+            * **tail** (int) -- the tail
+            * **head** (int) -- the head
 
     Arc(src) -> Arc
         Parameters:
@@ -3452,8 +3454,8 @@ class UndiGraph(object):
 
         Raises
         ------
-        pyAgrum.DuplicateElement
-          If the given id is already used
+          pyAgrum.DuplicateElement
+            If the given id is already used
 
         """
         return _pyAgrum.UndiGraph_addNodeWithId(self, id)
@@ -3514,8 +3516,8 @@ class UndiGraph(object):
 
         Raises
         ------
-        pyAgrum.InvalidNode
-          If n1 or n2 does not belong to the graph nodes.
+          pyAgrum.InvalidNode
+            If n1 or n2 does not belong to the graph nodes.
 
         """
         return _pyAgrum.UndiGraph_addEdge(self, *args)
@@ -3648,7 +3650,7 @@ class DiGraph(object):
         Returns
         -------
         str
-            a friendly display of the graph in DOT format 
+            a friendly display of the graph in DOT format
 
         """
         return _pyAgrum.DiGraph_toDot(self)
@@ -3836,7 +3838,7 @@ class DiGraph(object):
 
         Raises
         ------
-        pyAgrum.DuplicateElement
+          pyAgrum.DuplicateElement
           If the given id is already used
 
         """
@@ -3898,7 +3900,7 @@ class DiGraph(object):
 
         Raises
         ------
-        pyAgrum.InvalidNode
+          pyAgrum.InvalidNode
           If head or tail does not belong to the graph nodes.
 
         """
@@ -4170,8 +4172,8 @@ class MixedGraph(UndiGraph, DiGraph):
 
         Raises
         ------
-        pyAgrum.DuplicateElement
-          If the given id is already used
+          pyAgrum.DuplicateElement
+            If the given id is already used
 
         """
         return _pyAgrum.MixedGraph_addNodeWithId(self, id)
@@ -4232,8 +4234,8 @@ class MixedGraph(UndiGraph, DiGraph):
 
         Raises
         ------
-        pyAgrum.InvalidNode
-          If n1 or n2 does not belong to the graph nodes.
+          pyAgrum.InvalidNode
+            If n1 or n2 does not belong to the graph nodes.
 
         """
         return _pyAgrum.MixedGraph_addEdge(self, n1, n2)
@@ -4324,8 +4326,8 @@ class MixedGraph(UndiGraph, DiGraph):
 
         Raises
         ------
-        pyAgrum.InvalidNode
-          If head or tail does not belong to the graph nodes.
+          pyAgrum.InvalidNode
+            If head or tail does not belong to the graph nodes.
 
         """
         return _pyAgrum.MixedGraph_addArc(self, n1, n2)
@@ -4508,8 +4510,8 @@ class CliqueGraph(UndiGraph):
 
         Raises
         ------
-        pyAgrum.InvalidNode
-          If n1 or n2 does not belong to the graph nodes.
+          pyAgrum.InvalidNode
+            If n1 or n2 does not belong to the graph nodes.
 
         """
         return _pyAgrum.CliqueGraph_addEdge(self, first, second)
@@ -4532,7 +4534,7 @@ class CliqueGraph(UndiGraph):
     def clearEdges(self) -> None:
         r"""
 
-        Remove all edges and their separators 
+        Remove all edges and their separators
 
         """
         return _pyAgrum.CliqueGraph_clearEdges(self)
@@ -4585,7 +4587,7 @@ class CliqueGraph(UndiGraph):
         Raises
         ------
         pyAgrum.NotFound
-          If no clique contains idNode  
+          If no clique contains idNode
 
         """
         return _pyAgrum.CliqueGraph_container(self, idNode)
@@ -4613,7 +4615,7 @@ class CliqueGraph(UndiGraph):
     def addToClique(self, clique_id: int, node_id: int) -> None:
         r"""
 
-        Change the set of nodes included into a given clique and returns the new set 
+        Change the set of nodes included into a given clique and returns the new set
 
         Parameters
         ----------
@@ -4624,9 +4626,9 @@ class CliqueGraph(UndiGraph):
 
         Raises
         ------
-        pyAgrum.NotFound
+          pyAgrum.NotFound
           If clique_id does not exist
-        pyAgrum.DuplicateElement
+          pyAgrum.DuplicateElement
           If clique_id set already contains the ndoe
 
         """
@@ -4681,7 +4683,7 @@ class CliqueGraph(UndiGraph):
         Returns
         -------
         bool
-          True if the running intersection property holds 
+          True if the running intersection property holds
 
         """
         return _pyAgrum.CliqueGraph_hasRunningIntersection(self)
@@ -4692,7 +4694,7 @@ class CliqueGraph(UndiGraph):
         Returns
         -------
         bool
-          True if the graph is a join tree 
+          True if the graph is a join tree
 
         """
         return _pyAgrum.CliqueGraph_isJoinTree(self)
@@ -4742,9 +4744,9 @@ class CliqueGraph(UndiGraph):
         ----------
         edge : pyAgrum.Edge
           the edge to be checked
-        clique1 : int 
+        clique1 : int
           one extremity of the edge
-        clique : int 
+        clique : int
           the other extremity of the edge
 
         Returns
@@ -4978,7 +4980,7 @@ class Instantiation(object):
         ------
         NotFound
           If variable v does not belong to the instantiation.
-        OutOfBound
+        OutOfBounds
           If newval is not a possible value for the variable.
 
         """
@@ -5725,6 +5727,18 @@ class UGmodel(GraphicalModel):
 _pyAgrum.UGmodel_swigregister(UGmodel)
 
 class EssentialGraph(object):
+    r"""
+
+    Class building the essential graph from a BN.
+
+    Essential graph is a mixed graph (Chain Graph) that represents the class of markov equivalent Bayesian networks (with the same independency model).
+
+    EssentialGraph(m) -> EssentialGraph
+        Parameters:
+          * **m** (*pyAgrum.DAGmodel*) -- a DAGmodel
+
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
@@ -5749,7 +5763,7 @@ class EssentialGraph(object):
         Returns
         -------
         str
-            a friendly display of the graph in DOT format 
+            a friendly display of the graph in DOT format
 
         """
         return _pyAgrum.EssentialGraph_toDot(self)
@@ -5915,7 +5929,7 @@ class EssentialGraph(object):
         Returns
         -------
         Set
-            The set of edges adjacent to the given node 
+            The set of edges adjacent to the given node
 
         """
         return _pyAgrum.EssentialGraph_neighbours(self, id)
@@ -5924,6 +5938,22 @@ class EssentialGraph(object):
 _pyAgrum.EssentialGraph_swigregister(EssentialGraph)
 
 class MarkovBlanket(object):
+    r"""
+
+    Class building the Markov blanket of a node in a graph.
+
+    MarkovBlanket(m,n) -> MarkovBlanket
+        Parameters:
+            * **m** (*pyAgrum.DAGmodel*) -- a DAGmodel
+            * **n** (int) -- a node id
+
+    MarkovBlanket(m,name) -> MarkovBlanket
+        Parameters:
+            * **m** (*pyAgrum.DAGmodel*) -- a DAGmodel
+            * **name** (*str*) -- a node name
+
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
@@ -5948,7 +5978,7 @@ class MarkovBlanket(object):
         Returns
         -------
         str
-            a friendly display of the graph in DOT format 
+            a friendly display of the graph in DOT format
 
         """
         return _pyAgrum.MarkovBlanket_toDot(self)
@@ -5997,7 +6027,7 @@ class MarkovBlanket(object):
         Returns
         -------
         bool
-            True if all the named node are the same and all the named arcs are the same 
+            True if all the named node are the same and all the named arcs are the same
 
         """
         return _pyAgrum.MarkovBlanket_hasSameStructure(self, other)
@@ -6711,7 +6741,7 @@ class DiscretizedVariable(IDiscretizedVariable):
 
         Raises
         ------
-        gum.DefaultInLabel
+          pyAgrum.DefaultInLabel
             If the tick is already defined
         """
         _pyAgrum.DiscretizedVariable_addTick(self,*args)
@@ -6742,7 +6772,7 @@ class DiscretizedVariable(IDiscretizedVariable):
 
         Raises
         ------
-        pyAgrum.OutOfBound
+        pyAgrum.OutOfBounds
         	If the variable does not contain the label
 
         """
@@ -7101,7 +7131,7 @@ class Potential(object):
         Raises
         ------
         pyAgrum.InvalidArgument
-          If the var is not in the potential 
+          If the var is not in the potential
 
         """
         return _pyAgrum.Potential_putFirst(self, varname)
@@ -7129,7 +7159,7 @@ class Potential(object):
         Raises
         ------
         pyAgrum.SizeError
-          If v size's does not matches the domain size. 
+          If v size's does not matches the domain size.
 
         """
         val = _pyAgrum.Potential_fillWith(self, *args)
@@ -7236,10 +7266,10 @@ class Potential(object):
 
         Raises
         ------
-        pyAgrum.InvalidArgument
-          If p is not compatible with the potential (dimension, variables)
-        pyAgrum.FatalError
-          If a zero is found in p or the potential and not in the other. 
+          pyAgrum.InvalidArgument
+            If p is not compatible with the potential (dimension, variables)
+          pyAgrum.FatalError
+            If a zero is found in p or the potential and not in the other.
 
         """
         return _pyAgrum.Potential_KL(self, p)
@@ -7587,9 +7617,9 @@ class Potential(object):
 
     def loopIn(self):
       """
-      Generator to iterate inside a Potential. 
+      Generator to iterate inside a Potential.
 
-      Yield an gum.Instantiation that iterates over all the possible values for the gum.Potential
+      Yield an pyAgrum.Instantiation that iterates over all the possible values for the pyAgrum.Potential
 
       Examples
       --------
@@ -7598,7 +7628,7 @@ class Potential(object):
       >>> for i in bn.cpt("B").loopIn():
             print(i)
             print(bn.cpt("B").get(i))
-            bn.cpt("B").set(i,0.3) 
+            bn.cpt("B").set(i,0.3)
       """
       i=Instantiation(self)
       i.setFirst()
@@ -7639,7 +7669,7 @@ class Potential(object):
 
       Raises
       ------
-      gum.InvalidArgument
+        pyAgrum.InvalidArgument
         If the first variable is Labelized or Integer, or if the len of the noise is not odd.
       """
       if self.variable(0).varType()==VarType_Labelized:
@@ -7695,7 +7725,7 @@ class Potential(object):
 
     def __prepareIndices__(self,ind):
       """
-      From an indice (dict or tuple), returns a pair of gum.Instantiation to loop in a part of the Potential.
+      From an indice (dict or tuple), returns a pair of pyAgrum.Instantiation to loop in a part of the Potential.
       """
       loopvars=Instantiation(self)
       loopvars.setMutable()
@@ -7710,7 +7740,7 @@ class Potential(object):
 
       vn=self.var_names
       if isinstance(i,dict):
-          for nam in vn:        
+          for nam in vn:
               if nam in i:
                   inst.chgVal(nam,i[nam])
                   loopvars.erase(nam)
@@ -7740,7 +7770,7 @@ class Potential(object):
 
         inst=Instantiation(self)
         while not inst.end():
-            content.append(self.get(inst)) 
+            content.append(self.get(inst))
             inst.inc()
         tab=numpy.array(content,dtype=numpy.float64)
         tab.shape=tuple(self.var_dims)
@@ -7901,7 +7931,7 @@ class Potential(object):
         Returns
         -------
         bool
-            Returns true if no variable is in the potential. 
+            Returns true if no variable is in the potential.
 
         """
         return _pyAgrum.Potential_empty(self)
@@ -7916,12 +7946,12 @@ class Potential(object):
 
         Returns
         -------
-            Returns the index of a variable. 
+            Returns the index of a variable.
 
         Raises
         ------
         pyAgrum.NotFound
-          If v is not in this multidimensional matrix. 
+          If v is not in this multidimensional matrix.
 
         """
         return _pyAgrum.Potential_pos(self, v)
@@ -7947,17 +7977,17 @@ class Potential(object):
 
         Parameters
         ----------
-        i : int 
+        i : int
           An index of this multidimensional matrix.
 
         Returns
         -------
-          the varible at the ith index 
+          the varible at the ith index
 
         Raises
         ------
         pyAgrum.NotFound
-          If i does not reference a variable in this multidimensional matrix. 
+          If i does not reference a variable in this multidimensional matrix.
 
         """
         return _pyAgrum.Potential_variable(self, *args)
@@ -7977,7 +8007,7 @@ class Potential(object):
 
         Warnings
         --------
-        IndexError raised if the var is not in the potential 
+        IndexError raised if the var is not in the potential
 
         """
         val = _pyAgrum.Potential_remove(self, var)
@@ -8029,7 +8059,7 @@ class Potential(object):
         Returns
         -------
         int
-          the number of vars in the multidimensional container. 
+          the number of vars in the multidimensional container.
 
         """
         return _pyAgrum.Potential_nbrDim(self, *args)
@@ -9934,7 +9964,7 @@ class BayesNetFragment(IBayesNet, ):
         r"""
 
         Add a node to the fragment. The arcs that can be added between installed nodes are created.
-        No specific CPT are created. Then either the parents of the node are already in the fragment 
+        No specific CPT are created. Then either the parents of the node are already in the fragment
         and the node is consistant, or the parents are not in the fragment and the node is not consistant.
 
         Parameters
@@ -9962,7 +9992,7 @@ class BayesNetFragment(IBayesNet, ):
 
         Raises
         ------
-        pyAgrum.NotFound
+          pyAgrum.NotFound
           if the node is not found.
 
         """
@@ -10062,7 +10092,7 @@ class BayesNetFragment(IBayesNet, ):
 
         Raises
         ------
-        pyAgrum.NotFound
+          pyAgrum.NotFound
           if the node is not found.
 
         """
@@ -10457,7 +10487,7 @@ class MarkovNet(IMarkovNet):
         Returns
         -------
         pyAgrum.MarkovNet
-                the resulting Markov network 
+                the resulting Markov network
 
         """
         return _pyAgrum.MarkovNet_fastPrototype(dotlike, domainSize)
@@ -10482,13 +10512,13 @@ class MarkovNet(IMarkovNet):
     def add(self, *args) -> int:
         r"""
 
-        Add a variable to the pyAgrum.MarkovNet. 
+        Add a variable to the pyAgrum.MarkovNet.
 
         Parameters
         ----------
         variable : pyAgrum.DiscreteVariable
         	the variable added
-        name : str 
+        name : str
         	the variable name
         nbrmod : int
         	the number of modalities for the new variable
@@ -10497,7 +10527,7 @@ class MarkovNet(IMarkovNet):
 
         Returns
         -------
-        int 
+        int
         	the id of the new node
 
         Raises
@@ -10515,7 +10545,7 @@ class MarkovNet(IMarkovNet):
     def clear(self) -> None:
         r"""
 
-        Clear the whole MarkovNet  
+        Clear the whole MarkovNet
 
         """
         return _pyAgrum.MarkovNet_clear(self)
@@ -10532,11 +10562,11 @@ class MarkovNet(IMarkovNet):
         Parameters
         ----------
         id : int
-        	The variable's id to remove. 
+        	The variable's id to remove.
         name : str
         	The variable's name to remove.
         var : pyAgrum.DiscreteVariable
-        	A reference on the variable to remove. 
+        	A reference on the variable to remove.
 
         """
         return _pyAgrum.MarkovNet_erase(self, *args)
@@ -10620,7 +10650,7 @@ class MarkovNet(IMarkovNet):
         ----------
         node : int
         	The variable's id.
-        name : str 
+        name : str
         	The variable's name.
 
         """
@@ -10727,7 +10757,7 @@ class MarkovNet(IMarkovNet):
         Returns
         -------
         pyAgrum.Potential
-        	The factor of the set of nodes. 
+        	The factor of the set of nodes.
 
         Raises
         ------
@@ -10782,6 +10812,16 @@ class MarkovNet(IMarkovNet):
         return _pyAgrum.MarkovNet___str__(self)
 
     def addFactor(self, *args) -> "pyAgrum.Potential":
+        r"""
+
+        Add a factor from a list or a set of id or str. If the argument is a set, the order is the order of the IDs of the variables
+
+        Parameters
+        ----------
+        seq : sequence (list or set) of int or string
+        	The sequence (ordered or not) of node id or names
+
+        """
         return _pyAgrum.MarkovNet_addFactor(self, *args)
 
     def eraseFactor(self, *args) -> None:
@@ -10846,7 +10886,7 @@ def MarkovNet_fastPrototype(dotlike: str, domainSize: int=2) -> "pyAgrum.MarkovN
     Returns
     -------
     pyAgrum.MarkovNet
-            the resulting Markov network 
+            the resulting Markov network
 
     """
     return _pyAgrum.MarkovNet_fastPrototype(dotlike, domainSize)
@@ -10930,13 +10970,13 @@ class ShaferShenoyMNInference(object):
 
         Raises
         ------
-        gum.InvalidArgument
+        pyAgrum.InvalidArgument
             If one value is not a value for the node
-        gum.InvalidArgument
+        pyAgrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-        gum.FatalError
+        pyAgrum.FatalError
             If one value is a vector of 0s
-        gum.UndefinedElement
+        pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if not isinstance(evidces, dict):
@@ -10958,13 +10998,13 @@ class ShaferShenoyMNInference(object):
 
         Raises
         ------
-        gum.InvalidArgument
+        pyAgrum.InvalidArgument
             If one value is not a value for the node
-        gum.InvalidArgument
+        pyAgrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-        gum.FatalError
+        pyAgrum.FatalError
             If one value is a vector of 0s
-        gum.UndefinedElement
+        pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if not isinstance(evidces, dict):
@@ -10989,7 +11029,7 @@ class ShaferShenoyMNInference(object):
 
         Raises
         ------
-        gum.UndefinedElement
+        pyAgrum.UndefinedElement
             If one target is not in the Bayes net
         """
         if not isinstance(targets, set):
@@ -11068,13 +11108,9 @@ class ShaferShenoyMNInference(object):
 
         Parameters
         ----------
-        list :
+        targets :
           the list of nodes whose posterior joint probability is wanted
 
-
-        Warnings
-        --------
-        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used bu the Potential.
 
         Returns
         -------
@@ -11085,6 +11121,12 @@ class ShaferShenoyMNInference(object):
         ------
         pyAgrum.UndefinedElement
           If an element of nodes is not in targets
+
+
+        Warnings
+        --------
+        - The order of the variables given by the targets here or when the jointTarget is declared can not be assumed to be used by the Potential.
+        - The nodes with hard evidence are removed fom the targets.
 
         """
         return _pyAgrum.ShaferShenoyMNInference_jointPosterior(self, targets)
@@ -11729,13 +11771,13 @@ class LazyPropagation(object):
 
         Raises
         ------
-        gum.InvalidArgument
+        pyAgrum.InvalidArgument
             If one value is not a value for the node
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-        gum.FatalError
+          pyAgrum.FatalError
             If one value is a vector of 0s
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if not isinstance(evidces, dict):
@@ -11757,13 +11799,13 @@ class LazyPropagation(object):
 
         Raises
         ------
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If one value is not a value for the node
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-        gum.FatalError
+          pyAgrum.FatalError
             If one value is a vector of 0s
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if not isinstance(evidces, dict):
@@ -11788,7 +11830,7 @@ class LazyPropagation(object):
 
         Raises
         ------
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one target is not in the Bayes net
         """
         if not isinstance(targets, set):
@@ -11873,7 +11915,7 @@ class LazyPropagation(object):
 
         Warnings
         --------
-        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used bu the Potential.
+        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used by the Potential.
 
         Returns
         -------
@@ -11991,16 +12033,16 @@ class LazyPropagation(object):
 
         Raises
         ------
-        pyAgrum.InvalidArgument
-          If the node already has an evidence
-        pyAgrum.InvalidArgument
-          If val is not a value for the node
-        pyAgrum.InvalidArgument
-          If the size of vals is different from the domain side of the node
-        pyAgrum.FatalError
-          If vals is a vector of 0s
-        pyAgrum.UndefinedElement
-          If the node does not belong to the Bayesian network
+          pyAgrum.InvalidArgument
+            If the node already has an evidence
+          pyAgrum.InvalidArgument
+            If val is not a value for the node
+          pyAgrum.InvalidArgument
+            If the size of vals is different from the domain side of the node
+          pyAgrum.FatalError
+            If vals is a vector of 0s
+          pyAgrum.UndefinedElement
+            If the node does not belong to the Bayesian network
 
         """
         return _pyAgrum.LazyPropagation_addEvidence(self, *args)
@@ -12293,8 +12335,8 @@ class LazyPropagation(object):
 
         Raises
         ------
-        pyAgrum.UndefinedElement
-          If no Bayes net has been assigned to the inference.
+          pyAgrum.UndefinedElement
+            If no Bayes net has been assigned to the inference.
 
         """
         return _pyAgrum.LazyPropagation_BN(self)
@@ -12516,13 +12558,13 @@ class ShaferShenoyInference(object):
 
         Raises
         ------
-        gum.InvalidArgument
+        pyAgrum.InvalidArgument
             If one value is not a value for the node
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-        gum.FatalError
+          pyAgrum.FatalError
             If one value is a vector of 0s
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if not isinstance(evidces, dict):
@@ -12544,13 +12586,13 @@ class ShaferShenoyInference(object):
 
         Raises
         ------
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If one value is not a value for the node
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-        gum.FatalError
+          pyAgrum.FatalError
             If one value is a vector of 0s
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if not isinstance(evidces, dict):
@@ -12575,7 +12617,7 @@ class ShaferShenoyInference(object):
 
         Raises
         ------
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one target is not in the Bayes net
         """
         if not isinstance(targets, set):
@@ -12660,7 +12702,7 @@ class ShaferShenoyInference(object):
 
         Warnings
         --------
-        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used bu the Potential.
+        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used by the Potential.
 
         Returns
         -------
@@ -12778,16 +12820,16 @@ class ShaferShenoyInference(object):
 
         Raises
         ------
-        pyAgrum.InvalidArgument
-          If the node already has an evidence
-        pyAgrum.InvalidArgument
-          If val is not a value for the node
-        pyAgrum.InvalidArgument
-          If the size of vals is different from the domain side of the node
-        pyAgrum.FatalError
-          If vals is a vector of 0s
-        pyAgrum.UndefinedElement
-          If the node does not belong to the Bayesian network
+          pyAgrum.InvalidArgument
+            If the node already has an evidence
+          pyAgrum.InvalidArgument
+            If val is not a value for the node
+          pyAgrum.InvalidArgument
+            If the size of vals is different from the domain side of the node
+          pyAgrum.FatalError
+            If vals is a vector of 0s
+          pyAgrum.UndefinedElement
+            If the node does not belong to the Bayesian network
 
         """
         return _pyAgrum.ShaferShenoyInference_addEvidence(self, *args)
@@ -13080,8 +13122,8 @@ class ShaferShenoyInference(object):
 
         Raises
         ------
-        pyAgrum.UndefinedElement
-          If no Bayes net has been assigned to the inference.
+          pyAgrum.UndefinedElement
+            If no Bayes net has been assigned to the inference.
 
         """
         return _pyAgrum.ShaferShenoyInference_BN(self)
@@ -13306,13 +13348,13 @@ class VariableElimination(object):
 
         Raises
         ------
-        gum.InvalidArgument
+        pyAgrum.InvalidArgument
             If one value is not a value for the node
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-        gum.FatalError
+          pyAgrum.FatalError
             If one value is a vector of 0s
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if not isinstance(evidces, dict):
@@ -13334,13 +13376,13 @@ class VariableElimination(object):
 
         Raises
         ------
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If one value is not a value for the node
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-        gum.FatalError
+          pyAgrum.FatalError
             If one value is a vector of 0s
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if not isinstance(evidces, dict):
@@ -13365,7 +13407,7 @@ class VariableElimination(object):
 
         Raises
         ------
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one target is not in the Bayes net
         """
         if not isinstance(targets, set):
@@ -13477,7 +13519,7 @@ class VariableElimination(object):
 
         Warnings
         --------
-        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used bu the Potential.
+        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used by the Potential.
 
         Returns
         -------
@@ -13620,16 +13662,16 @@ class VariableElimination(object):
 
         Raises
         ------
-        pyAgrum.InvalidArgument
-          If the node already has an evidence
-        pyAgrum.InvalidArgument
-          If val is not a value for the node
-        pyAgrum.InvalidArgument
-          If the size of vals is different from the domain side of the node
-        pyAgrum.FatalError
-          If vals is a vector of 0s
-        pyAgrum.UndefinedElement
-          If the node does not belong to the Bayesian network
+          pyAgrum.InvalidArgument
+            If the node already has an evidence
+          pyAgrum.InvalidArgument
+            If val is not a value for the node
+          pyAgrum.InvalidArgument
+            If the size of vals is different from the domain side of the node
+          pyAgrum.FatalError
+            If vals is a vector of 0s
+          pyAgrum.UndefinedElement
+            If the node does not belong to the Bayesian network
 
         """
         return _pyAgrum.VariableElimination_addEvidence(self, *args)
@@ -13922,8 +13964,8 @@ class VariableElimination(object):
 
         Raises
         ------
-        pyAgrum.UndefinedElement
-          If no Bayes net has been assigned to the inference.
+          pyAgrum.UndefinedElement
+            If no Bayes net has been assigned to the inference.
 
         """
         return _pyAgrum.VariableElimination_BN(self)
@@ -13987,13 +14029,13 @@ class GibbsSampling(object):
 
         Raises
         ------
-        gum.InvalidArgument
+        pyAgrum.InvalidArgument
             If one value is not a value for the node
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-        gum.FatalError
+          pyAgrum.FatalError
             If one value is a vector of 0s
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if not isinstance(evidces, dict):
@@ -14015,13 +14057,13 @@ class GibbsSampling(object):
 
         Raises
         ------
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If one value is not a value for the node
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-        gum.FatalError
+          pyAgrum.FatalError
             If one value is a vector of 0s
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if not isinstance(evidces, dict):
@@ -14046,7 +14088,7 @@ class GibbsSampling(object):
 
         Raises
         ------
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one target is not in the Bayes net
         """
         if not isinstance(targets, set):
@@ -14380,16 +14422,16 @@ class GibbsSampling(object):
 
         Raises
         ------
-        pyAgrum.InvalidArgument
-          If the node already has an evidence
-        pyAgrum.InvalidArgument
-          If val is not a value for the node
-        pyAgrum.InvalidArgument
-          If the size of vals is different from the domain side of the node
-        pyAgrum.FatalError
-          If vals is a vector of 0s
-        pyAgrum.UndefinedElement
-          If the node does not belong to the Bayesian network
+          pyAgrum.InvalidArgument
+            If the node already has an evidence
+          pyAgrum.InvalidArgument
+            If val is not a value for the node
+          pyAgrum.InvalidArgument
+            If the size of vals is different from the domain side of the node
+          pyAgrum.FatalError
+            If vals is a vector of 0s
+          pyAgrum.UndefinedElement
+            If the node does not belong to the Bayesian network
 
         """
         return _pyAgrum.GibbsSampling_addEvidence(self, *args)
@@ -14682,8 +14724,8 @@ class GibbsSampling(object):
 
         Raises
         ------
-        pyAgrum.UndefinedElement
-          If no Bayes net has been assigned to the inference.
+          pyAgrum.UndefinedElement
+            If no Bayes net has been assigned to the inference.
 
         """
         return _pyAgrum.GibbsSampling_BN(self)
@@ -14794,13 +14836,13 @@ class ImportanceSampling(object):
 
         Raises
         ------
-        gum.InvalidArgument
+        pyAgrum.InvalidArgument
             If one value is not a value for the node
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-        gum.FatalError
+          pyAgrum.FatalError
             If one value is a vector of 0s
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if not isinstance(evidces, dict):
@@ -14822,13 +14864,13 @@ class ImportanceSampling(object):
 
         Raises
         ------
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If one value is not a value for the node
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-        gum.FatalError
+          pyAgrum.FatalError
             If one value is a vector of 0s
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if not isinstance(evidces, dict):
@@ -14853,7 +14895,7 @@ class ImportanceSampling(object):
 
         Raises
         ------
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one target is not in the Bayes net
         """
         if not isinstance(targets, set):
@@ -15187,16 +15229,16 @@ class ImportanceSampling(object):
 
         Raises
         ------
-        pyAgrum.InvalidArgument
-          If the node already has an evidence
-        pyAgrum.InvalidArgument
-          If val is not a value for the node
-        pyAgrum.InvalidArgument
-          If the size of vals is different from the domain side of the node
-        pyAgrum.FatalError
-          If vals is a vector of 0s
-        pyAgrum.UndefinedElement
-          If the node does not belong to the Bayesian network
+          pyAgrum.InvalidArgument
+            If the node already has an evidence
+          pyAgrum.InvalidArgument
+            If val is not a value for the node
+          pyAgrum.InvalidArgument
+            If the size of vals is different from the domain side of the node
+          pyAgrum.FatalError
+            If vals is a vector of 0s
+          pyAgrum.UndefinedElement
+            If the node does not belong to the Bayesian network
 
         """
         return _pyAgrum.ImportanceSampling_addEvidence(self, *args)
@@ -15489,8 +15531,8 @@ class ImportanceSampling(object):
 
         Raises
         ------
-        pyAgrum.UndefinedElement
-          If no Bayes net has been assigned to the inference.
+          pyAgrum.UndefinedElement
+            If no Bayes net has been assigned to the inference.
 
         """
         return _pyAgrum.ImportanceSampling_BN(self)
@@ -15557,13 +15599,13 @@ class WeightedSampling(object):
 
         Raises
         ------
-        gum.InvalidArgument
+        pyAgrum.InvalidArgument
             If one value is not a value for the node
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-        gum.FatalError
+          pyAgrum.FatalError
             If one value is a vector of 0s
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if not isinstance(evidces, dict):
@@ -15585,13 +15627,13 @@ class WeightedSampling(object):
 
         Raises
         ------
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If one value is not a value for the node
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-        gum.FatalError
+          pyAgrum.FatalError
             If one value is a vector of 0s
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if not isinstance(evidces, dict):
@@ -15616,7 +15658,7 @@ class WeightedSampling(object):
 
         Raises
         ------
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one target is not in the Bayes net
         """
         if not isinstance(targets, set):
@@ -15950,16 +15992,16 @@ class WeightedSampling(object):
 
         Raises
         ------
-        pyAgrum.InvalidArgument
-          If the node already has an evidence
-        pyAgrum.InvalidArgument
-          If val is not a value for the node
-        pyAgrum.InvalidArgument
-          If the size of vals is different from the domain side of the node
-        pyAgrum.FatalError
-          If vals is a vector of 0s
-        pyAgrum.UndefinedElement
-          If the node does not belong to the Bayesian network
+          pyAgrum.InvalidArgument
+            If the node already has an evidence
+          pyAgrum.InvalidArgument
+            If val is not a value for the node
+          pyAgrum.InvalidArgument
+            If the size of vals is different from the domain side of the node
+          pyAgrum.FatalError
+            If vals is a vector of 0s
+          pyAgrum.UndefinedElement
+            If the node does not belong to the Bayesian network
 
         """
         return _pyAgrum.WeightedSampling_addEvidence(self, *args)
@@ -16252,8 +16294,8 @@ class WeightedSampling(object):
 
         Raises
         ------
-        pyAgrum.UndefinedElement
-          If no Bayes net has been assigned to the inference.
+          pyAgrum.UndefinedElement
+            If no Bayes net has been assigned to the inference.
 
         """
         return _pyAgrum.WeightedSampling_BN(self)
@@ -16320,13 +16362,13 @@ class MonteCarloSampling(object):
 
         Raises
         ------
-        gum.InvalidArgument
+        pyAgrum.InvalidArgument
             If one value is not a value for the node
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-        gum.FatalError
+          pyAgrum.FatalError
             If one value is a vector of 0s
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if not isinstance(evidces, dict):
@@ -16348,13 +16390,13 @@ class MonteCarloSampling(object):
 
         Raises
         ------
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If one value is not a value for the node
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-        gum.FatalError
+          pyAgrum.FatalError
             If one value is a vector of 0s
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if not isinstance(evidces, dict):
@@ -16379,7 +16421,7 @@ class MonteCarloSampling(object):
 
         Raises
         ------
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one target is not in the Bayes net
         """
         if not isinstance(targets, set):
@@ -16713,16 +16755,16 @@ class MonteCarloSampling(object):
 
         Raises
         ------
-        pyAgrum.InvalidArgument
-          If the node already has an evidence
-        pyAgrum.InvalidArgument
-          If val is not a value for the node
-        pyAgrum.InvalidArgument
-          If the size of vals is different from the domain side of the node
-        pyAgrum.FatalError
-          If vals is a vector of 0s
-        pyAgrum.UndefinedElement
-          If the node does not belong to the Bayesian network
+          pyAgrum.InvalidArgument
+            If the node already has an evidence
+          pyAgrum.InvalidArgument
+            If val is not a value for the node
+          pyAgrum.InvalidArgument
+            If the size of vals is different from the domain side of the node
+          pyAgrum.FatalError
+            If vals is a vector of 0s
+          pyAgrum.UndefinedElement
+            If the node does not belong to the Bayesian network
 
         """
         return _pyAgrum.MonteCarloSampling_addEvidence(self, *args)
@@ -17015,8 +17057,8 @@ class MonteCarloSampling(object):
 
         Raises
         ------
-        pyAgrum.UndefinedElement
-          If no Bayes net has been assigned to the inference.
+          pyAgrum.UndefinedElement
+            If no Bayes net has been assigned to the inference.
 
         """
         return _pyAgrum.MonteCarloSampling_BN(self)
@@ -17097,13 +17139,13 @@ class LoopyImportanceSampling(ImportanceSampling):
 
         Raises
         ------
-        gum.InvalidArgument
+        pyAgrum.InvalidArgument
             If one value is not a value for the node
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-        gum.FatalError
+          pyAgrum.FatalError
             If one value is a vector of 0s
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if not isinstance(evidces, dict):
@@ -17125,13 +17167,13 @@ class LoopyImportanceSampling(ImportanceSampling):
 
         Raises
         ------
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If one value is not a value for the node
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-        gum.FatalError
+          pyAgrum.FatalError
             If one value is a vector of 0s
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if not isinstance(evidces, dict):
@@ -17156,7 +17198,7 @@ class LoopyImportanceSampling(ImportanceSampling):
 
         Raises
         ------
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one target is not in the Bayes net
         """
         if not isinstance(targets, set):
@@ -17490,16 +17532,16 @@ class LoopyImportanceSampling(ImportanceSampling):
 
         Raises
         ------
-        pyAgrum.InvalidArgument
-          If the node already has an evidence
-        pyAgrum.InvalidArgument
-          If val is not a value for the node
-        pyAgrum.InvalidArgument
-          If the size of vals is different from the domain side of the node
-        pyAgrum.FatalError
-          If vals is a vector of 0s
-        pyAgrum.UndefinedElement
-          If the node does not belong to the Bayesian network
+          pyAgrum.InvalidArgument
+            If the node already has an evidence
+          pyAgrum.InvalidArgument
+            If val is not a value for the node
+          pyAgrum.InvalidArgument
+            If the size of vals is different from the domain side of the node
+          pyAgrum.FatalError
+            If vals is a vector of 0s
+          pyAgrum.UndefinedElement
+            If the node does not belong to the Bayesian network
 
         """
         return _pyAgrum.LoopyImportanceSampling_addEvidence(self, *args)
@@ -17792,8 +17834,8 @@ class LoopyImportanceSampling(ImportanceSampling):
 
         Raises
         ------
-        pyAgrum.UndefinedElement
-          If no Bayes net has been assigned to the inference.
+          pyAgrum.UndefinedElement
+            If no Bayes net has been assigned to the inference.
 
         """
         return _pyAgrum.LoopyImportanceSampling_BN(self)
@@ -17874,13 +17916,13 @@ class LoopyWeightedSampling(WeightedSampling):
 
         Raises
         ------
-        gum.InvalidArgument
+        pyAgrum.InvalidArgument
             If one value is not a value for the node
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-        gum.FatalError
+          pyAgrum.FatalError
             If one value is a vector of 0s
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if not isinstance(evidces, dict):
@@ -17902,13 +17944,13 @@ class LoopyWeightedSampling(WeightedSampling):
 
         Raises
         ------
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If one value is not a value for the node
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-        gum.FatalError
+          pyAgrum.FatalError
             If one value is a vector of 0s
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if not isinstance(evidces, dict):
@@ -17933,7 +17975,7 @@ class LoopyWeightedSampling(WeightedSampling):
 
         Raises
         ------
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one target is not in the Bayes net
         """
         if not isinstance(targets, set):
@@ -18267,16 +18309,16 @@ class LoopyWeightedSampling(WeightedSampling):
 
         Raises
         ------
-        pyAgrum.InvalidArgument
-          If the node already has an evidence
-        pyAgrum.InvalidArgument
-          If val is not a value for the node
-        pyAgrum.InvalidArgument
-          If the size of vals is different from the domain side of the node
-        pyAgrum.FatalError
-          If vals is a vector of 0s
-        pyAgrum.UndefinedElement
-          If the node does not belong to the Bayesian network
+          pyAgrum.InvalidArgument
+            If the node already has an evidence
+          pyAgrum.InvalidArgument
+            If val is not a value for the node
+          pyAgrum.InvalidArgument
+            If the size of vals is different from the domain side of the node
+          pyAgrum.FatalError
+            If vals is a vector of 0s
+          pyAgrum.UndefinedElement
+            If the node does not belong to the Bayesian network
 
         """
         return _pyAgrum.LoopyWeightedSampling_addEvidence(self, *args)
@@ -18569,8 +18611,8 @@ class LoopyWeightedSampling(WeightedSampling):
 
         Raises
         ------
-        pyAgrum.UndefinedElement
-          If no Bayes net has been assigned to the inference.
+          pyAgrum.UndefinedElement
+            If no Bayes net has been assigned to the inference.
 
         """
         return _pyAgrum.LoopyWeightedSampling_BN(self)
@@ -18651,13 +18693,13 @@ class LoopyGibbsSampling(GibbsSampling):
 
         Raises
         ------
-        gum.InvalidArgument
+        pyAgrum.InvalidArgument
             If one value is not a value for the node
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-        gum.FatalError
+          pyAgrum.FatalError
             If one value is a vector of 0s
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if not isinstance(evidces, dict):
@@ -18679,13 +18721,13 @@ class LoopyGibbsSampling(GibbsSampling):
 
         Raises
         ------
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If one value is not a value for the node
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-        gum.FatalError
+          pyAgrum.FatalError
             If one value is a vector of 0s
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if not isinstance(evidces, dict):
@@ -18710,7 +18752,7 @@ class LoopyGibbsSampling(GibbsSampling):
 
         Raises
         ------
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one target is not in the Bayes net
         """
         if not isinstance(targets, set):
@@ -19044,16 +19086,16 @@ class LoopyGibbsSampling(GibbsSampling):
 
         Raises
         ------
-        pyAgrum.InvalidArgument
-          If the node already has an evidence
-        pyAgrum.InvalidArgument
-          If val is not a value for the node
-        pyAgrum.InvalidArgument
-          If the size of vals is different from the domain side of the node
-        pyAgrum.FatalError
-          If vals is a vector of 0s
-        pyAgrum.UndefinedElement
-          If the node does not belong to the Bayesian network
+          pyAgrum.InvalidArgument
+            If the node already has an evidence
+          pyAgrum.InvalidArgument
+            If val is not a value for the node
+          pyAgrum.InvalidArgument
+            If the size of vals is different from the domain side of the node
+          pyAgrum.FatalError
+            If vals is a vector of 0s
+          pyAgrum.UndefinedElement
+            If the node does not belong to the Bayesian network
 
         """
         return _pyAgrum.LoopyGibbsSampling_addEvidence(self, *args)
@@ -19346,8 +19388,8 @@ class LoopyGibbsSampling(GibbsSampling):
 
         Raises
         ------
-        pyAgrum.UndefinedElement
-          If no Bayes net has been assigned to the inference.
+          pyAgrum.UndefinedElement
+            If no Bayes net has been assigned to the inference.
 
         """
         return _pyAgrum.LoopyGibbsSampling_BN(self)
@@ -19494,13 +19536,13 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
 
         Raises
         ------
-        gum.InvalidArgument
+        pyAgrum.InvalidArgument
             If one value is not a value for the node
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-        gum.FatalError
+          pyAgrum.FatalError
             If one value is a vector of 0s
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if not isinstance(evidces, dict):
@@ -19522,13 +19564,13 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
 
         Raises
         ------
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If one value is not a value for the node
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-        gum.FatalError
+          pyAgrum.FatalError
             If one value is a vector of 0s
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if not isinstance(evidces, dict):
@@ -19553,7 +19595,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
 
         Raises
         ------
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one target is not in the Bayes net
         """
         if not isinstance(targets, set):
@@ -19887,16 +19929,16 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
 
         Raises
         ------
-        pyAgrum.InvalidArgument
-          If the node already has an evidence
-        pyAgrum.InvalidArgument
-          If val is not a value for the node
-        pyAgrum.InvalidArgument
-          If the size of vals is different from the domain side of the node
-        pyAgrum.FatalError
-          If vals is a vector of 0s
-        pyAgrum.UndefinedElement
-          If the node does not belong to the Bayesian network
+          pyAgrum.InvalidArgument
+            If the node already has an evidence
+          pyAgrum.InvalidArgument
+            If val is not a value for the node
+          pyAgrum.InvalidArgument
+            If the size of vals is different from the domain side of the node
+          pyAgrum.FatalError
+            If vals is a vector of 0s
+          pyAgrum.UndefinedElement
+            If the node does not belong to the Bayesian network
 
         """
         return _pyAgrum.LoopyMonteCarloSampling_addEvidence(self, *args)
@@ -20189,8 +20231,8 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
 
         Raises
         ------
-        pyAgrum.UndefinedElement
-          If no Bayes net has been assigned to the inference.
+          pyAgrum.UndefinedElement
+            If no Bayes net has been assigned to the inference.
 
         """
         return _pyAgrum.LoopyMonteCarloSampling_BN(self)
@@ -20257,13 +20299,13 @@ class LoopyBeliefPropagation(object):
 
         Raises
         ------
-        gum.InvalidArgument
+        pyAgrum.InvalidArgument
             If one value is not a value for the node
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-        gum.FatalError
+          pyAgrum.FatalError
             If one value is a vector of 0s
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if not isinstance(evidces, dict):
@@ -20285,13 +20327,13 @@ class LoopyBeliefPropagation(object):
 
         Raises
         ------
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If one value is not a value for the node
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-        gum.FatalError
+          pyAgrum.FatalError
             If one value is a vector of 0s
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if not isinstance(evidces, dict):
@@ -20316,7 +20358,7 @@ class LoopyBeliefPropagation(object):
 
         Raises
         ------
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one target is not in the Bayes net
         """
         if not isinstance(targets, set):
@@ -20650,16 +20692,16 @@ class LoopyBeliefPropagation(object):
 
         Raises
         ------
-        pyAgrum.InvalidArgument
-          If the node already has an evidence
-        pyAgrum.InvalidArgument
-          If val is not a value for the node
-        pyAgrum.InvalidArgument
-          If the size of vals is different from the domain side of the node
-        pyAgrum.FatalError
-          If vals is a vector of 0s
-        pyAgrum.UndefinedElement
-          If the node does not belong to the Bayesian network
+          pyAgrum.InvalidArgument
+            If the node already has an evidence
+          pyAgrum.InvalidArgument
+            If val is not a value for the node
+          pyAgrum.InvalidArgument
+            If the size of vals is different from the domain side of the node
+          pyAgrum.FatalError
+            If vals is a vector of 0s
+          pyAgrum.UndefinedElement
+            If the node does not belong to the Bayesian network
 
         """
         return _pyAgrum.LoopyBeliefPropagation_addEvidence(self, *args)
@@ -20952,8 +20994,8 @@ class LoopyBeliefPropagation(object):
 
         Raises
         ------
-        pyAgrum.UndefinedElement
-          If no Bayes net has been assigned to the inference.
+          pyAgrum.UndefinedElement
+            If no Bayes net has been assigned to the inference.
 
         """
         return _pyAgrum.LoopyBeliefPropagation_BN(self)
@@ -20980,7 +21022,7 @@ class ExactBNdistance(object):
 
     Raises
     ------
-    pyAgrum.OperationNotAllowed
+      pyAgrum.OperationNotAllowed
     	If the 2BNs have not the same domain size of compatible node sets
 
     """
@@ -21023,7 +21065,7 @@ class GibbsBNdistance(ApproximationScheme):
 
     Raises
     ------
-    pyAgrum.OperationNotAllowed
+      pyAgrum.OperationNotAllowed
     	If the 2BNs have not the same domain size of compatible node sets
 
     """
@@ -21852,7 +21894,7 @@ class CNMonteCarloSampling(object):
         Parameters
         ----------
         path : str
-        	the path to the evidence file. 
+        	the path to the evidence file.
 
         """
         return _pyAgrum.CNMonteCarloSampling_insertEvidenceFile(self, path)
@@ -22072,7 +22114,7 @@ class CNMonteCarloSampling(object):
         Parameters
         ----------
         flag : bool
-        	True if repetitive independence is to be used, false otherwise. Only usefull with dynamic networks. 
+        	True if repetitive independence is to be used, false otherwise. Only usefull with dynamic networks.
 
         """
         return _pyAgrum.CNMonteCarloSampling_setRepetitiveInd(self, flag)
@@ -22087,7 +22129,7 @@ class CNMonteCarloSampling(object):
         id : int
         	the node id which upper marginals we want.
         varName : str
-        	the variable name which upper marginals we want. 
+        	the variable name which upper marginals we want.
 
         Returns
         -------
@@ -22096,7 +22138,7 @@ class CNMonteCarloSampling(object):
 
         Raises
         ------
-        pyAgrum.IndexError
+          pyAgrum.IndexError
         	If the node does not belong to the Credal network
 
         """
@@ -22112,7 +22154,7 @@ class CNMonteCarloSampling(object):
         id : int
         	the node id which lower marginals we want.
         varName : str
-        	the variable name which lower marginals we want. 
+        	the variable name which lower marginals we want.
 
         Returns
         -------
@@ -22121,7 +22163,7 @@ class CNMonteCarloSampling(object):
 
         Raises
         ------
-        pyAgrum.IndexError
+          pyAgrum.IndexError
         	If the node does not belong to the Credal network
 
         """
@@ -22135,7 +22177,7 @@ class CNMonteCarloSampling(object):
         Parameters
         ----------
         path : str
-        	The path to the modalities file. 
+        	The path to the modalities file.
 
         """
         return _pyAgrum.CNMonteCarloSampling_insertModalsFile(self, path)
@@ -22153,7 +22195,7 @@ class CNMonteCarloSampling(object):
         Returns
         -------
         float
-            a constant reference to the variable upper expectation over all time steps. 
+            a constant reference to the variable upper expectation over all time steps.
 
         """
         return _pyAgrum.CNMonteCarloSampling_dynamicExpMax(self, varName)
@@ -22171,7 +22213,7 @@ class CNMonteCarloSampling(object):
         Returns
         -------
         float
-            a constant reference to the variable lower expectation over all time steps. 
+            a constant reference to the variable lower expectation over all time steps.
 
         """
         return _pyAgrum.CNMonteCarloSampling_dynamicExpMin(self, varName)
@@ -22236,7 +22278,7 @@ class CNLoopyPropagation(object):
         Parameters
         ----------
         path : str
-        	The path to the file to save marginals. 
+        	The path to the file to save marginals.
 
         """
         return _pyAgrum.CNLoopyPropagation_saveInference(self, path)
@@ -22258,7 +22300,7 @@ class CNLoopyPropagation(object):
         Parameters
         ----------
         path : str
-        	the path to the evidence file. 
+        	the path to the evidence file.
 
         """
         return _pyAgrum.CNLoopyPropagation_insertEvidenceFile(self, path)
@@ -22478,7 +22520,7 @@ class CNLoopyPropagation(object):
         Parameters
         ----------
         flag : bool
-        	True if repetitive independence is to be used, false otherwise. Only usefull with dynamic networks. 
+        	True if repetitive independence is to be used, false otherwise. Only usefull with dynamic networks.
 
         """
         return _pyAgrum.CNLoopyPropagation_setRepetitiveInd(self, flag)
@@ -22493,7 +22535,7 @@ class CNLoopyPropagation(object):
         id : int
         	the node id which upper marginals we want.
         varName : str
-        	the variable name which upper marginals we want. 
+        	the variable name which upper marginals we want.
 
         Returns
         -------
@@ -22502,7 +22544,7 @@ class CNLoopyPropagation(object):
 
         Raises
         ------
-        pyAgrum.IndexError
+          pyAgrum.IndexError
         	If the node does not belong to the Credal network
 
         """
@@ -22518,7 +22560,7 @@ class CNLoopyPropagation(object):
         id : int
         	the node id which lower marginals we want.
         varName : str
-        	the variable name which lower marginals we want. 
+        	the variable name which lower marginals we want.
 
         Returns
         -------
@@ -22527,7 +22569,7 @@ class CNLoopyPropagation(object):
 
         Raises
         ------
-        pyAgrum.IndexError
+          pyAgrum.IndexError
         	If the node does not belong to the Credal network
 
         """
@@ -22541,7 +22583,7 @@ class CNLoopyPropagation(object):
         Parameters
         ----------
         path : str
-        	The path to the modalities file. 
+        	The path to the modalities file.
 
         """
         return _pyAgrum.CNLoopyPropagation_insertModalsFile(self, path)
@@ -22559,7 +22601,7 @@ class CNLoopyPropagation(object):
         Returns
         -------
         float
-            a constant reference to the variable upper expectation over all time steps. 
+            a constant reference to the variable upper expectation over all time steps.
 
         """
         return _pyAgrum.CNLoopyPropagation_dynamicExpMax(self, varName)
@@ -22577,7 +22619,7 @@ class CNLoopyPropagation(object):
         Returns
         -------
         float
-            a constant reference to the variable lower expectation over all time steps. 
+            a constant reference to the variable lower expectation over all time steps.
 
         """
         return _pyAgrum.CNLoopyPropagation_dynamicExpMin(self, varName)
@@ -22625,7 +22667,7 @@ class InfluenceDiagram(DAGmodel):
               - with `'a{top|middle|bottom}'`, the variable is a pyAgrum.LabelizedVariable using the given labels.
               - with 'a{-1|5|0|3}', the variable is a pyAgrum.IntegerVariable using the sorted given values.
 
-        Note 
+        Note
         ----
           - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
           - the potentials (probabilities, utilities) are randomly generated.
@@ -22682,12 +22724,12 @@ class InfluenceDiagram(DAGmodel):
         Returns
         -------
         pyAgrum.Potential
-        	The variable's CPT. 
+        	The variable's CPT.
 
         Raises
         ------
         pyAgrum.NotFound
-        	If no variable's id matches varId. 
+        	If no variable's id matches varId.
 
         """
         return _pyAgrum.InfluenceDiagram_cpt(self, *args)
@@ -22697,7 +22739,7 @@ class InfluenceDiagram(DAGmodel):
 
         Parameters
         ----------
-        varId : int 
+        varId : int
         	the tested node id.
 
         Returns
@@ -22718,7 +22760,7 @@ class InfluenceDiagram(DAGmodel):
 
         Parameters
         ----------
-        varId : int 
+        varId : int
         	the tested node id.
 
         Returns
@@ -22734,7 +22776,7 @@ class InfluenceDiagram(DAGmodel):
 
         Parameters
         ----------
-        varId : int 
+        varId : int
         	the tested node id.
 
         Returns
@@ -22750,7 +22792,7 @@ class InfluenceDiagram(DAGmodel):
 
         Parameters
         ----------
-        varId : int 
+        varId : int
         	the tested node id.
 
         Returns
@@ -22778,7 +22820,7 @@ class InfluenceDiagram(DAGmodel):
         Returns
         -------
         int
-        	the number of chance nodes. 
+        	the number of chance nodes.
 
         """
         return _pyAgrum.InfluenceDiagram_chanceNodeSize(self)
@@ -22810,7 +22852,7 @@ class InfluenceDiagram(DAGmodel):
         Raises
         ------
         pyAgrum.NotFound
-        	If no variable's id matches the parameter 
+        	If no variable's id matches the parameter
 
         """
         return _pyAgrum.InfluenceDiagram_variable(self, *args)
@@ -22849,12 +22891,12 @@ class InfluenceDiagram(DAGmodel):
         Returns
         -------
         int
-        	the variable's node id. 
+        	the variable's node id.
 
         Raises
         ------
         pyAgrum.NotFound
-        	If no such name exists in the graph. 
+        	If no such name exists in the graph.
 
         """
         return _pyAgrum.InfluenceDiagram_idFromName(self, name)
@@ -22896,17 +22938,17 @@ class InfluenceDiagram(DAGmodel):
 
         Warnings
         --------
-        give an id (not 0) should be reserved for rare and specific situations !!! 
+        give an id (not 0) should be reserved for rare and specific situations !!!
 
         Returns
         -------
         int
-            the id of the added variable. 
+            the id of the added variable.
 
         Raises
         ------
-        pyAgrum.DuplicateElement
-        	If id(<>0) is already used 
+          pyAgrum.DuplicateElement
+        	If id(<>0) is already used
 
         """
         return _pyAgrum.InfluenceDiagram_add(self, variable, id)
@@ -22927,17 +22969,17 @@ class InfluenceDiagram(DAGmodel):
 
         Warnings
         --------
-        give an id (not 0) should be reserved for rare and specific situations !!! 
+        give an id (not 0) should be reserved for rare and specific situations !!!
 
         Returns
         -------
         int
-            the id of the added variable. 
+            the id of the added variable.
 
         Raises
         ------
         pyAgrum.DuplicateElement
-        	If id(<>0) is already used 
+        	If id(<>0) is already used
 
         """
         return _pyAgrum.InfluenceDiagram_addDecisionNode(self, variable, id)
@@ -22958,17 +23000,17 @@ class InfluenceDiagram(DAGmodel):
 
         Warnings
         --------
-        give an id (not 0) should be reserved for rare and specific situations !!! 
+        give an id (not 0) should be reserved for rare and specific situations !!!
 
         Returns
         -------
         int
-            the id of the added variable. 
+            the id of the added variable.
 
         Raises
         ------
         pyAgrum.DuplicateElement
-        	If id(<>0) is already used 
+        	If id(<>0) is already used
 
         """
         return _pyAgrum.InfluenceDiagram_addChanceNode(self, *args)
@@ -22976,7 +23018,7 @@ class InfluenceDiagram(DAGmodel):
     def addUtilityNode(self, *args) -> int:
         r"""
 
-        Add a utility variable, it's associate node and it's UT. 
+        Add a utility variable, it's associate node and it's UT.
 
         The id of the new variable is automatically generated.
 
@@ -22989,19 +23031,19 @@ class InfluenceDiagram(DAGmodel):
 
         Warnings
         --------
-        give an id (not 0) should be reserved for rare and specific situations !!! 
+        give an id (not 0) should be reserved for rare and specific situations !!!
 
         Returns
         -------
         int
-            the id of the added variable. 
+            the id of the added variable.
 
         Raises
         ------
         pyAgrum.InvalidArgument
         	If variable has more than one label
         pyAgrum.DuplicateElement
-        	If id(<>0) is already used 
+        	If id(<>0) is already used
 
         """
         return _pyAgrum.InfluenceDiagram_addUtilityNode(self, *args)
@@ -23018,7 +23060,7 @@ class InfluenceDiagram(DAGmodel):
         id : int
         	The id of the variable to erase.
         var : pyAgrum.DiscreteVariable
-        	The reference on the variable to remove. 
+        	The reference on the variable to remove.
 
         """
         return _pyAgrum.InfluenceDiagram_erase(self, *args)
@@ -23031,14 +23073,14 @@ class InfluenceDiagram(DAGmodel):
         id : int
         	the node Id
         new_name : str
-        	the name of the variable 
+        	the name of the variable
 
         Raises
         ------
         pyAgrum.DuplicateLabel
         	If this name already exists
         pyAgrum.NotFound
-        	If no nodes matches id. 
+        	If no nodes matches id.
 
         """
         return _pyAgrum.InfluenceDiagram_changeVariableName(self, *args)
@@ -23057,10 +23099,10 @@ class InfluenceDiagram(DAGmodel):
 
         Raises
         ------
-        pyAgrum.InvalidEdge
+          pyAgrum.InvalidEdge
         	If arc.tail and/or arc.head are not in the ID.
-        pyAgrum.InvalidEdge
-        	If tail is a utility node 
+          pyAgrum.InvalidEdge
+        	If tail is a utility node
 
         """
         return _pyAgrum.InfluenceDiagram_addArc(self, *args)
@@ -23101,7 +23143,7 @@ class InfluenceDiagram(DAGmodel):
         Returns
         -------
         pyAgrum.DAG
-        	the temporal Graph. 
+        	the temporal Graph.
 
         """
         return _pyAgrum.InfluenceDiagram_getDecisionGraph(self)
@@ -23115,7 +23157,7 @@ class InfluenceDiagram(DAGmodel):
         Returns
         -------
         bool
-        	true if a path exists between two nodes. 
+        	true if a path exists between two nodes.
 
         """
         return _pyAgrum.InfluenceDiagram_existsPathBetween(self, *args)
@@ -23305,7 +23347,7 @@ def InfluenceDiagram_fastPrototype(dotlike: str, domainSize: int=2) -> "pyAgrum.
           - with `'a{top|middle|bottom}'`, the variable is a pyAgrum.LabelizedVariable using the given labels.
           - with 'a{-1|5|0|3}', the variable is a pyAgrum.IntegerVariable using the sorted given values.
 
-    Note 
+    Note
     ----
       - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
       - the potentials (probabilities, utilities) are randomly generated.
@@ -23396,10 +23438,10 @@ class ShaferShenoyLIMIDInference(object):
 
         Raises
         ------
-        pyAgrum.OperationNotAllowed
+          pyAgrum.OperationNotAllowed
         	If no inference have yet been made
         pyAgrum.InvalidNode
-        	If node given in parmaeter is not a decision node 
+        	If node given in parmaeter is not a decision node
 
         """
         return _pyAgrum.ShaferShenoyLIMIDInference_optimalDecision(self, *args)
@@ -23418,13 +23460,13 @@ class ShaferShenoyLIMIDInference(object):
 
         Raises
         ------
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If one value is not a value for the node
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-        gum.FatalError
+          pyAgrum.FatalError
             If one value is a vector of 0s
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one node does not belong to the influence diagram
         """
         if not isinstance(evidces, dict):
@@ -23446,13 +23488,13 @@ class ShaferShenoyLIMIDInference(object):
 
         Raises
         ------
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If one value is not a value for the node
-        gum.InvalidArgument
+          pyAgrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-        gum.FatalError
+          pyAgrum.FatalError
             If one value is a vector of 0s
-        gum.UndefinedElement
+          pyAgrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if not isinstance(evidces, dict):
@@ -23480,7 +23522,7 @@ class ShaferShenoyLIMIDInference(object):
         Raises
         ------
         pyAgrum.OperationNotAllowed
-        	If no inference have yet been made 
+        	If no inference have yet been made
 
         """
         return _pyAgrum.ShaferShenoyLIMIDInference_MEU(self, *args)
@@ -23491,7 +23533,7 @@ class ShaferShenoyLIMIDInference(object):
     def makeInference(self) -> None:
         r"""
 
-        Makes the inference. 
+        Makes the inference.
 
         """
         return _pyAgrum.ShaferShenoyLIMIDInference_makeInference(self)
@@ -23526,7 +23568,7 @@ class ShaferShenoyLIMIDInference(object):
 
         Raises
         ------
-        pyAgrum.IndexError
+          pyAgrum.IndexError
         	If the evidence does not belong to the influence diagram
 
         """

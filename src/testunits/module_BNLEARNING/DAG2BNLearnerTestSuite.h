@@ -75,11 +75,11 @@ namespace gum_tests {
       var.addLabel("1");
       var.addLabel("2");
 
-      gum::learning::DBTranslatorSet<> trans_set;
+      gum::learning::DBTranslatorSet trans_set;
       {
-        const std::vector< std::string >                miss;
-        gum::learning::DBTranslator4LabelizedVariable<> translator(var, miss);
-        std::vector< std::string >                      names{"A", "B", "C", "D", "E", "F"};
+        const std::vector< std::string >              miss;
+        gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
+        std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
 
         for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
           translator.setVariableName(names[i]);
@@ -88,12 +88,12 @@ namespace gum_tests {
       }
 
       // create the database
-      gum::learning::DatabaseTable<> database(trans_set);
-      std::vector< std::string >     row0{"0", "1", "0", "2", "1", "1"};
-      std::vector< std::string >     row1{"1", "2", "0", "1", "2", "2"};
-      std::vector< std::string >     row2{"2", "1", "0", "1", "1", "0"};
-      std::vector< std::string >     row3{"1", "0", "0", "0", "0", "0"};
-      std::vector< std::string >     row4{"0", "0", "0", "1", "1", "1"};
+      gum::learning::DatabaseTable database(trans_set);
+      std::vector< std::string >   row0{"0", "1", "0", "2", "1", "1"};
+      std::vector< std::string >   row1{"1", "2", "0", "1", "2", "2"};
+      std::vector< std::string >   row2{"2", "1", "0", "1", "1", "0"};
+      std::vector< std::string >   row3{"1", "0", "0", "0", "0", "0"};
+      std::vector< std::string >   row4{"0", "0", "0", "1", "1", "1"};
       for (int i = 0; i < 1000; ++i)
         database.insertRow(row0);
       for (int i = 0; i < 50; ++i)
@@ -106,14 +106,14 @@ namespace gum_tests {
         database.insertRow(row4);
 
       // create the parser
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriSmoothing<>     extern_apriori(database);
-      gum::learning::AprioriNoApriori<>     intern_apriori(database);
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+      gum::learning::AprioriSmoothing     extern_apriori(database);
+      gum::learning::AprioriNoApriori     intern_apriori(database);
 
-      gum::learning::ParamEstimatorML<> param_estimator(parser, extern_apriori, intern_apriori);
+      gum::learning::ParamEstimatorML param_estimator(parser, extern_apriori, intern_apriori);
 
-      gum::learning::DAG2BNLearner<> learner;
+      gum::learning::DAG2BNLearner learner;
 
       gum::DAG dag;
       for (std::size_t i = std::size_t(0); i < database.nbVariables(); ++i) {
@@ -138,11 +138,11 @@ namespace gum_tests {
       gum::LabelizedVariable var("x", "", 0);
       var.addLabel("0");
       var.addLabel("1");
-      gum::learning::DBTranslatorSet<> trans_set;
+      gum::learning::DBTranslatorSet trans_set;
       {
-        const std::vector< std::string >                miss{"N/A", "?"};
-        gum::learning::DBTranslator4LabelizedVariable<> translator(var, miss);
-        std::vector< std::string >                      names{"A", "B", "C", "D"};
+        const std::vector< std::string >              miss{"N/A", "?"};
+        gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
+        std::vector< std::string >                    names{"A", "B", "C", "D"};
 
         for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
           translator.setVariableName(names[i]);
@@ -150,12 +150,12 @@ namespace gum_tests {
         }
       }
 
-      gum::learning::DatabaseTable<> database(trans_set);
-      std::vector< std::string >     row1{"0", "1", "1", "0"};
-      std::vector< std::string >     row2{"0", "?", "0", "1"};
-      std::vector< std::string >     row3{"1", "?", "?", "0"};
-      std::vector< std::string >     row4{"?", "?", "1", "0"};
-      std::vector< std::string >     row5{"?", "0", "?", "?"};
+      gum::learning::DatabaseTable database(trans_set);
+      std::vector< std::string >   row1{"0", "1", "1", "0"};
+      std::vector< std::string >   row2{"0", "?", "0", "1"};
+      std::vector< std::string >   row3{"1", "?", "?", "0"};
+      std::vector< std::string >   row4{"?", "?", "1", "0"};
+      std::vector< std::string >   row5{"?", "0", "?", "?"};
       for (int i = 0; i < 100; ++i) {
         database.insertRow(row1);
         database.insertRow(row2);
@@ -186,27 +186,23 @@ namespace gum_tests {
       }
 
       // create the parser
-      gum::learning::DBRowGenerator4CompleteRows<> generator_id(col_types);
-      gum::learning::DBRowGeneratorSet<>           genset_id;
+      gum::learning::DBRowGenerator4CompleteRows generator_id(col_types);
+      gum::learning::DBRowGeneratorSet           genset_id;
       genset_id.insertGenerator(generator_id);
-      gum::learning::DBRowGeneratorParser<> parser_id(database.handler(), genset_id);
+      gum::learning::DBRowGeneratorParser parser_id(database.handler(), genset_id);
 
-      gum::learning::AprioriSmoothing<> extern_apriori(database);
-      gum::learning::AprioriNoApriori<> intern_apriori(database);
-      gum::learning::ParamEstimatorML<> param_estimator_id(parser_id,
-                                                           extern_apriori,
-                                                           intern_apriori);
+      gum::learning::AprioriSmoothing extern_apriori(database);
+      gum::learning::AprioriNoApriori intern_apriori(database);
+      gum::learning::ParamEstimatorML param_estimator_id(parser_id, extern_apriori, intern_apriori);
 
-      gum::learning::DBRowGeneratorEM<>  generator_EM(col_types, bn);
-      gum::learning::DBRowGenerator<>&   gen_EM = generator_EM;   // fix for g++-4.8
-      gum::learning::DBRowGeneratorSet<> genset_EM;
+      gum::learning::DBRowGeneratorEM  generator_EM(col_types, bn);
+      gum::learning::DBRowGenerator&   gen_EM = generator_EM;   // fix for g++-4.8
+      gum::learning::DBRowGeneratorSet genset_EM;
       genset_EM.insertGenerator(gen_EM);
-      gum::learning::DBRowGeneratorParser<> parser_EM(database.handler(), genset_EM);
-      gum::learning::ParamEstimatorML<>     param_estimator_EM(parser_EM,
-                                                           extern_apriori,
-                                                           intern_apriori);
+      gum::learning::DBRowGeneratorParser parser_EM(database.handler(), genset_EM);
+      gum::learning::ParamEstimatorML param_estimator_EM(parser_EM, extern_apriori, intern_apriori);
 
-      gum::learning::DAG2BNLearner<> learner;
+      gum::learning::DAG2BNLearner learner;
 
       gum::DAG dag;
       for (std::size_t i = std::size_t(0); i < database.nbVariables(); ++i) {

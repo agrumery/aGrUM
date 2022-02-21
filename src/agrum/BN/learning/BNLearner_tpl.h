@@ -48,7 +48,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    BNLearner< GUM_SCALAR >::BNLearner(const DatabaseTable<>& db) : genericBNLearner(db) {
+    BNLearner< GUM_SCALAR >::BNLearner(const DatabaseTable& db) : genericBNLearner(db) {
       GUM_CONSTRUCTOR(BNLearner);
     }
 
@@ -109,7 +109,7 @@ namespace gum {
       createApriori_();
       createScore_();
 
-      std::unique_ptr< ParamEstimator<> > param_estimator(
+      std::unique_ptr< ParamEstimator > param_estimator(
          createParamEstimator_(scoreDatabase_.parser(), true));
 
       return Dag2BN_.createBN< GUM_SCALAR >(*(param_estimator.get()), learnDag_());
@@ -167,9 +167,8 @@ namespace gum {
         }
 
         // create the usual estimator
-        DBRowGeneratorParser<>              parser(scoreDatabase_.databaseTable().handler(),
-                                      DBRowGeneratorSet<>());
-        std::unique_ptr< ParamEstimator<> > param_estimator(
+        DBRowGeneratorParser parser(scoreDatabase_.databaseTable().handler(), DBRowGeneratorSet());
+        std::unique_ptr< ParamEstimator > param_estimator(
            createParamEstimator_(parser, takeIntoAccountScore));
 
         return Dag2BN_.createBN< GUM_SCALAR >(*(param_estimator.get()), dag);
@@ -185,21 +184,21 @@ namespace gum {
            gum::learning::DBTranslatedValueType::DISCRETE);
 
         // create the bootstrap estimator
-        DBRowGenerator4CompleteRows<> generator_bootstrap(col_types);
-        DBRowGeneratorSet<>           genset_bootstrap;
+        DBRowGenerator4CompleteRows generator_bootstrap(col_types);
+        DBRowGeneratorSet           genset_bootstrap;
         genset_bootstrap.insertGenerator(generator_bootstrap);
-        DBRowGeneratorParser<>              parser_bootstrap(database.handler(), genset_bootstrap);
-        std::unique_ptr< ParamEstimator<> > param_estimator_bootstrap(
+        DBRowGeneratorParser              parser_bootstrap(database.handler(), genset_bootstrap);
+        std::unique_ptr< ParamEstimator > param_estimator_bootstrap(
            createParamEstimator_(parser_bootstrap, takeIntoAccountScore));
 
         // create the EM estimator
         BayesNet< GUM_SCALAR >         dummy_bn;
         DBRowGeneratorEM< GUM_SCALAR > generator_EM(col_types, dummy_bn);
-        DBRowGenerator<>&              gen_EM = generator_EM;   // fix for g++-4.8
-        DBRowGeneratorSet<>            genset_EM;
+        DBRowGenerator&                gen_EM = generator_EM;   // fix for g++-4.8
+        DBRowGeneratorSet              genset_EM;
         genset_EM.insertGenerator(gen_EM);
-        DBRowGeneratorParser<>              parser_EM(database.handler(), genset_EM);
-        std::unique_ptr< ParamEstimator<> > param_estimator_EM(
+        DBRowGeneratorParser              parser_EM(database.handler(), genset_EM);
+        std::unique_ptr< ParamEstimator > param_estimator_EM(
            createParamEstimator_(parser_EM, takeIntoAccountScore));
 
         Dag2BN_.setEpsilon(epsilonEM_);
@@ -227,7 +226,7 @@ namespace gum {
         GUM_ERROR(gum::IOError, "File " << filename << " not found")
       }
 
-      CSVParser<> parser(in, filename);
+      CSVParser parser(in, filename);
       parser.next();
       auto names = parser.current();
 
@@ -348,13 +347,13 @@ namespace gum {
       } else {
         key = "Correction";
         switch (kmode3Off2_) {
-          case CorrectedMutualInformation<>::KModeTypes::MDL:
+          case CorrectedMutualInformation::KModeTypes::MDL:
             vals.emplace_back(key, "MDL", "");
             break;
-          case CorrectedMutualInformation<>::KModeTypes::NML:
+          case CorrectedMutualInformation::KModeTypes::NML:
             vals.emplace_back(key, "NML", "");
             break;
-          case CorrectedMutualInformation<>::KModeTypes::NoCorr:
+          case CorrectedMutualInformation::KModeTypes::NoCorr:
             vals.emplace_back(key, "No correction", "");
             break;
           default:

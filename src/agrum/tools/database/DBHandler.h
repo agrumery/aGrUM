@@ -48,7 +48,7 @@ namespace gum {
      * for a RawDatabaseTable:
      * @code
      * // create the database
-     * gum::learning::RawDatabaseTable<> database;
+     * gum::learning::RawDatabaseTable database;
      * database.setVariableNames( std::vector<std::string> { "v1", "v2", "v3" } );
      *
      * // add one row to the database
@@ -57,8 +57,8 @@ namespace gum {
      * database.insertRow( row );
      *
      * // create a safe and an unsafe handler. Those inherit from DBHandler
-     * typename gum::learning::RawDatabaseTable<>::HandlerSafe handler( database );
-     * typename gum::learning::RawDatabaseTable<>::Handler uhandler( database );
+     * typename gum::learning::RawDatabaseTable::HandlerSafe handler( database );
+     * typename gum::learning::RawDatabaseTable::Handler uhandler( database );
      * // by default, the handlers range over the whole database, which
      * // currently contains only one row
      *
@@ -115,25 +115,24 @@ namespace gum {
      * @endcode
      * @ingroup learning_database
      */
-    template < typename T_DATA, template < typename > class ALLOC = std::allocator >
+    template < typename T_DATA >
     class DBHandler {
       public:
       /// Types for STL compliance.
       /// @{
       using iterator_category = std::random_access_iterator_tag;
-      using value_type        = DBRow< T_DATA, ALLOC >;
+      using value_type        = DBRow< T_DATA >;
       using reference         = value_type&;
       using const_reference   = const value_type&;
       using pointer           = value_type*;
       using const_pointer     = const value_type*;
       using size_type         = std::size_t;
       using difference_type   = std::ptrdiff_t;
-      using allocator_type    = ALLOC< void >;
       /// @}
 
       /// the type for the allocated vectors in IDatabases
       template < typename TX_DATA >
-      using DBVector = std::vector< TX_DATA, ALLOC< TX_DATA > >;
+      using DBVector = std::vector< TX_DATA >;
 
 
       // ##########################################################################

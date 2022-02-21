@@ -1,9 +1,27 @@
-# -*- encoding: UTF-8 -*-
+# (c) Copyright by Pierre-Henri Wuillemin, UPMC, 2017
+# (pierre-henri.wuillemin@lip6.fr)
 
+# Permission to use, copy, modify, and distribute this
+# software and its documentation for any purpose and
+# without fee or royalty is hereby granted, provided
+# that the above copyright notice appear in all copies
+# and that both that copyright notice and this permission
+# notice appear in supporting documentation or portions
+# thereof, including modifications, that you make.
+
+# THE AUTHOR P.H. WUILLEMIN  DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE, INCLUDING ALL IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT
+# SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, INDIRECT
+# OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER
+# RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER
+# IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
+# ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
+# OR PERFORMANCE OF THIS SOFTWARE!
 import unittest
 
 import pyAgrum as gum
-from pyAgrumTestSuite import pyAgrumTestCase, addTests
+from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 
 class VariablesTestCase(pyAgrumTestCase):
@@ -15,7 +33,7 @@ class VariablesTestCase(pyAgrumTestCase):
     self.varL1 = self.varL2 = None
 
 
-class TestDiscreteVariable(VariablesTestCase):
+class DiscreteVariableTestCase(VariablesTestCase):
   def testLabelizedVarCopy(self):
     self.varL1.addLabel("coucou")
     self.varL1.addLabel("super")
@@ -57,7 +75,7 @@ class TestDiscreteVariable(VariablesTestCase):
     self.assertEqual(len(s),5)
 
 
-class TestLabelizedVariable(VariablesTestCase):
+class LabelizedVariableTestCase(VariablesTestCase):
   def testCopyConstructor(self):
     var = gum.LabelizedVariable(self.varL1)
 
@@ -90,7 +108,7 @@ class TestLabelizedVariable(VariablesTestCase):
     self.assertEqual(self.varL2.domainSize(), 0)
 
 
-class TestRangeVariable(VariablesTestCase):
+class RangeVariableTestCase(VariablesTestCase):
   def testCopyConstructor(self):
     var1 = gum.RangeVariable("var 1", "this is var 1")
     self.assertEqual(var1.varType(), gum.VarType_Range)
@@ -126,7 +144,7 @@ class TestRangeVariable(VariablesTestCase):
     self.assertEqual(self.varL2.domainSize(), 0)
 
 
-class TestDiscretizedVariable(VariablesTestCase):
+class DiscretizedVariableTestCase(VariablesTestCase):
   def testAddTicks(self):
     v = gum.DiscretizedVariable('a', '').addTick(0.5).addTick(
         5.9).addTick(5.99).addTick(0.1).addTick(0.23).addTick(12)
@@ -186,7 +204,7 @@ class TestDiscretizedVariable(VariablesTestCase):
 
 
 ts = unittest.TestSuite()
-addTests(ts, TestDiscreteVariable)
-addTests(ts, TestLabelizedVariable)
-addTests(ts, TestRangeVariable)
-addTests(ts, TestDiscretizedVariable)
+addTests(ts, DiscreteVariableTestCase)
+addTests(ts, LabelizedVariableTestCase)
+addTests(ts, RangeVariableTestCase)
+addTests(ts, DiscretizedVariableTestCase)

@@ -24,7 +24,7 @@ The purpose of this module is to provide basic tools for dealing with dynamic Ba
 # OR PERFORMANCE OF THIS SOFTWARE!
 
 import numpy as np
-import pydotplus as dot
+import pydot as dot
 
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle

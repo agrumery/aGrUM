@@ -63,11 +63,8 @@ namespace gum {
    * Kontkanen and Myllymaki (2007) "Factorized Normalized Maximum "
    * Likelihood Criterion for Learning Bayesian network Structures)"
    */
-  template < template < typename > class ALLOC = std::allocator >
-  class VariableLog2ParamComplexity: private ALLOC< double > {
+  class VariableLog2ParamComplexity {
     public:
-    /// type for the allocators passed in arguments of methods
-    using allocator_type = ALLOC< double >;
 
     // ########################################################################
     /// @name Constructors / Destructors
@@ -75,26 +72,16 @@ namespace gum {
     /// @{
 
     /// default constructor
-    VariableLog2ParamComplexity(const allocator_type& alloc = allocator_type());
+    VariableLog2ParamComplexity();
 
     /// copy constructor
     VariableLog2ParamComplexity(const VariableLog2ParamComplexity& from);
 
-    /// copy constructor with a given allocator
-    VariableLog2ParamComplexity(const VariableLog2ParamComplexity& from,
-                                const allocator_type&              alloc);
-
     /// move constructor
     VariableLog2ParamComplexity(VariableLog2ParamComplexity&& from);
 
-    /// move constructor with a given allocator
-    VariableLog2ParamComplexity(VariableLog2ParamComplexity&& from, const allocator_type& alloc);
-
     /// virtual copy constructor
     virtual VariableLog2ParamComplexity* clone() const;
-
-    /// virtual copy constructor with a given allocator
-    virtual VariableLog2ParamComplexity* clone(const allocator_type& alloc) const;
 
     /// destructor
     virtual ~VariableLog2ParamComplexity();
@@ -133,10 +120,6 @@ namespace gum {
     /// clears the current cache
     void clearCache();
 
-    /// returns the allocator used by the parameterized complexity class
-    allocator_type getAllocator() const;
-
-
     /// @}
 
     private:
@@ -170,7 +153,8 @@ namespace gum {
 } /* namespace gum */
 
 
-// always include the template implementation
-#include <agrum/tools/core/math/variableLog2ParamComplexity_tpl.h>
+#ifndef GUM_NO_INLINE
+#include <agrum/tools/core/math/variableLog2ParamComplexity_inl.h>
+#endif   // GUM_NO_INLINE
 
 #endif /* GUM_VARIABLE_LOG2_PARAM_COMPLEXITY_H */

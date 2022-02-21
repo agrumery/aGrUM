@@ -67,7 +67,7 @@ namespace gum {
      * var.addTick ( 1 );
      * var.addTick ( 3 );
      * var.addTick ( 10 );
-     * gum::learning::DBTranslator4DiscretizedVariable<> translator( var,missing );
+     * gum::learning::DBTranslator4DiscretizedVariable translator( var,missing );
      *
      * // gets the DBTranslatedValue corresponding to some strings
      * auto val1 = translator.translate("5.2");
@@ -116,13 +116,8 @@ namespace gum {
      *
      * @ingroup learning_database
      */
-    template < template < typename > class ALLOC = std::allocator >
-    class DBTranslator4DiscretizedVariable: public DBTranslator< ALLOC > {
+    class DBTranslator4DiscretizedVariable: public DBTranslator {
       public:
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = typename DBTranslator< ALLOC >::allocator_type;
-
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -138,17 +133,14 @@ namespace gum {
        * can contain. During the construction, we check that the discretized
        * variable passed in argument has fewer discretization intervals than
        * the admissible dictionary size
-       * @param alloc The allocator used to allocate memory for all the
-       * fields of the DBTranslator4DiscretizedVariable
        * @warning If the variable contained into the translator has a label
        * equal to a missing value symbol, the label will be taken into
        * account in the translation, not the missing value. */
-      template < typename GUM_SCALAR, template < typename > class XALLOC >
-      DBTranslator4DiscretizedVariable(
-         const DiscretizedVariable< GUM_SCALAR >&                 var,
-         const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
-         std::size_t           max_dico_entries = std::numeric_limits< std::size_t >::max(),
-         const allocator_type& alloc            = allocator_type());
+      template < typename GUM_SCALAR >
+      DBTranslator4DiscretizedVariable(const DiscretizedVariable< GUM_SCALAR >& var,
+                                       const std::vector< std::string >&        missing_symbols,
+                                       std::size_t                              max_dico_entries
+                                       = std::numeric_limits< std::size_t >::max());
 
       /** @brief default constructor with a discretized variable as translator
        * but without missing symbols
@@ -159,16 +151,13 @@ namespace gum {
        * can contain. During the construction, we check that the discretized
        * variable passed in argument has fewer discretization intervals than
        * the admissible dictionary size
-       * @param alloc The allocator used to allocate memory for all the
-       * fields of the DBTranslator4DiscretizedVariable
        * @warning If the variable contained into the translator has a label
        * equal to a missing value symbol, the label will be taken into
        * account in the translation, not the missing value. */
       template < typename GUM_SCALAR >
       DBTranslator4DiscretizedVariable(const DiscretizedVariable< GUM_SCALAR >& var,
                                        std::size_t                              max_dico_entries
-                                       = std::numeric_limits< std::size_t >::max(),
-                                       const allocator_type& alloc = allocator_type());
+                                       = std::numeric_limits< std::size_t >::max());
 
       /// default constructor with a IDiscretized variable as translator
       /** @param var a IDiscretized variable which will be used for translations.
@@ -179,17 +168,13 @@ namespace gum {
        * can contain. During the construction, we check that the discretized
        * variable passed in argument has fewer discretization intervals than
        * the admissible dictionary size
-       * @param alloc The allocator used to allocate memory for all the
-       * fields of the DBTranslator4DiscretizedVariable
        * @warning If the variable contained into the translator has a label
        * equal to a missing value symbol, the label will be taken into
        * account in the translation, not the missing value. */
-      template < template < typename > class XALLOC >
-      DBTranslator4DiscretizedVariable(
-         const IDiscretizedVariable&                              var,
-         const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
-         std::size_t           max_dico_entries = std::numeric_limits< std::size_t >::max(),
-         const allocator_type& alloc            = allocator_type());
+      DBTranslator4DiscretizedVariable(const IDiscretizedVariable&       var,
+                                       const std::vector< std::string >& missing_symbols,
+                                       std::size_t                       max_dico_entries
+                                       = std::numeric_limits< std::size_t >::max());
 
       /** @brief default constructor with a IDiscretized variable as translator
        * but without missing symbols
@@ -200,35 +185,21 @@ namespace gum {
        * can contain. During the construction, we check that the discretized
        * variable passed in argument has fewer discretization intervals than
        * the admissible dictionary size
-       * @param alloc The allocator used to allocate memory for all the
-       * fields of the DBTranslator4DiscretizedVariable
        * @warning If the variable contained into the translator has a label
        * equal to a missing value symbol, the label will be taken into
        * account in the translation, not the missing value. */
       DBTranslator4DiscretizedVariable(const IDiscretizedVariable& var,
                                        std::size_t                 max_dico_entries
-                                       = std::numeric_limits< std::size_t >::max(),
-                                       const allocator_type& alloc = allocator_type());
+                                       = std::numeric_limits< std::size_t >::max());
 
       /// copy constructor
-      DBTranslator4DiscretizedVariable(const DBTranslator4DiscretizedVariable< ALLOC >& from);
-
-      /// copy constructor with a given allocator
-      DBTranslator4DiscretizedVariable(const DBTranslator4DiscretizedVariable< ALLOC >& from,
-                                       const allocator_type&                            alloc);
+      DBTranslator4DiscretizedVariable(const DBTranslator4DiscretizedVariable& from);
 
       /// move constructor
-      DBTranslator4DiscretizedVariable(DBTranslator4DiscretizedVariable< ALLOC >&& from);
-
-      /// move constructor with a given allocator
-      DBTranslator4DiscretizedVariable(DBTranslator4DiscretizedVariable< ALLOC >&& from,
-                                       const allocator_type&                       alloc);
+      DBTranslator4DiscretizedVariable(DBTranslator4DiscretizedVariable&& from);
 
       /// virtual copy constructor
-      virtual DBTranslator4DiscretizedVariable< ALLOC >* clone() const;
-
-      /// virtual copy constructor with a given allocator
-      virtual DBTranslator4DiscretizedVariable< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual DBTranslator4DiscretizedVariable* clone() const;
 
       /// destructor
       virtual ~DBTranslator4DiscretizedVariable();
@@ -243,12 +214,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBTranslator4DiscretizedVariable< ALLOC >&
-         operator=(const DBTranslator4DiscretizedVariable< ALLOC >& from);
+      DBTranslator4DiscretizedVariable& operator=(const DBTranslator4DiscretizedVariable& from);
 
       /// move operator
-      DBTranslator4DiscretizedVariable< ALLOC >&
-         operator=(DBTranslator4DiscretizedVariable< ALLOC >&& from);
+      DBTranslator4DiscretizedVariable& operator=(DBTranslator4DiscretizedVariable&& from);
 
       /// @}
 
@@ -288,7 +257,7 @@ namespace gum {
 
       /// returns the number of discretization intervals used for translations
       /** @warning Note that missing values are encoded as
-       * std::numeric_limits<>::max () and are not taken into account in the
+       * std::numeric_limits::max () and are not taken into account in the
        * domain sizes. */
       virtual std::size_t domainSize() const final;
 
@@ -303,8 +272,7 @@ namespace gum {
 
       /** @brief returns an empty HashTable to indicate that no reordering
        * is needed. */
-      virtual HashTable< std::size_t, std::size_t, ALLOC< std::pair< std::size_t, std::size_t > > >
-         reorder() final;
+      virtual HashTable< std::size_t, std::size_t > reorder() final;
 
       /// returns the variable stored into the translator
       virtual const IDiscretizedVariable* variable() const final;
@@ -337,5 +305,10 @@ namespace gum {
 
 // always include the template implementation
 #include <agrum/tools/database/DBTranslator4DiscretizedVariable_tpl.h>
+
+// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#  include <agrum/tools/database/DBTranslator4DiscretizedVariable_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_DB_TRANSLATOR_4_DISCRETIZED_VARIABLE_H */

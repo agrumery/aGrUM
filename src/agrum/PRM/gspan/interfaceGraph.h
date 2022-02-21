@@ -82,11 +82,11 @@ namespace gum {
       class NodeData {
         public:
         /// Constructor.
-        NodeData< GUM_SCALAR >();
+        NodeData();
         /// Copy Constructor.
-        NodeData< GUM_SCALAR >(const NodeData< GUM_SCALAR >& from);
+        NodeData(const NodeData< GUM_SCALAR >& from);
         /// Destructor.
-        ~NodeData< GUM_SCALAR >();
+        ~NodeData();
         /// The instance represented by this node.
         PRMInstance< GUM_SCALAR >* n;
         /// The label of this node.

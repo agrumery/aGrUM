@@ -250,7 +250,7 @@ namespace gum {
       /// @{
 
       /// Copy constructor. Don't use it.
-      PRMAggregate< GUM_SCALAR >(const PRMAggregate< GUM_SCALAR >& source);
+      PRMAggregate(const PRMAggregate< GUM_SCALAR >& source);
 
       /// Copy operator. Don't use it.
       PRMAggregate< GUM_SCALAR >& operator=(const PRMAggregate< GUM_SCALAR >& source);

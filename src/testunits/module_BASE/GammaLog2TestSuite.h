@@ -23,7 +23,6 @@
 
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/testsuite_utils.h>
-#include <ressources/include/countedAlloc.h>
 
 #include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/core/math/gammaLog2.h>

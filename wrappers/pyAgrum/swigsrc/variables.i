@@ -20,7 +20,7 @@
 %rename ( index ) gum::DiscretizedVariable<double>::index(const double& tick) const;
 %ignore **::ticksAsDoubles() const;
 
-%newobject gum::LabelizedVariable::clone(); 
+%newobject gum::LabelizedVariable::clone();
 
 %extend gum::DiscreteVariable {
   %pythoncode %{
@@ -36,7 +36,7 @@
 def addLabel(self,*args):
     """
     Add a label with a new index (we assume that we will NEVER remove a label).
-  
+
     Parameters
     ----------
     aLabel : str
@@ -49,7 +49,7 @@ def addLabel(self,*args):
 
     Raises
     ------
-    gum.DuplicateElement
+      pyAgrum.DuplicateElement
         If the variable already contains the label
     """
     $action(self,*args)
@@ -71,7 +71,7 @@ def addTick(self,*args):
 
     Raises
     ------
-    gum.DefaultInLabel
+      pyAgrum.DefaultInLabel
         If the tick is already defined
     """
     $action(self,*args)

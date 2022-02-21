@@ -156,8 +156,8 @@ namespace gum {
     static bool _cmp_(const UnexecutedOperation& a, const UnexecutedOperation& b);
 
     /// friendship for allowing std::sort to use _cmp_
-    template<typename ITER, typename CMP>
-    friend void std::sort(ITER, ITER, CMP);
+    //template<typename ITER, typename CMP>
+    //friend void std::sort(ITER, ITER, CMP);
 
   };
 

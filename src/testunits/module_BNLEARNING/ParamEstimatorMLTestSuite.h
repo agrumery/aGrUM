@@ -89,11 +89,11 @@ namespace gum_tests {
       var.addLabel("1");
       var.addLabel("2");
 
-      gum::learning::DBTranslatorSet<> trans_set;
+      gum::learning::DBTranslatorSet trans_set;
       {
-        const std::vector< std::string >                miss;
-        gum::learning::DBTranslator4LabelizedVariable<> translator(var, miss);
-        std::vector< std::string >                      names{"A", "B", "C", "D", "E", "F"};
+        const std::vector< std::string >              miss;
+        gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
+        std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
 
         for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
           translator.setVariableName(names[i]);
@@ -102,12 +102,12 @@ namespace gum_tests {
       }
 
       // create the database
-      gum::learning::DatabaseTable<> database(trans_set);
-      std::vector< std::string >     row0{"0", "1", "0", "2", "1", "1"};
-      std::vector< std::string >     row1{"1", "2", "0", "1", "2", "2"};
-      std::vector< std::string >     row2{"2", "1", "0", "1", "1", "0"};
-      std::vector< std::string >     row3{"1", "0", "0", "0", "0", "0"};
-      std::vector< std::string >     row4{"0", "0", "0", "1", "1", "1"};
+      gum::learning::DatabaseTable database(trans_set);
+      std::vector< std::string >   row0{"0", "1", "0", "2", "1", "1"};
+      std::vector< std::string >   row1{"1", "2", "0", "1", "2", "2"};
+      std::vector< std::string >   row2{"2", "1", "0", "1", "1", "0"};
+      std::vector< std::string >   row3{"1", "0", "0", "0", "0", "0"};
+      std::vector< std::string >   row4{"0", "0", "0", "1", "1", "1"};
       for (int i = 0; i < 1000; ++i)
         database.insertRow(row0);
       for (int i = 0; i < 50; ++i)
@@ -120,12 +120,12 @@ namespace gum_tests {
         database.insertRow(row4);
 
       // create the parser
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriSmoothing<>     extern_apriori(database);
-      gum::learning::AprioriNoApriori<>     intern_apriori(database);
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+      gum::learning::AprioriSmoothing     extern_apriori(database);
+      gum::learning::AprioriNoApriori     intern_apriori(database);
 
-      gum::learning::ParamEstimatorML<> param_estimator(parser, extern_apriori, intern_apriori);
+      gum::learning::ParamEstimatorML param_estimator(parser, extern_apriori, intern_apriori);
 
       std::vector< double > v0  = param_estimator.parameters(gum::NodeId(0));
       std::vector< double > xv0 = _normalize_({1201, 126, 76});
@@ -152,8 +152,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(v21, xv21)
 
 
-      gum::learning::ParamEstimatorML<> param_estimator2(param_estimator);
-      std::vector< double >             w0 = param_estimator2.parameters(gum::NodeId(0));
+      gum::learning::ParamEstimatorML param_estimator2(param_estimator);
+      std::vector< double >           w0 = param_estimator2.parameters(gum::NodeId(0));
       TS_ASSERT_EQUALS(w0, xv0)
 
       std::vector< double > w1 = param_estimator2.parameters(gum::NodeId(1));
@@ -172,8 +172,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(w21, xv21)
 
 
-      gum::learning::ParamEstimatorML<> param_estimator3(std::move(param_estimator2));
-      std::vector< double >             x0 = param_estimator3.parameters(gum::NodeId(0));
+      gum::learning::ParamEstimatorML param_estimator3(std::move(param_estimator2));
+      std::vector< double >           x0 = param_estimator3.parameters(gum::NodeId(0));
       TS_ASSERT_EQUALS(x0, xv0)
 
       std::vector< double > x1 = param_estimator3.parameters(gum::NodeId(1));
@@ -192,8 +192,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(x21, xv21)
 
 
-      gum::learning::ParamEstimatorML<>* param_estimator4 = param_estimator.clone();
-      std::vector< double >              y0 = param_estimator4->parameters(gum::NodeId(0));
+      gum::learning::ParamEstimatorML* param_estimator4 = param_estimator.clone();
+      std::vector< double >            y0 = param_estimator4->parameters(gum::NodeId(0));
       TS_ASSERT_EQUALS(y0, xv0)
 
       std::vector< double > y1 = param_estimator4->parameters(gum::NodeId(1));
@@ -222,11 +222,11 @@ namespace gum_tests {
       var.addLabel("1");
       var.addLabel("2");
 
-      gum::learning::DBTranslatorSet<> trans_set;
+      gum::learning::DBTranslatorSet trans_set;
       {
-        const std::vector< std::string >                miss;
-        gum::learning::DBTranslator4LabelizedVariable<> translator(var, miss);
-        std::vector< std::string >                      names{"A", "B", "C", "D", "E", "F"};
+        const std::vector< std::string >              miss;
+        gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
+        std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
 
         for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
           translator.setVariableName(names[i]);
@@ -235,12 +235,12 @@ namespace gum_tests {
       }
 
       // create the database
-      gum::learning::DatabaseTable<> database(trans_set);
-      std::vector< std::string >     row0{"0", "1", "0", "2", "1", "1"};
-      std::vector< std::string >     row1{"1", "2", "0", "1", "2", "2"};
-      std::vector< std::string >     row2{"2", "1", "0", "1", "1", "0"};
-      std::vector< std::string >     row3{"1", "0", "0", "0", "0", "0"};
-      std::vector< std::string >     row4{"0", "0", "0", "1", "1", "1"};
+      gum::learning::DatabaseTable database(trans_set);
+      std::vector< std::string >   row0{"0", "1", "0", "2", "1", "1"};
+      std::vector< std::string >   row1{"1", "2", "0", "1", "2", "2"};
+      std::vector< std::string >   row2{"2", "1", "0", "1", "1", "0"};
+      std::vector< std::string >   row3{"1", "0", "0", "0", "0", "0"};
+      std::vector< std::string >   row4{"0", "0", "0", "1", "1", "1"};
       for (int i = 0; i < 1000; ++i)
         database.insertRow(row0);
       for (int i = 0; i < 50; ++i)
@@ -253,17 +253,17 @@ namespace gum_tests {
         database.insertRow(row4);
 
       // create the parser
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriSmoothing<>     extern_apriori(database);
-      gum::learning::AprioriNoApriori<>     intern_apriori(database);
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+      gum::learning::AprioriSmoothing     extern_apriori(database);
+      gum::learning::AprioriNoApriori     intern_apriori(database);
 
       std::vector< std::pair< std::size_t, std::size_t > > ranges{{800, 1000}, {1050, 1400}};
 
-      gum::learning::ParamEstimatorML<> param_estimator(parser,
-                                                        extern_apriori,
-                                                        intern_apriori,
-                                                        ranges);
+      gum::learning::ParamEstimatorML param_estimator(parser,
+                                                      extern_apriori,
+                                                      intern_apriori,
+                                                      ranges);
 
       std::vector< double > r0  = param_estimator.parameters(gum::NodeId(0));
       std::vector< double > xr0 = _normalize_({401, 76, 76});
@@ -290,8 +290,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(r21, xr21)
 
 
-      gum::learning::ParamEstimatorML<> param_estimator2(param_estimator);
-      std::vector< double >             v0 = param_estimator2.parameters(gum::NodeId(0));
+      gum::learning::ParamEstimatorML param_estimator2(param_estimator);
+      std::vector< double >           v0 = param_estimator2.parameters(gum::NodeId(0));
       TS_ASSERT_EQUALS(v0, xr0)
 
       std::vector< double > v1 = param_estimator2.parameters(gum::NodeId(1));
@@ -310,8 +310,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(v21, xr21)
 
 
-      gum::learning::ParamEstimatorML<> param_estimator3(std::move(param_estimator2));
-      std::vector< double >             w0 = param_estimator3.parameters(gum::NodeId(0));
+      gum::learning::ParamEstimatorML param_estimator3(std::move(param_estimator2));
+      std::vector< double >           w0 = param_estimator3.parameters(gum::NodeId(0));
       TS_ASSERT_EQUALS(w0, xr0)
 
       std::vector< double > w1 = param_estimator3.parameters(gum::NodeId(1));
@@ -330,8 +330,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(w21, xr21)
 
 
-      gum::learning::ParamEstimatorML<>* param_estimator4 = param_estimator.clone();
-      std::vector< double >              x0 = param_estimator4->parameters(gum::NodeId(0));
+      gum::learning::ParamEstimatorML* param_estimator4 = param_estimator.clone();
+      std::vector< double >            x0 = param_estimator4->parameters(gum::NodeId(0));
       TS_ASSERT_EQUALS(x0, xr0)
 
       std::vector< double > x1 = param_estimator4->parameters(gum::NodeId(1));
@@ -360,11 +360,11 @@ namespace gum_tests {
       var.addLabel("1");
       var.addLabel("2");
 
-      gum::learning::DBTranslatorSet<> trans_set;
+      gum::learning::DBTranslatorSet trans_set;
       {
-        const std::vector< std::string >                miss;
-        gum::learning::DBTranslator4LabelizedVariable<> translator(var, miss);
-        std::vector< std::string >                      names{"A", "B", "C", "D", "E", "F"};
+        const std::vector< std::string >              miss;
+        gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
+        std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
 
         for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
           translator.setVariableName(names[i]);
@@ -373,12 +373,12 @@ namespace gum_tests {
       }
 
       // create the database
-      gum::learning::DatabaseTable<> database(trans_set);
-      std::vector< std::string >     row0{"0", "1", "0", "2", "1", "1"};
-      std::vector< std::string >     row1{"1", "2", "0", "1", "2", "2"};
-      std::vector< std::string >     row2{"2", "1", "0", "1", "1", "0"};
-      std::vector< std::string >     row3{"1", "0", "0", "0", "0", "0"};
-      std::vector< std::string >     row4{"0", "0", "0", "1", "1", "1"};
+      gum::learning::DatabaseTable database(trans_set);
+      std::vector< std::string >   row0{"0", "1", "0", "2", "1", "1"};
+      std::vector< std::string >   row1{"1", "2", "0", "1", "2", "2"};
+      std::vector< std::string >   row2{"2", "1", "0", "1", "1", "0"};
+      std::vector< std::string >   row3{"1", "0", "0", "0", "0", "0"};
+      std::vector< std::string >   row4{"0", "0", "0", "1", "1", "1"};
       for (int i = 0; i < 1000; ++i)
         database.insertRow(row0);
       for (int i = 0; i < 50; ++i)
@@ -391,20 +391,20 @@ namespace gum_tests {
         database.insertRow(row4);
 
       // create the parser
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriSmoothing<>     extern_apriori(database);
-      gum::learning::AprioriNoApriori<>     intern_apriori(database);
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+      gum::learning::AprioriSmoothing     extern_apriori(database);
+      gum::learning::AprioriNoApriori     intern_apriori(database);
 
       gum::Bijection< gum::NodeId, std::size_t > nodeId2columns;
       nodeId2columns.insert(0, 2);
       nodeId2columns.insert(1, 0);
       nodeId2columns.insert(2, 1);
 
-      gum::learning::ParamEstimatorML<> param_estimator(parser,
-                                                        extern_apriori,
-                                                        intern_apriori,
-                                                        nodeId2columns);
+      gum::learning::ParamEstimatorML param_estimator(parser,
+                                                      extern_apriori,
+                                                      intern_apriori,
+                                                      nodeId2columns);
 
       std::vector< double > v0  = param_estimator.parameters(gum::NodeId(1));
       std::vector< double > xv0 = _normalize_({1201, 126, 76});
@@ -431,8 +431,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(v21, xv21)
 
 
-      gum::learning::ParamEstimatorML<> param_estimator2(param_estimator);
-      std::vector< double >             w0 = param_estimator2.parameters(gum::NodeId(1));
+      gum::learning::ParamEstimatorML param_estimator2(param_estimator);
+      std::vector< double >           w0 = param_estimator2.parameters(gum::NodeId(1));
       TS_ASSERT_EQUALS(w0, xv0)
 
       std::vector< double > w1 = param_estimator2.parameters(gum::NodeId(2));
@@ -451,8 +451,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(w21, xv21)
 
 
-      gum::learning::ParamEstimatorML<> param_estimator3(std::move(param_estimator2));
-      std::vector< double >             x0 = param_estimator3.parameters(gum::NodeId(1));
+      gum::learning::ParamEstimatorML param_estimator3(std::move(param_estimator2));
+      std::vector< double >           x0 = param_estimator3.parameters(gum::NodeId(1));
       TS_ASSERT_EQUALS(x0, xv0)
 
       std::vector< double > x1 = param_estimator3.parameters(gum::NodeId(2));
@@ -471,8 +471,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(x21, xv21)
 
 
-      gum::learning::ParamEstimatorML<>* param_estimator4 = param_estimator.clone();
-      std::vector< double >              y0 = param_estimator4->parameters(gum::NodeId(1));
+      gum::learning::ParamEstimatorML* param_estimator4 = param_estimator.clone();
+      std::vector< double >            y0 = param_estimator4->parameters(gum::NodeId(1));
       TS_ASSERT_EQUALS(y0, xv0)
 
       std::vector< double > y1 = param_estimator4->parameters(gum::NodeId(2));
@@ -501,11 +501,11 @@ namespace gum_tests {
       var.addLabel("1");
       var.addLabel("2");
 
-      gum::learning::DBTranslatorSet<> trans_set;
+      gum::learning::DBTranslatorSet trans_set;
       {
-        const std::vector< std::string >                miss;
-        gum::learning::DBTranslator4LabelizedVariable<> translator(var, miss);
-        std::vector< std::string >                      names{"A", "B", "C", "D", "E", "F"};
+        const std::vector< std::string >              miss;
+        gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
+        std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
 
         for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
           translator.setVariableName(names[i]);
@@ -514,12 +514,12 @@ namespace gum_tests {
       }
 
       // create the database
-      gum::learning::DatabaseTable<> database(trans_set);
-      std::vector< std::string >     row0{"0", "1", "0", "2", "1", "1"};
-      std::vector< std::string >     row1{"1", "2", "0", "1", "2", "2"};
-      std::vector< std::string >     row2{"2", "1", "0", "1", "1", "0"};
-      std::vector< std::string >     row3{"1", "0", "0", "0", "0", "0"};
-      std::vector< std::string >     row4{"0", "0", "0", "1", "1", "1"};
+      gum::learning::DatabaseTable database(trans_set);
+      std::vector< std::string >   row0{"0", "1", "0", "2", "1", "1"};
+      std::vector< std::string >   row1{"1", "2", "0", "1", "2", "2"};
+      std::vector< std::string >   row2{"2", "1", "0", "1", "1", "0"};
+      std::vector< std::string >   row3{"1", "0", "0", "0", "0", "0"};
+      std::vector< std::string >   row4{"0", "0", "0", "1", "1", "1"};
       for (int i = 0; i < 1000; ++i)
         database.insertRow(row0);
       for (int i = 0; i < 50; ++i)
@@ -532,10 +532,10 @@ namespace gum_tests {
         database.insertRow(row4);
 
       // create the parser
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriSmoothing<>     extern_apriori(database);
-      gum::learning::AprioriNoApriori<>     intern_apriori(database);
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+      gum::learning::AprioriSmoothing     extern_apriori(database);
+      gum::learning::AprioriNoApriori     intern_apriori(database);
 
       std::vector< std::pair< std::size_t, std::size_t > > ranges{{800, 1000}, {1050, 1400}};
 
@@ -544,11 +544,11 @@ namespace gum_tests {
       nodeId2columns.insert(1, 0);
       nodeId2columns.insert(2, 1);
 
-      gum::learning::ParamEstimatorML<> param_estimator(parser,
-                                                        extern_apriori,
-                                                        intern_apriori,
-                                                        ranges,
-                                                        nodeId2columns);
+      gum::learning::ParamEstimatorML param_estimator(parser,
+                                                      extern_apriori,
+                                                      intern_apriori,
+                                                      ranges,
+                                                      nodeId2columns);
 
       std::vector< double > r0  = param_estimator.parameters(gum::NodeId(1));
       std::vector< double > xr0 = _normalize_({401, 76, 76});
@@ -575,8 +575,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(r21, xr21)
 
 
-      gum::learning::ParamEstimatorML<> param_estimator2(param_estimator);
-      std::vector< double >             v0 = param_estimator2.parameters(gum::NodeId(1));
+      gum::learning::ParamEstimatorML param_estimator2(param_estimator);
+      std::vector< double >           v0 = param_estimator2.parameters(gum::NodeId(1));
       TS_ASSERT_EQUALS(v0, xr0)
 
       std::vector< double > v1 = param_estimator2.parameters(gum::NodeId(2));
@@ -595,8 +595,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(v21, xr21)
 
 
-      gum::learning::ParamEstimatorML<> param_estimator3(std::move(param_estimator2));
-      std::vector< double >             w0 = param_estimator3.parameters(gum::NodeId(1));
+      gum::learning::ParamEstimatorML param_estimator3(std::move(param_estimator2));
+      std::vector< double >           w0 = param_estimator3.parameters(gum::NodeId(1));
       TS_ASSERT_EQUALS(w0, xr0)
 
       std::vector< double > w1 = param_estimator3.parameters(gum::NodeId(2));
@@ -615,8 +615,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(w21, xr21)
 
 
-      gum::learning::ParamEstimatorML<>* param_estimator4 = param_estimator.clone();
-      std::vector< double >              x0 = param_estimator4->parameters(gum::NodeId(1));
+      gum::learning::ParamEstimatorML* param_estimator4 = param_estimator.clone();
+      std::vector< double >            x0 = param_estimator4->parameters(gum::NodeId(1));
       TS_ASSERT_EQUALS(x0, xr0)
 
       std::vector< double > x1 = param_estimator4->parameters(gum::NodeId(2));
@@ -644,11 +644,11 @@ namespace gum_tests {
       var.addLabel("1");
       var.addLabel("2");
 
-      gum::learning::DBTranslatorSet<> trans_set;
+      gum::learning::DBTranslatorSet trans_set;
       {
-        const std::vector< std::string >                miss;
-        gum::learning::DBTranslator4LabelizedVariable<> translator(var, miss);
-        std::vector< std::string >                      names{"A", "B", "C", "D", "E", "F"};
+        const std::vector< std::string >              miss;
+        gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
+        std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
 
         for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
           translator.setVariableName(names[i]);
@@ -657,12 +657,12 @@ namespace gum_tests {
       }
 
       // create the database
-      gum::learning::DatabaseTable<> database(trans_set);
-      std::vector< std::string >     row0{"0", "1", "0", "2", "1", "1"};
-      std::vector< std::string >     row1{"1", "2", "0", "1", "2", "2"};
-      std::vector< std::string >     row2{"2", "1", "0", "1", "1", "0"};
-      std::vector< std::string >     row3{"1", "0", "0", "0", "0", "0"};
-      std::vector< std::string >     row4{"0", "0", "0", "1", "1", "1"};
+      gum::learning::DatabaseTable database(trans_set);
+      std::vector< std::string >   row0{"0", "1", "0", "2", "1", "1"};
+      std::vector< std::string >   row1{"1", "2", "0", "1", "2", "2"};
+      std::vector< std::string >   row2{"2", "1", "0", "1", "1", "0"};
+      std::vector< std::string >   row3{"1", "0", "0", "0", "0", "0"};
+      std::vector< std::string >   row4{"0", "0", "0", "1", "1", "1"};
       for (int i = 0; i < 1000; ++i)
         database.insertRow(row0);
       for (int i = 0; i < 50; ++i)
@@ -675,12 +675,12 @@ namespace gum_tests {
         database.insertRow(row4);
 
       // create the parser
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriSmoothing<>     extern_apriori(database);
-      gum::learning::AprioriNoApriori<>     intern_apriori(database);
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+      gum::learning::AprioriSmoothing     extern_apriori(database);
+      gum::learning::AprioriNoApriori     intern_apriori(database);
 
-      gum::learning::ParamEstimatorML<> param_estimator(parser, extern_apriori, intern_apriori);
+      gum::learning::ParamEstimatorML param_estimator(parser, extern_apriori, intern_apriori);
 
       std::vector< double > v0  = param_estimator.parameters(gum::NodeId(0));
       std::vector< double > xv0 = _normalize_({1201, 126, 76});
@@ -707,8 +707,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(v21, xv21)
 
 
-      gum::learning::ParamEstimatorML<> param_estimator2(param_estimator);
-      std::vector< double >             w0 = param_estimator2.parameters(gum::NodeId(0));
+      gum::learning::ParamEstimatorML param_estimator2(param_estimator);
+      std::vector< double >           w0 = param_estimator2.parameters(gum::NodeId(0));
       TS_ASSERT_EQUALS(w0, xv0)
 
       std::vector< double > w1 = param_estimator2.parameters(gum::NodeId(1));
@@ -801,9 +801,9 @@ namespace gum_tests {
       gum::LabelizedVariable var("x", "", 0);
       var.addLabel("0");
       var.addLabel("1");
-      const std::vector< std::string >                miss{"N/A", "?"};
-      gum::learning::DBTranslator4LabelizedVariable<> translator(var, miss);
-      gum::learning::DBTranslatorSet<>                set;
+      const std::vector< std::string >              miss{"N/A", "?"};
+      gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
+      gum::learning::DBTranslatorSet                set;
       for (std::size_t i = std::size_t(0); i < std::size_t(4); ++i)
         set.insertTranslator(translator, i);
 
@@ -812,12 +812,12 @@ namespace gum_tests {
       set[2].setVariableName("C");
       set[3].setVariableName("D");
 
-      gum::learning::DatabaseTable<> database(set);
-      std::vector< std::string >     row1{"0", "1", "1", "0"};
-      std::vector< std::string >     row2{"0", "?", "1", "0"};
-      std::vector< std::string >     row3{"0", "?", "?", "0"};
-      std::vector< std::string >     row4{"?", "?", "1", "0"};
-      std::vector< std::string >     row5{"?", "?", "?", "?"};
+      gum::learning::DatabaseTable database(set);
+      std::vector< std::string >   row1{"0", "1", "1", "0"};
+      std::vector< std::string >   row2{"0", "?", "1", "0"};
+      std::vector< std::string >   row3{"0", "?", "?", "0"};
+      std::vector< std::string >   row4{"?", "?", "1", "0"};
+      std::vector< std::string >   row5{"?", "?", "?", "?"};
       for (int i = 0; i < 100; ++i) {
         database.insertRow(row1);
         database.insertRow(row2);
@@ -838,24 +838,24 @@ namespace gum_tests {
       bn0.cpt("C").fillWith({0.3, 0.7});
       bn0.cpt("D").fillWith({0.3, 0.7});
 
-      gum::learning::DBRowGeneratorIdentity<> generator1(col_types);
-      gum::learning::DBRowGeneratorEM<>       generator2(col_types, bn0);
-      gum::learning::DBRowGenerator<>&        gen2 = generator2;   // fix for g++-4.8
-      gum::learning::DBRowGeneratorIdentity<> generator3(col_types);
-      gum::learning::DBRowGeneratorEM<>       generator4(col_types, bn0);
-      gum::learning::DBRowGenerator<>&        gen4 = generator4;   // fix for g++-4.8
+      gum::learning::DBRowGeneratorIdentity generator1(col_types);
+      gum::learning::DBRowGeneratorEM       generator2(col_types, bn0);
+      gum::learning::DBRowGenerator&        gen2 = generator2;   // fix for g++-4.8
+      gum::learning::DBRowGeneratorIdentity generator3(col_types);
+      gum::learning::DBRowGeneratorEM       generator4(col_types, bn0);
+      gum::learning::DBRowGenerator&        gen4 = generator4;   // fix for g++-4.8
 
-      gum::learning::DBRowGeneratorSet<> genset;
+      gum::learning::DBRowGeneratorSet genset;
       genset.insertGenerator(generator1);
       genset.insertGenerator(gen2);
       genset.insertGenerator(generator3);
       genset.insertGenerator(gen4);
 
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriNoApriori<>     extern_apriori(database);
-      gum::learning::AprioriNoApriori<>     intern_apriori(database);
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+      gum::learning::AprioriNoApriori     extern_apriori(database);
+      gum::learning::AprioriNoApriori     intern_apriori(database);
 
-      gum::learning::ParamEstimatorML<> param_estimator(parser, extern_apriori, intern_apriori);
+      gum::learning::ParamEstimatorML param_estimator(parser, extern_apriori, intern_apriori);
 
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D");
       bn.cpt("A").fillWith({0.3, 0.7});
@@ -872,8 +872,8 @@ namespace gum_tests {
 
       param_estimator.setBayesNet(bn);
 
-      gum::learning::IdCondSet<> ids(0, std::vector< gum::NodeId >{1}, true);
-      // gum::learning::IdCondSet<> ids(0, {}, true);
+      gum::learning::IdCondSet ids(0, std::vector< gum::NodeId >{1}, true);
+      // gum::learning::IdCondSet ids(0, {}, true);
       std::vector< double > counts = param_estimator.parameters(gum::NodeId(0), {gum::NodeId(1)});
 
       std::vector< double > xcounts(4, 0.0);
@@ -909,7 +909,7 @@ namespace gum_tests {
     }
 
     void testZeroInPseudoCounts() {
-      gum::learning::DBTranslatorSet<> trans_set;
+      gum::learning::DBTranslatorSet trans_set;
       {
         // create the translator set
         gum::LabelizedVariable var("X1", "", 0);
@@ -917,9 +917,9 @@ namespace gum_tests {
         var.addLabel("1");
         var.addLabel("2");
 
-        const std::vector< std::string >                miss;
-        gum::learning::DBTranslator4LabelizedVariable<> translator(var, miss);
-        std::vector< std::string >                      names{"A", "B"};
+        const std::vector< std::string >              miss;
+        gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
+        std::vector< std::string >                    names{"A", "B"};
 
         for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
           translator.setVariableName(names[i]);
@@ -928,7 +928,7 @@ namespace gum_tests {
       }
 
       // create the database
-      gum::learning::DatabaseTable<> database(trans_set);
+      gum::learning::DatabaseTable database(trans_set);
       database.insertRow({"0", "1"});
       database.insertRow({"1", "0"});
       database.insertRow({"1", "1"});
@@ -936,12 +936,12 @@ namespace gum_tests {
       database.insertRow({"0", "0"});
 
       // create the parser
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriNoApriori<>     extern_apriori(database);
-      gum::learning::AprioriNoApriori<>     intern_apriori(database);
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+      gum::learning::AprioriNoApriori     extern_apriori(database);
+      gum::learning::AprioriNoApriori     intern_apriori(database);
 
-      gum::learning::ParamEstimatorML<> param_estimator(parser, extern_apriori, intern_apriori);
+      gum::learning::ParamEstimatorML param_estimator(parser, extern_apriori, intern_apriori);
 
       TS_GUM_ASSERT_THROWS_NOTHING(param_estimator.parameters(gum::NodeId(0)))
       TS_GUM_ASSERT_THROWS_NOTHING(param_estimator.parameters(gum::NodeId(1)))

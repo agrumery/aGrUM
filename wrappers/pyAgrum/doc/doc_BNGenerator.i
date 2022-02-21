@@ -8,7 +8,7 @@ BNGenerator() -> BNGenerator
 
 %feature("docstring") BNGenerator::generate
 "
-Generate a new Bayesian network 
+Generate a new Bayesian network
 
 Parameters
 ----------
@@ -26,8 +26,8 @@ pyAgrum.BayesNet
 
 Raises
 ------
-pyAgrum.OperationNotAllowed
+  pyAgrum.OperationNotAllowed
 	If n_modmax < 2
-pyAgrum.OperationNotAllowed
+  pyAgrum.OperationNotAllowed
 	If n_arcs is incompatible with n_nodes (not enough arcs)
 "

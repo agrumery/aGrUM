@@ -287,8 +287,7 @@ namespace gum_tests {
       generator.setColumnsOfInterest(cols_of_interest1);
 
 
-      std::allocator< gum::learning::DBTranslatedValue > alloc;
-      gum::learning::DBRowGeneratorEM<>                  generator2(generator, alloc);
+      gum::learning::DBRowGeneratorEM<> generator2(generator);
       TS_ASSERT(!generator2.hasRows())
       TS_ASSERT_EQUALS(generator2.columnsOfInterest().size(), std::size_t(2))
       TS_ASSERT_EQUALS(generator2.columnsOfInterest()[0], std::size_t(0))
@@ -630,7 +629,7 @@ namespace gum_tests {
       generator3.setColumnsOfInterest(cols_of_interest1);
 
 
-      gum::learning::DBRowGeneratorEM<> generator4(std::move(generator2), alloc);
+      gum::learning::DBRowGeneratorEM<> generator4(std::move(generator2));
       TS_ASSERT(!generator4.hasRows())
       TS_ASSERT_EQUALS(generator4.columnsOfInterest().size(), std::size_t(2))
       TS_ASSERT_EQUALS(generator4.columnsOfInterest()[0], std::size_t(0))
@@ -972,7 +971,7 @@ namespace gum_tests {
       generator5.setColumnsOfInterest(cols_of_interest1);
 
 
-      gum::learning::DBRowGeneratorEM<>* generator6 = generator4.clone(alloc);
+      gum::learning::DBRowGeneratorEM<>* generator6 = generator4.clone();
       TS_ASSERT(!generator6->hasRows())
       TS_ASSERT_EQUALS(generator6->columnsOfInterest().size(), std::size_t(2))
       TS_ASSERT_EQUALS(generator6->columnsOfInterest()[0], std::size_t(0))

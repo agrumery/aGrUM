@@ -255,6 +255,33 @@ namespace gum {
       return str.str();
     }
 
+
+    // returns the content of the DBCell as a string, whatever its type
+    std::string DBCell::toString(const std::vector< std::string >& missingVals) const {
+      switch (_type_) {
+        case EltType::STRING:
+          return _strings_().first(_val_index_);
+
+        case EltType::REAL: {
+          char buffer[100];
+          sprintf(buffer, "%g", _val_real_);
+          return std::string(buffer);
+        }
+
+        case EltType::INTEGER:
+          return std::to_string(_val_integer_);
+
+        case EltType::MISSING:
+          if (missingVals.size())
+            return missingVals[0];
+          else
+            GUM_ERROR(UndefinedElement, "no missing value symbol found")
+      }
+
+      GUM_ERROR(NotImplementedYet, "type not supported by DBCell toString")
+    }
+
+
   } /* namespace learning */
 
 } /* namespace gum */

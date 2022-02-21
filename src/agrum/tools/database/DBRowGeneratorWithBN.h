@@ -54,10 +54,10 @@ namespace gum {
      * The standard usage of a DBRowGenerator is the following:
      * @code
      * // create a DatabaseTable and fill it
-     * gum::learning::DBTranslatorSet<> set;
+     * gum::learning::DBTranslatorSet set;
      * for ( int i = 0; i < 10; ++i )
-     *   set.insertTranslator(gum::learning::DBTranslator4LabelizedVariable<>(),i);
-     * gum::learning::DatabaseTable<> database ( set );
+     *   set.insertTranslator(gum::learning::DBTranslator4LabelizedVariable(),i);
+     * gum::learning::DatabaseTable database ( set );
      * // fill the database
      *
      * // keep in a vector the types of the columns in the database
@@ -65,7 +65,7 @@ namespace gum {
      *   column_types ( 10, gum::learning::DBTranslatedValueType::DISCRETE );
      *
      * // create the generator
-     * gum::learning::DBRowGeneratorWithBN<> generator ( col_types );
+     * gum::learning::DBRowGeneratorWithBN generator ( col_types );
      *
      * // parse the database and produce output rows
      * for ( auto dbrow : database ) {
@@ -77,12 +77,9 @@ namespace gum {
      * }
      * @endcode
      */
-    template < typename GUM_SCALAR = double, template < typename > class ALLOC = std::allocator >
-    class DBRowGeneratorWithBN: public DBRowGenerator< ALLOC > {
+    template < typename GUM_SCALAR = double >
+    class DBRowGeneratorWithBN: public DBRowGenerator {
       public:
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC< DBTranslatedValue >;
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -90,27 +87,17 @@ namespace gum {
       /// @{
 
       /// default constructor
-      DBRowGeneratorWithBN(
-         const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > > column_types,
-         const BayesNet< GUM_SCALAR >&                                              bn,
-         const DBRowGeneratorGoal                                                   goal,
-         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&              nodeId2columns
-         = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-         const allocator_type& alloc = allocator_type());
+      DBRowGeneratorWithBN(const std::vector< DBTranslatedValueType >& column_types,
+                           const BayesNet< GUM_SCALAR >&               bn,
+                           const DBRowGeneratorGoal                    goal,
+                           const Bijection< NodeId, std::size_t >&     nodeId2columns
+                           = Bijection< NodeId, std::size_t >());
 
       /// copy constructor
-      DBRowGeneratorWithBN(const DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >& from);
-
-      /// copy constructor with a given allocator
-      DBRowGeneratorWithBN(const DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >& from,
-                           const allocator_type&                            alloc);
+      DBRowGeneratorWithBN(const DBRowGeneratorWithBN< GUM_SCALAR >& from);
 
       /// move constructor
-      DBRowGeneratorWithBN(DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&& from);
-
-      /// move constructor with a given allocator
-      DBRowGeneratorWithBN(DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&& from,
-                           const allocator_type&                       alloc);
+      DBRowGeneratorWithBN(DBRowGeneratorWithBN< GUM_SCALAR >&& from);
 
       /// destructor
       ~DBRowGeneratorWithBN();
@@ -130,9 +117,6 @@ namespace gum {
       /// returns the Bayes net used by the generator
       const BayesNet< GUM_SCALAR >& getBayesNet() const;
 
-      /// returns the allocator used
-      allocator_type getAllocator() const;
-
       /// @}
 
 
@@ -141,16 +125,14 @@ namespace gum {
       const BayesNet< GUM_SCALAR >* bn_;
 
       /// the mapping betwen the BN's node ids and the database's columns
-      Bijection< NodeId, std::size_t, ALLOC< std::size_t > > nodeId2columns_;
+      Bijection< NodeId, std::size_t > nodeId2columns_;
 
 
       /// copy operator
-      DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&
-         operator=(const DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >& from);
+      DBRowGeneratorWithBN< GUM_SCALAR >& operator=(const DBRowGeneratorWithBN< GUM_SCALAR >& from);
 
       /// move operator
-      DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&
-         operator=(DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&& from);
+      DBRowGeneratorWithBN< GUM_SCALAR >& operator=(DBRowGeneratorWithBN< GUM_SCALAR >&& from);
     };
 
   } /* namespace learning */

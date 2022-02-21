@@ -362,22 +362,36 @@ namespace gum {
     /// @{
 
     /**
+     * @brief Add a factor (a clique) to the gum::MarkovNet using the order sequence as an order for
+     * the factor.
+     *
+     * @param varnames the scope of the factor as vector of variable names
+     *
+     * @return a const ref to the factor in the Markov Network
+     */
+    const Potential< GUM_SCALAR >& addFactor(const std::vector< std::string >& varnames);
+
+    /**
      * @brief Add a factor (a clique) to the gum::MarkovNet.
      *
      * @param vars the scope of the factor
-     * @param varnames the scope of the factor as vector of variable names
-     * @param aContent The gum::MultiDimImplementation to use for this
-     *                 variable's gum::Potential implementation (will be copied).
      *
      * @return a const ref to the factor in the Markov Network
      *
      * @warning in order to be deterministic, the Potential contains all the vars
      * of the clique sorted by id.
      */
-    const Potential< GUM_SCALAR >& addFactor(const std::vector< std::string >& varnames);
-
     const Potential< GUM_SCALAR >& addFactor(const NodeSet& vars);
 
+    /**
+     * @brief Add a factor (a clique) to the gum::MarkovNet using the order sequence as an order for
+     * the factor.
+     *
+     * @param aContent The gum::MultiDimImplementation to use for this
+     *                 variable's gum::Potential implementation (will be copied).
+     *
+     * @return a const ref to the factor in the Markov Network
+     */
     const Potential< GUM_SCALAR >& addFactor(const Potential< GUM_SCALAR >& factor);
 
     /**
@@ -415,15 +429,13 @@ namespace gum {
 
     /// rebuild the graph after strucural changes in the factors
     void _rebuildGraph_();
-
     /// the map between variable and id
     VariableNodeMap _varMap_;
 
     /// the factors
     FactorTable< GUM_SCALAR > _factors_;
 
-    const Potential< GUM_SCALAR >* _addFactor_(const NodeSet&                 vars,
-                                               const Potential< GUM_SCALAR >* src = nullptr);
+    Potential< GUM_SCALAR >& _addFactor_(const std::vector< NodeId >& ordered_nodes);
 
     void _eraseFactor_(const NodeSet& vars);
 

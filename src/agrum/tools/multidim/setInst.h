@@ -293,7 +293,7 @@ namespace gum {
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newVal is not a possible value for v.
+     * @throw OutOfBounds Raised if newVal is not a possible value for v.
      */
     SetInst& chgVal(const DiscreteVariable& v, Idx newVal);
 
@@ -308,7 +308,7 @@ namespace gum {
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newVal is not a possible value for v.
+     * @throw OutOfBounds Raised if newVal is not a possible value for v.
      */
     SetInst& chgVal(const DiscreteVariable* v, Idx newVal);
 
@@ -324,7 +324,7 @@ namespace gum {
      * @return A reference to *this in order to chain the chgVal.
      *
      * @throw NotFound raised if the variable does not belong to this
-     * @throw OutOfBound raised if newVal is not a possible value for
+     * @throw OutOfBounds raised if newVal is not a possible value for
      *        the variable
      */
     SetInst& chgVal(Idx varPos, Idx newVal);
@@ -340,7 +340,7 @@ namespace gum {
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newVal is not a possible value for v.
+     * @throw OutOfBounds Raised if newVal is not a possible value for v.
      */
     SetInst& chgVals(const DiscreteVariable& v, const Size newVal);
 
@@ -355,7 +355,7 @@ namespace gum {
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newVal is not a possible value for v.
+     * @throw OutOfBounds Raised if newVal is not a possible value for v.
      */
     SetInst& addVal(const DiscreteVariable& v, Idx newVal);
 
@@ -370,7 +370,7 @@ namespace gum {
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newVal is not a possible value for v.
+     * @throw OutOfBounds Raised if newVal is not a possible value for v.
      */
     SetInst& addVals(const DiscreteVariable& v, const Size newVal);
 
@@ -385,7 +385,7 @@ namespace gum {
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newVal is not a possible value for v.
+     * @throw OutOfBounds Raised if newVal is not a possible value for v.
      */
     SetInst& remVal(const DiscreteVariable& v, Idx newVal);
 
@@ -400,7 +400,7 @@ namespace gum {
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newVal is not a possible value for v.
+     * @throw OutOfBounds Raised if newVal is not a possible value for v.
      */
     SetInst& remVals(const DiscreteVariable& v, const Size newVal);
 
@@ -416,7 +416,7 @@ namespace gum {
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newVal is not a possible value for v.
+     * @throw OutOfBounds Raised if newVal is not a possible value for v.
      */
     SetInst& interVals(const DiscreteVariable& v, const Size newVal);
 
@@ -432,7 +432,7 @@ namespace gum {
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newVal is not a possible value for v.
+     * @throw OutOfBounds Raised if newVal is not a possible value for v.
      */
     SetInst& interVal(const DiscreteVariable& v, Idx newVal);
 
@@ -447,7 +447,7 @@ namespace gum {
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newVal is not a possible value for v.
+     * @throw OutOfBounds Raised if newVal is not a possible value for v.
      */
     SetInst& chgVals(const DiscreteVariable* v, const Size newVal);
 
@@ -462,7 +462,7 @@ namespace gum {
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newVal is not a possible value for v.
+     * @throw OutOfBounds Raised if newVal is not a possible value for v.
      */
     SetInst& addVal(const DiscreteVariable* v, Idx newVal);
 
@@ -477,7 +477,7 @@ namespace gum {
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newVal is not a possible value for v.
+     * @throw OutOfBounds Raised if newVal is not a possible value for v.
      */
     SetInst& addVals(const DiscreteVariable* v, const Size newVal);
 
@@ -492,7 +492,7 @@ namespace gum {
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newVal is not a possible value for v.
+     * @throw OutOfBounds Raised if newVal is not a possible value for v.
      */
     SetInst& remVal(const DiscreteVariable* v, Idx newVal);
 
@@ -507,7 +507,7 @@ namespace gum {
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newVal is not a possible value for v.
+     * @throw OutOfBounds Raised if newVal is not a possible value for v.
      */
     SetInst& remVals(const DiscreteVariable* v, const Size newVal);
 
@@ -523,7 +523,7 @@ namespace gum {
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newVal is not a possible value for v.
+     * @throw OutOfBounds Raised if newVal is not a possible value for v.
      */
     SetInst& interVals(const DiscreteVariable* v, const Size newVal);
 
@@ -539,7 +539,7 @@ namespace gum {
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable v does not belong to the SetInst.
-     * @throw OutOfBound Raised if newVal is not a possible value for v.
+     * @throw OutOfBounds Raised if newVal is not a possible value for v.
      */
     SetInst& interVal(const DiscreteVariable* v, Idx newVal);
 
@@ -555,7 +555,7 @@ namespace gum {
      *        variable.
      * @return A reference to *this in order to chain the chgVal.
      * @throw NotFound Raised if the variable does not belong to this
-     * @throw OutOfBound Raised if newVal is not a possible value for
+     * @throw OutOfBounds Raised if newVal is not a possible value for
      *        the variable
      */
     SetInst& chgVals(Idx varPos, const Size newVal);
@@ -572,7 +572,7 @@ namespace gum {
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable varPos does not belong to the SetInst.
-     * @throw OutOfBound Raised if newVal is not a possible value for varPos.
+     * @throw OutOfBounds Raised if newVal is not a possible value for varPos.
      */
     SetInst& addVal(Idx varPos, Idx newVal);
 
@@ -588,7 +588,7 @@ namespace gum {
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable varPos does not belong to the SetInst.
-     * @throw OutOfBound Raised if newVal is not a possible value for varPos.
+     * @throw OutOfBounds Raised if newVal is not a possible value for varPos.
      */
     SetInst& addVals(Idx varPos, const Size newVal);
 
@@ -604,7 +604,7 @@ namespace gum {
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable varPos does not belong to the SetInst.
-     * @throw OutOfBound Raised if newVal is not a possible value for varPos.
+     * @throw OutOfBounds Raised if newVal is not a possible value for varPos.
      */
     SetInst& remVal(Idx varPos, Idx newVal);
 
@@ -620,7 +620,7 @@ namespace gum {
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable varPos does not belong to the SetInst.
-     * @throw OutOfBound Raised if newVal is not a possible value for varPos.
+     * @throw OutOfBounds Raised if newVal is not a possible value for varPos.
      */
     SetInst& remVals(Idx varPos, const Size newVal);
 
@@ -637,7 +637,7 @@ namespace gum {
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable varPos does not belong to the SetInst.
-     * @throw OutOfBound Raised if newVal is not a possible value for varPos.
+     * @throw OutOfBounds Raised if newVal is not a possible value for varPos.
      */
     SetInst& interVals(Idx varPos, const Size newVal);
 
@@ -654,7 +654,7 @@ namespace gum {
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable varPos does not belong to the SetInst.
-     * @throw OutOfBound Raised if newVal is not a possible value for varPos.
+     * @throw OutOfBounds Raised if newVal is not a possible value for varPos.
      */
     SetInst& interVal(Idx varPos, Idx newVal);
 
@@ -671,7 +671,7 @@ namespace gum {
      * @return Returns a reference to *this in order to chain the chgVal.
      *
      * @throw NotFound Raised if variable varPos does not belong to the SetInst.
-     * @throw OutOfBound Raised if newVal is not a possible value for varPos.
+     * @throw OutOfBounds Raised if newVal is not a possible value for varPos.
      */
     SetInst& chgDifVal(Idx varPos, const Size newVal);
 

@@ -21,7 +21,7 @@
 tools for exporting model and infernece as image
 """
 import re
-import pydotplus as dot
+import pydot as dot
 
 import pyAgrum as gum
 from pyAgrum.lib.bn2graph import BN2dot, BNinference2dot
@@ -29,7 +29,6 @@ from pyAgrum.lib.cn2graph import CN2dot, CNinference2dot
 from pyAgrum.lib.id2graph import ID2dot, LIMIDinference2dot
 from pyAgrum.lib.mn2graph import MN2UGdot, MNinference2UGdot
 from pyAgrum.lib.mn2graph import MN2FactorGraphdot, MNinference2FactorGraphdot
-
 
 def export(model, filename, **kwargs):
   """
@@ -59,9 +58,15 @@ def export(model, filename, **kwargs):
   elif isinstance(model, gum.CredalNet):
     fig = CN2dot(model, **kwargs)
   elif hasattr(model, "toDot"):
-    fig = dot.graph_from_dot_data(model.toDot(), **kwargs)
+    fig = dot.graph_from_dot_data(model.toDot())[0]
+
+    # workaround for some badly parsed graph (pyparsing>=3.03)
+    fig.del_node('"\\n"')
   elif isinstance(model,str):
-    fig = dot.graph_from_dot_data(model)
+    fig = dot.graph_from_dot_data(model)[0]
+
+    # workaround for some badly parsed graph (pyparsing>=3.03)
+    fig.del_node('"\\n"')
   else:
     raise gum.InvalidArgument(
       "Argument model should be a PGM (BayesNet, MarkovNet or Influence Diagram) or has a method `toDot()` or is a string"
@@ -191,12 +196,11 @@ def dot_as_svg_string(gr, size):
   repr a pydot graph in a notebook
 
   :param string size : size of the rendered graph
-  :param boolean asString : display the graph or return a string containing the corresponding HTML fragment
   """
   if size is not None:
     gr.set_size(size)
 
-  gsvg = prepareLinksForSVG(gr.create_svg().decode('utf-8'))
+  gsvg = prepareLinksForSVG(gr.create_svg(encoding="utf-8").decode('utf-8'))
   return gsvg
 
 

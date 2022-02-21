@@ -52,18 +52,18 @@ def _fitStandard(X, y, learner, learningMethod, possibleSkeleton, scoringType, c
     learner.useMIIC()
   elif learningMethod == "MIICMDL":
     learner.useMIIC()
-    learner.useMDL()
+    learner.useMDLCorrection()
   elif learningMethod == "MIICNML":
     learner.useMIIC()
-    learner.useNML()
+    learner.useNMLCorrection()
   elif learningMethod == "3off2":
     learner.use3off2()
   elif learningMethod == "3off2MDL":
     learner.use3off2()
-    learner.useMDL()
+    learner.useMDLCorrection()
   elif learningMethod == "3off2NML":
     learner.use3off2()
-    learner.useNML()
+    learner.useNMLCorrection()
   elif learningMethod == "GHC":  # default
     learner.useGreedyHillClimbing()
   elif learningMethod == "Tabu":

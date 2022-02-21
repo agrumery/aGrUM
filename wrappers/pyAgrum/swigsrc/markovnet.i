@@ -74,9 +74,15 @@ IMPROVE_MARKOVNET_API(gum::MarkovNet);
 
 %extend gum::classname {
     const Potential<double>& addFactor(PyObject *seq) {
-      gum::NodeSet son;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(son,seq,self->variableNodeMap());
-      return self->addFactor(son);
+      if (PyList_Check(seq)) {
+        std::vector<std::string> names;
+        PyAgrumHelper::populateStrVectorFromPySequenceOfIntOrString(names,seq,self->variableNodeMap());
+        return self->addFactor(names);
+      } else {
+        gum::NodeSet son;
+        PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(son,seq,self->variableNodeMap());
+        return self->addFactor(son);
+      }
     };
     void eraseFactor(PyObject *seq) {
       gum::NodeSet son;

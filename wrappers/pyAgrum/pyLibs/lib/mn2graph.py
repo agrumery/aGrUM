@@ -29,7 +29,7 @@ import time
 import hashlib
 
 import matplotlib.pyplot as plt
-import pydotplus as dot
+import pydot as dot
 
 import pyAgrum as gum
 import pyAgrum.lib._colors as gumcols
@@ -39,7 +39,7 @@ from .proba_histogram import saveFigProba
 
 def MN2UGdot(mn, size="4", nodeColor=None, edgeWidth=None, edgeColor=None, cmapNode=None, cmapEdge=None, showMsg=None):
   """
-  create a pydotplus representation of the Markov Network as an undirected graph
+  create a pydot representation of the Markov Network as an undirected graph
 
   :param pyAgrum.MarkovNet mn:
   :param string size: size of the rendered graph
@@ -122,7 +122,7 @@ def MN2UGdot(mn, size="4", nodeColor=None, edgeWidth=None, edgeColor=None, cmapN
 
 def MN2FactorGraphdot(mn, size="4", nodeColor=None, factorColor=None, cmapNode=None, showMsg=None):
   """
-  create a pydotplus representation of the Markov Network as a factor graph
+  create a pydot representation of the Markov Network as a factor graph
 
   :param pyAgrum.MarkovNet mn:
   :param string size: size of the rendered graph
@@ -195,7 +195,7 @@ def MNinference2UGdot(mn, size=None, engine=None, evs=None, targets=None, nodeCo
                       cmapNode=None, cmapArc=None, view=None
                       ):
   """
-  create a pydotplus representation of an inference in a MN as an UG
+  create a pydot representation of an inference in a MN as an UG
 
   :param pyAgrum.MarkovNet mn:
   :param string size: size of the rendered graph
@@ -277,7 +277,7 @@ def MNinference2UGdot(mn, size=None, engine=None, evs=None, targets=None, nodeCo
       filename = temp_dir + \
                  hashlib.md5(name.encode()).hexdigest() + "." + \
                  gum.config["notebook", "graph_format"]
-      saveFigProba(ie.posterior(name), filename, bgcol=bgcol)
+      saveFigProba(ie.posterior(name), filename, bgcolor=bgcol)
       dotstr += f' "{name}" [shape=rectangle,image="{filename}",label="", {colorattribute}];\n'
     else:
       dotstr += f' "{name}" [{colorattribute}]'
@@ -309,7 +309,10 @@ def MNinference2UGdot(mn, size=None, engine=None, evs=None, targets=None, nodeCo
     dotstr += f' "{mn.variable(n).name()}"--"{mn.variable(j).name()}" [penwidth="{pw}",tooltip="{a}:{av}",color="{col}"];'
   dotstr += '}'
 
-  g = dot.graph_from_dot_data(dotstr)
+  g = dot.graph_from_dot_data(dotstr)[0]
+
+  # workaround for some badly parsed graph (pyparsing>=3.03)
+  g.del_node('"\\n"')
 
   if size is None:
     size = gum.config["notebook", "default_graph_inference_size"]
@@ -324,7 +327,7 @@ def MNinference2FactorGraphdot(mn, size=None, engine=None, evs=None, targets=Non
                                cmapNode=None
                                ):
   """
-  create a pydotplus representation of an inference in a MN as an factor graph
+  create a pydot representation of an inference in a MN as an factor graph
 
   :param pyAgrum.MarkovNet mn:
   :param string size: size of the rendered graph
@@ -390,7 +393,7 @@ def MNinference2FactorGraphdot(mn, size=None, engine=None, evs=None, targets=Non
       filename = temp_dir + \
                  hashlib.md5(name.encode()).hexdigest() + "." + \
                  gum.config["notebook", "graph_format"]
-      saveFigProba(ie.posterior(name), filename, bgcol=bgcol)
+      saveFigProba(ie.posterior(name), filename, bgcolor=bgcol)
       dotstr += f' "{name}" [shape=rectangle,image="{filename}",label="", {colorattribute}];\n'
     else:
       dotstr += f' "{name}" [shape=rectangle,margin=0.04,width=0,height=0,{colorattribute}];\n'
@@ -411,7 +414,10 @@ def MNinference2FactorGraphdot(mn, size=None, engine=None, evs=None, targets=Non
       dotstr += f' {factorname(f)}->"{mn.variable(n).name()}" [tooltip="{f}:{n}",color="{col}",fillcolor="{bgcol}",len="{gum.config["factorgraph", "edge_length_inference"]}"];\n'
   dotstr += '}'
 
-  g = dot.graph_from_dot_data(dotstr)
+  g = dot.graph_from_dot_data(dotstr)[0]
+
+  # workaround for some badly parsed graph (pyparsing>=3.03)
+  g.del_node('"\\n"')
 
   if size is None:
     size = gum.config["notebook", "default_graph_inference_size"]

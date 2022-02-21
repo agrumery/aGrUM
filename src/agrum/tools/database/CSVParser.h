@@ -64,7 +64,7 @@ namespace gum {
      * // open the CSV file
      * std::string filename="foo.csv"
      * std::ifstream in(filename.c_str());
-     * gum::learning::CSVParser<> csvp(in);
+     * gum::learning::CSVParser csvp(in);
      *
      * // read each line in the CSV file
      * while (csvp.next()) {
@@ -74,13 +74,8 @@ namespace gum {
      * in.close();
      * @endcode
      */
-    template < template < typename > class ALLOC = std::allocator >
     class CSVParser {
       public:
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC< std::string >;
-
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -93,14 +88,12 @@ namespace gum {
        * @param commentmarker the character that marks the beginning of a comment
        * @param quoteMarker the character that is used to quote the sentences
        * in the CSV
-       * @param alloc the allocator used by all the methods
        */
-      CSVParser(std::istream&         in,
-                const std::string&    filename,
-                const std::string&    delimiter     = ",",
-                const char            commentmarker = '#',
-                const char            quoteMarker   = '"',
-                const allocator_type& alloc         = allocator_type());
+      CSVParser(std::istream&      in,
+                const std::string& filename,
+                const std::string& delimiter     = ",",
+                const char         commentmarker = '#',
+                const char         quoteMarker   = '"');
 
       /// destructor
       virtual ~CSVParser();
@@ -121,10 +114,10 @@ namespace gum {
       /// returns the current parsed line
       /** @throw NullElement is raised if there is no data
        */
-      const std::vector< std::string, ALLOC< std::string > >& current() const;
+      const std::vector< std::string >& current() const;
 
       /// returns the current line number within the stream
-      const std::size_t nbLine() const;
+      std::size_t nbLine() const;
 
       /// reopens a new input stream to parse
       void useNewStream(std::istream&      in,
@@ -158,9 +151,9 @@ namespace gum {
       char        _quoteMarker_;
       bool        _emptyData_;
 
-      std::istream*                                    _instream_;
-      std::vector< std::string, ALLOC< std::string > > _data_;
-      const std::string                                _filename_;
+      std::istream*              _instream_;
+      std::vector< std::string > _data_;
+      const std::string          _filename_;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
@@ -169,6 +162,9 @@ namespace gum {
 
 }   // namespace gum
 
-#include <agrum/tools/database/CSVParser_tpl.h>
+/// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/tools/database/CSVParser_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif   // GUM_CSV_PARSER_H

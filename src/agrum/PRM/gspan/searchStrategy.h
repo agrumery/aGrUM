@@ -77,13 +77,13 @@ namespace gum {
         /// @{
 
         /// Default constructor.
-        SearchStrategy< GUM_SCALAR >();
+        SearchStrategy();
 
         /// Copy constructor.
-        SearchStrategy< GUM_SCALAR >(const SearchStrategy< GUM_SCALAR >& from);
+        SearchStrategy(const SearchStrategy< GUM_SCALAR >& from);
 
         /// Destructor.
-        virtual ~SearchStrategy< GUM_SCALAR >();
+        virtual ~SearchStrategy();
 
         /// Copy operator.
         SearchStrategy< GUM_SCALAR >& operator=(const SearchStrategy< GUM_SCALAR >& from);

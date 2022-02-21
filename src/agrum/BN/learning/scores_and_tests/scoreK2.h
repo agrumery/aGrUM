@@ -56,12 +56,8 @@ namespace gum {
      * i.e., we will resort to the Bayesian Dirichlet (BD) formula to include
      * the sum of the two aprioris into the score.
      */
-    template < template < typename > class ALLOC = std::allocator >
-    class ScoreK2: public Score< ALLOC > {
+    class ScoreK2: public Score {
       public:
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC< NodeId >;
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -83,18 +79,14 @@ namespace gum {
        * in which variable A has a NodeId of 5. An empty nodeId2Columns
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
-       * @param alloc the allocator used to allocate the structures within the
-       * Score.
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      ScoreK2(const DBRowGeneratorParser< ALLOC >&                                 parser,
-              const Apriori< ALLOC >&                                              apriori,
-              const std::vector< std::pair< std::size_t, std::size_t >,
-                                 ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
-              const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&        nodeId2columns
-              = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-              const allocator_type& alloc = allocator_type());
+      ScoreK2(const DBRowGeneratorParser&                                 parser,
+              const Apriori&                                              apriori,
+              const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
+              const Bijection< NodeId, std::size_t >&                     nodeId2columns
+              = Bijection< NodeId, std::size_t >());
 
 
       /// default constructor
@@ -107,34 +99,22 @@ namespace gum {
        * in which variable A has a NodeId of 5. An empty nodeId2Columns
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
-       * @param alloc the allocator used to allocate the structures within the
-       * Score.
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      ScoreK2(const DBRowGeneratorParser< ALLOC >&                          parser,
-              const Apriori< ALLOC >&                                       apriori,
-              const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
-              = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-              const allocator_type& alloc = allocator_type());
+      ScoreK2(const DBRowGeneratorParser&             parser,
+              const Apriori&                          apriori,
+              const Bijection< NodeId, std::size_t >& nodeId2columns
+              = Bijection< NodeId, std::size_t >());
 
       /// copy constructor
-      ScoreK2(const ScoreK2< ALLOC >& from);
-
-      /// copy constructor with a given allocator
-      ScoreK2(const ScoreK2< ALLOC >& from, const allocator_type& alloc);
+      ScoreK2(const ScoreK2& from);
 
       /// move constructor
-      ScoreK2(ScoreK2< ALLOC >&& from);
-
-      /// move constructor with a given allocator
-      ScoreK2(ScoreK2< ALLOC >&& from, const allocator_type& alloc);
+      ScoreK2(ScoreK2&& from);
 
       /// virtual copy constructor
-      virtual ScoreK2< ALLOC >* clone() const;
-
-      /// virtual copy constructor with a given allocator
-      virtual ScoreK2< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual ScoreK2* clone() const;
 
       /// destructor
       virtual ~ScoreK2();
@@ -149,10 +129,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      ScoreK2< ALLOC >& operator=(const ScoreK2< ALLOC >& from);
+      ScoreK2& operator=(const ScoreK2& from);
 
       /// move operator
-      ScoreK2< ALLOC >& operator=(ScoreK2< ALLOC >&& from);
+      ScoreK2& operator=(ScoreK2&& from);
 
       /// @}
 
@@ -185,7 +165,7 @@ namespace gum {
        * note that, to be meaningful, a structure + parameter learning requires
        * that the same aprioris are taken into account during structure learning
        * and parameter learning. */
-      virtual const Apriori< ALLOC >& internalApriori() const final;
+      virtual const Apriori& internalApriori() const final;
 
       /// @}
 
@@ -197,7 +177,7 @@ namespace gum {
 
       /// indicates whether the apriori is compatible (meaningful) with the score
       /** a non empty string if the apriori is compatible with the score. */
-      static std::string isAprioriCompatible(const Apriori< ALLOC >& apriori);
+      static std::string isAprioriCompatible(const Apriori& apriori);
 
 
       protected:
@@ -205,14 +185,14 @@ namespace gum {
       /** @throws OperationNotAllowed is raised if the score does not support
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
-      virtual double score_(const IdCondSet< ALLOC >& idset) final;
+      virtual double score_(const IdCondSet& idset) final;
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
       private:
       /// the internal apriori of the score
-      AprioriK2< ALLOC > _internal_apriori_;
+      AprioriK2 _internal_apriori_;
 
       /// the log(gamma (n)) function: generalizes log((n-1)!)
       GammaLog2 _gammalog2_;
@@ -225,13 +205,9 @@ namespace gum {
 
 } /* namespace gum */
 
-
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-extern template class gum::learning::ScoreK2<>;
-#endif
-
-
-// always include the template implementation
-#include <agrum/BN/learning/scores_and_tests/scoreK2_tpl.h>
+/// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#  include <agrum/BN/learning/scores_and_tests/scoreK2_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_SCORE_K2_H */

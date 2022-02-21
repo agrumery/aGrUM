@@ -45,12 +45,8 @@ namespace gum {
      * @ingroup learning_scores
      *
      */
-    template < template < typename > class ALLOC = std::allocator >
-    class KNML: private IndependenceTest< ALLOC > {
+    class KNML: private IndependenceTest {
       public:
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC< NodeId >;
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -74,18 +70,14 @@ namespace gum {
        * in which variable A has a NodeId of 5. An empty nodeId2Columns
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
-       * @param alloc the allocator used to allocate the structures within the
-       * Score.
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      KNML(const DBRowGeneratorParser< ALLOC >&                                 parser,
-           const Apriori< ALLOC >&                                              apriori,
-           const std::vector< std::pair< std::size_t, std::size_t >,
-                              ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
-           const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&        nodeId2columns
-           = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-           const allocator_type& alloc = allocator_type());
+      KNML(const DBRowGeneratorParser&                                 parser,
+           const Apriori&                                              apriori,
+           const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
+           const Bijection< NodeId, std::size_t >&                     nodeId2columns
+           = Bijection< NodeId, std::size_t >());
 
 
       /// default constructor
@@ -100,34 +92,22 @@ namespace gum {
        * in which variable A has a NodeId of 5. An empty nodeId2Columns
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
-       * @param alloc the allocator used to allocate the structures within the
-       * Score.
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      KNML(const DBRowGeneratorParser< ALLOC >&                          parser,
-           const Apriori< ALLOC >&                                       apriori,
-           const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
-           = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-           const allocator_type& alloc = allocator_type());
+      KNML(const DBRowGeneratorParser&             parser,
+           const Apriori&                          apriori,
+           const Bijection< NodeId, std::size_t >& nodeId2columns
+           = Bijection< NodeId, std::size_t >());
 
       /// copy constructor
-      KNML(const KNML< ALLOC >& from);
-
-      /// copy constructor with a given allocator
-      KNML(const KNML< ALLOC >& from, const allocator_type& alloc);
+      KNML(const KNML& from);
 
       /// move constructor
-      KNML(KNML< ALLOC >&& from);
-
-      /// move constructor with a given allocator
-      KNML(KNML< ALLOC >&& from, const allocator_type& alloc);
+      KNML(KNML&& from);
 
       /// virtual copy constructor
-      virtual KNML< ALLOC >* clone() const;
-
-      /// virtual copy constructor with a given allocator
-      virtual KNML< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual KNML* clone() const;
 
       /// destructor
       virtual ~KNML();
@@ -142,10 +122,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      KNML< ALLOC >& operator=(const KNML< ALLOC >& from);
+      KNML& operator=(const KNML& from);
 
       /// move operator
-      KNML< ALLOC >& operator=(KNML< ALLOC >&& from);
+      KNML& operator=(KNML&& from);
 
       /// @}
 
@@ -156,10 +136,10 @@ namespace gum {
       /// @{
 
       /// changes the max number of threads used to parse the database
-      using IndependenceTest< ALLOC >::setMaxNbThreads;
+      using IndependenceTest::setMaxNbThreads;
 
       /// returns the number of threads used to parse the database
-      using IndependenceTest< ALLOC >::nbThreads;
+      using IndependenceTest::nbThreads;
 
       /** @brief changes the number min of rows a thread should process in a
        * multithreading context
@@ -170,10 +150,10 @@ namespace gum {
        * This is used to compute the number of threads actually run. This number
        * is equal to the min between the max number of threads allowed and the
        * number of records in the database divided by nb. */
-      using IndependenceTest< ALLOC >::setMinNbRowsPerThread;
+      using IndependenceTest::setMinNbRowsPerThread;
 
       /// returns the minimum of rows that each thread should process
-      using IndependenceTest< ALLOC >::minNbRowsPerThread;
+      using IndependenceTest::minNbRowsPerThread;
 
       /// sets new ranges to perform the countings used by kNML
       /** @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
@@ -182,16 +162,16 @@ namespace gum {
        * cross validation tasks, in which part of the database should be ignored.
        * An empty set of ranges is equivalent to an interval [X,Y) ranging over
        * the whole database. */
-      using IndependenceTest< ALLOC >::setRanges;
+      using IndependenceTest::setRanges;
 
       /// reset the ranges to the one range corresponding to the whole database
-      using IndependenceTest< ALLOC >::clearRanges;
+      using IndependenceTest::clearRanges;
 
       /// returns the current ranges
-      using IndependenceTest< ALLOC >::ranges;
+      using IndependenceTest::ranges;
 
       /// the scores
-      using IndependenceTest< ALLOC >::score;
+      using IndependenceTest::score;
 
       /// clears all the data structures from memory, including the C_n^r cache
       virtual void clear();
@@ -206,13 +186,10 @@ namespace gum {
       /** @warning An empty nodeId2Columns bijection means that the mapping is
        * an identity, i.e., the value of a NodeId is equal to the index of the
        * column in the DatabaseTable. */
-      using IndependenceTest< ALLOC >::nodeId2Columns;
+      using IndependenceTest::nodeId2Columns;
 
       /// return the database used by the score
-      using IndependenceTest< ALLOC >::database;
-
-      /// returns the allocator used by the score
-      using IndependenceTest< ALLOC >::getAllocator;
+      using IndependenceTest::database;
 
       /// @}
 
@@ -222,14 +199,14 @@ namespace gum {
       /** @throws OperationNotAllowed is raised if the score does not support
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
-      virtual double score_(const IdCondSet< ALLOC >& idset) final;
+      virtual double score_(const IdCondSet& idset) final;
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
       private:
       /// the CTable computation
-      VariableLog2ParamComplexity< ALLOC > _param_complexity_;
+      VariableLog2ParamComplexity _param_complexity_;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
@@ -238,8 +215,9 @@ namespace gum {
 
 } /* namespace gum */
 
-
-// always include the template implementation
-#include <agrum/tools/stattests/kNML_tpl.h>
+// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/tools/stattests/kNML_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_K_NML_H */

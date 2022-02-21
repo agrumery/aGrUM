@@ -218,7 +218,7 @@ namespace gum {
     if (actionSet.size() == 1) {
       _lastAction_ = actionSet[0];
     } else {
-      Idx randy    = (Idx)((double)std::rand() / (double)RAND_MAX * actionSet.size());
+      Idx randy    = randomValue(actionSet.size());
       _lastAction_ = actionSet[randy == actionSet.size() ? 0 : randy];
     }
     return _lastAction_;

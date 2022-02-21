@@ -82,25 +82,9 @@ namespace gum {
 
 
 #  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::List< bool >;
-#      endif
-#    endif
-#  endif
-#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::List< int >;
-#      endif
-#    endif
-#  endif
-#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::List< unsigned int >;
-#      endif
-#    endif
 #  endif
 
 

@@ -31,13 +31,13 @@ def setEvidence(self, evidces):
 
     Raises
     ------
-    gum.InvalidArgument
+    pyAgrum.InvalidArgument
         If one value is not a value for the node
-    gum.InvalidArgument
+    pyAgrum.InvalidArgument
         If the size of a value is different from the domain side of the node
-    gum.FatalError
+    pyAgrum.FatalError
         If one value is a vector of 0s
-    gum.UndefinedElement
+    pyAgrum.UndefinedElement
         If one node does not belong to the Bayesian network
     """
     if not isinstance(evidces, dict):
@@ -59,13 +59,13 @@ def updateEvidence(self, evidces):
 
     Raises
     ------
-    gum.InvalidArgument
+    pyAgrum.InvalidArgument
         If one value is not a value for the node
-    gum.InvalidArgument
+    pyAgrum.InvalidArgument
         If the size of a value is different from the domain side of the node
-    gum.FatalError
+    pyAgrum.FatalError
         If one value is a vector of 0s
-    gum.UndefinedElement
+    pyAgrum.UndefinedElement
         If one node does not belong to the Bayesian network
     """
     if not isinstance(evidces, dict):
@@ -90,7 +90,7 @@ def setTargets(self, targets):
 
     Raises
     ------
-    gum.UndefinedElement
+    pyAgrum.UndefinedElement
         If one target is not in the Bayes net
     """
     if not isinstance(targets, set):
@@ -204,5 +204,3 @@ IMPROVE_JOINT_MN_INFERENCE_API(gum::ShaferShenoyMNInference<double>)
 %}
 %enddef
 IMPROVE_EXACT_MN_INFERENCE_API(ShaferShenoyMNInference)
-
-

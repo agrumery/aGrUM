@@ -24,6 +24,7 @@
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #  include <agrum/tools/database/DBCell.h>
@@ -250,6 +251,34 @@ namespace gum {
 
     /// indicates whether the cell contains a missing value
     INLINE bool DBCell::isMissing() const { return _type_ == EltType::MISSING; }
+
+    // checks whether a string correspond to a missing value
+    INLINE bool DBCell::isMissing(const std::string&                str,
+                                  const std::vector< std::string >& missingVals) {
+      for (auto missing: missingVals) {
+        if (str == missing) return true;
+      }
+      return false;
+    }
+
+    // returns the best type to store a given element encoded as a string
+    INLINE DBCell::EltType DBCell::bestType(const std::string&                str,
+                                            const std::vector< std::string >& missingVals) {
+      if (isMissing(str, missingVals)) return EltType::MISSING;
+      if (isInteger(str)) return EltType::INTEGER;
+      if (isReal(str)) return EltType::REAL;
+      return EltType::STRING;
+    }
+
+    // returns the DBCell with the best type for an element encoded as a string
+    INLINE DBCell DBCell::bestDBCell(const std::string&                str,
+                                     const std::vector< std::string >& missingVals) {
+      if (isMissing(str, missingVals)) return DBCell();
+      if (isInteger(str)) return DBCell(std::stoi(str));
+      if (isReal(str)) return DBCell(std::stof(str));
+
+      return DBCell(str);
+    }
 
 
   } /* namespace learning */

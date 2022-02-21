@@ -62,7 +62,7 @@ namespace gum {
      * // i.e., each time the translator reads a "N/A" or a "???" string, it
      * // won't translate it into a number but into a missing value.
      * std::vector<std::string> missing { "N/A", "???" };
-     * gum::learning::DBTranslator4ContinuousVariable<> translator ( missing );
+     * gum::learning::DBTranslator4ContinuousVariable translator ( missing );
      *
      * // gets the DBTranslatedValue corresponding to some strings
      * auto val1 = translator.translate("5");   // val1 = DBTranslatedValue {5.0f}
@@ -107,7 +107,7 @@ namespace gum {
      * // constructor of the translator, or using the setEditableDictionaryMode
      * // method. Here, we create a continuous variable whose domain is [-2,10]
      * gum::ContinuousVariable<float> var ( "X", "", -2, 10 );
-     * gum::learning::DBTranslator4ContinuousVariable<> translator2 (var,missing);
+     * gum::learning::DBTranslator4ContinuousVariable translator2 (var,missing);
      *
      * float xval1 = translator2.translate ( "-1.4" ).cont_val; // xval1 = -1.4
      * float xval2 = translator2.translate ( "7" ).cont_val;    // xval2 = 7
@@ -122,13 +122,8 @@ namespace gum {
      *
      * @ingroup learning_database
      */
-    template < template < typename > class ALLOC = std::allocator >
-    class DBTranslator4ContinuousVariable: public DBTranslator< ALLOC > {
+    class DBTranslator4ContinuousVariable: public DBTranslator {
       public:
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = typename DBTranslator< ALLOC >::allocator_type;
-
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -146,14 +141,9 @@ namespace gum {
        * @param fit_range if true, the range of the variable is updated
        * so that it precisely fits the range of the observed values in the
        * database, else the range is kept to (-inf,inf)
-       * @param alloc The allocator used to allocate memory for all the
-       * fields of the DBTranslator4ContinuousVariable
        */
-      template < template < typename > class XALLOC >
-      DBTranslator4ContinuousVariable(
-         const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
-         const bool                                               fit_range = false,
-         const allocator_type&                                    alloc     = allocator_type());
+      DBTranslator4ContinuousVariable(const std::vector< std::string >& missing_symbols,
+                                      const bool                        fit_range = false);
 
       /// default constructor without any initial variable nor missing symbol
       /** When using this constructor, it is assumed implicitly that the
@@ -164,11 +154,8 @@ namespace gum {
        * @param fit_range if true, the range of the variable is updated
        * so that it precisely fits the range of the observed values in the
        * database, else the range is kept to (-inf,inf)
-       * @param alloc The allocator used to allocate memory for all the
-       * fields of the DBTranslator4ContinuousVariable
        */
-      DBTranslator4ContinuousVariable(const bool            fit_range = false,
-                                      const allocator_type& alloc     = allocator_type());
+      DBTranslator4ContinuousVariable(const bool fit_range = false);
 
       /// default constructor with a continuous variable as translator
       /** @param var a continuous variable that will be used for
@@ -178,18 +165,14 @@ namespace gum {
        * @param fit_range if true, the range of the variable is updated
        * so that it precisely fits the range of the observed values in the
        * database, else the range is kept to (-inf,inf)
-       * @param alloc The allocator used to allocate memory for all the
-       * fields of the DBTranslator4ContinuousVariable
        * @warning If a missing value symbol is a number included in the range
        * of the continuous variable, it will be discarded. If the fit_range
        * parameter is on, the range of the variable is updated so that it
        * can contain the range of the observed values in the database. */
-      template < typename GUM_SCALAR, template < typename > class XALLOC >
-      DBTranslator4ContinuousVariable(
-         const ContinuousVariable< GUM_SCALAR >&                  var,
-         const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
-         const bool                                               fit_range = false,
-         const allocator_type&                                    alloc     = allocator_type());
+      template < typename GUM_SCALAR >
+      DBTranslator4ContinuousVariable(const ContinuousVariable< GUM_SCALAR >& var,
+                                      const std::vector< std::string >&       missing_symbols,
+                                      const bool                              fit_range = false);
 
       /** @brief default constructor with a continuous variable as translator
        * but without missing symbol
@@ -199,16 +182,13 @@ namespace gum {
        * @param fit_range if true, the range of the variable is updated
        * so that it precisely fits the range of the observed values in the
        * database, else the range is kept to (-inf,inf)
-       * @param alloc The allocator used to allocate memory for all the
-       * fields of the DBTranslator4ContinuousVariable
        * @warning If a missing value symbol is a number included in the range
        * of the continuous variable, it will be discarded. If the fit_range
        * parameter is on, the range of the variable is updated so that it
        * can contain the range of the observed values in the database. */
       template < typename GUM_SCALAR >
       DBTranslator4ContinuousVariable(const ContinuousVariable< GUM_SCALAR >& var,
-                                      const bool                              fit_range = false,
-                                      const allocator_type& alloc = allocator_type());
+                                      const bool                              fit_range = false);
 
       /// default constructor with a IContinuous variable as translator
       /** @param var a IContinuous variable that will be used for
@@ -218,18 +198,13 @@ namespace gum {
        * @param fit_range if true, the range of the variable is updated
        * so that it precisely fits the range of the observed values in the
        * database, else the range is kept to (-inf,inf)
-       * @param alloc The allocator used to allocate memory for all the
-       * fields of the DBTranslator4ContinuousVariable
        * @warning If a missing value symbol is a number included in the range
        * of the continuous variable, it will be discarded. If the fit_range
        * parameter is on, the range of the variable is updated so that it
        * can contain the range of the observed values in the database. */
-      template < template < typename > class XALLOC >
-      DBTranslator4ContinuousVariable(
-         const IContinuousVariable&                               var,
-         const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
-         const bool                                               fit_range = false,
-         const allocator_type&                                    alloc     = allocator_type());
+      DBTranslator4ContinuousVariable(const IContinuousVariable&        var,
+                                      const std::vector< std::string >& missing_symbols,
+                                      const bool                        fit_range = false);
 
       /** @brief default constructor with a IContinuous variable as translator
        * but without missing symbol
@@ -239,35 +214,20 @@ namespace gum {
        * @param fit_range if true, the range of the variable is updated
        * so that it precisely fits the range of the observed values in the
        * database, else the range is kept to (-inf,inf)
-       * @param alloc The allocator used to allocate memory for all the
-       * fields of the DBTranslator4ContinuousVariable
        * @warning If a missing value symbol is a number included in the range
        * of the continuous variable, it will be discarded. If the fit_range
        * parameter is on, the range of the variable is updated so that it
        * can contain the range of the observed values in the database. */
-      DBTranslator4ContinuousVariable(const IContinuousVariable& var,
-                                      const bool                 fit_range = false,
-                                      const allocator_type&      alloc     = allocator_type());
+      DBTranslator4ContinuousVariable(const IContinuousVariable& var, const bool fit_range = false);
 
       /// copy constructor
-      DBTranslator4ContinuousVariable(const DBTranslator4ContinuousVariable< ALLOC >& from);
-
-      /// copy constructor with a given allocator
-      DBTranslator4ContinuousVariable(const DBTranslator4ContinuousVariable< ALLOC >& from,
-                                      const allocator_type&                           alloc);
+      DBTranslator4ContinuousVariable(const DBTranslator4ContinuousVariable& from);
 
       /// move constructor
-      DBTranslator4ContinuousVariable(DBTranslator4ContinuousVariable< ALLOC >&& from);
-
-      /// move constructor with a given allocator
-      DBTranslator4ContinuousVariable(DBTranslator4ContinuousVariable< ALLOC >&& from,
-                                      const allocator_type&                      alloc);
+      DBTranslator4ContinuousVariable(DBTranslator4ContinuousVariable&& from);
 
       /// virtual copy constructor
-      virtual DBTranslator4ContinuousVariable< ALLOC >* clone() const;
-
-      /// virtual copy constructor with a given allocator
-      virtual DBTranslator4ContinuousVariable< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual DBTranslator4ContinuousVariable* clone() const;
 
       /// destructor
       virtual ~DBTranslator4ContinuousVariable();
@@ -282,12 +242,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBTranslator4ContinuousVariable< ALLOC >&
-         operator=(const DBTranslator4ContinuousVariable< ALLOC >& from);
+      DBTranslator4ContinuousVariable& operator=(const DBTranslator4ContinuousVariable& from);
 
       /// move operator
-      DBTranslator4ContinuousVariable< ALLOC >&
-         operator=(DBTranslator4ContinuousVariable< ALLOC >&& from);
+      DBTranslator4ContinuousVariable& operator=(DBTranslator4ContinuousVariable&& from);
 
       /// @}
 
@@ -351,8 +309,7 @@ namespace gum {
 
       /** @brief returns an empty mapping, indicating that old tanslations
        * are equal to the newly reordered ones. */
-      virtual HashTable< std::size_t, std::size_t, ALLOC< std::pair< std::size_t, std::size_t > > >
-         reorder() final;
+      virtual HashTable< std::size_t, std::size_t > reorder() final;
 
       /// returns the variable stored into the translator
       virtual const IContinuousVariable* variable() const final;
@@ -378,8 +335,7 @@ namespace gum {
       // assign to each float missing symbol a Boolean indicating whether
       // we already translated it or not. If we translated it, then we cannot
       // change the range of the variable so that this range contains the symbol.
-      HashTable< std::string, bool, ALLOC< std::pair< float, bool > > >
-         _status_float_missing_symbols_;
+      HashTable< std::string, bool > _status_float_missing_symbols_;
 
       // a string containing a non real missing symbol
       // (useful for back translations)
@@ -398,5 +354,10 @@ namespace gum {
 
 // always include the template implementation
 #include <agrum/tools/database/DBTranslator4ContinuousVariable_tpl.h>
+
+/// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#  include <agrum/tools/database/DBTranslator4ContinuousVariable_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_DB_TRANSLATOR_4_CONTINUOUS_VARIABLE_H */

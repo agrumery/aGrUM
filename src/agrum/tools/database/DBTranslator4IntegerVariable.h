@@ -27,9 +27,14 @@
 #ifndef GUM_LEARNING_DB_TRANSLATOR_4_INTEGER_VARIABLE_H
 #define GUM_LEARNING_DB_TRANSLATOR_4_INTEGER_VARIABLE_H
 
+#include <utility>
+#include <vector>
+#include <sstream>
+
 #include <agrum/agrum.h>
 #include <agrum/tools/database/DBTranslator.h>
 #include <agrum/tools/variables/integerVariable.h>
+#include <agrum/tools/database/DBCell.h>
 
 
 namespace gum {
@@ -114,13 +119,8 @@ namespace gum {
      *
      * @ingroup learning_database
      */
-    template < template < typename > class ALLOC = std::allocator >
-    class DBTranslator4IntegerVariable: public DBTranslator< ALLOC > {
+    class DBTranslator4IntegerVariable: public DBTranslator {
       public:
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = typename DBTranslator< ALLOC >::allocator_type;
-
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -136,14 +136,11 @@ namespace gum {
        * can contain. During the construction, we check that the integer
        * variable passed in argument has fewer values than
        * the admissible dictionary size
-       * @param alloc The allocator used to allocate memory for all the
-       * fields of the DBTranslator4IntegerVariable */
-      template < template < typename > class XALLOC >
-      DBTranslator4IntegerVariable(
-         const IntegerVariable&                                   var,
-         const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
-         std::size_t           max_dico_entries = std::numeric_limits< std::size_t >::max(),
-         const allocator_type& alloc            = allocator_type());
+       */
+      DBTranslator4IntegerVariable(const IntegerVariable&            var,
+                                   const std::vector< std::string >& missing_symbols,
+                                   std::size_t                       max_dico_entries
+                                   = std::numeric_limits< std::size_t >::max());
 
       /** @brief default constructor with an integer variable as translator
        * but without missing symbols
@@ -154,32 +151,19 @@ namespace gum {
        * can contain. During the construction, we check that the integer
        * variable passed in argument has a domain size not larger than
        * the admissible dictionary size
-       * @param alloc The allocator used to allocate memory for all the
-       * fields of the DBTranslator4IntegerVariable */
+       */
       DBTranslator4IntegerVariable(const IntegerVariable& var,
                                    std::size_t            max_dico_entries
-                                   = std::numeric_limits< std::size_t >::max(),
-                                   const allocator_type& alloc = allocator_type());
+                                   = std::numeric_limits< std::size_t >::max());
 
       /// copy constructor
-      DBTranslator4IntegerVariable(const DBTranslator4IntegerVariable< ALLOC >& from);
-
-      /// copy constructor with a given allocator
-      DBTranslator4IntegerVariable(const DBTranslator4IntegerVariable< ALLOC >& from,
-                                   const allocator_type&                        alloc);
+      DBTranslator4IntegerVariable(const DBTranslator4IntegerVariable& from);
 
       /// move constructor
-      DBTranslator4IntegerVariable(DBTranslator4IntegerVariable< ALLOC >&& from);
-
-      /// move constructor with a given allocator
-      DBTranslator4IntegerVariable(DBTranslator4IntegerVariable< ALLOC >&& from,
-                                   const allocator_type&                   alloc);
+      DBTranslator4IntegerVariable(DBTranslator4IntegerVariable&& from);
 
       /// virtual copy constructor
-      virtual DBTranslator4IntegerVariable< ALLOC >* clone() const;
-
-      /// virtual copy constructor with a given allocator
-      virtual DBTranslator4IntegerVariable< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual DBTranslator4IntegerVariable* clone() const;
 
       /// destructor
       virtual ~DBTranslator4IntegerVariable();
@@ -194,12 +178,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBTranslator4IntegerVariable< ALLOC >&
-         operator=(const DBTranslator4IntegerVariable< ALLOC >& from);
+      DBTranslator4IntegerVariable& operator=(const DBTranslator4IntegerVariable& from);
 
       /// move operator
-      DBTranslator4IntegerVariable< ALLOC >&
-         operator=(DBTranslator4IntegerVariable< ALLOC >&& from);
+      DBTranslator4IntegerVariable& operator=(DBTranslator4IntegerVariable&& from);
 
       /// @}
 
@@ -253,8 +235,7 @@ namespace gum {
 
       /** @brief returns an empty HashTable to indicate that no reordering
        * is needed. */
-      virtual HashTable< std::size_t, std::size_t, ALLOC< std::pair< std::size_t, std::size_t > > >
-         reorder() final;
+      virtual HashTable< std::size_t, std::size_t > reorder() final;
 
       /// returns the variable stored into the translator
       virtual const IntegerVariable* variable() const final;
@@ -281,7 +262,9 @@ namespace gum {
 } /* namespace gum */
 
 
-// always include the template implementation
-#include <agrum/tools/database/DBTranslator4IntegerVariable_tpl.h>
+/// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#  include <agrum/tools/database/DBTranslator4IntegerVariable_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_DB_TRANSLATOR_4_INTEGER_VARIABLE_H */

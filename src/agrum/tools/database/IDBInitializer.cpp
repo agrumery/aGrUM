@@ -27,3 +27,43 @@
  */
 
 #include <agrum/tools/database/IDBInitializer.h>
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+/// include the inlined functions if necessary
+#  ifdef GUM_NO_INLINE
+#    include <agrum/tools/database/IDBInitializer_inl.h>
+#  endif /* GUM_NO_INLINE */
+
+namespace gum {
+
+  namespace learning {
+
+    // destructor
+    IDBInitializer::~IDBInitializer() { GUM_DESTRUCTOR(IDBInitializer); }
+
+    // copy operator
+    IDBInitializer& IDBInitializer::operator=(const IDBInitializer& from) {
+      if (this != &from) {
+        _var_names_             = from._var_names_;
+        _input_type_            = from._input_type_;
+        _last_insertion_failed_ = false;
+      }
+      return *this;
+    }
+
+    // move constructor
+    IDBInitializer& IDBInitializer::operator=(IDBInitializer&& from) {
+      if (this != &from) {
+        _var_names_             = std::move(from._var_names_);
+        _input_type_            = from._input_type_;
+        _last_insertion_failed_ = false;
+      }
+      return *this;
+    }
+
+  } /* namespace learning */
+
+} /* namespace gum */
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */

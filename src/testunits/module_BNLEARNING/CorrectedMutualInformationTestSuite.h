@@ -48,71 +48,71 @@ namespace gum_tests {
       return res;
     }
 
-    double _H_(const gum::learning::DBRowGeneratorParser<>& parser, const gum::NodeId id) {
-      gum::learning::RecordCounter<> counter(parser);
-      return _entropy_(counter.counts(gum::learning::IdCondSet<>(id, {})));
+    double _H_(const gum::learning::DBRowGeneratorParser& parser, const gum::NodeId id) {
+      gum::learning::RecordCounter counter(parser);
+      return _entropy_(counter.counts(gum::learning::IdCondSet(id, {})));
     }
 
-    double _H_(const gum::learning::DBRowGeneratorParser<>& parser,
-               const gum::NodeId                            id1,
-               const gum::NodeId                            id2) {
-      gum::learning::RecordCounter<> counter(parser);
-      return _entropy_(counter.counts(gum::learning::IdCondSet<>(id1, id2, {}, true)));
+    double _H_(const gum::learning::DBRowGeneratorParser& parser,
+               const gum::NodeId                          id1,
+               const gum::NodeId                          id2) {
+      gum::learning::RecordCounter counter(parser);
+      return _entropy_(counter.counts(gum::learning::IdCondSet(id1, id2, {}, true)));
     }
 
-    double _I_(const gum::learning::DBRowGeneratorParser<>& parser,
-               const gum::NodeId                            id1,
-               const gum::NodeId                            id2) {
+    double _I_(const gum::learning::DBRowGeneratorParser& parser,
+               const gum::NodeId                          id1,
+               const gum::NodeId                          id2) {
       return _H_(parser, id1) + _H_(parser, id2) - _H_(parser, id1, id2);
     }
 
-    double _H_(const gum::learning::DBRowGeneratorParser<>& parser,
-               const std::vector< gum::NodeId >&            cond) {
-      gum::learning::RecordCounter<> counter(parser);
-      return _entropy_(counter.counts(gum::learning::IdCondSet<>(cond, true, true)));
+    double _H_(const gum::learning::DBRowGeneratorParser& parser,
+               const std::vector< gum::NodeId >&          cond) {
+      gum::learning::RecordCounter counter(parser);
+      return _entropy_(counter.counts(gum::learning::IdCondSet(cond, true, true)));
     }
 
-    double _H_(const gum::learning::DBRowGeneratorParser<>& parser,
-               const gum::NodeId                            id,
-               const std::vector< gum::NodeId >&            cond) {
-      gum::learning::RecordCounter<> counter(parser);
-      const auto v1 = counter.counts(gum::learning::IdCondSet<>(id, cond, true));
-      const auto v2 = counter.counts(gum::learning::IdCondSet<>(cond, false, true));
+    double _H_(const gum::learning::DBRowGeneratorParser& parser,
+               const gum::NodeId                          id,
+               const std::vector< gum::NodeId >&          cond) {
+      gum::learning::RecordCounter counter(parser);
+      const auto                   v1 = counter.counts(gum::learning::IdCondSet(id, cond, true));
+      const auto                   v2 = counter.counts(gum::learning::IdCondSet(cond, false, true));
       return _entropy_(v1) - _entropy_(v2);
     }
 
-    double _H_(const gum::learning::DBRowGeneratorParser<>& parser,
-               const gum::NodeId                            id1,
-               const gum::NodeId                            id2,
-               const std::vector< gum::NodeId >&            cond) {
-      gum::learning::RecordCounter<> counter(parser);
-      const auto v1 = counter.counts(gum::learning::IdCondSet<>(id1, id2, cond, true, true));
-      const auto v2 = counter.counts(gum::learning::IdCondSet<>(cond, false, true));
+    double _H_(const gum::learning::DBRowGeneratorParser& parser,
+               const gum::NodeId                          id1,
+               const gum::NodeId                          id2,
+               const std::vector< gum::NodeId >&          cond) {
+      gum::learning::RecordCounter counter(parser);
+      const auto v1 = counter.counts(gum::learning::IdCondSet(id1, id2, cond, true, true));
+      const auto v2 = counter.counts(gum::learning::IdCondSet(cond, false, true));
       return _entropy_(v1) - _entropy_(v2);
     }
 
-    double _I_(const gum::learning::DBRowGeneratorParser<>& parser,
-               const gum::NodeId                            id1,
-               const gum::NodeId                            id2,
-               const std::vector< gum::NodeId >&            cond) {
+    double _I_(const gum::learning::DBRowGeneratorParser& parser,
+               const gum::NodeId                          id1,
+               const gum::NodeId                          id2,
+               const std::vector< gum::NodeId >&          cond) {
       const auto h1  = _H_(parser, id1, cond);
       const auto h2  = _H_(parser, id2, cond);
       const auto h12 = _H_(parser, id1, id2, cond);
       return h1 + h2 - h12;
     }
 
-    double _I_(const gum::learning::DBRowGeneratorParser<>& parser,
-               const gum::NodeId                            id1,
-               const gum::NodeId                            id2,
-               const gum::NodeId                            id3) {
+    double _I_(const gum::learning::DBRowGeneratorParser& parser,
+               const gum::NodeId                          id1,
+               const gum::NodeId                          id2,
+               const gum::NodeId                          id3) {
       return _I_(parser, id1, id2) - _I_(parser, id1, id2, std::vector< gum::NodeId >{id3});
     }
 
-    double _I_(const gum::learning::DBRowGeneratorParser<>& parser,
-               const gum::NodeId                            id1,
-               const gum::NodeId                            id2,
-               const gum::NodeId                            id3,
-               const std::vector< gum::NodeId >&            cond) {
+    double _I_(const gum::learning::DBRowGeneratorParser& parser,
+               const gum::NodeId                          id1,
+               const gum::NodeId                          id2,
+               const gum::NodeId                          id3,
+               const std::vector< gum::NodeId >&          cond) {
       std::vector< gum::NodeId > xcond(cond);
       xcond.push_back(id3);
       return _I_(parser, id1, id2, cond) - _I_(parser, id1, id2, xcond);
@@ -121,25 +121,25 @@ namespace gum_tests {
 
     public:
     void test_Ixy_NoCorr() {
-      gum::learning::DBInitializerFromCSV<> initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
-      const auto&                           var_names = initializer.variableNames();
-      const std::size_t                     nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+      const auto&                         var_names = initializer.variableNames();
+      const std::size_t                   nb_vars   = var_names.size();
 
-      gum::learning::DBTranslatorSet<>                translator_set;
-      gum::learning::DBTranslator4LabelizedVariable<> translator;
+      gum::learning::DBTranslatorSet                translator_set;
+      gum::learning::DBTranslator4LabelizedVariable translator;
       for (std::size_t i = 0; i < nb_vars; ++i) {
         translator_set.insertTranslator(translator, i);
       }
 
-      gum::learning::DatabaseTable<> database(translator_set);
+      gum::learning::DatabaseTable database(translator_set);
       database.setVariableNames(initializer.variableNames());
       initializer.fillDatabase(database);
 
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriNoApriori<>     apriori(database);
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+      gum::learning::AprioriNoApriori     apriori(database);
 
-      gum::learning::CorrectedMutualInformation<> score(parser, apriori);
+      gum::learning::CorrectedMutualInformation score(parser, apriori);
       score.useNoCorr();
 
       TS_ASSERT_DELTA(score.score(1, 6, std::vector< gum::NodeId >{0}),
@@ -179,27 +179,27 @@ namespace gum_tests {
 
 
     void test_Ixy_Kmdl() {
-      gum::learning::DBInitializerFromCSV<> initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
-      const auto&                           var_names = initializer.variableNames();
-      const std::size_t                     nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+      const auto&                         var_names = initializer.variableNames();
+      const std::size_t                   nb_vars   = var_names.size();
 
-      gum::learning::DBTranslatorSet<>                translator_set;
-      gum::learning::DBTranslator4LabelizedVariable<> translator;
+      gum::learning::DBTranslatorSet                translator_set;
+      gum::learning::DBTranslator4LabelizedVariable translator;
       for (std::size_t i = 0; i < nb_vars; ++i) {
         translator_set.insertTranslator(translator, i);
       }
 
-      gum::learning::DatabaseTable<> database(translator_set);
+      gum::learning::DatabaseTable database(translator_set);
       database.setVariableNames(initializer.variableNames());
       initializer.fillDatabase(database);
 
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriNoApriori<>     apriori(database);
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+      gum::learning::AprioriNoApriori     apriori(database);
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::CorrectedMutualInformation<> score(parser, apriori);
+      gum::learning::CorrectedMutualInformation score(parser, apriori);
       score.useMDL();
 
       const double cst = 0.5 * std::log2(10000);

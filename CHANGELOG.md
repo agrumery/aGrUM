@@ -1,5 +1,53 @@
 # aGrUM Changelog
 
+## Changelog for 0.22.7
+
+Mostly several quick fixes.
+
+* aGrUM
+
+  * Small bugfix on Markov Network with only one factor.
+  * Better behavior for ordering nodes when `gum::MarkovNetwork::addFactor`.
+  * Better behavior for `gum::ShaferShenoyMNInference::jointPosterior` when a node of the joint is hard-observed.
+
+* pyAgrum
+
+  * Update and fix documentation (mostly for readthedocs and typehints).
+  * Fix and improve ticks when plotting distribution with large domainSize.
+  * Better behavior for ordering nodes when `pyAgrum.MarkovNetwork.addFactor`.
+  * Better behavior for `pyAgrum.ShaferShenoyMNInference.jointPosterior` when a node of the joint is hard-observed.
+
+
+## Changelog for 0.22.6
+
+* aGrUM
+
+  * aGrum is now compiled using c++20 (updating cmake).
+  * Fix 'distribute' phase in some cases for `gum::ShaferShenoyLIMIDInference` (Thanks to Michael Kontoulis).
+  * Remove a lot of allocators as template parameters.
+  * `act`: Improve architecture.
+  * `act`: Use of `argparse`  instead of the obsolete `optparse`.
+  * Working on CI : Working on CI : removing some obsolete platform (`MSVC 15`), adding some new (`MSVC 22`)
+  * use `std::mt19937` instead of `rand()` (thanks to Julien Schueller).
+
+* pyAgrum
+
+  * Drop support for python 3.7 (following [NEP29](https://numpy.org/neps/nep-0029-deprecation_policy.html)).
+  * Drop support for 32bits architectures (following [numpy](https://numpy.org/devdocs/release/1.22.0-notes.html)).
+  * Use of `pydot` instead of `pydotplus`.
+  * Several typos in code and documentation of `gum.lib` (thanks to Benjamin Datko).
+  * Improve notebooks (thanks to Clara Charon).
+
+## Changelog for 0.22.5
+
+This release mainly deals with providing a workaround to a pydotplus/pyparsing bug affecting several graph visualizations in pyAgrum. 
+
+* pyAgrum
+
+  * workaround to the pydotplus/pyparsing bug : "adding an empty node".
+  * remove the use of deprecated distutils in act.
+  * (approximate) fix labels in x-axis for lined-histogram.
+
 ## Changelog for 0.22.4
 
 This release aims to provide a number of new configurations for aGrUM and pyAgrum:

@@ -21,7 +21,7 @@ project (agrum VERSION ${AGRUM_VERSION})
 
 set(CMAKE_INSTALL_PREFIX ${BACKUP_CMAKE_INSTALL_PREFIX})
 
-cmake_minimum_required (VERSION 3.1)
+cmake_minimum_required (VERSION 3.12)
 
 # options
 option(BUILD_SHARED_LIBS "build shared|static libs" ON)

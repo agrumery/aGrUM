@@ -21,7 +21,7 @@ evidence : pyAgrum.Potential
 
 Raises
 ------
-pyAgrum.IndexError
+  pyAgrum.IndexError
 	If the evidence does not belong to the influence diagram
 "
 
@@ -36,10 +36,10 @@ decisionId : int,str
 
 Raises
 ------
-pyAgrum.OperationNotAllowed
+  pyAgrum.OperationNotAllowed
 	If no inference have yet been made
 pyAgrum.InvalidNode
-	If node given in parmaeter is not a decision node 
+	If node given in parmaeter is not a decision node
 "
 
 %feature("docstring") gum::ShaferShenoyLIMIDInference::MEU
@@ -49,7 +49,7 @@ Returns maximum expected utility obtained from inference.
 Raises
 ------
 pyAgrum.OperationNotAllowed
-	If no inference have yet been made 
+	If no inference have yet been made
 "
 
 %feature("docstring") gum::ShaferShenoyLIMIDInference::influenceDiagram
@@ -84,5 +84,5 @@ pyAgrum.OperationNotAllowed
 
 %feature("docstring") gum::ShaferShenoyLIMIDInference::makeInference
 "
-Makes the inference. 
+Makes the inference.
 "

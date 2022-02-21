@@ -21,7 +21,6 @@
 
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/testsuite_utils.h>
-#include <ressources/include/countedAlloc.h>
 
 #include <agrum/tools/core/sequence.h>
 #include <string>
@@ -58,8 +57,8 @@ namespace gum_tests {
       gum::Sequence< int > seq4(std::move(seq2));
       TS_ASSERT_EQUALS(seq4.size(), (gum::Size)3)
 
-      gum::Sequence< int, DebugCountedAlloc< int > > seq5{2, 4};
-      gum::Sequence< int >                           seq6(seq5);
+      gum::Sequence< int > seq5{2, 4};
+      gum::Sequence< int > seq6(seq5);
       TS_ASSERT_EQUALS(seq5, seq6)
 
       seq5 = seq;
@@ -103,8 +102,8 @@ namespace gum_tests {
       gum::Sequence< std::string > seq4(std::move(seq2));
       TS_ASSERT_EQUALS(seq4.size(), (gum::Size)3)
 
-      gum::Sequence< std::string, DebugCountedAlloc< std::string > > seq5{p[1], p[3]};
-      gum::Sequence< std::string >                                   seq6(seq5);
+      gum::Sequence< std::string > seq5{p[1], p[3]};
+      gum::Sequence< std::string > seq6(seq5);
       TS_ASSERT_EQUALS(seq5, seq6)
 
       seq5 = seq;
@@ -165,7 +164,7 @@ namespace gum_tests {
       seq3 << 2 << 3 << 4 << 5;
       TS_ASSERT_DIFFERS(seq1, seq3)
 
-      gum::Sequence< int, DebugCountedAlloc< int > > seq4;
+      gum::Sequence< int > seq4;
       TS_ASSERT_DIFFERS(seq1, seq4)
       seq4 << 1;
       TS_ASSERT_DIFFERS(seq1, seq4)
@@ -193,7 +192,7 @@ namespace gum_tests {
       seq3 << p[1] << p[2] << p[3] << p[4];
       TS_ASSERT_DIFFERS(seq1, seq3)
 
-      gum::Sequence< std::string, DebugCountedAlloc< std::string > > seq4;
+      gum::Sequence< std::string > seq4;
       TS_ASSERT_DIFFERS(seq1, seq4)
       seq4 << p[0] << p[1];
       TS_ASSERT_EQUALS(seq1, seq4)
@@ -366,7 +365,7 @@ namespace gum_tests {
       p[4] = "ee";
       p[5] = "ff";
 
-      gum::Sequence< std::string, DebugCountedAlloc< std::string > > seq;
+      gum::Sequence< std::string > seq;
 
       int n = 0;
 
@@ -444,7 +443,7 @@ namespace gum_tests {
       p[4] = "ee";
       p[5] = "ff";
 
-      gum::Sequence< std::string, DebugCountedAlloc< std::string > > seq;
+      gum::Sequence< std::string > seq;
 
       int n = 0;
 
@@ -479,7 +478,7 @@ namespace gum_tests {
     }
 
     void testInsert1() {
-      gum::Sequence< int, DebugCountedAlloc< int > > seq;
+      gum::Sequence< int > seq;
 
       seq.insert(1);
       TS_ASSERT_EQUALS(seq.size(), (gum::Size)1)
@@ -500,8 +499,8 @@ namespace gum_tests {
     }
 
     void testInsert2() {
-      gum::Sequence< std::string, DebugCountedAlloc< std::string > > seq;
-      std::string                                                    x = "1";
+      gum::Sequence< std::string > seq;
+      std::string                  x = "1";
 
       seq.insert(x);
       TS_ASSERT_EQUALS(seq.size(), (gum::Size)1)
@@ -521,8 +520,8 @@ namespace gum_tests {
     }
 
     void testEmplace1() {
-      gum::Sequence< std::pair< int, int >, DebugCountedAlloc< std::pair< int, int > > > seq;
-      std::pair< int, int >                                                              x(2, 3);
+      gum::Sequence< std::pair< int, int > > seq;
+      std::pair< int, int >                  x(2, 3);
 
       seq.emplace(2, 3);
       TS_ASSERT_EQUALS(seq.size(), (gum::Size)1)
@@ -536,8 +535,8 @@ namespace gum_tests {
     }
 
     void testEmplace2() {
-      gum::Sequence< int, DebugCountedAlloc< int > > seq;
-      int                                            x = 2;
+      gum::Sequence< int > seq;
+      int                  x = 2;
 
       seq.emplace(2);
       TS_ASSERT_EQUALS(seq.size(), (gum::Size)1)
@@ -551,7 +550,7 @@ namespace gum_tests {
     }
 
     void testNewIterOp1() {
-      gum::Sequence< int, DebugCountedAlloc< int > > seq;
+      gum::Sequence< int > seq;
       seq << 1 << 2 << 3 << 4 << 5;
       gum::SequenceIteratorSafe< int > iter = seq.begin();
       TS_ASSERT_EQUALS(*iter, 1)
@@ -575,7 +574,7 @@ namespace gum_tests {
       p[4] = "ee";
       p[5] = "ff";
 
-      gum::Sequence< std::string, DebugCountedAlloc< std::string > > seq;
+      gum::Sequence< std::string > seq;
       seq << p[1] << p[2] << p[3] << p[4] << p[5];
       gum::SequenceIteratorSafe< std::string > iter = seq.begin();
       TS_ASSERT_EQUALS(*iter, p[1])
@@ -591,7 +590,7 @@ namespace gum_tests {
     }
 
     void testNewIterOp3() {
-      gum::Sequence< int, DebugCountedAlloc< int > > seq;
+      gum::Sequence< int > seq;
       seq << 1 << 2 << 3 << 4 << 5;
       gum::SequenceIterator< int > iter = seq.begin();
       TS_ASSERT_EQUALS(*iter, 1)
@@ -615,7 +614,7 @@ namespace gum_tests {
       p[4] = "ee";
       p[5] = "ff";
 
-      gum::Sequence< std::string, DebugCountedAlloc< std::string > > seq;
+      gum::Sequence< std::string > seq;
       seq << p[1] << p[2] << p[3] << p[4] << p[5];
       gum::SequenceIterator< std::string > iter = seq.begin();
       TS_ASSERT_EQUALS(*iter, p[1])

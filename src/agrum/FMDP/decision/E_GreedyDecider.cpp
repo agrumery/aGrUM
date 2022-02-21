@@ -29,8 +29,8 @@
 
 // =========================================================================
 #include <cstdlib>
-#include <random>
 // =========================================================================
+#include <agrum/tools/core/utils_random.h>
 #include <agrum/FMDP/decision/E_GreedyDecider.h>
 // =========================================================================
 
@@ -104,7 +104,7 @@ namespace gum {
    */
   // ###################################################################
   ActionSet E_GreedyDecider::stateOptimalPolicy(const Instantiation& curState) {
-    double explo          = (double)std::rand() / (double)RAND_MAX;
+    double explo          = randomProba();
     double temp           = std::pow((_sss_ - (double)_statecpt_.nbVisitedStates()) / _sss_, 3.0);
     double exploThreshold = temp < 0.1 ? 0.1 : temp;
 

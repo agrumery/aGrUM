@@ -45,7 +45,7 @@ except ImportError:  # because of python 2.7, matplotlib-inline cannot be part o
     print("** pyAgrum** For better visualizations, please install matplotlib-inline.")
 
 import numpy as np
-import pydotplus as dot
+import pydot as dot
 
 import IPython.core.display
 import IPython.core.pylabtools
@@ -207,7 +207,7 @@ def _reprGraph(gr, size, asString, format=None):
     format = gum.config["notebook", "graph_format"]
 
   if format == "svg":
-    gsvg = IPython.display.SVG(prepareLinksForSVG(gr.create_svg().decode('utf-8')))
+    gsvg = IPython.display.SVG(prepareLinksForSVG(gr.create_svg(encoding="utf-8").decode('utf-8')))
     if asString:
       return gsvg.data
     else:
@@ -249,7 +249,12 @@ def getGraph(gr, size=None):
 
 
 def _from_dotstring(dotstring):
-  g = dot.graph_from_dot_data(dotstring)
+  g = dot.graph_from_dot_data(dotstring)[0]
+
+  # workaround for some badly parsed graph (pyparsing>=3.03)
+  g.del_node('"\\n"')
+  g.del_node('"\\n\\n"')
+
   g.set_bgcolor("transparent")
   for e in g.get_edges():
     if e.get_color() is None:
@@ -1067,17 +1072,16 @@ def getInferenceEngine(ie, inferenceCaption):
 def getJT(jt, size=None):
   if gum.config["notebook", "junctiontree_with_names"] == "True":
     def cliqlabels(c):
-      return " ".join(
+      labels=",".join(
         sorted([model.variable(n).name() for n in jt.clique(c)])
       )
+      return f"({c}):{labels}"
 
-    def cliqnames(
-       c
-    ):
+    def cliqnames(c):
       return "-".join(sorted([model.variable(n).name() for n in jt.clique(c)]))
 
     def seplabels(c1, c2):
-      return " ".join(
+      return ",".join(
         sorted([model.variable(n).name() for n in jt.separator(c1, c2)])
       )
 
@@ -1085,13 +1089,14 @@ def getJT(jt, size=None):
       return cliqnames(c1) + '+' + cliqnames(c2)
   else:
     def cliqlabels(c):
-      return " ".join([str(n) for n in sorted(jt.clique(c))])
+      ids=",".join([str(n) for n in sorted(jt.clique(c))])
+      return f"({c}):{ids}"
 
     def cliqnames(c):
       return "-".join([str(n) for n in sorted(jt.clique(c))])
 
     def seplabels(c1, c2):
-      return " ".join(
+      return ",".join(
         [str(n) for n in sorted(jt.separator(c1, c2))]
       )
 
@@ -1176,7 +1181,12 @@ def show(model, **kwargs):
   elif isinstance(model, gum.Potential):
     showPotential(model)
   elif hasattr(model, "toDot"):
-    showDot(dot.graph_from_dot_data(model.toDot()), **kwargs)
+    g=dot.graph_from_dot_data(model.toDot())[0]
+
+    # workaround for some badly parsed graph (pyparsing>=3.03)
+    g.del_node('"\\n"')
+
+    showDot(g, **kwargs)
   else:
     raise gum.InvalidArgument(
       "Argument model should be a PGM (BayesNet, MarkovNet, Influence Diagram or Potential or ..."

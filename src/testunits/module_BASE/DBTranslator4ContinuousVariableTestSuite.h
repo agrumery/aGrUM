@@ -21,8 +21,6 @@
 
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/testsuite_utils.h>
-#include <ressources/include/countedAlloc.h>
-#include <ressources/include/poolAlloc.h>
 #include <iostream>
 #include <string>
 
@@ -33,7 +31,7 @@ namespace gum_tests {
   class DBTranslator4ContinuousVariableTestSuite: public CxxTest::TestSuite {
     public:
     void test_trans1() {
-      gum::learning::DBTranslator4ContinuousVariable<> translator;
+      gum::learning::DBTranslator4ContinuousVariable translator;
       TS_ASSERT(translator.isLossless())
       TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("3"));
       TS_ASSERT_EQUALS(translator.translate("3").cont_val, 3)
@@ -57,7 +55,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(translator.translate("0x422"), gum::TypeError)
 
       std::vector< std::string >                       missing{"2", "N/A", "20", "4", "xxx"};
-      gum::learning::DBTranslator4ContinuousVariable<> translator2(missing);
+      gum::learning::DBTranslator4ContinuousVariable translator2(missing);
       TS_ASSERT(!translator2.missingSymbols().exists("2"))
       TS_ASSERT(!translator2.missingSymbols().exists("20"))
       TS_ASSERT(!translator2.missingSymbols().exists("4"))
@@ -67,7 +65,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(translator2.translate("xxx").cont_val, std::numeric_limits< float >::max())
 
       gum::ContinuousVariable< double >                var("X2", "", -2, 10);
-      gum::learning::DBTranslator4ContinuousVariable<> translator3(var, missing);
+      gum::learning::DBTranslator4ContinuousVariable translator3(var, missing);
       TS_ASSERT(!translator3.missingSymbols().exists("2"))
       TS_ASSERT(!translator3.missingSymbols().exists("4"))
       TS_ASSERT(translator3.missingSymbols().exists("20"))
@@ -92,7 +90,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(good_cont, 1)
 
       std::vector< std::string > missing4{"2", "N/A", "20", "4", "xxx", "-10"};
-      gum::learning::DBTranslator4ContinuousVariable<> translator4(var, missing4, true);
+      gum::learning::DBTranslator4ContinuousVariable translator4(var, missing4, true);
       TS_ASSERT(!translator4.missingSymbols().exists("2"))
       TS_ASSERT(!translator4.missingSymbols().exists("4"))
       TS_ASSERT(translator4.missingSymbols().exists("20"))
@@ -117,7 +115,7 @@ namespace gum_tests {
          gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()})));
 
 
-      gum::learning::DBTranslator4ContinuousVariable<> translator5(var, missing4, true);
+      gum::learning::DBTranslator4ContinuousVariable translator5(var, missing4, true);
       TS_ASSERT(!translator5.missingSymbols().exists("2"))
       TS_ASSERT(!translator5.missingSymbols().exists("4"))
       TS_ASSERT_EQUALS(translator5.translate("-10").cont_val, std::numeric_limits< float >::max())
@@ -135,7 +133,7 @@ namespace gum_tests {
         gum::ContinuousVariable< double > var("X2", "", -2, 10);
         std::vector< std::string >        missing{"2", "N/A", "20", "4", "xxx", "-10"};
 
-        gum::learning::DBTranslator4ContinuousVariable< DebugCountedAlloc > translator(var,
+        gum::learning::DBTranslator4ContinuousVariable translator(var,
                                                                                        missing,
                                                                                        true);
         TS_ASSERT(!translator.missingSymbols().exists("2"))
@@ -151,7 +149,7 @@ namespace gum_tests {
         TS_ASSERT(translator.missingSymbols().exists(translator.translateBack(
            gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()})));
 
-        gum::learning::DBTranslator4ContinuousVariable< DebugCountedAlloc > translator2(translator);
+        gum::learning::DBTranslator4ContinuousVariable translator2(translator);
         TS_ASSERT(!translator2.missingSymbols().exists("2"))
         TS_ASSERT(!translator2.missingSymbols().exists("4"))
         TS_ASSERT_EQUALS(translator2.translate("-10").cont_val,
@@ -166,7 +164,7 @@ namespace gum_tests {
         TS_ASSERT(translator2.missingSymbols().exists(translator2.translateBack(
            gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()})));
 
-        gum::learning::DBTranslator4ContinuousVariable< DebugCountedAlloc > translator3(
+        gum::learning::DBTranslator4ContinuousVariable translator3(
            translator2);
         TS_ASSERT(!translator3.missingSymbols().exists("2"))
         TS_ASSERT(!translator3.missingSymbols().exists("4"))
@@ -182,7 +180,7 @@ namespace gum_tests {
         TS_ASSERT(translator3.missingSymbols().exists(translator3.translateBack(
            gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()})));
 
-        gum::learning::DBTranslator4ContinuousVariable< DebugCountedAlloc > translator4(
+        gum::learning::DBTranslator4ContinuousVariable translator4(
            std::move(translator3));
         TS_ASSERT(!translator4.missingSymbols().exists("2"))
         TS_ASSERT(!translator4.missingSymbols().exists("4"))
@@ -198,7 +196,7 @@ namespace gum_tests {
         TS_ASSERT(translator4.missingSymbols().exists(translator4.translateBack(
            gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()})));
 
-        gum::learning::DBTranslator4ContinuousVariable< DebugCountedAlloc >* translator5
+        gum::learning::DBTranslator4ContinuousVariable* translator5
            = translator4.clone();
 
         TS_ASSERT(!translator5->missingSymbols().exists("2"))
@@ -215,10 +213,7 @@ namespace gum_tests {
         TS_ASSERT(translator5->missingSymbols().exists(translator5->translateBack(
            gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()})));
 
-        DebugCountedAlloc< gum::learning::DBTranslator4ContinuousVariable< DebugCountedAlloc > >
-           allocator(translator5->getAllocator());
-        allocator.destroy(translator5);
-        allocator.deallocate(translator5, 1);
+        delete translator5;
 
         TS_ASSERT_EQUALS(translator4.translate("12").cont_val, 12.0f)
         TS_ASSERT_EQUALS(translator4.variable()->lowerBoundAsDouble(), -2.0f)
@@ -241,8 +236,6 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(translator.variable()->lowerBoundAsDouble(), -2.0f)
         TS_ASSERT_EQUALS(translator.variable()->upperBoundAsDouble(), 10.0f)
       }
-
-      TS_ASSERT_EQUALS(CountedAlloc::hasMemoryLeak(), false)
     }
   };
 

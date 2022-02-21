@@ -32,43 +32,31 @@ namespace gum {
 
   namespace learning {
 
-    /// returns the allocator used
-    template < typename GUM_SCALAR, template < typename > class ALLOC >
-    INLINE typename DBRowGeneratorEM< GUM_SCALAR, ALLOC >::allocator_type
-       DBRowGeneratorEM< GUM_SCALAR, ALLOC >::getAllocator() const {
-      return DBRowGenerator< ALLOC >::getAllocator();
-    }
-
-
     /// default constructor
-    template < typename GUM_SCALAR, template < typename > class ALLOC >
-    DBRowGeneratorEM< GUM_SCALAR, ALLOC >::DBRowGeneratorEM(
-       const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > > column_types,
-       const BayesNet< GUM_SCALAR >&                                              bn,
-       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&              nodeId2columns,
-       const typename DBRowGeneratorEM< GUM_SCALAR, ALLOC >::allocator_type&      alloc) :
-        DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >(column_types,
-                                                  bn,
-                                                  DBRowGeneratorGoal::ONLY_REMOVE_MISSING_VALUES,
-                                                  nodeId2columns,
-                                                  alloc),
-        _filled_row1_(bn.size(), 1.0, alloc), _filled_row2_(bn.size(), 1.0, alloc) {
+    template < typename GUM_SCALAR >
+    DBRowGeneratorEM< GUM_SCALAR >::DBRowGeneratorEM(
+       const std::vector< DBTranslatedValueType >& column_types,
+       const BayesNet< GUM_SCALAR >&               bn,
+       const Bijection< NodeId, std::size_t >&     nodeId2columns) :
+        DBRowGeneratorWithBN< GUM_SCALAR >(column_types,
+                                           bn,
+                                           DBRowGeneratorGoal::ONLY_REMOVE_MISSING_VALUES,
+                                           nodeId2columns),
+        _filled_row1_(bn.size(), 1.0), _filled_row2_(bn.size(), 1.0) {
       setBayesNet(bn);
 
       GUM_CONSTRUCTOR(DBRowGeneratorEM);
     }
 
 
-    /// copy constructor with a given allocator
-    template < typename GUM_SCALAR, template < typename > class ALLOC >
-    DBRowGeneratorEM< GUM_SCALAR, ALLOC >::DBRowGeneratorEM(
-       const DBRowGeneratorEM< GUM_SCALAR, ALLOC >&                          from,
-       const typename DBRowGeneratorEM< GUM_SCALAR, ALLOC >::allocator_type& alloc) :
-        DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >(from, alloc),
-        _input_row_(from._input_row_), _missing_cols_(from._missing_cols_),
-        _nb_miss_(from._nb_miss_), _joint_proba_(from._joint_proba_),
-        _filled_row1_(from._filled_row1_), _filled_row2_(from._filled_row2_),
-        _use_filled_row1_(from._use_filled_row1_), _original_weight_(from._original_weight_) {
+    /// copy constructor
+    template < typename GUM_SCALAR >
+    DBRowGeneratorEM< GUM_SCALAR >::DBRowGeneratorEM(const DBRowGeneratorEM< GUM_SCALAR >& from) :
+        DBRowGeneratorWithBN< GUM_SCALAR >(from), _input_row_(from._input_row_),
+        _missing_cols_(from._missing_cols_), _nb_miss_(from._nb_miss_),
+        _joint_proba_(from._joint_proba_), _filled_row1_(from._filled_row1_),
+        _filled_row2_(from._filled_row2_), _use_filled_row1_(from._use_filled_row1_),
+        _original_weight_(from._original_weight_) {
       if (from._joint_inst_ != nullptr) {
         _joint_inst_              = new Instantiation(_joint_proba_);
         const auto&       var_seq = _joint_inst_->variablesSequence();
@@ -82,23 +70,14 @@ namespace gum {
     }
 
 
-    /// copy constructor
-    template < typename GUM_SCALAR, template < typename > class ALLOC >
-    DBRowGeneratorEM< GUM_SCALAR, ALLOC >::DBRowGeneratorEM(
-       const DBRowGeneratorEM< GUM_SCALAR, ALLOC >& from) :
-        DBRowGeneratorEM< GUM_SCALAR, ALLOC >(from, from.getAllocator()) {}
-
-
-    /// move constructor with a given allocator
-    template < typename GUM_SCALAR, template < typename > class ALLOC >
-    DBRowGeneratorEM< GUM_SCALAR, ALLOC >::DBRowGeneratorEM(
-       DBRowGeneratorEM< GUM_SCALAR, ALLOC >&&                               from,
-       const typename DBRowGeneratorEM< GUM_SCALAR, ALLOC >::allocator_type& alloc) :
-        DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >(std::move(from), alloc),
-        _input_row_(from._input_row_), _missing_cols_(std::move(from._missing_cols_)),
-        _nb_miss_(from._nb_miss_), _joint_proba_(std::move(from._joint_proba_)),
-        _filled_row1_(std::move(from._filled_row1_)), _filled_row2_(std::move(from._filled_row2_)),
-        _use_filled_row1_(from._use_filled_row1_), _original_weight_(from._original_weight_) {
+    /// move constructor
+    template < typename GUM_SCALAR >
+    DBRowGeneratorEM< GUM_SCALAR >::DBRowGeneratorEM(DBRowGeneratorEM< GUM_SCALAR >&& from) :
+        DBRowGeneratorWithBN< GUM_SCALAR >(std::move(from)), _input_row_(from._input_row_),
+        _missing_cols_(std::move(from._missing_cols_)), _nb_miss_(from._nb_miss_),
+        _joint_proba_(std::move(from._joint_proba_)), _filled_row1_(std::move(from._filled_row1_)),
+        _filled_row2_(std::move(from._filled_row2_)), _use_filled_row1_(from._use_filled_row1_),
+        _original_weight_(from._original_weight_) {
       if (from._joint_inst_ != nullptr) {
         _joint_inst_              = new Instantiation(_joint_proba_);
         const auto&       var_seq = _joint_inst_->variablesSequence();
@@ -112,58 +91,35 @@ namespace gum {
     }
 
 
-    /// move constructor
-    template < typename GUM_SCALAR, template < typename > class ALLOC >
-    DBRowGeneratorEM< GUM_SCALAR, ALLOC >::DBRowGeneratorEM(
-       DBRowGeneratorEM< GUM_SCALAR, ALLOC >&& from) :
-        DBRowGeneratorEM< GUM_SCALAR, ALLOC >(std::move(from), from.getAllocator()) {}
-
-
-    /// virtual copy constructor with a given allocator
-    template < typename GUM_SCALAR, template < typename > class ALLOC >
-    DBRowGeneratorEM< GUM_SCALAR, ALLOC >* DBRowGeneratorEM< GUM_SCALAR, ALLOC >::clone(
-       const typename DBRowGeneratorEM< GUM_SCALAR, ALLOC >::allocator_type& alloc) const {
-      ALLOC< DBRowGeneratorEM< GUM_SCALAR, ALLOC > > allocator(alloc);
-      DBRowGeneratorEM< GUM_SCALAR, ALLOC >*         generator = allocator.allocate(1);
-      try {
-        allocator.construct(generator, *this, alloc);
-      } catch (...) {
-        allocator.deallocate(generator, 1);
-        throw;
-      }
-      return generator;
-    }
-
-
     /// virtual copy constructor
-    template < typename GUM_SCALAR, template < typename > class ALLOC >
-    DBRowGeneratorEM< GUM_SCALAR, ALLOC >* DBRowGeneratorEM< GUM_SCALAR, ALLOC >::clone() const {
-      return clone(this->getAllocator());
+    template < typename GUM_SCALAR >
+    DBRowGeneratorEM< GUM_SCALAR >* DBRowGeneratorEM< GUM_SCALAR >::clone() const {
+      return new DBRowGeneratorEM< GUM_SCALAR >(*this);
     }
 
 
     /// destructor
-    template < typename GUM_SCALAR, template < typename > class ALLOC >
-    DBRowGeneratorEM< GUM_SCALAR, ALLOC >::~DBRowGeneratorEM() {
+    template < typename GUM_SCALAR >
+    DBRowGeneratorEM< GUM_SCALAR >::~DBRowGeneratorEM() {
       if (_joint_inst_ != nullptr) delete _joint_inst_;
       GUM_DESTRUCTOR(DBRowGeneratorEM);
     }
 
 
     /// copy operator
-    template < typename GUM_SCALAR, template < typename > class ALLOC >
-    DBRowGeneratorEM< GUM_SCALAR, ALLOC >& DBRowGeneratorEM< GUM_SCALAR, ALLOC >::operator=(
-       const DBRowGeneratorEM< GUM_SCALAR, ALLOC >& from) {
+    template < typename GUM_SCALAR >
+    DBRowGeneratorEM< GUM_SCALAR >&
+       DBRowGeneratorEM< GUM_SCALAR >::operator=(const DBRowGeneratorEM< GUM_SCALAR >& from) {
       if (this != &from) {
-        DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::operator=(from);
-        _input_row_                                        = from._input_row_;
-        _missing_cols_                                     = from._missing_cols_;
-        _nb_miss_                                          = from._nb_miss_;
-        _joint_proba_                                      = from._joint_proba_;
-        _filled_row1_                                      = from._filled_row1_;
-        _filled_row2_                                      = from._filled_row2_;
-        _use_filled_row1_                                  = from._use_filled_row1_;
-        _original_weight_                                  = from._original_weight_;
+        DBRowGeneratorWithBN< GUM_SCALAR >::operator=(from);
+        _input_row_                                 = from._input_row_;
+        _missing_cols_                              = from._missing_cols_;
+        _nb_miss_                                   = from._nb_miss_;
+        _joint_proba_                               = from._joint_proba_;
+        _filled_row1_                               = from._filled_row1_;
+        _filled_row2_                               = from._filled_row2_;
+        _use_filled_row1_                           = from._use_filled_row1_;
+        _original_weight_                           = from._original_weight_;
 
         if (_joint_inst_ != nullptr) {
           delete _joint_inst_;
@@ -185,19 +141,19 @@ namespace gum {
 
 
     /// move operator
-    template < typename GUM_SCALAR, template < typename > class ALLOC >
-    DBRowGeneratorEM< GUM_SCALAR, ALLOC >& DBRowGeneratorEM< GUM_SCALAR, ALLOC >::operator=(
-       DBRowGeneratorEM< GUM_SCALAR, ALLOC >&& from) {
+    template < typename GUM_SCALAR >
+    DBRowGeneratorEM< GUM_SCALAR >&
+       DBRowGeneratorEM< GUM_SCALAR >::operator=(DBRowGeneratorEM< GUM_SCALAR >&& from) {
       if (this != &from) {
-        DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::operator=(std::move(from));
-        _input_row_                                        = from._input_row_;
-        _missing_cols_                                     = std::move(from._missing_cols_);
-        _nb_miss_                                          = from._nb_miss_;
-        _joint_proba_                                      = std::move(from._joint_proba_);
-        _filled_row1_                                      = std::move(from._filled_row1_);
-        _filled_row2_                                      = std::move(from._filled_row2_);
-        _use_filled_row1_                                  = from._use_filled_row1_;
-        _original_weight_                                  = from._original_weight_;
+        DBRowGeneratorWithBN< GUM_SCALAR >::operator=(std::move(from));
+        _input_row_                                 = from._input_row_;
+        _missing_cols_                              = std::move(from._missing_cols_);
+        _nb_miss_                                   = from._nb_miss_;
+        _joint_proba_                               = std::move(from._joint_proba_);
+        _filled_row1_                               = std::move(from._filled_row1_);
+        _filled_row2_                               = std::move(from._filled_row2_);
+        _use_filled_row1_                           = from._use_filled_row1_;
+        _original_weight_                           = from._original_weight_;
 
         if (_joint_inst_ != nullptr) {
           delete _joint_inst_;
@@ -219,9 +175,8 @@ namespace gum {
 
 
     /// generates new lines from those the generator gets in input
-    template < typename GUM_SCALAR, template < typename > class ALLOC >
-    INLINE const DBRow< DBTranslatedValue, ALLOC >&
-                 DBRowGeneratorEM< GUM_SCALAR, ALLOC >::generate() {
+    template < typename GUM_SCALAR >
+    INLINE const DBRow< DBTranslatedValue >& DBRowGeneratorEM< GUM_SCALAR >::generate() {
       this->decreaseRemainingRows();
 
       // if everything is observed, return the input row
@@ -256,9 +211,9 @@ namespace gum {
 
 
     /// computes the rows it will provide in output
-    template < typename GUM_SCALAR, template < typename > class ALLOC >
-    INLINE std::size_t DBRowGeneratorEM< GUM_SCALAR, ALLOC >::computeRows_(
-       const DBRow< DBTranslatedValue, ALLOC >& row) {
+    template < typename GUM_SCALAR >
+    INLINE std::size_t
+           DBRowGeneratorEM< GUM_SCALAR >::computeRows_(const DBRow< DBTranslatedValue >& row) {
       // check if there are unobserved values among the columns of interest.
       // If this is the case, set them as targets
       bool        found_unobserved = false;
@@ -277,14 +232,14 @@ namespace gum {
 
           case DBTranslatedValueType::CONTINUOUS:
             GUM_ERROR(NotImplementedYet,
-                      "The BDRowGeneratorEM does not handle yet continuous "
-                         << "variables. But the variable in column" << col << " is continuous.");
+                          "The BDRowGeneratorEM does not handle yet continuous "
+                             << "variables. But the variable in column" << col << " is continuous.");
             break;
 
           default:
             GUM_ERROR(NotImplementedYet,
-                      "DBTranslatedValueType " << int(this->column_types_[col])
-                                               << " is not supported yet");
+                          "DBTranslatedValueType " << int(this->column_types_[col])
+                                                   << " is not supported yet");
         }
       }
 
@@ -348,14 +303,14 @@ namespace gum {
 
             case DBTranslatedValueType::CONTINUOUS:
               GUM_ERROR(NotImplementedYet,
-                        "The BDRowGeneratorEM does not handle yet continuous "
-                           << "variables. But the variable in column" << col << " is continuous.");
+                            "The BDRowGeneratorEM does not handle yet continuous "
+                               << "variables. But the variable in column" << col << " is continuous.");
               break;
 
             default:
               GUM_ERROR(NotImplementedYet,
-                        "DBTranslatedValueType " << int(this->column_types_[col])
-                                                 << " is not supported yet");
+                            "DBTranslatedValueType " << int(this->column_types_[col])
+                                                     << " is not supported yet");
           }
         }
       } else {
@@ -370,14 +325,14 @@ namespace gum {
 
             case DBTranslatedValueType::CONTINUOUS:
               GUM_ERROR(NotImplementedYet,
-                        "The BDRowGeneratorEM does not handle yet continuous "
-                           << "variables. But the variable in column" << col << " is continuous.");
+                            "The BDRowGeneratorEM does not handle yet continuous "
+                               << "variables. But the variable in column" << col << " is continuous.");
               break;
 
             default:
               GUM_ERROR(NotImplementedYet,
-                        "DBTranslatedValueType " << int(this->column_types_[col])
-                                                 << " is not supported yet");
+                            "DBTranslatedValueType " << int(this->column_types_[col])
+                                                     << " is not supported yet");
           }
         }
       }
@@ -407,8 +362,8 @@ namespace gum {
 
 
     /// assign a new Bayes net to the generator
-    template < typename GUM_SCALAR, template < typename > class ALLOC >
-    void DBRowGeneratorEM< GUM_SCALAR, ALLOC >::setBayesNet(const BayesNet< GUM_SCALAR >& new_bn) {
+    template < typename GUM_SCALAR >
+    void DBRowGeneratorEM< GUM_SCALAR >::setBayesNet(const BayesNet< GUM_SCALAR >& new_bn) {
       // check that if nodeId2columns is not empty, then all the columns
       // correspond to nodes of the BN
       if (!this->nodeId2columns_.empty()) {
@@ -424,7 +379,7 @@ namespace gum {
         }
       }
 
-      DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::setBayesNet(new_bn);
+      DBRowGeneratorWithBN< GUM_SCALAR >::setBayesNet(new_bn);
 
       // we determine the size of the filled rows
       std::size_t size = std::size_t(0);

@@ -17,8 +17,6 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-from __future__ import annotations
-
 # General information about the project.
 project = 'pyAgrum'
 copyright = '2018-21, aGrUM/pyAgrum Team'
@@ -68,7 +66,6 @@ extensions = [
   'sphinx.ext.inheritance_diagram',
   'sphinx.ext.napoleon',
   'sphinx_autodoc_typehints',
-  # todo 'sphinx_autodoc_typehints', # may be error prone (with python<3.7)
   #'sphinx.ext.todo',
   #'sphinx.ext.viewcode',
   #'sphinx.ext.coverage'
@@ -508,62 +505,6 @@ inheritance_alias = {
   'pyAgrum.causal._doAST.ASTposteriorProba': 'pyAgrum.causal.ASTposteriorProba'
 }
 
-############################ TRANSLATER SWIG type #############
-import re
-
-gumReplaceList = [
-  ('pyAgrum.pyAgrum.','pyAgrum.'),
-  ('gum::Idx', 'int'),
-  ('gum::Size', 'int'),
-  ('gum::NodeId', 'int'),
-  ('gum::NodeSet', 'Set'),
-  ('std::string', 'str'),
-  ('gum::Variable::VarType', 'int'),
-  ('gum::IBayesNet< double > const &','pyAgrum.BayesNet'),
-  ('gum::', 'pyAgrum.'),
-  ('_double ', ' '),
-  ('_double', ''),
-  ('< double > *', ' '),
-  ('< double >', ' '),
-  (' const ', ' '),
-  ('&',''),
-  ('std::', ''),
-  ('const &', ' '),
-  ('const *', ' '),
-  ('vector< double,allocator >','list'),
-  ('\w+ self,', '')
-]
-dico = {re.escape(x): y for x, y in gumReplaceList}
-pattern = re.compile('|'.join([re.escape(x) for x, _ in gumReplaceList]))
-
-def substitution4swigautodoc(l):
-  #if l is None:
-  #  return None
-  #l1 = l
-  #l2 = ""
-  #while l1 != l2:
-  #  l2 = l1
-  #  l1 = pattern.sub(lambda m: dico[re.escape(m.group(0))], l1)
-  return l
-
-
-#def process_docstring(app, what, name, obj, options, lines):
-  # loop through each line in the docstring and replace |class| with
-  # the classname
-  #for i in range(len(lines)):
-  #  lines[i] = substitution4swigautodoc(lines[i])
-
-
-#def process_signature(app, what, name, obj, options, signature, return_annotation):
-  #signature = substitution4swigautodoc(signature)
-
-  #if signature is not None and "std::string" in signature:
-  #  print(f"== {signature}")
-  #return_annotation = substitution4swigautodoc(return_annotation)
-  #return_annotation = None
-  #return signature, return_annotation
-
-
 def skip(app, what, name, obj, skip, options):
   exclusions = ('__weakref__', '__ne__', '__eq__','__str__','__init__',  # special-members
                 '__doc__', '__module__', '__dict__',  # undoc-members
@@ -582,10 +523,10 @@ def skip(app, what, name, obj, skip, options):
 
 autodoc_default_options = {'members' : None,
                           'undoc-members':None,
-                          # 'private-members', 
-                          # 'special-members', 
-                          'inherited-members':None, 
-                          #'show-inheritance':None, 
+                          # 'private-members',
+                          # 'special-members',
+                          'inherited-members':None,
+                          #'show-inheritance':None,
                           #'ignore-module-all',
                           'exclude-members' : 'thisown',
                          }

@@ -49,15 +49,10 @@ namespace gum {
      * learning requires that the same aprioris are taken into account during
      * structure learning and parameter learning.
      */
-    template < template < typename > class ALLOC = std::allocator >
-    class AprioriBDeu: public Apriori< ALLOC > {
+    class AprioriBDeu: public Apriori {
       public:
       /// the type of the a priori
       using type = AprioriBDeuType;
-
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC< NodeId >;
-
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -74,30 +69,19 @@ namespace gum {
        * NodeId of 5. An empty nodeId2Columns bijection means that the mapping
        * is an identity, i.e., the value of a NodeId is equal to the index of
        * the column in the DatabaseTable.
-       * @param alloc the allocator used to allocate the structures within the
-       * RecordCounter.*/
-      AprioriBDeu(const DatabaseTable< ALLOC >&                                 database,
-                  const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
-                  = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-                  const allocator_type& alloc = allocator_type());
+       */
+      AprioriBDeu(const DatabaseTable&                    database,
+                  const Bijection< NodeId, std::size_t >& nodeId2columns
+                  = Bijection< NodeId, std::size_t >());
 
       /// copy constructor
-      AprioriBDeu(const AprioriBDeu< ALLOC >& from);
-
-      /// copy constructor with a given allocator
-      AprioriBDeu(const AprioriBDeu< ALLOC >& from, const allocator_type& alloc);
+      AprioriBDeu(const AprioriBDeu& from);
 
       /// move constructor
-      AprioriBDeu(AprioriBDeu< ALLOC >&& from);
-
-      /// move constructor with a given allocator
-      AprioriBDeu(AprioriBDeu< ALLOC >&& from, const allocator_type& alloc);
+      AprioriBDeu(AprioriBDeu&& from);
 
       /// virtual copy constructor
-      virtual AprioriBDeu< ALLOC >* clone() const;
-
-      /// virtual copy constructor with a given allocator
-      virtual AprioriBDeu< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual AprioriBDeu* clone() const;
 
       /// destructor
       virtual ~AprioriBDeu();
@@ -111,10 +95,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      AprioriBDeu< ALLOC >& operator=(const AprioriBDeu< ALLOC >& from);
+      AprioriBDeu& operator=(const AprioriBDeu& from);
 
       /// move operator
-      AprioriBDeu< ALLOC >& operator=(AprioriBDeu< ALLOC >&& from);
+      AprioriBDeu& operator=(AprioriBDeu&& from);
 
       /// @}
 
@@ -152,16 +136,15 @@ namespace gum {
        * conditioning bar of the idset.
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint variables set. */
-      virtual void addAllApriori(const IdCondSet< ALLOC >&               idset,
-                                 std::vector< double, ALLOC< double > >& counts) final;
+      virtual void addAllApriori(const IdCondSet& idset, std::vector< double >& counts) final;
 
       /** @brief adds the apriori to a counting vectordefined over the right
        * hand side of the idset
        *
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint RHS variables of the idset. */
-      virtual void addConditioningApriori(const IdCondSet< ALLOC >&               idset,
-                                          std::vector< double, ALLOC< double > >& counts) final;
+      virtual void addConditioningApriori(const IdCondSet&       idset,
+                                          std::vector< double >& counts) final;
 
       /// @}
     };
@@ -170,7 +153,9 @@ namespace gum {
 
 } /* namespace gum */
 
-/// include the template implementation
-#include <agrum/BN/learning/aprioris/aprioriBDeu_tpl.h>
+// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/BN/learning/aprioris/aprioriBDeu_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_A_PRIORI_BDEU_H */

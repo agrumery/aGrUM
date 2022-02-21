@@ -49,7 +49,7 @@ namespace gum {
   namespace learning {
 
 
-    genericBNLearner::Database::Database(const DatabaseTable<>& db) : _database_(db) {
+    genericBNLearner::Database::Database(const DatabaseTable& db) : _database_(db) {
       // get the variables names
       const auto&       var_names = _database_.variableNames();
       const std::size_t nb_vars   = var_names.size();
@@ -60,7 +60,7 @@ namespace gum {
       }
 
       // create the parser
-      _parser_ = new DBRowGeneratorParser<>(_database_.handler(), DBRowGeneratorSet<>());
+      _parser_ = new DBRowGeneratorParser(_database_.handler(), DBRowGeneratorSet());
     }
 
 
@@ -86,7 +86,7 @@ namespace gum {
                                          const std::vector< std::string >& missing_symbols) {
       // assign to each column name in the CSV file its column
       genericBNLearner::isCSVFileName_(CSV_filename);
-      DBInitializerFromCSV<>                initializer(CSV_filename);
+      DBInitializerFromCSV                  initializer(CSV_filename);
       const auto&                           apriori_names   = initializer.variableNames();
       std::size_t                           apriori_nb_vars = apriori_names.size();
       HashTable< std::string, std::size_t > apriori_names2col(apriori_nb_vars);
@@ -135,7 +135,7 @@ namespace gum {
       _nodeId2cols_ = score_database.nodeId2Columns();
 
       // create the parser
-      _parser_ = new DBRowGeneratorParser<>(_database_.handler(), DBRowGeneratorSet<>());
+      _parser_ = new DBRowGeneratorParser(_database_.handler(), DBRowGeneratorSet());
     }
 
 
@@ -143,7 +143,7 @@ namespace gum {
         _database_(from._database_), _domain_sizes_(from._domain_sizes_),
         _nodeId2cols_(from._nodeId2cols_) {
       // create the parser
-      _parser_ = new DBRowGeneratorParser<>(_database_.handler(), DBRowGeneratorSet<>());
+      _parser_ = new DBRowGeneratorParser(_database_.handler(), DBRowGeneratorSet());
     }
 
 
@@ -151,7 +151,7 @@ namespace gum {
         _database_(std::move(from._database_)), _domain_sizes_(std::move(from._domain_sizes_)),
         _nodeId2cols_(std::move(from._nodeId2cols_)) {
       // create the parser
-      _parser_ = new DBRowGeneratorParser<>(_database_.handler(), DBRowGeneratorSet<>());
+      _parser_ = new DBRowGeneratorParser(_database_.handler(), DBRowGeneratorSet());
     }
 
 
@@ -165,7 +165,7 @@ namespace gum {
         _nodeId2cols_  = from._nodeId2cols_;
 
         // create the parser
-        _parser_ = new DBRowGeneratorParser<>(_database_.handler(), DBRowGeneratorSet<>());
+        _parser_ = new DBRowGeneratorParser(_database_.handler(), DBRowGeneratorSet());
       }
 
       return *this;
@@ -179,7 +179,7 @@ namespace gum {
         _nodeId2cols_  = std::move(from._nodeId2cols_);
 
         // create the parser
-        _parser_ = new DBRowGeneratorParser<>(_database_.handler(), DBRowGeneratorSet<>());
+        _parser_ = new DBRowGeneratorParser(_database_.handler(), DBRowGeneratorSet());
       }
 
       return *this;
@@ -193,16 +193,16 @@ namespace gum {
                                        const bool                        induceTypes) :
         scoreDatabase_(filename, missing_symbols, induceTypes) {
       filename_     = filename;
-      noApriori_    = new AprioriNoApriori<>(scoreDatabase_.databaseTable());
+      noApriori_    = new AprioriNoApriori(scoreDatabase_.databaseTable());
       inducedTypes_ = induceTypes;
 
       GUM_CONSTRUCTOR(genericBNLearner);
     }
 
 
-    genericBNLearner::genericBNLearner(const DatabaseTable<>& db) : scoreDatabase_(db) {
+    genericBNLearner::genericBNLearner(const DatabaseTable& db) : scoreDatabase_(db) {
       filename_     = "-";
-      noApriori_    = new AprioriNoApriori<>(scoreDatabase_.databaseTable());
+      noApriori_    = new AprioriNoApriori(scoreDatabase_.databaseTable());
       inducedTypes_ = false;
 
       GUM_CONSTRUCTOR(genericBNLearner);
@@ -224,7 +224,7 @@ namespace gum {
         scoreDatabase_(from.scoreDatabase_), ranges_(from.ranges_),
         aprioriDbname_(from.aprioriDbname_), initialDag_(from.initialDag_),
         filename_(from.filename_), nbDecreasingChanges_(from.nbDecreasingChanges_) {
-      noApriori_ = new AprioriNoApriori<>(scoreDatabase_.databaseTable());
+      noApriori_ = new AprioriNoApriori(scoreDatabase_.databaseTable());
 
       GUM_CONS_CPY(genericBNLearner);
     }
@@ -246,7 +246,7 @@ namespace gum {
         aprioriDbname_(std::move(from.aprioriDbname_)), initialDag_(std::move(from.initialDag_)),
         filename_(std::move(from.filename_)),
         nbDecreasingChanges_(std::move(from.nbDecreasingChanges_)) {
-      noApriori_ = new AprioriNoApriori<>(scoreDatabase_.databaseTable());
+      noApriori_ = new AprioriNoApriori(scoreDatabase_.databaseTable());
 
       GUM_CONS_MOV(genericBNLearner)
     }
@@ -366,7 +366,7 @@ namespace gum {
     }
 
 
-    DatabaseTable<> readFile(const std::string& filename) {
+    DatabaseTable readFile(const std::string& filename) {
       // get the extension of the file
       Size filename_size = Size(filename.size());
 
@@ -387,18 +387,18 @@ namespace gum {
                                                                           "of database file");
       }
 
-      DBInitializerFromCSV<> initializer(filename);
+      DBInitializerFromCSV initializer(filename);
 
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars   = var_names.size();
 
-      DBTranslatorSet<>                translator_set;
-      DBTranslator4LabelizedVariable<> translator;
+      DBTranslatorSet                translator_set;
+      DBTranslator4LabelizedVariable translator;
       for (std::size_t i = 0; i < nb_vars; ++i) {
         translator_set.insertTranslator(translator, i);
       }
 
-      DatabaseTable<> database(translator_set);
+      DatabaseTable database(translator_set);
       database.setVariableNames(initializer.variableNames());
       initializer.fillDatabase(database);
 
@@ -426,23 +426,23 @@ namespace gum {
     }
 
 
-    DatabaseTable<> genericBNLearner::readFile_(const std::string&                filename,
-                                                const std::vector< std::string >& missing_symbols) {
+    DatabaseTable genericBNLearner::readFile_(const std::string&                filename,
+                                              const std::vector< std::string >& missing_symbols) {
       // get the extension of the file
       isCSVFileName_(filename);
 
-      DBInitializerFromCSV<> initializer(filename);
+      DBInitializerFromCSV initializer(filename);
 
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars   = var_names.size();
 
-      DBTranslatorSet<>                translator_set;
-      DBTranslator4LabelizedVariable<> translator(missing_symbols);
+      DBTranslatorSet                translator_set;
+      DBTranslator4LabelizedVariable translator(missing_symbols);
       for (std::size_t i = 0; i < nb_vars; ++i) {
         translator_set.insertTranslator(translator, i);
       }
 
-      DatabaseTable<> database(missing_symbols, translator_set);
+      DatabaseTable database(missing_symbols, translator_set);
       database.setVariableNames(initializer.variableNames());
       initializer.fillDatabase(database);
 
@@ -454,18 +454,18 @@ namespace gum {
 
     void genericBNLearner::createApriori_() {
       // first, save the old apriori, to be delete if everything is ok
-      Apriori<>* old_apriori = apriori_;
+      Apriori* old_apriori = apriori_;
 
       // create the new apriori
       switch (aprioriType_) {
         case AprioriType::NO_APRIORI:
-          apriori_ = new AprioriNoApriori<>(scoreDatabase_.databaseTable(),
-                                            scoreDatabase_.nodeId2Columns());
+          apriori_ = new AprioriNoApriori(scoreDatabase_.databaseTable(),
+                                          scoreDatabase_.nodeId2Columns());
           break;
 
         case AprioriType::SMOOTHING:
-          apriori_ = new AprioriSmoothing<>(scoreDatabase_.databaseTable(),
-                                            scoreDatabase_.nodeId2Columns());
+          apriori_ = new AprioriSmoothing(scoreDatabase_.databaseTable(),
+                                          scoreDatabase_.nodeId2Columns());
           break;
 
         case AprioriType::DIRICHLET_FROM_DATABASE:
@@ -477,14 +477,14 @@ namespace gum {
           aprioriDatabase_
              = new Database(aprioriDbname_, scoreDatabase_, scoreDatabase_.missingSymbols());
 
-          apriori_ = new AprioriDirichletFromDatabase<>(scoreDatabase_.databaseTable(),
-                                                        aprioriDatabase_->parser(),
-                                                        aprioriDatabase_->nodeId2Columns());
+          apriori_ = new AprioriDirichletFromDatabase(scoreDatabase_.databaseTable(),
+                                                      aprioriDatabase_->parser(),
+                                                      aprioriDatabase_->nodeId2Columns());
           break;
 
         case AprioriType::BDEU:
           apriori_
-             = new AprioriBDeu<>(scoreDatabase_.databaseTable(), scoreDatabase_.nodeId2Columns());
+             = new AprioriBDeu(scoreDatabase_.databaseTable(), scoreDatabase_.nodeId2Columns());
           break;
 
         default:
@@ -500,50 +500,50 @@ namespace gum {
 
     void genericBNLearner::createScore_() {
       // first, save the old score, to be delete if everything is ok
-      Score<>* old_score = score_;
+      Score* old_score = score_;
 
       // create the new scoring function
       switch (scoreType_) {
         case ScoreType::AIC:
-          score_ = new ScoreAIC<>(scoreDatabase_.parser(),
-                                  *apriori_,
-                                  ranges_,
-                                  scoreDatabase_.nodeId2Columns());
+          score_ = new ScoreAIC(scoreDatabase_.parser(),
+                                *apriori_,
+                                ranges_,
+                                scoreDatabase_.nodeId2Columns());
           break;
 
         case ScoreType::BD:
-          score_ = new ScoreBD<>(scoreDatabase_.parser(),
-                                 *apriori_,
-                                 ranges_,
-                                 scoreDatabase_.nodeId2Columns());
+          score_ = new ScoreBD(scoreDatabase_.parser(),
+                               *apriori_,
+                               ranges_,
+                               scoreDatabase_.nodeId2Columns());
           break;
 
         case ScoreType::BDeu:
-          score_ = new ScoreBDeu<>(scoreDatabase_.parser(),
-                                   *apriori_,
-                                   ranges_,
-                                   scoreDatabase_.nodeId2Columns());
-          break;
-
-        case ScoreType::BIC:
-          score_ = new ScoreBIC<>(scoreDatabase_.parser(),
-                                  *apriori_,
-                                  ranges_,
-                                  scoreDatabase_.nodeId2Columns());
-          break;
-
-        case ScoreType::K2:
-          score_ = new ScoreK2<>(scoreDatabase_.parser(),
+          score_ = new ScoreBDeu(scoreDatabase_.parser(),
                                  *apriori_,
                                  ranges_,
                                  scoreDatabase_.nodeId2Columns());
           break;
 
+        case ScoreType::BIC:
+          score_ = new ScoreBIC(scoreDatabase_.parser(),
+                                *apriori_,
+                                ranges_,
+                                scoreDatabase_.nodeId2Columns());
+          break;
+
+        case ScoreType::K2:
+          score_ = new ScoreK2(scoreDatabase_.parser(),
+                               *apriori_,
+                               ranges_,
+                               scoreDatabase_.nodeId2Columns());
+          break;
+
         case ScoreType::LOG2LIKELIHOOD:
-          score_ = new ScoreLog2Likelihood<>(scoreDatabase_.parser(),
-                                             *apriori_,
-                                             ranges_,
-                                             scoreDatabase_.nodeId2Columns());
+          score_ = new ScoreLog2Likelihood(scoreDatabase_.parser(),
+                                           *apriori_,
+                                           ranges_,
+                                           scoreDatabase_.nodeId2Columns());
           break;
 
         default:
@@ -554,25 +554,25 @@ namespace gum {
       if (old_score != nullptr) delete old_score;
     }
 
-    ParamEstimator<>* genericBNLearner::createParamEstimator_(DBRowGeneratorParser<>& parser,
-                                                              bool take_into_account_score) {
-      ParamEstimator<>* param_estimator = nullptr;
+    ParamEstimator* genericBNLearner::createParamEstimator_(DBRowGeneratorParser& parser,
+                                                            bool take_into_account_score) {
+      ParamEstimator* param_estimator = nullptr;
 
       // create the new estimator
       switch (paramEstimatorType_) {
         case ParamEstimatorType::ML:
           if (take_into_account_score && (score_ != nullptr)) {
-            param_estimator = new ParamEstimatorML<>(parser,
-                                                     *apriori_,
-                                                     score_->internalApriori(),
-                                                     ranges_,
-                                                     scoreDatabase_.nodeId2Columns());
+            param_estimator = new ParamEstimatorML(parser,
+                                                   *apriori_,
+                                                   score_->internalApriori(),
+                                                   ranges_,
+                                                   scoreDatabase_.nodeId2Columns());
           } else {
-            param_estimator = new ParamEstimatorML<>(parser,
-                                                     *apriori_,
-                                                     *noApriori_,
-                                                     ranges_,
-                                                     scoreDatabase_.nodeId2Columns());
+            param_estimator = new ParamEstimatorML(parser,
+                                                   *apriori_,
+                                                   *noApriori_,
+                                                   ranges_,
+                                                   scoreDatabase_.nodeId2Columns());
           }
 
           break;
@@ -649,20 +649,20 @@ namespace gum {
     void genericBNLearner::createCorrectedMutualInformation_() {
       if (mutualInfo_ != nullptr) delete mutualInfo_;
 
-      mutualInfo_ = new CorrectedMutualInformation<>(scoreDatabase_.parser(),
-                                                     *noApriori_,
-                                                     ranges_,
-                                                     scoreDatabase_.nodeId2Columns());
+      mutualInfo_ = new CorrectedMutualInformation(scoreDatabase_.parser(),
+                                                   *noApriori_,
+                                                   ranges_,
+                                                   scoreDatabase_.nodeId2Columns());
       switch (kmode3Off2_) {
-        case CorrectedMutualInformation<>::KModeTypes::MDL:
+        case CorrectedMutualInformation::KModeTypes::MDL:
           mutualInfo_->useMDL();
           break;
 
-        case CorrectedMutualInformation<>::KModeTypes::NML:
+        case CorrectedMutualInformation::KModeTypes::NML:
           mutualInfo_->useNML();
           break;
 
-        case CorrectedMutualInformation<>::KModeTypes::NoCorr:
+        case CorrectedMutualInformation::KModeTypes::NoCorr:
           mutualInfo_->useNoCorr();
           break;
 
@@ -846,22 +846,22 @@ namespace gum {
 
       switch (scoreType_) {
         case ScoreType::AIC:
-          return ScoreAIC<>::isAprioriCompatible(apriori, aprioriWeight_);
+          return ScoreAIC::isAprioriCompatible(apriori, aprioriWeight_);
 
         case ScoreType::BD:
-          return ScoreBD<>::isAprioriCompatible(apriori, aprioriWeight_);
+          return ScoreBD::isAprioriCompatible(apriori, aprioriWeight_);
 
         case ScoreType::BDeu:
-          return ScoreBDeu<>::isAprioriCompatible(apriori, aprioriWeight_);
+          return ScoreBDeu::isAprioriCompatible(apriori, aprioriWeight_);
 
         case ScoreType::BIC:
-          return ScoreBIC<>::isAprioriCompatible(apriori, aprioriWeight_);
+          return ScoreBIC::isAprioriCompatible(apriori, aprioriWeight_);
 
         case ScoreType::K2:
-          return ScoreK2<>::isAprioriCompatible(apriori, aprioriWeight_);
+          return ScoreK2::isAprioriCompatible(apriori, aprioriWeight_);
 
         case ScoreType::LOG2LIKELIHOOD:
-          return ScoreLog2Likelihood<>::isAprioriCompatible(apriori, aprioriWeight_);
+          return ScoreLog2Likelihood::isAprioriCompatible(apriori, aprioriWeight_);
 
         default:
           return "genericBNLearner does not support yet this score";
@@ -914,9 +914,7 @@ namespace gum {
                                                        const NodeId                 id2,
                                                        const std::vector< NodeId >& knowing) {
       createApriori_();
-      gum::learning::IndepTestChi2<> chi2score(scoreDatabase_.parser(),
-                                               *apriori_,
-                                               databaseRanges());
+      gum::learning::IndepTestChi2 chi2score(scoreDatabase_.parser(), *apriori_, databaseRanges());
 
       return chi2score.statistics(id1, id2, knowing);
     }
@@ -936,7 +934,7 @@ namespace gum {
                                                      const NodeId                 id2,
                                                      const std::vector< NodeId >& knowing) {
       createApriori_();
-      gum::learning::IndepTestG2<> g2score(scoreDatabase_.parser(), *apriori_, databaseRanges());
+      gum::learning::IndepTestG2 g2score(scoreDatabase_.parser(), *apriori_, databaseRanges());
       return g2score.statistics(id1, id2, knowing);
     }
 
@@ -954,17 +952,17 @@ namespace gum {
     double genericBNLearner::logLikelihood(const std::vector< NodeId >& vars,
                                            const std::vector< NodeId >& knowing) {
       createApriori_();
-      gum::learning::ScoreLog2Likelihood<> ll2score(scoreDatabase_.parser(),
-                                                    *apriori_,
-                                                    databaseRanges());
+      gum::learning::ScoreLog2Likelihood ll2score(scoreDatabase_.parser(),
+                                                  *apriori_,
+                                                  databaseRanges());
 
       std::vector< NodeId > total(vars);
       total.insert(total.end(), knowing.begin(), knowing.end());
-      double LLtotal = ll2score.score(IdCondSet<>(total, false, true));
+      double LLtotal = ll2score.score(IdCondSet(total, false, true));
       if (knowing.size() == (Size)0) {
         return LLtotal;
       } else {
-        double LLknw = ll2score.score(IdCondSet<>(knowing, false, true));
+        double LLknw = ll2score.score(IdCondSet(knowing, false, true));
         return LLtotal - LLknw;
       }
     }
@@ -988,7 +986,7 @@ namespace gum {
       Potential< double > res;
 
       createApriori_();
-      gum::learning::PseudoCount<> count(scoreDatabase_.parser(), *apriori_, databaseRanges());
+      gum::learning::PseudoCount count(scoreDatabase_.parser(), *apriori_, databaseRanges());
       return count.get(vars);
     }
 
@@ -1003,6 +1001,16 @@ namespace gum {
       std::transform(vars.begin(), vars.end(), std::back_inserter(ids), mapper);
 
       return rawPseudoCount(ids);
+    }
+
+
+    /// use a new set of database rows' ranges to perform learning
+    void genericBNLearner::useDatabaseRanges(
+       const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges) {
+      // use a score to detect whether the ranges are ok
+      ScoreLog2Likelihood score(scoreDatabase_.parser(), *noApriori_);
+      score.setRanges(new_ranges);
+      ranges_ = score.ranges();
     }
 
   } /* namespace learning */

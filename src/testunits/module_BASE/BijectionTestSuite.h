@@ -24,7 +24,6 @@
 
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/testsuite_utils.h>
-#include <ressources/include/countedAlloc.h>
 
 #include <agrum/tools/core/bijection.h>
 #include <agrum/tools/graphs/graphElements.h>
@@ -48,7 +47,7 @@ namespace gum_tests {
       gum::Bijection< int, int > bijection2(bijection);
       TS_ASSERT_EQUALS(bijection2.size(), (gum::Size)(gum::Size)3)
 
-      gum::Bijection< int, int, DebugCountedAlloc< int > > bij_bis(bijection);
+      gum::Bijection< int, int > bij_bis(bijection);
       bij_bis.insert(8, 10);
       TS_ASSERT_EQUALS(bij_bis.size(), (gum::Size)(gum::Size)4)
 
@@ -64,7 +63,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bijection4.second(1), 2)
       TS_ASSERT_EQUALS(bijection4.second(3), 3)
 
-      gum::Bijection< int, int, DebugCountedAlloc< int > > bij_ter(std::move(bij_bis));
+      gum::Bijection< int, int > bij_ter(std::move(bij_bis));
       TS_ASSERT_EQUALS(bij_ter.size(), (gum::Size)(gum::Size)4)
 
       gum::Bijection< int, int > bij5{std::pair< int, int >(3, 4), std::pair< int, int >(5, 6)};
@@ -97,7 +96,7 @@ namespace gum_tests {
       gum::Bijection< std::string, std::string > bijection2(bijection);
       TS_ASSERT_EQUALS(bijection2.size(), (gum::Size)3)
 
-      gum::Bijection< std::string, std::string, DebugCountedAlloc< int > > bij_bis(bijection);
+      gum::Bijection< std::string, std::string > bij_bis(bijection);
       bij_bis.insert("d", "bd");
       TS_ASSERT_EQUALS(bij_bis.size(), (gum::Size)4)
 
@@ -114,7 +113,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bijection4.second("a"), "b")
       TS_ASSERT_EQUALS(bijection4.second("b"), "a")
 
-      gum::Bijection< std::string, std::string, DebugCountedAlloc< int > > bij_ter(
+      gum::Bijection< std::string, std::string > bij_ter(
          std::move(bij_bis));
       TS_ASSERT_EQUALS(bij_ter.size(), (gum::Size)4)
 

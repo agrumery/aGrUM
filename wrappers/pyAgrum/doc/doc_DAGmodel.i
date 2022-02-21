@@ -17,7 +17,7 @@ Get an instantiation over all the variables of the model.
 
 Returns
 ----------
-pyAgrum.instantiation
+  pyAgrum.instantiation
 	the complete instantiation
 "
 

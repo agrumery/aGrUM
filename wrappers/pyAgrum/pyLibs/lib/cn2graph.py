@@ -30,7 +30,7 @@ import hashlib
 from tempfile import mkdtemp
 
 import matplotlib.pyplot as plt
-import pydotplus as dot
+import pydot as dot
 
 import pyAgrum as gum
 import pyAgrum.lib._colors as gumcols
@@ -39,7 +39,7 @@ from pyAgrum.lib.proba_histogram import saveFigProbaMinMax
 
 def CN2dot(cn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None, cmapArc=None, showMsg=None):
   """
-  create a pydotplus representation of the BN
+  create a pydot representation of the BN
 
   Parameters
   ----------
@@ -142,7 +142,7 @@ def CNinference2dot(cn, size=None, engine=None, evs=None, targets=None, nodeColo
                     cmapNode=None, cmapArc=None, dag=None
                     ):
   """
-  create a pydotplus representation of an inference in a BN
+  create a pydot representation of an inference in a BN
 
   Parameters
   ----------
@@ -239,7 +239,7 @@ def CNinference2dot(cn, size=None, engine=None, evs=None, targets=None, nodeColo
       filename = temp_dir + \
                  hashlib.md5(name.encode()).hexdigest() + "." + \
                  gum.config["notebook", "graph_format"]
-      saveFigProbaMinMax(ie.marginalMin(name), ie.marginalMax(name), filename, bgcol=bgcol)
+      saveFigProbaMinMax(ie.marginalMin(name), ie.marginalMax(name), filename, bgcolor=bgcol)
       dotstr += f' "{name}" [shape=rectangle,image="{filename}",label="", {colorattribute}];\n'
     else:
       dotstr += f' "{name}" [shape=polygon,sides=7,peripheries=1,{colorattribute}]'
@@ -271,7 +271,10 @@ def CNinference2dot(cn, size=None, engine=None, evs=None, targets=None, nodeColo
 
   dotstr += '}'
 
-  g = dot.graph_from_dot_data(dotstr)
+  g = dot.graph_from_dot_data(dotstr)[0]
+
+  # workaround for some badly parsed graph (pyparsing>=3.03)
+  g.del_node('"\\n"')
 
   if size is None:
     size = gum.config["notebook", "default_graph_inference_size"]

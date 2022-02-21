@@ -42,10 +42,6 @@ namespace gum {
 
     namespace DBTranslators {
 
-      template < template < typename > class ALLOC >
-      using allocator_type = typename DBTranslator< ALLOC >::allocator_type;
-
-
       /// named constructor
       /**
        * @param var the variable that the translator represents. This will
@@ -59,9 +55,7 @@ namespace gum {
        * @param max_dico_entries For translators that store explicitly their
        * dictionary in memory, this parameter specifies the max number of entries
        * in this dictionary
-       * @param alloc the allocator used to allocate everything in memory.
-       * @return a DBTranslator specifically designed for the variable in argument and
-       * allocated using the allocator of the DBTranslators.
+       * @return a DBTranslator specifically designed for the variable in argument.
        * @warning DBTranslator is an abstract class. To construct one, you should
        * usually construct one of its inherited classes (e.g.,
        * DBTranslator4LabelizedVariable, DBTranslator4RangeVariable, etc.). The
@@ -69,12 +63,10 @@ namespace gum {
        * the variable passed in argument.
        * @ingroup learning_database
        */
-      template < template < typename > class ALLOC >
-      DBTranslator< ALLOC >*
-         create(const Variable& var,
-                const bool      editable_dictionary  = false,
-                std::size_t     max_dico_entries     = std::numeric_limits< std::size_t >::max(),
-                const allocator_type< ALLOC >& alloc = allocator_type< ALLOC >());
+      DBTranslator* create(const Variable& var,
+                           const bool      editable_dictionary = false,
+                           std::size_t     max_dico_entries
+                           = std::numeric_limits< std::size_t >::max());
 
       /// named constructor
       /**
@@ -91,9 +83,7 @@ namespace gum {
        * @param max_dico_entries For translators that store explicitly their
        * dictionary in memory, this parameter specifies the max number of entries
        * in this dictionary
-       * @param alloc the allocator used to allocate everything in memory.
-       * @return a DBTranslator specifically designed for the variable in argument and
-       * allocated using the allocator of the DBTranslators.
+       * @return a DBTranslator specifically designed for the variable in argument.
        * @warning DBTranslator is an abstract class. To construct one, you should
        * usually construct one of its inherited classes (e.g.,
        * DBTranslator4LabelizedVariable, DBTranslator4RangeVariable, etc.). The
@@ -101,13 +91,11 @@ namespace gum {
        * the variable passed in argument.
        * @ingroup learning_database
        */
-      template < template < typename > class ALLOC, template < typename > class XALLOC >
-      DBTranslator< ALLOC >*
-         create(const Variable&                                          var,
-                const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
-                const bool  editable_dictionary      = false,
-                std::size_t max_dico_entries         = std::numeric_limits< std::size_t >::max(),
-                const allocator_type< ALLOC >& alloc = allocator_type< ALLOC >());
+      DBTranslator* create(const Variable&                   var,
+                           const std::vector< std::string >& missing_symbols,
+                           const bool                        editable_dictionary = false,
+                           std::size_t                       max_dico_entries
+                           = std::numeric_limits< std::size_t >::max());
 
     } /* namespace DBTranslators */
 
@@ -115,7 +103,9 @@ namespace gum {
 
 } /* namespace gum */
 
-// always include the template implementation
-#include <agrum/tools/database/DBTranslatorUtils_tpl.h>
+// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/tools/database/DBTranslatorUtils_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif   // GUM_DB_TRANSLATOR_UTILS_H

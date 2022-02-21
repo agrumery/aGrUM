@@ -17,6 +17,7 @@
 #include <ctime>
 #include <iomanip>
 #include <map>
+#include <limits>
 
 #ifndef  __clang__
     #include <cstdint>

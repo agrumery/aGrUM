@@ -82,7 +82,7 @@ namespace gum_tests {
 
   class GreedyHillClimbingTestSuite: public CxxTest::TestSuite {
     private:
-    double _score_(gum::learning::ScoreBIC<>& score, const gum::NodeId& node, const gum::DAG& dag) {
+    double _score_(gum::learning::ScoreBIC& score, const gum::NodeId& node, const gum::DAG& dag) {
       std::vector< gum::NodeId > cond_set;
       for (const auto par: dag.parents(node)) {
         cond_set.push_back(par);
@@ -90,9 +90,9 @@ namespace gum_tests {
       return score.score(node, cond_set);
     }
 
-    bool _applyNextChange_(gum::learning::ScoreBIC<>& score,
-                           std::vector< double >&     current_scores,
-                           gum::DAG&                  dag) {
+    bool _applyNextChange_(gum::learning::ScoreBIC& score,
+                           std::vector< double >&   current_scores,
+                           gum::DAG&                dag) {
       const int nb_vars = int(dag.size());
 
       std::vector< std::pair< gum::learning::GraphChange, double > > changes;
@@ -192,25 +192,25 @@ namespace gum_tests {
 
     public:
     void test_k2_asia() {
-      gum::learning::DBInitializerFromCSV<> initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
-      const auto&                           var_names = initializer.variableNames();
-      const std::size_t                     nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+      const auto&                         var_names = initializer.variableNames();
+      const std::size_t                   nb_vars   = var_names.size();
 
-      gum::learning::DBTranslatorSet<>                translator_set;
-      gum::learning::DBTranslator4LabelizedVariable<> translator;
+      gum::learning::DBTranslatorSet                translator_set;
+      gum::learning::DBTranslator4LabelizedVariable translator;
       for (std::size_t i = 0; i < nb_vars; ++i) {
         translator_set.insertTranslator(translator, i);
       }
 
-      gum::learning::DatabaseTable<> database(translator_set);
+      gum::learning::DatabaseTable database(translator_set);
       database.setVariableNames(initializer.variableNames());
       initializer.fillDatabase(database);
       // database.reorder();
 
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriSmoothing<>     apriori(database);
-      gum::learning::ScoreK2<>              score(parser, apriori);
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+      gum::learning::AprioriSmoothing     apriori(database);
+      gum::learning::ScoreK2              score(parser, apriori);
 
       gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG,
                                                     gum::learning::StructuralConstraintIndegree
@@ -232,7 +232,7 @@ namespace gum_tests {
       constraint1.setMaxIndegree(6);
       static_cast< gum::learning::StructuralConstraintIndegree& >(struct_constraint) = constraint1;
 
-      gum::learning::ParamEstimatorML<> estimator(parser, apriori, score.internalApriori());
+      gum::learning::ParamEstimatorML estimator(parser, apriori, score.internalApriori());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) > op_set(
          struct_constraint);
@@ -259,27 +259,27 @@ namespace gum_tests {
     }
 
     void test_asia_with_ordered_values() {
-      gum::learning::DBInitializerFromCSV<> initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
-      const auto&                           var_names = initializer.variableNames();
-      const std::size_t                     nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+      const auto&                         var_names = initializer.variableNames();
+      const std::size_t                   nb_vars   = var_names.size();
 
-      gum::learning::DBTranslatorSet<> translator_set;
-      gum::LabelizedVariable           xvar("var", "", 0);
+      gum::learning::DBTranslatorSet translator_set;
+      gum::LabelizedVariable         xvar("var", "", 0);
       xvar.addLabel("0");
       xvar.addLabel("1");
-      gum::learning::DBTranslator4LabelizedVariable<> translator(xvar);
+      gum::learning::DBTranslator4LabelizedVariable translator(xvar);
       for (std::size_t i = 0; i < nb_vars; ++i) {
         translator_set.insertTranslator(translator, i);
       }
 
-      gum::learning::DatabaseTable<> database(translator_set);
+      gum::learning::DatabaseTable database(translator_set);
       database.setVariableNames(initializer.variableNames());
       initializer.fillDatabase(database);
 
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriSmoothing<>     apriori(database);
-      gum::learning::ScoreK2<>              score(parser, apriori);
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+      gum::learning::AprioriSmoothing     apriori(database);
+      gum::learning::ScoreK2              score(parser, apriori);
 
       gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG,
                                                     gum::learning::StructuralConstraintIndegree
@@ -301,7 +301,7 @@ namespace gum_tests {
       constraint1.setMaxIndegree(6);
       static_cast< gum::learning::StructuralConstraintIndegree& >(struct_constraint) = constraint1;
 
-      gum::learning::ParamEstimatorML<> estimator(parser, apriori, score.internalApriori());
+      gum::learning::ParamEstimatorML estimator(parser, apriori, score.internalApriori());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) > op_set(
          struct_constraint);
@@ -329,29 +329,29 @@ namespace gum_tests {
 
 
     void test_alarm_with_ordered_values() {
-      gum::learning::DBInitializerFromCSV<> initializer(GET_RESSOURCES_PATH("csv/alarm.csv"));
-      const auto&                           var_names = initializer.variableNames();
-      const std::size_t                     nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/alarm.csv"));
+      const auto&                         var_names = initializer.variableNames();
+      const std::size_t                   nb_vars   = var_names.size();
 
-      gum::learning::DBTranslatorSet<> translator_set;
-      gum::LabelizedVariable           xvar("var", "", 0);
+      gum::learning::DBTranslatorSet translator_set;
+      gum::LabelizedVariable         xvar("var", "", 0);
       xvar.addLabel("0");
       xvar.addLabel("1");
       xvar.addLabel("2");
       xvar.addLabel("3");
-      gum::learning::DBTranslator4LabelizedVariable<> translator(xvar, true);
+      gum::learning::DBTranslator4LabelizedVariable translator(xvar, true);
       for (std::size_t i = 0; i < nb_vars; ++i) {
         translator_set.insertTranslator(translator, i);
       }
 
-      gum::learning::DatabaseTable<> database(translator_set);
+      gum::learning::DatabaseTable database(translator_set);
       database.setVariableNames(initializer.variableNames());
       initializer.fillDatabase(database);
 
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriSmoothing<>     apriori(database);
-      gum::learning::ScoreK2<>              score(parser, apriori);
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+      gum::learning::AprioriSmoothing     apriori(database);
+      gum::learning::ScoreK2              score(parser, apriori);
       // score.setMaxNbThreads(24);
 
       gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG,
@@ -374,7 +374,7 @@ namespace gum_tests {
       constraint1.setMaxIndegree(6);
       static_cast< gum::learning::StructuralConstraintIndegree& >(struct_constraint) = constraint1;
 
-      gum::learning::ParamEstimatorML<> estimator(parser, apriori, score.internalApriori());
+      gum::learning::ParamEstimatorML estimator(parser, apriori, score.internalApriori());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) > op_set(
          struct_constraint);
@@ -401,18 +401,18 @@ namespace gum_tests {
     }
 
     void test_alarm_with_ordered_values2() {
-      gum::learning::DBInitializerFromCSV<> initializer(GET_RESSOURCES_PATH("csv/alarm.csv"));
-      const auto&                           var_names = initializer.variableNames();
-      const std::size_t                     nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/alarm.csv"));
+      const auto&                         var_names = initializer.variableNames();
+      const std::size_t                   nb_vars   = var_names.size();
 
-      gum::learning::DBTranslatorSet<> translator_set;
-      gum::LabelizedVariable           xvar("var", "", 0);
+      gum::learning::DBTranslatorSet translator_set;
+      gum::LabelizedVariable         xvar("var", "", 0);
       xvar.addLabel("0");
       xvar.addLabel("1");
       xvar.addLabel("2");
       xvar.addLabel("3");
-      gum::learning::DBTranslator4LabelizedVariable<> translator1(xvar);
-      gum::learning::DBTranslator4LabelizedVariable<> translator2;
+      gum::learning::DBTranslator4LabelizedVariable translator1(xvar);
+      gum::learning::DBTranslator4LabelizedVariable translator2;
       for (std::size_t i = 0; i < nb_vars; ++i) {
         if ((i == 1) || (i == 10) || (i == 11) || (i == 14))
           translator_set.insertTranslator(translator1, i);
@@ -420,14 +420,14 @@ namespace gum_tests {
           translator_set.insertTranslator(translator2, i);
       }
 
-      gum::learning::DatabaseTable<> database(translator_set);
+      gum::learning::DatabaseTable database(translator_set);
       database.setVariableNames(initializer.variableNames());
       initializer.fillDatabase(database);
 
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriSmoothing<>     apriori(database);
-      gum::learning::ScoreK2<>              score(parser, apriori);
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+      gum::learning::AprioriSmoothing     apriori(database);
+      gum::learning::ScoreK2              score(parser, apriori);
 
       gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG,
                                                     gum::learning::StructuralConstraintIndegree
@@ -449,7 +449,7 @@ namespace gum_tests {
       constraint1.setMaxIndegree(6);
       static_cast< gum::learning::StructuralConstraintIndegree& >(struct_constraint) = constraint1;
 
-      gum::learning::ParamEstimatorML<> estimator(parser, apriori, score.internalApriori());
+      gum::learning::ParamEstimatorML estimator(parser, apriori, score.internalApriori());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) > op_set(
          struct_constraint);
@@ -478,59 +478,59 @@ namespace gum_tests {
 
     void test_dirichlet() {
       // read the learning database
-      gum::learning::DBInitializerFromCSV<> initializer(
+      gum::learning::DBInitializerFromCSV initializer(
          GET_RESSOURCES_PATH("csv/db_dirichlet_learning.csv"));
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars   = var_names.size();
 
-      gum::learning::DBTranslatorSet<>                translator_set;
-      gum::learning::DBTranslator4LabelizedVariable<> translator;
+      gum::learning::DBTranslatorSet                translator_set;
+      gum::learning::DBTranslator4LabelizedVariable translator;
       for (std::size_t i = 0; i < nb_vars; ++i) {
         translator_set.insertTranslator(translator, i);
       }
 
-      gum::learning::DatabaseTable<> database(translator_set);
+      gum::learning::DatabaseTable database(translator_set);
       database.setVariableNames(initializer.variableNames());
       initializer.fillDatabase(database);
 
 
       // read the apriori database
-      gum::learning::DBInitializerFromCSV<> dirichlet_initializer(
+      gum::learning::DBInitializerFromCSV dirichlet_initializer(
          GET_RESSOURCES_PATH("csv/db_dirichlet_apriori.csv"));
       const auto&       dirichlet_var_names = initializer.variableNames();
       const std::size_t dirichlet_nb_vars   = dirichlet_var_names.size();
 
-      gum::learning::DBTranslatorSet<> dirichlet_translator_set;
+      gum::learning::DBTranslatorSet dirichlet_translator_set;
       for (std::size_t i = 0; i < dirichlet_nb_vars; ++i) {
         dirichlet_translator_set.insertTranslator(translator, i);
       }
 
-      gum::learning::DatabaseTable<> dirichlet_database(dirichlet_translator_set);
+      gum::learning::DatabaseTable dirichlet_database(dirichlet_translator_set);
       dirichlet_database.setVariableNames(dirichlet_initializer.variableNames());
       dirichlet_initializer.fillDatabase(dirichlet_database);
 
 
       // create the score and the apriori
-      gum::learning::DBRowGeneratorSet<>            dirichlet_genset;
-      gum::learning::DBRowGeneratorParser<>         dirichlet_parser(dirichlet_database.handler(),
-                                                             dirichlet_genset);
-      gum::learning::AprioriDirichletFromDatabase<> apriori(dirichlet_database, dirichlet_parser);
+      gum::learning::DBRowGeneratorSet            dirichlet_genset;
+      gum::learning::DBRowGeneratorParser         dirichlet_parser(dirichlet_database.handler(),
+                                                           dirichlet_genset);
+      gum::learning::AprioriDirichletFromDatabase apriori(dirichlet_database, dirichlet_parser);
 
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
 
       std::vector< double > weights{0, 1.0, 5.0, 10.0, 1000.0, 7000.0, 100000.0};
 
       for (const auto weight: weights) {
         apriori.setWeight(weight);
-        gum::learning::ScoreBIC<> score(parser, apriori);
+        gum::learning::ScoreBIC score(parser, apriori);
 
 
         // finalize the learning algorithm
         gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG >
            struct_constraint;
 
-        gum::learning::ParamEstimatorML<> estimator(parser, apriori, score.internalApriori());
+        gum::learning::ParamEstimatorML estimator(parser, apriori, score.internalApriori());
 
         gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) > op_set(
            struct_constraint);
@@ -577,14 +577,14 @@ namespace gum_tests {
 
       std::vector< gum::Idx > modalities = filter.modalities();
 
-      gum::learning::AprioriSmoothing<> apriori;
-      gum::learning::ScoreBDeu<>        score(filter, modalities, apriori);
+      gum::learning::AprioriSmoothing apriori;
+      gum::learning::ScoreBDeu        score(filter, modalities, apriori);
 
       gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG >
         struct_constraint;
 
-      gum::learning::ParamEstimatorML<> estimator(
+      gum::learning::ParamEstimatorML estimator(
         filter, modalities, apriori, score.internalApriori());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
@@ -627,14 +627,14 @@ namespace gum_tests {
 
       std::vector< gum::Idx > modalities = filter.modalities();
 
-      gum::learning::AprioriSmoothing<> apriori;
-      gum::learning::ScoreBDeu<>        score(filter, modalities, apriori);
+      gum::learning::AprioriSmoothing apriori;
+      gum::learning::ScoreBDeu        score(filter, modalities, apriori);
 
       gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG >
         struct_constraint;
 
-      gum::learning::ParamEstimatorML<> estimator(
+      gum::learning::ParamEstimatorML estimator(
         filter, modalities, apriori, score.internalApriori());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
@@ -677,14 +677,14 @@ namespace gum_tests {
 
       std::vector< gum::Idx > modalities = filter.modalities();
 
-      gum::learning::AprioriSmoothing<> apriori;
-      gum::learning::ScoreBDeu<>        score(filter, modalities, apriori);
+      gum::learning::AprioriSmoothing apriori;
+      gum::learning::ScoreBDeu        score(filter, modalities, apriori);
 
       gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG >
         struct_constraint;
 
-      gum::learning::ParamEstimatorML<> estimator(
+      gum::learning::ParamEstimatorML estimator(
         filter, modalities, apriori, score.internalApriori());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
@@ -728,14 +728,14 @@ namespace gum_tests {
 
       std::vector< gum::Idx > modalities = filter.modalities();
 
-      gum::learning::AprioriSmoothing<> apriori;
-      gum::learning::ScoreBDeu<>        score(filter, modalities, apriori);
+      gum::learning::AprioriSmoothing apriori;
+      gum::learning::ScoreBDeu        score(filter, modalities, apriori);
 
       gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG >
         struct_constraint;
 
-      gum::learning::ParamEstimatorML<> estimator(
+      gum::learning::ParamEstimatorML estimator(
         filter, modalities, apriori, score.internalApriori());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
@@ -779,14 +779,14 @@ namespace gum_tests {
 
       std::vector< gum::Idx > modalities = filter.modalities();
 
-      gum::learning::AprioriSmoothing<> apriori;
-      gum::learning::ScoreBDeu<>        score(filter, modalities, apriori);
+      gum::learning::AprioriSmoothing apriori;
+      gum::learning::ScoreBDeu        score(filter, modalities, apriori);
 
       gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG >
         struct_constraint;
 
-      gum::learning::ParamEstimatorML<> estimator(
+      gum::learning::ParamEstimatorML estimator(
         filter, modalities, apriori, score.internalApriori());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
@@ -830,14 +830,14 @@ namespace gum_tests {
 
       std::vector< gum::Idx > modalities = filter.modalities();
 
-      gum::learning::AprioriSmoothing<> apriori;
-      gum::learning::ScoreBDeu<>        score(filter, modalities, apriori);
+      gum::learning::AprioriSmoothing apriori;
+      gum::learning::ScoreBDeu        score(filter, modalities, apriori);
 
       gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG >
         struct_constraint;
 
-      gum::learning::ParamEstimatorML<> estimator(filter, modalities, apriori);
+      gum::learning::ParamEstimatorML estimator(filter, modalities, apriori);
 
       gum::learning::GraphChangesGeneratorOnSubDiGraph< decltype(
         struct_constraint) >

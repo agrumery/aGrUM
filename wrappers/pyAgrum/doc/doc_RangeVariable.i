@@ -6,20 +6,20 @@ RangeVariable(aName, aDesc,minVal, maxVal) -> RangeVariable
     Parameters:
         * **aName** (*str*) -- the name of the variable
         * **aDesc** (*str*) -- the description of the variable
-        * **minVal** (*int*) -- the minimal integer of the interval
-        * **maxVal** (*int*) -- the maximal integer of the interval
-          
+        * **minVal** (int) -- the minimal integer of the interval
+        * **maxVal** (int) -- the maximal integer of the interval
+
 RangeVariable(aName, aDesc='') -> RangeVariable
     Parameters:
         * **aName** (*str*) -- the name of the variable
         * **aDesc** (*str*) -- the description of the variable
 
     By default ``minVal=0`` and ``maxVal=1``
-    
+
 RangeVariable(aRV) -> RangeVariable
     Parameters:
         * **aDV** (*RangeVariable*) -- the pyAgrum.RangeVariable that will be copied
-    
+
 Examples
 --------
 >>> import pyAgrum as gum
@@ -129,6 +129,6 @@ str
 
 Raises
 ------
-pyAgrum.OutOfBound
+pyAgrum.OutOfBounds
   If the variable does not contain the label
 "

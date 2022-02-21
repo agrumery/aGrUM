@@ -1250,12 +1250,12 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    const bool CredalNet< GUM_SCALAR >::isSeparatelySpecified() const {
+    bool CredalNet< GUM_SCALAR >::isSeparatelySpecified() const {
       return _separatelySpecified_;
     }
 
     template < typename GUM_SCALAR >
-    const bool CredalNet< GUM_SCALAR >::hasComputedBinaryCPTMinMax() const {
+    bool CredalNet< GUM_SCALAR >::hasComputedBinaryCPTMinMax() const {
       return _hasComputedBinaryCPTMinMax_;
     }
 
@@ -1689,6 +1689,7 @@ namespace gum {
             if (thread_redund) {
               is_redund = true;
 #pragma omp flush(is_redund)
+              int i=0; // this line to work around a weird syntax error with msvc
             }
           }   // end of : each thread for
         }     // end of : parallel

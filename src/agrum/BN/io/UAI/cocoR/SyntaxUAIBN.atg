@@ -53,7 +53,7 @@ PRODUCTIONS
 NUMBER =
   float  (. quartets.push_back(std::make_tuple(coco_atof(t->val),-1               ,t->line,t->col)); .)
   |
-  integer (. quartets.push_back(std::make_tuple(-1.0             ,coco_atoi(t->val),t->line,t->col)); .)
+  integer (. quartets.push_back(std::make_tuple(-1.0f             ,coco_atoi(t->val),t->line,t->col)); .)
 .
 
 LISTE = 

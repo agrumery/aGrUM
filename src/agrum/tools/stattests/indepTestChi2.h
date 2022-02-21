@@ -43,11 +43,8 @@ namespace gum {
      * @headerfile indepTestChi2.h <agrum/BN/learning/scores_and_tests/indepTestChi2.h>
      * @ingroup learning_scores
      */
-    template < template < typename > class ALLOC = std::allocator >
-    class IndepTestChi2: public IndependenceTest< ALLOC > {
+    class IndepTestChi2: public IndependenceTest {
       public:
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC< NodeId >;
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -72,18 +69,14 @@ namespace gum {
        * in which variable A has a NodeId of 5. An empty nodeId2Columns
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
-       * @param alloc the allocator used to allocate the structures within the
-       * Score.
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      IndepTestChi2(const DBRowGeneratorParser< ALLOC >& parser,
-                    const Apriori< ALLOC >&              external_apriori,
-                    const std::vector< std::pair< std::size_t, std::size_t >,
-                                       ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
-                    const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
-                    = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-                    const allocator_type& alloc = allocator_type());
+      IndepTestChi2(const DBRowGeneratorParser& parser,
+                    const Apriori&              external_apriori,
+                    const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
+                    const Bijection< NodeId, std::size_t >& nodeId2columns
+                    = Bijection< NodeId, std::size_t >());
 
 
       /// default constructor
@@ -96,34 +89,22 @@ namespace gum {
        * in which variable A has a NodeId of 5. An empty nodeId2Columns
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
-       * @param alloc the allocator used to allocate the structures within the
-       * Score.
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      IndepTestChi2(const DBRowGeneratorParser< ALLOC >&                          parser,
-                    const Apriori< ALLOC >&                                       apriori,
-                    const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
-                    = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-                    const allocator_type& alloc = allocator_type());
+      IndepTestChi2(const DBRowGeneratorParser&                          parser,
+                    const Apriori&                                       apriori,
+                    const Bijection< NodeId, std::size_t >& nodeId2columns
+                    = Bijection< NodeId, std::size_t >());
 
       /// copy constructor
-      IndepTestChi2(const IndepTestChi2< ALLOC >& from);
-
-      /// copy constructor with a given allocator
-      IndepTestChi2(const IndepTestChi2< ALLOC >& from, const allocator_type& alloc);
+      IndepTestChi2(const IndepTestChi2& from);
 
       /// move constructor
-      IndepTestChi2(IndepTestChi2< ALLOC >&& from);
-
-      /// move constructor with a given allocator
-      IndepTestChi2(IndepTestChi2< ALLOC >&& from, const allocator_type& alloc);
+      IndepTestChi2(IndepTestChi2&& from);
 
       /// virtual copy constructor
-      virtual IndepTestChi2< ALLOC >* clone() const;
-
-      /// virtual copy constructor with a given allocator
-      virtual IndepTestChi2< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual IndepTestChi2* clone() const;
 
       /// destructor
       virtual ~IndepTestChi2();
@@ -138,10 +119,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      IndepTestChi2< ALLOC >& operator=(const IndepTestChi2< ALLOC >& from);
+      IndepTestChi2& operator=(const IndepTestChi2& from);
 
       /// move operator
-      IndepTestChi2< ALLOC >& operator=(IndepTestChi2< ALLOC >&& from);
+      IndepTestChi2& operator=(IndepTestChi2&& from);
 
       /// @}
 
@@ -155,7 +136,7 @@ namespace gum {
       /// rhs_ids
       std::pair< double, double > statistics(NodeId                                        var1,
                                              NodeId                                        var2,
-                                             const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids
+                                             const std::vector< NodeId >& rhs_ids
                                              = {});
 
       /// @}
@@ -166,16 +147,16 @@ namespace gum {
       /** @throws OperationNotAllowed is raised if the score does not support
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
-      virtual double score_(const IdCondSet< ALLOC >& idset) final;
+      virtual double score_(const IdCondSet& idset) final;
 
       /// compute the pair <chi2 statistic,pvalue>
-      std::pair< double, double > statistics_(const IdCondSet< ALLOC >& idset);
+      std::pair< double, double > statistics_(const IdCondSet& idset);
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
       private:
       /// the domain sizes of the variables
-      std::vector< std::size_t, ALLOC< std::size_t > > _domain_sizes_;
+      std::vector< std::size_t > _domain_sizes_;
 
       /// a chi2 distribution for computing critical values
       Chi2 _chi2_;
@@ -190,13 +171,9 @@ namespace gum {
 
 } /* namespace gum */
 
-
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-extern template class gum::learning::IndepTestChi2<>;
-#endif
-
-
-// always include the template implementation
-#include <agrum/tools/stattests/indepTestChi2_tpl.h>
+// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/tools/stattests/indepTestChi2_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_INDEP_TEST_CHI2_H */

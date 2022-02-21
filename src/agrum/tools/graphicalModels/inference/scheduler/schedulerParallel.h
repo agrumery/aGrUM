@@ -119,8 +119,8 @@ namespace gum {
     double _max_instruction_number_{2000};
 
     /// friendship for allowing std::sort to use _cmp_
-    template < typename ITER, typename CMP >
-    friend void std::sort(ITER, ITER, CMP);
+    //template < typename ITER, typename CMP >
+    //friend void std::sort(ITER, ITER, CMP);
   };
 
 } /* namespace gum */

@@ -37,7 +37,7 @@ namespace gum_tests {
          gum::learning::DBTranslatedValueType::CONTINUOUS,
          gum::learning::DBTranslatedValueType::DISCRETE};
 
-      gum::learning::DBRowGeneratorIdentity<> generator(col_types);
+      gum::learning::DBRowGeneratorIdentity generator(col_types);
       TS_ASSERT(!generator.hasRows())
 
       const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row1{
@@ -85,8 +85,7 @@ namespace gum_tests {
       generator.setInputRow(input_row1);
       TS_ASSERT(generator.hasRows())
 
-      std::allocator< gum::learning::DBTranslatedValue > alloc;
-      gum::learning::DBRowGeneratorIdentity<>            generator2(generator, alloc);
+      gum::learning::DBRowGeneratorIdentity generator2(generator);
       TS_ASSERT(generator2.hasRows())
       TS_ASSERT_EQUALS(generator2.columnsOfInterest().size(), std::size_t(2))
       TS_ASSERT_EQUALS(generator2.columnsOfInterest()[0], std::size_t(0))
@@ -98,7 +97,7 @@ namespace gum_tests {
       TS_ASSERT(!generator2.hasRows())
       generator2.setInputRow(input_row1);
 
-      gum::learning::DBRowGeneratorIdentity<> generator3(generator);
+      gum::learning::DBRowGeneratorIdentity generator3(generator);
       TS_ASSERT(generator3.hasRows())
       TS_ASSERT_EQUALS(generator3.columnsOfInterest().size(), std::size_t(2))
       TS_ASSERT_EQUALS(generator3.columnsOfInterest()[0], std::size_t(0))
@@ -110,7 +109,7 @@ namespace gum_tests {
       TS_ASSERT(!generator3.hasRows())
       generator3.setInputRow(input_row1);
 
-      gum::learning::DBRowGeneratorIdentity<> generator4(std::move(generator2), alloc);
+      gum::learning::DBRowGeneratorIdentity generator4(std::move(generator2));
       TS_ASSERT(generator4.hasRows())
       TS_ASSERT_EQUALS(generator4.columnsOfInterest().size(), std::size_t(2))
       TS_ASSERT_EQUALS(generator4.columnsOfInterest()[0], std::size_t(0))
@@ -122,7 +121,7 @@ namespace gum_tests {
       TS_ASSERT(!generator4.hasRows())
       generator4.setInputRow(input_row1);
 
-      gum::learning::DBRowGeneratorIdentity<> generator5(std::move(generator3));
+      gum::learning::DBRowGeneratorIdentity generator5(std::move(generator3));
       TS_ASSERT(generator5.hasRows())
       TS_ASSERT_EQUALS(generator5.columnsOfInterest().size(), std::size_t(2))
       TS_ASSERT_EQUALS(generator5.columnsOfInterest()[0], std::size_t(0))
@@ -134,7 +133,7 @@ namespace gum_tests {
       TS_ASSERT(!generator5.hasRows())
       generator5.setInputRow(input_row1);
 
-      gum::learning::DBRowGeneratorIdentity<>* generator6 = generator4.clone(alloc);
+      gum::learning::DBRowGeneratorIdentity* generator6 = generator4.clone();
       TS_ASSERT(generator6->hasRows())
       TS_ASSERT_EQUALS(generator6->columnsOfInterest().size(), std::size_t(2))
       TS_ASSERT_EQUALS(generator6->columnsOfInterest()[0], std::size_t(0))
@@ -146,7 +145,7 @@ namespace gum_tests {
       TS_ASSERT(!generator6->hasRows())
       delete generator6;
 
-      gum::learning::DBRowGeneratorIdentity<>* generator7 = generator5.clone();
+      gum::learning::DBRowGeneratorIdentity* generator7 = generator5.clone();
       TS_ASSERT(generator7->hasRows())
       TS_ASSERT_EQUALS(generator7->columnsOfInterest().size(), std::size_t(2))
       TS_ASSERT_EQUALS(generator7->columnsOfInterest()[0], std::size_t(0))
@@ -158,7 +157,7 @@ namespace gum_tests {
       TS_ASSERT(!generator7->hasRows())
       delete generator7;
 
-      gum::learning::DBRowGeneratorIdentity<> generator8(col_types);
+      gum::learning::DBRowGeneratorIdentity generator8(col_types);
       TS_ASSERT(!generator8.hasRows())
       TS_ASSERT_EQUALS(generator8.columnsOfInterest().size(), std::size_t(0))
 
@@ -176,7 +175,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(zoutput_row8[2].cont_val, 4.5f)
       TS_ASSERT(!generator8.hasRows())
 
-      gum::learning::DBRowGeneratorIdentity<> generator9(col_types);
+      gum::learning::DBRowGeneratorIdentity generator9(col_types);
       TS_ASSERT(!generator9.hasRows())
       TS_ASSERT_EQUALS(generator9.columnsOfInterest().size(), std::size_t(0))
 
@@ -203,7 +202,7 @@ namespace gum_tests {
          gum::learning::DBTranslatedValueType::CONTINUOUS,
          gum::learning::DBTranslatedValueType::DISCRETE};
 
-      gum::learning::SimpleDebugGenerator<> generator(col_types, 3);
+      gum::learning::SimpleDebugGenerator generator(col_types, 3);
       TS_ASSERT(!generator.hasRows())
 
       const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row1{

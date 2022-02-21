@@ -136,8 +136,8 @@ namespace gum {
        * computations and has loaded the database.
        * @param graph the MixedGraph we start from for the learning
        * */
-      MixedGraph learnMixedStructure(CorrectedMutualInformation<>& mutualInformation,
-                                     MixedGraph                    graph);
+      MixedGraph learnMixedStructure(CorrectedMutualInformation& mutualInformation,
+                                     MixedGraph                  graph);
 
       /// learns the structure of a Bayesian network, i.e. a DAG, by first learning
       /// an Essential graph and then directing the remaining edges.
@@ -145,7 +145,7 @@ namespace gum {
        * and has loaded the database
        * @param graph the MixedGraph we start from for the learning
        */
-      DAG learnStructure(CorrectedMutualInformation<>& I, MixedGraph graph);
+      DAG learnStructure(CorrectedMutualInformation& I, MixedGraph graph);
 
       /// learns the structure and the parameters of a BN
       /** @param selector A selector class that computes the best changes that
@@ -195,8 +195,8 @@ namespace gum {
        * @param sepSet the separation set for independent couples, here set to {}
        * @param rank the heap of ranks of the algorithm
        */
-      void initiation_(CorrectedMutualInformation<>& mutualInformation,
-                       MixedGraph&                   graph,
+      void initiation_(CorrectedMutualInformation& mutualInformation,
+                       MixedGraph&                 graph,
                        HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet,
                        Heap< CondRanking, GreaterPairOn2nd >&                           rank);
 
@@ -212,8 +212,8 @@ namespace gum {
        * the iterations of the phase
        * @param rank the heap of ranks of the algorithm
        */
-      void iteration_(CorrectedMutualInformation<>& mutualInformation,
-                      MixedGraph&                   graph,
+      void iteration_(CorrectedMutualInformation& mutualInformation,
+                      MixedGraph&                 graph,
                       HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet,
                       Heap< CondRanking, GreaterPairOn2nd >&                           rank);
 
@@ -225,7 +225,7 @@ namespace gum {
        * the previous phase
        */
       void orientation3off2_(
-         CorrectedMutualInformation<>&                                          mutualInformation,
+         CorrectedMutualInformation&                                            mutualInformation,
          MixedGraph&                                                            graph,
          const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet);
 
@@ -238,7 +238,7 @@ namespace gum {
        * the previous phase
        */
       void orientationLatents_(
-         CorrectedMutualInformation<>&                                          mutualInformation,
+         CorrectedMutualInformation&                                            mutualInformation,
          MixedGraph&                                                            graph,
          const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet);
 
@@ -251,7 +251,7 @@ namespace gum {
        * the previous phase
        */
       void orientationMiic_(
-         CorrectedMutualInformation<>&                                          mutualInformation,
+         CorrectedMutualInformation&                                            mutualInformation,
          MixedGraph&                                                            graph,
          const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet);
       /// @}
@@ -269,7 +269,7 @@ namespace gum {
                                 NodeId                                 y,
                                 const std::vector< NodeId >&           ui,
                                 const MixedGraph&                      graph,
-                                CorrectedMutualInformation<>&          mutualInformation,
+                                CorrectedMutualInformation&            mutualInformation,
                                 Heap< CondRanking, GreaterPairOn2nd >& rank);
 
       /// gets the list of unshielded triples in the graph in decreasing value of
@@ -280,7 +280,7 @@ namespace gum {
        */
       std::vector< Ranking > unshieldedTriples_(
          const MixedGraph&                                                      graph,
-         CorrectedMutualInformation<>&                                          mutualInformation,
+         CorrectedMutualInformation&                                            mutualInformation,
          const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet);
 
       /// gets the list of unshielded triples in the graph in decreasing value of
@@ -292,7 +292,7 @@ namespace gum {
        */
       std::vector< ProbabilisticRanking > unshieldedTriplesMiic_(
          const MixedGraph&                                                      graph,
-         CorrectedMutualInformation<>&                                          mutualInformation,
+         CorrectedMutualInformation&                                            mutualInformation,
          const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet,
          HashTable< std::pair< NodeId, NodeId >, char >&                        marks);
 

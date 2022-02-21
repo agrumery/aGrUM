@@ -36,11 +36,6 @@ from ._CausalModel import CausalModel
 from ._exceptions import HedgeException, UnidentifiableException
 import sys
 
-if sys.version_info < (3, 7):
-  print("[pyAgrum] python 3.7 is needed for pyAgrum's causality package.")
-  sys.exit(1)
-
-
 __all__ = ['CausalModel', 'CausalFormula',
            'causalImpact', 'counterfactualModel', 'counterfactual',
            'doCalculusWithObservation', 'identifyingIntervention',

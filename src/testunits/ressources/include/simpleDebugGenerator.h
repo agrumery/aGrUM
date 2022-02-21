@@ -33,82 +33,41 @@ namespace gum {
 
   namespace learning {
 
-    template <template<typename> class ALLOC = std::allocator>
-    class SimpleDebugGenerator : public DBRowGenerator<ALLOC> {
-    public:
-
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC<DBTranslatedValue>;
-      
+    class SimpleDebugGenerator: public DBRowGenerator {
+      public:
       // ##########################################################################
       // @name Constructors / Destructors
       // ##########################################################################
 
       /// default constructor
-      SimpleDebugGenerator( const std::vector<DBTranslatedValueType,
-                                     ALLOC<DBTranslatedValueType>> column_types,
-                   const std::size_t nb_duplicates,
-                   const allocator_type& alloc  = allocator_type () )
-        : DBRowGenerator<ALLOC> ( column_types, DBRowGeneratorGoal::OTHER_THINGS_THAN_REMOVE_MISSING_VALUES, alloc )
-        ,  _nb_duplicates_ ( nb_duplicates ) {
-        GUM_CONSTRUCTOR( SimpleDebugGenerator );
-      }
-
-      /// copy constructor with a given allocator
-      SimpleDebugGenerator( const SimpleDebugGenerator<ALLOC>& from,
-                   const allocator_type& alloc )
-        : DBRowGenerator<ALLOC>( from, alloc )
-        ,  _input_row_( from. _input_row_ )
-        ,  _nb_duplicates_ ( from. _nb_duplicates_ ) {
-        GUM_CONS_CPY( SimpleDebugGenerator );
+      SimpleDebugGenerator(const std::vector< DBTranslatedValueType > column_types,
+                           const std::size_t                          nb_duplicates) :
+          DBRowGenerator(column_types, DBRowGeneratorGoal::OTHER_THINGS_THAN_REMOVE_MISSING_VALUES),
+          _nb_duplicates_(nb_duplicates) {
+        GUM_CONSTRUCTOR(SimpleDebugGenerator);
       }
 
       /// copy constructor
-      SimpleDebugGenerator( const SimpleDebugGenerator<ALLOC>& from )
-         : SimpleDebugGenerator<ALLOC> ( from, from.getAllocator () ) {}
-        
-
-      /// move constructor with a given allocator
-      SimpleDebugGenerator( SimpleDebugGenerator<ALLOC>&& from,
-                   const allocator_type& alloc )
-        : DBRowGenerator<ALLOC> ( std::move( from ), alloc )
-        ,  _input_row_( from. _input_row_ )
-        ,  _nb_duplicates_ ( from. _nb_duplicates_ ) {
-        GUM_CONS_MOV( SimpleDebugGenerator );
+      SimpleDebugGenerator(const SimpleDebugGenerator& from) :
+          DBRowGenerator(from), _input_row_(from._input_row_),
+          _nb_duplicates_(from._nb_duplicates_) {
+        GUM_CONS_CPY(SimpleDebugGenerator);
       }
-
 
       /// move constructor
-      SimpleDebugGenerator( SimpleDebugGenerator<ALLOC>&& from )
-        : SimpleDebugGenerator<ALLOC> ( std::move( from ), from.getAllocator () ) {}
-
-      
-      /// virtual copy constructor with a given allocator
-      virtual SimpleDebugGenerator<ALLOC>* clone ( const allocator_type& alloc ) const {
-        ALLOC<SimpleDebugGenerator<ALLOC>> allocator ( alloc );
-        SimpleDebugGenerator<ALLOC>* generator = allocator.allocate(1);
-        try {
-          allocator.construct ( generator, *this, alloc );
-        }
-        catch ( ... ) {
-          allocator.deallocate ( generator, 1 );
-          throw;
-        }
-        return generator;
+      SimpleDebugGenerator(SimpleDebugGenerator&& from) :
+          DBRowGenerator(std::move(from)), _input_row_(from._input_row_),
+          _nb_duplicates_(from._nb_duplicates_) {
+        GUM_CONS_MOV(SimpleDebugGenerator);
       }
 
-      
+
       /// virtual copy constructor
-      virtual SimpleDebugGenerator<ALLOC>* clone () const {
-        return clone ( this->getAllocator () );
-      }
-
+      virtual SimpleDebugGenerator* clone() const { return new SimpleDebugGenerator(*this); }
 
       /// destructor
-      ~SimpleDebugGenerator() {
-        GUM_DESTRUCTOR( SimpleDebugGenerator );
-      }
-      
+      ~SimpleDebugGenerator() { GUM_DESTRUCTOR(SimpleDebugGenerator); }
+
 
       // ##########################################################################
       // @name Operators
@@ -117,52 +76,48 @@ namespace gum {
       /// @{
 
       /// copy operator
-      SimpleDebugGenerator<ALLOC>& operator=( const SimpleDebugGenerator<ALLOC>& from ) {
-        DBRowGenerator<ALLOC>::operator=( from );
-         _input_row_ = from. _input_row_;
-         _nb_duplicates_ = from. _nb_duplicates_;
+      SimpleDebugGenerator& operator=(const SimpleDebugGenerator& from) {
+        DBRowGenerator::operator=(from);
+        _input_row_             = from._input_row_;
+        _nb_duplicates_         = from._nb_duplicates_;
         return *this;
       }
-    
+
 
       /// move operator
-      SimpleDebugGenerator<ALLOC>& operator=( SimpleDebugGenerator<ALLOC>&& from ) {
-        DBRowGenerator<ALLOC>::operator=( std::move( from ) );
-         _input_row_ = from. _input_row_;
-         _nb_duplicates_ = from. _nb_duplicates_;
+      SimpleDebugGenerator& operator=(SimpleDebugGenerator&& from) {
+        DBRowGenerator::operator=(std::move(from));
+        _input_row_             = from._input_row_;
+        _nb_duplicates_         = from._nb_duplicates_;
         return *this;
       }
-    
+
 
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
 
       /// generates new lines from those the generator gets in input
-      virtual const DBRow<DBTranslatedValue,ALLOC>& generate() final {
+      virtual const DBRow< DBTranslatedValue >& generate() final {
         this->decreaseRemainingRows();
-        return * _input_row_;
+        return *_input_row_;
       }
-  
-      
-    protected:
 
+
+      protected:
       /// computes the rows it will provide in output
-      virtual std::size_t
-      computeRows_( const DBRow<DBTranslatedValue,ALLOC>& row ) final {
-         _input_row_ = &row;
-        return  _nb_duplicates_;
+      virtual std::size_t computeRows_(const DBRow< DBTranslatedValue >& row) final {
+        _input_row_ = &row;
+        return _nb_duplicates_;
       }
 
 
-    private:
-     
+      private:
       /// the row used as input to generate the output DBRows
-      const DBRow<DBTranslatedValue,ALLOC>*  _input_row_ { nullptr };
+      const DBRow< DBTranslatedValue >* _input_row_{nullptr};
 
       /// the number of times we return each input row
-      std::size_t  _nb_duplicates_ { std::size_t(1) };
-      
+      std::size_t _nb_duplicates_{std::size_t(1)};
     };
 
   } /* namespace learning */

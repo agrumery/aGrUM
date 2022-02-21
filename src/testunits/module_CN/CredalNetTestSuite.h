@@ -30,7 +30,8 @@
 #include <agrum/CN/polytope/LpInterface.h>
 #include <agrum/CN/credalNet.h>
 
-#include <agrum/tools/core/OMPThreads.h>
+#include <agrum/tools/core/threads.h>
+#include <agrum/tools/core/threadExecutor.h>
 
 /**
  * @file
@@ -50,7 +51,7 @@ namespace gum_tests {
 
     void initCNet() {
 #ifdef _OPENMP
-      gum::setNumberOfThreads(1);
+      gum::threadsOMP::setNumberOfThreads(1);
 #endif
 
       cn = new gum::credal::CredalNet< double >();

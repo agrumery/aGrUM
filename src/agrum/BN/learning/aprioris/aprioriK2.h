@@ -47,15 +47,10 @@ namespace gum {
      * learning requires that the same aprioris are taken into account during
      * structure learning and parameter learning.
      */
-    template < template < typename > class ALLOC = std::allocator >
-    class AprioriK2: public AprioriSmoothing< ALLOC > {
+    class AprioriK2: public AprioriSmoothing {
       public:
       /// the type of the a priori
       using type = AprioriSmoothingType;
-
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC< NodeId >;
-
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -72,30 +67,19 @@ namespace gum {
        * NodeId of 5. An empty nodeId2Columns bijection means that the mapping
        * is an identity, i.e., the value of a NodeId is equal to the index of
        * the column in the DatabaseTable.
-       * @param alloc the allocator used to allocate the structures within the
-       * RecordCounter.*/
-      AprioriK2(const DatabaseTable< ALLOC >&                                 database,
-                const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
-                = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-                const allocator_type& alloc = allocator_type());
+       */
+      AprioriK2(const DatabaseTable&                    database,
+                const Bijection< NodeId, std::size_t >& nodeId2columns
+                = Bijection< NodeId, std::size_t >());
 
       /// copy constructor
-      AprioriK2(const AprioriK2< ALLOC >& from);
-
-      /// copy constructor with a given allocator
-      AprioriK2(const AprioriK2< ALLOC >& from, const allocator_type& alloc);
+      AprioriK2(const AprioriK2& from);
 
       /// move constructor
-      AprioriK2(AprioriK2< ALLOC >&& from);
-
-      /// move constructor with a given allocator
-      AprioriK2(AprioriK2< ALLOC >&& from, const allocator_type& alloc);
+      AprioriK2(AprioriK2&& from);
 
       /// virtual copy constructor
-      virtual AprioriK2< ALLOC >* clone() const;
-
-      /// virtual copy constructor with a given allocator
-      virtual AprioriK2< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual AprioriK2* clone() const;
 
       /// destructor
       virtual ~AprioriK2();
@@ -109,10 +93,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      AprioriK2< ALLOC >& operator=(const AprioriK2< ALLOC >& from);
+      AprioriK2& operator=(const AprioriK2& from);
 
       /// move operator
-      AprioriK2< ALLOC >& operator=(AprioriK2< ALLOC >&& from);
+      AprioriK2& operator=(AprioriK2&& from);
 
       /// @}
 
@@ -132,7 +116,9 @@ namespace gum {
 
 } /* namespace gum */
 
-/// include the template implementation
-#include <agrum/BN/learning/aprioris/aprioriK2_tpl.h>
+// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/BN/learning/aprioris/aprioriK2_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_A_PRIORI_K2_H */

@@ -55,28 +55,28 @@ namespace gum_tests {
   class K2TestSuite: public CxxTest::TestSuite {
     public:
     void test_k2_asia() {
-      gum::learning::DBInitializerFromCSV<> initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
-      const auto&                           var_names = initializer.variableNames();
-      const std::size_t                     nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+      const auto&                         var_names = initializer.variableNames();
+      const std::size_t                   nb_vars   = var_names.size();
 
-      gum::learning::DBTranslatorSet<>                translator_set;
-      gum::learning::DBTranslator4LabelizedVariable<> translator;
+      gum::learning::DBTranslatorSet                translator_set;
+      gum::learning::DBTranslator4LabelizedVariable translator;
       for (std::size_t i = 0; i < nb_vars; ++i) {
         translator_set.insertTranslator(translator, i);
       }
 
-      gum::learning::DatabaseTable<> database(translator_set);
+      gum::learning::DatabaseTable database(translator_set);
       database.setVariableNames(initializer.variableNames());
       initializer.fillDatabase(database);
 
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriSmoothing<>     apriori(database);
-      gum::learning::ScoreK2<>              score(parser, apriori);
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+      gum::learning::AprioriSmoothing     apriori(database);
+      gum::learning::ScoreK2              score(parser, apriori);
 
       gum::learning::StructuralConstraintDAG struct_constraint;
 
-      gum::learning::ParamEstimatorML<> estimator(parser, apriori, score.internalApriori());
+      gum::learning::ParamEstimatorML estimator(parser, apriori, score.internalApriori());
 
       std::vector< gum::NodeId > order(database.nbVariables());
       for (gum::NodeId i = 0; i < order.size(); ++i) {
@@ -121,15 +121,15 @@ gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
 
       std::vector<gum::Idx> modalities = filter.modalities ();
 
-      gum::learning::AprioriSmoothing<> apriori;
-      gum::learning::ScoreK2<> real_score ( filter, modalities, apriori );
-      gum::learning::Score<>& score = real_score;
+      gum::learning::AprioriSmoothing apriori;
+      gum::learning::ScoreK2 real_score ( filter, modalities, apriori );
+      gum::learning::Score& score = real_score;
 
       gum::learning::StructuralConstraintDAG
         struct_constraint ( modalities.size () );
 
-      gum::learning::ParamEstimatorML<> real_estimator ( filter, modalities );
-      gum::learning::ParamEstimator<>& estimator = real_estimator;
+      gum::learning::ParamEstimatorML real_estimator ( filter, modalities );
+      gum::learning::ParamEstimator& estimator = real_estimator;
 
       std::vector<gum::Idx> order ( filter.modalities ().size() );
       for ( gum::Idx i = 0; i < order.size(); ++i ) {
@@ -185,13 +185,13 @@ translators;
 
       std::vector<gum::Idx> modalities = filter.modalities ();
 
-      gum::learning::AprioriSmoothing<> apriori;
-      gum::learning::ScoreK2<> score ( filter, modalities, apriori );
+      gum::learning::AprioriSmoothing apriori;
+      gum::learning::ScoreK2 score ( filter, modalities, apriori );
 
       gum::learning::StructuralConstraintDAG
         struct_constraint ( modalities.size () );
 
-      gum::learning::ParamEstimatorML<> estimator ( filter, modalities );
+      gum::learning::ParamEstimatorML estimator ( filter, modalities );
 
       std::vector<gum::Size> order ( filter.modalities ().size() );
       for ( gum::Idx i = 0; i < order.size(); ++i ) {
@@ -227,8 +227,8 @@ translators;
 
       std::vector<gum::Size> modalities = filter.modalities ();
 
-      gum::learning::AprioriSmoothing<> apriori;
-      gum::learning::ScoreK2<> score ( filter, modalities, apriori );
+      gum::learning::AprioriSmoothing apriori;
+      gum::learning::ScoreK2 score ( filter, modalities, apriori );
 
       gum::NodeProperty<bool> slices;
       for ( gum::Idx i = 0; i < modalities.size (); ++i ) {
@@ -243,7 +243,7 @@ translators;
       gum::learning::StructuralConstraintSliceOrder
         struct_constraint ( slices );
 
-      gum::learning::ParamEstimatorML<> estimator ( filter, modalities );
+      gum::learning::ParamEstimatorML estimator ( filter, modalities );
 
       std::vector<gum::Size> order ( filter.modalities ().size() );
       for ( gum::Idx i = 0; i < order.size(); ++i ) {
@@ -278,13 +278,13 @@ translators;
 
       std::vector<gum::Size> modalities = filter.modalities ();
 
-      gum::learning::AprioriSmoothing<> apriori;
-      gum::learning::ScoreK2<> score ( filter, modalities, apriori );
+      gum::learning::AprioriSmoothing apriori;
+      gum::learning::ScoreK2 score ( filter, modalities, apriori );
 
       gum::learning::StructuralConstraintIndegree
         struct_constraint ( modalities.size (), 6 );
 
-      gum::learning::ParamEstimatorML<> estimator ( filter, modalities );
+      gum::learning::ParamEstimatorML estimator ( filter, modalities );
 
       std::vector<gum::Size> order ( filter.modalities ().size() );
       for ( gum::Idx i = 0; i < order.size(); ++i ) {

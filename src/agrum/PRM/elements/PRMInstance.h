@@ -79,10 +79,10 @@ namespace gum {
        * However neither of their children or parents are updated (i.e.
        * DiscreteVariable pointers are inconsistent).
        */
-      PRMInstance< GUM_SCALAR >(const std::string& name, PRMClass< GUM_SCALAR >& type);
+      PRMInstance(const std::string& name, PRMClass< GUM_SCALAR >& type);
 
       /// Destructor.
-      virtual ~PRMInstance< GUM_SCALAR >();
+      virtual ~PRMInstance();
 
       /// @}
       // ========================================================================

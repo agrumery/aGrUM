@@ -28,8 +28,56 @@
 
 #include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+/// include the inlined functions if necessary
+#  ifdef GUM_NO_INLINE
+#    include <agrum/BN/learning/paramUtils/DAG2BNLearner_inl.h>
+#  endif /* GUM_NO_INLINE */
+
 namespace gum {
 
-  namespace learning {} /* namespace learning */
+  namespace learning {
+
+    /// default constructor
+    DAG2BNLearner::DAG2BNLearner() { GUM_CONSTRUCTOR(DAG2BNLearner); }
+
+
+    /// copy constructor
+    DAG2BNLearner::DAG2BNLearner(const DAG2BNLearner& from) : ApproximationScheme(from) {
+      GUM_CONS_CPY(DAG2BNLearner);
+    }
+
+    /// move constructor
+    DAG2BNLearner::DAG2BNLearner(DAG2BNLearner&& from) : ApproximationScheme(std::move(from)) {
+      GUM_CONS_MOV(DAG2BNLearner);
+    }
+
+
+    /// virtual copy constructor
+    DAG2BNLearner* DAG2BNLearner::clone() const { return new DAG2BNLearner(*this); }
+
+
+    /// destructor
+    DAG2BNLearner::~DAG2BNLearner() { GUM_DESTRUCTOR(DAG2BNLearner); }
+
+
+    /// copy operator
+    DAG2BNLearner& DAG2BNLearner::operator=(const DAG2BNLearner& from) {
+      ApproximationScheme::operator=(from);
+      return *this;
+    }
+
+
+    /// move operator
+    DAG2BNLearner& DAG2BNLearner::operator=(DAG2BNLearner&& from) {
+      ApproximationScheme::operator=(std::move(from));
+      return *this;
+    }
+
+
+  } /* namespace learning */
 
 } /* namespace gum */
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */

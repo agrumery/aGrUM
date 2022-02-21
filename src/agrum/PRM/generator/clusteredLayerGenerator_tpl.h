@@ -123,7 +123,7 @@ namespace gum {
       std::string                 first, second, third;
       std::vector< std::string >* v = 0;
 
-      switch (std::rand() % 2) {
+      switch (randomValue(2)) {
         // Shape A->B
         // v == [first, second, second.ref -> first]
         case 0: {
@@ -143,7 +143,7 @@ namespace gum {
           for (std::vector< std::string >::iterator g = l[lvl].g.begin(); g != l[lvl].g.end();
                ++g) {
             std::stringstream s;
-            s << v->back() << "." << l[lvl].a[std::rand() % l[lvl].a.size()];
+            s << v->back() << "." << l[lvl].a[randomValue(l[lvl].a.size())];
             std::vector< std::string > chain(1, s.str()), param(1, "1");
             f.addAggregator(*g, "exists", chain, param);
           }
@@ -202,7 +202,7 @@ namespace gum {
             for (std::vector< std::string >::iterator g = l[lvl].g.begin(); g != l[lvl].g.end();
                  ++g) {
               std::stringstream s;
-              s << v->back() << "." << l[lvl].a[std::rand() % l[lvl].a.size()];
+              s << v->back() << "." << l[lvl].a[randomValue(l[lvl].a.size())];
               std::vector< std::string > chain(1, s.str()), param(1, "1");
               f.addAggregator(*g, "exists", chain, param);
             }
@@ -252,7 +252,7 @@ namespace gum {
             for (std::vector< std::string >::iterator g = l[lvl].g.begin(); g != l[lvl].g.end();
                  ++g) {
               std::stringstream s;
-              s << v->back() << "." << l[lvl].a[std::rand() % l[lvl].a.size()];
+              s << v->back() << "." << l[lvl].a[randomValue(l[lvl].a.size())];
               std::vector< std::string > chain(1, s.str()), param(1, "1");
               f.addAggregator(*g, "exists", chain, param);
             }
@@ -321,7 +321,7 @@ namespace gum {
       if (lvl) {
         for (const auto& agg: l[lvl].g) {
           std::stringstream s;
-          s << l[lvl].r << "." << l[lvl - 1].a[std::rand() % l[lvl - 1].a.size()];
+          s << l[lvl].r << "." << l[lvl - 1].a[randomValue(l[lvl - 1].a.size())];
           std::vector< std::string > chain(1, s.str()), param(1, "1");
           f.addAggregator(agg, "exists", chain, param);
         }
@@ -364,7 +364,7 @@ namespace gum {
        DAG&                                                                   dag,
        Bijection< std::string, NodeId >&                                      names,
        std::vector< typename ClusteredLayerGenerator< GUM_SCALAR >::MyData >& l) {
-      float                 density = _layers_[lvl].inner_density * RAND_MAX;
+      float                 density = _layers_[lvl].inner_density;
       std::vector< NodeId > nodes;
       NodeId                id = 0;
 
@@ -381,7 +381,7 @@ namespace gum {
         names.insert(*a, id);
 
         for (std::vector< NodeId >::iterator prnt = nodes.begin(); prnt != nodes.end(); ++prnt)
-          if (std::rand() < density) dag.addArc(*prnt, names.second(*a));
+          if (randomProba() < density) dag.addArc(*prnt, names.second(*a));
 
         nodes.push_back(id);
       }
@@ -397,7 +397,7 @@ namespace gum {
             v.push_back(par);
 
           while (dag.parents(node).size() > getMaxParents()) {
-            size_t idx = std::rand() % v.size();
+            size_t idx = randomValue(v.size());
             Arc    arc(v[idx], node);
             GUM_ASSERT(dag.existsArc(arc));
             dag.eraseArc(arc);
@@ -419,10 +419,10 @@ namespace gum {
       size_t                                    idx = 0;
 
       for (size_t lvl = 0; lvl < _layers_.size(); ++lvl) {
-        float density = _layers_[lvl].outter_density * RAND_MAX;
+        float density = _layers_[lvl].outter_density;
 
         for (size_t count = 0; count < _layers_[lvl].o; ++count) {
-          c = l[lvl].c[std::rand() % l[lvl].c.size()];
+          c = l[lvl].c[randomValue(l[lvl].c.size())];
 
           if (_cluster_map_.exists(c)) {
             v = _cluster_map_[c];
@@ -477,13 +477,13 @@ namespace gum {
             for (std::vector< std::string >::iterator iter = o[lvl - 1].begin();
                  iter != o[lvl - 1].end();
                  ++iter)
-              if (std::rand() <= density) ref2add.push_back(*iter);
+              if (randomProba() <= density) ref2add.push_back(*iter);
 
             if (ref2add.empty())
-              factory.setReferenceSlot(chain.str(), o[lvl - 1][std::rand() % o[lvl - 1].size()]);
+              factory.setReferenceSlot(chain.str(), o[lvl - 1][randomValue(o[lvl - 1].size())]);
 
             while (ref2add.size() > getMaxParents()) {
-              idx          = std::rand() % ref2add.size();
+              idx          = randomValue(ref2add.size());
               ref2add[idx] = ref2add.back();
               ref2add.pop_back();
             }

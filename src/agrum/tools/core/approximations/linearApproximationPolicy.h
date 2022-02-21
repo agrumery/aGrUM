@@ -64,7 +64,7 @@ namespace gum {
      * @param low The lower limit.
      * @param high The higher limit.
      * @param eps The epsilon.
-     * @throw OutOfBound if out of bounds (low<high, eps>0)
+     * @throw OutOfBounds if out of bounds (low<high, eps>0)
      */
     LinearApproximationPolicy(GUM_SCALAR low  = (GUM_SCALAR)0.0,
                               GUM_SCALAR high = (GUM_SCALAR)1.0,

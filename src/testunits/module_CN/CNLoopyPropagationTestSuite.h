@@ -31,7 +31,8 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/tools/core/approximations/approximationSchemeListener.h>
 
-#include <agrum/tools/core/OMPThreads.h>
+#include <agrum/tools/core/threads.h>
+#include <agrum/tools/core/threadExecutor.h>
 
 /**
  * @file
@@ -75,7 +76,7 @@ namespace gum_tests {
     // not dynamic (2U network - fast)
     void initCNet() {
 #ifdef _OPENMP
-      gum::setNumberOfThreads(1);
+      gum::threadsOMP::setNumberOfThreads(1);
 #endif
       gum::BayesNet< double >  monBNa;
       gum::BIFReader< double > readera(&monBNa, GET_RESSOURCES_PATH("cn/2Umin.bif"));
@@ -94,7 +95,7 @@ namespace gum_tests {
     // dynamic (dynaCheese network - slow)
     void initDCNet() {
 #ifdef _OPENMP
-      gum::setNumberOfThreads(1);
+      gum::threadsOMP::setNumberOfThreads(1);
 #endif
       gum::BayesNet< double >  monBNa;
       gum::BIFReader< double > readera(&monBNa, GET_RESSOURCES_PATH("cn/dbn_bin_min.bif"));

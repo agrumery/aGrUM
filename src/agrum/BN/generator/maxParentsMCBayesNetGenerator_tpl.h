@@ -30,12 +30,6 @@
 
 namespace gum {
 
-#ifdef _MSC_VER
-#  define MCBG MCBayesNetGenerator
-#else
-#  define MCBG MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >
-#endif
-
   // Default constructor.
   // Use the SimpleCPTGenerator for generating the BNs CPT.
   template < typename GUM_SCALAR,
@@ -51,7 +45,7 @@ namespace gum {
                                    Idx  iteration,
                                    Idx  p,
                                    Idx  q) :
-      MCBG(nbrNodes, maxArcs, maxModality, iteration, p, q) {
+      MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >(nbrNodes, maxArcs, maxModality, iteration, p, q) {
     if (maxParents == 0)
       GUM_ERROR(OperationNotAllowed,
                 "maxParents must be at least equal to 1 to have a connexe graph")
@@ -71,7 +65,7 @@ namespace gum {
                                    Idx                    iteration,
                                    Idx                    p,
                                    Idx                    q) :
-      MCBG(bayesNet, iteration, p, q) {
+      MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >(bayesNet, iteration, p, q) {
     maxParents_ = maxParents;
     GUM_CONSTRUCTOR(MaxParentsMCBayesNetGenerator);
   }
@@ -97,7 +91,7 @@ namespace gum {
     for (auto node: this->bayesNet_.nodes())
       if (this->bayesNet_.parents(node).size() > maxParents_) return false;
 
-    return MCBG::_checkConditions_();
+    return MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::_checkConditions_();
   }
 
   template < typename GUM_SCALAR,

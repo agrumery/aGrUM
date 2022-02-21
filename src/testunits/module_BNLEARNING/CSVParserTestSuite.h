@@ -19,7 +19,6 @@
  ***************************************************************************/
 #include <iostream>
 #include <string>
-#include <ressources/include/countedAlloc.h>
 
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/testsuite_utils.h>
@@ -33,8 +32,8 @@ namespace gum_tests {
     std::size_t _noParsedLine_;
 
     std::size_t testParseString(std::string csvstring, std::string& res) {
-      std::istringstream         in(csvstring);
-      gum::learning::CSVParser<> parser(in, "(stream)");
+      std::istringstream       in(csvstring);
+      gum::learning::CSVParser parser(in, "(stream)");
 
       // no data parser for now
       TS_ASSERT_THROWS(parser.current(), gum::NullElement)
@@ -216,9 +215,9 @@ namespace gum_tests {
 
 
     void testUseNewStream() {
-      std::string                csvstring1 = "1,2,3,4 \n 5,6,7,8 \n 9,10,11,12";
-      std::istringstream         in1(csvstring1);
-      gum::learning::CSVParser<> parser(in1, "(stream)");
+      std::string              csvstring1 = "1,2,3,4 \n 5,6,7,8 \n 9,10,11,12";
+      std::istringstream       in1(csvstring1);
+      gum::learning::CSVParser parser(in1, "(stream)");
 
       TS_ASSERT_THROWS(parser.current(), gum::NullElement)
       TS_ASSERT_THROWS(parser.nbLine(), gum::NullElement)
@@ -243,9 +242,9 @@ namespace gum_tests {
 
     void testGuillemet() {
       {
-        std::string                csvstring1 = "\"a\",\"b\",\"c d,e\" \n 9,10,11";
-        std::istringstream         in1(csvstring1);
-        gum::learning::CSVParser<> parser(in1, "(stream)");
+        std::string              csvstring1 = "\"a\",\"b\",\"c d,e\" \n 9,10,11";
+        std::istringstream       in1(csvstring1);
+        gum::learning::CSVParser parser(in1, "(stream)");
 
         TS_ASSERT_THROWS(parser.current(), gum::NullElement)
         TS_ASSERT_THROWS(parser.nbLine(), gum::NullElement)
@@ -257,9 +256,9 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(v1[2], "c d,e")
       }
       {
-        std::string                csvstring1 = "\"\",\"\",\"c d,e\" \n 9,10,11";
-        std::istringstream         in1(csvstring1);
-        gum::learning::CSVParser<> parser(in1, "(stream)");
+        std::string              csvstring1 = "\"\",\"\",\"c d,e\" \n 9,10,11";
+        std::istringstream       in1(csvstring1);
+        gum::learning::CSVParser parser(in1, "(stream)");
 
         TS_ASSERT_THROWS(parser.current(), gum::NullElement)
         TS_ASSERT_THROWS(parser.nbLine(), gum::NullElement)
@@ -273,9 +272,9 @@ namespace gum_tests {
     }
     void testApostrophe() {
       {
-        std::string                csvstring1 = "'a','b','c d,e' \n 9,10,11";
-        std::istringstream         in1(csvstring1);
-        gum::learning::CSVParser<> parser(in1, "(stream)");
+        std::string              csvstring1 = "'a','b','c d,e' \n 9,10,11";
+        std::istringstream       in1(csvstring1);
+        gum::learning::CSVParser parser(in1, "(stream)");
 
         TS_ASSERT_THROWS(parser.current(), gum::NullElement)
         TS_ASSERT_THROWS(parser.nbLine(), gum::NullElement)
@@ -288,9 +287,9 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(v1[3], "e'")
       }
       {
-        std::string                csvstring1 = "'a','b','c d,e' \n 9,10,11";
-        std::istringstream         in1(csvstring1);
-        gum::learning::CSVParser<> parser(in1, "(stream)",",",'#','\'');
+        std::string              csvstring1 = "'a','b','c d,e' \n 9,10,11";
+        std::istringstream       in1(csvstring1);
+        gum::learning::CSVParser parser(in1, "(stream)", ",", '#', '\'');
 
         TS_ASSERT_THROWS(parser.current(), gum::NullElement)
         TS_ASSERT_THROWS(parser.nbLine(), gum::NullElement)
@@ -303,36 +302,6 @@ namespace gum_tests {
       }
     }
 
-
-    void testAllocator() {
-      {
-        std::string        csvstring1 = "1,2,3,4 \n 5,6,7,8 \n 9,10,11,12";
-        std::istringstream in1(csvstring1);
-        gum::learning::CSVParser< DebugCountedAlloc > parser(in1, "(stream)");
-
-        TS_ASSERT_THROWS(parser.current(), gum::NullElement)
-        TS_ASSERT_THROWS(parser.nbLine(), gum::NullElement)
-
-        parser.next();
-        const std::vector< std::string, DebugCountedAlloc< std::string > >& v1 = parser.current();
-        TS_ASSERT_EQUALS(v1[0], "1")
-        TS_ASSERT_EQUALS(v1[2], "3")
-
-        std::string        csvstring2 = "a,b,c,d\ne,f,g,h\n";
-        std::istringstream in2(csvstring2);
-        parser.useNewStream(in2);
-
-        TS_ASSERT_THROWS(parser.current(), gum::NullElement)
-        TS_ASSERT_THROWS(parser.nbLine(), gum::NullElement)
-
-        parser.next();
-        const std::vector< std::string, DebugCountedAlloc< std::string > >& v2 = parser.current();
-        TS_ASSERT_EQUALS(v2[0], "a")
-        TS_ASSERT_EQUALS(v2[2], "c")
-      }
-
-      TS_ASSERT_EQUALS(CountedAlloc::hasMemoryLeak(), false)
-    }
   };
 
 }   // namespace gum_tests

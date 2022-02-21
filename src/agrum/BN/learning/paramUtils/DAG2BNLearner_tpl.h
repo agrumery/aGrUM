@@ -26,119 +26,14 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-
-#include <algorithm>
-#include <string>
-#include <vector>
-
 namespace gum {
 
   namespace learning {
 
-    /// returns the allocator used by the score
-    template < template < typename > class ALLOC >
-    INLINE typename DAG2BNLearner< ALLOC >::allocator_type
-       DAG2BNLearner< ALLOC >::getAllocator() const {
-      return *this;
-    }
-
-
-    /// default constructor
-    template < template < typename > class ALLOC >
-    DAG2BNLearner< ALLOC >::DAG2BNLearner(
-       const typename DAG2BNLearner< ALLOC >::allocator_type& alloc) :
-        ALLOC< NodeId >(alloc) {
-      GUM_CONSTRUCTOR(DAG2BNLearner);
-    }
-
-
-    /// copy constructor with a given allocator
-    template < template < typename > class ALLOC >
-    DAG2BNLearner< ALLOC >::DAG2BNLearner(
-       const DAG2BNLearner< ALLOC >&                          from,
-       const typename DAG2BNLearner< ALLOC >::allocator_type& alloc) :
-        ApproximationScheme(from),
-        ALLOC< NodeId >(alloc) {
-      GUM_CONS_CPY(DAG2BNLearner);
-    }
-
-
-    /// copy constructor
-    template < template < typename > class ALLOC >
-    DAG2BNLearner< ALLOC >::DAG2BNLearner(const DAG2BNLearner< ALLOC >& from) :
-        DAG2BNLearner(from, from.getAllocator()) {}
-
-
-    /// move constructor with a given allocator
-    template < template < typename > class ALLOC >
-    DAG2BNLearner< ALLOC >::DAG2BNLearner(
-       DAG2BNLearner< ALLOC >&&                               from,
-       const typename DAG2BNLearner< ALLOC >::allocator_type& alloc) :
-        ApproximationScheme(std::move(from)),
-        ALLOC< NodeId >(alloc) {
-      GUM_CONS_MOV(DAG2BNLearner);
-    }
-
-
-    /// move constructor
-    template < template < typename > class ALLOC >
-    DAG2BNLearner< ALLOC >::DAG2BNLearner(DAG2BNLearner< ALLOC >&& from) :
-        DAG2BNLearner(std::move(from), from.getAllocator()) {}
-
-
-    /// virtual copy constructor with a given allocator
-    template < template < typename > class ALLOC >
-    DAG2BNLearner< ALLOC >* DAG2BNLearner< ALLOC >::clone(
-       const typename DAG2BNLearner< ALLOC >::allocator_type& alloc) const {
-      ALLOC< DAG2BNLearner< ALLOC > > allocator(alloc);
-      DAG2BNLearner< ALLOC >*         new_learner = allocator.allocate(1);
-      try {
-        allocator.construct(new_learner, *this, alloc);
-      } catch (...) {
-        allocator.deallocate(new_learner, 1);
-        throw;
-      }
-
-      return new_learner;
-    }
-
-
-    /// virtual copy constructor
-    template < template < typename > class ALLOC >
-    DAG2BNLearner< ALLOC >* DAG2BNLearner< ALLOC >::clone() const {
-      return clone(this->getAllocator());
-    }
-
-
-    /// destructor
-    template < template < typename > class ALLOC >
-    DAG2BNLearner< ALLOC >::~DAG2BNLearner() {
-      GUM_DESTRUCTOR(DAG2BNLearner);
-    }
-
-
-    /// copy operator
-    template < template < typename > class ALLOC >
-    DAG2BNLearner< ALLOC >& DAG2BNLearner< ALLOC >::operator=(const DAG2BNLearner< ALLOC >& from) {
-      ApproximationScheme::operator=(from);
-      return *this;
-    }
-
-
-    /// move operator
-    template < template < typename > class ALLOC >
-    DAG2BNLearner< ALLOC >& DAG2BNLearner< ALLOC >::operator=(DAG2BNLearner< ALLOC >&& from) {
-      ApproximationScheme::operator=(std::move(from));
-      return *this;
-    }
-
-
     /// copy a potential into another whose variables' sequence differs
-    template < template < typename > class ALLOC >
     template < typename GUM_SCALAR >
-    void
-       DAG2BNLearner< ALLOC >::_probaVarReordering_(gum::Potential< GUM_SCALAR >&       pot,
-                                                    const gum::Potential< GUM_SCALAR >& other_pot) {
+    void DAG2BNLearner::_probaVarReordering_(gum::Potential< GUM_SCALAR >&       pot,
+                                             const gum::Potential< GUM_SCALAR >& other_pot) {
       // check that the variables are identical
       if (!pot.variablesSequence().diffSet(other_pot.variablesSequence()).empty()) {
         GUM_ERROR(gum::CPTError, "the potentials do not have the same variables")
@@ -154,10 +49,8 @@ namespace gum {
     }
 
     /// create a BN
-    template < template < typename > class ALLOC >
     template < typename GUM_SCALAR >
-    BayesNet< GUM_SCALAR > DAG2BNLearner< ALLOC >::createBN(ParamEstimator< ALLOC >& estimator,
-                                                            const DAG&               dag) {
+    BayesNet< GUM_SCALAR > DAG2BNLearner::createBN(ParamEstimator& estimator, const DAG& dag) {
       BayesNet< GUM_SCALAR > bn;
 
       // create a bn with dummy parameters corresponding to the dag
@@ -202,12 +95,10 @@ namespace gum {
     }
 
     /// create a BN
-    template < template < typename > class ALLOC >
     template < typename GUM_SCALAR >
-    BayesNet< GUM_SCALAR >
-       DAG2BNLearner< ALLOC >::createBN(ParamEstimator< ALLOC >& bootstrap_estimator,
-                                        ParamEstimator< ALLOC >& general_estimator,
-                                        const DAG&               dag) {
+    BayesNet< GUM_SCALAR > DAG2BNLearner::createBN(ParamEstimator& bootstrap_estimator,
+                                                   ParamEstimator& general_estimator,
+                                                   const DAG&      dag) {
       // bootstrap EM by learning an initial model
       BayesNet< GUM_SCALAR > bn = createBN< GUM_SCALAR >(bootstrap_estimator, dag);
       for (const auto& nod: bn.nodes()) {
@@ -257,13 +148,6 @@ namespace gum {
 
       return bn;
     }   // namespace learning
-
-
-    /// returns the approximation policy of the learning algorithm
-    template < template < typename > class ALLOC >
-    INLINE ApproximationScheme& DAG2BNLearner< ALLOC >::approximationScheme() {
-      return *this;
-    }
 
 
   }   // namespace learning

@@ -1,9 +1,28 @@
-# -*- encoding: UTF-8 -*-
+# (c) Copyright by Pierre-Henri Wuillemin, UPMC, 2017
+# (pierre-henri.wuillemin@lip6.fr)
+
+# Permission to use, copy, modify, and distribute this
+# software and its documentation for any purpose and
+# without fee or royalty is hereby granted, provided
+# that the above copyright notice appear in all copies
+# and that both that copyright notice and this permission
+# notice appear in supporting documentation or portions
+# thereof, including modifications, that you make.
+
+# THE AUTHOR P.H. WUILLEMIN  DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE, INCLUDING ALL IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT
+# SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, INDIRECT
+# OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER
+# RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER
+# IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
+# ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
+# OR PERFORMANCE OF THIS SOFTWARE!
 import unittest
 
 import numpy
 import pyAgrum as gum
-from pyAgrumTestSuite import pyAgrumTestCase, addTests
+from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 
 class MarkovNetTestCase(pyAgrumTestCase):
@@ -96,8 +115,8 @@ class MarkovNetTestCase(pyAgrumTestCase):
     pot.randomDistribution()
     mn1.addFactor(pot)
 
-    # should be different because of the sorting by order of the vars in pot.
-    self.assertNotEqual(pot.__str__(), mn1.factor({"11", "21"}).__str__())
+    # should be equal : does not depend of the order of vars in the MarkonNet
+    self.assertEqual(pot.__str__(), mn1.factor({"11", "21"}).__str__())
 
     # but the data should be the same
     I = gum.Instantiation(pot)
@@ -228,13 +247,56 @@ class MarkovNetTestCase(pyAgrumTestCase):
 
   def testIndependence(self) :
     mn = gum.fastMN("A--B--C;C--D;E--F--G;B--E;D--G;X")
-    
+
     self.assertTrue(mn.isIndependent("D", "X", {}))
     self.assertFalse(mn.isIndependent("D", "A", {"C"}))
     self.assertTrue(mn.isIndependent("D", "A", {"C","G"}))
     self.assertFalse(mn.isIndependent("G", "A", {"C","F"}))
     self.assertTrue(mn.isIndependent("G", "A", {"D","E"}))
 
+
+
+  def testOrderInsertion(self):
+    mn=gum.fastMN("V0;V1;V2;V3")
+
+    # V0 should be the first
+    mn.addFactor(["V0", "V1"])
+    self.assertEquals(mn.factor({"V0", "V1"}).variable(0).name(), "V0")
+    self.assertEquals(mn.factor({"V1", "V0"}).variable(0).name(), "V0")
+
+    # V2 should be the first
+    mn.addFactor(["V2", "V1"])
+    self.assertEquals(mn.factor({"V2", "V1"}).variable(0).name(), "V2")
+    self.assertEquals(mn.factor({"V1", "V2"}).variable(0).name(), "V2")
+
+    # 2 should be the first
+    mn.addFactor({"V2", "V3"})
+    self.assertEquals(mn.factor({"V3", "V2"}).variable(0).name(), "V2")
+
+    # 1 should be the first
+    mn.addFactor({"V2","V0"})
+    self.assertEquals(mn.factor({"V2","V0"}).variable(0).name(), "V0")
+
+  def testOrderInsertionWithId(self):
+    mn=gum.fastMN("V0;V1;V2;V3")
+
+    # V0 should be the first
+    mn.addFactor([0,1])
+    self.assertEquals(mn.factor({0,1}).variable(0).name(), "V0")
+    self.assertEquals(mn.factor({1,0}).variable(0).name(), "V0")
+
+    # V2 should be the first
+    mn.addFactor([2,1])
+    self.assertEquals(mn.factor({2,1}).variable(0).name(), "V2")
+    self.assertEquals(mn.factor({1,2}).variable(0).name(), "V2")
+
+    # 2 should be the first
+    mn.addFactor({2,3})
+    self.assertEquals(mn.factor({2,3}).variable(0).name(), mn.variable(2).name())
+
+    # 1 should be the first
+    mn.addFactor({2,0})
+    self.assertEquals(mn.factor({2,0}).variable(0).name(), mn.variable(0).name())
 
 ts = unittest.TestSuite()
 addTests(ts, MarkovNetTestCase)

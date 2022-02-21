@@ -29,7 +29,8 @@
  */
 // =====================================================================
 #include <cstdlib>
-#include <random>
+//======================================================================
+#include <agrum/tools/core/utils_random.h>
 //======================================================================
 #include <agrum/FMDP/io/dat/fmdpDatReader.h>
 #include <agrum/FMDP/simulation/fmdpSimulator.h>
@@ -78,7 +79,7 @@ namespace gum {
       Instantiation transit(currentState_);
       transit.add(*(this->primeVar(*varIter)));
 
-      double proba = (double)std::rand() / (double)RAND_MAX;
+      double proba = randomProba();
       double cdd   = 0.0;
       for (transit.setFirstOut(currentState_); !transit.end(); transit.incOut(currentState_)) {
         cdd += this->transitionProbability_(*varIter, transit, actionId);

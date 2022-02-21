@@ -24,8 +24,6 @@
 #include <gumtest/testsuite_utils.h>
 #include <iostream>
 #include <locale>
-#include <ressources/include/poolAlloc.h>
-#include <ressources/include/countedAlloc.h>
 #include <string>
 #include <vector>
 
@@ -62,20 +60,20 @@ namespace gum_tests {
         // TRUE  TRUE  FALSE TRUE TRUE "true"  "toto titi"  2.45
         // TRUE  TRUE  TRUE  TRUE TRUE "true"  "toto titi"  4
 
-        gum::learning::DBInitializerFromSQL<> initializer(dataSource, login, password, query);
+        gum::learning::DBInitializerFromSQL initializer(dataSource, login, password, query);
 
         const auto&       var_names = initializer.variableNames();
         const std::size_t nb_vars   = var_names.size();
         TS_ASSERT_EQUALS(nb_vars, std::size_t(8))
 
-        gum::learning::DBTranslatorSet<>                 translator_set;
-        gum::learning::DBTranslator4ContinuousVariable<> translator_cont;
-        gum::learning::DBTranslator4LabelizedVariable<>  translator_lab;
+        gum::learning::DBTranslatorSet                 translator_set;
+        gum::learning::DBTranslator4ContinuousVariable translator_cont;
+        gum::learning::DBTranslator4LabelizedVariable  translator_lab;
         for (int i = 0; i <= 6; ++i)
           translator_set.insertTranslator(translator_lab, i);
         translator_set.insertTranslator(translator_cont, 7);
 
-        gum::learning::DatabaseTable<> database(translator_set);
+        gum::learning::DatabaseTable database(translator_set);
 
         database.setVariableNames(initializer.variableNames());
         TS_ASSERT_EQUALS(database.size(), std::size_t(0))
@@ -98,8 +96,8 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xrow12[7].cont_val, 4.0f)
 
 
-        gum::learning::DBInitializerFromSQL<> initializer2(initializer);
-        gum::learning::DatabaseTable<>        database2;
+        gum::learning::DBInitializerFromSQL initializer2(initializer);
+        gum::learning::DatabaseTable        database2;
         database2.insertTranslator(translator_lab, std::size_t(1));
         database2.insertTranslator(translator_lab, std::size_t(3));
         database2.insertTranslator(translator_lab, std::size_t(4));
@@ -130,9 +128,8 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(row2[2].discr_val, std::size_t(0))
 
 
-        gum::learning::DBInitializerFromSQL<> initializer3(initializer,
-                                                           std::allocator< std::string >());
-        gum::learning::DatabaseTable<>        database3;
+        gum::learning::DBInitializerFromSQL initializer3(initializer);
+        gum::learning::DatabaseTable        database3;
         database3.ignoreColumn(0);
         database3.ignoreColumn(2);
         database3.ignoreColumn(5);
@@ -176,9 +173,8 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(row31[3].discr_val, std::size_t(0))
         TS_ASSERT_EQUALS(row31[4].cont_val, 2.45f)
 
-        gum::learning::DBInitializerFromSQL<> initializer4(std::move(initializer),
-                                                           std::allocator< std::string >());
-        gum::learning::DatabaseTable<>        database4;
+        gum::learning::DBInitializerFromSQL initializer4(std::move(initializer));
+        gum::learning::DatabaseTable        database4;
         database4.insertTranslator(translator_lab, std::size_t(1));
         database4.insertTranslator(translator_lab, std::size_t(3));
         database4.insertTranslator(translator_lab, std::size_t(4));
@@ -187,8 +183,8 @@ namespace gum_tests {
         initializer4.fillDatabase(database4);
         TS_ASSERT_EQUALS(database4.size(), std::size_t(3))
 
-        gum::learning::DBInitializerFromSQL<> initializer5(std::move(initializer));
-        gum::learning::DatabaseTable<>        database5;
+        gum::learning::DBInitializerFromSQL initializer5(std::move(initializer));
+        gum::learning::DatabaseTable        database5;
         database5.insertTranslator(translator_lab, std::size_t(1));
         database5.insertTranslator(translator_lab, std::size_t(3));
         database5.insertTranslator(translator_lab, std::size_t(4));
@@ -197,8 +193,8 @@ namespace gum_tests {
         initializer5.fillDatabase(database5);
         TS_ASSERT_EQUALS(database5.size(), std::size_t(3))
 
-        gum::learning::DBInitializerFromSQL<>* initializer6 = initializer4.clone();
-        gum::learning::DatabaseTable<>         database6;
+        gum::learning::DBInitializerFromSQL* initializer6 = initializer4.clone();
+        gum::learning::DatabaseTable         database6;
         database6.insertTranslator(translator_lab, std::size_t(1));
         database6.insertTranslator(translator_lab, std::size_t(3));
         database6.insertTranslator(translator_lab, std::size_t(4));
@@ -209,8 +205,8 @@ namespace gum_tests {
 
         delete initializer6;
 
-        gum::learning::DBInitializerFromSQL<>* initializer7 = initializer4.clone();
-        gum::learning::DatabaseTable<>         database7;
+        gum::learning::DBInitializerFromSQL* initializer7 = initializer4.clone();
+        gum::learning::DatabaseTable         database7;
         database7.insertTranslator(translator_lab, std::size_t(1));
         database7.insertTranslator(translator_lab, std::size_t(3));
         database7.insertTranslator(translator_lab, std::size_t(4));
@@ -222,7 +218,7 @@ namespace gum_tests {
         delete initializer7;
 
         initializer = initializer5;
-        gum::learning::DatabaseTable<> database8;
+        gum::learning::DatabaseTable database8;
         database8.insertTranslator(translator_lab, std::size_t(1));
         database8.insertTranslator(translator_lab, std::size_t(3));
         database8.insertTranslator(translator_lab, std::size_t(4));
@@ -232,7 +228,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(database8.size(), std::size_t(3))
 
         initializer = std::move(initializer5);
-        gum::learning::DatabaseTable<> database9;
+        gum::learning::DatabaseTable database9;
         database9.insertTranslator(translator_lab, std::size_t(1));
         database9.insertTranslator(translator_lab, std::size_t(3));
         database9.insertTranslator(translator_lab, std::size_t(4));
@@ -274,20 +270,20 @@ namespace gum_tests {
         // TRUE  TRUE  FALSE TRUE TRUE "true"  "toto titi"  2.45
         // TRUE  TRUE  TRUE  TRUE TRUE "true"  "toto titi"  4
 
-        gum::learning::DBInitializerFromSQL<> initializer(connection_string, query);
+        gum::learning::DBInitializerFromSQL initializer(connection_string, query);
 
         const auto&       var_names = initializer.variableNames();
         const std::size_t nb_vars   = var_names.size();
         TS_ASSERT_EQUALS(nb_vars, std::size_t(8))
 
-        gum::learning::DBTranslatorSet<>                 translator_set;
-        gum::learning::DBTranslator4ContinuousVariable<> translator_cont;
-        gum::learning::DBTranslator4LabelizedVariable<>  translator_lab;
+        gum::learning::DBTranslatorSet                 translator_set;
+        gum::learning::DBTranslator4ContinuousVariable translator_cont;
+        gum::learning::DBTranslator4LabelizedVariable  translator_lab;
         for (int i = 0; i <= 6; ++i)
           translator_set.insertTranslator(translator_lab, i);
         translator_set.insertTranslator(translator_cont, 7);
 
-        gum::learning::DatabaseTable<> database(translator_set);
+        gum::learning::DatabaseTable database(translator_set);
 
         database.setVariableNames(initializer.variableNames());
         TS_ASSERT_EQUALS(database.size(), std::size_t(0))

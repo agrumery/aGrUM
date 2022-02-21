@@ -112,7 +112,6 @@ namespace gum {
      * // but only columns 1, 3 and 4 of the CSV file have been kept.
      * @endcode
      */
-    template < template < typename > class ALLOC >
     class IDBInitializer {
       public:
       /** @brief the enumeration indicating the type of the data the
@@ -123,9 +122,6 @@ namespace gum {
         DBCELL
       };
 
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC< std::string >;
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -133,27 +129,17 @@ namespace gum {
 
       /// default constructor
       /** @param type indicates what type of data will be read by the
-       * IDBInitializer when it will try to fill the database.
-       * @param alloc The allocator that will be used by all methods */
-      IDBInitializer(const InputType type, const allocator_type& alloc);
+       * IDBInitializer when it will try to fill the database. */
+      IDBInitializer(const InputType type);
 
       /// copy constructor
-      IDBInitializer(const IDBInitializer< ALLOC >& from);
-
-      /// copy constructor with a given allocator
-      IDBInitializer(const IDBInitializer< ALLOC >& from, const allocator_type& alloc);
+      IDBInitializer(const IDBInitializer& from);
 
       /// move constructor
-      IDBInitializer(IDBInitializer< ALLOC >&& from);
-
-      /// move constructor with a given allocator
-      IDBInitializer(IDBInitializer< ALLOC >&& from, const allocator_type& alloc);
+      IDBInitializer(IDBInitializer&& from);
 
       /// virtual copy constructor
-      virtual IDBInitializer< ALLOC >* clone() const = 0;
-
-      /// virtual copy constructor with a given allocator
-      virtual IDBInitializer< ALLOC >* clone(const allocator_type& alloc) const = 0;
+      virtual IDBInitializer* clone() const = 0;
 
       /// destructor
       virtual ~IDBInitializer();
@@ -167,41 +153,38 @@ namespace gum {
       /// @{
 
       /// returns the names of the variables in the input dataset
-      const std::vector< std::string, ALLOC< std::string > >& variableNames();
+      const std::vector< std::string >& variableNames();
 
       /// fills the rows of the database table
       /** This method may raise exceptions when trying to insert new rows
        * into the database table. See Method insertRow() of the database table. */
-      template < template < template < typename > class > class DATABASE >
-      void fillDatabase(DATABASE< ALLOC >& database, const bool retry_insertion = false);
+      template < class DATABASE >
+         void fillDatabase(DATABASE& database, const bool retry_insertion = false);
 
       /** @brief This method indicates which column filling raised an exception,
        * if any, during the execution of fillDatabase */
       std::size_t throwingColumn() const;
-
-      /// returns the allocator used
-      allocator_type getAllocator() const;
 
       /// @}
 
 
       protected:
       /// copy operator
-      IDBInitializer< ALLOC >& operator=(const IDBInitializer< ALLOC >& from);
+      IDBInitializer& operator=(const IDBInitializer& from);
 
       /// move operator
-      IDBInitializer< ALLOC >& operator=(IDBInitializer< ALLOC >&& from);
+      IDBInitializer& operator=(IDBInitializer&& from);
 
       /// ask the child class for the names of the variables
-      virtual std::vector< std::string, ALLOC< std::string > > variableNames_() = 0;
+      virtual std::vector< std::string > variableNames_() = 0;
 
       /// asks the child class for the content of the current row using strings
       /** If the child class parses strings, this method should be overloaded */
-      virtual const std::vector< std::string, ALLOC< std::string > >& currentStringRow_();
+      virtual const std::vector< std::string >& currentStringRow_();
 
       /// asks the child class for the content of the current row using dbcells
       /** If the child class parses DBRows, this method should be overloaded */
-      virtual const DBRow< DBCell, ALLOC >& currentDBCellRow_();
+      virtual const DBRow< DBCell >& currentDBCellRow_();
 
       /// indicates whether there is a next row to read (and point on it)
       virtual bool nextRow_() = 0;
@@ -211,7 +194,7 @@ namespace gum {
 
       private:
       // the names of the variables
-      std::vector< std::string, ALLOC< std::string > > _var_names_;
+      std::vector< std::string > _var_names_;
 
       // the types of the input data read to fill the database
       InputType _input_type_;
@@ -223,12 +206,12 @@ namespace gum {
 
 
       /// fills the rows of the database using string inputs
-      template < template < template < typename > class > class DATABASE >
-      void _fillDatabaseFromStrings_(DATABASE< ALLOC >& database, const bool retry_insertion);
+      template < class DATABASE >
+      void _fillDatabaseFromStrings_(DATABASE& database, const bool retry_insertion);
 
       /// fills the rows of the database using DBCell inputs
-      template < template < template < typename > class > class DATABASE >
-      void _fillDatabaseFromDBCells_(DATABASE< ALLOC >& database, const bool retry_insertion);
+      template < class DATABASE >
+      void _fillDatabaseFromDBCells_(DATABASE& database, const bool retry_insertion);
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
@@ -236,6 +219,11 @@ namespace gum {
   } /* namespace learning */
 
 } /* namespace gum */
+
+/// include the inlined functions if necessary
+#  ifndef GUM_NO_INLINE
+#    include <agrum/tools/database/IDBInitializer_inl.h>
+#  endif /* GUM_NO_INLINE */
 
 // always include the template implementation
 #include <agrum/tools/database/IDBInitializer_tpl.h>

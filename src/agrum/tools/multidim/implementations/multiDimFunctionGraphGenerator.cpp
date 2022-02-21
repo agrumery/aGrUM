@@ -30,9 +30,9 @@
  */
 
 #include <cstdlib>
-#include <random>
 
 #include <agrum/tools/core/priorityQueue.h>
+#include <agrum/tools/core/utils_random.h>
 #include <agrum/tools/multidim/implementations/multiDimFunctionGraphGenerator.h>
 
 namespace gum {
@@ -97,13 +97,12 @@ namespace gum {
 
       for (Idx modality = 0; modality < currentNode->nodeVar()->domainSize(); modality++) {
         if (!potentialSons.list()
-            || (double)std::rand() / (double)RAND_MAX > (1.0 / (1.0 + 3.0 / nbPotentialSons))) {
+            || randomProba() > (1.0 / (1.0 + 3.0 / nbPotentialSons))) {
           if (_createLeaf_(currentNodeId, node2MinVar)) {
             generatedFunctionGraph->manager()->setSon(
                currentNodeId,
                modality,
-               generatedFunctionGraph->manager()->addTerminalNode((double)std::rand()
-                                                                  / (double)RAND_MAX * 100));
+               generatedFunctionGraph->manager()->addTerminalNode(100.0 * randomProba()));
           } else {
             Idx sonVarPos = _generateVarPos_(node2MinVar[currentNodeId] + 1,
                                              _nbTotalVar_ - node2MinVar[currentNodeId] - 2);
@@ -115,7 +114,7 @@ namespace gum {
             node2MinVar.insert(currentNode->son(modality), sonVarPos);
           }
         } else {
-          Idx sonPos = (Idx)(((double)std::rand() / (double)RAND_MAX) * nbPotentialSons);
+          Idx sonPos = randomValue(nbPotentialSons);
           sonPos     = sonPos == nbPotentialSons ? nbPotentialSons - 1 : sonPos;
           Link< NodeId >* nicleIter = potentialSons.list();
           while (sonPos) {
@@ -138,7 +137,7 @@ namespace gum {
                                                     HashTable< NodeId, Idx >& node2MinVar) {
     return !(
        currentNodeId == 1
-       || ((double)std::rand() / (double)RAND_MAX
+       || (randomProba()
               < 0.9
                    + 0.01 * (float(_nbTotalVar_ - node2MinVar[currentNodeId]) / float(_nbTotalVar_))
            && node2MinVar[currentNodeId] < _nbTotalVar_ - 1));

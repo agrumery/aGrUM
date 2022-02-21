@@ -251,7 +251,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   const NodeSet& MarkovNet< GUM_SCALAR >::smallestFactorFromNode(NodeId node) const {
     const NodeSet* res      = nullptr;
-    Size           smallest = size();
+    Size           smallest = size() + 1;
     for (const auto& kv: factors()) {
       const auto& fact = kv.first;
       if (fact.contains(node))
@@ -323,7 +323,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE const DiscreteVariable&
-               MarkovNet< GUM_SCALAR >::variableFromName(const std::string& name) const {
+     MarkovNet< GUM_SCALAR >::variableFromName(const std::string& name) const {
     return _varMap_.variableFromName(name);
   }
 
@@ -358,7 +358,7 @@ namespace gum {
     for (const auto& ns: vs) {
       NodeSet nv = ns;
       nv.erase(varId);
-      if (nv.size() > 1) _addFactor_(nv);
+      if (nv.size() > 1) addFactor(nv);
     }
     _rebuildGraph_();
   }
@@ -381,73 +381,68 @@ namespace gum {
     return output;
   }
 
+
   template < typename GUM_SCALAR >
-  INLINE const Potential< GUM_SCALAR >& MarkovNet< GUM_SCALAR >::addFactor(const NodeSet& vars) {
+  Potential< GUM_SCALAR >&
+     MarkovNet< GUM_SCALAR >::_addFactor_(const std::vector< NodeId >& ordered_nodes) {
+    NodeSet vars;
+    for (auto node: ordered_nodes)
+      vars.insert(node);
+
     if (vars.size() == 0) { GUM_ERROR(InvalidArgument, "Empty factor cannot be added.") }
 
     if (_factors_.exists(vars)) {
-      GUM_ERROR(InvalidArgument, "A factor for (" << vars << ") already exists.")
+      GUM_ERROR(InvalidArgument, "A factor for (" << this->names(vars) << ") already exists.")
     }
 
-    auto res = _addFactor_(vars);
-    _rebuildGraph_();
-
-    return *res;
-  }
-
-  template < typename GUM_SCALAR >
-  INLINE const Potential< GUM_SCALAR >&
-               MarkovNet< GUM_SCALAR >::addFactor(const std::vector< std::string >& varnames) {
-    auto vars = this->nodeset(varnames);
-    if (_factors_.exists(vars)) {
-      GUM_ERROR(InvalidArgument, "A factor for (" << varnames << ") already exists.")
-    }
-
-    return addFactor(vars);
-  }
-
-  template < typename GUM_SCALAR >
-  INLINE const Potential< GUM_SCALAR >&
-               MarkovNet< GUM_SCALAR >::addFactor(const Potential< GUM_SCALAR >& factor) {
-    if (factor.nbrDim() == 0) { GUM_ERROR(InvalidArgument, "Empty factor cannot be added.") }
-
-    NodeSet key;
-    for (Idx i = 0; i < factor.nbrDim(); i++) {
-      key.insert(idFromName(factor.variable(i).name()));
-    }
-
-    if (_factors_.exists(key)) {
-      GUM_ERROR(InvalidArgument, "A factor for (" << key << ") already exists.")
-    }
-
-    auto res = _addFactor_(key, &factor);
-    _rebuildGraph_();
-
-    return *res;
-  }
-
-  template < typename GUM_SCALAR >
-  INLINE const Potential< GUM_SCALAR >*
-     MarkovNet< GUM_SCALAR >::_addFactor_(const NodeSet& vars, const Potential< GUM_SCALAR >* src) {
     Potential< GUM_SCALAR >* factor = new Potential< GUM_SCALAR >();
 
-    // in order to be deterministic, the Potential contains all the vars, sorted by
-    // id.
+    for (auto node: ordered_nodes) {
+      factor->add(variable(node));
+    }
+
+    _factors_.insert(vars, factor);
+    _rebuildGraph_();
+
+    return *factor;
+  }
+
+  template < typename GUM_SCALAR >
+  INLINE const Potential< GUM_SCALAR >& MarkovNet< GUM_SCALAR >::addFactor(const NodeSet& vars) {
+    // in order to be deterministic, the Potential contains all the vars sorted by id.
     std::vector< NodeId > sorted_nodes;
     for (auto node: vars) {
       sorted_nodes.push_back(node);
     }
     std::sort(sorted_nodes.begin(), sorted_nodes.end());
-    for (auto node: sorted_nodes) {
-      factor->add(variable(node));
-    }
 
-    if (src != nullptr) { factor->fillWith(*src); }
-    _factors_.insert(vars, factor);
-
-    return factor;
+    return _addFactor_(sorted_nodes);
   }
 
+
+  template < typename GUM_SCALAR >
+  INLINE const Potential< GUM_SCALAR >&
+               MarkovNet< GUM_SCALAR >::addFactor(const std::vector< std::string >& varnames) {
+    std::vector< NodeId > sorted_nodes;
+    for (const auto& v: varnames) {
+      sorted_nodes.push_back(idFromName(v));
+    }
+
+    return _addFactor_(sorted_nodes);
+  }
+
+  template < typename GUM_SCALAR >
+  INLINE const Potential< GUM_SCALAR >&
+               MarkovNet< GUM_SCALAR >::addFactor(const Potential< GUM_SCALAR >& factor) {
+    std::vector< NodeId > sorted_nodes;
+    for (Idx i = 0; i < factor.nbrDim(); i++) {
+      sorted_nodes.push_back(idFromName(factor.variable(i).name()));
+    }
+    auto& res= _addFactor_(sorted_nodes);
+    res.fillWith(factor);
+
+    return res;
+  }
 
   template < typename GUM_SCALAR >
   INLINE void MarkovNet< GUM_SCALAR >::generateFactors() const {
@@ -501,7 +496,7 @@ namespace gum {
   void MarkovNet< GUM_SCALAR >::_copyFactors_(const MarkovNet< GUM_SCALAR >& source) {
     _clearFactors_();
     for (const auto& pf: source.factors()) {
-      _addFactor_(pf.first, pf.second);
+      addFactor(*pf.second);
     }
     _rebuildGraph_();
   }

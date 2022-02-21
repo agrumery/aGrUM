@@ -19,7 +19,6 @@
  */
 
 
-#include <ressources/include/countedAlloc.h>
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/testsuite_utils.h>
 
@@ -403,11 +402,11 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(xx, 36)
 
       std::vector< int > v;
-      std::copy(xlist.begin(), xlist.end(), back_inserter(v));
+      std::copy(xlist.begin(), xlist.end(), std::back_inserter(v));
       TS_ASSERT_EQUALS(v.size(), size_t(8))
 
       gum::List< int > list2;
-      std::copy(v.begin(), v.end(), back_inserter(list2));
+      std::copy(v.begin(), v.end(), std::back_inserter(list2));
       TS_ASSERT_EQUALS(list2, xlist)
 
       gum::List< int >                 list3{2, 1, 8, 5, 3, 6, 4, 7};
@@ -430,37 +429,6 @@ namespace gum_tests {
       gum::List< int >::iterator iter14 = list3.begin() + 4;
       int                        d12    = int(iter14 - iter13);
       TS_ASSERT_EQUALS(d12, 4)
-    }
-
-    void testAllocator() {
-      { gum::List< int, DebugCountedAlloc< int > > xlist{1, 2, 3, 4, 5, 6, 7, 8}; }
-
-      TS_ASSERT_EQUALS(CountedAlloc::hasMemoryLeak(), false)
-
-      gum::List< int, DebugCountedAlloc< int > > xlist{1, 2, 3, 4, 5, 6, 7, 8};
-      gum::ListIterator< int >                   iter = xlist.begin();
-      gum::ListIterator< int >                   iter1(xlist);
-      gum::ListConstIterator< int >              iter2(xlist);
-      gum::ListIterator< int >                   iter3(xlist);
-      gum::ListConstIterator< int >              iter4(xlist);
-
-      gum::Size i;
-
-      for (i = 0; iter1 != xlist.end(); ++iter1, ++i) {}
-
-      TS_ASSERT_EQUALS(i, xlist.size())
-
-      for (i = 0; iter2 != xlist.cend(); ++iter2, ++i) {}
-
-      TS_ASSERT_EQUALS(i, xlist.size())
-
-      for (i = 0; iter3 != xlist.end(); ++iter3, ++i) {}
-
-      TS_ASSERT_EQUALS(i, xlist.size())
-
-      for (i = 0; iter4 != xlist.cend(); ++iter4, ++i) {}
-
-      TS_ASSERT_EQUALS(i, xlist.size())
     }
 
     private:

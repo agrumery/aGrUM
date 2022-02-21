@@ -41,15 +41,10 @@ namespace gum {
      * @headerfile aprioriNoApriori.h <agrum/tools/database/aprioriNoApriori.h>
      * @ingroup learning_apriori
      */
-    template < template < typename > class ALLOC = std::allocator >
-    class AprioriNoApriori: public Apriori< ALLOC > {
+    class AprioriNoApriori: public Apriori {
       public:
       /// the type of the a priori
       using type = AprioriNoAprioriType;
-
-      /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC< NodeId >;
-
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -66,30 +61,19 @@ namespace gum {
        * NodeId of 5. An empty nodeId2Columns bijection means that the mapping
        * is an identity, i.e., the value of a NodeId is equal to the index of
        * the column in the DatabaseTable.
-       * @param alloc the allocator used to allocate the structures within the
-       * RecordCounter.*/
-      AprioriNoApriori(const DatabaseTable< ALLOC >&                                 database,
-                       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns
-                       = Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-                       const allocator_type& alloc = allocator_type());
+       */
+      AprioriNoApriori(const DatabaseTable&                    database,
+                       const Bijection< NodeId, std::size_t >& nodeId2columns
+                       = Bijection< NodeId, std::size_t >());
 
       /// copy constructor
-      AprioriNoApriori(const AprioriNoApriori< ALLOC >& from);
-
-      /// copy constructor with a given allocator
-      AprioriNoApriori(const AprioriNoApriori< ALLOC >& from, const allocator_type& alloc);
+      AprioriNoApriori(const AprioriNoApriori& from);
 
       /// move constructor
-      AprioriNoApriori(AprioriNoApriori< ALLOC >&& from);
-
-      /// move constructor with a given allocator
-      AprioriNoApriori(AprioriNoApriori< ALLOC >&& from, const allocator_type& alloc);
+      AprioriNoApriori(AprioriNoApriori&& from);
 
       /// virtual copy constructor
-      virtual AprioriNoApriori< ALLOC >* clone() const;
-
-      /// virtual copy constructor with a given allocator
-      virtual AprioriNoApriori< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual AprioriNoApriori* clone() const;
 
       /// destructor
       virtual ~AprioriNoApriori();
@@ -103,10 +87,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      AprioriNoApriori< ALLOC >& operator=(const AprioriNoApriori< ALLOC >& from);
+      AprioriNoApriori& operator=(const AprioriNoApriori& from);
 
       /// move operator
-      AprioriNoApriori< ALLOC >& operator=(AprioriNoApriori< ALLOC >&& from);
+      AprioriNoApriori& operator=(AprioriNoApriori&& from);
 
       /// @}
 
@@ -117,13 +101,13 @@ namespace gum {
       /// @{
 
       /// sets the weight of the a priori (kind of effective sample size)
-      virtual void setWeight(const double weight) final;
+      void setWeight(const double weight) final;
 
       /// indicates whether an apriori is of a certain type
-      virtual bool isOfType(const std::string& type) final;
+      bool isOfType(const std::string& type) final;
 
       /// returns the type of the apriori
-      virtual const std::string& getType() const final;
+      const std::string& getType() const final;
 
       /// indicates whether the apriori is potentially informative
       /** Basically, only the NoApriori is uninformative. However, it may happen
@@ -133,7 +117,7 @@ namespace gum {
        * inform the classes that use it that it is temporarily uninformative.
        * These classes will then be able to speed-up their code by avoiding to
        * take into account the apriori in their computations. */
-      virtual bool isInformative() const final;
+      bool isInformative() const final;
 
       /// adds the apriori to a counting vector corresponding to the idset
       /** adds the apriori to an already created counting vector defined over
@@ -141,16 +125,14 @@ namespace gum {
        * conditioning bar of the idset.
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint variables set. */
-      virtual void addAllApriori(const IdCondSet< ALLOC >&               idset,
-                                 std::vector< double, ALLOC< double > >& counts) final;
+      void addAllApriori(const IdCondSet& idset, std::vector< double >& counts) final;
 
       /** @brief adds the apriori to a counting vectordefined over the right
        * hand side of the idset
        *
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint RHS variables of the idset. */
-      virtual void addConditioningApriori(const IdCondSet< ALLOC >&               idset,
-                                          std::vector< double, ALLOC< double > >& counts) final;
+      void addConditioningApriori(const IdCondSet& idset, std::vector< double >& counts) final;
 
       /// @}
     };
@@ -159,7 +141,9 @@ namespace gum {
 
 } /* namespace gum */
 
-/// include the template implementation
-#include <agrum/BN/learning/aprioris/aprioriNoApriori_tpl.h>
+// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/BN/learning/aprioris/aprioriNoApriori_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_A_PRIORI_NO_APRIORI_H */
