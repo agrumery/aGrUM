@@ -997,21 +997,22 @@ namespace gum {
 
       // create the function to be executed by the threads
       auto threadedEps = [this, ranges, &tEps] (const std::size_t this_thread,
-                                               const std::size_t nb_threads) {
+                                                const std::size_t nb_threads) {
         auto& this_tEps = tEps[this_thread];
+        GUM_SCALAR delta;
 
         for (Idx i = ranges[this_thread].first, end=ranges[this_thread].second;
              i < end; i++) {
-          const auto dSize = this->marginalMin_[i].size();
+          const auto dSize = marginalMin_[i].size();
 
           for (Size j = 0; j < dSize; j++) {
             // on min
-            GUM_SCALAR delta = this->marginalMin_[i][j] - this->oldMarginalMin_[i][j];
+            delta = marginalMin_[i][j] - oldMarginalMin_[i][j];
             delta = (delta < 0) ? (-delta) : delta;
             this_tEps = (this_tEps < delta) ? delta : this_tEps;
 
             // on max
-            delta = this->marginalMax_[i][j] - this->oldMarginalMax_[i][j];
+            delta = marginalMax_[i][j] - oldMarginalMax_[i][j];
             delta = (delta < 0) ? (-delta) : delta;
             this_tEps  = (this_tEps < delta) ? delta : this_tEps;
 
