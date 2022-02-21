@@ -315,14 +315,14 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     variableNames = None
     self.discretizer.clear()
 
-    if type(y) == pandas.DataFrame:
+    if isinstance(y,pandas.DataFrame): #type(y) == pandas.DataFrame:
       self.target = y.columns.tolist()[0]
     elif type(y) == pandas.core.series.Series:
       self.target = y.name
     else:
       self.target = 'y'
 
-    if type(X) == pandas.DataFrame:
+    if isinstance(X,pandas.DataFrame): #type(X) == pandas.DataFrame:
       variableNames = X.columns.tolist()
 
     # verifies the shape of the two arrays
@@ -535,7 +535,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     if type(X) == str:
       X, _ = self.XYfromCSV(X, target=self.target)
 
-    if type(X) == pandas.DataFrame:
+    if isinstance(X,pandas.DataFrame): #type(X) == pandas.DataFrame:
       dictName = DFNames(X)
     else:
       dictName = self.variableNameIndexDictionary
@@ -637,7 +637,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     # dictionnary of the name of a variable and his column in the data base
     dictName = self.variableNameIndexDictionary
 
-    if type(X) == pandas.DataFrame:
+    if isinstance(X,pandas.DataFrame): #type(X) == pandas.DataFrame:
       dictName = DFNames(X)
       vals = X.to_numpy()
     elif type(X) == str:

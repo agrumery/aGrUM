@@ -11,7 +11,7 @@
 
   * Reorganization of notebooks.
   * Add `pyAgrum.lib.image.export[Inference]` with no filename in order to export a `numpy.array` ready for `matplotlib.pyplot.imshow()` (thanks to Mads Lindskou).
-  * Improve `pyAgrum.bn_vs_bn` graphical diff between BNs with many configuration in `pyAgrum.config`.
+  * Improve `pyAgrum.bn_vs_bn` graphical diff between BNs with many style configurations in `pyAgrum.config`.
   * Cosmetic improvements for `pyAgrum.lib.bn2scores`.
   * Add an access to `pyAgrum.lib.explain.getInformationGraph` in order to export the image (thanks to Dennis Mac R).
   * `pyAgrum.BNLearner`
@@ -23,10 +23,10 @@
   * `pyAgrum.lib.notebook`
 
     * Add `_repr_html_` to `pydot.Dot`.
-    * Add an easier to use `pyAgrum.lib.notebook.flow.add(obj,caption)`.
+    * Add an easier-to-use `pyAgrum.lib.notebook.flow.add(obj,caption)`.
     * Add the ability to chain many methods in `pyAgrum.lib.notebook.flow`.
-    * Improve graphical representation for `pyAgrum.lib.notebook.showInformation()`.
     * Move from `title` to `caption` as argument for `pyAgrum.lib.notebook.flow`'s methods.
+    * Improve graphical representation for `pyAgrum.lib.notebook.showInformation()`.
     * Add a new argument `ncols` to `pyAgrum.lib.notebook.sideBySide` in order to use it as a grid (and not only as a line).
 
 

@@ -182,7 +182,7 @@ class FlowLayout(object):
       cap=caption
 
     if hasattr(obj, "get_figure"):
-      self.add_plot(arg, cap)
+      self.add_plot(obj, cap)
     elif hasattr(obj,"_repr_html_"):
       self.add_html(obj._repr_html_(),cap)
     else:

@@ -32,7 +32,7 @@ class BNDiscretizer():
   """
   Represents a tool to discretize some variables in a database in order to obtain  a way to learn a pyAgrum's (discrete)
   Bayesian networks.
-  
+
   parameters:
       defaultDiscretizationMethod: str
             sets the default method of discretization for this discretizer. Possible values are: 'quantile', 'uniform',
@@ -178,7 +178,7 @@ class BNDiscretizer():
 
     auditDict = dict()
 
-    if type(X) == pandas.DataFrame:
+    if isinstance(X,pandas.DataFrame): #type(X) == pandas.DataFrame:
       variableNames = X.columns.tolist()
     elif type(X) == pandas.core.series.Series:
       variableNames = [X.name]
