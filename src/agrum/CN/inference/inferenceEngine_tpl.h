@@ -1028,48 +1028,7 @@ namespace gum {
       // aggregate all the results
       GUM_SCALAR eps = tEps[0];
       for (const auto nb: tEps)
-        eps = (eps < nb) ? nb : eps;
-
-
-      /*
-      GUM_SCALAR eps = 0;
-
-#pragma omp parallel
-      {
-        GUM_SCALAR tEps = 0;
-        GUM_SCALAR delta;
-
-        /// int tId = threadsOMP::ggetThreadNumber();
-        int nsize = int(marginalMin_.size());
-
-#pragma omp for
-
-        for (int i = 0; i < nsize; i++) {
-          auto dSize = marginalMin_[i].size();
-
-          for (Size j = 0; j < dSize; j++) {
-            // on min
-            delta = marginalMin_[i][j] - oldMarginalMin_[i][j];
-            delta = (delta < 0) ? (-delta) : delta;
-            tEps  = (tEps < delta) ? delta : tEps;
-
-            // on max
-            delta = marginalMax_[i][j] - oldMarginalMax_[i][j];
-            delta = (delta < 0) ? (-delta) : delta;
-            tEps  = (tEps < delta) ? delta : tEps;
-
-            oldMarginalMin_[i][j] = marginalMin_[i][j];
-            oldMarginalMax_[i][j] = marginalMax_[i][j];
-          }
-        }   // end of : all variables
-
-#pragma omp critical(epsilon_max)
-        {
-#pragma omp flush(eps)
-          eps = (eps < tEps) ? tEps : eps;
-        }
-      }
-       */
+        if (eps < nb) eps = nb;
 
       return eps;
     }

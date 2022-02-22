@@ -263,8 +263,47 @@ namespace gum {
       l_marginalSets_[tId][id] = lrsWrapper.getOutput();
     }
 
+
     template < typename GUM_SCALAR, class BNInferenceEngine >
     inline void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::updateMarginals_() {
+      const auto                           nb_threads = workingSet_.size();
+      std::vector< std::pair< Idx, Idx > > ranges;
+      Idx                                  work_index = 0;
+
+      // create the function to be executed by the threads
+      auto threadedExec = [this, &ranges, &work_index](const std::size_t this_thread,
+                                                       const std::size_t nb_threads) {
+        for (Idx i = ranges[this_thread].first, end = ranges[this_thread].second; i < end; i++) {
+          Size dSize = Size(l_marginalMin_[work_index][i].size());
+
+          for (Idx j = 0; j < dSize; j++) {
+            Size tsize = Size(l_marginalMin_.size());
+
+            // go through all work indices
+            for (Idx tId = 0; tId < tsize; tId++) {
+              if (l_marginalMin_[tId][i][j] < this->marginalMin_[i][j])
+                this->marginalMin_[i][j] = l_marginalMin_[tId][i][j];
+
+              if (l_marginalMax_[tId][i][j] > this->marginalMax_[i][j])
+                this->marginalMax_[i][j] = l_marginalMax_[tId][i][j];
+            }   // end of : all work indices
+          }     // end of : all modalities
+        }       // end of : all variables
+      };        // end of : parallel
+
+
+      for (work_index = 0; work_index < nb_threads; ++work_index) {
+        // compute the ranges over which the threads will work
+        const auto nsize = workingSet_[work_index]->size();
+        const auto real_nb_threads = std::min(nb_threads, nsize);
+        ranges = gum::dispatchRangeToThreads(0, nsize, real_nb_threads);
+
+        // launch the threads
+        ThreadExecutor::execute(nb_threads, threadedExec);
+      }
+    }
+
+/*
 #pragma omp parallel
       {
         int  threadId = threadsOMP::getThreadNumber();
@@ -290,10 +329,24 @@ namespace gum {
         }       // end of : all variables
       }         // end of : parallel region
     }
+*/
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     inline const GUM_SCALAR
        MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::computeEpsilon_() {
+      /*
+
+      // compute the number of threads and the ranges over which they will work in the
+      // working set
+      const auto nb_threads = std::min(workingSet_.size(), Size(gum::getCurrentNumberOfThreads()));
+      const auto ranges     = gum::dispatchRangeToThreads(0, workingSet_.size(), nb_threads);
+
+      // create the function to be executed by the threads
+      auto threadedExec
+         = [this, ranges](const std::size_t this_thread, const std::size_t nb_threads) {
+             const Size nsize = workingSet_[this_thread]->size();
+
+*/
       GUM_SCALAR eps = 0;
 #pragma omp parallel
       {
