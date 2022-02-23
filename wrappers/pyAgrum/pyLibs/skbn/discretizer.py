@@ -223,7 +223,7 @@ class BNDiscretizer():
           auditDict[variable]['methode'] = self.defaultMethod
         else:
           auditDict[variable]['methode'] = 'NoDiscretization'
-          auditDict[variable]['k'] = None
+          auditDict[variable]['k'] = len(possibleValues[i])
       if auditDict[variable]['methode'] == "NoDiscretization":
         auditDict[variable]['type'] = 'Discrete'
       else:
