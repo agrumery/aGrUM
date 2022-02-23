@@ -57,7 +57,7 @@ from pyAgrum.lib.cn2graph import CN2dot, CNinference2dot
 from pyAgrum.lib.id2graph import ID2dot, LIMIDinference2dot
 from pyAgrum.lib.mn2graph import MN2UGdot, MNinference2UGdot
 from pyAgrum.lib.mn2graph import MN2FactorGraphdot, MNinference2FactorGraphdot
-from pyAgrum.lib.bn_vs_bn import GraphicalBNComparator
+from pyAgrum.lib.bn_vs_bn import GraphicalBNComparator,graphDiff
 from pyAgrum.lib.proba_histogram import proba2histo, probaMinMaxH
 from pyAgrum.lib.image import prepareShowInference,prepareLinksForSVG
 
@@ -340,40 +340,43 @@ def getDot(dotstring, size=None):
   return getGraph(_from_dotstring(dotstring), size)
 
 
-def getBNDiff(bn1, bn2, size=None):
+def getBNDiff(bn1, bn2, size=None,noStyle=False):
   """ get a HTML string representation of a graphical diff between the arcs of _bn1 (reference) with those of _bn2.
 
-  * full black line: the arc is common for both
-  * full red line: the arc is common but inverted in _bn2
-  * dotted black line: the arc is added in _bn2
-  * dotted red line: the arc is removed in _bn2
+  if noStyle is False use 4 styles (fixed in pyAgrum.config) :
+    - the arc is common for both
+    - the arc is common but inverted in _bn2
+    - the arc is added in _bn2
+    - the arc is removed in _bn2
 
   :param BayesNet bn1: referent model for the comparison
   :param BayesNet bn2: bn compared to the referent model
   :param size: size of the rendered graph
+  :param noStyle: do we want styles for arcs or not
   """
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
-  cmp = GraphicalBNComparator(bn1, bn2)
-  return getGraph(cmp.dotDiff(), size)
+
+  return getGraph(graphDiff(bn1,bn2,noStyle), size)
 
 
-def showBNDiff(bn1, bn2, size=None):
+def showBNDiff(bn1, bn2, size=None,noStyle=False):
   """ show a graphical diff between the arcs of _bn1 (reference) with those of _bn2.
-
-  * full black line: the arc is common for both
-  * full red line: the arc is common but inverted in _bn2
-  * dotted black line: the arc is added in _bn2
-  * dotted red line: the arc is removed in _bn2
+  if noStyle is False use 4 styles (fixed in pyAgrum.config) :
+    - the arc is common for both
+    - the arc is common but inverted in _bn2
+    - the arc is added in _bn2
+    - the arc is removed in _bn2
 
   :param BayesNet bn1: referent model for the comparison
   :param BayesNet bn2: bn compared to the referent model
   :param size: size of the rendered graph
+  :param noStyle: do we want styles for arcs or not
   """
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
-  cmp = GraphicalBNComparator(bn1, bn2)
-  showGraph(cmp.dotDiff(), size)
+
+  showGraph(graphDiff(bn1,bn2,noStyle), size)
 
 
 def showInformation(*args, **kwargs):

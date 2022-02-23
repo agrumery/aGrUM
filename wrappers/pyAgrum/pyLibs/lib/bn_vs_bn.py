@@ -29,6 +29,7 @@ import math
 from itertools import product, combinations
 
 import pyAgrum as gum
+import pyAgrum.lib._colors as gumcols
 
 
 class GraphicalBNComparator:
@@ -395,13 +396,17 @@ class GraphicalBNComparator:
     return hamming_dico
 
 
-def graphDiff(bnref, bncmp):
+def graphDiff(bnref, bncmp,noStyle=False):
   """ Return a pydot graph that compares the arcs of bnref to bncmp.
-  full black line: the arc is common for both
-  full red line: the arc is common but inverted in _bn2
-  dotted black line: the arc is added in _bn2
-  dotted red line: the arc is removed in _bn2
+  graphDiff allows bncmp to have less nodes than bnref. (this is not the case in GraphicalBNComparator.dotDiff())
 
+  if noStyle is False use 4 styles (fixed in pyAgrum.config) :
+    - the arc is common for both
+    - the arc is common but inverted in _bn2
+    - the arc is added in _bn2
+    - the arc is removed in _bn2
+
+  See graphDiffLegend() to add a legend to the graph.
   Warning
   -------
   if pydot is not installed, this function just returns None
@@ -431,40 +436,69 @@ def graphDiff(bnref, bncmp):
 
   res = dot.Dot(graph_type='digraph', bgcolor="transparent", layout="fdp", splines=True)
   for i1 in bnref.nodes():
-    res.add_node(dot.Node(f'"{bnref.variable(i1).name()}"', style="filled",
-                          bgcol="#444444",
-                          fgcol="#FFFFFF",
-                          pos=positions[bnref.variable(i1).name()]
-                          )
-                 )
-  for (i1, i2) in bnref.arcs():
-    n1 = bnref.variable(i1).name()
-    n2 = bnref.variable(i2).name()
-    keyarc = "graphdiff_correct"
-    if bncmp.existsArc(n1, n2):  # arc is OK in BN2
+    if bnref.variable(i1).name() in bncmp.names():
+      res.add_node(dot.Node(f'"{bnref.variable(i1).name()}"',
+                            style="filled",
+                            fillcolor=gum.config["notebook", "graphdiff_correct_color"],
+                            color=gumcols.getBlackInTheme(),
+                            pos=positions[bnref.variable(i1).name()]
+                            )
+                   )
+    else:
+      if not noStyle:
+        res.add_node(dot.Node(f'"{bnref.variable(i1).name()}"',
+                              style="dashed",
+                              fillcolor=gum.config["notebook", "graphdiff_correct_color"],
+                              color=gumcols.getBlackInTheme(),
+                              pos=positions[bnref.variable(i1).name()]
+                              )
+                     )
+  if noStyle:
+    for (i1, i2) in bncmp.arcs():
+      n1 = bncmp.variable(i1).name()
+      n2 = bncmp.variable(i2).name()
       res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
                             style=gum.config["notebook", "graphdiff_correct_style"],
-                            color=gum.config["notebook", "graphdiff_correct_color"]))
-    elif bncmp.existsArc(n2, n1):  # arc is reversed in BN2
-      res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
-                            style="invis"))
-      res.add_edge(dot.Edge(f'"{n2}"', f'"{n1}"',
-                            style=gum.config["notebook", "graphdiff_reversed_style"],
-                            color=gum.config["notebook", "graphdiff_reversed_color"],
+                            color=gum.config["notebook", "graphdiff_correct_color"],
                             constraint="false"))
-    else:  # arc is missing in BN2
-      res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
-                            style=gum.config["notebook", "graphdiff_missing_style"],
-                            color=gum.config["notebook", "graphdiff_missing_color"]))
 
-  for (i1, i2) in bncmp.arcs():
-    n1 = bncmp.variable(i1).name()
-    n2 = bncmp.variable(i2).name()
-    if not bnref.existsArc(n1, n2) and not bnref.existsArc(n2, n1):  # arc only in BN2
-      res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
-                            style=gum.config["notebook", "graphdiff_overflow_style"],
-                            color=gum.config["notebook", "graphdiff_overflow_color"],
-                            constraint="false"))
+  else:
+    for (i1, i2) in bnref.arcs():
+      n1 = bnref.variable(i1).name()
+      n2 = bnref.variable(i2).name()
+
+      # a node is missing
+      if not (n1 in bncmp.names() and n2 in bncmp.names()):
+        res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
+                              style=gum.config["notebook", "graphdiff_missing_style"],
+                              color=gum.config["notebook", "graphdiff_missing_color"]))
+        continue
+
+      keyarc = "graphdiff_correct"
+      if bncmp.existsArc(n1, n2):  # arc is OK in BN2
+        res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
+                              style=gum.config["notebook", "graphdiff_correct_style"],
+                              color=gum.config["notebook", "graphdiff_correct_color"]))
+      elif bncmp.existsArc(n2, n1):  # arc is reversed in BN2
+        res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
+                              style="invis"))
+        res.add_edge(dot.Edge(f'"{n2}"', f'"{n1}"',
+                              style=gum.config["notebook", "graphdiff_reversed_style"],
+                              color=gum.config["notebook", "graphdiff_reversed_color"],
+                              constraint="false"))
+      else:  # arc is missing in BN2
+        res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
+                              style=gum.config["notebook", "graphdiff_missing_style"],
+                              color=gum.config["notebook", "graphdiff_missing_color"]))
+
+    for (i1, i2) in bncmp.arcs():
+      n1 = bncmp.variable(i1).name()
+      n2 = bncmp.variable(i2).name()
+      if not bnref.existsArc(n1, n2) and not bnref.existsArc(n2, n1):  # arc only in BN2
+        res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
+                              style=gum.config["notebook", "graphdiff_overflow_style"],
+                              color=gum.config["notebook", "graphdiff_overflow_color"],
+                              constraint="false"))
 
   return res
 
