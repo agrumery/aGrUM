@@ -400,7 +400,7 @@ namespace gum {
 namespace gum {
   void statsObj(void) {
 #ifdef GUM_DEBUG_MODE
-    gum::__debug__::__atexit();
+    gum::__debug__::_atexit_();
 #else
     //std::cout<<"Stats on aGrUM objects only available in debug mode"<<std::endl;
 #endif // GUM_DEBUG_MODE
