@@ -266,13 +266,13 @@ namespace gum {
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     inline void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::updateMarginals_() {
-      const auto                           nb_threads = workingSet_.size();
-      std::vector< std::pair< Idx, Idx > > ranges;
-      Idx                                  work_index = 0;
+      const auto nb_threads = gum::getCurrentNumberOfThreads();
 
       // create the function to be executed by the threads
-      auto threadedExec = [this, &ranges, &work_index](const std::size_t this_thread,
-                                                       const std::size_t nb_threads) {
+      auto threadedExec = [this](const std::size_t this_thread,
+                                 const std::size_t nb_threads,
+                                 Idx work_index,
+                                 std::vector< std::pair< Idx, Idx > >& ranges) {
         for (Idx i = ranges[this_thread].first, end = ranges[this_thread].second; i < end; i++) {
           Size dSize = Size(l_marginalMin_[work_index][i].size());
 
@@ -292,14 +292,16 @@ namespace gum {
       };        // end of : parallel
 
 
-      for (work_index = 0; work_index < nb_threads; ++work_index) {
+      const Size working_size = workingSet_.size();
+      for (Idx work_index = 0; work_index < working_size; ++work_index) {
         // compute the ranges over which the threads will work
         const auto nsize = workingSet_[work_index]->size();
-        const auto real_nb_threads = std::min(nb_threads, nsize);
-        ranges = gum::dispatchRangeToThreads(0, nsize, real_nb_threads);
+        const auto real_nb_threads = std::min(Size(nb_threads), nsize);
+        std::vector< std::pair< Idx, Idx > > ranges =
+           gum::dispatchRangeToThreads(0, nsize, real_nb_threads);
 
         // launch the threads
-        ThreadExecutor::execute(nb_threads, threadedExec);
+        ThreadExecutor::execute(real_nb_threads, threadedExec, work_index, ranges);
       }
     }
 
@@ -332,21 +334,124 @@ namespace gum {
 */
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
+    std::vector< std::pair< NodeId, Idx > >
+       MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::displatchMarginalsToThreads_() {
+      // we compute the number of elements in the 2 loops (over i,j in marginalMin_[i][j])
+      Size nb_elements = 0;
+      const auto marginalMin_size = this->marginalMin_.size();
+      for (const auto& marg_i : this->marginalMin_)
+        nb_elements += marg_i.second.size();
+
+      // distribute evenly the elements among the threads
+      auto nb_threads = Size(gum::getCurrentNumberOfThreads());
+      if (nb_elements < nb_threads) nb_threads = nb_elements;
+
+      // the result that we return is a vector of pairs (NodeId, Idx). For thread number i, the
+      // pair at index i is the beginning of the range that the thread will have to process: this
+      // is the part of the marginal distribution vector of node NodeId starting at index Idx.
+      // The pair at index i+1 is the end of this range (not included)
+      std::vector< std::pair< NodeId, Idx > > result;
+      result.reserve(nb_threads + 1);
+
+      // try to balance the number of elements among the threads
+      Idx nb_elts_par_thread = nb_elements / nb_threads;
+      Idx rest_elts          = nb_elements - nb_elts_par_thread * nb_threads;
+
+      NodeId current_node  = 0;
+      Idx    current_domain_index = 0;
+      Size   current_domain_size = this->marginalMin_[0].size();
+      result.emplace_back(current_node, current_domain_index);
+
+      for (Idx i = Idx(0); i < nb_threads; ++i) {
+        // compute the end of the threads, assuming that the current node has a domain
+        // sufficiently large
+        current_domain_index += nb_elts_par_thread;
+        if (rest_elts != Idx(0)) {
+          ++current_domain_index;
+          --rest_elts;
+        }
+
+        // if the current node is not sufficient to hold all the elements that
+        // the current thread should process. So we should add elements of the
+        // next nodes
+        while (current_domain_index >= current_domain_size) {
+          current_domain_index -= current_domain_size;
+          ++current_node;
+          current_domain_index = 0;
+          if (current_node != marginalMin_size) {
+            current_domain_size = this->marginalMin_[current_node].size();
+          }
+        }
+
+        // now we can store the range if elements
+        result.emplace_back(current_node, current_domain_index);
+
+        // compute the next begin_node
+        if (current_domain_index == current_domain_size) {
+          ++current_node;
+          current_domain_index = 0;
+        }
+      }
+
+      return result;
+    }
+
+
+    template < typename GUM_SCALAR, class BNInferenceEngine >
     inline const GUM_SCALAR
        MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::computeEpsilon_() {
-      /*
-
-      // compute the number of threads and the ranges over which they will work in the
-      // working set
-      const auto nb_threads = std::min(workingSet_.size(), Size(gum::getCurrentNumberOfThreads()));
-      const auto ranges     = gum::dispatchRangeToThreads(0, workingSet_.size(), nb_threads);
+      const auto ranges = this->displatchMarginalsToThreads_();
+      const auto nb_threads = ranges.size() - 1;
+      std::vector< GUM_SCALAR > tEps(nb_threads, std::numeric_limits< GUM_SCALAR >::max());
 
       // create the function to be executed by the threads
-      auto threadedExec
-         = [this, ranges](const std::size_t this_thread, const std::size_t nb_threads) {
-             const Size nsize = workingSet_[this_thread]->size();
+      auto threadedExec = [this, ranges, &tEps](const std::size_t this_thread,
+                                                const std::size_t nb_threads) {
+        auto&      this_tEps = tEps[this_thread];
+        GUM_SCALAR delta = 0;
 
-*/
+        auto i = ranges[this_thread].first;
+        auto j = ranges[this_thread].second;
+        auto domain_size = this->marginalMax_[i].size();
+        const auto end_i = ranges[this_thread + 1].first;
+        auto end_j = ranges[this_thread+1].second;
+        const auto marginalMax_size = this->marginalMax_.size();
+
+        while ((i < end_i) || (j < end_j)) {
+          // on min
+          delta = this->marginalMin_[i][j] - this->oldMarginalMin_[i][j];
+          delta = (delta < 0) ? (-delta) : delta;
+          if (this_tEps < delta) this_tEps = delta;
+
+          // on max
+          delta = this->marginalMax_[i][j] - this->oldMarginalMax_[i][j];
+          delta = (delta < 0) ? (-delta) : delta;
+          if (this_tEps < delta) this_tEps = delta;
+
+          this->oldMarginalMin_[i][j] = this->marginalMin_[i][j];
+          this->oldMarginalMax_[i][j] = this->marginalMax_[i][j];
+
+          if (++j == domain_size) {
+            j = 0;
+            ++i;
+            if (i < marginalMax_size)
+              domain_size = this->marginalMax_[i].size();
+          }
+        }
+      };
+
+      // launch the threads
+      ThreadExecutor::execute(nb_threads, threadedExec);
+
+      // aggregate all the results
+      GUM_SCALAR eps = tEps[0];
+      for (const auto nb: tEps)
+        if (eps < nb) eps = nb;
+
+      return eps;
+    }
+
+    /*
       GUM_SCALAR eps = 0;
 #pragma omp parallel
       {
@@ -386,6 +491,7 @@ namespace gum {
       }   // end of : parallel region
       return eps;
     }
+*/
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::updateOldMarginals_() {

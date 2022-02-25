@@ -122,6 +122,8 @@ namespace gum {
       /// @name Protected initialization methods
       /// @{
 
+      std::vector< std::pair< Idx, Idx > > displatchMarginalsToThreads_();
+
       /**
        * @brief Initialize threads data.
        *
