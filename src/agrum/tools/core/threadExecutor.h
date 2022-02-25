@@ -33,7 +33,7 @@
 
 namespace gum {
 
-  using ThreadExecutor = GUM_THREADS::ThreadExecutorImpl;
+  using ThreadExecutor = GUM_THREADS::ThreadExecutor;
 
 } /* namespace gum */
 

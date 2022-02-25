@@ -39,11 +39,11 @@ namespace gum {
 
   namespace threadsOMP {
 
-    /** @class threadsOMP::ThreadExecutorImpl
+    /** @class threadsOMP::ThreadExecutor
      * @brief The class enables to uses openMP to execute callables in
      * parallel.
      *
-     * The threadsOMP::ThreadExecutorImpl class is intended to easily
+     * The threadsOMP::ThreadExecutor class is intended to easily
      * parallelize algorithms by providing a simple interface to launch the
      * threads. The class also catches exceptions raised by the threads, so that
      * those do not terminate prematurely the program. It can then rethrow one
@@ -51,15 +51,15 @@ namespace gum {
      * the main thread.
      *
      * @warning This class is not intended to be used explicitly by the user.
-     * It is preferable to use class ThreadExecutor, which will point to the
-     * threadsOMP::ThreadExecutorImpl class if the threads infrastructure to
+     * It is preferable to use class threads::ThreadExecutor, which will point to
+     * the threadsOMP::ThreadExecutor class if the threads infrastructure to
      * use is openMP.
      *
      * @par Usage example:
      * @code
      * @endcode
      */
-    struct ThreadExecutorImpl {
+    struct ThreadExecutor {
 
       /// executes a function using several threads
       template <typename FUNCTION, typename... ARGS>

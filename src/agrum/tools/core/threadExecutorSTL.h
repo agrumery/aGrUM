@@ -33,7 +33,7 @@ namespace gum {
 
   namespace threadsSTL {
 
-    /** @class threadsSTL::ThreadExecutorImpl
+    /** @class threadsSTL::ThreadExecutor
      * @brief The class enables to launch std::threads to execute callables in
      * parallel.
      *
@@ -45,15 +45,15 @@ namespace gum {
      * main thread.
      *
      * @warning This class is not intended to be used explicitly by the user.
-     * It is preferable to use class ThreadExecutor, which will point to the
-     * threadsSTL::ThreadExecutorImpl class if the threads infrastructure to
+     * It is preferable to use class threads::ThreadExecutor, which will point to
+     * the threadsSTL::ThreadExecutor class if the threads infrastructure to
      * use is STL.
      *
      * @par Usage example:
      * @code
      * @endcode
      */
-    struct ThreadExecutorImpl {
+    struct ThreadExecutor {
 
       /// executes a function using several threads
       template <typename FUNCTION, typename... ARGS>

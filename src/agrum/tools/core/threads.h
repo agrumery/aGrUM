@@ -33,6 +33,8 @@
 
 namespace gum {
 
+  namespace threads = GUM_THREADS;
+
   /**
    * @brief Returns the maximum number of threads at any time.
    * @ingroup basicstruct_group

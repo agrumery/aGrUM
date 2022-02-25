@@ -660,6 +660,10 @@ namespace gum {
         marginalMax_.insert(node, std::vector< GUM_SCALAR >(dSize, 0));
         oldMarginalMax_.insert(node, std::vector< GUM_SCALAR >(dSize, 0));
       }
+
+      // now that we know the sizes of marginalMin_ and marginalMax_, we can
+      // dispatch their processes to the threads
+      displatchMarginalsToThreads_();
     }
 
     template < typename GUM_SCALAR >
@@ -1032,5 +1036,69 @@ namespace gum {
 
       return eps;
     }
+
+
+    template < typename GUM_SCALAR >
+    void InferenceEngine< GUM_SCALAR >::displatchMarginalsToThreads_() {
+      // we compute the number of elements in the 2 loops (over i,j in marginalMin_[i][j])
+      Size nb_elements = 0;
+      const auto marginalMin_size = this->marginalMin_.size();
+      for (const auto& marg_i : this->marginalMin_)
+        nb_elements += marg_i.second.size();
+
+      // distribute evenly the elements among the threads
+      auto nb_threads = Size(gum::getCurrentNumberOfThreads());
+      if (nb_elements < nb_threads) nb_threads = nb_elements;
+      nb_threads = 1;
+
+      // the result that we return is a vector of pairs (NodeId, Idx). For thread number i, the
+      // pair at index i is the beginning of the range that the thread will have to process: this
+      // is the part of the marginal distribution vector of node NodeId starting at index Idx.
+      // The pair at index i+1 is the end of this range (not included)
+      threadRanges_.clear();
+      threadRanges_.reserve(nb_threads + 1);
+
+      // try to balance the number of elements among the threads
+      Idx nb_elts_par_thread = nb_elements / nb_threads;
+      Idx rest_elts          = nb_elements - nb_elts_par_thread * nb_threads;
+
+      NodeId current_node  = 0;
+      Idx    current_domain_index = 0;
+      Size   current_domain_size = this->marginalMin_[0].size();
+      threadRanges_.emplace_back(current_node, current_domain_index);
+
+      for (Idx i = Idx(0); i < nb_threads; ++i) {
+        // compute the end of the threads, assuming that the current node has a domain
+        // sufficiently large
+        current_domain_index += nb_elts_par_thread;
+        if (rest_elts != Idx(0)) {
+          ++current_domain_index;
+          --rest_elts;
+        }
+
+        // if the current node is not sufficient to hold all the elements that
+        // the current thread should process. So we should add elements of the
+        // next nodes
+        while (current_domain_index >= current_domain_size) {
+          current_domain_index -= current_domain_size;
+          ++current_node;
+          current_domain_index = 0;
+          if (current_node != marginalMin_size) {
+            current_domain_size = this->marginalMin_[current_node].size();
+          }
+        }
+
+        // now we can store the range if elements
+        threadRanges_.emplace_back(current_node, current_domain_index);
+
+        // compute the next begin_node
+        if (current_domain_index == current_domain_size) {
+          ++current_node;
+          current_domain_index = 0;
+        }
+      }
+    }
+
+
   }   // namespace credal
 }   // namespace gum

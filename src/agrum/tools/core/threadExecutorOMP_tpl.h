@@ -35,29 +35,33 @@ namespace gum {
   
     /// executes a function using several threads
     template <typename FUNCTION, typename... ARGS>
-    void ThreadExecutorImpl::execute ( std::size_t nb_threads,
-                                       FUNCTION    exec_func,
-                                       ARGS&&...   func_args ) {
-      // here, we shall create one std::exception_ptr for each thread openMP
-      // that will be created. This will allow us to catch the exception raised
-      // by the threads
-      std::vector< std::exception_ptr > func_exceptions(nb_threads, nullptr);
-
-      // launch the threads and waith for their completion
-#  pragma omp parallel num_threads(int(nb_threads))
-      {
-        // get the number of the thread
-        const std::size_t this_thread = getThreadNumber();
-        
-        try {
-          exec_func(this_thread, nb_threads, std::forward<ARGS> (func_args)...);
-        } catch (...) { func_exceptions[this_thread] = std::current_exception(); }
+    void ThreadExecutor::execute(std::size_t nb_threads,
+                                 FUNCTION    exec_func,
+                                 ARGS&&...   func_args) {
+      if (nb_threads <= 1) {
+        exec_func(0, 1, std::forward< ARGS >(func_args)...);
       }
+      else {
+        // here, we shall create one std::exception_ptr for each thread openMP
+        // that will be created. This will allow us to catch the exception raised
+        // by the threads
+        std::vector< std::exception_ptr > func_exceptions(nb_threads, nullptr);
 
-      // now, check if one exception has been raised
-      for (const auto& exc : func_exceptions) {
-        if (exc != nullptr) {
-          std::rethrow_exception(exc);
+        // launch the threads and waith for their completion
+#  pragma omp parallel num_threads(int(nb_threads))
+        {
+          // get the number of the thread
+          const std::size_t this_thread = omp_get_thread_num();
+
+          try {
+            exec_func(this_thread, nb_threads, std::forward< ARGS >(func_args)...);
+          }
+          catch (...) { func_exceptions[this_thread] = std::current_exception(); }
+        }
+
+        // now, check if one exception has been raised
+        for (const auto& exc: func_exceptions) {
+          if (exc != nullptr) { std::rethrow_exception(exc); }
         }
       }
     }
@@ -65,56 +69,65 @@ namespace gum {
 
     /// executes in parallel a function and undoes it if execptions are raised
     template <typename FUNC1, typename FUNC2, typename... ARGS>
-    void ThreadExecutorImpl::executeOrUndo ( std::size_t nb_threads,
-                                             FUNC1       exec_func,
-                                             FUNC2       undo_func,
-                                             ARGS&&...   func_args ) {
-      // here, we shall create one std::exception_ptr for each thread openMP
-      // that will be created. This will allow us to catch the exception raised
-      // by the threads
-      std::vector< std::exception_ptr > func_exceptions(nb_threads, nullptr);
-
-      // launch the threads and waith for their completion
-#  pragma omp parallel num_threads(int(nb_threads))
-      {
-        // get the number of the thread
-        const std::size_t this_thread = getThreadNumber();
-
+    void ThreadExecutor::executeOrUndo(std::size_t nb_threads,
+                                       FUNC1       exec_func,
+                                       FUNC2       undo_func,
+                                       ARGS&&...   func_args ) {
+      if (nb_threads <= 1) {
         try {
-          exec_func(this_thread, nb_threads, std::forward<ARGS> (func_args)...);
-        } catch (...) { func_exceptions[this_thread] = std::current_exception(); }
-      }
-
-      // now, check if one exception has been raised
-      bool exception_raised = false;
-      for (const auto& exc : func_exceptions) {
-        if (exc != nullptr) {
-          exception_raised = true;
-          break;
+          exec_func(0, 1, std::forward< ARGS >(func_args)...);
+        }
+        catch (...) {
+          undo_func(0, 1, std::forward< ARGS >(func_args)...);
+          throw;
         }
       }
+      else {
+        // here, we shall create one std::exception_ptr for each thread openMP
+        // that will be created. This will allow us to catch the exception raised
+        // by the threads
+        std::vector< std::exception_ptr > func_exceptions(nb_threads, nullptr);
 
-      if (exception_raised) {
-        // create the exceptions to catch during the repair threads executions
-        std::vector< std::exception_ptr >
-          undo_func_exceptions(nb_threads, nullptr);
-
-        // launch the repair threads
+        // launch the threads and waith for their completion
 #  pragma omp parallel num_threads(int(nb_threads))
         {
           // get the number of the thread
           const std::size_t this_thread = getThreadNumber();
 
           try {
-            undo_func(this_thread, nb_threads, std::forward<ARGS> (func_args)...);
-          } catch (...) {
-            undo_func_exceptions[this_thread] = std::current_exception();
+            exec_func(this_thread, nb_threads, std::forward< ARGS >(func_args)...);
+          } catch (...) { func_exceptions[this_thread] = std::current_exception(); }
+        }
+
+        // now, check if one exception has been raised
+        bool exception_raised = false;
+        for (const auto& exc: func_exceptions) {
+          if (exc != nullptr) {
+            exception_raised = true;
+            break;
           }
         }
 
-        // rethrow the exception
-        for (const auto& exc : func_exceptions) {
-          if (exc != nullptr) { std::rethrow_exception(exc); }
+        if (exception_raised) {
+          // create the exceptions to catch during the repair threads executions
+          std::vector< std::exception_ptr > undo_func_exceptions(nb_threads, nullptr);
+
+          // launch the repair threads
+#  pragma omp parallel num_threads(int(nb_threads))
+          {
+            // get the number of the thread
+            const std::size_t this_thread = getThreadNumber();
+
+            try {
+              undo_func(this_thread, nb_threads, std::forward< ARGS >(func_args)...);
+            }
+            catch (...) { undo_func_exceptions[this_thread] = std::current_exception(); }
+          }
+
+          // rethrow the exception
+          for (const auto& exc: func_exceptions) {
+            if (exc != nullptr) { std::rethrow_exception(exc); }
+          }
         }
       }
     }

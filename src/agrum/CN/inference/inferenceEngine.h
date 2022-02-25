@@ -139,10 +139,23 @@ namespace gum {
        * modality, \c False otherwise. Not all algorithms offers this option. \c
        * False by default. */
       bool storeBNOpt_;
+
       /** @brief Object used to efficiently store optimal bayes net during
        * inference,
        * for some algorithms. */
       VarMod2BNsMap< GUM_SCALAR > dbnOpt_;
+
+      /** @brief the ranges of elements of marginalMin_ and marginalMax_ processed
+       * by each thread
+       *
+       * these ranges are stored into a vector of pairs (NodeId, Idx). For thread
+       * number i, the pair at index i is the beginning of the range that the
+       * thread will have to process: this is the part of the marginal distribution
+       * vector of node NodeId starting at index Idx. The pair at index i+1 is the
+       * end of this range (not included).
+       * @warning the size of threadRanges_ is the number of threads + 1.
+       */
+      std::vector< std::pair< NodeId, Idx > > threadRanges_;
 
       /**
        * @deprecated
@@ -174,6 +187,12 @@ namespace gum {
       void initMarginals_();
 
       /**
+       * computes Vector threadRanges_, that assigns some part of marginalMin_
+       * and marginalMax_ to the threads
+       */
+      void displatchMarginalsToThreads_();
+
+      /**
        * Initialize credal set vertices with empty sets.
        */
       void initMarginalSets_();
@@ -191,7 +210,7 @@ namespace gum {
        *
        * @return Epsilon.
        */
-      inline const GUM_SCALAR computeEpsilon_();
+      virtual const GUM_SCALAR computeEpsilon_();
 
       /**
        * Given a node id and one of it's possible vertex obtained during
