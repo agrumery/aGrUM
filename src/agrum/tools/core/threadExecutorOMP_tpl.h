@@ -42,6 +42,9 @@ namespace gum {
         exec_func(0, 1, std::forward< ARGS >(func_args)...);
       }
       else {
+        // indicate that we start a new threadExecutor
+        ++nbRunningThreadsExecutors_;
+
         // here, we shall create one std::exception_ptr for each thread openMP
         // that will be created. This will allow us to catch the exception raised
         // by the threads
@@ -58,6 +61,9 @@ namespace gum {
           }
           catch (...) { func_exceptions[this_thread] = std::current_exception(); }
         }
+
+        // now, we have completed the execution of the ThreadExecutor
+        --nbRunningThreadsExecutors_;
 
         // now, check if one exception has been raised
         for (const auto& exc: func_exceptions) {
@@ -83,6 +89,9 @@ namespace gum {
         }
       }
       else {
+        // indicate that we start a new threadExecutor
+        ++nbRunningThreadsExecutors_;
+
         // here, we shall create one std::exception_ptr for each thread openMP
         // that will be created. This will allow us to catch the exception raised
         // by the threads
@@ -124,10 +133,17 @@ namespace gum {
             catch (...) { undo_func_exceptions[this_thread] = std::current_exception(); }
           }
 
+          // now, we have completed the execution of the ThreadExecutor
+          --nbRunningThreadsExecutors_;
+
           // rethrow the exception
           for (const auto& exc: func_exceptions) {
             if (exc != nullptr) { std::rethrow_exception(exc); }
           }
+        }
+        else {
+          // now, we have completed the execution of the ThreadExecutor
+          --nbRunningThreadsExecutors_;
         }
       }
     }

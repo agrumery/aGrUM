@@ -25,4 +25,3 @@
  */
 
 #include <agrum/tools/core/threadExecutorOMP.h>
-

@@ -20,24 +20,41 @@
 
 /**
  * @file
- * @brief The class to use to execute a function by several threads
+ * @brief The base class used by all thread executors
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#ifndef GUM_THREAD_EXECUTOR_H
-#define GUM_THREAD_EXECUTOR_H
+#ifndef AGRUM_THREADEXECUTOR_BASE_H
+#define AGRUM_THREADEXECUTOR_BASE_H
+
+#include <atomic>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/threadExecutorSTL.h>
-#include <agrum/tools/core/threadExecutorOMP.h>
 
 namespace gum {
 
-  // use either the OMP or the STL thread executor, depending on the --threads
-  // aGrUM's compilation option
-  using ThreadExecutor = GUM_THREADS::ThreadExecutor;
+  /**
+   * @class ThreadExecutorBase
+   * @brief The base class used by all thread executors
+   * @headerfile threadExecutorBase.h <agrum/tools/core/threadExecutorBase.h>
+   */
+  class ThreadExecutorBase {
+    public:
+    /// indicates how many threadExecutors are currently running
+    static int nbRunningThreadsExecutors();
+
+    protected:
+    /// he number of currently running ThreadExecutors
+    static std::atomic< int > nbRunningThreadsExecutors_;
+  };
 
 } /* namespace gum */
 
-#endif /* GUM_THREAD_EXECUTOR_H */
 
+// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#include <agrum/tools/core/threadExecutorBase_inl.h>
+#endif /* GUM_NO_INLINE */
+
+
+#endif   // AGRUM_THREADEXECUTOR_BASE_H

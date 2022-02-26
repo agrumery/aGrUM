@@ -266,6 +266,7 @@ namespace gum {
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     inline void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::updateMarginals_() {
+      /*
       const auto nb_threads = gum::getCurrentNumberOfThreads();
 
       // create the function to be executed by the threads
@@ -305,7 +306,7 @@ namespace gum {
       }
     }
 
-/*
+/*/
 #pragma omp parallel
       {
         int  threadId = threadsOMP::getThreadNumber();
@@ -331,13 +332,13 @@ namespace gum {
         }       // end of : all variables
       }         // end of : parallel region
     }
-*/
+//*/
 
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     inline const GUM_SCALAR
        MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::computeEpsilon_() {
-
+/*
       const auto nb_threads = this->threadRanges_.size() - 1;
       std::vector< GUM_SCALAR > tEps(nb_threads, std::numeric_limits< GUM_SCALAR >::max());
 
@@ -388,7 +389,7 @@ namespace gum {
       return eps;
     }
 
-    /*
+    /*/
       GUM_SCALAR eps = 0;
 #pragma omp parallel
       {
@@ -429,7 +430,7 @@ namespace gum {
       }   // end of : parallel region
       return eps;
     }
-*/
+//*/
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::updateOldMarginals_() {

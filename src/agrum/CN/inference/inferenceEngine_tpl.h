@@ -20,9 +20,8 @@
 
 
 /** @file
- * @brief the class for computing G2 scores
- *
- * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
+ * @brief Abstract class representing CredalNet inference engines
+ * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6) and Christophe GONZALES(_at_AMU)
  */
 
 #include <algorithm>
@@ -992,38 +991,56 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     inline const GUM_SCALAR InferenceEngine< GUM_SCALAR >::computeEpsilon_() {
-      auto nsize = (unsigned int)(marginalMin_.size());
-
+/*
       // compute the number of threads and prepare for the result
-      const auto nb_threads = std::min(nsize, gum::getCurrentNumberOfThreads());
-      const auto ranges = gum::dispatchRangeToThreads(0, nsize, nb_threads);
+      const auto nb_threads = this->threadRanges_.size() - 1;
       std::vector< GUM_SCALAR > tEps(nb_threads, std::numeric_limits<GUM_SCALAR>::max());
 
       // create the function to be executed by the threads
-      auto threadedEps = [this, ranges, &tEps] (const std::size_t this_thread,
-                                                const std::size_t nb_threads) {
+      auto threadedEps = [this, &tEps](const std::size_t this_thread,
+                                       const std::size_t nb_threads) {
         auto& this_tEps = tEps[this_thread];
         GUM_SCALAR delta;
 
-        for (Idx i = ranges[this_thread].first, end=ranges[this_thread].second;
-             i < end; i++) {
-          const auto dSize = marginalMin_[i].size();
+        // below, we will loop over indices i and j of marginalMin_ and
+        // marginalMax_. Index i represents nodes and j allow to parse their
+        // domain. To parse all the domains of all the nodes, we should theorically
+        // use 2 loops. However, here, we will use one loop: we start with node i
+        // and parse its domain with index j. When this is done, we move to the
+        // next node, and so on. The underlying idea is that, by doing so, we
+        // need not parse in this function the whole domain of a node: we can start
+        // the loop at a given value of node i and complete the loop on another
+        // value of another node. These values are computed in Vector threadRanges_
+        // by Method displatchMarginalsToThreads_(), which dispatches the loops
+        // among threads
+        auto i = this->threadRanges_[this_thread].first;
+        auto j = this->threadRanges_[this_thread].second;
+        auto domain_size = this->marginalMax_[i].size();
+        const auto end_i = this->threadRanges_[this_thread + 1].first;
+        auto end_j = this->threadRanges_[this_thread+1].second;
+        const auto marginalMax_size = this->marginalMax_.size();
 
-          for (Size j = 0; j < dSize; j++) {
-            // on min
-            delta = marginalMin_[i][j] - oldMarginalMin_[i][j];
-            delta = (delta < 0) ? (-delta) : delta;
-            this_tEps = (this_tEps < delta) ? delta : this_tEps;
+        while ((i < end_i) || (j < end_j)) {
+          // on min
+          delta = marginalMin_[i][j] - oldMarginalMin_[i][j];
+          delta = (delta < 0) ? (-delta) : delta;
+          this_tEps = (this_tEps < delta) ? delta : this_tEps;
 
-            // on max
-            delta = marginalMax_[i][j] - oldMarginalMax_[i][j];
-            delta = (delta < 0) ? (-delta) : delta;
-            this_tEps  = (this_tEps < delta) ? delta : this_tEps;
+          // on max
+          delta = marginalMax_[i][j] - oldMarginalMax_[i][j];
+          delta = (delta < 0) ? (-delta) : delta;
+          this_tEps  = (this_tEps < delta) ? delta : this_tEps;
 
-            oldMarginalMin_[i][j] = marginalMin_[i][j];
-            oldMarginalMax_[i][j] = marginalMax_[i][j];
+          oldMarginalMin_[i][j] = marginalMin_[i][j];
+          oldMarginalMax_[i][j] = marginalMax_[i][j];
+
+          if (++j == domain_size) {
+            j = 0;
+            ++i;
+            if (i < marginalMax_size)
+              domain_size = this->marginalMax_[i].size();
           }
-        }   // end of : all variables
+        }
       };
 
       // launch the threads
@@ -1036,6 +1053,48 @@ namespace gum {
 
       return eps;
     }
+
+/*/
+      GUM_SCALAR eps = 0;
+#pragma omp parallel
+      {
+        GUM_SCALAR tEps = 0;
+        GUM_SCALAR delta;
+
+        /// int tId = getThreadNumber();
+        int nsize = int(marginalMin_.size());
+
+#pragma omp for
+
+        for (int i = 0; i < nsize; i++) {
+          auto dSize = marginalMin_[i].size();
+
+          for (Size j = 0; j < dSize; j++) {
+            // on min
+            delta = marginalMin_[i][j] - oldMarginalMin_[i][j];
+            delta = (delta < 0) ? (-delta) : delta;
+            tEps  = (tEps < delta) ? delta : tEps;
+
+            // on max
+            delta = marginalMax_[i][j] - oldMarginalMax_[i][j];
+            delta = (delta < 0) ? (-delta) : delta;
+            tEps  = (tEps < delta) ? delta : tEps;
+
+            oldMarginalMin_[i][j] = marginalMin_[i][j];
+            oldMarginalMax_[i][j] = marginalMax_[i][j];
+          }
+        }   // end of : all variables
+
+#pragma omp critical(epsilon_max)
+        {
+#pragma omp flush(eps)
+          eps = (eps < tEps) ? tEps : eps;
+        }
+      }
+
+      return eps;
+    }
+//*/
 
 
     template < typename GUM_SCALAR >
@@ -1098,7 +1157,6 @@ namespace gum {
         }
       }
     }
-
 
   }   // namespace credal
 }   // namespace gum

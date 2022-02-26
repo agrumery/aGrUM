@@ -25,7 +25,7 @@
 /**
  * @file
  * @brief Abstract class representing CredalNet inference engines
- * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
+ * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6) and Christophe GONZALES(_at_AMU)
  */
 #include <map>
 
@@ -163,6 +163,10 @@ namespace gum {
        * dynamic
        * networks). */
       int timeSteps_;
+
+      // the minimal number of operations that a thread should execute
+      Size threadMinimalNbOps_ {Size(20)};
+
 
       /// @name Protected initialization methods
       /// @{

@@ -48,6 +48,9 @@ namespace gum {
         exec_func(0, 1, std::forward< ARGS >(func_args)...);
       }
       else {
+        // indicate that we start a new threadExecutor
+        ++nbRunningThreadsExecutors_;
+
         // here, we shall create the threads, but also one std::exception_ptr
         // for each thread. This will allow us to catch the exception raised
         // by the threads
@@ -76,6 +79,9 @@ namespace gum {
         // wait for the threads to complete their executions
         std::for_each(threads.begin(), threads.end(), std::mem_fn(&std::thread::join));
 
+        // now, we have completed the execution of the ThreadExecutor
+        --nbRunningThreadsExecutors_;
+
         // now, check if one exception has been raised
         for (const auto& exc: func_exceptions) {
           if (exc != nullptr) { std::rethrow_exception(exc); }
@@ -100,6 +106,9 @@ namespace gum {
         }
       }
       else {
+        // indicate that we start a new threadExecutor
+        ++nbRunningThreadsExecutors_;
+
         // here, we shall create the threads, but also one std::exception_ptr
         // for each thread. This will allow us to catch the exception raised
         // by the threads
@@ -165,10 +174,17 @@ namespace gum {
           // wait for the threads to complete their executions
           std::for_each(threads.begin(), threads.end(), std::mem_fn(&std::thread::join));
 
+          // now, we have completed the execution of the ThreadExecutor
+          --nbRunningThreadsExecutors_;
+
           // rethrow the exception
           for (const auto& exc: func_exceptions) {
             if (exc != nullptr) { std::rethrow_exception(exc); }
           }
+        }
+        else {
+          // now, we have completed the execution of the ThreadExecutor
+          --nbRunningThreadsExecutors_;
         }
       }
     }

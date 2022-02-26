@@ -389,61 +389,58 @@ namespace gum {
         return;
       }
 
-      decltype(taille) msgPerm = 1;
-#pragma omp parallel
-      {
-        GUM_SCALAR msg_pmin = msg_p_min;
-        GUM_SCALAR msg_pmax = msg_p_max;
-
-        std::vector< std::vector< GUM_SCALAR > > combi_msg_p(taille);
-
-        decltype(taille) confs = 1;
-
-#pragma omp for
-
-        for (long i = 0; i < long(taille); i++) {
-          confs *= msgs_p[i].size();
-        }
-
-#pragma omp atomic
-        msgPerm *= confs;
-#pragma omp barrier
-#pragma omp flush   // ( msgPerm ) let the compiler choose what to flush (due to mvsc)
-
-#pragma omp for
-
-        for (int j = 0; j < int(msgPerm); j++) {
-          // get jth msg :
-          auto jvalue = j;
-
-          for (decltype(taille) i = 0; i < taille; i++) {
-            if (msgs_p[i].size() == 2) {
-              combi_msg_p[i] = (jvalue & 1) ? msgs_p[i][1] : msgs_p[i][0];
-              jvalue /= 2;
-            } else {
-              combi_msg_p[i] = msgs_p[i][0];
-            }
-          }
-
-          compute_ext_(combi_msg_p, id, msg_pmin, msg_pmax);
-        }
-
-// since min is INF_ and max is 0 at init, there is no issue having more threads
-// here
-// than during for loop
-#pragma omp critical(msgpminmax)
-        {
-#pragma omp flush   //( msg_p_min )
-          //#pragma omp flush ( msg_p_max )  let the compiler choose what to
-          // flush (due to mvsc)
-
-          if (msg_p_min > msg_pmin) { msg_p_min = msg_pmin; }
-
-          if (msg_p_max < msg_pmax) { msg_p_max = msg_pmax; }
-        }
+      Size msgPerm = 1;
+      for (Size i = 0; i < taille; i++) {
+        msgPerm *= msgs_p[i].size();
       }
-      return;
+
+      // dispatch the messages among the threads and prepare the data
+      // they will process
+      Size nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
+                         ? gum::getCurrentNumberOfThreads()
+                         : 1;   // no nested multithreading
+      nb_threads      = std::min(msgPerm * taille / this->threadMinimalNbOps_, nb_threads);
+      if (nb_threads < 1) nb_threads = 1;
+
+      const auto                ranges = gum::dispatchRangeToThreads(0, msgPerm, nb_threads);
+      const auto                real_nb_threads = ranges.size();
+      std::vector< GUM_SCALAR > msg_pmin(real_nb_threads, msg_p_min);
+      std::vector< GUM_SCALAR > msg_pmax(real_nb_threads, msg_p_max);
+
+      // create the function to be executed by the threads
+      auto threadedExec
+         = [this, &msg_pmin, &msg_pmax, msgs_p, taille, ranges, id](const std::size_t this_thread,
+                                                                    const std::size_t nb_threads) {
+             std::vector< std::vector< GUM_SCALAR > > combi_msg_p(taille);
+
+             const auto& this_range = ranges[this_thread];
+             for (Idx j = this_range.first; j < this_range.second; ++j) {
+               // get jth msg :
+               auto jvalue = j;
+
+               for (Idx i = 0; i < taille; i++) {
+                 if (msgs_p[i].size() == 2) {
+                   combi_msg_p[i] = (jvalue & 1) ? msgs_p[i][1] : msgs_p[i][0];
+                   jvalue /= 2;
+                 }
+                 else {
+                   combi_msg_p[i] = msgs_p[i][0];
+                 }
+               }
+
+               compute_ext_(combi_msg_p, id, msg_pmin[this_thread], msg_pmax[this_thread]);
+             }
+           };
+
+      // launch the threads
+      ThreadExecutor::execute(real_nb_threads, threadedExec);
+
+      for (Idx j = 0; j < real_nb_threads; ++j) {
+        if (msg_p_min > msg_pmin[j]) { msg_p_min = msg_pmin[j]; }
+        if (msg_p_max < msg_pmax[j]) { msg_p_max = msg_pmax[j]; }
+      }
     }
+
 
     /**
      * comme precedemment mais pour message parent, vraisemblance prise en
@@ -476,60 +473,62 @@ namespace gum {
         return;
       }
 
-      decltype(taille) msgPerm = 1;
-#pragma omp parallel
-      {
-        GUM_SCALAR                               msg_lmin = msg_l_min;
-        GUM_SCALAR                               msg_lmax = msg_l_max;
-        std::vector< std::vector< GUM_SCALAR > > combi_msg_p(taille);
+      Size msgPerm = 1;
+      for (Size i = 0; i < taille; i++) {
+        msgPerm *= msgs_p[i].size();
+      }
 
-        decltype(taille) confs = 1;
-#pragma omp for
+      // dispatch the messages among the threads and prepare the data
+      // they will process
+      Size nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
+                         ? gum::getCurrentNumberOfThreads()
+                         : 1;   // no nested multithreading
+      nb_threads      = std::min(msgPerm * taille / this->threadMinimalNbOps_, nb_threads);
+      if (nb_threads < 1) nb_threads = 1;
 
-        for (int i = 0; i < int(taille); i++) {
-          confs *= msgs_p[i].size();
-        }
+      const auto                ranges = gum::dispatchRangeToThreads(0, msgPerm, nb_threads);
+      const auto                real_nb_threads = ranges.size();
+      std::vector< GUM_SCALAR > msg_lmin(real_nb_threads, msg_l_min);
+      std::vector< GUM_SCALAR > msg_lmax(real_nb_threads, msg_l_max);
 
-#pragma omp atomic
-        msgPerm *= confs;
-#pragma omp barrier
-#pragma omp flush(msgPerm)
+      // create the function to be executed by the threads
+      auto threadedExec
+         = [this, &msg_lmin, &msg_lmax, msgs_p, taille, ranges, id, &lx, pos](
+              const std::size_t this_thread,
+              const std::size_t nb_threads) {
+             std::vector< std::vector< GUM_SCALAR > > combi_msg_p(taille);
 
-// direct binary representation of config, no need for iterators
-#pragma omp for
+             const auto& this_range = ranges[this_thread];
+             for (Idx j = this_range.first; j < this_range.second; ++j) {
+               // get jth msg :
+               auto jvalue = j;
 
-        for (long j = 0; j < long(msgPerm); j++) {
-          // get jth msg :
-          auto jvalue = j;
+               for (Idx i = 0; i < taille; i++) {
+                 if (msgs_p[i].size() == 2) {
+                   combi_msg_p[i] = (jvalue & 1) ? msgs_p[i][1] : msgs_p[i][0];
+                   jvalue /= 2;
+                 }
+                 else {
+                   combi_msg_p[i] = msgs_p[i][0];
+                 }
+                }
+               compute_ext_(combi_msg_p, id, msg_lmin[this_thread], msg_lmax[this_thread], lx, pos);
+             }
+           };
 
-          for (decltype(taille) i = 0; i < taille; i++) {
-            if (msgs_p[i].size() == 2) {
-              combi_msg_p[i] = (jvalue & 1) ? msgs_p[i][1] : msgs_p[i][0];
-              jvalue /= 2;
-            } else {
-              combi_msg_p[i] = msgs_p[i][0];
-            }
-          }
+      // launch the threads
+      ThreadExecutor::execute(real_nb_threads, threadedExec);
 
-          compute_ext_(combi_msg_p, id, msg_lmin, msg_lmax, lx, pos);
-        }
-
-// there may be more threads here than in the for loop, therefor positive test
-// is NECESSARY (init is -2)
-#pragma omp critical(msglminmax)
-        {
-#pragma omp flush(msg_l_min)
-#pragma omp flush(msg_l_max)
-
-          if ((msg_l_min > msg_lmin || msg_l_min == -2) && msg_lmin > 0) { msg_l_min = msg_lmin; }
-
-          if ((msg_l_max < msg_lmax || msg_l_max == -2) && msg_lmax > 0) { msg_l_max = msg_lmax; }
-        }
+      for (Idx j = 0; j < real_nb_threads; ++j) {
+        if ((msg_l_min > msg_lmin[j] || msg_l_min == -2) && msg_lmin[j] > 0) {
+          msg_l_min = msg_lmin[j]; }
+        if ((msg_l_max < msg_lmax[j] || msg_l_max == -2) && msg_lmax[j] > 0) { msg_l_max = msg_lmax[j]; }
       }
 
       real_msg_l_min = msg_l_min;
       real_msg_l_max = msg_l_max;
     }
+
 
     template < typename GUM_SCALAR >
     void CNLoopyPropagation< GUM_SCALAR >::makeInference() {

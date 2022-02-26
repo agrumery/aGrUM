@@ -34,6 +34,7 @@
 
 #include <agrum/agrum.h>
 #include <agrum/tools/core/threadsOMP.h>
+#include <agrum/tools/core/threadExecutorBase.h>
 
 namespace gum {
 
@@ -59,14 +60,17 @@ namespace gum {
      * @code
      * @endcode
      */
-    struct ThreadExecutor {
+    class ThreadExecutor : private ThreadExecutorBase {
+      public:
+
+      /// indicates how many threadExecutors are currently running
+      using ThreadExecutorBase::nbRunningThreadsExecutors;
 
       /// executes a function using several threads
       template <typename FUNCTION, typename... ARGS>
       static void execute ( std::size_t nb_threads,
                             FUNCTION    exec_func,
                             ARGS&&...   func_args );
-      
 
       /// executes in parallel a function and undoes it if exceptions are raised
       template <typename FUNC1, typename FUNC2, typename... ARGS>

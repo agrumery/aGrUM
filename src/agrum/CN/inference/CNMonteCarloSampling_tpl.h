@@ -199,8 +199,61 @@ namespace gum {
       this->initApproximationScheme();
     }
 
+
     template < typename GUM_SCALAR, class BNInferenceEngine >
     void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_mcThreadDataCopy_() {
+      /*
+      auto num_threads = this->l_marginalMin_.size();
+      this->initThreadsData_(num_threads, _infEs_::storeVertices_, _infEs_::storeBNOpt_);
+      this->l_inferenceEngine_.resize(num_threads, nullptr);
+
+      // create the function to be executed by the threads
+      auto threadedExec = [this](const std::size_t this_thread, const std::size_t nb_threads) {
+        // we could put those below in a function in InferenceEngine, but let's
+        // keep this parallel region instead of breaking it and making another one to
+        // do the same stuff in 2 places since :
+        // !!! BNInferenceEngine still needs to be initialized here anyway !!!
+        BayesNet< GUM_SCALAR >* thread_bn = new BayesNet< GUM_SCALAR >();
+        *thread_bn = this->credalNet_->current_bn();
+
+        this->workingSet_[this_thread] = thread_bn;
+
+        this->l_marginalMin_[this_thread]    = this->marginalMin_;
+        this->l_marginalMax_[this_thread]    = this->marginalMax_;
+        this->l_expectationMin_[this_thread] = this->expectationMin_;
+        this->l_expectationMax_[this_thread] = this->expectationMax_;
+        this->l_modal_[this_thread]          = this->modal_;
+
+        _infEs_::l_clusters_[this_thread].resize(2);
+        _infEs_::l_clusters_[this_thread][0] = _infEs_::t0_;
+        _infEs_::l_clusters_[this_thread][1] = _infEs_::t1_;
+
+        if (_infEs_::storeVertices_) { this->l_marginalSets_[this_thread] = this->marginalSets_; }
+
+        List< const Potential< GUM_SCALAR >* >* evi_list
+           = new List< const Potential< GUM_SCALAR >* >();
+        this->workingSetE_[this_thread] = evi_list;
+
+        // #TODO: the next instruction works only for lazy propagation.
+        //        => find a way to remove the second argument
+        BNInferenceEngine* inference_engine
+           = new BNInferenceEngine((this->workingSet_[this_thread]),
+                                   RelevantPotentialsFinderType::FIND_ALL);
+
+        this->l_inferenceEngine_[this_thread] = inference_engine;
+
+        if (_infEs_::storeBNOpt_) {
+          VarMod2BNsMap< GUM_SCALAR >* threadOpt
+             = new VarMod2BNsMap< GUM_SCALAR >(*this->credalNet_);
+          this->l_optimalNet_[this_thread] = threadOpt;
+        }
+      };
+
+      // launch the threads
+      ThreadExecutor::execute(num_threads, threadedExec);
+    }
+
+      /*/
       int num_threads;
 #pragma omp parallel
       {
@@ -228,14 +281,15 @@ namespace gum {
         // the same stuff in 2 places since :
         // !!! BNInferenceEngine still needs to be initialized here anyway !!!
 
-        BayesNet< GUM_SCALAR >* thread_bn = new BayesNet< GUM_SCALAR >();
+        //BayesNet< GUM_SCALAR >* thread_bn = new BayesNet< GUM_SCALAR >();
 #pragma omp critical(Init)
         {
           // IBayesNet< GUM_SCALAR > * thread_bn = new IBayesNet< GUM_SCALAR
           // >();//(this->credalNet_->current_bn());
-          *thread_bn = this->credalNet_->current_bn();
+          // *thread_bn = this->credalNet_->current_bn();
+	  this->workingSet_[this_thread] = new BayesNet< GUM_SCALAR >(this->credalNet_->current_bn());
         }
-        this->workingSet_[this_thread] = thread_bn;
+        //this->workingSet_[this_thread] = thread_bn;
 
         this->l_marginalMin_[this_thread]    = this->marginalMin_;
         this->l_marginalMax_[this_thread]    = this->marginalMax_;
@@ -268,6 +322,8 @@ namespace gum {
         }
       }
     }
+
+    //*/
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     inline void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_binaryRep_(

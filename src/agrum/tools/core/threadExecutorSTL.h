@@ -28,6 +28,8 @@
 #define GUM_THREAD_EXECUTOR_STL_H
 
 #include <agrum/agrum.h>
+#include <agrum/tools/core/threadsSTL.h>
+#include <agrum/tools/core/threadExecutorBase.h>
 
 namespace gum {
 
@@ -53,7 +55,10 @@ namespace gum {
      * @code
      * @endcode
      */
-    struct ThreadExecutor {
+    struct ThreadExecutor : private ThreadExecutorBase {
+
+      /// indicates how many threadExecutors are currently running
+      using ThreadExecutorBase::nbRunningThreadsExecutors;
 
       /// executes a function using several threads
       template <typename FUNCTION, typename... ARGS>
