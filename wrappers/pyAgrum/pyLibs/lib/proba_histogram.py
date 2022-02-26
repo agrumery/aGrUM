@@ -43,7 +43,7 @@ def _getTitleHisto(p, show_mu_sigma=True):
     return var.name()
 
   (mu, std) = _stats(p)
-  return f"${var.name()}$\n$\\mu={mu:.2f}$; $\\sigma={std:.2f}$"
+  return f"{var.name()}\n$\\mu={mu:.2f}$; $\\sigma={std:.2f}$"
 
 
 def __limits(p):

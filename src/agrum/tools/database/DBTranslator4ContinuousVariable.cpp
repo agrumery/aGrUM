@@ -64,7 +64,8 @@ namespace gum {
       // if fit_range is true, we shall be able to update the ranges of
       // the continuous variable. To indicate that we did not encountered any
       // value yet in the database, we fix the lower bound of  _variable_ to +max
-      if (_fit_range_) _variable_.setLowerBound(std::numeric_limits< float >::infinity());
+      if (_fit_range_)
+        _variable_.setLowerBound(std::numeric_limits< float >::infinity());
 
       // store a copy of the variable, that should be used by method variable ()
       _real_variable_ = _variable_.clone();

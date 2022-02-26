@@ -63,9 +63,19 @@ namespace gum {
   INLINE Idx DiscretizedVariable< T_TICKS >::pos_(const T_TICKS& target) const {
     if (_ticks_size_ < 2) { GUM_ERROR(OutOfBounds, "not enough ticks") }
 
-    if (target < _ticks_[0]) { GUM_ERROR(OutOfBounds, "less than first range") }
+    if (target < _ticks_[0]) {
+      if (_is_empirical)
+        return 0;
+      else
+        GUM_ERROR(OutOfBounds, "less than first range")
+    }
 
-    if (target > _ticks_[_ticks_size_ - 1]) { GUM_ERROR(OutOfBounds, "more than last range") }
+    if (target > _ticks_[_ticks_size_ - 1]) {
+      if (_is_empirical)
+        return _ticks_size_ - 2;
+      else
+        GUM_ERROR(OutOfBounds, "more than last range")
+    }
 
     if (target == _ticks_[_ticks_size_ - 1])   // special case for upper limit
       // (which belongs to class  _ticks_size_-2
@@ -80,6 +90,7 @@ namespace gum {
       IDiscretizedVariable(aName, aDesc),
       _ticks_size_((Size)0) {
     GUM_CONSTRUCTOR(DiscretizedVariable);
+    _is_empirical = false;
     _ticks_.reserve(1);
   }
 
@@ -90,6 +101,7 @@ namespace gum {
       IDiscretizedVariable(aName, aDesc),
       _ticks_size_((Size)0) {
     GUM_CONSTRUCTOR(DiscretizedVariable);
+    _is_empirical = false;
     _ticks_.reserve(ticks.size());
     for (const auto t: ticks)
       addTick(t);
@@ -99,6 +111,7 @@ namespace gum {
   DiscretizedVariable< T_TICKS >::DiscretizedVariable(const DiscretizedVariable< T_TICKS >& aDRV) :
       IDiscretizedVariable(aDRV) {
     GUM_CONS_CPY(DiscretizedVariable);
+    _is_empirical = aDRV._is_empirical;
     _ticks_.reserve(1);
     copy_(aDRV);
   }
@@ -191,9 +204,20 @@ namespace gum {
 
     if (i >= _ticks_size_ - 1) { GUM_ERROR(OutOfBounds, "inexisting label index") }
 
-    ss << "[" << _ticks_[i] << ";" << _ticks_[i + 1];
+    if ((i == 0) && (_is_empirical))
+      ss << "(";
+    else
+      ss << "[";
 
-    ss << ((i == _ticks_size_ - 2) ? "]" : "[");
+    ss << _ticks_[i] << ";" << _ticks_[i + 1];
+
+    if (i==_ticks_size_ - 2)
+      if (_is_empirical)
+        ss<<")";
+      else
+        ss<<"]";
+    else
+      ss<<"[";
 
     return ss.str();
   }

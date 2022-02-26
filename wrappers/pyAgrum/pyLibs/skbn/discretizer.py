@@ -729,10 +729,13 @@ class BNDiscretizer():
           self.discretizationParametersDictionary[variableName]['k']) + " bins for the variable " + str(
           variableName) + "gave only 1 bin. Try increasing the number of bins used by this variable using "
                           "setDiscetizationParameters to avoid this error")
-      binEdges[0] = -math.inf
-      binEdges[-1] = math.inf
+
+      #we replace infinity as min and max by the new empirical flag.
+      #binEdges[0] = -math.inf
+      #binEdges[-1] = math.inf
       self.totalNumberOfBins += len(binEdges) - 1
       var = gum.DiscretizedVariable(variableName, variableName, binEdges)
+      var.setEmpirical(True)
 
     if usingDefaultParameters:
       self.discretizationParametersDictionary.pop(variableName)

@@ -3065,6 +3065,12 @@ class IDiscretizedVariable(DiscreteVariable):
         """
         return _pyAgrum.IDiscretizedVariable_clone(self)
 
+    def isEmpirical(self) -> bool:
+        return _pyAgrum.IDiscretizedVariable_isEmpirical(self)
+
+    def setEmpirical(self, state: bool) -> None:
+        return _pyAgrum.IDiscretizedVariable_setEmpirical(self, state)
+
 # Register IDiscretizedVariable in _pyAgrum:
 _pyAgrum.IDiscretizedVariable_swigregister(IDiscretizedVariable)
 

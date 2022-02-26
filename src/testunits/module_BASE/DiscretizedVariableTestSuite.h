@@ -111,31 +111,67 @@ namespace gum_tests {
       gum::Size vv = (gum::Size)0;
 
       TS_ASSERT_THROWS(v["0"], gum::OutOfBounds)
-      TS_ASSERT_THROWS(v["0"], gum::OutOfBounds)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["1"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["1"])
       TS_ASSERT_EQUALS(vv, (gum::Size)0)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["2"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["2"])
       TS_ASSERT_EQUALS(vv, (gum::Size)0)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["3"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["3"])
       TS_ASSERT_EQUALS(vv, (gum::Size)1)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["4"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["4"])
       TS_ASSERT_EQUALS(vv, (gum::Size)1)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["5"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["5"])
       TS_ASSERT_EQUALS(vv, (gum::Size)2)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["6"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["6"])
       TS_ASSERT_EQUALS(vv, (gum::Size)2)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["7"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["7"])
       TS_ASSERT_EQUALS(vv, (gum::Size)2)
 
       TS_ASSERT_THROWS(v["8"], gum::OutOfBounds)
-      TS_ASSERT_THROWS(v["8"], gum::OutOfBounds)
+    }
+
+    void testNormalLimitsWithEmpirical() {
+      gum::DiscretizedVariable< unsigned int > v("var", "a var");
+      v.addTick(1).addTick(5).addTick(3).addTick(7);
+
+      v.setEmpirical(true);
+
+      TS_ASSERT_EQUALS(v.toString(), "var:Discretized(<(1;3[,[3;5[,[5;7)>)")
+
+      gum::Size vv = (gum::Size)0;
+
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["0"])
+      TS_ASSERT_EQUALS(vv, (gum::Size)0)
+
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["1"])
+      TS_ASSERT_EQUALS(vv, (gum::Size)0)
+
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["2"])
+      TS_ASSERT_EQUALS(vv, (gum::Size)0)
+
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["3"])
+      TS_ASSERT_EQUALS(vv, (gum::Size)1)
+
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["4"])
+      TS_ASSERT_EQUALS(vv, (gum::Size)1)
+
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["5"])
+      TS_ASSERT_EQUALS(vv, (gum::Size)2)
+
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["6"])
+      TS_ASSERT_EQUALS(vv, (gum::Size)2)
+
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["7"])
+      TS_ASSERT_EQUALS(vv, (gum::Size)2)
+
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["8"])
+      TS_ASSERT_EQUALS(vv, (gum::Size)2)
     }
 
     void testOrderTicks() {
@@ -161,18 +197,25 @@ namespace gum_tests {
 
     void testFloatLimits() {
       gum::DiscretizedVariable< double > d("d", "Discretized variable");
-      ;
       d.addTick(3.1).addTick(2.0).addTick(4.0);
 
       TS_GUM_ASSERT_THROWS_NOTHING(d["2.5"]);
       TS_ASSERT_THROWS(d["0.5"], gum::OutOfBounds)
       TS_ASSERT_THROWS(d["4.5"], gum::OutOfBounds)
 
-      TS_ASSERT_EQUALS(d.numerical(0), (2.0 + 3.1) / 2)
-      TS_ASSERT_EQUALS(d.numerical(1), (4.0 + 3.1) / 2)
-
       d.addTick(-std::numeric_limits< double >::infinity());
       d.addTick(std::numeric_limits< double >::infinity());
+
+      TS_GUM_ASSERT_THROWS_NOTHING(d["2.5"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(d["0.5"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(d["4.5"]);
+    }
+
+    void testFloatLimitsEmpirical() {
+      gum::DiscretizedVariable< double > d("d", "Discretized variable");
+      d.addTick(3.1).addTick(2.0).addTick(4.0);
+
+      d.setEmpirical(true);
 
       TS_GUM_ASSERT_THROWS_NOTHING(d["2.5"]);
       TS_GUM_ASSERT_THROWS_NOTHING(d["0.5"]);

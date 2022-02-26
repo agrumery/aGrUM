@@ -60,7 +60,7 @@ namespace gum {
         _variable_.addTick((float)tick);
       }
 
-      // the the bounds of the discretized variable
+      // the bounds of the discretized variable
       const auto lower_bound = float(ticks[0]);
       const auto upper_bound = float(ticks.back());
 

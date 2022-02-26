@@ -68,6 +68,18 @@ namespace gum {
     // ############################################################################
     /// @{
 
+    /**
+     *
+     * @return true if the tick is considered as empirical (relaxeds bounds)
+     */
+    bool isEmpirical() const;
+
+    /**
+     *
+     *  @param state : change the variabl to empirical or not
+     */
+    void setEmpirical(bool state);
+
     /// return the list of ticks as a vector of doubles
     virtual std::vector< double > ticksAsDoubles() const = 0;
 
@@ -75,6 +87,7 @@ namespace gum {
 
 
     protected:
+    bool _is_empirical;
     /// copy operator
     IDiscretizedVariable& operator=(const IDiscretizedVariable& from);
   };
