@@ -29,6 +29,7 @@
 #ifndef __CN_MC_SAMPLING__H__
 #define __CN_MC_SAMPLING__H__
 
+#include <thread>
 #include <agrum/CN/inference/multipleInferenceEngine.h>
 #include <limits>
 
@@ -82,10 +83,10 @@ namespace gum {
 
       /** Thread performs an inference using BNInferenceEngine. Calls
        *  _verticesSampling_ and  _insertEvidence_. */
-      inline void _threadInference_();
+      inline void _threadInference_(Size this_thread);
 
       /** Update thread data after a IBayesNet inference. */
-      inline void _threadUpdate_();
+      inline void _threadUpdate_(Size this_thread);
 
       /**
        * Get the binary representation of a given value.

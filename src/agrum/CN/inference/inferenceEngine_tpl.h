@@ -991,14 +991,16 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     inline const GUM_SCALAR InferenceEngine< GUM_SCALAR >::computeEpsilon_() {
-/*
       // compute the number of threads and prepare for the result
-      const auto nb_threads = this->threadRanges_.size() - 1;
+      const Size nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
+                                              ? this->threadRanges_.size() - 1
+                                              : 1;   // no nested multithreading
       std::vector< GUM_SCALAR > tEps(nb_threads, std::numeric_limits<GUM_SCALAR>::max());
 
       // create the function to be executed by the threads
       auto threadedEps = [this, &tEps](const std::size_t this_thread,
-                                       const std::size_t nb_threads) {
+                                       const std::size_t nb_threads,
+                                       const std::vector< std::pair< NodeId, Idx > >& ranges) {
         auto& this_tEps = tEps[this_thread];
         GUM_SCALAR delta;
 
@@ -1011,13 +1013,13 @@ namespace gum {
         // need not parse in this function the whole domain of a node: we can start
         // the loop at a given value of node i and complete the loop on another
         // value of another node. These values are computed in Vector threadRanges_
-        // by Method displatchMarginalsToThreads_(), which dispatches the loops
+        // by Method dispatchMarginalsToThreads_(), which dispatches the loops
         // among threads
-        auto i = this->threadRanges_[this_thread].first;
-        auto j = this->threadRanges_[this_thread].second;
+        auto i = ranges[this_thread].first;
+        auto j = ranges[this_thread].second;
         auto domain_size = this->marginalMax_[i].size();
-        const auto end_i = this->threadRanges_[this_thread + 1].first;
-        auto end_j = this->threadRanges_[this_thread+1].second;
+        const auto end_i = ranges[this_thread + 1].first;
+        auto end_j = ranges[this_thread+1].second;
         const auto marginalMax_size = this->marginalMax_.size();
 
         while ((i < end_i) || (j < end_j)) {
@@ -1044,7 +1046,12 @@ namespace gum {
       };
 
       // launch the threads
-      ThreadExecutor::execute(nb_threads, threadedEps);
+      ThreadExecutor::execute(
+         nb_threads,
+         threadedEps,
+         (nb_threads == 1)
+            ? std::vector< std::pair< NodeId, Idx > >{{0, 0}, {this->marginalMin_.size(), 0}}
+            : this->threadRanges_);
 
       // aggregate all the results
       GUM_SCALAR eps = tEps[0];
@@ -1054,7 +1061,7 @@ namespace gum {
       return eps;
     }
 
-/*/
+/*
       GUM_SCALAR eps = 0;
 #pragma omp parallel
       {
@@ -1094,7 +1101,7 @@ namespace gum {
 
       return eps;
     }
-//*/
+*/
 
 
     template < typename GUM_SCALAR >

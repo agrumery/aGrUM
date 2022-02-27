@@ -29,6 +29,7 @@
 #define GUM_THREAD_DATA_H
 
 #include <new>
+#include <type_traits>
 
 #include <agrum/agrum.h>
 
@@ -53,6 +54,9 @@ namespace gum {
   // @TODO: for C++17, replace by
   // alignas(std::hardware_destructive_interference_size)
   struct alignas(128) ThreadData {
+    /// the return types of accessors: T_DATA if scalar, else T_DATA&
+    using data_type = std::conditional< std::is_scalar<T_DATA>::value, T_DATA, T_DATA& >;
+
     // ##########################################################################
     /// @name Constructors / Destructors
     // ##########################################################################
@@ -83,7 +87,7 @@ namespace gum {
 
     /// copy operator
     ThreadData< T_DATA >& operator=(const ThreadData< T_DATA >& from) {
-      if (this != &from) data = from.data;
+      data = from.data;
       return *this;
     }
 
@@ -93,11 +97,60 @@ namespace gum {
       return *this;
     }
 
+    /// equality operator
+    bool operator==(const ThreadData< T_DATA >& from) {
+      return data == from.data;
+    }
+
+    /// equality operator
+    bool operator==(const T_DATA& from) {
+      return data == from;
+    }
+
+    /// inequality operator
+    bool operator!=(const ThreadData< T_DATA >& from) {
+      return data != from.data;
+    }
+
+    /// inequality operator
+    bool operator!=(const T_DATA& from) {
+      return data != from;
+    }
+
     /// @}
+
+    // ##########################################################################
+    /// @name Accessors
+    // ##########################################################################
+
+    /// @{
+
+    /// easy accessor
+    data_type operator*() {
+      return data;
+    }
+
+
+    using data_pointer = typename
+      std::conditional< std::is_pointer< T_DATA >::value,
+                        T_DATA,
+                        typename std::add_pointer<T_DATA>::type >::type;
+
+    template< typename X = T_DATA>
+    std::enable_if_t< std::is_pointer< X >::value, data_pointer > operator->() {
+      return data;
+    }
+
+    template< typename X = T_DATA>
+    std::enable_if_t< !std::is_pointer< X >::value, data_pointer > operator->() {
+      return &data;
+    }
+
 
     /// the data we wish to store without cacheline parallel problem
     T_DATA data;
   };
+
 
 } /* namespace gum */
 

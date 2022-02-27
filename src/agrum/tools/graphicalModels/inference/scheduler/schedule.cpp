@@ -38,7 +38,7 @@
 namespace gum {
 
   // the version number of the schedules
-  Idx Schedule::_overall_version_number_ = Idx(0);
+  std::atomic<Idx> Schedule::_overall_version_number_ = Idx(0);
 
 
   /// returns the graph that would obtain when no operation is performed

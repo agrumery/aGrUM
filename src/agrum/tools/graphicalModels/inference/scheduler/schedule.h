@@ -27,6 +27,7 @@
 #ifndef GUM_SCHEDULE_H
 #define GUM_SCHEDULE_H
 
+#include <atomic>
 #include <string>
 #include <sstream>
 #include <utility>
@@ -436,7 +437,7 @@ namespace gum {
     static Idx _newVersionNumber_();
 
     // the version numbers help to identify the changes in schedules
-    static Idx _overall_version_number_;
+    static std::atomic<Idx> _overall_version_number_;
 
   };
 

@@ -61,7 +61,7 @@ namespace gum {
         // create a lambda that will execute exec_func while catching its exceptions
         auto real_exec_func = [&exec_func, nb_threads](std::size_t         this_thread,
                                                        std::exception_ptr& exc,
-                                                       ARGS&&... args) -> void {
+                                                       ARGS&... args) -> void {
           try {
             exec_func(this_thread, nb_threads, std::forward< ARGS >(args)...);
           }
@@ -73,7 +73,8 @@ namespace gum {
           threads.push_back(std::thread(real_exec_func,
                                         i,
                                         std::ref(func_exceptions[i]),
-                                        std::ref(std::forward< ARGS >(func_args))...));
+                                        std::ref(func_args)...));
+ //                                     std::ref(std::forward< ARGS >(func_args))...));
         }
 
         // wait for the threads to complete their executions
@@ -119,7 +120,7 @@ namespace gum {
         // create a lambda that will execute exec_func while catching its exceptions
         auto real_exec_func = [&exec_func, nb_threads](std::size_t         this_thread,
                                                        std::exception_ptr& exc,
-                                                       ARGS&&... args) -> void {
+                                                       ARGS&... args) -> void {
           try {
             exec_func(this_thread, nb_threads, std::forward< ARGS >(args)...);
           }
@@ -132,7 +133,8 @@ namespace gum {
           threads.push_back(std::thread(real_exec_func,
                                         i,
                                         std::ref(func_exceptions[i]),
-                                        std::ref(std::forward< ARGS >(func_args))...));
+                                        std::ref(func_args)...));
+ //                                     std::ref(std::forward< ARGS >(func_args))...));
         }
 
         // wait for the threads to complete their executions
@@ -153,7 +155,7 @@ namespace gum {
           // its exceptions
           auto real_undo_func = [&undo_func, nb_threads](std::size_t         this_thread,
                                                          std::exception_ptr& exc,
-                                                         ARGS&&... args) -> void {
+                                                         ARGS&... args) -> void {
             try {
               undo_func(this_thread, nb_threads, std::forward< ARGS >(args)...);
             } catch (...) { exc = std::current_exception(); }
@@ -168,7 +170,8 @@ namespace gum {
               threads.push_back(std::thread(real_undo_func,
                                             i,
                                             std::ref(undo_func_exceptions[i]),
-                                            std::ref(std::forward< ARGS >(func_args))...));
+                                            std::ref(func_args)...));
+                                            //std::ref(std::forward< ARGS >(func_args))...));
           }
 
           // wait for the threads to complete their executions

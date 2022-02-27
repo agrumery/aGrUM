@@ -31,6 +31,7 @@
 /// @todo virtual for all functions that MAY be one day redefined in any derived
 /// class
 
+#include <agrum/tools/core/threadData.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/CN/inference/inferenceEngine.h>
 
@@ -75,6 +76,7 @@ namespace gum {
        *
        * Called by updateThread_ if vertices are stored.
        *
+       * @param this_thread the id of the thread executing this method
        * @param id A constant reference to the node id whose credal set is to be
        *checked for redundancy.
        * @param vertex The vertex to add to the credal set.
@@ -82,7 +84,8 @@ namespace gum {
        *\c
        *false otherwise and by default.
        */
-      inline void _updateThreadCredalSets_(const NodeId&                    id,
+      inline void _updateThreadCredalSets_(Size                             this_thread,
+                                           const NodeId&                    id,
                                            const std::vector< GUM_SCALAR >& vertex,
                                            const bool&                      elimRedund);
 
@@ -105,7 +108,7 @@ namespace gum {
       _clusters_ l_clusters_;
 
       /** Threads IBayesNet. */
-      typename std::vector< _bnet_* > workingSet_;
+      typename std::vector< ThreadData< _bnet_* > > workingSet_;
       /** Threads evidence. */
       typename std::vector< List< const Potential< GUM_SCALAR >* >* > workingSetE_;
 
@@ -145,6 +148,7 @@ namespace gum {
        * @brief Update thread information (marginals, expectations, IBayesNet,
        *vertices) for a given node id.
        *
+       * @param this_thread the id of the thread executing this method
        * @param id The id of the node to be updated.
        * @param vertex The vertex.
        * @param elimRedund \c true if redundancy elimination is to be performed,
@@ -152,7 +156,8 @@ namespace gum {
        *false otherwise and by default.
        * @return \c True if the IBayesNet is kept (for now), \c False otherwise.
        */
-      inline bool updateThread_(const NodeId&                    id,
+      inline bool updateThread_(Size                             this_thread,
+                                const NodeId&                    id,
                                 const std::vector< GUM_SCALAR >& vertex,
                                 const bool&                      elimRedund = false);
 

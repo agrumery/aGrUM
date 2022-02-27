@@ -83,10 +83,11 @@ namespace gum {
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     inline bool MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::updateThread_(
+       Size                             tId,
        const NodeId&                    id,
        const std::vector< GUM_SCALAR >& vertex,
        const bool&                      elimRedund) {
-      int tId = threadsOMP::getThreadNumber();
+      //int tId = threadsOMP::getThreadNumber();
 
       // save E(X) if we don't save vertices
       if (!_infE_::storeVertices_ && !l_modal_[tId].empty()) {
@@ -173,7 +174,7 @@ namespace gum {
         // store point to compute credal set vertices.
         // check for redundancy at each step or at the end ?
         if (_infE_::storeVertices_ && !added && newOne) {
-          _updateThreadCredalSets_(id, vertex, elimRedund);
+          _updateThreadCredalSets_(tId, id, vertex, elimRedund);
           added = true;
         }
       }
@@ -186,10 +187,11 @@ namespace gum {
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     inline void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::_updateThreadCredalSets_(
+       Size                             tId,
        const NodeId&                    id,
        const std::vector< GUM_SCALAR >& vertex,
        const bool&                      elimRedund) {
-      int   tId           = threadsOMP::getThreadNumber();
+      // int   tId           = threadsOMP::getThreadNumber();
       auto& nodeCredalSet = l_marginalSets_[tId][id];
       Size  dsize         = Size(vertex.size());
 
@@ -266,14 +268,16 @@ namespace gum {
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     inline void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::updateMarginals_() {
-      /*
-      const auto nb_threads = gum::getCurrentNumberOfThreads();
+      // compute the number of threads (avoid nested threads)
+      const Size nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
+                                              ? gum::getCurrentNumberOfThreads()
+                                              : 1;   // no nested multithreading
 
       // create the function to be executed by the threads
       auto threadedExec = [this](const std::size_t this_thread,
                                  const std::size_t nb_threads,
                                  Idx work_index,
-                                 std::vector< std::pair< Idx, Idx > >& ranges) {
+                                 const std::vector< std::pair< Idx, Idx > >& ranges) {
         for (Idx i = ranges[this_thread].first, end = ranges[this_thread].second; i < end; i++) {
           Size dSize = Size(l_marginalMin_[work_index][i].size());
 
@@ -297,7 +301,7 @@ namespace gum {
       for (Idx work_index = 0; work_index < working_size; ++work_index) {
         // compute the ranges over which the threads will work
         const auto nsize = workingSet_[work_index]->size();
-        const auto real_nb_threads = std::min(Size(nb_threads), nsize);
+        const auto real_nb_threads = std::min(nb_threads, nsize);
         std::vector< std::pair< Idx, Idx > > ranges =
            gum::dispatchRangeToThreads(0, nsize, real_nb_threads);
 
@@ -306,7 +310,7 @@ namespace gum {
       }
     }
 
-/*/
+/*
 #pragma omp parallel
       {
         int  threadId = threadsOMP::getThreadNumber();
@@ -332,19 +336,23 @@ namespace gum {
         }       // end of : all variables
       }         // end of : parallel region
     }
-//*/
+*/
 
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     inline const GUM_SCALAR
        MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::computeEpsilon_() {
-/*
-      const auto nb_threads = this->threadRanges_.size() - 1;
+      // compute the number of threads (avoid nested threads)
+      const Size nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
+                                              ? this->threadRanges_.size() - 1
+                                              : 1;   // no nested multithreading
+
       std::vector< GUM_SCALAR > tEps(nb_threads, std::numeric_limits< GUM_SCALAR >::max());
 
       // create the function to be executed by the threads
       auto threadedExec = [this, &tEps](const std::size_t this_thread,
-                                        const std::size_t nb_threads) {
+                                        const std::size_t nb_threads,
+                                        const std::vector< std::pair< Idx, Idx > >& ranges) {
         auto&      this_tEps = tEps[this_thread];
         GUM_SCALAR delta = 0;
 
@@ -379,7 +387,12 @@ namespace gum {
       };
 
       // launch the threads
-      ThreadExecutor::execute(nb_threads, threadedExec);
+      ThreadExecutor::execute(
+         nb_threads,
+         threadedExec,
+         (nb_threads == 1)
+            ? std::vector< std::pair< NodeId, Idx > >{{0, 0}, {this->marginalMin_.size(), 0}}
+            : this->threadRanges_);
 
       // aggregate all the results
       GUM_SCALAR eps = tEps[0];
@@ -620,7 +633,7 @@ namespace gum {
       for (Size bn = 0; bn < tsize; bn++) {
         if (_infE_::storeVertices_) l_marginalSets_[bn].clear();
 
-        if (workingSet_[bn] != nullptr) delete workingSet_[bn];
+        if (workingSet_[bn].data != nullptr) delete workingSet_[bn].data;
 
         if (_infE_::storeBNOpt_)
           if (l_inferenceEngine_[bn] != nullptr) delete l_optimalNet_[bn];
