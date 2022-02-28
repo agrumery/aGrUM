@@ -76,10 +76,10 @@ namespace gum {
       /// @name Private algorithm methods
       /// @{
       /** Thread samples a IBayesNet from the CredalNet. */
-      inline void _verticesSampling_();
+      inline void _verticesSampling_(Size this_thread);
 
       /** Insert CredalNet evidence into a thread BNInferenceEngine. */
-      inline void _insertEvidence_();
+      inline void _insertEvidence_(Size this_thread);
 
       /** Thread performs an inference using BNInferenceEngine. Calls
        *  _verticesSampling_ and  _insertEvidence_. */

@@ -79,6 +79,15 @@ namespace gum {
       this->oldMarginalMin_ = this->marginalMin_;
       this->oldMarginalMax_.clear();
       this->oldMarginalMax_ = this->marginalMax_;
+
+      // init the random number generators
+      generators_.clear();
+      generators_.resize(num_threads);
+      auto seed = currentRandomGeneratorValue();
+      for (auto& generator: generators_) {
+        generator.seed(seed);
+        seed = generator();
+      }
     }
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
@@ -217,8 +226,7 @@ namespace gum {
         return;
 
       /// we need this because of the next lambda return contidion fabs ( *minIt
-      /// -
-      /// *maxIt ) > 1e-6 which never happens if there is only one vertice
+      /// - *maxIt ) > 1e-6 which never happens if there is only one vertice
       if (nodeCredalSet.size() == 1) return;
 
       // check that the point and all previously added ones are not inside the
@@ -250,8 +258,7 @@ namespace gum {
 
       // there may be points not inside the polytope but on one of it's facet,
       // meaning it's still a convex combination of vertices of this facet. Here
-      // we
-      // need lrs.
+      // we need lrs.
       Size setSize = Size(nodeCredalSet.size());
 
       LRSWrapper< GUM_SCALAR > lrsWrapper;
@@ -268,9 +275,9 @@ namespace gum {
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     inline void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::updateMarginals_() {
-      // compute the number of threads (avoid nested threads)
+      // compute the max number of threads to use (avoid nested threads)
       const Size nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
-                                              ? gum::getCurrentNumberOfThreads()
+                                              ? gum::getMaxNumberOfThreads()
                                               : 1;   // no nested multithreading
 
       // create the function to be executed by the threads
@@ -302,7 +309,7 @@ namespace gum {
         // compute the ranges over which the threads will work
         const auto nsize = workingSet_[work_index]->size();
         const auto real_nb_threads = std::min(nb_threads, nsize);
-        std::vector< std::pair< Idx, Idx > > ranges =
+        const auto ranges =
            gum::dispatchRangeToThreads(0, nsize, real_nb_threads);
 
         // launch the threads
@@ -478,6 +485,45 @@ namespace gum {
       // don't create threads if there are no vertices saved
       if (!_infE_::storeVertices_) return;
 
+      // compute the max number of threads to use (avoid nested threads)
+      const Size nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
+                               ? gum::getMaxNumberOfThreads()
+                               : 1;   // no nested multithreading
+
+      // create the function to be executed by the threads
+      Size tsize        = Size(l_marginalMin_.size());
+      auto threadedExec = [this, tsize](const std::size_t                           this_thread,
+                                        const std::size_t                           nb_threads,
+                                        Idx                                         work_index,
+                                        const std::vector< std::pair< Idx, Idx > >& ranges) {
+        for (Idx i = ranges[this_thread].first, end = ranges[this_thread].second; i < end; i++) {
+          // go through all threads
+          for (Size tId = 0; tId < tsize; ++tId) {
+            auto& nodeThreadCredalSet = l_marginalSets_[tId][i];
+
+            // for each vertex, if we are at any opt marginal, add it to the set
+            for (const auto& vtx: nodeThreadCredalSet) {
+              // we run redundancy elimination at each step because there could
+              // be 100000 threads and the set will be so huge...
+              // BUT not if vertices are of dimension 2 ! opt check and equality
+              // should be enough
+              _infE_::updateCredalSets_(i, vtx, (vtx.size() > 2) ? true : false);
+            }   // end of : nodeThreadCredalSet
+          }     // end of : all threads
+        }       // end of : all variables
+      };
+
+      const Size working_size = workingSet_.size();
+      for (Idx work_index = 0; work_index < working_size; ++work_index) {
+        // compute the ranges over which the threads will work
+        const auto nsize           = workingSet_[work_index]->size();
+        const auto real_nb_threads = std::min(nb_threads, nsize);
+        const auto ranges          = gum::dispatchRangeToThreads(0, nsize, real_nb_threads);
+        ThreadExecutor::execute(real_nb_threads, threadedExec, work_index, ranges);
+      }
+    }
+
+    /*
 #pragma omp parallel
       {
         int  threadId = threadsOMP::getThreadNumber();
@@ -506,9 +552,98 @@ namespace gum {
         }       // end of : all variables
       }         // end of : parallel region
     }
+    */
+
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::expFusion_() {
+      // don't create threads if there are no modalities to compute expectations
+      if (this->modal_.empty()) return;
+
+      // compute the max number of threads to use (avoid nested threads)
+      const Size nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
+                               ? gum::getMaxNumberOfThreads()
+                               : 1;   // no nested multithreading
+
+      // we can compute expectations from vertices of the final credal set
+      if (_infE_::storeVertices_) {
+        // create the function to be executed by the threads
+        auto threadedExec = [this](const std::size_t                           this_thread,
+                                   const std::size_t                           nb_threads,
+                                   Idx                                         work_index,
+                                   const std::vector< std::pair< Idx, Idx > >& ranges) {
+          for (Idx i = ranges[this_thread].first, end = ranges[this_thread].second; i < end; i++) {
+            std::string var_name = workingSet_[work_index]->variable(i).name();
+            auto        delim    = var_name.find_first_of("_");
+            var_name             = var_name.substr(0, delim);
+
+            if (!l_modal_[work_index].exists(var_name)) continue;
+
+            for (const auto& vertex: _infE_::marginalSets_[i]) {
+              GUM_SCALAR exp   = 0;
+              Size       vsize = Size(vertex.size());
+
+              for (Size mod = 0; mod < vsize; mod++)
+                exp += vertex[mod] * l_modal_[work_index][var_name][mod];
+
+              if (exp > _infE_::expectationMax_[i]) _infE_::expectationMax_[i] = exp;
+
+              if (exp < _infE_::expectationMin_[i]) _infE_::expectationMin_[i] = exp;
+            }
+          }
+        };
+
+        const Size working_size = workingSet_.size();
+        for (Idx work_index = 0; work_index < working_size; ++work_index) {
+          if (!this->l_modal_[work_index].empty()) {
+            // compute the ranges over which the threads will work
+            const auto nsize           = workingSet_[work_index]->size();
+            const auto real_nb_threads = std::min(nb_threads, nsize);
+            const auto ranges          = gum::dispatchRangeToThreads(0, nsize, real_nb_threads);
+            ThreadExecutor::execute(real_nb_threads, threadedExec, work_index, ranges);
+          }
+        }
+
+        return;
+      }
+
+      // create the function to be executed by the threads
+      auto threadedExec = [this](const std::size_t                           this_thread,
+                                 const std::size_t                           nb_threads,
+                                 Idx                                         work_index,
+                                 const std::vector< std::pair< Idx, Idx > >& ranges) {
+        for (Idx i = ranges[this_thread].first, end = ranges[this_thread].second; i < end; i++) {
+          std::string var_name = workingSet_[work_index]->variable(i).name();
+          auto        delim    = var_name.find_first_of("_");
+          var_name             = var_name.substr(0, delim);
+
+          if (!l_modal_[work_index].exists(var_name)) continue;
+
+          Size tsize = Size(l_expectationMax_.size());
+
+          for (Idx tId = 0; tId < tsize; tId++) {
+            if (l_expectationMax_[tId][i] > this->expectationMax_[i])
+              this->expectationMax_[i] = l_expectationMax_[tId][i];
+
+            if (l_expectationMin_[tId][i] < this->expectationMin_[i])
+              this->expectationMin_[i] = l_expectationMin_[tId][i];
+          }   // end of : each thread
+        }     // end of : each variable
+      };
+
+      const Size working_size = workingSet_.size();
+      for (Idx work_index = 0; work_index < working_size; ++work_index) {
+        if (!this->l_modal_[work_index].empty()) {
+          const auto nsize           = Size(workingSet_[work_index]->size());
+          const auto real_nb_threads = std::min(nb_threads, nsize);
+          const auto ranges          = gum::dispatchRangeToThreads(0, nsize, real_nb_threads);
+          ThreadExecutor::execute(real_nb_threads, threadedExec, work_index, ranges);
+        }
+      }
+    }
+
+    /*
+
       // don't create threads if there are no modalities to compute expectations
       if (this->modal_.empty()) return;
 
@@ -577,6 +712,8 @@ namespace gum {
       }         // end of : parallel region
     }
 
+    */
+
     template < typename GUM_SCALAR, class BNInferenceEngine >
     void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::optFusion_() {
       typedef std::vector< bool > dBN;
@@ -633,7 +770,7 @@ namespace gum {
       for (Size bn = 0; bn < tsize; bn++) {
         if (_infE_::storeVertices_) l_marginalSets_[bn].clear();
 
-        if (workingSet_[bn].data != nullptr) delete workingSet_[bn].data;
+        if (workingSet_[bn] != nullptr) delete workingSet_[bn];
 
         if (_infE_::storeBNOpt_)
           if (l_inferenceEngine_[bn] != nullptr) delete l_optimalNet_[bn];

@@ -36,15 +36,31 @@ namespace gum {
   namespace threads = GUM_THREADS;
 
   /**
-   * @brief Returns the maximum number of threads at any time.
+   * @brief Returns the absolute maximum number of threads at any time.
    * @ingroup basicstruct_group
    *
-   * Call this from anywhere (parallel region or not). By default, it is the
-   * number of threads launched in any parallel region.
+   * By default, it should be the number of CPU cores available. Note that it
+   * is preferable to use getMaxNumberOfThreads(), which corresponds to the
+   * max number of threads the user wants to launch in parallel region (this
+   * is by default equal to getMaxNumberOfThreads(), but the user may wish to
+   * change it for some reason).
    *
-   * @return Returns the maximum number of threads at any time.
+   * @return Returns the absolute maximum number of threads at any time.
    */
-  using gum::GUM_THREADS::getMaxNumberOfThreads;
+  using gum::GUM_THREADS::getAbsoluteMaxNumberOfThreads;
+
+  /**
+   * @brief returns the max number of threads used by default when entering the next
+   * parallel region
+   *
+   * This is the number of threads launched in parallel regions. By default, this
+   * number is equal to getAbsoluteMaxNumberOfThreads() but if the user wishes
+   * to change this number (using method setMaxNumberOfThreads), then this
+   * number is updated.
+   * @return the number of threads used by default the next time we enter into
+   * a parallel region
+   */
+  unsigned int getMaxNumberOfThreads();
 
    /**
    * @brief Get the number of logical processors.
@@ -61,15 +77,7 @@ namespace gum {
    * logical processors (x2 is a good all-around value).
    * @param number The number of threads to be used.
    */
-  void setNumberOfThreads(unsigned int number);
-
-  /**
-   * @brief returns the number of threads used by default when entering the next
-   * parallel region
-   * @return the number of threads used by default the next time we enter into
-   * a parallel region
-   */
-  unsigned int getCurrentNumberOfThreads();
+  void setMaxNumberOfThreads(unsigned int number);
 
   /** returns a vector equally splitting elements of a range among threads
    * @brief

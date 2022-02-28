@@ -53,6 +53,14 @@ namespace gum {
   Idx randomValue(const Size max = 2);
 
   /**
+   * @brief Returns a random Idx between 0 and max-1 included.
+   * @return Returns a random Odxbetween 0 and max-1 included (i.e. a proba).
+   * By default, max=2
+   */
+  template< typename GENERATOR >
+  Idx randomValue(GENERATOR& generator,  const Size max = 2);
+
+  /**
    * @brief Returns a random double between 0 and 1 included (i.e. a proba).
    * @return Returns a random double between 0 and 1 included (i.e. a proba).
    */
@@ -72,6 +80,9 @@ namespace gum {
    * @return Returns the aGrUM's seed used by the std::generators.
    */
   unsigned int randomGeneratorSeed();
+
+  /// returns the current generator's value
+  unsigned int currentRandomGeneratorValue();
 
   /**
    * @brief Initialize random generator seed.

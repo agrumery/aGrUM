@@ -38,15 +38,18 @@ namespace gum {
   namespace threadsSTL {
 
     /**
-     * @brief Returns the maximum number of threads at any time.
+     * @brief Returns the absolute maximum number of threads at any time.
      * @ingroup basicstruct_group
      *
-     * Call this from anywhere (parallel region or not). By default, it is the
-     * number of threads launched in any parallel region.
+     * By default, it should be the number of CPU cores available. Note that it
+     * is preferable to use getMaxNumberOfThreads(), which corresponds to the
+     * max number of threads the user wants to launch in parallel region (this
+     * is by default equal to getMaxNumberOfThreads(), but the user may wish to
+     * change it for some reason).
      *
      * @return Returns the maximum number of threads at any time.
      */
-    unsigned int getMaxNumberOfThreads();
+    unsigned int getAbsoluteMaxNumberOfThreads();
      
     /**
      * @brief Get the number of logical processors.

@@ -76,7 +76,7 @@ namespace gum_tests {
     // not dynamic (2U network - fast)
     void initCNet() {
 #ifdef _OPENMP
-      GUM_DEBUG_ONLY(gum::setNumberOfThreads(1););
+      GUM_DEBUG_ONLY(gum::setMaxNumberOfThreads(1););
 #endif
 
       gum::BayesNet< double >  monBNa;
@@ -95,7 +95,7 @@ namespace gum_tests {
     // dynamic (dynaCheese network - slow)
     void initDCNet() {
 #ifdef _OPENMP
-      GUM_DEBUG_ONLY(gum::setNumberOfThreads(1);)
+      GUM_DEBUG_ONLY(gum::setMaxNumberOfThreads(1);)
 #endif
 
       gum::BayesNet< double >  monBNa;

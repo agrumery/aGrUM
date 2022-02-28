@@ -108,7 +108,7 @@ namespace gum {
       _clusters_ l_clusters_;
 
       /** Threads IBayesNet. */
-      typename std::vector< ThreadData< _bnet_* > > workingSet_;
+      typename std::vector< _bnet_* > workingSet_;
       /** Threads evidence. */
       typename std::vector< List< const Potential< GUM_SCALAR >* >* > workingSetE_;
 
@@ -116,6 +116,10 @@ namespace gum {
       typename std::vector< BNInferenceEngine* > l_inferenceEngine_;
       /** Threads optimal IBayesNet. */
       std::vector< VarMod2BNsMap< GUM_SCALAR >* > l_optimalNet_;
+
+      /// the generators used for computing random values
+      std::vector< std::mt19937 > generators_;
+
       /** Fusion of threads optimal IBayesNet. */
       // OptBN< GUM_SCALAR > threadFusion_; // we should use this OptBN if omp
       // is

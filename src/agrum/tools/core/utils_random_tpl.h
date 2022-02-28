@@ -52,4 +52,13 @@ namespace gum {
 
     return v;
   }
+
+
+  template< typename GENERATOR >
+  INLINE Idx randomValue(GENERATOR& generator, const Size max) {
+    std::uniform_int_distribution<Idx> uni_int(0, max - 1);
+    return uni_int(generator);
+  }
+
+
 }   // namespace gum

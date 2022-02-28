@@ -58,4 +58,9 @@ namespace gum {
     }
   }
 
+  /// returns the current generator's value
+  INLINE unsigned int currentRandomGeneratorValue() {
+    return Generator_();
+  }
+
 } /* namespace gum */

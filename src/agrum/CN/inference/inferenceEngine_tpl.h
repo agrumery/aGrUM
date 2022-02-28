@@ -1113,7 +1113,7 @@ namespace gum {
         nb_elements += marg_i.second.size();
 
       // distribute evenly the elements among the threads
-      auto nb_threads = Size(gum::getCurrentNumberOfThreads());
+      auto nb_threads = Size(gum::getMaxNumberOfThreads());
       if (nb_elements < nb_threads) nb_threads = nb_elements;
       nb_threads = 1;
 

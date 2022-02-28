@@ -99,23 +99,32 @@ namespace gum {
   // type
   template < typename GUM_SCALAR >
   OperatorRegister4MultiDim< GUM_SCALAR >& OperatorRegister4MultiDim< GUM_SCALAR >::Register() {
-    static OperatorRegister4MultiDim< GUM_SCALAR >* container = nullptr;
-    static bool                                     first     = true;
+    static OperatorRegister4MultiDim< GUM_SCALAR >* container             = nullptr;
+    static std::atomic<bool>                        first                 = true;
+    static std::atomic<bool>                        container_initialized = false;
+    static std::mutex                               mutex;
 
     if (first) {
-      first     = false;
-      container = new OperatorRegister4MultiDim< GUM_SCALAR >;
+      // lock so that only one thread will create the container
+      mutex.lock();
+      if (! container_initialized) {
+        container = new OperatorRegister4MultiDim< GUM_SCALAR >;
 
 #  ifdef GUM_DEBUG_MODE
-      // for debugging purposes, we should inform the aGrUM's debugger that
-      // the hashtable contained within the OperatorRegister4MultiDim will be
-      // removed at the end of the program's execution.
-      __debug__::_inc_deletion_("HashTable",
-                                __FILE__,
-                                __LINE__,
-                                "destructor of",
-                                (void*)&container->_set_);
+        // for debugging purposes, we should inform the aGrUM's debugger that
+        // the hashtable contained within the OperatorRegister4MultiDim will be
+        // removed at the end of the program's execution.
+        __debug__::_inc_deletion_("HashTable",
+                                  __FILE__,
+                                  __LINE__,
+                                  "destructor of",
+                                  (void*)&container->_set_);
 #  endif /* GUM_DEBUG_MODE */
+
+        first = false;
+        container_initialized = true;
+      }
+      mutex.unlock();
     }
 
     return *container;

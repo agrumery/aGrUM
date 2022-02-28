@@ -30,10 +30,14 @@
 #ifndef GUM_OPERATOR_REGISTER_4_MULTI_DIM_H
 #define GUM_OPERATOR_REGISTER_4_MULTI_DIM_H
 
-#include <agrum/tools/core/hashTable.h>
+#include <atomic>
 #include <iostream>
+#include <mutex>
 #include <string>
 #include <utility>
+
+#include <agrum/tools/core/hashTable.h>
+
 
 namespace gum {
 

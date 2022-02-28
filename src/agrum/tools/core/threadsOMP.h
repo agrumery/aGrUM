@@ -44,29 +44,18 @@ namespace gum {
     bool hasOMPSupport();
 
     /**
-     * @brief Set the number of threads to be used.
+     * @brief Returns the absolute maximum number of threads at any time.
      * @ingroup basicstruct_group
      *
-     * To avoid spare cycles (less then 100% CPU occupied), use more threads than
-     * logical processors (x2 is a good all-around value).
-     * @param number The number of threads to be used.
-     */
-    void setNumberOfThreads(unsigned int number);
-
-    /**
-     * @brief Returns the maximum number of threads at any time.
-     * @ingroup basicstruct_group
-     *
-     * Call this from anywhere (parallel region or not). By default, it is the
-     * number of threads launched in any parallel region.
-     *
-     * It should return the number of logical processors by default, i.e.
-     * omp_get_num_procs(). If setNumberOfThreads(number) was called, it will
-     * return the choosen number.
+     * By default, it should be the number of CPU cores available. Note that it
+     * is preferable to use getMaxNumberOfThreads(), which corresponds to the
+     * max number of threads the user wants to launch in parallel region (this
+     * is by default equal to getMaxNumberOfThreads(), but the user may wish to
+     * change it for some reason).
      *
      * @return Returns the maximum number of threads at any time.
      */
-    unsigned int getMaxNumberOfThreads();
+    unsigned int getAbsoluteMaxNumberOfThreads();
 
     /**
      * @brief Get the calling thread id.

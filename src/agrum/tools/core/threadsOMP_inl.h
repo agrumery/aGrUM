@@ -28,6 +28,7 @@
 // to ease automatic parsers
 #include <agrum/agrum.h>
 #include <agrum/tools/core/threadsOMP.h>
+#include <thread>
 
 namespace gum {
   
@@ -42,22 +43,22 @@ namespace gum {
     }
 
 
-    INLINE void setNumberOfThreads(unsigned int number) {
+    INLINE unsigned int getAbsoluteMaxNumberOfThreads() {
+#ifdef _OPENMP
+      return omp_get_max_threads();
+#else
+      return 1;
+#endif
+    }
+
+
+    INLINE void setAbsoluteMaxNumberOfThreads(unsigned int number) {
 #ifdef _OPENMP
       omp_set_num_threads(number);
 #else
       GUM_ERROR(OperationNotAllowed,
                 "openMP was not enabled at compilation (or "
                 "you asked for 0 threads !)");
-#endif
-    }
-    
-
-    INLINE unsigned int getMaxNumberOfThreads() {
-#ifdef _OPENMP
-      return omp_get_max_threads();
-#else
-      return 1;
 #endif
     }
 
@@ -84,7 +85,7 @@ namespace gum {
 #ifdef _OPENMP
       return omp_get_num_procs();
 #else
-      return 1;
+      return std::thread::hardware_concurrency();
 #endif
     }
 
