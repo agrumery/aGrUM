@@ -33,3 +33,36 @@
 #ifdef GUM_NO_INLINE
 #  include <agrum/tools/core/threadsOMP_inl.h>
 #endif /* GUM_NO_INLINE */
+
+namespace gum {
+
+  namespace threadsOMP {
+
+    // the number of threads used the next time we enter into a parallel region
+    static unsigned int _nb_threads_{getAbsoluteMaxNumberOfThreads()};
+
+
+    // returns the max number of threads used by default when entering the
+    //next parallel region
+    unsigned int getMaxNumberOfThreads() {
+      return _nb_threads_;
+    }
+
+
+    // Set the max number of threads to be used.
+    void setMaxNumberOfThreads(unsigned int number) {
+      if (number == 0) number = 1;
+#ifdef _OPENMP
+      omp_set_num_threads(number);
+#else
+      if (number != 1) {
+        GUM_ERROR(OperationNotAllowed,
+                  "openMP was not enabled at compilation (or "
+                  "you asked for 0 threads !)");
+      }
+#endif
+    }
+
+  } // namespace threadsOMP
+
+} // namespace gum

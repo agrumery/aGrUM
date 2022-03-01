@@ -29,30 +29,15 @@
 
 namespace gum {
 
-  // the number of threads used the next time we enter into a parallel region
-  static unsigned int _nb_threads_ { gum::getMaxNumberOfThreads() };
-
-
   // Set the number of threads to be used.
   void setMaxNumberOfThreads(unsigned int number) {
-    if (_nb_threads_ <= gum::getAbsoluteMaxNumberOfThreads()) {
-      if (number > 0) _nb_threads_ = number;
-      else _nb_threads_ = 1;
-    }
-    else {
-      _nb_threads_ = gum::getAbsoluteMaxNumberOfThreads();
-    }
+    if (number == 0) number = 1;
+
+    threadsSTL::setMaxNumberOfThreads(number);
 
 #ifdef _OPENMP
-    omp_set_num_threads(_nb_threads_);
+    threadsOMP::setMaxNumberOfThreads(number);
 #endif
-  }
-
-
-  // returns the number of threads used by default when entering the next
-  // parallel region
-  unsigned int getMaxNumberOfThreads() {
-    return _nb_threads_;
   }
 
 

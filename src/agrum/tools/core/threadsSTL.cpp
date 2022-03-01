@@ -29,8 +29,33 @@
 #include <agrum/agrum.h>
 #include <agrum/tools/core/threadsSTL.h>
 
-
 // include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
 #  include <agrum/tools/core/threadsSTL_inl.h>
 #endif /* GUM_NO_INLINE */
+
+
+namespace gum {
+
+  namespace threadsSTL {
+
+    // the number of threads used the next time we enter into a parallel region
+    static unsigned int _nb_threads_{getAbsoluteMaxNumberOfThreads()};
+
+
+    // returns the max number of threads used by default when entering the
+    // next parallel region
+    unsigned int getMaxNumberOfThreads() {
+      return _nb_threads_;
+    }
+
+
+    // Set the max number of threads to be used.
+    void setMaxNumberOfThreads(unsigned int number) {
+      if (number == 0) number = 1;
+      _nb_threads_ = number;
+    }
+
+  } // namespace threadsSTL
+
+} // namespace gum

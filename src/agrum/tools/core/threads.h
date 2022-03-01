@@ -27,6 +27,9 @@
 #ifndef GUM_THREADS_H
 #define GUM_THREADS_H
 
+#include <vector>
+#include <utility>
+
 #include <agrum/agrum.h>
 #include <agrum/tools/core/threadsSTL.h>
 #include <agrum/tools/core/threadsOMP.h>
@@ -54,13 +57,24 @@ namespace gum {
    * parallel region
    *
    * This is the number of threads launched in parallel regions. By default, this
-   * number is equal to getAbsoluteMaxNumberOfThreads() but if the user wishes
-   * to change this number (using method setMaxNumberOfThreads), then this
-   * number is updated.
+   * number is equal to getAbsoluteMaxNumberOfThreads() but if the user has
+   * changed it using method setMaxNumberOfThreads, then this number is what the
+   * user required.
+   *
    * @return the number of threads used by default the next time we enter into
    * a parallel region
    */
-  unsigned int getMaxNumberOfThreads();
+  using gum::GUM_THREADS::getMaxNumberOfThreads;
+
+  /**
+   * @brief Set the max number of threads to be used.
+   * @ingroup basicstruct_group
+   *
+   * To avoid spare cycles (less then 100% CPU occupied), use more threads than
+   * logical processors (x2 is a good all-around value).
+   * @param number The number of threads to be used.
+   */
+  void setMaxNumberOfThreads(unsigned int number);
 
    /**
    * @brief Get the number of logical processors.
@@ -69,15 +83,6 @@ namespace gum {
    */
   using gum::GUM_THREADS::getNumberOfLogicalProcessors;
 
-  /**
-   * @brief Set the number of threads to be used.
-   * @ingroup basicstruct_group
-   *
-   * To avoid spare cycles (less then 100% CPU occupied), use more threads than
-   * logical processors (x2 is a good all-around value).
-   * @param number The number of threads to be used.
-   */
-  void setMaxNumberOfThreads(unsigned int number);
 
   /** returns a vector equally splitting elements of a range among threads
    * @brief

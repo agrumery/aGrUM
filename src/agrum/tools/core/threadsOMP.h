@@ -32,6 +32,12 @@
 #  include <omp.h>
 #endif
 
+#include <thread>
+#include <vector>
+#include <utility>
+
+#include <agrum/agrum.h>
+
 namespace gum {
   
   namespace threadsOMP {
@@ -56,6 +62,30 @@ namespace gum {
      * @return Returns the maximum number of threads at any time.
      */
     unsigned int getAbsoluteMaxNumberOfThreads();
+
+    /**
+     * @brief returns the max number of threads used by default when entering the
+     * next parallel region
+     *
+     * This is the number of threads launched in parallel regions. By default, this
+     * number is equal to getAbsoluteMaxNumberOfThreads() but if the user has
+     * changed it using method setMaxNumberOfThreads, then this number is what the
+     * user required.
+     *
+     * @return the number of threads used by default the next time we enter into
+     * a parallel region
+     */
+    unsigned int getMaxNumberOfThreads();
+
+    /**
+     * @brief Set the number of threads to be used.
+     * @ingroup basicstruct_group
+     *
+     * To avoid spare cycles (less then 100% CPU occupied), use more threads than
+     * logical processors (x2 is a good all-around value).
+     * @param number The number of threads to be used.
+     */
+    void setMaxNumberOfThreads(unsigned int number);
 
     /**
      * @brief Get the calling thread id.

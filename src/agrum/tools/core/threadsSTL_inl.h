@@ -29,7 +29,6 @@
 #include <agrum/agrum.h>
 #include <agrum/tools/core/threadsSTL.h>
 
-
 namespace gum {
 
   namespace threadsSTL {
