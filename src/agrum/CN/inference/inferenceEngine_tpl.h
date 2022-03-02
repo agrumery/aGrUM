@@ -241,6 +241,10 @@ namespace gum {
 
         evidence_.insert(id, it->second);
       }
+
+      // forces the computation of the begin iterator to avoid subsequent data races
+      // @TODO make HashTableConstIterator constructors thread safe
+      evidence_.begin();
     }
 
     // check that observed variables DO exists in the network (otherwise Lazy
@@ -262,6 +266,10 @@ namespace gum {
 
         evidence_.insert(elt.first, elt.second);
       }
+
+      // forces the computation of the begin iterator to avoid subsequent data races
+      // @TODO make HashTableConstIterator constructors thread safe
+      evidence_.begin();
     }
 
     template < typename GUM_SCALAR >
@@ -323,6 +331,10 @@ namespace gum {
       }   // end of : file
 
       evi_stream.close();
+
+      // forces the computation of the begin iterator to avoid subsequent data races
+      // @TODO make HashTableConstIterator constructors thread safe
+      evidence_.begin();
     }
 
     template < typename GUM_SCALAR >
