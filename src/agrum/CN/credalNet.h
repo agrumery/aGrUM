@@ -25,7 +25,7 @@
 /**
  * @file
  * @brief Class representing Credal Networks
- * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
+ * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6) and Christophe GONZALES(_at_AMU)
  */
 
 #include <agrum/agrum.h>
@@ -62,7 +62,8 @@
 
 #include <agrum/CN/polytope/LrsWrapper.h>
 
-#include <agrum/tools/core/threadsOMP.h>
+#include <agrum/tools/core/threads.h>
+#include <agrum/tools/core/threadExecutor.h>
 
 // 64 bits for windows (long is 32 bits)
 #ifdef _MSC_VER

@@ -23,7 +23,7 @@
  * @file
  * @brief Inference by basic sampling algorithm (pure random) of bnet in credal
  * networks.
- * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
+ * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6) and Christophe GONZALES(_at_AMU)
  */
 
 #ifndef __CN_MC_SAMPLING__H__

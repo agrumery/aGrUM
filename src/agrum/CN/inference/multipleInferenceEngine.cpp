@@ -23,7 +23,7 @@
  * @file
  * @brief Implementation of the Multiple Inference Engine for credal networks
  *
- * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
+ * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6) and Christophe GONZALES(_at_AMU)
  */
 
 #include <agrum/CN/inference/multipleInferenceEngine.h>

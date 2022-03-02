@@ -1073,9 +1073,10 @@ namespace gum {
       return eps;
     }
 
-/*
+    /*
+      // old openMP code:
       GUM_SCALAR eps = 0;
-#pragma omp parallel
+      #pragma omp parallel
       {
         GUM_SCALAR tEps = 0;
         GUM_SCALAR delta;
@@ -1083,7 +1084,7 @@ namespace gum {
         /// int tId = getThreadNumber();
         int nsize = int(marginalMin_.size());
 
-#pragma omp for
+        #pragma omp for
 
         for (int i = 0; i < nsize; i++) {
           auto dSize = marginalMin_[i].size();
@@ -1104,16 +1105,16 @@ namespace gum {
           }
         }   // end of : all variables
 
-#pragma omp critical(epsilon_max)
+        #pragma omp critical(epsilon_max)
         {
-#pragma omp flush(eps)
+        #pragma omp flush(eps)
           eps = (eps < tEps) ? tEps : eps;
         }
       }
 
       return eps;
     }
-*/
+    */
 
 
     template < typename GUM_SCALAR >

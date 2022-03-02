@@ -140,8 +140,9 @@ namespace gum {
           ThreadExecutor::execute(nb_threads, threadedExec);
 
           /*
-// less overheads with high periodSize
-#pragma omp parallel for
+          // old openMP code:
+          // less overheads with high periodSize
+          #pragma omp parallel for
 
           for (int iter = 0; iter < int(psize); iter++) {
             Size tId = threadsOMP::getThreadNumber();
@@ -270,16 +271,17 @@ namespace gum {
       ThreadExecutor::execute(num_threads, threadedExec);
     }
 
-/*
+    /*
+      // old openMP code
       int num_threads;
 
-#pragma omp parallel
+      #pragma omp parallel
       {
         int this_thread = omp_get_thread_num();
 
-// implicit wait clause (don't put nowait)
+        // implicit wait clause (don't put nowait)
 
-#pragma omp single
+        #pragma omp single
         {
           // should we ask for max threads instead ( no differences here in
           // practice
@@ -300,7 +302,7 @@ namespace gum {
         // the same stuff in 2 places since :
         // !!! BNInferenceEngine still needs to be initialized here anyway !!!
 
-#pragma omp critical(Init)
+        #pragma omp critical(Init)
         {
           // IBayesNet< GUM_SCALAR > * thread_bn = new IBayesNet< GUM_SCALAR
           // >();//(this->credalNet_->current_bn());

@@ -25,7 +25,7 @@
 /**
  * @file
  * @brief Abstract class representing CredalNet inference engines
- * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
+ * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6) and Christophe GONZALES(_at_AMU)
  */
 
 /// @todo virtual for all functions that MAY be one day redefined in any derived

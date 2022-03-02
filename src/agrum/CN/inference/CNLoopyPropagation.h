@@ -23,7 +23,7 @@
  * @file
  * @brief Class implementing loopy-propagation with binary networks - L2U
  * algorithm.
- * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
+ * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6) and Christophe GONZALES(_at_AMU)
  */
 
 #ifndef __CN_LOOPY_PROPAGATION__H__

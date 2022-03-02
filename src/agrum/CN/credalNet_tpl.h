@@ -1660,9 +1660,56 @@ namespace gum {
         delete[] p;
         delete[] cstr;
 
-        bool is_redund = false;
+        // compute is_redund using multiple threads:
+        // compute the max number of threads to use (avoid nested threads)
+        const Size nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
+                               ? gum::getMaxNumberOfThreads()
+                               : 1;   // no nested multithreading
 
-#pragma omp parallel
+        const auto nsize = v_rep.size();
+        const auto real_nb_threads = std::min(nb_threads, nsize);
+
+        // prepare the data used by the threads
+        const auto ranges = gum::dispatchRangeToThreads(0, nsize, real_nb_threads);
+        std::vector< Size > t_redund(real_nb_threads); // use Size to avoid false sharing
+
+        // create the function to be executed by the threads
+        auto threadedExec = [this, ranges, &t_redund, vertex, v_rep](
+                               const std::size_t this_thread,
+                               const std::size_t nb_threads) {
+          const auto vsize         = vertex.size();
+          auto&      thread_redund = t_redund[this_thread];
+
+          for (Idx i = ranges[this_thread].first, end = ranges[this_thread].second; i < end;
+               i++) {
+            thread_redund = 1;
+            for (Idx modality = 0; modality < vsize; ++modality) {
+              if (std::fabs(vertex[modality] - v_rep[i][modality]) > _epsRedund_) {
+                thread_redund = 0;
+                break;
+              }
+            }
+
+            if (thread_redund) return;
+          }
+        };
+
+        // launch the threads
+        ThreadExecutor::execute(real_nb_threads, threadedExec);
+
+        // aggregate the results
+        bool is_redund = false;
+        for (const auto thread_redund: t_redund) {
+          if (thread_redund) {
+            is_redund = true;
+            break;
+          }
+        }
+
+
+        /*
+        // old openMP code:
+        #pragma omp parallel
         {
           int this_thread = threadsOMP::getThreadNumber();
           int num_threads = threadsOMP::getNumberOfRunningThreads();
@@ -1671,7 +1718,7 @@ namespace gum {
           auto end_pos   = (this_thread + 1) * v_rep.size() / num_threads;
 
           for (auto p = begin_pos; p < end_pos; p++) {
-#pragma omp flush(is_redund)
+          #pragma omp flush(is_redund)
 
             if (is_redund) break;
 
@@ -1688,11 +1735,12 @@ namespace gum {
 
             if (thread_redund) {
               is_redund = true;
-#pragma omp flush(is_redund)
+              #pragma omp flush(is_redund)
               int i=0; // this line to work around a weird syntax error with msvc
             }
           }   // end of : each thread for
         }     // end of : parallel
+        */
 
         if (!is_redund) v_rep.push_back(vertex);
 

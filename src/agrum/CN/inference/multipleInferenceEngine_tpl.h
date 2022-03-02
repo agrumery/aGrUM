@@ -317,14 +317,14 @@ namespace gum {
       }
     }
 
-/*
-#pragma omp parallel
+    /*
+      // old openMP code :
+      #pragma omp parallel
       {
         int  threadId = threadsOMP::getThreadNumber();
         long nsize    = long(workingSet_[threadId]->size());
 
-#pragma omp for
-
+        #pragma omp for
         for (long i = 0; i < nsize; i++) {
           Size dSize = Size(l_marginalMin_[threadId][i].size());
 
@@ -343,7 +343,7 @@ namespace gum {
         }       // end of : all variables
       }         // end of : parallel region
     }
-*/
+    */
 
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
@@ -409,9 +409,10 @@ namespace gum {
       return eps;
     }
 
-    /*/
+    /*
+     // old openMP code :
       GUM_SCALAR eps = 0;
-#pragma omp parallel
+      #pragma omp parallel
       {
         GUM_SCALAR tEps = 0;
         GUM_SCALAR delta;
@@ -419,8 +420,7 @@ namespace gum {
         int  tId   = threadsOMP::getThreadNumber();
         long nsize = long(workingSet_[tId]->size());
 
-#pragma omp for
-
+        #pragma omp for
         for (long i = 0; i < nsize; i++) {
           Size dSize = Size(l_marginalMin_[tId][i].size());
           std::cout << omp_get_num_threads() << std::endl;
@@ -441,16 +441,16 @@ namespace gum {
           }
         }   // end of : all variables
 
-#pragma omp critical(epsilon_max)
+        #pragma omp critical(epsilon_max)
         {
-#pragma omp flush(eps)
+        #pragma omp flush(eps)
           eps = (eps < tEps) ? tEps : eps;
         }
 
       }   // end of : parallel region
       return eps;
     }
-//*/
+    */
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::updateOldMarginals_() {
@@ -524,13 +524,13 @@ namespace gum {
     }
 
     /*
-#pragma omp parallel
+      // old openMP code :
+      #pragma omp parallel
       {
         int  threadId = threadsOMP::getThreadNumber();
         Size nsize    = Size(workingSet_[threadId]->size());
 
-#pragma omp for
-
+        #pragma omp for
         for (long i = 0; i < long(nsize); i++) {
           Size tsize = Size(l_marginalMin_.size());
 
@@ -643,21 +643,20 @@ namespace gum {
     }
 
     /*
-
+      // old openMP code :
       // don't create threads if there are no modalities to compute expectations
       if (this->modal_.empty()) return;
 
       // we can compute expectations from vertices of the final credal set
       if (_infE_::storeVertices_) {
-#pragma omp parallel
+      #pragma omp parallel
         {
           int threadId = threadsOMP::getThreadNumber();
 
           if (!this->l_modal_[threadId].empty()) {
             Size nsize = Size(workingSet_[threadId]->size());
 
-#pragma omp for
-
+            #pragma omp for
             for (long i = 0; i < long(nsize); i++) {   // i needs to be signed (due to omp with
                                                        // visual c++ 15)
               std::string var_name = workingSet_[threadId]->variable(i).name();
@@ -683,13 +682,13 @@ namespace gum {
         return;
       }
 
-#pragma omp parallel
+      #pragma omp parallel
       {
         int threadId = threadsOMP::getThreadNumber();
 
         if (!this->l_modal_[threadId].empty()) {
           Size nsize = Size(workingSet_[threadId]->size());
-#pragma omp for
+          #pragma omp for
           for (long i = 0; i < long(nsize);
                i++) {   // long instead of Idx due to omp for visual C++15
             std::string var_name = workingSet_[threadId]->variable(i).name();
@@ -711,7 +710,6 @@ namespace gum {
         }       // end of : if modals not empty
       }         // end of : parallel region
     }
-
     */
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
