@@ -177,16 +177,22 @@ namespace gum {
       auto& node_to_execute = thread2node[this_thread];
       Size  nb_remaining;
 
+      // sets the condition to wait for new nodes
+      const auto duration = std::chrono::milliseconds(10);
+      auto has_node_to_process =
+         [&node_to_execute, &nb_remaining_operations, &nb_remaining, this_thread] {
+           nb_remaining = nb_remaining_operations.load();
+           return (node_to_execute != NodeId(0)) || (nb_remaining == Size(0));
+         };
+
       while (true) {
         {   // use brace for unique_lock's scope
 
           // wait until some operation is available or all the operations have
           // been executed
           std::unique_lock< std::mutex > lock(this_mutex);
-          this_not_empty.wait(lock, [&node_to_execute, &nb_remaining_operations, &nb_remaining] {
-            nb_remaining = nb_remaining_operations.load();
-            return (node_to_execute != NodeId(0)) || (nb_remaining == Size(0));
-          });
+          do {}
+          while(!this_not_empty.wait_for(lock, duration, has_node_to_process));
 
           // if all the operations have been executed, stop the thread
           if (nb_remaining == Size(0)) {
@@ -214,23 +220,60 @@ namespace gum {
           }
         }
 
-        // get a list of threads that seem inactive. As we do not guard the reads of
-        // inactive_threads, some threads might seem to be currently inactive but can
-        // become active before we try to assign them some operations to perform
+        // if there are new nodes to process. Assign one node to the current thread
+        bool this_thread_is_inactive = false;
+        if (!new_available_nodes.empty()) {
+          // no need to lock with a mutex here since, the thread being still active,
+          // no other thread can assign it another node
+          node_to_execute = new_available_nodes.back();
+          new_available_nodes.pop_back();
+        }
+        else {
+          // here, no new node was assigned, so the thread becomes inactive
+          this_thread_is_inactive = true;
+        }
+
+        // There may still exist nodes to process. We will try to assign them to the
+        // set of inactive threads. So, get a list of threads that seem inactive. As we
+        // do not guard the reads of these inactive_threads, some threads might seem to
+        // be currently inactive but can become active before we try to assign them some
+        // operations to perform
         std::vector< Idx > inactive_threads;
         inactive_threads.reserve(nb_threads);
         for (Idx i = 0; i < nb_threads; ++i) {
           if (!active_threads[i]) inactive_threads.push_back(i);
         }
-        inactive_threads.push_back(this_thread);
 
-        // now, indicate that the current thread can be assigned a new operation
-        this_active_thread = false;
-        node_to_execute    = 0;
+        // If we did not assign a new node to the current thread, consider it now
+        // as inactive. Below, we may be able to assign it a node that was stored
+        // into the overall set of available nodes
+        if (this_thread_is_inactive) {
+          inactive_threads.push_back(this_thread);
+          this_mutex.lock();
+          this_active_thread = false;
+          node_to_execute = 0;
+          this_mutex.unlock();
+        }
 
-        // try to assign the nodes in new_available_nodes to inactive threads. Here, we
-        // guard what we do with mutexes in order to get really inactive threads
-        // performing operations that are guaranteed to be different.
+        // if no inactive thread was identified, we store the newly available nodes
+        // into the overall set of available nodes and we go back to the waiting step
+        if (inactive_threads.empty()) {
+          if (!new_available_nodes.empty()) {
+            // lock the next shared memory operations
+            std::lock_guard< std::mutex > overall_lock(overall_mutex);
+            for (const auto node: new_available_nodes)
+              available_nodes.insert(node);
+          }
+
+          // go to the waiting step
+          continue;
+        }
+
+        // here we know that there are some threads that are still inactive.
+
+        // try to assign the nodes in new_available_nodes to these inactive threads.
+        // Here, we guard what we do with mutexes in order to get really inactive
+        // threads performing operations that are guaranteed to be different.
         bool no_more_inactive_threads = false;
         {
           Idx i = inactive_threads.size() - 1;
@@ -238,40 +281,44 @@ namespace gum {
           while (!new_available_nodes.empty()) {
             while (!no_more_inactive_threads) {
               thread = inactive_threads[i];
-              std::lock_guard< std::mutex > lock(thread2mutex[thread]);
-              if (!active_threads[thread]) {
-                active_threads[thread] = true;
-                thread2node[thread]    = new_available_nodes.back();
-                thread2not_empty[thread].notify_one();
-                new_available_nodes.pop_back();
+              {   // use brace for lock_guard's scope
+                std::lock_guard< std::mutex > lock(thread2mutex[thread]);
+                if (!active_threads[thread]) {
+                  active_threads[thread] = true;
+                  thread2node[thread]    = new_available_nodes.back();
+                  new_available_nodes.pop_back();
+                  thread2not_empty[thread].notify_one();
 
-                if (i != Idx(0))
-                  --i;
-                else
-                  no_more_inactive_threads = true;
-                break;
-              } else {
-                if (i != Idx(0))
-                  --i;
-                else
-                  no_more_inactive_threads = true;
+                  if (i != Idx(0))
+                    --i;
+                  else
+                    no_more_inactive_threads = true;
+                  break;
+                }
               }
+              if (i != Idx(0))
+                --i;
+              else
+                no_more_inactive_threads = true;
             }
+
             if (no_more_inactive_threads) break;
           }
 
           // do not take anymore into account the threads we have assigned
           // operations to
-          if (no_more_inactive_threads)
+          if (no_more_inactive_threads) {
             inactive_threads.clear();
-          else
+          }
+          else {
             inactive_threads.resize(i + 1);
+          }
         }
 
         // add the remaining elements of new_available_nodes to available_nodes and
-        // try to assign the nodes in available_nodes to inactive threads. Here, we
-        // guard what we do with mutexes in order to get really inactive threads
-        // performing operations that are guaranteed to be different.
+        // try to assign the nodes in available_nodes to the remaining inactive threads.
+        // Here, we guard what we do with mutexes in order to get really inactive
+        // threads performing operations that are guaranteed to be different.
         {
           // lock the next shared memory operations
           std::lock_guard< std::mutex > overall_lock(overall_mutex);
@@ -284,24 +331,26 @@ namespace gum {
           while (!available_nodes.empty()) {
             while (!no_more_inactive_threads) {
               thread = inactive_threads[i];
-              std::lock_guard< std::mutex > lock(thread2mutex[thread]);
-              if (!active_threads[thread]) {
-                active_threads[thread] = true;
-                thread2node[thread]    = available_nodes.front();
-                thread2not_empty[thread].notify_one();
-                available_nodes.popFront();
-
-                if (i != Idx(0))
-                  --i;
-                else
-                  no_more_inactive_threads = true;
-                break;
-              } else {
-                if (i != Idx(0))
-                  --i;
-                else
-                  no_more_inactive_threads = true;
+              {
+                std::lock_guard< std::mutex > lock(thread2mutex[thread]);
+                if (!active_threads[thread]) {
+                  active_threads[thread] = true;
+                  thread2node[thread]    = available_nodes.front();
+                  available_nodes.popFront();
+                  thread2not_empty[thread].notify_one();
+                  if (i != Idx(0))
+                    --i;
+                  else
+                    no_more_inactive_threads = true;
+                  break;
+                }
               }
+
+              if (i != Idx(0))
+                --i;
+              else
+                no_more_inactive_threads = true;
+
             }
             if (no_more_inactive_threads) break;
           }
