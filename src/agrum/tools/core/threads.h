@@ -46,9 +46,6 @@ namespace gum {
 #endif
 
 
-  // @TODO substitute the lines below by
-  // using gum::GUM_THREADS::getAbsoluteMaxNumberOfThreads;
-  // when swig will support it
   /**
    * @brief Returns the absolute maximum number of threads at any time.
    * @ingroup basicstruct_group
@@ -61,16 +58,8 @@ namespace gum {
    *
    * @return Returns the absolute maximum number of threads at any time.
    */
-#ifdef GUM_THREADS_USE_OMP
-  using gum::threadsOMP::getAbsoluteMaxNumberOfThreads;
-#else
-  using gum::threadsOMP::getAbsoluteMaxNumberOfThreads;
-#endif
+  using gum::threads::getAbsoluteMaxNumberOfThreads;
 
-
-  // @TODO substitute the lines below by
-  // using gum::GUM_THREADS::getMaxNumberOfThreads;
-  // when swig will support it
   /**
    * @brief returns the max number of threads used by default when entering the next
    * parallel region
@@ -83,26 +72,14 @@ namespace gum {
    * @return the number of threads used by default the next time we enter into
    * a parallel region
    */
-#ifdef GUM_THREADS_USE_OMP
-  using gum::threadsOMP::getMaxNumberOfThreads;
-#else
-  using gum::threadsSTL::getMaxNumberOfThreads;
-#endif
+  using threads::getMaxNumberOfThreads;
 
-
-  // @TODO substitute the lines below by
-  // using gum::GUM_THREADS::getNumberOfLogicalProcessors;
-  // when swig will support it
    /**
    * @brief Get the number of logical processors.
    * @ingroup basicstruct_group
    * @return The number of logical processors.
    */
-#ifdef GUM_THREADS_USE_OMP
-  using gum::threadsOMP::getNumberOfLogicalProcessors;
-#else
-  using gum::threadsSTL::getNumberOfLogicalProcessors;
-#endif
+  using gum::threads::getNumberOfLogicalProcessors;
 
   /**
    * @brief Set the max number of threads to be used.

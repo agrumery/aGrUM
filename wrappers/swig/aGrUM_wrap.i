@@ -17,6 +17,20 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
+
+/* NAMESPACE CLASHES */
+%rename(OMP_getAbsoluteMaxNumberOfThreads) gum::threadsOMP::getAbsoluteMaxNumberOfThreads;
+%rename(OMP_getMaxNumberOfThreads) gum::threadsOMP::getMaxNumberOfThreads;
+%rename(OMP_getNumberOfLogicalProcessors) gum::threadsOMP::getNumberOfLogicalProcessors;
+%rename(OMP_setMaxNumberOfThreads) gum::threadsOMP::setMaxNumberOfThreads;
+
+%rename(STL_getAbsoluteMaxNumberOfThreads) gum::threadsSTL::getAbsoluteMaxNumberOfThreads;
+%rename(STL_getMaxNumberOfThreads) gum::threadsSTL::getMaxNumberOfThreads;
+%rename(STL_getNumberOfLogicalProcessors) gum::threadsSTL::getNumberOfLogicalProcessors;
+%rename(STL_setMaxNumberOfThreads) gum::threadsSTL::setMaxNumberOfThreads;
+
+
 /* INCLUDES */
 %{
 #include <iostream>
@@ -192,6 +206,7 @@ namespace std {
   }
 }
 
+
 %include "forUsing.i"
 
 /* EXCEPTION HANDLING */
@@ -241,7 +256,11 @@ namespace std {
 %include <agrum/tools/core/set.h>
 %include <agrum/tools/core/exceptions.h>
 %include <agrum/tools/core/sequence.h>
+%import <agrum/tools/core/threadsOMP.h>
+%import <agrum/tools/core/threadsSTL.h>
+%include <agrum/tools/core/threads.h>
 %include <agrum/tools/core/utils_random.h>
+
 
 %include <agrum/tools/variables/variable.h>
 %include <agrum/tools/variables/discreteVariable.h>
@@ -407,6 +426,33 @@ namespace gum {
 #else
     //std::cout<<"Stats on aGrUM objects only available in debug mode"<<std::endl;
 #endif // GUM_DEBUG_MODE
+  }
+}
+%}
+
+
+/* for multithreading */
+namespace gum {
+  namespace multithreading {
+    void setNumberOfThreads(unsigned int);
+    unsigned int getMaxNumberOfThreads();
+    unsigned int getNumberOfLogicalProcessors();
+  }
+}
+%{
+namespace gum {
+  namespace multithreading {
+    void setNumberOfThreads(unsigned int nb) {
+      gum::setMaxNumberOfThreads(nb);
+    }
+
+    unsigned int getMaxNumberOfThreads() {
+      return gum::getAbsoluteMaxNumberOfThreads();
+    }
+
+    unsigned int getNumberOfLogicalProcessors() {
+      return gum::getNumberOfLogicalProcessors();
+    }
   }
 }
 %}

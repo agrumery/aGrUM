@@ -2047,6 +2047,12 @@ class SyntaxError(IOError):
 _pyAgrum.SyntaxError_swigregister(SyntaxError)
 
 
+def setMaxNumberOfThreads(number: int) -> None:
+    return _pyAgrum.setMaxNumberOfThreads(number)
+
+def dispatchRangeToThreads(beg: int, end: int, nb_threads: int) -> "std::vector< std::pair< int,int >,std::allocator< std::pair< int,int > > >":
+    return _pyAgrum.dispatchRangeToThreads(beg, end, nb_threads)
+
 def randomValue(max: int=2) -> int:
     r"""
 
@@ -24478,5 +24484,14 @@ _pyAgrum.BNDatabaseGenerator_swigregister(BNDatabaseGenerator)
 
 def statsObj() -> None:
     return _pyAgrum.statsObj()
+
+def setNumberOfThreads(arg1: int) -> None:
+    return _pyAgrum.setNumberOfThreads(arg1)
+
+def getMaxNumberOfThreads() -> int:
+    return _pyAgrum.getMaxNumberOfThreads()
+
+def getNumberOfLogicalProcessors() -> int:
+    return _pyAgrum.getNumberOfLogicalProcessors()
 
 
