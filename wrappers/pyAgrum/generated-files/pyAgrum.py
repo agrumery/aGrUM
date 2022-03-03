@@ -24488,10 +24488,16 @@ def statsObj() -> None:
 def setNumberOfThreads(arg1: int) -> None:
     return _pyAgrum.setNumberOfThreads(arg1)
 
+def getNumberOfThreads() -> int:
+    return _pyAgrum.getNumberOfThreads()
+
 def getMaxNumberOfThreads() -> int:
     return _pyAgrum.getMaxNumberOfThreads()
 
 def getNumberOfLogicalProcessors() -> int:
     return _pyAgrum.getNumberOfLogicalProcessors()
+
+def isOMP() -> bool:
+    return _pyAgrum.isOMP()
 
 

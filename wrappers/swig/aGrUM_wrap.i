@@ -19,7 +19,7 @@
  */
 
 
-/* NAMESPACE CLASHES */
+/* TO AVOID NAMESPACE CLASHES */
 %rename(OMP_getAbsoluteMaxNumberOfThreads) gum::threadsOMP::getAbsoluteMaxNumberOfThreads;
 %rename(OMP_getMaxNumberOfThreads) gum::threadsOMP::getMaxNumberOfThreads;
 %rename(OMP_getNumberOfLogicalProcessors) gum::threadsOMP::getNumberOfLogicalProcessors;
@@ -435,8 +435,10 @@ namespace gum {
 namespace gum {
   namespace multithreading {
     void setNumberOfThreads(unsigned int);
+    unsigned int getNumberOfThreads();
     unsigned int getMaxNumberOfThreads();
     unsigned int getNumberOfLogicalProcessors();
+    bool isOMP();
   }
 }
 %{
@@ -446,12 +448,24 @@ namespace gum {
       gum::setMaxNumberOfThreads(nb);
     }
 
+    unsigned int getNumberOfThreads() {
+      return gum::getMaxNumberOfThreads();
+    }
+
     unsigned int getMaxNumberOfThreads() {
       return gum::getAbsoluteMaxNumberOfThreads();
     }
 
     unsigned int getNumberOfLogicalProcessors() {
       return gum::getNumberOfLogicalProcessors();
+    }
+
+    bool isOMP() {
+#ifdef GUM_THREADS_USE_OMP
+      return true;
+#else
+      return false;
+#endif
     }
   }
 }
