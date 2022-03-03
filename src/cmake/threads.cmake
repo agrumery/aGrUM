@@ -23,8 +23,11 @@ endif(UNIX)
 
 
 # specifies which kind of thread should be used by default by aGrUM
+# the _USE_ are required for swig
 if ("${CMAKE_GUM_THREADS}" STREQUAL "omp" AND OPENMP_FOUND)
    set (GUM_THREADS "threadsOMP")
+   set(GUM_THREADS_USE_OMP "1")
 else ()
    set (GUM_THREADS "threadsSTL")
+   set(GUM_THREADS_USE_STL "1")
 endif ()

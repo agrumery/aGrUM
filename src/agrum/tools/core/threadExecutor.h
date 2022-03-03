@@ -35,7 +35,14 @@ namespace gum {
 
   // use either the OMP or the STL thread executor, depending on the --threads
   // aGrUM's compilation option
-  using ThreadExecutor = GUM_THREADS::ThreadExecutor;
+  // @TODO substitute the lines below by
+  // using ThreadExecutor = GUM_THREADS::ThreadExecutor;
+  // when swig will support it
+#ifdef GUM_THREADS_USE_OMP
+  using ThreadExecutor = threadsOMP::ThreadExecutor;
+#else
+  using ThreadExecutor = threadsSTL::ThreadExecutor;
+#endif
 
 } /* namespace gum */
 

@@ -41,7 +41,12 @@
 #include <agrum/tools/core/hashTable.h>
 #include <agrum/tools/core/refPtr.h>
 #include <agrum/tools/core/list.h>
+#include <agrum/tools/core/threadsOMP.h>
+#include <agrum/tools/core/threadsSTL.h>
 #include <agrum/tools/core/threads.h>
+#include <agrum/tools/core/threadExecutorOMP.h>
+#include <agrum/tools/core/threadExecutorSTL.h>
+#include <agrum/tools/core/threadExecutor.h>
 
 #include <agrum/tools/graphs/parts/edgeGraphPart.h>
 #include <agrum/tools/graphs/parts/arcGraphPart.h>
@@ -237,8 +242,6 @@ namespace std {
 %include <agrum/tools/core/exceptions.h>
 %include <agrum/tools/core/sequence.h>
 %include <agrum/tools/core/utils_random.h>
-
-%include <agrum/tools/core/threads.h>
 
 %include <agrum/tools/variables/variable.h>
 %include <agrum/tools/variables/discreteVariable.h>
