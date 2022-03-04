@@ -75,7 +75,7 @@ namespace gum {
         const IScheduleMultiDim* table       = schedule.scheduleMultiDim(pot->id());
         const auto               creating_op = schedule.scheduleMultiDimCreator(table);
         if (creating_op != nullptr) {
-          const_cast< ScheduleOperation* >(creating_op)->makeResultsPersistent(true);
+          const_cast< ScheduleOperator* >(creating_op)->makeResultsPersistent(true);
         }
         result.insert(table);
       }

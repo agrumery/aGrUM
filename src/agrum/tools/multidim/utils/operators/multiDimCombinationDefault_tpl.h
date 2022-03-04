@@ -251,7 +251,7 @@ namespace gum {
 
   // returns the set of operations to perform to make the combination
   template < class TABLE >
-  std::pair< std::vector< ScheduleOperation* >, const IScheduleMultiDim* >
+  std::pair< std::vector< ScheduleOperator* >, const IScheduleMultiDim* >
      MultiDimCombinationDefault< TABLE >::operations(
         const std::vector< const IScheduleMultiDim* >& original_tables,
         const bool                                     is_result_persistent) const {
@@ -264,7 +264,7 @@ namespace gum {
     std::vector< const IScheduleMultiDim* > tables = original_tables;
 
     // create the resulting set of operations to execute to perform the combination
-    std::vector< ScheduleOperation* > operations;
+    std::vector< ScheduleOperator* > operations;
     operations.reserve(2 * tables.size());
 
     // create a vector indicating whether the elements in Vector tables are
@@ -291,7 +291,7 @@ namespace gum {
     // keep track of the result of the last combination performed as well as of
     // the operation that created it
     const IScheduleMultiDim* resulting_table = nullptr;
-    ScheduleOperation*       resulting_op    = nullptr;
+    ScheduleOperator*       resulting_op    = nullptr;
 
     // now parse the priority queue: the top element (i,j) gives the combination
     // to perform. When the operations R has been computed,substitute i by R,
@@ -374,7 +374,7 @@ namespace gum {
 
   /// returns the set of operations to perform to make the combination
   template < class TABLE >
-  std::pair< std::vector< ScheduleOperation* >, const IScheduleMultiDim* >
+  std::pair< std::vector< ScheduleOperator* >, const IScheduleMultiDim* >
      MultiDimCombinationDefault< TABLE >::operations(const Set< const IScheduleMultiDim* >& set,
                                                      const bool is_result_persistent) const {
     std::vector< const IScheduleMultiDim* > vect;
@@ -390,7 +390,7 @@ namespace gum {
   template < class TABLE >
   INLINE void MultiDimCombinationDefault< TABLE >::_freeData_(
      std::vector< const IScheduleMultiDim* >& tables,
-     std::vector< ScheduleOperation* >&       operations) const {
+     std::vector< ScheduleOperator* >&       operations) const {
     for (auto op: operations)
       delete op;
 

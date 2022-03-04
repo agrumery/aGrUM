@@ -947,7 +947,7 @@ namespace gum_tests {
         auto       avail_nodes = schedule.availableOperations();
         const auto node        = *(avail_nodes.begin());
         auto&      op          = schedule.operation(node);
-        const_cast< gum::ScheduleOperation& >(op).execute();
+        const_cast< gum::ScheduleOperator& >(op).execute();
 
         auto t2 = t1.margMaxOut(proj_set);
         TS_ASSERT(dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(ptrRes)
@@ -1025,7 +1025,7 @@ namespace gum_tests {
       avail = schedule.availableOperations();
       TS_ASSERT(avail.size() == 1)
       const gum::NodeId node     = *avail.begin();
-      auto&             proj_ops = const_cast< gum::ScheduleOperation& >(schedule.operation(node));
+      auto&             proj_ops = const_cast< gum::ScheduleOperator& >(schedule.operation(node));
       proj_ops.execute();
       std::vector< gum::NodeId > xavail;
       schedule.updateAfterExecution(node, xavail, false);
@@ -1075,7 +1075,7 @@ namespace gum_tests {
         auto       avail_nodes = schedule.availableOperations();
         const auto node        = *(avail_nodes.begin());
         auto&      op          = schedule.operation(node);
-        const_cast< gum::ScheduleOperation& >(op).execute();
+        const_cast< gum::ScheduleOperator& >(op).execute();
 
         auto t2 = t1.margMaxOut(proj_set);
         TS_ASSERT(dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(ptrRes)
@@ -1158,7 +1158,7 @@ namespace gum_tests {
       avail = schedule.availableOperations();
       TS_ASSERT(avail.size() == 1)
       const gum::NodeId node     = *avail.begin();
-      auto&             proj_ops = const_cast< gum::ScheduleOperation& >(schedule.operation(node));
+      auto&             proj_ops = const_cast< gum::ScheduleOperator& >(schedule.operation(node));
       proj_ops.execute();
       std::vector< gum::NodeId > xavail;
       schedule.updateAfterExecution(node, xavail, false);

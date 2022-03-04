@@ -258,8 +258,8 @@ namespace gum_tests {
       TS_ASSERT(*schedule4 == schedule);
       delete schedule4;
 
-      gum::ScheduleOperation& op2
-         = const_cast< gum::ScheduleOperation& >(schedule3.operation(gum::NodeId(2)));
+      gum::ScheduleOperator& op2
+         = const_cast< gum::ScheduleOperator& >(schedule3.operation(gum::NodeId(2)));
       op2.execute();
       TS_ASSERT(op2.isExecuted());
       std::vector< gum::NodeId > available_nodes;
@@ -286,8 +286,8 @@ namespace gum_tests {
       TS_ASSERT(!op2_res.isAbstract());
       TS_ASSERT(!result2.isAbstract());
 
-      gum::ScheduleOperation& op1
-         = const_cast< gum::ScheduleOperation& >(schedule3.operation(gum::NodeId(1)));
+      gum::ScheduleOperator& op1
+         = const_cast< gum::ScheduleOperator& >(schedule3.operation(gum::NodeId(1)));
       op1.execute();
       schedule3.updateAfterExecution(gum::NodeId(1), available_nodes, true);
       TS_ASSERT(available_nodes.size() == 0);
@@ -309,8 +309,8 @@ namespace gum_tests {
       TS_ASSERT(result1.hasSameVariables(op1_res));
       TS_ASSERT(result1.hasSameContent(op1_res));
 
-      gum::ScheduleOperation& op3
-         = const_cast< gum::ScheduleOperation& >(schedule3.operation(gum::NodeId(3)));
+      gum::ScheduleOperator& op3
+         = const_cast< gum::ScheduleOperator& >(schedule3.operation(gum::NodeId(3)));
       op3.execute();
       schedule3.updateAfterExecution(gum::NodeId(3), available_nodes, true);
       TS_ASSERT(available_nodes.size() == 2);
@@ -328,8 +328,8 @@ namespace gum_tests {
       TS_ASSERT(result3.hasSameVariables(op3_res));
       TS_ASSERT(result3.hasSameContent(op3_res));
 
-      gum::ScheduleOperation& op4
-         = const_cast< gum::ScheduleOperation& >(schedule3.operation(gum::NodeId(4)));
+      gum::ScheduleOperator& op4
+         = const_cast< gum::ScheduleOperator& >(schedule3.operation(gum::NodeId(4)));
       TS_ASSERT(!op2_res.isAbstract());
       op4.execute();
       TS_ASSERT(op2_res.isAbstract());
@@ -339,8 +339,8 @@ namespace gum_tests {
       TS_ASSERT(available_operations.size() == 1);
       TS_ASSERT(available_operations.contains(gum::NodeId(6)));
 
-      gum::ScheduleOperation& op6
-         = const_cast< gum::ScheduleOperation& >(schedule3.operation(gum::NodeId(6)));
+      gum::ScheduleOperator& op6
+         = const_cast< gum::ScheduleOperator& >(schedule3.operation(gum::NodeId(6)));
       op6.execute();
       schedule3.updateAfterExecution(gum::NodeId(6), available_nodes, true);
       TS_ASSERT(available_nodes.size() == 3);
@@ -420,32 +420,32 @@ namespace gum_tests {
       gum::NodeSet               available_operations = schedule.availableOperations();
       std::vector< gum::NodeId > available_nodes;
       TS_ASSERT(available_operations.size() == 1)
-      gum::ScheduleOperation& op1
-         = const_cast< gum::ScheduleOperation& >(schedule.operation(*available_operations.begin()));
+      gum::ScheduleOperator& op1
+         = const_cast< gum::ScheduleOperator& >(schedule.operation(*available_operations.begin()));
       op1.execute();
       TS_ASSERT(op1.isExecuted())
       schedule.updateAfterExecution(op1, available_nodes, true);
 
       available_operations = schedule.availableOperations();
       TS_ASSERT(available_operations.size() == 1)
-      gum::ScheduleOperation& op2
-         = const_cast< gum::ScheduleOperation& >(schedule.operation(*available_operations.begin()));
+      gum::ScheduleOperator& op2
+         = const_cast< gum::ScheduleOperator& >(schedule.operation(*available_operations.begin()));
       op2.execute();
       TS_ASSERT(op2.isExecuted())
       schedule.updateAfterExecution(op2, available_nodes, false);
 
       available_operations = schedule.availableOperations();
       TS_ASSERT(available_operations.size() == 2)
-      gum::ScheduleOperation& op3
-         = const_cast< gum::ScheduleOperation& >(schedule.operation(*available_operations.begin()));
+      gum::ScheduleOperator& op3
+         = const_cast< gum::ScheduleOperator& >(schedule.operation(*available_operations.begin()));
       op3.execute();
       TS_ASSERT(op3.isExecuted())
       schedule.updateAfterExecution(op3, available_nodes, false);
 
       available_operations = schedule.availableOperations();
       TS_ASSERT(available_operations.size() == 1);
-      gum::ScheduleOperation& op4
-         = const_cast< gum::ScheduleOperation& >(schedule.operation(*available_operations.begin()));
+      gum::ScheduleOperator& op4
+         = const_cast< gum::ScheduleOperator& >(schedule.operation(*available_operations.begin()));
       op4.execute();
       TS_ASSERT(op4.isExecuted())
 
@@ -472,7 +472,7 @@ namespace gum_tests {
 
       available_operations = schedule2.availableOperations();
       TS_ASSERT(available_operations.size() == 1)
-      gum::ScheduleOperation& xop1 = const_cast< gum::ScheduleOperation& >(
+      gum::ScheduleOperator& xop1 = const_cast< gum::ScheduleOperator& >(
          schedule2.operation(*available_operations.begin()));
       xop1.execute();
       TS_ASSERT(xop1.isExecuted())
@@ -480,7 +480,7 @@ namespace gum_tests {
 
       available_operations = schedule2.availableOperations();
       TS_ASSERT(available_operations.size() == 1)
-      gum::ScheduleOperation& xop2 = const_cast< gum::ScheduleOperation& >(
+      gum::ScheduleOperator& xop2 = const_cast< gum::ScheduleOperator& >(
          schedule2.operation(*available_operations.begin()));
       xop2.execute();
       TS_ASSERT(xop2.isExecuted())
@@ -488,7 +488,7 @@ namespace gum_tests {
 
       available_operations = schedule2.availableOperations();
       TS_ASSERT(available_operations.size() == 2)
-      gum::ScheduleOperation& xop3 = const_cast< gum::ScheduleOperation& >(
+      gum::ScheduleOperator& xop3 = const_cast< gum::ScheduleOperator& >(
          schedule2.operation(*available_operations.begin()));
       xop3.execute();
       TS_ASSERT(xop3.isExecuted())
@@ -496,7 +496,7 @@ namespace gum_tests {
 
       available_operations = schedule2.availableOperations();
       TS_ASSERT(available_operations.size() == 1);
-      gum::ScheduleOperation& xop4 = const_cast< gum::ScheduleOperation& >(
+      gum::ScheduleOperator& xop4 = const_cast< gum::ScheduleOperator& >(
          schedule2.operation(*available_operations.begin()));
       xop4.execute();
       TS_ASSERT(xop4.isExecuted())

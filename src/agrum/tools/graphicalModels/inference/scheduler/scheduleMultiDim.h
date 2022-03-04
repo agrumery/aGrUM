@@ -58,15 +58,15 @@ namespace gum {
    * gum::ScheduleMultiDim< gum::Potential< float > > f3 ( pot3 );
    *
    * // now schedule a combination (+) between f1 and f2
-   * gum::ScheduleCombine< gum::Potential< float >,
-   *                       gum::Potential< float >,
-   *                       gum::Potential< float > > comb1 ( &f1, &f2, add );
+   * gum::ScheduleCombination< gum::Potential< float >,
+   *                           gum::Potential< float >,
+   *                           gum::Potential< float > > comb1 ( &f1, &f2, add );
    *
    * // get the result and schedule it with f3
    * const ScheduleMultiDim< gum::Potential< float > >& result1 = comb1.result ();
-   * gum::ScheduleCombine< gum::Potential< float >,
-   *                       gum::Potential< float >,
-   *                       gum::Potential< float > > comb2 ( &result2, &f3, add );
+   * gum::ScheduleCombination< gum::Potential< float >,
+   *                           gum::Potential< float >,
+   *                           gum::Potential< float > > comb2 ( &result2, &f3, add );
    *
    * // get the resulting ScheduleMultiDim
    * const ScheduleMultiDim<gum::Potential< float > >& result2 = comb2.result ();
@@ -80,7 +80,7 @@ namespace gum {
    * std::cout << result2.isAbstract ();
    * std::cout << ! f1.isAbstract ();
    *
-   * // now, we can actually perform the operations
+   * // now, we can actually perform the operators
    * comb1.execute ();
    * std::cout << ! result1.isAbstract ();
    * comb2.execute ();
@@ -93,7 +93,7 @@ namespace gum {
    * So, to summarize the key idea underlying Schedule* classes: these classes
    * encapsulate operations to perform and multidim tables that should be passed
    * as argument to these operations. But nothing is actually computed until
-   * the execute() methods of the scheduled operations are executed.
+   * the execute() methods of the scheduled operators are executed.
    */
   template < typename TABLE >
   class ScheduleMultiDim: public IScheduleMultiDim {

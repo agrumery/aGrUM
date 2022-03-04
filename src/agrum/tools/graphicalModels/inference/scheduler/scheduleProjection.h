@@ -35,7 +35,7 @@
 
 #include <agrum/tools/core/set.h>
 #include <agrum/tools/graphicalModels/inference/scheduler/scheduleMultiDim.h>
-#include <agrum/tools/graphicalModels/inference/scheduler/scheduleOperation.h>
+#include <agrum/tools/graphicalModels/inference/scheduler/scheduleOperator.h>
 #include <agrum/tools/variables/discreteVariable.h>
 
 namespace gum {
@@ -82,7 +82,7 @@ namespace gum {
    *
    */
   template < typename TABLE >
-  class ScheduleProjection: public ScheduleOperation {
+  class ScheduleProjection: public ScheduleOperator {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -98,7 +98,7 @@ namespace gum {
      * @param project the function that will actually perform the projection
      * @param is_result_persistent this boolean indicates whether the result of
      * the projection is persistent, i.e., whether it should be kept in
-     * memory when the operation itself is deleted from memory.
+     * memory when the operator itself is deleted from memory.
      * @warning table is stored only by reference within the ScheduleProjection.
      * But the set of variables to remove (del_vars) is stored by copy
      * within the ScheduleProjection */
@@ -137,31 +137,31 @@ namespace gum {
     ScheduleProjection< TABLE >& operator=(ScheduleProjection< TABLE >&&);
 
     /// operator ==
-    /** Two operations are identical if and only if they have equal (==)
+    /** Two operators are identical if and only if they have equal (==)
      * ScheduleMultiDim arguments, the same set of variables to project on, and
-     * they perform exactly the same operation (e.g., both perform a max
+     * they perform exactly the same set of operations (e.g., both perform a max
      * projection). By Equal arguments, we stress that we mean that these
      * ScheduleMultiDims have the same IDs*/
-    bool operator==(const ScheduleOperation&) const final;
+    bool operator==(const ScheduleOperator&) const final;
 
     /// operator !=
-    /** Two operations are different if and only if they either have different
+    /** Two operators are different if and only if they either have different
      * (!=) ScheduleMultiDim arguments or they have different sets of variables
      * to project on, or they perform different operations (e.g., one performs a
      * max projection and the other a min projection). Different
      * ScheduleMultiDim arguments means that the latter differ by their Ids. */
-    bool operator!=(const ScheduleOperation&) const final;
+    bool operator!=(const ScheduleOperator&) const final;
 
     /// operator ==
-    /** Two operations are identical if and only if they have equal (==)
+    /** Two operators are identical if and only if they have equal (==)
      * ScheduleMultiDim arguments, the same set of variables to project on, and
-     * they perform exactly the same operation (e.g., both perform a max
+     * they perform exactly the same set of operations (e.g., both perform a max
      * projection). By Equal arguments, we mean that these ScheduleMultiDims have
      * the same IDs */
     virtual bool operator==(const ScheduleProjection< TABLE >&) const;
 
     /// operator !=
-    /** Two operations are different if and only if they either have different
+    /** Two operators are different if and only if they either have different
      * (!=) ScheduleMultiDim arguments or they have different sets of variables
      * to project on, or they perform different operations (e.g., one performs a
      * max projection and the other a min projection). Different
@@ -183,7 +183,7 @@ namespace gum {
      * are essentially identical but they may have different Ids (so that they
      * may not be ==).
      */
-    bool hasSameArguments(const ScheduleOperation&) const final;
+    bool hasSameArguments(const ScheduleOperator&) const final;
 
     /** @brief checks whether two ScheduleProjection have the same parameters
      * (same variables, including the set of variables to delete, and same content)
@@ -201,7 +201,7 @@ namespace gum {
      * are essentially identical but they may have different Ids (so that they
      * may not be ==).
      */
-    bool hasSimilarArguments(const ScheduleOperation&) const final;
+    bool hasSimilarArguments(const ScheduleOperator&) const final;
 
     /** @brief checks whether two ScheduleProjection have similar parameters
      * (same variables, including the set of variables to delete)
@@ -212,37 +212,37 @@ namespace gum {
      */
     bool hasSimilarArguments(const ScheduleProjection< TABLE >&) const;
 
-    /// checks whether two ScheduleOperation perform the same projection
-    bool isSameOperation(const ScheduleOperation&) const final;
+    /// checks whether two ScheduleOperator perform the same projection
+    bool isSameOperator(const ScheduleOperator&) const final;
 
-    /// checks whether two ScheduleOperation perform the same projection
-    bool isSameOperation(const ScheduleProjection< TABLE >&) const;
+    /// checks whether two ScheduleOperator perform the same projection
+    bool isSameOperator(const ScheduleProjection< TABLE >&) const;
 
     /// returns the argument of the projection
     const ScheduleMultiDim< TABLE >& arg() const;
 
-    /// returns the sequence of arguments passed to the operation
+    /// returns the sequence of arguments passed to the operator
     const Sequence< const IScheduleMultiDim* >& args() const final;
 
     /// returns the result of the projection
     const ScheduleMultiDim< TABLE >& result() const;
 
-    /// returns the sequence of ScheduleMultidim output by the operation
+    /// returns the sequence of ScheduleMultidim output by the operator
     const Sequence< const IScheduleMultiDim* >& results() const final;
 
-    /// modifies the arguments of the operation
+    /// modifies the arguments of the operator
     /** @throws SizeError is raised if the number of elements in new_args
      * does not correspond to the number of arguments expected by the
-     * ScheduleOperation.
+     * ScheduleOperator.
      * @throws TypeError is raised if at least one element of new_args does
-     * not have a type compatible with what the ScheduleOperation expects.
+     * not have a type compatible with what the ScheduleOperator expects.
      */
     void updateArgs(const Sequence< const IScheduleMultiDim* >& new_args) final;
 
-    /// indicates whether the operation has been executed
+    /// indicates whether the operator has been executed
     bool isExecuted() const final;
 
-    /// executes the operation
+    /// executes the operator
     /** This method guarantees that the result of the combination is a stored
      * into a newly allocated table */
     void execute() final;
@@ -251,20 +251,20 @@ namespace gum {
     void undo() final;
 
     /** @brief returns an estimation of the number of elementary operations
-     * needed to perform the ScheduleOperation */
+     * needed to perform the ScheduleOperator */
     double nbOperations() const final;
 
-    /// returns the memory consumption used during the operation
+    /// returns the memory consumption used during the execution of the operator
     /** Actually, this function does not return a precise account of the memory
-     * used by the ScheduleOperation but a rough estimate based on the sizes
-     * of the tables involved in the operation.
+     * used by the ScheduleOperator but a rough estimate based on the sizes
+     * of the tables involved in the operator.
      * @return a pair of memory consumption: the first one is the maximum
-     * amount of memory used during the operation and the second one is the
-     * amount of memory still used at the end of the function ( the memory used
-     * by the resulting table ) */
+     * amount of memory used during the execution of the operator and the second
+     * one is the amount of memory still used at the end of the function (the
+     * memory used by the resulting table ) */
     std::pair< double, double > memoryUsage() const final;
 
-    /// displays the content of the operation
+    /// displays the content of the operator
     std::string toString() const final;
 
     /// use a new projection function
@@ -277,16 +277,16 @@ namespace gum {
     /// the argument to be projected
     const ScheduleMultiDim< TABLE >* _arg_{nullptr};
 
-    /// the sequence of arguments passed to the operation
-    /** This method is convenient when using ScheduleOperation rather than
+    /// the sequence of arguments passed to the operator
+    /** This method is convenient when using ScheduleOperator rather than
      * directly using ScheduleBinaryCombination */
     Sequence< const IScheduleMultiDim* > _args_;
 
     /// the result of the projection
     ScheduleMultiDim< TABLE >* _result_{nullptr};
 
-    /// the sequence of ScheduleMultidim output by the operation
-    /** @warning Note that the Operation has always some output, even if
+    /// the sequence of ScheduleMultidim output by the operator
+    /** @warning Note that the Operator has always some output, even if
      * it has not been executed. In this case, the outputs are abstract
      * ScheduleMultiDim.
      */

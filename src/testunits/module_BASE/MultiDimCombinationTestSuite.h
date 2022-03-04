@@ -139,7 +139,7 @@ namespace gum_tests {
           else {
             for (const auto node: avail_nodes) {
               auto& op = scheduleS.operation(node);
-              const_cast< gum::ScheduleOperation& >(op).execute();
+              const_cast< gum::ScheduleOperator& >(op).execute();
               std::vector< gum::NodeId > new_avail;
               scheduleS.updateAfterExecution(node, new_avail);
               break;
@@ -160,7 +160,7 @@ namespace gum_tests {
           else {
             for (const auto node: avail_nodes) {
               auto& op = scheduleV.operation(node);
-              const_cast< gum::ScheduleOperation& >(op).execute();
+              const_cast< gum::ScheduleOperator& >(op).execute();
               std::vector< gum::NodeId > new_avail;
               scheduleV.updateAfterExecution(node, new_avail);
               break;
@@ -313,7 +313,7 @@ namespace gum_tests {
           else {
             for (const auto node: avail_nodes) {
               auto& op = scheduleS.operation(node);
-              const_cast< gum::ScheduleOperation& >(op).execute();
+              const_cast< gum::ScheduleOperator& >(op).execute();
               std::vector< gum::NodeId > new_avail;
               scheduleS.updateAfterExecution(node, new_avail);
               break;
@@ -334,7 +334,7 @@ namespace gum_tests {
           else {
             for (const auto node: avail_nodes) {
               auto& op = scheduleV.operation(node);
-              const_cast< gum::ScheduleOperation& >(op).execute();
+              const_cast< gum::ScheduleOperator& >(op).execute();
               std::vector< gum::NodeId > new_avail;
               scheduleV.updateAfterExecution(node, new_avail);
               break;

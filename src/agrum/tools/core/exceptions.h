@@ -364,7 +364,7 @@ namespace gum {
   /**
    * @class gum::ScheduleOperationError agrum/tools/core/exceptions.h
    * @extends gum::Exception
-   * Exception base for ScheduleOperation errors
+   * Exception base for ScheduleOperator errors
    */
   class ScheduleOperationError;
 
@@ -540,7 +540,7 @@ namespace gum {
   GUM_MAKE_ERROR(DuplicateScheduleMultiDim,
                  ScheduleMultiDimError,
                  "There exists another identical Schedule MultiDim Table")
-  GUM_MAKE_ERROR(ScheduleOperationError, Exception, "ScheduleOperation error")
+  GUM_MAKE_ERROR(ScheduleOperationError, Exception, "ScheduleOperator error")
   GUM_MAKE_ERROR(UnknownScheduleOperation,
                  ScheduleOperationError,
                  "The Schedule operation is unknown")

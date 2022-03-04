@@ -40,7 +40,7 @@ namespace gum {
      const ScheduleMultiDim< TABLE2 >& table2,
      TABLE_RES (*combine)(const TABLE1&, const TABLE2&),
      const bool is_result_persistent) :
-      ScheduleOperation(ScheduleOperationType::COMBINE_MULTIDIM, false, is_result_persistent),
+      ScheduleOperator(ScheduleOperatorType::COMBINE_MULTIDIM, false, is_result_persistent),
       _arg1_(&table1), _arg2_(&table2), _combine_(combine) {
     // compute the variables of the resulting table
     Sequence< const DiscreteVariable* >        vars  = table1.variablesSequence();
@@ -66,9 +66,9 @@ namespace gum {
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::ScheduleBinaryCombination(
      const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >& from) :
-      ScheduleOperation(from),
+      ScheduleOperator(from),
       _arg1_(from._arg1_), _arg2_(from._arg2_), _combine_(from._combine_) {
-    // copy the result of the from operation
+    // copy the result of the from operator
     _result_ = from._result_->clone();
 
     // save the args and result into _args_ and _results_
@@ -84,7 +84,7 @@ namespace gum {
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::ScheduleBinaryCombination(
      ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >&& from) :
-      ScheduleOperation(std::move(from)),
+      ScheduleOperator(std::move(from)),
       _arg1_(from._arg1_), _arg2_(from._arg2_), _result_(from._result_), _combine_(from._combine_) {
     // indicate that from does not contain anything anymore
     from.makeResultsPersistent(true);   // prevent deleting nullptr
@@ -126,7 +126,7 @@ namespace gum {
     if (this != &from) {
       // try to copy result (no need to update _results_)
       *_result_                  = *(from._result_);
-      ScheduleOperation::operator=(from);
+      ScheduleOperator::operator=(from);
 
       _arg1_    = from._arg1_;
       _arg2_    = from._arg2_;
@@ -145,7 +145,7 @@ namespace gum {
     if (this != &from) {
       if (!this->hasPersistentResults()) delete _result_;
       _result_                   = from._result_;
-      ScheduleOperation::operator=(std::move(from));
+      ScheduleOperator::operator=(std::move(from));
 
       _arg1_    = from._arg1_;
       _arg2_    = from._arg2_;
@@ -170,8 +170,8 @@ namespace gum {
   /// operator ==
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::operator==(
-     const ScheduleOperation& op) const {
-    if (ScheduleOperation::operator!=(op)) return false;
+     const ScheduleOperator& op) const {
+    if (ScheduleOperator::operator!=(op)) return false;
 
     try {
       const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >& real_op
@@ -184,7 +184,7 @@ namespace gum {
   /// operator !=
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   INLINE bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::operator!=(
-     const ScheduleOperation& op) const {
+     const ScheduleOperator& op) const {
     return !ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::operator==(op);
   }
 
@@ -209,7 +209,7 @@ namespace gum {
   /// checks whether two ScheduleCombination have the same parameters
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::hasSameArguments(
-     const ScheduleOperation& op) const {
+     const ScheduleOperator& op) const {
     try {
       const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >& real_op
          = dynamic_cast< const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >& >(op);
@@ -229,7 +229,7 @@ namespace gum {
   /// checks whether two ScheduleCombination have similar parameters
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::hasSimilarArguments(
-     const ScheduleOperation& op) const {
+     const ScheduleOperator& op) const {
     try {
       const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >& real_op
          = dynamic_cast< const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >& >(op);
@@ -238,22 +238,22 @@ namespace gum {
   }
 
 
-  /// checks whether two ScheduleOperation perform the same operation
+  /// checks whether two ScheduleOperator perform the same set of operations
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
-  bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::isSameOperation(
+  bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::isSameOperator(
      const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >& op) const {
     return _combine_ == op._combine_;
   }
 
 
-  /// checks whether two ScheduleOperation perform the same operation
+  /// checks whether two ScheduleOperator perform the same set of operations
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
-  bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::isSameOperation(
-     const ScheduleOperation& op) const {
+  bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::isSameOperator(
+     const ScheduleOperator& op) const {
     try {
       const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >& real_op
          = dynamic_cast< const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >& >(op);
-      return ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::isSameOperation(real_op);
+      return ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::isSameOperator(real_op);
     } catch (std::bad_cast&) { return false; }
   }
 
@@ -274,7 +274,7 @@ namespace gum {
   }
 
 
-  /// returns the sequence of arguments passed to the operation
+  /// returns the sequence of arguments passed to the operator
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   INLINE const Sequence< const IScheduleMultiDim* >&
                ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::args() const {
@@ -290,7 +290,7 @@ namespace gum {
   }
 
 
-  /// returns the sequence of ScheduleMultidim output by the operation
+  /// returns the sequence of ScheduleMultidim output by the operator
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   INLINE const Sequence< const IScheduleMultiDim* >&
                ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::results() const {
@@ -298,7 +298,7 @@ namespace gum {
   }
 
 
-  /// modifies the arguments of the operation
+  /// modifies the arguments of the operator
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   void ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::updateArgs(
      const Sequence< const IScheduleMultiDim* >& new_args) {
@@ -317,7 +317,7 @@ namespace gum {
       GUM_ERROR(TypeError,
                 "The type of the first argument passed to "
                    << "ScheduleBinaryCombination::updateArgs does not match what "
-                   << "the ScheduleOperation expects");
+                   << "the ScheduleOperator expects");
     }
     try {
       arg2 = dynamic_cast< const ScheduleMultiDim< TABLE2 >* >(new_args[1]);
@@ -325,7 +325,7 @@ namespace gum {
       GUM_ERROR(TypeError,
                 "The type of the second argument passed to "
                    << "ScheduleBinaryCombination::updateArgs does not match what "
-                   << "the ScheduleOperation expects");
+                   << "the ScheduleOperator expects");
     }
 
     // save the new arguments
@@ -338,14 +338,14 @@ namespace gum {
   }
 
 
-  /// indicates whether the operation has been executed
+  /// indicates whether the operator has been executed
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   INLINE bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::isExecuted() const {
     return !_result_->isAbstract();
   }
 
 
-  /// executes the operation
+  /// executes the operator
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   void ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::execute() {
     if (_result_->isAbstract()) {
@@ -368,14 +368,14 @@ namespace gum {
 
 
   /** @brief returns an estimation of the number of elementary operations
-   * needed to perform the ScheduleOperation */
+   * needed to perform the ScheduleOperator */
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   double ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::nbOperations() const {
     return double(_result_->domainSize());
   }
 
 
-  /// returns the memory consumption used during the operation
+  /// returns the memory consumption used during the execution of the operator
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   INLINE std::pair< double, double >
          ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::memoryUsage() const {
@@ -385,7 +385,7 @@ namespace gum {
   }
 
 
-  /// displays the content of the operation
+  /// displays the content of the operator
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   std::string ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::toString() const {
     return _result_->toString() + " = combine ( " + _arg1_->toString() + " , " + _arg2_->toString()

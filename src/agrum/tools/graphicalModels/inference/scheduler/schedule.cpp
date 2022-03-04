@@ -129,11 +129,11 @@ namespace gum {
 
     // we can now create all the operations contained in this in the same
     // topological order as from: this enables to create all the ScheduleMultiDims
-    // needed by a ScheduleOperation before creating the ScheduleOperation itself
+    // needed by a ScheduleOperator before creating the ScheduleOperator itself
     for (const auto node: nodes_sequence) {
       // get the "from" operation and clone it
-      const ScheduleOperation* from_op = from._node2op_.second(node);
-      ScheduleOperation*       new_op  = from_op->clone();
+      const ScheduleOperator* from_op = from._node2op_.second(node);
+      ScheduleOperator*       new_op  = from_op->clone();
       _node2op_.insert(node, new_op);
 
       // we get the ScheduleMultiDims passed as parameters to from_op and we
@@ -164,7 +164,7 @@ namespace gum {
       const Sequence< const IScheduleMultiDim* > new_res  = new_op->results();
       for (Idx i = Idx(0), end = from_res.size(); i < end; ++i) {
         multidim_from2this.insert(from_res[i], new_res[i]);
-        _multidim_location_.insert(new_res[i], std::pair< ScheduleOperation*, Idx >(new_op, i));
+        _multidim_location_.insert(new_res[i], std::pair< ScheduleOperator*, Idx >(new_op, i));
         _multidim2id_.insert(new_res[i], new_res[i]->id());
         _multidim2nodes_.insert(new_res[i], NodeSet());
       }
@@ -318,7 +318,7 @@ namespace gum {
       if (!from._node2op_.existsFirst(iter.first())) return false;
 
     // map "this"'s operations and source multidims to those of "from"
-    HashTable< const ScheduleOperation*, const ScheduleOperation* > this_op2from(_node2op_.size());
+    HashTable< const ScheduleOperator*, const ScheduleOperator* > this_op2from(_node2op_.size());
     Bijection< const IScheduleMultiDim*, const IScheduleMultiDim* > this_multidim2from(
        _multidim2nodes_.size());
 
@@ -332,11 +332,11 @@ namespace gum {
     // check if all the operations have the same type and the same parameters
     for (const auto node: order) {
       // get the operations corresponding to node
-      const ScheduleOperation* this_op = _node2op_.second(node);
-      const ScheduleOperation* from_op = from._node2op_.second(node);
+      const ScheduleOperator* this_op = _node2op_.second(node);
+      const ScheduleOperator* from_op = from._node2op_.second(node);
 
       // check if they perform the same operations
-      if (!this_op->isSameOperation(*from_op)) return false;
+      if (!this_op->isSameOperator(*from_op)) return false;
 
       // check that the content of their parameters are the same
       const Sequence< const IScheduleMultiDim* > this_args = this_op->args();
@@ -413,7 +413,7 @@ namespace gum {
     // into the schedule
     IScheduleMultiDim* new_multidim = multidim.clone();
     _multidim2nodes_.insert(new_multidim, NodeSet());
-    _multidim_location_.insert(new_multidim, std::pair< ScheduleOperation*, Idx >(nullptr, Idx(0)));
+    _multidim_location_.insert(new_multidim, std::pair< ScheduleOperator*, Idx >(nullptr, Idx(0)));
     _multidim2id_.insert(new_multidim, new_multidim->id());
 
     // indicate that the schedule has been modified
@@ -443,7 +443,7 @@ namespace gum {
     // now, everything is ok, so we should insert the ScheduleMultiDim
     // into the schedule
     _multidim2nodes_.insert(&multidim, NodeSet());
-    _multidim_location_.insert(&multidim, std::pair< ScheduleOperation*, Idx >(nullptr, Idx(0)));
+    _multidim_location_.insert(&multidim, std::pair< ScheduleOperator*, Idx >(nullptr, Idx(0)));
     _multidim2id_.insert(&multidim, multidim.id());
     _emplaced_multidims_.insert(&multidim);
 
@@ -468,7 +468,7 @@ namespace gum {
 
 
   /// inserts an operation into the schedule
-  const ScheduleOperation& Schedule::insertOperation(const ScheduleOperation& op,
+  const ScheduleOperator& Schedule::insertOperation(const ScheduleOperator& op,
                                                      const bool are_results_persistent) {
     // check that the parameters of the operation already belong to the schedule.
     // to do so, it is sufficient to check that their ids belong to the schedule
@@ -523,7 +523,7 @@ namespace gum {
     // ScheduleOperations are pointers to ScheduleMultiDim. Therefore, we need
     // to map the pointers of op_args to pointers of the corresponding
     // ScheduleMultiDim in our new operation
-    ScheduleOperation*                   new_op = op.clone();
+    ScheduleOperator*                   new_op = op.clone();
     Sequence< const IScheduleMultiDim* > new_args(op_args.size());
     for (Idx i = Idx(0), end = op_args.size(); i < end; ++i) {
       try {
@@ -561,7 +561,7 @@ namespace gum {
     // keep track of the locations and ids of new_op's results
     const Sequence< const IScheduleMultiDim* > new_results = new_op->results();
     for (Idx i = Idx(0), end = new_results.size(); i < end; ++i) {
-      _multidim_location_.insert(new_results[i], std::pair< ScheduleOperation*, Idx >(new_op, i));
+      _multidim_location_.insert(new_results[i], std::pair< ScheduleOperator*, Idx >(new_op, i));
       _multidim2id_.insert(new_results[i], new_results[i]->id());
       _multidim2nodes_.insert(new_results[i], NodeSet());
     }

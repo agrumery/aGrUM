@@ -87,7 +87,7 @@ namespace gum {
     for (const auto node: _operations_) {
       // try to execute the operation. If this raises an exception, then
       // we do not try to catch it
-      auto& op = const_cast< ScheduleOperation& >(schedule.operation(node));
+      auto& op = const_cast< ScheduleOperator& >(schedule.operation(node));
       op.execute();
 
       // if we succeeded to execute the operation, indicate that the set of all
@@ -211,7 +211,7 @@ namespace gum {
   /// execute one operation
   void SchedulerSequential::_simulateExecuteOneOperation_(
      const NodeId           node,
-     ScheduleOperation&     op,
+     ScheduleOperator&     op,
      DAG&                   dag,
      List< NodeId >&        available_nodes,
      std::vector< NodeId >& new_available_nodes) {
@@ -280,7 +280,7 @@ namespace gum {
         // get the first operation available_nodes
         const NodeId node = available_nodes.front();
         available_nodes.popFront();
-        auto& op = const_cast< ScheduleOperation& >(_schedule_->operation(node));
+        auto& op = const_cast< ScheduleOperator& >(_schedule_->operation(node));
 
         // if scheduling under memory budget, check that we do not consume too
         // much memory.

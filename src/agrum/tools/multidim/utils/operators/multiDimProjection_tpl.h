@@ -90,7 +90,7 @@ namespace gum {
 
   /// returns the set of operations to perform as well as the result of the projection
   template < class TABLE >
-  std::pair< ScheduleOperation*, const IScheduleMultiDim* >
+  std::pair< ScheduleOperator*, const IScheduleMultiDim* >
      MultiDimProjection< TABLE >::operations(const IScheduleMultiDim*              table,
                                              const Set< const DiscreteVariable* >& del_vars,
                                              const bool is_result_persistent) const {

@@ -93,11 +93,11 @@ namespace gum {
     /** @brief returns the set of operations to perform to make all the combinations
      * and projections
      */
-    std::pair< std::vector< ScheduleOperation* >, Set< const IScheduleMultiDim* > >
+    std::pair< std::vector< ScheduleOperator* >, Set< const IScheduleMultiDim* > >
        operations(const Set< const IScheduleMultiDim* >& original_tables,
                   const Set< const DiscreteVariable* >&  del_vars,
                   const bool                             is_result_persistent = false) const final;
-    std::pair< std::vector< ScheduleOperation* >, Set< const IScheduleMultiDim* > >
+    std::pair< std::vector< ScheduleOperator* >, Set< const IScheduleMultiDim* > >
        operations(const std::vector< const IScheduleMultiDim* >& original_tables,
                   const Set< const DiscreteVariable* >&          del_vars,
                   const bool is_result_persistent = false) const final;
@@ -204,7 +204,7 @@ namespace gum {
 
     /// free the scheduling memory
     void _freeData_(std::vector< const IScheduleMultiDim* >& tables,
-                    std::vector< ScheduleOperation* >&       operations) const;
+                    std::vector< ScheduleOperator* >&       operations) const;
   };
 
 } /* namespace gum */

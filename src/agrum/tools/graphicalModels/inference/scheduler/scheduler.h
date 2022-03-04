@@ -37,6 +37,12 @@
 
 namespace gum {
 
+  /// the type of scheduler that can be used
+  enum SchedulerType {
+    SEQUENTIAL, // fully sequential scheduler
+    PARALLEL_OPERATION
+  };
+
   class Scheduler {
     public:
 

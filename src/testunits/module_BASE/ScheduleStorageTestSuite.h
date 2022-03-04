@@ -76,22 +76,22 @@ namespace gum_tests {
       TS_ASSERT(store2bis.implyDeletion());
 
       TS_ASSERT(store1 != store1bis);
-      TS_ASSERT(store1.isSameOperation(store1bis));
+      TS_ASSERT(store1.isSameOperator(store1bis));
       TS_ASSERT(!(store1 == store1bis));
       TS_ASSERT(store1.hasSimilarArguments(store1bis));
       TS_ASSERT(store1.hasSameArguments(store1bis));
 
       TS_ASSERT(store2 != store2bis);
-      TS_ASSERT(store2.isSameOperation(store2bis));
+      TS_ASSERT(store2.isSameOperator(store2bis));
       TS_ASSERT(!(store2 == store2bis));
       TS_ASSERT(store2.hasSimilarArguments(store2bis));
       TS_ASSERT(!store2.hasSameArguments(store2bis));
 
-      const gum::ScheduleOperation& store1const = store1;
+      const gum::ScheduleOperator& store1const = store1;
       TS_ASSERT(store1const.implyDeletion());
       TS_ASSERT(store1 == store1const);
       TS_ASSERT(!(store1 != store1const));
-      TS_ASSERT(store1.isSameOperation(store1const));
+      TS_ASSERT(store1.isSameOperator(store1const));
       TS_ASSERT(store1.hasSimilarArguments(store1const));
       TS_ASSERT(store1.hasSameArguments(store1const));
 
@@ -191,7 +191,7 @@ namespace gum_tests {
       gum::Set< const gum::DiscreteVariable* > del_vars1;
       del_vars1 << vars[0] << vars[3];
       gum::ScheduleProjection< gum::Potential< double > > myproj(f1b, del_vars1, myProjectMax);
-      TS_ASSERT(!store1bis.isSameOperation(myproj));
+      TS_ASSERT(!store1bis.isSameOperator(myproj));
       TS_ASSERT(!store1bis.hasSimilarArguments(myproj));
 
       for (const auto ptr: set2)

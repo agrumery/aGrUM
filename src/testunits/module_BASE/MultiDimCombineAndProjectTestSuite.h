@@ -143,14 +143,14 @@ namespace gum_tests {
 
       auto ops_plus_res = projcomb.operations(sched_to_comb, del_vars);
       for (auto op: ops_plus_res.first) {
-        const_cast< gum::ScheduleOperation* >(op)->execute();
+        const_cast< gum::ScheduleOperator* >(op)->execute();
       }
 
       gum::Potential< double > result1;
       if (ops_plus_res.second.size() > 1) {
         auto comb_ops_plus_res = comb.operations(ops_plus_res.second);
         for (auto op: comb_ops_plus_res.first) {
-          const_cast< gum::ScheduleOperation* >(op)->execute();
+          const_cast< gum::ScheduleOperator* >(op)->execute();
         }
         result1 = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(
                      comb_ops_plus_res.second)
@@ -242,8 +242,8 @@ namespace gum_tests {
       if (!available_operations.empty()) {
         do {
           gum::NodeId               node = *available_operations.begin();
-          gum::ScheduleOperation& op
-             = const_cast< gum::ScheduleOperation& >(schedule.operation(node));
+          gum::ScheduleOperator& op
+             = const_cast< gum::ScheduleOperator& >(schedule.operation(node));
           op.execute();
 
           for (const auto res: op.results())
@@ -340,14 +340,14 @@ namespace gum_tests {
 
       auto ops_plus_res = projcomb.operations(sched_to_comb, del_vars, true);
       for (auto op: ops_plus_res.first) {
-        const_cast< gum::ScheduleOperation* >(op)->execute();
+        const_cast< gum::ScheduleOperator* >(op)->execute();
       }
 
       gum::Potential< double > result1;
       if (ops_plus_res.second.size() > 1) {
         auto comb_ops_plus_res = comb.operations(ops_plus_res.second);
         for (auto op: comb_ops_plus_res.first) {
-          const_cast< gum::ScheduleOperation* >(op)->execute();
+          const_cast< gum::ScheduleOperator* >(op)->execute();
         }
         result1 = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >* >(
                      comb_ops_plus_res.second)
@@ -446,8 +446,8 @@ namespace gum_tests {
       if (!available_operations.empty()) {
         do {
           gum::NodeId               node = *available_operations.begin();
-          gum::ScheduleOperation& op
-             = const_cast< gum::ScheduleOperation& >(schedule.operation(node));
+          gum::ScheduleOperator& op
+             = const_cast< gum::ScheduleOperator& >(schedule.operation(node));
           op.execute();
 
           for (const auto res: op.results())

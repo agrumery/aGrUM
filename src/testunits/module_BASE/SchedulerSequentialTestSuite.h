@@ -126,8 +126,8 @@ namespace gum_tests {
       TS_ASSERT_DELTA(scheduler.nbOperations(schedule), 2200000.0, 10);
       scheduler.execute(schedule);
 
-      gum::ScheduleOperation& op4
-         = const_cast< gum::ScheduleOperation& >(schedule.operation(gum::NodeId(4)));
+      gum::ScheduleOperator& op4
+         = const_cast< gum::ScheduleOperator& >(schedule.operation(gum::NodeId(4)));
       const gum::ScheduleMultiDim< gum::Potential< double > >& op4_res
          = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >& >(
             *op4.results()[0]);

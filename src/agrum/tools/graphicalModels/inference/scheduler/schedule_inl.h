@@ -39,29 +39,29 @@ namespace gum {
   INLINE const DAG& Schedule::dag() const { return _dag_; }
 
   /// returns the scheduleOperation corresponding to an id in the DAG
-  INLINE const ScheduleOperation& Schedule::operation(const NodeId node_id) const {
+  INLINE const ScheduleOperator& Schedule::operation(const NodeId node_id) const {
     return *(_node2op_.second(node_id));
   }
 
   /// returns the id associated to a given operation
-  INLINE NodeId Schedule::nodeId(const ScheduleOperation& op) const {
-    return _node2op_.first(const_cast< ScheduleOperation* >(&op));
+  INLINE NodeId Schedule::nodeId(const ScheduleOperator& op) const {
+    return _node2op_.first(const_cast< ScheduleOperator* >(&op));
   }
 
   /// updates the DAG after a given operation has been executed
-  INLINE void Schedule::updateAfterExecution(const ScheduleOperation& op,
+  INLINE void Schedule::updateAfterExecution(const ScheduleOperator& op,
                                              std::vector< NodeId >&   new_available_nodes,
                                              const bool               check) {
     /// check that the node belongs to the schedule
     if (check) {
-      if (!_node2op_.existsSecond(const_cast< ScheduleOperation* >(&op))) {
+      if (!_node2op_.existsSecond(const_cast< ScheduleOperator* >(&op))) {
         GUM_ERROR(UnknownScheduleOperation,
                   "the schedule cannot be updated because Operation "
                      << op.toString() << " that has been executed does not belong to its DAG.");
       }
     }
 
-    updateAfterExecution(_node2op_.first(const_cast< ScheduleOperation* >(&op)),
+    updateAfterExecution(_node2op_.first(const_cast< ScheduleOperator* >(&op)),
                          new_available_nodes,
                          check);
   }
@@ -82,13 +82,13 @@ namespace gum {
   }
 
   /// returns the operation, if any, that created a given scheduleMultiDim
-  INLINE const ScheduleOperation*
+  INLINE const ScheduleOperator*
      Schedule::scheduleMultiDimCreator(const IScheduleMultiDim* multidim) const {
     return _multidim_location_[multidim].first;
   }
 
   /// returns the operation, if any, that created a given scheduleMultiDim
-  INLINE const ScheduleOperation* Schedule::scheduleMultiDimCreator(const NodeId id) const {
+  INLINE const ScheduleOperator* Schedule::scheduleMultiDimCreator(const NodeId id) const {
     return scheduleMultiDimCreator(_multidim2id_.first(id));
   }
 

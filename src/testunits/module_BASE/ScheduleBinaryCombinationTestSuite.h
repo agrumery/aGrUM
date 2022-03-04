@@ -125,16 +125,16 @@ namespace gum_tests {
       TS_ASSERT(result2.hasSameVariables(*(resultsconst[0])));
       TS_ASSERT(comb2const.hasSameArguments(comb2));
       TS_ASSERT(comb2const.hasSimilarArguments(comb2));
-      TS_ASSERT(comb2const.isSameOperation(comb2));
+      TS_ASSERT(comb2const.isSameOperator(comb2));
       TS_ASSERT(comb2const == comb2);
       TS_ASSERT(!(comb2const != comb2));
 
-      const gum::ScheduleOperation& comb2op = comb2;
+      const gum::ScheduleOperator& comb2op = comb2;
       TS_ASSERT(!comb2op.implyDeletion());
       TS_ASSERT(comb2const == comb2op);
       TS_ASSERT(!(comb2const != comb2op));
       TS_ASSERT(comb2const.hasSameArguments(comb2op));
-      TS_ASSERT(comb2const.isSameOperation(comb2op));
+      TS_ASSERT(comb2const.isSameOperator(comb2op));
 
       gum::ScheduleBinaryCombination< gum::Potential< double >,
                                       gum::Potential< double >,
@@ -232,9 +232,9 @@ namespace gum_tests {
 
       TS_ASSERT(!comb1.hasSameArguments(comb7));
       TS_ASSERT(!comb1.hasSimilarArguments(comb7));
-      TS_ASSERT(!comb1.hasSimilarArguments(dynamic_cast< gum::ScheduleOperation& >(comb7)));
-      TS_ASSERT(comb1.isSameOperation(comb7))
-      TS_ASSERT(comb1.isSameOperation(dynamic_cast< gum::ScheduleOperation& >(comb7)));
+      TS_ASSERT(!comb1.hasSimilarArguments(dynamic_cast< gum::ScheduleOperator& >(comb7)));
+      TS_ASSERT(comb1.isSameOperator(comb7))
+      TS_ASSERT(comb1.isSameOperator(dynamic_cast< gum::ScheduleOperator& >(comb7)));
       TS_ASSERT(comb1 != comb7);
 
       comb1.setCombinationFunction(mymult);
@@ -243,7 +243,7 @@ namespace gum_tests {
       gum::Potential< double > mult32(pot3 * pot2);
       TS_ASSERT(comb1.result().multiDim() == mult32);
       TS_ASSERT(!comb1.implyDeletion());
-      TS_ASSERT(!comb1.isSameOperation(comb7))
+      TS_ASSERT(!comb1.isSameOperator(comb7))
 
 
       for (unsigned int i = 0; i < vars.size(); ++i)

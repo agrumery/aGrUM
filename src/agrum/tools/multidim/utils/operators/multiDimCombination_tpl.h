@@ -68,7 +68,7 @@ namespace gum {
     if (is_result_persistent) {
       const auto creating_op = schedule.scheduleMultiDimCreator(table);
       if (creating_op != nullptr) {
-        const_cast< ScheduleOperation* >(creating_op)->makeResultsPersistent(true);
+        const_cast< ScheduleOperator* >(creating_op)->makeResultsPersistent(true);
       }
     }
 

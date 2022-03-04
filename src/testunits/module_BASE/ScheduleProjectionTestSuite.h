@@ -189,31 +189,31 @@ namespace gum_tests {
       TS_ASSERT(myproj5.result() == *(xresultsconst[0]));
       TS_ASSERT(myproj5const.hasSameArguments(myproj5));
       TS_ASSERT(myproj5const.hasSimilarArguments(myproj5));
-      TS_ASSERT(myproj5const.hasSameArguments(dynamic_cast< gum::ScheduleOperation& >(myproj5)));
-      TS_ASSERT(myproj5const.hasSimilarArguments(dynamic_cast< gum::ScheduleOperation& >(myproj5)));
+      TS_ASSERT(myproj5const.hasSameArguments(dynamic_cast< gum::ScheduleOperator& >(myproj5)));
+      TS_ASSERT(myproj5const.hasSimilarArguments(dynamic_cast< gum::ScheduleOperator& >(myproj5)));
       TS_ASSERT(myproj5const == myproj5);
       TS_ASSERT(!(myproj5const != myproj5));
 
-      const gum::ScheduleOperation& proj5op = myproj5;
+      const gum::ScheduleOperator& proj5op = myproj5;
       TS_ASSERT(!proj5op.implyDeletion());
       TS_ASSERT(myproj5 == proj5op);
       TS_ASSERT(!(myproj5 != proj5op));
-      TS_ASSERT(myproj5.isSameOperation(proj5op));
+      TS_ASSERT(myproj5.isSameOperator(proj5op));
       TS_ASSERT(myproj5.hasSameArguments(proj5op));
       TS_ASSERT(myproj5.hasSimilarArguments(proj5op));
 
       gum::ScheduleProjection< gum::Potential< double > > myproj7(f1, del_vars1, myProjectMax);
-      TS_ASSERT(!myproj5.isSameOperation(myproj7));
+      TS_ASSERT(!myproj5.isSameOperator(myproj7));
       TS_ASSERT(myproj5.hasSameArguments(myproj7));
       TS_ASSERT(myproj5.hasSimilarArguments(myproj7));
 
       gum::ScheduleProjection< gum::Potential< double > > myproj8(f2, del_vars2, myProjectMax);
-      TS_ASSERT(myproj8.isSameOperation(myproj7));
+      TS_ASSERT(myproj8.isSameOperator(myproj7));
       TS_ASSERT(!myproj8.hasSameArguments(myproj7));
       TS_ASSERT(!myproj8.hasSimilarArguments(myproj7));
 
       gum::ScheduleProjection< gum::Potential< double > > myproj9(f2, del_vars1, myProjectMax);
-      TS_ASSERT(myproj9.isSameOperation(myproj7));
+      TS_ASSERT(myproj9.isSameOperator(myproj7));
       TS_ASSERT(!myproj9.hasSameArguments(myproj7));
       TS_ASSERT(!myproj9.hasSimilarArguments(myproj7));
 

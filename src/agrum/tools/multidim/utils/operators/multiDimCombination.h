@@ -166,10 +166,10 @@ namespace gum {
      * produce the right result. The latter is contained within the IScheduleMultiDim.
      * @warning MultiDimCombinations always produce a new freshly allocated resulting table
      */
-    virtual std::pair< std::vector< ScheduleOperation* >, const IScheduleMultiDim* >
+    virtual std::pair< std::vector< ScheduleOperator* >, const IScheduleMultiDim* >
        operations(const std::vector< const IScheduleMultiDim* >& set,
                   const bool is_result_persistent = false) const = 0;
-    virtual std::pair< std::vector< ScheduleOperation* >, const IScheduleMultiDim* >
+    virtual std::pair< std::vector< ScheduleOperator* >, const IScheduleMultiDim* >
        operations(const Set< const IScheduleMultiDim* >& set,
                   const bool                             is_result_persistent = false) const = 0;
 

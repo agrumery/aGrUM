@@ -20,7 +20,7 @@
 
 
 /** @file
- * @brief an operation to force a ScheduleMultiDim to be abstract
+ * @brief an operator to force a ScheduleMultiDim to be abstract
  *
  * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
@@ -33,13 +33,13 @@
 #include <agrum/agrum.h>
 
 #include <agrum/tools/graphicalModels/inference/scheduler/scheduleMultiDim.h>
-#include <agrum/tools/graphicalModels/inference/scheduler/scheduleOperation.h>
+#include <agrum/tools/graphicalModels/inference/scheduler/scheduleOperator.h>
 
 namespace gum {
 
   /**
    * @class ScheduleDeletion
-   * @brief an operation to make a ScheduleMultiDim abstract and free its memory
+   * @brief an operator to make a ScheduleMultiDim abstract and free its memory
    * @headerfile scheduleDeletion.h <agrum/tools/graphicalModels/inference/scheduler/scheduleDeletion.h>
    *
    * @ingroup inference_schedule
@@ -62,7 +62,7 @@ namespace gum {
    * @encode
    */
   template < typename TABLE >
-  class ScheduleDeletion: public ScheduleOperation {
+  class ScheduleDeletion: public ScheduleOperator {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -103,25 +103,25 @@ namespace gum {
     ScheduleDeletion< TABLE >& operator=(ScheduleDeletion< TABLE >&&);
 
     /// operator ==
-    /** Two operations are identical if and only if they have equal (==)
+    /** Two operators are identical if and only if they have equal (==)
      * ScheduleMultiDim arguments. By Equal arguments, we stress that we mean
      * that these ScheduleMultiDims have the same IDs*/
-    bool operator==(const ScheduleOperation& m) const final;
+    bool operator==(const ScheduleOperator& m) const final;
 
     /// operator !=
-    /** Two operations are identical if and only if they have equal (==)
+    /** Two operators are identical if and only if they have equal (==)
      * ScheduleMultiDim arguments. By Equal arguments, we stress that we mean
      * that these ScheduleMultiDims have the same IDs*/
-    bool operator!=(const ScheduleOperation& m) const final;
+    bool operator!=(const ScheduleOperator& m) const final;
 
     /// operator ==
-    /** Two operations are identical if and only if they have equal (==)
+    /** Two operators are identical if and only if they have equal (==)
      * ScheduleMultiDim arguments. By Equal arguments, we stress that we mean
      * that these ScheduleMultiDims have the same IDs*/
     virtual bool operator==(const ScheduleDeletion< TABLE >&) const;
 
     /// operator !=
-    /** Two operations are identical if and only if they have equal (==)
+    /** Two operators are identical if and only if they have equal (==)
      * ScheduleMultiDim arguments. By Equal arguments, we stress that we mean
      * that these ScheduleMultiDims have the same IDs*/
     virtual bool operator!=(const ScheduleDeletion< TABLE >&) const;
@@ -141,7 +141,7 @@ namespace gum {
      * are essentially identical but they may have different Ids (so that they
      * may not be ==).
      */
-    bool hasSameArguments(const ScheduleOperation&) const final;
+    bool hasSameArguments(const ScheduleOperator&) const final;
 
     /** @brief checks whether two ScheduleDeletion have the same parameters
      * (same variables and same content)
@@ -155,41 +155,41 @@ namespace gum {
     /** @brief checks whether two ScheduleProjection have similar parameters
      * (same variables but not necessarily the same content)
      */
-    bool hasSimilarArguments(const ScheduleOperation&) const final;
+    bool hasSimilarArguments(const ScheduleOperator&) const final;
 
     /** @brief checks whether two ScheduleProjection have similar parameters
      * (same variables but not necessarily the same content)
      */
     bool hasSimilarArguments(const ScheduleDeletion< TABLE >&) const;
 
-    /// checks whether two ScheduleOperation perform the same operation
-    bool isSameOperation(const ScheduleOperation&) const final;
+    /// checks whether two ScheduleOperator perform the same set of operations
+    bool isSameOperator(const ScheduleOperator&) const final;
 
-    /// checks whether two ScheduleOperation perform the same operation
-    bool isSameOperation(const ScheduleDeletion< TABLE >&) const;
+    /// checks whether two ScheduleOperator perform the same set of operations
+    bool isSameOperator(const ScheduleDeletion< TABLE >&) const;
 
     /// returns the argument of the projection
     const ScheduleMultiDim< TABLE >& arg() const;
 
-    /// returns the sequence of arguments passed to the operation
+    /// returns the sequence of arguments passed to the operator
     const Sequence< const IScheduleMultiDim* >& args() const final;
 
-    /// returns the sequence of ScheduleMultidim output by the operation
+    /// returns the sequence of ScheduleMultidim output by the operator
     const Sequence< const IScheduleMultiDim* >& results() const final;
 
-    /// modifies the arguments of the operation
+    /// modifies the arguments of the operator
     /** @throws SizeError is raised if the number of elements in new_args
      * does not correspond to the number of arguments expected by the
-     * ScheduleOperation.
+     * ScheduleOperator.
      * @throws TypeError is raised if at least one element of new_args does
-     * not have a type compatible with what the ScheduleOperation expects.
+     * not have a type compatible with what the ScheduleOperator expects.
      */
     void updateArgs(const Sequence< const IScheduleMultiDim* >& new_args) final;
 
-    /// indicates whether the operation has been executed
+    /// indicates whether the operator has been executed
     bool isExecuted() const final;
 
-    /// executes the operation
+    /// executes the operator
     void execute() final;
 
     /// undo a previous execution, if any
@@ -199,24 +199,24 @@ namespace gum {
     void undo() final;
 
     /** @brief returns an estimation of the number of elementary operations
-     * needed to perform the ScheduleOperation */
+     * needed to perform the ScheduleOperator */
     double nbOperations() const final;
 
-    /// returns the memory consumption used during the operation
+    /// returns the memory consumption used during the execution of the operator
     /** Actually, this function does not return a precise account of the memory
-     * used by the ScheduleOperation but a rough estimate based on the sizes
-     * of the tables involved in the operation.
+     * used by the ScheduleOperator but a rough estimate based on the sizes
+     * of the tables involved in the operator.
      * @return a pair of memory consumption: the first one is the maximum
-     * amount of memory used during the operation and the second one is the
-     * amount of memory still used at the end of the function ( the memory used
-     * by the resulting table )
+     * amount of memory used during the execution of the operator and the second
+     * one is the amount of memory still used at the end of the function (the
+     * memory used by the resulting table)
      * @warning This method does not checks whether the ScheduleMultiDim to be
      * deleted is abstract or not: it assumes that it is not when the deletion
      * is performed. This enables to take into account the memory usage of a
      * whole Schedule tree before performing any operation within it. */
     std::pair< double, double > memoryUsage() const final;
 
-    /// displays the content of the operation
+    /// displays the content of the operator
     std::string toString() const final;
 
     /// @}
@@ -225,19 +225,19 @@ namespace gum {
     /// the table to delete, i.e., to make abstract
     ScheduleMultiDim< TABLE >* _arg_{nullptr};
 
-    /// the sequence of arguments passed to the operation
-    /** This method is convenient when using ScheduleOperation rather than
+    /// the sequence of arguments passed to the operator
+    /** This method is convenient when using ScheduleOperator rather than
      * directly using ScheduleBinaryCombination */
     Sequence< const IScheduleMultiDim* > _args_;
 
-    /// the sequence of ScheduleMultidim output by the operation
-    /** @warning Note that the Operation has always some output, even if
+    /// the sequence of ScheduleMultidim output by the operator
+    /** @warning Note that the Operator has always some output, even if
      * it has not been executed. In this case, the outputs are abstract
      * ScheduleMultiDim.
      */
     Sequence< const IScheduleMultiDim* > _results_;
 
-    /// indicates whether the operation has been performed or not
+    /// indicates whether the operator has been performed or not
     bool _is_executed_{false};
   };
 

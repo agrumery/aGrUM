@@ -729,7 +729,7 @@ namespace gum {
             auto projected_pot = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
                static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
                   *new_cpt_list.begin()));
-            const_cast< ScheduleOperation* >(schedule.scheduleMultiDimCreator(projected_pot))
+            const_cast< ScheduleOperator* >(schedule.scheduleMultiDimCreator(projected_pot))
                ->makeResultsPersistent(true);
             _clique_potentials_[_node_to_clique_[node]].insert(projected_pot);
             _node_to_hard_ev_projected_CPTs_.insert(node, projected_pot);
@@ -946,7 +946,7 @@ namespace gum {
       }
       auto projected_pot = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
          static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(*new_cpt_list.begin()));
-      const_cast< ScheduleOperation* >(schedule.scheduleMultiDimCreator(projected_pot))
+      const_cast< ScheduleOperator* >(schedule.scheduleMultiDimCreator(projected_pot))
          ->makeResultsPersistent(true);
       _clique_potentials_[_node_to_clique_[node]].insert(projected_pot);
       _node_to_hard_ev_projected_CPTs_.insert(node, projected_pot);
@@ -1358,7 +1358,7 @@ namespace gum {
 
         // do not forget to make the ScheduleMultiDim persistent
         auto op = schedule.scheduleMultiDimCreator(pot);
-        if (op != nullptr) const_cast< ScheduleOperation* >(op)->makeResultsPersistent(true);
+        if (op != nullptr) const_cast< ScheduleOperator* >(op)->makeResultsPersistent(true);
       }
     }
 

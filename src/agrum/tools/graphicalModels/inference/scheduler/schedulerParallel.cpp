@@ -204,7 +204,7 @@ namespace gum {
         }
 
         // now, actually execute the operation
-        const_cast< ScheduleOperation& >(schedule.operation(node_to_execute)).execute();
+        const_cast< ScheduleOperator& >(schedule.operation(node_to_execute)).execute();
         nb_remaining_operations.fetch_sub(1);
 
         // compute the next operations available to be executed

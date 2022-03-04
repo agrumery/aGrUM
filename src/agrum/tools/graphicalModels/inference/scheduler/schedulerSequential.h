@@ -144,7 +144,7 @@ namespace gum {
     /// simulate the execution of one operation
     void _simulateExecuteOneOperation_(
        const NodeId                node,
-       ScheduleOperation& op,
+                                       ScheduleOperator& op,
        DAG&                        dag,
        List<NodeId>&               available_nodes,
        std::vector<NodeId>&        new_available_nodes);

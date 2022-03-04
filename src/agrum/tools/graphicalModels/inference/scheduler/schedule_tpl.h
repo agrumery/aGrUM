@@ -44,7 +44,7 @@ namespace gum {
 
     // keep track that this is a source multidim
     _multidim2nodes_.insert(new_multidim, NodeSet());
-    _multidim_location_.insert(new_multidim, std::pair< ScheduleOperation*, Idx >(nullptr, Idx(0)));
+    _multidim_location_.insert(new_multidim, std::pair< ScheduleOperator*, Idx >(nullptr, Idx(0)));
     _multidim2id_.insert(new_multidim, new_multidim->id());
 
     // indicate that the schedule has been modified
@@ -56,7 +56,7 @@ namespace gum {
 
   /// emplace a new schedule binary combination operator
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
-  const ScheduleOperation&
+  const ScheduleOperator&
      Schedule::emplaceBinaryCombination(const ScheduleMultiDim< TABLE1 >& table1,
                                         const ScheduleMultiDim< TABLE2 >& table2,
                                         TABLE_RES (*combine)(const TABLE1&, const TABLE2&),
@@ -71,7 +71,7 @@ namespace gum {
 
   /// emplace a new schedule projection operator
   template < typename TABLE >
-  const ScheduleOperation& Schedule::emplaceProjection(
+  const ScheduleOperator& Schedule::emplaceProjection(
      const ScheduleMultiDim< TABLE >&      table,
      const Set< const DiscreteVariable* >& del_vars,
      TABLE (*project)(const TABLE&, const Set< const DiscreteVariable* >&),
@@ -85,7 +85,7 @@ namespace gum {
 
   /// emplace a new schedule deletion operation
   template < typename TABLE >
-  const ScheduleOperation& Schedule::emplaceDeletion(const ScheduleMultiDim< TABLE >& table) {
+  const ScheduleOperator& Schedule::emplaceDeletion(const ScheduleMultiDim< TABLE >& table) {
     // note that the insertOperation will check that table already belongs
     // to the schedule
     return insertOperation(ScheduleDeletion< TABLE >(table), false);
@@ -97,7 +97,7 @@ namespace gum {
              template < typename, typename... >
              class CONTAINER,
              typename... CONTAINER_PARAMS >
-  const ScheduleOperation&
+  const ScheduleOperator&
      Schedule::emplaceStorage(const IScheduleMultiDim&                 table,
                               CONTAINER< TABLE, CONTAINER_PARAMS... >& container) {
     // note that the insertOperation will check that table already belongs

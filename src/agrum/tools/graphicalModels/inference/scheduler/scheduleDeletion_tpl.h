@@ -36,7 +36,7 @@ namespace gum {
   /// default constructor
   template < typename TABLE >
   ScheduleDeletion< TABLE >::ScheduleDeletion(const ScheduleMultiDim< TABLE >& table) :
-      ScheduleOperation(ScheduleOperationType::DELETE_MULTIDIM, true, false),
+      ScheduleOperator(ScheduleOperatorType::DELETE_MULTIDIM, true, false),
       _arg_(const_cast< ScheduleMultiDim< TABLE >* >(&table)) {
     // save the arg into _args_ (no need to update _results_)
     _args_ << _arg_;
@@ -49,7 +49,7 @@ namespace gum {
   /// copy constructor
   template < typename TABLE >
   ScheduleDeletion< TABLE >::ScheduleDeletion(const ScheduleDeletion< TABLE >& from) :
-      ScheduleOperation(from), _arg_(from._arg_), _is_executed_(from._is_executed_) {
+      ScheduleOperator(from), _arg_(from._arg_), _is_executed_(from._is_executed_) {
     // save the arg into _args_ (no need to update _results_)
     _args_ << _arg_;
 
@@ -61,7 +61,7 @@ namespace gum {
   /// move constructor
   template < typename TABLE >
   ScheduleDeletion< TABLE >::ScheduleDeletion(ScheduleDeletion< TABLE >&& from) :
-      ScheduleOperation(std::move(from)), _arg_(from._arg_), _is_executed_(from._is_executed_) {
+      ScheduleOperator(std::move(from)), _arg_(from._arg_), _is_executed_(from._is_executed_) {
     // save the arg into _args_ (no need to update _results_)
     _args_ = std::move(from._args_);
 
@@ -93,7 +93,7 @@ namespace gum {
     _args_.clear();
     _args_ << _arg_;
     _is_executed_              = from._is_executed_;
-    ScheduleOperation::operator=(from);
+    ScheduleOperator::operator=(from);
     return *this;
   }
 
@@ -105,7 +105,7 @@ namespace gum {
     _arg_                      = from._arg_;
     _args_                     = std::move(from._args_);
     _is_executed_              = from._is_executed_;
-    ScheduleOperation::operator=(std::move(from));
+    ScheduleOperator::operator=(std::move(from));
     return *this;
   }
 
@@ -119,7 +119,7 @@ namespace gum {
 
   /// operator ==
   template < typename TABLE >
-  bool ScheduleDeletion< TABLE >::operator==(const ScheduleOperation& op) const {
+  bool ScheduleDeletion< TABLE >::operator==(const ScheduleOperator& op) const {
     try {
       const ScheduleDeletion< TABLE >& real_op
          = dynamic_cast< const ScheduleDeletion< TABLE >& >(op);
@@ -137,12 +137,12 @@ namespace gum {
 
   /// operator !=
   template < typename TABLE >
-  INLINE bool ScheduleDeletion< TABLE >::operator!=(const ScheduleOperation& op) const {
+  INLINE bool ScheduleDeletion< TABLE >::operator!=(const ScheduleOperator& op) const {
     return !ScheduleDeletion< TABLE >::operator==(op);
   }
 
 
-  /// checks whether two ScheduleOperation have similar parameters
+  /// checks whether two ScheduleOperator have similar parameters
   template < typename TABLE >
   INLINE bool
      ScheduleDeletion< TABLE >::hasSimilarArguments(const ScheduleDeletion< TABLE >& op) const {
@@ -150,9 +150,9 @@ namespace gum {
   }
 
 
-  /// checks whether two ScheduleOperation have similar parameters
+  /// checks whether two ScheduleOperator have similar parameters
   template < typename TABLE >
-  bool ScheduleDeletion< TABLE >::hasSimilarArguments(const ScheduleOperation& op) const {
+  bool ScheduleDeletion< TABLE >::hasSimilarArguments(const ScheduleOperator& op) const {
     try {
       const ScheduleDeletion< TABLE >& real_op
          = dynamic_cast< const ScheduleDeletion< TABLE >& >(op);
@@ -161,7 +161,7 @@ namespace gum {
   }
 
 
-  /// checks whether two ScheduleOperation have the same parameters
+  /// checks whether two ScheduleOperator have the same parameters
   template < typename TABLE >
   INLINE bool
      ScheduleDeletion< TABLE >::hasSameArguments(const ScheduleDeletion< TABLE >& op) const {
@@ -169,9 +169,9 @@ namespace gum {
   }
 
 
-  /// checks whether two ScheduleOperation have the same parameters
+  /// checks whether two ScheduleOperator have the same parameters
   template < typename TABLE >
-  bool ScheduleDeletion< TABLE >::hasSameArguments(const ScheduleOperation& op) const {
+  bool ScheduleDeletion< TABLE >::hasSameArguments(const ScheduleOperator& op) const {
     try {
       const ScheduleDeletion< TABLE >& real_op
          = dynamic_cast< const ScheduleDeletion< TABLE >& >(op);
@@ -180,21 +180,21 @@ namespace gum {
   }
 
 
-  /// checks whether two ScheduleOperation perform the same operation
+  /// checks whether two ScheduleOperator perform the same operation
   template < typename TABLE >
   INLINE bool
-     ScheduleDeletion< TABLE >::isSameOperation(const ScheduleDeletion< TABLE >& op) const {
+     ScheduleDeletion< TABLE >::isSameOperator(const ScheduleDeletion< TABLE >& op) const {
     return true;
   }
 
 
-  /// checks whether two ScheduleOperation perform the same operation
+  /// checks whether two ScheduleOperator perform the same operator
   template < typename TABLE >
-  bool ScheduleDeletion< TABLE >::isSameOperation(const ScheduleOperation& op) const {
+  bool ScheduleDeletion< TABLE >::isSameOperator(const ScheduleOperator& op) const {
     try {
       const ScheduleDeletion< TABLE >& real_op
          = dynamic_cast< const ScheduleDeletion< TABLE >& >(op);
-      return ScheduleDeletion< TABLE >::isSameOperation(real_op);
+      return ScheduleDeletion< TABLE >::isSameOperator(real_op);
     } catch (std::bad_cast&) { return false; }
   }
 
@@ -206,7 +206,7 @@ namespace gum {
   }
 
 
-  /// returns the sequence of arguments passed to the operation
+  /// returns the sequence of arguments passed to the operator
   template < typename TABLE >
   INLINE const Sequence< const IScheduleMultiDim* >& ScheduleDeletion< TABLE >::args() const {
     return _args_;
@@ -220,7 +220,7 @@ namespace gum {
   }
 
 
-  /// modifies the arguments of the operation
+  /// modifies the arguments of the operator
   template < typename TABLE >
   void ScheduleDeletion< TABLE >::updateArgs(const Sequence< const IScheduleMultiDim* >& new_args) {
     // check that there is exactly one argument in new_args and that its type
@@ -237,7 +237,7 @@ namespace gum {
       GUM_ERROR(TypeError,
                 "The type of the argument passed to "
                    << "ScheduleDeletion::updateArgs does not match what "
-                   << "the ScheduleOperation expects");
+                   << "the ScheduleOperator expects");
     }
 
     // save the new argument
@@ -248,14 +248,14 @@ namespace gum {
   }
 
 
-  /// indicates whether the operation has been executed
+  /// indicates whether the operator has been executed
   template < typename TABLE >
   INLINE bool ScheduleDeletion< TABLE >::isExecuted() const {
     return _is_executed_;
   }
 
 
-  /// executes the operation
+  /// executes the operator
   template < typename TABLE >
   INLINE void ScheduleDeletion< TABLE >::execute() {
     _arg_->makeAbstract();
@@ -271,14 +271,14 @@ namespace gum {
 
 
   /** @brief returns an estimation of the number of elementary operations
-   * needed to perform the ScheduleOperation */
+   * needed to perform the ScheduleOperator */
   template < typename TABLE >
   INLINE double ScheduleDeletion< TABLE >::nbOperations() const {
     return 1.0;
   }
 
 
-  /// returns the memory consumption used during the operation
+  /// returns the memory consumption used during the operator
   template < typename TABLE >
   INLINE std::pair< double, double > ScheduleDeletion< TABLE >::memoryUsage() const {
     const double size_table = double(_arg_->domainSize()) * _arg_->sizeOfContent() + sizeof(TABLE);
@@ -286,7 +286,7 @@ namespace gum {
   }
 
 
-  /// displays the content of the operation
+  /// displays the content of the operator
   template < typename TABLE >
   std::string ScheduleDeletion< TABLE >::toString() const {
     return "delete ( " + _arg_->toString() + " )";

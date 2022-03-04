@@ -153,10 +153,10 @@ namespace gum {
      * produce the right result.
      * @warning MultiDimCombinations always produce a new freshly allocated resulting table
      */
-    std::pair< std::vector< ScheduleOperation* >, const IScheduleMultiDim* >
+    std::pair< std::vector< ScheduleOperator* >, const IScheduleMultiDim* >
        operations(const std::vector< const IScheduleMultiDim* >& set,
                   const bool is_result_persistent = false) const final;
-    std::pair< std::vector< ScheduleOperation* >, const IScheduleMultiDim* >
+    std::pair< std::vector< ScheduleOperator* >, const IScheduleMultiDim* >
        operations(const Set< const IScheduleMultiDim* >& set,
                   const bool                             is_result_persistent = false) const final;
 
@@ -205,7 +205,7 @@ namespace gum {
 
     /// free the scheduling memory
     void _freeData_(std::vector< const IScheduleMultiDim* >& tables,
-                    std::vector< ScheduleOperation* >&       operations) const;
+                    std::vector< ScheduleOperator* >&       operations) const;
   };
 
 } /* namespace gum */

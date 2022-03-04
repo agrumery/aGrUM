@@ -39,7 +39,7 @@ namespace gum {
      const Set< const DiscreteVariable* >& del_vars,
      TABLE (*project)(const TABLE&, const Set< const DiscreteVariable* >&),
      const bool is_result_persistent) :
-      ScheduleOperation(ScheduleOperationType::PROJECT_MULTIDIM, false, is_result_persistent),
+      ScheduleOperator(ScheduleOperatorType::PROJECT_MULTIDIM, false, is_result_persistent),
       _arg_(&table), _del_vars_(del_vars), _project_(project) {
     // compute the variables that shall belong to the result of the projection
     Sequence< const DiscreteVariable* > vars = table.variablesSequence();
@@ -66,9 +66,9 @@ namespace gum {
   /// copy constructor
   template < typename TABLE >
   ScheduleProjection< TABLE >::ScheduleProjection(const ScheduleProjection< TABLE >& from) :
-      ScheduleOperation(from), _arg_(from._arg_), _del_vars_(from._del_vars_),
+      ScheduleOperator(from), _arg_(from._arg_), _del_vars_(from._del_vars_),
       _project_(from._project_) {
-    // copy the result of the from operation
+    // copy the result of the from operator
     _result_ = new ScheduleMultiDim< TABLE >(*(from._result_));
 
     // save the args and result into _args_ and _results_
@@ -83,7 +83,7 @@ namespace gum {
   /// move constructor
   template < typename TABLE >
   ScheduleProjection< TABLE >::ScheduleProjection(ScheduleProjection< TABLE >&& from) :
-      ScheduleOperation(std::move(from)), _arg_(from._arg_), _result_(from._result_),
+      ScheduleOperator(std::move(from)), _arg_(from._arg_), _result_(from._result_),
       _del_vars_(std::move(from._del_vars_)), _project_(from._project_) {
     // indicate that from does not contain anything anymore
     from.makeResultsPersistent(true);   // prevent deleting nullptr
@@ -127,7 +127,7 @@ namespace gum {
 
       // try to copy result (no need to update _results_)
       *_result_                  = *(from._result_);
-      ScheduleOperation::operator=(from);
+      ScheduleOperator::operator=(from);
 
       _del_vars_ = std::move(new_del_vars);
       _arg_      = from._arg_;
@@ -147,7 +147,7 @@ namespace gum {
     if (this != &from) {
       if (!this->hasPersistentResults()) delete _result_;
       _result_                   = from._result_;
-      ScheduleOperation::operator=(std::move(from));
+      ScheduleOperator::operator=(std::move(from));
 
       _del_vars_ = std::move(from._del_vars_);
       _arg_      = from._arg_;
@@ -171,8 +171,8 @@ namespace gum {
 
   /// operator ==
   template < typename TABLE >
-  bool ScheduleProjection< TABLE >::operator==(const ScheduleOperation& op) const {
-    if (ScheduleOperation::operator!=(op)) return false;
+  bool ScheduleProjection< TABLE >::operator==(const ScheduleOperator& op) const {
+    if (ScheduleOperator::operator!=(op)) return false;
 
     try {
       const ScheduleProjection< TABLE >& real_op
@@ -184,7 +184,7 @@ namespace gum {
 
   /// operator !=
   template < typename TABLE >
-  INLINE bool ScheduleProjection< TABLE >::operator!=(const ScheduleOperation& op) const {
+  INLINE bool ScheduleProjection< TABLE >::operator!=(const ScheduleOperator& op) const {
     return !ScheduleProjection< TABLE >::operator==(op);
   }
 
@@ -196,7 +196,7 @@ namespace gum {
   }
 
 
-  /// checks whether two ScheduleOperation have similar parameters
+  /// checks whether two ScheduleOperator have similar parameters
   template < typename TABLE >
   INLINE bool
      ScheduleProjection< TABLE >::hasSimilarArguments(const ScheduleProjection< TABLE >& op) const {
@@ -204,9 +204,9 @@ namespace gum {
   }
 
 
-  /// checks whether two ScheduleOperation have similar parameters
+  /// checks whether two ScheduleOperator have similar parameters
   template < typename TABLE >
-  bool ScheduleProjection< TABLE >::hasSimilarArguments(const ScheduleOperation& op) const {
+  bool ScheduleProjection< TABLE >::hasSimilarArguments(const ScheduleOperator& op) const {
     try {
       const ScheduleProjection< TABLE >& real_op
          = dynamic_cast< const ScheduleProjection< TABLE >& >(op);
@@ -215,7 +215,7 @@ namespace gum {
   }
 
 
-  /// checks whether two ScheduleOperation have the same parameters
+  /// checks whether two ScheduleOperator have the same parameters
   template < typename TABLE >
   INLINE bool
      ScheduleProjection< TABLE >::hasSameArguments(const ScheduleProjection< TABLE >& op) const {
@@ -224,9 +224,9 @@ namespace gum {
   }
 
 
-  /// checks whether two ScheduleOperation have the same parameters
+  /// checks whether two ScheduleOperator have the same parameters
   template < typename TABLE >
-  bool ScheduleProjection< TABLE >::hasSameArguments(const ScheduleOperation& op) const {
+  bool ScheduleProjection< TABLE >::hasSameArguments(const ScheduleOperator& op) const {
     try {
       const ScheduleProjection< TABLE >& real_op
          = dynamic_cast< const ScheduleProjection< TABLE >& >(op);
@@ -235,21 +235,21 @@ namespace gum {
   }
 
 
-  /// checks whether two ScheduleOperation perform the same operation
+  /// checks whether two ScheduleOperator perform the same operation
   template < typename TABLE >
   INLINE bool
-     ScheduleProjection< TABLE >::isSameOperation(const ScheduleProjection< TABLE >& op) const {
+     ScheduleProjection< TABLE >::isSameOperator(const ScheduleProjection< TABLE >& op) const {
     return _project_ == op._project_;
   }
 
 
-  /// checks whether two ScheduleOperation perform the same operation
+  /// checks whether two ScheduleOperator perform the same operation
   template < typename TABLE >
-  bool ScheduleProjection< TABLE >::isSameOperation(const ScheduleOperation& op) const {
+  bool ScheduleProjection< TABLE >::isSameOperator(const ScheduleOperator& op) const {
     try {
       const ScheduleProjection< TABLE >& real_op
          = dynamic_cast< const ScheduleProjection< TABLE >& >(op);
-      return ScheduleProjection< TABLE >::isSameOperation(real_op);
+      return ScheduleProjection< TABLE >::isSameOperator(real_op);
     } catch (std::bad_cast&) { return false; }
   }
 
@@ -261,7 +261,7 @@ namespace gum {
   }
 
 
-  /// returns the sequence of arguments passed to the operation
+  /// returns the sequence of arguments passed to the operator
   template < typename TABLE >
   INLINE const Sequence< const IScheduleMultiDim* >& ScheduleProjection< TABLE >::args() const {
     return _args_;
@@ -282,7 +282,7 @@ namespace gum {
   }
 
 
-  /// modifies the arguments of the operation
+  /// modifies the arguments of the operator
   template < typename TABLE >
   void
      ScheduleProjection< TABLE >::updateArgs(const Sequence< const IScheduleMultiDim* >& new_args) {
@@ -300,7 +300,7 @@ namespace gum {
       GUM_ERROR(TypeError,
                 "The type of the argument passed to "
                    << "ScheduleProjection::updateArgs does not match what "
-                   << "the ScheduleOperation expects");
+                   << "the ScheduleOperator expects");
     }
 
     // if the new table is a constant, just copy it
@@ -322,14 +322,14 @@ namespace gum {
   }
 
 
-  /// indicates whether the operation has been executed
+  /// indicates whether the operator has been executed
   template < typename TABLE >
   bool ScheduleProjection< TABLE >::isExecuted() const {
     return !_result_->isAbstract();
   }
 
 
-  /// executes the operation
+  /// executes the operator
   template < typename TABLE >
   void ScheduleProjection< TABLE >::execute() {
     if (_result_->isAbstract()) {
@@ -352,14 +352,14 @@ namespace gum {
 
 
   /** @brief returns an estimation of the number of elementary operations
-   * needed to perform the ScheduleOperation */
+   * needed to perform the ScheduleOperator */
   template < typename TABLE >
   INLINE double ScheduleProjection< TABLE >::nbOperations() const {
     return double(_arg_->domainSize());
   }
 
 
-  /// returns the memory consumption used during the operation
+  /// returns the memory consumption used during the operator
   template < typename TABLE >
   std::pair< double, double > ScheduleProjection< TABLE >::memoryUsage() const {
     const double domsize
@@ -368,7 +368,7 @@ namespace gum {
   }
 
 
-  /// displays the content of the operation
+  /// displays the content of the operator
   template < typename TABLE >
   std::string ScheduleProjection< TABLE >::toString() const {
     return _result_->toString() + " = project ( " + _arg_->toString() + " , "

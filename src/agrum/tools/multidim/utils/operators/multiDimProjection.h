@@ -155,7 +155,7 @@ namespace gum {
     /** @warning MultiDimProjections always produce a new freshly allocated
      * resulting table
      */
-    std::pair< ScheduleOperation*, const IScheduleMultiDim* >
+    std::pair< ScheduleOperator*, const IScheduleMultiDim* >
        operations(const IScheduleMultiDim*              table,
                   const Set< const DiscreteVariable* >& del_vars,
                   const bool                            is_result_persistent = false) const;

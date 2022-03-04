@@ -114,7 +114,7 @@ namespace gum {
     /// @{
 
     /** @brief inserts a new table as a source operation's input, i.e., this
-     * table is not computed by any ScheduleOperation
+     * table is not computed by any ScheduleOperator
      *
      * ScheduleOperations produce new tables that can be passed as arguments to
      * other ScheduleOperations. However source operations, i.e., those that
@@ -132,7 +132,7 @@ namespace gum {
        insertTable(const TABLE& table, const bool copy, const Idx id = 0);
 
     /** @brief inserts a copy of a table as a source operation's input, i.e., this
-     * table is not computed by any ScheduleOperation
+     * table is not computed by any ScheduleOperator
      *
      * ScheduleOperations produce new tables that can be passed as arguments to
      * other ScheduleOperations. However source operations, i.e., those that
@@ -154,7 +154,7 @@ namespace gum {
        insertScheduleMultiDim(const IScheduleMultiDim& multidim);
 
     /** @brief inserts without copying it a table as a source operation's input,
-     * i.e., this table is not computed by any ScheduleOperation
+     * i.e., this table is not computed by any ScheduleOperator
      *
      * ScheduleOperations produce new tables that can be passed as arguments to
      * other ScheduleOperations. However source operations, i.e., those that
@@ -188,8 +188,8 @@ namespace gum {
      * already been performed but other operations use some of these arguments
      * and they have not been executed yet.
      * @warning operations are inserted by cloning */
-    const ScheduleOperation& insertOperation(const ScheduleOperation& op,
-                                                      const bool are_results_persistent = false);
+    const ScheduleOperator& insertOperation(const ScheduleOperator& op,
+                                              const bool are_results_persistent = false);
 
     /// emplace a new schedule binary combination operation
     /** @param table1 the first ScheduleMultiDim to combine with the other table
@@ -208,7 +208,7 @@ namespace gum {
      * and they have not been executed yet.
      */
     template < typename TABLE1, typename TABLE2, typename TABLE_RES >
-    const ScheduleOperation&
+    const ScheduleOperator&
        emplaceBinaryCombination(const ScheduleMultiDim< TABLE1 >& table1,
                                 const ScheduleMultiDim< TABLE2 >& table2,
                                 TABLE_RES (*combine)(const TABLE1&, const TABLE2&),
@@ -233,7 +233,7 @@ namespace gum {
      * and they have not been executed yet.
      */
     template < typename TABLE >
-    const ScheduleOperation&
+    const ScheduleOperator&
        emplaceProjection(const ScheduleMultiDim< TABLE >& table,
                          const Set< const DiscreteVariable* >&   del_vars,
                          TABLE (*project)(const TABLE&, const Set< const DiscreteVariable* >&),
@@ -249,7 +249,7 @@ namespace gum {
      * and they have not been executed yet.
      */
     template < typename TABLE >
-    const ScheduleOperation&
+    const ScheduleOperator&
        emplaceDeletion(const ScheduleMultiDim< TABLE >& table);
 
     /// emplace a new schedule storage operation
@@ -265,7 +265,7 @@ namespace gum {
                template < typename, typename... >
                class CONTAINER,
                typename... CONTAINER_PARAMS >
-    const ScheduleOperation&
+    const ScheduleOperator&
        emplaceStorage(const IScheduleMultiDim&        table,
                       CONTAINER< TABLE, CONTAINER_PARAMS... >& container);
 
@@ -277,12 +277,12 @@ namespace gum {
     /// returns the scheduleOperation corresponding to an id in the DAG
     /** @throws NotFound exception is raised if the DAG does not contain the id
      */
-    const ScheduleOperation& operation(const NodeId id) const;
+    const ScheduleOperator& operation(const NodeId id) const;
 
-    /// returns the id of the node corresponding to a given ScheduleOperation
+    /// returns the id of the node corresponding to a given ScheduleOperator
     /** @throws NotFound exception is raised the operation does not belong to
      * the Schedule */
-    NodeId nodeId(const ScheduleOperation&) const;
+    NodeId nodeId(const ScheduleOperator&) const;
 
     /** @brief returns the set of ScheduleOperations that are ready to be executed
      *
@@ -328,7 +328,7 @@ namespace gum {
      * @throws UnexecutedScheduleOperation exception is thrown in check mode if
      * the operation has not yet been executed. This should never happen.
      */
-    void updateAfterExecution(const ScheduleOperation& exec_op,
+    void updateAfterExecution(const ScheduleOperator& exec_op,
                               std::vector< NodeId >&            new_available_nodes,
                               const bool                        check = false);
 
@@ -342,16 +342,16 @@ namespace gum {
     NodeId scheduleMultiDimId(const IScheduleMultiDim* multidim) const;
 
     /// returns the operation, if any, that created a given scheduleMultiDim
-    /** @returns a pointer to the ScheduleOperation that created (as a result)
+    /** @returns a pointer to the ScheduleOperator that created (as a result)
      * a given ScheduleMultiDim. If no operation created it, the method
      * returns nullptr. */
-    const ScheduleOperation* scheduleMultiDimCreator(const NodeId id) const;
+    const ScheduleOperator* scheduleMultiDimCreator(const NodeId id) const;
 
     /// returns the operation, if any, that created a given scheduleMultiDim
-    /** @returns a pointer to the ScheduleOperation that created (as a result)
+    /** @returns a pointer to the ScheduleOperator that created (as a result)
      * a given ScheduleMultiDim. If no operation created it, the method
      * returns nullptr. */
-    const ScheduleOperation*
+    const ScheduleOperator*
        scheduleMultiDimCreator(const IScheduleMultiDim* multidim) const;
 
     /// returns the version number of the schedule
@@ -374,7 +374,7 @@ namespace gum {
     NodeId _newId_{NodeId(0)};
 
     /// a mapping between the ids of the operations and their pointer
-    Bijection< NodeId, ScheduleOperation* > _node2op_;
+    Bijection< NodeId, ScheduleOperator* > _node2op_;
 
     /// a structure to indicate precisely where a ScheduleMultiDim comes from
     /** ScheduleMultiDims can either result from the execution of some
@@ -384,12 +384,12 @@ namespace gum {
      * ScheduleMultiDim has been created outside of the schedule, i.e., that
      * it references an outside MultiDim.
      * - if the first element of the std::pair is different from nullptr, then
-     * the ScheduleMultiDim results from a ScheduleOperation and the pointer
+     * the ScheduleMultiDim results from a ScheduleOperator and the pointer
      * of this operation is this first argument. The second argument of the
      * std::pair indicates the index of the ScheduleMultiDim in the sequence
-     * of results of the ScheduleOperation.
+     * of results of the ScheduleOperator.
      */
-    HashTable< const IScheduleMultiDim*, std::pair< ScheduleOperation*, Idx > >
+    HashTable< const IScheduleMultiDim*, std::pair< ScheduleOperator*, Idx > >
        _multidim_location_;
 
     /// a bijection between pointers to IScheduleMultiDim and their Ids

@@ -246,7 +246,7 @@ namespace gum {
   /// returns the set of operations to perform to make all the combinations
   /// and projections
   template < class TABLE >
-  std::pair< std::vector< ScheduleOperation* >, Set< const IScheduleMultiDim* > >
+  std::pair< std::vector< ScheduleOperator* >, Set< const IScheduleMultiDim* > >
      MultiDimCombineAndProjectDefault< TABLE >::operations(
         const std::vector< const IScheduleMultiDim* >& original_tables,
         const Set< const DiscreteVariable* >&          del_vars,
@@ -262,7 +262,7 @@ namespace gum {
   /// returns the set of operations to perform to make all the combinations
   /// and projections
   template < class TABLE >
-  std::pair< std::vector< ScheduleOperation* >, Set< const IScheduleMultiDim* > >
+  std::pair< std::vector< ScheduleOperator* >, Set< const IScheduleMultiDim* > >
      MultiDimCombineAndProjectDefault< TABLE >::operations(
         const Set< const IScheduleMultiDim* >& original_tables,
         const Set< const DiscreteVariable* >&  original_del_vars,
@@ -272,7 +272,7 @@ namespace gum {
     if (tabsize < 2) {
       if (tabsize == 1) {
         auto res = _projection_->operations(*original_tables.begin(), original_del_vars);
-        return std::pair< std::vector< ScheduleOperation* >, Set< const IScheduleMultiDim* > >(
+        return std::pair< std::vector< ScheduleOperator* >, Set< const IScheduleMultiDim* > >(
            {res.first},
            {res.second});
       } else {
@@ -353,12 +353,12 @@ namespace gum {
 
     // create the set of operations to execute to perform the combinations and
     // projections
-    std::vector< ScheduleOperation* > ops;
+    std::vector< ScheduleOperator* > ops;
     ops.reserve(2 * tables.size() + del_vars.size());
 
     // keep track of the operations that created new tables. This is useful
     // when requiring that results are persistent
-    HashTable< const IScheduleMultiDim*, ScheduleOperation* > multidim2op(tables.size());
+    HashTable< const IScheduleMultiDim*, ScheduleOperator* > multidim2op(tables.size());
 
     // the sizes of the tables produced when removing a given discrete variable
     PriorityQueue< const DiscreteVariable*, double > product_size;
@@ -522,7 +522,7 @@ namespace gum {
   template < class TABLE >
   INLINE void MultiDimCombineAndProjectDefault< TABLE >::_freeData_(
      std::vector< const IScheduleMultiDim* >& tables,
-     std::vector< ScheduleOperation* >&       operations) const {
+     std::vector< ScheduleOperator* >&       operations) const {
     for (auto op: operations)
       delete op;
 

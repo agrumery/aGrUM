@@ -112,11 +112,11 @@ namespace gum {
     /** @brief returns the set of operations to perform to make all the combinations
      * and projections
      */
-    virtual std::pair< std::vector< ScheduleOperation* >, Set< const IScheduleMultiDim* > >
+    virtual std::pair< std::vector< ScheduleOperator* >, Set< const IScheduleMultiDim* > >
        operations(const Set< const IScheduleMultiDim* >& original_tables,
                   const Set< const DiscreteVariable* >&  del_vars,
                   const bool                             is_result_persistent = false) const = 0;
-    virtual std::pair< std::vector< ScheduleOperation* >, Set< const IScheduleMultiDim* > >
+    virtual std::pair< std::vector< ScheduleOperator* >, Set< const IScheduleMultiDim* > >
        operations(const std::vector< const IScheduleMultiDim* >& original_tables,
                   const Set< const DiscreteVariable* >&          del_vars,
                   const bool is_result_persistent = false) const = 0;
