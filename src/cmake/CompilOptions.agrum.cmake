@@ -3,7 +3,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 include (CheckCXXCompilerFlag)
-set (WARNING_FLAGS "-Wall -pedantic -g")
+set (WARNING_FLAGS "-Wall -pedantic")
 check_cxx_compiler_flag("${WARNING_FLAGS}" _SUPPORT_WARNING_FLAGS)
 if (_SUPPORT_WARNING_FLAGS)
   set (CMAKE_CXX_FLAGS "${WARNING_FLAGS} ${CMAKE_CXX_FLAGS}")

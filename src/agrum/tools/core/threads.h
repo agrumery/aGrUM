@@ -72,7 +72,7 @@ namespace gum {
    * @return the number of threads used by default the next time we enter into
    * a parallel region
    */
-  using threads::getMaxNumberOfThreads;
+  using gum::threads::getMaxNumberOfThreads;
 
    /**
    * @brief Get the number of logical processors.
