@@ -2070,7 +2070,7 @@ def randomProba() -> float:
     Returns
     -------
     float
-        a random number between 0 and 1 included (i.e. a proba). 
+        a random number between 0 and 1 included (i.e. a proba).
 
     """
     return _pyAgrum.randomProba()
@@ -6632,7 +6632,7 @@ def randomDistribution(n: int) -> List[float]:
 
     Returns
     -------
-    a random discrete distribution. 
+    a random discrete distribution.
 
     """
     return _pyAgrum.randomDistribution(n)

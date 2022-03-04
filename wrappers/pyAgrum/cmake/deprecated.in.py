@@ -34,39 +34,6 @@ def ShaferShenoyIDInference(infdiag):
   return ShaferShenoyLIMIDInference(infdiag)
 
 
-def JTGenerator():
-  """
-  Deprecated class. Use pyAgrum.JunctionTreeGenerator instead.
-  """
-  warnings.warn("""
-  ** pyAgrum.JTGenerator is deprecated in pyAgrum>0.12.6.
-  ** A pyAgrum.JunctionTreeGenerator has been created.
-  """)
-  return JunctionTreeGenerator()
-
-
-def GibbsKL(p, q):
-  """
-  Deprecated class. Use pyAgrum.GibbsBNdistance instead.
-  """
-  warnings.warn("""
-  ** pyAgrum.GibbsKL is deprecated in pyAgrum>0.12.6.
-  ** A pyAgrum.GibbsBNdistance has been created.
-  """)
-  return GibbsBNdistance(p, q)
-
-
-def BruteForceKL(p, q):
-  """
-  Deprecated class. Use pyAgrum.ExactBNdistance instead.
-  """
-  warnings.warn("""
-  ** pyAgrum.BruteForceKL is deprecated in pyAgrum>0.12.6.
-  ** A pyAgrum.ExactBNdistance has been created.
-  """)
-  return ExactBNdistance(p, q)
-
-
 def _addDeprecatedMethods():
   def deprecated_setAprioriWeight(learner, weight):
     """
@@ -80,5 +47,35 @@ def _addDeprecatedMethods():
 
   BNLearner.setAprioriWeight = deprecated_setAprioriWeight
 
+
+def getNumberOfRunningThreads():
+  warnings.warn(""""
+  ** pyAgrum.getNumberOfRunningThreads is obsolete in pyAgrum>0.22.7.
+  """)
+
+def getDynamicThreadsNumber():
+  warnings.warn(""""
+  ** pyAgrum.getDynamicThreadsNumber is obsolete in pyAgrum>0.22.7.
+  """)
+
+def setDynamicThreadsNumber(n):
+  warnings.warn(""""
+  ** pyAgrum.setDynamicThreadsNumber is obsolete in pyAgrum>0.22.7.
+  """)
+
+def getNestedParallelism():
+  warnings.warn(""""
+  ** pyAgrum.getNestedParallelism is obsolete in pyAgrum>0.22.7.
+  """)
+
+def setNestedParallelism(n):
+  warnings.warn(""""
+  ** pyAgrum.setNestedParallelism is obsolete in pyAgrum>0.22.7.
+  """)
+
+def getThreadNumber():
+  warnings.warn(""""
+  ** pyAgrum.getThreadNumber is obsolete in pyAgrum>0.22.7.
+  """)
 
 _addDeprecatedMethods()

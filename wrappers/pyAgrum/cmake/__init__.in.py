@@ -56,12 +56,9 @@ from .pyAgrum import PRMexplorer
 from .pyAgrum import ApproximationScheme
 
 from .pyAgrum import initRandom, randomProba, randomDistribution, randomGeneratorSeed, getRandomGenerator, randomValue
+from .pyAgrum import isOMP, setNumberOfThreads, getNumberOfLogicalProcessors, getMaxNumberOfThreads
 
-#from .pyAgrum import isOMP, setNumberOfThreads, getThreadNumber, getNumberOfRunningThreads, getNumberOfLogicalProcessors, getMaxNumberOfThreads, getDynamicThreadsNumber, setDynamicThreadsNumber
-from .pyAgrum import isOMP,  setNumberOfThreads, getNumberOfThreads, getNumberOfLogicalProcessors,  getMaxNumberOfThreads
-#from .pyAgrum import getNestedParallelism, setNestedParallelism
-
-from .pyAgrum import VarType_Discretized,VarType_Labelized,VarType_Range
+from .pyAgrum import VarType_Discretized,VarType_Labelized,VarType_Range,VarType_Integer
 
 from .pyAgrum import DefaultInLabel, DuplicateElement, DuplicateLabel, GumException, FatalError, FormatNotFound, GraphError, IOError, InvalidArc, InvalidArgument, InvalidArgumentsNumber, InvalidDirectedCycle, InvalidEdge, InvalidNode, DatabaseError, MissingValueInDatabase, MissingVariableInDatabase, NoChild, NoNeighbour, NoParent, NotFound, NullElement, OperationNotAllowed, OutOfBounds, ArgumentError, SizeError, SyntaxError, UndefinedElement, UndefinedIteratorKey, UndefinedIteratorValue, UnknownLabelInDatabase, CPTError
 
@@ -94,16 +91,12 @@ __all__=[
   'PRMexplorer',
 
   'ApproximationScheme',
-
-  'initRandom','randomProba','randomDistribution',
-  'isOMP','setNumberOfThreads','getNumberOfLogicalProcessors','getMaxNumberOfThreads',
-
   'initRandom','randomProba','randomDistribution','randomGeneratorSeed','getRandomGenerator','randomValue',
-  'isOMP','setNumberOfThreads','getThreadNumber','getNumberOfRunningThreads','getNumberOfLogicalProcessors','getMaxNumberOfThreads','getDynamicThreadsNumber','setDynamicThreadsNumber',
 
-  'getNestedParallelism', 'setNestedParallelism',
+  'isOMP','setNumberOfThreads','getNumberOfLogicalProcessors','getMaxNumberOfThreads',
+  'getThreadNumber','getNumberOfRunningThreads','getDynamicThreadsNumber','setDynamicThreadsNumber','getNestedParallelism', 'setNestedParallelism',
 
-  'VarType_Discretized', 'VarType_Labelized', 'VarType_Range',
+  'VarType_Discretized', 'VarType_Labelized', 'VarType_Range','VarType_Integer',
 
   'DefaultInLabel', 'DuplicateElement', 'DuplicateLabel', 'GumException', 'FatalError', 'FormatNotFound', 'GraphError', 'IOError', 'InvalidArc', 'InvalidArgument', 'InvalidArgumentsNumber', 'InvalidDirectedCycle', 'InvalidEdge', 'InvalidNode', 'DatabaseError', 'MissingValueInDatabase', 'MissingVariableInDatabase', 'NoChild', 'NoNeighbour', 'NoParent', 'NotFound', 'NullElement', 'OperationNotAllowed', 'OutOfBounds', 'ArgumentError', 'SizeError', 'SyntaxError', 'UndefinedElement', 'UndefinedIteratorKey', 'UndefinedIteratorValue', 'UnknownLabelInDatabase',"CPTError",
 
@@ -359,7 +352,7 @@ def fastBN(structure, domain_size=2):
 Create a Bayesian network with a dot-like syntax which specifies:
     - the structure 'a->b->c;b->d<-e;',
     - the type of the variables with different syntax (cf documentation).
-    
+
 Examples
 --------
 >>> import pyAgrum as gum
@@ -375,7 +368,7 @@ domain_size : int
 Returns
 -------
 pyAgrum.BayesNet
-        the resulting bayesian network 
+        the resulting bayesian network
   """
   return BayesNet.fastPrototype(structure, domain_size)
 
@@ -400,7 +393,7 @@ domain_size : int
 Returns
 -------
 pyAgrum.MarkovNet
-        the resulting Markov network 
+        the resulting Markov network
   """
   return MarkovNet.fastPrototype(structure, domain_size)
 
@@ -416,7 +409,7 @@ Create an Influence Diagram with a modified dot-like syntax which specifies:
       - ``a`` : a chance node named 'a' (by default)
       - ``$a`` : a utility node named 'a'
       - ``*a`` : a decision node named 'a'
-    
+
 Examples
 --------
 >>> import pyAgrum as gum
@@ -449,7 +442,7 @@ def getPosterior(model, evs, target):
   Parameters
   ----------
   bn : pyAgrum.BayesNet or pyAgrum.MarkovNet
-    The probabilistic Graphical Model   
+    The probabilistic Graphical Model
   evs:  dictionaryDict
     {name/id:val, name/id : [ val1, val2 ], ...}
   target: string or int
@@ -488,7 +481,7 @@ def generateCSV(bn, name_out, n, show_progress=False, with_labels=False, random_
   :param with_labels: if True, use the labels of the modalities of variables in the csv. If False, use their ids.
   :type with_labels: boolean
   :param random_order: if True, the columns in the csv are randomized sorted
-  :type random_order: boolean  
+  :type random_order: boolean
   :return: the log2-likelihood of the generated base
   """
 
@@ -520,10 +513,10 @@ def generateCSV(bn, name_out, n, show_progress=False, with_labels=False, random_
 
 def log2(p):
   """Compute p.log2() in a new Potential without modifying p
-  
+
   Parameters
   ----------
-  p : pyAgrum.Potential 
+  p : pyAgrum.Potential
     The potential on which to apply log2 function
 
   Returns
