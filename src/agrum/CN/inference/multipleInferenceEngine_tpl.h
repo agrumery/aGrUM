@@ -310,7 +310,8 @@ namespace gum {
         const auto nsize = workingSet_[work_index]->size();
         const auto real_nb_threads = std::min(nb_threads, nsize);
         const auto ranges =
-           gum::dispatchRangeToThreads(0, nsize, real_nb_threads);
+           gum::dispatchRangeToThreads(0, nsize,
+                                       (unsigned int)(real_nb_threads));
 
         // launch the threads
         ThreadExecutor::execute(real_nb_threads, threadedExec, work_index, ranges);
@@ -518,7 +519,8 @@ namespace gum {
         // compute the ranges over which the threads will work
         const auto nsize           = workingSet_[work_index]->size();
         const auto real_nb_threads = std::min(nb_threads, nsize);
-        const auto ranges          = gum::dispatchRangeToThreads(0, nsize, real_nb_threads);
+        const auto ranges          = gum::dispatchRangeToThreads(0, nsize,
+                                                        (unsigned int)(real_nb_threads));
         ThreadExecutor::execute(real_nb_threads, threadedExec, work_index, ranges);
       }
     }
@@ -599,7 +601,8 @@ namespace gum {
             // compute the ranges over which the threads will work
             const auto nsize           = workingSet_[work_index]->size();
             const auto real_nb_threads = std::min(nb_threads, nsize);
-            const auto ranges          = gum::dispatchRangeToThreads(0, nsize, real_nb_threads);
+            const auto ranges          = gum::dispatchRangeToThreads(0, nsize,
+                                                            (unsigned int)(real_nb_threads));
             ThreadExecutor::execute(real_nb_threads, threadedExec, work_index, ranges);
           }
         }
@@ -636,7 +639,8 @@ namespace gum {
         if (!this->l_modal_[work_index].empty()) {
           const auto nsize           = Size(workingSet_[work_index]->size());
           const auto real_nb_threads = std::min(nb_threads, nsize);
-          const auto ranges          = gum::dispatchRangeToThreads(0, nsize, real_nb_threads);
+          const auto ranges          = gum::dispatchRangeToThreads(0, nsize,
+                                                          (unsigned int)(real_nb_threads));
           ThreadExecutor::execute(real_nb_threads, threadedExec, work_index, ranges);
         }
       }

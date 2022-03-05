@@ -1256,7 +1256,7 @@ namespace gum {
     // potentials were just temporary potentials
     for (auto barren_pot: barren_projected_potentials) {
       if (!new_pot_list.exists(barren_pot))
-        schedule.template emplaceDeletion(
+        schedule.emplaceDeletion(
            static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >& >(*barren_pot));
     }
 
@@ -1268,7 +1268,7 @@ namespace gum {
         // potentials might be empty. In this case, we shall keep their
         // constant and remove them from memory
         // # TODO: keep the constants!
-        schedule.template emplaceDeletion(
+        schedule.emplaceDeletion(
            static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >& >(**iter_pot));
         new_pot_list.erase(iter_pot);
       }

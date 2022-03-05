@@ -1670,7 +1670,8 @@ namespace gum {
         const auto real_nb_threads = std::min(nb_threads, nsize);
 
         // prepare the data used by the threads
-        const auto ranges = gum::dispatchRangeToThreads(0, nsize, real_nb_threads);
+        const auto ranges = gum::dispatchRangeToThreads(0, nsize,
+                                                        (unsigned int)(real_nb_threads));
         std::vector< Size > t_redund(real_nb_threads); // use Size to avoid false sharing
 
         // create the function to be executed by the threads

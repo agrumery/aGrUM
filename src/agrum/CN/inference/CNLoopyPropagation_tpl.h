@@ -402,7 +402,8 @@ namespace gum {
       nb_threads      = std::min(msgPerm * taille / this->threadMinimalNbOps_, nb_threads);
       if (nb_threads < 1) nb_threads = 1;
 
-      const auto                ranges = gum::dispatchRangeToThreads(0, msgPerm, nb_threads);
+      const auto                ranges = gum::dispatchRangeToThreads(0, msgPerm,
+                                                      (unsigned int)(nb_threads));
       const auto                real_nb_threads = ranges.size();
       std::vector< GUM_SCALAR > msg_pmin(real_nb_threads, msg_p_min);
       std::vector< GUM_SCALAR > msg_pmax(real_nb_threads, msg_p_max);
@@ -486,7 +487,8 @@ namespace gum {
       nb_threads      = std::min(msgPerm * taille / this->threadMinimalNbOps_, nb_threads);
       if (nb_threads < 1) nb_threads = 1;
 
-      const auto                ranges = gum::dispatchRangeToThreads(0, msgPerm, nb_threads);
+      const auto                ranges = gum::dispatchRangeToThreads(0, msgPerm,
+                                                      (unsigned int)(nb_threads));
       const auto                real_nb_threads = ranges.size();
       std::vector< GUM_SCALAR > msg_lmin(real_nb_threads, msg_l_min);
       std::vector< GUM_SCALAR > msg_lmax(real_nb_threads, msg_l_max);

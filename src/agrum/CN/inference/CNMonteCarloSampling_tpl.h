@@ -121,7 +121,8 @@ namespace gum {
                                  : 1;   // no nested multithreading
 
         // dispatch {0,...,psize} among the threads
-        const auto ranges = gum::dispatchRangeToThreads(0, psize, nb_threads);
+        const auto ranges = gum::dispatchRangeToThreads(0, psize,
+                                                        (unsigned int)(nb_threads));
 
         // create the function to be executed by the threads
         auto threadedExec = [this, ranges](const std::size_t this_thread,
