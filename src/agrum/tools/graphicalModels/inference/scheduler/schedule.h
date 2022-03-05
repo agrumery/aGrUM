@@ -262,12 +262,10 @@ namespace gum {
      * and they have not been executed yet.
      */
     template < typename TABLE,
-               template < typename, typename... >
-               class CONTAINER,
-               typename... CONTAINER_PARAMS >
+               template < typename > class CONTAINER >
     const ScheduleOperator&
-       emplaceStorage(const IScheduleMultiDim&        table,
-                      CONTAINER< TABLE, CONTAINER_PARAMS... >& container);
+       emplaceStorage(const IScheduleMultiDim& table,
+                      CONTAINER< TABLE >&      container);
 
     /// returns a DAG indicating in which order the operations can be performed
     /** In this DAG, each node corresponds to an operation and an operation

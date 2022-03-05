@@ -94,16 +94,14 @@ namespace gum {
 
   /// emplace a new schedule storage operation
   template < typename TABLE,
-             template < typename, typename... >
-             class CONTAINER,
-             typename... CONTAINER_PARAMS >
+             template < typename > class CONTAINER >
   const ScheduleOperator&
-     Schedule::emplaceStorage(const IScheduleMultiDim&                 table,
-                              CONTAINER< TABLE, CONTAINER_PARAMS... >& container) {
+     Schedule::emplaceStorage(const IScheduleMultiDim& table,
+                              CONTAINER< TABLE >&      container) {
     // note that the insertOperation will check that table already belongs
     // to the schedule
     return insertOperation(
-       ScheduleStorage< TABLE, CONTAINER, CONTAINER_PARAMS... >(table, container),
+       ScheduleStorage< TABLE, CONTAINER >(table, container),
        false);
   }
 
