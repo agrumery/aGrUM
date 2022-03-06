@@ -143,7 +143,7 @@ namespace gum {
      * joint
      * targets that have been added by the user).
      */
-    virtual void eraseAllTargets();
+    virtual void eraseAllTargets() final;
 
     /// Clear all previously defined joint targets
     virtual void eraseAllJointTargets() final;

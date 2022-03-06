@@ -114,13 +114,6 @@ namespace gum {
     private:
     /// a scheduler used for computing the number of operations and memory usage
     SchedulerSequential _sequential_scheduler_;
-
-    /// the max cumulative number of instructions allowed for a given thread
-    double _max_instruction_number_{2000};
-
-    /// friendship for allowing std::sort to use _cmp_
-    //template < typename ITER, typename CMP >
-    //friend void std::sort(ITER, ITER, CMP);
   };
 
 } /* namespace gum */

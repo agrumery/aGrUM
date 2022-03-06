@@ -145,7 +145,7 @@ namespace gum {
     // prepare keeping information about memory usage. This is useful if the user
     // added constraints on memory usage. When operations cannot be performed
     // due to memory shortage, they will be temporarily stored into ordered vectors
-    double overall_memory_used = 0.0;   // the current memory used by all the threads
+    // double overall_memory_used = 0.0;   // the current memory used by all the threads
 
     // create the mutexes needed for threads synchronization
     std::vector< std::mutex >              thread2mutex(nb_threads);
@@ -154,8 +154,7 @@ namespace gum {
 
     // here, we create a lambda that will be executed by all the threads
     // to execute the operations in a parallel manner
-    auto opExecute = [this,
-                      &schedule,
+    auto opExecute = [&schedule,
                       &nb_parents_to_execute,
                       &overall_mutex,
                       &thread2mutex,
@@ -163,9 +162,8 @@ namespace gum {
                       &active_threads,
                       &thread2node,
                       &available_nodes,
-                      &nb_remaining_operations,
-                      &overall_memory_used](const std::size_t this_thread,
-                                            const std::size_t nb_threads) -> void {
+                      &nb_remaining_operations](const std::size_t this_thread,
+                                                const std::size_t nb_threads) -> void {
       const DAG& dag = schedule.dag();
 
       // get the synchronization objects
@@ -180,7 +178,7 @@ namespace gum {
       // sets the condition to wait for new nodes
       const auto duration = std::chrono::milliseconds(10);
       auto has_node_to_process =
-         [&node_to_execute, &nb_remaining_operations, &nb_remaining, this_thread] {
+         [&node_to_execute, &nb_remaining_operations, &nb_remaining] {
            nb_remaining = nb_remaining_operations.load();
            return (node_to_execute != NodeId(0)) || (nb_remaining == Size(0));
          };
