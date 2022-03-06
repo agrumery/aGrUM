@@ -166,8 +166,8 @@ namespace gum_tests {
 
       gum::ScheduleMultiDim< gum::Potential< double > > f4(pot2, true);
       store2.updateArgs({&f4});
-      gum::ScheduleOperator& xstore1 = store1;
-      TS_ASSERT(xstore1 != store2);
+      gum::ScheduleOperator& xstore2 = store2;
+      TS_ASSERT(store1 != xstore2);
 
       store2bis.updateArgs({&f4});
       gum::ScheduleStorage< gum::Potential< double >*, gum::Set > store3bis = store2bis;

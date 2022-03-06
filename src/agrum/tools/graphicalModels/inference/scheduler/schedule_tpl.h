@@ -94,7 +94,7 @@ namespace gum {
 
   /// emplace a new schedule storage operation
   template < typename TABLE,
-             template < typename > class CONTAINER >
+             template < typename... > class CONTAINER >
   const ScheduleOperator&
      Schedule::emplaceStorage(const IScheduleMultiDim& table,
                               CONTAINER< TABLE >&      container) {

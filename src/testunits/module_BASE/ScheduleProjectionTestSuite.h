@@ -393,8 +393,8 @@ namespace gum_tests {
       gum::Instantiation inst(table);
 
       for (inst.setFirst(); !inst.end(); ++inst) {
-        float xxx = result.get(inst);
-        float yyy = table[inst];
+        auto xxx = result.get(inst);
+        auto yyy = table[inst];
         result.set(inst, xxx > yyy ? xxx : yyy);
       }
 

@@ -1087,6 +1087,13 @@ namespace gum {
   }
 
 
+  // fired after a new Markov net has been assigned to the engine
+  template < typename GUM_SCALAR >
+  INLINE void ShaferShenoyMNInference< GUM_SCALAR >::onModelChanged_(const GraphicalModel* mn) {
+    JointTargetedMNInference< GUM_SCALAR >::onModelChanged_(mn);
+  }
+
+
   // performs a whole inference
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyMNInference< GUM_SCALAR >::makeInference_() {

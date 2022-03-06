@@ -262,7 +262,7 @@ namespace gum {
     virtual NodeSet superForJointComputable_(const NodeSet& vars);
 
     /// fired after a new Markov net has been assigned to the engine
-    virtual void onModelChanged_(const GraphicalModel* mn);
+    virtual void onModelChanged_(const GraphicalModel* mn) override;
 
     /// fired after a new joint target is inserted
     /** @param set The set of target variable's ids. */

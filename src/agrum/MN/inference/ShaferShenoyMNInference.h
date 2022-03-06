@@ -171,10 +171,12 @@ namespace gum {
      * makeMNInference_. */
     void updateOutdatedPotentials_() final;
 
+    /// fired after a new Markov net has been assigned to the engine
+    void onModelChanged_(const GraphicalModel* mn) final;
+
     /// called when the inference has to be performed effectively
     /** Once the inference is done, fillPosterior_ can be called. */
     void makeInference_() final;
-
 
     /// returns the posterior of a given variable
     /** @param id The variable's id. */

@@ -55,7 +55,7 @@ namespace gum {
      * the container by moves. */
     template < typename TABLE,
                typename CONTAINER_TABLE,
-               template < typename > class CONTAINER >
+               template < typename... > class CONTAINER >
     struct Execution {
       void execute(TABLE& table,
                    CONTAINER< CONTAINER_TABLE >& container);
@@ -92,7 +92,7 @@ namespace gum {
    * @ingroup inference_schedule
    */
   template < typename TABLE,
-             template < typename > class CONTAINER >
+             template < typename... > class CONTAINER >
   class ScheduleStorage:
       public ScheduleOperator,
       private ScheduleStorageMethod::Execution< typename std::remove_pointer<TABLE>::type,

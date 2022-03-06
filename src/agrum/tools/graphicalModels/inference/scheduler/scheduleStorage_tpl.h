@@ -51,7 +51,7 @@ namespace gum {
 
 
   /// default constructor
-  template < typename TABLE, template < typename > class CONTAINER >
+  template < typename TABLE, template < typename... > class CONTAINER >
   ScheduleStorage< TABLE, CONTAINER >::ScheduleStorage(const IScheduleMultiDim& table,
                                                        CONTAINER< TABLE >&      container) :
       ScheduleOperator(ScheduleOperatorType::STORE_MULTIDIM, true, false),
@@ -78,7 +78,7 @@ namespace gum {
 
 
   /// copy constructor
-  template < typename TABLE, template < typename > class CONTAINER >
+  template < typename TABLE, template < typename... > class CONTAINER >
   ScheduleStorage< TABLE, CONTAINER >::ScheduleStorage(
      const ScheduleStorage< TABLE, CONTAINER >& from) :
       ScheduleOperator(from),
@@ -92,7 +92,7 @@ namespace gum {
 
 
   /// move constructor
-  template < typename TABLE, template < typename > class CONTAINER >
+  template < typename TABLE, template < typename... > class CONTAINER >
   ScheduleStorage< TABLE, CONTAINER >::ScheduleStorage(ScheduleStorage< TABLE, CONTAINER >&& from) :
       ScheduleOperator(std::move(from)), _arg_(from._arg_), _container_(from._container_),
       _is_executed_(from._is_executed_) {
@@ -105,14 +105,14 @@ namespace gum {
 
 
   /// virtual copy constructor
-  template < typename TABLE, template < typename > class CONTAINER >
+  template < typename TABLE, template < typename... > class CONTAINER >
   INLINE ScheduleStorage< TABLE, CONTAINER >* ScheduleStorage< TABLE, CONTAINER >::clone() const {
     return new ScheduleStorage< TABLE, CONTAINER >(*this);
   }
 
 
   /// destructor
-  template < typename TABLE, template < typename > class CONTAINER >
+  template < typename TABLE, template < typename... > class CONTAINER >
   ScheduleStorage< TABLE, CONTAINER >::~ScheduleStorage() {
     // for debugging purposes
     GUM_DESTRUCTOR(ScheduleStorage);
@@ -120,7 +120,7 @@ namespace gum {
 
 
   /// copy operator
-  template < typename TABLE, template < typename > class CONTAINER >
+  template < typename TABLE, template < typename... > class CONTAINER >
   ScheduleStorage< TABLE, CONTAINER >& ScheduleStorage< TABLE, CONTAINER >::operator=(
      const ScheduleStorage< TABLE, CONTAINER >& from) {
     if (this != &from) {
@@ -136,7 +136,7 @@ namespace gum {
 
 
   /// move operator
-  template < typename TABLE, template < typename > class CONTAINER >
+  template < typename TABLE, template < typename... > class CONTAINER >
   ScheduleStorage< TABLE, CONTAINER >&
      ScheduleStorage< TABLE, CONTAINER >::operator=(ScheduleStorage< TABLE, CONTAINER >&& from) {
     if (this != &from) {
@@ -152,7 +152,7 @@ namespace gum {
 
 
   /// operator ==
-  template < typename TABLE, template < typename > class CONTAINER >
+  template < typename TABLE, template < typename... > class CONTAINER >
   INLINE bool ScheduleStorage< TABLE, CONTAINER >::operator==(
      const ScheduleStorage< TABLE, CONTAINER >& op) const {
     return (_container_ == op._container_) && (*_arg_ == *op._arg_);
@@ -160,7 +160,7 @@ namespace gum {
 
 
   /// operator ==
-  template < typename TABLE, template < typename > class CONTAINER >
+  template < typename TABLE, template < typename... > class CONTAINER >
   bool ScheduleStorage< TABLE, CONTAINER >::operator==(const ScheduleOperator& op) const {
     try {
       const ScheduleStorage< TABLE, CONTAINER >& real_op
@@ -171,7 +171,7 @@ namespace gum {
 
 
   /// operator !=
-  template < typename TABLE, template < typename > class CONTAINER >
+  template < typename TABLE, template < typename... > class CONTAINER >
   INLINE bool ScheduleStorage< TABLE, CONTAINER >::operator!=(
      const ScheduleStorage< TABLE, CONTAINER >& op) const {
     return !ScheduleStorage< TABLE, CONTAINER >::operator==(op);
@@ -179,14 +179,14 @@ namespace gum {
 
 
   /// operator !=
-  template < typename TABLE, template < typename > class CONTAINER >
+  template < typename TABLE, template < typename... > class CONTAINER >
   INLINE bool ScheduleStorage< TABLE, CONTAINER >::operator!=(const ScheduleOperator& op) const {
     return !ScheduleStorage< TABLE, CONTAINER >::operator==(op);
   }
 
 
   /// checks whether two ScheduleOperator have similar parameters
-  template < typename TABLE, template < typename > class CONTAINER >
+  template < typename TABLE, template < typename... > class CONTAINER >
   INLINE bool ScheduleStorage< TABLE, CONTAINER >::hasSimilarArguments(
      const ScheduleStorage< TABLE, CONTAINER >& op) const {
     return _arg_->hasSameVariables(*op._arg_);
@@ -194,7 +194,7 @@ namespace gum {
 
 
   /// checks whether two ScheduleOperator have similar parameters
-  template < typename TABLE, template < typename > class CONTAINER >
+  template < typename TABLE, template < typename... > class CONTAINER >
   bool ScheduleStorage< TABLE, CONTAINER >::hasSimilarArguments(const ScheduleOperator& op) const {
     try {
       const ScheduleStorage< TABLE, CONTAINER >& real_op
@@ -205,7 +205,7 @@ namespace gum {
 
 
   /// checks whether two ScheduleOperator have the same parameters
-  template < typename TABLE, template < typename > class CONTAINER >
+  template < typename TABLE, template < typename... > class CONTAINER >
   INLINE bool ScheduleStorage< TABLE, CONTAINER >::hasSameArguments(
      const ScheduleStorage< TABLE, CONTAINER >& op) const {
     return (_container_ == op._container_) && _arg_->hasSameVariables(*op._arg_)
@@ -214,7 +214,7 @@ namespace gum {
 
 
   /// checks whether two ScheduleOperator have the same parameters
-  template < typename TABLE, template < typename > class CONTAINER >
+  template < typename TABLE, template < typename... > class CONTAINER >
   bool ScheduleStorage< TABLE, CONTAINER >::hasSameArguments(const ScheduleOperator& op) const {
     try {
       const ScheduleStorage< TABLE, CONTAINER >& real_op
@@ -225,7 +225,7 @@ namespace gum {
 
 
   /// checks whether two ScheduleOperator perform the same operation
-  template < typename TABLE, template < typename > class CONTAINER >
+  template < typename TABLE, template < typename... > class CONTAINER >
   INLINE bool ScheduleStorage< TABLE, CONTAINER >::isSameOperator(
      const ScheduleStorage< TABLE, CONTAINER >& op) const {
     return true;
@@ -233,7 +233,7 @@ namespace gum {
 
 
   /// checks whether two ScheduleOperator perform the same operation
-  template < typename TABLE, template < typename > class CONTAINER >
+  template < typename TABLE, template < typename... > class CONTAINER >
   bool ScheduleStorage< TABLE, CONTAINER >::isSameOperator(const ScheduleOperator& op) const {
     try {
       const ScheduleStorage< TABLE, CONTAINER >& real_op
@@ -244,7 +244,7 @@ namespace gum {
 
 
   /// returns the argument of the Store
-  template < typename TABLE, template < typename > class CONTAINER >
+  template < typename TABLE, template < typename... > class CONTAINER >
   INLINE const ScheduleMultiDim< typename std::remove_pointer< TABLE >::type >&
                ScheduleStorage< TABLE, CONTAINER >::arg() const {
     return *_arg_;
@@ -252,21 +252,21 @@ namespace gum {
 
 
   /// returns the sequence of arguments passed to the operator
-  template < typename TABLE, template < typename > class CONTAINER >
+  template < typename TABLE, template < typename... > class CONTAINER >
   const Sequence< const IScheduleMultiDim* >& ScheduleStorage< TABLE, CONTAINER >::args() const {
     return _args_;
   }
 
 
   /// returns the sequence of ScheduleMultidim output by the operator
-  template < typename TABLE, template < typename > class CONTAINER >
+  template < typename TABLE, template < typename... > class CONTAINER >
   const Sequence< const IScheduleMultiDim* >& ScheduleStorage< TABLE, CONTAINER >::results() const {
     return _results_;
   }
 
 
   /// really executes the operator
-  template < typename TABLE, template < typename > class CONTAINER >
+  template < typename TABLE, template < typename... > class CONTAINER >
   void ScheduleStorage< TABLE, CONTAINER >::execute() {
     if (_arg_->isAbstract()) {
       GUM_ERROR(NullElement,
@@ -318,21 +318,21 @@ namespace gum {
 
 
   /// indicates whether the operator has been executed
-  template < typename TABLE, template < typename > class CONTAINER >
+  template < typename TABLE, template < typename... > class CONTAINER >
   INLINE bool ScheduleStorage< TABLE, CONTAINER >::isExecuted() const {
     return _is_executed_;
   }
 
 
   /// undo a previous execution, if any
-  template < typename TABLE, template < typename > class CONTAINER >
+  template < typename TABLE, template < typename... > class CONTAINER >
   void ScheduleStorage< TABLE, CONTAINER >::undo() {
     GUM_ERROR(OperationNotAllowed, "ScheduleStorage cannot be undone.");
   }
 
 
   /// modifies the arguments of the operator
-  template < typename TABLE, template < typename > class CONTAINER >
+  template < typename TABLE, template < typename... > class CONTAINER >
   void ScheduleStorage< TABLE, CONTAINER >::updateArgs(
      const Sequence< const IScheduleMultiDim* >& new_args) {
     // check that there is exactly one argument in new_args and that its type
@@ -363,14 +363,14 @@ namespace gum {
 
   /** @brief returns an estimation of the number of elementary operations
    * needed to perform the ScheduleOperator */
-  template < typename TABLE, template < typename > class CONTAINER >
+  template < typename TABLE, template < typename... > class CONTAINER >
   INLINE double ScheduleStorage< TABLE, CONTAINER >::nbOperations() const {
     return 1.0;
   }
 
 
   /// returns the memory consumption used during the operator
-  template < typename TABLE, template < typename > class CONTAINER >
+  template < typename TABLE, template < typename... > class CONTAINER >
   INLINE std::pair< double, double > ScheduleStorage< TABLE, CONTAINER >::memoryUsage() const {
     const double size_table = double(_arg_->domainSize()) * _arg_->sizeOfContent() + sizeof(TABLE);
     return {-size_table, -size_table};
@@ -378,7 +378,7 @@ namespace gum {
 
 
   /// displays the content of the operator
-  template < typename TABLE, template < typename > class CONTAINER >
+  template < typename TABLE, template < typename... > class CONTAINER >
   std::string ScheduleStorage< TABLE, CONTAINER >::toString() const {
     return "store ( " + _arg_->toString() + " )";
   }

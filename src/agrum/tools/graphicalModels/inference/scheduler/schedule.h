@@ -262,7 +262,7 @@ namespace gum {
      * and they have not been executed yet.
      */
     template < typename TABLE,
-               template < typename > class CONTAINER >
+               template < typename... > class CONTAINER >
     const ScheduleOperator&
        emplaceStorage(const IScheduleMultiDim& table,
                       CONTAINER< TABLE >&      container);

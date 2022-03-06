@@ -536,7 +536,7 @@ namespace gum_tests {
 
       gum::Set< const gum::Potential< float >* > res = projcomb.execute(to_comb, del_vars);
 
-      float nb_ops = projcomb.nbOperations(to_comb, del_vars);
+      auto nb_ops = projcomb.nbOperations(to_comb, del_vars);
 
       auto yyy = projcomb.memoryUsage(to_comb, del_vars);
 
