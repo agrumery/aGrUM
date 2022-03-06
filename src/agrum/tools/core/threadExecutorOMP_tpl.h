@@ -38,6 +38,10 @@ namespace gum {
     void ThreadExecutor::execute(std::size_t nb_threads,
                                  FUNCTION    exec_func,
                                  ARGS&&...   func_args) {
+#ifndef _OPENMP
+      // without openMP we only have one thread available
+      exec_func(0, 1, std::forward< ARGS >(func_args)...);
+#else      
       if (nb_threads <= 1) {
         exec_func(0, 1, std::forward< ARGS >(func_args)...);
       }
@@ -70,6 +74,7 @@ namespace gum {
           if (exc != nullptr) { std::rethrow_exception(exc); }
         }
       }
+#endif // _OPENMP
     }
 
 
@@ -79,6 +84,16 @@ namespace gum {
                                        FUNC1       exec_func,
                                        FUNC2       undo_func,
                                        ARGS&&...   func_args ) {
+#ifndef _OPENMP
+      // without openMP we only have one thread available
+      try {
+        exec_func(0, 1, std::forward< ARGS >(func_args)...);
+      }
+      catch (...) {
+        undo_func(0, 1, std::forward< ARGS >(func_args)...);
+        throw;
+      }
+#else
       if (nb_threads <= 1) {
         try {
           exec_func(0, 1, std::forward< ARGS >(func_args)...);
@@ -146,6 +161,7 @@ namespace gum {
           --nbRunningThreadsExecutors_;
         }
       }
+#endif // _OPENMP
     }
 
   } /* namespace threadsOMP */
