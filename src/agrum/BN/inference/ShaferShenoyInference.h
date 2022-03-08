@@ -29,12 +29,16 @@
 
 #include <utility>
 
+#include <agrum/agrum.h>
 #include <agrum/tools/core/math/math_utils.h>
 #include <agrum/BN/algorithms/barrenNodesFinder.h>
 #include <agrum/BN/inference/tools/evidenceInference.h>
 #include <agrum/BN/inference/tools/jointTargetedInference.h>
-#include <agrum/agrum.h>
+#include <agrum/BN/inference/tools/relevantPotentialsFinderType.h>
 #include <agrum/tools/graphs/algorithms/triangulations/defaultTriangulation.h>
+
+#include <agrum/tools/graphicalModels/inference/scheduler/schedule.h>
+#include <agrum/tools/graphicalModels/inference/scheduler/scheduledInference.h>
 
 namespace gum {
 
@@ -65,7 +69,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   class ShaferShenoyInference:
       public JointTargetedInference< GUM_SCALAR >,
-      public EvidenceInference< GUM_SCALAR > {
+      public EvidenceInference< GUM_SCALAR >,
+      public ScheduledInference {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -74,9 +79,17 @@ namespace gum {
 
     /// default constructor
     explicit ShaferShenoyInference(const IBayesNet< GUM_SCALAR >* BN,
+                                   RelevantPotentialsFinderType
+                                   = RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS,
                                    FindBarrenNodesType            barren_type
                                    = FindBarrenNodesType::FIND_BARREN_NODES,
                                    bool use_binary_join_tree = true);
+
+    /// avoid copy constructors
+    ShaferShenoyInference(const ShaferShenoyInference< GUM_SCALAR >&) = delete;
+
+    /// avoid copy operators
+    ShaferShenoyInference< GUM_SCALAR >& operator=(const ShaferShenoyInference< GUM_SCALAR >&) = delete;
 
     /// destructor
     ~ShaferShenoyInference();
@@ -91,6 +104,17 @@ namespace gum {
 
     /// use a new triangulation algorithm
     void setTriangulation(const Triangulation& new_triangulation);
+
+    /// sets how we determine the relevant potentials to combine
+    /** When a clique sends a message to a separator, it first constitute the
+     * set of the potentials it contains and of the potentials contained in the
+     * messages it received. If RelevantPotentialsFinderType = FIND_ALL,
+     * all these potentials are combined and projected to produce the message
+     * sent to the separator.
+     * If RelevantPotentialsFinderType = DSEP_BAYESBALL_NODES, then only the
+     * set of potentials d-connected to the variables of the separator are kept
+     * for combination and projection. */
+    void setRelevantPotentialsFinderType(RelevantPotentialsFinderType type);
 
     /// sets how we determine barren nodes
     /** Barren nodes are unnecessary for probability inference, so they can
@@ -114,15 +138,12 @@ namespace gum {
     const JunctionTree* junctionTree();
 
     /// returns the probability of evidence
-    GUM_SCALAR evidenceProbability();
+    GUM_SCALAR evidenceProbability() final;
 
     /// @}
 
 
     protected:
-    /// fired when the stage is changed
-    void onStateChanged_() final{};
-
     /// fired after a new evidence is inserted
     void onEvidenceAdded_(const NodeId id, bool isHardEvidence) final;
 
@@ -172,6 +193,9 @@ namespace gum {
     /// fired before a all single and joint_targets are removed
     void onAllTargetsErased_() final;
 
+    /// fired when the stage is changed
+    void onStateChanged_() final{};
+
     /// prepares inference when the latter is in OutdatedStructure state
     /** Note that the values of evidence are not necessarily
      * known and can be changed between updateOutdatedStructure_ and
@@ -216,9 +240,20 @@ namespace gum {
 
 
     private:
-    typedef Set< const Potential< GUM_SCALAR >* >             _PotentialSet_;
+    using _PotentialSet_        = Set< const Potential< GUM_SCALAR >* >;
+    using _ScheduleMultiDimSet_ = Set< const IScheduleMultiDim* >;
+
     typedef SetIteratorSafe< const Potential< GUM_SCALAR >* > _PotentialSetIterator_;
 
+
+    /// the type of relevant potential finding algorithm to be used
+    RelevantPotentialsFinderType _find_relevant_potential_type_;
+
+    /** @brief update a set of potentials: the remaining are those to be
+     * combined to produce a message on a separator */
+    void (ShaferShenoyInference< GUM_SCALAR >::*_findRelevantPotentials_)(
+       Set< const IScheduleMultiDim* >& pot_list,
+       Set< const DiscreteVariable* >&  kept_vars);
 
     /// the type of barren nodes computation we wish
     FindBarrenNodesType _barren_nodes_type_;
@@ -269,7 +304,7 @@ namespace gum {
      * is called. */
     NodeSet _roots_;
 
-    /// for each node of  _graph_ (~ in the Bayes net), associate an ID in the JT
+    /// for each node of _graph_ (~ in the Bayes net), associate an ID in the JT
     HashTable< NodeId, NodeId > _node_to_clique_;
 
     /// for each set target, assign a clique in the JT that contains it
@@ -283,27 +318,29 @@ namespace gum {
      * remove their variables that received hard evidence. The product of all
      * these potentials is precisely the potential stored into
      *  _clique_ss_potential_ */
-    NodeProperty< _PotentialSet_ > _clique_potentials_;
+    NodeProperty< _ScheduleMultiDimSet_ > _clique_potentials_;
 
     /// the potentials stored into the cliques by Shafer-Shenoy
-    /** For a given clique, there is an entry in  _clique_ss_potential_ if and
-     * only if the clique received some potential(s). In this case, the
-     * potential stored is the combination of all the corresponding list of
-     * potentials in  _clique_potentials_. */
-    NodeProperty< const Potential< GUM_SCALAR >* > _clique_ss_potential_;
+    /** For a given clique, there is an entry in _clique_ss_potential_ even
+     * if the clique received no potential. In this case, the potential stored is
+     * equal to nullptr, else it is equal to the combination of all the
+     * corresponding list of potentials in  _clique_potentials_. */
+    NodeProperty< const IScheduleMultiDim* > _clique_ss_potential_;
 
     /// the list of all potentials stored in the separators after inferences
     /** This structure contains all the arcs of the join tree (edges in both
-     * directions) whether the arc received any potential or not. */
-    ArcProperty< _PotentialSet_ > _separator_potentials_;
+     * directions) whether the arc received any potential or not. If it did
+     * not receive any potential, then it contains a nullptr pointer. */
+    ArcProperty< const IScheduleMultiDim* > _separator_potentials_;
 
     /// the set of potentials created for the last inference messages
-    /** This structure contains only the arcs on which potentials have
-     * been created.
+    /** This structure contains some pointer only for the arcs on which a
+     * potential has been created. Arcs for which no potential was created do
+     * not belong to this structure.
      * @warning Note that the CPTs that were projected due to hard
      * evidence do not belong to this structure, they are kept in
      *  _node_to_hard_ev_projected_CPTs_. */
-    ArcProperty< _PotentialSet_ > _created_potentials_;
+    ArcProperty< const IScheduleMultiDim* > _arc_to_created_potentials_;
 
     /// the set of single posteriors computed during the last inference
     /** the posteriors are owned by ShaferShenoyInference. */
@@ -333,14 +370,14 @@ namespace gum {
      * @warning These potentials are not owned by ShaferShenoyInference,
      * they are only referenced by it. Only the cliques that contain evidence
      * are filled in this structure. */
-    NodeProperty< const Potential< GUM_SCALAR >* > _node_to_soft_evidence_;
+    NodeProperty< const IScheduleMultiDim* > _node_to_soft_evidence_;
 
     /// the CPTs that were projected due to hard evidence nodes
     /** For each node whose CPT is defined over some nodes that contain some
      * hard evidence, assigns a new projected CPT that does not contain
      * these nodes anymore.
      * @warning These potentials are owned by LayPropagation. */
-    NodeProperty< const Potential< GUM_SCALAR >* > _hard_ev_projected_CPTs_;
+    NodeProperty< const IScheduleMultiDim* > _node_to_hard_ev_projected_CPTs_;
 
     /// the hard evidence nodes which were projected in CPTs
     NodeSet _hard_ev_nodes_;
@@ -358,7 +395,7 @@ namespace gum {
     NodeProperty< EvidenceChangeType > _evidence_changes_;
 
     /// for comparisons with 1 - epsilon
-    const GUM_SCALAR _one_minus_epsilon_{GUM_SCALAR(1.0 - 1e-6)};
+    static constexpr GUM_SCALAR _one_minus_epsilon_{GUM_SCALAR(1.0 - 1e-6)};
 
 
     /// check whether a new join tree is really needed for the next inference
@@ -366,6 +403,7 @@ namespace gum {
 
     /// create a new junction tree as well as its related data structures
     void _createNewJT_();
+
     /// sets the operator for performing the projections
     void _setProjectionFunction_(Potential< GUM_SCALAR > (
        *proj)(const Potential< GUM_SCALAR >&, const Set< const DiscreteVariable* >&));
@@ -383,27 +421,51 @@ namespace gum {
     /// compute a root for each connected component of  _JT_
     void _computeJoinTreeRoots_();
 
+    /** @brief update a set of potentials: the remaining are those to be
+     * combined to produce a message on a separator */
+    void _findRelevantPotentialsWithdSeparation_(_ScheduleMultiDimSet_&          pot_list,
+                                                 Set< const DiscreteVariable* >& kept_vars);
+
+    /** @brief update a set of potentials: the remaining are those to be
+     * combined to produce a message on a separator */
+    void _findRelevantPotentialsWithdSeparation2_(_ScheduleMultiDimSet_&          pot_list,
+                                                  Set< const DiscreteVariable* >& kept_vars);
+
+    /** @brief update a set of potentials: the remaining are those to be
+     * combined to produce a message on a separator */
+    void _findRelevantPotentialsWithdSeparation3_(_ScheduleMultiDimSet_&          pot_list,
+                                                  Set< const DiscreteVariable* >& kept_vars);
+
+    /** @brief update a set of potentials: the remaining are those to be
+     * combined
+     * to produce a message on a separator */
+    void _findRelevantPotentialsGetAll_(_ScheduleMultiDimSet_&          pot_list,
+                                        Set< const DiscreteVariable* >& kept_vars);
+
+    /** @brief update a set of potentials: the remaining are those to be
+     * combined
+     * to produce a message on a separator */
+    void _findRelevantPotentialsXX_(_ScheduleMultiDimSet_&          pot_list,
+                                    Set< const DiscreteVariable* >& kept_vars);
+
+
     // remove barren variables and return the newly created projected potentials
-    _PotentialSet_ _removeBarrenVariables_(_PotentialSet_&                 pot_list,
-                                           Set< const DiscreteVariable* >& del_vars);
+    _ScheduleMultiDimSet_ _removeBarrenVariables_(Schedule&                       schedule,
+                                                  _ScheduleMultiDimSet_&          pot_list,
+                                                  Set< const DiscreteVariable* >& del_vars);
 
     /** @brief removes variables del_vars from a list of potentials and
      * returns the resulting list */
-    _PotentialSet_ _marginalizeOut_(_PotentialSet_                  pot_list,
-                                    Set< const DiscreteVariable* >& del_vars,
-                                    Set< const DiscreteVariable* >& kept_vars);
+    const IScheduleMultiDim* _marginalizeOut_(Schedule&                       schedule,
+                                              _ScheduleMultiDimSet_           pot_list,
+                                              Set< const DiscreteVariable* >& del_vars,
+                                              Set< const DiscreteVariable* >& kept_vars);
 
     /// creates the message sent by clique from_id to clique to_id
-    void _produceMessage_(NodeId from_id, NodeId to_id);
+    void _produceMessage_(Schedule& schedule, NodeId from_id, NodeId to_id);
 
     /// actually perform the collect phase
-    void _collectMessage_(NodeId id, NodeId from);
-
-    /// avoid copy constructors
-    ShaferShenoyInference(const ShaferShenoyInference< GUM_SCALAR >&);
-
-    /// avoid copy operators
-    ShaferShenoyInference< GUM_SCALAR >& operator=(const ShaferShenoyInference< GUM_SCALAR >&);
+    void _collectMessage_(Schedule& schedule, NodeId id, NodeId from);
   };
 
 

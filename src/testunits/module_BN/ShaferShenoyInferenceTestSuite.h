@@ -95,7 +95,6 @@ namespace gum_tests {
       return true;
     }
 
-
     // Testing when there is no evidence
     void testCreationAndInference() {
       try {
@@ -302,11 +301,6 @@ namespace gum_tests {
 
       TS_ASSERT_DELTA(proba, proba2, TS_GUM_SMALL_ERROR)
     }
-
-
-
-
-
 
     void testAsia() {
       std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
@@ -615,7 +609,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
-
       gum::ShaferShenoyInference< double > ie_0(&bn);
       ie_0.addTarget(0);        // visit_to_asia
       ie_0.addEvidence(1, 0);   // tuberculosis
@@ -775,6 +768,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(res = ie.evidenceImpact("E", {"A", "B", "C", "D", "F"}));
       TS_ASSERT_EQUALS(res.nbrDim(), (gum::Size)4);   // MarkovBlanket(E)=(A,D,C)
     }
+
     void testJointWithHardEvidence() {
       /*
       F  A

@@ -28,15 +28,15 @@
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-#  include <algorithm>
+#include <algorithm>
 
-#  include <agrum/BN/algorithms/BayesBall.h>
-#  include <agrum/BN/algorithms/barrenNodesFinder.h>
-#  include <agrum/BN/algorithms/dSeparation.h>
-#  include <agrum/tools/graphs/algorithms/binaryJoinTreeConverterDefault.h>
-#  include <agrum/tools/multidim/instantiation.h>
-#  include <agrum/tools/multidim/utils/operators/multiDimCombineAndProjectDefault.h>
-#  include <agrum/tools/multidim/utils/operators/multiDimProjection.h>
+#include <agrum/BN/algorithms/BayesBall.h>
+#include <agrum/BN/algorithms/barrenNodesFinder.h>
+#include <agrum/BN/algorithms/dSeparation.h>
+#include <agrum/tools/graphs/algorithms/binaryJoinTreeConverterDefault.h>
+#include <agrum/tools/multidim/instantiation.h>
+#include <agrum/tools/multidim/utils/operators/multiDimCombineAndProjectDefault.h>
+#include <agrum/tools/multidim/utils/operators/multiDimProjection.h>
 
 
 namespace gum {
@@ -55,6 +55,7 @@ namespace gum {
     // create a default triangulation (the user can change it afterwards)
     _triangulation_ = new DefaultTriangulation;
 
+    // for debugging purposes
     GUM_CONSTRUCTOR(LazyPropagation);
   }
 
@@ -199,8 +200,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   void LazyPropagation< GUM_SCALAR >::setFindBarrenNodesType(FindBarrenNodesType type) {
     if (type != _barren_nodes_type_) {
-      // WARNING: if a new type is added here, method  _createJT_ should
-      // certainly
+      // WARNING: if a new type is added here, method  _createJT_ should certainly
       // be updated as well, in particular its step 2.
       switch (type) {
         case FindBarrenNodesType::FIND_BARREN_NODES:
@@ -361,7 +361,7 @@ namespace gum {
   // check whether a new junction tree is really needed for the next inference
   template < typename GUM_SCALAR >
   bool LazyPropagation< GUM_SCALAR >::_isNewJTNeeded_() const {
-    // if we do not have a JT or if  _new_jt_needed_ is set to true, then
+    // if we do not have a JT or if _new_jt_needed_ is set to true, then
     // we know that we need to create a new join tree
     if ((_JT_ == nullptr) || _is_new_jt_needed_) return true;
 
@@ -434,12 +434,11 @@ namespace gum {
     for (const auto node: bn.dag())
       _graph_.addNodeWithId(node);
 
-    // 2/ if we wish to exploit barren nodes, we shall remove them from the BN
-    // to do so: we identify all the nodes that are not targets and have
-    // received
-    // no evidence and such that their descendants are neither targets nor
-    // evidence nodes. Such nodes can be safely discarded from the BN without
-    // altering the inference output
+    // 2/ if we wish to exploit barren nodes, we shall remove them from the
+    // BN. To do so: we identify all the nodes that are not targets and have
+    // received no evidence and such that their descendants are neither
+    // targets nor evidence nodes. Such nodes can be safely discarded from
+    // the BN without altering the inference output
     if (_barren_nodes_type_ == FindBarrenNodesType::FIND_BARREN_NODES) {
       // identify the barren nodes
       NodeSet target_nodes = this->targets();
@@ -517,7 +516,7 @@ namespace gum {
     _junctionTree_ = new CliqueGraph(triang_jt);
 
 
-    // indicate, for each node of the moral graph a clique in  _JT_ that can
+    // indicate, for each node of the moral graph a clique in _JT_ that can
     // contain its conditional probability table
     _node_to_clique_.clear();
     const std::vector< NodeId >& JT_elim_order = _triangulation_->eliminationOrder();
@@ -545,7 +544,7 @@ namespace gum {
                               _triangulation_->createdJunctionTreeClique(first_eliminated_node));
     }
 
-    // do the same for the nodes that received evidence. Here, we only store
+    // do the same for the nodes that received hard evidence. Here, we only store
     // the nodes for which at least one parent belongs to _graph_ (otherwise
     // their CPT is just a constant real number).
     for (const auto node: _hard_ev_nodes_) {
@@ -620,7 +619,8 @@ namespace gum {
     _arc_to_created_potentials_.clear();
 
     // remove all the potentials created to take into account hard evidence
-    // during the last inference.
+    // during the last inference (they have already been deleted from memory
+    // by the clearing of _clique_potentials_).
     _node_to_hard_ev_projected_CPTs_.clear();
 
     // remove all the soft evidence.
@@ -714,8 +714,7 @@ namespace gum {
 
             // perform the combination of those potentials and their projection
             MultiDimCombineAndProjectDefault< Potential< GUM_SCALAR > > combine_and_project(
-               _combination_op_,
-               LPNewprojPotential);
+               _combination_op_, _projection_op_);
 
             auto new_cpt_list
                = combine_and_project.schedule(schedule, marg_cpt_set, hard_variables);
@@ -910,8 +909,8 @@ namespace gum {
     // if we are performing updateOutdatedPotentials_, this means that the
     // set of nodes that received hard evidence has not changed, only
     // their instantiations can have changed. So, if there is an entry
-    // for node in  _constants_, there will still be such an entry after
-    // performing the new projections. Idem for  _node_to_hard_ev_projected_CPTs_
+    // for node in _constants_, there will still be such an entry after
+    // performing the new projections. Idem for _node_to_hard_ev_projected_CPTs_
     Schedule schedule;
     for (const auto node: nodes_with_projected_CPTs_changed) {
       // perform the projection with a combine and project instance
@@ -933,8 +932,7 @@ namespace gum {
 
       // perform the combination of those potentials and their projection
       MultiDimCombineAndProjectDefault< Potential< GUM_SCALAR > > combine_and_project(
-         _combination_op_,
-         LPNewprojPotential);
+         _combination_op_, _projection_op_);
 
       auto new_cpt_list = combine_and_project.schedule(schedule, marg_cpt_set, hard_variables);
 
@@ -1712,7 +1710,7 @@ namespace gum {
     Set< const DiscreteVariable* > del_vars;
     for (const auto node: declared_target)
       if (!wanted_target.contains(node)) del_vars.insert(&(bn.variable(node)));
-    Potential< GUM_SCALAR >* pot = new Potential< GUM_SCALAR >(
+    auto pot = new Potential< GUM_SCALAR >(
        _joint_target_posteriors_[declared_target]->margSumOut(del_vars));
 
     // save the result into the cache

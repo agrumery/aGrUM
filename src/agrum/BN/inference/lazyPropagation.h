@@ -31,12 +31,12 @@
 
 #include <utility>
 
+#include <agrum/agrum.h>
 #include <agrum/tools/core/math/math_utils.h>
 #include <agrum/BN/algorithms/barrenNodesFinder.h>
 #include <agrum/BN/inference/tools/evidenceInference.h>
 #include <agrum/BN/inference/tools/jointTargetedInference.h>
 #include <agrum/BN/inference/tools/relevantPotentialsFinderType.h>
-#include <agrum/agrum.h>
 #include <agrum/tools/graphs/algorithms/triangulations/defaultTriangulation.h>
 
 #include <agrum/tools/graphicalModels/inference/scheduler/schedule.h>
@@ -125,7 +125,6 @@ namespace gum {
      * want to remove barren nodes, typically when we want to answer queries
      * such as Most Probable Explanations (MPE). */
     void setFindBarrenNodesType(FindBarrenNodesType type);
-
 
     /// returns the current join tree used
     /** Lazy Propagation does not use a junction tree but a binary join tree
@@ -243,8 +242,7 @@ namespace gum {
 
 
     private:
-    using _PotentialSet_ = Set< const Potential< GUM_SCALAR >* >;
-
+    using _PotentialSet_        = Set< const Potential< GUM_SCALAR >* >;
     using _ScheduleMultiDimSet_ = Set< const IScheduleMultiDim* >;
 
 
@@ -385,7 +383,7 @@ namespace gum {
     NodeProperty< EvidenceChangeType > _evidence_changes_;
 
     /// for comparisons with 1 - epsilon
-    const GUM_SCALAR _one_minus_epsilon_{GUM_SCALAR(1.0 - 1e-6)};
+    static constexpr GUM_SCALAR _one_minus_epsilon_{GUM_SCALAR(1.0 - 1e-6)};
 
 
     /// check whether a new join tree is really needed for the next inference
@@ -393,6 +391,7 @@ namespace gum {
 
     /// create a new junction tree as well as its related data structures
     void _createNewJT_();
+
     /// sets the operator for performing the projections
     void _setProjectionFunction_(Potential< GUM_SCALAR > (
        *proj)(const Potential< GUM_SCALAR >&, const Set< const DiscreteVariable* >&));
@@ -432,8 +431,7 @@ namespace gum {
                                         Set< const DiscreteVariable* >& kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
-     * combined
-     * to produce a message on a separator */
+     * combined to produce a message on a separator */
     void _findRelevantPotentialsXX_(_ScheduleMultiDimSet_&          pot_list,
                                     Set< const DiscreteVariable* >& kept_vars);
 
