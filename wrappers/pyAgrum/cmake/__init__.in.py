@@ -9,7 +9,7 @@ pyAgrum includes :
   * examples as `notebooks <http://www-desir.lip6.fr/~phw/aGrUM/docs/last/notebooks/Tutorial.ipynb.html>`_,
   * a `website <http://agrum.org>`_.
 """
-import warnings
+
 
 # aGrum Licence (LGPL)
 # -------------------
@@ -32,7 +32,9 @@ __version__ = '@PYAGRUM_VERSION@'
 __license__ = __doc__
 __project_url__ = 'http://agrum.org'
 
+import warnings
 import numpy as np
+
 from .deprecated import *
 
 # selection of imports extracted from dir(.pyAgrum)
@@ -473,10 +475,10 @@ def generateSample(bn, n=1, name_out=None, show_progress=False, with_labels=Fals
 
   :param bn: the BN from which the sample is generated
   :type bn: pyAgrum.BayesNet
+  :param name_out: the name for the output filename
+  :type name_out: string
   :param n: the number of samples
   :type n: int
-  :param name_out: the name for the output csv filename. If name_out is None, a pandas.DataFrame is generated
-  :type name_out: string
   :param show_progress: if True, show a progress bar
   :type show_progress: boolean
   :param with_labels: if True, use the labels of the modalities of variables in the csv. If False, use their ids.
