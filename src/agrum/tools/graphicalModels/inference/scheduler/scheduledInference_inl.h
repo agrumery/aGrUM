@@ -30,29 +30,26 @@ namespace gum {
 
   // sets the number max of threads that can be used
   INLINE void ScheduledInference::setMaxNbThreads(Size nb) {
-    if (nb == Size(0)) nb = gum::getMaxNumberOfThreads();
-    _max_nb_threads_ = nb;
     _scheduler_->setMaxNbThreads(nb);
   }
 
 
   // returns the current max number of threads of the scheduler
   INLINE Size ScheduledInference::maxNbThreads() const {
-    return _max_nb_threads_;
+    return _scheduler_->maxNbThreads();
   }
 
 
   // sets an upper bound on the memory consumption admissible
   INLINE void ScheduledInference::setMaxMemory(double megabytes) {
     if (megabytes < 0.0) megabytes = 0.0;
-    _max_megabyte_memory_ = megabytes;
     _scheduler_->setMaxMemory(megabytes);
   }
 
 
   // returns the Max memory (in megabytes) available for executing schedules
   INLINE double ScheduledInference::maxMemory() const {
-    return _max_megabyte_memory_;
+    return _scheduler_->maxMemory();
   }
 
 } /* namespace gum */

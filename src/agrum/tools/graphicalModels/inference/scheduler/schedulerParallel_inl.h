@@ -39,8 +39,6 @@ namespace gum {
 
   /// sets the number max of threads that can be used
   INLINE void SchedulerParallel::setMaxNbThreads(Size nb) {
-    if (nb == Size(0)) nb = gum::getMaxNumberOfThreads();
-
     Scheduler::setMaxNbThreads(nb);
     _sequential_scheduler_.setMaxNbThreads(nb);
   }

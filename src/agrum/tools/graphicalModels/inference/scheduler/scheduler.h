@@ -122,12 +122,15 @@ namespace gum {
      * the schedule */
     virtual std::pair< double, double > memoryUsage(const Schedule&) = 0;
 
+    /// indicates whether the user set herself the number of threads
+    bool isNbThreadsUserDefined() const;
+
     /// @}
 
     
     protected:
     /// the max number of threads
-    Size _max_nb_threads{gum::getMaxNumberOfThreads()};
+    Size _max_nb_threads{0};
 
     /// the max memory usage possible (in bytes)
     double _max_memory {0.0};

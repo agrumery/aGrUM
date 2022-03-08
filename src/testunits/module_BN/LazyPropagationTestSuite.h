@@ -1101,6 +1101,23 @@ namespace gum_tests {
        */
     }
 
+
+    void testAdaptiveNbThreads() {
+      fill(*bn);
+      // Testing the inference
+      gum::LazyPropagation< double > inf(bn);
+
+      TS_ASSERT(inf.maxNbThreads() == gum::getMaxNumberOfThreads());
+      inf.setMaxNbThreads(10);
+      TS_ASSERT(inf.maxNbThreads() == 10);
+      gum::setMaxNumberOfThreads(25);
+      TS_ASSERT(inf.maxNbThreads() == 10);
+      inf.setMaxNbThreads(0);
+      TS_ASSERT(inf.maxNbThreads() == gum::getMaxNumberOfThreads());
+      gum::setMaxNumberOfThreads(32);
+      TS_ASSERT(inf.maxNbThreads() == gum::getMaxNumberOfThreads());
+    }
+
     private:
     // Builds a BN to test the inference
     void fill(gum::BayesNet< double >& bn) {

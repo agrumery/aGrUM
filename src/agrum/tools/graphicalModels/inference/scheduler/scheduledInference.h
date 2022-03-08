@@ -109,12 +109,6 @@ namespace gum {
     private:
     // the scheduler to be used by inferences
     Scheduler* _scheduler_{nullptr};
-
-    // the max number to be used by _scheduler_
-    Size _max_nb_threads_;
-
-    // the max ammount of memory to be used during inferences (in megabytes)
-    double _max_megabyte_memory_;
   };
 
 }   // namespace gum

@@ -116,10 +116,15 @@ namespace gum {
     }
     nodes_to_execute.clear();
 
-    // compute the number of threads to execute
-    const Size nb_threads = nb_remaining_operations.load() < this->maxNbThreads()
+    // compute the number of threads to execute. Desired_nb_threads equals either
+    // the number of threads asked by the user or, if the used did not ask for a
+    // particular number, the aGrUM's current max number of threads
+    const auto desired_nb_threads =
+       this->isNbThreadsUserDefined() ? gum::getMaxNumberOfThreads()
+                                      : this->maxNbThreads();
+    const Size nb_threads = nb_remaining_operations.load() < desired_nb_threads
                              ? nb_remaining_operations.load()
-                             : this->maxNbThreads();
+                             : desired_nb_threads;
 
     // indicate which threads are active
     std::vector< std::atomic< bool > > active_threads(nb_remaining_operations.load());

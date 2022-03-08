@@ -1,8 +1,0 @@
-//
-// Created by gonzales on 08/12/2021.
-//
-
-#ifndef AGRUM_SCHEDULEDINFERENCE_H
-#define AGRUM_SCHEDULEDINFERENCE_H
-
-#endif   // AGRUM_SCHEDULEDINFERENCE_H
