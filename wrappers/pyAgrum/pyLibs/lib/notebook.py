@@ -57,11 +57,11 @@ from pyAgrum.lib.cn2graph import CN2dot, CNinference2dot
 from pyAgrum.lib.id2graph import ID2dot, LIMIDinference2dot
 from pyAgrum.lib.mn2graph import MN2UGdot, MNinference2UGdot
 from pyAgrum.lib.mn2graph import MN2FactorGraphdot, MNinference2FactorGraphdot
-from pyAgrum.lib.bn_vs_bn import GraphicalBNComparator,graphDiff
+from pyAgrum.lib.bn_vs_bn import GraphicalBNComparator, graphDiff
 from pyAgrum.lib.proba_histogram import proba2histo, probaMinMaxH
-from pyAgrum.lib.image import prepareShowInference,prepareLinksForSVG
+from pyAgrum.lib.image import prepareShowInference, prepareLinksForSVG
 
-from pyAgrum.lib._colors import setDarkTheme,setLightTheme,getBlackInTheme
+from pyAgrum.lib._colors import setDarkTheme, setLightTheme, getBlackInTheme
 
 import pyAgrum.lib._colors as gumcols
 
@@ -106,12 +106,12 @@ class FlowLayout(object):
     """
     if caption is None:
       if title is None:
-        cap=""
+        cap = ""
       else:
         print("`title` is obsolete since `0.22.8`. Please use `caption`.")
-        cap=title
+        cap = title
     else:
-      cap=caption
+      cap = caption
 
     self.sHtml += f'<div class="floating-box">{html}{self._getCaption(cap)}</div>'
     return self
@@ -130,12 +130,12 @@ class FlowLayout(object):
     """
     if caption is None:
       if title is None:
-        cap=""
+        cap = ""
       else:
         print("`title` is obsolete since `0.22.8`. Please use `caption`.")
-        cap=title
+        cap = title
     else:
-      cap=caption
+      cap = caption
 
     Bio = io.BytesIO()  # bytes buffer for the plot
     fig = oAxes.get_figure()
@@ -167,26 +167,26 @@ class FlowLayout(object):
     IPython.display.display(self.html())
     self.clear()
 
-  def add(self,obj, caption=None, title=None):
+  def add(self, obj, caption=None, title=None):
     """
     add an element in the row by trying to treat it as plot or html if possible.
     (title is an obsolete parameter)
     """
     if caption is None:
       if title is None:
-        cap=""
+        cap = ""
       else:
         print("`title` is obsolete since `0.22.8`. Please use `caption`.")
-        cap=title
+        cap = title
     else:
-      cap=caption
+      cap = caption
 
     if hasattr(obj, "get_figure"):
       self.add_plot(obj, cap)
-    elif hasattr(obj,"_repr_html_"):
-      self.add_html(obj._repr_html_(),cap)
+    elif hasattr(obj, "_repr_html_"):
+      self.add_html(obj._repr_html_(), cap)
     else:
-      self.add_html(obj,cap)
+      self.add_html(obj, cap)
 
     return self
 
@@ -199,7 +199,7 @@ class FlowLayout(object):
       if captions is None:
         self.add(arg)
       else:
-        self.add(arg,captions[i])
+        self.add(arg, captions[i])
 
     self.display()
 
@@ -234,7 +234,6 @@ def configuration():
   )
 
   IPython.display.display(IPython.display.HTML(res))
-
 
 
 def _reprGraph(gr, size, asString, format=None):
@@ -340,7 +339,7 @@ def getDot(dotstring, size=None):
   return getGraph(_from_dotstring(dotstring), size)
 
 
-def getBNDiff(bn1, bn2, size=None,noStyle=False):
+def getBNDiff(bn1, bn2, size=None, noStyle=False):
   """ get a HTML string representation of a graphical diff between the arcs of _bn1 (reference) with those of _bn2.
 
   if noStyle is False use 4 styles (fixed in pyAgrum.config) :
@@ -357,10 +356,10 @@ def getBNDiff(bn1, bn2, size=None,noStyle=False):
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
 
-  return getGraph(graphDiff(bn1,bn2,noStyle), size)
+  return getGraph(graphDiff(bn1, bn2, noStyle), size)
 
 
-def showBNDiff(bn1, bn2, size=None,noStyle=False):
+def showBNDiff(bn1, bn2, size=None, noStyle=False):
   """ show a graphical diff between the arcs of _bn1 (reference) with those of _bn2.
   if noStyle is False use 4 styles (fixed in pyAgrum.config) :
     - the arc is common for both
@@ -376,7 +375,7 @@ def showBNDiff(bn1, bn2, size=None,noStyle=False):
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
 
-  showGraph(graphDiff(bn1,bn2,noStyle), size)
+  showGraph(graphDiff(bn1, bn2, noStyle), size)
 
 
 def showInformation(*args, **kwargs):
@@ -757,6 +756,7 @@ def getCN(cn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=None
 
   return getGraph(CN2dot(cn, size, nodeColor, arcWidth, arcColor, cmap, cmapArc), size)
 
+
 def showInference(model, **kwargs):
   """
   show pydot graph for an inference in a notebook
@@ -828,11 +828,22 @@ def _reprPotential(pot, digits=None, withColors=True, varnames=None, asString=Fa
 
   :return: the representation
   """
-  from IPython.core.display import HTML
-
+  from fractions import Fraction
 
   r0, g0, b0 = gumcols.hex2rgb(gum.config['notebook', 'potential_color_0'])
   r1, g1, b1 = gumcols.hex2rgb(gum.config['notebook', 'potential_color_1'])
+
+  if digits is None:
+    digits = gum.config['notebook', 'potential_visible_digits']
+
+  if gum.config["notebook", "potential_with_colors"] == "False":
+    withColors = False
+
+  with_fraction = gum.config['notebook', 'potential_with_fraction'] == "True"
+  if with_fraction:
+    fraction_limit = int(gum.config['notebook', 'potential_fraction_limit'])
+    fraction_round_error = float(gum.config['notebook', 'potential_fraction_round_error'])
+    fraction_with_latex = gum.config['notebook', 'potential_fraction_with_latex']=="True"
 
   def _rgb(r, g, b):
     return '#%02x%02x%02x' % (r, g, b)
@@ -844,17 +855,27 @@ def _reprPotential(pot, digits=None, withColors=True, varnames=None, asString=Fa
       g = int(g0 + val * (g1 - g0))
       b = int(b0 + val * (b1 - b0))
 
-      tx = gumcols.rgb2brightness(r,g,b)
+      tx = gumcols.rgb2brightness(r, g, b)
 
       s += "color:" + tx + ";background-color:" + _rgb(r, g, b) + ";"
-    s += "text-align:right;'>{:." + str(digits) + "f}</td>"
-    return s.format(val)
 
-  if digits is None:
-    digits = gum.config['notebook', 'potential_visible_digits']
+    str_val = ""
+    if with_fraction:
+      frac_val = Fraction(val).limit_denominator(fraction_limit)
+      a = frac_val.numerator
+      b = frac_val.denominator
+      val_app = a / b
+      if abs(val_app - val) < fraction_round_error:
+        str_val = "text-align:center;'>"
+        if fraction_with_latex:
+          str_val += f"$\\frac{{{frac_val.numerator}}}{{{frac_val.denominator}}}$"
+        else:
+          str_val += f"{frac_val}"
+        str_val+="</td>"
+    if str_val == "":
+      str_val = f"text-align:right;'>{val:.{digits}f}</td>"
 
-  if gum.config["notebook", "potential_with_colors"] == "False":
-    withColors = False
+    return s + str_val
 
   html = list()
   html.append('<table style="border:1px solid black;">')
@@ -1009,6 +1030,7 @@ def getPotential(pot, digits=None, withColors=None, varnames=None):
 
   return _reprPotential(pot, digits, withColors, varnames, asString=True)
 
+
 def showCPTs(bn):
   flow.clear()
   for i in bn.names():
@@ -1026,7 +1048,7 @@ def getSideBySide(*args, **kwargs):
   :param ncols: number of columns (infinite by default)
   :return: a string representing the table
   """
-  vals = {'captions', 'valign','ncols'}
+  vals = {'captions', 'valign', 'ncols'}
   if not set(kwargs.keys()).issubset(vals):
     raise TypeError(f"sideBySide() got unexpected keyword argument(s) : '{set(kwargs.keys()).difference(vals)}'")
 
@@ -1035,16 +1057,16 @@ def getSideBySide(*args, **kwargs):
   else:
     captions = None
 
-  if 'valign' in kwargs and kwargs['valign'] in ['top','middle','bottom'] :
+  if 'valign' in kwargs and kwargs['valign'] in ['top', 'middle', 'bottom']:
     v_align = f"vertical-align:{kwargs['valign']};"
   else:
     v_align = f"vertical-align:middle;"
 
-  ncols=None
+  ncols = None
   if 'ncols' in kwargs:
-    ncols=int(kwargs['ncols'])
-    if ncols<1:
-      ncols=1
+    ncols = int(kwargs['ncols'])
+    if ncols < 1:
+      ncols = 1
 
   def reprHTML(s):
     if isinstance(s, str):
@@ -1057,12 +1079,12 @@ def getSideBySide(*args, **kwargs):
   s = '<table style="border-style: hidden; border-collapse: collapse;" width="100%"><tr>'
   for i in range(len(args)):
     s += f'<td style="border-top:hidden;border-bottom:hidden;{v_align}"><div align="center" style="{v_align}">'
-    s+=reprHTML(args[i])
+    s += reprHTML(args[i])
     if captions is not None:
-      s+=f'<br><small><i>{captions[i]}</i></small>'
-    s+='</div></td>'
-    if ncols is not None and (i+1)%ncols==0:
-      s+='</tr><tr>'
+      s += f'<br><small><i>{captions[i]}</i></small>'
+    s += '</div></td>'
+    if ncols is not None and (i + 1) % ncols == 0:
+      s += '</tr><tr>'
   s += '</tr></table>'
   return s
 
@@ -1123,7 +1145,7 @@ def getInferenceEngine(ie, inferenceCaption):
 def getJT(jt, size=None):
   if gum.config["notebook", "junctiontree_with_names"] == "True":
     def cliqlabels(c):
-      labels=",".join(
+      labels = ",".join(
         sorted([model.variable(n).name() for n in jt.clique(c)])
       )
       return f"({c}):{labels}"
@@ -1140,7 +1162,7 @@ def getJT(jt, size=None):
       return cliqnames(c1) + '+' + cliqnames(c2)
   else:
     def cliqlabels(c):
-      ids=",".join([str(n) for n in sorted(jt.clique(c))])
+      ids = ",".join([str(n) for n in sorted(jt.clique(c))])
       return f"({c}):{ids}"
 
     def cliqnames(c):
@@ -1232,7 +1254,7 @@ def show(model, **kwargs):
   elif isinstance(model, gum.Potential):
     showPotential(model)
   elif hasattr(model, "toDot"):
-    g=dot.graph_from_dot_data(model.toDot())[0]
+    g = dot.graph_from_dot_data(model.toDot())[0]
 
     # workaround for some badly parsed graph (pyparsing>=3.03)
     g.del_node('"\\n"')
@@ -1242,6 +1264,7 @@ def show(model, **kwargs):
     raise gum.InvalidArgument(
       "Argument model should be a PGM (BayesNet, MarkovNet, Influence Diagram or Potential or ..."
     )
+
 
 def _update_config():
   # hook to control some parameters for notebook when config changes
