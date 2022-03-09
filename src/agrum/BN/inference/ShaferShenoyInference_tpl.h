@@ -830,9 +830,8 @@ namespace gum {
       message_computed = false;
       _separator_potentials_[arc] = nullptr;
       if (_arc_to_created_potentials_.exists(arc)) {
-        auto& created_pot = _arc_to_created_potentials_[arc];
-        delete created_pot;
-        _arc_to_created_potentials_[arc] = nullptr;
+        delete _arc_to_created_potentials_[arc];
+        _arc_to_created_potentials_.erase(arc);
       }
 
       // go on with the diffusion
@@ -915,7 +914,7 @@ namespace gum {
     // now that we know the cliques whose set of potentials have been changed,
     // we can discard their corresponding Shafer-Shenoy potential
     for (const auto clique: invalidated_cliques) {
-      if (_clique_ss_potential_.exists(clique) && ss_potential_to_deallocate[clique]) {
+      if (ss_potential_to_deallocate[clique]) {
         delete _clique_ss_potential_[clique];
         _clique_ss_potential_[clique] = nullptr;
       }

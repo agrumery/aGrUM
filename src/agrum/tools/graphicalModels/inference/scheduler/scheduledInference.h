@@ -86,7 +86,7 @@ namespace gum {
     void setMaxNbThreads(Size nb);
 
     /// returns the current max number of threads of the scheduler
-    Size maxNbThreads() const;
+    Size getMaxNbThreads() const;
 
     /// sets an upper bound on the memory consumption admissible
     /**
@@ -109,6 +109,9 @@ namespace gum {
     private:
     // the scheduler to be used by inferences
     Scheduler* _scheduler_{nullptr};
+
+    // a sequential scheduler: to be used if only one thread is used
+    SchedulerSequential _sequential_scheduler_;
   };
 
 }   // namespace gum

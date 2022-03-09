@@ -31,7 +31,8 @@ namespace gum {
   ScheduledInference::ScheduledInference(const Scheduler& scheduler,
                                          Size             max_nb_threads,
                                          double           max_megabyte_memory) :
-      _scheduler_(scheduler.clone()) {
+      _scheduler_(scheduler.clone()),
+      _sequential_scheduler_(max_nb_threads, max_megabyte_memory) {
     setMaxNbThreads(max_nb_threads);
     setMaxMemory(max_megabyte_memory);
 
@@ -42,7 +43,7 @@ namespace gum {
 
   // copy constructor
   ScheduledInference::ScheduledInference(const ScheduledInference& from) :
-      _scheduler_(from._scheduler_->clone()) {
+      _scheduler_(from._scheduler_->clone()), _sequential_scheduler_(from._sequential_scheduler_) {
     // for debugging purposes
     GUM_CONS_CPY(ScheduledInference);
   }
@@ -50,7 +51,7 @@ namespace gum {
 
   // move constructor
   ScheduledInference::ScheduledInference(ScheduledInference&& from) :
-      _scheduler_(from._scheduler_) {
+      _scheduler_(from._scheduler_), _sequential_scheduler_(from._sequential_scheduler_) {
     from._scheduler_ = nullptr;
 
     // for debugging purposes
@@ -74,7 +75,7 @@ namespace gum {
   // sets a new scheduler
   void ScheduledInference::setScheduler(const Scheduler& scheduler) {
     const auto max_nb_threads =
-       _scheduler_->isNbThreadsUserDefined() ? _scheduler_->maxNbThreads() : 0;
+       _scheduler_->isNbThreadsUserDefined() ? _scheduler_->getMaxNbThreads() : 0;
     const auto max_memory = _scheduler_->maxMemory();
 
     delete _scheduler_;

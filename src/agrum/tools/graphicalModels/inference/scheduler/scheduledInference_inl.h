@@ -24,7 +24,11 @@ namespace gum {
 
   // returns the current scheduler
   INLINE Scheduler& ScheduledInference::scheduler() const {
-    return *_scheduler_;
+    if (_scheduler_->getMaxNbThreads() != 1)
+      return *_scheduler_;
+    else {
+      return const_cast< SchedulerSequential& >(_sequential_scheduler_);
+    }
   }
 
 
@@ -35,8 +39,8 @@ namespace gum {
 
 
   // returns the current max number of threads of the scheduler
-  INLINE Size ScheduledInference::maxNbThreads() const {
-    return _scheduler_->maxNbThreads();
+  INLINE Size ScheduledInference::getMaxNbThreads() const {
+    return _scheduler_->getMaxNbThreads();
   }
 
 

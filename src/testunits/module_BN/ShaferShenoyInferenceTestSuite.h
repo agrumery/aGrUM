@@ -800,15 +800,15 @@ namespace gum_tests {
       // Testing the inference
       gum::ShaferShenoyInference< double > inf(bn);
 
-      TS_ASSERT(inf.maxNbThreads() == gum::getMaxNumberOfThreads());
+      TS_ASSERT(inf.getMaxNbThreads() == gum::getMaxNumberOfThreads());
       inf.setMaxNbThreads(10);
-      TS_ASSERT(inf.maxNbThreads() == 10);
+      TS_ASSERT(inf.getMaxNbThreads() == 10);
       gum::setMaxNumberOfThreads(25);
-      TS_ASSERT(inf.maxNbThreads() == 10);
+      TS_ASSERT(inf.getMaxNbThreads() == 10);
       inf.setMaxNbThreads(0);
-      TS_ASSERT(inf.maxNbThreads() == gum::getMaxNumberOfThreads());
+      TS_ASSERT(inf.getMaxNbThreads() == gum::getMaxNumberOfThreads());
       gum::setMaxNumberOfThreads(32);
-      TS_ASSERT(inf.maxNbThreads() == gum::getMaxNumberOfThreads());
+      TS_ASSERT(inf.getMaxNbThreads() == gum::getMaxNumberOfThreads());
     }
 
 

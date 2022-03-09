@@ -40,7 +40,7 @@ namespace gum {
   /// the type of scheduler that can be used
   enum SchedulerType {
     SEQUENTIAL, // fully sequential scheduler
-    PARALLEL_OPERATION
+    PARALLEL_OPERATORS // combinations and projections are dispatched among threads
   };
 
   class Scheduler {
@@ -88,7 +88,7 @@ namespace gum {
     virtual void setMaxNbThreads(Size nb);
 
     /// returns the current max number of threads of the scheduler
-    virtual Size maxNbThreads() const;
+    virtual Size getMaxNbThreads() const;
 
     /// sets an upper bound on the memory consumption admissible
     /**

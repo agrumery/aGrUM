@@ -38,7 +38,7 @@ namespace gum {
 
 
   /// returns the current max number of threads of the scheduler
-  INLINE Size Scheduler::maxNbThreads() const {
+  INLINE Size Scheduler::getMaxNbThreads() const {
     if (_max_nb_threads == 0)
       return gum::getMaxNumberOfThreads();
     else

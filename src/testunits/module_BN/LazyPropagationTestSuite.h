@@ -121,6 +121,16 @@ namespace gum_tests {
       if (inf != nullptr) { TS_ASSERT_THROWS_NOTHING(delete inf); }
     }
 
+    // Testing when there is no evidence
+    void testSequentialInference() {
+      fill(*bn);
+      // Testing the inference
+      gum::LazyPropagation< double > inf (bn);
+      inf.setMaxNbThreads(1);
+      TS_ASSERT(inf.getMaxNbThreads() == 1)
+      TS_ASSERT_THROWS_NOTHING(inf.makeInference())
+    }
+
     void testBigInference() {
       std::string              file = GET_RESSOURCES_PATH("bif/Munin1.bif");
       gum::BayesNet< double >  bn;
@@ -1107,15 +1117,15 @@ namespace gum_tests {
       // Testing the inference
       gum::LazyPropagation< double > inf(bn);
 
-      TS_ASSERT(inf.maxNbThreads() == gum::getMaxNumberOfThreads());
+      TS_ASSERT(inf.getMaxNbThreads() == gum::getMaxNumberOfThreads());
       inf.setMaxNbThreads(10);
-      TS_ASSERT(inf.maxNbThreads() == 10);
+      TS_ASSERT(inf.getMaxNbThreads() == 10);
       gum::setMaxNumberOfThreads(25);
-      TS_ASSERT(inf.maxNbThreads() == 10);
+      TS_ASSERT(inf.getMaxNbThreads() == 10);
       inf.setMaxNbThreads(0);
-      TS_ASSERT(inf.maxNbThreads() == gum::getMaxNumberOfThreads());
+      TS_ASSERT(inf.getMaxNbThreads() == gum::getMaxNumberOfThreads());
       gum::setMaxNumberOfThreads(32);
-      TS_ASSERT(inf.maxNbThreads() == gum::getMaxNumberOfThreads());
+      TS_ASSERT(inf.getMaxNbThreads() == gum::getMaxNumberOfThreads());
     }
 
     private:
