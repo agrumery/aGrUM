@@ -39,6 +39,7 @@
 #include <agrum/tools/core/threads.h>
 #include <agrum/tools/core/threadExecutor.h>
 #include <agrum/tools/core/threadData.h>
+#include <agrum/tools/core/threadNumberManager.h>
 
 namespace gum {
   namespace credal {
@@ -55,7 +56,8 @@ namespace gum {
      * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
      */
     template < typename GUM_SCALAR >
-    class InferenceEngine: public ApproximationScheme {
+    class InferenceEngine: public ApproximationScheme,
+                           public ThreadNumberManager {
       private:
       //@beforeMerging swapping from typedef to using
       using credalSet = NodeProperty< std::vector< std::vector< GUM_SCALAR > > >;
@@ -166,9 +168,6 @@ namespace gum {
 
       // the minimal number of operations that a thread should execute
       Size threadMinimalNbOps_ {Size(20)};
-
-      /// the max number of threads
-      Size _max_nb_threads{0};
 
       /// @name Protected initialization methods
       /// @{
@@ -521,20 +520,6 @@ namespace gum {
        * Print all nodes marginals to standart output.
        */
       std::string toString() const;
-
-      /// sets the number max of threads that can be used
-      /**
-       * @param nb the number max of threads used for executing inferences. If this
-       * number is set to 0, then it is defaulted to aGrUM's max number
-       * of threads
-       */
-      void setMaxNumberOfThreads(Size nb);
-
-      /// returns the current max number of threads of the inference engine
-      Size getMaxNumberOfThreads() const;
-
-      /// indicates whether the user set herself the number of threads
-      bool isNumberOfThreadsUserDefined() const;
 
       /**
        * Get approximation scheme state.

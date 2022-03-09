@@ -96,7 +96,6 @@ namespace gum {
        const NodeId&                    id,
        const std::vector< GUM_SCALAR >& vertex,
        const bool&                      elimRedund) {
-      //int tId = threadsOMP::getThreadNumber();
 
       // save E(X) if we don't save vertices
       if (!_infE_::storeVertices_ && !l_modal_[tId].empty()) {
@@ -200,7 +199,6 @@ namespace gum {
        const NodeId&                    id,
        const std::vector< GUM_SCALAR >& vertex,
        const bool&                      elimRedund) {
-      // int   tId           = threadsOMP::getThreadNumber();
       auto& nodeCredalSet = l_marginalSets_[tId][id];
       Size  dsize         = Size(vertex.size());
 
@@ -277,7 +275,7 @@ namespace gum {
     inline void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::updateMarginals_() {
       // compute the max number of threads to use (avoid nested threads)
       const Size nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
-                                              ? this->getMaxNumberOfThreads()
+                                              ? ThreadNumberManager::getMaxNumberOfThreads()
                                               : 1;   // no nested multithreading
 
       // create the function to be executed by the threads
@@ -488,7 +486,7 @@ namespace gum {
 
       // compute the max number of threads to use (avoid nested threads)
       const Size nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
-                               ? this->getMaxNumberOfThreads()
+                               ? ThreadNumberManager::getMaxNumberOfThreads()
                                : 1;   // no nested multithreading
 
       // create the function to be executed by the threads
@@ -564,7 +562,7 @@ namespace gum {
 
       // compute the max number of threads to use (avoid nested threads)
       const Size nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
-                               ? this->getMaxNumberOfThreads()
+                               ? ThreadNumberManager::getMaxNumberOfThreads()
                                : 1;   // no nested multithreading
 
       // we can compute expectations from vertices of the final credal set

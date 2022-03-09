@@ -1126,7 +1126,7 @@ namespace gum {
         nb_elements += marg_i.second.size();
 
       // distribute evenly the elements among the threads
-      auto nb_threads = this->getMaxNumberOfThreads();
+      auto nb_threads = ThreadNumberManager::getMaxNumberOfThreads();
       if (nb_elements < nb_threads) nb_threads = nb_elements;
 
       // the result that we return is a vector of pairs (NodeId, Idx). For thread number i, the
@@ -1176,31 +1176,6 @@ namespace gum {
         }
       }
     }
-
-
-    // sets the number max of threads that can be used
-    template < typename GUM_SCALAR >
-    INLINE void InferenceEngine< GUM_SCALAR >::setMaxNumberOfThreads(Size nb) {
-      _max_nb_threads = nb;
-    }
-
-
-    // returns the current max number of threads of the inference engine
-    template < typename GUM_SCALAR >
-    INLINE Size InferenceEngine< GUM_SCALAR >::getMaxNumberOfThreads() const {
-    if (_max_nb_threads == 0)
-      return gum::getMaxNumberOfThreads();
-    else
-      return _max_nb_threads;
-    }
-
-
-    // indicates whether the user set herself the number of threads
-    template < typename GUM_SCALAR >
-    INLINE bool InferenceEngine< GUM_SCALAR >::isNumberOfThreadsUserDefined() const {
-      return _max_nb_threads != 0;
-    }
-
 
   }   // namespace credal
 }   // namespace gum
