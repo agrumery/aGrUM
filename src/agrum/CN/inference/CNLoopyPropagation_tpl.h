@@ -397,7 +397,7 @@ namespace gum {
       // dispatch the messages among the threads and prepare the data
       // they will process
       Size nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
-                         ? gum::getMaxNumberOfThreads()
+                         ? this->getMaxNumberOfThreads()
                          : 1;   // no nested multithreading
       nb_threads      = std::min(msgPerm * taille / this->threadMinimalNbOps_, nb_threads);
       if (nb_threads < 1) nb_threads = 1;
@@ -482,7 +482,7 @@ namespace gum {
       // dispatch the messages among the threads and prepare the data
       // they will process
       Size nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
-                         ? gum::getMaxNumberOfThreads()
+                         ? this->getMaxNumberOfThreads()
                          : 1;   // no nested multithreading
       nb_threads      = std::min(msgPerm * taille / this->threadMinimalNbOps_, nb_threads);
       if (nb_threads < 1) nb_threads = 1;

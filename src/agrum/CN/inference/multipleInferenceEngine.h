@@ -107,6 +107,8 @@ namespace gum {
       /** Threads clusters. */
       _clusters_ l_clusters_;
 
+
+
       /** Threads IBayesNet. */
       typename std::vector< _bnet_* > workingSet_;
       /** Threads evidence. */
@@ -231,6 +233,7 @@ namespace gum {
       /// @{
       /** To be redefined by each credal net algorithm. Starts the inference. */
       virtual void makeInference() = 0;
+
       /// @}
     };
 

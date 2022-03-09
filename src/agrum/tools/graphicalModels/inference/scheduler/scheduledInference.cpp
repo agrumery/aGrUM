@@ -31,10 +31,11 @@ namespace gum {
   ScheduledInference::ScheduledInference(const Scheduler& scheduler,
                                          Size             max_nb_threads,
                                          double           max_megabyte_memory) :
+      ThreadNumberManager(max_nb_threads),
       _scheduler_(scheduler.clone()),
-      _sequential_scheduler_(max_nb_threads, max_megabyte_memory) {
-    setMaxNbThreads(max_nb_threads);
-    setMaxMemory(max_megabyte_memory);
+      _sequential_scheduler_(1, max_megabyte_memory) {
+    this->setMaxNumberOfThreads(max_nb_threads);
+    this->setMaxMemory(max_megabyte_memory);
 
     // for debugging purposes
     GUM_CONSTRUCTOR(ScheduledInference);
@@ -43,7 +44,8 @@ namespace gum {
 
   // copy constructor
   ScheduledInference::ScheduledInference(const ScheduledInference& from) :
-      _scheduler_(from._scheduler_->clone()), _sequential_scheduler_(from._sequential_scheduler_) {
+      ThreadNumberManager(from), _scheduler_(from._scheduler_->clone()),
+      _sequential_scheduler_(from._sequential_scheduler_) {
     // for debugging purposes
     GUM_CONS_CPY(ScheduledInference);
   }
@@ -51,7 +53,9 @@ namespace gum {
 
   // move constructor
   ScheduledInference::ScheduledInference(ScheduledInference&& from) :
-      _scheduler_(from._scheduler_), _sequential_scheduler_(from._sequential_scheduler_) {
+      ThreadNumberManager(std::move(from)),
+      _scheduler_(from._scheduler_),
+      _sequential_scheduler_(from._sequential_scheduler_) {
     from._scheduler_ = nullptr;
 
     // for debugging purposes
@@ -75,13 +79,13 @@ namespace gum {
   // sets a new scheduler
   void ScheduledInference::setScheduler(const Scheduler& scheduler) {
     const auto max_nb_threads =
-       _scheduler_->isNbThreadsUserDefined() ? _scheduler_->getMaxNbThreads() : 0;
+       this->isNbThreadsUserDefined() ? this->getMaxNumberOfThreads() : 0;
     const auto max_memory = _scheduler_->maxMemory();
 
     delete _scheduler_;
 
     _scheduler_ = scheduler.clone();
-    _scheduler_->setMaxNbThreads(max_nb_threads);
+    _scheduler_->setMaxNumberOfThreads(max_nb_threads);
     _scheduler_->setMaxMemory(max_memory);
   }
 

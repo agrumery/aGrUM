@@ -167,6 +167,8 @@ namespace gum {
       // the minimal number of operations that a thread should execute
       Size threadMinimalNbOps_ {Size(20)};
 
+      /// the max number of threads
+      Size _max_nb_threads{0};
 
       /// @name Protected initialization methods
       /// @{
@@ -519,6 +521,20 @@ namespace gum {
        * Print all nodes marginals to standart output.
        */
       std::string toString() const;
+
+      /// sets the number max of threads that can be used
+      /**
+       * @param nb the number max of threads used for executing inferences. If this
+       * number is set to 0, then it is defaulted to aGrUM's max number
+       * of threads
+       */
+      void setMaxNumberOfThreads(Size nb);
+
+      /// returns the current max number of threads of the inference engine
+      Size getMaxNumberOfThreads() const;
+
+      /// indicates whether the user set herself the number of threads
+      bool isNumberOfThreadsUserDefined() const;
 
       /**
        * Get approximation scheme state.

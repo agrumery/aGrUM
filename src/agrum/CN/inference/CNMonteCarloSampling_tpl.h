@@ -117,7 +117,7 @@ namespace gum {
       if (this->continueApproximationScheme(eps)) {
         // compute the number of threads to use
         const Size nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
-                                 ? gum::getMaxNumberOfThreads()
+                                 ? this->getMaxNumberOfThreads()
                                  : 1;   // no nested multithreading
 
         // dispatch {0,...,psize} among the threads
@@ -225,7 +225,7 @@ namespace gum {
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_mcThreadDataCopy_() {
-      auto num_threads = gum::getMaxNumberOfThreads();
+      auto num_threads = this->getMaxNumberOfThreads();
       this->initThreadsData_(num_threads, _infEs_::storeVertices_, _infEs_::storeBNOpt_);
       this->l_inferenceEngine_.resize(num_threads, nullptr);
 

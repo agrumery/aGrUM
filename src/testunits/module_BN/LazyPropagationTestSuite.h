@@ -126,8 +126,8 @@ namespace gum_tests {
       fill(*bn);
       // Testing the inference
       gum::LazyPropagation< double > inf (bn);
-      inf.setMaxNbThreads(1);
-      TS_ASSERT(inf.getMaxNbThreads() == 1)
+      inf.setMaxNumberOfThreads(1);
+      TS_ASSERT(inf.getMaxNumberOfThreads() == 1)
       TS_ASSERT_THROWS_NOTHING(inf.makeInference())
     }
 
@@ -148,7 +148,7 @@ namespace gum_tests {
         inf.setScheduler(sched);
       }
       else {
-        inf.setMaxNbThreads(4);
+        inf.setMaxNumberOfThreads(4);
       }
 
       inf.makeInference();
@@ -1117,15 +1117,15 @@ namespace gum_tests {
       // Testing the inference
       gum::LazyPropagation< double > inf(bn);
 
-      TS_ASSERT(inf.getMaxNbThreads() == gum::getMaxNumberOfThreads());
-      inf.setMaxNbThreads(10);
-      TS_ASSERT(inf.getMaxNbThreads() == 10);
+      TS_ASSERT(inf.getMaxNumberOfThreads() == gum::getMaxNumberOfThreads());
+      inf.setMaxNumberOfThreads(10);
+      TS_ASSERT(inf.getMaxNumberOfThreads() == 10);
       gum::setMaxNumberOfThreads(25);
-      TS_ASSERT(inf.getMaxNbThreads() == 10);
-      inf.setMaxNbThreads(0);
-      TS_ASSERT(inf.getMaxNbThreads() == gum::getMaxNumberOfThreads());
+      TS_ASSERT(inf.getMaxNumberOfThreads() == 10);
+      inf.setMaxNumberOfThreads(0);
+      TS_ASSERT(inf.getMaxNumberOfThreads() == gum::getMaxNumberOfThreads());
       gum::setMaxNumberOfThreads(32);
-      TS_ASSERT(inf.getMaxNbThreads() == gum::getMaxNumberOfThreads());
+      TS_ASSERT(inf.getMaxNumberOfThreads() == gum::getMaxNumberOfThreads());
     }
 
     private:

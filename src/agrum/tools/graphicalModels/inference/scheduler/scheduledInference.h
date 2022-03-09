@@ -28,6 +28,7 @@
 #define GUM_SCHEDULED_INFERENCE_H
 
 #include <agrum/agrum.h>
+#include <agrum/tools/core/threadNumberManager.h>
 #include <agrum/tools/graphicalModels/inference/scheduler/schedulerSequential.h>
 #include <agrum/tools/graphicalModels/inference/scheduler/schedulerParallel.h>
 
@@ -39,7 +40,7 @@ namespace gum {
    * @brief the class containing the scheduler used by schedule-based inferences
    * @ingroup gm_group
    */
-  class ScheduledInference {
+  class ScheduledInference : public ThreadNumberManager {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -83,10 +84,7 @@ namespace gum {
      * number is set to 0, then it is defaulted to aGrUM's max number
      * of threads
      */
-    void setMaxNbThreads(Size nb);
-
-    /// returns the current max number of threads of the scheduler
-    Size getMaxNbThreads() const;
+    void setMaxNumberOfThreads(Size nb) final;
 
     /// sets an upper bound on the memory consumption admissible
     /**

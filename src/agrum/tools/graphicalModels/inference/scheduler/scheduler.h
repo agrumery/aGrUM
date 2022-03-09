@@ -85,10 +85,10 @@ namespace gum {
      * number is set to 0, then it is defaulted to aGrUM's max number
      * of threads
      */
-    virtual void setMaxNbThreads(Size nb);
+    virtual void setMaxNumberOfThreads(Size nb);
 
     /// returns the current max number of threads of the scheduler
-    virtual Size getMaxNbThreads() const;
+    virtual Size getMaxNumberOfThreads() const;
 
     /// sets an upper bound on the memory consumption admissible
     /**
