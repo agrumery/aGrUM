@@ -78,13 +78,21 @@ namespace gum {
 
 
     /// changes the max number of threads used to parse the database
-    INLINE void IndependenceTest::setMaxNbThreads(std::size_t nb) const {
-      counter_.setMaxNbThreads(nb);
+    INLINE void IndependenceTest::setMaxNumberOfThreads(Size nb) {
+      counter_.setMaxNumberOfThreads(nb);
     }
 
 
     /// returns the number of threads used to parse the database
-    INLINE std::size_t IndependenceTest::nbThreads() const { return counter_.nbThreads(); }
+    INLINE Size IndependenceTest::getMaxNumberOfThreads() const {
+      return counter_.getMaxNumberOfThreads();
+    }
+
+
+    /// indicates whether the user set herself the number of threads
+    INLINE bool IndependenceTest::isNbThreadsUserDefined() const {
+      return counter_.isNbThreadsUserDefined();
+    }
 
 
     /** @brief changes the number min of rows a thread should process in a

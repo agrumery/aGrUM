@@ -37,6 +37,7 @@
 #include <agrum/tools/stattests/kNML.h>
 #include <agrum/BN/learning/scores_and_tests/scoreLog2Likelihood.h>
 #include <agrum/BN/learning/scores_and_tests/scoreMDL.h>
+#include <agrum/tools/core/IThreadNumberManager.h>
 
 namespace gum {
 
@@ -52,7 +53,7 @@ namespace gum {
      *
      * @ingroup learning_scores
      */
-    class CorrectedMutualInformation {
+    class CorrectedMutualInformation : public IThreadNumberManager {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -231,10 +232,13 @@ namespace gum {
       void useNoCorr();
 
       /// changes the max number of threads used to parse the database
-      virtual void setMaxNbThreads(std::size_t nb) const;
+      virtual void setMaxNumberOfThreads(Size nb);
 
       /// returns the number of threads used to parse the database
-      virtual std::size_t nbThreads() const;
+      virtual std::size_t getMaxNumberOfThreads() const;
+
+      /// indicates whether the user set herself the number of threads
+      virtual bool isNbThreadsUserDefined() const;
 
       /** @brief changes the number min of rows a thread should process in a
        * multithreading context

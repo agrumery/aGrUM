@@ -29,10 +29,12 @@
 
 #include <agrum/agrum.h>
 #include <agrum/tools/core/threads.h>
+#include <agrum/tools/core/IThreadNumberManager.h>
 
 namespace gum {
 
-  class ThreadNumberManager {
+
+  class ThreadNumberManager : public IThreadNumberManager {
     public:
 
     // ############################################################################

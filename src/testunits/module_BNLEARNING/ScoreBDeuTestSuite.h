@@ -688,7 +688,7 @@ namespace gum_tests {
       gum::learning::AprioriNoApriori apriori(database);
       for (std::size_t i = std::size_t(1); i < std::size_t(24); ++i) {
         gum::learning::ScoreBDeu score(parser, apriori, ranges);
-        score.setMaxNbThreads(i);
+        score.setMaxNumberOfThreads(i);
         score.setEffectiveSampleSize(2.0);
 
         TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreBDeu::isAprioriCompatible(

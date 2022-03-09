@@ -32,6 +32,7 @@
 #include <agrum/agrum.h>
 #include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/core/threads.h>
+#include <agrum/tools/core/IThreadNumberManager.h>
 
 #include <agrum/tools/stattests/recordCounter.h>
 #include <agrum/BN/learning/scores_and_tests/scoringCache.h>
@@ -47,7 +48,7 @@ namespace gum {
      * @headerfile score.h <agrum/BN/learning/scores_and_tests/score.h>
      * @ingroup learning_scores
      */
-    class Score {
+    class Score : public IThreadNumberManager {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -114,11 +115,18 @@ namespace gum {
       // ##########################################################################
       /// @{
 
-      /// changes the max number of threads used to parse the database
-      virtual void setMaxNbThreads(std::size_t nb) const;
+      /// sets the number max of threads that can be used
+      /**
+       * @param nb the number max of threads to be used. If this number is set to 0, then
+       * it is defaulted to aGrUM's max number of threads
+       */
+      virtual void setMaxNumberOfThreads(Size nb);
 
-      /// returns the number of threads used to parse the database
-      virtual std::size_t nbThreads() const;
+      /// returns the current max number of threads of the scheduler
+      virtual Size getMaxNumberOfThreads() const;
+
+      /// indicates whether the user set herself the number of threads
+      virtual bool isNbThreadsUserDefined() const;
 
       /** @brief changes the number min of rows a thread should process in a
        * multithreading context

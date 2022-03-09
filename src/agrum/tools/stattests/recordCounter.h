@@ -41,6 +41,7 @@
 #include <agrum/tools/core/threads.h>
 #include <agrum/tools/core/threadExecutor.h>
 #include <agrum/tools/core/threadData.h>
+#include <agrum/tools/core/threadNumberManager.h>
 #include <agrum/tools/graphs/DAG.h>
 #include <agrum/tools/database/DBRowGeneratorParser.h>
 #include <agrum/tools/stattests/idCondSet.h>
@@ -109,7 +110,7 @@ namespace gum {
      * const std::vector< double >& counts2 = counter.counts ( ids );
      * @endcode
      */
-    class RecordCounter {
+    class RecordCounter : public ThreadNumberManager {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -193,12 +194,6 @@ namespace gum {
 
       /// clears all the last database-parsed countings from memory
       void clear();
-
-      /// changes the max number of threads used to parse the database
-      void setMaxNbThreads(const std::size_t nb) const;
-
-      /// returns the number of threads used to parse the database
-      std::size_t nbThreads() const;
 
       /** @brief changes the number min of rows a thread should process in a
        * multithreading context
@@ -288,7 +283,6 @@ namespace gum {
 
       /// @}
 
-
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
       private:
@@ -321,9 +315,6 @@ namespace gum {
 
       // the ids of the nodes of last countings deduced from  _last_DB_countings_
       IdCondSet _last_nonDB_ids_;
-
-      // the maximal number of threads that the record counter can use
-      mutable std::size_t _max_nb_threads_{std::size_t(gum::getMaxNumberOfThreads())};
 
       // the min number of rows that a thread should process in a
       // multithreading context

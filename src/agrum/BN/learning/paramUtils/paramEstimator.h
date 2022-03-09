@@ -34,6 +34,7 @@
 #include <agrum/BN/learning/aprioris/apriori.h>
 #include <agrum/tools/stattests/recordCounter.h>
 #include <agrum/tools/multidim/potential.h>
+#include <agrum/tools/core/IThreadNumberManager.h>
 
 namespace gum {
 
@@ -45,7 +46,7 @@ namespace gum {
      * @headerfile paramEstimator.h <agrum/BN/learning/paramUtils/paramEstimator.h>
      * @ingroup learning_param_utils
      */
-    class ParamEstimator {
+    class ParamEstimator : public IThreadNumberManager {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -126,11 +127,18 @@ namespace gum {
       /// clears all the data structures from memory
       virtual void clear();
 
-      /// changes the max number of threads used to parse the database
-      virtual void setMaxNbThreads(std::size_t nb) const;
+      /// sets the number max of threads that can be used
+      /**
+       * @param nb the number max of threads to be used. If this number is set to 0, then
+       * it is defaulted to aGrUM's max number of threads
+       */
+      virtual void setMaxNumberOfThreads(Size nb);
 
-      /// returns the number of threads used to parse the database
-      virtual std::size_t nbThreads() const;
+      /// returns the current max number of threads of the scheduler
+      virtual Size getMaxNumberOfThreads() const;
+
+      /// indicates whether the user set herself the number of threads
+      virtual bool isNbThreadsUserDefined() const;
 
       /** @brief changes the number min of rows a thread should process in a
        * multithreading context

@@ -352,7 +352,7 @@ namespace gum_tests {
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
       gum::learning::AprioriSmoothing     apriori(database);
       gum::learning::ScoreK2              score(parser, apriori);
-      // score.setMaxNbThreads(24);
+      // score.setMaxNumberOfThreads(24);
 
       gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG,
                                                     gum::learning::StructuralConstraintIndegree

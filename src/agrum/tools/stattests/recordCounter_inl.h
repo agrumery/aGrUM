@@ -26,10 +26,6 @@ namespace gum {
 
   namespace learning {
 
-    /// returns the number of threads used to parse the database
-    INLINE std::size_t RecordCounter::nbThreads() const { return _max_nb_threads_; }
-
-
     /// returns the minimum of rows that each thread should process
     INLINE std::size_t RecordCounter::minNbRowsPerThread() const {
       return _min_nb_rows_per_thread_;

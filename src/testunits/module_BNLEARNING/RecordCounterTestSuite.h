@@ -432,9 +432,9 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(counts[8], double(0));     // A=2, B=2
 
       gum::learning::RecordCounter counter2(counter);
-      TS_ASSERT_EQUALS(counter2.nbThreads(), gum::getMaxNumberOfThreads())
-      counter2.setMaxNbThreads(std::size_t(2));
-      TS_ASSERT_EQUALS(counter2.nbThreads(), std::size_t(2))
+      TS_ASSERT_EQUALS(counter2.getMaxNumberOfThreads(), gum::getMaxNumberOfThreads())
+      counter2.setMaxNumberOfThreads(std::size_t(2));
+      TS_ASSERT_EQUALS(counter2.getMaxNumberOfThreads(), std::size_t(2))
       counts = counter2.counts(ids7);
       TS_ASSERT_EQUALS(counts.size(), std::size_t(9))
       TS_ASSERT_EQUALS(counts[0], double(0));     // A=0, B=0
@@ -474,7 +474,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(counts[8], double(0));     // A=2, B=2
       counter.clearRanges();
       counter3 = counter;
-      TS_ASSERT_EQUALS(counter3.nbThreads(), gum::getMaxNumberOfThreads())
+      TS_ASSERT_EQUALS(counter3.getMaxNumberOfThreads(), gum::getMaxNumberOfThreads())
       counter3.setMinNbRowsPerThread(std::size_t(10000));
       counts = counter3.counts(ids7);
       TS_ASSERT_EQUALS(counts.size(), std::size_t(9))
@@ -844,7 +844,7 @@ namespace gum_tests {
       for (std::size_t i = std::size_t(1); i < std::size_t(24); ++i) {
         // create the record counter
         gum::learning::RecordCounter counter(parser, ranges);
-        counter.setMaxNbThreads(i);
+        counter.setMaxNumberOfThreads(i);
 
         gum::learning::IdCondSet ids(0, std::vector< gum::NodeId >{2, 1}, true);
         std::vector< double >    counts = counter.counts(ids);

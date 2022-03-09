@@ -55,9 +55,9 @@ namespace gum {
       }
 
       // create the parsers. There should always be at least one parser
-      if (_max_nb_threads_ < std::size_t(1)) _max_nb_threads_ = std::size_t(1);
-      _parsers_.reserve(_max_nb_threads_);
-      for (std::size_t i = std::size_t(0); i < _max_nb_threads_; ++i)
+      const auto max_nb_threads = ThreadNumberManager::getMaxNumberOfThreads();
+      _parsers_.reserve(max_nb_threads);
+      for (std::size_t i = std::size_t(0); i < max_nb_threads; ++i)
         _parsers_.push_back(parser);
 
       // check that the ranges are within the bounds of the database and
@@ -84,10 +84,11 @@ namespace gum {
 
     /// copy constructor
     RecordCounter::RecordCounter(const RecordCounter& from) :
+        ThreadNumberManager(from),
         _parsers_(from._parsers_), _ranges_(from._ranges_), _thread_ranges_(from._thread_ranges_),
         _nodeId2columns_(from._nodeId2columns_), _last_DB_countings_(from._last_DB_countings_),
         _last_DB_ids_(from._last_DB_ids_), _last_nonDB_countings_(from._last_nonDB_countings_),
-        _last_nonDB_ids_(from._last_nonDB_ids_), _max_nb_threads_(from._max_nb_threads_),
+        _last_nonDB_ids_(from._last_nonDB_ids_),
         _min_nb_rows_per_thread_(from._min_nb_rows_per_thread_) {
       GUM_CONS_CPY(RecordCounter);
     }
@@ -95,13 +96,14 @@ namespace gum {
 
     /// move constructor
     RecordCounter::RecordCounter(RecordCounter&& from) :
+        ThreadNumberManager(std::move(from)),
         _parsers_(std::move(from._parsers_)), _ranges_(std::move(from._ranges_)),
         _thread_ranges_(std::move(from._thread_ranges_)),
         _nodeId2columns_(std::move(from._nodeId2columns_)),
         _last_DB_countings_(std::move(from._last_DB_countings_)),
         _last_DB_ids_(std::move(from._last_DB_ids_)),
         _last_nonDB_countings_(std::move(from._last_nonDB_countings_)),
-        _last_nonDB_ids_(std::move(from._last_nonDB_ids_)), _max_nb_threads_(from._max_nb_threads_),
+        _last_nonDB_ids_(std::move(from._last_nonDB_ids_)),
         _min_nb_rows_per_thread_(from._min_nb_rows_per_thread_) {
       GUM_CONS_MOV(RecordCounter);
     }
@@ -118,6 +120,7 @@ namespace gum {
     /// copy operator
     RecordCounter& RecordCounter::operator=(const RecordCounter& from) {
       if (this != &from) {
+        ThreadNumberManager::operator=(from);
         _parsers_                = from._parsers_;
         _ranges_                 = from._ranges_;
         _thread_ranges_          = from._thread_ranges_;
@@ -126,7 +129,6 @@ namespace gum {
         _last_DB_ids_            = from._last_DB_ids_;
         _last_nonDB_countings_   = from._last_nonDB_countings_;
         _last_nonDB_ids_         = from._last_nonDB_ids_;
-        _max_nb_threads_         = from._max_nb_threads_;
         _min_nb_rows_per_thread_ = from._min_nb_rows_per_thread_;
       }
       return *this;
@@ -136,6 +138,7 @@ namespace gum {
     /// move operator
     RecordCounter& RecordCounter::operator=(RecordCounter&& from) {
       if (this != &from) {
+        ThreadNumberManager::operator=(std::move(from));
         _parsers_                = std::move(from._parsers_);
         _ranges_                 = std::move(from._ranges_);
         _thread_ranges_          = std::move(from._thread_ranges_);
@@ -144,7 +147,6 @@ namespace gum {
         _last_DB_ids_            = std::move(from._last_DB_ids_);
         _last_nonDB_countings_   = std::move(from._last_nonDB_countings_);
         _last_nonDB_ids_         = std::move(from._last_nonDB_ids_);
-        _max_nb_threads_         = from._max_nb_threads_;
         _min_nb_rows_per_thread_ = from._min_nb_rows_per_thread_;
       }
       return *this;
@@ -157,15 +159,6 @@ namespace gum {
       _last_DB_ids_.clear();
       _last_nonDB_countings_.clear();
       _last_nonDB_ids_.clear();
-    }
-
-
-    /// changes the max number of threads used to parse the database
-    void RecordCounter::setMaxNbThreads(const std::size_t nb) const {
-      if (nb == std::size_t(0))
-        _max_nb_threads_ = std::size_t(1);
-      else
-        _max_nb_threads_ = nb;
     }
 
 
@@ -507,7 +500,8 @@ namespace gum {
 
       // create parsers if needed
       const std::size_t nb_ranges  = _thread_ranges_.size();
-      const std::size_t nb_threads = nb_ranges <= _max_nb_threads_ ? nb_ranges : _max_nb_threads_;
+      const auto max_nb_threads = ThreadNumberManager::getMaxNumberOfThreads();
+      const std::size_t nb_threads = nb_ranges <= max_nb_threads ? nb_ranges : max_nb_threads;
       while (_parsers_.size() < nb_threads) {
         ThreadData< DBRowGeneratorParser > new_parser(_parsers_[0]);
         _parsers_.push_back(std::move(new_parser));
@@ -640,11 +634,12 @@ namespace gum {
       for (const auto& range: _ranges_) {
         if (range.second > range.first) {
           const std::size_t range_size = range.second - range.first;
+          const auto max_nb_threads = ThreadNumberManager::getMaxNumberOfThreads();
           std::size_t       nb_threads = range_size / _min_nb_rows_per_thread_;
           if (nb_threads < 1)
             nb_threads = 1;
-          else if (nb_threads > _max_nb_threads_)
-            nb_threads = _max_nb_threads_;
+          else if (nb_threads > max_nb_threads)
+            nb_threads = max_nb_threads;
           std::size_t nb_rows_par_thread = range_size / nb_threads;
           std::size_t rest_rows          = range_size - nb_rows_par_thread * nb_threads;
 

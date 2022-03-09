@@ -107,15 +107,23 @@ namespace gum {
 
 
     /// changes the max number of threads used to parse the database
-    INLINE void CorrectedMutualInformation::setMaxNbThreads(std::size_t nb) const {
-      _NH_.setMaxNbThreads(nb);
-      _k_NML_.setMaxNbThreads(nb);
-      _score_MDL_.setMaxNbThreads(nb);
+    INLINE void CorrectedMutualInformation::setMaxNumberOfThreads(Size nb) {
+      _NH_.setMaxNumberOfThreads(nb);
+      _k_NML_.setMaxNumberOfThreads(nb);
+      _score_MDL_.setMaxNumberOfThreads(nb);
     }
 
 
     /// returns the number of threads used to parse the database
-    INLINE std::size_t CorrectedMutualInformation::nbThreads() const { return _NH_.nbThreads(); }
+    INLINE Size CorrectedMutualInformation::getMaxNumberOfThreads() const {
+      return _NH_.getMaxNumberOfThreads();
+    }
+
+
+    /// indicates whether the user set herself the number of threads
+    INLINE bool CorrectedMutualInformation::isNbThreadsUserDefined() const {
+       return _NH_.isNbThreadsUserDefined();
+    }
 
 
     /** @brief changes the number min of rows a thread should process in a

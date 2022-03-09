@@ -78,11 +78,21 @@ namespace gum {
 
 
     /// changes the max number of threads used to parse the database
-    INLINE void PseudoCount::setMaxNbThreads(std::size_t nb) const { counter_.setMaxNbThreads(nb); }
+    INLINE void PseudoCount::setMaxNumberOfThreads(Size nb) {
+      counter_.setMaxNumberOfThreads(nb);
+    }
 
 
-    /// returns the number of threads used to parse the database
-    INLINE std::size_t PseudoCount::nbThreads() const { return counter_.nbThreads(); }
+    /// returns the current max number of threads of the scheduler
+    INLINE Size PseudoCount::getMaxNumberOfThreads() const {
+      return counter_.getMaxNumberOfThreads();
+    }
+
+
+    /// indicates whether the user set herself the number of threads
+    INLINE bool PseudoCount::isNbThreadsUserDefined() const {
+      return counter_.isNbThreadsUserDefined();
+    }
 
 
     /** @brief changes the number min of rows a thread should process in a
