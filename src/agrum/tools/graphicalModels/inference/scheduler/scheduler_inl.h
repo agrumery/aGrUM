@@ -31,27 +31,6 @@
 
 namespace gum {
 
-  /// sets the number max of threads that can be used
-  INLINE void Scheduler::setMaxNumberOfThreads(Size nb) {
-    _max_nb_threads = nb;
-  }
-
-
-  /// returns the current max number of threads of the scheduler
-  INLINE Size Scheduler::getMaxNumberOfThreads() const {
-    if (_max_nb_threads == 0)
-      return gum::getMaxNumberOfThreads();
-    else
-      return _max_nb_threads;
-  }
-
-
-  /// indicates whether the user set herself the number of threads
-  INLINE bool Scheduler::isNbThreadsUserDefined() const {
-    return _max_nb_threads != 0;
-  }
-
-
   /// sets an upper bound on the memory consumption admissible
   INLINE void Scheduler::setMaxMemory(double megabytes) {
     _max_memory = megabytes * 1048576.0;   // 1048576 = 1024 * 1024 = 1Mb

@@ -44,6 +44,18 @@ namespace gum {
   // destructor
   INLINE ThreadNumberManager::~ThreadNumberManager() { GUM_DESTRUCTOR(ThreadNumberManager); }
 
+  // copy operator
+  INLINE ThreadNumberManager& ThreadNumberManager::operator=(const ThreadNumberManager& from) {
+    _max_nb_threads_ = from._max_nb_threads_;
+    return *this;
+  }
+
+  // move operator
+  INLINE ThreadNumberManager& ThreadNumberManager::operator=(ThreadNumberManager&& from) {
+    _max_nb_threads_ = from._max_nb_threads_;
+    return *this;
+  }
+
   // sets the number max of threads that can be used
   INLINE void ThreadNumberManager::setMaxNumberOfThreads(Size nb) { _max_nb_threads_ = nb; }
 

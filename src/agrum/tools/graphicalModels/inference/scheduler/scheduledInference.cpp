@@ -63,6 +63,29 @@ namespace gum {
   }
 
 
+  // copy operator
+  ScheduledInference& ScheduledInference::operator=(const ScheduledInference& from) {
+    if (this != &from) {
+      ThreadNumberManager::operator=(std::move(from));
+      delete _scheduler_;
+      _scheduler_ = from._scheduler_->clone();
+      _sequential_scheduler_.setMaxMemory(from._sequential_scheduler_.maxMemory());
+    }
+    return *this;
+  }
+
+  // move operator
+  ScheduledInference& ScheduledInference::operator=(ScheduledInference&& from) {
+    if (this != &from) {
+      ThreadNumberManager::operator=(from);
+      delete _scheduler_;
+      _scheduler_ = from._scheduler_->clone();
+      _sequential_scheduler_.setMaxMemory(from._sequential_scheduler_.maxMemory());
+    }
+    return *this;
+  }
+
+
   // virtual copy constructor
   ScheduledInference* ScheduledInference::clone() const { return new ScheduledInference(*this); }
 

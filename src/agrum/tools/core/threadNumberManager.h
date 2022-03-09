@@ -54,6 +54,21 @@ namespace gum {
 
     /// @}
 
+
+    // ############################################################################
+    /// @name Operators
+    // ############################################################################
+    /// @{
+
+    /// copy operator
+    ThreadNumberManager& operator=(const ThreadNumberManager& from);
+
+    /// move operator
+    ThreadNumberManager& operator=(ThreadNumberManager&& from);
+
+    /// @}
+
+
     // ############################################################################
     /// @name Accessors/Modifiers
     // ############################################################################

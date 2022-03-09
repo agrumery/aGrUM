@@ -68,6 +68,20 @@ namespace gum {
 
 
     // ############################################################################
+    /// @name Operators
+    // ############################################################################
+    /// @{
+
+    /// copy operator
+    ScheduledInference& operator=(const ScheduledInference& from);
+
+    /// move operator
+    ScheduledInference& operator=(ScheduledInference&& from);
+
+    /// @}
+
+
+    // ############################################################################
     /// @name Accessors/Modifiers
     // ############################################################################
     /// @{
@@ -110,6 +124,7 @@ namespace gum {
 
     // a sequential scheduler: to be used if only one thread is used
     SchedulerSequential _sequential_scheduler_;
+
   };
 
 }   // namespace gum

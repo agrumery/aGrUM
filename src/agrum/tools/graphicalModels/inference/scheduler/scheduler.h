@@ -33,6 +33,7 @@
 #include <agrum/agrum.h>
 
 #include <agrum/tools/core/threads.h>
+#include <agrum/tools/core/threadNumberManager.h>
 #include <agrum/tools/graphicalModels/inference/scheduler/schedule.h>
 
 namespace gum {
@@ -43,7 +44,7 @@ namespace gum {
     PARALLEL_OPERATORS // combinations and projections are dispatched among threads
   };
 
-  class Scheduler {
+  class Scheduler : public ThreadNumberManager {
     public:
 
     // ############################################################################
@@ -79,17 +80,6 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    /// sets the number max of threads that can be used
-    /**
-     * @param nb the number max of threads used for executing schedules. If this
-     * number is set to 0, then it is defaulted to aGrUM's max number
-     * of threads
-     */
-    virtual void setMaxNumberOfThreads(Size nb);
-
-    /// returns the current max number of threads of the scheduler
-    virtual Size getMaxNumberOfThreads() const;
-
     /// sets an upper bound on the memory consumption admissible
     /**
      * @param megabytes the number of megabytes that can be used for the
@@ -122,16 +112,10 @@ namespace gum {
      * the schedule */
     virtual std::pair< double, double > memoryUsage(const Schedule&) = 0;
 
-    /// indicates whether the user set herself the number of threads
-    bool isNbThreadsUserDefined() const;
-
     /// @}
 
     
     protected:
-    /// the max number of threads
-    Size _max_nb_threads{0};
-
     /// the max memory usage possible (in bytes)
     double _max_memory {0.0};
 

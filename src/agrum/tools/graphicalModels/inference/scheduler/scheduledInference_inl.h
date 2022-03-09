@@ -24,7 +24,7 @@ namespace gum {
 
   // returns the current scheduler
   INLINE Scheduler& ScheduledInference::scheduler() const {
-    if (this->getMaxNumberOfThreads() != 1)
+    if (ThreadNumberManager::getMaxNumberOfThreads() != 1)
       return *_scheduler_;
     else {
       return const_cast< SchedulerSequential& >(_sequential_scheduler_);
@@ -34,7 +34,7 @@ namespace gum {
 
   // sets the number max of threads that can be used
   INLINE void ScheduledInference::setMaxNumberOfThreads(Size nb) {
-    this->setMaxNumberOfThreads(nb);
+    ThreadNumberManager::setMaxNumberOfThreads(nb);
     _scheduler_->setMaxNumberOfThreads(nb);
   }
 
@@ -43,6 +43,7 @@ namespace gum {
   INLINE void ScheduledInference::setMaxMemory(double megabytes) {
     if (megabytes < 0.0) megabytes = 0.0;
     _scheduler_->setMaxMemory(megabytes);
+    _sequential_scheduler_.setMaxMemory(megabytes);
   }
 
 
