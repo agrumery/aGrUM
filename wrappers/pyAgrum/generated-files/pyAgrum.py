@@ -12470,6 +12470,31 @@ class ShaferShenoyInference(object):
     def setTriangulation(self, new_triangulation: "pyAgrum.Triangulation") -> None:
         return _pyAgrum.ShaferShenoyInference_setTriangulation(self, new_triangulation)
 
+    def setRelevantPotentialsFinderType(self, type: int) -> None:
+        r"""
+
+        sets how we determine the relevant potentials to combine
+
+        When a clique sends a message to a separator, it first constitute the set of the potentials it contains and of the potentials contained in the messages it received. If RelevantPotentialsFinderType = FIND_ALL, all these potentials are combined and projected to produce the message sent to the separator. If RelevantPotentialsFinderType = DSEP_BAYESBALL_NODES, then only the set of potentials d-connected to the variables of the separator are kept for combination and projection.
+
+        0 = FIND_ALL
+        1 = DSEP_BAYESBALL_NODES
+        2 = DSEP_BAYESBALL_POTENTIALS
+        3 = DSEP_KOLLER_FRIEDMAN_2009
+
+        Parameters
+        ----------
+        type : int
+          the finder type
+
+        Raises
+        ------
+        pyAgrum.InvalidArgument
+          If type is not implemented
+
+        """
+        return _pyAgrum.ShaferShenoyInference_setRelevantPotentialsFinderType(self, type)
+
     def setFindBarrenNodesType(self, type: int) -> None:
         r"""
 
