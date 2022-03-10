@@ -934,7 +934,7 @@ namespace gum {
        * @throw SizeError is raised if the vector of string cannot be inserted
        * in the IDatabaseTable because its size does not allow a matching with the
        * columns of the IDatabaseTable (taking into account the ignored columns) */
-      void insertRow(const std::vector< std::string >& new_row);
+      virtual void insertRow(const std::vector< std::string >& new_row) = 0;
 
       /// insert a new DBRow at the end of the database
       /** Unlike methods insertRow for data whose type is different from T_DATA,

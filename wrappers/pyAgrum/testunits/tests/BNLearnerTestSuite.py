@@ -464,7 +464,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     learner = gum.BNLearner(self.agrumSrcDir(
       'data1.csv'))
     learner.useMIIC()
-    eg = learner.learnMixedStructure()
+    eg = learner.learnEssentialGraph()
     skel = eg.skeleton()
 
     learner = gum.BNLearner(self.agrumSrcDir(

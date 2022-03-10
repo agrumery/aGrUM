@@ -32,7 +32,7 @@ class BNDiscretizer():
   """
   Represents a tool to discretize some variables in a database in order to obtain  a way to learn a pyAgrum's (discrete)
   Bayesian networks.
-  
+
   parameters:
       defaultDiscretizationMethod: str
             sets the default method of discretization for this discretizer. Possible values are: 'quantile', 'uniform',
@@ -178,7 +178,7 @@ class BNDiscretizer():
 
     auditDict = dict()
 
-    if type(X) == pandas.DataFrame:
+    if isinstance(X,pandas.DataFrame): #type(X) == pandas.DataFrame:
       variableNames = X.columns.tolist()
     elif type(X) == pandas.core.series.Series:
       variableNames = [X.name]
@@ -223,7 +223,7 @@ class BNDiscretizer():
           auditDict[variable]['methode'] = self.defaultMethod
         else:
           auditDict[variable]['methode'] = 'NoDiscretization'
-          auditDict[variable]['k'] = None
+          auditDict[variable]['k'] = len(possibleValues[i])
       if auditDict[variable]['methode'] == "NoDiscretization":
         auditDict[variable]['type'] = 'Discrete'
       else:
@@ -729,10 +729,13 @@ class BNDiscretizer():
           self.discretizationParametersDictionary[variableName]['k']) + " bins for the variable " + str(
           variableName) + "gave only 1 bin. Try increasing the number of bins used by this variable using "
                           "setDiscetizationParameters to avoid this error")
-      binEdges[0] = -math.inf
-      binEdges[-1] = math.inf
+
+      #we replace infinity as min and max by the new empirical flag.
+      #binEdges[0] = -math.inf
+      #binEdges[-1] = math.inf
       self.totalNumberOfBins += len(binEdges) - 1
       var = gum.DiscretizedVariable(variableName, variableName, binEdges)
+      var.setEmpirical(True)
 
     if usingDefaultParameters:
       self.discretizationParametersDictionary.pop(variableName)

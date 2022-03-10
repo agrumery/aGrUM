@@ -2910,11 +2910,11 @@ class IntegerVariable(DiscreteVariable):
         return _pyAgrum.IntegerVariable_clone(self)
     __swig_destroy__ = _pyAgrum.delete_IntegerVariable
 
-    def __eq__(self, var: "pyAgrum.Variable") -> bool:
-        return _pyAgrum.IntegerVariable___eq__(self, var)
+    def __eq__(self, *args) -> bool:
+        return _pyAgrum.IntegerVariable___eq__(self, *args)
 
-    def __ne__(self, var: "pyAgrum.Variable") -> bool:
-        return _pyAgrum.IntegerVariable___ne__(self, var)
+    def __ne__(self, *args) -> bool:
+        return _pyAgrum.IntegerVariable___ne__(self, *args)
 
     def domainSize(self) -> int:
         r"""
@@ -3049,6 +3049,12 @@ class IDiscretizedVariable(DiscreteVariable):
 
         """
         return _pyAgrum.IDiscretizedVariable_clone(self)
+
+    def isEmpirical(self) -> bool:
+        return _pyAgrum.IDiscretizedVariable_isEmpirical(self)
+
+    def setEmpirical(self, state: bool) -> None:
+        return _pyAgrum.IDiscretizedVariable_setEmpirical(self, state)
 
 # Register IDiscretizedVariable in _pyAgrum:
 _pyAgrum.IDiscretizedVariable_swigregister(IDiscretizedVariable)
@@ -23680,6 +23686,377 @@ class BNLearner(object):
         """
         return _pyAgrum.BNLearner_learnParameters(self, *args)
 
+    def setInitialDAG(self, dag: "DAG") -> "pyAgrum.BNLearner":
+        r"""
+
+        Parameters
+        ----------
+        dag : pyAgrum.DAG
+        	an initial DAG structure
+
+        """
+        val = _pyAgrum.BNLearner_setInitialDAG(self, dag)
+
+        return self
+
+
+        return val
+
+
+    def useEM(self, epsilon: float) -> "pyAgrum.BNLearner":
+        val = _pyAgrum.BNLearner_useEM(self, epsilon)
+
+        return self
+
+
+        return val
+
+
+    def useScoreAIC(self) -> "pyAgrum.BNLearner":
+        r"""
+
+        Indicate that we wish to use an AIC score.
+
+        """
+        val = _pyAgrum.BNLearner_useScoreAIC(self)
+
+        return self
+
+
+        return val
+
+
+    def useScoreBD(self) -> "pyAgrum.BNLearner":
+        r"""
+
+        Indicate that we wish to use a BD score.
+
+        """
+        val = _pyAgrum.BNLearner_useScoreBD(self)
+
+        return self
+
+
+        return val
+
+
+    def useScoreBDeu(self) -> "pyAgrum.BNLearner":
+        r"""
+
+        Indicate that we wish to use a BDeu score.
+
+        """
+        val = _pyAgrum.BNLearner_useScoreBDeu(self)
+
+        return self
+
+
+        return val
+
+
+    def useScoreBIC(self) -> "pyAgrum.BNLearner":
+        r"""
+
+        Indicate that we wish to use a BIC score.
+
+        """
+        val = _pyAgrum.BNLearner_useScoreBIC(self)
+
+        return self
+
+
+        return val
+
+
+    def useScoreK2(self) -> "pyAgrum.BNLearner":
+        r"""
+
+        Indicate that we wish to use a K2 score.
+
+        """
+        val = _pyAgrum.BNLearner_useScoreK2(self)
+
+        return self
+
+
+        return val
+
+
+    def useScoreLog2Likelihood(self) -> "pyAgrum.BNLearner":
+        r"""
+
+        Indicate that we wish to use a Log2Likelihood score.
+
+        """
+        val = _pyAgrum.BNLearner_useScoreLog2Likelihood(self)
+
+        return self
+
+
+        return val
+
+
+    def useNoApriori(self) -> "pyAgrum.BNLearner":
+        r"""
+
+        Use no apriori.
+
+        """
+        val = _pyAgrum.BNLearner_useNoApriori(self)
+
+        return self
+
+
+        return val
+
+
+    def useAprioriBDeu(self, weight: float=1.0) -> "pyAgrum.BNLearner":
+        val = _pyAgrum.BNLearner_useAprioriBDeu(self, weight)
+
+        return self
+
+
+        return val
+
+
+    def useAprioriSmoothing(self, weight: float=1) -> "pyAgrum.BNLearner":
+        r"""
+
+        Use the apriori smoothing.
+
+        Parameters
+        ----------
+        weight : float
+                pass in argument a weight if you wish to assign a weight to the smoothing, else the current weight of the learner will be used.
+
+        """
+        val = _pyAgrum.BNLearner_useAprioriSmoothing(self, weight)
+
+        return self
+
+
+        return val
+
+
+    def useAprioriDirichlet(self, filename: str, weight: float=1) -> "pyAgrum.BNLearner":
+        r"""
+
+        Use the Dirichlet apriori.
+
+        Parameters
+        ----------
+        filename : str
+                the Dirichlet related database
+
+        """
+        val = _pyAgrum.BNLearner_useAprioriDirichlet(self, filename, weight)
+
+        return self
+
+
+        return val
+
+
+    def useGreedyHillClimbing(self) -> "pyAgrum.BNLearner":
+        r"""
+
+        Indicate that we wish to use a greedy hill climbing algorithm.
+
+        """
+        val = _pyAgrum.BNLearner_useGreedyHillClimbing(self)
+
+        return self
+
+
+        return val
+
+
+    def useLocalSearchWithTabuList(self, tabu_size: int=100, nb_decrease: int=2) -> "pyAgrum.BNLearner":
+        val = _pyAgrum.BNLearner_useLocalSearchWithTabuList(self, tabu_size, nb_decrease)
+
+        return self
+
+
+        return val
+
+
+    def use3off2(self) -> "pyAgrum.BNLearner":
+        r"""
+
+        Indicate that we wish to use 3off2.
+
+        """
+        val = _pyAgrum.BNLearner_use3off2(self)
+
+        return self
+
+
+        return val
+
+
+    def useMIIC(self) -> "pyAgrum.BNLearner":
+        r"""
+
+        Indicate that we wish to use MIIC.
+
+        """
+        val = _pyAgrum.BNLearner_useMIIC(self)
+
+        return self
+
+
+        return val
+
+
+    def useNMLCorrection(self) -> "pyAgrum.BNLearner":
+        r"""
+
+        Indicate that we wish to use the NML correction for 3off2 or MIIC
+
+        """
+        val = _pyAgrum.BNLearner_useNMLCorrection(self)
+
+        return self
+
+
+        return val
+
+
+    def useMDLCorrection(self) -> "pyAgrum.BNLearner":
+        r"""
+
+        Indicate that we wish to use the MDL correction for 3off2 or MIIC
+
+        """
+        val = _pyAgrum.BNLearner_useMDLCorrection(self)
+
+        return self
+
+
+        return val
+
+
+    def useNoCorrection(self) -> "pyAgrum.BNLearner":
+        r"""
+
+        Indicate that we wish to use the NoCorr correction for 3off2 or MIIC
+
+        """
+        val = _pyAgrum.BNLearner_useNoCorrection(self)
+
+        return self
+
+
+        return val
+
+
+    def setMaxIndegree(self, max_indegree: int) -> "pyAgrum.BNLearner":
+        r"""
+
+        Parameters
+        ----------
+        max_indegree : int
+        	the limit number of parents
+
+        """
+        val = _pyAgrum.BNLearner_setMaxIndegree(self, max_indegree)
+
+        return self
+
+
+        return val
+
+
+    def setForbiddenArcs(self, set: Set[Tuple[int,int]]) -> "pyAgrum.BNLearner":
+        val = _pyAgrum.BNLearner_setForbiddenArcs(self, set)
+
+        return self
+
+
+        return val
+
+
+    def addForbiddenArc(self, *args) -> "pyAgrum.BNLearner":
+        val = _pyAgrum.BNLearner_addForbiddenArc(self, *args)
+
+        return self
+
+
+        return val
+
+
+    def eraseForbiddenArc(self, *args) -> "pyAgrum.BNLearner":
+        val = _pyAgrum.BNLearner_eraseForbiddenArc(self, *args)
+
+        return self
+
+
+        return val
+
+
+    def addMandatoryArc(self, *args) -> "pyAgrum.BNLearner":
+        val = _pyAgrum.BNLearner_addMandatoryArc(self, *args)
+
+        return self
+
+
+        return val
+
+
+    def eraseMandatoryArc(self, *args) -> "pyAgrum.BNLearner":
+        val = _pyAgrum.BNLearner_eraseMandatoryArc(self, *args)
+
+        return self
+
+
+        return val
+
+
+    def addPossibleEdge(self, *args) -> "pyAgrum.BNLearner":
+        val = _pyAgrum.BNLearner_addPossibleEdge(self, *args)
+
+        return self
+
+
+        return val
+
+
+    def erasePossibleEdge(self, *args) -> "pyAgrum.BNLearner":
+        val = _pyAgrum.BNLearner_erasePossibleEdge(self, *args)
+
+        return self
+
+
+        return val
+
+
+    def setMandatoryArcs(self, set: Set[Tuple[int,int]]) -> "pyAgrum.BNLearner":
+        val = _pyAgrum.BNLearner_setMandatoryArcs(self, set)
+
+        return self
+
+
+        return val
+
+
+    def setPossibleEdges(self, set: Set[Tuple[int,int]]) -> "pyAgrum.BNLearner":
+        val = _pyAgrum.BNLearner_setPossibleEdges(self, set)
+
+        return self
+
+
+        return val
+
+
+    def setPossibleSkeleton(self, skeleton: "pyAgrum.UndiGraph") -> "pyAgrum.BNLearner":
+        val = _pyAgrum.BNLearner_setPossibleSkeleton(self, skeleton)
+
+        return self
+
+
+        return val
+
+
     def __repr__(self) -> str:
         return _pyAgrum.BNLearner___repr__(self)
 
@@ -23736,6 +24113,39 @@ class BNLearner(object):
         """
         return _pyAgrum.BNLearner_G2(self, *args)
 
+    def setSliceOrder(self, *args) -> "pyAgrum.BNLearner":
+        val = _pyAgrum.BNLearner_setSliceOrder(self, *args)
+
+        return self
+
+
+        return val
+
+
+    def useK2(self, *args) -> "pyAgrum.BNLearner":
+        val = _pyAgrum.BNLearner_useK2(self, *args)
+
+        return self
+
+
+        return val
+
+
+    def latentVariables(self) -> object:
+        r"""
+
+        Warnings
+        --------
+        learner must be using 3off2 or MIIC algorithm
+
+        Returns
+        -------
+        list
+        	the list of latent variables
+
+        """
+        return _pyAgrum.BNLearner_latentVariables(self)
+
     def state(self) -> object:
         return _pyAgrum.BNLearner_state(self)
 
@@ -23762,6 +24172,38 @@ class BNLearner(object):
             lv.append(name)
         p.fillWith(self.rawPseudoCount(lv))
         return p
+
+    def fitParameters(self,bn):
+      """
+      Easy shortcut to LearnParameters method. fitParameters uses self to direcuptly populate the CPTs of bn.0
+
+      Parameters
+      ----------
+      bn : pyAgrum.BayesNet
+        a BN which will directly have its parameters learned.
+
+      """
+      if set(self.names())!=bn.names():
+        raise Exception("Not the same variable names in the database and in the BN")
+
+      d=DAG()
+      for n in bn.names():
+        d.addNodeWithId(self.idFromName(n))
+      for i1,i2 in bn.arcs():
+        d.addArc(self.idFromName(bn.variable(i1).name()),self.idFromName(bn.variable(i2).name()))
+      tmp=self.learnParameters(d)
+      for n in tmp.names():
+        bn.cpt(n).fillWith(tmp.cpt(n))
+      return self
+
+    def learnEssentialGraph(self):
+      bn=BayesNet()
+      for i in range(len(self.names())):
+        bn.add(self.nameFromId(i),2)
+      ge=EssentialGraph(bn,self.learnMixedStructure())
+      ge._bn=bn
+      return ge
+
 
 
     def setVerbosity(self, v: bool) -> None:
@@ -23974,95 +24416,21 @@ class BNLearner(object):
         return _pyAgrum.BNLearner__asIApproximationSchemeConfiguration(self)
 
     def learnDAG(self) -> "pyAgrum.DAG":
-        r"""
-
-        learn a structure from a file
-
-        Returns
-        -------
-        pyAgrum.DAG
-        	the learned DAG
-
-        """
         return _pyAgrum.BNLearner_learnDAG(self)
 
+    def learnMixedStructure(self) -> "pyAgrum.MixedGraph":
+        return _pyAgrum.BNLearner_learnMixedStructure(self)
+
     def names(self) -> List[str]:
-        r"""
-
-        Returns
-        -------
-        List[str]
-        	the names of the variables in the database
-
-        """
         return _pyAgrum.BNLearner_names(self)
 
     def idFromName(self, var_name: str) -> int:
-        r"""
-
-        Parameters
-        ----------
-        var_names : str
-        	a variable's name
-
-        Returns
-        -------
-        int
-        	the column id corresponding to a variable name
-
-        Raises
-        ------
-        pyAgrum.MissingVariableInDatabase
-        	If a variable of the BN is not found in the database.
-
-        """
         return _pyAgrum.BNLearner_idFromName(self, var_name)
 
     def nameFromId(self, id: int) -> str:
-        r"""
-
-        Parameters
-        ----------
-        id
-        	a node id
-
-        Returns
-        -------
-        str
-        	the variable's name
-
-        """
         return _pyAgrum.BNLearner_nameFromId(self, id)
 
-    def useScoreAIC(self) -> None:
-        return _pyAgrum.BNLearner_useScoreAIC(self)
-
-    def useScoreBD(self) -> None:
-        return _pyAgrum.BNLearner_useScoreBD(self)
-
-    def useScoreBDeu(self) -> None:
-        return _pyAgrum.BNLearner_useScoreBDeu(self)
-
-    def useScoreBIC(self) -> None:
-        return _pyAgrum.BNLearner_useScoreBIC(self)
-
-    def useScoreK2(self) -> None:
-        return _pyAgrum.BNLearner_useScoreK2(self)
-
-    def useScoreLog2Likelihood(self) -> None:
-        return _pyAgrum.BNLearner_useScoreLog2Likelihood(self)
-
     def setDatabaseWeight(self, new_weight: float) -> None:
-        r"""
-
-        Set the database weight which is given as an equivalent sample size.
-
-        Parameters
-        ----------
-        weight : float
-        	the database weight
-
-        """
         return _pyAgrum.BNLearner_setDatabaseWeight(self, new_weight)
 
     def setRecordWeight(self, i: int, weight: float) -> None:
@@ -24074,366 +24442,23 @@ class BNLearner(object):
     def recordWeight(self, i: int) -> float:
         return _pyAgrum.BNLearner_recordWeight(self, i)
 
-    def useNoApriori(self) -> None:
-        return _pyAgrum.BNLearner_useNoApriori(self)
-
-    def useAprioriSmoothing(self, *args) -> None:
-        return _pyAgrum.BNLearner_useAprioriSmoothing(self, *args)
-
-    def useAprioriDirichlet(self, *args) -> None:
-        return _pyAgrum.BNLearner_useAprioriDirichlet(self, *args)
-
-    def useAprioriBDeu(self, *args) -> None:
-        r"""
-
-        The BDeu apriori adds weight to all the cells of the counting tables.
-        In other words, it adds weight rows in the database with equally probable
-        values.
-
-        Parameters
-        ----------
-        weight : float
-        	the apriori weight
-
-        """
-        return _pyAgrum.BNLearner_useAprioriBDeu(self, *args)
-
-    def useGreedyHillClimbing(self) -> None:
-        return _pyAgrum.BNLearner_useGreedyHillClimbing(self)
-
-    def useLocalSearchWithTabuList(self, *args) -> None:
-        r"""
-
-        Indicate that we wish to use a local search with tabu list
-
-        Parameters
-        ----------
-        tabu_size : int
-                The size of the tabu list
-
-        nb_decrease : int
-                The max number of changes decreasing the score consecutively that we allow to apply
-
-        """
-        return _pyAgrum.BNLearner_useLocalSearchWithTabuList(self, *args)
-
-    def useK2(self, *args) -> None:
-        r"""
-
-        Indicate to use the K2 algorithm (which needs a total ordering of the variables).
-
-        Parameters
-        ----------
-        order : list[int or str]
-              sequences of (ids or name)
-
-        """
-        return _pyAgrum.BNLearner_useK2(self, *args)
-
-    def setMaxIndegree(self, max_indegree: int) -> None:
-        return _pyAgrum.BNLearner_setMaxIndegree(self, max_indegree)
-
-    def setSliceOrder(self, *args) -> None:
-        r"""
-
-        Set a partial order on the nodes.
-
-        Parameters
-        ----------
-        l : list
-                a list of sequences (composed of ids of rows or string)
-
-        """
-        return _pyAgrum.BNLearner_setSliceOrder(self, *args)
-
-    def setPossibleSkeleton(self, skeleton: "pyAgrum.UndiGraph") -> None:
-        return _pyAgrum.BNLearner_setPossibleSkeleton(self, skeleton)
-
-    def addPossibleEdge(self, *args) -> None:
-        return _pyAgrum.BNLearner_addPossibleEdge(self, *args)
-
-    def erasePossibleEdge(self, *args) -> None:
-        r"""
-
-        Allow the 2 arcs to be added if necessary.
-
-        Parameters
-        ----------
-        arc : pyAgrum
-        	an arc
-        head :
-        	a variable's id (int)
-        tail :
-        	a variable's id (int)
-        head :
-        	a variable's name (str)
-        tail :
-        	a variable's name (str)
-
-        """
-        return _pyAgrum.BNLearner_erasePossibleEdge(self, *args)
-
-    def addForbiddenArc(self, *args) -> None:
-        r"""
-
-        The arc in parameters won't be added.
-
-        Parameters
-        ----------
-        arc : pyAgrum.Arc
-        	an arc
-        head :
-        	a variable's id (int)
-        tail :
-        	a variable's id (int)
-        head :
-        	a variable's name (str)
-        tail :
-        	a variable's name (str)
-
-        """
-        return _pyAgrum.BNLearner_addForbiddenArc(self, *args)
-
-    def eraseForbiddenArc(self, *args) -> None:
-        r"""
-
-        Allow the arc to be added if necessary.
-
-        Parameters
-        ----------
-        arc : pyAgrum
-        	an arc
-        head :
-        	a variable's id (int)
-        tail :
-        	a variable's id (int)
-        head :
-        	a variable's name (str)
-        tail :
-        	a variable's name (str)
-
-        """
-        return _pyAgrum.BNLearner_eraseForbiddenArc(self, *args)
-
-    def addMandatoryArc(self, *args) -> None:
-        r"""
-
-        Allow to add prior structural knowledge.
-
-        Parameters
-        ----------
-        arc : pyAgrum.Arc
-        	an arc
-        head :
-        	a variable's id (int)
-        tail :
-        	a variable's id (int)
-        head :
-        	a variable's name (str)
-        tail :
-        	a variable's name (str)
-
-        Raises
-        ------
-        pyAgrum.InvalidDirectedCycle
-        	If the added arc creates a directed cycle in the DAG
-
-        """
-        return _pyAgrum.BNLearner_addMandatoryArc(self, *args)
-
-    def eraseMandatoryArc(self, *args) -> None:
-        r"""
-
-        Parameters
-        ----------
-        arc : pyAgrum
-        	an arc
-        head :
-        	a variable's id (int)
-        tail :
-        	a variable's id (int)
-        head :
-        	a variable's name (str)
-        tail :
-        	a variable's name (str)
-
-        """
-        return _pyAgrum.BNLearner_eraseMandatoryArc(self, *args)
-
-    def useEM(self, epsilon: float) -> None:
-        r"""
-
-        Indicates if we use EM for parameter learning.
-
-        Parameters
-        ----------
-        epsilon : float
-        	if epsilon=0.0 then EM is not used
-        	if epsilon>0 then EM is used and stops when the sum of the cumulative squared error on parameters is les than epsilon.
-
-        """
-        return _pyAgrum.BNLearner_useEM(self, epsilon)
-
     def hasMissingValues(self) -> bool:
-        r"""
-
-        Indicates whether there are missing values in the database.
-
-        Returns
-        -------
-        bool
-            True if there are some missing values in the database.
-
-        """
         return _pyAgrum.BNLearner_hasMissingValues(self)
 
     def logLikelihood(self, *args) -> float:
-        r"""
-
-        logLikelihood computes the log-likelihood for the columns in vars, given the columns in the list knowing (optional)
-
-
-        Parameters
-        ----------
-        vars: List[str]
-        	the name of the columns of interest
-
-        knowing : List[str]
-        	the (optional) list of names of conditioning columns
-
-        Returns
-        -------
-        float
-        	the log-likelihood (base 2)
-
-        """
         return _pyAgrum.BNLearner_logLikelihood(self, *args)
 
     def rawPseudoCount(self, *args) -> List[float]:
         return _pyAgrum.BNLearner_rawPseudoCount(self, *args)
 
     def nbRows(self) -> int:
-        r"""
-
-        Return the number of row in the database
-
-
-        Returns
-        -------
-        int
-        	the number of rows in the database
-
-        """
         return _pyAgrum.BNLearner_nbRows(self)
 
     def nbCols(self) -> int:
-        r"""
-
-        Return the nimber of columns in the database
-
-
-        Returns
-        -------
-        int
-        	the number of columns in the database
-
-        """
         return _pyAgrum.BNLearner_nbCols(self)
 
     def domainSize(self, *args) -> int:
         return _pyAgrum.BNLearner_domainSize(self, *args)
-
-    def setInitialDAG(self, g: "DAG") -> None:
-        r"""
-
-        Parameters
-        ----------
-        dag : pyAgrum.DAG
-        	an initial DAG structure
-
-        """
-        return _pyAgrum.BNLearner_setInitialDAG(self, g)
-
-    def use3off2(self) -> None:
-        r"""
-
-        Indicate that we wish to use 3off2.
-
-        """
-        return _pyAgrum.BNLearner_use3off2(self)
-
-    def useMIIC(self) -> None:
-        r"""
-
-        Indicate that we wish to use MIIC.
-
-        """
-        return _pyAgrum.BNLearner_useMIIC(self)
-
-    def useNMLCorrection(self) -> None:
-        r"""
-
-        Indicate that we wish to use the NML correction for 3off2 or MIIC
-
-        """
-        return _pyAgrum.BNLearner_useNMLCorrection(self)
-
-    def useMDLCorrection(self) -> None:
-        r"""
-
-        Indicate that we wish to use the MDL correction for 3off2 or MIIC
-
-        """
-        return _pyAgrum.BNLearner_useMDLCorrection(self)
-
-    def useNoCorrection(self) -> None:
-        r"""
-
-        Indicate that we wish to use the NoCorr correction for 3off2 or MIIC
-
-        """
-        return _pyAgrum.BNLearner_useNoCorrection(self)
-
-    def latentVariables(self, *args) -> List[Tuple[int,int]]:
-        r"""
-
-        Warnings
-        --------
-        learner must be using 3off2 or MIIC algorithm
-
-        Returns
-        -------
-        list
-        	the list of latent variables
-
-        """
-        return _pyAgrum.BNLearner_latentVariables(self, *args)
-
-    def learnMixedStructure(self) -> "pyAgrum.MixedGraph":
-        r"""
-
-        Warnings
-        --------
-        learner must be using 3off2 or MIIC algorithm
-
-        Returns
-        -------
-        pyAgrum.EssentialGraph
-        	the learned structure as an EssentialGraph
-
-        """
-        val = _pyAgrum.BNLearner_learnMixedStructure(self)
-
-        bn=BayesNet()
-        for i in range(len(self.names())):
-          bn.add(self.nameFromId(i),2)
-        ge=EssentialGraph(bn,val)
-        ge._bn=bn
-        return ge
-
-
-        return val
-
 
 # Register BNLearner in _pyAgrum:
 _pyAgrum.BNLearner_swigregister(BNLearner)

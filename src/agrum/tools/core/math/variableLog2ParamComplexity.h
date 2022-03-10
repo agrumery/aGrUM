@@ -124,7 +124,7 @@ namespace gum {
 
     private:
     /// the value of N above which we should use Szpankowski's approximation
-    const double _Szpankowski_threshold_{VariableLog2ParamComplexityCTableNSize};
+    // const double _Szpankowski_threshold_{VariableLog2ParamComplexityCTableNSize};
 
     // constants used to speed-up the computation of the Szpankowski
     // approximation.

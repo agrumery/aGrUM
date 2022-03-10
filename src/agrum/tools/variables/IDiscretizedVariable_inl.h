@@ -49,7 +49,10 @@ namespace gum {
     return *this;
   }
 
+  INLINE bool IDiscretizedVariable::isEmpirical() const { return _is_empirical; }
 
+
+  INLINE void IDiscretizedVariable::setEmpirical(bool state) { _is_empirical = state; }
 } /* namespace gum */
 
 

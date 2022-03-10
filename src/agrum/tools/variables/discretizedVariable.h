@@ -45,11 +45,14 @@ namespace gum {
    * @warning DiscretizedVariable is a template but it is assumed that there is
    * a complete order on T_TICKS.
    * @warning Note that, if T_TICKS allows it, you may use
-   * std::numeric_limits<T_TICKS>::infinity() and
+   * -std::numeric_limits<T_TICKS>::infinity() and
    * std::numeric_limits<T_TICKS>::infinity() as tick value.
    * @warning If a variable contains less than 3 ticks, it is considered as
    * empty(). A variable with 3 ticks is binary and contains 2 ranges :
    * [T1,T2[ (modality 0) and [T2,T3] (modality 1).
+   * @warning For convenience, if the variable `_is_empirical`,  a value smaller 
+   * than the first tick or bigger than the last tick is not considered as an 
+   * error but is treated as a correct value.
    * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
    */
   template < typename T_TICKS >

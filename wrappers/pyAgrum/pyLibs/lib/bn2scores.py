@@ -59,13 +59,12 @@ def checkCompatibility(bn, fields, csv_name):
   return res
 
 
-def computeScores(bn_name, csv_name, visible=False, transforme_label=False):
+def computeScores(bn_name, csv_name, visible=False):
   """
   Compute scores from a bn w.r.t to a csv
   :param bn_name: a gum.BayesianNetwork or a filename for a BN
   :param csv_name: a filename for the CSV database
   :param visible: do we show the progress
-  :param transforme_label: do we adapt from labels to id
   :return: percentDatabaseUsed,scores
   """
   if isinstance(bn_name, str):
@@ -77,6 +76,10 @@ def computeScores(bn_name, csv_name, visible=False, transforme_label=False):
 
   with open(csv_name, "r") as csvfile:
     dialect = csv.Sniffer().sniff(csvfile.read(1024))
+  
+  nbr_insignificant = 0
+  num_ligne = 1
+  likelihood = mdl= aic = aicc= bic=0.0
 
   with open(csv_name, 'r') as csvfile:
     batchReader = csv.reader(csvfile, dialect)
@@ -86,65 +89,59 @@ def computeScores(bn_name, csv_name, visible=False, transforme_label=False):
     for i, nom in enumerate(titre):
       fields[nom] = i
 
-  positions = checkCompatibility(bn, fields, csv_name)
+    positions = checkCompatibility(bn, fields, csv_name)
 
-  inst = bn.completeInstantiation()
+    inst = bn.completeInstantiation()
 
-  if visible:
-    # tqdm is optional
-    # pylint: disable=import-outside-toplevel
-    from tqdm import tqdm
-    pbar = tqdm(total=nbr_lines, desc=csv_name, bar_format='{desc}: {percentage:3.0f}%|{bar}|')
-
-  nbr_insignificant = 0
-  num_ligne = 0
-  likelihood = 0.0
-  for data in batchReader:
-    num_ligne += 1
-
-    for i in range(inst.nbrDim()):
-      try:
-        inst.chgVal(i, _getIdLabel(inst, i, data[positions[i]], transforme_label))
-      except gum.OutOfBounds:
-        print("out of bounds", i, positions[i], data[positions[i]], inst.variable(i))
-
-    p = bn.jointProbability(inst)
-    if p == 0.0:
-      print(str(num_ligne) + ":" + str(inst))
-      nbr_insignificant += 1
-    else:
-      likelihood += math.log(p, 2)
     if visible:
-      pbar.update()
+      # tqdm is optional
+      # pylint: disable=import-outside-toplevel
+      from tqdm import tqdm
+      pbar = tqdm(total=nbr_lines, desc=csv_name, bar_format='{desc}: {percentage:3.0f}%|{bar}|')
 
-  if visible:
-    pbar.close()
+    for data in batchReader:
+      num_ligne += 1
 
-  nbr_arcs = 1.0 * bn.sizeArcs()
-  dim = 1.0 * bn.dim()
+      for i in range(inst.nbrDim()):
+        try:
+            inst.chgVal(i, _getIdLabel(inst, i, data[positions[i]]))
+        except gum.OutOfBounds:
+            print(f"Out of bounds for ({i},{positions[i]}) : unknown id or label '{data[positions[i]]}' for the variable {inst.variable(i)}")
 
-  aic = likelihood - dim
-  aicc = 2 * aic - 2 * dim * (dim + 1) / (nbr_lines - dim + 1) if (nbr_lines - dim + 1 > 0) else "undefined"
-  bic = likelihood - dim * math.log(nbr_lines, 2)
-  mdl = likelihood - nbr_arcs * math.log(nbr_lines, 2) - 32 * dim  # 32=nbr bits for a params
+      p = bn.jointProbability(inst)
+      if p == 0.0:
+        print(str(num_ligne) + ":" + str(inst))
+        nbr_insignificant += 1
+      else:
+        likelihood += math.log(p, 2)
+      if visible:
+        pbar.update()
+
+    if visible:
+      pbar.close()
+
+    nbr_arcs = 1.0 * bn.sizeArcs()
+    dim = 1.0 * bn.dim()
+
+    aic = likelihood - dim
+    aicc = 2 * aic - 2 * dim * (dim + 1) / (nbr_lines - dim + 1) if (nbr_lines - dim + 1 > 0) else "undefined"
+    bic = likelihood - dim * math.log(nbr_lines, 2)
+    mdl = likelihood - nbr_arcs * math.log(nbr_lines, 2) - 32 * dim  # 32=nbr bits for a params
 
   return ((nbr_lines - nbr_insignificant) * 100.0 / nbr_lines,
-          {'likelihood': likelihood, 'aic': aic, 'aicc': aicc, 'bic': bic, 'mdl': mdl})
+  {'likelihood': likelihood, 'aic': aic, 'aicc': aicc, 'bic': bic, 'mdl': mdl})
 
 
-def _getIdLabel(inst, i, label, transforme_label):
+def _getIdLabel(inst, i, label):
   """
-  Return the idLabel w.r.t. transforme_label
+  Return the idLabel 
 
   :param inst: the instantiation
   :param i: the id of the variable in the instantiation
   :param label: the label or idLabel
-  :param transforme_label: is label a label or an idLabel
 
   :return: the idLabel
   """
-  if not transforme_label:
-    label = transforme_label(label)
 
   if label.isdigit():  # an indice
     return int(label)

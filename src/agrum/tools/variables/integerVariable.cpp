@@ -51,7 +51,7 @@ namespace gum {
   bool IntegerVariable::operator==(const Variable& var) const {
     try {
       const IntegerVariable& xvar = dynamic_cast< const IntegerVariable& >(var);
-      return Variable::      operator==(var) && (xvar._domain_ == _domain_);
+      return operator==(xvar);
     } catch (std::bad_cast&) { return false; }
   }
 

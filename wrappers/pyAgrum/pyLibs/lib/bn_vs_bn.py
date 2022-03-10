@@ -29,6 +29,7 @@ import math
 from itertools import product, combinations
 
 import pyAgrum as gum
+import pyAgrum.lib._colors as gumcols
 
 
 class GraphicalBNComparator:
@@ -194,60 +195,7 @@ class GraphicalBNComparator:
     pydot.Dot
       the result dot graph or None if pydot can not be imported
     """
-
-    try:
-      # pydot is optional
-      # pylint: disable=import-outside-toplevel
-      import pydot as dot
-    except ImportError:
-      return False
-
-    graph = dot.Dot(graph_type='digraph', bgcolor="transparent")
-
-    # Nodes
-    for n in self._bn1.names():
-      node = dot.Node('"' + n + '"', style="filled",
-                      bgcol="#444444",
-                      fgcol="#FFFFFF",
-                      tooltip=f'"({self._bn1.idFromName(n)}) {n}"')
-      graph.add_node(node)
-
-    # Arcs
-    for n1 in self._bn2.names():
-      for n2 in self._bn2.names():
-        id1in2 = self._bn2.idFromName(n1)
-        id2in2 = self._bn2.idFromName(n2)
-        id1in1 = self._bn1.idFromName(n1)
-        id2in1 = self._bn1.idFromName(n2)
-
-        if self._bn1.dag().existsArc(id1in1, id2in1):
-          if self._bn2.dag().existsArc(id1in2, id2in2):
-            # If present in both
-            edge = dot.Edge('"' + n1 + '"', '"' + n2 + '"')
-            graph.add_edge(edge)
-          elif self._bn2.dag().existsArc(id2in2, id1in2):
-            # If inversed in _bn2
-            edge = dot.Edge('"' + n2 + '"', '"' + n1 + '"')
-
-            # dynamic member makes pylink unhappy
-            # pylint: disable=no-member
-            edge.set_color("red")
-            graph.add_edge(edge)
-          else:
-            # If removed from _bn2
-            edge = dot.Edge('"' + n1 + '"', '"' + n2 + '"', style='dashed')
-
-            # dynamic member makes pylink unhappy
-            # pylint: disable=no-member
-            edge.set_color("red")
-            graph.add_edge(edge)
-        else:
-          if not self._bn1.dag().existsArc(id2in1, id1in1) and self._bn2.dag().existsArc(id1in2, id2in2):
-            # If added to _bn2
-            edge = dot.Edge('"' + n1 + '"', '"' + n2 + '"', style='dashed')
-            graph.add_edge(edge)
-
-    return graph
+    return graphDiff(self._bn1, self._bn2)
 
   def skeletonScores(self):
     """
@@ -446,3 +394,136 @@ class GraphicalBNComparator:
         hamming_dico["hamming"] += 1
 
     return hamming_dico
+
+
+def graphDiff(bnref, bncmp,noStyle=False):
+  """ Return a pydot graph that compares the arcs of bnref to bncmp.
+  graphDiff allows bncmp to have less nodes than bnref. (this is not the case in GraphicalBNComparator.dotDiff())
+
+  if noStyle is False use 4 styles (fixed in pyAgrum.config) :
+    - the arc is common for both
+    - the arc is common but inverted in _bn2
+    - the arc is added in _bn2
+    - the arc is removed in _bn2
+
+  See graphDiffLegend() to add a legend to the graph.
+  Warning
+  -------
+  if pydot is not installed, this function just returns None
+
+  Returns
+  -------
+  pydot.Dot
+    the result dot graph or None if pydot can not be imported
+  """
+
+  try:
+    # pydot is optional
+    # pylint: disable=import-outside-toplevel
+    import pydot as dot
+    import csv
+    import pyAgrum.lib.bn2graph as ggr
+  except ImportError:
+    return None
+
+  g = ggr.BN2dot(bnref)
+  positions = {l[1]: f"{l[2]},{l[3]}!"
+               for l in csv.reader(g.create(format="plain")
+                                   .decode("utf8")
+                                   .split("\n")
+                                   , delimiter=' ', quotechar='"')
+               if len(l) > 3 and l[0] == "node"}
+
+  res = dot.Dot(graph_type='digraph', bgcolor="transparent", layout="fdp", splines=True)
+  for i1 in bnref.nodes():
+    if bnref.variable(i1).name() in bncmp.names():
+      res.add_node(dot.Node(f'"{bnref.variable(i1).name()}"',
+                            style="filled",
+                            fillcolor=gum.config["notebook", "graphdiff_correct_color"],
+                            color=gumcols.getBlackInTheme(),
+                            pos=positions[bnref.variable(i1).name()]
+                            )
+                   )
+    else:
+      if not noStyle:
+        res.add_node(dot.Node(f'"{bnref.variable(i1).name()}"',
+                              style="dashed",
+                              fillcolor=gum.config["notebook", "graphdiff_correct_color"],
+                              color=gumcols.getBlackInTheme(),
+                              pos=positions[bnref.variable(i1).name()]
+                              )
+                     )
+  if noStyle:
+    for (i1, i2) in bncmp.arcs():
+      n1 = bncmp.variable(i1).name()
+      n2 = bncmp.variable(i2).name()
+      res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
+                            style=gum.config["notebook", "graphdiff_correct_style"],
+                            color=gum.config["notebook", "graphdiff_correct_color"],
+                            constraint="false"))
+
+  else:
+    for (i1, i2) in bnref.arcs():
+      n1 = bnref.variable(i1).name()
+      n2 = bnref.variable(i2).name()
+
+      # a node is missing
+      if not (n1 in bncmp.names() and n2 in bncmp.names()):
+        res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
+                              style=gum.config["notebook", "graphdiff_missing_style"],
+                              color=gum.config["notebook", "graphdiff_missing_color"]))
+        continue
+
+      keyarc = "graphdiff_correct"
+      if bncmp.existsArc(n1, n2):  # arc is OK in BN2
+        res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
+                              style=gum.config["notebook", "graphdiff_correct_style"],
+                              color=gum.config["notebook", "graphdiff_correct_color"]))
+      elif bncmp.existsArc(n2, n1):  # arc is reversed in BN2
+        res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
+                              style="invis"))
+        res.add_edge(dot.Edge(f'"{n2}"', f'"{n1}"',
+                              style=gum.config["notebook", "graphdiff_reversed_style"],
+                              color=gum.config["notebook", "graphdiff_reversed_color"],
+                              constraint="false"))
+      else:  # arc is missing in BN2
+        res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
+                              style=gum.config["notebook", "graphdiff_missing_style"],
+                              color=gum.config["notebook", "graphdiff_missing_color"]))
+
+    for (i1, i2) in bncmp.arcs():
+      n1 = bncmp.variable(i1).name()
+      n2 = bncmp.variable(i2).name()
+      if not bnref.existsArc(n1, n2) and not bnref.existsArc(n2, n1):  # arc only in BN2
+        res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
+                              style=gum.config["notebook", "graphdiff_overflow_style"],
+                              color=gum.config["notebook", "graphdiff_overflow_color"],
+                              constraint="false"))
+
+  return res
+
+def graphDiffLegend():
+  try:
+    # pydot is optional
+    # pylint: disable=import-outside-toplevel
+    import pydot as dot
+  except ImportError:
+    return None
+
+  res = dot.Dot(graph_type='digraph', bgcolor="transparent", rankdir="LR")
+  for i in "abcdefgh":
+    res.add_node(dot.Node(i, style="invis"))
+  res.add_edge(dot.Edge("a", "b", label="overflow",
+                        style=gum.config["notebook", "graphdiff_overflow_style"],
+                        color=gum.config["notebook", "graphdiff_overflow_color"]))
+  res.add_edge(dot.Edge("c", "d", label="Missing",
+                        style=gum.config["notebook", "graphdiff_missing_style"],
+                        color=gum.config["notebook", "graphdiff_missing_color"]))
+  res.add_edge(dot.Edge("e", "f", label="reversed",
+                        style=gum.config["notebook", "graphdiff_reversed_style"],
+                        color=gum.config["notebook", "graphdiff_reversed_color"]))
+  res.add_edge(dot.Edge("g", "h", label="Correct",
+                        style=gum.config["notebook", "graphdiff_correct_style"],
+                        color=gum.config["notebook", "graphdiff_correct_color"]))
+
+  return res

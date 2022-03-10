@@ -28,11 +28,11 @@ namespace gum {
   namespace learning {
 
     template < typename GUM_SCALAR >
-    genericBNLearner::Database::Database(const std::string&                filename,
+    GenericBNLearner::Database::Database(const std::string&                filename,
                                          const BayesNet< GUM_SCALAR >&     bn,
                                          const std::vector< std::string >& missing_symbols) {
       // assign to each column name in the database its position
-      genericBNLearner::isCSVFileName_(filename);
+      GenericBNLearner::isCSVFileName_(filename);
       DBInitializerFromCSV                  initializer(filename);
       const auto&                           xvar_names = initializer.variableNames();
       std::size_t                           nb_vars    = xvar_names.size();
@@ -70,7 +70,7 @@ namespace gum {
 
 
     template < typename GUM_SCALAR >
-    BayesNet< GUM_SCALAR > genericBNLearner::Database::_BNVars_() const {
+    BayesNet< GUM_SCALAR > GenericBNLearner::Database::_BNVars_() const {
       BayesNet< GUM_SCALAR > bn;
       const std::size_t      nb_vars = _database_.nbVariables();
       for (std::size_t i = 0; i < nb_vars; ++i) {
@@ -83,14 +83,14 @@ namespace gum {
 
 
     template < typename GUM_SCALAR >
-    genericBNLearner::genericBNLearner(const std::string&                 filename,
+    GenericBNLearner::GenericBNLearner(const std::string&                 filename,
                                        const gum::BayesNet< GUM_SCALAR >& bn,
                                        const std::vector< std::string >&  missing_symbols) :
         scoreDatabase_(filename, bn, missing_symbols) {
       filename_     = filename;
       noApriori_    = new AprioriNoApriori(scoreDatabase_.databaseTable());
       inducedTypes_ = false;
-      GUM_CONSTRUCTOR(genericBNLearner);
+      GUM_CONSTRUCTOR(GenericBNLearner);
     }
 
 

@@ -62,52 +62,30 @@ ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::GibbsBNdistance<double
 
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::credal::CNMonteCarloSampling<double>)
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::credal::CNLoopyPropagation<double>)
-ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLearner<double>)
+ADD_APPROXIMATIONSCHEME_API(gum::learning::GenericBNLearner,gum::learning::BNLearner<double>)
 
 %extend gum::learning::BNLearner<double> {
-  using gum::learning::genericBNLearner::setMaxTime;
-  using gum::learning::genericBNLearner::maxTime;
-  using gum::learning::genericBNLearner::currentTime;
+  using gum::learning::GenericBNLearner::setMaxTime;
+  using gum::learning::GenericBNLearner::maxTime;
+  using gum::learning::GenericBNLearner::currentTime;
 
-  using gum::learning::genericBNLearner::learnDAG;
-  using gum::learning::genericBNLearner::names;
-  using gum::learning::genericBNLearner::modalities;
-  using gum::learning::genericBNLearner::idFromName;
-  using gum::learning::genericBNLearner::nameFromId;
-  using gum::learning::genericBNLearner::useScoreAIC;
-  using gum::learning::genericBNLearner::useScoreBD;
-  using gum::learning::genericBNLearner::useScoreBDeu;
-  using gum::learning::genericBNLearner::useScoreBIC;
-  using gum::learning::genericBNLearner::useScoreK2;
-  using gum::learning::genericBNLearner::useScoreLog2Likelihood;
-  using gum::learning::genericBNLearner::setDatabaseWeight;
-  using gum::learning::genericBNLearner::setRecordWeight;
-  using gum::learning::genericBNLearner::databaseWeight;
-  using gum::learning::genericBNLearner::recordWeight;
-  using gum::learning::genericBNLearner::useNoApriori;
-  using gum::learning::genericBNLearner::useAprioriSmoothing;
-  using gum::learning::genericBNLearner::useAprioriDirichlet;
-  using gum::learning::genericBNLearner::useAprioriBDeu;
-  using gum::learning::genericBNLearner::useGreedyHillClimbing;
-  using gum::learning::genericBNLearner::useLocalSearchWithTabuList;
-  using gum::learning::genericBNLearner::useK2;
-  using gum::learning::genericBNLearner::setMaxIndegree;
-  using gum::learning::genericBNLearner::setSliceOrder;
-  using gum::learning::genericBNLearner::setPossibleSkeleton;
-  using gum::learning::genericBNLearner::addPossibleEdge;
-  using gum::learning::genericBNLearner::erasePossibleEdge;
-  using gum::learning::genericBNLearner::addForbiddenArc;
-  using gum::learning::genericBNLearner::eraseForbiddenArc;
-  using gum::learning::genericBNLearner::addMandatoryArc;
-  using gum::learning::genericBNLearner::addMandatoryArc;
-  using gum::learning::genericBNLearner::eraseMandatoryArc;
-  using gum::learning::genericBNLearner::useEM;
-  using gum::learning::genericBNLearner::hasMissingValues;
-  using gum::learning::genericBNLearner::logLikelihood;
-  using gum::learning::genericBNLearner::rawPseudoCount;
-  using gum::learning::genericBNLearner::nbRows;
-  using gum::learning::genericBNLearner::nbCols;
-  using gum::learning::genericBNLearner::domainSize;
+  using gum::learning::GenericBNLearner::learnDAG;
+  using gum::learning::GenericBNLearner::learnMixedStructure;
+  using gum::learning::GenericBNLearner::learnEssentialGraph;
+  using gum::learning::GenericBNLearner::names;
+  using gum::learning::GenericBNLearner::modalities;
+  using gum::learning::GenericBNLearner::idFromName;
+  using gum::learning::GenericBNLearner::nameFromId;
+  using gum::learning::GenericBNLearner::setDatabaseWeight;
+  using gum::learning::GenericBNLearner::setRecordWeight;
+  using gum::learning::GenericBNLearner::databaseWeight;
+  using gum::learning::GenericBNLearner::recordWeight;
+  using gum::learning::GenericBNLearner::hasMissingValues;
+  using gum::learning::GenericBNLearner::logLikelihood;
+  using gum::learning::GenericBNLearner::rawPseudoCount;
+  using gum::learning::GenericBNLearner::nbRows;
+  using gum::learning::GenericBNLearner::nbCols;
+  using gum::learning::GenericBNLearner::domainSize;
 }
 
 #####################################
@@ -290,37 +268,6 @@ ADD_MULTIDIMDECORATOR_API(gum::Potential<double>)
 %enddef
 ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNMonteCarloSampling<double>)
 ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNLoopyPropagation<double>)
-
-
-#####################################
-#####################################
-%extend gum::learning::BNLearner<double> {
-  void setInitialDAG( const gum::DAG& g) {
-    self->gum::learning::genericBNLearner::setInitialDAG(g);
-  }
-  void use3off2() {
-    self->gum::learning::genericBNLearner::use3off2();
-  }
-  void useMIIC() {
-    self->gum::learning::genericBNLearner::useMIIC();
-  }
-  void useNMLCorrection(){
-    self->gum::learning::genericBNLearner::useNMLCorrection();
-  }
-  void useMDLCorrection(){
-    self->gum::learning::genericBNLearner::useMDLCorrection();
-  }
-  void useNoCorrection(){
-    self->gum::learning::genericBNLearner::useNoCorrection();
-  }
-  const std::vector<Arc> latentVariables() {
-    return self->gum::learning::genericBNLearner::latentVariables();
-  }
-  gum::MixedGraph learnMixedStructure() {
-    return self->gum::learning::genericBNLearner::learnMixedStructure();
-  }
-}
-
 
 
 #####################################

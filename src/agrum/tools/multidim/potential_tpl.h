@@ -221,7 +221,7 @@ namespace gum {
   INLINE const Potential< GUM_SCALAR >&
                Potential< GUM_SCALAR >::fillWith(const Potential< GUM_SCALAR >& src) const {
     if (src.domainSize() != this->domainSize()) {
-      GUM_ERROR(InvalidArgument, "Potential to copy has not the same dimension.")
+      GUM_ERROR(InvalidArgument, "Potential to copy has not the same domainSize.")
     }
     gum::Set< std::string > son;   // set of names
     for (const auto& v: src.variablesSequence()) {
@@ -255,10 +255,10 @@ namespace gum {
                Potential< GUM_SCALAR >::fillWith(const Potential< GUM_SCALAR >&    src,
                                        const std::vector< std::string >& mapSrc) const {
     if (src.nbrDim() != this->nbrDim()) {
-      GUM_ERROR(InvalidArgument, "Potential to copy has not the same dimension.")
+      GUM_ERROR(InvalidArgument, "Potential to copy has not the same size.")
     }
     if (src.nbrDim() != mapSrc.size()) {
-      GUM_ERROR(InvalidArgument, "Potential and vector have not the same dimension.")
+      GUM_ERROR(InvalidArgument, "Potential and vector have not the same size.")
     }
     Instantiation Isrc;
     for (Idx i = 0; i < src.nbrDim(); i++) {

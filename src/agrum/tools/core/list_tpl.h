@@ -403,6 +403,18 @@ namespace gum {
     GUM_DESTRUCTOR(ListIterator);
   }
 
+  // test equality
+  template < typename Val >
+  INLINE bool ListIterator< Val >::operator==(const ListIterator< Val >& src) const noexcept {
+    return ListConstIterator< Val >::operator==(src);
+  }
+
+  // test inequality
+  template < typename Val >
+  INLINE bool ListIterator< Val >::operator!=(const ListIterator< Val >& src) const noexcept {
+    return !operator==(src);
+  }
+
   // makes the iterator point to the next element in the List
   template < typename Val >
   INLINE ListIterator< Val >& ListIterator< Val >::operator++() noexcept {
@@ -453,11 +465,24 @@ namespace gum {
     return const_cast< Val* >(ListConstIterator< Val >::operator->());
   }
 
+  // dereferences the value pointed to by the iterator
+  template < typename Val >
+  INLINE const Val* ListIterator< Val >::operator->() const {
+    return ListConstIterator< Val >::operator->();
+  }
+
   // gives access to the content of the iterator
   template < typename Val >
   INLINE Val& ListIterator< Val >::operator*() {
     return const_cast< Val& >(ListConstIterator< Val >::operator*());
   }
+
+  // gives access to the content of the iterator
+  template < typename Val >
+  INLINE const Val& ListIterator< Val >::operator*() const {
+    return ListConstIterator< Val >::operator*();
+  }
+
 
   // ===========================================================================
   // ===========================================================================
@@ -996,6 +1021,18 @@ namespace gum {
     GUM_DESTRUCTOR(ListIteratorSafe);
   }
 
+  // test equality
+  template < typename Val >
+  INLINE bool ListIteratorSafe< Val >::operator==(const ListIteratorSafe< Val >& src) const {
+    return ListConstIteratorSafe< Val >::operator==(src);
+  }
+
+  // test inequality
+  template < typename Val >
+  INLINE bool ListIteratorSafe< Val >::operator!=(const ListIteratorSafe< Val >& src) const {
+    return !operator==(src);
+  }
+
   // makes the iterator point to the next element in the List
   template < typename Val >
   INLINE ListIteratorSafe< Val >& ListIteratorSafe< Val >::operator++() noexcept {
@@ -1046,11 +1083,24 @@ namespace gum {
     return const_cast< Val* >(ListConstIteratorSafe< Val >::operator->());
   }
 
+  // dereferences the value pointed to by the iterator
+  template < typename Val >
+  INLINE const Val* ListIteratorSafe< Val >::operator->() const {
+    return ListConstIteratorSafe< Val >::operator->();
+  }
+
   // gives access to the content of the iterator
   template < typename Val >
   INLINE Val& ListIteratorSafe< Val >::operator*() {
     return const_cast< Val& >(ListConstIteratorSafe< Val >::operator*());
   }
+
+  // gives access to the content of the iterator
+  template < typename Val >
+  INLINE const Val& ListIteratorSafe< Val >::operator*() const {
+    return ListConstIteratorSafe< Val >::operator*();
+  }
+
 
   // ===========================================================================
   // ===========================================================================
