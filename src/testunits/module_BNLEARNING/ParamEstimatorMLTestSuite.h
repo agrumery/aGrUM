@@ -948,6 +948,82 @@ namespace gum_tests {
       TS_ASSERT_THROWS(param_estimator.parameters(gum::NodeId(1), {gum::NodeId(0)}),
                        gum::DatabaseError)
     }
+
+
+    void test_multicore() {
+      // create the translator set
+      gum::LabelizedVariable var("X1", "", 0);
+      var.addLabel("0");
+      var.addLabel("1");
+      var.addLabel("2");
+
+      gum::learning::DBTranslatorSet trans_set;
+      {
+        const std::vector< std::string >              miss;
+        gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
+        std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
+
+        for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
+          translator.setVariableName(names[i]);
+          trans_set.insertTranslator(translator, i);
+        }
+      }
+
+      // create the database
+      gum::learning::DatabaseTable database(trans_set);
+      std::vector< std::string >   row0{"0", "1", "0", "2", "1", "1"};
+      std::vector< std::string >   row1{"1", "2", "0", "1", "2", "2"};
+      std::vector< std::string >   row2{"2", "1", "0", "1", "1", "0"};
+      std::vector< std::string >   row3{"1", "0", "0", "0", "0", "0"};
+      std::vector< std::string >   row4{"0", "0", "0", "1", "1", "1"};
+      for (int i = 0; i < 1000; ++i)
+        database.insertRow(row0);
+      for (int i = 0; i < 50; ++i)
+        database.insertRow(row1);
+      for (int i = 0; i < 75; ++i)
+        database.insertRow(row2);
+      for (int i = 0; i < 75; ++i)
+        database.insertRow(row3);
+      for (int i = 0; i < 200; ++i)
+        database.insertRow(row4);
+
+      // create the parser
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+      gum::learning::AprioriSmoothing     extern_apriori(database);
+      gum::learning::AprioriNoApriori     intern_apriori(database);
+
+      gum::learning::ParamEstimatorML param_estimator(parser, extern_apriori, intern_apriori);
+
+      for (std::size_t i = std::size_t(1); i < std::size_t(24); ++i) {
+        param_estimator.setMaxNumberOfThreads(i);
+
+        std::vector< double > v0  = param_estimator.parameters(gum::NodeId(0));
+        std::vector< double > xv0 = _normalize_({1201, 126, 76});
+        TS_ASSERT_EQUALS(v0, xv0)
+
+        std::vector< double > v1  = param_estimator.parameters(gum::NodeId(1));
+        std::vector< double > xv1 = _normalize_({276, 1076, 51});
+        TS_ASSERT_EQUALS(v1, xv1)
+
+        std::vector< double > v2  = param_estimator.parameters(gum::NodeId(2));
+        std::vector< double > xv2 = _normalize_({1401, 1, 1});
+        TS_ASSERT_EQUALS(v2, xv2)
+
+        std::vector< double > v02  = param_estimator.parameters(gum::NodeId(0), {gum::NodeId(2)});
+        std::vector< double > xv02 = _xnormalize_({1201, 126, 76, 1, 1, 1, 1, 1, 1});
+        TS_ASSERT_EQUALS(v02, xv02)
+
+        std::vector< double > v01  = param_estimator.parameters(gum::NodeId(0), {gum::NodeId(1)});
+        std::vector< double > xv01 = _xnormalize_({201, 76, 1, 1001, 1, 76, 1, 51, 1});
+        TS_ASSERT_EQUALS(v01, xv01)
+
+        std::vector< double > v21  = param_estimator.parameters(gum::NodeId(2), {gum::NodeId(1)});
+        std::vector< double > xv21 = _xnormalize_({276, 1, 1, 1076, 1, 1, 51, 1, 1});
+        TS_ASSERT_EQUALS(v21, xv21)
+      }
+    }
+
   };
 
 }   // namespace gum_tests

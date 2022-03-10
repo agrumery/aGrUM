@@ -195,6 +195,13 @@ namespace gum {
       /// clears all the last database-parsed countings from memory
       void clear();
 
+      /// sets the number max of threads that can be used
+      /**
+       * @param nb the number max of threads to be used. If this number is set to 0, then
+       * it is defaulted to aGrUM's max number of threads
+       */
+      virtual void setMaxNumberOfThreads(Size nb);
+
       /** @brief changes the number min of rows a thread should process in a
        * multithreading context
        *

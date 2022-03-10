@@ -210,6 +210,7 @@ namespace gum {
 
 
     genericBNLearner::genericBNLearner(const genericBNLearner& from) :
+        ThreadNumberManager(from),
         inducedTypes_(from.inducedTypes_), scoreType_(from.scoreType_),
         paramEstimatorType_(from.paramEstimatorType_), epsilonEM_(from.epsilonEM_),
         aprioriType_(from.aprioriType_), aprioriWeight_(from.aprioriWeight_),
@@ -230,6 +231,7 @@ namespace gum {
     }
 
     genericBNLearner::genericBNLearner(genericBNLearner&& from) :
+        ThreadNumberManager(std::move(from)),
         inducedTypes_(from.inducedTypes_), scoreType_(from.scoreType_),
         paramEstimatorType_(from.paramEstimatorType_), epsilonEM_(from.epsilonEM_),
         aprioriType_(from.aprioriType_), aprioriWeight_(from.aprioriWeight_),
@@ -287,6 +289,7 @@ namespace gum {
           mutualInfo_ = nullptr;
         }
 
+        ThreadNumberManager::operator=(from);
         scoreType_               = from.scoreType_;
         paramEstimatorType_      = from.paramEstimatorType_;
         epsilonEM_               = from.epsilonEM_;
@@ -337,6 +340,7 @@ namespace gum {
           mutualInfo_ = nullptr;
         }
 
+        ThreadNumberManager::operator=(std::move(from));
         scoreType_               = from.scoreType_;
         paramEstimatorType_      = from.paramEstimatorType_;
         epsilonEM_               = from.epsilonEM_;
@@ -552,6 +556,10 @@ namespace gum {
 
       // remove the old score, if any
       if (old_score != nullptr) delete old_score;
+
+      // assign the number of threads
+      score_->setMaxNumberOfThreads(
+         this->isNbThreadsUserDefined() ? this->getMaxNumberOfThreads() : 0);
     }
 
     ParamEstimator* genericBNLearner::createParamEstimator_(DBRowGeneratorParser& parser,
@@ -582,6 +590,10 @@ namespace gum {
                     "genericBNLearner does not support "
                        << "yet this parameter estimator");
       }
+
+      // assign the number of threads
+      param_estimator->setMaxNumberOfThreads(
+         this->isNbThreadsUserDefined() ? this->getMaxNumberOfThreads() : 0);
 
       // assign the set of ranges
       param_estimator->setRanges(ranges_);
@@ -999,7 +1011,6 @@ namespace gum {
       };
 
       std::transform(vars.begin(), vars.end(), std::back_inserter(ids), mapper);
-
       return rawPseudoCount(ids);
     }
 

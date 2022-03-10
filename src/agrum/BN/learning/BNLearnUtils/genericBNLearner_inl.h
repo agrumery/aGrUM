@@ -501,5 +501,12 @@ namespace gum {
     INLINE Size genericBNLearner::nbCols() const { return scoreDatabase_.domainSizes().size(); }
 
     INLINE Size genericBNLearner::nbRows() const { return scoreDatabase_.databaseTable().size(); }
+
+    // sets the number max of threads that can be used
+    INLINE void genericBNLearner::setMaxNumberOfThreads(Size nb) {
+      ThreadNumberManager::setMaxNumberOfThreads(nb);
+      if (score_ != nullptr) score_->setMaxNumberOfThreads(nb);
+    }
+
   } /* namespace learning */
 } /* namespace gum */

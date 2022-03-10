@@ -631,10 +631,10 @@ namespace gum {
       }
 
       // dispatch the ranges
+      const auto max_nb_threads = ThreadNumberManager::getMaxNumberOfThreads();
       for (const auto& range: _ranges_) {
         if (range.second > range.first) {
           const std::size_t range_size = range.second - range.first;
-          const auto max_nb_threads = ThreadNumberManager::getMaxNumberOfThreads();
           std::size_t       nb_threads = range_size / _min_nb_rows_per_thread_;
           if (nb_threads < 1)
             nb_threads = 1;

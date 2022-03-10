@@ -103,7 +103,8 @@ namespace gum {
      * LocalSearchWithTabuList also 3off2/miic
      * @ingroup learning_group
      */
-    class genericBNLearner: public gum::IApproximationSchemeConfiguration {
+    class genericBNLearner: public gum::IApproximationSchemeConfiguration,
+                            public ThreadNumberManager {
       // private:
       public:
       /// an enumeration enabling to select easily the score we wish to use
@@ -270,7 +271,6 @@ namespace gum {
 
         /// returns the weight of the whole database
         double weight() const;
-
 
         /// @}
 
@@ -752,6 +752,20 @@ namespace gum {
       ///@}
 
       ///@}
+
+      // ##########################################################################
+      /// @name Multithreading
+      // ##########################################################################
+      /// @{
+
+      /// sets the number max of threads that can be used
+      /**
+       * @param nb the number max of threads to be used. If this number is set to 0, then
+       * it is defaulted to aGrUM's max number of threads
+       */
+      virtual void setMaxNumberOfThreads(Size nb);
+
+      /// @}
 
       protected:
       /// the policy for typing variables

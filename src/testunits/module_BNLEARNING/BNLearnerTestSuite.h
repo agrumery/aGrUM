@@ -1750,5 +1750,102 @@ namespace gum_tests {
         TS_ASSERT_DIFFERS(std::get< 2 >(state[8]), "")   // there is a comment about AIC versus BDeu
       }
     }
+
+    void test_multicore() {
+      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"));
+
+      learner.useGreedyHillClimbing();
+      learner.useScoreBIC();
+      learner.useAprioriSmoothing();
+
+      const std::size_t k        = 5;
+      const auto&       database = learner.database();
+      const std::size_t dbsize   = database.nbRows();
+      std::size_t       foldSize = dbsize / k;
+
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+      gum::learning::AprioriSmoothing     apriori(database);
+      apriori.setWeight(1);
+
+      gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG >
+         struct_constraint;
+
+      gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) > op_set(
+         struct_constraint);
+
+      gum::learning::GreedyHillClimbing search;
+
+      gum::learning::ScoreBIC         score(parser, apriori);
+      gum::learning::ParamEstimatorML estimator(parser, apriori, score.internalApriori());
+      for (std::size_t fold = 0; fold < k; fold++) {
+        // create the ranges of rows over which we perform the learning
+        const std::size_t unfold_deb = fold * foldSize;
+        const std::size_t unfold_end = unfold_deb + foldSize;
+
+        std::vector< std::pair< std::size_t, std::size_t > > ranges;
+        if (fold == std::size_t(0)) {
+          ranges.push_back(std::pair< std::size_t, std::size_t >(unfold_end, dbsize));
+        } else {
+          ranges.push_back(std::pair< std::size_t, std::size_t >(std::size_t(0), unfold_deb));
+
+          if (fold != k - 1) {
+            ranges.push_back(std::pair< std::size_t, std::size_t >(unfold_end, dbsize));
+          }
+        }
+
+        for (std::size_t nb_threads = std::size_t(1); nb_threads < std::size_t(24); ++nb_threads) {
+          learner.useDatabaseRanges(ranges);
+          learner.setMaxNumberOfThreads(nb_threads);
+
+          TS_ASSERT_EQUALS(learner.databaseRanges(), ranges)
+
+          learner.clearDatabaseRanges();
+          TS_ASSERT_DIFFERS(learner.databaseRanges(), ranges)
+
+          learner.useCrossValidationFold(fold, k);
+          TS_ASSERT_EQUALS(learner.databaseRanges(), ranges)
+
+          gum::BayesNet< double > bn1 = learner.learnBN();
+
+
+          score.setRanges(ranges);
+          estimator.setRanges(ranges);
+          gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
+                                                       decltype(op_set) >
+                                  selector(score, struct_constraint, op_set);
+          gum::BayesNet< double > bn2 = search.learnBN< double >(selector, estimator);
+
+          TS_ASSERT_EQUALS(bn1.dag(), bn2.dag())
+
+          gum::Instantiation I1, I2;
+
+          for (auto& name: database.variableNames()) {
+            I1.add(bn1.variableFromName(name));
+            I2.add(bn2.variableFromName(name));
+          }
+
+          double            LL1 = 0.0, LL2 = 0.0;
+          const std::size_t nbCol = database.nbVariables();
+          parser.setRange(unfold_deb, unfold_end);
+          while (parser.hasRows()) {
+            const gum::learning::DBRow< gum::learning::DBTranslatedValue >& row = parser.row();
+            for (std::size_t i = 0; i < nbCol; ++i) {
+              I1.chgVal(i, row[i].discr_val);
+              I2.chgVal(i, row[i].discr_val);
+            }
+
+            LL1 += bn1.log2JointProbability(I1) * row.weight();
+            LL2 += bn2.log2JointProbability(I2) * row.weight();
+          }
+
+          TS_ASSERT_EQUALS(LL1, LL2)
+        }
+      }
+    }
+
+
+
+
   };   // class BNLearnerTestSuite
 } /* namespace gum_tests */
