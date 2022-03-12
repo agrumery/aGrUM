@@ -48,7 +48,7 @@ namespace gum {
     /// @{
 
     /// default constructor
-    ScheduledInference(const Scheduler& scheduler           = SchedulerParallel(),
+    ScheduledInference(const Scheduler& scheduler           = SchedulerSequential(),
                        Size             max_nb_threads      = 0,
                        double           max_megabyte_memory = 0.0);
 
