@@ -78,7 +78,7 @@ namespace gum {
     // If this is not the case, then we should raise an exception before even
     // trying to execute any operation of the schedule
     if (this->_max_memory != 0.0) {
-      SchedulerSequential seq_scheduler(this->getMaxNumberOfThreads(), this->maxMemory());
+      SchedulerSequential seq_scheduler(this->getNumberOfThreads(), this->maxMemory());
       auto                memory_usage = seq_scheduler.memoryUsage(schedule);
       if (memory_usage.first > this->_max_memory) { throw std::bad_alloc(); }
     }
@@ -119,9 +119,8 @@ namespace gum {
     // compute the number of threads to execute. Desired_nb_threads equals either
     // the number of threads asked by the user or, if the used did not ask for a
     // particular number, the aGrUM's current max number of threads
-    const auto desired_nb_threads =
-       this->isNbThreadsUserDefined() ? gum::getMaxNumberOfThreads()
-                                      : this->getMaxNumberOfThreads();
+    const auto desired_nb_threads = this->isGumNumberOfThreadsOverriden() ? gum::getNumberOfThreads()
+                                      : this->getNumberOfThreads();
     const Size nb_threads = nb_remaining_operations.load() < desired_nb_threads
                              ? nb_remaining_operations.load()
                              : desired_nb_threads;

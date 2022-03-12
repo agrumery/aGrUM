@@ -290,7 +290,7 @@ namespace gum {
         Bijection< NodeId, std::size_t > _nodeId2cols_;
 
         /// the max number of threads authorized
-        Size _max_threads_number_{gum::getMaxNumberOfThreads()};
+        Size _max_threads_number_{gum::getNumberOfThreads()};
 
         /// the minimal number of rows to parse (on average) by thread
         Size _min_nb_rows_per_thread_{100};
@@ -765,7 +765,7 @@ namespace gum {
        * @param nb the number max of threads to be used. If this number is set to 0, then
        * it is defaulted to aGrUM's max number of threads
        */
-      virtual void setMaxNumberOfThreads(Size nb);
+      virtual void setNumberOfThreads(Size nb);
 
       /// @}
 

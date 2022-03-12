@@ -506,7 +506,7 @@ namespace gum_tests {
       gum::learning::DBRow< gum::learning::DBCell > row4(3, gum::learning::DBCell(5), 1.0f);
       database.insertRows({row3, row4}, is_miss);
 
-      const unsigned int num_threads = gum::getMaxNumberOfThreads();
+      const unsigned int num_threads = gum::getNumberOfThreads();
 
       std::vector< gum::learning::RawDatabaseTable::Handler* > handlers(num_threads);
       std::vector< std::thread* >                              threads(num_threads);
@@ -560,7 +560,7 @@ namespace gum_tests {
       gum::learning::DBRow< gum::learning::DBCell > row4(3, gum::learning::DBCell(5), 1.0f);
       database.insertRows({row3, row4}, is_miss);
 
-      const unsigned int num_threads = gum::getMaxNumberOfThreads();
+      const unsigned int num_threads = gum::getNumberOfThreads();
 
       std::vector< gum::learning::RawDatabaseTable::HandlerSafe* > handlers(num_threads);
       std::vector< std::thread* >                                  threads(num_threads);

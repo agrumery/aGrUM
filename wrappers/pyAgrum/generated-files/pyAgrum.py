@@ -2047,12 +2047,6 @@ class SyntaxError(IOError):
 _pyAgrum.SyntaxError_swigregister(SyntaxError)
 
 
-def setMaxNumberOfThreads(number: int) -> None:
-    return _pyAgrum.setMaxNumberOfThreads(number)
-
-def dispatchRangeToThreads(beg: int, end: int, nb_threads: int) -> "std::vector< std::pair< int,int >,std::allocator< std::pair< int,int > > >":
-    return _pyAgrum.dispatchRangeToThreads(beg, end, nb_threads)
-
 def randomValue(max: int=2) -> int:
     r"""
 
@@ -24459,6 +24453,15 @@ class BNLearner(object):
 
     def domainSize(self, *args) -> int:
         return _pyAgrum.BNLearner_domainSize(self, *args)
+
+    def setNumberOfThreads(self, nb: int) -> None:
+        return _pyAgrum.BNLearner_setNumberOfThreads(self, nb)
+
+    def getNumberOfThreads(self) -> int:
+        return _pyAgrum.BNLearner_getNumberOfThreads(self)
+
+    def isGumNumberOfThreadsOverriden(self) -> bool:
+        return _pyAgrum.BNLearner_isGumNumberOfThreadsOverriden(self)
 
 # Register BNLearner in _pyAgrum:
 _pyAgrum.BNLearner_swigregister(BNLearner)

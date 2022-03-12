@@ -503,9 +503,9 @@ namespace gum {
     INLINE Size GenericBNLearner::nbRows() const { return scoreDatabase_.databaseTable().size(); }
 
     // sets the number max of threads that can be used
-    INLINE void GenericBNLearner::setMaxNumberOfThreads(Size nb) {
-      ThreadNumberManager::setMaxNumberOfThreads(nb);
-      if (score_ != nullptr) score_->setMaxNumberOfThreads(nb);
+    INLINE void GenericBNLearner::setNumberOfThreads(Size nb) {
+      ThreadNumberManager::setNumberOfThreads(nb);
+      if (score_ != nullptr) score_->setNumberOfThreads(nb);
     }
 
   } /* namespace learning */

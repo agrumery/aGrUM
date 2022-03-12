@@ -1663,7 +1663,7 @@ namespace gum {
         // compute is_redund using multiple threads:
         // compute the max number of threads to use (avoid nested threads)
         const Size nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
-                               ? gum::getMaxNumberOfThreads()
+                               ? gum::getNumberOfThreads()
                                : 1;   // no nested multithreading
 
         const auto nsize = v_rep.size();

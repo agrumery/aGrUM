@@ -123,13 +123,13 @@ namespace gum {
        * @param nb the number max of threads to be used. If this number is set to 0, then
        * it is defaulted to aGrUM's max number of threads
        */
-      virtual void setMaxNumberOfThreads(Size nb);
+      virtual void setNumberOfThreads(Size nb);
 
       /// returns the current max number of threads of the scheduler
-      virtual Size getMaxNumberOfThreads() const;
+      virtual Size getNumberOfThreads() const;
 
       /// indicates whether the user set herself the number of threads
-      virtual bool isNbThreadsUserDefined() const;
+      virtual bool isGumNumberOfThreadsOverriden() const;
 
       /** @brief changes the number min of rows a thread should process in a
        * multithreading context

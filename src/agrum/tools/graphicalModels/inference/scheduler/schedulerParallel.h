@@ -81,7 +81,7 @@ namespace gum {
      * number is set to 0, then it is defaulted to aGrUM's max number
      * of threads
      */
-    void setMaxNumberOfThreads(Size nb) final;
+    void setNumberOfThreads(Size nb) final;
 
     /// sets an upper bound on the memory consumption admissible
     /**

@@ -30,13 +30,13 @@
 namespace gum {
 
   // Set the number of threads to be used.
-  void setMaxNumberOfThreads(unsigned int number) {
+  void setNumberOfThreads(unsigned int number) {
     if (number == 0) number = 1;
 
-    threadsSTL::setMaxNumberOfThreads(number);
+    threadsSTL::setNumberOfThreads(number);
 
 #ifdef _OPENMP
-    threadsOMP::setMaxNumberOfThreads(number);
+    threadsOMP::setNumberOfThreads(number);
 #endif
   }
 

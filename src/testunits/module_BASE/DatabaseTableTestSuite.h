@@ -669,7 +669,7 @@ namespace gum_tests {
            gum::learning::DatabaseTable::IsMissing::False);
         database.insertRows({row3, row4}, is_miss);
 
-        const unsigned int num_threads = gum::getMaxNumberOfThreads();
+        const unsigned int num_threads = gum::getNumberOfThreads();
 
         std::vector< gum::learning::DatabaseTable::Handler* > handlers(num_threads);
         std::vector< std::thread* >                           threads(num_threads);
@@ -743,7 +743,7 @@ namespace gum_tests {
            gum::learning::DatabaseTable::IsMissing::False);
         database.insertRows({row3, row4}, is_miss);
 
-        const unsigned int num_threads = gum::getMaxNumberOfThreads();
+        const unsigned int num_threads = gum::getNumberOfThreads();
 
         std::vector< gum::learning::DatabaseTable::HandlerSafe* > handlers(num_threads);
         std::vector< std::thread* >                               threads(num_threads);

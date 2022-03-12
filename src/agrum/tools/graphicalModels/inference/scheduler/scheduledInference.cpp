@@ -34,7 +34,7 @@ namespace gum {
       ThreadNumberManager(max_nb_threads),
       _scheduler_(scheduler.clone()),
       _sequential_scheduler_(1, max_megabyte_memory) {
-    this->setMaxNumberOfThreads(max_nb_threads);
+    this->setNumberOfThreads(max_nb_threads);
     this->setMaxMemory(max_megabyte_memory);
 
     // for debugging purposes
@@ -101,14 +101,13 @@ namespace gum {
 
   // sets a new scheduler
   void ScheduledInference::setScheduler(const Scheduler& scheduler) {
-    const auto max_nb_threads =
-       this->isNbThreadsUserDefined() ? this->getMaxNumberOfThreads() : 0;
+    const auto max_nb_threads = this->isGumNumberOfThreadsOverriden() ? this->getNumberOfThreads() : 0;
     const auto max_memory = _scheduler_->maxMemory();
 
     delete _scheduler_;
 
     _scheduler_ = scheduler.clone();
-    _scheduler_->setMaxNumberOfThreads(max_nb_threads);
+    _scheduler_->setNumberOfThreads(max_nb_threads);
     _scheduler_->setMaxMemory(max_memory);
   }
 

@@ -232,13 +232,13 @@ namespace gum {
       void useNoCorr();
 
       /// changes the max number of threads used to parse the database
-      virtual void setMaxNumberOfThreads(Size nb);
+      virtual void setNumberOfThreads(Size nb);
 
       /// returns the number of threads used to parse the database
-      virtual std::size_t getMaxNumberOfThreads() const;
+      virtual std::size_t getNumberOfThreads() const;
 
       /// indicates whether the user set herself the number of threads
-      virtual bool isNbThreadsUserDefined() const;
+      virtual bool isGumNumberOfThreadsOverriden() const;
 
       /** @brief changes the number min of rows a thread should process in a
        * multithreading context

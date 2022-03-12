@@ -51,7 +51,7 @@ namespace gum_tests {
 
     void initCNet() {
 #ifdef _OPENMP
-      gum::threadsOMP::setMaxNumberOfThreads(1);
+      gum::threadsOMP::setNumberOfThreads(1);
 #endif
 
       cn = new gum::credal::CredalNet< double >();

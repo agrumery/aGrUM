@@ -200,7 +200,7 @@ namespace gum {
        * @param nb the number max of threads to be used. If this number is set to 0, then
        * it is defaulted to aGrUM's max number of threads
        */
-      virtual void setMaxNumberOfThreads(Size nb);
+      virtual void setNumberOfThreads(Size nb);
 
       /** @brief changes the number min of rows a thread should process in a
        * multithreading context
@@ -325,7 +325,7 @@ namespace gum {
 
       // the min number of rows that a thread should process in a
       // multithreading context
-      mutable std::size_t _min_nb_rows_per_thread_{100};
+      mutable std::size_t _min_nb_rows_per_thread_{512};
 
       // returns a mapping from the nodes ids to the columns of the database
       // for a given sequence of ids. This is especially convenient when

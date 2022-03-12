@@ -1090,7 +1090,7 @@ namespace gum {
       DBVector< IsMissing > has_row_missing_val_;
 
       // the maximal number of threads that the database can use
-      mutable std::size_t max_nb_threads_{std::size_t(gum::getMaxNumberOfThreads())};
+      mutable std::size_t max_nb_threads_{std::size_t(gum::getNumberOfThreads())};
 
       // the min number of rows that a thread should process in a
       // multithreading context

@@ -996,7 +996,7 @@ namespace gum_tests {
       gum::learning::ParamEstimatorML param_estimator(parser, extern_apriori, intern_apriori);
 
       for (std::size_t i = std::size_t(1); i < std::size_t(24); ++i) {
-        param_estimator.setMaxNumberOfThreads(i);
+        param_estimator.setNumberOfThreads(i);
 
         std::vector< double > v0  = param_estimator.parameters(gum::NodeId(0));
         std::vector< double > xv0 = _normalize_({1201, 126, 76});

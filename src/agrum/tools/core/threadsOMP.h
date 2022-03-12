@@ -54,28 +54,35 @@ namespace gum {
      * @ingroup basicstruct_group
      *
      * By default, it should be the number of CPU cores available. Note that it
-     * is preferable to use getMaxNumberOfThreads(), which corresponds to the
+     * is preferable to use getNumberOfThreads(), which corresponds to the
      * max number of threads the user wants to launch in parallel region (this
-     * is by default equal to getMaxNumberOfThreads(), but the user may wish to
+     * is by default equal to getNumberOfThreads(), but the user may wish to
      * change it for some reason).
      *
      * @return Returns the maximum number of threads at any time.
      */
-    unsigned int getAbsoluteMaxNumberOfThreads();
+    unsigned int getMaxNumberOfThreads();
 
     /**
      * @brief returns the max number of threads used by default when entering the
      * next parallel region
      *
      * This is the number of threads launched in parallel regions. By default, this
-     * number is equal to getAbsoluteMaxNumberOfThreads() but if the user has
-     * changed it using method setMaxNumberOfThreads, then this number is what the
+     * number is equal to getMaxNumberOfThreads() but if the user has
+     * changed it using method setNumberOfThreads, then this number is what the
      * user required.
      *
      * @return the number of threads used by default the next time we enter into
      * a parallel region
      */
-    unsigned int getMaxNumberOfThreads();
+    unsigned int getNumberOfThreads();
+
+    /**
+     * @brief Get the number of logical processors.
+     * @ingroup basicstruct_group
+     * @return The number of logical processors.
+     */
+    unsigned int getNumberOfLogicalProcessors();
 
     /**
      * @brief Set the number of threads to be used.
@@ -85,7 +92,7 @@ namespace gum {
      * logical processors (x2 is a good all-around value).
      * @param number The number of threads to be used.
      */
-    void setMaxNumberOfThreads(unsigned int number);
+    void setNumberOfThreads(unsigned int number);
 
     /**
      * @brief Get the calling thread id.
@@ -105,13 +112,6 @@ namespace gum {
      */
     unsigned int getNumberOfRunningThreads();
 
-    /**
-     * @brief Get the number of logical processors.
-     * @ingroup basicstruct_group
-     * @return The number of logical processors.
-     */
-    unsigned int getNumberOfLogicalProcessors();
-    
     /**
      * @brief Set nested parallelism (false bu default).
      * @ingroup basicstruct_group

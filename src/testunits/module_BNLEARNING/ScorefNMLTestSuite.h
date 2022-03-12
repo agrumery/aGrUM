@@ -700,7 +700,7 @@ namespace gum_tests {
 
       for (std::size_t i = std::size_t(1); i < std::size_t(24); ++i) {
         gum::learning::ScorefNML score(parser, apriori, ranges);
-        score.setMaxNumberOfThreads(i);
+        score.setNumberOfThreads(i);
 
         TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScorefNML::isAprioriCompatible(
            gum::learning::AprioriSmoothing::type::type));

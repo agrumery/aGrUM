@@ -86,6 +86,11 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::GenericBNLearner,gum::learning::BNLea
   using gum::learning::GenericBNLearner::nbRows;
   using gum::learning::GenericBNLearner::nbCols;
   using gum::learning::GenericBNLearner::domainSize;
+
+  using gum::learning::GenericBNLearner::setNumberOfThreads;
+  using gum::learning::GenericBNLearner::getNumberOfThreads;
+  using gum::learning::GenericBNLearner::isGumNumberOfThreadsOverriden;
+
 }
 
 #####################################

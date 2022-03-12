@@ -200,7 +200,7 @@ namespace gum {
     template < typename STRUCT_CONSTRAINT >
     INLINE void
        GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::setMaxNbThreads(Size nb) noexcept {
-      if (nb == 0) nb = gum::getMaxNumberOfThreads();
+      if (nb == 0) nb = gum::getNumberOfThreads();
       _max_threads_number_ = nb;
     }
 

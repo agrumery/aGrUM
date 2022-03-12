@@ -107,22 +107,22 @@ namespace gum {
 
 
     /// changes the max number of threads used to parse the database
-    INLINE void CorrectedMutualInformation::setMaxNumberOfThreads(Size nb) {
-      _NH_.setMaxNumberOfThreads(nb);
-      _k_NML_.setMaxNumberOfThreads(nb);
-      _score_MDL_.setMaxNumberOfThreads(nb);
+    INLINE void CorrectedMutualInformation::setNumberOfThreads(Size nb) {
+      _NH_.setNumberOfThreads(nb);
+      _k_NML_.setNumberOfThreads(nb);
+      _score_MDL_.setNumberOfThreads(nb);
     }
 
 
     /// returns the number of threads used to parse the database
-    INLINE Size CorrectedMutualInformation::getMaxNumberOfThreads() const {
-      return _NH_.getMaxNumberOfThreads();
+    INLINE Size CorrectedMutualInformation::getNumberOfThreads() const {
+      return _NH_.getNumberOfThreads();
     }
 
 
     /// indicates whether the user set herself the number of threads
-    INLINE bool CorrectedMutualInformation::isNbThreadsUserDefined() const {
-       return _NH_.isNbThreadsUserDefined();
+    INLINE bool CorrectedMutualInformation::isGumNumberOfThreadsOverriden() const {
+       return _NH_.isGumNumberOfThreadsOverriden();
     }
 
 

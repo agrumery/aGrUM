@@ -56,7 +56,7 @@ from .pyAgrum import PRMexplorer
 from .pyAgrum import ApproximationScheme
 
 from .pyAgrum import initRandom, randomProba, randomDistribution, randomGeneratorSeed, getRandomGenerator, randomValue
-from .pyAgrum import isOMP, setNumberOfThreads, getNumberOfLogicalProcessors, getMaxNumberOfThreads
+from .pyAgrum import isOMP, getNumberOfThreads, getMaxNumberOfThreads, getNumberOfLogicalProcessors, setNumberOfThreads
 
 from .pyAgrum import VarType_Discretized,VarType_Labelized,VarType_Range,VarType_Integer
 
@@ -93,8 +93,8 @@ __all__=[
   'ApproximationScheme',
   'initRandom','randomProba','randomDistribution','randomGeneratorSeed','getRandomGenerator','randomValue',
 
-  'isOMP','setNumberOfThreads','getNumberOfLogicalProcessors','getMaxNumberOfThreads',
-  'getThreadNumber','getNumberOfRunningThreads','getDynamicThreadsNumber','setDynamicThreadsNumber','getNestedParallelism', 'setNestedParallelism',
+  'isOMP','setNumberOfThreads','getNumberOfThreads','getMaxNumberOfThreads','getNumberOfLogicalProcessors',
+  #'getThreadNumber','getNumberOfRunningThreads','getDynamicThreadsNumber','setDynamicThreadsNumber','getNestedParallelism', 'setNestedParallelism',
 
   'VarType_Discretized', 'VarType_Labelized', 'VarType_Range','VarType_Integer',
 

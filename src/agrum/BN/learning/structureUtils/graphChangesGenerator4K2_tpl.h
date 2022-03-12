@@ -221,7 +221,7 @@ namespace gum {
     /// sets the maximum number of threads used to perform countings
     template < typename STRUCT_CONSTRAINT >
     INLINE void GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::setMaxNbThreads(Size nb) noexcept {
-      if (nb == 0) nb = gum::getMaxNumberOfThreads();
+      if (nb == 0) nb = gum::getNumberOfThreads();
       _max_threads_number_ = nb;
 
     }

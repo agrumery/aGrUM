@@ -558,8 +558,7 @@ namespace gum {
       if (old_score != nullptr) delete old_score;
 
       // assign the number of threads
-      score_->setMaxNumberOfThreads(
-         this->isNbThreadsUserDefined() ? this->getMaxNumberOfThreads() : 0);
+      score_->setNumberOfThreads(this->isGumNumberOfThreadsOverriden() ? this->getNumberOfThreads() : 0);
     }
 
     ParamEstimator* GenericBNLearner::createParamEstimator_(DBRowGeneratorParser& parser,
@@ -592,8 +591,8 @@ namespace gum {
       }
 
       // assign the number of threads
-      param_estimator->setMaxNumberOfThreads(
-         this->isNbThreadsUserDefined() ? this->getMaxNumberOfThreads() : 0);
+      param_estimator->setNumberOfThreads(
+         this->isGumNumberOfThreadsOverriden() ? this->getNumberOfThreads() : 0);
 
       // assign the set of ranges
       param_estimator->setRanges(ranges_);

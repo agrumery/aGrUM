@@ -1796,7 +1796,7 @@ namespace gum_tests {
 
         for (std::size_t nb_threads = std::size_t(1); nb_threads < std::size_t(24); ++nb_threads) {
           learner.useDatabaseRanges(ranges);
-          learner.setMaxNumberOfThreads(nb_threads);
+          learner.setNumberOfThreads(nb_threads);
 
           TS_ASSERT_EQUALS(learner.databaseRanges(), ranges)
 

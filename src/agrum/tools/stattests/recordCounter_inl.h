@@ -73,8 +73,8 @@ namespace gum {
 
 
     /// sets the number max of threads that can be used
-    INLINE void RecordCounter::setMaxNumberOfThreads(Size nb) {
-      ThreadNumberManager::setMaxNumberOfThreads(nb);
+    INLINE void RecordCounter::setNumberOfThreads(Size nb) {
+      ThreadNumberManager::setNumberOfThreads(nb);
 
       // redispatch the ranges to the threads
       _dispatchRangesToThreads_();

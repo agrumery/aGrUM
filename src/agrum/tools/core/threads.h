@@ -51,28 +51,28 @@ namespace gum {
    * @ingroup basicstruct_group
    *
    * By default, it should be the number of CPU cores available. Note that it
-   * is preferable to use getMaxNumberOfThreads(), which corresponds to the
+   * is preferable to use getNumberOfThreads(), which corresponds to the
    * max number of threads the user wants to launch in parallel region (this
-   * is by default equal to getMaxNumberOfThreads(), but the user may wish to
+   * is by default equal to getNumberOfThreads(), but the user may wish to
    * change it for some reason).
    *
    * @return Returns the absolute maximum number of threads at any time.
    */
-  using gum::threads::getAbsoluteMaxNumberOfThreads;
+  using gum::threads::getMaxNumberOfThreads;
 
   /**
    * @brief returns the max number of threads used by default when entering the next
    * parallel region
    *
    * This is the number of threads launched in parallel regions. By default, this
-   * number is equal to getAbsoluteMaxNumberOfThreads() but if the user has
-   * changed it using method setMaxNumberOfThreads, then this number is what the
+   * number is equal to getMaxNumberOfThreads() but if the user has
+   * changed it using method setNumberOfThreads, then this number is what the
    * user required.
    *
    * @return the number of threads used by default the next time we enter into
    * a parallel region
    */
-  using gum::threads::getMaxNumberOfThreads;
+  using gum::threads::getNumberOfThreads;
 
    /**
    * @brief Get the number of logical processors.
@@ -89,7 +89,7 @@ namespace gum {
    * logical processors (x2 is a good all-around value).
    * @param number The number of threads to be used.
    */
-  void setMaxNumberOfThreads(unsigned int number);
+  void setNumberOfThreads(unsigned int number);
 
   /** returns a vector equally splitting elements of a range among threads
    * @brief

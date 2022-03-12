@@ -136,13 +136,13 @@ namespace gum {
       /// @{
 
       /// changes the max number of threads used to parse the database
-      using IndependenceTest::setMaxNumberOfThreads;
+      using IndependenceTest::setNumberOfThreads;
 
       /// returns the number of threads used to parse the database
-      using IndependenceTest::getMaxNumberOfThreads;
+      using IndependenceTest::getNumberOfThreads;
 
       /// indicates whether the user set herself the number of threads
-      using IndependenceTest::isNbThreadsUserDefined;
+      using IndependenceTest::isGumNumberOfThreadsOverriden;
 
       /** @brief changes the number min of rows a thread should process in a
        * multithreading context

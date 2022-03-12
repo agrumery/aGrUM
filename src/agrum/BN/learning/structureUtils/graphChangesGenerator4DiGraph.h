@@ -219,7 +219,7 @@ namespace gum {
 
       private:
       /// the max number of threads authorized
-      Size _max_threads_number_{gum::getMaxNumberOfThreads()};
+      Size _max_threads_number_{gum::getNumberOfThreads()};
     };
 
   } /* namespace learning */

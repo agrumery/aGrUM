@@ -86,6 +86,7 @@ SETPROP_THEN_RETURN_SELF(erasePossibleEdge)
 SETPROP_THEN_RETURN_SELF(setMandatoryArcs)
 SETPROP_THEN_RETURN_SELF(setPossibleEdges)
 SETPROP_THEN_RETURN_SELF(setPossibleSkeleton)
+SETPROP_THEN_RETURN_SELF(setNumberOfThreads);
 
 %extend gum::learning::BNLearner< double > {
   PyObject *chi2(const std::string& var1,const std::string& var2,const std::vector<std::string>& knw={}) {

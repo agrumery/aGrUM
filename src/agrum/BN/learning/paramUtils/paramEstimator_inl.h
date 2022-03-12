@@ -56,20 +56,19 @@ namespace gum {
 
 
     /// changes the max number of threads used to parse the database
-    INLINE void ParamEstimator::setMaxNumberOfThreads(Size nb) {
-      counter_.setMaxNumberOfThreads(nb);
+    INLINE void ParamEstimator::setNumberOfThreads(Size nb) { counter_.setNumberOfThreads(nb);
     }
 
 
     /// returns the current max number of threads of the scheduler
-    INLINE Size ParamEstimator::getMaxNumberOfThreads() const {
-      return counter_.getMaxNumberOfThreads();
+    INLINE Size ParamEstimator::getNumberOfThreads() const {
+      return counter_.getNumberOfThreads();
     }
 
 
     /// indicates whether the user set herself the number of threads
-    INLINE bool ParamEstimator::isNbThreadsUserDefined() const {
-      return counter_.isNbThreadsUserDefined();
+    INLINE bool ParamEstimator::isGumNumberOfThreadsOverriden() const {
+      return counter_.isGumNumberOfThreadsOverriden();
     }
 
 

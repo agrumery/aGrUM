@@ -20,16 +20,15 @@
 
 
 /* TO AVOID NAMESPACE CLASHES */
-%rename(OMP_getAbsoluteMaxNumberOfThreads) gum::threadsOMP::getAbsoluteMaxNumberOfThreads;
 %rename(OMP_getMaxNumberOfThreads) gum::threadsOMP::getMaxNumberOfThreads;
+%rename(OMP_getNumberOfThreads) gum::threadsOMP::getNumberOfThreads;
 %rename(OMP_getNumberOfLogicalProcessors) gum::threadsOMP::getNumberOfLogicalProcessors;
-%rename(OMP_setMaxNumberOfThreads) gum::threadsOMP::setMaxNumberOfThreads;
+%rename(OMP_setNumberOfThreads) gum::threadsOMP::setNumberOfThreads;
 
-%rename(STL_getAbsoluteMaxNumberOfThreads) gum::threadsSTL::getAbsoluteMaxNumberOfThreads;
 %rename(STL_getMaxNumberOfThreads) gum::threadsSTL::getMaxNumberOfThreads;
+%rename(STL_getNumberOfThreads) gum::threadsSTL::getNumberOfThreads;
 %rename(STL_getNumberOfLogicalProcessors) gum::threadsSTL::getNumberOfLogicalProcessors;
-%rename(STL_setMaxNumberOfThreads) gum::threadsSTL::setMaxNumberOfThreads;
-
+%rename(STL_setNumberOfThreads) gum::threadsSTL::setNumberOfThreads;
 
 /* INCLUDES */
 %{
@@ -258,7 +257,8 @@ namespace std {
 %include <agrum/tools/core/sequence.h>
 %import <agrum/tools/core/threadsOMP.h>
 %import <agrum/tools/core/threadsSTL.h>
-%include <agrum/tools/core/threads.h>
+%import <agrum/tools/core/threads.h>
+%import <agrum/tools/core/threadNumberManager.h>
 %include <agrum/tools/core/utils_random.h>
 
 
@@ -444,16 +444,17 @@ namespace gum {
 %{
 namespace gum {
   namespace multithreading {
+
     void setNumberOfThreads(unsigned int nb) {
-      gum::setMaxNumberOfThreads(nb);
+      gum::setNumberOfThreads(nb);
     }
 
     unsigned int getNumberOfThreads() {
-      return gum::getMaxNumberOfThreads();
+      return gum::getNumberOfThreads();
     }
 
     unsigned int getMaxNumberOfThreads() {
-      return gum::getAbsoluteMaxNumberOfThreads();
+      return gum::getMaxNumberOfThreads();
     }
 
     unsigned int getNumberOfLogicalProcessors() {

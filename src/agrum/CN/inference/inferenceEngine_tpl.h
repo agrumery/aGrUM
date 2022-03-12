@@ -1126,7 +1126,7 @@ namespace gum {
         nb_elements += marg_i.second.size();
 
       // distribute evenly the elements among the threads
-      auto nb_threads = ThreadNumberManager::getMaxNumberOfThreads();
+      auto nb_threads = ThreadNumberManager::getNumberOfThreads();
       if (nb_elements < nb_threads) nb_threads = nb_elements;
 
       // the result that we return is a vector of pairs (NodeId, Idx). For thread number i, the

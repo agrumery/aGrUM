@@ -42,7 +42,7 @@ namespace gum {
     }
 
 
-    INLINE unsigned int getAbsoluteMaxNumberOfThreads() {
+    INLINE unsigned int getMaxNumberOfThreads() {
 #ifdef _OPENMP
       return omp_get_max_threads();
 #else

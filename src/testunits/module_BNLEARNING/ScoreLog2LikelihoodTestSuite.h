@@ -655,7 +655,7 @@ namespace gum_tests {
       gum::learning::AprioriSmoothing apriori(database);
       for (std::size_t i = std::size_t(1); i < std::size_t(24); ++i) {
         gum::learning::ScoreLog2Likelihood score(parser, apriori, ranges);
-        score.setMaxNumberOfThreads(i);
+        score.setNumberOfThreads(i);
 
         TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreLog2Likelihood::isAprioriCompatible(
            gum::learning::AprioriSmoothing::type::type));

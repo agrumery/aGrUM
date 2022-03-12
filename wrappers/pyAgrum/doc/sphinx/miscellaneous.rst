@@ -26,5 +26,5 @@ OMP functions
 
 .. autofunction:: pyAgrum.getNumberOfLogicalProcessors
 
-.. autofunction:: pyAgrum.getMaxNumberOfThreads
+.. autofunction:: pyAgrum.getNumberOfThreads
 

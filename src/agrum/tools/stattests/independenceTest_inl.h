@@ -78,20 +78,20 @@ namespace gum {
 
 
     /// changes the max number of threads used to parse the database
-    INLINE void IndependenceTest::setMaxNumberOfThreads(Size nb) {
-      counter_.setMaxNumberOfThreads(nb);
+    INLINE void IndependenceTest::setNumberOfThreads(Size nb) {
+      counter_.setNumberOfThreads(nb);
     }
 
 
     /// returns the number of threads used to parse the database
-    INLINE Size IndependenceTest::getMaxNumberOfThreads() const {
-      return counter_.getMaxNumberOfThreads();
+    INLINE Size IndependenceTest::getNumberOfThreads() const {
+      return counter_.getNumberOfThreads();
     }
 
 
     /// indicates whether the user set herself the number of threads
-    INLINE bool IndependenceTest::isNbThreadsUserDefined() const {
-      return counter_.isNbThreadsUserDefined();
+    INLINE bool IndependenceTest::isGumNumberOfThreadsOverriden() const {
+      return counter_.isGumNumberOfThreadsOverriden();
     }
 
 

@@ -275,7 +275,7 @@ namespace gum {
     inline void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::updateMarginals_() {
       // compute the max number of threads to use (avoid nested threads)
       const Size nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
-                                              ? ThreadNumberManager::getMaxNumberOfThreads()
+                                              ? ThreadNumberManager::getNumberOfThreads()
                                               : 1;   // no nested multithreading
 
       // create the function to be executed by the threads
@@ -486,7 +486,7 @@ namespace gum {
 
       // compute the max number of threads to use (avoid nested threads)
       const Size nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
-                               ? ThreadNumberManager::getMaxNumberOfThreads()
+                               ? ThreadNumberManager::getNumberOfThreads()
                                : 1;   // no nested multithreading
 
       // create the function to be executed by the threads
@@ -562,7 +562,7 @@ namespace gum {
 
       // compute the max number of threads to use (avoid nested threads)
       const Size nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
-                               ? ThreadNumberManager::getMaxNumberOfThreads()
+                               ? ThreadNumberManager::getNumberOfThreads()
                                : 1;   // no nested multithreading
 
       // we can compute expectations from vertices of the final credal set

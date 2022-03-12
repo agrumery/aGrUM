@@ -55,7 +55,7 @@ namespace gum {
       }
 
       // create the parsers. There should always be at least one parser
-      const auto max_nb_threads = ThreadNumberManager::getMaxNumberOfThreads();
+      const auto max_nb_threads = ThreadNumberManager::getNumberOfThreads();
       _parsers_.reserve(max_nb_threads);
       for (std::size_t i = std::size_t(0); i < max_nb_threads; ++i)
         _parsers_.push_back(parser);
@@ -500,7 +500,7 @@ namespace gum {
 
       // create parsers if needed
       const std::size_t nb_ranges  = _thread_ranges_.size();
-      const auto max_nb_threads = ThreadNumberManager::getMaxNumberOfThreads();
+      const auto max_nb_threads = ThreadNumberManager::getNumberOfThreads();
       const std::size_t nb_threads = nb_ranges <= max_nb_threads ? nb_ranges : max_nb_threads;
       while (_parsers_.size() < nb_threads) {
         ThreadData< DBRowGeneratorParser > new_parser(_parsers_[0]);
@@ -526,14 +526,13 @@ namespace gum {
          nb_threads,
          ThreadData< std::vector< double > >(counting_vect));
 
-
       // here, we create a lambda that will be executed by all the threads
       // to perform the countings in a parallel manner
-      auto threadedCount = [this, nb_ranges, ids_size,
-                            &thread_countings, &cols_offsets] (
-           const std::size_t   this_thread,
-           const std::size_t   nb_threads,
-           const std::size_t   nb_loop)
+      auto threadedCount =
+         [this, nb_ranges, ids_size, &thread_countings, cols_offsets] (
+            const std::size_t   this_thread,
+            const std::size_t   nb_threads,
+            const std::size_t   nb_loop)
         -> void {
         if (this_thread + nb_loop < nb_ranges) {
           // get the database parser and the contingency table to fill
@@ -631,7 +630,7 @@ namespace gum {
       }
 
       // dispatch the ranges
-      const auto max_nb_threads = ThreadNumberManager::getMaxNumberOfThreads();
+      const auto max_nb_threads = ThreadNumberManager::getNumberOfThreads();
       for (const auto& range: _ranges_) {
         if (range.second > range.first) {
           const std::size_t range_size = range.second - range.first;

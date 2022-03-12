@@ -57,18 +57,18 @@ namespace gum {
   }
 
   // sets the number max of threads that can be used
-  INLINE void ThreadNumberManager::setMaxNumberOfThreads(Size nb) { _max_nb_threads_ = nb; }
+  INLINE void ThreadNumberManager::setNumberOfThreads(Size nb) { _max_nb_threads_ = nb; }
 
   // returns the current max number of threads of the scheduler
-  INLINE Size ThreadNumberManager::getMaxNumberOfThreads() const {
+  INLINE Size ThreadNumberManager::getNumberOfThreads() const {
     if (_max_nb_threads_ == 0)
-      return gum::getMaxNumberOfThreads();
+      return gum::getNumberOfThreads();
     else
       return _max_nb_threads_;
   }
 
   // indicates whether the user set herself the number of threads
-  INLINE bool ThreadNumberManager::isNbThreadsUserDefined() const { return _max_nb_threads_ != 0; }
+  INLINE bool ThreadNumberManager::isGumNumberOfThreadsOverriden() const { return _max_nb_threads_ != 0; }
 
 }   // namespace gum
 
