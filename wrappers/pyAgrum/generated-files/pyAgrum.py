@@ -12441,6 +12441,18 @@ class LazyPropagation(object):
         """
         return _pyAgrum.LazyPropagation_evidenceJointImpact(self, *args)
 
+    def setNumberOfThreads(self, nb: int) -> None:
+        return _pyAgrum.LazyPropagation_setNumberOfThreads(self, nb)
+
+    def getNumberOfThreads(self) -> int:
+        return _pyAgrum.LazyPropagation_getNumberOfThreads(self)
+
+    def isGumNumberOfThreadsOverriden(self) -> bool:
+        return _pyAgrum.LazyPropagation_isGumNumberOfThreadsOverriden(self)
+
+    def setMaxMemory(self, megabytes: float) -> None:
+        return _pyAgrum.LazyPropagation_setMaxMemory(self, megabytes)
+
 # Register LazyPropagation in _pyAgrum:
 _pyAgrum.LazyPropagation_swigregister(LazyPropagation)
 
@@ -13252,6 +13264,18 @@ class ShaferShenoyInference(object):
 
         """
         return _pyAgrum.ShaferShenoyInference_evidenceJointImpact(self, *args)
+
+    def setNumberOfThreads(self, nb: int) -> None:
+        return _pyAgrum.ShaferShenoyInference_setNumberOfThreads(self, nb)
+
+    def getNumberOfThreads(self) -> int:
+        return _pyAgrum.ShaferShenoyInference_getNumberOfThreads(self)
+
+    def isGumNumberOfThreadsOverriden(self) -> bool:
+        return _pyAgrum.ShaferShenoyInference_isGumNumberOfThreadsOverriden(self)
+
+    def setMaxMemory(self, megabytes: float) -> None:
+        return _pyAgrum.ShaferShenoyInference_setMaxMemory(self, megabytes)
 
 # Register ShaferShenoyInference in _pyAgrum:
 _pyAgrum.ShaferShenoyInference_swigregister(ShaferShenoyInference)

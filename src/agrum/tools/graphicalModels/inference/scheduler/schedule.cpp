@@ -211,7 +211,11 @@ namespace gum {
 
   /// default constructor (construct an empty set of operations)
   Schedule::Schedule(const Size nb_ops) :
-      _dag_(nb_ops, true, 2 * nb_ops, true), _version_number_(_newVersionNumber_()) {
+      _dag_(nb_ops, true, 2 * nb_ops, true),
+      _node2op_(nb_ops), _multidim_location_(2 * nb_ops),
+      _multidim2id_(2 * nb_ops), _emplaced_multidims_(2 * nb_ops),
+      _multidim2nodes_(2 * nb_ops), _deleted_multidim2node_(2 * nb_ops),
+      _version_number_(_newVersionNumber_()) {
     // for debugging purposes
     GUM_CONSTRUCTOR(Schedule);
   }
@@ -523,7 +527,7 @@ namespace gum {
     // ScheduleOperations are pointers to ScheduleMultiDim. Therefore, we need
     // to map the pointers of op_args to pointers of the corresponding
     // ScheduleMultiDim in our new operation
-    ScheduleOperator*                   new_op = op.clone();
+    ScheduleOperator*                    new_op = op.clone();
     Sequence< const IScheduleMultiDim* > new_args(op_args.size());
     for (Idx i = Idx(0), end = op_args.size(); i < end; ++i) {
       try {
@@ -532,7 +536,6 @@ namespace gum {
         // deallocate everything we have allocated
         delete new_op;
 
-        std::cout << "toto" << std::endl;
         GUM_ERROR(UnknownScheduleMultiDim,
                   "the " << _paramString_(i + 1) << " argument of the operation is not known by"
                          << " the schedule");

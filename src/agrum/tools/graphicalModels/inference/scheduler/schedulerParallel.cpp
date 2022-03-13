@@ -119,8 +119,9 @@ namespace gum {
     // compute the number of threads to execute. Desired_nb_threads equals either
     // the number of threads asked by the user or, if the used did not ask for a
     // particular number, the aGrUM's current max number of threads
-    const auto desired_nb_threads = this->isGumNumberOfThreadsOverriden() ? gum::getNumberOfThreads()
-                                      : this->getNumberOfThreads();
+    const auto desired_nb_threads = this->isGumNumberOfThreadsOverriden()
+                                     ? this->getNumberOfThreads()
+                                     : gum::getNumberOfThreads();
     const Size nb_threads = nb_remaining_operations.load() < desired_nb_threads
                              ? nb_remaining_operations.load()
                              : desired_nb_threads;
@@ -180,7 +181,7 @@ namespace gum {
       Size  nb_remaining;
 
       // sets the condition to wait for new nodes
-      const auto duration = std::chrono::milliseconds(10);
+      const auto duration = std::chrono::milliseconds(2);
       auto has_node_to_process =
          [&node_to_execute, &nb_remaining_operations, &nb_remaining] {
            nb_remaining = nb_remaining_operations.load();

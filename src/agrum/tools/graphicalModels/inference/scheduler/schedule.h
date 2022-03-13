@@ -70,7 +70,7 @@ namespace gum {
     /// @{
 
     /// default constructor (construct an empty sequence)
-    explicit Schedule(const Size nb_ops = 100);
+    explicit Schedule(const Size nb_ops = 256);
 
     /// copy constructor
     Schedule(const Schedule& from);

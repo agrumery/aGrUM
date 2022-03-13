@@ -516,6 +516,20 @@ ADD_BN_MONOTARGET_INFERENCE_API(gum::MarginalTargetedInference<double>,classname
 ADD_JOINT_INFERENCE_API(gum::LazyPropagation<double>)
 ADD_JOINT_INFERENCE_API(gum::ShaferShenoyInference<double>)
 
+%extend gum::LazyPropagation<double> {
+  using gum::ScheduledInference::setNumberOfThreads;
+  using gum::ThreadNumberManager::getNumberOfThreads;
+  using gum::ThreadNumberManager::isGumNumberOfThreadsOverriden;
+  using gum::ScheduledInference::setMaxMemory;
+}
+
+%extend gum::ShaferShenoyInference<double> {
+  using gum::ScheduledInference::setNumberOfThreads;
+  using gum::ThreadNumberManager::getNumberOfThreads;
+  using gum::ThreadNumberManager::isGumNumberOfThreadsOverriden;
+  using gum::ScheduledInference::setMaxMemory;
+}
+
 
 %define ADD_GIBBS_OPERATOR_API(classname...)
 %extend classname {

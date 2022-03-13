@@ -1227,7 +1227,7 @@ namespace gum {
                                                      Set< const DiscreteVariable* >& del_vars,
                                                      Set< const DiscreteVariable* >& kept_vars) {
     // use d-separation analysis to check which potentials shall be combined
-    _findRelevantPotentialsXX_(pot_list, kept_vars);
+    // _findRelevantPotentialsXX_(pot_list, kept_vars);
 
     // now, let's guarantee that all the potentials to be combined and projected
     // belong to the schedule

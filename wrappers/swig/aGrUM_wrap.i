@@ -54,6 +54,7 @@
 #include <agrum/tools/core/hashTable.h>
 #include <agrum/tools/core/refPtr.h>
 #include <agrum/tools/core/list.h>
+
 #include <agrum/tools/core/threadsOMP.h>
 #include <agrum/tools/core/threadsSTL.h>
 #include <agrum/tools/core/threads.h>
@@ -132,6 +133,7 @@
 
 #include <agrum/BN/inference/tools/BayesNetInference.h>
 
+#include <agrum/tools/graphicalModels/inference/scheduler/scheduledInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/variableElimination.h>
@@ -327,6 +329,7 @@ namespace std {
 %import <agrum/BN/inference/tools/relevantPotentialsFinderType.h>
 
 %ignore gum::BayesNetInference;
+%import <agrum/tools/graphicalModels/inference/scheduler/scheduledInference.h>
 %include <agrum/BN/inference/tools/BayesNetInference.h>
 %include <agrum/BN/inference/lazyPropagation.h>
 %include <agrum/BN/inference/ShaferShenoyInference.h>
