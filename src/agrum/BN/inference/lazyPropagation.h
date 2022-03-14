@@ -382,6 +382,12 @@ namespace gum {
      * since the last inference */
     NodeProperty< EvidenceChangeType > _evidence_changes_;
 
+    /// indicates whether we should use schedules for inference
+    bool _use_schedules_ {false};
+
+    /// minimal number of operations to perform in the JT to use schedules
+    static constexpr double _schedule_threshold_{1000000.0};
+
     /// for comparisons with 1 - epsilon
     static constexpr GUM_SCALAR _one_minus_epsilon_{GUM_SCALAR(1.0 - 1e-6)};
 
@@ -391,6 +397,12 @@ namespace gum {
 
     /// create a new junction tree as well as its related data structures
     void _createNewJT_();
+
+    /// put all the CPTs into the cliques when creating the JT using a schedule
+    void _initializeJTCliques_(Schedule& schedule);
+
+    /// put all the CPTs into the cliques when creating the JT without using a schedule
+    void _initializeJTCliques_();
 
     /// sets the operator for performing the projections
     void _setProjectionFunction_(Potential< GUM_SCALAR > (
@@ -435,23 +447,47 @@ namespace gum {
     void _findRelevantPotentialsXX_(_ScheduleMultiDimSet_&          pot_list,
                                     Set< const DiscreteVariable* >& kept_vars);
 
-    // remove barren variables and return the newly created projected potentials
+    // remove barren variables using schedules and return the newly created projected potentials
     _ScheduleMultiDimSet_ _removeBarrenVariables_(Schedule&                       schedule,
                                                   _ScheduleMultiDimSet_&          pot_list,
                                                   Set< const DiscreteVariable* >& del_vars);
 
+    // remove barren variables without schedules and return the newly created projected potentials
+    _PotentialSet_ _removeBarrenVariables_(_PotentialSet_&                 pot_list,
+                                           Set< const DiscreteVariable* >& del_vars);
+
     /** @brief removes variables del_vars from a list of potentials and
-     * returns the resulting list */
+     * returns the resulting list using schedules */
     _ScheduleMultiDimSet_ _marginalizeOut_(Schedule&                       schedule,
                                            _ScheduleMultiDimSet_           pot_list,
                                            Set< const DiscreteVariable* >& del_vars,
                                            Set< const DiscreteVariable* >& kept_vars);
 
-    /// creates the message sent by clique from_id to clique to_id
+    /** @brief removes variables del_vars from a list of potentials and
+     * returns the resulting list directly without schedules */
+    _ScheduleMultiDimSet_ _marginalizeOut_(_ScheduleMultiDimSet_&          pot_list,
+                                           Set< const DiscreteVariable* >& del_vars,
+                                           Set< const DiscreteVariable* >& kept_vars);
+
+    /// creates the message sent by clique from_id to clique to_id using schedules
     void _produceMessage_(Schedule& schedule, NodeId from_id, NodeId to_id);
 
-    /// actually perform the collect phase
+    /// creates the message sent by clique from_id to clique to_id without schedules
+    void _produceMessage_(NodeId from_id, NodeId to_id);
+
+    /// perform the collect phase using schedules
     void _collectMessage_(Schedule& schedule, NodeId id, NodeId from);
+
+    /// perform the collect phase directly without schedules
+    void _collectMessage_(NodeId id, NodeId from);
+
+    /// computes the unnormalized posterior of a node using schedules
+    Potential< GUM_SCALAR >* _unnormalizedJointPosterior_(Schedule& schedule, NodeId id);
+
+    /// computes the unnormalized posterior of a node using schedules
+    Potential< GUM_SCALAR >* _unnormalizedJointPosterior_(NodeId id);
+
+
   };
 
 

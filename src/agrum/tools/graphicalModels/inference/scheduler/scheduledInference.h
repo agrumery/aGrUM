@@ -48,9 +48,8 @@ namespace gum {
     /// @{
 
     /// default constructor
-    ScheduledInference(const Scheduler& scheduler           = SchedulerParallel(),
-                       Size             max_nb_threads      = 0,
-                       double           max_megabyte_memory = 0.0);
+    ScheduledInference(Size   max_nb_threads      = 0,
+                       double max_megabyte_memory = 0.0);
 
     /// copy constructor
     ScheduledInference(const ScheduledInference& from);
@@ -90,7 +89,7 @@ namespace gum {
     Scheduler& scheduler() const;
 
     /// sets a new scheduler
-    void setScheduler(const Scheduler& scheduler);
+    //void setScheduler(const Scheduler& scheduler);
 
     /// sets the number max of threads that can be used
     /**
@@ -119,11 +118,11 @@ namespace gum {
     /// @}
 
     private:
-    // the scheduler to be used by inferences
-    Scheduler* _scheduler_{nullptr};
+    // the scheduler to be used if several threads are used
+    SchedulerParallel _scheduler_parallel_;
 
     // a sequential scheduler: to be used if only one thread is used
-    SchedulerSequential _sequential_scheduler_;
+    SchedulerSequential _scheduler_sequential_;
 
   };
 

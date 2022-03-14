@@ -257,7 +257,7 @@ namespace gum {
         BNInferenceEngine* inference_engine
            = new BNInferenceEngine(this->workingSet_[this_thread],
                                    RelevantPotentialsFinderType::FIND_ALL);
-        inference_engine->setScheduler(SchedulerSequential());
+        inference_engine->setNumberOfThreads(1);
 
         this->l_inferenceEngine_[this_thread] = inference_engine;
 

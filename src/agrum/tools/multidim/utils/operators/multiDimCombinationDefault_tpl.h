@@ -291,7 +291,7 @@ namespace gum {
     // keep track of the result of the last combination performed as well as of
     // the operation that created it
     const IScheduleMultiDim* resulting_table = nullptr;
-    ScheduleOperator*       resulting_op    = nullptr;
+    ScheduleOperator*        resulting_op    = nullptr;
 
     // now parse the priority queue: the top element (i,j) gives the combination
     // to perform. When the operations R has been computed,substitute i by R,

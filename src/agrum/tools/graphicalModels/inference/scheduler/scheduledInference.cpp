@@ -28,12 +28,11 @@
 namespace gum {
 
   // default constructor
-  ScheduledInference::ScheduledInference(const Scheduler& scheduler,
-                                         Size             max_nb_threads,
-                                         double           max_megabyte_memory) :
+  ScheduledInference::ScheduledInference(Size   max_nb_threads,
+                                         double max_megabyte_memory) :
       ThreadNumberManager(max_nb_threads),
-      _scheduler_(scheduler.clone()),
-      _sequential_scheduler_(1, max_megabyte_memory) {
+      _scheduler_parallel_(max_nb_threads, max_megabyte_memory),
+      _scheduler_sequential_(1, max_megabyte_memory) {
     this->setNumberOfThreads(max_nb_threads);
     this->setMaxMemory(max_megabyte_memory);
 
@@ -44,8 +43,9 @@ namespace gum {
 
   // copy constructor
   ScheduledInference::ScheduledInference(const ScheduledInference& from) :
-      ThreadNumberManager(from), _scheduler_(from._scheduler_->clone()),
-      _sequential_scheduler_(from._sequential_scheduler_) {
+      ThreadNumberManager(from),
+      _scheduler_parallel_(from._scheduler_parallel_),
+      _scheduler_sequential_(from._scheduler_sequential_) {
     // for debugging purposes
     GUM_CONS_CPY(ScheduledInference);
   }
@@ -54,9 +54,8 @@ namespace gum {
   // move constructor
   ScheduledInference::ScheduledInference(ScheduledInference&& from) :
       ThreadNumberManager(std::move(from)),
-      _scheduler_(from._scheduler_),
-      _sequential_scheduler_(from._sequential_scheduler_) {
-    from._scheduler_ = nullptr;
+      _scheduler_parallel_(from._scheduler_parallel_),
+      _scheduler_sequential_(from._scheduler_sequential_) {
 
     // for debugging purposes
     GUM_CONS_MOV(ScheduledInference);
@@ -67,9 +66,12 @@ namespace gum {
   ScheduledInference& ScheduledInference::operator=(const ScheduledInference& from) {
     if (this != &from) {
       ThreadNumberManager::operator=(std::move(from));
-      delete _scheduler_;
-      _scheduler_ = from._scheduler_->clone();
-      _sequential_scheduler_.setMaxMemory(from._sequential_scheduler_.maxMemory());
+      _scheduler_parallel_.setMaxMemory(from._scheduler_parallel_.maxMemory());
+      _scheduler_parallel_.setNumberOfThreads(
+         _scheduler_parallel_.isGumNumberOfThreadsOverriden()
+            ? _scheduler_parallel_.getNumberOfThreads() : 0);
+      _scheduler_sequential_.setMaxMemory(
+         from._scheduler_sequential_.maxMemory());
     }
     return *this;
   }
@@ -78,9 +80,12 @@ namespace gum {
   ScheduledInference& ScheduledInference::operator=(ScheduledInference&& from) {
     if (this != &from) {
       ThreadNumberManager::operator=(from);
-      delete _scheduler_;
-      _scheduler_ = from._scheduler_->clone();
-      _sequential_scheduler_.setMaxMemory(from._sequential_scheduler_.maxMemory());
+      _scheduler_parallel_.setMaxMemory(from._scheduler_parallel_.maxMemory());
+      _scheduler_parallel_.setNumberOfThreads(
+         _scheduler_parallel_.isGumNumberOfThreadsOverriden()
+            ? _scheduler_parallel_.getNumberOfThreads() : 0);
+      _scheduler_sequential_.setMaxMemory(
+         from._scheduler_sequential_.maxMemory());
     }
     return *this;
   }
@@ -92,14 +97,13 @@ namespace gum {
 
   // destructor
   ScheduledInference::~ScheduledInference() {
-    if (_scheduler_ != nullptr) delete _scheduler_;
-
     // for debugging purposes
     GUM_DESTRUCTOR(ScheduledInference);
   }
 
 
   // sets a new scheduler
+  /*
   void ScheduledInference::setScheduler(const Scheduler& scheduler) {
     const auto max_nb_threads = this->isGumNumberOfThreadsOverriden() ? this->getNumberOfThreads() : 0;
     const auto max_memory = _scheduler_->maxMemory();
@@ -110,5 +114,6 @@ namespace gum {
     _scheduler_->setNumberOfThreads(max_nb_threads);
     _scheduler_->setMaxMemory(max_memory);
   }
+   */
 
 }   // namespace gum
