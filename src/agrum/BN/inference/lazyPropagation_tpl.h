@@ -767,8 +767,11 @@ namespace gum {
                         "the projection of a potential containing "
                            << "hard evidence is empty!");
             }
+            auto new_pot = const_cast< Potential< GUM_SCALAR>* >(*(new_cpt_list.begin()));
             auto projected_pot = new ScheduleMultiDim< Potential < GUM_SCALAR > >(
-               **(new_cpt_list.begin()), true);
+               std::move(*new_pot));
+            delete new_pot;
+
             _clique_potentials_[_node_to_clique_[node]].insert(projected_pot);
             _node_to_hard_ev_projected_CPTs_.insert(node, projected_pot);
           }
