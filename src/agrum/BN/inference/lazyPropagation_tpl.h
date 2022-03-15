@@ -2030,22 +2030,11 @@ namespace gum {
     // now we just need to create the product of the potentials of the clique
     // containing set with the messages received by this clique and
     // marginalize out all variables except set
-    _ScheduleMultiDimSet_ pot_list;
-    for (const auto pot: _clique_potentials_[clique_of_set]) {
-      schedule.emplaceScheduleMultiDim(*pot);
-      pot_list.insert(pot);
-    }
+    _ScheduleMultiDimSet_ pot_list = _clique_potentials_[clique_of_set];
 
     // add the messages sent by adjacent nodes to targetClique
-    for (const auto other: _JT_->neighbours(clique_of_set)) {
-      for (const auto pot: _separator_potentials_[Arc(other, clique_of_set)]) {
-        try {
-          schedule.emplaceScheduleMultiDim(*pot);
-          pot_list.insert(pot);
-        } catch (DuplicateScheduleMultiDim&) {}
-      }
-    }
-
+    for (const auto other: _JT_->neighbours(clique_of_set))
+      pot_list += _separator_potentials_[Arc(other, clique_of_set)];
 
     // get the set of variables that need be removed from the potentials
     const NodeSet&                 nodes = _JT_->clique(clique_of_set);
