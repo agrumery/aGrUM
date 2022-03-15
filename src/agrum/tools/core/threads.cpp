@@ -41,6 +41,15 @@ namespace gum {
   }
 
 
+  // indicates whether aGrUM uses openMP or STL threads
+  bool isOMP() {
+#ifdef GUM_THREADS_USE_OMP
+    return true;
+#else
+    return false;
+#endif
+  }
+
   // returns a vector equally splitting elements of a range among threads
   std::vector< std::pair< Idx, Idx > >
      dispatchRangeToThreads(Idx beg, Idx end, unsigned int nb_threads) {

@@ -2047,6 +2047,33 @@ class SyntaxError(IOError):
 _pyAgrum.SyntaxError_swigregister(SyntaxError)
 
 
+def setNumberOfThreads(number: int) -> None:
+    r"""
+
+    To aNone spare cycles (less then 100% CPU occupied), use more threads than logical processors (x2 is a good all-around value).
+
+    Returns
+    -------
+    number : int
+      the number of threads to be used
+
+    """
+    return _pyAgrum.setNumberOfThreads(number)
+
+def isOMP() -> bool:
+    r"""
+
+    Returns
+    -------
+    bool
+      True if OMP has been set at compilation, False otherwise
+
+    """
+    return _pyAgrum.isOMP()
+
+def dispatchRangeToThreads(beg: int, end: int, nb_threads: int) -> "std::vector< std::pair< int,int >,std::allocator< std::pair< int,int > > >":
+    return _pyAgrum.dispatchRangeToThreads(beg, end, nb_threads)
+
 def randomValue(max: int=2) -> int:
     r"""
 
@@ -24562,9 +24589,6 @@ _pyAgrum.BNDatabaseGenerator_swigregister(BNDatabaseGenerator)
 def statsObj() -> None:
     return _pyAgrum.statsObj()
 
-def setNumberOfThreads(arg1: int) -> None:
-    return _pyAgrum.setNumberOfThreads(arg1)
-
 def getNumberOfThreads() -> int:
     return _pyAgrum.getNumberOfThreads()
 
@@ -24573,8 +24597,5 @@ def getMaxNumberOfThreads() -> int:
 
 def getNumberOfLogicalProcessors() -> int:
     return _pyAgrum.getNumberOfLogicalProcessors()
-
-def isOMP() -> bool:
-    return _pyAgrum.isOMP()
 
 

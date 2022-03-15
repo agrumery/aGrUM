@@ -259,7 +259,7 @@ namespace std {
 %include <agrum/tools/core/sequence.h>
 %import <agrum/tools/core/threadsOMP.h>
 %import <agrum/tools/core/threadsSTL.h>
-%import <agrum/tools/core/threads.h>
+%include <agrum/tools/core/threads.h>
 %import <agrum/tools/core/threadNumberManager.h>
 %include <agrum/tools/core/utils_random.h>
 
@@ -437,21 +437,14 @@ namespace gum {
 /* for multithreading */
 namespace gum {
   namespace multithreading {
-    void setNumberOfThreads(unsigned int);
     unsigned int getNumberOfThreads();
     unsigned int getMaxNumberOfThreads();
     unsigned int getNumberOfLogicalProcessors();
-    bool isOMP();
   }
 }
 %{
 namespace gum {
   namespace multithreading {
-
-    void setNumberOfThreads(unsigned int nb) {
-      gum::setNumberOfThreads(nb);
-    }
-
     unsigned int getNumberOfThreads() {
       return gum::getNumberOfThreads();
     }
@@ -462,14 +455,6 @@ namespace gum {
 
     unsigned int getNumberOfLogicalProcessors() {
       return gum::getNumberOfLogicalProcessors();
-    }
-
-    bool isOMP() {
-#ifdef GUM_THREADS_USE_OMP
-      return true;
-#else
-      return false;
-#endif
     }
   }
 }

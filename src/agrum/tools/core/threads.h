@@ -91,6 +91,9 @@ namespace gum {
    */
   void setNumberOfThreads(unsigned int number);
 
+  /// indicates whether aGrUM uses openMP or STL threads
+  bool isOMP();
+
   /** returns a vector equally splitting elements of a range among threads
    * @brief
    * @param beg the beginning of the range (included)
