@@ -348,17 +348,21 @@ namespace gum {
 
   /// returns the contained table and make the ScheduleMultiDim abstract
   template < typename TABLE >
-  TABLE ScheduleMultiDim< TABLE >::exportMultiDim() {
+  TABLE* ScheduleMultiDim< TABLE >::exportMultiDim() {
     if (_table_ == nullptr) {
       GUM_ERROR(NullElement,
                 "The ScheduleMultiDim being abstract, "
                    << "it is impossible to export its table");
     }
+    if (! _table_contained_) {
+      GUM_ERROR(OperationNotAllowed,
+                "a ScheduleMultiDim cannot export a table it does not contain. "
+                "Use method multiDim() instead.");
+    }
 
-    // if the ScheduleMultiDim only references the table, we should copy it
-    TABLE table = _table_contained_ ? std::move(*_table_) : *_table_;
+    auto table = _table_;
+    _table_ = nullptr;
 
-    makeAbstract();
     return table;
   }
 

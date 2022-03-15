@@ -263,10 +263,11 @@ namespace gum_tests {
       myproj1b.execute();
       TS_ASSERT(!myproj1b.result().isAbstract())
       TS_ASSERT(myproj1b.result().multiDim().domainSize() == 1);
-      gum::Potential< double > pot1b
+      gum::Potential< double >* pot1b
          = const_cast< gum::ScheduleMultiDim< gum::Potential< double > >& >(myproj1b.result())
               .exportMultiDim();
-      TS_ASSERT(pot1b.domainSize() == 1);
+      TS_ASSERT(pot1b->domainSize() == 1);
+      delete pot1b;
 
       del_vars1.clear();
       del_vars1 << vars[0];

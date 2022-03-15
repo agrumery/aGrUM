@@ -144,8 +144,7 @@ namespace gum_tests {
       //const bool seq = true;
       const bool seq = false;
       if (seq) {
-        gum::SchedulerSequential sched;
-        inf.setScheduler(sched);
+        inf.setNumberOfThreads(1);
       }
       else {
         inf.setNumberOfThreads(4);
@@ -159,8 +158,7 @@ namespace gum_tests {
       gum::LazyPropagation< double >       inf(bn);
       gum::ShaferShenoyInference< double > inf2(bn);
 
-      gum::SchedulerSequential sched;
-      inf.setScheduler(sched);
+      inf.setNumberOfThreads(1);
 
       TS_ASSERT_THROWS_NOTHING(inf.makeInference())
       TS_ASSERT_THROWS_NOTHING(inf.posterior(i1))

@@ -250,9 +250,10 @@ namespace gum {
      * the ScheduleMultiDim abstract
      *
      * @throws NullElement is raised if the ScheduleMultiDim is abstract
-     * @warning if the ScheduleMultiDim only references an outside MultiDim, the
-     * method copies it before returning it. */
-    TABLE exportMultiDim();
+     * @throws OperationNotAllowed is raised if the ScheduleMultiDim does not own
+     * (contain) its table
+     */
+    TABLE* exportMultiDim();
 
     /** @brief returns the table actually contained in the ScheduleMultiDim
      *

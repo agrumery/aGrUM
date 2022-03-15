@@ -128,7 +128,7 @@ namespace gum {
 
     // note that, as ScheduleCombinations always produce new freshly allocated
     // tables, we can safely export the multiDims of their results
-    auto* result = new TABLE(std::move(schedule_result.exportMultiDim()));
+    auto result = schedule_result.exportMultiDim();
 
     // delete all the operations created as well as all the schedule tables
     _freeData_(tables, ops_plus_res.first);

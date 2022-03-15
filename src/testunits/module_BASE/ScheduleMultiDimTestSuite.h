@@ -235,9 +235,10 @@ namespace gum_tests {
       auto pot3 = f10.exportMultiDim();
       TS_ASSERT(f10.isAbstract());
       TS_ASSERT(!f10.containsMultiDim());
-      TS_ASSERT(pot3 == pot2);
+      TS_ASSERT(*pot3 == pot2);
       f10.makeAbstract();
       TS_ASSERT(f10.isAbstract());
+      delete pot3;
 
       const auto pot4 = pot2;
       f10.setMultiDim(std::move(pot2));
@@ -266,9 +267,10 @@ namespace gum_tests {
       gum::ScheduleMultiDim< gum::Potential< double > > f2(pot, true);
       TS_ASSERT(f2.containsMultiDim());
       TS_ASSERT(f2.domainSize() == 1);
-      gum::Potential< double > pot2 = f2.exportMultiDim();
-      TS_ASSERT(pot2.max() == pot2.min());
-      TS_ASSERT(pot2.min() == 42.42);
+      gum::Potential< double >* pot2 = f2.exportMultiDim();
+      TS_ASSERT(pot2->max() == pot2->min());
+      TS_ASSERT(pot2->min() == 42.42);
+      delete pot2;
 
       gum::Sequence< const gum::DiscreteVariable* >     seq;
       gum::ScheduleMultiDim< gum::Potential< double > > f3(seq, 0);

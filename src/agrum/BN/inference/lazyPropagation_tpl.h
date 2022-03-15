@@ -1795,7 +1795,7 @@ namespace gum {
     if (pot_list.exists(resulting_pot)) {
       joint = new Potential< GUM_SCALAR >(resulting_pot->multiDim());
     } else {
-      joint = new Potential< GUM_SCALAR >(resulting_pot->exportMultiDim());
+      joint = resulting_pot->exportMultiDim();
     }
 
     // remove the potentials that were created in new_pot_list
@@ -1873,10 +1873,11 @@ namespace gum {
         joint = new Potential< GUM_SCALAR >(sched_joint->multiDim());
       }
       else {
-        joint = new Potential< GUM_SCALAR >(sched_joint->exportMultiDim());
+        joint = sched_joint->exportMultiDim();
 
         // remove the joint from new_pot_list so that it will not be
         // removed just after the else block
+        delete sched_joint;
         new_pot_list.clear();
       }
     } else {
@@ -1969,7 +1970,7 @@ namespace gum {
         auto       schedule_pot = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
            static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(pot));
         scheduler.execute(schedule);
-        auto result = new Potential< GUM_SCALAR >(schedule_pot->exportMultiDim());
+        auto result = schedule_pot->exportMultiDim();
 
         return result;
       }
@@ -2088,7 +2089,7 @@ namespace gum {
     if (pot_list.exists(resulting_pot)) {
       joint = new Potential< GUM_SCALAR >(resulting_pot->multiDim());
     } else {
-      joint = new Potential< GUM_SCALAR >(resulting_pot->exportMultiDim());
+      joint = resulting_pot->exportMultiDim();
     }
 
     // check that the joint posterior is different from a 0 vector: this would
