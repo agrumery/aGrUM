@@ -483,7 +483,7 @@ int
 
 %feature("docstring") gum::learning::genericBNLearner::nbCols
 "
-Return the nimber of columns in the database
+Return the number of columns in the database
 
 
 Returns
@@ -491,3 +491,37 @@ Returns
 int
 	the number of columns in the database
 "
+
+%feature("docstring") gum::learning::BNLearner::getNumberOfThreads
+"
+Return the number of threads used by the BNLearner during structure and parameter learning.
+
+Returns
+-------
+int
+	the number of threads used by the BNLearner during structure and parameter learning
+"
+
+%feature("docstring") gum::learning::BNLearner::setNumberOfThreads
+"
+If the parameter n passed in argument is different from 0, the BNLearner will use n threads during learning, hence overriding aGrUM's default number of threads.
+If, on the contrary, n is equal to 0, the BNLearner will comply with aGrUM's default number of threads.
+
+Parameters
+----------
+n : int
+	the number of threads to be used by the BNLearner
+"
+
+%feature("docstring") gum::learning::BNLearner::isGumNumberOfThreadsOverriden
+"
+Indicates whether the BNLearner currently overrides aGrUM's default number of threads (see method setNumberOfThreads).
+
+Returns
+-------
+bool
+	A Boolean indicating whether the BNLearner currently overrides aGrUM's default number of threads
+"
+
+
+
