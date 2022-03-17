@@ -36,8 +36,8 @@ namespace gum {
 
   /**
    * @class ScheduledInference
-   * <agrum/tools/graphicalModels/inference/scheduler/scheduledInference.h>
    * @brief the class containing the scheduler used by schedule-based inferences
+   * @headerfile scheduledInference.h <agrum/tools/graphicalModels/inference/scheduler/scheduledInference.h>
    * @ingroup gm_group
    */
   class ScheduledInference : public ThreadNumberManager {
@@ -118,7 +118,7 @@ namespace gum {
     /// @}
 
     private:
-    // the scheduler to be used if several threads are used
+    // the scheduler to be used when several threads are used
     SchedulerParallel _scheduler_parallel_;
 
     // a sequential scheduler: to be used if only one thread is used

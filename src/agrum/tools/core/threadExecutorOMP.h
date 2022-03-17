@@ -44,6 +44,8 @@ namespace gum {
      * @brief The class enables to uses openMP to execute callables in
      * parallel.
      *
+     * @headerfile threadExecutorOMP.h <agrum/tools/core/threadExecutorOMP.h>
+     *
      * The threadsOMP::ThreadExecutor class is intended to easily
      * parallelize algorithms by providing a simple interface to launch the
      * threads. The class also catches exceptions raised by the threads, so that

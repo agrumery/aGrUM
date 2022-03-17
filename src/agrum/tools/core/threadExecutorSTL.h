@@ -38,6 +38,7 @@ namespace gum {
     /** @class threadsSTL::ThreadExecutor
      * @brief The class enables to launch std::threads to execute callables in
      * parallel.
+     * @headerfile threadExecutorSTL.h <agrum/tools/core/threadExecutorSTL.h>
      *
      * The threadsSTL::ThreadExecutor class is intended to easily parallelize
      * algorithms by providing a simple interface to launch the threads. The

@@ -33,7 +33,11 @@
 
 namespace gum {
 
-
+  /**
+   * @class ThreadNumberManager
+   * @brief A class to manage the number of threads to use in an algorithm
+   * @headerfile threadNumberManager.h <agrum/tools/core/threadNumberManager.h>
+   */
   class ThreadNumberManager : public IThreadNumberManager {
     public:
 
