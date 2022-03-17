@@ -21,7 +21,7 @@
 
 /**
  * @file
- * @brief C++17 threads convenience utilities for aGrUM.
+ * @brief C++17 STL threads convenience utilities for aGrUM.
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
@@ -41,16 +41,16 @@ namespace gum {
   namespace threadsSTL {
 
     /**
-     * @brief Returns the absolute maximum number of threads at any time.
+     * @brief Returns the maximum number of threads you should use at any time.
      * @ingroup basicstruct_group
      *
      * By default, it should be the number of CPU cores available. Note that it
-     * is preferable to use getNumberOfThreads(), which corresponds to the
-     * max number of threads the user wants to launch in parallel region (this
-     * is by default equal to getNumberOfThreads(), but the user may wish to
+     * is preferable to use function getNumberOfThreads(), which corresponds to the
+     * max number of threads the user wants to launch in parallel regions (this
+     * is by default equal to getMaxNumberOfThreads(), but the user may wish to
      * change it for some reason).
      *
-     * @return Returns the maximum number of threads at any time.
+     * @return Returns the maximum number of threads that should be used at any time.
      */
     unsigned int getMaxNumberOfThreads();
 
@@ -76,12 +76,13 @@ namespace gum {
     unsigned int getNumberOfLogicalProcessors();
 
     /**
-     * @brief Set the max number of threads to be used.
+     * @brief Set the max number of threads to be used when entering the next
+     * parallel region.
      * @ingroup basicstruct_group
      *
-     * To avoid spare cycles (less then 100% CPU occupied), use more threads than
-     * logical processors (x2 is a good all-around value).
-     * @param number The number of threads to be used.
+     * To avoid spare cycles (less then 100% CPU occupied), you may want to use more
+     * threads than logical processors (x2 could be a good all-around value).
+     * @param number The number of threads to be used in the next parallel region.
      */
     void setNumberOfThreads(unsigned int number);
 

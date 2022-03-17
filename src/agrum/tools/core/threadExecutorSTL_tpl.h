@@ -43,7 +43,7 @@ namespace gum {
     template <typename FUNCTION, typename... ARGS>
     void ThreadExecutor::execute(std::size_t nb_threads,
                                  FUNCTION    exec_func,
-                                 ARGS&&...   func_args ) {
+                                 ARGS&&...   func_args) {
       if (nb_threads <= 1) {
         exec_func(0, 1, std::forward< ARGS >(func_args)...);
       }
@@ -78,7 +78,8 @@ namespace gum {
         }
 
         // wait for the threads to complete their executions
-        std::for_each(threads.begin(), threads.end(), std::mem_fn(&std::thread::join));
+        std::for_each(threads.begin(), threads.end(),
+                      std::mem_fn(&std::thread::join));
 
         // now, we have completed the execution of the ThreadExecutor
         --nbRunningThreadsExecutors_;
@@ -138,7 +139,8 @@ namespace gum {
         }
 
         // wait for the threads to complete their executions
-        std::for_each(threads.begin(), threads.end(), std::mem_fn(&std::thread::join));
+        std::for_each(threads.begin(), threads.end(),
+                      std::mem_fn(&std::thread::join));
 
         // now, check if one exception has been raised
         bool exception_raised = false;
@@ -175,7 +177,8 @@ namespace gum {
           }
 
           // wait for the threads to complete their executions
-          std::for_each(threads.begin(), threads.end(), std::mem_fn(&std::thread::join));
+          std::for_each(threads.begin(), threads.end(),
+                        std::mem_fn(&std::thread::join));
 
           // now, we have completed the execution of the ThreadExecutor
           --nbRunningThreadsExecutors_;

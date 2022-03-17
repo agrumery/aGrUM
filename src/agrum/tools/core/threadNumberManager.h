@@ -76,24 +76,29 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    /// sets the number max of threads that can be used
-    /**
-     * @param nb the number max of threads to be used. If this number is set to 0, then
-     * it is defaulted to aGrUM's max number of threads
+    /**@brief sets the number max of threads to be used by the class containing
+     * this ThreadNumberManager
+     *
+     * @param nb the number of threads to be used. If this number is set to 0, then
+     * it is defaulted to aGrUM's number of threads
      */
     virtual void setNumberOfThreads(Size nb);
 
-    /// returns the current max number of threads of the scheduler
+    /** @brief returns the current max number of threads used by the class
+     * containing this ThreadNumberManager
+     */
     virtual Size getNumberOfThreads() const;
 
-    /// indicates whether the user set herself the number of threads
+    /** @brief indicates whether the class containing this ThreadNumberManager set
+     * its own number of threads
+     */
     bool isGumNumberOfThreadsOverriden() const;
 
     /// @}
 
     private:
-    /// the max number of threads
-    Size _max_nb_threads_{0};
+    /// the max number of threads used by the class
+    Size _nb_threads_{0};
 
   };
 

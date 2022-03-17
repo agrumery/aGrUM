@@ -49,12 +49,12 @@ namespace gum {
         // indicate that we start a new threadExecutor
         ++nbRunningThreadsExecutors_;
 
-        // here, we shall create one std::exception_ptr for each thread openMP
+        // here, we shall create one std::exception_ptr for each openMP thread
         // that will be created. This will allow us to catch the exception raised
         // by the threads
         std::vector< std::exception_ptr > func_exceptions(nb_threads, nullptr);
 
-        // launch the threads and waith for their completion
+        // launch the threads and wait for their completion
 #  pragma omp parallel num_threads(int(nb_threads))
         {
           // get the number of the thread
@@ -83,7 +83,7 @@ namespace gum {
     void ThreadExecutor::executeOrUndo(std::size_t nb_threads,
                                        FUNC1       exec_func,
                                        FUNC2       undo_func,
-                                       ARGS&&...   func_args ) {
+                                       ARGS&&...   func_args) {
 #ifndef _OPENMP
       // without openMP we only have one thread available
       try {

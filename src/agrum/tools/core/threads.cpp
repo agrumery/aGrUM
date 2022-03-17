@@ -20,7 +20,7 @@
 
 /**
  * @file
- * @brief Utility functions used for exploiting OMP/STD parallelism
+ * @brief Utility functions used for exploiting OpenMP/STL parallelism
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
@@ -29,7 +29,7 @@
 
 namespace gum {
 
-  // Set the number of threads to be used.
+  // Set the number of threads to be used in the next parallel region
   void setNumberOfThreads(unsigned int number) {
     if (number == 0) number = 1;
 

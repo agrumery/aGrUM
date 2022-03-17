@@ -25,19 +25,19 @@
 namespace gum {
 
   // default constructor
-  INLINE ThreadNumberManager::ThreadNumberManager(Size nb_threads) : _max_nb_threads_(nb_threads) {
+  INLINE ThreadNumberManager::ThreadNumberManager(Size nb_threads) : _nb_threads_(nb_threads) {
     GUM_CONSTRUCTOR(ThreadNumberManager);
   }
 
   // copy constructor
   INLINE ThreadNumberManager::ThreadNumberManager(const ThreadNumberManager& from) :
-      _max_nb_threads_(from._max_nb_threads_) {
+      _nb_threads_(from._nb_threads_) {
     GUM_CONS_CPY(ThreadNumberManager);
   }
 
   // move constructor
   INLINE ThreadNumberManager::ThreadNumberManager(ThreadNumberManager&& from) :
-      _max_nb_threads_(from._max_nb_threads_) {
+      _nb_threads_(from._nb_threads_) {
     GUM_CONS_MOV(ThreadNumberManager);
   }
 
@@ -46,29 +46,29 @@ namespace gum {
 
   // copy operator
   INLINE ThreadNumberManager& ThreadNumberManager::operator=(const ThreadNumberManager& from) {
-    _max_nb_threads_ = from._max_nb_threads_;
+    _nb_threads_ = from._nb_threads_;
     return *this;
   }
 
   // move operator
   INLINE ThreadNumberManager& ThreadNumberManager::operator=(ThreadNumberManager&& from) {
-    _max_nb_threads_ = from._max_nb_threads_;
+    _nb_threads_ = from._nb_threads_;
     return *this;
   }
 
   // sets the number max of threads that can be used
-  INLINE void ThreadNumberManager::setNumberOfThreads(Size nb) { _max_nb_threads_ = nb; }
+  INLINE void ThreadNumberManager::setNumberOfThreads(Size nb) { _nb_threads_ = nb; }
 
   // returns the current max number of threads of the scheduler
   INLINE Size ThreadNumberManager::getNumberOfThreads() const {
-    if (_max_nb_threads_ == 0)
+    if (_nb_threads_ == 0)
       return gum::getNumberOfThreads();
     else
-      return _max_nb_threads_;
+      return _nb_threads_;
   }
 
   // indicates whether the user set herself the number of threads
-  INLINE bool ThreadNumberManager::isGumNumberOfThreadsOverriden() const { return _max_nb_threads_ != 0; }
+  INLINE bool ThreadNumberManager::isGumNumberOfThreadsOverriden() const { return _nb_threads_ != 0; }
 
 }   // namespace gum
 

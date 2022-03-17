@@ -21,7 +21,7 @@
 
 /**
  * @file
- * @brief C++11 threads convenience utilities for agrum.
+ * @brief C++17 STL threads convenience utilities for agrum.
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
