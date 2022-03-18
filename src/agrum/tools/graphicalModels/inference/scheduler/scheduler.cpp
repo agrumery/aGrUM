@@ -21,7 +21,7 @@
 
 /**
  * @file
- * @brief Class to include at least once this header
+ * @brief the common interface of all the schedulers
  *
  * @author Christophe GONZALES(@AMU) & Pierre-Henri WUILLEMIN(@LIP6)
  */
@@ -38,9 +38,9 @@
 namespace gum {
 
   /// default constructor
-  Scheduler::Scheduler(Size   max_nb_threads,
+  Scheduler::Scheduler(Size   nb_threads,
                        double max_memory) :
-      ThreadNumberManager(max_nb_threads),
+      ThreadNumberManager(nb_threads),
       _max_memory(max_memory * 1048576.0) {   // 1048576 = 1024 * 1024 = 1Mb
     if (_max_memory <= 0.0) _max_memory = 0.0;
 

@@ -19,7 +19,7 @@
  */
 
 /** @file
- * @brief a parallel scheduler that executes available operations
+ * @brief A scheduler that executes available operators in parallel
  *
  * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
@@ -46,6 +46,11 @@
 
 namespace gum {
 
+  /**
+   * @class SchedulerParallel
+   * @brief A scheduler that executes available operators in parallel
+   * @headerfile schedulerParallel.h <agrum/tools/graphicalModels/inference/scheduler/schedulerParallel.h>
+   */
   class SchedulerParallel: public Scheduler {
     public:
     // ############################################################################
@@ -75,11 +80,10 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    /// sets the number max of threads that can be used
+    /// sets the number of threads that can be used by the scheduler
     /**
-     * @param nb the number max of threads used for executing schedules. If this
-     * number is set to 0, then it is defaulted to aGrUM's max number
-     * of threads
+     * @param nb the number of threads used for executing schedules. If this
+     * number is set to 0, then it is defaulted to aGrUM's number of threads
      */
     void setNumberOfThreads(Size nb) final;
 

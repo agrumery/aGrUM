@@ -44,6 +44,11 @@ namespace gum {
     PARALLEL_OPERATORS // combinations and projections are dispatched among threads
   };
 
+  /**
+   * @class Scheduler
+   * @brief The common interface of all the schedulers
+   * @headerfile scheduler.h <agrum/tools/graphicalModels/inference/scheduler/scheduler.h>
+   */
   class Scheduler : public ThreadNumberManager {
     public:
 
@@ -55,15 +60,15 @@ namespace gum {
     /// default constructor
     /**
      * By default, the number of threads used by the scheduler to execute
-     * schedules is aGrUM's max number of threads (see file thread.h). The
+     * schedules is aGrUM's number of threads (see file thread.h). The
      * default max memory available is infinite.
      * @param max_megabyte_memory the maximum number of megabytes to use for
      * executing the operations of a schedule. If non strictly positive, this
      * means an infinite memory available (the default).
-     * @param max_nb_threads the number max of threads to use to execute in
+     * @param nb_threads the number of threads to use to execute in
      * parallel the operations of a schedule. 0 = use aGrUM's default.
      */
-    Scheduler(Size   max_nb_threads = 0,
+    Scheduler(Size   nb_threads = 0,
               double max_megabyte_memory = 0.0);
 
     /// virtual copy constructor
