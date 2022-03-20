@@ -62,9 +62,9 @@ namespace gum {
     /// draw instances from  _bn_
     template < typename GUM_SCALAR >
     double BNDatabaseGenerator< GUM_SCALAR >::drawSamples(Size nbSamples) {
-      Timer timer;
-      int   progress = 0;
+      int progress = 0;
 
+      gum::Timer timer;
       timer.reset();
 
       if (onProgress.hasListener()) { GUM_EMIT2(onProgress, progress, timer.step()); }
@@ -131,6 +131,31 @@ namespace gum {
       }
 
       return _log2likelihood_;
+    }
+
+    template < typename GUM_SCALAR >
+    INLINE Size BNDatabaseGenerator< GUM_SCALAR >::samplesNbRows() const {
+      if (!_drawnSamples_) { GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.") }
+
+      return _database_.size();
+    }
+    template < typename GUM_SCALAR >
+    INLINE Size BNDatabaseGenerator< GUM_SCALAR >::samplesNbCols() const {
+      if (!_drawnSamples_) { GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.") }
+
+      return _nbVars_;
+    }
+
+    template < typename GUM_SCALAR >
+    INLINE Idx BNDatabaseGenerator< GUM_SCALAR >::samplesAt(Idx row,Idx col) const {
+      if (!_drawnSamples_) { GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.") }
+      return _database_.at(row).at(_varOrder_.at(col));
+    }
+
+    template < typename GUM_SCALAR >
+    INLINE std::string BNDatabaseGenerator< GUM_SCALAR >:: samplesLabelAt(Idx row,Idx col) const {
+      if (!_drawnSamples_) { GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.") }
+      return _bn_.variable(_varOrder_.at(col)).label(_database_.at(row).at(_varOrder_.at(col)));
     }
 
     /// generates database, and writes csv file

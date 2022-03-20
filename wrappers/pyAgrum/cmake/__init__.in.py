@@ -9,6 +9,7 @@ pyAgrum includes :
   * examples as `notebooks <http://www-desir.lip6.fr/~phw/aGrUM/docs/last/notebooks/Tutorial.ipynb.html>`_,
   * a `website <http://agrum.org>`_.
 """
+import warnings
 
 # aGrum Licence (LGPL)
 # -------------------
@@ -472,23 +473,23 @@ def getPosterior(model, evs, target):
   return Potential(inf.posterior(target))
 
 
-def generateCSV(bn, name_out, n, show_progress=False, with_labels=False, random_order=True):
+def generateSample(bn, n=1, name_out=None, show_progress=False, with_labels=False, random_order=True):
   """
   generate a CSV file of samples from a bn.
 
   :param bn: the BN from which the sample is generated
   :type bn: pyAgrum.BayesNet
-  :param name_out: the name for the output filename
-  :type name_out: string
   :param n: the number of samples
   :type n: int
+  :param name_out: the name for the output csv filename. If name_out is None, a pandas.DataFrame is generated
+  :type name_out: string
   :param show_progress: if True, show a progress bar
   :type show_progress: boolean
   :param with_labels: if True, use the labels of the modalities of variables in the csv. If False, use their ids.
   :type with_labels: boolean
   :param random_order: if True, the columns in the csv are randomized sorted
   :type random_order: boolean  
-  :return: the log2-likelihood of the generated base
+  :return: the log2-likelihood of the generated base or if name_out is None, the couple (generated pandas.DataFrame,log2-likelihood)
   """
 
   genere = BNDatabaseGenerator(bn)
@@ -510,12 +511,31 @@ def generateCSV(bn, name_out, n, show_progress=False, with_labels=False, random_
     genere.setRandomVarOrder()
   ll = genere.drawSamples(n)
 
-  genere.toCSV(name_out, with_labels)
+  if name_out is not None:
+    genere.toCSV(name_out, with_labels)
 
   if show_progress:
     print(f"Log2-Likelihood : {ll}")
 
-  return ll
+  if name_out is not None:
+    return ll
+  else:
+    return genere.to_pandas(with_labels),ll
+
+
+def generateCSV(bn, name_out, n=1, show_progress=False, with_labels=False, random_order=True):
+  """
+  Deprecated. Please use gum.generateSample instead.
+  """
+  warnings.warn(f"""
+  ** pyAgrum.generatedCSV is deprecated since pyAgrum>0.22.7.
+  ** A call to 
+      'generateSample(bn, {n=}, {name_out=}, {show_progress=}, {with_labels=}, {random_order=})' 
+  ** is executed.
+    
+  """, DeprecationWarning, stacklevel=2)
+
+  generateSample(bn,n,name_out,show_progress,with_labels,random_order)
 
 def log2(p):
   """Compute p.log2() in a new Potential without modifying p

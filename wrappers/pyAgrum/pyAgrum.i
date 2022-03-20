@@ -81,6 +81,7 @@
 %include "inference.i"
 %include "learning.i"
 %include "bndistance.i"
+%include "BNDatabaseGenerator.i"
 
 %include "markovnet.i"
 %include "MNinference.i"

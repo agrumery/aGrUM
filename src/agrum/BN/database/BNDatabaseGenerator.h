@@ -115,6 +115,12 @@ namespace gum {
       /// @warning: makes a copy of the whole database
       std::vector< std::vector< Idx > > database() const;
 
+      Size samplesNbRows() const;
+      Size samplesNbCols() const;
+
+      Idx samplesAt(Idx row,Idx col) const;
+      std::string samplesLabelAt(Idx row,Idx col) const;
+
       /// change columns order
       void setVarOrder(const std::vector< Idx >& varOrder);
 
