@@ -8,6 +8,12 @@ LabelizedVariable(aName, aDesc='', nbrLabel=2) -> LabelizedVariable
         * **aDesc** (str) -- the (optional) description of the variable
         * **nbrLabel** (int) -- the number of labels to create (2 by default)
 
+LabelizedVariable(aName, aDesc='', labels) -> LabelizedVariable
+    Parameters:
+        * **aName** (str) -- the name of the variable
+        * **aDesc** (str) -- the (optional) description of the variable
+        * **labels** (List[str]) -- the labels to create
+
 LabelizedVariable(aLDRV) -> LabelizedVariable
     Parameters:
         * **aLDRV** (*pyAgrum.LabelizedVariable*) -- The pyAgrum.LabelizedVariable that will be copied

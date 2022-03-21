@@ -19,6 +19,14 @@ str
 	the domain of the variable
 "
 
+%feature("docstring") gum::DiscreteVariable::stype
+"
+Returns
+-------
+str
+	a description of its type
+"
+
 %feature("docstring") gum::DiscreteVariable::domainSize
 "
 Returns
