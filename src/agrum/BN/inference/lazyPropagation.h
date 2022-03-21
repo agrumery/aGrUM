@@ -486,9 +486,14 @@ namespace gum {
     /// computes the unnormalized posterior of a node using schedules
     Potential< GUM_SCALAR >* _unnormalizedJointPosterior_(Schedule& schedule, NodeId id);
 
-    /// computes the unnormalized posterior of a node using schedules
+    /// computes the unnormalized posterior of a node without using schedules
     Potential< GUM_SCALAR >* _unnormalizedJointPosterior_(NodeId id);
 
+    /// returns a fresh potential equal to P(argument,evidence) using schedules
+    Potential< GUM_SCALAR >* _unnormalizedJointPosterior_(Schedule& schedule, const NodeSet& set);
+
+    /// returns a fresh potential equal to P(argument,evidence) without using schedules
+    Potential< GUM_SCALAR >* _unnormalizedJointPosterior_(const NodeSet& set);
 
   };
 
