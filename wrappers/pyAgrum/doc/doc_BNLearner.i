@@ -57,7 +57,7 @@ dag : pyAgrum.DAG
 	an initial DAG structure
 "
 
-%feature("docstring") gum::learning::genericBNLearner::useEM
+%feature("docstring") gum::learning::BNLearner::useEM
 "
 Indicates if we use EM for parameter learning.
 
