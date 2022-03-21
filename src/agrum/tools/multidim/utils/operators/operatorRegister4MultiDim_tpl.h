@@ -80,8 +80,9 @@ namespace gum {
                                                               const std::string& type1,
                                                               const std::string& type2) const {
     if (!_set_.exists(operation_name)) return false;
-    OperatorSet* theset = _set_[operation_name];
-    return theset->exists(std::pair< std::string, std::string >(type1, type2));
+    const OperatorSet& theset = *(_set_[operation_name]);
+    const std::pair< std::string, std::string > key(type1, type2);
+    return theset.exists(key);
   }
 
   /** @brief returns the specialized operator assigned to a given pair of
@@ -91,8 +92,9 @@ namespace gum {
      OperatorRegister4MultiDim< GUM_SCALAR >::get(const std::string& operation_name,
                                                   const std::string& type1,
                                                   const std::string& type2) const {
-    OperatorSet* theset = _set_[operation_name];
-    return (*theset)[std::pair< std::string, std::string >(type1, type2)];
+    const OperatorSet& theset = *(_set_[operation_name]);
+    const std::pair< std::string, std::string > key(type1, type2);
+    return theset[key];
   }
 
   // a named constructor that constructs one and only one Register per data
@@ -101,7 +103,7 @@ namespace gum {
   OperatorRegister4MultiDim< GUM_SCALAR >& OperatorRegister4MultiDim< GUM_SCALAR >::Register() {
     static OperatorRegister4MultiDim< GUM_SCALAR >* container             = nullptr;
     static std::atomic<bool>                        first                 = true;
-    static std::atomic<bool>                        container_initialized = false;
+    static bool                                     container_initialized = false;
     static std::mutex                               mutex;
 
     if (first) {

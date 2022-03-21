@@ -33,6 +33,7 @@
 #include <iostream>
 #include <string>
 #include <utility>
+#include <atomic>
 
 #include <agrum/tools/core/hashTable.h>
 #include <agrum/tools/core/set.h>

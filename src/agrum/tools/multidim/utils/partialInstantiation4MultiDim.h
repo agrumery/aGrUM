@@ -29,6 +29,7 @@
 #ifndef GUM_PARTIAL_INSTANTIATION_4_MULTI_DIM_H
 #define GUM_PARTIAL_INSTANTIATION_4_MULTI_DIM_H
 
+#include <atomic>
 #include <agrum/tools/core/hashTable.h>
 #include <agrum/tools/core/set.h>
 #include <agrum/tools/variables/discreteVariable.h>

@@ -48,6 +48,8 @@ namespace gum {
       JointTargetedInference< GUM_SCALAR >(BN),
       EvidenceInference< GUM_SCALAR >(BN), _use_binary_join_tree_(use_binary_join_tree) {
     // sets the relevant potential and the barren nodes finding algorithm
+    _findRelevantPotentials_
+       = &LazyPropagation< GUM_SCALAR >::_findRelevantPotentialsWithdSeparation2_;
     setRelevantPotentialsFinderType(relevant_type);
     setFindBarrenNodesType(barren_type);
 

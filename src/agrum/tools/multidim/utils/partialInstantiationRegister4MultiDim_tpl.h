@@ -78,7 +78,8 @@ namespace gum {
      const std::string& type_multidim) const {
     if (!_set_.exists(instantiation_func_name)) return false;
 
-    return _set_[instantiation_func_name].exists(type_multidim);
+    const PartialInstantiationSet& theset = *(_set_[instantiation_func_name]);
+    return theset.exists(type_multidim);
   }
 
   /** @brief returns the specialized operator assigned to a given subtype of
@@ -88,8 +89,8 @@ namespace gum {
      PartialInstantiationRegister4MultiDim< GUM_SCALAR >::get(
         const std::string& instantiation_func_name,
         const std::string& type_multidim) const {
-    PartialInstantiationSet* theset = _set_[instantiation_func_name];
-    return theset->          operator[](type_multidim);
+    const PartialInstantiationSet& theset = *(_set_[instantiation_func_name]);
+    return theset[type_multidim];
   }
 
   // a named constructor that constructs one and only one Register per data
@@ -97,27 +98,36 @@ namespace gum {
   template < typename GUM_SCALAR >
   PartialInstantiationRegister4MultiDim< GUM_SCALAR >&
      PartialInstantiationRegister4MultiDim< GUM_SCALAR >::Register() {
-    static PartialInstantiationRegister4MultiDim container;
-
-#  ifdef GUM_DEBUG_MODE
-    static bool first = true;
+    static PartialInstantiationRegister4MultiDim* container;
+    static std::atomic<bool>                      first                 = true;
+    static bool                                   container_initialized = false;
+    static std::mutex                             mutex;
 
     if (first) {
-      first = false;
-      // for debugging purposes, we should inform the aGrUM's debugger that
-      // the hashtable contained within the
-      // PartialInstantiationRegister4MultiDim
-      // will be removed at the end of the program's execution.
-      __debug__::_inc_deletion_("HashTable",
-                                __FILE__,
-                                __LINE__,
-                                "destructor of",
-                                (void*)&container._set_);
-    }
+      // lock so that only one thread will create the container
+      mutex.lock();
+      if (! container_initialized) {
+        container = new PartialInstantiationRegister4MultiDim;
 
+#  ifdef GUM_DEBUG_MODE
+        // for debugging purposes, we should inform the aGrUM's debugger that
+        // the hashtable contained within the
+        // PartialInstantiationRegister4MultiDim
+        // will be removed at the end of the program's execution.
+        __debug__::_inc_deletion_("HashTable",
+                                  __FILE__,
+                                  __LINE__,
+                                  "destructor of",
+                                  (void*)&container._set_);
 #  endif /* GUM_DEBUG_MODE */
 
-    return container;
+        first = false;
+        container_initialized = true;
+      }
+      mutex.unlock();
+    }
+
+    return *container;
   }
 
   // Default constructor: creates an empty register

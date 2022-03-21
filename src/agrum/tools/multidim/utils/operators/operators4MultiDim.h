@@ -29,6 +29,7 @@
 #ifndef GUM_OPERATORS_4_MULTI_DIM_H
 #define GUM_OPERATORS_4_MULTI_DIM_H
 
+#include <atomic>
 #include <agrum/tools/core/timer.h>
 #include <agrum/tools/multidim/implementations/multiDimArray.h>
 #include <agrum/tools/multidim/implementations/multiDimFunctionGraph.h>

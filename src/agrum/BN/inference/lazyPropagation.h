@@ -247,7 +247,8 @@ namespace gum {
 
 
     /// the type of relevant potential finding algorithm to be used
-    RelevantPotentialsFinderType _find_relevant_potential_type_;
+    RelevantPotentialsFinderType _find_relevant_potential_type_
+       {RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS};
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined to produce a message on a separator */
@@ -256,7 +257,8 @@ namespace gum {
        Set< const DiscreteVariable* >&  kept_vars);
 
     /// the type of barren nodes computation we wish
-    FindBarrenNodesType _barren_nodes_type_;
+    FindBarrenNodesType _barren_nodes_type_
+       {FindBarrenNodesType::FIND_BARREN_NODES};
 
     /// the operator for performing the projections
     Potential< GUM_SCALAR > (*_projection_op_)(const Potential< GUM_SCALAR >&,

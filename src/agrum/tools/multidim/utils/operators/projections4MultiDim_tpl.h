@@ -365,71 +365,87 @@ namespace gum {
   // the function used to register all the above functions
   template < typename GUM_SCALAR >
   void projections4MultiDimInit() {
-    static bool first_init = true;
+    static std::atomic<bool> first             = true;
+    static bool              registration_done = false;
+    static std::mutex        mutex;
 
-    if (first_init) {
-      first_init = false;
+    if (first) {
+      // lock so that only one thread will register the operations
+      mutex.lock();
+      if (!registration_done) {
+        std::string MultiDimArrayString("MultiDimArray");
+        std::string MultiDimFunctionGraphString("MultiDimFunctionGraph");
+        std::string BaseNameString("MultiDimImplementation");
 
-      std::string MultiDimArrayString("MultiDimArray");
-      std::string MultiDimFunctionGraphString("MultiDimFunctionGraph");
-      std::string BaseNameString("MultiDimImplementation");
+        // register base functions for multiDimArrays
+        registerProjection< GUM_SCALAR >("max", MultiDimArrayString, &projectMaxMultiDimArray);
+        registerProjection< GUM_SCALAR >("min", MultiDimArrayString, &projectMinMultiDimArray);
+        registerProjection< GUM_SCALAR >("sum", MultiDimArrayString, &projectSumMultiDimArray);
+        registerProjection< GUM_SCALAR >("product",
+                                         MultiDimArrayString,
+                                         &projectProductMultiDimArray);
 
-      // register base functions for multiDimArrays
-      registerProjection< GUM_SCALAR >("max", MultiDimArrayString, &projectMaxMultiDimArray);
-      registerProjection< GUM_SCALAR >("min", MultiDimArrayString, &projectMinMultiDimArray);
-      registerProjection< GUM_SCALAR >("sum", MultiDimArrayString, &projectSumMultiDimArray);
-      registerProjection< GUM_SCALAR >("product",
-                                       MultiDimArrayString,
-                                       &projectProductMultiDimArray);
+        // register base functions for multiDimArrays
+        registerProjection< GUM_SCALAR >("max",
+                                         MultiDimFunctionGraphString,
+                                         &projectMaxMultiDimFunctionGraph);
+        registerProjection< GUM_SCALAR >("min",
+                                         MultiDimFunctionGraphString,
+                                         &projectMinMultiDimFunctionGraph);
+        registerProjection< GUM_SCALAR >("sum",
+                                         MultiDimFunctionGraphString,
+                                         &projectSumMultiDimFunctionGraph);
+        registerProjection< GUM_SCALAR >("product",
+                                         MultiDimFunctionGraphString,
+                                         &projectProductMultiDimFunctionGraph);
 
-      // register base functions for multiDimArrays
-      registerProjection< GUM_SCALAR >("max",
-                                       MultiDimFunctionGraphString,
-                                       &projectMaxMultiDimFunctionGraph);
-      registerProjection< GUM_SCALAR >("min",
-                                       MultiDimFunctionGraphString,
-                                       &projectMinMultiDimFunctionGraph);
-      registerProjection< GUM_SCALAR >("sum",
-                                       MultiDimFunctionGraphString,
-                                       &projectSumMultiDimFunctionGraph);
-      registerProjection< GUM_SCALAR >("product",
-                                       MultiDimFunctionGraphString,
-                                       &projectProductMultiDimFunctionGraph);
+        // register default basename functions
+        registerProjection< GUM_SCALAR >("max", BaseNameString, &projectMaxMultiDimImplementation);
+        registerProjection< GUM_SCALAR >("min", BaseNameString, &projectMinMultiDimImplementation);
+        registerProjection< GUM_SCALAR >("sum", BaseNameString, &projectSumMultiDimImplementation);
+        registerProjection< GUM_SCALAR >("product",
+                                         BaseNameString,
+                                         &projectProductMultiDimImplementation);
 
-      // register default basename functions
-      registerProjection< GUM_SCALAR >("max", BaseNameString, &projectMaxMultiDimImplementation);
-      registerProjection< GUM_SCALAR >("min", BaseNameString, &projectMinMultiDimImplementation);
-      registerProjection< GUM_SCALAR >("sum", BaseNameString, &projectSumMultiDimImplementation);
-      registerProjection< GUM_SCALAR >("product",
-                                       BaseNameString,
-                                       &projectProductMultiDimImplementation);
+        first = false;
+        registration_done = true;
+      }
+      mutex.unlock();
     }
   }
 
   // the function used to register all the above functions
   template < typename GUM_SCALAR >
   void pointerProjections4MultiDimInit() {
-    static bool first_init = true;
+    static std::atomic<bool> first             = true;
+    static bool              registration_done = false;
+    static std::mutex        mutex;
 
-    if (first_init) {
-      first_init = false;
+    if (first) {
+      // lock so that only one thread will register the operations
+      mutex.lock();
+      if (!registration_done) {
+        std::string MultiDimArrayString("MultiDimArray");
+        std::string BaseNameString("MultiDimImplementation");
 
-      std::string MultiDimArrayString("MultiDimArray");
-      std::string BaseNameString("MultiDimImplementation");
+        // register base functions for multiDimArrays
+        registerProjection< GUM_SCALAR* >("max",
+                                          MultiDimArrayString,
+                                          &projectMaxMultiDimArray4Pointers);
+        registerProjection< GUM_SCALAR* >("min",
+                                          MultiDimArrayString,
+                                          &projectMinMultiDimArray4Pointers);
+        registerProjection< GUM_SCALAR* >("sum",
+                                          MultiDimArrayString,
+                                          &projectSumMultiDimArray4Pointers);
+        registerProjection< GUM_SCALAR* >("product",
+                                          MultiDimArrayString,
+                                          &projectProductMultiDimArray4Pointers);
 
-      // register base functions for multiDimArrays
-      registerProjection< GUM_SCALAR* >("max",
-                                        MultiDimArrayString,
-                                        &projectMaxMultiDimArray4Pointers);
-      registerProjection< GUM_SCALAR* >("min",
-                                        MultiDimArrayString,
-                                        &projectMinMultiDimArray4Pointers);
-      registerProjection< GUM_SCALAR* >("sum",
-                                        MultiDimArrayString,
-                                        &projectSumMultiDimArray4Pointers);
-      registerProjection< GUM_SCALAR* >("product",
-                                        MultiDimArrayString,
-                                        &projectProductMultiDimArray4Pointers);
+        first = false;
+        registration_done = true;
+      }
+      mutex.unlock();
     }
   }
 
