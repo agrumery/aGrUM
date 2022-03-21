@@ -64,7 +64,7 @@ namespace gum {
 
   /**
    * @class LazyPropagation lazyPropagation.h
-   * <agrum/BN/inference/lazyPropagation.h>
+   * @headerfile lazyPropagation.h <agrum/BN/inference/lazyPropagation.h>
    * @brief Implementation of a Shafer-Shenoy's-like version of lazy
    * propagation for inference in Bayesian networks
    * @ingroup bn_inference
@@ -108,8 +108,8 @@ namespace gum {
     void setTriangulation(const Triangulation& new_triangulation);
 
     /// sets how we determine the relevant potentials to combine
-    /** When a clique sends a message to a separator, it first constitute the
-     * set of the potentials it contains and of the potentials contained in the
+    /** When a clique sends a message to a separator, it first determines the
+     * set of the potentials it contains and the potentials contained in the
      * messages it received. If RelevantPotentialsFinderType = FIND_ALL,
      * all these potentials are combined and projected to produce the message
      * sent to the separator.
@@ -129,7 +129,7 @@ namespace gum {
     /// returns the current join tree used
     /** Lazy Propagation does not use a junction tree but a binary join tree
      * because this may enable faster inferences. So do not be surprised to
-     * see that somes cliques are contained into others in this tree. */
+     * see that some cliques are contained into others in this tree. */
     const JoinTree* joinTree();
 
     /// returns the current junction tree
@@ -172,7 +172,7 @@ namespace gum {
     /** @param id The target variable's id. */
     void onMarginalTargetErased_(const NodeId id) final;
 
-    /// fired after a new Bayes net has been assigned to the engine
+    /// fired after a new Bayes net has been assigned to the inference engine
     virtual void onModelChanged_(const GraphicalModel* bn) final;
 
     /// fired after a new joint target is inserted
@@ -186,16 +186,16 @@ namespace gum {
     /// fired after all the nodes of the BN are added as single targets
     void onAllMarginalTargetsAdded_() final;
 
-    /// fired before a all the single targets are removed
+    /// fired before all the single targets are removed
     void onAllMarginalTargetsErased_() final;
 
-    /// fired before a all the joint targets are removed
+    /// fired before all the joint targets are removed
     void onAllJointTargetsErased_() final;
 
-    /// fired before a all single and joint_targets are removed
+    /// fired before all single and joint targets are removed
     void onAllTargetsErased_() final;
 
-    /// fired when the stage is changed
+    /// fired when the state of the inference engine is changed
     void onStateChanged_() final{};
 
     /// prepares inference when the latter is in OutdatedStructure state
@@ -278,7 +278,7 @@ namespace gum {
     /// the undigraph extracted from the BN and used to construct the join tree
     /** If all nodes are targets, this graph corresponds to the moral graph
      * of the BN. Otherwise, it may be a subgraph of this moral graph. For
-     * instance if the BN is A->B->C and only B is a target,  _graph_ will be
+     * instance if the BN is A->B->C and only B is a target, _graph_ will be
      * equal to A-B if we exploit barren nodes (C is a barren node and,
      * therefore, can be removed for inference). */
     UndiGraph _graph_;
@@ -295,16 +295,16 @@ namespace gum {
      * enables us to keep track of this. */
     bool _is_new_jt_needed_{true};
 
-    /// a clique node used as a root in each connected component of  _JT_
+    /// a clique node used as a root in each connected component of _JT_
     /** For usual probabilistic inference, roots is useless. This is useful
      * when computing the probability of evidence. In this case, we need to
      * compute this probability in every connected component and multiply
      * them to get the overall probability of evidence.
-     * @warning  _roots_ should be computed only when evidenceProbability
+     * @warning _roots_ should be computed only when evidenceProbability
      * is called. */
     NodeSet _roots_;
 
-    /// for each node of  _graph_ (~ in the Bayes net), associate an ID in the JT
+    /// for each node of _graph_ (~ in the Bayes net), associate an ID in the JT
     HashTable< NodeId, NodeId > _node_to_clique_;
 
     /// for each set target, assign a clique in the JT that contains it
@@ -345,8 +345,7 @@ namespace gum {
      * potentials/multidim arrays */
     NodeProperty< GUM_SCALAR > _constants_;
 
-    /// indicates whether a message (from one clique to another) has been
-    /// computed
+    /// indicates whether a message (from one clique to another) has been computed
     /** Here, all the messages, computed or not, are put into the property, only
      * the Boolean makes the difference between messages computed and those that
      * were not computed */
@@ -365,7 +364,10 @@ namespace gum {
     /** For each node whose CPT is defined over some nodes that contain some
      * hard evidence, assigns a new projected CPT that does not contain
      * these nodes anymore.
-     * @warning These potentials are owned by LayPropagation. */
+     * @warning These potentials are owned by LayPropagation.
+     * @warning As these potentials are also inserted in _clique_potentials_, we
+     * should not parse _node_to_hard_ev_projected_CPTs_ to delete them but rather
+     * parse _clique_potentials_ to do it. */
     NodeProperty< const IScheduleMultiDim* > _node_to_hard_ev_projected_CPTs_;
 
     /// the hard evidence nodes which were projected in CPTs

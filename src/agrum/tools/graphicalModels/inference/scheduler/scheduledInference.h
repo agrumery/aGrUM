@@ -88,14 +88,10 @@ namespace gum {
     /// returns the current scheduler
     Scheduler& scheduler() const;
 
-    /// sets a new scheduler
-    //void setScheduler(const Scheduler& scheduler);
-
     /// sets the number max of threads that can be used
     /**
      * @param nb the number max of threads used for executing schedules. If this
-     * number is set to 0, then it is defaulted to aGrUM's max number
-     * of threads
+     * number is set to 0, then it is defaulted to aGrUM's number of threads
      */
     void setNumberOfThreads(Size nb) final;
 
