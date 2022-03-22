@@ -378,7 +378,7 @@ pyAgrum.FatalError
 "
 Returns
 -------
-list
+List[str]
 	The names of the InfluenceDiagram variables
 "
 

@@ -16,8 +16,9 @@
 %include "doc_Instantiation.i"
 %include "doc_Potential.i"
 
-%include "doc_IBayesNet.i"
+%include "doc_GraphicalModel.i"
 %include "doc_DAGmodel.i"
+%include "doc_IBayesNet.i"
 %include "doc_BayesNet.i"
 %include "doc_BayesNetFragment.i"
 %include "doc_EssentialGraph.i"

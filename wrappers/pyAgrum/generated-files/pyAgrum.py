@@ -2468,7 +2468,9 @@ class DiscreteVariable(Variable):
         Returns
         -------
         int :
-        	the type of the variable, 0: DiscretizedVariable, 1: LabelizedVariable, 2: RangeVariable
+        	the type of the variable.
+
+        	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable
 
         """
         return _pyAgrum.DiscreteVariable_varType(self)
@@ -2828,7 +2830,9 @@ class LabelizedVariable(DiscreteVariable):
         Returns
         -------
         int :
-        	the type of the variable, 0: DiscretizedVariable, 1: LabelizedVariable, 2: RangeVariable
+        	the type of the variable.
+
+        	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable
 
         """
         return _pyAgrum.LabelizedVariable_varType(self)
@@ -2941,7 +2945,9 @@ class RangeVariable(DiscreteVariable):
         Returns
         -------
         int :
-        	the type of the variable, 0: DiscretizedVariable, 1: LabelizedVariable, 2: RangeVariable
+        	the type of the variable.
+
+        	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable
 
         """
         return _pyAgrum.RangeVariable_varType(self)
@@ -3179,7 +3185,9 @@ class IntegerVariable(DiscreteVariable):
         Returns
         -------
         int :
-        	the type of the variable, 0: DiscretizedVariable, 1: LabelizedVariable, 2: RangeVariable
+        	the type of the variable.
+
+        	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable
 
         """
         return _pyAgrum.IntegerVariable_varType(self)
@@ -3284,6 +3292,19 @@ class IntegerVariable(DiscreteVariable):
 
 
     def isValue(self, value: int) -> bool:
+        r"""
+
+        Parameters
+        ----------
+        value: int
+            the value to look at.
+
+        Returns
+        -------
+        bool
+            True if the value is in the domain.
+
+        """
         return _pyAgrum.IntegerVariable_isValue(self, value)
 
     def changeValue(self, old_value: int, new_value: int) -> None:
@@ -3306,7 +3327,7 @@ class IntegerVariable(DiscreteVariable):
         Parameters
         ----------
         value: int
-            the value to erased. If the value is not in the domain, the function does nothing (no exception raised)
+            the value to erase. If the value is not in the domain, the function does nothing (no exception raised)
 
         """
         return _pyAgrum.IntegerVariable_eraseValue(self, value)
@@ -4296,14 +4317,14 @@ _pyAgrum.DiGraph_swigregister(DiGraph)
 class DAG(DiGraph):
     r"""
 
-    DAG represents a Directed Acyclic Graph.
+    DAG represents a Directed Graph.
 
     DAG() -> DAG
         default constructor
 
     DAG(src) -> DAG
         Parameters:
-            * **src** (*DAG*) -- the DAG to copy
+            * **src** (*pyAgrum.DAG*) -- the digraph to copy
 
     """
 
@@ -4337,30 +4358,98 @@ class DAG(DiGraph):
 
         Raises
         ------
-        pyAgrum.InvalidDirectedCircle
-        	If any (directed) cycle is created by this arc
-        pyAgrum.InvalidNode
-        	If head or tail does not belong to the graph nodes
+          pyAgrum.InvalidNode
+            If head or tail does not belong to the graph nodes.
+
+          PyAgrum.InvalidDirectedCycle
+            if the arc would create a cycle.
 
         """
         return _pyAgrum.DAG_addArc(self, *args)
 
     def eraseArc(self, n1: int, n2: int) -> None:
+        r"""
+
+        Erase the arc between n1 and n2.
+
+        Parameters
+        ----------
+        n1 : int
+        	the id of the tail node
+        n2 : int
+        	the id of the head node
+
+        """
         return _pyAgrum.DAG_eraseArc(self, n1, n2)
 
     def existsArc(self, n1: int, n2: int) -> bool:
+        r"""
+
+        Check if an arc exists bewteen n1 and n2.
+
+        Parameters
+        ----------
+        n1 : int
+        	the id of the tail node
+        n2 : int
+        	the id of the head node
+
+        Returns
+        -------
+        bool
+            True if the arc exists
+
+        """
         return _pyAgrum.DAG_existsArc(self, n1, n2)
 
     def eraseParents(self, n: int) -> None:
+        r"""
+
+        Erase the arcs coming to the node.
+
+        Parameters
+        ----------
+        n : int
+        	the id of the child node
+
+        """
         return _pyAgrum.DAG_eraseParents(self, n)
 
     def eraseChildren(self, n: int) -> None:
+        r"""
+
+        Erase the arcs heading through the node's children.
+
+        Parameters
+        ----------
+        n : int
+        	the id of the parent node
+
+        """
         return _pyAgrum.DAG_eraseChildren(self, n)
 
     def sizeArcs(self) -> int:
+        r"""
+
+        Returns
+        -------
+        int
+            the number of arcs in the graph
+
+        """
         return _pyAgrum.DAG_sizeArcs(self)
 
     def emptyArcs(self) -> bool:
+        r"""
+
+        Check if the graph doesn't contains arcs.
+
+        Returns
+        -------
+        bool
+            True if the graph doesn't contains arcs
+
+        """
         return _pyAgrum.DAG_emptyArcs(self)
 
 # Register DAG in _pyAgrum:
@@ -5767,6 +5856,12 @@ _pyAgrum.Instantiation_swigregister(Instantiation)
 
 GUM_DEFAULT_ITERATOR_NUMBER = _pyAgrum.GUM_DEFAULT_ITERATOR_NUMBER
 class GraphicalModel(object):
+    r"""
+
+    Abstract class for all PGM (associating set of variables and a graph).
+
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
 
     def __init__(self, *args, **kwargs):
@@ -5796,6 +5891,15 @@ class GraphicalModel(object):
         return _pyAgrum.GraphicalModel_exists(self, *args)
 
     def names(self, *args) -> List[str]:
+        r"""
+        names() -> List[str]names() -> List[str]
+
+        Returns
+        -------
+        List[str]
+        	The names of the graph variables
+
+        """
         return _pyAgrum.GraphicalModel_names(self, *args)
 
     def ids(self, names: "Vector_string") -> "pyAgrum.YetUnWrapped":
@@ -7005,7 +7109,9 @@ class DiscretizedVariable(IDiscretizedVariable):
         Returns
         -------
         int :
-        	the type of the variable, 0: DiscretizedVariable, 1: LabelizedVariable, 2: RangeVariable
+        	the type of the variable.
+
+        	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable
 
         """
         return _pyAgrum.DiscretizedVariable_varType(self)
@@ -8402,12 +8508,12 @@ class IBayesNet(DAGmodel):
         Returns
         -------
         pyAgrum.Potential
-        	The variable's CPT. 
+        	The variable's CPT.
 
         Raises
         ------
         pyAgrum.NotFound
-        	If no variable's id matches varId. 
+        	If no variable's id matches varId.
 
         """
         return _pyAgrum.IBayesNet_cpt(self, varId)
@@ -8663,10 +8769,11 @@ class IBayesNet(DAGmodel):
 
     def names(self) -> object:
         r"""
+        names() -> List[str]
 
         Returns
         -------
-        list
+        List[str]
         	The names of the graph variables
 
         """
@@ -9663,10 +9770,11 @@ class BayesNet(IBayesNet):
 
     def names(self) -> object:
         r"""
+        names() -> List[str]
 
         Returns
         -------
-        list
+        List[str]
         	The names of the graph variables
 
         """
@@ -10134,12 +10242,12 @@ class BayesNetFragment(IBayesNet, ):
         Returns
         -------
         pyAgrum.Potential
-        	The variable's CPT. 
+        	The variable's CPT.
 
         Raises
         ------
         pyAgrum.NotFound
-        	If no variable's id matches varId. 
+        	If no variable's id matches varId.
 
         """
         return _pyAgrum.BayesNetFragment_cpt(self, *args)
@@ -10462,10 +10570,11 @@ class BayesNetFragment(IBayesNet, ):
 
     def names(self) -> object:
         r"""
+        names() -> List[str]
 
         Returns
         -------
-        list
+        List[str]
         	The names of the graph variables
 
         """
@@ -10679,6 +10788,15 @@ class IMarkovNet(UGmodel):
         return _pyAgrum.IMarkovNet_toDotAsFactorGraph(self)
 
     def names(self) -> object:
+        r"""
+        names() -> List[str]
+
+        Returns
+        -------
+        List[str]
+        	The names of the graph variables
+
+        """
         return _pyAgrum.IMarkovNet_names(self)
 
     def nodes(self) -> object:
@@ -10989,6 +11107,15 @@ class MarkovNet(IMarkovNet):
         return _pyAgrum.MarkovNet_log10DomainSize(self)
 
     def names(self) -> object:
+        r"""
+        names() -> List[str]
+
+        Returns
+        -------
+        List[str]
+        	The names of the graph variables
+
+        """
         return _pyAgrum.MarkovNet_names(self)
 
     def nodes(self) -> object:
@@ -23507,7 +23634,7 @@ class InfluenceDiagram(DAGmodel):
 
         Returns
         -------
-        list
+        List[str]
         	The names of the InfluenceDiagram variables
 
         """

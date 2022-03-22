@@ -2,4 +2,4 @@ Model
 -----
 
 .. autoclass:: pyAgrum.BayesNet
-			:exclude-members: setProperty, property, propertyWithDefault
+    :exclude-members: setProperty, property, propertyWithDefault
