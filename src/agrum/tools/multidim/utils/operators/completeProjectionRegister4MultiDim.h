@@ -34,6 +34,7 @@
 #include <string>
 #include <utility>
 #include <atomic>
+#include <mutex>
 
 #include <agrum/tools/core/hashTable.h>
 #include <agrum/tools/core/set.h>
