@@ -142,9 +142,11 @@ namespace gum {
 
     /// add a new value to the domain size
     /** @throw DuplicateElement is raised if the variable already contains the value
-     * @return *this which allows : v.addValue(1).addValue(2)...;
      */
-    IntegerVariable& addValue(int value);
+    void addValue(int value);
+
+    /// does this value exist in the domain ?
+    bool isValue(int value) const;
 
     /// substitute a value by another one
     void changeValue(int old_value, int new_value);

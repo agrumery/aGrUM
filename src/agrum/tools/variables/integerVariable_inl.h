@@ -100,12 +100,14 @@ namespace gum {
 
   /// equality operator
   INLINE bool IntegerVariable::operator==(const IntegerVariable& var) const {
-      return Variable::operator==(var) && (var._domain_ == _domain_);
+    return Variable::operator==(var) && (var._domain_ == _domain_);
   }
 
   /// inequality operator
   INLINE bool IntegerVariable::operator!=(const Variable& var) const { return !operator==(var); }
-  INLINE bool IntegerVariable::operator!=(const IntegerVariable& var) const { return !operator==(var); }
+  INLINE bool IntegerVariable::operator!=(const IntegerVariable& var) const {
+    return !operator==(var);
+  }
 
 
   /// returns the domain size of the discrete random variable
@@ -141,7 +143,7 @@ namespace gum {
   /// returns the domain as a sequence of values
   INLINE const Sequence< int >& IntegerVariable::integerDomain() const { return _domain_; }
 
-
+  INLINE bool IntegerVariable::isValue(int value) const { return _domain_.exists(value); }
   /// substitute a value by another one
   INLINE void IntegerVariable::changeValue(int old_value, int new_value) {
     if (!_domain_.exists(old_value)) return;
