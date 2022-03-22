@@ -525,7 +525,7 @@ def generateSample(bn, n=1, name_out=None, show_progress=False, with_labels=Fals
 
 def generateCSV(bn, name_out, n=1, show_progress=False, with_labels=False, random_order=True):
   """
-  Deprecated. Please use gum.generateSample instead.
+  Deprecated. Please use `pyAgrum.generateSample` instead.
   """
   warnings.warn(f"""
   ** pyAgrum.generatedCSV is deprecated since pyAgrum>0.22.7.

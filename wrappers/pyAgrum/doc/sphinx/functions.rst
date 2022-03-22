@@ -8,6 +8,10 @@ Useful functions in pyAgrum
 
 .. autofunction:: pyAgrum.getPosterior
 
+.. autofunction:: pyAgrum.generateSample
+
+.. autofunction:: pyAgrum.generateCSV
+
 Quick specification of (randomly parameterized) graphical models
 ----------------------------------------------------------------
 
