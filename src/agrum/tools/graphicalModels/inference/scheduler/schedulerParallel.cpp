@@ -26,6 +26,7 @@
  */
 
 #include <agrum/tools/graphicalModels/inference/scheduler/schedulerParallel.h>
+#include <agrum/tools/core/threadData.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -157,6 +158,9 @@ namespace gum {
     std::vector< std::condition_variable > thread2not_empty(nb_threads);
     std::mutex                             overall_mutex;
 
+    // std::vector< ThreadData< std::pair<int,double> > >
+    //    stats(nb_threads, {std::pair<int,double>(0,0.0)});
+
     // here, we create a lambda that will be executed by all the threads
     // to execute the operations in a parallel manner
     auto opExecute = [&schedule,
@@ -167,6 +171,7 @@ namespace gum {
                       &active_threads,
                       &thread2node,
                       &available_nodes,
+                      // &stats,
                       &nb_remaining_operations](const std::size_t this_thread,
                                                 const std::size_t nb_threads) -> void {
       const DAG& dag = schedule.dag();
@@ -204,6 +209,8 @@ namespace gum {
           }
 
           this_active_thread = true;
+          // ++stats[this_thread].data.first;
+          // stats[this_thread].data.second += schedule.operation(node_to_execute).nbOperations();
         }
 
         // now, actually execute the operation
@@ -363,6 +370,13 @@ namespace gum {
 
     // launch the threads
     ThreadExecutor::execute(nb_threads, opExecute);
+
+    /*
+    std::cout << "nb_ops =";
+    for (const auto& nb : stats)
+      std::cout << "  " << nb.data.first << '(' << nb.data.second << ')';
+    std::cout << std::endl;
+    */
   }
 
 } /* namespace gum */

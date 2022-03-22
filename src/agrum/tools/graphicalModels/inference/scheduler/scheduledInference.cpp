@@ -33,7 +33,6 @@ namespace gum {
       ThreadNumberManager(max_nb_threads),
       _scheduler_parallel_(max_nb_threads, max_megabyte_memory),
       _scheduler_sequential_(1, max_megabyte_memory) {
-    this->setNumberOfThreads(max_nb_threads);
     this->setMaxMemory(max_megabyte_memory);
 
     // for debugging purposes

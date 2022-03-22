@@ -54,6 +54,7 @@ namespace gum {
       if (number == 0) number = 1;
 #ifdef _OPENMP
       omp_set_num_threads(number);
+      _nb_threads_ = number;
 #else
       if (number != 1) {
         GUM_ERROR(OperationNotAllowed,
