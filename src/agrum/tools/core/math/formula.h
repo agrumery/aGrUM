@@ -59,8 +59,7 @@ namespace gum {
   class FormulaPart {
     public:
     /// The tokens constituting a formula.
-    enum token_type
-    {
+    enum token_type {
       NUMBER,
       OPERATOR,
       PARENTHESIS,
@@ -70,8 +69,7 @@ namespace gum {
     };
 
     /// The functions allowed in a formula.
-    enum token_function
-    {
+    enum token_function {
       exp,
       log,
       ln,

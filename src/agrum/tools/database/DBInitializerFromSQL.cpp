@@ -30,12 +30,12 @@
 
 #ifdef _ODBC
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+#  ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 /// include the inlined functions if necessary
-#  ifdef GUM_NO_INLINE
-#    include <agrum/tools/database/DBInitializerFromSQL_inl.h>
-#  endif /* GUM_NO_INLINE */
+#    ifdef GUM_NO_INLINE
+#      include <agrum/tools/database/DBInitializerFromSQL_inl.h>
+#    endif /* GUM_NO_INLINE */
 
 namespace gum {
 
@@ -198,6 +198,6 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+#  endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
-#endif // _ODBC
+#endif   // _ODBC

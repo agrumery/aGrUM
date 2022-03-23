@@ -76,8 +76,7 @@ namespace gum {
       /// @{
 
       /// The different type of aggregates we can have.
-      enum class AggregateType : char
-      {
+      enum class AggregateType : char {
         MIN,
         MAX,
         COUNT,

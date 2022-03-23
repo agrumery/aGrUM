@@ -65,7 +65,6 @@ namespace gum {
    */
   class VariableLog2ParamComplexity {
     public:
-
     // ########################################################################
     /// @name Constructors / Destructors
     // ########################################################################
@@ -154,7 +153,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_INLINE
-#include <agrum/tools/core/math/variableLog2ParamComplexity_inl.h>
+#  include <agrum/tools/core/math/variableLog2ParamComplexity_inl.h>
 #endif   // GUM_NO_INLINE
 
 #endif /* GUM_VARIABLE_LOG2_PARAM_COMPLEXITY_H */

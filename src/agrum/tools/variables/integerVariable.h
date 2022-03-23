@@ -98,11 +98,11 @@ namespace gum {
     IntegerVariable& operator=(IntegerVariable&& from);
 
     /// equality operator
-    bool operator==(const IntegerVariable& var) const;
+    bool         operator==(const IntegerVariable& var) const;
     virtual bool operator==(const Variable& var) const;
 
     /// inequality operator
-    bool operator!=(const IntegerVariable& var) const;
+    bool         operator!=(const IntegerVariable& var) const;
     virtual bool operator!=(const Variable& var) const;
 
     /// @}

@@ -56,8 +56,7 @@ namespace gum {
      * There is an exception for the delegated CPT definition methods which do
      * not change the state of the factory.
      */
-    enum class factory_state : char
-    {
+    enum class factory_state : char {
       NONE,
       NETWORK,
       VARIABLE,

@@ -71,8 +71,7 @@ namespace gum {
     class DBCell {
       public:
       /// the set of types possibly taken by the last element read
-      enum class EltType : unsigned char
-      {
+      enum class EltType : unsigned char {
         REAL,
         INTEGER,
         STRING,

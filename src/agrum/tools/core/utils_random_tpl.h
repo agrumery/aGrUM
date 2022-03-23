@@ -54,9 +54,9 @@ namespace gum {
   }
 
 
-  template< typename GENERATOR >
+  template < typename GENERATOR >
   INLINE Idx randomValue(GENERATOR& generator, const Size max) {
-    std::uniform_int_distribution<Idx> uni_int(0, max - 1);
+    std::uniform_int_distribution< Idx > uni_int(0, max - 1);
     return uni_int(generator);
   }
 

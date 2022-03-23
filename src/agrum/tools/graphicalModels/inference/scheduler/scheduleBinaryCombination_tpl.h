@@ -125,7 +125,7 @@ namespace gum {
         const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >& from) {
     if (this != &from) {
       // try to copy result (no need to update _results_)
-      *_result_                  = *(from._result_);
+      *_result_                 = *(from._result_);
       ScheduleOperator::operator=(from);
 
       _arg1_    = from._arg1_;
@@ -144,7 +144,7 @@ namespace gum {
         ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >&& from) {
     if (this != &from) {
       if (!this->hasPersistentResults()) delete _result_;
-      _result_                   = from._result_;
+      _result_                  = from._result_;
       ScheduleOperator::operator=(std::move(from));
 
       _arg1_    = from._arg1_;

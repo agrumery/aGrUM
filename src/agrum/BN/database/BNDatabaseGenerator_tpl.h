@@ -147,13 +147,13 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE Idx BNDatabaseGenerator< GUM_SCALAR >::samplesAt(Idx row,Idx col) const {
+    INLINE Idx BNDatabaseGenerator< GUM_SCALAR >::samplesAt(Idx row, Idx col) const {
       if (!_drawnSamples_) { GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.") }
       return _database_.at(row).at(_varOrder_.at(col));
     }
 
     template < typename GUM_SCALAR >
-    INLINE std::string BNDatabaseGenerator< GUM_SCALAR >:: samplesLabelAt(Idx row,Idx col) const {
+    INLINE std::string BNDatabaseGenerator< GUM_SCALAR >::samplesLabelAt(Idx row, Idx col) const {
       if (!_drawnSamples_) { GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.") }
       return _bn_.variable(_varOrder_.at(col)).label(_database_.at(row).at(_varOrder_.at(col)));
     }

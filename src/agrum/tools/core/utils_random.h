@@ -57,8 +57,8 @@ namespace gum {
    * @return Returns a random Odxbetween 0 and max-1 included (i.e. a proba).
    * By default, max=2
    */
-  template< typename GENERATOR >
-  Idx randomValue(GENERATOR& generator,  const Size max = 2);
+  template < typename GENERATOR >
+  Idx randomValue(GENERATOR& generator, const Size max = 2);
 
   /**
    * @brief Returns a random double between 0 and 1 included (i.e. a proba).

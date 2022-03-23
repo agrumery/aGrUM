@@ -365,9 +365,9 @@ namespace gum {
   // the function used to register all the above functions
   template < typename GUM_SCALAR >
   void projections4MultiDimInit() {
-    static std::atomic<bool> first             = true;
-    static bool              registration_done = false;
-    static std::mutex        mutex;
+    static std::atomic< bool > first             = true;
+    static bool                registration_done = false;
+    static std::mutex          mutex;
 
     if (first) {
       // lock so that only one thread will register the operations
@@ -407,7 +407,7 @@ namespace gum {
                                          BaseNameString,
                                          &projectProductMultiDimImplementation);
 
-        first = false;
+        first             = false;
         registration_done = true;
       }
       mutex.unlock();
@@ -417,9 +417,9 @@ namespace gum {
   // the function used to register all the above functions
   template < typename GUM_SCALAR >
   void pointerProjections4MultiDimInit() {
-    static std::atomic<bool> first             = true;
-    static bool              registration_done = false;
-    static std::mutex        mutex;
+    static std::atomic< bool > first             = true;
+    static bool                registration_done = false;
+    static std::mutex          mutex;
 
     if (first) {
       // lock so that only one thread will register the operations
@@ -442,7 +442,7 @@ namespace gum {
                                           MultiDimArrayString,
                                           &projectProductMultiDimArray4Pointers);
 
-        first = false;
+        first             = false;
         registration_done = true;
       }
       mutex.unlock();

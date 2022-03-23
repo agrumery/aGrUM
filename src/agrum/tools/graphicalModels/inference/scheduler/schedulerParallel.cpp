@@ -123,9 +123,9 @@ namespace gum {
     const auto desired_nb_threads = this->isGumNumberOfThreadsOverriden()
                                      ? this->getNumberOfThreads()
                                      : gum::getNumberOfThreads();
-    const Size nb_threads = nb_remaining_operations.load() < desired_nb_threads
-                             ? nb_remaining_operations.load()
-                             : desired_nb_threads;
+    const Size nb_threads         = nb_remaining_operations.load() < desired_nb_threads
+                                     ? nb_remaining_operations.load()
+                                     : desired_nb_threads;
 
     // indicate which threads are active
     std::vector< std::atomic< bool > > active_threads(nb_remaining_operations.load());
@@ -186,12 +186,11 @@ namespace gum {
       Size  nb_remaining;
 
       // sets the condition to wait for new nodes
-      const auto duration = std::chrono::milliseconds(2);
-      auto has_node_to_process =
-         [&node_to_execute, &nb_remaining_operations, &nb_remaining] {
-           nb_remaining = nb_remaining_operations.load();
-           return (node_to_execute != NodeId(0)) || (nb_remaining == Size(0));
-         };
+      const auto duration            = std::chrono::milliseconds(2);
+      auto       has_node_to_process = [&node_to_execute, &nb_remaining_operations, &nb_remaining] {
+        nb_remaining = nb_remaining_operations.load();
+        return (node_to_execute != NodeId(0)) || (nb_remaining == Size(0));
+      };
 
       while (true) {
         {   // use brace for unique_lock's scope
@@ -199,8 +198,8 @@ namespace gum {
           // wait until some operation is available or all the operations have
           // been executed
           std::unique_lock< std::mutex > lock(this_mutex);
-          do {}
-          while(!this_not_empty.wait_for(lock, duration, has_node_to_process));
+          do {
+          } while (!this_not_empty.wait_for(lock, duration, has_node_to_process));
 
           // if all the operations have been executed, stop the thread
           if (nb_remaining == Size(0)) {
@@ -237,8 +236,7 @@ namespace gum {
           // no other thread can assign it another node
           node_to_execute = new_available_nodes.back();
           new_available_nodes.pop_back();
-        }
-        else {
+        } else {
           // here, no new node was assigned, so the thread becomes inactive
           this_thread_is_inactive = true;
         }
@@ -261,7 +259,7 @@ namespace gum {
           inactive_threads.push_back(this_thread);
           this_mutex.lock();
           this_active_thread = false;
-          node_to_execute = 0;
+          node_to_execute    = 0;
           this_mutex.unlock();
         }
 
@@ -319,8 +317,7 @@ namespace gum {
           // operations to
           if (no_more_inactive_threads) {
             inactive_threads.clear();
-          }
-          else {
+          } else {
             inactive_threads.resize(i + 1);
           }
         }
@@ -360,7 +357,6 @@ namespace gum {
                 --i;
               else
                 no_more_inactive_threads = true;
-
             }
             if (no_more_inactive_threads) break;
           }

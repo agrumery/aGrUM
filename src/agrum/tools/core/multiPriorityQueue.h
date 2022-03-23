@@ -117,9 +117,7 @@ namespace gum {
    * @tparam Priority The priorities type.
    * @tparam Cmp The priorities comparator.
    */
-  template < typename Val,
-             typename Priority = int,
-             typename Cmp      = std::less< Priority > >
+  template < typename Val, typename Priority = int, typename Cmp = std::less< Priority > >
   class MultiPriorityQueue {
     public:
     /// types for STL compliance

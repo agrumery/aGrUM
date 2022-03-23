@@ -37,17 +37,15 @@
 
 namespace gum {
 
-  class SchedulerSequential : public Scheduler {
+  class SchedulerSequential: public Scheduler {
     public:
-
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
 
     /// default constructor
-    explicit SchedulerSequential(Size max_nb_threads = 0,
-                                 double max_megabyte_memory = 0.0);
+    explicit SchedulerSequential(Size max_nb_threads = 0, double max_megabyte_memory = 0.0);
 
     /// copy constructor
     SchedulerSequential(const SchedulerSequential& from);
@@ -98,16 +96,16 @@ namespace gum {
 
     private:
     /// the schedule we wish to execute
-    Schedule* _schedule_ {nullptr};
+    Schedule* _schedule_{nullptr};
 
     /// the sequence of operations to perform
     std::vector< NodeId > _operations_;
 
     /// the memory usage for the sequence of operations;
-    std::pair< double, double > _memory_usage_ {0.0, 0.0};
+    std::pair< double, double > _memory_usage_{0.0, 0.0};
 
     /// is the set of operations up to date
-    bool _operations_up_to_date_ {false};
+    bool _operations_up_to_date_{false};
 
 
     /** @brief a structure to keep informations about operations that could not be
@@ -125,29 +123,27 @@ namespace gum {
     /** @brief add the currently executable deletions into the set of
      * available operations
      */
-    Size _addExecutableOps_(
-       std::vector< UnexecutedOperation >& unexecuted_deletions,
-       std::vector< UnexecutedOperation >& unexecuted_operations,
-       bool&                               unexecuted_deletions_sorted,
-       bool&                               unexecuted_operations_sorted,
-       double                              memory_used,
-       double                              max_memory,
-       List<NodeId>&                       available_nodes) const;
+    Size _addExecutableOps_(std::vector< UnexecutedOperation >& unexecuted_deletions,
+                            std::vector< UnexecutedOperation >& unexecuted_operations,
+                            bool&                               unexecuted_deletions_sorted,
+                            bool&                               unexecuted_operations_sorted,
+                            double                              memory_used,
+                            double                              max_memory,
+                            List< NodeId >&                     available_nodes) const;
 
     /** @brief simulate the update of the schedule's DAG resulting from the
      * execution of an operation
      */
-    void _simulateDAGUpdate_(DAG&                 dag,
-                             const NodeId         node,
-                             std::vector<NodeId>& new_available_nodes) const;
+    void _simulateDAGUpdate_(DAG&                   dag,
+                             const NodeId           node,
+                             std::vector< NodeId >& new_available_nodes) const;
 
     /// simulate the execution of one operation
-    void _simulateExecuteOneOperation_(
-       const NodeId                node,
-                                       ScheduleOperator& op,
-       DAG&                        dag,
-       List<NodeId>&               available_nodes,
-       std::vector<NodeId>&        new_available_nodes);
+    void _simulateExecuteOneOperation_(const NodeId           node,
+                                       ScheduleOperator&      op,
+                                       DAG&                   dag,
+                                       List< NodeId >&        available_nodes,
+                                       std::vector< NodeId >& new_available_nodes);
 
     /// simulate the execution of the whole schedule
     void _simulateExecution_();
@@ -156,16 +152,15 @@ namespace gum {
     static bool _cmp_(const UnexecutedOperation& a, const UnexecutedOperation& b);
 
     /// friendship for allowing std::sort to use _cmp_
-    //template<typename ITER, typename CMP>
-    //friend void std::sort(ITER, ITER, CMP);
-
+    // template<typename ITER, typename CMP>
+    // friend void std::sort(ITER, ITER, CMP);
   };
 
 } /* namespace gum */
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/tools/graphicalModels/inference/scheduler/schedulerSequential_inl.h>
+#  include <agrum/tools/graphicalModels/inference/scheduler/schedulerSequential_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_SCHEDULER_SEQUENTIAL_H */

@@ -38,9 +38,8 @@ namespace gum {
    * @brief A class to manage the number of threads to use in an algorithm
    * @headerfile threadNumberManager.h <agrum/tools/core/threadNumberManager.h>
    */
-  class ThreadNumberManager : public IThreadNumberManager {
+  class ThreadNumberManager: public IThreadNumberManager {
     public:
-
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -103,14 +102,13 @@ namespace gum {
     private:
     /// the max number of threads used by the class
     Size _nb_threads_{0};
-
   };
 
-} // namespace gum
+}   // namespace gum
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/tools/core/threadNumberManager_inl.h>
+#  include <agrum/tools/core/threadNumberManager_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif   // AGRUM_THREAD_NUMBER_MANAGER_H

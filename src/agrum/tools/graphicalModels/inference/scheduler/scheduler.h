@@ -40,8 +40,8 @@ namespace gum {
 
   /// the type of scheduler that can be used
   enum SchedulerType {
-    SEQUENTIAL, // fully sequential scheduler
-    PARALLEL_OPERATORS // combinations and projections are dispatched among threads
+    SEQUENTIAL,          // fully sequential scheduler
+    PARALLEL_OPERATORS   // combinations and projections are dispatched among threads
   };
 
   /**
@@ -49,9 +49,8 @@ namespace gum {
    * @brief The common interface of all the schedulers
    * @headerfile scheduler.h <agrum/tools/graphicalModels/inference/scheduler/scheduler.h>
    */
-  class Scheduler : public ThreadNumberManager {
+  class Scheduler: public ThreadNumberManager {
     public:
-
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -68,8 +67,7 @@ namespace gum {
      * @param nb_threads the number of threads to use to execute in
      * parallel the operations of a schedule. 0 = use aGrUM's default.
      */
-    Scheduler(Size   nb_threads = 0,
-              double max_megabyte_memory = 0.0);
+    Scheduler(Size nb_threads = 0, double max_megabyte_memory = 0.0);
 
     /// virtual copy constructor
     virtual Scheduler* clone() const = 0;
@@ -78,7 +76,7 @@ namespace gum {
     virtual ~Scheduler();
 
     /// @}
-    
+
 
     // ############################################################################
     /// @name Accessors/Modifiers
@@ -119,10 +117,10 @@ namespace gum {
 
     /// @}
 
-    
+
     protected:
     /// the max memory usage possible (in bytes)
-    double _max_memory {0.0};
+    double _max_memory{0.0};
 
 
     /// copy constructor
@@ -136,14 +134,13 @@ namespace gum {
 
     /// move operator
     Scheduler& operator=(Scheduler&& from);
-
   };
 
 } /* namespace gum */
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/tools/graphicalModels/inference/scheduler/scheduler_inl.h>
+#  include <agrum/tools/graphicalModels/inference/scheduler/scheduler_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_SCHEDULER_H */

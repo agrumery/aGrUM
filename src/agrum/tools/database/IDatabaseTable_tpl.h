@@ -1118,9 +1118,8 @@ namespace gum {
 
       // perform the assignment:
       // we create the lambda that will be executed by all the threads
-      auto threadedAssign = [this, &ranges, new_weight]
-        (const std::size_t this_thread,
-         const std::size_t nb_threads) -> void {
+      auto threadedAssign = [this, &ranges, new_weight](const std::size_t this_thread,
+                                                        const std::size_t nb_threads) -> void {
         const std::size_t begin_index = ranges[this_thread].first;
         const std::size_t end_index   = ranges[this_thread].second;
 

@@ -76,14 +76,11 @@ namespace gum {
 
 
     /// changes the max number of threads used to parse the database
-    INLINE void Score::setNumberOfThreads(Size nb) { counter_.setNumberOfThreads(nb);
-    }
+    INLINE void Score::setNumberOfThreads(Size nb) { counter_.setNumberOfThreads(nb); }
 
 
     /// returns the current max number of threads of the scheduler
-    INLINE Size Score::getNumberOfThreads() const {
-      return counter_.getNumberOfThreads();
-    }
+    INLINE Size Score::getNumberOfThreads() const { return counter_.getNumberOfThreads(); }
 
 
     /// indicates whether the user set herself the number of threads

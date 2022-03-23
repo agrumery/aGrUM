@@ -213,9 +213,7 @@ namespace gum {
        * @param ordered_ids indicates whether the ids in rhs_ids should be
        * considered as an ordered set or an unordered set
        */
-      IdCondSet(const std::vector< NodeId >& ids,
-                const bool                                    rhs_ids,
-                const bool                                    ordered_ids);
+      IdCondSet(const std::vector< NodeId >& ids, const bool rhs_ids, const bool ordered_ids);
 
       /// default constructor with one variable on the left side
       /** @param var1 the variable on the left side of the conditioning bar
@@ -224,9 +222,9 @@ namespace gum {
        * @param ordered_rhs_ids indicates whether the ids in rhs_ids should be
        * considered as an ordered set or an unordered set
        */
-      IdCondSet(NodeId                                        var1,
+      IdCondSet(NodeId                       var1,
                 const std::vector< NodeId >& rhs_ids,
-                const bool                                    ordered_rhs_ids = false);
+                const bool                   ordered_rhs_ids = false);
 
       /// default constructor with two variables on the left side
       /** @param var1 the 1st variable on the left side of the conditioning bar
@@ -240,11 +238,11 @@ namespace gum {
        * considered as an ordered set or an unordered set
        * @param ordered_rhs_ids
        */
-      IdCondSet(NodeId                                        var1,
-                NodeId                                        var2,
+      IdCondSet(NodeId                       var1,
+                NodeId                       var2,
                 const std::vector< NodeId >& rhs_ids,
-                const bool                                    ordered_lhs_vars,
-                const bool                                    ordered_rhs_ids = false);
+                const bool                   ordered_lhs_vars,
+                const bool                   ordered_rhs_ids = false);
 
       /// default constructor with three variables on the left side
       /** @param var1 the 1st variable on the left side of the conditioning bar
@@ -257,12 +255,12 @@ namespace gum {
        * @param ordered_rhs_ids indicates whether the ids in rhs_ids should be
        * considered as an ordered set or an unordered set
        */
-      IdCondSet(NodeId                                        var1,
-                NodeId                                        var2,
-                NodeId                                        var3,
+      IdCondSet(NodeId                       var1,
+                NodeId                       var2,
+                NodeId                       var3,
                 const std::vector< NodeId >& rhs_ids,
-                const bool                                    ordered_lhs_vars,
-                const bool                                    ordered_rhs_ids = false);
+                const bool                   ordered_lhs_vars,
+                const bool                   ordered_rhs_ids = false);
 
       /// copy constructor
       IdCondSet(const IdCondSet& from);
@@ -407,9 +405,8 @@ namespace gum {
 
 
   /// the hash function for idSets
-  template<>
-  class HashFunc< learning::IdCondSet >:
-      public HashFuncBase< learning::IdCondSet > {
+  template <>
+  class HashFunc< learning::IdCondSet >: public HashFuncBase< learning::IdCondSet > {
     public:
     /**
      * @brief Returns the value of a key as a Size.
@@ -428,7 +425,7 @@ namespace gum {
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/tools/stattests/idCondSet_inl.h>
+#  include <agrum/tools/stattests/idCondSet_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_ID_SET_H */

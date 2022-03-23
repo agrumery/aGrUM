@@ -41,32 +41,28 @@
 namespace gum {
 
 
-  enum TaxiSimulationLandmark : Idx
-  {
+  enum TaxiSimulationLandmark : Idx {
     HOME    = 0,
     WORK    = 1,
     THEATER = 2,
     CLUB    = 3,
     TAXI    = 4
   };
-  enum TaxiSimulationLandmarkX : Idx
-  {
+  enum TaxiSimulationLandmarkX : Idx {
     HOMEX    = 0,
     WORKX    = 0,
     THEATERX = 3,
     CLUBX    = 4,
     STATIONX = 2
   };
-  enum TaxiSimulationLandmarkY : Idx
-  {
+  enum TaxiSimulationLandmarkY : Idx {
     HOMEY    = 0,
     WORKY    = 4,
     THEATERY = 0,
     CLUBY    = 4,
     STATIONY = 1
   };
-  enum TaxiSimulationAction : Idx
-  {
+  enum TaxiSimulationAction : Idx {
     GoNorth = 1,
     GoEast  = 2,
     GoSouth = 3,

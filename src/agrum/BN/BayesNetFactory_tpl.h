@@ -117,7 +117,7 @@ namespace gum {
   // @throw NotFound Raised if no variable matches the name.
   template < typename GUM_SCALAR >
   INLINE const DiscreteVariable&
-               BayesNetFactory< GUM_SCALAR >::variable(const std::string& name) const {
+     BayesNetFactory< GUM_SCALAR >::variable(const std::string& name) const {
     try {
       return _bn_->variable(variableId(name));
     } catch (NotFound&) { GUM_ERROR(NotFound, name) }

@@ -89,8 +89,7 @@ namespace gum {
     class CredalNet {
       public:
       /** @brief NodeType to speed-up computations in some algorithms */
-      enum class NodeType : char
-      {
+      enum class NodeType : char {
         Precise,
         Credal,
         Vacuous,

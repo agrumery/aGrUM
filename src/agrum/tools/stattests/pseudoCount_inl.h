@@ -35,10 +35,10 @@ namespace gum {
 
     /// default constructor
     INLINE
-       PseudoCount::PseudoCount(const DBRowGeneratorParser&                                 parser,
-                                const Apriori&                                              apriori,
-                                const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
-                                const Bijection< NodeId, std::size_t >& nodeId2columns) :
+    PseudoCount::PseudoCount(const DBRowGeneratorParser&                                 parser,
+                             const Apriori&                                              apriori,
+                             const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
+                             const Bijection< NodeId, std::size_t >& nodeId2columns) :
         apriori_(apriori.clone()),
         counter_(parser, ranges, nodeId2columns) {
       GUM_CONSTRUCTOR(PseudoCount);
@@ -78,14 +78,11 @@ namespace gum {
 
 
     /// changes the max number of threads used to parse the database
-    INLINE void PseudoCount::setNumberOfThreads(Size nb) { counter_.setNumberOfThreads(nb);
-    }
+    INLINE void PseudoCount::setNumberOfThreads(Size nb) { counter_.setNumberOfThreads(nb); }
 
 
     /// returns the current max number of threads of the scheduler
-    INLINE Size PseudoCount::getNumberOfThreads() const {
-      return counter_.getNumberOfThreads();
-    }
+    INLINE Size PseudoCount::getNumberOfThreads() const { return counter_.getNumberOfThreads(); }
 
 
     /// indicates whether the user set herself the number of threads

@@ -331,8 +331,7 @@ namespace gum {
     NodeSet _hard_ev_nodes_;
 
     /// the possible types of evidence changes
-    enum EvidenceChangeType
-    {
+    enum EvidenceChangeType {
       EVIDENCE_ADDED,
       EVIDENCE_ERASED,
       EVIDENCE_MODIFIED

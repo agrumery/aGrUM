@@ -41,32 +41,28 @@
 namespace gum {
 
 
-  enum FactorySimulationLandmark : Idx
-  {
+  enum FactorySimulationLandmark : Idx {
     HOME    = 0,
     WORK    = 1,
     THEATER = 2,
     CLUB    = 3,
     Factory = 4
   };
-  enum FactorySimulationLandmarkX : Idx
-  {
+  enum FactorySimulationLandmarkX : Idx {
     HOMEX    = 0,
     WORKX    = 0,
     THEATERX = 3,
     CLUBX    = 4,
     STATIONX = 2
   };
-  enum FactorySimulationLandmarkY : Idx
-  {
+  enum FactorySimulationLandmarkY : Idx {
     HOMEY    = 0,
     WORKY    = 4,
     THEATERY = 0,
     CLUBY    = 4,
     STATIONY = 1
   };
-  enum FactorySimulationAction : Idx
-  {
+  enum FactorySimulationAction : Idx {
     GoNorth = 0,
     GoEast  = 1,
     GoSouth = 2,

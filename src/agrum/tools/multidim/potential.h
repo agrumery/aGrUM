@@ -495,12 +495,12 @@ namespace gum {
     }
 
     virtual std::string toString() const {
-      auto table = this->content();
+      auto              table = this->content();
       std::stringstream ss;
 
       if (table->nbrDim() == 0) {
         Instantiation I(this);
-        ss<<"["<<this->get(I)<<"]";
+        ss << "[" << this->get(I) << "]";
         return ss.str();
       }
       const Size colwidth    = 6;

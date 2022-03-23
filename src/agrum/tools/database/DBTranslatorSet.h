@@ -437,7 +437,7 @@ namespace gum {
       std::size_t size() const;
 
       /// returns the set of translators
-      const std::vector< DBTranslator* > &translators() const;
+      const std::vector< DBTranslator* >& translators() const;
 
       /// @}
 

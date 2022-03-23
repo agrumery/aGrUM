@@ -124,7 +124,7 @@ namespace gum {
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/tools/graphicalModels/inference/scheduler/schedulerParallel_inl.h>
+#  include <agrum/tools/graphicalModels/inference/scheduler/schedulerParallel_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_SCHEDULER_PARALLEL_H */

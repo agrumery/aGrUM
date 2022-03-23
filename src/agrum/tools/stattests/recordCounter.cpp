@@ -84,10 +84,10 @@ namespace gum {
 
     /// copy constructor
     RecordCounter::RecordCounter(const RecordCounter& from) :
-        ThreadNumberManager(from),
-        _parsers_(from._parsers_), _ranges_(from._ranges_), _thread_ranges_(from._thread_ranges_),
-        _nodeId2columns_(from._nodeId2columns_), _last_DB_countings_(from._last_DB_countings_),
-        _last_DB_ids_(from._last_DB_ids_), _last_nonDB_countings_(from._last_nonDB_countings_),
+        ThreadNumberManager(from), _parsers_(from._parsers_), _ranges_(from._ranges_),
+        _thread_ranges_(from._thread_ranges_), _nodeId2columns_(from._nodeId2columns_),
+        _last_DB_countings_(from._last_DB_countings_), _last_DB_ids_(from._last_DB_ids_),
+        _last_nonDB_countings_(from._last_nonDB_countings_),
         _last_nonDB_ids_(from._last_nonDB_ids_),
         _min_nb_rows_per_thread_(from._min_nb_rows_per_thread_) {
       GUM_CONS_CPY(RecordCounter);
@@ -96,9 +96,8 @@ namespace gum {
 
     /// move constructor
     RecordCounter::RecordCounter(RecordCounter&& from) :
-        ThreadNumberManager(std::move(from)),
-        _parsers_(std::move(from._parsers_)), _ranges_(std::move(from._ranges_)),
-        _thread_ranges_(std::move(from._thread_ranges_)),
+        ThreadNumberManager(std::move(from)), _parsers_(std::move(from._parsers_)),
+        _ranges_(std::move(from._ranges_)), _thread_ranges_(std::move(from._thread_ranges_)),
         _nodeId2columns_(std::move(from._nodeId2columns_)),
         _last_DB_countings_(std::move(from._last_DB_countings_)),
         _last_DB_ids_(std::move(from._last_DB_ids_)),
@@ -121,15 +120,15 @@ namespace gum {
     RecordCounter& RecordCounter::operator=(const RecordCounter& from) {
       if (this != &from) {
         ThreadNumberManager::operator=(from);
-        _parsers_                = from._parsers_;
-        _ranges_                 = from._ranges_;
-        _thread_ranges_          = from._thread_ranges_;
-        _nodeId2columns_         = from._nodeId2columns_;
-        _last_DB_countings_      = from._last_DB_countings_;
-        _last_DB_ids_            = from._last_DB_ids_;
-        _last_nonDB_countings_   = from._last_nonDB_countings_;
-        _last_nonDB_ids_         = from._last_nonDB_ids_;
-        _min_nb_rows_per_thread_ = from._min_nb_rows_per_thread_;
+        _parsers_                    = from._parsers_;
+        _ranges_                     = from._ranges_;
+        _thread_ranges_              = from._thread_ranges_;
+        _nodeId2columns_             = from._nodeId2columns_;
+        _last_DB_countings_          = from._last_DB_countings_;
+        _last_DB_ids_                = from._last_DB_ids_;
+        _last_nonDB_countings_       = from._last_nonDB_countings_;
+        _last_nonDB_ids_             = from._last_nonDB_ids_;
+        _min_nb_rows_per_thread_     = from._min_nb_rows_per_thread_;
       }
       return *this;
     }
@@ -139,15 +138,15 @@ namespace gum {
     RecordCounter& RecordCounter::operator=(RecordCounter&& from) {
       if (this != &from) {
         ThreadNumberManager::operator=(std::move(from));
-        _parsers_                = std::move(from._parsers_);
-        _ranges_                 = std::move(from._ranges_);
-        _thread_ranges_          = std::move(from._thread_ranges_);
-        _nodeId2columns_         = std::move(from._nodeId2columns_);
-        _last_DB_countings_      = std::move(from._last_DB_countings_);
-        _last_DB_ids_            = std::move(from._last_DB_ids_);
-        _last_nonDB_countings_   = std::move(from._last_nonDB_countings_);
-        _last_nonDB_ids_         = std::move(from._last_nonDB_ids_);
-        _min_nb_rows_per_thread_ = from._min_nb_rows_per_thread_;
+        _parsers_                    = std::move(from._parsers_);
+        _ranges_                     = std::move(from._ranges_);
+        _thread_ranges_              = std::move(from._thread_ranges_);
+        _nodeId2columns_             = std::move(from._nodeId2columns_);
+        _last_DB_countings_          = std::move(from._last_DB_countings_);
+        _last_DB_ids_                = std::move(from._last_DB_ids_);
+        _last_nonDB_countings_       = std::move(from._last_nonDB_countings_);
+        _last_nonDB_ids_             = std::move(from._last_nonDB_ids_);
+        _min_nb_rows_per_thread_     = from._min_nb_rows_per_thread_;
       }
       return *this;
     }
@@ -499,9 +498,9 @@ namespace gum {
             const std::pair< std::size_t, std::size_t >& b) -> bool { return a.first < b.first; });
 
       // create parsers if needed
-      const std::size_t nb_ranges  = _thread_ranges_.size();
-      const auto max_nb_threads = ThreadNumberManager::getNumberOfThreads();
-      const std::size_t nb_threads = nb_ranges <= max_nb_threads ? nb_ranges : max_nb_threads;
+      const std::size_t nb_ranges      = _thread_ranges_.size();
+      const auto        max_nb_threads = ThreadNumberManager::getNumberOfThreads();
+      const std::size_t nb_threads     = nb_ranges <= max_nb_threads ? nb_ranges : max_nb_threads;
       while (_parsers_.size() < nb_threads) {
         ThreadData< DBRowGeneratorParser > new_parser(_parsers_[0]);
         _parsers_.push_back(std::move(new_parser));
@@ -528,12 +527,10 @@ namespace gum {
 
       // here, we create a lambda that will be executed by all the threads
       // to perform the countings in a parallel manner
-      auto threadedCount =
-         [this, nb_ranges, ids_size, &thread_countings, cols_offsets] (
-            const std::size_t   this_thread,
-            const std::size_t   nb_threads,
-            const std::size_t   nb_loop)
-        -> void {
+      auto threadedCount = [this, nb_ranges, ids_size, &thread_countings, cols_offsets](
+                              const std::size_t this_thread,
+                              const std::size_t nb_threads,
+                              const std::size_t nb_loop) -> void {
         if (this_thread + nb_loop < nb_ranges) {
           // get the database parser and the contingency table to fill
           DBRowGeneratorParser& parser = this->_parsers_[this_thread].data;
@@ -550,8 +547,7 @@ namespace gum {
               // fill the counts for the current row
               std::size_t offset = std::size_t(0);
               for (std::size_t i = std::size_t(0); i < ids_size; ++i) {
-                offset +=
-                  row[cols_offsets[i].first].discr_val * cols_offsets[i].second;
+                offset += row[cols_offsets[i].first].discr_val * cols_offsets[i].second;
               }
 
               countings[offset] += row.weight();
@@ -562,7 +558,7 @@ namespace gum {
         }
       };
 
-      
+
       // launch the threads
       for (std::size_t i = std::size_t(0); i < nb_ranges; i += nb_threads) {
         ThreadExecutor::execute(nb_threads, threadedCount, i);
@@ -701,8 +697,8 @@ namespace gum {
     }
 
 
-    } /* namespace learning */
+  } /* namespace learning */
 
-  } /* namespace gum */
+} /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

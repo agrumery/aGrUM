@@ -241,7 +241,7 @@ namespace gum_tests {
       gum::NodeSet               results{1, 2, 3, 4, 5, 6, 7, 8};
       if (!available_operations.empty()) {
         do {
-          gum::NodeId               node = *available_operations.begin();
+          gum::NodeId            node = *available_operations.begin();
           gum::ScheduleOperator& op
              = const_cast< gum::ScheduleOperator& >(schedule.operation(node));
           op.execute();
@@ -365,8 +365,7 @@ namespace gum_tests {
       TS_ASSERT(result1 == *result2);
 
       for (const auto pot: ops_plus_res.second) {
-        if (!sched_to_comb.exists(pot))
-          delete pot;
+        if (!sched_to_comb.exists(pot)) delete pot;
       }
 
       delete result2;
@@ -428,14 +427,14 @@ namespace gum_tests {
          sched_to_comb{&xt1, &xt2, &xt3, &xt4, &xt5, &xt6, &xt7, &xt8};
 
       gum::Schedule schedule;
-      auto xxt1 = schedule.insertScheduleMultiDim(xt1);
-      auto xxt2 = schedule.insertScheduleMultiDim(xt2);
-      auto xxt3 = schedule.insertScheduleMultiDim(xt3);
-      auto xxt4 = schedule.insertScheduleMultiDim(xt4);
-      auto xxt5 = schedule.insertScheduleMultiDim(xt5);
-      auto xxt6 = schedule.insertScheduleMultiDim(xt6);
-      auto xxt7 = schedule.insertScheduleMultiDim(xt7);
-      auto xxt8 = schedule.insertScheduleMultiDim(xt8);
+      auto          xxt1 = schedule.insertScheduleMultiDim(xt1);
+      auto          xxt2 = schedule.insertScheduleMultiDim(xt2);
+      auto          xxt3 = schedule.insertScheduleMultiDim(xt3);
+      auto          xxt4 = schedule.insertScheduleMultiDim(xt4);
+      auto          xxt5 = schedule.insertScheduleMultiDim(xt5);
+      auto          xxt6 = schedule.insertScheduleMultiDim(xt6);
+      auto          xxt7 = schedule.insertScheduleMultiDim(xt7);
+      auto          xxt8 = schedule.insertScheduleMultiDim(xt8);
       gum::Set< const gum::IScheduleMultiDim* >
          xxsched_to_comb{xxt1, xxt2, xxt3, xxt4, xxt5, xxt6, xxt7, xxt8};
 
@@ -445,7 +444,7 @@ namespace gum_tests {
       gum::NodeSet               results{1, 2, 3, 4, 5, 6, 7, 8};
       if (!available_operations.empty()) {
         do {
-          gum::NodeId               node = *available_operations.begin();
+          gum::NodeId            node = *available_operations.begin();
           gum::ScheduleOperator& op
              = const_cast< gum::ScheduleOperator& >(schedule.operation(node));
           op.execute();
@@ -490,8 +489,7 @@ namespace gum_tests {
       TS_ASSERT(*all_res == *base_res)
 
       for (const auto pot: xxres) {
-        if (!xxsched_to_comb.exists(pot))
-          delete pot;
+        if (!xxsched_to_comb.exists(pot)) delete pot;
       }
 
       delete all_res;

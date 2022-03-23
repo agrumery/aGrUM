@@ -44,9 +44,9 @@ namespace gum {
 
     /// default constructor
     INLINE
-       IndependenceTest::IndependenceTest(const DBRowGeneratorParser&             parser,
-                                          const Apriori&                          apriori,
-                                          const Bijection< NodeId, std::size_t >& nodeId2columns) :
+    IndependenceTest::IndependenceTest(const DBRowGeneratorParser&             parser,
+                                       const Apriori&                          apriori,
+                                       const Bijection< NodeId, std::size_t >& nodeId2columns) :
         apriori_(apriori.clone()),
         counter_(parser, nodeId2columns) {
       GUM_CONSTRUCTOR(IndependenceTest);
@@ -78,9 +78,7 @@ namespace gum {
 
 
     /// changes the max number of threads used to parse the database
-    INLINE void IndependenceTest::setNumberOfThreads(Size nb) {
-      counter_.setNumberOfThreads(nb);
-    }
+    INLINE void IndependenceTest::setNumberOfThreads(Size nb) { counter_.setNumberOfThreads(nb); }
 
 
     /// returns the number of threads used to parse the database

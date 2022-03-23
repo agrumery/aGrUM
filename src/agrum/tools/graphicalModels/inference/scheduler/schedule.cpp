@@ -38,7 +38,7 @@
 namespace gum {
 
   // the version number of the schedules
-  std::atomic<Idx> Schedule::_overall_version_number_ = Idx(0);
+  std::atomic< Idx > Schedule::_overall_version_number_ = Idx(0);
 
 
   /// returns the graph that would obtain when no operation is performed
@@ -211,11 +211,9 @@ namespace gum {
 
   /// default constructor (construct an empty set of operations)
   Schedule::Schedule(const Size nb_ops) :
-      _dag_(nb_ops, true, 2 * nb_ops, true),
-      _node2op_(nb_ops), _multidim_location_(2 * nb_ops),
-      _multidim2id_(2 * nb_ops), _emplaced_multidims_(2 * nb_ops),
-      _multidim2nodes_(2 * nb_ops), _deleted_multidim2node_(2 * nb_ops),
-      _version_number_(_newVersionNumber_()) {
+      _dag_(nb_ops, true, 2 * nb_ops, true), _node2op_(nb_ops), _multidim_location_(2 * nb_ops),
+      _multidim2id_(2 * nb_ops), _emplaced_multidims_(2 * nb_ops), _multidim2nodes_(2 * nb_ops),
+      _deleted_multidim2node_(2 * nb_ops), _version_number_(_newVersionNumber_()) {
     // for debugging purposes
     GUM_CONSTRUCTOR(Schedule);
   }
@@ -322,7 +320,7 @@ namespace gum {
       if (!from._node2op_.existsFirst(iter.first())) return false;
 
     // map "this"'s operations and source multidims to those of "from"
-    HashTable< const ScheduleOperator*, const ScheduleOperator* > this_op2from(_node2op_.size());
+    HashTable< const ScheduleOperator*, const ScheduleOperator* >   this_op2from(_node2op_.size());
     Bijection< const IScheduleMultiDim*, const IScheduleMultiDim* > this_multidim2from(
        _multidim2nodes_.size());
 
@@ -473,7 +471,7 @@ namespace gum {
 
   /// inserts an operation into the schedule
   const ScheduleOperator& Schedule::insertOperation(const ScheduleOperator& op,
-                                                     const bool are_results_persistent) {
+                                                    const bool are_results_persistent) {
     // check that the parameters of the operation already belong to the schedule.
     // to do so, it is sufficient to check that their ids belong to the schedule
     const Sequence< const IScheduleMultiDim* >& op_args = op.args();

@@ -122,7 +122,7 @@ namespace gum {
 
     /// indicates whether the user set herself the number of threads
     INLINE bool CorrectedMutualInformation::isGumNumberOfThreadsOverriden() const {
-       return _NH_.isGumNumberOfThreadsOverriden();
+      return _NH_.isGumNumberOfThreadsOverriden();
     }
 
 

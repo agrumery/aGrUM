@@ -32,7 +32,6 @@
 namespace gum {
 
   struct IThreadNumberManager {
-
     /// sets the number max of threads that can be used
     /**
      * @param nb the number max of threads to be used. If this number is set to 0, then
@@ -45,9 +44,8 @@ namespace gum {
 
     /// indicates whether the user set herself the number of threads
     virtual bool isGumNumberOfThreadsOverriden() const = 0;
-
   };
 
-} // namespace gum
+}   // namespace gum
 
 #endif   // AGRUM_ITHREAD_NUMBER_MANAGER_H

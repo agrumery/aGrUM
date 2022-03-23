@@ -390,7 +390,7 @@ namespace gum {
   template < class TABLE >
   INLINE void MultiDimCombinationDefault< TABLE >::_freeData_(
      std::vector< const IScheduleMultiDim* >& tables,
-     std::vector< ScheduleOperator* >&       operations) const {
+     std::vector< ScheduleOperator* >&        operations) const {
     for (auto op: operations)
       delete op;
 

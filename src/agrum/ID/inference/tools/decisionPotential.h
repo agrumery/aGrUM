@@ -138,7 +138,8 @@ namespace gum {
     }
 
 
-    static Potential< GUM_SCALAR > divideEvenZero(const Potential< GUM_SCALAR >& p1,const Potential< GUM_SCALAR >& p2) {
+    static Potential< GUM_SCALAR > divideEvenZero(const Potential< GUM_SCALAR >& p1,
+                                                  const Potential< GUM_SCALAR >& p2) {
       Potential< GUM_SCALAR > res(p1);
       Instantiation           I(res);
       for (I.setFirst(); !I.end(); I.inc()) {

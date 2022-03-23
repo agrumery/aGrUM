@@ -30,8 +30,8 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // include the inlined functions if necessary
-#ifdef GUM_NO_INLINE
-#include <agrum/tools/database/DBTranslator_inl.h>
-#endif /* GUM_NO_INLINE */
+#  ifdef GUM_NO_INLINE
+#    include <agrum/tools/database/DBTranslator_inl.h>
+#  endif /* GUM_NO_INLINE */
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

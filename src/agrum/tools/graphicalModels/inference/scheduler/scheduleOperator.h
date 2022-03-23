@@ -234,7 +234,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/tools/graphicalModels/inference/scheduler/scheduleOperator_inl.h>
+#  include <agrum/tools/graphicalModels/inference/scheduler/scheduleOperator_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_SCHEDULE_OPERATOR_H */

@@ -30,7 +30,7 @@
 #include <agrum/tools/core/math/variableLog2ParamComplexity.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/tools/core/math/variableLog2ParamComplexity_inl.h>
+#  include <agrum/tools/core/math/variableLog2ParamComplexity_inl.h>
 #endif   // GUM_NO_INLINE
 
 namespace gum {

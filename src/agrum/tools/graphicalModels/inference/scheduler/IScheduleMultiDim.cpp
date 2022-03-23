@@ -37,8 +37,8 @@
 
 namespace gum {
 
-    // the id used whenever any ScheduleMultiDim of any type asks for a new id
-    std::atomic<Idx> IScheduleMultiDim::_multidim_id_ = Idx(0);
+  // the id used whenever any ScheduleMultiDim of any type asks for a new id
+  std::atomic< Idx > IScheduleMultiDim::_multidim_id_ = Idx(0);
 
 }   // namespace gum
 

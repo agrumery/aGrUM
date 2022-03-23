@@ -34,12 +34,10 @@ namespace gum {
 
   template < int v >
   struct Int2Type {
-    enum
-    { value = v };
+    enum { value = v };
   };
 
-  enum TESTNAME
-  {
+  enum TESTNAME {
     GTEST           = 1,
     CHI2TEST        = 2,
     LEASTSQUARETEST = 3
@@ -66,8 +64,7 @@ namespace gum {
     typedef B type;
   };
 
-  enum LEARNERNAME
-  {
+  enum LEARNERNAME {
     IMDDILEARNER = 1,
     ITILEARNER   = 2
   };

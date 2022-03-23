@@ -298,7 +298,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE const NodeSet&
-               IMarkovNet< GUM_SCALAR >::smallestFactorFromNode(const std::string& name) const {
+     IMarkovNet< GUM_SCALAR >::smallestFactorFromNode(const std::string& name) const {
     try {
       return smallestFactorFromNode(idFromName(name));
     } catch (NotFound) { GUM_ERROR(NotFound, "No factor containing the variable <" << name << ">") }

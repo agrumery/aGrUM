@@ -53,12 +53,9 @@ namespace gum {
      * take care of deallocating the pointers it contains. If the container
      * directly contains tables, then those are supposed to be inserted into
      * the container by moves. */
-    template < typename TABLE,
-               typename CONTAINER_TABLE,
-               template < typename... > class CONTAINER >
+    template < typename TABLE, typename CONTAINER_TABLE, template < typename... > class CONTAINER >
     struct Execution {
-      void execute(TABLE& table,
-                   CONTAINER< CONTAINER_TABLE >& container);
+      void execute(TABLE& table, CONTAINER< CONTAINER_TABLE >& container);
     };
 
     /// Specialized structure to store a Table into a Set<Table*>
@@ -67,21 +64,19 @@ namespace gum {
      * deallocating the pointers it contains. */
     template < typename TABLE >
     struct Execution< TABLE, TABLE*, Set > {
-      void execute(TABLE& table,
-                   Set< TABLE* >& container);
+      void execute(TABLE& table, Set< TABLE* >& container);
     };
 
     /// a Specialized structure to store a Table into a vector<Table>
     /** @warning we assume that the container will take the ownership of the
      * tables inserted into it, i.e., the tables are supposed to be inserted
      * into the container by moves. */
-     template < typename TABLE >
-     struct Execution< TABLE, TABLE, std::vector > {
-      void execute(TABLE& table,
-                   std::vector< TABLE >& container);
+    template < typename TABLE >
+    struct Execution< TABLE, TABLE, std::vector > {
+      void execute(TABLE& table, std::vector< TABLE >& container);
     };
 
-  }
+  }   // namespace ScheduleStorageMethod
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
@@ -91,14 +86,13 @@ namespace gum {
    * @headerfile scheduleStore.h <agrum/tools/graphicalModels/inference/scheduler/scheduleStore.h>
    * @ingroup inference_schedule
    */
-  template < typename TABLE,
-             template < typename... > class CONTAINER >
+  template < typename TABLE, template < typename... > class CONTAINER >
   class ScheduleStorage:
       public ScheduleOperator,
-      private ScheduleStorageMethod::Execution< typename std::remove_pointer<TABLE>::type,
-                                                TABLE, CONTAINER > {
+      private ScheduleStorageMethod::
+         Execution< typename std::remove_pointer< TABLE >::type, TABLE, CONTAINER > {
     public:
-    using SCHED_TABLE = typename std::remove_pointer<TABLE>::type;
+    using SCHED_TABLE = typename std::remove_pointer< TABLE >::type;
 
 
     // ############################################################################
@@ -111,8 +105,7 @@ namespace gum {
      * eventually be stored.
      * @warning table is stored only by reference within the ScheduleStorage.
      */
-    explicit ScheduleStorage(const IScheduleMultiDim& table,
-                             CONTAINER< TABLE >& container);
+    explicit ScheduleStorage(const IScheduleMultiDim& table, CONTAINER< TABLE >& container);
 
     /// copy constructor
     ScheduleStorage(const ScheduleStorage< TABLE, CONTAINER >& from);
@@ -135,12 +128,10 @@ namespace gum {
     /// @{
 
     /// copy operator
-    ScheduleStorage< TABLE, CONTAINER >&
-       operator=(const ScheduleStorage< TABLE, CONTAINER >&);
+    ScheduleStorage< TABLE, CONTAINER >& operator=(const ScheduleStorage< TABLE, CONTAINER >&);
 
     /// move operator
-    ScheduleStorage< TABLE, CONTAINER >&
-       operator=(ScheduleStorage< TABLE, CONTAINER >&&);
+    ScheduleStorage< TABLE, CONTAINER >& operator=(ScheduleStorage< TABLE, CONTAINER >&&);
 
     /// operator ==
     /** Two ScheduleStorage are identical if and only if they have equal (==)
@@ -161,16 +152,14 @@ namespace gum {
      * ScheduleMultiDim arguments and the same containers to store their tables
      * into. By Equal arguments, we stress that we mean that these
      * ScheduleMultiDims have the same IDs*/
-    virtual bool operator==(
-       const ScheduleStorage< TABLE, CONTAINER >&) const;
+    virtual bool operator==(const ScheduleStorage< TABLE, CONTAINER >&) const;
 
     /// operator !=
     /** Two ScheduleStorage are identical if and only if they have equal (==)
      * ScheduleMultiDim arguments and the same containers to store their tables
      * into. By Equal arguments, we stress that we mean that these
      * ScheduleMultiDims have the same IDs*/
-    virtual bool operator!=(
-       const ScheduleStorage< TABLE, CONTAINER >&) const;
+    virtual bool operator!=(const ScheduleStorage< TABLE, CONTAINER >&) const;
 
     /// @}
 
@@ -196,8 +185,7 @@ namespace gum {
      * are essentially identical but they may have different Ids (so that they
      * may not be ==).
      */
-    bool hasSameArguments(
-       const ScheduleStorage< TABLE, CONTAINER >&) const;
+    bool hasSameArguments(const ScheduleStorage< TABLE, CONTAINER >&) const;
 
     /** @brief checks whether two ScheduleProjection have similar parameters
      * (same variables but not necessarily the same content)
@@ -207,15 +195,13 @@ namespace gum {
     /** @brief checks whether two ScheduleProjection have similar parameters
      * (same variables but not necessarily the same content)
      */
-    bool hasSimilarArguments(
-       const ScheduleStorage< TABLE, CONTAINER >&) const;
+    bool hasSimilarArguments(const ScheduleStorage< TABLE, CONTAINER >&) const;
 
     /// checks whether two ScheduleOperator perform the same operation
     bool isSameOperator(const ScheduleOperator&) const final;
 
     /// checks whether two ScheduleOperator perform the same operation
-    bool isSameOperator(
-       const ScheduleStorage< TABLE, CONTAINER >&) const;
+    bool isSameOperator(const ScheduleStorage< TABLE, CONTAINER >&) const;
 
     /// returns the argument of the storing function
     const ScheduleMultiDim< SCHED_TABLE >& arg() const;
@@ -244,8 +230,7 @@ namespace gum {
      * @throws TypeError is raised if at least one element of new_args does
      * not have a type compatible with what the ScheduleOperator expects.
      */
-    void updateArgs(
-       const Sequence< const IScheduleMultiDim* >& new_args) final;
+    void updateArgs(const Sequence< const IScheduleMultiDim* >& new_args) final;
 
     /** @brief returns an estimation of the number of elementary operations
      * needed to perform the ScheduleOperator */
@@ -292,7 +277,6 @@ namespace gum {
 
     /// indicates whether the operator has been performed or not
     bool _is_executed_{false};
-
   };
 
 } /* namespace gum */

@@ -54,7 +54,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(translator.translate("4.22x"), gum::TypeError)
       TS_ASSERT_THROWS(translator.translate("0x422"), gum::TypeError)
 
-      std::vector< std::string >                       missing{"2", "N/A", "20", "4", "xxx"};
+      std::vector< std::string >                     missing{"2", "N/A", "20", "4", "xxx"};
       gum::learning::DBTranslator4ContinuousVariable translator2(missing);
       TS_ASSERT(!translator2.missingSymbols().exists("2"))
       TS_ASSERT(!translator2.missingSymbols().exists("20"))
@@ -64,7 +64,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(translator2.translate("N/A").cont_val, std::numeric_limits< float >::max())
       TS_ASSERT_EQUALS(translator2.translate("xxx").cont_val, std::numeric_limits< float >::max())
 
-      gum::ContinuousVariable< double >                var("X2", "", -2, 10);
+      gum::ContinuousVariable< double >              var("X2", "", -2, 10);
       gum::learning::DBTranslator4ContinuousVariable translator3(var, missing);
       TS_ASSERT(!translator3.missingSymbols().exists("2"))
       TS_ASSERT(!translator3.missingSymbols().exists("4"))
@@ -89,7 +89,7 @@ namespace gum_tests {
       } catch (std::bad_cast&) { good_cont = 0; }
       TS_ASSERT_EQUALS(good_cont, 1)
 
-      std::vector< std::string > missing4{"2", "N/A", "20", "4", "xxx", "-10"};
+      std::vector< std::string >                     missing4{"2", "N/A", "20", "4", "xxx", "-10"};
       gum::learning::DBTranslator4ContinuousVariable translator4(var, missing4, true);
       TS_ASSERT(!translator4.missingSymbols().exists("2"))
       TS_ASSERT(!translator4.missingSymbols().exists("4"))
@@ -133,9 +133,7 @@ namespace gum_tests {
         gum::ContinuousVariable< double > var("X2", "", -2, 10);
         std::vector< std::string >        missing{"2", "N/A", "20", "4", "xxx", "-10"};
 
-        gum::learning::DBTranslator4ContinuousVariable translator(var,
-                                                                                       missing,
-                                                                                       true);
+        gum::learning::DBTranslator4ContinuousVariable translator(var, missing, true);
         TS_ASSERT(!translator.missingSymbols().exists("2"))
         TS_ASSERT(!translator.missingSymbols().exists("4"))
         TS_ASSERT_EQUALS(translator.translate("-10").cont_val, std::numeric_limits< float >::max())
@@ -164,8 +162,7 @@ namespace gum_tests {
         TS_ASSERT(translator2.missingSymbols().exists(translator2.translateBack(
            gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()})));
 
-        gum::learning::DBTranslator4ContinuousVariable translator3(
-           translator2);
+        gum::learning::DBTranslator4ContinuousVariable translator3(translator2);
         TS_ASSERT(!translator3.missingSymbols().exists("2"))
         TS_ASSERT(!translator3.missingSymbols().exists("4"))
         TS_ASSERT_EQUALS(translator3.translate("-10").cont_val,
@@ -180,8 +177,7 @@ namespace gum_tests {
         TS_ASSERT(translator3.missingSymbols().exists(translator3.translateBack(
            gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()})));
 
-        gum::learning::DBTranslator4ContinuousVariable translator4(
-           std::move(translator3));
+        gum::learning::DBTranslator4ContinuousVariable translator4(std::move(translator3));
         TS_ASSERT(!translator4.missingSymbols().exists("2"))
         TS_ASSERT(!translator4.missingSymbols().exists("4"))
         TS_ASSERT_EQUALS(translator4.translate("-10").cont_val,
@@ -196,8 +192,7 @@ namespace gum_tests {
         TS_ASSERT(translator4.missingSymbols().exists(translator4.translateBack(
            gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()})));
 
-        gum::learning::DBTranslator4ContinuousVariable* translator5
-           = translator4.clone();
+        gum::learning::DBTranslator4ContinuousVariable* translator5 = translator4.clone();
 
         TS_ASSERT(!translator5->missingSymbols().exists("2"))
         TS_ASSERT(!translator5->missingSymbols().exists("4"))

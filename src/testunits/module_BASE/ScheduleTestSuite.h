@@ -472,32 +472,32 @@ namespace gum_tests {
 
       available_operations = schedule2.availableOperations();
       TS_ASSERT(available_operations.size() == 1)
-      gum::ScheduleOperator& xop1 = const_cast< gum::ScheduleOperator& >(
-         schedule2.operation(*available_operations.begin()));
+      gum::ScheduleOperator& xop1
+         = const_cast< gum::ScheduleOperator& >(schedule2.operation(*available_operations.begin()));
       xop1.execute();
       TS_ASSERT(xop1.isExecuted())
       schedule2.updateAfterExecution(xop1, available_nodes, true);
 
       available_operations = schedule2.availableOperations();
       TS_ASSERT(available_operations.size() == 1)
-      gum::ScheduleOperator& xop2 = const_cast< gum::ScheduleOperator& >(
-         schedule2.operation(*available_operations.begin()));
+      gum::ScheduleOperator& xop2
+         = const_cast< gum::ScheduleOperator& >(schedule2.operation(*available_operations.begin()));
       xop2.execute();
       TS_ASSERT(xop2.isExecuted())
       schedule2.updateAfterExecution(xop2, available_nodes, false);
 
       available_operations = schedule2.availableOperations();
       TS_ASSERT(available_operations.size() == 2)
-      gum::ScheduleOperator& xop3 = const_cast< gum::ScheduleOperator& >(
-         schedule2.operation(*available_operations.begin()));
+      gum::ScheduleOperator& xop3
+         = const_cast< gum::ScheduleOperator& >(schedule2.operation(*available_operations.begin()));
       xop3.execute();
       TS_ASSERT(xop3.isExecuted())
       schedule2.updateAfterExecution(xop3, available_nodes, false);
 
       available_operations = schedule2.availableOperations();
       TS_ASSERT(available_operations.size() == 1);
-      gum::ScheduleOperator& xop4 = const_cast< gum::ScheduleOperator& >(
-         schedule2.operation(*available_operations.begin()));
+      gum::ScheduleOperator& xop4
+         = const_cast< gum::ScheduleOperator& >(schedule2.operation(*available_operations.begin()));
       xop4.execute();
       TS_ASSERT(xop4.isExecuted())
 

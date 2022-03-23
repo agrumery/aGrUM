@@ -32,8 +32,8 @@ namespace gum {
 
     /// default constructor
     INLINE
-       AprioriSmoothing::AprioriSmoothing(const DatabaseTable&                    database,
-                                          const Bijection< NodeId, std::size_t >& nodeId2columns) :
+    AprioriSmoothing::AprioriSmoothing(const DatabaseTable&                    database,
+                                       const Bijection< NodeId, std::size_t >& nodeId2columns) :
         Apriori(database, nodeId2columns) {
       GUM_CONSTRUCTOR(AprioriSmoothing);
     }

@@ -102,15 +102,13 @@ namespace gum {
       legal_changes_.clear();
 
       // for all the pairs of nodes, consider adding, reverse and removing arcs
-      const Size nb_threads = _max_threads_number_;
-      std::vector< Set< GraphChange > > legal_changes (nb_threads);
- 
+      const Size                        nb_threads = _max_threads_number_;
+      std::vector< Set< GraphChange > > legal_changes(nb_threads);
+
       // create the lambda that will be used to fill the legal changes
-      auto threadedLegalSet = [this, &legal_changes] (
-           const std::size_t this_thread,
-           const std::size_t nb_threads) -> void {
-        for (Idx i = 0, j = 0; j < this->order_.size();
-             i = (i + 1) % nb_threads, ++j) {
+      auto threadedLegalSet = [this, &legal_changes](const std::size_t this_thread,
+                                                     const std::size_t nb_threads) -> void {
+        for (Idx i = 0, j = 0; j < this->order_.size(); i = (i + 1) % nb_threads, ++j) {
           if (i == this_thread) {
             for (Idx k = j + 1; k < this->order_.size(); ++k) {
               // try arc additions
@@ -122,7 +120,7 @@ namespace gum {
           }
         }
       };
-        
+
       // launch the threads
       ThreadExecutor::execute(nb_threads, threadedLegalSet);
 
@@ -223,13 +221,12 @@ namespace gum {
     INLINE void GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::setMaxNbThreads(Size nb) noexcept {
       if (nb == 0) nb = gum::getNumberOfThreads();
       _max_threads_number_ = nb;
-
     }
 
     /// returns the constraint that is used by the generator
     template < typename STRUCT_CONSTRAINT >
     INLINE STRUCT_CONSTRAINT&
-           GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::constraint() const noexcept {
+       GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::constraint() const noexcept {
       return *constraint_;
     }
 

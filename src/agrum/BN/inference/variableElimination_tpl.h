@@ -718,10 +718,10 @@ namespace gum {
             hard_variables.insert(&(bn.variable(xnode)));
           }
           // perform the combination of those potentials and their projection
-          MultiDimCombineAndProjectDefault< Potential< GUM_SCALAR > >
-             combine_and_project(_combination_op_, VENewprojPotential);
-          _PotentialSet_ new_cpt_list
-             = combine_and_project.execute(marg_cpt_set, hard_variables);
+          MultiDimCombineAndProjectDefault< Potential< GUM_SCALAR > > combine_and_project(
+             _combination_op_,
+             VENewprojPotential);
+          _PotentialSet_ new_cpt_list = combine_and_project.execute(marg_cpt_set, hard_variables);
 
           // there should be only one potential in new_cpt_list
           if (new_cpt_list.size() != 1) {
@@ -855,8 +855,9 @@ namespace gum {
 
     // create a combine and project operator that will perform the
     // marginalization
-    MultiDimCombineAndProjectDefault< Potential< GUM_SCALAR > >
-       combine_and_project(_combination_op_, _projection_op_);
+    MultiDimCombineAndProjectDefault< Potential< GUM_SCALAR > > combine_and_project(
+       _combination_op_,
+       _projection_op_);
     _PotentialSet_ new_pot_list = combine_and_project.execute(pot_list, del_vars);
 
     // remove all the potentials that were created due to projections of
@@ -932,8 +933,7 @@ namespace gum {
         new_pot_list.clear();
       }
     } else {
-      MultiDimCombinationDefault< Potential< GUM_SCALAR > >
-         fast_combination(_combination_op_);
+      MultiDimCombinationDefault< Potential< GUM_SCALAR > > fast_combination(_combination_op_);
       joint = fast_combination.execute(new_pot_list);
     }
 
@@ -1007,8 +1007,7 @@ namespace gum {
       if (pot_list.size() == 1) {
         return new Potential< GUM_SCALAR >(**(pot_list.begin()));
       } else {
-        MultiDimCombinationDefault< Potential< GUM_SCALAR > >
-           fast_combination(_combination_op_);
+        MultiDimCombinationDefault< Potential< GUM_SCALAR > > fast_combination(_combination_op_);
         return fast_combination.execute(pot_list);
       }
     }
@@ -1053,8 +1052,7 @@ namespace gum {
       for (const auto node: hard_ev_nodes) {
         new_new_pot_list.insert(evidence[node]);
       }
-      MultiDimCombinationDefault< Potential< GUM_SCALAR > >
-         fast_combination(_combination_op_);
+      MultiDimCombinationDefault< Potential< GUM_SCALAR > > fast_combination(_combination_op_);
       joint = fast_combination.execute(new_new_pot_list);
     }
 

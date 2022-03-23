@@ -489,7 +489,7 @@ namespace gum {
   // Getter by name
   template < typename GUM_SCALAR >
   INLINE const DiscreteVariable&
-               InfluenceDiagram< GUM_SCALAR >::variableFromName(const std::string& name) const {
+     InfluenceDiagram< GUM_SCALAR >::variableFromName(const std::string& name) const {
     return _variableMap_.variableFromName(name);
   }
 

@@ -129,7 +129,6 @@ namespace gum {
      */
     class DBInitializerFromCSV: public IDBInitializer {
       public:
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -145,11 +144,11 @@ namespace gum {
        * @param quoteMarker the character that is used to quote the sentences
        * in the CSV file
        */
-      DBInitializerFromCSV(const std::string     filename,
-                           bool                  fileContainsNames = true,
-                           const std::string     delimiter         = ",",
-                           const char            commentmarker     = '#',
-                           const char            quoteMarker       = '"');
+      DBInitializerFromCSV(const std::string filename,
+                           bool              fileContainsNames = true,
+                           const std::string delimiter         = ",",
+                           const char        commentmarker     = '#',
+                           const char        quoteMarker       = '"');
 
       /// copy constructor
       /** the new initializer points to the same file as from, but it reparses
@@ -234,7 +233,7 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/tools/database/DBInitializerFromCSV_inl.h>
+#  include <agrum/tools/database/DBInitializerFromCSV_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_DB_INITILIALIZER_FROM_CSV_H */

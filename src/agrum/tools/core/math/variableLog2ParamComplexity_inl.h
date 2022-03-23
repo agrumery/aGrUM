@@ -37,8 +37,7 @@
 namespace gum {
 
   /// default constructor
-  INLINE VariableLog2ParamComplexity::VariableLog2ParamComplexity() :
-      _cache_(1000) {
+  INLINE VariableLog2ParamComplexity::VariableLog2ParamComplexity() : _cache_(1000) {
     GUM_CONSTRUCTOR(VariableLog2ParamComplexity);
   }
 
@@ -46,14 +45,15 @@ namespace gum {
   /// copy constructor
   INLINE VariableLog2ParamComplexity::VariableLog2ParamComplexity(
      const VariableLog2ParamComplexity& from) :
-      _use_cache_(from._use_cache_), _cache_(from._cache_) {
+      _use_cache_(from._use_cache_),
+      _cache_(from._cache_) {
     GUM_CONS_CPY(VariableLog2ParamComplexity);
   }
 
 
   /// move constructor
-  INLINE VariableLog2ParamComplexity::VariableLog2ParamComplexity(
-     VariableLog2ParamComplexity&& from) :
+  INLINE
+  VariableLog2ParamComplexity::VariableLog2ParamComplexity(VariableLog2ParamComplexity&& from) :
       _use_cache_(from._use_cache_), _cache_(std::move(from._cache_)) {
     GUM_CONS_MOV(VariableLog2ParamComplexity);
   }
@@ -72,8 +72,8 @@ namespace gum {
 
 
   /// copy operator
-  INLINE VariableLog2ParamComplexity& VariableLog2ParamComplexity::operator=(
-     const VariableLog2ParamComplexity& from) {
+  INLINE VariableLog2ParamComplexity&
+     VariableLog2ParamComplexity::operator=(const VariableLog2ParamComplexity& from) {
     return *this;
   }
 
@@ -86,15 +86,11 @@ namespace gum {
 
 
   /// indicates whether we wish to use a cache for the Cnr
-  INLINE void VariableLog2ParamComplexity::useCache(const bool on_off) {
-    _use_cache_ = on_off;
-  }
+  INLINE void VariableLog2ParamComplexity::useCache(const bool on_off) { _use_cache_ = on_off; }
 
 
   /// clears the current cache
-  INLINE void VariableLog2ParamComplexity::clearCache() {
-    _cache_.clear();
-  }
+  INLINE void VariableLog2ParamComplexity::clearCache() { _cache_.clear(); }
 
 } /* namespace gum */
 

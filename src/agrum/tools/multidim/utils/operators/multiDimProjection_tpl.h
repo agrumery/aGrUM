@@ -110,8 +110,7 @@ namespace gum {
                                            const Set< const DiscreteVariable* >& del_vars,
                                            const bool is_result_persistent) const {
     const auto& xtable = dynamic_cast< const ScheduleMultiDim< TABLE >& >(*table);
-    const auto& op
-       = schedule.emplaceProjection(xtable, del_vars, proj_, is_result_persistent);
+    const auto& op     = schedule.emplaceProjection(xtable, del_vars, proj_, is_result_persistent);
     return op.results()[0];
   }
 

@@ -30,14 +30,14 @@
 #include <agrum/tools/core/threadsOMP.h>
 
 namespace gum {
-  
+
   namespace threadsOMP {
 
     INLINE bool hasOMPSupport() {
 #ifdef _OPENMP
-    return true;
+      return true;
 #else
-    return false;
+      return false;
 #endif
     }
 
@@ -68,7 +68,7 @@ namespace gum {
 #endif
     }
 
-    
+
     INLINE unsigned int getNumberOfRunningThreads() {
 #ifdef _OPENMP
       return omp_get_num_threads();
@@ -77,7 +77,7 @@ namespace gum {
 #endif
     }
 
-    
+
     INLINE void setNestedParallelism(bool value) {
 #ifdef _OPENMP
       omp_set_nested(((value == true) ? 1 : 0));
@@ -88,7 +88,7 @@ namespace gum {
 #endif
     }
 
-    
+
     INLINE bool getNestedParallelism() {
 #ifdef _OPENMP
       return ((omp_get_nested() == 0) ? false : true);
@@ -97,7 +97,7 @@ namespace gum {
 #endif
     }
 
-    
+
     INLINE void setDynamicThreadsNumber(bool value) {
 #ifdef _OPENMP
       omp_set_dynamic(((value == true) ? 1 : 0));
@@ -108,7 +108,7 @@ namespace gum {
                 "threads !)");
 #endif
     }
-    
+
 
     INLINE bool getDynamicThreadsNumber() {
 #ifdef _OPENMP
@@ -117,7 +117,7 @@ namespace gum {
       return false;
 #endif
     }
-    
+
   } /* namespace threadsOMP */
 
 }   // namespace gum

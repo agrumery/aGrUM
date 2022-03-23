@@ -49,7 +49,6 @@ namespace gum {
      */
     class ScoreAIC: public Score {
       public:
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -77,7 +76,7 @@ namespace gum {
       ScoreAIC(const DBRowGeneratorParser&                                 parser,
                const Apriori&                                              apriori,
                const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
-               const Bijection< NodeId, std::size_t >&        nodeId2columns
+               const Bijection< NodeId, std::size_t >&                     nodeId2columns
                = Bijection< NodeId, std::size_t >());
 
 
@@ -94,8 +93,8 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      ScoreAIC(const DBRowGeneratorParser&                          parser,
-               const Apriori&                                       apriori,
+      ScoreAIC(const DBRowGeneratorParser&             parser,
+               const Apriori&                          apriori,
                const Bijection< NodeId, std::size_t >& nodeId2columns
                = Bijection< NodeId, std::size_t >());
 
@@ -195,7 +194,7 @@ namespace gum {
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/BN/learning/scores_and_tests/scoreAIC_inl.h>
+#  include <agrum/BN/learning/scores_and_tests/scoreAIC_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_SCORE_AIC_H */

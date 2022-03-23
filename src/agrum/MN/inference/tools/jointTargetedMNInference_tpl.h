@@ -198,10 +198,8 @@ namespace gum {
   const Potential< GUM_SCALAR >&
      JointTargetedMNInference< GUM_SCALAR >::jointPosterior(const NodeSet& nodes) {
     NodeSet real_nodes;
-    for(const auto& node: nodes) {
-      if (! this->hasHardEvidence(node)) {
-        real_nodes.insert(node);
-      }
+    for (const auto& node: nodes) {
+      if (!this->hasHardEvidence(node)) { real_nodes.insert(node); }
     }
     // try to get the smallest set of targets that contains "nodes"
     bool    found_exact_target = false;

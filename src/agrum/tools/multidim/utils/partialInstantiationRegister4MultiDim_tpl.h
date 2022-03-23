@@ -99,14 +99,14 @@ namespace gum {
   PartialInstantiationRegister4MultiDim< GUM_SCALAR >&
      PartialInstantiationRegister4MultiDim< GUM_SCALAR >::Register() {
     static PartialInstantiationRegister4MultiDim* container;
-    static std::atomic<bool>                      first                 = true;
+    static std::atomic< bool >                    first                 = true;
     static bool                                   container_initialized = false;
     static std::mutex                             mutex;
 
     if (first) {
       // lock so that only one thread will create the container
       mutex.lock();
-      if (! container_initialized) {
+      if (!container_initialized) {
         container = new PartialInstantiationRegister4MultiDim;
 
 #  ifdef GUM_DEBUG_MODE
@@ -121,7 +121,7 @@ namespace gum {
                                   (void*)&container._set_);
 #  endif /* GUM_DEBUG_MODE */
 
-        first = false;
+        first                 = false;
         container_initialized = true;
       }
       mutex.unlock();

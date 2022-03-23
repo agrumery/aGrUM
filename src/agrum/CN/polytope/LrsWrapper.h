@@ -140,8 +140,7 @@ namespace gum {
        * throw an exception if the state is not correct. It allows the user to
        * avoid
        * making - invisible - mistakes. */
-      enum class _states_ : char
-      {
+      enum class _states_ : char {
         none     = char(0),
         Hup      = char(1),
         Vup      = char(2),

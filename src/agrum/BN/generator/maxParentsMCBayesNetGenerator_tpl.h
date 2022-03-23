@@ -45,7 +45,12 @@ namespace gum {
                                    Idx  iteration,
                                    Idx  p,
                                    Idx  q) :
-      MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >(nbrNodes, maxArcs, maxModality, iteration, p, q) {
+      MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >(nbrNodes,
+                                                                      maxArcs,
+                                                                      maxModality,
+                                                                      iteration,
+                                                                      p,
+                                                                      q) {
     if (maxParents == 0)
       GUM_ERROR(OperationNotAllowed,
                 "maxParents must be at least equal to 1 to have a connexe graph")

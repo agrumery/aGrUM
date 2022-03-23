@@ -56,8 +56,7 @@ namespace gum {
      * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
      */
     template < typename GUM_SCALAR >
-    class InferenceEngine: public ApproximationScheme,
-                           public ThreadNumberManager {
+    class InferenceEngine: public ApproximationScheme, public ThreadNumberManager {
       private:
       //@beforeMerging swapping from typedef to using
       using credalSet = NodeProperty< std::vector< std::vector< GUM_SCALAR > > >;
@@ -167,7 +166,7 @@ namespace gum {
       int timeSteps_;
 
       // the minimal number of operations that a thread should execute
-      Size threadMinimalNbOps_ {Size(20)};
+      Size threadMinimalNbOps_{Size(20)};
 
       /// @name Protected initialization methods
       /// @{

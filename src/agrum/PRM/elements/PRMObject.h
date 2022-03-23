@@ -65,8 +65,7 @@ namespace gum {
        * (useful with iterators for example). No PRMObject will ever have
        * "all" as type.
        */
-      enum class prm_type : char
-      {
+      enum class prm_type : char {
         ALL,
         CLASS,
         PRM_INTERFACE,

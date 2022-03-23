@@ -211,13 +211,13 @@ namespace gum {
 
     ss << _ticks_[i] << ";" << _ticks_[i + 1];
 
-    if (i==_ticks_size_ - 2)
+    if (i == _ticks_size_ - 2)
       if (_is_empirical)
-        ss<<")";
+        ss << ")";
       else
-        ss<<"]";
+        ss << "]";
     else
-      ss<<"[";
+      ss << "[";
 
     return ss.str();
   }

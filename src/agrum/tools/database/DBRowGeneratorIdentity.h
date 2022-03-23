@@ -71,9 +71,8 @@ namespace gum {
      * }
      * @endcode
      */
-     class DBRowGeneratorIdentity: public DBRowGenerator {
+    class DBRowGeneratorIdentity: public DBRowGenerator {
       public:
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -81,8 +80,7 @@ namespace gum {
       /// @{
 
       /// default constructor
-      DBRowGeneratorIdentity(
-         const std::vector< DBTranslatedValueType >& column_types);
+      DBRowGeneratorIdentity(const std::vector< DBTranslatedValueType >& column_types);
 
       /// copy constructor
       DBRowGeneratorIdentity(const DBRowGeneratorIdentity& from);
@@ -146,7 +144,7 @@ namespace gum {
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/tools/database/DBRowGeneratorIdentity_inl.h>
+#  include <agrum/tools/database/DBRowGeneratorIdentity_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_DBROW_GENERATOR_IDENTITY_H */

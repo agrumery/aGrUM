@@ -103,9 +103,7 @@ namespace gum_tests {
         j++;
         // we do not compare the comments (can contain version number of agrum
         if ((strncmp(string1, "//", 2) == 0) && (strncmp(string2, "//", 2) == 0)) continue;
-        if (strcmp(string1, string2) != 0) {
-          return false;
-        }
+        if (strcmp(string1, string2) != 0) { return false; }
       }
 
       return true;

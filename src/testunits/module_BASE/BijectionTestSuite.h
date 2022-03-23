@@ -113,8 +113,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bijection4.second("a"), "b")
       TS_ASSERT_EQUALS(bijection4.second("b"), "a")
 
-      gum::Bijection< std::string, std::string > bij_ter(
-         std::move(bij_bis));
+      gum::Bijection< std::string, std::string > bij_ter(std::move(bij_bis));
       TS_ASSERT_EQUALS(bij_ter.size(), (gum::Size)4)
 
       gum::Bijection< std::string, std::string > bij5{

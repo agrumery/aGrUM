@@ -124,12 +124,11 @@ namespace gum {
 
 
     /// returns the current set of columns of interest
-    INLINE const std::vector< std::size_t >&
-                 DBRowGeneratorSet::columnsOfInterest() const {
+    INLINE const std::vector< std::size_t >& DBRowGeneratorSet::columnsOfInterest() const {
       if (_nb_generators_ == std::size_t(0)) {
         GUM_ERROR(UndefinedElement,
                   "there are no generators yet in the generator set, so "
-                            "there are no columns of interest");
+                  "there are no columns of interest");
       }
       return _generators_[0]->columnsOfInterest();
     }

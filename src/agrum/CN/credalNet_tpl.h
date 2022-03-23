@@ -1663,26 +1663,23 @@ namespace gum {
         // compute is_redund using multiple threads:
         // compute the max number of threads to use (avoid nested threads)
         const Size nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
-                               ? gum::getNumberOfThreads()
-                               : 1;   // no nested multithreading
+                                 ? gum::getNumberOfThreads()
+                                 : 1;   // no nested multithreading
 
-        const auto nsize = v_rep.size();
+        const auto nsize           = v_rep.size();
         const auto real_nb_threads = std::min(nb_threads, nsize);
 
         // prepare the data used by the threads
-        const auto ranges = gum::dispatchRangeToThreads(0, nsize,
-                                                        (unsigned int)(real_nb_threads));
-        std::vector< Size > t_redund(real_nb_threads); // use Size to avoid false sharing
+        const auto ranges = gum::dispatchRangeToThreads(0, nsize, (unsigned int)(real_nb_threads));
+        std::vector< Size > t_redund(real_nb_threads);   // use Size to avoid false sharing
 
         // create the function to be executed by the threads
-        auto threadedExec = [this, ranges, &t_redund, vertex, v_rep](
-                               const std::size_t this_thread,
-                               const std::size_t nb_threads) {
+        auto threadedExec = [this, ranges, &t_redund, vertex, v_rep](const std::size_t this_thread,
+                                                                     const std::size_t nb_threads) {
           const auto vsize         = vertex.size();
           auto&      thread_redund = t_redund[this_thread];
 
-          for (Idx i = ranges[this_thread].first, end = ranges[this_thread].second; i < end;
-               i++) {
+          for (Idx i = ranges[this_thread].first, end = ranges[this_thread].second; i < end; i++) {
             thread_redund = 1;
             for (Idx modality = 0; modality < vsize; ++modality) {
               if (std::fabs(vertex[modality] - v_rep[i][modality]) > _epsRedund_) {

@@ -28,25 +28,25 @@
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-#include <algorithm>
+#  include <algorithm>
 
-#include <agrum/BN/algorithms/BayesBall.h>
-#include <agrum/BN/algorithms/barrenNodesFinder.h>
-#include <agrum/BN/algorithms/dSeparation.h>
-#include <agrum/tools/graphs/algorithms/binaryJoinTreeConverterDefault.h>
-#include <agrum/tools/multidim/instantiation.h>
-#include <agrum/tools/multidim/utils/operators/multiDimCombineAndProjectDefault.h>
-#include <agrum/tools/multidim/utils/operators/multiDimProjection.h>
+#  include <agrum/BN/algorithms/BayesBall.h>
+#  include <agrum/BN/algorithms/barrenNodesFinder.h>
+#  include <agrum/BN/algorithms/dSeparation.h>
+#  include <agrum/tools/graphs/algorithms/binaryJoinTreeConverterDefault.h>
+#  include <agrum/tools/multidim/instantiation.h>
+#  include <agrum/tools/multidim/utils/operators/multiDimCombineAndProjectDefault.h>
+#  include <agrum/tools/multidim/utils/operators/multiDimProjection.h>
 
 
 namespace gum {
   // default constructor
   template < typename GUM_SCALAR >
-  INLINE
-     ShaferShenoyInference< GUM_SCALAR >::ShaferShenoyInference(const IBayesNet< GUM_SCALAR >* BN,
-                                                                RelevantPotentialsFinderType relevant_type,
-                                                                FindBarrenNodesType          barren_type,
-                                                                bool use_binary_join_tree) :
+  INLINE ShaferShenoyInference< GUM_SCALAR >::ShaferShenoyInference(
+     const IBayesNet< GUM_SCALAR >* BN,
+     RelevantPotentialsFinderType   relevant_type,
+     FindBarrenNodesType            barren_type,
+     bool                           use_binary_join_tree) :
       JointTargetedInference< GUM_SCALAR >(BN),
       EvidenceInference< GUM_SCALAR >(BN), _use_binary_join_tree_(use_binary_join_tree) {
     // sets the relevant potential and the barren nodes finding algorithm
@@ -78,7 +78,7 @@ namespace gum {
     }
 
     for (auto potset: _clique_potentials_) {
-      for (auto pot : potset.second)
+      for (auto pot: potset.second)
         delete pot;
     }
 
@@ -148,7 +148,8 @@ namespace gum {
           break;
 
         case RelevantPotentialsFinderType::FIND_ALL:
-          _findRelevantPotentials_ = &ShaferShenoyInference< GUM_SCALAR >::_findRelevantPotentialsGetAll_;
+          _findRelevantPotentials_
+             = &ShaferShenoyInference< GUM_SCALAR >::_findRelevantPotentialsGetAll_;
           break;
 
         default:
@@ -176,8 +177,9 @@ namespace gum {
 
   /// sets the operator for performing the combinations
   template < typename GUM_SCALAR >
-  INLINE void ShaferShenoyInference< GUM_SCALAR >::_setCombinationFunction_(Potential< GUM_SCALAR > (
-     *comb)(const Potential< GUM_SCALAR >&, const Potential< GUM_SCALAR >&)) {
+  INLINE void ShaferShenoyInference< GUM_SCALAR >::_setCombinationFunction_(
+     Potential< GUM_SCALAR > (*comb)(const Potential< GUM_SCALAR >&,
+                                     const Potential< GUM_SCALAR >&)) {
     _combination_op_ = comb;
   }
 
@@ -187,7 +189,7 @@ namespace gum {
   void ShaferShenoyInference< GUM_SCALAR >::_invalidateAllMessages_() {
     // remove all the messages computed
     for (auto& pot: _separator_potentials_)
-        pot.second = nullptr;
+      pot.second = nullptr;
 
     for (auto& mess_computed: _messages_computed_)
       mess_computed.second = false;
@@ -737,7 +739,8 @@ namespace gum {
 
             // perform the combination of those potentials and their projection
             MultiDimCombineAndProjectDefault< Potential< GUM_SCALAR > > combine_and_project(
-               _combination_op_, _projection_op_);
+               _combination_op_,
+               _projection_op_);
 
             auto new_cpt_list
                = combine_and_project.schedule(schedule, marg_cpt_set, hard_variables);
@@ -783,10 +786,10 @@ namespace gum {
           }
 
           auto joint = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
-               static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
-                  fast_combination.schedule(schedule, potset)));
+             static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
+                fast_combination.schedule(schedule, potset)));
           const_cast< ScheduleOperator* >(schedule.scheduleMultiDimCreator(joint))
-               ->makeResultsPersistent(true);
+             ->makeResultsPersistent(true);
           _clique_ss_potential_[xpotset.first] = joint;
         }
       }
@@ -827,7 +830,7 @@ namespace gum {
     const Arc arc(from_id, to_id);
     bool&     message_computed = _messages_computed_[arc];
     if (message_computed) {
-      message_computed = false;
+      message_computed            = false;
       _separator_potentials_[arc] = nullptr;
       if (_arc_to_created_potentials_.exists(arc)) {
         delete _arc_to_created_potentials_[arc];
@@ -851,8 +854,8 @@ namespace gum {
     // case, it has been allocated by the combination and will need to be
     // deallocated if its clique has been invalidated
     NodeProperty< bool > ss_potential_to_deallocate(_clique_potentials_.size());
-    for (const auto& potset : _clique_potentials_) {
-        ss_potential_to_deallocate.insert(potset.first, (potset.second.size() > 1));
+    for (const auto& potset: _clique_potentials_) {
+      ss_potential_to_deallocate.insert(potset.first, (potset.second.size() > 1));
     }
 
     // compute the set of CPTs that were projected due to hard evidence and
@@ -997,7 +1000,8 @@ namespace gum {
 
       // perform the combination of those potentials and their projection
       MultiDimCombineAndProjectDefault< Potential< GUM_SCALAR > > combine_and_project(
-         _combination_op_, _projection_op_);
+         _combination_op_,
+         _projection_op_);
 
       auto new_cpt_list = combine_and_project.schedule(schedule, marg_cpt_set, hard_variables);
 
@@ -1031,13 +1035,12 @@ namespace gum {
           _clique_ss_potential_[clique] = *(potset.cbegin());
         } else {
           for (const auto pot: potset)
-            if (!schedule.existsScheduleMultiDim(pot->id()))
-              schedule.emplaceScheduleMultiDim(*pot);
+            if (!schedule.existsScheduleMultiDim(pot->id())) schedule.emplaceScheduleMultiDim(*pot);
           auto joint = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
-               static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
-                  fast_combination.schedule(schedule, potset)));
+             static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
+                fast_combination.schedule(schedule, potset)));
           const_cast< ScheduleOperator* >(schedule.scheduleMultiDimCreator(joint))
-               ->makeResultsPersistent(true);
+             ->makeResultsPersistent(true);
           _clique_ss_potential_[clique] = joint;
         }
       }
@@ -1236,8 +1239,7 @@ namespace gum {
 
   // remove barren variables
   template < typename GUM_SCALAR >
-  Set< const IScheduleMultiDim* >
-  ShaferShenoyInference< GUM_SCALAR >::_removeBarrenVariables_(
+  Set< const IScheduleMultiDim* > ShaferShenoyInference< GUM_SCALAR >::_removeBarrenVariables_(
      Schedule&                       schedule,
      _ScheduleMultiDimSet_&          pot_list,
      Set< const DiscreteVariable* >& del_vars) {
@@ -1289,8 +1291,7 @@ namespace gum {
       // check whether we need to add a projected new potential or not (i.e.,
       // whether there exist non-barren variables or not)
       if (pot->variablesSequence().size() != elt.second.size()) {
-        if (!schedule.existsScheduleMultiDim(pot->id()))
-          schedule.emplaceScheduleMultiDim(*pot);
+        if (!schedule.existsScheduleMultiDim(pot->id())) schedule.emplaceScheduleMultiDim(*pot);
         auto new_pot = projector.schedule(schedule, pot, elt.second);
         pot_list.insert(new_pot);
         projected_pots.insert(new_pot);
@@ -1303,8 +1304,9 @@ namespace gum {
 
   // performs the collect phase of Lazy Propagation
   template < typename GUM_SCALAR >
-  INLINE void
-     ShaferShenoyInference< GUM_SCALAR >::_collectMessage_(Schedule& schedule, NodeId id, NodeId from) {
+  INLINE void ShaferShenoyInference< GUM_SCALAR >::_collectMessage_(Schedule& schedule,
+                                                                    NodeId    id,
+                                                                    NodeId    from) {
     for (const auto other: _JT_->neighbours(id)) {
       if ((other != from) && !_messages_computed_[Arc(other, id)])
         _collectMessage_(schedule, other, id);
@@ -1318,8 +1320,7 @@ namespace gum {
 
   // remove variables del_vars from the list of potentials pot_list
   template < typename GUM_SCALAR >
-  const IScheduleMultiDim*
-     ShaferShenoyInference< GUM_SCALAR >::_marginalizeOut_(
+  const IScheduleMultiDim* ShaferShenoyInference< GUM_SCALAR >::_marginalizeOut_(
      Schedule&                       schedule,
      Set< const IScheduleMultiDim* > pot_list,
      Set< const DiscreteVariable* >& del_vars,
@@ -1330,8 +1331,7 @@ namespace gum {
     // now, let's guarantee that all the potentials to be combined and projected
     // belong to the schedule
     for (const auto pot: pot_list) {
-      if (!schedule.existsScheduleMultiDim(pot->id()))
-        schedule.emplaceScheduleMultiDim(*pot);
+      if (!schedule.existsScheduleMultiDim(pot->id())) schedule.emplaceScheduleMultiDim(*pot);
     }
 
     // remove the potentials corresponding to barren variables if we want
@@ -1374,8 +1374,7 @@ namespace gum {
     */
 
     // combine all the remaining potentials in order to create only one resulting potential
-    if (new_pot_list.size() == 1)
-      return *(new_pot_list.begin());
+    if (new_pot_list.size() == 1) return *(new_pot_list.begin());
     MultiDimCombinationDefault< Potential< GUM_SCALAR > > fast_combination(_combination_op_);
     return fast_combination.schedule(schedule, new_pot_list);
   }
@@ -1384,8 +1383,8 @@ namespace gum {
   // creates the message sent by clique from_id to clique to_id
   template < typename GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::_produceMessage_(Schedule& schedule,
-                                                             NodeId from_id,
-                                                             NodeId to_id) {
+                                                             NodeId    from_id,
+                                                             NodeId    to_id) {
     // get the potentials of the clique.
     _ScheduleMultiDimSet_ pot_list;
     if (_clique_ss_potential_[from_id] != nullptr) pot_list.insert(_clique_ss_potential_[from_id]);
@@ -1430,7 +1429,7 @@ namespace gum {
     }
 
     _separator_potentials_[arc] = new_pot;
-    _messages_computed_[arc] = true;
+    _messages_computed_[arc]    = true;
   }
 
 
@@ -1503,12 +1502,12 @@ namespace gum {
     // pot_list now contains all the potentials to multiply and marginalize
     // => combine the messages
     auto resulting_pot = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
-      static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
-         _marginalizeOut_(schedule, pot_list, del_vars, kept_vars)));
-    Potential< GUM_SCALAR >* joint         = nullptr;
-    
+       static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
+          _marginalizeOut_(schedule, pot_list, del_vars, kept_vars)));
+    Potential< GUM_SCALAR >* joint = nullptr;
+
     scheduler.execute(schedule);
-  
+
     // if pot already existed, create a copy, so that we can put it into
     // the _target_posteriors_ property
     if (pot_list.exists(resulting_pot)) {
@@ -1657,8 +1656,7 @@ namespace gum {
     _ScheduleMultiDimSet_ pot_list;
     if (_clique_ss_potential_[clique_of_set] != nullptr) {
       auto pot = _clique_ss_potential_[clique_of_set];
-      if (!schedule.existsScheduleMultiDim(pot->id()))
-        schedule.emplaceScheduleMultiDim(*pot);
+      if (!schedule.existsScheduleMultiDim(pot->id())) schedule.emplaceScheduleMultiDim(*pot);
       pot_list.insert(_clique_ss_potential_[clique_of_set]);
     }
 
@@ -1689,9 +1687,10 @@ namespace gum {
     // => combine the messages
     auto new_pot = _marginalizeOut_(schedule, pot_list, del_vars, kept_vars);
     scheduler.execute(schedule);
-    ScheduleMultiDim< Potential< GUM_SCALAR > >* resulting_pot = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
-         static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(new_pot));
-    
+    ScheduleMultiDim< Potential< GUM_SCALAR > >* resulting_pot
+       = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
+          static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(new_pot));
+
     // if pot already existed, create a copy, so that we can put it into
     // the  _target_posteriors_ property
     Potential< GUM_SCALAR >* joint = nullptr;

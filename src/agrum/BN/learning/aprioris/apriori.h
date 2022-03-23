@@ -152,7 +152,7 @@ namespace gum {
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/BN/learning/aprioris/apriori_inl.h>
+#  include <agrum/BN/learning/aprioris/apriori_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_A_PRIORI_H */

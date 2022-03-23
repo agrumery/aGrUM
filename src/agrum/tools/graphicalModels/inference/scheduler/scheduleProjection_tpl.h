@@ -126,7 +126,7 @@ namespace gum {
       const Set< const DiscreteVariable* > new_del_vars = from._del_vars_;
 
       // try to copy result (no need to update _results_)
-      *_result_                  = *(from._result_);
+      *_result_                 = *(from._result_);
       ScheduleOperator::operator=(from);
 
       _del_vars_ = std::move(new_del_vars);
@@ -146,7 +146,7 @@ namespace gum {
     // avoid self assignment
     if (this != &from) {
       if (!this->hasPersistentResults()) delete _result_;
-      _result_                   = from._result_;
+      _result_                  = from._result_;
       ScheduleOperator::operator=(std::move(from));
 
       _del_vars_ = std::move(from._del_vars_);

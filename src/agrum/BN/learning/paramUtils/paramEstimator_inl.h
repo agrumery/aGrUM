@@ -27,7 +27,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/BN/learning/paramUtils/paramEstimator.h>
+#  include <agrum/BN/learning/paramUtils/paramEstimator.h>
 
 namespace gum {
 
@@ -56,14 +56,11 @@ namespace gum {
 
 
     /// changes the max number of threads used to parse the database
-    INLINE void ParamEstimator::setNumberOfThreads(Size nb) { counter_.setNumberOfThreads(nb);
-    }
+    INLINE void ParamEstimator::setNumberOfThreads(Size nb) { counter_.setNumberOfThreads(nb); }
 
 
     /// returns the current max number of threads of the scheduler
-    INLINE Size ParamEstimator::getNumberOfThreads() const {
-      return counter_.getNumberOfThreads();
-    }
+    INLINE Size ParamEstimator::getNumberOfThreads() const { return counter_.getNumberOfThreads(); }
 
 
     /// indicates whether the user set herself the number of threads

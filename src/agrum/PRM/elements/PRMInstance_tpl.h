@@ -349,7 +349,7 @@ namespace gum {
       } catch (NotFound&) {
         GUM_ERROR(NotFound,
                   "no ReferenceSlot<GUM_SCALAR> or SlotChain<GUM_SCALAR> "
-                  "matches the given NodeId");
+                            "matches the given NodeId");
       }
     }
 
@@ -361,7 +361,7 @@ namespace gum {
       } catch (NotFound&) {
         GUM_ERROR(NotFound,
                   "no ReferenceSlot<GUM_SCALAR> or SlotChain<GUM_SCALAR> "
-                  "matches the given NodeId");
+                            "matches the given NodeId");
       }
     }
 

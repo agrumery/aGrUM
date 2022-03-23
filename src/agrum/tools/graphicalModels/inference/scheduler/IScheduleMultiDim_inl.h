@@ -37,20 +37,15 @@
 namespace gum {
 
   /// returns a new distinct ScheduleMultiDim ID
-  INLINE Idx IScheduleMultiDim::_newId_() {
-    return ++_multidim_id_;
-  }
+  INLINE Idx IScheduleMultiDim::_newId_() { return ++_multidim_id_; }
 
 
   /// reset the ScheduleMultiDim ID generator to 0
-  INLINE void IScheduleMultiDim::resetIdGenerator() {
-    _multidim_id_ = Idx(0);
-  }
+  INLINE void IScheduleMultiDim::resetIdGenerator() { _multidim_id_ = Idx(0); }
 
 
   /// constructs a IScheduleMultiDim
-  INLINE IScheduleMultiDim::IScheduleMultiDim(
-     const Idx                                                  id) :
+  INLINE IScheduleMultiDim::IScheduleMultiDim(const Idx id) :
       id_(id == Idx(0) ? IScheduleMultiDim::_newId_() : id) {
     // make sure that we won't get several IScheduleMultiDim with the same Id
     if (id_ > _multidim_id_) _multidim_id_ = id_;
@@ -61,18 +56,14 @@ namespace gum {
 
 
   /// copy constructor
-  INLINE IScheduleMultiDim::IScheduleMultiDim(
-     const IScheduleMultiDim&                          from) :
-      id_(from.id_) {
+  INLINE IScheduleMultiDim::IScheduleMultiDim(const IScheduleMultiDim& from) : id_(from.id_) {
     // for debugging purposes
     GUM_CONS_CPY(IScheduleMultiDim);
   }
 
 
   /// move constructor
-  INLINE IScheduleMultiDim::IScheduleMultiDim(
-     IScheduleMultiDim&&                               from) :
-      id_(from.id_) {
+  INLINE IScheduleMultiDim::IScheduleMultiDim(IScheduleMultiDim&& from) : id_(from.id_) {
     // for debugging purposes
     GUM_CONS_MOV(IScheduleMultiDim);
   }
@@ -86,16 +77,14 @@ namespace gum {
 
 
   /// copy operator
-  INLINE IScheduleMultiDim&
-     IScheduleMultiDim::operator=(const IScheduleMultiDim& from) {
+  INLINE IScheduleMultiDim& IScheduleMultiDim::operator=(const IScheduleMultiDim& from) {
     id_ = from.id_;
     return *this;
   }
 
 
   /// move operator
-  INLINE IScheduleMultiDim&
-     IScheduleMultiDim::operator=(IScheduleMultiDim&& from) {
+  INLINE IScheduleMultiDim& IScheduleMultiDim::operator=(IScheduleMultiDim&& from) {
     id_ = from.id_;
     return *this;
   }
@@ -114,9 +103,7 @@ namespace gum {
 
 
   /// returns the id of the ScheduleMultiDim
-  INLINE Idx IScheduleMultiDim::id() const {
-    return id_;
-  }
+  INLINE Idx IScheduleMultiDim::id() const { return id_; }
 
 } /* namespace gum */
 

@@ -47,4 +47,3 @@ namespace gum {
 } /* namespace gum */
 
 #endif /* GUM_THREAD_EXECUTOR_H */
-

@@ -354,14 +354,14 @@ namespace gum {
                 "The ScheduleMultiDim being abstract, "
                    << "it is impossible to export its table");
     }
-    if (! _table_contained_) {
+    if (!_table_contained_) {
       GUM_ERROR(OperationNotAllowed,
                 "a ScheduleMultiDim cannot export a table it does not contain. "
                 "Use method multiDim() instead.");
     }
 
     auto table = _table_;
-    _table_ = nullptr;
+    _table_    = nullptr;
 
     return table;
   }

@@ -80,7 +80,7 @@ namespace gum {
                                                               const std::string& type1,
                                                               const std::string& type2) const {
     if (!_set_.exists(operation_name)) return false;
-    const OperatorSet& theset = *(_set_[operation_name]);
+    const OperatorSet&                          theset = *(_set_[operation_name]);
     const std::pair< std::string, std::string > key(type1, type2);
     return theset.exists(key);
   }
@@ -92,7 +92,7 @@ namespace gum {
      OperatorRegister4MultiDim< GUM_SCALAR >::get(const std::string& operation_name,
                                                   const std::string& type1,
                                                   const std::string& type2) const {
-    const OperatorSet& theset = *(_set_[operation_name]);
+    const OperatorSet&                          theset = *(_set_[operation_name]);
     const std::pair< std::string, std::string > key(type1, type2);
     return theset[key];
   }
@@ -102,14 +102,14 @@ namespace gum {
   template < typename GUM_SCALAR >
   OperatorRegister4MultiDim< GUM_SCALAR >& OperatorRegister4MultiDim< GUM_SCALAR >::Register() {
     static OperatorRegister4MultiDim< GUM_SCALAR >* container             = nullptr;
-    static std::atomic<bool>                        first                 = true;
+    static std::atomic< bool >                      first                 = true;
     static bool                                     container_initialized = false;
     static std::mutex                               mutex;
 
     if (first) {
       // lock so that only one thread will create the container
       mutex.lock();
-      if (! container_initialized) {
+      if (!container_initialized) {
         container = new OperatorRegister4MultiDim< GUM_SCALAR >;
 
 #  ifdef GUM_DEBUG_MODE
@@ -123,7 +123,7 @@ namespace gum {
                                   (void*)&container->_set_);
 #  endif /* GUM_DEBUG_MODE */
 
-        first = false;
+        first                 = false;
         container_initialized = true;
       }
       mutex.unlock();

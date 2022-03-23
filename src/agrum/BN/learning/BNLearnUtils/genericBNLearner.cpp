@@ -210,8 +210,7 @@ namespace gum {
 
 
     GenericBNLearner::GenericBNLearner(const GenericBNLearner& from) :
-        ThreadNumberManager(from),
-        inducedTypes_(from.inducedTypes_), scoreType_(from.scoreType_),
+        ThreadNumberManager(from), inducedTypes_(from.inducedTypes_), scoreType_(from.scoreType_),
         paramEstimatorType_(from.paramEstimatorType_), epsilonEM_(from.epsilonEM_),
         aprioriType_(from.aprioriType_), aprioriWeight_(from.aprioriWeight_),
         constraintSliceOrder_(from.constraintSliceOrder_),
@@ -231,10 +230,10 @@ namespace gum {
     }
 
     GenericBNLearner::GenericBNLearner(GenericBNLearner&& from) :
-        ThreadNumberManager(std::move(from)),
-        inducedTypes_(from.inducedTypes_), scoreType_(from.scoreType_),
-        paramEstimatorType_(from.paramEstimatorType_), epsilonEM_(from.epsilonEM_),
-        aprioriType_(from.aprioriType_), aprioriWeight_(from.aprioriWeight_),
+        ThreadNumberManager(std::move(from)), inducedTypes_(from.inducedTypes_),
+        scoreType_(from.scoreType_), paramEstimatorType_(from.paramEstimatorType_),
+        epsilonEM_(from.epsilonEM_), aprioriType_(from.aprioriType_),
+        aprioriWeight_(from.aprioriWeight_),
         constraintSliceOrder_(std::move(from.constraintSliceOrder_)),
         constraintIndegree_(std::move(from.constraintIndegree_)),
         constraintTabuList_(std::move(from.constraintTabuList_)),
@@ -290,29 +289,29 @@ namespace gum {
         }
 
         ThreadNumberManager::operator=(from);
-        scoreType_               = from.scoreType_;
-        paramEstimatorType_      = from.paramEstimatorType_;
-        epsilonEM_               = from.epsilonEM_;
-        aprioriType_             = from.aprioriType_;
-        aprioriWeight_           = from.aprioriWeight_;
-        constraintSliceOrder_    = from.constraintSliceOrder_;
-        constraintIndegree_      = from.constraintIndegree_;
-        constraintTabuList_      = from.constraintTabuList_;
-        constraintForbiddenArcs_ = from.constraintForbiddenArcs_;
-        constraintMandatoryArcs_ = from.constraintMandatoryArcs_;
-        selectedAlgo_            = from.selectedAlgo_;
-        algoK2_                  = from.algoK2_;
-        algoMiic3off2_           = from.algoMiic3off2_;
-        kmode3Off2_              = from.kmode3Off2_;
-        greedyHillClimbing_      = from.greedyHillClimbing_;
-        localSearchWithTabuList_ = from.localSearchWithTabuList_;
-        scoreDatabase_           = from.scoreDatabase_;
-        ranges_                  = from.ranges_;
-        aprioriDbname_           = from.aprioriDbname_;
-        initialDag_              = from.initialDag_;
-        filename_                = from.filename_;
-        nbDecreasingChanges_     = from.nbDecreasingChanges_;
-        currentAlgorithm_        = nullptr;
+        scoreType_                   = from.scoreType_;
+        paramEstimatorType_          = from.paramEstimatorType_;
+        epsilonEM_                   = from.epsilonEM_;
+        aprioriType_                 = from.aprioriType_;
+        aprioriWeight_               = from.aprioriWeight_;
+        constraintSliceOrder_        = from.constraintSliceOrder_;
+        constraintIndegree_          = from.constraintIndegree_;
+        constraintTabuList_          = from.constraintTabuList_;
+        constraintForbiddenArcs_     = from.constraintForbiddenArcs_;
+        constraintMandatoryArcs_     = from.constraintMandatoryArcs_;
+        selectedAlgo_                = from.selectedAlgo_;
+        algoK2_                      = from.algoK2_;
+        algoMiic3off2_               = from.algoMiic3off2_;
+        kmode3Off2_                  = from.kmode3Off2_;
+        greedyHillClimbing_          = from.greedyHillClimbing_;
+        localSearchWithTabuList_     = from.localSearchWithTabuList_;
+        scoreDatabase_               = from.scoreDatabase_;
+        ranges_                      = from.ranges_;
+        aprioriDbname_               = from.aprioriDbname_;
+        initialDag_                  = from.initialDag_;
+        filename_                    = from.filename_;
+        nbDecreasingChanges_         = from.nbDecreasingChanges_;
+        currentAlgorithm_            = nullptr;
       }
 
       return *this;
@@ -341,29 +340,29 @@ namespace gum {
         }
 
         ThreadNumberManager::operator=(std::move(from));
-        scoreType_               = from.scoreType_;
-        paramEstimatorType_      = from.paramEstimatorType_;
-        epsilonEM_               = from.epsilonEM_;
-        aprioriType_             = from.aprioriType_;
-        aprioriWeight_           = from.aprioriWeight_;
-        constraintSliceOrder_    = std::move(from.constraintSliceOrder_);
-        constraintIndegree_      = std::move(from.constraintIndegree_);
-        constraintTabuList_      = std::move(from.constraintTabuList_);
-        constraintForbiddenArcs_ = std::move(from.constraintForbiddenArcs_);
-        constraintMandatoryArcs_ = std::move(from.constraintMandatoryArcs_);
-        selectedAlgo_            = from.selectedAlgo_;
-        algoK2_                  = from.algoK2_;
-        algoMiic3off2_           = std::move(from.algoMiic3off2_);
-        kmode3Off2_              = from.kmode3Off2_;
-        greedyHillClimbing_      = std::move(from.greedyHillClimbing_);
-        localSearchWithTabuList_ = std::move(from.localSearchWithTabuList_);
-        scoreDatabase_           = std::move(from.scoreDatabase_);
-        ranges_                  = std::move(from.ranges_);
-        aprioriDbname_           = std::move(from.aprioriDbname_);
-        filename_                = std::move(from.filename_);
-        initialDag_              = std::move(from.initialDag_);
-        nbDecreasingChanges_     = std::move(from.nbDecreasingChanges_);
-        currentAlgorithm_        = nullptr;
+        scoreType_                   = from.scoreType_;
+        paramEstimatorType_          = from.paramEstimatorType_;
+        epsilonEM_                   = from.epsilonEM_;
+        aprioriType_                 = from.aprioriType_;
+        aprioriWeight_               = from.aprioriWeight_;
+        constraintSliceOrder_        = std::move(from.constraintSliceOrder_);
+        constraintIndegree_          = std::move(from.constraintIndegree_);
+        constraintTabuList_          = std::move(from.constraintTabuList_);
+        constraintForbiddenArcs_     = std::move(from.constraintForbiddenArcs_);
+        constraintMandatoryArcs_     = std::move(from.constraintMandatoryArcs_);
+        selectedAlgo_                = from.selectedAlgo_;
+        algoK2_                      = from.algoK2_;
+        algoMiic3off2_               = std::move(from.algoMiic3off2_);
+        kmode3Off2_                  = from.kmode3Off2_;
+        greedyHillClimbing_          = std::move(from.greedyHillClimbing_);
+        localSearchWithTabuList_     = std::move(from.localSearchWithTabuList_);
+        scoreDatabase_               = std::move(from.scoreDatabase_);
+        ranges_                      = std::move(from.ranges_);
+        aprioriDbname_               = std::move(from.aprioriDbname_);
+        filename_                    = std::move(from.filename_);
+        initialDag_                  = std::move(from.initialDag_);
+        nbDecreasingChanges_         = std::move(from.nbDecreasingChanges_);
+        currentAlgorithm_            = nullptr;
       }
 
       return *this;
@@ -558,7 +557,8 @@ namespace gum {
       if (old_score != nullptr) delete old_score;
 
       // assign the number of threads
-      score_->setNumberOfThreads(this->isGumNumberOfThreadsOverriden() ? this->getNumberOfThreads() : 0);
+      score_->setNumberOfThreads(this->isGumNumberOfThreadsOverriden() ? this->getNumberOfThreads()
+                                                                       : 0);
     }
 
     ParamEstimator* GenericBNLearner::createParamEstimator_(DBRowGeneratorParser& parser,

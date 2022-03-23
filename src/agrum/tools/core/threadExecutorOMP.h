@@ -62,28 +62,25 @@ namespace gum {
      * @code
      * @endcode
      */
-    class ThreadExecutor : private ThreadExecutorBase {
+    class ThreadExecutor: private ThreadExecutorBase {
       public:
-
       /// indicates how many threadExecutors are currently running
       using ThreadExecutorBase::nbRunningThreadsExecutors;
 
       /// executes a function using several threads
-      template <typename FUNCTION, typename... ARGS>
-      static void execute(std::size_t nb_threads,
-                          FUNCTION    exec_func,
-                          ARGS&&...   func_args);
+      template < typename FUNCTION, typename... ARGS >
+      static void execute(std::size_t nb_threads, FUNCTION exec_func, ARGS&&... func_args);
 
       /// executes in parallel a function and undoes it if exceptions are raised
-      template <typename FUNC1, typename FUNC2, typename... ARGS>
+      template < typename FUNC1, typename FUNC2, typename... ARGS >
       static void executeOrUndo(std::size_t nb_threads,
                                 FUNC1       exec_func,
                                 FUNC2       undo_func,
-                                ARGS&&...   func_args);
+                                ARGS&&... func_args);
     };
 
   } /* namespace threadsOMP */
-    
+
 } /* namespace gum */
 
 

@@ -95,15 +95,15 @@ namespace gum {
   // type
   template < typename GUM_SCALAR >
   ProjectionRegister4MultiDim< GUM_SCALAR >& ProjectionRegister4MultiDim< GUM_SCALAR >::Register() {
-    static ProjectionRegister4MultiDim* container = nullptr;
-    static std::atomic<bool> first = true;
-    static bool              container_initialized = false;
-    static std::mutex        mutex;
+    static ProjectionRegister4MultiDim* container             = nullptr;
+    static std::atomic< bool >          first                 = true;
+    static bool                         container_initialized = false;
+    static std::mutex                   mutex;
 
     if (first) {
       // lock so that only one thread will create the container
       mutex.lock();
-      if (! container_initialized) {
+      if (!container_initialized) {
         container = new ProjectionRegister4MultiDim;
 
 #  ifdef GUM_DEBUG_MODE
@@ -117,7 +117,7 @@ namespace gum {
                                   (void*)&container._set_);
 #  endif /* GUM_DEBUG_MODE */
 
-        first = false;
+        first                 = false;
         container_initialized = true;
       }
       mutex.unlock();

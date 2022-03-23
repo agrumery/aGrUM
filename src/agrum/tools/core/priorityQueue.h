@@ -121,15 +121,13 @@ namespace gum {
      * @brief Copy constructor.
      * @param from The gum::PriorityQueueImplementation to copy.
      */
-    PriorityQueueImplementation(
-       const PriorityQueueImplementation< Val, Priority, Cmp, Gen >& from);
+    PriorityQueueImplementation(const PriorityQueueImplementation< Val, Priority, Cmp, Gen >& from);
 
     /**
      * @brief Move constructor.
      * @param from The gum::PriorityQueueImplementation to move.
      */
-    PriorityQueueImplementation(
-       PriorityQueueImplementation< Val, Priority, Cmp, Gen >&& from);
+    PriorityQueueImplementation(PriorityQueueImplementation< Val, Priority, Cmp, Gen >&& from);
 
     /**
      * @brief Class destructor.
@@ -500,8 +498,7 @@ namespace gum {
      * @brief Move constructor.
      * @param from The gum::PriorityQueueImplementation to move.
      */
-    PriorityQueueImplementation(
-       PriorityQueueImplementation< Val, Priority, Cmp, true >&& from);
+    PriorityQueueImplementation(PriorityQueueImplementation< Val, Priority, Cmp, true >&& from);
 
     /**
      * @brief Class destructor.
@@ -860,14 +857,9 @@ namespace gum {
    * @tparam Priority The priorities type.
    * @tparam Cmp The priorities comparator.
    */
-  template < typename Val,
-             typename Priority = int,
-             typename Cmp      = std::less< Priority > >
+  template < typename Val, typename Priority = int, typename Cmp = std::less< Priority > >
   class PriorityQueue:
-      public PriorityQueueImplementation< Val,
-                                          Priority,
-                                          Cmp,
-                                          std::is_scalar< Val >::value > {
+      public PriorityQueueImplementation< Val, Priority, Cmp, std::is_scalar< Val >::value > {
     public:
     /// Types for STL compliance.
     /// @{
@@ -943,16 +935,14 @@ namespace gum {
      * @param from The gum::PriorityQueue to copy.
      * @return Returns this gum::PriorityQueue.
      */
-    PriorityQueue< Val, Priority, Cmp >&
-       operator=(const PriorityQueue< Val, Priority, Cmp >& from);
+    PriorityQueue< Val, Priority, Cmp >& operator=(const PriorityQueue< Val, Priority, Cmp >& from);
 
     /**
      * @brief Move operator.
      * @param from The gum::PriorityQueue to move.
      * @return Returns this gum::PriorityQueue.
      */
-    PriorityQueue< Val, Priority, Cmp >&
-       operator=(PriorityQueue< Val, Priority, Cmp >&& from);
+    PriorityQueue< Val, Priority, Cmp >& operator=(PriorityQueue< Val, Priority, Cmp >&& from);
 
     /// @}
   };

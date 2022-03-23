@@ -151,7 +151,7 @@ namespace gum {
      */
     BijectionImplementation< T1, T2, Gen >&
        operator=(const BijectionImplementation< T1, T2, Gen >& toCopy);
-    
+
     /**
      * @brief Move operator.
      * @param toCopy Bijection to move
@@ -735,7 +735,7 @@ namespace gum {
      * @param toCopy Bijection to copy.
      */
     BijectionImplementation(const BijectionImplementation< T1, T2, true >& toCopy);
-    
+
     /**
      * @brief Move constructor.
      * @param from Bijection to move.
@@ -1520,10 +1520,10 @@ namespace gum {
 
     private:
     /// Alias for one of the internal gum::HashTable of the gum::Bijection.
-    using HashTable12 = typename std::conditional<
-       std::is_scalar< T1 >::value && std::is_scalar< T2 >::value,
-       HashTable< T1, T2 >,
-       HashTable< T1, T2* > >::type;
+    using HashTable12 =
+       typename std::conditional< std::is_scalar< T1 >::value && std::is_scalar< T2 >::value,
+                                  HashTable< T1, T2 >,
+                                  HashTable< T1, T2* > >::type;
 
     /// Alias for one of the internal gum::HastTableIterator of the
     /// gum::Bijection.
@@ -1708,10 +1708,10 @@ namespace gum {
 
     private:
     /// Alias for one of the internal gum::HashTable of the gum::Bijection.
-    using HashTable12 = typename std::conditional<
-       std::is_scalar< T1 >::value && std::is_scalar< T2 >::value,
-       HashTable< T1, T2 >,
-       HashTable< T1, T2* > >::type;
+    using HashTable12 =
+       typename std::conditional< std::is_scalar< T1 >::value && std::is_scalar< T2 >::value,
+                                  HashTable< T1, T2 >,
+                                  HashTable< T1, T2* > >::type;
     using HashIter = typename HashTable12::const_iterator;
 
     /// The hashTable iterator that actually does all the job.

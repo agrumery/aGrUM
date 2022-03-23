@@ -490,9 +490,7 @@ namespace gum {
        const Sequence< PRMInstance< GUM_SCALAR >* >&      match) {
 #ifdef DEBUG
 
-      for (const auto iter = data.matches.begin();
-           iter != data.matches.end();
-           ++iter) {
+      for (const auto iter = data.matches.begin(); iter != data.matches.end(); ++iter) {
         GUM_ASSERT((**iter).size() == match.size());
 
         for (Size idx = 0; idx < match.size(); ++idx) {
@@ -926,21 +924,21 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE std::string
            StructuredInference< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
-                                                    const PRMAttribute< GUM_SCALAR >* a) const {
+                                                const PRMAttribute< GUM_SCALAR >* a) const {
       return i->name() + _dot_ + a->safeName();
     }
 
     template < typename GUM_SCALAR >
     INLINE std::string
            StructuredInference< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
-                                                    const PRMAttribute< GUM_SCALAR >& a) const {
+                                                const PRMAttribute< GUM_SCALAR >& a) const {
       return i->name() + _dot_ + a.safeName();
     }
 
     template < typename GUM_SCALAR >
     INLINE std::string
            StructuredInference< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
-                                                    const PRMSlotChain< GUM_SCALAR >& a) const {
+                                                const PRMSlotChain< GUM_SCALAR >& a) const {
       return i->name() + _dot_ + a.lastElt().safeName();
     }
 

@@ -25,4 +25,3 @@
  */
 
 #include <agrum/tools/core/threadExecutorSTL.h>
-

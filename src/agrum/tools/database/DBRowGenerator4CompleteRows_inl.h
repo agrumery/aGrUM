@@ -63,8 +63,8 @@ namespace gum {
 
           default:
             GUM_ERROR(NotImplementedYet,
-                          "DBTranslatedValueType " << int(this->column_types_[col])
-                                                   << " is not supported yet");
+                      "DBTranslatedValueType " << int(this->column_types_[col])
+                                               << " is not supported yet");
         }
       }
       _input_row_ = &row;

@@ -438,7 +438,7 @@ namespace gum {
     for (Idx i = 0; i < factor.nbrDim(); i++) {
       sorted_nodes.push_back(idFromName(factor.variable(i).name()));
     }
-    auto& res= _addFactor_(sorted_nodes);
+    auto& res = _addFactor_(sorted_nodes);
     res.fillWith(factor);
 
     return res;

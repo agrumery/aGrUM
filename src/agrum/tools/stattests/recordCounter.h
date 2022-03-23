@@ -110,7 +110,7 @@ namespace gum {
      * const std::vector< double >& counts2 = counter.counts ( ids );
      * @endcode
      */
-    class RecordCounter : public ThreadNumberManager {
+    class RecordCounter: public ThreadNumberManager {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -373,7 +373,7 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/tools/stattests/recordCounter_inl.h>
+#  include <agrum/tools/stattests/recordCounter_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_RECORD_COUNTER_H */

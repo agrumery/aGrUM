@@ -112,8 +112,8 @@ namespace gum {
 
     /// inserts a new translator at the end of the translator set
     std::size_t DBTranslatorSet::insertTranslator(const DBTranslator& translator,
-                                                  const std::size_t column,
-                                                  const bool        unique_column) {
+                                                  const std::size_t   column,
+                                                  const bool          unique_column) {
       // if the unique_column parameter is set to true and there exists already
       // another translator that parses the column, raise a DuplicateElement
       // exception

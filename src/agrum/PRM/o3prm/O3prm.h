@@ -392,8 +392,7 @@ namespace gum {
        */
       class O3Parameter {
         public:
-        enum class PRMType
-        {
+        enum class PRMType {
           NONE,
           INT,
           FLOAT

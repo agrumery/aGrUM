@@ -33,10 +33,10 @@ namespace gum {
 
     /// default constructor
     INLINE
-       IndepTestG2::IndepTestG2(const DBRowGeneratorParser&                                 parser,
-                                const Apriori&                                              apriori,
-                                const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
-                                const Bijection< NodeId, std::size_t >& nodeId2columns) :
+    IndepTestG2::IndepTestG2(const DBRowGeneratorParser&                                 parser,
+                             const Apriori&                                              apriori,
+                             const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
+                             const Bijection< NodeId, std::size_t >& nodeId2columns) :
         IndependenceTest(parser, apriori, ranges, nodeId2columns),
         _domain_sizes_(parser.database().domainSizes()), _chi2_(_domain_sizes_) {
       GUM_CONSTRUCTOR(IndepTestG2);
@@ -78,7 +78,7 @@ namespace gum {
 
     /// returns the pair <statistics,pvalue> corresponding to a given IdCondSet
     INLINE std::pair< double, double >
-       IndepTestG2::statistics(NodeId var1, NodeId var2, const std::vector< NodeId >& rhs_ids) {
+           IndepTestG2::statistics(NodeId var1, NodeId var2, const std::vector< NodeId >& rhs_ids) {
       return statistics_(IdCondSet(var1, var2, rhs_ids, false));
     }
 

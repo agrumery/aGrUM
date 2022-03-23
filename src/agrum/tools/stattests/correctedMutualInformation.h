@@ -53,7 +53,7 @@ namespace gum {
      *
      * @ingroup learning_scores
      */
-    class CorrectedMutualInformation : public IThreadNumberManager {
+    class CorrectedMutualInformation: public IThreadNumberManager {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

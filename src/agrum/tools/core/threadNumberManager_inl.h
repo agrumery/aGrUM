@@ -20,7 +20,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/tools/core/threadNumberManager.h>
+#  include <agrum/tools/core/threadNumberManager.h>
 
 namespace gum {
 
@@ -68,7 +68,9 @@ namespace gum {
   }
 
   // indicates whether the user set herself the number of threads
-  INLINE bool ThreadNumberManager::isGumNumberOfThreadsOverriden() const { return _nb_threads_ != 0; }
+  INLINE bool ThreadNumberManager::isGumNumberOfThreadsOverriden() const {
+    return _nb_threads_ != 0;
+  }
 
 }   // namespace gum
 

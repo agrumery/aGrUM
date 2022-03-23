@@ -19,7 +19,7 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/tools/graphicalModels/inference/scheduler/schedule.h>
+#  include <agrum/tools/graphicalModels/inference/scheduler/schedule.h>
 
 namespace gum {
 
@@ -50,8 +50,8 @@ namespace gum {
 
   /// updates the DAG after a given operation has been executed
   INLINE void Schedule::updateAfterExecution(const ScheduleOperator& op,
-                                             std::vector< NodeId >&   new_available_nodes,
-                                             const bool               check) {
+                                             std::vector< NodeId >&  new_available_nodes,
+                                             const bool              check) {
     /// check that the node belongs to the schedule
     if (check) {
       if (!_node2op_.existsSecond(const_cast< ScheduleOperator* >(&op))) {

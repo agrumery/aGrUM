@@ -499,7 +499,7 @@ namespace gum {
   // Returns a const reference to the manager of this diagram
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE const NodeGraphPart&
-               MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::model() const {
+     MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::model() const {
     return _model_;
   }
 
@@ -539,7 +539,7 @@ namespace gum {
   // Returns value associated to given node.
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE const GUM_SCALAR&
-               MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::nodeValue(NodeId n) const {
+     MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::nodeValue(NodeId n) const {
     if (!isTerminalNode(n))
       GUM_ERROR(InvalidArgument, "Id " << n << " is not bound to any terminal node")
     return this->terminalNodeValue(n);
@@ -548,7 +548,7 @@ namespace gum {
   // Returns internalNode structure associated to that nodeId
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE const InternalNode*
-               MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::node(NodeId n) const {
+     MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::node(NodeId n) const {
     if (!isInternalNode(n))
       GUM_ERROR(InvalidArgument, "Id " << n << " is not bound to any terminal node")
     return this->_internalNodeMap_[n];

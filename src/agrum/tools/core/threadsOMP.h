@@ -39,7 +39,7 @@
 #include <agrum/agrum.h>
 
 namespace gum {
-  
+
   namespace threadsOMP {
 
     /**
@@ -126,7 +126,7 @@ namespace gum {
      * otherwise.
      */
     void setNestedParallelism(bool value);
-    
+
     /**
      * @brief Get nested parallelism status.
      * @ingroup basicstruct_group
@@ -156,7 +156,7 @@ namespace gum {
      */
     bool getDynamicThreadsNumber();
 
-    
+
   } /* namespace threadsOMP */
 
 }   // namespace gum

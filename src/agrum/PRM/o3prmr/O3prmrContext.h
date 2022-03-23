@@ -49,8 +49,7 @@ namespace gum {
       class O3prmrCommand {
         public:
         int line;
-        enum class RequestType : char
-        {
+        enum class RequestType : char {
           Observe,
           Unobserve,
           Query,

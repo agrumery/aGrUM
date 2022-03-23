@@ -36,50 +36,38 @@ namespace gum {
        const Apriori&                                              external_apriori,
        const Apriori&                                              score_internal_apriori,
        const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
-       const Bijection< NodeId, std::size_t >&        nodeId2columns) :
-        ParamEstimator(parser,
-                                external_apriori,
-                                score_internal_apriori,
-                                ranges,
-                                nodeId2columns) {
+       const Bijection< NodeId, std::size_t >&                     nodeId2columns) :
+        ParamEstimator(parser, external_apriori, score_internal_apriori, ranges, nodeId2columns) {
       GUM_CONSTRUCTOR(ParamEstimatorML);
     }
 
 
     /// default constructor
-    INLINE ParamEstimatorML::ParamEstimatorML(
-       const DBRowGeneratorParser&                          parser,
-       const Apriori&                                       external_apriori,
-       const Apriori&                                       score_internal_apriori,
-       const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        ParamEstimator(parser,
-                                external_apriori,
-                                score_internal_apriori,
-                                nodeId2columns) {
+    INLINE
+    ParamEstimatorML::ParamEstimatorML(const DBRowGeneratorParser& parser,
+                                       const Apriori&              external_apriori,
+                                       const Apriori&              score_internal_apriori,
+                                       const Bijection< NodeId, std::size_t >& nodeId2columns) :
+        ParamEstimator(parser, external_apriori, score_internal_apriori, nodeId2columns) {
       GUM_CONSTRUCTOR(ParamEstimatorML);
     }
 
 
     /// copy constructor
-    INLINE ParamEstimatorML::ParamEstimatorML(
-       const ParamEstimatorML&                          from) :
-        ParamEstimator(from) {
+    INLINE ParamEstimatorML::ParamEstimatorML(const ParamEstimatorML& from) : ParamEstimator(from) {
       GUM_CONS_CPY(ParamEstimatorML);
     }
 
 
     /// move constructor
-    INLINE ParamEstimatorML::ParamEstimatorML(
-       ParamEstimatorML&&                               from) :
+    INLINE ParamEstimatorML::ParamEstimatorML(ParamEstimatorML&& from) :
         ParamEstimator(std::move(from)) {
       GUM_CONS_MOV(ParamEstimatorML);
     }
 
 
     /// virtual copy constructor
-    INLINE ParamEstimatorML* ParamEstimatorML::clone() const {
-      return new ParamEstimatorML(*this);
-    }
+    INLINE ParamEstimatorML* ParamEstimatorML::clone() const { return new ParamEstimatorML(*this); }
 
   } /* namespace learning */
 

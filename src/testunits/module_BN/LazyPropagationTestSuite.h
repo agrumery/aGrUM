@@ -125,7 +125,7 @@ namespace gum_tests {
     void testSequentialInference() {
       fill(*bn);
       // Testing the inference
-      gum::LazyPropagation< double > inf (bn);
+      gum::LazyPropagation< double > inf(bn);
       inf.setNumberOfThreads(1);
       TS_ASSERT(inf.getNumberOfThreads() == 1)
       TS_ASSERT_THROWS_NOTHING(inf.makeInference())
@@ -141,12 +141,11 @@ namespace gum_tests {
 
       gum::LazyPropagation< double > inf(&bn);
 
-      //const bool seq = true;
+      // const bool seq = true;
       const bool seq = false;
       if (seq) {
         inf.setNumberOfThreads(1);
-      }
-      else {
+      } else {
         inf.setNumberOfThreads(4);
       }
 
@@ -177,7 +176,6 @@ namespace gum_tests {
       TS_ASSERT(equalPotentials(inf.posterior(i3), inf2.posterior(i3)))
       TS_ASSERT(equalPotentials(inf.posterior(i4), inf2.posterior(i4)))
       TS_ASSERT(equalPotentials(inf.posterior(i5), inf2.posterior(i5)))
-
     }
 
     void testMarginal() {

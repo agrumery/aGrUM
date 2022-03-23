@@ -43,8 +43,7 @@ namespace gum {
      *
      * @ingroup learning_database
      */
-    enum class DBRowGeneratorGoal : char
-    {
+    enum class DBRowGeneratorGoal : char {
       // the generator's goal is only to remove all missing values
       ONLY_REMOVE_MISSING_VALUES,
 

@@ -96,8 +96,7 @@ namespace gum {
       }
 
       for (Idx modality = 0; modality < currentNode->nodeVar()->domainSize(); modality++) {
-        if (!potentialSons.list()
-            || randomProba() > (1.0 / (1.0 + 3.0 / nbPotentialSons))) {
+        if (!potentialSons.list() || randomProba() > (1.0 / (1.0 + 3.0 / nbPotentialSons))) {
           if (_createLeaf_(currentNodeId, node2MinVar)) {
             generatedFunctionGraph->manager()->setSon(
                currentNodeId,
@@ -114,8 +113,8 @@ namespace gum {
             node2MinVar.insert(currentNode->son(modality), sonVarPos);
           }
         } else {
-          Idx sonPos = randomValue(nbPotentialSons);
-          sonPos     = sonPos == nbPotentialSons ? nbPotentialSons - 1 : sonPos;
+          Idx sonPos                = randomValue(nbPotentialSons);
+          sonPos                    = sonPos == nbPotentialSons ? nbPotentialSons - 1 : sonPos;
           Link< NodeId >* nicleIter = potentialSons.list();
           while (sonPos) {
             nicleIter = nicleIter->nextLink();

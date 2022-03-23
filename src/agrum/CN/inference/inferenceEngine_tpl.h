@@ -1004,16 +1004,16 @@ namespace gum {
     template < typename GUM_SCALAR >
     inline const GUM_SCALAR InferenceEngine< GUM_SCALAR >::computeEpsilon_() {
       // compute the number of threads and prepare for the result
-      const Size nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
+      const Size                nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
                                               ? this->threadRanges_.size() - 1
                                               : 1;   // no nested multithreading
-      std::vector< GUM_SCALAR > tEps(nb_threads, std::numeric_limits<GUM_SCALAR>::max());
+      std::vector< GUM_SCALAR > tEps(nb_threads, std::numeric_limits< GUM_SCALAR >::max());
 
       // create the function to be executed by the threads
-      auto threadedEps = [this, &tEps](const std::size_t this_thread,
-                                       const std::size_t nb_threads,
+      auto threadedEps = [this, &tEps](const std::size_t                              this_thread,
+                                       const std::size_t                              nb_threads,
                                        const std::vector< std::pair< NodeId, Idx > >& ranges) {
-        auto& this_tEps = tEps[this_thread];
+        auto&      this_tEps = tEps[this_thread];
         GUM_SCALAR delta;
 
         // below, we will loop over indices i and j of marginalMin_ and
@@ -1027,23 +1027,23 @@ namespace gum {
         // value of another node. These values are computed in Vector threadRanges_
         // by Method dispatchMarginalsToThreads_(), which dispatches the loops
         // among threads
-        auto i = ranges[this_thread].first;
-        auto j = ranges[this_thread].second;
-        auto domain_size = this->marginalMax_[i].size();
-        const auto end_i = ranges[this_thread + 1].first;
-        auto end_j = ranges[this_thread+1].second;
+        auto       i                = ranges[this_thread].first;
+        auto       j                = ranges[this_thread].second;
+        auto       domain_size      = this->marginalMax_[i].size();
+        const auto end_i            = ranges[this_thread + 1].first;
+        auto       end_j            = ranges[this_thread + 1].second;
         const auto marginalMax_size = this->marginalMax_.size();
 
         while ((i < end_i) || (j < end_j)) {
           // on min
-          delta = marginalMin_[i][j] - oldMarginalMin_[i][j];
-          delta = (delta < 0) ? (-delta) : delta;
+          delta     = marginalMin_[i][j] - oldMarginalMin_[i][j];
+          delta     = (delta < 0) ? (-delta) : delta;
           this_tEps = (this_tEps < delta) ? delta : this_tEps;
 
           // on max
-          delta = marginalMax_[i][j] - oldMarginalMax_[i][j];
-          delta = (delta < 0) ? (-delta) : delta;
-          this_tEps  = (this_tEps < delta) ? delta : this_tEps;
+          delta     = marginalMax_[i][j] - oldMarginalMax_[i][j];
+          delta     = (delta < 0) ? (-delta) : delta;
+          this_tEps = (this_tEps < delta) ? delta : this_tEps;
 
           oldMarginalMin_[i][j] = marginalMin_[i][j];
           oldMarginalMax_[i][j] = marginalMax_[i][j];
@@ -1051,8 +1051,7 @@ namespace gum {
           if (++j == domain_size) {
             j = 0;
             ++i;
-            if (i < marginalMax_size)
-              domain_size = this->marginalMax_[i].size();
+            if (i < marginalMax_size) domain_size = this->marginalMax_[i].size();
           }
         }
       };
@@ -1120,9 +1119,9 @@ namespace gum {
     template < typename GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::displatchMarginalsToThreads_() {
       // we compute the number of elements in the 2 loops (over i,j in marginalMin_[i][j])
-      Size nb_elements = 0;
+      Size       nb_elements      = 0;
       const auto marginalMin_size = this->marginalMin_.size();
-      for (const auto& marg_i : this->marginalMin_)
+      for (const auto& marg_i: this->marginalMin_)
         nb_elements += marg_i.second.size();
 
       // distribute evenly the elements among the threads
@@ -1140,9 +1139,9 @@ namespace gum {
       Idx nb_elts_par_thread = nb_elements / nb_threads;
       Idx rest_elts          = nb_elements - nb_elts_par_thread * nb_threads;
 
-      NodeId current_node  = 0;
+      NodeId current_node         = 0;
       Idx    current_domain_index = 0;
-      Size   current_domain_size = this->marginalMin_[0].size();
+      Size   current_domain_size  = this->marginalMin_[0].size();
       threadRanges_.emplace_back(current_node, current_domain_index);
 
       for (Idx i = Idx(0); i < nb_threads; ++i) {

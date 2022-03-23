@@ -55,7 +55,7 @@ namespace gum {
      dispatchRangeToThreads(Idx beg, Idx end, unsigned int nb_threads) {
     // there should always be at least one thread
     const auto real_nb_threads = nb_threads < 1 ? Idx(1) : Idx(nb_threads);
-    const Idx range_size = end - beg;
+    const Idx  range_size      = end - beg;
     std::vector< std::pair< Idx, Idx > > result;
     result.reserve(real_nb_threads);
 
@@ -63,12 +63,11 @@ namespace gum {
     // number of threads, assign only one element per thread
     if (range_size <= real_nb_threads) {
       for (Idx i = Idx(0); i < range_size; ++i) {
-        result.emplace_back(i, i+1);
+        result.emplace_back(i, i + 1);
       }
       for (Idx i = range_size; i < real_nb_threads; ++i)
         result.emplace_back(range_size, range_size);
-    }
-    else {
+    } else {
       // here there are more elements in the range than threads. So try to balance
       // the number of elements among the threads
       Idx nb_elts_par_thread = range_size / real_nb_threads;
@@ -89,4 +88,4 @@ namespace gum {
     return result;
   }
 
-} // namespace gum
+}   // namespace gum

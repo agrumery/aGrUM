@@ -81,7 +81,7 @@ namespace gum {
     explicit ShaferShenoyInference(const IBayesNet< GUM_SCALAR >* BN,
                                    RelevantPotentialsFinderType
                                    = RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS,
-                                   FindBarrenNodesType            barren_type
+                                   FindBarrenNodesType barren_type
                                    = FindBarrenNodesType::FIND_BARREN_NODES,
                                    bool use_binary_join_tree = true);
 
@@ -89,7 +89,8 @@ namespace gum {
     ShaferShenoyInference(const ShaferShenoyInference< GUM_SCALAR >&) = delete;
 
     /// avoid copy operators
-    ShaferShenoyInference< GUM_SCALAR >& operator=(const ShaferShenoyInference< GUM_SCALAR >&) = delete;
+    ShaferShenoyInference< GUM_SCALAR >& operator=(const ShaferShenoyInference< GUM_SCALAR >&)
+       = delete;
 
     /// destructor
     ~ShaferShenoyInference();
@@ -383,8 +384,7 @@ namespace gum {
     NodeSet _hard_ev_nodes_;
 
     /// the possible types of evidence changes
-    enum EvidenceChangeType
-    {
+    enum EvidenceChangeType {
       EVIDENCE_ADDED,
       EVIDENCE_ERASED,
       EVIDENCE_MODIFIED

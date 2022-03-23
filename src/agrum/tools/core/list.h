@@ -108,10 +108,7 @@ namespace gum {
      *
      * This type is used to prevent the list emplace (int) to compile.
      */
-    enum class Emplace
-    {
-      EMPLACE
-    };
+    enum class Emplace { EMPLACE };
 
     public:
     // ============================================================================
@@ -388,8 +385,7 @@ namespace gum {
 
     /// Locations around iterators where insertions of new elements can take /
     /// place.
-    enum class location
-    {
+    enum class location {
       BEFORE,
       AFTER
     };
@@ -1905,7 +1901,7 @@ namespace gum {
      */
     bool operator!=(const ListIterator< Val >& src) const noexcept;
 
-   /**
+    /**
      * @brief Gives access to the content of the iterator.
      * @throw UndefinedIteratorValue Raised if the iterator points to nothing.
      * @return Returns the content of the iterator.
@@ -2495,7 +2491,6 @@ namespace gum {
      * @return Returns the value pointed to by the iterator.
      */
     const Val* operator->() const;
-
   };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

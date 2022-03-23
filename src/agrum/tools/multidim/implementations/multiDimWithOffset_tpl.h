@@ -192,7 +192,7 @@ namespace gum {
    * for instance : M<<a<<b<<c; with i=b:1|c:2|d:1 then M.getOffs_(i) give the
    * offset of a:0|b:1|c:2.
    */
-  
+
   template < typename GUM_SCALAR >
   INLINE Size MultiDimWithOffset< GUM_SCALAR >::getOffs_(const Instantiation& i) const {
     Idx off = 0;

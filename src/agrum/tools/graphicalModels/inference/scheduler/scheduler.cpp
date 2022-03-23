@@ -38,8 +38,7 @@
 namespace gum {
 
   /// default constructor
-  Scheduler::Scheduler(Size   nb_threads,
-                       double max_memory) :
+  Scheduler::Scheduler(Size nb_threads, double max_memory) :
       ThreadNumberManager(nb_threads),
       _max_memory(max_memory * 1048576.0) {   // 1048576 = 1024 * 1024 = 1Mb
     if (_max_memory <= 0.0) _max_memory = 0.0;
@@ -76,7 +75,7 @@ namespace gum {
   Scheduler& Scheduler::operator=(const Scheduler& from) {
     if (this != &from) {
       ThreadNumberManager::operator=(from);
-      _max_memory = from._max_memory;
+      _max_memory                  = from._max_memory;
     }
 
     return *this;
@@ -87,7 +86,7 @@ namespace gum {
   Scheduler& Scheduler::operator=(Scheduler&& from) {
     if (this != &from) {
       ThreadNumberManager::operator=(std::move(from));
-      _max_memory = from._max_memory;
+      _max_memory                  = from._max_memory;
     }
 
     return *this;

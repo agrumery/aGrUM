@@ -303,7 +303,7 @@ namespace gum {
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/tools/database/rawDatabaseTable_inl.h>
+#  include <agrum/tools/database/rawDatabaseTable_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_RAW_DATABASE_TABLE_H */

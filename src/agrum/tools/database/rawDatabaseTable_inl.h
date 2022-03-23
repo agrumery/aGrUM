@@ -52,8 +52,7 @@ namespace gum {
 
     // default constructor
     INLINE RawDatabaseTable::RawDatabaseTable() :
-        IDatabaseTable< DBCell >(std::vector< std::string >(),
-                                 std::vector< std::string >()) {
+        IDatabaseTable< DBCell >(std::vector< std::string >(), std::vector< std::string >()) {
       GUM_CONSTRUCTOR(RawDatabaseTable);
     }
 

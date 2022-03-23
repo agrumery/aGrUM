@@ -92,9 +92,9 @@ namespace gum {
   // the function used to register all the above functions
   template < typename GUM_SCALAR >
   void partialInstantiation4MultiDimInit() {
-    static std::atomic<bool> first             = true;
-    static bool              registration_done = false;
-    static std::mutex        mutex;
+    static std::atomic< bool > first             = true;
+    static bool                registration_done = false;
+    static std::mutex          mutex;
 
     if (first) {
       // lock so that only one thread will register the operations
@@ -114,19 +114,19 @@ namespace gum {
                                                    BaseNameString,
                                                    &partialInstantiationMultiDimImplementation);
 
-        first = false;
+        first             = false;
         registration_done = true;
       }
-    mutex.unlock();
+      mutex.unlock();
     }
   }
 
   // the function used to register all the above functions
   template < typename GUM_SCALAR >
   void pointerPartialInstantiation4MultiDimInit() {
-    static std::atomic<bool> first             = true;
-    static bool              registration_done = false;
-    static std::mutex        mutex;
+    static std::atomic< bool > first             = true;
+    static bool                registration_done = false;
+    static std::mutex          mutex;
 
     if (first) {
       // lock so that only one thread will register the operations
@@ -146,7 +146,7 @@ namespace gum {
            BaseNameString,
            &partialInstantiationMultiDimImplementation4Pointers);
 
-        first = false;
+        first             = false;
         registration_done = true;
       }
       mutex.unlock();

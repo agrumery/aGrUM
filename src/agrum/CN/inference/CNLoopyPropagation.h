@@ -62,8 +62,7 @@ namespace gum {
       /**
        * Inference type to be used by the algorithm.
        */
-      enum class InferenceType : char
-      {
+      enum class InferenceType : char {
         nodeToNeighbours, /**< Uses a node-set so we don't iterate on nodes that
                              can't send a new message. Should be the fastest
                              inference type. A step is going through the

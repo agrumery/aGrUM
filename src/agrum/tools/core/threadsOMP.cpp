@@ -43,10 +43,8 @@ namespace gum {
 
 
     // returns the max number of threads used by default when entering the
-    //next parallel region
-    unsigned int getNumberOfThreads() {
-      return _nb_threads_;
-    }
+    // next parallel region
+    unsigned int getNumberOfThreads() { return _nb_threads_; }
 
 
     // Set the max number of threads to be used.
@@ -64,6 +62,6 @@ namespace gum {
 #endif
     }
 
-  } // namespace threadsOMP
+  }   // namespace threadsOMP
 
-} // namespace gum
+}   // namespace gum

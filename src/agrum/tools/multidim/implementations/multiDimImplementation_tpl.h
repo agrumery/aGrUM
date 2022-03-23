@@ -170,7 +170,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE const DiscreteVariable&
-               MultiDimImplementation< GUM_SCALAR >::variable(const std::string& name) const {
+     MultiDimImplementation< GUM_SCALAR >::variable(const std::string& name) const {
     for (const auto& v: _vars_) {
       if (v->name() == name) return *v;
     }

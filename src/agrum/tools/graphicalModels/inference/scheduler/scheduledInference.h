@@ -40,7 +40,7 @@ namespace gum {
    * @headerfile scheduledInference.h <agrum/tools/graphicalModels/inference/scheduler/scheduledInference.h>
    * @ingroup gm_group
    */
-  class ScheduledInference : public ThreadNumberManager {
+  class ScheduledInference: public ThreadNumberManager {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -48,8 +48,7 @@ namespace gum {
     /// @{
 
     /// default constructor
-    ScheduledInference(Size   max_nb_threads      = 0,
-                       double max_megabyte_memory = 0.0);
+    ScheduledInference(Size max_nb_threads = 0, double max_megabyte_memory = 0.0);
 
     /// copy constructor
     ScheduledInference(const ScheduledInference& from);
@@ -119,7 +118,6 @@ namespace gum {
 
     // a sequential scheduler: to be used if only one thread is used
     SchedulerSequential _scheduler_sequential_;
-
   };
 
 }   // namespace gum

@@ -204,10 +204,7 @@ namespace gum {
      * @brief A dummy type for the emplace constructor.
      * This type is used to prevent the Bucket emplace (int,...) to compile.
      */
-    enum class Emplace
-    {
-      EMPLACE
-    };
+    enum class Emplace { EMPLACE };
 
     /**
      * Class constructor.

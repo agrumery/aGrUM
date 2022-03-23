@@ -26,7 +26,7 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/BN/learning/aprioris/aprioriK2.h>
+#  include <agrum/BN/learning/aprioris/aprioriK2.h>
 
 namespace gum {
 

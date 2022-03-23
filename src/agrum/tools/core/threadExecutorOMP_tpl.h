@@ -32,20 +32,17 @@
 namespace gum {
 
   namespace threadsOMP {
-  
+
     /// executes a function using several threads
-    template <typename FUNCTION, typename... ARGS>
-    void ThreadExecutor::execute(std::size_t nb_threads,
-                                 FUNCTION    exec_func,
-                                 ARGS&&...   func_args) {
-#ifndef _OPENMP
+    template < typename FUNCTION, typename... ARGS >
+    void ThreadExecutor::execute(std::size_t nb_threads, FUNCTION exec_func, ARGS&&... func_args) {
+#  ifndef _OPENMP
       // without openMP we only have one thread available
       exec_func(0, 1, std::forward< ARGS >(func_args)...);
-#else      
+#  else
       if (nb_threads <= 1) {
         exec_func(0, 1, std::forward< ARGS >(func_args)...);
-      }
-      else {
+      } else {
         // indicate that we start a new threadExecutor
         ++nbRunningThreadsExecutors_;
 
@@ -55,15 +52,14 @@ namespace gum {
         std::vector< std::exception_ptr > func_exceptions(nb_threads, nullptr);
 
         // launch the threads and wait for their completion
-#  pragma omp parallel num_threads(int(nb_threads))
+#    pragma omp parallel num_threads(int(nb_threads))
         {
           // get the number of the thread
           const std::size_t this_thread = omp_get_thread_num();
 
           try {
             exec_func(this_thread, nb_threads, std::forward< ARGS >(func_args)...);
-          }
-          catch (...) { func_exceptions[this_thread] = std::current_exception(); }
+          } catch (...) { func_exceptions[this_thread] = std::current_exception(); }
         }
 
         // now, we have completed the execution of the ThreadExecutor
@@ -74,36 +70,33 @@ namespace gum {
           if (exc != nullptr) { std::rethrow_exception(exc); }
         }
       }
-#endif // _OPENMP
+#  endif   // _OPENMP
     }
 
 
     /// executes in parallel a function and undoes it if execptions are raised
-    template <typename FUNC1, typename FUNC2, typename... ARGS>
+    template < typename FUNC1, typename FUNC2, typename... ARGS >
     void ThreadExecutor::executeOrUndo(std::size_t nb_threads,
                                        FUNC1       exec_func,
                                        FUNC2       undo_func,
-                                       ARGS&&...   func_args) {
-#ifndef _OPENMP
+                                       ARGS&&... func_args) {
+#  ifndef _OPENMP
       // without openMP we only have one thread available
       try {
         exec_func(0, 1, std::forward< ARGS >(func_args)...);
-      }
-      catch (...) {
+      } catch (...) {
         undo_func(0, 1, std::forward< ARGS >(func_args)...);
         throw;
       }
-#else
+#  else
       if (nb_threads <= 1) {
         try {
           exec_func(0, 1, std::forward< ARGS >(func_args)...);
-        }
-        catch (...) {
+        } catch (...) {
           undo_func(0, 1, std::forward< ARGS >(func_args)...);
           throw;
         }
-      }
-      else {
+      } else {
         // indicate that we start a new threadExecutor
         ++nbRunningThreadsExecutors_;
 
@@ -113,7 +106,7 @@ namespace gum {
         std::vector< std::exception_ptr > func_exceptions(nb_threads, nullptr);
 
         // launch the threads and waith for their completion
-#  pragma omp parallel num_threads(int(nb_threads))
+#    pragma omp parallel num_threads(int(nb_threads))
         {
           // get the number of the thread
           const std::size_t this_thread = getThreadNumber();
@@ -137,15 +130,14 @@ namespace gum {
           std::vector< std::exception_ptr > undo_func_exceptions(nb_threads, nullptr);
 
           // launch the repair threads
-#  pragma omp parallel num_threads(int(nb_threads))
+#    pragma omp parallel num_threads(int(nb_threads))
           {
             // get the number of the thread
             const std::size_t this_thread = getThreadNumber();
 
             try {
               undo_func(this_thread, nb_threads, std::forward< ARGS >(func_args)...);
-            }
-            catch (...) { undo_func_exceptions[this_thread] = std::current_exception(); }
+            } catch (...) { undo_func_exceptions[this_thread] = std::current_exception(); }
           }
 
           // now, we have completed the execution of the ThreadExecutor
@@ -155,13 +147,12 @@ namespace gum {
           for (const auto& exc: func_exceptions) {
             if (exc != nullptr) { std::rethrow_exception(exc); }
           }
-        }
-        else {
+        } else {
           // now, we have completed the execution of the ThreadExecutor
           --nbRunningThreadsExecutors_;
         }
       }
-#endif // _OPENMP
+#  endif   // _OPENMP
     }
 
   } /* namespace threadsOMP */
@@ -169,4 +160,3 @@ namespace gum {
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
-

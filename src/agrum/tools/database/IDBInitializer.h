@@ -116,8 +116,7 @@ namespace gum {
       public:
       /** @brief the enumeration indicating the type of the data the
        * IDBInitializer expects as input data */
-      enum class InputType : char
-      {
+      enum class InputType : char {
         STRING,
         DBCELL
       };
@@ -159,7 +158,7 @@ namespace gum {
       /** This method may raise exceptions when trying to insert new rows
        * into the database table. See Method insertRow() of the database table. */
       template < class DATABASE >
-         void fillDatabase(DATABASE& database, const bool retry_insertion = false);
+      void fillDatabase(DATABASE& database, const bool retry_insertion = false);
 
       /** @brief This method indicates which column filling raised an exception,
        * if any, during the execution of fillDatabase */
@@ -221,9 +220,9 @@ namespace gum {
 } /* namespace gum */
 
 /// include the inlined functions if necessary
-#  ifndef GUM_NO_INLINE
-#    include <agrum/tools/database/IDBInitializer_inl.h>
-#  endif /* GUM_NO_INLINE */
+#ifndef GUM_NO_INLINE
+#  include <agrum/tools/database/IDBInitializer_inl.h>
+#endif /* GUM_NO_INLINE */
 
 // always include the template implementation
 #include <agrum/tools/database/IDBInitializer_tpl.h>

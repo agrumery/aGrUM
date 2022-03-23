@@ -402,9 +402,8 @@ namespace gum {
       nb_threads      = std::min(msgPerm * taille / this->threadMinimalNbOps_, nb_threads);
       if (nb_threads < 1) nb_threads = 1;
 
-      const auto                ranges = gum::dispatchRangeToThreads(0, msgPerm,
-                                                      (unsigned int)(nb_threads));
-      const auto                real_nb_threads = ranges.size();
+      const auto ranges = gum::dispatchRangeToThreads(0, msgPerm, (unsigned int)(nb_threads));
+      const auto real_nb_threads = ranges.size();
       std::vector< GUM_SCALAR > msg_pmin(real_nb_threads, msg_p_min);
       std::vector< GUM_SCALAR > msg_pmax(real_nb_threads, msg_p_max);
 
@@ -423,8 +422,7 @@ namespace gum {
                  if (msgs_p[i].size() == 2) {
                    combi_msg_p[i] = (jvalue & 1) ? msgs_p[i][1] : msgs_p[i][0];
                    jvalue /= 2;
-                 }
-                 else {
+                 } else {
                    combi_msg_p[i] = msgs_p[i][0];
                  }
                }
@@ -487,44 +485,44 @@ namespace gum {
       nb_threads      = std::min(msgPerm * taille / this->threadMinimalNbOps_, nb_threads);
       if (nb_threads < 1) nb_threads = 1;
 
-      const auto                ranges = gum::dispatchRangeToThreads(0, msgPerm,
-                                                      (unsigned int)(nb_threads));
-      const auto                real_nb_threads = ranges.size();
+      const auto ranges = gum::dispatchRangeToThreads(0, msgPerm, (unsigned int)(nb_threads));
+      const auto real_nb_threads = ranges.size();
       std::vector< GUM_SCALAR > msg_lmin(real_nb_threads, msg_l_min);
       std::vector< GUM_SCALAR > msg_lmax(real_nb_threads, msg_l_max);
 
       // create the function to be executed by the threads
-      auto threadedExec
-         = [this, &msg_lmin, &msg_lmax, msgs_p, taille, ranges, id, &lx, pos](
-              const std::size_t this_thread,
-              const std::size_t nb_threads) {
-             std::vector< std::vector< GUM_SCALAR > > combi_msg_p(taille);
+      auto threadedExec = [this, &msg_lmin, &msg_lmax, msgs_p, taille, ranges, id, &lx, pos](
+                             const std::size_t this_thread,
+                             const std::size_t nb_threads) {
+        std::vector< std::vector< GUM_SCALAR > > combi_msg_p(taille);
 
-             const auto& this_range = ranges[this_thread];
-             for (Idx j = this_range.first; j < this_range.second; ++j) {
-               // get jth msg :
-               auto jvalue = j;
+        const auto& this_range = ranges[this_thread];
+        for (Idx j = this_range.first; j < this_range.second; ++j) {
+          // get jth msg :
+          auto jvalue = j;
 
-               for (Idx i = 0; i < taille; i++) {
-                 if (msgs_p[i].size() == 2) {
-                   combi_msg_p[i] = (jvalue & 1) ? msgs_p[i][1] : msgs_p[i][0];
-                   jvalue /= 2;
-                 }
-                 else {
-                   combi_msg_p[i] = msgs_p[i][0];
-                 }
-                }
-               compute_ext_(combi_msg_p, id, msg_lmin[this_thread], msg_lmax[this_thread], lx, pos);
-             }
-           };
+          for (Idx i = 0; i < taille; i++) {
+            if (msgs_p[i].size() == 2) {
+              combi_msg_p[i] = (jvalue & 1) ? msgs_p[i][1] : msgs_p[i][0];
+              jvalue /= 2;
+            } else {
+              combi_msg_p[i] = msgs_p[i][0];
+            }
+          }
+          compute_ext_(combi_msg_p, id, msg_lmin[this_thread], msg_lmax[this_thread], lx, pos);
+        }
+      };
 
       // launch the threads
       ThreadExecutor::execute(real_nb_threads, threadedExec);
 
       for (Idx j = 0; j < real_nb_threads; ++j) {
         if ((msg_l_min > msg_lmin[j] || msg_l_min == -2) && msg_lmin[j] > 0) {
-          msg_l_min = msg_lmin[j]; }
-        if ((msg_l_max < msg_lmax[j] || msg_l_max == -2) && msg_lmax[j] > 0) { msg_l_max = msg_lmax[j]; }
+          msg_l_min = msg_lmin[j];
+        }
+        if ((msg_l_max < msg_lmax[j] || msg_l_max == -2) && msg_lmax[j] > 0) {
+          msg_l_max = msg_lmax[j];
+        }
       }
 
       real_msg_l_min = msg_l_min;

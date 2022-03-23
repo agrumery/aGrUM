@@ -39,7 +39,9 @@ namespace gum {
 
 
     /// returns the database on which we perform the counts
-    INLINE const DatabaseTable& RecordCounter::database() const { return _parsers_[0].data.database(); }
+    INLINE const DatabaseTable& RecordCounter::database() const {
+      return _parsers_[0].data.database();
+    }
 
 
     /// returns the counts for a given set of nodes

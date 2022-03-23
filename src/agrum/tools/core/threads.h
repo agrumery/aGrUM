@@ -74,7 +74,7 @@ namespace gum {
    */
   using gum::threads::getNumberOfThreads;
 
-   /**
+  /**
    * @brief Get the number of logical processors.
    * @ingroup basicstruct_group
    * @return The number of logical processors.
@@ -106,9 +106,8 @@ namespace gum {
    */
   std::vector< std::pair< Idx, Idx > >
      dispatchRangeToThreads(Idx beg, Idx end, unsigned int nb_threads);
-  
+
 } /* namespace gum */
 
 
 #endif /* GUM_THREADS_H */
-

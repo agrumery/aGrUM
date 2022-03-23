@@ -110,7 +110,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE const DiscreteVariable&
-               BayesNetFragment< GUM_SCALAR >::variableFromName(const std::string& name) const {
+     BayesNetFragment< GUM_SCALAR >::variableFromName(const std::string& name) const {
     NodeId id = idFromName(name);
 
     if (!isInstalledNode(id)) GUM_ERROR(NotFound, "variable " << name << " is not installed")
@@ -286,18 +286,18 @@ namespace gum {
 
     std::string bn_name;
 
-    static std::string inFragmentStyle = "fillcolor=\"#ffffaa\","
-                                         "color=\"#000000\","
-                                         "fontcolor=\"#000000\"";
-    static std::string styleWithLocalCPT = "fillcolor=\"#ffddaa\","
-                                           "color=\"#000000\","
-                                           "fontcolor=\"#000000\"";
+    static std::string inFragmentStyle    = "fillcolor=\"#ffffaa\","
+                                            "color=\"#000000\","
+                                            "fontcolor=\"#000000\"";
+    static std::string styleWithLocalCPT  = "fillcolor=\"#ffddaa\","
+                                            "color=\"#000000\","
+                                            "fontcolor=\"#000000\"";
     static std::string notConsistantStyle = "fillcolor=\"#ff0000\","
                                             "color=\"#000000\","
                                             "fontcolor=\"#ffff00\"";
-    static std::string outFragmentStyle = "fillcolor=\"#f0f0f0\","
-                                          "color=\"#f0f0f0\","
-                                          "fontcolor=\"#000000\"";
+    static std::string outFragmentStyle   = "fillcolor=\"#f0f0f0\","
+                                            "color=\"#f0f0f0\","
+                                            "fontcolor=\"#000000\"";
 
     try {
       bn_name = _bn_.property("name");

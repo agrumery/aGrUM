@@ -91,8 +91,7 @@ namespace gum {
       // ========================================================================
       /// @{
 
-      enum ClassElementType
-      {
+      enum ClassElementType {
         prm_attribute,
         prm_aggregate,
         prm_refslot,

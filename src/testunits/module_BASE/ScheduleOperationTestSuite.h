@@ -55,7 +55,7 @@ namespace gum_tests {
 
       gum::ScheduleProjection< gum::Potential< double > > real_myproj(f1, del_vars, myProjectMax);
       const gum::ScheduleMultiDim< gum::Potential< double > >& res    = real_myproj.result();
-      gum::ScheduleOperator&                                  myproj = real_myproj;
+      gum::ScheduleOperator&                                   myproj = real_myproj;
 
       const gum::Sequence< const gum::IScheduleMultiDim* >& multidims = myproj.args();
       TS_ASSERT(multidims.size() == 1);
@@ -67,7 +67,7 @@ namespace gum_tests {
       TS_ASSERT(s1.str() == myproj.toString());
 
       gum::ScheduleProjection< gum::Potential< double > > real_myproj2 = real_myproj;
-      gum::ScheduleOperator&                             myproj2      = real_myproj2;
+      gum::ScheduleOperator&                              myproj2      = real_myproj2;
       TS_ASSERT(real_myproj2.result().isAbstract());
       TS_ASSERT(myproj2 == myproj);
       TS_ASSERT(!(myproj2 != myproj));

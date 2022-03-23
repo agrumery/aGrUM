@@ -21,7 +21,8 @@
 
 /**
  * @file
- * @brief A class for storing multidimensional tables into data structures during scheduled inferences
+ * @brief A class for storing multidimensional tables into data structures during scheduled
+ * inferences
  *
  * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */

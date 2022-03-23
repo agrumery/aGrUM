@@ -34,8 +34,8 @@
 #  include <agrum/ID/inference/tools/decisionPotential.h>
 #  include <agrum/tools/multidim/potential.h>
 
-#  define GUM_SSLI_TRACE_ON(x)           //GUM_TRACE(x)
-#  define GUM_SSLI_POTENTIAL_TRACE_ON(x) //GUM_TRACE(x)
+#  define GUM_SSLI_TRACE_ON(x)             // GUM_TRACE(x)
+#  define GUM_SSLI_POTENTIAL_TRACE_ON(x)   // GUM_TRACE(x)
 
 
 namespace gum {
@@ -672,7 +672,7 @@ namespace gum {
       res.probPot
          = gum::DecisionPotential< GUM_SCALAR >::divideEvenZero(res.probPot,
                                                                 psi[gum::Arc(node, from)].probPot);
-      res.utilPot=res.utilPot-psi[gum::Arc(node, from)].utilPot;
+      res.utilPot = res.utilPot - psi[gum::Arc(node, from)].utilPot;
 
       phi.set(node, res);
       GUM_SSLI_TRACE_ON("    -> phi[" << node << "] updated")
@@ -765,9 +765,9 @@ namespace gum {
       if (infdiag.isChanceNode(node)) {
         SetOfVars sev;
         sev.insert(&infdiag.variable(node));
-        res = finalphi ^ sev;
-        const auto f=res.probPot.sum();
-        res.probPot.scale(1/f);
+        res          = finalphi ^ sev;
+        const auto f = res.probPot.sum();
+        res.probPot.scale(1 / f);
       } else if (infdiag.isDecisionNode(node)) {
         SetOfVars sev;
         sev.insert(&infdiag.variable(node));
@@ -798,7 +798,7 @@ namespace gum {
         res.utilPot = infdiag.utility(node);
       }
 
-      posteriors_.set(node,res);
+      posteriors_.set(node, res);
     }
   }
 

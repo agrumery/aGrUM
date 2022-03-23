@@ -48,7 +48,7 @@ namespace gum {
      * @headerfile score.h <agrum/BN/learning/scores_and_tests/score.h>
      * @ingroup learning_scores
      */
-    class Score : public IThreadNumberManager {
+    class Score: public IThreadNumberManager {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -266,7 +266,7 @@ namespace gum {
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/BN/learning/scores_and_tests/score_inl.h>
+#  include <agrum/BN/learning/scores_and_tests/score_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_SCORE_H */

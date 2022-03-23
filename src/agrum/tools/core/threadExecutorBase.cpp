@@ -28,7 +28,7 @@
 
 // include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
-#include <agrum/tools/core/threadExecutorBase_inl.h>
+#  include <agrum/tools/core/threadExecutorBase_inl.h>
 #endif /* GUM_NO_INLINE */
 
 
@@ -37,4 +37,4 @@ namespace gum {
   // the number of currently running ThreadExecutors
   std::atomic< int > ThreadExecutorBase::nbRunningThreadsExecutors_{0};
 
-} // namespace gum
+}   // namespace gum

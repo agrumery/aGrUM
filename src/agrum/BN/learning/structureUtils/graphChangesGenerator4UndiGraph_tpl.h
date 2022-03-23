@@ -100,13 +100,12 @@ namespace gum {
 
       // for all the pairs of nodes, consider adding, reverse and removing arcs
       // do it for each thread
-      const Size nb_threads = _max_threads_number_;
-      std::vector< Set< GraphChange > > legal_changes (nb_threads);
+      const Size                        nb_threads = _max_threads_number_;
+      std::vector< Set< GraphChange > > legal_changes(nb_threads);
 
       // create the lambda that will be used to fill the legal changes
-      auto threadedLegalSet = [this, &legal_changes] (
-           const std::size_t this_thread,
-           const std::size_t nb_threads) -> void {
+      auto threadedLegalSet = [this, &legal_changes](const std::size_t this_thread,
+                                                     const std::size_t nb_threads) -> void {
         Idx i = 0;
         for (const auto node1: this->graph_) {
           if (i == this_thread) {
@@ -133,7 +132,7 @@ namespace gum {
 
       // launch the threads
       ThreadExecutor::execute(nb_threads, threadedLegalSet);
-      
+
 
       // now store the changes into the protected vectors of the
       // GraphChangesGenerator4UndiGraph
@@ -207,7 +206,7 @@ namespace gum {
     /// returns the constraint that is used by the generator
     template < typename STRUCT_CONSTRAINT >
     INLINE STRUCT_CONSTRAINT&
-           GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::constraint() const noexcept {
+       GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::constraint() const noexcept {
       return *constraint_;
     }
 

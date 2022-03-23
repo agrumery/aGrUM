@@ -38,16 +38,13 @@
 namespace gum {
 
   namespace threadsSTL {
-      
+
     /// executes a function using several threads
-    template <typename FUNCTION, typename... ARGS>
-    void ThreadExecutor::execute(std::size_t nb_threads,
-                                 FUNCTION    exec_func,
-                                 ARGS&&...   func_args) {
+    template < typename FUNCTION, typename... ARGS >
+    void ThreadExecutor::execute(std::size_t nb_threads, FUNCTION exec_func, ARGS&&... func_args) {
       if (nb_threads <= 1) {
         exec_func(0, 1, std::forward< ARGS >(func_args)...);
-      }
-      else {
+      } else {
         // indicate that we start a new threadExecutor
         ++nbRunningThreadsExecutors_;
 
@@ -59,27 +56,23 @@ namespace gum {
         std::vector< std::exception_ptr > func_exceptions(nb_threads, nullptr);
 
         // create a lambda that will execute exec_func while catching its exceptions
-        auto real_exec_func = [&exec_func, nb_threads](std::size_t         this_thread,
-                                                       std::exception_ptr& exc,
-                                                       ARGS&... args) -> void {
+        auto real_exec_func
+           = [&exec_func,
+              nb_threads](std::size_t this_thread, std::exception_ptr& exc, ARGS&... args) -> void {
           try {
             exec_func(this_thread, nb_threads, std::forward< ARGS >(args)...);
-          }
-          catch (...) { exc = std::current_exception(); }
+          } catch (...) { exc = std::current_exception(); }
         };
 
         // launch the threads
         for (std::size_t i = std::size_t(0); i < nb_threads; ++i) {
-          threads.push_back(std::thread(real_exec_func,
-                                        i,
-                                        std::ref(func_exceptions[i]),
-                                        std::ref(func_args)...));
- //                                     std::ref(std::forward< ARGS >(func_args))...));
+          threads.push_back(
+             std::thread(real_exec_func, i, std::ref(func_exceptions[i]), std::ref(func_args)...));
+          //                                     std::ref(std::forward< ARGS >(func_args))...));
         }
 
         // wait for the threads to complete their executions
-        std::for_each(threads.begin(), threads.end(),
-                      std::mem_fn(&std::thread::join));
+        std::for_each(threads.begin(), threads.end(), std::mem_fn(&std::thread::join));
 
         // now, we have completed the execution of the ThreadExecutor
         --nbRunningThreadsExecutors_;
@@ -93,21 +86,19 @@ namespace gum {
 
 
     /// executes in parallel a function and undoes it if execptions are raised
-    template <typename FUNC1, typename FUNC2, typename... ARGS>
+    template < typename FUNC1, typename FUNC2, typename... ARGS >
     void ThreadExecutor::executeOrUndo(std::size_t nb_threads,
                                        FUNC1       exec_func,
                                        FUNC2       undo_func,
-                                       ARGS&&...   func_args) {
+                                       ARGS&&... func_args) {
       if (nb_threads <= 1) {
         try {
           exec_func(0, 1, std::forward< ARGS >(func_args)...);
-        }
-        catch (...) {
+        } catch (...) {
           undo_func(0, 1, std::forward< ARGS >(func_args)...);
           throw;
         }
-      }
-      else {
+      } else {
         // indicate that we start a new threadExecutor
         ++nbRunningThreadsExecutors_;
 
@@ -119,28 +110,24 @@ namespace gum {
         std::vector< std::exception_ptr > func_exceptions(nb_threads, nullptr);
 
         // create a lambda that will execute exec_func while catching its exceptions
-        auto real_exec_func = [&exec_func, nb_threads](std::size_t         this_thread,
-                                                       std::exception_ptr& exc,
-                                                       ARGS&... args) -> void {
+        auto real_exec_func
+           = [&exec_func,
+              nb_threads](std::size_t this_thread, std::exception_ptr& exc, ARGS&... args) -> void {
           try {
             exec_func(this_thread, nb_threads, std::forward< ARGS >(args)...);
-          }
-          catch (...) { exc = std::current_exception(); }
+          } catch (...) { exc = std::current_exception(); }
         };
 
 
         // launch the threads
         for (std::size_t i = std::size_t(0); i < nb_threads; ++i) {
-          threads.push_back(std::thread(real_exec_func,
-                                        i,
-                                        std::ref(func_exceptions[i]),
-                                        std::ref(func_args)...));
- //                                     std::ref(std::forward< ARGS >(func_args))...));
+          threads.push_back(
+             std::thread(real_exec_func, i, std::ref(func_exceptions[i]), std::ref(func_args)...));
+          //                                     std::ref(std::forward< ARGS >(func_args))...));
         }
 
         // wait for the threads to complete their executions
-        std::for_each(threads.begin(), threads.end(),
-                      std::mem_fn(&std::thread::join));
+        std::for_each(threads.begin(), threads.end(), std::mem_fn(&std::thread::join));
 
         // now, check if one exception has been raised
         bool exception_raised = false;
@@ -173,12 +160,11 @@ namespace gum {
                                             i,
                                             std::ref(undo_func_exceptions[i]),
                                             std::ref(func_args)...));
-                                            //std::ref(std::forward< ARGS >(func_args))...));
+            // std::ref(std::forward< ARGS >(func_args))...));
           }
 
           // wait for the threads to complete their executions
-          std::for_each(threads.begin(), threads.end(),
-                        std::mem_fn(&std::thread::join));
+          std::for_each(threads.begin(), threads.end(), std::mem_fn(&std::thread::join));
 
           // now, we have completed the execution of the ThreadExecutor
           --nbRunningThreadsExecutors_;
@@ -187,8 +173,7 @@ namespace gum {
           for (const auto& exc: func_exceptions) {
             if (exc != nullptr) { std::rethrow_exception(exc); }
           }
-        }
-        else {
+        } else {
           // now, we have completed the execution of the ThreadExecutor
           --nbRunningThreadsExecutors_;
         }
@@ -201,4 +186,3 @@ namespace gum {
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
-

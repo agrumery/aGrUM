@@ -45,7 +45,6 @@ namespace gum {
      */
     class IndepTestChi2: public IndependenceTest {
       public:
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -72,10 +71,10 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      IndepTestChi2(const DBRowGeneratorParser& parser,
-                    const Apriori&              external_apriori,
+      IndepTestChi2(const DBRowGeneratorParser&                                 parser,
+                    const Apriori&                                              external_apriori,
                     const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
-                    const Bijection< NodeId, std::size_t >& nodeId2columns
+                    const Bijection< NodeId, std::size_t >&                     nodeId2columns
                     = Bijection< NodeId, std::size_t >());
 
 
@@ -92,8 +91,8 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      IndepTestChi2(const DBRowGeneratorParser&                          parser,
-                    const Apriori&                                       apriori,
+      IndepTestChi2(const DBRowGeneratorParser&             parser,
+                    const Apriori&                          apriori,
                     const Bijection< NodeId, std::size_t >& nodeId2columns
                     = Bijection< NodeId, std::size_t >());
 
@@ -134,10 +133,8 @@ namespace gum {
 
       /// get the pair <chi2 statistic,pvalue> for a test var1 indep var2 given
       /// rhs_ids
-      std::pair< double, double > statistics(NodeId                                        var1,
-                                             NodeId                                        var2,
-                                             const std::vector< NodeId >& rhs_ids
-                                             = {});
+      std::pair< double, double >
+         statistics(NodeId var1, NodeId var2, const std::vector< NodeId >& rhs_ids = {});
 
       /// @}
 
@@ -173,7 +170,7 @@ namespace gum {
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/tools/stattests/indepTestChi2_inl.h>
+#  include <agrum/tools/stattests/indepTestChi2_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_INDEP_TEST_CHI2_H */

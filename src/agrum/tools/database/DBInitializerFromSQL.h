@@ -134,7 +134,6 @@ namespace gum {
      */
     class DBInitializerFromSQL: public IDBInitializer {
       public:
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -151,11 +150,11 @@ namespace gum {
        * @param timeout Defines a timeout for accessing the SQL database, if 0
        * then no timeout is set.
        */
-      DBInitializerFromSQL(const std::string&    dataSource,
-                           const std::string&    login,
-                           const std::string&    password,
-                           const std::string&    query,
-                           long                  timeout = 0L);
+      DBInitializerFromSQL(const std::string& dataSource,
+                           const std::string& login,
+                           const std::string& password,
+                           const std::string& query,
+                           long               timeout = 0L);
 
       /// default constructor, especially for sqlite databases
       /** This will read the result of query and load it in memory.
@@ -166,9 +165,9 @@ namespace gum {
        * @param timeout Defines a timeout for accessing the SQL database, if 0
        * then no timeout is set.
        */
-      DBInitializerFromSQL(const std::string&    connection_string,
-                           const std::string&    query,
-                           long                  timeout = 0L);
+      DBInitializerFromSQL(const std::string& connection_string,
+                           const std::string& query,
+                           long               timeout = 0L);
 
       /// copy constructor
       /** the new initializer points to the same SQL query as from, but
@@ -251,9 +250,9 @@ namespace gum {
 
 
 // include the inlined functions if necessary
-#ifndef GUM_NO_INLINE
-#include <agrum/tools/database/DBInitializerFromSQL_inl.h>
-#endif /* GUM_NO_INLINE */
+#    ifndef GUM_NO_INLINE
+#      include <agrum/tools/database/DBInitializerFromSQL_inl.h>
+#    endif /* GUM_NO_INLINE */
 
 #  endif /* GUM_LEARNING_DB_INITILIALIZER_FROM_SQL_H */
 

@@ -39,14 +39,15 @@ namespace gum {
    * @headerfile threadExecutorBase.h <agrum/tools/core/threadExecutorBase.h>
    */
   class ThreadExecutorBase
-    /**
-     * @brief Set the max number of threads to be used.
-     * @ingroup basicstruct_group
-     *
-     * To avoid spare cycles (less then 100% CPU occupied), use more threads than
-     * logical processors (x2 is a good all-around value).
-     * @param number The number of threads to be used.
-     */{
+  /**
+   * @brief Set the max number of threads to be used.
+   * @ingroup basicstruct_group
+   *
+   * To avoid spare cycles (less then 100% CPU occupied), use more threads than
+   * logical processors (x2 is a good all-around value).
+   * @param number The number of threads to be used.
+   */
+  {
     public:
     /// indicates how many threadExecutors are currently running
     static int nbRunningThreadsExecutors();
@@ -61,7 +62,7 @@ namespace gum {
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/tools/core/threadExecutorBase_inl.h>
+#  include <agrum/tools/core/threadExecutorBase_inl.h>
 #endif /* GUM_NO_INLINE */
 
 

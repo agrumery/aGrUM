@@ -1023,7 +1023,6 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(v21, xv21)
       }
     }
-
   };
 
 }   // namespace gum_tests

@@ -265,8 +265,7 @@ namespace gum {
 
       using MissingValType = std::vector< std::string >;
 
-      enum IsMissing : char
-      {
+      enum IsMissing : char {
         False,
         True
       };
@@ -952,8 +951,7 @@ namespace gum {
        * as is into the database table.
        * @throw SizeError is raised if the size of the new_row is not equal to
        * the number of columns retained in the IDatabaseTable */
-      virtual void insertRow(const Row< T_DATA >& new_row,
-                             const IsMissing contains_missing_data);
+      virtual void insertRow(const Row< T_DATA >& new_row, const IsMissing contains_missing_data);
 
       using IDatabaseTableInsert4DBCell< !std::is_same< T_DATA, DBCell >::value >::insertRows;
 

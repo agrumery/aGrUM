@@ -49,7 +49,7 @@ namespace gum {
      * @headerfile independenceTest.h <agrum/BN/learning/scores_and_tests/independenceTest.h>
      * @ingroup learning_scores
      */
-    class IndependenceTest : public IThreadNumberManager {
+    class IndependenceTest: public IThreadNumberManager {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

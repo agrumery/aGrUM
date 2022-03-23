@@ -63,7 +63,6 @@ namespace gum {
    */
   class Schedule {
     public:
-
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -128,8 +127,7 @@ namespace gum {
      * contains a table with the same id
      */
     template < typename TABLE >
-    const IScheduleMultiDim*
-       insertTable(const TABLE& table, const bool copy, const Idx id = 0);
+    const IScheduleMultiDim* insertTable(const TABLE& table, const bool copy, const Idx id = 0);
 
     /** @brief inserts a copy of a table as a source operation's input, i.e., this
      * table is not computed by any ScheduleOperator
@@ -150,8 +148,7 @@ namespace gum {
      * @throws DuplicateScheduleMultiDim is thrown if the schedule already
      * contains a table with the same id
      */
-    const IScheduleMultiDim*
-       insertScheduleMultiDim(const IScheduleMultiDim& multidim);
+    const IScheduleMultiDim* insertScheduleMultiDim(const IScheduleMultiDim& multidim);
 
     /** @brief inserts without copying it a table as a source operation's input,
      * i.e., this table is not computed by any ScheduleOperator
@@ -171,7 +168,7 @@ namespace gum {
      * @throws DuplicateScheduleMultiDim is thrown if the schedule already
      * contains a table with the same id
      */
-     void emplaceScheduleMultiDim(const IScheduleMultiDim& multidim);
+    void emplaceScheduleMultiDim(const IScheduleMultiDim& multidim);
 
     /// inserts an operation into the schedule
     /** The Schedule class is able to determine by itself when the operation
@@ -189,7 +186,7 @@ namespace gum {
      * and they have not been executed yet.
      * @warning operations are inserted by cloning */
     const ScheduleOperator& insertOperation(const ScheduleOperator& op,
-                                              const bool are_results_persistent = false);
+                                            const bool              are_results_persistent = false);
 
     /// emplace a new schedule binary combination operation
     /** @param table1 the first ScheduleMultiDim to combine with the other table
@@ -208,11 +205,11 @@ namespace gum {
      * and they have not been executed yet.
      */
     template < typename TABLE1, typename TABLE2, typename TABLE_RES >
-    const ScheduleOperator&
-       emplaceBinaryCombination(const ScheduleMultiDim< TABLE1 >& table1,
-                                const ScheduleMultiDim< TABLE2 >& table2,
-                                TABLE_RES (*combine)(const TABLE1&, const TABLE2&),
-                                const bool is_result_persistent = false);
+    const ScheduleOperator& emplaceBinaryCombination(const ScheduleMultiDim< TABLE1 >& table1,
+                                                     const ScheduleMultiDim< TABLE2 >& table2,
+                                                     TABLE_RES (*combine)(const TABLE1&,
+                                                                          const TABLE2&),
+                                                     const bool is_result_persistent = false);
 
     /// emplace a new schedule projection operation
     /** @param table the ScheduleMultiDim containing the table that will
@@ -234,8 +231,8 @@ namespace gum {
      */
     template < typename TABLE >
     const ScheduleOperator&
-       emplaceProjection(const ScheduleMultiDim< TABLE >& table,
-                         const Set< const DiscreteVariable* >&   del_vars,
+       emplaceProjection(const ScheduleMultiDim< TABLE >&      table,
+                         const Set< const DiscreteVariable* >& del_vars,
                          TABLE (*project)(const TABLE&, const Set< const DiscreteVariable* >&),
                          const bool is_result_persistent = false);
 
@@ -249,8 +246,7 @@ namespace gum {
      * and they have not been executed yet.
      */
     template < typename TABLE >
-    const ScheduleOperator&
-       emplaceDeletion(const ScheduleMultiDim< TABLE >& table);
+    const ScheduleOperator& emplaceDeletion(const ScheduleMultiDim< TABLE >& table);
 
     /// emplace a new schedule storage operation
     /** @throws UnknownScheduleMultiDim if some of the arguments of op do not
@@ -261,11 +257,9 @@ namespace gum {
      * already been performed but other operations use some of these arguments
      * and they have not been executed yet.
      */
-    template < typename TABLE,
-               template < typename... > class CONTAINER >
-    const ScheduleOperator&
-       emplaceStorage(const IScheduleMultiDim& table,
-                      CONTAINER< TABLE >&      container);
+    template < typename TABLE, template < typename... > class CONTAINER >
+    const ScheduleOperator& emplaceStorage(const IScheduleMultiDim& table,
+                                           CONTAINER< TABLE >&      container);
 
     /// returns a DAG indicating in which order the operations can be performed
     /** In this DAG, each node corresponds to an operation and an operation
@@ -327,8 +321,8 @@ namespace gum {
      * the operation has not yet been executed. This should never happen.
      */
     void updateAfterExecution(const ScheduleOperator& exec_op,
-                              std::vector< NodeId >&            new_available_nodes,
-                              const bool                        check = false);
+                              std::vector< NodeId >&  new_available_nodes,
+                              const bool              check = false);
 
     /// returns the ScheduleMultiDim corresponding to a given id
     const IScheduleMultiDim* scheduleMultiDim(const NodeId id) const;
@@ -349,8 +343,7 @@ namespace gum {
     /** @returns a pointer to the ScheduleOperator that created (as a result)
      * a given ScheduleMultiDim. If no operation created it, the method
      * returns nullptr. */
-    const ScheduleOperator*
-       scheduleMultiDimCreator(const IScheduleMultiDim* multidim) const;
+    const ScheduleOperator* scheduleMultiDimCreator(const IScheduleMultiDim* multidim) const;
 
     /// returns the version number of the schedule
     Idx versionNumber() const;
@@ -387,8 +380,7 @@ namespace gum {
      * std::pair indicates the index of the ScheduleMultiDim in the sequence
      * of results of the ScheduleOperator.
      */
-    HashTable< const IScheduleMultiDim*, std::pair< ScheduleOperator*, Idx > >
-       _multidim_location_;
+    HashTable< const IScheduleMultiDim*, std::pair< ScheduleOperator*, Idx > > _multidim_location_;
 
     /// a bijection between pointers to IScheduleMultiDim and their Ids
     Bijection< const IScheduleMultiDim*, Idx > _multidim2id_;
@@ -435,8 +427,7 @@ namespace gum {
     static Idx _newVersionNumber_();
 
     // the version numbers help to identify the changes in schedules
-    static std::atomic<Idx> _overall_version_number_;
-
+    static std::atomic< Idx > _overall_version_number_;
   };
 
 } /* namespace gum */
@@ -445,7 +436,7 @@ namespace gum {
 #include <agrum/tools/graphicalModels/inference/scheduler/schedule_tpl.h>
 
 #ifndef GUM_NO_INLINE
-#include <agrum/tools/graphicalModels/inference/scheduler/schedule_inl.h>
+#  include <agrum/tools/graphicalModels/inference/scheduler/schedule_inl.h>
 #endif /* GUM_NO_INLINE */
 
 

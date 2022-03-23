@@ -108,7 +108,6 @@ namespace gum {
       _clusters_ l_clusters_;
 
 
-
       /** Threads IBayesNet. */
       typename std::vector< _bnet_* > workingSet_;
       /** Threads evidence. */

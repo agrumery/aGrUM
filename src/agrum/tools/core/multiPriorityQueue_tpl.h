@@ -95,9 +95,8 @@ namespace gum {
 
   // copy operator
   template < typename Val, typename Priority, typename Cmp >
-  MultiPriorityQueue< Val, Priority, Cmp >&
-     MultiPriorityQueue< Val, Priority, Cmp >::operator=(
-        const MultiPriorityQueue< Val, Priority, Cmp >& from) {
+  MultiPriorityQueue< Val, Priority, Cmp >& MultiPriorityQueue< Val, Priority, Cmp >::operator=(
+     const MultiPriorityQueue< Val, Priority, Cmp >& from) {
     // for debugging purposes
     GUM_OP_CPY(MultiPriorityQueue);
 
@@ -131,9 +130,8 @@ namespace gum {
 
   // move operator
   template < typename Val, typename Priority, typename Cmp >
-  MultiPriorityQueue< Val, Priority, Cmp >&
-     MultiPriorityQueue< Val, Priority, Cmp >::operator=(
-        MultiPriorityQueue< Val, Priority, Cmp >&& from) {
+  MultiPriorityQueue< Val, Priority, Cmp >& MultiPriorityQueue< Val, Priority, Cmp >::operator=(
+     MultiPriorityQueue< Val, Priority, Cmp >&& from) {
     // avoid self assignment
     if (this != &from) {
       // for debugging purposes
@@ -286,8 +284,7 @@ namespace gum {
 
   // inserts a new (a copy) element in the priority queue
   template < typename Val, typename Priority, typename Cmp >
-  Size MultiPriorityQueue< Val, Priority, Cmp >::insert(const Val&      val,
-                                                               const Priority& priority) {
+  Size MultiPriorityQueue< Val, Priority, Cmp >::insert(const Val& val, const Priority& priority) {
     // create the entry in the indices hashtable
     const Val*           new_val;
     std::vector< Size >* new_vect;
@@ -446,9 +443,8 @@ namespace gum {
 
   // changes the size of the internal structure storing the priority queue
   template < typename Val, typename Priority, typename Cmp >
-  Size MultiPriorityQueue< Val, Priority, Cmp >::setPriorityByPos(
-     Size            index,
-     const Priority& new_priority) {
+  Size MultiPriorityQueue< Val, Priority, Cmp >::setPriorityByPos(Size            index,
+                                                                  const Priority& new_priority) {
     // check whether the element the priority of which should be changed exists
     if (index >= _nb_elements_) {
       GUM_ERROR(NotFound, "not enough elements in the MultiPriorityQueue")
@@ -509,7 +505,7 @@ namespace gum {
   // changes the size of the internal structure storing the priority queue
   template < typename Val, typename Priority, typename Cmp >
   Size MultiPriorityQueue< Val, Priority, Cmp >::setPriorityByPos(Size       index,
-                                                                         Priority&& new_priority) {
+                                                                  Priority&& new_priority) {
     // check whether the element the priority of which should be changed exists
     if (index >= _nb_elements_) {
       GUM_ERROR(NotFound, "not enough elements in the MultiPriorityQueue")
@@ -570,7 +566,7 @@ namespace gum {
   // modifies the priority of each instance of a given element
   template < typename Val, typename Priority, typename Cmp >
   void MultiPriorityQueue< Val, Priority, Cmp >::setPriority(const Val&      elt,
-                                                                    const Priority& new_priority) {
+                                                             const Priority& new_priority) {
     std::vector< Size >& vect_index = _indices_[elt];
 
     for (auto index: vect_index) {
@@ -580,14 +576,13 @@ namespace gum {
 
   // modifies the priority of each instance of a given element
   template < typename Val, typename Priority, typename Cmp >
-  INLINE const Priority&
-               MultiPriorityQueue< Val, Priority, Cmp >::priority(const Val& elt) const {
+  INLINE const Priority& MultiPriorityQueue< Val, Priority, Cmp >::priority(const Val& elt) const {
     return _heap_[_indices_[elt][0]].first;
   }
 
   // A \c << operator for priority queues
   template < typename Val, typename Priority, typename Cmp >
-  INLINE std::ostream& operator<<(std::ostream&                                          stream,
+  INLINE std::ostream& operator<<(std::ostream&                                   stream,
                                   const MultiPriorityQueue< Val, Priority, Cmp >& queue) {
     stream << queue.toString();
     return stream;

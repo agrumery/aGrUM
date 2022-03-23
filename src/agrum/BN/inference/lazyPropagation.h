@@ -247,8 +247,8 @@ namespace gum {
 
 
     /// the type of relevant potential finding algorithm to be used
-    RelevantPotentialsFinderType _find_relevant_potential_type_
-       {RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS};
+    RelevantPotentialsFinderType _find_relevant_potential_type_{
+       RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS};
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined to produce a message on a separator */
@@ -257,8 +257,7 @@ namespace gum {
        Set< const DiscreteVariable* >&  kept_vars);
 
     /// the type of barren nodes computation we wish
-    FindBarrenNodesType _barren_nodes_type_
-       {FindBarrenNodesType::FIND_BARREN_NODES};
+    FindBarrenNodesType _barren_nodes_type_{FindBarrenNodesType::FIND_BARREN_NODES};
 
     /// the operator for performing the projections
     Potential< GUM_SCALAR > (*_projection_op_)(const Potential< GUM_SCALAR >&,
@@ -387,7 +386,7 @@ namespace gum {
     NodeProperty< EvidenceChangeType > _evidence_changes_;
 
     /// indicates whether we should use schedules for inference
-    bool _use_schedules_ {false};
+    bool _use_schedules_{false};
 
     /// minimal number of operations to perform in the JT to use schedules
     static constexpr double _schedule_threshold_{1000000.0};
@@ -496,7 +495,6 @@ namespace gum {
 
     /// returns a fresh potential equal to P(argument,evidence) without using schedules
     Potential< GUM_SCALAR >* _unnormalizedJointPosterior_(const NodeSet& set);
-
   };
 
 

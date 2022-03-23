@@ -37,8 +37,8 @@ namespace gum_tests {
     public:
     void test_G2() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
-      const auto&                           var_names = initializer.variableNames();
-      const std::size_t                     nb_vars   = var_names.size();
+      const auto&                         var_names = initializer.variableNames();
+      const std::size_t                   nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet                translator_set;
       gum::learning::DBTranslator4LabelizedVariable translator;
@@ -77,8 +77,8 @@ namespace gum_tests {
 
     void test_cache() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
-      const auto&                           var_names = initializer.variableNames();
-      const std::size_t                     nb_vars   = var_names.size();
+      const auto&                         var_names = initializer.variableNames();
+      const std::size_t                   nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet                translator_set;
       gum::learning::DBTranslator4LabelizedVariable translator;
@@ -109,8 +109,8 @@ namespace gum_tests {
 
     void xtest_clearcache() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
-      const auto&                           var_names = initializer.variableNames();
-      const std::size_t                     nb_vars   = var_names.size();
+      const auto&                         var_names = initializer.variableNames();
+      const std::size_t                   nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet                translator_set;
       gum::learning::DBTranslator4LabelizedVariable translator;
@@ -142,8 +142,8 @@ namespace gum_tests {
 
     void test_statistics_2() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/testXYbase.csv"));
-      const auto&                           var_names = initializer.variableNames();
-      const std::size_t                     nb_vars   = var_names.size();
+      const auto&                         var_names = initializer.variableNames();
+      const std::size_t                   nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet                translator_set;
       gum::learning::DBTranslator4LabelizedVariable translator;

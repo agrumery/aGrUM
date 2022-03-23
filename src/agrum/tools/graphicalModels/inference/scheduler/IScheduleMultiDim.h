@@ -184,7 +184,7 @@ namespace gum {
     static Idx _newId_();
 
     // the id used whenever any ScheduleMultiDim of any type asks for a new id
-    static std::atomic<Idx> _multidim_id_;
+    static std::atomic< Idx > _multidim_id_;
   };
 
 } /* namespace gum */

@@ -109,7 +109,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE const DiscreteVariable*
-               FMDPFactory< GUM_SCALAR >::variable(const std::string& name) const {
+     FMDPFactory< GUM_SCALAR >::variable(const std::string& name) const {
     for (const auto& elt: _varNameMap_)
       if (elt.first.compare(name) == 0) return elt.second;
 

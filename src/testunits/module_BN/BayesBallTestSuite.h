@@ -65,18 +65,18 @@ namespace gum_tests {
     void testRelevantPotentials() {
       std::string file = GET_RESSOURCES_PATH("bif/asia.bif");
 
-      gum::BayesNet< double > bn;
+      gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
-      gum::Size nbrErr = reader.proceed();
+      gum::Size                nbrErr = reader.proceed();
       TS_ASSERT(nbrErr == gum::Size(0))
 
-      gum::Sequence< gum::NodeId > nodes_seq;
+      gum::Sequence< gum::NodeId >                nodes_seq;
       gum::Set< const gum::Potential< double >* > potentials;
 
       for (const auto node: bn.nodes()) {
         nodes_seq.insert(node);
         potentials.insert(&bn.cpt(node));
-        //std::cout << node << " : " << bn.variable(node).name() << std::endl;
+        // std::cout << node << " : " << bn.variable(node).name() << std::endl;
       }
 
       gum::Set< gum::NodeId > requisite;
@@ -86,7 +86,7 @@ namespace gum_tests {
       hardEvidence.insert(gum::NodeId(5));   // smoking
 
       TS_ASSERT_THROWS_NOTHING(
-       gum::BayesBall::requisiteNodes(bn.dag(), query, hardEvidence, softEvidence, requisite));
+         gum::BayesBall::requisiteNodes(bn.dag(), query, hardEvidence, softEvidence, requisite));
       TS_ASSERT_THROWS_NOTHING(
          gum::BayesBall::relevantPotentials(bn, query, hardEvidence, softEvidence, potentials));
 
@@ -96,19 +96,20 @@ namespace gum_tests {
     void testRelevantScheduleMultiDims() {
       std::string file = GET_RESSOURCES_PATH("bif/asia.bif");
 
-      gum::BayesNet< double > bn;
+      gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
-      gum::Size nbrErr = reader.proceed();
+      gum::Size                nbrErr = reader.proceed();
       TS_ASSERT(nbrErr == gum::Size(0))
 
-      gum::Sequence< gum::NodeId > nodes_seq;
+      gum::Sequence< gum::NodeId >                                         nodes_seq;
       gum::Set< const gum::ScheduleMultiDim< gum::Potential< double > >* > potentials;
 
       for (const auto node: bn.nodes()) {
         nodes_seq.insert(node);
-        auto sched = new gum::ScheduleMultiDim< gum::Potential< double > >(bn.cpt(node), false, node);
+        auto sched
+           = new gum::ScheduleMultiDim< gum::Potential< double > >(bn.cpt(node), false, node);
         potentials.insert(sched);
-        //std::cout << node << " : " << bn.variable(node).name() << std::endl;
+        // std::cout << node << " : " << bn.variable(node).name() << std::endl;
       }
       gum::Set< const gum::ScheduleMultiDim< gum::Potential< double > >* > pots = potentials;
 
@@ -119,7 +120,7 @@ namespace gum_tests {
       hardEvidence.insert(gum::NodeId(5));   // smoking
 
       TS_ASSERT_THROWS_NOTHING(
-       gum::BayesBall::requisiteNodes(bn.dag(), query, hardEvidence, softEvidence, requisite));
+         gum::BayesBall::requisiteNodes(bn.dag(), query, hardEvidence, softEvidence, requisite));
       TS_ASSERT_THROWS_NOTHING(
          gum::BayesBall::relevantPotentials(bn, query, hardEvidence, softEvidence, potentials));
 
@@ -128,7 +129,5 @@ namespace gum_tests {
       for (const auto pot: pots)
         delete pot;
     }
-
-
   };
 }   // namespace gum_tests

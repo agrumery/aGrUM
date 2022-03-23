@@ -20,7 +20,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/tools/database/DBTranslator4DiscretizedVariable.h>
+#  include <agrum/tools/database/DBTranslator4DiscretizedVariable.h>
 
 namespace gum {
 

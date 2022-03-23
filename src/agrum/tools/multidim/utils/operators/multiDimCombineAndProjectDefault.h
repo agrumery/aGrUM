@@ -204,7 +204,7 @@ namespace gum {
 
     /// free the scheduling memory
     void _freeData_(std::vector< const IScheduleMultiDim* >& tables,
-                    std::vector< ScheduleOperator* >&       operations) const;
+                    std::vector< ScheduleOperator* >&        operations) const;
   };
 
 } /* namespace gum */

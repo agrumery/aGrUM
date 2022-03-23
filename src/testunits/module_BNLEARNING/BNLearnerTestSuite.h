@@ -1845,7 +1845,5 @@ namespace gum_tests {
     }
 
 
-
-
   };   // class BNLearnerTestSuite
 } /* namespace gum_tests */

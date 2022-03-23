@@ -103,8 +103,7 @@ namespace gum {
 
   // move operator
   template < typename Val, typename Cmp >
-  Heap< Val, Cmp >&
-     Heap< Val, Cmp >::operator=(Heap< Val, Cmp >&& from) noexcept {
+  Heap< Val, Cmp >& Heap< Val, Cmp >::operator=(Heap< Val, Cmp >&& from) noexcept {
     // avoid self assignment
     if (this != &from) {
       _heap_        = std::move(from._heap_);

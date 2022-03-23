@@ -189,8 +189,8 @@ namespace gum_tests {
       // get the set of variables to erase
       gum::Set< const gum::DiscreteVariable* > myset = *BN_variable_set;
       myset.erase(BN_variable[target_id]);
-      gum::Potential< double >* res =
-         new gum::Potential< double >(LPIncrprojPotential(*joint, myset));
+      gum::Potential< double >* res
+         = new gum::Potential< double >(LPIncrprojPotential(*joint, myset));
       res->normalize();
       return res;
     }

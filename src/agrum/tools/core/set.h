@@ -788,8 +788,7 @@ namespace gum {
      * @brief An enumeration to position the iterator at the beginning or the
      * end of the set.
      */
-    enum Position
-    {
+    enum Position {
       BEGIN,
       END
     };
@@ -1003,8 +1002,7 @@ namespace gum {
      * @brief An enumeration to position the iterator at the beginning or the
      * end of the set.
      */
-    enum Position
-    {
+    enum Position {
       BEGIN,
       END
     };

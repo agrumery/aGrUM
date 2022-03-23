@@ -121,18 +121,17 @@ namespace gum {
                                  : 1;   // no nested multithreading
 
         // dispatch {0,...,psize} among the threads
-        const auto ranges = gum::dispatchRangeToThreads(0, psize,
-                                                        (unsigned int)(nb_threads));
+        const auto ranges = gum::dispatchRangeToThreads(0, psize, (unsigned int)(nb_threads));
 
         // create the function to be executed by the threads
-        auto threadedExec = [this, ranges](const std::size_t this_thread,
-                                           const std::size_t nb_threads) {
-          const auto& this_range = ranges[this_thread];
-          for (Idx j = this_range.first; j < this_range.second; ++j) {
-            _threadInference_(this_thread);
-            _threadUpdate_(this_thread);
-          }
-        };
+        auto threadedExec
+           = [this, ranges](const std::size_t this_thread, const std::size_t nb_threads) {
+               const auto& this_range = ranges[this_thread];
+               for (Idx j = this_range.first; j < this_range.second; ++j) {
+                 _threadInference_(this_thread);
+                 _threadUpdate_(this_thread);
+               }
+             };
 
         do {
           eps = 0;
@@ -231,7 +230,7 @@ namespace gum {
 
       // create the BNs: do this in a single thread because Bayes Nets do not
       // support slaves in multi threading
-      for(auto& thread_bn : this->workingSet_)
+      for (auto& thread_bn: this->workingSet_)
         thread_bn = new BayesNet< GUM_SCALAR >(this->credalNet_->current_bn());
 
       // create the function to be executed by the threads
@@ -310,7 +309,8 @@ namespace gum {
           BayesNet< GUM_SCALAR >* thread_bn = new BayesNet< GUM_SCALAR >();
           *thread_bn = this->credalNet_->current_bn();
           this->workingSet_[this_thread] = thread_bn;
-	  //this->workingSet_[this_thread] = new BayesNet< GUM_SCALAR >(this->credalNet_->current_bn());
+          //this->workingSet_[this_thread] = new BayesNet< GUM_SCALAR
+    >(this->credalNet_->current_bn());
         }
         //this->workingSet_[this_thread] = thread_bn;
 
@@ -364,10 +364,11 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
-    inline void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_verticesSampling_(Size this_thread) {
-      IBayesNet< GUM_SCALAR >* working_bn  = this->workingSet_[this_thread];
-      auto& random_generator = this->generators_[this_thread];
-      const auto cpt = &this->credalNet_->credalNet_currentCpt();
+    inline void
+       CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_verticesSampling_(Size this_thread) {
+      IBayesNet< GUM_SCALAR >* working_bn       = this->workingSet_[this_thread];
+      auto&                    random_generator = this->generators_[this_thread];
+      const auto               cpt              = &this->credalNet_->credalNet_currentCpt();
 
       using dBN = std::vector< std::vector< std::vector< bool > > >;
 
@@ -468,7 +469,8 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
-    inline void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_insertEvidence_(Size this_thread) {
+    inline void
+       CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_insertEvidence_(Size this_thread) {
       if (this->evidence_.size() == 0) { return; }
 
       BNInferenceEngine* inference_engine = this->l_inferenceEngine_[this_thread];

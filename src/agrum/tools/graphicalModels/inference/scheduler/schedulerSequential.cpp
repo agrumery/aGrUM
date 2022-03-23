@@ -211,7 +211,7 @@ namespace gum {
   /// execute one operation
   void SchedulerSequential::_simulateExecuteOneOperation_(
      const NodeId           node,
-     ScheduleOperator&     op,
+     ScheduleOperator&      op,
      DAG&                   dag,
      List< NodeId >&        available_nodes,
      std::vector< NodeId >& new_available_nodes) {

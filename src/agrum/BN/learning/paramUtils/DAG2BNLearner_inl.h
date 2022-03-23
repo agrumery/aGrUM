@@ -28,16 +28,14 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
+#  include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
 
 namespace gum {
 
   namespace learning {
 
     /// returns the approximation policy of the learning algorithm
-    INLINE ApproximationScheme& DAG2BNLearner::approximationScheme() {
-      return *this;
-    }
+    INLINE ApproximationScheme& DAG2BNLearner::approximationScheme() { return *this; }
 
   } /* namespace learning */
 

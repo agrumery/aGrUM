@@ -39,9 +39,7 @@ namespace gum {
   namespace learning {
 
     // virtual copy constructor
-    RawDatabaseTable* RawDatabaseTable::clone() const {
-      return new RawDatabaseTable(*this);
-    }
+    RawDatabaseTable* RawDatabaseTable::clone() const { return new RawDatabaseTable(*this); }
 
 
     // copy operator

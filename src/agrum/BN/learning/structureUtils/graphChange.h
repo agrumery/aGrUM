@@ -43,8 +43,7 @@ namespace gum {
   namespace learning {
 
     /// the type of modification that can be applied to the graph
-    enum GraphChangeType
-    {
+    enum GraphChangeType {
       ARC_ADDITION,
       ARC_DELETION,
       ARC_REVERSAL,

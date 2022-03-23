@@ -38,7 +38,7 @@ namespace gum {
 
   INLINE
   Idx randomValue(const Size max) {
-    std::uniform_int_distribution<Idx> uni_int(0, max - 1);
+    std::uniform_int_distribution< Idx > uni_int(0, max - 1);
     return uni_int(Generator_);
   }
 
@@ -59,8 +59,6 @@ namespace gum {
   }
 
   /// returns the current generator's value
-  INLINE unsigned int currentRandomGeneratorValue() {
-    return Generator_();
-  }
+  INLINE unsigned int currentRandomGeneratorValue() { return Generator_(); }
 
 } /* namespace gum */

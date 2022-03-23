@@ -823,8 +823,8 @@ namespace gum_tests {
       ie.addEvidence("re", 0);
       ie.makeInference();
 
-      for (const auto nod : bn.nodes()) {
-        const std::string& name=bn.variable(nod).name();
+      for (const auto nod: bn.nodes()) {
+        const std::string& name = bn.variable(nod).name();
         TS_GUM_POTENTIAL_DELTA(
            iediag.posterior(name),
            (gum::Potential< double >() << diag.variableFromName(name)).fillWith(ie.posterior(name)),

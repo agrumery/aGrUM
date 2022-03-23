@@ -232,14 +232,14 @@ namespace gum {
 
           case DBTranslatedValueType::CONTINUOUS:
             GUM_ERROR(NotImplementedYet,
-                          "The BDRowGeneratorEM does not handle yet continuous "
-                             << "variables. But the variable in column" << col << " is continuous.");
+                      "The BDRowGeneratorEM does not handle yet continuous "
+                         << "variables. But the variable in column" << col << " is continuous.");
             break;
 
           default:
             GUM_ERROR(NotImplementedYet,
-                          "DBTranslatedValueType " << int(this->column_types_[col])
-                                                   << " is not supported yet");
+                      "DBTranslatedValueType " << int(this->column_types_[col])
+                                               << " is not supported yet");
         }
       }
 
@@ -303,14 +303,14 @@ namespace gum {
 
             case DBTranslatedValueType::CONTINUOUS:
               GUM_ERROR(NotImplementedYet,
-                            "The BDRowGeneratorEM does not handle yet continuous "
-                               << "variables. But the variable in column" << col << " is continuous.");
+                        "The BDRowGeneratorEM does not handle yet continuous "
+                           << "variables. But the variable in column" << col << " is continuous.");
               break;
 
             default:
               GUM_ERROR(NotImplementedYet,
-                            "DBTranslatedValueType " << int(this->column_types_[col])
-                                                     << " is not supported yet");
+                        "DBTranslatedValueType " << int(this->column_types_[col])
+                                                 << " is not supported yet");
           }
         }
       } else {
@@ -325,14 +325,14 @@ namespace gum {
 
             case DBTranslatedValueType::CONTINUOUS:
               GUM_ERROR(NotImplementedYet,
-                            "The BDRowGeneratorEM does not handle yet continuous "
-                               << "variables. But the variable in column" << col << " is continuous.");
+                        "The BDRowGeneratorEM does not handle yet continuous "
+                           << "variables. But the variable in column" << col << " is continuous.");
               break;
 
             default:
               GUM_ERROR(NotImplementedYet,
-                            "DBTranslatedValueType " << int(this->column_types_[col])
-                                                     << " is not supported yet");
+                        "DBTranslatedValueType " << int(this->column_types_[col])
+                                                 << " is not supported yet");
           }
         }
       }

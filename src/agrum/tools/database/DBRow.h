@@ -53,7 +53,6 @@ namespace gum {
     template < typename T_DATA >
     class DBRow {
       public:
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -64,25 +63,19 @@ namespace gum {
       DBRow();
 
       /// constructs a row of a given size with missing values
-      DBRow(const std::size_t      size,
-            const double           weight = 1.0);
+      DBRow(const std::size_t size, const double weight = 1.0);
 
       /// constructor with a given size for the row
-      DBRow(const std::size_t      size,
-            const T_DATA           default_value,
-            const double           weight);
+      DBRow(const std::size_t size, const T_DATA default_value, const double weight);
 
       /// initializer list constructor
-      DBRow(std::initializer_list< T_DATA > list,
-            const double                    weight = 1.0);
+      DBRow(std::initializer_list< T_DATA > list, const double weight = 1.0);
 
       /// initializer from a vector of cells
-      DBRow(const std::vector< T_DATA >& cells,
-            const double                 weight = 1.0);
+      DBRow(const std::vector< T_DATA >& cells, const double weight = 1.0);
 
       /// initializer with a move from a vector of cells
-      DBRow(std::vector< T_DATA >&& cells,
-            const double            weight = 1.0);
+      DBRow(std::vector< T_DATA >&& cells, const double weight = 1.0);
 
       /// copy constructor
       DBRow(const DBRow< T_DATA >& from);

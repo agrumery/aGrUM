@@ -105,7 +105,7 @@ namespace gum {
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/tools/database/DBTranslatorUtils_inl.h>
+#  include <agrum/tools/database/DBTranslatorUtils_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif   // GUM_DB_TRANSLATOR_UTILS_H
