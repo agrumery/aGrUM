@@ -19,7 +19,7 @@ def InfluenceDiagramInference(infdiag):
   warnings.warn("""
   ** pyAgrum.InfluenceDiagramInference is deprecated in pyAgrum>0.18.2.
   ** A pyAgrum.ShaferShenoyLIMIDInference has been created.
-  """)
+  """, DeprecationWarning, stacklevel=2)
   return ShaferShenoyLIMIDInference(infdiag)
 
 
@@ -30,8 +30,41 @@ def ShaferShenoyIDInference(infdiag):
   warnings.warn(""""
   ** pyAgrum.InfluenceDiagramInference is deprecated in pyAgrum>0.18.2.
   ** A pyAgrum.ShaferShenoyLIMIDInference has been created.
-  """)
+  """, DeprecationWarning, stacklevel=2)
   return ShaferShenoyLIMIDInference(infdiag)
+
+
+def JTGenerator():
+  """
+  Deprecated class. Use pyAgrum.JunctionTreeGenerator instead.
+  """
+  warnings.warn("""
+  ** pyAgrum.JTGenerator is deprecated in pyAgrum>0.12.6.
+  ** A pyAgrum.JunctionTreeGenerator has been created.
+  """, DeprecationWarning, stacklevel=2)
+  return JunctionTreeGenerator()
+
+
+def GibbsKL(p, q):
+  """
+  Deprecated class. Use pyAgrum.GibbsBNdistance instead.
+  """
+  warnings.warn("""
+  ** pyAgrum.GibbsKL is deprecated in pyAgrum>0.12.6.
+  ** A pyAgrum.GibbsBNdistance has been created.
+  """, DeprecationWarning, stacklevel=2)
+  return GibbsBNdistance(p, q)
+
+
+def BruteForceKL(p, q):
+  """
+  Deprecated class. Use pyAgrum.ExactBNdistance instead.
+  """
+  warnings.warn("""
+  ** pyAgrum.BruteForceKL is deprecated in pyAgrum>0.12.6.
+  ** A pyAgrum.ExactBNdistance has been created.
+  """, DeprecationWarning, stacklevel=2)
+  return ExactBNdistance(p, q)
 
 
 def _addDeprecatedMethods():
@@ -42,7 +75,7 @@ def _addDeprecatedMethods():
     warnings.warn("""
     ** pyAgrum.BNLearner.setAprioriWeight() is removed in pyAgrum>0.14.0.
     ** Please use the weight argument in `useApriori...` methods instead.
-    """)
+    """, DeprecationWarning, stacklevel=2)
     return
 
   BNLearner.setAprioriWeight = deprecated_setAprioriWeight

@@ -246,10 +246,49 @@ class JunctionTreeGenerator(object):
 _pyAgrum.JunctionTreeGenerator_swigregister(JunctionTreeGenerator)
 
 class PythonBNListener(object):
+    r"""
+
+    Listener for Bayesian Network's modifications. This listener is notified when the structure of the BN is changed.
+
+    PythonBNListener(bn:gum.BayesNet,vnm:gum.VariableNodeMap) -> PythonBNListener
+        default constructor
+
+    Note
+    ----
+        This class est mainly automatically instantiated using the method gum.BayesNet.addStructureListener.
+
+    Parameters
+    ----------
+    bn : BaysNet
+        The bayes net to listen to
+    vnm : VarNodeMap
+        A translation unit between id of node and name of variable (usually : bn.variableNodeMap()).
+
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, bn: "pyAgrum.BayesNet", vnm: "pyAgrum.VariableNodeMap"):
+        r"""
+
+        Listener for Bayesian Network's modifications. This listener is notified when the structure of the BN is changed.
+
+        PythonBNListener(bn:gum.BayesNet,vnm:gum.VariableNodeMap) -> PythonBNListener
+            default constructor
+
+        Note
+        ----
+            This class est mainly automatically instantiated using the method gum.BayesNet.addStructureListener.
+
+        Parameters
+        ----------
+        bn : BaysNet
+            The bayes net to listen to
+        vnm : VarNodeMap
+            A translation unit between id of node and name of variable (usually : bn.variableNodeMap()).
+
+        """
         _pyAgrum.PythonBNListener_swiginit(self, _pyAgrum.new_PythonBNListener(bn, vnm))
     __swig_destroy__ = _pyAgrum.delete_PythonBNListener
 
@@ -268,7 +307,12 @@ class PythonBNListener(object):
     def setWhenArcAdded(self, pyfunc: object) -> None:
         r"""
 
+        Add the listener in parameter to the list of existing ones for adding an arc.
 
+        Parameters
+        ----------
+        pyfunc : lambda expression
+            a function (i:int,j:int) called when when an arc (i,j) is added
 
         """
         return _pyAgrum.PythonBNListener_setWhenArcAdded(self, pyfunc)
@@ -276,7 +320,12 @@ class PythonBNListener(object):
     def setWhenArcDeleted(self, pyfunc: object) -> None:
         r"""
 
+        Add the listener in parameter to the list of existing ones for deleting an arc.
 
+        Parameters
+        ----------
+        pyfunc : lambda expression
+            a function (i:int,j:int) called when when an arc (i,j) is removed
 
         """
         return _pyAgrum.PythonBNListener_setWhenArcDeleted(self, pyfunc)
@@ -284,7 +333,12 @@ class PythonBNListener(object):
     def setWhenNodeAdded(self, pyfunc: object) -> None:
         r"""
 
+        Add the listener in parameter to the list of existing ones for adding a node.
 
+        Parameters
+        ----------
+        pyfunc : lambda expression
+            a function (i:int,s:str) called when a node of id i and name s is added.
 
         """
         return _pyAgrum.PythonBNListener_setWhenNodeAdded(self, pyfunc)
@@ -292,7 +346,12 @@ class PythonBNListener(object):
     def setWhenNodeDeleted(self, pyfunc: object) -> None:
         r"""
 
+        Add the listener in parameter to the list of existing ones for deleting an arc.
 
+        Parameters
+        ----------
+        pyfunc : lambda expression
+            a function (i:int) called when a node of id i and name s is removed.
 
         """
         return _pyAgrum.PythonBNListener_setWhenNodeDeleted(self, pyfunc)
@@ -1140,28 +1199,28 @@ class Vector(object):
     def swap(self, v: "Vector") -> None:
         return _pyAgrum.Vector_swap(self, v)
 
-    def begin(self) -> "std::vector< double >::iterator":
+    def begin(self) -> int:
         return _pyAgrum.Vector_begin(self)
 
-    def end(self) -> "std::vector< double >::iterator":
+    def end(self) -> int:
         return _pyAgrum.Vector_end(self)
 
-    def rbegin(self) -> "std::vector< double >::reverse_iterator":
+    def rbegin(self) -> int:
         return _pyAgrum.Vector_rbegin(self)
 
-    def rend(self) -> "std::vector< double >::reverse_iterator":
+    def rend(self) -> int:
         return _pyAgrum.Vector_rend(self)
 
     def clear(self) -> None:
         return _pyAgrum.Vector_clear(self)
 
-    def get_allocator(self) -> "std::vector< double >::allocator_type":
+    def get_allocator(self) -> object:
         return _pyAgrum.Vector_get_allocator(self)
 
     def pop_back(self) -> None:
         return _pyAgrum.Vector_pop_back(self)
 
-    def erase(self, *args) -> "std::vector< double >::iterator":
+    def erase(self, *args) -> int:
         return _pyAgrum.Vector_erase(self, *args)
 
     def __init__(self, *args):
@@ -1195,6 +1254,112 @@ class Vector(object):
 # Register Vector in _pyAgrum:
 _pyAgrum.Vector_swigregister(Vector)
 
+class Vector_uint(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self) -> "swig::SwigPyIterator *":
+        return _pyAgrum.Vector_uint_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self) -> bool:
+        return _pyAgrum.Vector_uint___nonzero__(self)
+
+    def __bool__(self) -> bool:
+        return _pyAgrum.Vector_uint___bool__(self)
+
+    def __len__(self) -> int:
+        return _pyAgrum.Vector_uint___len__(self)
+
+    def __getslice__(self, i: int, j: int) -> List[int]:
+        return _pyAgrum.Vector_uint___getslice__(self, i, j)
+
+    def __setslice__(self, *args) -> None:
+        return _pyAgrum.Vector_uint___setslice__(self, *args)
+
+    def __delslice__(self, i: int, j: int) -> None:
+        return _pyAgrum.Vector_uint___delslice__(self, i, j)
+
+    def __delitem__(self, *args) -> None:
+        return _pyAgrum.Vector_uint___delitem__(self, *args)
+
+    def __getitem__(self, *args) -> int:
+        return _pyAgrum.Vector_uint___getitem__(self, *args)
+
+    def __setitem__(self, *args) -> None:
+        return _pyAgrum.Vector_uint___setitem__(self, *args)
+
+    def pop(self) -> int:
+        return _pyAgrum.Vector_uint_pop(self)
+
+    def append(self, x: int) -> None:
+        return _pyAgrum.Vector_uint_append(self, x)
+
+    def empty(self) -> bool:
+        return _pyAgrum.Vector_uint_empty(self)
+
+    def size(self) -> int:
+        return _pyAgrum.Vector_uint_size(self)
+
+    def swap(self, v: "Vector_uint") -> None:
+        return _pyAgrum.Vector_uint_swap(self, v)
+
+    def begin(self) -> int:
+        return _pyAgrum.Vector_uint_begin(self)
+
+    def end(self) -> int:
+        return _pyAgrum.Vector_uint_end(self)
+
+    def rbegin(self) -> int:
+        return _pyAgrum.Vector_uint_rbegin(self)
+
+    def rend(self) -> int:
+        return _pyAgrum.Vector_uint_rend(self)
+
+    def clear(self) -> None:
+        return _pyAgrum.Vector_uint_clear(self)
+
+    def get_allocator(self) -> object:
+        return _pyAgrum.Vector_uint_get_allocator(self)
+
+    def pop_back(self) -> None:
+        return _pyAgrum.Vector_uint_pop_back(self)
+
+    def erase(self, *args) -> int:
+        return _pyAgrum.Vector_uint_erase(self, *args)
+
+    def __init__(self, *args):
+        _pyAgrum.Vector_uint_swiginit(self, _pyAgrum.new_Vector_uint(*args))
+
+    def push_back(self, x: int) -> None:
+        return _pyAgrum.Vector_uint_push_back(self, x)
+
+    def front(self) -> int:
+        return _pyAgrum.Vector_uint_front(self)
+
+    def back(self) -> int:
+        return _pyAgrum.Vector_uint_back(self)
+
+    def assign(self, n: int, x: int) -> None:
+        return _pyAgrum.Vector_uint_assign(self, n, x)
+
+    def resize(self, *args) -> None:
+        return _pyAgrum.Vector_uint_resize(self, *args)
+
+    def insert(self, *args) -> None:
+        return _pyAgrum.Vector_uint_insert(self, *args)
+
+    def reserve(self, n: int) -> None:
+        return _pyAgrum.Vector_uint_reserve(self, n)
+
+    def capacity(self) -> int:
+        return _pyAgrum.Vector_uint_capacity(self)
+    __swig_destroy__ = _pyAgrum.delete_Vector_uint
+
+# Register Vector_uint in _pyAgrum:
+_pyAgrum.Vector_uint_swigregister(Vector_uint)
+
 class Vector_int(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
@@ -1210,37 +1375,37 @@ class Vector_int(object):
     def __bool__(self) -> bool:
         return _pyAgrum.Vector_int___bool__(self)
 
-    def __len__(self) -> int:
+    def __len__(self) -> "std::vector< int >::size_type":
         return _pyAgrum.Vector_int___len__(self)
 
-    def __getslice__(self, i: int, j: int) -> List[int]:
+    def __getslice__(self, i: "std::vector< int >::difference_type", j: "std::vector< int >::difference_type") -> List[int]:
         return _pyAgrum.Vector_int___getslice__(self, i, j)
 
     def __setslice__(self, *args) -> None:
         return _pyAgrum.Vector_int___setslice__(self, *args)
 
-    def __delslice__(self, i: int, j: int) -> None:
+    def __delslice__(self, i: "std::vector< int >::difference_type", j: "std::vector< int >::difference_type") -> None:
         return _pyAgrum.Vector_int___delslice__(self, i, j)
 
     def __delitem__(self, *args) -> None:
         return _pyAgrum.Vector_int___delitem__(self, *args)
 
-    def __getitem__(self, *args) -> int:
+    def __getitem__(self, *args) -> "std::vector< int >::value_type const &":
         return _pyAgrum.Vector_int___getitem__(self, *args)
 
     def __setitem__(self, *args) -> None:
         return _pyAgrum.Vector_int___setitem__(self, *args)
 
-    def pop(self) -> int:
+    def pop(self) -> "std::vector< int >::value_type":
         return _pyAgrum.Vector_int_pop(self)
 
-    def append(self, x: int) -> None:
+    def append(self, x: "std::vector< int >::value_type const &") -> None:
         return _pyAgrum.Vector_int_append(self, x)
 
     def empty(self) -> bool:
         return _pyAgrum.Vector_int_empty(self)
 
-    def size(self) -> int:
+    def size(self) -> "std::vector< int >::size_type":
         return _pyAgrum.Vector_int_size(self)
 
     def swap(self, v: "Vector_int") -> None:
@@ -1273,16 +1438,16 @@ class Vector_int(object):
     def __init__(self, *args):
         _pyAgrum.Vector_int_swiginit(self, _pyAgrum.new_Vector_int(*args))
 
-    def push_back(self, x: int) -> None:
+    def push_back(self, x: "std::vector< int >::value_type const &") -> None:
         return _pyAgrum.Vector_int_push_back(self, x)
 
-    def front(self) -> int:
+    def front(self) -> "std::vector< int >::value_type const &":
         return _pyAgrum.Vector_int_front(self)
 
-    def back(self) -> int:
+    def back(self) -> "std::vector< int >::value_type const &":
         return _pyAgrum.Vector_int_back(self)
 
-    def assign(self, n: int, x: int) -> None:
+    def assign(self, n: "std::vector< int >::size_type", x: "std::vector< int >::value_type const &") -> None:
         return _pyAgrum.Vector_int_assign(self, n, x)
 
     def resize(self, *args) -> None:
@@ -1291,10 +1456,10 @@ class Vector_int(object):
     def insert(self, *args) -> None:
         return _pyAgrum.Vector_int_insert(self, *args)
 
-    def reserve(self, n: int) -> None:
+    def reserve(self, n: "std::vector< int >::size_type") -> None:
         return _pyAgrum.Vector_int_reserve(self, n)
 
-    def capacity(self) -> int:
+    def capacity(self) -> "std::vector< int >::size_type":
         return _pyAgrum.Vector_int_capacity(self)
     __swig_destroy__ = _pyAgrum.delete_Vector_int
 
@@ -1316,16 +1481,16 @@ class Vector_string(object):
     def __bool__(self) -> bool:
         return _pyAgrum.Vector_string___bool__(self)
 
-    def __len__(self) -> "std::vector< str >::size_type":
+    def __len__(self) -> int:
         return _pyAgrum.Vector_string___len__(self)
 
-    def __getslice__(self, i: "std::vector< str >::difference_type", j: "std::vector< str >::difference_type") -> List[str]:
+    def __getslice__(self, i: int, j: int) -> List[str]:
         return _pyAgrum.Vector_string___getslice__(self, i, j)
 
     def __setslice__(self, *args) -> None:
         return _pyAgrum.Vector_string___setslice__(self, *args)
 
-    def __delslice__(self, i: "std::vector< str >::difference_type", j: "std::vector< str >::difference_type") -> None:
+    def __delslice__(self, i: int, j: int) -> None:
         return _pyAgrum.Vector_string___delslice__(self, i, j)
 
     def __delitem__(self, *args) -> None:
@@ -1346,34 +1511,34 @@ class Vector_string(object):
     def empty(self) -> bool:
         return _pyAgrum.Vector_string_empty(self)
 
-    def size(self) -> "std::vector< str >::size_type":
+    def size(self) -> int:
         return _pyAgrum.Vector_string_size(self)
 
     def swap(self, v: "Vector_string") -> None:
         return _pyAgrum.Vector_string_swap(self, v)
 
-    def begin(self) -> "std::vector< str >::iterator":
+    def begin(self) -> int:
         return _pyAgrum.Vector_string_begin(self)
 
-    def end(self) -> "std::vector< str >::iterator":
+    def end(self) -> int:
         return _pyAgrum.Vector_string_end(self)
 
-    def rbegin(self) -> "std::vector< str >::reverse_iterator":
+    def rbegin(self) -> int:
         return _pyAgrum.Vector_string_rbegin(self)
 
-    def rend(self) -> "std::vector< str >::reverse_iterator":
+    def rend(self) -> int:
         return _pyAgrum.Vector_string_rend(self)
 
     def clear(self) -> None:
         return _pyAgrum.Vector_string_clear(self)
 
-    def get_allocator(self) -> "std::vector< str >::allocator_type":
+    def get_allocator(self) -> object:
         return _pyAgrum.Vector_string_get_allocator(self)
 
     def pop_back(self) -> None:
         return _pyAgrum.Vector_string_pop_back(self)
 
-    def erase(self, *args) -> "std::vector< str >::iterator":
+    def erase(self, *args) -> int:
         return _pyAgrum.Vector_string_erase(self, *args)
 
     def __init__(self, *args):
@@ -1388,7 +1553,7 @@ class Vector_string(object):
     def back(self) -> str:
         return _pyAgrum.Vector_string_back(self)
 
-    def assign(self, n: "std::vector< str >::size_type", x: str) -> None:
+    def assign(self, n: int, x: str) -> None:
         return _pyAgrum.Vector_string_assign(self, n, x)
 
     def resize(self, *args) -> None:
@@ -1397,10 +1562,10 @@ class Vector_string(object):
     def insert(self, *args) -> None:
         return _pyAgrum.Vector_string_insert(self, *args)
 
-    def reserve(self, n: "std::vector< str >::size_type") -> None:
+    def reserve(self, n: int) -> None:
         return _pyAgrum.Vector_string_reserve(self, n)
 
-    def capacity(self) -> "std::vector< str >::size_type":
+    def capacity(self) -> int:
         return _pyAgrum.Vector_string_capacity(self)
     __swig_destroy__ = _pyAgrum.delete_Vector_string
 
@@ -2309,7 +2474,9 @@ class DiscreteVariable(Variable):
         Returns
         -------
         int :
-        	the type of the variable, 0: DiscretizedVariable, 1: LabelizedVariable, 2: RangeVariable
+        	the type of the variable.
+
+        	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable
 
         """
         return _pyAgrum.DiscreteVariable_varType(self)
@@ -2380,6 +2547,14 @@ class DiscreteVariable(Variable):
         return _pyAgrum.DiscreteVariable_domain(self)
 
     def stype(self) -> str:
+        r"""
+
+        Returns
+        -------
+        str
+        	a description of its type
+
+        """
         return _pyAgrum.DiscreteVariable_stype(self)
 
     def __repr__(self) -> str:
@@ -2459,6 +2634,12 @@ class LabelizedVariable(DiscreteVariable):
             * **aName** (str) -- the name of the variable
             * **aDesc** (str) -- the (optional) description of the variable
             * **nbrLabel** (int) -- the number of labels to create (2 by default)
+
+    LabelizedVariable(aName, aDesc='', labels) -> LabelizedVariable
+        Parameters:
+            * **aName** (str) -- the name of the variable
+            * **aDesc** (str) -- the (optional) description of the variable
+            * **labels** (List[str]) -- the labels to create
 
     LabelizedVariable(aLDRV) -> LabelizedVariable
         Parameters:
@@ -2655,7 +2836,9 @@ class LabelizedVariable(DiscreteVariable):
         Returns
         -------
         int :
-        	the type of the variable, 0: DiscretizedVariable, 1: LabelizedVariable, 2: RangeVariable
+        	the type of the variable.
+
+        	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable
 
         """
         return _pyAgrum.LabelizedVariable_varType(self)
@@ -2672,6 +2855,14 @@ class LabelizedVariable(DiscreteVariable):
         return _pyAgrum.LabelizedVariable_domain(self)
 
     def stype(self) -> str:
+        r"""
+
+        Returns
+        -------
+        str
+        	a description of its type
+
+        """
         return _pyAgrum.LabelizedVariable_stype(self)
 
     def __repr__(self) -> str:
@@ -2760,7 +2951,9 @@ class RangeVariable(DiscreteVariable):
         Returns
         -------
         int :
-        	the type of the variable, 0: DiscretizedVariable, 1: LabelizedVariable, 2: RangeVariable
+        	the type of the variable.
+
+        	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable
 
         """
         return _pyAgrum.RangeVariable_varType(self)
@@ -2902,6 +3095,14 @@ class RangeVariable(DiscreteVariable):
         return _pyAgrum.RangeVariable_domain(self)
 
     def stype(self) -> str:
+        r"""
+
+        Returns
+        -------
+        str
+        	a description of its type
+
+        """
         return _pyAgrum.RangeVariable_stype(self)
 
     def __repr__(self) -> str:
@@ -2914,6 +3115,40 @@ class RangeVariable(DiscreteVariable):
 _pyAgrum.RangeVariable_swigregister(RangeVariable)
 
 class IntegerVariable(DiscreteVariable):
+    r"""
+
+    IntegerVariable is a discrete random variable with a customizable sequence of int.
+
+    IntegerVariable(aName, aDesc='', values) -> IntegerVariable
+        Parameters:
+            * **aName** (str) -- the name of the variable
+            * **aDesc** (str) -- the (optional) description of the variable
+            * **labels** (List[int]) -- the values to create
+
+    IntegerVariable(aIDRV) -> IntegerVariable
+        Parameters:
+            * **aIDRV** (*pyAgrum.IntegerVariable*) -- The pyAgrum.IntegerVariable that will be copied
+
+    Examples
+    --------
+    >>> import pyAgrum as gum
+    >>> # creating a variable with 3 values : 1,34,142
+    >>> va=gum.IntegerVariable('a','a integer variable',[1,34,142])
+    >>> print(va)
+    a:Integer(<1,34,142>)
+    >>> va.addValue(25)
+    (pyAgrum.IntegerVariable@000001E4F5D07490) a:Integer(<1,25,34,142>)
+    >>> va.changeLabel(34,43)
+    >>> print(va)
+    a:Integer(<1,25,43,142>)
+    >>> vb=gum.IntegerVariable('b','b').addValue(34).addValue(142).addValue(1)
+    >>> print(vb)
+    b:Integer(<1,34,142>)
+    >>> vb.labels()
+    ('1', '34', '142')
+
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
 
     def __init__(self, *args):
@@ -2956,7 +3191,9 @@ class IntegerVariable(DiscreteVariable):
         Returns
         -------
         int :
-        	the type of the variable, 0: DiscretizedVariable, 1: LabelizedVariable, 2: RangeVariable
+        	the type of the variable.
+
+        	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable
 
         """
         return _pyAgrum.IntegerVariable_varType(self)
@@ -3026,21 +3263,87 @@ class IntegerVariable(DiscreteVariable):
         return _pyAgrum.IntegerVariable_domain(self)
 
     def stype(self) -> str:
+        r"""
+
+        Returns
+        -------
+        str
+        	a description of its type
+
+        """
         return _pyAgrum.IntegerVariable_stype(self)
 
-    def integerDomain(self) -> List[int]:
-        return _pyAgrum.IntegerVariable_integerDomain(self)
+    def addValue(self,*args):
+        """
+        Add a value to the list of values for the variable.
 
-    def addValue(self, value: int) -> "pyAgrum.IntegerVariable":
-        return _pyAgrum.IntegerVariable_addValue(self, value)
+        Parameters
+        ----------
+        value : int
+            the new value
+
+        Returns
+        -------
+        pyAgrum.IntegerVariable
+            the Integer variable
+
+        Raises
+        ------
+          pyAgrum.DuplicateElement
+            If the variable already contains the value
+        """
+        _pyAgrum.IntegerVariable_addValue(self,*args)
+        return self
+
+
+
+    def isValue(self, value: int) -> bool:
+        r"""
+
+        Parameters
+        ----------
+        value: int
+            the value to look at.
+
+        Returns
+        -------
+        bool
+            True if the value is in the domain.
+
+        """
+        return _pyAgrum.IntegerVariable_isValue(self, value)
 
     def changeValue(self, old_value: int, new_value: int) -> None:
+        r"""
+
+        Parameters
+        ----------
+        old_value : int
+            the value to be changed
+
+        new_value : int
+            the new value
+
+        """
         return _pyAgrum.IntegerVariable_changeValue(self, old_value, new_value)
 
     def eraseValue(self, value: int) -> None:
+        r"""
+
+        Parameters
+        ----------
+        value: int
+            the value to erase. If the value is not in the domain, the function does nothing (no exception raised)
+
+        """
         return _pyAgrum.IntegerVariable_eraseValue(self, value)
 
     def eraseValues(self) -> None:
+        r"""
+
+        Remove all the domain.
+
+        """
         return _pyAgrum.IntegerVariable_eraseValues(self)
 
     def __repr__(self) -> str:
@@ -3048,6 +3351,17 @@ class IntegerVariable(DiscreteVariable):
 
     def __str__(self) -> str:
         return _pyAgrum.IntegerVariable___str__(self)
+
+    def integerDomain(self) -> object:
+        r"""
+
+        Returns
+        -------
+        list[int]
+            the list of integer values that form the domain of this variable
+
+        """
+        return _pyAgrum.IntegerVariable_integerDomain(self)
 
 # Register IntegerVariable in _pyAgrum:
 _pyAgrum.IntegerVariable_swigregister(IntegerVariable)
@@ -4009,14 +4323,14 @@ _pyAgrum.DiGraph_swigregister(DiGraph)
 class DAG(DiGraph):
     r"""
 
-    DAG represents a Directed Acyclic Graph.
+    DAG represents a Directed Graph.
 
     DAG() -> DAG
         default constructor
 
     DAG(src) -> DAG
         Parameters:
-            * **src** (*DAG*) -- the DAG to copy
+            * **src** (*pyAgrum.DAG*) -- the digraph to copy
 
     """
 
@@ -4050,30 +4364,98 @@ class DAG(DiGraph):
 
         Raises
         ------
-        pyAgrum.InvalidDirectedCircle
-        	If any (directed) cycle is created by this arc
-        pyAgrum.InvalidNode
-        	If head or tail does not belong to the graph nodes
+          pyAgrum.InvalidNode
+            If head or tail does not belong to the graph nodes.
+
+          PyAgrum.InvalidDirectedCycle
+            if the arc would create a cycle.
 
         """
         return _pyAgrum.DAG_addArc(self, *args)
 
     def eraseArc(self, n1: int, n2: int) -> None:
+        r"""
+
+        Erase the arc between n1 and n2.
+
+        Parameters
+        ----------
+        n1 : int
+        	the id of the tail node
+        n2 : int
+        	the id of the head node
+
+        """
         return _pyAgrum.DAG_eraseArc(self, n1, n2)
 
     def existsArc(self, n1: int, n2: int) -> bool:
+        r"""
+
+        Check if an arc exists bewteen n1 and n2.
+
+        Parameters
+        ----------
+        n1 : int
+        	the id of the tail node
+        n2 : int
+        	the id of the head node
+
+        Returns
+        -------
+        bool
+            True if the arc exists
+
+        """
         return _pyAgrum.DAG_existsArc(self, n1, n2)
 
     def eraseParents(self, n: int) -> None:
+        r"""
+
+        Erase the arcs coming to the node.
+
+        Parameters
+        ----------
+        n : int
+        	the id of the child node
+
+        """
         return _pyAgrum.DAG_eraseParents(self, n)
 
     def eraseChildren(self, n: int) -> None:
+        r"""
+
+        Erase the arcs heading through the node's children.
+
+        Parameters
+        ----------
+        n : int
+        	the id of the parent node
+
+        """
         return _pyAgrum.DAG_eraseChildren(self, n)
 
     def sizeArcs(self) -> int:
+        r"""
+
+        Returns
+        -------
+        int
+            the number of arcs in the graph
+
+        """
         return _pyAgrum.DAG_sizeArcs(self)
 
     def emptyArcs(self) -> bool:
+        r"""
+
+        Check if the graph doesn't contains arcs.
+
+        Returns
+        -------
+        bool
+            True if the graph doesn't contains arcs
+
+        """
         return _pyAgrum.DAG_emptyArcs(self)
 
 # Register DAG in _pyAgrum:
@@ -5480,6 +5862,12 @@ _pyAgrum.Instantiation_swigregister(Instantiation)
 
 GUM_DEFAULT_ITERATOR_NUMBER = _pyAgrum.GUM_DEFAULT_ITERATOR_NUMBER
 class GraphicalModel(object):
+    r"""
+
+    Abstract class for all PGM (associating set of variables and a graph).
+
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
 
     def __init__(self, *args, **kwargs):
@@ -5509,6 +5897,14 @@ class GraphicalModel(object):
         return _pyAgrum.GraphicalModel_exists(self, *args)
 
     def names(self, *args) -> List[str]:
+        r"""
+
+        Returns
+        -------
+        List[str]
+        	The names of the graph variables
+
+        """
         return _pyAgrum.GraphicalModel_names(self, *args)
 
     def ids(self, names: "Vector_string") -> "pyAgrum.YetUnWrapped":
@@ -6718,7 +7114,9 @@ class DiscretizedVariable(IDiscretizedVariable):
         Returns
         -------
         int :
-        	the type of the variable, 0: DiscretizedVariable, 1: LabelizedVariable, 2: RangeVariable
+        	the type of the variable.
+
+        	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable
 
         """
         return _pyAgrum.DiscretizedVariable_varType(self)
@@ -6845,6 +7243,14 @@ class DiscretizedVariable(IDiscretizedVariable):
         return _pyAgrum.DiscretizedVariable_domain(self)
 
     def stype(self) -> str:
+        r"""
+
+        Returns
+        -------
+        str
+        	a description of its type
+
+        """
         return _pyAgrum.DiscretizedVariable_stype(self)
 
     def tick(self, i: int) -> float:
@@ -8107,12 +8513,12 @@ class IBayesNet(DAGmodel):
         Returns
         -------
         pyAgrum.Potential
-        	The variable's CPT. 
+        	The variable's CPT.
 
         Raises
         ------
         pyAgrum.NotFound
-        	If no variable's id matches varId. 
+        	If no variable's id matches varId.
 
         """
         return _pyAgrum.IBayesNet_cpt(self, varId)
@@ -8371,7 +8777,7 @@ class IBayesNet(DAGmodel):
 
         Returns
         -------
-        list
+        List[str]
         	The names of the graph variables
 
         """
@@ -9371,7 +9777,7 @@ class BayesNet(IBayesNet):
 
         Returns
         -------
-        list
+        List[str]
         	The names of the graph variables
 
         """
@@ -9839,12 +10245,12 @@ class BayesNetFragment(IBayesNet, ):
         Returns
         -------
         pyAgrum.Potential
-        	The variable's CPT. 
+        	The variable's CPT.
 
         Raises
         ------
         pyAgrum.NotFound
-        	If no variable's id matches varId. 
+        	If no variable's id matches varId.
 
         """
         return _pyAgrum.BayesNetFragment_cpt(self, *args)
@@ -10170,7 +10576,7 @@ class BayesNetFragment(IBayesNet, ):
 
         Returns
         -------
-        list
+        List[str]
         	The names of the graph variables
 
         """
@@ -10384,6 +10790,14 @@ class IMarkovNet(UGmodel):
         return _pyAgrum.IMarkovNet_toDotAsFactorGraph(self)
 
     def names(self) -> object:
+        r"""
+
+        Returns
+        -------
+        List[str]
+        	The names of the graph variables
+
+        """
         return _pyAgrum.IMarkovNet_names(self)
 
     def nodes(self) -> object:
@@ -10694,6 +11108,14 @@ class MarkovNet(IMarkovNet):
         return _pyAgrum.MarkovNet_log10DomainSize(self)
 
     def names(self) -> object:
+        r"""
+
+        Returns
+        -------
+        List[str]
+        	The names of the graph variables
+
+        """
         return _pyAgrum.MarkovNet_names(self)
 
     def nodes(self) -> object:
@@ -23261,7 +23683,7 @@ class InfluenceDiagram(DAGmodel):
 
         Returns
         -------
-        list
+        List[str]
         	The names of the InfluenceDiagram variables
 
         """
@@ -23749,6 +24171,17 @@ class BNLearner(object):
 
 
     def useEM(self, epsilon: float) -> "pyAgrum.BNLearner":
+        r"""
+
+        Indicates if we use EM for parameter learning.
+
+        Parameters
+        ----------
+        epsilon : float
+        	if epsilon=0.0 then EM is not used
+        	if epsilon>0 then EM is used and stops when the sum of the cumulative squared error on parameters is les than epsilon.
+
+        """
         val = _pyAgrum.BNLearner_useEM(self, epsilon)
 
         return self
@@ -24558,6 +24991,18 @@ class BNDatabaseGenerator(object):
     def database(self) -> "pyAgrum.YetUnWrapped":
         return _pyAgrum.BNDatabaseGenerator_database(self)
 
+    def samplesNbRows(self) -> int:
+        return _pyAgrum.BNDatabaseGenerator_samplesNbRows(self)
+
+    def samplesNbCols(self) -> int:
+        return _pyAgrum.BNDatabaseGenerator_samplesNbCols(self)
+
+    def samplesAt(self, row: int, col: int) -> int:
+        return _pyAgrum.BNDatabaseGenerator_samplesAt(self, row, col)
+
+    def samplesLabelAt(self, row: int, col: int) -> str:
+        return _pyAgrum.BNDatabaseGenerator_samplesLabelAt(self, row, col)
+
     def setVarOrder(self, *args) -> None:
         return _pyAgrum.BNDatabaseGenerator_setVarOrder(self, *args)
 
@@ -24573,14 +25018,39 @@ class BNDatabaseGenerator(object):
     def setRandomVarOrder(self) -> None:
         return _pyAgrum.BNDatabaseGenerator_setRandomVarOrder(self)
 
-    def varOrder(self) -> "pyAgrum.YetUnWrapped":
-        return _pyAgrum.BNDatabaseGenerator_varOrder(self)
-
     def varOrderNames(self) -> List[str]:
         return _pyAgrum.BNDatabaseGenerator_varOrderNames(self)
 
     def log2likelihood(self) -> float:
         return _pyAgrum.BNDatabaseGenerator_log2likelihood(self)
+
+    def varOrder(self) -> object:
+        return _pyAgrum.BNDatabaseGenerator_varOrder(self)
+
+    def to_pandas(self,with_labels=False):
+      r"""
+      export the samples as a pandas.DataFrame.
+
+      Parameters
+      ----------
+      with_labels: bool
+        is the DataFrame full of labels of variables or full of index of labels of variables
+      """
+      import pandas
+
+      t=pandas.DataFrame(columns=self.varOrderNames())
+      nrow=self.samplesNbRows()
+      ncol=self.samplesNbCols()
+
+      if with_labels:
+        for row in range(nrow):
+          t.loc[len(t),self.varOrderNames()]= [self.samplesLabelAt(row,col) for col in range(ncol)]
+      else:
+        for row in range(nrow):
+          t.loc[len(t),self.varOrderNames()]= [self.samplesAt(row,col) for col in range(ncol)]
+
+      return t
+
 
 # Register BNDatabaseGenerator in _pyAgrum:
 _pyAgrum.BNDatabaseGenerator_swigregister(BNDatabaseGenerator)

@@ -1,5 +1,22 @@
 # aGrUM Changelog
 
+## Changelog for 0.22.9
+
+* aGrUM
+
+  * `gum::DiscretizedVariable` can now be declared as "empirical". Meaning that the lower and upper ticks are not always hard limits.
+  * improve a bit API for `gum::IntegerVariable`.
+
+* pyAgrum
+
+  * small change in `pyAgrum.skbn.Discretizer.audit` : show the domain size for discrete variable.
+  * better graphical diff between BN, even if a node is missing using `pyAgrum.bn_vs_bn` functionalities.
+  * empirical gum.DiscretizedVariable used in `pyAgrum.skbn.Discretizer`
+  * new configuration for (LaTeX) fractions in `gum.lib.notebook.showCPT` (see tutorial)
+  * add a way to export BN samples as a `pandas.DataFrame` instead of csv files in `pyAgrum.BNDatabaseGenerator` and in the function `pyAgrum.generateSamples(....)`.
+  * update a bit `pyAgrum.IntegerVariable` wrapper and documentation.
+
+
 ## Changelog for 0.22.8
 
 * aGrUM

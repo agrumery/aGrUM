@@ -19,6 +19,14 @@ str
 	the domain of the variable
 "
 
+%feature("docstring") gum::DiscreteVariable::stype
+"
+Returns
+-------
+str
+	a description of its type
+"
+
 %feature("docstring") gum::DiscreteVariable::domainSize
 "
 Returns
@@ -141,5 +149,7 @@ returns the type of variable
 Returns
 -------
 int :
-	the type of the variable, 0: DiscretizedVariable, 1: LabelizedVariable, 2: RangeVariable
+	the type of the variable.
+
+	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable
 "

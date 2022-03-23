@@ -77,3 +77,34 @@ def addTick(self,*args):
     $action(self,*args)
     return self
 %}
+
+%feature("shadow") gum::IntegerVariable::addValue(int value) %{
+def addValue(self,*args):
+    """
+    Add a value to the list of values for the variable.
+
+    Parameters
+    ----------
+    value : int
+        the new value
+
+    Returns
+    -------
+    pyAgrum.IntegerVariable
+        the Integer variable
+
+    Raises
+    ------
+      pyAgrum.DuplicateElement
+        If the variable already contains the value
+    """
+    $action(self,*args)
+    return self
+%}
+
+%extend gum::IntegerVariable {
+PyObject *integerDomain() const {
+  return PyAgrumHelper::PyListFromSequenceOfInt(self->integerDomain());
+}
+}
+%ignore gum::IntegerVariable::integerDomain;

@@ -19,7 +19,7 @@
 #
 # General information about the project.
 project = 'pyAgrum'
-copyright = '2018-21, aGrUM/pyAgrum Team'
+copyright = '2018-22, aGrUM/pyAgrum Team'
 author = 'Pierre-henri Wuillemin'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -525,8 +525,7 @@ autodoc_default_options = {'members' : None,
                           'undoc-members':None,
                           # 'private-members',
                           # 'special-members',
-                          'inherited-members':None,
-                          #'show-inheritance':None,
+                          'inherited-members':True,
                           #'ignore-module-all',
                           'exclude-members' : 'thisown',
                          }

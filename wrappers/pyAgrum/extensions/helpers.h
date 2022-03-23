@@ -296,6 +296,14 @@ namespace PyAgrumHelper {
     return q;
   }
 
+  PyObject* PyListFromSequenceOfInt(const gum::Sequence< int >& seq) {
+    PyObject* q = PyList_New(0);
+    for (const auto& val: seq) {
+      PyList_Append(q, PyLong_FromLong(val));
+    }
+    return q;
+  }
+
   PyObject* PySetFromArcSet(const gum::ArcSet& arcset) {
     PyObject* q = PySet_New(0);
     for (const auto& arc: arcset) {

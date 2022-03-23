@@ -77,7 +77,7 @@ namespace gum {
 
 
   /// add a new value to the domain size
-  IntegerVariable& IntegerVariable::addValue(int value) {
+  void IntegerVariable::addValue(int value) {
     const Size size = _domain_.size();
     if (size == Size(0) || (_domain_[size - 1] < value)) {
       _domain_.insert(value);
@@ -96,8 +96,6 @@ namespace gum {
         new_domain.insert(val);
       _domain_ = std::move(new_domain);
     }
-
-    return *this;
   }
 
 }   // namespace gum

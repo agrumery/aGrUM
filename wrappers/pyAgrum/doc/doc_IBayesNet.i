@@ -130,12 +130,12 @@ name : str
 Returns
 -------
 pyAgrum.Potential
-	The variable's CPT. 
+	The variable's CPT.
 
 Raises
 ------
 pyAgrum.NotFound
-	If no variable's id matches varId. 
+	If no variable's id matches varId.
 "
 
 %feature("docstring") gum::IBayesNet::parents
@@ -163,14 +163,6 @@ Returns
 -------
 set
     the set of ids
-"
-
-%feature("docstring") gum::IBayesNet::names
-"
-Returns
--------
-list
-	The names of the graph variables
 "
 
 %feature("docstring") gum::IBayesNet::minimalCondSet

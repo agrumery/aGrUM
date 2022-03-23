@@ -868,7 +868,7 @@ def _reprPotential(pot, digits=None, withColors=True, varnames=None, asString=Fa
       if abs(val_app - val) < fraction_round_error:
         str_val = "text-align:center;'>"
         if fraction_with_latex:
-          str_val += f"$\\frac{{{frac_val.numerator}}}{{{frac_val.denominator}}}$"
+          str_val += f"$$\\frac{{{frac_val.numerator}}}{{{frac_val.denominator}}}$$"
         else:
           str_val += f"{frac_val}"
         str_val+="</td>"

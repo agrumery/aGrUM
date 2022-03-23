@@ -58,11 +58,28 @@ def doTheJob(target, resultat, backup, debugmode):
     # complicated std types
     ("std::vector< double >::size_type", "int"),
     ("std::vector< unsigned int >::size_type", "int"),
+    ("std::vector< std::string >::size_type", "int"),
+
     ("std::vector< double >::difference_type", "int"),
     ("std::vector< unsigned int >::difference_type", "int"),
+    ("std::vector< std::string >::difference_type", "int"),
+
+    ("std::vector< double >::iterator", "int"),
+    ("std::vector< unsigned int >::iterator", "int"),
+    ("std::vector< std::string >::iterator", "int"),
+
+    ("std::vector< double >::reverse_iterator", "int"),
+    ("std::vector< unsigned int >::reverse_iterator", "int"),
+    ("std::vector< std::string >::reverse_iterator", "int"),
+
+    ("std::vector< double >::allocator", "object"),
+    ("std::vector< unsigned int >::allocator", "object"),
+    ("std::vector< std::string >::allocator", "object"),
+
     ("std::vector< double >::value_type", "float"),
     ("std::vector< unsigned int >::value_type", "int"),
     ("std::vector< std::string >::value_type", "str"),
+
 
     # containers
     ("std::vector< double,std::allocator< double > >", "List[float]"),
@@ -141,6 +158,7 @@ def doTheJob(target, resultat, backup, debugmode):
     ("void", "None"),
     ("std::string", "str"),
     ("std::size_t", "int"),
+    ("object_type","object"),
 
     # remove type decorators (const, &, etc.) ... to be treated as complete word : \b
     ("\\bbool\\b", "bool"),
