@@ -80,36 +80,6 @@ def _addDeprecatedMethods():
 
   BNLearner.setAprioriWeight = deprecated_setAprioriWeight
 
-def getThreadNumber():
-  warnings.warn(""""
-  ** pyAgrum.getThreadNumber is deprecated in pyAgrum>0.22.8.
-  """)
-
-def getNumberOfRunningThreads():
-  warnings.warn(""""
-  ** pyAgrum.getNumberOfRunningThreads is deprecated in pyAgrum>0.22.8.
-  """)
-
-def getDynamicThreadsNumber():
-  warnings.warn(""""
-  ** pyAgrum.getDynamicThreadsNumber is deprecated in pyAgrum>0.22.8.
-  """)
-
-def setDynamicThreadsNumber(n):
-  warnings.warn(""""
-  ** pyAgrum.setDynamicThreadsNumber is deprecated in pyAgrum>0.22.8.
-  """)
-
-def getNestedParallelism():
-  warnings.warn(""""
-  ** pyAgrum.getNestedParallelism is deprecated in pyAgrum>0.22.8.
-  """)
-
-def setNestedParallelism(n):
-  warnings.warn(""""
-  ** pyAgrum.setNestedParallelism is deprecated in pyAgrum>0.22.8.
-  """)
-
 def getNumberOfRunningThreads():
   warnings.warn(""""
   ** pyAgrum.getNumberOfRunningThreads is obsolete in pyAgrum>0.22.7.
@@ -139,5 +109,6 @@ def getThreadNumber():
   warnings.warn(""""
   ** pyAgrum.getThreadNumber is obsolete in pyAgrum>0.22.7.
   """)
+
 
 _addDeprecatedMethods()

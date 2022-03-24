@@ -112,6 +112,14 @@ initRandom(0)
 # configuration object
 from .config import PyAgrumConfiguration
 config = PyAgrumConfiguration()
+
+def _update_config_core():
+  # hook to control some parameters for core params
+  setNumberOfThreads(int(config['core','default_maxNumberOfThreads']))
+
+config.add_hook(_update_config_core)
+config.run_hooks()
+
 try:
   # load custom configuration if any
   config.load()
@@ -475,10 +483,10 @@ def generateSample(bn, n=1, name_out=None, show_progress=False, with_labels=Fals
 
   :param bn: the BN from which the sample is generated
   :type bn: pyAgrum.BayesNet
-  :param name_out: the name for the output filename
-  :type name_out: string
   :param n: the number of samples
   :type n: int
+  :param name_out: the name for the output csv filename. If name_out is None, a pandas.DataFrame is generated
+  :type name_out: string
   :param show_progress: if True, show a progress bar
   :type show_progress: boolean
   :param with_labels: if True, use the labels of the modalities of variables in the csv. If False, use their ids.

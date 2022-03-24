@@ -1266,7 +1266,7 @@ def show(model, **kwargs):
     )
 
 
-def _update_config():
+def _update_config_notebooks():
   # hook to control some parameters for notebook when config changes
   mpl.rcParams['figure.facecolor'] = gum.config["notebook", "figure_facecolor"]
   set_matplotlib_formats(gum.config["notebook", "graph_format"])
@@ -1283,7 +1283,7 @@ except NameError as e:
   """
                 )
 else:
-  gum.config.add_hook(_update_config)
+  gum.config.add_hook(_update_config_notebooks)
   gum.config.run_hooks()
 
   # adding _repr_html_ to some pyAgrum classes !

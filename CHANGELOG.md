@@ -3,12 +3,20 @@
 ## Changelog for 0.22.9
 
 * aGrUM
-
+* 
+  * Added a new Multithreaded facility which supports easily both `openMP` and `STL`.
+  * Enabled exceptions raised by threads to be catched.
+  * Made `gum::CredalNetworks` and `gum::learning::BNLearner` use the new multithreading facility.
+  * Made a fully new architecture for scheduling inferences.
+  * Added a sequential and a parallel schedulers for inferences.
+  * Enabled `gum::LazyPropagation` and `gum::ShaferShenoy` to use schedulers for their inferences.
   * `gum::DiscretizedVariable` can now be declared as "empirical". Meaning that the lower and upper ticks are not always hard limits.
   * improve a bit API for `gum::IntegerVariable`.
 
 * pyAgrum
-
+* 
+  * Added methods to get/set the number of threads used by `pyAgrum.BNLearner`, `pyAgrum.LazyPropagation` and `pyAgrum.
+    ShaferShenoy`.
   * small change in `pyAgrum.skbn.Discretizer.audit` : show the domain size for discrete variable.
   * better graphical diff between BN, even if a node is missing using `pyAgrum.bn_vs_bn` functionalities.
   * empirical gum.DiscretizedVariable used in `pyAgrum.skbn.Discretizer`
