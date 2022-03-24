@@ -25038,18 +25038,15 @@ class BNDatabaseGenerator(object):
       """
       import pandas
 
-      t=pandas.DataFrame(columns=self.varOrderNames())
       nrow=self.samplesNbRows()
       ncol=self.samplesNbCols()
 
       if with_labels:
-        for row in range(nrow):
-          t.loc[len(t),self.varOrderNames()]= [self.samplesLabelAt(row,col) for col in range(ncol)]
+        ldatas=[[self.samplesLabelAt(row,col) for col in range(ncol)] for row in range(nrow)]
       else:
-        for row in range(nrow):
-          t.loc[len(t),self.varOrderNames()]= [self.samplesAt(row,col) for col in range(ncol)]
+        ldatas=[[self.samplesAt(row,col) for col in range(ncol)] for row in range(nrow)]
 
-      return t
+      return pandas.DataFrame(columns=self.varOrderNames(),data=ldatas)
 
 
 # Register BNDatabaseGenerator in _pyAgrum:
