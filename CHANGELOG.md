@@ -2,8 +2,10 @@
 
 ## Changelog for 0.22.9
 
+This tag is a pre-relase for 1.0.0 (!). 
+
 * aGrUM
-* 
+ 
   * Added a new Multithreaded facility which supports easily both `openMP` and `STL`.
   * Enabled exceptions raised by threads to be catched.
   * Made `gum::CredalNetworks` and `gum::learning::BNLearner` use the new multithreading facility.
@@ -14,7 +16,8 @@
   * improve a bit API for `gum::IntegerVariable`.
 
 * pyAgrum
-* 
+
+  * Add support for default number of thread in `gum.config`.
   * Added methods to get/set the number of threads used by `pyAgrum.BNLearner`, `pyAgrum.LazyPropagation` and `pyAgrum.
     ShaferShenoy`.
   * small change in `pyAgrum.skbn.Discretizer.audit` : show the domain size for discrete variable.
