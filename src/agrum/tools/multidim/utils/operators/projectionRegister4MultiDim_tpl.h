@@ -114,7 +114,7 @@ namespace gum {
                                   __FILE__,
                                   __LINE__,
                                   "destructor of",
-                                  (void*)&container._set_);
+                                  (void*)&container->_set_);
 #  endif /* GUM_DEBUG_MODE */
 
         first                 = false;

@@ -450,12 +450,12 @@ namespace gum {
     void _findRelevantPotentialsXX_(_ScheduleMultiDimSet_&          pot_list,
                                     Set< const DiscreteVariable* >& kept_vars);
 
-    // remove barren variables using schedules and return the newly created projected potentials
+    /// remove barren variables using schedules and return the newly created projected potentials
     _ScheduleMultiDimSet_ _removeBarrenVariables_(Schedule&                       schedule,
                                                   _ScheduleMultiDimSet_&          pot_list,
                                                   Set< const DiscreteVariable* >& del_vars);
 
-    // remove barren variables without schedules and return the newly created projected potentials
+    /// remove barren variables without schedules and return the newly created projected potentials
     _PotentialSet_ _removeBarrenVariables_(_PotentialSet_&                 pot_list,
                                            Set< const DiscreteVariable* >& del_vars);
 

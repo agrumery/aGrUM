@@ -733,9 +733,7 @@ namespace gum {
           // as a potential anymore but as a constant
           // TODO substitute constants by 0-dimensional potentials
           if (hard_nodes.size() == variables.size()) {
-            Instantiation inst;
-            for (const auto var: cpt.variablesSequence())
-              inst << *var;
+            Instantiation inst(cpt);
             for (Size i = 0; i < hard_nodes.size(); ++i) {
               inst.chgVal(variables[i], hard_evidence[bn.nodeId(*(variables[i]))]);
             }
@@ -754,7 +752,7 @@ namespace gum {
                _combination_op_,
                _projection_op_);
 
-            Set< const Potential< GUM_SCALAR >* > new_cpt_list
+            _PotentialSet_ new_cpt_list
                = combine_and_project.execute(marg_cpt_set, hard_variables);
 
             // there should be only one potential in new_cpt_list
@@ -1552,24 +1550,28 @@ namespace gum {
     MultiDimCombineAndProjectDefault< Potential< GUM_SCALAR > > combine_and_project(
        _combination_op_,
        _projection_op_);
-    _PotentialSet_        xnew_pot_list = combine_and_project.execute(xpot_list, del_vars);
+    _PotentialSet_ xnew_pot_list = combine_and_project.execute(xpot_list, del_vars);
     _ScheduleMultiDimSet_ new_pot_list(xnew_pot_list.size());
     for (auto xpot: xnew_pot_list) {
-      auto pot = new ScheduleMultiDim< Potential< GUM_SCALAR > >(
-         std::move(const_cast< Potential< GUM_SCALAR >& >(*xpot)));
+      ScheduleMultiDim< Potential< GUM_SCALAR > >* pot;
+      if (xpot_list.contains(xpot))
+        pot = new ScheduleMultiDim< Potential< GUM_SCALAR > >(*xpot, false);
+      else {
+        pot = new ScheduleMultiDim< Potential< GUM_SCALAR > >(
+           std::move(const_cast< Potential< GUM_SCALAR >& >(*xpot)));
+        delete xpot;
+      }
       new_pot_list.insert(pot);
-      delete xpot;
     }
 
     // remove all the potentials that were created due to projections of
     // barren nodes and that are not part of the new_pot_list: these
     // potentials were just temporary potentials
-    for (auto iter = barren_projected_potentials.beginSafe();
-         iter != barren_projected_potentials.endSafe();
-         ++iter) {
-      if (!xnew_pot_list.exists(*iter)) delete *iter;
+    for (const auto barren_pot: barren_projected_potentials) {
+      if (!xnew_pot_list.exists(barren_pot)) delete barren_pot;
     }
 
+    /*
     // remove all the potentials that have no dimension
     for (auto iter_pot = new_pot_list.beginSafe(); iter_pot != new_pot_list.endSafe(); ++iter_pot) {
       if ((*iter_pot)->variablesSequence().empty()) {
@@ -1582,6 +1584,7 @@ namespace gum {
         new_pot_list.erase(iter_pot);
       }
     }
+     */
 
     return new_pot_list;
   }
@@ -1686,9 +1689,7 @@ namespace gum {
     if (!_arc_to_created_potentials_.exists(arc))
       _arc_to_created_potentials_.insert(arc, _ScheduleMultiDimSet_());
 
-    for (auto iter = new_pot_list.beginSafe(); iter != new_pot_list.endSafe(); ++iter) {
-      const auto pot = *iter;
-
+    for (const auto pot : new_pot_list) {
       if (!pot_list.exists(pot)) { _arc_to_created_potentials_[arc].insert(pot); }
     }
 
@@ -1734,9 +1735,9 @@ namespace gum {
       }
 
       // collect messages for all set targets
-      // by parsing   _joint_target_to_clique_, we ensure that the cliques that
+      // by parsing _joint_target_to_clique_, we ensure that the cliques that
       // are referenced belong to the join tree (even if some of the nodes in
-      // their associated joint_target do not belong to  _graph_)
+      // their associated joint_target do not belong to _graph_)
       for (const auto& set: _joint_target_to_clique_)
         _collectMessage_(set.second, set.second);
     }
