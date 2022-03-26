@@ -34,6 +34,20 @@
 %ignore gum::learning::BNLearner::state() const;
 
 
+%pythonprepend gum::learning::BNLearner<double>::BNLearner %{
+  if not type(args[0]) is str:
+    if hasattr(args[0],"to_csv"):
+        import tempfile
+        csvfile = tempfile.NamedTemporaryFile(delete=False)
+        tmpfilename = csvfile.name
+        csvfilename = tmpfilename + ".csv"
+        csvfile.close()
+        args[0].to_csv(csvfilename,na_rep="?",index=False)
+
+        self.__init__(csvfilename,*args[1:])
+        return
+
+%}
 
 %define SETPROP_THEN_RETURN_SELF(methodname)
 %pythonappend gum::learning::BNLearner<double>::methodname %{

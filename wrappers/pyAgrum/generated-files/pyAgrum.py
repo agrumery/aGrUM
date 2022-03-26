@@ -24110,6 +24110,21 @@ class BNLearner(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
 
     def __init__(self, *args):
+
+        if not type(args[0]) is str:
+          if hasattr(args[0],"to_csv"):
+              import tempfile
+              csvfile = tempfile.NamedTemporaryFile(delete=False)
+              tmpfilename = csvfile.name
+              csvfilename = tmpfilename + ".csv"
+              csvfile.close()
+              args[0].to_csv(csvfilename,na_rep="?",index=False)
+
+              self.__init__(csvfilename,*args[1:])
+              return
+
+
+
         _pyAgrum.BNLearner_swiginit(self, _pyAgrum.new_BNLearner(*args))
     __swig_destroy__ = _pyAgrum.delete_BNLearner
 

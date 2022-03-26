@@ -2,12 +2,12 @@
 "
 BNLearner(filename,inducedTypes=True) -> BNLearner
     Parameters:
-        * **filename** (*str*) -- the file to learn from
+        * **source** (*str* or *pandas.DataFrame) -- the data to learn from
         * **inducedTypes** (*Bool*) -- whether BNLearner should try to automatically find the type of each variable
 
 BNLearner(filename,src) -> BNLearner
     Parameters:
-        * **filename** (*str*) -- the file to learn from
+        * **source** (*str* or *pandas.DataFrame) -- the data to learn from
         * **src** (*pyAgrum.BayesNet*) -- the Bayesian network used to find those modalities
 
 BNLearner(learner) -> BNLearner
@@ -522,6 +522,3 @@ Returns
 bool
 	A Boolean indicating whether the BNLearner currently overrides aGrUM's default number of threads
 "
-
-
-
