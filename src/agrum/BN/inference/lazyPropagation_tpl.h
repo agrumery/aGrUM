@@ -741,7 +741,9 @@ namespace gum {
           } else {
             // perform the projection with a combine and project instance
             Set< const DiscreteVariable* > hard_variables;
-            _PotentialSet_                 marg_cpt_set{&cpt};
+
+            _PotentialSet_ marg_cpt_set(1+hard_nodes.size());
+            marg_cpt_set.insert(&cpt);
             for (const auto xnode: hard_nodes) {
               marg_cpt_set.insert(evidence[xnode]);
               hard_variables.insert(&(bn.variable(xnode)));
@@ -815,9 +817,7 @@ namespace gum {
           // as a potential anymore but as a constant
           // TODO substitute constants by 0-dimensional potentials
           if (hard_nodes.size() == variables.size()) {
-            Instantiation inst;
-            for (const auto var: cpt.variablesSequence())
-              inst << *var;
+            Instantiation inst(cpt);
             for (Size i = 0; i < hard_nodes.size(); ++i) {
               inst.chgVal(variables[i], hard_evidence[bn.nodeId(*(variables[i]))]);
             }

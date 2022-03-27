@@ -689,6 +689,14 @@ namespace gum {
     }
     _use_schedules_ = (overall_size > _schedule_threshold_);
 
+    // we shall now add all the potentials of the soft evidence to the cliques
+    const NodeProperty< const Potential< GUM_SCALAR >* >& evidence = this->evidence();
+    for (const auto node: this->softEvidenceNodes()) {
+      auto ev_pot = new ScheduleMultiDim< Potential< GUM_SCALAR > >(*evidence[node], false);
+      _node_to_soft_evidence_.insert(node, ev_pot);
+      _clique_potentials_[_node_to_clique_[node]].insert(ev_pot);
+    }
+
     // put all the CPTs of the Bayes net nodes into the cliques
     // here, beware: all the potentials that are defined over some nodes
     // including hard evidence must be projected so that these nodes are
@@ -700,13 +708,6 @@ namespace gum {
       _initializeJTCliques_();
     }
 
-    // we shall now add all the potentials of the soft evidence
-    const NodeProperty< const Potential< GUM_SCALAR >* >& evidence = this->evidence();
-    for (const auto node: this->softEvidenceNodes()) {
-      auto ev_pot = new ScheduleMultiDim< Potential< GUM_SCALAR > >(*evidence[node], false);
-      _node_to_soft_evidence_.insert(node, ev_pot);
-      _clique_potentials_[_node_to_clique_[node]].insert(ev_pot);
-    }
 
     // indicate that the data structures are up to date.
     _evidence_changes_.clear();
@@ -724,8 +725,9 @@ namespace gum {
     // here, beware: all the potentials that are defined over some nodes
     // including hard evidence must be projected so that these nodes are
     // removed from the potential
-    const auto& hard_evidence = this->hardEvidence();
-    const auto& evidence = this->evidence();
+    const NodeProperty< const Potential< GUM_SCALAR >* >& evidence      = this->evidence();
+    const NodeProperty< Idx >&                            hard_evidence = this->hardEvidence();
+
     for (const auto node: dag) {
       if (_graph_.exists(node) || _hard_ev_nodes_.contains(node)) {
         const Potential< GUM_SCALAR >& cpt = bn.cpt(node);
@@ -776,17 +778,16 @@ namespace gum {
 
             // there should be only one potential in new_cpt_list
             if (new_cpt_list.size() != 1) {
-              for (const auto pot : new_cpt_list)
-                if (! marg_cpt_set.contains(pot)) delete pot;
+              for (const auto pot: new_cpt_list)
+                if (!marg_cpt_set.contains(pot)) delete pot;
 
               GUM_ERROR(FatalError,
                         "the projection of a potential containing "
                            << "hard evidence is empty!");
             }
-            auto new_pot =
-               const_cast< Potential< GUM_SCALAR >* >(*new_cpt_list.begin());
-            ScheduleMultiDim< Potential< GUM_SCALAR > >* projected_pot =
-               new ScheduleMultiDim< Potential< GUM_SCALAR > >(std::move(*new_pot));
+            auto new_pot = const_cast< Potential< GUM_SCALAR >* >(*(new_cpt_list.begin()));
+            auto projected_pot
+               = new ScheduleMultiDim< Potential< GUM_SCALAR > >(std::move(*new_pot));
             delete new_pot;
 
             _clique_potentials_[_node_to_clique_[node]].insert(projected_pot);
@@ -826,7 +827,7 @@ namespace gum {
   }
 
 
-  /// put all the CPTs into the cliques when creating the JT without using a schedule
+  /// put all the CPTs into the cliques when creating the JT using a schedule
   template < typename GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::_initializeJTCliques_(Schedule& schedule) {
     const auto& bn  = this->BN();
@@ -836,8 +837,9 @@ namespace gum {
     // here, beware: all the potentials that are defined over some nodes
     // including hard evidence must be projected so that these nodes are
     // removed from the potential
-    const auto& hard_evidence = this->hardEvidence();
-    const auto& evidence = this->evidence();
+    const NodeProperty< const Potential< GUM_SCALAR >* >& evidence      = this->evidence();
+    const NodeProperty< Idx >&                            hard_evidence = this->hardEvidence();
+
     for (const auto node: dag) {
       if (_graph_.exists(node) || _hard_ev_nodes_.contains(node)) {
         const Potential< GUM_SCALAR >& cpt = bn.cpt(node);
@@ -862,9 +864,7 @@ namespace gum {
           // as a potential anymore but as a constant
           // TODO substitute constants by 0-dimensional potentials
           if (hard_nodes.size() == variables.size()) {
-            Instantiation inst;
-            for (const auto var: cpt.variablesSequence())
-              inst << *var;
+            Instantiation inst(cpt);
             for (Size i = 0; i < hard_nodes.size(); ++i) {
               inst.chgVal(variables[i], hard_evidence[bn.nodeId(*(variables[i]))]);
             }
@@ -872,13 +872,13 @@ namespace gum {
           } else {
             // perform the projection with a combine and project instance
             Set< const DiscreteVariable* > hard_variables;
-
-            _ScheduleMultiDimSet_ marg_cpt_set;
-            const auto sched_cpt = schedule.insertTable< Potential< GUM_SCALAR > >(cpt, false);
+            _ScheduleMultiDimSet_          marg_cpt_set;
+            const IScheduleMultiDim*       sched_cpt
+               = schedule.insertTable< Potential< GUM_SCALAR > >(cpt, false);
             marg_cpt_set.insert(sched_cpt);
 
             for (const auto xnode: hard_nodes) {
-              const auto pot
+              const IScheduleMultiDim* pot
                  = schedule.insertTable< Potential< GUM_SCALAR > >(*evidence[xnode], false);
               marg_cpt_set.insert(pot);
               hard_variables.insert(&(bn.variable(xnode)));
@@ -889,7 +889,7 @@ namespace gum {
                _combination_op_,
                _projection_op_);
 
-            auto new_cpt_list
+            _ScheduleMultiDimSet_ new_cpt_list
                = combine_and_project.schedule(schedule, marg_cpt_set, hard_variables);
 
             // there should be only one potential in new_cpt_list
@@ -943,9 +943,6 @@ namespace gum {
     }
     this->scheduler().execute(schedule);
   }
-
-
-
 
 
   /// prepare the inference structures w.r.t. new targets, soft/hard evidence
@@ -1092,16 +1089,29 @@ namespace gum {
       }
     }
 
-    // finally, cope with joint targets
+    // finally, cope with joint targets. Notably, remove the joint posteriors whose
+    // nodes have all received changed evidence
     for (auto iter = _joint_target_posteriors_.beginSafe();
          iter != _joint_target_posteriors_.endSafe();
          ++iter) {
       if (invalidated_cliques.exists(_joint_target_to_clique_[iter.key()])) {
         delete iter.val();
         _joint_target_posteriors_.erase(iter);
+      } else {
+        // check for sets in which all nodes have received evidence
+        bool has_unevidenced_node = false;
+        for (const auto node: iter.key()) {
+          if (!hard_nodes_changed.exists(node)) {
+            has_unevidenced_node = true;
+            break;
+          }
+        }
+        if (!has_unevidenced_node) {
+          delete iter.val();
+          _joint_target_posteriors_.erase(iter);
+        }
       }
     }
-
 
     // remove all the evidence that were entered into _node_to_soft_evidence_
     // and _clique_potentials_ and add the new soft ones
@@ -1125,74 +1135,150 @@ namespace gum {
     // their instantiations can have changed. So, if there is an entry
     // for node in _constants_, there will still be such an entry after
     // performing the new projections. Idem for _node_to_hard_ev_projected_CPTs_
-    Schedule schedule;
-    for (const auto node: nodes_with_projected_CPTs_changed) {
-      // perform the projection with a combine and project instance
-      const Potential< GUM_SCALAR >& cpt       = bn.cpt(node);
-      const auto&                    variables = cpt.variablesSequence();
-      _ScheduleMultiDimSet_          marg_cpt_set;
-      const auto sched_cpt = schedule.insertTable< Potential< GUM_SCALAR > >(cpt, false);
-      marg_cpt_set.insert(sched_cpt);
+    if (_use_schedules_) {
+      Schedule schedule;
+      for (const auto node: nodes_with_projected_CPTs_changed) {
+        // perform the projection with a combine and project instance
+        const Potential< GUM_SCALAR >& cpt       = bn.cpt(node);
+        const auto&                    variables = cpt.variablesSequence();
+        _ScheduleMultiDimSet_          marg_cpt_set;
+        const auto sched_cpt = schedule.insertTable< Potential< GUM_SCALAR > >(cpt, false);
+        marg_cpt_set.insert(sched_cpt);
 
-      Set< const DiscreteVariable* > hard_variables;
-      for (const auto var: variables) {
-        NodeId xnode = bn.nodeId(*var);
-        if (_hard_ev_nodes_.exists(xnode)) {
-          const auto pot = schedule.insertTable< Potential< GUM_SCALAR > >(*evidence[xnode], false);
-          marg_cpt_set.insert(pot);
-          hard_variables.insert(var);
+        Set< const DiscreteVariable* > hard_variables;
+        for (const auto var: variables) {
+          NodeId xnode = bn.nodeId(*var);
+          if (_hard_ev_nodes_.exists(xnode)) {
+            const auto pot
+               = schedule.insertTable< Potential< GUM_SCALAR > >(*evidence[xnode], false);
+            marg_cpt_set.insert(pot);
+            hard_variables.insert(var);
+          }
+        }
+
+        // perform the combination of those potentials and their projection
+        MultiDimCombineAndProjectDefault< Potential< GUM_SCALAR > > combine_and_project(
+           _combination_op_,
+           _projection_op_);
+
+        _ScheduleMultiDimSet_ new_cpt_list
+           = combine_and_project.schedule(schedule, marg_cpt_set, hard_variables);
+
+        // there should be only one potential in new_cpt_list
+        if (new_cpt_list.size() != 1) {
+          GUM_ERROR(FatalError,
+                    "the projection of a potential containing "
+                       << "hard evidence is empty!");
+        }
+        auto projected_pot = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
+           static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
+              *new_cpt_list.begin()));
+        const_cast< ScheduleOperator* >(schedule.scheduleMultiDimCreator(projected_pot))
+           ->makeResultsPersistent(true);
+        _clique_potentials_[_node_to_clique_[node]].insert(projected_pot);
+        _node_to_hard_ev_projected_CPTs_.insert(node, projected_pot);
+      }
+
+      // here, the list of potentials stored in the invalidated cliques have
+      // been updated. So, now, we can combine them to produce the Shafer-Shenoy
+      // potential stored into the clique
+      MultiDimCombinationDefault< Potential< GUM_SCALAR > > fast_combination(_combination_op_);
+      for (const auto clique: invalidated_cliques) {
+        const auto& potset = _clique_potentials_[clique];
+
+        if (potset.size() > 0) {
+          // here, there will be an entry in _clique_ss_potential_
+          // If there is only one element in potset, this element shall be
+          // stored into _clique_ss_potential_, else all the elements of potset
+          // shall be combined and their result shall be stored
+          if (potset.size() == 1) {
+            _clique_ss_potential_[clique] = *(potset.cbegin());
+          } else {
+            for (const auto pot: potset)
+              if (!schedule.existsScheduleMultiDim(pot->id()))
+                schedule.emplaceScheduleMultiDim(*pot);
+            auto joint = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
+               static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
+                  fast_combination.schedule(schedule, potset)));
+            const_cast< ScheduleOperator* >(schedule.scheduleMultiDimCreator(joint))
+               ->makeResultsPersistent(true);
+            _clique_ss_potential_[clique] = joint;
+          }
         }
       }
-
-      // perform the combination of those potentials and their projection
-      MultiDimCombineAndProjectDefault< Potential< GUM_SCALAR > > combine_and_project(
-         _combination_op_,
-         _projection_op_);
-
-      auto new_cpt_list = combine_and_project.schedule(schedule, marg_cpt_set, hard_variables);
-
-      // there should be only one potential in new_cpt_list
-      if (new_cpt_list.size() != 1) {
-        GUM_ERROR(FatalError,
-                  "the projection of a potential containing "
-                     << "hard evidence is empty!");
-      }
-      auto projected_pot = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
-         static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(*new_cpt_list.begin()));
-      const_cast< ScheduleOperator* >(schedule.scheduleMultiDimCreator(projected_pot))
-         ->makeResultsPersistent(true);
-      _clique_potentials_[_node_to_clique_[node]].insert(projected_pot);
-      _node_to_hard_ev_projected_CPTs_.insert(node, projected_pot);
+      this->scheduler().execute(schedule);
     }
+    else {
+      for (const auto node: nodes_with_projected_CPTs_changed) {
+        // perform the projection with a combine and project instance
+        const Potential< GUM_SCALAR >& cpt       = bn.cpt(node);
+        const auto&                    variables = cpt.variablesSequence();
+        _PotentialSet_                 marg_cpt_set (1+variables.size());
+        marg_cpt_set.insert(&cpt);
 
-    // here, the list of potentials stored in the invalidated cliques have
-    // been updated. So, now, we can combine them to produce the Shafer-Shenoy
-    // potential stored into the clique
-    MultiDimCombinationDefault< Potential< GUM_SCALAR > > fast_combination(_combination_op_);
-    for (const auto clique: invalidated_cliques) {
-      const auto& potset = _clique_potentials_[clique];
+        Set< const DiscreteVariable* > hard_variables;
+        for (const auto var: variables) {
+          NodeId xnode = bn.nodeId(*var);
+          if (_hard_ev_nodes_.exists(xnode)) {
+            marg_cpt_set.insert(evidence[xnode]);
+            hard_variables.insert(var);
+          }
+        }
 
-      if (potset.size() > 0) {
-        // here, there will be an entry in _clique_ss_potential_
-        // If there is only one element in potset, this element shall be
-        // stored into _clique_ss_potential_, else all the elements of potset
-        // shall be combined and their result shall be stored
-        if (potset.size() == 1) {
-          _clique_ss_potential_[clique] = *(potset.cbegin());
-        } else {
-          for (const auto pot: potset)
-            if (!schedule.existsScheduleMultiDim(pot->id())) schedule.emplaceScheduleMultiDim(*pot);
-          auto joint = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
-             static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
-                fast_combination.schedule(schedule, potset)));
-          const_cast< ScheduleOperator* >(schedule.scheduleMultiDimCreator(joint))
-             ->makeResultsPersistent(true);
-          _clique_ss_potential_[clique] = joint;
+        // perform the combination of those potentials and their projection
+        MultiDimCombineAndProjectDefault< Potential< GUM_SCALAR > > combine_and_project(
+           _combination_op_,
+           _projection_op_);
+
+        _PotentialSet_ new_cpt_list
+           = combine_and_project.execute(marg_cpt_set, hard_variables);
+
+        // there should be only one potential in new_cpt_list
+        if (new_cpt_list.size() != 1) {
+          for (const auto pot : new_cpt_list)
+            if (!marg_cpt_set.contains(pot)) delete pot;
+
+          GUM_ERROR(FatalError,
+                    "the projection of a potential containing "
+                       << "hard evidence is empty!");
+        }
+        Potential< GUM_SCALAR>* xprojected_pot =
+           const_cast< Potential< GUM_SCALAR >* >(*new_cpt_list.begin());
+        auto projected_pot = new ScheduleMultiDim< Potential< GUM_SCALAR > >
+           (std::move(*xprojected_pot));
+        delete xprojected_pot;
+        _clique_potentials_[_node_to_clique_[node]].insert(projected_pot);
+        _node_to_hard_ev_projected_CPTs_.insert(node, projected_pot);
+      }
+
+      // here, the list of potentials stored in the invalidated cliques have
+      // been updated. So, now, we can combine them to produce the Shafer-Shenoy
+      // potential stored into the clique
+      MultiDimCombinationDefault< Potential< GUM_SCALAR > > fast_combination(_combination_op_);
+      for (const auto clique: invalidated_cliques) {
+        const auto& potset = _clique_potentials_[clique];
+
+        if (potset.size() > 0) {
+          // here, there will be an entry in _clique_ss_potential_
+          // If there is only one element in potset, this element shall be
+          // stored into _clique_ss_potential_, else all the elements of potset
+          // shall be combined and their result shall be stored
+          if (potset.size() == 1) {
+            _clique_ss_potential_[clique] = *(potset.cbegin());
+          } else {
+            _PotentialSet_ p_potset(potset.size());
+            for (const auto pot : potset)
+              p_potset.insert(&(static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(pot)->multiDim()));
+
+            Potential< GUM_SCALAR >* joint =
+               const_cast< Potential< GUM_SCALAR >* >(fast_combination.execute(p_potset));
+            _clique_ss_potential_[clique] =
+               new ScheduleMultiDim< Potential< GUM_SCALAR > >(std::move(*joint));
+            delete joint;
+          }
         }
       }
     }
-    this->scheduler().execute(schedule);
-
 
     // update the constants
     const auto& hard_evidence = this->hardEvidence();
@@ -1216,7 +1302,9 @@ namespace gum {
   /// compute a root for each connected component of  _JT_
   template < typename GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::_computeJoinTreeRoots_() {
-    // get the set of cliques in which we can find the targets and joint_targets
+    // get the set of cliques in which we can find the targets and joint_targets.
+    // Due to hard evidence, the cliques related to a given target node
+    // might not exist, hence the try..catch.
     NodeSet clique_targets;
     for (const auto node: this->targets()) {
       try {
@@ -1229,7 +1317,7 @@ namespace gum {
       } catch (Exception&) {}
     }
 
-    // put in a vector these cliques and their size
+    // put in a vector these cliques and their sizes
     std::vector< std::pair< NodeId, Size > > possible_roots(clique_targets.size());
     const auto&                              bn = this->BN();
     std::size_t                              i  = 0;
@@ -1271,16 +1359,6 @@ namespace gum {
   }
 
 
-
-
-
-
-
-
-
-
-
-
   // find the potentials d-connected to a set of variables
   template < typename GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::_findRelevantPotentialsGetAll_(
@@ -1294,7 +1372,7 @@ namespace gum {
      Set< const IScheduleMultiDim* >& pot_list,
      Set< const DiscreteVariable* >&  kept_vars) {
     // find the node ids of the kept variables
-    NodeSet     kept_ids;
+    NodeSet     kept_ids(kept_vars.size());
     const auto& bn = this->BN();
     for (const auto var: kept_vars) {
       kept_ids.insert(bn.nodeId(*var));
@@ -1328,7 +1406,7 @@ namespace gum {
      Set< const IScheduleMultiDim* >& pot_list,
      Set< const DiscreteVariable* >&  kept_vars) {
     // find the node ids of the kept variables
-    NodeSet     kept_ids;
+    NodeSet     kept_ids(kept_vars.size());
     const auto& bn = this->BN();
     for (const auto var: kept_vars) {
       kept_ids.insert(bn.nodeId(*var));
@@ -1349,7 +1427,7 @@ namespace gum {
      Set< const IScheduleMultiDim* >& pot_list,
      Set< const DiscreteVariable* >&  kept_vars) {
     // find the node ids of the kept variables
-    NodeSet     kept_ids;
+    NodeSet     kept_ids(kept_vars.size());
     const auto& bn = this->BN();
     for (const auto var: kept_vars) {
       kept_ids.insert(bn.nodeId(*var));
@@ -1558,7 +1636,7 @@ namespace gum {
      Set< const DiscreteVariable* >& del_vars,
      Set< const DiscreteVariable* >& kept_vars) {
     // use d-separation analysis to check which potentials shall be combined
-    _findRelevantPotentialsXX_(pot_list, kept_vars);
+    //_findRelevantPotentialsXX_(pot_list, kept_vars);
 
     // now, let's guarantee that all the potentials to be combined and projected
     // belong to the schedule
