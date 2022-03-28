@@ -41,7 +41,7 @@ namespace gum {
      typename PartialInstantiationRegister4MultiDim< GUM_SCALAR >::PartialInstantiationPtr
         newFunction) {
     // insert the new entry
-    PartialInstantiationSet* theset;
+    PartialInstantiationSet* theset = nullptr;
 
     if (!_set_.exists(instantiation_func_name)) {
       theset = _set_.insert(instantiation_func_name, new PartialInstantiationSet).second;
@@ -98,7 +98,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   PartialInstantiationRegister4MultiDim< GUM_SCALAR >&
      PartialInstantiationRegister4MultiDim< GUM_SCALAR >::Register() {
-    static PartialInstantiationRegister4MultiDim* container;
+    static PartialInstantiationRegister4MultiDim* container             = nullptr;
     static std::atomic< bool >                    first                 = true;
     static bool                                   container_initialized = false;
     static std::mutex                             mutex;

@@ -47,32 +47,90 @@ namespace gum {
   namespace __debug__ {
     typedef std::map< std::string, int > DEBUG_MAP;
 
-    static std::mutex debug_mutex;
+
+    static std::mutex& _debug_mutex_() {
+      static std::mutex*         debug_mutex       = nullptr;
+      static std::atomic_flag    first             = ATOMIC_FLAG_INIT;
+      static std::atomic< bool > mutex_initialized = false;
+      if (!first.test_and_set()) {
+        debug_mutex       = new std::mutex;
+        mutex_initialized = true;
+      }
+
+      while (!mutex_initialized) {}
+
+      return *debug_mutex;
+    }
+
 
     // this static hashtable only on debug mode.
     static DEBUG_MAP& _sizeof_() {
-      // This function is not thread-safe ! (but only in debug mode)
-      static DEBUG_MAP* sizeOf = new DEBUG_MAP();
+      static DEBUG_MAP*          sizeOf          = nullptr;
+      static std::atomic< bool > first           = true;
+      static bool                map_initialized = false;
+      static std::mutex&         debug_mutex     = _debug_mutex_();
+
+      if (first) {
+        // lock so that only one thread will create the debug map
+        debug_mutex.lock();
+        if (!map_initialized) {
+          sizeOf          = new DEBUG_MAP();
+          first           = false;
+          map_initialized = true;
+        }
+        debug_mutex.unlock();
+      }
       return *sizeOf;
     }
 
+
     // this static hashtable only on debug mode.
     static DEBUG_MAP& _creation_() {
-      // @warning This function is not thread-safe ! (but only in debug mode)
-      static DEBUG_MAP* creation = new DEBUG_MAP();
+      static DEBUG_MAP* creation                 = nullptr;
+      static std::atomic< bool > first           = true;
+      static bool                map_initialized = false;
+      static std::mutex&         debug_mutex     = _debug_mutex_();
+
+      if (first) {
+        // lock so that only one thread will create the debug map
+        debug_mutex.lock();
+        if (!map_initialized) {
+          creation        = new DEBUG_MAP();
+          first           = false;
+          map_initialized = true;
+        }
+        debug_mutex.unlock();
+      }
+
       return *creation;
     }
 
+
     static DEBUG_MAP& _deletion_() {
-      // @warning This function is not thread-safe ! (but only in debug mode)
-      static DEBUG_MAP* deletion = new DEBUG_MAP();
+      static DEBUG_MAP* deletion                 = nullptr;
+      static std::atomic< bool > first           = true;
+      static bool                map_initialized = false;
+      static std::mutex&         debug_mutex     = _debug_mutex_();
+
+      if (first) {
+        // lock so that only one thread will create the debug map
+        debug_mutex.lock();
+        if (!map_initialized) {
+          deletion = new DEBUG_MAP();
+          first           = false;
+          map_initialized = true;
+        }
+        debug_mutex.unlock();
+      }
       return *deletion;
     }
+
 
     std::string _getFile_(const char* f) {
       std::string s(f);
       return s.erase(0, s.rfind("/") + 1);
     }
+
 
     void _show_trace_(const char* zeKey,
                       const char* zeFile,
@@ -86,17 +144,22 @@ namespace gum {
 #    endif   // TRACE_CONSTRUCTION_ON
     }
 
+
     void _inc_creation_(const char* zeKey,
                         const char* zeFile,
                         long        zeLine,
                         const char* zeMsg,
                         const void* zePtr,
                         int         zeSize) {
-      debug_mutex.lock();
+      static DEBUG_MAP&  creation = _creation_();
+      static DEBUG_MAP&  size     = _sizeof_();
+      static std::mutex& mutex    = _debug_mutex_();
+
+      mutex.lock();
       _show_trace_(zeKey, zeFile, zeLine, zeMsg, zePtr);
-      _creation_()[zeKey]++;
-      _sizeof_()[zeKey] = zeSize;
-      debug_mutex.unlock();
+      creation[zeKey]++;
+      size[zeKey] = zeSize;
+      mutex.unlock();
     }
 
     // to handle static element of agrum library
@@ -105,10 +168,13 @@ namespace gum {
                         long        zeLine,
                         const char* zeMsg,
                         const void* zePtr) {
-      debug_mutex.lock();
+      static DEBUG_MAP&  creation = _creation_();
+      static std::mutex& mutex    = _debug_mutex_();
+
+      mutex.lock();
       _show_trace_(zeKey, zeFile, zeLine, zeMsg, zePtr);
-      _creation_()[zeKey]--;
-      debug_mutex.unlock();
+      creation[zeKey]--;
+      mutex.unlock();
     }
 
     void _inc_deletion_(const char* zeKey,
@@ -116,13 +182,19 @@ namespace gum {
                         long        zeLine,
                         const char* zeMsg,
                         const void* zePtr) {
-      debug_mutex.lock();
+      static DEBUG_MAP&  deletion = _deletion_();
+      static std::mutex& mutex    = _debug_mutex_();
+      mutex.lock();
       _show_trace_(zeKey, zeFile, zeLine, zeMsg, zePtr);
-      _deletion_()[zeKey]++;
-      debug_mutex.unlock();
+      deletion[zeKey]++;
+      mutex.unlock();
     }
 
     void _dumpObjects_() {
+      DEBUG_MAP& creation = _creation_();
+      DEBUG_MAP& deletion = _deletion_();
+      DEBUG_MAP& sizeOf   = _sizeof_();
+
       Size   nb_err     = 0;
       double total_size = 0.0;
 
@@ -149,11 +221,11 @@ namespace gum {
       // list of created objects
       std::map< std::string, std::string > res;
 
-      for (DEBUG_MAP::const_iterator xx = _creation_().begin(); xx != _creation_().end(); ++xx) {
+      for (DEBUG_MAP::const_iterator xx = creation.begin(); xx != creation.end(); ++xx) {
         std::stringstream stream;
         int               zeCreatedObjs  = xx->second;
         int               zeDeletedObjts = -1;
-        int               size           = _sizeof_()[xx->first];
+        int               size           = sizeOf[xx->first];
 
         stream << std::setfill(fillChar = (fillChar == '_') ? ' ' : '_') << "| "
                << std::setw(widthColLibelle) << std::left << xx->first << " | " << std::right
@@ -163,7 +235,7 @@ namespace gum {
         if (size > 0) total_size += zeCreatedObjs * (size / 1024.0);
 
         try {
-          zeDeletedObjts = _deletion_()[xx->first];
+          zeDeletedObjts = deletion[xx->first];
           stream << std::setfill(fillChar) << std::setw(widthColItemsNumber) << zeDeletedObjts;
         } catch (NotFound&) {
           stream << std::setfill(fillChar) << std::setw(widthColItemsNumber) << "?????";
@@ -182,15 +254,15 @@ namespace gum {
       }
 
       // list of deleted objects, but not created (?)
-      for (DEBUG_MAP::const_iterator xx = _deletion_().begin(); xx != _deletion_().end(); ++xx) {
+      for (DEBUG_MAP::const_iterator xx = deletion.begin(); xx != deletion.end(); ++xx) {
         try {
-          _creation_()[xx->first];
+          creation[xx->first];
         } catch (NotFound&) {
           std::stringstream stream;
           fillChar = (fillChar == '_') ? ' ' : '_';
           stream << std::setfill(fillChar = (fillChar == '_') ? ' ' : '_') << "| "
                  << std::setw(widthColLibelle) << std::left << xx->first + " "
-                 << " | " << std::right << std::setw(widthColSizeOf) << _sizeof_()[xx->first]
+                 << " | " << std::right << std::setw(widthColSizeOf) << sizeOf[xx->first]
                  << " o | " << std::setw(widthColItemsNumber) << "?????"
                  << " | " << std::setw(widthColItemsNumber) << xx->second << " |<--- failed";
           res.insert(make_pair(xx->first, stream.str()));
