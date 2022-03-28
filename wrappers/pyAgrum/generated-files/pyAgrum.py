@@ -7832,6 +7832,12 @@ class Potential(object):
         dict : Dict[str,str|int]
           a dictionnary containing values for some discrete variables.
 
+        Warning
+        --------
+            if the dictionnary contains a key that is not the name of a variable in the `pyAgrum.Potential`, 
+            this key is just not used without notification. Then `pyAgrum.Potential.extract` concerns 
+            only the variables that  both are in the Potential and in the dictionnary.
+
         Returns
         -------
         pyAgrum.Potential
@@ -24093,12 +24099,12 @@ class BNLearner(object):
 
     BNLearner(filename,inducedTypes=True) -> BNLearner
         Parameters:
-            * **filename** (*str*) -- the file to learn from
+            * **source** (*str* or *pandas.DataFrame) -- the data to learn from
             * **inducedTypes** (*Bool*) -- whether BNLearner should try to automatically find the type of each variable
 
     BNLearner(filename,src) -> BNLearner
         Parameters:
-            * **filename** (*str*) -- the file to learn from
+            * **source** (*str* or *pandas.DataFrame) -- the data to learn from
             * **src** (*pyAgrum.BayesNet*) -- the Bayesian network used to find those modalities
 
     BNLearner(learner) -> BNLearner

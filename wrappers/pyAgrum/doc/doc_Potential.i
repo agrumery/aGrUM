@@ -104,6 +104,12 @@ inst : pyAgrum.instantiation
 dict : Dict[str,str|int]
   a dictionnary containing values for some discrete variables.
 
+Warning
+--------
+    if the dictionnary contains a key that is not the name of a variable in the `pyAgrum.Potential`, 
+    this key is just not used without notification. Then `pyAgrum.Potential.extract` concerns 
+    only the variables that  both are in the Potential and in the dictionnary.
+
 Returns
 -------
 pyAgrum.Potential
