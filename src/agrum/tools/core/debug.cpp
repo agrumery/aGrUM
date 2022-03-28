@@ -35,6 +35,7 @@
 #include <string>
 #include <vector>
 #include <mutex>
+#include <atomic>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
