@@ -20,8 +20,7 @@ This tag is a pre-relase for 1.0.0 (!).
   * add a way to export BN samples as a `pandas.DataFrame` instead of csv files in `pyAgrum.BNDatabaseGenerator` and in the function `pyAgrum.generateSamples(....)`.
   * `gum.BNLearner` can now take a `pandas.DataFrame` as data source in its constructor.
   * Add support for default number of thread in `gum.config`.
-  * Added methods to get/set the number of threads used by `pyAgrum.BNLearner`, `pyAgrum.LazyPropagation` and `pyAgrum.
-    ShaferShenoy`.
+  * Added methods to get/set the number of threads used by `pyAgrum.BNLearner`, `pyAgrum.LazyPropagation` and `pyAgrum.ShaferShenoy`.
   * small change in `pyAgrum.skbn.Discretizer.audit` : show the domain size for discrete variable.
   * better graphical diff between BN, even if a node is missing using `pyAgrum.bn_vs_bn` functionalities.
   * empirical gum.DiscretizedVariable used in `pyAgrum.skbn.Discretizer`

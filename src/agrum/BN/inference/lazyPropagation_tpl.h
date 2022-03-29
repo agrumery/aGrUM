@@ -742,7 +742,7 @@ namespace gum {
             // perform the projection with a combine and project instance
             Set< const DiscreteVariable* > hard_variables;
 
-            _PotentialSet_ marg_cpt_set(1+hard_nodes.size());
+            _PotentialSet_ marg_cpt_set(1 + hard_nodes.size());
             marg_cpt_set.insert(&cpt);
             for (const auto xnode: hard_nodes) {
               marg_cpt_set.insert(evidence[xnode]);
@@ -754,8 +754,7 @@ namespace gum {
                _combination_op_,
                _projection_op_);
 
-            _PotentialSet_ new_cpt_list
-               = combine_and_project.execute(marg_cpt_set, hard_variables);
+            _PotentialSet_ new_cpt_list = combine_and_project.execute(marg_cpt_set, hard_variables);
 
             // there should be only one potential in new_cpt_list
             if (new_cpt_list.size() != 1) {
@@ -1550,7 +1549,7 @@ namespace gum {
     MultiDimCombineAndProjectDefault< Potential< GUM_SCALAR > > combine_and_project(
        _combination_op_,
        _projection_op_);
-    _PotentialSet_ xnew_pot_list = combine_and_project.execute(xpot_list, del_vars);
+    _PotentialSet_        xnew_pot_list = combine_and_project.execute(xpot_list, del_vars);
     _ScheduleMultiDimSet_ new_pot_list(xnew_pot_list.size());
     for (auto xpot: xnew_pot_list) {
       ScheduleMultiDim< Potential< GUM_SCALAR > >* pot;
@@ -1689,7 +1688,7 @@ namespace gum {
     if (!_arc_to_created_potentials_.exists(arc))
       _arc_to_created_potentials_.insert(arc, _ScheduleMultiDimSet_());
 
-    for (const auto pot : new_pot_list) {
+    for (const auto pot: new_pot_list) {
       if (!pot_list.exists(pot)) { _arc_to_created_potentials_[arc].insert(pot); }
     }
 

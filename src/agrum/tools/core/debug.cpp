@@ -87,7 +87,7 @@ namespace gum {
 
     // this static hashtable only on debug mode.
     static DEBUG_MAP& _creation_() {
-      static DEBUG_MAP* creation                 = nullptr;
+      static DEBUG_MAP*          creation        = nullptr;
       static std::atomic< bool > first           = true;
       static bool                map_initialized = false;
       static std::mutex&         debug_mutex     = _debug_mutex_();
@@ -108,7 +108,7 @@ namespace gum {
 
 
     static DEBUG_MAP& _deletion_() {
-      static DEBUG_MAP* deletion                 = nullptr;
+      static DEBUG_MAP*          deletion        = nullptr;
       static std::atomic< bool > first           = true;
       static bool                map_initialized = false;
       static std::mutex&         debug_mutex     = _debug_mutex_();
@@ -117,7 +117,7 @@ namespace gum {
         // lock so that only one thread will create the debug map
         debug_mutex.lock();
         if (!map_initialized) {
-          deletion = new DEBUG_MAP();
+          deletion        = new DEBUG_MAP();
           first           = false;
           map_initialized = true;
         }
@@ -263,8 +263,8 @@ namespace gum {
           fillChar = (fillChar == '_') ? ' ' : '_';
           stream << std::setfill(fillChar = (fillChar == '_') ? ' ' : '_') << "| "
                  << std::setw(widthColLibelle) << std::left << xx->first + " "
-                 << " | " << std::right << std::setw(widthColSizeOf) << sizeOf[xx->first]
-                 << " o | " << std::setw(widthColItemsNumber) << "?????"
+                 << " | " << std::right << std::setw(widthColSizeOf) << sizeOf[xx->first] << " o | "
+                 << std::setw(widthColItemsNumber) << "?????"
                  << " | " << std::setw(widthColItemsNumber) << xx->second << " |<--- failed";
           res.insert(make_pair(xx->first, stream.str()));
           // res.push_back( stream.str() );

@@ -507,7 +507,6 @@ namespace gum {
 
     /// returns a fresh potential equal to P(argument,evidence) without using schedules
     Potential< GUM_SCALAR >* _unnormalizedJointPosterior_(const NodeSet& set);
-
   };
 
 
