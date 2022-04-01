@@ -913,8 +913,11 @@ def _reprPotential(pot, digits=None, withColors=True, varnames=None, asString=Fa
         pmin, pmax, pinc = nparents - 1, 0 - 1, -1
       else:
         pmin, pmax, pinc = 0, nparents, 1
+
+      if varnames is None:
+        varnames=list(reversed(pot.names))
       for par in range(pmin, pmax, pinc):
-        parent = pot.var_names[par] if varnames is None else varnames[par]
+        parent = varnames[par]
         s += f"<th style='border:1px solid black;color:black;background-color:#808080'><center>{parent}</center></th>"
 
     for label in var.labels():

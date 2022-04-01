@@ -1,6 +1,6 @@
 /**
  *
- *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
+ *  Copyright 2005-2022 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
  *   {prenom.nom}_at_lip6.fr
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -17,7 +17,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
- 
+
 %ignore gum::InfluenceDiagram::variableNodeMap;
 %ignore gum::InfluenceDiagram::insertArc;
 %ignore gum::InfluenceDiagram::getPartialTemporalOrder;
@@ -34,7 +34,7 @@
    bool loadBIFXML(std::string name, PyObject *l=(PyObject*)0) {
     try {
         gum::BIFXMLIDReader<GUM_SCALAR> reader(self,name);
-        reader.proceed(); 
+        reader.proceed();
         return true;
     } catch (gum::IOError& e) {
         throw(e);

@@ -250,8 +250,8 @@ def unroll2TBN(dbn, nbr):
   for dbn_id in dbn.nodes():
     name = dbn.variable(dbn_id).name()
     # right order for parents
-    lvarnames = dbn.cpt(dbn_id).var_names
-    lvarnames.pop()
+    lvarnames = list(reversed(dbn.cpt(dbn_id).names))
+    lvarnames.pop() # remove the node itself, parents remain
     lvarnames.reverse()
 
     for name_parent in lvarnames:
@@ -322,7 +322,7 @@ def plotFollowUnrolled(lovars, dbn, T, evs, vars_title=None):
         plt.title(vars_title[var], fontsize=20)
     else:
         raise TypeError("Incorrect format of the plots title dictionary")
-    
+
     plt.xlabel('time')
 
     stack = ax.stackplot(x, lpots)

@@ -1,6 +1,6 @@
 /**
  *
- *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
+ *  Copyright 2005-2022 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
  *   {prenom.nom}_at_lip6.fr
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -68,6 +68,7 @@ ADD_REPR_STR_API(gum,DiscretizedVariable<double>)
 
 ADD_REPR_STR_API(gum,UndiGraph)
 ADD_REPR_STR_API(gum,DiGraph)
+ADD_REPR_STR_API(gum,DAG)
 ADD_REPR_STR_API(gum,MixedGraph)
 
 ADD_REPR_STR_API(gum,IBayesNet<double>)

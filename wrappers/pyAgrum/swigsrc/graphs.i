@@ -1,6 +1,6 @@
 /**
  *
- *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
+ *  Copyright 2005-2022 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
  *   {prenom.nom}_at_lip6.fr
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -143,11 +143,11 @@ ADD_DI_METHOD_TO_GRAPHCLASS(gum::MarkovBlanket);
     return PyAgrumHelper::PySetFromNodeSet(self->neighbours(id));
   };
 };
+%ignore classname::edges const;
+%ignore classname::neighbours const;
 %enddef
 ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::UndiGraph); // add for the sub-classes (including MixedGraph)
 ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::EssentialGraph);
-%ignore gum::EssentialGraph::edges const;
-%ignore gum::EssentialGraph::neighbours const;
 
 
 %define ADD_MIXED_METHOD_TO_GRAPHCLASS(classname)
@@ -162,6 +162,9 @@ ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::EssentialGraph);
     return PyAgrumHelper::PyListFromNodeVect(self->mixedUnorientedPath(node1,node2));
   };
 };
+%ignore classname::adjacents const;
+%ignore classname::mixedOrientedPath const;
+%ignore classname::mixedUnorientedPath const;
 %enddef
 ADD_MIXED_METHOD_TO_GRAPHCLASS(gum::MixedGraph);
 

@@ -1,6 +1,6 @@
 /**
  *
- *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
+ *  Copyright 2005-2022 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
  *   {prenom.nom}_at_lip6.fr
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -34,7 +34,7 @@
   bool isMutable() {
     return self->isSlave();
   }
-  
+
   PyObject* todict(bool withLabels=false) const {
     auto res=PyDict_New();
     for(gum::Idx i=0;i<self->nbrDim();i++) {
@@ -134,4 +134,3 @@
 %pythonappend gum::Instantiation::add %{
   return self
 %}
-

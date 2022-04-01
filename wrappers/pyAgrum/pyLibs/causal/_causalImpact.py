@@ -44,8 +44,8 @@ def causalImpact(cm: CausalModel,
                  on: Union[str, NameSet],
                  doing: Union[str, NameSet],
                  knowing: Optional[NameSet] = None,
-                 values: Optional[Dict[str, int]] = None) \
-   -> Tuple['pyAgrum.causal.CausalFormula', 'pyAgrum.Potential', str]:
+                 values: Optional[Dict[str, int]] = None) -> Tuple[
+  'pyAgrum.causal.CausalFormula', 'pyAgrum.Potential' , str]:
   """
   Determines the causal impact of interventions.
 
@@ -95,7 +95,7 @@ def causalImpact(cm: CausalModel,
   if potential is None or values is None:
     return formula, potential, explanation
 
-  sv = set(potential.var_names)
+  sv = set(potential.names)
   extract_values = {k: _getLabelIdx(cm.observationalBN(), k, v)
                     for k, v in values.items() if k in sv}
   potextract = potential.extract(extract_values)
@@ -143,7 +143,7 @@ def _causalImpact(cm: CausalModel, on: NameSet,
     ar = CausalFormula(cm, ASTposteriorProba(
       cm.causalBN(), set(nY), set(nK)), on, doing, knowing)
     adj = ar.eval()
-    return ar, adj.reorganize([v for v in nY + nDo + nK if v in adj.var_names]), explain
+    return ar, adj.reorganize([v for v in nY + nDo + nK if v in adj.names]), explain
 
   # Front or Back door
   if len(iDo) == 1 and len(nY) == 1 and len(nK) == 0:
@@ -156,7 +156,7 @@ def _causalImpact(cm: CausalModel, on: NameSet,
       adj = ar.eval()
       explain = "backdoor " + \
                 str([cm.causalBN().variable(i).name() for i in bd]) + " found."
-      return ar, adj.reorganize([v for v in nY + nDo + nK if v in adj.var_names]), explain
+      return ar, adj.reorganize([v for v in nY + nDo + nK if v in adj.names]), explain
 
     # for fd in frontdoor_generator(cm, iDo[0], iY[0], cm.latentVariablesIds()):
     fd = cm.frontDoor(iDo[0], iY[0], withNames=False)
@@ -166,7 +166,7 @@ def _causalImpact(cm: CausalModel, on: NameSet,
       adj = ar.eval()
       explain = "frontdoor " + \
                 str([cm.causalBN().variable(i).name() for i in fd]) + " found."
-      return ar, adj.reorganize([v for v in nY + nDo + nK if v in adj.var_names]), explain
+      return ar, adj.reorganize([v for v in nY + nDo + nK if v in adj.names]), explain
 
   # Go for do-calculus
   try:
@@ -179,14 +179,14 @@ def _causalImpact(cm: CausalModel, on: NameSet,
 
   adj = ar.eval()
   lsum = nY + nDo + nK
-  lv = [v for v in lsum if v in adj.var_names]
+  lv = [v for v in lsum if v in adj.names]
 
-  # todo : check why it is possible that some variables are in var_names and
+  # todo : check why it is possible that some variables are in names and
   # not in lsum ...  (see for instance p213, book of why and
   # https://twitter.com/analisereal/status/1022277416205475841 : should
   # really z be in the last formula ?)
   ssum = set(lsum)
-  lv += [v for v in adj.var_names if v not in ssum]
+  lv += [v for v in adj.names if v not in ssum]
 
   adj = adj.reorganize(lv)  # margSumIn(lv).reorganize(lv)
   explain = "Do-calculus computations"
@@ -300,7 +300,7 @@ def counterfactual(cm: CausalModel, profile: Union[Dict[str, int], type(None)], 
 
   # adj is using variables from twincm. We copy it in a Potential using variables of cm
   res = pyAgrum.Potential()
-  for v in adj.var_names:
+  for v in adj.names:
     res.add(cm.observationalBN().variableFromName(v))
   res.fillWith(adj)
   return res

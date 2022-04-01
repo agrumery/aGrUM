@@ -31,7 +31,8 @@
 //509 : Overloaded method effectively ignore
 //401 : not wrapped class
 ///327 : extern template effectively ignored
-#pragma SWIG nowarn=320,317,325,509,401,327
+// 503 : DAG is not a correct name (still correctly wrapped ... ???)
+#pragma SWIG nowarn=320,317,325,509,401,327, 503
 
 //#pragma SWIG nowarn=341,342 // The 'using' keyword in type aliasing is not fully supported yet.
 

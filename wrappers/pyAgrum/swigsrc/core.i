@@ -1,6 +1,6 @@
 /**
  *
- *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
+ *  Copyright 2005-2022 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
  *   {prenom.nom}_at_lip6.fr
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -17,12 +17,11 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
- 
+
  %ignore *::diffSet;
- 
+
 %ignore gum::Instantiation::setValsFrom;
 
 %pythonprepend gum::List::append %{
         args[0].__disown__() #lets c++ take care of deleting it
 %}
-

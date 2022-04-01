@@ -1,6 +1,6 @@
 /**
  *
- *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
+ *  Copyright 2005-2022 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
  *   {prenom.nom}_at_lip6.fr
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -324,7 +324,7 @@ CHANGE_THEN_RETURN_SELF(fillWith)
             content.append(self.get(inst))
             inst.inc()
         tab=numpy.array(content,dtype=numpy.float64)
-        tab.shape=tuple(self.var_dims)
+        tab.shape=tuple(reversed(self.shape))
         return tab
 
       names=[loopvars.variable(i-1).name() for i in range(loopvars.nbrDim(),0,-1)]
@@ -430,9 +430,11 @@ CHANGE_THEN_RETURN_SELF(fillWith)
 
         Warnings
         --------
-            listed in the reverse order of the enumeration order of the variables.
+            This methods is deprecated. Please use gum.Potential.names and note the change in the order !
+
+            var_names return a list in the reverse order of the enumeration order of the variables.
         """
-        return [self.variable(i-1).name() for i in range(self.nbrDim(),0,-1)]
+        return [n for n in reversed(self.names)]
 
     @property
     def var_dims(self):
@@ -441,7 +443,41 @@ CHANGE_THEN_RETURN_SELF(fillWith)
         -------
         list
             a list containing the dimensions of each variables in the potential
+
+        Warnings
+        --------
+            This methods is deprecated. Please use gum.Potential.shape and note the change in the order !
+
+            var_dims return a list in the reverse order of the enumeration order of the variables.
         """
-        return [self.variable(i-1).domainSize() for i in range(self.nbrDim(),0,-1)]
+        return [n for n in reversed(self.shape)]
+
+    @property
+    def names(self):
+        """
+        Returns
+        -------
+        list
+            a list containing the name of each variables in the potential
+
+        Warnings
+        --------
+            listed in the reverse order of the enumeration order of the variables.
+        """
+        return tuple([self.variable(i).name() for i in range(self.nbrDim())])
+
+    @property
+    def shape(self):
+        """
+        Returns
+        -------
+        list
+            a list containing the dimensions of each variables in the potential
+
+        Warnings
+        --------
+            `p.shape` and `p[:].shape` list the dimensions in different order
+        """
+        return tuple([self.variable(i).domainSize() for i in range(self.nbrDim())])
   }
 }

@@ -4335,7 +4335,6 @@ class DAG(DiGraph):
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
 
     def __init__(self, *args):
         _pyAgrum.DAG_swiginit(self, _pyAgrum.new_DAG(*args))
@@ -4349,6 +4348,12 @@ class DAG(DiGraph):
 
     def dSeparation(self, *args) -> bool:
         return _pyAgrum.DAG_dSeparation(self, *args)
+
+    def __repr__(self) -> str:
+        return _pyAgrum.DAG___repr__(self)
+
+    def __str__(self) -> str:
+        return _pyAgrum.DAG___str__(self)
 
     def addArc(self, *args) -> None:
         r"""
@@ -4542,6 +4547,61 @@ class MixedGraph(UndiGraph, DiGraph):
 
         """
         return _pyAgrum.MixedGraph_addNodes(self, n)
+
+    def adjacents(self, id: int) -> object:
+        r"""
+
+        adjacents nodes are neighbours (not oriented), children and parents
+
+        Parameters
+        ----------
+        id : int
+        	the id of the node
+
+        Returns
+        -------
+        set
+            the set of node ids.
+
+        """
+        return _pyAgrum.MixedGraph_adjacents(self, id)
+
+    def mixedOrientedPath(self, node1: int, node2: int) -> object:
+        r"""
+
+        Parameters
+        ----------
+        node1 : int
+        	the id form which the path begins
+        node2 : int
+        	the id to witch the path ends
+
+        Returns
+        -------
+        List
+        	 a path from node1 to node2, using edges and/or arcs (following the direction of the arcs). If no path is found, the returned list is empty.
+
+        """
+        return _pyAgrum.MixedGraph_mixedOrientedPath(self, node1, node2)
+
+    def mixedUnorientedPath(self, node1: int, node2: int) -> object:
+        r"""
+
+        Parameters
+        ----------
+        node1 : int
+        	the id from which the path begins
+        node2 : int
+        	the id to which the path ends
+
+        Returns
+        -------
+        List
+        	 a path from node1 to node2, using edges and/or arcs (not necessarily following the direction of the arcs). If no path is found, the list is empty.
+
+
+        """
+        return _pyAgrum.MixedGraph_mixedUnorientedPath(self, node1, node2)
 
     def addNode(self) -> int:
         r"""
@@ -4810,61 +4870,6 @@ class MixedGraph(UndiGraph, DiGraph):
 
         """
         return _pyAgrum.MixedGraph_emptyArcs(self)
-
-    def adjacents(self, *args) -> List[int]:
-        r"""
-
-        adjacents nodes are neighbours (not oriented), children and parents
-
-        Parameters
-        ----------
-        id : int
-        	the id of the node
-
-        Returns
-        -------
-        set
-            the set of node ids.
-
-        """
-        return _pyAgrum.MixedGraph_adjacents(self, *args)
-
-    def mixedOrientedPath(self, *args) -> "pyAgrum.YetUnWrapped":
-        r"""
-
-        Parameters
-        ----------
-        node1 : int
-        	the id form which the path begins
-        node2 : int
-        	the id to witch the path ends
-
-        Returns
-        -------
-        List
-        	 a path from node1 to node2, using edges and/or arcs (following the direction of the arcs). If no path is found, the returned list is empty.
-
-        """
-        return _pyAgrum.MixedGraph_mixedOrientedPath(self, *args)
-
-    def mixedUnorientedPath(self, *args) -> "pyAgrum.YetUnWrapped":
-        r"""
-
-        Parameters
-        ----------
-        node1 : int
-        	the id from which the path begins
-        node2 : int
-        	the id to which the path ends
-
-        Returns
-        -------
-        List
-        	 a path from node1 to node2, using edges and/or arcs (not necessarily following the direction of the arcs). If no path is found, the list is empty.
-
-
-        """
-        return _pyAgrum.MixedGraph_mixedUnorientedPath(self, *args)
 
 # Register MixedGraph in _pyAgrum:
 _pyAgrum.MixedGraph_swigregister(MixedGraph)
@@ -8197,7 +8202,7 @@ class Potential(object):
             content.append(self.get(inst))
             inst.inc()
         tab=numpy.array(content,dtype=numpy.float64)
-        tab.shape=tuple(self.var_dims)
+        tab.shape=tuple(reversed(self.shape))
         return tab
 
       names=[loopvars.variable(i-1).name() for i in range(loopvars.nbrDim(),0,-1)]
@@ -8303,9 +8308,11 @@ class Potential(object):
 
         Warnings
         --------
-            listed in the reverse order of the enumeration order of the variables.
+            This methods is deprecated. Please use gum.Potential.names and note the change in the order !
+
+            var_names return a list in the reverse order of the enumeration order of the variables.
         """
-        return [self.variable(i-1).name() for i in range(self.nbrDim(),0,-1)]
+        return [n for n in reversed(self.names)]
 
     @property
     def var_dims(self):
@@ -8314,8 +8321,42 @@ class Potential(object):
         -------
         list
             a list containing the dimensions of each variables in the potential
+
+        Warnings
+        --------
+            This methods is deprecated. Please use gum.Potential.shape and note the change in the order !
+
+            var_dims return a list in the reverse order of the enumeration order of the variables.
         """
-        return [self.variable(i-1).domainSize() for i in range(self.nbrDim(),0,-1)]
+        return [n for n in reversed(self.shape)]
+
+    @property
+    def names(self):
+        """
+        Returns
+        -------
+        list
+            a list containing the name of each variables in the potential
+
+        Warnings
+        --------
+            listed in the reverse order of the enumeration order of the variables.
+        """
+        return tuple([self.variable(i).name() for i in range(self.nbrDim())])
+
+    @property
+    def shape(self):
+        """
+        Returns
+        -------
+        list
+            a list containing the dimensions of each variables in the potential
+
+        Warnings
+        --------
+            `p.shape` and `p[:].shape` list the dimensions in different order
+        """
+        return tuple([self.variable(i).domainSize() for i in range(self.nbrDim())])
 
 
     def get(self, i: "Instantiation") -> float:
