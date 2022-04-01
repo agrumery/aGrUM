@@ -444,12 +444,13 @@ namespace gum {
     // nodes that received evidence:
     // 1/ we create an undirected graph containing only the nodes and no edge
     // 2/ if we take into account barren nodes, remove them from the graph
-    // 3/ add edges so that each node and its parents in the BN form a clique
-    // 4/ add edges so that joint targets are cliques of the moral graph
-    // 5/ remove the nodes that received hard evidence (by step 3/, their
+    // 3/ if we take d-separation into account, remove the d-separated nodes
+    // 4/ add edges so that each node and its parents in the BN form a clique
+    // 5/ add edges so that join targets form a clique of the moral graph
+    // 6/ remove the nodes that received hard evidence (by step 4/, their
     //    parents are linked by edges, which is necessary for inference)
     //
-    // At the end of step 5/, we have our moral graph and we can triangulate it
+    // At the end of step 6/, we have our moral graph and we can triangulate it
     // to get the new junction tree
 
     // 1/ create an undirected graph containing only the nodes and no edge
@@ -458,18 +459,19 @@ namespace gum {
     for (const auto node: bn.dag())
       _graph_.addNodeWithId(node);
 
+    // identify the target nodes
+    NodeSet target_nodes = this->targets();
+    for (const auto& nodeset: this->jointTargets()) {
+      target_nodes += nodeset;
+    }
+
     // 2/ if we wish to exploit barren nodes, we shall remove them from the
     // BN. To do so: we identify all the nodes that are not targets and have
     // received no evidence and such that their descendants are neither
     // targets nor evidence nodes. Such nodes can be safely discarded from
     // the BN without altering the inference output
-    if (_barren_nodes_type_ == FindBarrenNodesType::FIND_BARREN_NODES) {
-      // identify the target nodes
-      NodeSet target_nodes = this->targets();
-      for (const auto& nodeset: this->jointTargets()) {
-        target_nodes += nodeset;
-      }
-
+    if ((this->nbrTargets() != bn.dag().size())
+        && (_barren_nodes_type_ == FindBarrenNodesType::FIND_BARREN_NODES)) {
       // check that all the nodes are not targets, otherwise, there is no
       // barren node
       if (target_nodes.size() != bn.size()) {
@@ -491,19 +493,74 @@ namespace gum {
       }
     }
 
-    // 3/ add edges so that each node and its parents in the BN form a clique
-    for (const auto node: _graph_) {
-      const NodeSet& parents = bn.parents(node);
-      for (auto iter1 = parents.cbegin(); iter1 != parents.cend(); ++iter1) {
-        _graph_.addEdge(*iter1, node);
-        auto iter2 = iter1;
-        for (++iter2; iter2 != parents.cend(); ++iter2) {
-          _graph_.addEdge(*iter1, *iter2);
+    // 3/ if we wish to exploit d-separation, remove all the nodes that are
+    // d-separated from our targets. Of course, if all the nodes are targets,
+    // no need to perform a d-separation analysis
+    if (this->nbrTargets() != bn.dag().size()) {
+      NodeSet requisite_nodes;
+      bool    dsep_analysis = false;
+      switch (_find_relevant_potential_type_) {
+        case RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS:
+        case RelevantPotentialsFinderType::DSEP_BAYESBALL_NODES: {
+          BayesBall::requisiteNodes(bn.dag(),
+                                    target_nodes,
+                                    this->hardEvidenceNodes(),
+                                    this->softEvidenceNodes(),
+                                    requisite_nodes);
+          dsep_analysis = true;
+        } break;
+
+        case RelevantPotentialsFinderType::DSEP_KOLLER_FRIEDMAN_2009: {
+          dSeparation dsep;
+          dsep.requisiteNodes(bn.dag(),
+                              target_nodes,
+                              this->hardEvidenceNodes(),
+                              this->softEvidenceNodes(),
+                              requisite_nodes);
+          dsep_analysis = true;
+        } break;
+
+        case RelevantPotentialsFinderType::FIND_ALL:
+          break;
+
+        default:
+          GUM_ERROR(FatalError, "not implemented yet")
+      }
+
+      // remove all the nodes that are not requisite
+      if (dsep_analysis) {
+        for (auto iter = _graph_.beginSafe(); iter != _graph_.endSafe(); ++iter) {
+          if (!requisite_nodes.contains(*iter) && !this->hardEvidenceNodes().contains(*iter)) {
+            _graph_.eraseNode(*iter);
+          }
         }
       }
     }
 
-    // 4/ if there exist some joint targets, we shall add new edges
+    // 4/ add edges so that each node and its parents in the BN form a clique
+    for (const auto node: _graph_) {
+      const NodeSet& parents = bn.parents(node);
+      for (auto iter1 = parents.cbegin(); iter1 != parents.cend(); ++iter1) {
+        // before adding an edge between node and its parent, check that the
+        // parent belongs to the graph. Actually, when d-separated nodes are
+        // removed, it may be the case that the parents of hard evidence nodes
+        // are removed. But the latter still exist in the graph.
+        if (_graph_.existsNode(*iter1)) {
+          _graph_.addEdge(*iter1, node);
+
+          auto iter2 = iter1;
+          for (++iter2; iter2 != parents.cend(); ++iter2) {
+            // before adding an edge, check that both extremities belong to
+            // the graph. Actually, when d-separated nodes are removed, it may
+            // be the case that the parents of hard evidence nodes are removed.
+            // But the latter still exist in the graph.
+            if (_graph_.existsNode(*iter2)) _graph_.addEdge(*iter1, *iter2);
+          }
+        }
+      }
+    }
+
+    // 5/ if there exist some joint targets, we shall add new edges
     // into the moral graph in order to ensure that there exists a clique
     // containing each joint
     for (const auto& nodeset: this->jointTargets()) {
@@ -515,7 +572,7 @@ namespace gum {
       }
     }
 
-    // 5/ remove all the nodes that received hard evidence
+    // 6/ remove all the nodes that received hard evidence
     _hard_ev_nodes_ = this->hardEvidenceNodes();
     for (const auto node: _hard_ev_nodes_) {
       _graph_.eraseNode(node);
@@ -575,11 +632,12 @@ namespace gum {
       NodeId first_eliminated_node = std::numeric_limits< NodeId >::max();
       int    elim_number           = std::numeric_limits< int >::max();
 
-      for (const auto parent: dag.parents(node))
+      for (const auto parent: dag.parents(node)) {
         if (_graph_.exists(parent) && (elim_order[parent] < elim_number)) {
           elim_number           = elim_order[parent];
           first_eliminated_node = parent;
         }
+      }
 
       // first_eliminated_node contains the first var (node or one of its
       // parents) eliminated => the clique created during its elimination
@@ -734,10 +792,14 @@ namespace gum {
 
         // get the list of nodes with hard evidence in cpt
         NodeSet     hard_nodes;
-        const auto& variables = cpt.variablesSequence();
+        const auto& variables            = cpt.variablesSequence();
+        bool        graph_contains_nodes = false;
         for (const auto var: variables) {
           NodeId xnode = bn.nodeId(*var);
-          if (_hard_ev_nodes_.contains(xnode)) hard_nodes.insert(xnode);
+          if (_hard_ev_nodes_.contains(xnode))
+            hard_nodes.insert(xnode);
+          else if (_graph_.exists(xnode))
+            graph_contains_nodes = true;
         }
 
         // if hard_nodes contains hard evidence nodes, perform a projection
@@ -758,10 +820,14 @@ namespace gum {
             }
             _constants_.insert(node, cpt.get(inst));
           } else {
-            // perform the projection with a combine and project instance
-            Set< const DiscreteVariable* > hard_variables;
+            // here, we have a CPT defined over some nodes that received hard
+            // evidence and other nodes that did not receive it. If none of the
+            // latter belong to the graph, then the CPT is useless for inference
+            if (!graph_contains_nodes) continue;
 
-            _PotentialSet_ marg_cpt_set(1 + hard_nodes.size());
+            // prepare the projection with a combine and project instance
+            Set< const DiscreteVariable* > hard_variables;
+            _PotentialSet_                 marg_cpt_set(1 + hard_nodes.size());
             marg_cpt_set.insert(&cpt);
             for (const auto xnode: hard_nodes) {
               marg_cpt_set.insert(evidence[xnode]);
@@ -846,10 +912,14 @@ namespace gum {
 
         // get the list of nodes with hard evidence in cpt
         NodeSet     hard_nodes;
-        const auto& variables = cpt.variablesSequence();
+        const auto& variables            = cpt.variablesSequence();
+        bool        graph_contains_nodes = false;
         for (const auto var: variables) {
           NodeId xnode = bn.nodeId(*var);
-          if (_hard_ev_nodes_.contains(xnode)) hard_nodes.insert(xnode);
+          if (_hard_ev_nodes_.contains(xnode))
+            hard_nodes.insert(xnode);
+          else if (_graph_.exists(xnode))
+            graph_contains_nodes = true;
         }
 
         // if hard_nodes contains hard evidence nodes, perform a projection
@@ -870,9 +940,14 @@ namespace gum {
             }
             _constants_.insert(node, cpt.get(inst));
           } else {
-            // perform the projection with a combine and project instance
+            // here, we have a CPT defined over some nodes that received hard
+            // evidence and other nodes that did not receive it. If none of the
+            // latter belong to the graph, then the CPT is useless for inference
+            if (!graph_contains_nodes) continue;
+
+            // prepare the projection with a combine and project instance
             Set< const DiscreteVariable* > hard_variables;
-            _ScheduleMultiDimSet_          marg_cpt_set;
+            _ScheduleMultiDimSet_          marg_cpt_set(1 + hard_nodes.size());
             const IScheduleMultiDim*       sched_cpt
                = schedule.insertTable< Potential< GUM_SCALAR > >(cpt, false);
             marg_cpt_set.insert(sched_cpt);
@@ -1471,7 +1546,7 @@ namespace gum {
   }
 
 
-  // remove barren variables
+  // remove barren variables using schedules
   template < typename GUM_SCALAR >
   Set< const IScheduleMultiDim* > ShaferShenoyInference< GUM_SCALAR >::_removeBarrenVariables_(
      Schedule&                       schedule,
