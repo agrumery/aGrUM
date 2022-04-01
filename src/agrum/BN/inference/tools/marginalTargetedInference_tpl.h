@@ -292,8 +292,9 @@ namespace gum {
         this->chgEvidence(n, inst.val(this->BN().variable(n)));
       this->makeInference();
       // populate res
+      const auto& pot = this->posterior(target);
       for (inst.setFirstVar(vtarget); !inst.end(); inst.incVar(vtarget)) {
-        res.set(inst, this->posterior(target)[inst]);
+        res.set(inst, pot[inst]);
       }
       inst.setFirstVar(vtarget);   // remove inst.end() flag
     }
