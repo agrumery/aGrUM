@@ -31,12 +31,16 @@
 
 #include <utility>
 
+#include <agrum/agrum.h>
 #include <agrum/tools/core/math/math_utils.h>
 #include <agrum/BN/algorithms/barrenNodesFinder.h>
 #include <agrum/BN/inference/tools/jointTargetedInference.h>
 #include <agrum/BN/inference/tools/relevantPotentialsFinderType.h>
-#include <agrum/agrum.h>
 #include <agrum/tools/graphs/algorithms/triangulations/defaultTriangulation.h>
+
+#include <agrum/tools/graphicalModels/inference/scheduler/schedule.h>
+#include <agrum/tools/graphicalModels/inference/scheduler/scheduledInference.h>
+
 
 namespace gum {
 
@@ -59,13 +63,15 @@ namespace gum {
 
   /**
    * @class VariableElimination VariableElimination.h
-   * <agrum/BN/inference/variableElimination.h>
+   * @headerfile variableElimination.h <agrum/BN/inference/variableElimination.h>
    * @brief Implementation of a Shafer-Shenoy's-like version of lazy
    * propagation for inference in Bayesian networks
    * @ingroup bn_inference
    */
   template < typename GUM_SCALAR >
-  class VariableElimination: public JointTargetedInference< GUM_SCALAR > {
+  class VariableElimination:
+      public JointTargetedInference< GUM_SCALAR >,
+      public ScheduledInference {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -74,7 +80,7 @@ namespace gum {
 
     /// default constructor
     explicit VariableElimination(const IBayesNet< GUM_SCALAR >* BN,
-                                 RelevantPotentialsFinderType   relevant_type
+                                 RelevantPotentialsFinderType
                                  = RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS,
                                  FindBarrenNodesType = FindBarrenNodesType::FIND_BARREN_NODES);
 
@@ -99,8 +105,8 @@ namespace gum {
     void setTriangulation(const Triangulation& new_triangulation);
 
     /// sets how we determine the relevant potentials to combine
-    /** When a clique sends a message to a separator, it first constitute the
-     * set of the potentials it contains and of the potentials contained in the
+    /** When a clique sends a message to a separator, it first determines the
+     * set of the potentials it contains and the potentials contained in the
      * messages it received. If RelevantPotentialsFinderType = FIND_ALL,
      * all these potentials are combined and projected to produce the message
      * sent to the separator.
@@ -124,9 +130,6 @@ namespace gum {
 
 
     protected:
-    /// fired when the stage is changed
-    void onStateChanged_() final{};
-
     /// fired after a new evidence is inserted
     void onEvidenceAdded_(const NodeId id, bool isHardEvidence) final;
 
@@ -134,7 +137,7 @@ namespace gum {
     void onEvidenceErased_(const NodeId id, bool isHardEvidence) final;
 
     /// fired before all the evidence are erased
-    void onAllEvidenceErased_(bool contains_hard_evidence) final;
+    void onAllEvidenceErased_(bool has_hard_evidence) final;
 
     /** @brief fired after an evidence is changed, in particular when its status
      * (soft/hard) changes
@@ -153,7 +156,7 @@ namespace gum {
     /** @param id The target variable's id. */
     void onMarginalTargetErased_(const NodeId id) final;
 
-    /// fired after a new Bayes net has been assigned to the engine
+    /// fired after a new Bayes net has been assigned to the inference engine
     virtual void onModelChanged_(const GraphicalModel* bn) final;
 
     /// fired after a new joint target is inserted
@@ -167,14 +170,17 @@ namespace gum {
     /// fired after all the nodes of the BN are added as single targets
     void onAllMarginalTargetsAdded_() final;
 
-    /// fired before a all the single targets are removed
+    /// fired before all the single targets are removed
     void onAllMarginalTargetsErased_() final;
 
-    /// fired before a all the joint targets are removed
+    /// fired before all the joint targets are removed
     void onAllJointTargetsErased_() final;
 
-    /// fired before a all single and joint_targets are removed
+    /// fired before all single and joint targets are removed
     void onAllTargetsErased_() final;
+
+    /// fired when the state of the inference engine is changed
+    void onStateChanged_() final{};
 
     /// prepares inference when the latter is in OutdatedStructure state
     /** Note that the values of evidence are not necessarily
@@ -220,21 +226,22 @@ namespace gum {
 
 
     private:
-    typedef Set< const Potential< GUM_SCALAR >* >             _PotentialSet_;
-    typedef SetIteratorSafe< const Potential< GUM_SCALAR >* > _PotentialSetIterator_;
+    using _PotentialSet_        = Set< const Potential< GUM_SCALAR >* >;
+    using _ScheduleMultiDimSet_ = Set< const IScheduleMultiDim* >;
 
 
     /// the type of relevant potential finding algorithm to be used
-    RelevantPotentialsFinderType _find_relevant_potential_type_;
+    RelevantPotentialsFinderType _find_relevant_potential_type_{
+       RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS};
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined to produce a message on a separator */
     void (VariableElimination< GUM_SCALAR >::*_findRelevantPotentials_)(
-       Set< const Potential< GUM_SCALAR >* >& pot_list,
-       Set< const DiscreteVariable* >&        kept_vars);
+       Set< const IScheduleMultiDim* >& pot_list,
+       Set< const DiscreteVariable* >&  kept_vars);
 
     /// the type of barren nodes computation we wish
-    FindBarrenNodesType _barren_nodes_type_;
+    FindBarrenNodesType _barren_nodes_type_{FindBarrenNodesType::FIND_BARREN_NODES};
 
     /// the operator for performing the projections
     Potential< GUM_SCALAR > (*_projection_op_)(const Potential< GUM_SCALAR >&,
@@ -252,7 +259,7 @@ namespace gum {
     /// the undigraph extracted from the BN and used to construct the join tree
     /** If all nodes are targets, this graph corresponds to the moral graph
      * of the BN. Otherwise, it may be a subgraph of this moral graph. For
-     * instance if the BN is A->B->C and only B is a target,  _graph_ will be
+     * instance if the BN is A->B->C and only B is a target, _graph_ will be
      * equal to A-B if we exploit barren nodes (C is a barren node and,
      * therefore, can be removed for inference). */
     UndiGraph _graph_;
@@ -260,11 +267,11 @@ namespace gum {
     /// the junction tree used to answer the last inference query
     JunctionTree* _JT_{nullptr};
 
-    /// for each node of  _graph_ (~ in the Bayes net), associate an ID in the JT
+    /// for each node of _graph_ (~ in the Bayes net), associate an ID in the JT
     HashTable< NodeId, NodeId > _node_to_clique_;
 
-    /// for each BN node, indicate in which clique its CPT will be stored
-    HashTable< NodeId, NodeSet > _clique_potentials_;
+    /// for each clique, indicate the set of nodes whose CPTs will be stored into it
+    HashTable< NodeId, NodeSet > _clique_to_nodes_;
 
     /// indicate a clique that contains all the nodes of the target
     NodeId _targets2clique_;
@@ -272,6 +279,9 @@ namespace gum {
     /// the posterior computed during the last inference
     /** the posterior is owned by VariableElimination. */
     Potential< GUM_SCALAR >* _target_posterior_{nullptr};
+
+    /// minimal number of operations to perform in the JT to use schedules
+    static constexpr double _schedule_threshold_{1000000.0};
 
     /// for comparisons with 1 - epsilon
     const GUM_SCALAR _one_minus_epsilon_{GUM_SCALAR(1.0 - 1e-6)};
@@ -289,56 +299,97 @@ namespace gum {
                                                                   const Potential< GUM_SCALAR >&));
 
     /** @brief update a set of potentials: the remaining are those to be
-     * combined
-     * to produce a message on a separator */
-    void _findRelevantPotentialsWithdSeparation_(_PotentialSet_&                 pot_list,
+     * combined to produce a message on a separator */
+    void _findRelevantPotentialsWithdSeparation_(_ScheduleMultiDimSet_&          pot_list,
                                                  Set< const DiscreteVariable* >& kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
-     * combined
-     * to produce a message on a separator */
-    void _findRelevantPotentialsWithdSeparation2_(_PotentialSet_&                 pot_list,
+     * combined to produce a message on a separator */
+    void _findRelevantPotentialsWithdSeparation2_(_ScheduleMultiDimSet_&          pot_list,
+                                                  Set< const DiscreteVariable* >& kept_vars);
+
+    /** @brief update a set of potentials: the remaining are those to be
+     * combined to produce a message on a separator */
+    void _findRelevantPotentialsWithdSeparation3_(_ScheduleMultiDimSet_&          pot_list,
                                                   Set< const DiscreteVariable* >& kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void _findRelevantPotentialsWithdSeparation3_(_PotentialSet_&                 pot_list,
-                                                  Set< const DiscreteVariable* >& kept_vars);
-
-    /** @brief update a set of potentials: the remaining are those to be
-     * combined
-     * to produce a message on a separator */
-    void _findRelevantPotentialsGetAll_(_PotentialSet_&                 pot_list,
+    void _findRelevantPotentialsGetAll_(_ScheduleMultiDimSet_&          pot_list,
                                         Set< const DiscreteVariable* >& kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
-     * combined
-     * to produce a message on a separator */
-    void _findRelevantPotentialsXX_(_PotentialSet_&                 pot_list,
+     * combined to produce a message on a separator */
+    void _findRelevantPotentialsXX_(_ScheduleMultiDimSet_&          pot_list,
                                     Set< const DiscreteVariable* >& kept_vars);
 
-    // remove barren variables and return the newly created projected potentials
+    /// remove barren variables using schedules and return the newly created projected potentials
+    _ScheduleMultiDimSet_ _removeBarrenVariables_(Schedule&                       schedule,
+                                                  _ScheduleMultiDimSet_&          pot_list,
+                                                  Set< const DiscreteVariable* >& del_vars);
+
+    /// remove barren variables without schedules and return the newly created projected potentials
     _PotentialSet_ _removeBarrenVariables_(_PotentialSet_&                 pot_list,
                                            Set< const DiscreteVariable* >& del_vars);
 
-    /// actually perform the collect phase
+    /// perform the collect phase using schedules
+    _ScheduleMultiDimSet_ _collectMessage_(Schedule& schedule, NodeId id, NodeId from);
+
+    /// perform the collect phase directly without schedules
     std::pair< _PotentialSet_, _PotentialSet_ > _collectMessage_(NodeId id, NodeId from);
 
     /// returns the CPT + evidence of a node projected w.r.t. hard evidence
     std::pair< _PotentialSet_, _PotentialSet_ > _NodePotentials_(NodeId node);
 
-    /// creates the message sent by clique from_id to clique to_id
+    /// returns the CPT + evidence of a node projected w.r.t. hard evidence
+    _ScheduleMultiDimSet_ _NodePotentials_(Schedule& schedule, NodeId node);
+
+    /// creates the message sent by clique from_id to clique to_id without using schedules
     std::pair< _PotentialSet_, _PotentialSet_ >
        _produceMessage_(NodeId                                        from_id,
                         NodeId                                        to_id,
                         std::pair< _PotentialSet_, _PotentialSet_ >&& incoming_messages);
 
+    /// creates the message sent by clique from_id to clique to_id using schedules
+    _ScheduleMultiDimSet_ _produceMessage_(Schedule&               schedule,
+                                           NodeId                  from_id,
+                                           NodeId                  to_id,
+                                           _ScheduleMultiDimSet_&& incoming_messages);
+
     /** @brief removes variables del_vars from a list of potentials and
-     * returns the resulting list */
+     * returns the resulting list directly without schedules */
     _PotentialSet_ _marginalizeOut_(_PotentialSet_                  pot_list,
                                     Set< const DiscreteVariable* >& del_vars,
                                     Set< const DiscreteVariable* >& kept_vars);
+
+    /** @brief removes variables del_vars from a list of potentials and
+     * returns the resulting list using schedules */
+    _ScheduleMultiDimSet_ _marginalizeOut_(Schedule&                       schedule,
+                                           _ScheduleMultiDimSet_           pot_list,
+                                           Set< const DiscreteVariable* >& del_vars,
+                                           Set< const DiscreteVariable* >& kept_vars);
+
+    /// returns a fresh potential equal to P(1st arg,evidence) without using schedules
+    /** This function is used by unnormalizedJointPosterior_ */
+    Potential< GUM_SCALAR >* _unnormalizedJointPosterior_(NodeId id);
+
+    /// returns a fresh potential equal to P(1st arg,evidence) without using schedules
+    /** This function is used by unnormalizedJointPosterior_ */
+    Potential< GUM_SCALAR >* _unnormalizedJointPosterior_(Schedule& schedule, NodeId id);
+
+    /// returns a fresh potential equal to P(1st arg,evidence) without using schedules
+    /** This function is used by unnormalizedJointPosterior_ */
+    Potential< GUM_SCALAR >* _unnormalizedJointPosterior_(const NodeSet& set,
+                                                          const NodeSet& targets,
+                                                          const NodeSet& hard_evidence_nodes);
+
+    /// returns a fresh potential equal to P(1st arg,evidence) without using schedules
+    /** This function is used by unnormalizedJointPosterior_ */
+    Potential< GUM_SCALAR >* _unnormalizedJointPosterior_(Schedule&      schedule,
+                                                          const NodeSet& set,
+                                                          const NodeSet& targets,
+                                                          const NodeSet& hard_evidence_nodes);
   };
 
 
@@ -348,7 +399,6 @@ namespace gum {
 
 
 } /* namespace gum */
-
 
 #include <agrum/BN/inference/variableElimination_tpl.h>
 
