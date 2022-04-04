@@ -1,4 +1,4 @@
-# Configuration for mybinder.org
+# Configuration for mybinder.org (or ovh.mybinder.org)
 - URL : **https://gitlab.com/agrumery/aGrUM**
 - GitLab.com repository (!)
 - git branch, tag: **[last one]**
