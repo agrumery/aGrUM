@@ -50,80 +50,32 @@ namespace gum {
 
 
     static std::mutex& _debug_mutex_() {
-      static std::mutex*         debug_mutex       = nullptr;
-      static std::atomic_flag    first             = ATOMIC_FLAG_INIT;
-      static std::atomic< bool > mutex_initialized = false;
-      if (!first.test_and_set()) {
-        debug_mutex       = new std::mutex;
-        mutex_initialized = true;
-      }
-
-      while (!mutex_initialized) {}
-
-      return *debug_mutex;
+      // Here, this initialization is thread-safe due to Meyer’s Singleton property
+      static std::mutex debug_mutex;
+      return debug_mutex;
     }
 
 
     // this static hashtable only on debug mode.
     static DEBUG_MAP& _sizeof_() {
-      static DEBUG_MAP*          sizeOf          = nullptr;
-      static std::atomic< bool > first           = true;
-      static bool                map_initialized = false;
-      static std::mutex&         debug_mutex     = _debug_mutex_();
-
-      if (first) {
-        // lock so that only one thread will create the debug map
-        debug_mutex.lock();
-        if (!map_initialized) {
-          sizeOf          = new DEBUG_MAP();
-          first           = false;
-          map_initialized = true;
-        }
-        debug_mutex.unlock();
-      }
-      return *sizeOf;
+      // Here, this initialization is thread-safe due to Meyer’s Singleton property
+      static DEBUG_MAP sizeOf;
+      return sizeOf;
     }
 
 
     // this static hashtable only on debug mode.
     static DEBUG_MAP& _creation_() {
-      static DEBUG_MAP*          creation        = nullptr;
-      static std::atomic< bool > first           = true;
-      static bool                map_initialized = false;
-      static std::mutex&         debug_mutex     = _debug_mutex_();
-
-      if (first) {
-        // lock so that only one thread will create the debug map
-        debug_mutex.lock();
-        if (!map_initialized) {
-          creation        = new DEBUG_MAP();
-          first           = false;
-          map_initialized = true;
-        }
-        debug_mutex.unlock();
-      }
-
-      return *creation;
+      // Here, this initialization is thread-safe due to Meyer’s Singleton property
+      static DEBUG_MAP creation;
+      return creation;
     }
 
 
     static DEBUG_MAP& _deletion_() {
-      static DEBUG_MAP*          deletion        = nullptr;
-      static std::atomic< bool > first           = true;
-      static bool                map_initialized = false;
-      static std::mutex&         debug_mutex     = _debug_mutex_();
-
-      if (first) {
-        // lock so that only one thread will create the debug map
-        debug_mutex.lock();
-        if (!map_initialized) {
-          deletion        = new DEBUG_MAP();
-          first           = false;
-          map_initialized = true;
-        }
-        debug_mutex.unlock();
-      }
-      return *deletion;
+      // Here, this initialization is thread-safe due to Meyer’s Singleton property
+      static DEBUG_MAP deletion;
+      return deletion;
     }
 
 

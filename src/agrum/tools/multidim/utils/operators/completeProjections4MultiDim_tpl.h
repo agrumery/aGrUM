@@ -255,11 +255,9 @@ namespace gum {
   // the function used to register all the above functions
   template < typename GUM_SCALAR >
   void completeProjections4MultiDimInit() {
-    static bool first_init = true;
-
-    if (first_init) {
-      first_init = false;
-
+    // ensure that only one thread will register the projections
+    static std::once_flag first;
+    std::call_once(first, []() {
       std::string MultiDimArrayString("MultiDimArray");
       std::string BaseNameString("MultiDimImplementation");
 
@@ -290,17 +288,15 @@ namespace gum {
       registerCompleteProjection< GUM_SCALAR >("product",
                                                BaseNameString,
                                                &projectProductMultiDimImplementation);
-    }
+    });
   }
 
   // the function used to register all the above functions
   template < typename GUM_SCALAR >
   void pointerCompleteProjections4MultiDimInit() {
-    static bool first_init = true;
-
-    if (first_init) {
-      first_init = false;
-
+    // ensure that only one thread will register the projections
+    static std::once_flag first;
+    std::call_once(first, []() {
       std::string MultiDimArrayString("MultiDimArray");
       std::string BaseNameString("MultiDimImplementation");
 
@@ -317,7 +313,7 @@ namespace gum {
       registerCompleteProjection< GUM_SCALAR* >("product",
                                                 MultiDimArrayString,
                                                 &projectProductMultiDimArray4Pointers);
-    }
+    });
   }
 
 } /* namespace gum */

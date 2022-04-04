@@ -198,8 +198,9 @@ namespace gum {
 
   // returns the name of the implementation
   template < typename GUM_SCALAR >
-  INLINE const std::string& MultiDimArray< GUM_SCALAR >::name() const {
-    static const std::string str = "MultiDimArray";
+  const std::string& MultiDimArray< GUM_SCALAR >::name() const {
+    // Here, this initialization is thread-safe due to Meyer’s Singleton property
+    static const std::string str("MultiDimArray");
     return str;
   }
 

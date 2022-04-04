@@ -26,6 +26,8 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 
+#include <mutex>
+
 // include the operators that will be used by the decorators
 #include <agrum/tools/multidim/utils/operators/completeProjections4MultiDim.h>
 #include <agrum/tools/multidim/utils/operators/operators4MultiDim.h>
@@ -38,11 +40,9 @@ namespace gum {
   // instrumental and non-API function
   template < typename GUM_SCALAR >
   void _initPotentialOperators__() {
-    static bool first = true;
-
-    if (first) {
-      first = false;
-
+    // ensure that only one thread will register the projections
+    static std::once_flag first;
+    std::call_once(first, []() {
       // register the operators that will be used by the decorator
       Operators4MultiDimInitialize< GUM_SCALAR > op;
       op.init();
@@ -58,7 +58,7 @@ namespace gum {
       // register the partial instantiators that will be used by the decorator
       PartialInstantiation4MultiDimInitialize< GUM_SCALAR > inst;
       inst.init();
-    }
+    });
   }
 
   // constructors

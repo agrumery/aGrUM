@@ -36,7 +36,6 @@
 #include <string>
 #include <utility>
 #include <atomic>
-#include <mutex>
 
 namespace gum {
 

@@ -29,11 +29,11 @@
 #ifndef GUM_PARTIAL_INSTANTIATION_4_MULTI_DIM_H
 #define GUM_PARTIAL_INSTANTIATION_4_MULTI_DIM_H
 
-#include <atomic>
-#include <mutex>
 #include <agrum/tools/core/hashTable.h>
 #include <agrum/tools/core/set.h>
 #include <agrum/tools/variables/discreteVariable.h>
+#include <atomic>
+#include <mutex>
 //#include <agrum/tools/multidim/implementations/multiDimImplementation.h>
 //#include <agrum/tools/multidim/implementations/multiDimArray.h>
 //#include <agrum/tools/multidim/implementations/multiDimDecorator.h>

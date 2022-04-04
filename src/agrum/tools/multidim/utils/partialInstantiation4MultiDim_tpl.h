@@ -92,65 +92,45 @@ namespace gum {
   // the function used to register all the above functions
   template < typename GUM_SCALAR >
   void partialInstantiation4MultiDimInit() {
-    static std::atomic< bool > first             = true;
-    static bool                registration_done = false;
-    static std::mutex          mutex;
+    // ensure that only one thread will register the projections
+    static std::once_flag first;
+    std::call_once(first, []() {
+      std::string MultiDimArrayString("MultiDimArray");
+      std::string MultiDimDecisionDiagramString("MultiDimDecisionDiagram");
+      std::string BaseNameString("MultiDimImplementation");
 
-    if (first) {
-      // lock so that only one thread will register the operations
-      mutex.lock();
-      if (!registration_done) {
-        std::string MultiDimArrayString("MultiDimArray");
-        std::string MultiDimDecisionDiagramString("MultiDimDecisionDiagram");
-        std::string BaseNameString("MultiDimImplementation");
+      // register base functions for multiDimArrays
+      registerPartialInstantiation< GUM_SCALAR >("i",
+                                                 MultiDimArrayString,
+                                                 &partialInstantiationMultiDimArray);
 
-        // register base functions for multiDimArrays
-        registerPartialInstantiation< GUM_SCALAR >("i",
-                                                   MultiDimArrayString,
-                                                   &partialInstantiationMultiDimArray);
-
-        // register default basename functions
-        registerPartialInstantiation< GUM_SCALAR >("i",
-                                                   BaseNameString,
-                                                   &partialInstantiationMultiDimImplementation);
-
-        first             = false;
-        registration_done = true;
-      }
-      mutex.unlock();
-    }
+      // register default basename functions
+      registerPartialInstantiation< GUM_SCALAR >("i",
+                                                 BaseNameString,
+                                                 &partialInstantiationMultiDimImplementation);
+    });
   }
 
   // the function used to register all the above functions
   template < typename GUM_SCALAR >
   void pointerPartialInstantiation4MultiDimInit() {
-    static std::atomic< bool > first             = true;
-    static bool                registration_done = false;
-    static std::mutex          mutex;
+    // ensure that only one thread will register the projections
+    static std::once_flag first;
+    std::call_once(first, []() {
+      std::string MultiDimArrayString("MultiDimArray");
+      std::string BaseNameString("MultiDimImplementation");
 
-    if (first) {
-      // lock so that only one thread will register the operations
-      mutex.lock();
-      if (!registration_done) {
-        std::string MultiDimArrayString("MultiDimArray");
-        std::string BaseNameString("MultiDimImplementation");
+      // register base functions for multiDimArrays
+      registerPartialInstantiation< GUM_SCALAR* >("i",
+                                                  MultiDimArrayString,
+                                                  &partialInstantiationMultiDimArray4Pointers);
 
-        // register base functions for multiDimArrays
-        registerPartialInstantiation< GUM_SCALAR* >("i",
-                                                    MultiDimArrayString,
-                                                    &partialInstantiationMultiDimArray4Pointers);
-
-        // register default basename functions
-        registerPartialInstantiation< GUM_SCALAR* >(
-           "i",
-           BaseNameString,
-           &partialInstantiationMultiDimImplementation4Pointers);
-
-        first             = false;
-        registration_done = true;
-      }
-      mutex.unlock();
-    }
+      // register default basename functions
+      registerPartialInstantiation< GUM_SCALAR* >(
+         "i",
+         BaseNameString,
+         &partialInstantiationMultiDimImplementation4Pointers);
+    });
   }
 
 } /* namespace gum */

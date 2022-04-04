@@ -320,116 +320,96 @@ namespace gum {
   // the function used to register all the above functions
   template < typename GUM_SCALAR >
   void operators4MultiDimInit() {
-    static std::atomic< bool > first             = true;
-    static bool                registration_done = false;
-    static std::mutex          mutex;
+    // ensure that only one thread will register the projections
+    static std::once_flag first;
+    std::call_once(first, []() {
+      std::string MultiDimArrayString("MultiDimArray");
+      std::string MultiDimFunctionGraphString("MultiDimFunctionGraph");
+      std::string BaseNameString("MultiDimImplementation");
 
-    if (first) {
-      // lock so that only one thread will register the operations
-      mutex.lock();
-      if (!registration_done) {
-        std::string MultiDimArrayString("MultiDimArray");
-        std::string MultiDimFunctionGraphString("MultiDimFunctionGraph");
-        std::string BaseNameString("MultiDimImplementation");
+      // register base functions for multiDimArrays
+      registerOperator< GUM_SCALAR >("+",
+                                     MultiDimArrayString,
+                                     MultiDimArrayString,
+                                     &add2MultiDimArrays);
+      registerOperator< GUM_SCALAR >("-",
+                                     MultiDimArrayString,
+                                     MultiDimArrayString,
+                                     &subtract2MultiDimArrays);
+      registerOperator< GUM_SCALAR >("*",
+                                     MultiDimArrayString,
+                                     MultiDimArrayString,
+                                     &multiply2MultiDimArrays);
+      registerOperator< GUM_SCALAR >("/",
+                                     MultiDimArrayString,
+                                     MultiDimArrayString,
+                                     &divide2MultiDimArrays);
 
-        // register base functions for multiDimArrays
-        registerOperator< GUM_SCALAR >("+",
-                                       MultiDimArrayString,
-                                       MultiDimArrayString,
-                                       &add2MultiDimArrays);
-        registerOperator< GUM_SCALAR >("-",
-                                       MultiDimArrayString,
-                                       MultiDimArrayString,
-                                       &subtract2MultiDimArrays);
-        registerOperator< GUM_SCALAR >("*",
-                                       MultiDimArrayString,
-                                       MultiDimArrayString,
-                                       &multiply2MultiDimArrays);
-        registerOperator< GUM_SCALAR >("/",
-                                       MultiDimArrayString,
-                                       MultiDimArrayString,
-                                       &divide2MultiDimArrays);
+      // register base functions for multiDimFunctionGraphs
+      registerOperator< GUM_SCALAR >("+",
+                                     MultiDimFunctionGraphString,
+                                     MultiDimFunctionGraphString,
+                                     &add2MultiDimFunctionGraphs);
+      registerOperator< GUM_SCALAR >("-",
+                                     MultiDimFunctionGraphString,
+                                     MultiDimFunctionGraphString,
+                                     &subtract2MultiDimFunctionGraphs);
+      registerOperator< GUM_SCALAR >("*",
+                                     MultiDimFunctionGraphString,
+                                     MultiDimFunctionGraphString,
+                                     &multiply2MultiDimFunctionGraphs);
+      registerOperator< GUM_SCALAR >("/",
+                                     MultiDimFunctionGraphString,
+                                     MultiDimFunctionGraphString,
+                                     &divide2MultiDimFunctionGraphs);
 
-        // register base functions for multiDimFunctionGraphs
-        registerOperator< GUM_SCALAR >("+",
-                                       MultiDimFunctionGraphString,
-                                       MultiDimFunctionGraphString,
-                                       &add2MultiDimFunctionGraphs);
-        registerOperator< GUM_SCALAR >("-",
-                                       MultiDimFunctionGraphString,
-                                       MultiDimFunctionGraphString,
-                                       &subtract2MultiDimFunctionGraphs);
-        registerOperator< GUM_SCALAR >("*",
-                                       MultiDimFunctionGraphString,
-                                       MultiDimFunctionGraphString,
-                                       &multiply2MultiDimFunctionGraphs);
-        registerOperator< GUM_SCALAR >("/",
-                                       MultiDimFunctionGraphString,
-                                       MultiDimFunctionGraphString,
-                                       &divide2MultiDimFunctionGraphs);
-
-        // register default basename functions
-        registerOperator< GUM_SCALAR >("+",
-                                       BaseNameString,
-                                       BaseNameString,
-                                       &add2MultiDimImplementations);
-        registerOperator< GUM_SCALAR >("-",
-                                       BaseNameString,
-                                       BaseNameString,
-                                       &subtract2MultiDimImplementations);
-        registerOperator< GUM_SCALAR >("*",
-                                       BaseNameString,
-                                       BaseNameString,
-                                       &multiply2MultiDimImplementations);
-        registerOperator< GUM_SCALAR >("/",
-                                       BaseNameString,
-                                       BaseNameString,
-                                       &divide2MultiDimImplementations);
-
-        first             = false;
-        registration_done = true;
-      }
-      mutex.unlock();
-    }
+      // register default basename functions
+      registerOperator< GUM_SCALAR >("+",
+                                     BaseNameString,
+                                     BaseNameString,
+                                     &add2MultiDimImplementations);
+      registerOperator< GUM_SCALAR >("-",
+                                     BaseNameString,
+                                     BaseNameString,
+                                     &subtract2MultiDimImplementations);
+      registerOperator< GUM_SCALAR >("*",
+                                     BaseNameString,
+                                     BaseNameString,
+                                     &multiply2MultiDimImplementations);
+      registerOperator< GUM_SCALAR >("/",
+                                     BaseNameString,
+                                     BaseNameString,
+                                     &divide2MultiDimImplementations);
+    });
   }
 
   // the function used to register all the above functions
   template < typename GUM_SCALAR >
   void pointerOperators4MultiDimInit() {
-    static std::atomic< bool > first             = true;
-    static bool                registration_done = false;
-    static std::mutex          mutex;
+    // ensure that only one thread will register the projections
+    static std::once_flag first;
+    std::call_once(first, []() {
+      std::string MultiDimArrayString("MultiDimArray");
+      std::string BaseNameString("MultiDimImplementation");
 
-    if (first) {
-      // lock so that only one thread will register the operations
-      mutex.lock();
-      if (!registration_done) {
-        std::string MultiDimArrayString("MultiDimArray");
-        std::string BaseNameString("MultiDimImplementation");
-
-        // register base functions for multiDimArrays
-        registerOperator< GUM_SCALAR* >("+",
-                                        MultiDimArrayString,
-                                        MultiDimArrayString,
-                                        &add2MultiDimArrays4Pointers);
-        registerOperator< GUM_SCALAR* >("-",
-                                        MultiDimArrayString,
-                                        MultiDimArrayString,
-                                        &subtract2MultiDimArrays4Pointers);
-        registerOperator< GUM_SCALAR* >("*",
-                                        MultiDimArrayString,
-                                        MultiDimArrayString,
-                                        &multiply2MultiDimArrays4Pointers);
-        registerOperator< GUM_SCALAR* >("/",
-                                        MultiDimArrayString,
-                                        MultiDimArrayString,
-                                        &divide2MultiDimArrays4Pointers);
-
-        first             = false;
-        registration_done = true;
-      }
-      mutex.unlock();
-    }
+      // register base functions for multiDimArrays
+      registerOperator< GUM_SCALAR* >("+",
+                                      MultiDimArrayString,
+                                      MultiDimArrayString,
+                                      &add2MultiDimArrays4Pointers);
+      registerOperator< GUM_SCALAR* >("-",
+                                      MultiDimArrayString,
+                                      MultiDimArrayString,
+                                      &subtract2MultiDimArrays4Pointers);
+      registerOperator< GUM_SCALAR* >("*",
+                                      MultiDimArrayString,
+                                      MultiDimArrayString,
+                                      &multiply2MultiDimArrays4Pointers);
+      registerOperator< GUM_SCALAR* >("/",
+                                      MultiDimArrayString,
+                                      MultiDimArrayString,
+                                      &divide2MultiDimArrays4Pointers);
+    });
   }
 
 } /* namespace gum */
