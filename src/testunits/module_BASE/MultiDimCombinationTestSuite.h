@@ -198,6 +198,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS((*t3)[inst3], 12.0)
       }
       delete t3;
+      t3 = nullptr;
 
 
       std::vector< gum::LabelizedVariable* > vars(2);
@@ -213,18 +214,77 @@ namespace gum_tests {
       t4 << *(vars[0]) << *(vars[1]);
       randomInitP(t4);
       t4.normalize();
+      for (gum::Instantiation inst4(t4); !inst4.end(); ++inst4)
+        t4.set(inst4, t4[inst4] * 2);
 
       set.clear();
       set << &t1 << &t4;
       t3 = xxx.execute(set);
       {
-        gum::Instantiation inst3(t3);
+        gum::Instantiation inst3(t3), inst4(t4);
         double             x = 0;
-        for (inst3.setFirst(); !inst3.end(); ++inst3)
+        for (inst3.setFirst(), inst4.setFirst(); !inst3.end(); ++inst3, ++inst4) {
           x += (*t3)[inst3];
-        TS_ASSERT_DELTA(x, 3.0, 0.001)
+          TS_ASSERT_DELTA((*t3)[inst3], t4[inst4] * 3.0, 0.001)
+        }
+        TS_ASSERT_DELTA(x, 6.0, 0.001)
       }
       delete t3;
+      t3 = nullptr;
+
+      set.clear();
+      set << &t4 << &t1;
+      t3 = xxx.execute(set);
+      {
+        gum::Instantiation inst3(t3), inst4(t4);
+        double             x = 0;
+        for (inst3.setFirst(), inst4.setFirst(); !inst3.end(); ++inst3, ++inst4) {
+          x += (*t3)[inst3];
+          TS_ASSERT_DELTA((*t3)[inst3], t4[inst4] * 3.0, 0.001)
+        }
+        TS_ASSERT_DELTA(x, 6.0, 0.001)
+      }
+      delete t3;
+      t3 = nullptr;
+
+
+      gum::Potential< double > t5;
+      t5 << *(vars[0]);
+      randomInitP(t5);
+      t5.normalize();
+      for (gum::Instantiation inst5(t5); !inst5.end(); ++inst5)
+        t5.set(inst5, t5[inst5] * 2);
+
+      set.clear();
+      set << &t1 << &t5;
+      t3 = xxx.execute(set);
+      {
+        gum::Instantiation inst3(t3), inst5(t5);
+        double             x = 0;
+        for (inst3.setFirst(), inst5.setFirst(); !inst3.end(); ++inst3, ++inst5) {
+          x += (*t3)[inst3];
+          TS_ASSERT_DELTA((*t3)[inst3], t5[inst5] * 3.0, 0.001)
+        }
+        TS_ASSERT_DELTA(x, 6.0, 0.001)
+      }
+      delete t3;
+      t3 = nullptr;
+
+      set.clear();
+      set << &t5 << &t1;
+      t3 = xxx.execute(set);
+      {
+        gum::Instantiation inst3(t3), inst5(t5);
+        double             x = 0;
+        for (inst3.setFirst(), inst5.setFirst(); !inst3.end(); ++inst3, ++inst5) {
+          x += (*t3)[inst3];
+          TS_ASSERT_DELTA((*t3)[inst3], t5[inst5] * 3.0, 0.001)
+        }
+        TS_ASSERT_DELTA(x, 6.0, 0.001)
+      }
+      delete t3;
+      t3 = nullptr;
+
 
       for (gum::Idx i = 0; i < vars.size(); ++i)
         delete vars[i];

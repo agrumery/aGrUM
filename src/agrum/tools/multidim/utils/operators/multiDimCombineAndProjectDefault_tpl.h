@@ -93,7 +93,7 @@ namespace gum {
     }
 
     // get the schedule multidims resulting from the computations and save them
-    Set< const TABLE* > result;
+    Set< const TABLE* > result(ops_plus_res.second.size());
     for (const auto pot: ops_plus_res.second) {
       auto& schedule_result = const_cast< ScheduleMultiDim< TABLE >& >(
          static_cast< const ScheduleMultiDim< TABLE >& >(*pot));

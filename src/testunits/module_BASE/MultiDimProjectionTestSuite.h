@@ -118,6 +118,20 @@ namespace gum_tests {
       delete t;
     }
 
+
+    static gum::Potential< double >
+       myMax(const gum::Potential< double >&                 table,
+             const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+      return table.margMaxOut(del_vars);
+    }
+
+
+    static gum::Potential< double >
+       mySum(const gum::Potential< double >&                 table,
+             const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+      return table.margSumOut(del_vars);
+    }
+
     // ==========================================================================
     // ==========================================================================
     template < typename T >
@@ -885,12 +899,6 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    static gum::Potential< double >
-       myMax(const gum::Potential< double >&                 table,
-             const gum::Set< const gum::DiscreteVariable* >& del_vars) {
-      return table.margMaxOut(del_vars);
-    }
-
     void test_MultiDimProjection() {
       std::vector< gum::LabelizedVariable* > vars(10);
 
@@ -1038,6 +1046,90 @@ namespace gum_tests {
         delete vars[i];
     }
 
+    void testConstants() {
+      gum::Potential< double > t1, t2;
+      gum::Instantiation       inst1(t1), inst2(t2);
+      t1.set(inst1, 3.0);
+      t2.set(inst2, 4.0);
+
+      gum::MultiDimProjection< gum::Potential< double > > proj(mySum);
+      gum::Set< const gum::DiscreteVariable* > del_vars;
+
+      {
+        gum::Potential< double >* t3 = proj.execute(t1, del_vars);
+        auto t2 = t1.margSumOut(del_vars);
+        TS_ASSERT_EQUALS(t2, *t3)
+        TS_ASSERT_EQUALS(t1, *t3)
+        gum::Instantiation inst(t3);
+        TS_ASSERT(t3->get(inst) == 3.0)
+      }
+
+
+      std::vector< gum::LabelizedVariable* > vars(5);
+
+      for (gum::Idx i = 0; i < 5; ++i) {
+        std::stringstream str;
+        str << "x" << i;
+        std::string s = str.str();
+        vars[i]       = new gum::LabelizedVariable(s, s, 3);
+      }
+
+      del_vars.insert(vars[0]);
+      {
+        gum::Potential< double >* t3 = proj.execute(t1, del_vars);
+        auto t2 = t1.margMaxOut(del_vars);
+        TS_ASSERT_EQUALS(t2, *t3)
+        TS_ASSERT_EQUALS(t1, *t3)
+        gum::Instantiation inst(t3);
+        TS_ASSERT(t3->get(inst) == 3.0)
+      }
+
+      del_vars.insert(vars[1]);
+      {
+        gum::Potential< double >* t3 = proj.execute(t1, del_vars);
+        auto t2 = t1.margMaxOut(del_vars);
+        TS_ASSERT_EQUALS(t2, *t3)
+        TS_ASSERT_EQUALS(t1, *t3)
+        gum::Instantiation inst(t3);
+        TS_ASSERT(t3->get(inst) == 3.0)
+      }
+
+
+      t1 << *(vars[0]);
+      randomInitP(t1);
+      t1.normalize();
+      for (gum::Instantiation inst1(t1); !inst1.end(); ++inst1)
+        t1.set(inst1, t1[inst1] * 2);
+      del_vars.clear();
+      del_vars.insert(vars[0]);
+      {
+        gum::Potential< double >* t3 = proj.execute(t1, del_vars);
+        auto t2 = t1.margSumOut(del_vars);
+        TS_ASSERT_EQUALS(t2, *t3)
+        TS_ASSERT_EQUALS(t3->variablesSequence().size(), gum::Size(0))
+        gum::Instantiation inst3(t3);
+        TS_ASSERT_DELTA((*t3)[inst3], 2.0, 0.001)
+      }
+
+      t1 << *(vars[1]);
+      TS_ASSERT(t1.variablesSequence().size() == 2)
+      randomInitP(t1);
+      t1.normalize();
+      for (gum::Instantiation inst1(t1); !inst1.end(); ++inst1)
+        t1.set(inst1, t1[inst1] * 5);
+      del_vars.insert(vars[1]);
+      {
+        gum::Potential< double >* t3 = proj.execute(t1, del_vars);
+        auto t2 = t1.margSumOut(del_vars);
+        TS_ASSERT_EQUALS(t2, *t3)
+        TS_ASSERT_EQUALS(t3->variablesSequence().size(), gum::Size(0))
+        gum::Instantiation inst3(t3);
+        TS_ASSERT_DELTA((*t3)[inst3], 5.0, 0.001)
+      }
+
+    }
+
+
     void test_persistence() {
       std::vector< gum::LabelizedVariable* > vars(10);
 
@@ -1175,12 +1267,6 @@ namespace gum_tests {
     }
 
 
-    static gum::Potential< double >
-       mySum(const gum::Potential< double >&                 table,
-             const gum::Set< const gum::DiscreteVariable* >& del_vars) {
-      return table.margSumOut(del_vars);
-    }
-
     void test_MultiDimSumProjection() {
       std::vector< gum::LabelizedVariable* > vars(10);
 
@@ -1196,6 +1282,7 @@ namespace gum_tests {
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
          << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInitP(t1);
+      t1.normalize();
       gum::Set< const gum::DiscreteVariable* > proj_set;
       proj_set.insert(vars[2]);
       proj_set.insert(vars[3]);
@@ -1231,7 +1318,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(t2, *t5)
 
         gum::Instantiation I5(*t5);
-        TS_ASSERT_EQUALS(1.0, (*t5)[I5])
+        TS_ASSERT_DELTA(1.0, (*t5)[I5], 0.0001)
       }
       delete t5;
 

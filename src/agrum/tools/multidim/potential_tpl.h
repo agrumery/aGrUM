@@ -406,6 +406,22 @@ namespace gum {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
     }
+
+    // if we remove all the variables, create an empty potential
+    // TODO: remove this test when operations will be able to handle empty potentials
+    if (this->variablesSequence().size() <= del_vars.size()) {
+      bool equal = true;
+      for (const auto var: this->variablesSequence()) {
+        if (! del_vars.exists(var)) {
+          equal = false;
+          break;
+        }
+      }
+      if (equal) {
+        return Potential< GUM_SCALAR >().fillWith(this->sum());
+      }
+    }
+
     return Potential< GUM_SCALAR >(gum::projectSum(*this->content(), del_vars));
   }
 
@@ -415,6 +431,22 @@ namespace gum {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
     }
+
+    // if we remove all the variables, create an empty potential
+    // TODO: remove this test when operations will be able to handle empty potentials
+    if (this->variablesSequence().size() <= del_vars.size()) {
+      bool equal = true;
+      for (const auto var: this->variablesSequence()) {
+        if (! del_vars.exists(var)) {
+          equal = false;
+          break;
+        }
+      }
+      if (equal) {
+        return Potential< GUM_SCALAR >().fillWith(this->product());
+      }
+    }
+
     return Potential< GUM_SCALAR >(gum::projectProduct(*this->content(), del_vars));
   }
 
@@ -424,6 +456,22 @@ namespace gum {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
     }
+
+    // if we remove all the variables, create an empty potential
+    // TODO: remove this test when operations will be able to handle empty potentials
+    if (this->variablesSequence().size() <= del_vars.size()) {
+      bool equal = true;
+      for (const auto var: this->variablesSequence()) {
+        if (! del_vars.exists(var)) {
+          equal = false;
+          break;
+        }
+      }
+      if (equal) {
+        return Potential< GUM_SCALAR >().fillWith(this->min());
+      }
+    }
+
     return Potential< GUM_SCALAR >(gum::projectMin(*this->content(), del_vars));
   }
 
@@ -433,14 +481,38 @@ namespace gum {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
     }
+
+    // if we remove all the variables, create an empty potential
+    // TODO: remove this test when operations will be able to handle empty potentials
+    if (this->variablesSequence().size() <= del_vars.size()) {
+      bool equal = true;
+      for (const auto var: this->variablesSequence()) {
+        if (! del_vars.exists(var)) {
+          equal = false;
+          break;
+        }
+      }
+      if (equal) {
+        return Potential< GUM_SCALAR >().fillWith(this->max());
+      }
+    }
+
     return Potential< GUM_SCALAR >(gum::projectMax(*this->content(), del_vars));
   }
+
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >
          Potential< GUM_SCALAR >::margSumIn(const Set< const DiscreteVariable* >& kept_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
     }
+
+    // if kept_var is empty, create an empty potential
+    // TODO: remove this test when operations will be able to handle empty potentials
+    if (kept_vars.empty()) {
+      return Potential< GUM_SCALAR >().fillWith(this->sum());
+    }
+
     return Potential< GUM_SCALAR >(gum::projectSum(*this->content(), complementVars_(kept_vars)));
   }
 
@@ -450,6 +522,13 @@ namespace gum {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
     }
+
+    // if kept_var is empty, create an empty potential
+    // TODO: remove this test when operations will be able to handle empty potentials
+    if (kept_vars.empty()) {
+      return Potential< GUM_SCALAR >().fillWith(this->product());
+    }
+
     return Potential< GUM_SCALAR >(
        gum::projectProduct(*this->content(), complementVars_(kept_vars)));
   }
@@ -460,6 +539,13 @@ namespace gum {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
     }
+
+    // if kept_var is empty, create an empty potential
+    // TODO: remove this test when operations will be able to handle empty potentials
+    if (kept_vars.empty()) {
+      return Potential< GUM_SCALAR >().fillWith(this->min());
+    }
+
     return Potential< GUM_SCALAR >(gum::projectMin(*this->content(), complementVars_(kept_vars)));
   }
 
@@ -469,6 +555,13 @@ namespace gum {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
     }
+
+    // if kept_var is empty, create an empty potential
+    // TODO: remove this test when operations will be able to handle empty potentials
+    if (kept_vars.empty()) {
+      return Potential< GUM_SCALAR >().fillWith(this->max());
+    }
+
     return Potential< GUM_SCALAR >(gum::projectMax(*this->content(), complementVars_(kept_vars)));
   }
 

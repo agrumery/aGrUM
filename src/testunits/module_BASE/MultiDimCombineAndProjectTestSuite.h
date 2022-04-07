@@ -599,6 +599,33 @@ namespace gum_tests {
 
 
     void testConstants() {
+      gum::MultiDimCombineAndProjectDefault< gum::Potential< float > > projcomb(multPot, mySum);
+
+      gum::Potential< float > t1, t2;
+      gum::Instantiation      inst1(t1), inst2(t2);
+      t1.set(inst1, 3.0);
+      t2.set(inst2, 4.0);
+
+      gum::Set< const gum::Potential< float >* > to_comb;
+      to_comb << &t1 << &t2;
+      gum::Set< const gum::DiscreteVariable* > del_vars;
+
+      {
+        gum::Set< const gum::Potential< float >* > res = projcomb.execute(to_comb, del_vars);
+        TS_ASSERT(res.size() == 2);
+        auto t3   = t1 * t2;
+        auto iter = res.begin();
+        auto t4   = *iter;
+        ++iter;
+        auto t5 = *iter;
+        TS_ASSERT_EQUALS(t3, *t4 * (*t5))
+        gum::Instantiation inst(t3);
+        TS_ASSERT(t3.get(inst) == 12.0)
+
+        for (const auto pot: res)
+          delete pot;
+      }
+
       std::vector< gum::LabelizedVariable* > vars(3);
 
       for (gum::Idx i = 0; i < 3; ++i) {
@@ -608,37 +635,65 @@ namespace gum_tests {
         vars[i]       = new gum::LabelizedVariable(s, s, 4);
       }
 
-      gum::Potential< float > t1, t2, t3;
-      t1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
+      t1 << *(vars[0]);
       randomInitP(t1);
+      t1.normalize();
+      for (gum::Instantiation xinst1(t1); !xinst1.end(); ++xinst1)
+        t1.set(xinst1, t1[xinst1] * 2);
 
-      gum::Instantiation I2(t2), I3(t3);
+      gum::Potential< float > t3;
+      gum::Instantiation      I2(t2), I3(t3);
       t2.set(I2, 3.0);
       t3.set(I3, 5.0);
 
-      gum::MultiDimCombineAndProjectDefault< gum::Potential< float > > projcomb(multPot, mySum);
+      to_comb << &t3;
+      del_vars << vars[0];
 
-      gum::Set< const gum::Potential< float >* > to_comb;
-      to_comb << &t1 << &t2 << &t3;
-      gum::Set< const gum::DiscreteVariable* > del_vars;
-      del_vars << vars[0] << vars[2];
+      {
+        gum::Set< const gum::Potential< float >* > res = projcomb.execute(to_comb, del_vars);
+        TS_ASSERT_EQUALS(res.size(), (gum::Size)3)
 
-      gum::Set< const gum::Potential< float >* > res = projcomb.execute(to_comb, del_vars);
-      TS_ASSERT_EQUALS(res.size(), (gum::Size)3)
-
-      int   nb_empty = 0;
-      float prod     = 1;
-      for (const auto ptrPot: res) {
-        if (ptrPot->nbrDim() == 0) {
-          gum::Instantiation I(*ptrPot);
-          prod *= (*ptrPot)[I];
-          nb_empty++;
+        int   nb_empty = 0;
+        float prod     = 1;
+        for (const auto ptrPot: res) {
+          if (ptrPot->nbrDim() == 0) {
+            gum::Instantiation I(*ptrPot);
+            prod *= (*ptrPot)[I];
+            nb_empty++;
+          }
+          delete ptrPot;
         }
-        delete ptrPot;
+
+        TS_ASSERT_EQUALS(nb_empty, 3)
+        TS_ASSERT(prod = 30.0)
       }
 
-      TS_ASSERT_EQUALS(nb_empty, 2)
-      TS_ASSERT(prod = 15.0)
+      del_vars << vars[2];
+      {
+        gum::Set< const gum::Potential< float >* > res = projcomb.execute(to_comb, del_vars);
+        TS_ASSERT_EQUALS(res.size(), (gum::Size)3)
+
+        int   nb_empty = 0;
+        float prod     = 1;
+        for (const auto ptrPot: res) {
+          if (ptrPot->nbrDim() == 0) {
+            gum::Instantiation I(*ptrPot);
+            prod *= (*ptrPot)[I];
+            nb_empty++;
+          }
+          delete ptrPot;
+        }
+
+        TS_ASSERT_EQUALS(nb_empty, 3)
+        TS_ASSERT(prod = 30.0)
+      }
+
+
+      t1 << *(vars[1]) << *(vars[2]);
+      randomInitP(t1);
+      t1.normalize();
+      for (gum::Instantiation xinst1(t1); !xinst1.end(); ++xinst1)
+        t1.set(xinst1, t1[xinst1] * 4);
 
       del_vars << vars[1];
       {
@@ -658,14 +713,21 @@ namespace gum_tests {
         }
 
         TS_ASSERT_EQUALS(nb_empty, 3)
-        TS_ASSERT_DELTA(prod, 15.0, 1e-6)
+        TS_ASSERT_DELTA(prod, 60.0, 1e-3)
       }
 
-      to_comb.clear();
-      to_comb << &t2 << &t3;
+      t2 << *(vars[1]) << *(vars[2]);
+      randomInitP(t2);
+      t2.normalize();
+      for (gum::Instantiation xinst2(t2); !xinst2.end(); ++xinst2)
+        t2.set(xinst2, t2[xinst2] * 6);
+
       {
         gum::Set< const gum::Potential< float >* > res = projcomb.execute(to_comb, del_vars);
+
         TS_ASSERT_EQUALS(res.size(), (gum::Size)2)
+
+        auto t4 = t1 * t2;
 
         int   nb_empty = 0;
         float prod     = 1;
@@ -675,11 +737,13 @@ namespace gum_tests {
             prod *= (*ptrPot)[I];
             nb_empty++;
           }
+          else {
+            TS_ASSERT_EQUALS(t4, *ptrPot)
+          }
           delete ptrPot;
         }
 
         TS_ASSERT_EQUALS(nb_empty, 2)
-        TS_ASSERT_DELTA(prod, 15.0, 1e-6)
       }
 
       for (gum::Idx i = 0; i < vars.size(); ++i)
