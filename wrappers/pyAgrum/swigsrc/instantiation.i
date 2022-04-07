@@ -35,7 +35,7 @@
     return self->isSlave();
   }
 
-  PyObject* todict(bool withLabels=false) const {
+  PyObject* todict(bool withLabels=true) const {
     auto res=PyDict_New();
     for(gum::Idx i=0;i<self->nbrDim();i++) {
       auto key=PyString_FromString(self->variable(i).name().c_str());

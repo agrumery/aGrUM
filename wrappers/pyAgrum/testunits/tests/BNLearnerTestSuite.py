@@ -230,10 +230,10 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
   def test_dirichlet(self):
     bn = gum.fastBN("A->B<-C->D->E<-B")
-    gum.generateCSV(bn, self.agrumSrcDir("dirichlet.csv"), 2000, with_labels=True)
+    gum.generateSample(bn, 2000, self.agrumSrcDir("dirichlet.csv"), with_labels=True)
 
     bn2 = gum.fastBN("A->B->C->D->E")
-    gum.generateCSV(bn2, self.agrumSrcDir("database.csv"), 2000, with_labels=True)
+    gum.generateCSV(bn2, 2000, self.agrumSrcDir("database.csv"), with_labels=True)
 
     # bn is used to give the variables and their domains
     learner = gum.BNLearner(self.agrumSrcDir("database.csv"), bn)

@@ -25,7 +25,7 @@
 
 %extend gum::learning::BNDatabaseGenerator< double > {
 %pythoncode {
-def to_pandas(self,with_labels=False):
+def to_pandas(self,with_labels=True):
   r"""
   export the samples as a pandas.DataFrame.
 
