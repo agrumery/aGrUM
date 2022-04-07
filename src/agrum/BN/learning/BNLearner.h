@@ -68,18 +68,18 @@ namespace gum {
        * read the database file for the score / parameter estimation and var
        * names
        * @param filename the name of a CSV file containing the dataset
+       * @param missingSymbols the set of symbols in the CSV that should
+       * be interpreted as missing values
        * @param induceTypes By default, all the values in the dataset are
        * interpreted as "labels", i.e., as categorical values. But if some
        * columns of the dataset have only numerical values, it would certainly
        * be better totag them as corresponding to integer, range or continuous
        * variables. By setting induceTypes to true, this is precisely what the
        * BNLearner will do.
-       * @param missingSymbols the set of symbols in the CSV that should
-       * be interpreted as missing values
        */
       BNLearner(const std::string&                filename,
-                const bool                        induceTypes    = true,
-                const std::vector< std::string >& missingSymbols = {"?"});
+                const std::vector< std::string >& missingSymbols = {"?"},
+                const bool                        induceTypes    = true);
 
       /// default constructor
       /**

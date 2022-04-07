@@ -41,8 +41,8 @@ namespace gum {
   namespace learning {
     template < typename GUM_SCALAR >
     BNLearner< GUM_SCALAR >::BNLearner(const std::string&                filename,
-                                       const bool                        induceTypes,
-                                       const std::vector< std::string >& missingSymbols) :
+                                       const std::vector< std::string >& missingSymbols,
+                                       const bool                        induceTypes) :
         GenericBNLearner(filename, missingSymbols, induceTypes) {
       GUM_CONSTRUCTOR(BNLearner);
     }

@@ -5789,7 +5789,7 @@ class Instantiation(object):
     def isMutable(self) -> bool:
         return _pyAgrum.Instantiation_isMutable(self)
 
-    def todict(self, withLabels: bool=False) -> object:
+    def todict(self, withLabels: bool=True) -> object:
         r"""
 
         Create a dictionary `{variable_name:value}` from an instantiation
@@ -24140,13 +24140,15 @@ class BNLearner(object):
 
     BNLearner(filename,inducedTypes=True) -> BNLearner
         Parameters:
-            * **source** (*str* or *pandas.DataFrame) -- the data to learn from
+            * **source** (*str* or *pandas.DataFrame*) -- the data to learn from
+            * **missingSymbols** (*List[str]*) -- list of string that will be interpreted as missing values (by default : ['?'])
             * **inducedTypes** (*Bool*) -- whether BNLearner should try to automatically find the type of each variable
 
     BNLearner(filename,src) -> BNLearner
         Parameters:
             * **source** (*str* or *pandas.DataFrame) -- the data to learn from
             * **src** (*pyAgrum.BayesNet*) -- the Bayesian network used to find those modalities
+            * **missingSymbols** (*List[str]*) -- list of string that will be interpreted as missing values (by default : ['?'])
 
     BNLearner(learner) -> BNLearner
         Parameters:
@@ -25089,7 +25091,7 @@ class BNDatabaseGenerator(object):
     def varOrder(self) -> object:
         return _pyAgrum.BNDatabaseGenerator_varOrder(self)
 
-    def to_pandas(self,with_labels=False):
+    def to_pandas(self,with_labels=True):
       r"""
       export the samples as a pandas.DataFrame.
 
