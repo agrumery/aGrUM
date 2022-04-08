@@ -1743,22 +1743,6 @@ namespace gum {
            static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >& >(*barren_pot));
     }
 
-    /*
-    // remove all the potentials that have no dimension
-    for (auto iter_pot = new_pot_list.beginSafe(); iter_pot != new_pot_list.endSafe(); ++iter_pot) {
-      if ((*iter_pot)->variablesSequence().empty()) {
-        // as we have already marginalized out variables that received evidence,
-        // it may be the case that, after combining and projecting, some
-        // potentials might be empty. In this case, we shall keep their
-        // constant and remove them from memory
-        // # TODO: keep the constants!
-        schedule.emplaceDeletion(
-           static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >& >(**iter_pot));
-        new_pot_list.erase(iter_pot);
-      }
-    }
-    */
-
     // combine all the remaining potentials in order to create only one resulting potential
     if (new_pot_list.size() == 1) return *(new_pot_list.begin());
     MultiDimCombinationDefault< Potential< GUM_SCALAR > > fast_combination(_combination_op_);
@@ -1824,22 +1808,6 @@ namespace gum {
     for (const auto barren_pot: barren_projected_potentials) {
       if (!xnew_pot_list.exists(barren_pot)) delete barren_pot;
     }
-
-    /*
-    // remove all the potentials that have no dimension
-    for (auto iter_pot = new_pot_list.beginSafe(); iter_pot != new_pot_list.endSafe(); ++iter_pot) {
-      if ((*iter_pot)->variablesSequence().empty()) {
-        // as we have already marginalized out variables that received evidence,
-        // it may be the case that, after combining and projecting, some
-        // potentials might be empty. In this case, we shall keep their
-        // constant and remove them from memory
-        // # TODO: keep the constants!
-        schedule.emplaceDeletion(
-           static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >& >(**iter_pot));
-        new_pot_list.erase(iter_pot);
-      }
-    }
-    */
 
     return res_pot;
   }
@@ -2571,11 +2539,7 @@ namespace gum {
       // get a node in the clique
       NodeId                   node = *(_JT_->clique(root).begin());
       Potential< GUM_SCALAR >* tmp  = unnormalizedJointPosterior_(node);
-      GUM_SCALAR               sum  = 0;
-      for (Instantiation iter(*tmp); !iter.end(); ++iter)
-        sum += tmp->get(iter);
-
-      prob_ev *= sum;
+      prob_ev *= tmp->sum();
       delete tmp;
     }
 

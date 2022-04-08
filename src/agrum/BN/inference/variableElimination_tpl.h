@@ -1081,19 +1081,6 @@ namespace gum {
       if (!new_pot_list.exists(*iter)) delete *iter;
     }
 
-    // remove all the potentials that have no dimension
-    for (auto iter_pot = new_pot_list.beginSafe(); iter_pot != new_pot_list.endSafe(); ++iter_pot) {
-      if ((*iter_pot)->variablesSequence().size() == 0) {
-        // as we have already marginalized out variables that received evidence,
-        // it may be the case that, after combining and projecting, some
-        // potentials might be empty. In this case, we shall keep their
-        // constant and remove them from memory
-        // # TODO: keep the constants!
-        delete *iter_pot;
-        new_pot_list.erase(iter_pot);
-      }
-    }
-
     return new_pot_list;
   }
 
@@ -1132,21 +1119,6 @@ namespace gum {
         schedule.emplaceDeletion(*sched_pot);
       }
     }
-
-    /*
-    // remove all the potentials that have no dimension
-    for (auto iter_pot = new_pot_list.beginSafe(); iter_pot != new_pot_list.endSafe(); ++iter_pot) {
-      if ((*iter_pot)->variablesSequence().size() == 0) {
-        // as we have already marginalized out variables that received evidence,
-        // it may be the case that, after combining and projecting, some
-        // potentials might be empty. In this case, we shall keep their
-        // constant and remove them from memory
-        // # TODO: keep the constants!
-        delete *iter_pot;
-        new_pot_list.erase(iter_pot);
-      }
-    }
-     */
 
     return new_pot_list;
   }
