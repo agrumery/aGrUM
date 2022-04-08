@@ -736,8 +736,7 @@ namespace gum_tests {
             gum::Instantiation I(*ptrPot);
             prod *= (*ptrPot)[I];
             nb_empty++;
-          }
-          else {
+          } else {
             TS_ASSERT_EQUALS(t4, *ptrPot)
           }
           delete ptrPot;

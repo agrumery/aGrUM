@@ -1053,11 +1053,11 @@ namespace gum_tests {
       t2.set(inst2, 4.0);
 
       gum::MultiDimProjection< gum::Potential< double > > proj(mySum);
-      gum::Set< const gum::DiscreteVariable* > del_vars;
+      gum::Set< const gum::DiscreteVariable* >            del_vars;
 
       {
         gum::Potential< double >* t3 = proj.execute(t1, del_vars);
-        auto t2 = t1.margSumOut(del_vars);
+        auto                      t2 = t1.margSumOut(del_vars);
         TS_ASSERT_EQUALS(t2, *t3)
         TS_ASSERT_EQUALS(t1, *t3)
         gum::Instantiation inst(t3);
@@ -1077,7 +1077,7 @@ namespace gum_tests {
       del_vars.insert(vars[0]);
       {
         gum::Potential< double >* t3 = proj.execute(t1, del_vars);
-        auto t2 = t1.margMaxOut(del_vars);
+        auto                      t2 = t1.margMaxOut(del_vars);
         TS_ASSERT_EQUALS(t2, *t3)
         TS_ASSERT_EQUALS(t1, *t3)
         gum::Instantiation inst(t3);
@@ -1087,7 +1087,7 @@ namespace gum_tests {
       del_vars.insert(vars[1]);
       {
         gum::Potential< double >* t3 = proj.execute(t1, del_vars);
-        auto t2 = t1.margMaxOut(del_vars);
+        auto                      t2 = t1.margMaxOut(del_vars);
         TS_ASSERT_EQUALS(t2, *t3)
         TS_ASSERT_EQUALS(t1, *t3)
         gum::Instantiation inst(t3);
@@ -1104,7 +1104,7 @@ namespace gum_tests {
       del_vars.insert(vars[0]);
       {
         gum::Potential< double >* t3 = proj.execute(t1, del_vars);
-        auto t2 = t1.margSumOut(del_vars);
+        auto                      t2 = t1.margSumOut(del_vars);
         TS_ASSERT_EQUALS(t2, *t3)
         TS_ASSERT_EQUALS(t3->variablesSequence().size(), gum::Size(0))
         gum::Instantiation inst3(t3);
@@ -1120,13 +1120,12 @@ namespace gum_tests {
       del_vars.insert(vars[1]);
       {
         gum::Potential< double >* t3 = proj.execute(t1, del_vars);
-        auto t2 = t1.margSumOut(del_vars);
+        auto                      t2 = t1.margSumOut(del_vars);
         TS_ASSERT_EQUALS(t2, *t3)
         TS_ASSERT_EQUALS(t3->variablesSequence().size(), gum::Size(0))
         gum::Instantiation inst3(t3);
         TS_ASSERT_DELTA((*t3)[inst3], 5.0, 0.001)
       }
-
     }
 
 

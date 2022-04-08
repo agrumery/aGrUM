@@ -412,14 +412,12 @@ namespace gum {
     if (this->variablesSequence().size() <= del_vars.size()) {
       bool equal = true;
       for (const auto var: this->variablesSequence()) {
-        if (! del_vars.exists(var)) {
+        if (!del_vars.exists(var)) {
           equal = false;
           break;
         }
       }
-      if (equal) {
-        return Potential< GUM_SCALAR >().fillWith(this->sum());
-      }
+      if (equal) { return Potential< GUM_SCALAR >().fillWith(this->sum()); }
     }
 
     return Potential< GUM_SCALAR >(gum::projectSum(*this->content(), del_vars));
@@ -437,14 +435,12 @@ namespace gum {
     if (this->variablesSequence().size() <= del_vars.size()) {
       bool equal = true;
       for (const auto var: this->variablesSequence()) {
-        if (! del_vars.exists(var)) {
+        if (!del_vars.exists(var)) {
           equal = false;
           break;
         }
       }
-      if (equal) {
-        return Potential< GUM_SCALAR >().fillWith(this->product());
-      }
+      if (equal) { return Potential< GUM_SCALAR >().fillWith(this->product()); }
     }
 
     return Potential< GUM_SCALAR >(gum::projectProduct(*this->content(), del_vars));
@@ -462,14 +458,12 @@ namespace gum {
     if (this->variablesSequence().size() <= del_vars.size()) {
       bool equal = true;
       for (const auto var: this->variablesSequence()) {
-        if (! del_vars.exists(var)) {
+        if (!del_vars.exists(var)) {
           equal = false;
           break;
         }
       }
-      if (equal) {
-        return Potential< GUM_SCALAR >().fillWith(this->min());
-      }
+      if (equal) { return Potential< GUM_SCALAR >().fillWith(this->min()); }
     }
 
     return Potential< GUM_SCALAR >(gum::projectMin(*this->content(), del_vars));
@@ -487,14 +481,12 @@ namespace gum {
     if (this->variablesSequence().size() <= del_vars.size()) {
       bool equal = true;
       for (const auto var: this->variablesSequence()) {
-        if (! del_vars.exists(var)) {
+        if (!del_vars.exists(var)) {
           equal = false;
           break;
         }
       }
-      if (equal) {
-        return Potential< GUM_SCALAR >().fillWith(this->max());
-      }
+      if (equal) { return Potential< GUM_SCALAR >().fillWith(this->max()); }
     }
 
     return Potential< GUM_SCALAR >(gum::projectMax(*this->content(), del_vars));
@@ -509,9 +501,7 @@ namespace gum {
 
     // if kept_var is empty, create an empty potential
     // TODO: remove this test when operations will be able to handle empty potentials
-    if (kept_vars.empty()) {
-      return Potential< GUM_SCALAR >().fillWith(this->sum());
-    }
+    if (kept_vars.empty()) { return Potential< GUM_SCALAR >().fillWith(this->sum()); }
 
     return Potential< GUM_SCALAR >(gum::projectSum(*this->content(), complementVars_(kept_vars)));
   }
@@ -525,9 +515,7 @@ namespace gum {
 
     // if kept_var is empty, create an empty potential
     // TODO: remove this test when operations will be able to handle empty potentials
-    if (kept_vars.empty()) {
-      return Potential< GUM_SCALAR >().fillWith(this->product());
-    }
+    if (kept_vars.empty()) { return Potential< GUM_SCALAR >().fillWith(this->product()); }
 
     return Potential< GUM_SCALAR >(
        gum::projectProduct(*this->content(), complementVars_(kept_vars)));
@@ -542,9 +530,7 @@ namespace gum {
 
     // if kept_var is empty, create an empty potential
     // TODO: remove this test when operations will be able to handle empty potentials
-    if (kept_vars.empty()) {
-      return Potential< GUM_SCALAR >().fillWith(this->min());
-    }
+    if (kept_vars.empty()) { return Potential< GUM_SCALAR >().fillWith(this->min()); }
 
     return Potential< GUM_SCALAR >(gum::projectMin(*this->content(), complementVars_(kept_vars)));
   }
@@ -558,9 +544,7 @@ namespace gum {
 
     // if kept_var is empty, create an empty potential
     // TODO: remove this test when operations will be able to handle empty potentials
-    if (kept_vars.empty()) {
-      return Potential< GUM_SCALAR >().fillWith(this->max());
-    }
+    if (kept_vars.empty()) { return Potential< GUM_SCALAR >().fillWith(this->max()); }
 
     return Potential< GUM_SCALAR >(gum::projectMax(*this->content(), complementVars_(kept_vars)));
   }
