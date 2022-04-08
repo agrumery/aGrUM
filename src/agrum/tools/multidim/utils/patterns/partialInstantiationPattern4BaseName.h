@@ -140,7 +140,11 @@ namespace gum {
 #  ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
     // fill the matrix with any element
     {
-      const Instantiation table_inst(table);
+      // TODO: change into Instantiation table_inst(table); when Potentials will support
+      // thread-safe creations of Instantiations
+      Instantiation table_inst;
+      for (const auto var: table->variablesSequence())
+        table_inst.add(*var);
       const GUM_SCALAR&   any_element = *(table->get(table_inst));
 
       for (Idx i = 0; i < result_domain_size; ++i) {
@@ -154,7 +158,11 @@ namespace gum {
     // arrays that are directly used for this loop
     GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE* presult
        = const_cast< GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE* >(&(result->unsafeGet(0)));
-    Instantiation table_inst(table);
+    // TODO: change into Instantiation table_inst(table); when Potentials will support
+    // thread-safe creations of Instantiations
+    Instantiation table_inst;
+    for (const auto var: table->variablesSequence())
+      table_inst.add(*var);
     table_inst += table_alone_offset;
 
     // but before doing so, check whether the instantiated variables are the

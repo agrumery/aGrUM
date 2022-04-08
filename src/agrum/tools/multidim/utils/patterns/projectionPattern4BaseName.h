@@ -187,7 +187,11 @@ namespace gum {
       // If this is not the case, optimize by not using before_incr at all
       if (!nb_positive_before_incr) {
         Idx           result_offset = 0;
-        Instantiation table_inst(table);
+        // TODO: change into Instantiation table_inst(table); when Potentials will support
+        // thread-safe creations of Instantiations
+        Instantiation table_inst;
+        for (const auto var: table->variablesSequence())
+          table_inst.add(*var);
 
         for (Idx i = 0; i < table_alone_domain_size; ++i) {
           for (Idx j = 0; j < result_domain_size; ++j) {
@@ -212,7 +216,11 @@ namespace gum {
         // here there are positive before_incr and we should use them to know
         // when result_offset needs be changed
         Idx           result_offset = 0;
-        Instantiation table_inst(table);
+        // TODO: change into Instantiation table_inst(table); when Potentials support
+        // thread-safe creations of Instantiations
+        Instantiation table_inst;
+        for (const auto var: table->variablesSequence())
+          table_inst.add(*var);
 
         for (Idx i = 0; i < table_domain_size; ++i) {
 #  ifdef GUM_MULTI_DIM_PROJECTION_POINTER
@@ -362,7 +370,11 @@ namespace gum {
       // If this is not the case, optimize by not using before_incr at all
       if (!has_before_incr) {
         Idx           result_offset = 0;
-        Instantiation table_inst(table);
+        // TODO: change into Instantiation table_inst(table); when Potentials will support
+        // thread-safe creations of Instantiations
+        Instantiation table_inst;
+        for (const auto var: table->variablesSequence())
+          table_inst.add(*var);
 
         for (Idx i = 0; i < result_domain_size; ++i) {
           for (Idx j = 0; j < table_alone_domain_size; ++j) {
@@ -386,7 +398,11 @@ namespace gum {
         // here there are positive before_incr and we should use them to know
         // when result_offset needs be changed
         Idx           result_offset = 0;
-        Instantiation table_inst(table);
+        // TODO: change into Instantiation table_inst(table); when Potentials will support
+        // thread-safe creations of Instantiations
+        Instantiation table_inst;
+        for (const auto var: table->variablesSequence())
+          table_inst.add(*var);
 
         for (Idx j = 0; j < result_domain_size; ++j) {
           for (Idx i = 0; i < table_alone_domain_size; ++i) {
