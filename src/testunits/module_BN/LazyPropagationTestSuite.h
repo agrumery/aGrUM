@@ -292,7 +292,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING(inf.posterior(3))
     }
 
-    // testing information methods
+    // Testing information methods
     void testInformationMethods() {
       fill(*bn);
 
@@ -1124,7 +1124,270 @@ namespace gum_tests {
       TS_ASSERT(inf.getNumberOfThreads() == gum::getNumberOfThreads());
     }
 
+    void testProbaEvidence() {
+      std::vector< gum::LabelizedVariable* > vars(10);
+
+      for (gum::Idx i = 0; i < 10; ++i) {
+        std::stringstream str;
+        str << "x" << i;
+        std::string s = str.str();
+        vars[i]       = new gum::LabelizedVariable(s, s, 2);
+      }
+
+      gum::BayesNet< double > bn;
+      gum::NodeId             i0 = bn.add(*vars[0]);
+      auto&                   x0 = bn.variable(i0);
+      auto&                   p0 = bn.cpt(i0);
+      p0.fillWith({0.7, 0.3});
+
+      gum::Potential< double > ev0;
+      ev0 << x0;
+      ev0.fillWith({0.3, 0.2});
+
+      gum::Potential< double > ev0b;
+      ev0b << x0;
+      ev0b.fillWith({1.0, 0.0});
+
+      {
+        gum::LazyPropagation< double > inf(&bn);
+        inf.addEvidence(ev0);
+        double xpe0 = inf.evidenceProbability();
+        double pe0  = (p0 * ev0).sum();
+        TS_ASSERT_DELTA(pe0, 0.27, 0.0001)
+        TS_ASSERT_DELTA(xpe0, pe0, 0.0001)
+      }
+
+      {
+        gum::LazyPropagation< double > inf(&bn);
+        inf.addEvidence(ev0b);
+        double xpe0b = inf.evidenceProbability();
+        double pe0b  = (p0 * ev0b).sum();
+        TS_ASSERT_DELTA(pe0b, 0.7, 0.0001)
+        TS_ASSERT_DELTA(xpe0b, pe0b, 0.0001)
+      }
+
+      gum::NodeId i1 = bn.add(*vars[1]);
+      auto&       x1 = bn.variable(i1);
+      auto&       p1 = bn.cpt(i1);
+      p1.fillWith({0.4, 0.6});
+
+      gum::Potential< double > ev1;
+      ev1 << x1;
+      ev1.fillWith({0.4, 0.6});
+
+      gum::Potential< double > ev1b;
+      ev1b << x1;
+      ev1b.fillWith({0.0, 1.0});
+
+      {
+        gum::LazyPropagation< double > inf(&bn);
+        inf.addEvidence(ev0);
+        inf.addEvidence(ev1);
+        double xpe01 = inf.evidenceProbability();
+        double pe01  = (p0 * ev0 * p1 * ev1).sum();
+        TS_ASSERT_DELTA(pe01, 0.27 * 0.52, 0.0001)
+        TS_ASSERT_DELTA(xpe01, pe01, 0.0001)
+      }
+
+      {
+        gum::LazyPropagation< double > inf(&bn);
+        inf.addEvidence(ev0b);
+        inf.addEvidence(ev1);
+        double xpe01 = inf.evidenceProbability();
+        double pe01  = (p0 * ev0b * p1 * ev1).sum();
+        TS_ASSERT_DELTA(pe01, 0.7 * 0.52, 0.0001)
+        TS_ASSERT_DELTA(xpe01, pe01, 0.0001)
+      }
+
+      {
+        gum::LazyPropagation< double > inf(&bn);
+        inf.addEvidence(ev0);
+        inf.addEvidence(ev1b);
+        double xpe01 = inf.evidenceProbability();
+        double pe01  = (p0 * ev0 * p1 * ev1b).sum();
+        TS_ASSERT_DELTA(pe01, 0.27 * 0.6, 0.0001)
+        TS_ASSERT_DELTA(xpe01, pe01, 0.0001)
+      }
+
+      {
+        gum::LazyPropagation< double > inf(&bn);
+        inf.addEvidence(ev0b);
+        inf.addEvidence(ev1b);
+        double xpe01 = inf.evidenceProbability();
+        double pe01  = (p0 * ev0b * p1 * ev1b).sum();
+        TS_ASSERT_DELTA(pe01, 0.7 * 0.6, 0.0001)
+        TS_ASSERT_DELTA(xpe01, pe01, 0.0001)
+      }
+
+      gum::NodeId i2 = bn.add(*vars[2]);
+      bn.addArc(i0, i2);
+      auto& x2 = bn.variable(i2);
+      auto& p2 = bn.cpt(i2);
+      p2.fillWith({0.4, 0.6, 0.8, 0.2});
+
+      {
+        gum::LazyPropagation< double > inf(&bn);
+        inf.addEvidence(ev0);
+        inf.addEvidence(ev1);
+        double xpe02 = inf.evidenceProbability();
+        double pe02  = (p0 * ev0 * p1 * ev1 * p2).sum();
+        TS_ASSERT_DELTA(pe02, 0.27 * 0.52, 0.0001)
+        TS_ASSERT_DELTA(xpe02, pe02, 0.0001)
+      }
+
+      gum::NodeId i3 = bn.add(*vars[3]);
+      bn.addArc(i2, i3);
+      auto& x3 = bn.variable(i3);
+      auto& p3 = bn.cpt(i3);
+      p3.fillWith({0.1, 0.9, 0.7, 0.3});
+
+      {
+        gum::LazyPropagation< double > inf(&bn);
+        inf.addEvidence(ev0);
+        inf.addEvidence(ev1);
+        double xpe03 = inf.evidenceProbability();
+        double pe03  = (p0 * ev0 * p1 * ev1 * p2 * p3).sum();
+        TS_ASSERT_DELTA(pe03, 0.27 * 0.52, 0.0001)
+        TS_ASSERT_DELTA(xpe03, pe03, 0.0001)
+      }
+
+      gum::Potential< double > ev3;
+      ev3 << x3;
+      ev3.fillWith({0.4, 0.3});
+
+      gum::Potential< double > ev3b;
+      ev3b << x3;
+      ev3b.fillWith({1.0, 0.0});
+
+      {
+        gum::LazyPropagation< double > inf(&bn);
+        inf.addEvidence(ev0);
+        inf.addEvidence(ev1);
+        inf.addEvidence(ev3);
+        double xpe0_3 = inf.evidenceProbability();
+        double pe0_3  = (p0 * ev0 * p1 * ev1 * p2 * p3 * ev3).sum();
+
+        // P(x0,x3) = [X00: [0.3220, 0.3780], x01: [0.0660, 0.2340]]
+        double p03 = 0.322 * 0.12 + 0.378 * 0.09 + 0.066 * 0.08 + 0.234 * .06;
+        TS_ASSERT_DELTA(pe0_3, p03 * 0.52, 0.0001)
+        TS_ASSERT_DELTA(xpe0_3, pe0_3, 0.0001)
+      }
+
+      {
+        gum::LazyPropagation< double > inf(&bn);
+        inf.addEvidence(ev0);
+        inf.addEvidence(ev1);
+        inf.addEvidence(ev3b);
+        double xpe0_3 = inf.evidenceProbability();
+        double pe0_3  = (p0 * ev0 * p1 * ev1 * p2 * p3 * ev3b).sum();
+
+        // P(x0,x3) = [X00: [0.3220, 0.3780], x01: [0.0660, 0.2340]]
+        double p03 = 0.322 * 0.3 + 0.066 * 0.2;
+        TS_ASSERT_DELTA(pe0_3, p03 * 0.52, 0.0001)
+        TS_ASSERT_DELTA(xpe0_3, pe0_3, 0.0001)
+      }
+
+      gum::NodeId i4 = bn.add(*vars[4]);
+      bn.addArc(i1, i4);
+      bn.addArc(i3, i4);
+      auto& x4 = bn.variable(i4);
+      auto& p4 = bn.cpt(i4);
+      p4.fillWith({0.2, 0.8, 0.3, 0.7, 0.4, 0.6, 0.5, 0.5});
+
+      gum::NodeId i5 = bn.add(*vars[5]);
+      bn.addArc(i3, i5);
+      auto& x5 = bn.variable(i5);
+      auto& p5 = bn.cpt(i5);
+      p5.fillWith({0.7, 0.3, 0.8, 0.2});
+
+      gum::Potential< double > ev5;
+      ev5 << x5;
+      ev5.fillWith({0.7, 0.6});
+
+      gum::Potential< double > pot0_5;
+      {
+        gum::LazyPropagation< double > inf(&bn);
+        inf.addJointTarget({i0, i1, i5});
+        pot0_5 = inf.jointPosterior({i0, i1, i5});
+      }
+
+      {
+        gum::LazyPropagation< double > inf(&bn);
+        inf.addEvidence(ev0);
+        inf.addEvidence(ev1);
+        inf.addEvidence(ev5);
+
+        double xpe0_5 = inf.evidenceProbability();
+        double pe0_5  = (pot0_5 * ev0 * ev1 * ev5).sum();
+        TS_ASSERT_DELTA(xpe0_5, pe0_5, 0.0001)
+      }
+
+      gum::NodeId i6 = bn.add(*vars[6]);
+      auto&       x6 = bn.variable(i6);
+      auto&       p6 = bn.cpt(i6);
+      p6.fillWith({0.8, 0.2});
+
+      gum::Potential< double > ev6;
+      ev6 << x6;
+      ev6.fillWith({0.7, 0.6});
+
+      {
+        gum::LazyPropagation< double > inf(&bn);
+        inf.addEvidence(ev0);
+        inf.addEvidence(ev1);
+        inf.addEvidence(ev5);
+        inf.addEvidence(ev6);
+
+        double xpe0_6 = inf.evidenceProbability();
+        double pe0_6  = (pot0_5 * ev0 * ev1 * ev5 * p6 * ev6).sum();
+        TS_ASSERT_DELTA(xpe0_6, pe0_6, 0.0001)
+      }
+
+      gum::NodeId i7 = bn.add(*vars[7]);
+      bn.addArc(i4, i7);
+      auto& x7 = bn.variable(i7);
+      auto& p7 = bn.cpt(i7);
+      p7.fillWith({0.4, 0.6, 0.6, 0.4});
+
+      gum::Potential< double > ev7;
+      ev7 << x7;
+      ev7.fillWith({0.2, 0.5});
+
+      gum::Potential< double > pot0_7;
+      {
+        gum::LazyPropagation< double > inf(&bn);
+        inf.addJointTarget({i0, i1, i5, i7});
+        pot0_7 = inf.jointPosterior({i0, i1, i5, i7});
+      }
+
+      {
+        gum::LazyPropagation< double > inf(&bn);
+        inf.addEvidence(ev0);
+        inf.addEvidence(ev1);
+        inf.addEvidence(ev5);
+        inf.addEvidence(ev6);
+        inf.addEvidence(ev7);
+
+        double xpe0_7 = inf.evidenceProbability();
+        double pe0_7  = (pot0_7 * ev0 * ev1 * ev5 * ev7 * p6 * ev6).sum();
+        TS_ASSERT_DELTA(xpe0_7, pe0_7, 0.0001)
+      }
+
+      for (gum::Idx i = 0; i < vars.size(); ++i)
+        delete vars[i];
+    }
+
+
     private:
+    void randomInitP(const gum::Potential< double >& tt) {
+      auto&              t = const_cast< gum::Potential< double >& >(tt);
+      gum::Instantiation i(t);
+
+      for (i.setFirst(); !i.end(); ++i)
+        t.set(i, 1.0f + rand() * 50.0f / float(RAND_MAX));
+    }
+
+
     // Builds a BN to test the inference
     void fill(gum::BayesNet< double >& bn) {
       bn.cpt(i1).fillWith({0.2f, 0.8f});
