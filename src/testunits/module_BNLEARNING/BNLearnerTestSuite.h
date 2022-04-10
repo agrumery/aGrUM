@@ -131,8 +131,8 @@ namespace gum_tests {
         gum::BayesNet< double > bn1 = learner1.learnBN();
 
         gum::learning::BNLearner< double > learner2(GET_RESSOURCES_PATH("csv/asia.csv"),
-                                                    true,
-                                                    {"?"});
+                                                    {"?"},
+                                                    true);
         for (const auto trans2: learner2.database().translatorSet().translators()) {
           const auto& var2 = trans2->variable();
           TS_ASSERT((var2->varType() == gum::VarType::Range)
@@ -153,8 +153,8 @@ namespace gum_tests {
         gum::BayesNet< double > bn1 = learner1.learnBN();
 
         gum::learning::BNLearner< double > learner2(GET_RESSOURCES_PATH("csv/alarm.csv"),
-                                                    true,
-                                                    {"?"});
+                                                    {"?"},
+                                                    true);
 
         for (const auto trans2: learner2.database().translatorSet().translators()) {
           const auto& var2 = trans2->variable();
@@ -189,8 +189,8 @@ namespace gum_tests {
 
         gum::learning::BNLearner< double > learner2(
            GET_RESSOURCES_PATH("outputs/bnlearner_database.csv"),
-           true,
-           {"?"});
+           {"?"},
+           true);
 
         for (const auto trans2: learner2.database().translatorSet().translators()) {
           const auto& var2 = trans2->variable();
@@ -932,7 +932,9 @@ namespace gum_tests {
       gum::BayesNet< double > learn4;
       {
         // inductive learning leads to scrambled modalities
-        gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/DBN_Tonda.csv"), false);
+        gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/DBN_Tonda.csv"),
+                                                   {"?"},
+                                                   false);
         learner.useScoreLog2Likelihood();
         learner.useAprioriSmoothing(1.0);
         learn4 = learner.learnParameters(dbn.dag());
@@ -946,7 +948,6 @@ namespace gum_tests {
       int nb = 0;
       try {
         gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3-faulty.csv"),
-                                                   true,
                                                    std::vector< std::string >{"BEURK"});
         learner.useK2(std::vector< gum::NodeId >{1, 5, 2, 6, 0, 3, 4, 7});
         learner.learnBN();
@@ -1240,7 +1241,6 @@ namespace gum_tests {
 
     void test_EM() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/EM.csv"),
-                                                 true,
                                                  std::vector< std::string >{"?"});
 
       TS_ASSERT(learner.hasMissingValues())
