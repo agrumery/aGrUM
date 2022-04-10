@@ -47,10 +47,10 @@ class TestInstantiation(pyAgrumTestCase):
   def testFromDictAndToDict(self):
     bn = gum.fastBN("a{chaud|tiede|froid}->b[5]<-c->d->e;c->e")
     i = bn.completeInstantiation()
-    self.assertEqual(i.todict(), {'a': 0, 'b': 0, 'c': 0, 'd': 0, 'e': 0})
-    self.assertEqual(i.todict(withLabels=True), {'a': 'chaud', 'b': '0', 'c': '0', 'd': '0', 'e': '0'})
+    self.assertEqual(i.todict(withLabels=False), {'a': 0, 'b': 0, 'c': 0, 'd': 0, 'e': 0})
+    self.assertEqual(i.todict(), {'a': 'chaud', 'b': '0', 'c': '0', 'd': '0', 'e': '0'})
     i.fromdict({'a': 'tiede', 'bar': 'foo'})
-    self.assertEqual(i.todict(), {'a': 1, 'b': 0, 'c': 0, 'd': 0, 'e': 0})
+    self.assertEqual(i.todict(withLabels=False), {'a': 1, 'b': 0, 'c': 0, 'd': 0, 'e': 0})
 
   def testOperatorEqual(self):
     bn = gum.fastBN("a{chaud|tiede|froid}->b[5]<-c->d->e;c->e")
