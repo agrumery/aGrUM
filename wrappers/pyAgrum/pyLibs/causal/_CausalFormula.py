@@ -40,16 +40,37 @@ class CausalFormula:
   Represents a causal query in a causal model. The query is encoded as an CausalFormula that can be evaluated in the
   causal model : $P(on|knowing, \\overhook (doing))$
 
-  :param cm: the causal model
-  :param root: the syntax tree as the root ASTtree
-  :param on: the variable or the set of variables of interest
-  :param doing: the intervention variables
-  :param knowing: the observation variables
+  Parameters
+  ----------
+  cm : CausalModel
+    the causal model
+  root : ASTtree
+    the syntax tree
+  on : str|Set[str]
+    the variable or the set of variables of interest
+  doing : str|Set[str]
+    the intervention variable(s)
+  knowing: None|str|Set[str]
+    the observation variable(s)
   """
 
   def __init__(self, cm: "pyAgrum.causal.CausalModel", root: ASTtree, on: Union[str, NameSet],
                doing: Union[str, NameSet],
                knowing: Optional[NameSet] = None):
+    """
+    Parameters
+    ----------
+    cm : CausalModel
+      the causal model
+    root : ASTtree
+      the syntax tree
+    on : str|Set[str]
+      the variable or the set of variables of interest
+    doing : str|Set[str]
+      the intervention variable(s)
+    knowing: None|str|Set[str]
+      the observation variable(s)
+    """
     self._cm = cm
     self._root = root
     if isinstance(on, str):
@@ -67,8 +88,16 @@ class CausalFormula:
 
   def __str__(self, prefix: str = "") -> str:
     """
-    :param prefix: a prefix for each line of the string representation
-    :return:  the string version of the CausalFormula
+
+    Parameters
+    ----------
+    prefix :
+      a prefix for each line of the string representation
+
+    Returns
+    -------
+    str
+      the string version of the CausalFormula
     """
     return self.root.__str__(prefix)
 
@@ -77,8 +106,15 @@ class CausalFormula:
     Returns a string representing the query compiled by this Formula. If values, the query is annotated with the
     values in the dictionary.
 
-    :param values: the values to add in the query representation
-    :return: the string representing the causal query for this CausalFormula
+    Parameters
+    ----------
+    values : None|Dict[str,str]
+      the values to add in the query representation
+
+    Returns
+    -------
+    str
+      the LaTeX representation of the causal query for this CausalFormula
     """
     if values is None:
       values = {}
@@ -115,9 +151,12 @@ class CausalFormula:
 
   def toLatex(self) -> str:
     """
-    :return: a LaTeX representation of the CausalFormula
-    """
 
+    Returns
+    -------
+    str
+      a LaTeX representation of the CausalFormula
+    """
     occur = defaultdict(int)
     for n in self._cm.observationalBN().nodes():
       occur[self._cm.observationalBN().variable(n).name()] = 0
@@ -134,21 +173,32 @@ class CausalFormula:
     """
     Copy theAST. Note that the causal model is just referenced. The tree is copied.
 
-    :return: the new CausalFormula
+    Returns
+    -------
+    CausalFormula
+      the copu
     """
     return CausalFormula(self.cm, self.root.copy(), self._on, self._doing, self._knowing)
 
   @property
   def cm(self) -> "pyAgrum.causal.CausalModel":
     """
-    :return: the causal model
+
+    Returns
+    -------
+    CausalModel
+      the causal model
     """
     return self._cm
 
   @property
   def root(self) -> ASTtree:
     """
-    :return: ASTtree root of the CausalFormula tree
+
+    Returns
+    -------
+    ASTtree
+      the causalFormula as an ASTtree
     """
     return self._root
 
@@ -156,7 +206,10 @@ class CausalFormula:
     """
     Compute the Potential from the CausalFormula over vars using cond as value for others variables
 
-    :return:
+    Returns
+    -------
+    pyAgrum.Potential
+      The resulting distribution
     """
     return self.root.eval(self.cm.observationalBN())
 
@@ -166,11 +219,20 @@ def _getLabelIdx(bn: "pyAgrum.BayesNet", varname: str, val: Union[int, str]) -> 
   Find the index of a label in a discrete variable from a BN.
 
   If val is an int, we keep is as is. If it is a str, we try to find the correct index in the variable
-  :param bn: the BN where to find the variable
-  :param varname: the name of the variable
-  :param val: the index or the name of the label
 
-  :return: the index of the label
+  Parameters
+  ----------
+  bn: pyAgrum.BayesNet
+    the BN where to find the variable
+  varname : str
+     the name of the variable
+  val : int|str
+     the index or the name of the label
+
+  Returns
+  -------
+  int
+    the index of the label
   """
   if not isinstance(val, str):
     return val

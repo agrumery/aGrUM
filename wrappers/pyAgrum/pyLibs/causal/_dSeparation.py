@@ -53,11 +53,21 @@ def _reduce_moralize(bn: "pyAgrum.BayesNet", x: NodeSet, y: NodeSet, zset: NodeS
   """
   Returns the undirected graph obtained by reducing (ancestor graph) and moralizing the Bayesian network ``bn``
 
-  :param bn: the BayesNet
-  :param x: NodeSet generating the ancestor graph
-  :param y: Second NodeSet generating the ancestor graph
-  :param zset: Third NodeSet generating the ancestor graph
-  :return:
+  Parameters
+  ----------
+  bn: pyAgrum.BayesNet
+      the BayesNet
+  x: Set[int|str]
+      NodeSet generating the ancestor graph
+  y: Set[int|str]
+      Second NodeSet generating the ancestor graph
+  zset: Set[int|str]
+      Third NodeSet generating the ancestor graph
+
+  Returns
+  -------
+  pyAgrum.UndiGraph
+      The reduced moralized graph
   """
   G = pyAgrum.UndiGraph()
 
@@ -94,14 +104,24 @@ def _removeZ(g_undi: "pyAgrum.UndiGraph", zset: NodeSet):
 
 def _is_path_x_y(g_undi: "pyAgrum.UndiGraph", sx: NodeSet, sy: NodeSet, marked: NodeSet = None) -> bool:
   """
-  Predicate asserting the existence of a path between ``x`` and ``y`` in the non oriented graph
+  Predicate asserting the existence of a path between ``x`` and ``y`` in the non-oriented graph
   ``g_undi``, without going through the optional marking set ``mark``
 
-  :param g_undi:
-  :param x:
-  :param y:
-  :param marked:
-  :return: True if a path has been found
+  Parameters
+  ----------
+  g_undi: PyAgrum.UndiGraph
+      The graph
+  x: int
+      first node
+  y: int
+      second node
+
+  marked: Set[int]
+      forbidden nodes
+
+  :return:
+  bool
+      True if a path has been found
   """
 
   def inner_ec(g_und: "pyAgrum.UndiGraph", a: NodeId, b: NodeSet, m: NodeSet) -> bool:
@@ -138,11 +158,21 @@ def isDSep_tech2(bn: "pyAgrum.BayesNet", sx: NodeSet, sy: NodeSet, zset: NodeSet
   """
   Test of d-separation for ``x`` and ``y``, given ``zset`` using the graph-moralization method
 
-  :param bn: the bayes net
-  :param x:
-  :param y:
-  :param zset:
-  :return: True if ``Z`` d-separates ``x`` and ``y``
+  Parameters
+  ----------
+  bn: pyAgrum.BayesNet
+      the bayesian network
+  sx: Set[int]
+      source nodes
+  sy: Set[int]
+      destinantion nodes
+  zset: Set[int]
+      blocking set
+
+  Returns
+  -------
+  bool
+      True if ``Z`` d-separates ``x`` and ``y``
   """
   g_undi = _reduce_moralize(bn, sx, sy, zset)
 
@@ -156,13 +186,47 @@ def isDSep_tech2(bn: "pyAgrum.BayesNet", sx: NodeSet, sy: NodeSet, zset: NodeSet
 
 def isDSep_parents(bn: "pyAgrum.BayesNet", sx: NodeSet, sy: NodeSet, zset: NodeSet) -> bool:
   """Test of d-separation of ``sx`` and ``sy`` given ``Z``, considering only the paths with an arc coming into ``x``
-  using the graph-moralization method"""
+  using the graph-moralization method
+
+
+  Parameters
+  ----------
+  bn: pyAgrum.BayesNet
+      the bayesian network
+  sx: Set[int]
+      source nodes
+  sy: Set[int]
+      destinantion nodes
+  zset: Set[int]
+      blocking set
+
+  Returns
+  -------
+  bool
+      True if ``Z`` d-separates ``x`` and ``y``
+  """
   return _isDSep_tech2_parents(bn, sx, sy, zset)
 
 
 def _isDSep_tech2_parents(bn: "pyAgrum.BayesNet", sx: NodeSet, sy: NodeSet, zset: NodeSet) -> bool:
   """Test of d-separation of ``sx`` and ``sy`` given ``Z``, considering only the paths with an arc coming into ``x``
-  using the graph-moralization method"""
+  using the graph-moralization method
+
+  Parameters
+  ----------
+  bn: pyAgrum.BayesNet
+      the bayesian network
+  sx: Set[int]
+      source nodes
+  sy: Set[int]
+      destinantion nodes
+  zset: Set[int]
+      blocking set
+
+  Returns
+  -------
+  bool
+  """
   G = pyAgrum.UndiGraph()
   ancesters = sx | sy
   anc = frozenset(ancesters)
@@ -196,7 +260,23 @@ def _isDSep_tech2_parents(bn: "pyAgrum.BayesNet", sx: NodeSet, sy: NodeSet, zset
 
 def _isDSep_tech2_children(bn: "pyAgrum.BayesNet", sx: NodeSet, sy: NodeSet, zset: NodeSet) -> bool:
   """Test of d-separation of ``x`` and ``y`` given ``zset``, considering only the paths with an arc coming from ``x``
-  using the graph-moralization method"""
+  using the graph-moralization method
+
+  Parameters
+  ----------
+  bn: pyAgrum.BayesNet
+      the bayesian network
+  sx: Set[int]
+      source nodes
+  sy: Set[int]
+      destinantion nodes
+  zset: Set[int]
+      blocking set
+
+  Returns
+  -------
+  bool
+  """
   G = pyAgrum.UndiGraph()
   ancesters = sx | sy
   for i in sy:
@@ -227,7 +307,7 @@ def _isDSep_tech2_children(bn: "pyAgrum.BayesNet", sx: NodeSet, sy: NodeSet, zse
 
 
 def _is_descendant(bn: "pyAgrum.BayesNet", x: NodeId, y: NodeId, marked: NodeSet = None) -> bool:
-  """ Asserts whether or not ``x`` is a descendant of ``y`` in ``bn`` """
+  """ Asserts whether or not ``x`` is a descendant of ``y`` in ``bn``"""
 
   if marked is None:
     marked = set()
@@ -333,8 +413,20 @@ def _barren_nodes(bn: "pyAgrum.BayesNet", interest: NodeSet = None) -> NodeSet:
 
 
 def partialDAGFromBN(bn: "pyAgrum.BayesNet", Nexcl: NodeSet = None) -> "pyAgrum.DAG":
-  """ Creates and returns a duplicate DAG of the given Bayesian network """
+  """
+  Creates and returns a duplicate DAG of the given Bayesian network
 
+  Parameters
+  ----------
+  bn : pyAgrum.BayesNet
+    the source
+  Nexcl : NodeSet
+    the nodes
+
+  Returns
+  -------
+  pyAgrum.DAG
+  """
   if Nexcl is None:
     Nexcl = set()
   d = pyAgrum.DAG()
@@ -354,10 +446,17 @@ def dSep_reduce(g: "pyAgrum.BayesNet", interest: NodeSet = None) -> "pyAgrum.DAG
   """
   Reduce a BN by removing barren nodes w.r.t a set of nodes.
 
-  :param g: the BN
-  :param interest: the nodes to check
+  Parameters
+  ----------
+  g : pyAgrum.BayesNet
+    the source
+  interest: NodeSet
+    the nodes of interest
 
-  :return: the reduced DAG
+  Returns
+  -------
+  pyAgrum.DAG
+    the reduced DAG
   """
   if interest is None:
     interest = set()
@@ -459,12 +558,21 @@ def isDSep_tech1(bn: "pyAgrum.BayesNet", sx: NodeSet, sy: NodeSet, setz: NodeSet
 
 def isDSep(bn: "pyAgrum.BayesNet", x: NodeSet, y: NodeSet, z: NodeSet) -> bool:
   """
-  Check if x and y are d-separated by setz in the BN
+  Check if x and y are d-separated by z in the BN
 
-  :param bn: the BN
-  :param x: a set of nodes
-  :param y: a set of nodes
-  :param z: a set of nodes
-  :return: true if x and y are d-separeted by z
+  Parameters
+  ----------
+  bn: pyAgrum.BayesNet
+
+  x : NodeSet
+
+  y : NodeSet
+
+  z : NodeSet
+
+  Returns
+  -------
+  bool
+    whether x and y are d-separated by z
   """
   return isDSep_tech2(bn, x, y, z)

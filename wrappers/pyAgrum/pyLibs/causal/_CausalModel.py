@@ -40,10 +40,14 @@ class CausalModel:
   From an observational BNs and the description of latent variables, this class represent a complet causal model
   obtained by adding the latent variables specified in ``latentVarsDescriptor`` to the Bayesian network ``bn``.
 
-  :param bn: a observational Bayesian network
-  :param latentVarsDescriptor:  list of couples (<latent variable name>, <list of affected variables' ids>).
-  :param keepArcs: By default, the arcs between variables affected by a common latent variable will be removed but
-         this can be avoided by setting ``keepArcs`` to ``True``
+  Parameters
+  ----------
+  bn: pyAgrum.BayesNet
+      an observational Bayesian network
+  latentVarsDescriptor:  List[(str,List[int])]
+      list of couples (<latent variable name>, <list of affected variables' ids>).
+  keepArcs: bool
+      By default, the arcs between variables affected by a common latent variable will be removed but this can be avoided by setting ``keepArcs`` to ``True``
   """
 
   def __init__(self, bn: "pyAgrum.BayesNet",
@@ -90,9 +94,14 @@ class CausalModel:
     """
     Add a new latent variable with a name, a tuple of children and replacing (or not) correlations between children.
 
-    :param name: the name of the latent variable
-    :param lchild: the tuple of (2) children
-    :param keepArcs: do wee keep (or not) the arc between the children
+    Parameters
+    ----------
+    name: str
+        the name of the latent variable
+    lchild: Tuple[str,str]
+        the tuple of (2) children
+    keepArcs: bool
+        do wee keep (or not) the arc between the children ?
     """
     # simplest variable to add : only 2 modalities for latent variables
     id_latent = self.__causalBN.add(name, 2)
@@ -176,34 +185,64 @@ class CausalModel:
     """
     From a NodeId, returns its parent (as a set of NodeId)
 
-    :param x: the node
-    :return:
+    Parameters
+    ----------
+    x : int
+      the node
+
+    Returns
+    -------
+    Set[int]
+      the set of parents
     """
     return self.__causalBN.parents(self.__causalBN.idFromName(x) if isinstance(x, str) else x)
 
   def children(self, x: Union[NodeId, str]) -> NodeSet:
     """
-    :param x: the node
-    :return:
+    From a NodeId, returns its children (as a set of NodeId)
+
+    Parameters
+    ----------
+    x : int
+      the node
+
+    Returns
+    -------
+    Set[int]
+      the set of children
     """
     return self.__causalBN.children(self.__causalBN.idFromName(x) if isinstance(x, str) else x)
 
   def names(self) -> Dict[NodeId, str]:
     """
-    :return: the map NodeId,Name
+    Returns
+    -------
+    Dict[int,str]
+      the map NodeId,Name
     """
     return self.__names
 
   def idFromName(self, name: str) -> NodeId:
     """
-    :param name: the name of the variable
-    :return: the id of the variable
+
+    Parameters
+    ----------
+    name: str
+      the name of the variable
+
+    Returns
+    -------
+    int
+      the id of the variable
     """
     return self.__causalBN.idFromName(name)
 
   def latentVariablesIds(self) -> NodeSet:
     """
-    :return: the set of ids of latent variables in the causal model
+    Returns
+    -------
+    NodeSet
+      the set of ids of latent variables in the causal model
     """
     return self.__lat
 
@@ -211,8 +250,12 @@ class CausalModel:
     """
     Erase the arc x->y
 
-    :param x: the nodeId or the name of the first node
-    :param y: the nodeId or the name of the second node
+    Parameters
+    ----------
+    x : int|str
+      the nodeId or the name of the first node
+    y : int|str
+      the nodeId or the name of the second node
     """
     ix = self.__observationalBN.idFromName(x) if isinstance(x, str) else x
     iy = self.__observationalBN.idFromName(y) if isinstance(y, str) else y
@@ -222,8 +265,12 @@ class CausalModel:
     """
     Add an arc x->y
 
-    :param x: the nodeId or the name of the first node
-    :param y: the nodeId or the name of the second node
+    Parameters
+    ----------
+    x : int|str
+      the nodeId or the name of the first node
+    y : int|str
+      the nodeId or the name of the second node
     """
     ix = self.__observationalBN.idFromName(x) if isinstance(x, str) else x
     iy = self.__observationalBN.idFromName(y) if isinstance(y, str) else y
@@ -233,10 +280,17 @@ class CausalModel:
     """
     Does the arc x->y exist ?
 
-    :param x: the nodeId or the name of the first node
-    :param y: the nodeId or the name of the second node
+    Parameters
+    ----------
+    x : int|str
+      the nodeId or the name of the first node
+    y : int|str
+      the nodeId or the name of the second node
 
-    :return: True if the arc exists.
+    Returns
+    -------
+    bool
+      True if the arc exists.
     """
     ix = self.__observationalBN.idFromName(x) if isinstance(x, str) else x
     iy = self.__observationalBN.idFromName(y) if isinstance(y, str) else y

@@ -10,9 +10,13 @@ It is used to represent probabilities and utilities tables in aGrUMs' multidimen
 
     >>> a=gum.RangeVariable("A","variable A",1,3)
     >>> b=gum.RangeVariable("B","variable B",1,2)
-    >>> p=gum.Potential().add(a).add(b).fillWith([1,2,3,4,5,6]);
+    >>> p=gum.Potential().add(a).add(b).fillWith([1,2,3,4,5,6])
     >>> print(p)
-    <A:1|B:1> :: 1 /<A:2|B:1> :: 2 /<A:3|B:1> :: 3 /<A:1|B:2> :: 4 /<A:2|B:2> :: 5 /<A:3|B:2> :: 6
+          ||  A                          |
+    B     ||1        |2        |3        |
+    ------||---------|---------|---------|
+    1     || 1.0000  | 2.0000  | 3.0000  |
+    2     || 4.0000  | 5.0000  | 6.0000  |
 
 * If a :py:class:`pyAgrum.Potential` with the sequence of :py:class:`pyAgrum.DiscreteVariable` X,Y,Z represents a conditional probability Table (CPT), it will be P(X|Y,Z).
 
@@ -20,7 +24,11 @@ It is used to represent probabilities and utilities tables in aGrUMs' multidimen
 .. code-block:: python
 
     >>> print(p.normalizeAsCPT())
-    <A:1|B:1> :: 0.166667 /<A:2|B:1> :: 0.333333 /<A:3|B:1> :: 0.5 /<A:1|B:2> :: 0.266667 /<A:2|B:2> :: 0.333333 /<A:3|B:2> :: 0.4
+          ||  A                          |
+    B     ||1        |2        |3        |
+    ------||---------|---------|---------|
+    1     || 0.1667  | 0.3333  | 0.5000  |
+    2     || 0.2667  | 0.3333  | 0.4000  |
 
 
 * For addressing and looping in a :py:class:`pyAgrum.Potential` structure, pyAgrum provides :py:class:`Instantiation` class which represents a multi-dimensionnal index.
@@ -48,9 +56,24 @@ It is used to represent probabilities and utilities tables in aGrUMs' multidimen
     >>> c=gum.RangeVariable("C","variable C",1,5)
     >>> q=gum.Potential().add(a).add(c).fillWith(1)
     >>> print(p+q)
-    <A:1|C:1|B:1> :: 2 /<A:2|C:1|B:1> :: 3 /<A:3|C:1|B:1> :: 4 /<A:1|C:2|B:1> :: 2 /<A:2|C:2|B:1> :: 3 /<A:3|C:2|B:1> :: 4 /<A:1|C:3|B:1> :: 2 /<A:2|C:3|B:1> :: 3 /<A:3|C:3|B:1> :: 4 /<A:1|C:4|B:1> :: 2 /<A:2|C:4|B:1> :: 3 /<A:3|C:4|B:1> :: 4 /<A:1|C:5|B:1> :: 2 /<A:2|C:5|B:1> :: 3 /<A:3|C:5|B:1> :: 4 /<A:1|C:1|B:2> :: 5 /<A:2|C:1|B:2> :: 6 /<A:3|C:1|B:2> :: 7 /<A:1|C:2|B:2> :: 5 /<A:2|C:2|B:2> :: 6 /<A:3|C:2|B:2> :: 7 /<A:1|C:3|B:2> :: 5 /<A:2|C:3|B:2> :: 6 /<A:3|C:3|B:2> :: 7 /<A:1|C:4|B:2> :: 5 /<A:2|C:4|B:2> :: 6 /<A:3|C:4|B:2> :: 7 /<A:1|C:5|B:2> :: 5 /<A:2|C:5|B:2> :: 6 /<A:3|C:5|B:2> :: 7
+                 ||  A                          |
+    C     |B     ||1        |2        |3        |
+    ------|------||---------|---------|---------|
+    1     |1     || 1.1667  | 1.3333  | 1.5000  |
+    2     |1     || 1.1667  | 1.3333  | 1.5000  |
+    3     |1     || 1.1667  | 1.3333  | 1.5000  |
+    4     |1     || 1.1667  | 1.3333  | 1.5000  |
+    5     |1     || 1.1667  | 1.3333  | 1.5000  |
+    1     |2     || 1.2667  | 1.3333  | 1.4000  |
+    2     |2     || 1.2667  | 1.3333  | 1.4000  |
+    3     |2     || 1.2667  | 1.3333  | 1.4000  |
+    4     |2     || 1.2667  | 1.3333  | 1.4000  |
+    5     |2     || 1.2667  | 1.3333  | 1.4000  |
     >>> print((p*q).margSumOut(["B","C"])) # marginalize p*q over B and C(using sum)
-    <A:1> :: 25 /<A:2> :: 35 /<A:3> :: 45
+      A                          |
+    1        |2        |3        |
+    ---------|---------|---------|
+     2.1667  | 3.3333  | 4.5000  |
 
 Instantiation
 -------------

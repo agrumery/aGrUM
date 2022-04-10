@@ -87,12 +87,16 @@ def getTimeSlicesRange(dbn):
   """
   get the range and (name,radical) of each variables
 
-  :param dbn: a 2TBN or an unrolled BN
-  :return: all the timeslice of a dbn
+  Parameters
+  ----------
+  dbn: gum.BayesNet
+    a 2TBN or an unrolled BN
 
-  e.g.
-  ['0','t'] for a classic 2TBN
-  range(T) for a classic unrolled BN
+
+  Returns
+  ------
+  Dict[str,List[T[str,str]]]
+    all the timeslice of a dbn : ['0','t'] for a classic 2TBN, range(T) for a classic unrolled BN
   """
   timeslices = {}
 
@@ -111,8 +115,15 @@ def is2TBN(bn):
   """
   Check if bn is a 2 TimeSlice Bayesian network
 
-  :param bn: the Bayesian network
-  :return: True if the BN is syntaxically correct to be a 2TBN
+  Parameters
+  ----------
+  bn: pyAgrum.BayesNet
+    the Bayesian network
+
+  Returns
+  -------
+  bool
+    True if the BN is syntaxically correct to be a 2TBN
   """
   ts = getTimeSlicesRange(bn)
   if not set(ts.keys()) <= {noTimeCluster, "0", "t"}:
@@ -137,6 +148,11 @@ def is2TBN(bn):
 def _TimeSlicesToDot(dbn):
   """
   Try to correctly represent dBN and 2TBN in dot format
+
+  Parameters
+  ----------
+  dbn: pyAgrum.BayesNet
+    a 2TBN or an unrolled BN
   """
   timeslices = getTimeSlicesRange(dbn)
 
@@ -184,8 +200,12 @@ def showTimeSlices(dbn, size=None):
   """
   Try to correctly display dBN and 2TBN
 
-  :param dbn: the dynamic BN
-  :param size: size of the fig
+  Parameters
+  ----------
+  dbn: pyAgrum.BayesNet
+    a 2TBN or an unrolled BN
+  size: int or str
+    size of the fig
   """
 
   # jupyter notebooks is optional
@@ -201,8 +221,12 @@ def getTimeSlices(dbn, size=None):
   """
   Try to correctly represent dBN and 2TBN as an HTML string
 
-  :param dbn: the dynamic BN
-  :param size: size of the fig
+  Parameters
+  ----------
+  dbn: pyAgrum.BayesNet
+    a 2TBN or an unrolled BN
+  size: int or str
+    size of the fig
   """
   # jupyter notebooks is optional
   # pylint: disable=import-outside-toplevel
@@ -217,10 +241,17 @@ def unroll2TBN(dbn, nbr):
   """
   unroll a 2TBN given the nbr of timeslices
 
-  :param dbn: the dBN
-  :param nbr: the number of timeslice
+  Parameters
+  ----------
+  dbn: pyAgrum.BayesNet
+    a 2TBN or an unrolled BN
+  nbr: int
+   the number of timeslice
 
-  :return: unrolled BN from a 2TBN and the nbr of timeslices
+  Returns
+  -------
+  pyAgrum.BayesNet
+    unrolled BN from a 2TBN and the nbr of timeslices
   """
   ts = getTimeSlicesRange(dbn)
   if not {noTimeCluster, "0", "t"}.issuperset(ts.keys()) and {"0", "t"}.issubset(ts.keys()):

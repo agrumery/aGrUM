@@ -5,6 +5,7 @@ In aGrUM, graphs are undirected (using edges), directed (using arcs) or mixed (u
 
 For all types of graphs, nodes are int. If a graph of objects is needed (like :py:class:`pyAgrum.BayesNet`), the objects are mapped to nodeIds.
 
+
 Edges and Arcs
 --------------
 
@@ -12,6 +13,7 @@ Arc
 ^^^
 
 .. autoclass:: pyAgrum.Arc
+
 
 Edge
 ^^^^

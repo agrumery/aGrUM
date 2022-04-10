@@ -39,11 +39,21 @@ def backdoor_path(bn: "pyAgrum.BayesNet", x: str, y: str, zset: NameSet = None)-
   Predicate on the existence of an open back door path from ``x`` to ``y``,
   conditioning on the set of variables ``zset``
 
-  :param bn: the DAG model
-  :param x: name of source node
-  :param y: name of destination node
-  :param zset: names of conditioning nodes
-  :return: True if such backdoor exists
+  Parameters
+  ----------
+  bn: pyAgrum.BayesNez
+      the DAG model
+  x: str
+      name of source node
+  y: str
+      name of destination node
+  zset: Set[str]
+      names of conditioning nodes
+
+  Returns
+  -------
+  bool
+      True if such backdoor exists
   """
   if zset is None:
     zset = set()
@@ -55,11 +65,20 @@ def exists_unblocked_directed_path(bn: "pyAgrum.BayesNet", x: str, y: str, zset:
   Predicate on the existence of a directed path from ``x`` to ``y`` in the Bayesian network ``bn``
   not blocked by nodes of ``zset``
 
-  :param bn:
-  :param x:
-  :param y:
-  :param zset:
-  :return:
+  Parameters
+  ----------
+  bn: pyAgrum.BayesNez
+      the DAG model
+  x: str
+      name of source node
+  y: str
+      name of destination node
+  zset: Set[str]
+      names of conditioning nodes
+
+  Returns
+  -------
+  bool
   """
   if zset is None:
     zset = set()
@@ -76,13 +95,21 @@ def is_frontdoor(bn: "pyAgrum.BayesNet", x: str, y: str, zset: NameSet) -> bool:
   """
   Tests whether or not ``zset`` satisifies the front door criterion for ``x`` and ``y``, in the Bayesian network ``bn``
 
-  :param bn:
-  :param x:
-  :param y:
-  :param zset:
-  :return:
-  """
+  Parameters
+  ----------
+  bn: pyAgrum.BayesNez
+      the DAG model
+  x: str
+      name of source node
+  y: str
+      name of destination node
+  zset: Set[str]
+      names of conditioning nodes
 
+  Returns
+  -------
+  bool
+  """
   if exists_unblocked_directed_path(bn, x, y, zset):
     return False
 
@@ -101,11 +128,20 @@ def is_backdoor(bn: "pyAgrum.BayesNet", x: str, y: str, zset: NameSet) -> bool:
   """
   Tests whether or not ``zset`` satisifies the back door criterion for ``x`` and ``y``, in the Bayesian network ``bn``
 
-  :param bn:
-  :param x:
-  :param y:
-  :param zset:
-  :return:
+  Parameters
+  ----------
+  bn: pyAgrum.BayesNez
+      the DAG model
+  x: str
+      name of source node
+  y: str
+      name of destination node
+  zset: Set[str]
+      names of conditioning nodes
+
+  Returns
+  -------
+  bool
   """
 
   desc_x = descendants(bn, x)

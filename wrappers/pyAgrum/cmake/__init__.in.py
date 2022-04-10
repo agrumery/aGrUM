@@ -150,14 +150,27 @@ def availableBNExts():
 def loadBN(filename, listeners=None, verbose=False, **opts):
   """load a BN from a file with optional listeners and arguments
 
-  :param filename: the name of the input file
-  :param listeners: list of functions to execute
-  :param verbose: whether to print or not warning messages
-  :param system: (for O3PRM) name of the system to flatten in a BN
-  :param classpath: (for O3PRM) list of folders containing classes
-  :return: a BN from a file using one of the availableBNExts() suffixes.
+  Parameters
+  ----------
+  filename: str
+      the name of the input file
+  listeners: List[object]
+      list of functions to execute when listening
+  verbose: bool
+      whether to print or not warning messages
+  system: str
+      (for O3PRM) name of the system to flatten in a BN
+  classpath: List[str]
+      (for O3PRM) list of folders containing classes
 
-  Listeners could be added in order to monitor its loading.
+  Returns
+  -------
+  pyAgrum.BayesNet
+      a BN from a file using one of the availableBNExts() suffixes.
+
+  Notes
+  ----
+      Listeners could be added in order to monitor its loading.
 
   Examples
   --------
@@ -216,8 +229,12 @@ def saveBN(bn, filename):
   """
   save a BN into a file using the format corresponding to one of the availableWriteBNExts() suffixes.
 
-  :param bn(gum.BayesNet): the BN to save
-  :param filename(str): the name of the output file
+  Parameters
+  ----------
+  bn : pyAgrum.BayesNet
+    the BN to save
+  filename : str
+    the name of the output file
   """
   extension = filename.split('.')[-1].upper()
   if extension == "BIF":
@@ -240,24 +257,39 @@ def saveBN(bn, filename):
 def availableMNExts():
   """ Give the list of all formats known by pyAgrum to save a Markov network.
 
-  :return: a string which lists all suffixes for supported MN file formats.
+  Returns
+  ------
+  str
+    a string which lists all suffixes for supported MN file formats.
   """
   return "uai"
 
 def availableIDExts():
   """ Give the list of all formats known by pyAgrum to save a influence diagram.
 
-  :return: a string which lists all suffixes for supported ID file formats.
+  Returns
+  ------
+  str
+    a string which lists all suffixes for supported ID file formats.
   """
   return "bifxml"
 
 def loadMN(filename, listeners=None, verbose=False):
   """load a MN from a file with optional listeners and arguments
 
-  :param filename: the name of the input file
-  :param listeners: list of functions to execute
-  :param verbose: whether to print or not warning messages
-  :return: a MN from a file using one of the availableMNExts() suffixes.
+  Parameters
+  ----------
+  filename: str
+    the name of the input file
+  listeners: List[Object]
+    list of functions to execute
+  verbose: bool
+    whether to print or not warning messages
+
+  Returns
+  -------
+  pyAgrum.MarkovNet
+    a MN from a file using one of the availableMNExts() suffixes.
 
   Listeners could be added in order to monitor its loading.
 
@@ -307,8 +339,12 @@ def saveMN(mn, filename):
   """
   save a MN into a file using the format corresponding to one of the availableWriteMNExts() suffixes.
 
-  :param mn(gum.MarkovNet): the MN to save
-  :param filename(str): the name of the output file
+  Parameters
+  ----------
+  mn : pyAgrum.MarkovNet)
+    the MN to save
+  filename : str
+    the name of the output file
   """
   extension = filename.split('.')[-1].upper()
   if extension not in availableMNExts():
@@ -323,10 +359,16 @@ def loadID(filename):
   """
   read a gum.InfluenceDiagram from a ID file
 
-  :param filename: the name of the input file
-  :return: an InfluenceDiagram
-  """
+  Parameters
+  ----------
+  filename: str
+    the name of the input file
 
+  Returns
+  -------
+  pyAgrum.InfluenceDiagram
+    the InfluenceDiagram
+  """
   extension = filename.split('.')[-1].upper()
   if extension != "BIFXML":
     raise InvalidArgument("extension "+extension +
@@ -347,8 +389,12 @@ def saveID(infdiag, filename):
   """
   save an ID into a file using the format corresponding to one of the availableWriteIDExts() suffixes.
 
-  :param ID(gum.InfluenceDiagram): the ID to save
-  :param filename(str): the name of the output file
+  Parameters
+  ----------
+  infdiag : pyAgrum.InfluenceDiagram
+    the Influence Diagram to save
+  filename : str
+    the name of the output file
   """
   extension = filename.split('.')[-1].upper()
   if extension not in availableIDExts():
@@ -360,51 +406,51 @@ def saveID(infdiag, filename):
 
 def fastBN(structure, domain_size=2):
   """
-Create a Bayesian network with a dot-like syntax which specifies:
-    - the structure 'a->b->c;b->d<-e;',
-    - the type of the variables with different syntax (cf documentation).
+  Create a Bayesian network with a dot-like syntax which specifies:
+      - the structure 'a->b->c;b->d<-e;',
+      - the type of the variables with different syntax (cf documentation).
 
-Examples
---------
->>> import pyAgrum as gum
->>> bn=gum.fastBN('A->B[1,3]<-C{yes|No}->D[2,4]<-E[1,2.5,3.9]',6)
+  Examples
+  --------
+  >>> import pyAgrum as gum
+  >>> bn=gum.fastBN('A->B[1,3]<-C{yes|No}->D[2,4]<-E[1,2.5,3.9]',6)
 
-Parameters
-----------
-structure : str
-        the string containing the specification
-domain_size : int
-        the default domain size for variables
+  Parameters
+  ----------
+  structure : str
+          the string containing the specification
+  domain_size : int
+          the default domain size for variables
 
-Returns
--------
-pyAgrum.BayesNet
-        the resulting bayesian network
+  Returns
+  -------
+  pyAgrum.BayesNet
+          the resulting bayesian network
   """
   return BayesNet.fastPrototype(structure, domain_size)
 
 def fastMN(structure, domain_size=2):
   """
-Create a Markov network with a modified dot-like syntax which specifies:
-    - the structure 'a-b-c;b-d;c-e;' where each chain 'a-b-c' specifies a factor,
-    - the type of the variables with different syntax (cf documentation).
+  Create a Markov network with a modified dot-like syntax which specifies:
+      - the structure 'a-b-c;b-d;c-e;' where each chain 'a-b-c' specifies a factor,
+      - the type of the variables with different syntax (cf documentation).
 
-Examples
---------
->>> import pyAgrum as gum
->>> bn=gum.fastMN('A--B[1,3]--C{yes|No};C--D[2,4]--E[1,2.5,3.9]',6)
+  Examples
+  --------
+  >>> import pyAgrum as gum
+  >>> bn=gum.fastMN('A--B[1,3]--C{yes|No};C--D[2,4]--E[1,2.5,3.9]',6)
 
-Parameters
-----------
-structure : str
-        the string containing the specification
-domain_size : int
-        the default domain size for variables
+  Parameters
+  ----------
+  structure : str
+          the string containing the specification
+  domain_size : int
+          the default domain size for variables
 
-Returns
--------
-pyAgrum.MarkovNet
-        the resulting Markov network
+  Returns
+  -------
+  pyAgrum.MarkovNet
+          the resulting Markov network
   """
   return MarkovNet.fastPrototype(structure, domain_size)
 
@@ -412,31 +458,31 @@ pyAgrum.MarkovNet
 
 def fastID(structure, domain_size=2):
   """
-Create an Influence Diagram with a modified dot-like syntax which specifies:
-    - the structure 'a->b<-c;b->d;c<-e;',
-    - the type of the variables with different syntax (cf documentation),
-    - a prefix for the type of node (chance/decision/utiliy nodes):
+  Create an Influence Diagram with a modified dot-like syntax which specifies:
+      - the structure 'a->b<-c;b->d;c<-e;',
+      - the type of the variables with different syntax (cf documentation),
+      - a prefix for the type of node (chance/decision/utiliy nodes):
 
-      - ``a`` : a chance node named 'a' (by default)
-      - ``$a`` : a utility node named 'a'
-      - ``*a`` : a decision node named 'a'
+        - ``a`` : a chance node named 'a' (by default)
+        - ``$a`` : a utility node named 'a'
+        - ``*a`` : a decision node named 'a'
 
-Examples
---------
->>> import pyAgrum as gum
->>> bn=gum.fastID('A->B[1,3]<-*C{yes|No}->$D<-E[1,2.5,3.9]',6)
+  Examples
+  --------
+  >>> import pyAgrum as gum
+  >>> bn=gum.fastID('A->B[1,3]<-*C{yes|No}->$D<-E[1,2.5,3.9]',6)
 
-Parameters
-----------
-structure : str
-        the string containing the specification
-domain_size : int
-        the default domain size for variables
+  Parameters
+  ----------
+  structure : str
+          the string containing the specification
+  domain_size : int
+          the default domain size for variables
 
-Returns
--------
-pyAgrum.InfluenceDiagram
-        the resulting Influence Diagram
+  Returns
+  -------
+  pyAgrum.InfluenceDiagram
+          the resulting Influence Diagram
   """
   return InfluenceDiagram.fastPrototype(structure, domain_size)
 
@@ -455,7 +501,7 @@ def getPosterior(model, evs, target):
   bn : pyAgrum.BayesNet or pyAgrum.MarkovNet
     The probabilistic Graphical Model
   evs:  dictionaryDict
-    {name/id:val, name/id : [ val1, val2 ], ...}
+    {name|id:val, name|id : [ val1, val2 ], ...}
   target: string or int
     variable name or id
 
@@ -477,25 +523,30 @@ def getPosterior(model, evs, target):
   return Potential(inf.posterior(target))
 
 
-def generateSample(bn, n=1, name_out=None, show_progress=False, with_labels=False, random_order=True):
+def generateSample(bn, n=1, name_out=None, show_progress=False, with_labels=True, random_order=True):
   """
   generate a CSV file of samples from a bn.
 
-  :param bn: the BN from which the sample is generated
-  :type bn: pyAgrum.BayesNet
-  :param n: the number of samples
-  :type n: int
-  :param name_out: the name for the output csv filename. If name_out is None, a pandas.DataFrame is generated
-  :type name_out: string
-  :param show_progress: if True, show a progress bar
-  :type show_progress: boolean
-  :param with_labels: if True, use the labels of the modalities of variables in the csv. If False, use their ids.
-  :type with_labels: boolean
-  :param random_order: if True, the columns in the csv are randomized sorted
-  :type random_order: boolean
-  :return: the log2-likelihood of the generated base or if name_out is None, the couple (generated pandas.DataFrame,log2-likelihood)
-  """
+  Parameters
+  ----------
+  bn: pyAgrum.BayesNet
+    the Bayes Net from which the sample is generated
+  n: int
+    the number of samples
+  name_out: str
+    the name for the output csv filename. If name_out is None, a pandas.DataFrame is generated
+  show_progress: bool
+    if True, show a progress bar. Default is False
+  with_labels: bool
+    if True, use the labels of the modalities of variables in the csv. If False, use their ids. Default is True
+  random_order: bool
+    if True, the columns in the csv are randomized sorted. Default is True
 
+  Returns
+  -------
+  float|Tuple[pandas.DataFrame,float]
+    the log2-likelihood of the generated base or if name_out is None, the couple (generated pandas.DataFrame,log2-likelihood)
+  """
   genere = BNDatabaseGenerator(bn)
   if show_progress:
     from tqdm import tqdm

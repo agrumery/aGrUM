@@ -37,10 +37,15 @@ def export(model, filename=None, **kwargs):
   """
   export the graphical representation of the model in filename (png, pdf,etc.)
 
-  :param GraphicalModel model: the model to show (pyAgrum.BayesNet, pyAgrum.MarkovNet, pyAgrum.InfluenceDiagram or pyAgrum.Potential)
-  :param str filename: the name of the resulting file (suffix in ['pdf', 'png', 'fig', 'jpg', 'svg', 'ps']). If filename is None, the result is a np.array ready to be used with imshow().
+  Parameters
+  ----------
+  model: pyAgrum.GraphicalModel
+      the model to show (pyAgrum.BayesNet, pyAgrum.MarkovNet, pyAgrum.InfluenceDiagram or pyAgrum.Potential)
+  filename: str
+      the name of the resulting file (suffix in ['pdf', 'png', 'fig', 'jpg', 'svg', 'ps']). If filename is None, the result is a np.array ready to be used with imshow().
 
-  .. warning::
+  Note
+  ----
     Model can also just possess a method `toDot()` or even be a simple string in dot syntax.
   """
   if filename is None:
@@ -98,20 +103,46 @@ def prepareShowInference(model, engine=None, evs=None, targets=None, size=None,
   """
   Transform an inference for a model in a dot representation
 
-  :param model:
-  :param engine:
-  :param evs:
-  :param targets:
-  :param size:
-  :param nodeColor:
-  :param factorColor:
-  :param arcWidth:
-  :param arcColor:
-  :param cmap:
-  :param cmapArc:
-  :param graph:
-  :param view:
-  :return:
+  Parameters
+  ----------
+  model: pyAgrum:GraphicalModel
+      the model in which to infer (pyAgrum.BayesNet, pyAgrum.MarkovNet or pyAgrum.InfluenceDiagram)
+  filename: str
+      the name of the resulting file (suffix in ['pdf', 'png', 'ps']). If filename is None, the result is a np.array ready to be used with imshow().
+  engine: pyAgrum.Inference
+      inference algorithm used. If None, gum.LazyPropagation will be used for BayesNet,gum.ShaferShenoy for gum.MarkovNet and gum.ShaferShenoyLIMIDInference for gum.InfluenceDiagram.
+  evs: Dict[str,str|int]
+      map of evidence
+  targets: Set[str|int]
+      set of targets
+  size: str
+      size of the rendered graph
+  nodeColor: Dict[int,float]
+      a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  factorColor: Dict[int,float]
+      a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovNet representation)
+  arcWidth: Dict[(int,int),float]
+      a arcMap of values to be shown as width of arcs
+  arcColor: Dict[(int,int),float]
+      a arcMap of values (between 0 and 1) to be shown as color of arcs
+  cmap: matplotlib.colors.ColorMap
+      color map to show the color of nodes and arcs
+  cmapArc: matplotlib.colors.ColorMap
+      color map to show the vals of Arcs.
+  graph: pyAgrum.Graph
+      only shows nodes that have their id in the graph (and not in the whole BN)
+  view: str
+      graph | factorgraph | None (default) for Markov network
+
+  Raises
+  ------
+  pyAgrum.InvalidArgument:
+      if the arg is invalid
+
+  Returns
+  -------
+  str
+      the obtained graph as a string
   """
   if size is None:
     size = gum.config["notebook", "default_graph_inference_size"]
@@ -158,7 +189,7 @@ def prepareShowInference(model, engine=None, evs=None, targets=None, size=None,
                            )
 
   raise gum.InvalidArgument(
-    "Argument model should be a PGM (BayesNet, MarkovNet or Influence Diagram"
+    "Argument model should be a PGM (BayesNet, MarkovNet or Influence Diagram)"
   )
 
 
@@ -166,8 +197,15 @@ def prepareLinksForSVG(mainSvg):
   """
   Inlining links in svg
 
-  :param mainSvg:
-  :return: the new version with inlined links
+  Parameters
+  ----------
+  mainSvg: str
+    the main svg to be changed
+
+  Returns
+  ------
+  str
+      the new version with inlined links
   """
   re_images = re.compile(r"(<image [^>]*>)")
   re_xlink = re.compile(r"xlink:href=\"([^\"]*)")
@@ -212,7 +250,10 @@ def dot_as_svg_string(gr, size):
   """
   repr a pydot graph in a notebook
 
-  :param string size : size of the rendered graph
+  Parameters
+  ----------
+  size : str
+      size of the rendered graph
   """
   if size is not None:
     gr.set_size(size)
@@ -225,23 +266,41 @@ def exportInference(model, filename=None, **kwargs):
   """
   the graphical representation of an inference in a notebook
 
-  :param GraphicalModel model: the model in which to infer (pyAgrum.BayesNet, pyAgrum.MarkovNet or
-          pyAgrum.InfluenceDiagram)
-  :param str filename: the name of the resulting file (suffix in ['pdf', 'png', 'ps']). If filename is None, the result is a np.array ready to be used with imshow().
-  :param gum.Inference engine: inference algorithm used. If None, gum.LazyPropagation will be used for BayesNet,
-          gum.ShaferShenoy for gum.MarkovNet and gum.ShaferShenoyLIMIDInference for gum.InfluenceDiagram.
-  :param dictionnary evs: map of evidence
-  :param set targets: set of targets
-  :param string size: size of the rendered graph
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
-  :param factorColor: a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovNet representation)
-  :param arcWidth: a arcMap of values to be shown as width of arcs
-  :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
-  :param cmap: color map to show the color of nodes and arcs
-  :param cmapArc: color map to show the vals of Arcs.
-  :param graph: only shows nodes that have their id in the graph (and not in the whole BN)
-  :param view: graph | factorgraph | None (default) for Markov network
-  :return: the desired representation of the inference
+  Parameters
+  ----------
+  model: pyAgrum:GraphicalModel
+      the model in which to infer (pyAgrum.BayesNet, pyAgrum.MarkovNet or pyAgrum.InfluenceDiagram)
+  filename: str
+      the name of the resulting file (suffix in ['pdf', 'png', 'ps']). If filename is None, the result is a np.array ready to be used with imshow().
+  engine: pyAgrum.Inference
+      inference algorithm used. If None, gum.LazyPropagation will be used for BayesNet,gum.ShaferShenoy for gum.MarkovNet and gum.ShaferShenoyLIMIDInference for gum.InfluenceDiagram.
+  evs: Dict[str,str|int]
+      map of evidence
+  targets: Set[str|int]
+      set of targets
+  size: str
+      size of the rendered graph
+  nodeColor: Dict[int,float]
+      a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  factorColor: Dict[int,float]
+      a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovNet representation)
+  arcWidth: Dict[(int,int),float]
+      a arcMap of values to be shown as width of arcs
+  arcColor: Dict[(int,int),float]
+      a arcMap of values (between 0 and 1) to be shown as color of arcs
+  cmap: matplotlib.colors.ColorMap
+      color map to show the color of nodes and arcs
+  cmapArc: matplotlib.colors.ColorMap
+      color map to show the vals of Arcs.
+  graph: pyAgrum.Graph
+      only shows nodes that have their id in the graph (and not in the whole BN)
+  view: str
+      graph | factorgraph | None (default) for Markov network
+
+  Returns
+  -------
+  str|dot.Dot
+    the desired representation of the inference
   """
   if filename is None:
     tmp = tempfile.NamedTemporaryFile(suffix='.png', delete=False)
