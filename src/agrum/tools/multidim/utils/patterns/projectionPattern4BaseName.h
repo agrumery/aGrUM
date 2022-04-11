@@ -186,7 +186,7 @@ namespace gum {
       // but before doing so, check whether there exist positive_before_incr.
       // If this is not the case, optimize by not using before_incr at all
       if (!nb_positive_before_incr) {
-        Idx           result_offset = 0;
+        Idx result_offset = 0;
         // TODO: change into Instantiation table_inst(table); when Potentials will support
         // thread-safe creations of Instantiations
         Instantiation table_inst;
@@ -215,7 +215,7 @@ namespace gum {
       } else {
         // here there are positive before_incr and we should use them to know
         // when result_offset needs be changed
-        Idx           result_offset = 0;
+        Idx result_offset = 0;
         // TODO: change into Instantiation table_inst(table); when Potentials support
         // thread-safe creations of Instantiations
         Instantiation table_inst;
@@ -369,7 +369,7 @@ namespace gum {
       // but before doing so, check whether there exist positive_before_incr.
       // If this is not the case, optimize by not using before_incr at all
       if (!has_before_incr) {
-        Idx           result_offset = 0;
+        Idx result_offset = 0;
         // TODO: change into Instantiation table_inst(table); when Potentials will support
         // thread-safe creations of Instantiations
         Instantiation table_inst;
@@ -397,7 +397,7 @@ namespace gum {
       } else {
         // here there are positive before_incr and we should use them to know
         // when result_offset needs be changed
-        Idx           result_offset = 0;
+        Idx result_offset = 0;
         // TODO: change into Instantiation table_inst(table); when Potentials will support
         // thread-safe creations of Instantiations
         Instantiation table_inst;

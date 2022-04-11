@@ -202,7 +202,7 @@ namespace gum {
     // corresponds to the variables that belongs both to t1 and t2. The middle
     // loop to the variables that belong to t2 but not to t1. Finally, the
     // outer loop corresponds to the variables that belong to t1 but not t2.
-    Idx           result_offset = 0;
+    Idx result_offset = 0;
     // TODO: change the followings lines into:
     // Instantiation t2_inst(t2);
     // Instantiation t1_inst(t1);
@@ -211,9 +211,12 @@ namespace gum {
     Instantiation t2_inst;
     Instantiation t1_inst;
     Instantiation t1_alone_begin_inst;
-    for (const auto var: t2_vars) t2_inst.add(*var);
-    for (const auto var: t1_vars) t1_inst.add(*var);
-    for (const auto var: t1_vars) t1_alone_begin_inst.add(*var);
+    for (const auto var: t2_vars)
+      t2_inst.add(*var);
+    for (const auto var: t1_vars)
+      t1_inst.add(*var);
+    for (const auto var: t1_vars)
+      t1_alone_begin_inst.add(*var);
 
     // test if all the variables in common in t1 and t2 are the first variables
     // and are in the same order. In this case, we can speed-up the

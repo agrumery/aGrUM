@@ -95,7 +95,7 @@ namespace gum {
     Instantiation table_inst;
     for (const auto var: table->variablesSequence())
       table_inst.add(*var);
-    GUM_SCALAR    current_val = GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL;
+    GUM_SCALAR current_val = GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL;
 
     if (instantiation) {
       GUM_SCALAR old_val     = current_val;

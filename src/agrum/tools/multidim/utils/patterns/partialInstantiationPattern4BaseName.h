@@ -145,7 +145,7 @@ namespace gum {
       Instantiation table_inst;
       for (const auto var: table->variablesSequence())
         table_inst.add(*var);
-      const GUM_SCALAR&   any_element = *(table->get(table_inst));
+      const GUM_SCALAR& any_element = *(table->get(table_inst));
 
       for (Idx i = 0; i < result_domain_size; ++i) {
         result->unsafeSet(i, new GUM_SCALAR(any_element));
