@@ -12,8 +12,12 @@ def addTests(ts, cl):
   """
   adding test methods (which names begin by 'test')of class cl in testsuite ts
 
-  :param ts: test suite
-  :param cl: class
+  Parameters
+  ----------
+  ts
+    the test suite
+  cl
+    the test class t odd
   """
   for met, _ in inspect.getmembers(cl):
     if met[0:4] == 'test':

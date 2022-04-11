@@ -155,11 +155,18 @@ def backdoor_reach(bn: "pyAgrum.BayesNet", a: NodeId) -> NodeSet:
   """
   Returns the set of nodes that can be reached through a backdoor path from ``a`` in the graph ``bn``
 
-  :param bn:
-  :param a:
-  :return:
-  """
+  Parameters
+  ----------
+  bn: pyAgrum.BayesNet
+    the model
+  a: int
+    the backdoor-ed node
 
+  Returns
+  -------
+  Set[int]
+    set of nodes
+  """
   def inner_br(bn: "pyAgrum.BayesNet", x: NodeId, pht: bool, reach0: NodeSet, reach1: NodeSet):
     for c in bn.children(x):
       if c not in reach0 and c not in reach1:
@@ -172,9 +179,9 @@ def backdoor_reach(bn: "pyAgrum.BayesNet", a: NodeId) -> NodeSet:
           reach0.add(p)
           inner_br(bn, p, False, reach0, reach1)
 
-  r = set([a])
+  r = {a}
   r.union(bn.parents(a))
-  l = set([a])
+  l = {a}
   for pa in bn.parents(a):
     inner_br(bn, pa, False, r, l)
   s = r | l
@@ -185,14 +192,18 @@ def backdoor_reach(bn: "pyAgrum.BayesNet", a: NodeId) -> NodeSet:
 
 def nodes_on_dipath(bn: "pyAgrum.BayesNet", x: NodeId, y: NodeId) -> Optional[NodeSet]:
   """
-  Returns the set of nodes through which there is a directed path from ``x`` to ``y`` in the graph ``bn``
+  Returns the set of nodes through which there is a directed path from `x` to `y` in the graph `bn`
 
-  :param bn:
-  :param x:
-  :param y:
-  :return:
+  Parameters
+  ----------
+  bn: pyAgrum.BayesNet
+  x  int
+  y: int
+
+  Returns
+  -------
+  Set[int] (maybe None)
   """
-
   def inner_nod(g: "pyAgrum.BayesNet", a: NodeId, b: NodeId) -> Optional[NodeSet]:
     if b == a:
       return set()
@@ -218,17 +229,22 @@ def nodes_on_dipath(bn: "pyAgrum.BayesNet", x: NodeId, y: NodeId) -> Optional[No
   return r
 
 
-def backdoor_generator(bn: "pyAgrum.BayesNet", cause: NodeId, effect: NodeId, not_bd: NodeSet = None) -> Iterator[
-  NodeList]:
+def backdoor_generator(bn: "pyAgrum.BayesNet", cause: NodeId, effect: NodeId, not_bd: NodeSet = None):
   """
-  Generates backdoor sets for the pair of nodes ``(x, y)`` in the graph ``bn`` excluding the nodes in the set
-  ``not_bd`` (optional)
+  Generates backdoor sets for the pair of nodes `(cause, effect)` in the graph `bn` excluding the nodes in the set
+  `not_bd` (optional)
 
-  :param bn:
-  :param cause:
-  :param effect:
-  :param not_bd:
-  :return:
+  Parameters
+  ----------
+  bn: pyAgrum.BayesNet
+  cause: int
+  effect: int
+  not_bd: Set[int] default=None
+
+  Yields
+  -------
+  List[int]
+    the different backdoors
   """
   if len(bn.parents(cause)) == 0:  # no parent of cause, no backdoor
     return
@@ -272,16 +288,22 @@ def backdoor_generator(bn: "pyAgrum.BayesNet", cause: NodeId, effect: NodeId, no
         yield list(subset)
 
 
-def frontdoor_generator(bn: "pyAgrum.BayesNet", x: NodeId, y: NodeId, not_fd: NodeSet = None) -> Iterator[NodeList]:
+def frontdoor_generator(bn: "pyAgrum.BayesNet", x: NodeId, y: NodeId, not_fd: NodeSet = None):
   """
-  Generates frontdoor sets for the pair of nodes ``(x, y)`` in the graph ``bn`` excluding the nodes in the set
-  ``not_fd`` (optional)
+  Generates frontdoor sets for the pair of nodes `(x, y)` in the graph `bn` excluding the nodes in the set
+  `not_fd` (optional)
 
-  :param bn:
-  :param x:
-  :param y:
-  :param not_fd:
-  :return:
+  Parameters
+  ----------
+  bn: pyAgrum.BayesNet
+  x: int
+  y: int
+  not_fd: Set[int] default=None
+
+  Yields
+  -------
+  List[int]
+    the different frontdoors
   """
   if isParent(x, y, bn):
     return

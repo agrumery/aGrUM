@@ -312,19 +312,28 @@ class CausalModel:
   def backDoor(self, cause: Union[NodeId, str], effect: Union[NodeId, str], withNames: bool = True) -> Union[
     None, NameSet, NodeSet]:
     """
-    Check if a backdoor exists between cause and effet
+    Check if a backdoor exists between `cause` and `effect`
 
-    :param cause: the nodeId or the name of the cause
-    :param effect: the nodeId or the name of the effect
-    :param withNames: does the function return the set of NodeId or the set of name ?
-    :return: None if no backdoor has been found. Otherwise the set of NodeId or names of the backdoor.
+    Parameters
+    ----------
+    cause: int|str
+      the nodeId or the name of the cause
+    effect: int|str
+      the nodeId or the name of the effect
+    withNames: bool
+      wether we use ids (int) or names (str)
+
+    Returns
+    -------
+    None|Set[str]|Set[int]
+      None if no found backdoor. Otherwise return the found backdoors as set of ids or set of names.
     """
     icause = self.__observationalBN.idFromName(cause) if isinstance(cause, str) else cause
     ieffect = self.__observationalBN.idFromName(effect) if isinstance(effect, str) else effect
 
     for bd in backdoor_generator(self, icause, ieffect, self.latentVariablesIds()):
       if withNames:
-        return [self.__observationalBN.variable(i).name() for i in bd]
+        return {self.__observationalBN.variable(i).name() for i in bd}
 
       return bd
 
@@ -335,17 +344,26 @@ class CausalModel:
     """
     Check if a frontdoor exists between cause and effet
 
-    :param cause: the nodeId or the name of the cause
-    :param effect: the nodeId or the name of the effect
-    :param withNames: does the function return the set of NodeId or the set of name ?
-    :return: None if no frontdoor has been found. Otherwise the set of NodeId or names of the frontdoor.
+    Parameters
+    ----------
+    cause: int|str
+      the nodeId or the name of the cause
+    effect: int|str
+      the nodeId or the name of the effect
+    withNames: bool
+      wether we use ids (int) or names (str)
+
+    Returns
+    -------
+    None|Set[str]|Set[int]
+      None if no found frontdoot. Otherwise return the found frontdoors as set of ids or set of names.
     """
     icause = self.__observationalBN.idFromName(cause) if isinstance(cause, str) else cause
     ieffect = self.__observationalBN.idFromName(effect) if isinstance(effect, str) else effect
 
     for fd in frontdoor_generator(self, icause, ieffect, self.latentVariablesIds()):
       if withNames:
-        return [self.__observationalBN.variable(i).name() for i in fd]
+        return {self.__observationalBN.variable(i).name() for i in fd}
 
       return fd
 
@@ -355,10 +373,18 @@ class CausalModel:
 def inducedCausalSubModel(cm: CausalModel, sns: NodeSet = None) -> CausalModel:
   """
   Create an causal model induced by a subset of nodes.
-  :param cm:  the causal model
-  :param sns: the set of nodes
 
-  :return: the sub-causal model
+  Parameters
+  ----------
+  cm: CausalModel
+    the causal model
+  sns: Set[int]
+    the set of nodes
+
+  Returns
+  -------
+  CausalModel
+    the induced sub-causal model
   """
   if sns is None:
     sns = cm.nodes()

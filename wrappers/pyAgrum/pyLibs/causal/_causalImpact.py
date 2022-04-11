@@ -58,12 +58,23 @@ def causalImpact(cm: CausalModel,
   ``on`` is simply returned. If the impact is not identifiable the formula and the adjustment will be ``None`` but an
   explanation  is still given.
 
-  :param cm: causal model
-  :param on: variable name or variable names set
-  :param doing: variable name or variable names set
-  :param knowing: variable names set
-  :param values: Dictionary
-  :return: the CausalFormula, the computation, the explanation
+  Parameters
+  ----------
+  cm: CausalModel
+    the causal model
+  on: str|NameSet
+    variable name or variable names set of interest
+  doing: str|NameSet
+    the interventions
+  knowing: str|NameSet
+    the observations
+  values: Dict[str,int] default=None
+    the values of interventions and observations
+
+  Returns
+  -------
+  Tuple[CausalFormula,pyAgrum.Potential,str]
+    the CausalFormula, the computation, the explanation
   """
   # Checking the args
   son = {on} if isinstance(on, str) else on
@@ -102,9 +113,9 @@ def causalImpact(cm: CausalModel,
   return formula, potextract, explanation
 
 
-def _causalImpact(cm: CausalModel, on: NameSet,
-                  doing: NameSet,
-                  knowing: NameSet) \
+def _causalImpact(cm: CausalModel, on: Union[str,NameSet],
+                  doing: Union[str,NameSet],
+                  knowing: Union[str,NameSet]) \
    -> Tuple['pyAgrum.causal.CausalFormula', 'pyAgrum.Potential', str]:
   """
   Determines the causal impact of interventions.
@@ -118,11 +129,21 @@ def _causalImpact(cm: CausalModel, on: NameSet,
   ``on`` is simply returned. If the impact is not identifiable the formula and the adjustment will be ``None`` but an
   explanation  is still given.
 
-  :param cm: causal model
-  :param on: variable name or variable names set
-  :param doing: variable name or variable names set
-  :param knowing: variable names set
-  :return: the latex representation, the computation, the explanation
+  Parameters
+  ----------
+  cm: CausalModel
+    the causal model
+  on: str|Set[str]
+    targeted variable(s)
+  doing: str|Set[str]
+    interventions
+  knowing: str|Set[str]
+    observations
+
+  Returns
+  -------
+  Tuple[CausalFormula,pyAgrum.Potential,str]
+    the latex representation, the computation, the explanation
   """
   nY = list(on)
   iY = [cm.observationalBN().idFromName(i) for i in nY]
@@ -195,7 +216,8 @@ def _causalImpact(cm: CausalModel, on: NameSet,
 
 def counterfactualModel(cm: CausalModel, profile: Union[Dict[str, int], type(None)],
                         whatif: Union[str, Set[str]]) -> CausalModel:
-  """Determines the estimation of the twin model following the the three steps algorithm from "The Book Of Why" (Pearl 2018) chapter 8 page 253.
+  """
+  Determines the estimation of the twin model following the three steps algorithm from "The Book Of Why" (Pearl 2018) chapter 8 page 253.
 
   This is done according to the following algorithm:
       -Step 1: calculate the posterior probabilities of idiosyncratic nodes (parentless nodes - whatif-latent variables) in the BN with which we created the causal model with  "profile" as evidence.
@@ -203,18 +225,19 @@ def counterfactualModel(cm: CausalModel, profile: Union[Dict[str, int], type(Non
 
   This function returns the twin CausalModel
 
-  :param cm: CausalModel
-  :param profile: Dictionary
-  :param whatif: variable name or variable names set
-  :param values: Dictionary
-  :type cm: pyAgrum.causal.CausalModel
-  :type profile: Union[Dict[str, int], type(None)]
-  :type on: Union[str, Set[str]]
-  :type whatif: Union[str, Set[str]]
-  :return: the 'twin' causalModel
-  :rtype: CausalModel
-  """
+  Parameters
+  ----------
+  cm: CausalModel
+  profile: Dict[str,int] default=None
+    evidence
+  whatif: str|Set[str]
+    idiosyncratic nodes
 
+  Returns
+  -------
+  CausalModel
+    the twin CausalModel
+  """
   # Step 1 : calculate the posterior probabilities of idiosyncratic nodes knowing the profil
 
   # whatif can be a string or a set of strings
@@ -261,7 +284,8 @@ def counterfactualModel(cm: CausalModel, profile: Union[Dict[str, int], type(Non
 def counterfactual(cm: CausalModel, profile: Union[Dict[str, int], type(None)], on: Union[str, Set[str]],
                    whatif: Union[str, Set[str]],
                    values: Union[Dict[str, int], type(None)] = None) -> "pyAgrum.Potential":
-  """Determines the estimation of a counterfactual query following the the three steps algorithm from "The Book Of Why"
+  """
+  Determines the estimation of a counterfactual query following the the three steps algorithm from "The Book Of Why"
   (Pearl 2018) chapter 8 page 253.
 
   Determines the estimation of the counterfactual query: Given the "profile" (dictionary <variable name>:<value>),what
@@ -277,18 +301,22 @@ def counterfactual(cm: CausalModel, profile: Union[Dict[str, int], type(None)], 
   the interventions  "whatif", if it had been as specified in "values" (if "values" is omitted, every possible value of
   "whatif")
 
-  :param cm: CausalModel
-  :param profile: Dictionary
-  :param on: variable name or variable names set
-  :param whatif: variable name or variable names set
-  :param values: Dictionary
-  :type cm: pyAgrum.causal.CausalModel
-  :type profile: Union[Dict[str, int], type(None)]
-  :type on: Union[str, Set[str]]
-  :type whatif: Union[str, Set[str]]
-  :type values: Union[Dict[str, int], type(None)]
-  :return: the computation
-  :rtype: "pyAgrum.Potential"
+  Parameters
+  ----------
+  cm: CausalModel
+  profile: Dict[str,int] default=None
+    evidence
+  on: variable name or variable names set
+   the variable(s) of interest
+  whatif: str|Set[str]
+    idiosyncratic nodes
+  values: Dict[str,int]
+    values for certain variables in whatif.
+
+  Returns
+  -------
+  pyAgrum.Potential
+    the computed counterfactual impact
   """
   # Step 1 and 2 : create the twin causal model
   twincm = counterfactualModel(cm, profile, whatif)

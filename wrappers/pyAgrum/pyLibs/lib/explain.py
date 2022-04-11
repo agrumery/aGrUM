@@ -224,15 +224,26 @@ def getInformationGraph(bn, evs=None, size=None, cmap=_INFOcmap,withMinMax=False
 
 def _reprInformation(bn, evs=None, size=None, cmap=_INFOcmap, asString=False):
   """
-    repr a bn annoted with results from inference : Information and mutual informations
+  repr a bn annotated with results from inference : Information and mutual information
 
-    :param bn: the BN
-    :param evs: map of evidence
-    :param size:  size of the graph
-    :param cmap: colour map used
-    :param asString: result in string or displayed
-    :return: the HTML string or displayed
-    """
+  Parameters
+  ----------
+  bn: pyAgrum.BayesNet
+    the model
+  evs: Dict[str|int,str|int|List[float]]
+    the observations
+  size: int|str
+    size of the rendered graph
+  cmap: matplotlib.colours.Colormap
+    the cmap
+  asString: bool
+    returns the string or display the HTML
+
+  Returns
+  -------
+  str|None
+    return the HTML string or directly display it.
+  """
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
 
@@ -271,16 +282,26 @@ def _reprInformation(bn, evs=None, size=None, cmap=_INFOcmap, asString=False):
   return IPython.display.display(IPython.display.HTML(sss))
 
 
-def getInformation(bn, evs=None, size=None, cmap=_INFOcmap):
+def getInformation(bn, evs=None, size=None, cmap=_INFOcmap)->str:
   """
-    get a HTML string for a bn annotated with results from inference : entropy and mutual information
+  get a HTML string for a bn annotated with results from inference : entropy and mutual information
 
-    :param bn: the BN
-    :param evs: map of evidence
-    :param size:  size of the graph
-    :param cmap: colour map used
-    :return: the HTML string
-    """
+  Parameters
+  ----------
+  bn: pyAgrum.BayesNet
+    the model
+  evs: Dict[str|int,str|int|List[float]]
+    the observations
+  size: int|str
+    size of the rendered graph
+  cmap: matplotlib.colours.Colormap
+    the cmap
+
+  Returns
+  -------
+  str
+    return the HTML string
+  """
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
 
@@ -290,17 +311,21 @@ def getInformation(bn, evs=None, size=None, cmap=_INFOcmap):
   return _reprInformation(bn, evs, size, cmap, asString=True)
 
 
-def showInformation(bn, evs=None, target=None, size=None, cmap=_INFOcmap):
+def showInformation(bn, evs=None, size=None, cmap=_INFOcmap):
   """
-    show a bn annotated with results from inference : entropy and mutual information
+  diplay a bn annotated with results from inference : entropy and mutual information
 
-    :param bn: the BN
-    :param evs: map of evidence
-    :param target: (optional)  the name or id of the target variable
-    :param size:  size of the graph
-    :param cmap: colour map used
-    :return: the graph
-    """
+  Parameters
+  ----------
+  bn: pyAgrum.BayesNet
+    the model
+  evs: Dict[str|int,str|int|List[float]]
+    the observations
+  size: int|str
+    size of the rendered graph
+  cmap: matplotlib.colours.Colormap
+    the cmap
+  """
   if evs is None:
     evs = {}
 
@@ -335,19 +360,6 @@ class ShapValues:
     return math.factorial(n)
 
   def __init__(self, bn, target):
-    """
-The ShapValue class implements the calculation of Shap values in Bayesian networks.
-
-The main implementation is based on Conditional Shap values [3]_, but the Interventional calculation method proposed in [2]_ is also present. In addition, a new causal method, based on [1]_, is implemented which is well suited for Bayesian networks.
-
-Parameters
-----------
-bn : gum.BayesNet
-  The Bayesian network
-
-target : str
-  the name of the target node
-    """
     self.bn = bn
     self.target = target
     self.feats_names = self._get_feats_name(bn, target)

@@ -18,7 +18,7 @@
 # IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
 # ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 # OR PERFORMANCE OF THIS SOFTWARE!
-
+from typing import List
 
 import pandas
 import numpy
@@ -559,14 +559,24 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     return returned_list
 
-  def _nary_predict(self, X, dictName, with_labels):
+  def _nary_predict(self, X, dictName, with_labels)->List[int|str]:
     """
-     For a classifier, predicts the most likely class for each row of input data, with bn's Markov Blanket
+    For a classifier, predicts the most likely class for each row of input data, with bn's Markov Blanket
 
-    :param X: data
-    :param dictName: dictionnary of the name of a variable and his column in the data base
-    :param with_labels: tells us whether the csv includes the labels themselves or their indexes.
-    :return:
+    Parameters
+    ----------
+    X: {array-like, sparse matrix} of shape (n_samples, n_features) or str
+            test data, can be either dataFrame, matrix or name of a csv file
+      the data
+    dictName: Dict[str,int]
+      dictionary of the name of a variable and his column in the database
+    with_labels: bool
+      whether `data` contains the labels themselves or their ids.
+
+    Returns
+    -------
+    array-like of shape (n_samples,)
+      the list of predictions as idLabel or label name.
     """
     returned_list = []
     I = self.MarkovBlanket.completeInstantiation()
@@ -582,13 +592,22 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     return returned_list
 
-  def _binary_predict(self, X, dictName):
+  def _binary_predict(self, X, dictName)->List[bool|str]:
     """
-     For a binary classifier, predicts the most likely class for each row of input data, with bn's Markov Blanket
+    For a binary classifier, predicts the most likely class for each row of input data, with bn's Markov Blanket
 
-    :param X: data
-    :param dictName: dictionnary of the name of a variable and his column in the data base
-    :return:
+    Parameters
+    ----------
+    X: {array-like, sparse matrix} of shape (n_samples, n_features) or str
+            test data, can be either dataFrame, matrix or name of a csv file
+      the datas
+    dictName: Dict[str,int]
+      dictionary of the name of a variable and his column in the database
+
+    Returns
+    -------
+    array-like of shape (n_samples,)
+      the list of predictions
     """
     returned_list = []
     # list of other labels of the target
@@ -602,7 +621,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     label1 = self.label
     # Instantiation use to apply values of the data base
     I = self.MarkovBlanket.completeInstantiation()
-    # read through data base's ligns
+    # read through database's ligns
     for x in X:
       res = round(_calcul_proba_for_binary_class(x, label1, labels, I, dictName, self.MarkovBlanket, self.target),
                   self.significant_digit)
@@ -624,17 +643,19 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
   def predict_proba(self, X):
     """
-    parameters:
-        X: {array-like, sparse matrix} of shape (n_samples, n_features) or str
-            test data, can be either dataFrame, matrix or name of a csv file
-    returns:
-        y: array-like of shape (n_samples,)
-            Predicted probability for each classes
-
     Predicts the probability of classes for each row of input data, with bn's Markov Blanket
-    """
 
-    # dictionnary of the name of a variable and his column in the data base
+    Parameters
+    ----------
+    X: {array-like, sparse matrix} of shape (n_samples, n_features) or str
+            test data, can be either dataFrame, matrix or name of a csv file
+
+    Returns
+    -------
+    array-like of shape (n_samples,)
+      Predicted probability for each classes
+    """
+    # dictionary of the name of a variable and his column in the data base
     dictName = self.variableNameIndexDictionary
 
     if isinstance(X,pandas.DataFrame): #type(X) == pandas.DataFrame:
@@ -683,23 +704,23 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
   def XYfromCSV(self, filename, with_labels=True, target=None):
     """
-    parameters:
-        filename: str
-            the name of the csv file
-        with_labels: bool
-            tells us whether the csv includes the labels themselves or their indexes.
-        target: str or None
-            The name of the column that will be put in the dataframe y. If target is None, we use the target that is
-            already specified in the classifier
-    returns:
-        X: pandas.dataframe
-            Matrix containing the data
-        y: pandas.dataframe
-            Column-vector containing the class for each data vector in X
-
     Reads the data from a csv file and separates it into a X matrix and a y column vector.
-    """
 
+    Parameters
+    ----------
+    filename: str
+        the name of the csv file
+    with_labels: bool
+        tells us whether the csv includes the labels themselves or their indexes.
+    target: str or None
+        The name of the column that will be put in the dataframe y. If target is None, we use the target that is
+        already specified in the classifier
+
+    Returns
+    -------
+    Tuple(pandas.Dataframe,pandas.Dataframe)
+        Matrix X containing the data,Column-vector containing the class for each data vector in X
+    """
     if self.fromModel:
       dataframe = pandas.read_csv(filename, dtype='str')
     else:
@@ -742,12 +763,13 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     """
     Use the `pyAgrum.lib.bn2roc` tools to create ROC and Precision-Recall curve
 
-    parameters:
-      csv_name : str
+    Parameters
+    ----------
+    filename: str
         a csv filename
-      save_fig : bool
+    save_fig : bool
         whether the graph soulb de saved
-      show_progress : bool
+    show_progress : bool
         indicates if the resulting curve must be printed
     """
     import pyAgrum.lib.bn2roc as bn2roc

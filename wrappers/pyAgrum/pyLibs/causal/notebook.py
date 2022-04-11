@@ -36,17 +36,32 @@ from pyAgrum.causal._types import NameSet
 def getCausalModel(cm: csl.CausalModel, size=None) -> str:
   """
   return a HTML representing the causal model
-  :param cm: the causal model
-  :param size: passd
-  :param vals:
-  :return:
+
+  Parameters
+  ----------
+  cm: CausalModel
+    the causal model
+  size: int|str
+    the size of the rendered graph
+
+  Returns
+  -------
+  pydot.Dot
+    the dot representation
   """
-  return gnb.getDot(cm.toDot())
+  return gnb.getDot(cm.toDot(),size)
 
 
-def showCausalModel(cm: csl.CausalModel, size: str = "4"):
+def showCausalModel(cm: csl.CausalModel, size= None):
   """
-  Shows a graphviz svg representation of the causal DAG ``d``
+  Shows a pydot svg representation of the causal DAG
+
+  Parameters
+  ----------
+  cm: CausalModel
+    the causal model
+  size: int|str
+    the size of the rendered graph
   """
   gnb.showDot(cm.toDot())
 
@@ -56,13 +71,24 @@ def getCausalImpact(model: csl.CausalModel, on: Union[str, NameSet], doing: Unio
         str, "pyAgrum.Potential", str]:
   """
   return a HTML representing of the three values defining a causal impact : formula, value, explanation
-  :param model: the causal model
-  :param on: the impacted variable(s)
-  :param doing: the variable(s) of intervention
-  :param knowing: the variable(s) of evidence
-  :param values : values for certain variables
 
-  :return: a triplet (CausalFormula representation (string), pyAgrum.Potential, explanation)
+  Parameters
+  ----------
+  model: CausalModel
+    the causal model
+  on: str | Set[str]
+    the impacted variable(s)
+  doing: str | Set[str]
+    the interventions
+  knowing: str | Set[str]
+    the observations
+  values: Dict[str,int] default=None
+    value for certain variables
+
+  Returns
+  -------
+  Tuple[str,pyAgrum.Potential,str]
+    a triplet (CausalFormula representation (as string), pyAgrum.Potential, explanation)
   """
   formula, impact, explanation = csl.causalImpact(
       model, on, doing, knowing, values)
@@ -78,11 +104,19 @@ def showCausalImpact(model: csl.CausalModel, on: Union[str, NameSet], doing: Uni
                      knowing: Optional[NameSet] = None, values: Optional[Dict[str, int]] = None):
   """
   display a HTML representing of the three values defining a causal impact :  formula, value, explanation
-  :param model: the causal model
-  :param on: the impacted variable(s)
-  :param doing: the variable(s) of intervention
-  :param knowing: the variable(s) of evidence
-  :param values : values for certain variables
+
+  Parameters
+  ----------
+  model: CausalModel
+    the causal model
+  on: str | Set[str]
+    the impacted variable(s)
+  doing: str | Set[str]
+    the interventions
+  knowing: str | Set[str]
+    the observations
+  values: Dict[str,int] default=None
+    value for certain variables
   """
   html = getCausalImpact(model, on, doing, knowing, values)
   IPython.display.display(IPython.display.HTML(html))

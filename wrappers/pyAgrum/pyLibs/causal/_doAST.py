@@ -32,14 +32,30 @@ from pyAgrum.causal._types import NameSet
 # pylint: disable=unused-import
 import pyAgrum.causal  # for annotations
 
+
 class ASTtree:
   """
   Represents a generic node for the CausalFormula. The type of the node will be registered in a string.
 
-  :param type: the type of the node (will be specified in concrete children classes.
+  Parameters
+  ----------
+  typ: str
+    the type of the node (will be specified in concrete children classes.
+  verbose: bool
+    if True, add some messages
   """
 
   def __init__(self, typ: str, verbose=False):
+    """
+    Represents a generic node for the CausalFormula. The type of the node will be registered in a string.
+
+    Parameters
+    ----------
+    typ: str
+      the type of the node (will be specified in concrete children classes.
+    verbose: bool
+      if True, add some messages
+    """
     self._type = typ
     self.__continueNextLine = "| "
     self._verbose = verbose
@@ -51,7 +67,10 @@ class ASTtree:
   @property
   def type(self) -> str:
     """
-    :return: the type of the node
+    Returns
+    -------
+    str
+      the type of the node
     """
     return self._type
 
@@ -59,8 +78,15 @@ class ASTtree:
     """
     stringify a CausalFormula tree
 
-    :param prefix: a prefix for each line of the string representation
-    :return:  the string version of the tree
+    Parameters
+    ----------
+    prefix: str
+      a prefix for each line of the string representation
+
+    Returns
+    -------
+    str
+      the string version of the tree
     """
     raise NotImplementedError
 
@@ -68,15 +94,31 @@ class ASTtree:
     """
     Create a protected LaTeX representation of a ASTtree
 
-    :return: the LaTeX string
+    Parameters
+    ----------
+    nameOccur: Dict[str,int]
+      the number of occurrence for each variable
+
+    Returns
+    -------
+    str
+      a protected version of LaTeX representation of the tree
     """
     raise NotImplementedError
 
   def fastToLatex(self, nameOccur: Dict[str, int]) -> str:
     """
-    Internal virtual function to create a LaTeX representation of a ASTtree
+    Internal virtual function to create a LaTeX representation of the ASTtree
 
-    :return: the LaTeX string
+    Parameters
+    ----------
+    nameOccur: Dict[str,int]
+      the number of occurrence for each variable
+
+    Returns
+    -------
+    str
+      LaTeX representation of the tree
     """
     raise NotImplementedError
 
@@ -84,7 +126,15 @@ class ASTtree:
     """
     Create a LaTeX representation of a ASTtree
 
-    :return: the LaTeX string
+    Parameters
+    ----------
+    nameOccur: Dict[str,int] default=None
+      the number of occurrence for each variable
+
+    Returns
+    -------
+    str
+      LaTeX representation of the tree
     """
     if nameOccur is None:
       nameOccur = defaultdict(int)
@@ -96,10 +146,18 @@ class ASTtree:
     Change the latex presentation of variable w.r.t the number of occurrence of this variable : for instance,
     add primes when necessary
 
-    :param srcName: the name or an iterable containing a collection of names
-    :param nameOccur: the dict that gives the number of occurrence for each variable (default value 0 if the variable
+    Parameters
+    ----------
+    srcName: str
+      the name or an iterable containing a collection of names
+    nameOccur: Dict[str,int]
+      the dict that gives the number of occurrence for each variable (default value 0 if the variable
     is not a key in this dict)
-    :return: the corrected name or the list of corrected names
+
+    Returns
+    -------
+    str | Iterable[str]
+      the corrected name or the list of corrected names
     """
 
     def __transform(v: str) -> str:
@@ -115,15 +173,26 @@ class ASTtree:
     """
     Copy an CausalFormula tree
 
-    :return: the new causal tree
+    Returns
+    -------
+    ASTtree
+      the new causal tree
     """
     raise NotImplementedError
 
   def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Potential":
     """
     Evaluation of a AST tree from inside a BN
-    :param contextual_bn: the BN in which will be done the computations
-    :return: the resulting Potential
+
+    Parameters
+    ----------
+    contextual_bn: pyAgrum.BayesNet
+      the observational Bayesian network in which will be done the computations
+
+    Returns
+    -------
+    pyAgrum.Potential
+      the resulting Potential
     """
     raise NotImplementedError
 
@@ -132,70 +201,68 @@ class ASTBinaryOp(ASTtree):
   """
   Represents a generic binary node for the CausalFormula. The op1 and op2 are the two operands of the class.
 
-  :param type: the type of the node (will be specified in concrete children classes
-  :param op1: left operand
-  :param op2: right operand
+  Parameters
+  ----------
+  typ: str
+    the type of the node (will be specified in concrete children classes
+  op1: ASTtree
+    left operand
+  op2: ASTtree
+    right operand
   """
 
   def __init__(self, typ: str, op1: ASTtree, op2: ASTtree):
+    """
+    Represents a generic binary node for the CausalFormula. The op1 and op2 are the two operands of the class.
+
+    Parameters
+    ----------
+    typ: str
+      the type of the node (will be specified in concrete children classes
+    op1: ASTtree
+      left operand
+    op2: ASTtree
+      right operand
+    """
     super().__init__(typ)
     self._op1: ASTtree = op1
     self._op2: ASTtree = op2
 
   def protectToLatex(self, nameOccur: Dict[str, int]) -> str:
-    """
-    Create a protected LaTeX representation of a ASTtree
-
-    :return: the LaTeX string
-    """
     raise NotImplementedError
 
   def fastToLatex(self, nameOccur: Dict[str, int]) -> str:
-    """
-    Internal virtual function to create a LaTeX representation of a ASTtree
-
-    :return: the LaTeX string
-    """
     raise NotImplementedError
 
   def copy(self) -> "ASTtree":
-    """
-    Copy an CausalFormula tree
-
-    :return: the new causal tree
-    """
     raise NotImplementedError
 
   def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Potential":
-    """
-    Evaluation of a AST tree from inside a BN
-    :param contextual_bn: the BN in which will be done the computations
-    :return: the resulting Potential
-    """
     raise NotImplementedError
 
   @property
   def op1(self) -> ASTtree:
     """
-    :return: the left operand
+    Returns
+    -------
+    ASTtree
+      the left operand
     """
     return self._op1
 
   @property
   def op2(self) -> ASTtree:
     """
-    :return: the right operand
+    Returns
+    -------
+    ASTtree
+      the right operand
     """
     return self._op2
 
   def __str__(self, prefix: str = "") -> str:
-    """
-    stringify a CausalFormula tree
-
-    :param prefix: a prefix for each line of the string representation
-    :return:  the string version of the tree
-    """
-    return f"""{prefix}{self.type}\n{self.op1.__str__(prefix + self._continueNextLine)}
+    return f"""{prefix}{self.type}
+{self.op1.__str__(prefix + self._continueNextLine)}
 {self.op2.__str__(prefix + self._continueNextLine)}"""
 
 
@@ -203,35 +270,34 @@ class ASTplus(ASTBinaryOp):
   """
   Represents the sum of 2 :class:`causal.ASTtree`
 
-  :param op1: first operand
-  :param op2: second operand
+  Parameters
+  ----------
+  op1: ASTtree
+    left operand
+  op2: ASTtree
+    right operand
   """
 
   def __init__(self, op1: ASTtree, op2: ASTtree):
+    """
+    Represents the sum of 2 :class:`causal.ASTtree`
+
+    Parameters
+    ----------
+    op1: ASTtree
+      left operand
+    op2: ASTtree
+      right operand
+    """
     super().__init__('+', op1, op2)
 
   def copy(self) -> "ASTtree":
-    """
-    Copy an CausalFormula tree
-
-    :return: the new CausalFormula tree
-    """
     return ASTplus(self.op1.copy(), self.op2.copy())
 
   def protectToLatex(self, nameOccur: Dict[str, int]) -> str:
-    """
-    Create a protected LaTeX representation of a ASTtree
-
-    :return: the LaTeX string
-    """
     return f"\\left({self.fastToLatex(nameOccur)}\\right)"
 
   def fastToLatex(self, nameOccur: Dict[str, int]) -> str:
-    """
-    Create a LaTeX representation of a ASTtree
-
-    :return: the LaTeX string
-    """
     return self.op1.fastToLatex(nameOccur) + '+' + self.op2.fastToLatex(nameOccur)
 
   def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Potential":
@@ -249,35 +315,34 @@ class ASTminus(ASTBinaryOp):
   """
   Represents the substraction of 2 :class:`causal.ASTtree`
 
-  :param op1: first operand
-  :param op2: second operand
+  Parameters
+  ----------
+  op1: ASTtree
+    left operand
+  op2: ASTtree
+    right operand
   """
 
   def __init__(self, op1: ASTtree, op2: ASTtree):
+    """
+    Represents the substraction of 2 :class:`causal.ASTtree`
+
+    Parameters
+    ----------
+    op1: ASTtree
+      left operand
+    op2: ASTtree
+      right operand
+    """
     super().__init__('-', op1, op2)
 
   def copy(self) -> "ASTtree":
-    """
-    Copy an CausalFormula tree
-
-    :return: the new CausalFormula tree
-    """
     return ASTminus(self.op1.copy(), self.op2.copy())
 
   def protectToLatex(self, nameOccur: Dict[str, int]) -> str:
-    """
-    Create a protected LaTeX representation of a ASTtree
-
-    :return: the LaTeX string
-    """
     return "\\left(" + self.fastToLatex(nameOccur) + "\\right)"
 
   def fastToLatex(self, nameOccur: Dict[str, int]) -> str:
-    """
-    Create a LaTeX representation of a ASTtree
-
-    :return: the LaTeX string
-    """
     return self.op1.fastToLatex(nameOccur) + '-' + self.op2.fastToLatex(nameOccur)
 
   def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Potential":
@@ -295,35 +360,34 @@ class ASTmult(ASTBinaryOp):
   """
   Represents the multiplication of 2 :class:`causal.ASTtree`
 
-  :param op1: first operand
-  :param op2: second operand
+  Parameters
+  ----------
+  op1: ASTtree
+    left operand
+  op2: ASTtree
+    right operand
   """
 
   def __init__(self, op1: ASTtree, op2: ASTtree):
+    """
+    Represents the multiplication of 2 :class:`causal.ASTtree`
+
+    Parameters
+    ----------
+    op1: ASTtree
+      left operand
+    op2: ASTtree
+      right operand
+    """
     super().__init__('*', op1, op2)
 
   def copy(self) -> "ASTtree":
-    """
-    Copy an CausalFormula tree
-
-    :return: the new CausalFormula tree
-    """
     return ASTmult(self.op1.copy(), self.op2.copy())
 
   def protectToLatex(self, nameOccur: Dict[str, int]) -> str:
-    """
-    Create a protected LaTeX representation of a ASTtree
-
-    :return: the LaTeX string
-    """
     return self.fastToLatex(nameOccur)
 
   def fastToLatex(self, nameOccur: Dict[str, int]) -> str:
-    """
-    Create a LaTeX representation of a ASTtree
-
-    :return: the LaTeX string
-    """
     return self.op1.protectToLatex(nameOccur) + ' \\cdot ' + self.op2.protectToLatex(nameOccur)
 
   def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Potential":
@@ -341,35 +405,34 @@ class ASTdiv(ASTBinaryOp):
   """
   Represents the division of 2 :class:`causal.ASTtree`
 
-  :param op1: first operand
-  :param op2: second operand
+  Parameters
+  ----------
+  op1: ASTtree
+    left operand
+  op2: ASTtree
+    right operand
   """
 
   def __init__(self, op1: ASTtree, op2: ASTtree):
+    """
+    Represents the division of 2 :class:`causal.ASTtree`
+
+    Parameters
+    ----------
+    op1: ASTtree
+      left operand
+    op2: ASTtree
+      right operand
+    """
     super().__init__("/", op1, op2)
 
   def copy(self) -> "ASTtree":
-    """
-    Copy an CausalFormula tree
-
-    :return: the new CausalFormula tree
-    """
     return ASTdiv(self.op1.copy(), self.copy(self.op2.copy()))
 
   def protectToLatex(self, nameOccur: Dict[str, int]) -> str:
-    """
-    Create a protected LaTeX representation of a ASTtree
-
-    :return: the LaTeX string
-    """
     return self.fastToLatex(nameOccur)
 
   def fastToLatex(self, nameOccur: Dict[str, int]) -> str:
-    """
-    Create a LaTeX representation of a ASTtree
-
-    :return: the LaTeX string
-    """
     return " \\frac {" + self.op1.fastToLatex(nameOccur) + "}{" + self.op2.fastToLatex(nameOccur) + "}"
 
   def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Potential":
@@ -387,12 +450,29 @@ class ASTposteriorProba(ASTtree):
   """
   Represent a conditional probability :math:`P_{bn}(vars|knw)` that can be computed by an inference in a BN.
 
-  :param bn: the :class:`pyAgrum:pyAgrum.BayesNet`
-  :param varset: a set of variable names (in the BN)
-  :param knw: a set of variable names (in the BN)
+  Parameters
+  ----------
+  bn: pyAgrum.BayesNet
+    the :class:`pyAgrum:pyAgrum.BayesNet`
+  varset: Set[str]
+    a set of variable names (in the BN) conditioned in the posterior
+  knw: Set[str]
+    a set of variable names (in the BN) conditioning in the posterior
   """
 
   def __init__(self, bn: "pyAgrum.BayesNet", varset: NameSet, knw: NameSet):
+    """
+    Represent a conditional probability :math:`P_{bn}(vars|knw)` that can be computed by an inference in a BN.
+
+    Parameters
+    ----------
+    bn: pyAgrum.BayesNet
+      the :class:`pyAgrum:pyAgrum.BayesNet`
+    varset: Set[str]
+      a set of variable names (in the BN) conditioned in the posterior
+    knw: Set[str]
+      a set of variable names (in the BN) conditioning in the posterior
+    """
     super().__init__("_posterior_")
     if not isinstance(varset, set):
       raise ValueError("'varset' must be a set")
@@ -401,38 +481,40 @@ class ASTposteriorProba(ASTtree):
 
     self._vars = varset
     self._bn = bn
-    minKnames = {bn.variable(i).name() for i in
-                 bn.minimalCondSet(varset, knw)}
+    minKnames = {bn.variable(i).name() for i in bn.minimalCondSet(varset, knw)}
     self._knw = minKnames
 
   @property
   def vars(self) -> NameSet:
     """
-    :return: vars in :math:`P_{bn}(vars|knw)`
+    Returns
+    -------
+    Set[str]
+      (Conditioned) vars in :math:`P_{bn}(vars|knw)`
     """
     return self._vars
 
   @property
   def knw(self) -> NameSet:
     """
-    :return: knw in :math:`P_{bn}(vars|knw)`
+    Returns
+    -------
+    Set[str]
+      (Conditioning) knw in :math:`P_{bn}(vars|knw)`
     """
     return self._knw
 
   @property
   def bn(self) -> "pyAgrum.BayesNet":
     """
-    :return: bn in :math:`P_{bn}(vars|knw)`
+    Returns
+    -------
+    pyAgrum.BayesNet
+      the observationnal BayesNet in :math:`P_{bn}(vars|knw)`
     """
     return self._bn
 
   def __str__(self, prefix: str = "") -> str:
-    """
-    stringify a CausalFormula tree
-
-    :param prefix: a prefix for each line of the string representation
-    :return:  the string version of the tree
-    """
     s = "P("
     s += ','.join(sorted(self.vars))
     if self.knw is not None:
@@ -442,19 +524,9 @@ class ASTposteriorProba(ASTtree):
     return f"{prefix}{s}"
 
   def protectToLatex(self, nameOccur: Dict[str, int]) -> str:
-    """
-    Create a protected LaTeX representation of a ASTtree
-
-    :return: the LaTeX string
-    """
     return self.fastToLatex(nameOccur)
 
   def fastToLatex(self, nameOccur: Dict[str, int]) -> str:
-    """
-    Create a LaTeX representation of a ASTtree
-
-    :return: the LaTeX string
-    """
     s = "P\\left(" + ",".join(self._latexCorrect(self.vars, nameOccur))
     if self.knw is not None and len(self.knw) > 0:
       s += "\\mid "
@@ -465,11 +537,6 @@ class ASTposteriorProba(ASTtree):
     return s
 
   def copy(self) -> "ASTtree":
-    """
-    Copy an CausalFormula tree
-
-    :return: the new CausalFormula tree
-    """
     return ASTposteriorProba(self.bn, self.vars, self.knw)
 
   def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Potential":
@@ -509,53 +576,47 @@ class ASTjointProba(ASTtree):
   """
   Represent a joint probability in the base observational part of the :class:`causal.CausalModel`
 
-  :param varNames: a set of variable names
+  Parameters
+  ----------
+  varNames: Set[str]
+    a set of variable names
   """
 
   def __init__(self, varNames: NameSet):
+    """
+    Represent a joint probability in the base observational part of the :class:`causal.CausalModel`
+
+    Parameters
+    ----------
+    varNames: Set[str]
+      a set of variable names
+    """
     super().__init__("_joint_")
     self._varNames = varNames
 
   @property
   def varNames(self) -> NameSet:
     """
-    :return: the set of names of var
+    Returns
+    -------
+    Set[str]
+      the set of names of var
     """
     return self._varNames
 
   def __str__(self, prefix: str = "") -> str:
-    """
-    stringify a CausalFormula tree
-
-    :param prefix: a prefix for each line of the string representation
-    :return:  the string version of the tree
-    """
     s = "P("
     s += ",".join(sorted(self._varNames))
     s += ")"
     return f"{prefix}joint {s}"
 
   def copy(self) -> "ASTtree":
-    """
-    Copy an CausalFormula tree
-
-    :return: the new CausalFormula tree
-    """
     return ASTjointProba(self.varNames)
 
   def protectToLatex(self, nameOccur: Dict[str, int]) -> str:
-    """
-    Create a protected LaTeX representation of a ASTtree
-
-    :return: the LaTeX string
-    """
     return self.fastToLatex(nameOccur)
 
   def fastToLatex(self, nameOccur: Dict[str, int]) -> str:
-    """
-    Create a LaTeX representation of a ASTtree
-    :return: the LaTeX string
-    """
     return "P\\left(" + ",".join(self._latexCorrect(self.varNames, nameOccur)) + "\\right)"
 
   def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Potential":
@@ -583,11 +644,25 @@ class ASTsum(ASTtree):
   """
   Represents a sum over a variable of a :class:`causal.ASTtree`.
 
-  :param var: name of the variable
-  :param term: the tree to be evaluated
+  Parameters
+  ----------
+  var: str
+    name of the variable on which to sum
+  term: ASTtree
+    the tree to be evaluated
   """
 
-  def __init__(self, var: List[str], term: ASTtree):
+  def __init__(self, var: str, term: ASTtree):
+    """
+    Represents a sum over a variable of a :class:`causal.ASTtree`.
+
+    Parameters
+    ----------
+    var: str
+      name of the variable on which to sum
+    term: ASTtree
+      the tree to be evaluated
+    """
     super().__init__("_sum_")
 
     va = var if isinstance(var, list) else [var]
@@ -601,48 +676,28 @@ class ASTsum(ASTtree):
   @property
   def term(self) -> ASTtree:
     """
-    :return: the ASTtree of the expression inside the sum
+    Returns
+    -------
+    ASTtree
+      the term to sum
     """
     return self._term
 
   def __str__(self, prefix: str = "") -> str:
-    """
-    stringify a CausalFormula tree
-
-    :param prefix: a prefix for each line of the string representation
-    :return:  the string version of the tree
-    """
     l = []
     a = self
     while a.type == "_sum_":
       l.append(a.var)
       a = a.term
-    return f"""{prefix}sum on {",".join(sorted(l))} for 
-{a.__str__(prefix + self._continueNextLine)}"""
+    return f"""{prefix}sum on {",".join(sorted(l))} for {a.__str__(prefix + self._continueNextLine)}"""
 
   def copy(self) -> "ASTtree":
-    """
-    Copy an CausalFormula tree
-
-    :return: the new CausalFormula tree
-    """
-
     return ASTsum(self.var, self.term.copy())
 
   def protectToLatex(self, nameOccur: Dict[str, int]) -> str:
-    """
-    Create a protected LaTeX representation of a ASTtree
-
-    :return: the LaTeX string
-    """
     return "\\left(" + self.fastToLatex(nameOccur) + "\\right)"
 
   def fastToLatex(self, nameOccur: Dict[str, int]) -> str:
-    """
-    Create a LaTeX representation of a ASTtree
-
-    :return: the LaTeX string
-    """
     la = []
     a = self
     while a.type == "_sum_":
@@ -657,12 +712,6 @@ class ASTsum(ASTtree):
     return res
 
   def eval(self, contextual_bn: "pyAgrum.BayesNet") -> "pyAgrum.Potential":
-    """
-    Evaluation of the sum
-
-    :param contextual_bn: BN where to infer
-    :return: the value of the sum
-    """
     if self._verbose:
       print(f"EVAL ${self.fastToLatex(defaultdict(int))}$", flush=True)
 
@@ -677,8 +726,17 @@ class ASTsum(ASTtree):
 def productOfTrees(lterms: List[ASTtree]) -> ASTtree:
   """
   create an ASTtree for a sequence of multiplications of ASTtree
-  :param lterms: the trees (as ASTtree)
-  :return: the ASTtree representing the tree of multiplications
+
+  Parameters
+  ----------
+  lterms: List[ASTtree]
+    the trees (as ASTtree) to multiply
+
+  Returns
+  -------
+  ASTtree
+    the ASTtree representing the tree of multiplications
+
   """
   if len(lterms) == 1:
     return lterms[0]

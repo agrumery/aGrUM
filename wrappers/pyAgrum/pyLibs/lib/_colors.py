@@ -22,10 +22,15 @@ Color manipulations for pyAgrum.lib module
 # IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
 # ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 # OR PERFORMANCE OF THIS SOFTWARE!
+from typing import List, Tuple
+
+import matplotlib.colors
 import pyAgrum as gum
 
+
 def forDarkTheme():
-  print("** pyAgrum : forDarkTheme() is obsolete since 0.21.0. Please use setDarkTheme() instead. setDarkTheme() called.")
+  print(
+    "** pyAgrum : forDarkTheme() is obsolete since 0.21.0. Please use setDarkTheme() instead. setDarkTheme() called.")
   setDarkTheme()
 
 
@@ -52,6 +57,7 @@ def getBlackInTheme():
   """
   return gum.config["notebook", "default_arc_color"]
 
+
 def hex2rgb(vstr):
   """
   from "#FFFFFF" to [255,255,255]
@@ -70,7 +76,7 @@ def hex2rgb(vstr):
   return [int(value[i:i + lv // 3], 16) for i in range(0, lv, lv // 3)]
 
 
-def hextuple2rgb(vtuple):
+def hextuple2rgb(vtuple: List[str]) -> List[int]:
   """
   from ("FF","FF","FF") to [255,255,255]
 
@@ -87,7 +93,7 @@ def hextuple2rgb(vtuple):
   return [int(v, 16) for v in vtuple]
 
 
-def rgb2brightness(r, g, b):
+def rgb2brightness(r: int, g: int, b: int) -> str:
   """
   Give the fgcol for a background (r,g,b).
 
@@ -106,7 +112,7 @@ def rgb2brightness(r, g, b):
   return "white" if brightness <= 153 else "black"
 
 
-def proba2hex(p, cmap, withSpecialColor):
+def proba2hex(p: float, cmap: matplotlib.colors.Colormap, withSpecialColor: bool) -> Tuple[str, str, str]:
   """
   From a proba p and cmap gives the HTML rgb color
 
@@ -114,7 +120,7 @@ def proba2hex(p, cmap, withSpecialColor):
   ----------
   p: float
     the proba
-  cmap: matplotlib.color.colormap
+  cmap: matplotlib.colors.Colormap
     the cmap
   withSpecialColor: bool
     do we have special colors for p=0 or 1 ?
@@ -126,40 +132,66 @@ def proba2hex(p, cmap, withSpecialColor):
   """
   if withSpecialColor:  # add special color for p=0 or p=1
     if p == 0.0:
-      return  "FF", "33", "33"
+      return "FF", "33", "33"
     elif p == 1.0:
       return "AA", "FF", "FF"
 
-  return [f"{int(i*256):02x}" for i in cmap(p)]
+  a, b, c, _ = cmap(p)
+  return f"{int(a * 256):02x}", f"{int(b * 256):02x}", f"{int(c * 256):02x}"
 
 
-def proba2color(p, cmap):
+def proba2color(p: float, cmap: matplotlib.colors.Colormap) -> str:
   """
   From a proba p and cmap gives the HTML rgb color
-  :param p: the proba
-  :param cmap: the cmap
-  :return: a string
+
+  Parameters
+  ----------
+  p: float
+    a value in [0,1]
+  cmap: matplotlib.colors.Colormap
+
+  Returns
+  -------
+  str
+    the html representation of the color
   """
   r, g, b = proba2hex(p, cmap, withSpecialColor=False)
   return "#" + r + g + b
 
 
-def proba2bgcolor(p, cmap):
+def proba2bgcolor(p: float, cmap: matplotlib.colors.Colormap) -> str:
   """
   From a proba p and cmap gives the HTML rgb color (with special colors for p=0 and p=1)
-  :param p: the proba
-  :param cmap: the cmap
-  :return: a string
+
+  Parameters
+  ----------
+  p: float
+    a value in [0,1]
+  cmap: matplotlib.colors.Colormap
+
+  Returns
+  -------
+  str
+    the html representation of the background color
   """
   r, g, b = proba2hex(p, cmap, withSpecialColor=True)
   return "#" + r + g + b
 
 
-def proba2fgcolor(p, cmap):
+def proba2fgcolor(p: float, cmap: matplotlib.colors.Colormap) -> str:
   """
   From a proba p and cmap, returns the best choice for text color for the bgcolor(p,cmap).
-  :param p: the proba
-  :param cmap: the cmap
-  :return: a string
+
+  Parameters
+  ----------
+  p: float
+    a value in [0,1]
+  cmap: matplotlib.colors.Colormap
+
+  Returns
+  -------
+  str
+    the html representation of the foreground color
   """
-  return rgb2brightness(*hextuple2rgb(proba2hex(p, cmap, withSpecialColor=True)))
+  a, b, c = hextuple2rgb(list(proba2hex(p, cmap, withSpecialColor=True)))
+  return rgb2brightness(a, b, c)

@@ -44,12 +44,26 @@ def doCalculusWithObservation(cm: CausalModel, on: Set[str], doing: NameSet,
   Compute the CausalFormula for an impact analysis given the causal model, the observed variables and the
   variable on  which there will be intervention.
 
-  :param on: the variables of interest
-  :param cm: the causal model
-  :param doing: the interventions
-  :param knowing: the observations
+  Parameters
+  ----------
+  cm: CausalModel
+    the causal model
+  on: Set[str]
+    the variables of interest
+  doing: Set[str]
+    the interventions
+  knowing: Set[str] default=None
+    the observations
 
-  :return: the CausalFormula for computing this causal impact
+  Returns
+  -------
+  CausalFormula
+    if possible, returns the formula to compute this intervention
+
+  Raises
+  ------
+  HedgeException, UnidentifiableException
+    if this calculous is not possible
   """
   if knowing is None or len(knowing) == 0:
     return doCalculus(cm, on, doing)

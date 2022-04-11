@@ -274,13 +274,16 @@ def _reprGraph(gr, size, asString, format=None):
       IPython.core.display.display_png(i)
 
 
-def showGraph(gr, size=None):
+def showGraph(gr:dot.Dot, size=None):
   """
   show a pydot graph in a notebook
 
-  :param gr: pydot graph
-  :param size:  size of the rendered graph
-  :return: the representation of the graph
+  Parameters
+  ----------
+  gr: pydot.Dot
+    the graph
+  size: float|str
+    the size of the rendered graph
   """
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
@@ -288,14 +291,20 @@ def showGraph(gr, size=None):
   return _reprGraph(gr, size, asString=False)
 
 
-def getGraph(gr, size=None):
+def getGraph(gr:dot.Dot, size=None)->str:
   """
-  get a HTML string representation of pydot graph
+  get an HTML representation of a pydot graph
 
-  :param gr: pydot graph
-  :param size:  size of the rendered graph
-  :param format: render as "png" or "svg"
-  :return: the HTML representation of the graph as a string
+  Parameters
+  ----------
+  gr: pydot.Dot
+    the graph
+  size: float|str
+    the size of the rendered graph
+
+  Returns
+  -------
+    the HTML representation of the graph (as a string)
   """
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
@@ -321,28 +330,36 @@ def _from_dotstring(dotstring):
   return g
 
 
-def showDot(dotstring, size=None):
+def showDot(dotstring:str, size=None):
   """
   show a dot string as a graph
 
-  :param dotstring: dot string
-  :param size: size of the rendered graph
-  :return: the representation of the graph
+  Parameters
+  ----------
+  dotstring:str
+    the dot string
+  size: float|str
+    size of the rendered graph
   """
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
-  return showGraph(_from_dotstring(dotstring), size)
+  showGraph(_from_dotstring(dotstring), size)
 
 
-def getDot(dotstring, size=None):
+def getDot(dotstring:str, size=None)->str:
   """
-  get a dot string as a HTML string
+  get an HTML representation of a dot string
 
-  :param dotstring: dot string
-  :param size: size of the rendered graph
-  :param format: render as "png" or "svg"
-  :param bg: color for background
-  :return: the HTML representation of the graph
+  Parameters
+  ----------
+  dotstring:str
+    the dot string
+  size: float|str
+    size of the rendered graph
+
+  Returns
+  -------
+    the HTML representation of the dot string
   """
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
@@ -351,18 +368,29 @@ def getDot(dotstring, size=None):
 
 
 def getBNDiff(bn1, bn2, size=None, noStyle=False):
-  """ get a HTML string representation of a graphical diff between the arcs of _bn1 (reference) with those of _bn2.
+  """
+  get a HTML string representation of a graphical diff between the arcs of _bn1 (reference) with those of _bn2.
 
-  if noStyle is False use 4 styles (fixed in pyAgrum.config) :
+  if `noStyle` is False use 4 styles (fixed in pyAgrum.config) :
     - the arc is common for both
-    - the arc is common but inverted in _bn2
-    - the arc is added in _bn2
-    - the arc is removed in _bn2
+    - the arc is common but inverted in `bn2`
+    - the arc is added in `bn2`
+    - the arc is removed in `bn2`
 
-  :param BayesNet bn1: referent model for the comparison
-  :param BayesNet bn2: bn compared to the referent model
-  :param size: size of the rendered graph
-  :param noStyle: do we want styles for arcs or not
+  Parameters
+  ----------
+  bn1: pyAgrum.BayesNet
+    the reference
+  bn2: pyAgrum.BayesNet
+    the compared one
+  size: float|str
+    size of the rendered graph
+  noStyle: bool
+    with style or not.
+
+  Returns
+  -------
+    the HTML representation of the comparison
   """
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
@@ -371,17 +399,25 @@ def getBNDiff(bn1, bn2, size=None, noStyle=False):
 
 
 def showBNDiff(bn1, bn2, size=None, noStyle=False):
-  """ show a graphical diff between the arcs of _bn1 (reference) with those of _bn2.
-  if noStyle is False use 4 styles (fixed in pyAgrum.config) :
-    - the arc is common for both
-    - the arc is common but inverted in _bn2
-    - the arc is added in _bn2
-    - the arc is removed in _bn2
+  """
+  show a graphical diff between the arcs of _bn1 (reference) with those of _bn2.
 
-  :param BayesNet bn1: referent model for the comparison
-  :param BayesNet bn2: bn compared to the referent model
-  :param size: size of the rendered graph
-  :param noStyle: do we want styles for arcs or not
+  if `noStyle` is False use 4 styles (fixed in pyAgrum.config) :
+    - the arc is common for both
+    - the arc is common but inverted in `bn2`
+    - the arc is added in `bn2`
+    - the arc is removed in `bn2`
+
+  Parameters
+  ----------
+  bn1: pyAgrum.BayesNet
+    the reference
+  bn2: pyAgrum.BayesNet
+    the compared one
+  size: float|str
+    size of the rendered graph
+  noStyle: bool
+    with style or not.
   """
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
@@ -399,12 +435,16 @@ def showInformation(*args, **kwargs):
 
 def showJunctionTree(bn, withNames=True, size=None):
   """
-  Show a junction tree
+  Show a junction tree of a Bayesian network
 
-  :param bn: the Bayesian network
-  :param boolean withNames: display the variable names or the node id in the clique
-  :param size: size of the rendered graph
-  :return: the representation of the graph
+  Parameters
+  ----------
+  bn: pyAgrum.BayesNet
+    the model
+  withNames: bool
+    names or id in the graph (names can created very large nodes)
+  size: float|str
+    size of the rendered graph
   """
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
@@ -440,17 +480,21 @@ def getJunctionTree(bn, withNames=True, size=None):
   jtg._model = bn
 
   if withNames:
-    return getDot(jt.toDotWithNames(bn), size)
+    getDot(jt.toDotWithNames(bn), size)
   else:
-    return getDot(jt.toDot(), size)
+    getDot(jt.toDot(), size)
 
 
 def showProba(p, scale=1.0):
   """
-  Show a mono-dim Potential
+  Show a mono-dim Potential (a marginal)
 
-  :param p: the mono-dim Potential
-  :param scale: the scale (zoom)
+  Parameters
+  ----------
+  p: pyAgrum.Potential
+    the marginal to show
+  scale: float
+    the zoom factor
   """
   fig = proba2histo(p, scale)
   set_matplotlib_formats(gum.config["notebook", "graph_format"])
@@ -468,12 +512,21 @@ def _getMatplotFig(fig):
   return res
 
 
-def getProba(p, scale=1.0):
+def getProba(p, scale=1.0)->str:
   """
-  get a mono-dim Potential as html (png) img
+  get a mono-dim Potential as html (png/svg) image
 
-  :param p: the mono-dim Potential
-  :param scale: the scale (zoom)
+  Parameters
+  ----------
+  p: pyAgrum.Potential
+    the marginal to show
+  scale: float
+    the zoom factor
+
+  Returns
+  -------
+  str
+    the HTML representation of the marginal
   """
   set_matplotlib_formats(gum.config["notebook", "graph_format"])
   return _getMatplotFig(proba2histo(p, scale))
@@ -483,22 +536,37 @@ def showProbaMinMax(pmin, pmax, scale=1.0):
   """
   Show a bi-Potential (min,max)
 
-  :param pmin: the mono-dim Potential for min values
-  :param pmax: the mono-dim Potential for max values
-  :param scale: the scale (zoom)
+  Parameters
+  ----------
+  pmin: pyAgrum.Potential
+    the min pmarginal to show
+  pmax: pyAgrum.Potential
+    the max pmarginal to show
+  scale: float
+    the zoom factor
   """
   fig = probaMinMaxH(pmin, pmax, scale)
   set_matplotlib_formats(gum.config["notebook", "graph_format"])
   plt.show()
 
 
-def getProbaMinMax(pmin, pmax, scale=1.0):
+def getProbaMinMax(pmin, pmax, scale=1.0)->str:
   """
-  get a bi-Potential (min,max) as html (png) img
+  get a bi-Potential (min,max) as html (png/svg) img
 
-  :param pmin: the mono-dim Potential for min values
-  :param pmax: the mono-dim Potential for max values
-  :param scale: the scale (zoom)
+  Parameters
+  ----------
+  pmin: pyAgrum.Potential
+    the min pmarginal to show
+  pmax: pyAgrum.Potential
+    the max pmarginal to show
+  scale: float
+    the zoom factor
+
+  Returns
+  -------
+  str
+    the HTML representation of the marginal min,max
   """
   set_matplotlib_formats(gum.config["notebook", "graph_format"])
   return _getMatplotFig(probaMinMaxH(pmin, pmax, scale))
