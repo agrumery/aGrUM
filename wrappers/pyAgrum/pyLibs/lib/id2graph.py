@@ -39,9 +39,17 @@ def ID2dot(diag, size=None):
   """
   create a pydot representation of the influence diagram
 
-  :param diag: the influence diagram
-  :param size: the size of the visualization
-  :return: the dot model for the influence diagram
+  Parameters
+  ----------
+  diag: pyAgrum.InfluenceDiagram
+    the model
+  size: int|str
+    the size of the visualization
+
+  Returns
+  -------
+  pydot.Dot
+    the dot representation of the influence diagram
   """
   res = "digraph  { \n graph [bgcolor=transparent];\n"
 
@@ -105,13 +113,23 @@ def LIMIDinference2dot(diag, size, engine, evs, targets):
   """
   create a pydot representation of an inference in a influence diagram
 
-  :param pyAgrum.InfluenceDiagram diag: influence diagram
-  :param string size: size of the rendered graph
-  :param pyAgrum Inference engine: inference algorithm used. If None, ShaferShenoyLIMIDInference will be used
-  :param dictionnary evs: map of evidence
-  :param set targets: set of targets. If targets={} then each node is a target
+  Parameters
+  ----------
+  diag: pyAgrum.InfluenceDiagram
+    the model
+  size: float|str
+    the size of the rendered graph
+  engine: pyAgrum.InfluenceDiagramInference
+    the inference algorithm used. If None, ShaferShenoyLIMIDInference will be used
+  evs: Dict[str,str|int|List[float]]
+    the evidence
+  targets: Set[str]
+    set of targetted variable. If targets={} then each node is a target
 
-  :return: the desired representation of the inference
+  Returns
+  -------
+  pydot.Dot
+    the representation of the inference
   """
   startTime = time.time()
   if engine is None:

@@ -240,8 +240,19 @@ def _reprGraph(gr, size, asString, format=None):
   """
   repr a pydot graph in a notebook
 
-  :param string size : size of the rendered graph
-  :param boolean asString : display the graph or return a string containing the corresponding HTML fragment
+  Parameters
+  ----------
+  gr : dot.Dot
+    the dot representation of the graph
+  size: int | str
+    the size argument for the representation
+  asString : bool
+    display the graph or return a string containing the corresponding HTML fragment
+
+  Returns
+  -------
+  str | None
+    return the HTML representation as a str or display the graph
   """
   if size is not None:
     gr.set_size(size)
@@ -998,11 +1009,16 @@ def showPotential(pot, digits=None, withColors=None, varnames=None):
   show a gum.Potential as a HTML table.
   The first dimension is special (horizontal) due to the representation of conditional probability table
 
-  :param gum.Potential pot: the potential to get
-  :param int digits: number of digits to show
-  :param: boolean withColors : bgcolor for proba cells or not
-  :param list of strings varnames: the aliases for variables name in the table
-  :return: the display of the potential
+  Parameters
+  ----------
+  pot : gum.Potential
+    the potential to show
+  digits : int
+    number of digits to show
+  withColors : bool
+    bgcolor for proba cells or not
+  varnames : List[str]
+    the aliases for variables name in the table
   """
   if withColors is None:
     if gum.config["notebook", "potential_with_colors"] == "False":
@@ -1019,11 +1035,21 @@ def getPotential(pot, digits=None, withColors=None, varnames=None):
   return a HTML string of a gum.Potential as a HTML table.
   The first dimension is special (horizontal) due to the representation of conditional probability table
 
-  :param gum.Potential pot: the potential to get
-  :param int digits: number of digits to show
-  :param: boolean withColors : bgcolor for proba cells or not
-  :param list of strings varnames: the aliases for variables name in the table
-  :return: the HTML string
+  Parameters
+  ----------
+  pot : gum.Potential
+    the potential to show
+  digits : int
+    number of digits to show
+  withColors : bool
+    bgcolor for proba cells or not
+  varnames : List[str]
+    the aliases for variables name in the table
+
+  Returns
+  -------
+  str
+    the html representation of the Potential (as a string)
   """
   if withColors is None:
     if gum.config["notebook", "potential_with_colors"] == "False":

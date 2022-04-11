@@ -41,13 +41,23 @@ def checkCompatibility(bn, fields, csv_name):
   """
   check if the variables of the bn are in the fields
 
-  :param bn: gum.BayesNet
-  :param fields: Dict of name,position in the file
-  :param csv_name: name of the csv file
+  Parameters
+  ----------
+  bn: gum.BayesNet
+    the model
+  fields: Dict[str,int]
+    Dict of name,position in the file
+  csv_name: str
+    name of the csv file
 
-  @throw gum.DatabaseError if a BN variable is not in fields
+  Raises
+  ------
+  gum.DatabaseError
+    if a BN variable is not in fields
 
-  :return:
+  Returns
+  -------
+  Dict[int,str]
     return a dictionary of position for BN variables in fields
   """
   res = {}
@@ -61,11 +71,21 @@ def checkCompatibility(bn, fields, csv_name):
 
 def computeScores(bn_name, csv_name, visible=False):
   """
-  Compute scores from a bn w.r.t to a csv
-  :param bn_name: a gum.BayesianNetwork or a filename for a BN
-  :param csv_name: a filename for the CSV database
-  :param visible: do we show the progress
-  :return: percentDatabaseUsed,scores
+  Compute scores (likelihood, aic, bic, mdl, etc.) from a bn w.r.t to a csv
+
+  Parameters
+  ----------
+  bn_name : pyAgrum.BayesNet | str
+    a gum.BayesianNetwork or a filename for a BN
+  csv_name : str
+     a filename for the CSV database
+  visible: bool
+    do we show the progress
+
+  Returns
+  -------
+  Tuple[float,Dict[str,float]]
+    percentDatabaseUsed,scores
   """
   if isinstance(bn_name, str):
     bn = gum.loadBN(bn_name)
@@ -76,10 +96,10 @@ def computeScores(bn_name, csv_name, visible=False):
 
   with open(csv_name, "r") as csvfile:
     dialect = csv.Sniffer().sniff(csvfile.read(1024))
-  
+
   nbr_insignificant = 0
   num_ligne = 1
-  likelihood = mdl= aic = aicc= bic=0.0
+  likelihood = 0.0
 
   with open(csv_name, 'r') as csvfile:
     batchReader = csv.reader(csvfile, dialect)
@@ -104,9 +124,10 @@ def computeScores(bn_name, csv_name, visible=False):
 
       for i in range(inst.nbrDim()):
         try:
-            inst.chgVal(i, _getIdLabel(inst, i, data[positions[i]]))
+          inst.chgVal(i, _getIdLabel(inst, i, data[positions[i]]))
         except gum.OutOfBounds:
-            print(f"Out of bounds for ({i},{positions[i]}) : unknown id or label '{data[positions[i]]}' for the variable {inst.variable(i)}")
+          print(
+            f"Out of bounds for ({i},{positions[i]}) : unknown id or label '{data[positions[i]]}' for the variable {inst.variable(i)}")
 
       p = bn.jointProbability(inst)
       if p == 0.0:
@@ -129,21 +150,28 @@ def computeScores(bn_name, csv_name, visible=False):
     mdl = likelihood - nbr_arcs * math.log(nbr_lines, 2) - 32 * dim  # 32=nbr bits for a params
 
   return ((nbr_lines - nbr_insignificant) * 100.0 / nbr_lines,
-  {'likelihood': likelihood, 'aic': aic, 'aicc': aicc, 'bic': bic, 'mdl': mdl})
+          {'likelihood': likelihood, 'aic': aic, 'aicc': aicc, 'bic': bic, 'mdl': mdl})
 
 
 def _getIdLabel(inst, i, label):
   """
-  Return the idLabel 
+  Return the idLabel. if label is an int, it already is an idLabel
 
-  :param inst: the instantiation
-  :param i: the id of the variable in the instantiation
-  :param label: the label or idLabel
+  Parameters
+  ----------
+  inst : gum.Instantiation
+    the inst to find the idLabel
+  i: int
+    the id to find the variable
+  label: int|str
+    the label or id of label
 
-  :return: the idLabel
+  Returns
+  -------
+  int
+    the id of label
   """
-
-  if label.isdigit():  # an indice
-    return int(label)
+  if isinstance(label,int):  # an idLabel
+    return label
 
   return inst.variable(i)[label]

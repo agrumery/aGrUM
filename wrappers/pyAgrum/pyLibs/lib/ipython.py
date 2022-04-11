@@ -69,9 +69,12 @@ def showGraph(gr, size=None):
   """
   show a pydot graph in a notebook
 
-  :param gr: pydot graph
-  :param size:  size of the rendered graph
-  :return: the representation of the graph
+  Parameters
+  ----------
+  gr: pydot.Dot
+    the graph to show
+  size: int|str
+    the size of the visualisation
   """
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
@@ -102,12 +105,14 @@ def showDot(dotstring, size=None):
   """
   show a dot string as a graph
 
-  :param dotstring: dot string
-  :param size: size of the rendered graph
-  :param format: render as "png" or "svg"
-  :return: the representation of the graph
+  Parameters
+  ----------
+  dotstring: str
+    the dot string
+  size: float | str
+    the size of the graphe
   """
-  return showGraph(_from_dotstring(dotstring), size)
+  showGraph(_from_dotstring(dotstring), size)
 
 
 def showBNDiff(bn1, bn2, size=None):

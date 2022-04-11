@@ -39,18 +39,31 @@ from .proba_histogram import saveFigProba
 
 def MN2UGdot(mn, size="4", nodeColor=None, edgeWidth=None, edgeColor=None, cmapNode=None, cmapEdge=None, showMsg=None):
   """
-  create a pydot representation of the Markov Network as an undirected graph
+  Create a pydot representation of the Markov Network as an undirected graph
 
-  :param pyAgrum.MarkovNet mn:
-  :param string size: size of the rendered graph
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
-  :param edgeWidth: a arcMap of values to be shown as width of arcs
-  :param edgeColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
-  :param cmapNode: color map to show the vals of Nodes
-  :param cmapEdge: color map to show the vals of Edges.
-  :param showMsg: a nodeMap of values to be shown as tooltip
+  Parameters
+  ----------
+  mn : pyAgrum.MarkovNet
+    The Markov network
+  size : int |str
+    Size of the rendered graph
+  nodeColor : Dict[int,float]
+    a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  edgeWidth : Dict[Tuple(int,int),float]
+    a edgeMap of values to be shown as width of edges
+  edgeColor: Dict[Tuple(int,int),float]
+    a edgeMap of values to be shown as color of edges
+  cmapNode : matplotlib.color.colormap
+    color map to show the vals of Nodes
+  cmapEdge
+    color map to show the vals of Edges.
+  showMsg : Dict[int,str]
+     a nodeMap of values to be shown as tooltip
 
-  :return: the desired representation of the MN as a dot graph
+  Returns
+  -------
+  pydot.Dot
+    the desired representation of the MN as a dot graph
   """
   if cmapNode is None:
     cmapNode = plt.get_cmap(gum.config["notebook", "default_node_cmap"])
@@ -120,18 +133,29 @@ def MN2UGdot(mn, size="4", nodeColor=None, edgeWidth=None, edgeColor=None, cmapN
   return graph
 
 
-def MN2FactorGraphdot(mn, size="4", nodeColor=None, factorColor=None, cmapNode=None, showMsg=None):
+def MN2FactorGraphdot(mn, size=None, nodeColor=None, factorColor=None, cmapNode=None, showMsg=None):
   """
-  create a pydot representation of the Markov Network as a factor graph
+  Create a pydot representation of the Markov Network as a factor graph
 
-  :param pyAgrum.MarkovNet mn:
-  :param string size: size of the rendered graph
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
-  :param factorColor: a function returning a value (beeween 0 and 1) to be shown as a color of factor.
-  :param cmapNode: color map to show the vals of Nodes
-  :param showMsg: a nodeMap of values to be shown as tooltip
+  Parameters
+  ----------
+  mn: pyAgrum.MarkovNet
+    the model
+  size: float|str
+    the size of the rendered graph
+  nodeColor: Dict[str,float]
+    a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  factorColor:
+    a function returning a value (between 0 and 1) to be shown as a color of factor.
+  cmapNode: matplotlib.colors.Colormap
+    colormap for nodes
+  showMsg: Dict[str,str]
+    a nodeMap of values to be shown as tooltip
 
-  :return: the desired representation of the MN as a dot graph
+  Returns
+  -------
+  pydot.Dot
+    the desired representation of the MN as a dot graph
   """
   if cmapNode is None:
     cmapNode = plt.get_cmap(gum.config["notebook", "default_node_cmap"])

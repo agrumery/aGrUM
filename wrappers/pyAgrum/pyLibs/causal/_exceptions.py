@@ -29,12 +29,23 @@ class HedgeException(Exception):
   """
   Represents an hedge exception for a causal query
 
-  :param msg: str
-  :param observables: NameSet
-  :param gs: ???
+  Parameters
+  ----------
+  msg: str
+  observables: NameSet
+  gs: ???
   """
 
   def __init__(self, msg: str, observables: NameSet, gs):
+    """
+    Represents an hedge exception for a causal query
+
+    Parameters
+    ----------
+    msg: str
+    observables: NameSet
+    gs: ???
+    """
     self.message = msg
     self.type = "HedgeException"
     self.observables = observables
@@ -45,9 +56,20 @@ class HedgeException(Exception):
 class UnidentifiableException(Exception):
   """
   Represents an unidentifiability for a causal query
+
+  Parameters
+  ----------
+  msg: str
   """
 
   def __init__(self, msg):
+    """
+    Represents an unidentifiability for a causal query
+
+    Parameters
+    ----------
+    msg: str
+    """
     self.message = msg
     self.type = "Unidentifiable"
     super().__init__(self.message)

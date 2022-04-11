@@ -177,12 +177,23 @@ def getInformationGraph(bn, evs=None, size=None, cmap=_INFOcmap,withMinMax=False
   """
   Create a dot representation of the information graph for this BN
 
-  :param bn: the BN
-  :param evs: map of evidence
-  :param size:  size of the graph
-  :param cmap: colour map used
-  :param withMinMax: min and max in the return values ?
-  :return: dot representation, min_information_value, max_information_value
+  Parameters
+  ----------
+  bn: gum.BayesNet
+    the BN
+  evs : Dict[str,str|int|List[float]]
+    map of evidence
+  size: str|int
+    size of the graph
+  cmap: matplotlib.colors.Colormap
+    color map
+  withMinMax: bool
+    min and max in the return values ?
+
+  Returns
+  -------
+  dot.Dot | Tuple[dot.Dot,float,float]
+    graph as a dot representation and if asked, min_information_value, max_information_value
   """
   if size is None:
     size = gum.config["notebook", "default_graph_size"]

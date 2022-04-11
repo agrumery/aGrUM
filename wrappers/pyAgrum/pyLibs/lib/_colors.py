@@ -55,8 +55,15 @@ def getBlackInTheme():
 def hex2rgb(vstr):
   """
   from "#FFFFFF" to [255,255,255]
-  :param vstr: the rbg string
-  :return: the list
+
+  Parameters
+  ----------
+  vstr: str
+    the rbg string
+  Returns
+  -------
+  List[int]
+    the list [r,g,b]
   """
   value = vstr.lstrip('#')
   lv = len(value)
@@ -66,6 +73,16 @@ def hex2rgb(vstr):
 def hextuple2rgb(vtuple):
   """
   from ("FF","FF","FF") to [255,255,255]
+
+  Parameters
+  ----------
+  vtuple : Tuple[str,str,str]
+    the Tuple of hexa values
+
+  Returns
+  -------
+  List[int,int,int]
+    the list [r,g,b]
   """
   return [int(v, 16) for v in vtuple]
 
@@ -74,10 +91,16 @@ def rgb2brightness(r, g, b):
   """
   Give the fgcol for a background (r,g,b).
 
-  :param r: int[0,255]
-  :param g: int[0,255]
-  :param b: int[0,255]
-  :return: "white" or "black"
+  Parameters
+  ----------
+  g: int[0,255]
+  r: int[0,255]
+  b: int[0,255]
+
+  Returns
+  -------
+  str
+    "white" or "black"
   """
   brightness = r * 0.299 + g * 0.587 + b * 0.114
   return "white" if brightness <= 153 else "black"
@@ -87,23 +110,27 @@ def proba2hex(p, cmap, withSpecialColor):
   """
   From a proba p and cmap gives the HTML rgb color
 
-  :param p: the proba
-  :param cmap: the cmap
-  :param withSpecialColor: do we have a special color when p=0 or 1 ?
-  :return: a string
-  """
-  (r, g, b, _) = cmap(p)
-  r = "%02x" % int(r * 256)
-  g = "%02x" % int(g * 256)
-  b = "%02x" % int(b * 256)
+  Parameters
+  ----------
+  p: float
+    the proba
+  cmap: matplotlib.color.colormap
+    the cmap
+  withSpecialColor: bool
+    do we have special colors for p=0 or 1 ?
 
+  Returns
+  -------
+  Tuple(str,str,str)
+    the hex values for r,g,b.
+  """
   if withSpecialColor:  # add special color for p=0 or p=1
     if p == 0.0:
-      r, g, b = "FF", "33", "33"
+      return  "FF", "33", "33"
     elif p == 1.0:
-      r, g, b = "AA", "FF", "FF"
+      return "AA", "FF", "FF"
 
-  return r, g, b
+  return [f"{int(i*256):02x}" for i in cmap(p)]
 
 
 def proba2color(p, cmap):
