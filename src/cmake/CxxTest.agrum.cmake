@@ -1,5 +1,5 @@
 #enable_testing()
-find_package(PythonInterp ${PYAGRUM_REQUIRED_PYTHON_VERSION})
+find_package(PythonInterp ${PYAGRUM_REQUIRED_PYTHON_VERSION} REQUIRED)
 
 set(CXXTESTPATH ${AGRUM_SOURCE_DIR}/testunits/cxxtest-3.10-1)
 set(GUMTESTPATH ${AGRUM_SOURCE_DIR}/testunits/gumtest)
