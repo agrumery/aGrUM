@@ -37,10 +37,10 @@ class TestASTmethod(pyAgrumTestCase):
     self.assertEqual(nod2.__str__(), "P(A|C)")
 
     su = ast.ASTsum(['A'], nod)
-    self.assertEqual(su.__str__(), "sum on A for \n| P(A,C|B)")
+    self.assertEqual(su.__str__(), "sum on A for\n| P(A,C|B)")
 
     su2 = ast.ASTsum(['A', 'C'], nod)
-    self.assertEqual(su2.__str__(), "sum on A,C for \n| P(A,C|B)")
+    self.assertEqual(su2.__str__(), "sum on A,C for\n| P(A,C|B)")
 
     op = ast.ASTdiv(nod, nod2)
     self.assertEqual(op.__str__(), "/\n| P(A,C|B)\n| P(A|C)")

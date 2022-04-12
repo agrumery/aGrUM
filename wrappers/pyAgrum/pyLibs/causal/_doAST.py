@@ -261,8 +261,7 @@ class ASTBinaryOp(ASTtree):
     return self._op2
 
   def __str__(self, prefix: str = "") -> str:
-    return f"""{prefix}{self.type}
-{self.op1.__str__(prefix + self._continueNextLine)}
+    return f"""{prefix}{self.type}\n{self.op1.__str__(prefix + self._continueNextLine)}
 {self.op2.__str__(prefix + self._continueNextLine)}"""
 
 
@@ -689,7 +688,7 @@ class ASTsum(ASTtree):
     while a.type == "_sum_":
       l.append(a.var)
       a = a.term
-    return f"""{prefix}sum on {",".join(sorted(l))} for {a.__str__(prefix + self._continueNextLine)}"""
+    return f'{prefix}sum on {",".join(sorted(l))} for\n{a.__str__(prefix + self._continueNextLine)}'
 
   def copy(self) -> "ASTtree":
     return ASTsum(self.var, self.term.copy())
