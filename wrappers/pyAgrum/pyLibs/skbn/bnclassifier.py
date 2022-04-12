@@ -18,7 +18,7 @@
 # IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
 # ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 # OR PERFORMANCE OF THIS SOFTWARE!
-from typing import List
+from typing import List, Union
 
 import pandas
 import numpy
@@ -559,7 +559,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     return returned_list
 
-  def _nary_predict(self, X, dictName, with_labels)->List[int|str]:
+  def _nary_predict(self, X, dictName, with_labels)->Union[List[str],List[int]]:
     """
     For a classifier, predicts the most likely class for each row of input data, with bn's Markov Blanket
 
@@ -592,7 +592,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     return returned_list
 
-  def _binary_predict(self, X, dictName)->List[bool|str]:
+  def _binary_predict(self, X, dictName)->Union[List[str],List[bool]]:
     """
     For a binary classifier, predicts the most likely class for each row of input data, with bn's Markov Blanket
 
