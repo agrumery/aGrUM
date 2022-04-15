@@ -1038,8 +1038,12 @@ namespace gum_tests {
 
       _testval_for_set_(p, 3, p.findAll(3), 1);
       _testval_for_set_(p, 10, p.findAll(10), 0);
-      _testval_for_set_(p, 4, p.argmax(), 2);
-      _testval_for_set_(p, 1, p.argmin(), 2);
+
+      const auto [amax, vmax] = p.argmax();
+      _testval_for_set_(p, 4, amax, 2);
+
+      const auto [amin, vmin] = p.argmin();
+      _testval_for_set_(p, 1, amin, 2);
     }
 
     void testAddDummyVariables() {
