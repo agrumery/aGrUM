@@ -153,6 +153,12 @@ namespace gum {
     ///
     /// @}
 
+  /**
+   * Check if the BayesNet is consistent (variables, CPT)
+   *
+   * @return a list of comments on the consistency of the Bayes Net
+   */
+    std::vector<std::string> check() const ;
     /**
      * This operator compares 2 BNs !
      * @warning To identify nodes between BNs, it is assumed that they share the

@@ -352,8 +352,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(cpt, bn.size())
 
       cpt = (gum::Size)0;
-
       for (const auto& arc: bn.arcs()) {
+        GUM_UNUSED(arc);
         cpt++;
       }
 
@@ -1002,8 +1002,8 @@ namespace gum_tests {
     }
 
     void testNonRegressionCPTinReverseArc() {
-      auto bn1 = gum::BayesNet< double >::fastPrototype("A->B->C");
-      auto bn2 = gum::BayesNet< double >(bn1);
+      const auto bn1 = gum::BayesNet< double >::fastPrototype("A->B->C");
+      auto       bn2 = gum::BayesNet< double >(bn1);
       bn2.reverseArc("A", "B");
       TS_ASSERT_EQUALS(bn1.cpt("A").variable(0).name(), "A")
       TS_ASSERT_EQUALS(bn2.cpt("A").variable(0).name(), "A")
@@ -1012,7 +1012,7 @@ namespace gum_tests {
     }
 
     void testClearBN() {
-      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D->E<-A<-G->F");
+      const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D->E<-A<-G->F");
       {   // by hand
         auto bn_instance = gum::BayesNet< double >(bn);
         if (!bn_instance.empty()) {
@@ -1031,7 +1031,7 @@ namespace gum_tests {
     }
 
     void testExistsArc() {
-      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D->E<-A<-G->F");
+      const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D->E<-A<-G->F");
 
       TS_ASSERT(bn.existsArc(0, 1))
       TS_ASSERT(bn.existsArc("A", "B"))
@@ -1039,6 +1039,28 @@ namespace gum_tests {
       TS_ASSERT(!bn.existsArc("B", "A"))
       TS_ASSERT(!bn.existsArc(0, 2))
       TS_ASSERT(!bn.existsArc("A", "C"))
+    }
+
+    void testCheck() {
+      const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D->E<-A<-G->F");
+
+      TS_ASSERT_EQUALS(bn.check().size(), gum::Size(0))
+
+      bn.cpt("B").fillWith(0);
+      TS_ASSERT_EQUALS(bn.check().size(), gum::Size(1))
+
+      bn.cpt("C").fillWith(2);
+      TS_ASSERT_EQUALS(bn.check().size(), gum::Size(2))
+
+      const auto bn2
+         = gum::BayesNet< double >::fastPrototype("Y->X->T1;Z2->X;Z1->X;Z1->T1;Z1->Z3->T2");
+      TS_ASSERT_EQUALS(bn2.check().size(), gum::Size(0))
+
+      bn2.cpt("X").scale(12);
+      TS_ASSERT_EQUALS(bn2.check().size(), gum::Size(1))
+
+      bn2.cpt("Z1").scale(12);
+      TS_ASSERT_EQUALS(bn2.check().size(), gum::Size(2))
     }
   };
 }   // namespace gum_tests
