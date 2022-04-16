@@ -7503,12 +7503,6 @@ class Potential(object):
     def findAll(self, v: float) -> List[Dict[str,int]]:
         return _pyAgrum.Potential_findAll(self, v)
 
-    def argmax(self) -> List[Dict[str,int]]:
-        return _pyAgrum.Potential_argmax(self)
-
-    def argmin(self) -> List[Dict[str,int]]:
-        return _pyAgrum.Potential_argmin(self)
-
     def entropy(self) -> float:
         r"""
 
@@ -7839,8 +7833,8 @@ class Potential(object):
 
         Warning
         --------
-            if the dictionnary contains a key that is not the name of a variable in the `pyAgrum.Potential`, 
-            this key is just not used without notification. Then `pyAgrum.Potential.extract` concerns 
+            if the dictionnary contains a key that is not the name of a variable in the `pyAgrum.Potential`,
+            this key is just not used without notification. Then `pyAgrum.Potential.extract` concerns
             only the variables that  both are in the Potential and in the dictionnary.
 
         Returns
@@ -8013,6 +8007,28 @@ class Potential(object):
 
         """
         return _pyAgrum.Potential_margMinIn(self, varnames)
+
+    def argmin(self) -> object:
+        r"""
+
+        Returns
+        -------
+        Tuple[Dict[str,int],float]
+          the list of positions of the min and the min of all elements in the Potential
+
+        """
+        return _pyAgrum.Potential_argmin(self)
+
+    def argmax(self) -> object:
+        r"""
+
+        Returns
+        -------
+        Tuple[Dict[str,int],float]
+          the list of positions of the max and the max of all elements in the Potential
+
+        """
+        return _pyAgrum.Potential_argmax(self)
 
     def __eq__(self, *args) -> bool:
         return _pyAgrum.Potential___eq__(self, *args)
@@ -8312,6 +8328,7 @@ class Potential(object):
 
             var_names return a list in the reverse order of the enumeration order of the variables.
         """
+        warnings.warn("\n** pyAgrum.Potential.var_names is obsolete in pyAgrum>0.22.9. Please use pyAgrum.Potential.names.\n")
         return [n for n in reversed(self.names)]
 
     @property
@@ -8328,6 +8345,7 @@ class Potential(object):
 
             var_dims return a list in the reverse order of the enumeration order of the variables.
         """
+        warnings.warn("\n** pyAgrum.Potential.var_dims is obsolete in pyAgrum>0.22.9. Please use pyAgrum.Potential.shape.\n")
         return [n for n in reversed(self.shape)]
 
     @property
@@ -8708,6 +8726,9 @@ class IBayesNet(DAGmodel):
 
         """
         return _pyAgrum.IBayesNet_log2JointProbability(self, i)
+
+    def check(self) -> List[str]:
+        return _pyAgrum.IBayesNet_check(self)
 
     def __eq__(self, _from: "IBayesNet") -> bool:
         return _pyAgrum.IBayesNet___eq__(self, _from)

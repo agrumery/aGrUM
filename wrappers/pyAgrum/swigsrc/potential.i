@@ -66,6 +66,9 @@ CHANGE_THEN_RETURN_SELF(fillWith)
 %rename ("$ignore", fullname=1) gum::Potential<double>::reorganize(const Set<const DiscreteVariable*>& vars) const;
 %rename ("$ignore", fullname=1) gum::Potential<double>::putFirst(const DiscreteVariable* var) const;
 
+%rename ("$ignore", fullname=1) gum::Potential<double>::argmin() const;
+%rename ("$ignore", fullname=1) gum::Potential<double>::argmax() const;
+
 
 %extend gum::Potential<double> {
     Potential<double> extract(PyObject* dict) {
@@ -128,6 +131,16 @@ CHANGE_THEN_RETURN_SELF(fillWith)
       gum::Set<const gum::DiscreteVariable*> s;
       PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
       return self->margMinIn(s);
+    }
+
+    PyObject* argmin() {
+      const auto [argmi,mi] = self->argmin();
+      return PyTuple_Pack(2,PyAgrumHelper::PySeqFromSetOfInstantiation(argmi),PyFloat_FromDouble(mi));
+    }
+
+    PyObject* argmax() {
+      const auto [argma,ma] = self->argmax();
+      return PyTuple_Pack(2,PyAgrumHelper::PySeqFromSetOfInstantiation(argma),PyFloat_FromDouble(ma));
     }
 
     // equality
@@ -434,6 +447,7 @@ CHANGE_THEN_RETURN_SELF(fillWith)
 
             var_names return a list in the reverse order of the enumeration order of the variables.
         """
+        warnings.warn("\n** pyAgrum.Potential.var_names is obsolete in pyAgrum>0.22.9. Please use pyAgrum.Potential.names.\n")
         return [n for n in reversed(self.names)]
 
     @property
@@ -450,6 +464,7 @@ CHANGE_THEN_RETURN_SELF(fillWith)
 
             var_dims return a list in the reverse order of the enumeration order of the variables.
         """
+        warnings.warn("\n** pyAgrum.Potential.var_dims is obsolete in pyAgrum>0.22.9. Please use pyAgrum.Potential.shape.\n")
         return [n for n in reversed(self.shape)]
 
     @property

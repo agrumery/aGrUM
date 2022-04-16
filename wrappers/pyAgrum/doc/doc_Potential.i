@@ -106,8 +106,8 @@ dict : Dict[str,str|int]
 
 Warning
 --------
-    if the dictionnary contains a key that is not the name of a variable in the `pyAgrum.Potential`, 
-    this key is just not used without notification. Then `pyAgrum.Potential.extract` concerns 
+    if the dictionnary contains a key that is not the name of a variable in the `pyAgrum.Potential`,
+    this key is just not used without notification. Then `pyAgrum.Potential.extract` concerns
     only the variables that  both are in the Potential and in the dictionnary.
 
 Returns
@@ -333,6 +333,14 @@ pyAgrum.InvalidArgument
   If varnames contains only one variable that does not exist in the Potential
 "
 
+%feature("docstring") gum::Potential::argmax
+"
+Returns
+-------
+Tuple[Dict[str,int],double]
+  the list of positions of the max and the max of all elements in the Potential
+"
+
 %feature("docstring") gum::Potential::max
 "
 Returns
@@ -352,6 +360,14 @@ Raises
 ------
 pyAgrum.NotFound
   If all value == 1.0
+"
+
+%feature("docstring") gum::Potential::argmin
+"
+Returns
+-------
+Tuple[Dict[str,int],double]
+  the list of positions of the min and the min of all elements in the Potential
 "
 
 %feature("docstring") gum::Potential::min
