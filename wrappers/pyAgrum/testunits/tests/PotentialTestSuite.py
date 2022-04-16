@@ -814,8 +814,8 @@ class TestOperators(pyAgrumTestCase):
 
     self.__test_val_for_set(p, 3, p.findAll(3), 1)
     self.__test_val_for_set(p, 10, p.findAll(10), 0)
-    self.__test_val_for_set(p, 4, p.argmax(), 2)
-    self.__test_val_for_set(p, 1, p.argmin(), 2)
+    self.__test_val_for_set(p, 4, p.argmax()[0], 2)
+    self.__test_val_for_set(p, 1, p.argmin()[0], 2)
 
   def testAddDummyVariables(self):
     # === LabelizedVariable

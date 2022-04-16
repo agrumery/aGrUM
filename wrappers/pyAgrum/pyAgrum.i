@@ -52,6 +52,7 @@
 
 %pythoncode %{
   import numpy
+  import warnings
   from numbers import Number
 %}
 

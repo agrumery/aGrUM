@@ -302,13 +302,13 @@ CHANGE_THEN_RETURN_SELF(fillWith)
       else:
         i = ind
 
-      vn=self.var_names
       if isinstance(i,dict):
-          for nam in vn:
+          for nam in self.names:
               if nam in i:
                   inst.chgVal(nam,i[nam])
                   loopvars.erase(nam)
       elif isinstance(i,tuple):
+          vn=[n for n in reversed(self.names)]
           if len(i)>self.nbrDim():
               raise KeyError("Too many values in '"+str(i)+"' for '"+str(self)+"'")
           for k,v in enumerate(i):
