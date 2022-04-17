@@ -1,5 +1,37 @@
 # aGrUM Changelog
 
+## Changelog for 1.0.0
+
+The aGrUM's team is very proud to announce the release of aGrUM/pyAgrum 1.0.0! 
+
+This long journey sometimes strewn with pitfalls, but which often brought great satisfactions began with this first commit (subversion):
+
+> add8dbff5 | 13 years ago | phw | test?
+
+aGrUM/pyAgrum is now definitely no longer a test :-) Parallelization of inference in Bayesian networks is the important feature that allows us to symbolically assert a level of quality of aGrUM. The 1.0.0 release shows that we also believe the API will remain stable in a medium term.
+
+pyAgrum continues its path as a wrapper of aGrUM but with more and more specific features. Some of them are intended to be implemented in C++ and eventually integrated in aGrUM (causality, etc.), others will certainly remain specificities of pyAgrum. 
+
+In the near future, for aGrUM and pyAgrum, we expect many more new features and releases ! Stay tuned!
+
+* aGrUM
+
+  * VariableElimination, ShaferShenoy and LazyPropagation are now parallelized.
+  * Better use of d-separation in ShaferShenoy and LazyPropagation.
+  * Better initialization/registrations using Meyer's singleton.
+  * Better 0-dimensional Potential.
+  * new `gum::IBayesNet::check()` to test if the BN is completely and well defined.
+
+* pyAgrum
+
+  * Better documentation and argument order for `gum.BNLearner.__init__`.
+  * Better numpystyle for docstrings.
+  * Better tests and notebooks.
+  * Better signature for `gum.Potential.arg{max|min}`.
+  * New `gum.IBayesNet.check()` to test if the BN is completely and well defined.
+  * More consistant API : `with_labels` default is True everywhere.
+
+
 ## Changelog for 0.22.9
 
 This tag is a pre-relase for 1.0.0 (!). 
