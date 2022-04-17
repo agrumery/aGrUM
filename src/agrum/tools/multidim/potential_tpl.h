@@ -678,23 +678,24 @@ namespace gum {
     Instantiation        I(*this);
     Set< Instantiation > res;
 
-//    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) { return res; }
+    //    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) { return
+    //    res; }
     for (I.setFirst(); !I.end(); ++I) {
-      if (this->get(I) == v) res.insert(Instantiation(I,false));
+      if (this->get(I) == v) res.insert(Instantiation(I, false));
     }
     return res;
   }
   // argmax of all elements in this
   template < typename GUM_SCALAR >
-  INLINE std::pair<Set< Instantiation >,GUM_SCALAR> Potential< GUM_SCALAR >::argmax() const {
-    auto m=max();
-    return std::pair(findAll(m),m);
+  INLINE std::pair< Set< Instantiation >, GUM_SCALAR > Potential< GUM_SCALAR >::argmax() const {
+    auto m = max();
+    return std::pair(findAll(m), m);
   }
   // argmin of all elements in this
   template < typename GUM_SCALAR >
-  INLINE std::pair<Set< Instantiation >,GUM_SCALAR> Potential< GUM_SCALAR >::argmin() const {
-    auto m=min();
-    return std::pair(findAll(m),m);
+  INLINE std::pair< Set< Instantiation >, GUM_SCALAR > Potential< GUM_SCALAR >::argmin() const {
+    auto m = min();
+    return std::pair(findAll(m), m);
   }
 
   template < typename GUM_SCALAR >

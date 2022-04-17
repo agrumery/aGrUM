@@ -212,12 +212,12 @@ namespace gum {
 
     /// set of instantiation corresponding to the parameter v in the Potential
     Set< Instantiation > findAll(GUM_SCALAR v) const;
-    
+
     /// Pair of the set of instantiation corresponding to the max and this max in the Potential
-    std::pair<Set< Instantiation >,GUM_SCALAR> argmax() const;
+    std::pair< Set< Instantiation >, GUM_SCALAR > argmax() const;
 
     /// Pair of the set of instantiation corresponding to the min and this min in the Potential
-    std::pair<Set< Instantiation >,GUM_SCALAR> argmin() const;
+    std::pair< Set< Instantiation >, GUM_SCALAR > argmin() const;
 
     /// entropy of the Potential
     GUM_SCALAR entropy() const;
