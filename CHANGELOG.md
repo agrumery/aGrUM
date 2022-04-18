@@ -18,7 +18,7 @@ In the near future, for aGrUM and pyAgrum, we expect many more new features and 
 
   * VariableElimination, ShaferShenoy and LazyPropagation are now parallelized.
   * Better use of d-separation in ShaferShenoy and LazyPropagation.
-  * Better initialization/registrations using Meyer's singleton.
+  * Better initialization/registrations using Meyers singleton.
   * Better 0-dimensional Potential.
   * new `gum::IBayesNet::check()` to test if the BN is completely and well defined.
 

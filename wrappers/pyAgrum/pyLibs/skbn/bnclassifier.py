@@ -586,9 +586,9 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
         x, I, dictName, self.MarkovBlanket, self.target)
       if with_labels:
         returned_list.append(self.MarkovBlanket.variable(
-          self.target).label(vals[0][self.target]))
+          self.target).label(vals[0][0][self.target]))
       else:
-        returned_list.append(vals[0][self.target])
+        returned_list.append(vals[0][0][self.target])
 
     return returned_list
 

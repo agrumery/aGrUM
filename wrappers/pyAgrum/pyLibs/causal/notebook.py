@@ -67,8 +67,7 @@ def showCausalModel(cm: csl.CausalModel, size= None):
 
 
 def getCausalImpact(model: csl.CausalModel, on: Union[str, NameSet], doing: Union[str, NameSet],
-                    knowing: Optional[NameSet] = None, values: Optional[Dict[str, int]] = None) -> Tuple[
-        str, "pyAgrum.Potential", str]:
+                    knowing: Optional[NameSet] = None, values: Optional[Dict[str, int]] = None):
   """
   return a HTML representing of the three values defining a causal impact : formula, value, explanation
 
@@ -87,17 +86,19 @@ def getCausalImpact(model: csl.CausalModel, on: Union[str, NameSet], doing: Unio
 
   Returns
   -------
-  Tuple[str,pyAgrum.Potential,str]
-    a triplet (CausalFormula representation (as string), pyAgrum.Potential, explanation)
+  HTML
   """
-  formula, impact, explanation = csl.causalImpact(
-      model, on, doing, knowing, values)
-  return gnb.getSideBySide(getCausalModel(model),
-                           "?" if formula is None else (
-                               '$$\\begin{equation*}' + formula.toLatex() + '\\end{equation*}$$'),
-                           "No result" if formula is None else impact,
-                           captions=["Causal Model", "Explanation : " + explanation,
-                                     "Impact : $" + ("?" if formula is None else formula.latexQuery(values)) + "$"])
+  formula, impact, explanation = csl.causalImpact(model, on, doing, knowing, values)
+
+  gnb.flow.clear()
+  gnb.flow.add(getCausalModel(model),caption="Causal Model")
+  if formula is None:
+    gnb.flow.add(explanation,caption="Impossible")
+  else:
+    gnb.flow.add('$$\\begin{equation*}' + formula.toLatex() + '\\end{equation*}$$',caption="Explanation : "+explanation )
+  gnb.flow.add("No result" if formula is None else impact,caption="Impact") # : $" + ("?" if formula is None else formula.latexQuery(values)) + "$")
+
+  return gnb.flow.html()
 
 
 def showCausalImpact(model: csl.CausalModel, on: Union[str, NameSet], doing: Union[str, NameSet],
@@ -119,7 +120,7 @@ def showCausalImpact(model: csl.CausalModel, on: Union[str, NameSet], doing: Uni
     value for certain variables
   """
   html = getCausalImpact(model, on, doing, knowing, values)
-  IPython.display.display(IPython.display.HTML(html))
+  IPython.display.display(html)
 
 
 csl.CausalModel._repr_html_ = lambda self: gnb.getDot(
