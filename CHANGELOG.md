@@ -4,7 +4,7 @@
 
 The aGrUM's team is very proud to announce the release of aGrUM/pyAgrum 1.0.0! 
 
-This long journey sometimes strewn with pitfalls, but which often brought great satisfactions began with this first commit (subversion):
+This long journey sometimes strewn with pitfalls, but which often brought great satisfactions, began with this first commit (subversion):
 
 > add8dbff5 | 13 years ago | phw | test?
 
@@ -20,7 +20,7 @@ In the near future, for aGrUM and pyAgrum, we expect many more new features and 
   * Better use of d-separation in ShaferShenoy and LazyPropagation.
   * Better initialization/registrations using Meyers singleton.
   * Better 0-dimensional Potential.
-  * new `gum::IBayesNet::check()` to test if the BN is completely and well defined.
+  * new `gum::IBayesNet::check()` to test if the BN is completely and well-defined.
 
 * pyAgrum
 
@@ -28,8 +28,8 @@ In the near future, for aGrUM and pyAgrum, we expect many more new features and 
   * Better numpystyle for docstrings.
   * Better tests and notebooks.
   * Better signature for `gum.Potential.arg{max|min}`.
-  * New `gum.IBayesNet.check()` to test if the BN is completely and well defined.
-  * More consistant API : `with_labels` default is True everywhere.
+  * New `gum.IBayesNet.check()` to test if the BN is completely and well-defined.
+  * More consistent API : `with_labels` default is True everywhere.
 
 
 ## Changelog for 0.22.9
