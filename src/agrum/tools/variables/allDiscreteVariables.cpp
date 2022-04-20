@@ -18,29 +18,6 @@
  *
  */
 
+#include <agrum/tools/variables/allDiscreteVariables.h>
 
-#include <agrum/tools/variables/labelizedVariable.h>
-
-#ifdef GUM_NO_INLINE
-#  include <agrum/tools/variables/labelizedVariable_inl.h>
-#endif /* GUM_NO_INLINE */
-
-namespace gum {
-  const std::string LabelizedVariable::domain() const {
-    std::stringstream s;
-    s << "{";
-
-    if (domainSize() > 0) {
-      s << label(0);
-
-      for (Idx i = 1; i < domainSize(); ++i) {
-        s << "|";
-        s << label(i);
-      }
-    }
-
-    s << "}";
-
-    return s.str();
-  }
-}   // namespace gum
+namespace gum {}   // namespace gum

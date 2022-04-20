@@ -59,19 +59,15 @@ namespace gum {
   /// Returns the domain as a string
   const std::string IntegerVariable::domain() const {
     std::stringstream s;
-    s << "<";
-
     const Size size = domainSize();
+
+    s << "{";
     if (size > 0) {
       s << _domain_[0];
-
-      for (Idx i = 1; i < size; ++i) {
-        s << ',' << _domain_[i];
-      }
+      for (Idx i = 1; i < size; ++i)
+        s << '|' << _domain_[i];
     }
-
-    s << ">";
-
+    s << "}";
     return s.str();
   }
 

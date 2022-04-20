@@ -40,9 +40,8 @@
 
 #include <agrum/BN/io/BNWriter.h>
 #include <agrum/agrum.h>
-#include <agrum/tools/variables/discreteVariable.h>
-#include <agrum/tools/variables/discretizedVariable.h>
-#include <agrum/tools/variables/rangeVariable.h>
+
+#include <agrum/tools/variables/allDiscreteVariables.h>
 
 namespace gum {
   /**

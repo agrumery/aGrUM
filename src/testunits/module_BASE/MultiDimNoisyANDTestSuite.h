@@ -52,15 +52,17 @@ namespace gum_tests {
       // doing the right stuf :)
       TS_GUM_ASSERT_THROWS_NOTHING(p.causalWeight(b, 0.4f));
       TS_GUM_ASSERT_THROWS_NOTHING(p.causalWeight(d, 0.7f));
-      TS_ASSERT_EQUALS(p.toString(),
-                       "a:Labelized(<0,1>)=noisyAND([0.2],b:Labelized(<0,1>)[0.4]c:Labelized(<0,1>)"
-                       "[1]d:Labelized(<0,1>)[0.7])");
+      TS_ASSERT_EQUALS(
+         p.toString(),
+         "a:Labelized({0|1})=noisyAND([0.2], b:Labelized({0|1})[0.4], c:Labelized({0|1})"
+         "[1], d:Labelized({0|1})[0.7])");
       TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4)
 
       gum::MultiDimNoisyAND< double > q(p);
-      TS_ASSERT_EQUALS(q.toString(),
-                       "a:Labelized(<0,1>)=noisyAND([0.2],b:Labelized(<0,1>)[0.4]c:Labelized(<0,1>)"
-                       "[1]d:Labelized(<0,1>)[0.7])");
+      TS_ASSERT_EQUALS(
+         q.toString(),
+         "a:Labelized({0|1})=noisyAND([0.2], b:Labelized({0|1})[0.4], c:Labelized({0|1})"
+         "[1], d:Labelized({0|1})[0.7])");
       TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4)
 
       // trying a noisyAND with 0 as external weight (not allowed)

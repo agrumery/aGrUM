@@ -940,7 +940,7 @@ namespace gum_tests {
         learn4 = learner.learnParameters(dbn.dag());
       }
       TS_ASSERT_EQUALS(learn4.variable(learn1.idFromName("wl_0")).toString(),
-                       "wl_0:Labelized(<0,1,2,3>)");
+                       "wl_0:Labelized({0|1|2|3})");
     }
 
 

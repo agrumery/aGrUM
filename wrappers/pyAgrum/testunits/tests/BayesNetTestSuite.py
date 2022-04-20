@@ -178,11 +178,11 @@ class TestFeatures(BayesNetTestCase):
 
     res = bn.loadBIF(self.agrumSrcDir('alarm.bif'))
 
-    self.assertEqual(str(bn.variable(0)), "HISTORY:Labelized(<TRUE,FALSE>)")
+    self.assertEqual(str(bn.variable(0)), "HISTORY:Labelized({TRUE|FALSE})")
     bn.variable(0).toLabelizedVar().changeLabel(0, "toto")
-    self.assertNotEqual(str(bn.variable(0)), "HISTORY:Labelized(<toto,FALSE>)")
+    self.assertNotEqual(str(bn.variable(0)), "HISTORY:Labelized({toto|FALSE})")
     bn.changeVariableLabel(0, "TRUE", "toto")
-    self.assertEqual(str(bn.variable(0)), "HISTORY:Labelized(<toto,FALSE>)")
+    self.assertEqual(str(bn.variable(0)), "HISTORY:Labelized({toto|FALSE})")
 
   def testStringAccessors(self):
     bn = gum.BayesNet()
@@ -360,58 +360,58 @@ class TestFeatures(BayesNetTestCase):
                      "a:Discretized(<[-0.4;0.1[,[0.1;0.5[,[0.5;3.14[,[3.14;10]>)")
 
     bn=gum.fastBN("a{-3|0|3}")
-    self.assertEqual(bn.variable("a").__str__(),"a:Integer(<-3,0,3>)")
+    self.assertEqual(bn.variable("a").__str__(),"a:Integer({-3|0|3})")
 
     bn=gum.fastBN("a{X|Y|Z}")
-    self.assertEqual(bn.variable("a").__str__(),"a:Labelized(<X,Y,Z>)")
+    self.assertEqual(bn.variable("a").__str__(),"a:Labelized({X|Y|Z})")
 
   def test_minimalCondSet(self):
     bn = gum.fastBN("A->C->E->F->G;B->C;B->D->F;H->E")
     iA, iB, iC, iD, iE, iF, iG, iH = [bn.idFromName(s) for s in
                                       "ABCDEFGH"]
-    tous = set([iA, iB, iC, iD, iE, iF, iG, iH])
+    tous = {iA, iB, iC, iD, iE, iF, iG, iH}
 
     r = bn.minimalCondSet(iA, tous)
-    self.assertEqual(r, set([iA]))
+    self.assertEqual(r, {iA})
 
-    r = bn.minimalCondSet(iA, tous - set([iA]))
-    self.assertEqual(r, set([iB, iC]))
+    r = bn.minimalCondSet(iA, tous - {iA})
+    self.assertEqual(r, {iB, iC})
 
-    r = bn.minimalCondSet(iA, set([iE, iF, iG]))
-    self.assertEqual(r, set([iE, iF]))
+    r = bn.minimalCondSet(iA, {iE, iF, iG})
+    self.assertEqual(r, {iE, iF})
 
-    r = bn.minimalCondSet(iA, set([iB, iC, iE, iF, iG]))
-    self.assertEqual(r, set([iB, iC]))
+    r = bn.minimalCondSet(iA, {iB, iC, iE, iF, iG})
+    self.assertEqual(r, {iB, iC})
 
-    r = bn.minimalCondSet(iA, set([iC, iE, iF, iG]))
-    self.assertEqual(r, set([iC, iE, iF]))
+    r = bn.minimalCondSet(iA, {iC, iE, iF, iG})
+    self.assertEqual(r, {iC, iE, iF})
 
     r = bn.minimalCondSet(iC, tous)
-    self.assertEqual(r, set([iC]))
+    self.assertEqual(r, {iC})
 
-    r = bn.minimalCondSet(iC, tous - set([iC]))
-    self.assertEqual(r, set([iA, iB, iH, iE]))
+    r = bn.minimalCondSet(iC, tous - {iC})
+    self.assertEqual(r, {iA, iB, iH, iE})
 
-    r = bn.minimalCondSet(iC, set([iE, iF, iG]))
-    self.assertEqual(r, set([iE, iF]))
+    r = bn.minimalCondSet(iC, {iE, iF, iG})
+    self.assertEqual(r, {iE, iF})
 
-    r = bn.minimalCondSet(iC, set([iB, iE, iF, iG]))
-    self.assertEqual(r, set([iE, iB]))
+    r = bn.minimalCondSet(iC, {iB, iE, iF, iG})
+    self.assertEqual(r, {iE, iB})
 
-    r = bn.minimalCondSet(iC, set([iC, iE, iF, iG]))
-    self.assertEqual(r, set([iC]))
+    r = bn.minimalCondSet(iC, {iC, iE, iF, iG})
+    self.assertEqual(r, {iC})
 
     # for set of targets
-    tous = set([iA, iB, iC, iD, iE, iF, iG, iH])
+    tous = {iA, iB, iC, iD, iE, iF, iG, iH}
 
     r = bn.minimalCondSet([iE, iD], tous)
-    self.assertEqual(r, set([iE, iD]))
+    self.assertEqual(r, {iE, iD})
 
-    r = bn.minimalCondSet([iE, iD], tous - set([iE]))
-    self.assertEqual(r, set([iC, iD, iH, iF]))
+    r = bn.minimalCondSet([iE, iD], tous - {iE})
+    self.assertEqual(r, {iC, iD, iH, iF})
 
-    r = bn.minimalCondSet([iE, iD], tous - set([iE, iD]))
-    self.assertEqual(r, set([iB, iC, iH, iF]))
+    r = bn.minimalCondSet([iE, iD], tous - {iE, iD})
+    self.assertEqual(r, {iB, iC, iH, iF})
 
   def testClearBN(self):
     bn = gum.fastBN("A->B->C->D;E<-C<-F")
@@ -431,14 +431,14 @@ class TestFeatures(BayesNetTestCase):
   def testAncestors(self):
     bn = gum.fastBN("A->B<-C->D->E<-A->F;G->A;D->H;G<-I->C<-J")
 
-    self.assertEqual(bn.descendants(6), set([0, 1, 4, 5]))
-    self.assertEqual(bn.descendants("G"), set([0, 1, 4, 5]))
+    self.assertEqual(bn.descendants(6), {0, 1, 4, 5})
+    self.assertEqual(bn.descendants("G"), {0, 1, 4, 5})
 
     self.assertEqual(bn.descendants(1), set())
     self.assertEqual(bn.descendants("B"), set())
 
-    self.assertEqual(bn.ancestors(1), set([0, 2, 6, 8, 9]))
-    self.assertEqual(bn.ancestors("B"), set([0, 2, 6, 8, 9]))
+    self.assertEqual(bn.ancestors(1), {0, 2, 6, 8, 9})
+    self.assertEqual(bn.ancestors("B"), {0, 2, 6, 8, 9})
 
     self.assertEqual(bn.ancestors(9), set())
     self.assertEqual(bn.ancestors("J"), set())

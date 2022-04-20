@@ -248,7 +248,7 @@ namespace gum_tests {
                          "4");
         TS_ASSERT_EQUALS(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
                          "2");
-        TS_ASSERT_EQUALS(translator.variable()->toString(), "X1:Labelized(<1,4,2>)")
+        TS_ASSERT_EQUALS(translator.variable()->toString(), "X1:Labelized({1|4|2})")
 
         gum::LabelizedVariable var2("X2", "", 0);
         var2.addLabel("1");
@@ -265,7 +265,7 @@ namespace gum_tests {
                   == "2");
         TS_ASSERT(translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
                   == "4");
-        TS_ASSERT_EQUALS(translator2.variable()->toString(), "X2:Labelized(<1,2,4>)")
+        TS_ASSERT_EQUALS(translator2.variable()->toString(), "X2:Labelized({1|2|4})")
 
         gum::learning::DBTranslator4LabelizedVariable translator3(translator);
         TS_ASSERT_EQUALS(translator3.translate("1").discr_val, (std::size_t)0)
@@ -277,7 +277,7 @@ namespace gum_tests {
                   == "4");
         TS_ASSERT(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
                   == "2");
-        TS_ASSERT_EQUALS(translator3.variable()->toString(), "X1:Labelized(<1,4,2>)")
+        TS_ASSERT_EQUALS(translator3.variable()->toString(), "X1:Labelized({1|4|2})")
 
         gum::learning::DBTranslator4LabelizedVariable translator4(translator2);
         TS_ASSERT_EQUALS(translator4.translate("1").discr_val, (std::size_t)0)
@@ -289,7 +289,7 @@ namespace gum_tests {
                   == "2");
         TS_ASSERT(translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
                   == "4");
-        TS_ASSERT_EQUALS(translator4.variable()->toString(), "X2:Labelized(<1,2,4>)")
+        TS_ASSERT_EQUALS(translator4.variable()->toString(), "X2:Labelized({1|2|4})")
 
         gum::learning::DBTranslator4LabelizedVariable translator5(std::move(translator3));
         TS_ASSERT_EQUALS(translator5.translate("1").discr_val, (std::size_t)0)
@@ -301,7 +301,7 @@ namespace gum_tests {
                   == "4");
         TS_ASSERT(translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
                   == "2");
-        TS_ASSERT_EQUALS(translator5.variable()->toString(), "X1:Labelized(<1,4,2>)")
+        TS_ASSERT_EQUALS(translator5.variable()->toString(), "X1:Labelized({1|4|2})")
 
         gum::learning::DBTranslator4LabelizedVariable translator6(std::move(translator4));
         TS_ASSERT_EQUALS(translator6.translate("1").discr_val, (std::size_t)0)
@@ -313,7 +313,7 @@ namespace gum_tests {
                   == "2");
         TS_ASSERT(translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
                   == "4");
-        TS_ASSERT_EQUALS(translator6.variable()->toString(), "X2:Labelized(<1,2,4>)")
+        TS_ASSERT_EQUALS(translator6.variable()->toString(), "X2:Labelized({1|2|4})")
 
         gum::learning::DBTranslator4LabelizedVariable* translator7 = translator6.clone();
         TS_ASSERT_EQUALS(translator7->translate("1").discr_val, (std::size_t)0)
@@ -325,7 +325,7 @@ namespace gum_tests {
                   == "2");
         TS_ASSERT(translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
                   == "4");
-        TS_ASSERT_EQUALS(translator7->variable()->toString(), "X2:Labelized(<1,2,4>)")
+        TS_ASSERT_EQUALS(translator7->variable()->toString(), "X2:Labelized({1|2|4})")
 
         delete translator7;
 
@@ -339,7 +339,7 @@ namespace gum_tests {
                   == "2");
         TS_ASSERT(translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
                   == "4");
-        TS_ASSERT_EQUALS(translator5.variable()->toString(), "X2:Labelized(<1,2,4>)")
+        TS_ASSERT_EQUALS(translator5.variable()->toString(), "X2:Labelized({1|2|4})")
 
         translator3 = translator5;
         TS_ASSERT_EQUALS(translator3.translate("1").discr_val, (std::size_t)0)
@@ -351,7 +351,7 @@ namespace gum_tests {
                   == "2");
         TS_ASSERT(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
                   == "4");
-        TS_ASSERT_EQUALS(translator3.variable()->toString(), "X2:Labelized(<1,2,4>)")
+        TS_ASSERT_EQUALS(translator3.variable()->toString(), "X2:Labelized({1|2|4})")
 
         translator5 = std::move(translator3);
         TS_ASSERT_EQUALS(translator5.translate("1").discr_val, (std::size_t)0)
@@ -363,7 +363,7 @@ namespace gum_tests {
                   == "2");
         TS_ASSERT(translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
                   == "4");
-        TS_ASSERT_EQUALS(translator5.variable()->toString(), "X2:Labelized(<1,2,4>)")
+        TS_ASSERT_EQUALS(translator5.variable()->toString(), "X2:Labelized({1|2|4})")
       }
     }
 
@@ -385,7 +385,7 @@ namespace gum_tests {
                        "4");
       TS_ASSERT_EQUALS(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
                        "2");
-      TS_ASSERT_EQUALS(translator.variable()->toString(), "X1:Labelized(<1,4,2>)")
+      TS_ASSERT_EQUALS(translator.variable()->toString(), "X1:Labelized({1|4|2})")
 
       gum::LabelizedVariable var2("X2", "", 0);
       var2.addLabel("1");
@@ -402,7 +402,7 @@ namespace gum_tests {
                        "2");
       TS_ASSERT_EQUALS(translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
                        "4");
-      TS_ASSERT_EQUALS(translator2.variable()->toString(), "X2:Labelized(<1,2,4>)")
+      TS_ASSERT_EQUALS(translator2.variable()->toString(), "X2:Labelized({1|2|4})")
 
       gum::learning::DBTranslator4LabelizedVariable translator3(translator);
       TS_ASSERT_EQUALS(translator3.translate("1").discr_val, (std::size_t)0)
@@ -414,7 +414,7 @@ namespace gum_tests {
                        "4");
       TS_ASSERT_EQUALS(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
                        "2");
-      TS_ASSERT_EQUALS(translator3.variable()->toString(), "X1:Labelized(<1,4,2>)")
+      TS_ASSERT_EQUALS(translator3.variable()->toString(), "X1:Labelized({1|4|2})")
 
       gum::learning::DBTranslator4LabelizedVariable translator4(translator2);
       TS_ASSERT_EQUALS(translator4.translate("1").discr_val, (std::size_t)0)
@@ -426,7 +426,7 @@ namespace gum_tests {
                        "2");
       TS_ASSERT_EQUALS(translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
                        "4");
-      TS_ASSERT_EQUALS(translator4.variable()->toString(), "X2:Labelized(<1,2,4>)")
+      TS_ASSERT_EQUALS(translator4.variable()->toString(), "X2:Labelized({1|2|4})")
 
       gum::learning::DBTranslator4LabelizedVariable translator5(std::move(translator3));
       TS_ASSERT_EQUALS(translator5.translate("1").discr_val, (std::size_t)0)
@@ -438,7 +438,7 @@ namespace gum_tests {
                        "4");
       TS_ASSERT_EQUALS(translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
                        "2");
-      TS_ASSERT_EQUALS(translator5.variable()->toString(), "X1:Labelized(<1,4,2>)")
+      TS_ASSERT_EQUALS(translator5.variable()->toString(), "X1:Labelized({1|4|2})")
 
       gum::learning::DBTranslator4LabelizedVariable translator6(std::move(translator4));
       TS_ASSERT_EQUALS(translator6.translate("1").discr_val, (std::size_t)0)
@@ -450,7 +450,7 @@ namespace gum_tests {
                        "2");
       TS_ASSERT_EQUALS(translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
                        "4");
-      TS_ASSERT_EQUALS(translator6.variable()->toString(), "X2:Labelized(<1,2,4>)")
+      TS_ASSERT_EQUALS(translator6.variable()->toString(), "X2:Labelized({1|2|4})")
 
       gum::learning::DBTranslator4LabelizedVariable* translator7 = translator6.clone();
       TS_ASSERT_EQUALS(translator7->translate("1").discr_val, (std::size_t)0)
@@ -462,7 +462,7 @@ namespace gum_tests {
                 == "2");
       TS_ASSERT(translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})
                 == "4");
-      TS_ASSERT_EQUALS(translator7->variable()->toString(), "X2:Labelized(<1,2,4>)")
+      TS_ASSERT_EQUALS(translator7->variable()->toString(), "X2:Labelized({1|2|4})")
 
       delete translator7;
 
@@ -476,7 +476,7 @@ namespace gum_tests {
                        "2");
       TS_ASSERT_EQUALS(translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
                        "4");
-      TS_ASSERT_EQUALS(translator5.variable()->toString(), "X2:Labelized(<1,2,4>)")
+      TS_ASSERT_EQUALS(translator5.variable()->toString(), "X2:Labelized({1|2|4})")
 
       translator3 = translator5;
       TS_ASSERT_EQUALS(translator3.translate("1").discr_val, (std::size_t)0)
@@ -488,7 +488,7 @@ namespace gum_tests {
                        "2");
       TS_ASSERT_EQUALS(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
                        "4");
-      TS_ASSERT_EQUALS(translator3.variable()->toString(), "X2:Labelized(<1,2,4>)")
+      TS_ASSERT_EQUALS(translator3.variable()->toString(), "X2:Labelized({1|2|4})")
 
       translator5 = std::move(translator3);
       TS_ASSERT_EQUALS(translator5.translate("1").discr_val, (std::size_t)0)
@@ -500,7 +500,7 @@ namespace gum_tests {
                        "2");
       TS_ASSERT_EQUALS(translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
                        "4");
-      TS_ASSERT_EQUALS(translator5.variable()->toString(), "X2:Labelized(<1,2,4>)")
+      TS_ASSERT_EQUALS(translator5.variable()->toString(), "X2:Labelized({1|2|4})")
     }
 
 

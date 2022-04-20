@@ -95,18 +95,14 @@ namespace gum {
   std::string MultiDimNoisyAND< GUM_SCALAR >::toString() const {
     std::stringstream s;
     s << MultiDimImplementation< GUM_SCALAR >::variable(0) << "=noisyAND(["
-      << this->externalWeight() << "],";
+      << this->externalWeight() << "]";
 
-    for (Idx i = 1; i < MultiDimImplementation< GUM_SCALAR >::nbrDim(); i++) {
-      s << MultiDimImplementation< GUM_SCALAR >::variable(i) << "["
+    for (Idx i = 1; i < MultiDimImplementation< GUM_SCALAR >::nbrDim(); i++)
+      s << ", " << MultiDimImplementation< GUM_SCALAR >::variable(i) << "["
         << this->causalWeight(MultiDimImplementation< GUM_SCALAR >::variable(i)) << "]";
-    }
 
     s << ")";
-
-    std::string res;
-    s >> res;
-    return res;
+    return s.str();
   }
 
   // For friendly displaying the content of the variable.

@@ -19,28 +19,21 @@
  */
 
 
-#include <agrum/tools/variables/labelizedVariable.h>
+#ifndef GUM_ALL_DISCRETE_VARIABLE_H
+#define GUM_ALL_DISCRETE_VARIABLE_H
+#include <memory>
 
-#ifdef GUM_NO_INLINE
-#  include <agrum/tools/variables/labelizedVariable_inl.h>
-#endif /* GUM_NO_INLINE */
+#include <agrum/tools/variables/rangeVariable.h>
+#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/tools/variables/integerVariable.h>
+#include <agrum/tools/variables/discretizedVariable.h>
 
 namespace gum {
-  const std::string LabelizedVariable::domain() const {
-    std::stringstream s;
-    s << "{";
-
-    if (domainSize() > 0) {
-      s << label(0);
-
-      for (Idx i = 1; i < domainSize(); ++i) {
-        s << "|";
-        s << label(i);
-      }
-    }
-
-    s << "}";
-
-    return s.str();
-  }
+  template < typename GUM_SCALAR >
+  const std::unique_ptr< DiscreteVariable > fastVariable(const std::string& var_description,
+                                                         Size default_domain_size = 2);
 }   // namespace gum
+
+#include <agrum/tools/variables/allDiscreteVariables_tpl.h>
+
+#endif   // GUM_ALL_DISCRETE_VARIABLE_H

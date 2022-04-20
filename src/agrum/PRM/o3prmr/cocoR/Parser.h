@@ -1,6 +1,6 @@
 /***************************************************************************
  *  aGrUM modified frames and atg files for cocoR
- *   Copyright (c) 2005-2021 by Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)  *
+ *   Copyright (c) 2005 by Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)  *
  *   info_at_agrum_dot_org
 ***************************************************************************/
 /*----------------------------------------------------------------------
@@ -32,8 +32,8 @@ Coco/R itself) does not fall under the GNU General Public License.
 -----------------------------------------------------------------------*/
 
 
-#if !defined( _gum_prm_o3prmr_COCO_PARSER_H_)
-#define  _gum_prm_o3prmr_COCO_PARSER_H_
+#if !defined(gum_prm_o3prmr_COCO_PARSER_H__)
+#define gum_prm_o3prmr_COCO_PARSER_H__
 
 #include <string>
 #include <sstream>
@@ -92,7 +92,7 @@ class Parser {
     void ExpectWeak( int n, int follow );
     bool WeakSeparator( int n, int syFol, int repFol );
 
-    ErrorsContainer   _errors_;
+    ErrorsContainer  errors__;
 
   public:
     Scanner* scanner;
@@ -100,15 +100,15 @@ class Parser {
     Token* t;     // last recognized token
     Token* la;      // lookahead token
 
-    gum::prm::o3prmr::O3prmrContext<double> * _context_;
-gum::prm::o3prmr::O3prmrSession<double> * _currentSession_;
+    gum::prm::o3prmr::O3prmrContext<double> *context__;
+gum::prm::o3prmr::O3prmrSession<double> *currentSession__;
 
 void SemErr(std::string s) {
   SemErr(widen(s).c_str());
 }
 
 void setO3prmrContext(gum::prm::o3prmr::O3prmrContext<double> *c) {
-   _context_=c;
+  context__=c;
 }
 
 //=====================
@@ -141,5 +141,5 @@ void setO3prmrContext(gum::prm::o3prmr::O3prmrContext<double> *c) {
 } // namespace
 
 
-#endif // !defined( _COCO_PARSER_H_)
+#endif // !defined(COCO_PARSER_H__)
 

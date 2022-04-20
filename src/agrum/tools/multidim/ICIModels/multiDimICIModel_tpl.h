@@ -111,17 +111,13 @@ namespace gum {
   template < typename GUM_SCALAR >
   std::string MultiDimICIModel< GUM_SCALAR >::toString() const {
     std::stringstream s;
-    s << this->variable(0) << "=CIModel([" << externalWeight() << "],";
+    s << this->variable(0) << "=CIModel([" << externalWeight() << "]";
 
-    for (Idx i = 1; i < this->nbrDim(); i++) {
-      s << this->variable(i) << "[" << causalWeight(this->variable(i)) << "]";
-    }
+    for (Idx i = 1; i < this->nbrDim(); i++)
+      s << ", " << this->variable(i) << "[" << causalWeight(this->variable(i)) << "]";
 
     s << ")";
-
-    std::string res;
-    s >> res;
-    return res;
+    return s.str();
   }
   template < typename GUM_SCALAR >
   void MultiDimICIModel< GUM_SCALAR >::copyFrom(const MultiDimContainer< GUM_SCALAR >& src) const {

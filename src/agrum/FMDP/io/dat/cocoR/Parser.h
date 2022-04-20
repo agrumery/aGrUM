@@ -1,6 +1,6 @@
 /***************************************************************************
  *  aGrUM modified frames and atg files for cocoR
- *   Copyright (c) 2005-2021 by Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)  *
+ *   Copyright (c) 2005 by Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)  *
  *   info_at_agrum_dot_org
 ***************************************************************************/
 /*----------------------------------------------------------------------
@@ -32,8 +32,8 @@ Coco/R itself) does not fall under the GNU General Public License.
 -----------------------------------------------------------------------*/
 
 
-#if !defined( _gum_MDPDAT_COCO_PARSER_H_)
-#define  _gum_MDPDAT_COCO_PARSER_H_
+#if !defined(gum_MDPDAT_COCO_PARSER_H__)
+#define gum_MDPDAT_COCO_PARSER_H__
 
 #include <agrum/tools/core/cast_unicode.h>
 // =====================================================================
@@ -76,7 +76,7 @@ class Parser {
     void ExpectWeak( int n, int follow );
     bool WeakSeparator( int n, int syFol, int repFol );
 
-    ErrorsContainer   _errors_;
+    ErrorsContainer  errors__;
 
   public:
     Scanner* scanner;
@@ -84,16 +84,16 @@ class Parser {
     Token* t;     // last recognized token
     Token* la;      // lookahead token
 
-    gum::AbstractFMDPFactory*  _factory_;
+    gum::AbstractFMDPFactory* factory__;
 
                 /// for each transition diagram, we need to know the associated variable
-                std::string  _currentFunctionGraphVar_;
+                std::string currentFunctionGraphVar__;
 
                 /// for building the diagram, we need to keep track of var parents
-                std::vector< gum::NodeId >  _parentNode_;
+                std::vector< gum::NodeId > parentNode__;
 
                 /// and current modality
-                std::vector< gum::Idx >  _parentModality_;
+                std::vector< gum::Idx > parentModality__;
 
 
         // *************************************************************************************
@@ -102,13 +102,13 @@ class Parser {
 
                 /// Sets the main factory
                 void setFactory( gum::AbstractFMDPFactory* f ) {
-                         _factory_ = f;
+                        factory__ = f;
                 }
 
                 gum::AbstractFMDPFactory& factory() {
-                  if ( _factory_)
-                        return * _factory_;
-                  GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning BIF file...")
+                  if (factory__)
+                        return *factory__;
+                  GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning BIF file...");
                 }
 
                 bool IsFollowedByIdent() {
@@ -166,5 +166,5 @@ class Parser {
 } // namespace
 
 
-#endif // !defined( _COCO_PARSER_H_)
+#endif // !defined(COCO_PARSER_H__)
 

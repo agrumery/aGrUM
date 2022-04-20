@@ -1,6 +1,6 @@
 /***************************************************************************
  *  aGrUM modified frames and atg files for cocoR
- *   Copyright (c) 2005-2021 by Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)  *
+ *   Copyright (c) 2005 by Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)  *
  *   info_at_agrum_dot_org
 ***************************************************************************/
 /*----------------------------------------------------------------------
@@ -51,10 +51,10 @@ void Parser::SynErr( int n ) {
 
 
 const ErrorsContainer& Parser::errors( void ) const {
-  return  _errors_;
+  return errors__;
 }
 ErrorsContainer& Parser::errors( void ) {
-  return  _errors_;
+  return errors__;
 }
 
 void Parser::Get() {
@@ -337,7 +337,7 @@ void Parser::ASSIGNATION(const std::string& var,const std::vector<std::string>& 
 			LISTE_LABELS(parents,labels,0);
 			Expect(19 /* ")" */);
 			LISTE_FLOAT(v);
-			 _checkSizeOfProbabilityAssignation_(v,var);
+			checkSizeOfProbabilityAssignation__(v,var);
 			TRY(factory().setVariableValuesUnchecked(v));
 			TRY(factory().endFactorizedEntry());
 			
@@ -346,7 +346,7 @@ void Parser::ASSIGNATION(const std::string& var,const std::vector<std::string>& 
 			if (! is_first) SemErr("'default' assignation has to be the first."); 
 			LISTE_FLOAT(v);
 			TRY(factory().startFactorizedEntry());
-			 _checkSizeOfProbabilityAssignation_(v,var);
+			checkSizeOfProbabilityAssignation__(v,var);
 			TRY(factory().setVariableValuesUnchecked(v));
 			TRY(factory().endFactorizedEntry());
 			
@@ -516,13 +516,13 @@ Parser::~Parser() {
   delete dummyToken;
 }
 void Parser::SemErr( const wchar_t* msg ) {
-  if ( errDist >= minErrDist )  _errors_.Error( scanner->filename(),t->line, t->col, msg );
+  if ( errDist >= minErrDist ) errors__.Error( scanner->filename(),t->line, t->col, msg );
 
   errDist = 0;
 }
 
 void Parser::Warning( const wchar_t* msg ) {
-   _errors_.Warning( scanner->filename(),t->line, t->col, msg );
+  errors__.Warning( scanner->filename(),t->line, t->col, msg );
 }
 
 void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
@@ -576,7 +576,7 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 
   //wprintf(L"-- line %d col %d: %ls\n", line, col, s);
   std::wstring ss=L"Syntax error : "+std::wstring( s );
-   _errors_.Error( filename,line,col,ss.c_str() );
+  errors__.Error( filename,line,col,ss.c_str() );
   coco_string_delete( s );
 }
 

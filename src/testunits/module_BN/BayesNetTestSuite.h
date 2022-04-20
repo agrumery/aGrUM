@@ -788,10 +788,10 @@ namespace gum_tests {
       gum::List< gum::NodeId > idList;
       fill(bn, idList);
 
-      TS_ASSERT_EQUALS(bn.variable(0).toString(), "var1:Labelized(<0,1>)")
+      TS_ASSERT_EQUALS(bn.variable(0).toString(), "var1:Labelized({0|1})")
       TS_ASSERT_THROWS_NOTHING(
          dynamic_cast< const gum::LabelizedVariable& >(bn.variable(0)).changeLabel(0, "x"));
-      TS_ASSERT_EQUALS(bn.variable(0).toString(), "var1:Labelized(<x,1>)")
+      TS_ASSERT_EQUALS(bn.variable(0).toString(), "var1:Labelized({x|1})")
     }
 
     void testShortCutAddLabelized() {

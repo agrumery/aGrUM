@@ -1,6 +1,6 @@
 /***************************************************************************
  *  aGrUM modified frames and atg files for cocoR
- *   Copyright (c) 2005-2021 by Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)  *
+ *   Copyright (c) 2005 by Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)  *
  *   info_at_agrum_dot_org
 ***************************************************************************/
 /*----------------------------------------------------------------------
@@ -32,8 +32,8 @@ Coco/R itself) does not fall under the GNU General Public License.
 -----------------------------------------------------------------------*/
 
 
-#if !defined( _gum_formula_COCO_PARSER_H_)
-#define  _gum_formula_COCO_PARSER_H_
+#if !defined(gum_formula_COCO_PARSER_H__)
+#define gum_formula_COCO_PARSER_H__
 
 #include <algorithm>
 #include <fstream>
@@ -81,7 +81,7 @@ class Parser {
     void ExpectWeak( int n, int follow );
     bool WeakSeparator( int n, int syFol, int repFol );
 
-    ErrorsContainer   _errors_;
+    ErrorsContainer  errors__;
 
   public:
     Scanner* scanner;
@@ -90,26 +90,26 @@ class Parser {
     Token* la;      // lookahead token
 
     private:
-  gum::Formula*  _formula_;
+  gum::Formula* _formula_;
 
 public:
   void formula( gum::Formula* f ) {
-     _formula_ = f;
+    _formula_ = f;
   }
 
   gum::Formula& formula() {
-    return * _formula_;
+    return *_formula_;
   }
 
   const gum::Formula& formula() const {
-    return * _formula_;
+    return *_formula_;
   }
 
 // =============================================================================
 //                              SCANNER RULES
 // =============================================================================
 
-// ________________________
+//________________________
 
     Parser( Scanner* scanner );
     ~Parser();
@@ -130,5 +130,5 @@ public:
 } // namespace
 
 
-#endif // !defined( _COCO_PARSER_H_)
+#endif // !defined(COCO_PARSER_H__)
 

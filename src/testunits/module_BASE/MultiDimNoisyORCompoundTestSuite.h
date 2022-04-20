@@ -51,14 +51,14 @@ namespace gum_tests {
       p.causalWeight(b, 0.4f);
       p.causalWeight(d, 0.7f);
       TS_ASSERT_EQUALS(p.toString(),
-                       "a:Labelized(<0,1>)=noisyORCompound([0.2],b:Labelized(<0,1>)[0.4]c:"
-                       "Labelized(<0,1>)[1]d:Labelized(<0,1>)[0.7])");
+                       "a:Labelized({0|1})=noisyORCompound([0.2], b:Labelized({0|1})[0.4], c:"
+                       "Labelized({0|1})[1], d:Labelized({0|1})[0.7])");
       TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4)
 
       gum::MultiDimNoisyORCompound< double > q(p);
       TS_ASSERT_EQUALS(q.toString(),
-                       "a:Labelized(<0,1>)=noisyORCompound([0.2],b:Labelized(<0,1>)[0.4]c:"
-                       "Labelized(<0,1>)[1]d:Labelized(<0,1>)[0.7])");
+                       "a:Labelized({0|1})=noisyORCompound([0.2], b:Labelized({0|1})[0.4], c:"
+                       "Labelized({0|1})[1], d:Labelized({0|1})[0.7])");
       TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4)
     }
 

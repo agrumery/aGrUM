@@ -32,9 +32,7 @@
 
 #include <agrum/tools/core/math/formula.h>
 
-#include <agrum/tools/variables/discretizedVariable.h>
-#include <agrum/tools/variables/integerVariable.h>
-#include <agrum/tools/variables/rangeVariable.h>
+#include <agrum/tools/variables/allDiscreteVariables.h>
 
 #include <agrum/PRM/elements/PRMFormAttribute.h>
 #include <agrum/PRM/elements/PRMFuncAttribute.h>
