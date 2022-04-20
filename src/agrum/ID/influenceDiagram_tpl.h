@@ -40,15 +40,10 @@ namespace gum {
   NodeId build_node_for_ID(gum::InfluenceDiagram< GUM_SCALAR >& infdiag,
                            std::string                          node,
                            gum::Size                            default_domain_size) {
-    auto                       ds        = default_domain_size;
-    long                       range_min = 0;
-    long                       range_max = long(ds) - 1;
-    std::vector< std::string > labels;
-    std::vector< GUM_SCALAR >  ticks;
-    bool                       isUtil, isDeci, isChanc;
-    isUtil  = false;
-    isDeci  = false;
-    isChanc = false;
+    bool isUtil  = false;
+    bool isDeci  = false;
+    bool isChanc = false;
+    gum::Size default_ds=default_domain_size;
 
     switch (*(node.begin())) {
       case '*':
@@ -57,102 +52,31 @@ namespace gum {
         break;
       case '$':
         isUtil = true;
+        default_ds=1;
         node.erase(0, 1);
         break;
       default:
         isChanc = true;
     }
+    auto v= fastVariable<GUM_SCALAR>(node,default_ds);
 
-    std::string name = node;
-    if (*(node.rbegin()) == ']') {
-      auto posBrack = node.find('[');
-      if (posBrack != std::string::npos) {
-        name               = node.substr(0, posBrack);
-        const auto& s_args = node.substr(posBrack + 1, node.size() - posBrack - 2);
-        const auto& args   = split(s_args, ",");
-        if (args.empty()) {   // n[]
-          GUM_ERROR(InvalidArgument, "Empty range for variable " << node)
-        } else if (args.size() == 1) {   // n[4]
-          ds        = static_cast< Size >(std::stoi(args[0]));
-          range_min = 0;
-          range_max = long(ds) - 1;
-        } else if (args.size() == 2) {   // n[5,10]
-          range_min = std::stol(args[0]);
-          range_max = std::stol(args[1]);
-          if (1 + range_max - range_min < 2) {
-            GUM_ERROR(InvalidArgument, "Invalid range for variable " << node)
-          }
-          ds = static_cast< Size >(1 + range_max - range_min);
-        } else {   // n[3.14,5,10,12]
-          for (const auto& tick: args) {
-            ticks.push_back(static_cast< GUM_SCALAR >(std::strtod(tick.c_str(), nullptr)));
-          }
-          ds = static_cast< Size >(args.size() - 1);
-        }
-      }
-    } else if (*(node.rbegin()) == '}') {   // node like "n{one|two|three}"
-      auto posBrack = node.find('{');
-      if (posBrack != std::string::npos) {
-        name   = node.substr(0, posBrack);
-        labels = split(node.substr(posBrack + 1, node.size() - posBrack - 2), "|");
-        if (labels.size() < 2) { GUM_ERROR(InvalidArgument, "Not enough labels in node " << node) }
-        if (!hasUniqueElts(labels)) {
-          GUM_ERROR(InvalidArgument, "Duplicate labels in node " << node)
-        }
-        ds = static_cast< Size >(labels.size());
-      }
-    }
-
-    if (ds == 0) {
-      GUM_ERROR(InvalidArgument, "No value for variable " << name << ".")
-    } else if (ds == 1) {
-      GUM_ERROR(InvalidArgument,
-                "Only one value for variable " << name << " (2 at least are needed).")
-    }
-
-    std::vector< int > values;
-    if (!labels.empty()) {
-      if (std::all_of(labels.begin(), labels.end(), isInteger)) {
-        for (const auto& label: labels)
-          values.push_back(std::stoi(label));
-      }
-    }
-
-    // now we add the node in the Influence Diagram
-    NodeId idVar;
-    trim(name);
+    NodeId res;
     try {
-      idVar = infdiag.idFromName(name);
+      res = infdiag.idFromName(v->name());
     } catch (gum::NotFound&) {
-      if (isChanc) {
-        if (!values.empty()) {
-          idVar = infdiag.addChanceNode(IntegerVariable(name, name, values));
-        } else if (!labels.empty()) {
-          idVar = infdiag.addChanceNode(LabelizedVariable(name, name, labels));
-        } else if (!ticks.empty()) {
-          idVar = infdiag.addChanceNode(DiscretizedVariable< GUM_SCALAR >(name, name, ticks));
-        } else {
-          idVar = infdiag.addChanceNode(RangeVariable(name, name, range_min, range_max));
-        }
-      } else if (isDeci) {
-        if (!values.empty()) {
-          idVar = infdiag.addDecisionNode(IntegerVariable(name, name, values));
-        } else if (!labels.empty()) {
-          idVar = infdiag.addDecisionNode(LabelizedVariable(name, name, labels));
-        } else if (!ticks.empty()) {
-          idVar = infdiag.addDecisionNode(DiscretizedVariable< GUM_SCALAR >(name, name, ticks));
-        } else {
-          idVar = infdiag.addDecisionNode(RangeVariable(name, name, range_min, range_max));
-        }
-      } else if (isUtil) {
-        idVar = infdiag.addUtilityNode(LabelizedVariable(name, name, 1));
-      } else {
+      if (isChanc)
+        res=infdiag.addChanceNode(*v);
+      else if (isDeci)
+        res=infdiag.addDecisionNode(*v);
+      else if (isUtil)
+        res=infdiag.addUtilityNode(*v);
+      else
         GUM_ERROR(FatalError,
                   "No type (chance, decision or utility) for the node '" << node << "'.")
-      }
+
     }
 
-    return idVar;
+    return res;
   }
 
 

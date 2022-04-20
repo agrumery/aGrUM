@@ -57,85 +57,15 @@ namespace gum {
   template < typename GUM_SCALAR >
   NodeId
      build_node_for_MN(MarkovNet< GUM_SCALAR >& mn, std::string node, Size default_domain_size) {
-    std::string                name      = node;
-    auto                       ds        = default_domain_size;
-    long                       range_min = 0;
-    long                       range_max = long(ds) - 1;
-    std::vector< std::string > labels;
-    std::vector< GUM_SCALAR >  ticks;
+    auto v= fastVariable<GUM_SCALAR>(node,default_domain_size);
 
-    if (*(node.rbegin()) == ']') {
-      auto posBrack = node.find('[');
-      if (posBrack != std::string::npos) {
-        name               = node.substr(0, posBrack);
-        const auto& s_args = node.substr(posBrack + 1, node.size() - posBrack - 2);
-        const auto& args   = split(s_args, ",");
-        if (args.size() == 0) {   // n[]
-          GUM_ERROR(InvalidArgument, "Empty range for variable " << node)
-        } else if (args.size() == 1) {   // n[4]
-          ds        = static_cast< Size >(std::stoi(args[0]));
-          range_min = 0;
-          range_max = long(ds) - 1;
-        } else if (args.size() == 2) {   // n[5,10]
-          range_min = std::stol(args[0]);
-          range_max = std::stol(args[1]);
-          if (1 + range_max - range_min < 2) {
-            GUM_ERROR(InvalidArgument, "Invalid range for variable " << node)
-          }
-          ds = static_cast< Size >(1 + range_max - range_min);
-        } else {   // n[3.14,5,10,12]
-          for (const auto& tick: args) {
-            ticks.push_back(static_cast< GUM_SCALAR >(std::atof(tick.c_str())));
-          }
-          ds = static_cast< Size >(args.size() - 1);
-        }
-      }
-    } else if (*(node.rbegin()) == '}') {   // node like "n{one|two|three}"
-      auto posBrack = node.find('{');
-      if (posBrack != std::string::npos) {
-        name   = node.substr(0, posBrack);
-        labels = split(node.substr(posBrack + 1, node.size() - posBrack - 2), "|");
-        if (labels.size() < 2) { GUM_ERROR(InvalidArgument, "Not enough labels in node " << node) }
-        if (!hasUniqueElts(labels)) {
-          GUM_ERROR(InvalidArgument, "Duplicate labels in node " << node)
-        }
-        ds = static_cast< Size >(labels.size());
-      }
-    }
-
-    if (ds == 0) {
-      GUM_ERROR(InvalidArgument, "No value for variable " << name << ".")
-    } else if (ds == 1) {
-      GUM_ERROR(InvalidArgument,
-                "Only one value for variable " << name << " (2 at least are needed).");
-    }
-
-    std::vector< int > values;
-    if (!labels.empty()) {
-      if (std::all_of(labels.begin(), labels.end(), isInteger)) {
-        for (const auto& label: labels)
-          values.push_back(std::stoi(label));
-      }
-    }
-
-    // now we add the node in the BN
-    NodeId idVar;
-    trim(name);
+    NodeId res;
     try {
-      idVar = mn.idFromName(name);
-    } catch (NotFound&) {
-      if (!values.empty()) {
-        idVar = mn.add(IntegerVariable(name, name, values));
-      } else if (!labels.empty()) {
-        idVar = mn.add(LabelizedVariable(name, name, labels));
-      } else if (!ticks.empty()) {
-        idVar = mn.add(DiscretizedVariable< GUM_SCALAR >(name, name, ticks));
-      } else {
-        idVar = mn.add(RangeVariable(name, name, range_min, range_max));
-      }
+      res=mn.idFromName(v->name());
+    } catch (gum::NotFound&) {
+      res= mn.add(*v);
     }
-
-    return idVar;
+    return res;
   }
 
   template < typename GUM_SCALAR >

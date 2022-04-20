@@ -271,40 +271,40 @@ namespace gum_tests {
     }
 
     void testFromBN() {
-      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D;C<-E->F<-G;F<-A");
-      auto mn = gum::MarkovNet< double >::fromBN(bn);
+        auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D;C<-E->F<-G;F<-A");
+        auto mn = gum::MarkovNet< double >::fromBN(bn);
 
-      gum::Potential< double > pbn;
-      pbn.fill(1);
-      for (gum::NodeId nod: bn.nodes()) {
-        TS_ASSERT_EQUALS(bn.variable(nod).toString(), mn.variable(nod).toString())
+        gum::Potential< double > pbn;
+        pbn.fill(1);
+        for (gum::NodeId nod: bn.nodes()) {
+          TS_ASSERT_EQUALS(bn.variable(nod).toString(), mn.variable(nod).toString())
 
-        pbn *= bn.cpt(nod);
-      }
+          pbn *= bn.cpt(nod);
+        }
 
-      gum::Potential< double > pmn;
-      pmn.fill(1);
-      for (const auto& key: mn.factors()) {
-        TS_ASSERT_EQUALS(mn.factor(key.first), *key.second)
-        pmn *= *key.second;
-      }
-      pmn.normalize();
+        gum::Potential< double > pmn;
+        pmn.fill(1);
+        for (const auto& key: mn.factors()) {
+          TS_ASSERT_EQUALS(mn.factor(key.first), *key.second)
+          pmn *= *key.second;
+        }
+        pmn.normalize();
 
-      gum::NodeSet s;
-      s.clear();
-      s << 0 << 4 << 5 << 6;
-      TS_GUM_ASSERT_THROWS_NOTHING(mn.factor(s));
-      s.clear();
-      s << 4 << 0 << 6 << 5;
-      TS_GUM_ASSERT_THROWS_NOTHING(mn.factor(s));
+        gum::NodeSet s;
+        s.clear();
+        s << 0 << 4 << 5 << 6;
+        TS_GUM_ASSERT_THROWS_NOTHING(mn.factor(s));
+        s.clear();
+        s << 4 << 0 << 6 << 5;
+        TS_GUM_ASSERT_THROWS_NOTHING(mn.factor(s));
 
-      gum::Potential< double > ppmn(pbn);
-      ppmn.fillWith(pmn);   // copy of pmn using pbn's variables
-      auto diff = (pbn - ppmn).new_abs();
-      TS_ASSERT_EQUALS(pbn.domainSize(), diff.domainSize())
-      TS_ASSERT_LESS_THAN(diff.max(), 1e-10)
+        gum::Potential< double > ppmn(pbn);
+        ppmn.fillWith(pmn);   // copy of pmn using pbn's variables
+        auto diff = (pbn - ppmn).new_abs();
+        TS_ASSERT_EQUALS(pbn.domainSize(), diff.domainSize())
+        TS_ASSERT_LESS_THAN(diff.max(), 1e-10)
 
-      TS_ASSERT_EQUALS(mn.graph(), bn.moralGraph())
+        TS_ASSERT_EQUALS(mn.graph(), bn.moralGraph())
     }
 
     void testExistsEdge() {
