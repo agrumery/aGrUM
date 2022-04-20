@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
+ *   Copyright (c) 2005-2022 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -252,14 +252,9 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE NodeId BayesNet< GUM_SCALAR >::add(const std::string& name, unsigned int nbrmod) {
-    if (nbrmod < 2) {
-      GUM_ERROR(OperationNotAllowed,
-                "Variable " << name << "needs more than " << nbrmod << " modalities")
-    }
-
-    RangeVariable v(name, name, 0, nbrmod - 1);
-    return add(v);
+  INLINE NodeId BayesNet< GUM_SCALAR >::add(const std::string& fast_description, unsigned int default_nbrmod) {
+    auto v= fastVariable<GUM_SCALAR>(fast_description,default_nbrmod);
+    return add(*v);
   }
 
   template < typename GUM_SCALAR >

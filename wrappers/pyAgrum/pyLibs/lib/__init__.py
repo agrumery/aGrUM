@@ -22,4 +22,4 @@
 pyAgrum.lib is a set of python tools for pyAgrum.
 """
 __author__ = "Pierre-Henri Wuillemin"
-__copyright__ = "(c) 2016-2021 PARIS"
+__copyright__ = "(c) 2016-2022 PARIS"

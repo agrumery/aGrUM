@@ -132,7 +132,7 @@ def about():
 
   """
   print("pyAgrum @PYAGRUM_VERSION@")
-  print("(c) 2015-2021 Pierre-Henri Wuillemin, Christophe Gonzales")
+  print("(c) 2015-2022 Pierre-Henri Wuillemin, Christophe Gonzales")
   print("""
     This is free software; see the source code for copying conditions.
     There is ABSOLUTELY NO WARRANTY; not even for MERCHANTABILITY or

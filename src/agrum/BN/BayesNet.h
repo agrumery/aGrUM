@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
+ *   Copyright (c) 2005-2022 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -190,17 +190,22 @@ namespace gum {
     NodeId add(const DiscreteVariable& var);
 
     /**
-     * @brief Shortcut for add(gum::LabelizedVariable(name,name,nbrmod))
+     * Use "fast" syntax to add a variable in the BayesNet.
+     *   - a : range variable from 0 to default_nbrmod-1
+     *   - a[5] : range variable from 0 to 5
+     *   - a[-3,5] : range variable from -3 to 5
+     *   - a[1,3.14,5,3] : discretized variable
+     *   - a{x|y|z} : labelized variable
+     *   - a{-3|0|3|100} : integer variable
      *
-     * Add a gum::LabelizedVariable to the gum::BayesNet
-     *
-     * This method is just a shortcut for a often used pattern
+     * @param fast_description(: str) following "fast" syntax description
+     * @param default_nbrmod(: int) nbr of modality if fast_description do not indicate it.
      *
      * @throws DuplicateLabel Raised if variable.name() is already used in this
      *                        gum::BayesNet.
      * @throws NotAllowed if nbrmod<2
      */
-    NodeId add(const std::string& name, unsigned int nbrmod);
+    NodeId add(const std::string& fast_description, unsigned int default_nbrmod);
 
     /**
      * @brief Add a variable to the gum::BayesNet.

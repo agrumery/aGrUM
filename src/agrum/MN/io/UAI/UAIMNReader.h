@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) et Christophe GONZALES(_at_AMU)
+ *   Copyright (c) 2005-2022 by Pierre-Henri WUILLEMIN(_at_LIP6) et Christophe GONZALES(_at_AMU)
  * (_at_AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify

@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2021 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
+ *   Copyright (c) 2005-2022 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -111,8 +111,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(var3.numerical(3), 8.0)
       TS_ASSERT_THROWS(var3.numerical(4), gum::NotFound)
 
-      TS_ASSERT_EQUALS(var3.domain(), "<-2,-1,4,8>")
-      TS_ASSERT_EQUALS(var1.domain(), "<>")
+      TS_ASSERT_EQUALS(var3.domain(), "{-2|-1|4|8}")
+      TS_ASSERT_EQUALS(var1.domain(), "{}")
 
       var1.addValue(4);
       TS_ASSERT_EQUALS(vect1.size(), (gum::Size)1)
