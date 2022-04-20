@@ -23474,7 +23474,7 @@ class InfluenceDiagram(DAGmodel):
         """
         return _pyAgrum.InfluenceDiagram_variableFromName(self, name)
 
-    def add(self, variable: "pyAgrum.DiscreteVariable", id: int=0) -> int:
+    def add(self, *args) -> int:
         r"""
 
         Add a chance variable, it's associate node and it's CPT.
@@ -23503,38 +23503,7 @@ class InfluenceDiagram(DAGmodel):
         	If id(<>0) is already used
 
         """
-        return _pyAgrum.InfluenceDiagram_add(self, variable, id)
-
-    def addDecisionNode(self, variable: "pyAgrum.DiscreteVariable", id: int=0) -> int:
-        r"""
-
-        Add a decision variable.
-
-        The id of the new variable is automatically generated.
-
-        Parameters
-        ----------
-        variable : pyAgrum.DiscreteVariable
-        	the variable added by copy.
-        id : int
-        	the chosen id. If 0, the NodeGraphPart will choose.
-
-        Warnings
-        --------
-        give an id (not 0) should be reserved for rare and specific situations !!!
-
-        Returns
-        -------
-        int
-            the id of the added variable.
-
-        Raises
-        ------
-        pyAgrum.DuplicateElement
-        	If id(<>0) is already used
-
-        """
-        return _pyAgrum.InfluenceDiagram_addDecisionNode(self, variable, id)
+        return _pyAgrum.InfluenceDiagram_add(self, *args)
 
     def addChanceNode(self, *args) -> int:
         r"""
@@ -23599,6 +23568,37 @@ class InfluenceDiagram(DAGmodel):
 
         """
         return _pyAgrum.InfluenceDiagram_addUtilityNode(self, *args)
+
+    def addDecisionNode(self, *args) -> int:
+        r"""
+
+        Add a decision variable.
+
+        The id of the new variable is automatically generated.
+
+        Parameters
+        ----------
+        variable : pyAgrum.DiscreteVariable
+        	the variable added by copy.
+        id : int
+        	the chosen id. If 0, the NodeGraphPart will choose.
+
+        Warnings
+        --------
+        give an id (not 0) should be reserved for rare and specific situations !!!
+
+        Returns
+        -------
+        int
+            the id of the added variable.
+
+        Raises
+        ------
+        pyAgrum.DuplicateElement
+        	If id(<>0) is already used
+
+        """
+        return _pyAgrum.InfluenceDiagram_addDecisionNode(self, *args)
 
     def erase(self, *args) -> None:
         r"""

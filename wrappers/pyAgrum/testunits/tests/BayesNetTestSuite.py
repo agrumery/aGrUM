@@ -235,7 +235,7 @@ class TestFeatures(BayesNetTestCase):
 
     with self.assertRaises(gum.DuplicateLabel):
       bn.add("A", 5)
-    with self.assertRaises(gum.OperationNotAllowed):
+    with self.assertRaises(gum.InvalidArgument):
       bn.add("C", 0)
 
     bn.addArc("A", "B")
