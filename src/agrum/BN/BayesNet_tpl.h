@@ -252,8 +252,11 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE NodeId BayesNet< GUM_SCALAR >::add(const std::string& fast_description, unsigned int default_nbrmod) {
-    auto v= fastVariable<GUM_SCALAR>(fast_description,default_nbrmod);
+  INLINE NodeId BayesNet< GUM_SCALAR >::add(const std::string& fast_description,
+                                            unsigned int       default_nbrmod) {
+    auto v = fastVariable< GUM_SCALAR >(fast_description, default_nbrmod);
+    if (v->domainSize() < 2)
+      GUM_ERROR(OperationNotAllowed,v->name()<<" has a domain size <2")
     return add(*v);
   }
 

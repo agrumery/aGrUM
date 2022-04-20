@@ -276,14 +276,11 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE NodeId MarkovNet< GUM_SCALAR >::add(const std::string& name, unsigned int nbrmod) {
-    if (nbrmod < 2) {
-      GUM_ERROR(OperationNotAllowed,
-                "Variable " << name << "needs more than " << nbrmod << " modalities");
-    }
-
-    RangeVariable v(name, name, 0, nbrmod - 1);
-    return add(v);
+  INLINE NodeId MarkovNet< GUM_SCALAR >::add(const std::string& fast_description,
+                                             unsigned int       default_nbrmod) {
+    auto v = fastVariable< GUM_SCALAR >(fast_description, default_nbrmod);
+    if (v->domainSize() < 2) GUM_ERROR(OperationNotAllowed, v->name() << " has a domain size <2")
+    return add(*v);
   }
 
   template < typename GUM_SCALAR >

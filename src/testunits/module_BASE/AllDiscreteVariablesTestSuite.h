@@ -33,37 +33,57 @@ namespace gum_tests {
   class AllVariablesTestSuite: public CxxTest::TestSuite {
     public:
     void testCreationRange() {
-      {
-        auto a = gum::fastVariable< double >("A", 2);
-        TS_ASSERT_EQUALS(a->toString(), "A:Range([0,1])")
-      }
-      {
-        auto a = gum::fastVariable< double >("A", 4);
-        TS_ASSERT_EQUALS(a->toString(), "A:Range([0,3])")
-      }
-      {
-        auto a = gum::fastVariable< double >("A[3]", 4);
-        TS_ASSERT_EQUALS(a->toString(), "A:Range([0,2])")
-      }
-      {
-        auto a = gum::fastVariable< double >("A[3,7]", 4);
-        TS_ASSERT_EQUALS(a->toString(), "A:Range([3,7])")
-      }
-      {
-        auto a = gum::fastVariable< double >("A[-7,-3]", 4);
-        TS_ASSERT_EQUALS(a->toString(), "A:Range([-7,-3])")
-      }
+      try {
+        {
+          auto a = gum::fastVariable< double >("A", 2);
+          TS_ASSERT_EQUALS(a->toString(), "A:Range([0,1])")
+        }
+        {
+          // a way to create a variable with only one value
+          auto a = gum::fastVariable< double >("A", 1);
+          TS_ASSERT_EQUALS(a->toString(), "A:Range([0,0])")
+        }
+        {
+          auto a = gum::fastVariable< double >("A", 4);
+          TS_ASSERT_EQUALS(a->toString(), "A:Range([0,3])")
+        }
+        {
+          auto a = gum::fastVariable< double >("A[3]", 4);
+          TS_ASSERT_EQUALS(a->toString(), "A:Range([0,2])")
+        }
+        {
+          auto a = gum::fastVariable< double >("A[3,7]", 4);
+          TS_ASSERT_EQUALS(a->toString(), "A:Range([3,7])")
+        }
+        {
+          auto a = gum::fastVariable< double >("A[-7,-3]", 4);
+          TS_ASSERT_EQUALS(a->toString(), "A:Range([-7,-3])")
+        }
 
-      TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A[7,3]", 4), gum::InvalidArgument)
-      TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A[1,1]", 4), gum::InvalidArgument)
+        TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A[7,3]", 4), gum::InvalidArgument)
+        TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A[1,1]", 4), gum::InvalidArgument)
+
+        {
+          auto a = gum::fastVariable< double >("A[1,1]", 1);
+          TS_ASSERT_EQUALS(a->toString(), "A:Range([1,1])")
+        }
+      } catch (gum::Exception& e)
+        GUM_SHOWERROR(e);
     }
 
     void testCreationLabelized() {
-      {
-        auto a = gum::fastVariable< double >("A{a|b|c}", 4);
-        TS_ASSERT_EQUALS(a->toString(), "A:Labelized({a|b|c})")
-      }
-      TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A{a}", 4), gum::InvalidArgument)
+      try {
+        {
+          auto a = gum::fastVariable< double >("A{a|b|c}", 4);
+          TS_ASSERT_EQUALS(a->toString(), "A:Labelized({a|b|c})")
+        }
+        TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A{a}", 4), gum::InvalidArgument)
+
+        {
+          auto a = gum::fastVariable< double >("A{a}", 1);
+          TS_ASSERT_EQUALS(a->toString(), "A:Labelized({a})")
+        }
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
     void testCreationInteger() {
@@ -79,6 +99,12 @@ namespace gum_tests {
         auto a = gum::fastVariable< double >("A{15|-3|0|3}", 4);
         TS_ASSERT_EQUALS(a->toString(), "A:Integer({-3|0|3|15})")
       }
+      TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A{15}", 4), gum::InvalidArgument)
+
+      {
+        auto a = gum::fastVariable< double >("A{15}", 1);
+        TS_ASSERT_EQUALS(a->toString(), "A:Integer({15})")
+      }
     }
 
     void testCreationDiscretized() {
@@ -86,6 +112,9 @@ namespace gum_tests {
         auto a = gum::fastVariable< double >("A[1,2,3,4,5,6]", 4);
         TS_ASSERT_EQUALS(a->toString(), "A:Discretized(<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>)")
       }
+
+      TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A[0.3]", 4), gum::InvalidArgument)
+      TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A[0.3]", 1), gum::InvalidArgument)
     }
   };
 }   // namespace gum_tests

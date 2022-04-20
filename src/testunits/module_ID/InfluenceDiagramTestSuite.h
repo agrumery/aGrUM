@@ -816,5 +816,51 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(infdiag.variable("b").varType(), gum::VarType::Integer)
       TS_ASSERT_EQUALS(infdiag.variable("c").varType(), gum::VarType::Labelized)
     }
+
+    void testFastVariable() {
+      {
+        gum::InfluenceDiagram< float > infdiag;
+        infdiag.addChanceNode("a{1|4|6}");
+        infdiag.addChanceNode("b", 4);
+        infdiag.addDecisionNode("c[1,2,3,4,5.5]");
+        infdiag.addUtilityNode("d");
+        infdiag.addUtilityNode("e{degre}");
+
+        TS_ASSERT_EQUALS(infdiag.variable("a").toString(), "a:Integer({1|4|6})")
+        TS_ASSERT_EQUALS(infdiag.variable("b").toString(), "b:Range([0,3])")
+        TS_ASSERT_EQUALS(infdiag.variable("c").toString(),
+                         "c:Discretized(<[1;2[,[2;3[,[3;4[,[4;5.5]>)")
+        TS_ASSERT_EQUALS(infdiag.variable("d").toString(), "d:Range([0,0])")
+        TS_ASSERT_EQUALS(infdiag.variable("e").toString(), "e:Labelized({degre})")
+
+        TS_ASSERT(infdiag.isChanceNode("a"))
+        TS_ASSERT(infdiag.isChanceNode("b"))
+        TS_ASSERT(infdiag.isDecisionNode("c"))
+        TS_ASSERT(infdiag.isUtilityNode("d"))
+        TS_ASSERT(infdiag.isUtilityNode("e"))
+      }
+
+      {
+        gum::InfluenceDiagram< float > infdiag;
+        infdiag.add("a{1|4|6}");
+        infdiag.add("b", 4);
+        infdiag.add("*c[1,2,3,4,5.5]");
+        infdiag.add("$d");
+        infdiag.add("$e{degre}");
+
+        TS_ASSERT_EQUALS(infdiag.variable("a").toString(), "a:Integer({1|4|6})")
+        TS_ASSERT_EQUALS(infdiag.variable("b").toString(), "b:Range([0,3])")
+        TS_ASSERT_EQUALS(infdiag.variable("c").toString(),
+                         "c:Discretized(<[1;2[,[2;3[,[3;4[,[4;5.5]>)")
+        TS_ASSERT_EQUALS(infdiag.variable("d").toString(), "d:Range([0,0])")
+        TS_ASSERT_EQUALS(infdiag.variable("e").toString(), "e:Labelized({degre})")
+
+        TS_ASSERT(infdiag.isChanceNode("a"))
+        TS_ASSERT(infdiag.isChanceNode("b"))
+        TS_ASSERT(infdiag.isDecisionNode("c"))
+        TS_ASSERT(infdiag.isUtilityNode("d"))
+        TS_ASSERT(infdiag.isUtilityNode("e"))
+      }
+    }
   };
 }   // namespace gum_tests

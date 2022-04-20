@@ -918,4 +918,46 @@ namespace gum {
 
     return _temporalOrder_;
   }
+
+  template < typename GUM_SCALAR >
+  NodeId InfluenceDiagram< GUM_SCALAR >::addChanceNode(const std::string& fast_description,
+                                                       unsigned int       default_nbrmod) {
+    auto v = fastVariable< GUM_SCALAR >(fast_description, default_nbrmod);
+    if (v->domainSize() < 2) GUM_ERROR(OperationNotAllowed, v->name() << " has a domain size <2")
+    return addChanceNode(*v);
+  }
+
+  template < typename GUM_SCALAR >
+  NodeId InfluenceDiagram< GUM_SCALAR >::addUtilityNode(const std::string& fast_description) {
+    auto v = fastVariable< GUM_SCALAR >(fast_description, 1);
+    if (v->domainSize() >= 2)
+      GUM_ERROR(OperationNotAllowed,
+                v->name() << " has a domain size >= 2 which is impossible for a utility node")
+    return addUtilityNode(*v);
+  }
+
+  template < typename GUM_SCALAR >
+  NodeId InfluenceDiagram< GUM_SCALAR >::addDecisionNode(const std::string& fast_description,
+                                                         unsigned int       default_nbrmod) {
+    auto v = fastVariable< GUM_SCALAR >(fast_description, default_nbrmod);
+    if (v->domainSize() < 2) GUM_ERROR(OperationNotAllowed, v->name() << " has a domain size <2")
+    return addDecisionNode(*v);
+  }
+
+  template < typename GUM_SCALAR >
+  NodeId InfluenceDiagram< GUM_SCALAR >::add(const std::string& fast_description,
+                                             unsigned int       default_nbrmod) {
+    std::string node = fast_description;
+    switch (*(node.begin())) {
+      case '*':
+        node.erase(0, 1);
+        return addDecisionNode(node, default_nbrmod);
+        break;
+      case '$':
+        node.erase(0, 1);
+        return addUtilityNode(node);
+        break;
+    }
+    return addChanceNode(fast_description, default_nbrmod);
+  }
 }   // namespace gum

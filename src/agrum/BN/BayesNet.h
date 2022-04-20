@@ -200,12 +200,14 @@ namespace gum {
      *
      * @param fast_description(: str) following "fast" syntax description
      * @param default_nbrmod(: int) nbr of modality if fast_description do not indicate it.
+     * default_nbrmod=1 is the way to create a variable with only one value (for instance for reward
+     * in influence diagram).
      *
      * @throws DuplicateLabel Raised if variable.name() is already used in this
      *                        gum::BayesNet.
      * @throws NotAllowed if nbrmod<2
      */
-    NodeId add(const std::string& fast_description, unsigned int default_nbrmod);
+    NodeId add(const std::string& fast_description, unsigned int default_nbrmod=2);
 
     /**
      * @brief Add a variable to the gum::BayesNet.

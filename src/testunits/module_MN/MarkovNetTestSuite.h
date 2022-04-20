@@ -349,6 +349,31 @@ namespace gum_tests {
       auto mn2 = gum::MarkovNet< float >::fastPrototype("A--B");
       TS_GUM_ASSERT_THROWS_NOTHING(mn2.factor({"A", "B"}));
     }
+
+    void testShortCutAddFastVar() {
+      gum::MarkovNet< double > mn;
+
+      gum::NodeId i1, i2, i3;
+
+      TS_ASSERT_THROWS_NOTHING(i1 = mn.add("A", 2))
+      TS_ASSERT_THROWS_NOTHING(i2 = mn.add("B", 3))
+      TS_ASSERT_EQUALS(i1, gum::NodeId(0))
+      TS_ASSERT_EQUALS(i2, gum::NodeId(1))
+
+      TS_ASSERT_THROWS(i3 = mn.add("A", 5), gum::DuplicateLabel)
+      // the variable "C",1 can be created but the BN does not allow to add such a variable
+      TS_ASSERT_THROWS(i3 = mn.add("C", 1),gum::OperationNotAllowed)
+      GUM_UNUSED(i3);
+
+      TS_ASSERT_THROWS_NOTHING(mn.add("X{top|middle|bottom}"))
+      TS_ASSERT_EQUALS(mn.variable("X").toString(),"X:Labelized({top|middle|bottom})")
+
+      // a mono-label with default 4 is impossible
+      TS_ASSERT_THROWS(mn.add("Y[1,1]",4),gum::ArgumentError)
+
+      // a mono-label with default 1 is possible but can not be integrated in the model
+      TS_ASSERT_THROWS(mn.add("Y[1,1]",1),gum::OperationNotAllowed)
+    }
   };
 
 

@@ -28,6 +28,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   const std::unique_ptr< DiscreteVariable > fastVariable(const std::string& var_description,
                                                          Size               default_domain_size) {
+    if (default_domain_size == 0) GUM_ERROR(InvalidArgument, "default_domain_size can not be 0")
+
     auto                       ds        = default_domain_size;
     long                       range_min = 0;
     long                       range_max = long(ds) - 1;
@@ -53,7 +55,10 @@ namespace gum {
           range_min = std::stol(args[0]);
           range_max = std::stol(args[1]);
           if (1 + range_max - range_min < 2) {
-            GUM_ERROR(InvalidArgument, "Invalid range for variable " << var_description)
+            if (range_max + Size(1)
+                < range_min + default_domain_size)   // ok if default_domain_size==1 and
+                                                     // range_max==range_min
+              GUM_ERROR(InvalidArgument, "Invalid range for variable " << var_description)
           }
           ds = static_cast< Size >(1 + range_max - range_min);
         } else {   // n[3.14,5,10,12]
@@ -70,7 +75,8 @@ namespace gum {
         labels = split(var_description.substr(posBrack + 1, var_description.size() - posBrack - 2),
                        "|");
         if (labels.size() < 2) {
-          GUM_ERROR(InvalidArgument, "Not enough labels in var_description " << var_description)
+          if (labels.size() != default_domain_size)   // 1 is ok if default_domain_size==1
+            GUM_ERROR(InvalidArgument, "Not enough labels in var_description " << var_description)
         }
         if (!hasUniqueElts(labels)) {
           GUM_ERROR(InvalidArgument, "Duplicate labels in var_description " << var_description)
@@ -84,8 +90,9 @@ namespace gum {
     if (ds == 0) {
       GUM_ERROR(InvalidArgument, "No value for variable " << var_description << ".")
     } else if (ds == 1) {
-      GUM_ERROR(InvalidArgument,
-                "Only one value for variable " << var_description << " (2 at least are needed).")
+      if (default_domain_size != 1)
+        GUM_ERROR(InvalidArgument,
+                  "Only one value for variable " << var_description << " (2 at least are needed).")
     }
 
     std::vector< int > values;
@@ -93,6 +100,7 @@ namespace gum {
       for (const auto& label: labels)
         values.push_back(std::stoi(label));
     }
+    trim(name);
 
     if (!values.empty()) {
       return std::make_unique< IntegerVariable >(name, name, values);

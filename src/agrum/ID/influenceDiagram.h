@@ -202,8 +202,7 @@ namespace gum {
 
     /**
      * Add a chance variable, it's associate node and it's CPT. The id of the
-     *new
-     * variable is automatically generated.
+     *new variable is automatically generated.
      *
      * The implementation of the Potential is by default a MultiDimArray.
      *
@@ -295,6 +294,78 @@ namespace gum {
                           MultiDimImplementation< GUM_SCALAR >* aContent,
                           NodeId                                id = 0);
 
+
+    /**
+     * Add a chance, a decision or an utility variable from a description in "fast" syntax.
+     *   - see addChancdeNode for the syntax of the type of variable
+     *   - if the description starts with "*", its a decision node
+     *   - if the description starts with "$", irs an utility node
+     *   - otherwise, it is a chance node.
+     *
+     * @param fast_description(: str) following "fast" syntax description
+     * @param default_nbrmod(: int) nbr of modality if fast_description do not indicate it.
+     * default_nbrmod=1 is the way to create a variable with only one value (for instance for
+     * reward
+     * in influence diagram).
+     *
+     * @throws DuplicateLabel Raised if variable.name() is already used in this
+     *                        gum::InfluenceDiagram.
+     * @throws NotAllowed if nbrmod<2
+     */
+    NodeId add(const std::string& fast_description, unsigned int default_nbrmod=2);
+
+    /**
+     * Add a chance variable from a description in "fast" syntax.
+     *   - a : range variable from 0 to default_nbrmod-1
+     *   - a[5] : range variable from 0 to 5
+     *   - a[-3,5] : range variable from -3 to 5
+     *   - a[1,3.14,5,3] : discretized variable
+     *   - a{x|y|z} : labelized variable
+     *   - a{-3|0|3|100} : integer variable
+     *
+     * @param fast_description(: str) following "fast" syntax description
+     * @param default_nbrmod(: int) nbr of modality if fast_description do not indicate it.
+     * default_nbrmod=1 is the way to create a variable with only one value (for instance for
+     * reward
+     * in influence diagram).
+     *
+     * @throws DuplicateLabel Raised if variable.name() is already used in this
+     *                        gum::InfluenceDiagram.
+     * @throws NotAllowed if nbrmod<2
+     */
+    NodeId addChanceNode(const std::string& fast_description, unsigned int default_nbrmod=2);
+
+    /**
+     * Add a utility variable from a description in "fast" syntax with only one value.
+     *   - a : range variable from 0 to default_nbrmod-1
+     *   - a[x,x] : range variable from x to x
+     *   - a{value} : labelized variable with only one label "value"
+     *
+     * @param fast_description(: str) following "fast" syntax description
+     */
+    NodeId addUtilityNode(const std::string& fast_description);
+
+    /**
+    * Add a decision variable from a description in "fast" syntax.
+    *   - a : range variable from 0 to default_nbrmod-1
+    *   - a[5] : range variable from 0 to 5
+    *   - a[-3,5] : range variable from -3 to 5
+    *   - a[1,3.14,5,3] : discretized variable
+    *   - a{x|y|z} : labelized variable
+    *   - a{-3|0|3|100} : integer variable
+    *
+    * @param fast_description(: str) following "fast" syntax description
+    * @param default_nbrmod(: int) nbr of modality if fast_description do not indicate it.
+    *
+    * @throws DuplicateLabel Raised if variable.name() is already used in this
+    *                        gum::InfluenceDiagram.
+    * @throws NotAllowed if nbrmod<2
+     */
+    NodeId addDecisionNode(const std::string& fast_description, unsigned int default_nbrmod=2);
+
+    
+    
+    
     /**
      * Erase a Variable from the network and remove the variable from
      * all his children.
