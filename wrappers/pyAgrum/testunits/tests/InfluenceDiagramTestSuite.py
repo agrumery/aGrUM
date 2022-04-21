@@ -151,5 +151,35 @@ class InfluenceDiagramTestCase(pyAgrumTestCase):
     self.assertEqual(ie.optimalDecision("d"), gum.Potential().add(tst_id.variableFromName("d")).fillWith([0, 1]))
     self.assertEqual(ie.MEU()['mean'], 200)
 
+
+  def testBugInferenceWithEvidenceWithSemiFastSyntax(self):
+    tst_id = gum.InfluenceDiagram()
+    tst_id.addVariables(["c1","c","$u","*d"])
+    tst_id.addArcs([("c","c1"),
+                    ("c","u"),
+                    ("d","u")])
+
+    tst_id.cpt("c").fillWith([0.5, 0.5])
+
+    tst_id.cpt("c1")[{'c': 0}] = [1, 0]
+    tst_id.cpt("c1")[{'c': 1}] = [0, 1]
+
+    tst_id.utility("u")[{'c': 0, 'd': 0}] = [10]
+    tst_id.utility("u")[{'c': 0, 'd': 1}] = [21]
+    tst_id.utility("u")[{'c': 1, 'd': 0}] = [100]
+    tst_id.utility("u")[{'c': 1, 'd': 1}] = [200]
+
+    ie = gum.ShaferShenoyLIMIDInference(tst_id)
+    ie.setEvidence({'c': 0})
+    ie.makeInference()
+    self.assertEqual(ie.optimalDecision("d"), gum.Potential().add(tst_id.variableFromName("d")).fillWith([0, 1]))
+    self.assertEqual(ie.MEU()['mean'], 21)
+
+    ie = gum.ShaferShenoyLIMIDInference(tst_id)
+    ie.setEvidence({'c': 1})
+    ie.makeInference()
+    self.assertEqual(ie.optimalDecision("d"), gum.Potential().add(tst_id.variableFromName("d")).fillWith([0, 1]))
+    self.assertEqual(ie.MEU()['mean'], 200)
+
 ts = unittest.TestSuite()
 addTests(ts, InfluenceDiagramTestCase)

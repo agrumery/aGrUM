@@ -47,6 +47,73 @@
       gum::BIFXMLIDWriter<GUM_SCALAR> writer;
       writer.write( name, *self );
   };
+
+  %pythoncode {
+def addVariables(self,listFastVariables,default_nbr_mod=2):
+   """
+   Add a list of variable in the form of 'fast' syntax.
+
+   Parameters
+   ----------
+   listFastVariables: List[str]
+     the list of variables following :ref:`fast syntax<Quick specification of (randomly parameterized) graphical models>` extended for :func:`pyAgrum.fastID`.
+   default_nbr_mod: int
+     the number of modalities for the variable if not specified in the fast description. Note that default_nbr_mod=1 is
+     mandatory to create variables with only one modality (for utility for instance).
+
+   Returns
+   -------
+   List[int]
+     the list of created ids.
+   """
+   return [self.add(descr,default_nbr_mod) for descr in listFastVariables]
+
+def addArcs(self,listArcs):
+  """
+  add a list of arcs in te model.
+
+  Parameters
+  ----------
+  listArcs : List[Tuple[int,int]]
+    the list of arcs
+  """
+  for arc in listArcs:
+    self.addArc(*arc)
+
+
+def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdded=None,whenArcDeleted=None):
+  """
+  Add the listeners in parameters to the list of existing ones.
+
+  Parameters
+  ----------
+  whenNodeAdded : lambda expression
+    a function for when a node is added
+  whenNodeDeleted : lambda expression
+    a function for when a node is removed
+  whenArcAdded : lambda expression
+    a function for when an arc is added
+  whenArcDeleted : lambda expression
+    a function for when an arc is removed
+  """
+  if [whenNodeAdded,whenNodeDeleted,whenArcAdded,whenArcDeleted]==[None,None,None,None]:
+    return
+
+  if not hasattr(self,"_listeners"):
+    self._listeners=[]
+
+  nl = PythonBNListener(self, self.variableNodeMap())
+  if whenNodeAdded is not None:
+    nl.setWhenNodeAdded(whenNodeAdded)
+  if whenNodeDeleted is not None:
+    nl.setWhenNodeDeleted(whenNodeDeleted)
+  if whenArcAdded is not None:
+    nl.setWhenArcAdded(whenArcAdded)
+  if whenArcDeleted is not None:
+    nl.setWhenArcDeleted(whenArcDeleted)
+
+  self._listeners.append(nl)
+  }
 }
 
 IMPROVE_DIRECTED_GRAPHICAL_MODEL_API(gum::InfluenceDiagram);

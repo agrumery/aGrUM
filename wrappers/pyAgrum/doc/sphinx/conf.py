@@ -61,6 +61,7 @@ needs_sphinx = '1.8.4'
 
 extensions = [
   #'sphinx.ext.autosummary',
+  'sphinx.ext.autosectionlabel',
   'sphinx.ext.autodoc',
   'sphinx.ext.mathjax',
   'sphinx.ext.inheritance_diagram',

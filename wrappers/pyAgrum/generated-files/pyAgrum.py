@@ -9005,7 +9005,7 @@ class BayesNet(IBayesNet):
               - with 'a{top|middle|bottom}', the variable is a pyAgrum.LabelizedVariable using the given labels.
               - with 'a{-1|5|0|3}', the variable is a pyAgrum.IntegerVariable using the sorted given values.
 
-        Note 
+        Note
         ----
           - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
           - the CPTs are randomly generated.
@@ -9050,7 +9050,7 @@ class BayesNet(IBayesNet):
         Returns
         -------
         pyAgrum.Potential
-        	The variable's CPT. 
+        	The variable's CPT.
 
         Raises
         ------
@@ -9074,14 +9074,14 @@ class BayesNet(IBayesNet):
     def add(self, *args) -> int:
         r"""
 
-        Add a variable to the pyAgrum.BayesNet. 
+        Add a variable to the pyAgrum.BayesNet.
 
         Parameters
         ----------
         variable : pyAgrum.DiscreteVariable
         	the variable added
-        name : str 
-        	the variable name
+        descr : str
+        	the description of the variable (following :ref:`fast syntax<Quick specification of (randomly parameterized) graphical models>`)
         nbrmod : int
         	the number of modalities for the new variable
         id : int
@@ -9089,17 +9089,15 @@ class BayesNet(IBayesNet):
 
         Returns
         -------
-        int 
+        int
         	the id of the new node
 
         Raises
         ------
         pyAgrum.DuplicateLabel
-            If variable.name() is already used in this pyAgrum.BayesNet.
+            If variable.name() or id is already used in this pyAgrum.BayesNet.
         pyAgrum.NotAllowed
             If nbrmod is less than 2
-        pyAgrum.DuplicateElement
-            If id is already used.
 
         """
         return _pyAgrum.BayesNet_add(self, *args)
@@ -9107,7 +9105,7 @@ class BayesNet(IBayesNet):
     def clear(self) -> None:
         r"""
 
-        Clear the whole BayesNet  
+        Clear the whole BayesNet
 
         """
         return _pyAgrum.BayesNet_clear(self)
@@ -9124,11 +9122,11 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         id : int
-        	The variable's id to remove. 
+        	The variable's id to remove.
         name : str
         	The variable's name to remove.
         var : pyAgrum.DiscreteVariable
-        	A reference on the variable to remove. 
+        	A reference on the variable to remove.
 
         """
         return _pyAgrum.BayesNet_erase(self, *args)
@@ -9306,7 +9304,7 @@ class BayesNet(IBayesNet):
 
         Parameters
         ----------
-        arc : pyAgrum.Arc 
+        arc : pyAgrum.Arc
         	The arc to be removed.
         head :
         	a variable's id (int)
@@ -9346,7 +9344,7 @@ class BayesNet(IBayesNet):
     def reverseArc(self, *args) -> None:
         r"""
 
-        Reverses an arc while preserving the same joint distribution. 
+        Reverses an arc while preserving the same joint distribution.
 
         Parameters
         ----------
@@ -9359,7 +9357,7 @@ class BayesNet(IBayesNet):
         head
         	(str) the name of the head variable
         arc : pyAgrum.Arc
-        	an arc 
+        	an arc
 
         Raises
         ------
@@ -9390,7 +9388,7 @@ class BayesNet(IBayesNet):
         Returns
         -------
         int
-        	the id of the added variable. 
+        	the id of the added variable.
 
         Raises
         --------
@@ -9558,7 +9556,7 @@ class BayesNet(IBayesNet):
         Returns
         -------
         int
-        	the id of the added variable. 
+        	the id of the added variable.
 
         Raises
         ------
@@ -9757,7 +9755,7 @@ class BayesNet(IBayesNet):
         ----------
         node : int
         	The variable's id.
-        name : str 
+        name : str
         	The variable's name.
 
         """
@@ -9963,6 +9961,37 @@ class BayesNet(IBayesNet):
 
     def moralizedAncestralGraph(self, nodes: object) -> "pyAgrum.UndiGraph":
         return _pyAgrum.BayesNet_moralizedAncestralGraph(self, nodes)
+
+    def addVariables(self,listFastVariables,default_nbr_mod=2):
+       """
+       Add a list of variable in the form of 'fast' syntax.
+
+       Parameters
+       ----------
+       listFastVariables: List[str]
+         the list of variables in 'fast' syntax.
+       default_nbr_mod: int
+         the number of modalities for the variable if not specified following :ref:`fast syntax<Quick specification of (randomly parameterized) graphical models>`. Note that default_nbr_mod=1 is
+         mandatory to create variables with only one modality (for utility for instance).
+
+       Returns
+       -------
+       List[int]
+         the list of created ids.
+       """
+       return [self.add(descr,default_nbr_mod) for descr in listFastVariables]
+
+    def addArcs(self,listArcs):
+      """
+      add a list of arcs in te model.
+
+      Parameters
+      ----------
+      listArcs : List[Tuple[intstr,intstr]]
+        the list of arcs
+      """
+      for arc in listArcs:
+        self.addArc(*arc)
 
     def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdded=None,whenArcDeleted=None):
         """
@@ -10243,7 +10272,7 @@ def BayesNet_fastPrototype(dotlike: str, domainSize: int=2) -> "pyAgrum.BayesNet
           - with 'a{top|middle|bottom}', the variable is a pyAgrum.LabelizedVariable using the given labels.
           - with 'a{-1|5|0|3}', the variable is a pyAgrum.IntegerVariable using the sorted given values.
 
-    Note 
+    Note
     ----
       - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
       - the CPTs are randomly generated.
@@ -10762,6 +10791,37 @@ class BayesNetFragment(IBayesNet, ):
 
     def moralizedAncestralGraph(self, nodes: object) -> "pyAgrum.UndiGraph":
         return _pyAgrum.BayesNetFragment_moralizedAncestralGraph(self, nodes)
+
+    def addVariables(self,listFastVariables,default_nbr_mod=2):
+       """
+       Add a list of variable in the form of 'fast' syntax.
+
+       Parameters
+       ----------
+       listFastVariables: List[str]
+         the list of variables in 'fast' syntax.
+       default_nbr_mod: int
+         the number of modalities for the variable if not specified following :ref:`fast syntax<Quick specification of (randomly parameterized) graphical models>`. Note that default_nbr_mod=1 is
+         mandatory to create variables with only one modality (for utility for instance).
+
+       Returns
+       -------
+       List[int]
+         the list of created ids.
+       """
+       return [self.add(descr,default_nbr_mod) for descr in listFastVariables]
+
+    def addArcs(self,listArcs):
+      """
+      add a list of arcs in te model.
+
+      Parameters
+      ----------
+      listArcs : List[Tuple[intstr,intstr]]
+        the list of arcs
+      """
+      for arc in listArcs:
+        self.addArc(*arc)
 
     def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdded=None,whenArcDeleted=None):
         """
@@ -11329,6 +11389,25 @@ class MarkovNet(IMarkovNet):
 
     def eraseFactor(self, *args) -> None:
         return _pyAgrum.MarkovNet_eraseFactor(self, *args)
+
+    def addVariables(self,listFastVariables,default_nbr_mod=2):
+       """
+       Add a list of variable in the form of 'fast' syntax.
+
+       Parameters
+       ----------
+       listFastVariables: List[str]
+         the list of variables in 'fast' syntax.
+       default_nbr_mod: int
+         the number of modalities for the variable if not specified following :ref:`fast syntax<Quick specification of (randomly parameterized) graphical models>`. Note that default_nbr_mod=1 is
+         mandatory to create variables with only one modality (for utility for instance).
+
+       Returns
+       -------
+       List[int]
+         the list of created ids.
+       """
+       return [self.add(descr,default_nbr_mod) for descr in listFastVariables]
 
     def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenEdgeAdded=None,whenedgeDeleted=None):
         """
@@ -23477,20 +23556,19 @@ class InfluenceDiagram(DAGmodel):
     def add(self, *args) -> int:
         r"""
 
-        Add a chance variable, it's associate node and it's CPT.
+        Add a variable, it's associate node and it's CPT.
 
         The id of the new variable is automatically generated.
 
         Parameters
         ----------
         variable : pyAgrum.DiscreteVariable
-        	The variable added by copy.
-        id : int
-        	The chosen id. If 0, the NodeGraphPart will choose.
-
-        Warnings
-        --------
-        give an id (not 0) should be reserved for rare and specific situations !!!
+        	The variable added by copy that will be a chance node.
+        descr: str
+          the descr of the variable following :ref:`fast syntax<Quick specification of (randomly parameterized) graphical models>` extended for :func:`pyAgrum.fastID`.
+        nbr_mod_or_id : int
+        	if the first argument is `variable`, this set an optional fixed id for the node. If the first argument is `descr`, this gives the default number of modalities
+        	for the variable. Note that if a utility node is described in `descr`, this value is overriden by 1.
 
         Returns
         -------
@@ -23500,7 +23578,7 @@ class InfluenceDiagram(DAGmodel):
         Raises
         ------
           pyAgrum.DuplicateElement
-        	If id(<>0) is already used
+        	  If already used id or name.
 
         """
         return _pyAgrum.InfluenceDiagram_add(self, *args)
@@ -23746,6 +23824,72 @@ class InfluenceDiagram(DAGmodel):
 
         """
         return _pyAgrum.InfluenceDiagram_saveBIFXML(self, name)
+
+    def addVariables(self,listFastVariables,default_nbr_mod=2):
+       """
+       Add a list of variable in the form of 'fast' syntax.
+
+       Parameters
+       ----------
+       listFastVariables: List[str]
+         the list of variables following :ref:`fast syntax<Quick specification of (randomly parameterized) graphical models>` extended for :func:`pyAgrum.fastID`.
+       default_nbr_mod: int
+         the number of modalities for the variable if not specified in the fast description. Note that default_nbr_mod=1 is
+         mandatory to create variables with only one modality (for utility for instance).
+
+       Returns
+       -------
+       List[int]
+         the list of created ids.
+       """
+       return [self.add(descr,default_nbr_mod) for descr in listFastVariables]
+
+    def addArcs(self,listArcs):
+      """
+      add a list of arcs in te model.
+
+      Parameters
+      ----------
+      listArcs : List[Tuple[int,int]]
+        the list of arcs
+      """
+      for arc in listArcs:
+        self.addArc(*arc)
+
+
+    def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdded=None,whenArcDeleted=None):
+      """
+      Add the listeners in parameters to the list of existing ones.
+
+      Parameters
+      ----------
+      whenNodeAdded : lambda expression
+        a function for when a node is added
+      whenNodeDeleted : lambda expression
+        a function for when a node is removed
+      whenArcAdded : lambda expression
+        a function for when an arc is added
+      whenArcDeleted : lambda expression
+        a function for when an arc is removed
+      """
+      if [whenNodeAdded,whenNodeDeleted,whenArcAdded,whenArcDeleted]==[None,None,None,None]:
+        return
+
+      if not hasattr(self,"_listeners"):
+        self._listeners=[]
+
+      nl = PythonBNListener(self, self.variableNodeMap())
+      if whenNodeAdded is not None:
+        nl.setWhenNodeAdded(whenNodeAdded)
+      if whenNodeDeleted is not None:
+        nl.setWhenNodeDeleted(whenNodeDeleted)
+      if whenArcAdded is not None:
+        nl.setWhenArcAdded(whenArcAdded)
+      if whenArcDeleted is not None:
+        nl.setWhenArcDeleted(whenArcDeleted)
+
+      self._listeners.append(nl)
+
 
     def names(self) -> object:
         r"""

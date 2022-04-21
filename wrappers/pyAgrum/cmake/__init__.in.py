@@ -459,8 +459,7 @@ def fastMN(structure, domain_size=2):
 def fastID(structure, domain_size=2):
   """
   Create an Influence Diagram with a modified dot-like syntax which specifies:
-      - the structure 'a->b<-c;b->d;c<-e;',
-      - the type of the variables with different syntax (cf documentation),
+      - the structure and the type of the variables following :ref:`fast syntax<Quick specification of (randomly parameterized) graphical models>`,
       - a prefix for the type of node (chance/decision/utiliy nodes):
 
         - ``a`` : a chance node named 'a' (by default)

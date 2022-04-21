@@ -12,20 +12,19 @@ InfluenceDiagram(source) -> InfluenceDiagram
 
 %feature("docstring") gum::InfluenceDiagram::add
 "
-Add a chance variable, it's associate node and it's CPT.
+Add a variable, it's associate node and it's CPT.
 
 The id of the new variable is automatically generated.
 
 Parameters
 ----------
 variable : pyAgrum.DiscreteVariable
-	The variable added by copy.
-id : int
-	The chosen id. If 0, the NodeGraphPart will choose.
-
-Warnings
---------
-give an id (not 0) should be reserved for rare and specific situations !!!
+	The variable added by copy that will be a chance node.
+descr: str
+  the descr of the variable following :ref:`fast syntax<Quick specification of (randomly parameterized) graphical models>` extended for :func:`pyAgrum.fastID`.
+nbr_mod_or_id : int
+	if the first argument is `variable`, this set an optional fixed id for the node. If the first argument is `descr`, this gives the default number of modalities
+	for the variable. Note that if a utility node is described in `descr`, this value is overriden by 1.
 
 Returns
 -------
@@ -35,7 +34,7 @@ int
 Raises
 ------
   pyAgrum.DuplicateElement
-	If id(<>0) is already used
+	  If already used id or name.
 "
 
 %feature("docstring") gum::InfluenceDiagram::addArc

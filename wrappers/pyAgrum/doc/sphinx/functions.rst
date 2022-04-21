@@ -15,11 +15,11 @@ Useful functions in pyAgrum
 Quick specification of (randomly parameterized) graphical models
 ----------------------------------------------------------------
 
-aGrUM/pyAgrum offers a compact syntax that allows to quickly specify prototypes of graphical models. These `fastPrototype` aGrUM's methods have also been wrapped in functions of pyAgrum.
+aGrUM/pyAgrum offers a so-called "fact" syntax that allows to quickly and compactly specify prototypes of graphical models. These `fastPrototype` aGrUM's methods have also been wrapped in functions of pyAgrum.
 
 .. code:: python
 
-    gum.fastBN("A->B<-C;B->D")
+    gum.fastBN("A[10]->B<-C{top|middle|bottom};B->D")
 
 The type of the random variables can be specifiy with different syntaxes:
 

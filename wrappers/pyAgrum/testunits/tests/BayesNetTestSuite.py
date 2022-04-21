@@ -156,6 +156,51 @@ class TestInsertions(BayesNetTestCase):
 
     self.assertFalse(bn.empty())
 
+  def testFastBuilders(self):
+    bn1=gum.BayesNet()
+    bn1.add(gum.RangeVariable("A","A",0,2))
+    bn1.add(gum.LabelizedVariable("B","B",["a","b","c"]))
+    bn1.add(gum.RangeVariable("C","C",4,7))
+    bn1.add(gum.IntegerVariable("D","D",[1,3,10]))
+    bn1.add(gum.DiscretizedVariable("E","E",[1,1.5,3,3.14,15]))
+    bn1.addArc("A","B")
+    bn1.addArc("B","C")
+    bn1.addArc("C","D")
+    bn1.addArc("D","E")
+    self.assertEquals(len(bn1.check()), 5)   # every cpt is faulty
+
+    bn2=gum.fastBN("A->B{a|b|c}->C[4,7]->D{1|3|10}->E[1,1.5,3,3.14,15]",3)
+    self.assertEquals(len(bn2.check()), 0)  # but random
+
+    bn3=gum.BayesNet()
+    bn3.add("A",3)
+    bn3.add("B{a|b|c}")
+    bn3.add("C[4,7]")
+    bn3.add("D{1|3|10}")
+    bn3.add("E[1,1.5,3,3.14,15]")
+    bn3.addArc("A","B")
+    bn3.addArc("B","C")
+    bn3.addArc("C","D")
+    bn3.addArc("D","E")
+    self.assertEquals(len(bn3.check()), 5)  # every cpt is faulty
+
+    bn4=gum.BayesNet()
+    bn4.addVariables(["A",
+                      "B{a|b|c}",
+                      "C[4,7]",
+                      "D{1|3|10}",
+                      "E[1,1.5,3,3.14,15]"]
+                     ,3)
+    bn4.addArcs([("A","B"),
+                 ("B","C"),
+                 ("C","D"),
+                 ("D","E")])
+    self.assertEquals(len(bn4.check()), 5)  # every cpt is faulty
+
+    for name in "ABCDE":
+      self.assertEquals(bn1.variable(name),bn2.variable(name))
+      self.assertEquals(bn1.variable(name),bn3.variable(name))
+      self.assertEquals(bn1.variable(name),bn4.variable(name))
 
 class TestFeatures(BayesNetTestCase):
   def testMoralGraph(self):

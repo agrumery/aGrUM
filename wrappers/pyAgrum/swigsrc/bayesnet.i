@@ -80,6 +80,37 @@ IMPROVE_BAYESNET_API(gum::BayesNetFragment);
 %define IMPROVE_CONCRETEBAYESNET_API(classname)
 %extend classname {
 %pythoncode {
+def addVariables(self,listFastVariables,default_nbr_mod=2):
+   """
+   Add a list of variable in the form of 'fast' syntax.
+
+   Parameters
+   ----------
+   listFastVariables: List[str]
+     the list of variables in 'fast' syntax.
+   default_nbr_mod: int
+     the number of modalities for the variable if not specified following :ref:`fast syntax<Quick specification of (randomly parameterized) graphical models>`. Note that default_nbr_mod=1 is
+     mandatory to create variables with only one modality (for utility for instance).
+
+   Returns
+   -------
+   List[int]
+     the list of created ids.
+   """
+   return [self.add(descr,default_nbr_mod) for descr in listFastVariables]
+
+def addArcs(self,listArcs):
+  """
+  add a list of arcs in te model.
+
+  Parameters
+  ----------
+  listArcs : List[Tuple[int|str,int|str]]
+    the list of arcs
+  """
+  for arc in listArcs:
+    self.addArc(*arc)
+
 def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdded=None,whenArcDeleted=None):
     """
     Add the listeners in parameters to the list of existing ones.

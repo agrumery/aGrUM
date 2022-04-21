@@ -13,14 +13,14 @@ BayesNet(source) -> BayesNet
 
 %feature("docstring") gum::BayesNet::add
 "
-Add a variable to the pyAgrum.BayesNet. 
+Add a variable to the pyAgrum.BayesNet.
 
 Parameters
 ----------
 variable : pyAgrum.DiscreteVariable
 	the variable added
-name : str 
-	the variable name
+descr : str
+	the description of the variable (following :ref:`fast syntax<Quick specification of (randomly parameterized) graphical models>`)
 nbrmod : int
 	the number of modalities for the new variable
 id : int
@@ -28,17 +28,15 @@ id : int
 
 Returns
 -------
-int 
+int
 	the id of the new node
 
 Raises
 ------
 pyAgrum.DuplicateLabel
-    If variable.name() is already used in this pyAgrum.BayesNet.
+    If variable.name() or id is already used in this pyAgrum.BayesNet.
 pyAgrum.NotAllowed
     If nbrmod is less than 2
-pyAgrum.DuplicateElement
-    If id is already used.
 "
 
 %feature("docstring") gum::BayesNet::addAMPLITUDE
@@ -70,7 +68,7 @@ variable : pyAgrum.DiscreteVariable
 Returns
 -------
 int
-	the id of the added variable. 
+	the id of the added variable.
 
 Raises
 ------
@@ -277,7 +275,7 @@ id : int
 Returns
 -------
 int
-	the id of the added variable. 
+	the id of the added variable.
 
 Raises
 --------
@@ -469,7 +467,7 @@ pyAgrum.BayesNet
 
 %feature("docstring") gum::BayesNet::clear
 "
-Clear the whole BayesNet  
+Clear the whole BayesNet
 "
 
 %feature("docstring") gum::BayesNet::erase
@@ -483,11 +481,11 @@ If no variable matches the given id, then nothing is done.
 Parameters
 ----------
 id : int
-	The variable's id to remove. 
+	The variable's id to remove.
 name : str
 	The variable's name to remove.
 var : pyAgrum.DiscreteVariable
-	A reference on the variable to remove. 
+	A reference on the variable to remove.
 "
 
 %feature("docstring") gum::BayesNet::eraseArc
@@ -498,7 +496,7 @@ If (tail, head) doesn't exist, the nothing happens.
 
 Parameters
 ----------
-arc : pyAgrum.Arc 
+arc : pyAgrum.Arc
 	The arc to be removed.
 head :
 	a variable's id (int)
@@ -523,12 +521,12 @@ Create a Bayesian network with a dot-like syntax which specifies:
       - with 'a{top|middle|bottom}', the variable is a pyAgrum.LabelizedVariable using the given labels.
       - with 'a{-1|5|0|3}', the variable is a pyAgrum.IntegerVariable using the sorted given values.
 
-Note 
+Note
 ----
   - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
   - the CPTs are randomly generated.
   - see also pyAgrum.fastBN.
-    
+
 Examples
 --------
 >>> import pyAgrum as gum
@@ -555,7 +553,7 @@ Parameters
 ----------
 node : int
 	The variable's id.
-name : str 
+name : str
 	The variable's name.
 "
 
@@ -688,7 +686,7 @@ pyAgrum.FatalError
 
 %feature("docstring") gum::BayesNet::reverseArc
 "
-Reverses an arc while preserving the same joint distribution. 
+Reverses an arc while preserving the same joint distribution.
 
 Parameters
 ----------
@@ -701,7 +699,7 @@ tail
 head
 	(str) the name of the head variable
 arc : pyAgrum.Arc
-	an arc 
+	an arc
 
 Raises
 ------
@@ -787,7 +785,7 @@ name : str
 Returns
 -------
 pyAgrum.Potential
-	The variable's CPT. 
+	The variable's CPT.
 
 Raises
 ------
