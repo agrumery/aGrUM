@@ -96,7 +96,7 @@ namespace gum {
     }
 
     std::vector< int > values;
-    if (!labels.empty() && std::ranges::all_of(labels.cbegin(), labels.cend(), isInteger)) {
+    if (!labels.empty() && std::all_of(labels.cbegin(), labels.cend(), isInteger)) {
       for (const auto& label: labels)
         values.push_back(std::stoi(label));
     }
