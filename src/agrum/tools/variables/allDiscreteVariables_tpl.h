@@ -31,8 +31,8 @@ namespace gum {
     if (default_domain_size == 0) GUM_ERROR(InvalidArgument, "default_domain_size can not be 0")
 
     Size                       ds        = default_domain_size;
-    Size                       range_min = 0;
-    Size                       range_max = long(ds) - 1;
+    long                       range_min = 0;
+    long                       range_max = long(ds) - 1;
     std::vector< std::string > labels;
     std::vector< GUM_SCALAR >  ticks;
     std::string                name;
