@@ -44,12 +44,12 @@ namespace gum {
    * with Bayes nets and other graphs already big enough to be unmanageable
    * from a computational point of view.
    */
-  typedef std::size_t Size;   // std::size_t Size;
+  using Size=std::size_t;   // std::size_t Size;
 
   /**
    * Type for indexes.
    */
-  typedef Size Idx;   // std::size_t Idx;
+  using Idx=Size;   // std::size_t Idx;
 
 
   /// @}

@@ -60,7 +60,8 @@ namespace gum_tests {
           TS_ASSERT_EQUALS(a->toString(), "A:Range([-7,-3])")
         }
 
-        TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A[7,3]", 4), gum::InvalidArgument)
+        TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A[7,3]", 4),gum::InvalidArgument)
+
         TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A[1,1]", 4), gum::InvalidArgument)
 
         {
