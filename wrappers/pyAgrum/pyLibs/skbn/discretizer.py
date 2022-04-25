@@ -634,6 +634,16 @@ class BNDiscretizer():
 
     return cutpoints
 
+  @staticmethod
+  def checkInt(v):
+    if isinstance(v, int):
+      return True
+    if isinstance(v, str):
+      if v[0] in ('-', '+'):
+        return v[1:].isdigit()
+      return v.isdigit()
+    return int(v)==v
+
   def createVariable(self, variableName, X, y=None, possibleValuesY=None):
     """
     parameters:
@@ -669,7 +679,6 @@ class BNDiscretizer():
     n = len(X)
 
     if variableName not in self.discretizationParametersDictionary.keys():  # The user has not manually set the discretization parameters for this variable
-
       if isNumeric and \
           ((self.discretizationThreshold >= 1 and len(possibleValuesX) > self.discretizationThreshold)
            or (self.discretizationThreshold < 1 and len(possibleValuesX) / len(X) > self.discretizationThreshold)):
@@ -686,10 +695,26 @@ class BNDiscretizer():
         raise ValueError("The variable " + variableName + " is not numeric and cannot be discretized!")
 
     if self.discretizationParametersDictionary[variableName]["methode"] == "NoDiscretization":
-      var = gum.LabelizedVariable(variableName, variableName, 0)
+      is_int_var=True
+      min_v=max_v=None
       for value in possibleValuesX:
-        var.addLabel(str(value))
+        if not self.checkInt(value):
+          is_int_var=False
+          break
+        else:
+          v=int(value)
+          if min_v is None or min_v>v:
+            min_v=v
+          if max_v is None or max_v<v:
+            max_v=v
 
+      if is_int_var:
+        if len(possibleValuesX)==max_v-min_v+1: # no hole in the list of int
+          var =gum.RangeVariable(variableName, variableName, min_v,max_v)
+        else:
+          var=gum.IntegerVariable(variableName, variableName,[int(v) for v in possibleValuesX])
+      else:
+        var = gum.LabelizedVariable(variableName, variableName, [str(v) for v in possibleValuesX])
     else:
       self.numberOfContinous += 1
       if self.discretizationParametersDictionary[variableName]['methode'] == "CAIM":
