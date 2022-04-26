@@ -63,7 +63,7 @@ namespace gum {
    */
   template < TESTNAME AttributeSelection, bool isScalar = false >
   class IncrementalGraphLearner: public IVisitableGraphLearner {
-    using ValueType = ValueSelect< isScalar, double, Idx >::type;
+    using ValueType = typename ValueSelect< isScalar, double, Idx >::type;
 
     public:
     // ###################################################################

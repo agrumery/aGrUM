@@ -55,7 +55,7 @@ namespace gum {
 
   template < TESTNAME AttributeSelection, bool isScalar >
   class NodeDatabase {
-    using ValueType = ValueSelect< isScalar, double, Idx >::type;
+    using ValueType = typename ValueSelect< isScalar, double, Idx >::type;
 
     template < typename GUM_SCALAR >
     using TestPolicy = typename TestSelect< AttributeSelection,
