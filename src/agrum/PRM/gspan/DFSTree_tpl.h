@@ -193,7 +193,7 @@ namespace gum {
 
         child->addArc(edge_growth.u, v, *(edge_growth.edge));
         // Neighborhood restriction is checked by the Pattern class
-        EdgeCode& edge = child->edgeCode(edge_growth.u, v);
+        const EdgeCode& edge = child->edgeCode(edge_growth.u, v);
 
         // Then we check if the edge we added is valid
         if (edge < *(child->code().codes.front())) {
@@ -203,9 +203,7 @@ namespace gum {
         }
 
         if (edge.isBackward()) {
-          typedef std::vector< EdgeCode* >::iterator EdgeIter;
-
-          for (EdgeIter iter = child->code().codes.begin(); (iter + 1) != child->code().codes.end();
+          for (auto iter = child->code().codes.begin(); (iter + 1) != child->code().codes.end();
                ++iter) {
             if ((((**iter).i == v) || ((**iter).j == v)) && edge < (**iter)) {
               GUM_ERROR(OperationNotAllowed,
@@ -214,7 +212,7 @@ namespace gum {
           }
         }
 
-        // Finally we check if child is minimal.
+        // Finally, we check if child is minimal.
         if (!child->isMinimal()) {
           GUM_ERROR(OperationNotAllowed, "the DFSCode for this growth is not minimal")
         }
@@ -224,22 +222,22 @@ namespace gum {
       Pattern& DFSTree< GUM_SCALAR >::growPattern(Pattern&                  p,
                                                   EdgeGrowth< GUM_SCALAR >& edge_growth,
                                                   Size                      min_freq) {
-        Pattern* child = new Pattern(p);
+        auto* child = new Pattern(p);
 
         try {
           _checkGrowth_(p, child, edge_growth);
-        } catch (OperationNotAllowed&) {
+        } catch (OperationNotAllowed const&) {
           delete child;
           throw;
         }
 
         // Now we need to build the pattern data about child
-        DFSTree< GUM_SCALAR >::PatternData* data = new DFSTree< GUM_SCALAR >::PatternData(child);
-        std::vector< NodeId >               degree_list;
+        auto*                 data = new DFSTree< GUM_SCALAR >::PatternData(child);
+        std::vector< NodeId > degree_list;
         NodeProperty< Sequence< PRMInstance< GUM_SCALAR >* >* >& p_iso_map = _data_[&p]->iso_map;
-        typename NodeProperty< std::pair< PRMInstance< GUM_SCALAR >*,
-                                          PRMInstance< GUM_SCALAR >* > >::iterator_safe match;
-        // Using p information to build child's isomorphism graph
+        // typename NodeProperty< std::pair< PRMInstance< GUM_SCALAR >*,
+        //                                   PRMInstance< GUM_SCALAR >* > >::iterator_safe match;
+        //  Using p information to build child's isomorphism graph
         NodeId id = 0;
 
         for (const auto& elt: p_iso_map) {
@@ -251,8 +249,7 @@ namespace gum {
               if (elt.second->exists(match.val().first)
                   && !(elt.second->exists(match.val().second))) {
                 // Let's see if the new match is already matched
-                Sequence< PRMInstance< GUM_SCALAR >* >* new_seq
-                   = new Sequence< PRMInstance< GUM_SCALAR >* >(*elt.second);
+                auto* new_seq = new Sequence< PRMInstance< GUM_SCALAR >* >(*elt.second);
                 new_seq->insert(match.val().second);
 
                 if (_is_new_seq_(*new_seq, data->iso_map)) {

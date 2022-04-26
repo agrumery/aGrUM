@@ -54,15 +54,11 @@ namespace gum {
     template < typename GUM_SCALAR >
     class VarMod2BNsMap {
       private:
-      typedef std::vector< bool > dBN;
-
-      typedef typename std::vector< Size > varKey;
-
-      typedef typename gum::HashTable< Size, dBN > hashNet;
-
-      typedef typename gum::HashTable< varKey, std::list< Size > > varHashs;
-
-      typedef typename gum::HashTable< Size, std::list< varKey > > hashVars;
+      using dBN      = std::vector< bool >;
+      using varKey   = std::vector< Size >;
+      using hashNet  = gum::HashTable< Size, dBN >;
+      using varHashs = gum::HashTable< varKey, std::list< Size > >;
+      using hashVars = gum::HashTable< Size, std::list< varKey > >;
 
       protected:
       /** Map id - dBN : get a net from it's id. */

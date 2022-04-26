@@ -125,10 +125,7 @@ namespace gum {
     if ((nbrDim() == p.nbrDim()) && (domainSize() == p.domainSize())) {
       if (nbrDim() == 0) return true;
 
-      typedef Sequence< const DiscreteVariable* >::const_iterator_safe var_iterator;
-
-      for (var_iterator iter = variablesSequence().beginSafe();
-           iter != variablesSequence().endSafe();
+      for (auto iter = variablesSequence().beginSafe(); iter != variablesSequence().endSafe();
            ++iter) {
         if (!p.variablesSequence().exists(*iter)) { return false; }
       }
@@ -136,10 +133,8 @@ namespace gum {
       return false;
     }
 
-    Instantiation i(*this);
-
+    Instantiation                 i(*this);
     AlmostDifferent< GUM_SCALAR > cmp;
-
     for (i.setFirst(); !i.end(); ++i) {
       if (cmp(get(i), p.get(i))) { return false; }
     }

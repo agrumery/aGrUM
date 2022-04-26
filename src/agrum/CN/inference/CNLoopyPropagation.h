@@ -372,7 +372,6 @@ namespace gum {
       /** A pointer to it's IBayesNet used as a DAG. */
       const IBayesNet< GUM_SCALAR >* _bnet_;
 
-      // typedef const CredalNet< GUM_SCALAR > * (infE::*cnfunc) ();
       // cnfunc getCN = &infE::getCN;
       public:
       virtual void insertEvidenceFile(const std::string& path) {

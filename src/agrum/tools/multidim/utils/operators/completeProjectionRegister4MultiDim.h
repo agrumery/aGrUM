@@ -66,8 +66,8 @@ namespace gum {
   class CompleteProjectionRegister4MultiDim {
     public:
     /// the type of functions used by the register
-    typedef GUM_SCALAR (*CompleteProjectionPtr)(const MultiDimImplementation< GUM_SCALAR >*,
-                                                Instantiation* instantiation);
+    using CompleteProjectionPtr
+       = GUM_SCALAR (*)(const MultiDimImplementation< GUM_SCALAR >*, Instantiation* instantiation);
 
     // =========================================================================
     /// @name Accessors / Modifiers
@@ -186,7 +186,7 @@ namespace gum {
     /// @}
 
     /// The set of associations for a given projection type
-    typedef HashTable< std::string, CompleteProjectionPtr > CompleteProjectionSet;
+    using CompleteProjectionSet = HashTable< std::string, CompleteProjectionPtr >;
 
     /**
      * @brief A mapping from the types of MultiDimImplementations to

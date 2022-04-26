@@ -65,8 +65,8 @@ namespace gum {
     public:
     /// @brief Alias for gum::BinSearchTree iterators
     /// @{
-    typedef BinSearchTreeIterator< Val, Cmp, Node > iterator;
-    typedef BinSearchTreeIterator< Val, Cmp, Node > const_iterator;
+    using iterator       = BinSearchTreeIterator< Val, Cmp, Node >;
+    using const_iterator = BinSearchTreeIterator< Val, Cmp, Node >;
     /// @}
 
     // ============================================================================

@@ -61,9 +61,9 @@ namespace gum {
   class OperatorRegister4MultiDim {
     public:
     /// The type of functions used by the register
-    typedef MultiDimImplementation< GUM_SCALAR >* (*OperatorPtr)(
-       const MultiDimImplementation< GUM_SCALAR >*,
-       const MultiDimImplementation< GUM_SCALAR >*);
+    using OperatorPtr
+       = MultiDimImplementation< GUM_SCALAR >* (*)(const MultiDimImplementation< GUM_SCALAR >*,
+                                                   const MultiDimImplementation< GUM_SCALAR >*);
 
     // ========================================================================
     /// @name Accessors / Modifiers
@@ -200,7 +200,7 @@ namespace gum {
     /// @}
 
     /// The set of associations for a given operation type
-    typedef HashTable< std::pair< std::string, std::string >, OperatorPtr > OperatorSet;
+    using OperatorSet = HashTable< std::pair< std::string, std::string >, OperatorPtr >;
 
     /**
      * @brief A mapping from pairs of types of MultiDimImplementations to

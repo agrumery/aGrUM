@@ -77,7 +77,7 @@ namespace gum {
 
   class ArcGraphPart {
     public:
-    typedef ArcSetIterator ArcIterator;
+    using ArcIterator = ArcSetIterator;
 
     Signaler2< NodeId, NodeId > onArcAdded;     // onArcAdded(tail,head)
     Signaler2< NodeId, NodeId > onArcDeleted;   // onArcDeleted(tail,head)

@@ -49,21 +49,21 @@ namespace gum {
    * @brief
    * @ingroup fmdp_group
    *
-   * Abstract class for incrementaly learn a graphical representation of a
+   * Abstract class for incrementally learn a graphical representation of a
    * function.
    * Can handle both function of real values, and function explaining the
    * behaviour
-   * of a variable given set of other variables (as typically in conditionnal
+   * of a variable given set of other variables (as typically in conditional
    * probabilities)
    *
-   * Maintains two graph in memory, one which is incrementaly updated and the
+   * Maintains two graph in memory, one which is incrementally updated and the
    * other one
    * which is updated on demand and is usable by the outside.
    *
    */
   template < TESTNAME AttributeSelection, bool isScalar = false >
   class IncrementalGraphLearner: public IVisitableGraphLearner {
-    typedef typename ValueSelect< isScalar, double, Idx >::type ValueType;
+    using ValueType = ValueSelect< isScalar, double, Idx >::type;
 
     public:
     // ###################################################################

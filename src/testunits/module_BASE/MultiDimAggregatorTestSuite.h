@@ -379,7 +379,8 @@ namespace gum_tests {
       gum::aggregator::Amplitude< double > p;
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d << e);
       TS_ASSERT_EQUALS(p.toString(),
-                       "a:Labelized({0|1|2|3})=amplitude(b:Labelized({0|1|2|3}),c:Labelized({0|1|2|3}),d:Labelized({0|1|2|3}),e:Labelized({0|1|2|3}))");
+                       "a:Labelized({0|1|2|3})=amplitude(b:Labelized({0|1|2|3}),c:Labelized({0|1|2|"
+                       "3}),d:Labelized({0|1|2|3}),e:Labelized({0|1|2|3}))");
 
       gum::Instantiation i(p);
 

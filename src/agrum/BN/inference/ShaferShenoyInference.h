@@ -247,7 +247,7 @@ namespace gum {
     using _PotentialSet_        = Set< const Potential< GUM_SCALAR >* >;
     using _ScheduleMultiDimSet_ = Set< const IScheduleMultiDim* >;
 
-    typedef SetIteratorSafe< const Potential< GUM_SCALAR >* > _PotentialSetIterator_;
+    using _PotentialSetIterator_ = SetIteratorSafe< const Potential< GUM_SCALAR >* >;
 
 
     /// the type of relevant potential finding algorithm to be used

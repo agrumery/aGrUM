@@ -92,7 +92,7 @@ namespace gum {
       /// @{
 
       /// Code alias.
-      typedef typename PRMInference< GUM_SCALAR >::Chain Chain;
+      using Chain = typename PRMInference< GUM_SCALAR >::Chain;
 
       /// See PRMInference<GUM_SCALAR>::evidenceAdded_().
       virtual void evidenceAdded_(const Chain& chain);
@@ -109,12 +109,9 @@ namespace gum {
       /// @}
       private:
       /// Code alias
-      typedef Set< Potential< GUM_SCALAR >* > BucketSet;
-      /// Code alias
-      typedef typename Set< Potential< GUM_SCALAR >* >::iterator_safe BucketSetIterator;
-
-      /// Code alias
-      typedef typename Set< MultiDimArray< GUM_SCALAR >* >::iterator_safe ArraySetIterator;
+      using BucketSet         = Set< Potential< GUM_SCALAR >* >;
+      using BucketSetIterator = typename Set< Potential< GUM_SCALAR >* >::iterator_safe;
+      using ArraySetIterator  = typename Set< MultiDimArray< GUM_SCALAR >* >::iterator_safe;
 
       HashTable< const PRMClass< GUM_SCALAR >*, std::vector< NodeId >* > _elim_orders_;
 

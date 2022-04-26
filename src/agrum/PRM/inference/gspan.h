@@ -166,7 +166,7 @@ namespace gum {
       const std::vector< gspan::Pattern* >& patterns() const;
 
       /// Code alias.
-      typedef Set< Sequence< PRMInstance< GUM_SCALAR >* >* > MatchedInstances;
+      using MatchedInstances = Set< Sequence< PRMInstance< GUM_SCALAR >* >* >;
 
       /**
        * Returns a mapping between patterns and the sequence of instance in the

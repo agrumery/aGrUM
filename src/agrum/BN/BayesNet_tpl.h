@@ -58,14 +58,12 @@ namespace gum {
   template < typename GUM_SCALAR >
   NodeId
      build_node(gum::BayesNet< GUM_SCALAR >& bn, std::string node, gum::Size default_domain_size) {
-    auto v= fastVariable<GUM_SCALAR>(node,default_domain_size);
+    auto v = fastVariable< GUM_SCALAR >(node, default_domain_size);
 
     NodeId res;
     try {
-      res=bn.idFromName(v->name());
-    } catch (gum::NotFound&) {
-      res= bn.add(*v);
-    }
+      res = bn.idFromName(v->name());
+    } catch (gum::NotFound&) { res = bn.add(*v); }
     return res;
   }
 
@@ -185,8 +183,7 @@ namespace gum {
   INLINE NodeId BayesNet< GUM_SCALAR >::add(const std::string& fast_description,
                                             unsigned int       default_nbrmod) {
     auto v = fastVariable< GUM_SCALAR >(fast_description, default_nbrmod);
-    if (v->domainSize() < 2)
-      GUM_ERROR(OperationNotAllowed,v->name()<<" has a domain size <2")
+    if (v->domainSize() < 2) GUM_ERROR(OperationNotAllowed, v->name() << " has a domain size <2")
     return add(*v);
   }
 

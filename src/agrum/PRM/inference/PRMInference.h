@@ -51,18 +51,18 @@ namespace gum {
     class PRMInference {
       public:
       /// Code alias.
-      typedef std::pair< const PRMInstance< GUM_SCALAR >*, const PRMAttribute< GUM_SCALAR >* >
-         Chain;
+      using Chain
+         = std::pair< const PRMInstance< GUM_SCALAR >*, const PRMAttribute< GUM_SCALAR >* >;
 
       /// Code alias.
-      typedef NodeProperty< const Potential< GUM_SCALAR >* > EMap;
+      using EMap = NodeProperty< const Potential< GUM_SCALAR >* >;
 
       /// Code alias.
-      typedef typename NodeProperty< const Potential< GUM_SCALAR >* >::iterator_safe EMapIterator;
+      using EMapIterator = typename NodeProperty< const Potential< GUM_SCALAR >* >::iterator_safe;
 
       /// Code alias.
-      typedef typename NodeProperty< const Potential< GUM_SCALAR >* >::const_iterator_safe
-         EMapConstIterator;
+      using EMapConstIterator =
+         typename NodeProperty< const Potential< GUM_SCALAR >* >::const_iterator_safe;
 
       // ========================================================================
       /// @name Constructor & destructor.
@@ -218,11 +218,11 @@ namespace gum {
       /// @{
 
       /// Code alias.
-      typedef typename HashTable< const PRMInstance< GUM_SCALAR >*, EMap* >::iterator_safe
-         EvidenceIterator;
+      using EvidenceIterator =
+         typename HashTable< const PRMInstance< GUM_SCALAR >*, EMap* >::iterator_safe;
       /// Code alias.
-      typedef typename HashTable< const PRMInstance< GUM_SCALAR >*, EMap* >::const_iterator_safe
-         EvidenceConstIterator;
+      using EvidenceConstIterator =
+         typename HashTable< const PRMInstance< GUM_SCALAR >*, EMap* >::const_iterator_safe;
 
       /// Mapping of evidence over PRMInstance<GUM_SCALAR>'s nodes.
       HashTable< const PRMInstance< GUM_SCALAR >*, EMap* > _evidences_;

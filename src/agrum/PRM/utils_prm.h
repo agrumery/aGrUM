@@ -43,7 +43,7 @@ namespace gum {
   namespace prm {
 
     /// PRMType for real numbers
-    typedef float prm_float;
+    using prm_float = float;
 
     /// Decompose a string in a vector of strings using "." as separators.
     void decomposePath(const std::string& path, std::vector< std::string >& v);

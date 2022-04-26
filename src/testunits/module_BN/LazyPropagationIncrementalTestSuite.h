@@ -51,8 +51,8 @@ namespace gum_tests {
 
 
   class LazyPropagationIncrementalTestSuite: public CxxTest::TestSuite {
-    typedef std::unique_ptr< gum::Potential< double > > __Potential;
-    typedef gum::Set< const gum::Potential< double >* > __PotentialSet;
+    using __Potential    = std::unique_ptr< gum::Potential< double > >;
+    using __PotentialSet = gum::Set< const gum::Potential< double >* >;
 
     public:
     // the function used to combine two tables

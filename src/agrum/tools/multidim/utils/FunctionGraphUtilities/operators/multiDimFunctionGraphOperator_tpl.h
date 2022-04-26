@@ -383,8 +383,9 @@ namespace gum {
 
     const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* leaddg     = nullptr;
     NodeId                                                         leadNodeId = 0;
-    Idx leadVarPos = _rd_->variablesSequence().size();
-    typedef void (O4DGContext::*SetNodeFunction)(const NodeId&);
+    Idx leadVarPos        = _rd_->variablesSequence().size();
+    using SetNodeFunction = void (O4DGContext::*)(const NodeId&);
+
     SetNodeFunction leadFunction = nullptr;
 
     bool sameVar = false;

@@ -46,9 +46,8 @@ namespace gum {
     class ClassDependencyGraph {
       public:
       /// Association between a class element and it's holding class.
-      typedef std::pair< const PRMClassElementContainer< GUM_SCALAR >*,
-                         const PRMClassElement< GUM_SCALAR >* >
-         EltPair;
+      using EltPair = std::pair< const PRMClassElementContainer< GUM_SCALAR >*,
+                                 const PRMClassElement< GUM_SCALAR >* >;
 
       // ========================================================================
       /// @name Constructors and Destructor.
@@ -131,9 +130,8 @@ namespace gum {
       NodeProperty< EltPair* > _elt_map_;
 
       /// Code shortcut.
-      typedef HashTable< const PRMClassElementContainer< GUM_SCALAR >*,
-                         HashTable< const PRMClassElement< GUM_SCALAR >*, NodeId >* >
-         NodeMap;
+      using NodeMap = HashTable< const PRMClassElementContainer< GUM_SCALAR >*,
+                                 HashTable< const PRMClassElement< GUM_SCALAR >*, NodeId >* >;
 
       /// Map each Class to a HashTable mapping the Class's ClassElements to
       /// their

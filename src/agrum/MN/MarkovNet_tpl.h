@@ -57,14 +57,12 @@ namespace gum {
   template < typename GUM_SCALAR >
   NodeId
      build_node_for_MN(MarkovNet< GUM_SCALAR >& mn, std::string node, Size default_domain_size) {
-    auto v= fastVariable<GUM_SCALAR>(node,default_domain_size);
+    auto v = fastVariable< GUM_SCALAR >(node, default_domain_size);
 
     NodeId res;
     try {
-      res=mn.idFromName(v->name());
-    } catch (gum::NotFound&) {
-      res= mn.add(*v);
-    }
+      res = mn.idFromName(v->name());
+    } catch (gum::NotFound&) { res = mn.add(*v); }
     return res;
   }
 

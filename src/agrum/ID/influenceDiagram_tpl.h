@@ -40,10 +40,10 @@ namespace gum {
   NodeId build_node_for_ID(gum::InfluenceDiagram< GUM_SCALAR >& infdiag,
                            std::string                          node,
                            gum::Size                            default_domain_size) {
-    bool isUtil  = false;
-    bool isDeci  = false;
-    bool isChanc = false;
-    gum::Size default_ds=default_domain_size;
+    bool      isUtil     = false;
+    bool      isDeci     = false;
+    bool      isChanc    = false;
+    gum::Size default_ds = default_domain_size;
 
     switch (*(node.begin())) {
       case '*':
@@ -51,29 +51,28 @@ namespace gum {
         node.erase(0, 1);
         break;
       case '$':
-        isUtil = true;
-        default_ds=1;
+        isUtil     = true;
+        default_ds = 1;
         node.erase(0, 1);
         break;
       default:
         isChanc = true;
     }
-    auto v= fastVariable<GUM_SCALAR>(node,default_ds);
+    auto v = fastVariable< GUM_SCALAR >(node, default_ds);
 
     NodeId res;
     try {
       res = infdiag.idFromName(v->name());
     } catch (gum::NotFound&) {
       if (isChanc)
-        res=infdiag.addChanceNode(*v);
+        res = infdiag.addChanceNode(*v);
       else if (isDeci)
-        res=infdiag.addDecisionNode(*v);
+        res = infdiag.addDecisionNode(*v);
       else if (isUtil)
-        res=infdiag.addUtilityNode(*v);
+        res = infdiag.addUtilityNode(*v);
       else
         GUM_ERROR(FatalError,
                   "No type (chance, decision or utility) for the node '" << node << "'.")
-
     }
 
     return res;

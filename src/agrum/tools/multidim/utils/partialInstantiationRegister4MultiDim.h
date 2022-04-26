@@ -68,9 +68,10 @@ namespace gum {
   class PartialInstantiationRegister4MultiDim {
     public:
     /// The type of functions used by the register
-    typedef MultiDimImplementation< GUM_SCALAR >* (*PartialInstantiationPtr)(
-       const MultiDimImplementation< GUM_SCALAR >*,
-       const HashTable< const DiscreteVariable*, Idx >&);
+    using PartialInstantiationPtr
+       = MultiDimImplementation< GUM_SCALAR >* (*)(const MultiDimImplementation< GUM_SCALAR >*,
+                                                   const HashTable< const DiscreteVariable*,
+                                                                    Idx >&);
 
     // ========================================================================
     /// @name Accessors / Modifiers
@@ -191,7 +192,7 @@ namespace gum {
     /// @}
 
     /// The set of associations for a given partial instantiation type
-    typedef HashTable< std::string, PartialInstantiationPtr > PartialInstantiationSet;
+    using PartialInstantiationSet = HashTable< std::string, PartialInstantiationPtr >;
 
     /**
      * @brief A mapping from the types of MultiDimImplementations to partial

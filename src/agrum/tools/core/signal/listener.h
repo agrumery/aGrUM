@@ -72,7 +72,7 @@ namespace gum {
   class Listener {
     private:
     /// Alias for the list of signal senders.
-    typedef std::vector< __sig__::ISignaler* > Senders_list;
+    using Senders_list = std::vector< __sig__::ISignaler* >;
 
     public:
     /**

@@ -115,9 +115,9 @@ namespace gum {
       StructuredBayesBall& operator=(const StructuredBayesBall& source);
 
       /// Code alias
-      typedef HashTable< NodeId, std::pair< bool, bool > > MarkMap;
-      /// Code alias
-      typedef HashTable< const PRMInstance< GUM_SCALAR >*, MarkMap* > InstanceMap;
+      using MarkMap     = HashTable< NodeId, std::pair< bool, bool > >;
+      using InstanceMap = HashTable< const PRMInstance< GUM_SCALAR >*, MarkMap* >;
+
       /// Code alias
       std::pair< bool, bool >&
          _getMark_(InstanceMap& marks, const PRMInstance< GUM_SCALAR >* i, NodeId n);

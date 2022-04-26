@@ -196,7 +196,7 @@ namespace gum_tests {
     void testCNMonteCarloSamplingInferenceDStrong() {
       initDCNet();
 
-      typedef std::vector< double > exp;
+      using exp = std::vector< double >;
 
       gum::credal::CNMonteCarloSampling< double > mcs(*cn);
 
@@ -251,7 +251,7 @@ namespace gum_tests {
     // dynamic (dynaCheese) - repetitive indep
     void testCNMonteCarloSamplingInferenceDRep() {
       initDCNet();
-      typedef std::vector< double > exp;
+      using exp = std::vector< double >;
 
       gum::credal::CNMonteCarloSampling< double > mcs(*cn);
 

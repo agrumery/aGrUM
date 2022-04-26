@@ -711,7 +711,7 @@ namespace gum {
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::optFusion_() {
-      typedef std::vector< bool > dBN;
+      using dBN = std::vector< bool >;
 
       Size nsize = Size(workingSet_[0]->size());
 

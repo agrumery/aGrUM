@@ -37,11 +37,12 @@ namespace gum_tests {
 
   class ReferenceSlotTestSuite: public CxxTest::TestSuite {
     private:
-    typedef gum::prm::PRMReferenceSlot< double > PRMReferenceSlot;
-    ClassElementTestSuiteAbstract*               _classEltTestSuite_;
-    gum::prm::PRMClass< double >*                _A_;
-    gum::prm::PRMClass< double >*                _B_;
-    gum::prm::PRMType*                           _boolean_;
+    using PRMReferenceSlot = gum::prm::PRMReferenceSlot< double >;
+
+    ClassElementTestSuiteAbstract* _classEltTestSuite_;
+    gum::prm::PRMClass< double >*  _A_;
+    gum::prm::PRMClass< double >*  _B_;
+    gum::prm::PRMType*             _boolean_;
 
     public:
     void setUp() {

@@ -185,8 +185,8 @@ namespace gum {
       s << "Observed node elimination time: " << obs_time << std::endl;
       s << "Full inference time: " << full_time << std::endl;
       s << "#patterns: " << _gspan_->patterns().size() << std::endl;
-      Size                                                   count = 0;
-      typedef std::vector< gspan::Pattern* >::const_iterator Iter;
+      Size count = 0;
+      using Iter = std::vector< gspan::Pattern* >::const_iterator;
 
       for (Iter p = _gspan_->patterns().begin(); p != _gspan_->patterns().end(); ++p) {
         if (_gspan_->matches(**p).size()) {
@@ -210,7 +210,7 @@ namespace gum {
       mining_time = plopTimer.step();
       // Reducing each used pattern
       plopTimer.reset();
-      typedef std::vector< gspan::Pattern* >::const_iterator Iter;
+      using Iter = std::vector< gspan::Pattern* >::const_iterator;
 
       for (Iter p = _gspan_->patterns().begin(); p != _gspan_->patterns().end(); ++p)
         if (_gspan_->matches(**p).size()) _reducePattern_(*p);

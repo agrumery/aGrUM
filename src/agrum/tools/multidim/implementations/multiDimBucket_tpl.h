@@ -49,7 +49,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   MultiDimBucket< GUM_SCALAR >::~MultiDimBucket() {
     GUM_DESTRUCTOR(MultiDimBucket);
-    typedef Bijection< Instantiation*, Instantiation* >::iterator_safe BiIter;
+    using BiIter = Bijection< Instantiation*, Instantiation* >::iterator_safe;
 
     for (BiIter iter = _instantiations_.beginSafe(); iter != _instantiations_.endSafe(); ++iter) {
       delete iter.second();
@@ -434,9 +434,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   void MultiDimBucket< GUM_SCALAR >::_initializeBuffer_() {
     if (_bucket_) {
-      typedef Bijection< Instantiation*, Instantiation* >::iterator_safe BiIter;
-
-      for (BiIter iter = _instantiations_.beginSafe(); iter != _instantiations_.endSafe(); ++iter) {
+      for (auto iter = _instantiations_.beginSafe(); iter != _instantiations_.endSafe(); ++iter) {
         delete iter.second();
       }
 
@@ -466,9 +464,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   void MultiDimBucket< GUM_SCALAR >::_eraseBuffer_() {
     if (_bucket_) {
-      typedef Bijection< Instantiation*, Instantiation* >::iterator_safe BiIter;
-
-      for (BiIter iter = _instantiations_.beginSafe(); iter != _instantiations_.endSafe(); ++iter) {
+      for (auto iter = _instantiations_.beginSafe(); iter != _instantiations_.endSafe(); ++iter) {
         delete iter.second();
       }
 
@@ -525,9 +521,7 @@ namespace gum {
   INLINE void MultiDimBucket< GUM_SCALAR >::replace_(const DiscreteVariable* x,
                                                      const DiscreteVariable* y) {
     MultiDimImplementation< GUM_SCALAR >::replace_(x, y);
-    typedef Bijection< Instantiation*, Instantiation* >::iterator_safe Iter;
-
-    for (Iter iter = _instantiations_.beginSafe(); iter != _instantiations_.endSafe(); ++iter) {
+    for (auto iter = _instantiations_.beginSafe(); iter != _instantiations_.endSafe(); ++iter) {
       iter.first()->replace(*x, *y);
       iter.second()->replace(*x, *y);
     }

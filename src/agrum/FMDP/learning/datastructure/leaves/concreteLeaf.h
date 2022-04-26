@@ -56,7 +56,7 @@ namespace gum {
 
   template < TESTNAME AttributeSelection, bool isScalar >
   class ConcreteLeaf: public AbstractLeaf {
-    typedef typename ValueSelect< isScalar, double, Idx >::type ValueType;
+    using ValueType = ValueSelect< isScalar, double, Idx >::type;
 
     public:
     // ==========================================================================

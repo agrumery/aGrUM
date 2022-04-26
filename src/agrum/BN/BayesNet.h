@@ -207,7 +207,7 @@ namespace gum {
      *                        gum::BayesNet.
      * @throws NotAllowed if nbrmod<2
      */
-    NodeId add(const std::string& fast_description, unsigned int default_nbrmod=2);
+    NodeId add(const std::string& fast_description, unsigned int default_nbrmod = 2);
 
     /**
      * @brief Add a variable to the gum::BayesNet.

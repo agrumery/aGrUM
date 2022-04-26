@@ -277,9 +277,7 @@ namespace gum {
       using next_constraints = _StructuralRoot_;
 
       // determines the set of all constraints in the set (included inherited
-      // ones)
-      /** this produces an  _ConstraintSet_. This typedef is to be used
-       * internally. */
+      // ones). Rhis produces an  _ConstraintSet_. This type is to be used internally.
       using allConstraints = typename std::conditional<
          std::is_base_of< _StructuralRoot_, CONSTRAINT >::value,
          typename _ConcatConstraintSet_< CONSTRAINT, typename CONSTRAINT::allConstraints >::type,

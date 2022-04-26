@@ -73,7 +73,7 @@ namespace gum {
 
   class EdgeGraphPart {
     public:
-    typedef EdgeSetIterator EdgeIterator;
+    using EdgeIterator = EdgeSetIterator;
 
     Signaler2< NodeId, NodeId > onEdgeAdded;
     Signaler2< NodeId, NodeId > onEdgeDeleted;

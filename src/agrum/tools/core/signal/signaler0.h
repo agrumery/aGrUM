@@ -53,7 +53,7 @@ namespace gum {
 
     class BasicSignaler0: public ISignaler {
       protected:
-      typedef std::vector< IConnector0* > ConnectorList;
+      using ConnectorList = std::vector< IConnector0* >;
 
       BasicSignaler0();
 

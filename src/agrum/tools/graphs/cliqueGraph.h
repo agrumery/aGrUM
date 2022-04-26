@@ -297,11 +297,11 @@ namespace gum {
   /** @brief a junction tree is a clique graph satisfying the running
    * intersection
    * property and such that no clique is included into another one. */
-  typedef CliqueGraph JunctionTree;
+  using JunctionTree = CliqueGraph;
 
   /** @brief a join tree is a clique graph satisfying the running intersection
    * property (but some cliques may be included into others) */
-  typedef CliqueGraph JoinTree;
+  using JoinTree = CliqueGraph;
 
   /// for friendly displaying the content of clique graphs
 

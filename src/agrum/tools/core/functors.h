@@ -62,9 +62,9 @@ namespace gum {
 
     /// @}
 
-    typedef GUM_SCALAR first_argument_type;
-    typedef GUM_SCALAR second_argument_type;
-    typedef GUM_SCALAR result_type;
+    using first_argument_type  = GUM_SCALAR;
+    using second_argument_type = GUM_SCALAR;
+    using result_type          = GUM_SCALAR;
   };
 
   /**
@@ -85,9 +85,9 @@ namespace gum {
 
     /// @}
 
-    typedef GUM_SCALAR first_argument_type;
-    typedef GUM_SCALAR second_argument_type;
-    typedef GUM_SCALAR result_type;
+    using first_argument_type  = GUM_SCALAR;
+    using second_argument_type = GUM_SCALAR;
+    using result_type          = GUM_SCALAR;
   };
 
   /**
@@ -115,9 +115,9 @@ namespace gum {
 
     /// @}
 
-    typedef GUM_SCALAR first_argument_type;
-    typedef GUM_SCALAR second_argument_type;
-    typedef GUM_SCALAR result_type;
+    using first_argument_type  = GUM_SCALAR;
+    using second_argument_type = GUM_SCALAR;
+    using result_type          = GUM_SCALAR;
   };
 }   // namespace gum
 

@@ -515,13 +515,6 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE ClusteredLayerGenerator< GUM_SCALAR >::~ClusteredLayerGenerator() {
       GUM_DESTRUCTOR(ClusteredLayerGenerator);
-      // typedef HashTable<std::string, std::vector<std::string>*>::iterator
-      // Iter;
-      // for (Iter iter =  _cluster_map_.begin(); iter !=  _cluster_map_.end();
-      // ++iter)
-      // {
-      //   delete *iter;
-      // }
     }
 
     template < typename GUM_SCALAR >

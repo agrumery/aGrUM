@@ -36,11 +36,11 @@ namespace gum_tests {
 
   class PRMInterfaceTestSuite: public CxxTest::TestSuite {
     private:
-    typedef gum::prm::PRMInterface< double >       PRMInterface;
-    typedef gum::prm::PRMType                      PRMType;
-    typedef gum::prm::PRMScalarAttribute< double > PRMAttribute;
-    typedef gum::prm::PRMReferenceSlot< double >   Reference;
-    typedef gum::prm::PRMSlotChain< double >       PRMSlotChain;
+    using PRMInterface = gum::prm::PRMInterface< double >;
+    using PRMType      = gum::prm::PRMType;
+    using PRMAttribute = gum::prm::PRMScalarAttribute< double >;
+    using Reference    = gum::prm::PRMReferenceSlot< double >;
+    using PRMSlotChain = gum::prm::PRMSlotChain< double >;
 
     PRMType* _boolean_;
     PRMType* _state_;

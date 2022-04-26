@@ -55,20 +55,20 @@ namespace gum {
     class MultipleInferenceEngine: public InferenceEngine< GUM_SCALAR > {
       private:
       /** To easily access InferenceEngine< GUM_SCALAR > methods. */
-      typedef InferenceEngine< GUM_SCALAR > _infE_;
+      using _infE_ = InferenceEngine< GUM_SCALAR >;
 
-      typedef NodeProperty< std::vector< NodeId > >                    _cluster_;
-      typedef NodeProperty< std::vector< std::vector< GUM_SCALAR > > > _credalSet_;
-      typedef NodeProperty< std::vector< GUM_SCALAR > >                _margi_;
-      typedef NodeProperty< GUM_SCALAR >                               _expe_;
+      using _cluster_   = NodeProperty< std::vector< NodeId > >;
+      using _credalSet_ = NodeProperty< std::vector< std::vector< GUM_SCALAR > > >;
+      using _margi_     = NodeProperty< std::vector< GUM_SCALAR > >;
+      using _expe_      = NodeProperty< GUM_SCALAR >;
 
-      typedef IBayesNet< GUM_SCALAR >                 _bnet_;
-      typedef std::vector< _margi_ >                  _margis_;
-      typedef std::vector< _expe_ >                   _expes_;
-      typedef std::vector< _credalSet_ >              _credalSets_;
-      typedef std::vector< std::vector< _cluster_ > > _clusters_;
+      using _bnet_       = IBayesNet< GUM_SCALAR >;
+      using _margis_     = std::vector< _margi_ >;
+      using _expes_      = std::vector< _expe_ >;
+      using _credalSets_ = std::vector< _credalSet_ >;
+      using _clusters_   = std::vector< std::vector< _cluster_ > >;
 
-      typedef typename std::vector< HashTable< std::string, std::vector< GUM_SCALAR > > > _modals_;
+      using _modals_ = std::vector< HashTable< std::string, std::vector< GUM_SCALAR > > >;
 
       /**
        * @brief Ask for redundancy elimination of a node credal set of a calling

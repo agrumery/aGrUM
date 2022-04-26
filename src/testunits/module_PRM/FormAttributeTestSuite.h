@@ -37,11 +37,12 @@ namespace gum_tests {
 
   class FormAttributeTestSuite: public CxxTest::TestSuite {
     private:
-    typedef gum::prm::PRMFormAttribute< double > PRMAttribute;
-    ClassElementTestSuiteAbstract*               _classEltTestSuite_;
-    gum::prm::PRMType*                           _boolean_;
-    gum::prm::PRMType*                           _state_;
-    gum::prm::PRMClass< double >*                _class_;
+    using PRMAttribute = gum::prm::PRMFormAttribute< double >;
+
+    ClassElementTestSuiteAbstract* _classEltTestSuite_;
+    gum::prm::PRMType*             _boolean_;
+    gum::prm::PRMType*             _state_;
+    gum::prm::PRMClass< double >*  _class_;
 
     public:
     void setUp() {

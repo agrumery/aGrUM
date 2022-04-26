@@ -277,12 +277,12 @@ namespace gum {
       // ========================================================================
       /// @{
 
-      typedef typename NodeProperty< PRMClassElement< GUM_SCALAR >* >::iterator ClassEltIterator;
-      ClassEltIterator                                                          begin();
-      const ClassEltIterator&                                                   end();
+      using ClassEltIterator = typename NodeProperty< PRMClassElement< GUM_SCALAR >* >::iterator;
+      ClassEltIterator        begin();
+      const ClassEltIterator& end();
 
-      typedef typename NodeProperty< PRMClassElement< GUM_SCALAR >* >::const_iterator
-                                    const_ClassEltIterator;
+      using const_ClassEltIterator =
+         typename NodeProperty< PRMClassElement< GUM_SCALAR >* >::const_iterator;
       const_ClassEltIterator        begin() const;
       const const_ClassEltIterator& end() const;
 

@@ -41,13 +41,14 @@ namespace gum_tests {
 
   class PRMAggregateTestSuite: public CxxTest::TestSuite {
     private:
-    typedef gum::prm::PRMAggregate< double >                PRMAggregate;
-    typedef gum::prm::PRMAggregate< double >::AggregateType AggType;
-    ClassElementTestSuiteAbstract*                          _classEltTestSuite_;
-    gum::prm::PRMType*                                      _boolean_;
-    gum::prm::PRMType*                                      _state_;
-    std::vector< AggType >*                                 _types_;
-    gum::prm::PRMClass< double >*                           _class_;
+    using PRMAggregate = gum::prm::PRMAggregate< double >;
+    using AggType      = gum::prm::PRMAggregate< double >::AggregateType;
+
+    ClassElementTestSuiteAbstract* _classEltTestSuite_;
+    gum::prm::PRMType*             _boolean_;
+    gum::prm::PRMType*             _state_;
+    std::vector< AggType >*        _types_;
+    gum::prm::PRMClass< double >*  _class_;
 
     public:
     void setUp() {

@@ -53,8 +53,8 @@ namespace gum {
     template < LIST_DECL_CLASSES >
     class MAKE_NAME(BasicSignaler) : public ISignaler {
       protected:
-      typedef List< MAKE_NAME(IConnector) < LIST_CLASSES >* > ConnectorList;
-      typedef ListConstIteratorSafe< MAKE_NAME(IConnector) < LIST_CLASSES >* > ConnectorIterator;
+      using ConnectorList     = List< MAKE_NAME(IConnector) < LIST_CLASSES >* > ;
+      using ConnectorIterator = ListConstIteratorSafe< MAKE_NAME(IConnector) < LIST_CLASSES >* > ;
 
       MAKE_NAME(BasicSignaler)() {
         GUM_CONSTRUCTOR(MAKE_NAME(BasicSignaler));
@@ -177,8 +177,8 @@ namespace gum {
 
   template < LIST_DECL_CLASSES >
   class MAKE_NAME(Signaler) : public __sig__::MAKE_NAME(BasicSignaler)< LIST_CLASSES > {
-    typedef typename __sig__::MAKE_NAME(BasicSignaler)< LIST_CLASSES >::ConnectorIterator
-       ConnectorIterator;
+    using ConnectorIterator
+       = typename __sig__::MAKE_NAME(BasicSignaler)< LIST_CLASSES >::ConnectorIterator;
 
     public:
     using BasicSignaler = __sig__::MAKE_NAME(BasicSignaler)< LIST_CLASSES >;

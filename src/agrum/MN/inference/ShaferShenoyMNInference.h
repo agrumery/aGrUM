@@ -205,8 +205,8 @@ namespace gum {
 
 
     private:
-    typedef Set< const Potential< GUM_SCALAR >* >             _PotentialSet_;
-    typedef SetIteratorSafe< const Potential< GUM_SCALAR >* > _PotentialSetIterator_;
+    using _PotentialSet_         = Set< const Potential< GUM_SCALAR >* >;
+    using _PotentialSetIterator_ = SetIteratorSafe< const Potential< GUM_SCALAR >* >;
 
     /// the operator for performing the projections
     Potential< GUM_SCALAR > (*_projection_op_)(const Potential< GUM_SCALAR >&,

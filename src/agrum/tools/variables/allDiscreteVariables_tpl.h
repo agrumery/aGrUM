@@ -27,7 +27,7 @@
 namespace gum {
   template < typename GUM_SCALAR >
   std::unique_ptr< DiscreteVariable > fastVariable(const std::string& var_description,
-                                                         Size               default_domain_size) {
+                                                   Size               default_domain_size) {
     if (default_domain_size == 0) GUM_ERROR(InvalidArgument, "default_domain_size can not be 0")
 
     Size                       ds        = default_domain_size;
@@ -55,10 +55,13 @@ namespace gum {
           range_min = std::stol(args[0]);
           range_max = std::stol(args[1]);
 
-          if (range_max  < range_min)
-            GUM_ERROR(InvalidArgument, "Invalid range for variable " << var_description<< ": max<min")
-          if (range_max ==range_min && default_domain_size>1)
-            GUM_ERROR(InvalidArgument, "Invalid range for variable " << var_description<< ": max==min not allowed if default_domain_size>1")
+          if (range_max < range_min)
+            GUM_ERROR(InvalidArgument,
+                      "Invalid range for variable " << var_description << ": max<min")
+          if (range_max == range_min && default_domain_size > 1)
+            GUM_ERROR(InvalidArgument,
+                      "Invalid range for variable "
+                         << var_description << ": max==min not allowed if default_domain_size>1")
 
           ds = static_cast< Size >(1 + range_max - range_min);
         } else {   // n[3.14,5,10,12]

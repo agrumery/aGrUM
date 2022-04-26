@@ -57,16 +57,16 @@ namespace gum {
              TESTNAME    RewardAttributeSelection,
              LEARNERNAME LearnerSelection >
   class FMDPLearner: public ILearningStrategy {
-    typedef
+    using VariableLearnerType =
        typename LearnerSelect< LearnerSelection,
                                IMDDI< VariableAttributeSelection, false >,
-                               ITI< VariableAttributeSelection, false > >::type VariableLearnerType;
+                               ITI< VariableAttributeSelection, false > >::type;
 
-    typedef typename LearnerSelect< LearnerSelection,
-                                    IMDDI< RewardAttributeSelection, true >,
-                                    ITI< RewardAttributeSelection, true > >::type RewardLearnerType;
+    using RewardLearnerType = typename LearnerSelect< LearnerSelection,
+                                                      IMDDI< RewardAttributeSelection, true >,
+                                                      ITI< RewardAttributeSelection, true > >::type;
 
-    typedef HashTable< const DiscreteVariable*, VariableLearnerType* > VarLearnerTable;
+    using VarLearnerTable = HashTable< const DiscreteVariable*, VariableLearnerType* >;
 
     public:
     // ==========================================================================

@@ -77,8 +77,8 @@ namespace gum_tests {
     }
 
     void testConstuctor_With_Aproximation() {
-      typedef gum::GeneralizedCNFWriter< double, gum::LinearApproximationPolicy > typCNF;
-      typCNF*                                                                     writer = nullptr;
+      using typCNF   = gum::GeneralizedCNFWriter< double, gum::LinearApproximationPolicy >;
+      typCNF* writer = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(writer = new typCNF());
       writer->setEpsilon(0.2);
       writer->setLowLimit(0);

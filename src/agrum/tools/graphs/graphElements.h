@@ -94,7 +94,7 @@ namespace gum {
   /** \ingroup graph_group
    * Type for node ids
    */
-  typedef Size NodeId;
+  using NodeId = Size;
 
   /* ===========================================================================
    */
@@ -371,13 +371,13 @@ namespace gum {
    * @{
    * Some typdefs and define for shortcuts ...
    */
-  typedef Set< NodeId > NodeSet;
-  typedef Set< Edge >   EdgeSet;
-  typedef Set< Arc >    ArcSet;
+  using EdgeSet = Set< Edge >;
+  using NodeSet = Set< NodeId >;
+  using ArcSet  = Set< Arc >;
 
-  typedef ArcSet::const_iterator  ArcSetIterator;
-  typedef EdgeSet::const_iterator EdgeSetIterator;
-  typedef NodeSet::const_iterator NodeSetIterator;
+  using ArcSetIterator  = ArcSet::const_iterator;
+  using EdgeSetIterator = EdgeSet::const_iterator;
+  using NodeSetIterator = NodeSet::const_iterator;
   /** @} */
 
   /** \ingroup graph_group

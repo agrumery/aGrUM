@@ -726,18 +726,12 @@ namespace gum {
       // already called by the algorithm or the user
       if (dynamicExpMax_.size() > 0 && dynamicExpMin_.size() > 0) return;
 
-      // typedef typename std::map< int, GUM_SCALAR > innerMap;
       using innerMap = typename gum::HashTable< int, GUM_SCALAR >;
 
-      // typedef typename std::map< std::string, innerMap > outerMap;
       using outerMap = typename gum::HashTable< std::string, innerMap >;
 
-      // typedef typename std::map< std::string, std::vector< GUM_SCALAR > >
-      // mod;
 
-      // si non dynamique, sauver directement expectationMin_ et Max (revient au
-      // meme
-      // mais plus rapide)
+      // if non dynamic, directly save expectationMin_ et Max (same but faster)
       outerMap expectationsMin, expectationsMax;
 
       for (const auto& elt: expectationMin_) {

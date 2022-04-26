@@ -806,20 +806,20 @@ namespace gum_tests {
 
       TS_ASSERT_THROWS(i3 = bn.add("A", 5), gum::DuplicateLabel)
       // the variable "C",1 can be created but the BN does not allow to add such a variable
-      TS_ASSERT_THROWS(i3 = bn.add("C", 1),gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(i3 = bn.add("C", 1), gum::OperationNotAllowed)
       GUM_UNUSED(i3);
 
       TS_ASSERT_THROWS_NOTHING(bn.addArc(i1, i2))
       TS_ASSERT_EQUALS(bn.log10DomainSize(), std::log10(2.0 * 3.0))
 
       TS_ASSERT_THROWS_NOTHING(bn.add("X{top|middle|bottom}"))
-      TS_ASSERT_EQUALS(bn.variable("X").toString(),"X:Labelized({top|middle|bottom})")
+      TS_ASSERT_EQUALS(bn.variable("X").toString(), "X:Labelized({top|middle|bottom})")
 
       // a mono-label with default 4 is impossible
-      TS_ASSERT_THROWS(bn.add("Y[1,1]",4),gum::ArgumentError)
+      TS_ASSERT_THROWS(bn.add("Y[1,1]", 4), gum::ArgumentError)
 
       // a mono-label with default 1 is possible but can not be integrated in the model
-      TS_ASSERT_THROWS(bn.add("Y[1,1]",1),gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(bn.add("Y[1,1]", 1), gum::OperationNotAllowed)
     }
 
     void testSomeFunctions() {

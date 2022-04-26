@@ -312,7 +312,7 @@ namespace gum {
      *                        gum::InfluenceDiagram.
      * @throws NotAllowed if nbrmod<2
      */
-    NodeId add(const std::string& fast_description, unsigned int default_nbrmod=2);
+    NodeId add(const std::string& fast_description, unsigned int default_nbrmod = 2);
 
     /**
      * Add a chance variable from a description in "fast" syntax.
@@ -333,7 +333,7 @@ namespace gum {
      *                        gum::InfluenceDiagram.
      * @throws NotAllowed if nbrmod<2
      */
-    NodeId addChanceNode(const std::string& fast_description, unsigned int default_nbrmod=2);
+    NodeId addChanceNode(const std::string& fast_description, unsigned int default_nbrmod = 2);
 
     /**
      * Add a utility variable from a description in "fast" syntax with only one value.
@@ -346,26 +346,24 @@ namespace gum {
     NodeId addUtilityNode(const std::string& fast_description);
 
     /**
-    * Add a decision variable from a description in "fast" syntax.
-    *   - a : range variable from 0 to default_nbrmod-1
-    *   - a[5] : range variable from 0 to 5
-    *   - a[-3,5] : range variable from -3 to 5
-    *   - a[1,3.14,5,3] : discretized variable
-    *   - a{x|y|z} : labelized variable
-    *   - a{-3|0|3|100} : integer variable
-    *
-    * @param fast_description(: str) following "fast" syntax description
-    * @param default_nbrmod(: int) nbr of modality if fast_description do not indicate it.
-    *
-    * @throws DuplicateLabel Raised if variable.name() is already used in this
-    *                        gum::InfluenceDiagram.
-    * @throws NotAllowed if nbrmod<2
+     * Add a decision variable from a description in "fast" syntax.
+     *   - a : range variable from 0 to default_nbrmod-1
+     *   - a[5] : range variable from 0 to 5
+     *   - a[-3,5] : range variable from -3 to 5
+     *   - a[1,3.14,5,3] : discretized variable
+     *   - a{x|y|z} : labelized variable
+     *   - a{-3|0|3|100} : integer variable
+     *
+     * @param fast_description(: str) following "fast" syntax description
+     * @param default_nbrmod(: int) nbr of modality if fast_description do not indicate it.
+     *
+     * @throws DuplicateLabel Raised if variable.name() is already used in this
+     *                        gum::InfluenceDiagram.
+     * @throws NotAllowed if nbrmod<2
      */
-    NodeId addDecisionNode(const std::string& fast_description, unsigned int default_nbrmod=2);
+    NodeId addDecisionNode(const std::string& fast_description, unsigned int default_nbrmod = 2);
 
-    
-    
-    
+
     /**
      * Erase a Variable from the network and remove the variable from
      * all his children.

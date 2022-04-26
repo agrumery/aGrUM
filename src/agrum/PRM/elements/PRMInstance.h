@@ -307,7 +307,7 @@ namespace gum {
 
       /// Alias to iterate over the gum::prm::PRMAttribute<GUM_SCALAR> in this
       /// PRMInstance<GUM_SCALAR>.
-      typedef typename NodeProperty< PRMAttribute< GUM_SCALAR >* >::iterator iterator;
+      using iterator = typename NodeProperty< PRMAttribute< GUM_SCALAR >* >::iterator;
 
       /// Returns an iterator at the begining of the list of
       /// gum::prm::PRMAttribute<GUM_SCALAR> in
@@ -320,7 +320,7 @@ namespace gum {
 
       /// Alias to iterate over the gum::prm::PRMAttribute<GUM_SCALAR> in this
       /// PRMInstance<GUM_SCALAR>.
-      typedef typename NodeProperty< PRMAttribute< GUM_SCALAR >* >::const_iterator const_iterator;
+      using const_iterator = typename NodeProperty< PRMAttribute< GUM_SCALAR >* >::const_iterator;
 
       /// Returns an iterator at the beginning of the list of
       /// gum::prm::PRMAttribute<GUM_SCALAR> in
@@ -433,12 +433,10 @@ namespace gum {
        */
       RefConstIterator begin(NodeId id) const;
 
-      typedef typename NodeProperty<
-         std::vector< std::pair< PRMInstance< GUM_SCALAR >*, std::string > >* >::iterator
-         InvRefIterator;
-      typedef typename NodeProperty<
-         std::vector< std::pair< PRMInstance< GUM_SCALAR >*, std::string > >* >::const_iterator
-         InvRefConstIterator;
+      using InvRefIterator = typename NodeProperty<
+         std::vector< std::pair< PRMInstance< GUM_SCALAR >*, std::string > >* >::iterator;
+      using InvRefConstIterator = typename NodeProperty<
+         std::vector< std::pair< PRMInstance< GUM_SCALAR >*, std::string > >* >::const_iterator;
 
       InvRefIterator        beginInvRef();
       const InvRefIterator& endInvRef();
@@ -512,7 +510,7 @@ namespace gum {
       NodeProperty< Set< PRMInstance< GUM_SCALAR >* >* > _referenceMap_;
 
       /// Code alias.
-      typedef std::pair< PRMInstance< GUM_SCALAR >*, std::string > pair;
+      using pair = std::pair< PRMInstance< GUM_SCALAR >*, std::string >;
 
       /// The set of pair (instance, attribute) referring an attribute of
       /// this instance.

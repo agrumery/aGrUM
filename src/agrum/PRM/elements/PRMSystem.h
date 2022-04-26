@@ -201,7 +201,7 @@ namespace gum {
       /// @{
 
       /// Iterator over the PRMInstance of this PRMSystem.
-      typedef typename NodeProperty< PRMInstance< GUM_SCALAR >* >::iterator iterator;
+      using iterator = typename NodeProperty< PRMInstance< GUM_SCALAR >* >::iterator;
 
       /// Returns an iterator over the instances in this system.
       iterator begin();
@@ -211,7 +211,7 @@ namespace gum {
       const iterator& end();
 
       /// Constant Iterator over the PRMInstance of this PRMSystem.
-      typedef typename NodeProperty< PRMInstance< GUM_SCALAR >* >::const_iterator const_iterator;
+      using const_iterator = typename NodeProperty< PRMInstance< GUM_SCALAR >* >::const_iterator;
 
       /// Returns a constant iterator over the instances in this system.
       const_iterator begin() const;
@@ -221,7 +221,7 @@ namespace gum {
       const const_iterator& end() const;
 
       /// Iterator over the PRMInstance in an array in this PRMSystem.
-      typedef typename Sequence< PRMInstance< GUM_SCALAR >* >::iterator array_iterator;
+      using array_iterator = typename Sequence< PRMInstance< GUM_SCALAR >* >::iterator;
 
       /// Returns an iterator at the beginning of the Sequence of PRMInstance
       /// in the array named a;
@@ -234,7 +234,7 @@ namespace gum {
       const array_iterator& end(const std::string& a);
 
       /// Iterator over the PRMInstance in an array in this PRMSystem.
-      typedef typename Sequence< PRMInstance< GUM_SCALAR >* >::const_iterator const_array_iterator;
+      using const_array_iterator = typename Sequence< PRMInstance< GUM_SCALAR >* >::const_iterator;
 
       /// Returns an iterator at the beginning of the Sequence of PRMInstance
       /// in the array named a;
@@ -272,11 +272,10 @@ namespace gum {
       /// Mapping between a class and all it's PRMInstance in this system
       HashTable< PRMClass< GUM_SCALAR >*, Set< PRMInstance< GUM_SCALAR >* >* > instanceMap_;
 
-      /// Typedef of the pair of a Class<GUM_SCALAR> and the sequence of it's
+      /// Type for the pair of a Class<GUM_SCALAR> and the sequence of it's
       /// instantiation.
-      typedef std::pair< PRMClassElementContainer< GUM_SCALAR >*,
-                         Sequence< PRMInstance< GUM_SCALAR >* >* >
-         model_pair;
+      using model_pair = std::pair< PRMClassElementContainer< GUM_SCALAR >*,
+                                    Sequence< PRMInstance< GUM_SCALAR >* >* >;
 
       /// Mapping between arrays and their name. The first element of the pair
       /// is the type of the array.

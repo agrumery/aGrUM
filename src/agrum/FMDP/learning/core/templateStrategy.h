@@ -44,24 +44,24 @@ namespace gum {
   };
   template < TESTNAME, class A, class B, class C >
   struct TestSelect {
-    typedef A type;
+    using type = A;
   };
   template < class A, class B, class C >
   struct TestSelect< CHI2TEST, A, B, C > {
-    typedef B type;
+    using type = B;
   };
   template < class A, class B, class C >
   struct TestSelect< LEASTSQUARETEST, A, B, C > {
-    typedef C type;
+    using type = C;
   };
 
   template < bool, class A, class B >
   struct ValueSelect {
-    typedef A type;
+    using type = A;
   };
   template < class A, class B >
   struct ValueSelect< false, A, B > {
-    typedef B type;
+    using type = B;
   };
 
   enum LEARNERNAME {
@@ -70,11 +70,11 @@ namespace gum {
   };
   template < LEARNERNAME, class A, class B >
   struct LearnerSelect {
-    typedef A type;
+    using type = A;
   };
   template < class A, class B >
   struct LearnerSelect< ITILEARNER, A, B > {
-    typedef B type;
+    using type = B;
   };
 
 }   // end of namespace gum

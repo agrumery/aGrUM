@@ -49,7 +49,7 @@ namespace gum {
    *
    */
 
-  typedef HashTableConstIteratorSafe< LeafPair*, std::vector< Size > > pair_iterator;
+  using pair_iterator = HashTableConstIteratorSafe< LeafPair*, std::vector< Size > >;
 
 
   template < bool isInitial = false >

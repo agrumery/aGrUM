@@ -33,12 +33,14 @@ namespace gum {
    * Create a pointer on a Discrete Variable from a "fast" syntax
    *
    * @param var_description : the string in "fast" syntax
-   * @param default_domain_size  : the domain size if the description does not give this information. Note that if default_domain_size=1, a variable with a domain Size=1 is not an error.
+   * @param default_domain_size  : the domain size if the description does not give this
+   * information. Note that if default_domain_size=1, a variable with a domain Size=1 is not an
+   * error.
    * @return an unique_ptr on the new variable.
    */
   template < typename GUM_SCALAR >
   std::unique_ptr< DiscreteVariable > fastVariable(const std::string& var_description,
-                                                         Size default_domain_size = 2);
+                                                   Size               default_domain_size = 2);
 }   // namespace gum
 
 #include <agrum/tools/variables/allDiscreteVariables_tpl.h>

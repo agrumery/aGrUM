@@ -136,8 +136,9 @@ namespace gum {
     // ============================================================================
     /// The pool containing FixedAllocator
     // ============================================================================
-    typedef HashTable< Size, FixedAllocator* > _Pool_;
-    _Pool_                                     _pool_;
+    using _Pool_ = HashTable< Size, FixedAllocator* >;
+
+    _Pool_ _pool_;
 
     // ============================================================================
     /// The memory that a chunk allocates

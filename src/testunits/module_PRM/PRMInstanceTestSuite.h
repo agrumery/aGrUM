@@ -36,15 +36,16 @@ namespace gum_tests {
 
   class PRMInstanceTestSuite: public CxxTest::TestSuite {
     private:
-    typedef gum::prm::PRMInstance< double >        PRMInstance;
-    typedef gum::prm::PRMClass< double >           PRMClass;
-    typedef gum::prm::PRMInterface< double >       PRMInterface;
-    typedef gum::prm::PRMType                      PRMType;
-    typedef gum::prm::PRMScalarAttribute< double > PRMAttribute;
-    typedef gum::prm::PRMReferenceSlot< double >   Reference;
-    typedef gum::prm::PRMSlotChain< double >       PRMSlotChain;
-    typedef gum::prm::PRMObject                    PRMObject;
-    typedef gum::Bijection< const gum::DiscreteVariable*, const gum::DiscreteVariable* > Bijection;
+    using PRMInstance  = gum::prm::PRMInstance< double >;
+    using PRMClass     = gum::prm::PRMClass< double >;
+    using PRMInterface = gum::prm::PRMInterface< double >;
+    using PRMType      = gum::prm::PRMType;
+    using PRMAttribute = gum::prm::PRMScalarAttribute< double >;
+    using Reference    = gum::prm::PRMReferenceSlot< double >;
+    using PRMSlotChain = gum::prm::PRMSlotChain< double >;
+    using PRMObject    = gum::prm::PRMObject;
+
+    using Bijection = gum::Bijection< const gum::DiscreteVariable*, const gum::DiscreteVariable* >;
 
     PRMType*  _boolean_;
     PRMType*  _state_;

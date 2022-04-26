@@ -174,8 +174,8 @@ namespace gum {
     // ============================================================================
     /// Vector of  _Chunk_ objects
     // ============================================================================
-    typedef std::vector< _Chunk_ > _Chunks_;
-    _Chunks_                       _chunks_;
+    using _Chunks_ = std::vector< _Chunk_ >;
+    _Chunks_ _chunks_;
 
     // ============================================================================
     /// Last Chunk used for an allocation

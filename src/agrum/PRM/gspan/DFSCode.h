@@ -124,10 +124,10 @@ namespace gum {
         bool operator<=(const DFSCode& code) const;
 
         /// Code alias.
-        typedef std::vector< EdgeCode* >::iterator iterator;
+        using iterator = std::vector< EdgeCode* >::iterator;
 
         /// Code alias.
-        typedef std::vector< EdgeCode* >::const_iterator const_iterator;
+        using const_iterator = std::vector< EdgeCode* >::const_iterator;
       };
 
       /**

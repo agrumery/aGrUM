@@ -13,49 +13,47 @@ namespace gum_tests {
 
     static std::size_t nbDeallocations() noexcept { return deallocs; }
 
-    static bool hasMemoryLeak() noexcept {
-      return allocs != CountedAlloc::deallocs;
-    }
+    static bool hasMemoryLeak() noexcept { return allocs != CountedAlloc::deallocs; }
   };
 
   std::size_t CountedAlloc::allocs{0};
   std::size_t CountedAlloc::deallocs{0};
 
-  template <typename T>
-  class DebugCountedAlloc : public CountedAlloc {
+  template < typename T >
+  class DebugCountedAlloc: public CountedAlloc {
     public:
     using value_type = T;
 
-    template <typename _Tp1>
+    template < typename _Tp1 >
     struct rebind {
-      typedef DebugCountedAlloc<_Tp1> other;
+      using other = DebugCountedAlloc< _Tp1 >;
     };
 
     DebugCountedAlloc() noexcept {}
 
-    template <typename U>
-    DebugCountedAlloc( const DebugCountedAlloc<U>& ) noexcept {}
+    template < typename U >
+    DebugCountedAlloc(const DebugCountedAlloc< U >&) noexcept {}
 
-    bool operator== ( const DebugCountedAlloc<T>& ) const { return true; }
+    bool operator==(const DebugCountedAlloc< T >&) const { return true; }
 
-    bool operator!= ( const DebugCountedAlloc<T>& ) const { return false; }
+    bool operator!=(const DebugCountedAlloc< T >&) const { return false; }
 
-    T* allocate( std::size_t num ) {
+    T* allocate(std::size_t num) {
       CountedAlloc::allocs += num;
-      return static_cast<T*>(::operator new( num * sizeof( T ) ) );
+      return static_cast< T* >(::operator new(num * sizeof(T)));
     }
 
-    void deallocate( T* p, std::size_t num ) {
+    void deallocate(T* p, std::size_t num) {
       CountedAlloc::deallocs += num;
-      ::operator delete( p );
+      ::operator delete(p);
     }
 
-    template <typename... Args>
-    void construct( T* p, Args&&... args ) {
-      ::new ( (void*) p ) T( std::forward<Args>( args )... );
+    template < typename... Args >
+    void construct(T* p, Args&&... args) {
+      ::new ((void*)p) T(std::forward< Args >(args)...);
     }
 
-    void destroy( T* p ) { p->~T(); }
+    void destroy(T* p) { p->~T(); }
   };
 
 } /* namespace gum_tests */
