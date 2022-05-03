@@ -101,13 +101,13 @@ void Attribute::operator=(const Attribute& copy) {
 Attribute::Attribute(const Attribute& copy)
     : Base() {
   // Dropping the reference to the old object
-  this->m_impRC->DecRef();
+  if (m_impRC!=nullptr) m_impRC->DecRef();
 
   // Pointing to the new Object
   SetTiXmlPointer(copy.m_tiXmlPointer);
 
   // The internal tixml pointer changed in the above line
-  this->m_impRC->IncRef();
+  m_impRC->IncRef();
 }
 
 Attribute::~Attribute() { m_impRC->DecRef(); }
