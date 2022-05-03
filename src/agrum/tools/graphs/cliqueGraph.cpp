@@ -269,12 +269,12 @@ namespace gum {
     return stream.str();
   }
 
-  const std::string expandCliqueContent(const NodeSet& clique) {
+  const std::string expandCliqueContent(const NodeSet& clique, std::string delim = "-") {
     std::stringstream stream;
     bool              first = true;
 
     for (auto node: clique) {
-      if (!first) { stream << "-"; }
+      if (!first) { stream << delim; }
 
       stream << node;
       first = false;
@@ -295,6 +295,7 @@ namespace gum {
     stream << expandClique(n1, clique1) << "^" << expandClique(n2, clique2);
     return stream.str();
   }
+
 
   std::string CliqueGraph::toDot() const {
     std::stringstream stream;
@@ -334,6 +335,41 @@ namespace gum {
                                 clique(edge.second()))
              << "\"--\"" << expandClique(edge.second(), clique(edge.second())) << "\";"
              << std::endl;
+
+    stream << "}" << std::endl;
+
+    return stream.str();
+  }
+
+  std::string CliqueGraph::mapToDot(double scaleClique, double scaleSep, double lenEdge) const {
+    std::stringstream stream;
+    stream << "graph {" << std::endl;
+    stream << "  layout=neato;" << std::endl << std::endl;
+    stream << "  node [shape=point,style=filled, fillcolor =burlywood];" << std::endl;
+    stream << "  edge [len=" << lenEdge << "];" << std::endl << std::endl;
+
+    // cliques as nodes
+    for (auto node: nodes()) {
+      const auto& clik = clique(node);
+      stream << "  " << node << " [tooltip=\"" << expandCliqueContent(clik, "\\n")
+             << "\", width=" << scaleClique * clik.size() << "];" << std::endl;
+    }
+    stream << std::endl;
+    stream << "  node [shape=square,style=filled, fillcolor =palegreen,label=\"\"];" << std::endl
+           << std::endl;
+
+    // separator as nodes and edges
+    for (const auto& edge: edges()) {
+      // the separator as node
+      const auto sep = clique(edge.first()) * clique(edge.second());
+      stream << "  \"" << edge.first() << "~" << edge.second() << "\" [tooltip=\""
+             << expandCliqueContent(sep, "\\n") << "\""
+             << ", width=" << scaleSep * sep.size() << "];" << std::endl;
+      // the edges
+      stream << "  \"" << edge.first() << "\"--\"" << edge.first() << "~" << edge.second()
+             << "\"--\"" << edge.second() << "\";" << std::endl
+             << std::endl;
+    }
 
     stream << "}" << std::endl;
 
