@@ -43,6 +43,7 @@ set(SOURCE_FILES ${AGRUM_FILES})
 ####################################################################
 ## TARGET library
 add_library(${LIBAGRUM} ${AGRUM_FILES})
+target_compile_features(${LIBAGRUM} PUBLIC cxx_std_20)
 set_target_properties (${LIBAGRUM} PROPERTIES POSITION_INDEPENDENT_CODE ON) 
 set_target_properties (${LIBAGRUM} PROPERTIES DEBUG_POSTFIX "-dbg")
 set_target_properties(${LIBAGRUM} PROPERTIES VERSION ${AGRUM_VERSION} SOVERSION ${AGRUM_VERSION_MAJOR})
