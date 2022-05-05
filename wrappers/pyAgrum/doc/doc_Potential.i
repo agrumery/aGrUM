@@ -89,7 +89,7 @@ bool
 "
 Returns
 -------
-double
+float
   the entropy of the potential
 "
 
@@ -182,7 +182,7 @@ i : pyAgrum.Instantiation
 
 Returns
 -------
-double
+float
   the value in the Potential at the position given by the instantiation
 "
 
@@ -337,7 +337,7 @@ pyAgrum.InvalidArgument
 "
 Returns
 -------
-Tuple[Dict[str,int],double]
+Tuple[Dict[str,int],float]
   the list of positions of the max and the max of all elements in the Potential
 "
 
@@ -345,7 +345,7 @@ Tuple[Dict[str,int],double]
 "
 Returns
 -------
-double
+float
   the maximum of all elements in the Potential
 "
 
@@ -353,7 +353,7 @@ double
 "
 Returns
 -------
-double
+float
   the maximum of non one elements in the Potential
 
 Raises
@@ -366,7 +366,7 @@ pyAgrum.NotFound
 "
 Returns
 -------
-Tuple[Dict[str,int],double]
+Tuple[Dict[str,int],float]
   the list of positions of the min and the min of all elements in the Potential
 "
 
@@ -374,7 +374,7 @@ Tuple[Dict[str,int],double]
 "
 Returns
 -------
-double
+float
   the min of all elements in the Potential
 "
 
@@ -382,7 +382,7 @@ double
 "
 Returns
 -------
-double
+float
   the min of non zero elements in the Potential
 
 Raises
@@ -455,7 +455,7 @@ pyAgrum.NotFound
 "
 Returns
 -------
-double
+float
   the product of all elements in the Potential
 "
 
@@ -515,7 +515,7 @@ Create a new potential multiplied by v.
 
 Parameters
 ----------
-v : double
+v : float
   a multiplier
 
 Returns
@@ -531,7 +531,7 @@ Parameters
 ----------
 i : pyAgrum.Instantiation
   The Instantiation to be changed
-value : double
+value : float
   The new value of the Instantiation
 "
 
@@ -553,7 +553,7 @@ When the Potential contains 0 or negative values, no exception are raised but `-
 "
 Returns
 -------
-double :
+float :
   the sum of all elements in the Potential
 "
 
@@ -563,7 +563,7 @@ Create a new potential added with v.
 
 Parameters
 ----------
-v : double
+v : float
   The value to be added
 
 Returns

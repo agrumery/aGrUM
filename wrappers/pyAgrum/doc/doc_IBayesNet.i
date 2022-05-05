@@ -22,7 +22,7 @@ i : pyAgrum.instantiation
 
 Returns
 -------
-double
+float
 	a parameter of the joint probability for the BayesNet
 
 Warnings
@@ -39,7 +39,7 @@ i : pyAgrum.instantiation
 
 Returns
 -------
-double
+float
 	a parameter of the log joint probability for the BayesNet
 
 Warnings
@@ -51,7 +51,7 @@ a variable not present in the instantiation is assumed to be instantiated to 0
 "
 Returns
 -------
-double
+float
 	The biggest value (not equal to 1) in the CPTs of the BayesNet
 "
 
@@ -59,7 +59,7 @@ double
 "
 Returns
 -------
-double
+float
     the biggest value in the CPTs of the BayesNet
 "
 
@@ -75,7 +75,7 @@ int
 "
 Returns
 -------
-double
+float
     the smallest value (not equal to 0) in the CPTs of the IBayesNet
 "
 
@@ -83,7 +83,7 @@ double
 "
 Returns
 -------
-double
+float
     the smallest value in the CPTs of the IBayesNet
 "
 

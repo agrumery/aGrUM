@@ -65,7 +65,7 @@ Indicates if we use EM for parameter learning.
 
 Parameters
 ----------
-epsilon : double
+epsilon : float
 	if epsilon=0.0 then EM is not used
 	if epsilon>0 then EM is used and stops when the sum of the cumulative squared error on parameters is les than epsilon.
 "
@@ -147,7 +147,7 @@ Use the apriori smoothing.
 
 Parameters
 ----------
-weight : double
+weight : float
         pass in argument a weight if you wish to assign a weight to the smoothing, else the current weight of the learner will be used.
 "
 
@@ -202,7 +202,7 @@ values.
 
 Parameters
 ----------
-weight : double
+weight : float
 	the apriori weight
 "
 
@@ -403,7 +403,7 @@ Set the database weight which is given as an equivalent sample size.
 
 Parameters
 ----------
-weight : double
+weight : float
 	the database weight
 "
 
@@ -467,7 +467,7 @@ knowing : List[str]
 
 Returns
 -------
-double
+float
 	the log-likelihood (base 2)
 "
 

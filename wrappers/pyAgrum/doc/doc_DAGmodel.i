@@ -7,7 +7,7 @@ Abstract class used by IBayesNet and InfluenceDiagram.
 "
 Returns
 -------
-double
+float
 	The log10 domain size of the joint probability for the model.
 "
 

@@ -154,7 +154,7 @@ Parameters
 ----------
 variable : pyAgrum.DiscreteVariable
 	The variable added by copy
-externalWeight : double
+externalWeight : float
 	the added external weight
 id : int
 	The proposed id for the variable.
@@ -239,7 +239,7 @@ Parameters
 ----------
 variable : pyAgrum.DiscreteVariable
 	The variable added by copy
-externalWeight : double
+externalWeight : float
 	the added external weight
 id : int
 	The proposed id for the variable.
@@ -267,7 +267,7 @@ Parameters
 ----------
 variable : pyAgrum.DiscreteVariable
 	The variable added by copy
-externalWeight : double
+externalWeight : float
 	the added external weight
 id : int
 	The proposed id for the variable.
@@ -295,7 +295,7 @@ Parameters
 ----------
 variable : pyAgrum.DiscreteVariable
 	The variable added by copy
-externalWeight : double
+externalWeight : float
 	the added external weight
 id : int
 	The proposed id for the variable.
@@ -323,7 +323,7 @@ Parameters
 ----------
 variable : pyAgrum.DiscreteVariable
 	The variable added by copy
-externalWeight : double
+externalWeight : float
 	the added external weight
 id : int
 	The proposed id for the variable.
@@ -374,7 +374,7 @@ head :
 	a variable's name (str)
 tail :
 	a variable's name (str)
-causalWeight : double
+causalWeight : float
 	the added causal weight
 
 Raises

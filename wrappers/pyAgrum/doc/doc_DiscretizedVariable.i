@@ -46,7 +46,7 @@ pyAgrum.DiscretizedVariable
 "
 Parameters
 ----------
-aTick : double
+aTick : float
 	the Tick to be added
 
 Returns
@@ -62,14 +62,14 @@ pyAgrum.DefaultInLabel
 
 %feature("docstring") gum::DiscretizedVariable::eraseTicks
 "
-erase all the Ticks 
+erase all the Ticks
 "
 
 %feature("docstring") gum::DiscretizedVariable::isTick
 "
 Parameters
 ----------
-aTick : double
+aTick : float
 	the Tick to be tested
 
 Returns
@@ -89,7 +89,7 @@ i : int
 
 Returns
 -------
-aTick : double
+aTick : float
 	the index-th Tick
 
 Raises

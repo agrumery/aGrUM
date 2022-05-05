@@ -18,7 +18,7 @@ Rate of true postive over labelized edges.
 
 Returns
 -------
-double
+float
 	the precision of the tested graph skeleton
 "
 
@@ -28,7 +28,7 @@ Rate of true postive over labelized edges.
 
 Returns
 -------
-double
+float
 	the recall of the tested graph skeleton
 "
 
@@ -38,7 +38,7 @@ Harmonic mean between recall and precision.
 
 Returns
 -------
-double
+float
 	the tarmonic mean of the tested graph skeleton
 "
 
@@ -48,7 +48,7 @@ Rate of true postive over postively labelized arcs/edges.
 
 Returns
 -------
-double
+float
 	the precision of the tested graph
 "
 
@@ -58,7 +58,7 @@ Rate of true postive over labelized arcs/edges.
 
 Returns
 -------
-double
+float
 	the recall of the tested graph
 "
 
@@ -68,6 +68,6 @@ Harmonic mean between recall and precision.
 
 Returns
 -------
-double
+float
 	the harmonic mean of the tested graph
 "

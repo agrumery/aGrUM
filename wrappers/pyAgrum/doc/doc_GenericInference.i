@@ -23,7 +23,7 @@ nodeName : str
 
 Returns
 -------
-double
+float
   the computed Shanon's entropy of a node given the observation
 "
 %feature("docstring") gum::classname::I
@@ -37,7 +37,7 @@ Y : int or str
 
    Returns
 -------
-double
+float
    the Mutual Information of X and Y given the observation
 "
 
@@ -52,7 +52,7 @@ Y : int or str
 
    Returns
 -------
-double
+float
    variation of information between X and Y
 "
 
@@ -279,7 +279,7 @@ pyAgrum.Exception
 "
 Returns
 -------
-double
+float
   the probability of evidence
 "
 
@@ -602,7 +602,7 @@ UndefinedElement
 "
 Parameters
 ----------
-vlbpsize : double
+vlbpsize : float
   the size of the virtual LBP
 "
 
@@ -650,15 +650,15 @@ pyAgrum.InvalidArgument
 
 %enddef
 
-ADD_GENERIC_INFERENCE_DOC(LazyPropagation<double>)
-ADD_GENERIC_INFERENCE_DOC(ShaferShenoyInference<double>)
-ADD_GENERIC_INFERENCE_DOC(VariableElimination<double>)
-ADD_GENERIC_INFERENCE_DOC(GibbsSampling<double>)
-ADD_GENERIC_INFERENCE_DOC(ImportanceSampling<double>)
-ADD_GENERIC_INFERENCE_DOC(WeightedSampling<double>)
-ADD_GENERIC_INFERENCE_DOC(MonteCarloSampling<double>)
-ADD_GENERIC_INFERENCE_DOC(LoopyBeliefPropagation<double>)
-ADD_GENERIC_INFERENCE_DOC(LoopySamplingInference<double,gum::GibbsSampling>)
-ADD_GENERIC_INFERENCE_DOC(LoopySamplingInference<double,gum::ImportanceSampling>)
-ADD_GENERIC_INFERENCE_DOC(LoopySamplingInference<double,gum::WeightedSampling>)
-ADD_GENERIC_INFERENCE_DOC(LoopySamplingInference<double,gum::MonteCarloSampling>)
+ADD_GENERIC_INFERENCE_DOC(LazyPropagation<float>)
+ADD_GENERIC_INFERENCE_DOC(ShaferShenoyInference<float>)
+ADD_GENERIC_INFERENCE_DOC(VariableElimination<float>)
+ADD_GENERIC_INFERENCE_DOC(GibbsSampling<float>)
+ADD_GENERIC_INFERENCE_DOC(ImportanceSampling<float>)
+ADD_GENERIC_INFERENCE_DOC(WeightedSampling<float>)
+ADD_GENERIC_INFERENCE_DOC(MonteCarloSampling<float>)
+ADD_GENERIC_INFERENCE_DOC(LoopyBeliefPropagation<float>)
+ADD_GENERIC_INFERENCE_DOC(LoopySamplingInference<float,gum::GibbsSampling>)
+ADD_GENERIC_INFERENCE_DOC(LoopySamplingInference<float,gum::ImportanceSampling>)
+ADD_GENERIC_INFERENCE_DOC(LoopySamplingInference<float,gum::WeightedSampling>)
+ADD_GENERIC_INFERENCE_DOC(LoopySamplingInference<float,gum::MonteCarloSampling>)

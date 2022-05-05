@@ -10,15 +10,15 @@ int
 "
 Returns
 -------
-double
-	get the current running time in second (double)
+float
+	get the current running time in second (float)
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::epsilon
 "
 Returns
 -------
-double
+float
 	the value of epsilon
 "
 
@@ -47,7 +47,7 @@ int
 "
 Returns
 -------
-double
+float
 	the timeout(in seconds)
 "
 
@@ -63,7 +63,7 @@ str
 "
 Returns
 -------
-double
+float
 	the value of the minimal epsilon rate
 "
 
@@ -100,7 +100,7 @@ b : int
 "
 Parameters
 ----------
-eps : double
+eps : float
 	the epsilon we want to use
 
 Raises
@@ -127,7 +127,7 @@ pyAgrum.OutOfBounds
 "
 Parameters
 ----------
-tiemout : double
+tiemout : float
 	stopping criterion on timeout (in seconds)
 
 Raises
@@ -140,7 +140,7 @@ pyAgrum.OutOfBounds
 "
 Parameters
 ----------
-rate : double
+rate : float
 	the minimal epsilon rate
 "
 

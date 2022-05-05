@@ -1,4 +1,4 @@
-%feature("docstring") gum::LoopySamplingInference<double,gum::GibbsSampling>
+%feature("docstring") gum::LoopySamplingInference<float,gum::GibbsSampling>
 "
 Class used for inferences using a loopy version of Gibbs sampling.
 

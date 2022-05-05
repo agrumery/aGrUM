@@ -211,6 +211,7 @@ ADD_MIXED_METHOD_TO_GRAPHCLASS(gum::MixedGraph);
       return m.sub(nameFromId,self.toDot())
     }
 };
+%rename ( __map_str__ ) gum::CliqueGraph::mapToDot const;
 %ignore gum::CliqueGraph::clique;
 %ignore gum::CliqueGraph::separator;
 %ignore gum::CliqueGraph::addNodeWithId;

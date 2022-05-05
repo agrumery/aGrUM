@@ -119,7 +119,7 @@ Continue the approximation scheme.
 
 Parameters
 ----------
-error : double
+error : float
 "
 
 %feature("docstring") gum::ApproximationScheme::updateApproximationScheme

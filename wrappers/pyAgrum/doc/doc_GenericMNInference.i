@@ -23,7 +23,7 @@ nodeName : str
 
 Returns
 -------
-double
+float
   the Shanon's entropy of a node given the observation
 "
 
@@ -38,7 +38,7 @@ Y : int or str
 
 Returns
 -------
-double
+float
   the Mutual Information of X and Y given the observation
 "
 
@@ -53,7 +53,7 @@ Y : int or str
 
 Returns
 -------
-double
+float
   variation of information between X and Y
 "
 
@@ -280,7 +280,7 @@ pyAgrum.Exception
 "
 Returns
 -------
-double
+float
   the probability of evidence
 "
 
@@ -605,7 +605,7 @@ UndefinedElement
 "
 Parameters
 ----------
-vlbpsize : double
+vlbpsize : float
   the size of the virtual LBP
 "
 
@@ -653,4 +653,4 @@ pyAgrum.InvalidArgument
 
 %enddef
 
-ADD_GENERIC_MNINFERENCE_DOC(ShaferShenoyMNInference<double>)
+ADD_GENERIC_MNINFERENCE_DOC(ShaferShenoyMNInference<float>)

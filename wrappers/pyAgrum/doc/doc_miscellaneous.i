@@ -12,7 +12,7 @@ seed : int
 "
 Returns
 -------
-double
+float
     a random number between 0 and 1 included (i.e. a proba).
 "
 

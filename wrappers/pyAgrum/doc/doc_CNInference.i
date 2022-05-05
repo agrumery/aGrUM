@@ -10,7 +10,7 @@ varName : str
 
 Returns
 -------
-double
+float
     a constant reference to the variable upper expectation over all time steps.
 "
 
@@ -25,7 +25,7 @@ varName : str
 
 Returns
 -------
-double
+float
     a constant reference to the variable lower expectation over all time steps.
 "
 
@@ -132,5 +132,5 @@ int
 "
 %enddef
 
-ADD_CNINFERENCE_DOC(CNMonteCarloSampling<double>)
-ADD_CNINFERENCE_DOC(CNLoopyPropagation<double>)
+ADD_CNINFERENCE_DOC(CNMonteCarloSampling<float>)
+ADD_CNINFERENCE_DOC(CNLoopyPropagation<float>)

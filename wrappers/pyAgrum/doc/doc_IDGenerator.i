@@ -14,11 +14,11 @@ Parameters
 ----------
 nbrNodes : int
 	the number of node
-arcDensity : double
+arcDensity : float
 	the density of arc (1 for a complete graph)
-chanceNodeDensity : double
+chanceNodeDensity : float
 	the density of chance node
-utilityNodeDensity : double
+utilityNodeDensity : float
 	the density of utility node
 max_modality : int
 	the maximum value for modalities

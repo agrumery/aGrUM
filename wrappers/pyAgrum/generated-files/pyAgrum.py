@@ -5110,6 +5110,9 @@ class CliqueGraph(UndiGraph):
         """
         return _pyAgrum.CliqueGraph_toDot(self)
 
+    def __map_str__(self, *args) -> str:
+        return _pyAgrum.CliqueGraph___map_str__(self, *args)
+
     def __ne__(self, _from: "CliqueGraph") -> bool:
         return _pyAgrum.CliqueGraph___ne__(self, _from)
 
@@ -7168,7 +7171,7 @@ class DiscretizedVariable(IDiscretizedVariable):
     def eraseTicks(self) -> None:
         r"""
 
-        erase all the Ticks 
+        erase all the Ticks
 
         """
         return _pyAgrum.DiscretizedVariable_eraseTicks(self)
@@ -11503,25 +11506,9 @@ class ShaferShenoyMNInference(object):
         return _pyAgrum.ShaferShenoyMNInference_setTriangulation(self, new_triangulation)
 
     def joinTree(self) -> "pyAgrum.CliqueGraph":
-        r"""
-
-        Returns
-        -------
-        pyAgrum.CliqueGraph
-          the current join tree used
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_joinTree(self)
 
     def junctionTree(self) -> "pyAgrum.JunctionTree":
-        r"""
-
-        Returns
-        -------
-        pyAgrum.CliqueGraph
-          the current junction tree
-
-        """
         val = _pyAgrum.ShaferShenoyMNInference_junctionTree(self)
 
         val._engine=self
@@ -11531,14 +11518,6 @@ class ShaferShenoyMNInference(object):
 
 
     def evidenceProbability(self) -> float:
-        r"""
-
-        Returns
-        -------
-        float
-          the probability of evidence
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_evidenceProbability(self)
 
     def setEvidence(self, evidces):
@@ -11624,606 +11603,111 @@ class ShaferShenoyMNInference(object):
 
 
     def hardEvidenceNodes(self) -> object:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with hard evidence
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_hardEvidenceNodes(self)
 
     def softEvidenceNodes(self) -> object:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with soft evidence
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_softEvidenceNodes(self)
 
     def targets(self) -> object:
-        r"""
-
-        Returns
-        -------
-        list
-          the list of marginal targets
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_targets(self)
 
     def evidenceImpact(self, target: object, evs: object) -> "pyAgrum.Potential":
-        r"""
-
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
-
-        Parameters
-        ----------
-        target : set
-          a set of targets ids or names.
-        evs : set
-          a set of nodes ids or names.
-
-        Warnings
-        --------
-        if some evs are d-separated, they are not included in the Potential.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_evidenceImpact(self, target, evs)
 
     def jointMutualInformation(self, targets: object) -> float:
         return _pyAgrum.ShaferShenoyMNInference_jointMutualInformation(self, targets)
 
     def jointPosterior(self, targets: object) -> "pyAgrum.Potential":
-        r"""
-
-        Compute the joint posterior of a set of nodes.
-
-        Parameters
-        ----------
-        targets :
-          the list of nodes whose posterior joint probability is wanted
-
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a const ref to the posterior joint probability of the set of nodes.
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If an element of nodes is not in targets
-
-
-        Warnings
-        --------
-        - The order of the variables given by the targets here or when the jointTarget is declared can not be assumed to be used by the Potential.
-        - The nodes with hard evidence are removed fom the targets.
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_jointPosterior(self, targets)
 
     def addJointTarget(self, targets: object) -> None:
-        r"""
-
-        Add a list of nodes as a new joint target. As a collateral effect, every node is added as a marginal target.
-
-        Parameters
-        ----------
-        list
-          a list of names of nodes
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If some node(s) do not belong to the Bayesian network
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_addJointTarget(self, targets)
 
     def eraseJointTarget(self, targets: object) -> None:
-        r"""
-
-        Remove, if existing, the joint target.
-
-        Parameters
-        ----------
-        list
-          a list of names or Ids of nodes
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If one of the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_eraseJointTarget(self, targets)
 
     def isJointTarget(self, targets: object) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        list
-          a list of nodes ids or names.
-
-        Returns
-        -------
-        bool
-          True if target is a joint target.
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_isJointTarget(self, targets)
 
     def jointTargets(self) -> object:
-        r"""
-
-        Returns
-        -------
-        list
-          the list of target sets
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_jointTargets(self)
 
     def makeInference(self) -> None:
-        r"""
-
-        Perform the heavy computations needed to compute the targets' posteriors
-
-        In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
-        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages.
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_makeInference(self)
 
     def addEvidence(self, *args) -> None:
-        r"""
-
-        Adds a new evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val :
-          (int) a node value
-        val :
-          (str) the label of the node value
-        vals : list
-          a list of values
-
-        Raises
-        ------
-        pyAgrum.InvalidArgument
-          If the node already has an evidence
-        pyAgrum.InvalidArgument
-          If val is not a value for the node
-        pyAgrum.InvalidArgument
-          If the size of vals is different from the domain side of the node
-        pyAgrum.FatalError
-          If vals is a vector of 0s
-        pyAgrum.UndefinedElement
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_addEvidence(self, *args)
 
     def chgEvidence(self, *args) -> None:
-        r"""
-
-        Change the value of an already existing evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val :
-          (int) a node value
-        val :
-          (str) the label of the node value
-        vals : list
-          a list of values
-
-        Raises
-        ------
-        pyAgrum.InvalidArgument
-          If the node does not already have an evidence
-        pyAgrum.InvalidArgument
-          If val is not a value for the node
-        pyAgrum.InvalidArgument
-          If the size of vals is different from the domain side of the node
-        pyAgrum.FatalError
-          If vals is a vector of 0s
-        pyAgrum.UndefinedElement
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_chgEvidence(self, *args)
 
     def hasEvidence(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if some node(s) (or the one in parameters) have received evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_hasEvidence(self, *args)
 
     def eraseAllEvidence(self) -> None:
-        r"""
-
-        Removes all the evidence entered into the network.
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_eraseAllEvidence(self)
 
     def eraseEvidence(self, *args) -> None:
-        r"""
-
-        Remove the evidence, if any, corresponding to the node Id or name.
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_eraseEvidence(self, *args)
 
     def hasHardEvidence(self, nodeName: str) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a hard evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_hasHardEvidence(self, nodeName)
 
     def hasSoftEvidence(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a soft evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_hasSoftEvidence(self, *args)
 
     def nbrEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_nbrEvidence(self)
 
     def nbrHardEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of hard evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_nbrHardEvidence(self)
 
     def nbrSoftEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of soft evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_nbrSoftEvidence(self)
 
     def eraseAllTargets(self) -> None:
-        r"""
-
-        Clear all previously defined targets (marginal and joint targets).
-
-        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user).
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_eraseAllTargets(self)
 
     def addAllTargets(self) -> None:
-        r"""
-
-        Add all the nodes as targets.
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_addAllTargets(self)
 
     def addTarget(self, *args) -> None:
-        r"""
-
-        Add a marginal target to the list of targets.
-
-        Parameters
-        ----------
-        target : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If target is not a NodeId in the Bayes net
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_addTarget(self, *args)
 
     def eraseTarget(self, *args) -> None:
-        r"""
-
-        Remove, if existing, the marginal target.
-
-        Parameters
-        ----------
-        target : int
-          a node Id
-        nodeName : int
-          a node name
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If one of the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_eraseTarget(self, *args)
 
     def isTarget(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        variable : int
-         a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if variable is a (marginal) target
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_isTarget(self, *args)
 
     def nbrTargets(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of marginal targets
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_nbrTargets(self)
 
     def H(self, *args) -> float:
-        r"""
-
-        Parameters
-        ----------
-        X : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        float
-          the Shanon's entropy of a node given the observation
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_H(self, *args)
 
     def MN(self) -> "pyAgrum.IMarkovNet":
         return _pyAgrum.ShaferShenoyMNInference_MN(self)
 
     def posterior(self, *args) -> "pyAgrum.Potential":
-        r"""
-
-        Computes and returns the posterior of a node.
-
-        Parameters
-        ----------
-        var : int
-          the node Id of the node for which we need a posterior probability
-        nodeName : str
-          the node name of the node for which we need a posterior probability
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a const ref to the posterior probability of the node
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If an element of nodes is not in targets
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_posterior(self, *args)
 
     def eraseAllJointTargets(self) -> None:
-        r"""
-
-        Clear all previously defined joint targets.
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_eraseAllJointTargets(self)
 
     def eraseAllMarginalTargets(self) -> None:
-        r"""
-
-        Clear all the previously defined marginal targets.
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_eraseAllMarginalTargets(self)
 
     def nbrJointTargets(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of joint targets
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_nbrJointTargets(self)
 
     def I(self, X: int, Y: int) -> float:
-        r"""
-
-        Parameters
-        ----------
-        X : int or str
-          a node Id or a node name
-        Y : int or str
-          another node Id or node name
-
-        Returns
-        -------
-        float
-          the Mutual Information of X and Y given the observation
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_I(self, X, Y)
 
     def VI(self, X: int, Y: int) -> float:
-        r"""
-
-        Parameters
-        ----------
-        X : int or str
-           a node Id or a node name
-        Y : int or str
-           another node Id or node name
-
-        Returns
-        -------
-        float
-          variation of information between X and Y
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_VI(self, X, Y)
 
     def evidenceJointImpact(self, *args) -> "pyAgrum.Potential":
-        r"""
-
-        Create a pyAgrum.Potential for P(joint targets|evs) (for all instanciation of targets and evs)
-
-        Parameters
-        ----------
-        targets :
-          (int) a node Id
-        targets :
-          (str) a node name
-        evs : set
-          a set of nodes ids or names.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a Potential for P(target|evs)
-
-        Raises
-        ------
-        pyAgrum.Exception
-          If some evidene entered into the Bayes net are incompatible (their joint proba = 0)
-
-        """
         return _pyAgrum.ShaferShenoyMNInference_evidenceJointImpact(self, *args)
 
 # Register ShaferShenoyMNInference in _pyAgrum:
@@ -12256,73 +11740,15 @@ class LazyPropagation(object):
         return _pyAgrum.LazyPropagation_setTriangulation(self, new_triangulation)
 
     def setRelevantPotentialsFinderType(self, type: int) -> None:
-        r"""
-
-        sets how we determine the relevant potentials to combine
-
-        When a clique sends a message to a separator, it first constitute the set of the potentials it contains and of the potentials contained in the messages it received. If RelevantPotentialsFinderType = FIND_ALL, all these potentials are combined and projected to produce the message sent to the separator. If RelevantPotentialsFinderType = DSEP_BAYESBALL_NODES, then only the set of potentials d-connected to the variables of the separator are kept for combination and projection.
-
-        0 = FIND_ALL
-        1 = DSEP_BAYESBALL_NODES
-        2 = DSEP_BAYESBALL_POTENTIALS
-        3 = DSEP_KOLLER_FRIEDMAN_2009
-
-        Parameters
-        ----------
-        type : int
-          the finder type
-
-        Raises
-        ------
-        pyAgrum.InvalidArgument
-          If type is not implemented
-
-        """
         return _pyAgrum.LazyPropagation_setRelevantPotentialsFinderType(self, type)
 
     def setFindBarrenNodesType(self, type: int) -> None:
-        r"""
-
-        sets how we determine barren nodes
-
-        Barren nodes are unnecessary for probability inference, so they can be safely discarded in this case (type = FIND_BARREN_NODES). This speeds-up inference. However, there are some cases in which we do not want to remove barren nodes, typically when we want to answer queries such as Most Probable Explanations (MPE).
-
-        0 = FIND_NO_BARREN_NODES
-        1 = FIND_BARREN_NODES
-
-        Parameters
-        ----------
-        type : int
-          the finder type
-
-        Raises
-        ------
-        pyAgrum.InvalidArgument
-          If type is not implemented
-
-        """
         return _pyAgrum.LazyPropagation_setFindBarrenNodesType(self, type)
 
     def joinTree(self) -> "pyAgrum.CliqueGraph":
-        r"""
-
-        Returns
-        -------
-        pyAgrum.CliqueGraph
-          the current join tree used
-
-        """
         return _pyAgrum.LazyPropagation_joinTree(self)
 
     def junctionTree(self) -> "pyAgrum.JunctionTree":
-        r"""
-
-        Returns
-        -------
-        pyAgrum.CliqueGraph
-          the current junction tree
-
-        """
         val = _pyAgrum.LazyPropagation_junctionTree(self)
 
         val._engine=self
@@ -12332,14 +11758,6 @@ class LazyPropagation(object):
 
 
     def evidenceProbability(self) -> float:
-        r"""
-
-        Returns
-        -------
-        float
-          the probability of evidence
-
-        """
         return _pyAgrum.LazyPropagation_evidenceProbability(self)
 
     def setEvidence(self, evidces):
@@ -12425,617 +11843,111 @@ class LazyPropagation(object):
 
 
     def hardEvidenceNodes(self) -> object:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with hard evidence
-
-        """
         return _pyAgrum.LazyPropagation_hardEvidenceNodes(self)
 
     def softEvidenceNodes(self) -> object:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with soft evidence
-
-        """
         return _pyAgrum.LazyPropagation_softEvidenceNodes(self)
 
     def targets(self) -> object:
-        r"""
-
-        Returns
-        -------
-        list
-          the list of marginal targets
-
-        """
         return _pyAgrum.LazyPropagation_targets(self)
 
     def evidenceImpact(self, target: object, evs: object) -> "pyAgrum.Potential":
-        r"""
-
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
-
-        Parameters
-        ----------
-        target : set
-          a set of targets ids or names.
-        evs : set
-          a set of nodes ids or names.
-
-        Warnings
-        --------
-        if some evs are d-separated, they are not included in the Potential.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
-
-        """
         return _pyAgrum.LazyPropagation_evidenceImpact(self, target, evs)
 
     def jointMutualInformation(self, targets: object) -> float:
         return _pyAgrum.LazyPropagation_jointMutualInformation(self, targets)
 
     def jointPosterior(self, targets: object) -> "pyAgrum.Potential":
-        r"""
-
-        Compute the joint posterior of a set of nodes.
-
-        Parameters
-        ----------
-        list :
-          the list of nodes whose posterior joint probability is wanted
-
-
-        Warnings
-        --------
-        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used by the Potential.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a const ref to the posterior joint probability of the set of nodes.
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If an element of nodes is not in targets
-
-        """
         return _pyAgrum.LazyPropagation_jointPosterior(self, targets)
 
     def addJointTarget(self, targets: object) -> None:
-        r"""
-
-        Add a list of nodes as a new joint target. As a collateral effect, every node is added as a marginal target.
-
-        Parameters
-        ----------
-        list
-          a list of names of nodes
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If some node(s) do not belong to the Bayesian network
-
-        """
         return _pyAgrum.LazyPropagation_addJointTarget(self, targets)
 
     def eraseJointTarget(self, targets: object) -> None:
-        r"""
-
-        Remove, if existing, the joint target.
-
-        Parameters
-        ----------
-        list
-          a list of names or Ids of nodes
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If one of the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.LazyPropagation_eraseJointTarget(self, targets)
 
     def isJointTarget(self, targets: object) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        list
-          a list of nodes ids or names.
-
-        Returns
-        -------
-        bool
-          True if target is a joint target.
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.LazyPropagation_isJointTarget(self, targets)
 
     def jointTargets(self) -> object:
-        r"""
-
-        Returns
-        -------
-        list
-          the list of target sets
-
-        """
         return _pyAgrum.LazyPropagation_jointTargets(self)
 
     def makeInference(self) -> None:
-        r"""
-
-        Perform the heavy computations needed to compute the targets' posteriors
-
-        In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
-        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages.
-
-        """
         return _pyAgrum.LazyPropagation_makeInference(self)
 
     def addEvidence(self, *args) -> None:
-        r"""
-
-        Adds a new evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val :
-          (int) a node value
-        val :
-          (str) the label of the node value
-        vals : list
-          a list of values
-
-        Raises
-        ------
-          pyAgrum.InvalidArgument
-            If the node already has an evidence
-          pyAgrum.InvalidArgument
-            If val is not a value for the node
-          pyAgrum.InvalidArgument
-            If the size of vals is different from the domain side of the node
-          pyAgrum.FatalError
-            If vals is a vector of 0s
-          pyAgrum.UndefinedElement
-            If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LazyPropagation_addEvidence(self, *args)
 
     def chgEvidence(self, *args) -> None:
-        r"""
-
-        Change the value of an already existing evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val :
-          (int) a node value
-        val :
-          (str) the label of the node value
-        vals : list
-          a list of values
-
-        Raises
-        ------
-        pyAgrum.InvalidArgument
-          If the node does not already have an evidence
-        pyAgrum.InvalidArgument
-          If val is not a value for the node
-        pyAgrum.InvalidArgument
-          If the size of vals is different from the domain side of the node
-        pyAgrum.FatalError
-          If vals is a vector of 0s
-        pyAgrum.UndefinedElement
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LazyPropagation_chgEvidence(self, *args)
 
     def hasEvidence(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if some node(s) (or the one in parameters) have received evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LazyPropagation_hasEvidence(self, *args)
 
     def eraseAllEvidence(self) -> None:
-        r"""
-
-        Removes all the evidence entered into the network.
-
-        """
         return _pyAgrum.LazyPropagation_eraseAllEvidence(self)
 
     def eraseEvidence(self, *args) -> None:
-        r"""
-
-        Remove the evidence, if any, corresponding to the node Id or name.
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LazyPropagation_eraseEvidence(self, *args)
 
     def hasHardEvidence(self, nodeName: str) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a hard evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LazyPropagation_hasHardEvidence(self, nodeName)
 
     def hasSoftEvidence(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a soft evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LazyPropagation_hasSoftEvidence(self, *args)
 
     def nbrEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.LazyPropagation_nbrEvidence(self)
 
     def nbrHardEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of hard evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.LazyPropagation_nbrHardEvidence(self)
 
     def nbrSoftEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of soft evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.LazyPropagation_nbrSoftEvidence(self)
 
     def eraseAllTargets(self) -> None:
-        r"""
-
-        Clear all previously defined targets (marginal and joint targets).
-
-        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user).
-
-        """
         return _pyAgrum.LazyPropagation_eraseAllTargets(self)
 
     def addAllTargets(self) -> None:
-        r"""
-
-        Add all the nodes as targets.
-
-        """
         return _pyAgrum.LazyPropagation_addAllTargets(self)
 
     def addTarget(self, *args) -> None:
-        r"""
-
-        Add a marginal target to the list of targets.
-
-        Parameters
-        ----------
-        target : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If target is not a NodeId in the Bayes net
-
-        """
         return _pyAgrum.LazyPropagation_addTarget(self, *args)
 
     def eraseTarget(self, *args) -> None:
-        r"""
-
-        Remove, if existing, the marginal target.
-
-        Parameters
-        ----------
-        target : int
-          a node Id
-        nodeName : int
-          a node name
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If one of the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.LazyPropagation_eraseTarget(self, *args)
 
     def isTarget(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        variable : int
-         a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if variable is a (marginal) target
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.LazyPropagation_isTarget(self, *args)
 
     def nbrTargets(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of marginal targets
-
-        """
         return _pyAgrum.LazyPropagation_nbrTargets(self)
 
     def H(self, *args) -> float:
-        r"""
-
-        Parameters
-        ----------
-        X : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        float
-          the computed Shanon's entropy of a node given the observation
-
-        """
         return _pyAgrum.LazyPropagation_H(self, *args)
 
     def BN(self) -> "pyAgrum.IBayesNet":
-        r"""
-
-        Returns
-        -------
-        pyAgrum.IBayesNet
-          A constant reference over the IBayesNet referenced by this class.
-
-        Raises
-        ------
-          pyAgrum.UndefinedElement
-            If no Bayes net has been assigned to the inference.
-
-        """
         return _pyAgrum.LazyPropagation_BN(self)
 
     def posterior(self, *args) -> "pyAgrum.Potential":
-        r"""
-
-        Computes and returns the posterior of a node.
-
-        Parameters
-        ----------
-        var : int
-          the node Id of the node for which we need a posterior probability
-        nodeName : str
-          the node name of the node for which we need a posterior probability
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a const ref to the posterior probability of the node
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If an element of nodes is not in targets
-
-        """
         return _pyAgrum.LazyPropagation_posterior(self, *args)
 
     def eraseAllJointTargets(self) -> None:
-        r"""
-
-        Clear all previously defined joint targets.
-
-        """
         return _pyAgrum.LazyPropagation_eraseAllJointTargets(self)
 
     def eraseAllMarginalTargets(self) -> None:
-        r"""
-
-        Clear all the previously defined marginal targets.
-
-        """
         return _pyAgrum.LazyPropagation_eraseAllMarginalTargets(self)
 
     def nbrJointTargets(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of joint targets
-
-        """
         return _pyAgrum.LazyPropagation_nbrJointTargets(self)
 
     def I(self, *args) -> float:
-        r"""
-
-        Parameters
-        ----------
-        X : int or str
-           a node Id or a node name
-        Y : int or str
-           another node Id or node name
-
-           Returns
-        -------
-        float
-           the Mutual Information of X and Y given the observation
-
-        """
         return _pyAgrum.LazyPropagation_I(self, *args)
 
     def VI(self, *args) -> float:
-        r"""
-
-        Parameters
-        ----------
-        X : int or str
-           a node Id or a node name
-        Y : int or str
-           another node Id or node name
-
-           Returns
-        -------
-        float
-           variation of information between X and Y
-
-        """
         return _pyAgrum.LazyPropagation_VI(self, *args)
 
     def evidenceJointImpact(self, *args) -> "pyAgrum.Potential":
-        r"""
-
-        Create a pyAgrum.Potential for P(joint targets|evs) (for all instanciation of targets and evs)
-
-        Parameters
-        ----------
-        targets :
-          (int) a node Id
-        targets :
-          (str) a node name
-        evs : set
-          a set of nodes ids or names.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a Potential for P(target|evs)
-
-        Raises
-        ------
-        pyAgrum.Exception
-          If some evidene entered into the Bayes net are incompatible (their joint proba = 0)
-
-        """
         return _pyAgrum.LazyPropagation_evidenceJointImpact(self, *args)
 
     def setNumberOfThreads(self, nb: int) -> None:
@@ -13080,73 +11992,15 @@ class ShaferShenoyInference(object):
         return _pyAgrum.ShaferShenoyInference_setTriangulation(self, new_triangulation)
 
     def setRelevantPotentialsFinderType(self, type: int) -> None:
-        r"""
-
-        sets how we determine the relevant potentials to combine
-
-        When a clique sends a message to a separator, it first constitute the set of the potentials it contains and of the potentials contained in the messages it received. If RelevantPotentialsFinderType = FIND_ALL, all these potentials are combined and projected to produce the message sent to the separator. If RelevantPotentialsFinderType = DSEP_BAYESBALL_NODES, then only the set of potentials d-connected to the variables of the separator are kept for combination and projection.
-
-        0 = FIND_ALL
-        1 = DSEP_BAYESBALL_NODES
-        2 = DSEP_BAYESBALL_POTENTIALS
-        3 = DSEP_KOLLER_FRIEDMAN_2009
-
-        Parameters
-        ----------
-        type : int
-          the finder type
-
-        Raises
-        ------
-        pyAgrum.InvalidArgument
-          If type is not implemented
-
-        """
         return _pyAgrum.ShaferShenoyInference_setRelevantPotentialsFinderType(self, type)
 
     def setFindBarrenNodesType(self, type: int) -> None:
-        r"""
-
-        sets how we determine barren nodes
-
-        Barren nodes are unnecessary for probability inference, so they can be safely discarded in this case (type = FIND_BARREN_NODES). This speeds-up inference. However, there are some cases in which we do not want to remove barren nodes, typically when we want to answer queries such as Most Probable Explanations (MPE).
-
-        0 = FIND_NO_BARREN_NODES
-        1 = FIND_BARREN_NODES
-
-        Parameters
-        ----------
-        type : int
-          the finder type
-
-        Raises
-        ------
-        pyAgrum.InvalidArgument
-          If type is not implemented
-
-        """
         return _pyAgrum.ShaferShenoyInference_setFindBarrenNodesType(self, type)
 
     def joinTree(self) -> "pyAgrum.CliqueGraph":
-        r"""
-
-        Returns
-        -------
-        pyAgrum.CliqueGraph
-          the current join tree used
-
-        """
         return _pyAgrum.ShaferShenoyInference_joinTree(self)
 
     def junctionTree(self) -> "pyAgrum.JunctionTree":
-        r"""
-
-        Returns
-        -------
-        pyAgrum.CliqueGraph
-          the current junction tree
-
-        """
         val = _pyAgrum.ShaferShenoyInference_junctionTree(self)
 
         val._engine=self
@@ -13156,14 +12010,6 @@ class ShaferShenoyInference(object):
 
 
     def evidenceProbability(self) -> float:
-        r"""
-
-        Returns
-        -------
-        float
-          the probability of evidence
-
-        """
         return _pyAgrum.ShaferShenoyInference_evidenceProbability(self)
 
     def setEvidence(self, evidces):
@@ -13249,617 +12095,111 @@ class ShaferShenoyInference(object):
 
 
     def hardEvidenceNodes(self) -> object:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with hard evidence
-
-        """
         return _pyAgrum.ShaferShenoyInference_hardEvidenceNodes(self)
 
     def softEvidenceNodes(self) -> object:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with soft evidence
-
-        """
         return _pyAgrum.ShaferShenoyInference_softEvidenceNodes(self)
 
     def targets(self) -> object:
-        r"""
-
-        Returns
-        -------
-        list
-          the list of marginal targets
-
-        """
         return _pyAgrum.ShaferShenoyInference_targets(self)
 
     def evidenceImpact(self, target: object, evs: object) -> "pyAgrum.Potential":
-        r"""
-
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
-
-        Parameters
-        ----------
-        target : set
-          a set of targets ids or names.
-        evs : set
-          a set of nodes ids or names.
-
-        Warnings
-        --------
-        if some evs are d-separated, they are not included in the Potential.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
-
-        """
         return _pyAgrum.ShaferShenoyInference_evidenceImpact(self, target, evs)
 
     def jointMutualInformation(self, targets: object) -> float:
         return _pyAgrum.ShaferShenoyInference_jointMutualInformation(self, targets)
 
     def jointPosterior(self, targets: object) -> "pyAgrum.Potential":
-        r"""
-
-        Compute the joint posterior of a set of nodes.
-
-        Parameters
-        ----------
-        list :
-          the list of nodes whose posterior joint probability is wanted
-
-
-        Warnings
-        --------
-        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used by the Potential.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a const ref to the posterior joint probability of the set of nodes.
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If an element of nodes is not in targets
-
-        """
         return _pyAgrum.ShaferShenoyInference_jointPosterior(self, targets)
 
     def addJointTarget(self, targets: object) -> None:
-        r"""
-
-        Add a list of nodes as a new joint target. As a collateral effect, every node is added as a marginal target.
-
-        Parameters
-        ----------
-        list
-          a list of names of nodes
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If some node(s) do not belong to the Bayesian network
-
-        """
         return _pyAgrum.ShaferShenoyInference_addJointTarget(self, targets)
 
     def eraseJointTarget(self, targets: object) -> None:
-        r"""
-
-        Remove, if existing, the joint target.
-
-        Parameters
-        ----------
-        list
-          a list of names or Ids of nodes
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If one of the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.ShaferShenoyInference_eraseJointTarget(self, targets)
 
     def isJointTarget(self, targets: object) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        list
-          a list of nodes ids or names.
-
-        Returns
-        -------
-        bool
-          True if target is a joint target.
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.ShaferShenoyInference_isJointTarget(self, targets)
 
     def jointTargets(self) -> object:
-        r"""
-
-        Returns
-        -------
-        list
-          the list of target sets
-
-        """
         return _pyAgrum.ShaferShenoyInference_jointTargets(self)
 
     def makeInference(self) -> None:
-        r"""
-
-        Perform the heavy computations needed to compute the targets' posteriors
-
-        In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
-        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages.
-
-        """
         return _pyAgrum.ShaferShenoyInference_makeInference(self)
 
     def addEvidence(self, *args) -> None:
-        r"""
-
-        Adds a new evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val :
-          (int) a node value
-        val :
-          (str) the label of the node value
-        vals : list
-          a list of values
-
-        Raises
-        ------
-          pyAgrum.InvalidArgument
-            If the node already has an evidence
-          pyAgrum.InvalidArgument
-            If val is not a value for the node
-          pyAgrum.InvalidArgument
-            If the size of vals is different from the domain side of the node
-          pyAgrum.FatalError
-            If vals is a vector of 0s
-          pyAgrum.UndefinedElement
-            If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.ShaferShenoyInference_addEvidence(self, *args)
 
     def chgEvidence(self, *args) -> None:
-        r"""
-
-        Change the value of an already existing evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val :
-          (int) a node value
-        val :
-          (str) the label of the node value
-        vals : list
-          a list of values
-
-        Raises
-        ------
-        pyAgrum.InvalidArgument
-          If the node does not already have an evidence
-        pyAgrum.InvalidArgument
-          If val is not a value for the node
-        pyAgrum.InvalidArgument
-          If the size of vals is different from the domain side of the node
-        pyAgrum.FatalError
-          If vals is a vector of 0s
-        pyAgrum.UndefinedElement
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.ShaferShenoyInference_chgEvidence(self, *args)
 
     def hasEvidence(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if some node(s) (or the one in parameters) have received evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.ShaferShenoyInference_hasEvidence(self, *args)
 
     def eraseAllEvidence(self) -> None:
-        r"""
-
-        Removes all the evidence entered into the network.
-
-        """
         return _pyAgrum.ShaferShenoyInference_eraseAllEvidence(self)
 
     def eraseEvidence(self, *args) -> None:
-        r"""
-
-        Remove the evidence, if any, corresponding to the node Id or name.
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.ShaferShenoyInference_eraseEvidence(self, *args)
 
     def hasHardEvidence(self, nodeName: str) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a hard evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.ShaferShenoyInference_hasHardEvidence(self, nodeName)
 
     def hasSoftEvidence(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a soft evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.ShaferShenoyInference_hasSoftEvidence(self, *args)
 
     def nbrEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.ShaferShenoyInference_nbrEvidence(self)
 
     def nbrHardEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of hard evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.ShaferShenoyInference_nbrHardEvidence(self)
 
     def nbrSoftEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of soft evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.ShaferShenoyInference_nbrSoftEvidence(self)
 
     def eraseAllTargets(self) -> None:
-        r"""
-
-        Clear all previously defined targets (marginal and joint targets).
-
-        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user).
-
-        """
         return _pyAgrum.ShaferShenoyInference_eraseAllTargets(self)
 
     def addAllTargets(self) -> None:
-        r"""
-
-        Add all the nodes as targets.
-
-        """
         return _pyAgrum.ShaferShenoyInference_addAllTargets(self)
 
     def addTarget(self, *args) -> None:
-        r"""
-
-        Add a marginal target to the list of targets.
-
-        Parameters
-        ----------
-        target : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If target is not a NodeId in the Bayes net
-
-        """
         return _pyAgrum.ShaferShenoyInference_addTarget(self, *args)
 
     def eraseTarget(self, *args) -> None:
-        r"""
-
-        Remove, if existing, the marginal target.
-
-        Parameters
-        ----------
-        target : int
-          a node Id
-        nodeName : int
-          a node name
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If one of the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.ShaferShenoyInference_eraseTarget(self, *args)
 
     def isTarget(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        variable : int
-         a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if variable is a (marginal) target
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.ShaferShenoyInference_isTarget(self, *args)
 
     def nbrTargets(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of marginal targets
-
-        """
         return _pyAgrum.ShaferShenoyInference_nbrTargets(self)
 
     def H(self, *args) -> float:
-        r"""
-
-        Parameters
-        ----------
-        X : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        float
-          the computed Shanon's entropy of a node given the observation
-
-        """
         return _pyAgrum.ShaferShenoyInference_H(self, *args)
 
     def BN(self) -> "pyAgrum.IBayesNet":
-        r"""
-
-        Returns
-        -------
-        pyAgrum.IBayesNet
-          A constant reference over the IBayesNet referenced by this class.
-
-        Raises
-        ------
-          pyAgrum.UndefinedElement
-            If no Bayes net has been assigned to the inference.
-
-        """
         return _pyAgrum.ShaferShenoyInference_BN(self)
 
     def posterior(self, *args) -> "pyAgrum.Potential":
-        r"""
-
-        Computes and returns the posterior of a node.
-
-        Parameters
-        ----------
-        var : int
-          the node Id of the node for which we need a posterior probability
-        nodeName : str
-          the node name of the node for which we need a posterior probability
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a const ref to the posterior probability of the node
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If an element of nodes is not in targets
-
-        """
         return _pyAgrum.ShaferShenoyInference_posterior(self, *args)
 
     def eraseAllJointTargets(self) -> None:
-        r"""
-
-        Clear all previously defined joint targets.
-
-        """
         return _pyAgrum.ShaferShenoyInference_eraseAllJointTargets(self)
 
     def eraseAllMarginalTargets(self) -> None:
-        r"""
-
-        Clear all the previously defined marginal targets.
-
-        """
         return _pyAgrum.ShaferShenoyInference_eraseAllMarginalTargets(self)
 
     def nbrJointTargets(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of joint targets
-
-        """
         return _pyAgrum.ShaferShenoyInference_nbrJointTargets(self)
 
     def I(self, *args) -> float:
-        r"""
-
-        Parameters
-        ----------
-        X : int or str
-           a node Id or a node name
-        Y : int or str
-           another node Id or node name
-
-           Returns
-        -------
-        float
-           the Mutual Information of X and Y given the observation
-
-        """
         return _pyAgrum.ShaferShenoyInference_I(self, *args)
 
     def VI(self, *args) -> float:
-        r"""
-
-        Parameters
-        ----------
-        X : int or str
-           a node Id or a node name
-        Y : int or str
-           another node Id or node name
-
-           Returns
-        -------
-        float
-           variation of information between X and Y
-
-        """
         return _pyAgrum.ShaferShenoyInference_VI(self, *args)
 
     def evidenceJointImpact(self, *args) -> "pyAgrum.Potential":
-        r"""
-
-        Create a pyAgrum.Potential for P(joint targets|evs) (for all instanciation of targets and evs)
-
-        Parameters
-        ----------
-        targets :
-          (int) a node Id
-        targets :
-          (str) a node name
-        evs : set
-          a set of nodes ids or names.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a Potential for P(target|evs)
-
-        Raises
-        ------
-        pyAgrum.Exception
-          If some evidene entered into the Bayes net are incompatible (their joint proba = 0)
-
-        """
         return _pyAgrum.ShaferShenoyInference_evidenceJointImpact(self, *args)
 
     def setNumberOfThreads(self, nb: int) -> None:
@@ -13904,62 +12244,12 @@ class VariableElimination(object):
         return _pyAgrum.VariableElimination_setTriangulation(self, new_triangulation)
 
     def setRelevantPotentialsFinderType(self, type: int) -> None:
-        r"""
-
-        sets how we determine the relevant potentials to combine
-
-        When a clique sends a message to a separator, it first constitute the set of the potentials it contains and of the potentials contained in the messages it received. If RelevantPotentialsFinderType = FIND_ALL, all these potentials are combined and projected to produce the message sent to the separator. If RelevantPotentialsFinderType = DSEP_BAYESBALL_NODES, then only the set of potentials d-connected to the variables of the separator are kept for combination and projection.
-
-        0 = FIND_ALL
-        1 = DSEP_BAYESBALL_NODES
-        2 = DSEP_BAYESBALL_POTENTIALS
-        3 = DSEP_KOLLER_FRIEDMAN_2009
-
-        Parameters
-        ----------
-        type : int
-          the finder type
-
-        Raises
-        ------
-        pyAgrum.InvalidArgument
-          If type is not implemented
-
-        """
         return _pyAgrum.VariableElimination_setRelevantPotentialsFinderType(self, type)
 
     def setFindBarrenNodesType(self, type: int) -> None:
-        r"""
-
-        sets how we determine barren nodes
-
-        Barren nodes are unnecessary for probability inference, so they can be safely discarded in this case (type = FIND_BARREN_NODES). This speeds-up inference. However, there are some cases in which we do not want to remove barren nodes, typically when we want to answer queries such as Most Probable Explanations (MPE).
-
-        0 = FIND_NO_BARREN_NODES
-        1 = FIND_BARREN_NODES
-
-        Parameters
-        ----------
-        type : int
-          the finder type
-
-        Raises
-        ------
-        pyAgrum.InvalidArgument
-          If type is not implemented
-
-        """
         return _pyAgrum.VariableElimination_setFindBarrenNodesType(self, type)
 
     def junctionTree(self, id: int) -> "pyAgrum.JunctionTree":
-        r"""
-
-        Returns
-        -------
-        pyAgrum.CliqueGraph
-          the current junction tree
-
-        """
         val = _pyAgrum.VariableElimination_junctionTree(self, id)
 
         val._engine=self
@@ -14051,554 +12341,96 @@ class VariableElimination(object):
 
 
     def hardEvidenceNodes(self) -> object:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with hard evidence
-
-        """
         return _pyAgrum.VariableElimination_hardEvidenceNodes(self)
 
     def softEvidenceNodes(self) -> object:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with soft evidence
-
-        """
         return _pyAgrum.VariableElimination_softEvidenceNodes(self)
 
     def targets(self) -> object:
-        r"""
-
-        Returns
-        -------
-        list
-          the list of marginal targets
-
-        """
         return _pyAgrum.VariableElimination_targets(self)
 
     def evidenceImpact(self, target: object, evs: object) -> "pyAgrum.Potential":
-        r"""
-
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
-
-        Parameters
-        ----------
-        target : set
-          a set of targets ids or names.
-        evs : set
-          a set of nodes ids or names.
-
-        Warnings
-        --------
-        if some evs are d-separated, they are not included in the Potential.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
-
-        """
         return _pyAgrum.VariableElimination_evidenceImpact(self, target, evs)
 
     def jointMutualInformation(self, targets: object) -> float:
         return _pyAgrum.VariableElimination_jointMutualInformation(self, targets)
 
     def evidenceJointImpact(self, targets: object, evs: object) -> "pyAgrum.Potential":
-        r"""
-
-        Create a pyAgrum.Potential for P(joint targets|evs) (for all instanciation of targets and evs)
-
-        Parameters
-        ----------
-        targets :
-          (int) a node Id
-        targets :
-          (str) a node name
-        evs : set
-          a set of nodes ids or names.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a Potential for P(target|evs)
-
-        Raises
-        ------
-        pyAgrum.Exception
-          If some evidene entered into the Bayes net are incompatible (their joint proba = 0)
-
-        """
         return _pyAgrum.VariableElimination_evidenceJointImpact(self, targets, evs)
 
     def jointPosterior(self, targets: object) -> "pyAgrum.Potential":
-        r"""
-
-        Compute the joint posterior of a set of nodes.
-
-        Parameters
-        ----------
-        list :
-          the list of nodes whose posterior joint probability is wanted
-
-
-        Warnings
-        --------
-        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used by the Potential.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a const ref to the posterior joint probability of the set of nodes.
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If an element of nodes is not in targets
-
-        """
         return _pyAgrum.VariableElimination_jointPosterior(self, targets)
 
     def addJointTarget(self, targets: object) -> None:
-        r"""
-
-        Add a list of nodes as a new joint target. As a collateral effect, every node is added as a marginal target.
-
-        Parameters
-        ----------
-        list
-          a list of names of nodes
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If some node(s) do not belong to the Bayesian network
-
-        """
         return _pyAgrum.VariableElimination_addJointTarget(self, targets)
 
     def eraseJointTarget(self, targets: object) -> None:
-        r"""
-
-        Remove, if existing, the joint target.
-
-        Parameters
-        ----------
-        list
-          a list of names or Ids of nodes
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If one of the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.VariableElimination_eraseJointTarget(self, targets)
 
     def isJointTarget(self, targets: object) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        list
-          a list of nodes ids or names.
-
-        Returns
-        -------
-        bool
-          True if target is a joint target.
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.VariableElimination_isJointTarget(self, targets)
 
     def jointTargets(self) -> object:
-        r"""
-
-        Returns
-        -------
-        list
-          the list of target sets
-
-        """
         return _pyAgrum.VariableElimination_jointTargets(self)
 
     def makeInference(self) -> None:
-        r"""
-
-        Perform the heavy computations needed to compute the targets' posteriors
-
-        In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
-        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages.
-
-        """
         return _pyAgrum.VariableElimination_makeInference(self)
 
     def posterior(self, *args) -> "pyAgrum.Potential":
-        r"""
-
-        Computes and returns the posterior of a node.
-
-        Parameters
-        ----------
-        var : int
-          the node Id of the node for which we need a posterior probability
-        nodeName : str
-          the node name of the node for which we need a posterior probability
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a const ref to the posterior probability of the node
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If an element of nodes is not in targets
-
-        """
         return _pyAgrum.VariableElimination_posterior(self, *args)
 
     def addEvidence(self, *args) -> None:
-        r"""
-
-        Adds a new evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val :
-          (int) a node value
-        val :
-          (str) the label of the node value
-        vals : list
-          a list of values
-
-        Raises
-        ------
-          pyAgrum.InvalidArgument
-            If the node already has an evidence
-          pyAgrum.InvalidArgument
-            If val is not a value for the node
-          pyAgrum.InvalidArgument
-            If the size of vals is different from the domain side of the node
-          pyAgrum.FatalError
-            If vals is a vector of 0s
-          pyAgrum.UndefinedElement
-            If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.VariableElimination_addEvidence(self, *args)
 
     def chgEvidence(self, *args) -> None:
-        r"""
-
-        Change the value of an already existing evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val :
-          (int) a node value
-        val :
-          (str) the label of the node value
-        vals : list
-          a list of values
-
-        Raises
-        ------
-        pyAgrum.InvalidArgument
-          If the node does not already have an evidence
-        pyAgrum.InvalidArgument
-          If val is not a value for the node
-        pyAgrum.InvalidArgument
-          If the size of vals is different from the domain side of the node
-        pyAgrum.FatalError
-          If vals is a vector of 0s
-        pyAgrum.UndefinedElement
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.VariableElimination_chgEvidence(self, *args)
 
     def hasEvidence(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if some node(s) (or the one in parameters) have received evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.VariableElimination_hasEvidence(self, *args)
 
     def eraseAllEvidence(self) -> None:
-        r"""
-
-        Removes all the evidence entered into the network.
-
-        """
         return _pyAgrum.VariableElimination_eraseAllEvidence(self)
 
     def eraseEvidence(self, *args) -> None:
-        r"""
-
-        Remove the evidence, if any, corresponding to the node Id or name.
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.VariableElimination_eraseEvidence(self, *args)
 
     def hasHardEvidence(self, nodeName: str) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a hard evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.VariableElimination_hasHardEvidence(self, nodeName)
 
     def hasSoftEvidence(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a soft evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.VariableElimination_hasSoftEvidence(self, *args)
 
     def nbrEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.VariableElimination_nbrEvidence(self)
 
     def nbrHardEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of hard evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.VariableElimination_nbrHardEvidence(self)
 
     def nbrSoftEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of soft evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.VariableElimination_nbrSoftEvidence(self)
 
     def eraseAllTargets(self) -> None:
-        r"""
-
-        Clear all previously defined targets (marginal and joint targets).
-
-        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user).
-
-        """
         return _pyAgrum.VariableElimination_eraseAllTargets(self)
 
     def addAllTargets(self) -> None:
-        r"""
-
-        Add all the nodes as targets.
-
-        """
         return _pyAgrum.VariableElimination_addAllTargets(self)
 
     def addTarget(self, *args) -> None:
-        r"""
-
-        Add a marginal target to the list of targets.
-
-        Parameters
-        ----------
-        target : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If target is not a NodeId in the Bayes net
-
-        """
         return _pyAgrum.VariableElimination_addTarget(self, *args)
 
     def eraseTarget(self, *args) -> None:
-        r"""
-
-        Remove, if existing, the marginal target.
-
-        Parameters
-        ----------
-        target : int
-          a node Id
-        nodeName : int
-          a node name
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If one of the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.VariableElimination_eraseTarget(self, *args)
 
     def isTarget(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        variable : int
-         a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if variable is a (marginal) target
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.VariableElimination_isTarget(self, *args)
 
     def nbrTargets(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of marginal targets
-
-        """
         return _pyAgrum.VariableElimination_nbrTargets(self)
 
     def H(self, *args) -> float:
-        r"""
-
-        Parameters
-        ----------
-        X : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        float
-          the computed Shanon's entropy of a node given the observation
-
-        """
         return _pyAgrum.VariableElimination_H(self, *args)
 
     def BN(self) -> "pyAgrum.IBayesNet":
-        r"""
-
-        Returns
-        -------
-        pyAgrum.IBayesNet
-          A constant reference over the IBayesNet referenced by this class.
-
-        Raises
-        ------
-          pyAgrum.UndefinedElement
-            If no Bayes net has been assigned to the inference.
-
-        """
         return _pyAgrum.VariableElimination_BN(self)
 
 # Register VariableElimination in _pyAgrum:
@@ -14628,25 +12460,9 @@ class GibbsSampling(object):
     __swig_destroy__ = _pyAgrum.delete_GibbsSampling
 
     def setBurnIn(self, b: int) -> None:
-        r"""
-
-        Parameters
-        ----------
-        b : int
-          size of burn in on number of iteration
-
-        """
         return _pyAgrum.GibbsSampling_setBurnIn(self, b)
 
     def burnIn(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          size of burn in on number of iteration
-
-        """
         return _pyAgrum.GibbsSampling_burnIn(self)
 
     def setEvidence(self, evidces):
@@ -14732,60 +12548,15 @@ class GibbsSampling(object):
 
 
     def hardEvidenceNodes(self) -> object:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with hard evidence
-
-        """
         return _pyAgrum.GibbsSampling_hardEvidenceNodes(self)
 
     def softEvidenceNodes(self) -> object:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with soft evidence
-
-        """
         return _pyAgrum.GibbsSampling_softEvidenceNodes(self)
 
     def targets(self) -> object:
-        r"""
-
-        Returns
-        -------
-        list
-          the list of marginal targets
-
-        """
         return _pyAgrum.GibbsSampling_targets(self)
 
     def evidenceImpact(self, target: object, evs: object) -> "pyAgrum.Potential":
-        r"""
-
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
-
-        Parameters
-        ----------
-        target : set
-          a set of targets ids or names.
-        evs : set
-          a set of nodes ids or names.
-
-        Warnings
-        --------
-        if some evs are d-separated, they are not included in the Potential.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
-
-        """
         return _pyAgrum.GibbsSampling_evidenceImpact(self, target, evs)
 
     def setVerbosity(self, v: bool) -> None:
@@ -14998,436 +12769,78 @@ class GibbsSampling(object):
         return _pyAgrum.GibbsSampling__asIApproximationSchemeConfiguration(self)
 
     def makeInference(self) -> None:
-        r"""
-
-        Perform the heavy computations needed to compute the targets' posteriors
-
-        In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
-        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages.
-
-        """
         return _pyAgrum.GibbsSampling_makeInference(self)
 
     def posterior(self, *args) -> "pyAgrum.Potential":
-        r"""
-
-        Computes and returns the posterior of a node.
-
-        Parameters
-        ----------
-        var : int
-          the node Id of the node for which we need a posterior probability
-        nodeName : str
-          the node name of the node for which we need a posterior probability
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a const ref to the posterior probability of the node
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If an element of nodes is not in targets
-
-        """
         return _pyAgrum.GibbsSampling_posterior(self, *args)
 
     def addEvidence(self, *args) -> None:
-        r"""
-
-        Adds a new evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val :
-          (int) a node value
-        val :
-          (str) the label of the node value
-        vals : list
-          a list of values
-
-        Raises
-        ------
-          pyAgrum.InvalidArgument
-            If the node already has an evidence
-          pyAgrum.InvalidArgument
-            If val is not a value for the node
-          pyAgrum.InvalidArgument
-            If the size of vals is different from the domain side of the node
-          pyAgrum.FatalError
-            If vals is a vector of 0s
-          pyAgrum.UndefinedElement
-            If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.GibbsSampling_addEvidence(self, *args)
 
     def chgEvidence(self, *args) -> None:
-        r"""
-
-        Change the value of an already existing evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val :
-          (int) a node value
-        val :
-          (str) the label of the node value
-        vals : list
-          a list of values
-
-        Raises
-        ------
-        pyAgrum.InvalidArgument
-          If the node does not already have an evidence
-        pyAgrum.InvalidArgument
-          If val is not a value for the node
-        pyAgrum.InvalidArgument
-          If the size of vals is different from the domain side of the node
-        pyAgrum.FatalError
-          If vals is a vector of 0s
-        pyAgrum.UndefinedElement
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.GibbsSampling_chgEvidence(self, *args)
 
     def hasEvidence(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if some node(s) (or the one in parameters) have received evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.GibbsSampling_hasEvidence(self, *args)
 
     def eraseAllEvidence(self) -> None:
-        r"""
-
-        Removes all the evidence entered into the network.
-
-        """
         return _pyAgrum.GibbsSampling_eraseAllEvidence(self)
 
     def eraseEvidence(self, *args) -> None:
-        r"""
-
-        Remove the evidence, if any, corresponding to the node Id or name.
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.GibbsSampling_eraseEvidence(self, *args)
 
     def hasHardEvidence(self, nodeName: str) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a hard evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.GibbsSampling_hasHardEvidence(self, nodeName)
 
     def hasSoftEvidence(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a soft evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.GibbsSampling_hasSoftEvidence(self, *args)
 
     def nbrEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.GibbsSampling_nbrEvidence(self)
 
     def nbrHardEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of hard evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.GibbsSampling_nbrHardEvidence(self)
 
     def nbrSoftEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of soft evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.GibbsSampling_nbrSoftEvidence(self)
 
     def eraseAllTargets(self) -> None:
-        r"""
-
-        Clear all previously defined targets (marginal and joint targets).
-
-        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user).
-
-        """
         return _pyAgrum.GibbsSampling_eraseAllTargets(self)
 
     def addAllTargets(self) -> None:
-        r"""
-
-        Add all the nodes as targets.
-
-        """
         return _pyAgrum.GibbsSampling_addAllTargets(self)
 
     def addTarget(self, *args) -> None:
-        r"""
-
-        Add a marginal target to the list of targets.
-
-        Parameters
-        ----------
-        target : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If target is not a NodeId in the Bayes net
-
-        """
         return _pyAgrum.GibbsSampling_addTarget(self, *args)
 
     def eraseTarget(self, *args) -> None:
-        r"""
-
-        Remove, if existing, the marginal target.
-
-        Parameters
-        ----------
-        target : int
-          a node Id
-        nodeName : int
-          a node name
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If one of the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.GibbsSampling_eraseTarget(self, *args)
 
     def isTarget(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        variable : int
-         a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if variable is a (marginal) target
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.GibbsSampling_isTarget(self, *args)
 
     def nbrTargets(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of marginal targets
-
-        """
         return _pyAgrum.GibbsSampling_nbrTargets(self)
 
     def H(self, *args) -> float:
-        r"""
-
-        Parameters
-        ----------
-        X : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        float
-          the computed Shanon's entropy of a node given the observation
-
-        """
         return _pyAgrum.GibbsSampling_H(self, *args)
 
     def BN(self) -> "pyAgrum.IBayesNet":
-        r"""
-
-        Returns
-        -------
-        pyAgrum.IBayesNet
-          A constant reference over the IBayesNet referenced by this class.
-
-        Raises
-        ------
-          pyAgrum.UndefinedElement
-            If no Bayes net has been assigned to the inference.
-
-        """
         return _pyAgrum.GibbsSampling_BN(self)
 
     def currentPosterior(self, *args) -> "pyAgrum.Potential":
-        r"""
-
-        Computes and returns the current posterior of a node.
-
-        Parameters
-        ----------
-        var : int
-          the node Id of the node for which we need a posterior probability
-        nodeName : str
-          the node name of the node for which we need a posterior probability
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a const ref to the current posterior probability of the node
-
-        Raises
-        ------
-        UndefinedElement
-          If an element of nodes is not in targets
-
-        """
         return _pyAgrum.GibbsSampling_currentPosterior(self, *args)
 
     def nbrDrawnVar(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of variable drawn at each iteration
-
-        """
         return _pyAgrum.GibbsSampling_nbrDrawnVar(self)
 
     def setNbrDrawnVar(self, _nbr: int) -> None:
-        r"""
-
-        Parameters
-        ----------
-        _nbr : int
-          the number of variables to be drawn at each iteration
-
-        """
         return _pyAgrum.GibbsSampling_setNbrDrawnVar(self, _nbr)
 
     def isDrawnAtRandom(self) -> bool:
-        r"""
-
-        Returns
-        -------
-        bool
-          True if variables are drawn at random
-
-        """
         return _pyAgrum.GibbsSampling_isDrawnAtRandom(self)
 
     def setDrawnAtRandom(self, _atRandom: bool) -> None:
-        r"""
-
-        Parameters
-        ----------
-        _atRandom : bool
-          indicates if variables should be drawn at random
-
-        """
         return _pyAgrum.GibbsSampling_setDrawnAtRandom(self, _atRandom)
 
 # Register GibbsSampling in _pyAgrum:
@@ -15539,60 +12952,15 @@ class ImportanceSampling(object):
 
 
     def hardEvidenceNodes(self) -> object:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with hard evidence
-
-        """
         return _pyAgrum.ImportanceSampling_hardEvidenceNodes(self)
 
     def softEvidenceNodes(self) -> object:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with soft evidence
-
-        """
         return _pyAgrum.ImportanceSampling_softEvidenceNodes(self)
 
     def targets(self) -> object:
-        r"""
-
-        Returns
-        -------
-        list
-          the list of marginal targets
-
-        """
         return _pyAgrum.ImportanceSampling_targets(self)
 
     def evidenceImpact(self, target: object, evs: object) -> "pyAgrum.Potential":
-        r"""
-
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
-
-        Parameters
-        ----------
-        target : set
-          a set of targets ids or names.
-        evs : set
-          a set of nodes ids or names.
-
-        Warnings
-        --------
-        if some evs are d-separated, they are not included in the Potential.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
-
-        """
         return _pyAgrum.ImportanceSampling_evidenceImpact(self, target, evs)
 
     def setVerbosity(self, v: bool) -> None:
@@ -15805,392 +13173,66 @@ class ImportanceSampling(object):
         return _pyAgrum.ImportanceSampling__asIApproximationSchemeConfiguration(self)
 
     def makeInference(self) -> None:
-        r"""
-
-        Perform the heavy computations needed to compute the targets' posteriors
-
-        In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
-        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages.
-
-        """
         return _pyAgrum.ImportanceSampling_makeInference(self)
 
     def posterior(self, *args) -> "pyAgrum.Potential":
-        r"""
-
-        Computes and returns the posterior of a node.
-
-        Parameters
-        ----------
-        var : int
-          the node Id of the node for which we need a posterior probability
-        nodeName : str
-          the node name of the node for which we need a posterior probability
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a const ref to the posterior probability of the node
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If an element of nodes is not in targets
-
-        """
         return _pyAgrum.ImportanceSampling_posterior(self, *args)
 
     def addEvidence(self, *args) -> None:
-        r"""
-
-        Adds a new evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val :
-          (int) a node value
-        val :
-          (str) the label of the node value
-        vals : list
-          a list of values
-
-        Raises
-        ------
-          pyAgrum.InvalidArgument
-            If the node already has an evidence
-          pyAgrum.InvalidArgument
-            If val is not a value for the node
-          pyAgrum.InvalidArgument
-            If the size of vals is different from the domain side of the node
-          pyAgrum.FatalError
-            If vals is a vector of 0s
-          pyAgrum.UndefinedElement
-            If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.ImportanceSampling_addEvidence(self, *args)
 
     def chgEvidence(self, *args) -> None:
-        r"""
-
-        Change the value of an already existing evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val :
-          (int) a node value
-        val :
-          (str) the label of the node value
-        vals : list
-          a list of values
-
-        Raises
-        ------
-        pyAgrum.InvalidArgument
-          If the node does not already have an evidence
-        pyAgrum.InvalidArgument
-          If val is not a value for the node
-        pyAgrum.InvalidArgument
-          If the size of vals is different from the domain side of the node
-        pyAgrum.FatalError
-          If vals is a vector of 0s
-        pyAgrum.UndefinedElement
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.ImportanceSampling_chgEvidence(self, *args)
 
     def hasEvidence(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if some node(s) (or the one in parameters) have received evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.ImportanceSampling_hasEvidence(self, *args)
 
     def eraseAllEvidence(self) -> None:
-        r"""
-
-        Removes all the evidence entered into the network.
-
-        """
         return _pyAgrum.ImportanceSampling_eraseAllEvidence(self)
 
     def eraseEvidence(self, *args) -> None:
-        r"""
-
-        Remove the evidence, if any, corresponding to the node Id or name.
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.ImportanceSampling_eraseEvidence(self, *args)
 
     def hasHardEvidence(self, nodeName: str) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a hard evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.ImportanceSampling_hasHardEvidence(self, nodeName)
 
     def hasSoftEvidence(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a soft evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.ImportanceSampling_hasSoftEvidence(self, *args)
 
     def nbrEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.ImportanceSampling_nbrEvidence(self)
 
     def nbrHardEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of hard evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.ImportanceSampling_nbrHardEvidence(self)
 
     def nbrSoftEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of soft evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.ImportanceSampling_nbrSoftEvidence(self)
 
     def eraseAllTargets(self) -> None:
-        r"""
-
-        Clear all previously defined targets (marginal and joint targets).
-
-        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user).
-
-        """
         return _pyAgrum.ImportanceSampling_eraseAllTargets(self)
 
     def addAllTargets(self) -> None:
-        r"""
-
-        Add all the nodes as targets.
-
-        """
         return _pyAgrum.ImportanceSampling_addAllTargets(self)
 
     def addTarget(self, *args) -> None:
-        r"""
-
-        Add a marginal target to the list of targets.
-
-        Parameters
-        ----------
-        target : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If target is not a NodeId in the Bayes net
-
-        """
         return _pyAgrum.ImportanceSampling_addTarget(self, *args)
 
     def eraseTarget(self, *args) -> None:
-        r"""
-
-        Remove, if existing, the marginal target.
-
-        Parameters
-        ----------
-        target : int
-          a node Id
-        nodeName : int
-          a node name
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If one of the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.ImportanceSampling_eraseTarget(self, *args)
 
     def isTarget(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        variable : int
-         a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if variable is a (marginal) target
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.ImportanceSampling_isTarget(self, *args)
 
     def nbrTargets(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of marginal targets
-
-        """
         return _pyAgrum.ImportanceSampling_nbrTargets(self)
 
     def H(self, *args) -> float:
-        r"""
-
-        Parameters
-        ----------
-        X : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        float
-          the computed Shanon's entropy of a node given the observation
-
-        """
         return _pyAgrum.ImportanceSampling_H(self, *args)
 
     def BN(self) -> "pyAgrum.IBayesNet":
-        r"""
-
-        Returns
-        -------
-        pyAgrum.IBayesNet
-          A constant reference over the IBayesNet referenced by this class.
-
-        Raises
-        ------
-          pyAgrum.UndefinedElement
-            If no Bayes net has been assigned to the inference.
-
-        """
         return _pyAgrum.ImportanceSampling_BN(self)
 
     def currentPosterior(self, *args) -> "pyAgrum.Potential":
-        r"""
-
-        Computes and returns the current posterior of a node.
-
-        Parameters
-        ----------
-        var : int
-          the node Id of the node for which we need a posterior probability
-        nodeName : str
-          the node name of the node for which we need a posterior probability
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a const ref to the current posterior probability of the node
-
-        Raises
-        ------
-        UndefinedElement
-          If an element of nodes is not in targets
-
-        """
         return _pyAgrum.ImportanceSampling_currentPosterior(self, *args)
 
 # Register ImportanceSampling in _pyAgrum:
@@ -16302,60 +13344,15 @@ class WeightedSampling(object):
 
 
     def hardEvidenceNodes(self) -> object:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with hard evidence
-
-        """
         return _pyAgrum.WeightedSampling_hardEvidenceNodes(self)
 
     def softEvidenceNodes(self) -> object:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with soft evidence
-
-        """
         return _pyAgrum.WeightedSampling_softEvidenceNodes(self)
 
     def targets(self) -> object:
-        r"""
-
-        Returns
-        -------
-        list
-          the list of marginal targets
-
-        """
         return _pyAgrum.WeightedSampling_targets(self)
 
     def evidenceImpact(self, target: object, evs: object) -> "pyAgrum.Potential":
-        r"""
-
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
-
-        Parameters
-        ----------
-        target : set
-          a set of targets ids or names.
-        evs : set
-          a set of nodes ids or names.
-
-        Warnings
-        --------
-        if some evs are d-separated, they are not included in the Potential.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
-
-        """
         return _pyAgrum.WeightedSampling_evidenceImpact(self, target, evs)
 
     def setVerbosity(self, v: bool) -> None:
@@ -16568,392 +13565,66 @@ class WeightedSampling(object):
         return _pyAgrum.WeightedSampling__asIApproximationSchemeConfiguration(self)
 
     def makeInference(self) -> None:
-        r"""
-
-        Perform the heavy computations needed to compute the targets' posteriors
-
-        In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
-        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages.
-
-        """
         return _pyAgrum.WeightedSampling_makeInference(self)
 
     def posterior(self, *args) -> "pyAgrum.Potential":
-        r"""
-
-        Computes and returns the posterior of a node.
-
-        Parameters
-        ----------
-        var : int
-          the node Id of the node for which we need a posterior probability
-        nodeName : str
-          the node name of the node for which we need a posterior probability
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a const ref to the posterior probability of the node
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If an element of nodes is not in targets
-
-        """
         return _pyAgrum.WeightedSampling_posterior(self, *args)
 
     def addEvidence(self, *args) -> None:
-        r"""
-
-        Adds a new evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val :
-          (int) a node value
-        val :
-          (str) the label of the node value
-        vals : list
-          a list of values
-
-        Raises
-        ------
-          pyAgrum.InvalidArgument
-            If the node already has an evidence
-          pyAgrum.InvalidArgument
-            If val is not a value for the node
-          pyAgrum.InvalidArgument
-            If the size of vals is different from the domain side of the node
-          pyAgrum.FatalError
-            If vals is a vector of 0s
-          pyAgrum.UndefinedElement
-            If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.WeightedSampling_addEvidence(self, *args)
 
     def chgEvidence(self, *args) -> None:
-        r"""
-
-        Change the value of an already existing evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val :
-          (int) a node value
-        val :
-          (str) the label of the node value
-        vals : list
-          a list of values
-
-        Raises
-        ------
-        pyAgrum.InvalidArgument
-          If the node does not already have an evidence
-        pyAgrum.InvalidArgument
-          If val is not a value for the node
-        pyAgrum.InvalidArgument
-          If the size of vals is different from the domain side of the node
-        pyAgrum.FatalError
-          If vals is a vector of 0s
-        pyAgrum.UndefinedElement
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.WeightedSampling_chgEvidence(self, *args)
 
     def hasEvidence(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if some node(s) (or the one in parameters) have received evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.WeightedSampling_hasEvidence(self, *args)
 
     def eraseAllEvidence(self) -> None:
-        r"""
-
-        Removes all the evidence entered into the network.
-
-        """
         return _pyAgrum.WeightedSampling_eraseAllEvidence(self)
 
     def eraseEvidence(self, *args) -> None:
-        r"""
-
-        Remove the evidence, if any, corresponding to the node Id or name.
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.WeightedSampling_eraseEvidence(self, *args)
 
     def hasHardEvidence(self, nodeName: str) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a hard evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.WeightedSampling_hasHardEvidence(self, nodeName)
 
     def hasSoftEvidence(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a soft evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.WeightedSampling_hasSoftEvidence(self, *args)
 
     def nbrEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.WeightedSampling_nbrEvidence(self)
 
     def nbrHardEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of hard evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.WeightedSampling_nbrHardEvidence(self)
 
     def nbrSoftEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of soft evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.WeightedSampling_nbrSoftEvidence(self)
 
     def eraseAllTargets(self) -> None:
-        r"""
-
-        Clear all previously defined targets (marginal and joint targets).
-
-        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user).
-
-        """
         return _pyAgrum.WeightedSampling_eraseAllTargets(self)
 
     def addAllTargets(self) -> None:
-        r"""
-
-        Add all the nodes as targets.
-
-        """
         return _pyAgrum.WeightedSampling_addAllTargets(self)
 
     def addTarget(self, *args) -> None:
-        r"""
-
-        Add a marginal target to the list of targets.
-
-        Parameters
-        ----------
-        target : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If target is not a NodeId in the Bayes net
-
-        """
         return _pyAgrum.WeightedSampling_addTarget(self, *args)
 
     def eraseTarget(self, *args) -> None:
-        r"""
-
-        Remove, if existing, the marginal target.
-
-        Parameters
-        ----------
-        target : int
-          a node Id
-        nodeName : int
-          a node name
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If one of the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.WeightedSampling_eraseTarget(self, *args)
 
     def isTarget(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        variable : int
-         a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if variable is a (marginal) target
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.WeightedSampling_isTarget(self, *args)
 
     def nbrTargets(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of marginal targets
-
-        """
         return _pyAgrum.WeightedSampling_nbrTargets(self)
 
     def H(self, *args) -> float:
-        r"""
-
-        Parameters
-        ----------
-        X : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        float
-          the computed Shanon's entropy of a node given the observation
-
-        """
         return _pyAgrum.WeightedSampling_H(self, *args)
 
     def BN(self) -> "pyAgrum.IBayesNet":
-        r"""
-
-        Returns
-        -------
-        pyAgrum.IBayesNet
-          A constant reference over the IBayesNet referenced by this class.
-
-        Raises
-        ------
-          pyAgrum.UndefinedElement
-            If no Bayes net has been assigned to the inference.
-
-        """
         return _pyAgrum.WeightedSampling_BN(self)
 
     def currentPosterior(self, *args) -> "pyAgrum.Potential":
-        r"""
-
-        Computes and returns the current posterior of a node.
-
-        Parameters
-        ----------
-        var : int
-          the node Id of the node for which we need a posterior probability
-        nodeName : str
-          the node name of the node for which we need a posterior probability
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a const ref to the current posterior probability of the node
-
-        Raises
-        ------
-        UndefinedElement
-          If an element of nodes is not in targets
-
-        """
         return _pyAgrum.WeightedSampling_currentPosterior(self, *args)
 
 # Register WeightedSampling in _pyAgrum:
@@ -17065,60 +13736,15 @@ class MonteCarloSampling(object):
 
 
     def hardEvidenceNodes(self) -> object:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with hard evidence
-
-        """
         return _pyAgrum.MonteCarloSampling_hardEvidenceNodes(self)
 
     def softEvidenceNodes(self) -> object:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with soft evidence
-
-        """
         return _pyAgrum.MonteCarloSampling_softEvidenceNodes(self)
 
     def targets(self) -> object:
-        r"""
-
-        Returns
-        -------
-        list
-          the list of marginal targets
-
-        """
         return _pyAgrum.MonteCarloSampling_targets(self)
 
     def evidenceImpact(self, target: object, evs: object) -> "pyAgrum.Potential":
-        r"""
-
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
-
-        Parameters
-        ----------
-        target : set
-          a set of targets ids or names.
-        evs : set
-          a set of nodes ids or names.
-
-        Warnings
-        --------
-        if some evs are d-separated, they are not included in the Potential.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
-
-        """
         return _pyAgrum.MonteCarloSampling_evidenceImpact(self, target, evs)
 
     def setVerbosity(self, v: bool) -> None:
@@ -17331,408 +13957,72 @@ class MonteCarloSampling(object):
         return _pyAgrum.MonteCarloSampling__asIApproximationSchemeConfiguration(self)
 
     def makeInference(self) -> None:
-        r"""
-
-        Perform the heavy computations needed to compute the targets' posteriors
-
-        In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
-        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages.
-
-        """
         return _pyAgrum.MonteCarloSampling_makeInference(self)
 
     def posterior(self, *args) -> "pyAgrum.Potential":
-        r"""
-
-        Computes and returns the posterior of a node.
-
-        Parameters
-        ----------
-        var : int
-          the node Id of the node for which we need a posterior probability
-        nodeName : str
-          the node name of the node for which we need a posterior probability
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a const ref to the posterior probability of the node
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If an element of nodes is not in targets
-
-        """
         return _pyAgrum.MonteCarloSampling_posterior(self, *args)
 
     def addEvidence(self, *args) -> None:
-        r"""
-
-        Adds a new evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val :
-          (int) a node value
-        val :
-          (str) the label of the node value
-        vals : list
-          a list of values
-
-        Raises
-        ------
-          pyAgrum.InvalidArgument
-            If the node already has an evidence
-          pyAgrum.InvalidArgument
-            If val is not a value for the node
-          pyAgrum.InvalidArgument
-            If the size of vals is different from the domain side of the node
-          pyAgrum.FatalError
-            If vals is a vector of 0s
-          pyAgrum.UndefinedElement
-            If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.MonteCarloSampling_addEvidence(self, *args)
 
     def chgEvidence(self, *args) -> None:
-        r"""
-
-        Change the value of an already existing evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val :
-          (int) a node value
-        val :
-          (str) the label of the node value
-        vals : list
-          a list of values
-
-        Raises
-        ------
-        pyAgrum.InvalidArgument
-          If the node does not already have an evidence
-        pyAgrum.InvalidArgument
-          If val is not a value for the node
-        pyAgrum.InvalidArgument
-          If the size of vals is different from the domain side of the node
-        pyAgrum.FatalError
-          If vals is a vector of 0s
-        pyAgrum.UndefinedElement
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.MonteCarloSampling_chgEvidence(self, *args)
 
     def hasEvidence(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if some node(s) (or the one in parameters) have received evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.MonteCarloSampling_hasEvidence(self, *args)
 
     def eraseAllEvidence(self) -> None:
-        r"""
-
-        Removes all the evidence entered into the network.
-
-        """
         return _pyAgrum.MonteCarloSampling_eraseAllEvidence(self)
 
     def eraseEvidence(self, *args) -> None:
-        r"""
-
-        Remove the evidence, if any, corresponding to the node Id or name.
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.MonteCarloSampling_eraseEvidence(self, *args)
 
     def hasHardEvidence(self, nodeName: str) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a hard evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.MonteCarloSampling_hasHardEvidence(self, nodeName)
 
     def hasSoftEvidence(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a soft evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.MonteCarloSampling_hasSoftEvidence(self, *args)
 
     def nbrEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.MonteCarloSampling_nbrEvidence(self)
 
     def nbrHardEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of hard evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.MonteCarloSampling_nbrHardEvidence(self)
 
     def nbrSoftEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of soft evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.MonteCarloSampling_nbrSoftEvidence(self)
 
     def eraseAllTargets(self) -> None:
-        r"""
-
-        Clear all previously defined targets (marginal and joint targets).
-
-        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user).
-
-        """
         return _pyAgrum.MonteCarloSampling_eraseAllTargets(self)
 
     def addAllTargets(self) -> None:
-        r"""
-
-        Add all the nodes as targets.
-
-        """
         return _pyAgrum.MonteCarloSampling_addAllTargets(self)
 
     def addTarget(self, *args) -> None:
-        r"""
-
-        Add a marginal target to the list of targets.
-
-        Parameters
-        ----------
-        target : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If target is not a NodeId in the Bayes net
-
-        """
         return _pyAgrum.MonteCarloSampling_addTarget(self, *args)
 
     def eraseTarget(self, *args) -> None:
-        r"""
-
-        Remove, if existing, the marginal target.
-
-        Parameters
-        ----------
-        target : int
-          a node Id
-        nodeName : int
-          a node name
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If one of the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.MonteCarloSampling_eraseTarget(self, *args)
 
     def isTarget(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        variable : int
-         a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if variable is a (marginal) target
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.MonteCarloSampling_isTarget(self, *args)
 
     def nbrTargets(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of marginal targets
-
-        """
         return _pyAgrum.MonteCarloSampling_nbrTargets(self)
 
     def H(self, *args) -> float:
-        r"""
-
-        Parameters
-        ----------
-        X : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        float
-          the computed Shanon's entropy of a node given the observation
-
-        """
         return _pyAgrum.MonteCarloSampling_H(self, *args)
 
     def BN(self) -> "pyAgrum.IBayesNet":
-        r"""
-
-        Returns
-        -------
-        pyAgrum.IBayesNet
-          A constant reference over the IBayesNet referenced by this class.
-
-        Raises
-        ------
-          pyAgrum.UndefinedElement
-            If no Bayes net has been assigned to the inference.
-
-        """
         return _pyAgrum.MonteCarloSampling_BN(self)
 
     def currentPosterior(self, *args) -> "pyAgrum.Potential":
-        r"""
-
-        Computes and returns the current posterior of a node.
-
-        Parameters
-        ----------
-        var : int
-          the node Id of the node for which we need a posterior probability
-        nodeName : str
-          the node name of the node for which we need a posterior probability
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a const ref to the current posterior probability of the node
-
-        Raises
-        ------
-        UndefinedElement
-          If an element of nodes is not in targets
-
-        """
         return _pyAgrum.MonteCarloSampling_currentPosterior(self, *args)
 
 # Register MonteCarloSampling in _pyAgrum:
 _pyAgrum.MonteCarloSampling_swigregister(MonteCarloSampling)
 
 class LoopyImportanceSampling(object):
-    r"""
-
-    Class used for inferences using a loopy version of importance sampling.
-
-    LoopyImportanceSampling(bn) -> LoopyImportanceSampling
-        Parameters:
-            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
-
-    """
-
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
@@ -17749,14 +14039,6 @@ class LoopyImportanceSampling(object):
         return _pyAgrum.LoopyImportanceSampling_makeInference_(self)
 
     def setVirtualLBPSize(self, vlbpsize: float) -> None:
-        r"""
-
-        Parameters
-        ----------
-        vlbpsize : float
-          the size of the virtual LBP
-
-        """
         return _pyAgrum.LoopyImportanceSampling_setVirtualLBPSize(self, vlbpsize)
 
     def setEvidence(self, evidces):
@@ -17842,60 +14124,15 @@ class LoopyImportanceSampling(object):
 
 
     def hardEvidenceNodes(self) -> object:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with hard evidence
-
-        """
         return _pyAgrum.LoopyImportanceSampling_hardEvidenceNodes(self)
 
     def softEvidenceNodes(self) -> object:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with soft evidence
-
-        """
         return _pyAgrum.LoopyImportanceSampling_softEvidenceNodes(self)
 
     def targets(self) -> object:
-        r"""
-
-        Returns
-        -------
-        list
-          the list of marginal targets
-
-        """
         return _pyAgrum.LoopyImportanceSampling_targets(self)
 
     def evidenceImpact(self, target: object, evs: object) -> "pyAgrum.Potential":
-        r"""
-
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
-
-        Parameters
-        ----------
-        target : set
-          a set of targets ids or names.
-        evs : set
-          a set of nodes ids or names.
-
-        Warnings
-        --------
-        if some evs are d-separated, they are not included in the Potential.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
-
-        """
         return _pyAgrum.LoopyImportanceSampling_evidenceImpact(self, target, evs)
 
     def setVerbosity(self, v: bool) -> None:
@@ -18108,408 +14345,72 @@ class LoopyImportanceSampling(object):
         return _pyAgrum.LoopyImportanceSampling__asIApproximationSchemeConfiguration(self)
 
     def makeInference(self) -> None:
-        r"""
-
-        Perform the heavy computations needed to compute the targets' posteriors
-
-        In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
-        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages.
-
-        """
         return _pyAgrum.LoopyImportanceSampling_makeInference(self)
 
     def posterior(self, *args) -> "pyAgrum.Potential":
-        r"""
-
-        Computes and returns the posterior of a node.
-
-        Parameters
-        ----------
-        var : int
-          the node Id of the node for which we need a posterior probability
-        nodeName : str
-          the node name of the node for which we need a posterior probability
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a const ref to the posterior probability of the node
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If an element of nodes is not in targets
-
-        """
         return _pyAgrum.LoopyImportanceSampling_posterior(self, *args)
 
     def addEvidence(self, *args) -> None:
-        r"""
-
-        Adds a new evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val :
-          (int) a node value
-        val :
-          (str) the label of the node value
-        vals : list
-          a list of values
-
-        Raises
-        ------
-          pyAgrum.InvalidArgument
-            If the node already has an evidence
-          pyAgrum.InvalidArgument
-            If val is not a value for the node
-          pyAgrum.InvalidArgument
-            If the size of vals is different from the domain side of the node
-          pyAgrum.FatalError
-            If vals is a vector of 0s
-          pyAgrum.UndefinedElement
-            If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LoopyImportanceSampling_addEvidence(self, *args)
 
     def chgEvidence(self, *args) -> None:
-        r"""
-
-        Change the value of an already existing evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val :
-          (int) a node value
-        val :
-          (str) the label of the node value
-        vals : list
-          a list of values
-
-        Raises
-        ------
-        pyAgrum.InvalidArgument
-          If the node does not already have an evidence
-        pyAgrum.InvalidArgument
-          If val is not a value for the node
-        pyAgrum.InvalidArgument
-          If the size of vals is different from the domain side of the node
-        pyAgrum.FatalError
-          If vals is a vector of 0s
-        pyAgrum.UndefinedElement
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LoopyImportanceSampling_chgEvidence(self, *args)
 
     def hasEvidence(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if some node(s) (or the one in parameters) have received evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LoopyImportanceSampling_hasEvidence(self, *args)
 
     def eraseAllEvidence(self) -> None:
-        r"""
-
-        Removes all the evidence entered into the network.
-
-        """
         return _pyAgrum.LoopyImportanceSampling_eraseAllEvidence(self)
 
     def eraseEvidence(self, *args) -> None:
-        r"""
-
-        Remove the evidence, if any, corresponding to the node Id or name.
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LoopyImportanceSampling_eraseEvidence(self, *args)
 
     def hasHardEvidence(self, nodeName: str) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a hard evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LoopyImportanceSampling_hasHardEvidence(self, nodeName)
 
     def hasSoftEvidence(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a soft evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LoopyImportanceSampling_hasSoftEvidence(self, *args)
 
     def nbrEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.LoopyImportanceSampling_nbrEvidence(self)
 
     def nbrHardEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of hard evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.LoopyImportanceSampling_nbrHardEvidence(self)
 
     def nbrSoftEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of soft evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.LoopyImportanceSampling_nbrSoftEvidence(self)
 
     def eraseAllTargets(self) -> None:
-        r"""
-
-        Clear all previously defined targets (marginal and joint targets).
-
-        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user).
-
-        """
         return _pyAgrum.LoopyImportanceSampling_eraseAllTargets(self)
 
     def addAllTargets(self) -> None:
-        r"""
-
-        Add all the nodes as targets.
-
-        """
         return _pyAgrum.LoopyImportanceSampling_addAllTargets(self)
 
     def addTarget(self, *args) -> None:
-        r"""
-
-        Add a marginal target to the list of targets.
-
-        Parameters
-        ----------
-        target : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If target is not a NodeId in the Bayes net
-
-        """
         return _pyAgrum.LoopyImportanceSampling_addTarget(self, *args)
 
     def eraseTarget(self, *args) -> None:
-        r"""
-
-        Remove, if existing, the marginal target.
-
-        Parameters
-        ----------
-        target : int
-          a node Id
-        nodeName : int
-          a node name
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If one of the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.LoopyImportanceSampling_eraseTarget(self, *args)
 
     def isTarget(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        variable : int
-         a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if variable is a (marginal) target
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.LoopyImportanceSampling_isTarget(self, *args)
 
     def nbrTargets(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of marginal targets
-
-        """
         return _pyAgrum.LoopyImportanceSampling_nbrTargets(self)
 
     def H(self, *args) -> float:
-        r"""
-
-        Parameters
-        ----------
-        X : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        float
-          the computed Shanon's entropy of a node given the observation
-
-        """
         return _pyAgrum.LoopyImportanceSampling_H(self, *args)
 
     def BN(self) -> "pyAgrum.IBayesNet":
-        r"""
-
-        Returns
-        -------
-        pyAgrum.IBayesNet
-          A constant reference over the IBayesNet referenced by this class.
-
-        Raises
-        ------
-          pyAgrum.UndefinedElement
-            If no Bayes net has been assigned to the inference.
-
-        """
         return _pyAgrum.LoopyImportanceSampling_BN(self)
 
     def currentPosterior(self, *args) -> "pyAgrum.Potential":
-        r"""
-
-        Computes and returns the current posterior of a node.
-
-        Parameters
-        ----------
-        var : int
-          the node Id of the node for which we need a posterior probability
-        nodeName : str
-          the node name of the node for which we need a posterior probability
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a const ref to the current posterior probability of the node
-
-        Raises
-        ------
-        UndefinedElement
-          If an element of nodes is not in targets
-
-        """
         return _pyAgrum.LoopyImportanceSampling_currentPosterior(self, *args)
 
 # Register LoopyImportanceSampling in _pyAgrum:
 _pyAgrum.LoopyImportanceSampling_swigregister(LoopyImportanceSampling)
 
 class LoopyWeightedSampling(object):
-    r"""
-
-    Class used for inferences using a loopy version of weighted sampling.
-
-    LoopyWeightedSampling(bn) -> LoopyWeightedSampling
-        Parameters:
-            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
-
-    """
-
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
@@ -18526,14 +14427,6 @@ class LoopyWeightedSampling(object):
         return _pyAgrum.LoopyWeightedSampling_makeInference_(self)
 
     def setVirtualLBPSize(self, vlbpsize: float) -> None:
-        r"""
-
-        Parameters
-        ----------
-        vlbpsize : float
-          the size of the virtual LBP
-
-        """
         return _pyAgrum.LoopyWeightedSampling_setVirtualLBPSize(self, vlbpsize)
 
     def setEvidence(self, evidces):
@@ -18619,60 +14512,15 @@ class LoopyWeightedSampling(object):
 
 
     def hardEvidenceNodes(self) -> object:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with hard evidence
-
-        """
         return _pyAgrum.LoopyWeightedSampling_hardEvidenceNodes(self)
 
     def softEvidenceNodes(self) -> object:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with soft evidence
-
-        """
         return _pyAgrum.LoopyWeightedSampling_softEvidenceNodes(self)
 
     def targets(self) -> object:
-        r"""
-
-        Returns
-        -------
-        list
-          the list of marginal targets
-
-        """
         return _pyAgrum.LoopyWeightedSampling_targets(self)
 
     def evidenceImpact(self, target: object, evs: object) -> "pyAgrum.Potential":
-        r"""
-
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
-
-        Parameters
-        ----------
-        target : set
-          a set of targets ids or names.
-        evs : set
-          a set of nodes ids or names.
-
-        Warnings
-        --------
-        if some evs are d-separated, they are not included in the Potential.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
-
-        """
         return _pyAgrum.LoopyWeightedSampling_evidenceImpact(self, target, evs)
 
     def setVerbosity(self, v: bool) -> None:
@@ -18885,408 +14733,72 @@ class LoopyWeightedSampling(object):
         return _pyAgrum.LoopyWeightedSampling__asIApproximationSchemeConfiguration(self)
 
     def makeInference(self) -> None:
-        r"""
-
-        Perform the heavy computations needed to compute the targets' posteriors
-
-        In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
-        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages.
-
-        """
         return _pyAgrum.LoopyWeightedSampling_makeInference(self)
 
     def posterior(self, *args) -> "pyAgrum.Potential":
-        r"""
-
-        Computes and returns the posterior of a node.
-
-        Parameters
-        ----------
-        var : int
-          the node Id of the node for which we need a posterior probability
-        nodeName : str
-          the node name of the node for which we need a posterior probability
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a const ref to the posterior probability of the node
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If an element of nodes is not in targets
-
-        """
         return _pyAgrum.LoopyWeightedSampling_posterior(self, *args)
 
     def addEvidence(self, *args) -> None:
-        r"""
-
-        Adds a new evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val :
-          (int) a node value
-        val :
-          (str) the label of the node value
-        vals : list
-          a list of values
-
-        Raises
-        ------
-          pyAgrum.InvalidArgument
-            If the node already has an evidence
-          pyAgrum.InvalidArgument
-            If val is not a value for the node
-          pyAgrum.InvalidArgument
-            If the size of vals is different from the domain side of the node
-          pyAgrum.FatalError
-            If vals is a vector of 0s
-          pyAgrum.UndefinedElement
-            If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LoopyWeightedSampling_addEvidence(self, *args)
 
     def chgEvidence(self, *args) -> None:
-        r"""
-
-        Change the value of an already existing evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val :
-          (int) a node value
-        val :
-          (str) the label of the node value
-        vals : list
-          a list of values
-
-        Raises
-        ------
-        pyAgrum.InvalidArgument
-          If the node does not already have an evidence
-        pyAgrum.InvalidArgument
-          If val is not a value for the node
-        pyAgrum.InvalidArgument
-          If the size of vals is different from the domain side of the node
-        pyAgrum.FatalError
-          If vals is a vector of 0s
-        pyAgrum.UndefinedElement
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LoopyWeightedSampling_chgEvidence(self, *args)
 
     def hasEvidence(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if some node(s) (or the one in parameters) have received evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LoopyWeightedSampling_hasEvidence(self, *args)
 
     def eraseAllEvidence(self) -> None:
-        r"""
-
-        Removes all the evidence entered into the network.
-
-        """
         return _pyAgrum.LoopyWeightedSampling_eraseAllEvidence(self)
 
     def eraseEvidence(self, *args) -> None:
-        r"""
-
-        Remove the evidence, if any, corresponding to the node Id or name.
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LoopyWeightedSampling_eraseEvidence(self, *args)
 
     def hasHardEvidence(self, nodeName: str) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a hard evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LoopyWeightedSampling_hasHardEvidence(self, nodeName)
 
     def hasSoftEvidence(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a soft evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LoopyWeightedSampling_hasSoftEvidence(self, *args)
 
     def nbrEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.LoopyWeightedSampling_nbrEvidence(self)
 
     def nbrHardEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of hard evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.LoopyWeightedSampling_nbrHardEvidence(self)
 
     def nbrSoftEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of soft evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.LoopyWeightedSampling_nbrSoftEvidence(self)
 
     def eraseAllTargets(self) -> None:
-        r"""
-
-        Clear all previously defined targets (marginal and joint targets).
-
-        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user).
-
-        """
         return _pyAgrum.LoopyWeightedSampling_eraseAllTargets(self)
 
     def addAllTargets(self) -> None:
-        r"""
-
-        Add all the nodes as targets.
-
-        """
         return _pyAgrum.LoopyWeightedSampling_addAllTargets(self)
 
     def addTarget(self, *args) -> None:
-        r"""
-
-        Add a marginal target to the list of targets.
-
-        Parameters
-        ----------
-        target : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If target is not a NodeId in the Bayes net
-
-        """
         return _pyAgrum.LoopyWeightedSampling_addTarget(self, *args)
 
     def eraseTarget(self, *args) -> None:
-        r"""
-
-        Remove, if existing, the marginal target.
-
-        Parameters
-        ----------
-        target : int
-          a node Id
-        nodeName : int
-          a node name
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If one of the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.LoopyWeightedSampling_eraseTarget(self, *args)
 
     def isTarget(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        variable : int
-         a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if variable is a (marginal) target
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.LoopyWeightedSampling_isTarget(self, *args)
 
     def nbrTargets(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of marginal targets
-
-        """
         return _pyAgrum.LoopyWeightedSampling_nbrTargets(self)
 
     def H(self, *args) -> float:
-        r"""
-
-        Parameters
-        ----------
-        X : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        float
-          the computed Shanon's entropy of a node given the observation
-
-        """
         return _pyAgrum.LoopyWeightedSampling_H(self, *args)
 
     def BN(self) -> "pyAgrum.IBayesNet":
-        r"""
-
-        Returns
-        -------
-        pyAgrum.IBayesNet
-          A constant reference over the IBayesNet referenced by this class.
-
-        Raises
-        ------
-          pyAgrum.UndefinedElement
-            If no Bayes net has been assigned to the inference.
-
-        """
         return _pyAgrum.LoopyWeightedSampling_BN(self)
 
     def currentPosterior(self, *args) -> "pyAgrum.Potential":
-        r"""
-
-        Computes and returns the current posterior of a node.
-
-        Parameters
-        ----------
-        var : int
-          the node Id of the node for which we need a posterior probability
-        nodeName : str
-          the node name of the node for which we need a posterior probability
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a const ref to the current posterior probability of the node
-
-        Raises
-        ------
-        UndefinedElement
-          If an element of nodes is not in targets
-
-        """
         return _pyAgrum.LoopyWeightedSampling_currentPosterior(self, *args)
 
 # Register LoopyWeightedSampling in _pyAgrum:
 _pyAgrum.LoopyWeightedSampling_swigregister(LoopyWeightedSampling)
 
 class LoopyGibbsSampling(object):
-    r"""
-
-    Class used for inferences using a loopy version of Gibbs sampling.
-
-    LoopyGibbsSampling(bn) -> LoopyGibbsSampling
-        Parameters:
-            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
-
-    """
-
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
@@ -19303,14 +14815,6 @@ class LoopyGibbsSampling(object):
         return _pyAgrum.LoopyGibbsSampling_makeInference_(self)
 
     def setVirtualLBPSize(self, vlbpsize: float) -> None:
-        r"""
-
-        Parameters
-        ----------
-        vlbpsize : float
-          the size of the virtual LBP
-
-        """
         return _pyAgrum.LoopyGibbsSampling_setVirtualLBPSize(self, vlbpsize)
 
     def setEvidence(self, evidces):
@@ -19396,60 +14900,15 @@ class LoopyGibbsSampling(object):
 
 
     def hardEvidenceNodes(self) -> object:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with hard evidence
-
-        """
         return _pyAgrum.LoopyGibbsSampling_hardEvidenceNodes(self)
 
     def softEvidenceNodes(self) -> object:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with soft evidence
-
-        """
         return _pyAgrum.LoopyGibbsSampling_softEvidenceNodes(self)
 
     def targets(self) -> object:
-        r"""
-
-        Returns
-        -------
-        list
-          the list of marginal targets
-
-        """
         return _pyAgrum.LoopyGibbsSampling_targets(self)
 
     def evidenceImpact(self, target: object, evs: object) -> "pyAgrum.Potential":
-        r"""
-
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
-
-        Parameters
-        ----------
-        target : set
-          a set of targets ids or names.
-        evs : set
-          a set of nodes ids or names.
-
-        Warnings
-        --------
-        if some evs are d-separated, they are not included in the Potential.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
-
-        """
         return _pyAgrum.LoopyGibbsSampling_evidenceImpact(self, target, evs)
 
     def setVerbosity(self, v: bool) -> None:
@@ -19662,474 +15121,90 @@ class LoopyGibbsSampling(object):
         return _pyAgrum.LoopyGibbsSampling__asIApproximationSchemeConfiguration(self)
 
     def makeInference(self) -> None:
-        r"""
-
-        Perform the heavy computations needed to compute the targets' posteriors
-
-        In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
-        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages.
-
-        """
         return _pyAgrum.LoopyGibbsSampling_makeInference(self)
 
     def posterior(self, *args) -> "pyAgrum.Potential":
-        r"""
-
-        Computes and returns the posterior of a node.
-
-        Parameters
-        ----------
-        var : int
-          the node Id of the node for which we need a posterior probability
-        nodeName : str
-          the node name of the node for which we need a posterior probability
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a const ref to the posterior probability of the node
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If an element of nodes is not in targets
-
-        """
         return _pyAgrum.LoopyGibbsSampling_posterior(self, *args)
 
     def addEvidence(self, *args) -> None:
-        r"""
-
-        Adds a new evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val :
-          (int) a node value
-        val :
-          (str) the label of the node value
-        vals : list
-          a list of values
-
-        Raises
-        ------
-          pyAgrum.InvalidArgument
-            If the node already has an evidence
-          pyAgrum.InvalidArgument
-            If val is not a value for the node
-          pyAgrum.InvalidArgument
-            If the size of vals is different from the domain side of the node
-          pyAgrum.FatalError
-            If vals is a vector of 0s
-          pyAgrum.UndefinedElement
-            If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LoopyGibbsSampling_addEvidence(self, *args)
 
     def chgEvidence(self, *args) -> None:
-        r"""
-
-        Change the value of an already existing evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val :
-          (int) a node value
-        val :
-          (str) the label of the node value
-        vals : list
-          a list of values
-
-        Raises
-        ------
-        pyAgrum.InvalidArgument
-          If the node does not already have an evidence
-        pyAgrum.InvalidArgument
-          If val is not a value for the node
-        pyAgrum.InvalidArgument
-          If the size of vals is different from the domain side of the node
-        pyAgrum.FatalError
-          If vals is a vector of 0s
-        pyAgrum.UndefinedElement
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LoopyGibbsSampling_chgEvidence(self, *args)
 
     def hasEvidence(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if some node(s) (or the one in parameters) have received evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LoopyGibbsSampling_hasEvidence(self, *args)
 
     def eraseAllEvidence(self) -> None:
-        r"""
-
-        Removes all the evidence entered into the network.
-
-        """
         return _pyAgrum.LoopyGibbsSampling_eraseAllEvidence(self)
 
     def eraseEvidence(self, *args) -> None:
-        r"""
-
-        Remove the evidence, if any, corresponding to the node Id or name.
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LoopyGibbsSampling_eraseEvidence(self, *args)
 
     def hasHardEvidence(self, nodeName: str) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a hard evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LoopyGibbsSampling_hasHardEvidence(self, nodeName)
 
     def hasSoftEvidence(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a soft evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LoopyGibbsSampling_hasSoftEvidence(self, *args)
 
     def nbrEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.LoopyGibbsSampling_nbrEvidence(self)
 
     def nbrHardEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of hard evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.LoopyGibbsSampling_nbrHardEvidence(self)
 
     def nbrSoftEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of soft evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.LoopyGibbsSampling_nbrSoftEvidence(self)
 
     def eraseAllTargets(self) -> None:
-        r"""
-
-        Clear all previously defined targets (marginal and joint targets).
-
-        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user).
-
-        """
         return _pyAgrum.LoopyGibbsSampling_eraseAllTargets(self)
 
     def addAllTargets(self) -> None:
-        r"""
-
-        Add all the nodes as targets.
-
-        """
         return _pyAgrum.LoopyGibbsSampling_addAllTargets(self)
 
     def addTarget(self, *args) -> None:
-        r"""
-
-        Add a marginal target to the list of targets.
-
-        Parameters
-        ----------
-        target : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If target is not a NodeId in the Bayes net
-
-        """
         return _pyAgrum.LoopyGibbsSampling_addTarget(self, *args)
 
     def eraseTarget(self, *args) -> None:
-        r"""
-
-        Remove, if existing, the marginal target.
-
-        Parameters
-        ----------
-        target : int
-          a node Id
-        nodeName : int
-          a node name
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If one of the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.LoopyGibbsSampling_eraseTarget(self, *args)
 
     def isTarget(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        variable : int
-         a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if variable is a (marginal) target
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.LoopyGibbsSampling_isTarget(self, *args)
 
     def nbrTargets(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of marginal targets
-
-        """
         return _pyAgrum.LoopyGibbsSampling_nbrTargets(self)
 
     def H(self, *args) -> float:
-        r"""
-
-        Parameters
-        ----------
-        X : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        float
-          the computed Shanon's entropy of a node given the observation
-
-        """
         return _pyAgrum.LoopyGibbsSampling_H(self, *args)
 
     def BN(self) -> "pyAgrum.IBayesNet":
-        r"""
-
-        Returns
-        -------
-        pyAgrum.IBayesNet
-          A constant reference over the IBayesNet referenced by this class.
-
-        Raises
-        ------
-          pyAgrum.UndefinedElement
-            If no Bayes net has been assigned to the inference.
-
-        """
         return _pyAgrum.LoopyGibbsSampling_BN(self)
 
     def currentPosterior(self, *args) -> "pyAgrum.Potential":
-        r"""
-
-        Computes and returns the current posterior of a node.
-
-        Parameters
-        ----------
-        var : int
-          the node Id of the node for which we need a posterior probability
-        nodeName : str
-          the node name of the node for which we need a posterior probability
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a const ref to the current posterior probability of the node
-
-        Raises
-        ------
-        UndefinedElement
-          If an element of nodes is not in targets
-
-        """
         return _pyAgrum.LoopyGibbsSampling_currentPosterior(self, *args)
 
     def nbrDrawnVar(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of variable drawn at each iteration
-
-        """
         return _pyAgrum.LoopyGibbsSampling_nbrDrawnVar(self)
 
     def setNbrDrawnVar(self, _nbr: int) -> None:
-        r"""
-
-        Parameters
-        ----------
-        _nbr : int
-          the number of variables to be drawn at each iteration
-
-        """
         return _pyAgrum.LoopyGibbsSampling_setNbrDrawnVar(self, _nbr)
 
     def isDrawnAtRandom(self) -> bool:
-        r"""
-
-        Returns
-        -------
-        bool
-          True if variables are drawn at random
-
-        """
         return _pyAgrum.LoopyGibbsSampling_isDrawnAtRandom(self)
 
     def setDrawnAtRandom(self, _atRandom: bool) -> None:
-        r"""
-
-        Parameters
-        ----------
-        _atRandom : bool
-          indicates if variables should be drawn at random
-
-        """
         return _pyAgrum.LoopyGibbsSampling_setDrawnAtRandom(self, _atRandom)
 
     def burnIn(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          size of burn in on number of iteration
-
-        """
         return _pyAgrum.LoopyGibbsSampling_burnIn(self)
 
     def setBurnIn(self, b: int) -> None:
-        r"""
-
-        Parameters
-        ----------
-        b : int
-          size of burn in on number of iteration
-
-        """
         return _pyAgrum.LoopyGibbsSampling_setBurnIn(self, b)
 
 # Register LoopyGibbsSampling in _pyAgrum:
 _pyAgrum.LoopyGibbsSampling_swigregister(LoopyGibbsSampling)
 
 class LoopyMonteCarloSampling(object):
-    r"""
-
-    Class used for inferences using a loopy version of Monte Carlo sampling.
-
-    LoopyMonteCarloSampling(bn) -> LoopyMonteCarloSampling
-        Parameters:
-            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
-
-    """
-
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
@@ -20146,14 +15221,6 @@ class LoopyMonteCarloSampling(object):
         return _pyAgrum.LoopyMonteCarloSampling_makeInference_(self)
 
     def setVirtualLBPSize(self, vlbpsize: float) -> None:
-        r"""
-
-        Parameters
-        ----------
-        vlbpsize : float
-          the size of the virtual LBP
-
-        """
         return _pyAgrum.LoopyMonteCarloSampling_setVirtualLBPSize(self, vlbpsize)
 
     def setEvidence(self, evidces):
@@ -20239,60 +15306,15 @@ class LoopyMonteCarloSampling(object):
 
 
     def hardEvidenceNodes(self) -> object:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with hard evidence
-
-        """
         return _pyAgrum.LoopyMonteCarloSampling_hardEvidenceNodes(self)
 
     def softEvidenceNodes(self) -> object:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with soft evidence
-
-        """
         return _pyAgrum.LoopyMonteCarloSampling_softEvidenceNodes(self)
 
     def targets(self) -> object:
-        r"""
-
-        Returns
-        -------
-        list
-          the list of marginal targets
-
-        """
         return _pyAgrum.LoopyMonteCarloSampling_targets(self)
 
     def evidenceImpact(self, target: object, evs: object) -> "pyAgrum.Potential":
-        r"""
-
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
-
-        Parameters
-        ----------
-        target : set
-          a set of targets ids or names.
-        evs : set
-          a set of nodes ids or names.
-
-        Warnings
-        --------
-        if some evs are d-separated, they are not included in the Potential.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
-
-        """
         return _pyAgrum.LoopyMonteCarloSampling_evidenceImpact(self, target, evs)
 
     def setVerbosity(self, v: bool) -> None:
@@ -20505,392 +15527,66 @@ class LoopyMonteCarloSampling(object):
         return _pyAgrum.LoopyMonteCarloSampling__asIApproximationSchemeConfiguration(self)
 
     def makeInference(self) -> None:
-        r"""
-
-        Perform the heavy computations needed to compute the targets' posteriors
-
-        In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
-        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages.
-
-        """
         return _pyAgrum.LoopyMonteCarloSampling_makeInference(self)
 
     def posterior(self, *args) -> "pyAgrum.Potential":
-        r"""
-
-        Computes and returns the posterior of a node.
-
-        Parameters
-        ----------
-        var : int
-          the node Id of the node for which we need a posterior probability
-        nodeName : str
-          the node name of the node for which we need a posterior probability
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a const ref to the posterior probability of the node
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If an element of nodes is not in targets
-
-        """
         return _pyAgrum.LoopyMonteCarloSampling_posterior(self, *args)
 
     def addEvidence(self, *args) -> None:
-        r"""
-
-        Adds a new evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val :
-          (int) a node value
-        val :
-          (str) the label of the node value
-        vals : list
-          a list of values
-
-        Raises
-        ------
-          pyAgrum.InvalidArgument
-            If the node already has an evidence
-          pyAgrum.InvalidArgument
-            If val is not a value for the node
-          pyAgrum.InvalidArgument
-            If the size of vals is different from the domain side of the node
-          pyAgrum.FatalError
-            If vals is a vector of 0s
-          pyAgrum.UndefinedElement
-            If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LoopyMonteCarloSampling_addEvidence(self, *args)
 
     def chgEvidence(self, *args) -> None:
-        r"""
-
-        Change the value of an already existing evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val :
-          (int) a node value
-        val :
-          (str) the label of the node value
-        vals : list
-          a list of values
-
-        Raises
-        ------
-        pyAgrum.InvalidArgument
-          If the node does not already have an evidence
-        pyAgrum.InvalidArgument
-          If val is not a value for the node
-        pyAgrum.InvalidArgument
-          If the size of vals is different from the domain side of the node
-        pyAgrum.FatalError
-          If vals is a vector of 0s
-        pyAgrum.UndefinedElement
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LoopyMonteCarloSampling_chgEvidence(self, *args)
 
     def hasEvidence(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if some node(s) (or the one in parameters) have received evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LoopyMonteCarloSampling_hasEvidence(self, *args)
 
     def eraseAllEvidence(self) -> None:
-        r"""
-
-        Removes all the evidence entered into the network.
-
-        """
         return _pyAgrum.LoopyMonteCarloSampling_eraseAllEvidence(self)
 
     def eraseEvidence(self, *args) -> None:
-        r"""
-
-        Remove the evidence, if any, corresponding to the node Id or name.
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LoopyMonteCarloSampling_eraseEvidence(self, *args)
 
     def hasHardEvidence(self, nodeName: str) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a hard evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LoopyMonteCarloSampling_hasHardEvidence(self, nodeName)
 
     def hasSoftEvidence(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a soft evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LoopyMonteCarloSampling_hasSoftEvidence(self, *args)
 
     def nbrEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.LoopyMonteCarloSampling_nbrEvidence(self)
 
     def nbrHardEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of hard evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.LoopyMonteCarloSampling_nbrHardEvidence(self)
 
     def nbrSoftEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of soft evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.LoopyMonteCarloSampling_nbrSoftEvidence(self)
 
     def eraseAllTargets(self) -> None:
-        r"""
-
-        Clear all previously defined targets (marginal and joint targets).
-
-        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user).
-
-        """
         return _pyAgrum.LoopyMonteCarloSampling_eraseAllTargets(self)
 
     def addAllTargets(self) -> None:
-        r"""
-
-        Add all the nodes as targets.
-
-        """
         return _pyAgrum.LoopyMonteCarloSampling_addAllTargets(self)
 
     def addTarget(self, *args) -> None:
-        r"""
-
-        Add a marginal target to the list of targets.
-
-        Parameters
-        ----------
-        target : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If target is not a NodeId in the Bayes net
-
-        """
         return _pyAgrum.LoopyMonteCarloSampling_addTarget(self, *args)
 
     def eraseTarget(self, *args) -> None:
-        r"""
-
-        Remove, if existing, the marginal target.
-
-        Parameters
-        ----------
-        target : int
-          a node Id
-        nodeName : int
-          a node name
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If one of the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.LoopyMonteCarloSampling_eraseTarget(self, *args)
 
     def isTarget(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        variable : int
-         a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if variable is a (marginal) target
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.LoopyMonteCarloSampling_isTarget(self, *args)
 
     def nbrTargets(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of marginal targets
-
-        """
         return _pyAgrum.LoopyMonteCarloSampling_nbrTargets(self)
 
     def H(self, *args) -> float:
-        r"""
-
-        Parameters
-        ----------
-        X : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        float
-          the computed Shanon's entropy of a node given the observation
-
-        """
         return _pyAgrum.LoopyMonteCarloSampling_H(self, *args)
 
     def BN(self) -> "pyAgrum.IBayesNet":
-        r"""
-
-        Returns
-        -------
-        pyAgrum.IBayesNet
-          A constant reference over the IBayesNet referenced by this class.
-
-        Raises
-        ------
-          pyAgrum.UndefinedElement
-            If no Bayes net has been assigned to the inference.
-
-        """
         return _pyAgrum.LoopyMonteCarloSampling_BN(self)
 
     def currentPosterior(self, *args) -> "pyAgrum.Potential":
-        r"""
-
-        Computes and returns the current posterior of a node.
-
-        Parameters
-        ----------
-        var : int
-          the node Id of the node for which we need a posterior probability
-        nodeName : str
-          the node name of the node for which we need a posterior probability
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a const ref to the current posterior probability of the node
-
-        Raises
-        ------
-        UndefinedElement
-          If an element of nodes is not in targets
-
-        """
         return _pyAgrum.LoopyMonteCarloSampling_currentPosterior(self, *args)
 
 # Register LoopyMonteCarloSampling in _pyAgrum:
@@ -21002,60 +15698,15 @@ class LoopyBeliefPropagation(object):
 
 
     def hardEvidenceNodes(self) -> object:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with hard evidence
-
-        """
         return _pyAgrum.LoopyBeliefPropagation_hardEvidenceNodes(self)
 
     def softEvidenceNodes(self) -> object:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with soft evidence
-
-        """
         return _pyAgrum.LoopyBeliefPropagation_softEvidenceNodes(self)
 
     def targets(self) -> object:
-        r"""
-
-        Returns
-        -------
-        list
-          the list of marginal targets
-
-        """
         return _pyAgrum.LoopyBeliefPropagation_targets(self)
 
     def evidenceImpact(self, target: object, evs: object) -> "pyAgrum.Potential":
-        r"""
-
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
-
-        Parameters
-        ----------
-        target : set
-          a set of targets ids or names.
-        evs : set
-          a set of nodes ids or names.
-
-        Warnings
-        --------
-        if some evs are d-separated, they are not included in the Potential.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
-
-        """
         return _pyAgrum.LoopyBeliefPropagation_evidenceImpact(self, target, evs)
 
     def setVerbosity(self, v: bool) -> None:
@@ -21268,367 +15919,63 @@ class LoopyBeliefPropagation(object):
         return _pyAgrum.LoopyBeliefPropagation__asIApproximationSchemeConfiguration(self)
 
     def makeInference(self) -> None:
-        r"""
-
-        Perform the heavy computations needed to compute the targets' posteriors
-
-        In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
-        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages.
-
-        """
         return _pyAgrum.LoopyBeliefPropagation_makeInference(self)
 
     def posterior(self, *args) -> "pyAgrum.Potential":
-        r"""
-
-        Computes and returns the posterior of a node.
-
-        Parameters
-        ----------
-        var : int
-          the node Id of the node for which we need a posterior probability
-        nodeName : str
-          the node name of the node for which we need a posterior probability
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a const ref to the posterior probability of the node
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If an element of nodes is not in targets
-
-        """
         return _pyAgrum.LoopyBeliefPropagation_posterior(self, *args)
 
     def addEvidence(self, *args) -> None:
-        r"""
-
-        Adds a new evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val :
-          (int) a node value
-        val :
-          (str) the label of the node value
-        vals : list
-          a list of values
-
-        Raises
-        ------
-          pyAgrum.InvalidArgument
-            If the node already has an evidence
-          pyAgrum.InvalidArgument
-            If val is not a value for the node
-          pyAgrum.InvalidArgument
-            If the size of vals is different from the domain side of the node
-          pyAgrum.FatalError
-            If vals is a vector of 0s
-          pyAgrum.UndefinedElement
-            If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LoopyBeliefPropagation_addEvidence(self, *args)
 
     def chgEvidence(self, *args) -> None:
-        r"""
-
-        Change the value of an already existing evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val :
-          (int) a node value
-        val :
-          (str) the label of the node value
-        vals : list
-          a list of values
-
-        Raises
-        ------
-        pyAgrum.InvalidArgument
-          If the node does not already have an evidence
-        pyAgrum.InvalidArgument
-          If val is not a value for the node
-        pyAgrum.InvalidArgument
-          If the size of vals is different from the domain side of the node
-        pyAgrum.FatalError
-          If vals is a vector of 0s
-        pyAgrum.UndefinedElement
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LoopyBeliefPropagation_chgEvidence(self, *args)
 
     def hasEvidence(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if some node(s) (or the one in parameters) have received evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LoopyBeliefPropagation_hasEvidence(self, *args)
 
     def eraseAllEvidence(self) -> None:
-        r"""
-
-        Removes all the evidence entered into the network.
-
-        """
         return _pyAgrum.LoopyBeliefPropagation_eraseAllEvidence(self)
 
     def eraseEvidence(self, *args) -> None:
-        r"""
-
-        Remove the evidence, if any, corresponding to the node Id or name.
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LoopyBeliefPropagation_eraseEvidence(self, *args)
 
     def hasHardEvidence(self, nodeName: str) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a hard evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LoopyBeliefPropagation_hasHardEvidence(self, nodeName)
 
     def hasSoftEvidence(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a soft evidence
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
         return _pyAgrum.LoopyBeliefPropagation_hasSoftEvidence(self, *args)
 
     def nbrEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.LoopyBeliefPropagation_nbrEvidence(self)
 
     def nbrHardEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of hard evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.LoopyBeliefPropagation_nbrHardEvidence(self)
 
     def nbrSoftEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of soft evidence entered into the Bayesian network
-
-        """
         return _pyAgrum.LoopyBeliefPropagation_nbrSoftEvidence(self)
 
     def eraseAllTargets(self) -> None:
-        r"""
-
-        Clear all previously defined targets (marginal and joint targets).
-
-        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user).
-
-        """
         return _pyAgrum.LoopyBeliefPropagation_eraseAllTargets(self)
 
     def addAllTargets(self) -> None:
-        r"""
-
-        Add all the nodes as targets.
-
-        """
         return _pyAgrum.LoopyBeliefPropagation_addAllTargets(self)
 
     def addTarget(self, *args) -> None:
-        r"""
-
-        Add a marginal target to the list of targets.
-
-        Parameters
-        ----------
-        target : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Raises
-        ------
-        pyAgrum.UndefinedElement
-          If target is not a NodeId in the Bayes net
-
-        """
         return _pyAgrum.LoopyBeliefPropagation_addTarget(self, *args)
 
     def eraseTarget(self, *args) -> None:
-        r"""
-
-        Remove, if existing, the marginal target.
-
-        Parameters
-        ----------
-        target : int
-          a node Id
-        nodeName : int
-          a node name
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If one of the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.LoopyBeliefPropagation_eraseTarget(self, *args)
 
     def isTarget(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        variable : int
-         a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if variable is a (marginal) target
-
-        Raises
-        ------
-        pyAgrum.IndexError
-          If the node does not belong to the Bayesian network
-        pyAgrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
         return _pyAgrum.LoopyBeliefPropagation_isTarget(self, *args)
 
     def nbrTargets(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of marginal targets
-
-        """
         return _pyAgrum.LoopyBeliefPropagation_nbrTargets(self)
 
     def H(self, *args) -> float:
-        r"""
-
-        Parameters
-        ----------
-        X : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        float
-          the computed Shanon's entropy of a node given the observation
-
-        """
         return _pyAgrum.LoopyBeliefPropagation_H(self, *args)
 
     def BN(self) -> "pyAgrum.IBayesNet":
-        r"""
-
-        Returns
-        -------
-        pyAgrum.IBayesNet
-          A constant reference over the IBayesNet referenced by this class.
-
-        Raises
-        ------
-          pyAgrum.UndefinedElement
-            If no Bayes net has been assigned to the inference.
-
-        """
         return _pyAgrum.LoopyBeliefPropagation_BN(self)
 
 # Register LoopyBeliefPropagation in _pyAgrum:
@@ -22054,7 +16401,7 @@ class CredalNet(object):
         ----------
         tail :
         	the id of the tail node
-        head : int 
+        head : int
         	the id of the head node
 
         Raises
@@ -22083,7 +16430,7 @@ class CredalNet(object):
         ----------
         id : int
         	the NodeId of the node
-        cpt	: tbw 
+        cpt	: tbw
         	the vertices of every credal set (for each instantiation of the parents)
 
         Warning
@@ -22110,7 +16457,7 @@ class CredalNet(object):
         entry : int
         	the index of the instantiation (from 0 to K - 1) excluding the given node (only the parents are used to compute the index of the credal set)
         ins : pyAgrum.Instantiation
-        	the Instantiation (only the parents matter to find the credal set index) 
+        	the Instantiation (only the parents matter to find the credal set index)
         cpt	: tbw
         	the vertices of every credal set (for each instantiation of the parents)
 
@@ -22124,11 +16471,11 @@ class CredalNet(object):
     def fillConstraints(self, id: int, lower: "Vector", upper: "Vector") -> None:
         r"""
 
-        Set the interval constraints of the credal sets of a given node (all instantiations) 
+        Set the interval constraints of the credal sets of a given node (all instantiations)
 
         Parameters
         ----------
-        id : int 
+        id : int
         	The id of the node
         lower : list
         	The lower value for each probability in correct order
@@ -22153,7 +16500,7 @@ class CredalNet(object):
 
         Parameters
         ----------
-        id : int 
+        id : int
         	The id of the node
         entry : int
         	The index of the instantiation excluding the given node (only the parents are used to compute the index of the credal set)
@@ -22170,7 +16517,7 @@ class CredalNet(object):
 
         Warning
         -------
-        DOES change the BayesNet (s) associated to this credal net ! 
+        DOES change the BayesNet (s) associated to this credal net !
 
         """
         return _pyAgrum.CredalNet_fillConstraint(self, *args)
@@ -22190,7 +16537,7 @@ class CredalNet(object):
         Returns
         -------
         pyAgrum.Instantiation
-            the instantiation 
+            the instantiation
 
         """
         return _pyAgrum.CredalNet_instantiation(self, id)
@@ -22206,7 +16553,7 @@ class CredalNet(object):
         Returns
         -------
         int
-            The cardinality of the node 
+            The cardinality of the node
 
         """
         return _pyAgrum.CredalNet_domainSize(self, id)
@@ -22238,7 +16585,7 @@ class CredalNet(object):
 
         Computes the vertices of each credal set according to their interval definition (uses lrs).
 
-        Use this method when using a single BayesNet storing counts of events. 
+        Use this method when using a single BayesNet storing counts of events.
 
         """
         return _pyAgrum.CredalNet_intervalToCredalWithFiles(self)
@@ -22260,7 +16607,7 @@ class CredalNet(object):
 
         Use this method when using a single BayesNet storing counts of events. Lagrange normalization. This call is irreversible and modify counts stored by __src_bn.
 
-        Doest not performs computations of the parameters but keeps normalized counts of events only. Call idmLearning to compute the probabilities (with any parameter value). 
+        Doest not performs computations of the parameters but keeps normalized counts of events only. Call idmLearning to compute the probabilities (with any parameter value).
 
         """
         return _pyAgrum.CredalNet_lagrangeNormalization(self)
@@ -22277,7 +16624,7 @@ class CredalNet(object):
         s : int
         	the IDM parameter.
         keepZeroes : bool
-        	used as a flag as whether or not - respectively True or False - we keep zeroes as zeroes. Default is False, i.e. zeroes are not kept. 
+        	used as a flag as whether or not - respectively True or False - we keep zeroes as zeroes. Default is False, i.e. zeroes are not kept.
 
         """
         return _pyAgrum.CredalNet_idmLearning(self, s, keepZeroes)
@@ -22322,7 +16669,7 @@ class CredalNet(object):
         Returns
         -------
         pyAgrum.BayesNet
-            Returns a constant reference to the original BayesNet (used as a DAG, it's CPTs does not matter). 
+            Returns a constant reference to the original BayesNet (used as a DAG, it's CPTs does not matter).
 
         """
         return _pyAgrum.CredalNet_src_bn(self)
@@ -22333,7 +16680,7 @@ class CredalNet(object):
         Returns
         -------
         pyAgrum.BayesNet
-            Returs a constant reference to the actual BayesNet (used as a DAG, it's CPTs does not matter). 
+            Returs a constant reference to the actual BayesNet (used as a DAG, it's CPTs does not matter).
 
         """
         return _pyAgrum.CredalNet_current_bn(self)
@@ -22373,13 +16720,13 @@ class CredalNet(object):
 
         Parameters
         ----------
-        id : int 
+        id : int
         	The constant reference to the choosen NodeId
 
         Returns
         -------
         pyAgrum.CredalNet
-            the type of the choosen node in the (up-to-date) CredalNet __current_bn if any, __src_bn otherwise. 
+            the type of the choosen node in the (up-to-date) CredalNet __current_bn if any, __src_bn otherwise.
 
         """
         return _pyAgrum.CredalNet_currentNodeType(self, id)
@@ -22395,7 +16742,7 @@ class CredalNet(object):
         Returns
         -------
         pyAgrum.CredalNet
-        	the type of the choosen node in the (up-to-date) CredalNet in __src_bn. 
+        	the type of the choosen node in the (up-to-date) CredalNet in __src_bn.
 
         """
         return _pyAgrum.CredalNet_nodeType(self, id)
@@ -22406,7 +16753,7 @@ class CredalNet(object):
         Returns
         -------
         float
-            a constant reference to the lowest perturbation of the BayesNet provided as input for this CredalNet. 
+            a constant reference to the lowest perturbation of the BayesNet provided as input for this CredalNet.
 
         """
         return _pyAgrum.CredalNet_epsilonMin(self)
@@ -22417,7 +16764,7 @@ class CredalNet(object):
         Returns
         -------
         float
-            a constant reference to the highest perturbation of the BayesNet provided as input for this CredalNet. 
+            a constant reference to the highest perturbation of the BayesNet provided as input for this CredalNet.
 
         """
         return _pyAgrum.CredalNet_epsilonMax(self)
@@ -22428,7 +16775,7 @@ class CredalNet(object):
         Returns
         -------
         float
-            a constant reference to the average perturbation of the BayesNet provided as input for this CredalNet. 
+            a constant reference to the average perturbation of the BayesNet provided as input for this CredalNet.
 
         """
         return _pyAgrum.CredalNet_epsilonMean(self)
@@ -22439,7 +16786,7 @@ class CredalNet(object):
         Returns
         -------
         bool
-        	True if this CredalNet is separately and interval specified, False otherwise. 
+        	True if this CredalNet is separately and interval specified, False otherwise.
 
         """
         return _pyAgrum.CredalNet_isSeparatelySpecified(self)
@@ -22510,24 +16857,9 @@ class CNMonteCarloSampling(object):
     __swig_destroy__ = _pyAgrum.delete_CNMonteCarloSampling
 
     def makeInference(self) -> None:
-        r"""
-
-        Starts the inference.
-
-        """
         return _pyAgrum.CNMonteCarloSampling_makeInference(self)
 
     def insertEvidenceFile(self, path: str) -> None:
-        r"""
-
-        Insert evidence from file.
-
-        Parameters
-        ----------
-        path : str
-        	the path to the evidence file.
-
-        """
         return _pyAgrum.CNMonteCarloSampling_insertEvidenceFile(self, path)
 
     def setVerbosity(self, v: bool) -> None:
@@ -22740,113 +17072,21 @@ class CNMonteCarloSampling(object):
         return _pyAgrum.CNMonteCarloSampling__asIApproximationSchemeConfiguration(self)
 
     def setRepetitiveInd(self, flag: bool) -> None:
-        r"""
-
-        Parameters
-        ----------
-        flag : bool
-        	True if repetitive independence is to be used, false otherwise. Only usefull with dynamic networks.
-
-        """
         return _pyAgrum.CNMonteCarloSampling_setRepetitiveInd(self, flag)
 
     def marginalMax(self, *args) -> "pyAgrum.Potential":
-        r"""
-
-        Get the upper marginals of a given node id.
-
-        Parameters
-        ----------
-        id : int
-        	the node id which upper marginals we want.
-        varName : str
-        	the variable name which upper marginals we want.
-
-        Returns
-        -------
-        list
-            a constant reference to this node upper marginals.
-
-        Raises
-        ------
-          pyAgrum.IndexError
-        	If the node does not belong to the Credal network
-
-        """
         return _pyAgrum.CNMonteCarloSampling_marginalMax(self, *args)
 
     def marginalMin(self, *args) -> "pyAgrum.Potential":
-        r"""
-
-        Get the lower marginals of a given node id.
-
-        Parameters
-        ----------
-        id : int
-        	the node id which lower marginals we want.
-        varName : str
-        	the variable name which lower marginals we want.
-
-        Returns
-        -------
-        list
-            a constant reference to this node lower marginals.
-
-        Raises
-        ------
-          pyAgrum.IndexError
-        	If the node does not belong to the Credal network
-
-        """
         return _pyAgrum.CNMonteCarloSampling_marginalMin(self, *args)
 
     def insertModalsFile(self, path: str) -> None:
-        r"""
-
-        Insert variables modalities from file to compute expectations.
-
-        Parameters
-        ----------
-        path : str
-        	The path to the modalities file.
-
-        """
         return _pyAgrum.CNMonteCarloSampling_insertModalsFile(self, path)
 
     def dynamicExpMax(self, varName: str) -> List[float]:
-        r"""
-
-        Get the upper dynamic expectation of a given variable prefix.
-
-        Parameters
-        ----------
-        varName : str
-        	the variable name prefix which upper expectation we want.
-
-        Returns
-        -------
-        float
-            a constant reference to the variable upper expectation over all time steps.
-
-        """
         return _pyAgrum.CNMonteCarloSampling_dynamicExpMax(self, varName)
 
     def dynamicExpMin(self, varName: str) -> List[float]:
-        r"""
-
-        Get the lower dynamic expectation of a given variable prefix.
-
-        Parameters
-        ----------
-        varName : str
-        	the variable name prefix which lower expectation we want.
-
-        Returns
-        -------
-        float
-            a constant reference to the variable lower expectation over all time steps.
-
-        """
         return _pyAgrum.CNMonteCarloSampling_dynamicExpMin(self, varName)
 
     def CN(self) -> "pyAgrum.CredalNet":
@@ -22873,45 +17113,15 @@ class CNLoopyPropagation(object):
     InferenceType_randomOrder = _pyAgrum.CNLoopyPropagation_InferenceType_randomOrder
 
     def makeInference(self) -> None:
-        r"""
-
-        Starts the inference.
-
-        """
         return _pyAgrum.CNLoopyPropagation_makeInference(self)
 
     def inferenceType(self, *args) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-        	the inference type
-
-        """
         return _pyAgrum.CNLoopyPropagation_inferenceType(self, *args)
 
     def eraseAllEvidence(self) -> None:
-        r"""
-
-        Erase all inference related data to perform another one.
-
-        You need to insert evidence again if needed but modalities are kept. You can insert new ones by using the appropriate method which will delete the old ones.
-
-        """
         return _pyAgrum.CNLoopyPropagation_eraseAllEvidence(self)
 
     def saveInference(self, path: str) -> None:
-        r"""
-
-        Saves marginals.
-
-        Parameters
-        ----------
-        path : str
-        	The path to the file to save marginals.
-
-        """
         return _pyAgrum.CNLoopyPropagation_saveInference(self, path)
 
     def __init__(self, cnet: "CredalNet"):
@@ -22924,16 +17134,6 @@ class CNLoopyPropagation(object):
     __swig_destroy__ = _pyAgrum.delete_CNLoopyPropagation
 
     def insertEvidenceFile(self, path: str) -> None:
-        r"""
-
-        Insert evidence from file.
-
-        Parameters
-        ----------
-        path : str
-        	the path to the evidence file.
-
-        """
         return _pyAgrum.CNLoopyPropagation_insertEvidenceFile(self, path)
 
     def setVerbosity(self, v: bool) -> None:
@@ -23146,113 +17346,21 @@ class CNLoopyPropagation(object):
         return _pyAgrum.CNLoopyPropagation__asIApproximationSchemeConfiguration(self)
 
     def setRepetitiveInd(self, flag: bool) -> None:
-        r"""
-
-        Parameters
-        ----------
-        flag : bool
-        	True if repetitive independence is to be used, false otherwise. Only usefull with dynamic networks.
-
-        """
         return _pyAgrum.CNLoopyPropagation_setRepetitiveInd(self, flag)
 
     def marginalMax(self, *args) -> "pyAgrum.Potential":
-        r"""
-
-        Get the upper marginals of a given node id.
-
-        Parameters
-        ----------
-        id : int
-        	the node id which upper marginals we want.
-        varName : str
-        	the variable name which upper marginals we want.
-
-        Returns
-        -------
-        list
-            a constant reference to this node upper marginals.
-
-        Raises
-        ------
-          pyAgrum.IndexError
-        	If the node does not belong to the Credal network
-
-        """
         return _pyAgrum.CNLoopyPropagation_marginalMax(self, *args)
 
     def marginalMin(self, *args) -> "pyAgrum.Potential":
-        r"""
-
-        Get the lower marginals of a given node id.
-
-        Parameters
-        ----------
-        id : int
-        	the node id which lower marginals we want.
-        varName : str
-        	the variable name which lower marginals we want.
-
-        Returns
-        -------
-        list
-            a constant reference to this node lower marginals.
-
-        Raises
-        ------
-          pyAgrum.IndexError
-        	If the node does not belong to the Credal network
-
-        """
         return _pyAgrum.CNLoopyPropagation_marginalMin(self, *args)
 
     def insertModalsFile(self, path: str) -> None:
-        r"""
-
-        Insert variables modalities from file to compute expectations.
-
-        Parameters
-        ----------
-        path : str
-        	The path to the modalities file.
-
-        """
         return _pyAgrum.CNLoopyPropagation_insertModalsFile(self, path)
 
     def dynamicExpMax(self, varName: str) -> List[float]:
-        r"""
-
-        Get the upper dynamic expectation of a given variable prefix.
-
-        Parameters
-        ----------
-        varName : str
-        	the variable name prefix which upper expectation we want.
-
-        Returns
-        -------
-        float
-            a constant reference to the variable upper expectation over all time steps.
-
-        """
         return _pyAgrum.CNLoopyPropagation_dynamicExpMax(self, varName)
 
     def dynamicExpMin(self, varName: str) -> List[float]:
-        r"""
-
-        Get the lower dynamic expectation of a given variable prefix.
-
-        Parameters
-        ----------
-        varName : str
-        	the variable name prefix which lower expectation we want.
-
-        Returns
-        -------
-        float
-            a constant reference to the variable lower expectation over all time steps.
-
-        """
         return _pyAgrum.CNLoopyPropagation_dynamicExpMin(self, varName)
 
     def CN(self) -> "pyAgrum.CredalNet":
