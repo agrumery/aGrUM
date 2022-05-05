@@ -348,6 +348,7 @@ namespace gum {
                                     const std::string& colorSep) const {
     std::stringstream stream;
     stream << "graph {" << std::endl;
+    stream << "  bgcolor=transparent;" << std::endl;
     stream << "  layout=neato;" << std::endl << std::endl;
     stream << "  node [shape=point,style=filled, fillcolor ="<<colorClique<<"];" << std::endl;
     stream << "  edge [len=" << lenEdge << "];" << std::endl << std::endl;

@@ -274,7 +274,7 @@ def _reprGraph(gr, size, asString, format=None):
       IPython.core.display.display_png(i)
 
 
-def showGraph(gr:dot.Dot, size=None):
+def showGraph(gr: dot.Dot, size=None):
   """
   show a pydot graph in a notebook
 
@@ -291,7 +291,7 @@ def showGraph(gr:dot.Dot, size=None):
   return _reprGraph(gr, size, asString=False)
 
 
-def getGraph(gr:dot.Dot, size=None)->str:
+def getGraph(gr: dot.Dot, size=None) -> str:
   """
   get an HTML representation of a pydot graph
 
@@ -335,7 +335,7 @@ def _from_dotstring(dotstring):
   return g
 
 
-def showDot(dotstring:str, size=None):
+def showDot(dotstring: str, size=None):
   """
   show a dot string as a graph
 
@@ -351,7 +351,7 @@ def showDot(dotstring:str, size=None):
   showGraph(_from_dotstring(dotstring), size)
 
 
-def getDot(dotstring:str, size=None)->str:
+def getDot(dotstring: str, size=None) -> str:
   """
   get an HTML representation of a dot string
 
@@ -517,7 +517,7 @@ def _getMatplotFig(fig):
   return res
 
 
-def getProba(p, scale=1.0)->str:
+def getProba(p, scale=1.0) -> str:
   """
   get a mono-dim Potential as html (png/svg) image
 
@@ -555,7 +555,7 @@ def showProbaMinMax(pmin, pmax, scale=1.0):
   plt.show()
 
 
-def getProbaMinMax(pmin, pmax, scale=1.0)->str:
+def getProbaMinMax(pmin, pmax, scale=1.0) -> str:
   """
   get a bi-Potential (min,max) as html (png/svg) img
 
@@ -927,7 +927,7 @@ def _reprPotential(pot, digits=None, withColors=True, varnames=None, asString=Fa
   if with_fraction:
     fraction_limit = int(gum.config['notebook', 'potential_fraction_limit'])
     fraction_round_error = float(gum.config['notebook', 'potential_fraction_round_error'])
-    fraction_with_latex = gum.config['notebook', 'potential_fraction_with_latex']=="True"
+    fraction_with_latex = gum.config['notebook', 'potential_fraction_with_latex'] == "True"
 
   def _rgb(r, g, b):
     return '#%02x%02x%02x' % (r, g, b)
@@ -955,7 +955,7 @@ def _reprPotential(pot, digits=None, withColors=True, varnames=None, asString=Fa
           str_val += f"$$\\frac{{{frac_val.numerator}}}{{{frac_val.denominator}}}$$"
         else:
           str_val += f"{frac_val}"
-        str_val+="</td>"
+        str_val += "</td>"
     if str_val == "":
       str_val = f"text-align:right;'>{val:.{digits}f}</td>"
 
@@ -999,7 +999,7 @@ def _reprPotential(pot, digits=None, withColors=True, varnames=None, asString=Fa
         pmin, pmax, pinc = 0, nparents, 1
 
       if varnames is None:
-        varnames=list(reversed(pot.names))
+        varnames = list(reversed(pot.names))
       for par in range(pmin, pmax, pinc):
         parent = varnames[par]
         s += f"<th style='border:1px solid black;color:black;background-color:#808080'><center>{parent}</center></th>"
@@ -1362,8 +1362,8 @@ def show(model, **kwargs):
     g.del_node('"\\n"')
 
     showDot(g, **kwargs)
-  elif isinstance(model,dot.Dot):
-    showDot(model,**kwargs)
+  elif isinstance(model, dot.Dot):
+    showDot(model, **kwargs)
   else:
     raise gum.InvalidArgument(
       "Argument model should be a PGM (BayesNet, MarkovNet, Influence Diagram or Potential or ..."
@@ -1387,6 +1387,23 @@ except NameError as e:
   """
                 )
 else:
+  def map(self, scaleClique: float = None, scaleSep: float = None, lenEdge: float = None, colorClique: str = None,
+          colorSep: str = None) -> dot.Dot:
+    if scaleClique is None:
+      scaleClique = float(gum.config["notebook", "junctiontree_map_cliquescale"])
+    if scaleSep is None:
+      scaleSep = float(gum.config["notebook", "junctiontree_map_sepscale"])
+    if lenEdge is None:
+      lenEdge = float(gum.config["notebook", "junctiontree_map_edgelen"])
+    if colorClique is None:
+      colorClique = gum.config["notebook", "junctiontree_clique_bgcolor"]
+    if colorSep is None:
+      colorSep = gum.config["notebook", "junctiontree_separator_bgcolor"]
+    return dot.graph_from_dot_data(self.__map_str__(scaleClique, scaleSep, lenEdge,colorClique,colorSep))[0]
+
+
+  setattr(gum.CliqueGraph, "map", map)
+
   gum.config.add_hook(_update_config_notebooks)
   gum.config.run_hooks()
 
