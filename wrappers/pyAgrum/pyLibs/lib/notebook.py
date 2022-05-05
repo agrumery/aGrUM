@@ -308,6 +308,11 @@ def getGraph(gr:dot.Dot, size=None)->str:
   """
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
+
+  # workaround for some badly parsed graph (pyparsing>=3.03)
+  gr.del_node('"\\n"')
+  gr.del_node('"\\n\\n"')
+
   return _reprGraph(gr, size, asString=True)
 
 
@@ -1357,6 +1362,8 @@ def show(model, **kwargs):
     g.del_node('"\\n"')
 
     showDot(g, **kwargs)
+  elif isinstance(model,dot.Dot):
+    showDot(model,**kwargs)
   else:
     raise gum.InvalidArgument(
       "Argument model should be a PGM (BayesNet, MarkovNet, Influence Diagram or Potential or ..."
