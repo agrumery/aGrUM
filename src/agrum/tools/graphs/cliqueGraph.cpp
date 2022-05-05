@@ -341,11 +341,15 @@ namespace gum {
     return stream.str();
   }
 
-  std::string CliqueGraph::mapToDot(double scaleClique, double scaleSep, double lenEdge) const {
+  std::string CliqueGraph::mapToDot(double             scaleClique,
+                                    double             scaleSep,
+                                    double             lenEdge,
+                                    const std::string& colorClique,
+                                    const std::string& colorSep) const {
     std::stringstream stream;
     stream << "graph {" << std::endl;
     stream << "  layout=neato;" << std::endl << std::endl;
-    stream << "  node [shape=point,style=filled, fillcolor =burlywood];" << std::endl;
+    stream << "  node [shape=point,style=filled, fillcolor ="<<colorClique<<"];" << std::endl;
     stream << "  edge [len=" << lenEdge << "];" << std::endl << std::endl;
 
     // cliques as nodes
@@ -355,7 +359,7 @@ namespace gum {
              << "\", width=" << scaleClique * clik.size() << "];" << std::endl;
     }
     stream << std::endl;
-    stream << "  node [shape=square,style=filled, fillcolor =palegreen,label=\"\"];" << std::endl
+    stream << "  node [shape=square,style=filled, fillcolor ="<<colorSep<<",label=\"\"];" << std::endl
            << std::endl;
 
     // separator as nodes and edges
