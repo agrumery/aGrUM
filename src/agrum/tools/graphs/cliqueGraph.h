@@ -49,7 +49,7 @@ namespace gum {
    * A CliqueGraph is an undirected graph the nodes of which are Cliques, i.e.,
    * sets of NodeIds. Cliques are linked by Edges. These edges contain
    *separators
-   * that are actually the intersection of the two Cliques at the extermities of
+   * that are actually the intersection of the two Cliques at the extremities of
    * the edge. */
   /* ===========================================================================
    */

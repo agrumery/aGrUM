@@ -28,6 +28,9 @@
 #include <agrum/tools/graphs/cliqueGraph.h>
 #include <agrum/tools/graphs/graphElements.h>
 
+#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/inference/lazyPropagation.h>
+
 /* The graphs used for the tests:
  * G1:          G2:       G3:
  *      A           A        A          A = {1,2}
@@ -721,6 +724,15 @@ namespace gum_tests {
       g.addEdge(5, 1);
 
       TS_ASSERT_EQUALS(g.hasRunningIntersection(), true)
+    }
+
+    void xxipydevtestToDot() {
+      const auto bn = gum::BayesNet< double >::fastPrototype("A->B<-C->D<-E->B");
+      auto       ie = gum::LazyPropagation< double >(&bn);
+      const auto jt = ie.junctionTree();
+
+      GUM_TRACE(jt->toDot())
+      GUM_TRACE(jt->mapToDot(0.4,0.15,1.0))
     }
   };
 }   // namespace gum_tests

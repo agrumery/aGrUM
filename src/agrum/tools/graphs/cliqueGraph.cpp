@@ -282,6 +282,13 @@ namespace gum {
 
     return stream.str();
   }
+
+  const std::string expandCliqueTooltip(const NodeSet& clique) {
+    std::stringstream stream;
+    stream << "size : " << clique.size() << "\\n" << expandCliqueContent(clique, "\\n");
+    return stream.str();
+  }
+
   const std::string expandClique(const NodeId n, const NodeSet& clique) {
     std::stringstream stream;
     stream << '(' << n << ") " << expandCliqueContent(clique);
@@ -300,13 +307,13 @@ namespace gum {
   std::string CliqueGraph::toDot() const {
     std::stringstream stream;
     stream << "graph {" << std::endl;
-    stream << "  node [style=\"filled\", fontcolor=\"black\"];" << std::endl;
+    stream << R"(  node [style="filled", fontcolor="black"];)" << std::endl;
 
     // cliques as nodes
     for (auto node: nodes()) {
       std::string nom = '"' + expandClique(node, clique(node)) + '"';
-      stream << "  " << nom << " [label=\"" << expandCliqueContent(clique(node))
-             << "\",fillcolor =\"burlywood\"];" << std::endl;
+      stream << "  " << nom << " [label=\"" << expandCliqueContent(clique(node)) << "\",tooltip=\""
+             << expandCliqueTooltip(clique(node)) << R"(",fillcolor ="burlywood"];)" << std::endl;
     }
 
     stream << std::endl;
@@ -318,10 +325,9 @@ namespace gum {
                                 clique(edge.first()),
                                 edge.second(),
                                 clique(edge.second()))
-             << "\" [label=\"" << expandCliqueContent(separator(edge)) << "\""
-             << ",shape=box,fillcolor=\"palegreen\",fontsize=8,"
-                "width=0,height=0];"
-             << std::endl;
+             << "\" [label=\"" << expandCliqueContent(separator(edge)) << "\",tooltip=\""
+             << expandCliqueTooltip(separator(edge))
+             << R"(",shape=box,fillcolor="palegreen",fontsize=8,width=0,height=0];)" << std::endl;
     }
 
     stream << std::endl;
@@ -356,7 +362,7 @@ namespace gum {
     // cliques as nodes
     for (auto node: nodes()) {
       const auto& clik = clique(node);
-      stream << "  " << node << " [tooltip=\"" << expandCliqueContent(clik, "\\n")
+      stream << "  " << node << " [tooltip=\"" << expandCliqueTooltip(clik)
              << "\", width=" << scaleClique * clik.size() << "];" << std::endl;
     }
     stream << std::endl;
@@ -369,7 +375,7 @@ namespace gum {
       // the separator as node
       const auto sep = clique(edge.first()) * clique(edge.second());
       stream << "  \"" << edge.first() << "~" << edge.second() << "\" [tooltip=\""
-             << expandCliqueContent(sep, "\\n") << "\""
+             << expandCliqueTooltip(sep) << "\""
              << ", width=" << scaleSep * sep.size() << "];" << std::endl;
       // the edges
       stream << "  \"" << edge.first() << "\"--\"" << edge.first() << "~" << edge.second()
