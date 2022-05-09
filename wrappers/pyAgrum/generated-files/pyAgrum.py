@@ -8828,14 +8828,14 @@ class IBayesNet(DAGmodel):
         ----------
         target : int
         	The id of the target
-        targets : list
+        targets : List[int]
         	The ids of the targets
-        list : list
+        list : List[int]
         	The list of available variables
 
         Returns
         -------
-        Set
+        Set[int]
         	The minimal set of variables
 
         """
@@ -8860,7 +8860,7 @@ class IBayesNet(DAGmodel):
 
         Returns
         -------
-        set
+        Set[int]
             the set of ids
 
         """
@@ -9826,14 +9826,14 @@ class BayesNet(IBayesNet):
         ----------
         target : int
         	The id of the target
-        targets : list
+        targets : List[int]
         	The ids of the targets
-        list : list
+        list : List[int]
         	The list of available variables
 
         Returns
         -------
-        Set
+        Set[int]
         	The minimal set of variables
 
         """
@@ -9858,7 +9858,7 @@ class BayesNet(IBayesNet):
 
         Returns
         -------
-        set
+        Set[int]
             the set of ids
 
         """
@@ -10656,14 +10656,14 @@ class BayesNetFragment(IBayesNet, ):
         ----------
         target : int
         	The id of the target
-        targets : list
+        targets : List[int]
         	The ids of the targets
-        list : list
+        list : List[int]
         	The list of available variables
 
         Returns
         -------
-        Set
+        Set[int]
         	The minimal set of variables
 
         """
@@ -10688,7 +10688,7 @@ class BayesNetFragment(IBayesNet, ):
 
         Returns
         -------
-        set
+        Set[int]
             the set of ids
 
         """

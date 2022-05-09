@@ -384,7 +384,7 @@ str
 "
 Returns
 -------
-List[str]
+Set[str]
 	the names of the variables in the database
 "
 

@@ -49,9 +49,9 @@ aGrUM uses [swig](http://www.swig.org/) to build these wrappers.
 ## Documentation
 
 Documentation is a never-ending story for a library with a complex API. The team tries its best to keep
-- [doxygen aGrUM documentation](http://docs.agrum.org/aGrUM/latest/)
+- [doxygen aGrUM documentation](https://www.lip6.fr/Pierre-Henri.Wuillemin/aGrUM/docs/last/doxygen/)
 - [sphinx pyAgrum documentation](https://pyagrum.readthedocs.io/en/latest/)
-- [jupyter notebooks as tutorials](http://www-desir.lip6.fr/~phw/aGrUM/docs/last/notebooks/) (pyAgrum)
+- [jupyter notebooks as tutorials](https://www.lip6.fr/Pierre-Henri.Wuillemin/aGrUM/docs/last/notebooks/) (pyAgrum)
 
 up to date but maintaining them is a difficult task and we are actively looking for people to help us writing
 those documentations and tutorials.

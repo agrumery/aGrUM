@@ -161,7 +161,7 @@ Set
 "
 Returns
 -------
-set
+Set[int]
     the set of ids
 "
 
@@ -173,13 +173,13 @@ Parameters
 ----------
 target : int
 	The id of the target
-targets : list
+targets : List[int]
 	The ids of the targets
-list : list
+list : List[int]
 	The list of available variables
 
 Returns
 -------
-Set
+Set[int]
 	The minimal set of variables
 "

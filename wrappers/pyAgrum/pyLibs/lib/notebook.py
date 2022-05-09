@@ -248,6 +248,8 @@ def _reprGraph(gr, size, asString, format=None):
     the size argument for the representation
   asString : bool
     display the graph or return a string containing the corresponding HTML fragment
+  format! str
+    "svg" or "png" ?
 
   Returns
   -------
@@ -1400,7 +1402,6 @@ else:
     if colorSep is None:
       colorSep = gum.config["notebook", "junctiontree_separator_bgcolor"]
     return dot.graph_from_dot_data(self.__map_str__(scaleClique, scaleSep, lenEdge,colorClique,colorSep))[0]
-
 
   setattr(gum.CliqueGraph, "map", map)
 

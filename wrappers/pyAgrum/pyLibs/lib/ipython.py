@@ -140,14 +140,13 @@ def showJunctionTree(bn, withNames=True, size=None):
   :param bn: the Bayesian network
   :param boolean withNames: display the variable names or the node id in the clique
   :param size: size of the rendered graph
-  :param format: render as "png" or "svg"
   """
   jtg = gum.JunctionTreeGenerator()
   jt = jtg.junctionTree(bn)
   if withNames:
-    return showDot(jt.toDotWithNames(bn), size, format)
+    return showDot(jt.toDotWithNames(bn), size)
   else:
-    return showDot(jt.toDot(), size, format)
+    return showDot(jt.toDot(), size)
 
 
 def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
