@@ -11710,6 +11710,18 @@ class ShaferShenoyMNInference(object):
     def evidenceJointImpact(self, *args) -> "pyAgrum.Potential":
         return _pyAgrum.ShaferShenoyMNInference_evidenceJointImpact(self, *args)
 
+    def setNumberOfThreads(self, nb: int) -> None:
+        return _pyAgrum.ShaferShenoyMNInference_setNumberOfThreads(self, nb)
+
+    def getNumberOfThreads(self) -> int:
+        return _pyAgrum.ShaferShenoyMNInference_getNumberOfThreads(self)
+
+    def isGumNumberOfThreadsOverriden(self) -> bool:
+        return _pyAgrum.ShaferShenoyMNInference_isGumNumberOfThreadsOverriden(self)
+
+    def setMaxMemory(self, megabytes: float) -> None:
+        return _pyAgrum.ShaferShenoyMNInference_setMaxMemory(self, megabytes)
+
 # Register ShaferShenoyMNInference in _pyAgrum:
 _pyAgrum.ShaferShenoyMNInference_swigregister(ShaferShenoyMNInference)
 

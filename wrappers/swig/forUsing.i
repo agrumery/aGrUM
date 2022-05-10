@@ -602,6 +602,13 @@ ADD_MN_INFERENCE_API(classname)
 %enddef
 ADD_JOINT_MN_INFERENCE_API(gum::ShaferShenoyMNInference<double>)
 
+%extend gum::ShaferShenoyMNInference<double> {
+  using gum::ScheduledInference::setNumberOfThreads;
+  using gum::ThreadNumberManager::getNumberOfThreads;
+  using gum::ThreadNumberManager::isGumNumberOfThreadsOverriden;
+  using gum::ScheduledInference::setMaxMemory;
+}
+
 
 #################
 %define ADD_ID_INFERENCE_API(classname...)
