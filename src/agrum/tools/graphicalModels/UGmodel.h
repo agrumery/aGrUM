@@ -21,7 +21,7 @@
 
 /**
  * @file
- * @brief Class representing probabilistic DAG model
+ * @brief Class representing probabilistic undirected model
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *
@@ -117,7 +117,7 @@ namespace gum {
 
     /** check if X and Y are independent given Z
      */
-    virtual bool isIndependent(NodeId X, NodeId Y, const NodeSet& Z) const final;
+    bool isIndependent(NodeId X, NodeId Y, const NodeSet& Z) const final;
     /** check if nodes X and nodes Y are independent given nodes Z
      */
     bool isIndependent(const NodeSet& X, const NodeSet& Y, const NodeSet& Z) const final;

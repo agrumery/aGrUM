@@ -21,7 +21,7 @@
 
 /**
  * @file
- * @brief Class representing Bayesian networks
+ * @brief Class representing Markov networks
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) and Lionel TORTI
  *
