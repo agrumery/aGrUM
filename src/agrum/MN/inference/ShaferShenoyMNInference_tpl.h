@@ -444,7 +444,7 @@ namespace gum {
     Size                         size_elim_order = JT_elim_order.size();
     NodeProperty< int >          elim_order(size_elim_order);
     for (Idx i = Idx(0); i < size_elim_order; ++i)
-      elim_order.insert(JT_elim_order[i], i);
+      elim_order.insert(JT_elim_order[i], (int)i);
 
     // assign to each factor of the markov network a clique in _JT_
     // that can contain its conditional probability table
