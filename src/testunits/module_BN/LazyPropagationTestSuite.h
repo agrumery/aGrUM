@@ -1377,6 +1377,133 @@ namespace gum_tests {
         delete vars[i];
     }
 
+    void testOnChanged() {
+      std::vector< gum::LabelizedVariable* > vars(5);
+
+      for (gum::Idx i = 0; i < 5; ++i) {
+        std::stringstream str;
+        str << "x" << i;
+        std::string s = str.str();
+        vars[i]       = new gum::LabelizedVariable(s, s, 2);
+      }
+
+      gum::BayesNet< double > xbn;
+
+      gum::NodeId i0 = xbn.add(*vars[0]);
+      gum::NodeId i1 = xbn.add(*vars[1]);
+      gum::NodeId i2 = xbn.add(*vars[2]);
+      gum::NodeId i3 = xbn.add(*vars[3]);
+      gum::NodeId i4 = xbn.add(*vars[4]);
+
+      xbn.addArc(i0, i2);
+      xbn.addArc(i1, i2);
+      xbn.addArc(i2, i3);
+      xbn.addArc(i3, i4);
+
+      auto& x0 = xbn.variable(i0);
+      auto& x1 = xbn.variable(i1);
+      auto& x2 = xbn.variable(i2);
+      auto& x3 = xbn.variable(i3);
+      auto& x4 = xbn.variable(i4);
+
+      auto& p0 = xbn.cpt(i0);
+      auto& p1 = xbn.cpt(i1);
+      auto& p2 = xbn.cpt(i2);
+      auto& p3 = xbn.cpt(i3);
+      auto& p4 = xbn.cpt(i4);
+
+      p0.fillWith({0.7, 0.3});
+      p1.fillWith({0.4, 0.6});
+      p2.fillWith({0.2, 0.8, 0.3, 0.7, 0.4, 0.6, 0.5, 0.5});
+      p3.fillWith({0.8, 0.2, 0.2, 0.8});
+      p4.fillWith({0.4, 0.6, 0.3, 0.7});
+
+      {
+        gum::LazyPropagation< double > inf(&xbn);
+        inf.addTarget("x0");
+        TS_ASSERT(inf.targets().size() == 1)
+        inf.makeInference();
+        TS_ASSERT_THROWS(inf.posterior(i3), gum::UndefinedElement)
+        inf.addTarget("x3");
+        const auto& pot3 = inf.posterior(i3);
+        TS_ASSERT(inf.junctionTree()->sizeNodes() == 2)
+
+        gum::Set< const gum::DiscreteVariable* > set3{&x0, &x1, &x2, &x4};
+        const gum::Potential< double >           pot3bis
+           = (p0 * p1 * p2 * p3 * p4).margSumOut(set3).normalize();
+        TS_ASSERT(equalPotentials(pot3, pot3bis))
+      }
+
+      {
+        gum::LazyPropagation< double > inf(&xbn);
+        inf.addTarget("x0");
+        inf.addTarget("x2");
+        TS_ASSERT(inf.targets().size() == 2)
+        inf.makeInference();
+        TS_ASSERT(inf.junctionTree()->sizeNodes() == 1)
+
+        inf.addEvidence(i4, 1);
+        const auto& pot2 = inf.posterior(i2);
+        TS_ASSERT(inf.junctionTree()->sizeNodes() == 2)
+
+        gum::Set< const gum::DiscreteVariable* > set2{&x0, &x1, &x3, &x4};
+        gum::Potential< double >                 ev4;
+        ev4 << x4;
+        ev4.fillWith({0.0, 1.0});
+        const gum::Potential< double > pot2bis
+           = (p0 * p1 * p2 * p3 * p4 * ev4).margSumOut(set2).normalize();
+        TS_ASSERT(equalPotentials(pot2, pot2bis))
+      }
+
+      {
+        gum::LazyPropagation< double > inf(&xbn);
+        inf.addTarget("x0");
+        TS_ASSERT(inf.targets().size() == 1)
+        inf.makeInference();
+        TS_ASSERT_THROWS(inf.posterior(i2), gum::UndefinedElement)
+        TS_ASSERT(inf.junctionTree()->sizeNodes() == 1)
+
+        inf.addTarget("x2");
+        inf.addEvidence(i4, 1);
+        const auto& pot2 = inf.posterior(i2);
+        TS_ASSERT(inf.junctionTree()->sizeNodes() == 2)
+
+        gum::Set< const gum::DiscreteVariable* > set2{&x0, &x1, &x3, &x4};
+        gum::Potential< double >                 ev4;
+        ev4 << x4;
+        ev4.fillWith({0.0, 1.0});
+        const gum::Potential< double > pot2bis
+           = (p0 * p1 * p2 * p3 * p4 * ev4).margSumOut(set2).normalize();
+        TS_ASSERT(equalPotentials(pot2, pot2bis))
+      }
+
+      {
+        gum::LazyPropagation< double > inf(&xbn);
+        inf.addTarget("x0");
+        TS_ASSERT(inf.targets().size() == 1)
+        inf.makeInference();
+        TS_ASSERT_THROWS(inf.posterior(i2), gum::UndefinedElement)
+        TS_ASSERT(inf.junctionTree()->sizeNodes() == 1)
+
+        inf.addTarget("x2");
+        inf.addEvidence(i4, 1);
+        inf.makeInference();
+        const auto& pot2 = inf.posterior(i2);
+        TS_ASSERT(inf.junctionTree()->sizeNodes() == 2)
+
+        gum::Set< const gum::DiscreteVariable* > set2{&x0, &x1, &x3, &x4};
+        gum::Potential< double >                 ev4;
+        ev4 << x4;
+        ev4.fillWith({0.0, 1.0});
+        const gum::Potential< double > pot2bis
+           = (p0 * p1 * p2 * p3 * p4 * ev4).margSumOut(set2).normalize();
+        TS_ASSERT(equalPotentials(pot2, pot2bis))
+      }
+
+      for (const auto var: vars)
+        delete var;
+    }
+
 
     private:
     void randomInitP(const gum::Potential< double >& tt) {

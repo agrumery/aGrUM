@@ -200,8 +200,10 @@ namespace gum {
     // remove all the posteriors
     for (const auto& pot: _target_posteriors_)
       delete pot.second;
+    _target_posteriors_.clear();
     for (const auto& pot: _joint_target_posteriors_)
       delete pot.second;
+    _joint_target_posteriors_.clear();
 
     // indicate that new messages need be computed
     if (this->isInferenceReady() || this->isInferenceDone()) this->setOutdatedPotentialsState_();
@@ -332,7 +334,13 @@ namespace gum {
 
   /// fired after a new target is inserted
   template < typename GUM_SCALAR >
-  INLINE void LazyPropagation< GUM_SCALAR >::onMarginalTargetAdded_(const NodeId id) {}
+  INLINE void LazyPropagation< GUM_SCALAR >::onMarginalTargetAdded_(const NodeId id) {
+    // if the graph does not contain the node, either this is due to the fact that
+    // the node has received a hard evidence or because it was d-separated from the
+    // target nodes during the last inference. In the latter case, we should change
+    // the graph, hence we should recompute the JT
+    if (!_graph_.exists(id) && !_hard_ev_nodes_.contains(id)) { _is_new_jt_needed_ = true; }
+  }
 
 
   /// fired before a target is removed
@@ -342,7 +350,52 @@ namespace gum {
 
   /// fired after a new set target is inserted
   template < typename GUM_SCALAR >
-  INLINE void LazyPropagation< GUM_SCALAR >::onJointTargetAdded_(const NodeSet& set) {}
+  void LazyPropagation< GUM_SCALAR >::onJointTargetAdded_(const NodeSet& set) {
+    // if there is no current joint tree, obviously, we need one.
+    if (_JT_ == nullptr) {
+      _is_new_jt_needed_ = true;
+      return;
+    }
+
+    // here, we will remove from set the nodes that received hard evidence and try
+    // to find a clique in the current _JT_ that can contain the resulting set. If
+    // we cannot find one, we must recompute the _JT_
+    NodeId                       first_eliminated_node = std::numeric_limits< NodeId >::max();
+    int                          elim_number           = std::numeric_limits< int >::max();
+    const std::vector< NodeId >& JT_elim_order         = _triangulation_->eliminationOrder();
+    NodeProperty< int >          elim_order(Size(JT_elim_order.size()));
+    for (std::size_t i = std::size_t(0), size = JT_elim_order.size(); i < size; ++i)
+      elim_order.insert(JT_elim_order[i], (int)i);
+    NodeSet unobserved_set(set.size());
+    for (const auto node: set) {
+      if (!_graph_.exists(node)) {
+        if (!_hard_ev_nodes_.contains(node)) {
+          _is_new_jt_needed_ = true;
+          return;
+        }
+      } else {
+        unobserved_set.insert(node);
+        if (elim_order[node] < elim_number) {
+          elim_number           = elim_order[node];
+          first_eliminated_node = node;
+        }
+      }
+    }
+
+    if (!unobserved_set.empty()) {
+      // here, first_eliminated_node contains the first var (node or one of its
+      // parents) eliminated => the clique created during its elimination
+      // should contain all the nodes in unobserved_set
+      const auto  clique_id = _node_to_clique_[first_eliminated_node];
+      const auto& clique    = _JT_->clique(clique_id);
+      for (const auto node: unobserved_set) {
+        if (!clique.contains(node)) {
+          _is_new_jt_needed_ = true;
+          return;
+        }
+      }
+    }
+  }
 
 
   /// fired before a set target is removed
@@ -352,7 +405,18 @@ namespace gum {
 
   /// fired after all the nodes of the BN are added as single targets
   template < typename GUM_SCALAR >
-  INLINE void LazyPropagation< GUM_SCALAR >::onAllMarginalTargetsAdded_() {}
+  INLINE void LazyPropagation< GUM_SCALAR >::onAllMarginalTargetsAdded_() {
+    for (const auto node: this->BN().dag()) {
+      // if the graph does not contain the node, either this is due to the fact
+      // that the node has received a hard evidence or because it was d-separated
+      // from the target nodes during the last inference. In the latter case, we
+      // should change the graph, hence we should recompute the JT
+      if (!_graph_.exists(node) && !_hard_ev_nodes_.contains(node)) {
+        _is_new_jt_needed_ = true;
+        return;
+      }
+    }
+  }
 
 
   /// fired before a all the single_targets are removed
@@ -387,29 +451,41 @@ namespace gum {
     for (const auto node: this->targets()) {
       if (!_graph_.exists(node) && !hard_ev_nodes.exists(node)) return true;
     }
+
+    // now, do the same for the joint targets
+    const std::vector< NodeId >& JT_elim_order = _triangulation_->eliminationOrder();
+    NodeProperty< int >          elim_order(Size(JT_elim_order.size()));
+    for (std::size_t i = std::size_t(0), size = JT_elim_order.size(); i < size; ++i)
+      elim_order.insert(JT_elim_order[i], (int)i);
+    NodeSet unobserved_set;
+
     for (const auto& joint_target: this->jointTargets()) {
       // here, we need to check that at least one clique contains all the
       // nodes of the joint target.
-      bool containing_clique_found = false;
+      NodeId first_eliminated_node = std::numeric_limits< NodeId >::max();
+      int    elim_number           = std::numeric_limits< int >::max();
+      unobserved_set.clear();
       for (const auto node: joint_target) {
-        bool found = true;
-        try {
-          const NodeSet& clique = _JT_->clique(_node_to_clique_[node]);
-          for (const auto xnode: joint_target) {
-            if (!clique.contains(xnode) && !hard_ev_nodes.exists(xnode)) {
-              found = false;
-              break;
-            }
+        if (!_graph_.exists(node)) {
+          if (!hard_ev_nodes.exists(node)) return true;
+        } else {
+          unobserved_set.insert(node);
+          if (elim_order[node] < elim_number) {
+            elim_number           = elim_order[node];
+            first_eliminated_node = node;
           }
-        } catch (NotFound&) { found = false; }
-
-        if (found) {
-          containing_clique_found = true;
-          break;
         }
       }
-
-      if (!containing_clique_found) return true;
+      if (!unobserved_set.empty()) {
+        // here, first_eliminated_node contains the first var (node or one of its
+        // parents) eliminated => the clique created during its elimination
+        // should contain all the nodes in unobserved_set
+        const auto  clique_id = _node_to_clique_[first_eliminated_node];
+        const auto& clique    = _JT_->clique(clique_id);
+        for (const auto node: unobserved_set) {
+          if (!clique.contains(node)) return true;
+        }
+      }
     }
 
     // if some new evidence have been added on nodes that do not belong
