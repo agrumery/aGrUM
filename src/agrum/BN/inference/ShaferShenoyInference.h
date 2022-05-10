@@ -129,13 +129,13 @@ namespace gum {
     void setFindBarrenNodesType(FindBarrenNodesType type);
 
     /// returns the current join tree used
-    /** Lazy Propagation does not use a junction tree but a binary join tree
+    /** ShaferShenoy does not use a junction tree but a binary join tree
      * because this may enable faster inferences. So do not be surprised to
      * see that some cliques are contained into others in this tree. */
     const JoinTree* joinTree();
 
     /// returns the current junction tree
-    /** Lazy Propagation does not use a junction tree but a binary join tree
+    /** ShaferShenoy does not use a junction tree but a binary join tree
      * because this may enable faster inferences. This method return the junction
      * tree, before optimizations
      **/
@@ -175,7 +175,7 @@ namespace gum {
     void onMarginalTargetErased_(const NodeId id) final;
 
     /// fired after a new Bayes net has been assigned to the inference engine
-    virtual void onModelChanged_(const GraphicalModel* bn) final;
+    void onModelChanged_(const GraphicalModel* bn) final;
 
     /// fired after a new joint target is inserted
     /** @param set The set of target variable's ids. */
@@ -208,7 +208,7 @@ namespace gum {
 
     /// prepares inference when the latter is in OutdatedPotentials state
     /** Note that the values of evidence are not necessarily
-     * known and can be changed between updateOutdatedPotentials_ and
+     * known and can be changed between updateOutdatedStructure_ and
      * makeInference_. */
     void updateOutdatedPotentials_() final;
 
@@ -310,7 +310,7 @@ namespace gum {
     NodeSet _roots_;
 
     /// for each node of _graph_ (~ in the Bayes net), associate an ID in the JT
-    HashTable< NodeId, NodeId > _node_to_clique_;
+    NodeProperty< NodeId > _node_to_clique_;
 
     /// for each set target, assign a clique in the JT that contains it
     HashTable< NodeSet, NodeId > _joint_target_to_clique_;
@@ -322,14 +322,14 @@ namespace gum {
      * contain also soft evidence and the CPTs that were projected to
      * remove their variables that received hard evidence. The product of all
      * these potentials is precisely the potential stored into
-     *  _clique_ss_potential_ */
+     * _clique_ss_potential_ */
     NodeProperty< _ScheduleMultiDimSet_ > _clique_potentials_;
 
     /// the potentials stored into the cliques by Shafer-Shenoy
     /** For a given clique, there is an entry in _clique_ss_potential_ even
      * if the clique received no potential. In this case, the potential stored is
      * equal to nullptr, else it is equal to the combination of all the
-     * corresponding list of potentials in  _clique_potentials_. */
+     * corresponding list of potentials in _clique_potentials_. */
     NodeProperty< const IScheduleMultiDim* > _clique_ss_potential_;
 
     /// the list of all potentials stored in the separators after inferences
@@ -380,7 +380,7 @@ namespace gum {
     /** For each node whose CPT is defined over some nodes that contain some
      * hard evidence, assigns a new projected CPT that does not contain
      * these nodes anymore.
-     * @warning These potentials are owned by LayPropagation. */
+     * @warning These potentials are owned by ShaferShenoy. */
     NodeProperty< const IScheduleMultiDim* > _node_to_hard_ev_projected_CPTs_;
 
     /// the hard evidence nodes which were projected in CPTs
