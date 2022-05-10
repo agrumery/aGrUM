@@ -350,7 +350,7 @@ namespace gum {
     stream << "graph {" << std::endl;
     stream << "  bgcolor=transparent;" << std::endl;
     stream << "  layout=neato;" << std::endl << std::endl;
-    stream << "  node [shape=point,style=filled, fillcolor ="<<colorClique<<"];" << std::endl;
+    stream << "  node [shape=point,style=filled, fillcolor =" << colorClique << "];" << std::endl;
     stream << "  edge [len=" << lenEdge << "];" << std::endl << std::endl;
 
     // cliques as nodes
@@ -360,7 +360,8 @@ namespace gum {
              << "\", width=" << scaleClique * clik.size() << "];" << std::endl;
     }
     stream << std::endl;
-    stream << "  node [shape=square,style=filled, fillcolor ="<<colorSep<<",label=\"\"];" << std::endl
+    stream << "  node [shape=square,style=filled, fillcolor =" << colorSep << ",label=\"\"];"
+           << std::endl
            << std::endl;
 
     // separator as nodes and edges
