@@ -706,7 +706,7 @@ namespace gum {
   }
 
 
-  // performs the collect phase of Lazy Propagation
+  // performs the collect phase of Variable Elimination
   template < typename GUM_SCALAR >
   Set< const IScheduleMultiDim* >
      VariableElimination< GUM_SCALAR >::_collectMessage_(Schedule& schedule,
@@ -726,7 +726,7 @@ namespace gum {
   }
 
 
-  // performs the collect phase of Lazy Propagation
+  // performs the collect phase of Variable Elimination
   template < typename GUM_SCALAR >
   std::pair< Set< const Potential< GUM_SCALAR >* >, Set< const Potential< GUM_SCALAR >* > >
      VariableElimination< GUM_SCALAR >::_collectMessage_(NodeId id, NodeId from) {

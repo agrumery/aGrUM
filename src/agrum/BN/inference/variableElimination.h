@@ -64,7 +64,7 @@ namespace gum {
   /**
    * @class VariableElimination VariableElimination.h
    * @headerfile variableElimination.h <agrum/BN/inference/variableElimination.h>
-   * @brief Implementation of a Shafer-Shenoy's-like version of lazy
+   * @brief Implementation of a Variable Elimination's-like version of lazy
    * propagation for inference in Bayesian networks
    * @ingroup bn_inference
    */
