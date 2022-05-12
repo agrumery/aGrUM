@@ -71,9 +71,7 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::GenericBNLearner,gum::learning::BNLea
 
   using gum::learning::GenericBNLearner::learnDAG;
   using gum::learning::GenericBNLearner::learnMixedStructure;
-  using gum::learning::GenericBNLearner::learnEssentialGraph;
   using gum::learning::GenericBNLearner::names;
-  using gum::learning::GenericBNLearner::modalities;
   using gum::learning::GenericBNLearner::idFromName;
   using gum::learning::GenericBNLearner::nameFromId;
   using gum::learning::GenericBNLearner::setDatabaseWeight;
@@ -516,20 +514,28 @@ ADD_BN_MONOTARGET_INFERENCE_API(gum::MarginalTargetedInference<double>,classname
 ADD_JOINT_INFERENCE_API(gum::LazyPropagation<double>)
 ADD_JOINT_INFERENCE_API(gum::ShaferShenoyInference<double>)
 
-%extend gum::LazyPropagation<double> {
-  using gum::ScheduledInference::setNumberOfThreads;
-  using gum::ThreadNumberManager::getNumberOfThreads;
-  using gum::ThreadNumberManager::isGumNumberOfThreadsOverriden;
-  using gum::ScheduledInference::setMaxMemory;
-}
 
-%extend gum::ShaferShenoyInference<double> {
-  using gum::ScheduledInference::setNumberOfThreads;
-  using gum::ThreadNumberManager::getNumberOfThreads;
-  using gum::ThreadNumberManager::isGumNumberOfThreadsOverriden;
-  using gum::ScheduledInference::setMaxMemory;
-}
+%define ADD_PARALLELIZED_INFERENCE_API(classname)
+%extend classname {
 
+  void setNumberOfThreads (int nb) {
+    self->setNumberOfThreads(nb);
+  }
+  int getNumberOfThreads () {
+    return self->getNumberOfThreads();
+  }
+  bool isGumNumberOfThreadsOverriden () {
+    return self->isGumNumberOfThreadsOverriden();
+  }
+  void setMaxMemory (int gigabytes) {
+    self->setMaxMemory(gigabytes);
+  }
+}
+%enddef
+ADD_PARALLELIZED_INFERENCE_API(gum::LazyPropagation<double>)
+ADD_PARALLELIZED_INFERENCE_API(gum::ShaferShenoyInference<double>)
+ADD_PARALLELIZED_INFERENCE_API(gum::VariableElimination<double>)
+ADD_PARALLELIZED_INFERENCE_API(gum::ShaferShenoyMNInference<double>)
 
 %define ADD_GIBBS_OPERATOR_API(classname...)
 %extend classname {
@@ -601,13 +607,6 @@ ADD_MN_INFERENCE_API(classname)
 }
 %enddef
 ADD_JOINT_MN_INFERENCE_API(gum::ShaferShenoyMNInference<double>)
-
-%extend gum::ShaferShenoyMNInference<double> {
-  using gum::ScheduledInference::setNumberOfThreads;
-  using gum::ThreadNumberManager::getNumberOfThreads;
-  using gum::ThreadNumberManager::isGumNumberOfThreadsOverriden;
-  using gum::ScheduledInference::setMaxMemory;
-}
 
 
 #################
