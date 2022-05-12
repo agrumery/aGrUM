@@ -1,5 +1,23 @@
 # aGrUM Changelog
 
+## Changelog for 1.1.0
+
+* aGrUM
+
+  * Parallelizing inference for Markov Net : `gum::ShaferShenoyMNInference`.
+  * Adding a new `gum::fastVar(std::string)` factory function to easily build variable such as in `gum::*::fastPrototype(std::string)`. See [Documentation](https://pyagrum.readthedocs.io/en/1.1.0/functions.html#quick-specification-of-randomly-parameterized-graphical-models). This syntax is now used in every graphical model with `gum::{BayesNet|MarkovNet|etc}::add(std::string)` to easily add a new variable in the model.
+  * Adding a new graphical representation of cliqueGraph : `gum::CliqueGraph::mapToDot()`.
+
+* pyAgrum
+
+  * Following aGrUM, `gum.ShaferShenoyMNInference` is now parallelized too.
+  * Wrapping the new fast syntax for creating variable in functions `gum.{BayesNet|etc}.add(str)`. See [Documentation](https://pyagrum.readthedocs.io/en/1.1.0/functions.html#quick-specification-of-randomly-parameterized-graphical-models).
+  * Introducing a better type induction for discrete variables when created by `gum.skbn.BNDiscretizer`. `gum.IntegerVariable` and `gum.RangeVariable` are now induced from the data.
+  * Adding `gum.JunctionTree.map()` (in notebook) to show a condensed map of a the junction tree.
+  * Still working on documentation (*One must imagine Sisyphus happy*).
+
+
+
 ## Changelog for 1.0.0
 
 The aGrUM's team is very proud to announce the release of aGrUM/pyAgrum 1.0.0! 

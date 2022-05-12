@@ -732,7 +732,7 @@ namespace gum_tests {
       const auto jt = ie.junctionTree();
 
       GUM_TRACE(jt->toDot())
-      GUM_TRACE(jt->mapToDot(0.4,0.15,1.0))
+      GUM_TRACE(jt->mapToDot(0.4, 0.15, 1.0))
     }
   };
 }   // namespace gum_tests
