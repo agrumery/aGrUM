@@ -78,6 +78,11 @@ wrappers/pyAgrum/sphinx/sphinx_warnings.txt
 # generated during swig compilation
 wrappers/pyAgrum/generated-files/pyAgrum.pyold.py
 
+# generated during different aGrUM's phases
+*-old.png
+**/Untitled*.ipynb
+wrappers/pyAgrum/pyLibs/notebooks/out/*
+
 # VS Code working folder
 .vscode/
 
