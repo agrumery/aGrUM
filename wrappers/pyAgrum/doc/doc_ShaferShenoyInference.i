@@ -7,6 +7,7 @@ ShaferShenoyInference(bn) -> ShaferShenoyInference
         * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 "
 
+<<<<<<< HEAD
 %feature("docstring") gum::ShaferShenoyInference::getNumberOfThreads
 "
 returns the number of threads used by ShaferShenoyInference during inferences.
@@ -38,3 +39,5 @@ bool
 	A Boolean indicating whether ShaferShenoyInference currently overrides aGrUM's default number of threads
 "
 
+=======
+>>>>>>> 5b6a6e72e ([pyAgrum] fixing some documentations)

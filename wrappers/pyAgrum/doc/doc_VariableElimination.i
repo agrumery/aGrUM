@@ -6,6 +6,7 @@ VariableElimination(bn) -> VariableElimination
     Parameters:
         * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 "
+<<<<<<< HEAD
 
 %feature("docstring") gum::VariableElimination::getNumberOfThreads
 "
@@ -38,3 +39,5 @@ bool
 	A Boolean indicating whether VariableElimination currently overrides aGrUM's default number of threads
 "
 
+=======
+>>>>>>> 5b6a6e72e ([pyAgrum] fixing some documentations)

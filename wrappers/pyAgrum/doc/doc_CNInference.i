@@ -132,5 +132,5 @@ int
 "
 %enddef
 
-ADD_CNINFERENCE_DOC(CNMonteCarloSampling<float>)
-ADD_CNINFERENCE_DOC(CNLoopyPropagation<float>)
+ADD_CNINFERENCE_DOC(CNMonteCarloSampling<double>)
+ADD_CNINFERENCE_DOC(CNLoopyPropagation<double>)
