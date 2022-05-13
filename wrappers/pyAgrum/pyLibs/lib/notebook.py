@@ -439,6 +439,55 @@ def showInformation(*args, **kwargs):
   import pyAgrum.lib.explain as explain
   explain.showInformation(*args, **kwargs)
 
+def getJunctionTreeMap(bn, size:str=None,scaleClique: float = None, scaleSep: float = None, lenEdge: float = None, colorClique: str = None,
+          colorSep: str = None):
+  """
+  Return a representation of the map of the junction tree of a Bayesian network
+
+  Parameters
+  ----------
+  bn: pyAgrum.BayesNet
+    the model
+  scaleClique: float
+    the scale for the size of the clique nodes (depending on the number of nodes in the clique)
+  scaleSep: float
+    the scale for the size of the separator nodes (depending on the number of nodes in the clique)
+  lenEdge: float
+    the desired length of edges
+  colorClique: str
+    color for the clique nodes
+  colorSep: str
+    color for the separator nodes
+  """
+  jtg = gum.JunctionTreeGenerator()
+  jt = jtg.junctionTree(bn)
+
+  return getGraph(jt.map(scaleClique,scaleSep,lenEdge,colorClique,colorSep),size)
+
+def showJunctionTreeMap(bn, size:str=None,scaleClique: float = None, scaleSep: float = None, lenEdge: float = None, colorClique: str = None,
+          colorSep: str = None):
+  """
+  Show the map of the junction tree of a Bayesian network
+
+  Parameters
+  ----------
+  bn: pyAgrum.BayesNet
+    the model
+  scaleClique: float
+    the scale for the size of the clique nodes (depending on the number of nodes in the clique)
+  scaleSep: float
+    the scale for the size of the separator nodes (depending on the number of nodes in the clique)
+  lenEdge: float
+    the desired length of edges
+  colorClique: str
+    color for the clique nodes
+  colorSep: str
+    color for the separator nodes
+  """
+  jtg = gum.JunctionTreeGenerator()
+  jt = jtg.junctionTree(bn)
+
+  showGraph(jt.map(scaleClique,scaleSep,lenEdge,colorClique,colorSep),size)
 
 def showJunctionTree(bn, withNames=True, size=None):
   """
@@ -463,9 +512,9 @@ def showJunctionTree(bn, withNames=True, size=None):
   jtg._model = bn
 
   if withNames:
-    return showDot(jt.toDotWithNames(bn), size)
+    showDot(jt.toDotWithNames(bn), size)
   else:
-    return showDot(jt.toDot(), size)
+    showDot(jt.toDot(), size)
 
 
 def getJunctionTree(bn, withNames=True, size=None):
@@ -487,9 +536,9 @@ def getJunctionTree(bn, withNames=True, size=None):
   jtg._model = bn
 
   if withNames:
-    getDot(jt.toDotWithNames(bn), size)
+    return getDot(jt.toDotWithNames(bn), size)
   else:
-    getDot(jt.toDot(), size)
+    return getDot(jt.toDot(), size)
 
 
 def showProba(p, scale=1.0):
@@ -1358,11 +1407,7 @@ def show(model, **kwargs):
   elif isinstance(model, gum.Potential):
     showPotential(model)
   elif hasattr(model, "toDot"):
-    g = dot.graph_from_dot_data(model.toDot())[0]
-
-    # workaround for some badly parsed graph (pyparsing>=3.03)
-    g.del_node('"\\n"')
-
+    g = _from_dotstring(model.toDot())
     showDot(g, **kwargs)
   elif isinstance(model, dot.Dot):
     showDot(model, **kwargs)
@@ -1391,6 +1436,22 @@ except NameError as e:
 else:
   def map(self, scaleClique: float = None, scaleSep: float = None, lenEdge: float = None, colorClique: str = None,
           colorSep: str = None) -> dot.Dot:
+    """
+    show the map of the junction tree.
+
+    Parameters
+    ----------
+    scaleClique: float
+      the scale for the size of the clique nodes (depending on the number of nodes in the clique)
+    scaleSep: float
+      the scale for the size of the separator nodes (depending on the number of nodes in the clique)
+    lenEdge: float
+      the desired length of edges
+    colorClique: str
+      color for the clique nodes
+    colorSep: str
+      color for the separator nodes
+    """
     if scaleClique is None:
       scaleClique = float(gum.config["notebook", "junctiontree_map_cliquescale"])
     if scaleSep is None:
@@ -1401,7 +1462,7 @@ else:
       colorClique = gum.config["notebook", "junctiontree_clique_bgcolor"]
     if colorSep is None:
       colorSep = gum.config["notebook", "junctiontree_separator_bgcolor"]
-    return dot.graph_from_dot_data(self.__map_str__(scaleClique, scaleSep, lenEdge,colorClique,colorSep))[0]
+    return _from_dotstring(self.__map_str__(scaleClique, scaleSep, lenEdge,colorClique,colorSep))
 
   setattr(gum.CliqueGraph, "map", map)
 

@@ -636,6 +636,8 @@ class BNDiscretizer():
 
   @staticmethod
   def checkInt(v):
+    if isinstance(v,bool):
+        return False
     if isinstance(v, int):
       return True
     if isinstance(v, str):
