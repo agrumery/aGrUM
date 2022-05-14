@@ -1,19 +1,49 @@
+# aGrUM/pyAgrum
 
-aGrUM is a C++ library designed for easily building applications using graphical 
+- aGrUM is a C++ library designed for easily building applications using graphical 
 models such as Bayesian networks, influence diagrams, decision trees or Markov 
 decision processes.
 
 It is written to provide the basic building blocks to perform the following 
 tasks :
 
-* graphical models learning/elicitation,
-* probabilistic inference with graphical models,
-* planification.
+    * graphical models learning/elicitation,
+    * probabilistic inference with graphical models,
+    * planification.
+
+- pyAgrum is a Python wrapper for the C++ aGrUM library (using SWIG interface generator). It provides a high-level interface to the part of aGrUM allowing to create, model, learn, use, calculate with and embed Bayesian Networks and other graphical models. Some specific (python and C++) codes are added in order to simplify and extend the aGrUM API.
+
+Specific codes have been added to pyAgrum (as pure python modules using pyAgrum) :
+
+    * Scikit-learn-compliant probabilistic classifiers based on Bayesian networks,
+    * Probabilistic causality (causal networks, do-calculus),
+    * dynamic Bayesian network,
+    * tools for explainability in Bayesian networks. 
+
+# tl;dr
+
+#### how to quickly install pyAgrum
+
+```sh
+pip install pyAgrum
+```
+
+```sh
+conda install -c conda-forge pyagrum
+```
+
+####  how to learn pyAgrum
+
+- [Read the docs](http://pyagrum.readthedocs.io)
+
+- [Tutorials](https://webia.lip6.fr/~phw//aGrUM/docs/last/notebooks/)
+
+- [Test it yourself with binder](https://mybinder.org/v2/gl/agrumery%2FaGrUM/1.1.0)
+
+# Philosophy & Design
 
 For a less technical introduction, checkout 
 [the project's homepage](http://agrum.gitlab.io).
-
-# Philosophy & Design
 
 aGrUM initial purpose was to support, sustain and share new frameworks and algorithms from the Graphical Models and 
 Decision team at 
