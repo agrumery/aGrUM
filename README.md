@@ -52,12 +52,12 @@ Decision team at
 [students and former students](http://agrum.gitlab.io/pages/hall-of-fame.html). aGrUM then took the form of a 
 generic framework designed to ease the emergence and experimentation of new ideas. More and more, as a consequence, 
 it began to fulfill all the requirements for providing a complete library to build applications using Probabilistic 
-Graphical Models, with a strong emphasis on Bayesian networks. Once the prohect reached this state, the team decided 
+Graphical Models, with a strong emphasis on Bayesian networks. Once the project reached this state, the team decided 
 to provide it as an open source contribution for the decision support and data science communities. The last move in 
 that direction has been to port its main code repository at gitlab.
 
-aGrUM main goals include code quality, code reuse and performance: aGrUM is written in modern C++11/17 
-(cross-platform: gcc>=4.8, clang and visual C++); tests and continuous integration are at the core of aGrUM's 
+aGrUM main goals include code quality, code reuse and performance: aGrUM is written in modern C++20 
+(cross-platform: gcc>=8.0, clang and visual C++); tests and continuous integration are at the core of aGrUM's 
 development; many classical algorithms have been reimplemented and multi-threaded to speed up learning and inference.
 
 Moreover, aGrUM allows its users to very finely tune learning (choosing priors, score, constraints, algorithms and 
