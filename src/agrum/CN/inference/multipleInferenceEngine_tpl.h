@@ -287,7 +287,7 @@ namespace gum {
         const auto end_i            = this->threadRanges_[this_thread + 1].first;
         auto       end_j            = this->threadRanges_[this_thread + 1].second;
         const auto marginalMax_size = this->marginalMax_.size();
-        const Size tsize            = workingSet_[0]->size();
+        const auto tsize            = Size(l_marginalMin_.size());
 
         while ((i < end_i) || (j < end_j)) {
           // go through all work indices
