@@ -149,7 +149,6 @@ namespace gum {
             _threadInference_(tId);
             _threadUpdate_(tId);
           }   // end of : parallel periodSize
-
           */
 
           this->updateApproximationScheme(int(psize));
@@ -280,7 +279,6 @@ namespace gum {
         int this_thread = omp_get_thread_num();
 
         // implicit wait clause (don't put nowait)
-
         #pragma omp single
         {
           // should we ask for max threads instead ( no differences here in
@@ -309,8 +307,8 @@ namespace gum {
           BayesNet< GUM_SCALAR >* thread_bn = new BayesNet< GUM_SCALAR >();
           *thread_bn = this->credalNet_->current_bn();
           this->workingSet_[this_thread] = thread_bn;
-          //this->workingSet_[this_thread] = new BayesNet< GUM_SCALAR
-    >(this->credalNet_->current_bn());
+          //this->workingSet_[this_thread] =
+          //  new BayesNet< GUM_SCALAR>(this->credalNet_->current_bn());
         }
         //this->workingSet_[this_thread] = thread_bn;
 
@@ -335,6 +333,7 @@ namespace gum {
         BNInferenceEngine* inference_engine
            = new BNInferenceEngine(this->workingSet_[this_thread].data,
                                    RelevantPotentialsFinderType::FIND_ALL);
+        inference_engine->setNumberOfThreads(1);
 
         this->l_inferenceEngine_[this_thread] = inference_engine;
 
@@ -344,8 +343,6 @@ namespace gum {
           this->l_optimalNet_[this_thread] = threadOpt;
         }
       }
-
-      exit(1);
     }
     */
 
