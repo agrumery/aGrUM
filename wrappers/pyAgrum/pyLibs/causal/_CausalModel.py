@@ -74,11 +74,11 @@ class CausalModel:
     # latent variables and arcs from latent variables
     self.__lat: NodeSet = set()
 
-    for n, ls in latentVarsDescriptor:
-      self.addLatentVariable(n, ls, keepArcs)
-
     self.__names = {nId: self.__causalBN.variable(
       nId).name() for nId in self.__causalBN.nodes()}
+
+    for n, ls in latentVarsDescriptor:
+      self.addLatentVariable(n, ls, keepArcs)
 
   def clone(self) -> "pyAgrum.causal.CausalModel":
     """
@@ -106,6 +106,7 @@ class CausalModel:
     # simplest variable to add : only 2 modalities for latent variables
     id_latent = self.__causalBN.add(name, 2)
     self.__lat.add(id_latent)
+    self.__names[id_latent]=name
 
     for item in lchild:
       j = self.__observationalBN.idFromName(
