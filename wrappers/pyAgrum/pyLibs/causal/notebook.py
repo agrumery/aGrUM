@@ -63,7 +63,7 @@ def showCausalModel(cm: csl.CausalModel, size= None):
   size: int|str
     the size of the rendered graph
   """
-  gnb.showDot(cm.toDot())
+  gnb.showDot(cm.toDot(),size=size)
 
 
 def getCausalImpact(model: csl.CausalModel, on: Union[str, NameSet], doing: Union[str, NameSet],
