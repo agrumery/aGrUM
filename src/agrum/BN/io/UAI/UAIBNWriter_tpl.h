@@ -51,7 +51,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void UAIBNWriter< GUM_SCALAR >::write(std::ostream&                  output,
                                                const IBayesNet< GUM_SCALAR >& bn) {
-    if (!output.good()) { GUM_ERROR(IOError, "Stream states flags are not all unset.") }
+    if (!output.good()) { GUM_ERROR(IOError, "Input/Output error : stream not writable.") }
 
     output << _preambule_(bn) << std::endl;
 

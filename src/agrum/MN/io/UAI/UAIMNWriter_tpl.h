@@ -51,7 +51,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void UAIMNWriter< GUM_SCALAR >::write(std::ostream&                   output,
                                                const IMarkovNet< GUM_SCALAR >& MN) {
-    if (!output.good()) { GUM_ERROR(IOError, "Stream states flags are not all unset.") }
+    if (!output.good()) { GUM_ERROR(IOError, "Input/Output error : stream not writable.") }
 
     output << _preambule_(MN) << std::endl;
 

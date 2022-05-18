@@ -53,7 +53,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   void DSLWriter< GUM_SCALAR >::write(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) {
-    if (!output.good()) { GUM_ERROR(IOError, "Stream states flags are not all unset.") }
+    if (!output.good()) { GUM_ERROR(IOError, "Input/Output error : stream not writable.") }
 
     output << "net " << bn.propertyWithDefault("name", "unnamedBN") << std::endl
            << "{" << std::endl;
@@ -68,7 +68,7 @@ namespace gum {
 
     output.flush();
 
-    if (output.fail()) { GUM_ERROR(IOError, "Writting in the ostream failed.") }
+    if (output.fail()) { GUM_ERROR(IOError, "Writing in the ostream failed.") }
   }
 
   /** Writes a Bayesian network in the referenced file using the DSL format.

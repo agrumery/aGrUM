@@ -51,7 +51,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void BIFXMLIDWriter< GUM_SCALAR >::write(std::ostream&                         output,
                                                   const InfluenceDiagram< GUM_SCALAR >& infdiag) {
-    if (!output.good()) { GUM_ERROR(IOError, "Stream states flags are not all unset.") }
+    if (!output.good()) { GUM_ERROR(IOError, "Input/Output error : stream not writable.") }
 
     output << _heading_() << std::endl;
     output << "<!-- Variables -->" << std::endl;
@@ -76,7 +76,7 @@ namespace gum {
     output << _documentend_();
     output.flush();
 
-    if (output.fail()) { GUM_ERROR(IOError, "Writting in the ostream failed.") }
+    if (output.fail()) { GUM_ERROR(IOError, "Writing in the ostream failed.") }
   }
 
   /*
@@ -97,7 +97,7 @@ namespace gum {
 
     output.close();
 
-    if (output.fail()) { GUM_ERROR(IOError, "Writting in the ostream failed.") }
+    if (output.fail()) { GUM_ERROR(IOError, "Writing in the ostream failed.") }
   }
 
   /*

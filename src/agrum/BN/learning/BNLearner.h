@@ -73,7 +73,7 @@ namespace gum {
        * @param induceTypes By default, all the values in the dataset are
        * interpreted as "labels", i.e., as categorical values. But if some
        * columns of the dataset have only numerical values, it would certainly
-       * be better totag them as corresponding to integer, range or continuous
+       * be better to tag them as corresponding to integer, range or continuous
        * variables. By setting induceTypes to true, this is precisely what the
        * BNLearner will do.
        */

@@ -49,7 +49,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void NetWriter< GUM_SCALAR >::write(std::ostream&                  output,
                                              const IBayesNet< GUM_SCALAR >& bn) {
-    if (!output.good()) GUM_ERROR(IOError, "Stream states flags are not all unset.")
+    if (!output.good()) GUM_ERROR(IOError, "Input/Output error : stream not writable.")
 
     output << _header_(bn) << std::endl;
 
@@ -63,7 +63,7 @@ namespace gum {
 
     output.flush();
 
-    if (output.fail()) { GUM_ERROR(IOError, "Writting in the ostream failed.") }
+    if (output.fail()) { GUM_ERROR(IOError, "Writing in the ostream failed.") }
   }
 
   // Writes a Bayesian network in the referenced file using the BN format.
@@ -78,7 +78,7 @@ namespace gum {
                                              const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
 
-    if (!output.good()) { GUM_ERROR(IOError, "Stream states flags are not all unset.") }
+    if (!output.good()) { GUM_ERROR(IOError, "Input/Output error : "<<filePath<<" not writable.") }
 
     output << _header_(bn) << std::endl;
 
@@ -93,7 +93,7 @@ namespace gum {
     output.flush();
     output.close();
 
-    if (output.fail()) { GUM_ERROR(IOError, "Writting in the ostream failed.") }
+    if (output.fail()) { GUM_ERROR(IOError, "Writing in the ostream failed.") }
   }
 
   // Returns a bloc defining a variable's CPT in the BN format.

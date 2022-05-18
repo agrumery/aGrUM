@@ -51,7 +51,7 @@ namespace gum {
   INLINE void GeneralizedCNFWriter< GUM_SCALAR, IApproximationPolicy >::write(
      std::ostream&                  output,
      const IBayesNet< GUM_SCALAR >& bn) {
-    if (!output.good()) GUM_ERROR(IOError, "Stream states flags are not all unset.")
+    if (!output.good()) GUM_ERROR(IOError, "Input/Output error : stream not writable.")
 
     std::stringstream strfile, strfile2;
 
@@ -148,11 +148,11 @@ namespace gum {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
     std::ofstream outputvar((filePath + ".var").c_str(), std::ios_base::trunc);
 
-    if (!output.good()) GUM_ERROR(IOError, "Stream states flags are not all unset.")
+    if (!output.good()) GUM_ERROR(IOError, "Input/Output error : "<<filePath<<" not writable.")
 
     std::stringstream strfile, strfile2;
 
-    if (!outputvar.good()) GUM_ERROR(IOError, "Stream states flags are not all unset.")
+    if (!outputvar.good()) GUM_ERROR(IOError, "Input/Output error : "<<(filePath + ".var")<<" not writable.")
 
     Idx num      = 0;
     Idx numparam = 0;
@@ -236,9 +236,9 @@ namespace gum {
     outputvar.close();
     output.close();
 
-    if (outputvar.fail()) GUM_ERROR(IOError, "Writting in the ostream failed.")
+    if (outputvar.fail()) GUM_ERROR(IOError, "Writing in the ostream failed.")
 
-    if (output.fail()) GUM_ERROR(IOError, "Writting in the ostream failed.")
+    if (output.fail()) GUM_ERROR(IOError, "Writing in the ostream failed.")
   }
 
   // Returns a bloc defining a variable's CPT in the BN format.
