@@ -109,7 +109,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
                 also be set to the string 'elbowMethod' so that the best number of bins is found automatically.
                 If the method used is NML, this parameter sets the the maximum number of bins up to which the NML
                 algorithm searches for the optimal number of bins. In this case this parameter must be an int
-                If any other discetization method is used, this parameter is ignored.
+                If any other discretization method is used, this parameter is ignored.
 
             discretizationThreshold: int or float
                 When using default parameters a variable will be treated as continous only if it has more unique values
@@ -290,7 +290,6 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     Fits the model to the training data provided. The two possible uses of this function are fit(X,y) and fit(filename,
     targetName). Any other combination will raise a ValueError
     """
-
     if filename is None:
       if targetName is not None:
         raise ValueError(
@@ -355,8 +354,27 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     self.bn = gum.BayesNet('Template')
 
     var = gum.LabelizedVariable(self.target, self.target, 0)
+
+    is_int_varY = True
+    min_vY=max_vY=None
     for value in possibleValuesY:
-      var.addLabel(str(value))
+      if not self.discretizer.checkInt(value):
+        is_int_varY = False
+        break
+      else:
+        v = int(value)
+        if min_vY is None or min_vY > v:
+          min_vY = v
+        if max_vY is None or max_vY < v:
+          max_vY = v
+
+    if is_int_varY:
+      if len(possibleValuesY) == max_vY - min_vY + 1:  # no hole in the list of int
+        var = gum.RangeVariable(self.target , self.target , min_vY, max_vY)
+      else:
+        var = gum.IntegerVariable(self.target , self.target , [int(v) for v in possibleValuesY])
+    else:
+      var = gum.LabelizedVariable(self.target , self.target , [str(v) for v in possibleValuesY])
     self.bn.add(var)
 
     for i in range(d):
@@ -758,6 +776,81 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
         y = y == self.label
 
     return X, y
+
+
+  def toDiscretizedDataFrame(self,X=None, y=None, filename=None, targetName=None):
+    """
+    Given an X and a y, returns a pandas.Dataframe with the discretized values of the base or a fimename and a targetname.
+
+    Parameters
+    ----------
+        X: {array-like, sparse matrix} of shape (n_samples, n_features)
+            training data. Warning: Raises ValueError if either filename or targetname is not None. Raises ValueError
+            if y is None.
+        y: array-like of shape (n_samples)
+            Target values. Warning: Raises ValueError if either filename or targetname is not None. Raises ValueError
+            if X is None
+        filename: str
+            specifies the csv file where the training data and target values are located. Warning: Raises ValueError
+            if either X or y is not None. Raises ValueError if targetName is None
+        targetName: str
+            specifies the name of the targetVariable in the csv file. Warning: Raises ValueError if either X or y is
+            not None. Raises ValueError if filename is None.
+
+    Returns
+    -------
+      pandas.Dataframe
+    """
+    if self.variableNameIndexDictionary is None:
+      raise ValueError("First, you need to fit a model !")
+
+    if filename is None:
+      if targetName is not None:
+        raise ValueError(
+          "This function should be used either as toDiscretizedDataFrame(X,y) or toDiscretizedDataFrame(filename=...,targetAttribute=...). You have set "
+          "filename to None, but have entered a targetName")
+      if X is None or y is None:
+        raise ValueError(
+          "This function should be used either as toDiscretizedDataFrame(X,y) or toDiscretizedDataFrame(filename=...,targetAttribute=...). You have not "
+          "entered a csv file name and not specified the X and y matrices that should be used")
+    else:
+      if targetName is None:
+        raise ValueError(
+          "This function should be used either as toDiscretizedDataFrame(X,y) or toDiscretizedDataFrame(filename=...,targetAttribute=...). The name of the "
+          "target must be specified if using this function with a csv file.")
+      if X is not None or y is not None:
+        raise ValueError(
+          "This function should be used either as toDiscretizedDataFrame(X,y) or toDiscretizedDataFrame(filename=...,targetAttribute=...). You have entered "
+          "a filename and the X and y matrices at the same time.")
+      X, y = self.XYfromCSV(filename, True, targetName)
+
+    def bestTypedVal(v,idx):
+        if v.varType()==gum.VarType_Discretized:
+            return v.label(idx)
+        elif v.varType()==gum.VarType_Integer:
+            return int(v.numerical(idx))
+        elif v.varType()==gum.VarType_Labelized:
+            return v.label(idx)
+        elif v.varType()==gum.VarType_Range:
+            return int(v.numerical(idx))
+        else:
+            return None
+
+    reverse={v:k for k,v in self.variableNameIndexDictionary.items()}
+    varY=self.bn.variable(self.target)
+    df = pandas.DataFrame([], columns=[reverse[k] for k in range(len(reverse))]+[self.target])
+
+    for i,j in zip(X,y):
+        ligne=[]
+        for k,val in enumerate(i):
+            var=self.bn.variable(reverse[k])
+            ligne.append(bestTypedVal(var,var[str(val)]))
+
+        ligne.append(bestTypedVal(varY,varY[str(j)]))
+        df.loc[len(df)] = ligne
+
+    return df
+
 
   def showROC_PR(self, filename, save_fig=False, show_progress=False):
     """
