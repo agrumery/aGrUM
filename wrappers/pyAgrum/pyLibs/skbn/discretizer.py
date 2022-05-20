@@ -25,8 +25,10 @@ import pandas
 import scipy
 import sklearn
 import sklearn.preprocessing as skp
+
 import pyAgrum as gum
 
+from ._utils import checkInt
 
 class BNDiscretizer():
   """
@@ -634,18 +636,6 @@ class BNDiscretizer():
 
     return cutpoints
 
-  @staticmethod
-  def checkInt(v):
-    if isinstance(v,bool):
-        return False
-    if isinstance(v, int):
-      return True
-    if isinstance(v, str):
-      if v[0] in ('-', '+'):
-        return v[1:].isdigit()
-      return v.isdigit()
-    return int(v)==v
-
   def createVariable(self, variableName, X, y=None, possibleValuesY=None):
     """
     parameters:
@@ -700,7 +690,7 @@ class BNDiscretizer():
       is_int_var=True
       min_v=max_v=None
       for value in possibleValuesX:
-        if not self.checkInt(value):
+        if not checkInt(value):
           is_int_var=False
           break
         else:

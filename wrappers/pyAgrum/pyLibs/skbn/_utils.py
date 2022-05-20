@@ -245,3 +245,17 @@ def _createCSVfromNDArrays(X, y, target, variableNameIndexDictionary, csvfilenam
   # This will serve as the first line in the csv file since it is needed by pyAgrum to function properly
   training_file = pd.concat([y, X], axis=1)
   training_file.to_csv(csvfilename, index=False)
+
+def checkInt(v):
+  """
+  Test is v is an int or a str representing an int
+  """
+  if isinstance(v,bool):
+      return False
+  if isinstance(v, int):
+    return True
+  if isinstance(v, str):
+    if v[0] in ('-', '+'):
+      return v[1:].isdigit()
+    return v.isdigit()
+  return int(v)==v

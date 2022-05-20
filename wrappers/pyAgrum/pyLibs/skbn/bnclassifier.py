@@ -35,6 +35,7 @@ from ._utils import _ImplementPrior as IPrior
 from ._utils import _CalculateThreshold as CThreshold
 from ._utils import _DFNames as DFNames
 from ._utils import _createCSVfromNDArrays as CSV
+from ._utils import checkInt
 
 from ._MBCalcul import compileMarkovBlanket
 from ._MBCalcul import _calcul_proba_for_binary_class, _calcul_most_probable_for_nary_class, \
@@ -316,13 +317,15 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     if isinstance(y,pandas.DataFrame): #type(y) == pandas.DataFrame:
       self.target = y.columns.tolist()[0]
+      if checkInt(self.target):
+        self.target="Y"
     elif type(y) == pandas.core.series.Series:
       self.target = y.name
     else:
       self.target = 'y'
 
     if isinstance(X,pandas.DataFrame): #type(X) == pandas.DataFrame:
-      variableNames = X.columns.tolist()
+      variableNames = [f"X{x}" if checkInt(x) else x for x in X.columns]
 
     # verifies the shape of the two arrays
     X, y = sklearn.utils.check_X_y(X, y, dtype=None, accept_sparse=True)
@@ -358,7 +361,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     is_int_varY = True
     min_vY=max_vY=None
     for value in possibleValuesY:
-      if not self.discretizer.checkInt(value):
+      if not checkInt(value):
         is_int_varY = False
         break
       else:
@@ -840,14 +843,17 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     varY=self.bn.variable(self.target)
     df = pandas.DataFrame([], columns=[reverse[k] for k in range(len(reverse))]+[self.target])
 
-    for i,j in zip(X,y):
-        ligne=[]
-        for k,val in enumerate(i):
-            var=self.bn.variable(reverse[k])
-            ligne.append(bestTypedVal(var,var[str(val)]))
+    print(reverse)
+    for n in range(len(X)):
+      ligne=[]
+      for k in range(len(X[reverse])):
+        val=X[k][n]
+        var=self.bn.variable(reverse[k])
+        print(f"{var} : {val}")
+        ligne.append(bestTypedVal(var,var[str(val)]))
 
-        ligne.append(bestTypedVal(varY,varY[str(j)]))
-        df.loc[len(df)] = ligne
+      ligne.append(bestTypedVal(varY,varY[str(Y[n])]))
+    df.loc[len(df)] = ligne
 
     return df
 
@@ -861,7 +867,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     filename: str
         a csv filename
     save_fig : bool
-        whether the graph soulb de saved
+        whether the graph should be saved
     show_progress : bool
         indicates if the resulting curve must be printed
     """
