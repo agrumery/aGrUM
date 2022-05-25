@@ -997,13 +997,16 @@ def _reprPotential(pot, digits=None, withColors=True, varnames=None, asString=Fa
     str_val = ""
     if with_fraction:
       frac_val = Fraction(val).limit_denominator(fraction_limit)
-      a = frac_val.numerator
-      b = frac_val.denominator
-      val_app = a / b
+      val_app = frac_val.numerator / frac_val.denominator
       if abs(val_app - val) < fraction_round_error:
         str_val = "text-align:center;'>"
         if fraction_with_latex:
-          str_val += f"$$\\frac{{{frac_val.numerator}}}{{{frac_val.denominator}}}$$"
+          str_val += "$$"
+          if frac_val.denominator>1:
+            str_val += f"\\frac{{{frac_val.numerator}}}{{{frac_val.denominator}}}"
+          else:
+            str_val += f"{frac_val.numerator}"
+          str_val += "$$"
         else:
           str_val += f"{frac_val}"
         str_val += "</td>"
