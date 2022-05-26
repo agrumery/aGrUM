@@ -1,4 +1,4 @@
-# (c) Copyright by Pierre-Henri Wuillemin, UPMC, 2017
+# (c) Copyright by Pierre-Henri Wuillemin, 2022
 # (pierre-henri.wuillemin@lip6.fr)
 # Permission to use, copy, modify, and distribute this
 # software and its documentation for any purpose and

@@ -1,4 +1,4 @@
-# (c) Copyright by Pierre-Henri Wuillemin, UPMC, 2017
+# (c) Copyright by Pierre-Henri Wuillemin, 2022
 # (pierre-henri.wuillemin@lip6.fr)
 # Permission to use, copy, modify, and distribute this
 # software and its documentation for any purpose and
@@ -79,6 +79,7 @@ from tests import MarkovNetTestSuite
 from tests import PotentialTestSuite
 from tests import PRMexplorerTestSuite
 from tests import SamplingTestSuite
+from tests import SkbnTestSuite
 from tests import VariablesTestSuite
 
 from tests import CausalASTTestSuite
@@ -118,6 +119,7 @@ tl.append(MarkovNetTestSuite.ts)
 tl.append(PotentialTestSuite.ts)
 tl.append(PRMexplorerTestSuite.ts)
 tl.append(SamplingTestSuite.ts)
+tl.append(SkbnTestSuite.ts)
 tl.append(VariablesTestSuite.ts)
 tl.append(CausalASTTestSuite.ts)
 tl.append(CausalDSepTestSuite.ts)

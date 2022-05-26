@@ -1,4 +1,4 @@
-# (c) Copyright by Pierre-Henri Wuillemin, UPMC, 2017
+# (c) Copyright by Pierre-Henri Wuillemin, 2022
 # (pierre-henri.wuillemin@lip6.fr)
 
 # Permission to use, copy, modify, and distribute this
@@ -61,8 +61,17 @@ class DiscreteVariableTestCase(VariablesTestCase):
         1).addTick(2).addTick(3).addTick(4)
     self.assertEqual(v.labels(), ("[1;2[", "[2;3[", "[3;4]"))
 
+    v = gum.DiscretizedVariable("e", "e").addTick(
+        1).addTick(2).addTick(3).addTick(4)
+    v.setEmpirical(True)
+    self.assertEqual(v.labels(), ("(1;2[", "[2;3[", "[3;4)"))
+
     v = gum.DiscretizedVariable("f", "f", [1, 5, 2, 4])
     self.assertEqual(v.labels(), ("[1;2[", "[2;4[", "[4;5]"))
+
+    v = gum.DiscretizedVariable("f", "f", [1, 5, 2, 4])
+    v.setEmpirical(True)
+    self.assertEqual(v.labels(), ("(1;2[", "[2;4[", "[4;5)"))
 
   def testHashableDiscreteVariable(self):
     va = gum.LabelizedVariable("a", "a")

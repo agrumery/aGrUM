@@ -781,7 +781,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     return X, y
 
 
-  def toDiscretizedDataFrame(self,X=None, y=None, filename=None, targetName=None):
+  def toDiscretizedDataFrame(self,X=None, y=None, filename=None):
     """
     Given an X and a y, returns a pandas.Dataframe with the discretized values of the base or a fimename and a targetname.
 
@@ -795,10 +795,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
             if X is None
         filename: str
             specifies the csv file where the training data and target values are located. Warning: Raises ValueError
-            if either X or y is not None. Raises ValueError if targetName is None
-        targetName: str
-            specifies the name of the targetVariable in the csv file. Warning: Raises ValueError if either X or y is
-            not None. Raises ValueError if filename is None.
+            if either X or y is not None.
 
     Returns
     -------
@@ -807,6 +804,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     if self.variableNameIndexDictionary is None:
       raise ValueError("First, you need to fit a model !")
 
+    targetName= self.target
     if filename is None:
       if targetName is not None:
         raise ValueError(
@@ -840,20 +838,25 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
             return None
 
     reverse={v:k for k,v in self.variableNameIndexDictionary.items()}
+    if isinstance(X, pandas.DataFrame): #to be sure of the name of the columns
+      X=X.rename(columns=reverse)
     varY=self.bn.variable(self.target)
     df = pandas.DataFrame([], columns=[reverse[k] for k in range(len(reverse))]+[self.target])
 
     print(reverse)
     for n in range(len(X)):
       ligne=[]
-      for k in range(len(X[reverse])):
-        val=X[k][n]
+      for k in range(len(reverse)):
+        if isinstance(X, pandas.DataFrame):
+          val=X[reverse[k]][n]
+        else: #np.array
+          val=X[n][k]
         var=self.bn.variable(reverse[k])
         print(f"{var} : {val}")
         ligne.append(bestTypedVal(var,var[str(val)]))
 
-      ligne.append(bestTypedVal(varY,varY[str(Y[n])]))
-    df.loc[len(df)] = ligne
+      ligne.append(bestTypedVal(varY,varY[str(y[n])]))
+      df.loc[len(df)] = ligne
 
     return df
 
