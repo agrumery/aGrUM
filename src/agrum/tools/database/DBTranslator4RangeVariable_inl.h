@@ -50,7 +50,7 @@ namespace gum {
            DBTranslator4RangeVariable::translateBack(const DBTranslatedValue translated_val) const {
       try {
         return this->back_dico_.second(translated_val.discr_val);
-      } catch (Exception&) {
+      } catch (Exception const&) {
         // check if this is a missing value
         if (translated_val.discr_val == std::numeric_limits< std::size_t >::max()) {
           if (!_nonint_missing_symbol_.empty()) return _nonint_missing_symbol_;

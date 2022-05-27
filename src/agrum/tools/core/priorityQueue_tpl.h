@@ -228,7 +228,7 @@ namespace gum {
   INLINE void PriorityQueueImplementation< Val, Priority, Cmp, Gen >::erase(const Val& val) {
     try {
       eraseByPos(_indices_[val]);
-    } catch (NotFound&) {}
+    } catch (NotFound const&) {}
   }
 
   // removes the top of the priority queue (but does not return it)
@@ -693,7 +693,7 @@ namespace gum {
   INLINE void PriorityQueueImplementation< Val, Priority, Cmp, true >::erase(Val val) {
     try {
       eraseByPos(_indices_[val]);
-    } catch (NotFound&) {}
+    } catch (NotFound const&) {}
   }
 
   // removes the top of the priority queue (but does not return it)

@@ -57,7 +57,7 @@ namespace gum {
     for (const auto& nid: nodes()) {
       try {
         other.idFromName(variable(nid).name());
-      } catch (NotFound) { return false; }
+      } catch (NotFound const&) { return false; }
     }
 
     for (const auto& edge: edges()) {

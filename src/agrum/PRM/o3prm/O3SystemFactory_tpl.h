@@ -104,7 +104,7 @@ namespace gum {
 
             try {
               factory.endSystem();
-            } catch (FatalError&) { O3PRM_SYSTEM_INSTANTIATION_FAILED(*sys, *_errors_); }
+            } catch (FatalError const&) { O3PRM_SYSTEM_INSTANTIATION_FAILED(*sys, *_errors_); }
           }
         }
       }

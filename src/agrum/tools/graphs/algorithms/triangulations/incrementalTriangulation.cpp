@@ -778,7 +778,7 @@ namespace gum {
         for (auto edge: _graph_.edges()) {
           try {
             tmp_graph.addEdge(edge.first(), edge.second());
-          } catch (Exception&) {}   // both extremities must be in tmp_graph
+          } catch (Exception const&) {}   // both extremities must be in tmp_graph
         }
 
         // remove from the mps_of_node table the affected mps containing the
@@ -1018,7 +1018,7 @@ namespace gum {
         for (const auto node: _junction_tree_.clique(elt.first)) {
           try {
             _T_mpd_.addToClique(idMPS, node);
-          } catch (DuplicateElement&) {}
+          } catch (DuplicateElement const&) {}
         }
 
         _cliques_of_mps_[idMPS].push_back(elt.first);

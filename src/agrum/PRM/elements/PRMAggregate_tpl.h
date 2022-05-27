@@ -238,7 +238,7 @@ namespace gum {
 
       try {
         cast = new PRMScalarAttribute< GUM_SCALAR >(this->name(), type().superType());
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         GUM_ERROR(OperationNotAllowed, "this PRMAggregate can not have cast descendant")
       }
 

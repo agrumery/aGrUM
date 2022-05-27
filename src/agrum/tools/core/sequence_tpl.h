@@ -410,7 +410,7 @@ namespace gum {
 
     try {
       pos = _h_[k];
-    } catch (NotFound&) { return; }
+    } catch (NotFound const&) { return; }
 
     // erase the element
     _v_.erase(_v_.begin() + pos);
@@ -776,7 +776,7 @@ namespace gum {
 
     try {
       pos = _h_[k];
-    } catch (NotFound&) { return; }
+    } catch (NotFound const&) { return; }
 
     // erase the element
     _v_.erase(_v_.begin() + pos);

@@ -435,11 +435,11 @@ namespace gum {
     try {
       _push_function_(ident);
 
-    } catch (OperationNotAllowed&) {
+    } catch (OperationNotAllowed const&) {
       try {
         _push_variable_(ident);
 
-      } catch (OperationNotAllowed&) { GUM_ERROR(OperationNotAllowed, "unknown identifier") }
+      } catch (OperationNotAllowed const&) { GUM_ERROR(OperationNotAllowed, "unknown identifier") }
     }
   }
 

@@ -226,7 +226,7 @@ namespace gum {
                                                  c_agg->agg_type(),
                                                  c_agg->type(),
                                                  c_agg->label());
-          } catch (OperationNotAllowed&) {
+          } catch (OperationNotAllowed const&) {
             agg = new PRMAggregate< GUM_SCALAR >(c_agg->name(), c_agg->agg_type(), c_agg->type());
             agg->sharedLabel(c_agg->sharedLabel());
             agg->setLabel(c_agg->labelValue());
@@ -356,7 +356,7 @@ namespace gum {
                                                  c_agg->agg_type(),
                                                  c_agg->type(),
                                                  c_agg->label());
-          } catch (OperationNotAllowed&) {
+          } catch (OperationNotAllowed const&) {
             agg = new PRMAggregate< GUM_SCALAR >(c_agg->name(), c_agg->agg_type(), c_agg->type());
           }
 
@@ -469,7 +469,7 @@ namespace gum {
       try {
         tail = _nameMap_[tail_name];
         head = _nameMap_[head_name];
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         GUM_ERROR(NotFound, "tail and/or head of arc does not exists in this Class")
       }
 
@@ -509,7 +509,7 @@ namespace gum {
         for (auto i: implements()) {
           if (i->exists(elt->name())) { _checkInterface_(elt, i); }
         }
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         // No interface
       }
     }
@@ -560,7 +560,7 @@ namespace gum {
         for (auto i: implements()) {
           if (i->exists(ref->name())) { _checkRefInterface_(ref, i); }
         }
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         // No interface to check
       }
     }
@@ -680,7 +680,7 @@ namespace gum {
               break;
             }
           }
-        } catch (NotFound&) {
+        } catch (NotFound const&) {
           // No interface
         }
         if (!found) {
@@ -705,7 +705,7 @@ namespace gum {
         if (!super().exists(overloader->name())) {
           GUM_ERROR(OperationNotAllowed, "found no ClassElement<GUM_SCALAR> to overload")
         }
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         GUM_ERROR(OperationNotAllowed, "overload is possible only with subclasses")
       }
 
@@ -940,11 +940,11 @@ namespace gum {
             if (impl->exists(elt->name())) {
               try {
                 this->getIOFlag_(*elt).second = true;
-              } catch (NotFound&) { this->setIOFlag_(*elt, std::make_pair(false, true)); }
+              } catch (NotFound const&) { this->setIOFlag_(*elt, std::make_pair(false, true)); }
             }
             try {
               super = &(super->super());
-            } catch (NotFound&) { super = nullptr; }
+            } catch (NotFound const&) { super = nullptr; }
           }
         }
       }
@@ -979,7 +979,7 @@ namespace gum {
     INLINE PRMClassElement< GUM_SCALAR >& PRMClass< GUM_SCALAR >::get(NodeId id) {
       try {
         return *(_nodeIdMap_[id]);
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given NodeId")
       }
     }
@@ -988,7 +988,7 @@ namespace gum {
     INLINE const PRMClassElement< GUM_SCALAR >& PRMClass< GUM_SCALAR >::get(NodeId id) const {
       try {
         return *(_nodeIdMap_[id]);
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given NodeId (" << id << ")");
       }
     }
@@ -997,7 +997,7 @@ namespace gum {
     INLINE PRMClassElement< GUM_SCALAR >& PRMClass< GUM_SCALAR >::get(const std::string& name) {
       try {
         return *(_nameMap_[name]);
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given name (" << name << ")");
       }
     }
@@ -1007,7 +1007,7 @@ namespace gum {
                  PRMClass< GUM_SCALAR >::get(const std::string& name) const {
       try {
         return *(_nameMap_[name]);
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given name (" << name << ")");
       }
     }
@@ -1193,7 +1193,9 @@ namespace gum {
 
       try {
         return elt.type().name() == get(elt.name()).type().name();
-      } catch (OperationNotAllowed&) { GUM_ERROR(NotFound, "no attribute with the given name") }
+      } catch (OperationNotAllowed const&) {
+        GUM_ERROR(NotFound, "no attribute with the given name")
+      }
     }
 
     template < typename GUM_SCALAR >
@@ -1212,7 +1214,7 @@ namespace gum {
         } else {
           return true;
         }
-      } catch (NotFound&) {}
+      } catch (NotFound const&) {}
       return false;
     }
 

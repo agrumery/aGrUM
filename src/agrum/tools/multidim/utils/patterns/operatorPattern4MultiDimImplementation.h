@@ -52,7 +52,7 @@ namespace gum {
       func = OperatorRegister4MultiDim< T >::Register().get(GUM_MULTI_DIM_OPERATOR_FUNC_NAME,
                                                             impl1.name(),
                                                             impl2.name());
-    } catch (NotFound&) {
+    } catch (NotFound const&) {
 
 #  ifdef GUM_MULTI_DIM_SYMMETRIC_OPERATOR
 
@@ -66,7 +66,7 @@ namespace gum {
                                                               impl2.name(),
                                                               impl1.name());
         swapped_names = true;
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
 #  endif /* GUM_MULTI_DIM_SYMMETRIC_OPERATOR */
 
         func = OperatorRegister4MultiDim< T >::Register().get(GUM_MULTI_DIM_OPERATOR_FUNC_NAME,

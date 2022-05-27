@@ -255,7 +255,7 @@ namespace gum {
   INLINE void MultiPriorityQueue< Val, Priority, Cmp >::erase(const Val& val) {
     try {
       eraseByPos(_indices_[val][0]);
-    } catch (NotFound&) {}
+    } catch (NotFound const&) {}
   }
 
   // removes the top of the priority queue (but does not return it)

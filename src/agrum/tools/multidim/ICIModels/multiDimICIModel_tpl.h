@@ -71,7 +71,7 @@ namespace gum {
          ++iter) {
       try {
         causalWeight(*(bij.first(iter.key())), iter.val());
-      } catch (NotFound&) { causalWeight(*(iter.key()), iter.val()); }
+      } catch (NotFound const&) { causalWeight(*(iter.key()), iter.val()); }
     }
   }
 

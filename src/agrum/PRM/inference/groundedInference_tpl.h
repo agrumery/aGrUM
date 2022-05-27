@@ -137,7 +137,7 @@ namespace gum {
         for (auto e: _obs_) {
           try {
             _inf_->addEvidence(*e);
-          } catch (InvalidArgument&) { _inf_->chgEvidence(*e); }
+          } catch (InvalidArgument const&) { _inf_->chgEvidence(*e); }
         }
       }
 

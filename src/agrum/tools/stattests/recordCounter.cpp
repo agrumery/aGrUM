@@ -552,9 +552,9 @@ namespace gum {
 
               countings[offset] += row.weight();
             }
-          } catch (NotFound&) {}   // this exception is raised by the row filter
-                                   // if the row generators create no output row
-                                   // from the last rows of the database
+          } catch (NotFound const&) {}   // this exception is raised by the row filter
+                                         // if the row generators create no output row
+                                         // from the last rows of the database
         }
       };
 

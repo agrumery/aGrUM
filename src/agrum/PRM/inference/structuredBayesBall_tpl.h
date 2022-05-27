@@ -70,7 +70,7 @@ namespace gum {
         }
 
         return false;
-      } catch (NotFound&) { return false; }
+      } catch (NotFound const&) { return false; }
     }
 
     template < typename GUM_SCALAR >
@@ -138,7 +138,7 @@ namespace gum {
 
               for (auto iter = refs.begin(); iter != refs.end(); ++iter)
                 _fromParent_(iter->first, iter->first->type().get(iter->second).id(), marks);
-            } catch (NotFound&) {
+            } catch (NotFound const&) {
               // Not an inverse sc
             }
           }
@@ -181,7 +181,7 @@ namespace gum {
         try {
           for (auto iter = i->getRefAttr(n).begin(); iter != i->getRefAttr(n).end(); ++iter)
             _fromParent_(iter->first, iter->first->type().get(iter->second).id(), marks);
-        } catch (NotFound&) {
+        } catch (NotFound const&) {
           // Not an inverse sc
         }
       }

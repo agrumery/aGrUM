@@ -110,7 +110,7 @@ namespace gum {
       for (std::size_t i = std::size_t(0); i < score_nb_vars; ++i) {
         try {
           mapping.insert(i, apriori_names2col[score_names[i]]);
-        } catch (Exception&) {
+        } catch (Exception const&) {
           GUM_ERROR(MissingVariableInDatabase,
                     "Variable " << score_names[i]
                                 << " of the observed database does not belong to the "

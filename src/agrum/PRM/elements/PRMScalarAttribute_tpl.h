@@ -142,9 +142,9 @@ namespace gum {
        PRMScalarAttribute< GUM_SCALAR >::addParent(const PRMClassElement< GUM_SCALAR >& elt) {
       try {
         _cpf_->add(elt.type().variable());
-      } catch (DuplicateElement&) {
+      } catch (DuplicateElement const&) {
         GUM_ERROR(DuplicateElement, elt.name() << " as parent of " << this->name())
-      } catch (OperationNotAllowed&) {
+      } catch (OperationNotAllowed const&) {
         GUM_ERROR(OperationNotAllowed, elt.name() << " of wrong type as parent of " << this->name())
       }
     }
@@ -160,7 +160,7 @@ namespace gum {
 
       try {
         cast = new PRMScalarAttribute< GUM_SCALAR >(this->name(), type().superType());
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         GUM_ERROR(OperationNotAllowed, "this ScalarAttribute can not have cast descendant")
       }
 
@@ -184,9 +184,9 @@ namespace gum {
     void PRMScalarAttribute< GUM_SCALAR >::setAsCastDescendant(PRMAttribute< GUM_SCALAR >* cast) {
       try {
         type().setSuper(cast->type());
-      } catch (OperationNotAllowed&) {
+      } catch (OperationNotAllowed const&) {
         GUM_ERROR(OperationNotAllowed, "this ScalarAttribute can not have cast descendant")
-      } catch (TypeError&) {
+      } catch (TypeError const&) {
         std::stringstream msg;
         msg << type().name() << " is not a subtype of " << cast->type().name();
         GUM_ERROR(TypeError, msg.str())

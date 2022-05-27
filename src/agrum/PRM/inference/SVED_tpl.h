@@ -59,7 +59,7 @@ namespace gum {
                ++iter)
             if ((!ignore.exists(iter->first)) && (_bb_.exists(iter->first)))
               _eliminateNodesDownward_(query, iter->first, pool, trash, elim_list, ignore);
-        } catch (NotFound&) {
+        } catch (NotFound const&) {
           // Ok
         }
       }
@@ -125,7 +125,7 @@ namespace gum {
           for (auto iter = i->getRefAttr(attr).begin(); iter != i->getRefAttr(attr).end(); ++iter)
             if ((!ignore.exists(iter->first)) && (_bb_.exists(iter->first)))
               _eliminateNodesDownward_(i, iter->first, pool, trash, my_list, ignore);
-        } catch (NotFound&) {
+        } catch (NotFound const&) {
           // Ok
         }
       }
@@ -149,7 +149,7 @@ namespace gum {
           }
 
           eliminateNodes(elim_order, pool, trash);
-        } catch (NotFound&) {
+        } catch (NotFound const&) {
           // Raised if there is no inner nodes to eliminate
         }
       }
@@ -191,7 +191,7 @@ namespace gum {
           for (auto iter = i->getRefAttr(attr).begin(); iter != i->getRefAttr(attr).end(); ++iter)
             if ((!ignore.exists(iter->first)) && (_bb_.exists(iter->first)))
               _eliminateNodesDownward_(i, iter->first, pool, trash, elim_list, ignore);
-        } catch (NotFound&) {
+        } catch (NotFound const&) {
           // Ok
         }
       }
@@ -214,7 +214,7 @@ namespace gum {
             elim_order.push_back(&var);
           }
           eliminateNodes(elim_order, pool, trash);
-        } catch (NotFound&) {
+        } catch (NotFound const&) {
           // Raised if there is no inner nodes to eliminate
         }
       }
@@ -270,7 +270,7 @@ namespace gum {
 
       try {
         lifted_pool = _lifted_pools_[&(_bb_.requisiteNodes(i))];
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         _initLiftedNodes_(i, trash);
         lifted_pool = _lifted_pools_[&(_bb_.requisiteNodes(i))];
       }
@@ -378,7 +378,7 @@ namespace gum {
         if (pos != std::string::npos) { name = name.substr(0, pos); }
         try {
           _class_elim_order_->insert(name);
-        } catch (DuplicateElement&) {}
+        } catch (DuplicateElement const&) {}
       }
     }
 
@@ -530,7 +530,7 @@ namespace gum {
     INLINE Set< NodeId >& SVED< GUM_SCALAR >::_getAttrSet_(const PRMInstance< GUM_SCALAR >* i) {
       try {
         return *(_req_set_[&(_bb_.requisiteNodes(i))].first);
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         _initReqSets_(i);
         return *(_req_set_[&(_bb_.requisiteNodes(i))].first);
       }
@@ -540,7 +540,7 @@ namespace gum {
     INLINE Set< NodeId >& SVED< GUM_SCALAR >::_getSCSet_(const PRMInstance< GUM_SCALAR >* i) {
       try {
         return *(_req_set_[&(_bb_.requisiteNodes(i))].second);
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         _initReqSets_(i);
         return *(_req_set_[&(_bb_.requisiteNodes(i))].second);
       }

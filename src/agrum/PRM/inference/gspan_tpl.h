@@ -63,7 +63,7 @@ namespace gum {
                _cost_func_(iter.second()->tree_width, _graph_->nodes(iter.second()).size()));
             _nodes_.push_back(const_cast< gspan::LabelData* >(iter.second()));
           }
-        } catch (NotFound&) {
+        } catch (NotFound const&) {
           // It's a label over edges
           if (_isEdgeEligible_(*(_graph_->edges(iter.second()).begin()))) {
             _cost_.insert(
@@ -174,7 +174,7 @@ namespace gum {
                   try {
                     edge_growth = (*edge_count)[temp_growth.toString()];
                     edge_growth->insert(current, neighbor);
-                  } catch (NotFound&) {
+                  } catch (NotFound const&) {
                     edge_growth = new gspan::EdgeGrowth< GUM_SCALAR >(node,
                                                                       edge_data->l,
                                                                       neighbor_label,
@@ -194,7 +194,7 @@ namespace gum {
             for (const auto& elt: *edge_count) {
               try {
                 _tree_.growPattern(*p, *elt.second, 2);
-              } catch (OperationNotAllowed&) {
+              } catch (OperationNotAllowed const&) {
                 // The child was not minimal or was not worth considering
               }
 

@@ -530,7 +530,7 @@ namespace gum {
     for (Idx i = Idx(0), end = op_args.size(); i < end; ++i) {
       try {
         new_args << _multidim2id_.first(op_args[i]->id());
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         // deallocate everything we have allocated
         delete new_op;
 

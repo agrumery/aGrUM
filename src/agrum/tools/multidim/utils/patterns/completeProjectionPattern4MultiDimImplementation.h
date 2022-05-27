@@ -50,7 +50,7 @@ namespace gum {
       func = CompleteProjectionRegister4MultiDim< GUM_SCALAR >::Register().get(
          GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME,
          ttable.name());
-    } catch (NotFound&) {
+    } catch (NotFound const&) {
       func = CompleteProjectionRegister4MultiDim< GUM_SCALAR >::Register().get(
          GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME,
          ttable.basename());

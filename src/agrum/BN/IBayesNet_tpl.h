@@ -170,7 +170,7 @@ namespace gum {
 
     try {
       bn_name = this->property("name");
-    } catch (NotFound&) { bn_name = "no_name"; }
+    } catch (NotFound const&) { bn_name = "no_name"; }
 
     output << bn_name << "\" {" << std::endl;
     output << "  graph [bgcolor=transparent,label=\"" << bn_name << "\"];" << std::endl;
@@ -250,7 +250,7 @@ namespace gum {
     for (auto node: nodes()) {
       try {
         alignment.insert(&variable(node), &from.variableFromName(variable(node).name()));
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         // a name is not found in from
         return false;
       }

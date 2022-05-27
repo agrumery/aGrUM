@@ -301,7 +301,7 @@ namespace gum {
 
     try {
       bn_name = _bn_.property("name");
-    } catch (NotFound&) { bn_name = "no_name"; }
+    } catch (NotFound const&) { bn_name = "no_name"; }
 
     bn_name = "Fragment of " + bn_name;
 

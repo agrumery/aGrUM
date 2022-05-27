@@ -149,7 +149,7 @@ namespace gum {
         if (!super().exists(overloader->name()))
           GUM_ERROR(OperationNotAllowed, "found no ClassElement<GUM_SCALAR> to overload")
 
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         GUM_ERROR(OperationNotAllowed, "overload is possible only with sub interfaces")
       }
 
@@ -406,7 +406,7 @@ namespace gum {
     INLINE PRMClassElement< GUM_SCALAR >& PRMInterface< GUM_SCALAR >::get(NodeId id) {
       try {
         return *(_nodeIdMap_[id]);
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given NodeId")
       }
     }
@@ -415,7 +415,7 @@ namespace gum {
     INLINE const PRMClassElement< GUM_SCALAR >& PRMInterface< GUM_SCALAR >::get(NodeId id) const {
       try {
         return *(_nodeIdMap_[id]);
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given NodeId")
       }
     }
@@ -424,7 +424,9 @@ namespace gum {
     INLINE PRMClassElement< GUM_SCALAR >& PRMInterface< GUM_SCALAR >::get(const std::string& name) {
       try {
         return *(_nameMap_[name]);
-      } catch (NotFound&) { GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given name") }
+      } catch (NotFound const&) {
+        GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given name")
+      }
     }
 
     template < typename GUM_SCALAR >
@@ -432,7 +434,9 @@ namespace gum {
                  PRMInterface< GUM_SCALAR >::get(const std::string& name) const {
       try {
         return *(_nameMap_[name]);
-      } catch (NotFound&) { GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given name") }
+      } catch (NotFound const&) {
+        GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given name")
+      }
     }
 
     template < typename GUM_SCALAR >
@@ -486,7 +490,7 @@ namespace gum {
         } else {
           return true;
         }
-      } catch (NotFound&) {}
+      } catch (NotFound const&) {}
       return false;
     }
   } /* namespace prm */

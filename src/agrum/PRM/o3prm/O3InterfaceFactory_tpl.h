@@ -118,7 +118,7 @@ namespace gum {
             _interfaceMap_.insert(i->name().label(), i.get());
             _nodeMap_.insert(id, i.get());
 
-          } catch (DuplicateElement&) {
+          } catch (DuplicateElement const&) {
             // Raised if duplicate type names
             O3PRM_INTERFACE_DUPLICATE(i->name(), *_errors_);
             return false;
@@ -140,7 +140,7 @@ namespace gum {
             try {
               _dag_.addArc(tail, head);
 
-            } catch (InvalidDirectedCycle&) {
+            } catch (InvalidDirectedCycle const&) {
               // Cyclic inheritance
               O3PRM_INTERFACE_CYCLIC_INHERITANCE(i->name(), i->superLabel(), *_errors_);
               return false;
@@ -176,7 +176,7 @@ namespace gum {
                   factory.addReferenceSlot(elt.type().label(), elt.name().label(), elt.isArray());
                 }
 
-              } catch (OperationNotAllowed&) {
+              } catch (OperationNotAllowed const&) {
                 // Duplicate or Wrong overload
                 O3PRM_INTERFACE_DUPLICATE_ELEMENT(elt, *_errors_);
               }

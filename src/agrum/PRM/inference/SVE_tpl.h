@@ -309,7 +309,7 @@ namespace gum {
           }
 
           eliminateNodes(elim, pool, trash);
-        } catch (NotFound&) {
+        } catch (NotFound const&) {
           // Raised if there is no inner nodes to eliminate
         }
       }
@@ -448,7 +448,9 @@ namespace gum {
           }
 
           eliminateNodes(elim, pool, trash);
-        } catch (NotFound&) { GUM_ERROR(FatalError, "there should be at least one node here.") }
+        } catch (NotFound const&) {
+          GUM_ERROR(FatalError, "there should be at least one node here.")
+        }
       }
     }
 
@@ -460,7 +462,7 @@ namespace gum {
 
       try {
         lifted_pool = _lifted_pools_[&(i->type())];
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         _initLiftedNodes_(i->type());
         lifted_pool = _lifted_pools_[&(i->type())];
       }
@@ -556,7 +558,7 @@ namespace gum {
         if (pos != std::string::npos) { name = name.substr(0, pos); }
         try {
           _class_elim_order_->insert(name);
-        } catch (DuplicateElement&) {}
+        } catch (DuplicateElement const&) {}
       }
     }
 
@@ -659,10 +661,10 @@ namespace gum {
                                                         NodeId                           id) {
       try {
         _delayedVariables_[i]->insert(&(j->get(id).type().variable()));
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         _delayedVariables_.insert(i, new Set< const DiscreteVariable* >());
         _delayedVariables_[i]->insert(&(j->get(id).type().variable()));
-      } catch (DuplicateElement&) {
+      } catch (DuplicateElement const&) {
         // happends if j->get(id) is parent of more than one variable in i
       }
 
@@ -670,7 +672,7 @@ namespace gum {
 
       try {
         _delayedVariablesCounters_[j->name() + dot + j->get(id).safeName()] += 1;
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         _delayedVariablesCounters_.insert(j->name() + dot + j->get(id).safeName(), 1);
       }
     }

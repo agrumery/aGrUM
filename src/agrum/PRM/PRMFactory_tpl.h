@@ -159,13 +159,13 @@ namespace gum {
                 }
               }
             }
-          } catch (NotFound&) {
+          } catch (NotFound const&) {
             std::stringstream msg;
             msg << "class " << c->name() << " does not respect interface ";
             GUM_ERROR(PRMTypeError, msg.str() + i->name())
           }
         }
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         // this Class<GUM_SCALAR> does not implement any
         // PRMInterface<GUM_SCALAR>
       }
@@ -223,7 +223,7 @@ namespace gum {
               c->addArc(c->get(node).safeName(), attr->safeName());
             }
           }
-        } catch (OperationNotAllowed&) {}
+        } catch (OperationNotAllowed const&) {}
       }
 
       if (count != attr->cpf().variablesSequence().size()) {
@@ -265,7 +265,7 @@ namespace gum {
             GUM_ERROR(FatalError, "unknown ClassElement<GUM_SCALAR>")
           }
         }
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         // Check if name is a slot chain
         PRMSlotChain< GUM_SCALAR >* sc = _buildSlotChain_(c, name);
 
@@ -293,7 +293,7 @@ namespace gum {
         PRMAttribute< GUM_SCALAR >* a = static_cast< PRMAttribute< GUM_SCALAR >* >(
            _checkStack_(1, PRMClassElement< GUM_SCALAR >::prm_attribute));
         _addParent_(c, a, name);
-      } catch (FactoryInvalidState&) {
+      } catch (FactoryInvalidState const&) {
         auto agg = static_cast< PRMAggregate< GUM_SCALAR >* >(
            _checkStack_(1, PRMClassElement< GUM_SCALAR >::prm_aggregate));
         _addParent_(static_cast< PRMClass< GUM_SCALAR >* >(c), agg, name);
@@ -537,7 +537,7 @@ namespace gum {
 
       try {
         c->add(p);
-      } catch (DuplicateElement&) { c->overload(p); }
+      } catch (DuplicateElement const&) { c->overload(p); }
     }
 
     template < typename GUM_SCALAR >
@@ -555,7 +555,7 @@ namespace gum {
 
       try {
         c->add(agg);
-      } catch (DuplicateElement&) { c->overload(agg); }
+      } catch (DuplicateElement const&) { c->overload(agg); }
 
       switch (agg->agg_type()) {
         case PRMAggregate< GUM_SCALAR >::AggregateType::COUNT:
@@ -781,7 +781,7 @@ namespace gum {
         if (hasSC) {
           try {
             c->add(agg);
-          } catch (DuplicateElement&) { c->overload(agg); }
+          } catch (DuplicateElement const&) { c->overload(agg); }
         } else {
           // Inner aggregators can be directly used as attributes
           auto attr
@@ -789,11 +789,11 @@ namespace gum {
 
           try {
             c->add(attr);
-          } catch (DuplicateElement&) { c->overload(attr); }
+          } catch (DuplicateElement const&) { c->overload(attr); }
 
           delete agg;
         }
-      } catch (DuplicateElement&) {
+      } catch (DuplicateElement const&) {
         delete agg;
         throw;
       }
@@ -812,10 +812,12 @@ namespace gum {
 
       try {
         slotType = _retrieveClass_(type);
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         try {
           slotType = _retrieveInterface_(type);
-        } catch (NotFound&) { GUM_ERROR(NotFound, "unknown ReferenceSlot<GUM_SCALAR> slot type") }
+        } catch (NotFound const&) {
+          GUM_ERROR(NotFound, "unknown ReferenceSlot<GUM_SCALAR> slot type")
+        }
       }
 
       PRMReferenceSlot< GUM_SCALAR >* ref
@@ -823,7 +825,7 @@ namespace gum {
 
       try {
         owner->add(ref);
-      } catch (DuplicateElement&) { owner->overload(ref); }
+      } catch (DuplicateElement const&) { owner->overload(ref); }
     }
 
     template < typename GUM_SCALAR >
@@ -844,10 +846,10 @@ namespace gum {
           inst = new PRMInstance< GUM_SCALAR >(elt_name.str(), *c);
           model->add(name, inst);
         }
-      } catch (PRMTypeError&) {
+      } catch (PRMTypeError const&) {
         delete inst;
         throw;
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         delete inst;
         throw;
       }
@@ -942,7 +944,7 @@ namespace gum {
               return nullptr;
             }
           }
-        } catch (NotFound&) { return nullptr; }
+        } catch (NotFound const&) { return nullptr; }
       }
 
       GUM_ASSERT(v.size() == elts.size());
@@ -963,7 +965,7 @@ namespace gum {
         try {
           inputs.push_back(&(c->get(chains[i])));
           retVal = retVal || PRMClassElement< GUM_SCALAR >::isSlotChain(*(inputs.back()));
-        } catch (NotFound&) {
+        } catch (NotFound const&) {
           inputs.push_back(_buildSlotChain_(c, chains[i]));
           retVal = true;
 
@@ -994,7 +996,7 @@ namespace gum {
 
             try {
               toAdd.push_back(std::make_pair(elt, &(c->get(name.str()))));
-            } catch (NotFound&) {
+            } catch (NotFound const&) {
               toAdd.push_back(std::make_pair(elt, _buildSlotChain_(c, name.str())));
             }
           } else {
@@ -1034,7 +1036,7 @@ namespace gum {
               current = nullptr;
             }
           }
-        } catch (OperationNotAllowed&) {
+        } catch (OperationNotAllowed const&) {
           GUM_ERROR(WrongClassElement, "found a ClassElement<GUM_SCALAR> without a type")
         }
       }
@@ -1382,7 +1384,7 @@ namespace gum {
 
         try {
           var->addLabel(l);
-        } catch (DuplicateElement&) {
+        } catch (DuplicateElement const&) {
           GUM_ERROR(DuplicateElement, "a label '" << l << "' already exists")
         }
       } else {
@@ -1401,7 +1403,7 @@ namespace gum {
           if (t->_superType_->_var_->label(i) == extends) {
             try {
               var->addLabel(l);
-            } catch (DuplicateElement&) {
+            } catch (DuplicateElement const&) {
               GUM_ERROR(DuplicateElement, "a label '" << l << "' already exists")
             }
 
@@ -1452,7 +1454,7 @@ namespace gum {
 
       try {
         var->addTick(tick);
-      } catch (DefaultInLabel&) {
+      } catch (DefaultInLabel const&) {
         GUM_ERROR(OperationNotAllowed, "tick already in used for this variable")
       }
     }
@@ -1527,8 +1529,8 @@ namespace gum {
       try {
         try {
           c->add(a);
-        } catch (DuplicateElement&) { c->overload(a); }
-      } catch (Exception&) {
+        } catch (DuplicateElement const&) { c->overload(a); }
+      } catch (Exception const&) {
         if (a != nullptr && (!c->exists(a->id()))) { delete a; }
       }
 
@@ -1573,7 +1575,7 @@ namespace gum {
            = static_cast< PRMSystem< GUM_SCALAR >* >(_checkStack_(1, PRMObject::prm_type::SYSTEM));
         _stack_.pop_back();
         model->instantiate();
-      } catch (Exception&) { GUM_ERROR(FatalError, "could not create system") }
+      } catch (Exception const&) { GUM_ERROR(FatalError, "could not create system") }
     }
 
     template < typename GUM_SCALAR >
@@ -1645,7 +1647,7 @@ namespace gum {
 
           _packages_ = pck_cpy;
 
-        } catch (DuplicateElement&) {
+        } catch (DuplicateElement const&) {
           // Sub Class already exists in this system
         }
         c = _retrieveClass_(sub_c);
@@ -1663,7 +1665,7 @@ namespace gum {
         i = new PRMInstance< GUM_SCALAR >(name, *type);
         s->add(i);
 
-      } catch (OperationNotAllowed&) {
+      } catch (OperationNotAllowed const&) {
         if (i) { delete i; }
         throw;
       }
@@ -1817,15 +1819,15 @@ namespace gum {
         _retrieveClass_(type);
         return true;
 
-      } catch (NotFound&) {
-      } catch (DuplicateElement&) {}
+      } catch (NotFound const&) {
+      } catch (DuplicateElement const&) {}
 
       try {
         _retrieveInterface_(type);
         return true;
 
-      } catch (NotFound&) {
-      } catch (DuplicateElement&) {}
+      } catch (NotFound const&) {
+      } catch (DuplicateElement const&) {}
 
       return false;
     }

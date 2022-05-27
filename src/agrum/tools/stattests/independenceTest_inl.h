@@ -119,7 +119,7 @@ namespace gum {
       if (use_cache_) {
         try {
           return cache_.score(idset);
-        } catch (NotFound&) {}
+        } catch (NotFound const&) {}
         double the_score = score_(idset);
         cache_.insert(std::move(idset), the_score);
         return the_score;
@@ -137,7 +137,7 @@ namespace gum {
       if (use_cache_) {
         try {
           return cache_.score(idset);
-        } catch (NotFound&) {}
+        } catch (NotFound const&) {}
         double the_score = score_(idset);
         cache_.insert(std::move(idset), the_score);
         return the_score;

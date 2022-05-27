@@ -154,7 +154,7 @@ namespace gum {
 
     try {
       mn_name = this->property("name");
-    } catch (NotFound&) { mn_name = "no_name"; }
+    } catch (NotFound const&) { mn_name = "no_name"; }
 
     output << mn_name << "\" {" << std::endl;
     output << "  graph [bgcolor=transparent,label=\"" << mn_name << "\"];" << std::endl;
@@ -193,7 +193,7 @@ namespace gum {
     std::string       mn_name;
     try {
       mn_name = this->property("name");
-    } catch (NotFound&) { mn_name = "no_name"; }
+    } catch (NotFound const&) { mn_name = "no_name"; }
 
     output << "graph FG_" << mn_name << " {" << std::endl;
     output << "  layout=neato;" << std::endl;
@@ -251,7 +251,7 @@ namespace gum {
     for (auto node: nodes()) {
       try {
         alignment.insert(&variable(node), &from.variableFromName(variable(node).name()));
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         // a name is not found in from
         return false;
       }
@@ -301,7 +301,9 @@ namespace gum {
      IMarkovNet< GUM_SCALAR >::smallestFactorFromNode(const std::string& name) const {
     try {
       return smallestFactorFromNode(idFromName(name));
-    } catch (NotFound) { GUM_ERROR(NotFound, "No factor containing the variable <" << name << ">") }
+    } catch (NotFound const&) {
+      GUM_ERROR(NotFound, "No factor containing the variable <" << name << ">")
+    }
   }
 
   // visit the nodes and add some of node from soids in minimal

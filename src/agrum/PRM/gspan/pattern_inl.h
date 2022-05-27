@@ -55,14 +55,14 @@ namespace gum {
       LabelData& Pattern::label(NodeId node) {
         try {
           return *(_node_map_[node]);
-        } catch (NotFound&) { GUM_ERROR(NotFound, "node not found in this Pattern") }
+        } catch (NotFound const&) { GUM_ERROR(NotFound, "node not found in this Pattern") }
       }
 
       INLINE
       const LabelData& Pattern::label(NodeId node) const {
         try {
           return *(_node_map_[node]);
-        } catch (NotFound&) { GUM_ERROR(NotFound, "node not found in this Pattern") }
+        } catch (NotFound const&) { GUM_ERROR(NotFound, "node not found in this Pattern") }
       }
 
       INLINE
@@ -83,28 +83,28 @@ namespace gum {
       LabelData& Pattern::label(NodeId i, NodeId j) {
         try {
           return *(_arc_map_[Arc(i, j)].first);
-        } catch (NotFound&) { GUM_ERROR(NotFound, "arc not found in this Pattern") }
+        } catch (NotFound const&) { GUM_ERROR(NotFound, "arc not found in this Pattern") }
       }
 
       INLINE
       const LabelData& Pattern::label(NodeId i, NodeId j) const {
         try {
           return *(_arc_map_[Arc(i, j)].first);
-        } catch (NotFound&) { GUM_ERROR(NotFound, "arc not found in this Pattern") }
+        } catch (NotFound const&) { GUM_ERROR(NotFound, "arc not found in this Pattern") }
       }
 
       INLINE
       LabelData& Pattern::label(const Arc& arc) {
         try {
           return *(_arc_map_[arc].first);
-        } catch (NotFound&) { GUM_ERROR(NotFound, "arc not found in this Pattern") }
+        } catch (NotFound const&) { GUM_ERROR(NotFound, "arc not found in this Pattern") }
       }
 
       INLINE
       const LabelData& Pattern::label(const Arc& arc) const {
         try {
           return *(_arc_map_[arc].first);
-        } catch (NotFound&) { GUM_ERROR(NotFound, "arc not found in this Pattern") }
+        } catch (NotFound const&) { GUM_ERROR(NotFound, "arc not found in this Pattern") }
       }
 
       INLINE
@@ -167,28 +167,28 @@ namespace gum {
       EdgeCode& Pattern::edgeCode(NodeId tail, NodeId head) {
         try {
           return *(_arc_map_[Arc(tail, head)].second);
-        } catch (NotFound&) { GUM_ERROR(NotFound, "arc not found in Pattern") }
+        } catch (NotFound const&) { GUM_ERROR(NotFound, "arc not found in Pattern") }
       }
 
       INLINE
       EdgeCode& Pattern::edgeCode(const Arc& arc) {
         try {
           return *(_arc_map_[arc].second);
-        } catch (NotFound&) { GUM_ERROR(NotFound, "arc not found in Pattern") }
+        } catch (NotFound const&) { GUM_ERROR(NotFound, "arc not found in Pattern") }
       }
 
       INLINE
       const EdgeCode& Pattern::edgeCode(NodeId tail, NodeId head) const {
         try {
           return *(_arc_map_[Arc(tail, head)].second);
-        } catch (NotFound&) { GUM_ERROR(NotFound, "arc not found in Pattern") }
+        } catch (NotFound const&) { GUM_ERROR(NotFound, "arc not found in Pattern") }
       }
 
       INLINE
       const EdgeCode& Pattern::edgeCode(const Arc& arc) const {
         try {
           return *(_arc_map_[arc].second);
-        } catch (NotFound&) { GUM_ERROR(NotFound, "arc not found in Pattern") }
+        } catch (NotFound const&) { GUM_ERROR(NotFound, "arc not found in Pattern") }
       }
 
       INLINE

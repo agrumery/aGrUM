@@ -165,7 +165,7 @@ namespace gum {
                    ++var) {
                 try {
                   pot->add(**var);
-                } catch (DuplicateElement&) {}
+                } catch (DuplicateElement const&) {}
               }
 
               toRemove.insert(p);
@@ -330,7 +330,7 @@ namespace gum {
       INLINE double StrictSearch< GUM_SCALAR >::_inner_cost_(const Pattern* p) {
         try {
           return _map_[p].first;
-        } catch (NotFound&) {
+        } catch (NotFound const&) {
           _compute_costs_(p);
           return _map_[p].first;
         }
@@ -340,7 +340,7 @@ namespace gum {
       INLINE double StrictSearch< GUM_SCALAR >::_outer_cost_(const Pattern* p) {
         try {
           return _map_[p].second;
-        } catch (NotFound&) {
+        } catch (NotFound const&) {
           _compute_costs_(p);
           return _map_[p].second;
         }
@@ -406,7 +406,7 @@ namespace gum {
       INLINE double TreeWidthSearch< GUM_SCALAR >::cost(const Pattern& p) {
         try {
           return _map_[&p];
-        } catch (NotFound&) {
+        } catch (NotFound const&) {
           _map_.insert(&p, this->computeCost_(p));
           return _map_[&p];
         }

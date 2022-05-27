@@ -64,7 +64,7 @@ namespace gum {
       _chgVal_(varPos, newVal);
 
       return *this;
-    } catch (NotFound&) {
+    } catch (NotFound const&) {
       std::string name = "instantiation does not contain this DiscreteVariable: ";
       GUM_ERROR(NotFound, name + v.name())
     }
@@ -85,7 +85,7 @@ namespace gum {
       _chgVal_(varPos, newVal);
 
       return *this;
-    } catch (NotFound&) {
+    } catch (NotFound const&) {
       std::string name = "instantiation does not contain this DiscreteVariable: ";
       GUM_ERROR(NotFound, name + v->name())
     }

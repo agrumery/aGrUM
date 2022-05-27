@@ -38,7 +38,7 @@ namespace gum {
   const std::string& GraphicalModel::property(const std::string& name) const {
     try {
       return _properties_()[name];
-    } catch (NotFound&) {
+    } catch (NotFound const&) {
       std::string msg = "The following property does not exists: ";
       GUM_ERROR(NotFound, msg + name)
     }
@@ -58,14 +58,14 @@ namespace gum {
                                                          const std::string& byDefault) const {
     try {
       return _properties_()[name];
-    } catch (NotFound&) { return byDefault; }
+    } catch (NotFound const&) { return byDefault; }
   }
 
   INLINE
   void GraphicalModel::setProperty(const std::string& name, const std::string& value) {
     try {
       _properties_()[name] = value;
-    } catch (NotFound&) { _properties_().insert(name, value); }
+    } catch (NotFound const&) { _properties_().insert(name, value); }
   }
 
 

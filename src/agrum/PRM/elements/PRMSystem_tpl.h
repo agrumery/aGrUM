@@ -76,7 +76,7 @@ namespace gum {
 
       try {
         instanceMap_[&(i->type())]->insert(i);
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         instanceMap_.insert(&(i->type()), new Set< PRMInstance< GUM_SCALAR >* >());
         instanceMap_[&(i->type())]->insert(i);
       }
@@ -272,7 +272,7 @@ namespace gum {
                   sBuff << ref->name() << "." << parent_name;
                   factory.addParent(sBuff.str());
                 }
-              } catch (NotFound&) {
+              } catch (NotFound const&) {
                 // No instances for this slotchain
               }
 
@@ -363,7 +363,7 @@ namespace gum {
     INLINE PRMInstance< GUM_SCALAR >& PRMSystem< GUM_SCALAR >::get(NodeId id) {
       try {
         return *(nodeIdMap_[id]);
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         GUM_ERROR(NotFound, "found no Instance<GUM_SCALAR> matching the given id")
       }
     }
@@ -372,7 +372,7 @@ namespace gum {
     INLINE const PRMInstance< GUM_SCALAR >& PRMSystem< GUM_SCALAR >::get(NodeId id) const {
       try {
         return *(nodeIdMap_[id]);
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         GUM_ERROR(NotFound, "found no Instance<GUM_SCALAR> matching the given id")
       }
     }
@@ -381,7 +381,7 @@ namespace gum {
     INLINE NodeId PRMSystem< GUM_SCALAR >::get(const PRMInstance< GUM_SCALAR >& i) const {
       try {
         return nodeIdMap_.keyByVal(const_cast< PRMInstance< GUM_SCALAR >* >(&i));
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         GUM_ERROR(NotFound, "found no Instance<GUM_SCALAR> matching the given id")
       }
     }
@@ -422,7 +422,7 @@ namespace gum {
     INLINE PRMInstance< GUM_SCALAR >& PRMSystem< GUM_SCALAR >::get(const std::string& name) {
       try {
         return *(nameMap_[name]);
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         GUM_ERROR(NotFound, "found no Instance<GUM_SCALAR> matching the given name")
       }
     }
@@ -432,7 +432,7 @@ namespace gum {
                  PRMSystem< GUM_SCALAR >::get(const std::string& name) const {
       try {
         return *(nameMap_[name]);
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         GUM_ERROR(NotFound, "found no Instance<GUM_SCALAR> matching the given name")
       }
     }
@@ -443,7 +443,7 @@ namespace gum {
        PRMSystem< GUM_SCALAR >::get(const PRMClass< GUM_SCALAR >& type) const {
       try {
         return *(instanceMap_[const_cast< PRMClass< GUM_SCALAR >* >(&type)]);
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         GUM_ERROR(NotFound, "the given Class<GUM_SCALAR> has no instantiation in this System");
       }
     }
@@ -454,7 +454,7 @@ namespace gum {
        PRMSystem< GUM_SCALAR >::getArray(const std::string& name) const {
       try {
         return *(arrayMap_[name].second);
-      } catch (NotFound&) { GUM_ERROR(NotFound, "found no array matching the given name") }
+      } catch (NotFound const&) { GUM_ERROR(NotFound, "found no array matching the given name") }
     }
 
     template < typename GUM_SCALAR >
@@ -462,7 +462,7 @@ namespace gum {
            PRMSystem< GUM_SCALAR >::getArrayType(const std::string& name) {
       try {
         return *(arrayMap_[name].first);
-      } catch (NotFound&) { GUM_ERROR(NotFound, "found no array matching the given name") }
+      } catch (NotFound const&) { GUM_ERROR(NotFound, "found no array matching the given name") }
     }
 
     template < typename GUM_SCALAR >
@@ -470,7 +470,7 @@ namespace gum {
                  PRMSystem< GUM_SCALAR >::getArrayType(const std::string& name) const {
       try {
         return *(arrayMap_[name].first);
-      } catch (NotFound&) { GUM_ERROR(NotFound, "found no array matching the given name") }
+      } catch (NotFound const&) { GUM_ERROR(NotFound, "found no array matching the given name") }
     }
 
     template < typename GUM_SCALAR >
@@ -486,7 +486,7 @@ namespace gum {
                     "the given Instance<GUM_SCALAR> is of an incorrect "
                     "Class<GUM_SCALAR> type");
         }
-      } catch (NotFound&) { GUM_ERROR(NotFound, "found no array matching the given name") }
+      } catch (NotFound const&) { GUM_ERROR(NotFound, "found no array matching the given name") }
     }
 
     template < typename GUM_SCALAR >
@@ -527,7 +527,7 @@ namespace gum {
        PRMSystem< GUM_SCALAR >::begin(const std::string& a) {
       try {
         return arrayMap_[a].second->begin();
-      } catch (NotFound&) { GUM_ERROR(NotFound, "found no array matching the given name") }
+      } catch (NotFound const&) { GUM_ERROR(NotFound, "found no array matching the given name") }
     }
 
     template < typename GUM_SCALAR >
@@ -535,7 +535,7 @@ namespace gum {
        PRMSystem< GUM_SCALAR >::end(const std::string& a) {
       try {
         return arrayMap_[a].second->end();
-      } catch (NotFound&) { GUM_ERROR(NotFound, "found no array matching the given name") }
+      } catch (NotFound const&) { GUM_ERROR(NotFound, "found no array matching the given name") }
     }
 
     template < typename GUM_SCALAR >
@@ -543,7 +543,7 @@ namespace gum {
        PRMSystem< GUM_SCALAR >::begin(const std::string& a) const {
       try {
         return arrayMap_[a].second->begin();
-      } catch (NotFound&) { GUM_ERROR(NotFound, "found no array matching the given name") }
+      } catch (NotFound const&) { GUM_ERROR(NotFound, "found no array matching the given name") }
     }
 
     template < typename GUM_SCALAR >
@@ -551,7 +551,7 @@ namespace gum {
        PRMSystem< GUM_SCALAR >::end(const std::string& a) const {
       try {
         return arrayMap_[a].second->end();
-      } catch (NotFound&) { GUM_ERROR(NotFound, "found no array matching the given name") }
+      } catch (NotFound const&) { GUM_ERROR(NotFound, "found no array matching the given name") }
     }
 
     template < typename GUM_SCALAR >

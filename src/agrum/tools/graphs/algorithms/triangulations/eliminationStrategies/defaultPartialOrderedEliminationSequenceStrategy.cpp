@@ -161,7 +161,7 @@ namespace gum {
           min_score = score;
           best_node = node;
         }
-      } catch (NotFound&) {}
+      } catch (NotFound const&) {}
     }
 
     if (!found) { GUM_ERROR(NotFound, "no possible node to eliminate") }
@@ -186,15 +186,15 @@ namespace gum {
     // note that if graph_ != nullptr,  _simplicial_set_ has been allocated
     try {
       return _nodeToEliminate_(_simplicial_set_->allSimplicialNodes());
-    } catch (NotFound&) {}
+    } catch (NotFound const&) {}
 
     try {
       return _nodeToEliminate_(_simplicial_set_->allAlmostSimplicialNodes());
-    } catch (NotFound&) {}
+    } catch (NotFound const&) {}
 
     try {
       return _nodeToEliminate_(_simplicial_set_->allQuasiSimplicialNodes());
-    } catch (NotFound&) {}
+    } catch (NotFound const&) {}
 
     // here: select the node through Kjaerulff's heuristic
     auto   iter      = nodeset_.cbegin();

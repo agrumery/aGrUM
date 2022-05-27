@@ -71,7 +71,7 @@ namespace gum {
        const PRMClassElement< GUM_SCALAR >& elt) const {
       try {
         return getIOFlag_(elt).first;
-      } catch (NotFound&) { return false; }
+      } catch (NotFound const&) { return false; }
     }
 
     template < typename GUM_SCALAR >
@@ -84,7 +84,7 @@ namespace gum {
                  || PRMClassElement< GUM_SCALAR >::isAggregate(elt)) {
         try {
           getIOFlag_(elt).first = b;
-        } catch (NotFound&) { setIOFlag_(elt, std::make_pair(b, false)); }
+        } catch (NotFound const&) { setIOFlag_(elt, std::make_pair(b, false)); }
       } else {
         GUM_ERROR(WrongClassElement, "given id is not an PRMAttribute or an PRMAggregate")
       }
@@ -100,7 +100,7 @@ namespace gum {
                  || PRMClassElement< GUM_SCALAR >::isAggregate(elt)) {
         try {
           getIOFlag_(elt).second = b;
-        } catch (NotFound&) { setIOFlag_(elt, std::make_pair(false, b)); }
+        } catch (NotFound const&) { setIOFlag_(elt, std::make_pair(false, b)); }
 
         if (b) { updateDescendants_(elt); }
       } else {
@@ -115,7 +115,7 @@ namespace gum {
        const PRMClassElement< GUM_SCALAR >& elt) const {
       try {
         return !(getIOFlag_(elt).first || getIOFlag_(elt).second);
-      } catch (NotFound&) { return true; }
+      } catch (NotFound const&) { return true; }
     }
 
     template < typename GUM_SCALAR >
@@ -129,7 +129,7 @@ namespace gum {
        const PRMClassElement< GUM_SCALAR >& elt) {
       try {
         return _IOFlags_[elt.safeName()];
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         GUM_ERROR(NotFound, "this ClassElement<GUM_SCALAR> does not have any IO flags")
       }
     }
@@ -139,7 +139,7 @@ namespace gum {
        const PRMClassElement< GUM_SCALAR >& elt) const {
       try {
         return _IOFlags_[elt.safeName()];
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         GUM_ERROR(NotFound, "this ClassElement<GUM_SCALAR> does not have any IO flags")
       }
     }
@@ -150,7 +150,7 @@ namespace gum {
                                                           const std::pair< bool, bool >& flags) {
       try {
         _IOFlags_[elt.safeName()] = flags;
-      } catch (NotFound&) { _IOFlags_.insert(elt.safeName(), flags); }
+      } catch (NotFound const&) { _IOFlags_.insert(elt.safeName(), flags); }
     }
 
     template < typename GUM_SCALAR >
@@ -163,7 +163,7 @@ namespace gum {
       try {
         get(name);
         return true;
-      } catch (NotFound&) { return false; }
+      } catch (NotFound const&) { return false; }
     }
 
     template < typename GUM_SCALAR >
@@ -171,7 +171,7 @@ namespace gum {
        const PRMClassElement< GUM_SCALAR >& elt) const {
       try {
         return &elt == &(get(elt.safeName()));
-      } catch (NotFound&) { return false; }
+      } catch (NotFound const&) { return false; }
     }
 
     template < typename GUM_SCALAR >

@@ -239,7 +239,7 @@ namespace gum {
 
     try {
       output << this->property("name") << "\" {" << std::endl;
-    } catch (NotFound&) { output << "no_name\" {" << std::endl; }
+    } catch (NotFound const&) { output << "no_name\" {" << std::endl; }
 
     output << "  node [bgcolor=\"#AAAAAA\", style=filled, height=0];" << std::endl;
 
@@ -434,7 +434,7 @@ namespace gum {
 
     try {
       res = addUtilityNode(var, newMultiDim, varId);
-    } catch (Exception&) {
+    } catch (Exception const&) {
       if (newMultiDim != nullptr) delete newMultiDim;
       throw;
     }
@@ -463,7 +463,7 @@ namespace gum {
 
     try {
       res = addChanceNode(var, newMultiDim, varId);
-    } catch (Exception&) {
+    } catch (Exception const&) {
       delete newMultiDim;
       throw;
     }

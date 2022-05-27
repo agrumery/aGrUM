@@ -478,7 +478,7 @@ namespace gum {
         if (has_missing_value && !old_miss_included) {
           try {
             new_translator.translate(*(old_translator.missingSymbols().begin()));
-          } catch (Exception&) {
+          } catch (Exception const&) {
             GUM_ERROR(OperationNotAllowed,
                       "it is impossible to substitute the translator because "
                       "the database contains some missing values that cannot be "
@@ -511,7 +511,7 @@ namespace gum {
             if (row[kk].discr_val != old_miss) {
               try {
                 new_translator.translate(old_translator.translateBack(row[kk]));
-              } catch (Exception&) {
+              } catch (Exception const&) {
                 // ok, here, the translation is impossible
                 unmapped[index] = 1;
                 return;

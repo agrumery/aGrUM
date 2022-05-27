@@ -302,7 +302,7 @@ namespace gum {
         for (const auto neighbour: _triangulated_graph_.neighbours(node)) {
           try {
             numbered_neighbours.setPriority(neighbour, 1 + numbered_neighbours.priority(neighbour));
-          } catch (NotFound&) {}
+          } catch (NotFound const&) {}
         }
       }
     }
@@ -436,7 +436,7 @@ namespace gum {
         for (const auto node: _junction_tree_->clique(elt.first)) {
           try {
             _max_prime_junction_tree_.addToClique(elt.second, node);
-          } catch (DuplicateElement&) {}
+          } catch (DuplicateElement const&) {}
         }
 
     // add the edges to the graph
@@ -447,7 +447,7 @@ namespace gum {
       if (node1 != node2) {
         try {
           _max_prime_junction_tree_.addEdge(node1, node2);
-        } catch (DuplicateElement&) {}
+        } catch (DuplicateElement const&) {}
       }
     }
 
@@ -490,7 +490,7 @@ namespace gum {
           for (unsigned int j = i + 1; j < clique_nodes.size(); ++j) {
             try {
               _triangulated_graph_.addEdge(clique_nodes[i], clique_nodes[j]);
-            } catch (DuplicateElement&) {}
+            } catch (DuplicateElement const&) {}
           }
         }
       }
@@ -693,7 +693,7 @@ namespace gum {
             if (!_original_graph_->existsEdge(edge)) {
               try {
                 _fill_ins_.insert(edge);
-              } catch (DuplicateElement&) {}
+              } catch (DuplicateElement const&) {}
             }
           }
         }

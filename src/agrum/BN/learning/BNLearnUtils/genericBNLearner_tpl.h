@@ -51,7 +51,7 @@ namespace gum {
         const Variable& var = bn.variable(node);
         try {
           _database_.insertTranslator(var, var_names[var.name()], missing_symbols);
-        } catch (NotFound&) {
+        } catch (NotFound const&) {
           GUM_ERROR(MissingVariableInDatabase, "Variable '" << var.name() << "' is missing")
         }
         _nodeId2cols_.insert(NodeId(node), i++);

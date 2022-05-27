@@ -151,7 +151,7 @@ namespace gum {
        PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >& i) {
       try {
         return *(_evidences_[&i]);
-      } catch (NotFound&) { GUM_ERROR(NotFound, "this instance has no evidence.") }
+      } catch (NotFound const&) { GUM_ERROR(NotFound, "this instance has no evidence.") }
     }
 
     template < typename GUM_SCALAR >
@@ -159,7 +159,7 @@ namespace gum {
        PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >& i) const {
       try {
         return *(_evidences_[&i]);
-      } catch (NotFound&) { GUM_ERROR(NotFound, "this instance has no evidence.") }
+      } catch (NotFound const&) { GUM_ERROR(NotFound, "this instance has no evidence.") }
     }
 
     template < typename GUM_SCALAR >
@@ -167,7 +167,7 @@ namespace gum {
        PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >* i) {
       try {
         return *(_evidences_[i]);
-      } catch (NotFound&) { GUM_ERROR(NotFound, "this instance has no evidence.") }
+      } catch (NotFound const&) { GUM_ERROR(NotFound, "this instance has no evidence.") }
     }
 
     template < typename GUM_SCALAR >
@@ -175,7 +175,7 @@ namespace gum {
        PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >* i) const {
       try {
         return *(_evidences_[i]);
-      } catch (NotFound&) { GUM_ERROR(NotFound, "this instance has no evidence.") }
+      } catch (NotFound const&) { GUM_ERROR(NotFound, "this instance has no evidence.") }
     }
 
     template < typename GUM_SCALAR >
@@ -206,7 +206,7 @@ namespace gum {
           delete _EMap_(chain.first)[chain.second->id()];
           _EMap_(chain.first).erase(chain.second->id());
         }
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         // Ok, we are only removing
       }
     }

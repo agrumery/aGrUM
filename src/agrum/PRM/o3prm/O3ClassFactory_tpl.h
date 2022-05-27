@@ -146,7 +146,7 @@ namespace gum {
             _classMap_.insert(c->name().label(), c.get());
             _nodeMap_.insert(id, c.get());
 
-          } catch (DuplicateElement&) {
+          } catch (DuplicateElement const&) {
             O3PRM_CLASS_DUPLICATE(c->name(), *_errors_);
             return false;
           }
@@ -166,7 +166,7 @@ namespace gum {
 
             try {
               _dag_.addArc(tail, head);
-            } catch (InvalidDirectedCycle&) {
+            } catch (InvalidDirectedCycle const&) {
               // Cyclic inheritance
               O3PRM_CLASS_CYLIC_INHERITANCE(c->name(), c->superLabel(), *_errors_);
               return false;
@@ -682,7 +682,7 @@ namespace gum {
               O3PRM_CLASS_ILLEGAL_RULE_LABEL(rule, label, prnt, *_errors_);
               errors = true;
             }
-          } catch (Exception&) {
+          } catch (Exception const&) {
             // parent does not exists and is already reported
           }
         }
@@ -719,7 +719,7 @@ namespace gum {
               O3PRM_CLASS_ILLEGAL_CPT_VALUE(c.name(), attr.name(), f, *_errors_);
               errors = true;
             }
-          } catch (OperationNotAllowed&) {
+          } catch (OperationNotAllowed const&) {
             O3PRM_CLASS_ILLEGAL_CPT_VALUE(c.name(), attr.name(), f, *_errors_);
             errors = true;
           }
@@ -764,7 +764,7 @@ namespace gum {
         for (auto& prnt: attr.parents()) {
           try {
             domainSize *= c.get(prnt.label()).type()->domainSize();
-          } catch (NotFound&) {
+          } catch (NotFound const&) {
             // If we are here, all parents have been check so  _resolveSlotChain_
             // will not raise an error and not return a nullptr
             domainSize *= _resolveSlotChain_(c, prnt)->type()->domainSize();
@@ -805,7 +805,7 @@ namespace gum {
               O3PRM_CLASS_ILLEGAL_CPT_VALUE(c.name(), attr.name(), attr.values()[i], *_errors_);
               return false;
             }
-          } catch (Exception&) {
+          } catch (Exception const&) {
             O3PRM_CLASS_ILLEGAL_CPT_VALUE(c.name(), attr.name(), attr.values()[i], *_errors_);
             return false;
           }
@@ -924,7 +924,7 @@ namespace gum {
               try {
                 t = &(elt->type());
 
-              } catch (OperationNotAllowed&) {
+              } catch (OperationNotAllowed const&) {
                 O3PRM_CLASS_WRONG_PARENT(prnt, *_errors_);
                 return nullptr;
               }

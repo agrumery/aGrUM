@@ -101,7 +101,7 @@ namespace gum {
       }
 
       _changed_ = true;
-    } catch (NotFound&) {
+    } catch (NotFound const&) {
       // Do nothing
     }
   }
@@ -216,7 +216,7 @@ namespace gum {
     if (_bucket_) {
       try {
         return _bucket_->get(*(_instantiations_.second(const_cast< Instantiation* >(&i))));
-      } catch (NotFound&) { return _bucket_->get(i); }
+      } catch (NotFound const&) { return _bucket_->get(i); }
     } else if (i.isMaster(this)) {
       if (!_slavesValue_.exists(&i)) { _slavesValue_.insert(&i, _computeValue_(i)); }
 
@@ -237,7 +237,7 @@ namespace gum {
                                      var,
                                      oldval,
                                      newval);
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         // Then i is not a slave of this
       }
     } else {
@@ -251,7 +251,7 @@ namespace gum {
       try {
         _bucket_->setFirstNotification(
            *(_instantiations_).second(const_cast< Instantiation* >(&i)));
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         // Then i is not a slave of this
       }
     } else {
@@ -264,7 +264,7 @@ namespace gum {
     if (_bucket_) {
       try {
         _bucket_->setLastNotification(*(_instantiations_).second(const_cast< Instantiation* >(&i)));
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         // Then i is not a slave of this
       }
     } else {
@@ -277,7 +277,7 @@ namespace gum {
     if (_bucket_) {
       try {
         _bucket_->setIncNotification(*(_instantiations_.second(const_cast< Instantiation* >(&i))));
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         // Then i is not a slave of this
       }
     } else {
@@ -290,7 +290,7 @@ namespace gum {
     if (_bucket_) {
       try {
         _bucket_->setDecNotification(*(_instantiations_.second(const_cast< Instantiation* >(&i))));
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         // Then i is not a slave of this
       }
     } else {
@@ -304,7 +304,7 @@ namespace gum {
       try {
         _bucket_->setChangeNotification(
            *(_instantiations_.second(const_cast< Instantiation* >(&i))));
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         // Then i is not a slave of this
       }
     } else {
@@ -317,7 +317,7 @@ namespace gum {
     if (_bucket_) {
       try {
         _instantiations_.insert(&i, new Instantiation(*_bucket_));
-      } catch (DuplicateElement&) { return false; }
+      } catch (DuplicateElement const&) { return false; }
     }
 
     return MultiDimImplementation< GUM_SCALAR >::registerSlave(i);
@@ -332,7 +332,7 @@ namespace gum {
         delete _instantiations_.second(&i);
         _instantiations_.eraseFirst(&i);
         return true;
-      } catch (NotFound&) { return false; }
+      } catch (NotFound const&) { return false; }
     } else {
       if (_slavesValue_.exists(&i)) {
         _slavesValue_.erase(&i);
@@ -405,7 +405,7 @@ namespace gum {
     try {
       _allVariables_.insert(var);
       _allVarsInst_.add(*var);
-    } catch (DuplicateElement&) {
+    } catch (DuplicateElement const&) {
       // Nothing to do then!
     }
   }

@@ -146,7 +146,7 @@ namespace gum {
         return (_ticks_[zeIdx] == aTick);
       else   // special case for upper limit
         return ((_ticks_[zeIdx] == aTick) || (_ticks_[zeIdx + 1] == aTick));
-    } catch (OutOfBounds&) { return false; }
+    } catch (OutOfBounds const&) { return false; }
   }
 
   template < typename T_TICKS >

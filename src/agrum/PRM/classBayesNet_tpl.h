@@ -42,7 +42,7 @@ namespace gum {
             this->dag_.addNodeWithId(elt.id());
             this->_varNodeMap_.insert(&(elt.type().variable()), &elt);
           }
-        } catch (NotFound&) {
+        } catch (NotFound const&) {
           // Not an attribute
         }
       }
@@ -50,7 +50,7 @@ namespace gum {
       for (const auto& arc: c.containerDag().arcs()) {
         try {
           this->dag_.addArc(arc.tail(), arc.head());
-        } catch (InvalidNode&) {
+        } catch (InvalidNode const&) {
           // Not added means not an attribute
         }
       }
@@ -132,7 +132,7 @@ namespace gum {
                  ClassBayesNet< GUM_SCALAR >::_get_(const std::string& name) const {
       try {
         return _class_->get(name);
-      } catch (NotFound&) { GUM_ERROR(NotFound, "no element found with that id.") }
+      } catch (NotFound const&) { GUM_ERROR(NotFound, "no element found with that id.") }
     }
 
     template < typename GUM_SCALAR >

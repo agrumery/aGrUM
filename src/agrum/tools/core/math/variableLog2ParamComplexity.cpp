@@ -61,7 +61,7 @@ namespace gum {
         if (_use_cache_) {
           try {
             return _cache_[std::pair< std::size_t, double >{r, n}];
-          } catch (NotFound&) {}
+          } catch (NotFound const&) {}
         }
 
         // use Equation (13) of the paper to compute the value of cnr:
@@ -102,7 +102,7 @@ namespace gum {
       if (_use_cache_) {
         try {
           return _cache_[std::pair< std::size_t, double >{r, n}];
-        } catch (NotFound&) {}
+        } catch (NotFound const&) {}
       }
 
       // compute the corrected Szpankowski approximation of cn2 (see the

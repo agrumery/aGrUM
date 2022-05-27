@@ -259,7 +259,7 @@ namespace gum {
     else {
       try {
         _evidence_changes_.insert(id, EvidenceChangeType::EVIDENCE_ADDED);
-      } catch (DuplicateElement&) {
+      } catch (DuplicateElement const&) {
         // here, the evidence change already existed. This necessarily means
         // that the current saved change is an EVIDENCE_ERASED. So if we
         // erased the evidence and added some again, this corresponds to an
@@ -281,7 +281,7 @@ namespace gum {
     else {
       try {
         _evidence_changes_.insert(id, EvidenceChangeType::EVIDENCE_ERASED);
-      } catch (DuplicateElement&) {
+      } catch (DuplicateElement const&) {
         // here, the evidence change already existed and it is necessarily an
         // EVIDENCE_ADDED or an EVIDENCE_MODIFIED. So, if the evidence has
         // been added and is now erased, this is similar to not having created
@@ -305,7 +305,7 @@ namespace gum {
       for (const auto node: this->softEvidenceNodes()) {
         try {
           _evidence_changes_.insert(node, EvidenceChangeType::EVIDENCE_ERASED);
-        } catch (DuplicateElement&) {
+        } catch (DuplicateElement const&) {
           // here, the evidence change already existed and it is necessarily an
           // EVIDENCE_ADDED or an EVIDENCE_MODIFIED. So, if the evidence has
           // been added and is now erased, this is similar to not having created
@@ -330,7 +330,7 @@ namespace gum {
     else {
       try {
         _evidence_changes_.insert(id, EvidenceChangeType::EVIDENCE_MODIFIED);
-      } catch (DuplicateElement&) {
+      } catch (DuplicateElement const&) {
         // here, the evidence change already existed and it is necessarily an
         // EVIDENCE_ADDED. So we should keep this state to indicate that this
         // evidence is new w.r.t. the last inference
@@ -1460,12 +1460,12 @@ namespace gum {
     for (const auto node: this->targets()) {
       try {
         clique_targets.insert(_node_to_clique_[node]);
-      } catch (Exception&) {}
+      } catch (Exception const&) {}
     }
     for (const auto& set: this->jointTargets()) {
       try {
         clique_targets.insert(_joint_target_to_clique_[set]);
-      } catch (Exception&) {}
+      } catch (Exception const&) {}
     }
 
     // put in a vector these cliques and their sizes
@@ -2276,7 +2276,7 @@ namespace gum {
     NodeId clique_of_set;
     try {
       clique_of_set = _joint_target_to_clique_[set];
-    } catch (NotFound&) {
+    } catch (NotFound const&) {
       // here, the precise set of targets does not belong to the set of targets
       // defined by the user. So we will try to find a clique in the junction
       // tree that contains "targets":
@@ -2429,7 +2429,7 @@ namespace gum {
     NodeId clique_of_set;
     try {
       clique_of_set = _joint_target_to_clique_[set];
-    } catch (NotFound&) {
+    } catch (NotFound const&) {
       // here, the precise set of targets does not belong to the set of targets
       // defined by the user. So we will try to find a clique in the junction
       // tree that contains "targets":

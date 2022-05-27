@@ -36,7 +36,7 @@ namespace gum {
     try {
       _scanner_ = new UAIBN::Scanner(_streamName_.c_str());
       _parser_  = new UAIBN::Parser(_scanner_);
-    } catch (IOError&) { _ioerror_ = true; }
+    } catch (IOError const&) { _ioerror_ = true; }
   }
 
   template < typename GUM_SCALAR >

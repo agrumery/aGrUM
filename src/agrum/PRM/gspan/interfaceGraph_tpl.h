@@ -199,7 +199,7 @@ namespace gum {
             try {
               sBuff << "-" << node->n->getRefAttr(nn).size() << node->n->get(nn).name();
               size *= node->n->get(nn).type().variable().domainSize();
-            } catch (NotFound&) {
+            } catch (NotFound const&) {
               // (nn) is an inactive output node
             }
           }
@@ -281,7 +281,7 @@ namespace gum {
       INLINE Size InterfaceGraph< GUM_SCALAR >::size(const LabelData* l) const {
         try {
           return _nodeMap_[const_cast< LabelData* >(l)]->size();
-        } catch (NotFound&) { return _edgeMap_[const_cast< LabelData* >(l)]->size(); }
+        } catch (NotFound const&) { return _edgeMap_[const_cast< LabelData* >(l)]->size(); }
       }
 
       template < typename GUM_SCALAR >
@@ -349,7 +349,7 @@ namespace gum {
       INLINE EdgeData< GUM_SCALAR >& InterfaceGraph< GUM_SCALAR >::edge(NodeId u, NodeId v) {
         try {
           return *(_edges_[Edge(u, v)]);
-        } catch (NotFound&) { return *(_edges_[Edge(v, u)]); }
+        } catch (NotFound const&) { return *(_edges_[Edge(v, u)]); }
       }
 
       template < typename GUM_SCALAR >
@@ -357,7 +357,7 @@ namespace gum {
                                                                               NodeId v) const {
         try {
           return *(_edges_[Edge(u, v)]);
-        } catch (NotFound&) { return *(_edges_[Edge(v, u)]); }
+        } catch (NotFound const&) { return *(_edges_[Edge(v, u)]); }
       }
 
       template < typename GUM_SCALAR >

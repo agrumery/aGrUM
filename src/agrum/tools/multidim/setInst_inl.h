@@ -63,7 +63,7 @@ namespace gum {
       _chgVal_(varPos, newVal);
 
       return *this;
-    } catch (NotFound&) {
+    } catch (NotFound const&) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
       GUM_ERROR(NotFound, name + v.name())
     }
@@ -83,7 +83,7 @@ namespace gum {
       _chgVal_(varPos, newVal);
 
       return *this;
-    } catch (NotFound&) {
+    } catch (NotFound const&) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
       GUM_ERROR(NotFound, name + v->name())
     }
@@ -134,7 +134,7 @@ namespace gum {
       _chgVals_(varPos, newVals);
 
       return *this;
-    } catch (NotFound&) {
+    } catch (NotFound const&) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
       GUM_ERROR(NotFound, name + v.name())
     }
@@ -154,7 +154,7 @@ namespace gum {
       _chgVals_(varPos, newVals);
 
       return *this;
-    } catch (NotFound&) {
+    } catch (NotFound const&) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
       GUM_ERROR(NotFound, name + v->name())
     }
@@ -200,7 +200,7 @@ namespace gum {
       addVal(varPos, newVal);
 
       return *this;
-    } catch (NotFound&) {
+    } catch (NotFound const&) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
       GUM_ERROR(NotFound, name + v->name())
     }
@@ -220,7 +220,7 @@ namespace gum {
       addVal(varPos, newVal);
 
       return *this;
-    } catch (NotFound&) {
+    } catch (NotFound const&) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
       GUM_ERROR(NotFound, name + v.name())
     }
@@ -248,7 +248,7 @@ namespace gum {
       addVals(varPos, newVal);
 
       return *this;
-    } catch (NotFound&) {
+    } catch (NotFound const&) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
       GUM_ERROR(NotFound, name + v->name())
     }
@@ -268,7 +268,7 @@ namespace gum {
       addVals(varPos, newVal);
 
       return *this;
-    } catch (NotFound&) {
+    } catch (NotFound const&) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
       GUM_ERROR(NotFound, name + v.name())
     }
@@ -296,7 +296,7 @@ namespace gum {
       remVal(varPos, newVal);
 
       return *this;
-    } catch (NotFound&) {
+    } catch (NotFound const&) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
       GUM_ERROR(NotFound, name + v->name())
     }
@@ -316,7 +316,7 @@ namespace gum {
       remVal(varPos, newVal);
 
       return *this;
-    } catch (NotFound&) {
+    } catch (NotFound const&) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
       GUM_ERROR(NotFound, name + v.name())
     }
@@ -344,7 +344,7 @@ namespace gum {
       remVals(varPos, newVal);
 
       return *this;
-    } catch (NotFound&) {
+    } catch (NotFound const&) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
       GUM_ERROR(NotFound, name + v->name())
     }
@@ -364,7 +364,7 @@ namespace gum {
       remVals(varPos, newVal);
 
       return *this;
-    } catch (NotFound&) {
+    } catch (NotFound const&) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
       GUM_ERROR(NotFound, name + v.name())
     }
@@ -401,7 +401,7 @@ namespace gum {
       interVals(varPos, newVal);
 
       return *this;
-    } catch (NotFound&) {
+    } catch (NotFound const&) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
       GUM_ERROR(NotFound, name + v->name())
     }
@@ -421,7 +421,7 @@ namespace gum {
       interVals(varPos, newVal);
 
       return *this;
-    } catch (NotFound&) {
+    } catch (NotFound const&) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
       GUM_ERROR(NotFound, name + v.name())
     }
@@ -449,7 +449,7 @@ namespace gum {
       interVal(varPos, newVal);
 
       return *this;
-    } catch (NotFound&) {
+    } catch (NotFound const&) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
       GUM_ERROR(NotFound, name + v->name())
     }
@@ -469,7 +469,7 @@ namespace gum {
       interVal(varPos, newVal);
 
       return *this;
-    } catch (NotFound&) {
+    } catch (NotFound const&) {
       std::string name = "SetInst does not contain this DiscreteVariable: ";
       GUM_ERROR(NotFound, name + v.name())
     }

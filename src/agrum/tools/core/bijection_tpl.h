@@ -324,7 +324,7 @@ namespace gum {
                                                                             const T1& val) const {
     try {
       return first(second);
-    } catch (NotFound&) { return _insert_(val, second)->first; }
+    } catch (NotFound const&) { return _insert_(val, second)->first; }
   }
 
   /* @brief Same method as second, but if the value is not found, a default
@@ -334,7 +334,7 @@ namespace gum {
                                                                              const T2& val) const {
     try {
       return second(first);
-    } catch (NotFound&) { return *(_insert_(first, val)->second); }
+    } catch (NotFound const&) { return *(_insert_(first, val)->second); }
   }
 
   // inserts a new association in the bijection
@@ -377,7 +377,7 @@ namespace gum {
     try {
       _secondToFirst_.erase(*_firstToSecond_[first]);
       _firstToSecond_.erase(first);
-    } catch (NotFound&) {}
+    } catch (NotFound const&) {}
   }
 
   // erase an association containing the given second element
@@ -386,7 +386,7 @@ namespace gum {
     try {
       _firstToSecond_.erase(*_secondToFirst_[second]);
       _secondToFirst_.erase(second);
-    } catch (NotFound&) {}
+    } catch (NotFound const&) {}
   }
 
   // returns the number of hashtables' slots used (@sa hashTable's capacity)
@@ -706,7 +706,7 @@ namespace gum {
                                                                              T1 val) const {
     try {
       return first(second);
-    } catch (NotFound&) {
+    } catch (NotFound const&) {
       _insert_(val, second);
       return val;
     }
@@ -719,7 +719,7 @@ namespace gum {
                                                                               T2 val) const {
     try {
       return second(first);
-    } catch (NotFound&) {
+    } catch (NotFound const&) {
       _insert_(first, val);
       return val;
     }
@@ -745,7 +745,7 @@ namespace gum {
     try {
       _secondToFirst_.erase(_firstToSecond_[first]);
       _firstToSecond_.erase(first);
-    } catch (NotFound&) {}
+    } catch (NotFound const&) {}
   }
 
   // erase an association containing the given second element
@@ -754,7 +754,7 @@ namespace gum {
     try {
       _firstToSecond_.erase(_secondToFirst_[second]);
       _secondToFirst_.erase(second);
-    } catch (NotFound&) {}
+    } catch (NotFound const&) {}
   }
 
   // returns the number of hashtables' slots used (@sa hashTable's capacity)

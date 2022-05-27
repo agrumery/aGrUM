@@ -177,10 +177,10 @@ namespace gum {
 
         try {
           chgVal(var, val);
-        } catch (NotFound&) {
+        } catch (NotFound const&) {
           GUM_ERROR(NotFound, var.name() << " : missing variable in instantiation")
         }
-      } catch (NotFound&) {
+      } catch (NotFound const&) {
         GUM_ERROR(NotFound, var.name() << " : missing variable in external instantiation")
       }
     }

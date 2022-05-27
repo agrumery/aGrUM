@@ -438,7 +438,7 @@ namespace gum {
             class_factory.completeAggregates();
             class_factory.completeAttributes();
             system_factory.build();
-          } catch (Exception&) {
+          } catch (Exception const&) {
             if (_errors_.count() == 0) { _errors_.addException("an unknown error occured", file); }
           } catch (...) { _errors_.addException("an unknown exception occured", file); }
         }

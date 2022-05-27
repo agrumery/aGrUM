@@ -115,7 +115,7 @@ namespace gum {
     for (const auto& nid: nodes()) {
       try {
         other.idFromName(_model_.variable(nid).name());
-      } catch (NotFound) { return false; }
+      } catch (NotFound const&) { return false; }
     }
 
     for (const auto& arc: arcs()) {

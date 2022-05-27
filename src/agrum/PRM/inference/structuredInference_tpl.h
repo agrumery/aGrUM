@@ -262,13 +262,13 @@ namespace gum {
         for (; iter != data.matches.end(); ++iter) {
           try {
             _elim_map_.insert(*iter, _eliminateObservedNodes_(data, pool, **iter, elim_order));
-          } catch (OperationNotAllowed&) { fake_patterns.insert(*iter); }
+          } catch (OperationNotAllowed const&) { fake_patterns.insert(*iter); }
         }
       } else {
         for (; iter != data.matches.end(); ++iter) {
           try {
             _elim_map_.insert(*iter, _translatePotSet_(data, pool, **iter));
-          } catch (OperationNotAllowed&) { fake_patterns.insert(*iter); }
+          } catch (OperationNotAllowed const&) { fake_patterns.insert(*iter); }
         }
       }
 
@@ -346,8 +346,8 @@ namespace gum {
           for (const auto var: pot->variablesSequence()) {
             try {
               if (id != data.vars.first(var)) data.graph.addEdge(id, data.vars.first(var));
-            } catch (DuplicateElement&) {
-            } catch (NotFound&) {}
+            } catch (DuplicateElement const&) {
+            } catch (NotFound const&) {}
           }
 
           _insertNodeInElimLists_(data, match, inst, elt.second, id, v);
@@ -407,7 +407,7 @@ namespace gum {
           if (data.inners().exists(nei)) {
             try {
               candidates.insert(nei);
-            } catch (DuplicateElement&) {}
+            } catch (DuplicateElement const&) {}
           }
       }
 
@@ -435,7 +435,7 @@ namespace gum {
             if (data.inners().exists(nei)) {
               try {
                 candidates.insert(nei);
-              } catch (DuplicateElement&) {}
+              } catch (DuplicateElement const&) {}
             }
           }
         }
@@ -524,7 +524,7 @@ namespace gum {
                             .get(sc->lastElt().safeName())
                             .type()
                             .variable()));
-          } catch (DuplicateElement&) {
+          } catch (DuplicateElement const&) {
             try {
               if (bij.first(&(match[idx]
                                  ->getInstance(sc->id())
@@ -539,7 +539,7 @@ namespace gum {
                 delete my_pool;
                 GUM_ERROR(OperationNotAllowed, "fake pattern")
               }
-            } catch (NotFound&) {
+            } catch (NotFound const&) {
               delete my_pool;
               GUM_ERROR(OperationNotAllowed, "fake pattern")
             }
@@ -552,13 +552,14 @@ namespace gum {
           try {
             target = data.map[data.vars.first(v)];
             bij.insert(v, &(match[target.first]->get(target.second).type().variable()));
-          } catch (NotFound&) { GUM_ASSERT(bij.existsFirst(v)); } catch (DuplicateElement&) {
-          }
+          } catch (NotFound const&) {
+            GUM_ASSERT(bij.existsFirst(v));
+          } catch (DuplicateElement const&) {}
         }
 
         try {
           my_pool->insert(copyPotential(bij, *p));
-        } catch (Exception&) {
+        } catch (Exception const&) {
           for (const auto pot: *my_pool)
             delete pot;
 
@@ -587,7 +588,7 @@ namespace gum {
 
             try {
               data = _cdata_map_[&(inst->type())];
-            } catch (NotFound&) {
+            } catch (NotFound const&) {
               data = new StructuredInference< GUM_SCALAR >::CData(inst->type());
               _cdata_map_.insert(&(inst->type()), data);
             }
@@ -716,7 +717,7 @@ namespace gum {
 
             try {
               data.reducedGraph.addEdge(id_1, id_2);
-            } catch (DuplicateElement&) {}
+            } catch (DuplicateElement const&) {}
           }
         }
       }
@@ -750,7 +751,7 @@ namespace gum {
 
               try {
                 data.reducedGraph.addEdge(id_1, id_2);
-              } catch (DuplicateElement&) {}
+              } catch (DuplicateElement const&) {}
             }
           }
         }

@@ -981,7 +981,7 @@ namespace gum {
     for (auto iter = begin(); iter != end(); ++iter) {
       try {
         if (iter.val() != from[iter.key()]) return false;
-      } catch (NotFound&) { return false; }
+      } catch (NotFound const&) { return false; }
     }
 
     return true;

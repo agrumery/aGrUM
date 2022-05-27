@@ -190,7 +190,7 @@ namespace gum {
         try {
           zeDeletedObjts = deletion[xx->first];
           stream << std::setfill(fillChar) << std::setw(widthColItemsNumber) << zeDeletedObjts;
-        } catch (NotFound&) {
+        } catch (NotFound const&) {
           stream << std::setfill(fillChar) << std::setw(widthColItemsNumber) << "?????";
         }
 
@@ -210,7 +210,7 @@ namespace gum {
       for (DEBUG_MAP::const_iterator xx = deletion.begin(); xx != deletion.end(); ++xx) {
         try {
           creation[xx->first];
-        } catch (NotFound&) {
+        } catch (NotFound const&) {
           std::stringstream stream;
           fillChar = (fillChar == '_') ? ' ' : '_';
           stream << std::setfill(fillChar = (fillChar == '_') ? ' ' : '_') << "| "
