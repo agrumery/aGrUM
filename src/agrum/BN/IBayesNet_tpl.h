@@ -47,18 +47,18 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE IBayesNet< GUM_SCALAR >::IBayesNet() : DAGmodel() {
-    GUM_CONSTRUCTOR(IBayesNet);
+    GUM_CONSTRUCTOR(IBayesNet)
   }
 
   template < typename GUM_SCALAR >
   INLINE IBayesNet< GUM_SCALAR >::IBayesNet(std::string name) : DAGmodel() {
-    GUM_CONSTRUCTOR(IBayesNet);
+    GUM_CONSTRUCTOR(IBayesNet)
     this->setProperty("name", name);
   }
 
   template < typename GUM_SCALAR >
   IBayesNet< GUM_SCALAR >::IBayesNet(const IBayesNet< GUM_SCALAR >& source) : DAGmodel(source) {
-    GUM_CONS_CPY(IBayesNet);
+    GUM_CONS_CPY(IBayesNet)
   }
 
   template < typename GUM_SCALAR >
@@ -71,7 +71,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   IBayesNet< GUM_SCALAR >::~IBayesNet() {
-    GUM_DESTRUCTOR(IBayesNet);
+    GUM_DESTRUCTOR(IBayesNet)
   }
 
   template < typename GUM_SCALAR >

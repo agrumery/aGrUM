@@ -21,31 +21,28 @@
 #include <agrum/CN/inference/CNMonteCarloSampling.h>
 #include <agrum/tools/core/exceptions.h>
 
-namespace gum {
-  namespace credal {
+namespace gum::credal {
 
-    template < typename GUM_SCALAR, class BNInferenceEngine >
+  template < typename GUM_SCALAR, class BNInferenceEngine >
     CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::CNMonteCarloSampling(
        const CredalNet< GUM_SCALAR >& credalNet) :
         MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::MultipleInferenceEngine(
            credalNet) {
       _infEs_::repetitiveInd_ = false;
-      // __infEs::iterStop_ = 1000;
       _infEs_::storeVertices_ = false;
       _infEs_::storeBNOpt_    = false;
 
       this->setMaxTime(60);
       this->enableMaxTime();
 
-      /// this->setBurnIn ( 1000 );
       this->setPeriodSize(1000);
 
-      GUM_CONSTRUCTOR(CNMonteCarloSampling);
+      GUM_CONSTRUCTOR(CNMonteCarloSampling)
     }
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::~CNMonteCarloSampling() {
-      GUM_DESTRUCTOR(CNMonteCarloSampling);
+      GUM_DESTRUCTOR(CNMonteCarloSampling)
     }
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
@@ -53,66 +50,19 @@ namespace gum {
       if (_infEs_::repetitiveInd_) {
         try {
           this->repetitiveInit_();
-        } catch (InvalidArgument& err) {
-          GUM_SHOWERROR(err);
+        } catch (InvalidArgument const& err) {
+          GUM_SHOWERROR(err)
           _infEs_::repetitiveInd_ = false;
         }
       }
-
-      // debug
-      /// notOptDelete = 0;
-
       _mcInitApproximationScheme_();
-
       _mcThreadDataCopy_();
 
       // don't put it after burnIn, it could stop with timeout : we want at
-      // least one
-      // burnIn and one periodSize
+      // least one burnIn and one periodSize
       GUM_SCALAR eps = 1.;   // to validate testSuite ?
 
-      /// auto bsize = this->burnIn();
       auto psize = this->periodSize();
-      /*
-
-            auto remaining = this->remainingBurnIn();
-
-            /// this->burnIn() should be 0 therefor the first do ... while should
-      be
-            /// skipped
-            if ( remaining != 0 ) {
-              /// instead of doing the whole burnIn in one pass, we do it period by
-              /// period
-              /// so we can test the timer ( done by continueApproximationScheme )
-      and
-              /// exit
-              /// during burnIn
-              /// no error is thrown if we exit during burnIn ( although one should
-      )
-              do {
-                eps = 0;
-
-                int iters = int( ( remaining < psize ) ? remaining : psize );
-
-      #pragma omp parallel for
-
-                for ( int iter = 0; iter < iters; iter++ ) {
-                   _threadInference_();
-                   _threadUpdate_();
-                }  // end of : parallel periodSize
-
-                this->updateApproximationScheme( iters );
-
-                /// this->updateMarginals_(); // fusion threads + update margi
-
-                /// eps = this->computeEpsilon_(); // also updates oldMargi
-
-                remaining = this->remainingBurnIn();
-
-              } while ( ( remaining > 0 ) && this->continueApproximationScheme( eps
-      ) );
-            }
-      */
 
       if (this->continueApproximationScheme(eps)) {
         // compute the number of threads to use
@@ -139,18 +89,6 @@ namespace gum {
           // launch the threads
           ThreadExecutor::execute(nb_threads, threadedExec);
 
-          /*
-          // old openMP code:
-          // less overheads with high periodSize
-          #pragma omp parallel for
-
-          for (int iter = 0; iter < int(psize); iter++) {
-            Size tId = threadsOMP::getThreadNumber();
-            _threadInference_(tId);
-            _threadUpdate_(tId);
-          }   // end of : parallel periodSize
-          */
-
           this->updateApproximationScheme(int(psize));
 
           this->updateMarginals_();   // fusion threads + update margi
@@ -173,8 +111,6 @@ namespace gum {
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_threadUpdate_(Size tId) {
-      // bool keepSample = false;
-
       if (this->l_inferenceEngine_[tId]->evidenceProbability() > 0) {
         const DAG& tDag = this->workingSet_[tId]->dag();
 
@@ -192,8 +128,8 @@ namespace gum {
           // approximationScheme, it is "useless" ( and expensive ) to check now
           this->updateThread_(tId, node, vertex, false);
 
-        }   // end of : for all nodes
-      }     // end of : if ( p(e) > 0 )
+        }
+      }
     }
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
@@ -207,10 +143,6 @@ namespace gum {
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_mcInitApproximationScheme_() {
-      // this->setEpsilon ( std::numeric_limits< GUM_SCALAR >::min() );
-      /**
-       * VERIFIER d/dt(e(t+1)-e(t))
-       */
       this->setEpsilon(0.);
       this->enableEpsilon();   // to be sure
 
@@ -246,105 +178,24 @@ namespace gum {
 
         if (_infEs_::storeVertices_) { this->l_marginalSets_[this_thread] = this->marginalSets_; }
 
-        List< const Potential< GUM_SCALAR >* >* evi_list
-           = new List< const Potential< GUM_SCALAR >* >();
-        this->workingSetE_[this_thread] = evi_list;
+        this->workingSetE_[this_thread] = new List< const Potential< GUM_SCALAR >* >();
 
         // #TODO: the next instruction works only for lazy propagation.
         //        => find a way to remove the second argument
-        BNInferenceEngine* inference_engine
-           = new BNInferenceEngine(this->workingSet_[this_thread],
-                                   RelevantPotentialsFinderType::FIND_ALL);
+        auto inference_engine = new BNInferenceEngine(this->workingSet_[this_thread],
+                                                      RelevantPotentialsFinderType::FIND_ALL);
         inference_engine->setNumberOfThreads(1);
 
         this->l_inferenceEngine_[this_thread] = inference_engine;
 
         if (_infEs_::storeBNOpt_) {
-          VarMod2BNsMap< GUM_SCALAR >* threadOpt
-             = new VarMod2BNsMap< GUM_SCALAR >(*this->credalNet_);
-          this->l_optimalNet_[this_thread] = threadOpt;
+          this->l_optimalNet_[this_thread] = new VarMod2BNsMap< GUM_SCALAR >(*this->credalNet_);
         }
       };
 
       // launch the threads
       ThreadExecutor::execute(num_threads, threadedExec);
     }
-
-    /*
-      // old openMP code
-      int num_threads;
-
-      #pragma omp parallel
-      {
-        int this_thread = omp_get_thread_num();
-
-        // implicit wait clause (don't put nowait)
-        #pragma omp single
-        {
-          // should we ask for max threads instead ( no differences here in
-          // practice
-          // )
-          num_threads = threadsOMP::getNumberOfRunningThreads();
-
-          this->initThreadsData_(num_threads, _infEs_::storeVertices_, _infEs_::storeBNOpt_);
-          this->l_inferenceEngine_.resize(num_threads, nullptr);
-
-          // if (  _infEs_::storeBNOpt_ )
-          // this->l_sampledNet_.resize ( num_threads );
-        }   // end of : single region
-
-        // we could put those below in a function in InferenceEngine, but let's
-        // keep
-        // this parallel region instead of breaking it and making another one to
-        // do
-        // the same stuff in 2 places since :
-        // !!! BNInferenceEngine still needs to be initialized here anyway !!!
-
-        #pragma omp critical(Init)
-        {
-          // IBayesNet< GUM_SCALAR > * thread_bn = new IBayesNet< GUM_SCALAR
-          // >();//(this->credalNet_->current_bn());
-          BayesNet< GUM_SCALAR >* thread_bn = new BayesNet< GUM_SCALAR >();
-          *thread_bn = this->credalNet_->current_bn();
-          this->workingSet_[this_thread] = thread_bn;
-          //this->workingSet_[this_thread] =
-          //  new BayesNet< GUM_SCALAR>(this->credalNet_->current_bn());
-        }
-        //this->workingSet_[this_thread] = thread_bn;
-
-        this->l_marginalMin_[this_thread]    = this->marginalMin_;
-        this->l_marginalMax_[this_thread]    = this->marginalMax_;
-        this->l_expectationMin_[this_thread] = this->expectationMin_;
-        this->l_expectationMax_[this_thread] = this->expectationMax_;
-        this->l_modal_[this_thread]          = this->modal_;
-
-        _infEs_::l_clusters_[this_thread].resize(2);
-        _infEs_::l_clusters_[this_thread][0] = _infEs_::t0_;
-        _infEs_::l_clusters_[this_thread][1] = _infEs_::t1_;
-
-        if (_infEs_::storeVertices_) { this->l_marginalSets_[this_thread] = this->marginalSets_; }
-
-        List< const Potential< GUM_SCALAR >* >* evi_list
-           = new List< const Potential< GUM_SCALAR >* >();
-        this->workingSetE_[this_thread] = evi_list;
-
-        // #TODO: the next instruction works only for lazy propagation.
-        //        => find a way to remove the second argument
-        BNInferenceEngine* inference_engine
-           = new BNInferenceEngine(this->workingSet_[this_thread].data,
-                                   RelevantPotentialsFinderType::FIND_ALL);
-        inference_engine->setNumberOfThreads(1);
-
-        this->l_inferenceEngine_[this_thread] = inference_engine;
-
-        if (_infEs_::storeBNOpt_) {
-          VarMod2BNsMap< GUM_SCALAR >* threadOpt
-             = new VarMod2BNsMap< GUM_SCALAR >(*this->credalNet_);
-          this->l_optimalNet_[this_thread] = threadOpt;
-        }
-      }
-    }
-    */
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     inline void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_binaryRep_(
@@ -483,14 +334,14 @@ namespace gum {
       }
 
       for (const auto& elt: this->evidence_) {
-        Potential< GUM_SCALAR >* p = new Potential< GUM_SCALAR >;
+        auto p = new Potential< GUM_SCALAR >;
         (*p) << working_bn->variable(elt.first);
 
         try {
           p->fillWith(elt.second);
-        } catch (Exception& err) {
-          GUM_SHOWERROR(err);
-          throw(err);
+        } catch (Exception const& err) {
+          GUM_SHOWERROR(err)
+          throw;
         }
 
         evi_list->insert(p);
@@ -502,5 +353,4 @@ namespace gum {
       }
     }
 
-  }   // namespace credal
-}   // namespace gum
+}   // namespace gum::credal

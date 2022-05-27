@@ -64,7 +64,7 @@ namespace gum {
     ~EssentialGraph();
 
     /// @return a copy of the mixed graph
-    MixedGraph mixedGraph();
+    MixedGraph mixedGraph() const;
 
     /// @return a dot representation of this essentialGraph
     std::string toDot() const;

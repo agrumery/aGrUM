@@ -48,7 +48,7 @@ namespace gum {
 
   /// destructor
   INLINE BarrenNodesFinder::~BarrenNodesFinder() {   // for debugging purposes
-    GUM_DESTRUCTOR(BarrenNodesFinder);
+    GUM_DESTRUCTOR(BarrenNodesFinder)
   }
 
 

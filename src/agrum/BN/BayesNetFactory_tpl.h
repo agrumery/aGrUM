@@ -497,8 +497,6 @@ namespace gum {
       varList.pushBack(&(_bn_->variable(_varNameMap_[variables[i]])));
     }
 
-    // varList.pushFront(&( _bn_->variable( _varNameMap_[ _stringBag_[0]])));
-
     Idx nbrVar = varList.size();
 
     std::vector< Idx > modCounter;
@@ -883,7 +881,7 @@ namespace gum {
   // Check if a variable with the given name exists, if not raise an NotFound
   // exception.
   template < typename GUM_SCALAR >
-  INLINE void BayesNetFactory< GUM_SCALAR >::_checkVariableName_(const std::string& name) {
+  INLINE void BayesNetFactory< GUM_SCALAR >::_checkVariableName_(const std::string& name) const {
     if (!_varNameMap_.exists(name)) { GUM_ERROR(NotFound, name) }
   }
 

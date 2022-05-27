@@ -432,7 +432,7 @@ namespace gum {
 
     /// Check if a variable with the given name exists, if not raise an NotFound
     /// exception.
-    void _checkVariableName_(const std::string& name);
+    void _checkVariableName_(const std::string& name) const;
 
     /// Check if var exists and if mod is one of it's modality, if not raise an
     /// NotFound exception.

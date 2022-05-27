@@ -258,4 +258,4 @@ def checkInt(v):
     if v[0] in ('-', '+'):
       return v[1:].isdigit()
     return v.isdigit()
-  return int(v)==v
+  return False

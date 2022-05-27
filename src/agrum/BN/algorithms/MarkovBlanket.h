@@ -53,7 +53,7 @@ namespace gum {
     ~MarkovBlanket();
 
     /// @return a copy of the graph
-    DAG dag();
+    DAG dag() const;
 
     // @return a dot representation of this MarkovBlanket
     // node of interest is in red
@@ -90,7 +90,7 @@ namespace gum {
 
     /// @return true if all the named node are the same and all the named arcs are
     /// the same
-    bool hasSameStructure(const DAGmodel& other);
+    bool hasSameStructure(const DAGmodel& other) const;
 
     private:
     bool _buildMarkovBlanket_(const NodeId id);

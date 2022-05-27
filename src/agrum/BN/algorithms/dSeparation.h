@@ -91,7 +91,7 @@ namespace gum {
                         const NodeSet& query,
                         const NodeSet& hardEvidence,
                         const NodeSet& softEvidence,
-                        NodeSet&       requisite);
+                        NodeSet&       requisite) const;
 
     /** @brief update a set of potentials, keeping only those d-connected with
      * query variables given evidence */

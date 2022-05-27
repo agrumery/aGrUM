@@ -41,7 +41,7 @@ namespace gum {
                                    const NodeSet& query,
                                    const NodeSet& hardEvidence,
                                    const NodeSet& softEvidence,
-                                   NodeSet&       requisite) {
+                                   NodeSet&       requisite) const {
     // for the moment, no node is requisite
     requisite.clear();
 

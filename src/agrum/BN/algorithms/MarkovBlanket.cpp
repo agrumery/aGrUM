@@ -107,7 +107,7 @@ namespace gum {
     return change;
   }
 
-  bool MarkovBlanket::hasSameStructure(const DAGmodel& other) {
+  bool MarkovBlanket::hasSameStructure(const DAGmodel& other) const {
     if (size() != other.size()) return false;
 
     if (sizeArcs() != other.sizeArcs()) return false;

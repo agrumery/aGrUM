@@ -31,7 +31,7 @@
 
 namespace gum {
 
-  INLINE MixedGraph EssentialGraph::mixedGraph() { return _mg_; }
+  INLINE MixedGraph EssentialGraph::mixedGraph() const { return _mg_; }
 
   INLINE const NodeSet& EssentialGraph::parents(NodeId id) const { return _mg_.parents(id); }
 

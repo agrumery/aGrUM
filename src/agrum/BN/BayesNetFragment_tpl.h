@@ -33,12 +33,12 @@ namespace gum {
   template < typename GUM_SCALAR >
   BayesNetFragment< GUM_SCALAR >::BayesNetFragment(const IBayesNet< GUM_SCALAR >& bn) :
       DiGraphListener(&bn.dag()), _bn_(bn) {
-    GUM_CONSTRUCTOR(BayesNetFragment);
+    GUM_CONSTRUCTOR(BayesNetFragment)
   }
 
   template < typename GUM_SCALAR >
   BayesNetFragment< GUM_SCALAR >::~BayesNetFragment() {
-    GUM_DESTRUCTOR(BayesNetFragment);
+    GUM_DESTRUCTOR(BayesNetFragment)
 
     for (auto node: nodes())
       if (_localCPTs_.exists(node)) uninstallCPT_(node);
@@ -199,7 +199,7 @@ namespace gum {
     if (&(pot.variable(0)) != &(variable(id))) {
       GUM_ERROR(OperationNotAllowed,
                 "The potential is not a marginal for  _bn_.variable <" << variable(id).name()
-                                                                       << ">");
+                                                                       << ">")
     }
 
     const NodeSet& parents = _bn_.parents(id);
@@ -208,7 +208,7 @@ namespace gum {
       if (!parents.contains(_bn_.idFromName(pot.variable(i).name())))
         GUM_ERROR(OperationNotAllowed,
                   "Variable <" << pot.variable(i).name() << "> is not in the parents of node "
-                               << id);
+                               << id)
     }
 
     installCPT_(id, pot);
@@ -250,7 +250,7 @@ namespace gum {
     if (&(pot.variable(0)) != &(_bn_.variable(id))) {
       GUM_ERROR(OperationNotAllowed,
                 "The potential is not a marginal for  _bn_.variable <" << _bn_.variable(id).name()
-                                                                       << ">");
+                                                                       << ">")
     }
 
     installCPT_(id, pot);

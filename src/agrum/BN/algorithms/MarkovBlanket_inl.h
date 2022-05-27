@@ -31,7 +31,7 @@
 
 namespace gum {
 
-  INLINE DAG MarkovBlanket::dag() { return _mb_; }
+  INLINE DAG MarkovBlanket::dag() const { return _mb_; }
 
   INLINE const NodeSet& MarkovBlanket::parents(NodeId id) const { return _mb_.parents(id); }
 
