@@ -79,7 +79,12 @@ from tests import MarkovNetTestSuite
 from tests import PotentialTestSuite
 from tests import PRMexplorerTestSuite
 from tests import SamplingTestSuite
-from tests import SkbnTestSuite
+
+if pandasFound and sklearnFound:
+  from tests import SkbnTestSuite
+else:
+  logging.warning("[pyAgrum] pyAgrum.lib.classifier needs pandas and scikit-learn")
+
 from tests import VariablesTestSuite
 
 from tests import CausalASTTestSuite
@@ -119,7 +124,10 @@ tl.append(MarkovNetTestSuite.ts)
 tl.append(PotentialTestSuite.ts)
 tl.append(PRMexplorerTestSuite.ts)
 tl.append(SamplingTestSuite.ts)
-tl.append(SkbnTestSuite.ts)
+
+if pandasFound and sklearnFound:
+  tl.append(SkbnTestSuite.ts)
+
 tl.append(VariablesTestSuite.ts)
 tl.append(CausalASTTestSuite.ts)
 tl.append(CausalDSepTestSuite.ts)
