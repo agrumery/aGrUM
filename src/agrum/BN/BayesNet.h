@@ -655,7 +655,6 @@ namespace gum {
 
     /// Mapping between the variable's id and their CPT.
     NodeProperty< Potential< GUM_SCALAR >* > _probaMap_;
-    // HashTable<NodeId, Potential<GUM_SCALAR>* >  _probaMap_;
 
     /// change the CPT associated to nodeId to newPot
     /// delete the old CPT associated to nodeId.

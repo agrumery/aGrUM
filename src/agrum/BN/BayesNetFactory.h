@@ -455,7 +455,8 @@ namespace gum {
     void _fillProbaWithValuesTable_(const std::vector< float >& rawTable);
 
     /// Increment a modality counter for the  _fillProbaWithValuesTable_ method.
-    bool _increment_(std::vector< gum::Idx >& modCounter, List< const DiscreteVariable* >& varList);
+    bool _increment_(std::vector< gum::Idx >&         modCounter,
+                     List< const DiscreteVariable* >& varList) const;
   };
 
 

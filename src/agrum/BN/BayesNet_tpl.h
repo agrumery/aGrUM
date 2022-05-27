@@ -63,7 +63,7 @@ namespace gum {
     NodeId res;
     try {
       res = bn.idFromName(v->name());
-    } catch (gum::NotFound&) { res = bn.add(*v); }
+    } catch (gum::NotFound const&) { res = bn.add(*v); }
     return res;
   }
 
@@ -102,18 +102,18 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE BayesNet< GUM_SCALAR >::BayesNet() : IBayesNet< GUM_SCALAR >() {
-    GUM_CONSTRUCTOR(BayesNet);
+    GUM_CONSTRUCTOR(BayesNet)
   }
 
   template < typename GUM_SCALAR >
   INLINE BayesNet< GUM_SCALAR >::BayesNet(std::string name) : IBayesNet< GUM_SCALAR >(name) {
-    GUM_CONSTRUCTOR(BayesNet);
+    GUM_CONSTRUCTOR(BayesNet)
   }
 
   template < typename GUM_SCALAR >
   BayesNet< GUM_SCALAR >::BayesNet(const BayesNet< GUM_SCALAR >& source) :
       IBayesNet< GUM_SCALAR >(source), _varMap_(source._varMap_) {
-    GUM_CONS_CPY(BayesNet);
+    GUM_CONS_CPY(BayesNet)
 
     _copyPotentials_(source);
   }
@@ -133,7 +133,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   BayesNet< GUM_SCALAR >::~BayesNet() {
-    GUM_DESTRUCTOR(BayesNet);
+    GUM_DESTRUCTOR(BayesNet)
     for (const auto& p: _probaMap_) {
       delete p.second;
     }
@@ -156,7 +156,7 @@ namespace gum {
     if (variable(id).varType() != VarType::Labelized)
       GUM_ERROR(NotFound, "Variable " << id << " is not a LabelizedVariable.")
 
-    LabelizedVariable* var
+    LabelizedVariable const* var
        = dynamic_cast< LabelizedVariable* >(const_cast< DiscreteVariable* >(&variable(id)));
 
     var->changeLabel(var->posLabel(old_label), new_label);
@@ -173,7 +173,7 @@ namespace gum {
     auto ptr = new MultiDimArray< GUM_SCALAR >();
     try {
       return add(var, ptr);
-    } catch (Exception&) {
+    } catch (Exception const&) {
       delete ptr;
       throw;
     }
@@ -202,7 +202,7 @@ namespace gum {
     try {
       return add(var, ptr, id);
 
-    } catch (Exception&) {
+    } catch (Exception const&) {
       delete ptr;
       throw;
     }
@@ -251,9 +251,7 @@ namespace gum {
   void BayesNet< GUM_SCALAR >::erase(NodeId varId) {
     if (_varMap_.exists(varId)) {
       // Reduce the variable child's CPT
-      const NodeSet& children = this->children(varId);
-
-      for (const auto c: children) {
+      for (const NodeSet& children = this->children(varId); const auto c: children) {
         _probaMap_[c]->erase(variable(varId));
       }
 
@@ -290,7 +288,7 @@ namespace gum {
   INLINE void BayesNet< GUM_SCALAR >::addArc(const std::string& tail, const std::string& head) {
     try {
       addArc(this->idFromName(tail), this->idFromName(head));
-    } catch (DuplicateElement) {
+    } catch (DuplicateElement const&) {
       GUM_ERROR(DuplicateElement, "The arc " << tail << "->" << head << " already exists.")
     }
   }
@@ -298,7 +296,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void BayesNet< GUM_SCALAR >::eraseArc(const Arc& arc) {
     if (_varMap_.exists(arc.tail()) && _varMap_.exists(arc.head())) {
-      NodeId head = arc.head(), tail = arc.tail();
+      NodeId head = arc.head();
+      NodeId tail = arc.tail();
       this->dag_.eraseArc(arc);
       // Remove parent from child's CPT
       (*(_probaMap_[head])) >> variable(tail);
@@ -317,14 +316,15 @@ namespace gum {
       GUM_ERROR(InvalidArc, "a non-existing arc cannot be reversed")
     }
 
-    NodeId tail = arc.tail(), head = arc.head();
+    NodeId tail = arc.tail();
+    NodeId head = arc.head();
 
     // check that the reversal does not induce a cycle
     try {
       DAG d = dag();
       d.eraseArc(arc);
       d.addArc(head, tail);
-    } catch (Exception&) {
+    } catch (Exception const&) {
       GUM_ERROR(InvalidArc, "this arc reversal would induce a directed cycle")
     }
 
@@ -560,7 +560,7 @@ namespace gum {
 
     for (const auto& src: source._probaMap_) {
       // First we build the node's CPT
-      Potential< GUM_SCALAR >* copy_array = new Potential< GUM_SCALAR >();
+      auto copy_array = new Potential< GUM_SCALAR >();
       copy_array->beginMultipleChanges();
       for (gum::Idx i = 0; i < src.second->nbrDim(); i++) {
         (*copy_array) << variableFromName(src.second->variable(i).name());
