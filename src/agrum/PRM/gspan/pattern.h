@@ -212,7 +212,7 @@ namespace gum {
         ArcProperty< std::pair< LabelData*, EdgeCode* > > _arc_map_;
 
         /// The last LabelData added to this pattern.
-        LabelData* _last_;
+        LabelData* _last_ = nullptr;
 
         /// Returns true if the expand code by adding and edge betwenne u and v
         /// is

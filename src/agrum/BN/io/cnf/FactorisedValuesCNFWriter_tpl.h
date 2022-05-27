@@ -149,11 +149,12 @@ namespace gum {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
     std::ofstream outputvar((filePath + ".var").c_str(), std::ios_base::trunc);
 
-    if (!output.good()) GUM_ERROR(IOError, "Input/Output error : "<<filePath<<" not writable.")
+    if (!output.good()) GUM_ERROR(IOError, "Input/Output error : " << filePath << " not writable.")
 
     std::stringstream strfile, strfile2;
 
-    if (!outputvar.good()) GUM_ERROR(IOError, "Input/Output error : "<<(filePath + ".var")<<" not writable.")
+    if (!outputvar.good())
+      GUM_ERROR(IOError, "Input/Output error : " << (filePath + ".var") << " not writable.")
 
     Idx num      = 0;
     Idx numparam = 0;

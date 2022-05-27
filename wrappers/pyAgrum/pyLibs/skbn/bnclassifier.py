@@ -315,16 +315,16 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     variableNames = None
     self.discretizer.clear()
 
-    if isinstance(y,pandas.DataFrame): #type(y) == pandas.DataFrame:
+    if isinstance(y, pandas.DataFrame):  # type(y) == pandas.DataFrame:
       self.target = y.columns.tolist()[0]
       if checkInt(self.target):
-        self.target="Y"
+        self.target = "Y"
     elif type(y) == pandas.core.series.Series:
       self.target = y.name
     else:
       self.target = 'y'
 
-    if isinstance(X,pandas.DataFrame): #type(X) == pandas.DataFrame:
+    if isinstance(X, pandas.DataFrame):  # type(X) == pandas.DataFrame:
       variableNames = [f"X{x}" if checkInt(x) else x for x in X.columns]
 
     # verifies the shape of the two arrays
@@ -359,7 +359,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     var = gum.LabelizedVariable(self.target, self.target, 0)
 
     is_int_varY = True
-    min_vY=max_vY=None
+    min_vY = max_vY = None
     for value in possibleValuesY:
       if not checkInt(value):
         is_int_varY = False
@@ -373,11 +373,11 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     if is_int_varY:
       if len(possibleValuesY) == max_vY - min_vY + 1:  # no hole in the list of int
-        var = gum.RangeVariable(self.target , self.target , min_vY, max_vY)
+        var = gum.RangeVariable(self.target, self.target, min_vY, max_vY)
       else:
-        var = gum.IntegerVariable(self.target , self.target , [int(v) for v in possibleValuesY])
+        var = gum.IntegerVariable(self.target, self.target, [int(v) for v in possibleValuesY])
     else:
-      var = gum.LabelizedVariable(self.target , self.target , [str(v) for v in possibleValuesY])
+      var = gum.LabelizedVariable(self.target, self.target, [str(v) for v in possibleValuesY])
     self.bn.add(var)
 
     for i in range(d):
@@ -556,7 +556,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     if type(X) == str:
       X, _ = self.XYfromCSV(X, target=self.target)
 
-    if isinstance(X,pandas.DataFrame): #type(X) == pandas.DataFrame:
+    if isinstance(X, pandas.DataFrame):  # type(X) == pandas.DataFrame:
       dictName = DFNames(X)
     else:
       dictName = self.variableNameIndexDictionary
@@ -580,7 +580,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     return returned_list
 
-  def _nary_predict(self, X, dictName, with_labels)->Union[List[str],List[int]]:
+  def _nary_predict(self, X, dictName, with_labels) -> Union[List[str], List[int]]:
     """
     For a classifier, predicts the most likely class for each row of input data, with bn's Markov Blanket
 
@@ -613,7 +613,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     return returned_list
 
-  def _binary_predict(self, X, dictName)->Union[List[str],List[bool]]:
+  def _binary_predict(self, X, dictName) -> Union[List[str], List[bool]]:
     """
     For a binary classifier, predicts the most likely class for each row of input data, with bn's Markov Blanket
 
@@ -679,7 +679,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     # dictionary of the name of a variable and his column in the data base
     dictName = self.variableNameIndexDictionary
 
-    if isinstance(X,pandas.DataFrame): #type(X) == pandas.DataFrame:
+    if isinstance(X, pandas.DataFrame):  # type(X) == pandas.DataFrame:
       dictName = DFNames(X)
       vals = X.to_numpy()
     elif type(X) == str:
@@ -780,10 +780,9 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     return X, y
 
-
-  def toDiscretizedDataFrame(self,X=None, y=None, filename=None):
+  def preparedData(self, X=None, y=None, filename=None):
     """
-    Given an X and a y, returns a pandas.Dataframe with the discretized values of the base or a fimename and a targetname.
+    Given an X and a y (or a fimename), returns a pandas.Dataframe with the prepared (especiallt discretized) values of the base
 
     Parameters
     ----------
@@ -804,12 +803,8 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     if self.variableNameIndexDictionary is None:
       raise ValueError("First, you need to fit a model !")
 
-    targetName= self.target
+    targetName = self.target
     if filename is None:
-      if targetName is not None:
-        raise ValueError(
-          "This function should be used either as toDiscretizedDataFrame(X,y) or toDiscretizedDataFrame(filename=...,targetAttribute=...). You have set "
-          "filename to None, but have entered a targetName")
       if X is None or y is None:
         raise ValueError(
           "This function should be used either as toDiscretizedDataFrame(X,y) or toDiscretizedDataFrame(filename=...,targetAttribute=...). You have not "
@@ -825,41 +820,38 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
           "a filename and the X and y matrices at the same time.")
       X, y = self.XYfromCSV(filename, True, targetName)
 
-    def bestTypedVal(v,idx):
-        if v.varType()==gum.VarType_Discretized:
-            return v.label(idx)
-        elif v.varType()==gum.VarType_Integer:
-            return int(v.numerical(idx))
-        elif v.varType()==gum.VarType_Labelized:
-            return v.label(idx)
-        elif v.varType()==gum.VarType_Range:
-            return int(v.numerical(idx))
-        else:
-            return None
+    def bestTypedVal(v, idx):
+      if v.varType() == gum.VarType_Discretized:
+        return v.label(idx)
+      elif v.varType() == gum.VarType_Integer:
+        return int(v.numerical(idx))
+      elif v.varType() == gum.VarType_Labelized:
+        return v.label(idx)
+      elif v.varType() == gum.VarType_Range:
+        return int(v.numerical(idx))
+      else:
+        return None
 
-    reverse={v:k for k,v in self.variableNameIndexDictionary.items()}
-    if isinstance(X, pandas.DataFrame): #to be sure of the name of the columns
-      X=X.rename(columns=reverse)
-    varY=self.bn.variable(self.target)
-    df = pandas.DataFrame([], columns=[reverse[k] for k in range(len(reverse))]+[self.target])
+    reverse = {v: k for k, v in self.variableNameIndexDictionary.items()}
+    if isinstance(X, pandas.DataFrame):  # to be sure of the name of the columns
+      X = X.rename(columns=reverse)
+    varY = self.bn.variable(self.target)
+    df = pandas.DataFrame([], columns=[reverse[k] for k in range(len(reverse))] + [self.target])
 
-    print(reverse)
     for n in range(len(X)):
-      ligne=[]
+      ligne = []
       for k in range(len(reverse)):
         if isinstance(X, pandas.DataFrame):
-          val=X[reverse[k]][n]
-        else: #np.array
-          val=X[n][k]
-        var=self.bn.variable(reverse[k])
-        print(f"{var} : {val}")
-        ligne.append(bestTypedVal(var,var[str(val)]))
+          val = X[reverse[k]][n]
+        else:  # np.array
+          val = X[n][k]
+        var = self.bn.variable(reverse[k])
+        ligne.append(bestTypedVal(var, var[str(val)]))
 
-      ligne.append(bestTypedVal(varY,varY[str(y[n])]))
+      ligne.append(bestTypedVal(varY, varY[str(y[n])]))
       df.loc[len(df)] = ligne
 
     return df
-
 
   def showROC_PR(self, filename, save_fig=False, show_progress=False):
     """

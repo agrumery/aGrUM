@@ -78,7 +78,9 @@ namespace gum {
                                              const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
 
-    if (!output.good()) { GUM_ERROR(IOError, "Input/Output error : "<<filePath<<" not writable.") }
+    if (!output.good()) {
+      GUM_ERROR(IOError, "Input/Output error : " << filePath << " not writable.")
+    }
 
     output << _header_(bn) << std::endl;
 

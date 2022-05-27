@@ -638,7 +638,7 @@ namespace gum {
             } else if (this->hasEvidence(inst)) {
               // Second case, the instance has evidences
               // Adding the potentials
-              for (const auto elt: *inst)
+              for (const auto& elt: *inst)
                 pool.insert(&const_cast< Potential< GUM_SCALAR >& >(elt.second->cpf()));
 
               // Adding evidences

@@ -54,7 +54,7 @@ namespace gum {
   template < typename GUM_SCALAR, template < typename > class APPROX >
   void LoopySamplingInference< GUM_SCALAR, APPROX >::makeInference_() {
     LoopyBeliefPropagation< GUM_SCALAR > lbp(&this->BN());
-    for (const auto x: this->hardEvidence()) {
+    for (const auto& x: this->hardEvidence()) {
       lbp.addEvidence(x.first, x.second);
     }
     lbp.makeInference();

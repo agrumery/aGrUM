@@ -112,7 +112,7 @@ namespace gum {
         _modalitites_(source._modalitites_), _elt_map_(source._elt_map_) {
       GUM_CONS_CPY(ClassDependencyGraph);
 
-      for (const auto elt: source._node_map_) {
+      for (const auto& elt: source._node_map_) {
         _node_map_.insert(
            elt.first,
            new HashTable< const PRMClassElement< GUM_SCALAR >*, NodeId >(*elt.second));

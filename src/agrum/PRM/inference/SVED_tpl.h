@@ -426,7 +426,7 @@ namespace gum {
 
       _req_set_.clear();
 
-      for (const auto elt: _elim_orders_)
+      for (const auto& elt: _elim_orders_)
         delete elt.second;
 
       _elim_orders_.clear();

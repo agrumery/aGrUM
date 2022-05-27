@@ -134,7 +134,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   BayesNet< GUM_SCALAR >::~BayesNet() {
     GUM_DESTRUCTOR(BayesNet);
-    for (const auto p: _probaMap_) {
+    for (const auto& p: _probaMap_) {
       delete p.second;
     }
   }
@@ -558,7 +558,7 @@ namespace gum {
   void BayesNet< GUM_SCALAR >::_copyPotentials_(const BayesNet< GUM_SCALAR >& source) {
     // Copying potentials
 
-    for (const auto src: source._probaMap_) {
+    for (const auto& src: source._probaMap_) {
       // First we build the node's CPT
       Potential< GUM_SCALAR >* copy_array = new Potential< GUM_SCALAR >();
       copy_array->beginMultipleChanges();
