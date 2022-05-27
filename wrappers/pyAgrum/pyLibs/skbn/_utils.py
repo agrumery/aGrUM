@@ -252,7 +252,7 @@ def checkInt(v):
   """
   if isinstance(v,bool):
       return False
-  if isinstance(v, int):
+  if numpy.issubdtype(type(v), numpy.integer): #isinstance(v, int)
     return True
   if isinstance(v, str):
     if v[0] in ('-', '+'):
