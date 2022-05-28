@@ -53,7 +53,7 @@ namespace gum_tests {
     gum::AggregatorDecomposition< double >* _aggregatorDecomposition_;
 
     public:
-    void setUp() {
+    void setUp() final {
       {
         gum::prm::o3prm::O3prmReader< double > reader;
         reader.readFile(GET_RESSOURCES_PATH("o3prm/watertanks.o3prm"));
@@ -63,12 +63,12 @@ namespace gum_tests {
       }
       _bn_                      = new gum::BayesNet< double >();
       _bn2_                     = new gum::BayesNet< double >();
-      _inf_                     = 0;
-      _inf2_                    = 0;
+      _inf_                     = nullptr;
+      _inf2_                    = nullptr;
       _aggregatorDecomposition_ = new gum::AggregatorDecomposition< double >();
     }
 
-    void tearDown() {
+    void tearDown() final {
       delete _prm_;
       delete _bn_;
       delete _bn2_;
@@ -78,27 +78,27 @@ namespace gum_tests {
     }
 
     void testDecomposition() {
-      gum::BayesNetFactory< double >* factory  = 0;
-      gum::BayesNetFactory< double >* factory2 = 0;
+      gum::BayesNetFactory< double >* factory  = nullptr;
+      gum::BayesNetFactory< double >* factory2 = nullptr;
       gum::NodeId                     node     = 0;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(factory = new gum::BayesNetFactory< double >(_bn_));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory2 = new gum::BayesNetFactory< double >(_bn2_));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory = new gum::BayesNetFactory< double >(_bn_))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory2 = new gum::BayesNetFactory< double >(_bn2_))
 
-      TS_GUM_ASSERT_THROWS_NOTHING(_prm_->getSystem("aSys").groundedBN(*factory));
-      TS_GUM_ASSERT_THROWS_NOTHING(_prm_->getSystem("aSys").groundedBN(*factory2));
+      TS_GUM_ASSERT_THROWS_NOTHING(_prm_->getSystem("aSys").groundedBN(*factory))
+      TS_GUM_ASSERT_THROWS_NOTHING(_prm_->getSystem("aSys").groundedBN(*factory2))
 
-      TS_GUM_ASSERT_THROWS_NOTHING(_aggregatorDecomposition_->setMaximumArity(2));
+      TS_GUM_ASSERT_THROWS_NOTHING(_aggregatorDecomposition_->setMaximumArity(2))
       TS_GUM_ASSERT_THROWS_NOTHING(*_bn_
-                                   = _aggregatorDecomposition_->getDecomposedAggregator(*_bn_));
+                                   = _aggregatorDecomposition_->getDecomposedAggregator(*_bn_))
 
       TS_GUM_ASSERT_THROWS_NOTHING(_inf_ = new gum::LazyPropagation< double >(_bn_))
-      TS_GUM_ASSERT_THROWS_NOTHING(_inf_->makeInference();)
+      TS_GUM_ASSERT_THROWS_NOTHING(_inf_->makeInference())
 
       TS_GUM_ASSERT_THROWS_NOTHING(_inf2_ = new gum::LazyPropagation< double >(_bn2_))
-      TS_GUM_ASSERT_THROWS_NOTHING(_inf2_->makeInference();)
+      TS_GUM_ASSERT_THROWS_NOTHING(_inf2_->makeInference())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(node = _bn_->idFromName("city.(total_quantity)waterlevel"));
+      TS_GUM_ASSERT_THROWS_NOTHING(node = _bn_->idFromName("city.(total_quantity)waterlevel"))
 
       gum::Instantiation inst(_inf_->posterior(node));
       gum::Instantiation inst2(_inf2_->posterior(node));

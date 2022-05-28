@@ -51,14 +51,12 @@ namespace gum_tests {
         gum::learning::DBTranslator4LabelizedVariable translator2(var2, miss);
         std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
 
-        for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
-          // translator.setName ( name );
+        for (auto i = std::size_t(0); i < names.size(); ++i)
           if (i % 2 == 0) {
             trans_set.insertTranslator(translator1, i);
           } else {
             trans_set.insertTranslator(translator2, i);
-          }
-        }
+          };
       }
 
       gum::learning::DatabaseTable database(trans_set);
@@ -348,14 +346,12 @@ namespace gum_tests {
         gum::learning::DBTranslator4LabelizedVariable translator2(var2, miss);
         std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
 
-        for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
-          // translator.setName ( name );
+        for (auto i = std::size_t(0); i < names.size(); ++i)
           if (i % 2 == 0) {
             trans_set.insertTranslator(translator1, i);
           } else {
             trans_set.insertTranslator(translator2, i);
           }
-        }
       }
 
       gum::learning::DatabaseTable database(trans_set);

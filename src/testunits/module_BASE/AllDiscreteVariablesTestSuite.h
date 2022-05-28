@@ -68,7 +68,7 @@ namespace gum_tests {
           auto a = gum::fastVariable< double >("A[1,1]", 1);
           TS_ASSERT_EQUALS(a->toString(), "A:Range([1,1])")
         }
-      } catch (gum::Exception& e) GUM_SHOWERROR(e);
+      } catch (gum::Exception const& e) GUM_SHOWERROR(e)
     }
 
     void testCreationLabelized() {
@@ -83,7 +83,7 @@ namespace gum_tests {
           auto a = gum::fastVariable< double >("A{a}", 1);
           TS_ASSERT_EQUALS(a->toString(), "A:Labelized({a})")
         }
-      } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
+      } catch (gum::Exception const& e) { GUM_SHOWERROR(e) }
     }
 
     void testCreationInteger() {
