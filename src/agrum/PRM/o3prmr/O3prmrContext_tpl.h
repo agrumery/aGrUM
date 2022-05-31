@@ -249,8 +249,10 @@ namespace gum {
 
         for (std::vector< O3prmrCommand* >::const_iterator i = m_commands.begin();
              i < m_commands.end();
-             i++)
-          output += "\t" + (*i)->toString() + "\n";
+             i++) {
+          output += "\t";
+          output += (*i)->toString() + "\n";
+        }
 
         output += "}\n";
 

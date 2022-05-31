@@ -66,7 +66,10 @@ namespace gum {
         return out;
       }
 
-      INLINE std::string LpCol::toString() const { return "V" + std::to_string(_id_); }
+      INLINE std::string LpCol::toString() const {
+        std::string res = "V";
+        return res.append(std::to_string(_id_));
+      }
 
 
       INLINE void swap(HashTable< LpCol, double >*& a, HashTable< LpCol, double >*& b) {

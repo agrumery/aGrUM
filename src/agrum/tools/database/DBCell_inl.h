@@ -34,7 +34,7 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    INLINE DBCell::DBCell() {
+    INLINE DBCell::DBCell() : _val_index_(0) {
       GUM_CONSTRUCTOR(DBCell);
       ;
     }

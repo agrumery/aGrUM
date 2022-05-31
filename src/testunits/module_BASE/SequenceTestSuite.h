@@ -173,7 +173,7 @@ namespace gum_tests {
     }
 
     void testEquality2() {
-      std::string p[5];
+      std::vector< std::string > p(5);
       p[0] = "aa";
       p[1] = "bb";
       p[2] = "cc";
