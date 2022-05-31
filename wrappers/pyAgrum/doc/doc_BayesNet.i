@@ -82,14 +82,10 @@ Add an arc in the BN, and update arc.head's CPT.
 
 Parameters
 ----------
-head :
-	a variable's id (int)
-tail :
-	a variable's id (int)
-head :
-	a variable's name (str)
-tail :
-	a variable's name (str)
+head : Union[int,str]
+	a variable's id (int) or name
+head : Union[int,str]
+	a variable's id (int) or name
 
 Raises
 ------
@@ -366,14 +362,10 @@ Add an arc in the BN, and update arc.head's CPT.
 
 Parameters
 ----------
-head :
-	a variable's id (int)
-tail :
-	a variable's id (int)
-head :
-	a variable's name (str)
-tail :
-	a variable's name (str)
+head : Union[int,str]
+	a variable's id (int) or name
+tail : Union[int,str]
+	a variable's id (int) or name
 causalWeight : float
 	the added causal weight
 
@@ -398,12 +390,10 @@ change the CPT associated to nodeId to newPot delete the old CPT associated to n
 
 Parameters
 ----------
+var : Union[int,str]
+	the current name or the id of the variable
 newPot : pyAgrum.Potential
 	the new potential
-NodeId : int
-	the id of the node
-name : str
-	the name of the variable
 
 Raises
 ------
@@ -419,12 +409,10 @@ This will change the gum::DiscreteVariable names in the gum::BayesNet.
 
 Parameters
 ----------
+var : Union[int,str]
+	the current name or the id of the variable
 new_name : str
-	the new name of the variable
-NodeId : int
-	the id of the node
-name : str
-	the name of the variable
+	the new name of the variable 
 
 Raises
 ------
@@ -440,10 +428,8 @@ change the label of the variable associated to nodeId to the new value.
 
 Parameters
 ----------
-id : int
-	the id of the node
-name : str
-	the name of the variable
+var : Union[int,str]
+	the current name or the id of the variable
 old_label : str
 	the new label
 new_label : str
@@ -480,12 +466,8 @@ If no variable matches the given id, then nothing is done.
 
 Parameters
 ----------
-id : int
-	The variable's id to remove.
-name : str
-	The variable's name to remove.
-var : pyAgrum.DiscreteVariable
-	A reference on the variable to remove.
+var : Union[int,str,pyAgrum.DiscreteVariable]
+	the current name, the id of the variable or a reference to the variable
 "
 
 %feature("docstring") gum::BayesNet::eraseArc
@@ -496,16 +478,12 @@ If (tail, head) doesn't exist, the nothing happens.
 
 Parameters
 ----------
-arc : pyAgrum.Arc
+arc : pyAgrum.Arc when calling eraseArc(arc)
 	The arc to be removed.
-head :
-	a variable's id (int)
-tail :
-	a variable's id (int)
-head :
-	a variable's name (str)
-tail :
-	a variable's name (str)
+head : Union[int,str]
+	a variable's id (int) or name for the head when calling eraseArc(head,tail)
+tail : Union[int,str]
+	a variable's id (int) or name for the tail when calling eraseArc(head,tail)
 "
 
 %feature("docstring") gum::BayesNet::fastPrototype
@@ -551,10 +529,8 @@ Randomly generate CPT for a given node in a given structure.
 
 Parameters
 ----------
-node : int
-	The variable's id.
-name : str
-	The variable's name.
+node : Union[int,str]
+	a variable's id (int) or name
 "
 
 %feature("docstring") gum::BayesNet::generateCPTs
@@ -777,10 +753,8 @@ Returns the CPT of a variable.
 
 Parameters
 ----------
-VarId : int
-	A variable's id in the pyAgrum.BayesNet.
-name : str
-	A variable's name in the pyAgrum.BayesNet.
+VarId :  Union[int,str]
+	a variable's id (int) or name
 
 Returns
 -------

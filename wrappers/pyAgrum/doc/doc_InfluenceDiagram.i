@@ -43,10 +43,10 @@ Add an arc in the ID, and update diagram's potential nodes cpt if necessary.
 
 Parameters
 ----------
-tail : int
-  the id of the tail node
-head : int
-  the id of the head node
+tail : Union[int,str]
+	a variable's id (int) or name
+head : Union[int,str]
+	a variable's id (int) or name
 
 Raises
 ------
@@ -162,8 +162,8 @@ int
 "
 Parameters
 ----------
-id : int
-	the node Id
+var : Union[int,str]
+	a variable's id (int) or name
 new_name : str
 	the name of the variable
 
@@ -179,8 +179,8 @@ pyAgrum.NotFound
 "
 Parameters
 ----------
-id : int
-  the id of the parent
+var : Union[int,str]
+	a variable's id (int) or name
 
 Returns
 -------
@@ -194,8 +194,8 @@ Returns the CPT of a variable.
 
 Parameters
 ----------
-VarId : int
-	A variable's id in the pyAgrum.BayesNet.
+var : Union[int,str]
+	a variable's id (int) or name
 
 Returns
 -------
@@ -234,8 +234,8 @@ Parameters
 ----------
 id : int
 	The id of the variable to erase.
-var : pyAgrum.DiscreteVariable
-	The reference on the variable to remove.
+var :  Union[int,str,pyAgrum.DiscreteVariable]
+	a variable's id (int) or name or th reference on the variable to remove.
 "
 
 %feature("docstring") gum::InfluenceDiagram::eraseArc
@@ -246,12 +246,12 @@ If (tail, head) doesn't exist, the nothing happens.
 
 Parameters
 ----------
-arc : pyAgrum.Arc
-	The arc to be removed.
-tail : int
-  the id of the tail node
-head : int
-  the id of the head node
+arc : pyAgrum.Arc 
+	The arc to be removed whn calling eraseArc(arc)
+tail : Union[int,str] 
+	a variable's id (int) or name when calling eraseArc(tail,head)
+head : Union[int,str] 
+	a variable's id (int) or name when calling eraseArc(tail,head)
 "
 
 %feature("docstring") gum::InfluenceDiagram::existsPathBetween
@@ -404,8 +404,8 @@ pyAgrum.IndexError
 "
 Parameters
 ----------
-id :
-	The id of the child node
+var : Union[int,str]
+	a variable's id (int) or name
 
 Returns
 -------
@@ -435,8 +435,8 @@ str
 "
 Parameters
 ----------
-varId : int
-	the tested node id.
+var : Union[int,str]
+	a variable's id (int) or name
 
 Returns
 -------

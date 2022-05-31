@@ -9045,10 +9045,8 @@ class BayesNet(IBayesNet):
 
         Parameters
         ----------
-        VarId : int
-        	A variable's id in the pyAgrum.BayesNet.
-        name : str
-        	A variable's name in the pyAgrum.BayesNet.
+        VarId :  Union[int,str]
+        	a variable's id (int) or name
 
         Returns
         -------
@@ -9124,12 +9122,8 @@ class BayesNet(IBayesNet):
 
         Parameters
         ----------
-        id : int
-        	The variable's id to remove.
-        name : str
-        	The variable's name to remove.
-        var : pyAgrum.DiscreteVariable
-        	A reference on the variable to remove.
+        var : Union[int,str,pyAgrum.DiscreteVariable]
+        	the current name, the id of the variable or a reference to the variable
 
         """
         return _pyAgrum.BayesNet_erase(self, *args)
@@ -9166,12 +9160,10 @@ class BayesNet(IBayesNet):
 
         Parameters
         ----------
+        var : Union[int,str]
+        	the current name or the id of the variable
         new_name : str
-        	the new name of the variable
-        NodeId : int
-        	the id of the node
-        name : str
-        	the name of the variable
+        	the new name of the variable 
 
         Raises
         ------
@@ -9190,10 +9182,8 @@ class BayesNet(IBayesNet):
 
         Parameters
         ----------
-        id : int
-        	the id of the node
-        name : str
-        	the name of the variable
+        var : Union[int,str]
+        	the current name or the id of the variable
         old_label : str
         	the new label
         new_label : str
@@ -9279,14 +9269,10 @@ class BayesNet(IBayesNet):
 
         Parameters
         ----------
-        head :
-        	a variable's id (int)
-        tail :
-        	a variable's id (int)
-        head :
-        	a variable's name (str)
-        tail :
-        	a variable's name (str)
+        head : Union[int,str]
+        	a variable's id (int) or name
+        head : Union[int,str]
+        	a variable's id (int) or name
 
         Raises
         ------
@@ -9307,16 +9293,12 @@ class BayesNet(IBayesNet):
 
         Parameters
         ----------
-        arc : pyAgrum.Arc
+        arc : pyAgrum.Arc when calling eraseArc(arc)
         	The arc to be removed.
-        head :
-        	a variable's id (int)
-        tail :
-        	a variable's id (int)
-        head :
-        	a variable's name (str)
-        tail :
-        	a variable's name (str)
+        head : Union[int,str]
+        	a variable's id (int) or name for the head when calling eraseArc(head,tail)
+        tail : Union[int,str]
+        	a variable's id (int) or name for the tail when calling eraseArc(head,tail)
 
         """
         return _pyAgrum.BayesNet_eraseArc(self, *args)
@@ -9720,14 +9702,10 @@ class BayesNet(IBayesNet):
 
         Parameters
         ----------
-        head :
-        	a variable's id (int)
-        tail :
-        	a variable's id (int)
-        head :
-        	a variable's name (str)
-        tail :
-        	a variable's name (str)
+        head : Union[int,str]
+        	a variable's id (int) or name
+        tail : Union[int,str]
+        	a variable's id (int) or name
         causalWeight : float
         	the added causal weight
 
@@ -9756,10 +9734,8 @@ class BayesNet(IBayesNet):
 
         Parameters
         ----------
-        node : int
-        	The variable's id.
-        name : str
-        	The variable's name.
+        node : Union[int,str]
+        	a variable's id (int) or name
 
         """
         return _pyAgrum.BayesNet_generateCPT(self, *args)
@@ -9771,12 +9747,10 @@ class BayesNet(IBayesNet):
 
         Parameters
         ----------
+        var : Union[int,str]
+        	the current name or the id of the variable
         newPot : pyAgrum.Potential
         	the new potential
-        NodeId : int
-        	the id of the node
-        name : str
-        	the name of the variable
 
         Raises
         ------
@@ -11119,12 +11093,8 @@ class MarkovNet(IMarkovNet):
 
         Parameters
         ----------
-        id : int
-        	The variable's id to remove.
-        name : str
-        	The variable's name to remove.
-        var : pyAgrum.DiscreteVariable
-        	A reference on the variable to remove.
+        var :Union[int,str,pyAgrum.DiscreteVariable]
+        	a variable's id (int) or name of variable or a reference of this variable to remove.
 
         """
         return _pyAgrum.MarkovNet_erase(self, *args)
@@ -11140,13 +11110,11 @@ class MarkovNet(IMarkovNet):
         This will change the "pyAgrum.DiscreteVariable" names in the pyAgrum.MarkovNet.
 
         Parameters
-        ----------
+        ---------- 
+        car :Union[int,str]
+        	a variable's id (int) or name
         new_name : str
         	the new name of the variable
-        NodeId : int
-        	the id of the node
-        name : str
-        	the name of the variable
 
         Raises
         ------
@@ -11165,12 +11133,10 @@ class MarkovNet(IMarkovNet):
 
         Parameters
         ----------
-        id : int
-        	the id of the node
-        name : str
-        	the name of the variable
+        var :Union[int,str]
+        	a variable's id (int) or name
         old_label : str
-        	the new label
+        	the old label
         new_label : str
         	the new label
 
@@ -11206,10 +11172,8 @@ class MarkovNet(IMarkovNet):
 
         Parameters
         ----------
-        node : int
-        	The variable's id.
-        name : str
-        	The variable's name.
+        node : Union[int,str]
+        	a variable's id (int) or name
 
         """
         return _pyAgrum.MarkovNet_generateFactor(self, vars)
@@ -11315,10 +11279,8 @@ class MarkovNet(IMarkovNet):
 
         Parameters
         ----------
-        VarId : Set[int]
-        	A variable's id in the pyAgrum.MarkovNet.
-        name : Set[str]
-        	A variable's name in the pyAgrum.MarkovNet.
+        vars : Union[Set[int],Set[str]]
+        	A set of ids or names of variable the pyAgrum.MarkovNet.
 
         Returns
         -------
@@ -23464,8 +23426,8 @@ class InfluenceDiagram(DAGmodel):
 
         Parameters
         ----------
-        VarId : int
-        	A variable's id in the pyAgrum.BayesNet.
+        var : Union[int,str]
+        	a variable's id (int) or name
 
         Returns
         -------
@@ -23485,8 +23447,8 @@ class InfluenceDiagram(DAGmodel):
 
         Parameters
         ----------
-        varId : int
-        	the tested node id.
+        var : Union[int,str]
+        	a variable's id (int) or name
 
         Returns
         -------
@@ -23804,8 +23766,8 @@ class InfluenceDiagram(DAGmodel):
         ----------
         id : int
         	The id of the variable to erase.
-        var : pyAgrum.DiscreteVariable
-        	The reference on the variable to remove.
+        var :  Union[int,str,pyAgrum.DiscreteVariable]
+        	a variable's id (int) or name or th reference on the variable to remove.
 
         """
         return _pyAgrum.InfluenceDiagram_erase(self, *args)
@@ -23815,8 +23777,8 @@ class InfluenceDiagram(DAGmodel):
 
         Parameters
         ----------
-        id : int
-        	the node Id
+        var : Union[int,str]
+        	a variable's id (int) or name
         new_name : str
         	the name of the variable
 
@@ -23837,10 +23799,10 @@ class InfluenceDiagram(DAGmodel):
 
         Parameters
         ----------
-        tail : int
-          the id of the tail node
-        head : int
-          the id of the head node
+        tail : Union[int,str]
+        	a variable's id (int) or name
+        head : Union[int,str]
+        	a variable's id (int) or name
 
         Raises
         ------
@@ -23861,12 +23823,12 @@ class InfluenceDiagram(DAGmodel):
 
         Parameters
         ----------
-        arc : pyAgrum.Arc
-        	The arc to be removed.
-        tail : int
-          the id of the tail node
-        head : int
-          the id of the head node
+        arc : pyAgrum.Arc 
+        	The arc to be removed whn calling eraseArc(arc)
+        tail : Union[int,str] 
+        	a variable's id (int) or name when calling eraseArc(tail,head)
+        head : Union[int,str] 
+        	a variable's id (int) or name when calling eraseArc(tail,head)
 
         """
         return _pyAgrum.InfluenceDiagram_eraseArc(self, *args)
@@ -24090,8 +24052,8 @@ class InfluenceDiagram(DAGmodel):
 
         Parameters
         ----------
-        id :
-        	The id of the child node
+        var : Union[int,str]
+        	a variable's id (int) or name
 
         Returns
         -------
@@ -24106,8 +24068,8 @@ class InfluenceDiagram(DAGmodel):
 
         Parameters
         ----------
-        id : int
-          the id of the parent
+        var : Union[int,str]
+        	a variable's id (int) or name
 
         Returns
         -------

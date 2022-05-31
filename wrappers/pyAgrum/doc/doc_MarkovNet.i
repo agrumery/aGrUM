@@ -58,13 +58,11 @@ Changes a variable's name in the gum::MarkovNet.
 This will change the gum::DiscreteVariable names in the gum::MarkovNet.
 
 Parameters
-----------
+---------- 
+car :Union[int,str]
+	a variable's id (int) or name
 new_name : str
 	the new name of the variable
-NodeId : int
-	the id of the node
-name : str
-	the name of the variable
 
 Raises
 ------
@@ -80,12 +78,10 @@ change the label of the variable associated to nodeId to the new value.
 
 Parameters
 ----------
-id : int
-	the id of the node
-name : str
-	the name of the variable
+var :Union[int,str]
+	a variable's id (int) or name
 old_label : str
-	the new label
+	the old label
 new_label : str
 	the new label
 
@@ -120,12 +116,8 @@ If no variable matches the given id, then nothing is done.
 
 Parameters
 ----------
-id : int
-	The variable's id to remove.
-name : str
-	The variable's name to remove.
-var : pyAgrum.DiscreteVariable
-	A reference on the variable to remove.
+var :Union[int,str,pyAgrum.DiscreteVariable]
+	a variable's id (int) or name of variable or a reference of this variable to remove.
 "
 
 %feature("docstring") gum::MarkovNet::eraseArc
@@ -138,14 +130,10 @@ Parameters
 ----------
 arc : pyAgrum.Arc
 	The arc to be removed.
-head :
-	a variable's id (int)
-tail :
-	a variable's id (int)
-head :
-	a variable's name (str)
-tail :
-	a variable's name (str)
+head : Union[int,str]
+	a variable's id (int) or name
+tail : Union[int,str]
+	a variable's id (int) or name
 "
 
 %feature("docstring") gum::MarkovNet::fastPrototype
@@ -178,10 +166,8 @@ Randomly generate factor parameters for a given factor in a given structure.
 
 Parameters
 ----------
-node : int
-	The variable's id.
-name : str
-	The variable's name.
+node : Union[int,str]
+	a variable's id (int) or name
 "
 
 %feature("docstring") gum::MarkovNet::generateFactors
@@ -224,10 +210,8 @@ Returns the factor of a set of variables (if existing).
 
 Parameters
 ----------
-VarId : Set[int]
-	A variable's id in the pyAgrum.MarkovNet.
-name : Set[str]
-	A variable's name in the pyAgrum.MarkovNet.
+vars : Union[Set[int],Set[str]]
+	A set of ids or names of variable the pyAgrum.MarkovNet.
 
 Returns
 -------
