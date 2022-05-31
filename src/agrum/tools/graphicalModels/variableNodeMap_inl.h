@@ -94,7 +94,7 @@ namespace gum {
   void VariableNodeMap::erase(NodeId id) {
     const DiscreteVariable* var = _nodes2vars_.second(id);
     _names2nodes_.eraseFirst(var->name());
-    delete (var);
+    delete var;
     _nodes2vars_.eraseFirst(id);
   }
 
@@ -124,7 +124,7 @@ namespace gum {
       GUM_ERROR(DuplicateLabel, "Unable to insert var with the name '" << new_name << "'.")
     }
 
-    DiscreteVariable* var = const_cast< DiscreteVariable* >(_nodes2vars_.second(id));
+    auto var = const_cast< DiscreteVariable* >(_nodes2vars_.second(id));
 
     _names2nodes_.eraseFirst(var->name());
     var->setName(new_name);

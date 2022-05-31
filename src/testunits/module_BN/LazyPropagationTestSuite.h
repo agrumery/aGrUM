@@ -136,7 +136,7 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
 
       gum::LazyPropagation< double > inf(&bn);
@@ -307,16 +307,16 @@ namespace gum_tests {
       inf.addJointTarget(nodeset);
       inf.makeInference();
 
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.H((gum::NodeId)2));
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.I((gum::NodeId)2, (gum::NodeId)4));
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.H((gum::NodeId)2))
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.I((gum::NodeId)2, (gum::NodeId)4))
       TS_ASSERT_THROWS(inf.I((gum::NodeId)2, (gum::NodeId)2), gum::OperationNotAllowed)
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.VI((gum::NodeId)2, (gum::NodeId)4));
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.I((gum::NodeId)0, (gum::NodeId)4));
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.VI((gum::NodeId)2, (gum::NodeId)4))
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.I((gum::NodeId)0, (gum::NodeId)4))
 
       for (const auto node: bn->dag()) {
         for (const auto par: bn->dag().parents(node)) {
-          TS_GUM_ASSERT_THROWS_NOTHING(inf.I(node, par));
-          TS_GUM_ASSERT_THROWS_NOTHING(inf.I(par, node));
+          TS_GUM_ASSERT_THROWS_NOTHING(inf.I(node, par))
+          TS_GUM_ASSERT_THROWS_NOTHING(inf.I(par, node))
         }
       }
 
@@ -336,17 +336,17 @@ namespace gum_tests {
       inf.addJointTarget(nodeset);
       inf.makeInference();
 
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.H(bn->variable(2).name()));
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.I(bn->variable(2).name(), bn->variable(4).name()));
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.H(bn->variable(2).name()))
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.I(bn->variable(2).name(), bn->variable(4).name()))
       TS_ASSERT_THROWS(inf.I(bn->variable(2).name(), bn->variable(2).name()),
                        gum::OperationNotAllowed);
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.VI(bn->variable(2).name(), bn->variable(4).name()));
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.I(bn->variable(0).name(), bn->variable(4).name()));
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.VI(bn->variable(2).name(), bn->variable(4).name()))
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.I(bn->variable(0).name(), bn->variable(4).name()))
 
       for (const auto node: bn->dag()) {
         for (const auto par: bn->dag().parents(node)) {
-          TS_GUM_ASSERT_THROWS_NOTHING(inf.I(bn->variable(node).name(), bn->variable(par).name()));
-          TS_GUM_ASSERT_THROWS_NOTHING(inf.I(bn->variable(par).name(), bn->variable(node).name()));
+          TS_GUM_ASSERT_THROWS_NOTHING(inf.I(bn->variable(node).name(), bn->variable(par).name()))
+          TS_GUM_ASSERT_THROWS_NOTHING(inf.I(bn->variable(par).name(), bn->variable(node).name()))
         }
       }
 
@@ -406,7 +406,7 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
@@ -432,7 +432,7 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
@@ -468,7 +468,7 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
@@ -548,7 +548,7 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
@@ -604,7 +604,7 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
@@ -662,7 +662,7 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
@@ -735,7 +735,7 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, file);
 
       gum::Size nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
@@ -770,7 +770,7 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, file);
 
       gum::Size nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
@@ -806,7 +806,7 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, file);
 
       gum::Size nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
@@ -844,7 +844,7 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, file);
 
       gum::Size nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
@@ -894,7 +894,7 @@ namespace gum_tests {
 
       gum::LazyPropagation< double > ie(&bn);
       gum::Potential< double >       res;
-      TS_GUM_ASSERT_THROWS_NOTHING(res = ie.evidenceImpact("E", {"A", "B", "C", "D", "F"}));
+      TS_GUM_ASSERT_THROWS_NOTHING(res = ie.evidenceImpact("E", {"A", "B", "C", "D", "F"}))
       TS_ASSERT_EQUALS(res.nbrDim(), (gum::Size)4);   // MarkovBlanket(E)=(A,D,C)
       try {
         auto joint = bn.cpt("A") * bn.cpt("B") * bn.cpt("C") * bn.cpt("D") * bn.cpt("E")
@@ -946,7 +946,7 @@ namespace gum_tests {
 
       gum::LazyPropagation< double > ie(&bn);
       gum::Potential< double >       res;
-      TS_GUM_ASSERT_THROWS_NOTHING(res = ie.evidenceJointImpact({"D", "E"}, {"A", "B", "C", "F"}));
+      TS_GUM_ASSERT_THROWS_NOTHING(res = ie.evidenceJointImpact({"D", "E"}, {"A", "B", "C", "F"}))
       TS_ASSERT_EQUALS(res.nbrDim(), (gum::Size)4);   // MarkovBlanket(E)=(A,D,C)
       try {
         auto joint = bn.cpt("A") * bn.cpt("B") * bn.cpt("C") * bn.cpt("D") * bn.cpt("E")
@@ -1020,7 +1020,7 @@ namespace gum_tests {
       gum::NodeId idFlu     = bn.add(flu);
       gum::NodeId idMalaria = bn.add(malaria);
       gum::NodeId idFever   = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(idFever = bn.addLogit(fever, 0.3f));
+      TS_GUM_ASSERT_THROWS_NOTHING(idFever = bn.addLogit(fever, 0.3f))
       gum::NodeId idOneMore        = bn.add(oneMore);
       gum::NodeId idOneMoreParent1 = bn.add(oneMoreParent1);
       gum::NodeId idOneMoreParent2 = bn.add(oneMoreParent2);

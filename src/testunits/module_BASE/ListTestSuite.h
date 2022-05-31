@@ -34,8 +34,8 @@ namespace gum_tests {
   class ListTestSuite: public CxxTest::TestSuite {
     public:
     void testPrivateMethods() {
-      TS_GUM_ASSERT_THROWS_NOTHING(initializeList(7));
-      TS_GUM_ASSERT_THROWS_NOTHING(initializeList(-7));
+      TS_GUM_ASSERT_THROWS_NOTHING(initializeList(7))
+      TS_GUM_ASSERT_THROWS_NOTHING(initializeList(-7))
     }
 
     void testConstructor() {
@@ -204,7 +204,7 @@ namespace gum_tests {
 
     void testEraseByVal() {
       gum::List< int > list = initializeList(7);
-      TS_GUM_ASSERT_THROWS_NOTHING(list.eraseByVal(20));
+      TS_GUM_ASSERT_THROWS_NOTHING(list.eraseByVal(20))
       list.pushBack(3);
       list.eraseByVal(3);
       TS_ASSERT_EQUALS(list.size(), (gum::Size)7)

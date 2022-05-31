@@ -38,7 +38,7 @@ namespace gum_tests {
 
       gum::LabelizedVariable var3(var1);
       gum::LabelizedVariable var4("var4", "this is var4");
-      TS_GUM_ASSERT_THROWS_NOTHING(var4 = var2);
+      TS_GUM_ASSERT_THROWS_NOTHING(var4 = var2)
 
       TS_ASSERT_EQUALS(var4, var2)
       TS_ASSERT_EQUALS(var1, var3)

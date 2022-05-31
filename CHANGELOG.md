@@ -1,5 +1,22 @@
 # aGrUM Changelog
 
+## Changelog for 1.1.1
+
+* aGrUM
+
+  * fix a regression that was slowing down the inference in credal networks.
+  * Better error messages when IOError caused by writing in 'bad' files.
+  * Typos in several error messages.
+  * Fix warnings from gcc 12.1 and integrate linter proposals 
+
+* pyAgrum
+
+  * PEP 3149 implemented.
+  * Small typos in pyAgrum.causal.
+  * Adding acces to the database built for learning in `pyAgrum.skbn.BNClassifier.preparedData()`.
+  * Small bug when representing Potential as fractions.
+  * Small bug in type deduction from database for variable in `pyAgrum.skbn`.
+
 ## Changelog for 1.1.0
 
 * aGrUM

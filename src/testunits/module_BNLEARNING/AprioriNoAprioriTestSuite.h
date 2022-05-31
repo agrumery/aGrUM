@@ -343,7 +343,6 @@ namespace gum_tests {
 
         for (auto i = std::size_t(0); i < names.size(); ++i)
           trans_set.insertTranslator(i % 2 == 0 ? translator1 : translator2, i);
-
       }
 
       gum::learning::DatabaseTable database(trans_set);

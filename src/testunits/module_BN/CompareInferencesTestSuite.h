@@ -117,7 +117,7 @@ namespace gum_tests {
         inf_gibbs.setEpsilon(1e-3);
         inf_gibbs.setMinEpsilonRate(1e-3);
         test_waiting();
-        TS_GUM_ASSERT_THROWS_NOTHING(inf_gibbs.makeInference());
+        TS_GUM_ASSERT_THROWS_NOTHING(inf_gibbs.makeInference())
 
         for (const auto i : bn->nodes()) {
           const gum::Potential< double >& marginal_gibbs = inf_gibbs.posterior(i);
@@ -191,7 +191,7 @@ namespace gum_tests {
       inf_his.setEpsilon(1e-3);
       inf_his.setMinEpsilonRate(1e-3);
       test_waiting();
-      TS_GUM_ASSERT_THROWS_NOTHING(inf_his.makeInference());
+      TS_GUM_ASSERT_THROWS_NOTHING(inf_his.makeInference())
 
       for (const auto i : bn->nodes()) {
         const gum::Potential< double >& marginal_gibbs = inf_his.posterior(i);
@@ -399,16 +399,16 @@ namespace gum_tests {
     std::string              file = GET_RESSOURCES_PATH("bif/alarm.bif");
     gum::BayesNet< double >  bn;
     gum::BIFReader< double > reader(&bn, file);
-    TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
+    TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed())
     gum::VariableElimination< double >   ve(&bn);
     gum::ShaferShenoyInference< double > ss(&bn);
     gum::LazyPropagation< double >       lazy(&bn);
     gum::Potential< double >             p_ve, p_ss, p_lazy;
     for (auto var_id : bn.nodes()) {
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(p_ve = ve.posterior(var_id));
-      TS_GUM_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id));
-      TS_GUM_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id));
+      TS_GUM_ASSERT_THROWS_NOTHING(p_ve = ve.posterior(var_id))
+      TS_GUM_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id))
+      TS_GUM_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id))
       // Assert
       TS_ASSERT_EQUALS(p_ve.domainSize(), p_ss.domainSize())
       TS_ASSERT_EQUALS(p_ve.domainSize(), p_lazy.domainSize())
@@ -424,7 +424,7 @@ namespace gum_tests {
     std::string              file = GET_RESSOURCES_PATH("bif/alarm.bif");
     gum::BayesNet< double >  bn;
     gum::BIFReader< double > reader(&bn, file);
-    TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
+    TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed())
     gum::VariableElimination< double >   ve(&bn);
     gum::ShaferShenoyInference< double > ss(&bn);
     gum::LazyPropagation< double >       lazy(&bn);
@@ -436,9 +436,9 @@ namespace gum_tests {
     }
     for (auto var_id : bn.nodes()) {
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(p_ve = ve.posterior(var_id));
-      TS_GUM_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id));
-      TS_GUM_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id));
+      TS_GUM_ASSERT_THROWS_NOTHING(p_ve = ve.posterior(var_id))
+      TS_GUM_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id))
+      TS_GUM_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id))
       // Assert
       TS_ASSERT_EQUALS(p_ve.domainSize(), p_ss.domainSize())
       TS_ASSERT_EQUALS(p_ve.domainSize(), p_lazy.domainSize())
@@ -454,7 +454,7 @@ namespace gum_tests {
     std::string              file = GET_RESSOURCES_PATH("bif/alarm.bif");
     gum::BayesNet< double >  bn;
     gum::BIFReader< double > reader(&bn, file);
-    TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
+    TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed())
     gum::VariableElimination< double >   ve(&bn);
     gum::ShaferShenoyInference< double > ss(&bn);
     gum::LazyPropagation< double >       lazy(&bn);
@@ -475,9 +475,9 @@ namespace gum_tests {
 
     for (auto var_id : bn.nodes()) {
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(p_ve = ve.posterior(var_id));
-      TS_GUM_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id));
-      TS_GUM_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id));
+      TS_GUM_ASSERT_THROWS_NOTHING(p_ve = ve.posterior(var_id))
+      TS_GUM_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id))
+      TS_GUM_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id))
       // Assert
       TS_ASSERT_EQUALS(p_ve.domainSize(), p_ss.domainSize())
       TS_ASSERT_EQUALS(p_ve.domainSize(), p_lazy.domainSize())
@@ -495,16 +495,16 @@ namespace gum_tests {
     std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
     gum::BayesNet< double >  bn;
     gum::BIFReader< double > reader(&bn, file);
-    TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
+    TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed())
     gum::VariableElimination< double >   ve(&bn);
     gum::ShaferShenoyInference< double > ss(&bn);
     gum::LazyPropagation< double >       lazy(&bn);
     gum::Potential< double >             p_ve, p_ss, p_lazy;
     for (auto var_id : bn.nodes()) {
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(p_ve = ve.posterior(var_id));
-      TS_GUM_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id));
-      TS_GUM_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id));
+      TS_GUM_ASSERT_THROWS_NOTHING(p_ve = ve.posterior(var_id))
+      TS_GUM_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id))
+      TS_GUM_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id))
       // Assert
       TS_ASSERT_EQUALS(p_ve.domainSize(), p_ss.domainSize())
       TS_ASSERT_EQUALS(p_ve.domainSize(), p_lazy.domainSize())
@@ -522,7 +522,7 @@ namespace gum_tests {
     std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
     gum::BayesNet< double >  bn;
     gum::BIFReader< double > reader(&bn, file);
-    TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
+    TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed())
     gum::VariableElimination< double >   ve(&bn);
     gum::ShaferShenoyInference< double > ss(&bn);
     gum::LazyPropagation< double >       lazy(&bn);
@@ -535,9 +535,9 @@ namespace gum_tests {
     }
     for (auto var_id : bn.nodes()) {
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(p_ve = ve.posterior(var_id));
-      TS_GUM_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id));
-      TS_GUM_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id));
+      TS_GUM_ASSERT_THROWS_NOTHING(p_ve = ve.posterior(var_id))
+      TS_GUM_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id))
+      TS_GUM_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id))
       // Assert
       TS_ASSERT_EQUALS(p_ve.domainSize(), p_ss.domainSize())
       TS_ASSERT_EQUALS(p_ve.domainSize(), p_lazy.domainSize())
@@ -555,7 +555,7 @@ namespace gum_tests {
     std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
     gum::BayesNet< double >  bn;
     gum::BIFReader< double > reader(&bn, file);
-    TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
+    TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed())
     gum::VariableElimination< double >   ve(&bn);
     gum::ShaferShenoyInference< double > ss(&bn);
     gum::LazyPropagation< double >       lazy(&bn);
@@ -576,9 +576,9 @@ namespace gum_tests {
 
     for (auto var_id : bn.nodes()) {
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(p_ve = ve.posterior(var_id));
-      TS_GUM_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id));
-      TS_GUM_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id));
+      TS_GUM_ASSERT_THROWS_NOTHING(p_ve = ve.posterior(var_id))
+      TS_GUM_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id))
+      TS_GUM_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id))
       // Assert
       TS_ASSERT_EQUALS(p_ve.domainSize(), p_ss.domainSize())
       TS_ASSERT_EQUALS(p_ve.domainSize(), p_lazy.domainSize())

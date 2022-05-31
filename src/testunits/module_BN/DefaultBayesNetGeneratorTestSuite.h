@@ -44,22 +44,22 @@ namespace gum_tests {
     void testCreationDeletion_1() {
       gum::SimpleBayesNetGenerator< double >* gen = nullptr;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::SimpleBayesNetGenerator< double >(10, 20));
-      TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
+      TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::SimpleBayesNetGenerator< double >(10, 20))
+      TS_GUM_ASSERT_THROWS_NOTHING(delete gen)
     }
 
     void testCreationDeletion_2() {
       gum::SimpleBayesNetGenerator< double >* gen = nullptr;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::SimpleBayesNetGenerator< double >(10, 20));
-      TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
+      TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::SimpleBayesNetGenerator< double >(10, 20))
+      TS_GUM_ASSERT_THROWS_NOTHING(delete gen)
     }
 
     void testGenerationFloat_1() {
       gum::SimpleBayesNetGenerator< double > gen(10, 20);
       gum::BayesNet< double >*               bn = new gum::BayesNet< double >();
 
-      TS_GUM_ASSERT_THROWS_NOTHING(gen.generateBN(*bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(gen.generateBN(*bn))
 
       if (bn != 0) delete bn;
     }
@@ -89,7 +89,7 @@ namespace gum_tests {
       gen.generateBN(*bn);
       // Test for inference
       gum::ShaferShenoyInference< double > ssInf(bn);
-      TS_GUM_ASSERT_THROWS_NOTHING(ssInf.makeInference());
+      TS_GUM_ASSERT_THROWS_NOTHING(ssInf.makeInference())
 
       if (bn != 0) delete bn;
     }
@@ -101,7 +101,7 @@ namespace gum_tests {
       gen.generateBN(*bn);
       // Test for inference
       gum::LazyPropagation< double > lazyInf(bn);
-      TS_GUM_ASSERT_THROWS_NOTHING(lazyInf.makeInference());
+      TS_GUM_ASSERT_THROWS_NOTHING(lazyInf.makeInference())
 
       if (bn != 0) delete bn;
     }
@@ -113,22 +113,22 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(bn = new gum::BayesNet< double >(); gen.generateBN(*bn);
                                    gum::LazyPropagation< double > lazyInf(bn);
                                    lazyInf.makeInference();
-                                   delete bn);
+                                   delete bn)
       TS_GUM_ASSERT_THROWS_NOTHING(bn = new gum::BayesNet< double >(); gen.generateBN(*bn);
                                    gum::LazyPropagation< double > lazyInf(bn);
                                    lazyInf.makeInference();
-                                   delete bn);
+                                   delete bn)
       TS_GUM_ASSERT_THROWS_NOTHING(bn = new gum::BayesNet< double >(); gen.generateBN(*bn);
                                    gum::LazyPropagation< double > lazyInf(bn);
                                    lazyInf.makeInference();
-                                   delete bn);
+                                   delete bn)
     }
 
     void testGenerationDouble_1() {
       gum::SimpleBayesNetGenerator< double > gen(10, 35);
       gum::BayesNet< double >*               bn = new gum::BayesNet< double >();
 
-      TS_GUM_ASSERT_THROWS_NOTHING(gen.generateBN(*bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(gen.generateBN(*bn))
 
       if (bn != 0) delete bn;
     }
@@ -156,7 +156,7 @@ namespace gum_tests {
       gen.generateBN(*bn);
       // Test for inference
       gum::ShaferShenoyInference< double > ssInf(bn);
-      TS_GUM_ASSERT_THROWS_NOTHING(ssInf.makeInference());
+      TS_GUM_ASSERT_THROWS_NOTHING(ssInf.makeInference())
 
       if (bn != 0) delete bn;
     }
@@ -168,7 +168,7 @@ namespace gum_tests {
 
       // Test for inference
       gum::LazyPropagation< double > lazyInf(bn);
-      TS_GUM_ASSERT_THROWS_NOTHING(lazyInf.makeInference());
+      TS_GUM_ASSERT_THROWS_NOTHING(lazyInf.makeInference())
 
       if (bn != 0) delete bn;
     }

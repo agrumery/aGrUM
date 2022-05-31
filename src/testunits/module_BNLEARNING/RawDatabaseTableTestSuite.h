@@ -39,8 +39,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)3)
       TS_ASSERT_EQUALS(database.nbVariables(), (gum::Size)3)
       TS_ASSERT_EQUALS(database.variableNames()[0], "v1")
-      TS_GUM_ASSERT_THROWS_NOTHING(database.setVariableNames({"x1", "x2"}, false));
-      TS_GUM_ASSERT_THROWS_NOTHING(database.setVariableNames({"x1", "x2"}, true));
+      TS_GUM_ASSERT_THROWS_NOTHING(database.setVariableNames({"x1", "x2"}, false))
+      TS_GUM_ASSERT_THROWS_NOTHING(database.setVariableNames({"x1", "x2"}, true))
       database.setVariableNames({"x1", "x2", "x3"}, false);
       TS_ASSERT_EQUALS(database.variableNames()[0], "x1")
 
@@ -470,14 +470,14 @@ namespace gum_tests {
       database.ignoreColumn(1);
       database.ignoreColumn(3);
       database.ignoreColumn(4);
-      TS_GUM_ASSERT_THROWS_NOTHING(database.insertRow(row3));
+      TS_GUM_ASSERT_THROWS_NOTHING(database.insertRow(row3))
 
       database.ignoreColumn(5);
-      TS_GUM_ASSERT_THROWS_NOTHING(database.insertRow(row3));
+      TS_GUM_ASSERT_THROWS_NOTHING(database.insertRow(row3))
 
       database.ignoreColumn(6);
       database.ignoreColumn(7);
-      TS_GUM_ASSERT_THROWS_NOTHING(database.insertRow(row3));
+      TS_GUM_ASSERT_THROWS_NOTHING(database.insertRow(row3))
     }
 
 

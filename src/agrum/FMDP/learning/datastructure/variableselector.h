@@ -58,7 +58,7 @@ namespace gum {
     // ###################################################################
     /// Default constructor
     // ###################################################################
-    VariableSelector(Set< const DiscreteVariable* >& startingSet);
+    explicit VariableSelector(const Set< const DiscreteVariable* >& startingSet);
 
     // ###################################################################
     /// Default destructor
@@ -84,12 +84,12 @@ namespace gum {
     // ###################################################################
     const DiscreteVariable* select();
 
-    bool isEmpty() { return _remainingVars_.empty(); }
+    bool isEmpty() const { return _remainingVars_.empty(); }
 
     void                    begin() { _rvi_ = _remainingVars_.beginSafe(); }
-    bool                    hasNext() { return _rvi_ != _remainingVars_.endSafe(); }
+    bool                    hasNext() const { return _rvi_ != _remainingVars_.endSafe(); }
     void                    next() { ++_rvi_; }
-    const DiscreteVariable* current() { return *_rvi_; }
+    const DiscreteVariable* current() const { return *_rvi_; }
 
     private:
     void _addVar_(const DiscreteVariable* var);

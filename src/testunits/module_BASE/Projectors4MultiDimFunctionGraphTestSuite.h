@@ -215,19 +215,19 @@ namespace gum_tests {
 
       switch (operationId) {
         case 1:   // Test Addition
-          TS_GUM_ASSERT_THROWS_NOTHING(a3 = projectSumMultiDimFunctionGraph(a1, del_vars));
+          TS_GUM_ASSERT_THROWS_NOTHING(a3 = projectSumMultiDimFunctionGraph(a1, del_vars))
           break;
 
         case 2:   // Test Multiplication
-          TS_GUM_ASSERT_THROWS_NOTHING(a3 = projectProductMultiDimFunctionGraph(a1, del_vars));
+          TS_GUM_ASSERT_THROWS_NOTHING(a3 = projectProductMultiDimFunctionGraph(a1, del_vars))
           break;
 
         case 3:   // Test Minimisation
-          TS_GUM_ASSERT_THROWS_NOTHING(a3 = projectMinMultiDimFunctionGraph(a1, del_vars));
+          TS_GUM_ASSERT_THROWS_NOTHING(a3 = projectMinMultiDimFunctionGraph(a1, del_vars))
           break;
 
         case 4:   // Test Maximisation
-          TS_GUM_ASSERT_THROWS_NOTHING(a3 = projectMaxMultiDimFunctionGraph(a1, del_vars));
+          TS_GUM_ASSERT_THROWS_NOTHING(a3 = projectMaxMultiDimFunctionGraph(a1, del_vars))
           break;
 
         default:   // Should Not Happen
@@ -252,7 +252,7 @@ namespace gum_tests {
              varIter != del_vars.endSafe();
              ++varIter) {
           if (!instEleminatedVar.variablesSequence().exists(*varIter))
-            TS_GUM_ASSERT_THROWS_NOTHING(instEleminatedVar.add(**varIter));
+            TS_GUM_ASSERT_THROWS_NOTHING(instEleminatedVar.add(**varIter))
         }
         gum::Instantiation instRemainingVar;
         for (gum::SequenceIteratorSafe< const gum::DiscreteVariable* > varIter
@@ -372,7 +372,7 @@ namespace gum_tests {
         gum::Sequence< const gum::DiscreteVariable* >* varList = _generateFixVarList_();
 
         gum::MultiDimFunctionGraph< double >* a1 = nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING(a1 = _generateFunctionGraph1_(varList));
+        TS_GUM_ASSERT_THROWS_NOTHING(a1 = _generateFunctionGraph1_(varList))
 
         gum::Set< const gum::DiscreteVariable* > del_vars;
         del_vars << varList->atPos(0);
@@ -519,7 +519,7 @@ namespace gum_tests {
         del_vars << vB;
 
         double a = 0.0, b = 0.0, c = 0.0;
-        TS_GUM_ASSERT_THROWS_NOTHING(_evalOperation_(1, dg1, del_vars, a, b, c));
+        TS_GUM_ASSERT_THROWS_NOTHING(_evalOperation_(1, dg1, del_vars, a, b, c))
 
         delete dg1;
         del_vars.clear();
@@ -637,7 +637,7 @@ namespace gum_tests {
         del_vars << vC;
 
         double a = 0.0, b = 0.0, c = 0.01;
-        TS_GUM_ASSERT_THROWS_NOTHING(_evalOperation_(1, dg1, del_vars, a, b, c));
+        TS_GUM_ASSERT_THROWS_NOTHING(_evalOperation_(1, dg1, del_vars, a, b, c))
 
         delete dg1;
         del_vars.clear();
@@ -864,7 +864,7 @@ namespace gum_tests {
         del_vars << v1;
 
         double a = 0.0, b = 0.0, c = 0.01;
-        TS_GUM_ASSERT_THROWS_NOTHING(_evalOperation_(1, dg1, del_vars, a, b, c));
+        TS_GUM_ASSERT_THROWS_NOTHING(_evalOperation_(1, dg1, del_vars, a, b, c))
 
         delete dg1;
         del_vars.clear();

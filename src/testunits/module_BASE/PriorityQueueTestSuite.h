@@ -239,8 +239,8 @@ namespace gum_tests {
 
       queue2.clear();
       TS_ASSERT_EQUALS(queue2.size(), (gum::Size)0)
-      TS_GUM_ASSERT_THROWS_NOTHING(queue2.eraseByPos(10));
-      TS_GUM_ASSERT_THROWS_NOTHING(queue2.erase("RRR"));
+      TS_GUM_ASSERT_THROWS_NOTHING(queue2.eraseByPos(10))
+      TS_GUM_ASSERT_THROWS_NOTHING(queue2.erase("RRR"))
 
       queue2 = queue1;
       queue2.eraseTop();
@@ -430,8 +430,8 @@ namespace gum_tests {
 
       queue2.clear();
       TS_ASSERT_EQUALS(queue2.size(), (gum::Size)0)
-      TS_GUM_ASSERT_THROWS_NOTHING(queue2.eraseByPos(10));
-      TS_GUM_ASSERT_THROWS_NOTHING(queue2.erase("RRR"));
+      TS_GUM_ASSERT_THROWS_NOTHING(queue2.eraseByPos(10))
+      TS_GUM_ASSERT_THROWS_NOTHING(queue2.erase("RRR"))
 
       queue2 = queue1;
       queue2.eraseTop();

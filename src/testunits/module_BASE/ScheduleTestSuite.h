@@ -122,7 +122,7 @@ namespace gum_tests {
       const auto xf3 = schedule.insertScheduleMultiDim(f3);
       TS_ASSERT(!f3.isAbstract());
       TS_ASSERT(!xf3->isAbstract());
-      TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertOperation(comb2));
+      TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertOperation(comb2))
       const auto& xcomb2 = schedule.operation(gum::NodeId(2));
       TS_ASSERT(!xcomb2.isExecuted());
       available_operations = schedule.availableOperations();
@@ -132,7 +132,7 @@ namespace gum_tests {
       TS_ASSERT(!f4.isAbstract());
       TS_ASSERT(!xf4->isAbstract());
       const auto& xr2 = xcomb2.results();
-      TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertOperation(comb3));
+      TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertOperation(comb3))
       const auto& xcomb3 = schedule.operation(gum::NodeId(3));
       const auto& arg3   = xcomb3.args();
       TS_ASSERT(arg3.size() == 2);
@@ -144,7 +144,7 @@ namespace gum_tests {
       available_operations = schedule.availableOperations();
       TS_ASSERT(available_operations.size() == 2);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertOperation(del2));
+      TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertOperation(del2))
       available_operations = schedule.availableOperations();
       TS_ASSERT(available_operations.size() == 2);
       TS_ASSERT(dag.sizeNodes() == 4);
@@ -153,14 +153,14 @@ namespace gum_tests {
       TS_ASSERT(dag.existsArc(2, 4));
       TS_ASSERT(dag.existsArc(3, 4));
 
-      TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertOperation(del1));
+      TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertOperation(del1))
       available_operations = schedule.availableOperations();
       TS_ASSERT(available_operations.size() == 2);
       TS_ASSERT(dag.sizeNodes() == 5);
       TS_ASSERT(dag.sizeArcs() == 4);
       TS_ASSERT(dag.existsArc(1, 5));
 
-      TS_GUM_ASSERT_THROWS_NOTHING(schedule.emplaceBinaryCombination(result1, result3, myadd));
+      TS_GUM_ASSERT_THROWS_NOTHING(schedule.emplaceBinaryCombination(result1, result3, myadd))
       const auto& xcomb4 = schedule.operation(6);
       const auto& args4  = xcomb4.args();
       TS_ASSERT(result1 == *args4[0])
@@ -187,14 +187,14 @@ namespace gum_tests {
       const gum::ScheduleMultiDim< gum::Potential< double > >&      xres4 = xxcomb4.result();
       std::vector< gum::Potential< double > >                       vect4;
       gum::ScheduleStorage< gum::Potential< double >, std::vector > store4(xres4, vect4);
-      TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertOperation(store4));
+      TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertOperation(store4))
       available_operations = schedule.availableOperations();
       TS_ASSERT(available_operations.size() == 2);
       TS_ASSERT(dag.sizeNodes() == 7);
       TS_ASSERT(dag.sizeArcs() == 8);
       TS_ASSERT(dag.existsArc(6, 7));
 
-      TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertOperation(del3));
+      TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertOperation(del3))
       available_operations = schedule.availableOperations();
       TS_ASSERT(available_operations.size() == 2);
       TS_ASSERT(dag.sizeNodes() == 8);
@@ -409,13 +409,13 @@ namespace gum_tests {
       gum::ScheduleStorage< gum::Potential< double >, std::vector > store(result2, vect);
 
       gum::Schedule schedule;
-      TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertScheduleMultiDim(f1));
-      TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertScheduleMultiDim(f2));
-      TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertScheduleMultiDim(f3));
-      TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertOperation(comb));
-      TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertOperation(myproj));
-      TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertOperation(del));
-      TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertOperation(store));
+      TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertScheduleMultiDim(f1))
+      TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertScheduleMultiDim(f2))
+      TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertScheduleMultiDim(f3))
+      TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertOperation(comb))
+      TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertOperation(myproj))
+      TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertOperation(del))
+      TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertOperation(store))
 
       gum::NodeSet               available_operations = schedule.availableOperations();
       std::vector< gum::NodeId > available_nodes;

@@ -69,8 +69,8 @@ namespace gum_tests {
 
     void testConstructor1() {
       gum::DAG* graph = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING((graph = new gum::DAG()));
-      TS_GUM_ASSERT_THROWS_NOTHING((delete (graph)));
+      TS_GUM_ASSERT_THROWS_NOTHING((graph = new gum::DAG()))
+      TS_GUM_ASSERT_THROWS_NOTHING((delete (graph)))
     }
 
     void testInsert1() {
@@ -78,18 +78,18 @@ namespace gum_tests {
       gum::NodeId id1, id2, id3, id4, id5;
       id1 = id2 = id3 = id4 = id5 = 0;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(id1 = graph.addNode());
-      TS_GUM_ASSERT_THROWS_NOTHING(id2 = graph.addNode());
-      TS_GUM_ASSERT_THROWS_NOTHING(id3 = graph.addNode());
-      TS_GUM_ASSERT_THROWS_NOTHING(id4 = graph.addNode());
-      TS_GUM_ASSERT_THROWS_NOTHING(id5 = graph.addNode());
+      TS_GUM_ASSERT_THROWS_NOTHING(id1 = graph.addNode())
+      TS_GUM_ASSERT_THROWS_NOTHING(id2 = graph.addNode())
+      TS_GUM_ASSERT_THROWS_NOTHING(id3 = graph.addNode())
+      TS_GUM_ASSERT_THROWS_NOTHING(id4 = graph.addNode())
+      TS_GUM_ASSERT_THROWS_NOTHING(id5 = graph.addNode())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id1, id3));
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id3, id5));
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id2, id4));
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id1, id4));
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id4, id5));
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id2, id5));
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id1, id3))
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id3, id5))
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id2, id4))
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id1, id4))
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id4, id5))
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id2, id5))
     }
 
     void testInsert2() {
@@ -97,17 +97,17 @@ namespace gum_tests {
       gum::NodeId id1, id2, id3, id4, id5;
       id1 = id2 = id3 = id4 = id5 = 0;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(id1 = graph.addNode());
-      TS_GUM_ASSERT_THROWS_NOTHING(id2 = graph.addNode());
-      TS_GUM_ASSERT_THROWS_NOTHING(id3 = graph.addNode());
-      TS_GUM_ASSERT_THROWS_NOTHING(id4 = graph.addNode());
-      TS_GUM_ASSERT_THROWS_NOTHING(id5 = graph.addNode());
+      TS_GUM_ASSERT_THROWS_NOTHING(id1 = graph.addNode())
+      TS_GUM_ASSERT_THROWS_NOTHING(id2 = graph.addNode())
+      TS_GUM_ASSERT_THROWS_NOTHING(id3 = graph.addNode())
+      TS_GUM_ASSERT_THROWS_NOTHING(id4 = graph.addNode())
+      TS_GUM_ASSERT_THROWS_NOTHING(id5 = graph.addNode())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id1, id3));
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id3, id5));
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id2, id4));
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id1, id4));
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id4, id5));
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id1, id3))
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id3, id5))
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id2, id4))
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id1, id4))
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id4, id5))
 
       TS_ASSERT_THROWS(graph.addArc(id5, id2), gum::InvalidDirectedCycle)
       TS_ASSERT_THROWS(graph.addArc(1000, id2), gum::InvalidNode)
@@ -118,12 +118,12 @@ namespace gum_tests {
       gum::DAG graph = buildGraph();
 
       gum::DAG* copy = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(copy = new gum::DAG(graph));
+      TS_GUM_ASSERT_THROWS_NOTHING(copy = new gum::DAG(graph))
       TS_ASSERT_EQUALS(graph, *copy)
       delete (copy);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::DAG copy2 = graph);
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::DAG copy3(graph));
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::DAG copy2 = graph)
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::DAG copy3(graph))
     }
 
     void testEmptyNodes() {
@@ -144,14 +144,14 @@ namespace gum_tests {
     void testClearNodes() {
       gum::DAG graph = buildGraph();
       TS_ASSERT(!graph.empty())
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.clear());
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.clear())
       TS_ASSERT(graph.empty() && graph.emptyArcs())
     }
 
     void testClearArcs() {
       gum::DAG graph = buildGraph();
       TS_ASSERT(!graph.emptyArcs())
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.clearArcs());
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.clearArcs())
       TS_ASSERT(graph.emptyArcs())
       TS_ASSERT(!graph.empty())
     }
@@ -173,7 +173,7 @@ namespace gum_tests {
       gum::Size nodeCount = graph.size();
       gum::Size arcCount  = graph.sizeArcs();
 
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseNode(id2));
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseNode(id2))
 
       TS_ASSERT_EQUALS(nodeCount, graph.size() + 1)
       TS_ASSERT_EQUALS(arcCount, graph.sizeArcs() + 2)
@@ -193,7 +193,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(arcCount, (gum::Size)6)
 
       for (int i = 0; i < 10; i++) {
-        TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseNode(id5));
+        TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseNode(id5))
       }
 
       TS_ASSERT_EQUALS(nodeCount, graph.size() + 1)
@@ -215,7 +215,7 @@ namespace gum_tests {
       gum::Size nodeCount = graph.size();
       gum::Size arcCount  = graph.sizeArcs();
 
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseArc(gum::Arc(id2, id5)));
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseArc(gum::Arc(id2, id5)))
 
       TS_ASSERT_EQUALS(nodeCount, graph.size())
       TS_ASSERT_EQUALS(arcCount, graph.sizeArcs() + 1)

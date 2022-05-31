@@ -77,14 +77,14 @@ namespace gum_tests {
 
     void testConstuctor() {
       gum::O3prmBNWriter< double >* writer = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::O3prmBNWriter< double >());
+      TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::O3prmBNWriter< double >())
       delete writer;
     }
 
     void testWriter_ostream() {
       gum::O3prmBNWriter< double > writer;
       // Uncomment this to check the ouput
-      // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
+      // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn))
     }
 
     void testReadAfterWrite() {
@@ -92,7 +92,7 @@ namespace gum_tests {
       gum::BayesNet< double >      bn;
       gum::O3prmBNReader< double > reader(&bn, rfile);
       gum::Size                    res = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed())
       TS_ASSERT_EQUALS(res, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)7);   // no system
       TS_ASSERT_EQUALS(bn.size(), (gum::Size)37)
@@ -101,13 +101,13 @@ namespace gum_tests {
 
       gum::O3prmBNWriter< double > writer;
       std::string                  wfile = GET_RESSOURCES_PATH("outputs/alarm_written.o3prm");
-      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(wfile, bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(wfile, bn))
 
 
       gum::BayesNet< double >      bn2;
       gum::O3prmBNReader< double > reader2(&bn2, wfile, "alarm");
       gum::Size                    res2 = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(res2 = reader2.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(res2 = reader2.proceed())
       TS_ASSERT_EQUALS(res2, (gum::Size)0)
       TS_ASSERT_EQUALS(reader2.warnings(), (gum::Size)7);   // no system
       TS_ASSERT_EQUALS(bn2.size(), (gum::Size)37)
@@ -132,13 +132,13 @@ namespace gum_tests {
 
       gum::O3prmBNWriter< double > writer;
       std::string                  wfile = GET_RESSOURCES_PATH("outputs/random_written.o3prm");
-      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(wfile, bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(wfile, bn))
 
 
       gum::BayesNet< double >      bn2;
       gum::O3prmBNReader< double > reader2(&bn2, wfile);
       gum::Size                    res2 = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(res2 = reader2.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(res2 = reader2.proceed())
       TS_ASSERT_EQUALS(res2, (gum::Size)0)
       TS_ASSERT_EQUALS(bn2.size(), (gum::Size)8)
 

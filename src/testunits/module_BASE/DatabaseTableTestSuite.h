@@ -589,8 +589,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(database.nbRows(), (std::size_t)4)
       TS_ASSERT(!database.hasMissingValues())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(database.insertTranslator(translator, 5));
-      TS_GUM_ASSERT_THROWS_NOTHING(database.insertTranslator(translator, 5, false));
+      TS_GUM_ASSERT_THROWS_NOTHING(database.insertTranslator(translator, 5))
+      TS_GUM_ASSERT_THROWS_NOTHING(database.insertTranslator(translator, 5, false))
       TS_ASSERT(database.hasMissingValues())
       TS_ASSERT_EQUALS(database.nbVariables(), (std::size_t)(5))
       database.eraseTranslators(5, true);
@@ -598,7 +598,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(database.nbVariables(), (std::size_t)(3))
       TS_ASSERT_EQUALS(database.content()[0].size(), (gum::Size)3)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(database.eraseTranslators(10));
+      TS_GUM_ASSERT_THROWS_NOTHING(database.eraseTranslators(10))
       database.eraseTranslators(1);
       TS_ASSERT_EQUALS(database.variableNames().size(), (gum::Size)2)
       TS_ASSERT_EQUALS(database.nbVariables(), (std::size_t)2)

@@ -91,7 +91,7 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(var3.varType(), gum::VarType::Integer)
       TS_ASSERT_THROWS(var3.index("0"), gum::NotFound)
-      TS_GUM_ASSERT_THROWS_NOTHING(var3.index("-1"));
+      TS_GUM_ASSERT_THROWS_NOTHING(var3.index("-1"))
       TS_ASSERT_EQUALS(var3.index("-2"), gum::Idx(0))
       TS_ASSERT_EQUALS(var3.index("-1"), gum::Idx(1))
       TS_ASSERT_EQUALS(var3.index("4"), gum::Idx(2))

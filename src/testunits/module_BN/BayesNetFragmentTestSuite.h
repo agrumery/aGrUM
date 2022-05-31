@@ -142,11 +142,11 @@ namespace gum_tests {
 
       // install a node
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)0)
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode(bn.idFromName("v1")));
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode(bn.idFromName("v1")))
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)1)
 
       // install twice the same node
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode(bn.idFromName("v1")));
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode(bn.idFromName("v1")))
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)1)
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)0)
 
@@ -157,28 +157,28 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)0)
 
       // install a second node (without arc)
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode(bn.idFromName("v6")));
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode(bn.idFromName("v6")))
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)2)
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)0)
 
       // install a third node (and 2 arcs)
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode(bn.idFromName("v3")));
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode(bn.idFromName("v3")))
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)3)
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)2)
 
       // install ascendants (nothing should happen)
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installAscendants(bn.idFromName("v6")));
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.installAscendants(bn.idFromName("v6")))
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)3)
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)2)
 
       // install ascendants (nothing should happen)
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installAscendants(bn.idFromName("v5")));
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.installAscendants(bn.idFromName("v5")))
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)6)
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)7)
 
       // another test for ascendants
       gum::BayesNetFragment< double > frag2(bn);
-      TS_GUM_ASSERT_THROWS_NOTHING(frag2.installAscendants(bn.idFromName("v5")));
+      TS_GUM_ASSERT_THROWS_NOTHING(frag2.installAscendants(bn.idFromName("v5")))
       TS_ASSERT_EQUALS(frag2.size(), (gum::Size)5)
       TS_ASSERT_EQUALS(frag2.sizeArcs(), (gum::Size)6)
     }
@@ -191,11 +191,11 @@ namespace gum_tests {
 
       // install a node
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)0)
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode("v1"));
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode("v1"))
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)1)
 
       // install twice the same node
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode("v1"));
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode("v1"))
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)1)
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)0)
 
@@ -205,28 +205,28 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)0)
 
       // install a second node (without arc)
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode("v6"));
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode("v6"))
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)2)
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)0)
 
       // install a third node (and 2 arcs)
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode("v3"));
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode("v3"))
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)3)
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)2)
 
       // install ascendants (nothing should happen)
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installAscendants("v6"));
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.installAscendants("v6"))
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)3)
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)2)
 
       // install ascendants (nothing should happen)
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installAscendants("v5"));
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.installAscendants("v5"))
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)6)
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)7)
 
       // another test for ascendants
       gum::BayesNetFragment< double > frag2(bn);
-      TS_GUM_ASSERT_THROWS_NOTHING(frag2.installAscendants("v5"));
+      TS_GUM_ASSERT_THROWS_NOTHING(frag2.installAscendants("v5"))
       TS_ASSERT_EQUALS(frag2.size(), (gum::Size)5)
       TS_ASSERT_EQUALS(frag2.sizeArcs(), (gum::Size)6)
     }
@@ -238,12 +238,12 @@ namespace gum_tests {
       gum::BayesNetFragment< double > frag(bn);
 
       // install ascendants (nothing should happen)
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installAscendants(bn.idFromName("v6")));
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.installAscendants(bn.idFromName("v6")))
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)3)
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)2)
 
       // uninstall node 3 (in the middle)
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.uninstallNode(bn.idFromName("v3")));
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.uninstallNode(bn.idFromName("v3")))
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)2)
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)0)
     }
@@ -255,12 +255,12 @@ namespace gum_tests {
       gum::BayesNetFragment< double > frag(bn);
 
       // install ascendants (nothing should happen)
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installAscendants("v6"));
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.installAscendants("v6"))
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)3)
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)2)
 
       // uninstall node 3 (in the middle)
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.uninstallNode("v3"));
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.uninstallNode("v3"))
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)2)
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)0)
     }
@@ -272,10 +272,10 @@ namespace gum_tests {
       gum::BayesNetFragment< double > frag(bn);
 
       TS_ASSERT(frag.empty())
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode(bn.idFromName("v1")));
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode(bn.idFromName("v1")))
       TS_ASSERT(!frag.empty())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode(bn.idFromName("v6")));
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode(bn.idFromName("v6")))
 
       TS_ASSERT_EQUALS(frag.dag().sizeNodes(), (gum::Size)2)
       TS_ASSERT_EQUALS(frag.dag().sizeArcs(), (gum::Size)0)
@@ -283,7 +283,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.dim(), gum::Size((3 - 1) + (2 - 1)))
       TS_ASSERT_EQUALS(pow(10, frag.log10DomainSize()), 2 * 3)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installAscendants(bn.idFromName("v6")));
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.installAscendants(bn.idFromName("v6")))
 
       TS_ASSERT_EQUALS(frag.dag().sizeNodes(), (gum::Size)3)
       TS_ASSERT_EQUALS(frag.dag().sizeArcs(), (gum::Size)2)
@@ -335,10 +335,10 @@ namespace gum_tests {
       gum::BayesNetFragment< double > frag(bn);
 
       TS_ASSERT(frag.empty())
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode("v1"));
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode("v1"))
       TS_ASSERT(!frag.empty())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode("v6"));
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode("v6"))
 
       TS_ASSERT_EQUALS(frag.dag().sizeNodes(), (gum::Size)2)
       TS_ASSERT_EQUALS(frag.dag().sizeArcs(), (gum::Size)0)
@@ -346,7 +346,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.dim(), gum::Size((3 - 1) + (2 - 1)))
       TS_ASSERT_EQUALS(pow(10, frag.log10DomainSize()), 2 * 3)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(frag.installAscendants("v6"));
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.installAscendants("v6"))
 
       TS_ASSERT_EQUALS(frag.dag().sizeNodes(), (gum::Size)3)
       TS_ASSERT_EQUALS(frag.dag().sizeArcs(), (gum::Size)2)
@@ -444,7 +444,7 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(frag2.toString(), tostr2)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(bn2.addArc(bn2.idFromName("v6"), bn2.idFromName("v7")));
+      TS_GUM_ASSERT_THROWS_NOTHING(bn2.addArc(bn2.idFromName("v6"), bn2.idFromName("v7")))
 
       TS_ASSERT_EQUALS(frag2.toString(), tostr2)
     }

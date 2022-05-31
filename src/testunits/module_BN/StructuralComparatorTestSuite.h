@@ -115,7 +115,7 @@ namespace gum_tests {
       }
 
       TS_ASSERT_THROWS(comp.compare(asia, g), gum::InvalidNode)
-      TS_GUM_ASSERT_THROWS_NOTHING(comp.compare(asia, graph));
+      TS_GUM_ASSERT_THROWS_NOTHING(comp.compare(asia, graph))
 
       comp.compare(asia, graph);
       TS_ASSERT_DELTA(comp.precision_skeleton(), 0.2857, 1e-3)
@@ -131,7 +131,7 @@ namespace gum_tests {
       bn1 = bn1.fastPrototype("0->1;0->2");
       bn2 = bn2.fastPrototype("0->1->2;0->2");
 
-      TS_GUM_ASSERT_THROWS_NOTHING(comp.compare(bn1, bn2));
+      TS_GUM_ASSERT_THROWS_NOTHING(comp.compare(bn1, bn2))
       TS_ASSERT_DELTA(comp.precision_skeleton(), 0.666, 1e-3)
       TS_ASSERT_DELTA(comp.recall_skeleton(), 1, 1e-3)
       TS_ASSERT_DELTA(comp.f_score_skeleton(), 0.8, 1e-3)
@@ -159,7 +159,7 @@ namespace gum_tests {
       mg.addEdge(5, 2);
       mg.addEdge(2, 3);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(comp.compare(mg, asia));
+      TS_GUM_ASSERT_THROWS_NOTHING(comp.compare(mg, asia))
 
       comp.compare(asia, mg);
       TS_ASSERT_DELTA(comp.precision(), 0.4444, 1e-3)

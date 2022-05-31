@@ -115,7 +115,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(cache3.size(), std::size_t(2))
 
       gum::learning::IdCondSet set4(node1, vect, true);
-      TS_GUM_ASSERT_THROWS_NOTHING(cache3.erase(set4));
+      TS_GUM_ASSERT_THROWS_NOTHING(cache3.erase(set4))
       TS_ASSERT_EQUALS(cache3.score(set3), 1.3)
       TS_ASSERT_EQUALS(cache3.score(set2), 7.3)
       TS_ASSERT_EQUALS(cache3.size(), std::size_t(2))

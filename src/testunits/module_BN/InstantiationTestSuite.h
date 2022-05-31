@@ -69,7 +69,7 @@ namespace gum_tests {
          c("c", "third var", 5);
       gum::Instantiation i;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(i << a << b << c);
+      TS_GUM_ASSERT_THROWS_NOTHING(i << a << b << c)
       TS_ASSERT_THROWS(i << a, gum::DuplicateElement)
       TS_ASSERT_EQUALS(i.nbrDim(), (gum::Size)3)
       TS_ASSERT_EQUALS(i.domainSize(), (gum::Size)(2 * 4 * 5))
@@ -82,7 +82,7 @@ namespace gum_tests {
       i.chgVal(a, 1).chgVal(b, 2).chgVal(c, 4);
       TS_ASSERT_EQUALS(i.toString(), "<a:1|b:2|c:4>")
 
-      TS_GUM_ASSERT_THROWS_NOTHING(i >> b);
+      TS_GUM_ASSERT_THROWS_NOTHING(i >> b)
       TS_ASSERT_THROWS(i >> b, gum::NotFound)
       TS_ASSERT_EQUALS(i.nbrDim(), (gum::Size)2)
       TS_ASSERT_EQUALS(i.domainSize(), (gum::Size)(2 * 5))
@@ -243,10 +243,10 @@ namespace gum_tests {
 
       gum::DiscretizedVariable< double > d("d", "Discretized variable");
       ;
-      TS_GUM_ASSERT_THROWS_NOTHING(d.addTick(3.1).addTick(2.0).addTick(4.0));
+      TS_GUM_ASSERT_THROWS_NOTHING(d.addTick(3.1).addTick(2.0).addTick(4.0))
       TS_ASSERT_THROWS(j << d, gum::OperationNotAllowed)
       j.forgetMaster();
-      TS_GUM_ASSERT_THROWS_NOTHING(j << d);
+      TS_GUM_ASSERT_THROWS_NOTHING(j << d)
       j.chgVal(d, d["2.5"]);
       TS_ASSERT(!j.actAsSlave(t))
     }
@@ -286,19 +286,19 @@ namespace gum_tests {
       ++(++ip);
 
       // free = slave
-      TS_GUM_ASSERT_THROWS_NOTHING(j = ip);
+      TS_GUM_ASSERT_THROWS_NOTHING(j = ip)
       TS_ASSERT_EQUALS(p.toOffset(j), p.toOffset(ip))
       TS_ASSERT_EQUALS(j.toString(), ip.toString())
 
       // slave_same_master=slave_same_master
-      TS_GUM_ASSERT_THROWS_NOTHING(ip2 = ip);
+      TS_GUM_ASSERT_THROWS_NOTHING(ip2 = ip)
       TS_ASSERT_EQUALS(p.toOffset(ip2), p.toOffset(ip))
       TS_ASSERT_EQUALS(ip2.toString(), ip.toString())
 
       // slave = free - same variables set
       k << b << a << c;
       ++k;
-      TS_GUM_ASSERT_THROWS_NOTHING(ip2 = k);
+      TS_GUM_ASSERT_THROWS_NOTHING(ip2 = k)
       TS_ASSERT_EQUALS(p.toOffset(k), p.toOffset(ip2))
       TS_ASSERT_EQUALS(k.val(a), ip2.val(a))
       TS_ASSERT_EQUALS(k.val(b), ip2.val(b))

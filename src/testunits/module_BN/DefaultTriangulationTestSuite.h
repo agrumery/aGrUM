@@ -81,12 +81,12 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(triangle
                                    = new gum::DefaultTriangulation(&undiGraph, &modalities));
 
-      TS_GUM_ASSERT_THROWS_NOTHING(triangle->triangulatedGraph());
+      TS_GUM_ASSERT_THROWS_NOTHING(triangle->triangulatedGraph())
 
       TS_ASSERT_EQUALS(triangle->maxLog10CliqueDomainSize(),
                        log10(16));   // clique of 4 binary variables
 
-      TS_GUM_ASSERT_THROWS_NOTHING(if (triangle) delete triangle);
+      TS_GUM_ASSERT_THROWS_NOTHING(if (triangle) delete triangle)
     };
 
     void testjunctionTree() {
@@ -98,7 +98,7 @@ namespace gum_tests {
       gum::UndiGraph                 undiGraph;
       gum::NodeProperty< gum::Size > modalities;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(undiGraph = topo.moralGraph());
+      TS_GUM_ASSERT_THROWS_NOTHING(undiGraph = topo.moralGraph())
 
       // Builds a hashTable where the keys are the id of the variable,
       // and the values the variable's domain size.
@@ -109,57 +109,46 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(triangle
                                    = new gum::DefaultTriangulation(&undiGraph, &modalities));
-      TS_GUM_ASSERT_THROWS_NOTHING(triangle->junctionTree());
+      TS_GUM_ASSERT_THROWS_NOTHING(triangle->junctionTree())
 
       // TODO : problem here !!
       TS_ASSERT(triangle->junctionTree().hasRunningIntersection())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(if (triangle) delete triangle);
+      TS_GUM_ASSERT_THROWS_NOTHING(if (triangle) delete triangle)
     };
 
-    void xxtestBIFtriangulation1() {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/Barley.bif")));
-    };
+    void xxtestBIFtriangulation1(){
+       TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/Barley.bif")))};
 
-    void xxtestBIFtriangulation1bis() {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/alarm.bif")));
-    };
+    void xxtestBIFtriangulation1bis(){
+       TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/alarm.bif")))};
 
-    void xxtestBIFtriangulation2() {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/carpo.bif")));
-    };
+    void xxtestBIFtriangulation2(){
+       TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/carpo.bif")))};
 
-    void xxtestBIFtriangulation3() {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/Pigs.bif")));
-    };
+    void xxtestBIFtriangulation3(){
+       TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/Pigs.bif")))};
 
-    void xxtestBIFtriangulation4() {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/Water.bif")));
-    };
+    void xxtestBIFtriangulation4(){
+       TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/Water.bif")))};
 
-    void xxtestBIFtriangulation5() {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/Link.bif")));
-    };
+    void xxtestBIFtriangulation5(){
+       TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/Link.bif")))};
 
-    void xxtestBIFtriangulation6() {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/Mildew.bif")));
-    };
+    void xxtestBIFtriangulation6(){
+       TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/Mildew.bif")))};
 
-    void xxtestBIFtriangulation7() {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/Munin1.bif")));
-    };
+    void xxtestBIFtriangulation7(){
+       TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/Munin1.bif")))};
 
-    void xxtestBIFtriangulation8() {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/hailfinder.bif")));
-    };
+    void xxtestBIFtriangulation8(){
+       TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/hailfinder.bif")))};
 
-    void xxtestBIFtriangulation9() {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/Diabetes.bif")));
-    };
+    void xxtestBIFtriangulation9(){
+       TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/Diabetes.bif")))};
 
-    void xxtestBIFtriangulation10() {
-      TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/insurance.bif")));
-    };
+    void xxtestBIFtriangulation10(){
+       TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/insurance.bif")))};
 
     void testTriangulatedGraph1() {
       gum::NodeSet c1, c2, c3, c4, c5;
@@ -277,7 +266,7 @@ namespace gum_tests {
       gum::BIFReader< double > reader(bn, file);
       reader.trace(false);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed())
 
       gum::LazyPropagation< double > inf(bn);
 

@@ -49,9 +49,9 @@ namespace gum_tests {
 
       gum::NetReader< double >* reader = 0;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(reader = new gum::NetReader< double >(&net, file));
+      TS_GUM_ASSERT_THROWS_NOTHING(reader = new gum::NetReader< double >(&net, file))
 
-      TS_GUM_ASSERT_THROWS_NOTHING(delete reader);
+      TS_GUM_ASSERT_THROWS_NOTHING(delete reader)
     }
 
     void testRead_not_existing_file() {
@@ -92,7 +92,7 @@ namespace gum_tests {
 
       gum::Size nbrErr = 0;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
 
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
@@ -119,7 +119,7 @@ namespace gum_tests {
 
       gum::Size nbrErr = 0;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
 
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
@@ -146,7 +146,7 @@ namespace gum_tests {
 
       gum::Size nbrErr = 0;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
 
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
@@ -173,7 +173,7 @@ namespace gum_tests {
 
       gum::Size nbrErr = 0;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
 
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)

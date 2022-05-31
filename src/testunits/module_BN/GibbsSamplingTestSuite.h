@@ -343,7 +343,7 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/asia.bif"));
       gum::Size                nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
 
       try {
@@ -367,7 +367,7 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
 
       gum::GibbsSampling< double > inf(&bn);
@@ -397,8 +397,8 @@ namespace gum_tests {
         inf.setEpsilon(EPSILON_FOR_GIBBS);
         inf.makeInference();
 
-        TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior("d"));
-        TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(bn.idFromName("d")));
+        TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior("d"))
+        TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(bn.idFromName("d")))
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);

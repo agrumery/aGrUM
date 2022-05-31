@@ -82,8 +82,8 @@ namespace gum_tests {
       TS_ASSERT_DIFFERS(gspan, nullptr)
 
       if (gspan != nullptr) {
-        TS_GUM_ASSERT_THROWS_NOTHING(gspan->discoverPatterns());
-        TS_GUM_ASSERT_THROWS_NOTHING(delete gspan);
+        TS_GUM_ASSERT_THROWS_NOTHING(gspan->discoverPatterns())
+        TS_GUM_ASSERT_THROWS_NOTHING(delete gspan)
       }
 
       _local_tearDown();

@@ -316,7 +316,7 @@ namespace gum_tests {
       gum::NodeId idMalaria = bn.add(malaria);
       gum::NodeId idFever   = 0;
       TS_ASSERT_THROWS(idFever = bn.addNoisyAND(fever, 0.0f), gum::InvalidArgument)
-      TS_GUM_ASSERT_THROWS_NOTHING(idFever = bn.addNoisyAND(fever, 0.999f));
+      TS_GUM_ASSERT_THROWS_NOTHING(idFever = bn.addNoisyAND(fever, 0.999f))
       gum::NodeId idOneMore        = bn.add(oneMore);
       gum::NodeId idOneMoreParent1 = bn.add(oneMoreParent1);
       gum::NodeId idOneMoreParent2 = bn.add(oneMoreParent2);
@@ -396,7 +396,7 @@ namespace gum_tests {
         gum::LazyPropagation< double > ie(&bn);
         ie.makeInference();
         gum::Potential< double > p;
-        TS_GUM_ASSERT_THROWS_NOTHING(p = ie.posterior("min"));
+        TS_GUM_ASSERT_THROWS_NOTHING(p = ie.posterior("min"))
         gum::Instantiation I(p);
         for (I.setFirst(); !I.end(); I.inc())
           TS_ASSERT_EQUALS(p.get(I), I.val(0) == 3 ? 1 : 0)
@@ -405,7 +405,7 @@ namespace gum_tests {
         gum::ShaferShenoyInference< double > ie(&bn);
         ie.makeInference();
         gum::Potential< double > p;
-        TS_GUM_ASSERT_THROWS_NOTHING(p = ie.posterior("min"));
+        TS_GUM_ASSERT_THROWS_NOTHING(p = ie.posterior("min"))
         gum::Instantiation I(p);
         for (I.setFirst(); !I.end(); I.inc())
           TS_ASSERT_EQUALS(p.get(I), I.val(0) == 3 ? 1 : 0)
@@ -414,7 +414,7 @@ namespace gum_tests {
         gum::VariableElimination< double > ie(&bn);
         ie.makeInference();
         gum::Potential< double > p;
-        TS_GUM_ASSERT_THROWS_NOTHING(p = ie.posterior("min"));
+        TS_GUM_ASSERT_THROWS_NOTHING(p = ie.posterior("min"))
         gum::Instantiation I(p);
         for (I.setFirst(); !I.end(); I.inc())
           TS_ASSERT_EQUALS(p.get(I), I.val(0) == 3 ? 1 : 0)
@@ -423,7 +423,7 @@ namespace gum_tests {
         gum::LoopyBeliefPropagation< double > ie(&bn);
         ie.makeInference();
         gum::Potential< double > p;
-        TS_GUM_ASSERT_THROWS_NOTHING(p = ie.posterior("min"));
+        TS_GUM_ASSERT_THROWS_NOTHING(p = ie.posterior("min"))
         gum::Instantiation I(p);
         for (I.setFirst(); !I.end(); I.inc())
           TS_ASSERT_EQUALS(p.get(I), I.val(0) == 3 ? 1 : 0)

@@ -67,8 +67,8 @@ namespace gum_tests {
 
     void testConstructor1() {
       gum::DiGraph* graph = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING((graph = new gum::DiGraph()));
-      TS_GUM_ASSERT_THROWS_NOTHING((delete (graph)));
+      TS_GUM_ASSERT_THROWS_NOTHING((graph = new gum::DiGraph()))
+      TS_GUM_ASSERT_THROWS_NOTHING((delete (graph)))
     }
 
     void testInsert1() {
@@ -79,30 +79,30 @@ namespace gum_tests {
       gum::NodeId  id4 = 0;
       gum::NodeId  id5 = 0;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(id1 = graph.addNode());
-      TS_GUM_ASSERT_THROWS_NOTHING(id2 = graph.addNode());
-      TS_GUM_ASSERT_THROWS_NOTHING(id3 = graph.addNode());
-      TS_GUM_ASSERT_THROWS_NOTHING(id4 = graph.addNode());
-      TS_GUM_ASSERT_THROWS_NOTHING(id5 = graph.addNode());
+      TS_GUM_ASSERT_THROWS_NOTHING(id1 = graph.addNode())
+      TS_GUM_ASSERT_THROWS_NOTHING(id2 = graph.addNode())
+      TS_GUM_ASSERT_THROWS_NOTHING(id3 = graph.addNode())
+      TS_GUM_ASSERT_THROWS_NOTHING(id4 = graph.addNode())
+      TS_GUM_ASSERT_THROWS_NOTHING(id5 = graph.addNode())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id1, id3));
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id3, id5));
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id2, id4));
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id1, id4));
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id4, id5));
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id5, id2));
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id1, id3))
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id3, id5))
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id2, id4))
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id1, id4))
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id4, id5))
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id5, id2))
     }
 
     void testCopyConstructor() {
       gum::DiGraph graph = buildGraph();
 
       gum::DiGraph* copy = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING((copy = new gum::DiGraph(graph)));
+      TS_GUM_ASSERT_THROWS_NOTHING((copy = new gum::DiGraph(graph)))
       TS_ASSERT_EQUALS(graph, *copy)
       delete (copy);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::DiGraph copy2 = graph);
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::DiGraph copy3(graph));
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::DiGraph copy2 = graph)
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::DiGraph copy3(graph))
     }
 
     void testCopyOperator() {
@@ -143,14 +143,14 @@ namespace gum_tests {
     void testClearNodes() {
       gum::DiGraph graph = buildGraph();
       TS_ASSERT(!graph.empty())
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.clear());
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.clear())
       TS_ASSERT(graph.empty() && graph.emptyArcs())
     }
 
     void testClearArcs() {
       gum::DiGraph graph = buildGraph();
       TS_ASSERT(!graph.emptyArcs())
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.clearArcs());
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.clearArcs())
       TS_ASSERT(graph.emptyArcs())
       TS_ASSERT(!graph.empty())
     }
@@ -172,7 +172,7 @@ namespace gum_tests {
       gum::Size nodeCount = graph.size();
       gum::Size arcCount  = graph.sizeArcs();
 
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseNode(id2));
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseNode(id2))
 
       TS_ASSERT_EQUALS(nodeCount, graph.size() + 1)
       TS_ASSERT_EQUALS(arcCount, graph.sizeArcs() + 2)
@@ -192,7 +192,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(arcCount, (gum::Size)6)
 
       for (int i = 0; i < 10; i++) {
-        TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseNode(id5));
+        TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseNode(id5))
       }
 
       TS_ASSERT_EQUALS(nodeCount, graph.size() + 1)
@@ -214,7 +214,7 @@ namespace gum_tests {
       gum::Size nodeCount = graph.size();
       gum::Size arcCount  = graph.sizeArcs();
 
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseArc(gum::Arc(id5, id2)));
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseArc(gum::Arc(id5, id2)))
 
       TS_ASSERT_EQUALS(nodeCount, graph.size())
       TS_ASSERT_EQUALS(arcCount, graph.sizeArcs() + 1)
@@ -371,7 +371,7 @@ namespace gum_tests {
 
     // void testToDot() {
     //   gum::DiGraph graph = buildGraph();
-    //   TS_GUM_ASSERT_THROWS_NOTHING(std::cout << graph.toDot());
+    //   TS_GUM_ASSERT_THROWS_NOTHING(std::cout << graph.toDot())
     // }
   };
 }   // namespace gum_tests

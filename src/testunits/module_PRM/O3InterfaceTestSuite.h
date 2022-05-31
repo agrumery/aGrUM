@@ -46,7 +46,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(output.str(), "")
       TS_ASSERT_EQUALS(prm.interfaces().size(), (gum::Size)1)
@@ -65,7 +65,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::string line;
       std::getline(output, line);
@@ -84,7 +84,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::string line;
       std::getline(output, line);
@@ -103,7 +103,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::string line;
       std::getline(output, line);
@@ -122,7 +122,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(output.str(), "")
       TS_ASSERT_EQUALS(prm.interfaces().size(), (gum::Size)1)
@@ -141,7 +141,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::string line;
       std::getline(output, line);
@@ -164,7 +164,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::string line;
       std::getline(output, line);
@@ -183,7 +183,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::string line;
       std::getline(output, line);
@@ -202,7 +202,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::string line;
       std::getline(output, line);
@@ -221,7 +221,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::string line;
       std::getline(output, line);
@@ -240,7 +240,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(output.str(), "")
       TS_ASSERT_EQUALS(prm.interfaces().size(), (gum::Size)1)
@@ -262,7 +262,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::string line;
       std::getline(output, line);
@@ -289,7 +289,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(output.str(), "")
       TS_ASSERT_EQUALS(prm.interfaces().size(), (gum::Size)2)
@@ -316,7 +316,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(output.str(), "")
       TS_ASSERT_EQUALS(prm.interfaces().size(), (gum::Size)2)
@@ -344,7 +344,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::string line;
       std::getline(output, line);
@@ -370,7 +370,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::string line;
       std::getline(output, line);
@@ -395,7 +395,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::string line;
       std::getline(output, line);
@@ -420,7 +420,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(output.str(), "")
       TS_ASSERT_EQUALS(prm.interfaces().size(), (gum::Size)2)
@@ -450,7 +450,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(output.str(), "")
       TS_ASSERT_EQUALS(prm.interfaces().size(), (gum::Size)4)
@@ -477,7 +477,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(output.str(), "")
       TS_ASSERT_EQUALS(prm.interfaces().size(), (gum::Size)1)
@@ -503,7 +503,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(output.str(), "")
       TS_ASSERT_EQUALS(prm.interfaces().size(), (gum::Size)2)
@@ -532,7 +532,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(output.str(), "")
       TS_ASSERT_EQUALS(prm.interfaces().size(), (gum::Size)2)
@@ -562,7 +562,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(output.str(), "")
       TS_ASSERT_EQUALS(prm.interfaces().size(), (gum::Size)2)
@@ -589,7 +589,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::string line;
       std::getline(output, line);
@@ -625,7 +625,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(output.str(), "")
       TS_ASSERT_EQUALS(prm.interfaces().size(), (gum::Size)4)
@@ -686,7 +686,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::string line;
       std::getline(output, line);
@@ -712,7 +712,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::string line;
       std::getline(output, line);

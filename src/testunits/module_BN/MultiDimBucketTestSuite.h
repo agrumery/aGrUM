@@ -185,8 +185,8 @@ namespace gum_tests {
           product.add(*(_variables_->at(i)));
         }
 
-        TS_GUM_ASSERT_THROWS_NOTHING(bucket->compute());
-        TS_GUM_ASSERT_THROWS_NOTHING(_makeProduct_(product));
+        TS_GUM_ASSERT_THROWS_NOTHING(bucket->compute())
+        TS_GUM_ASSERT_THROWS_NOTHING(_makeProduct_(product))
         gum::Instantiation inst(product);
 
         TS_ASSERT_EQUALS(bucket->domainSize(), product.domainSize())
@@ -212,9 +212,9 @@ namespace gum_tests {
           product.add(*(_variables_->at(i)));
         }
 
-        TS_GUM_ASSERT_THROWS_NOTHING(bucket->compute());
+        TS_GUM_ASSERT_THROWS_NOTHING(bucket->compute())
 
-        TS_GUM_ASSERT_THROWS_NOTHING(_makeProduct_(product));
+        TS_GUM_ASSERT_THROWS_NOTHING(_makeProduct_(product))
         gum::Instantiation inst(product);
         TS_ASSERT_EQUALS(bucket->domainSize(), product.domainSize())
         TS_ASSERT_EQUALS(bucket->nbrDim(), product.nbrDim())
@@ -241,12 +241,12 @@ namespace gum_tests {
           product.add(*(_variables_->at(i)));
         }
 
-        TS_GUM_ASSERT_THROWS_NOTHING(bucket->compute());
+        TS_GUM_ASSERT_THROWS_NOTHING(bucket->compute())
 
-        TS_GUM_ASSERT_THROWS_NOTHING(_makeProduct_(product));
+        TS_GUM_ASSERT_THROWS_NOTHING(_makeProduct_(product))
 
         gum::Instantiation* inst = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(inst = new gum::Instantiation(*bucket));
+        TS_GUM_ASSERT_THROWS_NOTHING(inst = new gum::Instantiation(*bucket))
 
         if (inst != 0) {
           TS_ASSERT(!inst->isMaster(bucket))
@@ -276,10 +276,10 @@ namespace gum_tests {
           product.add(*(_variables_->at(i)));
         }
 
-        TS_GUM_ASSERT_THROWS_NOTHING(_makeProduct_(product));
+        TS_GUM_ASSERT_THROWS_NOTHING(_makeProduct_(product))
 
         gum::Instantiation* inst = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(inst = new gum::Instantiation(*bucket));
+        TS_GUM_ASSERT_THROWS_NOTHING(inst = new gum::Instantiation(*bucket))
 
         if (inst != 0) {
           TS_ASSERT(!inst->isMaster(bucket))
@@ -309,12 +309,12 @@ namespace gum_tests {
           product.add(*(_variables_->at(i)));
         }
 
-        TS_GUM_ASSERT_THROWS_NOTHING(bucket->compute());
+        TS_GUM_ASSERT_THROWS_NOTHING(bucket->compute())
 
-        TS_GUM_ASSERT_THROWS_NOTHING(_makeProduct_(product));
+        TS_GUM_ASSERT_THROWS_NOTHING(_makeProduct_(product))
 
         gum::Instantiation* inst = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(inst = new gum::Instantiation(*bucket));
+        TS_GUM_ASSERT_THROWS_NOTHING(inst = new gum::Instantiation(*bucket))
 
         if (inst != 0) {
           TS_ASSERT(inst->isMaster(bucket))
@@ -346,15 +346,15 @@ namespace gum_tests {
           product.add(*(_variables_->at(i)));
         }
 
-        TS_GUM_ASSERT_THROWS_NOTHING(bucket->compute());
+        TS_GUM_ASSERT_THROWS_NOTHING(bucket->compute())
 
         TS_ASSERT(!bucket->bucketChanged())
-        TS_GUM_ASSERT_THROWS_NOTHING(_makeProduct_(product));
+        TS_GUM_ASSERT_THROWS_NOTHING(_makeProduct_(product))
 
         TS_ASSERT_EQUALS(bucket->realSize(), (gum::Size)0)
 
         gum::Instantiation* inst = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(inst = new gum::Instantiation(*bucket));
+        TS_GUM_ASSERT_THROWS_NOTHING(inst = new gum::Instantiation(*bucket))
         TS_ASSERT(!bucket->bucketChanged())
 
         if (inst != 0) {
@@ -366,12 +366,12 @@ namespace gum_tests {
             TS_ASSERT(!bucket->bucketChanged())
           }
 
-          TS_GUM_ASSERT_THROWS_NOTHING(bucket->setBufferSize((gum::Size)65536));
+          TS_GUM_ASSERT_THROWS_NOTHING(bucket->setBufferSize((gum::Size)65536))
 
           TS_ASSERT(bucket->bucketChanged())
           TS_ASSERT(bucket->realSize() > (gum::Size)0)
           TS_ASSERT(bucket->bucketChanged())
-          TS_GUM_ASSERT_THROWS_NOTHING(bucket->compute());
+          TS_GUM_ASSERT_THROWS_NOTHING(bucket->compute())
           TS_ASSERT(!bucket->bucketChanged())
 
           TS_ASSERT(inst->isMaster(bucket))

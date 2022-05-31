@@ -43,7 +43,7 @@ namespace gum_tests {
       // Initialisation de l'instance de SDyna
       // *********************************************************************************************
       gum::SDYNA* sdyna = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(sdyna = gum::SDYNA::spimddiInstance());
+      TS_GUM_ASSERT_THROWS_NOTHING(sdyna = gum::SDYNA::spimddiInstance())
 
       // Enregistrement des actions possibles auprès de SDyna
       for (auto actionIter = sim.beginActions(); actionIter != sim.endActions(); ++actionIter) {
@@ -53,28 +53,28 @@ namespace gum_tests {
       for (auto varIter = sim.beginVariables(); varIter != sim.endVariables(); ++varIter) {
         sdyna->addVariable(*varIter);
       }
-      TS_GUM_ASSERT_THROWS_NOTHING(sim.setInitialStateRandomly());
-      TS_GUM_ASSERT_THROWS_NOTHING(sdyna->initialize(sim.currentState()));
+      TS_GUM_ASSERT_THROWS_NOTHING(sim.setInitialStateRandomly())
+      TS_GUM_ASSERT_THROWS_NOTHING(sdyna->initialize(sim.currentState()))
 
       gum::Idx nbObs = 0;
       for (gum::Idx nbRun = 0; nbRun < 10; ++nbRun) {
         sim.setInitialStateRandomly();
-        TS_GUM_ASSERT_THROWS_NOTHING(sdyna->setCurrentState(sim.currentState()));
+        TS_GUM_ASSERT_THROWS_NOTHING(sdyna->setCurrentState(sim.currentState()))
         gum::Idx nbDec = 0;
         while (!sim.hasReachEnd() && nbDec < 25) {
           nbObs++;
 
           // Normal Iteration Part
           gum::Idx actionChosenId = 0;
-          TS_GUM_ASSERT_THROWS_NOTHING(actionChosenId = sdyna->takeAction(););
-          TS_GUM_ASSERT_THROWS_NOTHING(sim.perform(actionChosenId));
+          TS_GUM_ASSERT_THROWS_NOTHING(actionChosenId = sdyna->takeAction();)
+          TS_GUM_ASSERT_THROWS_NOTHING(sim.perform(actionChosenId))
           nbDec++;
 
-          TS_GUM_ASSERT_THROWS_NOTHING(sdyna->feedback(sim.currentState(), sim.reward()););
+          TS_GUM_ASSERT_THROWS_NOTHING(sdyna->feedback(sim.currentState(), sim.reward());)
         }
-        TS_GUM_ASSERT_THROWS_NOTHING(sim.setInitialStateRandomly());
+        TS_GUM_ASSERT_THROWS_NOTHING(sim.setInitialStateRandomly())
       }
-      TS_GUM_ASSERT_THROWS_NOTHING(delete sdyna);
+      TS_GUM_ASSERT_THROWS_NOTHING(delete sdyna)
     }
 
     public:
@@ -98,7 +98,7 @@ namespace gum_tests {
           break;
         }
       }
-      TS_GUM_ASSERT_THROWS_NOTHING(sim.setEndState(theEnd));
+      TS_GUM_ASSERT_THROWS_NOTHING(sim.setEndState(theEnd))
 
       // **************************************************************
       // Lancement

@@ -72,9 +72,9 @@ namespace gum_tests {
 
       gum::BIFXMLIDReader< double >* reader = 0;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(reader = new gum::BIFXMLIDReader< double >(&net, file));
+      TS_GUM_ASSERT_THROWS_NOTHING(reader = new gum::BIFXMLIDReader< double >(&net, file))
 
-      TS_GUM_ASSERT_THROWS_NOTHING(delete reader);
+      TS_GUM_ASSERT_THROWS_NOTHING(delete reader)
 
       // delete reader;
     }
@@ -86,7 +86,7 @@ namespace gum_tests {
 
       gum::BIFXMLIDReader< double > reader(net, file);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed())
 
       TS_ASSERT_DIFFERS(net, nullptr)
 
@@ -114,7 +114,7 @@ namespace gum_tests {
 
       gum::BIFXMLIDReader< double > reader(net, file);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed())
 
       TS_ASSERT_DIFFERS(net, nullptr)
 
@@ -358,7 +358,7 @@ namespace gum_tests {
       aSimpleListener asl;
       GUM_CONNECT(reader, onProceed, asl, aSimpleListener::whenProceeding);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed())
 
       TS_ASSERT_EQUALS(asl.getNbr(), 100)
       delete net;

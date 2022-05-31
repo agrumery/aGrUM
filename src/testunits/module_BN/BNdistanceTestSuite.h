@@ -67,9 +67,9 @@ namespace gum_tests {
         reader.proceed();
       }
 
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::ExactBNdistance< double > kl(net1, net1));
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::ExactBNdistance< double > kl(net1, net1))
       TS_ASSERT_THROWS(gum::ExactBNdistance< double > kl(net1, net2), gum::OperationNotAllowed)
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::ExactBNdistance< double > kl(net2, net3));
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::ExactBNdistance< double > kl(net2, net3))
     }
 
     void testDifficulty1() {
@@ -105,9 +105,9 @@ namespace gum_tests {
       double vkl = 0.0;
 
       gum::ExactBNdistance< double > stupid_bfkl(net3, net3);
-      TS_GUM_ASSERT_THROWS_NOTHING(vkl = stupid_bfkl.klPQ());
+      TS_GUM_ASSERT_THROWS_NOTHING(vkl = stupid_bfkl.klPQ())
       TS_ASSERT_EQUALS(vkl, 0.0)
-      TS_GUM_ASSERT_THROWS_NOTHING(vkl = stupid_bfkl.klQP());
+      TS_GUM_ASSERT_THROWS_NOTHING(vkl = stupid_bfkl.klQP())
       TS_ASSERT_EQUALS(vkl, 0.0)
 
       gum::BayesNet< double > net4;
@@ -122,14 +122,14 @@ namespace gum_tests {
 
       {
         gum::ExactBNdistance< double > bfkl(kl);
-        TS_GUM_ASSERT_THROWS_NOTHING(vkl = bfkl.klPQ());
+        TS_GUM_ASSERT_THROWS_NOTHING(vkl = bfkl.klPQ())
         TS_ASSERT_DIFFERS(vkl, (float)0.0)
       }
 
       {
         gum::GibbsBNdistance< double > gkl(kl);
         gkl.setMaxIter(40);
-        TS_GUM_ASSERT_THROWS_NOTHING(vkl = gkl.klPQ());
+        TS_GUM_ASSERT_THROWS_NOTHING(vkl = gkl.klPQ())
         TS_ASSERT_DIFFERS(vkl, (float)0.0)
         TS_ASSERT_THROWS(gkl.history(), gum::OperationNotAllowed)
       }
@@ -137,7 +137,7 @@ namespace gum_tests {
       {
         gum::GibbsBNdistance< double > gkl(kl);
         gkl.setMaxIter(40);
-        TS_GUM_ASSERT_THROWS_NOTHING(vkl = gkl.klPQ());
+        TS_GUM_ASSERT_THROWS_NOTHING(vkl = gkl.klPQ())
         TS_ASSERT_DIFFERS(vkl, (float)0.0)
         TS_ASSERT_THROWS(gkl.history(), gum::OperationNotAllowed)
       }
@@ -159,7 +159,7 @@ namespace gum_tests {
       }
 
       gum::ExactBNdistance< double > kl(netP, netQ);
-      TS_GUM_ASSERT_THROWS_NOTHING(kl.klPQ());
+      TS_GUM_ASSERT_THROWS_NOTHING(kl.klPQ())
       TS_ASSERT_DELTA(kl.klPQ(), 0.241864114, 1e-7)
       TS_ASSERT_DELTA(kl.klQP(), 0.399826689, 1e-7)
       TS_ASSERT_EQUALS(kl.errorPQ(), (gum::Size)0)

@@ -116,52 +116,52 @@ namespace gum_tests {
       fill(*bn);
       // Testing the inference
       gum::VariableElimination< double >* inf = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(inf = new gum::VariableElimination< double >(bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(inf = new gum::VariableElimination< double >(bn))
 
       if (inf != 0) {
-        TS_GUM_ASSERT_THROWS_NOTHING(inf->makeInference());
-        TS_GUM_ASSERT_THROWS_NOTHING(delete inf);
+        TS_GUM_ASSERT_THROWS_NOTHING(inf->makeInference())
+        TS_GUM_ASSERT_THROWS_NOTHING(delete inf)
       }
     }
 
     void testVariableElimination() {
       fill(*bn);
       gum::VariableElimination< double >* inf = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(inf = new gum::VariableElimination< double >(bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(inf = new gum::VariableElimination< double >(bn))
 
       if (inf != nullptr) {
-        TS_GUM_ASSERT_THROWS_NOTHING(inf->makeInference());
+        TS_GUM_ASSERT_THROWS_NOTHING(inf->makeInference())
 
         const gum::Potential< double >* posterior_1 = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(posterior_1 = &(inf->posterior(i1)));
+        TS_GUM_ASSERT_THROWS_NOTHING(posterior_1 = &(inf->posterior(i1)))
 
         if (posterior_1 != 0) printProba(*posterior_1);
 
         const gum::Potential< double >* posterior_2 = 0;
 
-        TS_GUM_ASSERT_THROWS_NOTHING(posterior_2 = &(inf->posterior(i2)));
+        TS_GUM_ASSERT_THROWS_NOTHING(posterior_2 = &(inf->posterior(i2)))
 
         if (posterior_2 != 0) printProba(*posterior_2);
 
         const gum::Potential< double >* posterior_3 = 0;
 
-        TS_GUM_ASSERT_THROWS_NOTHING(posterior_3 = &(inf->posterior(i3)));
+        TS_GUM_ASSERT_THROWS_NOTHING(posterior_3 = &(inf->posterior(i3)))
 
         if (posterior_3 != 0) printProba(*posterior_3);
 
         const gum::Potential< double >* posterior_4 = 0;
 
-        TS_GUM_ASSERT_THROWS_NOTHING(posterior_4 = &(inf->posterior(i4)));
+        TS_GUM_ASSERT_THROWS_NOTHING(posterior_4 = &(inf->posterior(i4)))
 
         if (posterior_4 != 0) printProba(*posterior_4);
 
         const gum::Potential< double >* posterior_5 = 0;
 
-        TS_GUM_ASSERT_THROWS_NOTHING(posterior_5 = &(inf->posterior(i5)));
+        TS_GUM_ASSERT_THROWS_NOTHING(posterior_5 = &(inf->posterior(i5)))
 
         if (posterior_5 != 0) printProba(*posterior_5);
 
-        TS_GUM_ASSERT_THROWS_NOTHING(delete inf);
+        TS_GUM_ASSERT_THROWS_NOTHING(delete inf)
       }
     }
 
@@ -172,41 +172,41 @@ namespace gum_tests {
       e_list.insert(e_i4);
 
       gum::VariableElimination< double >* inf = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(inf = new gum::VariableElimination< double >(bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(inf = new gum::VariableElimination< double >(bn))
 
       if (inf != 0) {
-        TS_GUM_ASSERT_THROWS_NOTHING(inf->addListOfEvidence(e_list));
+        TS_GUM_ASSERT_THROWS_NOTHING(inf->addListOfEvidence(e_list))
 
         const gum::Potential< double >* posterior_1 = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(posterior_1 = &(inf->posterior(i1)));
+        TS_GUM_ASSERT_THROWS_NOTHING(posterior_1 = &(inf->posterior(i1)))
 
         if (posterior_1 != 0) printProba(*posterior_1);
 
         const gum::Potential< double >* posterior_2 = 0;
 
-        TS_GUM_ASSERT_THROWS_NOTHING(posterior_2 = &(inf->posterior(i2)));
+        TS_GUM_ASSERT_THROWS_NOTHING(posterior_2 = &(inf->posterior(i2)))
 
         if (posterior_2 != 0) printProba(*posterior_2);
 
         const gum::Potential< double >* posterior_3 = 0;
 
-        TS_GUM_ASSERT_THROWS_NOTHING(posterior_3 = &(inf->posterior(i3)));
+        TS_GUM_ASSERT_THROWS_NOTHING(posterior_3 = &(inf->posterior(i3)))
 
         if (posterior_3 != 0) printProba(*posterior_3);
 
         const gum::Potential< double >* posterior_4 = 0;
 
-        TS_GUM_ASSERT_THROWS_NOTHING(posterior_4 = &(inf->posterior(i4)));
+        TS_GUM_ASSERT_THROWS_NOTHING(posterior_4 = &(inf->posterior(i4)))
 
         if (posterior_4 != 0) printProba(*posterior_4);
 
         const gum::Potential< double >* posterior_5 = 0;
 
-        TS_GUM_ASSERT_THROWS_NOTHING(posterior_5 = &(inf->posterior(i5)));
+        TS_GUM_ASSERT_THROWS_NOTHING(posterior_5 = &(inf->posterior(i5)))
 
         if (posterior_5 != 0) printProba(*posterior_5);
 
-        TS_GUM_ASSERT_THROWS_NOTHING(delete inf);
+        TS_GUM_ASSERT_THROWS_NOTHING(delete inf)
       }
     }
 
@@ -226,16 +226,16 @@ namespace gum_tests {
       inf.addJointTarget(nodeset);
       inf.makeInference();
 
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.H((gum::NodeId)2));
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.I((gum::NodeId)2, (gum::NodeId)4));
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.H((gum::NodeId)2))
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.I((gum::NodeId)2, (gum::NodeId)4))
       TS_ASSERT_THROWS(inf.I((gum::NodeId)2, (gum::NodeId)2), gum::OperationNotAllowed)
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.VI((gum::NodeId)2, (gum::NodeId)4));
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.I((gum::NodeId)0, (gum::NodeId)4));
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.VI((gum::NodeId)2, (gum::NodeId)4))
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.I((gum::NodeId)0, (gum::NodeId)4))
 
       for (const auto node: bn->dag()) {
         for (const auto par: bn->dag().parents(node)) {
-          TS_GUM_ASSERT_THROWS_NOTHING(inf.I(node, par));
-          TS_GUM_ASSERT_THROWS_NOTHING(inf.I(par, node));
+          TS_GUM_ASSERT_THROWS_NOTHING(inf.I(node, par))
+          TS_GUM_ASSERT_THROWS_NOTHING(inf.I(par, node))
         }
       }
 
@@ -318,7 +318,7 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
@@ -354,7 +354,7 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
@@ -434,7 +434,7 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
@@ -490,7 +490,7 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
@@ -548,7 +548,7 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
@@ -621,7 +621,7 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, file);
 
       gum::Size nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
@@ -656,7 +656,7 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, file);
 
       gum::Size nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
@@ -692,7 +692,7 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, file);
 
       gum::Size nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
@@ -730,7 +730,7 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, file);
 
       gum::Size nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
@@ -780,7 +780,7 @@ namespace gum_tests {
 
       gum::VariableElimination< double > ie(&bn);
       gum::Potential< double >           res;
-      TS_GUM_ASSERT_THROWS_NOTHING(res = ie.evidenceImpact("E", {"A", "B", "C", "D", "F"}));
+      TS_GUM_ASSERT_THROWS_NOTHING(res = ie.evidenceImpact("E", {"A", "B", "C", "D", "F"}))
       TS_ASSERT_EQUALS(res.nbrDim(), (gum::Size)4);   // MarkovBlanket(E)=(A,D,C)
     }
     void testJointWithHardEvidence() {

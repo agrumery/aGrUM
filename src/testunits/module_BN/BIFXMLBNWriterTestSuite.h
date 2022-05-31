@@ -49,8 +49,11 @@ namespace gum_tests {
     void setUp() {
       bn = new gum::BayesNet< double >();
 
-      gum::LabelizedVariable n1("1", "", 2), n2("2", "", 2), n3("3", "", 2);
-      gum::LabelizedVariable n4("4", "", 2), n5("5", "", 3);
+      gum::LabelizedVariable n1("1", "", 2);
+      gum::LabelizedVariable n2("2", "", 2);
+      gum::LabelizedVariable n3("3", "", 2);
+      gum::LabelizedVariable n4("4", "", 2);
+      gum::LabelizedVariable n5("5", "", 3);
 
       i1 = bn->add(n1);
       i2 = bn->add(n2);
@@ -72,14 +75,14 @@ namespace gum_tests {
 
     void testConstuctor() {
       gum::BIFXMLBNWriter< double >* writer = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::BIFXMLBNWriter< double >());
+      TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::BIFXMLBNWriter< double >())
       delete writer;
     }
 
     void testWriter_ostream() {
       gum::BIFXMLBNWriter< double > writer;
       // Uncomment this to check the ouput
-      // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
+      // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn))
     }
 
     private:

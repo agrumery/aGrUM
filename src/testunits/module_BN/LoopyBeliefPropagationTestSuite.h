@@ -502,7 +502,7 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/asia.bif"));
       gum::Size                nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
 
       for (int i = 0; i < MAX_ITER; i++) {
@@ -525,7 +525,7 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
 
       for (int i = 0; i < MAX_ITER; i++) {
@@ -550,7 +550,7 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
 
       gum::LoopyBeliefPropagation< double > inf(&bn);
@@ -597,7 +597,7 @@ namespace gum_tests {
         bn.add(item, 2);
 
       gum::LabelizedVariable fever("Fever", "", 2);
-      TS_GUM_ASSERT_THROWS_NOTHING(bn.addLogit(fever, 0.3f));
+      TS_GUM_ASSERT_THROWS_NOTHING(bn.addLogit(fever, 0.3f))
 
       bn.addWeightedArc("Malaria", "Fever", 0.9f);
       bn.addWeightedArc("Flu", "Fever", 0.8f);

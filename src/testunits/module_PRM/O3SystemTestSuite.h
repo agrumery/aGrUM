@@ -77,7 +77,7 @@ namespace gum_tests {
       std::stringstream output;
       auto              factory = gum::prm::o3prm::O3prmReader< double >(*simple_printers);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(output.str(), "")
       TS_ASSERT_EQUALS(simple_printers->systems().size(), (gum::Size)1)
@@ -104,7 +104,7 @@ namespace gum_tests {
       std::stringstream output;
       auto              factory = gum::prm::o3prm::O3prmReader< double >(*simple_printers);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(output.str(), "")
       TS_ASSERT_EQUALS(simple_printers->systems().size(), (gum::Size)1)
@@ -120,7 +120,7 @@ namespace gum_tests {
       std::stringstream output;
       auto              factory = gum::prm::o3prm::O3prmReader< double >(*simple_printers);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::string line;
       std::getline(output, line);
@@ -137,7 +137,7 @@ namespace gum_tests {
       std::stringstream output;
       auto              factory = gum::prm::o3prm::O3prmReader< double >(*simple_printers);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::string line;
       std::getline(output, line);
@@ -154,7 +154,7 @@ namespace gum_tests {
       std::stringstream output;
       auto              factory = gum::prm::o3prm::O3prmReader< double >(*simple_printers);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::string line;
       std::getline(output, line);
@@ -174,7 +174,7 @@ namespace gum_tests {
       std::stringstream output;
       auto              factory = gum::prm::o3prm::O3prmReader< double >(*simple_printers);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::string line;
       std::getline(output, line);
@@ -197,7 +197,7 @@ namespace gum_tests {
       std::stringstream output;
       auto              factory = gum::prm::o3prm::O3prmReader< double >(*simple_printers);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::string line;
       std::getline(output, line);
@@ -223,7 +223,7 @@ namespace gum_tests {
       std::stringstream output;
       auto              factory = gum::prm::o3prm::O3prmReader< double >(*simple_printers);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::string line;
       std::getline(output, line);
@@ -251,7 +251,7 @@ namespace gum_tests {
       std::stringstream output;
       auto              factory = gum::prm::o3prm::O3prmReader< double >(*simple_printers);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::string line;
       std::getline(output, line);
@@ -294,7 +294,7 @@ namespace gum_tests {
       std::stringstream output;
       auto              factory = gum::prm::o3prm::O3prmReader< double >(*simple_printers);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(output.str(), "")
       TS_ASSERT_EQUALS(simple_printers->systems().size(), (gum::Size)1)
@@ -330,7 +330,7 @@ namespace gum_tests {
       std::stringstream output;
       auto              factory = gum::prm::o3prm::O3prmReader< double >(*complex_printers);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(output.str(), "")
       TS_ASSERT_EQUALS(complex_printers->systems().size(), (gum::Size)1)

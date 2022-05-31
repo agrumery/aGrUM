@@ -167,7 +167,7 @@ namespace gum_tests {
         pot.add(mn1.variable("11"));
         pot.add(mn1.variable("21"));
         pot.randomDistribution();
-        TS_GUM_ASSERT_THROWS_NOTHING(mn1.addFactor(pot));
+        TS_GUM_ASSERT_THROWS_NOTHING(mn1.addFactor(pot))
         TS_ASSERT_EQUALS(pot.toString(), mn1.factor({"11", "21"}).toString())
       }
       {
@@ -177,7 +177,7 @@ namespace gum_tests {
         pot.add(mn1.variable("21"));
         pot.add(mn1.variable("11"));
         pot.randomDistribution();
-        TS_GUM_ASSERT_THROWS_NOTHING(mn1.addFactor(pot));
+        TS_GUM_ASSERT_THROWS_NOTHING(mn1.addFactor(pot))
 
         // should be equal because no sorting by order of the vars in pot.
         TS_ASSERT_EQUALS(pot.toString(), mn1.factor({"11", "21"}).toString())
@@ -217,7 +217,7 @@ namespace gum_tests {
       gum::MarkovNet< double > mn;
       _fill(mn);
       TS_ASSERT_THROWS(mn.eraseFactor({12, 14}), gum::InvalidArgument)
-      TS_GUM_ASSERT_THROWS_NOTHING(mn.eraseFactor({2, 4}));
+      TS_GUM_ASSERT_THROWS_NOTHING(mn.eraseFactor({2, 4}))
 
       TS_ASSERT_EQUALS(mn.size(), (gum::Idx)5)
       TS_ASSERT_EQUALS(mn.sizeEdges(), (gum::Idx)5)
@@ -229,7 +229,7 @@ namespace gum_tests {
       gum::MarkovNet< double > mn;
       _fill(mn);
       TS_ASSERT_THROWS(mn.eraseFactor({"31", "21"}), gum::InvalidArgument)
-      TS_GUM_ASSERT_THROWS_NOTHING(mn.eraseFactor({"31", "51"}));
+      TS_GUM_ASSERT_THROWS_NOTHING(mn.eraseFactor({"31", "51"}))
 
       TS_ASSERT_EQUALS(mn.size(), (gum::Idx)5)
       TS_ASSERT_EQUALS(mn.sizeEdges(), (gum::Idx)5)
@@ -241,7 +241,7 @@ namespace gum_tests {
       gum::MarkovNet< double > mn;
       _fill(mn);
       TS_ASSERT_THROWS(mn.erase(36), gum::InvalidArgument)
-      TS_GUM_ASSERT_THROWS_NOTHING(mn.erase(3));
+      TS_GUM_ASSERT_THROWS_NOTHING(mn.erase(3))
 
       TS_ASSERT_EQUALS(mn.size(), (gum::Idx)4)
       TS_ASSERT_EQUALS(mn.sizeEdges(), (gum::Idx)3)
@@ -253,7 +253,7 @@ namespace gum_tests {
       gum::MarkovNet< double > mn;
       _fill(mn);
       TS_ASSERT_THROWS(mn.erase("36"), gum::NotFound)
-      TS_GUM_ASSERT_THROWS_NOTHING(mn.erase("41"));
+      TS_GUM_ASSERT_THROWS_NOTHING(mn.erase("41"))
 
       TS_ASSERT_EQUALS(mn.size(), (gum::Idx)4)
       TS_ASSERT_EQUALS(mn.sizeEdges(), (gum::Idx)3)
@@ -293,10 +293,10 @@ namespace gum_tests {
       gum::NodeSet s;
       s.clear();
       s << 0 << 4 << 5 << 6;
-      TS_GUM_ASSERT_THROWS_NOTHING(mn.factor(s));
+      TS_GUM_ASSERT_THROWS_NOTHING(mn.factor(s))
       s.clear();
       s << 4 << 0 << 6 << 5;
-      TS_GUM_ASSERT_THROWS_NOTHING(mn.factor(s));
+      TS_GUM_ASSERT_THROWS_NOTHING(mn.factor(s))
 
       gum::Potential< double > ppmn(pbn);
       ppmn.fillWith(pmn);   // copy of pmn using pbn's variables
@@ -347,7 +347,7 @@ namespace gum_tests {
 
     void testMonoClique() {
       auto mn2 = gum::MarkovNet< float >::fastPrototype("A--B");
-      TS_GUM_ASSERT_THROWS_NOTHING(mn2.factor({"A", "B"}));
+      TS_GUM_ASSERT_THROWS_NOTHING(mn2.factor({"A", "B"}))
     }
 
     void testShortCutAddFastVar() {

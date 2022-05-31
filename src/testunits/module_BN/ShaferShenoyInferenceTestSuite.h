@@ -101,8 +101,8 @@ namespace gum_tests {
         fill(*bn);
         // Testing the inference
         gum::ShaferShenoyInference< double >* inf = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(inf = new gum::ShaferShenoyInference< double >(bn));
-        TS_GUM_ASSERT_THROWS_NOTHING(inf->makeInference());
+        TS_GUM_ASSERT_THROWS_NOTHING(inf = new gum::ShaferShenoyInference< double >(bn))
+        TS_GUM_ASSERT_THROWS_NOTHING(inf->makeInference())
 
         if (inf != 0) { TS_GUM_ASSERT_THROWS_NOTHING(delete inf); }
       } catch (gum::Exception& e) {
@@ -116,12 +116,12 @@ namespace gum_tests {
       fill(*bn);
       gum::ShaferShenoyInference< double > inf(bn);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.makeInference());
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(i1));
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(i2));
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(i3));
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(i4));
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(i5));
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.makeInference())
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(i1))
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(i2))
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(i3))
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(i4))
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(i5))
     }
 
     void testMarginalWithEvidence() {
@@ -132,15 +132,15 @@ namespace gum_tests {
 
       gum::ShaferShenoyInference< double > inf(bn);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.addListOfEvidence(e_list));
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.addListOfEvidence(e_list))
 
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.makeInference());
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.makeInference())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(i1));
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(i2));
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(i3));
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(i4));
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(i5));
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(i1))
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(i2))
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(i3))
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(i4))
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(i5))
     }
 
     // Testing when there is no evidence
@@ -192,16 +192,16 @@ namespace gum_tests {
       inf.addJointTarget(nodeset);
       inf.makeInference();
 
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.H((gum::NodeId)2));
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.I((gum::NodeId)2, (gum::NodeId)4));
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.H((gum::NodeId)2))
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.I((gum::NodeId)2, (gum::NodeId)4))
       TS_ASSERT_THROWS(inf.I((gum::NodeId)2, (gum::NodeId)2), gum::OperationNotAllowed)
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.VI((gum::NodeId)2, (gum::NodeId)4));
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.I((gum::NodeId)0, (gum::NodeId)4));
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.VI((gum::NodeId)2, (gum::NodeId)4))
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.I((gum::NodeId)0, (gum::NodeId)4))
 
       for (const auto node: bn->dag()) {
         for (const auto par: bn->dag().parents(node)) {
-          TS_GUM_ASSERT_THROWS_NOTHING(inf.I(node, par));
-          TS_GUM_ASSERT_THROWS_NOTHING(inf.I(par, node));
+          TS_GUM_ASSERT_THROWS_NOTHING(inf.I(node, par))
+          TS_GUM_ASSERT_THROWS_NOTHING(inf.I(par, node))
         }
       }
 
@@ -220,11 +220,11 @@ namespace gum_tests {
         bnGen.generateBN(*bayesNet);
 
         gum::ShaferShenoyInference< double >* inf = nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING(inf = new gum::ShaferShenoyInference< double >(bayesNet));
+        TS_GUM_ASSERT_THROWS_NOTHING(inf = new gum::ShaferShenoyInference< double >(bayesNet))
 
-        TS_GUM_ASSERT_THROWS_NOTHING(if (inf) inf->makeInference());
+        TS_GUM_ASSERT_THROWS_NOTHING(if (inf) inf->makeInference())
 
-        TS_GUM_ASSERT_THROWS_NOTHING(if (inf) delete inf);
+        TS_GUM_ASSERT_THROWS_NOTHING(if (inf) delete inf)
 
         delete bayesNet;
       }
@@ -283,7 +283,7 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
@@ -307,7 +307,7 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
@@ -343,7 +343,7 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
@@ -422,7 +422,7 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
@@ -478,7 +478,7 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
@@ -534,7 +534,7 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
@@ -605,7 +605,7 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, file);
 
       gum::Size nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
@@ -641,7 +641,7 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, file);
 
       gum::Size nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)(gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
@@ -677,7 +677,7 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, file);
 
       gum::Size nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
@@ -715,7 +715,7 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, file);
 
       gum::Size nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
@@ -765,7 +765,7 @@ namespace gum_tests {
 
       gum::ShaferShenoyInference< double > ie(&bn);
       gum::Potential< double >             res;
-      TS_GUM_ASSERT_THROWS_NOTHING(res = ie.evidenceImpact("E", {"A", "B", "C", "D", "F"}));
+      TS_GUM_ASSERT_THROWS_NOTHING(res = ie.evidenceImpact("E", {"A", "B", "C", "D", "F"}))
       TS_ASSERT_EQUALS(res.nbrDim(), (gum::Size)4);   // MarkovBlanket(E)=(A,D,C)
     }
 

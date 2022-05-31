@@ -67,7 +67,7 @@ namespace gum_tests {
         database.insertRow(row3);
       for (int i = 0; i < 200; ++i)
         database.insertRow(row4);
-      const std::size_t db_size = database.nbRows();
+      const auto db_size = (double)database.nbRows();
 
       // create the parser
       gum::learning::DBRowGeneratorSet    genset;
@@ -401,14 +401,14 @@ namespace gum_tests {
       vect.resize(9, 1.0);
       apriori4->addAllApriori(idset3, vect);
       TS_ASSERT_EQUALS(vect[0], 1.0)      // 0,0
-      TS_ASSERT_EQUALS(vect[1], 76.0)    // 1,0
-      TS_ASSERT_EQUALS(vect[2], 1.0)    // 2,0
+      TS_ASSERT_EQUALS(vect[1], 76.0)     // 1,0
+      TS_ASSERT_EQUALS(vect[2], 1.0)      // 2,0
       TS_ASSERT_EQUALS(vect[3], 201.0)    // 0,1
       TS_ASSERT_EQUALS(vect[4], 51.0)     // 1,1
-      TS_ASSERT_EQUALS(vect[5], 76.0)    // 2,1
+      TS_ASSERT_EQUALS(vect[5], 76.0)     // 2,1
       TS_ASSERT_EQUALS(vect[6], 1001.0)   // 0,2
-      TS_ASSERT_EQUALS(vect[7], 1.0)    // 1,2
-      TS_ASSERT_EQUALS(vect[8], 1.0)    // 2,2
+      TS_ASSERT_EQUALS(vect[7], 1.0)      // 1,2
+      TS_ASSERT_EQUALS(vect[8], 1.0)      // 2,2
 
       vect.clear();
       vect.resize(3, 1.0);
@@ -625,8 +625,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(vect[5], 151.0)    // 2,1
       TS_ASSERT_EQUALS(vect[6], 1.0)      // 0,2
       TS_ASSERT_EQUALS(vect[7], 101.0)    // 1,2
-      TS_ASSERT_EQUALS(vect[8], 1.0)
-         ;      // 2,2
+      TS_ASSERT_EQUALS(vect[8], 1.0)      // 2,2
 
       vect.clear();
       apriori3.addConditioningApriori(idset2, vect);
@@ -676,7 +675,7 @@ namespace gum_tests {
       apriori4->addAllApriori(idset2, vect);
       TS_ASSERT_EQUALS(vect[0], 201.0)    // 0,0
       TS_ASSERT_EQUALS(vect[1], 76.0)     // 1,0
-      TS_ASSERT_EQUALS(vect[2], 1.0)     // 2,0
+      TS_ASSERT_EQUALS(vect[2], 1.0)      // 2,0
       TS_ASSERT_EQUALS(vect[3], 1001.0)   // 0,1
       TS_ASSERT_EQUALS(vect[4], 1.0)      // 1,1
       TS_ASSERT_EQUALS(vect[5], 76.0)     // 2,1
@@ -697,7 +696,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(vect[4], 51.0)     // 1,1
       TS_ASSERT_EQUALS(vect[5], 76.0)     // 2,1
       TS_ASSERT_EQUALS(vect[6], 1001.0)   // 0,2
-      TS_ASSERT_EQUALS(vect[7], 1.0)     // 1,2
+      TS_ASSERT_EQUALS(vect[7], 1.0)      // 1,2
       TS_ASSERT_EQUALS(vect[8], 1.0)      // 2,2
 
       vect.clear();

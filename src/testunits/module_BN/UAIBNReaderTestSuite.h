@@ -46,8 +46,8 @@ namespace gum_tests {
       gum::BayesNet< double > net;
 
       gum::UAIBNReader< double >* reader = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(reader = new gum::UAIBNReader< double >(&net, file));
-      TS_GUM_ASSERT_THROWS_NOTHING(delete reader);
+      TS_GUM_ASSERT_THROWS_NOTHING(reader = new gum::UAIBNReader< double >(&net, file))
+      TS_GUM_ASSERT_THROWS_NOTHING(delete reader)
     }
 
     void testRead_file1() {
@@ -71,7 +71,7 @@ namespace gum_tests {
       gum::UAIBNReader< double > reader(net, file);
 
       gum::Size nbErr = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed())
       TS_ASSERT_EQUALS(nbErr, (gum::Size)0)
 
       TS_ASSERT_DIFFERS(net, nullptr)
@@ -121,7 +121,7 @@ namespace gum_tests {
       gum::UAIBNReader< double > reader(net, file);
 
       gum::Size nbErr = false;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed())
       TS_ASSERT_EQUALS(nbErr, (gum::Size)0)
 
       TS_ASSERT_DIFFERS(net, nullptr)
@@ -143,7 +143,7 @@ namespace gum_tests {
       gum::UAIBNReader< double > reader(net, file);
 
       gum::Size nbErr = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed())
       TS_ASSERT_EQUALS(nbErr, (gum::Size)0)
       TS_ASSERT_DIFFERS(net, nullptr)
 
@@ -483,7 +483,7 @@ namespace gum_tests {
       gum::UAIBNReader< double > reader(&net, file);
 
       gum::Size nbErr = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed())
       TS_ASSERT_EQUALS(nbErr, (gum::Size)0)
     }
     void testAsiaRead() {
@@ -492,7 +492,7 @@ namespace gum_tests {
       gum::UAIBNReader< double > reader(&net, file);
 
       gum::Size nbErr = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed())
       TS_ASSERT_EQUALS(nbErr, (gum::Size)0)
     }
   };

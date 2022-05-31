@@ -143,7 +143,7 @@ namespace gum_tests {
 
     void testConstuctor() {
       gum::BIFXMLIDWriter< double >* writer = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::BIFXMLIDWriter< double >());
+      TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::BIFXMLIDWriter< double >())
       delete writer;
     }
 
@@ -152,13 +152,13 @@ namespace gum_tests {
       std::stringstream             s;
 
       // Uncomment this to check the ouput
-      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(s /*cerr*/, *id));
+      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(s /*cerr*/, *id))
     }
 
     void testWriter_file() {
       gum::BIFXMLIDWriter< double > writer;
       std::string                   file = GET_RESSOURCES_PATH("outputs/IDBIFXMLIO_file.xml");
-      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *id));
+      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *id))
 
       // For comparison with what readers will return
       std::string   dotfile = GET_RESSOURCES_PATH("outputs/IDToDotWriter.dot");

@@ -47,7 +47,7 @@ namespace gum_tests {
 
       reader.trace(false);
       auto nbrErr = (gum::Size)0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
 
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
@@ -59,7 +59,7 @@ namespace gum_tests {
       _traceAlgoSaveFile_.open(GET_RESSOURCES_PATH("outputs/FMDPDatRead.dot"),
                                std::ios::out | std::ios::trunc);
       if (!_traceAlgoSaveFile_) return;
-      TS_GUM_ASSERT_THROWS_NOTHING(_traceAlgoSaveFile_ << fmdp.toString());
+      TS_GUM_ASSERT_THROWS_NOTHING(_traceAlgoSaveFile_ << fmdp.toString())
       _traceAlgoSaveFile_.close();
 
       int deletedFile = std::remove(GET_RESSOURCES_PATH("outputs/FMDPDatRead.dot"));
@@ -88,9 +88,9 @@ namespace gum_tests {
       gum::FMDP< double >           fmdp(true);
       gum::FMDPDatReader< double >* reader = nullptr;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(reader = new gum::FMDPDatReader< double >(&fmdp, file));
+      TS_GUM_ASSERT_THROWS_NOTHING(reader = new gum::FMDPDatReader< double >(&fmdp, file))
 
-      TS_GUM_ASSERT_THROWS_NOTHING(if (reader != nullptr) delete reader);
+      TS_GUM_ASSERT_THROWS_NOTHING(if (reader != nullptr) delete reader)
     }
 
     void testReadFileCoffeeRobot() {

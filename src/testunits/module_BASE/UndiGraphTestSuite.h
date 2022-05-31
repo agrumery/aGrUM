@@ -70,38 +70,38 @@ namespace gum_tests {
 
     void testConstructor1() {
       gum::UndiGraph* graph = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING((graph = new gum::UndiGraph()));
-      TS_GUM_ASSERT_THROWS_NOTHING(delete (graph));
+      TS_GUM_ASSERT_THROWS_NOTHING((graph = new gum::UndiGraph()))
+      TS_GUM_ASSERT_THROWS_NOTHING(delete (graph))
     }
 
     void testInsert1() {
       gum::UndiGraph graph;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addNode());
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addNode());
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addNode());
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addNode());
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addNode());
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addNode())
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addNode())
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addNode())
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addNode())
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addNode())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addEdge(0, 2));
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addEdge(2, 4));
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addEdge(1, 3));
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addEdge(0, 2))
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addEdge(2, 4))
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addEdge(1, 3))
 
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addEdge(0, 3));
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addEdge(3, 4));
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addEdge(4, 1));
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addEdge(0, 3))
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addEdge(3, 4))
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addEdge(4, 1))
     }
 
     void testCopyConstructor() {
       gum::UndiGraph graph = buildGraph();
 
       gum::UndiGraph* copy = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING((copy = new gum::UndiGraph(graph)));
+      TS_GUM_ASSERT_THROWS_NOTHING((copy = new gum::UndiGraph(graph)))
       TS_ASSERT_EQUALS(graph, *copy)
       delete (copy);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::UndiGraph copy2 = graph);
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::UndiGraph copy3(graph));
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::UndiGraph copy2 = graph)
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::UndiGraph copy3(graph))
     }
 
     void testCopyOperator() {
@@ -141,14 +141,14 @@ namespace gum_tests {
     void testClearNodes() {
       gum::UndiGraph graph = buildGraph();
       TS_ASSERT(!graph.empty())
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.clear());
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.clear())
       TS_ASSERT(graph.empty())
     }
 
     void testClearEdges() {
       gum::UndiGraph graph = buildGraph();
       TS_ASSERT(!graph.emptyEdges())
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.clearEdges());
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.clearEdges())
       TS_ASSERT(graph.emptyEdges())
       TS_ASSERT(!graph.empty())
     }
@@ -170,7 +170,7 @@ namespace gum_tests {
       gum::Size nodeCount = graph.size();
       gum::Size edgeCount = graph.sizeEdges();
 
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseNode(id2));
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseNode(id2))
 
       TS_ASSERT_EQUALS(nodeCount, graph.size() + 1)
       TS_ASSERT_EQUALS(edgeCount, graph.sizeEdges() + 2)
@@ -191,7 +191,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(edgeCount, (gum::Size)6)
 
       for (int i = 0; i < 10; i++) {
-        TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseNode(id5));
+        TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseNode(id5))
       }
 
       TS_ASSERT_EQUALS(nodeCount, graph.size() + 1)
@@ -213,7 +213,7 @@ namespace gum_tests {
       gum::Size nodeCount = graph.size();
       gum::Size edgeCount = graph.sizeEdges();
 
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseEdge(gum::Edge(4, 2)));
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseEdge(gum::Edge(4, 2)))
 
       TS_ASSERT_EQUALS(nodeCount, graph.size())
       TS_ASSERT_EQUALS(edgeCount, graph.sizeEdges() + 1)
@@ -231,7 +231,7 @@ namespace gum_tests {
       gum::Size nodeCount = graph.size();
       gum::Size edgeCount = graph.sizeEdges();
 
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseEdge(gum::Edge(id3, id5)));
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseEdge(gum::Edge(id3, id5)))
 
       TS_ASSERT_EQUALS(nodeCount, graph.size())
       TS_ASSERT_EQUALS(edgeCount, graph.sizeEdges() + 1)

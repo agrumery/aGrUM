@@ -52,11 +52,7 @@ namespace gum_tests {
         std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
 
         for (auto i = std::size_t(0); i < names.size(); ++i)
-          if (i % 2 == 0) {
-            trans_set.insertTranslator(translator1, i);
-          } else {
-            trans_set.insertTranslator(translator2, i);
-          };
+          trans_set.insertTranslator(i % 2 == 0 ? translator1 : translator2, i);
       }
 
       gum::learning::DatabaseTable database(trans_set);

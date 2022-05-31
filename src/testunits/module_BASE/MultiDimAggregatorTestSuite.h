@@ -245,7 +245,7 @@ namespace gum_tests {
     void testCreationMin() {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3);
       gum::aggregator::Min< double > p;
-      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
+      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d)
       TS_ASSERT_EQUALS(p.toString(),
                        "a:Range([0,3])=min(b:Range([0,3]),c:Range([0,3]),d:Range([0,3]))");
 
@@ -259,7 +259,7 @@ namespace gum_tests {
     void testCreationMax() {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3);
       gum::aggregator::Max< double > p;
-      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
+      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d)
       TS_ASSERT_EQUALS(p.toString(),
                        "a:Range([0,3])=max(b:Range([0,3]),c:Range([0,3]),d:Range([0,3]))");
 
@@ -273,7 +273,7 @@ namespace gum_tests {
     void testCreationCount() {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3);
       gum::aggregator::Count< double > p((gum::Idx)2);
-      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
+      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d)
       TS_ASSERT_EQUALS(p.toString(),
                        "a:Range([0,3])=count[2](b:Range([0,3]),c:Range([0,3]),d:Range([0,3]))");
 
@@ -287,7 +287,7 @@ namespace gum_tests {
     void testCreationForall() {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3);
       gum::aggregator::Forall< double > p((gum::Idx)2);
-      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
+      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d)
       TS_ASSERT_EQUALS(p.toString(),
                        "a:Range([0,3])=forall[2](b:Range([0,3]),c:Range([0,3]),d:Range([0,3]))");
 
@@ -301,7 +301,7 @@ namespace gum_tests {
     void testCreationExists() {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3);
       gum::aggregator::Exists< double > p((gum::Idx)2);
-      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
+      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d)
       TS_ASSERT_EQUALS(p.toString(),
                        "a:Range([0,3])=exists[2](b:Range([0,3]),c:Range([0,3]),d:Range([0,3]))");
 
@@ -315,7 +315,7 @@ namespace gum_tests {
     void testCreationOR() {
       gum::LabelizedVariable        a("a", "", 2), b("b", "", 4), c("c", "", 2), d("d", "", 2);
       gum::aggregator::Or< double > p;
-      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
+      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d)
       TS_ASSERT_EQUALS(
          p.toString(),
          "a:Labelized({0|1})=or(b:Labelized({0|1|2|3}),c:Labelized({0|1}),d:Labelized({0|1}))");
@@ -330,7 +330,7 @@ namespace gum_tests {
     void testCreationAND() {
       gum::LabelizedVariable         a("a", "", 2), b("b", "", 4), c("c", "", 2), d("d", "", 2);
       gum::aggregator::And< double > p;
-      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
+      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d)
       TS_ASSERT_EQUALS(
          p.toString(),
          "a:Labelized({0|1})=and(b:Labelized({0|1|2|3}),c:Labelized({0|1}),d:Labelized({0|1}))");
@@ -345,7 +345,7 @@ namespace gum_tests {
     void testCreationMedian3() {
       gum::LabelizedVariable            a("a", "", 4), b("b", "", 4), c("c", "", 4), d("d", "", 4);
       gum::aggregator::Median< double > p;
-      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
+      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d)
       TS_ASSERT_EQUALS(p.toString(),
                        "a:Labelized({0|1|2|3})=median(b:Labelized({0|1|2|3}),c:Labelized({0|1|2|3})"
                        ",d:Labelized({0|1|2|3}))");
@@ -361,7 +361,7 @@ namespace gum_tests {
       gum::LabelizedVariable a("a", "", 4), b("b", "", 4), c("c", "", 4), d("d", "", 4),
          e("e", "", 4);
       gum::aggregator::Median< double > p;
-      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d << e);
+      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d << e)
       TS_ASSERT_EQUALS(p.toString(),
                        "a:Labelized({0|1|2|3})=median(b:Labelized({0|1|2|3}),c:Labelized({0|1|2|3})"
                        ",d:Labelized({0|1|2|3}),e:Labelized({0|1|2|3}))");
@@ -377,7 +377,7 @@ namespace gum_tests {
       gum::LabelizedVariable a("a", "", 4), b("b", "", 4), c("c", "", 4), d("d", "", 4),
          e("e", "", 4);
       gum::aggregator::Amplitude< double > p;
-      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d << e);
+      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d << e)
       TS_ASSERT_EQUALS(p.toString(),
                        "a:Labelized({0|1|2|3})=amplitude(b:Labelized({0|1|2|3}),c:Labelized({0|1|2|"
                        "3}),d:Labelized({0|1|2|3}),e:Labelized({0|1|2|3}))");
@@ -393,7 +393,7 @@ namespace gum_tests {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3);
 
       gum::Potential< int > p(new gum::aggregator::Min< int >());
-      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
+      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d)
 
       gum::Instantiation i(p);
 
@@ -415,7 +415,7 @@ namespace gum_tests {
       try {
         gum::RangeVariable a("a", "", 0, 8), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3);
         gum::aggregator::Sum< double > p;
-        TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
+        TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d)
         TS_ASSERT_EQUALS(p.toString(),
                          "a:Range([0,8])=sum(b:Range([0,3]),c:Range([0,3]),d:Range([0,3]))");
 
@@ -459,12 +459,12 @@ namespace gum_tests {
       TS_ASSERT_THROWS(p.get(ind), gum::NotFound)
 
       p << a;
-      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p))
       TS_ASSERT_EQUALS(s, res0)
 
       p << b;
-      TS_GUM_ASSERT_THROWS_NOTHING(p.toString());
-      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(p.toString())
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p))
       TS_ASSERT_EQUALS(s, res1)
     }
 
@@ -481,12 +481,12 @@ namespace gum_tests {
       TS_ASSERT_THROWS(p.get(ind), gum::NotFound)
 
       p << a;
-      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p))
       TS_ASSERT_EQUALS(s, res0)
 
       p << b;
-      TS_GUM_ASSERT_THROWS_NOTHING(p.toString());
-      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(p.toString())
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p))
       TS_ASSERT_EQUALS(s, res1)
     }
 
@@ -503,12 +503,12 @@ namespace gum_tests {
       TS_ASSERT_THROWS(p.get(ind), gum::NotFound)
 
       p << a;
-      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p))
       TS_ASSERT_EQUALS(s, res0)
 
       p << b;
-      TS_GUM_ASSERT_THROWS_NOTHING(p.toString());
-      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(p.toString())
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p))
       TS_ASSERT_EQUALS(s, res1)
     }
 
@@ -525,12 +525,12 @@ namespace gum_tests {
       TS_ASSERT_THROWS(p.get(ind), gum::NotFound)
 
       p << a;
-      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p))
       TS_ASSERT_EQUALS(s, res0)
 
       p << b;
-      TS_GUM_ASSERT_THROWS_NOTHING(p.toString());
-      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(p.toString())
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p))
       TS_ASSERT_EQUALS(s, res1)
     }
 
@@ -547,12 +547,12 @@ namespace gum_tests {
       TS_ASSERT_THROWS(p.get(ind), gum::NotFound)
 
       p << a;
-      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p))
       TS_ASSERT_EQUALS(s, res0)
 
       p << b;
-      TS_GUM_ASSERT_THROWS_NOTHING(p.toString());
-      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(p.toString())
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p))
       TS_ASSERT_EQUALS(s, res1)
     }
 
@@ -569,12 +569,12 @@ namespace gum_tests {
       TS_ASSERT_THROWS(p.get(ind), gum::NotFound)
 
       p << a;
-      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p))
       TS_ASSERT_EQUALS(s, res0)
 
       p << b;
-      TS_GUM_ASSERT_THROWS_NOTHING(p.toString());
-      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(p.toString())
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p))
       TS_ASSERT_EQUALS(s, res1)
     }
 
@@ -591,12 +591,12 @@ namespace gum_tests {
       TS_ASSERT_THROWS(p.get(ind), gum::NotFound)
 
       p << a;
-      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p))
       TS_ASSERT_EQUALS(s, res0)
 
       p << b;
-      TS_GUM_ASSERT_THROWS_NOTHING(p.toString());
-      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(p.toString())
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p))
       TS_ASSERT_EQUALS(s, res1)
     }
 
@@ -613,12 +613,12 @@ namespace gum_tests {
       TS_ASSERT_THROWS(p.get(ind), gum::NotFound)
 
       p << a;
-      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p))
       TS_ASSERT_EQUALS(s, res0)
 
       p << b;
-      TS_GUM_ASSERT_THROWS_NOTHING(p.toString());
-      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(p.toString())
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p))
       TS_ASSERT_EQUALS(s, res1)
     }
 
@@ -635,12 +635,12 @@ namespace gum_tests {
       TS_ASSERT_THROWS(p.get(ind), gum::NotFound)
 
       p << a;
-      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p))
       TS_ASSERT_EQUALS(s, res0)
 
       p << b;
-      TS_GUM_ASSERT_THROWS_NOTHING(p.toString());
-      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(p.toString())
+      TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p))
       TS_ASSERT_EQUALS(s, res1)
     }
   };

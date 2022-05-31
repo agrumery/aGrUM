@@ -77,8 +77,8 @@ namespace gum_tests {
 
     void testConstructor1() {
       gum::MixedGraph* graph = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING((graph = new gum::MixedGraph()));
-      TS_GUM_ASSERT_THROWS_NOTHING(delete (graph));
+      TS_GUM_ASSERT_THROWS_NOTHING((graph = new gum::MixedGraph()))
+      TS_GUM_ASSERT_THROWS_NOTHING(delete (graph))
     }
 
     void testConstructorFromUG() {
@@ -103,9 +103,9 @@ namespace gum_tests {
       mg.addEdge(2, 3);
 
       gum::MixedGraph* mixed_graph = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING((mixed_graph = new gum::MixedGraph(ug)));
-      TS_GUM_ASSERT_THROWS_NOTHING(TS_ASSERT(*mixed_graph == mg));
-      TS_GUM_ASSERT_THROWS_NOTHING(delete (mixed_graph));
+      TS_GUM_ASSERT_THROWS_NOTHING((mixed_graph = new gum::MixedGraph(ug)))
+      TS_GUM_ASSERT_THROWS_NOTHING(TS_ASSERT(*mixed_graph == mg))
+      TS_GUM_ASSERT_THROWS_NOTHING(delete (mixed_graph))
     }
 
     void testConstructorFromDG() {
@@ -130,39 +130,39 @@ namespace gum_tests {
       mg.addArc(2, 3);
 
       gum::MixedGraph* mixed_graph = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING((mixed_graph = new gum::MixedGraph(dg)));
-      TS_GUM_ASSERT_THROWS_NOTHING(TS_ASSERT(*mixed_graph == mg));
-      TS_GUM_ASSERT_THROWS_NOTHING(delete (mixed_graph));
+      TS_GUM_ASSERT_THROWS_NOTHING((mixed_graph = new gum::MixedGraph(dg)))
+      TS_GUM_ASSERT_THROWS_NOTHING(TS_ASSERT(*mixed_graph == mg))
+      TS_GUM_ASSERT_THROWS_NOTHING(delete (mixed_graph))
     }
 
     void testInsert1() {
       gum::MixedGraph graph;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addNode());
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addNode());
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addNode());
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addNode());
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addNode());
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addNode())
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addNode())
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addNode())
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addNode())
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addNode())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addEdge(0, 2));
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addEdge(2, 4));
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addEdge(1, 3));
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addEdge(0, 2))
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addEdge(2, 4))
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addEdge(1, 3))
 
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(0, 3));
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(3, 4));
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(4, 1));
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(0, 3))
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(3, 4))
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(4, 1))
     }
 
     void testCopyConstructor() {
       gum::MixedGraph graph = buildGraph();
 
       gum::MixedGraph* copy = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING((copy = new gum::MixedGraph(graph)));
+      TS_GUM_ASSERT_THROWS_NOTHING((copy = new gum::MixedGraph(graph)))
       TS_ASSERT_EQUALS(graph, *copy)
       delete (copy);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::MixedGraph copy2 = graph);
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::MixedGraph copy3(graph));
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::MixedGraph copy2 = graph)
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::MixedGraph copy3(graph))
     }
 
     void testEmptyNodes() {
@@ -189,14 +189,14 @@ namespace gum_tests {
     void testClearNodes() {
       gum::MixedGraph graph = buildGraph();
       TS_ASSERT(!graph.empty())
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.clear());
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.clear())
       TS_ASSERT(graph.empty() && graph.emptyArcs())
     }
 
     void testClearArcs() {
       gum::MixedGraph graph = buildGraph();
       TS_ASSERT(!graph.emptyArcs())
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.clearArcs());
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.clearArcs())
       TS_ASSERT(graph.emptyArcs())
       TS_ASSERT(!graph.empty())
     }
@@ -204,7 +204,7 @@ namespace gum_tests {
     void testClearEdges() {
       gum::MixedGraph graph = buildGraph();
       TS_ASSERT(!graph.emptyEdges())
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.clearEdges());
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.clearEdges())
       TS_ASSERT(graph.emptyEdges())
       TS_ASSERT(!graph.empty())
     }
@@ -227,7 +227,7 @@ namespace gum_tests {
       gum::Size edgeCount = graph.sizeEdges();
       gum::Size arcCount  = graph.sizeArcs();
 
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseNode(id2));
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseNode(id2))
 
       TS_ASSERT_EQUALS(nodeCount, graph.size() + 1)
       TS_ASSERT_EQUALS(edgeCount, graph.sizeEdges() + 1)
@@ -251,7 +251,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(arcCount, (gum::Size)3)
 
       for (int i = 0; i < 10; i++) {
-        TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseNode(id5));
+        TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseNode(id5))
       }
 
       TS_ASSERT_EQUALS(nodeCount, graph.size() + 1)
@@ -274,7 +274,7 @@ namespace gum_tests {
       gum::Size nodeCount = graph.size();
       gum::Size edgeCount = graph.sizeEdges();
 
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseEdge(gum::Edge(4, 2)));
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseEdge(gum::Edge(4, 2)))
 
       TS_ASSERT_EQUALS(nodeCount, graph.size())
       TS_ASSERT_EQUALS(edgeCount, graph.sizeEdges() + 1)
@@ -292,7 +292,7 @@ namespace gum_tests {
       gum::Size nodeCount = graph.size();
       gum::Size edgeCount = graph.sizeEdges();
 
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseEdge(gum::Edge(id3, id5)));
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseEdge(gum::Edge(id3, id5)))
 
       TS_ASSERT_EQUALS(nodeCount, graph.size())
       TS_ASSERT_EQUALS(edgeCount, graph.sizeEdges() + 1)
@@ -310,7 +310,7 @@ namespace gum_tests {
       gum::Size nodeCount = graph.size();
       gum::Size arcCount  = graph.sizeArcs();
 
-      TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseArc(gum::Arc(id5, id2)));
+      TS_GUM_ASSERT_THROWS_NOTHING(graph.eraseArc(gum::Arc(id5, id2)))
 
       TS_ASSERT_EQUALS(nodeCount, graph.size())
       TS_ASSERT_EQUALS(arcCount, graph.sizeArcs() + 1)

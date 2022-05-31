@@ -33,7 +33,7 @@ namespace gum_tests {
       gum::BayesNet< double >      bn;
       gum::O3prmBNReader< double > reader(&bn, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
       gum::Size                    res = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed())
       TS_ASSERT_EQUALS(bn.property("name"), "Asia")
       TS_ASSERT_EQUALS(res, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)1);   // no system
@@ -46,7 +46,7 @@ namespace gum_tests {
         gum::O3prmBNReader< double > reader(&bn,
                                             GET_RESSOURCES_PATH("o3prm/AsiaOtherClassName.o3prm"));
         gum::Size                    res = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
+        TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed())
         TS_ASSERT_EQUALS(bn.property("name"), "Asia")
         TS_ASSERT_EQUALS(res, (gum::Size)0)
         TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)1);   // no system
@@ -58,7 +58,7 @@ namespace gum_tests {
       gum::BayesNet< double >      bn;
       gum::O3prmBNReader< double > reader(&bn, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
       gum::Size                    res = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed())
       TS_ASSERT_EQUALS(res, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)1);   // no system
       TS_ASSERT_EQUALS(bn.size(), (gum::Size)8)
@@ -67,7 +67,7 @@ namespace gum_tests {
       gum::BayesNet< double >      bn2;
       gum::O3prmBNReader< double > reader2(&bn2, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
       gum::Size                    res2 = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(res2 = reader2.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(res2 = reader2.proceed())
       TS_ASSERT_EQUALS(res2, (gum::Size)0)
       TS_ASSERT_EQUALS(reader2.warnings(), (gum::Size)1);   // no system
       TS_ASSERT_EQUALS(bn2.size(), (gum::Size)8)
@@ -78,7 +78,7 @@ namespace gum_tests {
       {
         gum::O3prmBNReader< double > reader(&bn, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
         gum::Size                    res = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
+        TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed())
         TS_ASSERT_EQUALS(res, (gum::Size)0)
         TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)1);   // no system
         TS_ASSERT_EQUALS(bn.size(), (gum::Size)8)
@@ -92,7 +92,7 @@ namespace gum_tests {
          GET_RESSOURCES_PATH("o3prm/AsiaClassAndSystemWithTwoClasses.o3prm"),
          "Asia");
       gum::Size res = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed())
       TS_ASSERT_EQUALS(bn.property("name"), "Asia")
       TS_ASSERT_EQUALS(res, (gum::Size)0)
       TS_ASSERT_EQUALS(bn.size(), (gum::Size)8)
@@ -104,7 +104,7 @@ namespace gum_tests {
                                           GET_RESSOURCES_PATH("o3prm/DoesNotExists.o3prm"),
                                           "Asia");
       gum::Size                    res = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed())
       TS_ASSERT_EQUALS(res, (gum::Size)1);               // file not found
       TS_ASSERT_EQUALS(reader.errors(), (gum::Size)1);   // file not found
       TS_ASSERT_EQUALS(bn.size(), (gum::Size)0)
@@ -125,7 +125,7 @@ namespace gum_tests {
                                           GET_RESSOURCES_PATH("o3prm/inference.o3prm"),
                                           "aSys");
       gum::Size                    res = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed())
       TS_ASSERT_EQUALS(res, (gum::Size)0)
       TS_ASSERT_EQUALS(bn.size(), (gum::Size)72)
     }
@@ -139,7 +139,7 @@ namespace gum_tests {
          "Work",
          GET_RESSOURCES_PATH("o3prmr/ComplexPrinters"));
       gum::Size res = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed())
       TS_ASSERT_EQUALS(res, (gum::Size)0)
       TS_ASSERT_EQUALS(bn.size(), (gum::Size)144)
       reader.showElegantErrorsAndWarnings();
@@ -152,7 +152,7 @@ namespace gum_tests {
         gum::BayesNet< double >      bn;
         gum::O3prmBNReader< double > reader(&bn, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
         gum::Size                    res = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
+        TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed())
         TS_ASSERT_EQUALS(res, (gum::Size)0)
         TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)1);   // no system
         for (auto n: bn.nodes()) {
@@ -166,7 +166,7 @@ namespace gum_tests {
            GET_RESSOURCES_PATH("o3prm/AsiaClassAndSystemWithTwoClasses.o3prm"),
            "Asia");
         gum::Size res = 0;
-        TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
+        TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed())
         TS_ASSERT_EQUALS(res, (gum::Size)0)
         TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
         for (auto n: bn.nodes()) {
@@ -179,7 +179,7 @@ namespace gum_tests {
       gum::BayesNet< double >      bn;
       gum::O3prmBNReader< double > reader(&bn, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
       gum::Size                    res = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed())
       TS_ASSERT_EQUALS(res, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)1);   // no system
       TS_ASSERT_EQUALS(bn.size(), (gum::Size)8)

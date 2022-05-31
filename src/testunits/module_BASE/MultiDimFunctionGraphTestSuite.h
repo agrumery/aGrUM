@@ -166,12 +166,12 @@ namespace gum_tests {
         // The insertion are done so that no error should be rised
         // *********************************************************************
         gum::List< gum::NodeId > idList;
-        TS_GUM_ASSERT_THROWS_NOTHING(_fillFactory_(functionGraph, &idList));
+        TS_GUM_ASSERT_THROWS_NOTHING(_fillFactory_(functionGraph, &idList))
 
         // *********************************************************************
         // Destruction of the multidim
         // *********************************************************************
-        TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph);
+        TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph)
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
@@ -210,24 +210,24 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(functionGraph->root(), (gum::NodeId)1)
 
         // test terminal node value
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->nodeValue(16));
+        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->nodeValue(16))
         TS_ASSERT_EQUALS(functionGraph->nodeValue(16), 0)
         TS_ASSERT_THROWS(functionGraph->nodeValue(6), gum::InvalidArgument)
         TS_ASSERT_THROWS(functionGraph->nodeValue(24), gum::InvalidArgument)
 
         // Test internal node structure
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->node(6));
+        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->node(6))
         TS_ASSERT_THROWS(functionGraph->node(16), gum::InvalidArgument)
         TS_ASSERT_THROWS(functionGraph->node(24), gum::InvalidArgument)
 
         // Test var node List
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->varNodeListe(Cvar));
+        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->varNodeListe(Cvar))
         TS_ASSERT_THROWS(functionGraph->varNodeListe(Banditovar), gum::InvalidArgument)
 
         // *********************************************************************
         // Cleaning
         // *********************************************************************
-        TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph);
+        TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph)
         delete Banditovar;
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
@@ -293,13 +293,13 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(functionGraph->manager()->addTerminalNode(10), idList[16])
 
         // Testing terminal node removal
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->manager()->eraseNode(idList[15]));
+        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->manager()->eraseNode(idList[15]))
 
         // Testing terminal node removal again
         TS_ASSERT_THROWS(functionGraph->manager()->eraseNode(idList[15]), gum::NotFound)
 
         // Testing internal node removal
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->manager()->eraseNode(idList[12]));
+        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->manager()->eraseNode(idList[12]))
 
         // Testing internal node removal again
         TS_ASSERT_THROWS(functionGraph->manager()->eraseNode(idList[12]), gum::NotFound)
@@ -333,7 +333,7 @@ namespace gum_tests {
         TS_ASSERT_THROWS(functionGraph->manager()->setSon(idList[8], 0, idList[1]),
                          gum::OperationNotAllowed);
 
-        TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph);
+        TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph)
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
@@ -358,7 +358,7 @@ namespace gum_tests {
         // Testing variablesSequence(), and if all variables are indeed present
         // *********************************************************************
         gum::Sequence< const gum::DiscreteVariable* > varSeq;
-        TS_GUM_ASSERT_THROWS_NOTHING(varSeq = functionGraph->variablesSequence());
+        TS_GUM_ASSERT_THROWS_NOTHING(varSeq = functionGraph->variablesSequence())
         TS_ASSERT_EQUALS(varSeq.exists(Cprimevar), true)
         TS_ASSERT_EQUALS(varSeq.exists(Cvar), true)
         TS_ASSERT_EQUALS(varSeq.exists(PLvar), true)
@@ -404,8 +404,8 @@ namespace gum_tests {
         // *********************************************************************
         // Test get(), [], and value access
         // *********************************************************************
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->get(inst));
-        TS_GUM_ASSERT_THROWS_NOTHING((*functionGraph)[inst]);
+        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->get(inst))
+        TS_GUM_ASSERT_THROWS_NOTHING((*functionGraph)[inst])
 
         for (inst.setFirst(); !inst.end(); ++inst)
           if (inst.val(*Cvar) == 1) {
@@ -517,7 +517,7 @@ namespace gum_tests {
         TS_ASSERT_THROWS(functionGraph->replace(*Cvar, *lv), gum::OperationNotAllowed)
         delete lv;
 
-        TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph);
+        TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph)
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
@@ -548,11 +548,11 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS(functionGraph->realSize(), (gum::Size)15);   // 19)
 
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->compressionRate());
+        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->compressionRate())
 
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->variable(0));
+        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->variable(0))
 
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->pos(*Cvar));
+        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->pos(*Cvar))
 
         TS_ASSERT_EQUALS(functionGraph->contains(*Cprimevar), true)
         TS_ASSERT_EQUALS(functionGraph->contains(*lv), false)
@@ -563,15 +563,15 @@ namespace gum_tests {
         // Test add(), erase()
         // *********************************************************************
 
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->add(*lv));
+        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->add(*lv))
         TS_ASSERT_EQUALS(functionGraph->contains(*lv), true)
 
 
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->erase(*Cvar));
+        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->erase(*Cvar))
         TS_ASSERT_EQUALS(functionGraph->contains(*Cvar), false)
 
 
-        TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph);
+        TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph)
         delete lv;
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
@@ -642,9 +642,9 @@ namespace gum_tests {
         map.insert(BDRvar, Joujouvar);
         map.insert(BOvar, Pouvar);
 
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph2->copyAndReassign(*functionGraph, map););
+        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph2->copyAndReassign(*functionGraph, map);)
 
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph2->clear(););
+        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph2->clear();)
 
         map.eraseFirst(PLvar);
         gum::LabelizedVariable* failvar
@@ -653,7 +653,7 @@ namespace gum_tests {
         TS_ASSERT_THROWS(functionGraph2->copyAndReassign(*functionGraph, map),
                          gum::InvalidArgument);
 
-        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph2->clear(););
+        TS_GUM_ASSERT_THROWS_NOTHING(functionGraph2->clear();)
         delete failvar;
 
         delete Bijouvar;
@@ -673,9 +673,9 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(functionGraph2->copyAndMultiplyByScalar(*functionGraph, 0);)
 
 
-        TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph);
+        TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph)
 
-        TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph2);
+        TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph2)
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
@@ -710,7 +710,7 @@ namespace gum_tests {
 
         gum::Instantiation inst(*dg1);
         inst.setFirst();
-        TS_GUM_ASSERT_THROWS_NOTHING(dg1->toString(&inst));
+        TS_GUM_ASSERT_THROWS_NOTHING(dg1->toString(&inst))
 
 
         // *********************************************************************
@@ -723,9 +723,9 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(*dg1 != *dg3, true)
 
 
-        TS_GUM_ASSERT_THROWS_NOTHING(delete dg1);
-        TS_GUM_ASSERT_THROWS_NOTHING(delete dg2);
-        TS_GUM_ASSERT_THROWS_NOTHING(delete dg3);
+        TS_GUM_ASSERT_THROWS_NOTHING(delete dg1)
+        TS_GUM_ASSERT_THROWS_NOTHING(delete dg2)
+        TS_GUM_ASSERT_THROWS_NOTHING(delete dg3)
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
@@ -788,13 +788,13 @@ namespace gum_tests {
           gum::MultiDimFunctionGraphGenerator gene(2, 5, *varList);
 
           gum::MultiDimFunctionGraph< double >* dg1 = nullptr;
-          TS_GUM_ASSERT_THROWS_NOTHING(dg1 = gene.generate());
+          TS_GUM_ASSERT_THROWS_NOTHING(dg1 = gene.generate())
 
           gum::MultiDimFunctionGraph< double >* dg2
              = gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
 
-          TS_GUM_ASSERT_THROWS_NOTHING(dg2->copy(*dg1));
-          TS_GUM_ASSERT_THROWS_NOTHING(dg2->manager()->reduce());
+          TS_GUM_ASSERT_THROWS_NOTHING(dg2->copy(*dg1))
+          TS_GUM_ASSERT_THROWS_NOTHING(dg2->manager()->reduce())
 
           gum::Instantiation inst(dg1);
           for (inst.setFirst(); !inst.end(); ++inst) {

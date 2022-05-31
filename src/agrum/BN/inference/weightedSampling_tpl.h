@@ -37,14 +37,14 @@ namespace gum {
   template < typename GUM_SCALAR >
   WeightedSampling< GUM_SCALAR >::WeightedSampling(const IBayesNet< GUM_SCALAR >* bn) :
       SamplingInference< GUM_SCALAR >(bn) {
-    GUM_CONSTRUCTOR(WeightedSampling);
+    GUM_CONSTRUCTOR(WeightedSampling)
   }
 
 
   /// Destructor
   template < typename GUM_SCALAR >
   WeightedSampling< GUM_SCALAR >::~WeightedSampling() {
-    GUM_DESTRUCTOR(WeightedSampling);
+    GUM_DESTRUCTOR(WeightedSampling)
   }
 
 

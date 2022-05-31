@@ -44,24 +44,24 @@ namespace gum_tests {
          planer = gum::StructuredPlaner< double >::spumddInstance(0.9, 0.01, false));
 
       gum::FMDPDatReader< double > reader(&fmdp, file);
-      TS_GUM_ASSERT_THROWS_NOTHING(reader.trace(false));
-      TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(reader.trace(false))
+      TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(planer->initialize(&fmdp));
-      TS_GUM_ASSERT_THROWS_NOTHING(planer->makePlanning(10));
+      TS_GUM_ASSERT_THROWS_NOTHING(planer->initialize(&fmdp))
+      TS_GUM_ASSERT_THROWS_NOTHING(planer->makePlanning(10))
 
 
       std::ofstream _traceAlgoSaveFile_;
       _traceAlgoSaveFile_.open(GET_RESSOURCES_PATH("outputs/PlannedPolicy.dot"),
                                std::ios::out | std::ios::trunc);
       if (!_traceAlgoSaveFile_) return;
-      TS_GUM_ASSERT_THROWS_NOTHING(_traceAlgoSaveFile_ << fmdp.toString());
+      TS_GUM_ASSERT_THROWS_NOTHING(_traceAlgoSaveFile_ << fmdp.toString())
       _traceAlgoSaveFile_.close();
 
       int deletedFile = std::remove(GET_RESSOURCES_PATH("outputs/PlannedPolicy.dot"));
       if (deletedFile != 0) std::cout << "Couldn't delete output file." << std::endl;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(delete planer);
+      TS_GUM_ASSERT_THROWS_NOTHING(delete planer)
     }
 
     public:

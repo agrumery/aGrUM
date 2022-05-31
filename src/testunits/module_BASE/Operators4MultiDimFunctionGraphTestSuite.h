@@ -256,19 +256,19 @@ namespace gum_tests {
 
       switch (operationId) {
         case 1:   // Test addition
-          TS_GUM_ASSERT_THROWS_NOTHING(a3 = add2MultiDimFunctionGraphs(a1, a2));
+          TS_GUM_ASSERT_THROWS_NOTHING(a3 = add2MultiDimFunctionGraphs(a1, a2))
           break;
 
         case 2:   // Test Substraction
-          TS_GUM_ASSERT_THROWS_NOTHING(a3 = subtract2MultiDimFunctionGraphs(a1, a2));
+          TS_GUM_ASSERT_THROWS_NOTHING(a3 = subtract2MultiDimFunctionGraphs(a1, a2))
           break;
 
         case 3:   // Test Multiplication
-          TS_GUM_ASSERT_THROWS_NOTHING(a3 = multiply2MultiDimFunctionGraphs(a1, a2));
+          TS_GUM_ASSERT_THROWS_NOTHING(a3 = multiply2MultiDimFunctionGraphs(a1, a2))
           break;
 
         case 4:   // Test Maximum
-          TS_GUM_ASSERT_THROWS_NOTHING(a3 = maximize2MultiDimFunctionGraphs(a1, a2));
+          TS_GUM_ASSERT_THROWS_NOTHING(a3 = maximize2MultiDimFunctionGraphs(a1, a2))
           break;
 
         default:   // Should not happen
@@ -353,10 +353,10 @@ namespace gum_tests {
         gum::Sequence< const gum::DiscreteVariable* >* varList = _generateFixVarList_();
 
         gum::MultiDimFunctionGraph< double >* a1 = nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING(a1 = _generateFunctionGraph1_(varList));
+        TS_GUM_ASSERT_THROWS_NOTHING(a1 = _generateFunctionGraph1_(varList))
 
         gum::MultiDimFunctionGraph< double >* a2 = nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING(a2 = _generateFunctionGraph2_(varList));
+        TS_GUM_ASSERT_THROWS_NOTHING(a2 = _generateFunctionGraph2_(varList))
 
         //          std::cout << a1->toDot() << std::endl;
 
@@ -564,7 +564,7 @@ namespace gum_tests {
       dg2->manager()->setRootNode(n01);
 
       double foo = 0.0, bar = 0.0;
-      TS_GUM_ASSERT_THROWS_NOTHING(_evalOperation_(1, dg1, dg2, foo, bar, 0.0));
+      TS_GUM_ASSERT_THROWS_NOTHING(_evalOperation_(1, dg1, dg2, foo, bar, 0.0))
 
       delete dg1;
       delete dg2;

@@ -72,14 +72,14 @@ namespace gum_tests {
 
     void testConstuctor() {
       gum::GeneralizedCNFWriter< double >* writer = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::GeneralizedCNFWriter< double >());
+      TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::GeneralizedCNFWriter< double >())
       delete writer;
     }
 
     void testConstuctor_With_Aproximation() {
       using typCNF   = gum::GeneralizedCNFWriter< double, gum::LinearApproximationPolicy >;
       typCNF* writer = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(writer = new typCNF());
+      TS_GUM_ASSERT_THROWS_NOTHING(writer = new typCNF())
       writer->setEpsilon(0.2);
       writer->setLowLimit(0);
       writer->setHighLimit(0.5);
@@ -90,7 +90,7 @@ namespace gum_tests {
     void testWriter_ostream() {
       gum::GeneralizedCNFWriter< double > writer;
       // Uncomment this to check the ouput
-      // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
+      // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn))
     }
 
     void testWriter_ostream_With_Approximation() {
@@ -100,13 +100,13 @@ namespace gum_tests {
       writer.setHighLimit(1);
 
       // Uncomment this to check the ouput
-      // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
+      // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn))
     }
 
     void testWriter_string() {
       gum::GeneralizedCNFWriter< double > writer;
       std::string file = GET_RESSOURCES_PATH("outputs/O2CNFWriter_TestFile.cnf");
-      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn))
     }
 
     void testWriter_string_With_Approximation() {
@@ -115,7 +115,7 @@ namespace gum_tests {
       writer.setLowLimit(0);
       writer.setHighLimit(1);
       std::string file = GET_RESSOURCES_PATH("outputs/O2CNFWriter_TestFile_Approximation.cnf");
-      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn))
     }
 
     private:

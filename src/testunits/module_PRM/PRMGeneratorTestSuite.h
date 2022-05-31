@@ -40,8 +40,8 @@ namespace gum_tests {
 
     void testConstructors() {
       gum::prm::LayerGenerator< double >* gen = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::prm::LayerGenerator< double >());
-      TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
+      TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::prm::LayerGenerator< double >())
+      TS_GUM_ASSERT_THROWS_NOTHING(delete gen)
     }
 
     void generateLayerLayer(std::vector< gum::prm::LayerGenerator< double >::LayerData >& v,
@@ -59,14 +59,14 @@ namespace gum_tests {
 
     void testLayerGenerator() {
       gum::prm::LayerGenerator< double >* gen = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::prm::LayerGenerator< double >());
+      TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::prm::LayerGenerator< double >())
       gen->setDomainSize(6);
       gen->setMaxParents(5);
       std::vector< gum::prm::LayerGenerator< double >::LayerData > v;
       generateLayerLayer(v, 10);
       gen->setLayers(v);
       gum::prm::PRM< double >* prm = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(prm = gen->generate());
+      TS_GUM_ASSERT_THROWS_NOTHING(prm = gen->generate())
       // testing interfaces
       const gum::Set< gum::prm::PRMInterface< double >* >& i_set = prm->interfaces();
       TS_ASSERT_EQUALS(i_set.size(), (gum::Size)10)
@@ -130,7 +130,7 @@ namespace gum_tests {
 
     void testClusterGenerator() {
       gum::prm::ClusteredLayerGenerator< double >* gen = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::prm::ClusteredLayerGenerator< double >());
+      TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::prm::ClusteredLayerGenerator< double >())
       gen->setDomainSize(6);
       gen->setMaxParents(5);
       gen->setClusterRatio(1.0);
@@ -138,7 +138,7 @@ namespace gum_tests {
       generateLayerLayer(v, 10);
       gen->setLayers(v);
       gum::prm::PRM< double >* prm = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(prm = gen->generate());
+      TS_GUM_ASSERT_THROWS_NOTHING(prm = gen->generate())
       // testing interfaces
       const gum::Set< gum::prm::PRMInterface< double >* >& i_set = prm->interfaces();
       TS_ASSERT_EQUALS(i_set.size(), (gum::Size)10)

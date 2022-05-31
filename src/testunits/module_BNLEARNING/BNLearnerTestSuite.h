@@ -365,7 +365,7 @@ namespace gum_tests {
 
     //     TS_ASSERT_THROWS( learner.useScoreBD(), gum::IncompatibleScoreApriori
     //     );
-    //     TS_GUM_ASSERT_THROWS_NOTHING( learner.useScoreBDeu() );
+    //     TS_GUM_ASSERT_THROWS_NOTHING( learner.useScoreBDeu() )
     //     learner.useScoreLog2Likelihood();
 
     //     learner.useK2( std::vector<gum::NodeId>{1, 5, 2, 6, 0, 3, 4, 7} );
@@ -436,7 +436,7 @@ namespace gum_tests {
       learner.useScoreLog2Likelihood();
 
       TS_ASSERT_THROWS(learner.useScoreBD(), gum::IncompatibleScoreApriori)
-      TS_GUM_ASSERT_THROWS_NOTHING(learner.useScoreBDeu());
+      TS_GUM_ASSERT_THROWS_NOTHING(learner.useScoreBDeu())
       learner.useScoreLog2Likelihood();
 
       learner.useK2(std::vector< gum::NodeId >{1, 5, 2, 6, 0, 3, 4, 7});
@@ -516,7 +516,7 @@ namespace gum_tests {
       learner.useScoreLog2Likelihood();
 
       TS_ASSERT_THROWS(learner.useScoreBD(), gum::IncompatibleScoreApriori)
-      TS_GUM_ASSERT_THROWS_NOTHING(learner.useScoreBDeu());
+      TS_GUM_ASSERT_THROWS_NOTHING(learner.useScoreBDeu())
       learner.useScoreLog2Likelihood();
 
       learner.useK2(std::vector< gum::NodeId >{1, 5, 2, 6, 0, 3, 4, 7});
@@ -1258,8 +1258,8 @@ namespace gum_tests {
       learner.useEM(1e-3);
       learner.useAprioriSmoothing();
 
-      TS_GUM_ASSERT_THROWS_NOTHING(learner.learnParameters(dag, false));
-      TS_GUM_ASSERT_THROWS_NOTHING(learner.nbrIterations());
+      TS_GUM_ASSERT_THROWS_NOTHING(learner.learnParameters(dag, false))
+      TS_GUM_ASSERT_THROWS_NOTHING(learner.nbrIterations())
     }
 
     void test_chi2() {

@@ -71,7 +71,7 @@ namespace gum_tests {
 
     void testConstructor() {
       gum::UAIMNWriter< double >* writer = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::UAIMNWriter< double >());
+      TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::UAIMNWriter< double >())
       delete writer;
     }
 
@@ -84,7 +84,7 @@ namespace gum_tests {
       gum::UAIMNReader< double > reader(&net, file);
 
       gum::Size nbErr = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed())
       TS_ASSERT_EQUALS(nbErr, (gum::Size)0)
       TS_ASSERT_EQUALS(*mn, net)
     }

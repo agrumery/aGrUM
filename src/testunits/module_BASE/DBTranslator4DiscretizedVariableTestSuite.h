@@ -37,7 +37,7 @@ namespace gum_tests {
 
       gum::learning::DBTranslator4DiscretizedVariable translator(var);
       TS_ASSERT(!translator.isLossless())
-      TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("1.3"));
+      TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("1.3"))
       TS_ASSERT_EQUALS(translator.translate("1.2").discr_val, (std::size_t)0)
       TS_ASSERT_EQUALS(translator.translate("1").discr_val, (std::size_t)0)
       TS_ASSERT_EQUALS(translator.translate("2.4").discr_val, (std::size_t)0)
@@ -48,7 +48,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(translator.missingValue().discr_val,
                        (std::size_t)std::numeric_limits< std::size_t >::max());
 
-      TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("7"));
+      TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("7"))
       TS_ASSERT_EQUALS(translator.translate("10").discr_val, (std::size_t)1)
       TS_ASSERT_EQUALS(translator.translate("9").discr_val, (std::size_t)1)
       TS_ASSERT_EQUALS(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
@@ -69,8 +69,8 @@ namespace gum_tests {
 
       std::vector< std::string >                      missing{"?", "N/A", "???"};
       gum::learning::DBTranslator4DiscretizedVariable translator2(var, missing);
-      TS_GUM_ASSERT_THROWS_NOTHING(translator2.translate("1.3"));
-      TS_GUM_ASSERT_THROWS_NOTHING(translator2.translate("3"));
+      TS_GUM_ASSERT_THROWS_NOTHING(translator2.translate("1.3"))
+      TS_GUM_ASSERT_THROWS_NOTHING(translator2.translate("3"))
       TS_ASSERT_EQUALS(translator2.translate("1").discr_val, (std::size_t)0)
       TS_ASSERT_EQUALS(translator2.translate("3").discr_val, (std::size_t)1)
       TS_ASSERT(translator2.translate("N/A").discr_val
@@ -86,8 +86,8 @@ namespace gum_tests {
                        "[3;10]");
 
       gum::learning::DBTranslator4DiscretizedVariable translator3(var, missing, 3);
-      TS_GUM_ASSERT_THROWS_NOTHING(translator3.translate("1"));
-      TS_GUM_ASSERT_THROWS_NOTHING(translator3.translate("10"));
+      TS_GUM_ASSERT_THROWS_NOTHING(translator3.translate("1"))
+      TS_GUM_ASSERT_THROWS_NOTHING(translator3.translate("10"))
       TS_ASSERT_EQUALS(translator3.translate("1").discr_val, (std::size_t)0)
       TS_ASSERT_EQUALS(translator3.translate("9.9").discr_val, (std::size_t)1)
       TS_ASSERT(translator3.translate("N/A").discr_val

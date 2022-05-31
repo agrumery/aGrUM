@@ -54,14 +54,14 @@ namespace gum_tests {
 
     void testCreation() {
       gum::BayesNetFactory< double >* factory = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(factory = new gum::BayesNetFactory< double >(__bn_d));
-      TS_GUM_ASSERT_THROWS_NOTHING(delete factory);
+      TS_GUM_ASSERT_THROWS_NOTHING(factory = new gum::BayesNetFactory< double >(__bn_d))
+      TS_GUM_ASSERT_THROWS_NOTHING(delete factory)
     }
 
     void testIllegalCallsInNONE() {
       std::vector< float >            aSequence;
       gum::BayesNetFactory< double >* factory = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(factory = new gum::BayesNetFactory< double >(__bn_d));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory = new gum::BayesNetFactory< double >(__bn_d))
 
       //        TS_ASSERT_THROWS(factory->startVariableDeclaration(),
       //        gum::OperationNotAllowed);
@@ -87,35 +87,35 @@ namespace gum_tests {
       TS_ASSERT_THROWS(factory->setVariableValues(aSequence), gum::OperationNotAllowed)
       TS_ASSERT_THROWS(factory->endFactorizedProbabilityDeclaration(), gum::OperationNotAllowed)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(delete factory);
+      TS_GUM_ASSERT_THROWS_NOTHING(delete factory)
     }
 
     void testLegalsCallsInNONE() {
       gum::BayesNetFactory< double >* factory = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(factory = new gum::BayesNetFactory< double >(__bn_d));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory = new gum::BayesNetFactory< double >(__bn_d))
 
       TS_ASSERT_THROWS(__bn_d->property("name"), gum::NotFound)
       TS_ASSERT_THROWS(__bn_d->property("author"), gum::NotFound)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->startNetworkDeclaration());
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addNetworkProperty("name", "TestSuite BayesNet"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addNetworkProperty("author", "Lionel"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->endNetworkDeclaration());
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->startNetworkDeclaration())
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addNetworkProperty("name", "TestSuite BayesNet"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addNetworkProperty("author", "Lionel"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->endNetworkDeclaration())
 
       TS_ASSERT_EQUALS(__bn_d->property("name"), "TestSuite BayesNet")
       TS_ASSERT_EQUALS(__bn_d->property("author"), "Lionel")
 
-      TS_GUM_ASSERT_THROWS_NOTHING(delete factory);
+      TS_GUM_ASSERT_THROWS_NOTHING(delete factory)
     }
 
     void testIllegalCallsInNETWORK() {
       std::vector< float >            aSequence;
       gum::BayesNetFactory< double >* factory = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(factory = new gum::BayesNetFactory< double >(__bn_d));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory = new gum::BayesNetFactory< double >(__bn_d))
 
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->startNetworkDeclaration());
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addNetworkProperty("name", "TestSuite BayesNet"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addNetworkProperty("author", "Lionel"));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->startNetworkDeclaration())
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addNetworkProperty("name", "TestSuite BayesNet"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addNetworkProperty("author", "Lionel"))
 
       TS_ASSERT_THROWS(factory->variableName("foo"), gum::OperationNotAllowed)
       TS_ASSERT_THROWS(factory->variableDescription("bar"), gum::OperationNotAllowed)
@@ -133,100 +133,100 @@ namespace gum_tests {
       TS_ASSERT_THROWS(factory->setVariableValues(aSequence), gum::OperationNotAllowed)
       TS_ASSERT_THROWS(factory->endFactorizedProbabilityDeclaration(), gum::OperationNotAllowed)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->endNetworkDeclaration());
-      TS_GUM_ASSERT_THROWS_NOTHING(delete factory);
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->endNetworkDeclaration())
+      TS_GUM_ASSERT_THROWS_NOTHING(delete factory)
     }
 
     void testBayesNetCreation() {
       gum::BayesNetFactory< double >* factory = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(factory = new gum::BayesNetFactory< double >(__bn_d));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory = new gum::BayesNetFactory< double >(__bn_d))
 
       // defining network
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->startNetworkDeclaration());
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addNetworkProperty("name", "TestSuite BayesNet"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addNetworkProperty("author", "Lionel"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->endNetworkDeclaration());
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->startNetworkDeclaration())
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addNetworkProperty("name", "TestSuite BayesNet"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addNetworkProperty("author", "Lionel"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->endNetworkDeclaration())
 
       // defining variables
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration());
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("1"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("Variable 1"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Labelized));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("true"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("false"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->endVariableDeclaration());
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration())
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("1"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("Variable 1"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Labelized))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("true"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("false"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->endVariableDeclaration())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration());
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("2"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("variable 2"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Labelized));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("true"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("false"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->endVariableDeclaration());
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration())
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("2"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("variable 2"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Labelized))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("true"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("false"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->endVariableDeclaration())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration());
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("3"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("variable 3"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Labelized));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("true"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("false"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->endVariableDeclaration());
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration())
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("3"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("variable 3"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Labelized))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("true"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("false"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->endVariableDeclaration())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration());
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("4"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("variable 4"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Labelized));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("true"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("false"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->endVariableDeclaration());
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration())
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("4"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("variable 4"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Labelized))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("true"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("false"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->endVariableDeclaration())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration());
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("5"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("variable 5"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Labelized));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("true"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("false"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->endVariableDeclaration());
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration())
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("5"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("variable 5"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Labelized))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("true"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("false"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->endVariableDeclaration())
 
       // Defining parents
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->startParentsDeclaration("3"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addParent("1"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->endParentsDeclaration());
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->startParentsDeclaration("3"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addParent("1"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->endParentsDeclaration())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->startParentsDeclaration("4"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addParent("1"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addParent("2"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->endParentsDeclaration());
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->startParentsDeclaration("4"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addParent("1"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addParent("2"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->endParentsDeclaration())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->startParentsDeclaration("5"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addParent("2"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addParent("3"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addParent("4"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->endParentsDeclaration());
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->startParentsDeclaration("5"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addParent("2"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addParent("3"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addParent("4"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->endParentsDeclaration())
 
       // defining cpt
       std::vector< float > cpt_1;
       cpt_1.push_back((float)0.2);   // 1 == true
       cpt_1.push_back((float)0.8);   // 1 == false
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->startRawProbabilityDeclaration("1"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->rawConditionalTable(cpt_1));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->endRawProbabilityDeclaration());
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->startRawProbabilityDeclaration("1"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->rawConditionalTable(cpt_1))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->endRawProbabilityDeclaration())
 
       std::vector< float > cpt_2;
       cpt_2.push_back((float)0.2);   // 2 == true
       cpt_2.push_back((float)0.8);   // 2 == false
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->startRawProbabilityDeclaration("2"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->rawConditionalTable(cpt_2));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->endRawProbabilityDeclaration());
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->startRawProbabilityDeclaration("2"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->rawConditionalTable(cpt_2))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->endRawProbabilityDeclaration())
 
       std::vector< float > cpt_3;
       cpt_3.push_back((float)0.2);   // 3 == true  | 1 == true
       cpt_3.push_back((float)0.5);   // 3 == true  | 1 == false
       cpt_3.push_back((float)0.8);   // 3 == false | 1 == true
       cpt_3.push_back((float)0.5);   // 3 == false | 1 == false
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->startRawProbabilityDeclaration("3"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->rawConditionalTable(cpt_3));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->endRawProbabilityDeclaration());
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->startRawProbabilityDeclaration("3"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->rawConditionalTable(cpt_3))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->endRawProbabilityDeclaration())
 
       std::vector< float > cpt_4;
       cpt_4.push_back((float)0.2);     // 4 == true  | 1 == true,  2 == true
@@ -237,144 +237,144 @@ namespace gum_tests {
       cpt_4.push_back((float)0.5);     // 4 == false | 1 == true,  2 == false
       cpt_4.push_back((float)0.35);    // 4 == false | 1 == false, 2 == true
       cpt_4.push_back((float)0.999);   // 4 == false | 1 == false, 2 == false
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->startRawProbabilityDeclaration("4"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->rawConditionalTable(cpt_4));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->endRawProbabilityDeclaration());
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->startRawProbabilityDeclaration("4"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->rawConditionalTable(cpt_4))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->endRawProbabilityDeclaration())
 
       std::vector< float > values_5;
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->startFactorizedProbabilityDeclaration("5"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->startFactorizedEntry());
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->startFactorizedProbabilityDeclaration("5"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->startFactorizedEntry())
       values_5.push_back((float)0.5);   // 5 == true  | *
       values_5.push_back((float)0.5);   // 5 == false | *
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->setVariableValues(values_5));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->setVariableValues(values_5))
       values_5.clear();
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->endFactorizedEntry());
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->startFactorizedEntry());
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->setParentModality("2", "true"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->setParentModality("4", "true"));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->endFactorizedEntry())
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->startFactorizedEntry())
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->setParentModality("2", "true"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->setParentModality("4", "true"))
       values_5.push_back((float)1);   // 5 == true  | 2 == true, 4 == true
       values_5.push_back((float)0);   // 5 == false | 2 == true, 4 == true
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->setVariableValues(values_5));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->setVariableValues(values_5))
       values_5.clear();
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->endFactorizedEntry());
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->startFactorizedEntry());
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->setParentModality("2", "false"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->setParentModality("3", "false"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->setParentModality("4", "true"));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->endFactorizedEntry())
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->startFactorizedEntry())
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->setParentModality("2", "false"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->setParentModality("3", "false"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->setParentModality("4", "true"))
       values_5.push_back((float)0);   // 5 == true  | 2 == false, 3 == false, 4 == true
       values_5.push_back((float)1);   // 5 == false | 2 == false, 3 == false, 4 == true
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->setVariableValues(values_5));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->setVariableValues(values_5))
       values_5.clear();
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->endFactorizedEntry());
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->endFactorizedProbabilityDeclaration());
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->endFactorizedEntry())
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->endFactorizedProbabilityDeclaration())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(delete factory);
+      TS_GUM_ASSERT_THROWS_NOTHING(delete factory)
     }
 
     void testDefiningWithAlltypes() {
       gum::BayesNetFactory< double >* factory = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(factory = new gum::BayesNetFactory< double >(__bn_d));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory = new gum::BayesNetFactory< double >(__bn_d))
 
       // defining network
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->startNetworkDeclaration());
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addNetworkProperty("name", "TestSuite BayesNet"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addNetworkProperty("author", "Gaspard"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->endNetworkDeclaration());
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->startNetworkDeclaration())
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addNetworkProperty("name", "TestSuite BayesNet"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addNetworkProperty("author", "Gaspard"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->endNetworkDeclaration())
 
       // defining variable using variable type
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration());
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("1"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("Variable 1"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Labelized));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("true"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("false"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->endVariableDeclaration());
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration())
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("1"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("Variable 1"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Labelized))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("true"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("false"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->endVariableDeclaration())
 
       // defining variables without using variableType
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration());
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("2"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("Variable 2"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("true"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("false"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->endVariableDeclaration());
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration())
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("2"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("Variable 2"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("true"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("false"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->endVariableDeclaration())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration());
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("3"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("variable 3"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Range));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addMin(0));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addMax(10));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->endVariableDeclaration());
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration())
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("3"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("variable 3"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Range))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addMin(0))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addMax(10))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->endVariableDeclaration())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration());
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("4"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("variable 4"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Discretized));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration())
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("4"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("variable 4"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Discretized))
       for (int i = 10; i <= 50; i += 5) {
-        TS_GUM_ASSERT_THROWS_NOTHING(factory->addTick(i));
+        TS_GUM_ASSERT_THROWS_NOTHING(factory->addTick(i))
       }
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->endVariableDeclaration());
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->endVariableDeclaration())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration());
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("5"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("variable 5"));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration())
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("5"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("variable 5"))
       TS_ASSERT_THROWS(factory->variableType(gum::VarType::Continuous), gum::OperationNotAllowed)
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Integer));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("1"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("7"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("3"));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Integer))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("1"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("7"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("3"))
     }
 
     void testDefiningWithCPT() {
       gum::BayesNetFactory< double >* factory = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(factory = new gum::BayesNetFactory< double >(__bn_d));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory = new gum::BayesNetFactory< double >(__bn_d))
 
       // defining network
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->startNetworkDeclaration());
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addNetworkProperty("name", "TestSuite BayesNet"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addNetworkProperty("author", "Lionel"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->endNetworkDeclaration());
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->startNetworkDeclaration())
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addNetworkProperty("name", "TestSuite BayesNet"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addNetworkProperty("author", "Lionel"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->endNetworkDeclaration())
 
       // defining variables
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration());
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("1"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("Variable 1"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Labelized));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("true"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("false"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->endVariableDeclaration());
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration())
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("1"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("Variable 1"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Labelized))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("true"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("false"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->endVariableDeclaration())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration());
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("2"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("variable 2"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Labelized));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("true"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("false"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->endVariableDeclaration());
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration())
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("2"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("variable 2"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Labelized))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("true"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("false"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->endVariableDeclaration())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration());
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("3"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("variable 3"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Labelized));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("true"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("false"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->endVariableDeclaration());
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration())
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("3"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("variable 3"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Labelized))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("true"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("false"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->endVariableDeclaration())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration());
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("4"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("variable 4"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Labelized));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("true"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("false"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->endVariableDeclaration());
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration())
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("4"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("variable 4"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Labelized))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("true"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("false"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->endVariableDeclaration())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration());
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("5"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("variable 5"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Integer));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("1"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("0"));
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->endVariableDeclaration());
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration())
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("5"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("variable 5"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Integer))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("1"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("0"))
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->endVariableDeclaration())
 
       // Defining CPT
       gum::Potential< double >*    cpt_1 = new gum::Potential< double >();
@@ -385,7 +385,7 @@ namespace gum_tests {
       cpt_1->set(inst_1, (double)0.2);
       inst_1.chgVal(var_1, 1);
       cpt_1->set(inst_1, (double)0.8);
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->setVariableCPT("1", cpt_1, true));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->setVariableCPT("1", cpt_1, true))
 
       gum::Potential< double >*    cpt_2 = new gum::Potential< double >();
       const gum::DiscreteVariable& var_2 = factory->bayesNet()->variable(factory->variableId("2"));
@@ -395,7 +395,7 @@ namespace gum_tests {
       cpt_2->set(inst_2, (double)0.2);
       inst_2.chgVal(var_2, 1);
       cpt_2->set(inst_2, (double)0.8);
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->setVariableCPT("2", cpt_2, true));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->setVariableCPT("2", cpt_2, true))
 
       gum::Potential< double >*    cpt_3 = new gum::Potential< double >();
       const gum::DiscreteVariable& var_3 = factory->bayesNet()->variable(factory->variableId("3"));
@@ -414,7 +414,7 @@ namespace gum_tests {
       inst_3.chgVal(var_3, 1);
       inst_3.chgVal(var_1, 1);
       cpt_3->set(inst_3, (double)0.5);
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->setVariableCPT("3", cpt_3, true));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->setVariableCPT("3", cpt_3, true))
 
       gum::Potential< double >*    cpt_4 = new gum::Potential< double >();
       const gum::DiscreteVariable& var_4 = factory->bayesNet()->variable(factory->variableId("4"));
@@ -454,7 +454,7 @@ namespace gum_tests {
       inst_4.chgVal(var_1, 1);
       inst_4.chgVal(var_2, 1);
       cpt_4->set(inst_4, (double)0.999);
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->setVariableCPT("4", cpt_4, true));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->setVariableCPT("4", cpt_4, true))
 
       gum::Potential< double >* cpt_5
          = new gum::Potential< double >(new gum::MultiDimSparse< double >((double)0.5));
@@ -488,9 +488,9 @@ namespace gum_tests {
       cpt_5->set(iter, (double)0);
       iter.chgVal(var_5, 1);
       cpt_5->set(iter, (double)1);
-      TS_GUM_ASSERT_THROWS_NOTHING(factory->setVariableCPT("5", cpt_5, true));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory->setVariableCPT("5", cpt_5, true))
 
-      TS_GUM_ASSERT_THROWS_NOTHING(delete factory);
+      TS_GUM_ASSERT_THROWS_NOTHING(delete factory)
     }
   };
 }   // namespace gum_tests

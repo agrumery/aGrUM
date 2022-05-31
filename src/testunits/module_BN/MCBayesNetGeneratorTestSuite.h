@@ -47,7 +47,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(gen
                                    = new gum::MCBayesNetGenerator< float >(10, 15, 3, 15, 20, 25));
-      TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
+      TS_GUM_ASSERT_THROWS_NOTHING(delete gen)
     }
 
     void testCreationDeletionDouble() {
@@ -55,19 +55,19 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(gen
                                    = new gum::MCBayesNetGenerator< double >(10, 15, 3, 15, 20, 25));
-      TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
+      TS_GUM_ASSERT_THROWS_NOTHING(delete gen)
     }
 
     void testGenerationBNFloat() {
       gum::MCBayesNetGenerator< float > gen(10, 15, 3, 15, 20, 25);
       gum::BayesNet< float >            bn;
-      TS_GUM_ASSERT_THROWS_NOTHING(gen.generateBN(bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(gen.generateBN(bn))
     }
 
     void testGenerationBNDouble() {
       gum::MCBayesNetGenerator< double > gen(10, 15, 3, 15, 20, 25);
       gum::BayesNet< double >            bn;
-      TS_GUM_ASSERT_THROWS_NOTHING(gen.generateBN(bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(gen.generateBN(bn))
     }
 
     void testGenerationfromBNDouble() {
@@ -122,7 +122,7 @@ namespace gum_tests {
       gum::MCBayesNetGenerator< double > gen(10, 15, 3, 15, 20, 25);
       gum::BayesNet< double >            bn;
       gen.generateBN(bn);
-      TS_GUM_ASSERT_THROWS_NOTHING(gen.disturbBN(bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(gen.disturbBN(bn))
     }
 
     void testInferenceFloat() {
@@ -131,7 +131,7 @@ namespace gum_tests {
       gen.generateBN(bn);
       // Test for inference
       gum::LazyPropagation< double > lazyInf(&bn);
-      TS_GUM_ASSERT_THROWS_NOTHING(lazyInf.makeInference());
+      TS_GUM_ASSERT_THROWS_NOTHING(lazyInf.makeInference())
     }
 
     void testInferenceDouble() {
@@ -140,7 +140,7 @@ namespace gum_tests {
       gen.generateBN(bn);
       // Test for inference
       gum::LazyPropagation< double > lazyInf(&bn);
-      TS_GUM_ASSERT_THROWS_NOTHING(lazyInf.makeInference());
+      TS_GUM_ASSERT_THROWS_NOTHING(lazyInf.makeInference())
     }
   };
 }   // namespace gum_tests

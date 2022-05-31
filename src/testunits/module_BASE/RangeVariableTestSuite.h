@@ -38,7 +38,7 @@ namespace gum_tests {
 
       gum::RangeVariable var3(var1);
       gum::RangeVariable var4("var4", "this is var4");
-      TS_GUM_ASSERT_THROWS_NOTHING(var4 = var2);
+      TS_GUM_ASSERT_THROWS_NOTHING(var4 = var2)
 
       TS_ASSERT_EQUALS(var4.minVal(), var2.minVal())
       TS_ASSERT_EQUALS(var1.maxVal(), var3.maxVal())

@@ -222,10 +222,10 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn->sizeArcs(), (gum::Size)8)
       for (auto node: bn->dag()) {
         const gum::Potential< double >* cpt = nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(node)));
+        TS_GUM_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(node)))
         gum::Instantiation inst(*cpt);
         for (inst.setFirst(); !inst.end(); inst.inc()) {
-          TS_GUM_ASSERT_THROWS_NOTHING(cpt->get(inst));
+          TS_GUM_ASSERT_THROWS_NOTHING(cpt->get(inst))
         }
       }
       delete bn;

@@ -46,7 +46,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(output.str(), "")
       TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2)
@@ -65,7 +65,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::stringstream msg;
       msg << "|1 col 1| Error : invalid declaration" << std::endl;
@@ -82,7 +82,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::stringstream msg;
       msg << "|1 col 29| Error : semicolon expected" << std::endl;
@@ -99,7 +99,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::stringstream msg;
       msg << "|2 col 1| Error : semicolon expected" << std::endl;
@@ -117,7 +117,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::stringstream msg;
       msg << "|1 col 23| Error : comma expected" << std::endl;
@@ -134,7 +134,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::stringstream msg;
       msg << "|1 col 24| Error : invalid declaration" << std::endl;
@@ -151,7 +151,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::stringstream msg;
       msg << "|1 col 6| Error : label expected" << std::endl;
@@ -168,7 +168,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::stringstream msg;
       msg << "|1 col 21| Error : invalid declaration" << std::endl;
@@ -185,7 +185,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::stringstream msg;
       msg << "|1 col 25| Error : invalid declaration" << std::endl;
@@ -202,7 +202,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::stringstream msg;
       msg << "|2 col 6| Error : Type t_state exists already" << std::endl;
@@ -221,7 +221,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(output.str(), "")
       TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2)
@@ -245,7 +245,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
       TS_ASSERT(!prm.isType("t_state"))
@@ -266,7 +266,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
       TS_ASSERT(!prm.isType("t_state"))
@@ -285,7 +285,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
       TS_ASSERT(!prm.isType("t_state"))
@@ -308,7 +308,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)3)
       TS_ASSERT(prm.isType("t_state"))
@@ -324,7 +324,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(output.str(), "")
       TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2)
@@ -352,7 +352,7 @@ namespace gum_tests {
         gum::prm::PRM< double > prm;
         auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
         // Act
-        TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+        TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
         // Assert
         TS_ASSERT_EQUALS(output.str(), "")
         TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2)
@@ -388,7 +388,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
       TS_ASSERT(!prm.isType("t_power"))
@@ -407,7 +407,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
       TS_ASSERT(!prm.isType("t_power"))
@@ -426,7 +426,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
       TS_ASSERT(!prm.isType("t_power"))
@@ -445,7 +445,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
       TS_ASSERT(!prm.isType("t_power"))
@@ -464,7 +464,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
       TS_ASSERT(!prm.isType("t_power"))
@@ -483,7 +483,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
       TS_ASSERT(!prm.isType("t_power"))
@@ -502,7 +502,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
       TS_ASSERT(!prm.isType("t_power"))
@@ -521,7 +521,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
       TS_ASSERT(!prm.isType("t_power"))
@@ -540,7 +540,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
       TS_ASSERT(!prm.isType("t_power"))
@@ -559,7 +559,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)1)
       TS_ASSERT(!prm.isType("t_power"))
@@ -578,7 +578,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output, "fr.agrum"));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output, "fr.agrum"))
       // Assert
       TS_ASSERT_EQUALS(output.str(), "")
       TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2)
@@ -600,7 +600,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output, "fr.agrum"));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output, "fr.agrum"))
       // Assert
       TS_ASSERT_EQUALS(output.str(), "")
       TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)3)
@@ -618,7 +618,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(output.str(), "")
       TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2)
@@ -640,7 +640,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(output.str(), "")
       TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2)
@@ -660,7 +660,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       TS_ASSERT_EQUALS(output.str(), "")
       TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2)
@@ -680,7 +680,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::stringstream msg;
       msg << "|1 col 1| Error : Found 2 values in range expected at least 3" << std::endl;
@@ -695,7 +695,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       std::stringstream msg;
       msg << "|1 col 1| Error : Found 1 values in range expected at least 3" << std::endl;
@@ -710,7 +710,7 @@ namespace gum_tests {
       gum::prm::PRM< double > prm;
       auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
       // Act
-      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output))
       // Assert
       auto line = std::string();
       std::getline(output, line);

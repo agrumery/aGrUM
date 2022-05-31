@@ -122,9 +122,9 @@ namespace gum_tests {
       gum::credal::CNMonteCarloSampling< double > mcs(*cn);
 
       // evidence from file
-      TS_GUM_ASSERT_THROWS_NOTHING(mcs.insertEvidenceFile(GET_CN_PATH_STR(L2U.evi)););
+      TS_GUM_ASSERT_THROWS_NOTHING(mcs.insertEvidenceFile(GET_CN_PATH_STR(L2U.evi));)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence(););
+      TS_GUM_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence();)
 
 
       // evidence from map
@@ -137,9 +137,9 @@ namespace gum_tests {
       eviMap["G"] = evi0;
 
 
-      TS_GUM_ASSERT_THROWS_NOTHING(mcs.insertEvidence(eviMap););
+      TS_GUM_ASSERT_THROWS_NOTHING(mcs.insertEvidence(eviMap);)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence(););
+      TS_GUM_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence();)
 
 
       mcs.setRepetitiveInd(false);
@@ -163,7 +163,7 @@ namespace gum_tests {
       }
 
 
-      TS_GUM_ASSERT_THROWS_NOTHING(mcs.insertModals(modals););
+      TS_GUM_ASSERT_THROWS_NOTHING(mcs.insertModals(modals);)
       try {
         mcs.makeInference();
       } catch (gum::Exception& e) {
@@ -185,7 +185,7 @@ namespace gum_tests {
       }
 
 
-      TS_GUM_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence(););
+      TS_GUM_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence();)
 
       clearCNet();
 
@@ -206,15 +206,15 @@ namespace gum_tests {
 
       // evidence from file
 
-      TS_GUM_ASSERT_THROWS_NOTHING(mcs.insertEvidenceFile(GET_CN_PATH_STR(f_3.evi)););
+      TS_GUM_ASSERT_THROWS_NOTHING(mcs.insertEvidenceFile(GET_CN_PATH_STR(f_3.evi));)
 
       mcs.setRepetitiveInd(false);
       mcs.setMaxTime(1);
 
       // modalities from file
-      TS_GUM_ASSERT_THROWS_NOTHING(mcs.insertModalsFile(GET_CN_PATH_STR(modalities.modal)););
+      TS_GUM_ASSERT_THROWS_NOTHING(mcs.insertModalsFile(GET_CN_PATH_STR(modalities.modal));)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(mcs.makeInference(););
+      TS_GUM_ASSERT_THROWS_NOTHING(mcs.makeInference();)
 
       try {
         for (const auto node: cn->current_bn().nodes()) {
@@ -228,7 +228,7 @@ namespace gum_tests {
         TS_ASSERT(false)
       }
 
-      TS_GUM_ASSERT_THROWS_NOTHING(mcs.dynamicExpectations(););
+      TS_GUM_ASSERT_THROWS_NOTHING(mcs.dynamicExpectations();)
 
       try {
         // exp ekm_inf ( mcs.dynamicExpMin ( "km" ) );
@@ -242,7 +242,7 @@ namespace gum_tests {
         TS_ASSERT(false)
       }
 
-      TS_GUM_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence(););
+      TS_GUM_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence();)
 
       clearCNet();
 
@@ -260,15 +260,15 @@ namespace gum_tests {
       //////////////////////////////////////////////////////
 
       // evidence from file
-      TS_GUM_ASSERT_THROWS_NOTHING(mcs.insertEvidenceFile(GET_CN_PATH_STR(f_3.evi)););
+      TS_GUM_ASSERT_THROWS_NOTHING(mcs.insertEvidenceFile(GET_CN_PATH_STR(f_3.evi));)
 
       mcs.setRepetitiveInd(true);
       mcs.setMaxTime(1);
 
       // modalities from file
-      TS_GUM_ASSERT_THROWS_NOTHING(mcs.insertModalsFile(GET_CN_PATH_STR(modalities.modal)););
+      TS_GUM_ASSERT_THROWS_NOTHING(mcs.insertModalsFile(GET_CN_PATH_STR(modalities.modal));)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(mcs.makeInference(););
+      TS_GUM_ASSERT_THROWS_NOTHING(mcs.makeInference();)
 
       try {
         for (const auto node: cn->current_bn().nodes()) {
@@ -282,7 +282,7 @@ namespace gum_tests {
         TS_ASSERT(false)
       }
 
-      TS_GUM_ASSERT_THROWS_NOTHING(mcs.dynamicExpectations(););
+      TS_GUM_ASSERT_THROWS_NOTHING(mcs.dynamicExpectations();)
 
       try {
         // exp ekm_inf ( mcs.dynamicExpMin ( "km" ) );
@@ -296,7 +296,7 @@ namespace gum_tests {
         TS_ASSERT(false)
       }
 
-      TS_GUM_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence(););
+      TS_GUM_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence();)
 
       clearCNet();
     }   // end of : testCNMonteCarloSamplingInferenceDRep (dynamic - dynacheese)
@@ -307,7 +307,7 @@ namespace gum_tests {
       gum::credal::CNMonteCarloSampling< double > mcs(*cn);
 
       // evidence from file
-      TS_GUM_ASSERT_THROWS_NOTHING(mcs.insertEvidenceFile(GET_CN_PATH_STR(f_3.evi)););
+      TS_GUM_ASSERT_THROWS_NOTHING(mcs.insertEvidenceFile(GET_CN_PATH_STR(f_3.evi));)
 
       mcs.setRepetitiveInd(false);
       mcs.setMaxTime(1);
@@ -319,13 +319,13 @@ namespace gum_tests {
 
       CNMonteCarloSamplingListener mcl(mcs);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(mcs.makeInference(););
+      TS_GUM_ASSERT_THROWS_NOTHING(mcs.makeInference();)
 
       /// time out criterion during burn in test
       TS_ASSERT_EQUALS(mcl.nbr() * mcs.periodSize(), mcs.nbrIterations())
       TS_ASSERT_DIFFERS(mcl.msg(), std::string(""))
 
-      TS_GUM_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence(););
+      TS_GUM_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence();)
 
       clearCNet();
     }   // end of : testCNMonteCarloSamplingListener

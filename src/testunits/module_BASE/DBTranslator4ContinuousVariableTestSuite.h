@@ -33,14 +33,14 @@ namespace gum_tests {
     void test_trans1() {
       gum::learning::DBTranslator4ContinuousVariable translator;
       TS_ASSERT(translator.isLossless())
-      TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("3"));
+      TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("3"))
       TS_ASSERT_EQUALS(translator.translate("3").cont_val, 3)
       TS_ASSERT_EQUALS(std::stof(translator.translateBack(gum::learning::DBTranslatedValue{3.0f})),
                        3);
 
       TS_ASSERT_EQUALS(translator.missingValue().cont_val, std::numeric_limits< float >::max())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("5"));
+      TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("5"))
       TS_ASSERT_EQUALS(translator.translate("4.22").cont_val, 4.22f)
       TS_ASSERT_EQUALS(translator.translate("-5.34").cont_val, -5.34f)
       TS_ASSERT_EQUALS(translator.translate("-5.34e3").cont_val, -5.34e3f)

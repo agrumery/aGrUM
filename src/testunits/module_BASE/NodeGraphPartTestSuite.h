@@ -50,7 +50,7 @@ namespace gum_tests {
       gum::NodeId next2 = ngp.addNode();
       TS_ASSERT_EQUALS(next, next2)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(ngp.addNodeWithId(next2 + 1));
+      TS_GUM_ASSERT_THROWS_NOTHING(ngp.addNodeWithId(next2 + 1))
       TS_ASSERT_THROWS(ngp.addNodeWithId(next2 + 1), gum::DuplicateElement)
     }
 
@@ -62,10 +62,10 @@ namespace gum_tests {
       ngp.addNode();
 
       ngp.eraseNode(id3);
-      TS_GUM_ASSERT_THROWS_NOTHING(ngp.eraseNode(id3));
+      TS_GUM_ASSERT_THROWS_NOTHING(ngp.eraseNode(id3))
       TS_ASSERT_EQUALS(ngp.size(), (gum::Size)3)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(ngp.addNodeWithId(id3));
+      TS_GUM_ASSERT_THROWS_NOTHING(ngp.addNodeWithId(id3))
       TS_ASSERT_THROWS(ngp.addNodeWithId(id3), gum::DuplicateElement)
       TS_ASSERT_EQUALS(ngp.size(), (gum::Size)4)
 
@@ -259,7 +259,7 @@ namespace gum_tests {
       for (gum::NodeGraphPartIteratorSafe iter = nodeset.beginSafe();   // safe iterator needed here
            iter != nodeset.endSafe();
            ++iter, ++cpt) {
-        TS_GUM_ASSERT_THROWS_NOTHING(nodeset.eraseNode(*iter));
+        TS_GUM_ASSERT_THROWS_NOTHING(nodeset.eraseNode(*iter))
 
         if (cpt > max_cpt) {
           // If false : infinite loop spotted
@@ -304,7 +304,7 @@ namespace gum_tests {
       futureIds.addNodeWithId(10);   // the 4th added node as 10 for id
 
       for (auto n: v2) {
-        TS_GUM_ASSERT_THROWS_NOTHING(futureIds.eraseNode(n));
+        TS_GUM_ASSERT_THROWS_NOTHING(futureIds.eraseNode(n))
       }
       TS_ASSERT(futureIds.empty())
     }

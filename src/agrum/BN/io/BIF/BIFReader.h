@@ -133,10 +133,10 @@ namespace gum {
     BIF::Scanner& scanner();
 
     /// name of readen file
-     const std::string& streamName() const;
+    const std::string& streamName() const;
 
     /// accessor to trace function (just write the number of parser line)
-     bool trace() const;
+    bool trace() const;
     void trace(bool b);
 
     /// parse.

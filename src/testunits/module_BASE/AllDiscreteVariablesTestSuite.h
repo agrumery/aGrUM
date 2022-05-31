@@ -71,50 +71,50 @@ namespace gum_tests {
       } catch (gum::Exception const& e) GUM_SHOWERROR(e)
     }
 
-    void testCreationLabelized() {
-      try {
+      void testCreationLabelized() {
+        try {
+          {
+            auto a = gum::fastVariable< double >("A{a|b|c}", 4);
+            TS_ASSERT_EQUALS(a->toString(), "A:Labelized({a|b|c})")
+          }
+          TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A{a}", 4), gum::InvalidArgument)
+
+          {
+            auto a = gum::fastVariable< double >("A{a}", 1);
+            TS_ASSERT_EQUALS(a->toString(), "A:Labelized({a})")
+          }
+        } catch (gum::Exception const& e) { GUM_SHOWERROR(e) }
+      }
+
+      void testCreationInteger() {
         {
-          auto a = gum::fastVariable< double >("A{a|b|c}", 4);
-          TS_ASSERT_EQUALS(a->toString(), "A:Labelized({a|b|c})")
+          auto a = gum::fastVariable< double >("A{0|3|5}", 4);
+          TS_ASSERT_EQUALS(a->toString(), "A:Integer({0|3|5})")
         }
-        TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A{a}", 4), gum::InvalidArgument)
+        {
+          auto a = gum::fastVariable< double >("A{-3|0|3}", 4);
+          TS_ASSERT_EQUALS(a->toString(), "A:Integer({-3|0|3})")
+        }
+        {
+          auto a = gum::fastVariable< double >("A{15|-3|0|3}", 4);
+          TS_ASSERT_EQUALS(a->toString(), "A:Integer({-3|0|3|15})")
+        }
+        TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A{15}", 4), gum::InvalidArgument)
 
         {
-          auto a = gum::fastVariable< double >("A{a}", 1);
-          TS_ASSERT_EQUALS(a->toString(), "A:Labelized({a})")
+          auto a = gum::fastVariable< double >("A{15}", 1);
+          TS_ASSERT_EQUALS(a->toString(), "A:Integer({15})")
         }
-      } catch (gum::Exception const& e) { GUM_SHOWERROR(e) }
-    }
-
-    void testCreationInteger() {
-      {
-        auto a = gum::fastVariable< double >("A{0|3|5}", 4);
-        TS_ASSERT_EQUALS(a->toString(), "A:Integer({0|3|5})")
-      }
-      {
-        auto a = gum::fastVariable< double >("A{-3|0|3}", 4);
-        TS_ASSERT_EQUALS(a->toString(), "A:Integer({-3|0|3})")
-      }
-      {
-        auto a = gum::fastVariable< double >("A{15|-3|0|3}", 4);
-        TS_ASSERT_EQUALS(a->toString(), "A:Integer({-3|0|3|15})")
-      }
-      TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A{15}", 4), gum::InvalidArgument)
-
-      {
-        auto a = gum::fastVariable< double >("A{15}", 1);
-        TS_ASSERT_EQUALS(a->toString(), "A:Integer({15})")
-      }
-    }
-
-    void testCreationDiscretized() {
-      {
-        auto a = gum::fastVariable< double >("A[1,2,3,4,5,6]", 4);
-        TS_ASSERT_EQUALS(a->toString(), "A:Discretized(<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>)")
       }
 
-      TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A[0.3]", 4), gum::InvalidArgument)
-      TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A[0.3]", 1), gum::InvalidArgument)
-    }
+      void testCreationDiscretized() {
+        {
+          auto a = gum::fastVariable< double >("A[1,2,3,4,5,6]", 4);
+          TS_ASSERT_EQUALS(a->toString(), "A:Discretized(<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>)")
+        }
+
+        TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A[0.3]", 4), gum::InvalidArgument)
+        TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A[0.3]", 1), gum::InvalidArgument)
+      }
   };
 }   // namespace gum_tests

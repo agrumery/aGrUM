@@ -72,14 +72,14 @@ namespace gum_tests {
 
     void testConstuctor() {
       gum::ContextualDependenciesCNFWriter< double >* writer = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::ContextualDependenciesCNFWriter< double >());
+      TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::ContextualDependenciesCNFWriter< double >())
       delete writer;
     }
 
     void testConstuctor_With_Aproximation() {
       using typCNF   = gum::ContextualDependenciesCNFWriter< double, gum::ExactPolicy >;
       typCNF* writer = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(writer = new typCNF());
+      TS_GUM_ASSERT_THROWS_NOTHING(writer = new typCNF())
       //   writer->setEpsilon( 0.2 );
       //         writer->setLowLimit ( 0 );
       //         writer->setHighLimit ( 0.5 );
@@ -90,7 +90,7 @@ namespace gum_tests {
     void testWriter_ostream() {
       gum::ContextualDependenciesCNFWriter< double > writer;
       std::stringstream                              sstream;
-      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(sstream, *bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(sstream, *bn))
     }
 
     void testWriter_ostream_With_Approximation() {
@@ -100,14 +100,14 @@ namespace gum_tests {
       writer.setHighLimit(1);
 
       // Uncomment this to check the ouput
-      // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
+      // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn))
     }
 
     void testWriter_string() {
       gum::ContextualDependenciesCNFWriter< double > writer;
       std::string                                    file
          = GET_RESSOURCES_PATH("outputs/ContextualDependenciesCNFWriter_TestFile.cnf");
-      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn))
     }
 
     void testWriter_string_With_Approximation() {
@@ -119,7 +119,7 @@ namespace gum_tests {
       std::string file = GET_RESSOURCES_PATH(
          "outputs/ContextualDependenciesCNFWriter_TestFile_Approximation.cnf");
 
-      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn))
 
       file = GET_RESSOURCES_PATH(
          "outputs/ContextualDependenciesCNFWriter_RO_TestFile_Approximation.cnf");

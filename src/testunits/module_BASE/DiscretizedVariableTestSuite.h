@@ -34,7 +34,7 @@ namespace gum_tests {
   class DiscretizedVariableTestSuite: public CxxTest::TestSuite {
     public:
     void testCreation() {
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::DiscretizedVariable< int > v("var", "a var"));
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::DiscretizedVariable< int > v("var", "a var"))
     }
 
     void testDiscreteVariableProperties() {
@@ -56,7 +56,7 @@ namespace gum_tests {
     void testConstructorWithTicks() {
       gum::DiscretizedVariable< double > d("d", "Discretized variable", {3.1, 2.0, 4.0});
 
-      TS_GUM_ASSERT_THROWS_NOTHING(d["2.5"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(d["2.5"])
       TS_ASSERT_THROWS(d["0.5"], gum::OutOfBounds)
       TS_ASSERT_THROWS(d["4.5"], gum::OutOfBounds)
 
@@ -66,9 +66,9 @@ namespace gum_tests {
       d.addTick(-std::numeric_limits< double >::infinity());
       d.addTick(std::numeric_limits< double >::infinity());
 
-      TS_GUM_ASSERT_THROWS_NOTHING(d["2.5"]);
-      TS_GUM_ASSERT_THROWS_NOTHING(d["0.5"]);
-      TS_GUM_ASSERT_THROWS_NOTHING(d["4.5"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(d["2.5"])
+      TS_GUM_ASSERT_THROWS_NOTHING(d["0.5"])
+      TS_GUM_ASSERT_THROWS_NOTHING(d["4.5"])
     }
 
     void testAddTicks() {
@@ -199,16 +199,16 @@ namespace gum_tests {
       gum::DiscretizedVariable< double > d("d", "Discretized variable");
       d.addTick(3.1).addTick(2.0).addTick(4.0);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(d["2.5"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(d["2.5"])
       TS_ASSERT_THROWS(d["0.5"], gum::OutOfBounds)
       TS_ASSERT_THROWS(d["4.5"], gum::OutOfBounds)
 
       d.addTick(-std::numeric_limits< double >::infinity());
       d.addTick(std::numeric_limits< double >::infinity());
 
-      TS_GUM_ASSERT_THROWS_NOTHING(d["2.5"]);
-      TS_GUM_ASSERT_THROWS_NOTHING(d["0.5"]);
-      TS_GUM_ASSERT_THROWS_NOTHING(d["4.5"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(d["2.5"])
+      TS_GUM_ASSERT_THROWS_NOTHING(d["0.5"])
+      TS_GUM_ASSERT_THROWS_NOTHING(d["4.5"])
     }
 
     void testFloatLimitsEmpirical() {
@@ -217,9 +217,9 @@ namespace gum_tests {
 
       d.setEmpirical(true);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(d["2.5"]);
-      TS_GUM_ASSERT_THROWS_NOTHING(d["0.5"]);
-      TS_GUM_ASSERT_THROWS_NOTHING(d["4.5"]);
+      TS_GUM_ASSERT_THROWS_NOTHING(d["2.5"])
+      TS_GUM_ASSERT_THROWS_NOTHING(d["0.5"])
+      TS_GUM_ASSERT_THROWS_NOTHING(d["4.5"])
     }
 
     void testNumerical() {

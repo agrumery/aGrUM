@@ -34,8 +34,8 @@ namespace gum_tests {
     public:
     void testConstructor() {
       gum::HashTable< int, int >* table = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING((table = new gum::HashTable< int, int >()));
-      TS_GUM_ASSERT_THROWS_NOTHING(delete table);
+      TS_GUM_ASSERT_THROWS_NOTHING((table = new gum::HashTable< int, int >()))
+      TS_GUM_ASSERT_THROWS_NOTHING(delete table)
 
       gum::HashTable< int, int > t2{std::pair< int, int >(3, 4)};
       table = new gum::HashTable< int, int >(t2);
@@ -78,27 +78,27 @@ namespace gum_tests {
 
     void testInsert() {
       gum::HashTable< int, std::string > table;
-      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(1, "a"));
-      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(2, "b"));
-      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(3, "c"));
-      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(4, "d"));
-      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(5, "e"));
-      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(6, "f"));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(1, "a"))
+      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(2, "b"))
+      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(3, "c"))
+      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(4, "d"))
+      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(5, "e"))
+      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(6, "f"))
 
       int         nb  = 7;
       std::string str = "kkk";
-      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(nb, str));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(nb, str))
       TS_ASSERT(table.exists(1))
       TS_ASSERT(table.exists(7))
 
       std::pair< int, std::string > p(8, "toto");
-      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(p));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(p))
       TS_ASSERT(table.exists(8))
 
-      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(std::pair< int, std::string >(9, "l")));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(std::pair< int, std::string >(9, "l")))
       TS_ASSERT(table.exists(9))
 
-      TS_GUM_ASSERT_THROWS_NOTHING(table.emplace(10, "m"));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.emplace(10, "m"))
       TS_ASSERT(table.exists(10))
       TS_ASSERT(!table.exists(11))
     }
@@ -148,21 +148,21 @@ namespace gum_tests {
       gum::HashTable< int, std::string > table;
       fill(table);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(4));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(4))
       TS_ASSERT_EQUALS(table.size(), (gum::Size)5)
-      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(6));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(6))
       TS_ASSERT_EQUALS(table.size(), (gum::Size)4)
-      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(1));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(1))
       TS_ASSERT_EQUALS(table.size(), (gum::Size)3)
-      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(3));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(3))
       TS_ASSERT_EQUALS(table.size(), (gum::Size)2)
-      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(5));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(5))
       TS_ASSERT_EQUALS(table.size(), (gum::Size)1)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(4));
-      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(-23));
-      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(10000));
-      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(42));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(4))
+      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(-23))
+      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(10000))
+      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(42))
 
       TS_ASSERT_EQUALS(table.size(), (gum::Size)1)
     }
@@ -175,25 +175,25 @@ namespace gum_tests {
       gum::HashTable< int, std::string >::iterator_safe iter
          = table.beginSafe();   // safe iterator needed here
 
-      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(iter));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(iter))
       TS_ASSERT_EQUALS(table.size(), (gum::Size)5)
 
       ++iter;
       ++iter;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(iter));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(iter))
       TS_ASSERT_EQUALS(table.size(), (gum::Size)4)
 
       iter = table.beginSafe();   // safe iterator needed here
-      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(iter));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(iter))
       TS_ASSERT_EQUALS(table.size(), (gum::Size)3)
 
       iter = table.endSafe();
-      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(iter));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(iter))
       TS_ASSERT_EQUALS(table.size(), (gum::Size)3)
 
       iter = table.endSafe();
-      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(iter));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(iter))
       TS_ASSERT_EQUALS(table.size(), (gum::Size)3)
     }
 
@@ -201,21 +201,21 @@ namespace gum_tests {
       gum::HashTable< int, std::string > table;
       fill(table);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(table.eraseByVal("a"));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.eraseByVal("a"))
       TS_ASSERT_EQUALS(table.size(), (gum::Size)5)
-      TS_GUM_ASSERT_THROWS_NOTHING(table.eraseByVal("d"));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.eraseByVal("d"))
       TS_ASSERT_EQUALS(table.size(), (gum::Size)4)
-      TS_GUM_ASSERT_THROWS_NOTHING(table.eraseByVal("e"));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.eraseByVal("e"))
       TS_ASSERT_EQUALS(table.size(), (gum::Size)3)
-      TS_GUM_ASSERT_THROWS_NOTHING(table.eraseByVal("b"));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.eraseByVal("b"))
       TS_ASSERT_EQUALS(table.size(), (gum::Size)2)
-      TS_GUM_ASSERT_THROWS_NOTHING(table.eraseByVal("f"));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.eraseByVal("f"))
       TS_ASSERT_EQUALS(table.size(), (gum::Size)1)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(table.eraseByVal("f"));
-      TS_GUM_ASSERT_THROWS_NOTHING(table.eraseByVal("foo"));
-      TS_GUM_ASSERT_THROWS_NOTHING(table.eraseByVal("bar"));
-      TS_GUM_ASSERT_THROWS_NOTHING(table.eraseByVal("42"));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.eraseByVal("f"))
+      TS_GUM_ASSERT_THROWS_NOTHING(table.eraseByVal("foo"))
+      TS_GUM_ASSERT_THROWS_NOTHING(table.eraseByVal("bar"))
+      TS_GUM_ASSERT_THROWS_NOTHING(table.eraseByVal("42"))
 
       TS_ASSERT_EQUALS(table.size(), (gum::Size)1)
     }
@@ -223,26 +223,26 @@ namespace gum_tests {
     void testEraseAllVal() {
       gum::HashTable< int, std::string > table;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(1, "Space, the final frontiere"));
-      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(2, "Space, the final frontiere"));
-      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(3, "Space, the final frontiere"));
-      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(4, "Space, the final frontiere"));
-      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(5, "Space, the final frontiere"));
-      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(6, "Space, the final frontiere"));
-      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(7, "Space, the final frontiere"));
-      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(8, "Space, the final frontiere"));
-      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(9, "Space, the final frontiere"));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(1, "Space, the final frontiere"))
+      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(2, "Space, the final frontiere"))
+      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(3, "Space, the final frontiere"))
+      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(4, "Space, the final frontiere"))
+      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(5, "Space, the final frontiere"))
+      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(6, "Space, the final frontiere"))
+      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(7, "Space, the final frontiere"))
+      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(8, "Space, the final frontiere"))
+      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(9, "Space, the final frontiere"))
 
-      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(10, "foo"));
-      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(11, "bar"));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(10, "foo"))
+      TS_GUM_ASSERT_THROWS_NOTHING(table.insert(11, "bar"))
 
       TS_ASSERT_EQUALS(table.size(), (gum::Size)11)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(table.eraseAllVal("Space, the final frontiere"));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.eraseAllVal("Space, the final frontiere"))
 
       TS_ASSERT_EQUALS(table.size(), (gum::Size)2)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(table.eraseAllVal("Space, the final frontiere"));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.eraseAllVal("Space, the final frontiere"))
       TS_ASSERT_EQUALS(table.size(), (gum::Size)2)
     }
 
@@ -250,12 +250,12 @@ namespace gum_tests {
       gum::HashTable< int, std::string > table;
 
       TS_ASSERT_EQUALS(table.size(), (gum::Size)0)
-      TS_GUM_ASSERT_THROWS_NOTHING(table.clear());
+      TS_GUM_ASSERT_THROWS_NOTHING(table.clear())
       TS_ASSERT_EQUALS(table.size(), (gum::Size)0)
 
       fill(table);
       TS_ASSERT_EQUALS(table.size(), (gum::Size)6)
-      TS_GUM_ASSERT_THROWS_NOTHING(table.clear());
+      TS_GUM_ASSERT_THROWS_NOTHING(table.clear())
       TS_ASSERT_EQUALS(table.size(), (gum::Size)0)
     }
 
@@ -265,7 +265,7 @@ namespace gum_tests {
       TS_ASSERT(table.empty())
       fill(table);
       TS_ASSERT(!table.empty())
-      TS_GUM_ASSERT_THROWS_NOTHING(table.clear());
+      TS_GUM_ASSERT_THROWS_NOTHING(table.clear())
       TS_ASSERT(table.empty())
     }
 
@@ -284,7 +284,7 @@ namespace gum_tests {
       TS_ASSERT(table.exists(5))
       TS_ASSERT(table.exists(6))
 
-      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(4));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(4))
 
       TS_ASSERT(table.exists(1))
       TS_ASSERT(table.exists(2))
@@ -299,21 +299,21 @@ namespace gum_tests {
       fill(table);
       int val = -1;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(val = table.key(1));
+      TS_GUM_ASSERT_THROWS_NOTHING(val = table.key(1))
       TS_ASSERT_EQUALS(val, 1)
-      TS_GUM_ASSERT_THROWS_NOTHING(val = table.key(2));
+      TS_GUM_ASSERT_THROWS_NOTHING(val = table.key(2))
       TS_ASSERT_EQUALS(val, 2)
-      TS_GUM_ASSERT_THROWS_NOTHING(val = table.key(3));
+      TS_GUM_ASSERT_THROWS_NOTHING(val = table.key(3))
       TS_ASSERT_EQUALS(val, 3)
-      TS_GUM_ASSERT_THROWS_NOTHING(val = table.key(4));
+      TS_GUM_ASSERT_THROWS_NOTHING(val = table.key(4))
       TS_ASSERT_EQUALS(val, 4)
-      TS_GUM_ASSERT_THROWS_NOTHING(val = table.key(5));
+      TS_GUM_ASSERT_THROWS_NOTHING(val = table.key(5))
       TS_ASSERT_EQUALS(val, 5)
-      TS_GUM_ASSERT_THROWS_NOTHING(val = table.key(6));
+      TS_GUM_ASSERT_THROWS_NOTHING(val = table.key(6))
       TS_ASSERT_EQUALS(val, 6)
 
       TS_ASSERT_THROWS_ANYTHING(table.key(42))
-      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(6));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(6))
       TS_ASSERT_THROWS_ANYTHING(table.key(6))
     }
 
@@ -323,21 +323,21 @@ namespace gum_tests {
 
       int key = 0;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(key = table.keyByVal("a"));
+      TS_GUM_ASSERT_THROWS_NOTHING(key = table.keyByVal("a"))
       TS_ASSERT_EQUALS(key, 1)
-      TS_GUM_ASSERT_THROWS_NOTHING(key = table.keyByVal("b"));
+      TS_GUM_ASSERT_THROWS_NOTHING(key = table.keyByVal("b"))
       TS_ASSERT_EQUALS(key, 2)
-      TS_GUM_ASSERT_THROWS_NOTHING(key = table.keyByVal("c"));
+      TS_GUM_ASSERT_THROWS_NOTHING(key = table.keyByVal("c"))
       TS_ASSERT_EQUALS(key, 3)
-      TS_GUM_ASSERT_THROWS_NOTHING(key = table.keyByVal("d"));
+      TS_GUM_ASSERT_THROWS_NOTHING(key = table.keyByVal("d"))
       TS_ASSERT_EQUALS(key, 4)
-      TS_GUM_ASSERT_THROWS_NOTHING(key = table.keyByVal("e"));
+      TS_GUM_ASSERT_THROWS_NOTHING(key = table.keyByVal("e"))
       TS_ASSERT_EQUALS(key, 5)
-      TS_GUM_ASSERT_THROWS_NOTHING(key = table.keyByVal("f"));
+      TS_GUM_ASSERT_THROWS_NOTHING(key = table.keyByVal("f"))
       TS_ASSERT_EQUALS(key, 6)
 
       TS_ASSERT_THROWS_ANYTHING(table.keyByVal("foo"))
-      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(6));
+      TS_GUM_ASSERT_THROWS_NOTHING(table.erase(6))
       TS_ASSERT_THROWS_ANYTHING(table.keyByVal("f"))
     }
 
@@ -345,14 +345,14 @@ namespace gum_tests {
       gum::HashTable< int, std::string > t1, t2, t3;
       fill(t1);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(t2 = t1);
-      TS_GUM_ASSERT_THROWS_NOTHING(t3 = t2);
+      TS_GUM_ASSERT_THROWS_NOTHING(t2 = t1)
+      TS_GUM_ASSERT_THROWS_NOTHING(t3 = t2)
 
       TS_ASSERT_EQUALS(t1, t2)
       TS_ASSERT_EQUALS(t3, t2)
       TS_ASSERT_EQUALS(t1, t3)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(t2.clear());
+      TS_GUM_ASSERT_THROWS_NOTHING(t2.clear())
 
       TS_ASSERT_DIFFERS(t1, t2)
       TS_ASSERT_DIFFERS(t2, t3)
@@ -364,14 +364,14 @@ namespace gum_tests {
       gum::HashTable< int, std::string > t1, t3;
       fill(t1);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(t2 = t1);
-      TS_GUM_ASSERT_THROWS_NOTHING(t3 = t2);
+      TS_GUM_ASSERT_THROWS_NOTHING(t2 = t1)
+      TS_GUM_ASSERT_THROWS_NOTHING(t3 = t2)
 
       TS_ASSERT_EQUALS(t1, t2)
       TS_ASSERT_EQUALS(t3, t2)
       TS_ASSERT_EQUALS(t1, t3)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(t2.clear());
+      TS_GUM_ASSERT_THROWS_NOTHING(t2.clear())
 
       TS_ASSERT_DIFFERS(t1, t2)
       TS_ASSERT_DIFFERS(t2, t3)
@@ -397,12 +397,12 @@ namespace gum_tests {
       gum::HashTable< int, std::string > t1, t2;
       fill(t1);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(t2.insert(1, t1[1]));
-      TS_GUM_ASSERT_THROWS_NOTHING(t2.insert(2, t1[2]));
-      TS_GUM_ASSERT_THROWS_NOTHING(t2.insert(3, t1[3]));
-      TS_GUM_ASSERT_THROWS_NOTHING(t2.insert(4, t1[4]));
-      TS_GUM_ASSERT_THROWS_NOTHING(t2.insert(5, t1[5]));
-      TS_GUM_ASSERT_THROWS_NOTHING(t2.insert(6, t1[6]));
+      TS_GUM_ASSERT_THROWS_NOTHING(t2.insert(1, t1[1]))
+      TS_GUM_ASSERT_THROWS_NOTHING(t2.insert(2, t1[2]))
+      TS_GUM_ASSERT_THROWS_NOTHING(t2.insert(3, t1[3]))
+      TS_GUM_ASSERT_THROWS_NOTHING(t2.insert(4, t1[4]))
+      TS_GUM_ASSERT_THROWS_NOTHING(t2.insert(5, t1[5]))
+      TS_GUM_ASSERT_THROWS_NOTHING(t2.insert(6, t1[6]))
 
       TS_ASSERT_EQUALS(t1, t2)
 
@@ -418,7 +418,7 @@ namespace gum_tests {
       TS_ASSERT(t1.keyUniquenessPolicy())
       TS_ASSERT(t2.keyUniquenessPolicy())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(t2.setKeyUniquenessPolicy(false));
+      TS_GUM_ASSERT_THROWS_NOTHING(t2.setKeyUniquenessPolicy(false))
       TS_ASSERT(!t2.keyUniquenessPolicy())
       TS_ASSERT_EQUALS(t1, t2)
     }
@@ -431,7 +431,7 @@ namespace gum_tests {
       TS_ASSERT(t1.resizePolicy())
       TS_ASSERT(t2.resizePolicy())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(t2.setResizePolicy(false));
+      TS_GUM_ASSERT_THROWS_NOTHING(t2.setResizePolicy(false))
       TS_ASSERT(!t2.resizePolicy())
       TS_ASSERT_EQUALS(t1, t2)
     }
@@ -439,14 +439,14 @@ namespace gum_tests {
     void testSize() {
       gum::HashTable< int, int > t1, t2;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(t2.setResizePolicy(false));
+      TS_GUM_ASSERT_THROWS_NOTHING(t2.setResizePolicy(false))
 
       TS_ASSERT_EQUALS(t1.capacity(), (gum::Size)4)
       TS_ASSERT_EQUALS(t2.capacity(), (gum::Size)4)
 
       for (int i = 0; i < 10000; i++) {
-        TS_GUM_ASSERT_THROWS_NOTHING(t1.insert(i, i));
-        TS_GUM_ASSERT_THROWS_NOTHING(t2.insert(i, i));
+        TS_GUM_ASSERT_THROWS_NOTHING(t1.insert(i, i))
+        TS_GUM_ASSERT_THROWS_NOTHING(t2.insert(i, i))
       }
 
       TS_ASSERT_DIFFERS(t1.capacity(), (gum::Size)4)
@@ -458,11 +458,11 @@ namespace gum_tests {
       gum::HashTable< int, std::string > t1, map1, map2, map3, map4;
       fill(t1);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(map1 = t1.map(&mappingTestFunc_1));
-      TS_GUM_ASSERT_THROWS_NOTHING(map2 = t1.map(&mappingTestFunc_2));
-      TS_GUM_ASSERT_THROWS_NOTHING(map3 = t1.map(&mappingTestFunc_3));
+      TS_GUM_ASSERT_THROWS_NOTHING(map1 = t1.map(&mappingTestFunc_1))
+      TS_GUM_ASSERT_THROWS_NOTHING(map2 = t1.map(&mappingTestFunc_2))
+      TS_GUM_ASSERT_THROWS_NOTHING(map3 = t1.map(&mappingTestFunc_3))
       std::string str = "Space, the final frontiere.";
-      TS_GUM_ASSERT_THROWS_NOTHING(map4 = t1.map(str));
+      TS_GUM_ASSERT_THROWS_NOTHING(map4 = t1.map(str))
 
       for (int i = 1; i < 7; i++) {
         TS_ASSERT_EQUALS(map1[i], t1[i] + ".foo")
@@ -477,12 +477,12 @@ namespace gum_tests {
       gum::HashTable< int, int >         map3, map5;
       fill(t1);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(map1 = t1.map(&mappingTestFunc_1));
-      TS_GUM_ASSERT_THROWS_NOTHING(map2 = t1.map(&mappingTestFunc_2));
-      TS_GUM_ASSERT_THROWS_NOTHING(map3 = t1.map(&mappingTestFunc_4));
+      TS_GUM_ASSERT_THROWS_NOTHING(map1 = t1.map(&mappingTestFunc_1))
+      TS_GUM_ASSERT_THROWS_NOTHING(map2 = t1.map(&mappingTestFunc_2))
+      TS_GUM_ASSERT_THROWS_NOTHING(map3 = t1.map(&mappingTestFunc_4))
       std::string str = "Space, the final frontiere.";
-      TS_GUM_ASSERT_THROWS_NOTHING(map4 = t1.map(str));
-      TS_GUM_ASSERT_THROWS_NOTHING(map5 = t1.map(12));
+      TS_GUM_ASSERT_THROWS_NOTHING(map4 = t1.map(str))
+      TS_GUM_ASSERT_THROWS_NOTHING(map5 = t1.map(12))
 
       for (int i = 1; i < 7; i++) {
         TS_ASSERT_EQUALS(map1[i], t1[i] + ".foo")

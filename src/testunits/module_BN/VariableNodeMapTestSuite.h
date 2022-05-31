@@ -62,27 +62,27 @@ namespace gum_tests {
 
     void testConstructor() {
       gum::BayesNet< double >* topology = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(topology = new gum::BayesNet< double >());
+      TS_GUM_ASSERT_THROWS_NOTHING(topology = new gum::BayesNet< double >())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(if (topology) delete topology);
+      TS_GUM_ASSERT_THROWS_NOTHING(if (topology) delete topology)
     }
 
     void testInsertion() {
       gum::BayesNet< double >  topo;
       gum::List< gum::NodeId > idList;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(topo.add(*var1)));
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(topo.add(*var2)));
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(topo.add(*var3)));
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(topo.add(*var4)));
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(topo.add(*var5)));
+      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(topo.add(*var1)))
+      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(topo.add(*var2)))
+      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(topo.add(*var3)))
+      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(topo.add(*var4)))
+      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(topo.add(*var5)))
 
       TS_ASSERT_EQUALS(topo.size(), (gum::Size)5)
       TS_ASSERT_EQUALS(topo.dag().size(), (gum::Size)5)
 
       gum::NodeId ind = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(const gum::DiscreteVariable& varPtr = topo.variable(idList[0]);
-                                   ind                                 = topo.nodeId(varPtr););
+                                   ind                                 = topo.nodeId(varPtr);)
       TS_ASSERT_EQUALS(idList[0], ind)
 
       TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&topo.variable(idList[0])), *var1)
@@ -102,12 +102,12 @@ namespace gum_tests {
       idList.insert(topo.add(*var4));
       idList.insert(topo.add(*var5));
 
-      TS_GUM_ASSERT_THROWS_NOTHING(topo.addArc(idList[0], idList[2]));
-      TS_GUM_ASSERT_THROWS_NOTHING(topo.addArc(idList[2], idList[4]));
-      TS_GUM_ASSERT_THROWS_NOTHING(topo.addArc(idList[1], idList[3]));
-      TS_GUM_ASSERT_THROWS_NOTHING(topo.addArc(idList[0], idList[3]));
-      TS_GUM_ASSERT_THROWS_NOTHING(topo.addArc(idList[3], idList[4]));
-      TS_GUM_ASSERT_THROWS_NOTHING(topo.addArc(idList[1], idList[4]));
+      TS_GUM_ASSERT_THROWS_NOTHING(topo.addArc(idList[0], idList[2]))
+      TS_GUM_ASSERT_THROWS_NOTHING(topo.addArc(idList[2], idList[4]))
+      TS_GUM_ASSERT_THROWS_NOTHING(topo.addArc(idList[1], idList[3]))
+      TS_GUM_ASSERT_THROWS_NOTHING(topo.addArc(idList[0], idList[3]))
+      TS_GUM_ASSERT_THROWS_NOTHING(topo.addArc(idList[3], idList[4]))
+      TS_GUM_ASSERT_THROWS_NOTHING(topo.addArc(idList[1], idList[4]))
 
       TS_ASSERT_EQUALS(topo.dag().sizeArcs(), (gum::Size)6)
     }
@@ -161,12 +161,12 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(topo.dag().size(), (gum::Size)5)
       TS_ASSERT_EQUALS(topo.dag().sizeArcs(), (gum::Size)6)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(topo.eraseArc(gum::Arc(idList[0], idList[2])));
-      TS_GUM_ASSERT_THROWS_NOTHING(topo.eraseArc(gum::Arc(idList[2], idList[4])));
-      TS_GUM_ASSERT_THROWS_NOTHING(topo.eraseArc(gum::Arc(idList[1], idList[3])));
-      TS_GUM_ASSERT_THROWS_NOTHING(topo.eraseArc(gum::Arc(idList[0], idList[3])));
-      TS_GUM_ASSERT_THROWS_NOTHING(topo.eraseArc(gum::Arc(idList[3], idList[4])));
-      TS_GUM_ASSERT_THROWS_NOTHING(topo.eraseArc(gum::Arc(idList[1], idList[4])));
+      TS_GUM_ASSERT_THROWS_NOTHING(topo.eraseArc(gum::Arc(idList[0], idList[2])))
+      TS_GUM_ASSERT_THROWS_NOTHING(topo.eraseArc(gum::Arc(idList[2], idList[4])))
+      TS_GUM_ASSERT_THROWS_NOTHING(topo.eraseArc(gum::Arc(idList[1], idList[3])))
+      TS_GUM_ASSERT_THROWS_NOTHING(topo.eraseArc(gum::Arc(idList[0], idList[3])))
+      TS_GUM_ASSERT_THROWS_NOTHING(topo.eraseArc(gum::Arc(idList[3], idList[4])))
+      TS_GUM_ASSERT_THROWS_NOTHING(topo.eraseArc(gum::Arc(idList[1], idList[4])))
 
       TS_ASSERT(!topo.empty())
       TS_ASSERT(!topo.dag().empty())
@@ -188,7 +188,7 @@ namespace gum_tests {
       fill(topo, idList);
 
       gum::UndiGraph graph;
-      TS_GUM_ASSERT_THROWS_NOTHING(graph = topo.moralGraph());
+      TS_GUM_ASSERT_THROWS_NOTHING(graph = topo.moralGraph())
       TS_ASSERT_EQUALS(graph, getRealMoralGraph(topo, idList))
     }
 
@@ -199,7 +199,7 @@ namespace gum_tests {
       fill(topo, idList);
 
       gum::Sequence< gum::NodeId > topoOrder;
-      // TS_GUM_ASSERT_THROWS_NOTHING( topoOrder = topo.topologicalOrder() );
+      // TS_GUM_ASSERT_THROWS_NOTHING( topoOrder = topo.topologicalOrder() )
 
       try {
         topoOrder = topo.topologicalOrder();

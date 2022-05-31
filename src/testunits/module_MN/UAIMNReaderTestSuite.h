@@ -46,8 +46,8 @@ namespace gum_tests {
       gum::MarkovNet< double > net;
 
       gum::UAIMNReader< double >* reader = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(reader = new gum::UAIMNReader< double >(&net, file));
-      TS_GUM_ASSERT_THROWS_NOTHING(delete reader);
+      TS_GUM_ASSERT_THROWS_NOTHING(reader = new gum::UAIMNReader< double >(&net, file))
+      TS_GUM_ASSERT_THROWS_NOTHING(delete reader)
     }
 
     void testRead_file1() {
@@ -71,7 +71,7 @@ namespace gum_tests {
       gum::UAIMNReader< double > reader(net, file);
 
       gum::Size nbErr = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed())
       TS_ASSERT_EQUALS(nbErr, (gum::Size)0)
 
       TS_ASSERT_DIFFERS(net, nullptr)
@@ -125,7 +125,7 @@ namespace gum_tests {
       gum::UAIMNReader< double > reader(&net, file);
 
       gum::Size nbErr = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed())
       TS_ASSERT_EQUALS(nbErr, (gum::Size)0)
 
       TS_ASSERT(!net.empty())
@@ -134,7 +134,7 @@ namespace gum_tests {
       net = gum::MarkovNet< double >::fastPrototype("A--B");
       gum::UAIMNReader< double > reader2(&net, file);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader2.proceed());
+      TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader2.proceed())
       TS_ASSERT_EQUALS(nbErr, (gum::Size)0)
 
       TS_ASSERT(!net.empty())

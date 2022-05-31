@@ -55,7 +55,7 @@ namespace gum_tests {
 
       heap1.erase(10);
       TS_ASSERT_EQUALS(heap1.size(), (gum::Size)3)
-      TS_GUM_ASSERT_THROWS_NOTHING(heap1.erase(150));
+      TS_GUM_ASSERT_THROWS_NOTHING(heap1.erase(150))
 
       heap1.eraseByPos(0);
       TS_ASSERT_EQUALS(heap1.top(), 23)
@@ -88,7 +88,7 @@ namespace gum_tests {
 
       heap1.erase(10);
       TS_ASSERT_EQUALS(heap1.size(), (gum::Size)3)
-      TS_GUM_ASSERT_THROWS_NOTHING(heap1.erase(150));
+      TS_GUM_ASSERT_THROWS_NOTHING(heap1.erase(150))
 
       heap1.eraseByPos(0);
       TS_ASSERT_EQUALS(heap1.top(), 8)
@@ -141,7 +141,7 @@ namespace gum_tests {
 
       heap1.eraseByPos(0);
       TS_ASSERT_EQUALS(heap1.top(), 8)
-      TS_GUM_ASSERT_THROWS_NOTHING(heap1.eraseByPos(150));
+      TS_GUM_ASSERT_THROWS_NOTHING(heap1.eraseByPos(150))
       TS_ASSERT_EQUALS(heap1.size(), (gum::Size)6)
       heap1.eraseByPos(4);
       TS_ASSERT_EQUALS(heap1.size(), (gum::Size)5)
@@ -202,7 +202,7 @@ namespace gum_tests {
       gum::Set< int > s6;
       heap1.erase(s2);
       TS_ASSERT_EQUALS(heap1.size(), (gum::Size)3)
-      TS_GUM_ASSERT_THROWS_NOTHING(heap1.erase(s6));
+      TS_GUM_ASSERT_THROWS_NOTHING(heap1.erase(s6))
 
       heap1.eraseByPos(0);
       TS_ASSERT_EQUALS(heap1.top(), s4)

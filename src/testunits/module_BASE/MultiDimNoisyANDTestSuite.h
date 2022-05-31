@@ -44,14 +44,14 @@ namespace gum_tests {
       TS_ASSERT_THROWS(p.causalWeight(d, 0.0f), gum::InvalidArgument)
 
       // adding causes
-      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
+      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d)
 
       // trying to set 0 for causal weight
       TS_ASSERT_THROWS(p.causalWeight(d, 0.0f), gum::OutOfBounds)
 
       // doing the right stuf :)
-      TS_GUM_ASSERT_THROWS_NOTHING(p.causalWeight(b, 0.4f));
-      TS_GUM_ASSERT_THROWS_NOTHING(p.causalWeight(d, 0.7f));
+      TS_GUM_ASSERT_THROWS_NOTHING(p.causalWeight(b, 0.4f))
+      TS_GUM_ASSERT_THROWS_NOTHING(p.causalWeight(d, 0.7f))
       TS_ASSERT_EQUALS(
          p.toString(),
          "a:Labelized({0|1})=noisyAND([0.2], b:Labelized({0|1})[0.4], c:Labelized({0|1})"

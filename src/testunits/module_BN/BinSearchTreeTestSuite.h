@@ -31,10 +31,10 @@ namespace gum_tests {
     void testConstructors() {
       gum::BinSearchTree< int >* tree = 0;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(tree = new gum::BinSearchTree< int >);
+      TS_GUM_ASSERT_THROWS_NOTHING(tree = new gum::BinSearchTree< int >)
       TS_ASSERT_EQUALS(tree->size(), (gum::Size)0)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::BinSearchTree< int > tree2(*tree));
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::BinSearchTree< int > tree2(*tree))
       gum::BinSearchTree< int > tree3;
       gum::BinSearchTree< int > tree4 = *tree;
       tree3                           = tree4;

@@ -66,22 +66,22 @@ namespace gum_tests {
 
     void testConstructors() {
       gum::prm::StructuredBayesBall< double >* bb = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(bb = new gum::prm::StructuredBayesBall< double >(*prm_inf));
-      TS_GUM_ASSERT_THROWS_NOTHING(delete bb);
-      TS_GUM_ASSERT_THROWS_NOTHING(bb = new gum::prm::StructuredBayesBall< double >(*small_inf));
-      TS_GUM_ASSERT_THROWS_NOTHING(delete bb);
+      TS_GUM_ASSERT_THROWS_NOTHING(bb = new gum::prm::StructuredBayesBall< double >(*prm_inf))
+      TS_GUM_ASSERT_THROWS_NOTHING(delete bb)
+      TS_GUM_ASSERT_THROWS_NOTHING(bb = new gum::prm::StructuredBayesBall< double >(*small_inf))
+      TS_GUM_ASSERT_THROWS_NOTHING(delete bb)
     }
 
     /// Checking that when a root is queried and there is no evidence, the
     /// requisite nodes set contains only the root node.
     void testRootsNoObs() {
       gum::prm::StructuredBayesBall< double >* bb = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(bb = new gum::prm::StructuredBayesBall< double >(*prm_inf));
+      TS_GUM_ASSERT_THROWS_NOTHING(bb = new gum::prm::StructuredBayesBall< double >(*prm_inf))
 
       for (auto i = sys->begin(); i != sys->end(); ++i) {
         for (auto a = (*(i.val())).begin(); a != (*(i.val())).end(); ++a) {
           if ((*(i.val())).type().containerDag().parents((*(a.val())).id()).empty()) {
-            TS_GUM_ASSERT_THROWS_NOTHING(bb->compute(i.val(), (*(a.val())).id()));
+            TS_GUM_ASSERT_THROWS_NOTHING(bb->compute(i.val(), (*(a.val())).id()))
 
             for (auto j = sys->begin(); j != sys->end(); ++j) {
               if ((j.val()) != (i.val())) {
@@ -97,19 +97,19 @@ namespace gum_tests {
         }
       }
 
-      TS_GUM_ASSERT_THROWS_NOTHING(delete bb);
+      TS_GUM_ASSERT_THROWS_NOTHING(delete bb)
     }
 
     /// Checking that when a root is queried and there is no evidence, the
     /// requisite nodes set contains only the root node.
     void testRootsNoObsSmall() {
       gum::prm::StructuredBayesBall< double >* bb = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(bb = new gum::prm::StructuredBayesBall< double >(*small_inf));
+      TS_GUM_ASSERT_THROWS_NOTHING(bb = new gum::prm::StructuredBayesBall< double >(*small_inf))
 
       for (auto i = small_sys->begin(); i != small_sys->end(); ++i) {
         for (auto a = (*(i.val())).begin(); a != (*(i.val())).end(); ++a) {
           if ((*(i.val())).type().containerDag().parents((*(a.val())).id()).empty()) {
-            TS_GUM_ASSERT_THROWS_NOTHING(bb->compute(i.val(), (*(a.val())).id()));
+            TS_GUM_ASSERT_THROWS_NOTHING(bb->compute(i.val(), (*(a.val())).id()))
 
             for (gum::prm::PRMSystem< double >::iterator j = small_sys->begin();
                  j != small_sys->end();
@@ -127,7 +127,7 @@ namespace gum_tests {
         }
       }
 
-      TS_GUM_ASSERT_THROWS_NOTHING(delete bb);
+      TS_GUM_ASSERT_THROWS_NOTHING(delete bb)
     }
   };
 

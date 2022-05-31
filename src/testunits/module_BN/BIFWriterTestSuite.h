@@ -116,8 +116,11 @@ namespace gum_tests {
     void setUp() {
       bn = new gum::BayesNet< double >();
 
-      gum::LabelizedVariable n1("1", "", 2), n2("2", "", 2), n3("3", "", 2);
-      gum::LabelizedVariable n4("4", "", 2), n5("5", "", 3);
+      gum::LabelizedVariable n1("1", "", 2);
+      gum::LabelizedVariable n2("2", "", 2);
+      gum::LabelizedVariable n3("3", "", 2);
+      gum::LabelizedVariable n4("4", "", 2);
+      gum::LabelizedVariable n5("5", "", 3);
 
       i1 = bn->add(n1);
       i2 = bn->add(n2);
@@ -139,20 +142,20 @@ namespace gum_tests {
 
     void testConstuctor() {
       gum::BIFWriter< double >* writer = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::BIFWriter< double >());
+      TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::BIFWriter< double >())
       delete writer;
     }
 
     void testWriter_ostream() {
       gum::BIFWriter< double > writer;
       // Uncomment this to check the ouput
-      // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
+      // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn))
     }
 
     void testWriter_string() {
       gum::BIFWriter< double > writer;
       std::string              file = GET_RESSOURCES_PATH("outputs/BIFWriter_TestFile.txt");
-      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn))
       TS_ASSERT(__compareFile(file, GET_RESSOURCES_PATH("txt/BIFWriter_Model.txt")))
     }
 

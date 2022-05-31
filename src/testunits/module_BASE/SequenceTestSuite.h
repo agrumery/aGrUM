@@ -33,16 +33,16 @@ namespace gum_tests {
     public:
     void testConstructor1() {
       gum::Sequence< int >* p_seq = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(p_seq = new gum::Sequence< int >());
+      TS_GUM_ASSERT_THROWS_NOTHING(p_seq = new gum::Sequence< int >())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(if (p_seq) delete (p_seq));
+      TS_GUM_ASSERT_THROWS_NOTHING(if (p_seq) delete (p_seq))
 
       gum::Sequence< int > seq;
-      TS_GUM_ASSERT_THROWS_NOTHING(seq << 1);
-      TS_GUM_ASSERT_THROWS_NOTHING(seq << 3);
-      TS_GUM_ASSERT_THROWS_NOTHING(seq << 5);
-      TS_GUM_ASSERT_THROWS_NOTHING(seq << 2);
-      TS_GUM_ASSERT_THROWS_NOTHING(seq << 4);
+      TS_GUM_ASSERT_THROWS_NOTHING(seq << 1)
+      TS_GUM_ASSERT_THROWS_NOTHING(seq << 3)
+      TS_GUM_ASSERT_THROWS_NOTHING(seq << 5)
+      TS_GUM_ASSERT_THROWS_NOTHING(seq << 2)
+      TS_GUM_ASSERT_THROWS_NOTHING(seq << 4)
 
       TS_ASSERT_EQUALS(seq.size(), (gum::Size)5)
 
@@ -71,9 +71,9 @@ namespace gum_tests {
 
     void testConstructor2() {
       gum::Sequence< std::string >* p_seq = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(p_seq = new gum::Sequence< std::string >());
+      TS_GUM_ASSERT_THROWS_NOTHING(p_seq = new gum::Sequence< std::string >())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(if (p_seq) delete (p_seq));
+      TS_GUM_ASSERT_THROWS_NOTHING(if (p_seq) delete (p_seq))
 
       std::string p[5];
       p[0] = "aa";
@@ -83,11 +83,11 @@ namespace gum_tests {
       p[4] = "ee";
 
       gum::Sequence< std::string > seq;
-      TS_GUM_ASSERT_THROWS_NOTHING(seq << p[0]);
-      TS_GUM_ASSERT_THROWS_NOTHING(seq << p[2]);
-      TS_GUM_ASSERT_THROWS_NOTHING(seq << p[4]);
-      TS_GUM_ASSERT_THROWS_NOTHING(seq << p[1]);
-      TS_GUM_ASSERT_THROWS_NOTHING(seq << p[3]);
+      TS_GUM_ASSERT_THROWS_NOTHING(seq << p[0])
+      TS_GUM_ASSERT_THROWS_NOTHING(seq << p[2])
+      TS_GUM_ASSERT_THROWS_NOTHING(seq << p[4])
+      TS_GUM_ASSERT_THROWS_NOTHING(seq << p[1])
+      TS_GUM_ASSERT_THROWS_NOTHING(seq << p[3])
 
       TS_ASSERT_EQUALS(seq.size(), (gum::Size)5)
 
@@ -129,18 +129,18 @@ namespace gum_tests {
 
     void testCopy() {
       gum::Sequence< int > seq;
-      TS_GUM_ASSERT_THROWS_NOTHING(seq << 1);
-      TS_GUM_ASSERT_THROWS_NOTHING(seq << 3);
-      TS_GUM_ASSERT_THROWS_NOTHING(seq << 5);
-      TS_GUM_ASSERT_THROWS_NOTHING(seq << 2);
-      TS_GUM_ASSERT_THROWS_NOTHING(seq << 4);
+      TS_GUM_ASSERT_THROWS_NOTHING(seq << 1)
+      TS_GUM_ASSERT_THROWS_NOTHING(seq << 3)
+      TS_GUM_ASSERT_THROWS_NOTHING(seq << 5)
+      TS_GUM_ASSERT_THROWS_NOTHING(seq << 2)
+      TS_GUM_ASSERT_THROWS_NOTHING(seq << 4)
 
       gum::Sequence< int >* p_seq2 = nullptr;
       TS_ASSERT_EQUALS(seq.toString(), "[0:1 - 1:3 - 2:5 - 3:2 - 4:4]")
-      TS_GUM_ASSERT_THROWS_NOTHING(p_seq2 = new gum::Sequence< int >(seq));
+      TS_GUM_ASSERT_THROWS_NOTHING(p_seq2 = new gum::Sequence< int >(seq))
       TS_ASSERT_EQUALS(p_seq2->toString(), "[0:1 - 1:3 - 2:5 - 3:2 - 4:4]")
 
-      TS_GUM_ASSERT_THROWS_NOTHING(if (p_seq2) delete (p_seq2));
+      TS_GUM_ASSERT_THROWS_NOTHING(if (p_seq2) delete (p_seq2))
 
       TS_GUM_ASSERT_THROWS_NOTHING(
          gum::Sequence< int > seq2(seq);
@@ -206,7 +206,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(seq << "aaaa"
                                        << "b"
                                        << "cc");
-      TS_GUM_ASSERT_THROWS_NOTHING(seq.insert("ddd"));
+      TS_GUM_ASSERT_THROWS_NOTHING(seq.insert("ddd"))
 
       TS_ASSERT_THROWS(seq.insert("ddd"), gum::DuplicateElement)
       TS_ASSERT_THROWS(seq << "ddd", gum::DuplicateElement)
@@ -223,16 +223,16 @@ namespace gum_tests {
       TS_ASSERT_THROWS(seq.pos("aaaaaaa"), gum::NotFound)
 
       TS_ASSERT_EQUALS(seq.toString(), "[0:aaaa - 1:b - 2:cc - 3:ddd]")
-      TS_GUM_ASSERT_THROWS_NOTHING(seq.setAtPos(1, "boom"));
+      TS_GUM_ASSERT_THROWS_NOTHING(seq.setAtPos(1, "boom"))
       TS_ASSERT_EQUALS(seq.toString(), "[0:aaaa - 1:boom - 2:cc - 3:ddd]")
       TS_ASSERT_THROWS(seq.setAtPos(15, "crach"), gum::NotFound)
       TS_ASSERT_THROWS(seq.setAtPos(1, "aaaa"), gum::DuplicateElement)
 
       TS_ASSERT_EQUALS(seq.toString(), "[0:aaaa - 1:boom - 2:cc - 3:ddd]")
 
-      TS_GUM_ASSERT_THROWS_NOTHING(seq.swap(0, 2));
+      TS_GUM_ASSERT_THROWS_NOTHING(seq.swap(0, 2))
       TS_ASSERT_EQUALS(seq.toString(), "[0:cc - 1:boom - 2:aaaa - 3:ddd]")
-      TS_GUM_ASSERT_THROWS_NOTHING(seq.swap(0, 3));
+      TS_GUM_ASSERT_THROWS_NOTHING(seq.swap(0, 3))
       TS_ASSERT_EQUALS(seq.toString(), "[0:ddd - 1:boom - 2:aaaa - 3:cc]")
       TS_ASSERT_THROWS(seq.swap(1, 10), gum::OutOfBounds)
       TS_ASSERT_THROWS(seq.swap(10, 1), gum::OutOfBounds)
@@ -245,13 +245,13 @@ namespace gum_tests {
       fill(seq);
 
       TS_ASSERT_EQUALS(seq.toString(), "[0:1 - 1:3 - 2:5 - 3:2 - 4:4]")
-      TS_GUM_ASSERT_THROWS_NOTHING(seq >> 2);
+      TS_GUM_ASSERT_THROWS_NOTHING(seq >> 2)
       TS_ASSERT_EQUALS(seq.toString(), "[0:1 - 1:3 - 2:5 - 3:4]")
-      TS_GUM_ASSERT_THROWS_NOTHING(seq.erase(1));
+      TS_GUM_ASSERT_THROWS_NOTHING(seq.erase(1))
       TS_ASSERT_EQUALS(seq.toString(), "[0:3 - 1:5 - 2:4]")
-      TS_GUM_ASSERT_THROWS_NOTHING(seq >> 4);
+      TS_GUM_ASSERT_THROWS_NOTHING(seq >> 4)
       TS_ASSERT_EQUALS(seq.toString(), "[0:3 - 1:5]")
-      TS_GUM_ASSERT_THROWS_NOTHING(seq >> 4);
+      TS_GUM_ASSERT_THROWS_NOTHING(seq >> 4)
       TS_ASSERT_EQUALS(seq.toString(), "[0:3 - 1:5]")
 
       seq.clear();

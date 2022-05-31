@@ -34,8 +34,8 @@ namespace gum_tests {
     public:
     void testConstructor() {
       gum::Set< int >* set = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(set = new gum::Set< int >());
-      TS_GUM_ASSERT_THROWS_NOTHING(delete set);
+      TS_GUM_ASSERT_THROWS_NOTHING(set = new gum::Set< int >())
+      TS_GUM_ASSERT_THROWS_NOTHING(delete set)
 
       gum::Set< int > set2{1, 2, 3};
       set = new gum::Set< int >(set2);
@@ -80,25 +80,25 @@ namespace gum_tests {
 
     void testInsert() {
       gum::Set< std::string > set;
-      TS_GUM_ASSERT_THROWS_NOTHING(set.insert("a"));
-      TS_GUM_ASSERT_THROWS_NOTHING(set.insert("b"));
-      TS_GUM_ASSERT_THROWS_NOTHING(set.insert("c"));
-      TS_GUM_ASSERT_THROWS_NOTHING(set.insert("d"));
-      TS_GUM_ASSERT_THROWS_NOTHING(set.insert("e"));
-      TS_GUM_ASSERT_THROWS_NOTHING(set.insert("f"));
+      TS_GUM_ASSERT_THROWS_NOTHING(set.insert("a"))
+      TS_GUM_ASSERT_THROWS_NOTHING(set.insert("b"))
+      TS_GUM_ASSERT_THROWS_NOTHING(set.insert("c"))
+      TS_GUM_ASSERT_THROWS_NOTHING(set.insert("d"))
+      TS_GUM_ASSERT_THROWS_NOTHING(set.insert("e"))
+      TS_GUM_ASSERT_THROWS_NOTHING(set.insert("f"))
       TS_ASSERT(set.exists("f"))
 
       std::string x = "aaa";
-      TS_GUM_ASSERT_THROWS_NOTHING(set.insert(x));
+      TS_GUM_ASSERT_THROWS_NOTHING(set.insert(x))
       TS_ASSERT(set.exists(x))
       TS_ASSERT(set.exists("aaa"))
 
-      TS_GUM_ASSERT_THROWS_NOTHING(set.emplace("xxx"));
+      TS_GUM_ASSERT_THROWS_NOTHING(set.emplace("xxx"))
       TS_ASSERT(set.exists("xxx"))
 
-      TS_GUM_ASSERT_THROWS_NOTHING(set << "ab");
+      TS_GUM_ASSERT_THROWS_NOTHING(set << "ab")
       x = "ac";
-      TS_GUM_ASSERT_THROWS_NOTHING(set << x);
+      TS_GUM_ASSERT_THROWS_NOTHING(set << x)
     }
 
     void testEquality() {
@@ -153,27 +153,27 @@ namespace gum_tests {
       gum::Set< int > set;
       fill(set);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(set.erase(4));
+      TS_GUM_ASSERT_THROWS_NOTHING(set.erase(4))
       TS_ASSERT_EQUALS(set.size(), (gum::Size)5)
-      TS_GUM_ASSERT_THROWS_NOTHING(set.erase(6));
+      TS_GUM_ASSERT_THROWS_NOTHING(set.erase(6))
       TS_ASSERT_EQUALS(set.size(), (gum::Size)4)
-      TS_GUM_ASSERT_THROWS_NOTHING(set.erase(1));
+      TS_GUM_ASSERT_THROWS_NOTHING(set.erase(1))
       TS_ASSERT_EQUALS(set.size(), (gum::Size)3)
-      TS_GUM_ASSERT_THROWS_NOTHING(set.erase(3));
+      TS_GUM_ASSERT_THROWS_NOTHING(set.erase(3))
       TS_ASSERT_EQUALS(set.size(), (gum::Size)2)
-      TS_GUM_ASSERT_THROWS_NOTHING(set.erase(5));
+      TS_GUM_ASSERT_THROWS_NOTHING(set.erase(5))
       TS_ASSERT_EQUALS(set.size(), (gum::Size)1)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(set.erase(4));
-      TS_GUM_ASSERT_THROWS_NOTHING(set.erase(-23));
-      TS_GUM_ASSERT_THROWS_NOTHING(set.erase(10000));
-      TS_GUM_ASSERT_THROWS_NOTHING(set.erase(42));
+      TS_GUM_ASSERT_THROWS_NOTHING(set.erase(4))
+      TS_GUM_ASSERT_THROWS_NOTHING(set.erase(-23))
+      TS_GUM_ASSERT_THROWS_NOTHING(set.erase(10000))
+      TS_GUM_ASSERT_THROWS_NOTHING(set.erase(42))
 
       TS_ASSERT_EQUALS(set.size(), (gum::Size)1)
 
       gum::Set< int > set2;
       fill(set2);
-      TS_GUM_ASSERT_THROWS_NOTHING(set2 >> 4);
+      TS_GUM_ASSERT_THROWS_NOTHING(set2 >> 4)
     }
 
     void testIterator() {
@@ -215,27 +215,27 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(set.size(), (gum::Size)6)
 
       auto iter = set.beginSafe();   // safe iterator needed here
-      TS_GUM_ASSERT_THROWS_NOTHING(set.erase(iter));
+      TS_GUM_ASSERT_THROWS_NOTHING(set.erase(iter))
       TS_ASSERT_EQUALS(set.size(), (gum::Size)5)
 
       ++iter;
       ++iter;
-      TS_GUM_ASSERT_THROWS_NOTHING(set.erase(iter));
+      TS_GUM_ASSERT_THROWS_NOTHING(set.erase(iter))
       TS_ASSERT_EQUALS(set.size(), (gum::Size)4)
 
       iter = set.begin();
-      TS_GUM_ASSERT_THROWS_NOTHING(set.erase(iter));
+      TS_GUM_ASSERT_THROWS_NOTHING(set.erase(iter))
       TS_ASSERT_EQUALS(set.size(), (gum::Size)3)
 
       iter = set.end();
-      TS_GUM_ASSERT_THROWS_NOTHING(set.erase(iter));
+      TS_GUM_ASSERT_THROWS_NOTHING(set.erase(iter))
       TS_ASSERT_EQUALS(set.size(), (gum::Size)3)
 
       gum::Set< int > set2;
       fill(set2);
       TS_ASSERT_EQUALS(set2.size(), (gum::Size)6)
       iter = set2.beginSafe();   // safe iterator needed here
-      TS_GUM_ASSERT_THROWS_NOTHING(set2.erase(iter));
+      TS_GUM_ASSERT_THROWS_NOTHING(set2.erase(iter))
       TS_ASSERT_EQUALS(set2.size(), (gum::Size)5)
     }
 
@@ -243,12 +243,12 @@ namespace gum_tests {
       gum::Set< int > set;
 
       TS_ASSERT_EQUALS(set.size(), (gum::Size)0)
-      TS_GUM_ASSERT_THROWS_NOTHING(set.clear());
+      TS_GUM_ASSERT_THROWS_NOTHING(set.clear())
       TS_ASSERT_EQUALS(set.size(), (gum::Size)0)
 
       fill(set);
       TS_ASSERT_EQUALS(set.size(), (gum::Size)6)
-      TS_GUM_ASSERT_THROWS_NOTHING(set.clear());
+      TS_GUM_ASSERT_THROWS_NOTHING(set.clear())
       TS_ASSERT_EQUALS(set.size(), (gum::Size)0)
     }
 
@@ -258,7 +258,7 @@ namespace gum_tests {
       TS_ASSERT(set.empty())
       fill(set);
       TS_ASSERT(!set.empty())
-      TS_GUM_ASSERT_THROWS_NOTHING(set.clear());
+      TS_GUM_ASSERT_THROWS_NOTHING(set.clear())
       TS_ASSERT(set.empty())
     }
 
@@ -277,7 +277,7 @@ namespace gum_tests {
       TS_ASSERT(set.contains(5))
       TS_ASSERT(set.contains(6))
 
-      TS_GUM_ASSERT_THROWS_NOTHING(set.erase(4));
+      TS_GUM_ASSERT_THROWS_NOTHING(set.erase(4))
 
       TS_ASSERT(set.contains(1))
       TS_ASSERT(set.contains(2))
@@ -291,14 +291,14 @@ namespace gum_tests {
       gum::Set< int > t1, t2, t3;
       fill(t1);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(t2 = t1);
-      TS_GUM_ASSERT_THROWS_NOTHING(t3 = t2);
+      TS_GUM_ASSERT_THROWS_NOTHING(t2 = t1)
+      TS_GUM_ASSERT_THROWS_NOTHING(t3 = t2)
 
       TS_ASSERT_EQUALS(t1, t2)
       TS_ASSERT_EQUALS(t3, t2)
       TS_ASSERT_EQUALS(t1, t3)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(t2.clear());
+      TS_GUM_ASSERT_THROWS_NOTHING(t2.clear())
 
       TS_ASSERT_DIFFERS(t1, t2)
       TS_ASSERT_DIFFERS(t2, t3)
@@ -312,31 +312,31 @@ namespace gum_tests {
       fillEven(t2);
       fillOdd(t3);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(fakeInter = t1 * t2);
+      TS_GUM_ASSERT_THROWS_NOTHING(fakeInter = t1 * t2)
       inter = getIntersection(fakeInter);
       TS_ASSERT_EQUALS(inter, t2)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(fakeInter = t1 * t3);
+      TS_GUM_ASSERT_THROWS_NOTHING(fakeInter = t1 * t3)
       inter = getIntersection(fakeInter);
       TS_ASSERT_EQUALS(inter, t3)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(fakeInter = t1 * t1);
+      TS_GUM_ASSERT_THROWS_NOTHING(fakeInter = t1 * t1)
       inter = getIntersection(fakeInter);
       TS_ASSERT_EQUALS(inter, t1)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(fakeInter = t2 * t2);
+      TS_GUM_ASSERT_THROWS_NOTHING(fakeInter = t2 * t2)
       inter = getIntersection(fakeInter);
       TS_ASSERT_EQUALS(inter, t2)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(fakeInter = t3 * t3);
+      TS_GUM_ASSERT_THROWS_NOTHING(fakeInter = t3 * t3)
       inter = getIntersection(fakeInter);
       TS_ASSERT_EQUALS(inter, t3)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(fakeInter = t2 * t3);
+      TS_GUM_ASSERT_THROWS_NOTHING(fakeInter = t2 * t3)
       inter = getIntersection(fakeInter);
       TS_ASSERT_EQUALS(inter, empty)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(fakeInter = t3 * t2);
+      TS_GUM_ASSERT_THROWS_NOTHING(fakeInter = t3 * t2)
       inter = getIntersection(fakeInter);
       TS_ASSERT_EQUALS(inter, empty)
     }
@@ -348,31 +348,31 @@ namespace gum_tests {
       fillEven(t2);
       fillOdd(t3);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(fakeUnion = empty + t2);
+      TS_GUM_ASSERT_THROWS_NOTHING(fakeUnion = empty + t2)
       unionSet = getUnion(fakeUnion);
       TS_ASSERT_EQUALS(unionSet, t2)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(fakeUnion = empty + t3);
+      TS_GUM_ASSERT_THROWS_NOTHING(fakeUnion = empty + t3)
       unionSet = getUnion(fakeUnion);
       TS_ASSERT_EQUALS(unionSet, t3)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(fakeUnion = t1 + t1);
+      TS_GUM_ASSERT_THROWS_NOTHING(fakeUnion = t1 + t1)
       unionSet = getUnion(fakeUnion);
       TS_ASSERT_EQUALS(unionSet, t1)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(fakeUnion = t2 + t2);
+      TS_GUM_ASSERT_THROWS_NOTHING(fakeUnion = t2 + t2)
       unionSet = getUnion(fakeUnion);
       TS_ASSERT_EQUALS(unionSet, t2)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(fakeUnion = t3 + t3);
+      TS_GUM_ASSERT_THROWS_NOTHING(fakeUnion = t3 + t3)
       unionSet = getUnion(fakeUnion);
       TS_ASSERT_EQUALS(unionSet, t3)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(fakeUnion = t2 + t3);
+      TS_GUM_ASSERT_THROWS_NOTHING(fakeUnion = t2 + t3)
       unionSet = getUnion(fakeUnion);
       TS_ASSERT_EQUALS(unionSet, t1)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(fakeUnion = t3 + t2);
+      TS_GUM_ASSERT_THROWS_NOTHING(fakeUnion = t3 + t2)
       unionSet = getUnion(fakeUnion);
       TS_ASSERT_EQUALS(unionSet, t1)
     }
@@ -383,40 +383,40 @@ namespace gum_tests {
       fillEven(t2);
       fillOdd(t3);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(disjunction = t1 - t2);
+      TS_GUM_ASSERT_THROWS_NOTHING(disjunction = t1 - t2)
       TS_ASSERT_EQUALS(disjunction, t3)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(disjunction = t1 - t3);
+      TS_GUM_ASSERT_THROWS_NOTHING(disjunction = t1 - t3)
       TS_ASSERT_EQUALS(disjunction, t2)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(disjunction = t1 - t1);
+      TS_GUM_ASSERT_THROWS_NOTHING(disjunction = t1 - t1)
       TS_ASSERT_EQUALS(disjunction, empty)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(disjunction = t2 - t2);
+      TS_GUM_ASSERT_THROWS_NOTHING(disjunction = t2 - t2)
       TS_ASSERT_EQUALS(disjunction, empty)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(disjunction = t3 - t3);
+      TS_GUM_ASSERT_THROWS_NOTHING(disjunction = t3 - t3)
       TS_ASSERT_EQUALS(disjunction, empty)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(disjunction = t2 - t3);
+      TS_GUM_ASSERT_THROWS_NOTHING(disjunction = t2 - t3)
       TS_ASSERT_EQUALS(disjunction, t2)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(disjunction = t2 - empty);
+      TS_GUM_ASSERT_THROWS_NOTHING(disjunction = t2 - empty)
       TS_ASSERT_EQUALS(disjunction, t2)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(disjunction = t3 - t2);
+      TS_GUM_ASSERT_THROWS_NOTHING(disjunction = t3 - t2)
       TS_ASSERT_EQUALS(disjunction, t3)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(disjunction = t3 - empty);
+      TS_GUM_ASSERT_THROWS_NOTHING(disjunction = t3 - empty)
       TS_ASSERT_EQUALS(disjunction, t3)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(disjunction = empty - t1);
+      TS_GUM_ASSERT_THROWS_NOTHING(disjunction = empty - t1)
       TS_ASSERT_EQUALS(disjunction, empty)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(disjunction = empty - t2);
+      TS_GUM_ASSERT_THROWS_NOTHING(disjunction = empty - t2)
       TS_ASSERT_EQUALS(disjunction, empty)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(disjunction = empty - t3);
+      TS_GUM_ASSERT_THROWS_NOTHING(disjunction = empty - t3)
       TS_ASSERT_EQUALS(disjunction, empty)
     }
 
@@ -428,12 +428,12 @@ namespace gum_tests {
          << "d";
       gum::HashTable< std::string, std::string > map1, map4;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(map1 = t1.hashMap(&mappingTestFunc_1));
+      TS_GUM_ASSERT_THROWS_NOTHING(map1 = t1.hashMap(&mappingTestFunc_1))
       std::string str = "Space, the final frontiere.";
-      TS_GUM_ASSERT_THROWS_NOTHING(map4 = t1.hashMap(str));
+      TS_GUM_ASSERT_THROWS_NOTHING(map4 = t1.hashMap(str))
 
       gum::List< std::string > map2;
-      TS_GUM_ASSERT_THROWS_NOTHING(map2 = t1.listMap(&mappingTestFunc_1));
+      TS_GUM_ASSERT_THROWS_NOTHING(map2 = t1.listMap(&mappingTestFunc_1))
     }
 
     void testIterator_1() {

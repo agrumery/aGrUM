@@ -70,20 +70,20 @@ namespace gum_tests {
 
     void testConstuctor() {
       gum::DSLWriter< double >* writer = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::DSLWriter< double >());
+      TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::DSLWriter< double >())
       delete writer;
     }
 
     void testWriter_ostream() {
       gum::DSLWriter< double > writer;
       // Uncomment this to check the output
-      // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
+      // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn))
     }
 
     void testWriter_string() {
       gum::DSLWriter< double > writer;
       std::string              file = GET_RESSOURCES_PATH("outputs/DSLWriter_TestFile.txt");
-      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
+      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn))
     }
 
     private:

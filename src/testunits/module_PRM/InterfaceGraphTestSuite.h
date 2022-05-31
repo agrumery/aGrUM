@@ -50,13 +50,13 @@ namespace gum_tests {
       gum::prm::gspan::InterfaceGraph< double >* ig = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(
          ig = new gum::prm::gspan::InterfaceGraph< double >(_prm_->getSystem("microSys")));
-      TS_GUM_ASSERT_THROWS_NOTHING(delete ig);
+      TS_GUM_ASSERT_THROWS_NOTHING(delete ig)
     }
 
     void testMicroTopologie() {
       gum::prm::gspan::InterfaceGraph< double >* ig = 0;
       gum::prm::PRMSystem< double >&             m  = _prm_->getSystem("microSys");
-      TS_GUM_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m));
+      TS_GUM_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m))
       // Checking existing nodes
       TS_ASSERT(ig->graph().existsNode(ig->id(m.get("pow"))))
       TS_ASSERT(ig->graph().existsNode(ig->id(m.get("r"))))
@@ -70,13 +70,13 @@ namespace gum_tests {
       TS_ASSERT(ig->graph().existsEdge(ig->id(m.get("pow")), ig->id(m.get("e"))))
       TS_ASSERT(ig->graph().existsEdge(ig->id(m.get("p")), ig->id(m.get("c"))))
       TS_ASSERT_EQUALS(ig->graph().sizeEdges(), (gum::Size)4)
-      TS_GUM_ASSERT_THROWS_NOTHING(delete ig);
+      TS_GUM_ASSERT_THROWS_NOTHING(delete ig)
     }
 
     void testMicroLabelsOnNodes() {
       gum::prm::gspan::InterfaceGraph< double >* ig = 0;
       gum::prm::PRMSystem< double >&             m  = _prm_->getSystem("microSys");
-      TS_GUM_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m));
+      TS_GUM_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m))
       // Testing power supply
       TS_ASSERT_EQUALS(ig->size(ig->node(ig->id(m.get("pow"))).l), (gum::Size)1)
       TS_ASSERT_DIFFERS(ig->node(ig->id(m.get("pow"))).l->l, ig->node(ig->id(m.get("r"))).l->l)
@@ -89,13 +89,13 @@ namespace gum_tests {
       // Testing printers
       TS_ASSERT_EQUALS(ig->size(ig->node(ig->id(m.get("p"))).l), (gum::Size)1)
       TS_ASSERT_DIFFERS(ig->node(ig->id(m.get("p"))).l->l, ig->node(ig->id(m.get("c"))).l->l)
-      TS_GUM_ASSERT_THROWS_NOTHING(delete ig);
+      TS_GUM_ASSERT_THROWS_NOTHING(delete ig)
     }
 
     void testMicroLabelsOnEdges() {
       gum::prm::gspan::InterfaceGraph< double >* ig = 0;
       gum::prm::PRMSystem< double >&             m  = _prm_->getSystem("microSys");
-      TS_GUM_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m));
+      TS_GUM_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m))
       // Test difference
       TS_ASSERT_DIFFERS(ig->edge(ig->id(m.get("pow")), ig->id(m.get("p"))).l,
                         ig->edge(ig->id(m.get("pow")), ig->id(m.get("c"))).l);
@@ -103,7 +103,7 @@ namespace gum_tests {
                         ig->edge(ig->id(m.get("p")), ig->id(m.get("c"))).l);
       TS_ASSERT_DIFFERS(ig->edge(ig->id(m.get("pow")), ig->id(m.get("c"))).l,
                         ig->edge(ig->id(m.get("p")), ig->id(m.get("c"))).l);
-      TS_GUM_ASSERT_THROWS_NOTHING(delete ig);
+      TS_GUM_ASSERT_THROWS_NOTHING(delete ig)
     }
 
     std::string getPrinter(int i) const {
@@ -121,7 +121,7 @@ namespace gum_tests {
     void testSmallTopologie() {
       gum::prm::gspan::InterfaceGraph< double >* ig = 0;
       gum::prm::PRMSystem< double >&             m  = _prm_->getSystem("smallSys");
-      TS_GUM_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m));
+      TS_GUM_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m))
       // Checking existing nodes
       int node_count = 0;
       TS_ASSERT(ig->graph().existsNode(ig->id(m.get("pow"))))
@@ -184,25 +184,25 @@ namespace gum_tests {
 
       ++edge_count;
       TS_ASSERT_EQUALS(ig->graph().sizeEdges(), (gum::Size)edge_count)
-      TS_GUM_ASSERT_THROWS_NOTHING(delete ig);
+      TS_GUM_ASSERT_THROWS_NOTHING(delete ig)
     }
 
     void testSmallLabelsOnNodes() {
       gum::prm::gspan::InterfaceGraph< double >* ig = 0;
       gum::prm::PRMSystem< double >&             m  = _prm_->getSystem("smallSys");
-      TS_GUM_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m));
+      TS_GUM_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m))
       // Testing each labels size (the number of nodes with the given label)
       TS_ASSERT_EQUALS(ig->size(ig->node(ig->id(m.get("pow"))).l), (gum::Size)1)
       TS_ASSERT_EQUALS(ig->size(ig->node(ig->id(m.get("r"))).l), (gum::Size)1)
       TS_ASSERT_EQUALS(ig->size(ig->node(ig->id(m.get("another_printer"))).l), (gum::Size)3)
       TS_ASSERT_EQUALS(ig->size(ig->node(ig->id(m.get("another_computer"))).l), (gum::Size)5)
-      TS_GUM_ASSERT_THROWS_NOTHING(delete ig);
+      TS_GUM_ASSERT_THROWS_NOTHING(delete ig)
     }
 
     void testSmallLabelsOnEdges() {
       gum::prm::gspan::InterfaceGraph< double >* ig = 0;
       gum::prm::PRMSystem< double >&             m  = _prm_->getSystem("smallSys");
-      TS_GUM_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m));
+      TS_GUM_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m))
       // Test difference
       int edge_count = 0;
       TS_ASSERT_EQUALS(ig->size(ig->edge(ig->id(m.get("pow")), ig->id(m.get("another_printer"))).l),
@@ -217,7 +217,7 @@ namespace gum_tests {
          (gum::Size)15);
       edge_count += 15;
       TS_ASSERT_EQUALS(ig->graph().sizeEdges(), (gum::Size)edge_count)
-      TS_GUM_ASSERT_THROWS_NOTHING(delete ig);
+      TS_GUM_ASSERT_THROWS_NOTHING(delete ig)
     }
 
     void generateLayer(std::vector< gum::prm::LayerGenerator< double >::LayerData >& v,
@@ -243,7 +243,7 @@ namespace gum_tests {
       gum::prm::PRM< double >*       prm = generator.generate();
       gum::prm::PRMSystem< double >& sys = prm->getSystem((**(prm->systems().begin())).name());
       gum::prm::gspan::InterfaceGraph< double >* g = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(g = new gum::prm::gspan::InterfaceGraph< double >(sys));
+      TS_GUM_ASSERT_THROWS_NOTHING(g = new gum::prm::gspan::InterfaceGraph< double >(sys))
 
       if (g != nullptr) delete g;
 

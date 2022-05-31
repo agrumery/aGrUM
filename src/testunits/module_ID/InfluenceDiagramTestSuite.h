@@ -139,21 +139,21 @@ namespace gum_tests {
 
     void testConstructor() {
       gum::InfluenceDiagram< double >* topology = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(topology = new gum::InfluenceDiagram< double >());
+      TS_GUM_ASSERT_THROWS_NOTHING(topology = new gum::InfluenceDiagram< double >())
 
       TS_ASSERT_THROWS(topology->addArc(1, 2), gum::InvalidNode)
       gum::List< gum::NodeId > idList;
-      TS_GUM_ASSERT_THROWS_NOTHING(fill(*topology, idList));
+      TS_GUM_ASSERT_THROWS_NOTHING(fill(*topology, idList))
 
       TS_ASSERT_THROWS(topology->add(*decisionVar1), gum::DuplicateLabel)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(delete topology);
+      TS_GUM_ASSERT_THROWS_NOTHING(delete topology)
     }
 
     void testNodeType() {
       gum::InfluenceDiagram< double > topology;
       gum::List< gum::NodeId >        idList;
-      TS_GUM_ASSERT_THROWS_NOTHING(fill(topology, idList));
+      TS_GUM_ASSERT_THROWS_NOTHING(fill(topology, idList))
 
       TS_ASSERT(topology.isDecisionNode(idList[0]))
       TS_ASSERT(topology.isDecisionNode(idList[1]))
@@ -219,10 +219,10 @@ namespace gum_tests {
     void testCopyConstructor() {
       gum::InfluenceDiagram< double > source;
       gum::List< gum::NodeId >        idList;
-      TS_GUM_ASSERT_THROWS_NOTHING(fill(source, idList));
+      TS_GUM_ASSERT_THROWS_NOTHING(fill(source, idList))
 
       gum::InfluenceDiagram< double >* copy = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(copy = new gum::InfluenceDiagram< double >(source));
+      TS_GUM_ASSERT_THROWS_NOTHING(copy = new gum::InfluenceDiagram< double >(source))
 
       TS_ASSERT_EQUALS(source.dag().size(), copy->dag().size())
       TS_ASSERT_EQUALS(source.dag().sizeArcs(), copy->dag().sizeArcs())
@@ -287,11 +287,11 @@ namespace gum_tests {
       gum::InfluenceDiagram< double > id;
       gum::List< gum::NodeId >        idList;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addDecisionNode(*decisionVar1)));
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addDecisionNode(*decisionVar3)));
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar3)));
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar5)));
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addUtilityNode(*utilityVar1)));
+      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addDecisionNode(*decisionVar1)))
+      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addDecisionNode(*decisionVar3)))
+      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar3)))
+      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar5)))
+      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addUtilityNode(*utilityVar1)))
 
       TS_ASSERT_EQUALS(id.size(), (gum::Size)5)
       TS_ASSERT_EQUALS(id.dag().size(), (gum::Size)5)
@@ -310,7 +310,7 @@ namespace gum_tests {
 
       gum::LabelizedVariable* varPtr = nullptr;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(varPtr = (gum::LabelizedVariable*)&id.variable(idList[0]));
+      TS_GUM_ASSERT_THROWS_NOTHING(varPtr = (gum::LabelizedVariable*)&id.variable(idList[0]))
       TS_ASSERT_EQUALS(*varPtr, *decisionVar1)
 
       TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[0])), *decisionVar1)
@@ -324,17 +324,17 @@ namespace gum_tests {
       gum::InfluenceDiagram< double > id;
       gum::List< gum::NodeId >        idList;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addDecisionNode(*decisionVar2)));
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addDecisionNode(*decisionVar4)));
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar1)));
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar4)));
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addUtilityNode(*utilityVar2)));
+      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addDecisionNode(*decisionVar2)))
+      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addDecisionNode(*decisionVar4)))
+      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar1)))
+      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar4)))
+      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addUtilityNode(*utilityVar2)))
 
       TS_ASSERT_EQUALS(id.size(), (gum::Size)5)
       TS_ASSERT_EQUALS(id.dag().size(), (gum::Size)5)
 
       gum::LabelizedVariable* varPtr = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(varPtr = (gum::LabelizedVariable*)&id.variable(idList[0]));
+      TS_GUM_ASSERT_THROWS_NOTHING(varPtr = (gum::LabelizedVariable*)&id.variable(idList[0]))
       TS_ASSERT_EQUALS(*varPtr, *decisionVar2)
 
       TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[0])), *decisionVar2)
@@ -352,18 +352,18 @@ namespace gum_tests {
       gum::InfluenceDiagram< double > id;
       gum::List< gum::NodeId >        idList;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addDecisionNode(*decisionVar2)));
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addDecisionNode(*decisionVar4)));
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar1)));
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar4)));
-      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addUtilityNode(*utilityVar2)));
+      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addDecisionNode(*decisionVar2)))
+      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addDecisionNode(*decisionVar4)))
+      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar1)))
+      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar4)))
+      TS_GUM_ASSERT_THROWS_NOTHING(idList.insert(id.addUtilityNode(*utilityVar2)))
 
-      TS_GUM_ASSERT_THROWS_NOTHING(id.addArc(idList[0], idList[2]));
-      TS_GUM_ASSERT_THROWS_NOTHING(id.addArc(idList[2], idList[4]));
-      TS_GUM_ASSERT_THROWS_NOTHING(id.addArc(idList[1], idList[3]));
-      TS_GUM_ASSERT_THROWS_NOTHING(id.addArc(idList[0], idList[3]));
-      TS_GUM_ASSERT_THROWS_NOTHING(id.addArc(idList[3], idList[4]));
-      TS_GUM_ASSERT_THROWS_NOTHING(id.addArc(idList[1], idList[4]));
+      TS_GUM_ASSERT_THROWS_NOTHING(id.addArc(idList[0], idList[2]))
+      TS_GUM_ASSERT_THROWS_NOTHING(id.addArc(idList[2], idList[4]))
+      TS_GUM_ASSERT_THROWS_NOTHING(id.addArc(idList[1], idList[3]))
+      TS_GUM_ASSERT_THROWS_NOTHING(id.addArc(idList[0], idList[3]))
+      TS_GUM_ASSERT_THROWS_NOTHING(id.addArc(idList[3], idList[4]))
+      TS_GUM_ASSERT_THROWS_NOTHING(id.addArc(idList[1], idList[4]))
 
       TS_ASSERT_THROWS(id.addArc(idList[4], idList[0]), gum::InvalidArc)
       TS_ASSERT_THROWS(id.addArc(idList[4], idList[3]), gum::InvalidArc)
@@ -405,7 +405,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(id.chanceNodeSize(), (gum::Size)0)
 
       idList.clear();
-      TS_GUM_ASSERT_THROWS_NOTHING(fill(id, idList));
+      TS_GUM_ASSERT_THROWS_NOTHING(fill(id, idList))
 
       TS_ASSERT(!id.empty())
       TS_ASSERT(!id.dag().emptyArcs())
@@ -435,23 +435,23 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(id.dag().size(), (gum::Size)11)
       TS_ASSERT_EQUALS(id.dag().sizeArcs(), (gum::Size)12)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[0], idList[4])));
-      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[4], idList[9])));
-      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[4], idList[5])));
-      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[5], idList[1])));
-      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[1], idList[7])));
-      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[3], idList[10])));
-      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[5], idList[2])));
-      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[1], idList[9])));
-      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[2], idList[6])));
-      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[6], idList[8])));
-      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[7], idList[8])));
-      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[8], idList[10])));
+      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[0], idList[4])))
+      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[4], idList[9])))
+      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[4], idList[5])))
+      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[5], idList[1])))
+      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[1], idList[7])))
+      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[3], idList[10])))
+      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[5], idList[2])))
+      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[1], idList[9])))
+      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[2], idList[6])))
+      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[6], idList[8])))
+      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[7], idList[8])))
+      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[8], idList[10])))
 
       TS_ASSERT(!id.empty())
       TS_ASSERT(id.dag().emptyArcs())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[0], idList[4])));
+      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[0], idList[4])))
     }
 
     void testIterator() {
@@ -470,7 +470,7 @@ namespace gum_tests {
       fill(id, idList);
 
       gum::Sequence< gum::NodeId > topoOrder;
-      TS_GUM_ASSERT_THROWS_NOTHING(topoOrder = id.topologicalOrder());
+      TS_GUM_ASSERT_THROWS_NOTHING(topoOrder = id.topologicalOrder())
 
       TS_ASSERT_EQUALS(topoOrder.size(), (gum::Size)11)
     }
@@ -508,7 +508,7 @@ namespace gum_tests {
       TS_ASSERT(id.cpt(idList[8]).contains(id.variable(idList[7])))
       TS_ASSERT(id.cpt(idList[8]).contains(id.variable(idList[8])))
 
-      TS_GUM_ASSERT_THROWS_NOTHING(id.erase(idList[7]));
+      TS_GUM_ASSERT_THROWS_NOTHING(id.erase(idList[7]))
 
       TS_ASSERT_EQUALS(id.dag().parents(idList[8]).size(), (gum::Size)1)
       TS_ASSERT(id.dag().existsArc(idList[6], idList[8]))
@@ -536,7 +536,7 @@ namespace gum_tests {
       TS_ASSERT(id.utility(idList[10]).contains(id.variable(idList[8])))
       TS_ASSERT(id.utility(idList[10]).contains(id.variable(idList[10])))
 
-      TS_GUM_ASSERT_THROWS_NOTHING(id.erase(idList[3]));
+      TS_GUM_ASSERT_THROWS_NOTHING(id.erase(idList[3]))
 
       TS_ASSERT_EQUALS(id.dag().parents(idList[10]).size(), (gum::Size)1)
       TS_ASSERT(id.dag().existsArc(idList[8], idList[10]))
@@ -571,7 +571,7 @@ namespace gum_tests {
       TS_ASSERT(id.cpt(idList[8]).contains(id.variable(idList[7])))
       TS_ASSERT(id.cpt(idList[8]).contains(id.variable(idList[8])))
 
-      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[7], idList[8])));
+      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[7], idList[8])))
 
       TS_ASSERT_EQUALS(id.dag().parents(idList[8]).size(), (gum::Size)1)
       TS_ASSERT(id.dag().existsArc(idList[6], idList[8]))
@@ -599,7 +599,7 @@ namespace gum_tests {
       TS_ASSERT(id.utility(idList[10]).contains(id.variable(idList[8])))
       TS_ASSERT(id.utility(idList[10]).contains(id.variable(idList[10])))
 
-      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[3], idList[10])));
+      TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[3], idList[10])))
 
       TS_ASSERT_EQUALS(id.dag().parents(idList[10]).size(), (gum::Size)1)
       TS_ASSERT(id.dag().existsArc(idList[8], idList[10]))
@@ -629,7 +629,7 @@ namespace gum_tests {
 
       TS_ASSERT_THROWS(id.variableFromName("chorizo"), gum::NotFound)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(id.idFromName("decisionVar1"));
+      TS_GUM_ASSERT_THROWS_NOTHING(id.idFromName("decisionVar1"))
       id.erase(id.idFromName("decisionVar1"));
       TS_ASSERT_THROWS(id.idFromName("decisionVar1"), gum::NotFound)
     }

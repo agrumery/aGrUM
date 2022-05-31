@@ -29,19 +29,18 @@ namespace gum_tests {
   class TimerTestSuite: public CxxTest::TestSuite {
     public:
     void testConstructors() {
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::Timer t1);
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::Timer* t2 = new gum::Timer(); delete (t2););
-      {
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::Timer t1)
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::Timer* t2 = new gum::Timer(); delete (t2);) {
         gum::Timer t1;
         t1.reset();
 
         gum::Timer* t2 = new gum::Timer();
         t2->reset();
 
-        TS_GUM_ASSERT_THROWS_NOTHING(gum::Timer t3(*t2));
+        TS_GUM_ASSERT_THROWS_NOTHING(gum::Timer t3(*t2))
 
         gum::Timer* t4 = nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING(t4 = new gum::Timer(t1));
+        TS_GUM_ASSERT_THROWS_NOTHING(t4 = new gum::Timer(t1))
         TS_ASSERT_DELTA(t4->step(), t1.step(), 1e-3)
 
         gum::Timer t3(*t2);

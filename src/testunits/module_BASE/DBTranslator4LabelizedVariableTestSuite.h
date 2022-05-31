@@ -32,14 +32,14 @@ namespace gum_tests {
     void test_trans1() {
       gum::learning::DBTranslator4LabelizedVariable translator;
       TS_ASSERT(translator.isLossless())
-      TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("toto"));
+      TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("toto"))
       TS_ASSERT_EQUALS(translator.translate("toto").discr_val, (std::size_t)0)
       TS_ASSERT_EQUALS(translator.translate("toto").discr_val, (std::size_t)0)
 
       TS_ASSERT_EQUALS(translator.missingValue().discr_val,
                        std::numeric_limits< std::size_t >::max());
 
-      TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("titi"));
+      TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("titi"))
       TS_ASSERT_EQUALS(translator.translate("toto").discr_val, (std::size_t)0)
       TS_ASSERT_EQUALS(translator.translate("titi").discr_val, (std::size_t)1)
       TS_ASSERT_EQUALS(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
@@ -49,8 +49,8 @@ namespace gum_tests {
 
       std::vector< std::string >                    missing{"?", "N/A", "???"};
       gum::learning::DBTranslator4LabelizedVariable translator2(missing);
-      TS_GUM_ASSERT_THROWS_NOTHING(translator2.translate("toto"));
-      TS_GUM_ASSERT_THROWS_NOTHING(translator2.translate("titi"));
+      TS_GUM_ASSERT_THROWS_NOTHING(translator2.translate("toto"))
+      TS_GUM_ASSERT_THROWS_NOTHING(translator2.translate("titi"))
       TS_ASSERT_EQUALS(translator2.translate("toto").discr_val, (std::size_t)0)
       TS_ASSERT_EQUALS(translator2.translate("titi").discr_val, (std::size_t)1)
       TS_ASSERT_EQUALS(translator2.translate("N/A").discr_val,
@@ -68,8 +68,8 @@ namespace gum_tests {
                        "??");
 
       gum::learning::DBTranslator4LabelizedVariable translator3(missing, 3);
-      TS_GUM_ASSERT_THROWS_NOTHING(translator3.translate("toto"));
-      TS_GUM_ASSERT_THROWS_NOTHING(translator3.translate("titi"));
+      TS_GUM_ASSERT_THROWS_NOTHING(translator3.translate("toto"))
+      TS_GUM_ASSERT_THROWS_NOTHING(translator3.translate("titi"))
       TS_ASSERT_EQUALS(translator3.translate("toto").discr_val, (std::size_t)0)
       TS_ASSERT_EQUALS(translator3.translate("titi").discr_val, (std::size_t)1)
       TS_ASSERT_EQUALS(translator3.translate("N/A").discr_val,
@@ -97,11 +97,11 @@ namespace gum_tests {
 
     void test_trans2() {
       gum::learning::DBTranslator4LabelizedVariable translator;
-      TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("toto"));
+      TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("toto"))
       TS_ASSERT_EQUALS(translator.translate("toto").discr_val, (std::size_t)0)
       TS_ASSERT_EQUALS(translator.translate("toto").discr_val, (std::size_t)0)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("titi"));
+      TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("titi"))
       TS_ASSERT_EQUALS(translator.translate("toto").discr_val, (std::size_t)0)
       TS_ASSERT_EQUALS(translator.translate("titi").discr_val, (std::size_t)1)
       TS_ASSERT_EQUALS(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
@@ -111,8 +111,8 @@ namespace gum_tests {
 
       std::vector< std::string >                    missing{"?", "N/A", "???"};
       gum::learning::DBTranslator4LabelizedVariable translator2(missing);
-      TS_GUM_ASSERT_THROWS_NOTHING(translator2.translate("toto"));
-      TS_GUM_ASSERT_THROWS_NOTHING(translator2.translate("titi"));
+      TS_GUM_ASSERT_THROWS_NOTHING(translator2.translate("toto"))
+      TS_GUM_ASSERT_THROWS_NOTHING(translator2.translate("titi"))
       TS_ASSERT_EQUALS(translator2.translate("toto").discr_val, (std::size_t)0)
       TS_ASSERT_EQUALS(translator2.translate("titi").discr_val, (std::size_t)1)
       TS_ASSERT_EQUALS(translator2.translate("N/A").discr_val,
@@ -131,8 +131,8 @@ namespace gum_tests {
                        "??");
 
       gum::learning::DBTranslator4LabelizedVariable translator3(missing, 3);
-      TS_GUM_ASSERT_THROWS_NOTHING(translator3.translate("toto"));
-      TS_GUM_ASSERT_THROWS_NOTHING(translator3.translate("titi"));
+      TS_GUM_ASSERT_THROWS_NOTHING(translator3.translate("toto"))
+      TS_GUM_ASSERT_THROWS_NOTHING(translator3.translate("titi"))
       TS_ASSERT_EQUALS(translator3.translate("toto").discr_val, (std::size_t)0)
       TS_ASSERT_EQUALS(translator3.translate("titi").discr_val, (std::size_t)1)
       TS_ASSERT_EQUALS(translator3.translate("N/A").discr_val,
@@ -165,11 +165,11 @@ namespace gum_tests {
       var.addLabel("tutu");
 
       gum::learning::DBTranslator4LabelizedVariable translator(var);
-      TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("toto"));
+      TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("toto"))
       TS_ASSERT_EQUALS(translator.translate("toto").discr_val, (std::size_t)0)
       TS_ASSERT_EQUALS(translator.translate("toto").discr_val, (std::size_t)0)
 
-      TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("tutu"));
+      TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("tutu"))
       TS_ASSERT_EQUALS(translator.translate("toto").discr_val, (std::size_t)0)
       TS_ASSERT_EQUALS(translator.translate("tutu").discr_val, (std::size_t)2)
       TS_ASSERT_EQUALS(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
@@ -179,8 +179,8 @@ namespace gum_tests {
 
       std::vector< std::string >                    missing{"?", "N/A", "???"};
       gum::learning::DBTranslator4LabelizedVariable translator2(var, missing);
-      TS_GUM_ASSERT_THROWS_NOTHING(translator2.translate("toto"));
-      TS_GUM_ASSERT_THROWS_NOTHING(translator2.translate("titi"));
+      TS_GUM_ASSERT_THROWS_NOTHING(translator2.translate("toto"))
+      TS_GUM_ASSERT_THROWS_NOTHING(translator2.translate("titi"))
       TS_ASSERT_EQUALS(translator2.translate("toto").discr_val, (std::size_t)0)
       TS_ASSERT_EQUALS(translator2.translate("titi").discr_val, (std::size_t)1)
       TS_ASSERT_EQUALS(translator2.translate("N/A").discr_val,
@@ -198,8 +198,8 @@ namespace gum_tests {
                        "tutu");
 
       gum::learning::DBTranslator4LabelizedVariable translator3(var, missing, true, 3);
-      TS_GUM_ASSERT_THROWS_NOTHING(translator3.translate("toto"));
-      TS_GUM_ASSERT_THROWS_NOTHING(translator3.translate("titi"));
+      TS_GUM_ASSERT_THROWS_NOTHING(translator3.translate("toto"))
+      TS_GUM_ASSERT_THROWS_NOTHING(translator3.translate("titi"))
       TS_ASSERT_EQUALS(translator3.translate("toto").discr_val, (std::size_t)0)
       TS_ASSERT_EQUALS(translator3.translate("titi").discr_val, (std::size_t)1)
       TS_ASSERT_EQUALS(translator3.translate("N/A").discr_val,
