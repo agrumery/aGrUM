@@ -87,8 +87,15 @@ class SkbnTestCase(pyAgrumTestCase):
 
   def test_with_file(self):
     classifier = skbn.BNClassifier()
-    classifier.fit(filename=self.agrumSrcDir("miniasia.csv"), targetName="dyspnoea")
-    res = classifier.preparedData(filename=self.agrumSrcDir("miniasia.csv"))
+    classifier.fit(data=self.agrumSrcDir("miniasia.csv"), targetName="dyspnoea")
+    res = classifier.preparedData(data=self.agrumSrcDir("miniasia.csv"))
+    self.assertEquals(str(res["lung_cancer"][0]), "0")
+
+  def test_with_df(self):
+    classifier = skbn.BNClassifier()
+    df=pd.read_csv(self.agrumSrcDir("miniasia.csv"))
+    classifier.fit(data=df, targetName="dyspnoea")
+    res = classifier.preparedData(data=dfgit s)
     self.assertEquals(str(res["lung_cancer"][0]), "0")
 
 

@@ -555,7 +555,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
   def predict(self, X, with_labels=True):
     """
     parameters:
-        X: {array-like, sparse matrix} of shape (n_samples, n_features) or str
+        X: str,{array-like, sparse matrix} of shape (n_samples, n_features) or str
             test data, can be either dataFrame, matrix or name of a csv file
         with_labels: bool
             tells us whether the csv includes the labels themselves or their indexes.
@@ -680,7 +680,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     Parameters
     ----------
-    X: {array-like, sparse matrix} of shape (n_samples, n_features) or str
+    X: str or {array-like, sparse matrix} of shape (n_samples, n_features) or str
             test data, can be either dataFrame, matrix or name of a csv file
 
     Returns
@@ -792,9 +792,9 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     return X, y
 
-  def preparedData(self, X=None, y=None, filename=None):
+  def preparedData(self, X=None, y=None, data=None, filename=None):
     """
-    Given an X and a y (or a fimename), returns a pandas.Dataframe with the prepared (especiallt discretized) values of the base
+    Given an X and a y (or a data source : filename or pandas.DataFrame), returns a pandas.Dataframe with the prepared (especially discretized) values of the base
 
     Parameters
     ----------
@@ -804,8 +804,12 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
         y: array-like of shape (n_samples)
             Target values. Warning: Raises ValueError if either filename or targetname is not None. Raises ValueError
             if X is None
+        data: Union[str,pandas.DataFrame]
+            specifies the csv file or the DataFrame where the data values are located. Warning: Raises ValueError
+            if either X or y is not None.
         filename: str
-            specifies the csv file where the training data and target values are located. Warning: Raises ValueError
+            (deprecated)
+            specifies the csv file where the data are located. Warning: Raises ValueError
             if either X or y is not None.
 
     Returns
@@ -814,23 +818,32 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     """
     if self.variableNameIndexDictionary is None:
       raise ValueError("First, you need to fit a model !")
+    if filename is not None:
+      print("pyAgrum ** : filename is deprecated. Please use data instead.")
+      if data is None:
+        data=filename
 
     targetName = self.target
-    if filename is None:
+    if data is None:
       if X is None or y is None:
         raise ValueError(
-          "This function should be used either as toDiscretizedDataFrame(X,y) or toDiscretizedDataFrame(filename=...,targetAttribute=...). You have not "
+          "This function should be used either as preparedData(X,y) or preparedData(data=...). You have not "
           "entered a csv file name and not specified the X and y matrices that should be used")
     else:
       if targetName is None:
         raise ValueError(
-          "This function should be used either as toDiscretizedDataFrame(X,y) or toDiscretizedDataFrame(filename=...,targetAttribute=...). The name of the "
+          "This function should be used either as preparedData(X,y) or preparedData(data=...). The name of the "
           "target must be specified if using this function with a csv file.")
       if X is not None or y is not None:
         raise ValueError(
-          "This function should be used either as toDiscretizedDataFrame(X,y) or toDiscretizedDataFrame(filename=...,targetAttribute=...). You have entered "
+          "This function should be used either as preparedData(X,y) or preparedData(data=...). You have entered "
           "a filename and the X and y matrices at the same time.")
-      X, y = self.XYfromCSV(filename, True, targetName)
+
+      if type(data)==str:
+        X, y = self.XYfromCSV(data, True, targetName)
+      else: # pandas.DataFrame
+        y = data[targetName]
+        X = data.drop(targetName, axis=1)
 
     def bestTypedVal(v, idx):
       if v.varType() == gum.VarType_Discretized:
