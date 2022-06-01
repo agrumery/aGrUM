@@ -270,7 +270,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     # the index of the variable.
     self.variableNameIndexDictionary = None
 
-  def fit(self, X=None, y=None, filename=None, targetName=None):
+  def fit(self, X=None, y=None, data=None, targetName=None,filename=None):
     """
     parameters:
         X: {array-like, sparse matrix} of shape (n_samples, n_features)
@@ -279,37 +279,49 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
         y: array-like of shape (n_samples)
             Target values. Warning: Raises ValueError if either filename or targetname is not None. Raises ValueError
             if X is None
-        filename: str
-            specifies the csv file where the training data and target values are located. Warning: Raises ValueError
-            if either X or y is not None. Raises ValueError if targetName is None
+        data: Union[std,pandas.DataFrame]
+            the source of training data : csv filename or pandas.DataFrame. targetName is mandatory to find the class in this source.
         targetName: str
             specifies the name of the targetVariable in the csv file. Warning: Raises ValueError if either X or y is
             not None. Raises ValueError if filename is None.
+        filename: str
+            (deprecated, use data instead)
+            specifies the csv file where the training data and target values are located. Warning: Raises ValueError
+            if either X or y is not None. Raises ValueError if targetName is None
     returns:
         void
 
-    Fits the model to the training data provided. The two possible uses of this function are fit(X,y) and fit(filename,
-    targetName). Any other combination will raise a ValueError
+    Fits the model to the training data provided. The two possible uses of this function are `fit(X,y)` and `fit(data=...,
+    targetName=...)`. Any other combination will raise a ValueError
     """
-    if filename is None:
+    if filename is not None:
+      print("**pyAgrum** : 'filename' is deprecated since 1.1.1. Please use 'data' instead.")
+      if data is None:
+        data = filename
+
+    if data is None:
       if targetName is not None:
         raise ValueError(
-          "This function should be used either as fit(X,y) or fit(filename=...,targetAttribute=...). You have set "
-          "filename to None, but have entered a targetName")
+          "This function should be used either as fit(X,y) or fit(data=...,targetAttribute=...). You have set "
+          "data to None, but have entered a targetName")
       if X is None or y is None:
         raise ValueError(
-          "This function should be used either as fit(X,y) or fit(filename=...,targetAttribute=...). You have not "
-          "entered a csv file name and not specified the X and y matrices that should be used")
+          "This function should be used either as fit(X,y) or fit(data=...,targetAttribute=...). You have not "
+          "entered a data source (filename or pandas.DataFrame) and not specified the X and y matrices that should be used")
     else:
       if targetName is None:
         raise ValueError(
-          "This function should be used either as fit(X,y) or fit(filename=...,targetAttribute=...). The name of the "
-          "target must be specified if using this function with a csv file.")
+          "This function should be used either as fit(X,y) or fit(data=...,targetAttribute=...). The name of the "
+          "target must be specified if using this function with data  containing a csv filename or a pandas.DataFrame.")
       if X is not None or y is not None:
         raise ValueError(
-          "This function should be used either as fit(X,y) or fit(filename=...,targetAttribute=...). You have entered "
-          "a filename and the X and y matrices at the same time.")
-      X, y = self.XYfromCSV(filename, True, targetName)
+          "This function should be used either as fit(X,y) or fit(data=...,targetAttribute=...). You can not give "
+          "a data and the X and y matrices at the same time.")
+      if type(data)==str:
+        X, y = self.XYfromCSV(data, True, targetName)
+      else: # pandas.DataFrame
+        y = data[targetName]
+        X = data.drop(targetName, axis=1)
 
     self.fromModel = False
     variableNames = None
