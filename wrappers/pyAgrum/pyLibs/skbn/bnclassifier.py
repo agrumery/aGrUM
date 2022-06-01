@@ -279,7 +279,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
         y: array-like of shape (n_samples)
             Target values. Warning: Raises ValueError if either filename or targetname is not None. Raises ValueError
             if X is None
-        data: Union[std,pandas.DataFrame]
+        data: Union[str,pandas.DataFrame]
             the source of training data : csv filename or pandas.DataFrame. targetName is mandatory to find the class in this source.
         targetName: str
             specifies the name of the targetVariable in the csv file. Warning: Raises ValueError if either X or y is
