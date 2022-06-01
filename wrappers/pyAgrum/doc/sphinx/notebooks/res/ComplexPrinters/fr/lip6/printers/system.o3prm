@@ -1,0 +1,29 @@
+import fr.lip6.printers.base;
+import fr.lip6.printers.printers;
+import fr.lip6.printers.computer;
+
+system Work {
+  PowerSupply pow;
+  Room r;
+
+  BWPrinter[10] bw_printers;
+
+  ColorPrinter[2] color_printers;
+
+  bw_printers.room = r;
+  color_printers.room = r;
+
+  r.power = pow;
+
+  Computer c1;
+  Computer c2;
+
+  c1.room = r;
+  c2.room = r;
+
+  c1.printers = bw_printers;
+  c2.printers = bw_printers;
+
+  c1.printers += color_printers;
+  c2.printers += color_printers;
+}

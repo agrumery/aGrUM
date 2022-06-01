@@ -1,0 +1,6 @@
+#ipython_notebook::before{
+ content:"Welcome to my Jupyter Notebook";
+ font-family: Verdana;
+ font-weight: 700;
+ color: orange;
+}

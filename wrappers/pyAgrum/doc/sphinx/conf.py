@@ -67,6 +67,7 @@ extensions = [
   'sphinx.ext.inheritance_diagram',
   'sphinx.ext.napoleon',
   'sphinx_autodoc_typehints',
+  'nbsphinx',
   #'sphinx.ext.todo',
   #'sphinx.ext.viewcode',
   #'sphinx.ext.coverage'
@@ -531,7 +532,13 @@ autodoc_default_options = {'members' : None,
                           'exclude-members' : 'thisown',
                          }
 
-
+########################### nbsphinx #####################
+nbsphinx_execute_arguments = [
+    "--InlineBackend.figure_formats={'svg', 'pdf'; 'png'}",
+    "--InlineBackend.rc=figure.dpi=96",
+]
+nbsphinx_input_prompt = 'In [%s]:'
+nbsphinx_output_prompt = 'Out[%s]:'
 ############################ Google Analytics #############
 
 from sphinx.errors import ExtensionError
@@ -569,3 +576,4 @@ def setup(app):
   app.add_config_value('googleanalytics_enabled', True, 'html')
   app.connect('html-page-context', add_ga_javascript)
   app.connect('builder-inited', check_config)
+

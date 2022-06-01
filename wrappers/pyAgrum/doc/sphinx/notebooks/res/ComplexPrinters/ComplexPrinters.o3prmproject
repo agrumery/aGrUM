@@ -1,0 +1,16 @@
+<!DOCTYPE ComplexPrinters>
+<o3prmproject name="ComplexPrinters">
+ <project name="ComplexPrinters">
+  <package name="fr">
+   <package name="lip6">
+    <package name="printers">
+     <file name="computer.o3prm"/>
+     <request name="request.o3prmr"/>
+     <file name="base.o3prm"/>
+     <file name="printers.o3prm"/>
+     <file name="system.o3prm"/>
+    </package>
+   </package>
+  </package>
+ </project>
+</o3prmproject>

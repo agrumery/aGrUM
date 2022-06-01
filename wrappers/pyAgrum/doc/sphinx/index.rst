@@ -33,7 +33,6 @@ pyAgrum contains :
   * a `gitlab repository <https://gitlab.com/agrumery/aGrUM>`_.
   * and a `website <http://agrum.org>`_.
 
-
 .. toctree::
   :caption: Fundamental components
   :maxdepth: 2
@@ -90,6 +89,21 @@ pyAgrum contains :
   :maxdepth: 2
 
   PyAgrumConfiguration
+
+
+.. toctree::
+  :caption: Tutorials
+  :maxdepth: 1
+
+  notebooks/01-Tutorial.ipynb
+
+
+.. toctree::
+  :caption: Examples
+  :maxdepth: 2
+
+  notebooks/01-Tutorial.ipynb
+
 
 Indices and tables
 ==================

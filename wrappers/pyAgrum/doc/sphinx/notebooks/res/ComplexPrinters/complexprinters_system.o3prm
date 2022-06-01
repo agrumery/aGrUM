@@ -1,0 +1,168 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   {prenom.nom}@lip6.fr                                                  *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+// ============================================================================
+// Tis file contains basic PRM classes for testing purpose.
+// Author: Lionel Torti.
+// ============================================================================
+
+type t_state extends boolean (
+  OK: true,
+  NOK: false);
+
+type t_ink extends t_state (
+  NotEmpty: OK,
+  Empty:    NOK);
+
+type t_paper extends t_state (
+  Ready:    OK,
+  Jammed:   NOK,
+  Empty:    NOK);
+
+type t_degraded extends t_state (
+  OK: OK,
+  Dysfunctional: NOK,
+  Degraded: NOK);
+
+type mycount int(0,5);
+
+class PowerSupply {
+  t_state state { [ 0.99, 0.01 ] };
+}
+
+class Room {
+  PowerSupply power;
+}
+
+interface Equipment {
+  Room room;
+  t_degraded equipState;
+}
+
+interface Printer extends Equipment {
+  boolean hasPaper;
+  boolean hasInk;
+}
+
+class BWPrinter implements Printer {
+  Room room;
+  t_ink hasInk { [0.8, 0.2] };
+  t_paper hasPaper { [0.7, 0.2, 0.1] };
+  t_degraded equipState dependson room.power.state, hasInk, hasPaper {
+    *, *, *:             0.0, 1.0, 0.0;
+    OK, NotEmpty, Ready: 1.0, 0.0, 0.0;
+  };
+}
+
+class ColorPrinter implements Printer {
+  Room room;
+  t_ink black   { [0.8, 0.2] };
+  t_ink magenta { [0.8, 0.2] };
+  t_ink yellow  { [0.8, 0.2] };
+  t_ink cyan    { [0.8, 0.2] };
+  boolean hasInk = forall ( [black, magenta, yellow, cyan], NotEmpty );
+  t_paper hasPaper { [0.7, 0.2, 0.1] };
+  t_degraded equipState dependson room.power.state, hasPaper, hasInk, black {
+    *, *, *, *:             0.00, 1.00, 0.00;
+    *, *, false, NotEmpty:  0.00, 0.00, 1.00;
+    OK, Ready, true, *:     0.99, 0.01, 0.00;
+  };
+}
+
+class Computer implements Equipment {
+  Room room;
+  Printer[] printers;
+  boolean functional_printer = exists ( printers.equipState, OK );
+  boolean degraded_printer = exists ( printers.equipState, Degraded );
+  boolean working_printer = exists ( [functional_printer, degraded_printer], true );
+  mycount count_printers = count ( [functional_printer, degraded_printer], true );
+  t_degraded equipState dependson room.power.state {
+    OK:  0.90, 0.09, 0.01;
+    NOK: 0.00, 1.00, 0.00;
+  };
+  boolean can_print dependson equipState, working_printer {
+    // working_printer |              false            | |              true             |
+    // equipState      | OK | Dysfunctional | Degraded | | OK | Dysfunctional | Degraded |
+    /* false */        [1.00,    1.00,         1.00,      1.00,     0.00,         0.00,
+    /* true  */         0.00,    0.00,         0.00,      0.00,     1.00,         1.00]
+  };
+}
+
+class SafeComputer implements Equipment {
+  Room room;
+  Printer[] printers;
+  boolean functional_printer = exists ( printers. ( t_state ) equipState, OK );
+  boolean degraded_printer = exists ( printers. ( t_degraded ) equipState, Degraded );
+  boolean working_printer = exists ( [functional_printer, degraded_printer], true );
+  t_degraded equipState dependson room.power. ( t_state ) state {
+    OK:  0.90, 0.09, 0.01;
+    NOK: 0.00, 1.00, 0.00;
+  };
+  boolean can_print dependson equipState, working_printer {
+    // working_printer |              false            | |              true             |
+    // equipState      | OK | Dysfunctional | Degraded | | OK | Dysfunctional | Degraded |
+    /* false */        [1.00,    1.00,         1.00,      1.00,     0.00,         0.00,
+    /* true  */         0.00,    0.00,         0.00,      0.00,     1.00,         1.00]
+  };
+}
+
+class ParamClass {
+	param real lambda default 0.4;
+	param int t default 4;
+
+  Room room;
+  t_ink hasInk { ["lambda", "1-lambda"] };
+  t_paper hasPaper { ["exp(-lambda*t)", "1-exp(-lambda*t)", 0] };
+  t_degraded equipState dependson room.power.state, hasInk, hasPaper {
+    *, *, *:             0.0, 1.0, 0.0;
+    OK, NotEmpty, Ready: 1.0, 0.0, 0.0;
+  };
+}
+
+system aSys {
+  PowerSupply pow;
+  Room r;
+
+  BWPrinter[10] bw_printers;
+
+  ColorPrinter[2] color_printers;
+
+  bw_printers.room = r;
+  color_printers.room = r;
+
+  r.power = pow;
+
+  Computer c1;
+  Computer c2;
+
+  c1.room = r;
+  c2.room = r;
+
+  c1.printers = bw_printers;
+  c2.printers = bw_printers;
+
+  c1.printers += color_printers;
+  c2.printers += color_printers;
+
+  ParamClass p;
+  p.room = r;
+
+  ParamClass paramBis(lambda=0.001);
+  paramBis.room = r;
+}

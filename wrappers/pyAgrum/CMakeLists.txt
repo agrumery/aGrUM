@@ -146,7 +146,7 @@ add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E 
 set(PYAGRUM_REQUIREMENTS_LIST
         ${CMAKE_CURRENT_SOURCE_DIR}/../../binder
         ${CMAKE_CURRENT_SOURCE_DIR}/doc/sphinx
-        ${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/notebooks
+        ${CMAKE_CURRENT_SOURCE_DIR}/doc/sphinx/notebooks
         ${CMAKE_CURRENT_SOURCE_DIR}/testunits
         )
 

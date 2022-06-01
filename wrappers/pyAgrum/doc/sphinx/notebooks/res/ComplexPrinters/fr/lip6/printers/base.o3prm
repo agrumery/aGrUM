@@ -1,0 +1,27 @@
+type t_state extends boolean
+	OK: true,
+    NOK: false;
+
+type t_degraded extends t_state
+	OK: OK,
+    Dysfunctional: NOK,
+    Degraded: NOK;
+
+class PowerSupply {
+    t_state state { [ 0.99, 0.01 ] };
+}
+
+class Room {
+    PowerSupply power;
+}
+
+interface Equipment {
+  Room room;
+  t_degraded equipState;
+}
+
+interface Printer extends Equipment {
+  boolean hasPaper;
+  boolean hasInk;
+}
+

@@ -1,0 +1,19 @@
+################################
+# generated : do not change it !
+################################
+matplotlib
+matplotlib-inline
+pydot
+numpy
+
+#### optional requirements #####
+nbformat
+nbconvert
+jupyter
+scipy
+scikit-learn
+pandas
+tqdm
+################################
+### Specific requirements for notebooks
+

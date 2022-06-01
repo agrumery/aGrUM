@@ -5,3 +5,5 @@ IPython
 ipykernel
 sphinx_rtd_theme
 sphinx-autodoc-typehints
+nbsphinx
+pandoc

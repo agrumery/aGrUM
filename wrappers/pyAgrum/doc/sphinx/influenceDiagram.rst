@@ -23,7 +23,7 @@ Model for Decision in PGM
 
 
 Inference for Influence Diagram
-------------------------------
+-------------------------------
 
 .. figure:: _static/LIMIDInference.png
     :align: center
