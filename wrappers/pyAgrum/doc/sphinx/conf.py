@@ -62,12 +62,13 @@ needs_sphinx = '1.8.4'
 extensions = [
   #'sphinx.ext.autosummary',
   'sphinx.ext.autosectionlabel',
+  'nbsphinx',
   'sphinx.ext.autodoc',
   'sphinx.ext.mathjax',
   'sphinx.ext.inheritance_diagram',
   'sphinx.ext.napoleon',
   'sphinx_autodoc_typehints',
-  'nbsphinx',
+  'sphinx_gallery.load_style',
   #'sphinx.ext.todo',
   #'sphinx.ext.viewcode',
   #'sphinx.ext.coverage'
@@ -539,6 +540,8 @@ nbsphinx_execute_arguments = [
 ]
 nbsphinx_input_prompt = 'In [%s]:'
 nbsphinx_output_prompt = 'Out[%s]:'
+
+
 ############################ Google Analytics #############
 
 from sphinx.errors import ExtensionError

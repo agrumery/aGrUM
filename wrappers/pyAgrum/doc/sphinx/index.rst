@@ -96,14 +96,7 @@ pyAgrum contains :
   :maxdepth: 1
 
   notebooks/01-Tutorial.ipynb
-
-
-.. toctree::
-  :caption: Examples
-  :maxdepth: 2
-
-  notebooks/01-Tutorial.ipynb
-
+  notebooks/02-Tutorial_Tutorial2.ipynb
 
 Indices and tables
 ==================
