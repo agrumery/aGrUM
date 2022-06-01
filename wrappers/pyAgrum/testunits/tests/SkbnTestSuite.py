@@ -95,7 +95,7 @@ class SkbnTestCase(pyAgrumTestCase):
     classifier = skbn.BNClassifier()
     df=pd.read_csv(self.agrumSrcDir("miniasia.csv"))
     classifier.fit(data=df, targetName="dyspnoea")
-    res = classifier.preparedData(data=dfgit s)
+    res = classifier.preparedData(data=df)
     self.assertEquals(str(res["lung_cancer"][0]), "0")
 
 
