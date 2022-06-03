@@ -28,75 +28,16 @@ pyAgrum aims to allow to easily use (as well as to prototype new algorithms on)
 Bayesian network and other graphical models.
 
 pyAgrum contains :
-  * a `comprehensive API documentation <https://pyagrum.readthedocs.io>`_.
-  * `tutorials as jupyter notebooks <http://www-desir.lip6.fr/~phw/aGrUM/docs/last/notebooks/Tutorial.ipynb.html>`_.
+  * a :ref:`comprehensive API documentation <Reference manual>`.
+  * :ref:`tutorials as jupyter notebooks <Notebooks>`.
   * a `gitlab repository <https://gitlab.com/agrumery/aGrUM>`_.
   * and a `website <http://agrum.org>`_.
 
 .. toctree::
-  :caption: Fundamental components
-  :maxdepth: 2
-
-  graph
-  randomVariables
-  potential
-
-.. toctree::
-  :caption: Graphical Models
-  :maxdepth: 2
-
-  bayesianNetwork
-  influenceDiagram
-  credalNetwork
-  markovNetwork
-  PRM
-
-.. toctree::
-  :caption: Causality
-  :maxdepth: 2
-  :titlesonly:
-
-  Causal
-
-.. toctree::
-  :caption: scikit-learn-like BN Classifiers
-  :maxdepth: 2
-  :titlesonly:
-
-  Classifier
-
-.. toctree::
-  :caption: pyAgrum.lib modules
-  :maxdepth: 2
-  :titlesonly:
-
-  lib.notebook
-  lib.image
-  lib.explain
-  lib.dBN
-  pyAgrum.lib
-
-.. toctree::
-  :caption: Miscellaneous
-  :maxdepth: 2
-
-  functions
-  miscellaneous
-  exceptions
-
-.. toctree::
-  :caption: Customizing pyAgrum
-  :maxdepth: 2
-
-  PyAgrumConfiguration
-
-
-.. toctree::
-  :caption: Tutorials
   :maxdepth: 1
 
-  notebooks/01-Tutorial.ipynb
-  notebooks/02-Tutorial_Tutorial2.ipynb
+  reference
+  notebooks
 
 Indices and tables
 ==================
