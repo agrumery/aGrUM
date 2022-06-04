@@ -545,6 +545,10 @@ nbsphinx_execute_arguments = [
 nbsphinx_input_prompt = 'In [%s]:'
 nbsphinx_output_prompt = 'Out[%s]:'
 
+nbsphinx_thumbnails = {
+    'notebooks/01-Tutorial': '_images/waterprinkler.png',
+    'notebooks/*': '_static/noLogo.png',
+}
 
 ############################ Google Analytics #############
 

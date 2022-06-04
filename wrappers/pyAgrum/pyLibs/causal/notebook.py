@@ -49,6 +49,8 @@ def getCausalModel(cm: csl.CausalModel, size=None) -> str:
   pydot.Dot
     the dot representation
   """
+  if size is None:
+    size=pyAgrum.config['causal', 'default_graph_size']
   return gnb.getDot(cm.toDot(),size)
 
 
@@ -63,6 +65,8 @@ def showCausalModel(cm: csl.CausalModel, size= None):
   size: int|str
     the size of the rendered graph
   """
+  if size is None:
+    size=pyAgrum.config['causal', 'default_graph_size']
   gnb.showDot(cm.toDot(),size=size)
 
 

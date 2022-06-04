@@ -1,9 +1,26 @@
 Notebooks 
 ==========
 
-.. toctree::
-  :maxdepth: 3
-  :titlesonly:
+Tutorials for Bayesian networks
+-------------------------------
 
-  nb.tutorials
-  
+.. nbgallery::
+    :glob:
+
+    notebooks/*utorial*
+
+Other Graphical Models
+----------------------
+
+.. nbgallery::
+    :glob:
+
+    notebooks/*Models*
+
+Examples
+---------
+
+.. nbgallery::
+    :glob:
+
+    notebooks/*Examples*
