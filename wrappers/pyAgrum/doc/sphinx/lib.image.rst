@@ -3,7 +3,7 @@ pyAgrum.lib.image
 
 `pyAgrum.lib.image` aims to graphically export models and inference using `pydot <https://pypi.org/project/pydot/>`_ (and then `graphviz <https://graphviz.org/>`_).
 
-For more details, <https://lip6.fr/Pierre-Henri.Wuillemin/aGrUM/docs/last/notebooks/colouringAndExportingBNs.ipynb.html>
+For more details, see `this notebook <notebooks/98-Tools_colouringAndExportingBNs.ipynb>`_.
 
 .. figure:: _static/bn2graph_test.png
     :align: right

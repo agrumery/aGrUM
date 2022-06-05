@@ -18,7 +18,7 @@ Moreover, inference algorithms can also use this graph to speed up the computati
 
 **Tutorial**
 
-* `Tutorial on Markov Network <https://lip6.fr/Pierre-Henri.Wuillemin/aGrUM/docs/current/notebooks/MarkovNetwork.ipynb.html>`_
+* `Tutorial on Markov Network <notebooks/23-Models_MarkovNetwork.ipynb>`_
 
 **Reference**
 
