@@ -21,9 +21,7 @@ sphinx
 IPython
 ipykernel
 sphinx_rtd_theme
-sphinx_copybutton
 sphinx-autodoc-typehints
-sphinx_gallery
 nbsphinx
 pandoc
 

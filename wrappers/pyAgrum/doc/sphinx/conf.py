@@ -19,7 +19,7 @@
 #
 # General information about the project.
 project = 'pyAgrum'
-copyright = '2018-22, aGrUM/pyAgrum Team'
+copyright = '2018-22, aGrUM/pyAgrum Team <info_at_agrum_dot_org>'
 author = 'Pierre-henri Wuillemin'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -547,6 +547,7 @@ nbsphinx_output_prompt = 'Out[%s]:'
 
 nbsphinx_thumbnails = {
     'notebooks/01-Tutorial': '_images/waterprinkler.png',
+    'notebooks/25-Models_o3prm': '_images/o3prm.png',
     'notebooks/*': '_static/noLogo.png',
 }
 
@@ -587,4 +588,3 @@ def setup(app):
   app.add_config_value('googleanalytics_enabled', True, 'html')
   app.connect('html-page-context', add_ga_javascript)
   app.connect('builder-inited', check_config)
-

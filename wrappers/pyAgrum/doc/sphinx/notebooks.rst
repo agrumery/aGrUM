@@ -1,26 +1,71 @@
+==========
 Notebooks 
 ==========
 
-Tutorials for Bayesian networks
--------------------------------
+Tutorials on pyAgrum
+====================
 
 .. nbgallery::
     :glob:
 
-    notebooks/*utorial*
+    notebooks/*-Tutorial*
 
-Other Graphical Models
-----------------------
+Bayesian Networks
+=================
 
-.. nbgallery::
-    :glob:
-
-    notebooks/*Models*
-
-Examples
+Inference
 ---------
 
 .. nbgallery::
     :glob:
 
-    notebooks/*Examples*
+    notebooks/*-Inference*
+
+
+Learning
+--------
+
+.. nbgallery::
+    :glob:
+
+    notebooks/*-Learning*
+
+Different Graphical Models
+==========================
+
+.. nbgallery::
+    :glob:
+
+    notebooks/*-Models*
+
+Bayesian networks as scikit-learn compliant classifiers
+=======================================================
+
+.. nbgallery::
+    :glob:
+
+    notebooks/*-Classifier*
+
+Causal Bayesian Networks
+========================
+
+.. nbgallery::
+    :glob:
+
+    notebooks/*-Causality*
+
+Other notebooks
+===============
+
+.. nbgallery::
+    :glob:
+
+    notebooks/*-Examples*
+
+Tools in pyAgrum
+================
+
+.. nbgallery::
+    :glob:
+
+    notebooks/*-Tools*
