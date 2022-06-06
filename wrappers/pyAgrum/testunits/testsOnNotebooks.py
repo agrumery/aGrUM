@@ -121,7 +121,7 @@ def runNotebooks():
               "15-Models_o3prm.ipynb"}
 
   excludes = {}
-  for filename in glob.glob("../pyLibs/notebooks/*.ipynb"):
+  for filename in glob.glob("../doc/sphinx/notebooks/*.ipynb"):
     if not os.path.basename(filename) in excludes:
       l.append(filename)
 

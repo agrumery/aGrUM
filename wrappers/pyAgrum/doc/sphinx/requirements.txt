@@ -24,4 +24,5 @@ sphinx_rtd_theme
 sphinx-autodoc-typehints
 nbsphinx
 pandoc
-
+sphinx-copybutton
+sphinx-gallery

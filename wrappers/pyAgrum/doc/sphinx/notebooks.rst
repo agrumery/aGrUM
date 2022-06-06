@@ -10,11 +10,9 @@ Tutorials on pyAgrum
 
     notebooks/*-Tutorial*
 
-Bayesian Networks
-=================
 
-Inference
----------
+Inference in Bayesian networks
+==============================
 
 .. nbgallery::
     :glob:
@@ -22,8 +20,8 @@ Inference
     notebooks/*-Inference*
 
 
-Learning
---------
+Learning Bayesian networks
+==========================
 
 .. nbgallery::
     :glob:
@@ -54,18 +52,20 @@ Causal Bayesian Networks
 
     notebooks/*-Causality*
 
-Other notebooks
-===============
+Examples
+========
 
 .. nbgallery::
     :glob:
 
     notebooks/*-Examples*
 
-Tools in pyAgrum
-================
+pyAgrum's specific features
+===========================
 
 .. nbgallery::
     :glob:
 
     notebooks/*-Tools*
+
+    
