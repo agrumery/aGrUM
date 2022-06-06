@@ -16,6 +16,7 @@
   * Adding acces to the database built for learning in `pyAgrum.skbn.BNClassifier.preparedData()`.
   * Small bug when representing Potential as fractions.
   * Small bug in type deduction from database for variable in `pyAgrum.skbn`.
+  * notebooks now added in the sphinx documentation (and then in readthedocs site).
 
 ## Changelog for 1.1.0
 
