@@ -56,7 +56,7 @@ def processNotebook(notebook_filename):
           'cell_type': 'code',
           'source': 'import os,sys\nsys.path.insert(0, os.path.abspath("../../../build/release/wrappers"))'
         }))
-        ep.preprocess(nb, {'metadata': {'path': '../pyLibs/notebooks/'}})
+        ep.preprocess(nb, {'metadata': {'path': '../doc/sphinx/notebooks/'}})
         break
       except RuntimeError as e:
         # print("zmq error on "+os.path.basename(notebook_filename)+"... restarting")
