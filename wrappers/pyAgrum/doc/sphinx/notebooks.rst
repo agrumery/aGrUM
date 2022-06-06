@@ -1,7 +1,3 @@
-==========
-Notebooks 
-==========
-
 Tutorials on pyAgrum
 ====================
 
