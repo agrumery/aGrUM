@@ -20,28 +20,34 @@
 
 
 /** @file
- * @brief the smooth a priori: adds a weight w to all the countings
+ * @brief the internal apriori for the BDeu score (N' / (r_i * q_i)
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
-#ifndef GUM_LEARNING_PRIOR_SMOOTHING_H
-#define GUM_LEARNING_PRIOR_SMOOTHING_H
+#ifndef GUM_LEARNING_PRIOR_BDEU_H
+#define GUM_LEARNING_PRIOR_BDEU_H
 
 #include <vector>
 
 #include <agrum/agrum.h>
 #include <agrum/BN/learning/priors/prior.h>
 
-namespace gum {
+namespace gum::learning {
 
-  namespace learning {
-
-    /** @class AprioriSmoothing
-     * @brief the smooth a priori: adds a weight w to all the countings
-     * @headerfile aprioriSmoothing.h <agrum/tools/database/aprioriSmoothing.h>
+    /** @class BDeuPrior
+     * @brief the internal apriori for the BDeu score (N' / (r_i * q_i)
+     * @headerfile bdeuPrior.h <agrum/tools/database/bdeuPrior.h>
      * @ingroup learning_apriori
+     *
+     * BDeu is a BD score with a N'/(r_i * q_i) apriori, where N' is an
+     * effective sample size and r_i is the domain size of the target variable
+     * and q_i is the domain size of the Cartesian product of its parents.
+     *
+     * It is important to note that, to be meaningful a structure + parameter
+     * learning requires that the same priors are taken into account during
+     * structure learning and parameter learning.
      */
-    class AprioriSmoothing: public Prior {
+    class BDeuPrior: public Prior {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -59,21 +65,21 @@ namespace gum {
        * is an identity, i.e., the value of a NodeId is equal to the index of
        * the column in the DatabaseTable.
        */
-      explicit AprioriSmoothing(const DatabaseTable&                    database,
-                       const Bijection< NodeId, std::size_t >& nodeId2columns
-                       = Bijection< NodeId, std::size_t >());
+      explicit BDeuPrior(const DatabaseTable&                    database,
+                  const Bijection< NodeId, std::size_t >& nodeId2columns
+                  = Bijection< NodeId, std::size_t >());
 
       /// copy constructor
-      AprioriSmoothing(const AprioriSmoothing& from);
+      BDeuPrior(const BDeuPrior& from);
 
       /// move constructor
-      AprioriSmoothing(AprioriSmoothing&& from) noexcept ;
+      BDeuPrior(BDeuPrior&& from) noexcept ;
 
       /// virtual copy constructor
-      AprioriSmoothing* clone() const override;
+      BDeuPrior* clone() const override;
 
       /// destructor
-      virtual ~AprioriSmoothing();
+      virtual ~BDeuPrior();
 
       /// @}
 
@@ -84,10 +90,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      AprioriSmoothing& operator=(const AprioriSmoothing& from);
+      BDeuPrior& operator=(const BDeuPrior& from);
 
       /// move operator
-      AprioriSmoothing& operator=(AprioriSmoothing&& from);
+      BDeuPrior& operator=(BDeuPrior&& from) noexcept ;
 
       /// @}
 
@@ -97,18 +103,24 @@ namespace gum {
       // ##########################################################################
       /// @{
 
+      /// sets the effective sample size N' (alias of setEffectiveSampleSize ())
+      void setWeight(double weight) final;
+
+      /// sets the effective sample size N'
+      void setEffectiveSampleSize(double weight);
+
       /// returns the type of the apriori
       PriorType getType()const final;
 
       /// indicates whether the apriori is potentially informative
       /** Basically, only the NoApriori is uninformative. However, it may happen
-       * that, under some circonstances, an apriori, which is usually not equal
+       * that, under some circumstances, an apriori, which is usually not equal
        * to the NoApriori, becomes equal to it (e.g., when the weight is equal
        * to zero). In this case, if the apriori can detect this case, it shall
        * inform the classes that use it that it is temporarily uninformative.
        * These classes will then be able to speed-up their code by avoiding to
        * take into account the apriori in their computations. */
-      virtual bool isInformative() const final;
+      bool isInformative() const final;
 
       /// adds the apriori to a counting vector corresponding to the idset
       /** adds the apriori to an already created counting vector defined over
@@ -116,26 +128,24 @@ namespace gum {
        * conditioning bar of the idset.
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint variables set. */
-      virtual void addAllApriori(const IdCondSet& idset, std::vector< double >& counts) final;
+      void addAllApriori(const IdCondSet& idset, std::vector< double >& counts) final;
 
-      /** @brief adds the apriori to a counting vectordefined over the right
+      /** @brief adds the apriori to a counting vector defined over the right
        * hand side of the idset
        *
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint RHS variables of the idset. */
-      virtual void addConditioningApriori(const IdCondSet&       idset,
+      void addConditioningApriori(const IdCondSet&       idset,
                                           std::vector< double >& counts) final;
 
       /// @}
     };
 
-  } /* namespace learning */
-
-} /* namespace gum */
+  } /* namespace gum */
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#  include <agrum/BN/learning/priors/aprioriSmoothing_inl.h>
+#  include <agrum/BN/learning/priors/bdeuPrior_inl.h>
 #endif /* GUM_NO_INLINE */
 
-#endif /* GUM_LEARNING_PRIOR_SMOOTHING_H */
+#endif /* GUM_LEARNING_PRIOR_BDEU_H */

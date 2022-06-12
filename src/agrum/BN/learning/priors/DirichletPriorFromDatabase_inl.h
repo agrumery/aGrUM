@@ -18,7 +18,7 @@
  *
  */
 
-
+#include <agrum/BN/learning/priors/DirichletPriorFromDatabase.h>
 /** @file
  * @brief A dirichlet priori: computes its N'_ijk from a database
  *
@@ -31,38 +31,38 @@ namespace gum {
   namespace learning {
 
     /// copy constructor
-    INLINE AprioriDirichletFromDatabase::AprioriDirichletFromDatabase(
-       const AprioriDirichletFromDatabase& from) :
+    INLINE DirichletPriorFromDatabase::DirichletPriorFromDatabase(
+       const DirichletPriorFromDatabase& from) :
         Prior(from),
         _counter_(from._counter_), _internal_weight_(from._internal_weight_) {
-      GUM_CONS_CPY(AprioriDirichletFromDatabase);
+      GUM_CONS_CPY(DirichletPriorFromDatabase);
     }
 
 
     /// move constructor
-    INLINE AprioriDirichletFromDatabase::AprioriDirichletFromDatabase(
-       AprioriDirichletFromDatabase&& from) :
+    INLINE
+       DirichletPriorFromDatabase::DirichletPriorFromDatabase(DirichletPriorFromDatabase&& from) :
         Prior(std::move(from)),
         _counter_(std::move(from._counter_)), _internal_weight_(from._internal_weight_) {
-      GUM_CONS_MOV(AprioriDirichletFromDatabase);
+      GUM_CONS_MOV(DirichletPriorFromDatabase);
     }
 
 
     /// virtual copy constructor
-    INLINE AprioriDirichletFromDatabase* AprioriDirichletFromDatabase::clone() const {
-      return new AprioriDirichletFromDatabase(*this);
+    INLINE DirichletPriorFromDatabase* DirichletPriorFromDatabase::clone() const {
+      return new DirichletPriorFromDatabase(*this);
     }
 
 
     /// destructor
-    INLINE AprioriDirichletFromDatabase::~AprioriDirichletFromDatabase() {
-      GUM_DESTRUCTOR(AprioriDirichletFromDatabase);
+    INLINE DirichletPriorFromDatabase::~DirichletPriorFromDatabase() {
+      GUM_DESTRUCTOR(DirichletPriorFromDatabase);
     }
 
 
     /// copy operator
-    INLINE AprioriDirichletFromDatabase&
-       AprioriDirichletFromDatabase::operator=(const AprioriDirichletFromDatabase& from) {
+    INLINE DirichletPriorFromDatabase&
+       DirichletPriorFromDatabase::operator=(const DirichletPriorFromDatabase& from) {
       if (this != &from) {
         Prior::operator =(from);
         _counter_         = from._counter_;
@@ -73,8 +73,8 @@ namespace gum {
 
 
     /// move operator
-    INLINE AprioriDirichletFromDatabase&
-       AprioriDirichletFromDatabase::operator=(AprioriDirichletFromDatabase&& from) {
+    INLINE DirichletPriorFromDatabase&
+       DirichletPriorFromDatabase::operator=(DirichletPriorFromDatabase&& from) {
       if (this != &from) {
         Prior::operator =(std::move(from));
         _counter_         = std::move(from._counter_);
@@ -85,19 +85,19 @@ namespace gum {
 
 
     /// returns the type of the apriori
-    INLINE PriorType AprioriDirichletFromDatabase::getType() const {
+    INLINE PriorType DirichletPriorFromDatabase::getType() const {
       return PriorType::DirichletPriorType;
     }
 
 
     /// indicates whether the apriori is potentially informative
-    INLINE bool AprioriDirichletFromDatabase::isInformative() const {
+    INLINE bool DirichletPriorFromDatabase::isInformative() const {
       return (this->weight_ != 0.0);
     }
 
 
     /// sets the weight of the a priori (kind of effective sample size)
-    INLINE void AprioriDirichletFromDatabase::setWeight(const double weight) {
+    INLINE void DirichletPriorFromDatabase::setWeight(const double weight) {
       Prior::setWeight(weight);
       if (_counter_.database().nbRows() == 0.0)
         _internal_weight_ = 0.0;
@@ -107,7 +107,7 @@ namespace gum {
 
 
     /// returns the apriori vector all the variables in the idset
-    INLINE void AprioriDirichletFromDatabase::addAllApriori(const IdCondSet&       idset,
+    INLINE void DirichletPriorFromDatabase::addAllApriori(const IdCondSet&       idset,
                                                             std::vector< double >& counts) {
       if (this->weight_ == 0.0) return;
 
@@ -126,8 +126,7 @@ namespace gum {
 
 
     /// returns the apriori vector over only the conditioning set of an idset
-    INLINE void
-       AprioriDirichletFromDatabase::addConditioningApriori(const IdCondSet&       idset,
+    INLINE void DirichletPriorFromDatabase::addConditioningApriori(const IdCondSet&       idset,
                                                             std::vector< double >& counts) {
       if (_internal_weight_ == 0.0) return;
 

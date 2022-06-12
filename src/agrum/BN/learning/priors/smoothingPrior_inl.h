@@ -32,58 +32,58 @@ namespace gum {
 
     /// default constructor
     INLINE
-    AprioriSmoothing::AprioriSmoothing(const DatabaseTable&                    database,
+    SmoothingPrior::SmoothingPrior(const DatabaseTable&                    database,
                                        const Bijection< NodeId, std::size_t >& nodeId2columns) :
         Prior(database, nodeId2columns) {
-      GUM_CONSTRUCTOR(AprioriSmoothing);
+      GUM_CONSTRUCTOR(SmoothingPrior);
     }
 
 
     /// copy constructor
-    INLINE AprioriSmoothing::AprioriSmoothing(const AprioriSmoothing& from) : Prior(from) {
-      GUM_CONS_CPY(AprioriSmoothing);
+    INLINE SmoothingPrior::SmoothingPrior(const SmoothingPrior& from) : Prior(from) {
+      GUM_CONS_CPY(SmoothingPrior);
     }
 
 
     /// move constructor
-    INLINE AprioriSmoothing::AprioriSmoothing(AprioriSmoothing&& from) noexcept : Prior(std::move(from))  {
-      GUM_CONS_MOV(AprioriSmoothing);
+    INLINE SmoothingPrior::SmoothingPrior(SmoothingPrior&& from) noexcept : Prior(std::move(from))  {
+      GUM_CONS_MOV(SmoothingPrior);
     }
 
 
     /// virtual copy constructor
-    INLINE AprioriSmoothing* AprioriSmoothing::clone() const { return new AprioriSmoothing(*this); }
+    INLINE SmoothingPrior* SmoothingPrior::clone() const { return new SmoothingPrior(*this); }
 
 
     /// destructor
-    INLINE AprioriSmoothing::~AprioriSmoothing() { GUM_DESTRUCTOR(AprioriSmoothing); }
+    INLINE SmoothingPrior::~SmoothingPrior() { GUM_DESTRUCTOR(SmoothingPrior); }
 
 
     /// copy operator
-    INLINE AprioriSmoothing& AprioriSmoothing::operator=(const AprioriSmoothing& from) {
+    INLINE SmoothingPrior& SmoothingPrior::operator=(const SmoothingPrior& from) {
       Prior::operator=(from);
       return *this;
     }
 
 
     /// move operator
-    INLINE AprioriSmoothing& AprioriSmoothing::operator=(AprioriSmoothing&& from) {
+    INLINE SmoothingPrior& SmoothingPrior::operator=(SmoothingPrior&& from) {
       Prior::operator=(std::move(from));
       return *this;
     }
 
     /// returns the type of the apriori
-    INLINE PriorType AprioriSmoothing::getType() const {
+    INLINE PriorType SmoothingPrior::getType() const {
       return PriorType::SmoothingPriorType;
     }
 
 
     /// indicates whether the apriori is potentially informative
-    INLINE bool AprioriSmoothing::isInformative() const { return this->weight_ != 0.0; }
+    INLINE bool SmoothingPrior::isInformative() const { return this->weight_ != 0.0; }
 
 
     /// returns the apriori vector all the variables in the idset
-    INLINE void AprioriSmoothing::addAllApriori(const IdCondSet&       idset,
+    INLINE void SmoothingPrior::addAllApriori(const IdCondSet&       idset,
                                                 std::vector< double >& counts) {
       // if the idset is empty or the weight is zero, the apriori is also empty
       if (idset.empty() || (this->weight_ == 0.0)) return;

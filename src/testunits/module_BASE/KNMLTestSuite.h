@@ -28,7 +28,7 @@
 #include <agrum/tools/database/DBInitializerFromCSV.h>
 #include <agrum/tools/database/databaseTable.h>
 #include <agrum/tools/database/DBTranslatorSet.h>
-#include <agrum/BN/learning/priors/aprioriNoApriori.h>
+#include <agrum/BN/learning/priors/noPrior.h>
 #include <agrum/tools/stattests/kNML.h>
 
 namespace gum_tests {
@@ -54,7 +54,7 @@ namespace gum_tests {
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
 
       // std::vector< gum::Size > modalities(nb_vars, 2);
-      gum::learning::AprioriNoApriori apriori(database);
+      gum::learning::NoPrior apriori(database);
 
       gum::learning::KNML score(parser, apriori);
       /* 3-4 K 2.6844818514806183

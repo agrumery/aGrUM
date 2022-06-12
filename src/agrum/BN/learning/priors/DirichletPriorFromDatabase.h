@@ -37,12 +37,12 @@ namespace gum {
 
   namespace learning {
 
-    /** @class AprioriDirichletFromDatabase
+    /** @class DirichletPriorFromDatabase
      * @brief A dirichlet priori: computes its N'_ijk from a database
-     * @headerfile aprioriDirichletFromDatabase.h <agrum/tools/database/aprioriDirichletFromDatabase.h>
+     * @headerfile DirichletPriorFromDatabase.h <agrum/tools/database/DirichletPriorFromDatabase.h>
      * @ingroup learning_apriori
      */
-    class AprioriDirichletFromDatabase: public Prior {
+    class DirichletPriorFromDatabase: public Prior {
       public:
 
       // ##########################################################################
@@ -68,22 +68,22 @@ namespace gum {
        * apriori database that correspond to those in the learning database
        * (they have the same names) are exactly identical. If this is not the
        * case, then a DatabaseError exception is raised. */
-      AprioriDirichletFromDatabase(const DatabaseTable&                    learning_db,
+      DirichletPriorFromDatabase(const DatabaseTable&                    learning_db,
                                    const DBRowGeneratorParser&             apriori_parser,
                                    const Bijection< NodeId, std::size_t >& nodeId2columns
                                    = Bijection< NodeId, std::size_t >());
 
       /// copy constructor
-      AprioriDirichletFromDatabase(const AprioriDirichletFromDatabase& from);
+      DirichletPriorFromDatabase(const DirichletPriorFromDatabase& from);
 
       /// move constructor
-      AprioriDirichletFromDatabase(AprioriDirichletFromDatabase&& from);
+      DirichletPriorFromDatabase(DirichletPriorFromDatabase&& from);
 
       /// virtual copy constructor
-      virtual AprioriDirichletFromDatabase* clone() const;
+      virtual DirichletPriorFromDatabase* clone() const;
 
       /// destructor
-      virtual ~AprioriDirichletFromDatabase();
+      virtual ~DirichletPriorFromDatabase();
 
       /// @}
 
@@ -94,10 +94,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      AprioriDirichletFromDatabase& operator=(const AprioriDirichletFromDatabase& from);
+      DirichletPriorFromDatabase& operator=(const DirichletPriorFromDatabase& from);
 
       /// move operator
-      AprioriDirichletFromDatabase& operator=(AprioriDirichletFromDatabase&& from);
+      DirichletPriorFromDatabase& operator=(DirichletPriorFromDatabase&& from);
 
       /// @}
 
@@ -163,7 +163,7 @@ namespace gum {
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#  include <agrum/BN/learning/priors/aprioriDirichletFromDatabase_inl.h>
+#  include <agrum/BN/learning/priors/DirichletPriorFromDatabase_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_PRIOR_DIRICHLET_FROM_DATABASE_H */

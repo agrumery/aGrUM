@@ -26,7 +26,7 @@
 
 #include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/tools/database/DBTranslatorSet.h>
-#include <agrum/BN/learning/priors/aprioriSmoothing.h>
+#include <agrum/BN/learning/priors/smoothingPrior.h>
 #include <agrum/BN/learning/scores_and_tests/scoreK2.h>
 #include <agrum/BN/learning/structureUtils/graphChangesSelector4DiGraph.h>
 
@@ -149,7 +149,7 @@ namespace gum_tests {
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
 
-      gum::learning::AprioriSmoothing apriori(database);
+      gum::learning::SmoothingPrior   apriori(database);
       gum::learning::ScoreK2          score(parser, apriori);
 
       gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDiGraph >

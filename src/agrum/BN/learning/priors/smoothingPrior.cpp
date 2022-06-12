@@ -21,41 +21,48 @@
 
 /**
  * @file
- * @brief the internal apriori for the BDeu score (N' / (r_i * q_i)
+ * @brief the smooth a priori: adds a weight w to all the counting
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 
-#include <agrum/BN/learning/priors/aprioriBDeu.h>
+#include <agrum/BN/learning/priors/smoothingPrior.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 /// include the inlined functions if necessary
 #  ifdef GUM_NO_INLINE
-#    include <agrum/BN/learning/priors/aprioriBDeu_inl.h>
+#    include <agrum/BN/learning/priors/smoothingPrior_inl.h>
 #  endif /* GUM_NO_INLINE */
 
-namespace gum {
-
-  namespace learning {
+namespace gum::learning {
 
     /// returns the apriori vector over only the conditioning set of an idset
-    void AprioriBDeu::addConditioningApriori(const IdCondSet&       idset,
-                                             std::vector< double >& counts) {
+    void SmoothingPrior::addConditioningApriori(const IdCondSet&       idset,
+                                                  std::vector< double >& counts) {
       // if the conditioning set is empty or the weight is equal to zero,
       // the apriori is also empty
       if ((idset.size() == idset.nbLHSIds()) || (this->weight_ == 0.0)
           || (idset.nbLHSIds() == std::size_t(0)))
         return;
 
+      // compute the weight of the conditioning set
+      double weight = this->weight_;
+      if (this->nodeId2columns_.empty()) {
+        for (auto i = std::size_t(0); i < idset.nbLHSIds(); ++i) {
+          weight *= double(this->database_->domainSize(idset[i]));
+        }
+      } else {
+        for (auto i = std::size_t(0); i < idset.nbLHSIds(); ++i) {
+          weight *= double(this->database_->domainSize(this->nodeId2columns_.second(idset[i])));
+        }
+      }
+
       // add the weight to the counting vector
-      const double weight = this->weight_ / counts.size();
       for (auto& count: counts)
         count += weight;
     }
 
-  } /* namespace learning */
-
-} /* namespace gum */
+  } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

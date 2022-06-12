@@ -26,13 +26,13 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 
-#include <agrum/BN/learning/priors/aprioriK2.h>
+#include <agrum/BN/learning/priors/K2Prior.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 /// include the inlined functions if necessary
 #  ifdef GUM_NO_INLINE
-#    include <agrum/BN/learning/priors/aprioriK2_inl.h>
+#    include <agrum/BN/learning/priors/K2Prior_inl.h>
 #  endif /* GUM_NO_INLINE */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

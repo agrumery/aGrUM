@@ -26,7 +26,7 @@
 #include <agrum/tools/core/math/gammaLog2.h>
 #include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/tools/database/DBTranslatorSet.h>
-#include <agrum/BN/learning/priors/aprioriNoApriori.h>
+#include <agrum/BN/learning/priors/noPrior.h>
 #include <agrum/BN/learning/scores_and_tests/scoreK2.h>
 
 namespace gum_tests {
@@ -122,7 +122,7 @@ namespace gum_tests {
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
 
-      gum::learning::AprioriNoApriori apriori(database);
+      gum::learning::NoPrior          apriori(database);
       gum::learning::ScoreK2          score(parser, apriori);
 
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -265,7 +265,7 @@ namespace gum_tests {
       nodeId2columns.insert(node4, std::size_t(5));
       nodeId2columns.insert(node5, std::size_t(1));
 
-      gum::learning::AprioriNoApriori apriori(database, nodeId2columns);
+      gum::learning::NoPrior          apriori(database, nodeId2columns);
       gum::learning::ScoreK2          score(parser, apriori, nodeId2columns);
 
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -395,7 +395,7 @@ namespace gum_tests {
 
       std::vector< std::pair< std::size_t, std::size_t > > ranges{{800, 1000}, {1050, 1400}};
 
-      gum::learning::AprioriNoApriori apriori(database);
+      gum::learning::NoPrior          apriori(database);
       gum::learning::ScoreK2          score(parser, apriori, ranges);
 
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -540,7 +540,7 @@ namespace gum_tests {
       nodeId2columns.insert(node4, std::size_t(5));
       nodeId2columns.insert(node5, std::size_t(1));
 
-      gum::learning::AprioriNoApriori apriori(database, nodeId2columns);
+      gum::learning::NoPrior          apriori(database, nodeId2columns);
       gum::learning::ScoreK2          score(parser, apriori, ranges, nodeId2columns);
 
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -670,7 +670,7 @@ namespace gum_tests {
 
       std::vector< std::pair< std::size_t, std::size_t > > ranges{{800, 1000}, {1050, 1400}};
 
-      gum::learning::AprioriNoApriori apriori(database);
+      gum::learning::NoPrior apriori(database);
       for (std::size_t i = std::size_t(1); i < std::size_t(24); ++i) {
         gum::learning::ScoreK2 score(parser, apriori, ranges);
         score.setNumberOfThreads(i);

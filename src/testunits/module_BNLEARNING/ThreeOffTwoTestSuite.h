@@ -34,7 +34,7 @@
 #include <agrum/tools/database/databaseTable.h>
 #include <agrum/tools/database/DBTranslatorSet.h>
 
-#include <agrum/BN/learning/priors/aprioriNoApriori.h>
+#include <agrum/BN/learning/priors/noPrior.h>
 
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
@@ -64,7 +64,7 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet          genset;
       gum::learning::DBRowGeneratorParser       parser(database.handler(), genset);
-      gum::learning::AprioriNoApriori           apriori(database);
+      gum::learning::NoPrior                    apriori(database);
       gum::learning::CorrectedMutualInformation I(parser, apriori);
       I.useNoCorr();
 
@@ -106,7 +106,7 @@ namespace gum_tests {
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::AprioriNoApriori           apriori(database);
+      gum::learning::NoPrior                    apriori(database);
       gum::learning::CorrectedMutualInformation cI(parser, apriori);
       cI.useMDL();
       // cI.useCache( false );
@@ -150,7 +150,7 @@ namespace gum_tests {
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::AprioriNoApriori           apriori(database);
+      gum::learning::NoPrior                    apriori(database);
       gum::learning::CorrectedMutualInformation cI(parser, apriori);
       cI.useNML();
       // cI.useCache( false );
@@ -196,7 +196,7 @@ namespace gum_tests {
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::AprioriNoApriori           apriori(database);
+      gum::learning::NoPrior                    apriori(database);
       gum::learning::CorrectedMutualInformation cI(parser, apriori);
       cI.useNML();
 
@@ -287,7 +287,7 @@ namespace gum_tests {
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::AprioriNoApriori           apriori(database);
+      gum::learning::NoPrior                    apriori(database);
       gum::learning::CorrectedMutualInformation cI(parser, apriori);
       cI.useNML();
       // cI.useCache( false );
@@ -341,7 +341,7 @@ namespace gum_tests {
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::AprioriNoApriori           apriori(database);
+      gum::learning::NoPrior                    apriori(database);
       gum::learning::CorrectedMutualInformation cI(parser, apriori);
       cI.useMDL();
       // cI.useCache( false );
@@ -390,7 +390,7 @@ namespace gum_tests {
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::AprioriNoApriori           apriori(database);
+      gum::learning::NoPrior                    apriori(database);
       gum::learning::CorrectedMutualInformation cI(parser, apriori);
       cI.useMDL();
       // cI.useCache( false );

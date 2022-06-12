@@ -62,7 +62,7 @@ namespace gum {
 
     /** @class Prior
      * @brief the base class for all a priori
-     * @headerfile apriori.h <agrum/tools/database/apriori.h>
+     * @headerfile prior.h <agrum/BN/learning/priors/prior.h>
      * @ingroup learning_apriori
      */
     class Prior {

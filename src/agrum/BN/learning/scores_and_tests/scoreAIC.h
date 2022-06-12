@@ -33,7 +33,7 @@
 #include <agrum/agrum.h>
 #include <agrum/tools/core/math/math_utils.h>
 #include <agrum/BN/learning/scores_and_tests/score.h>
-#include <agrum/BN/learning/priors/aprioriNoApriori.h>
+#include <agrum/BN/learning/priors/noPrior.h>
 
 namespace gum {
 
@@ -183,7 +183,7 @@ namespace gum {
 
       private:
       /// the internal apriori of the score
-      AprioriNoApriori _internal_apriori_;
+      NoPrior _internal_apriori_;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

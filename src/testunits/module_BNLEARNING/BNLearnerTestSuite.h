@@ -228,7 +228,7 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::AprioriSmoothing     apriori(database);
+      gum::learning::SmoothingPrior       apriori(database);
       apriori.setWeight(1);
 
       gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG >
@@ -1198,7 +1198,7 @@ namespace gum_tests {
       gum::learning::DBRowGeneratorSet            dirichlet_genset;
       gum::learning::DBRowGeneratorParser         dirichlet_parser(dirichlet_database.handler(),
                                                            dirichlet_genset);
-      gum::learning::AprioriDirichletFromDatabase apriori(dirichlet_database, dirichlet_parser);
+      gum::learning::DirichletPriorFromDatabase   apriori(dirichlet_database, dirichlet_parser);
 
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
@@ -1765,7 +1765,7 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::AprioriSmoothing     apriori(database);
+      gum::learning::SmoothingPrior       apriori(database);
       apriori.setWeight(1);
 
       gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG >

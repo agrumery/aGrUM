@@ -32,7 +32,7 @@
 
 /// include the inlined functions if necessary
 #  ifdef GUM_NO_INLINE
-#    include <agrum/BN/learning/priors/apriori_inl.h>
+#    include <agrum/BN/learning/priors/prior_inl.h>
 #  endif /* GUM_NO_INLINE */
 
 namespace gum {

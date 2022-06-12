@@ -25,7 +25,7 @@
 
 #include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/tools/database/DBTranslatorSet.h>
-#include <agrum/BN/learning/priors/aprioriK2.h>
+#include <agrum/BN/learning/priors/K2Prior.h>
 
 namespace gum_tests {
 
@@ -58,7 +58,7 @@ namespace gum_tests {
       gum::learning::DatabaseTable database(trans_set);
 
 
-      gum::learning::AprioriK2 apriori(database);
+      gum::learning::K2Prior apriori(database);
       TS_ASSERT_EQUALS(apriori.weight(), 1.0)
       apriori.setWeight(4.0);
       TS_ASSERT_EQUALS(apriori.weight(), 1.0)
@@ -111,7 +111,7 @@ namespace gum_tests {
       }
 
 
-      gum::learning::AprioriK2 apriori2(apriori);
+      gum::learning::K2Prior apriori2(apriori);
       TS_ASSERT_EQUALS(apriori2.weight(), 1.0)
       apriori2.setWeight(2.0);
       TS_ASSERT_EQUALS(apriori2.weight(), 1.0)
@@ -150,7 +150,7 @@ namespace gum_tests {
       }
 
 
-      gum::learning::AprioriK2 apriori3(std::move(apriori2));
+      gum::learning::K2Prior apriori3(std::move(apriori2));
       TS_ASSERT_EQUALS(apriori3.weight(), 1.0)
       apriori3.setWeight(4.0);
       TS_ASSERT_EQUALS(apriori3.weight(), 1.0)
@@ -189,7 +189,7 @@ namespace gum_tests {
       }
 
 
-      gum::learning::AprioriK2* apriori4 = apriori.clone();
+      gum::learning::K2Prior* apriori4 = apriori.clone();
       TS_ASSERT_EQUALS(apriori4->weight(), 1.0)
       apriori4->setWeight(2.0);
       TS_ASSERT_EQUALS(apriori4->weight(), 1.0)
@@ -231,7 +231,7 @@ namespace gum_tests {
 
 
       gum::learning::DatabaseTable database2;
-      gum::learning::AprioriK2     apriori5(database2);
+      gum::learning::K2Prior       apriori5(database2);
       apriori5 = apriori;
       TS_ASSERT_EQUALS(apriori5.weight(), 1.0)
       apriori5.setWeight(2.0);
@@ -355,7 +355,7 @@ namespace gum_tests {
       nodeId2columns.insert(node5, std::size_t(5));
 
 
-      gum::learning::AprioriK2 apriori(database, nodeId2columns);
+      gum::learning::K2Prior apriori(database, nodeId2columns);
       TS_ASSERT_EQUALS(apriori.weight(), 1.0)
       apriori.setWeight(4.0);
       TS_ASSERT_EQUALS(apriori.weight(), 1.0)
@@ -402,7 +402,7 @@ namespace gum_tests {
       }
 
 
-      gum::learning::AprioriK2 apriori2(apriori);
+      gum::learning::K2Prior apriori2(apriori);
       TS_ASSERT_EQUALS(apriori2.weight(), 1.0)
       apriori2.setWeight(2.0);
       TS_ASSERT_EQUALS(apriori2.weight(), 1.0)
@@ -440,7 +440,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(val, 17.0)
       }
 
-      gum::learning::AprioriK2 apriori3(std::move(apriori2));
+      gum::learning::K2Prior apriori3(std::move(apriori2));
       TS_ASSERT_EQUALS(apriori3.weight(), 1.0)
       apriori3.setWeight(4.0);
       TS_ASSERT_EQUALS(apriori3.weight(), 1.0)
@@ -479,7 +479,7 @@ namespace gum_tests {
       }
 
 
-      gum::learning::AprioriK2* apriori4 = apriori.clone();
+      gum::learning::K2Prior* apriori4 = apriori.clone();
       TS_ASSERT_EQUALS(apriori4->weight(), 1.0)
       apriori4->setWeight(2.0);
       TS_ASSERT_EQUALS(apriori4->weight(), 1.0)
@@ -520,7 +520,7 @@ namespace gum_tests {
       delete apriori4;
 
       gum::learning::DatabaseTable database2;
-      gum::learning::AprioriK2     apriori5(database2);
+      gum::learning::K2Prior       apriori5(database2);
       apriori5 = apriori;
       TS_ASSERT_EQUALS(apriori5.weight(), 1.0)
       apriori5.setWeight(2.0);

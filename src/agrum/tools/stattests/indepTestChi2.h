@@ -32,7 +32,7 @@
 
 #include <agrum/tools/core/math/chi2.h>
 #include <agrum/tools/stattests/independenceTest.h>
-#include <agrum/BN/learning/priors/aprioriNoApriori.h>
+#include <agrum/BN/learning/priors/noPrior.h>
 
 namespace gum {
 

@@ -59,10 +59,10 @@
 #include <agrum/BN/learning/scores_and_tests/scoreK2.h>
 #include <agrum/BN/learning/scores_and_tests/scoreLog2Likelihood.h>
 
-#include <agrum/BN/learning/priors/aprioriDirichletFromDatabase.h>
-#include <agrum/BN/learning/priors/aprioriNoApriori.h>
-#include <agrum/BN/learning/priors/aprioriSmoothing.h>
-#include <agrum/BN/learning/priors/aprioriBDeu.h>
+#include <agrum/BN/learning/priors/DirichletPriorFromDatabase.h>
+#include <agrum/BN/learning/priors/noPrior.h>
+#include <agrum/BN/learning/priors/smoothingPrior.h>
+#include <agrum/BN/learning/priors/bdeuPrior.h>
 
 #include <agrum/BN/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>
@@ -795,7 +795,7 @@ namespace gum {
       /// the apriori used
       Prior* apriori_{nullptr};
 
-      AprioriNoApriori* noApriori_{nullptr};
+      NoPrior* noApriori_{nullptr};
 
       /// the weight of the apriori
       double aprioriWeight_{1.0f};

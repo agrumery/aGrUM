@@ -25,8 +25,8 @@
 
 #include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/tools/database/DBTranslatorSet.h>
-#include <agrum/BN/learning/priors/aprioriNoApriori.h>
-#include <agrum/BN/learning/priors/aprioriSmoothing.h>
+#include <agrum/BN/learning/priors/noPrior.h>
+#include <agrum/BN/learning/priors/smoothingPrior.h>
 #include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
 #include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
 #include <agrum/tools/database/DBRowGenerator4CompleteRows.h>
@@ -108,8 +108,8 @@ namespace gum_tests {
       // create the parser
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::AprioriSmoothing     extern_apriori(database);
-      gum::learning::AprioriNoApriori     intern_apriori(database);
+      gum::learning::SmoothingPrior       extern_apriori(database);
+      gum::learning::NoPrior              intern_apriori(database);
 
       gum::learning::ParamEstimatorML param_estimator(parser, extern_apriori, intern_apriori);
 
@@ -191,8 +191,8 @@ namespace gum_tests {
       genset_id.insertGenerator(generator_id);
       gum::learning::DBRowGeneratorParser parser_id(database.handler(), genset_id);
 
-      gum::learning::AprioriSmoothing extern_apriori(database);
-      gum::learning::AprioriNoApriori intern_apriori(database);
+      gum::learning::SmoothingPrior   extern_apriori(database);
+      gum::learning::NoPrior          intern_apriori(database);
       gum::learning::ParamEstimatorML param_estimator_id(parser_id, extern_apriori, intern_apriori);
 
       gum::learning::DBRowGeneratorEM  generator_EM(col_types, bn);

@@ -36,8 +36,8 @@
 #include <agrum/BN/learning/scores_and_tests/scoreK2.h>
 #include <agrum/BN/learning/scores_and_tests/scoreBIC.h>
 
-#include <agrum/BN/learning/priors/aprioriSmoothing.h>
-#include <agrum/BN/learning/priors/aprioriDirichletFromDatabase.h>
+#include <agrum/BN/learning/priors/smoothingPrior.h>
+#include <agrum/BN/learning/priors/DirichletPriorFromDatabase.h>
 
 #include <agrum/BN/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>
@@ -209,7 +209,7 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::AprioriSmoothing     apriori(database);
+      gum::learning::SmoothingPrior       apriori(database);
       gum::learning::ScoreK2              score(parser, apriori);
 
       gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG,
@@ -278,7 +278,7 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::AprioriSmoothing     apriori(database);
+      gum::learning::SmoothingPrior       apriori(database);
       gum::learning::ScoreK2              score(parser, apriori);
 
       gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG,
@@ -350,7 +350,7 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::AprioriSmoothing     apriori(database);
+      gum::learning::SmoothingPrior       apriori(database);
       gum::learning::ScoreK2              score(parser, apriori);
       // score.setNumberOfThreads(24);
 
@@ -426,7 +426,7 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::AprioriSmoothing     apriori(database);
+      gum::learning::SmoothingPrior       apriori(database);
       gum::learning::ScoreK2              score(parser, apriori);
 
       gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG,
@@ -514,7 +514,7 @@ namespace gum_tests {
       gum::learning::DBRowGeneratorSet            dirichlet_genset;
       gum::learning::DBRowGeneratorParser         dirichlet_parser(dirichlet_database.handler(),
                                                            dirichlet_genset);
-      gum::learning::AprioriDirichletFromDatabase apriori(dirichlet_database, dirichlet_parser);
+      gum::learning::DirichletPriorFromDatabase   apriori(dirichlet_database, dirichlet_parser);
 
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
@@ -577,7 +577,7 @@ namespace gum_tests {
 
       std::vector< gum::Idx > modalities = filter.modalities();
 
-      gum::learning::AprioriSmoothing apriori;
+      gum::learning::SmoothingPrior apriori;
       gum::learning::ScoreBDeu        score(filter, modalities, apriori);
 
       gum::learning::StructuralConstraintSetStatic<
@@ -627,7 +627,7 @@ namespace gum_tests {
 
       std::vector< gum::Idx > modalities = filter.modalities();
 
-      gum::learning::AprioriSmoothing apriori;
+      gum::learning::SmoothingPrior apriori;
       gum::learning::ScoreBDeu        score(filter, modalities, apriori);
 
       gum::learning::StructuralConstraintSetStatic<
@@ -677,7 +677,7 @@ namespace gum_tests {
 
       std::vector< gum::Idx > modalities = filter.modalities();
 
-      gum::learning::AprioriSmoothing apriori;
+      gum::learning::SmoothingPrior apriori;
       gum::learning::ScoreBDeu        score(filter, modalities, apriori);
 
       gum::learning::StructuralConstraintSetStatic<
@@ -728,7 +728,7 @@ namespace gum_tests {
 
       std::vector< gum::Idx > modalities = filter.modalities();
 
-      gum::learning::AprioriSmoothing apriori;
+      gum::learning::SmoothingPrior apriori;
       gum::learning::ScoreBDeu        score(filter, modalities, apriori);
 
       gum::learning::StructuralConstraintSetStatic<
@@ -779,7 +779,7 @@ namespace gum_tests {
 
       std::vector< gum::Idx > modalities = filter.modalities();
 
-      gum::learning::AprioriSmoothing apriori;
+      gum::learning::SmoothingPrior apriori;
       gum::learning::ScoreBDeu        score(filter, modalities, apriori);
 
       gum::learning::StructuralConstraintSetStatic<
@@ -830,7 +830,7 @@ namespace gum_tests {
 
       std::vector< gum::Idx > modalities = filter.modalities();
 
-      gum::learning::AprioriSmoothing apriori;
+      gum::learning::SmoothingPrior apriori;
       gum::learning::ScoreBDeu        score(filter, modalities, apriori);
 
       gum::learning::StructuralConstraintSetStatic<

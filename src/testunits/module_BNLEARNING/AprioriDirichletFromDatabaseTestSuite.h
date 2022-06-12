@@ -25,7 +25,7 @@
 
 #include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/tools/database/DBTranslatorSet.h>
-#include <agrum/BN/learning/priors/aprioriDirichletFromDatabase.h>
+#include <agrum/BN/learning/priors/DirichletPriorFromDatabase.h>
 
 namespace gum_tests {
 
@@ -74,7 +74,7 @@ namespace gum_tests {
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
 
 
-      gum::learning::AprioriDirichletFromDatabase apriori(database, parser);
+      gum::learning::DirichletPriorFromDatabase apriori(database, parser);
 
       TS_ASSERT_EQUALS(apriori.weight(), 1.0)
       apriori.setWeight(2.0 * db_size);
@@ -139,7 +139,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(vect[2], 2001.0)
 
 
-      gum::learning::AprioriDirichletFromDatabase apriori2(apriori);
+      gum::learning::DirichletPriorFromDatabase apriori2(apriori);
       TS_ASSERT_EQUALS(apriori2.weight(), 2.0 * db_size)
       apriori2.setWeight(1.0 * db_size);
       TS_ASSERT_EQUALS(apriori2.weight(), db_size)
@@ -193,7 +193,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(vect[2], 1001.0)
 
 
-      gum::learning::AprioriDirichletFromDatabase apriori3(std::move(apriori2));
+      gum::learning::DirichletPriorFromDatabase apriori3(std::move(apriori2));
       TS_ASSERT_EQUALS(apriori3.weight(), db_size)
       apriori3.setWeight(2.0 * db_size);
       TS_ASSERT_EQUALS(apriori3.weight(), 2.0 * db_size)
@@ -245,7 +245,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(vect[2], 2001.0)
 
 
-      gum::learning::AprioriDirichletFromDatabase* apriori4 = apriori3.clone();
+      gum::learning::DirichletPriorFromDatabase* apriori4 = apriori3.clone();
       TS_ASSERT_EQUALS(apriori4->weight(), 2.0 * db_size)
       apriori4->setWeight(1.0 * db_size);
       TS_ASSERT_EQUALS(apriori4->weight(), 1.0 * db_size)
@@ -468,7 +468,7 @@ namespace gum_tests {
       nodeId2columns.insert(node4, std::size_t(5));
       nodeId2columns.insert(node5, std::size_t(1));
 
-      gum::learning::AprioriDirichletFromDatabase apriori(database, parser, nodeId2columns);
+      gum::learning::DirichletPriorFromDatabase apriori(database, parser, nodeId2columns);
 
       TS_ASSERT_EQUALS(apriori.weight(), 1.0)
       apriori.setWeight(2.0 * db_size);
@@ -530,7 +530,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(vect[2], 2001.0)
 
 
-      gum::learning::AprioriDirichletFromDatabase apriori2(apriori);
+      gum::learning::DirichletPriorFromDatabase apriori2(apriori);
       TS_ASSERT_EQUALS(apriori2.weight(), 2.0 * db_size)
       apriori2.setWeight(1.0 * db_size);
       TS_ASSERT_EQUALS(apriori2.weight(), 1.0 * db_size)
@@ -584,7 +584,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(vect[2], 1001.0)
 
 
-      gum::learning::AprioriDirichletFromDatabase apriori3(std::move(apriori2));
+      gum::learning::DirichletPriorFromDatabase apriori3(std::move(apriori2));
       TS_ASSERT_EQUALS(apriori3.weight(), 1.0 * db_size)
       apriori3.setWeight(2.0 * db_size);
       TS_ASSERT_EQUALS(apriori3.weight(), 2.0 * db_size)
@@ -637,7 +637,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(vect[2], 2001.0)
 
 
-      gum::learning::AprioriDirichletFromDatabase* apriori4 = apriori3.clone();
+      gum::learning::DirichletPriorFromDatabase* apriori4 = apriori3.clone();
       TS_ASSERT_EQUALS(apriori4->weight(), 2.0 * db_size)
       apriori4->setWeight(1.0 * db_size);
       TS_ASSERT_EQUALS(apriori4->weight(), 1.0 * db_size)

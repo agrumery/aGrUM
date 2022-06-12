@@ -26,7 +26,7 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#  include <agrum/BN/learning/priors/aprioriK2.h>
+#  include <agrum/BN/learning/priors/K2Prior.h>
 
 namespace gum {
 
@@ -34,49 +34,49 @@ namespace gum {
 
 
     /// default constructors
-    INLINE AprioriK2::AprioriK2(const DatabaseTable&                    database,
+    INLINE K2Prior::K2Prior(const DatabaseTable&                    database,
                                 const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        AprioriSmoothing(database, nodeId2columns) {
-      GUM_CONSTRUCTOR(AprioriK2);
+        SmoothingPrior(database, nodeId2columns) {
+      GUM_CONSTRUCTOR(K2Prior);
     }
 
 
     /// copy constructor
-    INLINE AprioriK2::AprioriK2(const AprioriK2& from) : AprioriSmoothing(from) {
-      GUM_CONS_CPY(AprioriK2);
+    INLINE K2Prior::K2Prior(const K2Prior& from) : SmoothingPrior(from) {
+      GUM_CONS_CPY(K2Prior);
     }
 
 
     /// move constructor
-    INLINE AprioriK2::AprioriK2(AprioriK2&& from) : AprioriSmoothing(std::move(from)) {
-      GUM_CONS_MOV(AprioriK2);
+    INLINE K2Prior::K2Prior(K2Prior&& from) : SmoothingPrior(std::move(from)) {
+      GUM_CONS_MOV(K2Prior);
     }
 
 
     /// virtual copy constructor
-    INLINE AprioriK2* AprioriK2::clone() const { return new AprioriK2(*this); }
+    INLINE K2Prior* K2Prior::clone() const { return new K2Prior(*this); }
 
 
     /// destructor
-    INLINE AprioriK2::~AprioriK2() { GUM_DESTRUCTOR(AprioriK2); }
+    INLINE K2Prior::~K2Prior() { GUM_DESTRUCTOR(K2Prior); }
 
 
     /// copy operator
-    INLINE AprioriK2& AprioriK2::operator=(const AprioriK2& from) {
-      AprioriSmoothing::operator=(from);
+    INLINE K2Prior& K2Prior::operator=(const K2Prior& from) {
+      SmoothingPrior::operator=(from);
       return *this;
     }
 
 
     /// move operator
-    INLINE AprioriK2& AprioriK2::operator=(AprioriK2&& from) {
-      AprioriSmoothing::operator=(std::move(from));
+    INLINE K2Prior& K2Prior::operator=(K2Prior&& from) {
+      SmoothingPrior::operator=(std::move(from));
       return *this;
     }
 
 
     /// dummy set weight function: in K2, weights are always equal to 1
-    INLINE void AprioriK2::setWeight(const double weight) {}
+    INLINE void K2Prior::setWeight(const double weight) {}
 
 
   } /* namespace learning */

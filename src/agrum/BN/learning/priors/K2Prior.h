@@ -30,15 +30,15 @@
 #include <vector>
 
 #include <agrum/agrum.h>
-#include <agrum/BN/learning/priors/aprioriSmoothing.h>
+#include <agrum/BN/learning/priors/smoothingPrior.h>
 
 namespace gum {
 
   namespace learning {
 
-    /** @class AprioriK2
+    /** @class K2Prior
      * @brief the internal apriori for the K2 score = Laplace Prior
-     * @headerfile aprioriK2.h <agrum/tools/database/aprioriK2.h>
+     * @headerfile K2Prior.h <agrum/tools/database/K2Prior.h>
      * @ingroup learning_apriori
      *
      * K2 is a BD score with a Laplace apriori (i.e., a smoothing of 1).
@@ -47,7 +47,7 @@ namespace gum {
      * learning requires that the same priors are taken into account during
      * structure learning and parameter learning.
      */
-    class AprioriK2: public AprioriSmoothing {
+    class K2Prior: public SmoothingPrior {
       public:
 
       // ##########################################################################
@@ -66,21 +66,21 @@ namespace gum {
        * is an identity, i.e., the value of a NodeId is equal to the index of
        * the column in the DatabaseTable.
        */
-      AprioriK2(const DatabaseTable&                    database,
+      explicit K2Prior(const DatabaseTable&                    database,
                 const Bijection< NodeId, std::size_t >& nodeId2columns
                 = Bijection< NodeId, std::size_t >());
 
       /// copy constructor
-      AprioriK2(const AprioriK2& from);
+      K2Prior(const K2Prior& from);
 
       /// move constructor
-      AprioriK2(AprioriK2&& from);
+      K2Prior(K2Prior&& from);
 
       /// virtual copy constructor
-      virtual AprioriK2* clone() const;
+      virtual K2Prior* clone() const;
 
       /// destructor
-      virtual ~AprioriK2();
+      virtual ~K2Prior();
 
       /// @}
 
@@ -91,10 +91,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      AprioriK2& operator=(const AprioriK2& from);
+      K2Prior& operator=(const K2Prior& from);
 
       /// move operator
-      AprioriK2& operator=(AprioriK2&& from);
+      K2Prior& operator=(K2Prior&& from);
 
       /// @}
 
@@ -116,7 +116,7 @@ namespace gum {
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#  include <agrum/BN/learning/priors/aprioriK2_inl.h>
+#  include <agrum/BN/learning/priors/K2Prior_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_PRIOR_K2_H */

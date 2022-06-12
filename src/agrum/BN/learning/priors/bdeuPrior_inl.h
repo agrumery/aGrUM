@@ -18,7 +18,7 @@
  *
  */
 
-
+#include <agrum/BN/learning/priors/bdeuPrior.h>
 /** @file
  * @brief the internal apriori for the BDeu score (N' / (r_i * q_i)
  *
@@ -26,90 +26,86 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-namespace gum {
-
-  namespace learning {
+namespace gum::learning {
 
     /// default constructor
-    INLINE AprioriBDeu::AprioriBDeu(const DatabaseTable&                    database,
+    INLINE BDeuPrior::BDeuPrior(const DatabaseTable&                    database,
                                     const Bijection< NodeId, std::size_t >& nodeId2columns) :
         Prior(database, nodeId2columns) {
-      GUM_CONSTRUCTOR(AprioriBDeu);
+      GUM_CONSTRUCTOR(BDeuPrior)
     }
 
 
     /// copy constructor
-    INLINE AprioriBDeu::AprioriBDeu(const AprioriBDeu& from) : Prior(from) {
-      GUM_CONS_CPY(AprioriBDeu);
+    INLINE BDeuPrior::BDeuPrior(const BDeuPrior& from) : Prior(from) {
+      GUM_CONS_CPY(BDeuPrior)
     }
 
 
     /// move constructor
-    INLINE AprioriBDeu::AprioriBDeu(AprioriBDeu&& from) : Prior(std::move(from)) {
-      GUM_CONS_MOV(AprioriBDeu);
+    INLINE BDeuPrior::BDeuPrior(BDeuPrior&& from) noexcept : Prior(std::move(from)) {
+      GUM_CONS_MOV(BDeuPrior)
     }
 
 
     /// virtual copy constructor
-    INLINE AprioriBDeu* AprioriBDeu::clone() const { return new AprioriBDeu(*this); }
+    INLINE BDeuPrior* BDeuPrior::clone() const { return new BDeuPrior(*this); }
 
 
     /// destructor
-    INLINE AprioriBDeu::~AprioriBDeu() { GUM_DESTRUCTOR(AprioriBDeu); }
+    INLINE BDeuPrior::~BDeuPrior() { GUM_DESTRUCTOR(BDeuPrior) }
 
 
     /// copy operator
-    INLINE AprioriBDeu& AprioriBDeu::operator=(const AprioriBDeu& from) {
+    INLINE BDeuPrior& BDeuPrior::operator=(const BDeuPrior& from) {
       Prior::operator=(from);
       return *this;
     }
 
 
     /// move operator
-    INLINE AprioriBDeu& AprioriBDeu::operator=(AprioriBDeu&& from) {
+    INLINE BDeuPrior& BDeuPrior::operator=(BDeuPrior&& from) noexcept {
       Prior::operator=(std::move(from));
       return *this;
     }
 
 
     /// sets the effective sample size N' (alias of setEffectiveSampleSize ())
-    INLINE void AprioriBDeu::setWeight(const double weight) {
+    INLINE void BDeuPrior::setWeight(const double weight) {
       if (weight < 0.0) {
         GUM_ERROR(OutOfBounds,
-                  "A negative weight (" << weight << ") is forbidden for the BDeu apriori");
+                  "A negative weight (" << weight << ") is forbidden for the BDeu apriori")
       }
       this->weight_ = weight;
     }
 
 
     /// sets the effective sample size N'
-    INLINE void AprioriBDeu::setEffectiveSampleSize(const double weight) { setWeight(weight); }
+    INLINE void BDeuPrior::setEffectiveSampleSize(const double weight) { setWeight(weight); }
 
 
     /// returns the type of the apriori
-    INLINE PriorType AprioriBDeu::getType() const {
+    INLINE PriorType BDeuPrior::getType() const {
       return PriorType::BDeuPriorType;
     }
 
 
     /// indicates whether the apriori is potentially informative
-    INLINE bool AprioriBDeu::isInformative() const { return this->weight_ != 0.0; }
+    INLINE bool BDeuPrior::isInformative() const { return this->weight_ != 0.0; }
 
 
     /// returns the apriori vector all the variables in the idset
-    INLINE void AprioriBDeu::addAllApriori(const IdCondSet& idset, std::vector< double >& counts) {
+    INLINE void BDeuPrior::addAllApriori(const IdCondSet& idset, std::vector< double >& counts) {
       // if the idset is empty or the weight is zero, the apriori is also empty
       if (idset.empty() || (this->weight_ == 0.0)) return;
 
       // otherwise, add the weight to all the cells in the counting vector
-      const double weight = this->weight_ / counts.size();
+      const double weight = this->weight_ / double(counts.size());
       for (auto& count: counts)
         count += weight;
     }
 
 
-  } /* namespace learning */
-
-} /* namespace gum */
+  } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

@@ -193,7 +193,7 @@ namespace gum {
                                        const bool                        induceTypes) :
         scoreDatabase_(filename, missing_symbols, induceTypes) {
       filename_     = filename;
-      noApriori_    = new AprioriNoApriori(scoreDatabase_.databaseTable());
+      noApriori_    = new NoPrior(scoreDatabase_.databaseTable());
       inducedTypes_ = induceTypes;
 
       GUM_CONSTRUCTOR(GenericBNLearner);
@@ -202,7 +202,7 @@ namespace gum {
 
     GenericBNLearner::GenericBNLearner(const DatabaseTable& db) : scoreDatabase_(db) {
       filename_     = "-";
-      noApriori_    = new AprioriNoApriori(scoreDatabase_.databaseTable());
+      noApriori_    = new NoPrior(scoreDatabase_.databaseTable());
       inducedTypes_ = false;
 
       GUM_CONSTRUCTOR(GenericBNLearner);
@@ -224,7 +224,7 @@ namespace gum {
         scoreDatabase_(from.scoreDatabase_), ranges_(from.ranges_),
         aprioriDbname_(from.aprioriDbname_), initialDag_(from.initialDag_),
         filename_(from.filename_), nbDecreasingChanges_(from.nbDecreasingChanges_) {
-      noApriori_ = new AprioriNoApriori(scoreDatabase_.databaseTable());
+      noApriori_ = new NoPrior(scoreDatabase_.databaseTable());
 
       GUM_CONS_CPY(GenericBNLearner);
     }
@@ -247,7 +247,7 @@ namespace gum {
         aprioriDbname_(std::move(from.aprioriDbname_)), initialDag_(std::move(from.initialDag_)),
         filename_(std::move(from.filename_)),
         nbDecreasingChanges_(std::move(from.nbDecreasingChanges_)) {
-      noApriori_ = new AprioriNoApriori(scoreDatabase_.databaseTable());
+      noApriori_ = new NoPrior(scoreDatabase_.databaseTable());
 
       GUM_CONS_MOV(GenericBNLearner)
     }
@@ -462,12 +462,12 @@ namespace gum {
       // create the new apriori
       switch (aprioriType_) {
         case BNLearnerPriorType::NO_APRIORI:
-          apriori_ = new AprioriNoApriori(scoreDatabase_.databaseTable(),
+          apriori_ = new NoPrior(scoreDatabase_.databaseTable(),
                                           scoreDatabase_.nodeId2Columns());
           break;
 
         case BNLearnerPriorType::SMOOTHING:
-          apriori_ = new AprioriSmoothing(scoreDatabase_.databaseTable(),
+          apriori_ = new SmoothingPrior(scoreDatabase_.databaseTable(),
                                           scoreDatabase_.nodeId2Columns());
           break;
 
@@ -480,14 +480,14 @@ namespace gum {
           aprioriDatabase_
              = new Database(aprioriDbname_, scoreDatabase_, scoreDatabase_.missingSymbols());
 
-          apriori_ = new AprioriDirichletFromDatabase(scoreDatabase_.databaseTable(),
+          apriori_ = new DirichletPriorFromDatabase(scoreDatabase_.databaseTable(),
                                                       aprioriDatabase_->parser(),
                                                       aprioriDatabase_->nodeId2Columns());
           break;
 
         case BNLearnerPriorType::BDEU:
           apriori_
-             = new AprioriBDeu(scoreDatabase_.databaseTable(), scoreDatabase_.nodeId2Columns());
+             = new BDeuPrior(scoreDatabase_.databaseTable(), scoreDatabase_.nodeId2Columns());
           break;
 
         default:

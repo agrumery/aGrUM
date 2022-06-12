@@ -28,8 +28,8 @@
 #include <agrum/tools/database/DBInitializerFromCSV.h>
 #include <agrum/tools/database/databaseTable.h>
 #include <agrum/tools/database/DBTranslatorSet.h>
-#include <agrum/BN/learning/priors/aprioriNoApriori.h>
-#include <agrum/BN/learning/priors/aprioriSmoothing.h>
+#include <agrum/BN/learning/priors/noPrior.h>
+#include <agrum/BN/learning/priors/smoothingPrior.h>
 #include <agrum/tools/stattests/pseudoCount.h>
 
 namespace gum_tests {
@@ -54,7 +54,7 @@ namespace gum_tests {
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
       {
-        gum::learning::AprioriNoApriori apriori(database);
+        gum::learning::NoPrior apriori(database);
         gum::learning::PseudoCount      counts(parser, apriori);
 
         TS_ASSERT_EQUALS(counts.get({1}), std::vector< double >({4, 3}))
@@ -62,7 +62,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(counts.get({0, 2}), std::vector< double >({2, 1, 1, 1, 0, 2}))
       }
       {
-        gum::learning::AprioriSmoothing apriori(database);
+        gum::learning::SmoothingPrior apriori(database);
         gum::learning::PseudoCount      counts(parser, apriori);
 
         TS_ASSERT_EQUALS(counts.get({1}), std::vector< double >({5, 4}))
@@ -70,7 +70,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(counts.get({0, 2}), std::vector< double >({3, 2, 2, 2, 1, 3}))
       }
       {
-        gum::learning::AprioriSmoothing apriori(database);
+        gum::learning::SmoothingPrior apriori(database);
         apriori.setWeight(0.1);
         gum::learning::PseudoCount counts(parser, apriori);
 

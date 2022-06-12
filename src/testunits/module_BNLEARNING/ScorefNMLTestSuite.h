@@ -25,7 +25,7 @@
 
 #include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/tools/database/DBTranslatorSet.h>
-#include <agrum/BN/learning/priors/aprioriSmoothing.h>
+#include <agrum/BN/learning/priors/smoothingPrior.h>
 #include <agrum/BN/learning/scores_and_tests/scorefNML.h>
 
 namespace gum_tests {
@@ -146,7 +146,7 @@ namespace gum_tests {
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
 
-      gum::learning::AprioriSmoothing apriori(database);
+      gum::learning::SmoothingPrior   apriori(database);
       gum::learning::ScorefNML        score(parser, apriori);
 
       TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScorefNML::isPriorCompatible(
@@ -290,7 +290,7 @@ namespace gum_tests {
       nodeId2columns.insert(node4, std::size_t(5));
       nodeId2columns.insert(node5, std::size_t(1));
 
-      gum::learning::AprioriSmoothing apriori(database, nodeId2columns);
+      gum::learning::SmoothingPrior   apriori(database, nodeId2columns);
       gum::learning::ScorefNML        score(parser, apriori, nodeId2columns);
 
       TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScorefNML::isPriorCompatible(
@@ -420,7 +420,7 @@ namespace gum_tests {
 
       std::vector< std::pair< std::size_t, std::size_t > > ranges{{800, 1000}, {1050, 1400}};
 
-      gum::learning::AprioriSmoothing apriori(database);
+      gum::learning::SmoothingPrior   apriori(database);
       gum::learning::ScorefNML        score(parser, apriori, ranges);
 
       TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScorefNML::isPriorCompatible(
@@ -566,7 +566,7 @@ namespace gum_tests {
       nodeId2columns.insert(node4, std::size_t(5));
       nodeId2columns.insert(node5, std::size_t(1));
 
-      gum::learning::AprioriSmoothing apriori(database, nodeId2columns);
+      gum::learning::SmoothingPrior   apriori(database, nodeId2columns);
       gum::learning::ScorefNML        score(parser, apriori, ranges, nodeId2columns);
 
       TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScorefNML::isPriorCompatible(
@@ -696,7 +696,7 @@ namespace gum_tests {
 
       std::vector< std::pair< std::size_t, std::size_t > > ranges{{800, 1000}, {1050, 1400}};
 
-      gum::learning::AprioriSmoothing apriori(database);
+      gum::learning::SmoothingPrior apriori(database);
 
       for (std::size_t i = std::size_t(1); i < std::size_t(24); ++i) {
         gum::learning::ScorefNML score(parser, apriori, ranges);

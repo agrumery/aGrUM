@@ -26,7 +26,7 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#  include <agrum/BN/learning/priors/aprioriNoApriori.h>
+#  include <agrum/BN/learning/priors/noPrior.h>
 
 namespace gum {
 
@@ -34,68 +34,68 @@ namespace gum {
 
     /// default constructor
     INLINE
-    AprioriNoApriori::AprioriNoApriori(const DatabaseTable&                    database,
+    NoPrior::NoPrior(const DatabaseTable&                    database,
                                        const Bijection< NodeId, std::size_t >& nodeId2columns) :
         Prior(database, nodeId2columns) {
       Prior::setWeight(0.0);
-      GUM_CONSTRUCTOR(AprioriNoApriori);
+      GUM_CONSTRUCTOR(NoPrior);
     }
 
 
     /// copy constructor
-    INLINE AprioriNoApriori::AprioriNoApriori(const AprioriNoApriori& from) : Prior(from) {
-      GUM_CONS_CPY(AprioriNoApriori);
+    INLINE NoPrior::NoPrior(const NoPrior& from) : Prior(from) {
+      GUM_CONS_CPY(NoPrior);
     }
 
 
     /// move constructor
-    INLINE AprioriNoApriori::AprioriNoApriori(AprioriNoApriori&& from) : Prior(std::move(from)) {
-      GUM_CONS_MOV(AprioriNoApriori);
+    INLINE NoPrior::NoPrior(NoPrior&& from) : Prior(std::move(from)) {
+      GUM_CONS_MOV(NoPrior);
     }
 
 
     /// virtual copy constructor
-    INLINE AprioriNoApriori* AprioriNoApriori::clone() const { return new AprioriNoApriori(*this); }
+    INLINE NoPrior* NoPrior::clone() const { return new NoPrior(*this); }
 
 
     /// destructor
-    INLINE AprioriNoApriori::~AprioriNoApriori() { GUM_DESTRUCTOR(AprioriNoApriori); }
+    INLINE NoPrior::~NoPrior() { GUM_DESTRUCTOR(NoPrior); }
 
 
     /// copy operator
-    INLINE AprioriNoApriori& AprioriNoApriori::operator=(const AprioriNoApriori& from) {
+    INLINE NoPrior& NoPrior::operator=(const NoPrior& from) {
       Prior::operator=(from);
       return *this;
     }
 
 
     /// move operator
-    INLINE AprioriNoApriori& AprioriNoApriori::operator=(AprioriNoApriori&& from) {
+    INLINE NoPrior& NoPrior::operator=(NoPrior&& from) {
       Prior::operator=(std::move(from));
       return *this;
     }
 
 
     /// sets the weight of the a priori
-    INLINE void AprioriNoApriori::setWeight(const double) {}
+    INLINE void NoPrior::setWeight(const double) {}
 
     /// returns the type of the apriori
-    INLINE PriorType AprioriNoApriori::getType() const {
+    INLINE PriorType NoPrior::getType() const {
       return PriorType::NoPriorType;
     }
 
 
     /// indicates whether the apriori is potentially informative
-    INLINE bool AprioriNoApriori::isInformative() const { return false; }
+    INLINE bool NoPrior::isInformative() const { return false; }
 
 
     /// returns the apriori vector all the variables in the idset
-    INLINE void AprioriNoApriori::addAllApriori(const IdCondSet&       idset,
+    INLINE void NoPrior::addAllApriori(const IdCondSet&       idset,
                                                 std::vector< double >& counts) {}
 
 
     /// returns the apriori vector over only the conditioning set of an idset
-    INLINE void AprioriNoApriori::addConditioningApriori(const IdCondSet&       idset,
+    INLINE void NoPrior::addConditioningApriori(const IdCondSet&       idset,
                                                          std::vector< double >& counts) {}
 
 

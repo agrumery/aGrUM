@@ -37,7 +37,7 @@
 #include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/core/math/gammaLog2.h>
 #include <agrum/BN/learning/scores_and_tests/score.h>
-#include <agrum/BN/learning/priors/aprioriK2.h>
+#include <agrum/BN/learning/priors/K2Prior.h>
 
 namespace gum {
 
@@ -192,7 +192,7 @@ namespace gum {
 
       private:
       /// the internal apriori of the score
-      AprioriK2 _internal_apriori_;
+      K2Prior _internal_apriori_;
 
       /// the log(gamma (n)) function: generalizes log((n-1)!)
       GammaLog2 _gammalog2_;

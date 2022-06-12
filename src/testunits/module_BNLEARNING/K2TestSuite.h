@@ -36,7 +36,7 @@
 #include <agrum/BN/learning/scores_and_tests/scoreBDeu.h>
 #include <agrum/BN/learning/scores_and_tests/scoreK2.h>
 
-#include <agrum/BN/learning/priors/aprioriSmoothing.h>
+#include <agrum/BN/learning/priors/smoothingPrior.h>
 
 #include <agrum/BN/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>
@@ -71,7 +71,7 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::AprioriSmoothing     apriori(database);
+      gum::learning::SmoothingPrior       apriori(database);
       gum::learning::ScoreK2              score(parser, apriori);
 
       gum::learning::StructuralConstraintDAG struct_constraint;
@@ -121,7 +121,7 @@ gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
 
       std::vector<gum::Idx> modalities = filter.modalities ();
 
-      gum::learning::AprioriSmoothing apriori;
+      gum::learning::SmoothingPrior apriori;
       gum::learning::ScoreK2 real_score ( filter, modalities, apriori );
       gum::learning::Score& score = real_score;
 
@@ -185,7 +185,7 @@ translators;
 
       std::vector<gum::Idx> modalities = filter.modalities ();
 
-      gum::learning::AprioriSmoothing apriori;
+      gum::learning::SmoothingPrior apriori;
       gum::learning::ScoreK2 score ( filter, modalities, apriori );
 
       gum::learning::StructuralConstraintDAG
@@ -227,7 +227,7 @@ translators;
 
       std::vector<gum::Size> modalities = filter.modalities ();
 
-      gum::learning::AprioriSmoothing apriori;
+      gum::learning::SmoothingPrior apriori;
       gum::learning::ScoreK2 score ( filter, modalities, apriori );
 
       gum::NodeProperty<bool> slices;
@@ -278,7 +278,7 @@ translators;
 
       std::vector<gum::Size> modalities = filter.modalities ();
 
-      gum::learning::AprioriSmoothing apriori;
+      gum::learning::SmoothingPrior apriori;
       gum::learning::ScoreK2 score ( filter, modalities, apriori );
 
       gum::learning::StructuralConstraintIndegree

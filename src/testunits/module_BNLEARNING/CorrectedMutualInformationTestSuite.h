@@ -29,7 +29,7 @@
 #include <agrum/tools/database/databaseTable.h>
 #include <agrum/tools/database/DBTranslatorSet.h>
 #include <agrum/tools/stattests/correctedMutualInformation.h>
-#include <agrum/BN/learning/priors/aprioriNoApriori.h>
+#include <agrum/BN/learning/priors/noPrior.h>
 
 namespace gum_tests {
 
@@ -137,7 +137,7 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::AprioriNoApriori     apriori(database);
+      gum::learning::NoPrior              apriori(database);
 
       gum::learning::CorrectedMutualInformation score(parser, apriori);
       score.useNoCorr();
@@ -195,7 +195,7 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::AprioriNoApriori     apriori(database);
+      gum::learning::NoPrior              apriori(database);
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 

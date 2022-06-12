@@ -28,7 +28,7 @@
 #include <agrum/tools/database/DBInitializerFromCSV.h>
 #include <agrum/tools/database/databaseTable.h>
 #include <agrum/tools/database/DBTranslatorSet.h>
-#include <agrum/BN/learning/priors/aprioriNoApriori.h>
+#include <agrum/BN/learning/priors/noPrior.h>
 #include <agrum/tools/stattests/indepTestChi2.h>
 
 namespace gum_tests {
@@ -52,7 +52,7 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::AprioriNoApriori     apriori(database);
+      gum::learning::NoPrior              apriori(database);
       gum::learning::IndepTestChi2        score(parser, apriori);
 
       TS_ASSERT_DELTA(score.score(0, 3), -0.999, 0.01)
@@ -90,7 +90,7 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::AprioriNoApriori     apriori(database);
+      gum::learning::NoPrior              apriori(database);
       gum::learning::IndepTestChi2        score(parser, apriori);
       // score.useCache ( false );
 
@@ -124,7 +124,7 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::AprioriNoApriori     apriori(database);
+      gum::learning::NoPrior              apriori(database);
       gum::learning::IndepTestChi2        score(parser, apriori);
       // score.useCache ( false );
 
@@ -157,7 +157,7 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::AprioriNoApriori     apriori(database);
+      gum::learning::NoPrior              apriori(database);
       gum::learning::IndepTestChi2        score(parser, apriori);
 
       // A:0, B:1, C:2, D:3
@@ -199,7 +199,7 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::AprioriNoApriori     apriori(database);
+      gum::learning::NoPrior              apriori(database);
       gum::learning::IndepTestChi2        score(parser, apriori);
 
       auto stats = score.statistics(0, 1);
@@ -224,7 +224,7 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::AprioriNoApriori     apriori(database);
+      gum::learning::NoPrior              apriori(database);
       gum::learning::IndepTestChi2        score(parser, apriori);
 
       auto stats = score.statistics(0, 1, {2, 3});
@@ -248,7 +248,7 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::AprioriNoApriori     apriori(database);
+      gum::learning::NoPrior              apriori(database);
       gum::learning::IndepTestChi2        score(parser, apriori);
 
       auto stats = score.statistics(0, 1, {2});
