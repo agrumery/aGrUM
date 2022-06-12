@@ -32,6 +32,7 @@
 #include <iomanip>
 #include <iostream>
 #include <string>
+#include <utility>
 
 #include <agrum/tools/core/types.h>
 
@@ -94,11 +95,12 @@ namespace gum {
   /**
    * @brief Base class for all aGrUM's exceptions.
    */
-  class Exception {
+  class Exception: public std::exception {
     protected:
     std::string msg_;
     std::string type_;
     std::string callstack_;
+    std::string what_;
 
     public:
     // ====================================================================
@@ -109,32 +111,29 @@ namespace gum {
 
     Exception(const Exception& e);
 
-    ~Exception() = default;
+    virtual ~Exception() = default;
 
-/// @}
-#ifdef GUM_FOR_SWIG
-    std::string what() const { return "[pyAgrum] " + type_ + ": " + msg_; }
-#else    // GUM_FOR_SWIG
-    std::string what() const { return type_ + " : " + msg_; }
-#endif   // GUM_FOR_SWIG
+    /// @}
+
+    GUM_NODISCARD const char* what() const override { return what_.c_str(); };
 
     /**
      * @brief Returns the message content.
      * @return Returns the message content.
      */
-    std::string errorContent() const { return msg_; }
+    GUM_NODISCARD std::string errorContent() const { return msg_; };
 
     /**
      * @brief Returns the error type.
      * @return Returns the error type.
      */
-    std::string errorType() const { return type_; }
+    GUM_NODISCARD std::string errorType() const { return type_; };
 
     /**
      * @brief Returns the error call stack.
      * @return Returns the error call stack.
      */
-    std::string errorCallStack() const { return callstack_; }
+    GUM_NODISCARD std::string errorCallStack() const { return callstack_; };
   };
 
 
@@ -498,7 +497,7 @@ namespace gum {
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-  const std::string _createMsg_(const std::string& filename,
+  std::string _createMsg_(const std::string& filename,
                                 const std::string& function,
                                 int                line,
                                 const std::string& msg);
@@ -576,27 +575,25 @@ namespace gum {
 
     public:
     SyntaxError(const std::string& aMsg,
-                const std::string& aFilename,
+                std::string        aFilename,
                 Size               nol,
                 Size               noc,
                 const std::string& aType = "Syntax Error") :
         IOError(aMsg, aType),
-        noLine_(nol), noCol_(noc), filename_(aFilename){};
-
-    Size        col() const { return noCol_; };
-    Size        line() const { return noLine_; };
-    std::string filename() const { return filename_; };
-
+        noLine_(nol), noCol_(noc), filename_(std::move(aFilename)) {
 #  ifdef GUM_FOR_SWIG
-    std::string what() const { return "[pyAgrum] " + msg_; }
+      what_ = "[pyAgrum] " + msg_;
 #  else    // GUM_FOR_SWIG
-    std::string what() const {
       std::ostringstream error_stream;
       error_stream << type_ << ":" << std::endl;
       error_stream << filename() << ":" << line() << "," << col() << " : " << msg_;
-      return error_stream.str();
-    }
+      what_ = error_stream.str();
 #  endif   // GUM_FOR_SWIG
+    }
+
+    GUM_NODISCARD Size        col() const { return noCol_; };
+    GUM_NODISCARD Size        line() const { return noLine_; };
+    GUM_NODISCARD std::string filename() const { return filename_; };
   };
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 } /* namespace gum */

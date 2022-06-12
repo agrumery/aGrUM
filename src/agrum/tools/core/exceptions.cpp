@@ -37,10 +37,10 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
-  const std::string _createMsg_(const std::string& filename,
-                                const std::string& function,
-                                const int          line,
-                                const std::string& msg) {
+  std::string _createMsg_(const std::string& filename,
+                          const std::string& function,
+                          const int          line,
+                          const std::string& msg) {
     std::stringstream stream;
 #  ifdef GUM_FOR_SWIG
     stream << std::endl << msg << std::endl;
@@ -53,10 +53,17 @@ namespace gum {
 #  endif   // GUM_FOR_SWIG
     return stream.str();
   }
-  Exception::Exception(const Exception& e) : msg_(e.msg_), type_(e.type_) {}
+  Exception::Exception(const Exception& e) :
+      std::exception(e), msg_(e.msg_), type_(e.type_), what_(e.what_) {}
 
   Exception::Exception(std::string aMsg, std::string aType) :
-      msg_(std::move(aMsg)), type_(std::move(aType)) {
+      std::exception(), msg_(std::move(aMsg)), type_(std::move(aType)) {
+#  ifdef GUM_FOR_SWIG
+    what_ = "[pyAgrum] " + type_ + ": " + msg_;
+#  else    // GUM_FOR_SWIG
+    what_      = type_ + ": " + msg_;
+#  endif   // GUM_FOR_SWIG
+
 #  ifdef GUM_DEBUG_MODE
 #    ifdef HAVE_EXECINFO_H
 #      define callStackDepth 20

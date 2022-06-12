@@ -23,7 +23,7 @@
  * @file
  * @brief Provides basic types used in aGrUM.
  *
- * @warning Do not include this file directlty : instead include
+ * @warning Do not include this file directly : instead include
  * <agrum/config.h>.
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
@@ -33,6 +33,13 @@
 
 #include <climits>
 #include <cstddef>
+
+
+#ifdef SWIG
+#define GUM_NODISCARD
+#else
+#define GUM_NODISCARD [[nodiscard]]
+#endif   // SWIG
 
 namespace gum {
 

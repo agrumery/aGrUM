@@ -1592,7 +1592,7 @@ class GumException(Exception):
         _pyAgrum.GumException_swiginit(self, _pyAgrum.new_GumException(*args))
     __swig_destroy__ = _pyAgrum.delete_GumException
 
-    def what(self) -> str:
+    def what(self) -> "char const *":
         return _pyAgrum.GumException_what(self)
 
     def errorContent(self) -> str:
@@ -2204,9 +2204,6 @@ class SyntaxError(IOError):
 
     def filename(self) -> str:
         return _pyAgrum.SyntaxError_filename(self)
-
-    def what(self) -> str:
-        return _pyAgrum.SyntaxError_what(self)
     __swig_destroy__ = _pyAgrum.delete_SyntaxError
 
 # Register SyntaxError in _pyAgrum:

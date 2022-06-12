@@ -22,7 +22,7 @@
 %{
 #define PYGUM_CATCH(GUMEXCEPTION)                                               \
   catch (gum::GUMEXCEPTION & e) {                                               \
-     PyErr_SetString (SWIG_Python_ExceptionType(SWIGTYPE_p_gum__##GUMEXCEPTION),e.what().c_str()); \
+     PyErr_SetString (SWIG_Python_ExceptionType(SWIGTYPE_p_gum__##GUMEXCEPTION),e.what()); \
   }
 
 static void SetPythonizeAgrumException() {
@@ -66,9 +66,6 @@ static void SetPythonizeAgrumException() {
   PYGUM_CATCH(UndefinedIteratorValue)
   PYGUM_CATCH(UnknownLabelInDatabase)
   PYGUM_CATCH(CPTError)
-  catch ( gum::Exception& e ) {
-    PyErr_SetString ( PyExc_Exception, e.what().c_str() );
-  }
   catch ( std::exception& e ) {
     PyErr_SetString ( PyExc_Exception, e.what() );
   }
