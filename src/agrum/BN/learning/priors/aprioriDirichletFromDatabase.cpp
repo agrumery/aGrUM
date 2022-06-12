@@ -26,13 +26,13 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 
-#include <agrum/BN/learning/aprioris/aprioriDirichletFromDatabase.h>
+#include <agrum/BN/learning/priors/aprioriDirichletFromDatabase.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 /// include the inlined functions if necessary
 #  ifdef GUM_NO_INLINE
-#    include <agrum/BN/learning/aprioris/aprioriDirichletFromDatabase_inl.h>
+#    include <agrum/BN/learning/priors/aprioriDirichletFromDatabase_inl.h>
 #  endif /* GUM_NO_INLINE */
 
 namespace gum {
@@ -44,7 +44,7 @@ namespace gum {
        const DatabaseTable&                    learning_db,
        const DBRowGeneratorParser&             apriori_parser,
        const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        Apriori(apriori_parser.database(), Bijection< NodeId, std::size_t >()),
+        Prior(apriori_parser.database(), Bijection< NodeId, std::size_t >()),
         _counter_(apriori_parser,
                   std::vector< std::pair< std::size_t, std::size_t > >(),
                   nodeId2columns) {

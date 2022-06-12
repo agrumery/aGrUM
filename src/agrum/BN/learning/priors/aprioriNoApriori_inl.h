@@ -26,7 +26,7 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#  include <agrum/BN/learning/aprioris/aprioriNoApriori.h>
+#  include <agrum/BN/learning/priors/aprioriNoApriori.h>
 
 namespace gum {
 
@@ -36,20 +36,20 @@ namespace gum {
     INLINE
     AprioriNoApriori::AprioriNoApriori(const DatabaseTable&                    database,
                                        const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        Apriori(database, nodeId2columns) {
-      Apriori::setWeight(0.0);
+        Prior(database, nodeId2columns) {
+      Prior::setWeight(0.0);
       GUM_CONSTRUCTOR(AprioriNoApriori);
     }
 
 
     /// copy constructor
-    INLINE AprioriNoApriori::AprioriNoApriori(const AprioriNoApriori& from) : Apriori(from) {
+    INLINE AprioriNoApriori::AprioriNoApriori(const AprioriNoApriori& from) : Prior(from) {
       GUM_CONS_CPY(AprioriNoApriori);
     }
 
 
     /// move constructor
-    INLINE AprioriNoApriori::AprioriNoApriori(AprioriNoApriori&& from) : Apriori(std::move(from)) {
+    INLINE AprioriNoApriori::AprioriNoApriori(AprioriNoApriori&& from) : Prior(std::move(from)) {
       GUM_CONS_MOV(AprioriNoApriori);
     }
 
@@ -64,14 +64,14 @@ namespace gum {
 
     /// copy operator
     INLINE AprioriNoApriori& AprioriNoApriori::operator=(const AprioriNoApriori& from) {
-      Apriori::operator=(from);
+      Prior::operator=(from);
       return *this;
     }
 
 
     /// move operator
     INLINE AprioriNoApriori& AprioriNoApriori::operator=(AprioriNoApriori&& from) {
-      Apriori::operator=(std::move(from));
+      Prior::operator=(std::move(from));
       return *this;
     }
 
@@ -79,16 +79,9 @@ namespace gum {
     /// sets the weight of the a priori
     INLINE void AprioriNoApriori::setWeight(const double) {}
 
-
-    /// indicates whether an apriori is of a certain type
-    INLINE bool AprioriNoApriori::isOfType(const std::string& type) {
-      return AprioriNoAprioriType::isOfType(type);
-    }
-
-
     /// returns the type of the apriori
-    INLINE const std::string& AprioriNoApriori::getType() const {
-      return AprioriNoAprioriType::type;
+    INLINE PriorType AprioriNoApriori::getType() const {
+      return PriorType::NoPriorType;
     }
 
 

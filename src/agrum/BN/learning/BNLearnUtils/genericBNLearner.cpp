@@ -457,21 +457,21 @@ namespace gum {
 
     void GenericBNLearner::createApriori_() {
       // first, save the old apriori, to be delete if everything is ok
-      Apriori* old_apriori = apriori_;
+      Prior* old_apriori = apriori_;
 
       // create the new apriori
       switch (aprioriType_) {
-        case AprioriType::NO_APRIORI:
+        case BNLearnerPriorType::NO_APRIORI:
           apriori_ = new AprioriNoApriori(scoreDatabase_.databaseTable(),
                                           scoreDatabase_.nodeId2Columns());
           break;
 
-        case AprioriType::SMOOTHING:
+        case BNLearnerPriorType::SMOOTHING:
           apriori_ = new AprioriSmoothing(scoreDatabase_.databaseTable(),
                                           scoreDatabase_.nodeId2Columns());
           break;
 
-        case AprioriType::DIRICHLET_FROM_DATABASE:
+        case BNLearnerPriorType::DIRICHLET_FROM_DATABASE:
           if (aprioriDatabase_ != nullptr) {
             delete aprioriDatabase_;
             aprioriDatabase_ = nullptr;
@@ -485,7 +485,7 @@ namespace gum {
                                                       aprioriDatabase_->nodeId2Columns());
           break;
 
-        case AprioriType::BDEU:
+        case BNLearnerPriorType::BDEU:
           apriori_
              = new AprioriBDeu(scoreDatabase_.databaseTable(), scoreDatabase_.nodeId2Columns());
           break;
@@ -688,7 +688,7 @@ namespace gum {
       // check that the database does not contain any missing value
       if (scoreDatabase_.databaseTable().hasMissingValues()
           || ((aprioriDatabase_ != nullptr)
-              && (aprioriType_ == AprioriType::DIRICHLET_FROM_DATABASE)
+              && (aprioriType_ == BNLearnerPriorType::DIRICHLET_FROM_DATABASE)
               && aprioriDatabase_->databaseTable().hasMissingValues())) {
         GUM_ERROR(MissingValueInDatabase,
                   "For the moment, the BNLearner is unable to cope "
@@ -853,26 +853,26 @@ namespace gum {
     }
 
     std::string GenericBNLearner::checkScoreAprioriCompatibility() const {
-      const std::string& apriori = getAprioriType_();
+      const auto apriori = getPriorType_();
 
       switch (scoreType_) {
         case ScoreType::AIC:
-          return ScoreAIC::isAprioriCompatible(apriori, aprioriWeight_);
+          return ScoreAIC::isPriorCompatible(apriori, aprioriWeight_);
 
         case ScoreType::BD:
-          return ScoreBD::isAprioriCompatible(apriori, aprioriWeight_);
+          return ScoreBD::isPriorCompatible(apriori, aprioriWeight_);
 
         case ScoreType::BDeu:
-          return ScoreBDeu::isAprioriCompatible(apriori, aprioriWeight_);
+          return ScoreBDeu::isPriorCompatible(apriori, aprioriWeight_);
 
         case ScoreType::BIC:
-          return ScoreBIC::isAprioriCompatible(apriori, aprioriWeight_);
+          return ScoreBIC::isPriorCompatible(apriori, aprioriWeight_);
 
         case ScoreType::K2:
-          return ScoreK2::isAprioriCompatible(apriori, aprioriWeight_);
+          return ScoreK2::isPriorCompatible(apriori, aprioriWeight_);
 
         case ScoreType::LOG2LIKELIHOOD:
-          return ScoreLog2Likelihood::isAprioriCompatible(apriori, aprioriWeight_);
+          return ScoreLog2Likelihood::isPriorCompatible(apriori, aprioriWeight_);
 
         default:
           return "GenericBNLearner does not support yet this score";

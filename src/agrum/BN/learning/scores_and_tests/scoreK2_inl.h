@@ -36,7 +36,7 @@ namespace gum {
 
     /// default constructor
     INLINE ScoreK2::ScoreK2(const DBRowGeneratorParser&                                 parser,
-                            const Apriori&                                              apriori,
+                            const Prior&                                              apriori,
                             const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
                             const Bijection< NodeId, std::size_t >& nodeId2columns) :
         Score(parser, apriori, ranges, nodeId2columns),
@@ -47,7 +47,7 @@ namespace gum {
 
     /// default constructor
     INLINE ScoreK2::ScoreK2(const DBRowGeneratorParser&             parser,
-                            const Apriori&                          apriori,
+                            const Prior&                          apriori,
                             const Bijection< NodeId, std::size_t >& nodeId2columns) :
         Score(parser, apriori, nodeId2columns),
         _internal_apriori_(parser.database(), nodeId2columns) {
@@ -79,19 +79,19 @@ namespace gum {
 
 
     /// indicates whether the apriori is compatible (meaningful) with the score
-    INLINE std::string ScoreK2::isAprioriCompatible(const Apriori& apriori) {
-      return isAprioriCompatible(apriori.getType(), apriori.weight());
+    INLINE std::string ScoreK2::isPriorCompatible(const Prior& apriori) {
+      return isPriorCompatible(apriori.getType(), apriori.weight());
     }
 
 
     /// indicates whether the apriori is compatible (meaningful) with the score
-    INLINE std::string ScoreK2::isAprioriCompatible() const {
-      return isAprioriCompatible(*(this->apriori_));
+    INLINE std::string ScoreK2::isPriorCompatible() const {
+      return isPriorCompatible(*(this->apriori_));
     }
 
 
     /// returns the internal apriori of the score
-    INLINE const Apriori& ScoreK2::internalApriori() const { return _internal_apriori_; }
+    INLINE const Prior& ScoreK2::internalApriori() const { return _internal_apriori_; }
 
   } /* namespace learning */
 

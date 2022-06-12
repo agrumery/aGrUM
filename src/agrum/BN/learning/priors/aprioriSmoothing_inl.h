@@ -34,19 +34,19 @@ namespace gum {
     INLINE
     AprioriSmoothing::AprioriSmoothing(const DatabaseTable&                    database,
                                        const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        Apriori(database, nodeId2columns) {
+        Prior(database, nodeId2columns) {
       GUM_CONSTRUCTOR(AprioriSmoothing);
     }
 
 
     /// copy constructor
-    INLINE AprioriSmoothing::AprioriSmoothing(const AprioriSmoothing& from) : Apriori(from) {
+    INLINE AprioriSmoothing::AprioriSmoothing(const AprioriSmoothing& from) : Prior(from) {
       GUM_CONS_CPY(AprioriSmoothing);
     }
 
 
     /// move constructor
-    INLINE AprioriSmoothing::AprioriSmoothing(AprioriSmoothing&& from) : Apriori(std::move(from)) {
+    INLINE AprioriSmoothing::AprioriSmoothing(AprioriSmoothing&& from) noexcept : Prior(std::move(from))  {
       GUM_CONS_MOV(AprioriSmoothing);
     }
 
@@ -61,27 +61,20 @@ namespace gum {
 
     /// copy operator
     INLINE AprioriSmoothing& AprioriSmoothing::operator=(const AprioriSmoothing& from) {
-      Apriori::operator=(from);
+      Prior::operator=(from);
       return *this;
     }
 
 
     /// move operator
     INLINE AprioriSmoothing& AprioriSmoothing::operator=(AprioriSmoothing&& from) {
-      Apriori::operator=(std::move(from));
+      Prior::operator=(std::move(from));
       return *this;
     }
 
-
-    /// indicates whether an apriori is of a certain type
-    INLINE bool AprioriSmoothing::isOfType(const std::string& type) {
-      return AprioriSmoothingType::isOfType(type);
-    }
-
-
     /// returns the type of the apriori
-    INLINE const std::string& AprioriSmoothing::getType() const {
-      return AprioriSmoothingType::type;
+    INLINE PriorType AprioriSmoothing::getType() const {
+      return PriorType::SmoothingPriorType;
     }
 
 

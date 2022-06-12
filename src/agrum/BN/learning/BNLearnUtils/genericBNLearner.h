@@ -59,10 +59,10 @@
 #include <agrum/BN/learning/scores_and_tests/scoreK2.h>
 #include <agrum/BN/learning/scores_and_tests/scoreLog2Likelihood.h>
 
-#include <agrum/BN/learning/aprioris/aprioriDirichletFromDatabase.h>
-#include <agrum/BN/learning/aprioris/aprioriNoApriori.h>
-#include <agrum/BN/learning/aprioris/aprioriSmoothing.h>
-#include <agrum/BN/learning/aprioris/aprioriBDeu.h>
+#include <agrum/BN/learning/priors/aprioriDirichletFromDatabase.h>
+#include <agrum/BN/learning/priors/aprioriNoApriori.h>
+#include <agrum/BN/learning/priors/aprioriSmoothing.h>
+#include <agrum/BN/learning/priors/aprioriBDeu.h>
 
 #include <agrum/BN/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>
@@ -125,7 +125,7 @@ namespace gum {
       enum class ParamEstimatorType { ML };
 
       /// an enumeration to select the apriori
-      enum class AprioriType {
+      enum class BNLearnerPriorType {
         NO_APRIORI,
         SMOOTHING,
         DIRICHLET_FROM_DATABASE,
@@ -171,7 +171,7 @@ namespace gum {
          */
         explicit Database(const DatabaseTable& db);
 
-        /// constructor for the aprioris
+        /// constructor for the priors
         /** We must ensure that the variables of the Database are identical to
          * those of the score database (else the countings used by the
          * scores might be erroneous). However, we allow the variables to be
@@ -790,10 +790,10 @@ namespace gum {
       CorrectedMutualInformation* mutualInfo_{nullptr};
 
       /// the a priori selected for the score and parameters
-      AprioriType aprioriType_{AprioriType::NO_APRIORI};
+      BNLearnerPriorType aprioriType_{BNLearnerPriorType::NO_APRIORI};
 
       /// the apriori used
-      Apriori* apriori_{nullptr};
+      Prior* apriori_{nullptr};
 
       AprioriNoApriori* noApriori_{nullptr};
 
@@ -889,7 +889,7 @@ namespace gum {
       MixedGraph prepareMiic3Off2_();
 
       /// returns the type (as a string) of a given apriori
-      const std::string& getAprioriType_() const;
+      PriorType getPriorType_() const;
 
       /// create the Corrected Mutual Information instance for Miic/3off2
       void createCorrectedMutualInformation_();

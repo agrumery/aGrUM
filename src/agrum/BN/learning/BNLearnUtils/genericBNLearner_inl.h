@@ -406,7 +406,7 @@ namespace gum {
 
     // use the apriori smoothing
     INLINE void GenericBNLearner::useNoApriori() {
-      aprioriType_ = AprioriType::NO_APRIORI;
+      aprioriType_ = BNLearnerPriorType::NO_APRIORI;
       checkScoreAprioriCompatibility();
     }
 
@@ -414,7 +414,7 @@ namespace gum {
     INLINE void GenericBNLearner::useAprioriSmoothing(double weight) {
       if (weight < 0) { GUM_ERROR(OutOfBounds, "the weight of the apriori must be positive") }
 
-      aprioriType_ = AprioriType::SMOOTHING;
+      aprioriType_ = BNLearnerPriorType::SMOOTHING;
       _setAprioriWeight_(weight);
 
       checkScoreAprioriCompatibility();
@@ -425,7 +425,7 @@ namespace gum {
       if (weight < 0) { GUM_ERROR(OutOfBounds, "the weight of the apriori must be positive") }
 
       aprioriDbname_ = filename;
-      aprioriType_   = AprioriType::DIRICHLET_FROM_DATABASE;
+      aprioriType_   = BNLearnerPriorType::DIRICHLET_FROM_DATABASE;
       _setAprioriWeight_(weight);
 
       checkScoreAprioriCompatibility();
@@ -436,7 +436,7 @@ namespace gum {
     INLINE void GenericBNLearner::useAprioriBDeu(double weight) {
       if (weight < 0) { GUM_ERROR(OutOfBounds, "the weight of the apriori must be positive") }
 
-      aprioriType_ = AprioriType::BDEU;
+      aprioriType_ = BNLearnerPriorType::BDEU;
       _setAprioriWeight_(weight);
 
       checkScoreAprioriCompatibility();
@@ -444,19 +444,19 @@ namespace gum {
 
 
     // returns the type (as a string) of a given apriori
-    INLINE const std::string& GenericBNLearner::getAprioriType_() const {
+    INLINE PriorType GenericBNLearner::getPriorType_() const {
       switch (aprioriType_) {
-        case AprioriType::NO_APRIORI:
-          return AprioriNoApriori::type::type;
+        case BNLearnerPriorType::NO_APRIORI:
+          return PriorType::NoPriorType;
 
-        case AprioriType::SMOOTHING:
-          return AprioriSmoothing::type::type;
+        case BNLearnerPriorType::SMOOTHING:
+          return PriorType::SmoothingPriorType;
 
-        case AprioriType::DIRICHLET_FROM_DATABASE:
-          return AprioriDirichletFromDatabase::type::type;
+        case BNLearnerPriorType::DIRICHLET_FROM_DATABASE:
+          return PriorType::DirichletPriorType;
 
-        case AprioriType::BDEU:
-          return AprioriBDeu::type::type;
+        case BNLearnerPriorType::BDEU:
+          return PriorType::BDeuPriorType;
 
         default:
           GUM_ERROR(OperationNotAllowed,

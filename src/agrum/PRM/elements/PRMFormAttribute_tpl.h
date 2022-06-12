@@ -271,7 +271,7 @@ namespace gum {
              inst.inc(), jnst.inc()) {
           // With CPT defined using rules, empty values can appear
           auto val = _formulas_->get(inst);
-          if (val == "") { val = "0.0"; }
+          if (val.empty()) { val = "0.0"; }
 
           Formula f(val);
 

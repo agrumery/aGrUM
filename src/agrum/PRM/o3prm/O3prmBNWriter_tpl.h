@@ -31,7 +31,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE O3prmBNWriter< GUM_SCALAR >::O3prmBNWriter() {
-    GUM_CONSTRUCTOR(O3prmBNWriter);
+    GUM_CONSTRUCTOR(O3prmBNWriter)
   }
 
   /*
@@ -39,11 +39,11 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE O3prmBNWriter< GUM_SCALAR >::~O3prmBNWriter() {
-    GUM_DESTRUCTOR(O3prmBNWriter);
+    GUM_DESTRUCTOR(O3prmBNWriter)
   }
 
   /*
-   * Writes a bayes net in the given ouput stream.
+   * Writes a bayes net in the given output stream.
    *
    * @param output The output stream.
    * @param bn The bayes net writen in the stream.
@@ -54,7 +54,7 @@ namespace gum {
                                                  const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good()) { GUM_ERROR(IOError, "Input/Output error : stream not writable.") }
     std::string bnName = bn.propertyWithDefault("name", "");
-    if (bnName == "") bnName = "bayesnet";
+    if (bnName.empty()) bnName = "bayesnet";
 
     output << "class " << bnName << " {" << std::endl;
 
@@ -129,7 +129,7 @@ namespace gum {
         } else {
           first = false;
         }
-        if (currentval != inst.val(0)) {   // begining line
+        if (currentval != inst.val(0)) {   // begins line
           str << std::endl << O3PRM_INDENT << O3PRM_INDENT;
           currentval = inst.val(0);
         }
@@ -220,7 +220,7 @@ namespace gum {
 
   /*
    * Writes a bayes net in the file referenced by filePath.
-   * If the file doesn't exists, it is created.
+   * If the file doesn't exist, it is created.
    * If the file exists, it's content will be erased.
    *
    * @param filePath The path to the file used to write the bayes net.

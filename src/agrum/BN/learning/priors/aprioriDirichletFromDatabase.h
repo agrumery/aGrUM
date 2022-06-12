@@ -20,31 +20,30 @@
 
 
 /** @file
- * @brief the smooth a priori: adds a weight w to all the countings
+ * @brief A dirichlet priori: computes its N'_ijk from a database
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
-#ifndef GUM_LEARNING_A_PRIORI_SMOOTHING_H
-#define GUM_LEARNING_A_PRIORI_SMOOTHING_H
+#ifndef GUM_LEARNING_PRIOR_DIRICHLET_FROM_DATABASE_H
+#define GUM_LEARNING_PRIOR_DIRICHLET_FROM_DATABASE_H
 
 #include <vector>
 
 #include <agrum/agrum.h>
-#include <agrum/BN/learning/aprioris/apriori.h>
+#include <agrum/tools/stattests/recordCounter.h>
+#include <agrum/BN/learning/priors/prior.h>
 
 namespace gum {
 
   namespace learning {
 
-    /** @class AprioriSmoothing
-     * @brief the smooth a priori: adds a weight w to all the countings
-     * @headerfile aprioriSmoothing.h <agrum/tools/database/aprioriSmoothing.h>
+    /** @class AprioriDirichletFromDatabase
+     * @brief A dirichlet priori: computes its N'_ijk from a database
+     * @headerfile aprioriDirichletFromDatabase.h <agrum/tools/database/aprioriDirichletFromDatabase.h>
      * @ingroup learning_apriori
      */
-    class AprioriSmoothing: public Apriori {
+    class AprioriDirichletFromDatabase: public Prior {
       public:
-      /// the type of the a priori
-      using type = AprioriSmoothingType;
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -52,31 +51,39 @@ namespace gum {
       /// @{
 
       /// default constructor
-      /** @param database the database from which learning is performed. This is
-       * useful to get access to the random variables
+      /** @param learning_db the database from which learning is performed.
+       * This is useful to get access to the random variables
+       * @param apriori_parser the parser used to parse the apriori database
        * @param nodeId2Columns a mapping from the ids of the nodes in the
-       * graphical model to the corresponding column in the DatabaseTable.
+       * graphical model to the corresponding column in learning_db.
        * This enables estimating from a database in which variable A corresponds
        * to the 2nd column the parameters of a BN in which variable A has a
        * NodeId of 5. An empty nodeId2Columns bijection means that the mapping
        * is an identity, i.e., the value of a NodeId is equal to the index of
        * the column in the DatabaseTable.
-       */
-      AprioriSmoothing(const DatabaseTable&                    database,
-                       const Bijection< NodeId, std::size_t >& nodeId2columns
-                       = Bijection< NodeId, std::size_t >());
+       *
+       * @throws DatabaseError The apriori database may differ from the learning
+       * database, i.e., the apriori may have more nodes than the learning one.
+       * However, a check is performed to ensure that the variables within the
+       * apriori database that correspond to those in the learning database
+       * (they have the same names) are exactly identical. If this is not the
+       * case, then a DatabaseError exception is raised. */
+      AprioriDirichletFromDatabase(const DatabaseTable&                    learning_db,
+                                   const DBRowGeneratorParser&             apriori_parser,
+                                   const Bijection< NodeId, std::size_t >& nodeId2columns
+                                   = Bijection< NodeId, std::size_t >());
 
       /// copy constructor
-      AprioriSmoothing(const AprioriSmoothing& from);
+      AprioriDirichletFromDatabase(const AprioriDirichletFromDatabase& from);
 
       /// move constructor
-      AprioriSmoothing(AprioriSmoothing&& from);
+      AprioriDirichletFromDatabase(AprioriDirichletFromDatabase&& from);
 
       /// virtual copy constructor
-      virtual AprioriSmoothing* clone() const;
+      virtual AprioriDirichletFromDatabase* clone() const;
 
       /// destructor
-      virtual ~AprioriSmoothing();
+      virtual ~AprioriDirichletFromDatabase();
 
       /// @}
 
@@ -87,10 +94,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      AprioriSmoothing& operator=(const AprioriSmoothing& from);
+      AprioriDirichletFromDatabase& operator=(const AprioriDirichletFromDatabase& from);
 
       /// move operator
-      AprioriSmoothing& operator=(AprioriSmoothing&& from);
+      AprioriDirichletFromDatabase& operator=(AprioriDirichletFromDatabase&& from);
 
       /// @}
 
@@ -100,11 +107,8 @@ namespace gum {
       // ##########################################################################
       /// @{
 
-      /// indicates whether an apriori is of a certain type
-      virtual bool isOfType(const std::string& type) final;
-
       /// returns the type of the apriori
-      virtual const std::string& getType() const final;
+      PriorType getType()const final;
 
       /// indicates whether the apriori is potentially informative
       /** Basically, only the NoApriori is uninformative. However, it may happen
@@ -115,6 +119,9 @@ namespace gum {
        * These classes will then be able to speed-up their code by avoiding to
        * take into account the apriori in their computations. */
       virtual bool isInformative() const final;
+
+      /// sets the weight of the a priori (kind of effective sample size)
+      virtual void setWeight(const double weight) final;
 
       /// adds the apriori to a counting vector corresponding to the idset
       /** adds the apriori to an already created counting vector defined over
@@ -133,6 +140,21 @@ namespace gum {
                                           std::vector< double >& counts) final;
 
       /// @}
+
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+      private:
+      // the record counter used to parse the apriori database
+      RecordCounter _counter_;
+
+      // the internal weight is equal to weight_ / nb rows of apriori database
+      // this internal weight is used to ensure that assigning a weight of 1
+      // to the apriori is equivalent to adding just one row to the learning
+      // database
+      double _internal_weight_;
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
   } /* namespace learning */
@@ -141,7 +163,7 @@ namespace gum {
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#  include <agrum/BN/learning/aprioris/aprioriSmoothing_inl.h>
+#  include <agrum/BN/learning/priors/aprioriDirichletFromDatabase_inl.h>
 #endif /* GUM_NO_INLINE */
 
-#endif /* GUM_LEARNING_A_PRIORI_SMOOTHING_H */
+#endif /* GUM_LEARNING_PRIOR_DIRICHLET_FROM_DATABASE_H */

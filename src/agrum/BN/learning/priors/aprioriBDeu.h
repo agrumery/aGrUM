@@ -20,32 +20,36 @@
 
 
 /** @file
- * @brief the base class for all a priori
+ * @brief the internal apriori for the BDeu score (N' / (r_i * q_i)
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
-#ifndef GUM_LEARNING_A_PRIORI_H
-#define GUM_LEARNING_A_PRIORI_H
+#ifndef GUM_LEARNING_PRIOR_BDEU_H
+#define GUM_LEARNING_PRIOR_BDEU_H
 
-#include <string>
 #include <vector>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/bijection.h>
-#include <agrum/BN/learning/aprioris/aprioriTypes.h>
-#include <agrum/tools/database/databaseTable.h>
-#include <agrum/tools/stattests/idCondSet.h>
+#include <agrum/BN/learning/priors/prior.h>
 
 namespace gum {
 
   namespace learning {
 
-    /** @class Apriori
-     * @brief the base class for all a priori
-     * @headerfile apriori.h <agrum/tools/database/apriori.h>
+    /** @class AprioriBDeu
+     * @brief the internal apriori for the BDeu score (N' / (r_i * q_i)
+     * @headerfile aprioriBDeu.h <agrum/tools/database/aprioriBDeu.h>
      * @ingroup learning_apriori
+     *
+     * BDeu is a BD score with a N'/(r_i * q_i) apriori, where N' is an
+     * effective sample size and r_i is the domain size of the target variable
+     * and q_i is the domain size of the Cartesian product of its parents.
+     *
+     * It is important to note that, to be meaningful a structure + parameter
+     * learning requires that the same priors are taken into account during
+     * structure learning and parameter learning.
      */
-    class Apriori {
+    class AprioriBDeu: public Prior {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -63,34 +67,52 @@ namespace gum {
        * is an identity, i.e., the value of a NodeId is equal to the index of
        * the column in the DatabaseTable.
        */
-      Apriori(const DatabaseTable&                    database,
-              const Bijection< NodeId, std::size_t >& nodeId2columns
-              = Bijection< NodeId, std::size_t >());
+      AprioriBDeu(const DatabaseTable&                    database,
+                  const Bijection< NodeId, std::size_t >& nodeId2columns
+                  = Bijection< NodeId, std::size_t >());
+
+      /// copy constructor
+      AprioriBDeu(const AprioriBDeu& from);
+
+      /// move constructor
+      AprioriBDeu(AprioriBDeu&& from);
 
       /// virtual copy constructor
-      virtual Apriori* clone() const = 0;
+      virtual AprioriBDeu* clone() const;
 
       /// destructor
-      virtual ~Apriori();
+      virtual ~AprioriBDeu();
 
       /// @}
+
+
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+      /// @{
+
+      /// copy operator
+      AprioriBDeu& operator=(const AprioriBDeu& from);
+
+      /// move operator
+      AprioriBDeu& operator=(AprioriBDeu&& from);
+
+      /// @}
+
 
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
 
-      /// sets the weight of the a priori (kind of effective sample size)
-      virtual void setWeight(const double weight);
+      /// sets the effective sample size N' (alias of setEffectiveSampleSize ())
+      virtual void setWeight(const double weight) final;
 
-      /// returns the weight assigned to the apriori
-      double weight() const;
-
-      /// indicates whether an apriori is of a certain type
-      virtual bool isOfType(const std::string& type) = 0;
+      /// sets the effective sample size N'
+      void setEffectiveSampleSize(const double weight);
 
       /// returns the type of the apriori
-      virtual const std::string& getType() const = 0;
+      PriorType getType()const final;
 
       /// indicates whether the apriori is potentially informative
       /** Basically, only the NoApriori is uninformative. However, it may happen
@@ -100,7 +122,7 @@ namespace gum {
        * inform the classes that use it that it is temporarily uninformative.
        * These classes will then be able to speed-up their code by avoiding to
        * take into account the apriori in their computations. */
-      virtual bool isInformative() const = 0;
+      virtual bool isInformative() const final;
 
       /// adds the apriori to a counting vector corresponding to the idset
       /** adds the apriori to an already created counting vector defined over
@@ -108,42 +130,17 @@ namespace gum {
        * conditioning bar of the idset.
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint variables set. */
-      virtual void addAllApriori(const IdCondSet& idset, std::vector< double >& counts) = 0;
+      virtual void addAllApriori(const IdCondSet& idset, std::vector< double >& counts) final;
 
       /** @brief adds the apriori to a counting vectordefined over the right
        * hand side of the idset
        *
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint RHS variables of the idset. */
-      virtual void addConditioningApriori(const IdCondSet& idset, std::vector< double >& counts)
-         = 0;
+      virtual void addConditioningApriori(const IdCondSet&       idset,
+                                          std::vector< double >& counts) final;
 
       /// @}
-
-
-      protected:
-      /// the weight of the apriori
-      double weight_{1.0};
-
-      /// a reference to the database in order to have access to its variables
-      const DatabaseTable* database_;
-
-      /** @brief a mapping from the NodeIds of the variables to the indices of
-       * the columns in the database */
-      Bijection< NodeId, std::size_t > nodeId2columns_;
-
-
-      /// copy constructor
-      Apriori(const Apriori& from);
-
-      /// move constructor
-      Apriori(Apriori&& from);
-
-      /// copy operator
-      Apriori& operator=(const Apriori& from);
-
-      /// move operator
-      Apriori& operator=(Apriori&& from);
     };
 
   } /* namespace learning */
@@ -152,7 +149,7 @@ namespace gum {
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#  include <agrum/BN/learning/aprioris/apriori_inl.h>
+#  include <agrum/BN/learning/priors/aprioriBDeu_inl.h>
 #endif /* GUM_NO_INLINE */
 
-#endif /* GUM_LEARNING_A_PRIORI_H */
+#endif /* GUM_LEARNING_PRIOR_BDEU_H */

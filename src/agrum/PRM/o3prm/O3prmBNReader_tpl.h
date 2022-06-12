@@ -66,7 +66,7 @@ namespace gum {
     GUM_CONSTRUCTOR(O3prmBNReader);
     _bn_         = bn;
     _filename_   = filename;
-    _entityName_ = entityName == "" ? _getEntityName_(filename) : entityName;
+    _entityName_ = entityName.empty() ? _getEntityName_(filename) : entityName;
     _classpath_  = classpath;
   }
 

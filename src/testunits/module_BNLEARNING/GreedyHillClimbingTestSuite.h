@@ -36,8 +36,8 @@
 #include <agrum/BN/learning/scores_and_tests/scoreK2.h>
 #include <agrum/BN/learning/scores_and_tests/scoreBIC.h>
 
-#include <agrum/BN/learning/aprioris/aprioriSmoothing.h>
-#include <agrum/BN/learning/aprioris/aprioriDirichletFromDatabase.h>
+#include <agrum/BN/learning/priors/aprioriSmoothing.h>
+#include <agrum/BN/learning/priors/aprioriDirichletFromDatabase.h>
 
 #include <agrum/BN/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>

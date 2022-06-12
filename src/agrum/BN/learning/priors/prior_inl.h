@@ -31,35 +31,35 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    INLINE Apriori::Apriori(const DatabaseTable&                    database,
+    INLINE Prior::Prior(const DatabaseTable&                    database,
                             const Bijection< NodeId, std::size_t >& nodeId2columns) :
         database_(&database),
         nodeId2columns_(nodeId2columns) {
-      GUM_CONSTRUCTOR(Apriori);
+      GUM_CONSTRUCTOR(Prior);
     }
 
 
     /// copy constructor
-    INLINE Apriori::Apriori(const Apriori& from) :
+    INLINE Prior::Prior(const Prior& from) :
         weight_(from.weight_), database_(from.database_), nodeId2columns_(from.nodeId2columns_) {
-      GUM_CONS_CPY(Apriori);
+      GUM_CONS_CPY(Prior);
     }
 
 
     /// move constructor
-    INLINE Apriori::Apriori(Apriori&& from) :
+    INLINE Prior::Prior(Prior&& from) :
         weight_(from.weight_), database_(from.database_),
         nodeId2columns_(std::move(from.nodeId2columns_)) {
-      GUM_CONS_MOV(Apriori);
+      GUM_CONS_MOV(Prior);
     }
 
 
     /// destructor
-    INLINE Apriori::~Apriori() { GUM_DESTRUCTOR(Apriori); }
+    INLINE Prior::~Prior() { GUM_DESTRUCTOR(Prior); }
 
 
     /// sets the weight of the a priori (kind of effective sample size)
-    INLINE void Apriori::setWeight(const double weight) {
+    INLINE void Prior::setWeight(const double weight) {
       if (weight < 0.0) {
         GUM_ERROR(OutOfBounds, "A negative weight (" << weight << ") is forbidden for an apriori");
       }
@@ -68,7 +68,7 @@ namespace gum {
 
 
     /// returns the weight assigned to the apriori
-    INLINE double Apriori::weight() const { return weight_; }
+    INLINE double Prior::weight() const { return weight_; }
 
 
   } /* namespace learning */

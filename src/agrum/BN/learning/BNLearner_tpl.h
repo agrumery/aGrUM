@@ -157,7 +157,7 @@ namespace gum {
         // check that the database does not contain any missing value
         if (scoreDatabase_.databaseTable().hasMissingValues()
             || ((aprioriDatabase_ != nullptr)
-                && (aprioriType_ == AprioriType::DIRICHLET_FROM_DATABASE)
+                && (aprioriType_ == BNLearnerPriorType::DIRICHLET_FROM_DATABASE)
                 && aprioriDatabase_->databaseTable().hasMissingValues())) {
           GUM_ERROR(MissingValueInDatabase,
                     "In general, the BNLearner is unable to cope with "
@@ -366,17 +366,17 @@ namespace gum {
       key     = "Prior";
       comment = checkScoreAprioriCompatibility();
       switch (aprioriType_) {
-        case AprioriType::NO_APRIORI:
+        case BNLearnerPriorType::NO_APRIORI:
           vals.emplace_back(key, "-", comment);
           break;
-        case AprioriType::DIRICHLET_FROM_DATABASE:
+        case BNLearnerPriorType::DIRICHLET_FROM_DATABASE:
           vals.emplace_back(key, "Dirichlet", comment);
           vals.emplace_back("Dirichlet database", aprioriDbname_, "");
           break;
-        case AprioriType::BDEU:
+        case BNLearnerPriorType::BDEU:
           vals.emplace_back(key, "BDEU", comment);
           break;
-        case AprioriType::SMOOTHING:
+        case BNLearnerPriorType::SMOOTHING:
           vals.emplace_back(key, "Smoothing", comment);
           break;
         default:
@@ -384,7 +384,7 @@ namespace gum {
           break;
       }
 
-      if (aprioriType_ != AprioriType::NO_APRIORI)
+      if (aprioriType_ != BNLearnerPriorType::NO_APRIORI)
         vals.emplace_back("Prior weight", std::to_string(aprioriWeight_), "");
 
       if (databaseWeight() != double(nbRows())) {

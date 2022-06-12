@@ -33,19 +33,19 @@ namespace gum {
     /// default constructor
     INLINE AprioriBDeu::AprioriBDeu(const DatabaseTable&                    database,
                                     const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        Apriori(database, nodeId2columns) {
+        Prior(database, nodeId2columns) {
       GUM_CONSTRUCTOR(AprioriBDeu);
     }
 
 
     /// copy constructor
-    INLINE AprioriBDeu::AprioriBDeu(const AprioriBDeu& from) : Apriori(from) {
+    INLINE AprioriBDeu::AprioriBDeu(const AprioriBDeu& from) : Prior(from) {
       GUM_CONS_CPY(AprioriBDeu);
     }
 
 
     /// move constructor
-    INLINE AprioriBDeu::AprioriBDeu(AprioriBDeu&& from) : Apriori(std::move(from)) {
+    INLINE AprioriBDeu::AprioriBDeu(AprioriBDeu&& from) : Prior(std::move(from)) {
       GUM_CONS_MOV(AprioriBDeu);
     }
 
@@ -60,14 +60,14 @@ namespace gum {
 
     /// copy operator
     INLINE AprioriBDeu& AprioriBDeu::operator=(const AprioriBDeu& from) {
-      Apriori::operator=(from);
+      Prior::operator=(from);
       return *this;
     }
 
 
     /// move operator
     INLINE AprioriBDeu& AprioriBDeu::operator=(AprioriBDeu&& from) {
-      Apriori::operator=(std::move(from));
+      Prior::operator=(std::move(from));
       return *this;
     }
 
@@ -86,14 +86,10 @@ namespace gum {
     INLINE void AprioriBDeu::setEffectiveSampleSize(const double weight) { setWeight(weight); }
 
 
-    /// indicates whether an apriori is of a certain type
-    INLINE bool AprioriBDeu::isOfType(const std::string& type) {
-      return AprioriBDeuType::isOfType(type);
-    }
-
-
     /// returns the type of the apriori
-    INLINE const std::string& AprioriBDeu::getType() const { return AprioriBDeuType::type; }
+    INLINE PriorType AprioriBDeu::getType() const {
+      return PriorType::BDeuPriorType;
+    }
 
 
     /// indicates whether the apriori is potentially informative

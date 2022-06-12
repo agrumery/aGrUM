@@ -33,7 +33,7 @@ namespace gum {
     /// copy constructor
     INLINE AprioriDirichletFromDatabase::AprioriDirichletFromDatabase(
        const AprioriDirichletFromDatabase& from) :
-        Apriori(from),
+        Prior(from),
         _counter_(from._counter_), _internal_weight_(from._internal_weight_) {
       GUM_CONS_CPY(AprioriDirichletFromDatabase);
     }
@@ -42,7 +42,7 @@ namespace gum {
     /// move constructor
     INLINE AprioriDirichletFromDatabase::AprioriDirichletFromDatabase(
        AprioriDirichletFromDatabase&& from) :
-        Apriori(std::move(from)),
+        Prior(std::move(from)),
         _counter_(std::move(from._counter_)), _internal_weight_(from._internal_weight_) {
       GUM_CONS_MOV(AprioriDirichletFromDatabase);
     }
@@ -64,7 +64,7 @@ namespace gum {
     INLINE AprioriDirichletFromDatabase&
        AprioriDirichletFromDatabase::operator=(const AprioriDirichletFromDatabase& from) {
       if (this != &from) {
-        Apriori::operator =(from);
+        Prior::operator =(from);
         _counter_         = from._counter_;
         _internal_weight_ = from._internal_weight_;
       }
@@ -76,7 +76,7 @@ namespace gum {
     INLINE AprioriDirichletFromDatabase&
        AprioriDirichletFromDatabase::operator=(AprioriDirichletFromDatabase&& from) {
       if (this != &from) {
-        Apriori::operator =(std::move(from));
+        Prior::operator =(std::move(from));
         _counter_         = std::move(from._counter_);
         _internal_weight_ = from._internal_weight_;
       }
@@ -84,15 +84,9 @@ namespace gum {
     }
 
 
-    /// indicates whether an apriori is of a certain type
-    INLINE bool AprioriDirichletFromDatabase::isOfType(const std::string& type) {
-      return AprioriDirichletType::isOfType(type);
-    }
-
-
     /// returns the type of the apriori
-    INLINE const std::string& AprioriDirichletFromDatabase::getType() const {
-      return AprioriDirichletType::type;
+    INLINE PriorType AprioriDirichletFromDatabase::getType() const {
+      return PriorType::DirichletPriorType;
     }
 
 
@@ -104,7 +98,7 @@ namespace gum {
 
     /// sets the weight of the a priori (kind of effective sample size)
     INLINE void AprioriDirichletFromDatabase::setWeight(const double weight) {
-      Apriori::setWeight(weight);
+      Prior::setWeight(weight);
       if (_counter_.database().nbRows() == 0.0)
         _internal_weight_ = 0.0;
       else

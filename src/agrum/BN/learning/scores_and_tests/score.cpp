@@ -42,7 +42,7 @@ namespace gum {
     /// copy operator
     Score& Score::operator=(const Score& from) {
       if (this != &from) {
-        Apriori*      new_apriori = from.apriori_->clone();
+        Prior*      new_apriori = from.apriori_->clone();
         RecordCounter new_counter = from.counter_;
         ScoringCache  new_cache   = from.cache_;
 

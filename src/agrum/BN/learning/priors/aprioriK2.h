@@ -20,37 +20,35 @@
 
 
 /** @file
- * @brief the internal apriori for the K2 score = Laplace Apriori
+ * @brief the internal apriori for the K2 score = Laplace Prior
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
-#ifndef GUM_LEARNING_A_PRIORI_K2_H
-#define GUM_LEARNING_A_PRIORI_K2_H
+#ifndef GUM_LEARNING_PRIOR_K2_H
+#define GUM_LEARNING_PRIOR_K2_H
 
 #include <vector>
 
 #include <agrum/agrum.h>
-#include <agrum/BN/learning/aprioris/aprioriSmoothing.h>
+#include <agrum/BN/learning/priors/aprioriSmoothing.h>
 
 namespace gum {
 
   namespace learning {
 
     /** @class AprioriK2
-     * @brief the internal apriori for the K2 score = Laplace Apriori
+     * @brief the internal apriori for the K2 score = Laplace Prior
      * @headerfile aprioriK2.h <agrum/tools/database/aprioriK2.h>
      * @ingroup learning_apriori
      *
      * K2 is a BD score with a Laplace apriori (i.e., a smoothing of 1).
      *
      * It is important to note that, to be meaningful a structure + parameter
-     * learning requires that the same aprioris are taken into account during
+     * learning requires that the same priors are taken into account during
      * structure learning and parameter learning.
      */
     class AprioriK2: public AprioriSmoothing {
       public:
-      /// the type of the a priori
-      using type = AprioriSmoothingType;
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -118,7 +116,7 @@ namespace gum {
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#  include <agrum/BN/learning/aprioris/aprioriK2_inl.h>
+#  include <agrum/BN/learning/priors/aprioriK2_inl.h>
 #endif /* GUM_NO_INLINE */
 
-#endif /* GUM_LEARNING_A_PRIORI_K2_H */
+#endif /* GUM_LEARNING_PRIOR_K2_H */

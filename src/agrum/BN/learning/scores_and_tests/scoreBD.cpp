@@ -60,8 +60,8 @@ namespace gum {
 
 
     /// indicates whether the apriori is compatible (meaningful) with the score
-    std::string ScoreBD::isAprioriCompatible(const std::string& apriori_type, double weight) {
-      if (apriori_type == AprioriNoAprioriType::type) { return "The BD score requires an apriori"; }
+    std::string ScoreBD::isPriorCompatible(PriorType apriori_type, double weight) {
+      if (apriori_type == PriorType::NoPriorType) { return "The BD score requires an apriori"; }
 
       if (weight != 0.0) {
         return "The apriori is currently compatible with the BD score but if "
@@ -70,7 +70,7 @@ namespace gum {
 
       // apriori types unsupported by the type checker
       std::stringstream msg;
-      msg << "The apriori '" << apriori_type << "' is not yet compatible with the score 'BD'.";
+      msg << "The apriori '" << priorTypeToString(apriori_type) << "' is not yet compatible with the score 'BD'.";
       return msg.str();
     }
 

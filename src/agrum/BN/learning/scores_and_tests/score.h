@@ -36,7 +36,7 @@
 
 #include <agrum/tools/stattests/recordCounter.h>
 #include <agrum/BN/learning/scores_and_tests/scoringCache.h>
-#include <agrum/BN/learning/aprioris/apriori.h>
+#include <agrum/BN/learning/priors/prior.h>
 #include <agrum/BN/learning/structureUtils/graphChange.h>
 
 namespace gum {
@@ -76,7 +76,7 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       Score(const DBRowGeneratorParser&                                 parser,
-            const Apriori&                                              external_apriori,
+            const Prior&                                              external_apriori,
             const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
             const Bijection< NodeId, std::size_t >&                     nodeId2columns
             = Bijection< NodeId, std::size_t >());
@@ -97,7 +97,7 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       Score(const DBRowGeneratorParser&             parser,
-            const Apriori&                          external_apriori,
+            const Prior&                          external_apriori,
             const Bijection< NodeId, std::size_t >& nodeId2columns
             = Bijection< NodeId, std::size_t >());
 
@@ -188,27 +188,27 @@ namespace gum {
       const DatabaseTable& database() const;
 
       /// indicates whether the apriori is compatible (meaningful) with the score
-      /** The combination of some scores and aprioris can be meaningless. For
+      /** The combination of some scores and priors can be meaningless. For
        * instance, adding a Dirichlet apriori to the K2 score is not very
        * meaningful since K2 corresonds to a BD score with a 1-smoothing
        * apriori.
        * aGrUM allows you to perform such combination, but you can check with
-       * method isAprioriCompatible () whether the result the score will give
+       * method isPriorCompatible () whether the result the score will give
        * you is meaningful or not. */
-      virtual std::string isAprioriCompatible() const = 0;
+      virtual std::string isPriorCompatible() const = 0;
 
       /// returns the internal apriori of the score
       /** Some scores include an apriori. For instance, the K2 score is a BD
-       * score with a Laplace Apriori ( smoothing(1) ). BDeu is a BD score with
+       * score with a Laplace Prior ( smoothing(1) ). BDeu is a BD score with
        * a N'/(r_i * q_i) apriori, where N' is an effective sample size and r_i
        * is the domain size of the target variable and q_i is the domain size of
        * the Cartesian product of its parents. The goal of the score's internal
-       * apriori classes is to enable to account for these aprioris outside the
+       * apriori classes is to enable to account for these priors outside the
        * score, e.g., when performing parameter estimation. It is important to
        * note that, to be meaningful, a structure + parameter learning requires
-       * that the same aprioris are taken into account during structure learning
+       * that the same priors are taken into account during structure learning
        * and parameter learning. */
-      virtual const Apriori& internalApriori() const = 0;
+      virtual const Prior& internalApriori() const = 0;
 
       /// @}
 
@@ -218,7 +218,7 @@ namespace gum {
       const double one_log2_{M_LOG2E};
 
       /// the expert knowledge a priori we add to the score
-      Apriori* apriori_{nullptr};
+      Prior* apriori_{nullptr};
 
       /// the record counter used for the countings over discrete variables
       RecordCounter counter_;

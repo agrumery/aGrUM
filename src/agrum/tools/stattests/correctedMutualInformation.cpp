@@ -42,7 +42,7 @@ namespace gum {
     /// default constructor
     CorrectedMutualInformation::CorrectedMutualInformation(
        const DBRowGeneratorParser&                                 parser,
-       const Apriori&                                              apriori,
+       const Prior&                                              apriori,
        const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
        const Bijection< NodeId, std::size_t >&                     nodeId2columns) :
         _NH_(parser, apriori, ranges, nodeId2columns),
@@ -55,7 +55,7 @@ namespace gum {
     /// default constructor
     CorrectedMutualInformation::CorrectedMutualInformation(
        const DBRowGeneratorParser&             parser,
-       const Apriori&                          apriori,
+       const Prior&                          apriori,
        const Bijection< NodeId, std::size_t >& nodeId2columns) :
         _NH_(parser, apriori, nodeId2columns),
         _k_NML_(parser, apriori, nodeId2columns), _score_MDL_(parser, apriori, nodeId2columns) {

@@ -37,7 +37,7 @@
 
 #include <agrum/tools/stattests/recordCounter.h>
 #include <agrum/BN/learning/scores_and_tests/scoringCache.h>
-#include <agrum/BN/learning/aprioris/apriori.h>
+#include <agrum/BN/learning/priors/prior.h>
 #include <agrum/BN/learning/structureUtils/graphChange.h>
 
 namespace gum {
@@ -78,7 +78,7 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       IndependenceTest(const DBRowGeneratorParser&                                 parser,
-                       const Apriori&                                              external_apriori,
+                       const Prior&                                              external_apriori,
                        const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
                        const Bijection< NodeId, std::size_t >&                     nodeId2columns
                        = Bijection< NodeId, std::size_t >());
@@ -100,7 +100,7 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       IndependenceTest(const DBRowGeneratorParser&             parser,
-                       const Apriori&                          external_apriori,
+                       const Prior&                          external_apriori,
                        const Bijection< NodeId, std::size_t >& nodeId2columns
                        = Bijection< NodeId, std::size_t >());
 
@@ -197,7 +197,7 @@ namespace gum {
       const double one_log2_{M_LOG2E};
 
       /// the expert knowledge a priori we add to the contingency tables
-      Apriori* apriori_{nullptr};
+      Prior* apriori_{nullptr};
 
       /// the record counter used for the countings over discrete variables
       RecordCounter counter_;

@@ -25,7 +25,7 @@
 
 #include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/tools/database/DBTranslatorSet.h>
-#include <agrum/BN/learning/aprioris/aprioriDirichletFromDatabase.h>
+#include <agrum/BN/learning/priors/aprioriDirichletFromDatabase.h>
 
 namespace gum_tests {
 
@@ -80,9 +80,7 @@ namespace gum_tests {
       apriori.setWeight(2.0 * db_size);
       TS_ASSERT_EQUALS(apriori.weight(), 2.0 * db_size)
 
-      TS_ASSERT_EQUALS(apriori.getType(), "Dirichlet")
-      TS_ASSERT(apriori.isOfType("Dirichlet"))
-      TS_ASSERT(!apriori.isOfType("NoApriori"))
+      TS_ASSERT_EQUALS(apriori.getType(), gum::learning::PriorType::DirichletPriorType)
 
       gum::NodeId                node0 = 0;
       gum::NodeId                node1 = 1;
@@ -146,9 +144,7 @@ namespace gum_tests {
       apriori2.setWeight(1.0 * db_size);
       TS_ASSERT_EQUALS(apriori2.weight(), db_size)
 
-      TS_ASSERT_EQUALS(apriori2.getType(), "Dirichlet")
-      TS_ASSERT(apriori2.isOfType("Dirichlet"))
-      TS_ASSERT(!apriori2.isOfType("NoApriori"))
+      TS_ASSERT_EQUALS(apriori2.getType(), gum::learning::PriorType::DirichletPriorType)
 
       vect.clear();
       vect.resize(3, 1.0);
@@ -254,9 +250,7 @@ namespace gum_tests {
       apriori4->setWeight(1.0 * db_size);
       TS_ASSERT_EQUALS(apriori4->weight(), 1.0 * db_size)
 
-      TS_ASSERT_EQUALS(apriori4->getType(), "Dirichlet")
-      TS_ASSERT(apriori4->isOfType("Dirichlet"))
-      TS_ASSERT(!apriori4->isOfType("NoApriori"))
+      TS_ASSERT_EQUALS(apriori4->getType(), gum::learning::PriorType::DirichletPriorType)
 
       vect.clear();
       vect.resize(3, 1.0);
@@ -310,9 +304,7 @@ namespace gum_tests {
       apriori4->setWeight(1.0 * db_size);
       TS_ASSERT_EQUALS(apriori4->weight(), 1.0 * db_size)
 
-      TS_ASSERT_EQUALS(apriori4->getType(), "Dirichlet")
-      TS_ASSERT(apriori4->isOfType("Dirichlet"))
-      TS_ASSERT(!apriori4->isOfType("NoApriori"))
+      TS_ASSERT_EQUALS(apriori4->getType(), gum::learning::PriorType::DirichletPriorType)
 
       vect.clear();
       vect.resize(3, 1.0);
@@ -366,9 +358,7 @@ namespace gum_tests {
       apriori4->setWeight(1.0 * db_size);
       TS_ASSERT_EQUALS(apriori4->weight(), 1.0 * db_size)
 
-      TS_ASSERT_EQUALS(apriori4->getType(), "Dirichlet")
-      TS_ASSERT(apriori4->isOfType("Dirichlet"))
-      TS_ASSERT(!apriori4->isOfType("NoApriori"))
+      TS_ASSERT_EQUALS(apriori4->getType(), gum::learning::PriorType::DirichletPriorType)
 
       vect.clear();
       vect.resize(3, 1.0);
@@ -484,9 +474,7 @@ namespace gum_tests {
       apriori.setWeight(2.0 * db_size);
       TS_ASSERT_EQUALS(apriori.weight(), 2.0 * db_size)
 
-      TS_ASSERT_EQUALS(apriori.getType(), "Dirichlet")
-      TS_ASSERT(apriori.isOfType("Dirichlet"))
-      TS_ASSERT(!apriori.isOfType("NoApriori"))
+      TS_ASSERT_EQUALS(apriori.getType(), gum::learning::PriorType::DirichletPriorType)
 
       std::vector< gum::NodeId > cond_empty;
       std::vector< gum::NodeId > cond1{node1};
@@ -547,9 +535,7 @@ namespace gum_tests {
       apriori2.setWeight(1.0 * db_size);
       TS_ASSERT_EQUALS(apriori2.weight(), 1.0 * db_size)
 
-      TS_ASSERT_EQUALS(apriori2.getType(), "Dirichlet")
-      TS_ASSERT(apriori2.isOfType("Dirichlet"))
-      TS_ASSERT(!apriori2.isOfType("NoApriori"))
+      TS_ASSERT_EQUALS(apriori2.getType(), gum::learning::PriorType::DirichletPriorType)
 
       vect.clear();
       vect.resize(3, 1.0);
@@ -656,9 +642,7 @@ namespace gum_tests {
       apriori4->setWeight(1.0 * db_size);
       TS_ASSERT_EQUALS(apriori4->weight(), 1.0 * db_size)
 
-      TS_ASSERT_EQUALS(apriori4->getType(), "Dirichlet")
-      TS_ASSERT(apriori4->isOfType("Dirichlet"))
-      TS_ASSERT(!apriori4->isOfType("NoApriori"))
+      TS_ASSERT_EQUALS(apriori4->getType(), gum::learning::PriorType::DirichletPriorType)
 
       vect.clear();
       vect.resize(3, 1.0);
@@ -712,9 +696,7 @@ namespace gum_tests {
       apriori4->setWeight(1.0 * db_size);
       TS_ASSERT_EQUALS(apriori4->weight(), 1.0 * db_size)
 
-      TS_ASSERT_EQUALS(apriori4->getType(), "Dirichlet")
-      TS_ASSERT(apriori4->isOfType("Dirichlet"))
-      TS_ASSERT(!apriori4->isOfType("NoApriori"))
+      TS_ASSERT_EQUALS(apriori4->getType(), gum::learning::PriorType::DirichletPriorType)
 
       vect.clear();
       vect.resize(3, 1.0);
@@ -768,9 +750,7 @@ namespace gum_tests {
       apriori4->setWeight(1.0 * db_size);
       TS_ASSERT_EQUALS(apriori4->weight(), 1.0 * db_size)
 
-      TS_ASSERT_EQUALS(apriori4->getType(), "Dirichlet")
-      TS_ASSERT(apriori4->isOfType("Dirichlet"))
-      TS_ASSERT(!apriori4->isOfType("NoApriori"))
+      TS_ASSERT_EQUALS(apriori4->getType(),gum::learning::PriorType::DirichletPriorType)
 
       vect.clear();
       vect.resize(3, 1.0);

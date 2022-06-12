@@ -37,7 +37,7 @@
 #include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/core/math/gammaLog2.h>
 #include <agrum/BN/learning/scores_and_tests/score.h>
-#include <agrum/BN/learning/aprioris/aprioriNoApriori.h>
+#include <agrum/BN/learning/priors/aprioriNoApriori.h>
 
 namespace gum {
 
@@ -57,7 +57,7 @@ namespace gum {
      * apriori with the score. In this case, this apriori will be included in
      * addition to the implicit smoothing apriori in a BD fashion, i.e., we
      * will ressort to the Bayesian Dirichlet (BD) formula to include the sum of
-     * the two aprioris into the score.
+     * the two priors into the score.
      *
      */
     class ScoreBD: public Score {
@@ -87,7 +87,7 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       ScoreBD(const DBRowGeneratorParser&                                 parser,
-              const Apriori&                                              apriori,
+              const Prior&                                              apriori,
               const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
               const Bijection< NodeId, std::size_t >&                     nodeId2columns
               = Bijection< NodeId, std::size_t >());
@@ -107,7 +107,7 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       ScoreBD(const DBRowGeneratorParser&             parser,
-              const Apriori&                          apriori,
+              const Prior&                          apriori,
               const Bijection< NodeId, std::size_t >& nodeId2columns
               = Bijection< NodeId, std::size_t >());
 
@@ -147,29 +147,29 @@ namespace gum {
       /// @{
 
       /// indicates whether the apriori is compatible (meaningful) with the score
-      /** The combination of some scores and aprioris can be meaningless. For
+      /** The combination of some scores and priors can be meaningless. For
        * instance, adding a Dirichlet apriori to the K2 score is not very
        * meaningful since K2 corresponds to a BD score with a 1-smoothing
        * apriori.
        * aGrUM allows you to perform such combination, but you can check with
-       * method isAprioriCompatible () whether the result the score will give
+       * method isPriorCompatible () whether the result the score will give
        * you is meaningful or not.
        * @returns a non empty string if the apriori is compatible with the
        * score.*/
-      virtual std::string isAprioriCompatible() const final;
+      virtual std::string isPriorCompatible() const final;
 
       /// returns the internal apriori of the score
       /** Some scores include an apriori. For instance, the K2 score is a BD
-       * score with a Laplace Apriori ( smoothing(1) ). BD is a BD score with
+       * score with a Laplace Prior ( smoothing(1) ). BD is a BD score with
        * a N'/(r_i * q_i) apriori, where N' is an effective sample size and r_i
        * is the domain size of the target variable and q_i is the domain size of
        * the Cartesian product of its parents. The goal of the score's internal
-       * apriori classes is to enable to account for these aprioris outside the
+       * apriori classes is to enable to account for these priors outside the
        * score, e.g., when performing parameter estimation. It is important to
        * note that, to be meaningful, a structure + parameter learning requires
-       * that the same aprioris are taken into account during structure learning
+       * that the same priors are taken into account during structure learning
        * and parameter learning. */
-      virtual const Apriori& internalApriori() const final;
+      virtual const Prior& internalApriori() const final;
 
       /// @}
 
@@ -177,11 +177,11 @@ namespace gum {
       /// indicates whether the apriori is compatible (meaningful) with the score
       /** @returns a non empty string if the apriori is compatible with the score.
        */
-      static std::string isAprioriCompatible(const std::string& apriori_type, double weight = 1.0f);
+      static std::string isPriorCompatible(PriorType apriori_type, double weight = 1.0f);
 
       /// indicates whether the apriori is compatible (meaningful) with the score
       /** a non empty string if the apriori is compatible with the score. */
-      static std::string isAprioriCompatible(const Apriori& apriori);
+      static std::string isPriorCompatible(const Prior& apriori);
 
 
       protected:

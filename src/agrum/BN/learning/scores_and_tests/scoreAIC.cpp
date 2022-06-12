@@ -60,17 +60,17 @@ namespace gum {
 
 
     /// indicates whether the apriori is compatible (meaningful) with the score
-    std::string ScoreAIC::isAprioriCompatible(const std::string& apriori_type, double weight) {
+    std::string ScoreAIC::isPriorCompatible(PriorType apriori_type, double weight) {
       // check that the apriori is compatible with the score
-      if ((apriori_type == AprioriDirichletType::type)
-          || (apriori_type == AprioriSmoothingType::type)
-          || (apriori_type == AprioriNoAprioriType::type)) {
+      if ((apriori_type == PriorType::DirichletPriorType)
+          || (apriori_type == PriorType::SmoothingPriorType)
+          || (apriori_type == PriorType::NoPriorType)) {
         return "";
       }
 
       // apriori types unsupported by the type checker
       std::stringstream msg;
-      msg << "The apriori '" << apriori_type << "' is not yet compatible with the score 'AIC'.";
+      msg << "The apriori '" << priorTypeToString(apriori_type) << "' is not yet compatible with the score 'AIC'.";
       return msg.str();
     }
 

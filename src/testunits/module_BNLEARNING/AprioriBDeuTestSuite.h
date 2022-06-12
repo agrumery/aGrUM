@@ -25,7 +25,7 @@
 
 #include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/tools/database/DBTranslatorSet.h>
-#include <agrum/BN/learning/aprioris/aprioriBDeu.h>
+#include <agrum/BN/learning/priors/aprioriBDeu.h>
 
 namespace gum_tests {
 
@@ -63,10 +63,7 @@ namespace gum_tests {
       apriori.setWeight(4.0);
       TS_ASSERT_EQUALS(apriori.weight(), 4.0)
 
-      TS_ASSERT_EQUALS(apriori.getType(), "BDeu")
-      TS_ASSERT(apriori.isOfType("BDeu"))
-      TS_ASSERT(!apriori.isOfType("NoApriori"))
-
+      TS_ASSERT_EQUALS(apriori.getType(), gum::learning::PriorType::BDeuPriorType)
 
       gum::NodeId                node0 = 0;
       gum::NodeId                node1 = 1;
@@ -119,9 +116,7 @@ namespace gum_tests {
       apriori2.setWeight(2.0);
       TS_ASSERT_EQUALS(apriori2.weight(), 2.0)
 
-      TS_ASSERT_EQUALS(apriori2.getType(), "BDeu")
-      TS_ASSERT(apriori2.isOfType("BDeu"))
-      TS_ASSERT(!apriori2.isOfType("NoApriori"))
+      TS_ASSERT_EQUALS(apriori2.getType(), gum::learning::PriorType::BDeuPriorType)
 
       vect.clear();
       vect.resize(3, 1.0);
@@ -160,9 +155,7 @@ namespace gum_tests {
       apriori3.setWeight(4.0);
       TS_ASSERT_EQUALS(apriori3.weight(), 4.0)
 
-      TS_ASSERT_EQUALS(apriori3.getType(), "BDeu")
-      TS_ASSERT(apriori3.isOfType("BDeu"))
-      TS_ASSERT(!apriori3.isOfType("NoApriori"))
+      TS_ASSERT_EQUALS(apriori3.getType(), gum::learning::PriorType::BDeuPriorType)
 
       vect.clear();
       vect.resize(3, 1.0);
@@ -201,9 +194,7 @@ namespace gum_tests {
       apriori4->setWeight(2.0);
       TS_ASSERT_EQUALS(apriori4->weight(), 2.0)
 
-      TS_ASSERT_EQUALS(apriori4->getType(), "BDeu")
-      TS_ASSERT(apriori4->isOfType("BDeu"))
-      TS_ASSERT(!apriori4->isOfType("NoApriori"))
+      TS_ASSERT_EQUALS(apriori4->getType(), gum::learning::PriorType::BDeuPriorType)
 
       vect.clear();
       vect.resize(3, 1.0);
@@ -246,9 +237,7 @@ namespace gum_tests {
       apriori5.setWeight(2.0);
       TS_ASSERT_EQUALS(apriori5.weight(), 2.0)
 
-      TS_ASSERT_EQUALS(apriori5.getType(), "BDeu")
-      TS_ASSERT(apriori5.isOfType("BDeu"))
-      TS_ASSERT(!apriori5.isOfType("NoApriori"))
+      TS_ASSERT_EQUALS(apriori5.getType(), gum::learning::PriorType::BDeuPriorType)
 
       vect.clear();
       vect.resize(3, 1.0);
@@ -286,9 +275,7 @@ namespace gum_tests {
       apriori5.setWeight(1.0);
       TS_ASSERT_EQUALS(apriori5.weight(), 1.0)
 
-      TS_ASSERT_EQUALS(apriori5.getType(), "BDeu")
-      TS_ASSERT(apriori5.isOfType("BDeu"))
-      TS_ASSERT(!apriori5.isOfType("NoApriori"))
+      TS_ASSERT_EQUALS(apriori5.getType(), gum::learning::PriorType::BDeuPriorType)
 
       vect.clear();
       vect.resize(3, 1.0);
@@ -374,9 +361,7 @@ namespace gum_tests {
       apriori.setWeight(4.0);
       TS_ASSERT_EQUALS(apriori.weight(), 4.0)
 
-      TS_ASSERT_EQUALS(apriori.getType(), "BDeu")
-      TS_ASSERT(apriori.isOfType("BDeu"))
-      TS_ASSERT(!apriori.isOfType("NoApriori"))
+      TS_ASSERT_EQUALS(apriori.getType(), gum::learning::PriorType::BDeuPriorType)
 
       std::vector< gum::NodeId > cond_empty;
       std::vector< gum::NodeId > cond1{node3, node5, node4};
@@ -423,9 +408,7 @@ namespace gum_tests {
       apriori2.setWeight(2.0);
       TS_ASSERT_EQUALS(apriori2.weight(), 2.0)
 
-      TS_ASSERT_EQUALS(apriori2.getType(), "BDeu")
-      TS_ASSERT(apriori2.isOfType("BDeu"))
-      TS_ASSERT(!apriori2.isOfType("NoApriori"))
+      TS_ASSERT_EQUALS(apriori2.getType(), gum::learning::PriorType::BDeuPriorType)
 
       vect.clear();
       vect.resize(4, 1.0);
@@ -463,9 +446,7 @@ namespace gum_tests {
       apriori3.setWeight(4.0);
       TS_ASSERT_EQUALS(apriori3.weight(), 4.0)
 
-      TS_ASSERT_EQUALS(apriori3.getType(), "BDeu")
-      TS_ASSERT(apriori3.isOfType("BDeu"))
-      TS_ASSERT(!apriori3.isOfType("NoApriori"))
+      TS_ASSERT_EQUALS(apriori3.getType(),gum::learning::PriorType::BDeuPriorType)
 
       vect.clear();
       vect.resize(4, 1.0);
@@ -504,9 +485,7 @@ namespace gum_tests {
       apriori4->setWeight(2.0);
       TS_ASSERT_EQUALS(apriori4->weight(), 2.0)
 
-      TS_ASSERT_EQUALS(apriori4->getType(), "BDeu")
-      TS_ASSERT(apriori4->isOfType("BDeu"))
-      TS_ASSERT(!apriori4->isOfType("NoApriori"))
+      TS_ASSERT_EQUALS(apriori4->getType(), gum::learning::PriorType::BDeuPriorType)
 
       vect.clear();
       vect.resize(4, 1.0);
@@ -548,9 +527,7 @@ namespace gum_tests {
       apriori5.setWeight(2.0);
       TS_ASSERT_EQUALS(apriori5.weight(), 2.0)
 
-      TS_ASSERT_EQUALS(apriori5.getType(), "BDeu")
-      TS_ASSERT(apriori5.isOfType("BDeu"))
-      TS_ASSERT(!apriori5.isOfType("NoApriori"))
+      TS_ASSERT_EQUALS(apriori5.getType(), gum::learning::PriorType::BDeuPriorType)
 
       vect.clear();
       vect.resize(4, 1.0);
@@ -589,9 +566,7 @@ namespace gum_tests {
       apriori5.setWeight(1.0);
       TS_ASSERT_EQUALS(apriori5.weight(), 1.0)
 
-      TS_ASSERT_EQUALS(apriori5.getType(), "BDeu")
-      TS_ASSERT(apriori5.isOfType("BDeu"))
-      TS_ASSERT(!apriori5.isOfType("NoApriori"))
+      TS_ASSERT_EQUALS(apriori5.getType(), gum::learning::PriorType::BDeuPriorType)
 
       vect.clear();
       vect.resize(4, 1.0);

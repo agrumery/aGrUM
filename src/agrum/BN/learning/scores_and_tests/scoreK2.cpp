@@ -60,25 +60,25 @@ namespace gum {
 
 
     /// indicates whether the apriori is compatible (meaningful) with the score
-    std::string ScoreK2::isAprioriCompatible(const std::string& apriori_type, double weight) {
+    std::string ScoreK2::isPriorCompatible(PriorType apriori_type, double weight) {
       // check that the apriori is compatible with the score
-      if (apriori_type == AprioriNoAprioriType::type) { return ""; }
+      if (apriori_type == PriorType::NoPriorType) { return ""; }
 
       if (weight == 0.0) {
         return "The apriori is currently compatible with the K2 score but "
                "if you change the weight, it will become incompatible.";
       }
 
-      // known incompatible aprioris
-      if ((apriori_type == AprioriDirichletType::type)
-          || (apriori_type == AprioriSmoothingType::type)) {
+      // known incompatible priors
+      if ((apriori_type == PriorType::DirichletPriorType)
+          || (apriori_type == PriorType::SmoothingPriorType)) {
         return "The K2 score already contains a different 'implicit' apriori. "
                "Therefore, the learning will probably be biased.";
       }
 
       // apriori types unsupported by the type checker
       std::stringstream msg;
-      msg << "The apriori '" << apriori_type << "' is not yet compatible with the score 'K2'.";
+      msg << "The apriori '" << priorTypeToString(apriori_type) << "' is not yet compatible with the score 'K2'.";
       return msg.str();
     }
 
@@ -100,7 +100,7 @@ namespace gum {
         const double          ri                = double(all_size / conditioning_size);
 
         if (informative_external_apriori) {
-          // the score to compute is that of BD with aprioris N'_ijk + 1
+          // the score to compute is that of BD with priors N'_ijk + 1
           // (the + 1 is here to take into account the internal apriori of K2)
           std::vector< double > N_prime_ijk(all_size, 0.0);
           this->apriori_->addAllApriori(idset, N_prime_ijk);
@@ -137,7 +137,7 @@ namespace gum {
         const double ri = double(all_size);
 
         if (informative_external_apriori) {
-          // the score to compute is that of BD with aprioris N'_ijk + 1
+          // the score to compute is that of BD with priors N'_ijk + 1
           // (the + 1 is here to take into account the internal apriori of K2)
 
           // the K2 score can be computed as follows:

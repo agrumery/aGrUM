@@ -71,8 +71,8 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       ParamEstimatorML(const DBRowGeneratorParser& parser,
-                       const Apriori&              external_apriori,
-                       const Apriori&              _score_internal_apriori,
+                       const Prior&              external_apriori,
+                       const Prior&              _score_internal_apriori,
                        const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
                        const Bijection< NodeId, std::size_t >&                     nodeId2columns
                        = Bijection< NodeId, std::size_t >());
@@ -94,8 +94,8 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       ParamEstimatorML(const DBRowGeneratorParser&             parser,
-                       const Apriori&                          external_apriori,
-                       const Apriori&                          _score_internal_apriori,
+                       const Prior&                          external_apriori,
+                       const Prior&                          _score_internal_apriori,
                        const Bijection< NodeId, std::size_t >& nodeId2columns
                        = Bijection< NodeId, std::size_t >());
 

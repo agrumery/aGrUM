@@ -62,11 +62,11 @@ namespace gum {
 
       if (extends != "") { mother = _retrieveClass_(extends); }
 
-      if ((extends == "") && impl.empty()) {
+      if ((extends.empty()) && impl.empty()) {
         c = new PRMClass< GUM_SCALAR >(real_name);
       } else if ((extends != "") && impl.empty()) {
         c = new PRMClass< GUM_SCALAR >(real_name, *mother, delayInheritance);
-      } else if ((extends == "") && (!impl.empty())) {
+      } else if ((extends.empty()) && (!impl.empty())) {
         c = new PRMClass< GUM_SCALAR >(real_name, impl, delayInheritance);
       } else if ((extends != "") && (!impl.empty())) {
         c = new PRMClass< GUM_SCALAR >(real_name, *mother, impl, delayInheritance);
@@ -1359,7 +1359,7 @@ namespace gum {
       if (_prm_->_typeMap_.exists(real_name)) {
         GUM_ERROR(DuplicateElement, "'" << real_name << "' is already used.")
       }
-      if (super == "") {
+      if (super.empty()) {
         auto t = new PRMType(LabelizedVariable(real_name, "", 0));
         _stack_.push_back(t);
       } else {
@@ -1372,7 +1372,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMFactory< GUM_SCALAR >::addLabel(const std::string& l, std::string extends) {
-      if (extends == "") {
+      if (extends.empty()) {
         PRMType*           t = static_cast< PRMType* >(_checkStack_(1, PRMObject::prm_type::TYPE));
         LabelizedVariable* var = dynamic_cast< LabelizedVariable* >(t->_var_);
 

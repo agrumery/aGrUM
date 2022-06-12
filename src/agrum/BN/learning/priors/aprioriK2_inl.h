@@ -20,13 +20,13 @@
 
 
 /** @file
- * @brief the internal apriori for the K2 score = Laplace Apriori
+ * @brief the internal apriori for the K2 score = Laplace Prior
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#  include <agrum/BN/learning/aprioris/aprioriK2.h>
+#  include <agrum/BN/learning/priors/aprioriK2.h>
 
 namespace gum {
 

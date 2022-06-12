@@ -31,7 +31,7 @@
 
 #include <agrum/agrum.h>
 #include <agrum/tools/database/databaseTable.h>
-#include <agrum/BN/learning/aprioris/apriori.h>
+#include <agrum/BN/learning/priors/prior.h>
 #include <agrum/tools/stattests/recordCounter.h>
 #include <agrum/tools/multidim/potential.h>
 #include <agrum/tools/core/IThreadNumberManager.h>
@@ -76,8 +76,8 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       ParamEstimator(const DBRowGeneratorParser& parser,
-                     const Apriori&              external_apriori,
-                     const Apriori&              _score_internal_apriori,
+                     const Prior&              external_apriori,
+                     const Prior&              _score_internal_apriori,
                      const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
                      const Bijection< NodeId, std::size_t >&                     nodeId2columns
                      = Bijection< NodeId, std::size_t >());
@@ -99,8 +99,8 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       ParamEstimator(const DBRowGeneratorParser&             parser,
-                     const Apriori&                          external_apriori,
-                     const Apriori&                          _score_internal_apriori,
+                     const Prior&                          external_apriori,
+                     const Prior&                          _score_internal_apriori,
                      const Bijection< NodeId, std::size_t >& nodeId2columns
                      = Bijection< NodeId, std::size_t >());
 
@@ -211,11 +211,11 @@ namespace gum {
 
       protected:
       /// an external a priori
-      Apriori* external_apriori_{nullptr};
+      Prior* external_apriori_{nullptr};
 
       /** @brief if a score was used for learning the structure of the PGM, this
        * is the a priori internal to the score */
-      Apriori* score_internal_apriori_{nullptr};
+      Prior* score_internal_apriori_{nullptr};
 
       /// the record counter used to parse the database
       RecordCounter counter_;

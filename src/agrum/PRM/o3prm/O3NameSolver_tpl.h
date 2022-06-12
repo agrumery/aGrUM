@@ -97,7 +97,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE bool O3NameSolver< GUM_SCALAR >::resolveClassElement(O3Label& name) {
         // If empty string, we return an empty string
-        if (name.label() == "") { return true; }
+        if (name.label().empty()) { return true; }
         // If we've already found the element real name
         if (_eltName_.exists(name.label())) {
           name.label() = _eltName_[name.label()];
@@ -223,7 +223,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE bool O3NameSolver< GUM_SCALAR >::resolveType(O3Label& name) {
         // If empty string, we return an empty string
-        if (name.label() == "") { return true; }
+        if (name.label().empty()) { return true; }
 
         // If we've already found the type real name
         if (_typeName_.exists(name.label())) {
@@ -293,7 +293,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE bool O3NameSolver< GUM_SCALAR >::resolveInterface(O3Label& name) {
         // If empty string, we return an empty string
-        if (name.label() == "") { return true; }
+        if (name.label().empty()) { return true; }
 
         // If we've already found the interface real name
         if (_interfaceName_.exists(name.label())) {
@@ -363,7 +363,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE bool O3NameSolver< GUM_SCALAR >::resolveClass(O3Label& name) {
         // If empty string, we return an empty string
-        if (name.label() == "") { return true; }
+        if (name.label().empty()) { return true; }
 
         // If we've already found super real name
         if (_className_.exists(name.label())) {
@@ -433,7 +433,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE bool O3NameSolver< GUM_SCALAR >::resolveSlotType(O3Label& name) {
         // If empty string, we return an empty string
-        if (name.label() == "") { return true; }
+        if (name.label().empty()) { return true; }
         // If we've already found the reference real name
         if (_refName_.exists(name.label())) {
           name.label() = _refName_[name.label()];

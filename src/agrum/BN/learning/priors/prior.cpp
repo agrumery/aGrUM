@@ -21,37 +21,43 @@
 
 /**
  * @file
- * @brief the internal apriori for the BDeu score (N' / (r_i * q_i)
+ * @brief the base class for all a priori
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 
-#include <agrum/BN/learning/aprioris/aprioriBDeu.h>
+#include <agrum/BN/learning/priors/prior.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 /// include the inlined functions if necessary
 #  ifdef GUM_NO_INLINE
-#    include <agrum/BN/learning/aprioris/aprioriBDeu_inl.h>
+#    include <agrum/BN/learning/priors/apriori_inl.h>
 #  endif /* GUM_NO_INLINE */
 
 namespace gum {
 
   namespace learning {
 
-    /// returns the apriori vector over only the conditioning set of an idset
-    void AprioriBDeu::addConditioningApriori(const IdCondSet&       idset,
-                                             std::vector< double >& counts) {
-      // if the conditioning set is empty or the weight is equal to zero,
-      // the apriori is also empty
-      if ((idset.size() == idset.nbLHSIds()) || (this->weight_ == 0.0)
-          || (idset.nbLHSIds() == std::size_t(0)))
-        return;
+    /// copy operator
+    Prior& Prior::operator=(const Prior& from) {
+      if (this != &from) {
+        nodeId2columns_ = from.nodeId2columns_;
+        weight_         = from.weight_;
+        database_       = from.database_;
+      }
+      return *this;
+    }
 
-      // add the weight to the counting vector
-      const double weight = this->weight_ / counts.size();
-      for (auto& count: counts)
-        count += weight;
+
+    /// move operator
+    Prior& Prior::operator=(Prior&& from) {
+      if (this != &from) {
+        nodeId2columns_ = std::move(from.nodeId2columns_);
+        weight_         = from.weight_;
+        database_       = from.database_;
+      }
+      return *this;
     }
 
   } /* namespace learning */

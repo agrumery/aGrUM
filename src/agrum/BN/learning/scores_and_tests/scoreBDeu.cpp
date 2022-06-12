@@ -60,25 +60,25 @@ namespace gum {
 
 
     /// indicates whether the apriori is compatible (meaningful) with the score
-    std::string ScoreBDeu::isAprioriCompatible(const std::string& apriori_type, double weight) {
+    std::string ScoreBDeu::isPriorCompatible(PriorType apriori_type, double weight) {
       // check that the apriori is compatible with the score
-      if (apriori_type == AprioriNoAprioriType::type) { return ""; }
+      if (apriori_type == PriorType::NoPriorType) { return ""; }
 
       if (weight == 0.0) {
         return "The apriori is currently compatible with the BDeu score but "
                "if you change the weight, it will become incompatible.";
       }
 
-      // known incompatible aprioris
-      if ((apriori_type == AprioriDirichletType::type)
-          || (apriori_type == AprioriSmoothingType::type)) {
+      // known incompatible priors
+      if ((apriori_type == PriorType::DirichletPriorType)
+          || (apriori_type == PriorType::SmoothingPriorType)) {
         return "The BDeu score already contains a different 'implicit' apriori. "
                "Therefore, the learning will probably be biased.";
       }
 
       // apriori types unsupported by the type checker
       std::stringstream msg;
-      msg << "The apriori '" << apriori_type << "' is not yet compatible with the score 'BDeu'.";
+      msg << "The apriori '" << priorTypeToString(apriori_type) << "' is not yet compatible with the score 'BDeu'.";
       return msg.str();
     }
 
@@ -104,7 +104,7 @@ namespace gum {
         const double          ess_riqi          = ess / all_size;
 
         if (informative_external_apriori) {
-          // the score to compute is that of BD with aprioris
+          // the score to compute is that of BD with priors
           // N'_ijk + ESS / (r_i * q_i )
           // (the + ESS / (r_i * q_i ) is here to take into account the
           // internal apriori of BDeu)
@@ -146,7 +146,7 @@ namespace gum {
         const double ess_ri = ess / all_size;
 
         if (informative_external_apriori) {
-          // the score to compute is that of BD with aprioris
+          // the score to compute is that of BD with priors
           // N'_ijk + ESS / ( ri * qi )
           // (the + ESS / ( ri * qi ) is here to take into account the
           // internal apriori of K2)

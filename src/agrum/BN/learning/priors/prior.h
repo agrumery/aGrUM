@@ -20,40 +20,53 @@
 
 
 /** @file
- * @brief the internal apriori for the BDeu score (N' / (r_i * q_i)
+ * @brief the base class for all a priori
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
-#ifndef GUM_LEARNING_A_PRIORI_BDEU_H
-#define GUM_LEARNING_A_PRIORI_BDEU_H
+#ifndef GUM_LEARNING_PRIOR_H
+#define GUM_LEARNING_PRIOR_H
 
+#include <string>
 #include <vector>
 
 #include <agrum/agrum.h>
-#include <agrum/BN/learning/aprioris/apriori.h>
+#include <agrum/tools/core/bijection.h>
+#include <agrum/tools/database/databaseTable.h>
+#include <agrum/tools/stattests/idCondSet.h>
 
 namespace gum {
 
   namespace learning {
+    enum class PriorType {
+      DirichletPriorType,
+      SmoothingPriorType,
+      NoPriorType,
+      BDeuPriorType,
+    };
 
-    /** @class AprioriBDeu
-     * @brief the internal apriori for the BDeu score (N' / (r_i * q_i)
-     * @headerfile aprioriBDeu.h <agrum/tools/database/aprioriBDeu.h>
+    constexpr const char* priorTypeToString(PriorType e) noexcept {
+      switch (e) {
+        case PriorType::NoPriorType:
+          return "No prior";
+        case PriorType::DirichletPriorType:
+          return "Dirichlet prior";
+        case PriorType::SmoothingPriorType:
+          return "TriSmoothing prior";
+        case PriorType::BDeuPriorType:
+          return "BDeu prior";
+      }
+      return "Error in prior";
+    }
+
+
+    /** @class Prior
+     * @brief the base class for all a priori
+     * @headerfile apriori.h <agrum/tools/database/apriori.h>
      * @ingroup learning_apriori
-     *
-     * BDeu is a BD score with a N'/(r_i * q_i) apriori, where N' is an
-     * effective sample size and r_i is the domain size of the target variable
-     * and q_i is the domain size of the Cartesian product of its parents.
-     *
-     * It is important to note that, to be meaningful a structure + parameter
-     * learning requires that the same aprioris are taken into account during
-     * structure learning and parameter learning.
      */
-    class AprioriBDeu: public Apriori {
+    class Prior {
       public:
-      /// the type of the a priori
-      using type = AprioriBDeuType;
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -70,65 +83,41 @@ namespace gum {
        * is an identity, i.e., the value of a NodeId is equal to the index of
        * the column in the DatabaseTable.
        */
-      AprioriBDeu(const DatabaseTable&                    database,
-                  const Bijection< NodeId, std::size_t >& nodeId2columns
-                  = Bijection< NodeId, std::size_t >());
-
-      /// copy constructor
-      AprioriBDeu(const AprioriBDeu& from);
-
-      /// move constructor
-      AprioriBDeu(AprioriBDeu&& from);
+      explicit Prior(const DatabaseTable&                    database,
+                     const Bijection< NodeId, std::size_t >& nodeId2columns
+                     = Bijection< NodeId, std::size_t >());
 
       /// virtual copy constructor
-      virtual AprioriBDeu* clone() const;
+      virtual Prior* clone() const = 0;
 
       /// destructor
-      virtual ~AprioriBDeu();
+      virtual ~Prior();
 
       /// @}
-
-
-      // ##########################################################################
-      /// @name Operators
-      // ##########################################################################
-      /// @{
-
-      /// copy operator
-      AprioriBDeu& operator=(const AprioriBDeu& from);
-
-      /// move operator
-      AprioriBDeu& operator=(AprioriBDeu&& from);
-
-      /// @}
-
 
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
 
-      /// sets the effective sample size N' (alias of setEffectiveSampleSize ())
-      virtual void setWeight(const double weight) final;
+      /// sets the weight of the a priori (kind of effective sample size)
+      virtual void setWeight(double weight);
 
-      /// sets the effective sample size N'
-      void setEffectiveSampleSize(const double weight);
-
-      /// indicates whether an apriori is of a certain type
-      virtual bool isOfType(const std::string& type) final;
+      /// returns the weight assigned to the apriori
+      double weight() const;
 
       /// returns the type of the apriori
-      virtual const std::string& getType() const final;
+      virtual PriorType getType() const = 0;
 
       /// indicates whether the apriori is potentially informative
       /** Basically, only the NoApriori is uninformative. However, it may happen
-       * that, under some circonstances, an apriori, which is usually not equal
+       * that, under some circumstances, an apriori, which is usually not equal
        * to the NoApriori, becomes equal to it (e.g., when the weight is equal
        * to zero). In this case, if the apriori can detect this case, it shall
        * inform the classes that use it that it is temporarily uninformative.
        * These classes will then be able to speed-up their code by avoiding to
        * take into account the apriori in their computations. */
-      virtual bool isInformative() const final;
+      virtual bool isInformative() const = 0;
 
       /// adds the apriori to a counting vector corresponding to the idset
       /** adds the apriori to an already created counting vector defined over
@@ -136,17 +125,42 @@ namespace gum {
        * conditioning bar of the idset.
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint variables set. */
-      virtual void addAllApriori(const IdCondSet& idset, std::vector< double >& counts) final;
+      virtual void addAllApriori(const IdCondSet& idset, std::vector< double >& counts) = 0;
 
-      /** @brief adds the apriori to a counting vectordefined over the right
+      /** @brief adds the apriori to a counting vector defined over the right
        * hand side of the idset
        *
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint RHS variables of the idset. */
-      virtual void addConditioningApriori(const IdCondSet&       idset,
-                                          std::vector< double >& counts) final;
+      virtual void addConditioningApriori(const IdCondSet& idset, std::vector< double >& counts)
+         = 0;
 
       /// @}
+
+
+      protected:
+      /// the weight of the apriori
+      double weight_{1.0};
+
+      /// a reference to the database in order to have access to its variables
+      const DatabaseTable* database_;
+
+      /** @brief a mapping from the NodeIds of the variables to the indices of
+       * the columns in the database */
+      Bijection< NodeId, std::size_t > nodeId2columns_;
+
+
+      /// copy constructor
+      Prior(const Prior& from);
+
+      /// move constructor
+      Prior(Prior&& from);
+
+      /// copy operator
+      Prior& operator=(const Prior& from);
+
+      /// move operator
+      Prior& operator=(Prior&& from);
     };
 
   } /* namespace learning */
@@ -155,7 +169,7 @@ namespace gum {
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#  include <agrum/BN/learning/aprioris/aprioriBDeu_inl.h>
+#  include <agrum/BN/learning/priors/prior_inl.h>
 #endif /* GUM_NO_INLINE */
 
-#endif /* GUM_LEARNING_A_PRIORI_BDEU_H */
+#endif /* GUM_LEARNING_PRIOR_H */

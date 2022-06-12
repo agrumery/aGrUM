@@ -28,8 +28,8 @@
 #include <agrum/tools/database/DBInitializerFromCSV.h>
 #include <agrum/tools/database/databaseTable.h>
 #include <agrum/tools/database/DBTranslatorSet.h>
-#include <agrum/BN/learning/aprioris/aprioriNoApriori.h>
-#include <agrum/BN/learning/aprioris/aprioriSmoothing.h>
+#include <agrum/BN/learning/priors/aprioriNoApriori.h>
+#include <agrum/BN/learning/priors/aprioriSmoothing.h>
 #include <agrum/tools/stattests/pseudoCount.h>
 
 namespace gum_tests {

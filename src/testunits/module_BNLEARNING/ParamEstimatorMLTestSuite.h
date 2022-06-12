@@ -27,8 +27,8 @@
 #include <agrum/tools/database/DBRowGeneratorEM.h>
 #include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/tools/database/DBTranslatorSet.h>
-#include <agrum/BN/learning/aprioris/aprioriNoApriori.h>
-#include <agrum/BN/learning/aprioris/aprioriSmoothing.h>
+#include <agrum/BN/learning/priors/aprioriNoApriori.h>
+#include <agrum/BN/learning/priors/aprioriSmoothing.h>
 #include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
 
 namespace gum_tests {

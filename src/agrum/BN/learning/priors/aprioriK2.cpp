@@ -19,23 +19,20 @@
  */
 
 
-/** @file
- * @brief the different types of apriori
+/**
+ * @file
+ * @brief the internal apriori for the K2 score: Laplace Prior
  *
- * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
+ * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 
-#include <agrum/BN/learning/aprioris/aprioriTypes.h>
+#include <agrum/BN/learning/priors/aprioriK2.h>
 
-namespace gum {
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-  namespace learning {
+/// include the inlined functions if necessary
+#  ifdef GUM_NO_INLINE
+#    include <agrum/BN/learning/priors/aprioriK2_inl.h>
+#  endif /* GUM_NO_INLINE */
 
-    const std::string AprioriDirichletType::type = "Dirichlet";
-    const std::string AprioriSmoothingType::type = "Smoothing";
-    const std::string AprioriNoAprioriType::type = "NoApriori";
-    const std::string AprioriBDeuType::type      = "BDeu";
-
-  } /* namespace learning */
-
-} /* namespace gum */
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */

@@ -35,7 +35,7 @@
 #include <agrum/tools/core/IThreadNumberManager.h>
 
 #include <agrum/tools/stattests/recordCounter.h>
-#include <agrum/BN/learning/aprioris/apriori.h>
+#include <agrum/BN/learning/priors/prior.h>
 #include <agrum/tools/variables/discreteVariable.h>
 #include <agrum/tools/multidim/potential.h>
 
@@ -78,7 +78,7 @@ namespace gum {
        * the ids belonging to this bijection can be computed: applying method
        * pseudo-count() over other ids will raise exception NotFound. */
       PseudoCount(const DBRowGeneratorParser&                                 parser,
-                  const Apriori&                                              external_apriori,
+                  const Prior&                                              external_apriori,
                   const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
                   const Bijection< NodeId, std::size_t >&                     nodeId2columns
                   = Bijection< NodeId, std::size_t >());
@@ -100,7 +100,7 @@ namespace gum {
        * the ids belonging to this bijection can be computed: applying method
        * pseudo-count() over other ids will raise exception NotFound. */
       PseudoCount(const DBRowGeneratorParser&             parser,
-                  const Apriori&                          external_apriori,
+                  const Prior&                          external_apriori,
                   const Bijection< NodeId, std::size_t >& nodeId2columns
                   = Bijection< NodeId, std::size_t >());
 
@@ -193,7 +193,7 @@ namespace gum {
 
       protected:
       /// the expert knowledge a priori we add to the contingency tables
-      Apriori* apriori_{nullptr};
+      Prior* apriori_{nullptr};
 
       /// the record counter used for the countings over discrete variables
       RecordCounter counter_;

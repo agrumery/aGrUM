@@ -66,7 +66,7 @@ namespace gum {
       IdCondSet idset(target_node, conditioning_nodes, true);
 
       // get the counts for all the nodes in the idset and add the external and
-      // score internal aprioris
+      // score internal priors
       std::vector< double > N_ijk(this->counter_.counts(idset, true));
       const bool            informative_external_apriori = this->external_apriori_->isInformative();
       const bool            informative_score_internal_apriori
@@ -82,7 +82,7 @@ namespace gum {
       // without conditioning nodes
       if (!conditioning_nodes.empty()) {
         // get the counts for all the conditioning nodes, and add them the
-        // external and score internal aprioris
+        // external and score internal priors
         std::vector< double > N_ij(this->counter_.counts(idset.conditionalIdCondSet(), false));
         if (informative_external_apriori)
           this->external_apriori_->addConditioningApriori(idset, N_ij);
