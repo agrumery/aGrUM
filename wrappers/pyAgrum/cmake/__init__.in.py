@@ -604,3 +604,119 @@ def log2(p):
     a pyAgrum.Potential
   """
   return Potential(p).log2()
+
+def mutilate(cm, intervention = {}, observation = {}):
+  """
+  Modify the causal model CM to reflect the effect of an intervention on given variables.
+  Warning: experimental use of evidence definition
+
+  Interventions or observations can be HARD or SOFT.
+      
+    Hard interventions or observations:
+        1) [0,... 1, 0] -> sum(x) = 1
+        3) X : [n] -> with n a value
+    
+    Soft interventions or observations:
+        1) X : [empty list] -> equiprobability is assumed
+        2) X : [x1, ... xn] -> sum(x) = 1
+        3) X : [1, ... 1, 0] -> sum(x) > 1
+        4) X : [n1, n2, n3] -> with n_i values that could happen
+        
+    X is the name of a variable
+
+  Parameters
+  ----------
+  cm : pyAgrum.pyAgrum.BayesNet
+    A causal model
+  intervention : set
+    set of variables on which we intervene to force the value
+  observation : set
+    set of variables whose value is observed
+          
+  Returns
+  -------   
+  inter_cm : new causal model reflecting the interventions and observations (pyAgrum.pyAgrum.BayesNet)
+  evidence : list of all evidences for future inferences
+  """
+  
+  inter_cm = gum.BayesNet(cm)
+  
+  # Check that a variable is not an intervention and an observation
+  if len( set(intervention).intersection( set(observation) ) ) > 0:
+      raise ValueError('A variable can\'t be an intervention and an observation')
+      
+      
+  evidence = dict() # Track the new distribution to update
+  list_hard = dict() # Track the hard values
+  toModify = {"intervention":intervention, "observation":observation}
+  
+  ## Delete relations
+  for typeSet in toModify:
+  
+      # For each variable we wish to modify
+      for var in toModify[typeSet]:
+          
+          # Get the ID and the name
+          if var in cm.names():
+              var_id = cm.idFromName(var)
+              
+          else:
+              var_id = var
+              var = cm.variable(var_id).name()
+
+          # Delete relations from parents for interventions
+          if typeSet == "intervention":
+              for par in cm.parents(var):
+                  inter_cm.eraseArc( par, var_id )
+
+          # Determine the new distributions
+          n = cm.variable(var).domainSize()
+          new_dis = toModify[typeSet][var]
+          hard = False
+          
+          if len(new_dis) == 0: # soft 1)
+              new_dis = [1/n for k in range(n)]
+          
+          elif str in [type(i) for i in new_dis]: # hard - soft 3) 4)
+              new_dis = [ 1 if cm.variable(var).labels()[i] == new_dis[0] else 0 for i in range(n) ]
+              
+              if len(toModify[typeSet][var]) == 1:
+                  new_val = toModify[typeSet][var][0]
+                  hard = True
+              
+          elif sum(new_dis) == 1 and 1 in new_dis: # hard 1)
+              new_val = cm.variable(var).labels()[ new_dis.index(1) ]
+              hard = True
+              
+          evidence[var] = new_dis
+          
+          # If hard values
+          if hard:
+              # Track the new values
+              list_hard[var] = new_val
+              
+              # Delete relation toward children
+              for chi in cm.children(var): 
+                  inter_cm.eraseArc( var_id, chi )
+                  
+  ## Update the distributions
+  for var in list(evidence):
+      
+      # Update variable if intervention
+      if var in intervention:
+          inter_cm.cpt(var).fillWith( evidence[var] )
+
+      # Update children if hard evidence
+      if var in list_hard:
+          for chi in cm.children(var):
+              new_cpt = cm.cpt(chi)[list_hard]
+
+              inter_cm.cpt(chi)[:] = new_cpt
+
+          # If intervention, remove var
+          if var in intervention:
+              inter_cm.erase(var)
+              del evidence[var]
+              
+              
+  return(inter_cm, evidence)
