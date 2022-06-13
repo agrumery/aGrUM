@@ -37,21 +37,20 @@
 
 namespace gum::learning {
 
-    /// returns the apriori vector over only the conditioning set of an idset
-    void BDeuPrior::addConditioningApriori(const IdCondSet&       idset,
-                                             std::vector< double >& counts) {
-      // if the conditioning set is empty or the weight is equal to zero,
-      // the apriori is also empty
-      if ((idset.size() == idset.nbLHSIds()) || (this->weight_ == 0.0)
-          || (idset.nbLHSIds() == std::size_t(0)))
-        return;
+  /// returns the apriori vector over only the conditioning set of an idset
+  void BDeuPrior::addConditioningApriori(const IdCondSet& idset, std::vector< double >& counts) {
+    // if the conditioning set is empty or the weight is equal to zero,
+    // the apriori is also empty
+    if ((idset.size() == idset.nbLHSIds()) || (this->weight_ == 0.0)
+        || (idset.nbLHSIds() == std::size_t(0)))
+      return;
 
-      // add the weight to the counting vector
-      const double weight = this->weight_ / double(counts.size());
-      for (auto& count: counts)
-        count += weight;
-    }
+    // add the weight to the counting vector
+    const double weight = this->weight_ / double(counts.size());
+    for (auto& count: counts)
+      count += weight;
+  }
 
-  } /* namespace gum */
+}   // namespace gum::learning
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

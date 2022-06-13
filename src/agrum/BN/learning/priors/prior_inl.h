@@ -32,7 +32,7 @@ namespace gum {
 
     /// default constructor
     INLINE Prior::Prior(const DatabaseTable&                    database,
-                            const Bijection< NodeId, std::size_t >& nodeId2columns) :
+                        const Bijection< NodeId, std::size_t >& nodeId2columns) :
         database_(&database),
         nodeId2columns_(nodeId2columns) {
       GUM_CONSTRUCTOR(Prior);

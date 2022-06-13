@@ -34,114 +34,113 @@
 
 namespace gum::learning {
 
-    /** @class BDeuPrior
-     * @brief the internal apriori for the BDeu score (N' / (r_i * q_i)
-     * @headerfile bdeuPrior.h <agrum/tools/database/bdeuPrior.h>
-     * @ingroup learning_apriori
-     *
-     * BDeu is a BD score with a N'/(r_i * q_i) apriori, where N' is an
-     * effective sample size and r_i is the domain size of the target variable
-     * and q_i is the domain size of the Cartesian product of its parents.
-     *
-     * It is important to note that, to be meaningful a structure + parameter
-     * learning requires that the same priors are taken into account during
-     * structure learning and parameter learning.
+  /** @class BDeuPrior
+   * @brief the internal apriori for the BDeu score (N' / (r_i * q_i)
+   * @headerfile bdeuPrior.h <agrum/tools/database/bdeuPrior.h>
+   * @ingroup learning_apriori
+   *
+   * BDeu is a BD score with a N'/(r_i * q_i) apriori, where N' is an
+   * effective sample size and r_i is the domain size of the target variable
+   * and q_i is the domain size of the Cartesian product of its parents.
+   *
+   * It is important to note that, to be meaningful a structure + parameter
+   * learning requires that the same priors are taken into account during
+   * structure learning and parameter learning.
+   */
+  class BDeuPrior: public Prior {
+    public:
+    // ##########################################################################
+    /// @name Constructors / Destructors
+    // ##########################################################################
+    /// @{
+
+    /// default constructor
+    /** @param database the database from which learning is performed. This is
+     * useful to get access to the random variables
+     * @param nodeId2Columns a mapping from the ids of the nodes in the
+     * graphical model to the corresponding column in the DatabaseTable.
+     * This enables estimating from a database in which variable A corresponds
+     * to the 2nd column the parameters of a BN in which variable A has a
+     * NodeId of 5. An empty nodeId2Columns bijection means that the mapping
+     * is an identity, i.e., the value of a NodeId is equal to the index of
+     * the column in the DatabaseTable.
      */
-    class BDeuPrior: public Prior {
-      public:
-      // ##########################################################################
-      /// @name Constructors / Destructors
-      // ##########################################################################
-      /// @{
+    explicit BDeuPrior(const DatabaseTable&                    database,
+                       const Bijection< NodeId, std::size_t >& nodeId2columns
+                       = Bijection< NodeId, std::size_t >());
 
-      /// default constructor
-      /** @param database the database from which learning is performed. This is
-       * useful to get access to the random variables
-       * @param nodeId2Columns a mapping from the ids of the nodes in the
-       * graphical model to the corresponding column in the DatabaseTable.
-       * This enables estimating from a database in which variable A corresponds
-       * to the 2nd column the parameters of a BN in which variable A has a
-       * NodeId of 5. An empty nodeId2Columns bijection means that the mapping
-       * is an identity, i.e., the value of a NodeId is equal to the index of
-       * the column in the DatabaseTable.
-       */
-      explicit BDeuPrior(const DatabaseTable&                    database,
-                  const Bijection< NodeId, std::size_t >& nodeId2columns
-                  = Bijection< NodeId, std::size_t >());
+    /// copy constructor
+    BDeuPrior(const BDeuPrior& from);
 
-      /// copy constructor
-      BDeuPrior(const BDeuPrior& from);
+    /// move constructor
+    BDeuPrior(BDeuPrior&& from) noexcept;
 
-      /// move constructor
-      BDeuPrior(BDeuPrior&& from) noexcept ;
+    /// virtual copy constructor
+    BDeuPrior* clone() const override;
 
-      /// virtual copy constructor
-      BDeuPrior* clone() const override;
+    /// destructor
+    virtual ~BDeuPrior();
 
-      /// destructor
-      virtual ~BDeuPrior();
-
-      /// @}
+    /// @}
 
 
-      // ##########################################################################
-      /// @name Operators
-      // ##########################################################################
-      /// @{
+    // ##########################################################################
+    /// @name Operators
+    // ##########################################################################
+    /// @{
 
-      /// copy operator
-      BDeuPrior& operator=(const BDeuPrior& from);
+    /// copy operator
+    BDeuPrior& operator=(const BDeuPrior& from);
 
-      /// move operator
-      BDeuPrior& operator=(BDeuPrior&& from) noexcept ;
+    /// move operator
+    BDeuPrior& operator=(BDeuPrior&& from) noexcept;
 
-      /// @}
+    /// @}
 
 
-      // ##########################################################################
-      /// @name Accessors / Modifiers
-      // ##########################################################################
-      /// @{
+    // ##########################################################################
+    /// @name Accessors / Modifiers
+    // ##########################################################################
+    /// @{
 
-      /// sets the effective sample size N' (alias of setEffectiveSampleSize ())
-      void setWeight(double weight) final;
+    /// sets the effective sample size N' (alias of setEffectiveSampleSize ())
+    void setWeight(double weight) final;
 
-      /// sets the effective sample size N'
-      void setEffectiveSampleSize(double weight);
+    /// sets the effective sample size N'
+    void setEffectiveSampleSize(double weight);
 
-      /// returns the type of the apriori
-      PriorType getType()const final;
+    /// returns the type of the apriori
+    PriorType getType() const final;
 
-      /// indicates whether the apriori is potentially informative
-      /** Basically, only the NoApriori is uninformative. However, it may happen
-       * that, under some circumstances, an apriori, which is usually not equal
-       * to the NoApriori, becomes equal to it (e.g., when the weight is equal
-       * to zero). In this case, if the apriori can detect this case, it shall
-       * inform the classes that use it that it is temporarily uninformative.
-       * These classes will then be able to speed-up their code by avoiding to
-       * take into account the apriori in their computations. */
-      bool isInformative() const final;
+    /// indicates whether the apriori is potentially informative
+    /** Basically, only the NoApriori is uninformative. However, it may happen
+     * that, under some circumstances, an apriori, which is usually not equal
+     * to the NoApriori, becomes equal to it (e.g., when the weight is equal
+     * to zero). In this case, if the apriori can detect this case, it shall
+     * inform the classes that use it that it is temporarily uninformative.
+     * These classes will then be able to speed-up their code by avoiding to
+     * take into account the apriori in their computations. */
+    bool isInformative() const final;
 
-      /// adds the apriori to a counting vector corresponding to the idset
-      /** adds the apriori to an already created counting vector defined over
-       * the union of the variables on both the left and right hand side of the
-       * conditioning bar of the idset.
-       * @warning the method assumes that the size of the vector is exactly
-       * the domain size of the joint variables set. */
-      void addAllApriori(const IdCondSet& idset, std::vector< double >& counts) final;
+    /// adds the apriori to a counting vector corresponding to the idset
+    /** adds the apriori to an already created counting vector defined over
+     * the union of the variables on both the left and right hand side of the
+     * conditioning bar of the idset.
+     * @warning the method assumes that the size of the vector is exactly
+     * the domain size of the joint variables set. */
+    void addAllApriori(const IdCondSet& idset, std::vector< double >& counts) final;
 
-      /** @brief adds the apriori to a counting vector defined over the right
-       * hand side of the idset
-       *
-       * @warning the method assumes that the size of the vector is exactly
-       * the domain size of the joint RHS variables of the idset. */
-      void addConditioningApriori(const IdCondSet&       idset,
-                                          std::vector< double >& counts) final;
+    /** @brief adds the apriori to a counting vector defined over the right
+     * hand side of the idset
+     *
+     * @warning the method assumes that the size of the vector is exactly
+     * the domain size of the joint RHS variables of the idset. */
+    void addConditioningApriori(const IdCondSet& idset, std::vector< double >& counts) final;
 
-      /// @}
-    };
+    /// @}
+  };
 
-  } /* namespace gum */
+}   // namespace gum::learning
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE

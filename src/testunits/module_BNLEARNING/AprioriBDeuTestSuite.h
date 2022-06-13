@@ -446,7 +446,7 @@ namespace gum_tests {
       apriori3.setWeight(4.0);
       TS_ASSERT_EQUALS(apriori3.weight(), 4.0)
 
-      TS_ASSERT_EQUALS(apriori3.getType(),gum::learning::PriorType::BDeuPriorType)
+      TS_ASSERT_EQUALS(apriori3.getType(), gum::learning::PriorType::BDeuPriorType)
 
       vect.clear();
       vect.resize(4, 1.0);

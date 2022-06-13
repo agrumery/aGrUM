@@ -81,7 +81,7 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       ScoreBDeu(const DBRowGeneratorParser&                                 parser,
-                const Prior&                                              apriori,
+                const Prior&                                                apriori,
                 const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
                 const Bijection< NodeId, std::size_t >&                     nodeId2columns
                 = Bijection< NodeId, std::size_t >());
@@ -101,7 +101,7 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       ScoreBDeu(const DBRowGeneratorParser&             parser,
-                const Prior&                          apriori,
+                const Prior&                            apriori,
                 const Bijection< NodeId, std::size_t >& nodeId2columns
                 = Bijection< NodeId, std::size_t >());
 

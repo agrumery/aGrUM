@@ -37,32 +37,32 @@
 
 namespace gum::learning {
 
-    /// returns the apriori vector over only the conditioning set of an idset
-    void SmoothingPrior::addConditioningApriori(const IdCondSet&       idset,
-                                                  std::vector< double >& counts) {
-      // if the conditioning set is empty or the weight is equal to zero,
-      // the apriori is also empty
-      if ((idset.size() == idset.nbLHSIds()) || (this->weight_ == 0.0)
-          || (idset.nbLHSIds() == std::size_t(0)))
-        return;
+  /// returns the apriori vector over only the conditioning set of an idset
+  void SmoothingPrior::addConditioningApriori(const IdCondSet&       idset,
+                                              std::vector< double >& counts) {
+    // if the conditioning set is empty or the weight is equal to zero,
+    // the apriori is also empty
+    if ((idset.size() == idset.nbLHSIds()) || (this->weight_ == 0.0)
+        || (idset.nbLHSIds() == std::size_t(0)))
+      return;
 
-      // compute the weight of the conditioning set
-      double weight = this->weight_;
-      if (this->nodeId2columns_.empty()) {
-        for (auto i = std::size_t(0); i < idset.nbLHSIds(); ++i) {
-          weight *= double(this->database_->domainSize(idset[i]));
-        }
-      } else {
-        for (auto i = std::size_t(0); i < idset.nbLHSIds(); ++i) {
-          weight *= double(this->database_->domainSize(this->nodeId2columns_.second(idset[i])));
-        }
+    // compute the weight of the conditioning set
+    double weight = this->weight_;
+    if (this->nodeId2columns_.empty()) {
+      for (auto i = std::size_t(0); i < idset.nbLHSIds(); ++i) {
+        weight *= double(this->database_->domainSize(idset[i]));
       }
-
-      // add the weight to the counting vector
-      for (auto& count: counts)
-        count += weight;
+    } else {
+      for (auto i = std::size_t(0); i < idset.nbLHSIds(); ++i) {
+        weight *= double(this->database_->domainSize(this->nodeId2columns_.second(idset[i])));
+      }
     }
 
-  } /* namespace gum */
+    // add the weight to the counting vector
+    for (auto& count: counts)
+      count += weight;
+  }
+
+}   // namespace gum::learning
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

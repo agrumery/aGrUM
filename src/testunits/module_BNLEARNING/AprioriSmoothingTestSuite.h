@@ -194,7 +194,7 @@ namespace gum_tests {
       apriori4->setWeight(2.0);
       TS_ASSERT_EQUALS(apriori4->weight(), 2.0)
 
-      TS_ASSERT_EQUALS(apriori4->getType(),gum::learning::PriorType::SmoothingPriorType)
+      TS_ASSERT_EQUALS(apriori4->getType(), gum::learning::PriorType::SmoothingPriorType)
 
       vect.clear();
       vect.resize(3, 1.0);
@@ -230,14 +230,14 @@ namespace gum_tests {
       delete apriori4;
 
 
-      gum::learning::DatabaseTable    database2;
-      gum::learning::SmoothingPrior   apriori5(database2);
+      gum::learning::DatabaseTable  database2;
+      gum::learning::SmoothingPrior apriori5(database2);
       apriori5 = apriori;
       TS_ASSERT_EQUALS(apriori5.weight(), 4.0)
       apriori5.setWeight(2.0);
       TS_ASSERT_EQUALS(apriori5.weight(), 2.0)
 
-      TS_ASSERT_EQUALS(apriori5.getType(),gum::learning::PriorType::SmoothingPriorType)
+      TS_ASSERT_EQUALS(apriori5.getType(), gum::learning::PriorType::SmoothingPriorType)
 
       vect.clear();
       vect.resize(3, 1.0);
@@ -275,7 +275,7 @@ namespace gum_tests {
       apriori5.setWeight(1.0);
       TS_ASSERT_EQUALS(apriori5.weight(), 1.0)
 
-      TS_ASSERT_EQUALS(apriori5.getType(),gum::learning::PriorType::SmoothingPriorType)
+      TS_ASSERT_EQUALS(apriori5.getType(), gum::learning::PriorType::SmoothingPriorType)
 
       vect.clear();
       vect.resize(3, 1.0);
@@ -521,14 +521,14 @@ namespace gum_tests {
 
       delete apriori4;
 
-      gum::learning::DatabaseTable    database2;
-      gum::learning::SmoothingPrior   apriori5(database2);
+      gum::learning::DatabaseTable  database2;
+      gum::learning::SmoothingPrior apriori5(database2);
       apriori5 = apriori;
       TS_ASSERT_EQUALS(apriori5.weight(), 4.0)
       apriori5.setWeight(2.0);
       TS_ASSERT_EQUALS(apriori5.weight(), 2.0)
 
-      TS_ASSERT_EQUALS(apriori5.getType(),gum::learning::PriorType::SmoothingPriorType)
+      TS_ASSERT_EQUALS(apriori5.getType(), gum::learning::PriorType::SmoothingPriorType)
 
       vect.clear();
       vect.resize(4, 1.0);

@@ -44,7 +44,6 @@ namespace gum {
      */
     class DirichletPriorFromDatabase: public Prior {
       public:
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -69,9 +68,9 @@ namespace gum {
        * (they have the same names) are exactly identical. If this is not the
        * case, then a DatabaseError exception is raised. */
       DirichletPriorFromDatabase(const DatabaseTable&                    learning_db,
-                                   const DBRowGeneratorParser&             apriori_parser,
-                                   const Bijection< NodeId, std::size_t >& nodeId2columns
-                                   = Bijection< NodeId, std::size_t >());
+                                 const DBRowGeneratorParser&             apriori_parser,
+                                 const Bijection< NodeId, std::size_t >& nodeId2columns
+                                 = Bijection< NodeId, std::size_t >());
 
       /// copy constructor
       DirichletPriorFromDatabase(const DirichletPriorFromDatabase& from);
@@ -108,7 +107,7 @@ namespace gum {
       /// @{
 
       /// returns the type of the apriori
-      PriorType getType()const final;
+      PriorType getType() const final;
 
       /// indicates whether the apriori is potentially informative
       /** Basically, only the NoApriori is uninformative. However, it may happen

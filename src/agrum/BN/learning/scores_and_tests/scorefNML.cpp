@@ -70,7 +70,8 @@ namespace gum {
 
       // apriori types unsupported by the type checker
       std::stringstream msg;
-      msg << "The apriori '" << priorTypeToString(apriori_type) << "' is not yet compatible with the score 'fNML'.";
+      msg << "The apriori '" << priorTypeToString(apriori_type)
+          << "' is not yet compatible with the score 'fNML'.";
       return msg.str();
     }
 

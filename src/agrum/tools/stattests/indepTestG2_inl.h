@@ -34,7 +34,7 @@ namespace gum {
     /// default constructor
     INLINE
     IndepTestG2::IndepTestG2(const DBRowGeneratorParser&                                 parser,
-                             const Prior&                                              apriori,
+                             const Prior&                                                apriori,
                              const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
                              const Bijection< NodeId, std::size_t >& nodeId2columns) :
         IndependenceTest(parser, apriori, ranges, nodeId2columns),
@@ -45,7 +45,7 @@ namespace gum {
 
     /// default constructor
     INLINE IndepTestG2::IndepTestG2(const DBRowGeneratorParser&             parser,
-                                    const Prior&                          apriori,
+                                    const Prior&                            apriori,
                                     const Bijection< NodeId, std::size_t >& nodeId2columns) :
         IndependenceTest(parser, apriori, nodeId2columns),
         _domain_sizes_(parser.database().domainSizes()), _chi2_(_domain_sizes_) {

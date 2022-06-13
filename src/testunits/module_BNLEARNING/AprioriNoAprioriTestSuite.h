@@ -229,8 +229,8 @@ namespace gum_tests {
       delete apriori4;
 
 
-      gum::learning::DatabaseTable    database2;
-      gum::learning::NoPrior          apriori5(database2);
+      gum::learning::DatabaseTable database2;
+      gum::learning::NoPrior       apriori5(database2);
       apriori5 = apriori;
       TS_ASSERT_EQUALS(apriori5.weight(), 0.0)
       apriori5.setWeight(4.0);
@@ -402,7 +402,7 @@ namespace gum_tests {
       apriori2.setWeight(4.0);
       TS_ASSERT_EQUALS(apriori2.weight(), 0.0)
 
-      TS_ASSERT_EQUALS(apriori2.getType(),gum::learning::PriorType::NoPriorType)
+      TS_ASSERT_EQUALS(apriori2.getType(), gum::learning::PriorType::NoPriorType)
 
       vect.clear();
       vect.resize(4, 1.0);
@@ -514,8 +514,8 @@ namespace gum_tests {
 
       delete apriori4;
 
-      gum::learning::DatabaseTable    database2;
-      gum::learning::NoPrior          apriori5(database2);
+      gum::learning::DatabaseTable database2;
+      gum::learning::NoPrior       apriori5(database2);
       apriori5 = apriori;
       TS_ASSERT_EQUALS(apriori5.weight(), 0.0)
       apriori5.setWeight(4.0);

@@ -60,8 +60,7 @@ namespace gum {
 
 
     /// indicates whether the apriori is compatible (meaningful) with the score
-    std::string ScoreLog2Likelihood::isPriorCompatible(PriorType apriori_type,
-                                                         double             weight) {
+    std::string ScoreLog2Likelihood::isPriorCompatible(PriorType apriori_type, double weight) {
       // check that the apriori is compatible with the score
       if ((apriori_type == PriorType::DirichletPriorType)
           || (apriori_type == PriorType::SmoothingPriorType)

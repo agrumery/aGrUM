@@ -54,8 +54,8 @@ namespace gum_tests {
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
       {
-        gum::learning::NoPrior apriori(database);
-        gum::learning::PseudoCount      counts(parser, apriori);
+        gum::learning::NoPrior     apriori(database);
+        gum::learning::PseudoCount counts(parser, apriori);
 
         TS_ASSERT_EQUALS(counts.get({1}), std::vector< double >({4, 3}))
         TS_ASSERT_EQUALS(counts.get({2}), std::vector< double >({3, 2, 2}))
@@ -63,7 +63,7 @@ namespace gum_tests {
       }
       {
         gum::learning::SmoothingPrior apriori(database);
-        gum::learning::PseudoCount      counts(parser, apriori);
+        gum::learning::PseudoCount    counts(parser, apriori);
 
         TS_ASSERT_EQUALS(counts.get({1}), std::vector< double >({5, 4}))
         TS_ASSERT_EQUALS(counts.get({2}), std::vector< double >({4, 3, 3}))

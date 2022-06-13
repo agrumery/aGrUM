@@ -33,7 +33,7 @@ namespace gum {
     /// default constructor
     INLINE
     SmoothingPrior::SmoothingPrior(const DatabaseTable&                    database,
-                                       const Bijection< NodeId, std::size_t >& nodeId2columns) :
+                                   const Bijection< NodeId, std::size_t >& nodeId2columns) :
         Prior(database, nodeId2columns) {
       GUM_CONSTRUCTOR(SmoothingPrior);
     }
@@ -46,7 +46,7 @@ namespace gum {
 
 
     /// move constructor
-    INLINE SmoothingPrior::SmoothingPrior(SmoothingPrior&& from) noexcept : Prior(std::move(from))  {
+    INLINE SmoothingPrior::SmoothingPrior(SmoothingPrior&& from) noexcept : Prior(std::move(from)) {
       GUM_CONS_MOV(SmoothingPrior);
     }
 
@@ -73,9 +73,7 @@ namespace gum {
     }
 
     /// returns the type of the apriori
-    INLINE PriorType SmoothingPrior::getType() const {
-      return PriorType::SmoothingPriorType;
-    }
+    INLINE PriorType SmoothingPrior::getType() const { return PriorType::SmoothingPriorType; }
 
 
     /// indicates whether the apriori is potentially informative
@@ -84,7 +82,7 @@ namespace gum {
 
     /// returns the apriori vector all the variables in the idset
     INLINE void SmoothingPrior::addAllApriori(const IdCondSet&       idset,
-                                                std::vector< double >& counts) {
+                                              std::vector< double >& counts) {
       // if the idset is empty or the weight is zero, the apriori is also empty
       if (idset.empty() || (this->weight_ == 0.0)) return;
 

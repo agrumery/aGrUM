@@ -42,7 +42,7 @@ namespace gum {
     /// copy operator
     PseudoCount& PseudoCount::operator=(const PseudoCount& from) {
       if (this != &from) {
-        Prior*      new_apriori = from.apriori_->clone();
+        Prior*        new_apriori = from.apriori_->clone();
         RecordCounter new_counter = from.counter_;
 
         if (apriori_ != nullptr) delete apriori_;

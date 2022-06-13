@@ -78,7 +78,7 @@ namespace gum {
        * the ids belonging to this bijection can be computed: applying method
        * pseudo-count() over other ids will raise exception NotFound. */
       PseudoCount(const DBRowGeneratorParser&                                 parser,
-                  const Prior&                                              external_apriori,
+                  const Prior&                                                external_apriori,
                   const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
                   const Bijection< NodeId, std::size_t >&                     nodeId2columns
                   = Bijection< NodeId, std::size_t >());
@@ -100,7 +100,7 @@ namespace gum {
        * the ids belonging to this bijection can be computed: applying method
        * pseudo-count() over other ids will raise exception NotFound. */
       PseudoCount(const DBRowGeneratorParser&             parser,
-                  const Prior&                          external_apriori,
+                  const Prior&                            external_apriori,
                   const Bijection< NodeId, std::size_t >& nodeId2columns
                   = Bijection< NodeId, std::size_t >());
 

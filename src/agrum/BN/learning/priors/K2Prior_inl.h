@@ -35,16 +35,14 @@ namespace gum {
 
     /// default constructors
     INLINE K2Prior::K2Prior(const DatabaseTable&                    database,
-                                const Bijection< NodeId, std::size_t >& nodeId2columns) :
+                            const Bijection< NodeId, std::size_t >& nodeId2columns) :
         SmoothingPrior(database, nodeId2columns) {
       GUM_CONSTRUCTOR(K2Prior);
     }
 
 
     /// copy constructor
-    INLINE K2Prior::K2Prior(const K2Prior& from) : SmoothingPrior(from) {
-      GUM_CONS_CPY(K2Prior);
-    }
+    INLINE K2Prior::K2Prior(const K2Prior& from) : SmoothingPrior(from) { GUM_CONS_CPY(K2Prior); }
 
 
     /// move constructor

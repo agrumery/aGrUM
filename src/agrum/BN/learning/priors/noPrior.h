@@ -43,7 +43,6 @@ namespace gum {
      */
     class NoPrior: public Prior {
       public:
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -61,8 +60,8 @@ namespace gum {
        * the column in the DatabaseTable.
        */
       NoPrior(const DatabaseTable&                    database,
-                       const Bijection< NodeId, std::size_t >& nodeId2columns
-                       = Bijection< NodeId, std::size_t >());
+              const Bijection< NodeId, std::size_t >& nodeId2columns
+              = Bijection< NodeId, std::size_t >());
 
       /// copy constructor
       NoPrior(const NoPrior& from);

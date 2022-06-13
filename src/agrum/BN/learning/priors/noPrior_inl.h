@@ -35,7 +35,7 @@ namespace gum {
     /// default constructor
     INLINE
     NoPrior::NoPrior(const DatabaseTable&                    database,
-                                       const Bijection< NodeId, std::size_t >& nodeId2columns) :
+                     const Bijection< NodeId, std::size_t >& nodeId2columns) :
         Prior(database, nodeId2columns) {
       Prior::setWeight(0.0);
       GUM_CONSTRUCTOR(NoPrior);
@@ -43,15 +43,11 @@ namespace gum {
 
 
     /// copy constructor
-    INLINE NoPrior::NoPrior(const NoPrior& from) : Prior(from) {
-      GUM_CONS_CPY(NoPrior);
-    }
+    INLINE NoPrior::NoPrior(const NoPrior& from) : Prior(from) { GUM_CONS_CPY(NoPrior); }
 
 
     /// move constructor
-    INLINE NoPrior::NoPrior(NoPrior&& from) : Prior(std::move(from)) {
-      GUM_CONS_MOV(NoPrior);
-    }
+    INLINE NoPrior::NoPrior(NoPrior&& from) : Prior(std::move(from)) { GUM_CONS_MOV(NoPrior); }
 
 
     /// virtual copy constructor
@@ -80,9 +76,7 @@ namespace gum {
     INLINE void NoPrior::setWeight(const double) {}
 
     /// returns the type of the apriori
-    INLINE PriorType NoPrior::getType() const {
-      return PriorType::NoPriorType;
-    }
+    INLINE PriorType NoPrior::getType() const { return PriorType::NoPriorType; }
 
 
     /// indicates whether the apriori is potentially informative
@@ -90,13 +84,12 @@ namespace gum {
 
 
     /// returns the apriori vector all the variables in the idset
-    INLINE void NoPrior::addAllApriori(const IdCondSet&       idset,
-                                                std::vector< double >& counts) {}
+    INLINE void NoPrior::addAllApriori(const IdCondSet& idset, std::vector< double >& counts) {}
 
 
     /// returns the apriori vector over only the conditioning set of an idset
     INLINE void NoPrior::addConditioningApriori(const IdCondSet&       idset,
-                                                         std::vector< double >& counts) {}
+                                                std::vector< double >& counts) {}
 
 
   } /* namespace learning */

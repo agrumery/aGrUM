@@ -60,14 +60,14 @@ namespace gum {
        * the column in the DatabaseTable.
        */
       explicit SmoothingPrior(const DatabaseTable&                    database,
-                       const Bijection< NodeId, std::size_t >& nodeId2columns
-                       = Bijection< NodeId, std::size_t >());
+                              const Bijection< NodeId, std::size_t >& nodeId2columns
+                              = Bijection< NodeId, std::size_t >());
 
       /// copy constructor
       SmoothingPrior(const SmoothingPrior& from);
 
       /// move constructor
-      SmoothingPrior(SmoothingPrior&& from) noexcept ;
+      SmoothingPrior(SmoothingPrior&& from) noexcept;
 
       /// virtual copy constructor
       SmoothingPrior* clone() const override;
@@ -98,7 +98,7 @@ namespace gum {
       /// @{
 
       /// returns the type of the apriori
-      PriorType getType()const final;
+      PriorType getType() const final;
 
       /// indicates whether the apriori is potentially informative
       /** Basically, only the NoApriori is uninformative. However, it may happen

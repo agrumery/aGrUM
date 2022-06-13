@@ -462,13 +462,12 @@ namespace gum {
       // create the new apriori
       switch (aprioriType_) {
         case BNLearnerPriorType::NO_APRIORI:
-          apriori_ = new NoPrior(scoreDatabase_.databaseTable(),
-                                          scoreDatabase_.nodeId2Columns());
+          apriori_ = new NoPrior(scoreDatabase_.databaseTable(), scoreDatabase_.nodeId2Columns());
           break;
 
         case BNLearnerPriorType::SMOOTHING:
-          apriori_ = new SmoothingPrior(scoreDatabase_.databaseTable(),
-                                          scoreDatabase_.nodeId2Columns());
+          apriori_
+             = new SmoothingPrior(scoreDatabase_.databaseTable(), scoreDatabase_.nodeId2Columns());
           break;
 
         case BNLearnerPriorType::DIRICHLET_FROM_DATABASE:
@@ -481,13 +480,12 @@ namespace gum {
              = new Database(aprioriDbname_, scoreDatabase_, scoreDatabase_.missingSymbols());
 
           apriori_ = new DirichletPriorFromDatabase(scoreDatabase_.databaseTable(),
-                                                      aprioriDatabase_->parser(),
-                                                      aprioriDatabase_->nodeId2Columns());
+                                                    aprioriDatabase_->parser(),
+                                                    aprioriDatabase_->nodeId2Columns());
           break;
 
         case BNLearnerPriorType::BDEU:
-          apriori_
-             = new BDeuPrior(scoreDatabase_.databaseTable(), scoreDatabase_.nodeId2Columns());
+          apriori_ = new BDeuPrior(scoreDatabase_.databaseTable(), scoreDatabase_.nodeId2Columns());
           break;
 
         default:

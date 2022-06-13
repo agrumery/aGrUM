@@ -37,7 +37,7 @@ namespace gum {
     /// default constructor
     INLINE ScoreLog2Likelihood::ScoreLog2Likelihood(
        const DBRowGeneratorParser&                                 parser,
-       const Prior&                                              apriori,
+       const Prior&                                                apriori,
        const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
        const Bijection< NodeId, std::size_t >&                     nodeId2columns) :
         Score(parser, apriori, ranges, nodeId2columns),
@@ -49,7 +49,7 @@ namespace gum {
     /// default constructor
     INLINE ScoreLog2Likelihood::ScoreLog2Likelihood(
        const DBRowGeneratorParser&             parser,
-       const Prior&                          apriori,
+       const Prior&                            apriori,
        const Bijection< NodeId, std::size_t >& nodeId2columns) :
         Score(parser, apriori, nodeId2columns),
         _internal_apriori_(parser.database(), nodeId2columns) {
@@ -94,9 +94,7 @@ namespace gum {
 
 
     /// returns the internal apriori of the score
-    INLINE const Prior& ScoreLog2Likelihood::internalApriori() const {
-      return _internal_apriori_;
-    }
+    INLINE const Prior& ScoreLog2Likelihood::internalApriori() const { return _internal_apriori_; }
 
 
     /// returns the score corresponding to a given nodeset

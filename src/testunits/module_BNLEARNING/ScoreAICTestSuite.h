@@ -100,8 +100,8 @@ namespace gum_tests {
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
 
-      gum::learning::SmoothingPrior   apriori(database);
-      gum::learning::ScoreAIC         score(parser, apriori);
+      gum::learning::SmoothingPrior apriori(database);
+      gum::learning::ScoreAIC       score(parser, apriori);
 
       TS_GUM_ASSERT_THROWS_NOTHING(
          gum::learning::ScoreAIC::isPriorCompatible(gum::learning::PriorType::SmoothingPriorType))
@@ -247,8 +247,8 @@ namespace gum_tests {
       nodeId2columns.insert(node4, std::size_t(5));
       nodeId2columns.insert(node5, std::size_t(1));
 
-      gum::learning::SmoothingPrior   apriori(database, nodeId2columns);
-      gum::learning::ScoreAIC         score(parser, apriori, nodeId2columns);
+      gum::learning::SmoothingPrior apriori(database, nodeId2columns);
+      gum::learning::ScoreAIC       score(parser, apriori, nodeId2columns);
 
       TS_GUM_ASSERT_THROWS_NOTHING(
          gum::learning::ScoreAIC::isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
@@ -528,8 +528,8 @@ namespace gum_tests {
       nodeId2columns.insert(node4, std::size_t(5));
       nodeId2columns.insert(node5, std::size_t(1));
 
-      gum::learning::SmoothingPrior   apriori(database, nodeId2columns);
-      gum::learning::ScoreAIC         score(parser, apriori, ranges, nodeId2columns);
+      gum::learning::SmoothingPrior apriori(database, nodeId2columns);
+      gum::learning::ScoreAIC       score(parser, apriori, ranges, nodeId2columns);
 
       TS_GUM_ASSERT_THROWS_NOTHING(
          gum::learning::ScoreAIC::isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
@@ -666,8 +666,8 @@ namespace gum_tests {
         gum::learning::ScoreAIC score(parser, apriori, ranges);
         score.setNumberOfThreads(i);
 
-        TS_GUM_ASSERT_THROWS_NOTHING(
-           gum::learning::ScoreAIC::isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+        TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreAIC::isPriorCompatible(
+           gum::learning::PriorType::SmoothingPriorType));
         TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreAIC::isPriorCompatible(apriori))
         TS_GUM_ASSERT_THROWS_NOTHING(
            score.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
@@ -796,8 +796,8 @@ namespace gum_tests {
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
 
-      gum::learning::SmoothingPrior   apriori(database);
-      gum::learning::ScoreAIC         score(parser, apriori);
+      gum::learning::SmoothingPrior apriori(database);
+      gum::learning::ScoreAIC       score(parser, apriori);
 
       TS_GUM_ASSERT_THROWS_NOTHING(
          gum::learning::ScoreAIC::isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));

@@ -750,7 +750,7 @@ namespace gum_tests {
       apriori4->setWeight(1.0 * db_size);
       TS_ASSERT_EQUALS(apriori4->weight(), 1.0 * db_size)
 
-      TS_ASSERT_EQUALS(apriori4->getType(),gum::learning::PriorType::DirichletPriorType)
+      TS_ASSERT_EQUALS(apriori4->getType(), gum::learning::PriorType::DirichletPriorType)
 
       vect.clear();
       vect.resize(3, 1.0);

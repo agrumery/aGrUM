@@ -42,7 +42,7 @@ namespace gum {
     /// copy operator
     IndependenceTest& IndependenceTest::operator=(const IndependenceTest& from) {
       if (this != &from) {
-        Prior*      new_apriori = from.apriori_->clone();
+        Prior*        new_apriori = from.apriori_->clone();
         RecordCounter new_counter = from.counter_;
         ScoringCache  new_cache   = from.cache_;
 

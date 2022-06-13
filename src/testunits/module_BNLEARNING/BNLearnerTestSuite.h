@@ -1195,10 +1195,10 @@ namespace gum_tests {
 
 
       // create the score and the apriori
-      gum::learning::DBRowGeneratorSet            dirichlet_genset;
-      gum::learning::DBRowGeneratorParser         dirichlet_parser(dirichlet_database.handler(),
+      gum::learning::DBRowGeneratorSet          dirichlet_genset;
+      gum::learning::DBRowGeneratorParser       dirichlet_parser(dirichlet_database.handler(),
                                                            dirichlet_genset);
-      gum::learning::DirichletPriorFromDatabase   apriori(dirichlet_database, dirichlet_parser);
+      gum::learning::DirichletPriorFromDatabase apriori(dirichlet_database, dirichlet_parser);
 
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);

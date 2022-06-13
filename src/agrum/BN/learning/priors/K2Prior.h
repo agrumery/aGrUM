@@ -49,7 +49,6 @@ namespace gum {
      */
     class K2Prior: public SmoothingPrior {
       public:
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -67,8 +66,8 @@ namespace gum {
        * the column in the DatabaseTable.
        */
       explicit K2Prior(const DatabaseTable&                    database,
-                const Bijection< NodeId, std::size_t >& nodeId2columns
-                = Bijection< NodeId, std::size_t >());
+                       const Bijection< NodeId, std::size_t >& nodeId2columns
+                       = Bijection< NodeId, std::size_t >());
 
       /// copy constructor
       K2Prior(const K2Prior& from);

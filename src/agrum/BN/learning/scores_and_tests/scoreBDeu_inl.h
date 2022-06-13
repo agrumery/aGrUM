@@ -36,7 +36,7 @@ namespace gum {
 
     /// default constructor
     INLINE ScoreBDeu::ScoreBDeu(const DBRowGeneratorParser&                                 parser,
-                                const Prior&                                              apriori,
+                                const Prior&                                                apriori,
                                 const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
                                 const Bijection< NodeId, std::size_t >& nodeId2columns) :
         Score(parser, apriori, ranges, nodeId2columns),
@@ -47,7 +47,7 @@ namespace gum {
 
     /// default constructor
     INLINE ScoreBDeu::ScoreBDeu(const DBRowGeneratorParser&             parser,
-                                const Prior&                          apriori,
+                                const Prior&                            apriori,
                                 const Bijection< NodeId, std::size_t >& nodeId2columns) :
         Score(parser, apriori, nodeId2columns),
         _internal_apriori_(parser.database(), nodeId2columns) {

@@ -37,10 +37,10 @@ def processNotebook(notebook_filename):
   err = 0
   res = "ok"
 
+  starttime = time.time()
   try:
     while True:
       try:
-        starttime = time.time()
         ep = ExecutePreprocessor(timeout=5000, kernel_name='python3')
         ep.log_output = False
         with open(notebook_filename) as f:
@@ -63,7 +63,7 @@ def processNotebook(notebook_filename):
         if str(e) == "Kernel died before replying to kernel_info":
           time.sleep(random.randint(5, 10) / 10.0)
         else:
-          raise CellExecutionError(e.__traceback__)
+          raise CellExecutionError(traceback=str(e.__traceback__), ename=str(e), evalue="")
   except CellExecutionError:
     err = 1
     errorfilename = "../../../" + \
@@ -92,9 +92,8 @@ def done(fn):
     print(f"\033[{3 + len(futures)}A")
   print("=" * 58)
   for f in futures:
-    if (f.running()):
+    if f.running():
       print(f"[ ......... ] {os.path.basename(f.filename)[0:40]:40} ...")
-      allok = False
     else:
       e, res, _ = f.result()
       print(res)
@@ -107,19 +106,8 @@ done.firstTime = True
 def runNotebooks():
   global futures
 
-  errs = 0
-
   l = []
   # slow notebooks
-  excludes = {"21-Learning_structuralLearning.ipynb",
-              "22-Learning_parametersLearningWithPandas.ipynb",
-              "24-Learning_LearningAndEssentialGraphs.ipynb",
-              "27-Learning_Chi2AndScoresFromBNLearner.ipynb",
-              "33-Inference_ApproximateInference.ipynb",
-              "29-Tools_klForBns.ipynb",
-              "35-Inference_samplingInference.ipynb",
-              "15-Models_o3prm.ipynb"}
-
   excludes = {}
   for filename in glob.glob("../doc/sphinx/notebooks/*.ipynb"):
     if not os.path.basename(filename) in excludes:
@@ -127,10 +115,6 @@ def runNotebooks():
 
   print(l)
   startTime = time.time()
-
-  # sequential
-  # for notebook_filename in sorted(list):
-  #  errs+=processeNotebook(notebook_filename)
 
   # concurrent
   futures = []
@@ -158,4 +142,4 @@ def runNotebooks():
   print("Success rate: {}%".format(int(100 * (1 - errs / len(list)))))
 
   print("Python Test Suite Error : " + str(errs))
-  return err
+  return errs

@@ -149,8 +149,8 @@ namespace gum_tests {
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
 
-      gum::learning::SmoothingPrior   apriori(database);
-      gum::learning::ScoreK2          score(parser, apriori);
+      gum::learning::SmoothingPrior apriori(database);
+      gum::learning::ScoreK2        score(parser, apriori);
 
       gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDiGraph >
          struct_constraint;
