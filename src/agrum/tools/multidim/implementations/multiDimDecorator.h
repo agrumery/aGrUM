@@ -28,8 +28,9 @@
 #ifndef GUM_MULTI_DIM_DECORATOR_H
 #define GUM_MULTI_DIM_DECORATOR_H
 
-#include <agrum/agrum.h>
+#include <mutex>
 
+#include <agrum/agrum.h>
 #include <agrum/tools/multidim/implementations/multiDimArray.h>
 
 namespace gum {
@@ -236,7 +237,7 @@ namespace gum {
     virtual void replace_(const DiscreteVariable* x, const DiscreteVariable* y);
 
     /**
-     * protecte method to swap the implementation behind the Potential
+     * protected method to swap the implementation behind the Potential
      * @warning unsafe method for slave Instantiations !
      */
     void swapContent_(MultiDimImplementation< GUM_SCALAR >* aContent) const;
@@ -247,7 +248,7 @@ namespace gum {
     mutable MultiDimImplementation< GUM_SCALAR >* content_;
 
     /**
-     * Return a data, given a Insantiation - final method.
+     * Return a data, given a Instantiation - final method.
      * @param i The instantiation.
      * @throw NullElement
      * @throw NotFound
