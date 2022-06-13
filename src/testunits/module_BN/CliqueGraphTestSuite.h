@@ -64,10 +64,10 @@ namespace gum_tests {
       gum::NodeSet A, B, C, D, E;
       fillSets(A, B, C, D, E);
 
-      graph.addNode(1, A);
-      graph.addNode(2, B);
-      graph.addNode(3, C);
-      graph.addNode(4, D);
+      graph.addNodeWithId(1, A);
+      graph.addNodeWithId(2, B);
+      graph.addNodeWithId(3, C);
+      graph.addNodeWithId(4, D);
 
       graph.addEdge(1, 2);
       graph.addEdge(2, 3);
@@ -78,10 +78,10 @@ namespace gum_tests {
       gum::NodeSet A, B, C, D, E;
       fillSets(A, B, C, D, E);
 
-      graph.addNode(1, A);
-      graph.addNode(2, B);
-      graph.addNode(3, C);
-      graph.addNode(4, D);
+      graph.addNodeWithId(1, A);
+      graph.addNodeWithId(2, B);
+      graph.addNodeWithId(3, C);
+      graph.addNodeWithId(4, D);
 
       graph.addEdge(1, 2);
       graph.addEdge(2, 3);
@@ -94,10 +94,10 @@ namespace gum_tests {
       gum::NodeSet A, B, C, D, E;
       fillSets(A, B, C, D, E);
 
-      graph.addNode(1, A);
-      graph.addNode(2, B);
-      graph.addNode(3, C);
-      graph.addNode(4, E);
+      graph.addNodeWithId(1, A);
+      graph.addNodeWithId(2, B);
+      graph.addNodeWithId(3, C);
+      graph.addNodeWithId(4, E);
 
       graph.addEdge(1, 2);
       graph.addEdge(2, 3);
@@ -691,31 +691,31 @@ namespace gum_tests {
       n1.insert((gum::NodeId)1);
       n1.insert((gum::NodeId)2);
       n1.insert((gum::NodeId)3);
-      g.addNode((gum::NodeId)1, n1);
+      g.addNodeWithId((gum::NodeId)1, n1);
 
       gum::NodeSet n2;   // BCD
       n2.insert((gum::NodeId)2);
       n2.insert((gum::NodeId)3);
       n2.insert((gum::NodeId)4);
-      g.addNode((gum::NodeId)2, n2);
+      g.addNodeWithId((gum::NodeId)2, n2);
 
       gum::NodeSet n3;   // CDE
       n3.insert((gum::NodeId)3);
       n3.insert((gum::NodeId)4);
       n3.insert((gum::NodeId)5);
-      g.addNode((gum::NodeId)3, n3);
+      g.addNodeWithId((gum::NodeId)3, n3);
 
       gum::NodeSet n4;   // ADE
       n4.insert((gum::NodeId)4);
       n4.insert((gum::NodeId)5);
       n4.insert((gum::NodeId)1);
-      g.addNode((gum::NodeId)4, n4);
+      g.addNodeWithId((gum::NodeId)4, n4);
 
       gum::NodeSet n5;   // ABE
       n5.insert((gum::NodeId)5);
       n5.insert((gum::NodeId)1);
       n5.insert((gum::NodeId)2);
-      g.addNode((gum::NodeId)5, n5);
+      g.addNodeWithId((gum::NodeId)5, n5);
 
       g.addEdge(1, 2);
       g.addEdge(2, 3);

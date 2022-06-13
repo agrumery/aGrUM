@@ -4939,7 +4939,7 @@ class CliqueGraph(UndiGraph):
         """
         return _pyAgrum.CliqueGraph_clearEdges(self)
 
-    def addNode(self, *args) -> None:
+    def addNode(self, *args) -> int:
         r"""
 
         Returns

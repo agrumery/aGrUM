@@ -79,7 +79,7 @@ namespace gum {
 
   /// adds a new clique to the graph
 
-  INLINE void CliqueGraph::addNode(const NodeId id, const NodeSet& clique) {
+  INLINE void CliqueGraph::addNodeWithId(const NodeId id, const NodeSet& clique) {
     // create the new node in the graph
     UndiGraph::addNodeWithId(id);
 
@@ -87,7 +87,7 @@ namespace gum {
     _cliques_.insert(id, clique);
   }
 
-  INLINE void CliqueGraph::addNode(const NodeId id) { addNode(id, NodeSet()); }
+  INLINE void CliqueGraph::addNodeWithId(const NodeId id) { addNodeWithId(id, NodeSet()); }
 
   /// removes a given clique from the clique graph
 

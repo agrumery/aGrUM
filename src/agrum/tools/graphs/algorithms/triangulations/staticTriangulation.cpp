@@ -329,19 +329,19 @@ namespace gum {
     // create the nodes of the elimination tree
     _elim_tree_.clear();
 
-    Size size = Size(_elim_order_.size());
-    for (NodeId i = NodeId(0); i < size; ++i)
-      _elim_tree_.addNode(i, _elim_cliques_[_elim_order_[i]]);
+    auto size = Size(_elim_order_.size());
+    for (auto i = NodeId(0); i < size; ++i)
+      _elim_tree_.addNodeWithId(i, _elim_cliques_[_elim_order_[i]]);
 
     // create the edges of the elimination tree: join a node to the one in
     // its clique that is eliminated first
-    for (NodeId i = NodeId(0); i < size; ++i) {
+    for (auto i = NodeId(0); i < size; ++i) {
       NodeId         clique_i_creator = _elim_order_[i];
       const NodeSet& list_of_nodes    = _elim_cliques_[clique_i_creator];
       Idx            child            = _original_graph_->bound() + 1;
 
       for (const auto node: list_of_nodes) {
-        Idx it_elim_step = _reverse_elim_order_[node];
+        auto it_elim_step = _reverse_elim_order_[node];
 
         if ((node != clique_i_creator) && (child > it_elim_step)) child = it_elim_step;
       }
@@ -427,7 +427,7 @@ namespace gum {
     // now we can create the max prime junction tree. First, create the cliques
     for (const auto& elt: T_mpd_cliques)
       if (elt.first == elt.second)
-        _max_prime_junction_tree_.addNode(elt.second, _junction_tree_->clique(elt.second));
+        _max_prime_junction_tree_.addNodeWithId(elt.second, _junction_tree_->clique(elt.second));
 
     // add to the cliques previously created the nodes of the cliques that were
     // merged into them

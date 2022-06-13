@@ -48,7 +48,7 @@ namespace gum_tests {
       cliques[10] << 14 << 16;
 
       for (unsigned int i = 0; i <= 10; ++i) {
-        graph.addNode(i, cliques[i]);
+        graph.addNodeWithId(i, cliques[i]);
       }
 
       graph.addEdge(0, 5);

@@ -114,6 +114,7 @@ namespace gum {
     /** @return the id chosen for the new clique */
     NodeId addNode(const NodeSet& clique);
 
+
     /// adds a new clique to the graph
     /** @return the id chosen for the new clique */
     virtual NodeId addNode();
@@ -121,12 +122,12 @@ namespace gum {
     /// try to add a new clique to the graph
     /** @throws DuplicateElement exception is thrown if the id of the clique
      * already exists within the clique graph */
-    virtual void addNode(const NodeId id, const NodeSet& clique);
+    virtual void addNodeWithId(const NodeId id, const NodeSet& clique);
 
     /// try to add a new clique to the graph
     /** @throws DuplicateElement exception is thrown if the id of the clique
      * already exists within the clique graph */
-    virtual void addNode(const NodeId id);
+    virtual void addNodeWithId(const NodeId id);
 
     /// removes a given clique from the clique graph
     /** If the CliqueGraph does not contain the node, then nothing is done. In

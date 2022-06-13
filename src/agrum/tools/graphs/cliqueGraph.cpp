@@ -24,8 +24,11 @@
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
-#include <agrum/tools/graphs/cliqueGraph.h>
 #include <sstream>
+#include <algorithm>
+
+#include <agrum/tools/graphs/cliqueGraph.h>
+
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/tools/graphs/cliqueGraph_inl.h>
@@ -48,30 +51,29 @@ namespace gum {
                            Size edges_size,
                            bool edges_resize_policy) :
       NodeGraphPart(nodes_size, nodes_resize_policy),
-      UndiGraph(nodes_size, nodes_resize_policy, edges_size, edges_resize_policy) {
-    // for debugging purposes
-    GUM_CONSTRUCTOR(CliqueGraph);
-  }
+      UndiGraph(nodes_size, nodes_resize_policy, edges_size, edges_resize_policy){
+         // for debugging purposes
+         GUM_CONSTRUCTOR(CliqueGraph)}
 
-  /// copy constructor
+      /// copy constructor
 
-  CliqueGraph::CliqueGraph(const CliqueGraph& from) :
+      CliqueGraph::CliqueGraph(const CliqueGraph& from) :
       NodeGraphPart(from),   // needed because NodeGraphPart is a virtual inherited
       UndiGraph(from),       // class (see C++ FAQ Lite #25.12 for details)
-      _cliques_(from._cliques_), _separators_(from._separators_) {   // for debugging purposes
-    GUM_CONS_CPY(CliqueGraph);
-  }
+      _cliques_(from._cliques_),
+      _separators_(from._separators_){// for debugging purposes
+                                      GUM_CONS_CPY(CliqueGraph)}
 
-  /// destructor
+      /// destructor
 
-  CliqueGraph::~CliqueGraph() {   // for debugging purposes
-    GUM_DESTRUCTOR(CliqueGraph);
-  }
+      CliqueGraph::~CliqueGraph(){// for debugging purposes
+                                  GUM_DESTRUCTOR(CliqueGraph)}
 
-  /// returns a path from a clique containing node1 to a clique containing
-  /// node2
+      /// returns a path from a clique containing node1 to a clique containing
+      /// node2
 
-  std::vector< NodeId > CliqueGraph::containerPath(const NodeId node1, const NodeId node2) const {
+      std::vector< NodeId > CliqueGraph::containerPath(const NodeId node1,
+                                                       const NodeId node2) const {
     // get a path from a  _clique_ containing node1 to a  _clique_ containing
     // node2
     std::vector< NodeId > path = undirectedPath(container(node1), container(node2));
@@ -229,8 +231,8 @@ namespace gum {
 
     // check that no clique requires an additional chain to guarantee the
     // running intersection property
-    for (const auto& elt: infos_DFS.cliques_DFS_chain)
-      if (!elt.second.empty()) return false;
+    for (const auto& [node, nodes]: infos_DFS.cliques_DFS_chain)
+      if (!nodes.empty()) return false;
 
     return true;
   }
@@ -242,8 +244,8 @@ namespace gum {
     if (UndiGraph::operator!=(from)) return false;
 
     // check if the  _cliques_ are identical
-    for (const auto& elt: _cliques_)
-      if (elt.second != from._cliques_[elt.first]) return false;
+    for (const auto& [node, nodes]: _cliques_)
+      if (nodes != from._cliques_[node]) return false;
 
     return true;
   }
@@ -269,11 +271,13 @@ namespace gum {
     return stream.str();
   }
 
-  const std::string expandCliqueContent(const NodeSet& clique, std::string delim = "-") {
+  std::string expandCliqueContent(const NodeSet& clique, const std::string& delim = "-") {
     std::stringstream stream;
     bool              first = true;
 
-    for (auto node: clique) {
+    std::vector< NodeId > sorted(clique.begin(), clique.end());
+    std::sort(sorted.begin(), sorted.end());
+    for (auto node: sorted) {
       if (!first) { stream << delim; }
 
       stream << node;
@@ -283,21 +287,21 @@ namespace gum {
     return stream.str();
   }
 
-  const std::string expandCliqueTooltip(const NodeSet& clique) {
+  std::string expandCliqueTooltip(const NodeSet& clique) {
     std::stringstream stream;
     stream << "size : " << clique.size() << "\\n" << expandCliqueContent(clique, "\\n");
     return stream.str();
   }
 
-  const std::string expandClique(const NodeId n, const NodeSet& clique) {
+  std::string expandClique(const NodeId n, const NodeSet& clique) {
     std::stringstream stream;
     stream << '(' << n << ") " << expandCliqueContent(clique);
     return stream.str();
   }
-  const std::string expandSeparator(const NodeId   n1,
-                                    const NodeSet& clique1,
-                                    const NodeId   n2,
-                                    const NodeSet& clique2) {
+  std::string expandSeparator(const NodeId   n1,
+                              const NodeSet& clique1,
+                              const NodeId   n2,
+                              const NodeSet& clique2) {
     std::stringstream stream;
     stream << expandClique(n1, clique1) << "^" << expandClique(n2, clique2);
     return stream.str();
@@ -363,7 +367,7 @@ namespace gum {
     for (auto node: nodes()) {
       const auto& clik = clique(node);
       stream << "  " << node << " [tooltip=\"" << expandCliqueTooltip(clik)
-             << "\", width=" << scaleClique * clik.size() << "];" << std::endl;
+             << "\", width=" << scaleClique * double(clik.size()) << "];" << std::endl;
     }
     stream << std::endl;
     stream << "  node [shape=square,style=filled, fillcolor =" << colorSep << ",label=\"\"];"
@@ -376,7 +380,7 @@ namespace gum {
       const auto sep = clique(edge.first()) * clique(edge.second());
       stream << "  \"" << edge.first() << "~" << edge.second() << "\" [tooltip=\""
              << expandCliqueTooltip(sep) << "\""
-             << ", width=" << scaleSep * sep.size() << "];" << std::endl;
+             << ", width=" << scaleSep * double(sep.size()) << "];" << std::endl;
       // the edges
       stream << "  \"" << edge.first() << "\"--\"" << edge.first() << "~" << edge.second()
              << "\"--\"" << edge.second() << "\";" << std::endl
