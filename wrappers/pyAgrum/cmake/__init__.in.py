@@ -640,7 +640,7 @@ def mutilateBN(bn, intervention = {}, observation = {}):
   evidence : dictionary of all evidences for future inferences (dict)
   """
   
-  inter_bn = gum.BayesNet(bn)
+  inter_bn = BayesNet(bn)
   
   # Check that a variable is not an intervention and an observation
   if len( set(intervention).intersection( set(observation) ) ) > 0:

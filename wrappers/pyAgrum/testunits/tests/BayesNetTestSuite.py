@@ -532,35 +532,35 @@ class TestFeatures(BayesNetTestCase):
     self.assertFalse(bn.isIndependent("I", "H", {"C", "E", "B"}))
     self.assertTrue(bn.isIndependent("I", "H", {"C", "E", "B", "G"}))
 
-  def testMutilateBN():
+  def testMutilateBN(self):
     bn=gum.fastBN("P2->N<-P1;A->E2<-N->E1")
 
-    bn2=gum.mutilateBN(bn,
-                      interventions={"N":["1"]},
-                      observations={})
-    self.assertEquals(bn2.sizeArc(),bn.sizeArc())
-    self.assertEquals(bn2.size(),bn.sizeArc())
+    bn2,_=gum.mutilateBN(bn,
+                         intervention={"N":["1"]},
+                         observation={})
+    self.assertEquals(bn2.sizeArcs(),1)
+    self.assertEquals(bn2.size(),5)
 
 
-    bn2=gum.mutilateBN(bn,
-                      interventions={},
-                      observations={"N":[0,1]})
-    self.assertEquals(bn2.sizeArc(),bn.sizeArc())
-    self.assertEquals(bn2.size(),bn.sizeArc())
+    bn2,_=gum.mutilateBN(bn,
+                      intervention={},
+                      observation={"N":[0,1]})
+    self.assertEquals(bn2.sizeArcs(),3)
+    self.assertEquals(bn2.size(),6)
 
-  
-  bn2=gum.mutilateBN(bn,
-                     interventions={'A':["1"]},
-                     observations={"N":[0.3,0.7]})
-  self.assertEquals(bn2.sizeArc(),bn.sizeArc())
-  self.assertEquals(bn2.size(),bn.sizeArc())
+    
+    bn2,_=gum.mutilateBN(bn,
+                      intervention={'A':["1"]},
+                      observation={"N":[0.3,0.7]})
+    self.assertEquals(bn2.sizeArcs(),4)
+    self.assertEquals(bn2.size(),5)
 
   def testMutilateBN2(self):
     bn=gum.fastBN("P2->N<-P1;A->E2<-N->E1")
 
     bn2, ev2=gum.mutilateBN(bn,
-                      interventions={},
-                      observations= {'A':["1"], "N":[1,1]})
+                      intervention={},
+                      observation= {'A':["1"], "N":[1,1]})
 
     ie=gum.LazyPropagation(bn)
     ie.setEvidence(ev2)
@@ -571,8 +571,8 @@ class TestFeatures(BayesNetTestCase):
     ie2.makeInference()
 
     for n in bn2.names():
-      self.assertEquals(ie.posterior(n),
-                        ie2.posterior(n))
+      self.assertEquals(ie.posterior(n).tolist(),
+                        ie2.posterior(n).tolist())
 
 
 class TestLoadBN(BayesNetTestCase):
