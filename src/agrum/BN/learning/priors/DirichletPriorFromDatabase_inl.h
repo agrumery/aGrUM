@@ -100,16 +100,13 @@ namespace gum {
     /// sets the weight of the a priori (kind of effective sample size)
     INLINE void DirichletPriorFromDatabase::setWeight(const double weight) {
       Prior::setWeight(weight);
-      if (_counter_.database().nbRows() == 0)
         _internal_weight_ = 0.0;
       else
-        _internal_weight_ = this->weight_ / double(_counter_.database().nbRows());
     }
 
 
     /// returns the apriori vector all the variables in the idset
     INLINE void DirichletPriorFromDatabase::addAllApriori(const IdCondSet&       idset,
-                                                          std::vector< double >& counts) {
       if (this->weight_ == 0.0) return;
 
       const auto&       apriori = _counter_.counts(idset);
@@ -128,7 +125,6 @@ namespace gum {
 
     /// returns the apriori vector over only the conditioning set of an idset
     INLINE void DirichletPriorFromDatabase::addConditioningApriori(const IdCondSet&       idset,
-                                                                   std::vector< double >& counts) {
       if (_internal_weight_ == 0.0) return;
 
       const auto&       apriori = _counter_.counts(idset.conditionalIdCondSet());
