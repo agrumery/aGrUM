@@ -605,9 +605,10 @@ def log2(p):
   """
   return Potential(p).log2()
 
-def mutilate(cm, intervention = {}, observation = {}):
+def mutilateBN(bn, intervention = {}, observation = {}):
   """
-  Modify the causal model CM to reflect the effect of an intervention on given variables.
+  Modify the bayesian network bn to reflect the effect of interventions and/or observations on a set of variables.
+  Due to the causal nature of interventions, we suppose the given bn to have a causal interpretation.
   Warning: experimental use of evidence definition
 
   Interventions or observations can be HARD or SOFT.
@@ -626,8 +627,8 @@ def mutilate(cm, intervention = {}, observation = {}):
 
   Parameters
   ----------
-  cm : pyAgrum.pyAgrum.BayesNet
-    A causal model
+  bn : pyAgrum.pyAgrum.BayesNet
+    A bayesian network
   intervention : set
     set of variables on which we intervene to force the value
   observation : set
@@ -635,11 +636,11 @@ def mutilate(cm, intervention = {}, observation = {}):
           
   Returns
   -------   
-  inter_cm : new causal model reflecting the interventions and observations (pyAgrum.pyAgrum.BayesNet)
-  evidence : list of all evidences for future inferences
+  inter_bn : new bayesian network reflecting the interventions and observations (pyAgrum.pyAgrum.BayesNet)
+  evidence : dictionary of all evidences for future inferences (dict)
   """
   
-  inter_cm = gum.BayesNet(cm)
+  inter_bn = gum.BayesNet(bn)
   
   # Check that a variable is not an intervention and an observation
   if len( set(intervention).intersection( set(observation) ) ) > 0:
@@ -657,20 +658,20 @@ def mutilate(cm, intervention = {}, observation = {}):
       for var in toModify[typeSet]:
           
           # Get the ID and the name
-          if var in cm.names():
-              var_id = cm.idFromName(var)
+          if var in bn.names():
+              var_id = bn.idFromName(var)
               
           else:
               var_id = var
-              var = cm.variable(var_id).name()
+              var = bn.variable(var_id).name()
 
           # Delete relations from parents for interventions
           if typeSet == "intervention":
-              for par in cm.parents(var):
-                  inter_cm.eraseArc( par, var_id )
+              for par in bn.parents(var):
+                  inter_bn.eraseArc( par, var_id )
 
           # Determine the new distributions
-          n = cm.variable(var).domainSize()
+          n = bn.variable(var).domainSize()
           new_dis = toModify[typeSet][var]
           hard = False
           
@@ -678,14 +679,14 @@ def mutilate(cm, intervention = {}, observation = {}):
               new_dis = [1/n for k in range(n)]
           
           elif str in [type(i) for i in new_dis]: # hard - soft 3) 4)
-              new_dis = [ 1 if cm.variable(var).labels()[i] == new_dis[0] else 0 for i in range(n) ]
+              new_dis = [ 1 if bn.variable(var).labels()[i] == new_dis[0] else 0 for i in range(n) ]
               
               if len(toModify[typeSet][var]) == 1:
                   new_val = toModify[typeSet][var][0]
                   hard = True
               
           elif sum(new_dis) == 1 and 1 in new_dis: # hard 1)
-              new_val = cm.variable(var).labels()[ new_dis.index(1) ]
+              new_val = bn.variable(var).labels()[ new_dis.index(1) ]
               hard = True
               
           evidence[var] = new_dis
@@ -696,27 +697,27 @@ def mutilate(cm, intervention = {}, observation = {}):
               list_hard[var] = new_val
               
               # Delete relation toward children
-              for chi in cm.children(var): 
-                  inter_cm.eraseArc( var_id, chi )
+              for chi in bn.children(var): 
+                  inter_bn.eraseArc( var_id, chi )
                   
   ## Update the distributions
   for var in list(evidence):
       
       # Update variable if intervention
       if var in intervention:
-          inter_cm.cpt(var).fillWith( evidence[var] )
+          inter_bn.cpt(var).fillWith( evidence[var] )
 
       # Update children if hard evidence
       if var in list_hard:
-          for chi in cm.children(var):
-              new_cpt = cm.cpt(chi)[list_hard]
+          for chi in bn.children(var):
+              new_cpt = bn.cpt(chi)[list_hard]
 
-              inter_cm.cpt(chi)[:] = new_cpt
+              inter_bn.cpt(chi)[:] = new_cpt
 
           # If intervention, remove var
           if var in intervention:
-              inter_cm.erase(var)
+              inter_bn.erase(var)
               del evidence[var]
               
               
-  return(inter_cm, evidence)
+  return(inter_bn, evidence)
