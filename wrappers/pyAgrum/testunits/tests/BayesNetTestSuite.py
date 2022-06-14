@@ -532,6 +532,48 @@ class TestFeatures(BayesNetTestCase):
     self.assertFalse(bn.isIndependent("I", "H", {"C", "E", "B"}))
     self.assertTrue(bn.isIndependent("I", "H", {"C", "E", "B", "G"}))
 
+  def testMutilateBN():
+    bn=gum.fastBN("P2->N<-P1;A->E2<-N->E1")
+
+    bn2=gum.mutilateBN(bn,
+                      interventions={"N":["1"]},
+                      observations={})
+    self.assertEquals(bn2.sizeArc(),bn.sizeArc())
+    self.assertEquals(bn2.size(),bn.sizeArc())
+
+
+    bn2=gum.mutilateBN(bn,
+                      interventions={},
+                      observations={"N":[0,1]})
+    self.assertEquals(bn2.sizeArc(),bn.sizeArc())
+    self.assertEquals(bn2.size(),bn.sizeArc())
+
+  
+  bn2=gum.mutilateBN(bn,
+                     interventions={'A':["1"]},
+                     observations={"N":[0.3,0.7]})
+  self.assertEquals(bn2.sizeArc(),bn.sizeArc())
+  self.assertEquals(bn2.size(),bn.sizeArc())
+
+  def testMutilateBN2(self):
+    bn=gum.fastBN("P2->N<-P1;A->E2<-N->E1")
+
+    bn2, ev2=gum.mutilateBN(bn,
+                      interventions={},
+                      observations= {'A':["1"], "N":[1,1]})
+
+    ie=gum.LazyPropagation(bn)
+    ie.setEvidence(ev2)
+    ie.makeInference()  
+
+    ie2=gum.LazyPropagation(bn2)
+    ie2.setEvidence(ev2)
+    ie2.makeInference(
+
+    for n in bn2.names():
+      self.assertEquals(ie.posterior(n),
+                        ie2.posterior(n))
+
 
 class TestLoadBN(BayesNetTestCase):
   def listen(self, percent):
@@ -785,6 +827,7 @@ class TestGraphicalConcepts(BayesNetTestCase):
     bn = gum.fastBN("A->B->C<-D->E;D->F->G<-A")
     self.assertEquals(bn.children(1), {2})
     self.assertEquals(bn.children("A"), {1, 6})
+
 
 
 ts = unittest.TestSuite()
