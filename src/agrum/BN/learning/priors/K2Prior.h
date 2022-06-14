@@ -20,7 +20,7 @@
 
 
 /** @file
- * @brief the internal apriori for the K2 score = Laplace Prior
+ * @brief the internal prior for the K2 score = Laplace Prior
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
@@ -37,11 +37,11 @@ namespace gum {
   namespace learning {
 
     /** @class K2Prior
-     * @brief the internal apriori for the K2 score = Laplace Prior
+     * @brief the internal prior for the K2 score = Laplace Prior
      * @headerfile K2Prior.h <agrum/tools/database/K2Prior.h>
-     * @ingroup learning_apriori
+     * @ingroup learnig_priors
      *
-     * K2 is a BD score with a Laplace apriori (i.e., a smoothing of 1).
+     * K2 is a BD score with a Laplace prior (i.e., a smoothing of 1).
      *
      * It is important to note that, to be meaningful a structure + parameter
      * learning requires that the same priors are taken into account during

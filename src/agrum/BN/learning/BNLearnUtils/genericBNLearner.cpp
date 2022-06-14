@@ -97,7 +97,7 @@ namespace gum {
       // database as those in the score_database
       if (apriori_nb_vars < score_database._database_.nbVariables()) {
         GUM_ERROR(InvalidArgument,
-                  "the a apriori database has fewer variables "
+                  "the a prior database has fewer variables "
                   "than the observed database");
       }
 
@@ -114,7 +114,7 @@ namespace gum {
           GUM_ERROR(MissingVariableInDatabase,
                     "Variable " << score_names[i]
                                 << " of the observed database does not belong to the "
-                                << "apriori database");
+                                << "prior database");
         }
       }
 
@@ -456,10 +456,10 @@ namespace gum {
 
 
     void GenericBNLearner::createApriori_() {
-      // first, save the old apriori, to be delete if everything is ok
+      // first, save the old prior, to be delete if everything is ok
       Prior* old_apriori = apriori_;
 
-      // create the new apriori
+      // create the new prior
       switch (aprioriType_) {
         case BNLearnerPriorType::NO_APRIORI:
           apriori_ = new NoPrior(scoreDatabase_.databaseTable(), scoreDatabase_.nodeId2Columns());
@@ -489,13 +489,13 @@ namespace gum {
           break;
 
         default:
-          GUM_ERROR(OperationNotAllowed, "The BNLearner does not support yet this apriori")
+          GUM_ERROR(OperationNotAllowed, "The BNLearner does not support yet this prior")
       }
 
-      // do not forget to assign a weight to the apriori
+      // do not forget to assign a weight to the prior
       apriori_->setWeight(aprioriWeight_);
 
-      // remove the old apriori, if any
+      // remove the old prior, if any
       if (old_apriori != nullptr) delete old_apriori;
     }
 
@@ -648,7 +648,7 @@ namespace gum {
     }
 
     DAG GenericBNLearner::learnDAG() {
-      // create the score and the apriori
+      // create the score and the prior
       createApriori_();
       createScore_();
 
@@ -851,26 +851,26 @@ namespace gum {
     }
 
     std::string GenericBNLearner::checkScoreAprioriCompatibility() const {
-      const auto apriori = getPriorType_();
+      const auto prior = getPriorType_();
 
       switch (scoreType_) {
         case ScoreType::AIC:
-          return ScoreAIC::isPriorCompatible(apriori, aprioriWeight_);
+          return ScoreAIC::isPriorCompatible(prior, aprioriWeight_);
 
         case ScoreType::BD:
-          return ScoreBD::isPriorCompatible(apriori, aprioriWeight_);
+          return ScoreBD::isPriorCompatible(prior, aprioriWeight_);
 
         case ScoreType::BDeu:
-          return ScoreBDeu::isPriorCompatible(apriori, aprioriWeight_);
+          return ScoreBDeu::isPriorCompatible(prior, aprioriWeight_);
 
         case ScoreType::BIC:
-          return ScoreBIC::isPriorCompatible(apriori, aprioriWeight_);
+          return ScoreBIC::isPriorCompatible(prior, aprioriWeight_);
 
         case ScoreType::K2:
-          return ScoreK2::isPriorCompatible(apriori, aprioriWeight_);
+          return ScoreK2::isPriorCompatible(prior, aprioriWeight_);
 
         case ScoreType::LOG2LIKELIHOOD:
-          return ScoreLog2Likelihood::isPriorCompatible(apriori, aprioriWeight_);
+          return ScoreLog2Likelihood::isPriorCompatible(prior, aprioriWeight_);
 
         default:
           return "GenericBNLearner does not support yet this score";

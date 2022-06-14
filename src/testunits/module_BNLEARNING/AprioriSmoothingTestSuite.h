@@ -58,12 +58,12 @@ namespace gum_tests {
       gum::learning::DatabaseTable database(trans_set);
 
 
-      gum::learning::SmoothingPrior apriori(database);
-      TS_ASSERT_EQUALS(apriori.weight(), 1.0)
-      apriori.setWeight(4.0);
-      TS_ASSERT_EQUALS(apriori.weight(), 4.0)
+      gum::learning::SmoothingPrior prior(database);
+      TS_ASSERT_EQUALS(prior.weight(), 1.0)
+      prior.setWeight(4.0);
+      TS_ASSERT_EQUALS(prior.weight(), 4.0)
 
-      TS_ASSERT_EQUALS(apriori.getType(), gum::learning::PriorType::SmoothingPriorType)
+      TS_ASSERT_EQUALS(prior.getType(), gum::learning::PriorType::SmoothingPriorType)
 
       gum::NodeId                node0 = 0;
       gum::NodeId                node1 = 1;
@@ -80,38 +80,38 @@ namespace gum_tests {
                                       true);   // #576,#48
 
       std::vector< double > vect(3, 1.0);
-      apriori.addAllApriori(idset1, vect);
+      prior.addAllApriori(idset1, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, 5.0)
       }
       vect.clear();
-      apriori.addConditioningApriori(idset1, vect);
+      prior.addConditioningApriori(idset1, vect);
 
       vect.clear();
       vect.resize(12, 1.0);
-      apriori.addAllApriori(idset2, vect);
+      prior.addAllApriori(idset2, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, 5.0)
       }
       vect.clear();
-      apriori.addConditioningApriori(idset2, vect);
+      prior.addConditioningApriori(idset2, vect);
 
       vect.clear();
       vect.resize(576, 1.0);
-      apriori.addAllApriori(idset3, vect);
+      prior.addAllApriori(idset3, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, 5.0)
       }
 
       vect.clear();
       vect.resize(48, 1.0);
-      apriori.addConditioningApriori(idset3, vect);
+      prior.addConditioningApriori(idset3, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, 49.0)
       }
 
 
-      gum::learning::SmoothingPrior apriori2(apriori);
+      gum::learning::SmoothingPrior apriori2(prior);
       TS_ASSERT_EQUALS(apriori2.weight(), 4.0)
       apriori2.setWeight(2.0);
       TS_ASSERT_EQUALS(apriori2.weight(), 2.0)
@@ -189,7 +189,7 @@ namespace gum_tests {
       }
 
 
-      gum::learning::SmoothingPrior* apriori4 = apriori.clone();
+      gum::learning::SmoothingPrior* apriori4 = prior.clone();
       TS_ASSERT_EQUALS(apriori4->weight(), 4.0)
       apriori4->setWeight(2.0);
       TS_ASSERT_EQUALS(apriori4->weight(), 2.0)
@@ -232,7 +232,7 @@ namespace gum_tests {
 
       gum::learning::DatabaseTable  database2;
       gum::learning::SmoothingPrior apriori5(database2);
-      apriori5 = apriori;
+      apriori5 = prior;
       TS_ASSERT_EQUALS(apriori5.weight(), 4.0)
       apriori5.setWeight(2.0);
       TS_ASSERT_EQUALS(apriori5.weight(), 2.0)
@@ -270,7 +270,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(val, 25.0)
       }
 
-      apriori5 = std::move(apriori);
+      apriori5 = std::move(prior);
       TS_ASSERT_EQUALS(apriori5.weight(), 4.0)
       apriori5.setWeight(1.0);
       TS_ASSERT_EQUALS(apriori5.weight(), 1.0)
@@ -357,12 +357,12 @@ namespace gum_tests {
       nodeId2columns.insert(node5, std::size_t(5));
 
 
-      gum::learning::SmoothingPrior apriori(database, nodeId2columns);
-      TS_ASSERT_EQUALS(apriori.weight(), 1.0)
-      apriori.setWeight(4.0);
-      TS_ASSERT_EQUALS(apriori.weight(), 4.0)
+      gum::learning::SmoothingPrior prior(database, nodeId2columns);
+      TS_ASSERT_EQUALS(prior.weight(), 1.0)
+      prior.setWeight(4.0);
+      TS_ASSERT_EQUALS(prior.weight(), 4.0)
 
-      TS_ASSERT_EQUALS(apriori.getType(), gum::learning::PriorType::SmoothingPriorType)
+      TS_ASSERT_EQUALS(prior.getType(), gum::learning::PriorType::SmoothingPriorType)
 
       std::vector< gum::NodeId > cond_empty;
       std::vector< gum::NodeId > cond1{node3, node5, node4};
@@ -374,37 +374,37 @@ namespace gum_tests {
                                       true);   // #576,#36
 
       std::vector< double > vect(4, 1.0);
-      apriori.addAllApriori(idset1, vect);
+      prior.addAllApriori(idset1, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, 5.0)
       }
       vect.clear();
-      apriori.addConditioningApriori(idset1, vect);
+      prior.addConditioningApriori(idset1, vect);
 
       vect.clear();
       vect.resize(16, 1.0);
-      apriori.addAllApriori(idset2, vect);
+      prior.addAllApriori(idset2, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, 5.0)
       }
       vect.clear();
-      apriori.addConditioningApriori(idset2, vect);
+      prior.addConditioningApriori(idset2, vect);
 
       vect.clear();
       vect.resize(576, 1.0);
-      apriori.addAllApriori(idset3, vect);
+      prior.addAllApriori(idset3, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, 5.0)
       }
       vect.clear();
       vect.resize(36, 1.0);
-      apriori.addConditioningApriori(idset3, vect);
+      prior.addConditioningApriori(idset3, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, 65.0)
       }
 
 
-      gum::learning::SmoothingPrior apriori2(apriori);
+      gum::learning::SmoothingPrior apriori2(prior);
       TS_ASSERT_EQUALS(apriori2.weight(), 4.0)
       apriori2.setWeight(2.0);
       TS_ASSERT_EQUALS(apriori2.weight(), 2.0)
@@ -481,7 +481,7 @@ namespace gum_tests {
       }
 
 
-      gum::learning::SmoothingPrior* apriori4 = apriori.clone();
+      gum::learning::SmoothingPrior* apriori4 = prior.clone();
       TS_ASSERT_EQUALS(apriori4->weight(), 4.0)
       apriori4->setWeight(2.0);
       TS_ASSERT_EQUALS(apriori4->weight(), 2.0)
@@ -523,7 +523,7 @@ namespace gum_tests {
 
       gum::learning::DatabaseTable  database2;
       gum::learning::SmoothingPrior apriori5(database2);
-      apriori5 = apriori;
+      apriori5 = prior;
       TS_ASSERT_EQUALS(apriori5.weight(), 4.0)
       apriori5.setWeight(2.0);
       TS_ASSERT_EQUALS(apriori5.weight(), 2.0)
@@ -562,7 +562,7 @@ namespace gum_tests {
       }
 
 
-      apriori5 = std::move(apriori);
+      apriori5 = std::move(prior);
       TS_ASSERT_EQUALS(apriori5.weight(), 4.0)
       apriori5.setWeight(1.0);
       TS_ASSERT_EQUALS(apriori5.weight(), 1.0)

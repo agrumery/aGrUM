@@ -137,9 +137,9 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::NoPrior              apriori(database);
+      gum::learning::NoPrior              prior(database);
 
-      gum::learning::CorrectedMutualInformation score(parser, apriori);
+      gum::learning::CorrectedMutualInformation score(parser, prior);
       score.useNoCorr();
 
       TS_ASSERT_DELTA(score.score(1, 6, std::vector< gum::NodeId >{0}),
@@ -195,11 +195,11 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::NoPrior              apriori(database);
+      gum::learning::NoPrior              prior(database);
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::CorrectedMutualInformation score(parser, apriori);
+      gum::learning::CorrectedMutualInformation score(parser, prior);
       score.useMDL();
 
       const double cst = 0.5 * std::log2(10000);

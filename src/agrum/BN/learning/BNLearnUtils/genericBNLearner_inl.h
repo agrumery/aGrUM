@@ -396,23 +396,23 @@ namespace gum {
       setSliceOrder(slice_order);
     }
 
-    // sets the apriori weight
+    // sets the prior weight
     INLINE void GenericBNLearner::_setAprioriWeight_(double weight) {
-      if (weight < 0) { GUM_ERROR(OutOfBounds, "the weight of the apriori must be positive") }
+      if (weight < 0) { GUM_ERROR(OutOfBounds, "the weight of the prior must be positive") }
 
       aprioriWeight_ = weight;
       checkScoreAprioriCompatibility();
     }
 
-    // use the apriori smoothing
-    INLINE void GenericBNLearner::useNoApriori() {
+    // use the prior smoothing
+    INLINE void GenericBNLearner::useNoPrior() {
       aprioriType_ = BNLearnerPriorType::NO_APRIORI;
       checkScoreAprioriCompatibility();
     }
 
-    // use the apriori smoothing
-    INLINE void GenericBNLearner::useAprioriSmoothing(double weight) {
-      if (weight < 0) { GUM_ERROR(OutOfBounds, "the weight of the apriori must be positive") }
+    // use the prior smoothing
+    INLINE void GenericBNLearner::useSmoothingPrior(double weight) {
+      if (weight < 0) { GUM_ERROR(OutOfBounds, "the weight of the prior must be positive") }
 
       aprioriType_ = BNLearnerPriorType::SMOOTHING;
       _setAprioriWeight_(weight);
@@ -420,9 +420,9 @@ namespace gum {
       checkScoreAprioriCompatibility();
     }
 
-    // use the Dirichlet apriori
-    INLINE void GenericBNLearner::useAprioriDirichlet(const std::string& filename, double weight) {
-      if (weight < 0) { GUM_ERROR(OutOfBounds, "the weight of the apriori must be positive") }
+    // use the Dirichlet prior
+    INLINE void GenericBNLearner::useDirichletPrior(const std::string& filename, double weight) {
+      if (weight < 0) { GUM_ERROR(OutOfBounds, "the weight of the prior must be positive") }
 
       aprioriDbname_ = filename;
       aprioriType_   = BNLearnerPriorType::DIRICHLET_FROM_DATABASE;
@@ -432,9 +432,9 @@ namespace gum {
     }
 
 
-    // use the apriori BDeu
-    INLINE void GenericBNLearner::useAprioriBDeu(double weight) {
-      if (weight < 0) { GUM_ERROR(OutOfBounds, "the weight of the apriori must be positive") }
+    // use the prior BDeu
+    INLINE void GenericBNLearner::useBDeuPrior(double weight) {
+      if (weight < 0) { GUM_ERROR(OutOfBounds, "the weight of the prior must be positive") }
 
       aprioriType_ = BNLearnerPriorType::BDEU;
       _setAprioriWeight_(weight);
@@ -443,7 +443,7 @@ namespace gum {
     }
 
 
-    // returns the type (as a string) of a given apriori
+    // returns the type (as a string) of a given prior
     INLINE PriorType GenericBNLearner::getPriorType_() const {
       switch (aprioriType_) {
         case BNLearnerPriorType::NO_APRIORI:
@@ -461,7 +461,7 @@ namespace gum {
         default:
           GUM_ERROR(OperationNotAllowed,
                     "GenericBNLearner getAprioriType does "
-                    "not support yet this apriori");
+                    "not support yet this prior");
       }
     }
 

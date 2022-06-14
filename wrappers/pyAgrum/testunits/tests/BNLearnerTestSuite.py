@@ -109,7 +109,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       'asia3.csv'), bn)
     learner.setInitialDAG(bn.dag())
     learner.useScoreLog2Likelihood()
-    learner.useAprioriSmoothing(1.0)
+    learner.useSmoothingPrior(1.0)
 
     bn2 = learner.learnParameters()
     for i in range(bn.size()):
@@ -149,13 +149,13 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     l1 = gum.BNLearner(csvfile)
     l1.setInitialDAG(dbn.dag())
     l1.useScoreLog2Likelihood()
-    l1.useAprioriSmoothing()
+    l1.useSmoothingPrior()
     bn1 = l1.learnParameters()
 
     l2 = gum.BNLearner(csvfile, dbn)
     l2.setInitialDAG(dbn.dag())
     l2.useScoreLog2Likelihood()
-    l2.useAprioriSmoothing()
+    l2.useSmoothingPrior()
     bn2 = l2.learnParameters()
 
     p1 = bn1.cpt(bn1.idFromName("c_0"))
@@ -237,7 +237,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
     # bn is used to give the variables and their domains
     learner = gum.BNLearner(self.agrumSrcDir("database.csv"), bn)
-    learner.useAprioriDirichlet(self.agrumSrcDir("dirichlet.csv"), 10)
+    learner.useDirichletPrior(self.agrumSrcDir("dirichlet.csv"), 10)
     learner.useScoreAIC()  # or another score with no included prior such as BDeu
 
     bn3 = learner.learnBN()
@@ -265,7 +265,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       learner.learnParameters(dag)
 
     learner.useEM(1e-3)
-    learner.useAprioriSmoothing()
+    learner.useSmoothingPrior()
     learner.learnParameters(dag, False)
 
   def test_chi2(self):
@@ -564,7 +564,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertEqual(learner.rawPseudoCount(["X", "Z"]), (1, 0, 2, 1, 2, 1))
     self.assertEqual(learner.rawPseudoCount(["Y", "Z"]), (0, 1, 0, 3, 2, 1))
 
-    learner.useAprioriSmoothing(0.1)
+    learner.useSmoothingPrior(0.1)
 
     self.assertEqual(learner.rawPseudoCount(["X"]), (5.1, 2.1))
     self.assertEqual(learner.rawPseudoCount(
@@ -581,7 +581,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertEqual(learner.pseudoCount(
       ["Z", "Y"]).tolist(), [[0, 0, 2], [1, 3, 1]])
 
-    learner.useAprioriSmoothing(0.1)
+    learner.useSmoothingPrior(0.1)
 
     self.assertEqual(learner.pseudoCount(["X"]).tolist(), [5.1, 2.1])
     self.assertEqual(learner.pseudoCount(["X", "Z"]).tolist(), [

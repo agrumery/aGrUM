@@ -85,13 +85,13 @@ namespace gum {
     }
 
 
-    /// returns the type of the apriori
+    /// returns the type of the prior
     INLINE PriorType DirichletPriorFromDatabase::getType() const {
       return PriorType::DirichletPriorType;
     }
 
 
-    /// indicates whether the apriori is potentially informative
+    /// indicates whether the prior is potentially informative
     INLINE bool DirichletPriorFromDatabase::isInformative() const { return (this->weight_ != 0.0); }
 
 
@@ -105,39 +105,39 @@ namespace gum {
     }
 
 
-    /// returns the apriori vector all the variables in the idset
+    /// returns the prior vector all the variables in the idset
     INLINE void DirichletPriorFromDatabase::addAllApriori(const IdCondSet&       idset,
                                                           std::vector< double >& counts) {
       if (this->weight_ == 0.0) return;
 
-      const auto&       apriori = _counter_.counts(idset);
-      const std::size_t size    = apriori.size();
+      const auto&       prior = _counter_.counts(idset);
+      const std::size_t size    = prior.size();
       if (_internal_weight_ != 1.0) {
         for (std::size_t i = std::size_t(0); i < size; ++i) {
-          counts[i] += apriori[i] * _internal_weight_;
+          counts[i] += prior[i] * _internal_weight_;
         }
       } else {
         for (std::size_t i = std::size_t(0); i < size; ++i) {
-          counts[i] += apriori[i];
+          counts[i] += prior[i];
         }
       }
     }
 
 
-    /// returns the apriori vector over only the conditioning set of an idset
+    /// returns the prior vector over only the conditioning set of an idset
     INLINE void DirichletPriorFromDatabase::addConditioningApriori(const IdCondSet&       idset,
                                                                    std::vector< double >& counts) {
       if (_internal_weight_ == 0.0) return;
 
-      const auto&       apriori = _counter_.counts(idset.conditionalIdCondSet());
-      const std::size_t size    = apriori.size();
+      const auto&       prior = _counter_.counts(idset.conditionalIdCondSet());
+      const std::size_t size    = prior.size();
       if (_internal_weight_ != 1.0) {
         for (std::size_t i = std::size_t(0); i < size; ++i) {
-          counts[i] += apriori[i] * _internal_weight_;
+          counts[i] += prior[i] * _internal_weight_;
         }
       } else {
         for (std::size_t i = std::size_t(0); i < size; ++i) {
-          counts[i] += apriori[i];
+          counts[i] += prior[i];
         }
       }
     }

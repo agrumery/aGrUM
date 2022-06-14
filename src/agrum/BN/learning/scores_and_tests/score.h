@@ -57,7 +57,7 @@ namespace gum {
 
       /// default constructor
       /** @param parser the parser used to parse the database
-       * @param external_apriori An apriori that we add to the computation of
+       * @param external_apriori An prior that we add to the computation of
        * the score (this should come from expert knowledge)
        * @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
        * indices. The countings are then performed only on the union of the
@@ -84,7 +84,7 @@ namespace gum {
 
       /// default constructor
       /** @param parser the parser used to parse the database
-       * @param external_apriori An apriori that we add to the computation of
+       * @param external_apriori An prior that we add to the computation of
        * the score (this should come from expert knowledge)
        * @param nodeId2Columns a mapping from the ids of the nodes in the
        * graphical model to the corresponding column in the DatabaseTable
@@ -187,23 +187,23 @@ namespace gum {
       /// return the database used by the score
       const DatabaseTable& database() const;
 
-      /// indicates whether the apriori is compatible (meaningful) with the score
+      /// indicates whether the prior is compatible (meaningful) with the score
       /** The combination of some scores and priors can be meaningless. For
-       * instance, adding a Dirichlet apriori to the K2 score is not very
+       * instance, adding a Dirichlet prior to the K2 score is not very
        * meaningful since K2 corresonds to a BD score with a 1-smoothing
-       * apriori.
+       * prior.
        * aGrUM allows you to perform such combination, but you can check with
        * method isPriorCompatible () whether the result the score will give
        * you is meaningful or not. */
       virtual std::string isPriorCompatible() const = 0;
 
-      /// returns the internal apriori of the score
-      /** Some scores include an apriori. For instance, the K2 score is a BD
+      /// returns the internal prior of the score
+      /** Some scores include an prior. For instance, the K2 score is a BD
        * score with a Laplace Prior ( smoothing(1) ). BDeu is a BD score with
-       * a N'/(r_i * q_i) apriori, where N' is an effective sample size and r_i
+       * a N'/(r_i * q_i) prior, where N' is an effective sample size and r_i
        * is the domain size of the target variable and q_i is the domain size of
        * the Cartesian product of its parents. The goal of the score's internal
-       * apriori classes is to enable to account for these priors outside the
+       * prior classes is to enable to account for these priors outside the
        * score, e.g., when performing parameter estimation. It is important to
        * note that, to be meaningful, a structure + parameter learning requires
        * that the same priors are taken into account during structure learning

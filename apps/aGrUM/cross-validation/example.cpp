@@ -67,7 +67,7 @@ int main(int argc, char* argv[]) {
 
     gum::learning::DBRowGeneratorSet<>    genset;
     gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-    gum::learning::AprioriSmoothing<>     apriori(database);
+    gum::learning::AprioriSmoothing<>     prior(database);
 
     gum::learning::StructuralConstraintSetStatic<
       gum::learning::StructuralConstraintDAG >
@@ -78,8 +78,8 @@ int main(int argc, char* argv[]) {
 
     gum::learning::GreedyHillClimbing search;
 
-    gum::learning::ScoreBIC<> score(parser, apriori);
-    gum::learning::ParamEstimatorML<> estimator(parser, apriori,
+    gum::learning::ScoreBIC<> score(parser, prior);
+    gum::learning::ParamEstimatorML<> estimator(parser, prior,
                                                 score.internalApriori());
 
     

@@ -121,15 +121,15 @@ namespace gum_tests {
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
 
-      gum::learning::NoPrior   apriori(database);
-      gum::learning::ScoreBDeu score(parser, apriori);
+      gum::learning::NoPrior   prior(database);
+      gum::learning::ScoreBDeu score(parser, prior);
       score.setEffectiveSampleSize(2.0);
 
       TS_GUM_ASSERT_THROWS_NOTHING(
          gum::learning::ScoreBDeu::isPriorCompatible(gum::learning::PriorType::NoPriorType));
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreBDeu::isPriorCompatible(apriori))
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreBDeu::isPriorCompatible(prior))
       TS_GUM_ASSERT_THROWS_NOTHING(score.isPriorCompatible(gum::learning::PriorType::NoPriorType));
-      TS_GUM_ASSERT_THROWS_NOTHING(score.isPriorCompatible(apriori))
+      TS_GUM_ASSERT_THROWS_NOTHING(score.isPriorCompatible(prior))
 
       gum::NodeId                node0 = 0;
       gum::NodeId                node1 = 1;
@@ -163,7 +163,7 @@ namespace gum_tests {
       gum::learning::ScoreBDeu score2(score);
       score2.setEffectiveSampleSize(2.0);
       TS_GUM_ASSERT_THROWS_NOTHING(score2.isPriorCompatible(gum::learning::PriorType::NoPriorType));
-      TS_GUM_ASSERT_THROWS_NOTHING(score2.isPriorCompatible(apriori))
+      TS_GUM_ASSERT_THROWS_NOTHING(score2.isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score2.score(node0)))
       TS_ASSERT(_equal_(xscore_2, score2.score(node0, cond2)))
@@ -172,7 +172,7 @@ namespace gum_tests {
       gum::learning::ScoreBDeu score3(std::move(score2));
       score3.setEffectiveSampleSize(2.0);
       TS_GUM_ASSERT_THROWS_NOTHING(score3.isPriorCompatible(gum::learning::PriorType::NoPriorType));
-      TS_GUM_ASSERT_THROWS_NOTHING(score3.isPriorCompatible(apriori))
+      TS_GUM_ASSERT_THROWS_NOTHING(score3.isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score3.score(node0)))
       TS_ASSERT(_equal_(xscore_2, score3.score(node0, cond2)))
@@ -182,7 +182,7 @@ namespace gum_tests {
       score4->setEffectiveSampleSize(2.0);
       TS_GUM_ASSERT_THROWS_NOTHING(
          score4->isPriorCompatible(gum::learning::PriorType::NoPriorType));
-      TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(apriori))
+      TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node0)))
       TS_ASSERT(_equal_(xscore_2, score4->score(node0, cond2)))
@@ -191,7 +191,7 @@ namespace gum_tests {
       score4->operator=(score);
       TS_GUM_ASSERT_THROWS_NOTHING(
          score4->isPriorCompatible(gum::learning::PriorType::NoPriorType));
-      TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(apriori))
+      TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node0)))
       TS_ASSERT(_equal_(xscore_2, score4->score(node0, cond2)))
@@ -200,7 +200,7 @@ namespace gum_tests {
       score4->operator=(std::move(score));
       TS_GUM_ASSERT_THROWS_NOTHING(
          score4->isPriorCompatible(gum::learning::PriorType::NoPriorType));
-      TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(apriori))
+      TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node0)))
       TS_ASSERT(_equal_(xscore_2, score4->score(node0, cond2)))
@@ -265,15 +265,15 @@ namespace gum_tests {
       nodeId2columns.insert(node4, std::size_t(5));
       nodeId2columns.insert(node5, std::size_t(1));
 
-      gum::learning::NoPrior   apriori(database, nodeId2columns);
-      gum::learning::ScoreBDeu score(parser, apriori, nodeId2columns);
+      gum::learning::NoPrior   prior(database, nodeId2columns);
+      gum::learning::ScoreBDeu score(parser, prior, nodeId2columns);
       score.setEffectiveSampleSize(2.0);
 
       TS_GUM_ASSERT_THROWS_NOTHING(
          gum::learning::ScoreBDeu::isPriorCompatible(gum::learning::PriorType::NoPriorType));
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreBDeu::isPriorCompatible(apriori))
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreBDeu::isPriorCompatible(prior))
       TS_GUM_ASSERT_THROWS_NOTHING(score.isPriorCompatible(gum::learning::PriorType::NoPriorType));
-      TS_GUM_ASSERT_THROWS_NOTHING(score.isPriorCompatible(apriori))
+      TS_GUM_ASSERT_THROWS_NOTHING(score.isPriorCompatible(prior))
 
       std::vector< gum::NodeId > cond_empty;
       std::vector< gum::NodeId > cond2{node5};
@@ -306,7 +306,7 @@ namespace gum_tests {
       gum::learning::ScoreBDeu score2(score);
       score2.setEffectiveSampleSize(2.0);
       TS_GUM_ASSERT_THROWS_NOTHING(score2.isPriorCompatible(gum::learning::PriorType::NoPriorType));
-      TS_GUM_ASSERT_THROWS_NOTHING(score2.isPriorCompatible(apriori))
+      TS_GUM_ASSERT_THROWS_NOTHING(score2.isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score2.score(node2)))
       TS_ASSERT(_equal_(xscore_2, score2.score(node2, cond2)))
@@ -315,7 +315,7 @@ namespace gum_tests {
       gum::learning::ScoreBDeu score3(std::move(score2));
       score3.setEffectiveSampleSize(2.0);
       TS_GUM_ASSERT_THROWS_NOTHING(score3.isPriorCompatible(gum::learning::PriorType::NoPriorType));
-      TS_GUM_ASSERT_THROWS_NOTHING(score3.isPriorCompatible(apriori))
+      TS_GUM_ASSERT_THROWS_NOTHING(score3.isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score3.score(node2)))
       TS_ASSERT(_equal_(xscore_2, score3.score(node2, cond2)))
@@ -325,7 +325,7 @@ namespace gum_tests {
       score4->setEffectiveSampleSize(2.0);
       TS_GUM_ASSERT_THROWS_NOTHING(
          score4->isPriorCompatible(gum::learning::PriorType::NoPriorType));
-      TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(apriori))
+      TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node2)))
       TS_ASSERT(_equal_(xscore_2, score4->score(node2, cond2)))
@@ -334,7 +334,7 @@ namespace gum_tests {
       score4->operator=(score);
       TS_GUM_ASSERT_THROWS_NOTHING(
          score4->isPriorCompatible(gum::learning::PriorType::NoPriorType));
-      TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(apriori))
+      TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node2)))
       TS_ASSERT(_equal_(xscore_2, score4->score(node2, cond2)))
@@ -343,7 +343,7 @@ namespace gum_tests {
       score4->operator=(std::move(score));
       TS_GUM_ASSERT_THROWS_NOTHING(
          score4->isPriorCompatible(gum::learning::PriorType::NoPriorType));
-      TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(apriori))
+      TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node2)))
       TS_ASSERT(_equal_(xscore_2, score4->score(node2, cond2)))
@@ -396,15 +396,15 @@ namespace gum_tests {
 
       std::vector< std::pair< std::size_t, std::size_t > > ranges{{800, 1000}, {1050, 1400}};
 
-      gum::learning::NoPrior   apriori(database);
-      gum::learning::ScoreBDeu score(parser, apriori, ranges);
+      gum::learning::NoPrior   prior(database);
+      gum::learning::ScoreBDeu score(parser, prior, ranges);
       score.setEffectiveSampleSize(2.0);
 
       TS_GUM_ASSERT_THROWS_NOTHING(
          gum::learning::ScoreBDeu::isPriorCompatible(gum::learning::PriorType::NoPriorType));
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreBDeu::isPriorCompatible(apriori))
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreBDeu::isPriorCompatible(prior))
       TS_GUM_ASSERT_THROWS_NOTHING(score.isPriorCompatible(gum::learning::PriorType::NoPriorType));
-      TS_GUM_ASSERT_THROWS_NOTHING(score.isPriorCompatible(apriori))
+      TS_GUM_ASSERT_THROWS_NOTHING(score.isPriorCompatible(prior))
 
       gum::NodeId                node0 = 0;
       gum::NodeId                node1 = 1;
@@ -438,7 +438,7 @@ namespace gum_tests {
       gum::learning::ScoreBDeu score2(score);
       score2.setEffectiveSampleSize(2.0);
       TS_GUM_ASSERT_THROWS_NOTHING(score2.isPriorCompatible(gum::learning::PriorType::NoPriorType));
-      TS_GUM_ASSERT_THROWS_NOTHING(score2.isPriorCompatible(apriori))
+      TS_GUM_ASSERT_THROWS_NOTHING(score2.isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score2.score(node0)))
       TS_ASSERT(_equal_(xscore_2, score2.score(node0, cond2)))
@@ -447,7 +447,7 @@ namespace gum_tests {
       gum::learning::ScoreBDeu score3(std::move(score2));
       score3.setEffectiveSampleSize(2.0);
       TS_GUM_ASSERT_THROWS_NOTHING(score3.isPriorCompatible(gum::learning::PriorType::NoPriorType));
-      TS_GUM_ASSERT_THROWS_NOTHING(score3.isPriorCompatible(apriori))
+      TS_GUM_ASSERT_THROWS_NOTHING(score3.isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score3.score(node0)))
       TS_ASSERT(_equal_(xscore_2, score3.score(node0, cond2)))
@@ -457,7 +457,7 @@ namespace gum_tests {
       score4->setEffectiveSampleSize(2.0);
       TS_GUM_ASSERT_THROWS_NOTHING(
          score4->isPriorCompatible(gum::learning::PriorType::NoPriorType));
-      TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(apriori))
+      TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node0)))
       TS_ASSERT(_equal_(xscore_2, score4->score(node0, cond2)))
@@ -466,7 +466,7 @@ namespace gum_tests {
       score4->operator=(score);
       TS_GUM_ASSERT_THROWS_NOTHING(
          score4->isPriorCompatible(gum::learning::PriorType::NoPriorType));
-      TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(apriori))
+      TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node0)))
       TS_ASSERT(_equal_(xscore_2, score4->score(node0, cond2)))
@@ -475,7 +475,7 @@ namespace gum_tests {
       score4->operator=(std::move(score));
       TS_GUM_ASSERT_THROWS_NOTHING(
          score4->isPriorCompatible(gum::learning::PriorType::NoPriorType));
-      TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(apriori))
+      TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node0)))
       TS_ASSERT(_equal_(xscore_2, score4->score(node0, cond2)))
@@ -542,15 +542,15 @@ namespace gum_tests {
       nodeId2columns.insert(node4, std::size_t(5));
       nodeId2columns.insert(node5, std::size_t(1));
 
-      gum::learning::NoPrior   apriori(database, nodeId2columns);
-      gum::learning::ScoreBDeu score(parser, apriori, ranges, nodeId2columns);
+      gum::learning::NoPrior   prior(database, nodeId2columns);
+      gum::learning::ScoreBDeu score(parser, prior, ranges, nodeId2columns);
       score.setEffectiveSampleSize(2.0);
 
       TS_GUM_ASSERT_THROWS_NOTHING(
          gum::learning::ScoreBDeu::isPriorCompatible(gum::learning::PriorType::NoPriorType));
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreBDeu::isPriorCompatible(apriori))
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreBDeu::isPriorCompatible(prior))
       TS_GUM_ASSERT_THROWS_NOTHING(score.isPriorCompatible(gum::learning::PriorType::NoPriorType));
-      TS_GUM_ASSERT_THROWS_NOTHING(score.isPriorCompatible(apriori))
+      TS_GUM_ASSERT_THROWS_NOTHING(score.isPriorCompatible(prior))
 
       std::vector< gum::NodeId > cond_empty;
       std::vector< gum::NodeId > cond2{node5};
@@ -583,7 +583,7 @@ namespace gum_tests {
       gum::learning::ScoreBDeu score2(score);
       score2.setEffectiveSampleSize(2.0);
       TS_GUM_ASSERT_THROWS_NOTHING(score2.isPriorCompatible(gum::learning::PriorType::NoPriorType));
-      TS_GUM_ASSERT_THROWS_NOTHING(score2.isPriorCompatible(apriori))
+      TS_GUM_ASSERT_THROWS_NOTHING(score2.isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score2.score(node2)))
       TS_ASSERT(_equal_(xscore_2, score2.score(node2, cond2)))
@@ -592,7 +592,7 @@ namespace gum_tests {
       gum::learning::ScoreBDeu score3(std::move(score2));
       score3.setEffectiveSampleSize(2.0);
       TS_GUM_ASSERT_THROWS_NOTHING(score3.isPriorCompatible(gum::learning::PriorType::NoPriorType));
-      TS_GUM_ASSERT_THROWS_NOTHING(score3.isPriorCompatible(apriori))
+      TS_GUM_ASSERT_THROWS_NOTHING(score3.isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score3.score(node2)))
       TS_ASSERT(_equal_(xscore_2, score3.score(node2, cond2)))
@@ -602,7 +602,7 @@ namespace gum_tests {
       score4->setEffectiveSampleSize(2.0);
       TS_GUM_ASSERT_THROWS_NOTHING(
          score4->isPriorCompatible(gum::learning::PriorType::NoPriorType));
-      TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(apriori))
+      TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node2)))
       TS_ASSERT(_equal_(xscore_2, score4->score(node2, cond2)))
@@ -611,7 +611,7 @@ namespace gum_tests {
       score4->operator=(score);
       TS_GUM_ASSERT_THROWS_NOTHING(
          score4->isPriorCompatible(gum::learning::PriorType::NoPriorType));
-      TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(apriori))
+      TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node2)))
       TS_ASSERT(_equal_(xscore_2, score4->score(node2, cond2)))
@@ -620,7 +620,7 @@ namespace gum_tests {
       score4->operator=(std::move(score));
       TS_GUM_ASSERT_THROWS_NOTHING(
          score4->isPriorCompatible(gum::learning::PriorType::NoPriorType));
-      TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(apriori))
+      TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior))
 
       TS_ASSERT(_equal_(xscore_1, score4->score(node2)))
       TS_ASSERT(_equal_(xscore_2, score4->score(node2, cond2)))
@@ -673,18 +673,18 @@ namespace gum_tests {
 
       std::vector< std::pair< std::size_t, std::size_t > > ranges{{800, 1000}, {1050, 1400}};
 
-      gum::learning::NoPrior apriori(database);
+      gum::learning::NoPrior prior(database);
       for (std::size_t i = std::size_t(1); i < std::size_t(24); ++i) {
-        gum::learning::ScoreBDeu score(parser, apriori, ranges);
+        gum::learning::ScoreBDeu score(parser, prior, ranges);
         score.setNumberOfThreads(i);
         score.setEffectiveSampleSize(2.0);
 
         TS_GUM_ASSERT_THROWS_NOTHING(
            gum::learning::ScoreBDeu::isPriorCompatible(gum::learning::PriorType::NoPriorType));
-        TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreBDeu::isPriorCompatible(apriori))
+        TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreBDeu::isPriorCompatible(prior))
         TS_GUM_ASSERT_THROWS_NOTHING(
            score.isPriorCompatible(gum::learning::PriorType::NoPriorType));
-        TS_GUM_ASSERT_THROWS_NOTHING(score.isPriorCompatible(apriori))
+        TS_GUM_ASSERT_THROWS_NOTHING(score.isPriorCompatible(prior))
 
         gum::NodeId                node0 = 0;
         gum::NodeId                node1 = 1;
@@ -719,7 +719,7 @@ namespace gum_tests {
         score2.setEffectiveSampleSize(2.0);
         TS_GUM_ASSERT_THROWS_NOTHING(
            score2.isPriorCompatible(gum::learning::PriorType::NoPriorType));
-        TS_GUM_ASSERT_THROWS_NOTHING(score2.isPriorCompatible(apriori))
+        TS_GUM_ASSERT_THROWS_NOTHING(score2.isPriorCompatible(prior))
 
         TS_ASSERT(_equal_(xscore_1, score2.score(node0)))
         TS_ASSERT(_equal_(xscore_2, score2.score(node0, cond2)))
@@ -729,7 +729,7 @@ namespace gum_tests {
         score3.setEffectiveSampleSize(2.0);
         TS_GUM_ASSERT_THROWS_NOTHING(
            score3.isPriorCompatible(gum::learning::PriorType::NoPriorType));
-        TS_GUM_ASSERT_THROWS_NOTHING(score3.isPriorCompatible(apriori))
+        TS_GUM_ASSERT_THROWS_NOTHING(score3.isPriorCompatible(prior))
 
         TS_ASSERT(_equal_(xscore_1, score3.score(node0)))
         TS_ASSERT(_equal_(xscore_2, score3.score(node0, cond2)))
@@ -739,7 +739,7 @@ namespace gum_tests {
         score4->setEffectiveSampleSize(2.0);
         TS_GUM_ASSERT_THROWS_NOTHING(
            score4->isPriorCompatible(gum::learning::PriorType::NoPriorType));
-        TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(apriori))
+        TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior))
 
         TS_ASSERT(_equal_(xscore_1, score4->score(node0)))
         TS_ASSERT(_equal_(xscore_2, score4->score(node0, cond2)))
@@ -748,7 +748,7 @@ namespace gum_tests {
         score4->operator=(score);
         TS_GUM_ASSERT_THROWS_NOTHING(
            score4->isPriorCompatible(gum::learning::PriorType::NoPriorType));
-        TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(apriori))
+        TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior))
 
         TS_ASSERT(_equal_(xscore_1, score4->score(node0)))
         TS_ASSERT(_equal_(xscore_2, score4->score(node0, cond2)))
@@ -757,7 +757,7 @@ namespace gum_tests {
         score4->operator=(std::move(score));
         TS_GUM_ASSERT_THROWS_NOTHING(
            score4->isPriorCompatible(gum::learning::PriorType::NoPriorType));
-        TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(apriori))
+        TS_GUM_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior))
 
         TS_ASSERT(_equal_(xscore_1, score4->score(node0)))
         TS_ASSERT(_equal_(xscore_2, score4->score(node0, cond2)))

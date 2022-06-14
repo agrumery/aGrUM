@@ -58,7 +58,7 @@ namespace gum {
 
       /// default constructor
       /** @param parser the parser used to parse the database
-       * @param external_apriori An apriori that we add to the computation of
+       * @param external_apriori An prior that we add to the computation of
        * the score (this should come from expert knowledge): this consists in
        * adding numbers to countings in the contingency tables
        * @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
@@ -86,7 +86,7 @@ namespace gum {
 
       /// default constructor
       /** @param parser the parser used to parse the database
-       * @param external_apriori An apriori that we add to the computation of
+       * @param external_apriori An prior that we add to the computation of
        * the score (this should come from expert knowledge): this consists in
        * adding numbers to countings in the contingency tables
        * @param nodeId2Columns a mapping from the ids of the nodes in the

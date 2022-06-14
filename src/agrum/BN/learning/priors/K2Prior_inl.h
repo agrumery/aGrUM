@@ -20,7 +20,7 @@
 
 
 /** @file
- * @brief the internal apriori for the K2 score = Laplace Prior
+ * @brief the internal prior for the K2 score = Laplace Prior
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */

@@ -54,7 +54,7 @@ namespace gum {
 
       /// default constructor
       /** @param parser the parser used to parse the database
-       * @param apriori An apriori that we add to the computation of
+       * @param prior An prior that we add to the computation of
        * the score (this should come from expert knowledge): this consists in
        * adding numbers to countings in the contingency tables
        * @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
@@ -74,7 +74,7 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       KNML(const DBRowGeneratorParser&                                 parser,
-           const Prior&                                                apriori,
+           const Prior&                                                prior,
            const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
            const Bijection< NodeId, std::size_t >&                     nodeId2columns
            = Bijection< NodeId, std::size_t >());
@@ -82,7 +82,7 @@ namespace gum {
 
       /// default constructor
       /** @param parser the parser used to parse the database
-       * @param apriori An apriori that we add to the computation of
+       * @param prior An prior that we add to the computation of
        * the score (this should come from expert knowledge): this consists in
        * adding numbers to countings in the contingency tables
        * @param nodeId2Columns a mapping from the ids of the nodes in the
@@ -96,7 +96,7 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       KNML(const DBRowGeneratorParser&             parser,
-           const Prior&                            apriori,
+           const Prior&                            prior,
            const Bijection< NodeId, std::size_t >& nodeId2columns
            = Bijection< NodeId, std::size_t >());
 

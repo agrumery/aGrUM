@@ -36,10 +36,10 @@ namespace gum {
 
     /// default constructor
     INLINE ScoreBDeu::ScoreBDeu(const DBRowGeneratorParser&                                 parser,
-                                const Prior&                                                apriori,
+                                const Prior&                                                prior,
                                 const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
                                 const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        Score(parser, apriori, ranges, nodeId2columns),
+        Score(parser, prior, ranges, nodeId2columns),
         _internal_apriori_(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreBDeu);
     }
@@ -47,9 +47,9 @@ namespace gum {
 
     /// default constructor
     INLINE ScoreBDeu::ScoreBDeu(const DBRowGeneratorParser&             parser,
-                                const Prior&                            apriori,
+                                const Prior&                            prior,
                                 const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        Score(parser, apriori, nodeId2columns),
+        Score(parser, prior, nodeId2columns),
         _internal_apriori_(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreBDeu);
     }
@@ -78,28 +78,28 @@ namespace gum {
     INLINE ScoreBDeu::~ScoreBDeu() { GUM_DESTRUCTOR(ScoreBDeu); }
 
 
-    /// indicates whether the apriori is compatible (meaningful) with the score
-    INLINE std::string ScoreBDeu::isPriorCompatible(const Prior& apriori) {
-      return isPriorCompatible(apriori.getType(), apriori.weight());
+    /// indicates whether the prior is compatible (meaningful) with the score
+    INLINE std::string ScoreBDeu::isPriorCompatible(const Prior& prior) {
+      return isPriorCompatible(prior.getType(), prior.weight());
     }
 
 
-    /// indicates whether the apriori is compatible (meaningful) with the score
+    /// indicates whether the prior is compatible (meaningful) with the score
     INLINE std::string ScoreBDeu::isPriorCompatible() const {
       return isPriorCompatible(*(this->apriori_));
     }
 
 
-    /// returns the internal apriori of the score
+    /// returns the internal prior of the score
     INLINE const Prior& ScoreBDeu::internalApriori() const { return _internal_apriori_; }
 
 
-    /// sets the effective sample size of the internal apriori
+    /// sets the effective sample size of the internal prior
     INLINE void ScoreBDeu::setEffectiveSampleSize(double ess) {
       if (ess < 0) {
         GUM_ERROR(OutOfBounds,
                   "The effective sample size of the BDeu's "
-                  "internal apriori must be positive");
+                  "internal prior must be positive");
       } else {
         _internal_apriori_.setEffectiveSampleSize(ess);
       }

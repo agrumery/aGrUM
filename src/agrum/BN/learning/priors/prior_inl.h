@@ -61,13 +61,13 @@ namespace gum {
     /// sets the weight of the a priori (kind of effective sample size)
     INLINE void Prior::setWeight(const double weight) {
       if (weight < 0.0) {
-        GUM_ERROR(OutOfBounds, "A negative weight (" << weight << ") is forbidden for an apriori");
+        GUM_ERROR(OutOfBounds, "A negative weight (" << weight << ") is forbidden for an prior");
       }
       weight_ = weight;
     }
 
 
-    /// returns the weight assigned to the apriori
+    /// returns the weight assigned to the prior
     INLINE double Prior::weight() const { return weight_; }
 
 

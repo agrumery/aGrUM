@@ -34,19 +34,19 @@ namespace gum {
 
     /// default constructor
     INLINE KNML::KNML(const DBRowGeneratorParser&                                 parser,
-                      const Prior&                                                apriori,
+                      const Prior&                                                prior,
                       const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
                       const Bijection< NodeId, std::size_t >&                     nodeId2columns) :
-        IndependenceTest(parser, apriori, ranges, nodeId2columns) {
+        IndependenceTest(parser, prior, ranges, nodeId2columns) {
       GUM_CONSTRUCTOR(KNML);
     }
 
 
     /// default constructor
     INLINE KNML::KNML(const DBRowGeneratorParser&             parser,
-                      const Prior&                            apriori,
+                      const Prior&                            prior,
                       const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        IndependenceTest(parser, apriori, nodeId2columns) {
+        IndependenceTest(parser, prior, nodeId2columns) {
       GUM_CONSTRUCTOR(KNML);
     }
 

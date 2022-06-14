@@ -49,7 +49,7 @@ namespace gum {
                   std::vector< std::pair< std::size_t, std::size_t > >(),
                   nodeId2columns) {
       // we check that the variables in the learning database also exist in the
-      // apriori database and that they are precisely equal.
+      // prior database and that they are precisely equal.
       const DatabaseTable&                  apriori_db    = apriori_parser.database();
       const auto&                           apriori_names = apriori_db.variableNames();
       const std::size_t                     apriori_size  = apriori_names.size();
@@ -62,14 +62,14 @@ namespace gum {
       HashTable< std::size_t, std::size_t > learning2apriori_index(learning_size);
       bool                                  different_index = false;
       for (auto i = std::size_t(0); i < learning_size; ++i) {
-        // get the column of the variable in the apriori database
+        // get the column of the variable in the prior database
         std::size_t apriori_col;
         try {
           apriori_col = names2col[learning_names[i]];
         } catch (...) {
           GUM_ERROR(DatabaseError,
                     "Variable " << learning_names[i]
-                                << " could not be found in the apriori database");
+                                << " could not be found in the prior database");
         }
 
         // check that both variables are the same
@@ -79,7 +79,7 @@ namespace gum {
           GUM_ERROR(DatabaseError,
                     "Variable " << learning_names[i]
                                 << " has not the same type in the learning database "
-                                   " and the apriori database");
+                                   " and the prior database");
         }
         if (learning_var.domain() != apriori_var.domain()) {
           GUM_ERROR(DatabaseError,

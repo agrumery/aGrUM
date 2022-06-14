@@ -59,26 +59,26 @@ namespace gum {
     }
 
 
-    /// indicates whether the apriori is compatible (meaningful) with the score
+    /// indicates whether the prior is compatible (meaningful) with the score
     std::string ScoreK2::isPriorCompatible(PriorType apriori_type, double weight) {
-      // check that the apriori is compatible with the score
+      // check that the prior is compatible with the score
       if (apriori_type == PriorType::NoPriorType) { return ""; }
 
       if (weight == 0.0) {
-        return "The apriori is currently compatible with the K2 score but "
+        return "The prior is currently compatible with the K2 score but "
                "if you change the weight, it will become incompatible.";
       }
 
       // known incompatible priors
       if ((apriori_type == PriorType::DirichletPriorType)
           || (apriori_type == PriorType::SmoothingPriorType)) {
-        return "The K2 score already contains a different 'implicit' apriori. "
+        return "The K2 score already contains a different 'implicit' prior. "
                "Therefore, the learning will probably be biased.";
       }
 
-      // apriori types unsupported by the type checker
+      // prior types unsupported by the type checker
       std::stringstream msg;
-      msg << "The apriori '" << priorTypeToString(apriori_type)
+      msg << "The prior '" << priorTypeToString(apriori_type)
           << "' is not yet compatible with the score 'K2'.";
       return msg.str();
     }
@@ -86,7 +86,7 @@ namespace gum {
 
     /// returns the score corresponding to a given nodeset
     double ScoreK2::score_(const IdCondSet& idset) {
-      // get the counts for all the nodes in the idset and add the apriori
+      // get the counts for all the nodes in the idset and add the prior
       std::vector< double > N_ijk(this->counter_.counts(idset, true));
       const std::size_t     all_size                     = N_ijk.size();
       const bool            informative_external_apriori = this->apriori_->isInformative();
@@ -102,7 +102,7 @@ namespace gum {
 
         if (informative_external_apriori) {
           // the score to compute is that of BD with priors N'_ijk + 1
-          // (the + 1 is here to take into account the internal apriori of K2)
+          // (the + 1 is here to take into account the internal prior of K2)
           std::vector< double > N_prime_ijk(all_size, 0.0);
           this->apriori_->addAllApriori(idset, N_prime_ijk);
           std::vector< double > N_prime_ij(N_ij.size(), 0.0);
@@ -139,7 +139,7 @@ namespace gum {
 
         if (informative_external_apriori) {
           // the score to compute is that of BD with priors N'_ijk + 1
-          // (the + 1 is here to take into account the internal apriori of K2)
+          // (the + 1 is here to take into account the internal prior of K2)
 
           // the K2 score can be computed as follows:
           // gammalog2 ( N' + r_i ) - gammalog2 ( N + N' + r_i )

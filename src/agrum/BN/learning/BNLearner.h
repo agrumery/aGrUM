@@ -130,12 +130,12 @@ namespace gum {
        * @param dag the structure of the Bayesian network
        * @param takeIntoAccountScore The dag passed in argument may have
        * been learnt from a structure learning. In this case, if the score used
-       * to learn the structure has an implicit apriori (like K2 which has a
-       * 1-smoothing apriori), it is important to also take into account this
-       * implicit apriori for parameter learning. By default, if a score
-       * exists, we will learn parameters by taking into account the apriori
-       * specified by methods useAprioriXXX () + the implicit apriori of the
-       * score, else we just take into account the apriori specified by
+       * to learn the structure has an implicit prior (like K2 which has a
+       * 1-smoothing prior), it is important to also take into account this
+       * implicit prior for parameter learning. By default, if a score
+       * exists, we will learn parameters by taking into account the prior
+       * specified by methods useAprioriXXX () + the implicit prior of the
+       * score, else we just take into account the prior specified by
        * useAprioriXXX () */
       BayesNet< GUM_SCALAR > learnParameters(const DAG& dag, bool takeIntoAccountScore = true);
 
@@ -143,12 +143,12 @@ namespace gum {
       /** @param take_into_account_score The dag of the BN which was passed in
        * argument to the BNLearner may have
        * been learnt from a structure learning. In this case, if the score used
-       * to learn the structure has an implicit apriori (like K2 which has a
-       * 1-smoothing apriori), it is important to also take into account this
-       * implicit apriori for parameter learning. By default, if a score
-       * exists, we will learn parameters by taking into account the apriori
-       * specified by methods useAprioriXXX () + the implicit apriori of the
-       * score, else we just take into account the apriori specified by
+       * to learn the structure has an implicit prior (like K2 which has a
+       * 1-smoothing prior), it is important to also take into account this
+       * implicit prior for parameter learning. By default, if a score
+       * exists, we will learn parameters by taking into account the prior
+       * specified by methods useAprioriXXX () + the implicit prior of the
+       * score, else we just take into account the prior specified by
        * useAprioriXXX ()
        * @throw MissingVariableInDatabase if a variable of the BN is not found
        * in the database.
@@ -196,20 +196,20 @@ namespace gum {
         GenericBNLearner::useScoreLog2Likelihood();
         return *this;
       }
-      BNLearner< GUM_SCALAR >& useNoApriori() {
-        GenericBNLearner::useNoApriori();
+      BNLearner< GUM_SCALAR >& useNoPrior() {
+        GenericBNLearner::useNoPrior();
         return *this;
       }
-      BNLearner< GUM_SCALAR >& useAprioriBDeu(double weight = 1.0) {
-        GenericBNLearner::useAprioriBDeu(weight);
+      BNLearner< GUM_SCALAR >& useBDeuPrior(double weight = 1.0) {
+        GenericBNLearner::useBDeuPrior(weight);
         return *this;
       }
-      BNLearner< GUM_SCALAR >& useAprioriSmoothing(double weight = 1) {
-        GenericBNLearner::useAprioriSmoothing(weight);
+      BNLearner< GUM_SCALAR >& useSmoothingPrior(double weight = 1) {
+        GenericBNLearner::useSmoothingPrior(weight);
         return *this;
       }
-      BNLearner< GUM_SCALAR >& useAprioriDirichlet(const std::string& filename, double weight = 1) {
-        GenericBNLearner::useAprioriDirichlet(filename, weight);
+      BNLearner< GUM_SCALAR >& useDirichletPrior(const std::string& filename, double weight = 1) {
+        GenericBNLearner::useDirichletPrior(filename, weight);
         return *this;
       }
       BNLearner< GUM_SCALAR >& useGreedyHillClimbing() {

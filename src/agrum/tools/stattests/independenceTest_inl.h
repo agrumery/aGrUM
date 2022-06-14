@@ -33,10 +33,10 @@ namespace gum {
     /// default constructor
     INLINE IndependenceTest::IndependenceTest(
        const DBRowGeneratorParser&                                 parser,
-       const Prior&                                                apriori,
+       const Prior&                                                prior,
        const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
        const Bijection< NodeId, std::size_t >&                     nodeId2columns) :
-        apriori_(apriori.clone()),
+        apriori_(prior.clone()),
         counter_(parser, ranges, nodeId2columns) {
       GUM_CONSTRUCTOR(IndependenceTest);
     }
@@ -45,9 +45,9 @@ namespace gum {
     /// default constructor
     INLINE
     IndependenceTest::IndependenceTest(const DBRowGeneratorParser&             parser,
-                                       const Prior&                            apriori,
+                                       const Prior&                            prior,
                                        const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        apriori_(apriori.clone()),
+        apriori_(prior.clone()),
         counter_(parser, nodeId2columns) {
       GUM_CONSTRUCTOR(IndependenceTest);
     }

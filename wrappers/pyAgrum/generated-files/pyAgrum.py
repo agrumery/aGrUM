@@ -24440,7 +24440,7 @@ class BNLearner(object):
         dag : pyAgrum.DAG
         bn : pyAgrum.BayesNet
         take_into_account_score : bool
-        	The dag passed in argument may have been learnt from a structure learning. In this case, if the score used to learn the structure has an implicit apriori (like K2 which has a 1-smoothing apriori), it is important to also take into account this implicit apriori for parameter learning. By default, if a score exists, we will learn parameters by taking into account the apriori specified by methods useAprioriXXX () + the implicit apriori of the score, else we just take into account the apriori specified by useAprioriXXX ()
+        	The dag passed in argument may have been learnt from a structure learning. In this case, if the score used to learn the structure has an implicit prior (like K2 which has a 1-smoothing prior), it is important to also take into account this implicit prior for parameter learning. By default, if a score exists, we will learn parameters by taking into account the prior specified by methods useAprioriXXX () + the implicit prior of the score, else we just take into account the prior specified by useAprioriXXX ()
 
         Returns
         -------
@@ -24578,13 +24578,13 @@ class BNLearner(object):
         return val
 
 
-    def useNoApriori(self) -> "pyAgrum.BNLearner":
+    def useNoPrior(self) -> "pyAgrum.BNLearner":
         r"""
 
-        Use no apriori.
+        Use no prior.
 
         """
-        val = _pyAgrum.BNLearner_useNoApriori(self)
+        val = _pyAgrum.BNLearner_useNoPrior(self)
 
         return self
 
@@ -24592,8 +24592,8 @@ class BNLearner(object):
         return val
 
 
-    def useAprioriBDeu(self, weight: float=1.0) -> "pyAgrum.BNLearner":
-        val = _pyAgrum.BNLearner_useAprioriBDeu(self, weight)
+    def useBDeuPrior(self, weight: float=1.0) -> "pyAgrum.BNLearner":
+        val = _pyAgrum.BNLearner_useBDeuPrior(self, weight)
 
         return self
 
@@ -24601,10 +24601,10 @@ class BNLearner(object):
         return val
 
 
-    def useAprioriSmoothing(self, weight: float=1) -> "pyAgrum.BNLearner":
+    def useSmoothingPrior(self, weight: float=1) -> "pyAgrum.BNLearner":
         r"""
 
-        Use the apriori smoothing.
+        Use the prior smoothing.
 
         Parameters
         ----------
@@ -24612,7 +24612,7 @@ class BNLearner(object):
                 pass in argument a weight if you wish to assign a weight to the smoothing, else the current weight of the learner will be used.
 
         """
-        val = _pyAgrum.BNLearner_useAprioriSmoothing(self, weight)
+        val = _pyAgrum.BNLearner_useSmoothingPrior(self, weight)
 
         return self
 
@@ -24620,10 +24620,10 @@ class BNLearner(object):
         return val
 
 
-    def useAprioriDirichlet(self, filename: str, weight: float=1) -> "pyAgrum.BNLearner":
+    def useDirichletPrior(self, filename: str, weight: float=1) -> "pyAgrum.BNLearner":
         r"""
 
-        Use the Dirichlet apriori.
+        Use the Dirichlet prior.
 
         Parameters
         ----------
@@ -24631,7 +24631,7 @@ class BNLearner(object):
                 the Dirichlet related database
 
         """
-        val = _pyAgrum.BNLearner_useAprioriDirichlet(self, filename, weight)
+        val = _pyAgrum.BNLearner_useDirichletPrior(self, filename, weight)
 
         return self
 

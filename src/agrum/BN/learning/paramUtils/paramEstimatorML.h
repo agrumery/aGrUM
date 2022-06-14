@@ -50,9 +50,9 @@ namespace gum {
 
       /// default constructor
       /** @param parser the parser used to parse the database
-       * @param external_apriori An apriori that we add to the computation
+       * @param external_apriori An prior that we add to the computation
        * of the score
-       * @param score_internal_apriori The apriori within the score used
+       * @param score_internal_apriori The prior within the score used
        * to learn the data structure (might be a NoApriori)
        * @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
        * indices. The countings are then performed only on the union of the
@@ -79,9 +79,9 @@ namespace gum {
 
       /// default constructor
       /** @param parser the parser used to parse the database
-       * @param external_apriori An apriori that we add to the computation
+       * @param external_apriori An prior that we add to the computation
        * of the score
-       * @param score_internal_apriori The apriori within the score used
+       * @param score_internal_apriori The prior within the score used
        * to learn the data structure (might be a NoApriori)
        * @param nodeId2Columns a mapping from the ids of the nodes in the
        * graphical model to the corresponding column in the DatabaseTable

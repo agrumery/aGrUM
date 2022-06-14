@@ -54,9 +54,9 @@ namespace gum_tests {
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
 
       // std::vector< gum::Size > modalities(nb_vars, 2);
-      gum::learning::NoPrior apriori(database);
+      gum::learning::NoPrior prior(database);
 
-      gum::learning::KNML score(parser, apriori);
+      gum::learning::KNML score(parser, prior);
       /* 3-4 K 2.6844818514806183
        * 2-6 K 4.1414644088786756
        * 4-7|5 K 3.763846399915938

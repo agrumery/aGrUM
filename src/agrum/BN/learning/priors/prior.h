@@ -63,7 +63,7 @@ namespace gum {
     /** @class Prior
      * @brief the base class for all a priori
      * @headerfile prior.h <agrum/BN/learning/priors/prior.h>
-     * @ingroup learning_apriori
+     * @ingroup learnig_priors
      */
     class Prior {
       public:
@@ -103,31 +103,31 @@ namespace gum {
       /// sets the weight of the a priori (kind of effective sample size)
       virtual void setWeight(double weight);
 
-      /// returns the weight assigned to the apriori
+      /// returns the weight assigned to the prior
       double weight() const;
 
-      /// returns the type of the apriori
+      /// returns the type of the prior
       virtual PriorType getType() const = 0;
 
-      /// indicates whether the apriori is potentially informative
+      /// indicates whether the prior is potentially informative
       /** Basically, only the NoApriori is uninformative. However, it may happen
-       * that, under some circumstances, an apriori, which is usually not equal
+       * that, under some circumstances, an prior, which is usually not equal
        * to the NoApriori, becomes equal to it (e.g., when the weight is equal
-       * to zero). In this case, if the apriori can detect this case, it shall
+       * to zero). In this case, if the prior can detect this case, it shall
        * inform the classes that use it that it is temporarily uninformative.
        * These classes will then be able to speed-up their code by avoiding to
-       * take into account the apriori in their computations. */
+       * take into account the prior in their computations. */
       virtual bool isInformative() const = 0;
 
-      /// adds the apriori to a counting vector corresponding to the idset
-      /** adds the apriori to an already created counting vector defined over
+      /// adds the prior to a counting vector corresponding to the idset
+      /** adds the prior to an already created counting vector defined over
        * the union of the variables on both the left and right hand side of the
        * conditioning bar of the idset.
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint variables set. */
       virtual void addAllApriori(const IdCondSet& idset, std::vector< double >& counts) = 0;
 
-      /** @brief adds the apriori to a counting vector defined over the right
+      /** @brief adds the prior to a counting vector defined over the right
        * hand side of the idset
        *
        * @warning the method assumes that the size of the vector is exactly
@@ -139,7 +139,7 @@ namespace gum {
 
 
       protected:
-      /// the weight of the apriori
+      /// the weight of the prior
       double weight_{1.0};
 
       /// a reference to the database in order to have access to its variables

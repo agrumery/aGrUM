@@ -54,25 +54,25 @@ namespace gum_tests {
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
       {
-        gum::learning::NoPrior     apriori(database);
-        gum::learning::PseudoCount counts(parser, apriori);
+        gum::learning::NoPrior     prior(database);
+        gum::learning::PseudoCount counts(parser, prior);
 
         TS_ASSERT_EQUALS(counts.get({1}), std::vector< double >({4, 3}))
         TS_ASSERT_EQUALS(counts.get({2}), std::vector< double >({3, 2, 2}))
         TS_ASSERT_EQUALS(counts.get({0, 2}), std::vector< double >({2, 1, 1, 1, 0, 2}))
       }
       {
-        gum::learning::SmoothingPrior apriori(database);
-        gum::learning::PseudoCount    counts(parser, apriori);
+        gum::learning::SmoothingPrior prior(database);
+        gum::learning::PseudoCount    counts(parser, prior);
 
         TS_ASSERT_EQUALS(counts.get({1}), std::vector< double >({5, 4}))
         TS_ASSERT_EQUALS(counts.get({2}), std::vector< double >({4, 3, 3}))
         TS_ASSERT_EQUALS(counts.get({0, 2}), std::vector< double >({3, 2, 2, 2, 1, 3}))
       }
       {
-        gum::learning::SmoothingPrior apriori(database);
-        apriori.setWeight(0.1);
-        gum::learning::PseudoCount counts(parser, apriori);
+        gum::learning::SmoothingPrior prior(database);
+        prior.setWeight(0.1);
+        gum::learning::PseudoCount counts(parser, prior);
 
         TS_ASSERT_EQUALS(counts.get({1}), std::vector< double >({4.1, 3.1}))
         TS_ASSERT_EQUALS(counts.get({2}), std::vector< double >({3.1, 2.1, 2.1}))

@@ -75,19 +75,19 @@ namespace gum {
     /// sets the weight of the a priori
     INLINE void NoPrior::setWeight(const double) {}
 
-    /// returns the type of the apriori
+    /// returns the type of the prior
     INLINE PriorType NoPrior::getType() const { return PriorType::NoPriorType; }
 
 
-    /// indicates whether the apriori is potentially informative
+    /// indicates whether the prior is potentially informative
     INLINE bool NoPrior::isInformative() const { return false; }
 
 
-    /// returns the apriori vector all the variables in the idset
+    /// returns the prior vector all the variables in the idset
     INLINE void NoPrior::addAllApriori(const IdCondSet& idset, std::vector< double >& counts) {}
 
 
-    /// returns the apriori vector over only the conditioning set of an idset
+    /// returns the prior vector over only the conditioning set of an idset
     INLINE void NoPrior::addConditioningApriori(const IdCondSet&       idset,
                                                 std::vector< double >& counts) {}
 

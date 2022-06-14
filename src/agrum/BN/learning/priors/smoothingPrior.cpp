@@ -37,11 +37,11 @@
 
 namespace gum::learning {
 
-  /// returns the apriori vector over only the conditioning set of an idset
+  /// returns the prior vector over only the conditioning set of an idset
   void SmoothingPrior::addConditioningApriori(const IdCondSet&       idset,
                                               std::vector< double >& counts) {
     // if the conditioning set is empty or the weight is equal to zero,
-    // the apriori is also empty
+    // the prior is also empty
     if ((idset.size() == idset.nbLHSIds()) || (this->weight_ == 0.0)
         || (idset.nbLHSIds() == std::size_t(0)))
       return;

@@ -42,12 +42,12 @@ namespace gum {
     /// default constructor
     CorrectedMutualInformation::CorrectedMutualInformation(
        const DBRowGeneratorParser&                                 parser,
-       const Prior&                                                apriori,
+       const Prior&                                                prior,
        const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
        const Bijection< NodeId, std::size_t >&                     nodeId2columns) :
-        _NH_(parser, apriori, ranges, nodeId2columns),
-        _k_NML_(parser, apriori, ranges, nodeId2columns),
-        _score_MDL_(parser, apriori, ranges, nodeId2columns) {
+        _NH_(parser, prior, ranges, nodeId2columns),
+        _k_NML_(parser, prior, ranges, nodeId2columns),
+        _score_MDL_(parser, prior, ranges, nodeId2columns) {
       GUM_CONSTRUCTOR(CorrectedMutualInformation);
     }
 
@@ -55,10 +55,10 @@ namespace gum {
     /// default constructor
     CorrectedMutualInformation::CorrectedMutualInformation(
        const DBRowGeneratorParser&             parser,
-       const Prior&                            apriori,
+       const Prior&                            prior,
        const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        _NH_(parser, apriori, nodeId2columns),
-        _k_NML_(parser, apriori, nodeId2columns), _score_MDL_(parser, apriori, nodeId2columns) {
+        _NH_(parser, prior, nodeId2columns),
+        _k_NML_(parser, prior, nodeId2columns), _score_MDL_(parser, prior, nodeId2columns) {
       GUM_CONSTRUCTOR(CorrectedMutualInformation);
     }
 

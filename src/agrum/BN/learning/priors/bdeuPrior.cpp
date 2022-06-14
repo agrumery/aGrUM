@@ -21,7 +21,7 @@
 
 /**
  * @file
- * @brief the internal apriori for the BDeu score (N' / (r_i * q_i)
+ * @brief the internal prior for the BDeu score (N' / (r_i * q_i)
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
@@ -37,10 +37,10 @@
 
 namespace gum::learning {
 
-  /// returns the apriori vector over only the conditioning set of an idset
+  /// returns the prior vector over only the conditioning set of an idset
   void BDeuPrior::addConditioningApriori(const IdCondSet& idset, std::vector< double >& counts) {
     // if the conditioning set is empty or the weight is equal to zero,
-    // the apriori is also empty
+    // the prior is also empty
     if ((idset.size() == idset.nbLHSIds()) || (this->weight_ == 0.0)
         || (idset.nbLHSIds() == std::size_t(0)))
       return;

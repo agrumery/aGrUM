@@ -36,7 +36,7 @@ Parameters
 dag : pyAgrum.DAG
 bn : pyAgrum.BayesNet
 take_into_account_score : bool
-	The dag passed in argument may have been learnt from a structure learning. In this case, if the score used to learn the structure has an implicit apriori (like K2 which has a 1-smoothing apriori), it is important to also take into account this implicit apriori for parameter learning. By default, if a score exists, we will learn parameters by taking into account the apriori specified by methods useAprioriXXX () + the implicit apriori of the score, else we just take into account the apriori specified by useAprioriXXX ()
+	The dag passed in argument may have been learnt from a structure learning. In this case, if the score used to learn the structure has an implicit prior (like K2 which has a 1-smoothing prior), it is important to also take into account this implicit prior for parameter learning. By default, if a score exists, we will learn parameters by taking into account the prior specified by methods useAprioriXXX () + the implicit prior of the score, else we just take into account the prior specified by useAprioriXXX ()
 
 Returns
 -------
@@ -131,9 +131,9 @@ l : list
 "
 
 
-%feature("docstring") gum::learning::BNLearner::useAprioriDirichlet
+%feature("docstring") gum::learning::BNLearner::useDirichletPrior
 "
-Use the Dirichlet apriori.
+Use the Dirichlet prior.
 
 Parameters
 ----------
@@ -141,9 +141,9 @@ filename : str
         the Dirichlet related database
 "
 
-%feature("docstring") gum::learning::BNLearner::useAprioriSmoothing
+%feature("docstring") gum::learning::BNLearner::useSmoothingPrior
 "
-Use the apriori smoothing.
+Use the prior smoothing.
 
 Parameters
 ----------
@@ -189,21 +189,21 @@ bool
     True if there are some missing values in the database.
 "
 
-%feature("docstring") gum::learning::BNLearner::useNoApriori
+%feature("docstring") gum::learning::BNLearner::useNoPrior
 "
-Use no apriori.
+Use no prior.
 "
 
-%feature("docstring") gum::learning::genericBNLearner::useAprioriBDeu
+%feature("docstring") gum::learning::genericBNLearner::useBDeuPrior
 "
-The BDeu apriori adds weight to all the cells of the counting tables.
+The BDeu prior adds weight to all the cells of the counting tables.
 In other words, it adds weight rows in the database with equally probable
 values.
 
 Parameters
 ----------
 weight : float
-	the apriori weight
+	the prior weight
 "
 
 %feature("docstring") gum::learning::BNLearner::useScoreAIC

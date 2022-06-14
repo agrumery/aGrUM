@@ -71,12 +71,12 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::SmoothingPrior       apriori(database);
-      gum::learning::ScoreK2              score(parser, apriori);
+      gum::learning::SmoothingPrior       prior(database);
+      gum::learning::ScoreK2              score(parser, prior);
 
       gum::learning::StructuralConstraintDAG struct_constraint;
 
-      gum::learning::ParamEstimatorML estimator(parser, apriori, score.internalApriori());
+      gum::learning::ParamEstimatorML estimator(parser, prior, score.internalApriori());
 
       std::vector< gum::NodeId > order(database.nbVariables());
       for (gum::NodeId i = 0; i < order.size(); ++i) {
@@ -121,8 +121,8 @@ gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
 
       std::vector<gum::Idx> modalities = filter.modalities ();
 
-      gum::learning::SmoothingPrior apriori;
-      gum::learning::ScoreK2 real_score ( filter, modalities, apriori );
+      gum::learning::SmoothingPrior prior;
+      gum::learning::ScoreK2 real_score ( filter, modalities, prior );
       gum::learning::Score& score = real_score;
 
       gum::learning::StructuralConstraintDAG
@@ -185,8 +185,8 @@ translators;
 
       std::vector<gum::Idx> modalities = filter.modalities ();
 
-      gum::learning::SmoothingPrior apriori;
-      gum::learning::ScoreK2 score ( filter, modalities, apriori );
+      gum::learning::SmoothingPrior prior;
+      gum::learning::ScoreK2 score ( filter, modalities, prior );
 
       gum::learning::StructuralConstraintDAG
         struct_constraint ( modalities.size () );
@@ -227,8 +227,8 @@ translators;
 
       std::vector<gum::Size> modalities = filter.modalities ();
 
-      gum::learning::SmoothingPrior apriori;
-      gum::learning::ScoreK2 score ( filter, modalities, apriori );
+      gum::learning::SmoothingPrior prior;
+      gum::learning::ScoreK2 score ( filter, modalities, prior );
 
       gum::NodeProperty<bool> slices;
       for ( gum::Idx i = 0; i < modalities.size (); ++i ) {
@@ -278,8 +278,8 @@ translators;
 
       std::vector<gum::Size> modalities = filter.modalities ();
 
-      gum::learning::SmoothingPrior apriori;
-      gum::learning::ScoreK2 score ( filter, modalities, apriori );
+      gum::learning::SmoothingPrior prior;
+      gum::learning::ScoreK2 score ( filter, modalities, prior );
 
       gum::learning::StructuralConstraintIndegree
         struct_constraint ( modalities.size (), 6 );

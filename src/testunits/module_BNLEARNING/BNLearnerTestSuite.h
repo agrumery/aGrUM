@@ -81,8 +81,8 @@ namespace gum_tests {
 
       learner.addMandatoryArc("bronchitis", "lung_cancer");
 
-      learner.useAprioriSmoothing();
-      // learner.useAprioriDirichlet (  GET_RESSOURCES_PATH( "asia.csv" ) );
+      learner.useSmoothingPrior();
+      // learner.useDirichletPrior (  GET_RESSOURCES_PATH( "asia.csv" ) );
 
       gum::NodeProperty< gum::Size > slice_order{std::make_pair(gum::NodeId(0), (gum::Size)1),
                                                  std::make_pair(gum::NodeId(3), (gum::Size)0),
@@ -127,7 +127,7 @@ namespace gum_tests {
       {
         gum::learning::BNLearner< double > learner1(GET_RESSOURCES_PATH("csv/asia.csv"));
         learner1.useScoreBDeu();
-        learner1.useNoApriori();
+        learner1.useNoPrior();
         gum::BayesNet< double > bn1 = learner1.learnBN();
 
         gum::learning::BNLearner< double > learner2(GET_RESSOURCES_PATH("csv/asia.csv"),
@@ -140,7 +140,7 @@ namespace gum_tests {
         }
 
         learner2.useScoreBDeu();
-        learner2.useNoApriori();
+        learner2.useNoPrior();
         gum::BayesNet< double > bn2 = learner2.learnBN();
 
         TS_ASSERT_EQUALS(bn1.dag(), bn2.dag())
@@ -149,7 +149,7 @@ namespace gum_tests {
       {
         gum::learning::BNLearner< double > learner1(GET_RESSOURCES_PATH("csv/alarm.csv"));
         learner1.useScoreBDeu();
-        learner1.useNoApriori();
+        learner1.useNoPrior();
         gum::BayesNet< double > bn1 = learner1.learnBN();
 
         gum::learning::BNLearner< double > learner2(GET_RESSOURCES_PATH("csv/alarm.csv"),
@@ -163,7 +163,7 @@ namespace gum_tests {
         }
 
         learner2.useScoreBDeu();
-        learner2.useNoApriori();
+        learner2.useNoPrior();
         gum::BayesNet< double > bn2 = learner2.learnBN();
 
         TS_ASSERT_EQUALS(bn1.dag(), bn2.dag())
@@ -183,7 +183,7 @@ namespace gum_tests {
 
         gum::learning::BNLearner< double > learner1(
            GET_RESSOURCES_PATH("outputs/bnlearner_database.csv"));
-        learner1.useAprioriDirichlet(GET_RESSOURCES_PATH("outputs/bnlearner_dirichlet.csv"), 10);
+        learner1.useDirichletPrior(GET_RESSOURCES_PATH("outputs/bnlearner_dirichlet.csv"), 10);
         learner1.useScoreAIC();
         gum::BayesNet< double > xbn1 = learner1.learnBN();
 
@@ -198,7 +198,7 @@ namespace gum_tests {
                     || (var2->varType() == gum::VarType::Integer));
         }
 
-        learner2.useAprioriDirichlet(GET_RESSOURCES_PATH("outputs/bnlearner_dirichlet.csv"), 10);
+        learner2.useDirichletPrior(GET_RESSOURCES_PATH("outputs/bnlearner_dirichlet.csv"), 10);
         learner2.useScoreAIC();
         gum::BayesNet< double > xbn2 = learner2.learnBN();
 
@@ -219,7 +219,7 @@ namespace gum_tests {
 
       learner.useGreedyHillClimbing();
       learner.useScoreBIC();
-      learner.useAprioriSmoothing();
+      learner.useSmoothingPrior();
 
       const std::size_t k        = 5;
       const auto&       database = learner.database();
@@ -228,8 +228,8 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::SmoothingPrior       apriori(database);
-      apriori.setWeight(1);
+      gum::learning::SmoothingPrior       prior(database);
+      prior.setWeight(1);
 
       gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG >
          struct_constraint;
@@ -239,8 +239,8 @@ namespace gum_tests {
 
       gum::learning::GreedyHillClimbing search;
 
-      gum::learning::ScoreBIC         score(parser, apriori);
-      gum::learning::ParamEstimatorML estimator(parser, apriori, score.internalApriori());
+      gum::learning::ScoreBIC         score(parser, prior);
+      gum::learning::ParamEstimatorML estimator(parser, prior, score.internalApriori());
       for (std::size_t fold = 0; fold < k; fold++) {
         // create the ranges of rows over which we perform the learning
         const std::size_t unfold_deb = fold * foldSize;
@@ -370,7 +370,7 @@ namespace gum_tests {
 
     //     learner.useK2( std::vector<gum::NodeId>{1, 5, 2, 6, 0, 3, 4, 7} );
     //     learner.addMandatoryArc( "bronchitis", "lung_cancer" );
-    //     learner.useAprioriSmoothing();
+    //     learner.useSmoothingPrior();
 
     //     gum::NodeProperty<unsigned int> slice_order{
     //         std::make_pair( gum::NodeId( 0 ), 1 ),
@@ -406,7 +406,7 @@ namespace gum_tests {
 
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"), bn);
       learner.useScoreBIC();
-      learner.useAprioriSmoothing();
+      learner.useSmoothingPrior();
 
       gum::BayesNet< double > bn2 = learner.learnBN();
       for (auto& name: database.variableNames()) {
@@ -450,8 +450,8 @@ namespace gum_tests {
 
       learner.addMandatoryArc("bronchitis", "lung_cancer");
 
-      learner.useAprioriSmoothing();
-      // learner.useAprioriDirichlet (  GET_RESSOURCES_PATH( "asia.csv" ) );
+      learner.useSmoothingPrior();
+      // learner.useDirichletPrior (  GET_RESSOURCES_PATH( "asia.csv" ) );
 
       gum::NodeProperty< gum::Size > slice_order{std::make_pair(gum::NodeId(0), (gum::Size)1),
                                                  std::make_pair(gum::NodeId(3), (gum::Size)0),
@@ -489,7 +489,7 @@ namespace gum_tests {
       try {
         gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"));
         // GET_RESSOURCES_PATH("csv/asia3.csv"), modals);
-        learner.useAprioriSmoothing();
+        learner.useSmoothingPrior();
       } catch (gum::UnknownLabelInDatabase&) { except = true; }
 
       TS_ASSERT(except)
@@ -526,8 +526,8 @@ namespace gum_tests {
 
       learner.addMandatoryArc("bronchitis", "lung_cancer");
 
-      learner.useAprioriSmoothing();
-      // learner.useAprioriDirichlet (  GET_RESSOURCES_PATH( "asia.csv" ) );
+      learner.useSmoothingPrior();
+      // learner.useDirichletPrior (  GET_RESSOURCES_PATH( "asia.csv" ) );
 
       gum::NodeProperty< gum::Size > slice_order{std::make_pair(gum::NodeId(0), (gum::Size)1),
                                                  std::make_pair(gum::NodeId(3), (gum::Size)0),
@@ -566,7 +566,7 @@ namespace gum_tests {
       try {
         gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia.csv"));
         // learner(GET_RESSOURCES_PATH("csv/asia.csv"), modals);
-        learner.useAprioriSmoothing();
+        learner.useSmoothingPrior();
       } catch (gum::UnknownLabelInDatabase&) { except = true; }
 
       TS_ASSERT(except)
@@ -590,7 +590,7 @@ namespace gum_tests {
       dag.addArc(5, 7);
       dag.addArc(3, 6);
 
-      learner.useNoApriori();
+      learner.useNoPrior();
 
       try {
         gum::BayesNet< double > bn = learner.learnParameters(dag);
@@ -629,7 +629,7 @@ namespace gum_tests {
       dag.addArc(5, 7);
       dag.addArc(3, 6);
 
-      learner.useNoApriori();
+      learner.useNoPrior();
 
       try {
         gum::BayesNet< double > bn = learner.learnParameters(dag);
@@ -684,7 +684,7 @@ namespace gum_tests {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"), bn);
 
       learner.useScoreLog2Likelihood();
-      learner.useAprioriSmoothing();
+      learner.useSmoothingPrior();
 
       try {
         gum::BayesNet< double > bn2 = learner.learnParameters(bn.dag());
@@ -728,7 +728,7 @@ namespace gum_tests {
 
 
       // learner.useScoreLog2Likelihood();
-      // learner.useAprioriSmoothing();
+      // learner.useSmoothingPrior();
 
       // TS_ASSERT_THROWS(gum::BayesNet< double > bn2 =
       // learner.learnParameters(bn),
@@ -757,7 +757,7 @@ namespace gum_tests {
 
 
       learner.useScoreLog2Likelihood();
-      learner.useAprioriSmoothing();
+      learner.useSmoothingPrior();
 
       gum::BayesNet< double > bn2 = learner.learnParameters(bn.dag());
     }
@@ -877,7 +877,7 @@ namespace gum_tests {
         // inductive learning leads to scrambled modalities
         gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/DBN_Tonda.csv"));
         learner.useScoreLog2Likelihood();
-        learner.useAprioriSmoothing(1.0);
+        learner.useSmoothingPrior(1.0);
         learn1 = learner.learnParameters(dbn.dag());
       }
       gum::BayesNet< double > learn2;
@@ -900,7 +900,7 @@ namespace gum_tests {
           gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/DBN_Tonda.csv"),
                                                      learn1);
           learner.useScoreLog2Likelihood();
-          learner.useAprioriSmoothing(1.0);
+          learner.useSmoothingPrior(1.0);
           learn2 = learner.learnParameters(dbn.dag());
         } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
       }
@@ -909,7 +909,7 @@ namespace gum_tests {
         // while explicit learning does the right thing
         gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/DBN_Tonda.csv"), dbn);
         learner.useScoreLog2Likelihood();
-        learner.useAprioriSmoothing(1.0);
+        learner.useSmoothingPrior(1.0);
         learn3 = learner.learnParameters(dbn.dag());
       }
 
@@ -936,7 +936,7 @@ namespace gum_tests {
                                                    {"?"},
                                                    false);
         learner.useScoreLog2Likelihood();
-        learner.useAprioriSmoothing(1.0);
+        learner.useSmoothingPrior(1.0);
         learn4 = learner.learnParameters(dbn.dag());
       }
       TS_ASSERT_EQUALS(learn4.variable(learn1.idFromName("wl_0")).toString(),
@@ -1025,7 +1025,7 @@ namespace gum_tests {
 
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/bugDoumenc.csv"), templ);
       learner.useScoreLog2Likelihood();
-      learner.useAprioriSmoothing();
+      learner.useSmoothingPrior();
       auto bn = learner.learnParameters(templ.dag());
     }
 
@@ -1098,7 +1098,7 @@ namespace gum_tests {
 
       gum::learning::BNLearner learner(GET_RESSOURCES_PATH("csv/bugDoumenc.csv"), templ);
       learner.useScoreLog2Likelihood();
-      learner.useAprioriSmoothing();
+      learner.useSmoothingPrior();
 
       auto bn = learner.learnParameters(templ.dag());
 
@@ -1149,7 +1149,7 @@ namespace gum_tests {
       gum::learning::BNLearner< double > learner(
          GET_RESSOURCES_PATH("outputs/bnlearner_database.csv"),
          bn);
-      learner.useAprioriDirichlet(GET_RESSOURCES_PATH("outputs/bnlearner_dirichlet.csv"), 10);
+      learner.useDirichletPrior(GET_RESSOURCES_PATH("outputs/bnlearner_dirichlet.csv"), 10);
       learner.useScoreAIC();
 
       try {
@@ -1176,7 +1176,7 @@ namespace gum_tests {
       initializer.fillDatabase(database);
 
 
-      // read the apriori database
+      // read the prior database
       gum::learning::DBInitializerFromCSV dirichlet_initializer(
          GET_RESSOURCES_PATH("csv/db_dirichlet_apriori.csv"));
       const auto&       dirichlet_var_names = initializer.variableNames();
@@ -1193,11 +1193,11 @@ namespace gum_tests {
       dirichlet_database.reorder();
 
 
-      // create the score and the apriori
+      // create the score and the prior
       gum::learning::DBRowGeneratorSet          dirichlet_genset;
       gum::learning::DBRowGeneratorParser       dirichlet_parser(dirichlet_database.handler(),
                                                            dirichlet_genset);
-      gum::learning::DirichletPriorFromDatabase apriori(dirichlet_database, dirichlet_parser);
+      gum::learning::DirichletPriorFromDatabase prior(dirichlet_database, dirichlet_parser);
 
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
@@ -1209,14 +1209,14 @@ namespace gum_tests {
       learner.useScoreBIC();
 
       for (const auto weight: weights) {
-        apriori.setWeight(weight);
-        gum::learning::ScoreBIC score(parser, apriori);
+        prior.setWeight(weight);
+        gum::learning::ScoreBIC score(parser, prior);
 
         // finalize the learning algorithm
         gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG >
            struct_constraint;
 
-        gum::learning::ParamEstimatorML estimator(parser, apriori, score.internalApriori());
+        gum::learning::ParamEstimatorML estimator(parser, prior, score.internalApriori());
 
         gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) > op_set(
            struct_constraint);
@@ -1230,7 +1230,7 @@ namespace gum_tests {
         // std::cout << dag << std::endl;
 
 
-        learner.useAprioriDirichlet(GET_RESSOURCES_PATH("csv/db_dirichlet_apriori.csv"), weight);
+        learner.useDirichletPrior(GET_RESSOURCES_PATH("csv/db_dirichlet_apriori.csv"), weight);
 
         gum::BayesNet< double > xbn = learner.learnBN();
 
@@ -1255,7 +1255,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(learner.learnParameters(dag), const gum::MissingValueInDatabase&)
 
       learner.useEM(1e-3);
-      learner.useAprioriSmoothing();
+      learner.useSmoothingPrior();
 
       TS_GUM_ASSERT_THROWS_NOTHING(learner.learnParameters(dag, false))
       TS_GUM_ASSERT_THROWS_NOTHING(learner.nbrIterations())
@@ -1362,7 +1362,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(learner.nbCols(), (gum::Size)4)
 
       double siz = -1.0 * learner.database().size();
-      learner.useNoApriori();
+      learner.useNoPrior();
 
       auto stat = learner.logLikelihood({"A"}) / siz;   // LL=-N.H
       TS_ASSERT_DELTA(stat, 0.99943499, TS_GUM_SMALL_ERROR)
@@ -1514,7 +1514,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(learner.domainSize("Y"), 2u)
       TS_ASSERT_EQUALS(learner.domainSize(2), 3u)
       TS_ASSERT_EQUALS(learner.domainSize("Z"), 3u)
-      learner.useNoApriori();
+      learner.useNoPrior();
 
       TS_ASSERT_EQUALS(learner.rawPseudoCount(std::vector< gum::NodeId >({0})),
                        std::vector< double >({3, 4}));
@@ -1547,7 +1547,7 @@ namespace gum_tests {
       auto templ34 = gum::BayesNet< double >::fastPrototype("smoking[3]->lung_cancer[3]");
       gum::learning::BNLearner< double > learner3(GET_RESSOURCES_PATH("csv/asia.csv"), templ34);
       learner3.useScoreAIC();
-      learner3.useAprioriSmoothing(1e-6);
+      learner3.useSmoothingPrior(1e-6);
 
       auto bn3 = learner3.learnParameters(templ34.dag());
       {
@@ -1741,7 +1741,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(std::get< 1 >(state[9]), "1000.000000")
       }
       learner.useScoreAIC();
-      learner.useAprioriBDeu();
+      learner.useBDeuPrior();
       {
         auto state = learner.state();
         TS_ASSERT_EQUALS(state.size(), (gum::Size)11)
@@ -1755,7 +1755,7 @@ namespace gum_tests {
 
       learner.useGreedyHillClimbing();
       learner.useScoreBIC();
-      learner.useAprioriSmoothing();
+      learner.useSmoothingPrior();
 
       const std::size_t k        = 5;
       const auto&       database = learner.database();
@@ -1764,8 +1764,8 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::SmoothingPrior       apriori(database);
-      apriori.setWeight(1);
+      gum::learning::SmoothingPrior       prior(database);
+      prior.setWeight(1);
 
       gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG >
          struct_constraint;
@@ -1775,8 +1775,8 @@ namespace gum_tests {
 
       gum::learning::GreedyHillClimbing search;
 
-      gum::learning::ScoreBIC         score(parser, apriori);
-      gum::learning::ParamEstimatorML estimator(parser, apriori, score.internalApriori());
+      gum::learning::ScoreBIC         score(parser, prior);
+      gum::learning::ParamEstimatorML estimator(parser, prior, score.internalApriori());
       for (std::size_t fold = 0; fold < k; fold++) {
         // create the ranges of rows over which we perform the learning
         const std::size_t unfold_deb = fold * foldSize;

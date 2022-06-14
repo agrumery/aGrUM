@@ -59,18 +59,18 @@ namespace gum {
     }
 
 
-    /// indicates whether the apriori is compatible (meaningful) with the score
+    /// indicates whether the prior is compatible (meaningful) with the score
     std::string ScoreBD::isPriorCompatible(PriorType apriori_type, double weight) {
-      if (apriori_type == PriorType::NoPriorType) { return "The BD score requires an apriori"; }
+      if (apriori_type == PriorType::NoPriorType) { return "The BD score requires an prior"; }
 
       if (weight != 0.0) {
-        return "The apriori is currently compatible with the BD score but if "
+        return "The prior is currently compatible with the BD score but if "
                "you change the weight, it may become biased";
       }
 
-      // apriori types unsupported by the type checker
+      // prior types unsupported by the type checker
       std::stringstream msg;
-      msg << "The apriori '" << priorTypeToString(apriori_type)
+      msg << "The prior '" << priorTypeToString(apriori_type)
           << "' is not yet compatible with the score 'BD'.";
       return msg.str();
     }
@@ -78,14 +78,14 @@ namespace gum {
 
     /// returns the score corresponding to a given nodeset
     double ScoreBD::score_(const IdCondSet& idset) {
-      // if the weight of the apriori is 0, then gammaLog2 will fail
+      // if the weight of the prior is 0, then gammaLog2 will fail
       if (!this->apriori_->isInformative()) {
         GUM_ERROR(OutOfBounds,
-                  "The BD score requires its external apriori to "
+                  "The BD score requires its external prior to "
                      << "be strictly positive");
       }
 
-      // get the counts for all the nodes in the idset and add the apriori
+      // get the counts for all the nodes in the idset and add the prior
       std::vector< double > N_ijk(this->counter_.counts(idset, true));
       const std::size_t     all_size = N_ijk.size();
       std::vector< double > N_prime_ijk(all_size, 0.0);

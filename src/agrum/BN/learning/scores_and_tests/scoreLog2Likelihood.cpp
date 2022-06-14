@@ -59,18 +59,18 @@ namespace gum {
     }
 
 
-    /// indicates whether the apriori is compatible (meaningful) with the score
+    /// indicates whether the prior is compatible (meaningful) with the score
     std::string ScoreLog2Likelihood::isPriorCompatible(PriorType apriori_type, double weight) {
-      // check that the apriori is compatible with the score
+      // check that the prior is compatible with the score
       if ((apriori_type == PriorType::DirichletPriorType)
           || (apriori_type == PriorType::SmoothingPriorType)
           || (apriori_type == PriorType::NoPriorType)) {
         return "";
       }
 
-      // apriori types unsupported by the type checker
+      // prior types unsupported by the type checker
       std::stringstream msg;
-      msg << "The apriori '" << priorTypeToString(apriori_type)
+      msg << "The prior '" << priorTypeToString(apriori_type)
           << "' is not yet compatible with the score 'Log2Likelihood'.";
       return msg.str();
     }
@@ -78,7 +78,7 @@ namespace gum {
 
     /// returns the score corresponding to a given nodeset
     double ScoreLog2Likelihood::score_(const IdCondSet& idset) {
-      // get the counts for all the nodes in the idset and add the apriori
+      // get the counts for all the nodes in the idset and add the prior
       std::vector< double > N_ijk(this->counter_.counts(idset, true));
       const bool            informative_external_apriori = this->apriori_->isInformative();
       if (informative_external_apriori) this->apriori_->addAllApriori(idset, N_ijk);

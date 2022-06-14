@@ -119,17 +119,17 @@ def _ImplementPrior(aPriori, learner, aPrioriWeight, DirichletCsv):
   Tells the Bayesian network which prior to use
   """
   if (aPriori == 'Smoothing'):
-    learner.useAprioriSmoothing(aPrioriWeight)
+    learner.useSmoothingPrior(aPrioriWeight)
   elif aPriori == 'Dirichlet':
     if DirichletCsv == None:
       raise ValueError("Must specify file for dirichlet prior as a parameter to the classifier if using a dirichlet prior. DirichletCsv cannot be set to none if aPriori is set to Dirichlet")
-    learner.useAprioriDirichlet(DirichletCsv, aPrioriWeight)
+    learner.useDirichletPrior(DirichletCsv, aPrioriWeight)
   elif aPriori == 'BDeu':
-    learner.useAprioriBDeu(aPrioriWeight)
+    learner.useBDeuPrior(aPrioriWeight)
   elif aPriori == 'NoPrior':
-    learner.useNoApriori()
+    learner.useNoPrior()
   elif aPriori is None:  # default : (small) Laplace's adjustment
-    learner.useAprioriSmoothing(0.01)
+    learner.useSmoothingPrior(0.01)
   else:
     raise ValueError(
         "Invalid aPriori! Possible values are : Smoothing , Dirichlet , BDeu and NoPrior")

@@ -52,8 +52,8 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::NoPrior              apriori(database);
-      gum::learning::IndepTestG2          score(parser, apriori);
+      gum::learning::NoPrior              prior(database);
+      gum::learning::IndepTestG2          score(parser, prior);
 
       TS_ASSERT_DELTA(score.score(0, 1), 123.3614, 1e-3)
       TS_ASSERT_DELTA(score.score(3, 1), -0.2345, 1e-3)
@@ -92,8 +92,8 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::NoPrior              apriori(database);
-      gum::learning::IndepTestG2          score(parser, apriori);
+      gum::learning::NoPrior              prior(database);
+      gum::learning::IndepTestG2          score(parser, prior);
       // score.useCache ( false );
 
       for (gum::Idx i = 0; i < 1000; ++i) {
@@ -124,8 +124,8 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::NoPrior              apriori(database);
-      gum::learning::IndepTestG2          score(parser, apriori);
+      gum::learning::NoPrior              prior(database);
+      gum::learning::IndepTestG2          score(parser, prior);
       // score.useCache ( false );
 
       for (gum::Idx i = 0; i < 4; ++i) {
@@ -157,8 +157,8 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::NoPrior              apriori(database);
-      gum::learning::IndepTestG2          score(parser, apriori);
+      gum::learning::NoPrior              prior(database);
+      gum::learning::IndepTestG2          score(parser, prior);
 
       auto stats = score.statistics(0, 1);
       TS_ASSERT_DELTA(stats.first, 16.6066, 1e-3)

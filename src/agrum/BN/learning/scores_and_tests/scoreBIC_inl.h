@@ -36,10 +36,10 @@ namespace gum {
 
     /// default constructor
     INLINE ScoreBIC::ScoreBIC(const DBRowGeneratorParser&                                 parser,
-                              const Prior&                                                apriori,
+                              const Prior&                                                prior,
                               const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
                               const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        Score(parser, apriori, ranges, nodeId2columns),
+        Score(parser, prior, ranges, nodeId2columns),
         _internal_apriori_(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreBIC);
     }
@@ -47,9 +47,9 @@ namespace gum {
 
     /// default constructor
     INLINE ScoreBIC::ScoreBIC(const DBRowGeneratorParser&             parser,
-                              const Prior&                            apriori,
+                              const Prior&                            prior,
                               const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        Score(parser, apriori, nodeId2columns),
+        Score(parser, prior, nodeId2columns),
         _internal_apriori_(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreBIC);
     }
@@ -77,19 +77,19 @@ namespace gum {
     INLINE ScoreBIC::~ScoreBIC() { GUM_DESTRUCTOR(ScoreBIC); }
 
 
-    /// indicates whether the apriori is compatible (meaningful) with the score
-    INLINE std::string ScoreBIC::isPriorCompatible(const Prior& apriori) {
-      return isPriorCompatible(apriori.getType(), apriori.weight());
+    /// indicates whether the prior is compatible (meaningful) with the score
+    INLINE std::string ScoreBIC::isPriorCompatible(const Prior& prior) {
+      return isPriorCompatible(prior.getType(), prior.weight());
     }
 
 
-    /// indicates whether the apriori is compatible (meaningful) with the score
+    /// indicates whether the prior is compatible (meaningful) with the score
     INLINE std::string ScoreBIC::isPriorCompatible() const {
       return isPriorCompatible(*(this->apriori_));
     }
 
 
-    /// returns the internal apriori of the score
+    /// returns the internal prior of the score
     INLINE const Prior& ScoreBIC::internalApriori() const { return _internal_apriori_; }
 
   } /* namespace learning */

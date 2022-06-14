@@ -72,18 +72,18 @@ namespace gum {
       return *this;
     }
 
-    /// returns the type of the apriori
+    /// returns the type of the prior
     INLINE PriorType SmoothingPrior::getType() const { return PriorType::SmoothingPriorType; }
 
 
-    /// indicates whether the apriori is potentially informative
+    /// indicates whether the prior is potentially informative
     INLINE bool SmoothingPrior::isInformative() const { return this->weight_ != 0.0; }
 
 
-    /// returns the apriori vector all the variables in the idset
+    /// returns the prior vector all the variables in the idset
     INLINE void SmoothingPrior::addAllApriori(const IdCondSet&       idset,
                                               std::vector< double >& counts) {
-      // if the idset is empty or the weight is zero, the apriori is also empty
+      // if the idset is empty or the weight is zero, the prior is also empty
       if (idset.empty() || (this->weight_ == 0.0)) return;
 
       // otherwise, add the weight to all the cells in the counting vector

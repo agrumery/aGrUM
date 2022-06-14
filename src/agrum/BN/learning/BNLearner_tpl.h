@@ -103,7 +103,7 @@ namespace gum {
     /// learn a Bayes Net from a file
     template < typename GUM_SCALAR >
     BayesNet< GUM_SCALAR > BNLearner< GUM_SCALAR >::learnBN() {
-      // create the score, the apriori and the estimator
+      // create the score, the prior and the estimator
       auto notification = checkScoreAprioriCompatibility();
       if (notification != "") { std::cout << "[aGrUM notification] " << notification << std::endl; }
       createApriori_();
@@ -150,7 +150,7 @@ namespace gum {
         GUM_ERROR(MissingVariableInDatabase, str.str())
       }
 
-      // create the apriori
+      // create the prior
       createApriori_();
 
       if (epsilonEM_ == 0.0) {

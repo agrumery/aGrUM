@@ -124,7 +124,7 @@ namespace gum {
       /// apply
       enum class ParamEstimatorType { ML };
 
-      /// an enumeration to select the apriori
+      /// an enumeration to select the prior
       enum class BNLearnerPriorType {
         NO_APRIORI,
         SMOOTHING,
@@ -298,12 +298,12 @@ namespace gum {
 
         private:
         // returns the set of variables as a BN. This is convenient for
-        // the constructors of apriori Databases
+        // the constructors of prior Databases
         template < typename GUM_SCALAR >
         BayesNet< GUM_SCALAR > _BNVars_() const;
       };
 
-      /// sets the apriori weight
+      /// sets the prior weight
       void _setAprioriWeight_(double weight);
 
       public:
@@ -603,27 +603,27 @@ namespace gum {
       // ##########################################################################
       /// @{
 
-      /// use no apriori
-      void useNoApriori();
+      /// use no prior
+      void useNoPrior();
 
-      /// use the BDeu apriori
-      /** The BDeu apriori adds weight to all the cells of the countings
+      /// use the BDeu prior
+      /** The BDeu prior adds weight to all the cells of the countings
        * tables. In other words, it adds weight rows in the database with
        * equally probable values. */
-      void useAprioriBDeu(double weight = 1.0);
+      void useBDeuPrior(double weight = 1.0);
 
-      /// use the apriori smoothing
+      /// use the prior smoothing
       /** @param weight pass in argument a weight if you wish to assign a weight
        * to the smoothing, else the current weight of the GenericBNLearner will
        * be used. */
-      void useAprioriSmoothing(double weight = 1);
+      void useSmoothingPrior(double weight = 1);
 
-      /// use the Dirichlet apriori
-      void useAprioriDirichlet(const std::string& filename, double weight = 1);
+      /// use the Dirichlet prior
+      void useDirichletPrior(const std::string& filename, double weight = 1);
 
 
-      /// checks whether the current score and apriori are compatible
-      /** @returns a non empty string if the apriori is somehow compatible with the
+      /// checks whether the current score and prior are compatible
+      /** @returns a non empty string if the prior is somehow compatible with the
        * score.*/
       std::string checkScoreAprioriCompatibility() const;
       /// @}
@@ -792,12 +792,12 @@ namespace gum {
       /// the a priori selected for the score and parameters
       BNLearnerPriorType aprioriType_{BNLearnerPriorType::NO_APRIORI};
 
-      /// the apriori used
+      /// the prior used
       Prior* apriori_{nullptr};
 
       NoPrior* noApriori_{nullptr};
 
-      /// the weight of the apriori
+      /// the weight of the prior
       double aprioriWeight_{1.0f};
 
       /// the constraint for 2TBNs
@@ -872,7 +872,7 @@ namespace gum {
       /// checks whether the extension of a CSV filename is correct
       static void isCSVFileName_(const std::string& filename);
 
-      /// create the apriori used for learning
+      /// create the prior used for learning
       void createApriori_();
 
       /// create the score used for learning
@@ -888,7 +888,7 @@ namespace gum {
       /// prepares the initial graph for 3off2 or miic
       MixedGraph prepareMiic3Off2_();
 
-      /// returns the type (as a string) of a given apriori
+      /// returns the type (as a string) of a given prior
       PriorType getPriorType_() const;
 
       /// create the Corrected Mutual Information instance for Miic/3off2

@@ -439,14 +439,14 @@ namespace gum {
   /**
    * @class gum::IncompatibleScoreApriori agrum/tools/core/exceptions.h
    * @extends gum::LearningError
-   * Error: The score already contains a different 'implicit' apriori.
+   * Error: The score already contains a different 'implicit' prior.
    */
   class IncompatibleScoreApriori;
 
   /**
    * @class gum::PossiblyIncompatibleScoreApriori agrum/tools/core/exceptions.h
    * @extends gum::LearningError
-   * Error: Due to its weight, the apriori is currently compatible with the
+   * Error: Due to its weight, the prior is currently compatible with the
    *        score but if you change the weight, it will become incompatible"
    */
   class PossiblyIncompatibleScoreApriori;

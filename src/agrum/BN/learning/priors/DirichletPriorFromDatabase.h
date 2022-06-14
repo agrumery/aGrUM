@@ -40,7 +40,7 @@ namespace gum {
     /** @class DirichletPriorFromDatabase
      * @brief A dirichlet priori: computes its N'_ijk from a database
      * @headerfile DirichletPriorFromDatabase.h <agrum/tools/database/DirichletPriorFromDatabase.h>
-     * @ingroup learning_apriori
+     * @ingroup learnig_priors
      */
     class DirichletPriorFromDatabase: public Prior {
       public:
@@ -52,7 +52,7 @@ namespace gum {
       /// default constructor
       /** @param learning_db the database from which learning is performed.
        * This is useful to get access to the random variables
-       * @param apriori_parser the parser used to parse the apriori database
+       * @param apriori_parser the parser used to parse the prior database
        * @param nodeId2Columns a mapping from the ids of the nodes in the
        * graphical model to the corresponding column in learning_db.
        * This enables estimating from a database in which variable A corresponds
@@ -61,10 +61,10 @@ namespace gum {
        * is an identity, i.e., the value of a NodeId is equal to the index of
        * the column in the DatabaseTable.
        *
-       * @throws DatabaseError The apriori database may differ from the learning
-       * database, i.e., the apriori may have more nodes than the learning one.
+       * @throws DatabaseError The prior database may differ from the learning
+       * database, i.e., the prior may have more nodes than the learning one.
        * However, a check is performed to ensure that the variables within the
-       * apriori database that correspond to those in the learning database
+       * prior database that correspond to those in the learning database
        * (they have the same names) are exactly identical. If this is not the
        * case, then a DatabaseError exception is raised. */
       DirichletPriorFromDatabase(const DatabaseTable&                    learning_db,
@@ -106,31 +106,31 @@ namespace gum {
       // ##########################################################################
       /// @{
 
-      /// returns the type of the apriori
+      /// returns the type of the prior
       PriorType getType() const final;
 
-      /// indicates whether the apriori is potentially informative
+      /// indicates whether the prior is potentially informative
       /** Basically, only the NoApriori is uninformative. However, it may happen
-       * that, under some circumstances, an apriori, which is usually not equal
+       * that, under some circumstances, an prior, which is usually not equal
        * to the NoApriori, becomes equal to it (e.g., when the weight is equal
-       * to zero). In this case, if the apriori can detect this case, it shall
+       * to zero). In this case, if the prior can detect this case, it shall
        * inform the classes that use it that it is temporarily uninformative.
        * These classes will then be able to speed-up their code by avoiding to
-       * take into account the apriori in their computations. */
+       * take into account the prior in their computations. */
       bool isInformative() const final;
 
       /// sets the weight of the a priori (kind of effective sample size)
       void setWeight(double weight) final;
 
-      /// adds the apriori to a counting vector corresponding to the idset
-      /** adds the apriori to an already created counting vector defined over
+      /// adds the prior to a counting vector corresponding to the idset
+      /** adds the prior to an already created counting vector defined over
        * the union of the variables on both the left and right hand side of the
        * conditioning bar of the idset.
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint variables set. */
       virtual void addAllApriori(const IdCondSet& idset, std::vector< double >& counts) final;
 
-      /** @brief adds the apriori to a counting vectordefined over the right
+      /** @brief adds the prior to a counting vectordefined over the right
        * hand side of the idset
        *
        * @warning the method assumes that the size of the vector is exactly
@@ -144,12 +144,12 @@ namespace gum {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
       private:
-      // the record counter used to parse the apriori database
+      // the record counter used to parse the prior database
       RecordCounter _counter_;
 
-      // the internal weight is equal to weight_ / nb rows of apriori database
+      // the internal weight is equal to weight_ / nb rows of prior database
       // this internal weight is used to ensure that assigning a weight of 1
-      // to the apriori is equivalent to adding just one row to the learning
+      // to the prior is equivalent to adding just one row to the learning
       // database
       double _internal_weight_;
 
