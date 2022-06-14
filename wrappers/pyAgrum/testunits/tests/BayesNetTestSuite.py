@@ -568,7 +568,7 @@ class TestFeatures(BayesNetTestCase):
 
     ie2=gum.LazyPropagation(bn2)
     ie2.setEvidence(ev2)
-    ie2.makeInference(
+    ie2.makeInference()
 
     for n in bn2.names():
       self.assertEquals(ie.posterior(n),
