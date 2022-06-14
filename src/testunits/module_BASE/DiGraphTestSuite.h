@@ -360,7 +360,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(graph.hasDirectedPath(0, 4), true)
       TS_ASSERT_EQUALS(graph.hasDirectedPath(1, 1), true)
 
-      TS_ASSERT_THROWS(graph.directedPath(1, 2), gum::NotFound)
+      TS_ASSERT_THROWS(graph.directedPath(1, 2), const gum::NotFound&)
 
       std::vector< gum::NodeId > path2 = graph.directedUnorientedPath(1, 2);
       TS_ASSERT_EQUALS(path2.size(), 3U)

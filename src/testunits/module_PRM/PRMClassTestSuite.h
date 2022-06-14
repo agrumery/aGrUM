@@ -206,7 +206,7 @@ namespace gum_tests {
       PRMAttribute* attr = new PRMAttribute("attr", *_boolean_);
       c.add(attr);
       // Act & Assert
-      TS_ASSERT_THROWS(c.get("foo"), gum::NotFound)
+      TS_ASSERT_THROWS(c.get("foo"), const gum::NotFound&)
     }
 
     void testGetConstNotFound() {
@@ -216,7 +216,7 @@ namespace gum_tests {
       c.add(attr);
       const auto& const_c = c;
       // Act & Assert
-      TS_ASSERT_THROWS(const_c.get("foo"), gum::NotFound)
+      TS_ASSERT_THROWS(const_c.get("foo"), const gum::NotFound&)
     }
 
     void testAdd() {
@@ -238,7 +238,7 @@ namespace gum_tests {
       PRMAttribute* attr = new PRMAttribute("attr", *_boolean_);
       // Act & assert
       TS_ASSERT_THROWS_NOTHING(c.add(attr))
-      TS_ASSERT_THROWS(c.add(attr), gum::DuplicateElement)
+      TS_ASSERT_THROWS(c.add(attr), const gum::DuplicateElement&)
       TS_ASSERT_EQUALS(c.attributes().size(), (gum::Size)1)
     }
 
@@ -251,7 +251,7 @@ namespace gum_tests {
       PRMClass      c("class");
       PRMAttribute* attr = new PRMAttribute("attr", *_boolean_);
       // Act & assert
-      TS_ASSERT_THROWS(c.overload(attr), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(c.overload(attr), const gum::OperationNotAllowed&)
       // Cleanup
       delete attr;
     }
@@ -264,7 +264,7 @@ namespace gum_tests {
       PRMClass   sub_c("sub c", c);
       Reference* ref = new Reference("attr", c);
       // Act & Assert
-      TS_ASSERT_THROWS(sub_c.overload(ref), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(sub_c.overload(ref), const gum::OperationNotAllowed&)
       // Cleanup
       delete ref;
     }
@@ -279,7 +279,7 @@ namespace gum_tests {
       gum::prm::PRMType      type(var);
       PRMAttribute*          bttr = new PRMAttribute("attr", type);
       // Act & Assert
-      TS_ASSERT_THROWS(sub_c.overload(bttr), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(sub_c.overload(bttr), const gum::OperationNotAllowed&)
       // Cleanup
       delete bttr;
     }
@@ -370,7 +370,7 @@ namespace gum_tests {
       sub_c.overload(state);
       auto before = sub_c.attributes().size();
       // Act
-      TS_ASSERT_THROWS(sub_c.overload(state), gum::DuplicateElement)
+      TS_ASSERT_THROWS(sub_c.overload(state), const gum::DuplicateElement&)
       // Assert
       auto after = sub_c.attributes().size();
       TS_ASSERT(sub_c.exists(attr->safeName()))
@@ -403,7 +403,7 @@ namespace gum_tests {
       sub_c.overload(state);
       auto before = sub_c.attributes().size();
       // Act
-      TS_ASSERT_THROWS(sub_c.overload(state), gum::DuplicateElement)
+      TS_ASSERT_THROWS(sub_c.overload(state), const gum::DuplicateElement&)
       // Assert
       auto after = sub_c.attributes().size();
       for (int i = 0; i < size; i++) {
@@ -452,7 +452,7 @@ namespace gum_tests {
       PRMClass   c_4("c_4", c_3);
       Reference* sub_ref = new Reference("ref", c_3);
       // Act
-      TS_ASSERT_THROWS(c_4.overload(sub_ref), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(c_4.overload(sub_ref), const gum::OperationNotAllowed&)
       // Assert
       TS_ASSERT(c_4.exists(ref->safeName()))
       TS_ASSERT(c_4.exists(ref->name()))
@@ -481,7 +481,7 @@ namespace gum_tests {
       PRMClass      c_4("c_4", c_1);
       PRMSlotChain* chain_copy = new PRMSlotChain("ref_1.ref_2.attr", seq);
       // Act
-      TS_ASSERT_THROWS(c_4.overload(chain_copy), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(c_4.overload(chain_copy), const gum::OperationNotAllowed&)
       // Assert
       TS_ASSERT(c_4.exists(chain->safeName()))
       TS_ASSERT(c_4.exists(chain->name()))

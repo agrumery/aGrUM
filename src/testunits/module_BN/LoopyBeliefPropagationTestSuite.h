@@ -560,7 +560,7 @@ namespace gum_tests {
       try {
         // Testing the inference
         inf.makeInference();
-      } catch (gum::Exception e) { TS_ASSERT(false); }
+      } catch (const gum::Exception& e) { TS_ASSERT(false) }
       TS_ASSERT_EQUALS(agsl.getNbr() * inf.periodSize(), inf.nbrIterations())
       TS_ASSERT_DIFFERS(agsl.getMess(), std::string(""))
     }
@@ -603,7 +603,7 @@ namespace gum_tests {
       bn.addWeightedArc("Flu", "Fever", 0.8f);
       bn.addWeightedArc("Cold", "Fever", 0.4f);
 
-      TS_ASSERT_THROWS(bn.addWeightedArc("Malaria", "Cold", 0.8f), gum::InvalidArc)
+      TS_ASSERT_THROWS(bn.addWeightedArc("Malaria", "Cold", 0.8f), const gum::InvalidArc&)
 
       bn.addArc("Y", "X");
       bn.addArc("Fever", "X");

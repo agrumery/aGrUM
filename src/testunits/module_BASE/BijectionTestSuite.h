@@ -40,9 +40,9 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert(3, 4))
       TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert(5, 6))
 
-      TS_ASSERT_THROWS(bijection.insert(5, 6), gum::DuplicateElement)
-      TS_ASSERT_THROWS(bijection.insert(5, 7), gum::DuplicateElement)
-      TS_ASSERT_THROWS(bijection.insert(7, 6), gum::DuplicateElement)
+      TS_ASSERT_THROWS(bijection.insert(5, 6), const gum::DuplicateElement&)
+      TS_ASSERT_THROWS(bijection.insert(5, 7), const gum::DuplicateElement&)
+      TS_ASSERT_THROWS(bijection.insert(7, 6), const gum::DuplicateElement&)
 
       gum::Bijection< int, int > bijection2(bijection);
       TS_ASSERT_EQUALS(bijection2.size(), (gum::Size)(gum::Size)3)
@@ -89,9 +89,9 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert("b", "bb"))
       TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert("c", "bc"))
 
-      TS_ASSERT_THROWS(bijection.insert("b", "d"), gum::DuplicateElement)
-      TS_ASSERT_THROWS(bijection.insert("b", "bb"), gum::DuplicateElement)
-      TS_ASSERT_THROWS(bijection.insert("e", "bc"), gum::DuplicateElement)
+      TS_ASSERT_THROWS(bijection.insert("b", "d"), const gum::DuplicateElement&)
+      TS_ASSERT_THROWS(bijection.insert("b", "bb"), const gum::DuplicateElement&)
+      TS_ASSERT_THROWS(bijection.insert("e", "bc"), const gum::DuplicateElement&)
 
       gum::Bijection< std::string, std::string > bijection2(bijection);
       TS_ASSERT_EQUALS(bijection2.size(), (gum::Size)3)
@@ -480,9 +480,9 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int*)3, (int*)4))
       TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int*)5, (int*)6))
 
-      TS_ASSERT_THROWS(bijection.insert((int*)5, (int*)6), gum::DuplicateElement)
-      TS_ASSERT_THROWS(bijection.insert((int*)5, (int*)7), gum::DuplicateElement)
-      TS_ASSERT_THROWS(bijection.insert((int*)7, (int*)6), gum::DuplicateElement)
+      TS_ASSERT_THROWS(bijection.insert((int*)5, (int*)6), const gum::DuplicateElement&)
+      TS_ASSERT_THROWS(bijection.insert((int*)5, (int*)7), const gum::DuplicateElement&)
+      TS_ASSERT_THROWS(bijection.insert((int*)7, (int*)6), const gum::DuplicateElement&)
 
       gum::Bijection< int*, int* > bijection2 = bijection;
       TS_ASSERT_EQUALS(bijection2.size(), (gum::Size)3)

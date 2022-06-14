@@ -240,7 +240,7 @@ namespace gum_tests {
       // Arrange
       PRMAggregate agg("my_agg", AggType::MIN, *_boolean_);
       // Act
-      TS_ASSERT_THROWS(agg.label(), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(agg.label(), const gum::OperationNotAllowed&)
       // Assert
     }
 
@@ -274,7 +274,7 @@ namespace gum_tests {
       // Arrange
       PRMAggregate agg("my_agg", AggType::MIN, *_boolean_);
       // Act & Assert
-      TS_ASSERT_THROWS(agg.cpf(), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(agg.cpf(), const gum::OperationNotAllowed&)
     }
 
     void testCpfConst() {
@@ -282,7 +282,7 @@ namespace gum_tests {
       PRMAggregate agg("my_agg", AggType::MIN, *_boolean_);
       const auto&  const_agg = agg;
       // Act & Assert
-      TS_ASSERT_THROWS(const_agg.cpf(), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(const_agg.cpf(), const gum::OperationNotAllowed&)
     }
 
     void testBuildImplMin() {

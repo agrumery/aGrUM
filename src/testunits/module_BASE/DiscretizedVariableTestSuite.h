@@ -57,8 +57,8 @@ namespace gum_tests {
       gum::DiscretizedVariable< double > d("d", "Discretized variable", {3.1, 2.0, 4.0});
 
       TS_GUM_ASSERT_THROWS_NOTHING(d["2.5"])
-      TS_ASSERT_THROWS(d["0.5"], gum::OutOfBounds)
-      TS_ASSERT_THROWS(d["4.5"], gum::OutOfBounds)
+      TS_ASSERT_THROWS(d["0.5"], const gum::OutOfBounds&)
+      TS_ASSERT_THROWS(d["4.5"], const gum::OutOfBounds&)
 
       TS_ASSERT_EQUALS(d.numerical(0), (2.0 + 3.1) / 2)
       TS_ASSERT_EQUALS(d.numerical(1), (4.0 + 3.1) / 2)
@@ -74,7 +74,7 @@ namespace gum_tests {
     void testAddTicks() {
       gum::DiscretizedVariable< int > v("var", "a var");
 
-      TS_ASSERT_THROWS(v.tick((gum::Idx)1), gum::OutOfBounds)
+      TS_ASSERT_THROWS(v.tick((gum::Idx)1), const gum::OutOfBounds&)
 
       TS_ASSERT(v.empty())
       TS_ASSERT_EQUALS(v.domainSize(), (gum::Idx)0)
@@ -88,7 +88,7 @@ namespace gum_tests {
       TS_ASSERT(!v.empty())
       TS_ASSERT_EQUALS(v.domainSize(), (gum::Idx)2)
 
-      TS_ASSERT_THROWS(v.addTick(2), gum::DefaultInLabel)
+      TS_ASSERT_THROWS(v.addTick(2), const gum::DefaultInLabel&)
 
       std::stringstream s;
       s << v;
@@ -99,7 +99,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(v.tick((gum::Idx)1), 2)
       TS_ASSERT_EQUALS(v.tick((gum::Idx)2), 3)
 
-      TS_ASSERT_THROWS(v.tick((gum::Idx)3), gum::OutOfBounds)
+      TS_ASSERT_THROWS(v.tick((gum::Idx)3), const gum::OutOfBounds&)
     }
 
     void testNormalLimits() {
@@ -110,7 +110,7 @@ namespace gum_tests {
 
       gum::Size vv = (gum::Size)0;
 
-      TS_ASSERT_THROWS(v["0"], gum::OutOfBounds)
+      TS_ASSERT_THROWS(v["0"], const gum::OutOfBounds&)
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["1"])
       TS_ASSERT_EQUALS(vv, (gum::Size)0)
@@ -133,7 +133,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["7"])
       TS_ASSERT_EQUALS(vv, (gum::Size)2)
 
-      TS_ASSERT_THROWS(v["8"], gum::OutOfBounds)
+      TS_ASSERT_THROWS(v["8"], const gum::OutOfBounds&)
     }
 
     void testNormalLimitsWithEmpirical() {
@@ -200,8 +200,8 @@ namespace gum_tests {
       d.addTick(3.1).addTick(2.0).addTick(4.0);
 
       TS_GUM_ASSERT_THROWS_NOTHING(d["2.5"])
-      TS_ASSERT_THROWS(d["0.5"], gum::OutOfBounds)
-      TS_ASSERT_THROWS(d["4.5"], gum::OutOfBounds)
+      TS_ASSERT_THROWS(d["0.5"], const gum::OutOfBounds&)
+      TS_ASSERT_THROWS(d["4.5"], const gum::OutOfBounds&)
 
       d.addTick(-std::numeric_limits< double >::infinity());
       d.addTick(std::numeric_limits< double >::infinity());

@@ -119,7 +119,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(nb_dup, std::size_t(12))
 
       genset.setInputRow(input_row1);
-      TS_ASSERT_THROWS(genset.setColumnsOfInterest(cols_of_interest), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(genset.setColumnsOfInterest(cols_of_interest), const gum::OperationNotAllowed&)
       genset.reset();
 
       genset.setColumnsOfInterest(std::move(cols_of_interest));

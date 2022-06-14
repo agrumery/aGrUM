@@ -61,11 +61,11 @@ namespace gum_tests {
 
       gum::NetReader< double > reader(net, file);
 
-      TS_ASSERT_THROWS(reader.trace(false), gum::IOError)
+      TS_ASSERT_THROWS(reader.trace(false), const gum::IOError&)
 
       gum::Size nbrErr = 0;
 
-      TS_ASSERT_THROWS(nbrErr = reader.proceed(), gum::IOError)
+      TS_ASSERT_THROWS(nbrErr = reader.proceed(), const gum::IOError&)
 
       TS_ASSERT(!nbrErr)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)

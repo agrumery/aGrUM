@@ -413,7 +413,7 @@ namespace gum {
                   std::vector< NodeId > path = graph.directedPath(z, x);
                   // if we find a cycle, we force the competing edge
                   _latentCouples_.emplace_back(z, x);
-                } catch (gum::NotFound) { graph.addArc(x, z); }
+                } catch (const gum::NotFound&) { graph.addArc(x, z); }
                 graph.addArc(z, x);
               } else {
                 try {
@@ -421,7 +421,7 @@ namespace gum {
                   // if we find a cycle, we force the competing edge
                   graph.addArc(z, x);
                   _latentCouples_.emplace_back(z, x);
-                } catch (gum::NotFound) { graph.addArc(x, z); }
+                } catch (const gum::NotFound&) { graph.addArc(x, z); }
               }
               if (graph.existsArc(z, y)) {
                 graph.eraseArc(Arc(z, y));
@@ -429,7 +429,7 @@ namespace gum {
                   std::vector< NodeId > path = graph.directedPath(z, y);
                   // if we find a cycle, we force the competing edge
                   _latentCouples_.emplace_back(z, y);
-                } catch (gum::NotFound) { graph.addArc(y, z); }
+                } catch (const gum::NotFound&) { graph.addArc(y, z); }
                 graph.addArc(z, y);
               } else {
                 try {
@@ -438,7 +438,7 @@ namespace gum {
                   graph.addArc(z, y);
                   _latentCouples_.emplace_back(z, y);
 
-                } catch (gum::NotFound) { graph.addArc(y, z); }
+                } catch (const gum::NotFound&) { graph.addArc(y, z); }
               }
               if (graph.existsArc(z, x) && _isNotLatentCouple_(z, x)) {
                 _latentCouples_.emplace_back(z, x);
@@ -460,7 +460,7 @@ namespace gum {
               // if we find a cycle, we force the competing edge
               graph.addArc(y, z);
               _latentCouples_.emplace_back(y, z);
-            } catch (gum::NotFound) { graph.addArc(z, y); }
+            } catch (const gum::NotFound&) { graph.addArc(z, y); }
           }
           if (graph.existsArc(y, z) && !graph.existsArc(z, x) && !graph.existsArc(x, z)) {
             reset = true;
@@ -470,7 +470,7 @@ namespace gum {
               // if we find a cycle, we force the competing edge
               graph.addArc(x, z);
               _latentCouples_.emplace_back(x, z);
-            } catch (gum::NotFound) { graph.addArc(z, x); }
+            } catch (const gum::NotFound&) { graph.addArc(z, x); }
           }
 
           if (reset) {

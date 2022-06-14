@@ -70,8 +70,8 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(database.variableNames()[1], "x4")
         TS_ASSERT_EQUALS(database.variableNames()[2], "x5")
         TS_ASSERT_THROWS(database.setVariableNames({"x1", "x2", "x3", "x4"}, false),
-                         gum::SizeError);
-        TS_ASSERT_THROWS(database.setVariableNames({"x1", "x2"}, true), gum::SizeError)
+                         const gum::SizeError&)
+        TS_ASSERT_THROWS(database.setVariableNames({"x1", "x2"}, true), const gum::SizeError&)
         TS_ASSERT_EQUALS(database.nbVariables(), (std::size_t)3)
 
         std::vector< std::string > row(7, "toto");
@@ -80,7 +80,7 @@ namespace gum_tests {
         database.insertRow(row);
         TS_ASSERT_EQUALS(database.content().size(), (gum::Size)2)
         std::vector< std::string > row2(3, "toto");
-        TS_ASSERT_THROWS(database.insertRow(row2), gum::SizeError)
+        TS_ASSERT_THROWS(database.insertRow(row2), const gum::SizeError&)
 
         gum::learning::DatabaseTable db(database);
         TS_ASSERT_EQUALS(db.variableNames().size(), (gum::Size)3)
@@ -433,7 +433,7 @@ namespace gum_tests {
          2,
          gum::learning::DBTranslatedValue{2.0f},
          1.0f);
-      TS_ASSERT_THROWS(database2.insertRow(row2, xmiss), gum::SizeError)
+      TS_ASSERT_THROWS(database2.insertRow(row2, xmiss), const gum::SizeError&)
 
       gum::learning::DBRow< gum::learning::DBTranslatedValue > row3(
          3,
@@ -455,7 +455,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(handler3.row()[0].cont_val, 5.0f)
       database2.eraseLastRow();
       TS_ASSERT_EQUALS(handler2.row()[0].cont_val, 4.0f)
-      TS_ASSERT_THROWS(handler3.rowSafe()[0], gum::OutOfBounds)
+      TS_ASSERT_THROWS(handler3.rowSafe()[0], const gum::OutOfBounds&)
       database2.insertRow(row4, xmiss);
 
       auto uhandler2 = database2.begin();
@@ -574,7 +574,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(database.variable(2).name(), "v3")
 
       database.ignoreColumn(4);
-      TS_ASSERT_THROWS(database.insertTranslator(translator, 4), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(database.insertTranslator(translator, 4), const gum::OperationNotAllowed&)
 
       const auto xmiss = gum::learning::DatabaseTable::IsMissing::False;
       gum::learning::DBRow< gum::learning::DBTranslatedValue > row(
@@ -993,7 +993,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(ignored_vect[5], std::size_t(6))
       }
 
-      TS_ASSERT_THROWS(database2.insertTranslator(translator, 1), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(database2.insertTranslator(translator, 1), const gum::OperationNotAllowed&)
       database2.insertTranslator(translator, 2);
       {
         const auto cols = database2.inputColumns();
@@ -1289,7 +1289,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(database.variable(2).name(), "v3")
 
       database.ignoreColumn(4);
-      TS_ASSERT_THROWS(database.insertTranslator(translator, 4), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(database.insertTranslator(translator, 4), const gum::OperationNotAllowed&)
 
       const auto xmiss = gum::learning::DatabaseTable::IsMissing::False;
       gum::learning::DBRow< gum::learning::DBTranslatedValue > row(
@@ -1344,7 +1344,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(r1[0].discr_val, (std::size_t)0)
       TS_ASSERT_EQUALS(r2[0].discr_val, (std::size_t)2)
 
-      TS_ASSERT_THROWS(db1.changeTranslator(trans2, 2), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(db1.changeTranslator(trans2, 2), const gum::OperationNotAllowed&)
 
       std::vector< std::string >                  missing2{"?", "N/A", "??", "???"};
       gum::learning::DBTranslator4IntegerVariable trans3(intvar, missing2);
@@ -1360,7 +1360,7 @@ namespace gum_tests {
       gum::IntegerVariable intvar2("X1", "");
       intvar2.addValue(1);
       intvar2.addValue(2);
-      TS_ASSERT_THROWS(db1.changeTranslator(intvar2, 1), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(db1.changeTranslator(intvar2, 1), const gum::OperationNotAllowed&)
 
       gum::IntegerVariable intvar3("X1", "");
       intvar3.addValue(1);
@@ -1368,7 +1368,7 @@ namespace gum_tests {
       intvar3.addValue(3);
       std::vector< std::string > missing3{"?"};
       TS_ASSERT_THROWS_NOTHING(db1.changeTranslator(intvar3, 0, true, missing3))
-      TS_ASSERT_THROWS(db1.changeTranslator(intvar3, 2, true, missing3), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(db1.changeTranslator(intvar3, 2, true, missing3), const gum::OperationNotAllowed&)
 
       const auto better = db1.betterTranslators();
       TS_ASSERT(!better.empty())

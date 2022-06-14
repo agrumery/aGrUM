@@ -50,9 +50,9 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(queue1.size(), (gum::Size)0)
       TS_ASSERT_EQUALS(queue1.empty(), true)
       TS_ASSERT_EQUALS(queue1.contains("ZZZ"), false)
-      TS_ASSERT_THROWS(queue1.top(), gum::NotFound)
-      TS_ASSERT_THROWS(queue1.pop(), gum::NotFound)
-      TS_ASSERT_THROWS(queue1.topPriority(), gum::NotFound)
+      TS_ASSERT_THROWS(queue1.top(), const gum::NotFound&)
+      TS_ASSERT_THROWS(queue1.pop(), const gum::NotFound&)
+      TS_ASSERT_THROWS(queue1.topPriority(), const gum::NotFound&)
 
       queue1.insert("AAA", 8);
       queue1.insert("BBB", 10);
@@ -79,16 +79,16 @@ namespace gum_tests {
       queue1.setPriorityByPos(0, 4);
       TS_ASSERT_EQUALS(queue1.top(), "AAA")
       TS_ASSERT_EQUALS(queue1.topPriority(), 4)
-      TS_ASSERT_THROWS(queue1.setPriorityByPos(10, 4), gum::NotFound)
+      TS_ASSERT_THROWS(queue1.setPriorityByPos(10, 4), const gum::NotFound&)
 
       queue1.setPriority("BBB", 100);
       nb = 2;
       queue1.setPriority("BBB", nb);
       TS_ASSERT_EQUALS(queue1.top(), "BBB")
       TS_ASSERT_EQUALS(queue1.topPriority(), 2)
-      TS_ASSERT_THROWS(queue1.setPriority("zzz", 4), gum::NotFound)
+      TS_ASSERT_THROWS(queue1.setPriority("zzz", 4), const gum::NotFound&)
 
-      TS_ASSERT_THROWS(queue1.priority("zzz"), gum::NotFound)
+      TS_ASSERT_THROWS(queue1.priority("zzz"), const gum::NotFound&)
       TS_ASSERT_EQUALS(queue1.priority("BBB"), 2)
 
       queue1.resize(10);
@@ -175,9 +175,9 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(queue1.size(), (gum::Size)0)
       TS_ASSERT_EQUALS(queue1.empty(), true)
       TS_ASSERT_EQUALS(queue1.contains(32), false)
-      TS_ASSERT_THROWS(queue1.top(), gum::NotFound)
-      TS_ASSERT_THROWS(queue1.pop(), gum::NotFound)
-      TS_ASSERT_THROWS(queue1.topPriority(), gum::NotFound)
+      TS_ASSERT_THROWS(queue1.top(), const gum::NotFound&)
+      TS_ASSERT_THROWS(queue1.pop(), const gum::NotFound&)
+      TS_ASSERT_THROWS(queue1.topPriority(), const gum::NotFound&)
 
       queue1.insert(1, 8);
       queue1.insert(2, 10);
@@ -204,16 +204,16 @@ namespace gum_tests {
       queue1.setPriorityByPos(0, 4);
       TS_ASSERT_EQUALS(queue1.top(), 1)
       TS_ASSERT_EQUALS(queue1.topPriority(), 4)
-      TS_ASSERT_THROWS(queue1.setPriorityByPos(10, 4), gum::NotFound)
+      TS_ASSERT_THROWS(queue1.setPriorityByPos(10, 4), const gum::NotFound&)
 
       queue1.setPriority(2, 100);
       nb = 2;
       queue1.setPriority(2, nb);
       TS_ASSERT_EQUALS(queue1.top(), 2)
       TS_ASSERT_EQUALS(queue1.topPriority(), 2)
-      TS_ASSERT_THROWS(queue1.setPriority(25, 4), gum::NotFound)
+      TS_ASSERT_THROWS(queue1.setPriority(25, 4), const gum::NotFound&)
 
-      TS_ASSERT_THROWS(queue1.priority(25), gum::NotFound)
+      TS_ASSERT_THROWS(queue1.priority(25), const gum::NotFound&)
       TS_ASSERT_EQUALS(queue1.priority(2), 2)
 
       queue1.resize(10);
@@ -280,9 +280,9 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(queue1.size(), (gum::Size)0)
       TS_ASSERT_EQUALS(queue1.empty(), true)
       TS_ASSERT_EQUALS(queue1.contains(set1), false)
-      TS_ASSERT_THROWS(queue1.top(), gum::NotFound)
-      TS_ASSERT_THROWS(queue1.pop(), gum::NotFound)
-      TS_ASSERT_THROWS(queue1.topPriority(), gum::NotFound)
+      TS_ASSERT_THROWS(queue1.top(), const gum::NotFound&)
+      TS_ASSERT_THROWS(queue1.pop(), const gum::NotFound&)
+      TS_ASSERT_THROWS(queue1.topPriority(), const gum::NotFound&)
 
       queue1.insert(set1, 8);
       queue1.insert(set2, 10);
@@ -307,21 +307,21 @@ namespace gum_tests {
       queue1.setPriorityByPos(0, 4);
       TS_ASSERT_EQUALS(queue1.top(), set1)
       TS_ASSERT_EQUALS(queue1.topPriority(), 4)
-      TS_ASSERT_THROWS(queue1.setPriorityByPos(10, 4), gum::NotFound)
+      TS_ASSERT_THROWS(queue1.setPriorityByPos(10, 4), const gum::NotFound&)
 
       int nb = 2;
       queue1.setPriority(set2, nb);
       TS_ASSERT_EQUALS(queue1.top(), set2)
       TS_ASSERT_EQUALS(queue1.topPriority(), 2)
-      TS_ASSERT_THROWS(queue1.setPriority(set6, 4), gum::NotFound)
+      TS_ASSERT_THROWS(queue1.setPriority(set6, 4), const gum::NotFound&)
 
-      TS_ASSERT_THROWS(queue1.priority(set6), gum::NotFound)
+      TS_ASSERT_THROWS(queue1.priority(set6), const gum::NotFound&)
       TS_ASSERT_EQUALS(queue1.priority(set2), 2)
 
       queue1.resize(10);
       TS_ASSERT_EQUALS(queue1.capacity(), (gum::Size)10)
 
-      TS_ASSERT_THROWS(queue1.insert(set1, 10), gum::DuplicateElement)
+      TS_ASSERT_THROWS(queue1.insert(set1, 10), const gum::DuplicateElement&)
 
       const gum::HashTable< gum::Set< int >, gum::Size >& vals = queue1.allValues();
       TS_ASSERT_EQUALS(vals.size(), (gum::Size)4)
@@ -368,9 +368,9 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(queue1.size(), (gum::Size)0)
       TS_ASSERT_EQUALS(queue1.empty(), true)
       TS_ASSERT_EQUALS(queue1.contains("ZZZ"), false)
-      TS_ASSERT_THROWS(queue1.top(), gum::NotFound)
-      TS_ASSERT_THROWS(queue1.pop(), gum::NotFound)
-      TS_ASSERT_THROWS(queue1.topPriority(), gum::NotFound)
+      TS_ASSERT_THROWS(queue1.top(), const gum::NotFound&)
+      TS_ASSERT_THROWS(queue1.pop(), const gum::NotFound&)
+      TS_ASSERT_THROWS(queue1.topPriority(), const gum::NotFound&)
 
       queue1.insert("AAA", 8);
       queue1.insert("BBB", 10);
@@ -396,14 +396,14 @@ namespace gum_tests {
       queue1.setPriorityByPos(0, 4);
       TS_ASSERT_EQUALS(queue1.top(), "AAA")
       TS_ASSERT_EQUALS(queue1.topPriority(), 4)
-      TS_ASSERT_THROWS(queue1.setPriorityByPos(10, 4), gum::NotFound)
+      TS_ASSERT_THROWS(queue1.setPriorityByPos(10, 4), const gum::NotFound&)
 
       queue1.setPriority("BBB", 2);
       TS_ASSERT_EQUALS(queue1.top(), "BBB")
       TS_ASSERT_EQUALS(queue1.topPriority(), 2)
-      TS_ASSERT_THROWS(queue1.setPriority("zzz", 4), gum::NotFound)
+      TS_ASSERT_THROWS(queue1.setPriority("zzz", 4), const gum::NotFound&)
 
-      TS_ASSERT_THROWS(queue1.priority("zzz"), gum::NotFound)
+      TS_ASSERT_THROWS(queue1.priority("zzz"), const gum::NotFound&)
       TS_ASSERT_EQUALS(queue1.priority("BBB"), 2)
 
       queue1.resize(10);
@@ -473,9 +473,9 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(queue1.size(), (gum::Size)0)
       TS_ASSERT_EQUALS(queue1.empty(), true)
       TS_ASSERT_EQUALS(queue1.contains(set1), false)
-      TS_ASSERT_THROWS(queue1.top(), gum::NotFound)
-      TS_ASSERT_THROWS(queue1.pop(), gum::NotFound)
-      TS_ASSERT_THROWS(queue1.topPriority(), gum::NotFound)
+      TS_ASSERT_THROWS(queue1.top(), const gum::NotFound&)
+      TS_ASSERT_THROWS(queue1.pop(), const gum::NotFound&)
+      TS_ASSERT_THROWS(queue1.topPriority(), const gum::NotFound&)
 
       queue1.insert(set1, 8);
       queue1.insert(set2, 10);
@@ -501,14 +501,14 @@ namespace gum_tests {
       queue1.setPriorityByPos(0, 4);
       TS_ASSERT_EQUALS(queue1.top(), set1)
       TS_ASSERT_EQUALS(queue1.topPriority(), 4)
-      TS_ASSERT_THROWS(queue1.setPriorityByPos(10, 4), gum::NotFound)
+      TS_ASSERT_THROWS(queue1.setPriorityByPos(10, 4), const gum::NotFound&)
 
       queue1.setPriority(set2, 2);
       TS_ASSERT_EQUALS(queue1.top(), set2)
       TS_ASSERT_EQUALS(queue1.topPriority(), 2)
-      TS_ASSERT_THROWS(queue1.setPriority(set6, 4), gum::NotFound)
+      TS_ASSERT_THROWS(queue1.setPriority(set6, 4), const gum::NotFound&)
 
-      TS_ASSERT_THROWS(queue1.priority(set6), gum::NotFound)
+      TS_ASSERT_THROWS(queue1.priority(set6), const gum::NotFound&)
       TS_ASSERT_EQUALS(queue1.priority(set2), 2)
 
       queue1.resize(10);

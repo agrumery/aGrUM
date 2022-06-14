@@ -353,7 +353,7 @@ namespace gum_tests {
       readerb.proceed();
 
       gum::credal::CredalNet< double > cn(monBNa, monBNb);
-      TS_ASSERT_THROWS(cn.intervalToCredal(), gum::CPTError)
+      TS_ASSERT_THROWS(cn.intervalToCredal(), const gum::CPTError&)
     }
   };   // end of class CredalNetTestSuite
 

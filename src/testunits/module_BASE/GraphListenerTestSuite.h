@@ -506,7 +506,7 @@ namespace gum_tests {
       buildDAG(g);   // 5 nodes/6 arcs for g
 
       TS_ASSERT_THROWS(g.addArc(id5, id2),
-                       gum::InvalidDirectedCycle);   // should throw
+                       const gum::InvalidDirectedCycle&)   // should throw
       // InvalidDirectedCycle and should
       // not call the listeners
 

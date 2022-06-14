@@ -100,7 +100,7 @@ namespace gum_tests {
         try {
           // Testing the inference
           inf.makeInference();
-        } catch (gum::Exception e) { TS_ASSERT(false); }
+        } catch (const gum::Exception& e) { TS_ASSERT(false) }
 
         try {
           TS_ASSERT_EQUALS(inf.posterior(idList[0]),
@@ -109,7 +109,7 @@ namespace gum_tests {
           TS_ASSERT_EQUALS(
              inf.posterior(idList[1]),
              (gum::Potential< double >() << bn.variable(idList[1])).fillWith({0.1, 0.1, 0.1, 0.7}))
-        } catch (gum::Exception e) { TS_ASSERT(false); }
+        } catch (const gum::Exception& e) { TS_ASSERT(false) }
       }
 
       {
@@ -118,7 +118,7 @@ namespace gum_tests {
         try {
           // Testing the inference
           inf.makeInference();
-        } catch (gum::Exception e) { TS_ASSERT(false); }
+        } catch (const gum::Exception& e) { TS_ASSERT(false) }
 
         try {
           TS_ASSERT_EQUALS(inf.posterior(idList[0]),
@@ -127,7 +127,7 @@ namespace gum_tests {
           TS_ASSERT_EQUALS(
              inf.posterior(idList[1]),
              (gum::Potential< double >() << bn.variable(idList[1])).fillWith({0.1, 0.1, 0.1, 0.7}))
-        } catch (gum::Exception) { TS_ASSERT(false); }
+        } catch (const gum::Exception&) { TS_ASSERT(false) }
       }
     }
 
@@ -154,7 +154,7 @@ namespace gum_tests {
       bn.addWeightedArc(idFlu, idFever, 0.8f);
       bn.addWeightedArc(idCold, idFever, 0.4f);
 
-      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f), gum::InvalidArc)
+      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f), const gum::InvalidArc&)
 
       const gum::Potential< double >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
       pOneMoreParent1.fillWith(std::vector< double >{0.2f, 0.8f});
@@ -237,7 +237,7 @@ namespace gum_tests {
       bn.addWeightedArc(idFlu, idFever, 0.8f);
       bn.addWeightedArc(idCold, idFever, 0.4f);
 
-      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f), gum::InvalidArc)
+      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f), const gum::InvalidArc&)
 
       const gum::Potential< double >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
       // FILLING PARAMS
@@ -315,7 +315,7 @@ namespace gum_tests {
       gum::NodeId idFlu     = bn.add(flu);
       gum::NodeId idMalaria = bn.add(malaria);
       gum::NodeId idFever   = 0;
-      TS_ASSERT_THROWS(idFever = bn.addNoisyAND(fever, 0.0f), gum::InvalidArgument)
+      TS_ASSERT_THROWS(idFever = bn.addNoisyAND(fever, 0.0f), const gum::InvalidArgument&)
       TS_GUM_ASSERT_THROWS_NOTHING(idFever = bn.addNoisyAND(fever, 0.999f))
       gum::NodeId idOneMore        = bn.add(oneMore);
       gum::NodeId idOneMoreParent1 = bn.add(oneMoreParent1);
@@ -325,7 +325,7 @@ namespace gum_tests {
       bn.addWeightedArc(idFlu, idFever, 0.8f);
       bn.addWeightedArc(idCold, idFever, 0.4f);
 
-      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f), gum::InvalidArc)
+      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f), const gum::InvalidArc&)
 
       const gum::Potential< double >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
       // FILLING PARAMS

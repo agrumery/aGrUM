@@ -51,7 +51,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(next, next2)
 
       TS_GUM_ASSERT_THROWS_NOTHING(ngp.addNodeWithId(next2 + 1))
-      TS_ASSERT_THROWS(ngp.addNodeWithId(next2 + 1), gum::DuplicateElement)
+      TS_ASSERT_THROWS(ngp.addNodeWithId(next2 + 1), const gum::DuplicateElement&)
     }
 
     void testSuppression() {
@@ -66,7 +66,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(ngp.size(), (gum::Size)3)
 
       TS_GUM_ASSERT_THROWS_NOTHING(ngp.addNodeWithId(id3))
-      TS_ASSERT_THROWS(ngp.addNodeWithId(id3), gum::DuplicateElement)
+      TS_ASSERT_THROWS(ngp.addNodeWithId(id3), const gum::DuplicateElement&)
       TS_ASSERT_EQUALS(ngp.size(), (gum::Size)4)
 
       ngp.clear();
@@ -159,7 +159,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(ngp._sizeHoles_(), ((gum::Size)0))
       TS_ASSERT_EQUALS(ngp.bound(), g + 1)
 
-      TS_ASSERT_THROWS(ngp.addNodeWithId(f), gum::DuplicateElement)
+      TS_ASSERT_THROWS(ngp.addNodeWithId(f), const gum::DuplicateElement&)
     }
 
     void testGarbageCollecting() {

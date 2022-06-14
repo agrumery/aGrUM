@@ -342,7 +342,7 @@ namespace gum_tests {
       try {
         gum::ImportanceSampling< double > inf(&bn);
         inf.addEvidence(bn.idFromName("d"), 0);
-        TS_ASSERT_THROWS(inf.addEvidence("i", std::vector< double >{1, 0, 1}), gum::FatalError)
+        TS_ASSERT_THROWS(inf.addEvidence("i", std::vector< double >{1, 0, 1}), const gum::FatalError&)
 
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
@@ -444,7 +444,7 @@ namespace gum_tests {
         inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
         inf.makeInference();
 
-      } catch (gum::Exception e) TS_ASSERT(false)
+      } catch (const gum::Exception& e) TS_ASSERT(false)
 
       TS_ASSERT_EQUALS(agsl.getNbr() * inf.periodSize(), inf.nbrIterations())
       TS_ASSERT_DIFFERS(agsl.getMess(), std::string(""))

@@ -372,7 +372,7 @@ namespace gum_tests {
       std::vector< gum::NodeId > path3 = graph.undirectedPath(5, 6);
       TS_ASSERT_EQUALS(path3.size(), 2U)
 
-      TS_ASSERT_THROWS(graph.undirectedPath(1, 5), gum::NotFound)
+      TS_ASSERT_THROWS(graph.undirectedPath(1, 5), const gum::NotFound&)
     }
 
     void testConnexComponents() {

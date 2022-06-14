@@ -141,11 +141,11 @@ namespace gum_tests {
       gum::InfluenceDiagram< double >* topology = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(topology = new gum::InfluenceDiagram< double >())
 
-      TS_ASSERT_THROWS(topology->addArc(1, 2), gum::InvalidNode)
+      TS_ASSERT_THROWS(topology->addArc(1, 2), const gum::InvalidNode&)
       gum::List< gum::NodeId > idList;
       TS_GUM_ASSERT_THROWS_NOTHING(fill(*topology, idList))
 
-      TS_ASSERT_THROWS(topology->add(*decisionVar1), gum::DuplicateLabel)
+      TS_ASSERT_THROWS(topology->add(*decisionVar1), const gum::DuplicateLabel&)
 
       TS_GUM_ASSERT_THROWS_NOTHING(delete topology)
     }
@@ -344,7 +344,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[4])), *utilityVar2)
 
       gum::LabelizedVariable* utilityVar3 = new gum::LabelizedVariable("utilityVar3", "U3", 2);
-      TS_ASSERT_THROWS(id.addUtilityNode(*utilityVar3), gum::InvalidArgument)
+      TS_ASSERT_THROWS(id.addUtilityNode(*utilityVar3), const gum::InvalidArgument&)
       delete utilityVar3;
     }
 
@@ -365,8 +365,8 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(id.addArc(idList[3], idList[4]))
       TS_GUM_ASSERT_THROWS_NOTHING(id.addArc(idList[1], idList[4]))
 
-      TS_ASSERT_THROWS(id.addArc(idList[4], idList[0]), gum::InvalidArc)
-      TS_ASSERT_THROWS(id.addArc(idList[4], idList[3]), gum::InvalidArc)
+      TS_ASSERT_THROWS(id.addArc(idList[4], idList[0]), const gum::InvalidArc&)
+      TS_ASSERT_THROWS(id.addArc(idList[4], idList[3]), const gum::InvalidArc&)
 
       TS_ASSERT_EQUALS(id.dag().sizeArcs(), (gum::Size)6)
     }
@@ -625,13 +625,13 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(&id.variableFromName(id.variable(node).name()), &id.variable(node))
       }
 
-      TS_ASSERT_THROWS(id.idFromName("chorizo"), gum::NotFound)
+      TS_ASSERT_THROWS(id.idFromName("chorizo"), const gum::NotFound&)
 
-      TS_ASSERT_THROWS(id.variableFromName("chorizo"), gum::NotFound)
+      TS_ASSERT_THROWS(id.variableFromName("chorizo"), const gum::NotFound&)
 
       TS_GUM_ASSERT_THROWS_NOTHING(id.idFromName("decisionVar1"))
       id.erase(id.idFromName("decisionVar1"));
-      TS_ASSERT_THROWS(id.idFromName("decisionVar1"), gum::NotFound)
+      TS_ASSERT_THROWS(id.idFromName("decisionVar1"), const gum::NotFound&)
     }
 
     void testDecisionPath() {
@@ -641,7 +641,7 @@ namespace gum_tests {
       fill(id, idList);
 
       TS_ASSERT(!id.decisionOrderExists())
-      TS_ASSERT_THROWS(id.decisionOrder(), gum::NotFound)
+      TS_ASSERT_THROWS(id.decisionOrder(), const gum::NotFound&)
       id.addArc(idList[2], idList[1]);
       id.addArc(idList[7], idList[3]);
       TS_ASSERT(id.decisionOrderExists())
@@ -796,7 +796,7 @@ namespace gum_tests {
       TS_ASSERT(!diag.existsPathBetween(0, 1))
       TS_ASSERT(!diag.existsPathBetween("I", "D"))
 
-      TS_ASSERT_THROWS(diag.addArc("foo", "bar"), gum::NotFound)
+      TS_ASSERT_THROWS(diag.addArc("foo", "bar"), const gum::NotFound&)
     }
 
     void testFastPrototype() {

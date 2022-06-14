@@ -59,8 +59,8 @@ def processNotebook(notebook_filename):
         ep.preprocess(nb, {'metadata': {'path': '../doc/sphinx/notebooks/'}})
         break
       except RuntimeError as e:
-        # print("zmq error on "+os.path.basename(notebook_filename)+"... restarting")
-        if str(e) == "Kernel died before replying to kernel_info":
+        print(str(e))
+        if str(e) == "Kernel died before replying to kernel_info" or str(e)=="Kernel didn't respond in 60 seconds":
           time.sleep(random.randint(5, 10) / 10.0)
         else:
           raise CellExecutionError(traceback=str(e.__traceback__), ename=str(e), evalue="")

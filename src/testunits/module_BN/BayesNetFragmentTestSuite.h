@@ -152,7 +152,7 @@ namespace gum_tests {
 
       // install a non-existing node
       TS_ASSERT_EQUALS(bn.dag().exists((gum::NodeId)100), false)
-      TS_ASSERT_THROWS(frag.installNode((gum::NodeId)100), gum::NotFound)
+      TS_ASSERT_THROWS(frag.installNode((gum::NodeId)100), const gum::NotFound&)
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)1)
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)0)
 
@@ -200,7 +200,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)0)
 
       // install a non-existing node
-      TS_ASSERT_THROWS(frag.installNode("v100"), gum::NotFound)
+      TS_ASSERT_THROWS(frag.installNode("v100"), const gum::NotFound&)
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)1)
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)0)
 
@@ -612,7 +612,7 @@ namespace gum_tests {
 
       frag.installNode("B");
       TS_ASSERT(!frag.checkConsistency())
-      TS_ASSERT_THROWS(frag.toBN(), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(frag.toBN(), const gum::OperationNotAllowed&)
 
       // checking if the nodes are well copied and referenced in frag and then in
       // minibn checking if the potential are well copied

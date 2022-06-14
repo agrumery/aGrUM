@@ -412,7 +412,7 @@ namespace gum_tests {
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
         inf.makeInference();
 
-      } catch (gum::Exception e) {
+      } catch (const gum::Exception& e) {
         GUM_SHOWERROR(e);
         TS_ASSERT(false)
       }
@@ -430,7 +430,7 @@ namespace gum_tests {
       try {
         gum::MonteCarloSampling< double > inf(&bn);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
-      } catch (gum::Exception e) {
+      } catch (const gum::Exception& e) {
         GUM_SHOWERROR(e);
         TS_ASSERT(false)
       }

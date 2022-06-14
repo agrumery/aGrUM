@@ -109,9 +109,9 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id1, id4))
       TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(id4, id5))
 
-      TS_ASSERT_THROWS(graph.addArc(id5, id2), gum::InvalidDirectedCycle)
-      TS_ASSERT_THROWS(graph.addArc(1000, id2), gum::InvalidNode)
-      TS_ASSERT_THROWS(graph.addArc(id2, 1000), gum::InvalidNode)
+      TS_ASSERT_THROWS(graph.addArc(id5, id2), const gum::InvalidDirectedCycle&)
+      TS_ASSERT_THROWS(graph.addArc(1000, id2), const gum::InvalidNode&)
+      TS_ASSERT_THROWS(graph.addArc(id2, 1000), const gum::InvalidNode&)
     }
 
     void testCopyConstructor() {
@@ -370,7 +370,7 @@ namespace gum_tests {
     void testMonoCycle() {
       gum::DAG graph;
       auto     x = graph.addNode();
-      TS_ASSERT_THROWS(graph.addArc(x, x), gum::Exception)
+      TS_ASSERT_THROWS(graph.addArc(x, x), const gum::Exception&)
     }
   };
 }   // namespace gum_tests

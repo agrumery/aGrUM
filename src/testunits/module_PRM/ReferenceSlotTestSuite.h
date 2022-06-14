@@ -105,7 +105,7 @@ namespace gum_tests {
         PRMReferenceSlot ref("ref", *_A_);
         // Act & Assert
         _classEltTestSuite_->testSafeName(ref);
-      } catch (gum::Exception&) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
     void testCast_NotAllowed() {
@@ -175,7 +175,7 @@ namespace gum_tests {
       // Arrange
       PRMReferenceSlot ref("ref", *_A_, false);
       // Act & assert
-      TS_ASSERT_THROWS(ref.type(), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(ref.type(), const gum::OperationNotAllowed&)
     }
 
     void testTypeConst() {
@@ -183,14 +183,14 @@ namespace gum_tests {
       PRMReferenceSlot ref("ref", *_A_, false);
       const auto&      const_ref = ref;
       // Act & assert
-      TS_ASSERT_THROWS(const_ref.type(), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(const_ref.type(), const gum::OperationNotAllowed&)
     }
 
     void testCPF() {
       // Arrange
       PRMReferenceSlot ref("ref", *_A_, false);
       // Act & assert
-      TS_ASSERT_THROWS(ref.cpf(), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(ref.cpf(), const gum::OperationNotAllowed&)
     }
 
     void testCPFConst() {
@@ -198,7 +198,7 @@ namespace gum_tests {
       PRMReferenceSlot ref("ref", *_A_, false);
       const auto&      const_ref = ref;
       // Act & assert
-      TS_ASSERT_THROWS(const_ref.cpf(), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(const_ref.cpf(), const gum::OperationNotAllowed&)
     }
     /// @}
 

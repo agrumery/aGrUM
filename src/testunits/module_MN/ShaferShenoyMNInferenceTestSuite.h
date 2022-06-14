@@ -297,7 +297,7 @@ namespace gum_tests {
         auto mn = gum::MarkovNet< double >::fastPrototype("A--B;B--C");
         gum::ShaferShenoyMNInference< double > ie(&mn);
         ie.makeInference();
-        TS_ASSERT_THROWS(auto p = ie.jointPosterior({0, 2}), gum::UndefinedElement)
+        TS_ASSERT_THROWS(auto p = ie.jointPosterior({0, 2}), const gum::UndefinedElement&)
       }
       {
         auto mn = gum::MarkovNet< double >::fastPrototype("A--B;B--C");

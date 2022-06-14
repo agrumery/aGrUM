@@ -70,7 +70,7 @@ namespace gum_tests {
       gum::Instantiation i;
 
       TS_GUM_ASSERT_THROWS_NOTHING(i << a << b << c)
-      TS_ASSERT_THROWS(i << a, gum::DuplicateElement)
+      TS_ASSERT_THROWS(i << a, const gum::DuplicateElement&)
       TS_ASSERT_EQUALS(i.nbrDim(), (gum::Size)3)
       TS_ASSERT_EQUALS(i.domainSize(), (gum::Size)(2 * 4 * 5))
 
@@ -83,7 +83,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(i.toString(), "<a:1|b:2|c:4>")
 
       TS_GUM_ASSERT_THROWS_NOTHING(i >> b)
-      TS_ASSERT_THROWS(i >> b, gum::NotFound)
+      TS_ASSERT_THROWS(i >> b, const gum::NotFound&)
       TS_ASSERT_EQUALS(i.nbrDim(), (gum::Size)2)
       TS_ASSERT_EQUALS(i.domainSize(), (gum::Size)(2 * 5))
 
@@ -196,7 +196,7 @@ namespace gum_tests {
 
       gum::Instantiation inst(pot);
       gum::Instantiation instcomp(inst);
-      TS_ASSERT_THROWS(instcomp.reorder(Order), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(instcomp.reorder(Order), const gum::OperationNotAllowed&)
 
       inst.forgetMaster();
 
@@ -228,7 +228,7 @@ namespace gum_tests {
       gum::Instantiation i(t);
       i.setFirst();
       TS_ASSERT_EQUALS(i.toString(), "<a:0|b:0|c:0>")
-      TS_ASSERT_THROWS(i.actAsSlave(t2), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(i.actAsSlave(t2), const gum::OperationNotAllowed&)
 
       gum::Instantiation j;
       j << b << c;
@@ -244,7 +244,7 @@ namespace gum_tests {
       gum::DiscretizedVariable< double > d("d", "Discretized variable");
       ;
       TS_GUM_ASSERT_THROWS_NOTHING(d.addTick(3.1).addTick(2.0).addTick(4.0))
-      TS_ASSERT_THROWS(j << d, gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(j << d, const gum::OperationNotAllowed&)
       j.forgetMaster();
       TS_GUM_ASSERT_THROWS_NOTHING(j << d)
       j.chgVal(d, d["2.5"]);
@@ -305,10 +305,10 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(k.val(c), ip2.val(c))
 
       // slave = free- not same variables set
-      TS_ASSERT_THROWS(iq = k, gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(iq = k, const gum::OperationNotAllowed&)
 
       // slave = slave - not same master
-      TS_ASSERT_THROWS(iq = ip, gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(iq = ip, const gum::OperationNotAllowed&)
     }
 
     void testOffsetOperation() {

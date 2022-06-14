@@ -54,7 +54,7 @@ namespace gum_tests {
       const auto& i_bar = prm.getInterface("IBar");
       TS_ASSERT_EQUALS(i_bar.attributes().size(), (gum::Size)0)
       TS_ASSERT_EQUALS(i_bar.referenceSlots().size(), (gum::Size)0)
-      TS_ASSERT_THROWS(i_bar.super(), gum::NotFound)
+      TS_ASSERT_THROWS(i_bar.super(), const gum::NotFound&)
     }
 
     void testEmptyInterfaceError1() {
@@ -130,7 +130,7 @@ namespace gum_tests {
       const auto& i_bar = prm.getInterface("IBar");
       TS_ASSERT_EQUALS(i_bar.attributes().size(), (gum::Size)1)
       TS_ASSERT_EQUALS(i_bar.referenceSlots().size(), (gum::Size)0)
-      TS_ASSERT_THROWS(i_bar.super(), gum::NotFound)
+      TS_ASSERT_THROWS(i_bar.super(), const gum::NotFound&)
     }
 
     void testSimpleInterfaceError1() {
@@ -153,7 +153,7 @@ namespace gum_tests {
       const auto& i_bar = prm.getInterface("IBar");
       TS_ASSERT_EQUALS(i_bar.attributes().size(), (gum::Size)0)
       TS_ASSERT_EQUALS(i_bar.referenceSlots().size(), (gum::Size)0)
-      TS_ASSERT_THROWS(i_bar.super(), gum::NotFound)
+      TS_ASSERT_THROWS(i_bar.super(), const gum::NotFound&)
     }
 
     void testSimpleInterfaceError2() {
@@ -248,7 +248,7 @@ namespace gum_tests {
       const auto& i_bar = prm.getInterface("IBar");
       TS_ASSERT_EQUALS(i_bar.attributes().size(), (gum::Size)1)
       TS_ASSERT_EQUALS(i_bar.referenceSlots().size(), (gum::Size)0)
-      TS_ASSERT_THROWS(i_bar.super(), gum::NotFound)
+      TS_ASSERT_THROWS(i_bar.super(), const gum::NotFound&)
     }
 
     void testSimpleInterfaceError6() {
@@ -274,7 +274,7 @@ namespace gum_tests {
       const auto& i_bar = prm.getInterface("IBar");
       TS_ASSERT_EQUALS(i_bar.attributes().size(), (gum::Size)1)
       TS_ASSERT_EQUALS(i_bar.referenceSlots().size(), (gum::Size)0)
-      TS_ASSERT_THROWS(i_bar.super(), gum::NotFound)
+      TS_ASSERT_THROWS(i_bar.super(), const gum::NotFound&)
     }
 
     void testInterfaceWithReference() {
@@ -297,12 +297,12 @@ namespace gum_tests {
       const auto& i_foo = prm.getInterface("IFoo");
       TS_ASSERT_EQUALS(i_foo.attributes().size(), (gum::Size)1)
       TS_ASSERT_EQUALS(i_foo.referenceSlots().size(), (gum::Size)0)
-      TS_ASSERT_THROWS(i_foo.super(), gum::NotFound)
+      TS_ASSERT_THROWS(i_foo.super(), const gum::NotFound&)
       TS_ASSERT(prm.isInterface("IBar"))
       const auto& i_bar = prm.getInterface("IBar");
       TS_ASSERT_EQUALS(i_bar.attributes().size(), (gum::Size)1)
       TS_ASSERT_EQUALS(i_bar.referenceSlots().size(), (gum::Size)1)
-      TS_ASSERT_THROWS(i_bar.super(), gum::NotFound)
+      TS_ASSERT_THROWS(i_bar.super(), const gum::NotFound&)
     }
 
     void testSuperInterface() {
@@ -324,7 +324,7 @@ namespace gum_tests {
       const auto& i_foo = prm.getInterface("IFoo");
       TS_ASSERT_EQUALS(i_foo.attributes().size(), (gum::Size)1)
       TS_ASSERT_EQUALS(i_foo.referenceSlots().size(), (gum::Size)0)
-      TS_ASSERT_THROWS(i_foo.super(), gum::NotFound)
+      TS_ASSERT_THROWS(i_foo.super(), const gum::NotFound&)
       TS_ASSERT(prm.isInterface("IBar"))
       const auto& i_bar = prm.getInterface("IBar");
       TS_ASSERT_EQUALS(i_bar.attributes().size(), (gum::Size)2)
@@ -428,7 +428,7 @@ namespace gum_tests {
       const auto& i_foo = prm.getInterface("IFoo");
       TS_ASSERT_EQUALS(i_foo.attributes().size(), (gum::Size)1)
       TS_ASSERT_EQUALS(i_foo.referenceSlots().size(), (gum::Size)0)
-      TS_ASSERT_THROWS(i_foo.super(), gum::NotFound)
+      TS_ASSERT_THROWS(i_foo.super(), const gum::NotFound&)
       TS_ASSERT(prm.isInterface("IBar"))
       const auto& i_bar = prm.getInterface("IBar");
       TS_ASSERT_EQUALS(i_bar.attributes().size(), (gum::Size)2)
@@ -458,7 +458,7 @@ namespace gum_tests {
       const auto& i_plop = prm.getInterface("IPlop");
       TS_ASSERT_EQUALS(i_plop.attributes().size(), (gum::Size)0)
       TS_ASSERT_EQUALS(i_plop.referenceSlots().size(), (gum::Size)1)
-      TS_ASSERT_THROWS(i_plop.super(), gum::NotFound)
+      TS_ASSERT_THROWS(i_plop.super(), const gum::NotFound&)
       TS_ASSERT(prm.isInterface("IPloc"))
       const auto& i_ploc = prm.getInterface("IPloc");
       TS_ASSERT_EQUALS(i_ploc.attributes().size(), (gum::Size)0)
@@ -486,7 +486,7 @@ namespace gum_tests {
       const auto& i_bar = prm.getInterface("IBar");
       TS_ASSERT_EQUALS(i_bar.attributes().size(), (gum::Size)1)
       TS_ASSERT_EQUALS(i_bar.referenceSlots().size(), (gum::Size)0)
-      TS_ASSERT_THROWS(i_bar.super(), gum::NotFound)
+      TS_ASSERT_THROWS(i_bar.super(), const gum::NotFound&)
     }
 
     void testOrderDoesNotMatter2() {
@@ -511,7 +511,7 @@ namespace gum_tests {
       const auto& i_foo = prm.getInterface("IFoo");
       TS_ASSERT_EQUALS(i_foo.attributes().size(), (gum::Size)1)
       TS_ASSERT_EQUALS(i_foo.referenceSlots().size(), (gum::Size)0)
-      TS_ASSERT_THROWS(i_foo.super(), gum::NotFound)
+      TS_ASSERT_THROWS(i_foo.super(), const gum::NotFound&)
       TS_ASSERT(prm.isInterface("IBar"))
       const auto& i_bar = prm.getInterface("IBar");
       TS_ASSERT_EQUALS(i_bar.attributes().size(), (gum::Size)2)
@@ -540,11 +540,11 @@ namespace gum_tests {
       const auto& i_foo = prm.getInterface("IFoo");
       TS_ASSERT_EQUALS(i_foo.attributes().size(), (gum::Size)1)
       TS_ASSERT_EQUALS(i_foo.referenceSlots().size(), (gum::Size)0)
-      TS_ASSERT_THROWS(i_foo.super(), gum::NotFound)
+      TS_ASSERT_THROWS(i_foo.super(), const gum::NotFound&)
       TS_ASSERT(prm.isInterface("IBar"))
       const auto& i_bar = prm.getInterface("IBar");
       TS_ASSERT_EQUALS(i_bar.attributes().size(), (gum::Size)1)
-      TS_ASSERT_THROWS(i_bar.super(), gum::NotFound)
+      TS_ASSERT_THROWS(i_bar.super(), const gum::NotFound&)
     }
 
     void testOrderDoesNotMatter4() {
@@ -570,12 +570,12 @@ namespace gum_tests {
       const auto& i_foo = prm.getInterface("IFoo");
       TS_ASSERT_EQUALS(i_foo.attributes().size(), (gum::Size)1)
       TS_ASSERT_EQUALS(i_foo.referenceSlots().size(), (gum::Size)1)
-      TS_ASSERT_THROWS(i_foo.super(), gum::NotFound)
+      TS_ASSERT_THROWS(i_foo.super(), const gum::NotFound&)
       TS_ASSERT(prm.isInterface("IBar"))
       const auto& i_bar = prm.getInterface("IBar");
       TS_ASSERT_EQUALS(i_bar.attributes().size(), (gum::Size)1)
       TS_ASSERT_EQUALS(i_bar.referenceSlots().size(), (gum::Size)1)
-      TS_ASSERT_THROWS(i_bar.super(), gum::NotFound)
+      TS_ASSERT_THROWS(i_bar.super(), const gum::NotFound&)
     }
 
     void testInterfaceWithReferenceError() {

@@ -256,8 +256,8 @@ namespace gum_tests {
       __Potential pa(get_marginal(joint, BN_node_index[0]));
       __Potential pc(get_marginal(joint, BN_node_index[2]));
 
-      TS_ASSERT_THROWS(inf.posterior(BN_node_index[3]), gum::UndefinedElement)
-      TS_ASSERT_THROWS(inf.posterior(BN_node_index[1]), gum::UndefinedElement)
+      TS_ASSERT_THROWS(inf.posterior(BN_node_index[3]), const gum::UndefinedElement&)
+      TS_ASSERT_THROWS(inf.posterior(BN_node_index[1]), const gum::UndefinedElement&)
 
       TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[0]), *pa))
       TS_ASSERT(equalPotentials(inf.posterior(BN_node_index[2]), *pc))

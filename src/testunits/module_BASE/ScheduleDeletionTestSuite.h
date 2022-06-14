@@ -104,7 +104,7 @@ namespace gum_tests {
       TS_ASSERT(f1.isAbstract());
       TS_ASSERT(arg1.isAbstract());
 
-      TS_ASSERT_THROWS(del1.undo(), gum::OperationNotAllowed);
+      TS_ASSERT_THROWS(del1.undo(), const gum::OperationNotAllowed&);
 
       TS_ASSERT(del2.nbOperations() == 1.0);
       const std::pair< double, double > xxx2 = del2.memoryUsage();

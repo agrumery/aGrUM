@@ -34,30 +34,30 @@ namespace gum_tests {
 
       gum::learning::DBCell cell1;
       TS_ASSERT_EQUALS(cell1.type(), gum::learning::DBCell::EltType::MISSING)
-      TS_ASSERT_THROWS(cell1.integer(), gum::TypeError)
-      TS_ASSERT_THROWS(cell1.string(), gum::TypeError)
-      TS_ASSERT_THROWS(cell1.real(), gum::TypeError)
+      TS_ASSERT_THROWS(cell1.integer(), const gum::TypeError&)
+      TS_ASSERT_THROWS(cell1.string(), const gum::TypeError&)
+      TS_ASSERT_THROWS(cell1.real(), const gum::TypeError&)
       TS_ASSERT_EQUALS(cell1.toString(miss), "N/A")
 
       gum::learning::DBCell cell2(3.5f);
       TS_ASSERT_EQUALS(cell2.type(), gum::learning::DBCell::EltType::REAL)
-      TS_ASSERT_THROWS(cell2.integer(), gum::TypeError)
-      TS_ASSERT_THROWS(cell2.string(), gum::TypeError)
+      TS_ASSERT_THROWS(cell2.integer(), const gum::TypeError&)
+      TS_ASSERT_THROWS(cell2.string(), const gum::TypeError&)
       TS_ASSERT_EQUALS(cell2.isMissing(), false)
       TS_ASSERT_EQUALS(cell2.real(), 3.5f)
       TS_ASSERT_EQUALS(std::stof(cell2.toString(miss)), 3.5f)
 
       gum::learning::DBCell cell3(int(3));
       TS_ASSERT_EQUALS(cell3.type(), gum::learning::DBCell::EltType::INTEGER)
-      TS_ASSERT_THROWS(cell3.real(), gum::TypeError)
-      TS_ASSERT_THROWS(cell3.string(), gum::TypeError)
+      TS_ASSERT_THROWS(cell3.real(), const gum::TypeError&)
+      TS_ASSERT_THROWS(cell3.string(), const gum::TypeError&)
       TS_ASSERT_EQUALS(cell3.isMissing(), false)
       TS_ASSERT_EQUALS(cell3.integer(), 3)
 
       gum::learning::DBCell cell3b("toto");
       TS_ASSERT_EQUALS(cell3b.type(), gum::learning::DBCell::EltType::STRING)
-      TS_ASSERT_THROWS(cell3b.real(), gum::TypeError)
-      TS_ASSERT_THROWS(cell3b.integer(), gum::TypeError)
+      TS_ASSERT_THROWS(cell3b.real(), const gum::TypeError&)
+      TS_ASSERT_THROWS(cell3b.integer(), const gum::TypeError&)
       TS_ASSERT_EQUALS(cell3b.isMissing(), false)
       TS_ASSERT_EQUALS(cell3b.string(), "toto")
 
@@ -104,9 +104,9 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(cell4.integer(), 3)
       cell4.convertType(gum::learning::DBCell::EltType::MISSING);
       TS_ASSERT_EQUALS(cell4.type(), gum::learning::DBCell::EltType::MISSING)
-      TS_ASSERT_THROWS(cell4.real(), gum::TypeError)
-      TS_ASSERT_THROWS(cell4.integer(), gum::TypeError)
-      TS_ASSERT_THROWS(cell4.string(), gum::TypeError)
+      TS_ASSERT_THROWS(cell4.real(), const gum::TypeError&)
+      TS_ASSERT_THROWS(cell4.integer(), const gum::TypeError&)
+      TS_ASSERT_THROWS(cell4.string(), const gum::TypeError&)
 
       cell4.setReal(4.5);
       TS_ASSERT_EQUALS(cell4.type(), gum::learning::DBCell::EltType::REAL)
@@ -119,10 +119,10 @@ namespace gum_tests {
       cell4.setReal("55");
       TS_ASSERT_EQUALS(cell4.type(), gum::learning::DBCell::EltType::REAL)
       TS_ASSERT_EQUALS(cell4.real(), 55.0f)
-      TS_ASSERT_THROWS(cell4.setReal("toto"), gum::TypeError)
+      TS_ASSERT_THROWS(cell4.setReal("toto"), const gum::TypeError&)
       TS_ASSERT_EQUALS(cell4.type(), gum::learning::DBCell::EltType::REAL)
       TS_ASSERT_EQUALS(cell4.real(), 55.0f)
-      TS_ASSERT_THROWS(cell4.setReal("3.4toto"), gum::TypeError)
+      TS_ASSERT_THROWS(cell4.setReal("3.4toto"), const gum::TypeError&)
       TS_ASSERT_EQUALS(cell4.type(), gum::learning::DBCell::EltType::REAL)
       TS_ASSERT_EQUALS(cell4.real(), 55.0f)
 
@@ -146,9 +146,9 @@ namespace gum_tests {
 
       cell4.setMissingState();
       TS_ASSERT_EQUALS(cell4.type(), gum::learning::DBCell::EltType::MISSING)
-      TS_ASSERT_THROWS(cell4.integer(), gum::TypeError)
-      TS_ASSERT_THROWS(cell4.string(), gum::TypeError)
-      TS_ASSERT_THROWS(cell4.real(), gum::TypeError)
+      TS_ASSERT_THROWS(cell4.integer(), const gum::TypeError&)
+      TS_ASSERT_THROWS(cell4.string(), const gum::TypeError&)
+      TS_ASSERT_THROWS(cell4.real(), const gum::TypeError&)
     }
   };
 

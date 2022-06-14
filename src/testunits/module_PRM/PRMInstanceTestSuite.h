@@ -204,7 +204,7 @@ namespace gum_tests {
       // Arrange
       PRMInstance i("i", *_classA_);
       // Act & Assert
-      TS_ASSERT_THROWS(i.get("azeaze"), gum::NotFound)
+      TS_ASSERT_THROWS(i.get("azeaze"), const gum::NotFound&)
     }
 
     void testGetByNameConstNotFound() {
@@ -212,7 +212,7 @@ namespace gum_tests {
       PRMInstance i("i", *_classA_);
       const auto& const_i = i;
       // Act & Assert
-      TS_ASSERT_THROWS(const_i.get("azeaze"), gum::NotFound)
+      TS_ASSERT_THROWS(const_i.get("azeaze"), const gum::NotFound&)
     }
 
     void testGetById() {
@@ -248,7 +248,7 @@ namespace gum_tests {
       // Arrange
       PRMInstance i("i", *_classA_);
       // Act & Assert
-      TS_ASSERT_THROWS(i.get(666), gum::NotFound)
+      TS_ASSERT_THROWS(i.get(666), const gum::NotFound&)
     }
 
     void testGetByIdConstNotFound() {
@@ -256,7 +256,7 @@ namespace gum_tests {
       PRMInstance i("i", *_classA_);
       const auto& const_i = i;
       // Act & Assert
-      TS_ASSERT_THROWS(const_i.get(666), gum::NotFound)
+      TS_ASSERT_THROWS(const_i.get(666), const gum::NotFound&)
     }
 
     void testSize() {

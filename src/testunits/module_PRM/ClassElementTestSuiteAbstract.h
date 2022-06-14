@@ -105,7 +105,7 @@ namespace gum_tests {
       gum::prm::PRMType      bar{foo};
       // Assert
       try {
-        TS_ASSERT_THROWS(elt.cast(bar), gum::OperationNotAllowed)
+        TS_ASSERT_THROWS(elt.cast(bar), const gum::OperationNotAllowed&)
       } catch (gum::OperationNotAllowed&) {}
     }
 

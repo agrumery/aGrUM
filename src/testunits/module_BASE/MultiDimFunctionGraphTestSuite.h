@@ -212,17 +212,17 @@ namespace gum_tests {
         // test terminal node value
         TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->nodeValue(16))
         TS_ASSERT_EQUALS(functionGraph->nodeValue(16), 0)
-        TS_ASSERT_THROWS(functionGraph->nodeValue(6), gum::InvalidArgument)
-        TS_ASSERT_THROWS(functionGraph->nodeValue(24), gum::InvalidArgument)
+        TS_ASSERT_THROWS(functionGraph->nodeValue(6), const gum::InvalidArgument&)
+        TS_ASSERT_THROWS(functionGraph->nodeValue(24), const gum::InvalidArgument&)
 
         // Test internal node structure
         TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->node(6))
-        TS_ASSERT_THROWS(functionGraph->node(16), gum::InvalidArgument)
-        TS_ASSERT_THROWS(functionGraph->node(24), gum::InvalidArgument)
+        TS_ASSERT_THROWS(functionGraph->node(16), const gum::InvalidArgument&)
+        TS_ASSERT_THROWS(functionGraph->node(24), const gum::InvalidArgument&)
 
         // Test var node List
         TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->varNodeListe(Cvar))
-        TS_ASSERT_THROWS(functionGraph->varNodeListe(Banditovar), gum::InvalidArgument)
+        TS_ASSERT_THROWS(functionGraph->varNodeListe(Banditovar), const gum::InvalidArgument&)
 
         // *********************************************************************
         // Cleaning
@@ -296,13 +296,13 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->manager()->eraseNode(idList[15]))
 
         // Testing terminal node removal again
-        TS_ASSERT_THROWS(functionGraph->manager()->eraseNode(idList[15]), gum::NotFound)
+        TS_ASSERT_THROWS(functionGraph->manager()->eraseNode(idList[15]), const gum::NotFound&)
 
         // Testing internal node removal
         TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->manager()->eraseNode(idList[12]))
 
         // Testing internal node removal again
-        TS_ASSERT_THROWS(functionGraph->manager()->eraseNode(idList[12]), gum::NotFound)
+        TS_ASSERT_THROWS(functionGraph->manager()->eraseNode(idList[12]), const gum::NotFound&)
 
 
         // *********************************************************************
@@ -312,26 +312,26 @@ namespace gum_tests {
         // Testing arc modification where starting node does not exist
         // (must raise gum::NotFound)
         // (node 15 has been erased before)
-        TS_ASSERT_THROWS(functionGraph->manager()->setSon(idList[15], 2, idList[1]), gum::NotFound)
-        TS_ASSERT_THROWS(functionGraph->manager()->setSon(idList[1], 2, idList[15]), gum::NotFound)
+        TS_ASSERT_THROWS(functionGraph->manager()->setSon(idList[15], 2, idList[1]), const gum::NotFound&)
+        TS_ASSERT_THROWS(functionGraph->manager()->setSon(idList[1], 2, idList[15]), const gum::NotFound&)
 
         // Testing node modification where starting node is a terminal node
         // (must raise gum::InvalidNode
         // as terminal nodes are ... terminal)
         TS_ASSERT_THROWS(functionGraph->manager()->setSon(idList[16], 3, idList[1]),
-                         gum::InvalidNode);
+                         const gum::InvalidNode&);
 
         // Testing arc modification where variable modality is higher than its
         // domain size
         TS_ASSERT_THROWS(functionGraph->manager()->setSon(idList[8], 4, idList[18]),
-                         gum::InvalidArgument);
+                         const gum::InvalidArgument&)
 
         // Testing arc modification that violates order constraint
         TS_ASSERT_THROWS(functionGraph->manager()->setSon(idList[10], 0, idList[1]),
-                         gum::OperationNotAllowed);
+                         const gum::OperationNotAllowed&)
         // NB : idList 8 and 1 are bound to the same variable
         TS_ASSERT_THROWS(functionGraph->manager()->setSon(idList[8], 0, idList[1]),
-                         gum::OperationNotAllowed);
+                         const gum::OperationNotAllowed&)
 
         TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph)
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
@@ -382,23 +382,23 @@ namespace gum_tests {
         // *********************************************************************
         gum::Instantiation inst(*functionGraph);
 
-        TS_ASSERT_THROWS(functionGraph->set(inst, 14.0), gum::OperationNotAllowed)
+        TS_ASSERT_THROWS(functionGraph->set(inst, 14.0), const gum::OperationNotAllowed&)
 
-        TS_ASSERT_THROWS(functionGraph->fill(14.0), gum::OperationNotAllowed)
+        TS_ASSERT_THROWS(functionGraph->fill(14.0), const gum::OperationNotAllowed&)
 
         std::vector< double > v;
 
         for (float i = 0; i < 128; i++)
           v.push_back(i);
 
-        TS_ASSERT_THROWS(functionGraph->populate(v), gum::OperationNotAllowed)
+        TS_ASSERT_THROWS(functionGraph->populate(v), const gum::OperationNotAllowed&)
 
         for (float i = 128; i < 256; i++)
           v.push_back(i);
 
-        TS_ASSERT_THROWS(functionGraph->populate(v), gum::OperationNotAllowed)
+        TS_ASSERT_THROWS(functionGraph->populate(v), const gum::OperationNotAllowed&)
 
-        TS_ASSERT_THROWS(functionGraph->populate({1, 2, 3}), gum::OperationNotAllowed)
+        TS_ASSERT_THROWS(functionGraph->populate({1, 2, 3}), const gum::OperationNotAllowed&)
 
 
         // *********************************************************************
@@ -514,7 +514,7 @@ namespace gum_tests {
         // Testing replace()
         // *********************************************************************
         gum::LabelizedVariable* lv = new gum::LabelizedVariable("Test", "Cornichon", 2);
-        TS_ASSERT_THROWS(functionGraph->replace(*Cvar, *lv), gum::OperationNotAllowed)
+        TS_ASSERT_THROWS(functionGraph->replace(*Cvar, *lv), const gum::OperationNotAllowed&)
         delete lv;
 
         TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph)
@@ -604,15 +604,15 @@ namespace gum_tests {
         // *********************************************************************
         gum::MultiDimArray< double >* array = new gum::MultiDimArray< double >();
 
-        TS_ASSERT_THROWS(functionGraph2->copy(*array), gum::OperationNotAllowed)
-        TS_ASSERT_THROWS(functionGraph2->copyFrom(*array), gum::OperationNotAllowed)
+        TS_ASSERT_THROWS(functionGraph2->copy(*array), const gum::OperationNotAllowed&)
+        TS_ASSERT_THROWS(functionGraph2->copyFrom(*array), const gum::OperationNotAllowed&)
 
         delete array;
 
         // *********************************************************************
         // Testing MultiDimFunctionGraph Duplication
         // *********************************************************************
-        TS_ASSERT_THROWS(functionGraph2->copyFrom(*functionGraph), gum::OperationNotAllowed)
+        TS_ASSERT_THROWS(functionGraph2->copyFrom(*functionGraph), const gum::OperationNotAllowed&)
 
         TS_GUM_ASSERT_THROWS_NOTHING(functionGraph2->copy(*functionGraph);)
 
@@ -651,7 +651,7 @@ namespace gum_tests {
            = new gum::LabelizedVariable("Fail", "Different domain size", 3);
         map.insert(PLvar, failvar);
         TS_ASSERT_THROWS(functionGraph2->copyAndReassign(*functionGraph, map),
-                         gum::InvalidArgument);
+                         const gum::InvalidArgument&)
 
         TS_GUM_ASSERT_THROWS_NOTHING(functionGraph2->clear();)
         delete failvar;

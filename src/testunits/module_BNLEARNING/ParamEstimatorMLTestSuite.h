@@ -946,7 +946,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(param_estimator.parameters(gum::NodeId(0)))
       TS_GUM_ASSERT_THROWS_NOTHING(param_estimator.parameters(gum::NodeId(1)))
       TS_ASSERT_THROWS(param_estimator.parameters(gum::NodeId(1), {gum::NodeId(0)}),
-                       gum::DatabaseError)
+                       const gum::DatabaseError&)
     }
 
 

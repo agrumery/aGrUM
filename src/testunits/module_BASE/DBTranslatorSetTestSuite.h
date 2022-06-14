@@ -70,13 +70,13 @@ namespace gum_tests {
 
       std::vector< std::string > row4{"???", "???", "???"};
       TS_ASSERT_EQUALS(set.translate(row4, 0).discr_val, std::numeric_limits< std::size_t >::max())
-      TS_ASSERT_THROWS(set.translate(row4, 1), gum::TypeError)
+      TS_ASSERT_THROWS(set.translate(row4, 1), const gum::TypeError&)
 
       std::vector< std::string > row5{"4.22x", "???", "???"};
-      TS_ASSERT_THROWS(set.translate(row5, 1), gum::TypeError)
+      TS_ASSERT_THROWS(set.translate(row5, 1), const gum::TypeError&)
       TS_ASSERT_EQUALS(set.translate(row5, 2).discr_val, (std::size_t)2)
 
-      TS_ASSERT_THROWS(set.translateSafe(row5, 3), gum::UndefinedElement)
+      TS_ASSERT_THROWS(set.translateSafe(row5, 3), const gum::UndefinedElement&)
 
       TS_ASSERT_EQUALS(set.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}, 0),
                        "toto");
@@ -85,7 +85,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(set.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}, 2),
                        "???");
       TS_ASSERT_THROWS(set.translateBackSafe(gum::learning::DBTranslatedValue{std::size_t{0}}, 3),
-                       gum::UndefinedElement);
+                       const gum::UndefinedElement&)
 
       TS_ASSERT_EQUALS(set.domainSize(0), (std::size_t)2)
       TS_ASSERT_EQUALS(set.domainSize(2), (std::size_t)3)
@@ -468,14 +468,14 @@ namespace gum_tests {
 
       std::vector< std::string > row4{"???", "???", "???"};
       TS_ASSERT_EQUALS(set.translate(row4, 0).discr_val, std::numeric_limits< std::size_t >::max())
-      TS_ASSERT_THROWS(set.translate(row4, 1), gum::TypeError)
+      TS_ASSERT_THROWS(set.translate(row4, 1), const gum::TypeError&)
       TS_ASSERT_EQUALS(set.translate(row4, 3).discr_val, std::numeric_limits< std::size_t >::max())
 
       std::vector< std::string > row5{"4.22x", "???", "???"};
-      TS_ASSERT_THROWS(set.translate(row5, 1), gum::TypeError)
+      TS_ASSERT_THROWS(set.translate(row5, 1), const gum::TypeError&)
       TS_ASSERT_EQUALS(set.translate(row5, 2).discr_val, (std::size_t)2)
 
-      TS_ASSERT_THROWS(set.translateSafe(row5, 4), gum::UndefinedElement)
+      TS_ASSERT_THROWS(set.translateSafe(row5, 4), const gum::UndefinedElement&)
 
       TS_ASSERT_EQUALS(set.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}, 0),
                        "toto");

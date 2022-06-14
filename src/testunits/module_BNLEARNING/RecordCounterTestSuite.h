@@ -582,7 +582,7 @@ namespace gum_tests {
       }
 
       gum::learning::IdCondSet ids4(5, std::vector< gum::NodeId >(), true);
-      TS_ASSERT_THROWS(counts = counter.counts(ids4), gum::NotFound)
+      TS_ASSERT_THROWS(counts = counter.counts(ids4), const gum::NotFound&)
     }
 
 

@@ -194,7 +194,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(inf.H((gum::NodeId)2))
       TS_GUM_ASSERT_THROWS_NOTHING(inf.I((gum::NodeId)2, (gum::NodeId)4))
-      TS_ASSERT_THROWS(inf.I((gum::NodeId)2, (gum::NodeId)2), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(inf.I((gum::NodeId)2, (gum::NodeId)2), const gum::OperationNotAllowed&)
       TS_GUM_ASSERT_THROWS_NOTHING(inf.VI((gum::NodeId)2, (gum::NodeId)4))
       TS_GUM_ASSERT_THROWS_NOTHING(inf.I((gum::NodeId)0, (gum::NodeId)4))
 
@@ -683,7 +683,7 @@ namespace gum_tests {
 
       gum::ShaferShenoyInference< double > ie_all(&bn);
       TS_ASSERT_THROWS(ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{0, 1, 2}),
-                       gum::InvalidArgument);
+                       const gum::InvalidArgument&)
 
       auto res = ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{1, 2});
 
@@ -722,10 +722,10 @@ namespace gum_tests {
 
       gum::ShaferShenoyInference< double > ie_all(&bn);
       TS_ASSERT_THROWS(ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{0, 1, 2}),
-                       gum::InvalidArgument);
+                       const gum::InvalidArgument&)
 
       TS_ASSERT_THROWS(ie_all.evidenceImpact("visit_to_asia", {"tuberculoisis", "toto"}),
-                       gum::NotFound);
+                       const gum::NotFound&)
 
       auto res = ie_all.evidenceImpact("visit_to_Asia", {"tuberculosis", "tuberculos_or_cancer"});
 
@@ -1110,7 +1110,7 @@ namespace gum_tests {
         inf.addTarget("x0");
         TS_ASSERT(inf.targets().size() == 1)
         inf.makeInference();
-        TS_ASSERT_THROWS(inf.posterior(i3), gum::UndefinedElement)
+        TS_ASSERT_THROWS(inf.posterior(i3), const gum::UndefinedElement&)
         inf.addTarget("x3");
         const auto& pot3 = inf.posterior(i3);
         TS_ASSERT(inf.junctionTree()->sizeNodes() == 2)
@@ -1147,7 +1147,7 @@ namespace gum_tests {
         inf.addTarget("x0");
         TS_ASSERT(inf.targets().size() == 1)
         inf.makeInference();
-        TS_ASSERT_THROWS(inf.posterior(i2), gum::UndefinedElement)
+        TS_ASSERT_THROWS(inf.posterior(i2), const gum::UndefinedElement&)
         TS_ASSERT(inf.junctionTree()->sizeNodes() == 1)
 
         inf.addTarget("x2");
@@ -1169,7 +1169,7 @@ namespace gum_tests {
         inf.addTarget("x0");
         TS_ASSERT(inf.targets().size() == 1)
         inf.makeInference();
-        TS_ASSERT_THROWS(inf.posterior(i2), gum::UndefinedElement)
+        TS_ASSERT_THROWS(inf.posterior(i2), const gum::UndefinedElement&)
         TS_ASSERT(inf.junctionTree()->sizeNodes() == 1)
 
         inf.addTarget("x2");

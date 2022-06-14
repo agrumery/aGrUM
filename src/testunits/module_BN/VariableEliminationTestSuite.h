@@ -228,7 +228,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(inf.H((gum::NodeId)2))
       TS_GUM_ASSERT_THROWS_NOTHING(inf.I((gum::NodeId)2, (gum::NodeId)4))
-      TS_ASSERT_THROWS(inf.I((gum::NodeId)2, (gum::NodeId)2), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(inf.I((gum::NodeId)2, (gum::NodeId)2), const gum::OperationNotAllowed&)
       TS_GUM_ASSERT_THROWS_NOTHING(inf.VI((gum::NodeId)2, (gum::NodeId)4))
       TS_GUM_ASSERT_THROWS_NOTHING(inf.I((gum::NodeId)0, (gum::NodeId)4))
 
@@ -290,7 +290,7 @@ namespace gum_tests {
         TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.posterior(node)))
         const gum::Potential< double >* pot_2 = nullptr;
         TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.posterior(node)))
-        if ((*pot_1) != (*pot_2)) { TS_ASSERT(false); }
+        if ((*pot_1) != (*pot_2)) { TS_ASSERT(false) }
       }
     }
 
@@ -698,7 +698,7 @@ namespace gum_tests {
 
       gum::VariableElimination< double > ie_all(&bn);
       TS_ASSERT_THROWS(ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{0, 1, 2}),
-                       gum::InvalidArgument);
+                       const gum::InvalidArgument&)
 
       auto res = ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{1, 2});
 
@@ -737,10 +737,10 @@ namespace gum_tests {
 
       gum::VariableElimination< double > ie_all(&bn);
       TS_ASSERT_THROWS(ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{0, 1, 2}),
-                       gum::InvalidArgument);
+                       const gum::InvalidArgument&)
 
       TS_ASSERT_THROWS(ie_all.evidenceImpact("visit_to_asia", {"tuberculoisis", "toto"}),
-                       gum::NotFound);
+                       const gum::NotFound&)
 
       auto res = ie_all.evidenceImpact("visit_to_Asia", {"tuberculosis", "tuberculos_or_cancer"});
 

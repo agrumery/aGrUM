@@ -136,7 +136,7 @@ namespace gum_tests {
       auto bn = gum::BayesNet< float >::fastPrototype("A->B->C<-F;C->G;D->B->E");
 
       TS_ASSERT_THROWS(bn.isIndependent(std::vector< std::string >{"A", "E"}, {"A", "G"}, {"F"}),
-                       gum::InvalidArgument);
+                       const gum::InvalidArgument&)
 
       // clang-format off
       TS_ASSERT( bn.isIndependent(std::vector<std::string>{"A"}        , {"D"}        , {}))

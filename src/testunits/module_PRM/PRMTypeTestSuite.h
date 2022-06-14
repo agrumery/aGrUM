@@ -306,7 +306,7 @@ namespace gum_tests {
       // Arrange
       PRMType boolean{*_boolean_};
       // Act & Assert
-      TS_ASSERT_THROWS(boolean.superType(), gum::NotFound)
+      TS_ASSERT_THROWS(boolean.superType(), const gum::NotFound&)
     }
 
     void testSetSuper() {
@@ -335,7 +335,7 @@ namespace gum_tests {
       PRMType state{boolean, map, *_state_};
       PRMType state_bis{*_state_};
       // Act & Assert
-      TS_ASSERT_THROWS(state.setSuper(state_bis), gum::TypeError)
+      TS_ASSERT_THROWS(state.setSuper(state_bis), const gum::TypeError&)
     }
 
     void testSetSuperOperationNotAllowed() {
@@ -343,7 +343,7 @@ namespace gum_tests {
       PRMType boolean{*_boolean_};
       PRMType state{*_state_};
       // Act & Assert
-      TS_ASSERT_THROWS(state.setSuper(boolean), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(state.setSuper(boolean), const gum::OperationNotAllowed&)
     }
 
     void testLabelMap() {
@@ -363,7 +363,7 @@ namespace gum_tests {
       // Arrange
       PRMType boolean{*_boolean_};
       // Act & Assert
-      TS_ASSERT_THROWS(boolean.label_map(), gum::NotFound)
+      TS_ASSERT_THROWS(boolean.label_map(), const gum::NotFound&)
     }
   };
 

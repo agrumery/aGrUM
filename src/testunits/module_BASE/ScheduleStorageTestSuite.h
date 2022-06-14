@@ -114,7 +114,7 @@ namespace gum_tests {
       TS_ASSERT(store1.arg().isAbstract());
       TS_ASSERT(v1.size() == std::size_t(1));
       TS_ASSERT(pot1 == v1[0]);
-      TS_ASSERT_THROWS(store1.undo(), gum::OperationNotAllowed);
+      TS_ASSERT_THROWS(store1.undo(), const gum::OperationNotAllowed&);
 
       store1bis.execute();
       TS_ASSERT(f1b.isAbstract());
@@ -127,7 +127,7 @@ namespace gum_tests {
       TS_ASSERT(store2.arg().isAbstract());
       TS_ASSERT(set2.size() == gum::Size(1));
       TS_ASSERT(**(set2.begin()) == pot2);
-      TS_ASSERT_THROWS(store2bis.execute(), gum::NullElement);
+      TS_ASSERT_THROWS(store2bis.execute(), const gum::NullElement&);
 
       store2ter.execute();
       TS_ASSERT(store2ter.isExecuted());

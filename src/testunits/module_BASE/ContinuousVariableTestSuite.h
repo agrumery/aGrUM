@@ -88,23 +88,23 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(var1["44"], 44.0f)
       TS_ASSERT_EQUALS(var2["4"], 4.0f)
-      TS_ASSERT_THROWS(var2["44"], gum::OutOfBounds)
-      TS_ASSERT_THROWS(var2["4xx"], gum::TypeError)
+      TS_ASSERT_THROWS(var2["44"], const gum::OutOfBounds&)
+      TS_ASSERT_THROWS(var2["4xx"], const gum::TypeError&)
       TS_ASSERT_EQUALS(var2[" \t\t4\t  "], 4.0f)
 
-      TS_ASSERT_THROWS(var2.setLowerBound(44.0f), gum::OutOfBounds)
+      TS_ASSERT_THROWS(var2.setLowerBound(44.0f), const gum::OutOfBounds&)
       var2.setLowerBound(4);
       TS_ASSERT_EQUALS(var2.lowerBound(), 4.0f)
       TS_ASSERT_EQUALS(var2.upperBound(), 10.0f)
 
-      TS_ASSERT_THROWS(var2.setUpperBound(2.0f), gum::OutOfBounds)
+      TS_ASSERT_THROWS(var2.setUpperBound(2.0f), const gum::OutOfBounds&)
       var2.setUpperBound(8.5f);
       TS_ASSERT_EQUALS(var2.lowerBound(), 4.0f)
       TS_ASSERT_EQUALS(var2.upperBound(), 8.5f)
 
       TS_ASSERT_EQUALS(var2.varType(), gum::VarType::Continuous)
       TS_ASSERT_EQUALS(std::stof(var2.label(4.5)), 4.5f)
-      TS_ASSERT_THROWS(var2.label(10.0f), gum::OutOfBounds)
+      TS_ASSERT_THROWS(var2.label(10.0f), const gum::OutOfBounds&)
       TS_ASSERT(var2.belongs(5.6f))
       TS_ASSERT(!var2.belongs(15.6f))
 

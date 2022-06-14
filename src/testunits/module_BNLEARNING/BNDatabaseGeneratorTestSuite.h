@@ -139,10 +139,10 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->setTopologicalVarOrder())
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->setAntiTopologicalVarOrder())
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->setRandomVarOrder())
-      TS_ASSERT_THROWS(dbgen->setVarOrder(badOrder1), gum::FatalError)
-      TS_ASSERT_THROWS(dbgen->setVarOrder(badOrder2), gum::FatalError)
-      TS_ASSERT_THROWS(dbgen->setVarOrder(badOrder3), gum::FatalError)
-      TS_ASSERT_THROWS(dbgen->setVarOrder(badOrder4), gum::FatalError)
+      TS_ASSERT_THROWS(dbgen->setVarOrder(badOrder1), const gum::FatalError&)
+      TS_ASSERT_THROWS(dbgen->setVarOrder(badOrder2), const gum::FatalError&)
+      TS_ASSERT_THROWS(dbgen->setVarOrder(badOrder3), const gum::FatalError&)
+      TS_ASSERT_THROWS(dbgen->setVarOrder(badOrder4), const gum::FatalError&)
 
       delete dbgen;
     }
@@ -159,7 +159,7 @@ namespace gum_tests {
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn))
 
-      TS_ASSERT_THROWS(dbgen->database(), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(dbgen->database(), const gum::OperationNotAllowed&)
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples))
       std::vector< std::vector< gum::Idx > > database;
       TS_GUM_ASSERT_THROWS_NOTHING(database = dbgen->database())
@@ -210,7 +210,7 @@ namespace gum_tests {
 
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn))
-      TS_ASSERT_THROWS(dbgen->database(), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(dbgen->database(), const gum::OperationNotAllowed&)
       TS_GUM_ASSERT_THROWS_NOTHING(ll_1 = dbgen->drawSamples(nbSamples1))
       TS_GUM_ASSERT_THROWS_NOTHING(ll_2 = dbgen->drawSamples(nbSamples2))
       TS_GUM_ASSERT_THROWS_NOTHING(ll_3 = dbgen->drawSamples(nbSamples3))
@@ -253,7 +253,7 @@ namespace gum_tests {
       bool        checkOnAppend = true;
 
       TS_ASSERT_THROWS(dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
-                       gum::OperationNotAllowed);
+                       const gum::OperationNotAllowed&)
 
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples))
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -264,7 +264,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples))
       append = true;
       TS_ASSERT_THROWS(dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
-                       gum::OperationNotAllowed);
+                       const gum::OperationNotAllowed&)
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->setVarOrderFromCSV(csvFileURL, csvSeparator))
       TS_GUM_ASSERT_THROWS_NOTHING(
          dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
@@ -324,7 +324,7 @@ namespace gum_tests {
       bool        checkOnAppend = true;
 
       TS_ASSERT_THROWS(dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
-                       gum::OperationNotAllowed);
+                       const gum::OperationNotAllowed&)
 
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples))
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -335,7 +335,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples))
       append = true;
       TS_ASSERT_THROWS(dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
-                       gum::OperationNotAllowed);
+                       const gum::OperationNotAllowed&)
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->setVarOrderFromCSV(csvFileURL, csvSeparator))
       TS_GUM_ASSERT_THROWS_NOTHING(
          dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
@@ -392,7 +392,7 @@ namespace gum_tests {
 
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn))
-      TS_ASSERT_THROWS(dbgen->toDatabaseTable(), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(dbgen->toDatabaseTable(), const gum::OperationNotAllowed&)
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples))
       gum::learning::DatabaseTable db;
       bool                         useLabels = true;

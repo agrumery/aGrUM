@@ -231,13 +231,13 @@ namespace gum_tests {
       gum::ShaferShenoyLIMIDInference< double >* dIDI = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(dIDI = new gum::ShaferShenoyLIMIDInference< double >(&net))
 
-      TS_ASSERT_THROWS(dIDI->MEU(), gum::OperationNotAllowed)
-      TS_ASSERT_THROWS(dIDI->optimalDecision(0), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(dIDI->MEU(), const gum::OperationNotAllowed&)
+      TS_ASSERT_THROWS(dIDI->optimalDecision(0), const gum::OperationNotAllowed&)
 
       TS_GUM_ASSERT_THROWS_NOTHING(dIDI->makeInference())
       TS_GUM_ASSERT_THROWS_NOTHING(dIDI->MEU())
       TS_GUM_ASSERT_THROWS_NOTHING(dIDI->optimalDecision(0))
-      TS_ASSERT_THROWS(dIDI->optimalDecision(2), gum::InvalidNode)
+      TS_ASSERT_THROWS(dIDI->optimalDecision(2), const gum::InvalidNode&)
       TS_GUM_ASSERT_THROWS_NOTHING(dIDI->makeInference())
 
       delete dIDI;
@@ -451,10 +451,10 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D3")), infdiag.nodeset({"D2"}))
       TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("D4")), infdiag.nodeset({"D3", "R4"}))
 
-      TS_ASSERT_THROWS(ieid.addNoForgettingAssumption({"D11"}), gum::NotFound)
+      TS_ASSERT_THROWS(ieid.addNoForgettingAssumption({"D11"}), const gum::NotFound&)
       TS_ASSERT_THROWS(ieid.addNoForgettingAssumption({"D4", "D1", "D2", "D3"}),
-                       gum::InvalidDirectedCycle)
-      TS_ASSERT_THROWS(ieid.addNoForgettingAssumption({"D1", "D2", "D3"}), gum::SizeError)
+                       const gum::InvalidDirectedCycle&)
+      TS_ASSERT_THROWS(ieid.addNoForgettingAssumption({"D1", "D2", "D3"}), const gum::SizeError&)
 
       TS_GUM_ASSERT_THROWS_NOTHING(ieid.addNoForgettingAssumption({"D1", "D2", "D3", "D4"}))
       TS_ASSERT(ieid.hasNoForgettingAssumption())
@@ -556,12 +556,12 @@ namespace gum_tests {
       reader.proceed();
 
       auto ieid = gum::ShaferShenoyLIMIDInference< double >(&net);
-      TS_ASSERT_THROWS(ieid.addEvidence("U", 0), gum::InvalidNode)
+      TS_ASSERT_THROWS(ieid.addEvidence("U", 0), const gum::InvalidNode&)
       TS_ASSERT_THROWS(
          ieid.addEvidence(
             (gum::Potential< double >() << net.variableFromName("DoTest")).fillWith({0.5, 1, 0})),
-         gum::InvalidNode)
-      TS_ASSERT_THROWS(ieid.addEvidence("DoTest", "Both"), gum::InvalidArgument)
+         const gum::InvalidNode&)
+      TS_ASSERT_THROWS(ieid.addEvidence("DoTest", "Both"), const gum::InvalidArgument&)
       ieid.eraseAllEvidence();
       ieid.addEvidence("DoTest", "Both");
       ieid.addEvidence("FirstTest", "Positive");

@@ -90,7 +90,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(var3, var6)
 
       TS_ASSERT_EQUALS(var3.varType(), gum::VarType::Integer)
-      TS_ASSERT_THROWS(var3.index("0"), gum::NotFound)
+      TS_ASSERT_THROWS(var3.index("0"), const gum::NotFound&)
       TS_GUM_ASSERT_THROWS_NOTHING(var3.index("-1"))
       TS_ASSERT_EQUALS(var3.index("-2"), gum::Idx(0))
       TS_ASSERT_EQUALS(var3.index("-1"), gum::Idx(1))
@@ -103,13 +103,13 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(var3.label(1), "-1")
       TS_ASSERT_EQUALS(var3.label(2), "4")
       TS_ASSERT_EQUALS(var3.label(3), "8")
-      TS_ASSERT_THROWS(var3.label(4), gum::NotFound)
+      TS_ASSERT_THROWS(var3.label(4), const gum::NotFound&)
 
       TS_ASSERT_EQUALS(var3.numerical(0), -2.0)
       TS_ASSERT_EQUALS(var3.numerical(1), -1.0)
       TS_ASSERT_EQUALS(var3.numerical(2), 4.0)
       TS_ASSERT_EQUALS(var3.numerical(3), 8.0)
-      TS_ASSERT_THROWS(var3.numerical(4), gum::NotFound)
+      TS_ASSERT_THROWS(var3.numerical(4), const gum::NotFound&)
 
       TS_ASSERT_EQUALS(var3.domain(), "{-2|-1|4|8}")
       TS_ASSERT_EQUALS(var1.domain(), "{}")
@@ -132,10 +132,10 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(vect1[1], 4)
       TS_ASSERT_EQUALS(vect1[2], 6)
       TS_ASSERT_EQUALS(vect1[3], 8)
-      TS_ASSERT_THROWS(var1.addValue(2), gum::DuplicateElement)
-      TS_ASSERT_THROWS(var1.addValue(4), gum::DuplicateElement)
-      TS_ASSERT_THROWS(var1.addValue(6), gum::DuplicateElement)
-      TS_ASSERT_THROWS(var1.addValue(8), gum::DuplicateElement)
+      TS_ASSERT_THROWS(var1.addValue(2), const gum::DuplicateElement&)
+      TS_ASSERT_THROWS(var1.addValue(4), const gum::DuplicateElement&)
+      TS_ASSERT_THROWS(var1.addValue(6), const gum::DuplicateElement&)
+      TS_ASSERT_THROWS(var1.addValue(8), const gum::DuplicateElement&)
 
       var1.changeValue(6, 7);
       TS_ASSERT_EQUALS(vect1.size(), (gum::Size)4)
@@ -172,7 +172,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(vect1[2], 10)
       TS_ASSERT_EQUALS(vect1[3], 12)
 
-      TS_ASSERT_THROWS(var1.changeValue(12, 10), gum::DuplicateElement)
+      TS_ASSERT_THROWS(var1.changeValue(12, 10), const gum::DuplicateElement&)
       TS_ASSERT_EQUALS(vect1.size(), (gum::Size)4)
       TS_ASSERT_EQUALS(vect1[0], 2)
       TS_ASSERT_EQUALS(vect1[1], 8)

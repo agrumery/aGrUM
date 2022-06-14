@@ -100,9 +100,9 @@ namespace gum_tests {
       tree.erase(5);
 
       TS_ASSERT_EQUALS(tree.size(), (gum::Size)4)
-      TS_ASSERT_THROWS(tree.erase(5), gum::NotFound)
+      TS_ASSERT_THROWS(tree.erase(5), const gum::NotFound&)
       TS_ASSERT_EQUALS(tree.size(), (gum::Size)4)
-      TS_ASSERT_THROWS(tree.erase(9), gum::NotFound)
+      TS_ASSERT_THROWS(tree.erase(9), const gum::NotFound&)
       TS_ASSERT_EQUALS(tree.size(), (gum::Size)4)
       tree.erase(1);
       TS_ASSERT_EQUALS(tree.size(), (gum::Size)3)

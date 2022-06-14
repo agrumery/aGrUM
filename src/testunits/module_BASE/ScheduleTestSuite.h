@@ -97,15 +97,16 @@ namespace gum_tests {
       gum::Schedule schedule;
       const auto    xf1 = schedule.insertScheduleMultiDim(f1);
       TS_ASSERT(*xf1 == f1);
-      TS_ASSERT_THROWS(schedule.insertScheduleMultiDim(f1), gum::DuplicateScheduleMultiDim);
-      TS_ASSERT_THROWS(schedule.insertTable(pot1, true, 1), gum::DuplicateScheduleMultiDim);
+      TS_ASSERT_THROWS(schedule.insertScheduleMultiDim(f1), const gum::DuplicateScheduleMultiDim&)
+      TS_ASSERT_THROWS(schedule.insertTable(pot1, true, 1), const gum::DuplicateScheduleMultiDim&)
 
       gum::Sequence< const gum::DiscreteVariable* > seq;
       seq << vars[1] << vars[2] << vars[3];
       gum::ScheduleMultiDim< gum::Potential< double > > abstract_f(seq);
-      TS_ASSERT_THROWS(schedule.insertScheduleMultiDim(abstract_f), gum::AbstractScheduleMultiDim);
+      TS_ASSERT_THROWS(schedule.insertScheduleMultiDim(abstract_f),
+                       const gum::AbstractScheduleMultiDim&)
 
-      TS_ASSERT_THROWS(schedule.insertOperation(comb1), gum::UnknownScheduleMultiDim);
+      TS_ASSERT_THROWS(schedule.insertOperation(comb1), const gum::UnknownScheduleMultiDim&)
 
       const auto xf2 = schedule.insertScheduleMultiDim(f2);
       TS_ASSERT(!f2.isAbstract());
@@ -166,20 +167,18 @@ namespace gum_tests {
       TS_ASSERT(result1 == *args4[0])
       TS_ASSERT(result3 == *args4[1])
       available_operations = schedule.availableOperations();
-      TS_ASSERT(available_operations.size() == 2);
-      TS_ASSERT(dag.sizeNodes() == 6);
-      TS_ASSERT(dag.sizeArcs() == 7);
-      TS_ASSERT(dag.existsArc(1, 5));
-      TS_ASSERT(dag.existsArc(1, 6));
-      TS_ASSERT(dag.existsArc(2, 3));
-      TS_ASSERT(dag.existsArc(2, 4));
-      TS_ASSERT(dag.existsArc(3, 4));
-      TS_ASSERT(dag.existsArc(3, 6));
-      TS_ASSERT(dag.existsArc(6, 5));
+      TS_ASSERT(available_operations.size() == 2)
+      TS_ASSERT(dag.sizeNodes() == 6)
+      TS_ASSERT(dag.sizeArcs() == 7)
+      TS_ASSERT(dag.existsArc(1, 5))
+      TS_ASSERT(dag.existsArc(1, 6))
+      TS_ASSERT(dag.existsArc(2, 3))
+      TS_ASSERT(dag.existsArc(2, 4))
+      TS_ASSERT(dag.existsArc(3, 4))
+      TS_ASSERT(dag.existsArc(3, 6))
+      TS_ASSERT(dag.existsArc(6, 5))
 
-      const gum::ScheduleBinaryCombination< gum::Potential< double >,
-                                            gum::Potential< double >,
-                                            gum::Potential< double > >& xxcomb4
+      const auto& xxcomb4
          = dynamic_cast< const gum::ScheduleBinaryCombination< gum::Potential< double >,
                                                                gum::Potential< double >,
                                                                gum::Potential< double > >& >(
@@ -189,175 +188,170 @@ namespace gum_tests {
       gum::ScheduleStorage< gum::Potential< double >, std::vector > store4(xres4, vect4);
       TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertOperation(store4))
       available_operations = schedule.availableOperations();
-      TS_ASSERT(available_operations.size() == 2);
-      TS_ASSERT(dag.sizeNodes() == 7);
-      TS_ASSERT(dag.sizeArcs() == 8);
-      TS_ASSERT(dag.existsArc(6, 7));
+      TS_ASSERT(available_operations.size() == 2)
+      TS_ASSERT(dag.sizeNodes() == 7)
+      TS_ASSERT(dag.sizeArcs() == 8)
+      TS_ASSERT(dag.existsArc(6, 7))
 
       TS_GUM_ASSERT_THROWS_NOTHING(schedule.insertOperation(del3))
       available_operations = schedule.availableOperations();
-      TS_ASSERT(available_operations.size() == 2);
-      TS_ASSERT(dag.sizeNodes() == 8);
-      TS_ASSERT(dag.sizeArcs() == 10);
-      TS_ASSERT(dag.existsArc(3, 8));
-      TS_ASSERT(dag.existsArc(6, 8));
+      TS_ASSERT(available_operations.size() == 2)
+      TS_ASSERT(dag.sizeNodes() == 8)
+      TS_ASSERT(dag.sizeArcs() == 10)
+      TS_ASSERT(dag.existsArc(3, 8))
+      TS_ASSERT(dag.existsArc(6, 8))
 
       gum::Schedule   schedule2(schedule);
       const gum::DAG& dag2 = schedule2.dag();
       available_operations = schedule2.availableOperations();
-      TS_ASSERT(available_operations.size() == 2);
-      TS_ASSERT(dag2.sizeNodes() == 8);
-      TS_ASSERT(dag2.sizeArcs() == 10);
-      TS_ASSERT(dag2.existsArc(1, 5));
-      TS_ASSERT(dag2.existsArc(1, 6));
-      TS_ASSERT(dag2.existsArc(2, 3));
-      TS_ASSERT(dag2.existsArc(2, 4));
-      TS_ASSERT(dag2.existsArc(3, 4));
-      TS_ASSERT(dag2.existsArc(3, 6));
-      TS_ASSERT(dag2.existsArc(6, 5));
-      TS_ASSERT(dag2.existsArc(6, 7));
-      TS_ASSERT(dag2.existsArc(3, 8));
-      TS_ASSERT(dag2.existsArc(6, 8));
+      TS_ASSERT(available_operations.size() == 2)
+      TS_ASSERT(dag2.sizeNodes() == 8)
+      TS_ASSERT(dag2.sizeArcs() == 10)
+      TS_ASSERT(dag2.existsArc(1, 5))
+      TS_ASSERT(dag2.existsArc(1, 6))
+      TS_ASSERT(dag2.existsArc(2, 3))
+      TS_ASSERT(dag2.existsArc(2, 4))
+      TS_ASSERT(dag2.existsArc(3, 4))
+      TS_ASSERT(dag2.existsArc(3, 6))
+      TS_ASSERT(dag2.existsArc(6, 5))
+      TS_ASSERT(dag2.existsArc(6, 7))
+      TS_ASSERT(dag2.existsArc(3, 8))
+      TS_ASSERT(dag2.existsArc(6, 8))
 
       gum::Schedule   schedule3(std::move(schedule2));
       const gum::DAG& dag3 = schedule3.dag();
       available_operations = schedule3.availableOperations();
-      TS_ASSERT(available_operations.size() == 2);
-      TS_ASSERT(dag3.sizeNodes() == 8);
-      TS_ASSERT(dag3.sizeArcs() == 10);
-      TS_ASSERT(dag3.existsArc(1, 5));
-      TS_ASSERT(dag3.existsArc(1, 6));
-      TS_ASSERT(dag3.existsArc(2, 3));
-      TS_ASSERT(dag3.existsArc(2, 4));
-      TS_ASSERT(dag3.existsArc(3, 4));
-      TS_ASSERT(dag3.existsArc(3, 6));
-      TS_ASSERT(dag3.existsArc(6, 5));
-      TS_ASSERT(dag3.existsArc(6, 7));
-      TS_ASSERT(dag3.existsArc(3, 8));
-      TS_ASSERT(dag3.existsArc(6, 8));
+      TS_ASSERT(available_operations.size() == 2)
+      TS_ASSERT(dag3.sizeNodes() == 8)
+      TS_ASSERT(dag3.sizeArcs() == 10)
+      TS_ASSERT(dag3.existsArc(1, 5))
+      TS_ASSERT(dag3.existsArc(1, 6))
+      TS_ASSERT(dag3.existsArc(2, 3))
+      TS_ASSERT(dag3.existsArc(2, 4))
+      TS_ASSERT(dag3.existsArc(3, 4))
+      TS_ASSERT(dag3.existsArc(3, 6))
+      TS_ASSERT(dag3.existsArc(6, 5))
+      TS_ASSERT(dag3.existsArc(6, 7))
+      TS_ASSERT(dag3.existsArc(3, 8))
+      TS_ASSERT(dag3.existsArc(6, 8))
 
-      TS_ASSERT(schedule3 == schedule);
-      TS_ASSERT(schedule2 != schedule);
+      TS_ASSERT(schedule3 == schedule)
+      TS_ASSERT(schedule2 != schedule)
 
       gum::Schedule*  schedule4 = schedule3.clone();
       const gum::DAG& dag4      = schedule4->dag();
       available_operations      = schedule4->availableOperations();
-      TS_ASSERT(available_operations.size() == 2);
-      TS_ASSERT(dag4.sizeNodes() == 8);
-      TS_ASSERT(dag4.sizeArcs() == 10);
-      TS_ASSERT(dag4.existsArc(1, 5));
-      TS_ASSERT(dag4.existsArc(1, 6));
-      TS_ASSERT(dag4.existsArc(2, 3));
-      TS_ASSERT(dag4.existsArc(2, 4));
-      TS_ASSERT(dag4.existsArc(3, 4));
-      TS_ASSERT(dag4.existsArc(3, 6));
-      TS_ASSERT(dag4.existsArc(6, 5));
-      TS_ASSERT(dag4.existsArc(6, 7));
-      TS_ASSERT(dag4.existsArc(3, 8));
-      TS_ASSERT(dag4.existsArc(6, 8));
-      TS_ASSERT(*schedule4 == schedule);
+      TS_ASSERT(available_operations.size() == 2)
+      TS_ASSERT(dag4.sizeNodes() == 8)
+      TS_ASSERT(dag4.sizeArcs() == 10)
+      TS_ASSERT(dag4.existsArc(1, 5))
+      TS_ASSERT(dag4.existsArc(1, 6))
+      TS_ASSERT(dag4.existsArc(2, 3))
+      TS_ASSERT(dag4.existsArc(2, 4))
+      TS_ASSERT(dag4.existsArc(3, 4))
+      TS_ASSERT(dag4.existsArc(3, 6))
+      TS_ASSERT(dag4.existsArc(6, 5))
+      TS_ASSERT(dag4.existsArc(6, 7))
+      TS_ASSERT(dag4.existsArc(3, 8))
+      TS_ASSERT(dag4.existsArc(6, 8))
+      TS_ASSERT(*schedule4 == schedule)
       delete schedule4;
 
-      gum::ScheduleOperator& op2
-         = const_cast< gum::ScheduleOperator& >(schedule3.operation(gum::NodeId(2)));
+      auto& op2 = const_cast< gum::ScheduleOperator& >(schedule3.operation(gum::NodeId(2)));
       op2.execute();
       TS_ASSERT(op2.isExecuted());
       std::vector< gum::NodeId > available_nodes;
       schedule3.updateAfterExecution(op2, available_nodes, true);
-      TS_ASSERT(available_nodes.size() == 1);
-      TS_ASSERT(available_nodes[0] == gum::NodeId(3));
+      TS_ASSERT(available_nodes.size() == 1)
+      TS_ASSERT(available_nodes[0] == gum::NodeId(3))
 
       available_operations = schedule3.availableOperations();
-      TS_ASSERT(available_operations.size() == 2);
-      TS_ASSERT(available_operations.contains(gum::NodeId(1)));
-      TS_ASSERT(available_operations.contains(gum::NodeId(3)));
+      TS_ASSERT(available_operations.size() == 2)
+      TS_ASSERT(available_operations.contains(gum::NodeId(1)))
+      TS_ASSERT(available_operations.contains(gum::NodeId(3)))
 
       available_operations = schedule.availableOperations();
-      TS_ASSERT(available_operations.size() == 2);
-      TS_ASSERT(available_operations.contains(gum::NodeId(1)));
-      TS_ASSERT(available_operations.contains(gum::NodeId(2)));
+      TS_ASSERT(available_operations.size() == 2)
+      TS_ASSERT(available_operations.contains(gum::NodeId(1)))
+      TS_ASSERT(available_operations.contains(gum::NodeId(2)))
 
       comb2.execute();
-      const gum::ScheduleMultiDim< gum::Potential< double > >& op2_res
+      const auto& op2_res
          = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >& >(
             *op2.results()[0]);
-      TS_ASSERT(result2.hasSameVariables(op2_res));
-      TS_ASSERT(result2.hasSameContent(op2_res));
-      TS_ASSERT(!op2_res.isAbstract());
-      TS_ASSERT(!result2.isAbstract());
+      TS_ASSERT(result2.hasSameVariables(op2_res))
+      TS_ASSERT(result2.hasSameContent(op2_res))
+      TS_ASSERT(!op2_res.isAbstract())
+      TS_ASSERT(!result2.isAbstract())
 
-      gum::ScheduleOperator& op1
-         = const_cast< gum::ScheduleOperator& >(schedule3.operation(gum::NodeId(1)));
+      auto& op1 = const_cast< gum::ScheduleOperator& >(schedule3.operation(gum::NodeId(1)));
       op1.execute();
       schedule3.updateAfterExecution(gum::NodeId(1), available_nodes, true);
-      TS_ASSERT(available_nodes.size() == 0);
+      TS_ASSERT(available_nodes.size() == 0)
       available_operations = schedule3.availableOperations();
-      TS_ASSERT(available_operations.size() == 1);
+      TS_ASSERT(available_operations.size() == 1)
       TS_ASSERT(available_operations.contains(gum::NodeId(3)));
 
       TS_ASSERT_THROWS(schedule3.updateAfterExecution(gum::NodeId(3), available_nodes, true),
-                       gum::UnexecutedScheduleOperation);
+                       const gum::UnexecutedScheduleOperation&)
       TS_ASSERT_THROWS(schedule3.updateAfterExecution(gum::NodeId(1), available_nodes, true),
-                       gum::UnknownScheduleOperation);
+                       const gum::UnknownScheduleOperation&)
       TS_ASSERT_THROWS(schedule3.updateAfterExecution(gum::NodeId(4), available_nodes, true),
-                       gum::UnavailableScheduleOperation);
+                       const gum::UnavailableScheduleOperation&)
 
       comb1.execute();
-      const gum::ScheduleMultiDim< gum::Potential< double > >& op1_res
+      const auto& op1_res
          = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >& >(
             *op1.results()[0]);
-      TS_ASSERT(result1.hasSameVariables(op1_res));
-      TS_ASSERT(result1.hasSameContent(op1_res));
+      TS_ASSERT(result1.hasSameVariables(op1_res))
+      TS_ASSERT(result1.hasSameContent(op1_res))
 
-      gum::ScheduleOperator& op3
-         = const_cast< gum::ScheduleOperator& >(schedule3.operation(gum::NodeId(3)));
+      auto& op3 = const_cast< gum::ScheduleOperator& >(schedule3.operation(gum::NodeId(3)));
       op3.execute();
       schedule3.updateAfterExecution(gum::NodeId(3), available_nodes, true);
-      TS_ASSERT(available_nodes.size() == 2);
-      TS_ASSERT((available_nodes[0] == gum::NodeId(4)) || (available_nodes[0] == gum::NodeId(6)));
-      TS_ASSERT((available_nodes[1] == gum::NodeId(4)) || (available_nodes[1] == gum::NodeId(6)));
+      TS_ASSERT(available_nodes.size() == 2)
+      TS_ASSERT((available_nodes[0] == gum::NodeId(4)) || (available_nodes[0] == gum::NodeId(6)))
+      TS_ASSERT((available_nodes[1] == gum::NodeId(4)) || (available_nodes[1] == gum::NodeId(6)))
       available_operations = schedule3.availableOperations();
-      TS_ASSERT(available_operations.size() == 2);
-      TS_ASSERT(available_operations.contains(gum::NodeId(4)));
-      TS_ASSERT(available_operations.contains(gum::NodeId(6)));
+      TS_ASSERT(available_operations.size() == 2)
+      TS_ASSERT(available_operations.contains(gum::NodeId(4)))
+      TS_ASSERT(available_operations.contains(gum::NodeId(6)))
 
       comb3.execute();
-      const gum::ScheduleMultiDim< gum::Potential< double > >& op3_res
+      const auto& op3_res
          = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >& >(
             *op3.results()[0]);
-      TS_ASSERT(result3.hasSameVariables(op3_res));
-      TS_ASSERT(result3.hasSameContent(op3_res));
+      TS_ASSERT(result3.hasSameVariables(op3_res))
+      TS_ASSERT(result3.hasSameContent(op3_res))
 
-      gum::ScheduleOperator& op4
-         = const_cast< gum::ScheduleOperator& >(schedule3.operation(gum::NodeId(4)));
-      TS_ASSERT(!op2_res.isAbstract());
+      auto& op4 = const_cast< gum::ScheduleOperator& >(schedule3.operation(gum::NodeId(4)));
+      TS_ASSERT(!op2_res.isAbstract())
       op4.execute();
-      TS_ASSERT(op2_res.isAbstract());
+      TS_ASSERT(op2_res.isAbstract())
       schedule3.updateAfterExecution(gum::NodeId(4), available_nodes, true);
-      TS_ASSERT(available_nodes.size() == 0);
+      TS_ASSERT(available_nodes.size() == 0)
       available_operations = schedule3.availableOperations();
-      TS_ASSERT(available_operations.size() == 1);
-      TS_ASSERT(available_operations.contains(gum::NodeId(6)));
+      TS_ASSERT(available_operations.size() == 1)
+      TS_ASSERT(available_operations.contains(gum::NodeId(6)))
 
-      gum::ScheduleOperator& op6
-         = const_cast< gum::ScheduleOperator& >(schedule3.operation(gum::NodeId(6)));
+      auto& op6 = const_cast< gum::ScheduleOperator& >(schedule3.operation(gum::NodeId(6)));
       op6.execute();
       schedule3.updateAfterExecution(gum::NodeId(6), available_nodes, true);
-      TS_ASSERT(available_nodes.size() == 3);
+      TS_ASSERT(available_nodes.size() == 3)
       available_operations = schedule3.availableOperations();
-      TS_ASSERT(available_operations.size() == 3);
-      TS_ASSERT(available_operations.contains(gum::NodeId(5)));
-      TS_ASSERT(available_operations.contains(gum::NodeId(7)));
-      TS_ASSERT(available_operations.contains(gum::NodeId(8)));
+      TS_ASSERT(available_operations.size() == 3)
+      TS_ASSERT(available_operations.contains(gum::NodeId(5)))
+      TS_ASSERT(available_operations.contains(gum::NodeId(7)))
+      TS_ASSERT(available_operations.contains(gum::NodeId(8)))
 
       comb4.execute();
-      const gum::ScheduleMultiDim< gum::Potential< double > >& op6_res
+      const auto& op6_res
          = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >& >(
             *op6.results()[0]);
-      TS_ASSERT(result4.hasSameVariables(op6_res));
-      TS_ASSERT(result4.hasSameContent(op6_res));
-      TS_ASSERT(!result4.isAbstract());
-      TS_ASSERT(!op6_res.isAbstract());
+      TS_ASSERT(result4.hasSameVariables(op6_res))
+      TS_ASSERT(result4.hasSameContent(op6_res))
+      TS_ASSERT(!result4.isAbstract())
+      TS_ASSERT(!op6_res.isAbstract())
 
       for (unsigned int i = 0; i < vars.size(); ++i)
         delete vars[i];

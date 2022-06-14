@@ -331,7 +331,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(set4.pos(i), (std::size_t)i)
         TS_ASSERT(set4.exists(i))
       }
-      TS_ASSERT_THROWS(set4.pos(7), gum::NotFound)
+      TS_ASSERT_THROWS(set4.pos(7), const gum::NotFound&)
       TS_ASSERT(!set4.exists(7))
 
       set4.clear();

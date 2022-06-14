@@ -52,7 +52,7 @@ namespace gum_tests {
       gum::SetInst i;
 
       TS_GUM_ASSERT_THROWS_NOTHING(i << a << b << c)
-      TS_ASSERT_THROWS(i << a, gum::DuplicateElement)
+      TS_ASSERT_THROWS(i << a, const gum::DuplicateElement&)
       TS_ASSERT_EQUALS(i.nbrDim(), (gum::Size)3)
       TS_ASSERT_EQUALS(i.domainSize(), (gum::Size)(2 * 4 * 5))
 
@@ -65,7 +65,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(i.toString(), "<a:10|b:0100|c:10000>")
 
       TS_GUM_ASSERT_THROWS_NOTHING(i >> b)
-      TS_ASSERT_THROWS(i >> b, gum::NotFound)
+      TS_ASSERT_THROWS(i >> b, const gum::NotFound&)
       TS_ASSERT_EQUALS(i.nbrDim(), (gum::Size)2)
       TS_ASSERT_EQUALS(i.domainSize(), (gum::Size)(2 * 5))
 

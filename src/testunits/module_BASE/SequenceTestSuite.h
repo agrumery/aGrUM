@@ -208,8 +208,8 @@ namespace gum_tests {
                                        << "cc");
       TS_GUM_ASSERT_THROWS_NOTHING(seq.insert("ddd"))
 
-      TS_ASSERT_THROWS(seq.insert("ddd"), gum::DuplicateElement)
-      TS_ASSERT_THROWS(seq << "ddd", gum::DuplicateElement)
+      TS_ASSERT_THROWS(seq.insert("ddd"), const gum::DuplicateElement&)
+      TS_ASSERT_THROWS(seq << "ddd", const gum::DuplicateElement&)
 
       TS_ASSERT_EQUALS(seq.toString(), "[0:aaaa - 1:b - 2:cc - 3:ddd]")
 
@@ -219,14 +219,14 @@ namespace gum_tests {
       TS_ASSERT(seq.exists("b"))
       TS_ASSERT(!seq.exists("bb"))
 
-      TS_ASSERT_THROWS(seq[15], gum::OutOfBounds)
-      TS_ASSERT_THROWS(seq.pos("aaaaaaa"), gum::NotFound)
+      TS_ASSERT_THROWS(seq[15], const gum::OutOfBounds&)
+      TS_ASSERT_THROWS(seq.pos("aaaaaaa"), const gum::NotFound&)
 
       TS_ASSERT_EQUALS(seq.toString(), "[0:aaaa - 1:b - 2:cc - 3:ddd]")
       TS_GUM_ASSERT_THROWS_NOTHING(seq.setAtPos(1, "boom"))
       TS_ASSERT_EQUALS(seq.toString(), "[0:aaaa - 1:boom - 2:cc - 3:ddd]")
-      TS_ASSERT_THROWS(seq.setAtPos(15, "crach"), gum::NotFound)
-      TS_ASSERT_THROWS(seq.setAtPos(1, "aaaa"), gum::DuplicateElement)
+      TS_ASSERT_THROWS(seq.setAtPos(15, "crach"), const gum::NotFound&)
+      TS_ASSERT_THROWS(seq.setAtPos(1, "aaaa"), const gum::DuplicateElement&)
 
       TS_ASSERT_EQUALS(seq.toString(), "[0:aaaa - 1:boom - 2:cc - 3:ddd]")
 
@@ -234,8 +234,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(seq.toString(), "[0:cc - 1:boom - 2:aaaa - 3:ddd]")
       TS_GUM_ASSERT_THROWS_NOTHING(seq.swap(0, 3))
       TS_ASSERT_EQUALS(seq.toString(), "[0:ddd - 1:boom - 2:aaaa - 3:cc]")
-      TS_ASSERT_THROWS(seq.swap(1, 10), gum::OutOfBounds)
-      TS_ASSERT_THROWS(seq.swap(10, 1), gum::OutOfBounds)
+      TS_ASSERT_THROWS(seq.swap(1, 10), const gum::OutOfBounds&)
+      TS_ASSERT_THROWS(seq.swap(10, 1), const gum::OutOfBounds&)
 
       TS_ASSERT_EQUALS(seq.toString(), "[0:ddd - 1:boom - 2:aaaa - 3:cc]")
     }
@@ -675,7 +675,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(n, (gum::Size)13524)
 
       gum::Sequence< gum::Idx > seq2;
-      TS_ASSERT_THROWS(seq2.front(), gum::NotFound)
+      TS_ASSERT_THROWS(seq2.front(), const gum::NotFound&)
     }
   };
 }   // namespace gum_tests

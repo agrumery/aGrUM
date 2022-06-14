@@ -36,8 +36,8 @@ namespace gum_tests {
       gum::learning::CSVParser parser(in, "(stream)");
 
       // no data parser for now
-      TS_ASSERT_THROWS(parser.current(), gum::NullElement)
-      TS_ASSERT_THROWS(parser.nbLine(), gum::NullElement)
+      TS_ASSERT_THROWS(parser.current(), const gum::NullElement&)
+      TS_ASSERT_THROWS(parser.nbLine(), const gum::NullElement&)
 
       std::size_t count = 0;
       res               = "";
@@ -172,7 +172,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(
          count
          = testParseString("1,\"fjk,dls2,3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12", res),
-         gum::SyntaxError);
+         const gum::SyntaxError&);
 
       try {
         count = testParseString("1,\"fjk,dls2,3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12",
@@ -188,7 +188,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(count = testParseString("1,\"fjkdls2\" nothing should be here,3,4 \n# "
                                                "this is a comment \n 5,6,7,8 \n 9,10,11,12",
                                                res),
-                       gum::SyntaxError);
+                       const gum::SyntaxError&);
 
       try {
         count = testParseString("1,\"fjkdls2\" nothing should be here,3,4 \n# this "
@@ -219,8 +219,8 @@ namespace gum_tests {
       std::istringstream       in1(csvstring1);
       gum::learning::CSVParser parser(in1, "(stream)");
 
-      TS_ASSERT_THROWS(parser.current(), gum::NullElement)
-      TS_ASSERT_THROWS(parser.nbLine(), gum::NullElement)
+      TS_ASSERT_THROWS(parser.current(), const gum::NullElement&)
+      TS_ASSERT_THROWS(parser.nbLine(), const gum::NullElement&)
 
       parser.next();
       const std::vector< std::string >& v1 = parser.current();
@@ -231,8 +231,8 @@ namespace gum_tests {
       std::istringstream in2(csvstring2);
       parser.useNewStream(in2);
 
-      TS_ASSERT_THROWS(parser.current(), gum::NullElement)
-      TS_ASSERT_THROWS(parser.nbLine(), gum::NullElement)
+      TS_ASSERT_THROWS(parser.current(), const gum::NullElement&)
+      TS_ASSERT_THROWS(parser.nbLine(), const gum::NullElement&)
 
       parser.next();
       const std::vector< std::string >& v2 = parser.current();
@@ -246,8 +246,8 @@ namespace gum_tests {
         std::istringstream       in1(csvstring1);
         gum::learning::CSVParser parser(in1, "(stream)");
 
-        TS_ASSERT_THROWS(parser.current(), gum::NullElement)
-        TS_ASSERT_THROWS(parser.nbLine(), gum::NullElement)
+        TS_ASSERT_THROWS(parser.current(), const gum::NullElement&)
+        TS_ASSERT_THROWS(parser.nbLine(), const gum::NullElement&)
 
         parser.next();
         const std::vector< std::string >& v1 = parser.current();
@@ -260,8 +260,8 @@ namespace gum_tests {
         std::istringstream       in1(csvstring1);
         gum::learning::CSVParser parser(in1, "(stream)");
 
-        TS_ASSERT_THROWS(parser.current(), gum::NullElement)
-        TS_ASSERT_THROWS(parser.nbLine(), gum::NullElement)
+        TS_ASSERT_THROWS(parser.current(), const gum::NullElement&)
+        TS_ASSERT_THROWS(parser.nbLine(), const gum::NullElement&)
 
         parser.next();
         const std::vector< std::string >& v1 = parser.current();
@@ -276,8 +276,8 @@ namespace gum_tests {
         std::istringstream       in1(csvstring1);
         gum::learning::CSVParser parser(in1, "(stream)");
 
-        TS_ASSERT_THROWS(parser.current(), gum::NullElement)
-        TS_ASSERT_THROWS(parser.nbLine(), gum::NullElement)
+        TS_ASSERT_THROWS(parser.current(), const gum::NullElement&)
+        TS_ASSERT_THROWS(parser.nbLine(), const gum::NullElement&)
 
         parser.next();
         const std::vector< std::string >& v1 = parser.current();
@@ -291,8 +291,8 @@ namespace gum_tests {
         std::istringstream       in1(csvstring1);
         gum::learning::CSVParser parser(in1, "(stream)", ",", '#', '\'');
 
-        TS_ASSERT_THROWS(parser.current(), gum::NullElement)
-        TS_ASSERT_THROWS(parser.nbLine(), gum::NullElement)
+        TS_ASSERT_THROWS(parser.current(), const gum::NullElement&)
+        TS_ASSERT_THROWS(parser.nbLine(), const gum::NullElement&)
 
         parser.next();
         const std::vector< std::string >& v1 = parser.current();

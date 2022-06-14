@@ -45,7 +45,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
         // Assert
         TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
     void testConstantFloat() {
@@ -58,7 +58,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
         // Assert
         TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
     void testMultiplication() {
@@ -71,7 +71,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
         // Assert
         TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
     void testDivision() {
@@ -84,7 +84,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
         // Assert
         TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
     void testAddition() {
@@ -97,7 +97,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
         // Assert
         TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
     void testSubstraction() {
@@ -110,7 +110,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
         // Assert
         TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
     void testSimplePriority1() {
@@ -123,7 +123,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
         // Assert
         TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
     void testSimplePriority2() {
@@ -136,7 +136,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
         // Assert
         TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
     void testComplexPriority() {
@@ -149,7 +149,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
         // Assert
         TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
     void testMinusSign() {
@@ -162,7 +162,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
         // Assert
         TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
     void testExp() {
@@ -175,7 +175,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
         // Assert
         TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
     void testLog() {
@@ -188,7 +188,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
         // Assert
         TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
     void testLn() {
@@ -201,7 +201,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
         // Assert
         TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
     void testSqrt() {
@@ -214,7 +214,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
         // Assert
         TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
     void testPow() {
@@ -227,7 +227,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
         // Assert
         TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
     void testGoal() {
@@ -240,7 +240,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
         // Assert
         TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
     void testVariables() {
@@ -262,7 +262,7 @@ namespace gum_tests {
         TS_ASSERT(formula.variables().exists("t"))
         TS_ASSERT(formula.variables().exists("unused"))
         TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
     void testScientificNotation1() {
@@ -275,7 +275,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
         // Assert
         TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
     void testScientificNotation2() {
@@ -288,7 +288,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
         // Assert
         TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
     void testScientificNotation3() {
@@ -301,7 +301,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(formula.result())
         // Assert
         TS_ASSERT_DELTA(formula.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
     void testOperatorUnary() {
@@ -314,7 +314,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(result = -a)
         // Assert
         TS_ASSERT_DELTA(result.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
     void testOperatorPlus() {
@@ -328,7 +328,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(result = a + b)
         // Assert
         TS_ASSERT_DELTA(result.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
     void testOperatorMinus() {
@@ -342,7 +342,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(result = a - b)
         // Assert
         TS_ASSERT_DELTA(result.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
     void testOperatorTimes() {
@@ -356,7 +356,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(result = a * b)
         // Assert
         TS_ASSERT_DELTA(result.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
     void testOperatorDivides() {
@@ -370,7 +370,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(result = a / b)
         // Assert
         TS_ASSERT_DELTA(result.result(), expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
     void testDoubleImplicitConversion() {
@@ -383,7 +383,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(result = (double)a)
         // Assert
         TS_ASSERT_DELTA(result, expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
     void testDoubleExplicitConversion() {
@@ -396,7 +396,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(result = static_cast< double >(a))
         // Assert
         TS_ASSERT_DELTA(result, expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
     void testDoubleInitialisation() {
@@ -407,7 +407,7 @@ namespace gum_tests {
         gum::Formula f = 3.14;
         // Assert
         TS_ASSERT_DELTA((double)f, expected, 1e-6)
-      } catch (gum::Exception&) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
     void testToString() {

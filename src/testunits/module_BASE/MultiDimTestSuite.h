@@ -60,7 +60,7 @@ namespace gum_tests {
         v[i] = new gum::LabelizedVariable(name, "x");
       }
 
-      TS_ASSERT_THROWS(feedMultiDimUntilOverflow(v, m), gum::OutOfBounds)
+      TS_ASSERT_THROWS(feedMultiDimUntilOverflow(v, m), const gum::OutOfBounds&)
 
       for (int i = 0; i < 100; i++)
         delete (v[i]);

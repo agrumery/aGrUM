@@ -435,7 +435,7 @@ namespace gum_tests {
       learner.setMaxIndegree(10);
       learner.useScoreLog2Likelihood();
 
-      TS_ASSERT_THROWS(learner.useScoreBD(), gum::IncompatibleScoreApriori)
+      TS_ASSERT_THROWS(learner.useScoreBD(), const gum::IncompatibleScoreApriori&)
       TS_GUM_ASSERT_THROWS_NOTHING(learner.useScoreBDeu())
       learner.useScoreLog2Likelihood();
 
@@ -515,7 +515,7 @@ namespace gum_tests {
       learner.setMaxIndegree(10);
       learner.useScoreLog2Likelihood();
 
-      TS_ASSERT_THROWS(learner.useScoreBD(), gum::IncompatibleScoreApriori)
+      TS_ASSERT_THROWS(learner.useScoreBD(), const gum::IncompatibleScoreApriori&)
       TS_GUM_ASSERT_THROWS_NOTHING(learner.useScoreBDeu())
       learner.useScoreLog2Likelihood();
 
@@ -724,7 +724,7 @@ namespace gum_tests {
 
       TS_ASSERT_THROWS(
          gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"), bn),
-         gum::MissingVariableInDatabase);
+         const gum::MissingVariableInDatabase&);
 
 
       // learner.useScoreLog2Likelihood();
@@ -732,7 +732,7 @@ namespace gum_tests {
 
       // TS_ASSERT_THROWS(gum::BayesNet< double > bn2 =
       // learner.learnParameters(bn),
-      //                 gum::MissingVariableInDatabase);
+      //                 const gum::MissingVariableInDatabase&);
     }
 
     void test_asia_param_bn_with_subset_of_variables_in_base() {
@@ -786,7 +786,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(
          gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3-faulty.csv"),
                                                     bn),
-         gum::UnknownLabelInDatabase);
+         const gum::UnknownLabelInDatabase&)
     }
 
     void test_listener() {
@@ -1096,7 +1096,7 @@ namespace gum_tests {
       }
 
 
-      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/bugDoumenc.csv"), templ);
+      gum::learning::BNLearner learner(GET_RESSOURCES_PATH("csv/bugDoumenc.csv"), templ);
       learner.useScoreLog2Likelihood();
       learner.useAprioriSmoothing();
 
@@ -1105,13 +1105,12 @@ namespace gum_tests {
       const gum::DiscreteVariable& var_discr = bn.variable("A");
       int                          good      = 1;
       try {
-        const gum::DiscretizedVariable< int >& xvar_discr
-           = dynamic_cast< const gum::DiscretizedVariable< int >& >(var_discr);
+        const auto& xvar_discr = dynamic_cast< const gum::DiscretizedVariable< int >& >(var_discr);
         TS_ASSERT_EQUALS(xvar_discr.domainSize(), (gum::Size)9)
         TS_ASSERT_EQUALS(xvar_discr.label(0), "[60;65[")
         TS_ASSERT_EQUALS(xvar_discr.label(1), "[65;70[")
         TS_ASSERT_EQUALS(xvar_discr.label(8), "[100;105]")
-      } catch (std::bad_cast&) { good = 0; }
+      } catch (const std::bad_cast&) { good = 0; }
       TS_ASSERT_EQUALS(good, 1)
     }
 
@@ -1125,13 +1124,13 @@ namespace gum_tests {
       TS_ASSERT_THROWS(learner2.setSliceOrder({{"smoking", "lung_cancer"},
                                                {"bronchitis", "visit_to_Asia"},
                                                {"smoking", "tuberculosis", "lung_cancer"}}),
-                       gum::DuplicateElement);
+                       const gum::DuplicateElement&)
 
       gum::learning::BNLearner< double > learner3(GET_RESSOURCES_PATH("csv/asia3.csv"));
       TS_ASSERT_THROWS(
          learner3.setSliceOrder(
             {{"smoking", "lung_cancer"}, {"bronchitis", "visit_to_Asia"}, {"CRUCRU"}}),
-         gum::MissingVariableInDatabase);
+         const gum::MissingVariableInDatabase&)
     }
 
     void test_dirichlet() {
@@ -1253,7 +1252,7 @@ namespace gum_tests {
       dag.addArc(gum::NodeId(2), gum::NodeId(1));
       dag.addArc(gum::NodeId(3), gum::NodeId(2));
 
-      TS_ASSERT_THROWS(learner.learnParameters(dag), gum::MissingValueInDatabase)
+      TS_ASSERT_THROWS(learner.learnParameters(dag), const gum::MissingValueInDatabase&)
 
       learner.useEM(1e-3);
       learner.useAprioriSmoothing();
@@ -1584,7 +1583,7 @@ namespace gum_tests {
       gum::learning::BNLearner< double > learner4(GET_RESSOURCES_PATH("csv/asia.csv"), templ35);
       learner4.useScoreAIC();
 
-      TS_ASSERT_THROWS(learner4.learnParameters(templ34.dag()), gum::DatabaseError)
+      TS_ASSERT_THROWS(learner4.learnParameters(templ34.dag()), const gum::DatabaseError&)
     }
 
     void test_misorientation_MIIC() {
@@ -1603,8 +1602,8 @@ namespace gum_tests {
           {"corporate customer", "yearly consumption"},
           {"yearly consumption", "loyalty"},
           {"yearly consumption", "coupon"}});
-      for (auto a: expected_arcs) {
-        TS_ASSERT(bn.existsArc(a.first, a.second))
+      for (const auto& [tail,head]: expected_arcs) {
+        TS_ASSERT(bn.existsArc(tail, head))
       }
     }
 

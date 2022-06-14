@@ -271,7 +271,7 @@ namespace gum_tests {
       child.addParent(parent);
       auto before = child.cpf().variablesSequence().size();
       // Act
-      TS_ASSERT_THROWS(child.addParent(parent), gum::DuplicateElement)
+      TS_ASSERT_THROWS(child.addParent(parent), const gum::DuplicateElement&)
       // Assert
       auto after = child.cpf().variablesSequence().size();
       TS_ASSERT_EQUALS(before, after)
@@ -327,7 +327,7 @@ namespace gum_tests {
       PRMAttribute boolean_bis("boolean", *_boolean_);
       auto         before = boolean.cpf().variablesSequence().size();
       // Act
-      TS_ASSERT_THROWS(boolean_bis.setAsCastDescendant(&boolean), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(boolean_bis.setAsCastDescendant(&boolean), const gum::OperationNotAllowed&)
       // Assert
       auto after = boolean.cpf().variablesSequence().size();
       TS_ASSERT_EQUALS(before, after)
@@ -340,7 +340,7 @@ namespace gum_tests {
       PRMAttribute           state("state", *_state_);
       auto                   before = foo.cpf().variablesSequence().size();
       // Act
-      TS_ASSERT_THROWS(state.setAsCastDescendant(&foo), gum::TypeError)
+      TS_ASSERT_THROWS(state.setAsCastDescendant(&foo), const gum::TypeError&)
       // Assert
       auto after = foo.cpf().variablesSequence().size();
       TS_ASSERT_EQUALS(before, after)

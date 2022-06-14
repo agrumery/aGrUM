@@ -38,14 +38,14 @@ namespace gum_tests {
       gum::MultiDimNoisyORCompound< double > p(0.2f);
 
       // trying to change weight for a non cause
-      TS_ASSERT_THROWS(p.causalWeight(b, 0.4f), gum::InvalidArgument)
-      TS_ASSERT_THROWS(p.causalWeight(d, 0.0f), gum::InvalidArgument)
+      TS_ASSERT_THROWS(p.causalWeight(b, 0.4f), const gum::InvalidArgument&)
+      TS_ASSERT_THROWS(p.causalWeight(d, 0.0f), const gum::InvalidArgument&)
 
       // adding causes
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d)
 
       // trying to set 0 for causal weight
-      TS_ASSERT_THROWS(p.causalWeight(d, 0.0f), gum::OutOfBounds)
+      TS_ASSERT_THROWS(p.causalWeight(d, 0.0f), const gum::OutOfBounds&)
 
       // doing the right stuff :)
       p.causalWeight(b, 0.4f);

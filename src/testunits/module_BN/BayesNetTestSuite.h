@@ -143,11 +143,11 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(topology->sizeArcs(), (gum::Idx)0)
       TS_ASSERT_EQUALS(topology->dim(), (gum::Idx)0)
 
-      TS_ASSERT_THROWS(topology->addArc(1, 2), gum::InvalidNode)
+      TS_ASSERT_THROWS(topology->addArc(1, 2), const gum::InvalidNode&)
       gum::List< gum::NodeId > idList;
       TS_GUM_ASSERT_THROWS_NOTHING(fill(*topology, idList))
 
-      TS_ASSERT_THROWS(topology->add(*var1), gum::DuplicateLabel)
+      TS_ASSERT_THROWS(topology->add(*var1), const gum::DuplicateLabel&)
 
       TS_ASSERT_EQUALS(topology->toString(),
                        "BN{nodes: 5, arcs: 6, domainSize: 48, "
@@ -377,7 +377,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(bn.addArc(idList[3], idList[4]))
       TS_GUM_ASSERT_THROWS_NOTHING(bn.addArc(idList[1], idList[4]))
 
-      TS_ASSERT_THROWS(bn.addArc(idList[3], idList[4]), gum::DuplicateElement)
+      TS_ASSERT_THROWS(bn.addArc(idList[3], idList[4]), const gum::DuplicateElement&)
 
       TS_ASSERT_EQUALS(bn.dag().sizeArcs(), (gum::Size)6)
     }
@@ -459,7 +459,7 @@ namespace gum_tests {
         for (const auto& a: {std::make_pair("A", "C"), std::make_pair("B", "C")}) {
           bn.addArc(a.first, a.second);
         }
-        TS_ASSERT_THROWS(bn.addArc("A", "C"), gum::DuplicateElement)
+        TS_ASSERT_THROWS(bn.addArc("A", "C"), const gum::DuplicateElement&)
 
         TS_ASSERT_EQUALS(bn.toString(),
                          "BN{nodes: 3, arcs: 2, domainSize: 8, "
@@ -468,30 +468,30 @@ namespace gum_tests {
         bn.cpt("A").fillWith(1.0f).normalize();
         bn.generateCPT("B");
         bn.generateCPT("C");
-        TS_ASSERT_THROWS(bn.cpt("XXX"), gum::NotFound)
+        TS_ASSERT_THROWS(bn.cpt("XXX"), const gum::NotFound&)
 
         bn.reverseArc("A", "C");
         TS_ASSERT_EQUALS(bn.toString(),
                          "BN{nodes: 3, arcs: 3, domainSize: 8, "
                          "dim: 14}");
 
-        TS_ASSERT_THROWS(bn.reverseArc("A", "C"), gum::InvalidArc)
-        TS_ASSERT_THROWS(bn.reverseArc("A", "C"), gum::GraphError)
-        TS_ASSERT_THROWS(bn.reverseArc("A", "X"), gum::NotFound)
+        TS_ASSERT_THROWS(bn.reverseArc("A", "C"), const gum::InvalidArc&)
+        TS_ASSERT_THROWS(bn.reverseArc("A", "C"), const gum::GraphError&)
+        TS_ASSERT_THROWS(bn.reverseArc("A", "X"), const gum::NotFound&)
 
         bn.erase("A");
         TS_ASSERT_EQUALS(bn.toString(),
                          "BN{nodes: 2, arcs: 1, domainSize: 4, "
                          "dim: 6}");
 
-        TS_ASSERT_THROWS(bn.erase("A"), gum::NotFound)
+        TS_ASSERT_THROWS(bn.erase("A"), const gum::NotFound&)
 
         bn.eraseArc("B", "C");
         TS_ASSERT_EQUALS(bn.toString(),
                          "BN{nodes: 2, arcs: 0, domainSize: 4, "
                          "dim: 4}");
 
-        TS_ASSERT_THROWS(bn.eraseArc("B", "C"), gum::NotFound)
+        TS_ASSERT_THROWS(bn.eraseArc("B", "C"), const gum::NotFound&)
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
@@ -644,13 +644,13 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(&bn.variableFromName(bn.variable(node).name()), &bn.variable(node))
       }
 
-      TS_ASSERT_THROWS(bn.idFromName("choucroute"), gum::NotFound)
+      TS_ASSERT_THROWS(bn.idFromName("choucroute"), const gum::NotFound&)
 
-      TS_ASSERT_THROWS(bn.variableFromName("choucroute"), gum::NotFound)
+      TS_ASSERT_THROWS(bn.variableFromName("choucroute"), const gum::NotFound&)
 
       TS_GUM_ASSERT_THROWS_NOTHING(bn.idFromName("var1"))
       bn.erase(bn.idFromName("var1"));
-      TS_ASSERT_THROWS(bn.idFromName("var1"), gum::NotFound)
+      TS_ASSERT_THROWS(bn.idFromName("var1"), const gum::NotFound&)
     }
 
     void testCopyAndEqualityOperators() {
@@ -712,7 +712,7 @@ namespace gum_tests {
         gum::Idx                i1 = 0;
 
         TS_GUM_ASSERT_THROWS_NOTHING(i1 = bn.addOR(*var1))
-        TS_ASSERT_THROWS(bn.addOR(*var5), gum::SizeError)
+        TS_ASSERT_THROWS(bn.addOR(*var5), const gum::SizeError&)
 
         bn.addArc(bn.add(*var3), i1);
         bn.addArc(bn.add(*var4), i1);
@@ -723,7 +723,7 @@ namespace gum_tests {
         gum::Idx                i2 = 0;
 
         TS_GUM_ASSERT_THROWS_NOTHING(i2 = bn.addAND(*var2))
-        TS_ASSERT_THROWS(bn.addAND(*var5), gum::SizeError)
+        TS_ASSERT_THROWS(bn.addAND(*var5), const gum::SizeError&)
 
         bn.addArc(bn.add(*var3), i2);
         bn.addArc(bn.add(*var4), i2);
@@ -749,7 +749,7 @@ namespace gum_tests {
 
       gum::Instantiation j;
       for (auto n: bn.nodes()) {
-        TS_ASSERT_THROWS(bn.jointProbability(j), gum::InvalidArgument)
+        TS_ASSERT_THROWS(bn.jointProbability(j), const gum::InvalidArgument&)
         j.add(bn.variable(n));
       }
       double b = 0.0;
@@ -773,9 +773,9 @@ namespace gum_tests {
 
       bn.reverseArc(0, 2);
       bn.reverseArc(gum::Arc(3, 4));
-      TS_ASSERT_THROWS(bn.reverseArc(gum::Arc(3, 4)), gum::InvalidArc)
-      TS_ASSERT_THROWS(bn.reverseArc(gum::Arc(3, 5)), gum::InvalidArc)
-      TS_ASSERT_THROWS(bn.reverseArc(gum::Arc(2, 4)), gum::InvalidArc)
+      TS_ASSERT_THROWS(bn.reverseArc(gum::Arc(3, 4)), const gum::InvalidArc&)
+      TS_ASSERT_THROWS(bn.reverseArc(gum::Arc(3, 5)), const gum::InvalidArc&)
+      TS_ASSERT_THROWS(bn.reverseArc(gum::Arc(2, 4)), const gum::InvalidArc&)
 
       unsigned int j;
       for (j = 0, i.setFirst(); !i.end(); i.inc(), ++j) {
@@ -804,9 +804,9 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(i1, gum::NodeId(0))
       TS_ASSERT_EQUALS(i2, gum::NodeId(1))
 
-      TS_ASSERT_THROWS(i3 = bn.add("A", 5), gum::DuplicateLabel)
+      TS_ASSERT_THROWS(i3 = bn.add("A", 5), const gum::DuplicateLabel&)
       // the variable "C",1 can be created but the BN does not allow to add such a variable
-      TS_ASSERT_THROWS(i3 = bn.add("C", 1), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(i3 = bn.add("C", 1), const gum::OperationNotAllowed&)
       GUM_UNUSED(i3);
 
       TS_ASSERT_THROWS_NOTHING(bn.addArc(i1, i2))
@@ -816,10 +816,10 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn.variable("X").toString(), "X:Labelized({top|middle|bottom})")
 
       // a mono-label with default 4 is impossible
-      TS_ASSERT_THROWS(bn.add("Y[1,1]", 4), gum::ArgumentError)
+      TS_ASSERT_THROWS(bn.add("Y[1,1]", 4), const gum::ArgumentError&)
 
       // a mono-label with default 1 is possible but can not be integrated in the model
-      TS_ASSERT_THROWS(bn.add("Y[1,1]", 1), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(bn.add("Y[1,1]", 1), const gum::OperationNotAllowed&)
     }
 
     void testSomeFunctions() {
@@ -932,7 +932,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(bn.dim(), gum::Size((2 - 1) + (2 * (2 - 1)) + (2 * 2 * (2 - 1))))
 
         TS_ASSERT_THROWS(bn = gum::BayesNet< float >::fastPrototype("a->b->c->a"),
-                         gum::InvalidDirectedCycle);
+                         const gum::InvalidDirectedCycle&)
 
         bn = gum::BayesNet< float >::fastPrototype("a{yes|maybe|no}->b->c;a->c");
         TS_ASSERT_EQUALS(bn.size(), (gum::Size)3)
@@ -940,9 +940,9 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(bn.dim(), gum::Size((3 - 1) + (3 * (2 - 1)) + (3 * 2 * (2 - 1))))
 
         TS_ASSERT_THROWS(gum::BayesNet< float >::fastPrototype("a{yes}->b->c;a->c"),
-                         gum::InvalidArgument);
+                         const gum::InvalidArgument&)
         TS_ASSERT_THROWS(gum::BayesNet< float >::fastPrototype("a{yes|no|yes}->b->c;a->c"),
-                         gum::InvalidArgument);
+                         const gum::InvalidArgument&)
 
         bn = gum::BayesNet< float >::fastPrototype("a->b->c->d->e->f");
         TS_ASSERT_EQUALS(bn.size(), (gum::Size)6)
@@ -988,9 +988,9 @@ namespace gum_tests {
       bn = gum::BayesNet< float >::fastPrototype("a[0,1]");
       TS_ASSERT_EQUALS(bn.variable("a").toString(), "a:Range([0,1])")
 
-      TS_ASSERT_THROWS(gum::BayesNet< float >::fastPrototype("a[0,0]"), gum::InvalidArgument)
-      TS_ASSERT_THROWS(gum::BayesNet< float >::fastPrototype("a[1,0]"), gum::InvalidArgument)
-      TS_ASSERT_THROWS(gum::BayesNet< float >::fastPrototype("a[1,1]"), gum::InvalidArgument)
+      TS_ASSERT_THROWS(gum::BayesNet< float >::fastPrototype("a[0,0]"), const gum::InvalidArgument&)
+      TS_ASSERT_THROWS(gum::BayesNet< float >::fastPrototype("a[1,0]"), const gum::InvalidArgument&)
+      TS_ASSERT_THROWS(gum::BayesNet< float >::fastPrototype("a[1,1]"), const gum::InvalidArgument&)
 
       bn = gum::BayesNet< float >::fastPrototype("a[5]");
       TS_ASSERT_EQUALS(bn.variable("a").toString(), "a:Range([0,4])")

@@ -55,7 +55,7 @@ namespace gum_tests {
       const auto& bar = prm.getClass("Bar");
       TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)0)
       TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0)
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
+      TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
     void testEmptyClassError1() {
@@ -140,7 +140,7 @@ namespace gum_tests {
       i.inc();
       TS_ASSERT_DELTA(cpf[i], 0.8, 1e-6)
       TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0)
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
+      TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
     void testSimpleClass2() {
@@ -169,7 +169,7 @@ namespace gum_tests {
       i.inc();
       TS_ASSERT_DELTA(cpf[i], 0.8, 1e-6)
       TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0)
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
+      TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
     void testSimpleClass3() {
@@ -213,7 +213,7 @@ namespace gum_tests {
       i.inc();
       TS_ASSERT_DELTA(cpf[i], 0.6, 1e-6)
       TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0)
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
+      TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
     void testSimpleClassError1() {
@@ -336,7 +336,7 @@ namespace gum_tests {
       i.inc();
       TS_ASSERT_DELTA(cpf[i], 0.2, 1e-6)
       TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0)
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
+      TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
     void testSimpleRules2() {
@@ -380,7 +380,7 @@ namespace gum_tests {
       i.inc();
       TS_ASSERT_DELTA(cpf[i], 0.2, 1e-6)
       TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0)
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
+      TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
     void testSimpleRules3() {
@@ -424,7 +424,7 @@ namespace gum_tests {
       i.inc();
       TS_ASSERT_DELTA(cpf[i], 0.2, 1e-6)
       TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0)
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
+      TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
     void testSimpleRules4() {
@@ -468,7 +468,7 @@ namespace gum_tests {
       i.inc();
       TS_ASSERT_DELTA(cpf[i], 0.2, 1e-6)
       TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0)
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
+      TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
     void testSimpleRulesError1() {
@@ -607,7 +607,7 @@ namespace gum_tests {
       i.inc();
       TS_ASSERT_DELTA(cpf[i], 1 - std::exp(-0.003 * 8760), 1e-6)
       TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0)
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
+      TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
     void testSimpleParameter2() {
@@ -652,7 +652,7 @@ namespace gum_tests {
       i.inc();
       TS_ASSERT_DELTA(cpf[i], 0.0, 1e-6)
       TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0)
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
+      TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
     void testClassWithReference1() {
@@ -684,7 +684,7 @@ namespace gum_tests {
          = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoo"));
       TS_ASSERT_EQUALS(&(myFoo.slotType()), &(foo))
       TS_ASSERT(!myFoo.isArray())
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
+      TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
     void testClassWithReference2() {
@@ -716,7 +716,7 @@ namespace gum_tests {
          = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoo"));
       TS_ASSERT_EQUALS(&(myFoo.slotType()), &(foo))
       TS_ASSERT(myFoo.isArray())
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
+      TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
     void testClassWithReference3() {
@@ -775,7 +775,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(cpf[i], 1.0, 1e-6)
       i.inc();
       TS_ASSERT_DELTA(cpf[i], 0.0, 1e-6)
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
+      TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
     void testClassWithReference4() {
@@ -836,7 +836,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(cpf[i], 1.0, 1e-6)
       i.inc();
       TS_ASSERT_DELTA(cpf[i], 0.0, 1e-6)
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
+      TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
     void testClassWithReferenceError1() {
@@ -2397,7 +2397,7 @@ namespace gum_tests {
       i.inc();
       TS_ASSERT_DELTA(cpf[i], 0.6, 1e-6)
       TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0)
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
+      TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
     void testAnonymousType2() {
@@ -2440,7 +2440,7 @@ namespace gum_tests {
       i.inc();
       TS_ASSERT_DELTA(cpf[i], 0.6, 1e-6)
       TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0)
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
+      TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
     void testAnonymousType3() {
@@ -2483,7 +2483,7 @@ namespace gum_tests {
       i.inc();
       TS_ASSERT_DELTA(cpf[i], 0.6, 1e-6)
       TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0)
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
+      TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
     void testAnonymousType4() {
@@ -2526,7 +2526,7 @@ namespace gum_tests {
       i.inc();
       TS_ASSERT_DELTA(cpf[i], 0.6, 1e-6)
       TS_ASSERT_EQUALS(bar.referenceSlots().size(), (gum::Size)0)
-      TS_ASSERT_THROWS(bar.super(), gum::NotFound)
+      TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
     void testAnonymousTypeError1() {

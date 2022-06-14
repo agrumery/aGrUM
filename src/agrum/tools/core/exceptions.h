@@ -115,7 +115,7 @@ namespace gum {
 
     /// @}
 
-    GUM_NODISCARD const char* what() const override { return what_.c_str(); };
+    GUM_NODISCARD const char* what() const noexcept override { return what_.c_str(); };
 
     /**
      * @brief Returns the message content.

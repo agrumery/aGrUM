@@ -55,7 +55,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(var1.label(1), "3")
       TS_ASSERT_EQUALS(var1["3"], (gum::Idx)1)
 
-      TS_ASSERT_THROWS(var1.addLabel("3"), gum::DuplicateElement)
+      TS_ASSERT_THROWS(var1.addLabel("3"), const gum::DuplicateElement&)
 
       std::stringstream s;
       s << var1;
@@ -80,8 +80,8 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(
          var1.changeLabel(1, "x"));   // should be OK since label 1 is already "x"
-      TS_ASSERT_THROWS(var1.changeLabel(0, "x"), gum::DuplicateElement)
-      TS_ASSERT_THROWS(var1.changeLabel(1000, "x"), gum::OutOfBounds)
+      TS_ASSERT_THROWS(var1.changeLabel(0, "x"), const gum::DuplicateElement&)
+      TS_ASSERT_THROWS(var1.changeLabel(1000, "x"), const gum::OutOfBounds&)
     }
 
     void testNumerical() {

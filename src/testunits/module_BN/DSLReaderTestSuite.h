@@ -339,7 +339,7 @@ namespace gum_tests {
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       TS_GUM_ASSERT_THROWS_NOTHING(gum::DSLReader< double > reader(net, file))
       gum::DSLReader< double > reader(net, file);
-      TS_ASSERT_THROWS(reader.proceed(), gum::IOError)
+      TS_ASSERT_THROWS(reader.proceed(), const gum::IOError&)
 
       if (net) delete net;
     }

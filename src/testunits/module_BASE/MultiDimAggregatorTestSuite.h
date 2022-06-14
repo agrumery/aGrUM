@@ -406,9 +406,9 @@ namespace gum_tests {
       // access
       i.setFirst();
 
-      TS_ASSERT_THROWS(p.set(i, 3), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(p.set(i, 3), const gum::OperationNotAllowed&)
 
-      TS_ASSERT_THROWS(p.fill(0), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(p.fill(0), const gum::OperationNotAllowed&)
     }
 
     void testCreationSum() {
@@ -456,7 +456,7 @@ namespace gum_tests {
       gum::Instantiation ind(p);
       std::string        s;
 
-      TS_ASSERT_THROWS(p.get(ind), gum::NotFound)
+      TS_ASSERT_THROWS(p.get(ind), const gum::NotFound&)
 
       p << a;
       TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p))
@@ -478,7 +478,7 @@ namespace gum_tests {
       gum::Instantiation ind(p);
       std::string        s;
 
-      TS_ASSERT_THROWS(p.get(ind), gum::NotFound)
+      TS_ASSERT_THROWS(p.get(ind), const gum::NotFound&)
 
       p << a;
       TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p))
@@ -500,7 +500,7 @@ namespace gum_tests {
       gum::Instantiation ind(p);
       std::string        s;
 
-      TS_ASSERT_THROWS(p.get(ind), gum::NotFound)
+      TS_ASSERT_THROWS(p.get(ind), const gum::NotFound&)
 
       p << a;
       TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p))
@@ -522,7 +522,7 @@ namespace gum_tests {
       gum::Instantiation ind(p);
       std::string        s;
 
-      TS_ASSERT_THROWS(p.get(ind), gum::NotFound)
+      TS_ASSERT_THROWS(p.get(ind), const gum::NotFound&)
 
       p << a;
       TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p))
@@ -544,7 +544,7 @@ namespace gum_tests {
       gum::Instantiation ind(p);
       std::string        s;
 
-      TS_ASSERT_THROWS(p.get(ind), gum::NotFound)
+      TS_ASSERT_THROWS(p.get(ind), const gum::NotFound&)
 
       p << a;
       TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p))
@@ -566,7 +566,7 @@ namespace gum_tests {
       gum::Instantiation ind(p);
       std::string        s;
 
-      TS_ASSERT_THROWS(p.get(ind), gum::NotFound)
+      TS_ASSERT_THROWS(p.get(ind), const gum::NotFound&)
 
       p << a;
       TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p))
@@ -588,7 +588,7 @@ namespace gum_tests {
       gum::Instantiation ind(p);
       std::string        s;
 
-      TS_ASSERT_THROWS(p.get(ind), gum::NotFound)
+      TS_ASSERT_THROWS(p.get(ind), const gum::NotFound&)
 
       p << a;
       TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p))
@@ -610,7 +610,7 @@ namespace gum_tests {
       gum::Instantiation ind(p);
       std::string        s;
 
-      TS_ASSERT_THROWS(p.get(ind), gum::NotFound)
+      TS_ASSERT_THROWS(p.get(ind), const gum::NotFound&)
 
       p << a;
       TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p))
@@ -632,7 +632,7 @@ namespace gum_tests {
       gum::Instantiation ind(p);
       std::string        s;
 
-      TS_ASSERT_THROWS(p.get(ind), gum::NotFound)
+      TS_ASSERT_THROWS(p.get(ind), const gum::NotFound&)
 
       p << a;
       TS_GUM_ASSERT_THROWS_NOTHING(s = pot2arr_(p))

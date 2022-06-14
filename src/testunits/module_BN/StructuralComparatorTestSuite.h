@@ -42,17 +42,17 @@ namespace gum_tests {
       dig1.addNodeWithId(0);
       undig1.addNodeWithId(0);
 
-      TS_ASSERT_THROWS(comp.compare(dig1, dig2), gum::OperationNotAllowed)
-      TS_ASSERT_THROWS(comp.compare(dig2, dig1), gum::OperationNotAllowed)
-      TS_ASSERT_THROWS(comp.compare(undig1, undig2), gum::OperationNotAllowed)
-      TS_ASSERT_THROWS(comp.compare(undig2, undig1), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(comp.compare(dig1, dig2), const gum::OperationNotAllowed&)
+      TS_ASSERT_THROWS(comp.compare(dig2, dig1), const gum::OperationNotAllowed&)
+      TS_ASSERT_THROWS(comp.compare(undig1, undig2), const gum::OperationNotAllowed&)
+      TS_ASSERT_THROWS(comp.compare(undig2, undig1), const gum::OperationNotAllowed&)
 
       dig2.addNodeWithId(2);
       undig2.addNodeWithId(2);
-      TS_ASSERT_THROWS(comp.compare(dig1, dig2), gum::InvalidNode)
-      TS_ASSERT_THROWS(comp.compare(dig2, dig1), gum::InvalidNode)
-      TS_ASSERT_THROWS(comp.compare(undig1, undig2), gum::InvalidNode)
-      TS_ASSERT_THROWS(comp.compare(undig2, undig1), gum::InvalidNode)
+      TS_ASSERT_THROWS(comp.compare(dig1, dig2), const gum::InvalidNode&)
+      TS_ASSERT_THROWS(comp.compare(dig2, dig1), const gum::InvalidNode&)
+      TS_ASSERT_THROWS(comp.compare(undig1, undig2), const gum::InvalidNode&)
+      TS_ASSERT_THROWS(comp.compare(undig2, undig1), const gum::InvalidNode&)
 
       dig1.addNodeWithId(1);
       dig1.addNodeWithId(2);
@@ -108,13 +108,13 @@ namespace gum_tests {
 
       gum::MixedGraph g;
 
-      TS_ASSERT_THROWS(comp.compare(asia, g), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(comp.compare(asia, g), const gum::OperationNotAllowed&)
 
       for (gum::Size i = 0; i < 16; i += 2) {
         g.addNodeWithId(i);
       }
 
-      TS_ASSERT_THROWS(comp.compare(asia, g), gum::InvalidNode)
+      TS_ASSERT_THROWS(comp.compare(asia, g), const gum::InvalidNode&)
       TS_GUM_ASSERT_THROWS_NOTHING(comp.compare(asia, graph))
 
       comp.compare(asia, graph);

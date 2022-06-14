@@ -79,7 +79,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(translator3.translate("???").discr_val,
                        std::numeric_limits< std::size_t >::max());
       TS_ASSERT_EQUALS(translator3.translate("??").discr_val, (std::size_t)2)
-      TS_ASSERT_THROWS(translator3.translate("a"), gum::SizeError)
+      TS_ASSERT_THROWS(translator3.translate("a"), const gum::SizeError&)
 
       TS_ASSERT_EQUALS(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
                        "toto");
@@ -88,7 +88,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
                        "??");
       TS_ASSERT_THROWS(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
-                       gum::UnknownLabelInDatabase);
+                       const gum::UnknownLabelInDatabase&)
       const std::string back = translator3.translateBack(
          gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()});
       TS_ASSERT(translator3.missingSymbols().exists(back))
@@ -142,7 +142,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(translator3.translate("???").discr_val,
                        std::numeric_limits< std::size_t >::max());
       TS_ASSERT_EQUALS(translator3.translate("??").discr_val, (std::size_t)2)
-      TS_ASSERT_THROWS(translator3.translate("a"), gum::SizeError)
+      TS_ASSERT_THROWS(translator3.translate("a"), const gum::SizeError&)
 
       TS_ASSERT_EQUALS(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
                        "toto");
@@ -151,7 +151,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
                        "??");
       TS_ASSERT_THROWS(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
-                       gum::UnknownLabelInDatabase);
+                       const gum::UnknownLabelInDatabase&)
       TS_ASSERT(translator3.translateBack(
                    gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()})
                 == "?");
@@ -189,7 +189,7 @@ namespace gum_tests {
                        std::numeric_limits< std::size_t >::max());
       TS_ASSERT_EQUALS(translator2.translate("???").discr_val,
                        std::numeric_limits< std::size_t >::max());
-      TS_ASSERT_THROWS(translator2.translate("??"), gum::UnknownLabelInDatabase)
+      TS_ASSERT_THROWS(translator2.translate("??"), const gum::UnknownLabelInDatabase&)
       TS_ASSERT_EQUALS(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
                        "toto");
       TS_ASSERT_EQUALS(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}),
@@ -208,8 +208,8 @@ namespace gum_tests {
                        std::numeric_limits< std::size_t >::max());
       TS_ASSERT_EQUALS(translator3.translate("???").discr_val,
                        std::numeric_limits< std::size_t >::max());
-      TS_ASSERT_THROWS(translator3.translate("??"), gum::SizeError)
-      TS_ASSERT_THROWS(translator3.translate("a"), gum::SizeError)
+      TS_ASSERT_THROWS(translator3.translate("??"), const gum::SizeError&)
+      TS_ASSERT_THROWS(translator3.translate("a"), const gum::SizeError&)
 
       TS_ASSERT_EQUALS(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}),
                        "toto");
@@ -218,7 +218,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
                        "tutu");
       TS_ASSERT_THROWS(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
-                       gum::UnknownLabelInDatabase);
+                       const gum::UnknownLabelInDatabase&)
       TS_ASSERT_EQUALS(translator3.translateBack(gum::learning::DBTranslatedValue{
                           std::numeric_limits< std::size_t >::max()}),
                        "?");
@@ -227,7 +227,7 @@ namespace gum_tests {
 
       TS_ASSERT_THROWS(
          gum::learning::DBTranslator4LabelizedVariable translator4(var, missing, true, 2),
-         gum::SizeError);
+         const gum::SizeError&)
     }
 
 

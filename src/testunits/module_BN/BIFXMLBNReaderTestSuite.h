@@ -685,7 +685,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(gum::BIFXMLBNReader< double > reader(net, file))
       gum::BIFXMLBNReader< double > reader(net, file);
-      TS_ASSERT_THROWS(reader.proceed(), gum::IOError)
+      TS_ASSERT_THROWS(reader.proceed(), const gum::IOError&)
 
       if (net) delete net;
     }

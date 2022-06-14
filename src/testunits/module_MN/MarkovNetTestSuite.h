@@ -156,9 +156,9 @@ namespace gum_tests {
       gum::MarkovNet< double > mn;
       _fill(mn);
       TS_ASSERT_THROWS(mn.addFactor(gum::Potential< double >()),
-                       gum::InvalidArgument);   // no empty factor
+                       const gum::InvalidArgument&)   // no empty factor
       TS_ASSERT_THROWS(mn.addFactor({"11", "31"}),
-                       gum::InvalidArgument);   // already exists
+                       const gum::InvalidArgument&)   // already exists
 
       {
         gum::MarkovNet< double > mn1;
@@ -216,7 +216,7 @@ namespace gum_tests {
     void testEraseFactor() {
       gum::MarkovNet< double > mn;
       _fill(mn);
-      TS_ASSERT_THROWS(mn.eraseFactor({12, 14}), gum::InvalidArgument)
+      TS_ASSERT_THROWS(mn.eraseFactor({12, 14}), const gum::InvalidArgument&)
       TS_GUM_ASSERT_THROWS_NOTHING(mn.eraseFactor({2, 4}))
 
       TS_ASSERT_EQUALS(mn.size(), (gum::Idx)5)
@@ -228,7 +228,7 @@ namespace gum_tests {
     void testEraseFactorWithNames() {
       gum::MarkovNet< double > mn;
       _fill(mn);
-      TS_ASSERT_THROWS(mn.eraseFactor({"31", "21"}), gum::InvalidArgument)
+      TS_ASSERT_THROWS(mn.eraseFactor({"31", "21"}), const gum::InvalidArgument&)
       TS_GUM_ASSERT_THROWS_NOTHING(mn.eraseFactor({"31", "51"}))
 
       TS_ASSERT_EQUALS(mn.size(), (gum::Idx)5)
@@ -240,7 +240,7 @@ namespace gum_tests {
     void testErase() {
       gum::MarkovNet< double > mn;
       _fill(mn);
-      TS_ASSERT_THROWS(mn.erase(36), gum::InvalidArgument)
+      TS_ASSERT_THROWS(mn.erase(36), const gum::InvalidArgument&)
       TS_GUM_ASSERT_THROWS_NOTHING(mn.erase(3))
 
       TS_ASSERT_EQUALS(mn.size(), (gum::Idx)4)
@@ -252,7 +252,7 @@ namespace gum_tests {
     void testEraseWithNames() {
       gum::MarkovNet< double > mn;
       _fill(mn);
-      TS_ASSERT_THROWS(mn.erase("36"), gum::NotFound)
+      TS_ASSERT_THROWS(mn.erase("36"), const gum::NotFound&)
       TS_GUM_ASSERT_THROWS_NOTHING(mn.erase("41"))
 
       TS_ASSERT_EQUALS(mn.size(), (gum::Idx)4)
@@ -360,19 +360,19 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(i1, gum::NodeId(0))
       TS_ASSERT_EQUALS(i2, gum::NodeId(1))
 
-      TS_ASSERT_THROWS(i3 = mn.add("A", 5), gum::DuplicateLabel)
+      TS_ASSERT_THROWS(i3 = mn.add("A", 5), const gum::DuplicateLabel&)
       // the variable "C",1 can be created but the BN does not allow to add such a variable
-      TS_ASSERT_THROWS(i3 = mn.add("C", 1), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(i3 = mn.add("C", 1), const gum::OperationNotAllowed&)
       GUM_UNUSED(i3);
 
       TS_ASSERT_THROWS_NOTHING(mn.add("X{top|middle|bottom}"))
       TS_ASSERT_EQUALS(mn.variable("X").toString(), "X:Labelized({top|middle|bottom})")
 
       // a mono-label with default 4 is impossible
-      TS_ASSERT_THROWS(mn.add("Y[1,1]", 4), gum::ArgumentError)
+      TS_ASSERT_THROWS(mn.add("Y[1,1]", 4), const gum::ArgumentError&)
 
       // a mono-label with default 1 is possible but can not be integrated in the model
-      TS_ASSERT_THROWS(mn.add("Y[1,1]", 1), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(mn.add("Y[1,1]", 1), const gum::OperationNotAllowed&)
     }
   };
 

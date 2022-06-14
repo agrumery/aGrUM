@@ -309,7 +309,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(inf.H((gum::NodeId)2))
       TS_GUM_ASSERT_THROWS_NOTHING(inf.I((gum::NodeId)2, (gum::NodeId)4))
-      TS_ASSERT_THROWS(inf.I((gum::NodeId)2, (gum::NodeId)2), gum::OperationNotAllowed)
+      TS_ASSERT_THROWS(inf.I((gum::NodeId)2, (gum::NodeId)2), const gum::OperationNotAllowed&)
       TS_GUM_ASSERT_THROWS_NOTHING(inf.VI((gum::NodeId)2, (gum::NodeId)4))
       TS_GUM_ASSERT_THROWS_NOTHING(inf.I((gum::NodeId)0, (gum::NodeId)4))
 
@@ -339,7 +339,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(inf.H(bn->variable(2).name()))
       TS_GUM_ASSERT_THROWS_NOTHING(inf.I(bn->variable(2).name(), bn->variable(4).name()))
       TS_ASSERT_THROWS(inf.I(bn->variable(2).name(), bn->variable(2).name()),
-                       gum::OperationNotAllowed);
+                       const gum::OperationNotAllowed&)
       TS_GUM_ASSERT_THROWS_NOTHING(inf.VI(bn->variable(2).name(), bn->variable(4).name()))
       TS_GUM_ASSERT_THROWS_NOTHING(inf.I(bn->variable(0).name(), bn->variable(4).name()))
 
@@ -812,7 +812,7 @@ namespace gum_tests {
 
       gum::LazyPropagation< double > ie_all(&bn);
       TS_ASSERT_THROWS(ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{0, 1, 2}),
-                       gum::InvalidArgument);
+                       const gum::InvalidArgument&)
 
       auto res = ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{1, 2});
 
@@ -851,10 +851,10 @@ namespace gum_tests {
 
       gum::LazyPropagation< double > ie_all(&bn);
       TS_ASSERT_THROWS(ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{0, 1, 2}),
-                       gum::InvalidArgument);
+                       const gum::InvalidArgument&)
 
       TS_ASSERT_THROWS(ie_all.evidenceImpact("visit_to_asia", {"tuberculosis", "toto"}),
-                       gum::NotFound);
+                       const gum::NotFound&)
 
       auto res = ie_all.evidenceImpact("visit_to_Asia", {"tuberculosis", "tuberculos_or_cancer"});
 
@@ -966,7 +966,7 @@ namespace gum_tests {
       gum::LazyPropagation< double > ie(&bn);
       ie.makeInference();
 
-      TS_ASSERT_THROWS(ie.jointMutualInformation(gum::NodeSet{0}), gum::InvalidArgument)
+      TS_ASSERT_THROWS(ie.jointMutualInformation(gum::NodeSet{0}), const gum::InvalidArgument&)
       TS_ASSERT_DELTA(ie.I(0, 1), ie.jointMutualInformation(gum::NodeSet{0, 1}), 1e-7)
 
       ie.addJointTarget({1, 4, 3});
@@ -1029,7 +1029,7 @@ namespace gum_tests {
       bn.addWeightedArc(idFlu, idFever, 0.8f);
       bn.addWeightedArc(idCold, idFever, 0.4f);
 
-      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f), gum::InvalidArc)
+      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f), const gum::InvalidArc&)
 
       const gum::Potential< double >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
       // FILLING PARAMS
@@ -1423,7 +1423,7 @@ namespace gum_tests {
         inf.addTarget("x0");
         TS_ASSERT(inf.targets().size() == 1)
         inf.makeInference();
-        TS_ASSERT_THROWS(inf.posterior(i3), gum::UndefinedElement)
+        TS_ASSERT_THROWS(inf.posterior(i3), const gum::UndefinedElement&)
         inf.addTarget("x3");
         const auto& pot3 = inf.posterior(i3);
         TS_ASSERT(inf.junctionTree()->sizeNodes() == 2)
@@ -1460,7 +1460,7 @@ namespace gum_tests {
         inf.addTarget("x0");
         TS_ASSERT(inf.targets().size() == 1)
         inf.makeInference();
-        TS_ASSERT_THROWS(inf.posterior(i2), gum::UndefinedElement)
+        TS_ASSERT_THROWS(inf.posterior(i2), const gum::UndefinedElement&)
         TS_ASSERT(inf.junctionTree()->sizeNodes() == 1)
 
         inf.addTarget("x2");
@@ -1482,7 +1482,7 @@ namespace gum_tests {
         inf.addTarget("x0");
         TS_ASSERT(inf.targets().size() == 1)
         inf.makeInference();
-        TS_ASSERT_THROWS(inf.posterior(i2), gum::UndefinedElement)
+        TS_ASSERT_THROWS(inf.posterior(i2), const gum::UndefinedElement&)
         TS_ASSERT(inf.junctionTree()->sizeNodes() == 1)
 
         inf.addTarget("x2");

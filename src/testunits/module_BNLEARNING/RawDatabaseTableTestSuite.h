@@ -48,7 +48,7 @@ namespace gum_tests {
       gum::learning::DBRow< gum::learning::DBCell > row(3, gum::learning::DBCell(2), 1.0f);
       database.insertRow(row, xmiss);
       TS_ASSERT_EQUALS(database.content().size(), (gum::Size)1)
-      TS_ASSERT_THROWS(database.setVariableNames({"x1", "x2"}, false), gum::SizeError)
+      TS_ASSERT_THROWS(database.setVariableNames({"x1", "x2"}, false), const gum::SizeError&)
 
       gum::learning::RawDatabaseTable db(database);
       TS_ASSERT_EQUALS(db.variableNames().size(), (gum::Size)3)
@@ -145,7 +145,7 @@ namespace gum_tests {
       database.insertRow(row, xmiss);
       TS_ASSERT_EQUALS(database.content().size(), (gum::Size)1)
       std::vector< std::string > badvect{"v1", "v2", "v3", "v4"};
-      TS_ASSERT_THROWS(database.setVariableNames(badvect), gum::SizeError)
+      TS_ASSERT_THROWS(database.setVariableNames(badvect), const gum::SizeError&)
 
       typename gum::learning::RawDatabaseTable::HandlerSafe handler(database);
       typename gum::learning::RawDatabaseTable::Handler     uhandler(database);
@@ -343,7 +343,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(database2.nbVariables(), (gum::Size)3)
 
       gum::learning::DBRow< gum::learning::DBCell > row2(4, gum::learning::DBCell(2), 1.0f);
-      TS_ASSERT_THROWS(database2.insertRow(row2, xmiss), gum::SizeError)
+      TS_ASSERT_THROWS(database2.insertRow(row2, xmiss), const gum::SizeError&)
 
       std::vector< gum::learning::RawDatabaseTable::IsMissing > is_miss(
          2,
@@ -359,7 +359,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(handler3.row()[0], 5)
       database2.eraseLastRow();
       TS_ASSERT_EQUALS(handler2.row()[0], 4)
-      TS_ASSERT_THROWS(handler3.rowSafe()[0], gum::OutOfBounds)
+      TS_ASSERT_THROWS(handler3.rowSafe()[0], const gum::OutOfBounds&)
       database2.insertRow(row4, xmiss);
 
       typename gum::learning::RawDatabaseTable::Handler uhandler2(database2);
