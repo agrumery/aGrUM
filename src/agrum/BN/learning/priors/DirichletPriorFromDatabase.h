@@ -76,7 +76,7 @@ namespace gum {
       DirichletPriorFromDatabase(const DirichletPriorFromDatabase& from);
 
       /// move constructor
-      DirichletPriorFromDatabase(DirichletPriorFromDatabase&& from);
+      DirichletPriorFromDatabase(DirichletPriorFromDatabase&& from) noexcept ;
 
       /// virtual copy constructor
       virtual DirichletPriorFromDatabase* clone() const;
@@ -111,16 +111,16 @@ namespace gum {
 
       /// indicates whether the apriori is potentially informative
       /** Basically, only the NoApriori is uninformative. However, it may happen
-       * that, under some circonstances, an apriori, which is usually not equal
+       * that, under some circumstances, an apriori, which is usually not equal
        * to the NoApriori, becomes equal to it (e.g., when the weight is equal
        * to zero). In this case, if the apriori can detect this case, it shall
        * inform the classes that use it that it is temporarily uninformative.
        * These classes will then be able to speed-up their code by avoiding to
        * take into account the apriori in their computations. */
-      virtual bool isInformative() const final;
+      bool isInformative() const final;
 
       /// sets the weight of the a priori (kind of effective sample size)
-      virtual void setWeight(const double weight) final;
+      void setWeight(double weight) final;
 
       /// adds the apriori to a counting vector corresponding to the idset
       /** adds the apriori to an already created counting vector defined over
@@ -135,7 +135,7 @@ namespace gum {
        *
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint RHS variables of the idset. */
-      virtual void addConditioningApriori(const IdCondSet&       idset,
+      void addConditioningApriori(const IdCondSet&       idset,
                                           std::vector< double >& counts) final;
 
       /// @}

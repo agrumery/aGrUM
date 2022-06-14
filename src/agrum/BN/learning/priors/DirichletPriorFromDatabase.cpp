@@ -32,7 +32,7 @@
 
 /// include the inlined functions if necessary
 #  ifdef GUM_NO_INLINE
-#    include <agrum/BN/learning/priors/priorDirichletFromDatabase_inl.h>
+#    include <agrum/BN/learning/priors/DirichletPriorFromDatabase_inl.h>
 #  endif /* GUM_NO_INLINE */
 
 namespace gum {
@@ -61,7 +61,7 @@ namespace gum {
       const std::size_t                     learning_size  = learning_names.size();
       HashTable< std::size_t, std::size_t > learning2apriori_index(learning_size);
       bool                                  different_index = false;
-      for (std::size_t i = std::size_t(0); i < learning_size; ++i) {
+      for (auto i = std::size_t(0); i < learning_size; ++i) {
         // get the column of the variable in the apriori database
         std::size_t apriori_col;
         try {
@@ -100,7 +100,7 @@ namespace gum {
         this->nodeId2columns_ = nodeId2columns;
       } else {
         if (nodeId2columns.empty()) {
-          for (std::size_t i = std::size_t(0); i < learning_size; ++i) {
+          for (auto i = std::size_t(0); i < learning_size; ++i) {
             this->nodeId2columns_.insert(NodeId(i), learning2apriori_index[i]);
           }
         } else {
@@ -118,7 +118,7 @@ namespace gum {
       if (apriori_db.nbRows() == std::size_t(0))
         _internal_weight_ = 0.0;
       else
-        _internal_weight_ = this->weight_ / apriori_db.nbRows();
+        _internal_weight_ = this->weight_ / double(apriori_db.nbRows());
 
       GUM_CONSTRUCTOR(DirichletPriorFromDatabase);
     }
