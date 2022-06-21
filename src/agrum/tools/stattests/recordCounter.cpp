@@ -86,8 +86,8 @@ namespace gum {
     RecordCounter::RecordCounter(const RecordCounter& from) :
         ThreadNumberManager(from), _parsers_(from._parsers_), _ranges_(from._ranges_),
         _thread_ranges_(from._thread_ranges_), _nodeId2columns_(from._nodeId2columns_),
-        _last_DB_countings_(from._last_DB_countings_), _last_DB_ids_(from._last_DB_ids_),
-        _last_nonDB_countings_(from._last_nonDB_countings_),
+        _last_DB_counting_(from._last_DB_counting_), _last_DB_ids_(from._last_DB_ids_),
+        _last_nonDB_counting_(from._last_nonDB_counting_),
         _last_nonDB_ids_(from._last_nonDB_ids_),
         _min_nb_rows_per_thread_(from._min_nb_rows_per_thread_) {
       GUM_CONS_CPY(RecordCounter);
@@ -99,9 +99,9 @@ namespace gum {
         ThreadNumberManager(std::move(from)), _parsers_(std::move(from._parsers_)),
         _ranges_(std::move(from._ranges_)), _thread_ranges_(std::move(from._thread_ranges_)),
         _nodeId2columns_(std::move(from._nodeId2columns_)),
-        _last_DB_countings_(std::move(from._last_DB_countings_)),
+        _last_DB_counting_(std::move(from._last_DB_counting_)),
         _last_DB_ids_(std::move(from._last_DB_ids_)),
-        _last_nonDB_countings_(std::move(from._last_nonDB_countings_)),
+        _last_nonDB_counting_(std::move(from._last_nonDB_counting_)),
         _last_nonDB_ids_(std::move(from._last_nonDB_ids_)),
         _min_nb_rows_per_thread_(from._min_nb_rows_per_thread_) {
       GUM_CONS_MOV(RecordCounter);
@@ -124,9 +124,9 @@ namespace gum {
         _ranges_                     = from._ranges_;
         _thread_ranges_              = from._thread_ranges_;
         _nodeId2columns_             = from._nodeId2columns_;
-        _last_DB_countings_          = from._last_DB_countings_;
+        _last_DB_counting_           = from._last_DB_counting_;
         _last_DB_ids_                = from._last_DB_ids_;
-        _last_nonDB_countings_       = from._last_nonDB_countings_;
+        _last_nonDB_counting_        = from._last_nonDB_counting_;
         _last_nonDB_ids_             = from._last_nonDB_ids_;
         _min_nb_rows_per_thread_     = from._min_nb_rows_per_thread_;
       }
@@ -142,9 +142,9 @@ namespace gum {
         _ranges_                     = std::move(from._ranges_);
         _thread_ranges_              = std::move(from._thread_ranges_);
         _nodeId2columns_             = std::move(from._nodeId2columns_);
-        _last_DB_countings_          = std::move(from._last_DB_countings_);
+        _last_DB_counting_           = std::move(from._last_DB_counting_);
         _last_DB_ids_                = std::move(from._last_DB_ids_);
-        _last_nonDB_countings_       = std::move(from._last_nonDB_countings_);
+        _last_nonDB_counting_        = std::move(from._last_nonDB_counting_);
         _last_nonDB_ids_             = std::move(from._last_nonDB_ids_);
         _min_nb_rows_per_thread_     = from._min_nb_rows_per_thread_;
       }
@@ -154,9 +154,9 @@ namespace gum {
 
     /// clears all the last database-parsed countings from memory
     void RecordCounter::clear() {
-      _last_DB_countings_.clear();
+      _last_DB_counting_.clear();
       _last_DB_ids_.clear();
-      _last_nonDB_countings_.clear();
+      _last_nonDB_counting_.clear();
       _last_nonDB_ids_.clear();
     }
 
@@ -302,11 +302,11 @@ namespace gum {
         // save the subset_ids and the result vector
         try {
           _last_nonDB_ids_       = subset_ids;
-          _last_nonDB_countings_ = std::move(result_vect);
-          return _last_nonDB_countings_;
+          _last_nonDB_counting_  = std::move(result_vect);
+          return _last_nonDB_counting_;
         } catch (...) {
           _last_nonDB_ids_.clear();
-          _last_nonDB_countings_.clear();
+          _last_nonDB_counting_.clear();
           throw;
         }
       }
@@ -342,11 +342,11 @@ namespace gum {
         // save the subset_ids and the result vector
         try {
           _last_nonDB_ids_       = subset_ids;
-          _last_nonDB_countings_ = std::move(result_vect);
-          return _last_nonDB_countings_;
+          _last_nonDB_counting_  = std::move(result_vect);
+          return _last_nonDB_counting_;
         } catch (...) {
           _last_nonDB_ids_.clear();
-          _last_nonDB_countings_.clear();
+          _last_nonDB_counting_.clear();
           throw;
         }
       }
@@ -446,11 +446,11 @@ namespace gum {
       // save the subset_ids and the result vector
       try {
         _last_nonDB_ids_       = subset_ids;
-        _last_nonDB_countings_ = std::move(result_vect);
-        return _last_nonDB_countings_;
+        _last_nonDB_counting_  = std::move(result_vect);
+        return _last_nonDB_counting_;
       } catch (...) {
         _last_nonDB_ids_.clear();
-        _last_nonDB_countings_.clear();
+        _last_nonDB_counting_.clear();
         throw;
       }
     }
@@ -462,9 +462,9 @@ namespace gum {
       // empty vector
       const auto& database = _parsers_[0].data.database();
       if (ids.empty() || database.empty() || _thread_ranges_.empty()) {
-        _last_nonDB_countings_.clear();
+        _last_nonDB_counting_.clear();
         _last_nonDB_ids_.clear();
-        return _last_nonDB_countings_;
+        return _last_nonDB_counting_;
       }
 
       // we translate the ids into their corresponding columns in the
@@ -575,9 +575,9 @@ namespace gum {
 
       // save the final results
       _last_DB_ids_       = ids;
-      _last_DB_countings_ = std::move(counting_vect);
+      _last_DB_counting_  = std::move(counting_vect);
 
-      return _last_DB_countings_;
+      return _last_DB_counting_;
     }
 
 

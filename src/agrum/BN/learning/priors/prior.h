@@ -63,7 +63,7 @@ namespace gum {
     /** @class Prior
      * @brief the base class for all a priori
      * @headerfile prior.h <agrum/BN/learning/priors/prior.h>
-     * @ingroup learnig_priors
+     * @ingroup learning_priors
      */
     class Prior {
       public:

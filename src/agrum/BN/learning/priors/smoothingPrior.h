@@ -39,7 +39,7 @@ namespace gum {
     /** @class SmoothingPrior
      * @brief the smooth a priori: adds a weight w to all the countings
      * @headerfile smoothingPrior.h <agrum/tools/database/smoothingPrior.h>
-     * @ingroup learnig_priors
+     * @ingroup learning_priors
      */
     class SmoothingPrior: public Prior {
       public:

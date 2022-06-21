@@ -39,7 +39,7 @@ namespace gum {
     /** @class K2Prior
      * @brief the internal prior for the K2 score = Laplace Prior
      * @headerfile K2Prior.h <agrum/tools/database/K2Prior.h>
-     * @ingroup learnig_priors
+     * @ingroup learning_priors
      *
      * K2 is a BD score with a Laplace prior (i.e., a smoothing of 1).
      *

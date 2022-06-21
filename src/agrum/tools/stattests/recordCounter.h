@@ -20,10 +20,10 @@
 
 
 /** @file
- * @brief The class that computes countings of observations from the database.
+ * @brief The class that computes counting of observations from the database.
  *
  * This class is the one to be called by scores and independence tests to
- * compute countings of observations from tabular databases.
+ * compute counting of observations from tabular databases.
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
@@ -52,28 +52,28 @@ namespace gum {
   namespace learning {
 
     /** @class RecordCounter
-     * @brief The class that computes countings of observations from the database.
+     * @brief The class that computes counting of observations from the database.
      * @headerfile recordCounter.h <agrum/BN/learning/scores_and_tests/recordCounter.h>
      * @ingroup learning_scores
      *
      * This class is the one to be called by scores and independence tests to
-     * compute the countings of observations from tabular datasets they need.
-     * The countings are performed the following way:
-     * when asked for the countings over a set X = {X_1,...,X_n} of
+     * compute the counting of observations from tabular datasets they need.
+     * The counting are performed the following way:
+     * when asked for the counting over a set X = {X_1,...,X_n} of
      * variables, the RecordCounter first checks whether it already contains
-     * some countings over a set Y of variables containing X. If this is the
-     * case, then it extracts from the countings over Y those over X (this is
-     * usually way faster than determining the countings by parsing the database).
-     * Otherwise, it determines the countings over X by parsing in a parallel
-     * way the database. Only the result of the last database-parsed countings
+     * some counting over a set Y of variables containing X. If this is the
+     * case, then it extracts from the counting over Y those over X (this is
+     * usually way faster than determining the counting by parsing the database).
+     * Otherwise, it determines the counting over X by parsing in a parallel
+     * way the database. Only the result of the last database-parsed counting
      * is available for the subset counting determination. As an example, if
-     * we create a RecordCounter and ask it the countings over {A,B,C}, it will
-     * parse the database and provide the countings. Then, if we ask it countings
-     * over B, it will use the table over {A,B,C} to produce the countings we
-     * look for. Then, asking for countings over {A,C} will be performed the same
-     * way. Now, asking countings over {B,C,D} will require another database
-     * parsing. Finally, if we ask for countings over A, a new database parsing
-     * will be performed because only the countings over {B,C,D} are now contained
+     * we create a RecordCounter and ask it the counting over {A,B,C}, it will
+     * parse the database and provide the counting. Then, if we ask it counting
+     * over B, it will use the table over {A,B,C} to produce the counting we
+     * look for. Then, asking for counting over {A,C} will be performed the same
+     * way. Now, asking counting over {B,C,D} will require another database
+     * parsing. Finally, if we ask for counting over A, a new database parsing
+     * will be performed because only the counting over {B,C,D} are now contained
      * in the RecordCounter.
      *
      * @par Here is an example of how to use the RecordCounter class:
@@ -120,7 +120,7 @@ namespace gum {
       /// default constructor
       /** @param parser the parser used to parse the database
        * @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
-       * indices. The countings are then performed only on the union of the
+       * indices. The counting are then performed only on the union of the
        * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
        * cross validation tasks, in which part of the database should be ignored.
        * An empty set of ranges is equivalent to an interval [X,Y) ranging over
@@ -192,7 +192,7 @@ namespace gum {
 
       /// @{
 
-      /// clears all the last database-parsed countings from memory
+      /// clears all the last database-parsed counting from memory
       void clear();
 
       /// sets the number max of threads that can be used
@@ -205,7 +205,7 @@ namespace gum {
       /** @brief changes the number min of rows a thread should process in a
        * multithreading context
        *
-       * When Method counts executes several threads to perform countings on the
+       * When Method counts executes several threads to perform counting on the
        * rows of the database, the MinNbRowsPerThread indicates how many rows each
        * thread should at least process. This is used to compute the number of
        * threads actually run. This number is equal to the min between the max
@@ -217,7 +217,7 @@ namespace gum {
       std::size_t minNbRowsPerThread() const;
 
       /// returns the counts over all the variables in an IdCondSet
-      /** @param ids the idset of the variables over which we perform countings.
+      /** @param ids the idset of the variables over which we perform counting.
        * @param check_discrete_vars The record counter can only produce correct
        * results on sets of discrete variables. By default, the method does not
        * check whether the variables corresponding to the IdCondSet are actually
@@ -257,9 +257,9 @@ namespace gum {
       const std::vector< double >& counts(const IdCondSet& ids,
                                           const bool       check_discrete_vars = false);
 
-      /// sets new ranges to perform the countings
+      /// sets new ranges to perform the counting
       /** @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
-       * indices. The countings are then performed only on the union of the
+       * indices. The counting are then performed only on the union of the
        * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
        * cross validation tasks, in which part of the database should be ignored.
        * An empty set of ranges is equivalent to an interval [X,Y) ranging over
@@ -297,13 +297,13 @@ namespace gum {
       std::vector< ThreadData< DBRowGeneratorParser > > _parsers_;
 
       // the set of ranges of the database's rows indices over which the user
-      // wishes to perform the countings
+      // wishes to perform the counting
       std::vector< std::pair< std::size_t, std::size_t > > _ranges_;
 
       // the ranges actually used by the threads: there is a hopefully clever
       // algorithm that split the rows ranges into another set of ranges that
       // are assigned to the threads. For instance, if the database has 1000
-      // rows and there are 10 threads, each one will be assed a set of 100
+      // rows and there are 10 threads, each one will be passed a set of 100
       // rows. These sets are precisely what are stored in the field below
       mutable std::vector< std::pair< std::size_t, std::size_t > > _thread_ranges_;
 
@@ -311,16 +311,16 @@ namespace gum {
       // columns in the database
       Bijection< NodeId, std::size_t > _nodeId2columns_;
 
-      // the last database-parsed countings
-      std::vector< double > _last_DB_countings_;
+      // the last database-parsed counting
+      std::vector< double > _last_DB_counting_;
 
-      // the ids of the nodes for the last database-parsed countings
+      // the ids of the nodes for the last database-parsed counting
       IdCondSet _last_DB_ids_;
 
-      // the last countings deduced from  _last_DB_countings_
-      std::vector< double > _last_nonDB_countings_;
+      // the last counting deduced from  _last_DB_counting_
+      std::vector< double > _last_nonDB_counting_;
 
-      // the ids of the nodes of last countings deduced from  _last_DB_countings_
+      // the ids of the nodes of last counting deduced from  _last_DB_counting_
       IdCondSet _last_nonDB_ids_;
 
       // the min number of rows that a thread should process in a
@@ -332,12 +332,12 @@ namespace gum {
       //  _nodeId2columns_ is empty (which means that there is an identity mapping)
       HashTable< NodeId, std::size_t > _getNodeIds2Columns_(const IdCondSet& ids) const;
 
-      /// extracts some new countings from previously computed ones
+      /// extracts some new counting from previously computed ones
       std::vector< double >& _extractFromCountings_(const IdCondSet&             subset_ids,
                                                     const IdCondSet&             superset_ids,
                                                     const std::vector< double >& superset_vect);
 
-      /// parse the database to produce new countings
+      /// parse the database to produce new counting
       std::vector< double >& _countFromDatabase_(const IdCondSet& ids);
 
       /// checks that the ranges passed in argument are ok or raise an exception
@@ -355,7 +355,7 @@ namespace gum {
       /// compute and raise the exception when some variables are continuous
       /** This method is used by  _checkDiscreteVariables_ to determine the
        * appropriate message to include in the TypeError exception raised when
-       * some variables over which we should perform countings are continuous. */
+       * some variables over which we should perform counting are continuous. */
       void _raiseCheckException_(const std::vector< std::string >& bad_vars) const;
 
       /// sets the ranges within which each thread will perform its computations

@@ -20,34 +20,32 @@
 
 
 /** @file
- * @brief the internal prior for the BDeu score (N' / (r_i * q_i)
+ * @brief A dirichlet priori: computes its N'_ijk from a bayesian network
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
-#ifndef GUM_LEARNING_PRIOR_BDEU_H
-#define GUM_LEARNING_PRIOR_BDEU_H
+#ifndef GUM_LEARNING_PRIOR_DIRICHLET_FROM_BN_H
+#define GUM_LEARNING_PRIOR_DIRICHLET_FROM_BN_H
 
 #include <vector>
 
 #include <agrum/agrum.h>
+
+#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/inference/lazyPropagation.h>
+
 #include <agrum/BN/learning/priors/prior.h>
 
 namespace gum::learning {
 
-  /** @class BDeuPrior
-   * @brief the internal prior for the BDeu score (N' / (r_i * q_i)
-   * @headerfile bdeuPrior.h <agrum/tools/database/bdeuPrior.h>
+
+  /** @class DirichletPriorFromBN
+   * @brief A dirichlet priori: computes its N'_ijk from a database
+   * @headerfile DirichletPriorFromBN.h <agrum/tools/database/DirichletPriorFromBN.h>
    * @ingroup learning_priors
-   *
-   * BDeu is a BD score with a N'/(r_i * q_i) prior, where N' is an
-   * effective sample size and r_i is the domain size of the target variable
-   * and q_i is the domain size of the Cartesian product of its parents.
-   *
-   * It is important to note that, to be meaningful a structure + parameter
-   * learning requires that the same priors are taken into account during
-   * structure learning and parameter learning.
    */
-  class BDeuPrior: public Prior {
+  template < typename GUM_SCALAR >
+  class DirichletPriorFromBN: public Prior {
     public:
     // ##########################################################################
     /// @name Constructors / Destructors
@@ -55,31 +53,28 @@ namespace gum::learning {
     /// @{
 
     /// default constructor
-    /** @param database the database from which learning is performed. This is
-     * useful to get access to the random variables
-     * @param nodeId2Columns a mapping from the ids of the nodes in the
-     * graphical model to the corresponding column in the DatabaseTable.
-     * This enables estimating from a database in which variable A corresponds
-     * to the 2nd column the parameters of a BN in which variable A has a
-     * NodeId of 5. An empty nodeId2Columns bijection means that the mapping
-     * is an identity, i.e., the value of a NodeId is equal to the index of
-     * the column in the DatabaseTable.
+    /** @param bn the prior bayesian network from which computation is performed.
+     * This is useful to get access to the random variables
+     * @param nodeId2priorId a mapping from the ids of the nodes in the graphical model to the
+     * corresponding id in the prior BN. An empty nodeId2Columns bijection means that the mapping
+     * is an identity.
      */
-    explicit BDeuPrior(const DatabaseTable&                    database,
-                       const Bijection< NodeId, std::size_t >& nodeId2columns
-                       = Bijection< NodeId, std::size_t >());
+    DirichletPriorFromBN(const DatabaseTable&                    database,
+                         const BayesNet< GUM_SCALAR >*           priorbn,
+                         const Bijection< NodeId, std::size_t >& nodeId2columns
+                         = Bijection< NodeId, std::size_t >());
 
     /// copy constructor
-    BDeuPrior(const BDeuPrior& from);
+    DirichletPriorFromBN(const DirichletPriorFromBN& from);
 
     /// move constructor
-    BDeuPrior(BDeuPrior&& from) noexcept;
+    DirichletPriorFromBN(DirichletPriorFromBN&& from) noexcept;
 
     /// virtual copy constructor
-    BDeuPrior* clone() const override;
+    DirichletPriorFromBN* clone() const final;
 
     /// destructor
-    virtual ~BDeuPrior();
+    virtual ~DirichletPriorFromBN();
 
     /// @}
 
@@ -90,10 +85,10 @@ namespace gum::learning {
     /// @{
 
     /// copy operator
-    BDeuPrior& operator=(const BDeuPrior& from);
+    DirichletPriorFromBN& operator=(const DirichletPriorFromBN& from);
 
     /// move operator
-    BDeuPrior& operator=(BDeuPrior&& from) noexcept;
+    DirichletPriorFromBN& operator=(DirichletPriorFromBN&& from);
 
     /// @}
 
@@ -103,24 +98,21 @@ namespace gum::learning {
     // ##########################################################################
     /// @{
 
-    /// sets the effective sample size N' (alias of setEffectiveSampleSize ())
-    void setWeight(double weight) final;
-
-    /// sets the effective sample size N'
-    void setEffectiveSampleSize(double weight);
-
     /// returns the type of the prior
     PriorType getType() const final;
 
     /// indicates whether the prior is potentially informative
     /** Basically, only the NoApriori is uninformative. However, it may happen
-     * that, under some circumstances, an prior, which is usually not equal
+     * that, under some circumstances, a prior, which is usually not equal
      * to the NoApriori, becomes equal to it (e.g., when the weight is equal
      * to zero). In this case, if the prior can detect this case, it shall
      * inform the classes that use it that it is temporarily uninformative.
      * These classes will then be able to speed-up their code by avoiding to
      * take into account the prior in their computations. */
     bool isInformative() const final;
+
+    /// sets the weight of the a priori (kind of effective sample size)
+    void setWeight(double weight) final;
 
     /// adds the prior to a counting vector corresponding to the idset
     /** adds the prior to an already created counting vector defined over
@@ -138,13 +130,15 @@ namespace gum::learning {
     void addConditioningApriori(const IdCondSet& idset, std::vector< double >& counts) final;
 
     /// @}
+
+    private:
+    const BayesNet< GUM_SCALAR >* _prior_bn_;
+    const LazyPropagation<GUM_SCALAR>* _lazy_;
   };
+  /* namespace learning */
 
 }   // namespace gum::learning
 
-// include the inlined functions if necessary
-#ifndef GUM_NO_INLINE
-#  include <agrum/BN/learning/priors/bdeuPrior_inl.h>
-#endif /* GUM_NO_INLINE */
+#include <agrum/BN/learning/priors/DirichletPriorFromBN_tpl.h>
 
-#endif /* GUM_LEARNING_PRIOR_BDEU_H */
+#endif /* GUM_LEARNING_PRIOR_DIRICHLET_FROM_BN_H */

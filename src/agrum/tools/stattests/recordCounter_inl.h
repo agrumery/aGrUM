@@ -50,16 +50,16 @@ namespace gum {
       // if the idset is empty, return an empty vector
       if (ids.empty()) {
         _last_nonDB_ids_.clear();
-        _last_nonDB_countings_.clear();
-        return _last_nonDB_countings_;
+        _last_nonDB_counting_.clear();
+        return _last_nonDB_counting_;
       }
 
       // check whether we can extract the vector we wish to return from
       // some already computed counting vector
       if (_last_nonDB_ids_.contains(ids))
-        return _extractFromCountings_(ids, _last_nonDB_ids_, _last_nonDB_countings_);
+        return _extractFromCountings_(ids, _last_nonDB_ids_, _last_nonDB_counting_);
       else if (_last_DB_ids_.contains(ids))
-        return _extractFromCountings_(ids, _last_DB_ids_, _last_DB_countings_);
+        return _extractFromCountings_(ids, _last_DB_ids_, _last_DB_counting_);
       else {
         if (check_discrete_vars) _checkDiscreteVariables_(ids);
         return _countFromDatabase_(ids);

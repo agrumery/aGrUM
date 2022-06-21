@@ -113,11 +113,11 @@ namespace gum {
       const auto&       prior = _counter_.counts(idset);
       const std::size_t size    = prior.size();
       if (_internal_weight_ != 1.0) {
-        for (std::size_t i = std::size_t(0); i < size; ++i) {
+        for (auto i = std::size_t(0); i < size; ++i) {
           counts[i] += prior[i] * _internal_weight_;
         }
       } else {
-        for (std::size_t i = std::size_t(0); i < size; ++i) {
+        for (auto i = std::size_t(0); i < size; ++i) {
           counts[i] += prior[i];
         }
       }

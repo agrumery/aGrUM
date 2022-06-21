@@ -1,0 +1,180 @@
+/**
+ *
+ *   Copyright (c) 2005-2022 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
+ *   info_at_agrum_dot_org
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public License
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+#include <agrum/BN/learning/priors/DirichletPriorFromBN.h>
+
+/** @file
+ * @brief A dirichlet priori: computes its N'_ijk from a database
+ *
+ * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
+ */
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+namespace gum::learning {
+
+    /// default constructor
+    template < typename GUM_SCALAR >
+    DirichletPriorFromBN< GUM_SCALAR >::DirichletPriorFromBN(
+       const DatabaseTable&                    database,
+       const BayesNet< GUM_SCALAR >*           priorbn,
+       const Bijection< NodeId, std::size_t >& nodeId2columns) :
+        Prior(database, nodeId2columns),
+        _prior_bn_(priorbn) {
+      _lazy_=new LazyPropagation(_prior_bn_);
+
+      GUM_CONSTRUCTOR(DirichletPriorFromBN);
+    }
+
+
+    /// copy constructor
+    template < typename GUM_SCALAR >
+    DirichletPriorFromBN< GUM_SCALAR >::DirichletPriorFromBN(const DirichletPriorFromBN& from) :
+        Prior(from), _prior_bn_(from._prior_bn_) {
+      delete _lazy_;
+      _lazy_=new LazyPropagation(_prior_bn_);
+
+      GUM_CONS_CPY(DirichletPriorFromBN);
+    }
+
+
+    /// move constructor
+    template < typename GUM_SCALAR >
+    DirichletPriorFromBN< GUM_SCALAR >::DirichletPriorFromBN(DirichletPriorFromBN&& from) noexcept :
+        Prior(std::move(from)), _prior_bn_(std::move(from._prior_bn_)), _lazy_(std::move(from._lazy_)) {
+      GUM_CONS_MOV(DirichletPriorFromBN);
+    }
+
+
+    /// virtual copy constructor
+    template < typename GUM_SCALAR >
+    DirichletPriorFromBN< GUM_SCALAR >*
+       DirichletPriorFromBN< GUM_SCALAR >::DirichletPriorFromBN< GUM_SCALAR >::clone() const {
+      return new DirichletPriorFromBN(*this);
+    }
+
+
+    /// destructor
+
+    template < typename GUM_SCALAR >
+    DirichletPriorFromBN< GUM_SCALAR >::DirichletPriorFromBN<
+       GUM_SCALAR >::~DirichletPriorFromBN() {
+      delete _lazy_;
+      GUM_DESTRUCTOR(DirichletPriorFromBN);
+    }
+
+
+    /// copy operator
+    template < typename GUM_SCALAR >
+    DirichletPriorFromBN< GUM_SCALAR >&
+       DirichletPriorFromBN< GUM_SCALAR >::operator=(const DirichletPriorFromBN& from) {
+      if (this != &from) {
+        Prior::operator=(from);
+        _prior_bn_ = from._prior_bn_;
+        delete _lazy_;
+        _lazy_=new LazyPropagation(_prior_bn_);
+      }
+      return *this;
+    }
+
+
+    /// move operator
+    template < typename GUM_SCALAR >
+    DirichletPriorFromBN< GUM_SCALAR >&
+       DirichletPriorFromBN< GUM_SCALAR >::DirichletPriorFromBN< GUM_SCALAR >::operator=(
+          DirichletPriorFromBN&& from) {
+      if (this != &from) {
+        Prior::operator=(std::move(from));
+        _prior_bn_ = from._prior_bn_;
+        delete _lazy_;
+        _lazy_=new LazyPropagation(_prior_bn_);
+      }
+      return *this;
+    }
+
+
+    /// returns the type of the prior
+
+    template < typename GUM_SCALAR >
+    INLINE PriorType
+       DirichletPriorFromBN< GUM_SCALAR >::DirichletPriorFromBN< GUM_SCALAR >::getType() const {
+      return PriorType::DirichletPriorType;
+    }
+
+
+    /// indicates whether the prior is potentially informative
+
+    template < typename GUM_SCALAR >
+    INLINE DirichletPriorFromBN< GUM_SCALAR >::DirichletPriorFromBN< GUM_SCALAR >::isInformative()
+       const {
+      return (this->weight_ != 0.0);
+    }
+
+
+    /// sets the weight of the a priori (kind of effective sample size)
+    template < typename GUM_SCALAR >
+    INLINE void DirichletPriorFromBN< GUM_SCALAR >::setWeight(const double weight) {
+      Prior::setWeight(weight);
+    }
+
+
+    /// returns the prior vector all the variables in the idset
+    template < typename GUM_SCALAR >
+    INLINE void DirichletPriorFromBN< GUM_SCALAR >::addAllApriori(const IdCondSet&       idset,
+                                                                  std::vector< double >& counts) {
+      if (this->weight_ == 0.0) return;
+
+      const auto&       prior = _counter_.counts(idset);
+      const std::size_t size  = prior.size();
+      if (weight_ != 1.0) {
+        for (std::size_t i = std::size_t(0); i < size; ++i) {
+          counts[i] += prior[i] * weight_;
+        }
+      } else {
+        for (std::size_t i = std::size_t(0); i < size; ++i) {
+          counts[i] += prior[i];
+        }
+      }
+    }
+
+
+    /// returns the prior vector over only the conditioning set of an idset
+    template < typename GUM_SCALAR >
+    INLINE void
+       DirichletPriorFromBN< GUM_SCALAR >::addConditioningApriori(const IdCondSet&       idset,
+                                                                  std::vector< double >& counts) {
+      if (weight_ == 0.0) return;
+
+      const auto&       prior = _counter_.counts(idset.conditionalIdCondSet());
+      const std::size_t size  = prior.size();
+      if (weight_ != 1.0) {
+        for (std::size_t i = std::size_t(0); i < size; ++i) {
+          counts[i] += prior[i] * weight_;
+        }
+      } else {
+        for (std::size_t i = std::size_t(0); i < size; ++i) {
+          counts[i] += prior[i];
+        }
+      }
+    }
+
+
+  } /* namespace gum */
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */

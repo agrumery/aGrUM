@@ -39,7 +39,7 @@ namespace gum {
     /** @class NoPrior
      * @brief the no a priori class: corresponds to 0 weight-sample
      * @headerfile noPrior.h <agrum/BN/learning/priors/noPrior.h>
-     * @ingroup learnig_priors
+     * @ingroup learning_priors
      */
     class NoPrior: public Prior {
       public:

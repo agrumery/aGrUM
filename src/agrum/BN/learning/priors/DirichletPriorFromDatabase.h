@@ -40,7 +40,7 @@ namespace gum {
     /** @class DirichletPriorFromDatabase
      * @brief A dirichlet priori: computes its N'_ijk from a database
      * @headerfile DirichletPriorFromDatabase.h <agrum/tools/database/DirichletPriorFromDatabase.h>
-     * @ingroup learnig_priors
+     * @ingroup learning_priors
      */
     class DirichletPriorFromDatabase: public Prior {
       public:
