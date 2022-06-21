@@ -65,7 +65,7 @@ namespace gum::learning {
     /// virtual copy constructor
     template < typename GUM_SCALAR >
     DirichletPriorFromBN< GUM_SCALAR >*
-       DirichletPriorFromBN< GUM_SCALAR >::DirichletPriorFromBN< GUM_SCALAR >::clone() const {
+       DirichletPriorFromBN< GUM_SCALAR >::clone() const {
       return new DirichletPriorFromBN(*this);
     }
 
@@ -73,8 +73,7 @@ namespace gum::learning {
     /// destructor
 
     template < typename GUM_SCALAR >
-    DirichletPriorFromBN< GUM_SCALAR >::DirichletPriorFromBN<
-       GUM_SCALAR >::~DirichletPriorFromBN() {
+    DirichletPriorFromBN<GUM_SCALAR >::~DirichletPriorFromBN() {
       delete _lazy_;
       GUM_DESTRUCTOR(DirichletPriorFromBN);
     }
@@ -97,7 +96,7 @@ namespace gum::learning {
     /// move operator
     template < typename GUM_SCALAR >
     DirichletPriorFromBN< GUM_SCALAR >&
-       DirichletPriorFromBN< GUM_SCALAR >::DirichletPriorFromBN< GUM_SCALAR >::operator=(
+       DirichletPriorFromBN< GUM_SCALAR >::operator=(
           DirichletPriorFromBN&& from) {
       if (this != &from) {
         Prior::operator=(std::move(from));
@@ -113,7 +112,7 @@ namespace gum::learning {
 
     template < typename GUM_SCALAR >
     INLINE PriorType
-       DirichletPriorFromBN< GUM_SCALAR >::DirichletPriorFromBN< GUM_SCALAR >::getType() const {
+       DirichletPriorFromBN< GUM_SCALAR >::getType() const {
       return PriorType::DirichletPriorType;
     }
 
@@ -121,7 +120,7 @@ namespace gum::learning {
     /// indicates whether the prior is potentially informative
 
     template < typename GUM_SCALAR >
-    INLINE DirichletPriorFromBN< GUM_SCALAR >::DirichletPriorFromBN< GUM_SCALAR >::isInformative()
+    INLINE bool DirichletPriorFromBN< GUM_SCALAR >::isInformative()
        const {
       return (this->weight_ != 0.0);
     }
@@ -138,7 +137,7 @@ namespace gum::learning {
     template < typename GUM_SCALAR >
     INLINE void DirichletPriorFromBN< GUM_SCALAR >::addAllApriori(const IdCondSet&       idset,
                                                                   std::vector< double >& counts) {
-      if (this->weight_ == 0.0) return;
+      /*if (this->weight_ == 0.0) return;
 
       const auto&       prior = _counter_.counts(idset);
       const std::size_t size  = prior.size();
@@ -150,7 +149,7 @@ namespace gum::learning {
         for (std::size_t i = std::size_t(0); i < size; ++i) {
           counts[i] += prior[i];
         }
-      }
+      }*/
     }
 
 
@@ -160,7 +159,7 @@ namespace gum::learning {
        DirichletPriorFromBN< GUM_SCALAR >::addConditioningApriori(const IdCondSet&       idset,
                                                                   std::vector< double >& counts) {
       if (weight_ == 0.0) return;
-
+/*
       const auto&       prior = _counter_.counts(idset.conditionalIdCondSet());
       const std::size_t size  = prior.size();
       if (weight_ != 1.0) {
@@ -171,7 +170,7 @@ namespace gum::learning {
         for (std::size_t i = std::size_t(0); i < size; ++i) {
           counts[i] += prior[i];
         }
-      }
+      }*/
     }
 
 

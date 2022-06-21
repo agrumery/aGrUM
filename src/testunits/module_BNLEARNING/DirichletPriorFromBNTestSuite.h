@@ -23,16 +23,59 @@
 #include <gumtest/testsuite_utils.h>
 #include <iostream>
 
+#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
+#include <agrum/tools/database/DBTranslatorSet.h>
 #include <agrum/BN/learning/priors/DirichletPriorFromBN.h>
 
 namespace gum_tests {
 
- class DirichletPriorFromDatabaseTestSuite: public CxxTest::TestSuite {
+ class DirichletPriorFromBNTestSuite: public CxxTest::TestSuite {
    public:
    void test1() {
+     // create the translator set
+     gum::LabelizedVariable var("X1", "", 0);
+     var.addLabel("0");
+     var.addLabel("1");
+     var.addLabel("2");
+
+     gum::learning::DBTranslatorSet trans_set;
+     {
+       const std::vector< std::string >              miss;
+       gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
+       std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
+
+       for (auto i = std::size_t(0); i < names.size(); ++i) {
+         translator.setVariableName(names[i]);
+         trans_set.insertTranslator(translator, i);
+       }
+     }
+
+     // create the database
+     gum::learning::DatabaseTable database(trans_set);
+     std::vector< std::string >   row0{"0", "1", "0", "2", "1", "1"};
+     std::vector< std::string >   row1{"1", "2", "0", "1", "2", "2"};
+     std::vector< std::string >   row2{"2", "1", "0", "1", "1", "0"};
+     std::vector< std::string >   row3{"1", "0", "0", "0", "0", "0"};
+     std::vector< std::string >   row4{"0", "0", "0", "1", "1", "1"};
+     for (int i = 0; i < 1000; ++i)
+       database.insertRow(row0);
+     for (int i = 0; i < 50; ++i)
+       database.insertRow(row1);
+     for (int i = 0; i < 75; ++i)
+       database.insertRow(row2);
+     for (int i = 0; i < 75; ++i)
+       database.insertRow(row3);
+     for (int i = 0; i < 200; ++i)
+       database.insertRow(row4);
+     const auto db_size = (double)database.nbRows();
+
+     // create the parser
+     gum::learning::DBRowGeneratorSet    genset;
+     gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+
     gum::BayesNet<double> bn=gum::BayesNet<double>::fastPrototype("A->B<-C");
 
-     gum::learning::DirichletPriorFromBN prior(&bn);
+     gum::learning::DirichletPriorFromBN<double> prior(database,&bn);
 
      TS_ASSERT_EQUALS(prior.weight(), 1.0)
      prior.setWeight(2.0);
@@ -369,7 +412,7 @@ namespace gum_tests {
    }
 
 
-   void test2() {
+   void est2() {
      // create the translator set
      gum::LabelizedVariable var("X1", "", 0);
      var.addLabel("0");
