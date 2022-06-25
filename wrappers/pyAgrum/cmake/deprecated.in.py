@@ -60,46 +60,46 @@ def ShaferShenoyIDInference(infdiag):
 
 
 def _addDeprecatedMethods():
-  def deprecated_useNoPrior(learner):
+  def deprecated_useNoApriori(learner):
     """
     Deprecated methods in BNLearner for pyAgrum>1.1.1
     """
     warnings.warn("""
-** pyAgrum.BNLearner.useNoAriori() is deprecated from pyAgrum>1.1.1. Please use NoPrior() instead.
+** pyAgrum.BNLearner.useNoAriori() is deprecated from pyAgrum>1.1.1. Please use NoApriori() instead.
 """, DeprecationWarning, stacklevel=2)
-    return learner.useNoPrior()
+    return learner.useNoApriori()
 
-  def deprecated_usePriorBDeu(learner):
+  def deprecated_useAprioriBDeu(learner):
     """
     Deprecated methods in BNLearner for pyAgrum>1.1.1
     """
     warnings.warn("""
-** pyAgrum.BNLearner.usePriorBDeu() is deprecated from pyAgrum>1.1.1. Please use useBDeuPrior() instead.
+** pyAgrum.BNLearner.useAprioriBDeu() is deprecated from pyAgrum>1.1.1. Please use useBDeuPrior() instead.
 """, DeprecationWarning, stacklevel=2)
     return learner.useBDeuPrior()
 
-  def deprecated_usePriorSmoothing(learner):
+  def deprecated_useAprioriSmoothing(learner):
     """
     Deprecated methods in BNLearner for pyAgrum>1.1.1
     """
     warnings.warn("""
-** pyAgrum.BNLearner.usePriorSmoothing() is deprecated from pyAgrum>1.1.1. Please use useSmoothingPrior() methods instead.
+** pyAgrum.BNLearner.useAprioriSmoothing() is deprecated from pyAgrum>1.1.1. Please use useSmoothingPrior() methods instead.
 """, DeprecationWarning, stacklevel=2)
     return learner.useSmoothingPrior()
 
-  def deprecated_usePriorDirichlet(learner):
+  def deprecated_useAprioriDirichlet(learner):
     """
     Deprecated methods in BNLearner for pyAgrum>1.1.1
     """
     warnings.warn("""
-** pyAgrum.BNLearner.usePriorDirichlet() is deprecated from pyAgrum>1.1.1. Please use useDirichletPrior() methods instead.
+** pyAgrum.BNLearner.useAprioriDirichlet() is deprecated from pyAgrum>1.1.1. Please use useDirichletPrior() methods instead.
 """, DeprecationWarning, stacklevel=2)
     return learner.useDirichletPrior()
 
-  BNLearner.useNoPrior = deprecated_useNoPrior
-  BNLearner.usePriorBDeu = deprecated_usePriorBDeu
-  BNLearner.usePriorSmoothing = deprecated_usePriorSmoothing
-  BNLearner.usePriorDirichlet = deprecated_usePriorDirichlet
+  BNLearner.useNoApriori = deprecated_useNoApriori
+  BNLearner.useAprioriBDeu = deprecated_useAprioriBDeu
+  BNLearner.useAprioriSmoothing = deprecated_useAprioriSmoothing
+  BNLearner.useAprioriDirichlet = deprecated_useAprioriDirichlet
 
 
 def getNumberOfRunningThreads():
