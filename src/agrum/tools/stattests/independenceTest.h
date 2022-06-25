@@ -58,11 +58,11 @@ namespace gum {
 
       /// default constructor
       /** @param parser the parser used to parse the database
-       * @param external_apriori An prior that we add to the computation of
+       * @param external_prior An prior that we add to the computation of
        * the score (this should come from expert knowledge): this consists in
-       * adding numbers to countings in the contingency tables
+       * adding numbers to counts in the contingency tables
        * @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
-       * indices. The countings are then performed only on the union of the
+       * indices. The counts are then performed only on the union of the
        * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
        * cross validation tasks, in which part of the database should be ignored.
        * An empty set of ranges is equivalent to an interval [X,Y) ranging over
@@ -78,7 +78,7 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       IndependenceTest(const DBRowGeneratorParser&                                 parser,
-                       const Prior&                                                external_apriori,
+                       const Prior&                                                external_prior,
                        const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
                        const Bijection< NodeId, std::size_t >&                     nodeId2columns
                        = Bijection< NodeId, std::size_t >());
@@ -86,9 +86,9 @@ namespace gum {
 
       /// default constructor
       /** @param parser the parser used to parse the database
-       * @param external_apriori An prior that we add to the computation of
+       * @param external_prior An prior that we add to the computation of
        * the score (this should come from expert knowledge): this consists in
-       * adding numbers to countings in the contingency tables
+       * adding numbers to counts in the contingency tables
        * @param nodeId2Columns a mapping from the ids of the nodes in the
        * graphical model to the corresponding column in the DatabaseTable
        * parsed by the parser. This enables estimating from a database in
@@ -100,7 +100,7 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       IndependenceTest(const DBRowGeneratorParser&             parser,
-                       const Prior&                            external_apriori,
+                       const Prior&                            external_prior,
                        const Bijection< NodeId, std::size_t >& nodeId2columns
                        = Bijection< NodeId, std::size_t >());
 
@@ -135,7 +135,7 @@ namespace gum {
        * multithreading context
        *
        * When computing score, several threads are used by record counters to
-       * perform countings on the rows of the database, the MinNbRowsPerThread
+       * perform counts on the rows of the database, the MinNbRowsPerThread
        * method indicates how many rows each thread should at least process.
        * This is used to compute the number of threads actually run. This number
        * is equal to the min between the max number of threads allowed and the
@@ -145,9 +145,9 @@ namespace gum {
       /// returns the minimum of rows that each thread should process
       virtual std::size_t minNbRowsPerThread() const;
 
-      /// sets new ranges to perform the countings used by the independence test
+      /// sets new ranges to perform the counts used by the independence test
       /** @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
-       * indices. The countings are then performed only on the union of the
+       * indices. The counts are then performed only on the union of the
        * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
        * cross validation tasks, in which part of the database should be ignored.
        * An empty set of ranges is equivalent to an interval [X,Y) ranging over
@@ -196,10 +196,10 @@ namespace gum {
       /// 1 / log(2)
       const double one_log2_{M_LOG2E};
 
-      /// the expert knowledge a priori we add to the contingency tables
-      Prior* apriori_{nullptr};
+      /// the expert knowledge a priorwe add to the contingency tables
+      Prior* prior_{nullptr};
 
-      /// the record counter used for the countings over discrete variables
+      /// the record counter used for the counts over discrete variables
       RecordCounter counter_;
 
       /// the scoring cache

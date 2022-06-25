@@ -20,7 +20,7 @@
 
 
 /** @file
- * @brief the no a priori class: corresponds to 0 weight-sample
+ * @brief the no a priorclass: corresponds to 0 weight-sample
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
@@ -84,11 +84,11 @@ namespace gum {
 
 
     /// returns the prior vector all the variables in the idset
-    INLINE void NoPrior::addAllApriori(const IdCondSet& idset, std::vector< double >& counts) {}
+    INLINE void NoPrior::addAllPrior(const IdCondSet& idset, std::vector< double >& counts) {}
 
 
     /// returns the prior vector over only the conditioning set of an idset
-    INLINE void NoPrior::addConditioningApriori(const IdCondSet&       idset,
+    INLINE void NoPrior::addConditioningPrior(const IdCondSet&       idset,
                                                 std::vector< double >& counts) {}
 
 

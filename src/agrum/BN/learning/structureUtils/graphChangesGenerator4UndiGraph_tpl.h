@@ -195,7 +195,7 @@ namespace gum {
       if (legal_changes_.size()) legal_changes_.clear();
     }
 
-    /// sets the maximum number of threads used to perform countings
+    /// sets the maximum number of threads used to perform counts
     template < typename STRUCT_CONSTRAINT >
     INLINE void
        GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::setMaxNbThreads(Size nb) noexcept {

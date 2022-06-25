@@ -104,9 +104,9 @@ namespace gum {
     template < typename GUM_SCALAR >
     BayesNet< GUM_SCALAR > BNLearner< GUM_SCALAR >::learnBN() {
       // create the score, the prior and the estimator
-      auto notification = checkScoreAprioriCompatibility();
+      auto notification = checkScorePriorCompatibility();
       if (notification != "") { std::cout << "[aGrUM notification] " << notification << std::endl; }
-      createApriori_();
+      createPrior_();
       createScore_();
 
       std::unique_ptr< ParamEstimator > param_estimator(
@@ -151,14 +151,14 @@ namespace gum {
       }
 
       // create the prior
-      createApriori_();
+      createPrior_();
 
       if (epsilonEM_ == 0.0) {
         // check that the database does not contain any missing value
         if (scoreDatabase_.databaseTable().hasMissingValues()
-            || ((aprioriDatabase_ != nullptr)
-                && (aprioriType_ == BNLearnerPriorType::DIRICHLET_FROM_DATABASE)
-                && aprioriDatabase_->databaseTable().hasMissingValues())) {
+            || ((priorDatabase_ != nullptr)
+                && (priorType_ == BNLearnerPriorType::DIRICHLET_FROM_DATABASE)
+                && priorDatabase_->databaseTable().hasMissingValues())) {
           GUM_ERROR(MissingValueInDatabase,
                     "In general, the BNLearner is unable to cope with "
                        << "missing values in databases. To learn parameters in "
@@ -364,14 +364,14 @@ namespace gum {
 
 
       key     = "Prior";
-      comment = checkScoreAprioriCompatibility();
-      switch (aprioriType_) {
-        case BNLearnerPriorType::NO_APRIORI:
+      comment = checkScorePriorCompatibility();
+      switch (priorType_) {
+        case BNLearnerPriorType::NO_prior:
           vals.emplace_back(key, "-", comment);
           break;
         case BNLearnerPriorType::DIRICHLET_FROM_DATABASE:
           vals.emplace_back(key, "Dirichlet", comment);
-          vals.emplace_back("Dirichlet database", aprioriDbname_, "");
+          vals.emplace_back("Dirichlet database", priorDbname_, "");
           break;
         case BNLearnerPriorType::BDEU:
           vals.emplace_back(key, "BDEU", comment);
@@ -384,8 +384,8 @@ namespace gum {
           break;
       }
 
-      if (aprioriType_ != BNLearnerPriorType::NO_APRIORI)
-        vals.emplace_back("Prior weight", std::to_string(aprioriWeight_), "");
+      if (priorType_ != BNLearnerPriorType::NO_prior)
+        vals.emplace_back("Prior weight", std::to_string(priorWeight_), "");
 
       if (databaseWeight() != double(nbRows())) {
         vals.emplace_back("Database weight", std::to_string(databaseWeight()), "");

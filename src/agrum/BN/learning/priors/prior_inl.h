@@ -26,9 +26,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-namespace gum {
-
-  namespace learning {
+namespace gum::learning {
 
     /// default constructor
     INLINE Prior::Prior(const DatabaseTable&                    database,
@@ -58,7 +56,7 @@ namespace gum {
     INLINE Prior::~Prior() { GUM_DESTRUCTOR(Prior); }
 
 
-    /// sets the weight of the a priori (kind of effective sample size)
+    /// sets the weight of the a prior(kind of effective sample size)
     INLINE void Prior::setWeight(const double weight) {
       if (weight < 0.0) {
         GUM_ERROR(OutOfBounds, "A negative weight (" << weight << ") is forbidden for an prior");
@@ -71,8 +69,6 @@ namespace gum {
     INLINE double Prior::weight() const { return weight_; }
 
 
-  } /* namespace learning */
-
-} /* namespace gum */
+  } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

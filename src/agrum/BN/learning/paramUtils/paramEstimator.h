@@ -55,12 +55,12 @@ namespace gum {
 
       /// default constructor
       /** @param parser the parser used to parse the database
-       * @param external_apriori An prior that we add to the computation
+       * @param external_prior An prior that we add to the computation
        * of the score
-       * @param score_internal_apriori The prior within the score used
-       * to learn the data structure (might be a NoApriori)
+       * @param score_internal_prior The prior within the score used
+       * to learn the data structure (might be a NoPrior)
        * @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
-       * indices. The countings are then performed only on the union of the
+       * indices. The counts are then performed only on the union of the
        * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
        * cross validation tasks, in which part of the database should be ignored.
        * An empty set of ranges is equivalent to an interval [X,Y) ranging over
@@ -76,18 +76,18 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       ParamEstimator(const DBRowGeneratorParser& parser,
-                     const Prior&                external_apriori,
-                     const Prior&                _score_internal_apriori,
+                     const Prior&                external_prior,
+                     const Prior&                _score_internal_prior,
                      const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
                      const Bijection< NodeId, std::size_t >&                     nodeId2columns
                      = Bijection< NodeId, std::size_t >());
 
       /// default constructor
       /** @param parser the parser used to parse the database
-       * @param external_apriori An prior that we add to the computation
+       * @param external_prior An prior that we add to the computation
        * of the score
-       * @param score_internal_apriori The prior within the score used
-       * to learn the data structure (might be a NoApriori)
+       * @param score_internal_prior The prior within the score used
+       * to learn the data structure (might be a NoPrior)
        * @param nodeId2Columns a mapping from the ids of the nodes in the
        * graphical model to the corresponding column in the DatabaseTable
        * parsed by the parser. This enables estimating from a database in
@@ -99,8 +99,8 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       ParamEstimator(const DBRowGeneratorParser&             parser,
-                     const Prior&                            external_apriori,
-                     const Prior&                            _score_internal_apriori,
+                     const Prior&                            external_prior,
+                     const Prior&                            _score_internal_prior,
                      const Bijection< NodeId, std::size_t >& nodeId2columns
                      = Bijection< NodeId, std::size_t >());
 
@@ -144,7 +144,7 @@ namespace gum {
        * multithreading context
        *
        * When computing score, several threads are used by record counters to
-       * perform countings on the rows of the database, the MinNbRowsPerThread
+       * perform counts on the rows of the database, the MinNbRowsPerThread
        * method indicates how many rows each thread should at least process.
        * This is used to compute the number of threads actually run. This number
        * is equal to the min between the max number of threads allowed and the
@@ -154,9 +154,9 @@ namespace gum {
       /// returns the minimum of rows that each thread should process
       virtual std::size_t minNbRowsPerThread() const;
 
-      /// sets new ranges to perform the countings used by the parameter estimator
+      /// sets new ranges to perform the counts used by the parameter estimator
       /** @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
-       * indices. The countings are then performed only on the union of the
+       * indices. The counts are then performed only on the union of the
        * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
        * cross validation tasks, in which part of the database should be ignored.
        * An empty set of ranges is equivalent to an interval [X,Y) ranging over
@@ -211,11 +211,11 @@ namespace gum {
 
       protected:
       /// an external a priori
-      Prior* external_apriori_{nullptr};
+      Prior* external_prior_{nullptr};
 
       /** @brief if a score was used for learning the structure of the PGM, this
-       * is the a priori internal to the score */
-      Prior* score_internal_apriori_{nullptr};
+       * is the priori internal to the score */
+      Prior* score_internal_prior_{nullptr};
 
       /// the record counter used to parse the database
       RecordCounter counter_;

@@ -50,12 +50,12 @@ namespace gum {
 
       /// default constructor
       /** @param parser the parser used to parse the database
-       * @param external_apriori An prior that we add to the computation
+       * @param external_prior An prior that we add to the computation
        * of the score
-       * @param score_internal_apriori The prior within the score used
-       * to learn the data structure (might be a NoApriori)
+       * @param score_internal_prior The prior within the score used
+       * to learn the data structure (might be a NoPrior)
        * @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
-       * indices. The countings are then performed only on the union of the
+       * indices. The counts are then performed only on the union of the
        * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
        * cross validation tasks, in which part of the database should be ignored.
        * An empty set of ranges is equivalent to an interval [X,Y) ranging over
@@ -71,18 +71,18 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       ParamEstimatorML(const DBRowGeneratorParser& parser,
-                       const Prior&                external_apriori,
-                       const Prior&                _score_internal_apriori,
+                       const Prior&                external_prior,
+                       const Prior&                _score_internal_prior,
                        const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
                        const Bijection< NodeId, std::size_t >&                     nodeId2columns
                        = Bijection< NodeId, std::size_t >());
 
       /// default constructor
       /** @param parser the parser used to parse the database
-       * @param external_apriori An prior that we add to the computation
+       * @param external_prior An prior that we add to the computation
        * of the score
-       * @param score_internal_apriori The prior within the score used
-       * to learn the data structure (might be a NoApriori)
+       * @param score_internal_prior The prior within the score used
+       * to learn the data structure (might be a NoPrior)
        * @param nodeId2Columns a mapping from the ids of the nodes in the
        * graphical model to the corresponding column in the DatabaseTable
        * parsed by the parser. This enables estimating from a database in
@@ -94,8 +94,8 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       ParamEstimatorML(const DBRowGeneratorParser&             parser,
-                       const Prior&                            external_apriori,
-                       const Prior&                            _score_internal_apriori,
+                       const Prior&                            external_prior,
+                       const Prior&                            _score_internal_prior,
                        const Bijection< NodeId, std::size_t >& nodeId2columns
                        = Bijection< NodeId, std::size_t >());
 

@@ -108,10 +108,10 @@ namespace gum_tests {
       // create the parser
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::SmoothingPrior       extern_apriori(database);
-      gum::learning::NoPrior              intern_apriori(database);
+      gum::learning::SmoothingPrior       extern_prior(database);
+      gum::learning::NoPrior              intern_prior(database);
 
-      gum::learning::ParamEstimatorML param_estimator(parser, extern_apriori, intern_apriori);
+      gum::learning::ParamEstimatorML param_estimator(parser, extern_prior, intern_prior);
 
       gum::learning::DAG2BNLearner learner;
 
@@ -191,16 +191,16 @@ namespace gum_tests {
       genset_id.insertGenerator(generator_id);
       gum::learning::DBRowGeneratorParser parser_id(database.handler(), genset_id);
 
-      gum::learning::SmoothingPrior   extern_apriori(database);
-      gum::learning::NoPrior          intern_apriori(database);
-      gum::learning::ParamEstimatorML param_estimator_id(parser_id, extern_apriori, intern_apriori);
+      gum::learning::SmoothingPrior   extern_prior(database);
+      gum::learning::NoPrior          intern_prior(database);
+      gum::learning::ParamEstimatorML param_estimator_id(parser_id, extern_prior, intern_prior);
 
       gum::learning::DBRowGeneratorEM  generator_EM(col_types, bn);
       gum::learning::DBRowGenerator&   gen_EM = generator_EM;   // fix for g++-4.8
       gum::learning::DBRowGeneratorSet genset_EM;
       genset_EM.insertGenerator(gen_EM);
       gum::learning::DBRowGeneratorParser parser_EM(database.handler(), genset_EM);
-      gum::learning::ParamEstimatorML param_estimator_EM(parser_EM, extern_apriori, intern_apriori);
+      gum::learning::ParamEstimatorML param_estimator_EM(parser_EM, extern_prior, intern_prior);
 
       gum::learning::DAG2BNLearner learner;
 

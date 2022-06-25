@@ -60,10 +60,10 @@ namespace gum {
 
     /// returns the score corresponding to a given nodeset
     std::pair< double, double > IndepTestG2::statistics_(const IdCondSet& idset) {
-      // get the countings
+      // get the counts
       std::vector< double > N_xyz(this->counter_.counts(idset, true));
-      const bool            informative_external_apriori = this->apriori_->isInformative();
-      if (informative_external_apriori) this->apriori_->addAllApriori(idset, N_xyz);
+      const bool            informative_external_prior = this->prior_->isInformative();
+      if (informative_external_prior) this->prior_->addAllPrior(idset, N_xyz);
       const std::size_t all_size = (N_xyz.size());
 
       // compute the domain sizes of X and Y

@@ -88,7 +88,7 @@ namespace gum {
                                        const std::vector< std::string >&  missing_symbols) :
         scoreDatabase_(filename, bn, missing_symbols) {
       filename_     = filename;
-      noApriori_    = new NoPrior(scoreDatabase_.databaseTable());
+      noPrior_    = new NoPrior(scoreDatabase_.databaseTable());
       inducedTypes_ = false;
       GUM_CONSTRUCTOR(GenericBNLearner);
     }

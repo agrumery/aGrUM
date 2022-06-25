@@ -134,9 +134,9 @@ namespace gum {
        * 1-smoothing prior), it is important to also take into account this
        * implicit prior for parameter learning. By default, if a score
        * exists, we will learn parameters by taking into account the prior
-       * specified by methods useAprioriXXX () + the implicit prior of the
+       * specified by methods usePriorXXX () + the implicit prior of the
        * score, else we just take into account the prior specified by
-       * useAprioriXXX () */
+       * usePriorXXX () */
       BayesNet< GUM_SCALAR > learnParameters(const DAG& dag, bool takeIntoAccountScore = true);
 
       // learns a BN (its parameters) when its structure is known
@@ -147,9 +147,9 @@ namespace gum {
        * 1-smoothing prior), it is important to also take into account this
        * implicit prior for parameter learning. By default, if a score
        * exists, we will learn parameters by taking into account the prior
-       * specified by methods useAprioriXXX () + the implicit prior of the
+       * specified by methods usePriorXXX () + the implicit prior of the
        * score, else we just take into account the prior specified by
-       * useAprioriXXX ()
+       * usePriorXXX ()
        * @throw MissingVariableInDatabase if a variable of the BN is not found
        * in the database.
        * @throw UnknownLabelInDatabase if a label is found in the databast that

@@ -42,13 +42,13 @@ namespace gum {
     /// copy operator
     IndependenceTest& IndependenceTest::operator=(const IndependenceTest& from) {
       if (this != &from) {
-        Prior*        new_apriori = from.apriori_->clone();
+        Prior*        new_prior = from.prior_->clone();
         RecordCounter new_counter = from.counter_;
         ScoringCache  new_cache   = from.cache_;
 
-        if (apriori_ != nullptr) delete apriori_;
+        if (prior_ != nullptr) delete prior_;
 
-        apriori_ = new_apriori;
+        prior_ = new_prior;
         counter_ = std::move(new_counter);
         cache_   = std::move(new_cache);
 
@@ -61,7 +61,7 @@ namespace gum {
     /// move operator
     IndependenceTest& IndependenceTest::operator=(IndependenceTest&& from) {
       if (this != &from) {
-        std::swap(apriori_, from.apriori_);
+        std::swap(prior_, from.prior_);
 
         counter_   = std::move(from.counter_);
         cache_     = std::move(from.cache_);
@@ -71,9 +71,9 @@ namespace gum {
     }
 
 
-    /// sets new ranges to perform the countings used by the score
+    /// sets new ranges to perform the counts used by the score
     /** @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
-     * indices. The countings are then performed only on the union of the
+     * indices. The counts are then performed only on the union of the
      * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
      * cross validation tasks, in which part of the database should be ignored.
      * An empty set of ranges is equivalent to an interval [X,Y) ranging over

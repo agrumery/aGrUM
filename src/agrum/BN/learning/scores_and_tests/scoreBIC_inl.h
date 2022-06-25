@@ -40,7 +40,7 @@ namespace gum {
                               const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
                               const Bijection< NodeId, std::size_t >& nodeId2columns) :
         Score(parser, prior, ranges, nodeId2columns),
-        _internal_apriori_(parser.database(), nodeId2columns) {
+        _internal_prior_(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreBIC);
     }
 
@@ -50,21 +50,21 @@ namespace gum {
                               const Prior&                            prior,
                               const Bijection< NodeId, std::size_t >& nodeId2columns) :
         Score(parser, prior, nodeId2columns),
-        _internal_apriori_(parser.database(), nodeId2columns) {
+        _internal_prior_(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreBIC);
     }
 
 
     /// copy constructor
     INLINE ScoreBIC::ScoreBIC(const ScoreBIC& from) :
-        Score(from), _internal_apriori_(from._internal_apriori_) {
+        Score(from), _internal_prior_(from._internal_prior_) {
       GUM_CONS_CPY(ScoreBIC);
     }
 
 
     /// move constructor
     INLINE ScoreBIC::ScoreBIC(ScoreBIC&& from) :
-        Score(std::move(from)), _internal_apriori_(std::move(from._internal_apriori_)) {
+        Score(std::move(from)), _internal_prior_(std::move(from._internal_prior_)) {
       GUM_CONS_MOV(ScoreBIC);
     }
 
@@ -85,12 +85,12 @@ namespace gum {
 
     /// indicates whether the prior is compatible (meaningful) with the score
     INLINE std::string ScoreBIC::isPriorCompatible() const {
-      return isPriorCompatible(*(this->apriori_));
+      return isPriorCompatible(*(this->prior_));
     }
 
 
     /// returns the internal prior of the score
-    INLINE const Prior& ScoreBIC::internalApriori() const { return _internal_apriori_; }
+    INLINE const Prior& ScoreBIC::internalPrior() const { return _internal_prior_; }
 
   } /* namespace learning */
 

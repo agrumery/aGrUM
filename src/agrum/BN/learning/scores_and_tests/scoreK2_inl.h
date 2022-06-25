@@ -40,7 +40,7 @@ namespace gum {
                             const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
                             const Bijection< NodeId, std::size_t >& nodeId2columns) :
         Score(parser, prior, ranges, nodeId2columns),
-        _internal_apriori_(parser.database(), nodeId2columns) {
+        _internal_prior_(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreK2);
     }
 
@@ -50,21 +50,21 @@ namespace gum {
                             const Prior&                            prior,
                             const Bijection< NodeId, std::size_t >& nodeId2columns) :
         Score(parser, prior, nodeId2columns),
-        _internal_apriori_(parser.database(), nodeId2columns) {
+        _internal_prior_(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreK2);
     }
 
 
     /// copy constructor
     INLINE ScoreK2::ScoreK2(const ScoreK2& from) :
-        Score(from), _internal_apriori_(from._internal_apriori_), _gammalog2_(from._gammalog2_) {
+        Score(from), _internal_prior_(from._internal_prior_), _gammalog2_(from._gammalog2_) {
       GUM_CONS_CPY(ScoreK2);
     }
 
 
     /// move constructor
     INLINE ScoreK2::ScoreK2(ScoreK2&& from) :
-        Score(std::move(from)), _internal_apriori_(std::move(from._internal_apriori_)),
+        Score(std::move(from)), _internal_prior_(std::move(from._internal_prior_)),
         _gammalog2_(std::move(from._gammalog2_)) {
       GUM_CONS_MOV(ScoreK2);
     }
@@ -86,12 +86,12 @@ namespace gum {
 
     /// indicates whether the prior is compatible (meaningful) with the score
     INLINE std::string ScoreK2::isPriorCompatible() const {
-      return isPriorCompatible(*(this->apriori_));
+      return isPriorCompatible(*(this->prior_));
     }
 
 
     /// returns the internal prior of the score
-    INLINE const Prior& ScoreK2::internalApriori() const { return _internal_apriori_; }
+    INLINE const Prior& ScoreK2::internalPrior() const { return _internal_prior_; }
 
   } /* namespace learning */
 

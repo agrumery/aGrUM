@@ -39,7 +39,7 @@ namespace gum {
                              const Prior&                                                prior,
                              const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
                              const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        apriori_(prior.clone()),
+        prior_(prior.clone()),
         counter_(parser, ranges, nodeId2columns) {
       GUM_CONSTRUCTOR(PseudoCount);
     }
@@ -49,7 +49,7 @@ namespace gum {
     INLINE PseudoCount::PseudoCount(const DBRowGeneratorParser&             parser,
                                     const Prior&                            prior,
                                     const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        apriori_(prior.clone()),
+        prior_(prior.clone()),
         counter_(parser, nodeId2columns) {
       GUM_CONSTRUCTOR(PseudoCount);
     }
@@ -57,22 +57,22 @@ namespace gum {
 
     /// copy constructor
     INLINE PseudoCount::PseudoCount(const PseudoCount& from) :
-        apriori_(from.apriori_->clone()), counter_(from.counter_) {
+        prior_(from.prior_->clone()), counter_(from.counter_) {
       GUM_CONS_CPY(PseudoCount);
     }
 
 
     /// move constructor
     INLINE PseudoCount::PseudoCount(PseudoCount&& from) :
-        apriori_(from.apriori_), counter_(std::move(from.counter_)) {
-      from.apriori_ = nullptr;
+        prior_(from.prior_), counter_(std::move(from.counter_)) {
+      from.prior_ = nullptr;
       GUM_CONS_MOV(PseudoCount);
     }
 
 
     /// destructor
     INLINE PseudoCount::~PseudoCount() {
-      if (apriori_ != nullptr) delete apriori_;
+      if (prior_ != nullptr) delete prior_;
       GUM_DESTRUCTOR(PseudoCount);
     }
 

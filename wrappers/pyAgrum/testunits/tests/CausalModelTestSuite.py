@@ -185,7 +185,7 @@ class TestCausalModel(pyAgrumTestCase):
     #
     # Ux : [-2,10], sans a priori
     # Us : [0,25], sans a priori
-    # education : 0,1,2 (low, medium, high), a priori [0.4,0.40.2]
+    # education : 0,1,2 (low, medium, high), a prior[0.4,0.40.2]
     # experience : [0,20]
     # salaire : [65,150]
 

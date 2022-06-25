@@ -113,9 +113,9 @@ namespace gum::learning {
     PriorType getType() const final;
 
     /// indicates whether the prior is potentially informative
-    /** Basically, only the NoApriori is uninformative. However, it may happen
+    /** Basically, only the NoPrior is uninformative. However, it may happen
      * that, under some circumstances, an prior, which is usually not equal
-     * to the NoApriori, becomes equal to it (e.g., when the weight is equal
+     * to the NoPrior, becomes equal to it (e.g., when the weight is equal
      * to zero). In this case, if the prior can detect this case, it shall
      * inform the classes that use it that it is temporarily uninformative.
      * These classes will then be able to speed-up their code by avoiding to
@@ -128,14 +128,14 @@ namespace gum::learning {
      * conditioning bar of the idset.
      * @warning the method assumes that the size of the vector is exactly
      * the domain size of the joint variables set. */
-    void addAllApriori(const IdCondSet& idset, std::vector< double >& counts) final;
+    void addAllPrior(const IdCondSet& idset, std::vector< double >& counts) final;
 
     /** @brief adds the prior to a counting vector defined over the right
      * hand side of the idset
      *
      * @warning the method assumes that the size of the vector is exactly
      * the domain size of the joint RHS variables of the idset. */
-    void addConditioningApriori(const IdCondSet& idset, std::vector< double >& counts) final;
+    void addConditioningPrior(const IdCondSet& idset, std::vector< double >& counts) final;
 
     /// @}
   };

@@ -58,7 +58,7 @@ namespace gum {
       /** @param parser the parser used to parse the database
        * @param prior An prior that we add to the computation of the score
        * @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
-       * indices. The countings are then performed only on the union of the
+       * indices. The counts are then performed only on the union of the
        * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
        * cross validation tasks, in which part of the database should be ignored.
        * An empty set of ranges is equivalent to an interval [X,Y) ranging over
@@ -156,7 +156,7 @@ namespace gum {
        * note that, to be meaningful, a structure + parameter learning requires
        * that the same priors are taken into account during structure learning
        * and parameter learning. */
-      virtual const Prior& internalApriori() const final;
+      virtual const Prior& internalPrior() const final;
 
       /// @}
 
@@ -164,7 +164,7 @@ namespace gum {
       /// indicates whether the prior is compatible (meaningful) with the score
       /** @returns a non empty string if the prior is compatible with the score.
        */
-      static std::string isPriorCompatible(PriorType apriori_type, double weight = 1.0f);
+      static std::string isPriorCompatible(PriorType prior_type, double weight = 1.0f);
 
       /// indicates whether the prior is compatible (meaningful) with the score
       /** a non empty string if the prior is compatible with the score. */
@@ -183,7 +183,7 @@ namespace gum {
 
       private:
       /// the internal prior of the score
-      NoPrior _internal_apriori_;
+      NoPrior _internal_prior_;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

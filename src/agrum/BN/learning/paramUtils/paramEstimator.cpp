@@ -42,17 +42,17 @@ namespace gum {
     /// default constructor
     ParamEstimator::ParamEstimator(
        const DBRowGeneratorParser&                                 parser,
-       const Prior&                                                external_apriori,
-       const Prior&                                                score_internal_apriori,
+       const Prior&                                                external_prior,
+       const Prior&                                                score_internal_prior,
        const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
        const Bijection< NodeId, std::size_t >&                     nodeId2columns) :
         counter_(parser, ranges, nodeId2columns) {
       // copy the a prioris
-      external_apriori_ = external_apriori.clone();
+      external_prior_ = external_prior.clone();
       try {
-        score_internal_apriori_ = score_internal_apriori.clone();
+        score_internal_prior_ = score_internal_prior.clone();
       } catch (...) {
-        delete external_apriori_;
+        delete external_prior_;
         throw;
       }
 
@@ -62,16 +62,16 @@ namespace gum {
 
     /// default constructor
     ParamEstimator::ParamEstimator(const DBRowGeneratorParser&             parser,
-                                   const Prior&                            external_apriori,
-                                   const Prior&                            score_internal_apriori,
+                                   const Prior&                            external_prior,
+                                   const Prior&                            score_internal_prior,
                                    const Bijection< NodeId, std::size_t >& nodeId2columns) :
         counter_(parser, nodeId2columns) {
       // copy the a prioris
-      external_apriori_ = external_apriori.clone();
+      external_prior_ = external_prior.clone();
       try {
-        score_internal_apriori_ = score_internal_apriori.clone();
+        score_internal_prior_ = score_internal_prior.clone();
       } catch (...) {
-        delete external_apriori_;
+        delete external_prior_;
         throw;
       }
 
@@ -81,8 +81,8 @@ namespace gum {
 
     /// destructor
     ParamEstimator::~ParamEstimator() {
-      if (external_apriori_ != nullptr) delete external_apriori_;
-      if (score_internal_apriori_ != nullptr) delete score_internal_apriori_;
+      if (external_prior_ != nullptr) delete external_prior_;
+      if (score_internal_prior_ != nullptr) delete score_internal_prior_;
 
       GUM_DESTRUCTOR(ParamEstimator);
     }
@@ -91,17 +91,17 @@ namespace gum {
     /// copy operator
     ParamEstimator& ParamEstimator::operator=(const ParamEstimator& from) {
       if (this != &from) {
-        if (external_apriori_ != nullptr) {
-          delete external_apriori_;
-          external_apriori_ = nullptr;
+        if (external_prior_ != nullptr) {
+          delete external_prior_;
+          external_prior_ = nullptr;
         }
-        external_apriori_ = from.external_apriori_->clone();
+        external_prior_ = from.external_prior_->clone();
 
-        if (score_internal_apriori_ != nullptr) {
-          delete score_internal_apriori_;
-          external_apriori_ = nullptr;
+        if (score_internal_prior_ != nullptr) {
+          delete score_internal_prior_;
+          external_prior_ = nullptr;
         }
-        score_internal_apriori_ = from.score_internal_apriori_->clone();
+        score_internal_prior_ = from.score_internal_prior_->clone();
 
         counter_ = from.counter_;
       }
@@ -112,19 +112,19 @@ namespace gum {
     /// move operator
     ParamEstimator& ParamEstimator::operator=(ParamEstimator&& from) {
       if (this != &from) {
-        external_apriori_            = from.external_apriori_;
-        score_internal_apriori_      = from.score_internal_apriori_;
+        external_prior_            = from.external_prior_;
+        score_internal_prior_      = from.score_internal_prior_;
         counter_                     = std::move(from.counter_);
-        from.external_apriori_       = nullptr;
-        from.score_internal_apriori_ = nullptr;
+        from.external_prior_       = nullptr;
+        from.score_internal_prior_ = nullptr;
       }
       return *this;
     }
 
 
-    /// sets new ranges to perform the countings used by the score
+    /// sets new ranges to perform the counts used by the score
     /** @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
-     * indices. The countings are then performed only on the union of the
+     * indices. The counts are then performed only on the union of the
      * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
      * cross validation tasks, in which part of the database should be ignored.
      * An empty set of ranges is equivalent to an interval [X,Y) ranging over

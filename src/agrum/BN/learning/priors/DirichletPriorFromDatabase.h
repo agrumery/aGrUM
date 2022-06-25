@@ -52,7 +52,7 @@ namespace gum {
       /// default constructor
       /** @param learning_db the database from which learning is performed.
        * This is useful to get access to the random variables
-       * @param apriori_parser the parser used to parse the prior database
+       * @param prior_parser the parser used to parse the prior database
        * @param nodeId2Columns a mapping from the ids of the nodes in the
        * graphical model to the corresponding column in learning_db.
        * This enables estimating from a database in which variable A corresponds
@@ -68,7 +68,7 @@ namespace gum {
        * (they have the same names) are exactly identical. If this is not the
        * case, then a DatabaseError exception is raised. */
       DirichletPriorFromDatabase(const DatabaseTable&                    learning_db,
-                                 const DBRowGeneratorParser&             apriori_parser,
+                                 const DBRowGeneratorParser&             prior_parser,
                                  const Bijection< NodeId, std::size_t >& nodeId2columns
                                  = Bijection< NodeId, std::size_t >());
 
@@ -110,16 +110,16 @@ namespace gum {
       PriorType getType() const final;
 
       /// indicates whether the prior is potentially informative
-      /** Basically, only the NoApriori is uninformative. However, it may happen
+      /** Basically, only the NoPrior is uninformative. However, it may happen
        * that, under some circumstances, an prior, which is usually not equal
-       * to the NoApriori, becomes equal to it (e.g., when the weight is equal
+       * to the NoPrior, becomes equal to it (e.g., when the weight is equal
        * to zero). In this case, if the prior can detect this case, it shall
        * inform the classes that use it that it is temporarily uninformative.
        * These classes will then be able to speed-up their code by avoiding to
        * take into account the prior in their computations. */
       bool isInformative() const final;
 
-      /// sets the weight of the a priori (kind of effective sample size)
+      /// sets the weight of the a prior(kind of effective sample size)
       void setWeight(double weight) final;
 
       /// adds the prior to a counting vector corresponding to the idset
@@ -128,14 +128,14 @@ namespace gum {
        * conditioning bar of the idset.
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint variables set. */
-      virtual void addAllApriori(const IdCondSet& idset, std::vector< double >& counts) final;
+      virtual void addAllPrior(const IdCondSet& idset, std::vector< double >& counts) final;
 
       /** @brief adds the prior to a counting vectordefined over the right
        * hand side of the idset
        *
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint RHS variables of the idset. */
-      void addConditioningApriori(const IdCondSet&       idset,
+      void addConditioningPrior(const IdCondSet&       idset,
                                           std::vector< double >& counts) final;
 
       /// @}

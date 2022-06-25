@@ -42,12 +42,12 @@ namespace gum {
     /// copy operator
     PseudoCount& PseudoCount::operator=(const PseudoCount& from) {
       if (this != &from) {
-        Prior*        new_apriori = from.apriori_->clone();
+        Prior*        new_prior = from.prior_->clone();
         RecordCounter new_counter = from.counter_;
 
-        if (apriori_ != nullptr) delete apriori_;
+        if (prior_ != nullptr) delete prior_;
 
-        apriori_ = new_apriori;
+        prior_ = new_prior;
         counter_ = std::move(new_counter);
       }
       return *this;
@@ -57,7 +57,7 @@ namespace gum {
     /// move operator
     PseudoCount& PseudoCount::operator=(PseudoCount&& from) {
       if (this != &from) {
-        std::swap(apriori_, from.apriori_);
+        std::swap(prior_, from.prior_);
 
         counter_ = std::move(from.counter_);
       }
@@ -65,9 +65,9 @@ namespace gum {
     }
 
 
-    /// sets new ranges to perform the countings used by the score
+    /// sets new ranges to perform the counts used by the score
     /** @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
-     * indices. The countings are then performed only on the union of the
+     * indices. The counts are then performed only on the union of the
      * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
      * cross validation tasks, in which part of the database should be ignored.
      * An empty set of ranges is equivalent to an interval [X,Y) ranging over
@@ -96,8 +96,8 @@ namespace gum {
     std::vector< double > PseudoCount::get(const std::vector< NodeId >& ids) {
       IdCondSet             idset(ids, false, true);
       std::vector< double > N_xyz(this->counter_.counts(idset, true));
-      const bool            informative_external_apriori = this->apriori_->isInformative();
-      if (informative_external_apriori) this->apriori_->addAllApriori(idset, N_xyz);
+      const bool            informative_external_prior = this->prior_->isInformative();
+      if (informative_external_prior) this->prior_->addAllPrior(idset, N_xyz);
       return N_xyz;
     }
 

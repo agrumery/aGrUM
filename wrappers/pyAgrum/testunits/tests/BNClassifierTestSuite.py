@@ -94,7 +94,7 @@ class BNCLassifierTestCase(pyAgrumTestCase):
 
 
     # some instantiation of parents are missing : No prior should lead to division by 0
-    classif3 = skbn.BNClassifier(aPriori="NoPrior")
+    classif3 = skbn.BNClassifier(prior="NoPrior")
     with self.assertRaises(gum.DatabaseError):
       classif3.fit(x_train_asia, y_train_asia)
 

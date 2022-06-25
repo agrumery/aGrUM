@@ -42,7 +42,7 @@ namespace gum {
     GUM_CONSTRUCTOR(DefaultPartialOrderedEliminationSequenceStrategy);
   }
 
-  /// constructor for an a priori non empty graph
+  /// constructor for a (potentially) non empty graph
   DefaultPartialOrderedEliminationSequenceStrategy::
      DefaultPartialOrderedEliminationSequenceStrategy(UndiGraph*                  graph,
                                                       const NodeProperty< Size >* dom_sizes,

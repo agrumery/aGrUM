@@ -76,7 +76,7 @@ namespace gum_tests {
 
       gum::learning::StructuralConstraintDAG struct_constraint;
 
-      gum::learning::ParamEstimatorML estimator(parser, prior, score.internalApriori());
+      gum::learning::ParamEstimatorML estimator(parser, prior, score.internalPrior());
 
       std::vector< gum::NodeId > order(database.nbVariables());
       for (gum::NodeId i = 0; i < order.size(); ++i) {

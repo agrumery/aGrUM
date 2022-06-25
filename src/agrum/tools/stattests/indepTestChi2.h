@@ -52,11 +52,11 @@ namespace gum {
 
       /// default constructor
       /** @param parser the parser used to parse the database
-       * @param external_apriori An prior that we add to the computation
+       * @param external_prior An prior that we add to the computation
        * of the score (this should come from expert knowledge): this consists in
-       * adding numbers to countings in the contingency tables
+       * adding numbers to counts in the contingency tables
        * @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
-       * indices. The countings are then performed only on the union of the
+       * indices. The counts are then performed only on the union of the
        * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
        * cross validation tasks, in which part of the database should be ignored.
        * An empty set of ranges is equivalent to an interval [X,Y) ranging over
@@ -72,7 +72,7 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       IndepTestChi2(const DBRowGeneratorParser&                                 parser,
-                    const Prior&                                                external_apriori,
+                    const Prior&                                                external_prior,
                     const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
                     const Bijection< NodeId, std::size_t >&                     nodeId2columns
                     = Bijection< NodeId, std::size_t >());

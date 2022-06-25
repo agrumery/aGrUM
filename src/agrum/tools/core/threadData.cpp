@@ -20,7 +20,7 @@
 
 
 /** @file
- * @brief The class that computes countings of observations from the database.
+ * @brief The class that computes counts of observations from the database.
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */

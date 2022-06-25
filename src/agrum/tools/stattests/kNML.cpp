@@ -82,12 +82,12 @@ namespace gum {
 
     /// returns the score corresponding to a given nodeset
     double KNML::score_(const IdCondSet& idset) {
-      // perform the countings on the database for all the nodes in the idset
+      // perform the counts on the database for all the nodes in the idset
       // This will help optimizing the computations of the Nxui, Nyui and Nui
       // that we will be needed subsequently
       this->counter_.counts(idset, true);
 
-      const bool informative_external_apriori = this->apriori_->isInformative();
+      const bool informative_external_prior = this->prior_->isInformative();
 
       // get the domain sizes of X and Y
       const auto& db        = this->database();
@@ -115,10 +115,10 @@ namespace gum {
         std::vector< double > N_xui = this->counter_.counts(idset_xui, false);
         std::vector< double > N_yui = this->counter_.counts(idset_yui, false);
 
-        if (informative_external_apriori) {
-          this->apriori_->addConditioningApriori(idset, N_ui);
-          this->apriori_->addAllApriori(idset, N_xui);
-          this->apriori_->addAllApriori(idset, N_yui);
+        if (informative_external_prior) {
+          this->prior_->addConditioningPrior(idset, N_ui);
+          this->prior_->addAllPrior(idset, N_xui);
+          this->prior_->addAllPrior(idset, N_yui);
         }
 
 
@@ -147,9 +147,9 @@ namespace gum {
         std::vector< double > N_xui = this->counter_.counts(idset_xui, false);
         std::vector< double > N_yui = this->counter_.counts(idset_yui, false);
 
-        if (informative_external_apriori) {
-          this->apriori_->addAllApriori(idset, N_xui);
-          this->apriori_->addAllApriori(idset, N_yui);
+        if (informative_external_prior) {
+          this->prior_->addAllPrior(idset, N_xui);
+          this->prior_->addAllPrior(idset, N_yui);
         }
 
 

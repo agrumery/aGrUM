@@ -95,7 +95,7 @@ namespace gum {
     INLINE bool DirichletPriorFromDatabase::isInformative() const { return (this->weight_ != 0.0); }
 
 
-    /// sets the weight of the a priori (kind of effective sample size)
+    /// sets the weight of the a prior(kind of effective sample size)
     INLINE void DirichletPriorFromDatabase::setWeight(const double weight) {
       Prior::setWeight(weight);
       if (_counter_.database().nbRows() == 0)
@@ -106,7 +106,7 @@ namespace gum {
 
 
     /// returns the prior vector all the variables in the idset
-    INLINE void DirichletPriorFromDatabase::addAllApriori(const IdCondSet&       idset,
+    INLINE void DirichletPriorFromDatabase::addAllPrior(const IdCondSet&       idset,
                                                           std::vector< double >& counts) {
       if (this->weight_ == 0.0) return;
 
@@ -125,7 +125,7 @@ namespace gum {
 
 
     /// returns the prior vector over only the conditioning set of an idset
-    INLINE void DirichletPriorFromDatabase::addConditioningApriori(const IdCondSet&       idset,
+    INLINE void DirichletPriorFromDatabase::addConditioningPrior(const IdCondSet&       idset,
                                                                    std::vector< double >& counts) {
       if (_internal_weight_ == 0.0) return;
 

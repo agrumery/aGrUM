@@ -43,7 +43,7 @@ namespace gum {
     ScoreK2& ScoreK2::operator=(const ScoreK2& from) {
       if (this != &from) {
         Score::operator    =(from);
-        _internal_apriori_ = from._internal_apriori_;
+        _internal_prior_ = from._internal_prior_;
       }
       return *this;
     }
@@ -53,16 +53,16 @@ namespace gum {
     ScoreK2& ScoreK2::operator=(ScoreK2&& from) {
       if (this != &from) {
         Score::operator    =(std::move(from));
-        _internal_apriori_ = std::move(from._internal_apriori_);
+        _internal_prior_ = std::move(from._internal_prior_);
       }
       return *this;
     }
 
 
     /// indicates whether the prior is compatible (meaningful) with the score
-    std::string ScoreK2::isPriorCompatible(PriorType apriori_type, double weight) {
+    std::string ScoreK2::isPriorCompatible(PriorType prior_type, double weight) {
       // check that the prior is compatible with the score
-      if (apriori_type == PriorType::NoPriorType) { return ""; }
+      if (prior_type == PriorType::NoPriorType) { return ""; }
 
       if (weight == 0.0) {
         return "The prior is currently compatible with the K2 score but "
@@ -70,15 +70,15 @@ namespace gum {
       }
 
       // known incompatible priors
-      if ((apriori_type == PriorType::DirichletPriorType)
-          || (apriori_type == PriorType::SmoothingPriorType)) {
+      if ((prior_type == PriorType::DirichletPriorType)
+          || (prior_type == PriorType::SmoothingPriorType)) {
         return "The K2 score already contains a different 'implicit' prior. "
                "Therefore, the learning will probably be biased.";
       }
 
       // prior types unsupported by the type checker
       std::stringstream msg;
-      msg << "The prior '" << priorTypeToString(apriori_type)
+      msg << "The prior '" << priorTypeToString(prior_type)
           << "' is not yet compatible with the score 'K2'.";
       return msg.str();
     }
@@ -89,7 +89,7 @@ namespace gum {
       // get the counts for all the nodes in the idset and add the prior
       std::vector< double > N_ijk(this->counter_.counts(idset, true));
       const std::size_t     all_size                     = N_ijk.size();
-      const bool            informative_external_apriori = this->apriori_->isInformative();
+      const bool            informative_external_prior = this->prior_->isInformative();
       double                score                        = 0.0;
 
       // here, we distinguish idsets with conditioning nodes from those
@@ -100,13 +100,13 @@ namespace gum {
         const std::size_t     conditioning_size = N_ij.size();
         const double          ri                = double(all_size / conditioning_size);
 
-        if (informative_external_apriori) {
+        if (informative_external_prior) {
           // the score to compute is that of BD with priors N'_ijk + 1
           // (the + 1 is here to take into account the internal prior of K2)
           std::vector< double > N_prime_ijk(all_size, 0.0);
-          this->apriori_->addAllApriori(idset, N_prime_ijk);
+          this->prior_->addAllPrior(idset, N_prime_ijk);
           std::vector< double > N_prime_ij(N_ij.size(), 0.0);
-          this->apriori_->addConditioningApriori(idset, N_prime_ij);
+          this->prior_->addConditioningPrior(idset, N_prime_ij);
 
           // the K2 score can be computed as follows:
           // sum_j=1^qi [ gammalog2 ( N'_ij + r_i ) -
@@ -137,7 +137,7 @@ namespace gum {
         // here, there are no conditioning nodes
         const double ri = double(all_size);
 
-        if (informative_external_apriori) {
+        if (informative_external_prior) {
           // the score to compute is that of BD with priors N'_ijk + 1
           // (the + 1 is here to take into account the internal prior of K2)
 
@@ -146,7 +146,7 @@ namespace gum {
           // + sum_k=1^ri { gammlog2 ( N_i + N'_i + 1 ) - gammalog2 ( N'_i + 1 )
           // }
           std::vector< double > N_prime_ijk(all_size, 0.0);
-          this->apriori_->addAllApriori(idset, N_prime_ijk);
+          this->prior_->addAllPrior(idset, N_prime_ijk);
 
           // the K2 score can be computed as follows:
           double N       = 0.0;

@@ -437,19 +437,19 @@ namespace gum {
   class LearningError;
 
   /**
-   * @class gum::IncompatibleScoreApriori agrum/tools/core/exceptions.h
+   * @class gum::IncompatibleScorePrior agrum/tools/core/exceptions.h
    * @extends gum::LearningError
    * Error: The score already contains a different 'implicit' prior.
    */
-  class IncompatibleScoreApriori;
+  class IncompatibleScorePrior;
 
   /**
-   * @class gum::PossiblyIncompatibleScoreApriori agrum/tools/core/exceptions.h
+   * @class gum::PossiblyIncompatibleScorePrior agrum/tools/core/exceptions.h
    * @extends gum::LearningError
    * Error: Due to its weight, the prior is currently compatible with the
    *        score but if you change the weight, it will become incompatible"
    */
-  class PossiblyIncompatibleScoreApriori;
+  class PossiblyIncompatibleScorePrior;
 
   /**
    * @class gum::DatabaseError agrum/tools/core/exceptions.h
@@ -558,8 +558,8 @@ namespace gum {
   GUM_MAKE_ERROR(WrongClassElement, FactoryError, "Wrong ClassElement")
   GUM_MAKE_ERROR(PRMTypeError, FactoryError, "Wrong subtype or subclass")
   GUM_MAKE_ERROR(LearningError, Exception, "Factory error")
-  GUM_MAKE_ERROR(IncompatibleScoreApriori, LearningError, "Incompatible (maybe implicit) priors")
-  GUM_MAKE_ERROR(PossiblyIncompatibleScoreApriori,
+  GUM_MAKE_ERROR(IncompatibleScorePrior, LearningError, "Incompatible (maybe implicit) priors")
+  GUM_MAKE_ERROR(PossiblyIncompatibleScorePrior,
                  LearningError,
                  "Possible incompatibility between score and prior")
   GUM_MAKE_ERROR(DatabaseError, LearningError, "Database error")

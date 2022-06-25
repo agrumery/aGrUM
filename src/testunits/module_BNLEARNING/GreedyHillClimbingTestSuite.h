@@ -232,7 +232,7 @@ namespace gum_tests {
       constraint1.setMaxIndegree(6);
       static_cast< gum::learning::StructuralConstraintIndegree& >(struct_constraint) = constraint1;
 
-      gum::learning::ParamEstimatorML estimator(parser, prior, score.internalApriori());
+      gum::learning::ParamEstimatorML estimator(parser, prior, score.internalPrior());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) > op_set(
          struct_constraint);
@@ -301,7 +301,7 @@ namespace gum_tests {
       constraint1.setMaxIndegree(6);
       static_cast< gum::learning::StructuralConstraintIndegree& >(struct_constraint) = constraint1;
 
-      gum::learning::ParamEstimatorML estimator(parser, prior, score.internalApriori());
+      gum::learning::ParamEstimatorML estimator(parser, prior, score.internalPrior());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) > op_set(
          struct_constraint);
@@ -374,7 +374,7 @@ namespace gum_tests {
       constraint1.setMaxIndegree(6);
       static_cast< gum::learning::StructuralConstraintIndegree& >(struct_constraint) = constraint1;
 
-      gum::learning::ParamEstimatorML estimator(parser, prior, score.internalApriori());
+      gum::learning::ParamEstimatorML estimator(parser, prior, score.internalPrior());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) > op_set(
          struct_constraint);
@@ -449,7 +449,7 @@ namespace gum_tests {
       constraint1.setMaxIndegree(6);
       static_cast< gum::learning::StructuralConstraintIndegree& >(struct_constraint) = constraint1;
 
-      gum::learning::ParamEstimatorML estimator(parser, prior, score.internalApriori());
+      gum::learning::ParamEstimatorML estimator(parser, prior, score.internalPrior());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) > op_set(
          struct_constraint);
@@ -496,7 +496,7 @@ namespace gum_tests {
 
       // read the prior database
       gum::learning::DBInitializerFromCSV dirichlet_initializer(
-         GET_RESSOURCES_PATH("csv/db_dirichlet_apriori.csv"));
+         GET_RESSOURCES_PATH("csv/db_dirichlet_prior.csv"));
       const auto&       dirichlet_var_names = initializer.variableNames();
       const std::size_t dirichlet_nb_vars   = dirichlet_var_names.size();
 
@@ -530,7 +530,7 @@ namespace gum_tests {
         gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG >
            struct_constraint;
 
-        gum::learning::ParamEstimatorML estimator(parser, prior, score.internalApriori());
+        gum::learning::ParamEstimatorML estimator(parser, prior, score.internalPrior());
 
         gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) > op_set(
            struct_constraint);
@@ -585,7 +585,7 @@ namespace gum_tests {
         struct_constraint;
 
       gum::learning::ParamEstimatorML estimator(
-        filter, modalities, prior, score.internalApriori());
+        filter, modalities, prior, score.internalPrior());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
         op_set(struct_constraint);
@@ -635,7 +635,7 @@ namespace gum_tests {
         struct_constraint;
 
       gum::learning::ParamEstimatorML estimator(
-        filter, modalities, prior, score.internalApriori());
+        filter, modalities, prior, score.internalPrior());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
         op_set(struct_constraint);
@@ -685,7 +685,7 @@ namespace gum_tests {
         struct_constraint;
 
       gum::learning::ParamEstimatorML estimator(
-        filter, modalities, prior, score.internalApriori());
+        filter, modalities, prior, score.internalPrior());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
         op_set(struct_constraint);
@@ -736,7 +736,7 @@ namespace gum_tests {
         struct_constraint;
 
       gum::learning::ParamEstimatorML estimator(
-        filter, modalities, prior, score.internalApriori());
+        filter, modalities, prior, score.internalPrior());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
         op_set(struct_constraint);
@@ -787,7 +787,7 @@ namespace gum_tests {
         struct_constraint;
 
       gum::learning::ParamEstimatorML estimator(
-        filter, modalities, prior, score.internalApriori());
+        filter, modalities, prior, score.internalPrior());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
         op_set(struct_constraint);

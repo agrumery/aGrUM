@@ -68,12 +68,12 @@ namespace gum {
       // get the counts for all the nodes in the idset and add the external and
       // score internal priors
       std::vector< double > N_ijk(this->counter_.counts(idset, true));
-      const bool            informative_external_apriori = this->external_apriori_->isInformative();
-      const bool            informative_score_internal_apriori
-         = this->score_internal_apriori_->isInformative();
-      if (informative_external_apriori) this->external_apriori_->addAllApriori(idset, N_ijk);
-      if (informative_score_internal_apriori)
-        this->score_internal_apriori_->addAllApriori(idset, N_ijk);
+      const bool            informative_external_prior = this->external_prior_->isInformative();
+      const bool            informative_score_internal_prior
+         = this->score_internal_prior_->isInformative();
+      if (informative_external_prior) this->external_prior_->addAllPrior(idset, N_ijk);
+      if (informative_score_internal_prior)
+        this->score_internal_prior_->addAllPrior(idset, N_ijk);
 
 
       // now, normalize N_ijk
@@ -84,10 +84,10 @@ namespace gum {
         // get the counts for all the conditioning nodes, and add them the
         // external and score internal priors
         std::vector< double > N_ij(this->counter_.counts(idset.conditionalIdCondSet(), false));
-        if (informative_external_apriori)
-          this->external_apriori_->addConditioningApriori(idset, N_ij);
-        if (informative_score_internal_apriori)
-          this->score_internal_apriori_->addConditioningApriori(idset, N_ij);
+        if (informative_external_prior)
+          this->external_prior_->addConditioningPrior(idset, N_ij);
+        if (informative_score_internal_prior)
+          this->score_internal_prior_->addConditioningPrior(idset, N_ij);
 
         const std::size_t conditioning_domsize = N_ij.size();
         const std::size_t target_domsize       = N_ijk.size() / conditioning_domsize;

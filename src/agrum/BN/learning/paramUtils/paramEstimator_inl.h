@@ -35,18 +35,18 @@ namespace gum {
 
     /// copy constructor
     INLINE ParamEstimator::ParamEstimator(const ParamEstimator& from) :
-        external_apriori_(from.external_apriori_->clone()),
-        score_internal_apriori_(from.score_internal_apriori_->clone()), counter_(from.counter_) {
+        external_prior_(from.external_prior_->clone()),
+        score_internal_prior_(from.score_internal_prior_->clone()), counter_(from.counter_) {
       GUM_CONS_CPY(ParamEstimator);
     }
 
 
     /// move constructor
     INLINE ParamEstimator::ParamEstimator(ParamEstimator&& from) :
-        external_apriori_(from.external_apriori_),
-        score_internal_apriori_(from.score_internal_apriori_), counter_(std::move(from.counter_)) {
-      from.external_apriori_       = nullptr;
-      from.score_internal_apriori_ = nullptr;
+        external_prior_(from.external_prior_),
+        score_internal_prior_(from.score_internal_prior_), counter_(std::move(from.counter_)) {
+      from.external_prior_       = nullptr;
+      from.score_internal_prior_ = nullptr;
       GUM_CONS_MOV(ParamEstimator);
     }
 

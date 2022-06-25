@@ -21,7 +21,7 @@
 
 /**
  * @file
- * @brief the no a priori class: corresponds to 0 weight-sample
+ * @brief the no a priorclass: corresponds to 0 weight-sample
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */

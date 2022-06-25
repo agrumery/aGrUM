@@ -20,7 +20,7 @@
 
 
 /** @file
- * @brief the smooth a priori: adds a weight w to all the countings
+ * @brief the smooth a priori: adds a weight w to all the counts
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
@@ -81,7 +81,7 @@ namespace gum {
 
 
     /// returns the prior vector all the variables in the idset
-    INLINE void SmoothingPrior::addAllApriori(const IdCondSet&       idset,
+    INLINE void SmoothingPrior::addAllPrior(const IdCondSet&       idset,
                                               std::vector< double >& counts) {
       // if the idset is empty or the weight is zero, the prior is also empty
       if (idset.empty() || (this->weight_ == 0.0)) return;

@@ -95,17 +95,17 @@ namespace gum_tests {
 
 
      std::vector< double > vect(3, 1.0);
-     prior.addAllApriori(idset1, vect);
+     prior.addAllPrior(idset1, vect);
      TS_ASSERT_EQUALS(vect[0], 2401.0)
      TS_ASSERT_EQUALS(vect[1], 251.0)
      TS_ASSERT_EQUALS(vect[2], 151.0)
 
      vect.clear();
-     prior.addConditioningApriori(idset1, vect);
+     prior.addConditioningPrior(idset1, vect);
 
      vect.clear();
      vect.resize(9, 1.0);
-     prior.addAllApriori(idset2, vect);
+     prior.addAllPrior(idset2, vect);
      TS_ASSERT_EQUALS(vect[0], 401.0)    // 0,0
      TS_ASSERT_EQUALS(vect[1], 151.0)    // 1,0
      TS_ASSERT_EQUALS(vect[2], 1.0)      // 2,0
@@ -117,11 +117,11 @@ namespace gum_tests {
      TS_ASSERT_EQUALS(vect[8], 1.0)      // 2,2
 
      vect.clear();
-     prior.addConditioningApriori(idset2, vect);
+     prior.addConditioningPrior(idset2, vect);
 
      vect.clear();
      vect.resize(9, 1.0);
-     prior.addAllApriori(idset3, vect);
+     prior.addAllPrior(idset3, vect);
      TS_ASSERT_EQUALS(vect[0], 1.0)      // 0,0
      TS_ASSERT_EQUALS(vect[1], 151.0)    // 1,0
      TS_ASSERT_EQUALS(vect[2], 1.0)      // 2,0
@@ -134,32 +134,32 @@ namespace gum_tests {
 
      vect.clear();
      vect.resize(3, 1.0);
-     prior.addConditioningApriori(idset3, vect);
+     prior.addConditioningPrior(idset3, vect);
      TS_ASSERT_EQUALS(vect[0], 151.0)
      TS_ASSERT_EQUALS(vect[1], 651.0)
      TS_ASSERT_EQUALS(vect[2], 2001.0)
 
 
-     gum::learning::DirichletPriorFromDatabase apriori2(prior);
-     TS_ASSERT_EQUALS(apriori2.weight(), 2.0 * db_size)
-     apriori2.setWeight(1.0 * db_size);
-     TS_ASSERT_EQUALS(apriori2.weight(), db_size)
+     gum::learning::DirichletPriorFromDatabase prior2(prior);
+     TS_ASSERT_EQUALS(prior2.weight(), 2.0 * db_size)
+     prior2.setWeight(1.0 * db_size);
+     TS_ASSERT_EQUALS(prior2.weight(), db_size)
 
-     TS_ASSERT_EQUALS(apriori2.getType(), gum::learning::PriorType::DirichletPriorType)
+     TS_ASSERT_EQUALS(prior2.getType(), gum::learning::PriorType::DirichletPriorType)
 
      vect.clear();
      vect.resize(3, 1.0);
-     apriori2.addAllApriori(idset1, vect);
+     prior2.addAllPrior(idset1, vect);
      TS_ASSERT_EQUALS(vect[0], 1201.0)
      TS_ASSERT_EQUALS(vect[1], 126.0)
      TS_ASSERT_EQUALS(vect[2], 76.0)
 
      vect.clear();
-     apriori2.addConditioningApriori(idset1, vect);
+     prior2.addConditioningPrior(idset1, vect);
 
      vect.clear();
      vect.resize(9, 1.0);
-     apriori2.addAllApriori(idset2, vect);
+     prior2.addAllPrior(idset2, vect);
      TS_ASSERT_EQUALS(vect[0], 201.0)    // 0,0
      TS_ASSERT_EQUALS(vect[1], 76.0)     // 1,0
      TS_ASSERT_EQUALS(vect[2], 1.0)      // 2,0
@@ -171,11 +171,11 @@ namespace gum_tests {
      TS_ASSERT_EQUALS(vect[8], 1.0)      // 2,2
 
      vect.clear();
-     apriori2.addConditioningApriori(idset2, vect);
+     prior2.addConditioningPrior(idset2, vect);
 
      vect.clear();
      vect.resize(9, 1.0);
-     apriori2.addAllApriori(idset3, vect);
+     prior2.addAllPrior(idset3, vect);
      TS_ASSERT_EQUALS(vect[0], 1.0)      // 0,0
      TS_ASSERT_EQUALS(vect[1], 76.0)     // 1,0
      TS_ASSERT_EQUALS(vect[2], 1.0)      // 2,0
@@ -188,30 +188,30 @@ namespace gum_tests {
 
      vect.clear();
      vect.resize(3, 1.0);
-     apriori2.addConditioningApriori(idset3, vect);
+     prior2.addConditioningPrior(idset3, vect);
      TS_ASSERT_EQUALS(vect[0], 76.0)
      TS_ASSERT_EQUALS(vect[1], 326.0)
      TS_ASSERT_EQUALS(vect[2], 1001.0)
 
 
-     gum::learning::DirichletPriorFromDatabase apriori3(std::move(apriori2));
-     TS_ASSERT_EQUALS(apriori3.weight(), db_size)
-     apriori3.setWeight(2.0 * db_size);
-     TS_ASSERT_EQUALS(apriori3.weight(), 2.0 * db_size)
+     gum::learning::DirichletPriorFromDatabase prior3(std::move(prior2));
+     TS_ASSERT_EQUALS(prior3.weight(), db_size)
+     prior3.setWeight(2.0 * db_size);
+     TS_ASSERT_EQUALS(prior3.weight(), 2.0 * db_size)
 
      vect.clear();
      vect.resize(3, 1.0);
-     apriori3.addAllApriori(idset1, vect);
+     prior3.addAllPrior(idset1, vect);
      TS_ASSERT_EQUALS(vect[0], 2401.0)
      TS_ASSERT_EQUALS(vect[1], 251.0)
      TS_ASSERT_EQUALS(vect[2], 151.0)
 
      vect.clear();
-     apriori3.addConditioningApriori(idset1, vect);
+     prior3.addConditioningPrior(idset1, vect);
 
      vect.clear();
      vect.resize(9, 1.0);
-     apriori3.addAllApriori(idset2, vect);
+     prior3.addAllPrior(idset2, vect);
      TS_ASSERT_EQUALS(vect[0], 401.0)    // 0,0
      TS_ASSERT_EQUALS(vect[1], 151.0)    // 1,0
      TS_ASSERT_EQUALS(vect[2], 1.0)      // 2,0
@@ -223,11 +223,11 @@ namespace gum_tests {
      TS_ASSERT_EQUALS(vect[8], 1.0)      // 2,2
 
      vect.clear();
-     apriori3.addConditioningApriori(idset2, vect);
+     prior3.addConditioningPrior(idset2, vect);
 
      vect.clear();
      vect.resize(9, 1.0);
-     apriori3.addAllApriori(idset3, vect);
+     prior3.addAllPrior(idset3, vect);
      TS_ASSERT_EQUALS(vect[0], 1.0)      // 0,0
      TS_ASSERT_EQUALS(vect[1], 151.0)    // 1,0
      TS_ASSERT_EQUALS(vect[2], 1.0)      // 2,0
@@ -240,32 +240,32 @@ namespace gum_tests {
 
      vect.clear();
      vect.resize(3, 1.0);
-     apriori3.addConditioningApriori(idset3, vect);
+     prior3.addConditioningPrior(idset3, vect);
      TS_ASSERT_EQUALS(vect[0], 151.0)
      TS_ASSERT_EQUALS(vect[1], 651.0)
      TS_ASSERT_EQUALS(vect[2], 2001.0)
 
 
-     gum::learning::DirichletPriorFromDatabase* apriori4 = apriori3.clone();
-     TS_ASSERT_EQUALS(apriori4->weight(), 2.0 * db_size)
-     apriori4->setWeight(1.0 * db_size);
-     TS_ASSERT_EQUALS(apriori4->weight(), 1.0 * db_size)
+     gum::learning::DirichletPriorFromDatabase* prior4 = prior3.clone();
+     TS_ASSERT_EQUALS(prior4->weight(), 2.0 * db_size)
+     prior4->setWeight(1.0 * db_size);
+     TS_ASSERT_EQUALS(prior4->weight(), 1.0 * db_size)
 
-     TS_ASSERT_EQUALS(apriori4->getType(), gum::learning::PriorType::DirichletPriorType)
+     TS_ASSERT_EQUALS(prior4->getType(), gum::learning::PriorType::DirichletPriorType)
 
      vect.clear();
      vect.resize(3, 1.0);
-     apriori4->addAllApriori(idset1, vect);
+     prior4->addAllPrior(idset1, vect);
      TS_ASSERT_EQUALS(vect[0], 1201.0)
      TS_ASSERT_EQUALS(vect[1], 126.0)
      TS_ASSERT_EQUALS(vect[2], 76.0)
 
      vect.clear();
-     apriori4->addConditioningApriori(idset1, vect);
+     prior4->addConditioningPrior(idset1, vect);
 
      vect.clear();
      vect.resize(9, 1.0);
-     apriori4->addAllApriori(idset2, vect);
+     prior4->addAllPrior(idset2, vect);
      TS_ASSERT_EQUALS(vect[0], 201.0)    // 0,0
      TS_ASSERT_EQUALS(vect[1], 76.0)     // 1,0
      TS_ASSERT_EQUALS(vect[2], 1.0)      // 2,0
@@ -277,11 +277,11 @@ namespace gum_tests {
      TS_ASSERT_EQUALS(vect[8], 1.0)      // 2,2
 
      vect.clear();
-     apriori4->addConditioningApriori(idset2, vect);
+     prior4->addConditioningPrior(idset2, vect);
 
      vect.clear();
      vect.resize(9, 1.0);
-     apriori4->addAllApriori(idset3, vect);
+     prior4->addAllPrior(idset3, vect);
      TS_ASSERT_EQUALS(vect[0], 1.0)      // 0,0
      TS_ASSERT_EQUALS(vect[1], 76.0)     // 1,0
      TS_ASSERT_EQUALS(vect[2], 1.0)      // 2,0
@@ -294,32 +294,32 @@ namespace gum_tests {
 
      vect.clear();
      vect.resize(3, 1.0);
-     apriori4->addConditioningApriori(idset3, vect);
+     prior4->addConditioningPrior(idset3, vect);
      TS_ASSERT_EQUALS(vect[0], 76.0)
      TS_ASSERT_EQUALS(vect[1], 326.0)
      TS_ASSERT_EQUALS(vect[2], 1001.0)
 
 
-     apriori4->operator=(prior);
-     TS_ASSERT_EQUALS(apriori4->weight(), 2.0 * db_size)
-     apriori4->setWeight(1.0 * db_size);
-     TS_ASSERT_EQUALS(apriori4->weight(), 1.0 * db_size)
+     prior4->operator=(prior);
+     TS_ASSERT_EQUALS(prior4->weight(), 2.0 * db_size)
+     prior4->setWeight(1.0 * db_size);
+     TS_ASSERT_EQUALS(prior4->weight(), 1.0 * db_size)
 
-     TS_ASSERT_EQUALS(apriori4->getType(), gum::learning::PriorType::DirichletPriorType)
+     TS_ASSERT_EQUALS(prior4->getType(), gum::learning::PriorType::DirichletPriorType)
 
      vect.clear();
      vect.resize(3, 1.0);
-     apriori4->addAllApriori(idset1, vect);
+     prior4->addAllPrior(idset1, vect);
      TS_ASSERT_EQUALS(vect[0], 1201.0)
      TS_ASSERT_EQUALS(vect[1], 126.0)
      TS_ASSERT_EQUALS(vect[2], 76.0)
 
      vect.clear();
-     apriori4->addConditioningApriori(idset1, vect);
+     prior4->addConditioningPrior(idset1, vect);
 
      vect.clear();
      vect.resize(9, 1.0);
-     apriori4->addAllApriori(idset2, vect);
+     prior4->addAllPrior(idset2, vect);
      TS_ASSERT_EQUALS(vect[0], 201.0)    // 0,0
      TS_ASSERT_EQUALS(vect[1], 76.0)     // 1,0
      TS_ASSERT_EQUALS(vect[2], 1.0)      // 2,0
@@ -331,11 +331,11 @@ namespace gum_tests {
      TS_ASSERT_EQUALS(vect[8], 1.0)      // 2,2
 
      vect.clear();
-     apriori4->addConditioningApriori(idset2, vect);
+     prior4->addConditioningPrior(idset2, vect);
 
      vect.clear();
      vect.resize(9, 1.0);
-     apriori4->addAllApriori(idset3, vect);
+     prior4->addAllPrior(idset3, vect);
      TS_ASSERT_EQUALS(vect[0], 1.0)      // 0,0
      TS_ASSERT_EQUALS(vect[1], 76.0)     // 1,0
      TS_ASSERT_EQUALS(vect[2], 1.0)      // 2,0
@@ -348,33 +348,33 @@ namespace gum_tests {
 
      vect.clear();
      vect.resize(3, 1.0);
-     apriori4->addConditioningApriori(idset3, vect);
+     prior4->addConditioningPrior(idset3, vect);
      TS_ASSERT_EQUALS(vect[0], 76.0)
      TS_ASSERT_EQUALS(vect[1], 326.0)
      TS_ASSERT_EQUALS(vect[2], 1001.0)
 
 
-     apriori4->operator=(std::move(prior));
-     TS_ASSERT_EQUALS(apriori4->weight(), 2.0 * db_size)
-     apriori4->setWeight(1.0 * db_size);
-     TS_ASSERT_EQUALS(apriori4->weight(), 1.0 * db_size)
+     prior4->operator=(std::move(prior));
+     TS_ASSERT_EQUALS(prior4->weight(), 2.0 * db_size)
+     prior4->setWeight(1.0 * db_size);
+     TS_ASSERT_EQUALS(prior4->weight(), 1.0 * db_size)
 
-     TS_ASSERT_EQUALS(apriori4->getType(), gum::learning::PriorType::DirichletPriorType)
+     TS_ASSERT_EQUALS(prior4->getType(), gum::learning::PriorType::DirichletPriorType)
 
      vect.clear();
      vect.resize(3, 1.0);
-     apriori4->addAllApriori(idset1, vect);
+     prior4->addAllPrior(idset1, vect);
      TS_ASSERT_EQUALS(vect[0], 1201.0)
      TS_ASSERT_EQUALS(vect[1], 126.0)
      TS_ASSERT_EQUALS(vect[2], 76.0)
 
      vect.clear();
-     apriori4->addConditioningApriori(idset1, vect);
+     prior4->addConditioningPrior(idset1, vect);
 
 
      vect.clear();
      vect.resize(9, 1.0);
-     apriori4->addAllApriori(idset2, vect);
+     prior4->addAllPrior(idset2, vect);
      TS_ASSERT_EQUALS(vect[0], 201.0)    // 0,0
      TS_ASSERT_EQUALS(vect[1], 76.0)     // 1,0
      TS_ASSERT_EQUALS(vect[2], 1.0)      // 2,0
@@ -386,11 +386,11 @@ namespace gum_tests {
      TS_ASSERT_EQUALS(vect[8], 1.0)      // 2,2
 
      vect.clear();
-     apriori4->addConditioningApriori(idset2, vect);
+     prior4->addConditioningPrior(idset2, vect);
 
      vect.clear();
      vect.resize(9, 1.0);
-     apriori4->addAllApriori(idset3, vect);
+     prior4->addAllPrior(idset3, vect);
      TS_ASSERT_EQUALS(vect[0], 1.0)      // 0,0
      TS_ASSERT_EQUALS(vect[1], 76.0)     // 1,0
      TS_ASSERT_EQUALS(vect[2], 1.0)      // 2,0
@@ -403,12 +403,12 @@ namespace gum_tests {
 
      vect.clear();
      vect.resize(3, 1.0);
-     apriori4->addConditioningApriori(idset3, vect);
+     prior4->addConditioningPrior(idset3, vect);
      TS_ASSERT_EQUALS(vect[0], 76.0)
      TS_ASSERT_EQUALS(vect[1], 326.0)
      TS_ASSERT_EQUALS(vect[2], 1001.0)
 
-     delete apriori4;
+     delete prior4;
    }
 
 
@@ -486,17 +486,17 @@ namespace gum_tests {
 
 
      std::vector< double > vect(3, 1.0);
-     prior.addAllApriori(idset1, vect);
+     prior.addAllPrior(idset1, vect);
      TS_ASSERT_EQUALS(vect[0], 2401.0)
      TS_ASSERT_EQUALS(vect[1], 251.0)
      TS_ASSERT_EQUALS(vect[2], 151.0)
 
      vect.clear();
-     prior.addConditioningApriori(idset1, vect);
+     prior.addConditioningPrior(idset1, vect);
 
      vect.clear();
      vect.resize(9, 1.0);
-     prior.addAllApriori(idset2, vect);
+     prior.addAllPrior(idset2, vect);
      TS_ASSERT_EQUALS(vect[0], 401.0)    // 0,0
      TS_ASSERT_EQUALS(vect[1], 151.0)    // 1,0
      TS_ASSERT_EQUALS(vect[2], 1.0)      // 2,0
@@ -508,11 +508,11 @@ namespace gum_tests {
      TS_ASSERT_EQUALS(vect[8], 1.0)      // 2,2
 
      vect.clear();
-     prior.addConditioningApriori(idset2, vect);
+     prior.addConditioningPrior(idset2, vect);
 
      vect.clear();
      vect.resize(9, 1.0);
-     prior.addAllApriori(idset3, vect);
+     prior.addAllPrior(idset3, vect);
      TS_ASSERT_EQUALS(vect[0], 1.0)      // 0,0
      TS_ASSERT_EQUALS(vect[1], 151.0)    // 1,0
      TS_ASSERT_EQUALS(vect[2], 1.0)      // 2,0
@@ -525,32 +525,32 @@ namespace gum_tests {
 
      vect.clear();
      vect.resize(3, 1.0);
-     prior.addConditioningApriori(idset3, vect);
+     prior.addConditioningPrior(idset3, vect);
      TS_ASSERT_EQUALS(vect[0], 151.0)
      TS_ASSERT_EQUALS(vect[1], 651.0)
      TS_ASSERT_EQUALS(vect[2], 2001.0)
 
 
-     gum::learning::DirichletPriorFromDatabase apriori2(prior);
-     TS_ASSERT_EQUALS(apriori2.weight(), 2.0 * db_size)
-     apriori2.setWeight(1.0 * db_size);
-     TS_ASSERT_EQUALS(apriori2.weight(), 1.0 * db_size)
+     gum::learning::DirichletPriorFromDatabase prior2(prior);
+     TS_ASSERT_EQUALS(prior2.weight(), 2.0 * db_size)
+     prior2.setWeight(1.0 * db_size);
+     TS_ASSERT_EQUALS(prior2.weight(), 1.0 * db_size)
 
-     TS_ASSERT_EQUALS(apriori2.getType(), gum::learning::PriorType::DirichletPriorType)
+     TS_ASSERT_EQUALS(prior2.getType(), gum::learning::PriorType::DirichletPriorType)
 
      vect.clear();
      vect.resize(3, 1.0);
-     apriori2.addAllApriori(idset1, vect);
+     prior2.addAllPrior(idset1, vect);
      TS_ASSERT_EQUALS(vect[0], 1201.0)
      TS_ASSERT_EQUALS(vect[1], 126.0)
      TS_ASSERT_EQUALS(vect[2], 76.0)
 
      vect.clear();
-     apriori2.addConditioningApriori(idset1, vect);
+     prior2.addConditioningPrior(idset1, vect);
 
      vect.clear();
      vect.resize(9, 1.0);
-     apriori2.addAllApriori(idset2, vect);
+     prior2.addAllPrior(idset2, vect);
      TS_ASSERT_EQUALS(vect[0], 201.0)    // 0,0
      TS_ASSERT_EQUALS(vect[1], 76.0)     // 1,0
      TS_ASSERT_EQUALS(vect[2], 1.0)      // 2,0
@@ -562,11 +562,11 @@ namespace gum_tests {
      TS_ASSERT_EQUALS(vect[8], 1.0)      // 2,2
 
      vect.clear();
-     apriori2.addConditioningApriori(idset2, vect);
+     prior2.addConditioningPrior(idset2, vect);
 
      vect.clear();
      vect.resize(9, 1.0);
-     apriori2.addAllApriori(idset3, vect);
+     prior2.addAllPrior(idset3, vect);
      TS_ASSERT_EQUALS(vect[0], 1.0)      // 0,0
      TS_ASSERT_EQUALS(vect[1], 76.0)     // 1,0
      TS_ASSERT_EQUALS(vect[2], 1.0)      // 2,0
@@ -579,31 +579,31 @@ namespace gum_tests {
 
      vect.clear();
      vect.resize(3, 1.0);
-     apriori2.addConditioningApriori(idset3, vect);
+     prior2.addConditioningPrior(idset3, vect);
      TS_ASSERT_EQUALS(vect[0], 76.0)
      TS_ASSERT_EQUALS(vect[1], 326.0)
      TS_ASSERT_EQUALS(vect[2], 1001.0)
 
 
-     gum::learning::DirichletPriorFromDatabase apriori3(std::move(apriori2));
-     TS_ASSERT_EQUALS(apriori3.weight(), 1.0 * db_size)
-     apriori3.setWeight(2.0 * db_size);
-     TS_ASSERT_EQUALS(apriori3.weight(), 2.0 * db_size)
+     gum::learning::DirichletPriorFromDatabase prior3(std::move(prior2));
+     TS_ASSERT_EQUALS(prior3.weight(), 1.0 * db_size)
+     prior3.setWeight(2.0 * db_size);
+     TS_ASSERT_EQUALS(prior3.weight(), 2.0 * db_size)
 
      vect.clear();
      vect.resize(3, 1.0);
-     apriori3.addAllApriori(idset1, vect);
+     prior3.addAllPrior(idset1, vect);
      TS_ASSERT_EQUALS(vect[0], 2401.0)
      TS_ASSERT_EQUALS(vect[1], 251.0)
      TS_ASSERT_EQUALS(vect[2], 151.0)
 
      vect.clear();
-     apriori3.addConditioningApriori(idset1, vect);
+     prior3.addConditioningPrior(idset1, vect);
      TS_ASSERT_EQUALS(vect.size(), std::size_t(0))
 
      vect.clear();
      vect.resize(9, 1.0);
-     apriori3.addAllApriori(idset2, vect);
+     prior3.addAllPrior(idset2, vect);
      TS_ASSERT_EQUALS(vect[0], 401.0)    // 0,0
      TS_ASSERT_EQUALS(vect[1], 151.0)    // 1,0
      TS_ASSERT_EQUALS(vect[2], 1.0)      // 2,0
@@ -615,11 +615,11 @@ namespace gum_tests {
      TS_ASSERT_EQUALS(vect[8], 1.0)      // 2,2
 
      vect.clear();
-     apriori3.addConditioningApriori(idset2, vect);
+     prior3.addConditioningPrior(idset2, vect);
 
      vect.clear();
      vect.resize(9, 1.0);
-     apriori3.addAllApriori(idset3, vect);
+     prior3.addAllPrior(idset3, vect);
      TS_ASSERT_EQUALS(vect[0], 1.0)      // 0,0
      TS_ASSERT_EQUALS(vect[1], 151.0)    // 1,0
      TS_ASSERT_EQUALS(vect[2], 1.0)      // 2,0
@@ -632,32 +632,32 @@ namespace gum_tests {
 
      vect.clear();
      vect.resize(3, 1.0);
-     apriori3.addConditioningApriori(idset3, vect);
+     prior3.addConditioningPrior(idset3, vect);
      TS_ASSERT_EQUALS(vect[0], 151.0)
      TS_ASSERT_EQUALS(vect[1], 651.0)
      TS_ASSERT_EQUALS(vect[2], 2001.0)
 
 
-     gum::learning::DirichletPriorFromDatabase* apriori4 = apriori3.clone();
-     TS_ASSERT_EQUALS(apriori4->weight(), 2.0 * db_size)
-     apriori4->setWeight(1.0 * db_size);
-     TS_ASSERT_EQUALS(apriori4->weight(), 1.0 * db_size)
+     gum::learning::DirichletPriorFromDatabase* prior4 = prior3.clone();
+     TS_ASSERT_EQUALS(prior4->weight(), 2.0 * db_size)
+     prior4->setWeight(1.0 * db_size);
+     TS_ASSERT_EQUALS(prior4->weight(), 1.0 * db_size)
 
-     TS_ASSERT_EQUALS(apriori4->getType(), gum::learning::PriorType::DirichletPriorType)
+     TS_ASSERT_EQUALS(prior4->getType(), gum::learning::PriorType::DirichletPriorType)
 
      vect.clear();
      vect.resize(3, 1.0);
-     apriori4->addAllApriori(idset1, vect);
+     prior4->addAllPrior(idset1, vect);
      TS_ASSERT_EQUALS(vect[0], 1201.0)
      TS_ASSERT_EQUALS(vect[1], 126.0)
      TS_ASSERT_EQUALS(vect[2], 76.0)
 
      vect.clear();
-     apriori4->addConditioningApriori(idset1, vect);
+     prior4->addConditioningPrior(idset1, vect);
 
      vect.clear();
      vect.resize(9, 1.0);
-     apriori4->addAllApriori(idset2, vect);
+     prior4->addAllPrior(idset2, vect);
      TS_ASSERT_EQUALS(vect[0], 201.0)    // 0,0
      TS_ASSERT_EQUALS(vect[1], 76.0)     // 1,0
      TS_ASSERT_EQUALS(vect[2], 1.0)      // 2,0
@@ -669,11 +669,11 @@ namespace gum_tests {
      TS_ASSERT_EQUALS(vect[8], 1.0)      // 2,2
 
      vect.clear();
-     apriori4->addConditioningApriori(idset2, vect);
+     prior4->addConditioningPrior(idset2, vect);
 
      vect.clear();
      vect.resize(9, 1.0);
-     apriori4->addAllApriori(idset3, vect);
+     prior4->addAllPrior(idset3, vect);
      TS_ASSERT_EQUALS(vect[0], 1.0)      // 0,0
      TS_ASSERT_EQUALS(vect[1], 76.0)     // 1,0
      TS_ASSERT_EQUALS(vect[2], 1.0)      // 2,0
@@ -686,32 +686,32 @@ namespace gum_tests {
 
      vect.clear();
      vect.resize(3, 1.0);
-     apriori4->addConditioningApriori(idset3, vect);
+     prior4->addConditioningPrior(idset3, vect);
      TS_ASSERT_EQUALS(vect[0], 76.0)
      TS_ASSERT_EQUALS(vect[1], 326.0)
      TS_ASSERT_EQUALS(vect[2], 1001.0)
 
 
-     apriori4->operator=(prior);
-     TS_ASSERT_EQUALS(apriori4->weight(), 2.0 * db_size)
-     apriori4->setWeight(1.0 * db_size);
-     TS_ASSERT_EQUALS(apriori4->weight(), 1.0 * db_size)
+     prior4->operator=(prior);
+     TS_ASSERT_EQUALS(prior4->weight(), 2.0 * db_size)
+     prior4->setWeight(1.0 * db_size);
+     TS_ASSERT_EQUALS(prior4->weight(), 1.0 * db_size)
 
-     TS_ASSERT_EQUALS(apriori4->getType(), gum::learning::PriorType::DirichletPriorType)
+     TS_ASSERT_EQUALS(prior4->getType(), gum::learning::PriorType::DirichletPriorType)
 
      vect.clear();
      vect.resize(3, 1.0);
-     apriori4->addAllApriori(idset1, vect);
+     prior4->addAllPrior(idset1, vect);
      TS_ASSERT_EQUALS(vect[0], 1201.0)
      TS_ASSERT_EQUALS(vect[1], 126.0)
      TS_ASSERT_EQUALS(vect[2], 76.0)
 
      vect.clear();
-     apriori4->addConditioningApriori(idset1, vect);
+     prior4->addConditioningPrior(idset1, vect);
 
      vect.clear();
      vect.resize(9, 1.0);
-     apriori4->addAllApriori(idset2, vect);
+     prior4->addAllPrior(idset2, vect);
      TS_ASSERT_EQUALS(vect[0], 201.0)    // 0,0
      TS_ASSERT_EQUALS(vect[1], 76.0)     // 1,0
      TS_ASSERT_EQUALS(vect[2], 1.0)      // 2,0
@@ -723,11 +723,11 @@ namespace gum_tests {
      TS_ASSERT_EQUALS(vect[8], 1.0)      // 2,2
 
      vect.clear();
-     apriori4->addConditioningApriori(idset2, vect);
+     prior4->addConditioningPrior(idset2, vect);
 
      vect.clear();
      vect.resize(9, 1.0);
-     apriori4->addAllApriori(idset3, vect);
+     prior4->addAllPrior(idset3, vect);
      TS_ASSERT_EQUALS(vect[0], 1.0)      // 0,0
      TS_ASSERT_EQUALS(vect[1], 76.0)     // 1,0
      TS_ASSERT_EQUALS(vect[2], 1.0)      // 2,0
@@ -740,32 +740,32 @@ namespace gum_tests {
 
      vect.clear();
      vect.resize(3, 1.0);
-     apriori4->addConditioningApriori(idset3, vect);
+     prior4->addConditioningPrior(idset3, vect);
      TS_ASSERT_EQUALS(vect[0], 76.0)
      TS_ASSERT_EQUALS(vect[1], 326.0)
      TS_ASSERT_EQUALS(vect[2], 1001.0)
 
 
-     apriori4->operator=(std::move(prior));
-     TS_ASSERT_EQUALS(apriori4->weight(), 2.0 * db_size)
-     apriori4->setWeight(1.0 * db_size);
-     TS_ASSERT_EQUALS(apriori4->weight(), 1.0 * db_size)
+     prior4->operator=(std::move(prior));
+     TS_ASSERT_EQUALS(prior4->weight(), 2.0 * db_size)
+     prior4->setWeight(1.0 * db_size);
+     TS_ASSERT_EQUALS(prior4->weight(), 1.0 * db_size)
 
-     TS_ASSERT_EQUALS(apriori4->getType(), gum::learning::PriorType::DirichletPriorType)
+     TS_ASSERT_EQUALS(prior4->getType(), gum::learning::PriorType::DirichletPriorType)
 
      vect.clear();
      vect.resize(3, 1.0);
-     apriori4->addAllApriori(idset1, vect);
+     prior4->addAllPrior(idset1, vect);
      TS_ASSERT_EQUALS(vect[0], 1201.0)
      TS_ASSERT_EQUALS(vect[1], 126.0)
      TS_ASSERT_EQUALS(vect[2], 76.0)
 
      vect.clear();
-     apriori4->addConditioningApriori(idset1, vect);
+     prior4->addConditioningPrior(idset1, vect);
 
      vect.clear();
      vect.resize(9, 1.0);
-     apriori4->addAllApriori(idset2, vect);
+     prior4->addAllPrior(idset2, vect);
      TS_ASSERT_EQUALS(vect[0], 201.0)    // 0,0
      TS_ASSERT_EQUALS(vect[1], 76.0)     // 1,0
      TS_ASSERT_EQUALS(vect[2], 1.0)      // 2,0
@@ -777,11 +777,11 @@ namespace gum_tests {
      TS_ASSERT_EQUALS(vect[8], 1.0)      // 2,2
 
      vect.clear();
-     apriori4->addConditioningApriori(idset2, vect);
+     prior4->addConditioningPrior(idset2, vect);
 
      vect.clear();
      vect.resize(9, 1.0);
-     apriori4->addAllApriori(idset3, vect);
+     prior4->addAllPrior(idset3, vect);
      TS_ASSERT_EQUALS(vect[0], 1.0)      // 0,0
      TS_ASSERT_EQUALS(vect[1], 76.0)     // 1,0
      TS_ASSERT_EQUALS(vect[2], 1.0)      // 2,0
@@ -794,12 +794,12 @@ namespace gum_tests {
 
      vect.clear();
      vect.resize(3, 1.0);
-     apriori4->addConditioningApriori(idset3, vect);
+     prior4->addConditioningPrior(idset3, vect);
      TS_ASSERT_EQUALS(vect[0], 76.0)
      TS_ASSERT_EQUALS(vect[1], 326.0)
      TS_ASSERT_EQUALS(vect[2], 1001.0)
 
-     delete apriori4;*/
+     delete prior4;*/
    }
  };
 

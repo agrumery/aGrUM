@@ -64,11 +64,11 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
                 TAN designates Tree-augmented NaiveBayes
                 Tabu designated Tabu list searching
 
-            aPriori: str
-                A string designating the type of a priori smoothing we want to use. Possible values are Smoothing,
+            prior: str
+                A string designating the type of a priorsmoothing we want to use. Possible values are Smoothing,
                 BDeu, Dirichlet and NoPrior .
                 Note: if using Dirichlet smoothing DirichletCsv cannot be set to none
-                By default (when aPriori is None) : a smoothing(0.01) is applied.
+                By default (when prior is None) : a smoothing(0.01) is applied.
 
             scoringType: str
                 A string designating the type of scoring we want to use. Since scoring is used while constructing the
@@ -90,14 +90,14 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
                 an arc going from x0 to y.
                 Note: PossibleEdge allows between nodes x and y allows for either (x,y) or (y,x) (or none of them) to be added to the Bayesian network, while the others are not symmetric.
 
-            aPrioriWeight: double
-                The weight used for a priori smoothing.
+            priorWeight: double
+                The weight used for a priorsmoothing.
 
             possibleSkeleton: pyagrum.undigraph
                 An undirected graph that serves as a possible skeleton for the Bayesian network
 
             DirichletCsv: str
-                the file name of the csv file we want to use for the dirichlet prior. Will be ignored if aPriori is not
+                the file name of the csv file we want to use for the dirichlet prior. Will be ignored if prior is not
                 set to Dirichlet.
 
             discretizationStrategy: str
@@ -131,7 +131,8 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
                 number of significant digits when computing probabilities
     """
 
-  def __init__(self, learningMethod="GHC", aPriori=None, scoringType="BIC", constraints=None, aPrioriWeight=1,
+  @gum.deprecated_arg(newA="prior", oldA="apriori", version="1.1.2")
+  def __init__(self, learningMethod="GHC", prior=None, scoringType="BIC", constraints=None, priorWeight=1,
                possibleSkeleton=None, DirichletCsv=None, discretizationStrategy="quantile", discretizationNbBins=5,
                discretizationThreshold=25, usePR=False, significant_digit=10):
     """ parameters:
@@ -143,8 +144,8 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
                 TAN designates Tree-augmented NaiveBayes
                 Tabu designated Tabu list searching
 
-            aPriori: str
-                A string designating the type of a priori smoothing we want to use. Possible values are Smoothing, BDeu ,
+            prior: str
+                A string designating the type of a prior we want to use. Possible values are Smoothing, BDeu ,
                 Dirichlet and NoPrior.
                 Note: if using Dirichlet smoothing DirichletCsv cannot be set to none
 
@@ -169,14 +170,14 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
                 Note: PossibleEdges allows for both (tail,head) and (head,tail) to be added to the Bayesian network,
                 while the others are not symmetric.
 
-            aPrioriWeight: double
-                The weight used for a priori smoothing.
+            priorWeight: double
+                The weight used for a priorsmoothing.
 
             possibleSkeleton: pyagrum.undigraph
                 An undirected graph that serves as a possible skeleton for the Bayesian network
 
             DirichletCsv: str
-                the file name of the csv file we want to use for the dirichlet prior. Will be ignored if aPriori is not
+                the file name of the csv file we want to use for the dirichlet prior. Will be ignored if prior is not
                 set to Dirichlet.
 
             discretizationStrategy: str
@@ -225,11 +226,11 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     self.threshold = 0.5
     self.usePR = usePR
 
-    # the type of a priori smoothing used
-    self.aPriori = aPriori
+    # the type of a priorsmoothing used
+    self.prior = prior
 
-    # the weight used for the a priori smoothing
-    self.aPrioriWeight = aPrioriWeight
+    # the weight used for the a priorsmoothing
+    self.priorWeight = priorWeight
 
     # the type of scoring used
     self.scoringType = scoringType
@@ -406,7 +407,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     self.learner = gum.BNLearner(csvfilename, self.bn)
 
-    IPrior(self.aPriori, self.learner, self.aPrioriWeight, self.DirichletCsv)
+    IPrior(self.prior, self.learner, self.priorWeight, self.DirichletCsv)
 
     if self.learningMethod == 'NaiveBayes':
       self.bn = BN_fitNaiveBayes(

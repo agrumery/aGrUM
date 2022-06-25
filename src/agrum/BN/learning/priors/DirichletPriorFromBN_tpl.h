@@ -126,7 +126,7 @@ namespace gum::learning {
     }
 
 
-    /// sets the weight of the a priori (kind of effective sample size)
+    /// sets the weight of the a prior(kind of effective sample size)
     template < typename GUM_SCALAR >
     INLINE void DirichletPriorFromBN< GUM_SCALAR >::setWeight(const double weight) {
       Prior::setWeight(weight);
@@ -135,7 +135,7 @@ namespace gum::learning {
 
     /// returns the prior vector all the variables in the idset
     template < typename GUM_SCALAR >
-    INLINE void DirichletPriorFromBN< GUM_SCALAR >::addAllApriori(const IdCondSet&       idset,
+    INLINE void DirichletPriorFromBN< GUM_SCALAR >::addAllPrior(const IdCondSet&       idset,
                                                                   std::vector< double >& counts) {
       /*if (this->weight_ == 0.0) return;
 
@@ -156,7 +156,7 @@ namespace gum::learning {
     /// returns the prior vector over only the conditioning set of an idset
     template < typename GUM_SCALAR >
     INLINE void
-       DirichletPriorFromBN< GUM_SCALAR >::addConditioningApriori(const IdCondSet&       idset,
+       DirichletPriorFromBN< GUM_SCALAR >::addConditioningPrior(const IdCondSet&       idset,
                                                                   std::vector< double >& counts) {
       if (weight_ == 0.0) return;
 /*

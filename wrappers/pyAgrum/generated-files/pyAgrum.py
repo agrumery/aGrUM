@@ -2107,27 +2107,27 @@ class LearningError(GumException):
 # Register LearningError in _pyAgrum:
 _pyAgrum.LearningError_swigregister(LearningError)
 
-class IncompatibleScoreApriori(LearningError):
+class IncompatibleScorePrior(LearningError):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        _pyAgrum.IncompatibleScoreApriori_swiginit(self, _pyAgrum.new_IncompatibleScoreApriori(*args))
-    __swig_destroy__ = _pyAgrum.delete_IncompatibleScoreApriori
+        _pyAgrum.IncompatibleScorePrior_swiginit(self, _pyAgrum.new_IncompatibleScorePrior(*args))
+    __swig_destroy__ = _pyAgrum.delete_IncompatibleScorePrior
 
-# Register IncompatibleScoreApriori in _pyAgrum:
-_pyAgrum.IncompatibleScoreApriori_swigregister(IncompatibleScoreApriori)
+# Register IncompatibleScorePrior in _pyAgrum:
+_pyAgrum.IncompatibleScorePrior_swigregister(IncompatibleScorePrior)
 
-class PossiblyIncompatibleScoreApriori(LearningError):
+class PossiblyIncompatibleScorePrior(LearningError):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        _pyAgrum.PossiblyIncompatibleScoreApriori_swiginit(self, _pyAgrum.new_PossiblyIncompatibleScoreApriori(*args))
-    __swig_destroy__ = _pyAgrum.delete_PossiblyIncompatibleScoreApriori
+        _pyAgrum.PossiblyIncompatibleScorePrior_swiginit(self, _pyAgrum.new_PossiblyIncompatibleScorePrior(*args))
+    __swig_destroy__ = _pyAgrum.delete_PossiblyIncompatibleScorePrior
 
-# Register PossiblyIncompatibleScoreApriori in _pyAgrum:
-_pyAgrum.PossiblyIncompatibleScoreApriori_swigregister(PossiblyIncompatibleScoreApriori)
+# Register PossiblyIncompatibleScorePrior in _pyAgrum:
+_pyAgrum.PossiblyIncompatibleScorePrior_swigregister(PossiblyIncompatibleScorePrior)
 
 class DatabaseError(LearningError):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
@@ -24440,7 +24440,7 @@ class BNLearner(object):
         dag : pyAgrum.DAG
         bn : pyAgrum.BayesNet
         take_into_account_score : bool
-        	The dag passed in argument may have been learnt from a structure learning. In this case, if the score used to learn the structure has an implicit prior (like K2 which has a 1-smoothing prior), it is important to also take into account this implicit prior for parameter learning. By default, if a score exists, we will learn parameters by taking into account the prior specified by methods useAprioriXXX () + the implicit prior of the score, else we just take into account the prior specified by useAprioriXXX ()
+        	The dag passed in argument may have been learnt from a structure learning. In this case, if the score used to learn the structure has an implicit prior (like K2 which has a 1-smoothing prior), it is important to also take into account this implicit prior for parameter learning. By default, if a score exists, we will learn parameters by taking into account the prior specified by methods usePriorXXX () + the implicit prior of the score, else we just take into account the prior specified by usePriorXXX ()
 
         Returns
         -------

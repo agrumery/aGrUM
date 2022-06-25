@@ -87,15 +87,15 @@ namespace gum {
       // assign to each column name in the CSV file its column
       GenericBNLearner::isCSVFileName_(CSV_filename);
       DBInitializerFromCSV                  initializer(CSV_filename);
-      const auto&                           apriori_names   = initializer.variableNames();
-      std::size_t                           apriori_nb_vars = apriori_names.size();
-      HashTable< std::string, std::size_t > apriori_names2col(apriori_nb_vars);
-      for (std::size_t i = std::size_t(0); i < apriori_nb_vars; ++i)
-        apriori_names2col.insert(apriori_names[i], i);
+      const auto&                           prior_names   = initializer.variableNames();
+      std::size_t                           prior_nb_vars = prior_names.size();
+      HashTable< std::string, std::size_t > prior_names2col(prior_nb_vars);
+      for (std::size_t i = std::size_t(0); i < prior_nb_vars; ++i)
+        prior_names2col.insert(prior_names[i], i);
 
       // check that there are at least as many variables in the a priori
       // database as those in the score_database
-      if (apriori_nb_vars < score_database._database_.nbVariables()) {
+      if (prior_nb_vars < score_database._database_.nbVariables()) {
         GUM_ERROR(InvalidArgument,
                   "the a prior database has fewer variables "
                   "than the observed database");
@@ -109,7 +109,7 @@ namespace gum {
       HashTable< std::size_t, std::size_t > mapping(score_nb_vars);
       for (std::size_t i = std::size_t(0); i < score_nb_vars; ++i) {
         try {
-          mapping.insert(i, apriori_names2col[score_names[i]]);
+          mapping.insert(i, prior_names2col[score_names[i]]);
         } catch (Exception const&) {
           GUM_ERROR(MissingVariableInDatabase,
                     "Variable " << score_names[i]
@@ -193,7 +193,7 @@ namespace gum {
                                        const bool                        induceTypes) :
         scoreDatabase_(filename, missing_symbols, induceTypes) {
       filename_     = filename;
-      noApriori_    = new NoPrior(scoreDatabase_.databaseTable());
+      noPrior_    = new NoPrior(scoreDatabase_.databaseTable());
       inducedTypes_ = induceTypes;
 
       GUM_CONSTRUCTOR(GenericBNLearner);
@@ -202,7 +202,7 @@ namespace gum {
 
     GenericBNLearner::GenericBNLearner(const DatabaseTable& db) : scoreDatabase_(db) {
       filename_     = "-";
-      noApriori_    = new NoPrior(scoreDatabase_.databaseTable());
+      noPrior_    = new NoPrior(scoreDatabase_.databaseTable());
       inducedTypes_ = false;
 
       GUM_CONSTRUCTOR(GenericBNLearner);
@@ -212,7 +212,7 @@ namespace gum {
     GenericBNLearner::GenericBNLearner(const GenericBNLearner& from) :
         ThreadNumberManager(from), inducedTypes_(from.inducedTypes_), scoreType_(from.scoreType_),
         paramEstimatorType_(from.paramEstimatorType_), epsilonEM_(from.epsilonEM_),
-        aprioriType_(from.aprioriType_), aprioriWeight_(from.aprioriWeight_),
+        priorType_(from.priorType_), priorWeight_(from.priorWeight_),
         constraintSliceOrder_(from.constraintSliceOrder_),
         constraintIndegree_(from.constraintIndegree_),
         constraintTabuList_(from.constraintTabuList_),
@@ -222,9 +222,9 @@ namespace gum {
         greedyHillClimbing_(from.greedyHillClimbing_),
         localSearchWithTabuList_(from.localSearchWithTabuList_),
         scoreDatabase_(from.scoreDatabase_), ranges_(from.ranges_),
-        aprioriDbname_(from.aprioriDbname_), initialDag_(from.initialDag_),
+        priorDbname_(from.priorDbname_), initialDag_(from.initialDag_),
         filename_(from.filename_), nbDecreasingChanges_(from.nbDecreasingChanges_) {
-      noApriori_ = new NoPrior(scoreDatabase_.databaseTable());
+      noPrior_ = new NoPrior(scoreDatabase_.databaseTable());
 
       GUM_CONS_CPY(GenericBNLearner);
     }
@@ -232,8 +232,8 @@ namespace gum {
     GenericBNLearner::GenericBNLearner(GenericBNLearner&& from) :
         ThreadNumberManager(std::move(from)), inducedTypes_(from.inducedTypes_),
         scoreType_(from.scoreType_), paramEstimatorType_(from.paramEstimatorType_),
-        epsilonEM_(from.epsilonEM_), aprioriType_(from.aprioriType_),
-        aprioriWeight_(from.aprioriWeight_),
+        epsilonEM_(from.epsilonEM_), priorType_(from.priorType_),
+        priorWeight_(from.priorWeight_),
         constraintSliceOrder_(std::move(from.constraintSliceOrder_)),
         constraintIndegree_(std::move(from.constraintIndegree_)),
         constraintTabuList_(std::move(from.constraintTabuList_)),
@@ -244,10 +244,10 @@ namespace gum {
         greedyHillClimbing_(std::move(from.greedyHillClimbing_)),
         localSearchWithTabuList_(std::move(from.localSearchWithTabuList_)),
         scoreDatabase_(std::move(from.scoreDatabase_)), ranges_(std::move(from.ranges_)),
-        aprioriDbname_(std::move(from.aprioriDbname_)), initialDag_(std::move(from.initialDag_)),
+        priorDbname_(std::move(from.priorDbname_)), initialDag_(std::move(from.initialDag_)),
         filename_(std::move(from.filename_)),
         nbDecreasingChanges_(std::move(from.nbDecreasingChanges_)) {
-      noApriori_ = new NoPrior(scoreDatabase_.databaseTable());
+      noPrior_ = new NoPrior(scoreDatabase_.databaseTable());
 
       GUM_CONS_MOV(GenericBNLearner)
     }
@@ -255,11 +255,11 @@ namespace gum {
     GenericBNLearner::~GenericBNLearner() {
       if (score_) delete score_;
 
-      if (apriori_) delete apriori_;
+      if (prior_) delete prior_;
 
-      if (noApriori_) delete noApriori_;
+      if (noPrior_) delete noPrior_;
 
-      if (aprioriDatabase_) delete aprioriDatabase_;
+      if (priorDatabase_) delete priorDatabase_;
 
       if (mutualInfo_) delete mutualInfo_;
 
@@ -273,14 +273,14 @@ namespace gum {
           score_ = nullptr;
         }
 
-        if (apriori_) {
-          delete apriori_;
-          apriori_ = nullptr;
+        if (prior_) {
+          delete prior_;
+          prior_ = nullptr;
         }
 
-        if (aprioriDatabase_) {
-          delete aprioriDatabase_;
-          aprioriDatabase_ = nullptr;
+        if (priorDatabase_) {
+          delete priorDatabase_;
+          priorDatabase_ = nullptr;
         }
 
         if (mutualInfo_) {
@@ -292,8 +292,8 @@ namespace gum {
         scoreType_                   = from.scoreType_;
         paramEstimatorType_          = from.paramEstimatorType_;
         epsilonEM_                   = from.epsilonEM_;
-        aprioriType_                 = from.aprioriType_;
-        aprioriWeight_               = from.aprioriWeight_;
+        priorType_                 = from.priorType_;
+        priorWeight_               = from.priorWeight_;
         constraintSliceOrder_        = from.constraintSliceOrder_;
         constraintIndegree_          = from.constraintIndegree_;
         constraintTabuList_          = from.constraintTabuList_;
@@ -307,7 +307,7 @@ namespace gum {
         localSearchWithTabuList_     = from.localSearchWithTabuList_;
         scoreDatabase_               = from.scoreDatabase_;
         ranges_                      = from.ranges_;
-        aprioriDbname_               = from.aprioriDbname_;
+        priorDbname_               = from.priorDbname_;
         initialDag_                  = from.initialDag_;
         filename_                    = from.filename_;
         nbDecreasingChanges_         = from.nbDecreasingChanges_;
@@ -324,14 +324,14 @@ namespace gum {
           score_ = nullptr;
         }
 
-        if (apriori_) {
-          delete apriori_;
-          apriori_ = nullptr;
+        if (prior_) {
+          delete prior_;
+          prior_ = nullptr;
         }
 
-        if (aprioriDatabase_) {
-          delete aprioriDatabase_;
-          aprioriDatabase_ = nullptr;
+        if (priorDatabase_) {
+          delete priorDatabase_;
+          priorDatabase_ = nullptr;
         }
 
         if (mutualInfo_) {
@@ -343,8 +343,8 @@ namespace gum {
         scoreType_                   = from.scoreType_;
         paramEstimatorType_          = from.paramEstimatorType_;
         epsilonEM_                   = from.epsilonEM_;
-        aprioriType_                 = from.aprioriType_;
-        aprioriWeight_               = from.aprioriWeight_;
+        priorType_                 = from.priorType_;
+        priorWeight_               = from.priorWeight_;
         constraintSliceOrder_        = std::move(from.constraintSliceOrder_);
         constraintIndegree_          = std::move(from.constraintIndegree_);
         constraintTabuList_          = std::move(from.constraintTabuList_);
@@ -358,7 +358,7 @@ namespace gum {
         localSearchWithTabuList_     = std::move(from.localSearchWithTabuList_);
         scoreDatabase_               = std::move(from.scoreDatabase_);
         ranges_                      = std::move(from.ranges_);
-        aprioriDbname_               = std::move(from.aprioriDbname_);
+        priorDbname_               = std::move(from.priorDbname_);
         filename_                    = std::move(from.filename_);
         initialDag_                  = std::move(from.initialDag_);
         nbDecreasingChanges_         = std::move(from.nbDecreasingChanges_);
@@ -455,37 +455,37 @@ namespace gum {
     }
 
 
-    void GenericBNLearner::createApriori_() {
+    void GenericBNLearner::createPrior_() {
       // first, save the old prior, to be delete if everything is ok
-      Prior* old_apriori = apriori_;
+      Prior* old_prior = prior_;
 
       // create the new prior
-      switch (aprioriType_) {
-        case BNLearnerPriorType::NO_APRIORI:
-          apriori_ = new NoPrior(scoreDatabase_.databaseTable(), scoreDatabase_.nodeId2Columns());
+      switch (priorType_) {
+        case BNLearnerPriorType::NO_prior:
+          prior_ = new NoPrior(scoreDatabase_.databaseTable(), scoreDatabase_.nodeId2Columns());
           break;
 
         case BNLearnerPriorType::SMOOTHING:
-          apriori_
+          prior_
              = new SmoothingPrior(scoreDatabase_.databaseTable(), scoreDatabase_.nodeId2Columns());
           break;
 
         case BNLearnerPriorType::DIRICHLET_FROM_DATABASE:
-          if (aprioriDatabase_ != nullptr) {
-            delete aprioriDatabase_;
-            aprioriDatabase_ = nullptr;
+          if (priorDatabase_ != nullptr) {
+            delete priorDatabase_;
+            priorDatabase_ = nullptr;
           }
 
-          aprioriDatabase_
-             = new Database(aprioriDbname_, scoreDatabase_, scoreDatabase_.missingSymbols());
+          priorDatabase_
+             = new Database(priorDbname_, scoreDatabase_, scoreDatabase_.missingSymbols());
 
-          apriori_ = new DirichletPriorFromDatabase(scoreDatabase_.databaseTable(),
-                                                    aprioriDatabase_->parser(),
-                                                    aprioriDatabase_->nodeId2Columns());
+          prior_ = new DirichletPriorFromDatabase(scoreDatabase_.databaseTable(),
+                                                    priorDatabase_->parser(),
+                                                    priorDatabase_->nodeId2Columns());
           break;
 
         case BNLearnerPriorType::BDEU:
-          apriori_ = new BDeuPrior(scoreDatabase_.databaseTable(), scoreDatabase_.nodeId2Columns());
+          prior_ = new BDeuPrior(scoreDatabase_.databaseTable(), scoreDatabase_.nodeId2Columns());
           break;
 
         default:
@@ -493,10 +493,10 @@ namespace gum {
       }
 
       // do not forget to assign a weight to the prior
-      apriori_->setWeight(aprioriWeight_);
+      prior_->setWeight(priorWeight_);
 
       // remove the old prior, if any
-      if (old_apriori != nullptr) delete old_apriori;
+      if (old_prior != nullptr) delete old_prior;
     }
 
     void GenericBNLearner::createScore_() {
@@ -507,42 +507,42 @@ namespace gum {
       switch (scoreType_) {
         case ScoreType::AIC:
           score_ = new ScoreAIC(scoreDatabase_.parser(),
-                                *apriori_,
+                                *prior_,
                                 ranges_,
                                 scoreDatabase_.nodeId2Columns());
           break;
 
         case ScoreType::BD:
           score_ = new ScoreBD(scoreDatabase_.parser(),
-                               *apriori_,
+                               *prior_,
                                ranges_,
                                scoreDatabase_.nodeId2Columns());
           break;
 
         case ScoreType::BDeu:
           score_ = new ScoreBDeu(scoreDatabase_.parser(),
-                                 *apriori_,
+                                 *prior_,
                                  ranges_,
                                  scoreDatabase_.nodeId2Columns());
           break;
 
         case ScoreType::BIC:
           score_ = new ScoreBIC(scoreDatabase_.parser(),
-                                *apriori_,
+                                *prior_,
                                 ranges_,
                                 scoreDatabase_.nodeId2Columns());
           break;
 
         case ScoreType::K2:
           score_ = new ScoreK2(scoreDatabase_.parser(),
-                               *apriori_,
+                               *prior_,
                                ranges_,
                                scoreDatabase_.nodeId2Columns());
           break;
 
         case ScoreType::LOG2LIKELIHOOD:
           score_ = new ScoreLog2Likelihood(scoreDatabase_.parser(),
-                                           *apriori_,
+                                           *prior_,
                                            ranges_,
                                            scoreDatabase_.nodeId2Columns());
           break;
@@ -568,14 +568,14 @@ namespace gum {
         case ParamEstimatorType::ML:
           if (take_into_account_score && (score_ != nullptr)) {
             param_estimator = new ParamEstimatorML(parser,
-                                                   *apriori_,
-                                                   score_->internalApriori(),
+                                                   *prior_,
+                                                   score_->internalPrior(),
                                                    ranges_,
                                                    scoreDatabase_.nodeId2Columns());
           } else {
             param_estimator = new ParamEstimatorML(parser,
-                                                   *apriori_,
-                                                   *noApriori_,
+                                                   *prior_,
+                                                   *noPrior_,
                                                    ranges_,
                                                    scoreDatabase_.nodeId2Columns());
           }
@@ -649,7 +649,7 @@ namespace gum {
 
     DAG GenericBNLearner::learnDAG() {
       // create the score and the prior
-      createApriori_();
+      createPrior_();
       createScore_();
 
       return learnDag_();
@@ -659,7 +659,7 @@ namespace gum {
       if (mutualInfo_ != nullptr) delete mutualInfo_;
 
       mutualInfo_ = new CorrectedMutualInformation(scoreDatabase_.parser(),
-                                                   *noApriori_,
+                                                   *noPrior_,
                                                    ranges_,
                                                    scoreDatabase_.nodeId2Columns());
       switch (kmode3Off2_) {
@@ -685,9 +685,9 @@ namespace gum {
     DAG GenericBNLearner::learnDag_() {
       // check that the database does not contain any missing value
       if (scoreDatabase_.databaseTable().hasMissingValues()
-          || ((aprioriDatabase_ != nullptr)
-              && (aprioriType_ == BNLearnerPriorType::DIRICHLET_FROM_DATABASE)
-              && aprioriDatabase_->databaseTable().hasMissingValues())) {
+          || ((priorDatabase_ != nullptr)
+              && (priorType_ == BNLearnerPriorType::DIRICHLET_FROM_DATABASE)
+              && priorDatabase_->databaseTable().hasMissingValues())) {
         GUM_ERROR(MissingValueInDatabase,
                   "For the moment, the BNLearner is unable to cope "
                   "with missing values in databases");
@@ -850,27 +850,27 @@ namespace gum {
       }
     }
 
-    std::string GenericBNLearner::checkScoreAprioriCompatibility() const {
+    std::string GenericBNLearner::checkScorePriorCompatibility() const {
       const auto prior = getPriorType_();
 
       switch (scoreType_) {
         case ScoreType::AIC:
-          return ScoreAIC::isPriorCompatible(prior, aprioriWeight_);
+          return ScoreAIC::isPriorCompatible(prior, priorWeight_);
 
         case ScoreType::BD:
-          return ScoreBD::isPriorCompatible(prior, aprioriWeight_);
+          return ScoreBD::isPriorCompatible(prior, priorWeight_);
 
         case ScoreType::BDeu:
-          return ScoreBDeu::isPriorCompatible(prior, aprioriWeight_);
+          return ScoreBDeu::isPriorCompatible(prior, priorWeight_);
 
         case ScoreType::BIC:
-          return ScoreBIC::isPriorCompatible(prior, aprioriWeight_);
+          return ScoreBIC::isPriorCompatible(prior, priorWeight_);
 
         case ScoreType::K2:
-          return ScoreK2::isPriorCompatible(prior, aprioriWeight_);
+          return ScoreK2::isPriorCompatible(prior, priorWeight_);
 
         case ScoreType::LOG2LIKELIHOOD:
-          return ScoreLog2Likelihood::isPriorCompatible(prior, aprioriWeight_);
+          return ScoreLog2Likelihood::isPriorCompatible(prior, priorWeight_);
 
         default:
           return "GenericBNLearner does not support yet this score";
@@ -922,8 +922,8 @@ namespace gum {
     std::pair< double, double > GenericBNLearner::chi2(const NodeId                 id1,
                                                        const NodeId                 id2,
                                                        const std::vector< NodeId >& knowing) {
-      createApriori_();
-      gum::learning::IndepTestChi2 chi2score(scoreDatabase_.parser(), *apriori_, databaseRanges());
+      createPrior_();
+      gum::learning::IndepTestChi2 chi2score(scoreDatabase_.parser(), *prior_, databaseRanges());
 
       return chi2score.statistics(id1, id2, knowing);
     }
@@ -942,8 +942,8 @@ namespace gum {
     std::pair< double, double > GenericBNLearner::G2(const NodeId                 id1,
                                                      const NodeId                 id2,
                                                      const std::vector< NodeId >& knowing) {
-      createApriori_();
-      gum::learning::IndepTestG2 g2score(scoreDatabase_.parser(), *apriori_, databaseRanges());
+      createPrior_();
+      gum::learning::IndepTestG2 g2score(scoreDatabase_.parser(), *prior_, databaseRanges());
       return g2score.statistics(id1, id2, knowing);
     }
 
@@ -960,9 +960,9 @@ namespace gum {
 
     double GenericBNLearner::logLikelihood(const std::vector< NodeId >& vars,
                                            const std::vector< NodeId >& knowing) {
-      createApriori_();
+      createPrior_();
       gum::learning::ScoreLog2Likelihood ll2score(scoreDatabase_.parser(),
-                                                  *apriori_,
+                                                  *prior_,
                                                   databaseRanges());
 
       std::vector< NodeId > total(vars);
@@ -994,8 +994,8 @@ namespace gum {
     std::vector< double > GenericBNLearner::rawPseudoCount(const std::vector< NodeId >& vars) {
       Potential< double > res;
 
-      createApriori_();
-      gum::learning::PseudoCount count(scoreDatabase_.parser(), *apriori_, databaseRanges());
+      createPrior_();
+      gum::learning::PseudoCount count(scoreDatabase_.parser(), *prior_, databaseRanges());
       return count.get(vars);
     }
 
@@ -1016,7 +1016,7 @@ namespace gum {
     void GenericBNLearner::useDatabaseRanges(
        const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges) {
       // use a score to detect whether the ranges are ok
-      ScoreLog2Likelihood score(scoreDatabase_.parser(), *noApriori_);
+      ScoreLog2Likelihood score(scoreDatabase_.parser(), *noPrior_);
       score.setRanges(new_ranges);
       ranges_ = score.ranges();
     }

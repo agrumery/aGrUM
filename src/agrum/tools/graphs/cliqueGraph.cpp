@@ -211,7 +211,7 @@ namespace gum {
     // while there exist unvisited cliques, perform a DFS on them
     for (const auto DFSnode: nodes())
       if (!infos_DFS.visited_cliques.contains(DFSnode)) {
-        // no nodes are forbidden a priori in the DFS
+        // no nodes are forbidden priori in the DFS
         infos_DFS.nodes_DFS_forbidden.clear();
 
         // no node has already been seen in the DFS

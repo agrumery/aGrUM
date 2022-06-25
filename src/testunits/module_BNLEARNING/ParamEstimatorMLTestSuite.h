@@ -122,10 +122,10 @@ namespace gum_tests {
       // create the parser
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::SmoothingPrior       extern_apriori(database);
-      gum::learning::NoPrior              intern_apriori(database);
+      gum::learning::SmoothingPrior       extern_prior(database);
+      gum::learning::NoPrior              intern_prior(database);
 
-      gum::learning::ParamEstimatorML param_estimator(parser, extern_apriori, intern_apriori);
+      gum::learning::ParamEstimatorML param_estimator(parser, extern_prior, intern_prior);
 
       std::vector< double > v0  = param_estimator.parameters(gum::NodeId(0));
       std::vector< double > xv0 = _normalize_({1201, 126, 76});
@@ -255,14 +255,14 @@ namespace gum_tests {
       // create the parser
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::SmoothingPrior       extern_apriori(database);
-      gum::learning::NoPrior              intern_apriori(database);
+      gum::learning::SmoothingPrior       extern_prior(database);
+      gum::learning::NoPrior              intern_prior(database);
 
       std::vector< std::pair< std::size_t, std::size_t > > ranges{{800, 1000}, {1050, 1400}};
 
       gum::learning::ParamEstimatorML param_estimator(parser,
-                                                      extern_apriori,
-                                                      intern_apriori,
+                                                      extern_prior,
+                                                      intern_prior,
                                                       ranges);
 
       std::vector< double > r0  = param_estimator.parameters(gum::NodeId(0));
@@ -393,8 +393,8 @@ namespace gum_tests {
       // create the parser
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::SmoothingPrior       extern_apriori(database);
-      gum::learning::NoPrior              intern_apriori(database);
+      gum::learning::SmoothingPrior       extern_prior(database);
+      gum::learning::NoPrior              intern_prior(database);
 
       gum::Bijection< gum::NodeId, std::size_t > nodeId2columns;
       nodeId2columns.insert(0, 2);
@@ -402,8 +402,8 @@ namespace gum_tests {
       nodeId2columns.insert(2, 1);
 
       gum::learning::ParamEstimatorML param_estimator(parser,
-                                                      extern_apriori,
-                                                      intern_apriori,
+                                                      extern_prior,
+                                                      intern_prior,
                                                       nodeId2columns);
 
       std::vector< double > v0  = param_estimator.parameters(gum::NodeId(1));
@@ -534,8 +534,8 @@ namespace gum_tests {
       // create the parser
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::SmoothingPrior       extern_apriori(database);
-      gum::learning::NoPrior              intern_apriori(database);
+      gum::learning::SmoothingPrior       extern_prior(database);
+      gum::learning::NoPrior              intern_prior(database);
 
       std::vector< std::pair< std::size_t, std::size_t > > ranges{{800, 1000}, {1050, 1400}};
 
@@ -545,8 +545,8 @@ namespace gum_tests {
       nodeId2columns.insert(2, 1);
 
       gum::learning::ParamEstimatorML param_estimator(parser,
-                                                      extern_apriori,
-                                                      intern_apriori,
+                                                      extern_prior,
+                                                      intern_prior,
                                                       ranges,
                                                       nodeId2columns);
 
@@ -677,10 +677,10 @@ namespace gum_tests {
       // create the parser
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::SmoothingPrior       extern_apriori(database);
-      gum::learning::NoPrior              intern_apriori(database);
+      gum::learning::SmoothingPrior       extern_prior(database);
+      gum::learning::NoPrior              intern_prior(database);
 
-      gum::learning::ParamEstimatorML param_estimator(parser, extern_apriori, intern_apriori);
+      gum::learning::ParamEstimatorML param_estimator(parser, extern_prior, intern_prior);
 
       std::vector< double > v0  = param_estimator.parameters(gum::NodeId(0));
       std::vector< double > xv0 = _normalize_({1201, 126, 76});
@@ -852,10 +852,10 @@ namespace gum_tests {
       genset.insertGenerator(gen4);
 
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::NoPrior              extern_apriori(database);
-      gum::learning::NoPrior              intern_apriori(database);
+      gum::learning::NoPrior              extern_prior(database);
+      gum::learning::NoPrior              intern_prior(database);
 
-      gum::learning::ParamEstimatorML param_estimator(parser, extern_apriori, intern_apriori);
+      gum::learning::ParamEstimatorML param_estimator(parser, extern_prior, intern_prior);
 
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D");
       bn.cpt("A").fillWith({0.3, 0.7});
@@ -938,10 +938,10 @@ namespace gum_tests {
       // create the parser
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::NoPrior              extern_apriori(database);
-      gum::learning::NoPrior              intern_apriori(database);
+      gum::learning::NoPrior              extern_prior(database);
+      gum::learning::NoPrior              intern_prior(database);
 
-      gum::learning::ParamEstimatorML param_estimator(parser, extern_apriori, intern_apriori);
+      gum::learning::ParamEstimatorML param_estimator(parser, extern_prior, intern_prior);
 
       TS_GUM_ASSERT_THROWS_NOTHING(param_estimator.parameters(gum::NodeId(0)))
       TS_GUM_ASSERT_THROWS_NOTHING(param_estimator.parameters(gum::NodeId(1)))
@@ -990,10 +990,10 @@ namespace gum_tests {
       // create the parser
       gum::learning::DBRowGeneratorSet    genset;
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::SmoothingPrior       extern_apriori(database);
-      gum::learning::NoPrior              intern_apriori(database);
+      gum::learning::SmoothingPrior       extern_prior(database);
+      gum::learning::NoPrior              intern_prior(database);
 
-      gum::learning::ParamEstimatorML param_estimator(parser, extern_apriori, intern_apriori);
+      gum::learning::ParamEstimatorML param_estimator(parser, extern_prior, intern_prior);
 
       for (std::size_t i = std::size_t(1); i < std::size_t(24); ++i) {
         param_estimator.setNumberOfThreads(i);

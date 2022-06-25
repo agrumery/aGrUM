@@ -64,9 +64,9 @@ namespace gum {
       /** @param parser the parser used to parse the database
        * @param prior An prior that we add to the computation of
        * the score (this should come from expert knowledge): this consists in
-       * adding numbers to countings in the contingency tables
+       * adding numbers to counts in the contingency tables
        * @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
-       * indices. The countings are then performed only on the union of the
+       * indices. The counts are then performed only on the union of the
        * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
        * cross validation tasks, in which part of the database should be ignored.
        * An empty set of ranges is equivalent to an interval [X,Y) ranging over
@@ -91,7 +91,7 @@ namespace gum {
       /** @param parser the parser used to parse the database
        * @param prior An prior that we add to the computation of
        * the score (this should come from expert knowledge): this consists in
-       * adding numbers to countings in the contingency tables
+       * adding numbers to counts in the contingency tables
        * @param nodeId2Columns a mapping from the ids of the nodes in the
        * graphical model to the corresponding column in the DatabaseTable
        * parsed by the parser. This enables estimating from a database in
@@ -244,7 +244,7 @@ namespace gum {
        * multithreading context
        *
        * When computing score, several threads are used by record counters to
-       * perform countings on the rows of the database, the MinNbRowsPerThread
+       * perform counts on the rows of the database, the MinNbRowsPerThread
        * method indicates how many rows each thread should at least process.
        * This is used to compute the number of threads actually run. This number
        * is equal to the min between the max number of threads allowed and the
@@ -254,9 +254,9 @@ namespace gum {
       /// returns the minimum of rows that each thread should process
       virtual std::size_t minNbRowsPerThread() const;
 
-      /// sets new ranges to perform the countings used by the mutual information
+      /// sets new ranges to perform the counts used by the mutual information
       /** @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
-       * indices. The countings are then performed only on the union of the
+       * indices. The counts are then performed only on the union of the
        * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
        * cross validation tasks, in which part of the database should be ignored.
        * An empty set of ranges is equivalent to an interval [X,Y) ranging over
@@ -291,7 +291,7 @@ namespace gum {
       KNML _k_NML_;
 
       /** @brief a score MDL used to compute the size N of the database,
-       * including the a priori */
+       * including the a prior*/
       ScoreMDL _score_MDL_;
 
       /// the mode used for the correction

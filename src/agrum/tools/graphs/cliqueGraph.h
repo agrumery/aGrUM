@@ -149,7 +149,7 @@ namespace gum {
     /** @brief returns the id of a clique containing the node the id of which is
      * in argument
      * @warning note that this method is time consuming as the clique graph does
-     * not contain a priori information about which clique could contain idNode.
+     * not contain priori information about which clique could contain idNode.
      * As a consequence, it searches the cliques until it finds one that
      * actually
      * contains idNode.

@@ -65,9 +65,9 @@ namespace gum_tests {
       learner.useScoreLog2Likelihood();
 
       TS_GUM_ASSERT_THROWS_NOTHING(learner.useScoreBD())
-      TS_ASSERT_DIFFERS("", learner.checkScoreAprioriCompatibility())
+      TS_ASSERT_DIFFERS("", learner.checkScorePriorCompatibility())
       TS_GUM_ASSERT_THROWS_NOTHING(learner.useScoreBDeu())
-      TS_ASSERT_EQUALS("", learner.checkScoreAprioriCompatibility())
+      TS_ASSERT_EQUALS("", learner.checkScorePriorCompatibility())
       learner.useScoreLog2Likelihood();
 
       learner.useK2(std::vector< gum::NodeId >{1, 5, 2, 6, 0, 3, 4, 7});
@@ -240,7 +240,7 @@ namespace gum_tests {
       gum::learning::GreedyHillClimbing search;
 
       gum::learning::ScoreBIC         score(parser, prior);
-      gum::learning::ParamEstimatorML estimator(parser, prior, score.internalApriori());
+      gum::learning::ParamEstimatorML estimator(parser, prior, score.internalPrior());
       for (std::size_t fold = 0; fold < k; fold++) {
         // create the ranges of rows over which we perform the learning
         const std::size_t unfold_deb = fold * foldSize;
@@ -363,7 +363,7 @@ namespace gum_tests {
     //     learner.setMaxIndegree( 10 );
     //     learner.useScoreLog2Likelihood();
 
-    //     TS_ASSERT_THROWS( learner.useScoreBD(), gum::IncompatibleScoreApriori
+    //     TS_ASSERT_THROWS( learner.useScoreBD(), gum::IncompatibleScorePrior
     //     );
     //     TS_GUM_ASSERT_THROWS_NOTHING( learner.useScoreBDeu() )
     //     learner.useScoreLog2Likelihood();
@@ -435,7 +435,7 @@ namespace gum_tests {
       learner.setMaxIndegree(10);
       learner.useScoreLog2Likelihood();
 
-      TS_ASSERT_THROWS(learner.useScoreBD(), const gum::IncompatibleScoreApriori&)
+      TS_ASSERT_THROWS(learner.useScoreBD(), const gum::IncompatibleScorePrior&)
       TS_GUM_ASSERT_THROWS_NOTHING(learner.useScoreBDeu())
       learner.useScoreLog2Likelihood();
 
@@ -515,7 +515,7 @@ namespace gum_tests {
       learner.setMaxIndegree(10);
       learner.useScoreLog2Likelihood();
 
-      TS_ASSERT_THROWS(learner.useScoreBD(), const gum::IncompatibleScoreApriori&)
+      TS_ASSERT_THROWS(learner.useScoreBD(), const gum::IncompatibleScorePrior&)
       TS_GUM_ASSERT_THROWS_NOTHING(learner.useScoreBDeu())
       learner.useScoreLog2Likelihood();
 
@@ -1178,7 +1178,7 @@ namespace gum_tests {
 
       // read the prior database
       gum::learning::DBInitializerFromCSV dirichlet_initializer(
-         GET_RESSOURCES_PATH("csv/db_dirichlet_apriori.csv"));
+         GET_RESSOURCES_PATH("csv/db_dirichlet_prior.csv"));
       const auto&       dirichlet_var_names = initializer.variableNames();
       const std::size_t dirichlet_nb_vars   = dirichlet_var_names.size();
 
@@ -1216,7 +1216,7 @@ namespace gum_tests {
         gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG >
            struct_constraint;
 
-        gum::learning::ParamEstimatorML estimator(parser, prior, score.internalApriori());
+        gum::learning::ParamEstimatorML estimator(parser, prior, score.internalPrior());
 
         gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) > op_set(
            struct_constraint);
@@ -1230,7 +1230,7 @@ namespace gum_tests {
         // std::cout << dag << std::endl;
 
 
-        learner.useDirichletPrior(GET_RESSOURCES_PATH("csv/db_dirichlet_apriori.csv"), weight);
+        learner.useDirichletPrior(GET_RESSOURCES_PATH("csv/db_dirichlet_prior.csv"), weight);
 
         gum::BayesNet< double > xbn = learner.learnBN();
 
@@ -1776,7 +1776,7 @@ namespace gum_tests {
       gum::learning::GreedyHillClimbing search;
 
       gum::learning::ScoreBIC         score(parser, prior);
-      gum::learning::ParamEstimatorML estimator(parser, prior, score.internalApriori());
+      gum::learning::ParamEstimatorML estimator(parser, prior, score.internalPrior());
       for (std::size_t fold = 0; fold < k; fold++) {
         // create the ranges of rows over which we perform the learning
         const std::size_t unfold_deb = fold * foldSize;

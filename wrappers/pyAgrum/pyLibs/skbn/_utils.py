@@ -99,40 +99,40 @@ def _ImplementScore(scoringType, learner):
                           AIC , BD , BDeu, BIC , K2 and Log2")
 
 
-def _ImplementPrior(aPriori, learner, aPrioriWeight, DirichletCsv):
+def _ImplementPrior(prior, learner, priorWeight, DirichletCsv):
   """
   parameters:
-      aPriori: str
-          A string designating the type of a priori smoothing we want to use.
+      prior: str
+          A string designating the type of a priorsmoothing we want to use.
           Possible values are Smoothing, BDeu , Dirichlet and NoPrior.
           Note: if using Dirichlet smoothing DirichletCsv cannot be set to none
       learner:
           learner object from pyAgrum to apply the score
-      aPrioriWeight: double
-          The weight used for a priori smoothing.
+      priorWeight: double
+          The weight used for a priorsmoothing.
       DirichletCsv: str
           the file name of the csv file we want to use for the dirichlet prior.
-          Will be ignored if aPriori is not set to Dirichlet.
+          Will be ignored if prior is not set to Dirichlet.
    returns:
       void
 
   Tells the Bayesian network which prior to use
   """
-  if (aPriori == 'Smoothing'):
-    learner.useSmoothingPrior(aPrioriWeight)
-  elif aPriori == 'Dirichlet':
+  if (prior == 'Smoothing'):
+    learner.useSmoothingPrior(priorWeight)
+  elif prior == 'Dirichlet':
     if DirichletCsv == None:
-      raise ValueError("Must specify file for dirichlet prior as a parameter to the classifier if using a dirichlet prior. DirichletCsv cannot be set to none if aPriori is set to Dirichlet")
-    learner.useDirichletPrior(DirichletCsv, aPrioriWeight)
-  elif aPriori == 'BDeu':
-    learner.useBDeuPrior(aPrioriWeight)
-  elif aPriori == 'NoPrior':
+      raise ValueError("Must specify file for dirichlet prior as a parameter to the classifier if using a dirichlet prior. DirichletCsv cannot be set to none if prior is set to Dirichlet")
+    learner.useDirichletPrior(DirichletCsv, priorWeight)
+  elif prior == 'BDeu':
+    learner.useBDeuPrior(priorWeight)
+  elif prior == 'NoPrior':
     learner.useNoPrior()
-  elif aPriori is None:  # default : (small) Laplace's adjustment
+  elif prior is None:  # default : (small) Laplace's adjustment
     learner.useSmoothingPrior(0.01)
   else:
     raise ValueError(
-        "Invalid aPriori! Possible values are : Smoothing , Dirichlet , BDeu and NoPrior")
+        "Invalid prior! Possible values are : Smoothing , Dirichlet , BDeu and NoPrior")
 
 
 def _ImplementConstraints(constraints, learner):

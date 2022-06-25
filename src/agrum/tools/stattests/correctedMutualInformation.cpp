@@ -135,9 +135,9 @@ namespace gum {
     }
 
 
-    /// sets new ranges to perform the countings used by the score
+    /// sets new ranges to perform the counts used by the score
     /** @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
-     * indices. The countings are then performed only on the union of the
+     * indices. The counts are then performed only on the union of the
      * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
      * cross validation tasks, in which part of the database should be ignored.
      * An empty set of ranges is equivalent to an interval [X,Y) ranging over

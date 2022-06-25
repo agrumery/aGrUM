@@ -89,7 +89,7 @@ namespace gum_tests {
       struct_constraint.setSliceOrder(slices);
       struct_constraint.setDefaultSlice(1);
 
-      gum::learning::ParamEstimatorML estimator(parser, prior, score.internalApriori());
+      gum::learning::ParamEstimatorML estimator(parser, prior, score.internalPrior());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) > op_set(
          struct_constraint);

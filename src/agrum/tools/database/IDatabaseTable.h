@@ -474,7 +474,7 @@ namespace gum {
         /** A handler needs not necessarily handle all the rows of the database.
          * For instance, RecordCounters cut the database into several pieces and
          * assign each piece to a handler. Then each handler is used in parallel
-         * to perform countings only on their subset of the database. The size
+         * to perform counts only on their subset of the database. The size
          * reported by method "size" is therefore the number of rows managed
          * by the handler. If you wish to retrieve the size of the whole database,
          * then use method DBSize instead. */

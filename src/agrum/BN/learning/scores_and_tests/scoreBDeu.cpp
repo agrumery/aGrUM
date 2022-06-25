@@ -43,7 +43,7 @@ namespace gum {
     ScoreBDeu& ScoreBDeu::operator=(const ScoreBDeu& from) {
       if (this != &from) {
         Score::operator    =(from);
-        _internal_apriori_ = from._internal_apriori_;
+        _internal_prior_ = from._internal_prior_;
       }
       return *this;
     }
@@ -53,16 +53,16 @@ namespace gum {
     ScoreBDeu& ScoreBDeu::operator=(ScoreBDeu&& from) {
       if (this != &from) {
         Score::operator    =(std::move(from));
-        _internal_apriori_ = std::move(from._internal_apriori_);
+        _internal_prior_ = std::move(from._internal_prior_);
       }
       return *this;
     }
 
 
     /// indicates whether the prior is compatible (meaningful) with the score
-    std::string ScoreBDeu::isPriorCompatible(PriorType apriori_type, double weight) {
+    std::string ScoreBDeu::isPriorCompatible(PriorType prior_type, double weight) {
       // check that the prior is compatible with the score
-      if (apriori_type == PriorType::NoPriorType) { return ""; }
+      if (prior_type == PriorType::NoPriorType) { return ""; }
 
       if (weight == 0.0) {
         return "The prior is currently compatible with the BDeu score but "
@@ -70,15 +70,15 @@ namespace gum {
       }
 
       // known incompatible priors
-      if ((apriori_type == PriorType::DirichletPriorType)
-          || (apriori_type == PriorType::SmoothingPriorType)) {
+      if ((prior_type == PriorType::DirichletPriorType)
+          || (prior_type == PriorType::SmoothingPriorType)) {
         return "The BDeu score already contains a different 'implicit' prior. "
                "Therefore, the learning will probably be biased.";
       }
 
       // prior types unsupported by the type checker
       std::stringstream msg;
-      msg << "The prior '" << priorTypeToString(apriori_type)
+      msg << "The prior '" << priorTypeToString(prior_type)
           << "' is not yet compatible with the score 'BDeu'.";
       return msg.str();
     }
@@ -91,8 +91,8 @@ namespace gum {
       const std::size_t     all_size = N_ijk.size();
 
       double       score                        = 0.0;
-      const double ess                          = _internal_apriori_.weight();
-      const bool   informative_external_apriori = this->apriori_->isInformative();
+      const double ess                          = _internal_prior_.weight();
+      const bool   informative_external_prior = this->prior_->isInformative();
 
 
       // here, we distinguish idsets with conditioning nodes from those
@@ -104,15 +104,15 @@ namespace gum {
         const double          ess_qi            = ess / conditioning_size;
         const double          ess_riqi          = ess / all_size;
 
-        if (informative_external_apriori) {
+        if (informative_external_prior) {
           // the score to compute is that of BD with priors
           // N'_ijk + ESS / (r_i * q_i )
           // (the + ESS / (r_i * q_i ) is here to take into account the
           // internal prior of BDeu)
           std::vector< double > N_prime_ijk(all_size, 0.0);
-          this->apriori_->addAllApriori(idset, N_prime_ijk);
+          this->prior_->addAllPrior(idset, N_prime_ijk);
           std::vector< double > N_prime_ij(N_ij.size(), 0.0);
-          this->apriori_->addConditioningApriori(idset, N_prime_ij);
+          this->prior_->addConditioningPrior(idset, N_prime_ij);
 
           // the BDeu score can be computed as follows:
           // sum_j=1^qi [ gammalog2 ( N'_ij + ESS / q_i ) -
@@ -146,13 +146,13 @@ namespace gum {
         // here, there are no conditioning nodes
         const double ess_ri = ess / all_size;
 
-        if (informative_external_apriori) {
+        if (informative_external_prior) {
           // the score to compute is that of BD with priors
           // N'_ijk + ESS / ( ri * qi )
           // (the + ESS / ( ri * qi ) is here to take into account the
           // internal prior of K2)
           std::vector< double > N_prime_ijk(all_size, 0.0);
-          this->apriori_->addAllApriori(idset, N_prime_ijk);
+          this->prior_->addAllPrior(idset, N_prime_ijk);
 
           // the BDeu score can be computed as follows:
           // gammalog2 ( N' + ess ) - gammalog2 ( N + N' + ess )

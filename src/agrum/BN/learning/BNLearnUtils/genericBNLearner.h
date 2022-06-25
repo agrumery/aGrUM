@@ -126,7 +126,7 @@ namespace gum {
 
       /// an enumeration to select the prior
       enum class BNLearnerPriorType {
-        NO_APRIORI,
+        NO_prior,
         SMOOTHING,
         DIRICHLET_FROM_DATABASE,
         BDEU
@@ -173,7 +173,7 @@ namespace gum {
 
         /// constructor for the priors
         /** We must ensure that the variables of the Database are identical to
-         * those of the score database (else the countings used by the
+         * those of the score database (else the counts used by the
          * scores might be erroneous). However, we allow the variables to be
          * ordered differently in the two databases: variables with the same
          * name in both databases are supposed to be the same.
@@ -304,7 +304,7 @@ namespace gum {
       };
 
       /// sets the prior weight
-      void _setAprioriWeight_(double weight);
+      void _setPriorWeight_(double weight);
 
       public:
       // ##########################################################################
@@ -599,7 +599,7 @@ namespace gum {
       /// @}
 
       // ##########################################################################
-      /// @name A priori selection / parameterization
+      /// @name a priorselection / parameterization
       // ##########################################################################
       /// @{
 
@@ -607,7 +607,7 @@ namespace gum {
       void useNoPrior();
 
       /// use the BDeu prior
-      /** The BDeu prior adds weight to all the cells of the countings
+      /** The BDeu prior adds weight to all the cells of the counts
        * tables. In other words, it adds weight rows in the database with
        * equally probable values. */
       void useBDeuPrior(double weight = 1.0);
@@ -625,7 +625,7 @@ namespace gum {
       /// checks whether the current score and prior are compatible
       /** @returns a non empty string if the prior is somehow compatible with the
        * score.*/
-      std::string checkScoreAprioriCompatibility() const;
+      std::string checkScorePriorCompatibility() const;
       /// @}
 
       // ##########################################################################
@@ -789,16 +789,16 @@ namespace gum {
       /// the selected correction for 3off2 and miic
       CorrectedMutualInformation* mutualInfo_{nullptr};
 
-      /// the a priori selected for the score and parameters
-      BNLearnerPriorType aprioriType_{BNLearnerPriorType::NO_APRIORI};
+      /// the a priorselected for the score and parameters
+      BNLearnerPriorType priorType_{BNLearnerPriorType::NO_prior};
 
       /// the prior used
-      Prior* apriori_{nullptr};
+      Prior* prior_{nullptr};
 
-      NoPrior* noApriori_{nullptr};
+      NoPrior* noPrior_{nullptr};
 
       /// the weight of the prior
-      double aprioriWeight_{1.0f};
+      double priorWeight_{1.0f};
 
       /// the constraint for 2TBNs
       StructuralConstraintSliceOrder constraintSliceOrder_;
@@ -847,10 +847,10 @@ namespace gum {
       std::vector< std::pair< std::size_t, std::size_t > > ranges_;
 
       /// the database used by the Dirichlet a priori
-      Database* aprioriDatabase_{nullptr};
+      Database* priorDatabase_{nullptr};
 
       /// the filename for the Dirichlet a priori, if any
-      std::string aprioriDbname_;
+      std::string priorDbname_;
 
 
       /// an initial DAG given to learners
@@ -873,7 +873,7 @@ namespace gum {
       static void isCSVFileName_(const std::string& filename);
 
       /// create the prior used for learning
-      void createApriori_();
+      void createPrior_();
 
       /// create the score used for learning
       void createScore_();

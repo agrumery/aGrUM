@@ -43,7 +43,7 @@ namespace gum {
     ScoreLog2Likelihood& ScoreLog2Likelihood::operator=(const ScoreLog2Likelihood& from) {
       if (this != &from) {
         Score::operator    =(from);
-        _internal_apriori_ = from._internal_apriori_;
+        _internal_prior_ = from._internal_prior_;
       }
       return *this;
     }
@@ -53,24 +53,24 @@ namespace gum {
     ScoreLog2Likelihood& ScoreLog2Likelihood::operator=(ScoreLog2Likelihood&& from) {
       if (this != &from) {
         Score::operator    =(std::move(from));
-        _internal_apriori_ = std::move(from._internal_apriori_);
+        _internal_prior_ = std::move(from._internal_prior_);
       }
       return *this;
     }
 
 
     /// indicates whether the prior is compatible (meaningful) with the score
-    std::string ScoreLog2Likelihood::isPriorCompatible(PriorType apriori_type, double weight) {
+    std::string ScoreLog2Likelihood::isPriorCompatible(PriorType prior_type, double weight) {
       // check that the prior is compatible with the score
-      if ((apriori_type == PriorType::DirichletPriorType)
-          || (apriori_type == PriorType::SmoothingPriorType)
-          || (apriori_type == PriorType::NoPriorType)) {
+      if ((prior_type == PriorType::DirichletPriorType)
+          || (prior_type == PriorType::SmoothingPriorType)
+          || (prior_type == PriorType::NoPriorType)) {
         return "";
       }
 
       // prior types unsupported by the type checker
       std::stringstream msg;
-      msg << "The prior '" << priorTypeToString(apriori_type)
+      msg << "The prior '" << priorTypeToString(prior_type)
           << "' is not yet compatible with the score 'Log2Likelihood'.";
       return msg.str();
     }
@@ -80,8 +80,8 @@ namespace gum {
     double ScoreLog2Likelihood::score_(const IdCondSet& idset) {
       // get the counts for all the nodes in the idset and add the prior
       std::vector< double > N_ijk(this->counter_.counts(idset, true));
-      const bool            informative_external_apriori = this->apriori_->isInformative();
-      if (informative_external_apriori) this->apriori_->addAllApriori(idset, N_ijk);
+      const bool            informative_external_prior = this->prior_->isInformative();
+      if (informative_external_prior) this->prior_->addAllPrior(idset, N_ijk);
 
       // here, we distinguish idsets with conditioning nodes from those
       // without conditioning nodes

@@ -61,7 +61,7 @@ namespace gum {
    *
    * Pure virtual functions :
    *  regress_, maximize_, argmaximize_, add_ and subtract_
-   *  are a priori the ones to be respecified according to the used
+   *  are a priorthe ones to be respecified according to the used
    * datastructure
    *  (MDDs, DTs, BNs, ...)
    *

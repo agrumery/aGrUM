@@ -92,7 +92,7 @@ namespace gum::learning {
 
 
   /// returns the prior vector all the variables in the idset
-  INLINE void BDeuPrior::addAllApriori(const IdCondSet& idset, std::vector< double >& counts) {
+  INLINE void BDeuPrior::addAllPrior(const IdCondSet& idset, std::vector< double >& counts) {
     // if the idset is empty or the weight is zero, the prior is also empty
     if (idset.empty() || (this->weight_ == 0.0)) return;
 

@@ -145,7 +145,7 @@ namespace gum {
       /** A handler needs not necessarily handle all the rows of the database.
        * For instance, RecordCounters cut the database into several pieces and
        * assign each piece to a handler. Then each handler is used in parallel
-       * to perform countings only on a subset of the database */
+       * to perform counts only on a subset of the database */
       virtual std::size_t size() const = 0;
 
       /// the number of rows in the whole database

@@ -169,7 +169,7 @@ namespace gum {
     /// default constructor
     EliminationSequenceStrategy();
 
-    /// constructor for an a priori non empty graph
+    /// constructor for a (potentially) non empty graph
     EliminationSequenceStrategy(UndiGraph* graph, const NodeProperty< Size >* domain_sizes);
 
     /// copy constructor

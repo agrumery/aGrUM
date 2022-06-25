@@ -20,7 +20,7 @@
 
 
 /** @file
- * @brief The class that computes countings of observations from the database.
+ * @brief The class that computes counts of observations from the database.
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
@@ -152,7 +152,7 @@ namespace gum {
     }
 
 
-    /// clears all the last database-parsed countings from memory
+    /// clears all the last database-parsed counts from memory
     void RecordCounter::clear() {
       _last_DB_counting_.clear();
       _last_DB_ids_.clear();
@@ -255,7 +255,7 @@ namespace gum {
     }
 
 
-    /// extracts some new countings from previously computed ones
+    /// extracts some new counts from previously computed ones
     std::vector< double >&
        RecordCounter::_extractFromCountings_(const IdCondSet&             subset_ids,
                                              const IdCondSet&             superset_ids,
@@ -314,7 +314,7 @@ namespace gum {
 
       // check if subset_ids is the end of the sequence of superset_ids.
       // In this case, as above, there are two simple loops to perform the
-      // countings
+      // counts
       bool              subset_end        = true;
       const std::size_t superset_ids_size = std::size_t(superset_ids.size());
       for (std::size_t i = 0; i < subset_ids_size; ++i) {
@@ -456,7 +456,7 @@ namespace gum {
     }
 
 
-    /// parse the database to produce new countings
+    /// parse the database to produce new counts
     std::vector< double >& RecordCounter::_countFromDatabase_(const IdCondSet& ids) {
       // if the ids vector is empty or the database is empty, return an
       // empty vector
@@ -490,7 +490,7 @@ namespace gum {
       }
 
       // we sort the columns and offsets by increasing column index. This
-      // may speed up threaded countings by improving the cacheline hits
+      // may speed up threaded counts by improving the cacheline hits
       std::sort(
          cols_offsets.begin(),
          cols_offsets.end(),
@@ -507,7 +507,7 @@ namespace gum {
       }
 
       // set the columns of interest for each parser. This specifies to the
-      // parser which columns are used for the countings. This is important
+      // parser which columns are used for the counts. This is important
       // for parsers like the EM parser that complete unobserved variables.
       std::vector< std::size_t > cols_of_interest(ids_size);
       for (std::size_t i = std::size_t(0); i < ids_size; ++i) {
@@ -526,7 +526,7 @@ namespace gum {
          ThreadData< std::vector< double > >(counting_vect));
 
       // here, we create a lambda that will be executed by all the threads
-      // to perform the countings in a parallel manner
+      // to perform the counts in a parallel manner
       auto threadedCount = [this, nb_ranges, ids_size, &thread_countings, cols_offsets](
                               const std::size_t this_thread,
                               const std::size_t nb_threads,
@@ -536,7 +536,7 @@ namespace gum {
           DBRowGeneratorParser& parser = this->_parsers_[this_thread].data;
           parser.setRange(this->_thread_ranges_[this_thread + nb_loop].first,
                           this->_thread_ranges_[this_thread + nb_loop].second);
-          std::vector< double >& countings = thread_countings[this_thread].data;
+          std::vector< double >& counts = thread_countings[this_thread].data;
 
           // parse the database
           try {
@@ -550,7 +550,7 @@ namespace gum {
                 offset += row[cols_offsets[i].first].discr_val * cols_offsets[i].second;
               }
 
-              countings[offset] += row.weight();
+              counts[offset] += row.weight();
             }
           } catch (NotFound const&) {}   // this exception is raised by the row filter
                                          // if the row generators create no output row
@@ -666,7 +666,7 @@ namespace gum {
     }
 
 
-    /// sets new ranges to perform the countings
+    /// sets new ranges to perform the counts
     void RecordCounter::setRanges(
        const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges) {
       // first, we check that all ranges are within the database's bounds

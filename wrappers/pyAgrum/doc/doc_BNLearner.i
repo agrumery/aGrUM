@@ -36,7 +36,7 @@ Parameters
 dag : pyAgrum.DAG
 bn : pyAgrum.BayesNet
 take_into_account_score : bool
-	The dag passed in argument may have been learnt from a structure learning. In this case, if the score used to learn the structure has an implicit prior (like K2 which has a 1-smoothing prior), it is important to also take into account this implicit prior for parameter learning. By default, if a score exists, we will learn parameters by taking into account the prior specified by methods useAprioriXXX () + the implicit prior of the score, else we just take into account the prior specified by useAprioriXXX ()
+	The dag passed in argument may have been learnt from a structure learning. In this case, if the score used to learn the structure has an implicit prior (like K2 which has a 1-smoothing prior), it is important to also take into account this implicit prior for parameter learning. By default, if a score exists, we will learn parameters by taking into account the prior specified by methods usePriorXXX () + the implicit prior of the score, else we just take into account the prior specified by usePriorXXX ()
 
 Returns
 -------

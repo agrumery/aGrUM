@@ -87,7 +87,7 @@ namespace gum {
     /// default constructor
     UnconstrainedEliminationSequenceStrategy();
 
-    /// constructor for an a priori non empty graph
+    /// constructor for a (potentially) non empty graph
     /** @param graph the graph to be triangulated, i.e., the nodes of which will
      * be eliminated
      * @param dom_sizes the domain sizes of the nodes to be eliminated

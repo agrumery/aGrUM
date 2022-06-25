@@ -10,7 +10,7 @@
 #include <agrum/BN/learning/scores_and_tests/scoreBDeu.h>
 #include <agrum/BN/learning/scores_and_tests/scoreBIC.h>
 
-#include <agrum/BN/learning/aprioris/aprioriSmoothing.h>
+#include <agrum/BN/learning/priors/smoothingPrior.h>
 
 #include <agrum/BN/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>
@@ -65,9 +65,9 @@ int main(int argc, char* argv[]) {
     // Structure Learning
     const std::size_t nbCol = database.nbVariables ();
 
-    gum::learning::DBRowGeneratorSet<>    genset;
-    gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-    gum::learning::AprioriSmoothing<>     prior(database);
+    gum::learning::DBRowGeneratorSet    genset;
+    gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+    gum::learning::SmoothingPrior     prior(database);
 
     gum::learning::StructuralConstraintSetStatic<
       gum::learning::StructuralConstraintDAG >
@@ -80,7 +80,7 @@ int main(int argc, char* argv[]) {
 
     gum::learning::ScoreBIC<> score(parser, prior);
     gum::learning::ParamEstimatorML<> estimator(parser, prior,
-                                                score.internalApriori());
+                                                score.internalPrior());
 
     
     std::size_t foldSize = database.nbRows() / k;

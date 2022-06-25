@@ -160,37 +160,37 @@ namespace gum {
     // indicate that we wish to use an AIC score
     INLINE void GenericBNLearner::useScoreAIC() {
       scoreType_ = ScoreType::AIC;
-      checkScoreAprioriCompatibility();
+      checkScorePriorCompatibility();
     }
 
     // indicate that we wish to use a BD score
     INLINE void GenericBNLearner::useScoreBD() {
       scoreType_ = ScoreType::BD;
-      checkScoreAprioriCompatibility();
+      checkScorePriorCompatibility();
     }
 
     // indicate that we wish to use a BDeu score
     INLINE void GenericBNLearner::useScoreBDeu() {
       scoreType_ = ScoreType::BDeu;
-      checkScoreAprioriCompatibility();
+      checkScorePriorCompatibility();
     }
 
     // indicate that we wish to use a BIC score
     INLINE void GenericBNLearner::useScoreBIC() {
       scoreType_ = ScoreType::BIC;
-      checkScoreAprioriCompatibility();
+      checkScorePriorCompatibility();
     }
 
     // indicate that we wish to use a K2 score
     INLINE void GenericBNLearner::useScoreK2() {
       scoreType_ = ScoreType::K2;
-      checkScoreAprioriCompatibility();
+      checkScorePriorCompatibility();
     }
 
     // indicate that we wish to use a Log2Likelihood score
     INLINE void GenericBNLearner::useScoreLog2Likelihood() {
       scoreType_ = ScoreType::LOG2LIKELIHOOD;
-      checkScoreAprioriCompatibility();
+      checkScorePriorCompatibility();
     }
 
     // sets the max indegree
@@ -397,38 +397,38 @@ namespace gum {
     }
 
     // sets the prior weight
-    INLINE void GenericBNLearner::_setAprioriWeight_(double weight) {
+    INLINE void GenericBNLearner::_setPriorWeight_(double weight) {
       if (weight < 0) { GUM_ERROR(OutOfBounds, "the weight of the prior must be positive") }
 
-      aprioriWeight_ = weight;
-      checkScoreAprioriCompatibility();
+      priorWeight_ = weight;
+      checkScorePriorCompatibility();
     }
 
     // use the prior smoothing
     INLINE void GenericBNLearner::useNoPrior() {
-      aprioriType_ = BNLearnerPriorType::NO_APRIORI;
-      checkScoreAprioriCompatibility();
+      priorType_ = BNLearnerPriorType::NO_prior;
+      checkScorePriorCompatibility();
     }
 
     // use the prior smoothing
     INLINE void GenericBNLearner::useSmoothingPrior(double weight) {
       if (weight < 0) { GUM_ERROR(OutOfBounds, "the weight of the prior must be positive") }
 
-      aprioriType_ = BNLearnerPriorType::SMOOTHING;
-      _setAprioriWeight_(weight);
+      priorType_ = BNLearnerPriorType::SMOOTHING;
+      _setPriorWeight_(weight);
 
-      checkScoreAprioriCompatibility();
+      checkScorePriorCompatibility();
     }
 
     // use the Dirichlet prior
     INLINE void GenericBNLearner::useDirichletPrior(const std::string& filename, double weight) {
       if (weight < 0) { GUM_ERROR(OutOfBounds, "the weight of the prior must be positive") }
 
-      aprioriDbname_ = filename;
-      aprioriType_   = BNLearnerPriorType::DIRICHLET_FROM_DATABASE;
-      _setAprioriWeight_(weight);
+      priorDbname_ = filename;
+      priorType_   = BNLearnerPriorType::DIRICHLET_FROM_DATABASE;
+      _setPriorWeight_(weight);
 
-      checkScoreAprioriCompatibility();
+      checkScorePriorCompatibility();
     }
 
 
@@ -436,17 +436,17 @@ namespace gum {
     INLINE void GenericBNLearner::useBDeuPrior(double weight) {
       if (weight < 0) { GUM_ERROR(OutOfBounds, "the weight of the prior must be positive") }
 
-      aprioriType_ = BNLearnerPriorType::BDEU;
-      _setAprioriWeight_(weight);
+      priorType_ = BNLearnerPriorType::BDEU;
+      _setPriorWeight_(weight);
 
-      checkScoreAprioriCompatibility();
+      checkScorePriorCompatibility();
     }
 
 
     // returns the type (as a string) of a given prior
     INLINE PriorType GenericBNLearner::getPriorType_() const {
-      switch (aprioriType_) {
-        case BNLearnerPriorType::NO_APRIORI:
+      switch (priorType_) {
+        case BNLearnerPriorType::NO_prior:
           return PriorType::NoPriorType;
 
         case BNLearnerPriorType::SMOOTHING:
@@ -460,7 +460,7 @@ namespace gum {
 
         default:
           GUM_ERROR(OperationNotAllowed,
-                    "GenericBNLearner getAprioriType does "
+                    "GenericBNLearner getPriorType does "
                     "not support yet this prior");
       }
     }

@@ -43,7 +43,7 @@ namespace gum {
     ScoreBD& ScoreBD::operator=(const ScoreBD& from) {
       if (this != &from) {
         Score::operator    =(from);
-        _internal_apriori_ = from._internal_apriori_;
+        _internal_prior_ = from._internal_prior_;
       }
       return *this;
     }
@@ -53,15 +53,15 @@ namespace gum {
     ScoreBD& ScoreBD::operator=(ScoreBD&& from) {
       if (this != &from) {
         Score::operator    =(std::move(from));
-        _internal_apriori_ = std::move(from._internal_apriori_);
+        _internal_prior_ = std::move(from._internal_prior_);
       }
       return *this;
     }
 
 
     /// indicates whether the prior is compatible (meaningful) with the score
-    std::string ScoreBD::isPriorCompatible(PriorType apriori_type, double weight) {
-      if (apriori_type == PriorType::NoPriorType) { return "The BD score requires an prior"; }
+    std::string ScoreBD::isPriorCompatible(PriorType prior_type, double weight) {
+      if (prior_type == PriorType::NoPriorType) { return "The BD score requires an prior"; }
 
       if (weight != 0.0) {
         return "The prior is currently compatible with the BD score but if "
@@ -70,7 +70,7 @@ namespace gum {
 
       // prior types unsupported by the type checker
       std::stringstream msg;
-      msg << "The prior '" << priorTypeToString(apriori_type)
+      msg << "The prior '" << priorTypeToString(prior_type)
           << "' is not yet compatible with the score 'BD'.";
       return msg.str();
     }
@@ -79,7 +79,7 @@ namespace gum {
     /// returns the score corresponding to a given nodeset
     double ScoreBD::score_(const IdCondSet& idset) {
       // if the weight of the prior is 0, then gammaLog2 will fail
-      if (!this->apriori_->isInformative()) {
+      if (!this->prior_->isInformative()) {
         GUM_ERROR(OutOfBounds,
                   "The BD score requires its external prior to "
                      << "be strictly positive");
@@ -89,7 +89,7 @@ namespace gum {
       std::vector< double > N_ijk(this->counter_.counts(idset, true));
       const std::size_t     all_size = N_ijk.size();
       std::vector< double > N_prime_ijk(all_size, 0.0);
-      this->apriori_->addAllApriori(idset, N_prime_ijk);
+      this->prior_->addAllPrior(idset, N_prime_ijk);
 
       double score = 0.0;
 
@@ -101,7 +101,7 @@ namespace gum {
         const std::size_t     conditioning_size = N_ij.size();
 
         std::vector< double > N_prime_ij(N_ij.size(), 0.0);
-        this->apriori_->addConditioningApriori(idset, N_prime_ij);
+        this->prior_->addConditioningPrior(idset, N_prime_ij);
 
         // the BD score can be computed as follows:
         // sum_j=1^qi [ gammalog2 ( N'_ij ) - gammalog2 ( N_ij + N'_ij )
