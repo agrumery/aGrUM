@@ -82,24 +82,35 @@ def getCmake(current, target):
     line += " -DPYTHON_INCLUDE_DIR=" + current["python3include"]
 
   if platform.system() == "Windows":
-    if current["windows"] == "mvsc22":
-      line += ' -G "Visual Studio 17 2022" -A x64'
-    elif current["windows"] == "mvsc22_32":
-      line += ' -G "Visual Studio 17 2022" -A Win32'
-    elif current["windows"] == "mvsc19":
-      line += ' -G "Visual Studio 16 2019" -A x64'
-    elif current["windows"] == "mvsc19_32":
-      line += ' -G "Visual Studio 16 2019" -A Win32'
-    elif current["windows"] == "mvsc17":
-      line += ' -G "Visual Studio 15 2017 Win64"'
-    elif current["windows"] == "mvsc17_32":
-      line += ' -G "Visual Studio 15 2017"'
-    elif current["windows"] == "mvsc15":
-      line += ' -G "Visual Studio 14 2015 Win64"'
-    elif current["windows"] == "mvsc15_32":
-      line += ' -G "Visual Studio 14 2015"'
-    elif current["windows"] == "mingw64":
-      line += ' -G "MinGW Makefiles"'
+    if current["compiler"] in ['clang','gcc']:
+      critic(f"{current['compiler']} forbidden : clang or gcc only configured for linux system.")
+  else:
+    if current["compiler"] not in ['clang','gcc']:
+      critic(f"{current['compiler']} forbidden : clang or gcc only for linux system.")
+
+  if current["compiler"] == "mvsc22":
+    line += ' -G "Visual Studio 17 2022" -A x64'
+  elif current["compiler"] == "mvsc22_32":
+    line += ' -G "Visual Studio 17 2022" -A Win32'
+  elif current["compiler"] == "mvsc19":
+    line += ' -G "Visual Studio 16 2019" -A x64'
+  elif current["compiler"] == "mvsc19_32":
+    line += ' -G "Visual Studio 16 2019" -A Win32'
+  elif current["compiler"] == "mvsc17":
+    line += ' -G "Visual Studio 15 2017 Win64"'
+  elif current["compiler"] == "mvsc17_32":
+    line += ' -G "Visual Studio 15 2017"'
+  elif current["compiler"] == "mvsc15":
+    line += ' -G "Visual Studio 14 2015 Win64"'
+  elif current["compiler"] == "mvsc15_32":
+    line += ' -G "Visual Studio 14 2015"'
+  elif current["compiler"] == "mingw64":
+    line += ' -G "MinGW Makefiles"'
+  elif current["compiler"]== "clang":
+    line += ' -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++'
+  else: # gcc
+    line += ' -DCMAKE_C_COMPILER=/usr/bin/gcc -DCMAKE_CXX_COMPILER=/usr/bin/g++'
+
 
   if current["threads"] == 'omp':
     line += " -DCMAKE_GUM_THREADS=omp"
@@ -171,14 +182,14 @@ def getForMsBuildSystem(current, target):
       else:  # if target!= "pyAgrum":
         critic(
             "Action '" + current[
-                "action"] + "' not treated for target '" + target + "' for now in windows strange world.")
+                "action"] + "' not treated for target '" + target + "' for now in compiler strange world.")
     elif current["action"] == "install":
       line = cfg.msbuild + ' INSTALL.vcxproj /p:Configuration="Release"'
     elif current["action"] == "lib":
       line = cfg.msbuild + ' INSTALL.vcxproj /p:Configuration="Release"'
     else:
       critic("Action '" + current["action"] +
-             "' not treated for now in windows weird world.")
+             "' not treated for now in compiler weird world.")
     line += ' /p:BuildInParallel=true /maxcpucount:' + nbrJobs
   return line
 
@@ -223,7 +234,7 @@ def getPost(current, target):
   if current["action"] == "test":
     if target == "aGrUM":
       if cfg.os_platform == "win32":
-        if current["windows"] == "mingw64":
+        if current["compiler"] == "mingw64":
           line = "src\\gumTest.exe"
         else:
           line = "src\\Release\\gumTest.exe"  # debug or release create Release folder

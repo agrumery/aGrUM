@@ -80,7 +80,7 @@ def checkCurrent(current, options, args):
 
     update(current, opt, value, current[opt] != value)
 
-  # fixing possible "\" from windows
+  # fixing possible "\" from compiler
   current['destination'] = current['destination'].replace('\\', '/')
 
   bT = bA = bM = False

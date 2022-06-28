@@ -70,7 +70,7 @@ cfg.os_platform = platform
 def initParams():
   cfg.default = {}
   cfg.default['action'] = "lib"
-  cfg.default['targets'] = set(["aGrUM"])
+  cfg.default['targets'] = {"aGrUM"}
   cfg.default['modules'] = 'ALL'
   cfg.default['mode'] = "release"
   cfg.default['verbose'] = False
@@ -89,7 +89,12 @@ def initParams():
   cfg.default['dry_run'] = False
   cfg.default['coverage'] = False
   cfg.default['withSQL'] = True
-  cfg.default['windows'] = "mvsc22"
+
+  if cfg.os_platform == "Windows":
+    cfg.default['compiler'] = "mvsc22"
+  else:
+    cfg.default['compiler'] = "gcc"
+
   cfg.default['build'] = "all"
   cfg.default['noSaveParams'] = False
   cfg.default['correction'] = False
@@ -215,12 +220,13 @@ def configureOptions(current):
                         action="store_true",
                         dest="coverage",
                         default=False)
-  cfg.parser.add_argument("--windows",
-                        help="windows compilers : {mvsc22|mvsc22_32|mvsc19|mvsc19_32|mvsc17|mvsc17_32|mvsc15|mvsc15_32|mingw64}.",
-                        choices=["mvsc22","mvsc22_32","mvsc19", "mvsc19_32",
+  cfg.parser.add_argument("--compiler",
+                        help="compilers : {gcc|clang|mvsc22|mvsc22_32|mvsc19|mvsc19_32|mvsc17|mvsc17_32|mvsc15|mvsc15_32|mingw64}.",
+                        choices=["gcc","clang",
+                                 "mvsc22","mvsc22_32","mvsc19", "mvsc19_32",
                                  "mvsc17", "mvsc17_32", "mvsc15", "mvsc15_32", "mingw64"],
-                        dest="windows",
-                        default="mvsc22")
+                        dest="compiler",
+                        default=current['compiler'])
   cfg.parser.add_argument("--build",
                         help="build options : {all|no-cmake|no-make|doc-only}.",
                         choices=["all", "no-cmake", "no-make", "doc-only"],

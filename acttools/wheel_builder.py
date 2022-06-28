@@ -106,7 +106,7 @@ def _prepare_wheel(current, tmp, nightly=False):
     critic(f"Python version used to build pyAgrum:   {gum_version}")
 
 
-def safe_windows_path(path):
+def safe_compiler_path(path):
   return path.replace('\\', '/')
 
 
@@ -114,10 +114,10 @@ def install_pyAgrum(current, tmp, nightly=False):
   """Instals pyAgrum in tmp and return the Python version used to build it."""
   targets = 'install release pyAgrum'
   version = sys.version_info[0]
-  options = f'--no-fun --withoutSQL -m all -d "{safe_windows_path(tmp)}"'
+  options = f'--no-fun --withoutSQL -m all -d "{safe_compiler_path(tmp)}"'
   if platform.system() == "Windows":
     cmd = "python"
-    options = f"{options} --windows={current['windows']}"
+    options = f"{options} --compiler={current['compiler']}"
   else:
     cmd = sys.executable
   cmd = f'{cmd} act {targets} {options}'
