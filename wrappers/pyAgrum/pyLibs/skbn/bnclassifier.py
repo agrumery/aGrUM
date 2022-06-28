@@ -48,7 +48,7 @@ from ._learningMethods import _fitChowLiu as BN_fitChowLiu
 
 
 class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
-  """ Represents a (scikit-learn compliant) classifier wich uses a BN to classify. A BNClassifier is build using
+  """ Represents a (scikit-learn compliant) classifier which uses a BN to classify. A BNClassifier is build using
 
    - a Bayesian network,
    - a database and a learning algorithm and parameters
@@ -91,9 +91,9 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
                 Note: PossibleEdge allows between nodes x and y allows for either (x,y) or (y,x) (or none of them) to be added to the Bayesian network, while the others are not symmetric.
 
             priorWeight: double
-                The weight used for a priorsmoothing.
+                The weight used for a prior.
 
-            possibleSkeleton: pyagrum.undigraph
+            possibleSkeleton: pyAgrum.undigraph
                 An undirected graph that serves as a possible skeleton for the Bayesian network
 
             DirichletCsv: str
@@ -108,20 +108,20 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
             defaultNumberOfBins: str or int
                 sets the number of bins if the method used is quantile, kmeans, uniform. In this case this parameter can
                 also be set to the string 'elbowMethod' so that the best number of bins is found automatically.
-                If the method used is NML, this parameter sets the the maximum number of bins up to which the NML
+                If the method used is NML, this parameter sets the maximum number of bins up to which the NML
                 algorithm searches for the optimal number of bins. In this case this parameter must be an int
                 If any other discretization method is used, this parameter is ignored.
 
             discretizationThreshold: int or float
-                When using default parameters a variable will be treated as continous only if it has more unique values
+                When using default parameters a variable will be treated as continuous only if it has more unique values
                 than this number (if the number is an int greater than 1).
                 If the number is a float between 0 and 1, we will test if the proportion of unique values is bigger than
                 this number.
-                For instance, if you have entered 0.95, the variable will be treated as continous only if more than 95%
+                For instance, if you have entered 0.95, the variable will be treated as continuous only if more than 95%
                 of its values are unique.
 
             usePR: bool
-                indicates if the threshold to choose is Prevision-Recall curve's threhsold or ROC's threshold by
+                indicates if the threshold to choose is Prevision-Recall curve's threshold or ROC's threshold by
                 default.
                 ROC curves should be used when there are roughly equal numbers of observations for each class.
                 Precision-Recall curves should be used when there is a moderate to large class imbalance especially for
@@ -145,7 +145,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
                 Tabu designated Tabu list searching
 
             prior: str
-                A string designating the type of a prior we want to use. Possible values are Smoothing, BDeu ,
+                A string designating the type of prior we want to use. Possible values are Smoothing, BDeu ,
                 Dirichlet and NoPrior.
                 Note: if using Dirichlet smoothing DirichletCsv cannot be set to none
 
@@ -171,7 +171,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
                 while the others are not symmetric.
 
             priorWeight: double
-                The weight used for a priorsmoothing.
+                The weight used for a prior.
 
             possibleSkeleton: pyagrum.undigraph
                 An undirected graph that serves as a possible skeleton for the Bayesian network
@@ -193,15 +193,15 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
                 If any other discetization method is used, this parameter is ignored.
 
             discretizationThreshold: int or float
-                When using default parameters a variable will be treated as continous only if it has more unique values
+                When using default parameters a variable will be treated as continuous only if it has more unique values
                 than this number (if the number is an int greater than 1).
                 If the number is a float between 0 and 1, we will test if the proportion of unique values is bigger than
                 this number.
-                For instance, if you have entered 0.95, the variable will be treated as continous only if more than 95%
+                For instance, if you have entered 0.95, the variable will be treated as continouus only if more than 95%
                 of its values are unique.
 
             usePR: bool
-                indicates if the threshold to choose is Prevision-Recall curve's threhsold or ROC's threshold by
+                indicates if the threshold to choose is Prevision-Recall curve's threshold or ROC's threshold by
                 default.
                 ROC curves should be used when there are roughly equal numbers of observations for each class.
                 Precision-Recall curves should be used when there is a moderate to large class imbalance especially for
@@ -226,10 +226,10 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     self.threshold = 0.5
     self.usePR = usePR
 
-    # the type of a priorsmoothing used
+    # the type of prior used
     self.prior = prior
 
-    # the weight used for the a priorsmoothing
+    # the weight used for the a prior
     self.priorWeight = priorWeight
 
     # the type of scoring used
@@ -252,8 +252,6 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     self.discretizer = BNDiscretizer(
       discretizationStrategy, discretizationNbBins, discretizationThreshold)
 
-    # AJOUT FROM MODEL
-
     # boolean that tells us whether this classifier is obtained from an already trained model (using the function
     # fromTrainedModel) or not
     self.fromModel = False
@@ -265,13 +263,14 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     # the type of the target variable
     self.targetType = None
+    self.isBinaryClassifier = None
 
     # dict(str:int)
-    # The keys of this dictionary are the names of the variables. The value associeted to each name is
+    # The keys of this dictionary are the names of the variables. The value associated to each name is
     # the index of the variable.
     self.variableNameIndexDictionary = None
 
-  def fit(self, X=None, y=None, data=None, targetName=None,filename=None):
+  def fit(self, X=None, y=None, data=None, targetName=None, filename=None):
     """
     parameters:
         X: {array-like, sparse matrix} of shape (n_samples, n_features)
@@ -318,9 +317,9 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
         raise ValueError(
           "This function should be used either as fit(X,y) or fit(data=...,targetAttribute=...). You can not give "
           "a data and the X and y matrices at the same time.")
-      if type(data)==str:
+      if type(data) == str:
         X, y = self.XYfromCSV(data, True, targetName)
-      else: # pandas.DataFrame
+      else:  # pandas.DataFrame
         y = data[targetName]
         X = data.drop(targetName, axis=1)
 
@@ -368,8 +367,6 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     self.isBinaryClassifier = (len(possibleValuesY) == 2)
 
     self.bn = gum.BayesNet('Template')
-
-    var = gum.LabelizedVariable(self.target, self.target, 0)
 
     is_int_varY = True
     min_vY = max_vY = None
@@ -444,7 +441,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
             If this is a binary classifier we have to specify which modality we are looking at if the target
             attribute has more than 2 possible values
             if  !="", a binary classifier is created.
-            if =="", a classifier is created that can be non binary depending on the number of modalities for targetAttribute. If binary, the second one is taken as targetModality.
+            if =="", a classifier is created that can be non-binary depending on the number of modalities for targetAttribute. If binary, the second one is taken as targetModality.
         copy: bool
             Indicates whether we want to put a copy of bn in the classifier, or bn itself.
         threshold: double
@@ -653,7 +650,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     label0 = labels[0]
     # label of the target
     label1 = self.label
-    # Instantiation use to apply values of the data base
+    # Instantiation use to apply values of the database
     I = self.MarkovBlanket.completeInstantiation()
     # read through database's ligns
     for x in X:
@@ -689,7 +686,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     array-like of shape (n_samples,)
       Predicted probability for each classes
     """
-    # dictionary of the name of a variable and his column in the data base
+    # dictionary of the name of a variable and his column in the database
     dictName = self.variableNameIndexDictionary
 
     if isinstance(X, pandas.DataFrame):  # type(X) == pandas.DataFrame:
@@ -716,10 +713,10 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
               for i in range(self.bn.variable(self.target).domainSize())
               if self.bn.variable(self.target).label(i) != self.label]
 
-    # Instantiation use to apply values of the data base
+    # Instantiation use to apply values of the database
     I = self.MarkovBlanket.completeInstantiation()
 
-    # read through data base's ligns
+    # read through database's ligns
     if self.isBinaryClassifier:
       for x in vals:
         res = round(_calcul_proba_for_binary_class(x, label1, labels, I,
@@ -738,7 +735,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
   def XYfromCSV(self, filename, with_labels=True, target=None):
     """
-    Reads the data from a csv file and separates it into a X matrix and a y column vector.
+    Reads the data from a csv file and separates it into an X matrix and a y column vector.
 
     Parameters
     ----------
@@ -822,7 +819,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     if filename is not None:
       print("pyAgrum ** : filename is deprecated. Please use data instead.")
       if data is None:
-        data=filename
+        data = filename
 
     targetName = self.target
     if data is None:
@@ -840,9 +837,9 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
           "This function should be used either as preparedData(X,y) or preparedData(data=...). You have entered "
           "a filename and the X and y matrices at the same time.")
 
-      if type(data)==str:
+      if type(data) == str:
         X, y = self.XYfromCSV(data, True, targetName)
-      else: # pandas.DataFrame
+      else:  # pandas.DataFrame
         y = data[targetName]
         X = data.drop(targetName, axis=1)
 
@@ -894,4 +891,4 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     """
     import pyAgrum.lib.bn2roc as bn2roc
     bn2roc.showROC_PR(self.bn, filename, self.target,
-                      self.label, significant_digits=self.significant_digit, show_progress=show_progress)
+                      self.label, significant_digits=self.significant_digit, save_fig=save_fig, show_progress=show_progress)
