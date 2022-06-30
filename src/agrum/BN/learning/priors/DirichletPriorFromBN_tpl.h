@@ -31,11 +31,9 @@ namespace gum::learning {
 
   /// default constructor
   template < typename GUM_SCALAR >
-  DirichletPriorFromBN< GUM_SCALAR >::DirichletPriorFromBN(
-     const DatabaseTable&                    database,
-     const BayesNet< GUM_SCALAR >*           priorbn,
-     const Bijection< NodeId, std::size_t >& nodeId2columns) :
-      Prior(database, nodeId2columns),
+  DirichletPriorFromBN< GUM_SCALAR >::DirichletPriorFromBN(const DatabaseTable& learning_db,
+                                                           const BayesNet< GUM_SCALAR >* priorbn) :
+      Prior(learning_db),
       _prior_bn_(priorbn) {
     GUM_CONSTRUCTOR(DirichletPriorFromBN)
   }
@@ -78,7 +76,7 @@ namespace gum::learning {
      DirichletPriorFromBN< GUM_SCALAR >::operator=(const DirichletPriorFromBN& from) {
     if (this != &from) {
       Prior::operator=(from);
-      _prior_bn_     = from._prior_bn_;
+      _prior_bn_   = from._prior_bn_;
     }
     return *this;
   }
@@ -90,7 +88,7 @@ namespace gum::learning {
      DirichletPriorFromBN< GUM_SCALAR >::operator=(DirichletPriorFromBN&& from) {
     if (this != &from) {
       Prior::operator=(std::move(from));
-      _prior_bn_     = from._prior_bn_;
+      _prior_bn_   = from._prior_bn_;
     }
     return *this;
   }
@@ -124,6 +122,7 @@ namespace gum::learning {
   INLINE void
      DirichletPriorFromBN< GUM_SCALAR >::addJointPseudoCount(const IdCondSet&       idset,
                                                              std::vector< double >& counts) {
+
     if (this->weight_ == 0.0) return;
     const auto [X, Y] = idset.toNodeSets();
 
@@ -143,10 +142,13 @@ namespace gum::learning {
                                                                     std::vector< double >& counts) {
     if (this->weight_ == 0.0) return;
     const auto [X, Y] = idset.toNodeSets();
+    GUM_CHECKPOINT;
     gum::Instantiation Ijoint;
     for (auto i = idset.nbLHSIds(); i < idset.size(); i++)
       Ijoint.add(_prior_bn_->variable(idset.ids()[i]));
+    GUM_CHECKPOINT;
     _addCountsForJoint_(Ijoint, Y, counts);
+    GUM_CHECKPOINT;
   }
 
   template < typename GUM_SCALAR >
