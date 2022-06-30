@@ -42,7 +42,7 @@ namespace gum {
     /// copy operator
     ScoreBDeu& ScoreBDeu::operator=(const ScoreBDeu& from) {
       if (this != &from) {
-        Score::operator    =(from);
+        Score::operator  =(from);
         _internal_prior_ = from._internal_prior_;
       }
       return *this;
@@ -52,7 +52,7 @@ namespace gum {
     /// move operator
     ScoreBDeu& ScoreBDeu::operator=(ScoreBDeu&& from) {
       if (this != &from) {
-        Score::operator    =(std::move(from));
+        Score::operator  =(std::move(from));
         _internal_prior_ = std::move(from._internal_prior_);
       }
       return *this;
@@ -90,8 +90,8 @@ namespace gum {
       std::vector< double > N_ijk(this->counter_.counts(idset, true));
       const std::size_t     all_size = N_ijk.size();
 
-      double       score                        = 0.0;
-      const double ess                          = _internal_prior_.weight();
+      double       score                      = 0.0;
+      const double ess                        = _internal_prior_.weight();
       const bool   informative_external_prior = this->prior_->isInformative();
 
 
@@ -110,9 +110,9 @@ namespace gum {
           // (the + ESS / (r_i * q_i ) is here to take into account the
           // internal prior of BDeu)
           std::vector< double > N_prime_ijk(all_size, 0.0);
-          this->prior_->addAllPrior(idset, N_prime_ijk);
+          this->prior_->addJointPseudoCount(idset, N_prime_ijk);
           std::vector< double > N_prime_ij(N_ij.size(), 0.0);
-          this->prior_->addConditioningPrior(idset, N_prime_ij);
+          this->prior_->addConditioningPseudoCount(idset, N_prime_ij);
 
           // the BDeu score can be computed as follows:
           // sum_j=1^qi [ gammalog2 ( N'_ij + ESS / q_i ) -
@@ -152,7 +152,7 @@ namespace gum {
           // (the + ESS / ( ri * qi ) is here to take into account the
           // internal prior of K2)
           std::vector< double > N_prime_ijk(all_size, 0.0);
-          this->prior_->addAllPrior(idset, N_prime_ijk);
+          this->prior_->addJointPseudoCount(idset, N_prime_ijk);
 
           // the BDeu score can be computed as follows:
           // gammalog2 ( N' + ess ) - gammalog2 ( N + N' + ess )

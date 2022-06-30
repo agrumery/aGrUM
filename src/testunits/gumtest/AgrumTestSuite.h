@@ -49,4 +49,8 @@
 // ASSERT_{EQUALS|DIFFERS} without copy
 #define TS_GUM_ASSERT_EQUALS(x, y)  TS_ASSERT((x) == (y))
 #define TS_GUM_ASSERT_DIFFERS(x, y) TS_ASSERT((x) != (y))
+
+#define TS_GUM_ASSERT_ALMOST_EQUALS(x, y) TS_ASSERT_LESS_THAN(fabs((x) - (y)), TS_GUM_SMALL_ERROR)
+#define TS_GUM_ASSERT_QUASI_EQUALS(x, y) \
+  TS_ASSERT_LESS_THAN(fabs((x) - (y)), TS_GUM_VERY_SMALL_ERROR)
 #endif   // AGRUM_TEST_SUITE_H

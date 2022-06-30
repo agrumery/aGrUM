@@ -65,7 +65,7 @@ namespace gum {
     INLINE DirichletPriorFromDatabase&
        DirichletPriorFromDatabase::operator=(const DirichletPriorFromDatabase& from) {
       if (this != &from) {
-        Prior::operator=(from);
+        Prior::operator   =(from);
         _counter_         = from._counter_;
         _internal_weight_ = from._internal_weight_;
       }
@@ -77,7 +77,7 @@ namespace gum {
     INLINE DirichletPriorFromDatabase&
        DirichletPriorFromDatabase::operator=(DirichletPriorFromDatabase&& from) {
       if (this != &from) {
-        Prior::operator=(std::move(from));
+        Prior::operator   =(std::move(from));
         _counter_         = std::move(from._counter_);
         _internal_weight_ = from._internal_weight_;
       }
@@ -106,12 +106,12 @@ namespace gum {
 
 
     /// returns the prior vector all the variables in the idset
-    INLINE void DirichletPriorFromDatabase::addAllPrior(const IdCondSet&       idset,
-                                                          std::vector< double >& counts) {
+    INLINE void DirichletPriorFromDatabase::addJointPseudoCount(const IdCondSet&       idset,
+                                                                std::vector< double >& counts) {
       if (this->weight_ == 0.0) return;
 
       const auto&       prior = _counter_.counts(idset);
-      const std::size_t size    = prior.size();
+      const std::size_t size  = prior.size();
       if (_internal_weight_ != 1.0) {
         for (auto i = std::size_t(0); i < size; ++i) {
           counts[i] += prior[i] * _internal_weight_;
@@ -125,12 +125,13 @@ namespace gum {
 
 
     /// returns the prior vector over only the conditioning set of an idset
-    INLINE void DirichletPriorFromDatabase::addConditioningPrior(const IdCondSet&       idset,
-                                                                   std::vector< double >& counts) {
+    INLINE void
+       DirichletPriorFromDatabase::addConditioningPseudoCount(const IdCondSet&       idset,
+                                                              std::vector< double >& counts) {
       if (_internal_weight_ == 0.0) return;
 
       const auto&       prior = _counter_.counts(idset.conditionalIdCondSet());
-      const std::size_t size    = prior.size();
+      const std::size_t size  = prior.size();
       if (_internal_weight_ != 1.0) {
         for (std::size_t i = std::size_t(0); i < size; ++i) {
           counts[i] += prior[i] * _internal_weight_;

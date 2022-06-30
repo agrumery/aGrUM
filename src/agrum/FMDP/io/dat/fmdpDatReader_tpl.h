@@ -52,7 +52,7 @@ namespace gum {
       _scanner_ = new MDPDAT::Scanner(_streamName_.c_str());
       _parser_  = new MDPDAT::Parser(_scanner_);
       _parser_->setFactory((AbstractFMDPFactory*)_factory_);
-    } catch (const IOError& ) { _ioerror_ = true; }
+    } catch (const IOError&) { _ioerror_ = true; }
   }
 
   template < typename GUM_SCALAR >

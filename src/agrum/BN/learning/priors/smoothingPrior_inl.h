@@ -81,8 +81,8 @@ namespace gum {
 
 
     /// returns the prior vector all the variables in the idset
-    INLINE void SmoothingPrior::addAllPrior(const IdCondSet&       idset,
-                                              std::vector< double >& counts) {
+    INLINE void SmoothingPrior::addJointPseudoCount(const IdCondSet&       idset,
+                                                    std::vector< double >& counts) {
       // if the idset is empty or the weight is zero, the prior is also empty
       if (idset.empty() || (this->weight_ == 0.0)) return;
 

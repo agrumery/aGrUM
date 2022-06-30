@@ -74,7 +74,7 @@ namespace gum {
 
         // check that both variables are the same
         const Variable& learning_var = learning_db.variable(i);
-        const Variable& prior_var  = prior_db.variable(prior_col);
+        const Variable& prior_var    = prior_db.variable(prior_col);
         if (learning_var.varType() != prior_var.varType()) {
           GUM_ERROR(DatabaseError,
                     "Variable " << learning_names[i]

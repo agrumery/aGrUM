@@ -36,9 +36,9 @@
 
 
 #ifdef SWIG
-#define GUM_NODISCARD
+#  define GUM_NODISCARD
 #else
-#define GUM_NODISCARD [[nodiscard]]
+#  define GUM_NODISCARD [[nodiscard]]
 #endif   // SWIG
 
 namespace gum {

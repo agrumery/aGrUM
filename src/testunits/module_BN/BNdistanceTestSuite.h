@@ -68,7 +68,8 @@ namespace gum_tests {
       }
 
       TS_GUM_ASSERT_THROWS_NOTHING(gum::ExactBNdistance< double > kl(net1, net1))
-      TS_ASSERT_THROWS(gum::ExactBNdistance< double > kl(net1, net2), const gum::OperationNotAllowed&)
+      TS_ASSERT_THROWS(gum::ExactBNdistance< double > kl(net1, net2),
+                       const gum::OperationNotAllowed&)
       TS_GUM_ASSERT_THROWS_NOTHING(gum::ExactBNdistance< double > kl(net2, net3))
     }
 

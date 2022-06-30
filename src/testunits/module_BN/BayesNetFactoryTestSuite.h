@@ -67,7 +67,8 @@ namespace gum_tests {
       //        const gum::OperationNotAllowed&)
       TS_ASSERT_THROWS(factory->variableName("foo"), const gum::OperationNotAllowed&)
       TS_ASSERT_THROWS(factory->variableDescription("bar"), const gum::OperationNotAllowed&)
-      TS_ASSERT_THROWS(factory->variableType(gum::VarType::Labelized), const gum::OperationNotAllowed&)
+      TS_ASSERT_THROWS(factory->variableType(gum::VarType::Labelized),
+                       const gum::OperationNotAllowed&)
       TS_ASSERT_THROWS(factory->addModality("plop"), const gum::OperationNotAllowed&)
       TS_ASSERT_THROWS(factory->setVariableCPTImplementation(0), const gum::OperationNotAllowed&)
       TS_ASSERT_THROWS(factory->endVariableDeclaration(), const gum::OperationNotAllowed&)
@@ -85,7 +86,8 @@ namespace gum_tests {
       TS_ASSERT_THROWS(factory->endFactorizedEntry(), const gum::OperationNotAllowed&)
       TS_ASSERT_THROWS(factory->setParentModality("foo", "plop"), const gum::OperationNotAllowed&)
       TS_ASSERT_THROWS(factory->setVariableValues(aSequence), const gum::OperationNotAllowed&)
-      TS_ASSERT_THROWS(factory->endFactorizedProbabilityDeclaration(), const gum::OperationNotAllowed&)
+      TS_ASSERT_THROWS(factory->endFactorizedProbabilityDeclaration(),
+                       const gum::OperationNotAllowed&)
 
       TS_GUM_ASSERT_THROWS_NOTHING(delete factory)
     }
@@ -119,7 +121,8 @@ namespace gum_tests {
 
       TS_ASSERT_THROWS(factory->variableName("foo"), const gum::OperationNotAllowed&)
       TS_ASSERT_THROWS(factory->variableDescription("bar"), const gum::OperationNotAllowed&)
-      TS_ASSERT_THROWS(factory->variableType(gum::VarType::Labelized), const gum::OperationNotAllowed&)
+      TS_ASSERT_THROWS(factory->variableType(gum::VarType::Labelized),
+                       const gum::OperationNotAllowed&)
       TS_ASSERT_THROWS(factory->addModality("plop"), const gum::OperationNotAllowed&)
       TS_ASSERT_THROWS(factory->setVariableCPTImplementation(0), const gum::OperationNotAllowed&)
       TS_ASSERT_THROWS(factory->endVariableDeclaration(), const gum::OperationNotAllowed&)
@@ -131,7 +134,8 @@ namespace gum_tests {
       TS_ASSERT_THROWS(factory->endFactorizedEntry(), const gum::OperationNotAllowed&)
       TS_ASSERT_THROWS(factory->setParentModality("foo", "plop"), const gum::OperationNotAllowed&)
       TS_ASSERT_THROWS(factory->setVariableValues(aSequence), const gum::OperationNotAllowed&)
-      TS_ASSERT_THROWS(factory->endFactorizedProbabilityDeclaration(), const gum::OperationNotAllowed&)
+      TS_ASSERT_THROWS(factory->endFactorizedProbabilityDeclaration(),
+                       const gum::OperationNotAllowed&)
 
       TS_GUM_ASSERT_THROWS_NOTHING(factory->endNetworkDeclaration())
       TS_GUM_ASSERT_THROWS_NOTHING(delete factory)
@@ -318,7 +322,8 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(factory->startVariableDeclaration())
       TS_GUM_ASSERT_THROWS_NOTHING(factory->variableName("5"))
       TS_GUM_ASSERT_THROWS_NOTHING(factory->variableDescription("variable 5"))
-      TS_ASSERT_THROWS(factory->variableType(gum::VarType::Continuous), const gum::OperationNotAllowed&)
+      TS_ASSERT_THROWS(factory->variableType(gum::VarType::Continuous),
+                       const gum::OperationNotAllowed&)
       TS_GUM_ASSERT_THROWS_NOTHING(factory->variableType(gum::VarType::Integer))
       TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("1"))
       TS_GUM_ASSERT_THROWS_NOTHING(factory->addModality("7"))

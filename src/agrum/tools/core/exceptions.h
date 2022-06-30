@@ -498,9 +498,9 @@ namespace gum {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
   std::string _createMsg_(const std::string& filename,
-                                const std::string& function,
-                                int                line,
-                                const std::string& msg);
+                          const std::string& function,
+                          int                line,
+                          const std::string& msg);
   GUM_MAKE_ERROR(FatalError, Exception, "Fatal error")
   GUM_MAKE_ERROR(NotImplementedYet, Exception, "Not implemented yet")
   GUM_MAKE_ERROR(IteratorError, Exception, "Error in iterator")
@@ -591,8 +591,8 @@ namespace gum {
 #  endif   // GUM_FOR_SWIG
     }
 
-    GUM_NODISCARD Size        col() const { return noCol_; };
-    GUM_NODISCARD Size        line() const { return noLine_; };
+    GUM_NODISCARD Size col() const { return noCol_; };
+    GUM_NODISCARD Size line() const { return noLine_; };
     GUM_NODISCARD std::string filename() const { return filename_; };
   };
 #endif   // DOXYGEN_SHOULD_SKIP_THIS

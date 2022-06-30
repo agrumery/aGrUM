@@ -99,6 +99,18 @@ namespace gum {
       return str.str();
     }
 
+    std::pair< NodeSet, NodeSet > IdCondSet::toNodeSets() const {
+      gum::NodeSet left;
+      gum::NodeSet right;
+
+      for (auto i = std::size_t(0); i < _ids_.size(); ++i)
+        if (i < _nb_lhs_ids_)
+          left.insert(_ids_[i]);
+        else
+          right.insert(_ids_[i]);
+      return {left, right};
+    }
+
 
     /// indicates whether the IdCondSet contains the IdCondSet passed in argument
     bool IdCondSet::contains(const IdCondSet& set) const {

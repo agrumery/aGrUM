@@ -289,6 +289,12 @@ namespace gum_tests {
       std::string str = "{0 , 1 , 2 | 3 , 4 , 5 , 6}";
       TS_ASSERT_EQUALS(set4.toString(), str)
 
+      auto [l, r]    = set4.toNodeSets();
+      gum::NodeSet s = gum::NodeSet{0, 1, 2};
+      TS_ASSERT_EQUALS(l, s)
+      s = gum::NodeSet{3, 4, 5, 6};
+      TS_ASSERT_EQUALS(r, s)
+
       gum::NodeId xnb = 0;
       for (auto iter = set4.begin(); iter != set4.end(); ++iter, ++xnb) {
         TS_ASSERT_EQUALS(*iter, xnb)

@@ -60,9 +60,11 @@ namespace gum_tests {
           TS_ASSERT_EQUALS(a->toString(), "A:Range([-7,-3])")
         }
 
-        TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A[7,3]", 4), const gum::InvalidArgument&)
+        TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A[7,3]", 4),
+                         const gum::InvalidArgument&)
 
-        TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A[1,1]", 4), const gum::InvalidArgument&)
+        TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A[1,1]", 4),
+                         const gum::InvalidArgument&)
 
         {
           auto a = gum::fastVariable< double >("A[1,1]", 1);
@@ -77,7 +79,8 @@ namespace gum_tests {
             auto a = gum::fastVariable< double >("A{a|b|c}", 4);
             TS_ASSERT_EQUALS(a->toString(), "A:Labelized({a|b|c})")
           }
-          TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A{a}", 4), const gum::InvalidArgument&)
+          TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A{a}", 4),
+                           const gum::InvalidArgument&)
 
           {
             auto a = gum::fastVariable< double >("A{a}", 1);

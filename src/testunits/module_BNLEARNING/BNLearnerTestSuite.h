@@ -1602,7 +1602,7 @@ namespace gum_tests {
           {"corporate customer", "yearly consumption"},
           {"yearly consumption", "loyalty"},
           {"yearly consumption", "coupon"}});
-      for (const auto& [tail,head]: expected_arcs) {
+      for (const auto& [tail, head]: expected_arcs) {
         TS_ASSERT(bn.existsArc(tail, head))
       }
     }

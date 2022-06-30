@@ -72,8 +72,7 @@ namespace gum::learning {
   /// sets the effective sample size N' (alias of setEffectiveSampleSize ())
   INLINE void BDeuPrior::setWeight(const double weight) {
     if (weight < 0.0) {
-      GUM_ERROR(OutOfBounds,
-                "A negative weight (" << weight << ") is forbidden for the BDeu prior")
+      GUM_ERROR(OutOfBounds, "A negative weight (" << weight << ") is forbidden for the BDeu prior")
     }
     this->weight_ = weight;
   }
@@ -92,7 +91,8 @@ namespace gum::learning {
 
 
   /// returns the prior vector all the variables in the idset
-  INLINE void BDeuPrior::addAllPrior(const IdCondSet& idset, std::vector< double >& counts) {
+  INLINE void BDeuPrior::addJointPseudoCount(const IdCondSet&       idset,
+                                             std::vector< double >& counts) {
     // if the idset is empty or the weight is zero, the prior is also empty
     if (idset.empty() || (this->weight_ == 0.0)) return;
 

@@ -80,32 +80,32 @@ namespace gum_tests {
                                       true);   // #576,#48
 
       std::vector< double > vect(3, 1.0);
-      prior.addAllPrior(idset1, vect);
+      prior.addJointPseudoCount(idset1, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 3))
       }
       vect.clear();
-      prior.addConditioningPrior(idset1, vect);
+      prior.addConditioningPseudoCount(idset1, vect);
 
       vect.clear();
       vect.resize(12, 1.0);
-      prior.addAllPrior(idset2, vect);
+      prior.addJointPseudoCount(idset2, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 12))
       }
       vect.clear();
-      prior.addConditioningPrior(idset2, vect);
+      prior.addConditioningPseudoCount(idset2, vect);
 
       vect.clear();
       vect.resize(576, 1.0);
-      prior.addAllPrior(idset3, vect);
+      prior.addJointPseudoCount(idset3, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 576))
       }
 
       vect.clear();
       vect.resize(48, 1.0);
-      prior.addConditioningPrior(idset3, vect);
+      prior.addConditioningPseudoCount(idset3, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 48))
       }
@@ -120,31 +120,31 @@ namespace gum_tests {
 
       vect.clear();
       vect.resize(3, 1.0);
-      prior2.addAllPrior(idset1, vect);
+      prior2.addJointPseudoCount(idset1, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 3))
       }
       vect.clear();
-      prior2.addConditioningPrior(idset1, vect);
+      prior2.addConditioningPseudoCount(idset1, vect);
 
       vect.clear();
       vect.resize(12, 1.0);
-      prior2.addAllPrior(idset2, vect);
+      prior2.addJointPseudoCount(idset2, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 12))
       }
       vect.clear();
-      prior2.addConditioningPrior(idset2, vect);
+      prior2.addConditioningPseudoCount(idset2, vect);
 
       vect.clear();
       vect.resize(576, 1.0);
-      prior2.addAllPrior(idset3, vect);
+      prior2.addJointPseudoCount(idset3, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 576))
       }
       vect.clear();
       vect.resize(48, 1.0);
-      prior2.addConditioningPrior(idset3, vect);
+      prior2.addConditioningPseudoCount(idset3, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 48))
       }
@@ -159,31 +159,31 @@ namespace gum_tests {
 
       vect.clear();
       vect.resize(3, 1.0);
-      prior3.addAllPrior(idset1, vect);
+      prior3.addJointPseudoCount(idset1, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 3))
       }
       vect.clear();
-      prior3.addConditioningPrior(idset1, vect);
+      prior3.addConditioningPseudoCount(idset1, vect);
 
       vect.clear();
       vect.resize(12, 1.0);
-      prior3.addAllPrior(idset2, vect);
+      prior3.addJointPseudoCount(idset2, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 12))
       }
       vect.clear();
-      prior3.addConditioningPrior(idset2, vect);
+      prior3.addConditioningPseudoCount(idset2, vect);
 
       vect.clear();
       vect.resize(576, 1.0);
-      prior3.addAllPrior(idset3, vect);
+      prior3.addJointPseudoCount(idset3, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 576))
       }
       vect.clear();
       vect.resize(48, 1.0);
-      prior3.addConditioningPrior(idset3, vect);
+      prior3.addConditioningPseudoCount(idset3, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 48))
       }
@@ -198,31 +198,31 @@ namespace gum_tests {
 
       vect.clear();
       vect.resize(3, 1.0);
-      prior4->addAllPrior(idset1, vect);
+      prior4->addJointPseudoCount(idset1, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 3))
       }
       vect.clear();
-      prior4->addConditioningPrior(idset1, vect);
+      prior4->addConditioningPseudoCount(idset1, vect);
 
       vect.clear();
       vect.resize(12, 1.0);
-      prior4->addAllPrior(idset2, vect);
+      prior4->addJointPseudoCount(idset2, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 12))
       }
       vect.clear();
-      prior4->addConditioningPrior(idset2, vect);
+      prior4->addConditioningPseudoCount(idset2, vect);
 
       vect.clear();
       vect.resize(576, 1.0);
-      prior4->addAllPrior(idset3, vect);
+      prior4->addJointPseudoCount(idset3, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 576))
       }
       vect.clear();
       vect.resize(48, 1.0);
-      prior4->addConditioningPrior(idset3, vect);
+      prior4->addConditioningPseudoCount(idset3, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 48))
       }
@@ -241,31 +241,31 @@ namespace gum_tests {
 
       vect.clear();
       vect.resize(3, 1.0);
-      prior5.addAllPrior(idset1, vect);
+      prior5.addJointPseudoCount(idset1, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 3))
       }
       vect.clear();
-      prior5.addConditioningPrior(idset1, vect);
+      prior5.addConditioningPseudoCount(idset1, vect);
 
       vect.clear();
       vect.resize(12, 1.0);
-      prior5.addAllPrior(idset2, vect);
+      prior5.addJointPseudoCount(idset2, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 12))
       }
       vect.clear();
-      prior5.addConditioningPrior(idset2, vect);
+      prior5.addConditioningPseudoCount(idset2, vect);
 
       vect.clear();
       vect.resize(576, 1.0);
-      prior5.addAllPrior(idset3, vect);
+      prior5.addJointPseudoCount(idset3, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 576))
       }
       vect.clear();
       vect.resize(48, 1.0);
-      prior5.addConditioningPrior(idset3, vect);
+      prior5.addConditioningPseudoCount(idset3, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 48))
       }
@@ -279,31 +279,31 @@ namespace gum_tests {
 
       vect.clear();
       vect.resize(3, 1.0);
-      prior5.addAllPrior(idset1, vect);
+      prior5.addJointPseudoCount(idset1, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 1.0 / 3))
       }
       vect.clear();
-      prior5.addConditioningPrior(idset1, vect);
+      prior5.addConditioningPseudoCount(idset1, vect);
 
       vect.clear();
       vect.resize(12, 1.0);
-      prior5.addAllPrior(idset2, vect);
+      prior5.addJointPseudoCount(idset2, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 1.0 / 12))
       }
       vect.clear();
-      prior5.addConditioningPrior(idset2, vect);
+      prior5.addConditioningPseudoCount(idset2, vect);
 
       vect.clear();
       vect.resize(576, 1.0);
-      prior5.addAllPrior(idset3, vect);
+      prior5.addJointPseudoCount(idset3, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 1.0 / 576))
       }
       vect.clear();
       vect.resize(48, 1.0);
-      prior5.addConditioningPrior(idset3, vect);
+      prior5.addConditioningPseudoCount(idset3, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 1.0 / 48))
       }
@@ -373,31 +373,31 @@ namespace gum_tests {
                                       true);   // #576,#36
 
       std::vector< double > vect(4, 1.0);
-      prior.addAllPrior(idset1, vect);
+      prior.addJointPseudoCount(idset1, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 4))
       }
       vect.clear();
-      prior.addConditioningPrior(idset1, vect);
+      prior.addConditioningPseudoCount(idset1, vect);
 
       vect.clear();
       vect.resize(16, 1.0);
-      prior.addAllPrior(idset2, vect);
+      prior.addJointPseudoCount(idset2, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 16))
       }
       vect.clear();
-      prior.addConditioningPrior(idset2, vect);
+      prior.addConditioningPseudoCount(idset2, vect);
 
       vect.clear();
       vect.resize(576, 1.0);
-      prior.addAllPrior(idset3, vect);
+      prior.addJointPseudoCount(idset3, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 576))
       }
       vect.clear();
       vect.resize(36, 1.0);
-      prior.addConditioningPrior(idset3, vect);
+      prior.addConditioningPseudoCount(idset3, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 36))
       }
@@ -412,31 +412,31 @@ namespace gum_tests {
 
       vect.clear();
       vect.resize(4, 1.0);
-      prior2.addAllPrior(idset1, vect);
+      prior2.addJointPseudoCount(idset1, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 4))
       }
       vect.clear();
-      prior2.addConditioningPrior(idset1, vect);
+      prior2.addConditioningPseudoCount(idset1, vect);
 
       vect.clear();
       vect.resize(16, 1.0);
-      prior2.addAllPrior(idset2, vect);
+      prior2.addJointPseudoCount(idset2, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 16))
       }
       vect.clear();
-      prior2.addConditioningPrior(idset2, vect);
+      prior2.addConditioningPseudoCount(idset2, vect);
 
       vect.clear();
       vect.resize(576, 1.0);
-      prior2.addAllPrior(idset3, vect);
+      prior2.addJointPseudoCount(idset3, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 576))
       }
       vect.clear();
       vect.resize(36, 1.0);
-      prior2.addConditioningPrior(idset3, vect);
+      prior2.addConditioningPseudoCount(idset3, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 36))
       }
@@ -450,31 +450,31 @@ namespace gum_tests {
 
       vect.clear();
       vect.resize(4, 1.0);
-      prior3.addAllPrior(idset1, vect);
+      prior3.addJointPseudoCount(idset1, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 4))
       }
       vect.clear();
-      prior3.addConditioningPrior(idset1, vect);
+      prior3.addConditioningPseudoCount(idset1, vect);
 
       vect.clear();
       vect.resize(16, 1.0);
-      prior3.addAllPrior(idset2, vect);
+      prior3.addJointPseudoCount(idset2, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 16))
       }
       vect.clear();
-      prior3.addConditioningPrior(idset2, vect);
+      prior3.addConditioningPseudoCount(idset2, vect);
 
       vect.clear();
       vect.resize(576, 1.0);
-      prior3.addAllPrior(idset3, vect);
+      prior3.addJointPseudoCount(idset3, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 576))
       }
       vect.clear();
       vect.resize(36, 1.0);
-      prior3.addConditioningPrior(idset3, vect);
+      prior3.addConditioningPseudoCount(idset3, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 4.0 / 36))
       }
@@ -489,31 +489,31 @@ namespace gum_tests {
 
       vect.clear();
       vect.resize(4, 1.0);
-      prior4->addAllPrior(idset1, vect);
+      prior4->addJointPseudoCount(idset1, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 4))
       }
       vect.clear();
-      prior4->addConditioningPrior(idset1, vect);
+      prior4->addConditioningPseudoCount(idset1, vect);
 
       vect.clear();
       vect.resize(16, 1.0);
-      prior4->addAllPrior(idset2, vect);
+      prior4->addJointPseudoCount(idset2, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 16))
       }
       vect.clear();
-      prior4->addConditioningPrior(idset2, vect);
+      prior4->addConditioningPseudoCount(idset2, vect);
 
       vect.clear();
       vect.resize(576, 1.0);
-      prior4->addAllPrior(idset3, vect);
+      prior4->addJointPseudoCount(idset3, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 576))
       }
       vect.clear();
       vect.resize(36, 1.0);
-      prior4->addConditioningPrior(idset3, vect);
+      prior4->addConditioningPseudoCount(idset3, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 36))
       }
@@ -531,31 +531,31 @@ namespace gum_tests {
 
       vect.clear();
       vect.resize(4, 1.0);
-      prior5.addAllPrior(idset1, vect);
+      prior5.addJointPseudoCount(idset1, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 4))
       }
       vect.clear();
-      prior5.addConditioningPrior(idset1, vect);
+      prior5.addConditioningPseudoCount(idset1, vect);
 
       vect.clear();
       vect.resize(16, 1.0);
-      prior5.addAllPrior(idset2, vect);
+      prior5.addJointPseudoCount(idset2, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 16))
       }
       vect.clear();
-      prior5.addConditioningPrior(idset2, vect);
+      prior5.addConditioningPseudoCount(idset2, vect);
 
       vect.clear();
       vect.resize(576, 1.0);
-      prior5.addAllPrior(idset3, vect);
+      prior5.addJointPseudoCount(idset3, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 576))
       }
       vect.clear();
       vect.resize(36, 1.0);
-      prior5.addConditioningPrior(idset3, vect);
+      prior5.addConditioningPseudoCount(idset3, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 2.0 / 36))
       }
@@ -570,31 +570,31 @@ namespace gum_tests {
 
       vect.clear();
       vect.resize(4, 1.0);
-      prior5.addAllPrior(idset1, vect);
+      prior5.addJointPseudoCount(idset1, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 1.0 / 4))
       }
       vect.clear();
-      prior5.addConditioningPrior(idset1, vect);
+      prior5.addConditioningPseudoCount(idset1, vect);
 
       vect.clear();
       vect.resize(16, 1.0);
-      prior5.addAllPrior(idset2, vect);
+      prior5.addJointPseudoCount(idset2, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 1.0 / 16))
       }
       vect.clear();
-      prior5.addConditioningPrior(idset2, vect);
+      prior5.addConditioningPseudoCount(idset2, vect);
 
       vect.clear();
       vect.resize(576, 1.0);
-      prior5.addAllPrior(idset3, vect);
+      prior5.addJointPseudoCount(idset3, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 1.0 / 576))
       }
       vect.clear();
       vect.resize(36, 1.0);
-      prior5.addConditioningPrior(idset3, vect);
+      prior5.addConditioningPseudoCount(idset3, vect);
       for (const auto val: vect) {
         TS_ASSERT_EQUALS(val, (1.0 + 1.0 / 36))
       }

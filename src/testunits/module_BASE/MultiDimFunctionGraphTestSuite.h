@@ -312,8 +312,10 @@ namespace gum_tests {
         // Testing arc modification where starting node does not exist
         // (must raise gum::NotFound)
         // (node 15 has been erased before)
-        TS_ASSERT_THROWS(functionGraph->manager()->setSon(idList[15], 2, idList[1]), const gum::NotFound&)
-        TS_ASSERT_THROWS(functionGraph->manager()->setSon(idList[1], 2, idList[15]), const gum::NotFound&)
+        TS_ASSERT_THROWS(functionGraph->manager()->setSon(idList[15], 2, idList[1]),
+                         const gum::NotFound&)
+        TS_ASSERT_THROWS(functionGraph->manager()->setSon(idList[1], 2, idList[15]),
+                         const gum::NotFound&)
 
         // Testing node modification where starting node is a terminal node
         // (must raise gum::InvalidNode

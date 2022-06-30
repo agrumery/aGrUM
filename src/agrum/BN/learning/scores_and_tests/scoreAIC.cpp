@@ -42,7 +42,7 @@ namespace gum {
     /// copy operator
     ScoreAIC& ScoreAIC::operator=(const ScoreAIC& from) {
       if (this != &from) {
-        Score::operator    =(from);
+        Score::operator  =(from);
         _internal_prior_ = from._internal_prior_;
       }
       return *this;
@@ -52,7 +52,7 @@ namespace gum {
     /// move operator
     ScoreAIC& ScoreAIC::operator=(ScoreAIC&& from) {
       if (this != &from) {
-        Score::operator    =(std::move(from));
+        Score::operator  =(std::move(from));
         _internal_prior_ = std::move(from._internal_prior_);
       }
       return *this;
@@ -81,7 +81,7 @@ namespace gum {
       // get the counts for all the nodes in the idset and add the prior
       std::vector< double > N_ijk(this->counter_.counts(idset, true));
       const bool            informative_external_prior = this->prior_->isInformative();
-      if (informative_external_prior) this->prior_->addAllPrior(idset, N_ijk);
+      if (informative_external_prior) this->prior_->addJointPseudoCount(idset, N_ijk);
       const std::size_t all_size = N_ijk.size();
 
       // here, we distinguish idsets with conditioning nodes from those

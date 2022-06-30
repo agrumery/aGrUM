@@ -87,8 +87,7 @@ namespace gum {
         ThreadNumberManager(from), _parsers_(from._parsers_), _ranges_(from._ranges_),
         _thread_ranges_(from._thread_ranges_), _nodeId2columns_(from._nodeId2columns_),
         _last_DB_counting_(from._last_DB_counting_), _last_DB_ids_(from._last_DB_ids_),
-        _last_nonDB_counting_(from._last_nonDB_counting_),
-        _last_nonDB_ids_(from._last_nonDB_ids_),
+        _last_nonDB_counting_(from._last_nonDB_counting_), _last_nonDB_ids_(from._last_nonDB_ids_),
         _min_nb_rows_per_thread_(from._min_nb_rows_per_thread_) {
       GUM_CONS_CPY(RecordCounter);
     }
@@ -301,8 +300,8 @@ namespace gum {
 
         // save the subset_ids and the result vector
         try {
-          _last_nonDB_ids_       = subset_ids;
-          _last_nonDB_counting_  = std::move(result_vect);
+          _last_nonDB_ids_      = subset_ids;
+          _last_nonDB_counting_ = std::move(result_vect);
           return _last_nonDB_counting_;
         } catch (...) {
           _last_nonDB_ids_.clear();
@@ -341,8 +340,8 @@ namespace gum {
 
         // save the subset_ids and the result vector
         try {
-          _last_nonDB_ids_       = subset_ids;
-          _last_nonDB_counting_  = std::move(result_vect);
+          _last_nonDB_ids_      = subset_ids;
+          _last_nonDB_counting_ = std::move(result_vect);
           return _last_nonDB_counting_;
         } catch (...) {
           _last_nonDB_ids_.clear();
@@ -445,8 +444,8 @@ namespace gum {
 
       // save the subset_ids and the result vector
       try {
-        _last_nonDB_ids_       = subset_ids;
-        _last_nonDB_counting_  = std::move(result_vect);
+        _last_nonDB_ids_      = subset_ids;
+        _last_nonDB_counting_ = std::move(result_vect);
         return _last_nonDB_counting_;
       } catch (...) {
         _last_nonDB_ids_.clear();
@@ -574,8 +573,8 @@ namespace gum {
       }
 
       // save the final results
-      _last_DB_ids_       = ids;
-      _last_DB_counting_  = std::move(counting_vect);
+      _last_DB_ids_      = ids;
+      _last_DB_counting_ = std::move(counting_vect);
 
       return _last_DB_counting_;
     }

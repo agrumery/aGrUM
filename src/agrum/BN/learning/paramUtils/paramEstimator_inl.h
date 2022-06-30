@@ -43,8 +43,8 @@ namespace gum {
 
     /// move constructor
     INLINE ParamEstimator::ParamEstimator(ParamEstimator&& from) :
-        external_prior_(from.external_prior_),
-        score_internal_prior_(from.score_internal_prior_), counter_(std::move(from.counter_)) {
+        external_prior_(from.external_prior_), score_internal_prior_(from.score_internal_prior_),
+        counter_(std::move(from.counter_)) {
       from.external_prior_       = nullptr;
       from.score_internal_prior_ = nullptr;
       GUM_CONS_MOV(ParamEstimator);

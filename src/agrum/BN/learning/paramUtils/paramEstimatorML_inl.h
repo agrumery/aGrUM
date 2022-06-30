@@ -44,9 +44,9 @@ namespace gum {
 
     /// default constructor
     INLINE
-    ParamEstimatorML::ParamEstimatorML(const DBRowGeneratorParser& parser,
-                                       const Prior&                external_prior,
-                                       const Prior&                score_internal_prior,
+    ParamEstimatorML::ParamEstimatorML(const DBRowGeneratorParser&             parser,
+                                       const Prior&                            external_prior,
+                                       const Prior&                            score_internal_prior,
                                        const Bijection< NodeId, std::size_t >& nodeId2columns) :
         ParamEstimator(parser, external_prior, score_internal_prior, nodeId2columns) {
       GUM_CONSTRUCTOR(ParamEstimatorML);

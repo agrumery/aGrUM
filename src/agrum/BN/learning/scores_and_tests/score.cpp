@@ -42,13 +42,13 @@ namespace gum {
     /// copy operator
     Score& Score::operator=(const Score& from) {
       if (this != &from) {
-        Prior*        new_prior = from.prior_->clone();
+        Prior*        new_prior   = from.prior_->clone();
         RecordCounter new_counter = from.counter_;
         ScoringCache  new_cache   = from.cache_;
 
         if (prior_ != nullptr) delete prior_;
 
-        prior_ = new_prior;
+        prior_   = new_prior;
         counter_ = std::move(new_counter);
         cache_   = std::move(new_cache);
 

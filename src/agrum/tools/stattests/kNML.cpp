@@ -116,9 +116,9 @@ namespace gum {
         std::vector< double > N_yui = this->counter_.counts(idset_yui, false);
 
         if (informative_external_prior) {
-          this->prior_->addConditioningPrior(idset, N_ui);
-          this->prior_->addAllPrior(idset, N_xui);
-          this->prior_->addAllPrior(idset, N_yui);
+          this->prior_->addConditioningPseudoCount(idset, N_ui);
+          this->prior_->addJointPseudoCount(idset, N_xui);
+          this->prior_->addJointPseudoCount(idset, N_yui);
         }
 
 
@@ -148,8 +148,8 @@ namespace gum {
         std::vector< double > N_yui = this->counter_.counts(idset_yui, false);
 
         if (informative_external_prior) {
-          this->prior_->addAllPrior(idset, N_xui);
-          this->prior_->addAllPrior(idset, N_yui);
+          this->prior_->addJointPseudoCount(idset, N_xui);
+          this->prior_->addJointPseudoCount(idset, N_yui);
         }
 
 

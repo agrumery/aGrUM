@@ -81,8 +81,8 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      CorrectedMutualInformation(const DBRowGeneratorParser& parser,
-                                 const Prior&                prior,
+      CorrectedMutualInformation(const DBRowGeneratorParser&                                 parser,
+                                 const Prior&                                                prior,
                                  const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
                                  const Bijection< NodeId, std::size_t >& nodeId2columns
                                  = Bijection< NodeId, std::size_t >());

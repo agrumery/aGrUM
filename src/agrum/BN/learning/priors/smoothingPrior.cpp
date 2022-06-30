@@ -38,8 +38,8 @@
 namespace gum::learning {
 
   /// returns the prior vector over only the conditioning set of an idset
-  void SmoothingPrior::addConditioningPrior(const IdCondSet&       idset,
-                                              std::vector< double >& counts) {
+  void SmoothingPrior::addConditioningPseudoCount(const IdCondSet&       idset,
+                                                  std::vector< double >& counts) {
     // if the conditioning set is empty or the weight is equal to zero,
     // the prior is also empty
     if ((idset.size() == idset.nbLHSIds()) || (this->weight_ == 0.0)

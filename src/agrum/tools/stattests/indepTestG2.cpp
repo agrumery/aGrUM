@@ -63,7 +63,7 @@ namespace gum {
       // get the counts
       std::vector< double > N_xyz(this->counter_.counts(idset, true));
       const bool            informative_external_prior = this->prior_->isInformative();
-      if (informative_external_prior) this->prior_->addAllPrior(idset, N_xyz);
+      if (informative_external_prior) this->prior_->addJointPseudoCount(idset, N_xyz);
       const std::size_t all_size = (N_xyz.size());
 
       // compute the domain sizes of X and Y

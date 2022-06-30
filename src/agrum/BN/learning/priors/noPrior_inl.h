@@ -84,12 +84,13 @@ namespace gum {
 
 
     /// returns the prior vector all the variables in the idset
-    INLINE void NoPrior::addAllPrior(const IdCondSet& idset, std::vector< double >& counts) {}
+    INLINE void NoPrior::addJointPseudoCount(const IdCondSet&       idset,
+                                             std::vector< double >& counts) {}
 
 
     /// returns the prior vector over only the conditioning set of an idset
-    INLINE void NoPrior::addConditioningPrior(const IdCondSet&       idset,
-                                                std::vector< double >& counts) {}
+    INLINE void NoPrior::addConditioningPseudoCount(const IdCondSet&       idset,
+                                                    std::vector< double >& counts) {}
 
 
   } /* namespace learning */

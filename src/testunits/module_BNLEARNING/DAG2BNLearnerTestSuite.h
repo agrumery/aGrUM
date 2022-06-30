@@ -200,7 +200,7 @@ namespace gum_tests {
       gum::learning::DBRowGeneratorSet genset_EM;
       genset_EM.insertGenerator(gen_EM);
       gum::learning::DBRowGeneratorParser parser_EM(database.handler(), genset_EM);
-      gum::learning::ParamEstimatorML param_estimator_EM(parser_EM, extern_prior, intern_prior);
+      gum::learning::ParamEstimatorML     param_estimator_EM(parser_EM, extern_prior, intern_prior);
 
       gum::learning::DAG2BNLearner learner;
 

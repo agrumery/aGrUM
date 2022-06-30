@@ -42,7 +42,7 @@ namespace gum {
     /// copy operator
     ScoreK2& ScoreK2::operator=(const ScoreK2& from) {
       if (this != &from) {
-        Score::operator    =(from);
+        Score::operator  =(from);
         _internal_prior_ = from._internal_prior_;
       }
       return *this;
@@ -52,7 +52,7 @@ namespace gum {
     /// move operator
     ScoreK2& ScoreK2::operator=(ScoreK2&& from) {
       if (this != &from) {
-        Score::operator    =(std::move(from));
+        Score::operator  =(std::move(from));
         _internal_prior_ = std::move(from._internal_prior_);
       }
       return *this;
@@ -88,9 +88,9 @@ namespace gum {
     double ScoreK2::score_(const IdCondSet& idset) {
       // get the counts for all the nodes in the idset and add the prior
       std::vector< double > N_ijk(this->counter_.counts(idset, true));
-      const std::size_t     all_size                     = N_ijk.size();
+      const std::size_t     all_size                   = N_ijk.size();
       const bool            informative_external_prior = this->prior_->isInformative();
-      double                score                        = 0.0;
+      double                score                      = 0.0;
 
       // here, we distinguish idsets with conditioning nodes from those
       // without conditioning nodes
@@ -104,9 +104,9 @@ namespace gum {
           // the score to compute is that of BD with priors N'_ijk + 1
           // (the + 1 is here to take into account the internal prior of K2)
           std::vector< double > N_prime_ijk(all_size, 0.0);
-          this->prior_->addAllPrior(idset, N_prime_ijk);
+          this->prior_->addJointPseudoCount(idset, N_prime_ijk);
           std::vector< double > N_prime_ij(N_ij.size(), 0.0);
-          this->prior_->addConditioningPrior(idset, N_prime_ij);
+          this->prior_->addConditioningPseudoCount(idset, N_prime_ij);
 
           // the K2 score can be computed as follows:
           // sum_j=1^qi [ gammalog2 ( N'_ij + r_i ) -
@@ -146,7 +146,7 @@ namespace gum {
           // + sum_k=1^ri { gammlog2 ( N_i + N'_i + 1 ) - gammalog2 ( N'_i + 1 )
           // }
           std::vector< double > N_prime_ijk(all_size, 0.0);
-          this->prior_->addAllPrior(idset, N_prime_ijk);
+          this->prior_->addJointPseudoCount(idset, N_prime_ijk);
 
           // the K2 score can be computed as follows:
           double N       = 0.0;

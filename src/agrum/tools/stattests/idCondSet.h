@@ -379,6 +379,9 @@ namespace gum {
       /// returns the content of the set as a string
       std::string toString() const;
 
+      /// returns the pair of conditioned gum::NodeSet and conditioning gum::NodeSet
+      std::pair< NodeSet, NodeSet > toNodeSets() const;
+
       /// @}
 
 

@@ -125,14 +125,14 @@ namespace gum {
        * conditioning bar of the idset.
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint variables set. */
-      virtual void addAllPrior(const IdCondSet& idset, std::vector< double >& counts) = 0;
+      virtual void addJointPseudoCount(const IdCondSet& idset, std::vector< double >& counts) = 0;
 
       /** @brief adds the prior to a counting vector defined over the right
        * hand side of the idset
        *
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint RHS variables of the idset. */
-      virtual void addConditioningPrior(const IdCondSet& idset, std::vector< double >& counts)
+      virtual void addConditioningPseudoCount(const IdCondSet& idset, std::vector< double >& counts)
          = 0;
 
       /// @}

@@ -260,10 +260,7 @@ namespace gum_tests {
 
       std::vector< std::pair< std::size_t, std::size_t > > ranges{{800, 1000}, {1050, 1400}};
 
-      gum::learning::ParamEstimatorML param_estimator(parser,
-                                                      extern_prior,
-                                                      intern_prior,
-                                                      ranges);
+      gum::learning::ParamEstimatorML param_estimator(parser, extern_prior, intern_prior, ranges);
 
       std::vector< double > r0  = param_estimator.parameters(gum::NodeId(0));
       std::vector< double > xr0 = _normalize_({401, 76, 76});

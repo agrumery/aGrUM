@@ -193,7 +193,7 @@ namespace gum {
                                        const bool                        induceTypes) :
         scoreDatabase_(filename, missing_symbols, induceTypes) {
       filename_     = filename;
-      noPrior_    = new NoPrior(scoreDatabase_.databaseTable());
+      noPrior_      = new NoPrior(scoreDatabase_.databaseTable());
       inducedTypes_ = induceTypes;
 
       GUM_CONSTRUCTOR(GenericBNLearner);
@@ -202,7 +202,7 @@ namespace gum {
 
     GenericBNLearner::GenericBNLearner(const DatabaseTable& db) : scoreDatabase_(db) {
       filename_     = "-";
-      noPrior_    = new NoPrior(scoreDatabase_.databaseTable());
+      noPrior_      = new NoPrior(scoreDatabase_.databaseTable());
       inducedTypes_ = false;
 
       GUM_CONSTRUCTOR(GenericBNLearner);
@@ -221,9 +221,9 @@ namespace gum {
         algoK2_(from.algoK2_), algoMiic3off2_(from.algoMiic3off2_), kmode3Off2_(from.kmode3Off2_),
         greedyHillClimbing_(from.greedyHillClimbing_),
         localSearchWithTabuList_(from.localSearchWithTabuList_),
-        scoreDatabase_(from.scoreDatabase_), ranges_(from.ranges_),
-        priorDbname_(from.priorDbname_), initialDag_(from.initialDag_),
-        filename_(from.filename_), nbDecreasingChanges_(from.nbDecreasingChanges_) {
+        scoreDatabase_(from.scoreDatabase_), ranges_(from.ranges_), priorDbname_(from.priorDbname_),
+        initialDag_(from.initialDag_), filename_(from.filename_),
+        nbDecreasingChanges_(from.nbDecreasingChanges_) {
       noPrior_ = new NoPrior(scoreDatabase_.databaseTable());
 
       GUM_CONS_CPY(GenericBNLearner);
@@ -232,8 +232,7 @@ namespace gum {
     GenericBNLearner::GenericBNLearner(GenericBNLearner&& from) :
         ThreadNumberManager(std::move(from)), inducedTypes_(from.inducedTypes_),
         scoreType_(from.scoreType_), paramEstimatorType_(from.paramEstimatorType_),
-        epsilonEM_(from.epsilonEM_), priorType_(from.priorType_),
-        priorWeight_(from.priorWeight_),
+        epsilonEM_(from.epsilonEM_), priorType_(from.priorType_), priorWeight_(from.priorWeight_),
         constraintSliceOrder_(std::move(from.constraintSliceOrder_)),
         constraintIndegree_(std::move(from.constraintIndegree_)),
         constraintTabuList_(std::move(from.constraintTabuList_)),
@@ -292,8 +291,8 @@ namespace gum {
         scoreType_                   = from.scoreType_;
         paramEstimatorType_          = from.paramEstimatorType_;
         epsilonEM_                   = from.epsilonEM_;
-        priorType_                 = from.priorType_;
-        priorWeight_               = from.priorWeight_;
+        priorType_                   = from.priorType_;
+        priorWeight_                 = from.priorWeight_;
         constraintSliceOrder_        = from.constraintSliceOrder_;
         constraintIndegree_          = from.constraintIndegree_;
         constraintTabuList_          = from.constraintTabuList_;
@@ -307,7 +306,7 @@ namespace gum {
         localSearchWithTabuList_     = from.localSearchWithTabuList_;
         scoreDatabase_               = from.scoreDatabase_;
         ranges_                      = from.ranges_;
-        priorDbname_               = from.priorDbname_;
+        priorDbname_                 = from.priorDbname_;
         initialDag_                  = from.initialDag_;
         filename_                    = from.filename_;
         nbDecreasingChanges_         = from.nbDecreasingChanges_;
@@ -343,8 +342,8 @@ namespace gum {
         scoreType_                   = from.scoreType_;
         paramEstimatorType_          = from.paramEstimatorType_;
         epsilonEM_                   = from.epsilonEM_;
-        priorType_                 = from.priorType_;
-        priorWeight_               = from.priorWeight_;
+        priorType_                   = from.priorType_;
+        priorWeight_                 = from.priorWeight_;
         constraintSliceOrder_        = std::move(from.constraintSliceOrder_);
         constraintIndegree_          = std::move(from.constraintIndegree_);
         constraintTabuList_          = std::move(from.constraintTabuList_);
@@ -358,7 +357,7 @@ namespace gum {
         localSearchWithTabuList_     = std::move(from.localSearchWithTabuList_);
         scoreDatabase_               = std::move(from.scoreDatabase_);
         ranges_                      = std::move(from.ranges_);
-        priorDbname_               = std::move(from.priorDbname_);
+        priorDbname_                 = std::move(from.priorDbname_);
         filename_                    = std::move(from.filename_);
         initialDag_                  = std::move(from.initialDag_);
         nbDecreasingChanges_         = std::move(from.nbDecreasingChanges_);
@@ -480,8 +479,8 @@ namespace gum {
              = new Database(priorDbname_, scoreDatabase_, scoreDatabase_.missingSymbols());
 
           prior_ = new DirichletPriorFromDatabase(scoreDatabase_.databaseTable(),
-                                                    priorDatabase_->parser(),
-                                                    priorDatabase_->nodeId2Columns());
+                                                  priorDatabase_->parser(),
+                                                  priorDatabase_->nodeId2Columns());
           break;
 
         case BNLearnerPriorType::BDEU:

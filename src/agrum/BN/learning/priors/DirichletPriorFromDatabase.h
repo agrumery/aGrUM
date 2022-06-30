@@ -76,7 +76,7 @@ namespace gum {
       DirichletPriorFromDatabase(const DirichletPriorFromDatabase& from);
 
       /// move constructor
-      DirichletPriorFromDatabase(DirichletPriorFromDatabase&& from) noexcept ;
+      DirichletPriorFromDatabase(DirichletPriorFromDatabase&& from) noexcept;
 
       /// virtual copy constructor
       virtual DirichletPriorFromDatabase* clone() const;
@@ -128,15 +128,14 @@ namespace gum {
        * conditioning bar of the idset.
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint variables set. */
-      virtual void addAllPrior(const IdCondSet& idset, std::vector< double >& counts) final;
+      virtual void addJointPseudoCount(const IdCondSet& idset, std::vector< double >& counts) final;
 
       /** @brief adds the prior to a counting vectordefined over the right
        * hand side of the idset
        *
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint RHS variables of the idset. */
-      void addConditioningPrior(const IdCondSet&       idset,
-                                          std::vector< double >& counts) final;
+      void addConditioningPseudoCount(const IdCondSet& idset, std::vector< double >& counts) final;
 
       /// @}
 

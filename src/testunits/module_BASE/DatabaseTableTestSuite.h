@@ -1368,7 +1368,8 @@ namespace gum_tests {
       intvar3.addValue(3);
       std::vector< std::string > missing3{"?"};
       TS_ASSERT_THROWS_NOTHING(db1.changeTranslator(intvar3, 0, true, missing3))
-      TS_ASSERT_THROWS(db1.changeTranslator(intvar3, 2, true, missing3), const gum::OperationNotAllowed&)
+      TS_ASSERT_THROWS(db1.changeTranslator(intvar3, 2, true, missing3),
+                       const gum::OperationNotAllowed&)
 
       const auto better = db1.betterTranslators();
       TS_ASSERT(!better.empty())

@@ -342,7 +342,8 @@ namespace gum_tests {
       try {
         gum::ImportanceSampling< double > inf(&bn);
         inf.addEvidence(bn.idFromName("d"), 0);
-        TS_ASSERT_THROWS(inf.addEvidence("i", std::vector< double >{1, 0, 1}), const gum::FatalError&)
+        TS_ASSERT_THROWS(inf.addEvidence("i", std::vector< double >{1, 0, 1}),
+                         const gum::FatalError&)
 
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_IMPORTANCE);

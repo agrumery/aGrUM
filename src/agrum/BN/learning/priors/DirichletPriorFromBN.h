@@ -111,7 +111,7 @@ namespace gum::learning {
      * take into account the prior in their computations. */
     bool isInformative() const final;
 
-    /// sets the weight of the a prior(kind of effective sample size)
+    /// sets the weight of the a prior(kind of virtual sample size)
     void setWeight(double weight) final;
 
     /// adds the prior to a counting vector corresponding to the idset
@@ -120,20 +120,23 @@ namespace gum::learning {
      * conditioning bar of the idset.
      * @warning the method assumes that the size of the vector is exactly
      * the domain size of the joint variables set. */
-    void addAllPrior(const IdCondSet& idset, std::vector< double >& counts) final;
+    void addJointPseudoCount(const IdCondSet& idset, std::vector< double >& counts) final;
 
     /** @brief adds the prior to a counting vector defined over the right
      * hand side of the idset
      *
      * @warning the method assumes that the size of the vector is exactly
      * the domain size of the joint RHS variables of the idset. */
-    void addConditioningPrior(const IdCondSet& idset, std::vector< double >& counts) final;
+    void addConditioningPseudoCount(const IdCondSet& idset, std::vector< double >& counts) final;
 
     /// @}
 
     private:
     const BayesNet< GUM_SCALAR >* _prior_bn_;
-    const LazyPropagation<GUM_SCALAR>* _lazy_;
+
+    void _addCountsForJoint_(Instantiation&         Ijoint,
+                             const Set< NodeId >&   joint,
+                             std::vector< double >& counts);
   };
   /* namespace learning */
 

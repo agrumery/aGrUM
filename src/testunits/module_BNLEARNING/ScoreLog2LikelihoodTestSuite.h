@@ -655,8 +655,7 @@ namespace gum_tests {
 
         TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreLog2Likelihood::isPriorCompatible(
            gum::learning::PriorType::SmoothingPriorType));
-        TS_GUM_ASSERT_THROWS_NOTHING(
-           gum::learning::ScoreLog2Likelihood::isPriorCompatible(prior));
+        TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreLog2Likelihood::isPriorCompatible(prior));
         TS_GUM_ASSERT_THROWS_NOTHING(
            score.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
         TS_GUM_ASSERT_THROWS_NOTHING(score.isPriorCompatible(prior))

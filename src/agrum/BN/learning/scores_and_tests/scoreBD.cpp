@@ -42,7 +42,7 @@ namespace gum {
     /// copy operator
     ScoreBD& ScoreBD::operator=(const ScoreBD& from) {
       if (this != &from) {
-        Score::operator    =(from);
+        Score::operator  =(from);
         _internal_prior_ = from._internal_prior_;
       }
       return *this;
@@ -52,7 +52,7 @@ namespace gum {
     /// move operator
     ScoreBD& ScoreBD::operator=(ScoreBD&& from) {
       if (this != &from) {
-        Score::operator    =(std::move(from));
+        Score::operator  =(std::move(from));
         _internal_prior_ = std::move(from._internal_prior_);
       }
       return *this;
@@ -89,7 +89,7 @@ namespace gum {
       std::vector< double > N_ijk(this->counter_.counts(idset, true));
       const std::size_t     all_size = N_ijk.size();
       std::vector< double > N_prime_ijk(all_size, 0.0);
-      this->prior_->addAllPrior(idset, N_prime_ijk);
+      this->prior_->addJointPseudoCount(idset, N_prime_ijk);
 
       double score = 0.0;
 
@@ -101,7 +101,7 @@ namespace gum {
         const std::size_t     conditioning_size = N_ij.size();
 
         std::vector< double > N_prime_ij(N_ij.size(), 0.0);
-        this->prior_->addConditioningPrior(idset, N_prime_ij);
+        this->prior_->addConditioningPseudoCount(idset, N_prime_ij);
 
         // the BD score can be computed as follows:
         // sum_j=1^qi [ gammalog2 ( N'_ij ) - gammalog2 ( N_ij + N'_ij )

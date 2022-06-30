@@ -42,12 +42,12 @@ namespace gum {
     /// copy operator
     PseudoCount& PseudoCount::operator=(const PseudoCount& from) {
       if (this != &from) {
-        Prior*        new_prior = from.prior_->clone();
+        Prior*        new_prior   = from.prior_->clone();
         RecordCounter new_counter = from.counter_;
 
         if (prior_ != nullptr) delete prior_;
 
-        prior_ = new_prior;
+        prior_   = new_prior;
         counter_ = std::move(new_counter);
       }
       return *this;
@@ -97,7 +97,7 @@ namespace gum {
       IdCondSet             idset(ids, false, true);
       std::vector< double > N_xyz(this->counter_.counts(idset, true));
       const bool            informative_external_prior = this->prior_->isInformative();
-      if (informative_external_prior) this->prior_->addAllPrior(idset, N_xyz);
+      if (informative_external_prior) this->prior_->addJointPseudoCount(idset, N_xyz);
       return N_xyz;
     }
 
