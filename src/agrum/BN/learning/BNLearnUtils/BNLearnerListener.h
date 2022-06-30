@@ -53,7 +53,7 @@
 
 namespace gum {
   namespace learning {
-    class GenericBNLearner;
+    class IBNLearner;
 
     /** @class BNLearnerListener
      * @brief A class that redirects gum_signal from algorithms to the listeners
@@ -64,7 +64,7 @@ namespace gum {
      */
     class BNLearnerListener: public ApproximationSchemeListener {
       public:
-      BNLearnerListener(GenericBNLearner* bnl, ApproximationScheme& sch);
+      BNLearnerListener(IBNLearner* bnl, ApproximationScheme& sch);
       virtual ~BNLearnerListener();
 
       virtual void whenProgress(const void*  src,
@@ -77,7 +77,7 @@ namespace gum {
       BNLearnerListener(const BNLearnerListener& other);
       BNLearnerListener& operator=(const BNLearnerListener& other);
 
-      GenericBNLearner* _bnlearner_;
+      IBNLearner* _bnlearner_;
     };
   }   // namespace learning
 }   // namespace gum

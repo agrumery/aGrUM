@@ -21,18 +21,18 @@
 
 #include <algorithm>
 
-#include <agrum/BN/learning/BNLearnUtils/genericBNLearner.h>
+#include <agrum/BN/learning/BNLearnUtils/IBNLearner.h>
 
 namespace gum {
 
   namespace learning {
 
     template < typename GUM_SCALAR >
-    GenericBNLearner::Database::Database(const std::string&                filename,
+    IBNLearner::Database::Database(const std::string&                filename,
                                          const BayesNet< GUM_SCALAR >&     bn,
                                          const std::vector< std::string >& missing_symbols) {
       // assign to each column name in the database its position
-      GenericBNLearner::isCSVFileName_(filename);
+      IBNLearner::isCSVFileName_(filename);
       DBInitializerFromCSV                  initializer(filename);
       const auto&                           xvar_names = initializer.variableNames();
       std::size_t                           nb_vars    = xvar_names.size();
@@ -70,7 +70,7 @@ namespace gum {
 
 
     template < typename GUM_SCALAR >
-    BayesNet< GUM_SCALAR > GenericBNLearner::Database::_BNVars_() const {
+    BayesNet< GUM_SCALAR > IBNLearner::Database::_BNVars_() const {
       BayesNet< GUM_SCALAR > bn;
       const std::size_t      nb_vars = _database_.nbVariables();
       for (std::size_t i = 0; i < nb_vars; ++i) {
@@ -83,14 +83,14 @@ namespace gum {
 
 
     template < typename GUM_SCALAR >
-    GenericBNLearner::GenericBNLearner(const std::string&                 filename,
+    IBNLearner::IBNLearner(const std::string&                 filename,
                                        const gum::BayesNet< GUM_SCALAR >& bn,
                                        const std::vector< std::string >&  missing_symbols) :
         scoreDatabase_(filename, bn, missing_symbols) {
       filename_     = filename;
       noPrior_      = new NoPrior(scoreDatabase_.databaseTable());
       inducedTypes_ = false;
-      GUM_CONSTRUCTOR(GenericBNLearner);
+      GUM_CONSTRUCTOR(IBNLearner);
     }
 
 

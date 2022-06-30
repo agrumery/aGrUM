@@ -40,7 +40,8 @@
 #include <agrum/tools/core/sequence.h>
 #include <agrum/tools/graphs/DAG.h>
 
-#include <agrum/BN/learning/BNLearnUtils/genericBNLearner.h>
+#include <agrum/BN/learning/BNLearnUtils/IBNLearner.h>
+#include <agrum/BN/learning/priors/DirichletPriorFromBN.h>
 
 namespace gum {
 
@@ -56,7 +57,7 @@ namespace gum {
      * @ingroup learning_group
      */
     template < typename GUM_SCALAR >
-    class BNLearner: public GenericBNLearner {
+    class BNLearner: public IBNLearner {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -165,194 +166,212 @@ namespace gum {
 
       //=== === add return to certain methods in order to chain command
       BNLearner< GUM_SCALAR >& setInitialDAG(const DAG& dag) {
-        GenericBNLearner::setInitialDAG(dag);
+        IBNLearner::setInitialDAG(dag);
         return *this;
       }
       BNLearner< GUM_SCALAR >& useEM(const double epsilon) {
-        GenericBNLearner::useEM(epsilon);
+        IBNLearner::useEM(epsilon);
         return *this;
       }
       BNLearner< GUM_SCALAR >& useScoreAIC() {
-        GenericBNLearner::useScoreAIC();
+        IBNLearner::useScoreAIC();
         return *this;
       }
       BNLearner< GUM_SCALAR >& useScoreBD() {
-        GenericBNLearner::useScoreBD();
+        IBNLearner::useScoreBD();
         return *this;
       }
       BNLearner< GUM_SCALAR >& useScoreBDeu() {
-        GenericBNLearner::useScoreBDeu();
+        IBNLearner::useScoreBDeu();
         return *this;
       }
       BNLearner< GUM_SCALAR >& useScoreBIC() {
-        GenericBNLearner::useScoreBIC();
+        IBNLearner::useScoreBIC();
         return *this;
       }
       BNLearner< GUM_SCALAR >& useScoreK2() {
-        GenericBNLearner::useScoreK2();
+        IBNLearner::useScoreK2();
         return *this;
       }
       BNLearner< GUM_SCALAR >& useScoreLog2Likelihood() {
-        GenericBNLearner::useScoreLog2Likelihood();
+        IBNLearner::useScoreLog2Likelihood();
         return *this;
       }
       BNLearner< GUM_SCALAR >& useNoPrior() {
-        GenericBNLearner::useNoPrior();
+        IBNLearner::useNoPrior();
         return *this;
       }
       BNLearner< GUM_SCALAR >& useBDeuPrior(double weight = 1.0) {
-        GenericBNLearner::useBDeuPrior(weight);
+        IBNLearner::useBDeuPrior(weight);
         return *this;
       }
       BNLearner< GUM_SCALAR >& useSmoothingPrior(double weight = 1) {
-        GenericBNLearner::useSmoothingPrior(weight);
+        IBNLearner::useSmoothingPrior(weight);
         return *this;
       }
       BNLearner< GUM_SCALAR >& useDirichletPrior(const std::string& filename, double weight = 1) {
-        GenericBNLearner::useDirichletPrior(filename, weight);
+        IBNLearner::useDirichletPrior(filename, weight);
         return *this;
       }
+      BNLearner< GUM_SCALAR >& useDirichletPrior(const gum::BayesNet< GUM_SCALAR >& bn,
+                                                 double                             weight = 1) {
+        if (weight < 0) { GUM_ERROR(OutOfBounds, "the weight of the prior must be positive") }
+
+        _prior_bn_ = gum::BayesNet< GUM_SCALAR >(bn);
+        priorType_ = BNLearnerPriorType::DIRICHLET_FROM_BAYESNET;
+        _setPriorWeight_(weight);
+
+        checkScorePriorCompatibility();
+        return *this;
+      }
+
       BNLearner< GUM_SCALAR >& useGreedyHillClimbing() {
-        GenericBNLearner::useGreedyHillClimbing();
+        IBNLearner::useGreedyHillClimbing();
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& useLocalSearchWithTabuList(Size tabu_size   = 100,
                                                           Size nb_decrease = 2) {
-        GenericBNLearner::useLocalSearchWithTabuList(tabu_size, nb_decrease);
+        IBNLearner::useLocalSearchWithTabuList(tabu_size, nb_decrease);
         return *this;
       }
       BNLearner< GUM_SCALAR >& useK2(const Sequence< NodeId >& order) {
-        GenericBNLearner::useK2(order);
+        IBNLearner::useK2(order);
         return *this;
       }
       BNLearner< GUM_SCALAR >& useK2(const std::vector< NodeId >& order) {
-        GenericBNLearner::useK2(order);
+        IBNLearner::useK2(order);
         return *this;
       }
       BNLearner< GUM_SCALAR >& use3off2() {
-        GenericBNLearner::use3off2();
+        IBNLearner::use3off2();
         return *this;
       }
       BNLearner< GUM_SCALAR >& useMIIC() {
-        GenericBNLearner::useMIIC();
+        IBNLearner::useMIIC();
         return *this;
       }
       BNLearner< GUM_SCALAR >& useNMLCorrection() {
-        GenericBNLearner::useNMLCorrection();
+        IBNLearner::useNMLCorrection();
         return *this;
       }
       BNLearner< GUM_SCALAR >& useMDLCorrection() {
-        GenericBNLearner::useMDLCorrection();
+        IBNLearner::useMDLCorrection();
         return *this;
       }
       BNLearner< GUM_SCALAR >& useNoCorrection() {
-        GenericBNLearner::useNoCorrection();
+        IBNLearner::useNoCorrection();
         return *this;
       }
       BNLearner< GUM_SCALAR >& setMaxIndegree(Size max_indegree) {
-        GenericBNLearner::setMaxIndegree(max_indegree);
+        IBNLearner::setMaxIndegree(max_indegree);
         return *this;
       }
       BNLearner< GUM_SCALAR >& setSliceOrder(const NodeProperty< NodeId >& slice_order) {
-        GenericBNLearner::setSliceOrder(slice_order);
+        IBNLearner::setSliceOrder(slice_order);
         return *this;
       }
       BNLearner< GUM_SCALAR >&
          setSliceOrder(const std::vector< std::vector< std::string > >& slices) {
-        GenericBNLearner::setSliceOrder(slices);
+        IBNLearner::setSliceOrder(slices);
         return *this;
       }
       BNLearner< GUM_SCALAR >& setForbiddenArcs(const ArcSet& set) {
-        GenericBNLearner::setForbiddenArcs(set);
+        IBNLearner::setForbiddenArcs(set);
         return *this;
       }
       BNLearner< GUM_SCALAR >& addForbiddenArc(const Arc& arc) {
-        GenericBNLearner::addForbiddenArc(arc);
+        IBNLearner::addForbiddenArc(arc);
         return *this;
       }
       BNLearner< GUM_SCALAR >& addForbiddenArc(const NodeId tail, const NodeId head) {
-        GenericBNLearner::addForbiddenArc(tail, head);
+        IBNLearner::addForbiddenArc(tail, head);
         return *this;
       }
       BNLearner< GUM_SCALAR >& addForbiddenArc(const std::string& tail, const std::string& head) {
-        GenericBNLearner::addForbiddenArc(tail, head);
+        IBNLearner::addForbiddenArc(tail, head);
         return *this;
       }
       BNLearner< GUM_SCALAR >& eraseForbiddenArc(const Arc& arc) {
-        GenericBNLearner::eraseForbiddenArc(arc);
+        IBNLearner::eraseForbiddenArc(arc);
         return *this;
       }
       BNLearner< GUM_SCALAR >& eraseForbiddenArc(const NodeId tail, const NodeId head) {
-        GenericBNLearner::eraseForbiddenArc(tail, head);
+        IBNLearner::eraseForbiddenArc(tail, head);
         return *this;
       }
       BNLearner< GUM_SCALAR >& eraseForbiddenArc(const std::string& tail, const std::string& head) {
-        GenericBNLearner::eraseForbiddenArc(tail, head);
+        IBNLearner::eraseForbiddenArc(tail, head);
         return *this;
       }
       BNLearner< GUM_SCALAR >& addMandatoryArc(const Arc& arc) {
-        GenericBNLearner::addMandatoryArc(arc);
+        IBNLearner::addMandatoryArc(arc);
         return *this;
       }
       BNLearner< GUM_SCALAR >& addMandatoryArc(const NodeId tail, const NodeId head) {
-        GenericBNLearner::addMandatoryArc(tail, head);
+        IBNLearner::addMandatoryArc(tail, head);
         return *this;
       }
       BNLearner< GUM_SCALAR >& addMandatoryArc(const std::string& tail, const std::string& head) {
-        GenericBNLearner::addMandatoryArc(tail, head);
+        IBNLearner::addMandatoryArc(tail, head);
         return *this;
       }
       BNLearner< GUM_SCALAR >& eraseMandatoryArc(const Arc& arc) {
-        GenericBNLearner::eraseMandatoryArc(arc);
+        IBNLearner::eraseMandatoryArc(arc);
         return *this;
       }
       BNLearner< GUM_SCALAR >& eraseMandatoryArc(const NodeId tail, const NodeId head) {
-        GenericBNLearner::eraseMandatoryArc(tail, head);
+        IBNLearner::eraseMandatoryArc(tail, head);
         return *this;
       }
       BNLearner< GUM_SCALAR >& eraseMandatoryArc(const std::string& tail, const std::string& head) {
-        GenericBNLearner::eraseMandatoryArc(tail, head);
+        IBNLearner::eraseMandatoryArc(tail, head);
         return *this;
       }
       BNLearner< GUM_SCALAR >& addPossibleEdge(const Edge& edge) {
-        GenericBNLearner::addPossibleEdge(edge);
+        IBNLearner::addPossibleEdge(edge);
         return *this;
       }
       BNLearner< GUM_SCALAR >& addPossibleEdge(const NodeId tail, const NodeId head) {
-        GenericBNLearner::addPossibleEdge(tail, head);
+        IBNLearner::addPossibleEdge(tail, head);
         return *this;
       }
       BNLearner< GUM_SCALAR >& addPossibleEdge(const std::string& tail, const std::string& head) {
-        GenericBNLearner::addPossibleEdge(tail, head);
+        IBNLearner::addPossibleEdge(tail, head);
         return *this;
       }
       BNLearner< GUM_SCALAR >& erasePossibleEdge(const Edge& edge) {
-        GenericBNLearner::erasePossibleEdge(edge);
+        IBNLearner::erasePossibleEdge(edge);
         return *this;
       }
       BNLearner< GUM_SCALAR >& erasePossibleEdge(const NodeId tail, const NodeId head) {
-        GenericBNLearner::erasePossibleEdge(tail, head);
+        IBNLearner::erasePossibleEdge(tail, head);
         return *this;
       }
       BNLearner< GUM_SCALAR >& erasePossibleEdge(const std::string& tail, const std::string& head) {
-        GenericBNLearner::erasePossibleEdge(tail, head);
+        IBNLearner::erasePossibleEdge(tail, head);
         return *this;
       }
       BNLearner< GUM_SCALAR >& setMandatoryArcs(const ArcSet& set) {
-        GenericBNLearner::setMandatoryArcs(set);
+        IBNLearner::setMandatoryArcs(set);
         return *this;
       }
       BNLearner< GUM_SCALAR >& setPossibleEdges(const EdgeSet& set) {
-        GenericBNLearner::setPossibleEdges(set);
+        IBNLearner::setPossibleEdges(set);
         return *this;
       }
       BNLearner< GUM_SCALAR >& setPossibleSkeleton(const UndiGraph& skeleton) {
-        GenericBNLearner::setPossibleSkeleton(skeleton);
+        IBNLearner::setPossibleSkeleton(skeleton);
         return *this;
       }
 
+      protected:
+      /// create the prior used for learning
+      void createPrior_() final;
 
       private:
+      BayesNet< GUM_SCALAR > _prior_bn_;
+
       /// read the first line of a file to find column names
       NodeProperty< Sequence< std::string > > _labelsFromBN_(const std::string&            filename,
                                                              const BayesNet< GUM_SCALAR >& src);

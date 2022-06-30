@@ -43,12 +43,12 @@ namespace gum {
     BNLearner< GUM_SCALAR >::BNLearner(const std::string&                filename,
                                        const std::vector< std::string >& missingSymbols,
                                        const bool                        induceTypes) :
-        GenericBNLearner(filename, missingSymbols, induceTypes) {
+        IBNLearner(filename, missingSymbols, induceTypes) {
       GUM_CONSTRUCTOR(BNLearner);
     }
 
     template < typename GUM_SCALAR >
-    BNLearner< GUM_SCALAR >::BNLearner(const DatabaseTable& db) : GenericBNLearner(db) {
+    BNLearner< GUM_SCALAR >::BNLearner(const DatabaseTable& db) : IBNLearner(db) {
       GUM_CONSTRUCTOR(BNLearner);
     }
 
@@ -56,19 +56,19 @@ namespace gum {
     BNLearner< GUM_SCALAR >::BNLearner(const std::string&                 filename,
                                        const gum::BayesNet< GUM_SCALAR >& bn,
                                        const std::vector< std::string >&  missing_symbols) :
-        GenericBNLearner(filename, bn, missing_symbols) {
+        IBNLearner(filename, bn, missing_symbols) {
       GUM_CONSTRUCTOR(BNLearner);
     }
 
     /// copy constructor
     template < typename GUM_SCALAR >
-    BNLearner< GUM_SCALAR >::BNLearner(const BNLearner< GUM_SCALAR >& src) : GenericBNLearner(src) {
+    BNLearner< GUM_SCALAR >::BNLearner(const BNLearner< GUM_SCALAR >& src) : IBNLearner(src) {
       GUM_CONSTRUCTOR(BNLearner);
     }
 
     /// move constructor
     template < typename GUM_SCALAR >
-    BNLearner< GUM_SCALAR >::BNLearner(BNLearner< GUM_SCALAR >&& src) : GenericBNLearner(src) {
+    BNLearner< GUM_SCALAR >::BNLearner(BNLearner< GUM_SCALAR >&& src) : IBNLearner(src) {
       GUM_CONSTRUCTOR(BNLearner);
     }
 
@@ -89,14 +89,14 @@ namespace gum {
     template < typename GUM_SCALAR >
     BNLearner< GUM_SCALAR >&
        BNLearner< GUM_SCALAR >::operator=(const BNLearner< GUM_SCALAR >& src) {
-      GenericBNLearner::operator=(src);
+      IBNLearner::operator=(src);
       return *this;
     }
 
     /// move operator
     template < typename GUM_SCALAR >
     BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::operator=(BNLearner< GUM_SCALAR >&& src) {
-      GenericBNLearner::operator=(std::move(src));
+      IBNLearner::operator=(std::move(src));
       return *this;
     }
 
@@ -371,7 +371,11 @@ namespace gum {
           break;
         case BNLearnerPriorType::DIRICHLET_FROM_DATABASE:
           vals.emplace_back(key, "Dirichlet", comment);
-          vals.emplace_back("Dirichlet database", priorDbname_, "");
+          vals.emplace_back("Dirichlet from database", priorDbname_, "");
+          break;
+        case BNLearnerPriorType::DIRICHLET_FROM_BAYESNET:
+          vals.emplace_back(key, "Dirichlet", comment);
+          vals.emplace_back("Dirichlet from Bayesian network : ", _prior_bn_.toString() , "");
           break;
         case BNLearnerPriorType::BDEU:
           vals.emplace_back(key, "BDEU", comment);
@@ -468,11 +472,60 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
+    void BNLearner< GUM_SCALAR >::createPrior_() {
+      // first, save the old prior, to be delete if everything is ok
+      Prior* old_prior = prior_;
+
+      // create the new prior
+      switch (priorType_) {
+        case BNLearnerPriorType::NO_prior:
+          prior_ = new NoPrior(scoreDatabase_.databaseTable(), scoreDatabase_.nodeId2Columns());
+          break;
+
+        case BNLearnerPriorType::SMOOTHING:
+          prior_
+             = new SmoothingPrior(scoreDatabase_.databaseTable(), scoreDatabase_.nodeId2Columns());
+          break;
+
+        case BNLearnerPriorType::DIRICHLET_FROM_DATABASE:
+          if (priorDatabase_ != nullptr) {
+            delete priorDatabase_;
+            priorDatabase_ = nullptr;
+          }
+
+          priorDatabase_
+             = new Database(priorDbname_, scoreDatabase_, scoreDatabase_.missingSymbols());
+
+          prior_ = new DirichletPriorFromDatabase(scoreDatabase_.databaseTable(),
+                                                  priorDatabase_->parser(),
+                                                  priorDatabase_->nodeId2Columns());
+          break;
+
+        case BNLearnerPriorType::DIRICHLET_FROM_BAYESNET:
+          prior_ = new DirichletPriorFromBN<GUM_SCALAR>(scoreDatabase_.databaseTable(), &_prior_bn_);
+          break;
+
+        case BNLearnerPriorType::BDEU:
+          prior_ = new BDeuPrior(scoreDatabase_.databaseTable(), scoreDatabase_.nodeId2Columns());
+          break;
+
+        default:
+          GUM_ERROR(OperationNotAllowed, "The BNLearner does not support yet this prior")
+      }
+
+      // do not forget to assign a weight to the prior
+      prior_->setWeight(priorWeight_);
+
+      // remove the old prior, if any
+      if (old_prior != nullptr) delete old_prior;
+    }
+
+
+    template < typename GUM_SCALAR >
     INLINE std::ostream& operator<<(std::ostream& output, const BNLearner< GUM_SCALAR >& learner) {
       output << learner.toString();
       return output;
     }
-
   } /* namespace learning */
 
 } /* namespace gum */

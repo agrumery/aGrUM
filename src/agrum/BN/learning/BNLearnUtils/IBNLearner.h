@@ -98,14 +98,14 @@ namespace gum {
 
     class BNLearnerListener;
 
-    /** @class GenericBNLearner
+    /** @class IBNLearner
      * @brief A pack of learning algorithms that can easily be used
      *
      * The pack currently contains K2, GreedyHillClimbing and
      * LocalSearchWithTabuList also 3off2/miic
      * @ingroup learning_group
      */
-    class GenericBNLearner:
+    class IBNLearner:
         public gum::IApproximationSchemeConfiguration,
         public ThreadNumberManager {
       // private:
@@ -129,6 +129,7 @@ namespace gum {
         NO_prior,
         SMOOTHING,
         DIRICHLET_FROM_DATABASE,
+        DIRICHLET_FROM_BAYESNET,
         BDEU
       };
 
@@ -324,11 +325,11 @@ namespace gum {
        * precisely what the BNLearner will do. If inducedTypes is false, all the values in
        * the dataset are interpreted as "labels", i.e., as categorical values.
        */
-      GenericBNLearner(const std::string&                filename,
+      IBNLearner(const std::string&                filename,
                        const std::vector< std::string >& missingSymbols,
                        bool                              induceTypes = true);
 
-      GenericBNLearner(const DatabaseTable& db);
+      IBNLearner(const DatabaseTable& db);
 
       /**
        * read the database file for the score / parameter estimation and var
@@ -348,18 +349,18 @@ namespace gum {
        * be interpreted as missing values
        */
       template < typename GUM_SCALAR >
-      GenericBNLearner(const std::string&                 filename,
+      IBNLearner(const std::string&                 filename,
                        const gum::BayesNet< GUM_SCALAR >& src,
                        const std::vector< std::string >&  missing_symbols);
 
       /// copy constructor
-      GenericBNLearner(const GenericBNLearner&);
+      IBNLearner(const IBNLearner&);
 
       /// move constructor
-      GenericBNLearner(GenericBNLearner&&);
+      IBNLearner(IBNLearner&&);
 
       /// destructor
-      virtual ~GenericBNLearner();
+      virtual ~IBNLearner();
 
       /// @}
 
@@ -369,10 +370,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      GenericBNLearner& operator=(const GenericBNLearner&);
+      IBNLearner& operator=(const IBNLearner&);
 
       /// move operator
-      GenericBNLearner& operator=(GenericBNLearner&&);
+      IBNLearner& operator=(IBNLearner&&);
 
       /// @}
 
@@ -614,13 +615,12 @@ namespace gum {
 
       /// use the prior smoothing
       /** @param weight pass in argument a weight if you wish to assign a weight
-       * to the smoothing, else the current weight of the GenericBNLearner will
+       * to the smoothing, else the current weight of the IBNLearner will
        * be used. */
       void useSmoothingPrior(double weight = 1);
 
-      /// use the Dirichlet prior
+      /// use the Dirichlet prior from a database
       void useDirichletPrior(const std::string& filename, double weight = 1);
-
 
       /// checks whether the current score and prior are compatible
       /** @returns a non empty string if the prior is somehow compatible with the
@@ -873,7 +873,7 @@ namespace gum {
       static void isCSVFileName_(const std::string& filename);
 
       /// create the prior used for learning
-      void createPrior_();
+      virtual void createPrior_()=0;
 
       /// create the score used for learning
       void createScore_();
@@ -900,7 +900,7 @@ namespace gum {
       /// @name redistribute signals AND implementation of interface
       /// IApproximationSchemeConfiguration
       // ##########################################################################
-      // in order to not pollute the proper code of GenericBNLearner, we
+      // in order to not pollute the proper code of IBNLearner, we
       // directly
       // implement those
       // very simples methods here.
@@ -1181,9 +1181,9 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#  include <agrum/BN/learning/BNLearnUtils/genericBNLearner_inl.h>
+#  include <agrum/BN/learning/BNLearnUtils/IBNLearner_inl.h>
 #endif /* GUM_NO_INLINE */
 
-#include <agrum/BN/learning/BNLearnUtils/genericBNLearner_tpl.h>
+#include <agrum/BN/learning/BNLearnUtils/IBNLearner_tpl.h>
 
 #endif /* GUM_LEARNING_GENERIC_BN_LEARNER_H */

@@ -33,7 +33,7 @@
 
 #include <agrum/agrum.h>
 #include <agrum/BN/learning/BNLearnUtils/BNLearnerListener.h>
-#include <agrum/BN/learning/BNLearnUtils/genericBNLearner.h>
+#include <agrum/BN/learning/BNLearnUtils/IBNLearner.h>
 #include <agrum/tools/stattests/indepTestChi2.h>
 #include <agrum/tools/stattests/indepTestG2.h>
 #include <agrum/BN/learning/scores_and_tests/scoreLog2Likelihood.h>
@@ -41,7 +41,7 @@
 
 // include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
-#  include <agrum/BN/learning/BNLearnUtils/genericBNLearner_inl.h>
+#  include <agrum/BN/learning/BNLearnUtils/IBNLearner_inl.h>
 #endif /* GUM_NO_INLINE */
 
 namespace gum {
@@ -49,7 +49,7 @@ namespace gum {
   namespace learning {
 
 
-    GenericBNLearner::Database::Database(const DatabaseTable& db) : _database_(db) {
+    IBNLearner::Database::Database(const DatabaseTable& db) : _database_(db) {
       // get the variables names
       const auto&       var_names = _database_.variableNames();
       const std::size_t nb_vars   = var_names.size();
@@ -64,10 +64,10 @@ namespace gum {
     }
 
 
-    GenericBNLearner::Database::Database(const std::string&                filename,
+    IBNLearner::Database::Database(const std::string&                filename,
                                          const std::vector< std::string >& missing_symbols,
                                          const bool                        induceTypes) :
-        Database(GenericBNLearner::readFile_(filename, missing_symbols)) {
+        Database(IBNLearner::readFile_(filename, missing_symbols)) {
       // if the usr wants the best translators to be inferred, just do it
       if (induceTypes) {
         for (const auto& new_trans: _database_.betterTranslators()) {
@@ -81,11 +81,11 @@ namespace gum {
     }
 
 
-    GenericBNLearner::Database::Database(const std::string&                CSV_filename,
+    IBNLearner::Database::Database(const std::string&                CSV_filename,
                                          Database&                         score_database,
                                          const std::vector< std::string >& missing_symbols) {
       // assign to each column name in the CSV file its column
-      GenericBNLearner::isCSVFileName_(CSV_filename);
+      IBNLearner::isCSVFileName_(CSV_filename);
       DBInitializerFromCSV                  initializer(CSV_filename);
       const auto&                           prior_names   = initializer.variableNames();
       std::size_t                           prior_nb_vars = prior_names.size();
@@ -139,7 +139,7 @@ namespace gum {
     }
 
 
-    GenericBNLearner::Database::Database(const Database& from) :
+    IBNLearner::Database::Database(const Database& from) :
         _database_(from._database_), _domain_sizes_(from._domain_sizes_),
         _nodeId2cols_(from._nodeId2cols_) {
       // create the parser
@@ -147,7 +147,7 @@ namespace gum {
     }
 
 
-    GenericBNLearner::Database::Database(Database&& from) :
+    IBNLearner::Database::Database(Database&& from) :
         _database_(std::move(from._database_)), _domain_sizes_(std::move(from._domain_sizes_)),
         _nodeId2cols_(std::move(from._nodeId2cols_)) {
       // create the parser
@@ -155,9 +155,9 @@ namespace gum {
     }
 
 
-    GenericBNLearner::Database::~Database() { delete _parser_; }
+    IBNLearner::Database::~Database() { delete _parser_; }
 
-    GenericBNLearner::Database& GenericBNLearner::Database::operator=(const Database& from) {
+    IBNLearner::Database& IBNLearner::Database::operator=(const Database& from) {
       if (this != &from) {
         delete _parser_;
         _database_     = from._database_;
@@ -171,7 +171,7 @@ namespace gum {
       return *this;
     }
 
-    GenericBNLearner::Database& GenericBNLearner::Database::operator=(Database&& from) {
+    IBNLearner::Database& IBNLearner::Database::operator=(Database&& from) {
       if (this != &from) {
         delete _parser_;
         _database_     = std::move(from._database_);
@@ -188,7 +188,7 @@ namespace gum {
 
     // ===========================================================================
 
-    GenericBNLearner::GenericBNLearner(const std::string&                filename,
+    IBNLearner::IBNLearner(const std::string&                filename,
                                        const std::vector< std::string >& missing_symbols,
                                        const bool                        induceTypes) :
         scoreDatabase_(filename, missing_symbols, induceTypes) {
@@ -196,20 +196,20 @@ namespace gum {
       noPrior_      = new NoPrior(scoreDatabase_.databaseTable());
       inducedTypes_ = induceTypes;
 
-      GUM_CONSTRUCTOR(GenericBNLearner);
+      GUM_CONSTRUCTOR(IBNLearner);
     }
 
 
-    GenericBNLearner::GenericBNLearner(const DatabaseTable& db) : scoreDatabase_(db) {
+    IBNLearner::IBNLearner(const DatabaseTable& db) : scoreDatabase_(db) {
       filename_     = "-";
       noPrior_      = new NoPrior(scoreDatabase_.databaseTable());
       inducedTypes_ = false;
 
-      GUM_CONSTRUCTOR(GenericBNLearner);
+      GUM_CONSTRUCTOR(IBNLearner);
     }
 
 
-    GenericBNLearner::GenericBNLearner(const GenericBNLearner& from) :
+    IBNLearner::IBNLearner(const IBNLearner& from) :
         ThreadNumberManager(from), inducedTypes_(from.inducedTypes_), scoreType_(from.scoreType_),
         paramEstimatorType_(from.paramEstimatorType_), epsilonEM_(from.epsilonEM_),
         priorType_(from.priorType_), priorWeight_(from.priorWeight_),
@@ -226,10 +226,10 @@ namespace gum {
         nbDecreasingChanges_(from.nbDecreasingChanges_) {
       noPrior_ = new NoPrior(scoreDatabase_.databaseTable());
 
-      GUM_CONS_CPY(GenericBNLearner);
+      GUM_CONS_CPY(IBNLearner);
     }
 
-    GenericBNLearner::GenericBNLearner(GenericBNLearner&& from) :
+    IBNLearner::IBNLearner(IBNLearner&& from) :
         ThreadNumberManager(std::move(from)), inducedTypes_(from.inducedTypes_),
         scoreType_(from.scoreType_), paramEstimatorType_(from.paramEstimatorType_),
         epsilonEM_(from.epsilonEM_), priorType_(from.priorType_), priorWeight_(from.priorWeight_),
@@ -248,10 +248,10 @@ namespace gum {
         nbDecreasingChanges_(std::move(from.nbDecreasingChanges_)) {
       noPrior_ = new NoPrior(scoreDatabase_.databaseTable());
 
-      GUM_CONS_MOV(GenericBNLearner)
+      GUM_CONS_MOV(IBNLearner)
     }
 
-    GenericBNLearner::~GenericBNLearner() {
+    IBNLearner::~IBNLearner() {
       if (score_) delete score_;
 
       if (prior_) delete prior_;
@@ -262,10 +262,10 @@ namespace gum {
 
       if (mutualInfo_) delete mutualInfo_;
 
-      GUM_DESTRUCTOR(GenericBNLearner);
+      GUM_DESTRUCTOR(IBNLearner);
     }
 
-    GenericBNLearner& GenericBNLearner::operator=(const GenericBNLearner& from) {
+    IBNLearner& IBNLearner::operator=(const IBNLearner& from) {
       if (this != &from) {
         if (score_) {
           delete score_;
@@ -316,7 +316,7 @@ namespace gum {
       return *this;
     }
 
-    GenericBNLearner& GenericBNLearner::operator=(GenericBNLearner&& from) {
+    IBNLearner& IBNLearner::operator=(IBNLearner&& from) {
       if (this != &from) {
         if (score_) {
           delete score_;
@@ -374,7 +374,7 @@ namespace gum {
 
       if (filename_size < 4) {
         GUM_ERROR(FormatNotFound,
-                  "GenericBNLearner could not determine the "
+                  "IBNLearner could not determine the "
                   "file type of the database '"
                      << filename << "'");
       }
@@ -384,7 +384,7 @@ namespace gum {
 
       if (extension != ".csv") {
         GUM_ERROR(OperationNotAllowed,
-                  "GenericBNLearner does not support yet this type ('" << extension
+                  "IBNLearner does not support yet this type ('" << extension
                                                                        << "')"
                                                                           "of database file");
       }
@@ -408,13 +408,13 @@ namespace gum {
     }
 
 
-    void GenericBNLearner::isCSVFileName_(const std::string& filename) {
+    void IBNLearner::isCSVFileName_(const std::string& filename) {
       // get the extension of the file
       Size filename_size = Size(filename.size());
 
       if (filename_size < 4) {
         GUM_ERROR(FormatNotFound,
-                  "GenericBNLearner could not determine the "
+                  "IBNLearner could not determine the "
                   "file type of the database");
       }
 
@@ -423,12 +423,12 @@ namespace gum {
 
       if (extension != ".csv") {
         GUM_ERROR(OperationNotAllowed,
-                  "GenericBNLearner does not support yet this type of database file");
+                  "IBNLearner does not support yet this type of database file");
       }
     }
 
 
-    DatabaseTable GenericBNLearner::readFile_(const std::string&                filename,
+    DatabaseTable IBNLearner::readFile_(const std::string&                filename,
                                               const std::vector< std::string >& missing_symbols) {
       // get the extension of the file
       isCSVFileName_(filename);
@@ -453,52 +453,7 @@ namespace gum {
       return database;
     }
 
-
-    void GenericBNLearner::createPrior_() {
-      // first, save the old prior, to be delete if everything is ok
-      Prior* old_prior = prior_;
-
-      // create the new prior
-      switch (priorType_) {
-        case BNLearnerPriorType::NO_prior:
-          prior_ = new NoPrior(scoreDatabase_.databaseTable(), scoreDatabase_.nodeId2Columns());
-          break;
-
-        case BNLearnerPriorType::SMOOTHING:
-          prior_
-             = new SmoothingPrior(scoreDatabase_.databaseTable(), scoreDatabase_.nodeId2Columns());
-          break;
-
-        case BNLearnerPriorType::DIRICHLET_FROM_DATABASE:
-          if (priorDatabase_ != nullptr) {
-            delete priorDatabase_;
-            priorDatabase_ = nullptr;
-          }
-
-          priorDatabase_
-             = new Database(priorDbname_, scoreDatabase_, scoreDatabase_.missingSymbols());
-
-          prior_ = new DirichletPriorFromDatabase(scoreDatabase_.databaseTable(),
-                                                  priorDatabase_->parser(),
-                                                  priorDatabase_->nodeId2Columns());
-          break;
-
-        case BNLearnerPriorType::BDEU:
-          prior_ = new BDeuPrior(scoreDatabase_.databaseTable(), scoreDatabase_.nodeId2Columns());
-          break;
-
-        default:
-          GUM_ERROR(OperationNotAllowed, "The BNLearner does not support yet this prior")
-      }
-
-      // do not forget to assign a weight to the prior
-      prior_->setWeight(priorWeight_);
-
-      // remove the old prior, if any
-      if (old_prior != nullptr) delete old_prior;
-    }
-
-    void GenericBNLearner::createScore_() {
+    void IBNLearner::createScore_() {
       // first, save the old score, to be delete if everything is ok
       Score* old_score = score_;
 
@@ -547,7 +502,7 @@ namespace gum {
           break;
 
         default:
-          GUM_ERROR(OperationNotAllowed, "GenericBNLearner does not support yet this score")
+          GUM_ERROR(OperationNotAllowed, "IBNLearner does not support yet this score")
       }
 
       // remove the old score, if any
@@ -558,7 +513,7 @@ namespace gum {
                                                                        : 0);
     }
 
-    ParamEstimator* GenericBNLearner::createParamEstimator_(DBRowGeneratorParser& parser,
+    ParamEstimator* IBNLearner::createParamEstimator_(DBRowGeneratorParser& parser,
                                                             bool take_into_account_score) {
       ParamEstimator* param_estimator = nullptr;
 
@@ -583,7 +538,7 @@ namespace gum {
 
         default:
           GUM_ERROR(OperationNotAllowed,
-                    "GenericBNLearner does not support "
+                    "IBNLearner does not support "
                        << "yet this parameter estimator");
       }
 
@@ -598,7 +553,7 @@ namespace gum {
     }
 
     /// prepares the initial graph for 3off2 or miic
-    MixedGraph GenericBNLearner::prepareMiic3Off2_() {
+    MixedGraph IBNLearner::prepareMiic3Off2_() {
       // Initialize the mixed graph to the fully connected graph
       MixedGraph mgraph;
       for (Size i = 0; i < scoreDatabase_.databaseTable().nbVariables(); ++i) {
@@ -628,7 +583,7 @@ namespace gum {
       return mgraph;
     }
 
-    MixedGraph GenericBNLearner::learnMixedStructure() {
+    MixedGraph IBNLearner::learnMixedStructure() {
       if (selectedAlgo_ != AlgoType::MIIC && selectedAlgo_ != AlgoType::THREE_OFF_TWO) {
         GUM_ERROR(OperationNotAllowed, "Must be using the miic/3off2 algorithm")
       }
@@ -646,7 +601,7 @@ namespace gum {
       return algoMiic3off2_.learnMixedStructure(*mutualInfo_, mgraph);
     }
 
-    DAG GenericBNLearner::learnDAG() {
+    DAG IBNLearner::learnDAG() {
       // create the score and the prior
       createPrior_();
       createScore_();
@@ -654,7 +609,7 @@ namespace gum {
       return learnDag_();
     }
 
-    void GenericBNLearner::createCorrectedMutualInformation_() {
+    void IBNLearner::createCorrectedMutualInformation_() {
       if (mutualInfo_ != nullptr) delete mutualInfo_;
 
       mutualInfo_ = new CorrectedMutualInformation(scoreDatabase_.parser(),
@@ -681,7 +636,7 @@ namespace gum {
       }
     }
 
-    DAG GenericBNLearner::learnDag_() {
+    DAG IBNLearner::learnDag_() {
       // check that the database does not contain any missing value
       if (scoreDatabase_.databaseTable().hasMissingValues()
           || ((priorDatabase_ != nullptr)
@@ -849,7 +804,7 @@ namespace gum {
       }
     }
 
-    std::string GenericBNLearner::checkScorePriorCompatibility() const {
+    std::string IBNLearner::checkScorePriorCompatibility() const {
       const auto prior = getPriorType_();
 
       switch (scoreType_) {
@@ -872,14 +827,14 @@ namespace gum {
           return ScoreLog2Likelihood::isPriorCompatible(prior, priorWeight_);
 
         default:
-          return "GenericBNLearner does not support yet this score";
+          return "IBNLearner does not support yet this score";
       }
     }
 
 
     /// sets the ranges of rows to be used for cross-validation learning
     std::pair< std::size_t, std::size_t >
-       GenericBNLearner::useCrossValidationFold(const std::size_t learning_fold,
+       IBNLearner::useCrossValidationFold(const std::size_t learning_fold,
                                                 const std::size_t k_fold) {
       if (k_fold == 0) { GUM_ERROR(OutOfBounds, "K-fold cross validation with k=0 is forbidden") }
 
@@ -918,7 +873,7 @@ namespace gum {
     }
 
 
-    std::pair< double, double > GenericBNLearner::chi2(const NodeId                 id1,
+    std::pair< double, double > IBNLearner::chi2(const NodeId                 id1,
                                                        const NodeId                 id2,
                                                        const std::vector< NodeId >& knowing) {
       createPrior_();
@@ -927,7 +882,7 @@ namespace gum {
       return chi2score.statistics(id1, id2, knowing);
     }
 
-    std::pair< double, double > GenericBNLearner::chi2(const std::string&                name1,
+    std::pair< double, double > IBNLearner::chi2(const std::string&                name1,
                                                        const std::string&                name2,
                                                        const std::vector< std::string >& knowing) {
       std::vector< NodeId > knowingIds;
@@ -938,7 +893,7 @@ namespace gum {
       return chi2(idFromName(name1), idFromName(name2), knowingIds);
     }
 
-    std::pair< double, double > GenericBNLearner::G2(const NodeId                 id1,
+    std::pair< double, double > IBNLearner::G2(const NodeId                 id1,
                                                      const NodeId                 id2,
                                                      const std::vector< NodeId >& knowing) {
       createPrior_();
@@ -946,7 +901,7 @@ namespace gum {
       return g2score.statistics(id1, id2, knowing);
     }
 
-    std::pair< double, double > GenericBNLearner::G2(const std::string&                name1,
+    std::pair< double, double > IBNLearner::G2(const std::string&                name1,
                                                      const std::string&                name2,
                                                      const std::vector< std::string >& knowing) {
       std::vector< NodeId > knowingIds;
@@ -957,7 +912,7 @@ namespace gum {
       return G2(idFromName(name1), idFromName(name2), knowingIds);
     }
 
-    double GenericBNLearner::logLikelihood(const std::vector< NodeId >& vars,
+    double IBNLearner::logLikelihood(const std::vector< NodeId >& vars,
                                            const std::vector< NodeId >& knowing) {
       createPrior_();
       gum::learning::ScoreLog2Likelihood ll2score(scoreDatabase_.parser(),
@@ -975,7 +930,7 @@ namespace gum {
       }
     }
 
-    double GenericBNLearner::logLikelihood(const std::vector< std::string >& vars,
+    double IBNLearner::logLikelihood(const std::vector< std::string >& vars,
                                            const std::vector< std::string >& knowing) {
       std::vector< NodeId > ids;
       std::vector< NodeId > knowingIds;
@@ -990,7 +945,7 @@ namespace gum {
       return logLikelihood(ids, knowingIds);
     }
 
-    std::vector< double > GenericBNLearner::rawPseudoCount(const std::vector< NodeId >& vars) {
+    std::vector< double > IBNLearner::rawPseudoCount(const std::vector< NodeId >& vars) {
       Potential< double > res;
 
       createPrior_();
@@ -999,7 +954,7 @@ namespace gum {
     }
 
 
-    std::vector< double > GenericBNLearner::rawPseudoCount(const std::vector< std::string >& vars) {
+    std::vector< double > IBNLearner::rawPseudoCount(const std::vector< std::string >& vars) {
       std::vector< NodeId > ids;
 
       auto mapper = [this](const std::string& c) -> NodeId {
@@ -1012,7 +967,7 @@ namespace gum {
 
 
     /// use a new set of database rows' ranges to perform learning
-    void GenericBNLearner::useDatabaseRanges(
+    void IBNLearner::useDatabaseRanges(
        const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges) {
       // use a score to detect whether the ranges are ok
       ScoreLog2Likelihood score(scoreDatabase_.parser(), *noPrior_);
