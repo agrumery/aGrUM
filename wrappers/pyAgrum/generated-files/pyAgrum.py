@@ -24620,7 +24620,7 @@ class BNLearner(object):
         return val
 
 
-    def useDirichletPrior(self, filename: str, weight: float=1) -> "pyAgrum.BNLearner":
+    def useDirichletPrior(self, *args) -> "pyAgrum.BNLearner":
         r"""
 
         Use the Dirichlet prior.
@@ -24631,7 +24631,7 @@ class BNLearner(object):
                 the Dirichlet related database
 
         """
-        val = _pyAgrum.BNLearner_useDirichletPrior(self, filename, weight)
+        val = _pyAgrum.BNLearner_useDirichletPrior(self, *args)
 
         return self
 

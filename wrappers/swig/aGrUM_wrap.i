@@ -353,7 +353,7 @@ namespace std {
 %import <agrum/BN/io/BIF/BIFReader.h>
 
 %import <agrum/tools/database/databaseTable.h>
-%import <agrum/BN/learning/BNLearnUtils/genericBNLearner.h>
+%import <agrum/BN/learning/BNLearnUtils/IBNLearner.h>
 %include <agrum/BN/learning/BNLearner.h>
 %include <agrum/BN/database/BNDatabaseGenerator.h>
 

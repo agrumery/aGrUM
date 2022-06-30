@@ -1843,9 +1843,8 @@ namespace gum_tests {
       }
     }
 
-    void test_DirichletFromBN() {
-      gum::BayesNet< double > model = gum::BayesNet< double >::fastPrototype("A;B;C;D", 3);
-
+    private:
+    void _test_dirichlet(const gum::BayesNet< double >& model) {
       gum::learning::BNLearner all(GET_RESSOURCES_PATH("dirichlet/dirichlet.csv"), model);
       all.useNoPrior();
       auto full = all.learnParameters(model.dag(), true);
@@ -1867,10 +1866,19 @@ namespace gum_tests {
         partial = learner.learnParameters(model.dag(), true);
         nb_elt += learner.nbRows();
       }
-      GUM_TRACE_VAR(partial.cpt("B"))
-      GUM_TRACE_VAR(partial.cpt("A"))
-      GUM_TRACE_VAR(partial.cpt("C"))
-      GUM_TRACE_VAR(partial.cpt("D"))
+
+      for (const auto& node: full.nodes()) {
+        TS_GUM_POTENTIAL_SHOW_DELTA(full.cpt(node),
+                                    gum::Potential(full.cpt(node)).fillWith(partial.cpt(node)),
+                                    TS_GUM_SMALL_ERROR)
+      }
+    }
+
+    public:
+    void test_DirichletFromBN() {
+      _test_dirichlet(gum::BayesNet< double >::fastPrototype("A;B;C;D", 3));
+      _test_dirichlet(gum::BayesNet< double >::fastPrototype("A->B->C->D", 3));
+      _test_dirichlet(gum::BayesNet< double >::fastPrototype("A->B->C<-D", 3));
     }
 
 

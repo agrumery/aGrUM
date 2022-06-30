@@ -62,32 +62,32 @@ ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::GibbsBNdistance<double
 
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::credal::CNMonteCarloSampling<double>)
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::credal::CNLoopyPropagation<double>)
-ADD_APPROXIMATIONSCHEME_API(gum::learning::GenericBNLearner,gum::learning::BNLearner<double>)
+ADD_APPROXIMATIONSCHEME_API(gum::learning::IBNLearner,gum::learning::BNLearner<double>)
 
 %extend gum::learning::BNLearner<double> {
-  using gum::learning::GenericBNLearner::setMaxTime;
-  using gum::learning::GenericBNLearner::maxTime;
-  using gum::learning::GenericBNLearner::currentTime;
+  using gum::learning::IBNLearner::setMaxTime;
+  using gum::learning::IBNLearner::maxTime;
+  using gum::learning::IBNLearner::currentTime;
 
-  using gum::learning::GenericBNLearner::learnDAG;
-  using gum::learning::GenericBNLearner::learnMixedStructure;
-  using gum::learning::GenericBNLearner::names;
-  using gum::learning::GenericBNLearner::idFromName;
-  using gum::learning::GenericBNLearner::nameFromId;
-  using gum::learning::GenericBNLearner::setDatabaseWeight;
-  using gum::learning::GenericBNLearner::setRecordWeight;
-  using gum::learning::GenericBNLearner::databaseWeight;
-  using gum::learning::GenericBNLearner::recordWeight;
-  using gum::learning::GenericBNLearner::hasMissingValues;
-  using gum::learning::GenericBNLearner::logLikelihood;
-  using gum::learning::GenericBNLearner::rawPseudoCount;
-  using gum::learning::GenericBNLearner::nbRows;
-  using gum::learning::GenericBNLearner::nbCols;
-  using gum::learning::GenericBNLearner::domainSize;
+  using gum::learning::IBNLearner::learnDAG;
+  using gum::learning::IBNLearner::learnMixedStructure;
+  using gum::learning::IBNLearner::names;
+  using gum::learning::IBNLearner::idFromName;
+  using gum::learning::IBNLearner::nameFromId;
+  using gum::learning::IBNLearner::setDatabaseWeight;
+  using gum::learning::IBNLearner::setRecordWeight;
+  using gum::learning::IBNLearner::databaseWeight;
+  using gum::learning::IBNLearner::recordWeight;
+  using gum::learning::IBNLearner::hasMissingValues;
+  using gum::learning::IBNLearner::logLikelihood;
+  using gum::learning::IBNLearner::rawPseudoCount;
+  using gum::learning::IBNLearner::nbRows;
+  using gum::learning::IBNLearner::nbCols;
+  using gum::learning::IBNLearner::domainSize;
 
-  using gum::learning::GenericBNLearner::setNumberOfThreads;
-  using gum::learning::GenericBNLearner::getNumberOfThreads;
-  using gum::learning::GenericBNLearner::isGumNumberOfThreadsOverriden;
+  using gum::learning::IBNLearner::setNumberOfThreads;
+  using gum::learning::IBNLearner::getNumberOfThreads;
+  using gum::learning::IBNLearner::isGumNumberOfThreadsOverriden;
 
 }
 

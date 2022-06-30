@@ -142,13 +142,10 @@ namespace gum::learning {
                                                                     std::vector< double >& counts) {
     if (this->weight_ == 0.0) return;
     const auto [X, Y] = idset.toNodeSets();
-    GUM_CHECKPOINT;
     gum::Instantiation Ijoint;
     for (auto i = idset.nbLHSIds(); i < idset.size(); i++)
       Ijoint.add(_prior_bn_->variable(idset.ids()[i]));
-    GUM_CHECKPOINT;
     _addCountsForJoint_(Ijoint, Y, counts);
-    GUM_CHECKPOINT;
   }
 
   template < typename GUM_SCALAR >
