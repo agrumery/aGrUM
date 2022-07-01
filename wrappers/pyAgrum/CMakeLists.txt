@@ -14,6 +14,7 @@ find_package (PythonLibs   ${PYTHON_VERSION_STRING} EXACT  REQUIRED)
 
 list (APPEND CMAKE_SWIG_FLAGS "-py3")
 list (APPEND CMAKE_SWIG_FLAGS "-fastdispatch")
+
 add_definitions ("-DSWIG_TYPE_TABLE=pyproba")
 
 # PYTHON_INSTALL

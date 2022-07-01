@@ -24609,7 +24609,7 @@ class BNLearner(object):
         Parameters
         ----------
         weight : float
-                pass in argument a weight if you wish to assign a weight to the smoothing, else the current weight of the learner will be used.
+                pass in argument a weight if you wish to assign a weight to the smoothing, otherwise the current weight of the learner will be used.
 
         """
         val = _pyAgrum.BNLearner_useSmoothingPrior(self, weight)
@@ -24627,8 +24627,10 @@ class BNLearner(object):
 
         Parameters
         ----------
-        filename : str
-                the Dirichlet related database
+        source : str|pyAgrum.BayesNet
+                the Dirichlet related source (filename of a database or a Bayesian network)
+        weight : float (optional)
+                the weight of the prior (the 'size' of the corresponding 'virtual database')
 
         """
         val = _pyAgrum.BNLearner_useDirichletPrior(self, *args)
