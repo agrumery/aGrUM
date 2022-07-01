@@ -57,7 +57,7 @@ namespace gum_tests {
 
   class BNLearnerTestSuite: public CxxTest::TestSuite {
     public:
-    void /*test*/ _asia() {
+    void test_asia() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"));
 
       learner.useLocalSearchWithTabuList(100, 1);
@@ -123,7 +123,7 @@ namespace gum_tests {
       }
     }
 
-    void /*test*/ _induceTypes() {
+    void test_induceTypes() {
       {
         gum::learning::BNLearner< double > learner1(GET_RESSOURCES_PATH("csv/asia.csv"));
         learner1.useScoreBDeu();
@@ -207,14 +207,14 @@ namespace gum_tests {
     }
 
 
-    void /*test*/ _guill() {
+    void test_guill() {
       try {
         gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3_withguill.csv"));
         TS_FAIL("asia3_withguill.csv contains syntax error (with \").");
       } catch ([[maybe_unused]] gum::SyntaxError& e) {};
     }
 
-    void /*test*/ _ranges() {
+    void test_ranges() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"));
 
       learner.useGreedyHillClimbing();
@@ -303,7 +303,7 @@ namespace gum_tests {
     }
 
 
-    void /*test*/ _asia_3off2() {
+    void test_asia_3off2() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia.csv"));
 
       aSimpleBNLeanerListener listen(learner);
@@ -394,7 +394,7 @@ namespace gum_tests {
     //   }
     // }
 
-    void /*test*/ _asia_with_domain_sizes() {
+    void test_asia_with_domain_sizes() {
       gum::learning::BNLearner< double > learn(GET_RESSOURCES_PATH("csv/asia3.csv"));
       const auto&                        database = learn.database();
 
@@ -572,7 +572,7 @@ namespace gum_tests {
       TS_ASSERT(except)
     }
 
-    void /*test*/ _asia_param() {
+    void test_asia_param() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"));
 
       gum::DAG dag;
@@ -598,7 +598,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-    void /*test*/ _asia_param_from_bn() {
+    void test_asia_param_from_bn() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"));
 
       learner.useK2(std::vector< gum::NodeId >{1, 5, 2, 6, 0, 3, 4, 7});
@@ -611,7 +611,7 @@ namespace gum_tests {
     }
 
 
-    void /*test*/ _asia_param_float() {
+    void test_asia_param_float() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"));
 
       gum::DAG dag;
@@ -637,7 +637,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-    void /*test*/ _asia_param_from_bn_float() {
+    void test_asia_param_from_bn_float() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"));
 
       learner.useK2(std::vector< gum::NodeId >{1, 5, 2, 6, 0, 3, 4, 7});
@@ -649,7 +649,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-    void /*test*/ _asia_param_bn() {
+    void test_asia_param_bn() {
 #define createBoolVar(s) gum::LabelizedVariable(s, s, 0).addLabel("false").addLabel("true");
       // smoking,lung_cancer,bronchitis,visit_to_Asia,tuberculosis,tuberculos_or_cancer,dyspnoea,positive_XraY
       auto s = createBoolVar("smoking");
@@ -698,7 +698,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-    void /*test*/ _asia_param_bn_with_not_matching_variable() {
+    void test_asia_param_bn_with_not_matching_variable() {
 #define createBoolVar(s) gum::LabelizedVariable(s, s, 0).addLabel("false").addLabel("true");
       auto s = createBoolVar("smoking");
       auto l = createBoolVar("lung_cancer");
@@ -735,7 +735,7 @@ namespace gum_tests {
       //                 const gum::MissingVariableInDatabase&);
     }
 
-    void /*test*/ _asia_param_bn_with_subset_of_variables_in_base() {
+    void test_asia_param_bn_with_subset_of_variables_in_base() {
 #define createBoolVar(s) gum::LabelizedVariable(s, s, 0).addLabel("false").addLabel("true");
       auto s = createBoolVar("smoking");
       auto t = createBoolVar("tuberculosis");
@@ -762,7 +762,7 @@ namespace gum_tests {
       gum::BayesNet< double > bn2 = learner.learnParameters(bn.dag());
     }
 
-    void /*test*/ _asia_param_bn_with_unknow_modality() {
+    void test_asia_param_bn_with_unknow_modality() {
 #define createBoolVar(s) gum::LabelizedVariable(s, s, 0).addLabel("false").addLabel("true");
       auto s = createBoolVar("smoking");
       auto t = createBoolVar("tuberculosis");
@@ -789,7 +789,7 @@ namespace gum_tests {
          const gum::UnknownLabelInDatabase&)
     }
 
-    void /*test*/ _listener() {
+    void test_listener() {
       {
         gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia.csv"));
         aSimpleBNLeanerListener            listen(learner);
@@ -851,7 +851,7 @@ namespace gum_tests {
       }
     }
 
-    void /*test*/ _DBNTonda() {
+    void test_DBNTonda() {
       gum::BayesNet< double > dbn;
       gum::NodeId             bf_0 = dbn.add(gum::LabelizedVariable("bf_0", "bf_0", 4));
       /*gum::NodeId bf_t =*/dbn.add(gum::LabelizedVariable("bf_t", "bf_t", 4));
@@ -944,7 +944,7 @@ namespace gum_tests {
     }
 
 
-    void /*test*/ _asia_with_missing_values() {
+    void test_asia_with_missing_values() {
       int nb = 0;
       try {
         gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3-faulty.csv"),
@@ -956,7 +956,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(nb, 1)
     }
 
-    void /*test*/ _BugDoumenc() {
+    void test_BugDoumenc() {
       gum::BayesNet< double >    templ;
       std::vector< std::string > varBool{"S",
                                          "DEP",
@@ -1029,7 +1029,7 @@ namespace gum_tests {
       auto bn = learner.learnParameters(templ.dag());
     }
 
-    void /*test*/ _BugDoumencWithInt() {
+    void test_BugDoumencWithInt() {
       gum::BayesNet< double >    templ;
       std::vector< std::string > varBool{"S",
                                          "DEP",
@@ -1114,7 +1114,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(good, 1)
     }
 
-    void /*test*/ _setSliceOrderWithNames() {
+    void test_setSliceOrderWithNames() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"));
       learner.setSliceOrder(
          {{"smoking", "lung_cancer"}, {"bronchitis", "visit_to_Asia"}, {"tuberculosis"}});
@@ -1133,7 +1133,7 @@ namespace gum_tests {
          const gum::MissingVariableInDatabase&)
     }
 
-    void /*test*/ _dirichlet() {
+    void test_dirichlet() {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B<-C->D->E<-B");
 
       gum::learning::BNDatabaseGenerator< double > genere(bn);
@@ -1158,7 +1158,7 @@ namespace gum_tests {
     }
 
 
-    void /*test*/ _dirichlet2() {
+    void test_dirichlet2() {
       // read the learning database
       gum::learning::DBInitializerFromCSV initializer(
          GET_RESSOURCES_PATH("csv/db_dirichlet_learning.csv"));
@@ -1238,7 +1238,7 @@ namespace gum_tests {
       }
     }
 
-    void /*test*/ _EM() {
+    void test_EM() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/EM.csv"),
                                                  std::vector< std::string >{"?"});
 
@@ -1261,7 +1261,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(learner.nbrIterations())
     }
 
-    void /*test*/ _chi2() {
+    void test_chi2() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"));
 
       auto reschi2 = learner.chi2("smoking", "lung_cancer");
@@ -1304,7 +1304,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(stat.second, 0.0005, 1e-4)
     }
 
-    void /*test*/ _G2() {
+    void test_G2() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"));
       auto                               resg2 = learner.G2("smoking", "lung_cancer");
       TS_ASSERT_DELTA(resg2.first, 43.0321, 1e-4)
@@ -1346,7 +1346,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(stat.second, 0.0002, 1e-4)
     }
 
-    void /*test*/ _cmpG2Chi2() {
+    void test_cmpG2Chi2() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/testXYbase.csv"));
       auto                               statChi2 = learner.chi2("X", "Y");
       TS_ASSERT_DELTA(statChi2.first, 15.3389, 1e-3)
@@ -1356,7 +1356,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(statG2.second, 0.0108433, 1e-6)
     }
 
-    void /*test*/ _loglikelihood() {
+    void test_loglikelihood() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/chi2.csv"));
       TS_ASSERT_EQUALS(learner.nbRows(), (gum::Size)500)
       TS_ASSERT_EQUALS(learner.nbCols(), (gum::Size)4)
@@ -1383,7 +1383,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(stat, 1.40077995 - 0.40217919, TS_GUM_SMALL_ERROR)
     }
 
-    void /*test*/ _errorFromPyagrum() {
+    void test_errorFromPyagrum() {
       try {
         gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/sample_asia.csv"));
         learner.use3off2();
@@ -1392,7 +1392,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-    void /*test*/ _PossibleEdges() {
+    void test_PossibleEdges() {
       //[smoking , lung_cancer , bronchitis , visit_to_Asia , tuberculosis ,
       // tuberculos_or_cancer , dyspnoea , positive_XraY]
       {
@@ -1447,7 +1447,7 @@ namespace gum_tests {
       }
     }
 
-    void /*test*/ _PossibleEdgesTabu() {
+    void test_PossibleEdgesTabu() {
       //[smoking , lung_cancer , bronchitis , visit_to_Asia , tuberculosis ,
       // tuberculos_or_cancer , dyspnoea , positive_XraY]
       {
@@ -1506,7 +1506,7 @@ namespace gum_tests {
       }
     }
 
-    void /*test*/ PseudoCount() {
+    void testPseudoCount() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/minimal.csv"));
       TS_ASSERT_EQUALS(learner.domainSize(0), 2u)
       TS_ASSERT_EQUALS(learner.domainSize("X"), 2u)
@@ -1531,7 +1531,7 @@ namespace gum_tests {
                        std::vector< double >({2, 1, 0, 1, 1, 2}));
     }
 
-    void /*test*/ NonRegressionZeroCount() {
+    void testNonRegressionZeroCount() {
       //////////////////////////
       // without specific score
       auto templ12 = gum::BayesNet< double >::fastPrototype("smoking->lung_cancer");
@@ -1586,7 +1586,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(learner4.learnParameters(templ34.dag()), const gum::DatabaseError&)
     }
 
-    void /*test*/ _misorientation_MIIC() {
+    void test_misorientation_MIIC() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/renewal.csv"));
 
       learner.useMIIC();
@@ -1607,7 +1607,7 @@ namespace gum_tests {
       }
     }
 
-    void /*test*/ State() {
+    void testState() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/renewal.csv"));
       {
         auto state = learner.state();
@@ -1725,7 +1725,7 @@ namespace gum_tests {
       }
     }
 
-    void /*test*/ StateContinued() {
+    void testStateContinued() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/renewal.csv"));
       learner.setDatabaseWeight(1000);
       learner.useK2(std::vector< gum::NodeId >{5, 4, 3, 2, 1, 0});
@@ -1750,7 +1750,7 @@ namespace gum_tests {
       }
     }
 
-    void /*test*/ _multicore() {
+    void test_multicore() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"));
 
       learner.useGreedyHillClimbing();
@@ -1868,9 +1868,9 @@ namespace gum_tests {
       }
 
       for (const auto& node: full.nodes()) {
-        TS_GUM_POTENTIAL_SHOW_DELTA(full.cpt(node),
-                                    gum::Potential(full.cpt(node)).fillWith(partial.cpt(node)),
-                                    TS_GUM_SMALL_ERROR)
+        TS_GUM_POTENTIAL_DELTA(full.cpt(node),
+                               gum::Potential(full.cpt(node)).fillWith(partial.cpt(node)),
+                               TS_GUM_SMALL_ERROR)
       }
     }
 
@@ -1878,7 +1878,9 @@ namespace gum_tests {
     void test_DirichletFromBN() {
       _test_dirichlet(gum::BayesNet< double >::fastPrototype("A;B;C;D", 3));
       _test_dirichlet(gum::BayesNet< double >::fastPrototype("A->B->C->D", 3));
-      _test_dirichlet(gum::BayesNet< double >::fastPrototype("A->B->C<-D", 3));
+      _test_dirichlet(gum::BayesNet< double >::fastPrototype("A<-B<-C<-D", 3));
+      _test_dirichlet(gum::BayesNet< double >::fastPrototype("A<-B<-C->D", 3));
+      _test_dirichlet(gum::BayesNet< double >::fastPrototype("A<-B->C->D", 3));
     }
 
 
