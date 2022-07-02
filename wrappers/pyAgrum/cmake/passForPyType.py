@@ -157,6 +157,7 @@ def doTheJob(target, resultat, backup, debugmode):
     ("void const", "object"),
     ("void", "None"),
     ("std::string", "str"),
+    ("char const *", "str"),
     ("std::size_t", "int"),
     ("object_type","object"),
 

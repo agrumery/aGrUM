@@ -1,13 +1,34 @@
 # aGrUM Changelog
 
+## Changelog for 1.2.0
+
+* aGrUM
+
+  * Moving naming convention from `apriori` to `prior`.
+  * `gum::CliqueGraph::addNode{WithId}` with the same syntax as in other graphs.
+  * [act] Improving the compliance for various microsoft compilers.
+  * [act] option `-windows` is now `-compiler` and accepts `gcc` or `clang` when platform is linux or mac.
+  * Changing internal representation of `gum::Exception` (now derived from `std::exception`).
+  * Adding a new prior : `gum::learning::DirichelPriorFromBN`.
+  * Renaming `genericBNLearner` to `IBNLearner`.
+  * Adding `gum::learning::BNLearner::useDirichletPriorFromBN`.
+
+
+* pyAgrum
+
+  * Moving naming convention from `apriori` to `prior`.
+  * Adding `pyAgrum.BNLearner.useDirichletPriorFromBN`.
+  * Adding a new function `gum::mutilateBN`.
+  * `pyAgrum.CliqueGraph.addNode{WithId}` with the same syntax as in other graphs.
+
 ## Changelog for 1.1.1
 
 * aGrUM
 
-  * fix a regression that was slowing down the inference in credal networks.
+  * Fix a regression that was slowing down the inference in credal networks.
   * Better error messages when IOError caused by writing in 'bad' files.
   * Typos in several error messages.
-  * Fix warnings from gcc 12.1 and integrate linter proposals 
+  * Fix warnings from gcc 12.1 and integrate linter proposals.
 
 * pyAgrum
 
