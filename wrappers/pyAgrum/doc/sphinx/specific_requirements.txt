@@ -9,3 +9,4 @@ nbsphinx
 pandoc
 sphinx-copybutton
 sphinx-gallery
+readthedocs-sphinx-search

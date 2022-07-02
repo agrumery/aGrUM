@@ -70,6 +70,7 @@ extensions = [
   'sphinx.ext.napoleon',
   'sphinx_autodoc_typehints',
   'sphinx_gallery.load_style',
+  'sphinx_search.extension',
   #'sphinx.ext.todo',
   #'sphinx.ext.viewcode',
   #'sphinx.ext.coverage'
