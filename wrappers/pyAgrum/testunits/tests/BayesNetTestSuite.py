@@ -157,50 +157,51 @@ class TestInsertions(BayesNetTestCase):
     self.assertFalse(bn.empty())
 
   def testFastBuilders(self):
-    bn1=gum.BayesNet()
-    bn1.add(gum.RangeVariable("A","A",0,2))
-    bn1.add(gum.LabelizedVariable("B","B",["a","b","c"]))
-    bn1.add(gum.RangeVariable("C","C",4,7))
-    bn1.add(gum.IntegerVariable("D","D",[1,3,10]))
-    bn1.add(gum.DiscretizedVariable("E","E",[1,1.5,3,3.14,15]))
-    bn1.addArc("A","B")
-    bn1.addArc("B","C")
-    bn1.addArc("C","D")
-    bn1.addArc("D","E")
-    self.assertEquals(len(bn1.check()), 5)   # every cpt is faulty
+    bn1 = gum.BayesNet()
+    bn1.add(gum.RangeVariable("A", "A", 0, 2))
+    bn1.add(gum.LabelizedVariable("B", "B", ["a", "b", "c"]))
+    bn1.add(gum.RangeVariable("C", "C", 4, 7))
+    bn1.add(gum.IntegerVariable("D", "D", [1, 3, 10]))
+    bn1.add(gum.DiscretizedVariable("E", "E", [1, 1.5, 3, 3.14, 15]))
+    bn1.addArc("A", "B")
+    bn1.addArc("B", "C")
+    bn1.addArc("C", "D")
+    bn1.addArc("D", "E")
+    self.assertEquals(len(bn1.check()), 5)  # every cpt is faulty
 
-    bn2=gum.fastBN("A->B{a|b|c}->C[4,7]->D{1|3|10}->E[1,1.5,3,3.14,15]",3)
+    bn2 = gum.fastBN("A->B{a|b|c}->C[4,7]->D{1|3|10}->E[1,1.5,3,3.14,15]", 3)
     self.assertEquals(len(bn2.check()), 0)  # but random
 
-    bn3=gum.BayesNet()
-    bn3.add("A",3)
+    bn3 = gum.BayesNet()
+    bn3.add("A", 3)
     bn3.add("B{a|b|c}")
     bn3.add("C[4,7]")
     bn3.add("D{1|3|10}")
     bn3.add("E[1,1.5,3,3.14,15]")
-    bn3.addArc("A","B")
-    bn3.addArc("B","C")
-    bn3.addArc("C","D")
-    bn3.addArc("D","E")
+    bn3.addArc("A", "B")
+    bn3.addArc("B", "C")
+    bn3.addArc("C", "D")
+    bn3.addArc("D", "E")
     self.assertEquals(len(bn3.check()), 5)  # every cpt is faulty
 
-    bn4=gum.BayesNet()
+    bn4 = gum.BayesNet()
     bn4.addVariables(["A",
                       "B{a|b|c}",
                       "C[4,7]",
                       "D{1|3|10}",
                       "E[1,1.5,3,3.14,15]"]
-                     ,3)
-    bn4.addArcs([("A","B"),
-                 ("B","C"),
-                 ("C","D"),
-                 ("D","E")])
+                     , 3)
+    bn4.addArcs([("A", "B"),
+                 ("B", "C"),
+                 ("C", "D"),
+                 ("D", "E")])
     self.assertEquals(len(bn4.check()), 5)  # every cpt is faulty
 
     for name in "ABCDE":
-      self.assertEquals(bn1.variable(name),bn2.variable(name))
-      self.assertEquals(bn1.variable(name),bn3.variable(name))
-      self.assertEquals(bn1.variable(name),bn4.variable(name))
+      self.assertEquals(bn1.variable(name), bn2.variable(name))
+      self.assertEquals(bn1.variable(name), bn3.variable(name))
+      self.assertEquals(bn1.variable(name), bn4.variable(name))
+
 
 class TestFeatures(BayesNetTestCase):
   def testMoralGraph(self):
@@ -404,11 +405,11 @@ class TestFeatures(BayesNetTestCase):
     self.assertEqual(bn.variable("a").__str__(),
                      "a:Discretized(<[-0.4;0.1[,[0.1;0.5[,[0.5;3.14[,[3.14;10]>)")
 
-    bn=gum.fastBN("a{-3|0|3}")
-    self.assertEqual(bn.variable("a").__str__(),"a:Integer({-3|0|3})")
+    bn = gum.fastBN("a{-3|0|3}")
+    self.assertEqual(bn.variable("a").__str__(), "a:Integer({-3|0|3})")
 
-    bn=gum.fastBN("a{X|Y|Z}")
-    self.assertEqual(bn.variable("a").__str__(),"a:Labelized({X|Y|Z})")
+    bn = gum.fastBN("a{X|Y|Z}")
+    self.assertEqual(bn.variable("a").__str__(), "a:Labelized({X|Y|Z})")
 
   def test_minimalCondSet(self):
     bn = gum.fastBN("A->C->E->F->G;B->C;B->D->F;H->E")
@@ -507,12 +508,13 @@ class TestFeatures(BayesNetTestCase):
     g = bn.moralizedAncestralGraph({"A", "D", "I", "H"})
     self.assertEqual(g.nodes(), {0, 2, 3, 6, 7, 8, 9})
     self.assertEqual(
-        g.edges(), {(2, 8), (2, 9), (8, 9), (2, 3), (3, 7), (0, 6), (6, 8)})
+      g.edges(), {(2, 8), (2, 9), (8, 9), (2, 3), (3, 7), (0, 6), (6, 8)})
 
     g = bn.moralizedAncestralGraph({"F", "B", "E", "H"})
     self.assertEqual(g.nodes(), {0, 1, 2, 3, 4, 5, 6, 7, 8, 9})
     self.assertEqual(
-        g.edges(), {(2, 8), (2, 9), (8, 9), (2, 3), (3, 7), (0, 6), (6, 8), (0, 5), (0, 1), (3, 4), (0, 2), (0, 3), (0, 4), (1, 2)})
+      g.edges(),
+      {(2, 8), (2, 9), (8, 9), (2, 3), (3, 7), (0, 6), (6, 8), (0, 5), (0, 1), (3, 4), (0, 2), (0, 3), (0, 4), (1, 2)})
 
   def testIsIndependent(self):
     bn = gum.fastBN("A->B<-C->D->E<-A->F;G->A;D->H;G<-I->C<-J")
@@ -533,46 +535,44 @@ class TestFeatures(BayesNetTestCase):
     self.assertTrue(bn.isIndependent("I", "H", {"C", "E", "B", "G"}))
 
   def testMutilateBN(self):
-    bn=gum.fastBN("P2->N<-P1;A->E2<-N->E1")
+    bn = gum.fastBN("P2->N<-P1;A->E2<-N->E1")
 
-    bn2,_=gum.mutilateBN(bn,
-                         intervention={"N":["1"]},
-                         observation={})
-    self.assertEquals(bn2.sizeArcs(),1)
-    self.assertEquals(bn2.size(),5)
+    bn2, _ = gum.mutilateBN(bn,
+                            intervention={"N": ["1"]},
+                            observation={})
+    self.assertEquals(bn2.sizeArcs(), 1)
+    self.assertEquals(bn2.size(), 5)
 
+    bn2, _ = gum.mutilateBN(bn,
+                            intervention={},
+                            observation={"N": [0, 1]})
+    self.assertEquals(bn2.sizeArcs(), 3)
+    self.assertEquals(bn2.size(), 6)
 
-    bn2,_=gum.mutilateBN(bn,
-                      intervention={},
-                      observation={"N":[0,1]})
-    self.assertEquals(bn2.sizeArcs(),3)
-    self.assertEquals(bn2.size(),6)
-
-    
-    bn2,_=gum.mutilateBN(bn,
-                      intervention={'A':["1"]},
-                      observation={"N":[0.3,0.7]})
-    self.assertEquals(bn2.sizeArcs(),4)
-    self.assertEquals(bn2.size(),5)
+    bn2, _ = gum.mutilateBN(bn,
+                            intervention={'A': ["1"]},
+                            observation={"N": [0.3, 0.7]})
+    self.assertEquals(bn2.sizeArcs(), 4)
+    self.assertEquals(bn2.size(), 5)
 
   def testMutilateBN2(self):
-    bn=gum.fastBN("P2->N<-P1;A->E2<-N->E1")
+    bn = gum.fastBN("P2->N<-P1;A->E2<-N->E1")
 
-    bn2, ev2=gum.mutilateBN(bn,
-                      intervention={},
-                      observation= {'A':["1"], "N":[1,1]})
+    bn2, ev2 = gum.mutilateBN(bn,
+                              intervention={},
+                              observation={'A': ["1"], "N": [1, 1]})
 
-    ie=gum.LazyPropagation(bn)
+    ie = gum.LazyPropagation(bn)
     ie.setEvidence(ev2)
-    ie.makeInference()  
+    ie.makeInference()
 
-    ie2=gum.LazyPropagation(bn2)
+    ie2 = gum.LazyPropagation(bn2)
     ie2.setEvidence(ev2)
     ie2.makeInference()
 
     for n in bn2.names():
-      self.assertEquals(ie.posterior(n).tolist(),
-                        ie2.posterior(n).tolist())
+      self.assertListsAlmostEqual(ie.posterior(n).tolist(),
+                                  ie2.posterior(n).tolist())
 
 
 class TestLoadBN(BayesNetTestCase):
@@ -590,15 +590,15 @@ class TestLoadBN(BayesNetTestCase):
     self.bufferecoute = ""
     bn = gum.BayesNet()
     res = bn.loadBIF(self.agrumSrcDir(
-        'alarm.bif'), self.listen)
+      'alarm.bif'), self.listen)
     self.assertEqual(self.bufferlisten, "##########")
     self.assertEqual(self.bufferecoute, "")
     self.assertTrue(res == "")
 
     self.assertListsAlmostEqual(bn.cpt(bn.idFromName(
-        "KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
+      "KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
     self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), [
-                                [0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
+      [0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
 
   def testSimpleBIFLoadWithoutListener(self):
     self.bufferlisten = ""
@@ -610,46 +610,46 @@ class TestLoadBN(BayesNetTestCase):
     self.assertTrue(res == "")
 
     self.assertListsAlmostEqual(bn.cpt(bn.idFromName(
-        "KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
+      "KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
     self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), [
-                                [0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
+      [0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
 
   def testListBIFLoad(self):
     self.bufferlisten = ""
     self.bufferecoute = ""
     bn = gum.BayesNet()
     res = bn.loadBIF(self.agrumSrcDir(
-        'alarm.bif'), [self.listen, self.ecoute])
+      'alarm.bif'), [self.listen, self.ecoute])
     self.assertEqual(self.bufferlisten, "##########")
     self.assertEqual(self.bufferecoute, "FINI")
     self.assertTrue(res == "")
 
     self.assertListsAlmostEqual(bn.cpt(bn.idFromName(
-        "KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
+      "KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
     self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), [
-                                [0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
+      [0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
 
   def testTupleBIFLoad(self):
     self.bufferlisten = ""
     self.bufferecoute = ""
     bn = gum.BayesNet()
     res = bn.loadBIF(self.agrumSrcDir(
-        'alarm.bif'), (self.ecoute, self.listen))
+      'alarm.bif'), (self.ecoute, self.listen))
     self.assertEqual(self.bufferlisten, "##########")
     self.assertEqual(self.bufferecoute, "FINI")
     self.assertTrue(res == "")
 
     self.assertListsAlmostEqual(bn.cpt(bn.idFromName(
-        "KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
+      "KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
     self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), [
-                                [0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
+      [0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
 
   def testSimpleNETLoad(self):
     self.bufferlisten = ""
     self.bufferecoute = ""
     bn = gum.BayesNet()
     res = bn.loadNET(self.agrumSrcDir(
-        'test1.net'), self.listen)
+      'test1.net'), self.listen)
     self.assertEqual(self.bufferlisten, "##########")
     self.assertEqual(self.bufferecoute, "")
     self.assertTrue(res == "")
@@ -659,60 +659,60 @@ class TestLoadBN(BayesNetTestCase):
     self.bufferecoute = ""
     bn = gum.BayesNet()
     res = bn.loadDSL(self.agrumSrcDir(
-        'DSL/alarm.dsl'), self.listen)
+      'DSL/alarm.dsl'), self.listen)
     self.assertEqual(self.bufferlisten, "##########")
     self.assertEqual(self.bufferecoute, "")
     self.assertTrue(res == "")
 
     self.assertListsAlmostEqual(bn.cpt(bn.idFromName(
-        "KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
+      "KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
     self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), [
-                                [0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
+      [0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
 
   def testSimpleDSLLoadWithoutListener(self):
     self.bufferlisten = ""
     self.bufferecoute = ""
     bn = gum.BayesNet()
     res = bn.loadDSL(self.agrumSrcDir(
-        'DSL/alarm.dsl'))
+      'DSL/alarm.dsl'))
     self.assertEqual(self.bufferlisten, "")
     self.assertEqual(self.bufferecoute, "")
     self.assertTrue(res == "")
 
     self.assertListsAlmostEqual(bn.cpt(bn.idFromName(
-        "KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
+      "KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
     self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), [
-                                [0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
+      [0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
 
   def testListDSLLoad(self):
     self.bufferlisten = ""
     self.bufferecoute = ""
     bn = gum.BayesNet()
     res = bn.loadDSL(self.agrumSrcDir(
-        'DSL/alarm.dsl'), [self.listen, self.ecoute])
+      'DSL/alarm.dsl'), [self.listen, self.ecoute])
     self.assertEqual(self.bufferlisten, "##########")
     self.assertEqual(self.bufferecoute, "FINI")
     self.assertTrue(res == "")
 
     self.assertListsAlmostEqual(bn.cpt(bn.idFromName(
-        "KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
+      "KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
     self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), [
-                                [0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
+      [0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
 
   def testTupleDSLLoad(self):
     self.bufferlisten = ""
     self.bufferecoute = ""
     bn = gum.BayesNet()
     res = bn.loadDSL(self.agrumSrcDir(
-        'DSL/alarm.dsl'), (self.ecoute, self.listen))
+      'DSL/alarm.dsl'), (self.ecoute, self.listen))
     self.assertEqual(self.bufferlisten, "##########")
     self.assertEqual(self.bufferecoute, "FINI")
     self.assertTrue(res == "")
 
     self.assertListsAlmostEqual(bn.cpt(bn.idFromName(
-        "KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
+      "KINKEDTUBE")).tolist(), [0.04, 0.96], places=4)
     self.assertListsAlmostEqual(bn.cpt(bn.idFromName("HR")).tolist(), [
-                                [0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
+      [0.05, 0.9, 0.05], [0.01, 0.09, 0.9]], places=4)
 
   def testO3PRMLoad(self):
     bn = gum.loadBN(self.agrumSrcDir('o3prm/Asia.o3prm'), [],
@@ -735,7 +735,7 @@ class TestSaveBN(BayesNetTestCase):
     bn = gum.BayesNet()
     bn.add(gum.RangeVariable("1", "", 0, 1))
     bn.add(gum.DiscretizedVariable("2", "").addTick(
-        0.0).addTick(0.5).addTick(1.0))
+      0.0).addTick(0.5).addTick(1.0))
     bn.add(gum.LabelizedVariable("3", "", 2))
     bn.add(gum.LabelizedVariable("4", "", 2))
     bn.add(gum.LabelizedVariable("5", "", 3))
@@ -756,10 +756,10 @@ class TestSaveBN(BayesNetTestCase):
                           0.5, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0])
 
     gum.saveBN(bn, self.agrumSrcDir(
-        "o3prm/BNO3PRMIO_file.o3prm"))
+      "o3prm/BNO3PRMIO_file.o3prm"))
 
     bn2 = gum.loadBN(self.agrumSrcDir(
-        "o3prm/BNO3PRMIO_file.o3prm"), system="bayesnet")
+      "o3prm/BNO3PRMIO_file.o3prm"), system="bayesnet")
 
     self.assertEqual(bn.dim(), bn2.dim())
     self.assertEqual(bn.log10DomainSize(), bn2.log10DomainSize())
@@ -775,8 +775,8 @@ class TestScore(BayesNetTestCase):
     true_bn = gum.fastBN("A->B->C")
     bn = gum.fastBN("A->B;C->B;A->C")
     precision = bvb.GraphicalBNComparator(
-        true_bn, bn).skeletonScores()['precision']
-    self.assertEqual(2./3., precision)
+      true_bn, bn).skeletonScores()['precision']
+    self.assertEqual(2. / 3., precision)
 
   def testSkeletonRecall(self):
     true_bn = gum.fastBN("A->B->C")
@@ -788,25 +788,25 @@ class TestScore(BayesNetTestCase):
     true_bn = gum.fastBN("A->B->C")
     bn = gum.fastBN("A->B;C->B;A->C")
     fscore = bvb.GraphicalBNComparator(true_bn, bn).skeletonScores()['fscore']
-    self.assertEqual(4./5., fscore)
+    self.assertEqual(4. / 5., fscore)
 
   def testPrecision(self):
     true_bn = gum.fastBN("A->B->C")
     bn = gum.fastBN("A->B;C->B;A->C")
     precision = bvb.GraphicalBNComparator(true_bn, bn).scores()['precision']
-    self.assertEqual(1./3., precision)
+    self.assertEqual(1. / 3., precision)
 
   def testRecall(self):
     true_bn = gum.fastBN("A->B->C")
     bn = gum.fastBN("A->B;C->B;A->C")
     recall = bvb.GraphicalBNComparator(true_bn, bn).scores()['recall']
-    self.assertEqual(1./2., recall)
+    self.assertEqual(1. / 2., recall)
 
   def testFscore(self):
     true_bn = gum.fastBN("A->B->C")
     bn = gum.fastBN("A->B;C->B;A->C")
     fscore = bvb.GraphicalBNComparator(true_bn, bn).scores()['fscore']
-    self.assertEqual(2./5., fscore)
+    self.assertEqual(2. / 5., fscore)
 
   def testHamming(self):
     true_bn = gum.fastBN("A->B->C;B->D")
@@ -818,7 +818,7 @@ class TestScore(BayesNetTestCase):
     true_bn = gum.fastBN("A->B->C;B->D")
     bn = gum.fastBN("A->B;C->B;D->C")
     shd = bvb.GraphicalBNComparator(true_bn, bn).hamming()[
-        'structural hamming']
+      'structural hamming']
     self.assertEqual(4, shd)
 
 
@@ -827,7 +827,6 @@ class TestGraphicalConcepts(BayesNetTestCase):
     bn = gum.fastBN("A->B->C<-D->E;D->F->G<-A")
     self.assertEquals(bn.children(1), {2})
     self.assertEquals(bn.children("A"), {1, 6})
-
 
 
 ts = unittest.TestSuite()

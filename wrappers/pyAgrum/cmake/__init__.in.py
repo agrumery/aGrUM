@@ -612,55 +612,55 @@ def mutilateBN(bn, intervention = {}, observation = {}):
   Warning: experimental use of evidence definition
 
   Interventions or observations can be HARD or SOFT.
-      
+
     Hard interventions or observations:
         1) [0,... 1, 0] -> sum(x) = 1
         3) X : [n] -> with n a value
-    
+
     Soft interventions or observations:
         1) X : [empty list] -> equiprobability is assumed
         2) X : [x1, ... xn] -> sum(x) = 1
-        3) X : [1, ... 1, 0] -> sum(x) > 1
+        3) X : [1, ... 1, 0] -> sum(x) >= 1
         4) X : [n1, n2, n3] -> with n_i values that could happen
-        
+
     X is the name of a variable
 
   Parameters
   ----------
   bn : pyAgrum.pyAgrum.BayesNet
     A bayesian network
-  intervention : set
+  intervention : Dict[str,List[str|float|int]]
     set of variables on which we intervene to force the value
-  observation : set
+  observation : Dict[str,List[str|float|int]]
     set of variables whose value is observed
-          
+
   Returns
-  -------   
+  -------
   inter_bn : new bayesian network reflecting the interventions and observations (pyAgrum.pyAgrum.BayesNet)
   evidence : dictionary of all evidences for future inferences (dict)
   """
-  
+
   inter_bn = BayesNet(bn)
-  
+
   # Check that a variable is not an intervention and an observation
   if len( set(intervention).intersection( set(observation) ) ) > 0:
       raise ValueError('A variable can\'t be an intervention and an observation')
-      
-      
+
+
   evidence = dict() # Track the new distribution to update
   list_hard = dict() # Track the hard values
   toModify = {"intervention":intervention, "observation":observation}
-  
+
   ## Delete relations
   for typeSet in toModify:
-  
+
       # For each variable we wish to modify
       for var in toModify[typeSet]:
-          
+
           # Get the ID and the name
           if var in bn.names():
               var_id = bn.idFromName(var)
-              
+
           else:
               var_id = var
               var = bn.variable(var_id).name()
@@ -674,35 +674,35 @@ def mutilateBN(bn, intervention = {}, observation = {}):
           n = bn.variable(var).domainSize()
           new_dis = toModify[typeSet][var]
           hard = False
-          
+
           if len(new_dis) == 0: # soft 1)
               new_dis = [1/n for k in range(n)]
-          
+
           elif str in [type(i) for i in new_dis]: # hard - soft 3) 4)
               new_dis = [ 1 if bn.variable(var).labels()[i] == new_dis[0] else 0 for i in range(n) ]
-              
+
               if len(toModify[typeSet][var]) == 1:
                   new_val = toModify[typeSet][var][0]
                   hard = True
-              
+
           elif sum(new_dis) == 1 and 1 in new_dis: # hard 1)
               new_val = bn.variable(var).labels()[ new_dis.index(1) ]
               hard = True
-              
+
           evidence[var] = new_dis
-          
+
           # If hard values
           if hard:
               # Track the new values
               list_hard[var] = new_val
-              
+
               # Delete relation toward children
-              for chi in bn.children(var): 
+              for chi in bn.children(var):
                   inter_bn.eraseArc( var_id, chi )
-                  
+
   ## Update the distributions
   for var in list(evidence):
-      
+
       # Update variable if intervention
       if var in intervention:
           inter_bn.cpt(var).fillWith( evidence[var] )
@@ -718,6 +718,6 @@ def mutilateBN(bn, intervention = {}, observation = {}):
           if var in intervention:
               inter_bn.erase(var)
               del evidence[var]
-              
-              
+
+
   return(inter_bn, evidence)
