@@ -8,6 +8,7 @@
   * `gum::CliqueGraph::addNode{WithId}` with the same syntax as in other graphs.
   * [act] Improving the compliance for various microsoft compilers.
   * [act] option `-windows` is now `-compiler` and accepts `gcc` or `clang` when platform is linux or mac.
+  * [act] options `-clangpath` add `-gccpath` to specify the path of the compilers (if those compilers are not in PATH).
   * Changing internal representation of `gum::Exception` (now derived from `std::exception`).
   * Adding a new prior : `gum::learning::DirichelPriorFromBN`.
   * Renaming `genericBNLearner` to `IBNLearner`.

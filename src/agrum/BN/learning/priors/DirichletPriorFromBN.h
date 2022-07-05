@@ -59,8 +59,7 @@ namespace gum::learning {
      * corresponding id in the prior BN. An empty nodeId2Columns bijection means that the mapping
      * is an identity.
      */
-    DirichletPriorFromBN(const DatabaseTable&                    learning_db,
-                         const BayesNet< GUM_SCALAR >*           priorbn);
+    DirichletPriorFromBN(const DatabaseTable& learning_db, const BayesNet< GUM_SCALAR >* priorbn);
 
     /// copy constructor
     DirichletPriorFromBN(const DirichletPriorFromBN& from);

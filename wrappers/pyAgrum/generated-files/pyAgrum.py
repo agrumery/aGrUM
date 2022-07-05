@@ -1592,7 +1592,7 @@ class GumException(Exception):
         _pyAgrum.GumException_swiginit(self, _pyAgrum.new_GumException(*args))
     __swig_destroy__ = _pyAgrum.delete_GumException
 
-    def what(self) -> "char const *":
+    def what(self) -> str:
         return _pyAgrum.GumException_what(self)
 
     def errorContent(self) -> str:

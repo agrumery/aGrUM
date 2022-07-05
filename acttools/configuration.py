@@ -85,6 +85,8 @@ def initParams():
   cfg.default['python'] = "3"
   cfg.default['python3lib'] = ""
   cfg.default['python3include'] = ""
+  cfg.default['clangpath'] = ""
+  cfg.default['gccpath'] = ""
   cfg.default['threads'] = "omp"
   cfg.default['dry_run'] = False
   cfg.default['coverage'] = False
@@ -205,6 +207,16 @@ def configureOptions(current):
                         metavar="FOLDER",
                         dest="python3include",
                         default=current['python3include'])
+  cfg.parser.add_argument("--clangpath",
+                        help="path for clang.",
+                        metavar="FOLDER",
+                        dest="clangpath",
+                        default=current['clangpath'])
+  cfg.parser.add_argument("--gccpath",
+                        help="path for gcc.",
+                        metavar="FOLDER",
+                        dest="gccpath",
+                        default=current['gccpath'])
   cfg.parser.add_argument("--threads",
                         help="defines the preferred kind of threads used by aGrUM: {omp|stl}.",
                         choices=["omp", "stl"],

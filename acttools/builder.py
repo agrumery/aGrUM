@@ -107,9 +107,17 @@ def getCmake(current, target):
   elif current["compiler"] == "mingw64":
     line += ' -G "MinGW Makefiles"'
   elif current["compiler"]== "clang":
-    line += ' -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++'
+    if current['clangpath']!="":
+      clangp=os.path.join(current['clangpath'],"clang")
+    else:
+      clangp="clang"
+    line += f' -DCMAKE_C_COMPILER={clangp} -DCMAKE_CXX_COMPILER={clangp}++'
   else: # gcc
-    line += ' -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++'
+    if current['gccpath']!="":
+      gccp=os.path.join(current['gccpath'],"g")
+    else:
+      gccp="g"
+    line += f' -DCMAKE_C_COMPILER={gccp}cc -DCMAKE_CXX_COMPILER={gccp}++'
 
 
   if current["threads"] == 'omp':

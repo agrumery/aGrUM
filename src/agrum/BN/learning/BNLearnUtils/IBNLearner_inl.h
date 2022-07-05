@@ -80,9 +80,7 @@ namespace gum {
 
 
     /// returns the internal database table
-    INLINE const DatabaseTable& IBNLearner::Database::databaseTable() const {
-      return _database_;
-    }
+    INLINE const DatabaseTable& IBNLearner::Database::databaseTable() const { return _database_; }
 
 
     /// returns the set of missing symbols taken into account
@@ -92,8 +90,7 @@ namespace gum {
 
 
     /// returns the mapping between node ids and their columns in the database
-    INLINE const Bijection< NodeId, std::size_t >&
-                 IBNLearner::Database::nodeId2Columns() const {
+    INLINE const Bijection< NodeId, std::size_t >& IBNLearner::Database::nodeId2Columns() const {
       return _nodeId2cols_;
     }
 
@@ -293,14 +290,12 @@ namespace gum {
     }
 
     // assign a new forbidden edge
-    INLINE void IBNLearner::addPossibleEdge(const std::string& tail,
-                                                  const std::string& head) {
+    INLINE void IBNLearner::addPossibleEdge(const std::string& tail, const std::string& head) {
       addPossibleEdge(Edge(idFromName(tail), idFromName(head)));
     }
 
     // remove a forbidden edge
-    INLINE void IBNLearner::erasePossibleEdge(const std::string& tail,
-                                                    const std::string& head) {
+    INLINE void IBNLearner::erasePossibleEdge(const std::string& tail, const std::string& head) {
       erasePossibleEdge(Edge(idFromName(tail), idFromName(head)));
     }
 
@@ -330,14 +325,12 @@ namespace gum {
     }
 
     // assign a new forbidden arc
-    INLINE void IBNLearner::addForbiddenArc(const std::string& tail,
-                                                  const std::string& head) {
+    INLINE void IBNLearner::addForbiddenArc(const std::string& tail, const std::string& head) {
       addForbiddenArc(Arc(idFromName(tail), idFromName(head)));
     }
 
     // remove a forbidden arc
-    INLINE void IBNLearner::eraseForbiddenArc(const std::string& tail,
-                                                    const std::string& head) {
+    INLINE void IBNLearner::eraseForbiddenArc(const std::string& tail, const std::string& head) {
       eraseForbiddenArc(Arc(idFromName(tail), idFromName(head)));
     }
 
@@ -357,14 +350,12 @@ namespace gum {
     }
 
     // assign a new forbidden arc
-    INLINE void IBNLearner::addMandatoryArc(const std::string& tail,
-                                                  const std::string& head) {
+    INLINE void IBNLearner::addMandatoryArc(const std::string& tail, const std::string& head) {
       addMandatoryArc(Arc(idFromName(tail), idFromName(head)));
     }
 
     // remove a forbidden arc
-    INLINE void IBNLearner::eraseMandatoryArc(const std::string& tail,
-                                                    const std::string& head) {
+    INLINE void IBNLearner::eraseMandatoryArc(const std::string& tail, const std::string& head) {
       eraseMandatoryArc(Arc(idFromName(tail), idFromName(head)));
     }
 
@@ -383,8 +374,7 @@ namespace gum {
       constraintSliceOrder_ = StructuralConstraintSliceOrder(slice_order);
     }
 
-    INLINE void
-       IBNLearner::setSliceOrder(const std::vector< std::vector< std::string > >& slices) {
+    INLINE void IBNLearner::setSliceOrder(const std::vector< std::vector< std::string > >& slices) {
       NodeProperty< NodeId > slice_order;
       NodeId                 rank = 0;
       for (const auto& slice: slices) {

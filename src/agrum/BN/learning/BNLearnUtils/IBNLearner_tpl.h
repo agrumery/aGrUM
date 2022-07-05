@@ -29,8 +29,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     IBNLearner::Database::Database(const std::string&                filename,
-                                         const BayesNet< GUM_SCALAR >&     bn,
-                                         const std::vector< std::string >& missing_symbols) {
+                                   const BayesNet< GUM_SCALAR >&     bn,
+                                   const std::vector< std::string >& missing_symbols) {
       // assign to each column name in the database its position
       IBNLearner::isCSVFileName_(filename);
       DBInitializerFromCSV                  initializer(filename);
@@ -84,8 +84,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     IBNLearner::IBNLearner(const std::string&                 filename,
-                                       const gum::BayesNet< GUM_SCALAR >& bn,
-                                       const std::vector< std::string >&  missing_symbols) :
+                           const gum::BayesNet< GUM_SCALAR >& bn,
+                           const std::vector< std::string >&  missing_symbols) :
         scoreDatabase_(filename, bn, missing_symbols) {
       filename_     = filename;
       noPrior_      = new NoPrior(scoreDatabase_.databaseTable());

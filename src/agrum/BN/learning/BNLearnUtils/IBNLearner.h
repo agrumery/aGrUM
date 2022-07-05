@@ -105,9 +105,7 @@ namespace gum {
      * LocalSearchWithTabuList also 3off2/miic
      * @ingroup learning_group
      */
-    class IBNLearner:
-        public gum::IApproximationSchemeConfiguration,
-        public ThreadNumberManager {
+    class IBNLearner: public gum::IApproximationSchemeConfiguration, public ThreadNumberManager {
       // private:
       public:
       /// an enumeration enabling to select easily the score we wish to use
@@ -326,8 +324,8 @@ namespace gum {
        * the dataset are interpreted as "labels", i.e., as categorical values.
        */
       IBNLearner(const std::string&                filename,
-                       const std::vector< std::string >& missingSymbols,
-                       bool                              induceTypes = true);
+                 const std::vector< std::string >& missingSymbols,
+                 bool                              induceTypes = true);
 
       IBNLearner(const DatabaseTable& db);
 
@@ -350,8 +348,8 @@ namespace gum {
        */
       template < typename GUM_SCALAR >
       IBNLearner(const std::string&                 filename,
-                       const gum::BayesNet< GUM_SCALAR >& src,
-                       const std::vector< std::string >&  missing_symbols);
+                 const gum::BayesNet< GUM_SCALAR >& src,
+                 const std::vector< std::string >&  missing_symbols);
 
       /// copy constructor
       IBNLearner(const IBNLearner&);
@@ -873,7 +871,7 @@ namespace gum {
       static void isCSVFileName_(const std::string& filename);
 
       /// create the prior used for learning
-      virtual void createPrior_()=0;
+      virtual void createPrior_() = 0;
 
       /// create the score used for learning
       void createScore_();

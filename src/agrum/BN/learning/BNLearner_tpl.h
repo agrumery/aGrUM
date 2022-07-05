@@ -375,7 +375,7 @@ namespace gum {
           break;
         case BNLearnerPriorType::DIRICHLET_FROM_BAYESNET:
           vals.emplace_back(key, "Dirichlet", comment);
-          vals.emplace_back("Dirichlet from Bayesian network : ", _prior_bn_.toString() , "");
+          vals.emplace_back("Dirichlet from Bayesian network : ", _prior_bn_.toString(), "");
           break;
         case BNLearnerPriorType::BDEU:
           vals.emplace_back(key, "BDEU", comment);
@@ -502,7 +502,8 @@ namespace gum {
           break;
 
         case BNLearnerPriorType::DIRICHLET_FROM_BAYESNET:
-          prior_ = new DirichletPriorFromBN<GUM_SCALAR>(scoreDatabase_.databaseTable(), &_prior_bn_);
+          prior_
+             = new DirichletPriorFromBN< GUM_SCALAR >(scoreDatabase_.databaseTable(), &_prior_bn_);
           break;
 
         case BNLearnerPriorType::BDEU:

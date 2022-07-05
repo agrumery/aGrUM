@@ -76,7 +76,7 @@ namespace gum::learning {
      DirichletPriorFromBN< GUM_SCALAR >::operator=(const DirichletPriorFromBN& from) {
     if (this != &from) {
       Prior::operator=(from);
-      _prior_bn_   = from._prior_bn_;
+      _prior_bn_     = from._prior_bn_;
     }
     return *this;
   }
@@ -88,7 +88,7 @@ namespace gum::learning {
      DirichletPriorFromBN< GUM_SCALAR >::operator=(DirichletPriorFromBN&& from) {
     if (this != &from) {
       Prior::operator=(std::move(from));
-      _prior_bn_   = from._prior_bn_;
+      _prior_bn_     = from._prior_bn_;
     }
     return *this;
   }
@@ -122,7 +122,6 @@ namespace gum::learning {
   INLINE void
      DirichletPriorFromBN< GUM_SCALAR >::addJointPseudoCount(const IdCondSet&       idset,
                                                              std::vector< double >& counts) {
-
     if (this->weight_ == 0.0) return;
     const auto [X, Y] = idset.toNodeSets();
 
