@@ -605,7 +605,7 @@ def log2(p):
   """
   return Potential(p).log2()
 
-def mutilateBN(bn, intervention = {}, observation = {}):
+def mutilateBN(bn, intervention = None, observation = None):
   """
   Modify the bayesian network bn to reflect the effect of interventions and/or observations on a set of variables.
   Due to the causal nature of interventions, we suppose the given bn to have a causal interpretation.
@@ -639,6 +639,11 @@ def mutilateBN(bn, intervention = {}, observation = {}):
   inter_bn : new bayesian network reflecting the interventions and observations (pyAgrum.pyAgrum.BayesNet)
   evidence : dictionary of all evidences for future inferences (dict)
   """
+  if intervention is None:
+    intervention=dict()
+
+  if observation is None:
+    observation=dict()
 
   inter_bn = BayesNet(bn)
 
