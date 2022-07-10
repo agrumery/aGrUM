@@ -208,7 +208,7 @@ namespace gum {
      * @warning for efficiency reasons, this function does not check whether
      * the element referenced by the offset actually belongs to the
      * MultiDimArray.  If you want this additional feature, use instead
-     * function MultiDimArray::setByOffset(Idx, const GUM_SCARLAR&).
+     * function MultiDimArray::setByOffset(Idx, const GUM_SCALAR&).
      *
      * @param offset The offset where to store the value.
      * @param val The value to store.
@@ -241,13 +241,13 @@ namespace gum {
     /// in a const multiDimArray
     mutable std::vector< GUM_SCALAR > values_;
 
-    virtual void commitMultipleChanges_();
+    void commitMultipleChanges_() final;
 
-    virtual void commitMultipleChanges_(const GUM_SCALAR&);
+    void commitMultipleChanges_(const GUM_SCALAR&) final;
 
-    virtual GUM_SCALAR& get_(const Instantiation& i) const;
+    GUM_SCALAR& get_(const Instantiation& i) const final;
 
-    virtual void replace_(const DiscreteVariable* x, const DiscreteVariable* y);
+    void replace_(const DiscreteVariable* x, const DiscreteVariable* y) final;
   };
 
 

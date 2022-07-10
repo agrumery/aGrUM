@@ -1196,6 +1196,22 @@ namespace gum_tests {
       TS_ASSERT_DELTA((p * q).max(), 1.0, 1e-7)
     }
 
+    void testMinNegatif() {
+      gum::LabelizedVariable   u("u", "u", 4), v("v", "v", 2), w("w", "w", 3);
+      gum::Potential< double > p;
+      p.add(u);
+      p.add(v);
+      p.add(w);
+
+      gum::Instantiation I(p);
+      double f=-150.0;
+      for(I.setFirst(); ! I.end(); I.inc())
+        p.set(I,f++);
+
+      TS_ASSERT_DELTA(p.min(),-150.0,1e-7)
+      TS_ASSERT_DELTA(p.max(),-150+4*2*3-1,1e-7)
+    }
+
     void testOperatorWithScalars() {
       gum::LabelizedVariable   u("u", "u", 4), v("v", "v", 2), w("w", "w", 3);
       gum::Potential< double > p;

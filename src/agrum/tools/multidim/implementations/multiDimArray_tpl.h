@@ -177,8 +177,8 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimArray< GUM_SCALAR >::unsafeSet(Idx offset, const GUM_SCALAR& data) {
-    values_[offset] = data;
+  INLINE void MultiDimArray< GUM_SCALAR >::unsafeSet(Idx offset, const GUM_SCALAR& val) {
+    values_[offset] = val;
   }
 
   // returns the element stored in the multidimArray at a given offset
