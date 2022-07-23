@@ -92,7 +92,7 @@ namespace gum {
     _arg_ = from._arg_;
     _args_.clear();
     _args_ << _arg_;
-    _is_executed_             = from._is_executed_;
+    _is_executed_ = from._is_executed_;
     ScheduleOperator::operator=(from);
     return *this;
   }
@@ -102,9 +102,9 @@ namespace gum {
   template < typename TABLE >
   ScheduleDeletion< TABLE >&
      ScheduleDeletion< TABLE >::operator=(ScheduleDeletion< TABLE >&& from) {
-    _arg_                     = from._arg_;
-    _args_                    = std::move(from._args_);
-    _is_executed_             = from._is_executed_;
+    _arg_         = from._arg_;
+    _args_        = std::move(from._args_);
+    _is_executed_ = from._is_executed_;
     ScheduleOperator::operator=(std::move(from));
     return *this;
   }

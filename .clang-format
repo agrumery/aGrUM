@@ -4,7 +4,7 @@
 #
 BasedOnStyle: LLVM
 
-Standard: c++14
+Standard: c++20
 
 ColumnLimit: 100
 MaxEmptyLinesToKeep: 2
@@ -57,9 +57,9 @@ SpaceAfterLogicalNot: false
 
 PointerAlignment: Left
 AlignAfterOpenBracket: Align
-AlignConsecutiveAssignments: true #clang-format12 =>Consecutive
-AlignConsecutiveMacros: true # clang-format 12  => Consecutive
-AlignConsecutiveDeclarations: true # clange-format 12 => Consecutive
+AlignConsecutiveAssignments: Consecutive
+AlignConsecutiveMacros: Consecutive
+AlignConsecutiveDeclarations: Consecutive
 AlignOperands: AlignAfterOperator
 
 AlignTrailingComments: true
@@ -73,16 +73,16 @@ BinPackArguments: false
 BinPackParameters: false
 
 AllowShortFunctionsOnASingleLine: All
-AllowShortIfStatementsOnASingleLine: true
+AllowShortIfStatementsOnASingleLine: AllIfsAndElse
 AllowShortLoopsOnASingleLine: false
 AllowShortBlocksOnASingleLine: Always
-AllowShortLambdasOnASingleLine: Inline
-AllowShortCaseLabelsOnASingleLine: false
+AllowShortLambdasOnASingleLine: All
+AllowShortCaseLabelsOnASingleLine: true
 AllowShortEnumsOnASingleLine: false
 
 
 SortUsingDeclarations: false
-SortIncludes: false # clang-format 12 => Never
+SortIncludes: Never
 IncludeBlocks: Regroup
 # see https://www.regextester.com/
 IncludeCategories:

@@ -412,7 +412,7 @@ Parameters
 var : Union[int,str]
 	the current name or the id of the variable
 new_name : str
-	the new name of the variable 
+	the new name of the variable
 
 Raises
 ------
@@ -498,6 +498,7 @@ Create a Bayesian network with a dot-like syntax which specifies:
       - with 'a[1,3.14,5,6.2]', the variable is a pyAgrum.DiscretizedVariable using the given ticks (at least 3 values)
       - with 'a{top|middle|bottom}', the variable is a pyAgrum.LabelizedVariable using the given labels.
       - with 'a{-1|5|0|3}', the variable is a pyAgrum.IntegerVariable using the sorted given values.
+      - with 'a{-0.5|5.01|0|3.1415}', the variable is a pyAgrum.NumericalDiscreteVariable using the sorted given values.
 
 Note
 ----

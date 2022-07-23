@@ -46,7 +46,7 @@ namespace gum {
     RawDatabaseTable& RawDatabaseTable::operator=(const RawDatabaseTable& from) {
       if (this != &from) {
         IDatabaseTable< DBCell >::operator=(from);
-        _ignored_cols_                    = from._ignored_cols_;
+        _ignored_cols_ = from._ignored_cols_;
       }
       return *this;
     }
@@ -56,7 +56,7 @@ namespace gum {
     RawDatabaseTable& RawDatabaseTable::operator=(RawDatabaseTable&& from) {
       if (this != &from) {
         IDatabaseTable< DBCell >::operator=(std::move(from));
-        _ignored_cols_                    = std::move(from._ignored_cols_);
+        _ignored_cols_ = std::move(from._ignored_cols_);
       }
       return *this;
     }

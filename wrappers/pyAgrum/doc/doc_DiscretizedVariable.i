@@ -1,11 +1,14 @@
 %feature("docstring") gum::DiscretizedVariable
 "
-DiscretizedVariable is a discrete random variable with a set of ``ticks`` defining intervalls.
+DiscretizedVariable is a discrete random variable with a set of ``ticks`` defining intervals.
 
-DiscretizedVariable(aName, aDesc='') -> DiscretizedVariable`
+DiscretizedVariable(aName, aDesc ,ticks=None,is_empirical=False) -> DiscretizedVariable`
     Parameters:
         * **aName** (*str*) -- the name of the variable
-        * **aDesc** (*str*) -- the (optional) description of the variable
+        * **aDesc** (*str*) -- the description of the variable
+        * **ticks (*list[double]*) -- the list of ticks to add
+        * **is_empirical** (*bool*) -- if False, raise an error if a value is out of bound.
+
 
 DiscretizedVariable(aDDRV) -> DiscretizedVariable
     Parameters:

@@ -85,8 +85,7 @@ namespace gum {
             return (_SliceOrder_order_[change.node1()] > _SliceOrder_order_[change.node2()]);
           } catch (const Exception&) { return false; }
 
-        case GraphChangeType::ARC_DELETION:
-          return false;
+        case GraphChangeType::ARC_DELETION: return false;
 
         case GraphChangeType::ARC_REVERSAL:
           try {

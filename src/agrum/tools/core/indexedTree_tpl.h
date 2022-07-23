@@ -105,10 +105,8 @@ namespace gum {
 
         if (data) delete data;
 
-        if (from.data)
-          data = new Data(*from.data);
-        else
-          data = 0;
+        if (from.data) data = new Data(*from.data);
+        else data = 0;
 
         children = from.children;
 
@@ -159,8 +157,7 @@ namespace gum {
         current_node->children.insert(index[i], new_node);
         new_node->parent = this;
         current_node     = new_node;
-      } else
-        current_node = current_node->children[index[i]];
+      } else current_node = current_node->children[index[i]];
     }
 
     // here, we can insert the new node. if ind + 1 == index.size(), this means
@@ -209,8 +206,7 @@ namespace gum {
         current_node->children.insert(index[i], new_node);
         new_node->parent = this;
         current_node     = new_node;
-      } else
-        current_node = current_node->children[index[i]];
+      } else current_node = current_node->children[index[i]];
     }
 
     // here, we can insert the new node. if ind + 1 == index.size(), this means
@@ -258,8 +254,7 @@ namespace gum {
         current_node->children.insert(index[i], new_node);
         new_node->parent = this;
         current_node     = new_node;
-      } else
-        current_node = current_node->children[index[i]];
+      } else current_node = current_node->children[index[i]];
     }
 
     // here, we can set the new node. if ind + 1 == index.size(), this means
@@ -311,8 +306,7 @@ namespace gum {
         current_node->children.insert(index[i], new_node);
         new_node->parent = this;
         current_node     = new_node;
-      } else
-        current_node = current_node->children[index[i]];
+      } else current_node = current_node->children[index[i]];
     }
 
     // here, we can set the new node. if ind + 1 == index.size(), this means
@@ -362,9 +356,9 @@ namespace gum {
   template < typename Key, typename Data >
   INLINE IndexedTree< Key, Data >&
          IndexedTree< Key, Data >::getNode(const std::vector< Key >& index) const {
-    IndexedTree< Key, Data >* current_node = const_cast< IndexedTree< Key, Data >* >(this);
+        IndexedTree< Key, Data >* current_node = const_cast< IndexedTree< Key, Data >* >(this);
 
-    for (unsigned int i = 0; i < index.size(); ++i)
+        for (unsigned int i = 0; i < index.size(); ++i)
       current_node = current_node->children[index[i]];
 
     return *current_node;

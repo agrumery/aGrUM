@@ -298,10 +298,8 @@ namespace gum {
       for (const auto& elt: *i) {
         if (_bb_.requisiteNodes(*i).exists(elt.first)) {
           if (PRMClassElement< GUM_SCALAR >::isAttribute(c.get(elt.first))) {
-            if (c.isOutputNode(c.get(elt.first)))
-              outers.insert(elt.first);
-            else if (!outers.exists(elt.first))
-              inners.insert(elt.first);
+            if (c.isOutputNode(c.get(elt.first))) outers.insert(elt.first);
+            else if (!outers.exists(elt.first)) inners.insert(elt.first);
           } else if (PRMClassElement< GUM_SCALAR >::isAggregate(c.get(elt.first))) {
             outers.insert(elt.first);
 
@@ -487,7 +485,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE std::vector< NodeId >&
            SVED< GUM_SCALAR >::_getElimOrder_(const PRMClass< GUM_SCALAR >& c) {
-      return *(_elim_orders_[&c]);
+          return *(_elim_orders_[&c]);
     }
 
     template < typename GUM_SCALAR >
@@ -511,7 +509,7 @@ namespace gum {
     INLINE Potential< GUM_SCALAR >*
            SVED< GUM_SCALAR >::_getAggPotential_(const PRMInstance< GUM_SCALAR >*  i,
                                              const PRMAggregate< GUM_SCALAR >* agg) {
-      return &(const_cast< Potential< GUM_SCALAR >& >(i->get(agg->safeName()).cpf()));
+          return &(const_cast< Potential< GUM_SCALAR >& >(i->get(agg->safeName()).cpf()));
     }
 
     template < typename GUM_SCALAR >

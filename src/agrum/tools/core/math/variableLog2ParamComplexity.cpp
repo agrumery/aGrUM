@@ -184,10 +184,8 @@ namespace gum {
     outfile << "      { ";
     bool first = true;
     for (const auto cn2: cn2_table) {
-      if (first)
-        first = false;
-      else
-        outfile << ",\n        ";
+      if (first) first = false;
+      else outfile << ",\n        ";
       const double logCn2 = (double)std::log2(cn2);
       outfile << logCn2;
     }

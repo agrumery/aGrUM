@@ -73,6 +73,13 @@ class DiscreteVariableTestCase(VariablesTestCase):
     v.setEmpirical(True)
     self.assertEqual(v.labels(), ("(1;2[", "[2;4[", "[4;5)"))
 
+    v = gum.DiscretizedVariable("f", "f", [1, 5, 2, 4],True)
+    self.assertEqual(v.labels(), ("(1;2[", "[2;4[", "[4;5)"))
+
+    v = gum.DiscretizedVariable("f", "f", [1, 5, 2, 4],True)
+    v.setEmpirical(False)
+    self.assertEqual(v.labels(), ("[1;2[", "[2;4[", "[4;5]"))
+
   def testHashableDiscreteVariable(self):
     va = gum.LabelizedVariable("a", "a")
     vb = gum.LabelizedVariable("b", "b", ["toto","titi","yes"])

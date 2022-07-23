@@ -152,10 +152,10 @@ namespace gum {
     std::string toStringWithDescription() const;
 
     /// string represent the domain of the variable
-    virtual const std::string domain() const = 0;
+    virtual std::string domain() const = 0;
 
     /// string represent the type of the variable
-    virtual const std::string stype() const = 0;
+    virtual std::string stype() const = 0;
 
 
     protected:

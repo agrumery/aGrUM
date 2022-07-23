@@ -151,5 +151,5 @@ Returns
 int :
 	the type of the variable.
 
-	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable
+	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable, 4:
 "

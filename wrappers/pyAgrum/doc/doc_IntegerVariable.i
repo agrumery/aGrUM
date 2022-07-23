@@ -6,7 +6,7 @@ IntegerVariable(aName, aDesc='', values) -> IntegerVariable
     Parameters:
         * **aName** (str) -- the name of the variable
         * **aDesc** (str) -- the (optional) description of the variable
-        * **labels** (List[int]) -- the values to create
+        * **values** (List[int]) -- the values to create
 
 IntegerVariable(aIDRV) -> IntegerVariable
     Parameters:

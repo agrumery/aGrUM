@@ -42,10 +42,8 @@ namespace std {
     stream << "[";
 
     for (const auto& v: val) {
-      if (deja)
-        stream << " , ";
-      else
-        deja = true;
+      if (deja) stream << " , ";
+      else deja = true;
       stream << v;
     }
 
@@ -88,12 +86,8 @@ namespace std {
     if (x.size() <= 1) return true;
     if (x.size() == 2) return x[0] != x[1];
 
-    auto refless = [](T const* l, T const* r) {
-      return *l < *r;
-    };
-    auto refeq = [](T const* l, T const* r) {
-      return *l == *r;
-    };
+    auto refless = [](T const* l, T const* r) { return *l < *r; };
+    auto refeq   = [](T const* l, T const* r) { return *l == *r; };
 
     std::vector< T const* > vp;
     vp.reserve(x.size());

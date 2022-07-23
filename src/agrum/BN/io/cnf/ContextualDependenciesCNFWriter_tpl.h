@@ -448,8 +448,7 @@ namespace gum {
 
                     delete orderStruct2;
                     orderStruct.erase(instpro->toString());
-                  } else
-                    delete instpro;
+                  } else delete instpro;
                 } else if (newSeqpre.exists(instpro->toString())) {
                   elimination.insert(linecount);
                   delete instpro;

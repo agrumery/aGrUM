@@ -74,13 +74,9 @@ namespace gum {
   /// returns an extremal node of an edge given the ID of the other one
 
   INLINE NodeId Edge::other(NodeId id) const {
-    if (id == n1)
-      return n2;
-    else if (id == n2)
-      return n1;
-    else {
-      GUM_ERROR(InvalidNode, id << " does not belong to this edge")
-    }
+    if (id == n1) return n2;
+    else if (id == n2) return n1;
+    else { GUM_ERROR(InvalidNode, id << " does not belong to this edge") }
   }
 
   /// returns one extremal node ID (whichever one it is is unspecified)
@@ -169,13 +165,9 @@ namespace gum {
   /// returns an extremal node of an edge given the ID of the other one
 
   INLINE NodeId Arc::other(NodeId id) const {
-    if (id == n1)
-      return n2;
-    else if (id == n2)
-      return n1;
-    else {
-      GUM_ERROR(InvalidNode, id << " does not belong to this arc")
-    }
+    if (id == n1) return n2;
+    else if (id == n2) return n1;
+    else { GUM_ERROR(InvalidNode, id << " does not belong to this arc") }
   }
 
   /// returns one extremal node ID (whichever one it is is unspecified)

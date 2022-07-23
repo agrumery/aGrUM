@@ -36,8 +36,8 @@ namespace gum {
   INLINE CliqueGraph& CliqueGraph::operator=(const CliqueGraph& g) {
     if (this != &g) {
       UndiGraph::operator=(g);
-      _cliques_          = g._cliques_;
-      _separators_       = g._separators_;
+      _cliques_    = g._cliques_;
+      _separators_ = g._separators_;
     }
 
     return *this;

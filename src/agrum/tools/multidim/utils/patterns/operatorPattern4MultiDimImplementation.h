@@ -80,10 +80,8 @@ namespace gum {
     }
 
     // perform the addition
-    if (swapped_names)
-      return func(&impl2, &impl1);
-    else
-      return func(&impl1, &impl2);
+    if (swapped_names) return func(&impl2, &impl1);
+    else return func(&impl1, &impl2);
   }
 }   // namespace gum
 #endif   /* GUM_OPERATOR_PATTERN_ALLOWED */

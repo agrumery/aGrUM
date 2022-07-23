@@ -113,19 +113,13 @@ namespace gum {
   }
 
   ParseError ErrorsContainer::error(Idx i) const {
-    if (count() > i)
-      return errors[i];   // May throw an error if i >= count().
-    else {
-      GUM_ERROR(OutOfBounds, "Index out of bound.")
-    }
+    if (count() > i) return errors[i];   // May throw an error if i >= count().
+    else { GUM_ERROR(OutOfBounds, "Index out of bound.") }
   }
 
   ParseError ErrorsContainer::last() const {
-    if (count() > 0)
-      return errors[count() - 1];
-    else {
-      GUM_ERROR(OutOfBounds, "Index out of bound.")
-    }
+    if (count() > 0) return errors[count() - 1];
+    else { GUM_ERROR(OutOfBounds, "Index out of bound.") }
   }
 
   ErrorsContainer::ErrorsContainer() {

@@ -288,29 +288,29 @@ namespace gum {
         }
 
         ThreadNumberManager::operator=(from);
-        scoreType_                   = from.scoreType_;
-        paramEstimatorType_          = from.paramEstimatorType_;
-        epsilonEM_                   = from.epsilonEM_;
-        priorType_                   = from.priorType_;
-        priorWeight_                 = from.priorWeight_;
-        constraintSliceOrder_        = from.constraintSliceOrder_;
-        constraintIndegree_          = from.constraintIndegree_;
-        constraintTabuList_          = from.constraintTabuList_;
-        constraintForbiddenArcs_     = from.constraintForbiddenArcs_;
-        constraintMandatoryArcs_     = from.constraintMandatoryArcs_;
-        selectedAlgo_                = from.selectedAlgo_;
-        algoK2_                      = from.algoK2_;
-        algoMiic3off2_               = from.algoMiic3off2_;
-        kmode3Off2_                  = from.kmode3Off2_;
-        greedyHillClimbing_          = from.greedyHillClimbing_;
-        localSearchWithTabuList_     = from.localSearchWithTabuList_;
-        scoreDatabase_               = from.scoreDatabase_;
-        ranges_                      = from.ranges_;
-        priorDbname_                 = from.priorDbname_;
-        initialDag_                  = from.initialDag_;
-        filename_                    = from.filename_;
-        nbDecreasingChanges_         = from.nbDecreasingChanges_;
-        currentAlgorithm_            = nullptr;
+        scoreType_               = from.scoreType_;
+        paramEstimatorType_      = from.paramEstimatorType_;
+        epsilonEM_               = from.epsilonEM_;
+        priorType_               = from.priorType_;
+        priorWeight_             = from.priorWeight_;
+        constraintSliceOrder_    = from.constraintSliceOrder_;
+        constraintIndegree_      = from.constraintIndegree_;
+        constraintTabuList_      = from.constraintTabuList_;
+        constraintForbiddenArcs_ = from.constraintForbiddenArcs_;
+        constraintMandatoryArcs_ = from.constraintMandatoryArcs_;
+        selectedAlgo_            = from.selectedAlgo_;
+        algoK2_                  = from.algoK2_;
+        algoMiic3off2_           = from.algoMiic3off2_;
+        kmode3Off2_              = from.kmode3Off2_;
+        greedyHillClimbing_      = from.greedyHillClimbing_;
+        localSearchWithTabuList_ = from.localSearchWithTabuList_;
+        scoreDatabase_           = from.scoreDatabase_;
+        ranges_                  = from.ranges_;
+        priorDbname_             = from.priorDbname_;
+        initialDag_              = from.initialDag_;
+        filename_                = from.filename_;
+        nbDecreasingChanges_     = from.nbDecreasingChanges_;
+        currentAlgorithm_        = nullptr;
       }
 
       return *this;
@@ -339,29 +339,29 @@ namespace gum {
         }
 
         ThreadNumberManager::operator=(std::move(from));
-        scoreType_                   = from.scoreType_;
-        paramEstimatorType_          = from.paramEstimatorType_;
-        epsilonEM_                   = from.epsilonEM_;
-        priorType_                   = from.priorType_;
-        priorWeight_                 = from.priorWeight_;
-        constraintSliceOrder_        = std::move(from.constraintSliceOrder_);
-        constraintIndegree_          = std::move(from.constraintIndegree_);
-        constraintTabuList_          = std::move(from.constraintTabuList_);
-        constraintForbiddenArcs_     = std::move(from.constraintForbiddenArcs_);
-        constraintMandatoryArcs_     = std::move(from.constraintMandatoryArcs_);
-        selectedAlgo_                = from.selectedAlgo_;
-        algoK2_                      = from.algoK2_;
-        algoMiic3off2_               = std::move(from.algoMiic3off2_);
-        kmode3Off2_                  = from.kmode3Off2_;
-        greedyHillClimbing_          = std::move(from.greedyHillClimbing_);
-        localSearchWithTabuList_     = std::move(from.localSearchWithTabuList_);
-        scoreDatabase_               = std::move(from.scoreDatabase_);
-        ranges_                      = std::move(from.ranges_);
-        priorDbname_                 = std::move(from.priorDbname_);
-        filename_                    = std::move(from.filename_);
-        initialDag_                  = std::move(from.initialDag_);
-        nbDecreasingChanges_         = std::move(from.nbDecreasingChanges_);
-        currentAlgorithm_            = nullptr;
+        scoreType_               = from.scoreType_;
+        paramEstimatorType_      = from.paramEstimatorType_;
+        epsilonEM_               = from.epsilonEM_;
+        priorType_               = from.priorType_;
+        priorWeight_             = from.priorWeight_;
+        constraintSliceOrder_    = std::move(from.constraintSliceOrder_);
+        constraintIndegree_      = std::move(from.constraintIndegree_);
+        constraintTabuList_      = std::move(from.constraintTabuList_);
+        constraintForbiddenArcs_ = std::move(from.constraintForbiddenArcs_);
+        constraintMandatoryArcs_ = std::move(from.constraintMandatoryArcs_);
+        selectedAlgo_            = from.selectedAlgo_;
+        algoK2_                  = from.algoK2_;
+        algoMiic3off2_           = std::move(from.algoMiic3off2_);
+        kmode3Off2_              = from.kmode3Off2_;
+        greedyHillClimbing_      = std::move(from.greedyHillClimbing_);
+        localSearchWithTabuList_ = std::move(from.localSearchWithTabuList_);
+        scoreDatabase_           = std::move(from.scoreDatabase_);
+        ranges_                  = std::move(from.ranges_);
+        priorDbname_             = std::move(from.priorDbname_);
+        filename_                = std::move(from.filename_);
+        initialDag_              = std::move(from.initialDag_);
+        nbDecreasingChanges_     = std::move(from.nbDecreasingChanges_);
+        currentAlgorithm_        = nullptr;
       }
 
       return *this;
@@ -501,8 +501,7 @@ namespace gum {
                                            scoreDatabase_.nodeId2Columns());
           break;
 
-        default:
-          GUM_ERROR(OperationNotAllowed, "IBNLearner does not support yet this score")
+        default: GUM_ERROR(OperationNotAllowed, "IBNLearner does not support yet this score")
       }
 
       // remove the old score, if any
@@ -617,17 +616,11 @@ namespace gum {
                                                    ranges_,
                                                    scoreDatabase_.nodeId2Columns());
       switch (kmode3Off2_) {
-        case CorrectedMutualInformation::KModeTypes::MDL:
-          mutualInfo_->useMDL();
-          break;
+        case CorrectedMutualInformation::KModeTypes::MDL: mutualInfo_->useMDL(); break;
 
-        case CorrectedMutualInformation::KModeTypes::NML:
-          mutualInfo_->useNML();
-          break;
+        case CorrectedMutualInformation::KModeTypes::NML: mutualInfo_->useNML(); break;
 
-        case CorrectedMutualInformation::KModeTypes::NoCorr:
-          mutualInfo_->useNoCorr();
-          break;
+        case CorrectedMutualInformation::KModeTypes::NoCorr: mutualInfo_->useNoCorr(); break;
 
         default:
           GUM_ERROR(NotImplementedYet,
@@ -808,26 +801,20 @@ namespace gum {
       const auto prior = getPriorType_();
 
       switch (scoreType_) {
-        case ScoreType::AIC:
-          return ScoreAIC::isPriorCompatible(prior, priorWeight_);
+        case ScoreType::AIC: return ScoreAIC::isPriorCompatible(prior, priorWeight_);
 
-        case ScoreType::BD:
-          return ScoreBD::isPriorCompatible(prior, priorWeight_);
+        case ScoreType::BD: return ScoreBD::isPriorCompatible(prior, priorWeight_);
 
-        case ScoreType::BDeu:
-          return ScoreBDeu::isPriorCompatible(prior, priorWeight_);
+        case ScoreType::BDeu: return ScoreBDeu::isPriorCompatible(prior, priorWeight_);
 
-        case ScoreType::BIC:
-          return ScoreBIC::isPriorCompatible(prior, priorWeight_);
+        case ScoreType::BIC: return ScoreBIC::isPriorCompatible(prior, priorWeight_);
 
-        case ScoreType::K2:
-          return ScoreK2::isPriorCompatible(prior, priorWeight_);
+        case ScoreType::K2: return ScoreK2::isPriorCompatible(prior, priorWeight_);
 
         case ScoreType::LOG2LIKELIHOOD:
           return ScoreLog2Likelihood::isPriorCompatible(prior, priorWeight_);
 
-        default:
-          return "IBNLearner does not support yet this score";
+        default: return "IBNLearner does not support yet this score";
       }
     }
 
@@ -933,9 +920,7 @@ namespace gum {
       std::vector< NodeId > ids;
       std::vector< NodeId > knowingIds;
 
-      auto mapper = [this](const std::string& c) -> NodeId {
-        return this->idFromName(c);
-      };
+      auto mapper = [this](const std::string& c) -> NodeId { return this->idFromName(c); };
 
       std::transform(vars.begin(), vars.end(), std::back_inserter(ids), mapper);
       std::transform(knowing.begin(), knowing.end(), std::back_inserter(knowingIds), mapper);
@@ -955,9 +940,7 @@ namespace gum {
     std::vector< double > IBNLearner::rawPseudoCount(const std::vector< std::string >& vars) {
       std::vector< NodeId > ids;
 
-      auto mapper = [this](const std::string& c) -> NodeId {
-        return this->idFromName(c);
-      };
+      auto mapper = [this](const std::string& c) -> NodeId { return this->idFromName(c); };
 
       std::transform(vars.begin(), vars.end(), std::back_inserter(ids), mapper);
       return rawPseudoCount(ids);

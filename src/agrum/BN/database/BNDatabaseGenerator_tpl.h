@@ -274,8 +274,7 @@ namespace gum {
 
             if (translatorType[i] == DBTranslatedValueType::DISCRETE)
               xrow[i].discr_val = std::size_t(row.at(j));
-            else
-              xrow[i].cont_val = float(row.at(j));
+            else xrow[i].cont_val = float(row.at(j));
           }
         }
         db.insertRow(xrow, xmiss);

@@ -75,7 +75,7 @@ namespace gum {
   Scheduler& Scheduler::operator=(const Scheduler& from) {
     if (this != &from) {
       ThreadNumberManager::operator=(from);
-      _max_memory                  = from._max_memory;
+      _max_memory = from._max_memory;
     }
 
     return *this;
@@ -86,7 +86,7 @@ namespace gum {
   Scheduler& Scheduler::operator=(Scheduler&& from) {
     if (this != &from) {
       ThreadNumberManager::operator=(std::move(from));
-      _max_memory                  = from._max_memory;
+      _max_memory = from._max_memory;
     }
 
     return *this;

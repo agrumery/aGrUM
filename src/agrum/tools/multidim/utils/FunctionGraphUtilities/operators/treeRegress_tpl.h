@@ -79,8 +79,7 @@ namespace gum {
     if (_vFunc_->isTerminalNode(_vFunc_->root())) {
       ret = MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::getTreeInstance();
       ret->copy(*_vFunc_);
-    } else
-      ret = _xPloreVFunc_(_vFunc_->root());
+    } else ret = _xPloreVFunc_(_vFunc_->root());
     return ret;
   }
 

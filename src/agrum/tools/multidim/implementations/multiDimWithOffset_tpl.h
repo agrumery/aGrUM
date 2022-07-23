@@ -198,8 +198,7 @@ namespace gum {
     Idx off = 0;
 
     for (auto iter = gaps_.begin(); iter != gaps_.end(); ++iter)
-      if (i.contains(iter.key()))
-        off += iter.val() * i.valFromPtr(iter.key());
+      if (i.contains(iter.key())) off += iter.val() * i.valFromPtr(iter.key());
       else
         GUM_ERROR(InvalidArgument, iter.key()->name() << " not present in the instantiation " << i)
 

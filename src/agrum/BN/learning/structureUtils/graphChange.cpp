@@ -62,8 +62,7 @@ namespace gum {
           stream << "EdgeDeletion ( " << node1() << " , " << node2() << " )";
           return stream.str();
 
-        default:
-          GUM_ERROR(OperationNotAllowed, "this graph modification is not supported yet")
+        default: GUM_ERROR(OperationNotAllowed, "this graph modification is not supported yet")
       }
     }
 

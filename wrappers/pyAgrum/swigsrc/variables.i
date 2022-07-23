@@ -108,3 +108,35 @@ PyObject *integerDomain() const {
 }
 }
 %ignore gum::IntegerVariable::integerDomain;
+
+
+%feature("shadow") gum::NumericalDiscreteVariable::addValue(double value) %{
+def addValue(self,*args):
+    """
+    Add a value to the list of values for the variable.
+
+    Parameters
+    ----------
+    value : double
+        the new value
+
+    Returns
+    -------
+    pyAgrum.IntegerVariable
+        the Integer variable
+
+    Raises
+    ------
+      pyAgrum.DuplicateElement
+        If the variable already contains the value
+    """
+    $action(self,*args)
+    return self
+%}
+
+%extend gum::NumericalDiscreteVariable {
+PyObject *numericalDomain() const {
+  return PyAgrumHelper::PyListFromSequenceOfDouble(self->numericalDomain());
+}
+}
+%ignore gum::IntegerVariable::integerDomain;

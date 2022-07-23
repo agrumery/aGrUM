@@ -42,7 +42,7 @@ namespace gum {
     /// copy operator
     ScoreK2& ScoreK2::operator=(const ScoreK2& from) {
       if (this != &from) {
-        Score::operator  =(from);
+        Score::operator=(from);
         _internal_prior_ = from._internal_prior_;
       }
       return *this;
@@ -52,7 +52,7 @@ namespace gum {
     /// move operator
     ScoreK2& ScoreK2::operator=(ScoreK2&& from) {
       if (this != &from) {
-        Score::operator  =(std::move(from));
+        Score::operator=(std::move(from));
         _internal_prior_ = std::move(from._internal_prior_);
       }
       return *this;

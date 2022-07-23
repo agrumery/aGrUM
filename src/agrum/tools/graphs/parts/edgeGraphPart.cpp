@@ -109,10 +109,8 @@ namespace gum {
     s << "{";
 
     for (const auto& edge: _edges_) {
-      if (first)
-        first = false;
-      else
-        s << ",";
+      if (first) first = false;
+      else s << ",";
 
       s << edge;
     }

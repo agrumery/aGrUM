@@ -40,10 +40,8 @@ namespace gum {
   INLINE void
      SplayBinaryNode< Element >::copy_(const SplayBinaryNode< Element >&                  from,
                                        HashTable< Element, SplayBinaryNode< Element >* >& addr) {
-    if (addr.exists(from.elt))
-      addr[from.elt] = this;
-    else
-      addr.insert(from.elt, this);
+    if (addr.exists(from.elt)) addr[from.elt] = this;
+    else addr.insert(from.elt, this);
 
     elt = from.elt;
 
@@ -77,10 +75,8 @@ namespace gum {
      SplayBinaryNode*                                   p) :
       elt(e),
       size(1), fg(g), fd(d), pere(p) {
-    if (addr.exists(elt))
-      addr[elt] = this;
-    else
-      addr.insert(elt, this);
+    if (addr.exists(elt)) addr[elt] = this;
+    else addr.insert(elt, this);
 
     // for debugging purposes
     GUM_CONSTRUCTOR(SplayBinaryNode);
@@ -262,28 +258,28 @@ namespace gum {
   INLINE SplayBinaryNode< Element >*
          SplayBinaryNode< Element >::join(const SplayBinaryNode< Element >*                  e,
                                       HashTable< Element, SplayBinaryNode< Element >* >& addr) {
-    SplayBinaryNode< Element >* b = new SplayBinaryNode< Element >(*e, addr);
-    GUM_ASSERT(b != 0);
-    SplayBinaryNode< Element >* act = this;
+        SplayBinaryNode< Element >* b = new SplayBinaryNode< Element >(*e, addr);
+        GUM_ASSERT(b != 0);
+        SplayBinaryNode< Element >* act = this;
 
-    for (; act->fd; act = act->fd)
+        for (; act->fd; act = act->fd)
       ;
 
     // act is the rightmost element
-    act->splay();
+        act->splay();
 
-    // insertion
-    act->fd = b;
+        // insertion
+        act->fd = b;
 
-    b->pere = act;
+        b->pere = act;
 
-    act->size = 1;
+        act->size = 1;
 
-    if (act->fg) act->size += act->fg->size;
+        if (act->fg) act->size += act->fg->size;
 
     act->size += act->fd->size;
 
-    return act;
+        return act;
   }
 
   // Get the position of the node
@@ -292,10 +288,8 @@ namespace gum {
   INLINE int SplayBinaryNode< Element >::position() const {
     if (!pere) {
       // I'm the root
-      if (fg)
-        return fg->size + 1;
-      else
-        return 0;
+      if (fg) return fg->size + 1;
+      else return 0;
     } else if (pere->fg == this) {
       // I'm the left child of my father
       int pos = pere->position() - 1;
@@ -434,10 +428,8 @@ namespace gum {
       bool                        next    = true;
 
       while (next) {
-        if (!act->fg)
-          pos_act = 0;
-        else
-          pos_act = act->fg->size;
+        if (!act->fg) pos_act = 0;
+        else pos_act = act->fg->size;
 
         if (pos_act > val) {
           act = act->fg;
@@ -471,10 +463,8 @@ namespace gum {
       bool                        next    = true;
 
       while (next) {
-        if (!act->fg)
-          pos_act = 0;
-        else
-          pos_act = act->fg->size;
+        if (!act->fg) pos_act = 0;
+        else pos_act = act->fg->size;
 
         if (pos_act > val) {
           act = act->fg;
@@ -768,10 +758,8 @@ namespace gum {
 
   template < class Element >
   INLINE Size SplayTree< Element >::size() const {
-    if (root)
-      return root->size;
-    else
-      return Size(0);
+    if (root) return root->size;
+    else return Size(0);
   }
 
   // Test if the tree contains the element

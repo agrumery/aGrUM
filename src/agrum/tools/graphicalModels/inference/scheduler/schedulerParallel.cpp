@@ -297,17 +297,13 @@ namespace gum {
                   new_available_nodes.pop_back();
                   thread2not_empty[thread].notify_one();
 
-                  if (i != Idx(0))
-                    --i;
-                  else
-                    no_more_inactive_threads = true;
+                  if (i != Idx(0)) --i;
+                  else no_more_inactive_threads = true;
                   break;
                 }
               }
-              if (i != Idx(0))
-                --i;
-              else
-                no_more_inactive_threads = true;
+              if (i != Idx(0)) --i;
+              else no_more_inactive_threads = true;
             }
 
             if (no_more_inactive_threads) break;
@@ -345,18 +341,14 @@ namespace gum {
                   thread2node[thread]    = available_nodes.front();
                   available_nodes.popFront();
                   thread2not_empty[thread].notify_one();
-                  if (i != Idx(0))
-                    --i;
-                  else
-                    no_more_inactive_threads = true;
+                  if (i != Idx(0)) --i;
+                  else no_more_inactive_threads = true;
                   break;
                 }
               }
 
-              if (i != Idx(0))
-                --i;
-              else
-                no_more_inactive_threads = true;
+              if (i != Idx(0)) --i;
+              else no_more_inactive_threads = true;
             }
             if (no_more_inactive_threads) break;
           }

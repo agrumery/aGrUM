@@ -44,12 +44,9 @@ namespace gum {
 
     double diff = p_.log10DomainSize();
 
-    if (diff > GAP_COMPLEXITY_KL_HEAVY_DIFFICULT)
-      _difficulty_ = Complexity::Heavy;
-    else if (diff > GAP_COMPLEXITY_KL_DIFFICULT_CORRECT)
-      _difficulty_ = Complexity::Difficult;
-    else
-      _difficulty_ = Complexity::Correct;
+    if (diff > GAP_COMPLEXITY_KL_HEAVY_DIFFICULT) _difficulty_ = Complexity::Heavy;
+    else if (diff > GAP_COMPLEXITY_KL_DIFFICULT_CORRECT) _difficulty_ = Complexity::Difficult;
+    else _difficulty_ = Complexity::Correct;
   }
 
   template < typename GUM_SCALAR >

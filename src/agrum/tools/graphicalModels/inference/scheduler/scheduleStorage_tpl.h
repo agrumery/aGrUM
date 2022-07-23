@@ -127,8 +127,8 @@ namespace gum {
       _arg_ = from._arg_;
       _args_.clear();
       _args_ << _arg_;
-      _container_               = from._container_;
-      _is_executed_             = from._is_executed_;
+      _container_   = from._container_;
+      _is_executed_ = from._is_executed_;
       ScheduleOperator::operator=(from);
     }
     return *this;
@@ -143,8 +143,8 @@ namespace gum {
       _arg_ = from._arg_;
       _args_.clear();
       _args_ << _arg_;
-      _container_               = from._container_;
-      _is_executed_             = from._is_executed_;
+      _container_   = from._container_;
+      _is_executed_ = from._is_executed_;
       ScheduleOperator::operator=(std::move(from));
     }
     return *this;
@@ -247,7 +247,7 @@ namespace gum {
   template < typename TABLE, template < typename... > class CONTAINER >
   INLINE const ScheduleMultiDim< typename std::remove_pointer< TABLE >::type >&
                ScheduleStorage< TABLE, CONTAINER >::arg() const {
-    return *_arg_;
+              return *_arg_;
   }
 
 

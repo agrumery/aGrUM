@@ -110,7 +110,7 @@ SHOW_AS = "SHOWAS" integer ';'.
 NODE =	(.
 			std::string var;
 			std::vector<std::string> parents;
-			int nbrMod = 0;
+			Size nbrMod = 0;
 		.)
 
 	"node" IDENT<var>
@@ -173,7 +173,7 @@ PARENTS_LIST<. std::vector<std::string>& parents .> =
 .
 
 //==============
-VARIABLE_DEFINITION<. int& nbrMod, std::string& var, const std::vector<std::string>& parents .> =
+VARIABLE_DEFINITION<. Size& nbrMod, std::string& var, const std::vector<std::string>& parents .> =
 	"DEFINITION" '{'
 		"NAMESTATES" '('
 									(.
@@ -197,7 +197,7 @@ VARIABLE_DEFINITION<. int& nbrMod, std::string& var, const std::vector<std::stri
 
 		PROBA<var, parents>
 					(.
-						int nbr=0;
+						Size nbr=0;
 						TRY(nbr=factory().varInBN(factory().variableId(var)).domainSize());
 						if (nbrMod<nbr) SemErr("Too much modalities for variable "+var);
 						if (nbrMod>nbr) SemErr("Too many modalities for variable "+var);
@@ -207,7 +207,7 @@ VARIABLE_DEFINITION<. int& nbrMod, std::string& var, const std::vector<std::stri
 .
 
 //==============
-MODALITY_LIST<int& nbrMod> =
+MODALITY_LIST<Size& nbrMod> =
 								(. std::string label; .)
 	IDENT_OR_INTEGER<label>
   							 	(.

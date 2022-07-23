@@ -175,10 +175,8 @@ namespace gum {
 
     if (!MultiDimImplementation< GUM_SCALAR >::isInMultipleChangeMethod_()) {
       if (this->domainSize() <= _bufferSize_) {
-        if (_bucket_)
-          _bucket_->add(v);
-        else
-          _initializeBuffer_();
+        if (_bucket_) _bucket_->add(v);
+        else _initializeBuffer_();
       } else if (_bucket_) {
         _eraseBuffer_();
       }
@@ -536,7 +534,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const HashTable< const MultiDimContainer< GUM_SCALAR >*, Instantiation* >&
                MultiDimBucket< GUM_SCALAR >::multidims() const {
-    return _multiDims_;
+              return _multiDims_;
   }
 
 } /* namespace gum */

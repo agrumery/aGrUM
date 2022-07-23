@@ -46,7 +46,8 @@ namespace gum_tests {
     }
 
     void test_CPP17_enumInit() {
-      enum byte : unsigned char {};
+      enum byte : unsigned char {
+      };
       byte b0 [[maybe_unused]]{0};
       byte b1 [[maybe_unused]] = byte{255};
     }
@@ -84,9 +85,7 @@ namespace gum_tests {
     void test_CPP20_lambda_implicit_this_capture() {
       struct S {
         int x{1};
-        int y{[&] {
-          return x + 1;
-        }()};   // OK, captures 'this'
+        int y{[&] { return x + 1; }()};   // OK, captures 'this'
       };
       S s;
       TS_ASSERT_EQUALS(s.y, 2);

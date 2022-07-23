@@ -26,8 +26,7 @@ namespace gum {
   INLINE Scheduler& ScheduledInference::scheduler() const {
     if (ThreadNumberManager::getNumberOfThreads() != 1)
       return const_cast< SchedulerParallel& >(_scheduler_parallel_);
-    else
-      return const_cast< SchedulerSequential& >(_scheduler_sequential_);
+    else return const_cast< SchedulerSequential& >(_scheduler_sequential_);
   }
 
 

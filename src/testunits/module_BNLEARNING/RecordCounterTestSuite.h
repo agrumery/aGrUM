@@ -1099,8 +1099,7 @@ namespace gum_tests {
         for (gum::Instantiation inst(proba); !inst.end(); ++inst) {
           if (proba.variablesSequence()[0]->name() == "A")
             idx = inst.val(0) + std::size_t(2) * inst.val(1);
-          else
-            idx = inst.val(1) + std::size_t(2) * inst.val(0);
+          else idx = inst.val(1) + std::size_t(2) * inst.val(0);
           xcounts[idx] += proba.get(inst) * 100;
         }
 

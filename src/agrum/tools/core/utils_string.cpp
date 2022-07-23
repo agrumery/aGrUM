@@ -93,6 +93,15 @@ namespace gum {
     if ((val[0] == '+') || (val[0] == '-')) { pos = 1; }
     return (val.find_first_not_of("0123456789", pos) == std::string::npos);
   }
+
+  bool isNumerical(const std::string& val) {
+    char*       endptr = nullptr;
+    const char* str    = val.c_str();
+    std::strtod(str, &endptr);
+
+    if (*endptr != '\0' || endptr == str) return false;
+    return true;
+  }
 } /* namespace gum */
 
 #ifdef GUM_NO_INLINE

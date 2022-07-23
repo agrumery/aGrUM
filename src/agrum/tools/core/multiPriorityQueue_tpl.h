@@ -199,8 +199,7 @@ namespace gum {
     // remove the element from the hashtable
     const Val&           del_val    = *(_heap_[index].second);
     std::vector< Size >& vect_index = _indices_[del_val];
-    if (vect_index.size() == 1)
-      _indices_.erase(del_val);
+    if (vect_index.size() == 1) _indices_.erase(del_val);
     else {
       for (auto& v_index: vect_index) {
         if (v_index == index) {
@@ -279,7 +278,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp >
   INLINE const HashTable< Val, std::vector< Size > >&
                MultiPriorityQueue< Val, Priority, Cmp >::allValues() const {
-    return reinterpret_cast< const HashTable< Val, std::vector< Size > >& >(_indices_);
+              return reinterpret_cast< const HashTable< Val, std::vector< Size > >& >(_indices_);
   }
 
   // inserts a new (a copy) element in the priority queue

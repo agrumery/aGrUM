@@ -174,10 +174,8 @@ namespace gum_tests {
       t_out->beginMultipleChanges();
 
       for (const auto var: tin_vars)
-        if (!inst_vars.exists(var))
-          t_out->add(*var);
-        else
-          partial_inst.add(*var);
+        if (!inst_vars.exists(var)) t_out->add(*var);
+        else partial_inst.add(*var);
 
       t_out->endMultipleChanges();
 
@@ -213,10 +211,8 @@ namespace gum_tests {
       t_out->beginMultipleChanges();
 
       for (const auto var: tin_vars)
-        if (!inst_vars.exists(var))
-          t_out->add(*var);
-        else
-          partial_inst.add(*var);
+        if (!inst_vars.exists(var)) t_out->add(*var);
+        else partial_inst.add(*var);
 
       t_out->endMultipleChanges();
 
@@ -252,10 +248,8 @@ namespace gum_tests {
       t_out->beginMultipleChanges();
 
       for (const auto var: tin_vars)
-        if (!inst_vars.exists(var))
-          t_out->add(*var);
-        else
-          partial_inst.add(*var);
+        if (!inst_vars.exists(var)) t_out->add(*var);
+        else partial_inst.add(*var);
 
       t_out->endMultipleChanges();
 
@@ -291,10 +285,8 @@ namespace gum_tests {
       t_out->beginMultipleChanges();
 
       for (const auto var: tin_vars)
-        if (!inst_vars.exists(var))
-          t_out->add(*var);
-        else
-          partial_inst.add(*var);
+        if (!inst_vars.exists(var)) t_out->add(*var);
+        else partial_inst.add(*var);
 
       t_out->endMultipleChanges();
 

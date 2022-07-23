@@ -199,8 +199,7 @@ namespace gum {
       if (!_initializedTable_[actionId]) {
         _counterTable_[actionId]->reset(newState);
         _initializedTable_[actionId] = true;
-      } else
-        _counterTable_[actionId]->incState(newState);
+      } else _counterTable_[actionId]->incState(newState);
     }
 
     private:

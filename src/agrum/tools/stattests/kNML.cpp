@@ -43,7 +43,7 @@ namespace gum {
     KNML& KNML::operator=(const KNML& from) {
       if (this != &from) {
         IndependenceTest::operator=(from);
-        _param_complexity_        = from._param_complexity_;
+        _param_complexity_ = from._param_complexity_;
       }
       return *this;
     }
@@ -53,7 +53,7 @@ namespace gum {
     KNML& KNML::operator=(KNML&& from) {
       if (this != &from) {
         IndependenceTest::operator=(std::move(from));
-        _param_complexity_        = std::move(from._param_complexity_);
+        _param_complexity_ = std::move(from._param_complexity_);
       }
       return *this;
     }

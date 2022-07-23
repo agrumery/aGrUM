@@ -56,10 +56,8 @@ namespace gum {
         // rechain properly the new list
         new_elt->prev = old_ptr;
 
-        if (old_ptr != nullptr)
-          old_ptr->next = new_elt;
-        else
-          _deb_list_ = new_elt;
+        if (old_ptr != nullptr) old_ptr->next = new_elt;
+        else _deb_list_ = new_elt;
 
         old_ptr = new_elt;
       }
@@ -99,15 +97,11 @@ namespace gum {
     if (ptr == nullptr) { GUM_ERROR(NullElement, "trying to erase a nullptr bucket") }
 
     // relink properly the doubly chained list
-    if (ptr->prev != nullptr)
-      ptr->prev->next = ptr->next;
-    else
-      _deb_list_ = ptr->next;
+    if (ptr->prev != nullptr) ptr->prev->next = ptr->next;
+    else _deb_list_ = ptr->next;
 
-    if (ptr->next != nullptr)
-      ptr->next->prev = ptr->prev;
-    else
-      _end_list_ = ptr->prev;
+    if (ptr->next != nullptr) ptr->next->prev = ptr->prev;
+    else _end_list_ = ptr->prev;
 
     // remove the current element from the list
     delete ptr;
@@ -236,10 +230,8 @@ namespace gum {
     new_elt->prev = nullptr;
     new_elt->next = _deb_list_;
 
-    if (_deb_list_ != nullptr)
-      _deb_list_->prev = new_elt;
-    else
-      _end_list_ = new_elt;
+    if (_deb_list_ != nullptr) _deb_list_->prev = new_elt;
+    else _end_list_ = new_elt;
 
     _deb_list_ = new_elt;
 
@@ -491,28 +483,22 @@ namespace gum {
   template < typename Key, typename Val >
   INLINE typename HashTable< Key, Val >::iterator HashTable< Key, Val >::begin() {
     // if the table is empty, make the begin and end point to the same element
-    if (_nb_elements_ == Size(0))
-      return iterator{end()};
-    else
-      return iterator{*this};
+    if (_nb_elements_ == Size(0)) return iterator{end()};
+    else return iterator{*this};
   }
 
   template < typename Key, typename Val >
   INLINE typename HashTable< Key, Val >::const_iterator HashTable< Key, Val >::begin() const {
     // if the table is empty, make the begin and end point to the same element
-    if (_nb_elements_ == Size(0))
-      return const_iterator{end()};
-    else
-      return const_iterator{*this};
+    if (_nb_elements_ == Size(0)) return const_iterator{end()};
+    else return const_iterator{*this};
   }
 
   template < typename Key, typename Val >
   INLINE typename HashTable< Key, Val >::const_iterator HashTable< Key, Val >::cbegin() const {
     // if the table is empty, make the begin and end point to the same element
-    if (_nb_elements_ == Size(0))
-      return const_iterator{cend()};
-    else
-      return const_iterator{*this};
+    if (_nb_elements_ == Size(0)) return const_iterator{cend()};
+    else return const_iterator{*this};
   }
 
   template < typename Key, typename Val >
@@ -548,30 +534,24 @@ namespace gum {
   template < typename Key, typename Val >
   INLINE typename HashTable< Key, Val >::iterator_safe HashTable< Key, Val >::beginSafe() {
     // if the table is empty, make the begin and end point to the same element
-    if (_nb_elements_ == Size(0))
-      return iterator_safe{endSafe()};
-    else
-      return iterator_safe{*this};
+    if (_nb_elements_ == Size(0)) return iterator_safe{endSafe()};
+    else return iterator_safe{*this};
   }
 
   template < typename Key, typename Val >
   INLINE typename HashTable< Key, Val >::const_iterator_safe
      HashTable< Key, Val >::beginSafe() const {
     // if the table is empty, make the begin and end point to the same element
-    if (_nb_elements_ == Size(0))
-      return const_iterator_safe{endSafe()};
-    else
-      return const_iterator_safe{*this};
+    if (_nb_elements_ == Size(0)) return const_iterator_safe{endSafe()};
+    else return const_iterator_safe{*this};
   }
 
   template < typename Key, typename Val >
   INLINE typename HashTable< Key, Val >::const_iterator_safe
      HashTable< Key, Val >::cbeginSafe() const {
     // if the table is empty, make the begin and end point to the same element
-    if (_nb_elements_ == Size(0))
-      return const_iterator_safe{cendSafe()};
-    else
-      return const_iterator_safe{*this};
+    if (_nb_elements_ == Size(0)) return const_iterator_safe{cendSafe()};
+    else return const_iterator_safe{*this};
   }
 
   template < typename Key, typename Val >
@@ -670,8 +650,7 @@ namespace gum {
 
         // update the iterators
         for (auto iter: _safe_iterators_) {
-          if (iter->_bucket_)
-            iter->_index_ = _hash_func_(iter->_bucket_->key());
+          if (iter->_bucket_) iter->_index_ = _hash_func_(iter->_bucket_->key());
           else {
             iter->_next_bucket_ = nullptr;
             iter->_index_       = 0;
@@ -760,10 +739,8 @@ namespace gum {
      HashTable< Key, Val >::getWithDefault(const Key& key, const Val& default_value) {
     Bucket* bucket = _nodes_[_hash_func_(key)].bucket(key);
 
-    if (bucket == nullptr)
-      return insert(key, default_value).second;
-    else
-      return bucket->val();
+    if (bucket == nullptr) return insert(key, default_value).second;
+    else return bucket->val();
   }
 
   template < typename Key, typename Val >
@@ -771,20 +748,16 @@ namespace gum {
      HashTable< Key, Val >::getWithDefault(Key&& key, Val&& default_value) {
     Bucket* bucket = _nodes_[_hash_func_(key)].bucket(key);
 
-    if (bucket == nullptr)
-      return insert(std::move(key), std::move(default_value)).second;
-    else
-      return bucket->val();
+    if (bucket == nullptr) return insert(std::move(key), std::move(default_value)).second;
+    else return bucket->val();
   }
 
   template < typename Key, typename Val >
   INLINE void HashTable< Key, Val >::set(const Key& key, const Val& value) {
     Bucket* bucket = _nodes_[_hash_func_(key)].bucket(key);
 
-    if (bucket == nullptr)
-      insert(key, value);
-    else
-      bucket->val() = value;
+    if (bucket == nullptr) insert(key, value);
+    else bucket->val() = value;
   }
 
   template < typename Key, typename Val >
@@ -1336,21 +1309,15 @@ namespace gum {
   template < typename Key, typename Val >
   INLINE const typename HashTableConstIteratorSafe< Key, Val >::key_type&
      HashTableConstIteratorSafe< Key, Val >::key() const {
-    if (_bucket_ != nullptr)
-      return _bucket_->key();
-    else {
-      GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object")
-    }
+    if (_bucket_ != nullptr) return _bucket_->key();
+    else { GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object") }
   }
 
   template < typename Key, typename Val >
   INLINE const typename HashTableConstIteratorSafe< Key, Val >::mapped_type&
      HashTableConstIteratorSafe< Key, Val >::val() const {
-    if (_bucket_ != nullptr)
-      return _bucket_->val();
-    else {
-      GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object")
-    }
+    if (_bucket_ != nullptr) return _bucket_->val();
+    else { GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object") }
   }
 
   template < typename Key, typename Val >
@@ -1415,10 +1382,8 @@ namespace gum {
             }
           }
 
-          if (_table_->_nodes_[0]._nb_elements_)
-            _bucket_ = _table_->_nodes_[0]._end_list_;
-          else
-            _bucket_ = nullptr;
+          if (_table_->_nodes_[0]._nb_elements_) _bucket_ = _table_->_nodes_[0]._end_list_;
+          else _bucket_ = nullptr;
 
           _index_ = 0;
         }
@@ -1493,17 +1458,14 @@ namespace gum {
   template < typename Key, typename Val >
   INLINE const typename HashTableConstIteratorSafe< Key, Val >::value_type&
      HashTableConstIteratorSafe< Key, Val >::operator*() const {
-    if (_bucket_)
-      return _bucket_->elt();
-    else {
-      GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object")
-    }
+    if (_bucket_) return _bucket_->elt();
+    else { GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object") }
   }
 
   template < typename Key, typename Val >
   INLINE HashTableBucket< Key, Val >*
          HashTableConstIteratorSafe< Key, Val >::_getBucket_() const noexcept {
-    return _bucket_;
+        return _bucket_;
   }
 
   template < typename Key, typename Val >
@@ -1779,21 +1741,15 @@ namespace gum {
   template < typename Key, typename Val >
   INLINE const typename HashTableConstIterator< Key, Val >::key_type&
      HashTableConstIterator< Key, Val >::key() const {
-    if (_bucket_)
-      return _bucket_->pair.first;
-    else {
-      GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object")
-    }
+    if (_bucket_) return _bucket_->pair.first;
+    else { GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object") }
   }
 
   template < typename Key, typename Val >
   INLINE const typename HashTableConstIterator< Key, Val >::mapped_type&
      HashTableConstIterator< Key, Val >::val() const {
-    if (_bucket_)
-      return _bucket_->val();
-    else {
-      GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object")
-    }
+    if (_bucket_) return _bucket_->val();
+    else { GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object") }
   }
 
   template < typename Key, typename Val >
@@ -1838,10 +1794,8 @@ namespace gum {
           }
         }
 
-        if (_table_->_nodes_[0]._nb_elements_)
-          _bucket_ = _table_->_nodes_[0]._end_list_;
-        else
-          _bucket_ = nullptr;
+        if (_table_->_nodes_[0]._nb_elements_) _bucket_ = _table_->_nodes_[0]._end_list_;
+        else _bucket_ = nullptr;
 
         _index_ = Size(0);
       }
@@ -1903,11 +1857,8 @@ namespace gum {
   template < typename Key, typename Val >
   INLINE const typename HashTableConstIterator< Key, Val >::value_type&
      HashTableConstIterator< Key, Val >::operator*() const {
-    if (_bucket_)
-      return _bucket_->elt();
-    else {
-      GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object")
-    }
+    if (_bucket_) return _bucket_->elt();
+    else { GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object") }
   }
 
   template < typename Key, typename Val >
@@ -1967,11 +1918,8 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE typename HashTableIterator< Key, Val >::mapped_type& HashTableIterator< Key, Val >::val() {
-    if (this->_bucket_)
-      return this->_bucket_->val();
-    else {
-      GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object")
-    }
+    if (this->_bucket_) return this->_bucket_->val();
+    else { GUM_ERROR(UndefinedIteratorValue, "Accessing a nullptr object") }
   }
 
   template < typename Key, typename Val >

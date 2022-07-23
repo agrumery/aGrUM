@@ -436,18 +436,14 @@ namespace gum {
     // returns the type (as a string) of a given prior
     INLINE PriorType IBNLearner::getPriorType_() const {
       switch (priorType_) {
-        case BNLearnerPriorType::NO_prior:
-          return PriorType::NoPriorType;
+        case BNLearnerPriorType::NO_prior: return PriorType::NoPriorType;
 
-        case BNLearnerPriorType::SMOOTHING:
-          return PriorType::SmoothingPriorType;
+        case BNLearnerPriorType::SMOOTHING: return PriorType::SmoothingPriorType;
 
         case BNLearnerPriorType::DIRICHLET_FROM_DATABASE:
-        case BNLearnerPriorType::DIRICHLET_FROM_BAYESNET:
-          return PriorType::DirichletPriorType;
+        case BNLearnerPriorType::DIRICHLET_FROM_BAYESNET: return PriorType::DirichletPriorType;
 
-        case BNLearnerPriorType::BDEU:
-          return PriorType::BDeuPriorType;
+        case BNLearnerPriorType::BDEU: return PriorType::BDeuPriorType;
 
         default:
           GUM_ERROR(OperationNotAllowed,
@@ -478,7 +474,7 @@ namespace gum {
     /// returns the current database rows' ranges used for learning
     INLINE const std::vector< std::pair< std::size_t, std::size_t > >&
                  IBNLearner::databaseRanges() const {
-      return ranges_;
+                return ranges_;
     }
 
     /// reset the ranges to the one range corresponding to the whole database

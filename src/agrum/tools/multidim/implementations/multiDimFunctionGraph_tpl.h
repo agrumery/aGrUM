@@ -78,11 +78,10 @@ namespace gum {
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE MultiDimContainer< GUM_SCALAR >*
          MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::newFactory() const {
-    if (_isReduced_)
+        if (_isReduced_)
       return MultiDimFunctionGraph< GUM_SCALAR,
                                     TerminalNodePolicy >::getReducedAndOrderedInstance();
-    else
-      return MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::getTreeInstance();
+    else return MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::getTreeInstance();
   }
 
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
@@ -431,69 +430,69 @@ namespace gum {
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE std::string
          MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::toDot(bool withBackArcs) const {
-    std::stringstream output;
-    std::stringstream terminalStream;
-    std::stringstream nonTerminalStream;
-    std::stringstream arcstream;
-    //      std::stringstream defaultarcstream;
-    output << std::endl << "digraph \" " << _tableName_ << "\" {" << std::endl;
+        std::stringstream output;
+        std::stringstream terminalStream;
+        std::stringstream nonTerminalStream;
+        std::stringstream arcstream;
+        //      std::stringstream defaultarcstream;
+        output << std::endl << "digraph \" " << _tableName_ << "\" {" << std::endl;
 
-    terminalStream << "node [shape = box];" << std::endl;
-    nonTerminalStream << "node [shape = ellipse];" << std::endl;
-    std::string tab = "  ";
+        terminalStream << "node [shape = box];" << std::endl;
+        nonTerminalStream << "node [shape = ellipse];" << std::endl;
+        std::string tab = "  ";
 
-    for (NodeGraphPart::NodeIterator nodeIter = _model_.begin(); nodeIter != _model_.end();
+        for (NodeGraphPart::NodeIterator nodeIter = _model_.begin(); nodeIter != _model_.end();
          ++nodeIter)
       if (*nodeIter != 0) {
-        if (this->isTerminalNode((NodeId)*nodeIter))
+            if (this->isTerminalNode((NodeId)*nodeIter))
           terminalStream << tab << *nodeIter << ";" << tab << *nodeIter << " [label=\"" << *nodeIter
                          << " - " << std::setprecision(30) << this->terminalNodeValue(*nodeIter)
                          << "\"]"
                          << ";" << std::endl;
         else {
-          InternalNode* currentNode = _internalNodeMap_[*nodeIter];
-          nonTerminalStream << tab << *nodeIter << ";" << tab << *nodeIter << " [label=\""
-                            << *nodeIter << " - " << currentNode->nodeVar()->name() << "\"]"
-                            << ";" << std::endl;
+              InternalNode* currentNode = _internalNodeMap_[*nodeIter];
+              nonTerminalStream << tab << *nodeIter << ";" << tab << *nodeIter << " [label=\""
+                                << *nodeIter << " - " << currentNode->nodeVar()->name() << "\"]"
+                                << ";" << std::endl;
 
-          //              if (arcMap_[*nodeIter] != NULL)
-          HashTable< NodeId, LinkedList< Idx >* > sonMap;
-          for (Idx sonIter = 0; sonIter < currentNode->nbSons(); ++sonIter) {
-            if (!sonMap.exists(currentNode->son(sonIter)))
+              //              if (arcMap_[*nodeIter] != NULL)
+              HashTable< NodeId, LinkedList< Idx >* > sonMap;
+              for (Idx sonIter = 0; sonIter < currentNode->nbSons(); ++sonIter) {
+                if (!sonMap.exists(currentNode->son(sonIter)))
               sonMap.insert(currentNode->son(sonIter), new LinkedList< Idx >());
             sonMap[currentNode->son(sonIter)]->addLink(sonIter);
           }
 
-          for (auto sonIter = sonMap.beginSafe(); sonIter != sonMap.endSafe(); ++sonIter) {
-            arcstream << tab << *nodeIter << " -> " << sonIter.key() << " [label=\" ";
-            Link< Idx >* modaIter = sonIter.val()->list();
-            while (modaIter) {
-              arcstream << currentNode->nodeVar()->label(modaIter->element()) << ", ";
-              modaIter = modaIter->nextLink();
+              for (auto sonIter = sonMap.beginSafe(); sonIter != sonMap.endSafe(); ++sonIter) {
+                arcstream << tab << *nodeIter << " -> " << sonIter.key() << " [label=\" ";
+                Link< Idx >* modaIter = sonIter.val()->list();
+                while (modaIter) {
+                  arcstream << currentNode->nodeVar()->label(modaIter->element()) << ", ";
+                  modaIter = modaIter->nextLink();
             }
-            arcstream << "\",color=\"#0000ff\"]"
-                      << ";" << std::endl;
-            delete sonIter.val();
+                arcstream << "\",color=\"#0000ff\"]"
+                          << ";" << std::endl;
+                delete sonIter.val();
           }
 
-          if (withBackArcs) {
-            Link< Parent >* parentIter = currentNode->parents();
-            while (parentIter != nullptr) {
-              arcstream << tab << *nodeIter << " -> " << parentIter->element().parentId
-                        << " [label=\"" << parentIter->element().modality << "\",color=\"#ff0000\"]"
-                        << ";" << std::endl;
-              parentIter = parentIter->nextLink();
+              if (withBackArcs) {
+                Link< Parent >* parentIter = currentNode->parents();
+                while (parentIter != nullptr) {
+                  arcstream << tab << *nodeIter << " -> " << parentIter->element().parentId
+                            << " [label=\"" << parentIter->element().modality << "\",color=\"#ff0000\"]"
+                            << ";" << std::endl;
+                  parentIter = parentIter->nextLink();
             }
           }
         }
       }
 
     output << terminalStream.str() << std::endl
-           << nonTerminalStream.str() << std::endl
-           << arcstream.str() << std::endl
-           << "}" << std::endl;
+               << nonTerminalStream.str() << std::endl
+               << arcstream.str() << std::endl
+               << "}" << std::endl;
 
-    return output.str();
+        return output.str();
   }
 
   // Returns a const reference to the manager of this diagram
@@ -507,13 +506,12 @@ namespace gum {
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >*
          MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::manager() {
-    if (_manager_ == nullptr) {
-      if (_isReduced_)
+        if (_manager_ == nullptr) {
+          if (_isReduced_)
         _manager_ = new MultiDimFunctionGraphROManager< GUM_SCALAR, TerminalNodePolicy >(this);
-      else
-        _manager_ = new MultiDimFunctionGraphTreeManager< GUM_SCALAR, TerminalNodePolicy >(this);
+      else _manager_ = new MultiDimFunctionGraphTreeManager< GUM_SCALAR, TerminalNodePolicy >(this);
     }
-    return _manager_;
+        return _manager_;
   }
 
   // Returns the id of the root node from the diagram
@@ -569,7 +567,7 @@ namespace gum {
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE const std::string&
                MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::tableName() const {
-    return _tableName_;
+              return _tableName_;
   }
 
   // Sets the name of the table represented by this structure.
@@ -589,14 +587,14 @@ namespace gum {
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
          MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::getReducedAndOrderedInstance() {
-    return new MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >();
+        return new MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >();
   }
 
   // Returns an arborescent instance
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
          MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::getTreeInstance() {
-    return new MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >(false);
+        return new MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >(false);
   }
 
   // Not implemented yet

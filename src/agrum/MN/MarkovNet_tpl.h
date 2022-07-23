@@ -125,7 +125,7 @@ namespace gum {
   MarkovNet< GUM_SCALAR >&
      MarkovNet< GUM_SCALAR >::operator=(const MarkovNet< GUM_SCALAR >& source) {
     if (this != &source) {
-      IMarkovNet< GUM_SCALAR >::operator =(source);
+      IMarkovNet< GUM_SCALAR >::operator=(source);
       _varMap_                           = source._varMap_;
       _topologyTransformationInProgress_ = false;
       _copyFactors_(source);
@@ -345,25 +345,25 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >&
                MarkovNet< GUM_SCALAR >::addFactor(const std::vector< std::string >& varnames) {
-    std::vector< NodeId > sorted_nodes;
-    for (const auto& v: varnames) {
-      sorted_nodes.push_back(idFromName(v));
+              std::vector< NodeId > sorted_nodes;
+              for (const auto& v: varnames) {
+                sorted_nodes.push_back(idFromName(v));
     }
 
-    return _addFactor_(sorted_nodes);
+              return _addFactor_(sorted_nodes);
   }
 
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >&
                MarkovNet< GUM_SCALAR >::addFactor(const Potential< GUM_SCALAR >& factor) {
-    std::vector< NodeId > sorted_nodes;
-    for (Idx i = 0; i < factor.nbrDim(); i++) {
-      sorted_nodes.push_back(idFromName(factor.variable(i).name()));
+              std::vector< NodeId > sorted_nodes;
+              for (Idx i = 0; i < factor.nbrDim(); i++) {
+                sorted_nodes.push_back(idFromName(factor.variable(i).name()));
     }
-    auto& res = _addFactor_(sorted_nodes);
-    res.fillWith(factor);
+              auto& res = _addFactor_(sorted_nodes);
+              res.fillWith(factor);
 
-    return res;
+              return res;
   }
 
   template < typename GUM_SCALAR >

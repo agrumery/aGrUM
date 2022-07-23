@@ -915,43 +915,43 @@ namespace gum {
     INLINE PRMSlotChain< GUM_SCALAR >*
            PRMFactory< GUM_SCALAR >::_buildSlotChain_(PRMClassElementContainer< GUM_SCALAR >* start,
                                                   const std::string&                      name) {
-      std::vector< std::string > v;
-      decomposePath(name, v);
-      PRMClassElementContainer< GUM_SCALAR >*    current = start;
-      PRMReferenceSlot< GUM_SCALAR >*            ref     = nullptr;
-      Sequence< PRMClassElement< GUM_SCALAR >* > elts;
+          std::vector< std::string > v;
+          decomposePath(name, v);
+          PRMClassElementContainer< GUM_SCALAR >*    current = start;
+          PRMReferenceSlot< GUM_SCALAR >*            ref     = nullptr;
+          Sequence< PRMClassElement< GUM_SCALAR >* > elts;
 
-      for (size_t i = 0; i < v.size(); ++i) {
-        try {
-          switch (current->get(v[i]).elt_type()) {
-            case PRMClassElement< GUM_SCALAR >::prm_refslot:
+          for (size_t i = 0; i < v.size(); ++i) {
+            try {
+              switch (current->get(v[i]).elt_type()) {
+                case PRMClassElement< GUM_SCALAR >::prm_refslot:
               ref = &(static_cast< PRMReferenceSlot< GUM_SCALAR >& >(current->get(v[i])));
               elts.insert(ref);
               current = &(/*const_cast<PRMClassElementContainer<GUM_SCALAR>&>*/ (ref->slotType()));
               break;
 
-            case PRMClassElement< GUM_SCALAR >::prm_aggregate:
-            case PRMClassElement< GUM_SCALAR >::prm_attribute:
+                case PRMClassElement< GUM_SCALAR >::prm_aggregate:
+                case PRMClassElement< GUM_SCALAR >::prm_attribute:
 
               if (i == v.size() - 1) {
-                elts.insert(&(current->get(v[i])));
-                break;
+                    elts.insert(&(current->get(v[i])));
+                    break;
               } else {
-                return nullptr;
+                    return nullptr;
               }
 
-            default: {
-              return nullptr;
+                default: {
+                  return nullptr;
             }
           }
         } catch (NotFound const&) { return nullptr; }
       }
 
-      GUM_ASSERT(v.size() == elts.size());
+          GUM_ASSERT(v.size() == elts.size());
 
-      current->setOutputNode(*(elts.back()), true);
+          current->setOutputNode(*(elts.back()), true);
 
-      return new PRMSlotChain< GUM_SCALAR >(name, elts);
+          return new PRMSlotChain< GUM_SCALAR >(name, elts);
     }
 
     template < typename GUM_SCALAR >
@@ -1702,18 +1702,18 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE PRMClassElementContainer< GUM_SCALAR >*
            PRMFactory< GUM_SCALAR >::_checkStackContainter_(Idx i) {
-      // Don't forget that Idx are unsigned int
+          // Don't forget that Idx are unsigned int
       if (_stack_.size() - i > _stack_.size()) {
-        GUM_ERROR(FactoryInvalidState, "illegal sequence of calls")
+            GUM_ERROR(FactoryInvalidState, "illegal sequence of calls")
       }
 
       PRMObject* obj = _stack_[_stack_.size() - i];
 
       if ((obj->obj_type() == PRMObject::prm_type::CLASS)
           || (obj->obj_type() == PRMObject::prm_type::PRM_INTERFACE)) {
-        return static_cast< PRMClassElementContainer< GUM_SCALAR >* >(obj);
+            return static_cast< PRMClassElementContainer< GUM_SCALAR >* >(obj);
       } else {
-        GUM_ERROR(FactoryInvalidState, "illegal sequence of calls")
+            GUM_ERROR(FactoryInvalidState, "illegal sequence of calls")
       }
     }
 
@@ -1798,7 +1798,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE PRMClass< GUM_SCALAR >&
            PRMFactory< GUM_SCALAR >::retrieveClass(const std::string& name) {
-      return *_retrieveClass_(name);
+          return *_retrieveClass_(name);
     }
 
     template < typename GUM_SCALAR >

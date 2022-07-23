@@ -107,10 +107,8 @@ namespace gum {
                                                          const std::vector< double >& N_xyz) const {
       // determine the size of the output vector
       std::size_t out_size = Z_size;
-      if (node_2_marginalize == std::size_t(0))
-        out_size *= Y_size;
-      else if (node_2_marginalize == std::size_t(1))
-        out_size *= X_size;
+      if (node_2_marginalize == std::size_t(0)) out_size *= Y_size;
+      else if (node_2_marginalize == std::size_t(1)) out_size *= X_size;
 
       // allocate the output vector
       std::vector< double > res(out_size, 0.0);

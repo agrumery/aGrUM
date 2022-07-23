@@ -112,14 +112,14 @@ namespace gum {
        DBRowGeneratorEM< GUM_SCALAR >::operator=(const DBRowGeneratorEM< GUM_SCALAR >& from) {
       if (this != &from) {
         DBRowGeneratorWithBN< GUM_SCALAR >::operator=(from);
-        _input_row_                                 = from._input_row_;
-        _missing_cols_                              = from._missing_cols_;
-        _nb_miss_                                   = from._nb_miss_;
-        _joint_proba_                               = from._joint_proba_;
-        _filled_row1_                               = from._filled_row1_;
-        _filled_row2_                               = from._filled_row2_;
-        _use_filled_row1_                           = from._use_filled_row1_;
-        _original_weight_                           = from._original_weight_;
+        _input_row_       = from._input_row_;
+        _missing_cols_    = from._missing_cols_;
+        _nb_miss_         = from._nb_miss_;
+        _joint_proba_     = from._joint_proba_;
+        _filled_row1_     = from._filled_row1_;
+        _filled_row2_     = from._filled_row2_;
+        _use_filled_row1_ = from._use_filled_row1_;
+        _original_weight_ = from._original_weight_;
 
         if (_joint_inst_ != nullptr) {
           delete _joint_inst_;
@@ -146,14 +146,14 @@ namespace gum {
        DBRowGeneratorEM< GUM_SCALAR >::operator=(DBRowGeneratorEM< GUM_SCALAR >&& from) {
       if (this != &from) {
         DBRowGeneratorWithBN< GUM_SCALAR >::operator=(std::move(from));
-        _input_row_                                 = from._input_row_;
-        _missing_cols_                              = std::move(from._missing_cols_);
-        _nb_miss_                                   = from._nb_miss_;
-        _joint_proba_                               = std::move(from._joint_proba_);
-        _filled_row1_                               = std::move(from._filled_row1_);
-        _filled_row2_                               = std::move(from._filled_row2_);
-        _use_filled_row1_                           = from._use_filled_row1_;
-        _original_weight_                           = from._original_weight_;
+        _input_row_       = from._input_row_;
+        _missing_cols_    = std::move(from._missing_cols_);
+        _nb_miss_         = from._nb_miss_;
+        _joint_proba_     = std::move(from._joint_proba_);
+        _filled_row1_     = std::move(from._filled_row1_);
+        _filled_row2_     = std::move(from._filled_row2_);
+        _use_filled_row1_ = from._use_filled_row1_;
+        _original_weight_ = from._original_weight_;
 
         if (_joint_inst_ != nullptr) {
           delete _joint_inst_;
@@ -214,29 +214,29 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE std::size_t
            DBRowGeneratorEM< GUM_SCALAR >::computeRows_(const DBRow< DBTranslatedValue >& row) {
-      // check if there are unobserved values among the columns of interest.
+          // check if there are unobserved values among the columns of interest.
       // If this is the case, set them as targets
       bool        found_unobserved = false;
       const auto& xrow             = row.row();
       for (const auto col: this->columns_of_interest_) {
-        switch (this->column_types_[col]) {
-          case DBTranslatedValueType::DISCRETE:
+            switch (this->column_types_[col]) {
+              case DBTranslatedValueType::DISCRETE:
             if (xrow[col].discr_val == std::numeric_limits< std::size_t >::max()) {
-              if (!found_unobserved) {
-                _missing_cols_.clear();
-                found_unobserved = true;
+                  if (!found_unobserved) {
+                    _missing_cols_.clear();
+                    found_unobserved = true;
               }
-              _missing_cols_.push_back(col);
+                  _missing_cols_.push_back(col);
             }
             break;
 
-          case DBTranslatedValueType::CONTINUOUS:
+              case DBTranslatedValueType::CONTINUOUS:
             GUM_ERROR(NotImplementedYet,
                       "The BDRowGeneratorEM does not handle yet continuous "
                          << "variables. But the variable in column" << col << " is continuous.");
             break;
 
-          default:
+              default:
             GUM_ERROR(NotImplementedYet,
                       "DBTranslatedValueType " << int(this->column_types_[col])
                                                << " is not supported yet");
@@ -245,8 +245,8 @@ namespace gum {
 
       // if there is no unobserved value, make the  _input_row_ point to the row
       if (!found_unobserved) {
-        _input_row_ = &row;
-        return std::size_t(1);
+            _input_row_ = &row;
+            return std::size_t(1);
       }
 
       _input_row_       = nullptr;
@@ -260,29 +260,29 @@ namespace gum {
       // add the targets and fill the output row with the observed values
       NodeSet target_set(_nb_miss_);
       if (this->nodeId2columns_.empty()) {
-        std::size_t i        = std::size_t(0);
-        bool        end_miss = false;
-        for (const auto col: this->columns_of_interest_) {
-          if (!end_miss && (col == _missing_cols_[i])) {
-            target_set.insert(NodeId(col));
-            ++i;
-            if (i == _nb_miss_) end_miss = true;
+            std::size_t i        = std::size_t(0);
+            bool        end_miss = false;
+            for (const auto col: this->columns_of_interest_) {
+              if (!end_miss && (col == _missing_cols_[i])) {
+                target_set.insert(NodeId(col));
+                ++i;
+                if (i == _nb_miss_) end_miss = true;
           } else {
-            _filled_row1_[col].discr_val = xrow[col].discr_val;
-            _filled_row2_[col].discr_val = xrow[col].discr_val;
+                _filled_row1_[col].discr_val = xrow[col].discr_val;
+                _filled_row2_[col].discr_val = xrow[col].discr_val;
           }
         }
       } else {
-        std::size_t i        = std::size_t(0);
-        bool        end_miss = false;
-        for (const auto col: this->columns_of_interest_) {
-          if (!end_miss && (col == _missing_cols_[i])) {
-            target_set.insert(this->nodeId2columns_.first(col));
-            ++i;
-            if (i == _nb_miss_) end_miss = true;
+            std::size_t i        = std::size_t(0);
+            bool        end_miss = false;
+            for (const auto col: this->columns_of_interest_) {
+              if (!end_miss && (col == _missing_cols_[i])) {
+                target_set.insert(this->nodeId2columns_.first(col));
+                ++i;
+                if (i == _nb_miss_) end_miss = true;
           } else {
-            _filled_row1_[col].discr_val = xrow[col].discr_val;
-            _filled_row2_[col].discr_val = xrow[col].discr_val;
+                _filled_row1_[col].discr_val = xrow[col].discr_val;
+                _filled_row2_[col].discr_val = xrow[col].discr_val;
           }
         }
       }
@@ -292,12 +292,12 @@ namespace gum {
       // add the evidence and the target
       const std::size_t row_size = xrow.size();
       if (this->nodeId2columns_.empty()) {
-        for (std::size_t col = std::size_t(0); col < row_size; ++col) {
-          switch (this->column_types_[col]) {
-            case DBTranslatedValueType::DISCRETE:
+            for (std::size_t col = std::size_t(0); col < row_size; ++col) {
+              switch (this->column_types_[col]) {
+                case DBTranslatedValueType::DISCRETE:
               // only observed values are evidence
               if (xrow[col].discr_val != std::numeric_limits< std::size_t >::max()) {
-                ve.addEvidence(NodeId(col), xrow[col].discr_val);
+                    ve.addEvidence(NodeId(col), xrow[col].discr_val);
               }
               break;
 
@@ -307,19 +307,19 @@ namespace gum {
                            << "variables. But the variable in column" << col << " is continuous.");
               break;
 
-            default:
+                default:
               GUM_ERROR(NotImplementedYet,
                         "DBTranslatedValueType " << int(this->column_types_[col])
                                                  << " is not supported yet");
           }
         }
       } else {
-        for (std::size_t col = std::size_t(0); col < row_size; ++col) {
-          switch (this->column_types_[col]) {
-            case DBTranslatedValueType::DISCRETE:
+            for (std::size_t col = std::size_t(0); col < row_size; ++col) {
+              switch (this->column_types_[col]) {
+                case DBTranslatedValueType::DISCRETE:
               // only observed values are evidence
               if (xrow[col].discr_val != std::numeric_limits< std::size_t >::max()) {
-                ve.addEvidence(this->nodeId2columns_.first(col), xrow[col].discr_val);
+                    ve.addEvidence(this->nodeId2columns_.first(col), xrow[col].discr_val);
               }
               break;
 
@@ -329,7 +329,7 @@ namespace gum {
                            << "variables. But the variable in column" << col << " is continuous.");
               break;
 
-            default:
+                default:
               GUM_ERROR(NotImplementedYet,
                         "DBTranslatedValueType " << int(this->column_types_[col])
                                                  << " is not supported yet");
@@ -348,12 +348,12 @@ namespace gum {
       // columns in the database
       const auto& var_sequence = _joint_proba_.variablesSequence();
       if (this->nodeId2columns_.empty()) {
-        for (std::size_t i = std::size_t(0); i < _nb_miss_; ++i) {
-          _missing_cols_[i] = std::size_t(this->bn_->nodeId(*(var_sequence[i])));
+            for (std::size_t i = std::size_t(0); i < _nb_miss_; ++i) {
+              _missing_cols_[i] = std::size_t(this->bn_->nodeId(*(var_sequence[i])));
         }
       } else {
-        for (std::size_t i = std::size_t(0); i < _nb_miss_; ++i) {
-          _missing_cols_[i] = this->nodeId2columns_.second(this->bn_->nodeId(*(var_sequence[i])));
+            for (std::size_t i = std::size_t(0); i < _nb_miss_; ++i) {
+              _missing_cols_[i] = this->nodeId2columns_.second(this->bn_->nodeId(*(var_sequence[i])));
         }
       }
 

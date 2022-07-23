@@ -147,10 +147,8 @@ namespace gum {
     template < typename T_DATA >
     INLINE typename IDatabaseTable< T_DATA >::Handler&
        IDatabaseTable< T_DATA >::Handler::operator-=(const std::size_t i) {
-      if (_index_ >= _begin_index_ + i)
-        _index_ -= i;
-      else
-        _index_ = _begin_index_;
+      if (_index_ >= _begin_index_ + i) _index_ -= i;
+      else _index_ = _begin_index_;
       return *this;
     }
 
@@ -179,10 +177,8 @@ namespace gum {
     // return the number of rows of the whole database
     template < typename T_DATA >
     INLINE std::size_t IDatabaseTable< T_DATA >::Handler::DBSize() const {
-      if (_row_ != nullptr)
-        return _row_->size();
-      else
-        return std::size_t(0);
+      if (_row_ != nullptr) return _row_->size();
+      else return std::size_t(0);
     }
 
 
@@ -307,10 +303,8 @@ namespace gum {
     // returns the number of variables (columns) of the database
     template < typename T_DATA >
     INLINE std::size_t IDatabaseTable< T_DATA >::Handler::nbVariables() const {
-      if (_db_ != nullptr)
-        return _db_->variableNames().size();
-      else
-        return 0;
+      if (_db_ != nullptr) return _db_->variableNames().size();
+      else return 0;
     }
 
 
@@ -651,7 +645,7 @@ namespace gum {
     template < typename T_DATA >
     INLINE const std::vector< std::string >&
                  IDatabaseTable< T_DATA >::variableNames() const noexcept {
-      return variable_names_;
+                return variable_names_;
     }
 
 
@@ -668,8 +662,8 @@ namespace gum {
     template < typename T_DATA >
     INLINE std::size_t
            IDatabaseTable< T_DATA >::columnFromVariableName(const std::string& name) const {
-      const std::size_t size = variable_names_.size();
-      for (std::size_t i = 0; i < size; ++i)
+          const std::size_t size = variable_names_.size();
+          for (std::size_t i = 0; i < size; ++i)
         if (variable_names_[i] == name) return i;
 
       GUM_ERROR(UndefinedElement, "the database contains no column whose name is " << name)
@@ -1036,10 +1030,8 @@ namespace gum {
     /// changes the max number of threads that a database can use
     template < typename T_DATA >
     void IDatabaseTable< T_DATA >::setMaxNbThreads(const std::size_t nb) const {
-      if (nb == std::size_t(0))
-        max_nb_threads_ = std::size_t(1);
-      else
-        max_nb_threads_ = nb;
+      if (nb == std::size_t(0)) max_nb_threads_ = std::size_t(1);
+      else max_nb_threads_ = nb;
     }
 
 
@@ -1054,10 +1046,8 @@ namespace gum {
      * multithreading context */
     template < typename T_DATA >
     void IDatabaseTable< T_DATA >::setMinNbRowsPerThread(const std::size_t nb) const {
-      if (nb == std::size_t(0))
-        min_nb_rows_per_thread_ = std::size_t(1);
-      else
-        min_nb_rows_per_thread_ = nb;
+      if (nb == std::size_t(0)) min_nb_rows_per_thread_ = std::size_t(1);
+      else min_nb_rows_per_thread_ = nb;
     }
 
 
@@ -1073,10 +1063,8 @@ namespace gum {
     std::size_t IDatabaseTable< T_DATA >::nbProcessingThreads_() const {
       const std::size_t db_size    = nbRows();
       std::size_t       nb_threads = db_size / min_nb_rows_per_thread_;
-      if (nb_threads < 1)
-        nb_threads = 1;
-      else if (nb_threads > max_nb_threads_)
-        nb_threads = max_nb_threads_;
+      if (nb_threads < 1) nb_threads = 1;
+      else if (nb_threads > max_nb_threads_) nb_threads = max_nb_threads_;
 
       return nb_threads;
     }

@@ -122,8 +122,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   void MultiDimICIModel< GUM_SCALAR >::copyFrom(const MultiDimContainer< GUM_SCALAR >& src) const {
     auto p = dynamic_cast< const MultiDimICIModel< GUM_SCALAR >* >(&src);
-    if (p == nullptr)
-      MultiDimReadOnly< GUM_SCALAR >::copyFrom(src);
+    if (p == nullptr) MultiDimReadOnly< GUM_SCALAR >::copyFrom(src);
     else {
       if (src.domainSize() != this->domainSize()) {
         GUM_ERROR(OperationNotAllowed, "Domain sizes do not fit")

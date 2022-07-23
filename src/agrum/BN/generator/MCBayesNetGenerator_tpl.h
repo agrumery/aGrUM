@@ -149,10 +149,8 @@ namespace gum {
 
       bayesNettemp_ = this->bayesNet_;
 
-      if (_isPolytree_())
-        _PMMx_poly_();
-      else
-        _PMMx_multi_();
+      if (_isPolytree_()) _PMMx_poly_();
+      else _PMMx_multi_();
 
       bayesNetinit = (this->bayesNet_);
 
@@ -208,8 +206,7 @@ namespace gum {
 
         if (!_checkConditions_()) {
           this->bayesNet_ = bayesNettemp_;
-        } else
-          bayesNettemp_ = this->bayesNet_;
+        } else bayesNettemp_ = this->bayesNet_;
 
         _PMMx_poly_();
       } else {
@@ -263,10 +260,8 @@ namespace gum {
       if (_checkConditions_()) {
         bayesNettemp_ = this->bayesNet_;
 
-        if (_isPolytree_())
-          _PMMx_poly_();
-        else
-          _PMMx_multi_();
+        if (_isPolytree_()) _PMMx_poly_();
+        else _PMMx_multi_();
 
       } else {
         this->bayesNet_ = bayesNettemp_;
@@ -289,8 +284,7 @@ namespace gum {
       _eraseArc_(i, j);
 
       return;
-    } else
-      _insertArc_(i, j);
+    } else _insertArc_(i, j);
   }
 
   template < typename GUM_SCALAR,
@@ -381,8 +375,7 @@ namespace gum {
       this->bayesNet_.addArc(i, j);
 
       this->disturbAugmCPT(j, this->bayesNet_, potj, (GUM_SCALAR)0.5);
-    } else
-      this->bayesNet_.addArc(i, j);
+    } else this->bayesNet_.addArc(i, j);
   }
 
   template < typename GUM_SCALAR,
@@ -404,8 +397,7 @@ namespace gum {
         auto marg = *hashMarginal_[i];
 
         this->disturbReducCPT(j, this->bayesNet_, potj, marg);
-      } else
-        this->bayesNet_.addArc(i, j);
+      } else this->bayesNet_.addArc(i, j);
     } else {
       this->bayesNet_.eraseArc(i, j);
 
@@ -549,8 +541,7 @@ namespace gum {
                                                                                   const NodeId j) {
     const DAG _dag_ = this->bayesNet_.dag();
 
-    if (_dag_.existsArc(i, j) || _dag_.existsArc(j, i))
-      return true;
+    if (_dag_.existsArc(i, j) || _dag_.existsArc(j, i)) return true;
     else {
       NodeSet excluded;
       excluded.insert(i);
@@ -578,8 +569,7 @@ namespace gum {
                                                                                 NodeSet& excluded) {
     const DAG _dag_ = this->bayesNet_.dag();
 
-    if (_dag_.existsArc(i, j) || _dag_.existsArc(j, i))
-      return true;
+    if (_dag_.existsArc(i, j) || _dag_.existsArc(j, i)) return true;
     else {
       excluded.insert(i);
 
@@ -605,8 +595,7 @@ namespace gum {
                                                                                      NodeId head) {
     const DAG _dag_ = this->bayesNet_.dag();
 
-    if (_dag_.existsArc(tail, head))
-      return true;
+    if (_dag_.existsArc(tail, head)) return true;
     else {
       NodeSet excluded;
       excluded.insert(tail);
@@ -630,8 +619,7 @@ namespace gum {
      NodeSet& excluded) {
     const DAG _dag_ = this->bayesNet_.dag();
 
-    if (_dag_.existsArc(tail, head))
-      return true;
+    if (_dag_.existsArc(tail, head)) return true;
     else {
       excluded.insert(tail);
 

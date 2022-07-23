@@ -76,6 +76,9 @@ namespace gum {
             const IContinuousVariable& xvar = static_cast< const IContinuousVariable& >(var);
             return new DBTranslator4ContinuousVariable(xvar, missing_symbols, editable_dictionary);
           }
+
+          case VarType::Numerical:
+            break;
         }
 
         GUM_ERROR(NotImplementedYet,

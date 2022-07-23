@@ -103,7 +103,7 @@ namespace gum {
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   INLINE ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >*
          ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::clone() const {
-    return new ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >(*this);
+        return new ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >(*this);
   }
 
 
@@ -125,7 +125,7 @@ namespace gum {
         const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >& from) {
     if (this != &from) {
       // try to copy result (no need to update _results_)
-      *_result_                 = *(from._result_);
+      *_result_ = *(from._result_);
       ScheduleOperator::operator=(from);
 
       _arg1_    = from._arg1_;
@@ -144,7 +144,7 @@ namespace gum {
         ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >&& from) {
     if (this != &from) {
       if (!this->hasPersistentResults()) delete _result_;
-      _result_                  = from._result_;
+      _result_ = from._result_;
       ScheduleOperator::operator=(std::move(from));
 
       _arg1_    = from._arg1_;
@@ -262,7 +262,7 @@ namespace gum {
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   INLINE const ScheduleMultiDim< TABLE1 >&
                ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::arg1() const {
-    return *_arg1_;
+              return *_arg1_;
   }
 
 
@@ -270,7 +270,7 @@ namespace gum {
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   INLINE const ScheduleMultiDim< TABLE2 >&
                ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::arg2() const {
-    return *_arg2_;
+              return *_arg2_;
   }
 
 
@@ -278,7 +278,7 @@ namespace gum {
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   INLINE const Sequence< const IScheduleMultiDim* >&
                ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::args() const {
-    return _args_;
+              return _args_;
   }
 
 
@@ -286,7 +286,7 @@ namespace gum {
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   INLINE const ScheduleMultiDim< TABLE_RES >&
                ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::result() const {
-    return *_result_;
+              return *_result_;
   }
 
 
@@ -294,7 +294,7 @@ namespace gum {
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   INLINE const Sequence< const IScheduleMultiDim* >&
                ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::results() const {
-    return _results_;
+              return _results_;
   }
 
 
@@ -379,9 +379,9 @@ namespace gum {
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   INLINE std::pair< double, double >
          ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::memoryUsage() const {
-    const double domsize
-       = double(_result_->domainSize()) * _result_->sizeOfContent() + sizeof(TABLE_RES);
-    return {domsize, domsize};
+        const double domsize
+           = double(_result_->domainSize()) * _result_->sizeOfContent() + sizeof(TABLE_RES);
+        return {domsize, domsize};
   }
 
 

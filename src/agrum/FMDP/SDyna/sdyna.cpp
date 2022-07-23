@@ -159,10 +159,8 @@ namespace gum {
          ++varIter) {
       obs->setModality(fmdp_->main2prime(*varIter), newState.val(**varIter));
 
-      if (this->_actionReward_)
-        obs->setRModality(*varIter, lastState_.val(**varIter));
-      else
-        obs->setRModality(*varIter, newState.val(**varIter));
+      if (this->_actionReward_) obs->setRModality(*varIter, lastState_.val(**varIter));
+      else obs->setRModality(*varIter, newState.val(**varIter));
     }
 
     obs->setReward(reward);

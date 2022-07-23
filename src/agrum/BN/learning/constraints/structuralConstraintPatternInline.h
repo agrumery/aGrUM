@@ -95,14 +95,11 @@ INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkModification(const ArcReversal& chan
 /// checks whether the constraints enable to perform a graph change
 INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkModification(const GraphChange& change) const {
   switch (change.type()) {
-    case GraphChangeType::ARC_ADDITION:
-      return checkArcAddition(change.node1(), change.node2());
+    case GraphChangeType::ARC_ADDITION: return checkArcAddition(change.node1(), change.node2());
 
-    case GraphChangeType::ARC_DELETION:
-      return checkArcDeletion(change.node1(), change.node2());
+    case GraphChangeType::ARC_DELETION: return checkArcDeletion(change.node1(), change.node2());
 
-    case GraphChangeType::ARC_REVERSAL:
-      return checkArcReversal(change.node1(), change.node2());
+    case GraphChangeType::ARC_REVERSAL: return checkArcReversal(change.node1(), change.node2());
 
     default:
       GUM_ERROR(OperationNotAllowed, "edge modifications are not supported by the constraint")

@@ -146,29 +146,17 @@ namespace gum_tests {
       for (gum::BinSearchTree< int >::iterator iter = tree.begin(); iter != tree.end();
            ++iter, ++i) {
         switch (i) {
-          case 0:
-            TS_ASSERT_EQUALS(*iter, 1)
-            break;
+          case 0: TS_ASSERT_EQUALS(*iter, 1) break;
 
-          case 1:
-            TS_ASSERT_EQUALS(*iter, 3)
-            break;
+          case 1: TS_ASSERT_EQUALS(*iter, 3) break;
 
-          case 2:
-            TS_ASSERT_EQUALS(*iter, 4)
-            break;
+          case 2: TS_ASSERT_EQUALS(*iter, 4) break;
 
-          case 3:
-            TS_ASSERT_EQUALS(*iter, 5)
-            break;
+          case 3: TS_ASSERT_EQUALS(*iter, 5) break;
 
-          case 4:
-            TS_ASSERT_EQUALS(*iter, 5)
-            break;
+          case 4: TS_ASSERT_EQUALS(*iter, 5) break;
 
-          case 5:
-            TS_ASSERT_EQUALS(*iter, 7)
-            break;
+          case 5: TS_ASSERT_EQUALS(*iter, 7) break;
         }
       }
 
@@ -177,29 +165,17 @@ namespace gum_tests {
       for (gum::BinSearchTree< int >::iterator iter = tree.rbegin(); iter != tree.rend();
            --iter, --i) {
         switch (i) {
-          case 0:
-            TS_ASSERT_EQUALS(*iter, 1)
-            break;
+          case 0: TS_ASSERT_EQUALS(*iter, 1) break;
 
-          case 1:
-            TS_ASSERT_EQUALS(*iter, 3)
-            break;
+          case 1: TS_ASSERT_EQUALS(*iter, 3) break;
 
-          case 2:
-            TS_ASSERT_EQUALS(*iter, 4)
-            break;
+          case 2: TS_ASSERT_EQUALS(*iter, 4) break;
 
-          case 3:
-            TS_ASSERT_EQUALS(*iter, 5)
-            break;
+          case 3: TS_ASSERT_EQUALS(*iter, 5) break;
 
-          case 4:
-            TS_ASSERT_EQUALS(*iter, 5)
-            break;
+          case 4: TS_ASSERT_EQUALS(*iter, 5) break;
 
-          case 5:
-            TS_ASSERT_EQUALS(*iter, 7)
-            break;
+          case 5: TS_ASSERT_EQUALS(*iter, 7) break;
         }
       }
 

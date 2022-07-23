@@ -437,10 +437,8 @@ namespace gum {
     INLINE const GraphChange&
        GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
                                      GRAPH_CHANGES_GENERATOR >::bestChange() {
-      if (!empty())
-        return _changes_[_change_queue_per_node_[_node_queue_.top()].top()];
-      else
-        GUM_ERROR(NotFound, "there exists no graph change applicable")
+      if (!empty()) return _changes_[_change_queue_per_node_[_node_queue_.top()].top()];
+      else GUM_ERROR(NotFound, "there exists no graph change applicable")
     }
 
 
@@ -449,10 +447,8 @@ namespace gum {
     INLINE const GraphChange&
        GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::bestChange(
           const NodeId node) {
-      if (!empty(node))
-        return _changes_[_change_queue_per_node_[node].top()];
-      else
-        GUM_ERROR(NotFound, "there exists no graph change applicable")
+      if (!empty(node)) return _changes_[_change_queue_per_node_[node].top()];
+      else GUM_ERROR(NotFound, "there exists no graph change applicable")
     }
 
 
@@ -460,10 +456,8 @@ namespace gum {
     template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
     INLINE double
        GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::bestScore() {
-      if (!empty())
-        return _change_queue_per_node_[_node_queue_.top()].topPriority();
-      else
-        GUM_ERROR(NotFound, "there exists no graph change applicable")
+      if (!empty()) return _change_queue_per_node_[_node_queue_.top()].topPriority();
+      else GUM_ERROR(NotFound, "there exists no graph change applicable")
     }
 
 
@@ -472,10 +466,8 @@ namespace gum {
     INLINE double
        GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::bestScore(
           const NodeId node) {
-      if (!empty(node))
-        return _change_queue_per_node_[node].topPriority();
-      else
-        GUM_ERROR(NotFound, "there exists no graph change applicable")
+      if (!empty(node)) return _change_queue_per_node_[node].topPriority();
+      else GUM_ERROR(NotFound, "there exists no graph change applicable")
     }
 
 

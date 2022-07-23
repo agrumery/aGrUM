@@ -69,13 +69,11 @@ namespace gum {
   double Chi2::_probaZValue_(double z) {
     double y, x, w;
 
-    if (z == 0.0)
-      x = 0.0;
+    if (z == 0.0) x = 0.0;
     else {
       y = 0.5 * std::fabs(z);
 
-      if (y >= (GUM_Z_MAX * 0.5))
-        x = 1.0;
+      if (y >= (GUM_Z_MAX * 0.5)) x = 1.0;
       else if (y < 1.0) {
         w = y * y;
         x = ((((((((0.000124818987 * w - 0.001075204047) * w + 0.005198775019) * w - 0.019198292004)
@@ -165,8 +163,7 @@ namespace gum {
 
         return (c * y + s);
       }
-    } else
-      return (s);
+    } else return (s);
   }
 
   // computes the critical value of a given chi2 test (used by the cache)
@@ -175,18 +172,14 @@ namespace gum {
     double maxchisq = GUM_CHI_MAX;
     double chisqval;
 
-    if (proba <= 0.0)
-      return (maxchisq);
-    else if (proba >= 1.0)
-      return (0.0);
+    if (proba <= 0.0) return (maxchisq);
+    else if (proba >= 1.0) return (0.0);
 
     chisqval = df / std::sqrt(proba); /* fair first value */
 
     while (maxchisq - minchisq > GUM_CHI_EPSILON) {
-      if (probaChi2(chisqval, df) < proba)
-        maxchisq = chisqval;
-      else
-        minchisq = chisqval;
+      if (probaChi2(chisqval, df) < proba) maxchisq = chisqval;
+      else minchisq = chisqval;
 
       chisqval = (maxchisq + minchisq) * 0.5;
     }

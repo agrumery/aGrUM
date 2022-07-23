@@ -174,20 +174,13 @@ namespace gum {
     if (curFuelLevel > 0) currentState_.chgVal(_fuelLevel_, --curFuelLevel);
 
     switch (actionId) {
-      case GoNorth:
-        return _performGoNorth_();
-      case GoEast:
-        return _performGoEast_();
-      case GoSouth:
-        return _performGoSouth_();
-      case GoWest:
-        return _performGoWest_();
-      case PickUp:
-        return _performPickUp_();
-      case PutDown:
-        return _performPutDown_();
-      case FillUp:
-        return _performFillUp_();
+      case GoNorth: return _performGoNorth_();
+      case GoEast: return _performGoEast_();
+      case GoSouth: return _performGoSouth_();
+      case GoWest: return _performGoWest_();
+      case PickUp: return _performPickUp_();
+      case PutDown: return _performPutDown_();
+      case FillUp: return _performFillUp_();
     }
   }
 
@@ -271,8 +264,7 @@ namespace gum {
         if (xCurPos == CLUBX && yCurPos == CLUBY) currentState_.chgVal(_passengerPos_, TAXI);
         return;
       }
-      case TAXI:
-        return;
+      case TAXI: return;
     }
   }
 
@@ -308,8 +300,7 @@ namespace gum {
           if (xCurPos == CLUBX && yCurPos == CLUBY) currentState_.chgVal(_passengerPos_, CLUB);
           return;
         }
-        case TAXI:
-          return;
+        case TAXI: return;
       }
     }
   }
@@ -343,10 +334,8 @@ namespace gum {
 
     if (_lastAction_ == PutDown) {
       if (passPos == TAXI) {
-        if (_isAtDestination_(passDest, xCurPos, yCurPos))
-          _reward_ = 30.0;
-        else
-          _reward_ = 0.0;
+        if (_isAtDestination_(passDest, xCurPos, yCurPos)) _reward_ = 30.0;
+        else _reward_ = 0.0;
         return;
       }
       _reward_ = 0;
@@ -354,10 +343,8 @@ namespace gum {
     }
 
     if (_lastAction_ == PickUp) {
-      if (_isAtMeetPoint_(passPos, xCurPos, yCurPos))
-        _reward_ = 20.0;
-      else
-        _reward_ = 0.0;
+      if (_isAtMeetPoint_(passPos, xCurPos, yCurPos)) _reward_ = 20.0;
+      else _reward_ = 0.0;
       return;
     }
 
@@ -394,8 +381,7 @@ namespace gum {
         if (xCurPos == CLUBX && yCurPos == CLUBY) return true;
         break;
       }
-      case TAXI:
-        return false;
+      case TAXI: return false;
     }
     return false;
   }
@@ -420,8 +406,7 @@ namespace gum {
         if (xCurPos == CLUBX && yCurPos == CLUBY) return true;
         break;
       }
-      case TAXI:
-        return false;
+      case TAXI: return false;
     }
     return false;
   }

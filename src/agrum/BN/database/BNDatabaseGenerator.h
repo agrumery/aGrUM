@@ -181,10 +181,10 @@ namespace gum {
                                            const std::string& csvSeparator = ",") const;
 
       // forbidden copies / moves
-      BNDatabaseGenerator(const BNDatabaseGenerator&) = delete;
-      BNDatabaseGenerator(BNDatabaseGenerator&&)      = delete;
+      BNDatabaseGenerator(const BNDatabaseGenerator&)            = delete;
+      BNDatabaseGenerator(BNDatabaseGenerator&&)                 = delete;
       BNDatabaseGenerator& operator=(const BNDatabaseGenerator&) = delete;
-      BNDatabaseGenerator& operator=(BNDatabaseGenerator&&) = delete;
+      BNDatabaseGenerator& operator=(BNDatabaseGenerator&&)      = delete;
     };
 
 

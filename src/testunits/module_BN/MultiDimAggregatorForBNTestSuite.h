@@ -96,11 +96,7 @@ namespace gum_tests {
 
       {
         gum::ShaferShenoyInference< double > inf(&bn);
-
-        try {
-          // Testing the inference
-          inf.makeInference();
-        } catch (const gum::Exception& e) { TS_ASSERT(false) }
+        TS_GUM_ASSERT_THROWS_NOTHING(inf.makeInference();)
 
         try {
           TS_ASSERT_EQUALS(inf.posterior(idList[0]),
@@ -109,16 +105,15 @@ namespace gum_tests {
           TS_ASSERT_EQUALS(
              inf.posterior(idList[1]),
              (gum::Potential< double >() << bn.variable(idList[1])).fillWith({0.1, 0.1, 0.1, 0.7}))
-        } catch (const gum::Exception& e) { TS_ASSERT(false) }
+        } catch (const gum::Exception& e) {
+          GUM_UNUSED(e);
+          TS_ASSERT(false)
+        }
       }
 
       {
         gum::LazyPropagation< double > inf(&bn);
-
-        try {
-          // Testing the inference
-          inf.makeInference();
-        } catch (const gum::Exception& e) { TS_ASSERT(false) }
+        TS_GUM_ASSERT_THROWS_NOTHING(inf.makeInference())
 
         try {
           TS_ASSERT_EQUALS(inf.posterior(idList[0]),
@@ -127,7 +122,10 @@ namespace gum_tests {
           TS_ASSERT_EQUALS(
              inf.posterior(idList[1]),
              (gum::Potential< double >() << bn.variable(idList[1])).fillWith({0.1, 0.1, 0.1, 0.7}))
-        } catch (const gum::Exception&) { TS_ASSERT(false) }
+        } catch (const gum::Exception& e) {
+          GUM_UNUSED(e);
+          TS_ASSERT(false)
+        }
       }
     }
 
@@ -187,21 +185,21 @@ namespace gum_tests {
 
       gum::Instantiation i(p);
       float              witness[] = {1.0f,
-                         0.0f,
-                         0.1f,
-                         0.9f,
-                         0.2f,
-                         0.8f,
-                         0.02f,
-                         0.98f,
-                         0.6f,
-                         0.4f,
-                         0.06f,
-                         0.94f,
-                         0.12f,
-                         0.88f,
-                         0.012f,
-                         0.988f};
+                                      0.0f,
+                                      0.1f,
+                                      0.9f,
+                                      0.2f,
+                                      0.8f,
+                                      0.02f,
+                                      0.98f,
+                                      0.6f,
+                                      0.4f,
+                                      0.06f,
+                                      0.94f,
+                                      0.12f,
+                                      0.88f,
+                                      0.012f,
+                                      0.988f};
 
       int j = 0;
 
@@ -273,21 +271,21 @@ namespace gum_tests {
 
       gum::Instantiation i(p);
       float              witness[] = {1.0f,
-                         0.0f,
-                         0.1f,
-                         0.9f,
-                         0.2f,
-                         0.8f,
-                         0.02f,
-                         0.98f,
-                         0.6f,
-                         0.4f,
-                         0.06f,
-                         0.94f,
-                         0.12f,
-                         0.88f,
-                         0.012f,
-                         0.988f};
+                                      0.0f,
+                                      0.1f,
+                                      0.9f,
+                                      0.2f,
+                                      0.8f,
+                                      0.02f,
+                                      0.98f,
+                                      0.6f,
+                                      0.4f,
+                                      0.06f,
+                                      0.94f,
+                                      0.12f,
+                                      0.88f,
+                                      0.012f,
+                                      0.988f};
 
       int j = 0;
 
@@ -361,21 +359,21 @@ namespace gum_tests {
 
       gum::Instantiation i(p);
       float              witness[] = {0.988012f,
-                         0.011988f,
-                         0.892108f,
-                         0.107892f,
-                         0.952048f,
-                         0.047952f,
-                         0.568432f,
-                         0.431568f,
-                         0.992008f,
-                         0.007992f,
-                         0.928072f,
-                         0.071928f,
-                         0.968032f,
-                         0.031968f,
-                         0.712288f,
-                         0.287712f};
+                                      0.011988f,
+                                      0.892108f,
+                                      0.107892f,
+                                      0.952048f,
+                                      0.047952f,
+                                      0.568432f,
+                                      0.431568f,
+                                      0.992008f,
+                                      0.007992f,
+                                      0.928072f,
+                                      0.071928f,
+                                      0.968032f,
+                                      0.031968f,
+                                      0.712288f,
+                                      0.287712f};
 
       int j = 0;
 

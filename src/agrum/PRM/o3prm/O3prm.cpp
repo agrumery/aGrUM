@@ -728,15 +728,15 @@ namespace gum {
       O3RawCPT& O3RawCPT::operator=(const O3RawCPT& src) {
         if (this == &src) { return *this; }
         O3Attribute::operator=(src);
-        auto         copy    = new O3FormulaList(*(src._values_));
-        _values_             = std::unique_ptr< O3FormulaList >(copy);
+        auto         copy = new O3FormulaList(*(src._values_));
+        _values_          = std::unique_ptr< O3FormulaList >(copy);
         return *this;
       }
 
       O3RawCPT& O3RawCPT::operator=(O3RawCPT&& src) {
         if (this == &src) { return *this; }
         O3Attribute::operator=(src);
-        _values_             = std::move(src._values_);
+        _values_ = std::move(src._values_);
         return *this;
       }
 
@@ -780,7 +780,7 @@ namespace gum {
         if (this == &src) { return *this; }
 
         O3Attribute::operator=(src);
-        _rules_              = std::unique_ptr< O3RuleList >(new O3RuleList(src.rules()));
+        _rules_ = std::unique_ptr< O3RuleList >(new O3RuleList(src.rules()));
         return *this;
       }
 
@@ -788,7 +788,7 @@ namespace gum {
         if (this == &src) { return *this; }
 
         O3Attribute::operator=(src);
-        _rules_              = std::move(src._rules_);
+        _rules_ = std::move(src._rules_);
         return *this;
       }
 

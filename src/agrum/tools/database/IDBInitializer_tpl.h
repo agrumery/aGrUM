@@ -35,13 +35,9 @@ namespace gum {
     template < class DATABASE >
     INLINE void IDBInitializer::fillDatabase(DATABASE& database, const bool retry_insertion) {
       switch (_input_type_) {
-        case InputType::STRING:
-          _fillDatabaseFromStrings_(database, retry_insertion);
-          return;
+        case InputType::STRING: _fillDatabaseFromStrings_(database, retry_insertion); return;
 
-        case InputType::DBCELL:
-          _fillDatabaseFromDBCells_(database, retry_insertion);
-          return;
+        case InputType::DBCELL: _fillDatabaseFromDBCells_(database, retry_insertion); return;
       }
 
       GUM_ERROR(NotImplementedYet,

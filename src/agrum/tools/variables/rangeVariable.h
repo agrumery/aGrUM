@@ -147,10 +147,10 @@ namespace gum {
 
     /// @}
 
-    virtual const std::string domain() const;
+    std::string domain() const final;
 
     /// string represent the type of the variable
-    virtual const std::string stype() const { return "Range"; };
+    std::string stype() const final { return "Range"; };
 
     private:
     /// @name Private Members.

@@ -83,8 +83,7 @@ namespace gum {
       if (!_initialized_) {
         _counter_.reset(newState);
         _initialized_ = true;
-      } else
-        _counter_.incState(newState);
+      } else _counter_.incState(newState);
     }
 
     private:

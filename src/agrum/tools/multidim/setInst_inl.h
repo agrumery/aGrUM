@@ -567,8 +567,7 @@ namespace gum {
       }
 
       return n;
-    } else
-      GUM_ERROR(NotFound, "There is more than one value ")
+    } else GUM_ERROR(NotFound, "There is more than one value ")
   }
 
   INLINE Idx SetInst::nbrOccurences(const DiscreteVariable& var) const {
@@ -594,8 +593,7 @@ namespace gum {
       }
 
       return n;
-    } else
-      GUM_ERROR(NotFound, "There is more than one value ")
+    } else GUM_ERROR(NotFound, "There is more than one value ")
   }
 
   // returns the variable at position i in the tuple

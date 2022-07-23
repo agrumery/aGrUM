@@ -42,7 +42,7 @@ namespace gum {
     /// copy operator
     ScoreLog2Likelihood& ScoreLog2Likelihood::operator=(const ScoreLog2Likelihood& from) {
       if (this != &from) {
-        Score::operator  =(from);
+        Score::operator=(from);
         _internal_prior_ = from._internal_prior_;
       }
       return *this;
@@ -52,7 +52,7 @@ namespace gum {
     /// move operator
     ScoreLog2Likelihood& ScoreLog2Likelihood::operator=(ScoreLog2Likelihood&& from) {
       if (this != &from) {
-        Score::operator  =(std::move(from));
+        Score::operator=(std::move(from));
         _internal_prior_ = std::move(from._internal_prior_);
       }
       return *this;

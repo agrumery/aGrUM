@@ -51,8 +51,7 @@ namespace gum {
     // if table is a constant, just copy it
     if (table.variablesSequence().empty() && !table.isAbstract())
       _result_ = new ScheduleMultiDim< TABLE >(table.multiDim(), true, Idx(0));
-    else
-      _result_ = new ScheduleMultiDim< TABLE >(vars, Idx(0));
+    else _result_ = new ScheduleMultiDim< TABLE >(vars, Idx(0));
 
     // save the args and result into _args_ and _results_
     _args_ << _arg_;
@@ -126,7 +125,7 @@ namespace gum {
       const Set< const DiscreteVariable* > new_del_vars = from._del_vars_;
 
       // try to copy result (no need to update _results_)
-      *_result_                 = *(from._result_);
+      *_result_ = *(from._result_);
       ScheduleOperator::operator=(from);
 
       _del_vars_ = std::move(new_del_vars);
@@ -146,7 +145,7 @@ namespace gum {
     // avoid self assignment
     if (this != &from) {
       if (!this->hasPersistentResults()) delete _result_;
-      _result_                  = from._result_;
+      _result_ = from._result_;
       ScheduleOperator::operator=(std::move(from));
 
       _del_vars_ = std::move(from._del_vars_);

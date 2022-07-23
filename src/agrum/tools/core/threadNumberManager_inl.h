@@ -61,10 +61,8 @@ namespace gum {
 
   // returns the current max number of threads of the scheduler
   INLINE Size ThreadNumberManager::getNumberOfThreads() const {
-    if (_nb_threads_ == 0)
-      return gum::getNumberOfThreads();
-    else
-      return _nb_threads_;
+    if (_nb_threads_ == 0) return gum::getNumberOfThreads();
+    else return _nb_threads_;
   }
 
   // indicates whether the user set herself the number of threads

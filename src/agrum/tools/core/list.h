@@ -108,7 +108,9 @@ namespace gum {
      *
      * This type is used to prevent the list emplace (int) to compile.
      */
-    enum class Emplace { EMPLACE };
+    enum class Emplace {
+      EMPLACE
+    };
 
     public:
     // ============================================================================

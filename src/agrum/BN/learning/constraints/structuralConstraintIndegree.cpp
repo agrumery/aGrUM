@@ -90,8 +90,8 @@ namespace gum {
        StructuralConstraintIndegree::operator=(const StructuralConstraintIndegree& from) {
       if (this != &from) {
         StructuralConstraintDiGraph::operator=(from);
-        _Indegree_max_parents_               = from._Indegree_max_parents_;
-        _Indegree_max_indegree_              = from._Indegree_max_indegree_;
+        _Indegree_max_parents_  = from._Indegree_max_parents_;
+        _Indegree_max_indegree_ = from._Indegree_max_indegree_;
       }
 
       return *this;
@@ -102,8 +102,8 @@ namespace gum {
        StructuralConstraintIndegree::operator=(StructuralConstraintIndegree&& from) {
       if (this != &from) {
         StructuralConstraintDiGraph::operator=(std::move(from));
-        _Indegree_max_parents_               = std::move(from._Indegree_max_parents_);
-        _Indegree_max_indegree_              = std::move(from._Indegree_max_indegree_);
+        _Indegree_max_parents_  = std::move(from._Indegree_max_parents_);
+        _Indegree_max_indegree_ = std::move(from._Indegree_max_indegree_);
       }
 
       return *this;

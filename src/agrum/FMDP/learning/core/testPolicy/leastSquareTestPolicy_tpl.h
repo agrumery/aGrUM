@@ -53,15 +53,11 @@ namespace gum {
     ITestPolicy< GUM_SCALAR >::addObservation(attr, value);
     _sumO_ += value;
 
-    if (_sumAttrTable_.exists(attr))
-      _sumAttrTable_[attr] += value;
-    else
-      _sumAttrTable_.insert(attr, value);
+    if (_sumAttrTable_.exists(attr)) _sumAttrTable_[attr] += value;
+    else _sumAttrTable_.insert(attr, value);
 
-    if (_nbObsTable_.exists(attr))
-      _nbObsTable_[attr]++;
-    else
-      _nbObsTable_.insert(attr, 1);
+    if (_nbObsTable_.exists(attr)) _nbObsTable_[attr]++;
+    else _nbObsTable_.insert(attr, 1);
 
     if (!_obsTable_.exists(attr)) _obsTable_.insert(attr, new LinkedList< double >());
     _obsTable_[attr]->addLink(value);
@@ -123,17 +119,13 @@ namespace gum {
 
     for (auto obsIter = src.nbObsTable().cbeginSafe(); obsIter != src.nbObsTable().cendSafe();
          ++obsIter)
-      if (_nbObsTable_.exists(obsIter.key()))
-        _nbObsTable_[obsIter.key()] += obsIter.val();
-      else
-        _nbObsTable_.insert(obsIter.key(), obsIter.val());
+      if (_nbObsTable_.exists(obsIter.key())) _nbObsTable_[obsIter.key()] += obsIter.val();
+      else _nbObsTable_.insert(obsIter.key(), obsIter.val());
 
     for (auto attrIter = src.sumAttrTable().cbeginSafe(); attrIter != src.sumAttrTable().cendSafe();
          ++attrIter)
-      if (_sumAttrTable_.exists(attrIter.key()))
-        _sumAttrTable_[attrIter.key()] += attrIter.val();
-      else
-        _sumAttrTable_.insert(attrIter.key(), attrIter.val());
+      if (_sumAttrTable_.exists(attrIter.key())) _sumAttrTable_[attrIter.key()] += attrIter.val();
+      else _sumAttrTable_.insert(attrIter.key(), attrIter.val());
 
     for (auto obsIter = src.obsTable().cbeginSafe(); obsIter != src.obsTable().cendSafe();
          ++obsIter) {

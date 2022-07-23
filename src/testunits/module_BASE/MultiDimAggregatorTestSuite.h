@@ -434,10 +434,8 @@ namespace gum_tests {
 
       gum::Instantiation Ind(p);
       for (Ind.setFirst(); !Ind.end(); ++Ind) {
-        if (!first)
-          v << "-";
-        else
-          first = false;
+        if (!first) v << "-";
+        else first = false;
 
         v << p.get(Ind);
       }

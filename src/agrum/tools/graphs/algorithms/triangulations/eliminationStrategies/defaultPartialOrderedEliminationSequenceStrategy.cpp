@@ -263,8 +263,7 @@ namespace gum {
   const EdgeSet& DefaultPartialOrderedEliminationSequenceStrategy::fillIns() {
     if (!_provide_fill_ins_ || (_simplicial_set_ == nullptr))
       return EliminationSequenceStrategy::fillIns();
-    else
-      return _simplicial_set_->fillIns();
+    else return _simplicial_set_->fillIns();
   }
 
   /** @brief creates a new elimination sequence of the same type as the current

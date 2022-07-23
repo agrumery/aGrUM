@@ -253,8 +253,7 @@ namespace gum {
 
       if (data.obs().size())
         _elim_map_.insert(*iter, _eliminateObservedNodesInSource_(data, pool, **iter, elim_order));
-      else
-        _elim_map_.insert(*iter, new Set< Potential< GUM_SCALAR >* >(pool));
+      else _elim_map_.insert(*iter, new Set< Potential< GUM_SCALAR >* >(pool));
 
       ++iter;
 
@@ -848,10 +847,8 @@ namespace gum {
         // Adding nodes to the partial ordering
         switch (c.get(node).elt_type()) {
           case PRMClassElement< GUM_SCALAR >::prm_aggregate: {
-            if (c.isOutputNode(c.get(node)))
-              outputs().insert(node);
-            else
-              aggregators().insert(node);
+            if (c.isOutputNode(c.get(node))) outputs().insert(node);
+            else aggregators().insert(node);
 
             // If the aggregators is not an output and have parents which are
             // not outputs, we must eliminate the parents after adding the
@@ -873,10 +870,8 @@ namespace gum {
           case PRMClassElement< GUM_SCALAR >::prm_attribute: {
             pool.insert(const_cast< Potential< GUM_SCALAR >* >(&(c.get(node).cpf())));
 
-            if (c.isOutputNode(c.get(node)))
-              outputs().insert(node);
-            else if (!aggregators().exists(node))
-              inners().insert(node);
+            if (c.isOutputNode(c.get(node))) outputs().insert(node);
+            else if (!aggregators().exists(node)) inners().insert(node);
 
             break;
           }
@@ -926,21 +921,21 @@ namespace gum {
     INLINE std::string
            StructuredInference< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
                                                 const PRMAttribute< GUM_SCALAR >* a) const {
-      return i->name() + _dot_ + a->safeName();
+          return i->name() + _dot_ + a->safeName();
     }
 
     template < typename GUM_SCALAR >
     INLINE std::string
            StructuredInference< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
                                                 const PRMAttribute< GUM_SCALAR >& a) const {
-      return i->name() + _dot_ + a.safeName();
+          return i->name() + _dot_ + a.safeName();
     }
 
     template < typename GUM_SCALAR >
     INLINE std::string
            StructuredInference< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
                                                 const PRMSlotChain< GUM_SCALAR >& a) const {
-      return i->name() + _dot_ + a.lastElt().safeName();
+          return i->name() + _dot_ + a.lastElt().safeName();
     }
 
     template < typename GUM_SCALAR >

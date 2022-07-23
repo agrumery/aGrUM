@@ -248,8 +248,7 @@ namespace gum {
           _overflow_ = true;
           _masterFirstNotification_();
           return;
-        } else
-          ++cpt;
+        } else ++cpt;
       } else {
         ++_vals_[cpt];
         break;
@@ -282,8 +281,7 @@ namespace gum {
           _masterLastNotification_();
 
           return;
-        } else
-          ++cpt;
+        } else ++cpt;
       } else {
         --_vals_[cpt];
         break;
@@ -366,8 +364,7 @@ namespace gum {
         if (i_cpt == p) {
           _overflow_ = true;
           return;
-        } else
-          ++i_cpt;
+        } else ++i_cpt;
       } else {
         Idx cpt = pos(v);
         Idx iv  = _vals_[cpt];
@@ -378,8 +375,7 @@ namespace gum {
           if (i_cpt == p) {
             _overflow_ = true;
             return;
-          } else
-            ++i_cpt;
+          } else ++i_cpt;
         } else {
           _chgVal_(cpt, iv + 1);
           return;
@@ -404,8 +400,7 @@ namespace gum {
         if (i_cpt == p) {
           _overflow_ = true;
           return;
-        } else
-          ++i_cpt;
+        } else ++i_cpt;
       } else {
         Idx cpt = pos(v);
         Idx iv  = _vals_[cpt];
@@ -416,8 +411,7 @@ namespace gum {
           if (i_cpt == p) {
             _overflow_ = true;
             return;
-          } else
-            ++i_cpt;
+          } else ++i_cpt;
         } else {
           _chgVal_(cpt, iv - 1);
           return;
@@ -471,8 +465,7 @@ namespace gum {
         if (cpt == p) {
           _overflow_ = true;
           return;
-        } else
-          ++cpt;
+        } else ++cpt;
       } else {
         Idx v = _vals_[cpt];
 
@@ -482,8 +475,7 @@ namespace gum {
           if (cpt == p) {
             _overflow_ = true;
             return;
-          } else
-            ++cpt;
+          } else ++cpt;
         } else {
           _chgVal_(cpt, v + 1);
           return;
@@ -505,8 +497,7 @@ namespace gum {
         if (cpt == p) {
           _overflow_ = true;
           return;
-        } else
-          ++cpt;
+        } else ++cpt;
       } else {
         Idx v = _vals_[cpt];
 
@@ -516,8 +507,7 @@ namespace gum {
           if (cpt == p) {
             _overflow_ = true;
             return;
-          } else
-            ++cpt;
+          } else ++cpt;
         } else {
           _chgVal_(cpt, v - 1);
           return;
@@ -558,8 +548,7 @@ namespace gum {
         if (cpt == p) {
           _overflow_ = true;
           return;
-        } else
-          ++cpt;
+        } else ++cpt;
       } else {
         Idx iv = _vals_[cpt];
 
@@ -569,8 +558,7 @@ namespace gum {
           if (cpt == p) {
             _overflow_ = true;
             return;
-          } else
-            ++cpt;
+          } else ++cpt;
         } else {
           _chgVal_(cpt, iv + 1);
           return;
@@ -592,8 +580,7 @@ namespace gum {
         if (cpt == p) {
           _overflow_ = true;
           return;
-        } else
-          ++cpt;
+        } else ++cpt;
       } else {
         Idx iv = _vals_[cpt];
 
@@ -603,8 +590,7 @@ namespace gum {
           if (cpt == p) {
             _overflow_ = true;
             return;
-          } else
-            ++cpt;
+          } else ++cpt;
         } else {
           _chgVal_(cpt, iv - 1);
           return;

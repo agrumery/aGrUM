@@ -90,10 +90,8 @@ namespace gum {
     for (auto varIter = _attrTable_.cbeginSafe(); varIter != _attrTable_.cendSafe(); ++varIter)
       varIter.val()->addObservation(newObs->rModality(varIter.key()), newObs->reward());
 
-    if (_valueCount_.exists(newObs->reward()))
-      _valueCount_[newObs->reward()]++;
-    else
-      _valueCount_.insert(newObs->reward(), 1);
+    if (_valueCount_.exists(newObs->reward())) _valueCount_[newObs->reward()]++;
+    else _valueCount_.insert(newObs->reward(), 1);
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
@@ -102,10 +100,8 @@ namespace gum {
     for (auto varIter = _attrTable_.cbeginSafe(); varIter != _attrTable_.cendSafe(); ++varIter)
       varIter.val()->addObservation(newObs->modality(varIter.key()), newObs->modality(_value_));
 
-    if (_valueCount_.exists(newObs->modality(_value_)))
-      _valueCount_[newObs->modality(_value_)]++;
-    else
-      _valueCount_.insert(newObs->modality(_value_), 1);
+    if (_valueCount_.exists(newObs->modality(_value_))) _valueCount_[newObs->modality(_value_)]++;
+    else _valueCount_.insert(newObs->modality(_value_), 1);
   }
 
 
@@ -127,10 +123,8 @@ namespace gum {
       varIter.val()->add(*(src.testPolicy(varIter.key())));
 
     for (auto valIter = src.cbeginValues(); valIter != src.cendValues(); ++valIter)
-      if (_valueCount_.exists(valIter.key()))
-        _valueCount_[valIter.key()] += valIter.val();
-      else
-        _valueCount_.insert(valIter.key(), valIter.val());
+      if (_valueCount_.exists(valIter.key())) _valueCount_[valIter.key()] += valIter.val();
+      else _valueCount_.insert(valIter.key(), valIter.val());
 
     return *this;
   }

@@ -81,22 +81,16 @@ namespace gum_tests {
         // get rid of linux or windows eol
         if (strlen(string1) > 0) {
           for (char* p = string1 + strlen(string1) - 1; p >= string1; p--) {
-            if (*p == '\n')
-              *p = '\0';
-            else if (*p == '\r')
-              *p = '\0';
-            else
-              break;
+            if (*p == '\n') *p = '\0';
+            else if (*p == '\r') *p = '\0';
+            else break;
           }
         }
         if (strlen(string2) > 0) {
           for (char* p = string2 + strlen(string2) - 1; p >= string2; p--) {
-            if (*p == '\n')
-              *p = '\0';
-            else if (*p == '\r')
-              *p = '\0';
-            else
-              break;
+            if (*p == '\n') *p = '\0';
+            else if (*p == '\r') *p = '\0';
+            else break;
           }
         }
 
@@ -170,7 +164,7 @@ namespace gum_tests {
                               0.5, 0.5,
                               0.5, 0.5,
                               1.0, 0.0} );   // clang-format on
-      bn.cpt(i5).fillWith(                            // clang-format off
+      bn.cpt(i5).fillWith(                             // clang-format off
                              {0.3, 0.6, 0.1,
                               0.5, 0.5, 0.0,
                               0.5, 0.5, 0.0,

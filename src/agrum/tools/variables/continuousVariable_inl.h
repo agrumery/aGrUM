@@ -52,10 +52,8 @@ namespace gum {
         GUM_ERROR(TypeError, "the value is not a number")
     }
 
-    if (belongs(value))
-      return value;
-    else
-      GUM_ERROR(OutOfBounds, "the value does not belong to the domain of the variable")
+    if (belongs(value)) return value;
+    else GUM_ERROR(OutOfBounds, "the value does not belong to the domain of the variable")
   }
 
 
@@ -76,10 +74,8 @@ namespace gum {
         GUM_ERROR(TypeError, "the value is not a number")
     }
 
-    if (belongs(value))
-      return value;
-    else
-      GUM_ERROR(OutOfBounds, "the value does not belong to the domain of the variable")
+    if (belongs(value)) return value;
+    else GUM_ERROR(OutOfBounds, "the value does not belong to the domain of the variable")
   }
 
 } /* namespace gum */

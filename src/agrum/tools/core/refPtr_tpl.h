@@ -68,8 +68,7 @@ namespace gum {
         // the delete of v fails (note that this should probably never happen))
         delete count;
         delete v;
-      } else
-        --*count;
+      } else --*count;
     }
   }
 
@@ -112,10 +111,8 @@ namespace gum {
 
       // perform the copy
       try {
-        if (from)
-          _refcount_ = new unsigned int(1U);
-        else
-          _refcount_ = 0;
+        if (from) _refcount_ = new unsigned int(1U);
+        else _refcount_ = 0;
 
         _val_ = from;
       } catch (std::bad_alloc&) {

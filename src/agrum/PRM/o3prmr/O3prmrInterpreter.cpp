@@ -76,10 +76,8 @@ namespace gum {
       void O3prmrInterpreter::setContext(O3prmrContext< double >* context) {
         delete m_context;
 
-        if (context == 0)
-          m_context = new O3prmrContext< double >();
-        else
-          m_context = context;
+        if (context == 0) m_context = new O3prmrContext< double >();
+        else m_context = context;
       }
 
       /// Root paths to search from there packages.
@@ -210,10 +208,8 @@ namespace gum {
         // On vérifie la sémantique.
         if (!checkSemantic(&c)) return false;
 
-        if (isInSyntaxMode())
-          return true;
-        else
-          return interpret(&c);
+        if (isInSyntaxMode()) return true;
+        else return interpret(&c);
       }
 
       /**
@@ -382,8 +378,7 @@ namespace gum {
           // ou à la dernière session.
           if (sessionName == "default" && m_context->sessions().size() > 0)
             *(m_context->sessions().back()) += *new_session;
-          else
-            m_context->addSession(*new_session);
+          else m_context->addSession(*new_session);
 
           if (m_verbose)
             m_log << std::endl

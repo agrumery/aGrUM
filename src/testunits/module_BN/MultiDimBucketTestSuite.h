@@ -400,10 +400,8 @@ namespace gum_tests {
 
         try {
           for (const auto var: bucket->allVariables())
-            if (bucket->contains(*var))
-              inBucket++;
-            else
-              outBucket++;
+            if (bucket->contains(*var)) inBucket++;
+            else outBucket++;
         } catch (gum::Exception& e) {
           std::cerr << std::endl << e.errorContent() << std::endl;
           TS_ASSERT(false)

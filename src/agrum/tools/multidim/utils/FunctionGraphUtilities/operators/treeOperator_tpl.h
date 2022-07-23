@@ -85,9 +85,9 @@ namespace gum {
              class TerminalNodePolicy >
   INLINE MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
          TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::compute() {
-    _rd_->manager()->setRootNode(_xPloreDT1_(_dt1_->root()));
+        _rd_->manager()->setRootNode(_xPloreDT1_(_dt1_->root()));
 
-    return _rd_;
+        return _rd_;
   }
 
   // Main recursion function, called every time we move on a node to determine

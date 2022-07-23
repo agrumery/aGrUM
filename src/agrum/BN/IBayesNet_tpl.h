@@ -151,10 +151,8 @@ namespace gum {
     std::stringstream s;
     s << "BN{nodes: " << size() << ", arcs: " << dag().sizeArcs() << ", ";
 
-    if (dSize > 6)
-      s << "domainSize: 10^" << dSize;
-    else
-      s << "domainSize: " << std::round(std::pow(10.0, dSize));
+    if (dSize > 6) s << "domainSize: 10^" << dSize;
+    else s << "domainSize: " << std::round(std::pow(10.0, dSize));
 
     s << ", dim: " << param << "}";
 

@@ -70,15 +70,11 @@ namespace gum {
     for (; varIter < state.variablesSequence().size(); ++varIter) {
       const DiscreteVariable* curVar = state.variablesSequence().atPos(varIter);
       NodeId                  varId  = _checker_->manager()->addInternalNode(curVar);
-      if (parentId)
-        _checker_->manager()->setSon(parentId, parentModa, varId);
-      else
-        _checker_->manager()->setRootNode(varId);
+      if (parentId) _checker_->manager()->setSon(parentId, parentModa, varId);
+      else _checker_->manager()->setRootNode(varId);
       for (Idx moda = 0; moda < curVar->domainSize(); ++moda) {
-        if (moda == state.valFromPtr(curVar))
-          parentModa = moda;
-        else
-          _checker_->manager()->setSon(varId, moda, _checkerFalseId_);
+        if (moda == state.valFromPtr(curVar)) parentModa = moda;
+        else _checker_->manager()->setSon(varId, moda, _checkerFalseId_);
       }
       parentId = varId;
     }

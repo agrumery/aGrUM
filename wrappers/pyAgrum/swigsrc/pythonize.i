@@ -64,6 +64,7 @@ ADD_REPR_STR_API(gum,DiscreteVariable)
 ADD_REPR_STR_API(gum,RangeVariable)
 ADD_REPR_STR_API(gum,LabelizedVariable)
 ADD_REPR_STR_API(gum,IntegerVariable)
+ADD_REPR_STR_API(gum,NumericalDiscreteVariable)
 ADD_REPR_STR_API(gum,DiscretizedVariable<double>)
 
 ADD_REPR_STR_API(gum,UndiGraph)

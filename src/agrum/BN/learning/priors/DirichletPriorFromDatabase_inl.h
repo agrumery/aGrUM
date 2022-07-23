@@ -65,7 +65,7 @@ namespace gum {
     INLINE DirichletPriorFromDatabase&
        DirichletPriorFromDatabase::operator=(const DirichletPriorFromDatabase& from) {
       if (this != &from) {
-        Prior::operator   =(from);
+        Prior::operator=(from);
         _counter_         = from._counter_;
         _internal_weight_ = from._internal_weight_;
       }
@@ -77,7 +77,7 @@ namespace gum {
     INLINE DirichletPriorFromDatabase&
        DirichletPriorFromDatabase::operator=(DirichletPriorFromDatabase&& from) {
       if (this != &from) {
-        Prior::operator   =(std::move(from));
+        Prior::operator=(std::move(from));
         _counter_         = std::move(from._counter_);
         _internal_weight_ = from._internal_weight_;
       }
@@ -98,10 +98,8 @@ namespace gum {
     /// sets the weight of the a prior(kind of effective sample size)
     INLINE void DirichletPriorFromDatabase::setWeight(const double weight) {
       Prior::setWeight(weight);
-      if (_counter_.database().nbRows() == 0)
-        _internal_weight_ = 0.0;
-      else
-        _internal_weight_ = this->weight_ / double(_counter_.database().nbRows());
+      if (_counter_.database().nbRows() == 0) _internal_weight_ = 0.0;
+      else _internal_weight_ = this->weight_ / double(_counter_.database().nbRows());
     }
 
 

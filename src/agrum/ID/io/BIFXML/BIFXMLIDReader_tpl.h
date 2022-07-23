@@ -137,12 +137,9 @@ namespace gum {
       std::string nodeType = currentVar->GetAttribute< std::string >("TYPE");
 
       // Add the variable to the id
-      if (nodeType.compare("decision") == 0)
-        _infdiag_->addDecisionNode(newVar);
-      else if (nodeType.compare("utility") == 0)
-        _infdiag_->addUtilityNode(newVar);
-      else
-        _infdiag_->addChanceNode(newVar);
+      if (nodeType.compare("decision") == 0) _infdiag_->addDecisionNode(newVar);
+      else if (nodeType.compare("utility") == 0) _infdiag_->addUtilityNode(newVar);
+      else _infdiag_->addChanceNode(newVar);
 
       // Emitting progress.
       std::string status   = "Network found. Now proceedind variables instanciation...";

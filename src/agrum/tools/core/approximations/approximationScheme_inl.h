@@ -141,7 +141,7 @@ namespace gum {
   // history
   INLINE IApproximationSchemeConfiguration::ApproximationSchemeSTATE
          ApproximationScheme::stateApproximationScheme() const {
-    return current_state_;
+        return current_state_;
   }
 
   // @throw OperationNotAllowed if scheme not performed

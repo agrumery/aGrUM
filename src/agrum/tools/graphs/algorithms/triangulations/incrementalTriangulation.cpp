@@ -369,8 +369,7 @@ namespace gum {
       if (other_node != Mz) {
         int neighbourStatus = _markAffectedMPSsByAddLink_(other_node, Mx, X, Y);
 
-        if (neighbourStatus == 2)
-          return 2;
+        if (neighbourStatus == 2) return 2;
         else if (neighbourStatus == 1) {
           _mps_affected_[Mx] = true;
 
@@ -455,8 +454,7 @@ namespace gum {
         _cliques_of_mps_.erase(mps_X);
         _created_JT_cliques_[X] = newNode;
         mps_X                   = newMPS;
-      } else
-        _mps_of_node_[X].insert(newMPS);
+      } else _mps_of_node_[X].insert(newMPS);
 
       // do the same thing as above for node Y
       if (_T_mpd_.clique(mps_Y).size() == 1) {
@@ -467,8 +465,7 @@ namespace gum {
         _cliques_of_mps_.erase(mps_Y);
         _created_JT_cliques_[Y] = newNode;
         mps_Y                   = newMPS;
-      } else
-        _mps_of_node_[Y].insert(newMPS);
+      } else _mps_of_node_[Y].insert(newMPS);
 
       std::vector< NodeId >& cl = _cliques_of_mps_.insert(newMPS, std::vector< NodeId >()).second;
 
@@ -659,8 +656,7 @@ namespace gum {
         if (nodes.exists(node)) {
           std::cerr << "check elimination order" << std::endl << _elimination_order_ << std::endl;
           return false;
-        } else
-          nodes.insert(node);
+        } else nodes.insert(node);
       }
 
       if (nodes.size() != _graph_.size()) {
@@ -988,8 +984,7 @@ namespace gum {
     for (unsigned int i = 0; i < merged_cliques.size(); ++i) {
       if (T_mpd_cliques.exists(merged_cliques[i].second))
         T_mpd_cliques[merged_cliques[i].first] = T_mpd_cliques[merged_cliques[i].second];
-      else
-        T_mpd_cliques[merged_cliques[i].first] = _mps_of_clique_[merged_cliques[i].second];
+      else T_mpd_cliques[merged_cliques[i].first] = _mps_of_clique_[merged_cliques[i].second];
     }
 
     // now we can create the max prime junction tree.

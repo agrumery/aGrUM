@@ -69,10 +69,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const IBayesNet< GUM_SCALAR >& SamplingInference< GUM_SCALAR >::samplingBN() {
     this->prepareInference();
-    if (_samplingBN_ == nullptr)
-      return this->BN();
-    else
-      return *_samplingBN_;
+    if (_samplingBN_ == nullptr) return this->BN();
+    else return *_samplingBN_;
   }
   template < typename GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::setEstimatorFromBN_() {

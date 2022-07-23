@@ -69,7 +69,7 @@ namespace gum {
     ;
   }
 
-  const std::string RangeVariable::domain() const {
+  std::string RangeVariable::domain() const {
     std::stringstream s;
     s << "[" << minVal() << "," << maxVal() << "]";
     return s.str();

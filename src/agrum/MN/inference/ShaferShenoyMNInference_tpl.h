@@ -191,8 +191,7 @@ namespace gum {
     // if we have a new hard evidence, this modifies the undigraph over which
     // the join tree is created. This is also the case if id is not a node of
     // of the undigraph
-    if (isHardEvidence || !_graph_.exists(id))
-      _is_new_jt_needed_ = true;
+    if (isHardEvidence || !_graph_.exists(id)) _is_new_jt_needed_ = true;
     else {
       try {
         _evidence_changes_.insert(id, EvidenceChangeType::EVIDENCE_ADDED);
@@ -213,8 +212,7 @@ namespace gum {
                                                                        bool isHardEvidence) {
     // if we delete a hard evidence, this modifies the undigraph over which
     // the join tree is created.
-    if (isHardEvidence)
-      _is_new_jt_needed_ = true;
+    if (isHardEvidence) _is_new_jt_needed_ = true;
     else {
       try {
         _evidence_changes_.insert(id, EvidenceChangeType::EVIDENCE_ERASED);
@@ -226,8 +224,7 @@ namespace gum {
         // last inference and we should now indicate that it has been removed.
         if (_evidence_changes_[id] == EvidenceChangeType::EVIDENCE_ADDED)
           _evidence_changes_.erase(id);
-        else
-          _evidence_changes_[id] = EvidenceChangeType::EVIDENCE_ERASED;
+        else _evidence_changes_[id] = EvidenceChangeType::EVIDENCE_ERASED;
       }
     }
   }
@@ -236,8 +233,7 @@ namespace gum {
   /// fired when all the evidence are erased
   template < typename GUM_SCALAR >
   void ShaferShenoyMNInference< GUM_SCALAR >::onAllEvidenceErased_(bool has_hard_evidence) {
-    if (has_hard_evidence || !this->hardEvidenceNodes().empty())
-      _is_new_jt_needed_ = true;
+    if (has_hard_evidence || !this->hardEvidenceNodes().empty()) _is_new_jt_needed_ = true;
     else {
       for (const auto node: this->softEvidenceNodes()) {
         try {
@@ -250,8 +246,7 @@ namespace gum {
           // last inference and we should now indicate that it has been removed.
           if (_evidence_changes_[node] == EvidenceChangeType::EVIDENCE_ADDED)
             _evidence_changes_.erase(node);
-          else
-            _evidence_changes_[node] = EvidenceChangeType::EVIDENCE_ERASED;
+          else _evidence_changes_[node] = EvidenceChangeType::EVIDENCE_ERASED;
         }
       }
     }
@@ -262,8 +257,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyMNInference< GUM_SCALAR >::onEvidenceChanged_(const NodeId id,
                                                                         bool hasChangedSoftHard) {
-    if (hasChangedSoftHard)
-      _is_new_jt_needed_ = true;
+    if (hasChangedSoftHard) _is_new_jt_needed_ = true;
     else {
       try {
         _evidence_changes_.insert(id, EvidenceChangeType::EVIDENCE_MODIFIED);
@@ -637,10 +631,8 @@ namespace gum {
       NodeSet hard_nodes(factor_nodes.size());
       bool    graph_contains_nodes = false;
       for (const auto node: factor_nodes) {
-        if (_hard_ev_nodes_.contains(node))
-          hard_nodes.insert(node);
-        else if (_graph_.exists(node))
-          graph_contains_nodes = true;
+        if (_hard_ev_nodes_.contains(node)) hard_nodes.insert(node);
+        else if (_graph_.exists(node)) graph_contains_nodes = true;
       }
 
       // if hard_nodes contains hard evidence nodes, perform a projection
@@ -755,10 +747,8 @@ namespace gum {
       NodeSet hard_nodes;
       bool    graph_contains_nodes = false;
       for (const auto node: factor_nodes) {
-        if (_hard_ev_nodes_.contains(node))
-          hard_nodes.insert(node);
-        else if (_graph_.exists(node))
-          graph_contains_nodes = true;
+        if (_hard_ev_nodes_.contains(node)) hard_nodes.insert(node);
+        else if (_graph_.exists(node)) graph_contains_nodes = true;
       }
 
       // if hard_nodes contains hard evidence nodes, perform a projection

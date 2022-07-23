@@ -83,22 +83,19 @@ namespace gum {
           _lCoeffs_ = new HashTable< LpCol, double >(*expr._lCoeffs_);
           _lValue_  = expr._lValue_;
           _ileft_   = true;
-        } else
-          _lCoeffs_ = new HashTable< LpCol, double >();
+        } else _lCoeffs_ = new HashTable< LpCol, double >();
 
         if (copyMiddle) {
           _mCoeffs_ = new HashTable< LpCol, double >(*expr._mCoeffs_);
           _mValue_  = expr._mValue_;
           _imiddle_ = true;
-        } else
-          _mCoeffs_ = new HashTable< LpCol, double >();
+        } else _mCoeffs_ = new HashTable< LpCol, double >();
 
         if (copyRight) {
           _rCoeffs_ = new HashTable< LpCol, double >(*expr._rCoeffs_);
           _rValue_  = expr._rValue_;
           _iright_  = true;
-        } else
-          _rCoeffs_ = new HashTable< LpCol, double >();
+        } else _rCoeffs_ = new HashTable< LpCol, double >();
 
         GUM_CONS_CPY(LpExpr);
       }
@@ -121,22 +118,19 @@ namespace gum {
           swap(_lCoeffs_, expr._lCoeffs_);
           _lValue_ = expr._lValue_;
           _ileft_  = true;
-        } else
-          _lCoeffs_ = new HashTable< LpCol, double >();
+        } else _lCoeffs_ = new HashTable< LpCol, double >();
 
         if (copyMiddle) {
           swap(_mCoeffs_, expr._mCoeffs_);
           _mValue_  = expr._mValue_;
           _imiddle_ = true;
-        } else
-          _mCoeffs_ = new HashTable< LpCol, double >();
+        } else _mCoeffs_ = new HashTable< LpCol, double >();
 
         if (copyRight) {
           swap(_rCoeffs_, expr._rCoeffs_);
           _rValue_ = expr._rValue_;
           _iright_ = true;
-        } else
-          _rCoeffs_ = new HashTable< LpCol, double >();
+        } else _rCoeffs_ = new HashTable< LpCol, double >();
 
         GUM_CONS_CPY(LpExpr);
       }

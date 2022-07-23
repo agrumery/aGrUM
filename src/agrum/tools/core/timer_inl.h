@@ -41,10 +41,8 @@ namespace gum {
   double Timer::step() const {
     std::chrono::duration< double, std::milli > ms;
     ;
-    if (sleeping_)
-      ms = pause_ - start_;
-    else
-      ms = std::chrono::high_resolution_clock::now() - start_;
+    if (sleeping_) ms = pause_ - start_;
+    else ms = std::chrono::high_resolution_clock::now() - start_;
     return ms.count() / 1000.0;
   }
 

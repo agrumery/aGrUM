@@ -130,10 +130,8 @@ namespace gum {
               }
             }
 
-            if (found)
-              data.outputs.insert(node);
-            else
-              data.inners.insert(node);
+            if (found) data.outputs.insert(node);
+            else data.inners.insert(node);
           }
       }
 
@@ -350,21 +348,21 @@ namespace gum {
       INLINE std::string
              StrictSearch< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
                                            const PRMAttribute< GUM_SCALAR >* a) const {
-        return i->name() + _dot_ + a->safeName();
+            return i->name() + _dot_ + a->safeName();
       }
 
       template < typename GUM_SCALAR >
       INLINE std::string
              StrictSearch< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
                                            const PRMAttribute< GUM_SCALAR >& a) const {
-        return i->name() + _dot_ + a.safeName();
+            return i->name() + _dot_ + a.safeName();
       }
 
       template < typename GUM_SCALAR >
       INLINE std::string
              StrictSearch< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
                                            const PRMSlotChain< GUM_SCALAR >& a) const {
-        return i->name() + _dot_ + a.lastElt().safeName();
+            return i->name() + _dot_ + a.lastElt().safeName();
       }
 
       template < typename GUM_SCALAR >

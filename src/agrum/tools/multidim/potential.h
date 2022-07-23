@@ -477,15 +477,11 @@ namespace gum {
 
     bool operator==(const Potential< GUM_SCALAR >& r) const {
       if (this->empty()) {
-        if (r.empty())
-          return this->empty_value_ == r.empty_value_;
-        else
-          return false;
+        if (r.empty()) return this->empty_value_ == r.empty_value_;
+        else return false;
       } else {
-        if (r.empty())
-          return false;
-        else
-          return (*this->content_) == (*r.content_);
+        if (r.empty()) return false;
+        else return (*this->content_) == (*r.content_);
       }
     }
 

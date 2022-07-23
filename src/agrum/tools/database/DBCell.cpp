@@ -110,10 +110,8 @@ namespace gum {
           if (has_exponent || !has_digit) return false;
           has_exponent = true;
           has_negation = false;
-        } else if ((*start_iter < '0') || (*start_iter > '9'))
-          return false;
-        else
-          has_digit = true;
+        } else if ((*start_iter < '0') || (*start_iter > '9')) return false;
+        else has_digit = true;
       }
 
       return true;
@@ -141,11 +139,9 @@ namespace gum {
                 return true;
               } catch (std::invalid_argument&) { return false; }
 
-            case EltType::MISSING:
-              return false;
+            case EltType::MISSING: return false;
 
-            default:
-              GUM_ERROR(NotImplementedYet, "type not supported by DBCell convertType")
+            default: GUM_ERROR(NotImplementedYet, "type not supported by DBCell convertType")
           }
 
           // ===================================
@@ -157,8 +153,7 @@ namespace gum {
                 _val_integer_ = nb;
                 _type_        = EltType::INTEGER;
                 return true;
-              } else
-                return false;
+              } else return false;
             }
 
             case EltType::STRING:
@@ -170,11 +165,9 @@ namespace gum {
                 return true;
               } catch (std::invalid_argument&) { return false; }
 
-            case EltType::MISSING:
-              return false;
+            case EltType::MISSING: return false;
 
-            default:
-              GUM_ERROR(NotImplementedYet, "type not supported by DBCell convertType")
+            default: GUM_ERROR(NotImplementedYet, "type not supported by DBCell convertType")
           }
 
           // ===================================
@@ -208,20 +201,15 @@ namespace gum {
               _type_ = EltType::STRING;
               return true;
 
-            case EltType::MISSING:
-              return false;
+            case EltType::MISSING: return false;
 
-            default:
-              GUM_ERROR(NotImplementedYet, "type not supported by DBCell convertType")
+            default: GUM_ERROR(NotImplementedYet, "type not supported by DBCell convertType")
           }
 
           // ===================================
-        case EltType::MISSING:
-          _type_ = EltType::MISSING;
-          return true;
+        case EltType::MISSING: _type_ = EltType::MISSING; return true;
 
-        default:
-          GUM_ERROR(NotImplementedYet, "type not supported by DBCell convertType")
+        default: GUM_ERROR(NotImplementedYet, "type not supported by DBCell convertType")
       }
 
       return false;
@@ -240,16 +228,13 @@ namespace gum {
           str << "The DBCell contains an integer instead of " << true_type;
           break;
 
-        case EltType::STRING:
-          str << "The DBCell contains a string instead of " << true_type;
-          break;
+        case EltType::STRING: str << "The DBCell contains a string instead of " << true_type; break;
 
         case EltType::MISSING:
           str << "The DBCell contains a missing value instead of " << true_type;
           break;
 
-        default:
-          GUM_ERROR(NotImplementedYet, "DBCell type not implemented yet")
+        default: GUM_ERROR(NotImplementedYet, "DBCell type not implemented yet")
       }
 
       return str.str();
@@ -259,8 +244,7 @@ namespace gum {
     // returns the content of the DBCell as a string, whatever its type
     std::string DBCell::toString(const std::vector< std::string >& missingVals) const {
       switch (_type_) {
-        case EltType::STRING:
-          return _strings_().first(_val_index_);
+        case EltType::STRING: return _strings_().first(_val_index_);
 
         case EltType::REAL: {
           char buffer[100];
@@ -268,14 +252,11 @@ namespace gum {
           return std::string(buffer);
         }
 
-        case EltType::INTEGER:
-          return std::to_string(_val_integer_);
+        case EltType::INTEGER: return std::to_string(_val_integer_);
 
         case EltType::MISSING:
-          if (missingVals.size())
-            return missingVals[0];
-          else
-            GUM_ERROR(UndefinedElement, "no missing value symbol found")
+          if (missingVals.size()) return missingVals[0];
+          else GUM_ERROR(UndefinedElement, "no missing value symbol found")
       }
 
       GUM_ERROR(NotImplementedYet, "type not supported by DBCell toString")

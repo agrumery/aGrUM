@@ -26,6 +26,7 @@
 #include <agrum/tools/variables/rangeVariable.h>
 #include <agrum/tools/variables/labelizedVariable.h>
 #include <agrum/tools/variables/integerVariable.h>
+#include <agrum/tools/variables/numericalDiscreteVariable.h>
 #include <agrum/tools/variables/discretizedVariable.h>
 
 namespace gum {

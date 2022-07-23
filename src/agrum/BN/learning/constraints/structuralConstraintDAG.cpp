@@ -81,7 +81,7 @@ namespace gum {
        StructuralConstraintDAG::operator=(const StructuralConstraintDAG& from) {
       if (this != &from) {
         StructuralConstraintDiGraph::operator=(from);
-        _DAG_cycle_detector_                 = from._DAG_cycle_detector_;
+        _DAG_cycle_detector_ = from._DAG_cycle_detector_;
       }
       return *this;
     }
@@ -90,7 +90,7 @@ namespace gum {
     StructuralConstraintDAG& StructuralConstraintDAG::operator=(StructuralConstraintDAG&& from) {
       if (this != &from) {
         StructuralConstraintDiGraph::operator=(std::move(from));
-        _DAG_cycle_detector_                 = std::move(from._DAG_cycle_detector_);
+        _DAG_cycle_detector_ = std::move(from._DAG_cycle_detector_);
       }
       return *this;
     }

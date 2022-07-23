@@ -50,10 +50,8 @@ namespace gum {
   void ErrorsContainer::add(ParseError error) {
     errors.push_back(error);
 
-    if (error.is_error)
-      error_count++;
-    else
-      warning_count++;
+    if (error.is_error) error_count++;
+    else warning_count++;
   }
 
   INLINE

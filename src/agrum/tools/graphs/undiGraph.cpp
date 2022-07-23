@@ -85,8 +85,7 @@ namespace gum {
 
             // avoid to check the node we are coming from
             if (new_node != from_current) {
-              if (examined_nodes[new_node])
-                return true;
+              if (examined_nodes[new_node]) return true;
               else {
                 examined_nodes[new_node] = true;
                 thePair.first            = new_node;

@@ -121,7 +121,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE MultiDimContainer< GUM_SCALAR >*
          MultiDimNoisyORCompound< GUM_SCALAR >::newFactory() const {
-    return new MultiDimNoisyORCompound< GUM_SCALAR >(this->_external_weight_,
+        return new MultiDimNoisyORCompound< GUM_SCALAR >(this->_external_weight_,
                                                      this->_default_weight_);
   }
 

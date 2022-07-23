@@ -115,10 +115,8 @@ namespace gum {
       RecordCounter good_counter(prior_parser, ranges, this->nodeId2columns_);
       _counter_ = std::move(good_counter);
 
-      if (prior_db.nbRows() == std::size_t(0))
-        _internal_weight_ = 0.0;
-      else
-        _internal_weight_ = this->weight_ / double(prior_db.nbRows());
+      if (prior_db.nbRows() == std::size_t(0)) _internal_weight_ = 0.0;
+      else _internal_weight_ = this->weight_ / double(prior_db.nbRows());
 
       GUM_CONSTRUCTOR(DirichletPriorFromDatabase);
     }

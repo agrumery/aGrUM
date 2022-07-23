@@ -65,8 +65,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     const GUM_SCALAR& LRSWrapper< GUM_SCALAR >::getVolume() const {
-      if (_volume_ != 0)
-        return _volume_;
+      if (_volume_ != 0) return _volume_;
       else
         GUM_ERROR(OperationNotAllowed,
                   "LRSWrapper< GUM_SCALAR >::getVolume () : "
@@ -162,8 +161,7 @@ namespace gum {
       _hull_      = false;
       _polytope_  = false;
 
-      if (_state_ == _states_::H2Vready)
-        _state_ = _states_::Hup;
+      if (_state_ == _states_::H2Vready) _state_ = _states_::Hup;
       else if (_state_ == _states_::V2Hready) {
         _state_ = _states_::Vup;
         GUM_ERROR(OperationNotAllowed,

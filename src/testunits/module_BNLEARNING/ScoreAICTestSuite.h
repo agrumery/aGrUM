@@ -45,8 +45,7 @@ namespace gum_tests {
       if (!N_ij.empty()) {
         for (const auto n_ij: N_ij)
           if (n_ij) score -= n_ij * std::log2(n_ij);
-      } else
-        score -= N * std::log2(N);
+      } else score -= N * std::log2(N);
       return score;
     }
 

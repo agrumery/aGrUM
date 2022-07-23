@@ -42,7 +42,7 @@ from .pyAgrum import statsObj
 from .pyAgrum import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, CliqueGraph
 from .pyAgrum import BayesNet, BayesNetFragment, EssentialGraph, MarkovBlanket
 from .pyAgrum import MarkovNet, ShaferShenoyMNInference
-from .pyAgrum import DiscretizedVariable, LabelizedVariable, RangeVariable, DiscreteVariable, IntegerVariable
+from .pyAgrum import DiscretizedVariable, LabelizedVariable, RangeVariable, DiscreteVariable, IntegerVariable, NumericalDiscreteVariable
 from .pyAgrum import Potential, Instantiation, Potential
 from .pyAgrum import ExactBNdistance, GibbsBNdistance, StructuralComparator
 from .pyAgrum import LazyPropagation, ShaferShenoyInference, VariableElimination
@@ -79,7 +79,7 @@ __all__=[
   'Arc','Edge','DiGraph','UndiGraph','MixedGraph','DAG','CliqueGraph',
   'BayesNet', 'BayesNetFragment', 'EssentialGraph', 'MarkovBlanket',
   'MarkovNet','ShaferShenoyMNInference',
-  'DiscretizedVariable','LabelizedVariable','RangeVariable','DiscreteVariable','IntegerVariable',
+  'DiscretizedVariable','LabelizedVariable','RangeVariable','DiscreteVariable','IntegerVariable','NumericalDiscreteVariable',
   'Potential','Instantiation','Potential',
   'ExactBNdistance','GibbsBNdistance','StructuralComparator',
   'LoopyBeliefPropagation','GibbsSampling','MonteCarloSampling', 'ImportanceSampling', 'WeightedSampling',

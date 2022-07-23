@@ -116,25 +116,23 @@ namespace gum {
   INLINE std::string
          UAIMNWriter< GUM_SCALAR >::_factorBloc_(const IMarkovNet< GUM_SCALAR >& MN,
                                              const Potential< GUM_SCALAR >&  clikpot) {
-    std::stringstream str;
+        std::stringstream str;
 
-    str << clikpot.domainSize() << " # {";
+        str << clikpot.domainSize() << " # {";
 
-    for (Idx k = 0; k < clikpot.nbrDim(); k++) {
-      str << MN.idFromName(clikpot.variable(k).name());
-      if (k == clikpot.nbrDim() - 1)
-        str << "}";
-      else
-        str << ", ";
+        for (Idx k = 0; k < clikpot.nbrDim(); k++) {
+          str << MN.idFromName(clikpot.variable(k).name());
+          if (k == clikpot.nbrDim() - 1) str << "}";
+      else str << ", ";
     }
-    Instantiation I(clikpot);
-    for (I.setFirst(); !I.end(); ++I) {
-      if (I.val(0) == 0) str << std::endl << "  ";
+        Instantiation I(clikpot);
+        for (I.setFirst(); !I.end(); ++I) {
+          if (I.val(0) == 0) str << std::endl << "  ";
       str << clikpot[I] << " ";
     }
-    str << std::endl;
+        str << std::endl;
 
-    return str.str();
+        return str.str();
   }
 
 } /* namespace gum */

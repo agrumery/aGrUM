@@ -196,7 +196,7 @@ namespace gum {
     DBTranslator4RangeVariable&
        DBTranslator4RangeVariable::operator=(const DBTranslator4RangeVariable& from) {
       if (this != &from) {
-        DBTranslator::operator           =(from);
+        DBTranslator::operator=(from);
         _variable_                       = from._variable_;
         _status_int_missing_symbols_     = from._status_int_missing_symbols_;
         _translated_int_missing_symbols_ = from._translated_int_missing_symbols_;
@@ -211,7 +211,7 @@ namespace gum {
     DBTranslator4RangeVariable&
        DBTranslator4RangeVariable::operator=(DBTranslator4RangeVariable&& from) {
       if (this != &from) {
-        DBTranslator::operator           =(std::move(from));
+        DBTranslator::operator=(std::move(from));
         _variable_                       = std::move(from._variable_);
         _status_int_missing_symbols_     = std::move(from._status_int_missing_symbols_);
         _translated_int_missing_symbols_ = std::move(from._translated_int_missing_symbols_);

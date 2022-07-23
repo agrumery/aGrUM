@@ -2299,6 +2299,7 @@ def getRandomGenerator(seed: int=0) -> "std::default_random_engine":
 VarType_Discretized = _pyAgrum.VarType_Discretized
 VarType_Labelized = _pyAgrum.VarType_Labelized
 VarType_Integer = _pyAgrum.VarType_Integer
+VarType_Numerical = _pyAgrum.VarType_Numerical
 VarType_Range = _pyAgrum.VarType_Range
 VarType_Continuous = _pyAgrum.VarType_Continuous
 class Variable(object):
@@ -2474,7 +2475,7 @@ class DiscreteVariable(Variable):
         int :
         	the type of the variable.
 
-        	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable
+        	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable, 4:
 
         """
         return _pyAgrum.DiscreteVariable_varType(self)
@@ -2602,6 +2603,9 @@ class DiscreteVariable(Variable):
 
     def toIntegerVar(self) -> "pyAgrum.IntegerVariable":
         return _pyAgrum.DiscreteVariable_toIntegerVar(self)
+
+    def toNumericalDiscreteVar(self) -> "pyAgrum.NumericalDiscreteVariable":
+        return _pyAgrum.DiscreteVariable_toNumericalDiscreteVar(self)
 
     def toDiscretizedVar(self) -> "pyAgrum.DiscretizedVariable":
         r"""
@@ -2836,7 +2840,7 @@ class LabelizedVariable(DiscreteVariable):
         int :
         	the type of the variable.
 
-        	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable
+        	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable, 4:
 
         """
         return _pyAgrum.LabelizedVariable_varType(self)
@@ -2951,7 +2955,7 @@ class RangeVariable(DiscreteVariable):
         int :
         	the type of the variable.
 
-        	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable
+        	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable, 4:
 
         """
         return _pyAgrum.RangeVariable_varType(self)
@@ -3121,7 +3125,7 @@ class IntegerVariable(DiscreteVariable):
         Parameters:
             * **aName** (str) -- the name of the variable
             * **aDesc** (str) -- the (optional) description of the variable
-            * **labels** (List[int]) -- the values to create
+            * **values** (List[int]) -- the values to create
 
     IntegerVariable(aIDRV) -> IntegerVariable
         Parameters:
@@ -3191,7 +3195,7 @@ class IntegerVariable(DiscreteVariable):
         int :
         	the type of the variable.
 
-        	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable
+        	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable, 4:
 
         """
         return _pyAgrum.IntegerVariable_varType(self)
@@ -3363,6 +3367,179 @@ class IntegerVariable(DiscreteVariable):
 
 # Register IntegerVariable in _pyAgrum:
 _pyAgrum.IntegerVariable_swigregister(IntegerVariable)
+
+class NumericalDiscreteVariable(DiscreteVariable):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+
+    def __init__(self, *args):
+        _pyAgrum.NumericalDiscreteVariable_swiginit(self, _pyAgrum.new_NumericalDiscreteVariable(*args))
+
+    def clone(self) -> "pyAgrum.NumericalDiscreteVariable":
+        r"""
+
+        Returns
+        -------
+          pyAgrum.DiscreteVariable
+        	a copy of the DiscreteVariable
+
+        """
+        return _pyAgrum.NumericalDiscreteVariable_clone(self)
+    __swig_destroy__ = _pyAgrum.delete_NumericalDiscreteVariable
+
+    def __eq__(self, *args) -> bool:
+        return _pyAgrum.NumericalDiscreteVariable___eq__(self, *args)
+
+    def __ne__(self, *args) -> bool:
+        return _pyAgrum.NumericalDiscreteVariable___ne__(self, *args)
+
+    def domainSize(self) -> int:
+        r"""
+
+        Returns
+        -------
+        int
+        	the number of modalities in the variable domain
+
+        """
+        return _pyAgrum.NumericalDiscreteVariable_domainSize(self)
+
+    def varType(self) -> int:
+        r"""
+
+        returns the type of variable
+
+        Returns
+        -------
+        int :
+        	the type of the variable.
+
+        	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable, 4:
+
+        """
+        return _pyAgrum.NumericalDiscreteVariable_varType(self)
+
+    def index(self, label: str) -> int:
+        r"""
+
+        Parameters
+        ----------
+        label : str
+        	a label
+
+        Returns
+        -------
+        int
+        	the indice of the label
+
+        """
+        return _pyAgrum.NumericalDiscreteVariable_index(self, label)
+
+    def label(self, index: int) -> str:
+        r"""
+
+        Parameters
+        ----------
+        i : int
+        	the index of the label we wish to return
+
+        Returns
+        -------
+        str
+        	the indice-th label
+
+        Raises
+        ------
+        pyAgrum.OutOfBounds
+        	If the variable does not contain the label
+
+        """
+        return _pyAgrum.NumericalDiscreteVariable_label(self, index)
+
+    def numerical(self, index: int) -> float:
+        r"""
+
+        Parameters
+        ----------
+        indice : int
+        	an index
+
+        Returns
+        -------
+        float
+        	the numerical representation of the indice-th value
+
+        """
+        return _pyAgrum.NumericalDiscreteVariable_numerical(self, index)
+
+    def domain(self) -> str:
+        r"""
+
+        Returns
+        -------
+        str
+        	the domain of the variable
+
+        """
+        return _pyAgrum.NumericalDiscreteVariable_domain(self)
+
+    def stype(self) -> str:
+        r"""
+
+        Returns
+        -------
+        str
+        	a description of its type
+
+        """
+        return _pyAgrum.NumericalDiscreteVariable_stype(self)
+
+    def addValue(self,*args):
+        """
+        Add a value to the list of values for the variable.
+
+        Parameters
+        ----------
+        value : float
+            the new value
+
+        Returns
+        -------
+        pyAgrum.IntegerVariable
+            the Integer variable
+
+        Raises
+        ------
+          pyAgrum.DuplicateElement
+            If the variable already contains the value
+        """
+        _pyAgrum.NumericalDiscreteVariable_addValue(self,*args)
+        return self
+
+
+
+    def isValue(self, value: float) -> bool:
+        return _pyAgrum.NumericalDiscreteVariable_isValue(self, value)
+
+    def changeValue(self, old_value: float, new_value: float) -> None:
+        return _pyAgrum.NumericalDiscreteVariable_changeValue(self, old_value, new_value)
+
+    def eraseValue(self, value: float) -> None:
+        return _pyAgrum.NumericalDiscreteVariable_eraseValue(self, value)
+
+    def eraseValues(self) -> None:
+        return _pyAgrum.NumericalDiscreteVariable_eraseValues(self)
+
+    def __repr__(self) -> str:
+        return _pyAgrum.NumericalDiscreteVariable___repr__(self)
+
+    def __str__(self) -> str:
+        return _pyAgrum.NumericalDiscreteVariable___str__(self)
+
+    def numericalDomain(self, *args) -> object:
+        return _pyAgrum.NumericalDiscreteVariable_numericalDomain(self, *args)
+
+# Register NumericalDiscreteVariable in _pyAgrum:
+_pyAgrum.NumericalDiscreteVariable_swigregister(NumericalDiscreteVariable)
 
 class IDiscretizedVariable(DiscreteVariable):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
@@ -7068,12 +7245,15 @@ def randomDistribution(n: int) -> List[float]:
 class DiscretizedVariable(IDiscretizedVariable):
     r"""
 
-    DiscretizedVariable is a discrete random variable with a set of ``ticks`` defining intervalls.
+    DiscretizedVariable is a discrete random variable with a set of ``ticks`` defining intervals.
 
-    DiscretizedVariable(aName, aDesc='') -> DiscretizedVariable`
+    DiscretizedVariable(aName, aDesc ,ticks=None,is_empirical=False) -> DiscretizedVariable`
         Parameters:
             * **aName** (*str*) -- the name of the variable
-            * **aDesc** (*str*) -- the (optional) description of the variable
+            * **aDesc** (*str*) -- the description of the variable
+            * **ticks (*list[float]*) -- the list of ticks to add
+            * **is_empirical** (*bool) -- if False, raise an error if a value is out of bound.
+
 
     DiscretizedVariable(aDDRV) -> DiscretizedVariable
         Parameters:
@@ -7122,7 +7302,7 @@ class DiscretizedVariable(IDiscretizedVariable):
         int :
         	the type of the variable.
 
-        	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable
+        	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable, 4:
 
         """
         return _pyAgrum.DiscretizedVariable_varType(self)
@@ -9004,6 +9184,7 @@ class BayesNet(IBayesNet):
               - with 'a[1,3.14,5,6.2]', the variable is a pyAgrum.DiscretizedVariable using the given ticks (at least 3 values)
               - with 'a{top|middle|bottom}', the variable is a pyAgrum.LabelizedVariable using the given labels.
               - with 'a{-1|5|0|3}', the variable is a pyAgrum.IntegerVariable using the sorted given values.
+              - with 'a{-0.5|5.01|0|3.1415}', the variable is a pyAgrum.NumericalDiscreteVariable using the sorted given values.
 
         Note
         ----
@@ -9160,7 +9341,7 @@ class BayesNet(IBayesNet):
         var : Union[int,str]
         	the current name or the id of the variable
         new_name : str
-        	the new name of the variable 
+        	the new name of the variable
 
         Raises
         ------
@@ -10245,6 +10426,7 @@ def BayesNet_fastPrototype(dotlike: str, domainSize: int=2) -> "pyAgrum.BayesNet
           - with 'a[1,3.14,5,6.2]', the variable is a pyAgrum.DiscretizedVariable using the given ticks (at least 3 values)
           - with 'a{top|middle|bottom}', the variable is a pyAgrum.LabelizedVariable using the given labels.
           - with 'a{-1|5|0|3}', the variable is a pyAgrum.IntegerVariable using the sorted given values.
+          - with 'a{-0.5|5.01|0|3.1415}', the variable is a pyAgrum.NumericalDiscreteVariable using the sorted given values.
 
     Note
     ----
@@ -23371,6 +23553,7 @@ class InfluenceDiagram(DAGmodel):
               - with `'a[1,3.14,5,6.2]'`, the variable is a pyAgrum.DiscretizedVariable using the given ticks (at least 3 values)
               - with `'a{top|middle|bottom}'`, the variable is a pyAgrum.LabelizedVariable using the given labels.
               - with 'a{-1|5|0|3}', the variable is a pyAgrum.IntegerVariable using the sorted given values.
+              - with 'a{-0.5|5.01|0|3.1415}', the variable is a pyAgrum.NumericalDiscreteVariable using the sorted given values.
 
         Note
         ----
@@ -23820,11 +24003,11 @@ class InfluenceDiagram(DAGmodel):
 
         Parameters
         ----------
-        arc : pyAgrum.Arc 
+        arc : pyAgrum.Arc
         	The arc to be removed whn calling eraseArc(arc)
-        tail : Union[int,str] 
+        tail : Union[int,str]
         	a variable's id (int) or name when calling eraseArc(tail,head)
-        head : Union[int,str] 
+        head : Union[int,str]
         	a variable's id (int) or name when calling eraseArc(tail,head)
 
         """
@@ -24116,6 +24299,7 @@ def InfluenceDiagram_fastPrototype(dotlike: str, domainSize: int=2) -> "pyAgrum.
           - with `'a[1,3.14,5,6.2]'`, the variable is a pyAgrum.DiscretizedVariable using the given ticks (at least 3 values)
           - with `'a{top|middle|bottom}'`, the variable is a pyAgrum.LabelizedVariable using the given labels.
           - with 'a{-1|5|0|3}', the variable is a pyAgrum.IntegerVariable using the sorted given values.
+          - with 'a{-0.5|5.01|0|3.1415}', the variable is a pyAgrum.NumericalDiscreteVariable using the sorted given values.
 
     Note
     ----

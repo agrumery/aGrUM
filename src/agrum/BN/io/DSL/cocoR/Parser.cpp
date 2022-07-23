@@ -219,7 +219,7 @@ void Parser::SHOW_AS() {
 void Parser::NODE() {
 		std::string var;
 		std::vector<std::string> parents;
-		int nbrMod = 0;
+		Size nbrMod = 0;
 		
 		Expect(13 /* "node" */);
 		IDENT(var);
@@ -275,7 +275,7 @@ void Parser::PARENTS(std::vector<std::string>& parents ) {
 		Expect(9 /* ";" */);
 }
 
-void Parser::VARIABLE_DEFINITION(int& nbrMod, std::string& var, const std::vector<std::string>& parents ) {
+void Parser::VARIABLE_DEFINITION(Size& nbrMod, std::string& var, const std::vector<std::string>& parents ) {
 		Expect(29 /* "DEFINITION" */);
 		Expect(7 /* "{" */);
 		Expect(30 /* "NAMESTATES" */);
@@ -298,7 +298,7 @@ void Parser::VARIABLE_DEFINITION(int& nbrMod, std::string& var, const std::vecto
 		TRY(factory().endParentsDeclaration());
 		
 		PROBA(var, parents);
-		int nbr=0;
+		Size nbr=0;
 		TRY(nbr=factory().varInBN(factory().variableId(var)).domainSize());
 		if (nbrMod<nbr) SemErr("Too much modalities for variable "+var);
 		if (nbrMod>nbr) SemErr("Too many modalities for variable "+var);
@@ -337,7 +337,7 @@ void Parser::PARENTS_LIST(std::vector<std::string>& parents ) {
 		}
 }
 
-void Parser::MODALITY_LIST(int& nbrMod) {
+void Parser::MODALITY_LIST(Size& nbrMod) {
 		std::string label; 
 		IDENT_OR_INTEGER(label);
 		if ((label=="") && (nbrMod == 0)) SemErr("Not enough modalities for a discrete variable");

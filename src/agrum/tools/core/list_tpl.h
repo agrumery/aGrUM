@@ -311,21 +311,15 @@ namespace gum {
   // dereferences the value pointed to by the iterator
   template < typename Val >
   INLINE const Val* ListConstIterator< Val >::operator->() const {
-    if (_bucket_ != nullptr)
-      return &(_bucket_->_val_);
-    else {
-      GUM_ERROR(UndefinedIteratorValue, "Accessing a NULL object")
-    }
+    if (_bucket_ != nullptr) return &(_bucket_->_val_);
+    else { GUM_ERROR(UndefinedIteratorValue, "Accessing a NULL object") }
   }
 
   // gives access to the content of the iterator
   template < typename Val >
   INLINE const Val& ListConstIterator< Val >::operator*() const {
-    if (_bucket_ != nullptr)
-      return _bucket_->_val_;
-    else {
-      GUM_ERROR(UndefinedIteratorValue, "Accessing a NULL object")
-    }
+    if (_bucket_ != nullptr) return _bucket_->_val_;
+    else { GUM_ERROR(UndefinedIteratorValue, "Accessing a NULL object") }
   }
 
   // for STL compliance, a distance operator
@@ -834,10 +828,8 @@ namespace gum {
      typename ListConstIteratorSafe< Val >::difference_type i) noexcept {
     if (!i) return *this;
 
-    if (i < 0)
-      return _opMinus_(-i);
-    else
-      return _opPlus_(i);
+    if (i < 0) return _opMinus_(-i);
+    else return _opPlus_(i);
   }
 
   // makes the iterator point to the preceding element in the List
@@ -882,10 +874,8 @@ namespace gum {
      typename ListConstIteratorSafe< Val >::difference_type i) noexcept {
     if (!i) return *this;
 
-    if (i < 0)
-      return _opPlus_(-i);
-    else
-      return _opMinus_(i);
+    if (i < 0) return _opPlus_(-i);
+    else return _opMinus_(i);
   }
 
   // returns a new iterator
@@ -923,21 +913,15 @@ namespace gum {
   // dereferences the value pointed to by the iterator
   template < typename Val >
   INLINE const Val* ListConstIteratorSafe< Val >::operator->() const {
-    if (_bucket_ != nullptr)
-      return &(_bucket_->_val_);
-    else {
-      GUM_ERROR(UndefinedIteratorValue, "Accessing a NULL object")
-    }
+    if (_bucket_ != nullptr) return &(_bucket_->_val_);
+    else { GUM_ERROR(UndefinedIteratorValue, "Accessing a NULL object") }
   }
 
   // gives access to the content of the iterator
   template < typename Val >
   INLINE const Val& ListConstIteratorSafe< Val >::operator*() const {
-    if (_bucket_ != nullptr)
-      return _bucket_->_val_;
-    else {
-      GUM_ERROR(UndefinedIteratorValue, "Accessing a NULL object")
-    }
+    if (_bucket_ != nullptr) return _bucket_->_val_;
+    else { GUM_ERROR(UndefinedIteratorValue, "Accessing a NULL object") }
   }
 
   // for STL compliance, a distance operator
@@ -1125,10 +1109,8 @@ namespace gum {
         // with nullptr)
         new_elt->_prev_ = old_ptr;
 
-        if (old_ptr)
-          old_ptr->_next_ = new_elt;
-        else
-          _deb_list_ = new_elt;
+        if (old_ptr) old_ptr->_next_ = new_elt;
+        else _deb_list_ = new_elt;
 
         old_ptr = new_elt;
       }
@@ -1370,46 +1352,36 @@ namespace gum {
   // the iterator pointing to the rbegin (the last element) of the List
   template < typename Val >
   INLINE ListConstIteratorSafe< Val > List< Val >::crbeginSafe() const {
-    if (_nb_elements_)
-      return ListConstIteratorSafe< Val >{*this, _nb_elements_ - 1};
-    else
-      return ListConstIteratorSafe< Val >{};
+    if (_nb_elements_) return ListConstIteratorSafe< Val >{*this, _nb_elements_ - 1};
+    else return ListConstIteratorSafe< Val >{};
   }
 
   // the iterator pointing to the rbegin (the last element) of the List
   template < typename Val >
   INLINE ListIteratorSafe< Val > List< Val >::rbeginSafe() {
-    if (_nb_elements_)
-      return ListIteratorSafe< Val >{*this, _nb_elements_ - 1};
-    else
-      return ListIteratorSafe< Val >{};
+    if (_nb_elements_) return ListIteratorSafe< Val >{*this, _nb_elements_ - 1};
+    else return ListIteratorSafe< Val >{};
   }
 
   // the iterator pointing to the rbegin (the last element) of the List
   template < typename Val >
   INLINE ListConstIterator< Val > List< Val >::crbegin() const {
-    if (_nb_elements_)
-      return ListConstIterator< Val >{*this, _nb_elements_ - 1};
-    else
-      return ListConstIterator< Val >{};
+    if (_nb_elements_) return ListConstIterator< Val >{*this, _nb_elements_ - 1};
+    else return ListConstIterator< Val >{};
   }
 
   // the iterator pointing to the rbegin (the last element) of the List
   template < typename Val >
   INLINE ListIterator< Val > List< Val >::rbegin() {
-    if (_nb_elements_)
-      return ListIterator< Val >{*this, _nb_elements_ - 1};
-    else
-      return ListIterator< Val >{};
+    if (_nb_elements_) return ListIterator< Val >{*this, _nb_elements_ - 1};
+    else return ListIterator< Val >{};
   }
 
   // the iterator pointing to the rbegin (the last element) of the List
   template < typename Val >
   INLINE ListConstIterator< Val > List< Val >::rbegin() const {
-    if (_nb_elements_)
-      return ListConstIterator< Val >{*this, _nb_elements_ - 1};
-    else
-      return ListConstIterator< Val >{};
+    if (_nb_elements_) return ListConstIterator< Val >{*this, _nb_elements_ - 1};
+    else return ListConstIterator< Val >{};
   }
 
   // create a new bucket with a given value
@@ -1437,10 +1409,8 @@ namespace gum {
   INLINE Val& List< Val >::_pushFront_(ListBucket< Val >* new_elt) {
     new_elt->_next_ = _deb_list_;
 
-    if (_deb_list_ != nullptr)
-      _deb_list_->_prev_ = new_elt;
-    else
-      _end_list_ = new_elt;
+    if (_deb_list_ != nullptr) _deb_list_->_prev_ = new_elt;
+    else _end_list_ = new_elt;
 
     _deb_list_ = new_elt;
 
@@ -1457,10 +1427,8 @@ namespace gum {
     // place the bucket at the end of the list
     new_elt->_prev_ = _end_list_;
 
-    if (_end_list_ != nullptr)
-      _end_list_->_next_ = new_elt;
-    else
-      _deb_list_ = new_elt;
+    if (_end_list_ != nullptr) _end_list_->_next_ = new_elt;
+    else _deb_list_ = new_elt;
 
     _end_list_ = new_elt;
 
@@ -1558,10 +1526,8 @@ namespace gum {
     new_elt->_prev_     = current_elt->_prev_;
     current_elt->_prev_ = new_elt;
 
-    if (new_elt->_prev_ == nullptr)
-      _deb_list_ = new_elt;
-    else
-      new_elt->_prev_->_next_ = new_elt;
+    if (new_elt->_prev_ == nullptr) _deb_list_ = new_elt;
+    else new_elt->_prev_->_next_ = new_elt;
 
     // update the number of elements
     ++_nb_elements_;
@@ -1578,10 +1544,8 @@ namespace gum {
     new_elt->_next_     = current_elt->_next_;
     current_elt->_next_ = new_elt;
 
-    if (new_elt->_next_ == nullptr)
-      _end_list_ = new_elt;
-    else
-      new_elt->_next_->_prev_ = new_elt;
+    if (new_elt->_next_ == nullptr) _end_list_ = new_elt;
+    else new_elt->_next_->_prev_ = new_elt;
 
     // update the number of elements
     ++_nb_elements_;
@@ -1632,14 +1596,11 @@ namespace gum {
       return _pushBack_(new_elt);
     } else {
       switch (place) {
-        case location::BEFORE:
-          return _insertBefore_(new_elt, ptr);
+        case location::BEFORE: return _insertBefore_(new_elt, ptr);
 
-        case location::AFTER:
-          return _insertAfter_(new_elt, ptr);
+        case location::AFTER: return _insertAfter_(new_elt, ptr);
 
-        default:
-          GUM_ERROR(FatalError, "List insertion for this location unimplemented")
+        default: GUM_ERROR(FatalError, "List insertion for this location unimplemented")
       }
     }
   }
@@ -1657,14 +1618,11 @@ namespace gum {
       return _pushBack_(new_elt);
     } else {
       switch (place) {
-        case location::BEFORE:
-          return _insertBefore_(new_elt, ptr);
+        case location::BEFORE: return _insertBefore_(new_elt, ptr);
 
-        case location::AFTER:
-          return _insertAfter_(new_elt, ptr);
+        case location::AFTER: return _insertAfter_(new_elt, ptr);
 
-        default:
-          GUM_ERROR(FatalError, "List insertion for this location unimplemented")
+        default: GUM_ERROR(FatalError, "List insertion for this location unimplemented")
       }
     }
   }
@@ -1777,15 +1735,11 @@ namespace gum {
 
       // set properly the begin and end of the chained list (the other chainings
       // will be performed by operator delete)
-      if (bucket->_prev_ == nullptr)
-        _deb_list_ = bucket->_next_;
-      else
-        bucket->_prev_->_next_ = bucket->_next_;
+      if (bucket->_prev_ == nullptr) _deb_list_ = bucket->_next_;
+      else bucket->_prev_->_next_ = bucket->_next_;
 
-      if (bucket->_next_ == nullptr)
-        _end_list_ = bucket->_prev_;
-      else
-        bucket->_next_->_prev_ = bucket->_prev_;
+      if (bucket->_next_ == nullptr) _end_list_ = bucket->_prev_;
+      else bucket->_next_->_prev_ = bucket->_prev_;
 
       // remove the current element src the list
       delete bucket;

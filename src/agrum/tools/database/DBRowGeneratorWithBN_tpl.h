@@ -78,8 +78,8 @@ namespace gum {
        const DBRowGeneratorWithBN< GUM_SCALAR >& from) {
       if (this != &from) {
         DBRowGenerator::operator=(from);
-        bn_                     = from.bn_;
-        nodeId2columns_         = from.nodeId2columns_;
+        bn_             = from.bn_;
+        nodeId2columns_ = from.nodeId2columns_;
       }
 
       return *this;
@@ -92,8 +92,8 @@ namespace gum {
        DBRowGeneratorWithBN< GUM_SCALAR >::operator=(DBRowGeneratorWithBN< GUM_SCALAR >&& from) {
       if (this != &from) {
         DBRowGenerator::operator=(std::move(from));
-        bn_                     = from.bn_;
-        nodeId2columns_         = std::move(from.nodeId2columns_);
+        bn_             = from.bn_;
+        nodeId2columns_ = std::move(from.nodeId2columns_);
       }
 
       return *this;

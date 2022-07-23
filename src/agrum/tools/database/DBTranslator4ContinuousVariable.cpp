@@ -111,8 +111,7 @@ namespace gum {
           const float missing_val = std::stof(*iter);
           if ((missing_val >= lower_bound) && (missing_val <= upper_bound)) {
             this->missing_symbols_.erase(iter);
-          } else
-            _status_float_missing_symbols_.insert(*iter, false);
+          } else _status_float_missing_symbols_.insert(*iter, false);
         } else if (!non_float_symbol_found) {
           non_float_symbol_found    = true;
           _nonfloat_missing_symbol_ = *iter;
@@ -184,7 +183,7 @@ namespace gum {
     DBTranslator4ContinuousVariable&
        DBTranslator4ContinuousVariable::operator=(const DBTranslator4ContinuousVariable& from) {
       if (this != &from) {
-        DBTranslator::operator         =(from);
+        DBTranslator::operator=(from);
         _variable_                     = from._variable_;
         _status_float_missing_symbols_ = from._status_float_missing_symbols_;
         _nonfloat_missing_symbol_      = from._nonfloat_missing_symbol_;
@@ -202,7 +201,7 @@ namespace gum {
     DBTranslator4ContinuousVariable&
        DBTranslator4ContinuousVariable::operator=(DBTranslator4ContinuousVariable&& from) {
       if (this != &from) {
-        DBTranslator::operator         =(std::move(from));
+        DBTranslator::operator=(std::move(from));
         _variable_                     = std::move(from._variable_);
         _status_float_missing_symbols_ = std::move(from._status_float_missing_symbols_);
         _nonfloat_missing_symbol_      = std::move(from._nonfloat_missing_symbol_);

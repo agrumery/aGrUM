@@ -182,8 +182,7 @@ namespace gum_tests {
              = _score_(score, changes[best_i].first.node2(), dag);
           break;
 
-        default:
-          break;
+        default: break;
       }
 
       return true;
@@ -416,8 +415,7 @@ namespace gum_tests {
       for (std::size_t i = 0; i < nb_vars; ++i) {
         if ((i == 1) || (i == 10) || (i == 11) || (i == 14))
           translator_set.insertTranslator(translator1, i);
-        else
-          translator_set.insertTranslator(translator2, i);
+        else translator_set.insertTranslator(translator2, i);
       }
 
       gum::learning::DatabaseTable database(translator_set);

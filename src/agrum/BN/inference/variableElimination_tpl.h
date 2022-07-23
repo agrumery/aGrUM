@@ -155,8 +155,7 @@ namespace gum {
       // be updated as well, in particular its step 2.
       switch (type) {
         case FindBarrenNodesType::FIND_BARREN_NODES:
-        case FindBarrenNodesType::FIND_NO_BARREN_NODES:
-          break;
+        case FindBarrenNodesType::FIND_NO_BARREN_NODES: break;
 
         default:
           GUM_ERROR(InvalidArgument,
@@ -308,11 +307,9 @@ namespace gum {
           dsep_analysis = true;
         } break;
 
-        case RelevantPotentialsFinderType::FIND_ALL:
-          break;
+        case RelevantPotentialsFinderType::FIND_ALL: break;
 
-        default:
-          GUM_ERROR(FatalError, "not implemented yet")
+        default: GUM_ERROR(FatalError, "not implemented yet")
       }
 
       // remove all the nodes that are not requisite
@@ -570,8 +567,7 @@ namespace gum {
         _findRelevantPotentialsGetAll_(pot_list, kept_vars);
         break;
 
-      default:
-        GUM_ERROR(FatalError, "not implemented yet")
+      default: GUM_ERROR(FatalError, "not implemented yet")
     }
   }
 

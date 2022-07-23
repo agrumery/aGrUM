@@ -127,8 +127,8 @@ namespace gum_tests {
       try {
         inf.makeInference();
       } catch (const gum::Exception& e) {
-        // std::cerr << std::endl << e.getContent() << std::endl;
-        throw;
+        GUM_UNUSED(e);
+        TS_ASSERT(false);
       }
     }
 

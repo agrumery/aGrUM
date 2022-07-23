@@ -110,10 +110,10 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE MarginalTargetedInference< GUM_SCALAR >&
            GroundedInference< GUM_SCALAR >::getBNInference() {
-      if (_inf_ != 0) {
-        return *_inf_;
+          if (_inf_ != 0) {
+            return *_inf_;
       } else {
-        GUM_ERROR(NotFound, "the inference engine is not yet defined")
+            GUM_ERROR(NotFound, "the inference engine is not yet defined")
       }
     }
 

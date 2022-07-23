@@ -82,8 +82,8 @@ namespace gum {
     DatabaseTable& DatabaseTable::operator=(const DatabaseTable& from) {
       if (this != &from) {
         IDatabaseTable< DBTranslatedValue >::operator=(from);
-        _translators_                                = from._translators_;
-        _ignored_cols_                               = from._ignored_cols_;
+        _translators_  = from._translators_;
+        _ignored_cols_ = from._ignored_cols_;
       }
 
       return *this;
@@ -94,8 +94,8 @@ namespace gum {
     DatabaseTable& DatabaseTable::operator=(DatabaseTable&& from) {
       if (this != &from) {
         IDatabaseTable< DBTranslatedValue >::operator=(std::move(from));
-        _translators_                                = std::move(from._translators_);
-        _ignored_cols_                               = std::move(from._ignored_cols_);
+        _translators_  = std::move(from._translators_);
+        _ignored_cols_ = std::move(from._ignored_cols_);
       }
 
       return *this;
@@ -124,8 +124,8 @@ namespace gum {
           this->rows_[i].row().reserve(new_size);
       };
 
-      auto undo_reserve_lambda = [](std::size_t begin, std::size_t end, std::size_t index) -> void {
-      };
+      auto undo_reserve_lambda
+         = [](std::size_t begin, std::size_t end, std::size_t index) -> void {};
 
       // launch the threads executing the lambdas
       this->_threadProcessDatabase_(reserve_lambda, undo_reserve_lambda);
@@ -210,8 +210,8 @@ namespace gum {
           this->rows_[i].row().reserve(new_size);
       };
 
-      auto undo_reserve_lambda = [](std::size_t begin, std::size_t end, std::size_t index) -> void {
-      };
+      auto undo_reserve_lambda
+         = [](std::size_t begin, std::size_t end, std::size_t index) -> void {};
 
       // launch the threads executing the lambdas
       this->_threadProcessDatabase_(reserve_lambda, undo_reserve_lambda);
@@ -254,8 +254,8 @@ namespace gum {
           this->rows_[i].row().reserve(new_size);
       };
 
-      auto undo_reserve_lambda = [](std::size_t begin, std::size_t end, std::size_t index) -> void {
-      };
+      auto undo_reserve_lambda
+         = [](std::size_t begin, std::size_t end, std::size_t index) -> void {};
 
       // launch the threads executing the lambdas
       this->_threadProcessDatabase_(reserve_lambda, undo_reserve_lambda);
@@ -339,8 +339,7 @@ namespace gum {
           };
 
           auto undo_erase_lambda
-             = [](std::size_t begin, std::size_t end, std::size_t index) -> void {
-          };
+             = [](std::size_t begin, std::size_t end, std::size_t index) -> void {};
 
           // launch the threads executing the lambdas
           this->_threadProcessDatabase_(erase_lambda, undo_erase_lambda);
@@ -437,8 +436,8 @@ namespace gum {
             }
           };
 
-          auto undo_get_lambda = [](std::size_t begin, std::size_t end, std::size_t index) -> void {
-          };
+          auto undo_get_lambda
+             = [](std::size_t begin, std::size_t end, std::size_t index) -> void {};
 
           // launch the threads executing the lambdas
           this->_threadProcessDatabase_(get_lambda, undo_get_lambda);
@@ -520,8 +519,8 @@ namespace gum {
           }
         };
 
-        auto undo_check_lambda = [](std::size_t begin, std::size_t end, std::size_t index) -> void {
-        };
+        auto undo_check_lambda
+           = [](std::size_t begin, std::size_t end, std::size_t index) -> void {};
 
         // launch the threads executing the lambdas
         this->_threadProcessDatabase_(check_lambda, undo_check_lambda);
@@ -554,8 +553,8 @@ namespace gum {
         }
       };
 
-      auto undo_change_lambda = [](std::size_t begin, std::size_t end, std::size_t index) -> void {
-      };
+      auto undo_change_lambda
+         = [](std::size_t begin, std::size_t end, std::size_t index) -> void {};
 
       // launch the threads executing the lambdas
       this->_threadProcessDatabase_(change_lambda, undo_change_lambda);
@@ -624,9 +623,9 @@ namespace gum {
           // if the translator is discretized, range or continuous, we cannot
           // improve it
           case VarType::Continuous:
+          case VarType::Numerical:
           case VarType::Discretized:
-          case VarType::Range:
-            break;
+          case VarType::Range: break;
 
           // if the translator can only translate integers ans all the numbers
           // are consecutive, prefer a range variable
@@ -1048,8 +1047,7 @@ namespace gum {
       };
 
       auto undo_newtrans_lambda
-         = [](std::size_t begin, std::size_t end, std::size_t index) -> void {
-      };
+         = [](std::size_t begin, std::size_t end, std::size_t index) -> void {};
 
       // launch the threads executing the lambdas
       this->_threadProcessDatabase_(newtrans_lambda, undo_newtrans_lambda);
@@ -1112,8 +1110,7 @@ namespace gum {
             break;
           }
 
-          default:
-            GUM_ERROR(NotImplementedYet, "Translated value type not supported yet")
+          default: GUM_ERROR(NotImplementedYet, "Translated value type not supported yet")
         }
       }
 

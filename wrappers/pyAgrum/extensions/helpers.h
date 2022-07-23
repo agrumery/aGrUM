@@ -304,6 +304,14 @@ namespace PyAgrumHelper {
     return q;
   }
 
+  PyObject* PyListFromSequenceOfDouble(const gum::Sequence< double >& seq) {
+    PyObject* q = PyList_New(0);
+    for (const auto& val: seq) {
+      PyList_Append(q, PyFloat_FromDouble(val));
+    }
+    return q;
+  }
+
   PyObject* PySetFromArcSet(const gum::ArcSet& arcset) {
     PyObject* q = PySet_New(0);
     for (const auto& arc: arcset) {

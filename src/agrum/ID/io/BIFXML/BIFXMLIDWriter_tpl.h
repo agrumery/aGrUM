@@ -59,10 +59,8 @@ namespace gum {
     for (const auto node: infdiag.nodes()) {
       int nodeType = 1;
 
-      if (infdiag.isChanceNode(node))
-        nodeType = 2;
-      else if (infdiag.isUtilityNode(node))
-        nodeType = 3;
+      if (infdiag.isChanceNode(node)) nodeType = 2;
+      else if (infdiag.isUtilityNode(node)) nodeType = 3;
 
       output << _variableBloc_(infdiag.variable(node), nodeType) << std::endl;
     }
@@ -161,20 +159,13 @@ namespace gum {
     str << "<VARIABLE TYPE=\"";
 
     switch (varType) {
-      case 1:
-        str << "decision";
-        break;
+      case 1: str << "decision"; break;
 
-      case 2:
-        str << "nature";
-        break;
+      case 2: str << "nature"; break;
 
-      case 3:
-        str << "utility";
-        break;
+      case 3: str << "utility"; break;
 
-      default:
-        break;
+      default: break;
     }
 
     str << "\">" << std::endl;

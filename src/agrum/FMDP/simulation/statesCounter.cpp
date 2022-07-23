@@ -89,15 +89,11 @@ namespace gum {
     for (; varIter < state.variablesSequence().size(); ++varIter) {
       const DiscreteVariable* curVar = state.variablesSequence().atPos(varIter);
       NodeId                  varId  = _counter_->manager()->addInternalNode(curVar);
-      if (parentId)
-        _counter_->manager()->setSon(parentId, parentModa, varId);
-      else
-        _counter_->manager()->setRootNode(varId);
+      if (parentId) _counter_->manager()->setSon(parentId, parentModa, varId);
+      else _counter_->manager()->setRootNode(varId);
       for (Idx moda = 0; moda < curVar->domainSize(); ++moda) {
-        if (moda == state.valFromPtr(curVar))
-          parentModa = moda;
-        else
-          _counter_->manager()->setSon(varId, moda, _counter_->terminalNodeId(nbVisits));
+        if (moda == state.valFromPtr(curVar)) parentModa = moda;
+        else _counter_->manager()->setSon(varId, moda, _counter_->terminalNodeId(nbVisits));
       }
       parentId = varId;
     }

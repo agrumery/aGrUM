@@ -79,7 +79,7 @@ namespace gum {
     // avoid self assignment
     if (&from != this) {
       DiscreteVariable::operator=(from);
-      _domain_                  = from._domain_;
+      _domain_ = from._domain_;
     }
 
     return *this;
@@ -91,7 +91,7 @@ namespace gum {
     // avoid self assignment
     if (&from != this) {
       DiscreteVariable::operator=(std::move(from));
-      _domain_                  = std::move(from._domain_);
+      _domain_ = std::move(from._domain_);
       from._domain_.clear();
     }
 

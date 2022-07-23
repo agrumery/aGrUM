@@ -212,8 +212,7 @@ namespace gum {
     NodeId next = 0;
 
     // return the first hole if holes exist
-    if (_holes_ && (!_holes_->empty()))
-      next = *(_holes_->begin());
+    if (_holes_ && (!_holes_->empty())) next = *(_holes_->begin());
     else   // in other case
       next = _boundVal_;
 
@@ -325,12 +324,9 @@ namespace gum {
     if (_boundVal_ != p._boundVal_) return false;
 
     if (_holes_)
-      if (p._holes_)
-        return (*_holes_ == *p._holes_);
-      else
-        return false;
-    else if (p._holes_)
-      return false;
+      if (p._holes_) return (*_holes_ == *p._holes_);
+      else return false;
+    else if (p._holes_) return false;
 
     return true;
   }

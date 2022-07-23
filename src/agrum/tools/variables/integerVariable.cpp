@@ -47,6 +47,36 @@ namespace gum {
   }
 
 
+  /// constructor assigning a domain to the variable
+  IntegerVariable::IntegerVariable(const std::string& aName,
+                                   const std::string& aDesc,
+                                   int                first,
+                                   int                last,
+                                   Size               nb) :
+      DiscreteVariable(aName, aDesc) {
+    // store the sorted values into a sequence
+    if (nb < 2) GUM_ERROR(ArgumentError, "The size of the domain must be >2 (here :" << nb << ").")
+    if (first >= last)
+      GUM_ERROR(ArgumentError, "first (here :" << first << " must be <last (here :" << last << ").")
+
+    double step = (last - first) / double(nb - 1);
+    if (step <= 1)
+      GUM_ERROR(ArgumentError,
+                "With nb=" << nb << ", increment is less (or equal) than 1 ! (" << step << ")")
+
+    _domain_.resize(nb);
+    _domain_ << first;
+    double current = first;
+    for (Idx i = 1; i < nb - 1; i++) {
+      current += step;
+      _domain_ << int(current);
+    }
+    _domain_ << last;
+
+    // for debugging purposes
+    GUM_CONSTRUCTOR(NumericalDiscreteVariable);
+  }
+
   /// equality operator
   bool IntegerVariable::operator==(const Variable& var) const {
     try {
@@ -57,7 +87,7 @@ namespace gum {
 
 
   /// Returns the domain as a string
-  const std::string IntegerVariable::domain() const {
+  std::string IntegerVariable::domain() const {
     std::stringstream s;
     const Size        size = domainSize();
 

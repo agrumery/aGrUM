@@ -603,7 +603,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const NodeProperty< const Potential< GUM_SCALAR >* >&
                GraphicalModelInference< GUM_SCALAR >::evidence() const {
-    return _evidence_;
+              return _evidence_;
   }
 
 
@@ -650,10 +650,8 @@ namespace gum {
                 "No model been assigned to the "
                 "inference algorithm");
 
-    if (_state_ == StateOfInference::OutdatedStructure)
-      updateOutdatedStructure_();
-    else
-      updateOutdatedPotentials_();
+    if (_state_ == StateOfInference::OutdatedStructure) updateOutdatedStructure_();
+    else updateOutdatedPotentials_();
 
     setState_(StateOfInference::ReadyForInference);
   }

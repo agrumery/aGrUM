@@ -102,10 +102,14 @@ namespace gum {
      * Constructor
      * @param aName the name
      * @param aDesc the description
+     * @param ticks list of ticks (limits of the intervals of the discretization)
+     * @param is_empirical determine the behavior of the variable for value below or above the
+     * limits. If false, it is treated as an error.
      */
     DiscretizedVariable(const std::string&            aName,
                         const std::string&            aDesc,
-                        const std::vector< T_TICKS >& ticks);
+                        const std::vector< T_TICKS >& ticks,
+                        bool                          is_empirical = false);
 
     /**
      * Copy constructor
@@ -171,11 +175,11 @@ namespace gum {
      *
      * @return the size of the random discrete variable domain
      */
-    virtual Size              domainSize() const;
-    virtual const std::string domain() const;
+    virtual Size domainSize() const;
+    std::string  domain() const final;
 
     /// string represent the type of the variable
-    virtual const std::string stype() const { return "Discretized"; };
+    std::string stype() const final { return "Discretized"; };
 
     /// from the index to the tick.
     /// @throws NotFound

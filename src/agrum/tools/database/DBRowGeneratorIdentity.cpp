@@ -73,7 +73,7 @@ namespace gum {
     /// copy operator
     DBRowGeneratorIdentity& DBRowGeneratorIdentity::operator=(const DBRowGeneratorIdentity& from) {
       DBRowGenerator::operator=(from);
-      _input_row_             = from._input_row_;
+      _input_row_ = from._input_row_;
       return *this;
     }
 
@@ -81,7 +81,7 @@ namespace gum {
     /// move operator
     DBRowGeneratorIdentity& DBRowGeneratorIdentity::operator=(DBRowGeneratorIdentity&& from) {
       DBRowGenerator::operator=(std::move(from));
-      _input_row_             = from._input_row_;
+      _input_row_ = from._input_row_;
       return *this;
     }
 

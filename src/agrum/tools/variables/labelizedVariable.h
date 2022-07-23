@@ -163,10 +163,10 @@ namespace gum {
     virtual VarType varType() const;
 
     /// Returns the domain
-    virtual const std::string domain() const;
+    std::string domain() const final;
 
     /// string represent the type of the variable
-    virtual const std::string stype() const { return "Labelized"; };
+    std::string stype() const final { return "Labelized"; };
 
     /// @}
 

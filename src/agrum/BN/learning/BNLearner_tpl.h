@@ -141,10 +141,8 @@ namespace gum {
         str << ": ";
         bool deja = false;
         for (const auto node: bad_ids) {
-          if (deja)
-            str << ", ";
-          else
-            deja = true;
+          if (deja) str << ", ";
+          else deja = true;
           str << node;
         }
         GUM_ERROR(MissingVariableInDatabase, str.str())
@@ -308,41 +306,21 @@ namespace gum {
           vals.emplace_back(key, "Local Search with Tabu List", "");
           vals.emplace_back("Tabu list size", std::to_string(nbDecreasingChanges_), "");
           break;
-        case AlgoType::THREE_OFF_TWO:
-          vals.emplace_back(key, "3off2", "");
-          break;
-        case AlgoType::MIIC:
-          vals.emplace_back(key, "MIIC", "");
-          break;
-        default:
-          vals.emplace_back(key, "(unknown)", "?");
-          break;
+        case AlgoType::THREE_OFF_TWO: vals.emplace_back(key, "3off2", ""); break;
+        case AlgoType::MIIC: vals.emplace_back(key, "MIIC", ""); break;
+        default: vals.emplace_back(key, "(unknown)", "?"); break;
       }
 
       if (selectedAlgo_ != AlgoType::MIIC && selectedAlgo_ != AlgoType::THREE_OFF_TWO) {
         key = "Score";
         switch (scoreType_) {
-          case ScoreType::K2:
-            vals.emplace_back(key, "K2", "");
-            break;
-          case ScoreType::AIC:
-            vals.emplace_back(key, "AIC", "");
-            break;
-          case ScoreType::BIC:
-            vals.emplace_back(key, "BIC", "");
-            break;
-          case ScoreType::BD:
-            vals.emplace_back(key, "BD", "");
-            break;
-          case ScoreType::BDeu:
-            vals.emplace_back(key, "BDeu", "");
-            break;
-          case ScoreType::LOG2LIKELIHOOD:
-            vals.emplace_back(key, "Log2Likelihood", "");
-            break;
-          default:
-            vals.emplace_back(key, "(unknown)", "?");
-            break;
+          case ScoreType::K2: vals.emplace_back(key, "K2", ""); break;
+          case ScoreType::AIC: vals.emplace_back(key, "AIC", ""); break;
+          case ScoreType::BIC: vals.emplace_back(key, "BIC", ""); break;
+          case ScoreType::BD: vals.emplace_back(key, "BD", ""); break;
+          case ScoreType::BDeu: vals.emplace_back(key, "BDeu", ""); break;
+          case ScoreType::LOG2LIKELIHOOD: vals.emplace_back(key, "Log2Likelihood", ""); break;
+          default: vals.emplace_back(key, "(unknown)", "?"); break;
         }
       } else {
         key = "Correction";
@@ -356,9 +334,7 @@ namespace gum {
           case CorrectedMutualInformation::KModeTypes::NoCorr:
             vals.emplace_back(key, "No correction", "");
             break;
-          default:
-            vals.emplace_back(key, "(unknown)", "?");
-            break;
+          default: vals.emplace_back(key, "(unknown)", "?"); break;
         }
       }
 
@@ -366,9 +342,7 @@ namespace gum {
       key     = "Prior";
       comment = checkScorePriorCompatibility();
       switch (priorType_) {
-        case BNLearnerPriorType::NO_prior:
-          vals.emplace_back(key, "-", comment);
-          break;
+        case BNLearnerPriorType::NO_prior: vals.emplace_back(key, "-", comment); break;
         case BNLearnerPriorType::DIRICHLET_FROM_DATABASE:
           vals.emplace_back(key, "Dirichlet", comment);
           vals.emplace_back("Dirichlet from database", priorDbname_, "");
@@ -377,15 +351,9 @@ namespace gum {
           vals.emplace_back(key, "Dirichlet", comment);
           vals.emplace_back("Dirichlet from Bayesian network : ", _prior_bn_.toString(), "");
           break;
-        case BNLearnerPriorType::BDEU:
-          vals.emplace_back(key, "BDEU", comment);
-          break;
-        case BNLearnerPriorType::SMOOTHING:
-          vals.emplace_back(key, "Smoothing", comment);
-          break;
-        default:
-          vals.emplace_back(key, "(unknown)", "?");
-          break;
+        case BNLearnerPriorType::BDEU: vals.emplace_back(key, "BDEU", comment); break;
+        case BNLearnerPriorType::SMOOTHING: vals.emplace_back(key, "Smoothing", comment); break;
+        default: vals.emplace_back(key, "(unknown)", "?"); break;
       }
 
       if (priorType_ != BNLearnerPriorType::NO_prior)
@@ -413,10 +381,8 @@ namespace gum {
         res     = "{";
         nofirst = false;
         for (const auto& arc: constraintForbiddenArcs_.arcs()) {
-          if (nofirst)
-            res += ", ";
-          else
-            nofirst = true;
+          if (nofirst) res += ", ";
+          else nofirst = true;
           res += nameFromId(arc.tail()) + "->" + nameFromId(arc.head());
         }
         res += "}";
@@ -426,10 +392,8 @@ namespace gum {
         res     = "{";
         nofirst = false;
         for (const auto& arc: constraintMandatoryArcs_.arcs()) {
-          if (nofirst)
-            res += ", ";
-          else
-            nofirst = true;
+          if (nofirst) res += ", ";
+          else nofirst = true;
           res += nameFromId(arc.tail()) + "->" + nameFromId(arc.head());
         }
         res += "}";
@@ -439,10 +403,8 @@ namespace gum {
         res     = "{";
         nofirst = false;
         for (const auto& edge: constraintPossibleEdges_.edges()) {
-          if (nofirst)
-            res += ", ";
-          else
-            nofirst = true;
+          if (nofirst) res += ", ";
+          else nofirst = true;
           res += nameFromId(edge.first()) + "--" + nameFromId(edge.second());
         }
         res += "}";
@@ -455,10 +417,8 @@ namespace gum {
         nofirst           = false;
         const auto& order = constraintSliceOrder_.sliceOrder();
         for (const auto& p: order) {
-          if (nofirst)
-            res += ", ";
-          else
-            nofirst = true;
+          if (nofirst) res += ", ";
+          else nofirst = true;
           res += nameFromId(p.first) + ":" + std::to_string(p.second);
         }
         res += "}";
@@ -510,8 +470,7 @@ namespace gum {
           prior_ = new BDeuPrior(scoreDatabase_.databaseTable(), scoreDatabase_.nodeId2Columns());
           break;
 
-        default:
-          GUM_ERROR(OperationNotAllowed, "The BNLearner does not support yet this prior")
+        default: GUM_ERROR(OperationNotAllowed, "The BNLearner does not support yet this prior")
       }
 
       // do not forget to assign a weight to the prior

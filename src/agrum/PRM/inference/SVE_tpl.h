@@ -482,10 +482,8 @@ namespace gum {
 
       for (const auto node: c.containerDag().nodes())
         if (PRMClassElement< GUM_SCALAR >::isAttribute(c.get(node))) {
-          if (c.isOutputNode(c.get(node)))
-            outers.insert(node);
-          else if (!outers.exists(node))
-            inners.insert(node);
+          if (c.isOutputNode(c.get(node))) outers.insert(node);
+          else if (!outers.exists(node)) inners.insert(node);
 
           lifted_pool->insert(const_cast< Potential< GUM_SCALAR >* >(&(c.get(node).cpf())));
         } else if (PRMClassElement< GUM_SCALAR >::isAggregate(c.get(node))) {
@@ -618,7 +616,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE std::vector< NodeId >&
            SVE< GUM_SCALAR >::_getElimOrder_(const PRMClass< GUM_SCALAR >& c) {
-      return *(_elim_orders_[&c]);
+          return *(_elim_orders_[&c]);
     }
 
     template < typename GUM_SCALAR >
@@ -642,7 +640,7 @@ namespace gum {
     INLINE Potential< GUM_SCALAR >*
            SVE< GUM_SCALAR >::_getAggPotential_(const PRMInstance< GUM_SCALAR >*  i,
                                             const PRMAggregate< GUM_SCALAR >* agg) {
-      return &(const_cast< Potential< GUM_SCALAR >& >(i->get(agg->id()).cpf()));
+          return &(const_cast< Potential< GUM_SCALAR >& >(i->get(agg->id()).cpf()));
     }
 
     template < typename GUM_SCALAR >

@@ -60,10 +60,8 @@ namespace gum {
           Size                           count = 0;
 
           for (inst.setFirst(); !inst.end(); inst.inc()) {
-            if ((e->get(inst) == (GUM_SCALAR)1.0))
-              ++count;
-            else if (e->get(inst) != (GUM_SCALAR)0.0)
-              return false;
+            if ((e->get(inst) == (GUM_SCALAR)1.0)) ++count;
+            else if (e->get(inst) != (GUM_SCALAR)0.0) return false;
           }
 
           return (count == 1);
@@ -266,13 +264,13 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const std::string&
                  StructuredBayesBall< GUM_SCALAR >::key(const PRMInstance< GUM_SCALAR >* i) const {
-      return _keyMap_[i].first;
+                return _keyMap_[i].first;
     }
 
     template < typename GUM_SCALAR >
     INLINE const std::string&
                  StructuredBayesBall< GUM_SCALAR >::key(const PRMInstance< GUM_SCALAR >& i) const {
-      return _keyMap_[&i].first;
+                return _keyMap_[&i].first;
     }
 
     template < typename GUM_SCALAR >
@@ -332,7 +330,7 @@ namespace gum {
            StructuredBayesBall< GUM_SCALAR >::_getMark_(InstanceMap&                     marks,
                                                     const PRMInstance< GUM_SCALAR >* i,
                                                     NodeId                           n) {
-      return (*(marks[i]))[n];
+          return (*(marks[i]))[n];
     }
 
   } /* namespace prm */

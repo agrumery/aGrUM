@@ -108,6 +108,7 @@ def doTheJob(target, resultat, backup, debugmode):
     ("gum::JunctionTree", '"pyAgrum.JunctionTree"'),
     ("gum::RangeVariable", '"pyAgrum.RangeVariable"'),
     ("gum::IntegerVariable", '"pyAgrum.IntegerVariable"'),
+    ("gum::NumericalDiscreteVariable", '"pyAgrum.NumericalDiscreteVariable"'),
     ("gum::LabelizedVariable", '"pyAgrum.LabelizedVariable"'),
     ("gum::DiscretizedVariable< double >", '"pyAgrum.DiscretizedVariable"'),
     ("gum::credal::CredalNet< double >::NodeType", 'int'),

@@ -76,17 +76,14 @@ namespace gum {
       bool deja = false;
 
       for (std::size_t i = std::size_t(0); i < _nb_lhs_ids_; ++i) {
-        if (deja)
-          str << " , ";
-        else
-          deja = true;
+        if (deja) str << " , ";
+        else deja = true;
         str << _ids_[i];
       }
 
       deja = false;
       for (auto iter = _ids_.begin() + _nb_lhs_ids_; iter != _ids_.end(); ++iter) {
-        if (deja)
-          str << " , ";
+        if (deja) str << " , ";
         else {
           deja = true;
           str << " | ";
@@ -104,10 +101,8 @@ namespace gum {
       gum::NodeSet right;
 
       for (auto i = std::size_t(0); i < _ids_.size(); ++i)
-        if (i < _nb_lhs_ids_)
-          left.insert(_ids_[i]);
-        else
-          right.insert(_ids_[i]);
+        if (i < _nb_lhs_ids_) left.insert(_ids_[i]);
+        else right.insert(_ids_[i]);
       return {left, right};
     }
 

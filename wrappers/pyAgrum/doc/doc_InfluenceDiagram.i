@@ -246,11 +246,11 @@ If (tail, head) doesn't exist, the nothing happens.
 
 Parameters
 ----------
-arc : pyAgrum.Arc 
+arc : pyAgrum.Arc
 	The arc to be removed whn calling eraseArc(arc)
-tail : Union[int,str] 
+tail : Union[int,str]
 	a variable's id (int) or name when calling eraseArc(tail,head)
-head : Union[int,str] 
+head : Union[int,str]
 	a variable's id (int) or name when calling eraseArc(tail,head)
 "
 
@@ -516,6 +516,7 @@ Create an Influence Diagram with a dot-like syntax which specifies:
       - with `'a[1,3.14,5,6.2]'`, the variable is a pyAgrum.DiscretizedVariable using the given ticks (at least 3 values)
       - with `'a{top|middle|bottom}'`, the variable is a pyAgrum.LabelizedVariable using the given labels.
       - with 'a{-1|5|0|3}', the variable is a pyAgrum.IntegerVariable using the sorted given values.
+      - with 'a{-0.5|5.01|0|3.1415}', the variable is a pyAgrum.NumericalDiscreteVariable using the sorted given values.
 
 Note
 ----

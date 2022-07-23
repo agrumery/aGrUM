@@ -137,11 +137,11 @@ void checkSizeOfProbabilityAssignation__(const std::vector<float>&v,const std::s
 	void OBSERVATION_COST_PART();
 	void HEADER();
 	void PARENTS(std::vector<std::string>& parents );
-	void VARIABLE_DEFINITION(int& nbrMod, std::string& var, const std::vector<std::string>& parents );
+	void VARIABLE_DEFINITION(Size& nbrMod, std::string& var, const std::vector<std::string>& parents );
 	void EXTRA_DEFINITION_PART();
 	void BLOC_PART();
 	void PARENTS_LIST(std::vector<std::string>& parents );
-	void MODALITY_LIST(int& nbrMod);
+	void MODALITY_LIST(Size& nbrMod);
 	void PROBA(const std::string& var, const std::vector<std::string>& parents );
 	void IDENT_OR_INTEGER(std::string& name);
 	void RAW_PROBA(const std::string& var, const std::vector<std::string>& parents );

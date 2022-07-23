@@ -66,6 +66,19 @@ namespace gum {
                     const std::string&        aDesc,
                     const std::vector< int >& domain);
 
+    /** @brief constructor assigning a domain to the variable
+     * @param aName the name of the variable
+     * @param aDesc the Description of the variable, if any
+     * @param first the first value
+     * @param last the last value
+     * @param nb the number of values
+     */
+    IntegerVariable(const std::string& aName,
+                    const std::string& aDesc,
+                    int                first,
+                    int                last,
+                    Size               nb);
+
     /// Copy constructor
     /**
      * @param from the variable we copy
@@ -132,10 +145,10 @@ namespace gum {
     virtual double numerical(Idx index) const;
 
     /// Returns the domain as a string
-    virtual const std::string domain() const;
+    std::string domain() const final;
 
     /// string represent the type of the variable
-    virtual const std::string stype() const { return "Integer"; };
+    std::string stype() const final { return "Integer"; };
 
     /// returns the domain as a sequence of values
     const Sequence< int >& integerDomain() const;

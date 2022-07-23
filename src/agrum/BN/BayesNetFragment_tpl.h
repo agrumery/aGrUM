@@ -72,10 +72,8 @@ namespace gum {
   INLINE const Potential< GUM_SCALAR >& BayesNetFragment< GUM_SCALAR >::cpt(NodeId id) const {
     if (!isInstalledNode(id)) GUM_ERROR(NotFound, "NodeId " << id << " is not installed")
 
-    if (_localCPTs_.exists(id))
-      return *_localCPTs_[id];
-    else
-      return _bn_.cpt(id);
+    if (_localCPTs_.exists(id)) return *_localCPTs_[id];
+    else return _bn_.cpt(id);
   }
 
   template < typename GUM_SCALAR >
@@ -316,12 +314,9 @@ namespace gum {
       if (isInstalledNode(node)) {
         if (!checkConsistency(node)) {
           output << notConsistantStyle;
-        } else if (_localCPTs_.exists(node))
-          output << styleWithLocalCPT;
-        else
-          output << inFragmentStyle;
-      } else
-        output << outFragmentStyle;
+        } else if (_localCPTs_.exists(node)) output << styleWithLocalCPT;
+        else output << inFragmentStyle;
+      } else output << outFragmentStyle;
 
       output << "];" << std::endl;
     }
@@ -336,10 +331,8 @@ namespace gum {
           output << tab << "\"" << _bn_.variable(node).name() << "\" -> "
                  << "\"" << _bn_.variable(child).name() << "\" [";
 
-          if (dag().existsArc(Arc(node, child)))
-            output << inFragmentStyle;
-          else
-            output << outFragmentStyle;
+          if (dag().existsArc(Arc(node, child))) output << inFragmentStyle;
+          else output << outFragmentStyle;
 
           output << "];" << std::endl;
         }

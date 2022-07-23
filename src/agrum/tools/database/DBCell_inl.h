@@ -164,10 +164,8 @@ namespace gum {
 
     /// returns the DBcell as a float
     INLINE float DBCell::real() const {
-      if (_type_ == EltType::REAL)
-        return _val_real_;
-      else
-        GUM_ERROR(TypeError, _typeErrorMsg_("a real number"))
+      if (_type_ == EltType::REAL) return _val_real_;
+      else GUM_ERROR(TypeError, _typeErrorMsg_("a real number"))
     }
 
 
@@ -188,10 +186,8 @@ namespace gum {
 
     /// returns the DBcell as an integer
     INLINE int DBCell::integer() const {
-      if (_type_ == EltType::INTEGER)
-        return _val_integer_;
-      else
-        GUM_ERROR(TypeError, _typeErrorMsg_("an integer"))
+      if (_type_ == EltType::INTEGER) return _val_integer_;
+      else GUM_ERROR(TypeError, _typeErrorMsg_("an integer"))
     }
 
 
@@ -212,19 +208,15 @@ namespace gum {
 
     /// returns the DBcell as a string
     INLINE const std::string& DBCell::string() const {
-      if (_type_ == EltType::STRING)
-        return _strings_().first(_val_index_);
-      else
-        GUM_ERROR(TypeError, _typeErrorMsg_("a string"))
+      if (_type_ == EltType::STRING) return _strings_().first(_val_index_);
+      else GUM_ERROR(TypeError, _typeErrorMsg_("a string"))
     }
 
 
     /// returns the DBcell as a string index (if it contains a string)
     INLINE int DBCell::stringIndex() const {
-      if (_type_ == EltType::STRING)
-        return _val_index_;
-      else
-        GUM_ERROR(TypeError, _typeErrorMsg_("a string"))
+      if (_type_ == EltType::STRING) return _val_index_;
+      else GUM_ERROR(TypeError, _typeErrorMsg_("a string"))
     }
 
 

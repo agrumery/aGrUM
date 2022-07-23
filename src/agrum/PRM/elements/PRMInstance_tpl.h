@@ -311,10 +311,10 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const PRMAttribute< GUM_SCALAR >&
                  PRMInstance< GUM_SCALAR >::get(const std::string& name) const {
-      try {
-        return *(_nodeIdMap_[type().get(name).id()]);
+                try {
+                  return *(_nodeIdMap_[type().get(name).id()]);
       } catch (NotFound const&) {
-        GUM_ERROR(NotFound, "no PRMAttribute<GUM_SCALAR> with the given name")
+                  GUM_ERROR(NotFound, "no PRMAttribute<GUM_SCALAR> with the given name")
       }
     }
 
@@ -338,20 +338,20 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const Bijection< const DiscreteVariable*, const DiscreteVariable* >&
                  PRMInstance< GUM_SCALAR >::bijection() const {
-      return _bijection_;
+                return _bijection_;
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMInstance< GUM_SCALAR >&
                  PRMInstance< GUM_SCALAR >::getInstance(NodeId id) const {
-      try {
-        if (_referenceMap_[id]->size() > 0) {
-          return **(_referenceMap_[id]->begin());
+                try {
+                  if (_referenceMap_[id]->size() > 0) {
+                    return **(_referenceMap_[id]->begin());
         } else {
-          GUM_ERROR(UndefinedElement, "no Instance associated with the given NodeId")
+                    GUM_ERROR(UndefinedElement, "no Instance associated with the given NodeId")
         }
       } catch (NotFound const&) {
-        GUM_ERROR(NotFound,
+                  GUM_ERROR(NotFound,
                   "no ReferenceSlot<GUM_SCALAR> or SlotChain<GUM_SCALAR> "
                             "matches the given NodeId");
       }
@@ -360,10 +360,10 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const Set< PRMInstance< GUM_SCALAR >* >&
                  PRMInstance< GUM_SCALAR >::getInstances(NodeId id) const {
-      try {
-        return *(_referenceMap_[id]);
+                try {
+                  return *(_referenceMap_[id]);
       } catch (NotFound const&) {
-        GUM_ERROR(NotFound,
+                  GUM_ERROR(NotFound,
                   "no ReferenceSlot<GUM_SCALAR> or SlotChain<GUM_SCALAR> "
                             "matches the given NodeId");
       }
@@ -556,13 +556,13 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE std::vector< std::pair< PRMInstance< GUM_SCALAR >*, std::string > >&
            PRMInstance< GUM_SCALAR >::getRefAttr(NodeId id) {
-      return *(_referingAttr_[id]);
+          return *(_referingAttr_[id]);
     }
 
     template < typename GUM_SCALAR >
     INLINE const std::vector< std::pair< PRMInstance< GUM_SCALAR >*, std::string > >&
                  PRMInstance< GUM_SCALAR >::getRefAttr(NodeId id) const {
-      return *(_referingAttr_[id]);
+                return *(_referingAttr_[id]);
     }
 
     template < typename GUM_SCALAR >

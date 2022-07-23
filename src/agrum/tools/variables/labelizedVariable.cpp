@@ -26,7 +26,7 @@
 #endif /* GUM_NO_INLINE */
 
 namespace gum {
-  const std::string LabelizedVariable::domain() const {
+  std::string LabelizedVariable::domain() const {
     std::stringstream s;
     s << "{";
 

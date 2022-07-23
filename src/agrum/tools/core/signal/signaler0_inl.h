@@ -77,9 +77,7 @@ namespace gum {
 
     INLINE
     std::function< bool(IConnector0* el) > BasicSignaler0::_find_target_(const gum::Listener* l) {
-      return [=](IConnector0* el) -> bool {
-        return el->target() == l;
-      };
+      return [=](IConnector0* el) -> bool { return el->target() == l; };
     }
 
   }   // namespace  __sig__

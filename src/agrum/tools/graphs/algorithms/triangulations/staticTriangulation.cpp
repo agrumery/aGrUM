@@ -666,8 +666,7 @@ namespace gum {
     if (_has_fill_ins_) {
       if (elimination_sequence_strategy_->providesFillIns())
         return elimination_sequence_strategy_->fillIns();
-      else
-        return _fill_ins_;
+      else return _fill_ins_;
     } else {
       // ok, here, we shall compute the fill-ins as they were not precomputed
       if (!_original_graph_) return _fill_ins_;

@@ -60,8 +60,7 @@ namespace gum {
           const float missing_val = std::stof(*iter);
           if ((missing_val >= lower_bound) && (missing_val <= upper_bound)) {
             this->missing_symbols_.erase(iter);
-          } else
-            _status_float_missing_symbols_.insert(*iter, false);
+          } else _status_float_missing_symbols_.insert(*iter, false);
         } else if (!non_float_symbol_found) {
           non_float_symbol_found    = true;
           _nonfloat_missing_symbol_ = *iter;

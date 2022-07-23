@@ -98,15 +98,23 @@ namespace gum {
                   "Only one value for variable " << var_description << " (2 at least are needed).")
     }
 
-    std::vector< int > values;
-    if (!labels.empty() && std::all_of(labels.cbegin(), labels.cend(), isInteger)) {
-      for (const auto& label: labels)
-        values.push_back(std::stoi(label));
+    std::vector< int >    values;
+    std::vector< double > double_values;
+    if (!labels.empty()) {
+      if (std::all_of(labels.cbegin(), labels.cend(), isInteger))
+        for (const auto& label: labels)
+          values.push_back(std::stoi(label));
+      else if (std::all_of(labels.cbegin(), labels.cend(), isNumerical))
+        for (const auto& label: labels)
+          double_values.push_back(std::stod(label));
     }
+
     trim(name);
 
     if (!values.empty()) {
       return std::make_unique< IntegerVariable >(name, name, values);
+    } else if (!double_values.empty()) {
+      return std::make_unique< NumericalDiscreteVariable >(name, name, double_values);
     } else if (!labels.empty()) {
       return std::make_unique< LabelizedVariable >(name, name, labels);
     } else if (!ticks.empty()) {

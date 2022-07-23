@@ -47,14 +47,10 @@ namespace gum {
 
     constexpr const char* priorTypeToString(PriorType e) noexcept {
       switch (e) {
-        case PriorType::NoPriorType:
-          return "No prior";
-        case PriorType::DirichletPriorType:
-          return "Dirichlet prior";
-        case PriorType::SmoothingPriorType:
-          return "TriSmoothing prior";
-        case PriorType::BDeuPriorType:
-          return "BDeu prior";
+        case PriorType::NoPriorType: return "No prior";
+        case PriorType::DirichletPriorType: return "Dirichlet prior";
+        case PriorType::SmoothingPriorType: return "TriSmoothing prior";
+        case PriorType::BDeuPriorType: return "BDeu prior";
       }
       return "Error in prior";
     }

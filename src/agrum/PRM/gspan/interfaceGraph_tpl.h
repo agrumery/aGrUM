@@ -287,25 +287,25 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE Set< NodeData< GUM_SCALAR >* >&
              InterfaceGraph< GUM_SCALAR >::nodes(const LabelData* l) {
-        return *(_nodeMap_[const_cast< LabelData* >(l)]);
+            return *(_nodeMap_[const_cast< LabelData* >(l)]);
       }
 
       template < typename GUM_SCALAR >
       INLINE const Set< NodeData< GUM_SCALAR >* >&
                    InterfaceGraph< GUM_SCALAR >::nodes(const LabelData* l) const {
-        return *(_nodeMap_[const_cast< LabelData* >(l)]);
+                  return *(_nodeMap_[const_cast< LabelData* >(l)]);
       }
 
       template < typename GUM_SCALAR >
       INLINE Set< EdgeData< GUM_SCALAR >* >&
              InterfaceGraph< GUM_SCALAR >::edges(const LabelData* l) {
-        return *(_edgeMap_[const_cast< LabelData* >(l)]);
+            return *(_edgeMap_[const_cast< LabelData* >(l)]);
       }
 
       template < typename GUM_SCALAR >
       INLINE const Set< EdgeData< GUM_SCALAR >* >&
                    InterfaceGraph< GUM_SCALAR >::edges(const LabelData* l) const {
-        return *(_edgeMap_[const_cast< LabelData* >(l)]);
+                  return *(_edgeMap_[const_cast< LabelData* >(l)]);
       }
 
       template < typename GUM_SCALAR >
@@ -326,13 +326,13 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE NodeData< GUM_SCALAR >&
              InterfaceGraph< GUM_SCALAR >::node(const PRMInstance< GUM_SCALAR >* i) {
-        return node(id(i));
+            return node(id(i));
       }
 
       template < typename GUM_SCALAR >
       INLINE const NodeData< GUM_SCALAR >&
                    InterfaceGraph< GUM_SCALAR >::node(const PRMInstance< GUM_SCALAR >* i) const {
-        return node(id(i));
+                  return node(id(i));
       }
 
       template < typename GUM_SCALAR >

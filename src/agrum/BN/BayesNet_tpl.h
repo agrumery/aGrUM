@@ -122,7 +122,7 @@ namespace gum {
   BayesNet< GUM_SCALAR >& BayesNet< GUM_SCALAR >::operator=(const BayesNet< GUM_SCALAR >& source) {
     if (this != &source) {
       IBayesNet< GUM_SCALAR >::operator=(source);
-      _varMap_                         = source._varMap_;
+      _varMap_ = source._varMap_;
 
       _clearPotentials_();
       _copyPotentials_(source);

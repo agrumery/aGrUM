@@ -97,11 +97,11 @@ namespace gum {
     DBInitializerFromCSV& DBInitializerFromCSV::operator=(const DBInitializerFromCSV& from) {
       if (this != &from) {
         IDBInitializer::operator=(from);
-        _filename_              = from._filename_;
-        _delimiter_             = from._delimiter_;
-        _comment_marker_        = from._comment_marker_;
-        _quote_marker_          = from._quote_marker_;
-        _first_row_has_names_   = from._first_row_has_names_;
+        _filename_            = from._filename_;
+        _delimiter_           = from._delimiter_;
+        _comment_marker_      = from._comment_marker_;
+        _quote_marker_        = from._quote_marker_;
+        _first_row_has_names_ = from._first_row_has_names_;
 
         // open the CSV file
         _input_stream_.close();

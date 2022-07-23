@@ -248,10 +248,8 @@ namespace gum {
     // fill available_nodes by inserting at the front the deletions and at the
     // back the other nodes. This will enable to free memory as soon as possible
     for (const auto node: _schedule_->availableOperations()) {
-      if (_schedule_->operation(node).implyDeletion())
-        available_nodes.pushFront(node);
-      else
-        available_nodes.pushBack(node);
+      if (_schedule_->operation(node).implyDeletion()) available_nodes.pushFront(node);
+      else available_nodes.pushBack(node);
     }
 
     // if there is nothing to do, don't do it

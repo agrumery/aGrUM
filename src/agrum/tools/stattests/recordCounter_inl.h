@@ -70,7 +70,7 @@ namespace gum {
     /// returns the current ranges
     INLINE const std::vector< std::pair< std::size_t, std::size_t > >&
                  RecordCounter::ranges() const {
-      return _ranges_;
+                return _ranges_;
     }
 
 

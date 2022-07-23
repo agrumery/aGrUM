@@ -161,12 +161,9 @@ namespace gum {
           auto p = (Potential< GUM_SCALAR >() << infdiag.variable(node)).fillWith(1).normalize();
           phi[clik].insertProba(p);   // WITHOUT NORMALIZATION !!!
         }
-      } else if (infdiag.isChanceNode(node))
-        phi[clik].insertProba(infdiag.cpt(node));
-      else if (infdiag.isUtilityNode(node))
-        phi[clik].insertUtility(infdiag.utility(node));
-      else
-        GUM_ERROR(FatalError, "Node " << node << " has no type.")
+      } else if (infdiag.isChanceNode(node)) phi[clik].insertProba(infdiag.cpt(node));
+      else if (infdiag.isUtilityNode(node)) phi[clik].insertUtility(infdiag.utility(node));
+      else GUM_ERROR(FatalError, "Node " << node << " has no type.")
     }
   }
 
@@ -496,10 +493,8 @@ namespace gum {
     const auto&                    infdiag = this->influenceDiagram();
     InfluenceDiagram< GUM_SCALAR > res;
     for (auto node: infdiag.nodes()) {
-      if (infdiag.isChanceNode(node))
-        res.addChanceNode(infdiag.variable(node), node);
-      else if (infdiag.isDecisionNode(node))
-        res.addDecisionNode(infdiag.variable(node), node);
+      if (infdiag.isChanceNode(node)) res.addChanceNode(infdiag.variable(node), node);
+      else if (infdiag.isDecisionNode(node)) res.addDecisionNode(infdiag.variable(node), node);
       else   // (infdiag.isUtilityNode(node))
         res.addUtilityNode(infdiag.variable(node), node);
     }
@@ -509,10 +504,8 @@ namespace gum {
     }
 
     for (auto node: infdiag.nodes()) {
-      if (infdiag.isChanceNode(node))
-        res.cpt(node).fillWith(infdiag.cpt(node));
-      else if (infdiag.isUtilityNode(node))
-        res.utility(node).fillWith(infdiag.utility(node));
+      if (infdiag.isChanceNode(node)) res.cpt(node).fillWith(infdiag.cpt(node));
+      else if (infdiag.isUtilityNode(node)) res.utility(node).fillWith(infdiag.utility(node));
     }
 
     // Potentials !!!

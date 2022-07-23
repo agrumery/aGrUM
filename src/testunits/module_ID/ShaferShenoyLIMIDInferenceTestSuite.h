@@ -778,10 +778,8 @@ namespace gum_tests {
       for (const auto& arc: diag.arcs())
         if (!diag.isUtilityNode(arc.head())) bn.addArc(arc.tail(), arc.head());
       for (const auto n: diag.nodes())
-        if (diag.isChanceNode(n))
-          bn.cpt(n).fillWith(diag.cpt(n));
-        else if (diag.isDecisionNode(n))
-          bn.cpt(n).fillWith(1).normalize();
+        if (diag.isChanceNode(n)) bn.cpt(n).fillWith(diag.cpt(n));
+        else if (diag.isDecisionNode(n)) bn.cpt(n).fillWith(1).normalize();
 
       auto ie = gum::LazyPropagation< double >(&bn);
       ie.addEvidence("D", 0);
@@ -813,10 +811,8 @@ namespace gum_tests {
       for (const auto& arc: diag.arcs())
         if (!diag.isUtilityNode(arc.head())) bn.addArc(arc.tail(), arc.head());
       for (const auto n: diag.nodes())
-        if (diag.isChanceNode(n))
-          bn.cpt(n).fillWith(diag.cpt(n));
-        else if (diag.isDecisionNode(n))
-          bn.cpt(n).fillWith(1).normalize();
+        if (diag.isChanceNode(n)) bn.cpt(n).fillWith(diag.cpt(n));
+        else if (diag.isDecisionNode(n)) bn.cpt(n).fillWith(1).normalize();
 
       auto ie = gum::LazyPropagation< double >(&bn);
       // best decision : re=0

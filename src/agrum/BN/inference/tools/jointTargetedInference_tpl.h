@@ -217,20 +217,16 @@ namespace gum {
 
     if (!this->isInferenceDone()) { this->makeInference(); }
 
-    if (found_exact_target)
-      return jointPosterior_(nodes);
-    else
-      return jointPosterior_(nodes, set);
+    if (found_exact_target) return jointPosterior_(nodes);
+    else return jointPosterior_(nodes, set);
   }
 
 
   // Compute the posterior of a node
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >& JointTargetedInference< GUM_SCALAR >::posterior(NodeId node) {
-    if (this->isTarget(node))
-      return MarginalTargetedInference< GUM_SCALAR >::posterior(node);
-    else
-      return jointPosterior(NodeSet{node});
+    if (this->isTarget(node)) return MarginalTargetedInference< GUM_SCALAR >::posterior(node);
+    else return jointPosterior(NodeSet{node});
   }
 
   // Compute the posterior of a node

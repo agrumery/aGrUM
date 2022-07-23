@@ -177,7 +177,7 @@ namespace gum {
   INLINE std::string
          BIFXMLBNWriter< GUM_SCALAR >::_variableDefinition_(const NodeId&                  varNodeId,
                                                         const IBayesNet< GUM_SCALAR >& bn) {
-    //<DEFINITION>
+        //<DEFINITION>
     //<FOR>var</FOR>
     //<GIVEN>conditional var</GIVEN>
     //<TABLE>conditional probabilities</TABLE>
@@ -209,10 +209,8 @@ namespace gum {
     str << "\t<TABLE>";
 
     for (inst.setFirst(); !inst.end(); inst.inc()) {
-      if (inst.val(0) == 0)
-        str << std::endl << "\t\t";
-      else
-        str << " ";
+          if (inst.val(0) == 0) str << std::endl << "\t\t";
+      else str << " ";
 
       str << cpt[inst];   //"<!-- "<<inst<<" -->"<<std::endl;
     }

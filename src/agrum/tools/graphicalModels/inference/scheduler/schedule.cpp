@@ -364,10 +364,8 @@ namespace gum {
           // between this's and from's multidim into Bijection this_multidim2from
           bool found = false;
           if (this_multidim2from.existsFirst(this_args[i])) {
-            if (this_multidim2from.second(this_args[i]) != from_args[i])
-              return false;
-            else
-              found = true;
+            if (this_multidim2from.second(this_args[i]) != from_args[i]) return false;
+            else found = true;
           }
 
           if (!found) {
@@ -456,12 +454,9 @@ namespace gum {
 
   /// returns the adjective corresponding to a parameter index (1st, 2nd, etc.)
   std::string Schedule::_paramString_(Idx i) const {
-    if (i == 0)
-      return "1st";
-    else if (i == 1)
-      return "2nd";
-    else if (i == 2)
-      return "3rd";
+    if (i == 0) return "1st";
+    else if (i == 1) return "2nd";
+    else if (i == 2) return "3rd";
 
     std::stringstream str;
     str << (i + 1) << "th";

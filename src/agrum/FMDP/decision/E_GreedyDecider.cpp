@@ -91,10 +91,8 @@ namespace gum {
    */
   // ###################################################################
   void E_GreedyDecider::checkState(const Instantiation& reachedState, Idx actionId) {
-    if (_statecpt_.nbVisitedStates() == 0)
-      _statecpt_.reset(reachedState);
-    else if (!_statecpt_.checkState(reachedState))
-      _statecpt_.addState(reachedState);
+    if (_statecpt_.nbVisitedStates() == 0) _statecpt_.reset(reachedState);
+    else if (!_statecpt_.checkState(reachedState)) _statecpt_.addState(reachedState);
   }
 
   // ###################################################################

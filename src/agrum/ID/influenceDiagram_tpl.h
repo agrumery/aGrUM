@@ -55,8 +55,7 @@ namespace gum {
         default_ds = 1;
         node.erase(0, 1);
         break;
-      default:
-        isChanc = true;
+      default: isChanc = true;
     }
     auto v = fastVariable< GUM_SCALAR >(node, default_ds);
 
@@ -64,12 +63,9 @@ namespace gum {
     try {
       res = infdiag.idFromName(v->name());
     } catch (gum::NotFound&) {
-      if (isChanc)
-        res = infdiag.addChanceNode(*v);
-      else if (isDeci)
-        res = infdiag.addDecisionNode(*v);
-      else if (isUtil)
-        res = infdiag.addUtilityNode(*v);
+      if (isChanc) res = infdiag.addChanceNode(*v);
+      else if (isDeci) res = infdiag.addDecisionNode(*v);
+      else if (isUtil) res = infdiag.addUtilityNode(*v);
       else
         GUM_ERROR(FatalError,
                   "No type (chance, decision or utility) for the node '" << node << "'.")
@@ -109,11 +105,8 @@ namespace gum {
     }
 
     for (const auto n: infdiag.nodes()) {
-      if (infdiag.isChanceNode(n))
-        infdiag.cpt(n).randomCPT();
-      else if (infdiag.isUtilityNode(n)) {
-        infdiag.utility(n).random().scale(50).translate(-10);
-      }
+      if (infdiag.isChanceNode(n)) infdiag.cpt(n).randomCPT();
+      else if (infdiag.isUtilityNode(n)) { infdiag.utility(n).random().scale(50).translate(-10); }
     }
 
     infdiag.setProperty("name", "fastPrototype");
@@ -180,10 +173,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   void InfluenceDiagram< GUM_SCALAR >::removeTables_() {
     for (const auto node: dag_.nodes()) {
-      if (isChanceNode(node))
-        delete &cpt(node);
-      else if (isUtilityNode(node))
-        delete &utility(node);
+      if (isChanceNode(node)) delete &cpt(node);
+      else if (isUtilityNode(node)) delete &utility(node);
     }
   }
 
@@ -194,10 +185,8 @@ namespace gum {
   void InfluenceDiagram< GUM_SCALAR >::copyStructureAndTables_(
      const InfluenceDiagram< GUM_SCALAR >& IDsource) {
     for (auto node: IDsource.nodes()) {
-      if (IDsource.isChanceNode(node))
-        addChanceNode(IDsource.variable(node), node);
-      else if (IDsource.isUtilityNode(node))
-        addUtilityNode(IDsource.variable(node), node);
+      if (IDsource.isChanceNode(node)) addChanceNode(IDsource.variable(node), node);
+      else if (IDsource.isUtilityNode(node)) addUtilityNode(IDsource.variable(node), node);
       else   // decision node
         addDecisionNode(IDsource.variable(node), node);
     }
@@ -292,10 +281,8 @@ namespace gum {
 
     double dSize = log10DomainSize();
 
-    if (dSize > 6)
-      output << "  domainSize: 10^" << dSize;
-    else
-      output << "  domainSize: " << std::round(std::pow(10.0, dSize));
+    if (dSize > 6) output << "  domainSize: 10^" << dSize;
+    else output << "  domainSize: " << std::round(std::pow(10.0, dSize));
 
     output << std::endl << "}";
 
@@ -320,7 +307,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >&
                InfluenceDiagram< GUM_SCALAR >::utility(NodeId varId) const {
-    return *(_utilityMap_[varId]);
+              return *(_utilityMap_[varId]);
   }
 
   /*
@@ -525,10 +512,8 @@ namespace gum {
     // None thread safe code!
     NodeId proposedId;
 
-    if (DesiredId == 0)
-      proposedId = dag_.nextNodeId();
-    else
-      proposedId = DesiredId;
+    if (DesiredId == 0) proposedId = dag_.nextNodeId();
+    else proposedId = DesiredId;
 
     _variableMap_.insert(proposedId, variableType);
 
@@ -548,10 +533,8 @@ namespace gum {
     if (_variableMap_.exists(varId)) {
       // Reduce the variable child's CPT or Utility Table if necessary
       for (const auto chi: dag_.children(varId))
-        if (isChanceNode(chi))
-          _potentialMap_[chi]->erase(variable(varId));
-        else if (isUtilityNode(chi))
-          _utilityMap_[chi]->erase(variable(varId));
+        if (isChanceNode(chi)) _potentialMap_[chi]->erase(variable(varId));
+        else if (isUtilityNode(chi)) _utilityMap_[chi]->erase(variable(varId));
 
       if (isChanceNode(varId)) {
         delete _potentialMap_[varId];
@@ -774,10 +757,8 @@ namespace gum {
 
         mark[new_one] = true;
 
-        if (!isDecisionNode(new_one))
-          nodeFIFO.pushBack(new_one);
-        else
-          childrenSeq.insert(new_one);
+        if (!isDecisionNode(new_one)) nodeFIFO.pushBack(new_one);
+        else childrenSeq.insert(new_one);
       }
     }
 

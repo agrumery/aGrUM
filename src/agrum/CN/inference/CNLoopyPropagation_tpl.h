@@ -539,17 +539,11 @@ namespace gum {
       _infE_::initApproximationScheme();
 
       switch (_inferenceType_) {
-        case InferenceType::nodeToNeighbours:
-          makeInferenceNodeToNeighbours_();
-          break;
+        case InferenceType::nodeToNeighbours: makeInferenceNodeToNeighbours_(); break;
 
-        case InferenceType::ordered:
-          makeInferenceByOrderedArcs_();
-          break;
+        case InferenceType::ordered: makeInferenceByOrderedArcs_(); break;
 
-        case InferenceType::randomOrder:
-          makeInferenceByRandomOrder_();
-          break;
+        case InferenceType::randomOrder: makeInferenceByRandomOrder_(); break;
       }
 
       //_updateMarginals();

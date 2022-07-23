@@ -101,23 +101,17 @@ namespace gum {
 
       static std::string enum2str(ClassElementType type) {
         switch (type) {
-          case prm_attribute:
-            return "prm_attribute";
+          case prm_attribute: return "prm_attribute";
 
-          case prm_aggregate:
-            return "prm_aggregate";
+          case prm_aggregate: return "prm_aggregate";
 
-          case prm_refslot:
-            return "prm_refslot";
+          case prm_refslot: return "prm_refslot";
 
-          case prm_slotchain:
-            return "prm_slotchain";
+          case prm_slotchain: return "prm_slotchain";
 
-          case prm_parameter:
-            return "prm_parameter";
+          case prm_parameter: return "prm_parameter";
 
-          default:
-            return "unknown";
+          default: return "unknown";
         }
       }
 

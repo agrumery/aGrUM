@@ -151,8 +151,7 @@ namespace gum {
     // select a node to be eliminated: try simplicial nodes, then almost
     // simplicial nodes, then quasi-simplicial nodes
     // note that if  _graph_ != 0,  _simplicial_set_ has been allocated
-    if (_simplicial_set_->hasSimplicialNode())
-      return _simplicial_set_->bestSimplicialNode();
+    if (_simplicial_set_->hasSimplicialNode()) return _simplicial_set_->bestSimplicialNode();
     else if (_simplicial_set_->hasAlmostSimplicialNode())
       return _simplicial_set_->bestAlmostSimplicialNode();
     else if (_simplicial_set_->hasQuasiSimplicialNode())
@@ -208,8 +207,7 @@ namespace gum {
   const EdgeSet& DefaultEliminationSequenceStrategy::fillIns() {
     if (!_provide_fill_ins_ || (_simplicial_set_ == nullptr))
       return UnconstrainedEliminationSequenceStrategy::fillIns();
-    else
-      return _simplicial_set_->fillIns();
+    else return _simplicial_set_->fillIns();
   }
 
 } /* namespace gum */

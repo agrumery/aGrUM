@@ -79,14 +79,11 @@ INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkModification(const EdgeDeletion& cha
 /// checks whether the constraints enable to perform a graph change
 INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkModification(const GraphChange& change) const {
   switch (change.type()) {
-    case GraphChangeType::EDGE_ADDITION:
-      return checkEdgeAddition(change.node1(), change.node2());
+    case GraphChangeType::EDGE_ADDITION: return checkEdgeAddition(change.node1(), change.node2());
 
-    case GraphChangeType::EDGE_DELETION:
-      return checkEdgeDeletion(change.node1(), change.node2());
+    case GraphChangeType::EDGE_DELETION: return checkEdgeDeletion(change.node1(), change.node2());
 
-    default:
-      GUM_ERROR(OperationNotAllowed, "arc modifications are not supported by the constraint")
+    default: GUM_ERROR(OperationNotAllowed, "arc modifications are not supported by the constraint")
   }
 }
 

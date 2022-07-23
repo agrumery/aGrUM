@@ -70,10 +70,8 @@ namespace gum {
      MultiDimProjection< TABLE >::execute(const TABLE&                          table,
                                           const Set< const DiscreteVariable* >& del_vars) const {
     // projected constants are equal to the same constant
-    if (table.variablesSequence().empty())
-      return new TABLE(table);
-    else
-      return new TABLE(proj_(table, del_vars));
+    if (table.variablesSequence().empty()) return new TABLE(table);
+    else return new TABLE(proj_(table, del_vars));
   }
 
   /// creates and returns the projection of the table over a subset of its vars
@@ -82,10 +80,8 @@ namespace gum {
      MultiDimProjection< TABLE >::execute(TABLE&                                container,
                                           const TABLE&                          table,
                                           const Set< const DiscreteVariable* >& del_vars) const {
-    if (table.variablesSequence().empty())
-      container = table;
-    else
-      container = proj_(table, del_vars);
+    if (table.variablesSequence().empty()) container = table;
+    else container = proj_(table, del_vars);
   }
 
   /// returns the set of operations to perform as well as the result of the projection

@@ -120,7 +120,9 @@ namespace gum {
 
       /// an enumeration to select the type of parameter estimation we shall
       /// apply
-      enum class ParamEstimatorType { ML };
+      enum class ParamEstimatorType {
+        ML
+      };
 
       /// an enumeration to select the prior
       enum class BNLearnerPriorType {
@@ -938,10 +940,8 @@ namespace gum {
 
       /// Get the value of epsilon
       double epsilon() const {
-        if (currentAlgorithm_ != nullptr)
-          return currentAlgorithm_->epsilon();
-        else
-          GUM_ERROR(FatalError, "No chosen algorithm for learning")
+        if (currentAlgorithm_ != nullptr) return currentAlgorithm_->epsilon();
+        else GUM_ERROR(FatalError, "No chosen algorithm for learning")
       }
 
       /// Disable stopping criterion on epsilon
@@ -963,10 +963,8 @@ namespace gum {
       /// @return true if stopping criterion on epsilon is enabled, false
       /// otherwise
       bool isEnabledEpsilon() const {
-        if (currentAlgorithm_ != nullptr)
-          return currentAlgorithm_->isEnabledEpsilon();
-        else
-          GUM_ERROR(FatalError, "No chosen algorithm for learning")
+        if (currentAlgorithm_ != nullptr) return currentAlgorithm_->isEnabledEpsilon();
+        else GUM_ERROR(FatalError, "No chosen algorithm for learning")
       }
       /// @}
 
@@ -984,10 +982,8 @@ namespace gum {
 
       /// Get the value of the minimal epsilon rate
       double minEpsilonRate() const {
-        if (currentAlgorithm_ != nullptr)
-          return currentAlgorithm_->minEpsilonRate();
-        else
-          GUM_ERROR(FatalError, "No chosen algorithm for learning")
+        if (currentAlgorithm_ != nullptr) return currentAlgorithm_->minEpsilonRate();
+        else GUM_ERROR(FatalError, "No chosen algorithm for learning")
       }
 
       /// Disable stopping criterion on epsilon rate
@@ -1007,10 +1003,8 @@ namespace gum {
       /// @return true if stopping criterion on epsilon rate is enabled, false
       /// otherwise
       bool isEnabledMinEpsilonRate() const {
-        if (currentAlgorithm_ != nullptr)
-          return currentAlgorithm_->isEnabledMinEpsilonRate();
-        else
-          GUM_ERROR(FatalError, "No chosen algorithm for learning")
+        if (currentAlgorithm_ != nullptr) return currentAlgorithm_->isEnabledMinEpsilonRate();
+        else GUM_ERROR(FatalError, "No chosen algorithm for learning")
       }
       /// @}
 
@@ -1028,10 +1022,8 @@ namespace gum {
 
       /// @return the criterion on number of iterations
       Size maxIter() const {
-        if (currentAlgorithm_ != nullptr)
-          return currentAlgorithm_->maxIter();
-        else
-          GUM_ERROR(FatalError, "No chosen algorithm for learning")
+        if (currentAlgorithm_ != nullptr) return currentAlgorithm_->maxIter();
+        else GUM_ERROR(FatalError, "No chosen algorithm for learning")
       }
 
       /// Disable stopping criterion on max iterations
@@ -1051,10 +1043,8 @@ namespace gum {
       /// @return true if stopping criterion on max iterations is enabled, false
       /// otherwise
       bool isEnabledMaxIter() const {
-        if (currentAlgorithm_ != nullptr)
-          return currentAlgorithm_->isEnabledMaxIter();
-        else
-          GUM_ERROR(FatalError, "No chosen algorithm for learning")
+        if (currentAlgorithm_ != nullptr) return currentAlgorithm_->isEnabledMaxIter();
+        else GUM_ERROR(FatalError, "No chosen algorithm for learning")
       }
       /// @}
 
@@ -1073,18 +1063,14 @@ namespace gum {
 
       /// returns the timeout (in seconds)
       double maxTime() const {
-        if (currentAlgorithm_ != nullptr)
-          return currentAlgorithm_->maxTime();
-        else
-          GUM_ERROR(FatalError, "No chosen algorithm for learning")
+        if (currentAlgorithm_ != nullptr) return currentAlgorithm_->maxTime();
+        else GUM_ERROR(FatalError, "No chosen algorithm for learning")
       }
 
       /// get the current running time in second (double)
       double currentTime() const {
-        if (currentAlgorithm_ != nullptr)
-          return currentAlgorithm_->currentTime();
-        else
-          GUM_ERROR(FatalError, "No chosen algorithm for learning")
+        if (currentAlgorithm_ != nullptr) return currentAlgorithm_->currentTime();
+        else GUM_ERROR(FatalError, "No chosen algorithm for learning")
       }
 
       /// Disable stopping criterion on timeout
@@ -1103,10 +1089,8 @@ namespace gum {
       /// @return true if stopping criterion on timeout is enabled, false
       /// otherwise
       bool isEnabledMaxTime() const {
-        if (currentAlgorithm_ != nullptr)
-          return currentAlgorithm_->isEnabledMaxTime();
-        else
-          GUM_ERROR(FatalError, "No chosen algorithm for learning")
+        if (currentAlgorithm_ != nullptr) return currentAlgorithm_->isEnabledMaxTime();
+        else GUM_ERROR(FatalError, "No chosen algorithm for learning")
       }
       /// @}
 
@@ -1121,10 +1105,8 @@ namespace gum {
       };
 
       Size periodSize() const {
-        if (currentAlgorithm_ != nullptr)
-          return currentAlgorithm_->periodSize();
-        else
-          GUM_ERROR(FatalError, "No chosen algorithm for learning")
+        if (currentAlgorithm_ != nullptr) return currentAlgorithm_->periodSize();
+        else GUM_ERROR(FatalError, "No chosen algorithm for learning")
       }
       /// @}
 
@@ -1138,10 +1120,8 @@ namespace gum {
       };
 
       bool verbosity() const {
-        if (currentAlgorithm_ != nullptr)
-          return currentAlgorithm_->verbosity();
-        else
-          GUM_ERROR(FatalError, "No chosen algorithm for learning")
+        if (currentAlgorithm_ != nullptr) return currentAlgorithm_->verbosity();
+        else GUM_ERROR(FatalError, "No chosen algorithm for learning")
       }
       /// @}
 
@@ -1149,26 +1129,20 @@ namespace gum {
       /// @{
 
       ApproximationSchemeSTATE stateApproximationScheme() const {
-        if (currentAlgorithm_ != nullptr)
-          return currentAlgorithm_->stateApproximationScheme();
-        else
-          GUM_ERROR(FatalError, "No chosen algorithm for learning")
+        if (currentAlgorithm_ != nullptr) return currentAlgorithm_->stateApproximationScheme();
+        else GUM_ERROR(FatalError, "No chosen algorithm for learning")
       }
 
       /// @throw OperationNotAllowed if scheme not performed
       Size nbrIterations() const {
-        if (currentAlgorithm_ != nullptr)
-          return currentAlgorithm_->nbrIterations();
-        else
-          GUM_ERROR(FatalError, "No chosen algorithm for learning")
+        if (currentAlgorithm_ != nullptr) return currentAlgorithm_->nbrIterations();
+        else GUM_ERROR(FatalError, "No chosen algorithm for learning")
       }
 
       /// @throw OperationNotAllowed if scheme not performed or verbosity=false
       const std::vector< double >& history() const {
-        if (currentAlgorithm_ != nullptr)
-          return currentAlgorithm_->history();
-        else
-          GUM_ERROR(FatalError, "No chosen algorithm for learning")
+        if (currentAlgorithm_ != nullptr) return currentAlgorithm_->history();
+        else GUM_ERROR(FatalError, "No chosen algorithm for learning")
       }
       /// @}
     };

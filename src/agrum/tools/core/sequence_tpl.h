@@ -70,10 +70,8 @@ namespace gum {
          &seq)} {
     GUM_CONSTRUCTOR(SequenceIteratorSafe);
 
-    if (pos > _seq_->size())
-      _iterator_ = _seq_->size();   // make the iterator point to end
-    else
-      _iterator_ = pos;
+    if (pos > _seq_->size()) _iterator_ = _seq_->size();   // make the iterator point to end
+    else _iterator_ = pos;
   }
 
   // default constructor
@@ -84,10 +82,8 @@ namespace gum {
          &seq)} {
     GUM_CONSTRUCTOR(SequenceIteratorSafe);
 
-    if (pos > _seq_->size())
-      _iterator_ = _seq_->size();   // make the iterator point to end
-    else
-      _iterator_ = pos;
+    if (pos > _seq_->size()) _iterator_ = _seq_->size();   // make the iterator point to end
+    else _iterator_ = pos;
   }
 
   // copy constructor
@@ -135,10 +131,8 @@ namespace gum {
   // point the iterator to the next value in the sequence
   template < typename Key >
   INLINE SequenceIteratorSafe< Key >& SequenceIteratorSafe< Key >::operator++() noexcept {
-    if (_iterator_ < _seq_->size())
-      ++_iterator_;
-    else
-      _iterator_ = _seq_->size();
+    if (_iterator_ < _seq_->size()) ++_iterator_;
+    else _iterator_ = _seq_->size();
 
     return *this;
   }
@@ -214,10 +208,8 @@ namespace gum {
   // the iterator points to the posth element (0 = beginning of the sequence).
   template < typename Key >
   INLINE void SequenceIteratorSafe< Key >::_setPos_(Idx pos) noexcept {
-    if (pos > _seq_->size())
-      _iterator_ = _seq_->size();
-    else
-      _iterator_ = pos;
+    if (pos > _seq_->size()) _iterator_ = _seq_->size();
+    else _iterator_ = pos;
   }
 
   // the iterator points to the posth element (0 = beginning of the sequence).
@@ -541,8 +533,7 @@ namespace gum {
   template < typename Key, bool Gen >
   bool SequenceImplementation< Key, Gen >::operator==(
      const SequenceImplementation< Key, Gen >& k) const {
-    if (size() != k.size())
-      return false;
+    if (size() != k.size()) return false;
     else {
       for (Idx i = 0; i < size(); ++i)
         if (*_v_[i] != *(k._v_[i])) return false;
@@ -576,7 +567,7 @@ namespace gum {
   template < typename Key, bool Gen >
   INLINE const SequenceIteratorSafe< Key >&
                SequenceImplementation< Key, Gen >::endSafe() const noexcept {
-    return _end_safe_;
+              return _end_safe_;
   }
 
   // return an iterator pointing to the last element
@@ -591,7 +582,7 @@ namespace gum {
   template < typename Key, bool Gen >
   INLINE const SequenceIteratorSafe< Key >&
                SequenceImplementation< Key, Gen >::rendSafe() const noexcept {
-    return _rend_safe_;
+              return _rend_safe_;
   }
 
   // returns the unsafe begin iterator
@@ -895,8 +886,7 @@ namespace gum {
   template < typename Key >
   bool SequenceImplementation< Key, true >::operator==(
      const SequenceImplementation< Key, true >& k) const {
-    if (size() != k.size())
-      return false;
+    if (size() != k.size()) return false;
     else {
       for (Idx i = 0; i < size(); ++i)
         if (_v_[i] != k._v_[i]) return false;
@@ -930,7 +920,7 @@ namespace gum {
   template < typename Key >
   INLINE const SequenceIteratorSafe< Key >&
                SequenceImplementation< Key, true >::endSafe() const noexcept {
-    return _end_safe_;
+              return _end_safe_;
   }
 
   // return an iterator pointing to the last element
@@ -945,7 +935,7 @@ namespace gum {
   template < typename Key >
   INLINE const SequenceIteratorSafe< Key >&
                SequenceImplementation< Key, true >::rendSafe() const noexcept {
-    return _rend_safe_;
+              return _rend_safe_;
   }
 
   // returns the unsafe begin iterator

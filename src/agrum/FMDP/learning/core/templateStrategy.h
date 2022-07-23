@@ -34,7 +34,9 @@ namespace gum {
 
   template < int v >
   struct Int2Type {
-    enum { value = v };
+    enum {
+      value = v
+    };
   };
 
   enum TESTNAME {

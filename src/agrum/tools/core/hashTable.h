@@ -204,7 +204,9 @@ namespace gum {
      * @brief A dummy type for the emplace constructor.
      * This type is used to prevent the Bucket emplace (int,...) to compile.
      */
-    enum class Emplace { EMPLACE };
+    enum class Emplace {
+      EMPLACE
+    };
 
     /**
      * Class constructor.
@@ -468,10 +470,10 @@ namespace gum {
     friend class HashTableConstIterator< Key, Val >;
     friend class HashTableIteratorSafe< Key, Val >;
     friend class HashTableConstIteratorSafe< Key, Val >;
-    friend std::ostream& operator<<<>(std::ostream&, const HashTableList< Key, Val >&);
-    friend std::ostream& operator<<<>(std::ostream&, const HashTableList< Key*, Val >&);
-    friend std::ostream& operator<<<>(std::ostream&, const HashTable< Key, Val >&);
-    friend std::ostream& operator<<<>(std::ostream&, const HashTable< Key*, Val >&);
+    friend std::ostream& operator<< <>(std::ostream&, const HashTableList< Key, Val >&);
+    friend std::ostream& operator<< <>(std::ostream&, const HashTableList< Key*, Val >&);
+    friend std::ostream& operator<< <>(std::ostream&, const HashTable< Key, Val >&);
+    friend std::ostream& operator<< <>(std::ostream&, const HashTable< Key*, Val >&);
     /// @}
 
     /// A pointer on the first element of the chained list.
@@ -1588,8 +1590,8 @@ namespace gum {
     friend class HashTableIteratorSafe< Key, Val >;
     friend class HashTableConstIteratorSafe< Key, Val >;
 
-    friend std::ostream& operator<<<>(std::ostream&, const HashTable< Key, Val >&);
-    friend std::ostream& operator<<<>(std::ostream& s, const HashTable< Key*, Val >& table);
+    friend std::ostream& operator<< <>(std::ostream&, const HashTable< Key, Val >&);
+    friend std::ostream& operator<< <>(std::ostream& s, const HashTable< Key*, Val >& table);
 
     /// For bijections to quickly access data.
     template < typename T1, typename T2 >

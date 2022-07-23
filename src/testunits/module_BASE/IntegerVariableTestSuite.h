@@ -202,5 +202,35 @@ namespace gum_tests {
 
       delete var5;
     }
+
+
+    void testSecondConstructor() {
+      {
+        gum::IntegerVariable var("var", "this is var2", 0.0, 10, gum::Size(6));
+
+        TS_ASSERT_EQUALS(var.domainSize(), (gum::Size)6)
+        const gum::Sequence< int >& vect = var.integerDomain();
+        TS_ASSERT_EQUALS(vect.size(), (gum::Size)(gum::Size)6)
+        TS_ASSERT_EQUALS(vect[0], 0)
+        TS_ASSERT_EQUALS(vect[1], 2)
+        TS_ASSERT_EQUALS(vect[2], 4)
+        TS_ASSERT_EQUALS(vect[3], 6)
+        TS_ASSERT_EQUALS(vect[4], 8)
+        TS_ASSERT_EQUALS(vect[5], 10)
+      }
+      {
+        gum::IntegerVariable var("var", "this is var2", 0.0, 9, gum::Size(6));
+
+        TS_ASSERT_EQUALS(var.domainSize(), (gum::Size)6)
+        const gum::Sequence< int >& vect = var.integerDomain();
+        TS_ASSERT_EQUALS(vect.size(), (gum::Size)(gum::Size)6)
+        TS_ASSERT_EQUALS(vect[0], 0)
+        TS_ASSERT_EQUALS(vect[1], 1)
+        TS_ASSERT_EQUALS(vect[2], 3)
+        TS_ASSERT_EQUALS(vect[3], 5)
+        TS_ASSERT_EQUALS(vect[4], 7)
+        TS_ASSERT_EQUALS(vect[5], 9)
+      }
+    }
   };
 }   // namespace gum_tests

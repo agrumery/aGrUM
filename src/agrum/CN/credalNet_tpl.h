@@ -449,10 +449,8 @@ namespace gum {
         for (Size entry = 0; entry < entry_size; entry++) {
           GUM_SCALAR den;
 
-          if (oneNet)
-            den = 0;
-          else
-            den = potential_max->get(ins_max);
+          if (oneNet) den = 0;
+          else den = potential_max->get(ins_max);
 
           Size nbm = 0;
 
@@ -498,12 +496,9 @@ namespace gum {
 
           GUM_SCALAR epsilon;
 
-          if (beta == 0)
-            epsilon = 0;
-          else if (den == 0 || beta == 1)
-            epsilon = GUM_SCALAR(1.0);
-          else
-            epsilon = GUM_SCALAR(std::pow(beta, std::log1p(den)));
+          if (beta == 0) epsilon = 0;
+          else if (den == 0 || beta == 1) epsilon = GUM_SCALAR(1.0);
+          else epsilon = GUM_SCALAR(std::pow(beta, std::log1p(den)));
 
           epsi_moy += epsilon;
           epsi_den += 1;
@@ -964,15 +959,12 @@ namespace gum {
       const NodeProperty< std::vector< std::vector< std::vector< GUM_SCALAR > > > >*
          credalNet_current_cpt;
 
-      if (this->_current_bn_ == nullptr)
-        current_bn = &this->_src_bn_;
-      else
-        current_bn = this->_current_bn_;
+      if (this->_current_bn_ == nullptr) current_bn = &this->_src_bn_;
+      else current_bn = this->_current_bn_;
 
       if (this->_credalNet_current_cpt_ == nullptr)
         credalNet_current_cpt = &this->_credalNet_src_cpt_;
-      else
-        credalNet_current_cpt = this->_credalNet_current_cpt_;
+      else credalNet_current_cpt = this->_credalNet_current_cpt_;
 
       /*if ( this-> _current_nodeType_ == nullptr )
          _current_nodeType_ = & this-> _nodeType_;
@@ -1078,10 +1070,8 @@ namespace gum {
                 Size pas = Size(int2Pow((unsigned long)preced));
                 Size elem;
 
-                if (val == 0)
-                  elem = 0;
-                else
-                  elem = pas;
+                if (val == 0) elem = 0;
+                else elem = pas;
 
                 while (elem < vertexsize) {
                   incc[elem]++;
@@ -1187,10 +1177,8 @@ namespace gum {
           for (Size entry = 0; entry < num; entry++) {
             std::vector< std::vector< GUM_SCALAR > > vertices(1, std::vector< GUM_SCALAR >(2, 0));
 
-            if (mod == entry)
-              vertices[0][1] = 1;
-            else
-              vertices[0][0] = 1;
+            if (mod == entry) vertices[0][1] = 1;
+            else vertices[0][0] = 1;
 
             icpt[entry] = vertices;
           }
@@ -1276,8 +1264,7 @@ namespace gum {
 
           if (credalNet_currentCpt()[node][pconf].size() > 1)
             v2 = credalNet_currentCpt()[node][pconf][1][1];
-          else
-            v2 = v1;
+          else v2 = v1;
 
           GUM_SCALAR delta = v1 - v2;
           min[pconf]       = (delta >= 0) ? v2 : v1;
@@ -1325,15 +1312,12 @@ namespace gum {
       const NodeProperty< std::vector< std::vector< std::vector< GUM_SCALAR > > > >*
          _credalNet_current_cpt_;
 
-      if (this->_current_bn_ == nullptr)
-        _current_bn_ = &this->_src_bn_;
-      else
-        _current_bn_ = this->_current_bn_;
+      if (this->_current_bn_ == nullptr) _current_bn_ = &this->_src_bn_;
+      else _current_bn_ = this->_current_bn_;
 
       if (this->_credalNet_current_cpt_ == nullptr)
         _credalNet_current_cpt_ = &this->_credalNet_src_cpt_;
-      else
-        _credalNet_current_cpt_ = this->_credalNet_current_cpt_;
+      else _credalNet_current_cpt_ = this->_credalNet_current_cpt_;
 
       for (auto node: _current_bn_->nodes()) {
         const Potential< GUM_SCALAR >* potential(&_current_bn_->cpt(node));
@@ -1408,10 +1392,8 @@ namespace gum {
       BIFReader< GUM_SCALAR > reader(&_src_bn_, src_min_num);
       std::string             other;
 
-      if (src_max_den.compare("") != 0)
-        other = src_max_den;
-      else
-        other = src_min_num;
+      if (src_max_den.compare("") != 0) other = src_max_den;
+      else other = src_min_num;
 
       BIFReader< GUM_SCALAR > reader_min(&_src_bn_min_, src_min_num);
       BIFReader< GUM_SCALAR > reader_max(&_src_bn_max_, other);
@@ -1427,10 +1409,8 @@ namespace gum {
       _src_bn_     = src_min_num;
       _src_bn_min_ = src_min_num;
 
-      if (src_max_den.size() > 0)
-        _src_bn_max_ = src_max_den;
-      else
-        _src_bn_max_ = src_min_num;
+      if (src_max_den.size() > 0) _src_bn_max_ = src_max_den;
+      else _src_bn_max_ = src_min_num;
     }
 
     template < typename GUM_SCALAR >
@@ -1449,10 +1429,8 @@ namespace gum {
     void CredalNet< GUM_SCALAR >::_bnCopy_(BayesNet< GUM_SCALAR >& dest) {
       const BayesNet< GUM_SCALAR >* _current_bn_;
 
-      if (this->_current_bn_ == nullptr)
-        _current_bn_ = &this->_src_bn_;
-      else
-        _current_bn_ = this->_current_bn_;
+      if (this->_current_bn_ == nullptr) _current_bn_ = &this->_src_bn_;
+      else _current_bn_ = this->_current_bn_;
 
       for (auto node: _current_bn_->nodes())
         dest.add(_current_bn_->variable(node));
@@ -1618,8 +1596,7 @@ namespace gum {
       while (v_file.good() && keep_going) {
         getline(v_file, line);
 
-        if (line.size() == 0)
-          continue;
+        if (line.size() == 0) continue;
         else if (line.compare("end") == 0) {
           keep_going = false;
           // this is to get vertices number :
@@ -1761,20 +1738,14 @@ namespace gum {
 
       const BayesNet< GUM_SCALAR >* _current_bn_;
 
-      if (this->_current_bn_ == nullptr)
-        _current_bn_ = &_src_bn_;
-      else
-        _current_bn_ = this->_current_bn_;
+      if (this->_current_bn_ == nullptr) _current_bn_ = &_src_bn_;
+      else _current_bn_ = this->_current_bn_;
 
-      if (this->_credalNet_current_cpt_ == nullptr)
-        _credalNet_current_cpt_ = &_credalNet_src_cpt_;
-      else
-        _credalNet_current_cpt_ = this->_credalNet_current_cpt_;
+      if (this->_credalNet_current_cpt_ == nullptr) _credalNet_current_cpt_ = &_credalNet_src_cpt_;
+      else _credalNet_current_cpt_ = this->_credalNet_current_cpt_;
 
-      if (this->_current_nodeType_ == nullptr)
-        _current_nodeType_ = &_original_nodeType_;
-      else
-        _current_nodeType_ = this->_current_nodeType_;
+      if (this->_current_nodeType_ == nullptr) _current_nodeType_ = &_original_nodeType_;
+      else _current_nodeType_ = this->_current_nodeType_;
 
       /*if ( !  _current_nodeType_->empty() )
          _current_nodeType_->clear();*/
@@ -1825,10 +1796,8 @@ namespace gum {
 
         }   // end of : for each parents entry
 
-        if (vacuous)
-          _current_nodeType_->insert(node, NodeType::Vacuous);
-        else if (precise)
-          _current_nodeType_->insert(node, NodeType::Precise);
+        if (vacuous) _current_nodeType_->insert(node, NodeType::Vacuous);
+        else if (precise) _current_nodeType_->insert(node, NodeType::Precise);
 
       }   // end of : for each variable
     }

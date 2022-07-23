@@ -87,6 +87,13 @@ namespace gum {
    */
   bool isInteger(const std::string& val);
 
+  /**
+   * @brief return true is a string contains a numerical (double) value
+   * @param s A string
+   * @return true if s exactly contains a double
+   */
+  bool isNumerical(const std::string& val);
+
 
   /**
    * @brief trim from start (in place)
@@ -113,6 +120,13 @@ namespace gum {
    */
   std::string remove_newline(const std::string& s);
 
+  template < typename T >
+  inline std::string compact_tostr(T value) {
+    std::ostringstream s;
+    s.precision(std::numeric_limits< T >::digits10);
+    s << value;
+    return s.str();
+  }
   /// @}
 } /* namespace gum */
 

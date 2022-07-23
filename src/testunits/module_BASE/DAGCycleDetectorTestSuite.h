@@ -130,33 +130,24 @@ namespace gum_tests {
 
         switch (modif.type()) {
           case gum::DAGCycleDetector::ChangeType::ARC_DELETION:
-            if (deletions.exists(arc))
-              ++deletions[arc];
-            else
-              deletions.insert(arc, 1);
+            if (deletions.exists(arc)) ++deletions[arc];
+            else deletions.insert(arc, 1);
             break;
 
           case gum::DAGCycleDetector::ChangeType::ARC_ADDITION:
-            if (additions.exists(arc))
-              ++additions[arc];
-            else
-              additions.insert(arc, 1);
+            if (additions.exists(arc)) ++additions[arc];
+            else additions.insert(arc, 1);
             break;
 
           case gum::DAGCycleDetector::ChangeType::ARC_REVERSAL:
-            if (deletions.exists(arc))
-              ++deletions[arc];
-            else
-              deletions.insert(arc, 1);
+            if (deletions.exists(arc)) ++deletions[arc];
+            else deletions.insert(arc, 1);
             arc = gum::Arc(modif.head(), modif.tail());
-            if (additions.exists(arc))
-              ++additions[arc];
-            else
-              additions.insert(arc, 1);
+            if (additions.exists(arc)) ++additions[arc];
+            else additions.insert(arc, 1);
             break;
 
-          default:
-            GUM_ERROR(gum::OperationNotAllowed, "undefined change type")
+          default: GUM_ERROR(gum::OperationNotAllowed, "undefined change type")
         }
       }
 
@@ -292,8 +283,7 @@ namespace gum_tests {
                   gg.addArc(chgt.tail(), chgt.head());
                   break;
 
-                default:
-                  GUM_ERROR(gum::NotFound, "del_add_changes")
+                default: GUM_ERROR(gum::NotFound, "del_add_changes")
               }
             }
 
@@ -351,8 +341,7 @@ namespace gum_tests {
                 detector1.reverseArc(chgt.tail(), chgt.head());
                 break;
 
-              default:
-                GUM_ERROR(gum::NotFound, "del_add_changes")
+              default: GUM_ERROR(gum::NotFound, "del_add_changes")
             }
             detector2.setDAG(g);
           }
@@ -395,8 +384,7 @@ namespace gum_tests {
                                  detector2.hasCycleFromModifications(changes));
                 break;
 
-              default:
-                GUM_ERROR(gum::NotFound, "del_add_changes")
+              default: GUM_ERROR(gum::NotFound, "del_add_changes")
             }
           }
         }

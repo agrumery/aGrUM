@@ -307,9 +307,7 @@ namespace gum {
           score = 0.5 * (rx - 1) * (ry - 1) * rui * std::log2(N);
         } break;
 
-        case KModeTypes::NML:
-          score = _k_NML_.score(var1, var2, conditioning_ids);
-          break;
+        case KModeTypes::NML: score = _k_NML_.score(var1, var2, conditioning_ids); break;
 
         default:
           GUM_ERROR(NotImplementedYet,

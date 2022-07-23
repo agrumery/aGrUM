@@ -179,7 +179,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const Set< NodeSet >&
                JointTargetedMNInference< GUM_SCALAR >::jointTargets() const noexcept {
-    return _joint_targets_;
+              return _joint_targets_;
   }
 
   /// returns the number of target sets
@@ -218,20 +218,16 @@ namespace gum {
 
     if (!this->isInferenceDone()) { this->makeInference(); }
 
-    if (found_exact_target)
-      return jointPosterior_(real_nodes);
-    else
-      return jointPosterior_(real_nodes, super_target);
+    if (found_exact_target) return jointPosterior_(real_nodes);
+    else return jointPosterior_(real_nodes, super_target);
   }
 
 
   // Compute the posterior of a node
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >& JointTargetedMNInference< GUM_SCALAR >::posterior(NodeId node) {
-    if (this->isTarget(node))
-      return MarginalTargetedMNInference< GUM_SCALAR >::posterior(node);
-    else
-      return jointPosterior(NodeSet{node});
+    if (this->isTarget(node)) return MarginalTargetedMNInference< GUM_SCALAR >::posterior(node);
+    else return jointPosterior(NodeSet{node});
   }
 
   // Compute the posterior of a node

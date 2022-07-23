@@ -144,7 +144,7 @@ namespace gum {
     /// returns the current ranges
     INLINE const std::vector< std::pair< std::size_t, std::size_t > >&
                  CorrectedMutualInformation::ranges() const {
-      return _NH_.ranges();
+                return _NH_.ranges();
     }
 
 

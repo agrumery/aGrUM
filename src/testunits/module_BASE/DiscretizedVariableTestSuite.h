@@ -174,6 +174,80 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(vv, (gum::Size)2)
     }
 
+    void testNormalLimitsWithEmpiricalInConstructor() {
+      gum::DiscretizedVariable< unsigned int > v("var",
+                                                 "a var",
+                                                 {1, 3, 5, 7},
+                                                 true);   // empirical is true
+
+      TS_ASSERT_EQUALS(v.toString(), "var:Discretized(<(1;3[,[3;5[,[5;7)>)")
+
+      gum::Size vv = (gum::Size)0;
+
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["0"])
+      TS_ASSERT_EQUALS(vv, (gum::Size)0)
+
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["1"])
+      TS_ASSERT_EQUALS(vv, (gum::Size)0)
+
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["2"])
+      TS_ASSERT_EQUALS(vv, (gum::Size)0)
+
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["3"])
+      TS_ASSERT_EQUALS(vv, (gum::Size)1)
+
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["4"])
+      TS_ASSERT_EQUALS(vv, (gum::Size)1)
+
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["5"])
+      TS_ASSERT_EQUALS(vv, (gum::Size)2)
+
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["6"])
+      TS_ASSERT_EQUALS(vv, (gum::Size)2)
+
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["7"])
+      TS_ASSERT_EQUALS(vv, (gum::Size)2)
+
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["8"])
+      TS_ASSERT_EQUALS(vv, (gum::Size)2)
+    }
+
+
+    void testNormalLimitsWithNoEmpiricalInConstructor() {
+      gum::DiscretizedVariable< unsigned int > v("var",
+                                                 "a var",
+                                                 {1, 3, 5, 7});   // empirical is false
+
+      TS_ASSERT_EQUALS(v.toString(), "var:Discretized(<[1;3[,[3;5[,[5;7]>)")
+
+      auto vv = (gum::Size)0;
+
+      TS_ASSERT_THROWS(vv = v["0"], gum::OutOfBounds&)
+
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["1"])
+      TS_ASSERT_EQUALS(vv, (gum::Size)0)
+
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["2"])
+      TS_ASSERT_EQUALS(vv, (gum::Size)0)
+
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["3"])
+      TS_ASSERT_EQUALS(vv, (gum::Size)1)
+
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["4"])
+      TS_ASSERT_EQUALS(vv, (gum::Size)1)
+
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["5"])
+      TS_ASSERT_EQUALS(vv, (gum::Size)2)
+
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["6"])
+      TS_ASSERT_EQUALS(vv, (gum::Size)2)
+
+      TS_GUM_ASSERT_THROWS_NOTHING(vv = v["7"])
+      TS_ASSERT_EQUALS(vv, (gum::Size)2)
+
+      TS_ASSERT_THROWS(vv = v["8"], gum::OutOfBounds&)
+    }
+
     void testOrderTicks() {
       for (int i = 1; i < 7; i++)
         for (int j = 1; j < 7; j++)

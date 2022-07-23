@@ -110,65 +110,44 @@ namespace gum {
   /// publishing Errors API
   template < typename GUM_SCALAR >
   INLINE Idx BIFReader< GUM_SCALAR >::errLine(Idx i) {
-    if (_parseDone_)
-      return _parser_->errors().error(i).line;
-    else {
-      GUM_ERROR(OperationNotAllowed, "BIF file not parsed yet")
-    }
+    if (_parseDone_) return _parser_->errors().error(i).line;
+    else { GUM_ERROR(OperationNotAllowed, "BIF file not parsed yet") }
   }
 
   template < typename GUM_SCALAR >
   INLINE Idx BIFReader< GUM_SCALAR >::errCol(Idx i) {
-    if (_parseDone_)
-      return _parser_->errors().error(i).column;
-    else {
-      GUM_ERROR(OperationNotAllowed, "BIF file not parsed yet")
-    }
+    if (_parseDone_) return _parser_->errors().error(i).column;
+    else { GUM_ERROR(OperationNotAllowed, "BIF file not parsed yet") }
   }
 
   template < typename GUM_SCALAR >
   INLINE bool BIFReader< GUM_SCALAR >::errIsError(Idx i) {
-    if (_parseDone_)
-      return _parser_->errors().error(i).is_error;
-    else {
-      GUM_ERROR(OperationNotAllowed, "BIF file not parsed yet")
-    }
+    if (_parseDone_) return _parser_->errors().error(i).is_error;
+    else { GUM_ERROR(OperationNotAllowed, "BIF file not parsed yet") }
   }
 
   template < typename GUM_SCALAR >
   INLINE std::string BIFReader< GUM_SCALAR >::errMsg(Idx i) {
-    if (_parseDone_)
-      return _parser_->errors().error(i).msg;
-    else {
-      GUM_ERROR(OperationNotAllowed, "BIF file not parsed yet")
-    }
+    if (_parseDone_) return _parser_->errors().error(i).msg;
+    else { GUM_ERROR(OperationNotAllowed, "BIF file not parsed yet") }
   }
 
   template < typename GUM_SCALAR >
   INLINE void BIFReader< GUM_SCALAR >::showElegantErrors(std::ostream& o) {
-    if (_parseDone_)
-      _parser_->errors().elegantErrors(o);
-    else {
-      GUM_ERROR(OperationNotAllowed, "BIF file not parsed yet")
-    }
+    if (_parseDone_) _parser_->errors().elegantErrors(o);
+    else { GUM_ERROR(OperationNotAllowed, "BIF file not parsed yet") }
   }
 
   template < typename GUM_SCALAR >
   INLINE void BIFReader< GUM_SCALAR >::showElegantErrorsAndWarnings(std::ostream& o) {
-    if (_parseDone_)
-      _parser_->errors().elegantErrorsAndWarnings(o);
-    else {
-      GUM_ERROR(OperationNotAllowed, "BIF file not parsed yet")
-    }
+    if (_parseDone_) _parser_->errors().elegantErrorsAndWarnings(o);
+    else { GUM_ERROR(OperationNotAllowed, "BIF file not parsed yet") }
   }
 
   template < typename GUM_SCALAR >
   INLINE void BIFReader< GUM_SCALAR >::showErrorCounts(std::ostream& o) {
-    if (_parseDone_)
-      _parser_->errors().syntheticResults(o);
-    else {
-      GUM_ERROR(OperationNotAllowed, "BIF file not parsed yet")
-    }
+    if (_parseDone_) _parser_->errors().syntheticResults(o);
+    else { GUM_ERROR(OperationNotAllowed, "BIF file not parsed yet") }
   }
 
   template < typename GUM_SCALAR >

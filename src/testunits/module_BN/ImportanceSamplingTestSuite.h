@@ -437,15 +437,10 @@ namespace gum_tests {
 
       gum::ImportanceSampling< double > inf(&bn);
       aSimpleImportanceListener         agsl(inf);
-      inf.setVerbosity(true);
+      inf.setVerbosity(false);
 
-      try {
-        // Testing the inference
-        inf.setVerbosity(false);
-        inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
-        inf.makeInference();
-
-      } catch (const gum::Exception& e) TS_ASSERT(false)
+      inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
+      TS_GUM_ASSERT_THROWS_NOTHING(inf.makeInference())
 
       TS_ASSERT_EQUALS(agsl.getNbr() * inf.periodSize(), inf.nbrIterations())
       TS_ASSERT_DIFFERS(agsl.getMess(), std::string(""))

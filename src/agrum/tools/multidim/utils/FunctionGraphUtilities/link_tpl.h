@@ -147,10 +147,8 @@ namespace gum {
       curLink  = curLink->nextLink();
     }
     if (curLink) {
-      if (prevLink)
-        prevLink->setNextLink(curLink->nextLink());
-      else
-        _firstLink_ = curLink->nextLink();
+      if (prevLink) prevLink->setNextLink(curLink->nextLink());
+      else _firstLink_ = curLink->nextLink();
       delete curLink;
     }
   }

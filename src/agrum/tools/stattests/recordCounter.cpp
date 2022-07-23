@@ -119,15 +119,15 @@ namespace gum {
     RecordCounter& RecordCounter::operator=(const RecordCounter& from) {
       if (this != &from) {
         ThreadNumberManager::operator=(from);
-        _parsers_                    = from._parsers_;
-        _ranges_                     = from._ranges_;
-        _thread_ranges_              = from._thread_ranges_;
-        _nodeId2columns_             = from._nodeId2columns_;
-        _last_DB_counting_           = from._last_DB_counting_;
-        _last_DB_ids_                = from._last_DB_ids_;
-        _last_nonDB_counting_        = from._last_nonDB_counting_;
-        _last_nonDB_ids_             = from._last_nonDB_ids_;
-        _min_nb_rows_per_thread_     = from._min_nb_rows_per_thread_;
+        _parsers_                = from._parsers_;
+        _ranges_                 = from._ranges_;
+        _thread_ranges_          = from._thread_ranges_;
+        _nodeId2columns_         = from._nodeId2columns_;
+        _last_DB_counting_       = from._last_DB_counting_;
+        _last_DB_ids_            = from._last_DB_ids_;
+        _last_nonDB_counting_    = from._last_nonDB_counting_;
+        _last_nonDB_ids_         = from._last_nonDB_ids_;
+        _min_nb_rows_per_thread_ = from._min_nb_rows_per_thread_;
       }
       return *this;
     }
@@ -137,15 +137,15 @@ namespace gum {
     RecordCounter& RecordCounter::operator=(RecordCounter&& from) {
       if (this != &from) {
         ThreadNumberManager::operator=(std::move(from));
-        _parsers_                    = std::move(from._parsers_);
-        _ranges_                     = std::move(from._ranges_);
-        _thread_ranges_              = std::move(from._thread_ranges_);
-        _nodeId2columns_             = std::move(from._nodeId2columns_);
-        _last_DB_counting_           = std::move(from._last_DB_counting_);
-        _last_DB_ids_                = std::move(from._last_DB_ids_);
-        _last_nonDB_counting_        = std::move(from._last_nonDB_counting_);
-        _last_nonDB_ids_             = std::move(from._last_nonDB_ids_);
-        _min_nb_rows_per_thread_     = from._min_nb_rows_per_thread_;
+        _parsers_                = std::move(from._parsers_);
+        _ranges_                 = std::move(from._ranges_);
+        _thread_ranges_          = std::move(from._thread_ranges_);
+        _nodeId2columns_         = std::move(from._nodeId2columns_);
+        _last_DB_counting_       = std::move(from._last_DB_counting_);
+        _last_DB_ids_            = std::move(from._last_DB_ids_);
+        _last_nonDB_counting_    = std::move(from._last_nonDB_counting_);
+        _last_nonDB_ids_         = std::move(from._last_nonDB_ids_);
+        _min_nb_rows_per_thread_ = from._min_nb_rows_per_thread_;
       }
       return *this;
     }
@@ -163,10 +163,8 @@ namespace gum {
     // changes the number min of rows a thread should process in a
     // multithreading context
     void RecordCounter::setMinNbRowsPerThread(const std::size_t nb) const {
-      if (nb == std::size_t(0))
-        _min_nb_rows_per_thread_ = std::size_t(1);
-      else
-        _min_nb_rows_per_thread_ = nb;
+      if (nb == std::size_t(0)) _min_nb_rows_per_thread_ = std::size_t(1);
+      else _min_nb_rows_per_thread_ = nb;
     }
 
 
@@ -176,16 +174,13 @@ namespace gum {
       std::stringstream msg;
       msg << "Counts cannot be performed on continuous variables. ";
       msg << "Unfortunately the following variable";
-      if (bad_vars.size() == 1)
-        msg << " is continuous: " << bad_vars[0];
+      if (bad_vars.size() == 1) msg << " is continuous: " << bad_vars[0];
       else {
         msg << "s are continuous: ";
         bool deja = false;
         for (const auto& name: bad_vars) {
-          if (deja)
-            msg << ", ";
-          else
-            deja = true;
+          if (deja) msg << ", ";
+          else deja = true;
           msg << name;
         }
       }
@@ -593,16 +588,12 @@ namespace gum {
       if (!incorrect_ranges.empty()) {
         std::stringstream str;
         str << "It is impossible to set the ranges because the following one";
-        if (incorrect_ranges.size() > 1)
-          str << "s are incorrect: ";
-        else
-          str << " is incorrect: ";
+        if (incorrect_ranges.size() > 1) str << "s are incorrect: ";
+        else str << " is incorrect: ";
         bool deja = false;
         for (const auto& range: incorrect_ranges) {
-          if (deja)
-            str << ", ";
-          else
-            deja = true;
+          if (deja) str << ", ";
+          else deja = true;
           str << '[' << range.first << ';' << range.second << ')';
         }
 
@@ -630,10 +621,8 @@ namespace gum {
         if (range.second > range.first) {
           const std::size_t range_size = range.second - range.first;
           std::size_t       nb_threads = range_size / _min_nb_rows_per_thread_;
-          if (nb_threads < 1)
-            nb_threads = 1;
-          else if (nb_threads > max_nb_threads)
-            nb_threads = max_nb_threads;
+          if (nb_threads < 1) nb_threads = 1;
+          else if (nb_threads > max_nb_threads) nb_threads = max_nb_threads;
           std::size_t nb_rows_par_thread = range_size / nb_threads;
           std::size_t rest_rows          = range_size - nb_rows_par_thread * nb_threads;
 

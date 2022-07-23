@@ -92,14 +92,14 @@ namespace gum_tests {
       std::string witness_angine[] = {"1", "0", "0", "0", "1", "1", "0", "0", "0"};
       std::string witness_coeur[] = {"OUI", "OUI", "OUI", "OUI", "OUI", "OUI", "NON", "NON", "NON"};
       float       witness_proba[] = {0.8786f,
-                               0.5807f,
-                               0.3912f,
-                               0.3773f,
-                               0.2127f,
-                               0.8760f,
-                               1 - 0.0163f,
-                               1 - 0.0710f,
-                               1 - 0.3765f};
+                                     0.5807f,
+                                     0.3912f,
+                                     0.3773f,
+                                     0.2127f,
+                                     0.8760f,
+                                     1 - 0.0163f,
+                                     1 - 0.0710f,
+                                     1 - 0.3765f};
       int         nbr             = 9;
 
       for (int l = 0; l < nbr; l++) {
@@ -137,7 +137,7 @@ namespace gum_tests {
 
       gum::Instantiation i(p);
       float              witness[] = {
-         // clang-format off
+                      // clang-format off
               0.26896108301760213f,0.7310389169823979f,
               0.13011979280757435f,0.8698802071924256f,
               0.14186323827049419f,0.8581367617295058f,

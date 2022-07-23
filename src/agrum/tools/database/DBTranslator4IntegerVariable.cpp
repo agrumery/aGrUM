@@ -137,7 +137,7 @@ namespace gum {
        DBTranslator4IntegerVariable::operator=(const DBTranslator4IntegerVariable& from) {
       if (this != &from) {
         DBTranslator::operator=(from);
-        _variable_            = from._variable_;
+        _variable_ = from._variable_;
       }
 
       return *this;
@@ -149,7 +149,7 @@ namespace gum {
        DBTranslator4IntegerVariable::operator=(DBTranslator4IntegerVariable&& from) {
       if (this != &from) {
         DBTranslator::operator=(std::move(from));
-        _variable_            = std::move(from._variable_);
+        _variable_ = std::move(from._variable_);
       }
 
       return *this;

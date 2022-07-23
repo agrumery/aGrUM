@@ -204,7 +204,7 @@ namespace gum {
     friend class SplayTree< Element >;
 
     /// Friendly to display
-    friend std::ostream& operator<<<>(std::ostream& out, const SplayBinaryNode< Element >&);
+    friend std::ostream& operator<< <>(std::ostream& out, const SplayBinaryNode< Element >&);
   };
 
   // ============================================================================
@@ -421,7 +421,7 @@ namespace gum {
     void copy_(const SplayTree< Element >&);
 
     /// Friendly to display
-    friend std::ostream& operator<<<>(std::ostream& out, const SplayTree< Element >&);
+    friend std::ostream& operator<< <>(std::ostream& out, const SplayTree< Element >&);
   };
 
 } /* namespace gum */

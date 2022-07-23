@@ -142,11 +142,9 @@ namespace gum {
   ScheduleMultiDim< TABLE >* ScheduleMultiDim< TABLE >::clone(bool force_copy) const {
     ScheduleMultiDim< TABLE >* new_sched;
 
-    if (!force_copy)
-      new_sched = new ScheduleMultiDim< TABLE >(*this);
+    if (!force_copy) new_sched = new ScheduleMultiDim< TABLE >(*this);
     else {
-      if (!isAbstract())
-        new_sched = new ScheduleMultiDim< TABLE >(*_table_, true, this->id());
+      if (!isAbstract()) new_sched = new ScheduleMultiDim< TABLE >(*_table_, true, this->id());
       else {
         new_sched                    = new ScheduleMultiDim< TABLE >(_var_sequence_, this->id());
         new_sched->_table_contained_ = true;
@@ -206,8 +204,8 @@ namespace gum {
         _table_contained_ = from._table_contained_;
       }
 
-      _var_sequence_             = from._var_sequence_;
-      _domain_size_              = from._domain_size_;
+      _var_sequence_ = from._var_sequence_;
+      _domain_size_  = from._domain_size_;
       IScheduleMultiDim::operator=(from);
     }
 
@@ -227,8 +225,8 @@ namespace gum {
       from._table_      = nullptr;
       _table_contained_ = from._table_contained_;
 
-      _var_sequence_             = from._var_sequence_;
-      _domain_size_              = from._domain_size_;
+      _var_sequence_ = from._var_sequence_;
+      _domain_size_  = from._domain_size_;
       IScheduleMultiDim::operator=(std::move(from));
     }
 
@@ -290,14 +288,10 @@ namespace gum {
   bool ScheduleMultiDim< TABLE >::hasSameContent(const ScheduleMultiDim< TABLE >& m) const {
     if (!hasSameVariables(m)) return false;
 
-    if (_table_ == nullptr)
-      return (m._table_ == nullptr);
+    if (_table_ == nullptr) return (m._table_ == nullptr);
     else {
-      if (m._table_ == nullptr)
-        return false;
-      else {
-        return (_table_ == m._table_) || (*_table_ == *(m._table_));
-      }
+      if (m._table_ == nullptr) return false;
+      else { return (_table_ == m._table_) || (*_table_ == *(m._table_)); }
     }
   }
 
@@ -371,7 +365,7 @@ namespace gum {
   template < typename TABLE >
   INLINE const Sequence< const DiscreteVariable* >&
                ScheduleMultiDim< TABLE >::variablesSequence() const {
-    return _var_sequence_;
+              return _var_sequence_;
   }
 
 
@@ -463,10 +457,8 @@ namespace gum {
   std::string ScheduleMultiDim< TABLE >::toString() const {
     std::stringstream str;
     str << "<id: " << this->id() << ", table: ";
-    if (_table_ == nullptr)
-      str << "--";
-    else
-      str << _table_->content();
+    if (_table_ == nullptr) str << "--";
+    else str << _table_->content();
     str << ">";
     return str.str();
   }

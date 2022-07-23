@@ -134,8 +134,7 @@ namespace gum_tests {
         bool       not_completed = true;
         do {
           auto avail_nodes = scheduleS.availableOperations();
-          if (avail_nodes.empty())
-            not_completed = false;
+          if (avail_nodes.empty()) not_completed = false;
           else {
             for (const auto node: avail_nodes) {
               auto& op = scheduleS.operation(node);
@@ -155,8 +154,7 @@ namespace gum_tests {
         not_completed      = true;
         do {
           auto avail_nodes = scheduleV.availableOperations();
-          if (avail_nodes.empty())
-            not_completed = false;
+          if (avail_nodes.empty()) not_completed = false;
           else {
             for (const auto node: avail_nodes) {
               auto& op = scheduleV.operation(node);
@@ -368,8 +366,7 @@ namespace gum_tests {
         bool       not_completed = true;
         do {
           auto avail_nodes = scheduleS.availableOperations();
-          if (avail_nodes.empty())
-            not_completed = false;
+          if (avail_nodes.empty()) not_completed = false;
           else {
             for (const auto node: avail_nodes) {
               auto& op = scheduleS.operation(node);
@@ -389,8 +386,7 @@ namespace gum_tests {
         not_completed      = true;
         do {
           auto avail_nodes = scheduleV.availableOperations();
-          if (avail_nodes.empty())
-            not_completed = false;
+          if (avail_nodes.empty()) not_completed = false;
           else {
             for (const auto node: avail_nodes) {
               auto& op = scheduleV.operation(node);

@@ -109,7 +109,7 @@ namespace gum {
     /// returns the current ranges
     INLINE const std::vector< std::pair< std::size_t, std::size_t > >&
                  IndependenceTest::ranges() const {
-      return counter_.ranges();
+                return counter_.ranges();
     }
 
 

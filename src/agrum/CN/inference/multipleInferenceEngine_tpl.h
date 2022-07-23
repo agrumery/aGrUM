@@ -219,8 +219,7 @@ namespace gum {
       if (!eq || nodeCredalSet.size() == 0) {
         nodeCredalSet.push_back(vertex);
         return;
-      } else
-        return;
+      } else return;
 
       /// we need this because of the next lambda return contidion fabs ( *minIt
       /// - *maxIt ) > 1e-6 which never happens if there is only one vertice

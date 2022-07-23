@@ -64,10 +64,8 @@ namespace gum {
 
     /// places the index to the end of the sequence
     INLINE void IdCondSetIterator::_gotoEnd_() {
-      if (_seq_ != nullptr)
-        _index_ = _seq_->size();
-      else
-        _index_ = std::size_t(0);
+      if (_seq_ != nullptr) _index_ = _seq_->size();
+      else _index_ = std::size_t(0);
     }
 
 

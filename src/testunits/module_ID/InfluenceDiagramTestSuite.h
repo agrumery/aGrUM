@@ -237,8 +237,7 @@ namespace gum_tests {
         if (srcVar.domainSize() == cpVar.domainSize()) {
           for (gum::Idx i = 0; i < srcVar.domainSize(); i++)
             TS_ASSERT_EQUALS(srcVar.label(i), cpVar.label(i))
-        } else
-          TS_ASSERT(false)
+        } else TS_ASSERT(false)
 
         for (const auto parent: source.dag().parents(node)) {
           TS_ASSERT(copy->dag().existsArc(parent, node))
@@ -810,11 +809,14 @@ namespace gum_tests {
 
 
     void testFastPrototypeVarType() {
-      auto infdiag
-         = gum::InfluenceDiagram< float >::fastPrototype("a{1|4|6}->b{1|-4|6}->c{1|toto|6}");
+      auto infdiag = gum::InfluenceDiagram< float >::fastPrototype(
+         "a{1|4|6}->b{1|-4|6}->c{1|toto|6}->d{1.0|-4.0|6.0}->e{1|-4|6.0}->f{1.0|-4.0|+6.0}");
       TS_ASSERT_EQUALS(infdiag.variable("a").varType(), gum::VarType::Integer)
       TS_ASSERT_EQUALS(infdiag.variable("b").varType(), gum::VarType::Integer)
       TS_ASSERT_EQUALS(infdiag.variable("c").varType(), gum::VarType::Labelized)
+      TS_ASSERT_EQUALS(infdiag.variable("d").varType(), gum::VarType::Numerical)
+      TS_ASSERT_EQUALS(infdiag.variable("e").varType(), gum::VarType::Numerical)
+      TS_ASSERT_EQUALS(infdiag.variable("f").varType(), gum::VarType::Numerical)
     }
 
     void testFastVariable() {

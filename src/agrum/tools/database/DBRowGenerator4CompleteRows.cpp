@@ -79,7 +79,7 @@ namespace gum {
     DBRowGenerator4CompleteRows&
        DBRowGenerator4CompleteRows::operator=(const DBRowGenerator4CompleteRows& from) {
       DBRowGenerator::operator=(from);
-      _input_row_             = from._input_row_;
+      _input_row_ = from._input_row_;
       return *this;
     }
 
@@ -88,7 +88,7 @@ namespace gum {
     DBRowGenerator4CompleteRows&
        DBRowGenerator4CompleteRows::operator=(DBRowGenerator4CompleteRows&& from) {
       DBRowGenerator::operator=(std::move(from));
-      _input_row_             = from._input_row_;
+      _input_row_ = from._input_row_;
       return *this;
     }
 

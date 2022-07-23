@@ -1204,12 +1204,12 @@ namespace gum_tests {
       p.add(w);
 
       gum::Instantiation I(p);
-      double f=-150.0;
-      for(I.setFirst(); ! I.end(); I.inc())
-        p.set(I,f++);
+      double             f = -150.0;
+      for (I.setFirst(); !I.end(); I.inc())
+        p.set(I, f++);
 
-      TS_ASSERT_DELTA(p.min(),-150.0,1e-7)
-      TS_ASSERT_DELTA(p.max(),-150+4*2*3-1,1e-7)
+      TS_ASSERT_DELTA(p.min(), -150.0, 1e-7)
+      TS_ASSERT_DELTA(p.max(), -150 + 4 * 2 * 3 - 1, 1e-7)
     }
 
     void testOperatorWithScalars() {

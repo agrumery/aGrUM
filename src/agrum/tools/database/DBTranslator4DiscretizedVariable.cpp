@@ -164,7 +164,7 @@ namespace gum {
        DBTranslator4DiscretizedVariable::operator=(const DBTranslator4DiscretizedVariable& from) {
       if (this != &from) {
         DBTranslator::operator=(from);
-        _variable_            = from._variable_;
+        _variable_ = from._variable_;
 
         if (_real_variable_ != nullptr) delete _real_variable_;
         _real_variable_ = from._real_variable_->clone();
@@ -179,7 +179,7 @@ namespace gum {
        DBTranslator4DiscretizedVariable::operator=(DBTranslator4DiscretizedVariable&& from) {
       if (this != &from) {
         DBTranslator::operator=(std::move(from));
-        _variable_            = std::move(from._variable_);
+        _variable_ = std::move(from._variable_);
 
         if (_real_variable_ != nullptr) delete _real_variable_;
         _real_variable_      = from._real_variable_;
