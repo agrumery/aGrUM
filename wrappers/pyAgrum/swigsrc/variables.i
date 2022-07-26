@@ -139,4 +139,4 @@ PyObject *numericalDomain() const {
   return PyAgrumHelper::PyListFromSequenceOfDouble(self->numericalDomain());
 }
 }
-%ignore gum::IntegerVariable::integerDomain;
+%ignore gum::NumericalDiscreteVariable::numericalDomain;

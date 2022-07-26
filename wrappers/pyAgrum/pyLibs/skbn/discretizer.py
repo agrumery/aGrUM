@@ -711,6 +711,7 @@ class BNDiscretizer():
           if not checkFloat(value):
             is_float_var=False
             break
+
         if is_float_var:
           var = gum.NumericalDiscreteVariable(variableName, variableName, [float(v) for v in possibleValuesX])
         else:

@@ -37,6 +37,7 @@ class SkbnTestCase(pyAgrumTestCase):
                       [1, 0.15, "A", True],
                       ])
     y = [3, 2, 3, 1, 2]
+
     classifier = skbn.BNClassifier()
     classifier.fit(X, y)
     res = classifier.preparedData(X, y)
@@ -45,7 +46,7 @@ class SkbnTestCase(pyAgrumTestCase):
 
     X = pd.DataFrame([[1, 0, "A", True]])
     y = [3]
-    with self.assertRaises(gum.OutOfBounds):
+    with self.assertRaises(gum.NotFound):
       res = classifier.preparedData(X, y)
 
   def test_with_discretization(self):

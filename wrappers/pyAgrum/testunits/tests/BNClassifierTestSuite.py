@@ -115,7 +115,7 @@ class BNCLassifierTestCase(pyAgrumTestCase):
     self.assertEquals(str(discretizer.createVariable('var3', X['var3'])),
                       "var3:Integer({1|2|5})")
     self.assertEquals(str(discretizer.createVariable('var4', X['var4'])),
-                      "var4:Labelized({1.11|2.213|3.33|4.23|5.42|6.6|7.5|8.9|9.19|10.11|11.12|12.21|13.3|14.5})")
+                      "var4:NumericalDiscrete({1.11|2.213|3.33|4.23|5.42|6.6|7.5|8.9|9.19|10.11|11.12|12.21|13.3|14.5})")
     self.assertEquals(str(discretizer.createVariable('var5', X['var5'])),
                       "var5:Range([1,13])")
 

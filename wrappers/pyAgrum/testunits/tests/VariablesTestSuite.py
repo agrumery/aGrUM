@@ -219,8 +219,34 @@ class DiscretizedVariableTestCase(VariablesTestCase):
                   _testOrderTicks(i, j, k, l, m, n)
 
 
+
+
+class NumericalDiscreteVariableTestCase(VariablesTestCase):
+  def testAddValue(self):
+    v = gum.NumericalDiscreteVariable('a', '').addValue(0.5).addValue(
+        5.9).addValue(5.99).addValue(0.1).addValue(0.23).addValue(12)
+    self.assertEqual(v.varType(), gum.VarType_Numerical)
+
+    var = gum.NumericalDiscreteVariable("var", "test var")
+
+    self.assertTrue(var.empty())
+    self.assertEqual(var.domainSize(), 0)
+    var.addValue(0.2)
+    self.assertTrue(var.empty())
+    self.assertEqual(var.domainSize(), 1)
+    var.addValue(3.0)
+    self.assertFalse(var.empty())
+    self.assertEqual(var.domainSize(), 2)
+    var.addValue(2.25)
+    self.assertFalse(var.empty())
+    self.assertEqual(var.domainSize(), 3)
+
+    self.assertRaises(gum.DuplicateElement, var.addValue, 2.25)
+    self.assertEqual(str(var), "var:NumericalDiscrete({0.2|2.25|3})")
+
 ts = unittest.TestSuite()
 addTests(ts, DiscreteVariableTestCase)
 addTests(ts, LabelizedVariableTestCase)
 addTests(ts, RangeVariableTestCase)
 addTests(ts, DiscretizedVariableTestCase)
+addTests(ts, NumericalDiscreteVariableTestCase)

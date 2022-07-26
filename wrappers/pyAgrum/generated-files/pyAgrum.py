@@ -3535,8 +3535,8 @@ class NumericalDiscreteVariable(DiscreteVariable):
     def __str__(self) -> str:
         return _pyAgrum.NumericalDiscreteVariable___str__(self)
 
-    def numericalDomain(self, *args) -> object:
-        return _pyAgrum.NumericalDiscreteVariable_numericalDomain(self, *args)
+    def numericalDomain(self) -> object:
+        return _pyAgrum.NumericalDiscreteVariable_numericalDomain(self)
 
 # Register NumericalDiscreteVariable in _pyAgrum:
 _pyAgrum.NumericalDiscreteVariable_swigregister(NumericalDiscreteVariable)

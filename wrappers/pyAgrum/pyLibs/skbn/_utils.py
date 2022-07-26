@@ -272,6 +272,9 @@ def checkFloat(v):
   -------
   True if v is a float
   """
+  if isinstance(v,bool):
+      return False
+
   try:
     float(v)
     return True

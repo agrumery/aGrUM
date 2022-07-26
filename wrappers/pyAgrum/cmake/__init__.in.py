@@ -61,7 +61,7 @@ from .pyAgrum import ApproximationScheme
 from .pyAgrum import initRandom, randomProba, randomDistribution, randomGeneratorSeed, getRandomGenerator, randomValue
 from .pyAgrum import isOMP, getNumberOfThreads, getMaxNumberOfThreads, getNumberOfLogicalProcessors, setNumberOfThreads
 
-from .pyAgrum import VarType_Discretized,VarType_Labelized,VarType_Range,VarType_Integer
+from .pyAgrum import VarType_Discretized,VarType_Labelized,VarType_Range,VarType_Integer,VarType_Numerical
 
 from .pyAgrum import DefaultInLabel, DuplicateElement, DuplicateLabel, GumException, FatalError, FormatNotFound, GraphError, IOError, InvalidArc, InvalidArgument, InvalidArgumentsNumber, InvalidDirectedCycle, InvalidEdge, InvalidNode, DatabaseError, MissingValueInDatabase, MissingVariableInDatabase, NoChild, NoNeighbour, NoParent, NotFound, NullElement, OperationNotAllowed, OutOfBounds, ArgumentError, SizeError, SyntaxError, UndefinedElement, UndefinedIteratorKey, UndefinedIteratorValue, UnknownLabelInDatabase, CPTError
 
@@ -99,7 +99,7 @@ __all__=[
   'isOMP','setNumberOfThreads','getNumberOfThreads','getMaxNumberOfThreads','getNumberOfLogicalProcessors',
   #'getThreadNumber','getNumberOfRunningThreads','getDynamicThreadsNumber','setDynamicThreadsNumber','getNestedParallelism', 'setNestedParallelism',
 
-  'VarType_Discretized', 'VarType_Labelized', 'VarType_Range','VarType_Integer',
+  'VarType_Discretized', 'VarType_Labelized', 'VarType_Range','VarType_Integer','VarType_Numerical',
 
   'DefaultInLabel', 'DuplicateElement', 'DuplicateLabel', 'GumException', 'FatalError', 'FormatNotFound', 'GraphError', 'IOError', 'InvalidArc', 'InvalidArgument', 'InvalidArgumentsNumber', 'InvalidDirectedCycle', 'InvalidEdge', 'InvalidNode', 'DatabaseError', 'MissingValueInDatabase', 'MissingVariableInDatabase', 'NoChild', 'NoNeighbour', 'NoParent', 'NotFound', 'NullElement', 'OperationNotAllowed', 'OutOfBounds', 'ArgumentError', 'SizeError', 'SyntaxError', 'UndefinedElement', 'UndefinedIteratorKey', 'UndefinedIteratorValue', 'UnknownLabelInDatabase',"CPTError",
 

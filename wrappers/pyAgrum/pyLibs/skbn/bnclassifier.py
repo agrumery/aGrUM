@@ -852,8 +852,10 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
         return v.label(idx)
       elif v.varType() == gum.VarType_Range:
         return int(v.numerical(idx))
+      elif v.varType() == gum.VarType_Numerical:
+        return float(v.numerical(idx))
       else:
-        return None
+        raise gum.NotFound("This type of variable does not exist yet.")
 
     reverse = {v: k for k, v in self.variableNameIndexDictionary.items()}
     if isinstance(X, pandas.DataFrame):  # to be sure of the name of the columns

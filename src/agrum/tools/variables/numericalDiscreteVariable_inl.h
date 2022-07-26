@@ -131,7 +131,7 @@ namespace gum {
   /// returns the index of a given label
   INLINE Idx NumericalDiscreteVariable::index(const std::string& aLabel) const {
     try {
-      return _domain_.pos(std::stoi(aLabel));
+      return _domain_.pos(std::stod(aLabel));
     } catch (...) {
       GUM_ERROR(NotFound, "label '" << aLabel << "' is unknown in " << this->toString());
     }

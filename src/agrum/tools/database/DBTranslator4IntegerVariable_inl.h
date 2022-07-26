@@ -50,7 +50,7 @@ namespace gum {
 
       if (!b) {
         GUM_ERROR(TypeError,
-                  "String \"" << str << "\" cannot be translated because it is not a number");
+                  "String \"" << str << "\" cannot be translated because it is not value for "<<_variable_);
       } else {
         GUM_ERROR(UnknownLabelInDatabase,
                   "The translation of \"" << str << "\" could not be found for " << _variable_)

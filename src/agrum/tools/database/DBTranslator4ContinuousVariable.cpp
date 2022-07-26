@@ -224,7 +224,7 @@ namespace gum {
           return DBTranslatedValue{std::numeric_limits< float >::max()};
         } else
           GUM_ERROR(TypeError,
-                    "String \"" << str << "\" cannot be translated because it is not a number");
+                    "String \"" << str << "\" cannot be translated because it is not a value for "<<_variable_);
       }
 
       // here we know that the string is a number
