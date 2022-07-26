@@ -289,6 +289,8 @@ namespace gum_tests {
            translator8.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
            "10");
         TS_ASSERT_EQUALS(translator8.variable()->toString(), "X1:Integer({1|3|10|12})")
+
+        TS_ASSERT_THROWS(translator8.translate("5"), gum::UnknownLabelInDatabase&)
       }
     }
   };

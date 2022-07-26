@@ -41,28 +41,19 @@ namespace gum {
 
     /// returns the translation of a string, as found in the current dictionary
     INLINE DBTranslatedValue DBTranslator4IntegerVariable::translate(const std::string& str) {
-      // try to get the index of str within the integer variable.
-      try {
-        return DBTranslatedValue{std::size_t(_variable_[str])};
-      } catch (gum::Exception&) {
-        // check for a missing symbol
-        if (this->isMissingSymbol(str))
-          return DBTranslatedValue{std::numeric_limits< std::size_t >::max()};
+      const bool b = isInteger(str);
+      if (b)
+        if (this->back_dico_.existsSecond(str)) return {this->back_dico_.first(str)};
 
-        // check if the back_dictionary does not contain str. This enables
-        // to execute translate ( translateBack ( translate ( str ) ) )
-        // without raising an exception
-        try {
-          return DBTranslatedValue{this->back_dico_.first(str)};
-        } catch (gum::Exception&) {
-          if (!DBCell::isInteger(str)) {
-            GUM_ERROR(TypeError,
-                      "String \"" << str << "\" cannot be translated because it is not a number");
-          } else {
-            GUM_ERROR(UnknownLabelInDatabase,
-                      "The translation of \"" << str << "\" could not be found")
-          }
-        }
+      if (this->isMissingSymbol(str))
+        return DBTranslatedValue{std::numeric_limits< std::size_t >::max()};
+
+      if (!b) {
+        GUM_ERROR(TypeError,
+                  "String \"" << str << "\" cannot be translated because it is not a number");
+      } else {
+        GUM_ERROR(UnknownLabelInDatabase,
+                  "The translation of \"" << str << "\" could not be found for " << _variable_)
       }
     }
 

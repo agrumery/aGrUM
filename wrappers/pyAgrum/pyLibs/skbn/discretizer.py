@@ -28,7 +28,7 @@ import sklearn.preprocessing as skp
 
 import pyAgrum as gum
 
-from ._utils import checkInt
+from ._utils import checkInt,checkFloat
 
 class BNDiscretizer():
   """
@@ -104,13 +104,13 @@ class BNDiscretizer():
     if clearDiscretizationParameters:
       self.discretizationParametersDictionary = dict()
 
-  def setDiscretizationParameters(self, variableName=None, methode=None, numberOfBins=None):
+  def setDiscretizationParameters(self, variableName=None, method=None, numberOfBins=None):
     """
     parameters:
         variableName: str
             the name of the variable you want to set the discretization paramaters of. Set to None to set the new
             default for this BNClassifier.
-        methode: str
+        method: str
             The method of discretization used for this variable. Type "NoDiscretization" if you do not want to discretize this
             variable. Possible values are: 'NoDiscretization', 'quantile', 'uniform', 'kmeans', 'NML', 'CAIM' and 'MDLP'
         numberOfBins:
@@ -125,29 +125,29 @@ class BNDiscretizer():
     """
     if variableName in self.discretizationParametersDictionary.keys():
       oldNbBins = self.discretizationParametersDictionary[variableName]['k']
-      oldMethod = self.discretizationParametersDictionary[variableName]['methode']
+      oldMethod = self.discretizationParametersDictionary[variableName]['method']
     else:
       oldNbBins = self.defaultNbBins
       oldMethod = self.defaultMethod
 
-    if methode is None:
-      methode = oldMethod
+    if method is None:
+      method = oldMethod
 
     if numberOfBins is None:
-      if methode != 'NoDiscretization':
+      if method != 'NoDiscretization':
         numberOfBins = oldNbBins
 
-    if methode not in {'kmeans', 'uniform', 'quantile', 'NML', 'MDLP', 'CAIM', 'NoDiscretization'}:
+    if method not in {'kmeans', 'uniform', 'quantile', 'NML', 'MDLP', 'CAIM', 'NoDiscretization'}:
       raise ValueError(
         "This discretization method is not recognized! Possible values are keans, uniform, quantile, NML, "
         "CAIM and MDLP. You have entered " + str(
-          methode))
+          method))
 
     if numberOfBins == 'elbowMethod':
-      if methode == "NML":
+      if method == "NML":
         raise ValueError(
           "The elbow Method cannot be used as the number of bins for the algorithm NML. Please an integer value")
-    elif methode != 'NoDiscretization':
+    elif method != 'NoDiscretization':
       try:
         numberOfBins = int(numberOfBins)
       except:
@@ -155,12 +155,12 @@ class BNDiscretizer():
           "The possible values for numberOfBins are any integer or the string 'elbowMethod'. You have entered: " + str(
             numberOfBins))
     if variableName is None:
-      self.defaultMethod = methode
+      self.defaultMethod = method
       self.defaultNbBins = numberOfBins
     else:
       self.discretizationParametersDictionary[variableName] = dict()
       self.discretizationParametersDictionary[variableName]['k'] = numberOfBins
-      self.discretizationParametersDictionary[variableName]['methode'] = methode
+      self.discretizationParametersDictionary[variableName]['method'] = method
 
   def audit(self, X, y=None):
     """
@@ -216,17 +216,17 @@ class BNDiscretizer():
         isNumeric = False
       if variable in self.discretizationParametersDictionary.keys():
         auditDict[variable] = self.discretizationParametersDictionary[variable]
-        if self.discretizationParametersDictionary[variable]['methode'] != "NoDiscretization" and not isNumeric:
+        if self.discretizationParametersDictionary[variable]['method'] != "NoDiscretization" and not isNumeric:
           raise ValueError("The variable " + variable + " is not numeric and cannot be discretized!")
 
       else:
         if len(possibleValues[i]) > self.discretizationThreshold and isNumeric:
           auditDict[variable]['k'] = self.defaultNbBins
-          auditDict[variable]['methode'] = self.defaultMethod
+          auditDict[variable]['method'] = self.defaultMethod
         else:
-          auditDict[variable]['methode'] = 'NoDiscretization'
+          auditDict[variable]['method'] = 'NoDiscretization'
           auditDict[variable]['k'] = len(possibleValues[i])
-      if auditDict[variable]['methode'] == "NoDiscretization":
+      if auditDict[variable]['method'] == "NoDiscretization":
         auditDict[variable]['type'] = 'Discrete'
       else:
         auditDict[variable]['type'] = 'Continuous'
@@ -675,18 +675,18 @@ class BNDiscretizer():
           ((self.discretizationThreshold >= 1 and len(possibleValuesX) > self.discretizationThreshold)
            or (self.discretizationThreshold < 1 and len(possibleValuesX) / len(X) > self.discretizationThreshold)):
         self.discretizationParametersDictionary[variableName] = dict()
-        self.discretizationParametersDictionary[variableName]['methode'] = self.defaultMethod
+        self.discretizationParametersDictionary[variableName]['method'] = self.defaultMethod
         self.discretizationParametersDictionary[variableName]['k'] = self.defaultNbBins
       else:
         self.discretizationParametersDictionary[variableName] = dict()
-        self.discretizationParametersDictionary[variableName]['methode'] = "NoDiscretization"
+        self.discretizationParametersDictionary[variableName]['method'] = "NoDiscretization"
       usingDefaultParameters = True
     else:
       usingDefaultParameters = False
-      if self.discretizationParametersDictionary[variableName]['methode'] != "NoDiscretization" and not isNumeric:
+      if self.discretizationParametersDictionary[variableName]['method'] != "NoDiscretization" and not isNumeric:
         raise ValueError("The variable " + variableName + " is not numeric and cannot be discretized!")
 
-    if self.discretizationParametersDictionary[variableName]["methode"] == "NoDiscretization":
+    if self.discretizationParametersDictionary[variableName]["method"] == "NoDiscretization":
       is_int_var=True
       min_v=max_v=None
       for value in possibleValuesX:
@@ -706,10 +706,18 @@ class BNDiscretizer():
         else:
           var=gum.IntegerVariable(variableName, variableName,[int(v) for v in possibleValuesX])
       else:
-        var = gum.LabelizedVariable(variableName, variableName, [str(v) for v in possibleValuesX])
+        is_float_var=True
+        for value in possibleValuesX:
+          if not checkFloat(value):
+            is_float_var=False
+            break
+        if is_float_var:
+          var = gum.NumericalDiscreteVariable(variableName, variableName, [float(v) for v in possibleValuesX])
+        else:
+          var = gum.LabelizedVariable(variableName, variableName, [str(v) for v in possibleValuesX])
     else:
       self.numberOfContinous += 1
-      if self.discretizationParametersDictionary[variableName]['methode'] == "CAIM":
+      if self.discretizationParametersDictionary[variableName]['method'] == "CAIM":
         if y is None:
           raise ValueError(
             "The CAIM discretization method requires a list of the associated classes for each data vector since it "
@@ -718,7 +726,7 @@ class BNDiscretizer():
           possibleValuesY = numpy.unique(y)
         binEdges = self.discretizationCAIM(Xtransformed.reshape(n, 1), y.reshape(n, 1), numpy.unique(Xtransformed),
                                            possibleValuesY)
-      elif self.discretizationParametersDictionary[variableName]['methode'] == "MDLP":
+      elif self.discretizationParametersDictionary[variableName]['method'] == "MDLP":
         if y is None:
           raise ValueError(
             "The MDLP discretization method requires a list of the associated classes for each data vector since it "
@@ -727,22 +735,22 @@ class BNDiscretizer():
           possibleValuesY = numpy.unique(y)
         binEdges = self.discretizationMDLP(Xtransformed.reshape(n, 1), y.reshape(n, 1), numpy.unique(Xtransformed),
                                            possibleValuesY)
-      elif self.discretizationParametersDictionary[variableName]['methode'] == "NML":
+      elif self.discretizationParametersDictionary[variableName]['method'] == "NML":
         binEdges = self.discretizationNML(Xtransformed.flatten(), numpy.unique(Xtransformed),
                                           kMax=self.discretizationParametersDictionary[variableName]["k"])
       else:
         if self.discretizationParametersDictionary[variableName]['k'] == 'elbowMethod':
           binEdges = self.discretizationElbowMethodRotation(
-            self.discretizationParametersDictionary[variableName]['methode'], Xtransformed.flatten())
+            self.discretizationParametersDictionary[variableName]['method'], Xtransformed.flatten())
         else:
           discre = skp.KBinsDiscretizer(self.discretizationParametersDictionary[variableName]['k'],
-                                        strategy=self.discretizationParametersDictionary[variableName]['methode'])
+                                        strategy=self.discretizationParametersDictionary[variableName]['method'])
           discre.fit(X.reshape(-1, 1))
           binEdges = discre.bin_edges_[0].tolist()
 
       if len(binEdges) == 2:
         raise ValueError("Due to an error the discretization method " + str(
-          self.discretizationParametersDictionary[variableName]['methode']) + " using " + str(
+          self.discretizationParametersDictionary[variableName]['method']) + " using " + str(
           self.discretizationParametersDictionary[variableName]['k']) + " bins for the variable " + str(
           variableName) + "gave only 1 bin. Try increasing the number of bins used by this variable using "
                           "setDiscetizationParameters to avoid this error")

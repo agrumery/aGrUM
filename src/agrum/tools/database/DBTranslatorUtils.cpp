@@ -54,18 +54,18 @@ namespace gum {
           }
 
           case VarType::Integer: {
-            const IntegerVariable& xvar = static_cast< const IntegerVariable& >(var);
+            const auto& xvar = static_cast< const IntegerVariable& >(var);
 
             return new DBTranslator4IntegerVariable(xvar, missing_symbols, max_dico_entries);
           }
 
           case VarType::Discretized: {
-            const IDiscretizedVariable& xvar = static_cast< const IDiscretizedVariable& >(var);
+            const auto& xvar = static_cast< const IDiscretizedVariable& >(var);
             return new DBTranslator4DiscretizedVariable(xvar, missing_symbols, max_dico_entries);
           }
 
           case VarType::Range: {
-            const RangeVariable& xvar = static_cast< const RangeVariable& >(var);
+            const auto& xvar = static_cast< const RangeVariable& >(var);
             return new DBTranslator4RangeVariable(xvar,
                                                   missing_symbols,
                                                   editable_dictionary,
@@ -73,12 +73,14 @@ namespace gum {
           }
 
           case VarType::Continuous: {
-            const IContinuousVariable& xvar = static_cast< const IContinuousVariable& >(var);
+            const auto& xvar = static_cast< const IContinuousVariable& >(var);
             return new DBTranslator4ContinuousVariable(xvar, missing_symbols, editable_dictionary);
           }
 
-          case VarType::Numerical:
-            break;
+          case VarType::Numerical: {
+            const auto& xvar = static_cast< const NumericalDiscreteVariable& >(var);
+            return new DBTranslator4NumericalDiscreteVariable(xvar, missing_symbols, max_dico_entries);
+          }
         }
 
         GUM_ERROR(NotImplementedYet,

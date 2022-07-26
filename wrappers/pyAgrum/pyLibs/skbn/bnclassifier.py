@@ -548,7 +548,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
       if oldName in self.MarkovBlanket.names():
         self.MarkovBlanket.changeVariableName(oldName, newName)
 
-  # ------------------methode Markov Blanket et predict---------------------
+  # ------------------method Markov Blanket and predict---------------------
 
   def predict(self, X, with_labels=True):
     """

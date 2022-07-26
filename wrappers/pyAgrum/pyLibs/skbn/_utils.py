@@ -248,7 +248,7 @@ def _createCSVfromNDArrays(X, y, target, variableNameIndexDictionary, csvfilenam
 
 def checkInt(v):
   """
-  Test is v is an int or a str representing an int
+  Test if v is an int or a str representing an int
   """
   if isinstance(v,bool):
       return False
@@ -259,3 +259,21 @@ def checkInt(v):
       return v[1:].isdigit()
     return v.isdigit()
   return False
+
+def checkFloat(v):
+  """
+  Test is  a float or a str representing a float.
+
+  Parameters
+  ----------
+  v
+
+  Returns
+  -------
+  True if v is a float
+  """
+  try:
+    float(v)
+    return True
+  except ValueError:
+    return False

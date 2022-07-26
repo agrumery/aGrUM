@@ -41,5 +41,80 @@ namespace gum_tests {
       TS_ASSERT(gum::isInteger("-12"))
       TS_ASSERT(!gum::isInteger("1-2"))
     }
+
+    void TestisNumerical() {
+      TS_ASSERT(gum::isNumerical("12"))
+      TS_ASSERT(!gum::isNumerical("foo"))
+      TS_ASSERT(!gum::isNumerical("12foo"))
+      TS_ASSERT(!gum::isNumerical("foo12"))
+      TS_ASSERT(!gum::isNumerical("foo12bar"))
+
+      TS_ASSERT(gum::isNumerical("12.5"))
+      TS_ASSERT(!gum::isNumerical("12.5foo"))
+      TS_ASSERT(!gum::isNumerical("foo12.5"))
+      TS_ASSERT(!gum::isNumerical("foo12.5bar"))
+
+      TS_ASSERT(gum::isNumerical("+12"))
+      TS_ASSERT(!gum::isNumerical("1+2"))
+
+      TS_ASSERT(gum::isNumerical("-12"))
+      TS_ASSERT(!gum::isNumerical("1-2"))
+
+      TS_ASSERT(gum::isNumerical("-1.2"))
+      TS_ASSERT(gum::isNumerical("1.2"))
+      TS_ASSERT(gum::isNumerical("+1.2"))
+      TS_ASSERT(gum::isNumerical("1.2e-8"))
+    }
+
+
+    void TestIsIntegerWithResult() {
+      int res;
+      TS_ASSERT(gum::isIntegerWithResult("12", &res))
+      TS_ASSERT_EQUALS(res, 12)
+      TS_ASSERT(!gum::isIntegerWithResult("foo", &res))
+      TS_ASSERT(!gum::isIntegerWithResult("12foo", &res))
+      TS_ASSERT(!gum::isIntegerWithResult("foo12", &res))
+      TS_ASSERT(!gum::isIntegerWithResult("foo12bar", &res))
+
+      TS_ASSERT(gum::isIntegerWithResult("+12", &res))
+      TS_ASSERT_EQUALS(res, 12)
+      TS_ASSERT(!gum::isIntegerWithResult("1+2", &res))
+
+      TS_ASSERT(gum::isIntegerWithResult("-12", &res))
+      TS_ASSERT_EQUALS(res, -12)
+      TS_ASSERT(!gum::isIntegerWithResult("1-2", &res))
+    }
+
+    void TestisNumericalWithResWithResult() {
+      double res;
+      TS_ASSERT(gum::isNumericalWithResult("12", &res))
+      TS_ASSERT_EQUALS(res, 12.0)
+      TS_ASSERT(!gum::isNumericalWithResult("foo", &res))
+      TS_ASSERT(!gum::isNumericalWithResult("12foo", &res))
+      TS_ASSERT(!gum::isNumericalWithResult("foo12", &res))
+      TS_ASSERT(!gum::isNumericalWithResult("foo12bar", &res))
+
+      TS_ASSERT(gum::isNumericalWithResult("12.5", &res))
+      TS_ASSERT_EQUALS(res, 12.5)
+      TS_ASSERT(!gum::isNumericalWithResult("12.5foo", &res))
+      TS_ASSERT(!gum::isNumericalWithResult("foo12.5", &res))
+      TS_ASSERT(!gum::isNumericalWithResult("foo12.5bar", &res))
+
+      TS_ASSERT(gum::isNumericalWithResult("+12", &res))
+      TS_ASSERT_EQUALS(res, 12.0)
+      TS_ASSERT(!gum::isNumericalWithResult("1+2", &res))
+
+      TS_ASSERT(gum::isNumericalWithResult("-12", &res))
+      TS_ASSERT_EQUALS(res, -12.0)
+      TS_ASSERT(!gum::isNumericalWithResult("1-2", &res))
+
+      TS_ASSERT(gum::isNumericalWithResult("-1.2", &res))
+      TS_ASSERT(gum::isNumericalWithResult("1.2", &res))
+      TS_ASSERT_EQUALS(res, 1.2)
+      TS_ASSERT(gum::isNumericalWithResult("+1.2", &res))
+      TS_ASSERT_EQUALS(res, 1.2)
+      TS_ASSERT(gum::isNumericalWithResult("1.2e-8", &res))
+      TS_ASSERT_EQUALS(res, 1.2e-8)
+    }
   };
 }   // namespace gum_tests

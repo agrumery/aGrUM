@@ -34,6 +34,7 @@
 #include <agrum/tools/database/DBTranslator4IntegerVariable.h>
 #include <agrum/tools/database/DBTranslator4RangeVariable.h>
 #include <agrum/tools/database/DBTranslator4ContinuousVariable.h>
+#include <agrum/tools/database/DBTranslator4NumericalDiscreteVariable.h>
 
 
 namespace gum {

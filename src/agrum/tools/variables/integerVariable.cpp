@@ -43,7 +43,7 @@ namespace gum {
     }
 
     // for debugging purposes
-    GUM_CONSTRUCTOR(IntegerVariable);
+    GUM_CONSTRUCTOR(IntegerVariable)
   }
 
 
@@ -74,7 +74,7 @@ namespace gum {
     _domain_ << last;
 
     // for debugging purposes
-    GUM_CONSTRUCTOR(NumericalDiscreteVariable);
+    GUM_CONSTRUCTOR(IntegerVariable)
   }
 
   /// equality operator
