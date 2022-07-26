@@ -87,21 +87,33 @@ namespace gum {
     return retVal;
   }
 
-  bool isInteger(const std::string& val) {
+  bool isIntegerWithResult(const std::string& val, int* res) {
     if (val.empty()) return false;
     std::size_t pos = 0;
     if ((val[0] == '+') || (val[0] == '-')) { pos = 1; }
-    return (val.find_first_not_of("0123456789", pos) == std::string::npos);
-  }
 
-  bool isNumerical(const std::string& val) {
-    char*       endptr = nullptr;
-    const char* str    = val.c_str();
-    std::strtod(str, &endptr);
+    if (val.find_first_not_of("0123456789", pos) != std::string::npos) return false;
 
-    if (*endptr != '\0' || endptr == str) return false;
+    if (res != nullptr) {
+      const char* p = (val[0] == '+') ? 1 + val.c_str() : val.c_str();
+      *res          = std::stoi(p);
+    }
+
     return true;
   }
+
+  bool isNumericalWithResult(const std::string& val, double* res) {
+    char*       endptr = nullptr;
+    const char* str    = val.c_str();
+    double      d      = std::strtod(str, &endptr);
+
+    if (*endptr != '\0' || endptr == str) return false;
+    if (res != nullptr) *res = d;
+
+    return true;
+  }
+
+
 } /* namespace gum */
 
 #ifdef GUM_NO_INLINE

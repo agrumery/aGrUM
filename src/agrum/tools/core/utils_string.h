@@ -88,11 +88,25 @@ namespace gum {
   bool isInteger(const std::string& val);
 
   /**
-   * @brief return true is a string contains a numerical (double) value
+   * @brief return true is a string contains an integer value
    * @param s A string
-   * @return true if s exactly contains a double
+   * @return true if s exactly contains an int (s can start with "-" or "+")
    */
-  bool isNumerical(const std::string& val);
+  bool isIntegerWithResult(const std::string& val,int *res);
+
+    /**
+     * @brief return true is a string contains a numerical (double) value
+     * @param s A string
+     * @return true if s exactly contains a double
+     */
+    bool isNumerical(const std::string& val);
+
+    /**
+     * @brief return true is a string contains a numerical (double) value
+     * @param s A string     *
+     * @return true if s exactly contains a double
+     */
+    bool isNumericalWithResult(const std::string& val,double* res);
 
 
   /**

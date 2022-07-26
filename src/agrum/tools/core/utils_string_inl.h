@@ -60,8 +60,14 @@ namespace gum {
   INLINE
   std::string remove_newline(const std::string& s) {
     std::string res{s};
-    res.erase(std::remove(res.begin(), res.end(), '\n'), res.end());
-    res.erase(std::remove(res.begin(), res.end(), '\r'), res.end());
+    std::erase(res, '\n');
+    std::erase(res, '\r');
     return res;
   }
+
+  INLINE
+  bool isInteger(const std::string& val) { return isIntegerWithResult(val, nullptr); }
+
+  INLINE
+  bool isNumerical(const std::string& val) { return isNumericalWithResult(val, nullptr); }
 } /* namespace gum */
