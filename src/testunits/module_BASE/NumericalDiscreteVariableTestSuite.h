@@ -233,5 +233,18 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(vect[6], 2.5)
       }
     }
+
+    void testPositions() {
+      gum::NumericalDiscreteVariable var("var", "this is var2", {-2.1, 0.0, 2.5, 3.7, 4.9});
+      TS_ASSERT_EQUALS(var.closestIndex(-3.9), gum::Idx(0))
+      TS_ASSERT_EQUALS(var.closestIndex(532.2), gum::Idx(4))
+      TS_ASSERT_EQUALS(var.closestIndex(0), gum::Idx(1))
+      TS_ASSERT_EQUALS(var.closestIndex(-2.05), gum::Idx(0))
+      TS_ASSERT_EQUALS(var.closestIndex(-0.05), gum::Idx(1))
+      TS_ASSERT_EQUALS(var.closestIndex(-1.05), gum::Idx(0))   // arbitrary
+      TS_ASSERT_EQUALS(var.closestIndex(4.8), gum::Idx(4))
+      TS_ASSERT_EQUALS(var.closestIndex(3.8), gum::Idx(3))
+      TS_ASSERT_EQUALS(var.closestIndex(4.3), gum::Idx(3))   // arbitrary
+    }
   };
 }   // namespace gum_tests

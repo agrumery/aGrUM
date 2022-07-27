@@ -37,21 +37,17 @@ namespace gum {
 
   template < typename T_TICKS >
   Idx DiscretizedVariable< T_TICKS >::dichotomy_(const T_TICKS& target, Idx min, Idx max) const {
-    Idx res;
-    Idx mid = 0;
-
-    if (max - min < 2) res = min;
+    if (max - min < 2) return min;
     else {
-      mid         = (max + min) / 2;
-      T_TICKS val = _ticks_[mid];
+      const Idx      mid = std::midpoint(min,max);
+      const T_TICKS& val = _ticks_[mid];
 
-      if (target == val) res = mid;
-      else if (target < val) res = dichotomy_(target, min, mid);
-      else if (target > val) res = dichotomy_(target, mid, max);
-      else res = mid;
+      if (target == val) {
+        return mid;
+      } else if (target < val) return dichotomy_(target, min, mid);
+      else if (target > val) return dichotomy_(target, mid, max);
+      else return mid;
     }
-
-    return res;
   }
 
   template < typename T_TICKS >
@@ -277,7 +273,7 @@ namespace gum {
   INLINE std::vector< double > DiscretizedVariable< T_TICKS >::ticksAsDoubles() const {
     const std::size_t     size = _ticks_.size();
     std::vector< double > ticks(size);
-    for (std::size_t i = std::size_t(0); i < size; ++i)
+    for (auto i = std::size_t(0); i < size; ++i)
       ticks[i] = (double)_ticks_[i];
     return ticks;
   }

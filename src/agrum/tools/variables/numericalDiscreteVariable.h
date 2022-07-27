@@ -170,11 +170,28 @@ namespace gum {
     /// clear the domain of the variable
     void eraseValues();
 
+    /**
+     * gives the index of the value closest to val
+     *
+     * @param val the desired double
+     * @return the index
+     */
+    Idx closestIndex(double val) const;
+    /**
+     * gves the value closets to val
+     *
+     * @param val the desired value
+     * @return the value
+     */
+    std::string closestLabel(double val) const;
     /// @}
 
     private:
     /// the domain of the variable
     Sequence< double > _domain_;
+
+    Idx dichotomy_(double target, Idx min, Idx max) const;
+    std::string _generateLabel(double f) const;
   };
 
 } /* namespace gum */

@@ -142,7 +142,7 @@ namespace gum {
   INLINE std::string NumericalDiscreteVariable::label(Idx i) const {
     // note that if i is outside the domain, Sequence _domain_ will raise
     // an exception
-    return compact_tostr(_domain_[i]);
+    return _generateLabel(_domain_.atPos(i));
   }
 
 
@@ -174,11 +174,36 @@ namespace gum {
   /// erase a value from the domain of the variable
   INLINE void NumericalDiscreteVariable::eraseValue(double value) { _domain_.erase(value); }
 
-
   /// clear the domain of the variable
   INLINE void NumericalDiscreteVariable::eraseValues() { _domain_.clear(); }
 
+  Idx NumericalDiscreteVariable::dichotomy_(double target, Idx min, Idx max) const {
+    if (max - min < 2) return min;
+    else {
+      const Idx     mid = std::midpoint(min, max);
+      const double& val = _domain_.atPos(mid);
 
+      if (target == val) return mid;
+      else if (target < val) return dichotomy_(target, min, mid);
+      else if (target > val) return dichotomy_(target, mid, max);
+      else return mid;
+    }
+  }
+
+  INLINE Idx NumericalDiscreteVariable::closestIndex(double val) const {
+    if (empty()) {
+      GUM_ERROR(SizeError, "Domain is too small for this operation (" << *this << ")");
+    }
+    return dichotomy_(val, 0, _domain_.size());
+  }
+
+  INLINE std::string NumericalDiscreteVariable::closestLabel(double val) const {
+    return _generateLabel(_domain_.atPos(closestIndex(val)));
+  }
+
+  INLINE std::string NumericalDiscreteVariable::_generateLabel(double f) const {
+    return compact_tostr(f);
+  }
 } /* namespace gum */
 
 #endif /* DOXYGEN SHOULD SKIP THIS */
