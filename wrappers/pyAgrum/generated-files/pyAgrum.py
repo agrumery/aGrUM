@@ -3529,6 +3529,12 @@ class NumericalDiscreteVariable(DiscreteVariable):
     def eraseValues(self) -> None:
         return _pyAgrum.NumericalDiscreteVariable_eraseValues(self)
 
+    def closestIndex(self, val: float) -> int:
+        return _pyAgrum.NumericalDiscreteVariable_closestIndex(self, val)
+
+    def closestLabel(self, val: float) -> str:
+        return _pyAgrum.NumericalDiscreteVariable_closestLabel(self, val)
+
     def __repr__(self) -> str:
         return _pyAgrum.NumericalDiscreteVariable___repr__(self)
 

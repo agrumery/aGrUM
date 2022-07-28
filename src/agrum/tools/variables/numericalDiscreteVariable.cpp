@@ -125,4 +125,16 @@ namespace gum {
     }
   }
 
+  Idx NumericalDiscreteVariable::dichotomy_(double target, Idx min, Idx max) const {
+    if (max - min < 2)
+      return (target <= (_domain_.atPos(min) + _domain_.atPos(max)) / 2) ? min : max;
+    else {
+      const Idx     mid = std::midpoint(min, max);
+      const double& val = _domain_.atPos(mid);
+
+      if (target < val) return this->dichotomy_(target, min, mid);
+      if (target > val) return this->dichotomy_(target, mid, max);
+      return mid;
+    }
+  }
 }   // namespace gum

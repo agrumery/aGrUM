@@ -177,24 +177,11 @@ namespace gum {
   /// clear the domain of the variable
   INLINE void NumericalDiscreteVariable::eraseValues() { _domain_.clear(); }
 
-  Idx NumericalDiscreteVariable::dichotomy_(double target, Idx min, Idx max) const {
-    if (max - min < 2) return min;
-    else {
-      const Idx     mid = std::midpoint(min, max);
-      const double& val = _domain_.atPos(mid);
-
-      if (target == val) return mid;
-      else if (target < val) return dichotomy_(target, min, mid);
-      else if (target > val) return dichotomy_(target, mid, max);
-      else return mid;
-    }
-  }
-
   INLINE Idx NumericalDiscreteVariable::closestIndex(double val) const {
     if (empty()) {
       GUM_ERROR(SizeError, "Domain is too small for this operation (" << *this << ")");
     }
-    return dichotomy_(val, 0, _domain_.size());
+    return dichotomy_(val, 0, _domain_.size()-1);
   }
 
   INLINE std::string NumericalDiscreteVariable::closestLabel(double val) const {

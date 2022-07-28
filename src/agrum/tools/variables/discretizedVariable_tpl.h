@@ -42,11 +42,9 @@ namespace gum {
       const Idx      mid = std::midpoint(min,max);
       const T_TICKS& val = _ticks_[mid];
 
-      if (target == val) {
-        return mid;
-      } else if (target < val) return dichotomy_(target, min, mid);
-      else if (target > val) return dichotomy_(target, mid, max);
-      else return mid;
+      if (target < val) return dichotomy_(target, min, mid);
+      if (target > val) return dichotomy_(target, mid, max);
+      return mid;
     }
   }
 
