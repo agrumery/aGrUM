@@ -245,6 +245,15 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(var.closestIndex(4.8), gum::Idx(4))
       TS_ASSERT_EQUALS(var.closestIndex(3.8), gum::Idx(3))
       TS_ASSERT_EQUALS(var.closestIndex(4.3), gum::Idx(3))   // arbitrary
+
+      gum::NumericalDiscreteVariable v("v","v",4,14,300);
+      TS_ASSERT_EQUALS(v.closestLabel(9.0), "8.9833")
+      TS_ASSERT_EQUALS(v.closestLabel(8.983), "8.9833")
+      TS_ASSERT_EQUALS(v.closestLabel(8.984), "8.9833")
+      TS_ASSERT_EQUALS(v.closestLabel(8.9), "8.9164")
+      TS_ASSERT_EQUALS(v.closestLabel(9.1), "9.0836")
+      TS_ASSERT_EQUALS(v.closestLabel(1.0), "4")
+      TS_ASSERT_EQUALS(v.closestLabel(15.0), "14")
     }
   };
 }   // namespace gum_tests

@@ -177,8 +177,9 @@ namespace gum {
      * @return the index
      */
     Idx closestIndex(double val) const;
+
     /**
-     * gves the value closets to val
+     * gives the value closets to val
      *
      * @param val the desired value
      * @return the value
