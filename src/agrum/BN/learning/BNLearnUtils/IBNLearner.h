@@ -523,7 +523,7 @@ namespace gum {
        * the BNLearner
        * @param vars a vector of NodeIds
        * @param knowing an optional vector of conditioning NodeIds
-       * @return a std::pair<double,double>
+       * @return a double
        */
       double logLikelihood(const std::vector< NodeId >& vars,
                            const std::vector< NodeId >& knowing = {});
@@ -533,10 +533,33 @@ namespace gum {
        * the BNLearner
        * @param vars a vector of name of rows
        * @param knowing an optional vector of conditioning rows
-       * @return a std::pair<double,double>
+       * @return a double
        */
       double logLikelihood(const std::vector< std::string >& vars,
                            const std::vector< std::string >& knowing = {});
+
+      /**
+       * Return the value of the score currently in use by the BNLearner of a
+       * variable given a set of other variables
+       * @param var the NodeId of the LHS variable
+       * @param knowing an optional vector of conditioning variables, specified
+       * by their NodeIds
+       * @return a double corresponding to the value of the score
+       */
+      double score(const NodeId                 vars,
+                   const std::vector< NodeId >& knowing = {});
+
+      /**
+       * Return the value of the score currently in use by the BNLearner of a
+       * variable given a set of other variables
+       * The score used is the one currently selected in the BNLearner
+       * @param var the name of the variable
+       * @param knowing an optional vector of conditioning variables, specified
+       * by their names
+       * @return a double corresponding to the value of the score
+       */
+      double score(const std::string&                vars,
+                   const std::vector< std::string >& knowing = {});
 
       /**
        * Return the pseudoconts ofNodeIds vars in the base in a raw array

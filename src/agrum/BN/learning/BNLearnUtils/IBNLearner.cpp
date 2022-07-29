@@ -928,6 +928,26 @@ namespace gum {
       return logLikelihood(ids, knowingIds);
     }
 
+    double IBNLearner::score(const NodeId var, const std::vector< NodeId >& knowing) {
+      createPrior_();
+      createScore_();
+
+      return score_->score(var, knowing);
+    }
+
+    double IBNLearner::score(const std::string&                var,
+                             const std::vector< std::string >& knowing) {
+      auto mapper = [this](const std::string& c) -> NodeId { return this->idFromName(c); };
+
+      const NodeId id = this->idFromName(var);
+      std::vector< NodeId > knowingIds;
+      knowingIds.reserve(knowing.size());
+      std::transform(knowing.begin(), knowing.end(), std::back_inserter(knowingIds), mapper);
+
+      return score(id, knowingIds);
+    }
+
+
     std::vector< double > IBNLearner::rawPseudoCount(const std::vector< NodeId >& vars) {
       Potential< double > res;
 

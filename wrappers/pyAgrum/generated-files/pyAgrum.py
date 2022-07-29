@@ -25422,6 +25422,9 @@ class BNLearner(object):
     def logLikelihood(self, *args) -> float:
         return _pyAgrum.BNLearner_logLikelihood(self, *args)
 
+    def score(self, *args) -> float:
+        return _pyAgrum.BNLearner_score(self, *args)
+
     def rawPseudoCount(self, *args) -> List[float]:
         return _pyAgrum.BNLearner_rawPseudoCount(self, *args)
 

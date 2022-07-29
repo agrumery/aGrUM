@@ -454,6 +454,25 @@ statistic,pvalue
 	the G2 statistic and the associated p-value as a Tuple
 "
 
+%feature("docstring") gum::learning::genericBNLearner::score
+"
+Returns the value of the score currently in use by the BNLearner of a variable given a set of other variables
+
+Parameters
+----------
+name1: str
+	the name of the variable at the LHS of the conditioning bar
+
+knowing : [str]
+	the list of names of the conditioning variables
+
+Returns
+-------
+float
+	the value of the score
+"
+
+
 %feature("docstring") gum::learning::genericBNLearner::logLikelihood
 "
 logLikelihood computes the log-likelihood for the columns in vars, given the columns in the list knowing (optional)
