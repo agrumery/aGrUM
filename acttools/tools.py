@@ -48,7 +48,7 @@ def is_tool(prog, longpath=False):
 
 
 def check_tools(options):
-  exe_py = sys.executable
+  exe_py = f'"{sys.executable}"'
 
   version, subversion, _ = cmdline(
     exe_py + ' -c "import platform;print(platform.python_version())"').split(".")
