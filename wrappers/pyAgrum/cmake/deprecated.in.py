@@ -65,7 +65,7 @@ def _addDeprecatedMethods():
     Deprecated methods in BNLearner for pyAgrum>1.1.1
     """
     warnings.warn("""
-** pyAgrum.BNLearner.useNoAriori() is deprecated from pyAgrum>1.1.1. Please use NoApriori() instead.
+** pyAgrum.BNLearner.useNoAriori() is deprecated from pyAgrum>1.1.1. Please use useNoPrior() instead.
 """, DeprecationWarning, stacklevel=2)
     return learner.useNoApriori()
 
