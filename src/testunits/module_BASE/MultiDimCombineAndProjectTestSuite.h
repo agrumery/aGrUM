@@ -665,7 +665,7 @@ namespace gum_tests {
         }
 
         TS_ASSERT_EQUALS(nb_empty, 3)
-        TS_ASSERT(prod = 30.0)
+        TS_ASSERT_EQUALS(prod ,30.0)
       }
 
       del_vars << vars[2];
@@ -730,18 +730,15 @@ namespace gum_tests {
         auto t4 = t1 * t2;
 
         int   nb_empty = 0;
-        float prod     = 1;
         for (const auto ptrPot: res) {
           if (ptrPot->nbrDim() == 0) {
             gum::Instantiation I(*ptrPot);
-            prod *= (*ptrPot)[I];
             nb_empty++;
           } else {
             TS_ASSERT_EQUALS(t4, *ptrPot)
           }
           delete ptrPot;
         }
-
         TS_ASSERT_EQUALS(nb_empty, 2)
       }
 
