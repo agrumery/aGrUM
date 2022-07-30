@@ -827,5 +827,28 @@ namespace gum_tests {
            TS_GUM_SMALL_ERROR);
       }
     }
+
+    void testNonRegression_BDatko() {
+      // from Learning Bayesian Networks by Richard E. Neapolitan page 264, Chapter 5.
+      auto diag = gum::InfluenceDiagram< double >::fastPrototype(
+         "Test{positive|negative}->*D{Buy Spiffycar|Do not buy}->$U<-Tran{bad|good};"
+         "Tran->Test;$U<-*R{Run test|Buy Spiffycar|Do not buy}->*D");
+      diag.cpt("Tran").fillWith({0.2, 0.8});
+      diag.cpt("Test").fillWith({0.9, 0.1, 0.3, 0.7});
+      diag.utility("U").fillWith(
+         {7800, 9800, 10800, 9800, 8000, 8000, 11000, 11000, 10000, 10000, 10000, 10000});
+
+
+      auto iediag = gum::ShaferShenoyLIMIDInference< double >(&diag);
+      iediag.addEvidence("R", "Do not buy");
+      iediag.makeInference();
+
+      const auto [m1, v1] = iediag.meanVar("Tran");
+      TS_ASSERT_EQUALS(v1, 0.0);
+      const auto [m2, v2] = iediag.meanVar("Test");
+      TS_ASSERT_EQUALS(v2, 0.0);
+      const auto [m3, v3] = iediag.meanVar("U");
+      TS_ASSERT_EQUALS(v3, 0.0);
+    }
   };
 }   // namespace gum_tests

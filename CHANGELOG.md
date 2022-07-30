@@ -5,14 +5,16 @@
 * aGrUM
 
   * Fixing errors in doxygen configuration.
-  * Adding a new discrete variable `gum::NumericalDiscreteVariable` whose support is a (finite) set of `double`.
+  * Adding a new class of discrete variable `gum::NumericalDiscreteVariable` whose support is a (finite) set of 
+    `double`.
   * Fixing new clang warnings.
   * Fixing a bug in `gum::Potential::max()` when all values are negative (thanks to Zakarie Aloui).
   * Adding a new method `gum::learning::BNLearner::score()` which computes the currently selected score for a node and its parents.
+  * Adding a test for a variance being not negative in `gum::SahferSheoyLIMIDInference` (thanks to Benjamin Datko). 
 
 * pyAgrum
 
-  * Adding a new discrete variable `gum.NumericalDiscreteVariable` whose support is a (finite) set of `double`.
+  * Adding a new class of discrete variable `gum.NumericalDiscreteVariable` whose support is a (finite) set of `double`.
   * Updating notebooks w.r.t. this new variable (`16-Examples_quasiContinuous` and `18-Examples-BayesianBetaCoin`).
   * Adding a new method `gum.BNLearner.score()` which computes the currently selected score for a node and its parents.
 
