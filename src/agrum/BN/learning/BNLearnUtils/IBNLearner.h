@@ -539,6 +539,71 @@ namespace gum {
                            const std::vector< std::string >& knowing = {});
 
       /**
+       * Return the mutual information of id1 and id2 in the base, conditioned by knowing for
+       * the BNLearner
+       *
+       * @warning This function returns the bare mutual information (without prior or correction)
+       *
+       * @param id1 nodeId
+       * @param id2 nodeId
+       * @param knowing an optional vector of conditioning NodeIds
+       * @return a double
+       */
+      double mutualInformation(const NodeId                 id1,
+                               const NodeId                 id2,
+                               const std::vector< NodeId >& knowing = {});
+
+      /**
+       * Return the mutual information of var1 and var2 in the base, conditioned by knowing for
+       * the BNLearner
+       *
+       * @warning This function returns the bare mutual information (without prior or correction)
+       *
+       * @param var1 name of a row
+       * @param var2 name of a row
+       * @param knowing an optional vector of conditioning rows
+       * @return a double
+       */
+      double mutualInformation(const std::string&                var1,
+                               const std::string&                var2,
+                               const std::vector< std::string >& knowing = {});
+
+
+      /**
+       * Return the mutual information of id1 and id2 in the base, conditioned by knowing for
+       * the BNLearner
+       *
+       * @warning This function returns the mutual information corrected using defined correction
+       * (useNML, useMDL) and prior
+       *
+       * @param id1 nodeId
+       * @param id2 nodeId
+       * @param knowing an optional vector of conditioning NodeIds
+       * @return a double
+       */
+      double correctedMutualInformation(const NodeId                 id1,
+                                        const NodeId                 id2,
+                                        const std::vector< NodeId >& knowing = {});
+
+      /**
+       * Return the mutual information of var1 and var2 in the base, conditioned by knowing for
+       * the BNLearner
+       *
+       * @warning This function returns the mutual information corrected using defined correction
+       * (useNML, useMDL) and prior
+       *
+       * @warning This function returns the bare mutual information (without prior or correction)
+       *
+       * @param var1 name of a row
+       * @param var2 name of a row
+       * @param knowing an optional vector of conditioning rows
+       * @return a double
+       */
+      double correctedMutualInformation(const std::string&                var1,
+                                        const std::string&                var2,
+                                        const std::vector< std::string >& knowing = {});
+
+      /**
        * Return the value of the score currently in use by the BNLearner of a
        * variable given a set of other variables
        * @param var the NodeId of the LHS variable
@@ -546,8 +611,7 @@ namespace gum {
        * by their NodeIds
        * @return a double corresponding to the value of the score
        */
-      double score(const NodeId                 vars,
-                   const std::vector< NodeId >& knowing = {});
+      double score(const NodeId vars, const std::vector< NodeId >& knowing = {});
 
       /**
        * Return the value of the score currently in use by the BNLearner of a
@@ -558,8 +622,7 @@ namespace gum {
        * by their names
        * @return a double corresponding to the value of the score
        */
-      double score(const std::string&                vars,
-                   const std::vector< std::string >& knowing = {});
+      double score(const std::string& vars, const std::vector< std::string >& knowing = {});
 
       /**
        * Return the pseudoconts ofNodeIds vars in the base in a raw array

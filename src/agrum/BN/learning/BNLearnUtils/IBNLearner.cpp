@@ -928,6 +928,69 @@ namespace gum {
       return logLikelihood(ids, knowingIds);
     }
 
+    double IBNLearner::correctedMutualInformation(const NodeId                 id1,
+                                                  const NodeId                 id2,
+                                                  const std::vector< NodeId >& knowing) {
+      createPrior_();
+      gum::learning::CorrectedMutualInformation cmi(scoreDatabase_.parser(),
+                                                    *prior_,
+                                                    databaseRanges());
+
+      switch (kmode3Off2_) {
+        case CorrectedMutualInformation::KModeTypes::MDL: cmi.useMDL(); break;
+
+        case CorrectedMutualInformation::KModeTypes::NML: cmi.useNML(); break;
+
+        case CorrectedMutualInformation::KModeTypes::NoCorr: cmi.useNoCorr(); break;
+
+        default:
+          GUM_ERROR(NotImplementedYet,
+                    "The BNLearner's corrected mutual information class does "
+                       << "not implement yet this correction : " << int(kmode3Off2_));
+      }
+
+      if (knowing.size() == (Size)0) return cmi.score(id1, id2) / this->nbRows();
+      else return cmi.score(id1, id2, knowing) / this->nbRows();
+    }
+
+    double IBNLearner::correctedMutualInformation(const std::string&                var1,
+                                                  const std::string&                var2,
+                                                  const std::vector< std::string >& knowing) {
+      std::vector< NodeId > knowingIds;
+
+      auto mapper = [this](const std::string& c) -> NodeId { return this->idFromName(c); };
+
+      std::transform(knowing.begin(), knowing.end(), std::back_inserter(knowingIds), mapper);
+
+      return correctedMutualInformation(this->idFromName(var1), this->idFromName(var2), knowingIds);
+    }
+
+
+    double IBNLearner::mutualInformation(const NodeId                 id1,
+                                         const NodeId                 id2,
+                                         const std::vector< NodeId >& knowing) {
+      const auto prior = NoPrior(scoreDatabase_.databaseTable(), scoreDatabase_.nodeId2Columns());
+      gum::learning::CorrectedMutualInformation cmi(scoreDatabase_.parser(),
+                                                    prior,
+                                                    databaseRanges());
+      cmi.useNoCorr();
+
+      if (knowing.size() == (Size)0) return cmi.score(id1, id2) / this->nbRows();
+      else return cmi.score(id1, id2, knowing) / this->nbRows();
+    }
+
+    double IBNLearner::mutualInformation(const std::string&                var1,
+                                         const std::string&                var2,
+                                         const std::vector< std::string >& knowing) {
+      std::vector< NodeId > knowingIds;
+
+      auto mapper = [this](const std::string& c) -> NodeId { return this->idFromName(c); };
+
+      std::transform(knowing.begin(), knowing.end(), std::back_inserter(knowingIds), mapper);
+
+      return mutualInformation(this->idFromName(var1), this->idFromName(var2), knowingIds);
+    }
+
     double IBNLearner::score(const NodeId var, const std::vector< NodeId >& knowing) {
       createPrior_();
       createScore_();
@@ -935,11 +998,10 @@ namespace gum {
       return score_->score(var, knowing);
     }
 
-    double IBNLearner::score(const std::string&                var,
-                             const std::vector< std::string >& knowing) {
+    double IBNLearner::score(const std::string& var, const std::vector< std::string >& knowing) {
       auto mapper = [this](const std::string& c) -> NodeId { return this->idFromName(c); };
 
-      const NodeId id = this->idFromName(var);
+      const NodeId          id = this->idFromName(var);
       std::vector< NodeId > knowingIds;
       knowingIds.reserve(knowing.size());
       std::transform(knowing.begin(), knowing.end(), std::back_inserter(knowingIds), mapper);

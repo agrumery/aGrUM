@@ -41,7 +41,7 @@ namespace gum {
      * @headerfile scoreMDL.h <agrum/BN/learning/scores_and_tests/scoreMDL.h>
      * @ingroup learning_scores
      *
-     * @warning If you pass an prior to the score, this one will be added
+     * @warning If you pass a prior to the score, this one will be added
      * into the log-likelihood part of the score.
      */
     using ScoreMDL = ScoreBIC;

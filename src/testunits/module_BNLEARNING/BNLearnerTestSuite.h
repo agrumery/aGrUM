@@ -1843,6 +1843,81 @@ namespace gum_tests {
       }
     }
 
+    void testMutualInformation() {
+      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"));
+
+      TS_ASSERT_DELTA(learner.mutualInformation("lung_cancer", "smoking"),
+                      0.0332346154587978,
+                      TS_GUM_SMALL_ERROR)
+
+      learner.useNoCorrection();
+      TS_ASSERT_DELTA(learner.mutualInformation("lung_cancer", "smoking"),
+                      0.0332346154587978,
+                      TS_GUM_SMALL_ERROR)
+
+      learner.useMDLCorrection();
+      TS_ASSERT_DELTA(learner.mutualInformation("lung_cancer", "smoking"),
+                      0.0332346154587978,
+                      TS_GUM_SMALL_ERROR)
+
+      learner.useNMLCorrection();
+      TS_ASSERT_DELTA(learner.mutualInformation("lung_cancer", "smoking"),
+                      0.0332346154587978,
+                      TS_GUM_SMALL_ERROR)
+
+      learner.useNoCorrection();
+      TS_ASSERT_DELTA(learner.correctedMutualInformation("lung_cancer", "smoking"),
+                      0.0332346154587978,
+                      TS_GUM_SMALL_ERROR)
+
+      learner.useMDLCorrection();
+      TS_ASSERT_DELTA(learner.correctedMutualInformation("lung_cancer", "smoking"),
+                      0.0279523,
+                      TS_GUM_SMALL_ERROR)
+
+      learner.useNMLCorrection();
+      TS_ASSERT_DELTA(learner.correctedMutualInformation("lung_cancer", "smoking"),
+                      0.0292368,
+                      TS_GUM_SMALL_ERROR)
+    }
+    void testConditionalMutualInformation() {
+      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"));
+
+      TS_ASSERT_DELTA(learner.mutualInformation("bronchitis", "lung_cancer", {"smoking"}),
+                      0.00159046091867418,
+                      TS_GUM_SMALL_ERROR)
+
+      learner.useNoCorrection();
+      TS_ASSERT_DELTA(learner.mutualInformation("bronchitis", "lung_cancer", {"smoking"}),
+                      0.00159046091867418,
+                      TS_GUM_SMALL_ERROR)
+
+      learner.useMDLCorrection();
+      TS_ASSERT_DELTA(learner.mutualInformation("bronchitis", "lung_cancer", {"smoking"}),
+                      0.00159046091867418,
+                      TS_GUM_SMALL_ERROR)
+
+      learner.useNMLCorrection();
+      TS_ASSERT_DELTA(learner.mutualInformation("bronchitis", "lung_cancer", {"smoking"}),
+                      0.00159046091867418,
+                      TS_GUM_SMALL_ERROR)
+
+      learner.useNoCorrection();
+      TS_ASSERT_DELTA(learner.correctedMutualInformation("bronchitis", "lung_cancer", {"smoking"}),
+                      0.00159046091867418,
+                      TS_GUM_SMALL_ERROR)
+
+      learner.useMDLCorrection();
+      TS_ASSERT_DELTA(learner.correctedMutualInformation("bronchitis", "lung_cancer", {"smoking"}),
+                      -0.00897408,
+                      TS_GUM_SMALL_ERROR)
+
+      learner.useNMLCorrection();
+      TS_ASSERT_DELTA(learner.correctedMutualInformation("bronchitis", "lung_cancer", {"smoking"}),
+                      -0.00486096,
+                      TS_GUM_SMALL_ERROR)
+    }
+
     private:
     void _test_dirichlet(const gum::BayesNet< double >& model) {
       gum::learning::BNLearner all(GET_RESSOURCES_PATH("dirichlet/dirichlet.csv"), model);
