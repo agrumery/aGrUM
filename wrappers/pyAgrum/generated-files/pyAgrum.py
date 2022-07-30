@@ -25425,6 +25425,12 @@ class BNLearner(object):
     def score(self, *args) -> float:
         return _pyAgrum.BNLearner_score(self, *args)
 
+    def mutualInformation(self, *args) -> float:
+        return _pyAgrum.BNLearner_mutualInformation(self, *args)
+
+    def correctedMutualInformation(self, *args) -> float:
+        return _pyAgrum.BNLearner_correctedMutualInformation(self, *args)
+
     def rawPseudoCount(self, *args) -> List[float]:
         return _pyAgrum.BNLearner_rawPseudoCount(self, *args)
 

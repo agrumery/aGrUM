@@ -10,13 +10,15 @@
   * Fixing new clang warnings.
   * Fixing a bug in `gum::Potential::max()` when all values are negative (thanks to Zakarie Aloui).
   * Adding a new method `gum::learning::BNLearner::score()` which computes the currently selected score for a node and its parents.
-  * Adding a test for a variance being not negative in `gum::SahferSheoyLIMIDInference` (thanks to Benjamin Datko). 
+  * Adding a test for a variance being not negative in `gum::ShaferSheoyLIMIDInference` (thanks to Benjamin Datko). 
+  * Adding new methods `gum::learning::BNLeaner::mutualInformation()` and `gum::learning::BNLearner::correctedMutualInformation()`.
 
 * pyAgrum
 
   * Adding a new class of discrete variable `gum.NumericalDiscreteVariable` whose support is a (finite) set of `double`.
   * Updating notebooks w.r.t. this new variable (`16-Examples_quasiContinuous` and `18-Examples-BayesianBetaCoin`).
   * Adding a new method `gum.BNLearner.score()` which computes the currently selected score for a node and its parents.
+  * Adding new methods `gum.BNLeaner.mutualInformation()` and `gum.BNLearner.correctedMutualInformation()`.
 
 ## Changelog for 1.2.0
 

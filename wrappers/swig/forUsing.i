@@ -81,6 +81,8 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::IBNLearner,gum::learning::BNLearner<d
   using gum::learning::IBNLearner::hasMissingValues;
   using gum::learning::IBNLearner::logLikelihood;
   using gum::learning::IBNLearner::score;
+  using gum::learning::IBNLearner::mutualInformation;
+  using gum::learning::IBNLearner::correctedMutualInformation;
   using gum::learning::IBNLearner::rawPseudoCount;
   using gum::learning::IBNLearner::nbRows;
   using gum::learning::IBNLearner::nbCols;

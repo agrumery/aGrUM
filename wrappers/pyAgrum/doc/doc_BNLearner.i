@@ -454,6 +454,59 @@ statistic,pvalue
 	the G2 statistic and the associated p-value as a Tuple
 "
 
+%feature("docstring") gum::learning::BNLearner::mutualInformation
+"
+computes the mutual information between two columns, given a list of other columns (log2).
+
+warning
+-------
+This function gives the 'raw' mutual information. If you want a version taking into account correction and prior, use
+gum.BNLearner.correctedMutualInformation
+
+Parameters
+----------
+name1: str
+	the name of the first column
+
+name2 : str
+	the name of the second column
+
+knowing : [str]
+	the list of names of conditioning columns
+
+Returns
+-------
+statistic,pvalue
+	the G2 statistic and the associated p-value as a Tuple
+"
+
+%feature("docstring") gum::learning::BNLearner::correctedMutualInformation
+"
+computes the mutual information between two columns, given a list of other columns (log2).
+
+warning
+-------
+This function takes into account correction and prior. If you want the 'raw' mutual information, use
+gum.BNLearner.mutualInformation
+
+
+Parameters
+----------
+name1: str
+	the name of the first column
+
+name2 : str
+	the name of the second column
+
+knowing : [str]
+	the list of names of conditioning columns
+
+Returns
+-------
+statistic,pvalue
+	the G2 statistic and the associated p-value as a Tuple
+"
+
 %feature("docstring") gum::learning::genericBNLearner::score
 "
 Returns the value of the score currently in use by the BNLearner of a variable given a set of other variables
