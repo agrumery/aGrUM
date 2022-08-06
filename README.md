@@ -1,8 +1,8 @@
 # aGrUM/pyAgrum
 
-- aGrUM is a C++ library designed for easily building applications using graphical 
-models such as Bayesian networks, influence diagrams, decision trees or Markov 
-decision processes.
+- aGrUM is a C++ library designed to facilitate the development of applications 
+using graphical models such as Bayesian networks, influence diagrams, decision 
+trees, GAI networks or Markov decision processes.
 
 It is written to provide the basic building blocks to perform the following 
 tasks :
@@ -11,9 +11,9 @@ tasks :
     * probabilistic inference with graphical models,
     * planification.
 
-- pyAgrum is a Python wrapper for the C++ aGrUM library (using SWIG interface generator). It provides a high-level interface to the part of aGrUM allowing to create, model, learn, use, calculate with and embed Bayesian Networks and other graphical models. Some specific (python and C++) codes are added in order to simplify and extend the aGrUM API.
+- pyAgrum is a Python wrapper for the C++ aGrUM library (using SWIG interface generator). It provides a high-level interface to the part of aGrUM allowing to create, model, learn, use, calculate with and embed Bayesian Networks and other graphical models. Some specific (python and C++) code was added in order to simplify and extend the aGrUM API.
 
-Specific codes have been added to pyAgrum (as pure python modules using pyAgrum) :
+The aforementioned extensions are (implemented as pure python modules using pyAgrum) :
 
     * Scikit-learn-compliant probabilistic classifiers based on Bayesian networks,
     * Probabilistic causality (causal networks, do-calculus),
@@ -45,7 +45,7 @@ conda install -c conda-forge pyagrum
 For a less technical introduction, checkout 
 [the project's homepage](http://agrum.gitlab.io).
 
-aGrUM initial purpose was to support, sustain and share new frameworks and algorithms from the Graphical Models and 
+aGrUM's initial purpose was to support, sustain and share new frameworks and algorithms from the Graphical Models and 
 Decision team at 
 [LIP6](http://www.lip6.fr): [Christophe Gonzales](https://www.lip6.fr/actualite/personnes-fiche.php?ident=P37&LANG=en), 
 [Pierre-Henri Wuillemin](https://www.lip6.fr/actualite/personnes-fiche.php?ident=P67) and 
