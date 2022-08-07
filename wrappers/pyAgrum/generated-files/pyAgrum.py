@@ -8471,7 +8471,7 @@ class Potential(object):
            the potential as an pandas.DataFrame
         """
         import pandas as pd
-        varnames = self.var_names
+        varnames = list(reversed(self.names))
         data = []
         pname = ""
         for inst in self.loopIn():
