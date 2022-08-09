@@ -154,14 +154,22 @@ namespace PyAgrumHelper {
         // not relevant name. we just skip it
         continue;
       }
-      if (!(PyInt_Check(value))) {
-        GUM_ERROR(gum::InvalidArgument, "A value is not an int")
+      std::string label = stringFromPyObject(value);
+      gum::Idx v;
+      if (label=="") {
+        if (!(PyInt_Check(value))) {
+          GUM_ERROR(gum::InvalidArgument, "A value is neither an int nor a string")
+        }
+        v = gum::Idx(PyInt_AsLong(value));
+      } else {
+        v= namesToVars[name]->index(label);
       }
-      gum::Idx v = gum::Idx(PyInt_AsLong(value));
+
       if (v >= namesToVars[name]->domainSize()) {
         GUM_ERROR(gum::InvalidArgument,
                   "The value " << v << " is not in the domain of " << name);
       }
+
       inst.add(*(namesToVars[name]));
       inst.chgVal(namesToVars[name], v);
     }
