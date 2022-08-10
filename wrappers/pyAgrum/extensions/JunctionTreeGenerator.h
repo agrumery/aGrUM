@@ -36,87 +36,75 @@
 
 class JunctionTreeGenerator {
   public:
-  gum::JunctionTree junctionTree(const gum::UndiGraph& g,
-                                 PyObject* partial_order = nullptr) const {
+  gum::JunctionTree junctionTree(const gum::UndiGraph& g, PyObject* partial_order = nullptr) const {
     return junctionTree_(g, translatePartialOrder_(partial_order));
   }
 
-  gum::JunctionTree junctionTree(const gum::DAG& dag,
-                                 PyObject*       partial_order = nullptr) const {
+  gum::JunctionTree junctionTree(const gum::DAG& dag, PyObject* partial_order = nullptr) const {
     return junctionTree_(dag.moralGraph(), translatePartialOrder_(partial_order));
   }
 
   gum::JunctionTree junctionTree(const gum::BayesNet< double >& bn,
-                                 PyObject* partial_order = nullptr) const {
+                                 PyObject*                      partial_order = nullptr) const {
     gum::NodeProperty< gum::Size > mods;
-    for (const auto node : bn.dag().nodes())
+    for (const auto node: bn.dag().nodes())
       mods.insert(node, bn.variable(node).domainSize());
-    return junctionTree_(
-       bn.moralGraph(), translatePartialOrder_(partial_order), mods);
+    return junctionTree_(bn.moralGraph(), translatePartialOrder_(partial_order), mods);
   }
 
   gum::JunctionTree junctionTree(const gum::MarkovNet< double >& mn,
-                                 PyObject* partial_order = nullptr) const {
+                                 PyObject*                       partial_order = nullptr) const {
     gum::NodeProperty< gum::Size > mods;
-    for (const auto node : mn.graph().nodes())
+    for (const auto node: mn.graph().nodes())
       mods.insert(node, mn.variable(node).domainSize());
-    return junctionTree_(
-       mn.graph(), translatePartialOrder_(partial_order), mods);
+    return junctionTree_(mn.graph(), translatePartialOrder_(partial_order), mods);
   }
 
-  PyObject* eliminationOrder(const gum::UndiGraph& g,
-                             PyObject*             partial_order = nullptr) const {
+  PyObject* eliminationOrder(const gum::UndiGraph& g, PyObject* partial_order = nullptr) const {
     return eliminationOrder_(g, translatePartialOrder_(partial_order));
   }
 
-  PyObject* eliminationOrder(const gum::DAG& dag,
-                             PyObject*       partial_order = nullptr) const {
-    return eliminationOrder_(dag.moralGraph(),
-                             translatePartialOrder_(partial_order));
+  PyObject* eliminationOrder(const gum::DAG& dag, PyObject* partial_order = nullptr) const {
+    return eliminationOrder_(dag.moralGraph(), translatePartialOrder_(partial_order));
   }
 
   PyObject* eliminationOrder(const gum::BayesNet< double >& bn,
-                             PyObject* partial_order = nullptr) const {
+                             PyObject*                      partial_order = nullptr) const {
     gum::NodeProperty< gum::Size > mods;
-    for (const auto node : bn.dag().nodes())
+    for (const auto node: bn.dag().nodes())
       mods.insert(node, bn.variable(node).domainSize());
-    return eliminationOrder_(
-       bn.moralGraph(), translatePartialOrder_(partial_order), mods);
+    return eliminationOrder_(bn.moralGraph(), translatePartialOrder_(partial_order), mods);
   }
 
 
   gum::JunctionTree binaryJoinTree(const gum::UndiGraph& g,
-                                   PyObject* partial_order = nullptr) const {
+                                   PyObject*             partial_order = nullptr) const {
     return binaryJoinTree_(g, translatePartialOrder_(partial_order));
   }
 
-  gum::JunctionTree binaryJoinTree(const gum::DAG& dag,
-                                   PyObject*       partial_order = nullptr) const {
-    return binaryJoinTree_(dag.moralGraph(),
-                           translatePartialOrder_(partial_order));
+  gum::JunctionTree binaryJoinTree(const gum::DAG& dag, PyObject* partial_order = nullptr) const {
+    return binaryJoinTree_(dag.moralGraph(), translatePartialOrder_(partial_order));
   }
 
   gum::JunctionTree binaryJoinTree(const gum::BayesNet< double >& bn,
-                                   PyObject* partial_order = nullptr) const {
+                                   PyObject*                      partial_order = nullptr) const {
     gum::NodeProperty< gum::Size > mods;
-    for (const auto node : bn.dag().nodes())
+    for (const auto node: bn.dag().nodes())
       mods.insert(node, bn.variable(node).domainSize());
-    return binaryJoinTree_(
-       bn.moralGraph(), translatePartialOrder_(partial_order), mods);
+    return binaryJoinTree_(bn.moralGraph(), translatePartialOrder_(partial_order), mods);
   }
 
   private:
   gum::JunctionTree junctionTree_(const gum::UndiGraph&            g,
                                   const gum::List< gum::NodeSet >& partial_order,
-                                  gum::NodeProperty< gum::Size >   mods =
-                                     gum::NodeProperty< gum::Size >()) const {
+                                  gum::NodeProperty< gum::Size >   mods
+                                  = gum::NodeProperty< gum::Size >()) const {
     if (mods.size() == 0) { mods = g.nodesProperty(static_cast< gum::Size >(2)); }
     gum::StaticTriangulation* triangulation;
     if (partial_order.size() == 0) {
       triangulation = new gum::DefaultTriangulation(&g, &mods);
     } else {
-      triangulation =
-         new gum::PartialOrderedTriangulation(&g, &mods, &partial_order);
+      triangulation = new gum::PartialOrderedTriangulation(&g, &mods, &partial_order);
     }
     gum::DefaultJunctionTreeStrategy strategy;
     strategy.setTriangulation(triangulation);
@@ -127,8 +115,8 @@ class JunctionTreeGenerator {
 
   gum::JunctionTree binaryJoinTree_(const gum::UndiGraph&            g,
                                     const gum::List< gum::NodeSet >& partial_order,
-                                    gum::NodeProperty< gum::Size >   mods =
-                                       gum::NodeProperty< gum::Size >()) const {
+                                    gum::NodeProperty< gum::Size >   mods
+                                    = gum::NodeProperty< gum::Size >()) const {
     gum::BinaryJoinTreeConverterDefault bjtc;
     gum::NodeSet                        emptyset;
     if (mods.size() == 0) { mods = g.nodesProperty(static_cast< gum::Size >(2)); }
@@ -138,18 +126,16 @@ class JunctionTreeGenerator {
 
   PyObject* eliminationOrder_(const gum::UndiGraph&            g,
                               const gum::List< gum::NodeSet >& partial_order,
-                              gum::NodeProperty< gum::Size >   mods =
-                                 gum::NodeProperty< gum::Size >()) const {
+                              gum::NodeProperty< gum::Size >   mods
+                              = gum::NodeProperty< gum::Size >()) const {
     if (mods.size() == 0) { mods = g.nodesProperty(static_cast< gum::Size >(2)); }
     gum::StaticTriangulation* triangulation;
     if (partial_order.size() == 0) {
       triangulation = new gum::DefaultTriangulation(&g, &mods);
     } else {
-      triangulation =
-         new gum::PartialOrderedTriangulation(&g, &mods, &partial_order);
+      triangulation = new gum::PartialOrderedTriangulation(&g, &mods, &partial_order);
     }
-    auto res =
-       PyAgrumHelper::PyListFromNodeVect(triangulation->eliminationOrder());
+    auto res = PyAgrumHelper::PyListFromNodeVect(triangulation->eliminationOrder());
     delete (triangulation);
     return res;
   }
@@ -173,14 +159,12 @@ class JunctionTreeGenerator {
             if (PyInt_Check(item2)) {
               se.insert(PyInt_AsLong(item2));
             } else {
-              GUM_ERROR(gum::InvalidArgument,
-                        "A value is neither a node name nor an node id");
+              GUM_ERROR(gum::InvalidArgument, "A value is neither a node name nor an node id");
             }
           }
           res.insert(se);
         } else {
-          GUM_ERROR(gum::InvalidArgument,
-                    "The argument is not a sequence of sequence");
+          GUM_ERROR(gum::InvalidArgument, "The argument is not a sequence of sequence");
         }
       }
     } else {

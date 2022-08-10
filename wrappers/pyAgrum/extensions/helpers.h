@@ -36,7 +36,7 @@ namespace PyAgrumHelper {
     std::string name = "";
     if (PyUnicode_Check(o)) {   // python3 string
       PyObject* asbytes = PyUnicode_AsUTF8String(o);
-      name = PyBytes_AsString(asbytes);
+      name              = PyBytes_AsString(asbytes);
       Py_DECREF(asbytes);
     } else if (PyString_Check(o)) {   // python2 string
       name = PyString_AsString(o);
@@ -57,8 +57,7 @@ namespace PyAgrumHelper {
       for (int i = 0; i < siz; i++) {
         std::string name = stringFromPyObject(PyList_GetItem(varnames, i));
 
-        if (name == "")
-          GUM_ERROR(gum::InvalidArgument, "Argument is not a list of string")
+        if (name == "") GUM_ERROR(gum::InvalidArgument, "Argument is not a list of string")
 
         names << name;
       }
@@ -74,15 +73,14 @@ namespace PyAgrumHelper {
     for (const auto v: pot->variablesSequence())
       if (names.contains(v->name())) s << v;
 
-    if (s.size() == 0)
-      GUM_ERROR(gum::InvalidArgument, "No relevant dimension in the argument")
+    if (s.size() == 0) GUM_ERROR(gum::InvalidArgument, "No relevant dimension in the argument")
   }
 
   // filling a vector of DiscreteVariable* from a list of string, in the context of
   // a potential.
   void fillDVVectorFromPyObject(const gum::Potential< double >*              pot,
                                 std::vector< const gum::DiscreteVariable* >& s,
-                                PyObject* varnames) {
+                                PyObject*                                    varnames) {
     if (PyList_Check(varnames)) {
       gum::HashTable< std::string, const gum::DiscreteVariable* > namesToVars;
       for (gum::Idx i = 0; i < pot->nbrDim(); i++)
@@ -93,12 +91,9 @@ namespace PyAgrumHelper {
 
       for (int i = 0; i < siz; i++) {
         std::string name = stringFromPyObject(PyList_GetItem(varnames, i));
-        if (name == "") {
-          GUM_ERROR(gum::InvalidArgument, "Argument is not a list of string")
-        }
+        if (name == "") { GUM_ERROR(gum::InvalidArgument, "Argument is not a list of string") }
         if (!namesToVars.exists(name)) {
-          GUM_ERROR(gum::InvalidArgument,
-                    "Argument is not a name of a variable in this potential");
+          GUM_ERROR(gum::InvalidArgument, "Argument is not a name of a variable in this potential");
         }
         s.push_back(namesToVars[name]);
       }
@@ -112,9 +107,7 @@ namespace PyAgrumHelper {
                           const gum::DiscreteVariable*&   pvar,
                           PyObject*                       varname) {
     const std::string name = stringFromPyObject(varname);
-    if (name == "") {
-      GUM_ERROR(gum::InvalidArgument, "Argument is not a string")
-    }
+    if (name == "") { GUM_ERROR(gum::InvalidArgument, "Argument is not a string") }
 
     bool isOK = false;
     for (gum::Idx i = 0; i < pot->nbrDim(); i++) {
@@ -125,8 +118,7 @@ namespace PyAgrumHelper {
       }
     }
     if (!isOK) {
-      GUM_ERROR(gum::InvalidArgument,
-                "Argument is not a name of a variable in this potential");
+      GUM_ERROR(gum::InvalidArgument, "Argument is not a name of a variable in this potential");
     }
   }
 
@@ -134,9 +126,7 @@ namespace PyAgrumHelper {
   void fillInstantiationFromPyObject(const gum::Potential< double >* pot,
                                      gum::Instantiation&             inst,
                                      PyObject*                       dict) {
-    if (!PyDict_Check(dict)) {
-      GUM_ERROR(gum::InvalidArgument, "Argument is not a dictionary")
-    }
+    if (!PyDict_Check(dict)) { GUM_ERROR(gum::InvalidArgument, "Argument is not a dictionary") }
 
     gum::HashTable< std::string, const gum::DiscreteVariable* > namesToVars;
     for (gum::Idx i = 0; i < pot->nbrDim(); i++)
@@ -155,19 +145,18 @@ namespace PyAgrumHelper {
         continue;
       }
       std::string label = stringFromPyObject(value);
-      gum::Idx v;
-      if (label=="") {
+      gum::Idx    v;
+      if (label == "") {
         if (!(PyInt_Check(value))) {
           GUM_ERROR(gum::InvalidArgument, "A value is neither an int nor a string")
         }
         v = gum::Idx(PyInt_AsLong(value));
       } else {
-        v= namesToVars[name]->index(label);
+        v = namesToVars[name]->index(label);
       }
 
       if (v >= namesToVars[name]->domainSize()) {
-        GUM_ERROR(gum::InvalidArgument,
-                  "The value " << v << " is not in the domain of " << name);
+        GUM_ERROR(gum::InvalidArgument, "The value " << v << " is not in the domain of " << name);
       }
 
       inst.add(*(namesToVars[name]));
@@ -184,8 +173,7 @@ namespace PyAgrumHelper {
     } else if (PyLong_Check(n)) {
       return gum::NodeId(PyLong_AsLong(n));
     } else {
-      GUM_ERROR(gum::InvalidArgument,
-                "A value is neither a node name nor an node id");
+      GUM_ERROR(gum::InvalidArgument, "A value is neither a node name nor an node id");
     }
   }
 
@@ -198,12 +186,13 @@ namespace PyAgrumHelper {
     } else if (PyLong_Check(n)) {
       return map.name(gum::NodeId(PyLong_AsLong(n)));
     } else {
-      GUM_ERROR(gum::InvalidArgument,
-                "A value is neither a node name nor an node id");
+      GUM_ERROR(gum::InvalidArgument, "A value is neither a node name nor an node id");
     }
   }
 
-  void populateStrVectorFromPySequenceOfIntOrString(std::vector<std::string>& names, PyObject* seq, const gum::VariableNodeMap& map) {
+  void populateStrVectorFromPySequenceOfIntOrString(std::vector< std::string >& names,
+                                                    PyObject*                   seq,
+                                                    const gum::VariableNodeMap& map) {
     // if seq is just a string
     const std::string name = PyAgrumHelper::stringFromPyObject(seq);
     if (name != "") {
@@ -229,8 +218,9 @@ namespace PyAgrumHelper {
     }
   }
 
-  void populateNodeSetFromPySequenceOfIntOrString(
-     gum::NodeSet& nodeset, PyObject* seq, const gum::VariableNodeMap& map) {
+  void populateNodeSetFromPySequenceOfIntOrString(gum::NodeSet&               nodeset,
+                                                  PyObject*                   seq,
+                                                  const gum::VariableNodeMap& map) {
     // if seq is just a string
     const std::string name = PyAgrumHelper::stringFromPyObject(seq);
     if (name != "") {
@@ -353,8 +343,7 @@ namespace PyAgrumHelper {
     return q;
   }
 
-  PyObject*
-     PySeqFromSetOfInstantiation(const gum::Set< gum::Instantiation >& soi) {
+  PyObject* PySeqFromSetOfInstantiation(const gum::Set< gum::Instantiation >& soi) {
     PyObject* q = PyList_New(0);
     for (const auto& inst: soi) {
       PyList_Append(q, PyDictFromInstantiation(inst));

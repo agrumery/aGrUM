@@ -1,29 +1,29 @@
 /***************************************************************************
-*   Copyright (c) 2005-2022 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (c) 2005-2022 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 /**
-* @file
-* @brief This file contains definition for a PRMexplorer (read-only access to
-*PRM)
-*
-* @author Pierre-Henri WUILLEMIN and Yangfan XIANG
-*/
+ * @file
+ * @brief This file contains definition for a PRMexplorer (read-only access to
+ *PRM)
+ *
+ * @author Pierre-Henri WUILLEMIN and Yangfan XIANG
+ */
 #include <Python.h>
 #include <string>
 #include <vector>
@@ -42,19 +42,18 @@ class Aggregate;
 class PRMexplorer {
   public:
   /**
-  * Create an explorer
-  */
+   * Create an explorer
+   */
   PRMexplorer(void) {}
 
   ~PRMexplorer(void) {}
   /**
-  * Fill an explorer from a filename and a classpath
-  * @param filename
-  * @param classpath
-  * @param verbose to print warnings and errors
-  */
-  void
-  load(std::string filename, std::string classpath = "", bool verbose = false) {
+   * Fill an explorer from a filename and a classpath
+   * @param filename
+   * @param classpath
+   * @param verbose to print warnings and errors
+   */
+  void load(std::string filename, std::string classpath = "", bool verbose = false) {
     _prm_ = nullptr;
 
     std::stringstream stream;
@@ -68,41 +67,33 @@ class PRMexplorer {
       _reader_.showErrorCounts(stream);
       GUM_ERROR(gum::FatalError, stream.str())
     }
-    if (verbose) {
-      std::cout << stream.str() << std::endl;
-    }
+    if (verbose) { std::cout << stream.str() << std::endl; }
 
     _prm_ = _reader_.prm();
   }
 
   /**
-  * @param name The name of a possible Type<GUM_SCALAR> in this PRM.
-  * @return Returns true if name names a Type<GUM_SCALAR> in this PRM.
-  */
-  PyObject* isType(std::string name) {
-    return _prm_->isType(name) ? Py_True : Py_False;
-  }
+   * @param name The name of a possible Type<GUM_SCALAR> in this PRM.
+   * @return Returns true if name names a Type<GUM_SCALAR> in this PRM.
+   */
+  PyObject* isType(std::string name) { return _prm_->isType(name) ? Py_True : Py_False; }
 
   /**
-  * @param name The name of a possible Class<GUM_SCALAR> in this PRM.
-  * @return Returns true if name names a Class<GUM_SCALAR> in this PRM.
-  */
+   * @param name The name of a possible Class<GUM_SCALAR> in this PRM.
+   * @return Returns true if name names a Class<GUM_SCALAR> in this PRM.
+   */
   PyObject* isClass(std::string name) {
-    if (_prm_ == nullptr) {
-      GUM_ERROR(gum::FatalError, "No loaded prm.")
-    }
+    if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     return _prm_->isClass(name) ? Py_True : Py_False;
   }
 
   /**
-  * @param name The name of a possible Interface<GUM_SCALAR> in this PRM.
-  * @return Returns true if name names a Interface<GUM_SCALAR> in this PRM.
-  */
+   * @param name The name of a possible Interface<GUM_SCALAR> in this PRM.
+   * @return Returns true if name names a Interface<GUM_SCALAR> in this PRM.
+   */
   PyObject* isInterface(std::string name) {
-    if (_prm_ == nullptr) {
-      GUM_ERROR(gum::FatalError, "No loaded prm.")
-    }
+    if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     return _prm_->isInterface(name) ? Py_True : Py_False;
   }
@@ -111,16 +102,14 @@ class PRMexplorer {
   /************CLASS**************/
 
   /**
-  * @return a list of class names
-  */
+   * @return a list of class names
+   */
   PyObject* classes() {
-    if (_prm_ == nullptr) {
-      GUM_ERROR(gum::FatalError, "No loaded prm.")
-    }
+    if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     PyObject* q = PyList_New(0);
 
-    for (auto c : _prm_->classes()) {
+    for (auto c: _prm_->classes()) {
       PyList_Append(q, PyString_FromString(c->name().c_str()));
     }
 
@@ -128,22 +117,19 @@ class PRMexplorer {
   }
 
   /**
-  * @return a list of Tuplet(typename, attribute_name, depenson)
-  * @param class_name : the name of the class
-  * @param allAttributes : even automatically generated attributes
-  */
-  PyObject*
-  classAttributes(std::string class_name /*, bool allAttributes = false */) {
-    if (_prm_ == nullptr) {
-      GUM_ERROR(gum::FatalError, "No loaded prm.")
-    }
+   * @return a list of Tuplet(typename, attribute_name, depenson)
+   * @param class_name : the name of the class
+   * @param allAttributes : even automatically generated attributes
+   */
+  PyObject* classAttributes(std::string class_name /*, bool allAttributes = false */) {
+    if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     PyObject* q = PyList_New(0);
 
-    auto&    c = _prm_->getClass(class_name);
+    auto&    c   = _prm_->getClass(class_name);
     gum::DAG gra = c.containerDag();
 
-    for (auto a : c.attributes()) {
+    for (auto a: c.attributes()) {
       /*if ( allAttributes ) {
       PyObject* uplet = PyTuple_New(2);
       PyTuple_SetItem(uplet, 0, PyString_FromString( c->type().name().c_str()) );
@@ -157,9 +143,8 @@ class PRMexplorer {
         PyTuple_SetItem(uplet, 1, PyString_FromString(a->name().c_str()));
 
         PyObject* depenson = PyList_New(0);
-        for (auto parentId : gra.parents(a->id())) {
-          PyList_Append(depenson,
-                        PyString_FromString(c.get(parentId).name().c_str()));
+        for (auto parentId: gra.parents(a->id())) {
+          PyList_Append(depenson, PyString_FromString(c.get(parentId).name().c_str()));
         }
 
         PyTuple_SetItem(uplet, 2, depenson);
@@ -171,32 +156,27 @@ class PRMexplorer {
   }
 
   /**
-  * @param class_name : the name of the class
-  * @param att_name : the name of the attribute contained in this class
-  */
+   * @param class_name : the name of the class
+   * @param att_name : the name of the attribute contained in this class
+   */
   PyObject* isAttribute(std::string class_name, std::string att_name) {
-    if (_prm_ == nullptr) {
-      GUM_ERROR(gum::FatalError, "No loaded prm.")
-    }
+    if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     auto& ob = _prm_->getClass(class_name).get(att_name);
 
-    return gum::prm::PRMClassElement< double >::isAttribute(ob) ? Py_True
-                                                                : Py_False;
+    return gum::prm::PRMClassElement< double >::isAttribute(ob) ? Py_True : Py_False;
   }
 
   /**
-  * @return a list of Tuplet(typename,reference_name, isArray)
-  * @param class_name : the name of the class
-  */
+   * @return a list of Tuplet(typename,reference_name, isArray)
+   * @param class_name : the name of the class
+   */
   PyObject* classReferences(std::string class_name) {
-    if (_prm_ == nullptr) {
-      GUM_ERROR(gum::FatalError, "No loaded prm.")
-    }
+    if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     PyObject* q = PyList_New(0);
 
-    for (auto r : _prm_->getClass(class_name).referenceSlots()) {
+    for (auto r: _prm_->getClass(class_name).referenceSlots()) {
       PyObject* uplet = PyTuple_New(3);
       PyTuple_SetItem(uplet, 0, PyString_FromString(r->slotType().name().c_str()));
       PyTuple_SetItem(uplet, 1, PyString_FromString(r->name().c_str()));
@@ -212,36 +192,32 @@ class PRMexplorer {
 
 
   /**
-  * @return a list of parameters from a class
-  * @param class_name : the name of the class
-  */
+   * @return a list of parameters from a class
+   * @param class_name : the name of the class
+   */
   PyObject* classParameters(std::string class_name) {
-    if (_prm_ == nullptr) {
-      GUM_ERROR(gum::FatalError, "No loaded prm.")
-    }
+    if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     PyObject* q = PyList_New(0);
 
-    for (auto c : _prm_->getClass(class_name).parameters()) {
+    for (auto c: _prm_->getClass(class_name).parameters()) {
       PyList_Append(q, PyString_FromString(c->safeName().c_str()));
     }
     return q;
   }
 
   /**
-  * @return a list of interface which the class implemented
-  * @param class_name : the name of the class
-  */
+   * @return a list of interface which the class implemented
+   * @param class_name : the name of the class
+   */
   PyObject* classImplements(std::string class_name) {
-    if (_prm_ == nullptr) {
-      GUM_ERROR(gum::FatalError, "No loaded prm.")
-    }
+    if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     PyObject* l = PyList_New(0);
 
     try {
       // raise NotFound if this class doesn't implement any interface
-      for (auto c : _prm_->getClass(class_name).implements()) {
+      for (auto c: _prm_->getClass(class_name).implements()) {
         PyList_Append(l, PyString_FromString(c->name().c_str()));
       }
     } catch (gum::NotFound&) { /*do nothing and return empty list*/
@@ -251,17 +227,15 @@ class PRMexplorer {
 
 
   /**
-  * @return a list of Tuplet(typename, name, agg_type, agg_label=None,
-  * applies_label_list)
-  * @param class_name : the name of the class
-  */
-  std::string aggType[9] = {
-    "min", "max", "count", "exists", "forall", "or", "and", "amplitude", "median"};
+   * @return a list of Tuplet(typename, name, agg_type, agg_label=None,
+   * applies_label_list)
+   * @param class_name : the name of the class
+   */
+  std::string aggType[9]
+     = {"min", "max", "count", "exists", "forall", "or", "and", "amplitude", "median"};
 
   PyObject* classAggregates(std::string class_name) {
-    if (_prm_ == nullptr) {
-      GUM_ERROR(gum::FatalError, "No loaded prm.")
-    }
+    if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     PyObject* l = PyList_New(0);
 
@@ -269,12 +243,11 @@ class PRMexplorer {
 
     gum::DAG gra = c.containerDag();
 
-    for (auto a : c.aggregates()) {
+    for (auto a: c.aggregates()) {
       PyObject* uplet = PyTuple_New(5);
       PyTuple_SetItem(uplet, 0, PyString_FromString(a->type().name().c_str()));
       PyTuple_SetItem(uplet, 1, PyString_FromString(a->name().c_str()));
-      PyTuple_SetItem(
-        uplet, 2, PyString_FromString(aggType[(int)a->agg_type()].c_str()));
+      PyTuple_SetItem(uplet, 2, PyString_FromString(aggType[(int)a->agg_type()].c_str()));
       if (a->hasLabel()) {
         PyTuple_SetItem(uplet, 3, PyString_FromString(a->labelValue().c_str()));
       } else {
@@ -282,7 +255,7 @@ class PRMexplorer {
       }
       PyObject* param = PyList_New(0);
 
-      for (auto parentId : gra.parents(a->id())) {
+      for (auto parentId: gra.parents(a->id())) {
         PyList_Append(param, PyString_FromString(c.get(parentId).name().c_str()));
       }
 
@@ -294,17 +267,15 @@ class PRMexplorer {
   }
 
   /**
-  * @return a list of Tuplet(typename, slotname, isMultiple)
-  * @param class_name : the name of the class
-  */
+   * @return a list of Tuplet(typename, slotname, isMultiple)
+   * @param class_name : the name of the class
+   */
   PyObject* classSlotChains(std::string class_name) {
-    if (_prm_ == nullptr) {
-      GUM_ERROR(gum::FatalError, "No loaded prm.")
-    }
+    if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     PyObject* l = PyList_New(0);
 
-    for (auto c : _prm_->getClass(class_name).slotChains()) {
+    for (auto c: _prm_->getClass(class_name).slotChains()) {
       PyObject* uplet = PyTuple_New(3);
       PyTuple_SetItem(uplet, 0, PyString_FromString(c->type().name().c_str()));
       PyTuple_SetItem(uplet, 1, PyString_FromString(c->name().c_str()));
@@ -330,18 +301,16 @@ class PRMexplorer {
   }
 
   /**
-  * @param class_name : the name of the class
-  */
+   * @param class_name : the name of the class
+   */
   PyObject* classDag(std::string class_name) {
-    if (_prm_ == nullptr) {
-      GUM_ERROR(gum::FatalError, "No loaded prm.")
-    }
+    if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     PyObject* uplet = PyTuple_New(2);
-    auto&     c = _prm_->getClass(class_name);
-    PyObject* d = PyDict_New();
-    gum::DAG  gra = c.containerDag();
-    for (auto id : gra.nodes()) {
+    auto&     c     = _prm_->getClass(class_name);
+    PyObject* d     = PyDict_New();
+    gum::DAG  gra   = c.containerDag();
+    for (auto id: gra.nodes()) {
       PyDict_SetItem(d,
                      PyLong_FromUnsignedLong((unsigned long)id),
                      PyString_FromString(c.get(id).name().c_str()));
@@ -352,46 +321,38 @@ class PRMexplorer {
   }
 
   /**
-  * @return a list of 3-uplets (nameofsystem,dictinary of ids  their name &
-  * type,list of arcs:[(tail,head),..] )
-  */
+   * @return a list of 3-uplets (nameofsystem,dictinary of ids  their name &
+   * type,list of arcs:[(tail,head),..] )
+   */
   PyObject* getalltheSystems() {
-    if (_prm_ == nullptr) {
-      GUM_ERROR(gum::FatalError, "No loaded prm.")
-    }
+    if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     PyObject* l = PyList_New(0);
 
     auto the_systems = _prm_->systems();
 
     unsigned long var = 0;
-    for (auto a_system : the_systems) {
+    for (auto a_system: the_systems) {
       PyObject* uplet = PyTuple_New(3);
-      PyObject* a = PyList_New(0);
-      PyObject* n = PyDict_New();
+      PyObject* a     = PyList_New(0);
+      PyObject* n     = PyDict_New();
 
       auto graph = a_system->skeleton();
 
       PyTuple_SetItem(uplet, 0, PyString_FromString(a_system->name().c_str()));
 
-      for (auto node : graph.nodes()) {
+      for (auto node: graph.nodes()) {
         PyObject* tnode = PyTuple_New(2);
-        PyTuple_SetItem(
-          tnode, 0, PyString_FromString(a_system->get(node).name().c_str()));
-        PyTuple_SetItem(
-          tnode,
-          1,
-          PyString_FromString(a_system->get(node).type().name().c_str()));
+        PyTuple_SetItem(tnode, 0, PyString_FromString(a_system->get(node).name().c_str()));
+        PyTuple_SetItem(tnode, 1, PyString_FromString(a_system->get(node).type().name().c_str()));
         PyDict_SetItem(n, PyLong_FromUnsignedLong((unsigned long)node), tnode);
       }
 
 
-      for (auto arc : graph.arcs()) {
+      for (auto arc: graph.arcs()) {
         PyObject* tarc = PyTuple_New(2);
-        PyTuple_SetItem(
-          tarc, 0, PyLong_FromUnsignedLong((unsigned long)arc.tail()));
-        PyTuple_SetItem(
-          tarc, 1, PyLong_FromUnsignedLong((unsigned long)arc.head()));
+        PyTuple_SetItem(tarc, 0, PyLong_FromUnsignedLong((unsigned long)arc.tail()));
+        PyTuple_SetItem(tarc, 1, PyLong_FromUnsignedLong((unsigned long)arc.head()));
         PyList_Append(a, tarc);
       }
 
@@ -406,50 +367,41 @@ class PRMexplorer {
   }
 
   /**
-  * @return the name of the super class
-  * @param class_name : the name of the class
-  */
+   * @return the name of the super class
+   * @param class_name : the name of the class
+   */
   PyObject* getSuperClass(std::string class_name) {
-    if (_prm_ == nullptr) {
-      GUM_ERROR(gum::FatalError, "No loaded prm.")
-    }
+    if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     auto& c = _prm_->getClass(class_name);
     try {
       // raise NotFound if this class haven't super
       return PyString_FromString(c.super().name().c_str());
-    } catch (gum::NotFound&) {
-      return Py_None;
-    }
+    } catch (gum::NotFound&) { return Py_None; }
   }
 
   /**
-  * @return the list of subclass name
-  * @param class_name : the name of the class
-  */
+   * @return the list of subclass name
+   * @param class_name : the name of the class
+   */
   PyObject* getDirectSubClass(std::string class_name) {
-    if (_prm_ == nullptr) {
-      GUM_ERROR(gum::FatalError, "No loaded prm.")
-    }
+    if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
-    PyObject* l = PyList_New(0);
+    PyObject* l     = PyList_New(0);
     auto&     exten = _prm_->getClass(class_name).extensions();
-    for (auto c : exten) {
+    for (auto c: exten) {
       PyList_Append(l, PyString_FromString(c->name().c_str()));
     }
     return l;
   }
 
   /**
-  * @return the potential of an attribute in a class
-  * @param classname : the name of the class   *
-  * @param attribute : the name of the attribute
-  */
-  const gum::Potential< double >& cpf(std::string class_name,
-                                      std::string attribute) {
-    if (_prm_ == nullptr) {
-      GUM_ERROR(gum::FatalError, "No loaded prm.")
-    }
+   * @return the potential of an attribute in a class
+   * @param classname : the name of the class   *
+   * @param attribute : the name of the attribute
+   */
+  const gum::Potential< double >& cpf(std::string class_name, std::string attribute) {
+    if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
     return _prm_->getClass(class_name).get(attribute).cpf();
   }
 
@@ -457,28 +409,24 @@ class PRMexplorer {
   /************TYPE**************/
 
   /**
-  * @return the list of type names
-  */
+   * @return the list of type names
+   */
   PyObject* types() {
-    if (_prm_ == nullptr) {
-      GUM_ERROR(gum::FatalError, "No loaded prm.")
-    }
+    if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     PyObject* l = PyList_New(0);
 
-    for (auto c : _prm_->types())
+    for (auto c: _prm_->types())
       PyList_Append(l, PyString_FromString(c->name().c_str()));
     return l;
   }
 
   /**
-  * @return the name of super type
-  * @param type_name : the name of the type
-  */
+   * @return the name of super type
+   * @param type_name : the name of the type
+   */
   PyObject* getSuperType(std::string type_name) {
-    if (_prm_ == nullptr) {
-      GUM_ERROR(gum::FatalError, "No loaded prm.")
-    }
+    if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     auto& c = _prm_->type(type_name);
     if (c.isSubType()) {
@@ -489,17 +437,15 @@ class PRMexplorer {
   }
 
   /**
-  * @return the list of subtype name
-  * @param type_name : the name of the type
-  */
+   * @return the list of subtype name
+   * @param type_name : the name of the type
+   */
   PyObject* getDirectSubTypes(std::string type_name) {
-    if (_prm_ == nullptr) {
-      GUM_ERROR(gum::FatalError, "No loaded prm.")
-    }
+    if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
-    PyObject* l = PyList_New(0);
+    PyObject* l        = PyList_New(0);
     auto&     selected = _prm_->type(type_name);
-    for (auto c : _prm_->types()) {
+    for (auto c: _prm_->types()) {
       if (c->isSubType()) {
         if (c->superType().name() == selected.name()) {
           PyList_Append(l, PyString_FromString(c->name().c_str()));
@@ -510,44 +456,37 @@ class PRMexplorer {
   }
 
   /**
-  * @return the list of labels name
-  * @param type_name : the name of the type
-  */
+   * @return the list of labels name
+   * @param type_name : the name of the type
+   */
   PyObject* getLabels(std::string type_name) {
-    if (_prm_ == nullptr) {
-      GUM_ERROR(gum::FatalError, "No loaded prm.")
-    }
+    if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
-    PyObject* l = PyList_New(0);
+    PyObject* l        = PyList_New(0);
     auto&     selected = _prm_->type(type_name);
-    for (auto lab : selected->labels()) {
+    for (auto lab: selected->labels()) {
       PyList_Append(l, PyString_FromString(lab.c_str()));
     }
     return l;
   }
 
   /**
-  * @return the dictionaty which the value is the super type of the key
-  * @param type_name : the name of the type
-  */
+   * @return the dictionaty which the value is the super type of the key
+   * @param type_name : the name of the type
+   */
   PyObject* getLabelMap(std::string type_name) {
-    if (_prm_ == nullptr) {
-      GUM_ERROR(gum::FatalError, "No loaded prm.")
-    }
+    if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
-    PyObject* d = PyDict_New();
+    PyObject* d        = PyDict_New();
     auto&     selected = _prm_->type(type_name);
-    if (!selected.isSubType()) {
-      return Py_None;
-    }
-    auto  typeLabelVector = selected.variable().labels();
-    auto  superTypeLabelVector = selected.superType().variable().labels();
+    if (!selected.isSubType()) { return Py_None; }
+    auto  typeLabelVector         = selected.variable().labels();
+    auto  superTypeLabelVector    = selected.superType().variable().labels();
     auto& labelMapTypeToSuperType = selected.label_map();
     for (unsigned i = 0; i != labelMapTypeToSuperType.size(); i++) {
       PyDict_SetItem(d,
                      PyString_FromString(typeLabelVector[i].c_str()),
-                     PyString_FromString(
-                       superTypeLabelVector[labelMapTypeToSuperType[i]].c_str()));
+                     PyString_FromString(superTypeLabelVector[labelMapTypeToSuperType[i]].c_str()));
     }
     return d;
   }
@@ -555,34 +494,29 @@ class PRMexplorer {
   /************INTERFACE**************/
 
   /**
-  * @return the list of interface names
-  */
+   * @return the list of interface names
+   */
   PyObject* interfaces() {
-    if (_prm_ == nullptr) {
-      GUM_ERROR(gum::FatalError, "No loaded prm.")
-    }
+    if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     PyObject* l = PyList_New(0);
 
-    for (auto c : _prm_->interfaces())
+    for (auto c: _prm_->interfaces())
       PyList_Append(l, PyString_FromString(c->name().c_str()));
     return l;
   }
 
   /**
-  * @return a list of attribute names from a interface
-  * @param interface_name : the name of the interface
-  * @param allAttributes : even automatically generated attributes
-  */
-  PyObject* interAttributes(std::string interface_name,
-                            bool        allAttributes = false) {
-    if (_prm_ == nullptr) {
-      GUM_ERROR(gum::FatalError, "No loaded prm.")
-    }
+   * @return a list of attribute names from a interface
+   * @param interface_name : the name of the interface
+   * @param allAttributes : even automatically generated attributes
+   */
+  PyObject* interAttributes(std::string interface_name, bool allAttributes = false) {
+    if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     PyObject* q = PyList_New(0);
 
-    for (auto c : _prm_->getInterface(interface_name).attributes())
+    for (auto c: _prm_->getInterface(interface_name).attributes())
       if (allAttributes) {
         PyObject* uplet = PyTuple_New(2);
         PyTuple_SetItem(uplet, 0, PyString_FromString(c->type().name().c_str()));
@@ -601,18 +535,16 @@ class PRMexplorer {
   }
 
   /**
-  * @return a list of attribute names from a interface
-  * @param interface_name : the name of the interface
-  * @param allAttributes : even automatically generated attributes
-  */
+   * @return a list of attribute names from a interface
+   * @param interface_name : the name of the interface
+   * @param allAttributes : even automatically generated attributes
+   */
   PyObject* interReferences(std::string interface_name) {
-    if (_prm_ == nullptr) {
-      GUM_ERROR(gum::FatalError, "No loaded prm.")
-    }
+    if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     PyObject* q = PyList_New(0);
 
-    for (auto r : _prm_->getInterface(interface_name).referenceSlots()) {
+    for (auto r: _prm_->getInterface(interface_name).referenceSlots()) {
       PyObject* uplet = PyTuple_New(3);
       PyTuple_SetItem(uplet, 0, PyString_FromString(r->slotType().name().c_str()));
       PyTuple_SetItem(uplet, 1, PyString_FromString(r->name().c_str()));
@@ -627,35 +559,29 @@ class PRMexplorer {
   }
 
   /**
-  * @return the name of super interface
-  * @param interface_name : the name of the interface
-  */
+   * @return the name of super interface
+   * @param interface_name : the name of the interface
+   */
   PyObject* getSuperInterface(std::string interface_name) {
-    if (_prm_ == nullptr) {
-      GUM_ERROR(gum::FatalError, "No loaded prm.")
-    }
+    if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     auto& c = _prm_->getInterface(interface_name);
     try {
       // raise NotFound if this interface haven't super
       return PyString_FromString(c.super().name().c_str());
-    } catch (gum::NotFound&) {
-      return Py_None;
-    }
+    } catch (gum::NotFound&) { return Py_None; }
   }
 
   /**
-  * @return the list of subinterface name
-  * @param interface_name : the name of the interface
-  */
+   * @return the list of subinterface name
+   * @param interface_name : the name of the interface
+   */
   PyObject* getDirectSubInterfaces(std::string interface_name) {
-    if (_prm_ == nullptr) {
-      GUM_ERROR(gum::FatalError, "No loaded prm.")
-    }
+    if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
-    PyObject* l = PyList_New(0);
+    PyObject* l        = PyList_New(0);
     auto&     selected = _prm_->getInterface(interface_name);
-    for (auto c : _prm_->interfaces()) {
+    for (auto c: _prm_->interfaces()) {
       try {
         // raise NotFound if this interface haven't super
         if (c->super().name() == selected.name()) {
@@ -668,17 +594,15 @@ class PRMexplorer {
   }
 
   /**
-  * @return the list of class name how implement this interface
-  * @param interface_name : the name of the interface
-  */
+   * @return the list of class name how implement this interface
+   * @param interface_name : the name of the interface
+   */
   PyObject* getImplementations(std::string interface_name) {
-    if (_prm_ == nullptr) {
-      GUM_ERROR(gum::FatalError, "No loaded prm.")
-    }
+    if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
-    PyObject* l = PyList_New(0);
+    PyObject* l        = PyList_New(0);
     auto&     selected = _prm_->getInterface(interface_name);
-    for (auto c : selected.implementations()) {
+    for (auto c: selected.implementations()) {
       PyList_Append(l, PyString_FromString(c->name().c_str()));
     }
     return l;
@@ -686,7 +610,6 @@ class PRMexplorer {
 
 
   private:
-  gum::prm::PRM< double >*
-                                         _prm_;  // will contain a reference to reader.prm() if reader is OK
+  gum::prm::PRM< double >* _prm_;   // will contain a reference to reader.prm() if reader is OK
   gum::prm::o3prm::O3prmReader< double > _reader_;
 };

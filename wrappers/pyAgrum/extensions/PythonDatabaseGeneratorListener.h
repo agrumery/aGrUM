@@ -22,20 +22,18 @@
 #include <agrum/tools/core/progressNotification.h>
 #include <agrum/BN/database/BNDatabaseGenerator.h>
 
-class PythonDatabaseGeneratorListener : public gum::ProgressListener {
+class PythonDatabaseGeneratorListener: public gum::ProgressListener {
   private:
   PyObject* _pyWhenProgress_;
   PyObject* _pyWhenStop_;
 
   void _checkCallable_(PyObject* pyfunc) {
-    if (!PyCallable_Check(pyfunc)) {
-      PyErr_SetString(PyExc_TypeError, "Need a callable object!");
-    }
+    if (!PyCallable_Check(pyfunc)) { PyErr_SetString(PyExc_TypeError, "Need a callable object!"); }
   };
 
   public:
-  explicit PythonDatabaseGeneratorListener(gum::learning::BNDatabaseGenerator<double>& notif)
-      : gum::ProgressListener(notif) {
+  explicit PythonDatabaseGeneratorListener(gum::learning::BNDatabaseGenerator< double >& notif) :
+      gum::ProgressListener(notif) {
     _pyWhenProgress_ = _pyWhenStop_ = (PyObject*)0;
   };
 

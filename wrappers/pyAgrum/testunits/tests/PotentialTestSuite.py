@@ -612,9 +612,15 @@ class TestOperators(pyAgrumTestCase):
       self.assertTrue(True)
 
     try:
+      pot.extract({"c": "2"})
+      self.assertTrue(True)
+    except gum.GumException:
+      self.assertTrue(False)
+
+    try:
       pot.extract({"c": "r"})
       self.assertTrue(False)
-    except gum.InvalidArgument:
+    except gum.OutOfBounds:
       self.assertTrue(True)
 
     try:

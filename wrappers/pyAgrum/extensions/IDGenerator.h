@@ -28,9 +28,14 @@
 
 class IDGenerator {
   public:
-    gum::InfluenceDiagram<double> generate ( gum::Size nbrNodes = 10, double arcDensity = 0.2, double chanceNodeDensity = 0.8, double utilityNodeDensity = 0.1, int max_modality = 2 ) {
-      gum::InfluenceDiagramGenerator<double> gen;
-      gum::InfluenceDiagram<double>* id = gen.generateID ( nbrNodes, arcDensity, chanceNodeDensity, utilityNodeDensity, max_modality );
-      return *id;
-    }
+  gum::InfluenceDiagram< double > generate(gum::Size nbrNodes           = 10,
+                                           double    arcDensity         = 0.2,
+                                           double    chanceNodeDensity  = 0.8,
+                                           double    utilityNodeDensity = 0.1,
+                                           int       max_modality       = 2) {
+    gum::InfluenceDiagramGenerator< double > gen;
+    gum::InfluenceDiagram< double >*         id
+       = gen.generateID(nbrNodes, arcDensity, chanceNodeDensity, utilityNodeDensity, max_modality);
+    return *id;
+  }
 };
