@@ -146,7 +146,7 @@ Automatically fills the potential with v.
 
 Parameters
 ----------
-v : number or list or pyAgrum.Potential the number of parameters of the Potential
+v : number or list of values or pyAgrum.Potential
     a value or a list/pyAgrum.Potential containing the values to fill the Potential with.
 
 mapping : list|tuple|dict
@@ -155,7 +155,9 @@ Warning
 -------
     - if `v` is a list, the size of the list must be the size of the potential
 
-    - if `v` is a ref:pyAgrum.Potential, it must to contain variables with exactly the same names and labels but not necessarily the same variables. Except if the second argument mapping is given. In that case, `mapping` explains how to map the variables of the potential source to the variables of the potential destination:
+    - if `v` is a ref:pyAgrum.Potential, it must contain variables with exactly the same names and labels but not necessarily the same variables. If
+
+    - If the second argument `mapping` is given, `mapping` explains how to map the variables of the potential source to the variables of the potential destination.
 
     - If `mapping` is a sequence, the order follows the same order as `destination.names`. If `mapping` is a dict, the keys are the names in the destination and the values are the names in the source.
 
@@ -168,6 +170,8 @@ Raises
 ------
 pyAgrum.SizeError
   If v size's does not matches the domain size.
+pyAgrum.ArgumentError
+  If anything wrong with the arguments.
 "
 
 %feature("docstring") gum::Potential::populate

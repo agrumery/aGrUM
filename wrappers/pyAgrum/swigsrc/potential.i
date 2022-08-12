@@ -61,7 +61,7 @@ if len(args)>1:
     if set(d.keys())==set(self.names):
       return self.fillWith(args[0],[d[s] for s in self.names])
     else:
-      raise pyAgrum.ArgumentError(f"[pyAgrum] keys in dict {tuple(d.keys())} does not match the Potential's varizables {self.names}")
+      raise pyAgrum.ArgumentError(f"[pyAgrum] keys in dict {tuple(d.keys())} does not match the Potential's variables {self.names}")
 %}
 
 %rename ("$ignore", fullname=1) gum::Potential<double>::margSumOut(const Set<const DiscreteVariable*>& del_vars) const;
