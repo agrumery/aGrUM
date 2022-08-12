@@ -53,6 +53,16 @@ CHANGE_THEN_RETURN_SELF(inverse)
 CHANGE_THEN_RETURN_SELF(translate)
 
 CHANGE_THEN_RETURN_SELF(fillWith)
+%pythonprepend gum::Potential<double>::fillWith %{
+# test
+if len(args)>1:
+  d=args[1]
+  if type(d)==dict:
+    if set(d.keys())==set(self.names):
+      return self.fillWith(args[0],[d[s] for s in self.names])
+    else:
+      raise pyAgrum.ArgumentError(f"[pyAgrum] keys in dict {tuple(d.keys())} does not match the Potential's varizables {self.names}")
+%}
 
 %rename ("$ignore", fullname=1) gum::Potential<double>::margSumOut(const Set<const DiscreteVariable*>& del_vars) const;
 %rename ("$ignore", fullname=1) gum::Potential<double>::margProdOut(const Set<const DiscreteVariable*>& del_vars) const;
@@ -71,11 +81,19 @@ CHANGE_THEN_RETURN_SELF(fillWith)
 
 
 %extend gum::Potential<double> {
-    Potential<double> extract(PyObject* dict) {
+  Potential<double> extract(PyObject* arg) {
+    if (PyDict_Check(arg)) {
       gum::Instantiation inst;
-      PyAgrumHelper::fillInstantiationFromPyObject(self,inst,dict);
+      PyAgrumHelper::fillInstantiationFromPyObject(self, inst, arg);
       return self->extract(inst);
+    } else {
+      //auto arg1 = reinterpret_cast< gum::Instantiation * >(arg);
+      //if (arg1==nullptr) {
+        GUM_ERROR(gum::InvalidArgument,"arg is neither a dict or an pyAgrum.Instantiation.");
+      //}
+      //return self->extract(*arg1);
     }
+  }
 
     Potential<double>
     margSumOut( PyObject* varnames ) const {

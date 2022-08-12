@@ -7606,7 +7606,7 @@ class Potential(object):
         Returns
         -------
         pyAgrum.Potential
-          a boolean-like potential using the predicate isNonZero
+          a boolean-like potential using the predicate `isNonZero`.
 
         """
         return _pyAgrum.Potential_isNonZeroMap(self)
@@ -7750,10 +7750,15 @@ class Potential(object):
         v : number or list or pyAgrum.Potential the number of parameters of the Potential
             a value or a list/pyAgrum.Potential containing the values to fill the Potential with.
 
+        mapping : list|tuple|dict
+
         Warning
         -------
-            if v is a list, the size of the list must be the
-            if v is a pyAgrum.Potential. It must to contain variables with exactly the same names and labels but not necessarily the same variables.
+            - if `v` is a list, the size of the list must be the size of the potential
+
+            - if `v` is a ref:pyAgrum.Potential, it must to contain variables with exactly the same names and labels but not necessarily the same variables. Except if the second argument mapping is given. In that case, `mapping` explains how to map the variables of the potential source to the variables of the potential destination:
+
+            - If `mapping` is a sequence, the order follows the same order as `destination.names`. If `mapping` is a dict, the keys are the names in the destination and the values are the names in the source.
 
         Returns
         -------
@@ -7766,6 +7771,17 @@ class Potential(object):
           If v size's does not matches the domain size.
 
         """
+
+        # test
+        if len(args)>1:
+          d=args[1]
+          if type(d)==dict:
+            if set(d.keys())==set(self.names):
+              return self.fillWith(args[0],[d[s] for s in self.names])
+            else:
+              raise pyAgrum.ArgumentError(f"[pyAgrum] keys in dict {tuple(d.keys())} does not match the Potential's varizables {self.names}")
+
+
         val = _pyAgrum.Potential_fillWith(self, *args)
 
         return self
@@ -8081,7 +8097,7 @@ class Potential(object):
     def margMaxOut(self, varnames: object) -> "pyAgrum.Potential":
         r"""
 
-        Projection using max as operation.
+        Projection using `max` as operation.
 
         Parameters
         ----------
@@ -8104,7 +8120,7 @@ class Potential(object):
     def margMinOut(self, varnames: object) -> "pyAgrum.Potential":
         r"""
 
-        Projection using min as operation.
+        Projection using `min` as operation.
 
         Parameters
         ----------
@@ -8162,7 +8178,7 @@ class Potential(object):
     def margMaxIn(self, varnames: object) -> "pyAgrum.Potential":
         r"""
 
-        Projection using max as operation.
+        Projection using `max` as operation.
 
         Parameters
         ----------
@@ -8180,7 +8196,7 @@ class Potential(object):
     def margMinIn(self, varnames: object) -> "pyAgrum.Potential":
         r"""
 
-        Projection using min as operation.
+        Projection using `min` as operation.
 
         Parameters
         ----------
