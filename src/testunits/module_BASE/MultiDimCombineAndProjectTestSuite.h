@@ -665,7 +665,7 @@ namespace gum_tests {
         }
 
         TS_ASSERT_EQUALS(nb_empty, 3)
-        TS_ASSERT(prod > 0.0) // wtf ?
+        TS_ASSERT(prod > 0.0)   // wtf ?
       }
 
       del_vars << vars[2];
@@ -729,7 +729,7 @@ namespace gum_tests {
 
         auto t4 = t1 * t2;
 
-        int   nb_empty = 0;
+        int nb_empty = 0;
         for (const auto ptrPot: res) {
           if (ptrPot->nbrDim() == 0) {
             gum::Instantiation I(*ptrPot);

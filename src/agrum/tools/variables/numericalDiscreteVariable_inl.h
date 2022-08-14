@@ -181,7 +181,7 @@ namespace gum {
     if (empty()) {
       GUM_ERROR(SizeError, "Domain is too small for this operation (" << *this << ")");
     }
-    return dichotomy_(val, 0, _domain_.size()-1);
+    return dichotomy_(val, 0, _domain_.size() - 1);
   }
 
   INLINE std::string NumericalDiscreteVariable::closestLabel(double val) const {

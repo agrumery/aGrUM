@@ -191,7 +191,7 @@ namespace gum {
     /// the domain of the variable
     Sequence< double > _domain_;
 
-    Idx dichotomy_(double target, Idx min, Idx max) const;
+    Idx         dichotomy_(double target, Idx min, Idx max) const;
     std::string _generateLabel(double f) const;
   };
 

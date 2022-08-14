@@ -79,7 +79,9 @@ namespace gum {
 
           case VarType::Numerical: {
             const auto& xvar = static_cast< const NumericalDiscreteVariable& >(var);
-            return new DBTranslator4NumericalDiscreteVariable(xvar, missing_symbols, max_dico_entries);
+            return new DBTranslator4NumericalDiscreteVariable(xvar,
+                                                              missing_symbols,
+                                                              max_dico_entries);
           }
         }
 

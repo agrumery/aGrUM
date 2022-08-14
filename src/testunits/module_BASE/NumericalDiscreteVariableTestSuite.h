@@ -246,7 +246,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(var.closestIndex(3.8), gum::Idx(3))
       TS_ASSERT_EQUALS(var.closestIndex(4.3), gum::Idx(3))   // arbitrary
 
-      gum::NumericalDiscreteVariable v("v","v",4,14,300);
+      gum::NumericalDiscreteVariable v("v", "v", 4, 14, 300);
       TS_ASSERT_EQUALS(v.closestLabel(9.0), "8.9833")
       TS_ASSERT_EQUALS(v.closestLabel(8.983), "8.9833")
       TS_ASSERT_EQUALS(v.closestLabel(8.984), "8.9833")

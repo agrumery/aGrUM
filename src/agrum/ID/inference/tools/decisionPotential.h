@@ -175,8 +175,8 @@ namespace gum {
       const GUM_SCALAR s   = probPot.sum();
       const double     m   = tmp.sum() / s;
       const double     m2  = (tmp * utilPot).sum() / s;
-      double var = m2 - m*m;
-      if (var<0.0) var=0.0; // var is a small number<0 due to computation errors
+      double           var = m2 - m * m;
+      if (var < 0.0) var = 0.0;   // var is a small number<0 due to computation errors
       return std::pair< GUM_SCALAR, GUM_SCALAR >(m, var);
     }
 

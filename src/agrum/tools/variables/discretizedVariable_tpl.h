@@ -39,7 +39,7 @@ namespace gum {
   Idx DiscretizedVariable< T_TICKS >::dichotomy_(const T_TICKS& target, Idx min, Idx max) const {
     if (max - min < 2) return min;
     else {
-      const Idx      mid = std::midpoint(min,max);
+      const Idx      mid = std::midpoint(min, max);
       const T_TICKS& val = _ticks_[mid];
 
       if (target < val) return dichotomy_(target, min, mid);
