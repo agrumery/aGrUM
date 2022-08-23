@@ -2,12 +2,13 @@
   max-width: 100% !important;
 }
 .sphx-glr-thumbcontainer {
-  width: 300px;
+  width: 200px;
   display: inline-flex;
   box-shadow: none;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  background-color: #F8F8F8;
 }
 .sphx-glr-thumbcontainer p a span {
-  vertical-align: top;
+  margin-top: -25px;
   display: block;
 }
