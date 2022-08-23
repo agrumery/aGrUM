@@ -34,65 +34,71 @@ pyAgrum contains :
   * and a `website <http://agrum.org>`_.
 
 
-.. toctree::
-  :caption: Fundamental components
-  :maxdepth: 2
+================
+Reference manual
+================
 
-  graph
-  randomVariables
-  potential
+  .. toctree::
+    :caption: 1-Fundamental components
+    :maxdepth: 2
 
-.. toctree::
-  :caption: Graphical Models
-  :maxdepth: 2
+    graph
+    randomVariables
+    potential
 
-  bayesianNetwork
-  influenceDiagram
-  credalNetwork
-  markovNetwork
-  PRM
+  .. toctree::
+    :caption: 2-Graphical Models
+    :maxdepth: 2
 
-.. toctree::
-  :caption: Causality
-  :maxdepth: 2
-  :titlesonly:
+    bayesianNetwork
+    influenceDiagram
+    credalNetwork
+    markovNetwork
+    PRM
 
-  Causal
+  .. toctree::
+    :caption: 3-Causality
+    :maxdepth: 2
+    :titlesonly:
 
-.. toctree::
-  :caption: scikit-learn-like BN Classifiers
-  :maxdepth: 2
-  :titlesonly:
+    Causal
 
-  Classifier
+  .. toctree::
+    :caption: 4-scikit-learn-like BN Classifiers
+    :maxdepth: 2
+    :titlesonly:
 
-.. toctree::
-  :caption: pyAgrum.lib modules
-  :maxdepth: 2
-  :titlesonly:
+    Classifier
 
-  lib.notebook
-  lib.image
-  lib.explain
-  lib.dBN
-  pyAgrum.lib
+  .. toctree::
+    :caption: 5-pyAgrum.lib modules
+    :maxdepth: 2
+    :titlesonly:
 
-.. toctree::
-  :caption: Miscellaneous
-  :maxdepth: 2
+    lib.notebook
+    lib.image
+    lib.explain
+    lib.dBN
+    pyAgrum.lib
 
-  functions
-  miscellaneous
-  exceptions
+  .. toctree::
+    :caption: 6-Miscellaneous
+    :maxdepth: 2
 
-.. toctree::
-  :caption: Customizing pyAgrum
-  :maxdepth: 2
+    functions
+    miscellaneous
+    exceptions
 
-  PyAgrumConfiguration
+  .. toctree::
+    :caption: 7-Customizing pyAgrum
+    :maxdepth: 2
+
+    PyAgrumConfiguration
+
 
 .. toctree::
   :caption: Notebooks
+  :name: Notebooks
   :maxdepth: 1
 
   notebooks

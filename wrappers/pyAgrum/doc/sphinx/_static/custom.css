@@ -1,3 +1,13 @@
 .wy-nav-content {
   max-width: 100% !important;
 }
+.sphx-glr-thumbcontainer {
+  width: 300px;
+  display: inline-flex;
+  box-shadow: none;
+  margin-bottom: 20px;
+}
+.sphx-glr-thumbcontainer p a span {
+  vertical-align: top;
+  display: block;
+}
