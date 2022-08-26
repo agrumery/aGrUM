@@ -1,5 +1,19 @@
 # aGrUM Changelog
 
+## Changelog for 1.3.1
+
+* aGrUM
+
+  * Updating readme
+
+* pyAgrum
+
+  * Fixing warnings in `gum.Potential.topandas()`.
+  * Allowing label or index when addressing variables in dictionary for `gum.Instantiation` (such as in `gum.Potential.extract`).
+  * Allowing dictionnary for mapping variables in `pyAgrum.Potential.fillWith`.
+  * Fixing typos in documentation of `pyAgrum.Potential.fillWith`.
+  * Fixing css for sphinx notebooks gallery.
+
 ## Changelog for 1.3.0
 
 * aGrUM
