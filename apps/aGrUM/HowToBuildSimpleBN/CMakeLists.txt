@@ -9,7 +9,7 @@ cmake_minimum_required(VERSION "3.0")
 # cmake -DCMAKE_BUILD_TYPE=Release
 #     Release is the default option (thanks to the next lines)
 
-set (CMAKE_CXX_STANDARD 14)
+set (CMAKE_CXX_STANDARD 20)
 
 find_package(OpenMP)
 if (OPENMP_FOUND)
