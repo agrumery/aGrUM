@@ -161,6 +161,7 @@ def _TimeSlicesToDot(dbn):
   g = dot.Dot(graph_type='digraph')
   g.set_rankdir("TD")
   g.set_splines("ortho")
+  g.set_node_defaults(color="#000000", fillcolor="white", style="filled")
 
   for k in sorted(timeslices.keys(), key=lambda x: -1 if x == noTimeCluster else 1e8 if x == 't' else int(x)):
     if k != noTimeCluster:
@@ -169,28 +170,19 @@ def _TimeSlicesToDot(dbn):
     else:
       cluster = g  # small trick to add in graph variable in no timeslice
     for (n, label) in sorted(timeslices[k]):
-      cluster.add_node(dot.Node('"' + n + '"', label='"' + label + '"', style='filled',
-                                color='#000000', fillcolor='white'
-                                )
-                       )
+      cluster.add_node(dot.Node('"' + n + '"', label='"' + label + '"'))
 
+  g.set_edge_defaults(color="blue", constraint="False")
   for tail, head in dbn.arcs():
     g.add_edge(dot.Edge('"' + dbn.variable(tail).name() + '"',
-                        '"' + dbn.variable(head).name() + '"',
-                        constraint=False, color="blue"
-                        )
-               )
-
+                        '"' + dbn.variable(head).name() + '"'))
+  g.set_edge_defaults(style="invis",constraint="True")
   for k in sorted(timeslices.keys(), key=lambda x: -1 if x == noTimeCluster else 1e8 if x == 't' else int(x)):
     if k != noTimeCluster:
       prec = None
       for (n, label) in sorted(timeslices[k]):
         if prec is not None:
-          g.add_edge(dot.Edge('"' + prec + '"',
-                              '"' + n + '"',
-                              style="invis"
-                              )
-                     )
+          g.add_edge(dot.Edge('"' + prec + '"','"' + n + '"'))
         prec = n
 
   return g
