@@ -155,17 +155,18 @@ def _TimeSlicesToDot(dbn):
     a 2TBN or an unrolled BN
   """
   timeslices = getTimeSlicesRange(dbn)
+  kts= sorted(timeslices.keys(), key=lambda x: -1 if x == noTimeCluster else 1e8 if x == 't' else int(x))
 
   # dynamic member makes pylink unhappy
   # pylint: disable=no-member
   g = dot.Dot(graph_type='digraph')
-  g.set_rankdir("TD")
+  g.set_rankdir("LR")
   g.set_splines("ortho")
   g.set_node_defaults(color="#000000", fillcolor="white", style="filled")
 
-  for k in sorted(timeslices.keys(), key=lambda x: -1 if x == noTimeCluster else 1e8 if x == 't' else int(x)):
+  for k in kts:
     if k != noTimeCluster:
-      cluster = dot.Cluster(k, label=f"Time slice {k}", bgcolor="#DDDDDD", rankdir="TD")
+      cluster = dot.Cluster(k, label=f"Time slice {k}", bgcolor="#DDDDDD", rankdir="same")
       g.add_subgraph(cluster)
     else:
       cluster = g  # small trick to add in graph variable in no timeslice
@@ -176,14 +177,17 @@ def _TimeSlicesToDot(dbn):
   for tail, head in dbn.arcs():
     g.add_edge(dot.Edge('"' + dbn.variable(tail).name() + '"',
                         '"' + dbn.variable(head).name() + '"'))
+
   g.set_edge_defaults(style="invis",constraint="True")
-  for k in sorted(timeslices.keys(), key=lambda x: -1 if x == noTimeCluster else 1e8 if x == 't' else int(x)):
-    if k != noTimeCluster:
-      prec = None
-      for (n, label) in sorted(timeslices[k]):
-        if prec is not None:
-          g.add_edge(dot.Edge('"' + prec + '"','"' + n + '"'))
-        prec = n
+  for x in timeslices["0"]:
+    name=x[1]
+    prec=None
+    for k in kts:
+      if k == noTimeCluster:
+        continue
+      if prec is not None:
+        g.add_edge(dot.Edge(f'"{name}{prec}"', f'"{name}{k}"'))
+      prec=k
 
   return g
 
