@@ -1410,10 +1410,9 @@ def show(model, **kwargs):
   elif isinstance(model, gum.Potential):
     showPotential(model)
   elif hasattr(model, "toDot"):
-    g = _from_dotstring(model.toDot())
-    showDot(g, **kwargs)
+    showDot(model.toDot(), **kwargs)
   elif isinstance(model, dot.Dot):
-    showDot(model, **kwargs)
+    showGraph(model, **kwargs)
   else:
     raise gum.InvalidArgument(
       "Argument model should be a PGM (BayesNet, MarkovNet, Influence Diagram or Potential or ..."
