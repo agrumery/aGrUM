@@ -1395,7 +1395,7 @@ def show(model, **kwargs):
   """
   propose a (visual) representation of a model in a notebook
 
-  :param GraphicalModel model: the model to show (pyAgrum.BayesNet, pyAgrum.MarkovNet, pyAgrum.InfluenceDiagram or pyAgrum.Potential)
+  :param model: the model to show (pyAgrum.BayesNet, pyAgrum.MarkovNet, pyAgrum.InfluenceDiagram or pyAgrum.Potential) or a dot string, or a `pydot.Dot` or even just an object with a method `toDot()`.
 
   :param int size: optional size for the graphical model (no effect for Potential)
   """
