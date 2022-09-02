@@ -23,7 +23,7 @@
  * @file
  * @brief Implementation of the BNDatabaseGenerator class.
  *
- * @author Santiago Cortijo
+ * @author Santiago Cortijo and Pierre-Henri Wuillemin
  */
 
 #include <agrum/BN/database/BNDatabaseGenerator.h>

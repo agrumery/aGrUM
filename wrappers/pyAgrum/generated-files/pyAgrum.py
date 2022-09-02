@@ -25491,35 +25491,42 @@ class BNDatabaseGenerator(object):
     __repr__ = _swig_repr
 
     def __init__(self, bn: "pyAgrum.BayesNet"):
-        r"""
-
-        BNDatabaseGenerator is used to easily generate databases from a pyAgrum.BayesNet.
-
-        Parameters
-        ----------
-        bn: pyAgrum.BayesNet
-          the Bayesian network used to generate data.
-
-        """
         _pyAgrum.BNDatabaseGenerator_swiginit(self, _pyAgrum.new_BNDatabaseGenerator(bn))
     __swig_destroy__ = _pyAgrum.delete_BNDatabaseGenerator
 
-    def drawSamples(self, nbSamples: int) -> float:
-        return _pyAgrum.BNDatabaseGenerator_drawSamples(self, nbSamples)
-
     def toCSV(self, *args) -> None:
+        r"""
+
+        generates csv representing the generated database.
+
+        Parameters
+        ----------
+        csvFilename: str
+          the name of the csv file
+        useLabels: bool
+          whether label or id in the csv file (default true)
+        append: bool
+          append in the file or rewrite the file (default false)
+        csvSeparator: str
+          separator in the csv file (default ',')
+
+        """
         return _pyAgrum.BNDatabaseGenerator_toCSV(self, *args)
 
-    def toDatabaseTable(self, useLabels: bool=True) -> "pyAgrum.YetUnWrapped":
-        return _pyAgrum.BNDatabaseGenerator_toDatabaseTable(self, useLabels)
-
-    def database(self) -> "pyAgrum.YetUnWrapped":
-        return _pyAgrum.BNDatabaseGenerator_database(self)
-
     def samplesNbRows(self) -> int:
+        r"""
+
+        return the number of rows in the samples
+
+        """
         return _pyAgrum.BNDatabaseGenerator_samplesNbRows(self)
 
     def samplesNbCols(self) -> int:
+        r"""
+
+        return the number of columns in the samples
+
+        """
         return _pyAgrum.BNDatabaseGenerator_samplesNbCols(self)
 
     def samplesAt(self, row: int, col: int) -> int:
@@ -25549,8 +25556,31 @@ class BNDatabaseGenerator(object):
     def log2likelihood(self) -> float:
         return _pyAgrum.BNDatabaseGenerator_log2likelihood(self)
 
+    def bn(self) -> "pyAgrum.BayesNet":
+        return _pyAgrum.BNDatabaseGenerator_bn(self)
+
     def varOrder(self) -> object:
         return _pyAgrum.BNDatabaseGenerator_varOrder(self)
+
+    def drawSamples(self, *args) -> float:
+        r"""
+
+        Generate and stock the part of the database compatible with the evidence, returns log2likelihood.
+
+        Parameters
+        ----------
+        nbSamples : int
+        	the number of samples that will be generated
+        evs : "pyAgrum.Instantiation" Dict[intstr,intstr] (optional)
+          the evidence that will be observed by the resulting samples. Default is empty.
+
+        Warning
+        -------
+        nbSamples is not the size of the database but the number of generated samples. It may happen that the evidence is very
+        rare (or even impossible). In that cas the generated database may have only a few samples (even it may be empty).
+
+        """
+        return _pyAgrum.BNDatabaseGenerator_drawSamples(self, *args)
 
     def to_pandas(self,with_labels=True):
       r"""

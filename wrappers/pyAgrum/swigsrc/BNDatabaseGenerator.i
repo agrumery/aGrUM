@@ -17,6 +17,8 @@
 *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
 *
 */
+%ignore gum::learning::BNDatabaseGenerator< double>::toDatabaseTable const;
+%ignore gum::learning::BNDatabaseGenerator< double>::database const;
 
 %extend gum::learning::BNDatabaseGenerator< double > {
   PyObject* varOrder() const { return PyAgrumHelper::PyListFromNodeVect(self->varOrder()); };
@@ -24,6 +26,16 @@
 %ignore gum::learning::BNDatabaseGenerator< double >::varOrder const;
 
 %extend gum::learning::BNDatabaseGenerator< double > {
+double drawSamples(Size nbSamples,PyObject *arg) {
+    if (PyDict_Check(arg)) {
+      gum::Instantiation inst;
+      PyAgrumHelper::fillInstantiationFromPyObject(self->bn(), inst, arg);
+      return self->drawSamples(nbSamples,inst);
+    } else {
+      GUM_ERROR(gum::InvalidArgument,"arg is neither a dict or an pyAgrum.Instantiation.");
+    }
+  }
+
 %pythoncode {
 def to_pandas(self,with_labels=True):
   r"""

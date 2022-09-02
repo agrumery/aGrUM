@@ -33,6 +33,8 @@
 #include <agrum/tools/variables/labelizedVariable.h>
 
 #include <agrum/BN/database/BNDatabaseGenerator.h>
+#include <agrum/BN/learning/BNLearner.h>
+#include <agrum/BN/inference/lazyPropagation.h>
 
 namespace gum_tests {
 
@@ -70,7 +72,7 @@ namespace gum_tests {
 
     void tearDown() { delete bn; }
 
-    void testConstuctor() {
+    void /*test*/ Constuctor() {
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn))
 
@@ -94,7 +96,7 @@ namespace gum_tests {
       delete dbgen;
     }
 
-    void testSetVarOrder() {
+    void /*test*/ SetVarOrder() {
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn))
 
@@ -147,7 +149,7 @@ namespace gum_tests {
       delete dbgen;
     }
 
-    void testDrawSamples() {
+    void /*test*/ DrawSamples() {
       gum::Size domSizeA  = 3;
       gum::Size domSizeS  = 2;
       gum::Size domSizeE  = 2;
@@ -161,6 +163,7 @@ namespace gum_tests {
 
       TS_ASSERT_THROWS(dbgen->database(), const gum::OperationNotAllowed&)
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples))
+
       std::vector< std::vector< gum::Idx > > database;
       TS_GUM_ASSERT_THROWS_NOTHING(database = dbgen->database())
 
@@ -200,12 +203,14 @@ namespace gum_tests {
       delete dbgen;
     }
 
-    void testDrawSamplesLog2likelihood() {
+    void /*test*/ DrawSamplesLog2likelihood() {
       gum::Size nbSamples1 = 100;
       gum::Size nbSamples2 = nbSamples1 * 100;
       gum::Size nbSamples3 = nbSamples1 * 1000;
 
-      double ll_1 = 0, ll_2 = 0, ll_3 = 0;
+      double ll_1      = 0;
+      double ll_2      = 0;
+      double ll_3      = 0;
       double tolerance = 0.1;
 
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
@@ -231,7 +236,7 @@ namespace gum_tests {
       delete (dbgen);
     }
 
-    void testToCSV_1() {
+    void /*test*/ ToCSV_1() {
       gum::Size nbSamples = 5;
 
       std::vector< std::string > domA = {"young", "adult", "old"};
@@ -302,7 +307,7 @@ namespace gum_tests {
       delete (dbgen);
     }
 
-    void testToCSV_2() {
+    void /*test*/ ToCSV_2() {
       gum::Size nbSamples = 5;
 
       gum::Size domSizeA = 3;
@@ -374,7 +379,7 @@ namespace gum_tests {
       delete (dbgen);
     }
 
-    void testToDatabaseTable() {
+    void /*test*/ ToDatabaseTable() {
       gum::Size domSizeA  = 3;
       gum::Size domSizeS  = 2;
       gum::Size domSizeE  = 2;
@@ -485,7 +490,7 @@ namespace gum_tests {
       delete (dbgen);
     }
 
-    void testListenToDrawSamples() {
+    void /*test*/ ListenToDrawSamples() {
       gum::learning::BNDatabaseGenerator< double > dbgen(*bn);
 
       ASimpleDBGeneratorListener gener(dbgen);
@@ -501,6 +506,91 @@ namespace gum_tests {
       dbgen.drawSamples(1000);
       TS_ASSERT_EQUALS(gener2.getNbr(), (gum::Size)4950)
       TS_ASSERT_DIFFERS(gener2.getMess(), "")
+    }
+
+    void /*test*/ DrawingWithEvidence() {
+      gum::learning::BNDatabaseGenerator< double > dbgen(*bn);
+      ASimpleDBGeneratorListener                   gener(dbgen);
+
+      gum::Instantiation filter;
+      filter.add(bn->variable(0));
+      filter.setFirst();
+      dbgen.drawSamples(100, filter);
+      TS_ASSERT_LESS_THAN(dbgen.samplesNbRows(), 100u)   // some samples have been rejected
+    }
+
+    void /*test*/ DrawingWithImpossibleEvidence() {
+      auto bn = gum::BayesNet< double >::fastPrototype("A->B");
+      bn.cpt("B").fillWith({0, 1, 0, 1});   // value 0 for B is impossible
+
+      gum::learning::BNDatabaseGenerator< double > dbgen(bn);
+      ASimpleDBGeneratorListener                   gener(dbgen);
+
+      gum::Instantiation filter;
+      filter.add(bn.variable("B"));
+      filter.setFirst();   // evs={B:0} => imposible
+      dbgen.drawSamples(100, filter);
+      TS_ASSERT_EQUALS(dbgen.samplesNbRows(), 0u)   // some samples have been rejected
+    }
+
+    void testAccuracy() {
+      std::string csvFileURL = GET_RESSOURCES_PATH("outputs/dbgen2.csv");
+      auto        bn         = gum::BayesNet< double >::fastPrototype("A->B");
+      gum::learning::BNDatabaseGenerator< double > dbgen(bn);
+      dbgen.drawSamples(100000);
+      dbgen.toCSV(csvFileURL);
+
+      auto                     marginals = gum::BayesNet< double >::fastPrototype("A;B");
+      gum::learning::BNLearner learn(csvFileURL, marginals);
+      auto                     bn2 = learn.learnParameters(marginals.dag());
+
+      gum::LazyPropagation ie(&bn);
+      ie.makeInference();
+
+      TS_ASSERT_LESS_THAN(
+         (bn2.cpt("A")
+          - (gum::Potential< double >() << bn2.variable("A")).fillWith(ie.posterior("A")))
+            .abs()
+            .max(),
+         1e-2)
+      TS_ASSERT_LESS_THAN(
+         (bn2.cpt("B")
+          - (gum::Potential< double >() << bn2.variable("B")).fillWith(ie.posterior("B")))
+            .abs()
+            .max(),
+         1e-2)
+    }
+
+    void testAccuracyWithEvidence() {
+      std::string csvFileURL = GET_RESSOURCES_PATH("outputs/dbgen2.csv");
+      auto        bn         = gum::BayesNet< double >::fastPrototype("A->B");
+      gum::learning::BNDatabaseGenerator< double > dbgen(bn);
+      gum::Instantiation                           filter;
+      filter.add(bn.variable("B"));
+      filter.setFirst();   // evs={B:0}
+      dbgen.drawSamples(100000, filter);
+      dbgen.toCSV(csvFileURL);
+
+      auto                     marginals = gum::BayesNet< double >::fastPrototype("A;B");
+      gum::learning::BNLearner learn(csvFileURL, marginals);
+      auto                     bn2 = learn.learnParameters(marginals.dag());
+
+      gum::LazyPropagation ie(&bn);
+      ie.addEvidence("B", 0);
+      ie.makeInference();
+
+      TS_ASSERT_LESS_THAN(
+         (bn2.cpt("A")
+          - (gum::Potential< double >() << bn2.variable("A")).fillWith(ie.posterior("A")))
+            .abs()
+            .max(),
+         1e-2)
+      TS_ASSERT_LESS_THAN(
+         (bn2.cpt("B")
+          - (gum::Potential< double >() << bn2.variable("B")).fillWith(ie.posterior("B")))
+            .abs()
+            .max(),
+         1e-2)
     }
   };
 }   // namespace gum_tests

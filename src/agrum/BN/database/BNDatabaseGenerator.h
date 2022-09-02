@@ -84,7 +84,7 @@ namespace gum {
       /// @{
 
       /// default constructor
-      BNDatabaseGenerator(const BayesNet< GUM_SCALAR >& bn);
+      explicit BNDatabaseGenerator(const BayesNet< GUM_SCALAR >& bn);
 
       /// destructor
       ~BNDatabaseGenerator();
@@ -99,9 +99,19 @@ namespace gum {
 
       /// generate and stock database, returns log2likelihood
       /// using ProgressNotifier as notification
-      double drawSamples(Size nbSamples);   // drawSamples
+      double drawSamples(Size nbSamples);
 
-      /// generates csv database according to bn
+      /**
+      Generate and stock the part of the database compatible with the evidence, returns
+      log2likelihood using ProgressNotifier as notification.
+
+      @warning nbSamples is not the size of the filtered database but the number of generated
+      samples. It may happen that the evidence is very rare (or even impossible). In that cas the
+      generated database may have only a few samples (even it may be empty).
+      */
+      double drawSamples(Size nbSamples, const gum::Instantiation& evs);
+
+      /// generates csv representing the generated database
       void toCSV(const std::string& csvFileURL,
                  bool               useLabels     = true,
                  bool               append        = false,
@@ -148,6 +158,8 @@ namespace gum {
       /// returns log2Likelihood of generated samples
       double log2likelihood() const;
 
+      /// return const ref to the Bayes Net
+      const BayesNet< GUM_SCALAR >& bn(void) { return _bn_; };
       /// @}
 
       private:

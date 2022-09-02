@@ -29,6 +29,7 @@
 #include <agrum/tools/graphs/graphElements.h>
 #include <agrum/tools/graphs/parts/nodeGraphPart.h>
 #include <agrum/tools/multidim/potential.h>
+#include <agrum/BN/BayesNet.h>
 
 namespace PyAgrumHelper {
 
@@ -122,7 +123,7 @@ namespace PyAgrumHelper {
     }
   }
 
-  // filling a Instantiation from a dictionnary<string,int>
+  // filling a Instantiation from a dictionnary<string,int> and a Potential (to find variable and labvels)
   void fillInstantiationFromPyObject(const gum::Potential< double >* pot,
                                      gum::Instantiation&             inst,
                                      PyObject*                       dict) {
@@ -135,7 +136,7 @@ namespace PyAgrumHelper {
 
     PyObject*  key;
     PyObject*  value;
-    Py_ssize_t pos = 0;
+    Py_ssize_t pos=0;
     inst.clear();
     while (PyDict_Next(dict, &pos, &key, &value)) {
       std::string name = stringFromPyObject(key);
@@ -161,6 +162,42 @@ namespace PyAgrumHelper {
 
       inst.add(*(namesToVars[name]));
       inst.chgVal(namesToVars[name], v);
+    }
+  }
+
+  // filling a Instantiation from a dictionnary<string,int> and a BayesNet (to find variable and labels)
+  void fillInstantiationFromPyObject(const gum::BayesNet<double>& map,
+                                     gum::Instantiation&             inst,
+                                     PyObject*                       dict) {
+    if (!PyDict_Check(dict)) { GUM_ERROR(gum::InvalidArgument, "Argument is not a dictionary") }
+
+    inst.clear();
+    PyObject*  key;
+    PyObject*  value;
+    Py_ssize_t pos=0;
+    while (PyDict_Next(dict, &pos, &key, &value)) {
+      std::string name = stringFromPyObject(key);
+      if (name == "") { GUM_ERROR(gum::InvalidArgument, "A key is not a string"); }
+
+      const auto& variable=map.variable(name);
+
+      std::string label = stringFromPyObject(value);
+      gum::Idx    v;
+      if (label == "") {
+        if (!(PyInt_Check(value))) {
+          GUM_ERROR(gum::InvalidArgument, "A value is neither an int nor a string")
+        }
+        v = gum::Idx(PyInt_AsLong(value));
+      } else {
+        v = variable.index(label);
+      }
+
+      if (v >= variable.domainSize()) {
+        GUM_ERROR(gum::InvalidArgument, "The value " << v << " is not in the domain of " << name);
+      }
+
+      inst.add(variable);
+      inst.chgVal(variable, v);
     }
   }
 
