@@ -87,8 +87,8 @@ namespace gum {
 
     if (!_parseDone_) {
       try {
-        _parser_->Parse();
         _parseDone_ = true;
+        _parser_->Parse();
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
         return 1 + _parser_->errors().error_count;
