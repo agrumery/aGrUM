@@ -491,7 +491,7 @@ namespace gum {
   /**
    * @class gum::NotImplementedYet agrum/tools/core/exceptions.h
    * @extends gum::Exception
-   * Exception : there is something wrong with an arc
+   * Exception : there is something wrong with an implementation
    */
   class NotImplementedYet;
 

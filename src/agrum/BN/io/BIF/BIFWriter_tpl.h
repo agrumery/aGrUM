@@ -50,8 +50,8 @@ namespace gum {
   // @param bn The Bayesian network writen in output.
   // @throws Raised if an I/O error occurs.
   template < typename GUM_SCALAR >
-  INLINE void BIFWriter< GUM_SCALAR >::write(std::ostream&                  output,
-                                             const IBayesNet< GUM_SCALAR >& bn) {
+  INLINE void BIFWriter< GUM_SCALAR >::_doWrite(std::ostream&                  output,
+                                                const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good()) { GUM_ERROR(IOError, "Input/Output error : stream not writable.") }
 
     output << _header_(bn) << std::endl;
@@ -80,30 +80,13 @@ namespace gum {
   // @param bn The Bayesian network writed in the file.
   // @throws Raised if an I/O error occurs.
   template < typename GUM_SCALAR >
-  INLINE void BIFWriter< GUM_SCALAR >::write(const std::string&             filePath,
-                                             const IBayesNet< GUM_SCALAR >& bn) {
+  INLINE void BIFWriter< GUM_SCALAR >::_doWrite(const std::string&             filePath,
+                                                const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
 
-    if (!output.good()) {
-      GUM_ERROR(IOError, "Input/Output error : " << filePath << " not writable.")
-    }
+    _doWrite(output, bn);
 
-    output << _header_(bn) << std::endl;
-
-    for (const auto node: bn.nodes()) {
-      output << _variableBloc_(bn.variable(node)) << std::endl;
-    }
-
-    for (const auto node: bn.nodes()) {
-      const Potential< GUM_SCALAR >& proba = bn.cpt(node);
-      output << _variableCPT_(proba);
-    }
-
-    output << std::endl;
-
-    output.flush();
     output.close();
-
     if (output.fail()) { GUM_ERROR(IOError, "Writing in the ostream failed.") }
   }
 
@@ -115,7 +98,8 @@ namespace gum {
 
     if (cpt.nbrDim() == 1) {
       Instantiation inst(cpt);
-      str << "probability (" << cpt.variable(0).name() << ") {" << std::endl;
+      str << "probability (" << this->_onlyValidCharsInName(cpt.variable(0).name()) << ") {"
+          << std::endl;
       str << tab << "default";
 
       for (inst.setFirst(); !inst.end(); ++inst) {
@@ -127,16 +111,14 @@ namespace gum {
       Instantiation inst(cpt);
       Instantiation condVars;   // Instantiation on the conditioning variables
       const Sequence< const DiscreteVariable* >& varsSeq = cpt.variablesSequence();
-      str << "probability (" << (varsSeq[(Idx)0])->name() << " | ";
+      str << "probability (" << this->_onlyValidCharsInName((varsSeq[(Idx)0])->name()) << " | ";
 
-      for (Idx i = 1; i < varsSeq.size() - 1; i++) {
-        str << varsSeq[i]->name() << ", ";
+      for (Idx i = 1; i < varsSeq.size(); i++) {
+        if (i > 1) str << ", ";
+        str << this->_onlyValidCharsInName(varsSeq[i]->name());
         condVars << *(varsSeq[i]);
       }
-
-      str << varsSeq[varsSeq.size() - 1]->name() << ") {" << std::endl;
-
-      condVars << *(varsSeq[varsSeq.size() - 1]);
+      str << ") {" << std::endl;
 
       for (inst.setFirstIn(condVars); !inst.end(); inst.incIn(condVars)) {
         str << tab << "(" << _variablesLabels_(varsSeq, inst) << ")";
@@ -173,14 +155,15 @@ namespace gum {
   INLINE std::string BIFWriter< GUM_SCALAR >::_variableBloc_(const DiscreteVariable& var) {
     std::stringstream str;
     std::string       tab = "   ";   // poor tabulation
-    str << "variable " << var.name() << " {" << std::endl;
+    str << "variable " << this->_onlyValidCharsInName(var.name()) << " {" << std::endl;
     str << tab << "type discrete[" << var.domainSize() << "] {";
 
-    for (Idx i = 0; i < var.domainSize() - 1; i++) {
-      str << var.label(i) << ", ";
+    for (Idx i = 0; i < var.domainSize(); i++) {
+      if (i > 0) str << ", ";
+      str << this->_onlyValidCharsInName(var.label(i));
     }
 
-    str << var.label(var.domainSize() - 1) << "};" << std::endl;
+    str << "};" << std::endl;
 
     str << "}" << std::endl;
     return str.str();
@@ -194,17 +177,18 @@ namespace gum {
     std::stringstream       str;
     const DiscreteVariable* varPtr = nullptr;
 
-    for (Idx i = 1; i < varsSeq.size() - 1; i++) {
+    for (Idx i = 1; i < varsSeq.size(); i++) {
+      if (i > 1) str << ", ";
       varPtr = varsSeq[i];
-      str << varPtr->label(inst.val(*varPtr)) << ", ";
+      str << this->_onlyValidCharsInName(varPtr->label(inst.val(*varPtr)));
     }
-
-    varPtr = varsSeq[varsSeq.size() - 1];
-
-    str << varPtr->label(inst.val(*varPtr));
     return str.str();
   }
 
+  template < typename GUM_SCALAR >
+  void BIFWriter< GUM_SCALAR >::_syntacticalCheck(const IBayesNet< GUM_SCALAR >& bn) {
+    this->_validCharInNamesCheck(bn);
+  }
 } /* namespace gum */
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS

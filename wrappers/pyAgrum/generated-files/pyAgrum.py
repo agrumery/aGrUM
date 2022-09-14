@@ -9204,7 +9204,7 @@ class BayesNet(IBayesNet):
             - the structure 'a->b->c;b->d<-e;'.
             - the type of the variables with different syntax:
 
-              - by default, a variable is a pyAgrum.RangeVariable using the default domain size (second argument)
+              - by default, a variable is a pyAgrum.RangeVariable using the default domain size ([2])
               - with 'a[10]', the variable is a pyAgrum.RangeVariable using 10 as domain size (from 0 to 9)
               - with 'a[3,7]', the variable is a pyAgrum.RangeVariable using a domainSize from 3 to 7
               - with 'a[1,3.14,5,6.2]', the variable is a pyAgrum.DiscretizedVariable using the given ticks (at least 3 values)
@@ -10230,7 +10230,7 @@ class BayesNet(IBayesNet):
         """
         return _pyAgrum.BayesNet_loadBIF(self, *args)
 
-    def saveBIF(self, name: str) -> None:
+    def saveBIF(self, name: str, allowModificationWhenSaving: bool=False) -> None:
         r"""
 
         Save the BayesNet in a BIF file.
@@ -10239,9 +10239,12 @@ class BayesNet(IBayesNet):
         ----------
         name : str
         	the file's name
+        allowModificationWhenSaving: bool
+                False by default.
+                if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
 
         """
-        return _pyAgrum.BayesNet_saveBIF(self, name)
+        return _pyAgrum.BayesNet_saveBIF(self, name, allowModificationWhenSaving)
 
     def loadDSL(self, *args) -> str:
         r"""
@@ -10265,7 +10268,7 @@ class BayesNet(IBayesNet):
         """
         return _pyAgrum.BayesNet_loadDSL(self, *args)
 
-    def saveDSL(self, name: str) -> None:
+    def saveDSL(self, name: str, allowModificationWhenSaving: bool=False) -> None:
         r"""
 
         Save the BayesNet in a DSL file.
@@ -10274,9 +10277,12 @@ class BayesNet(IBayesNet):
         ----------
         name : str
         	the file's name
+        allowModificationWhenSaving: bool
+                False by default.
+                if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
 
         """
-        return _pyAgrum.BayesNet_saveDSL(self, name)
+        return _pyAgrum.BayesNet_saveDSL(self, name, allowModificationWhenSaving)
 
     def loadNET(self, *args) -> str:
         r"""
@@ -10300,7 +10306,7 @@ class BayesNet(IBayesNet):
         """
         return _pyAgrum.BayesNet_loadNET(self, *args)
 
-    def saveNET(self, name: str) -> None:
+    def saveNET(self, name: str, allowModificationWhenSaving: bool=False) -> None:
         r"""
 
         Save the BayesNet in a NET file.
@@ -10309,9 +10315,12 @@ class BayesNet(IBayesNet):
         ----------
         name : str
         	the file's name
+        allowModificationWhenSaving: bool
+                False by default.
+                if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
 
         """
-        return _pyAgrum.BayesNet_saveNET(self, name)
+        return _pyAgrum.BayesNet_saveNET(self, name, allowModificationWhenSaving)
 
     def loadO3PRM(self, *args) -> str:
         r"""
@@ -10343,7 +10352,7 @@ class BayesNet(IBayesNet):
         """
         return _pyAgrum.BayesNet_loadO3PRM(self, *args)
 
-    def saveO3PRM(self, name: str) -> None:
+    def saveO3PRM(self, name: str, allowModificationWhenSaving: bool=False) -> None:
         r"""
 
         Save the BayesNet in an O3PRM file.
@@ -10356,9 +10365,12 @@ class BayesNet(IBayesNet):
         ----------
         name : str
         	the file's name
+        allowModificationWhenSaving: bool
+                False by default.
+                if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
 
         """
-        return _pyAgrum.BayesNet_saveO3PRM(self, name)
+        return _pyAgrum.BayesNet_saveO3PRM(self, name, allowModificationWhenSaving)
 
     def loadBIFXML(self, *args) -> str:
         r"""
@@ -10382,7 +10394,7 @@ class BayesNet(IBayesNet):
         """
         return _pyAgrum.BayesNet_loadBIFXML(self, *args)
 
-    def saveBIFXML(self, name: str) -> None:
+    def saveBIFXML(self, name: str, allowModificationWhenSaving: bool=False) -> None:
         r"""
 
         Save the BayesNet in a BIFXML file.
@@ -10391,9 +10403,12 @@ class BayesNet(IBayesNet):
         ----------
         name : str
         	the file's name
+        allowModificationWhenSaving: bool
+                False by default.
+                if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
 
         """
-        return _pyAgrum.BayesNet_saveBIFXML(self, name)
+        return _pyAgrum.BayesNet_saveBIFXML(self, name, allowModificationWhenSaving)
 
     def loadUAI(self, *args) -> str:
         r"""
@@ -10417,7 +10432,7 @@ class BayesNet(IBayesNet):
         """
         return _pyAgrum.BayesNet_loadUAI(self, *args)
 
-    def saveUAI(self, name: str) -> None:
+    def saveUAI(self, name: str, allowModificationWhenSaving: bool=False) -> None:
         r"""
 
         Save the BayesNet in an UAI file.
@@ -10426,9 +10441,12 @@ class BayesNet(IBayesNet):
         ----------
         name : str
         	the file's name
+        allowModificationWhenSaving: bool
+                False by default.
+                if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
 
         """
-        return _pyAgrum.BayesNet_saveUAI(self, name)
+        return _pyAgrum.BayesNet_saveUAI(self, name, allowModificationWhenSaving)
 
     def __repr__(self) -> str:
         return _pyAgrum.BayesNet___repr__(self)
@@ -10446,7 +10464,7 @@ def BayesNet_fastPrototype(dotlike: str, domainSize: int=2) -> "pyAgrum.BayesNet
         - the structure 'a->b->c;b->d<-e;'.
         - the type of the variables with different syntax:
 
-          - by default, a variable is a pyAgrum.RangeVariable using the default domain size (second argument)
+          - by default, a variable is a pyAgrum.RangeVariable using the default domain size ([2])
           - with 'a[10]', the variable is a pyAgrum.RangeVariable using 10 as domain size (from 0 to 9)
           - with 'a[3,7]', the variable is a pyAgrum.RangeVariable using a domainSize from 3 to 7
           - with 'a[1,3.14,5,6.2]', the variable is a pyAgrum.DiscretizedVariable using the given ticks (at least 3 values)

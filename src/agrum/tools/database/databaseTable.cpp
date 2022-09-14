@@ -1063,7 +1063,7 @@ namespace gum {
 
       if (_translators_.highestInputColumn() >= row_size) {
         GUM_ERROR(SizeError,
-                  "the row #" << 1+size() << " has " << row_size
+                  "the row #" << 1 + size() << " has " << row_size
                               << " columns whereas the database requires at least "
                               << (_translators_.highestInputColumn() + 1) << " columns")
       }

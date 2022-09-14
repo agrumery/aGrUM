@@ -47,8 +47,8 @@ namespace gum {
   // @param bn The Bayesian network writen in output.
   // @throws Raised if an I/O error occurs.
   template < typename GUM_SCALAR >
-  INLINE void NetWriter< GUM_SCALAR >::write(std::ostream&                  output,
-                                             const IBayesNet< GUM_SCALAR >& bn) {
+  INLINE void NetWriter< GUM_SCALAR >::_doWrite(std::ostream&                  output,
+                                                const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good()) GUM_ERROR(IOError, "Input/Output error : stream not writable.")
 
     output << _header_(bn) << std::endl;
@@ -74,27 +74,13 @@ namespace gum {
   // @param bn The Bayesian network writed in the file.
   // @throws Raised if an I/O error occurs.
   template < typename GUM_SCALAR >
-  INLINE void NetWriter< GUM_SCALAR >::write(const std::string&             filePath,
-                                             const IBayesNet< GUM_SCALAR >& bn) {
+  INLINE void NetWriter< GUM_SCALAR >::_doWrite(const std::string&             filePath,
+                                                const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
 
-    if (!output.good()) {
-      GUM_ERROR(IOError, "Input/Output error : " << filePath << " not writable.")
-    }
+    _doWrite(output, bn);
 
-    output << _header_(bn) << std::endl;
-
-    for (auto node: bn.nodes())
-      output << _variableBloc_(bn.variable(node)) << std::endl;
-
-    for (auto node: bn.nodes())
-      output << _variableCPT_(bn.cpt(node));
-
-    output << std::endl;
-
-    output.flush();
     output.close();
-
     if (output.fail()) { GUM_ERROR(IOError, "Writing in the ostream failed.") }
   }
 

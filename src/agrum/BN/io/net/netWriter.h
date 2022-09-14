@@ -71,10 +71,15 @@ namespace gum {
     /**
      * Destructor.
      */
-    ~NetWriter();
+    ~NetWriter() override;
+
+    NetWriter(const NetWriter&)                = default;
+    NetWriter(NetWriter&&) noexcept            = default;
+    NetWriter& operator=(const NetWriter&)     = default;
+    NetWriter& operator=(NetWriter&&) noexcept = default;
 
     /// @}
-
+    protected:
     /**
      * Writes a Bayesian network in the output stream using the BN format.
      *
@@ -82,7 +87,7 @@ namespace gum {
      * @param bn The Bayesian network writen in output.
      * @throws IOError Raised if and I/O error occurs.
      */
-    void write(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) final;
+    void _doWrite(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) final;
 
     /**
      * Writes a Bayesian network in the referenced file using the BN format.
@@ -92,7 +97,7 @@ namespace gum {
      * @param bn The Bayesian network writed in the file.
      * @throws IOError Raised if and I/O error occurs.
      */
-    void write(const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) final;
+    void _doWrite(const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) final;
 
     private:
     // Returns the header of the BN file.

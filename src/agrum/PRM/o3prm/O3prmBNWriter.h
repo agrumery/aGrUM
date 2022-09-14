@@ -69,10 +69,10 @@ namespace gum {
     /**
      * Destructor.
      */
-    virtual ~O3prmBNWriter();
+    ~O3prmBNWriter() override;
 
     /// @}
-
+    protected:
     /**
      * Writes an bayes net in the given ouput stream.
      *
@@ -80,7 +80,7 @@ namespace gum {
      * @param bn The bayes net writen in the stream.
      * @throws IOError Raised if an I/O error occurs.
      */
-    virtual void write(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) final;
+    void _doWrite(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) final;
 
     /**
      * Writes an bayes net in the file referenced by filePath.
@@ -91,7 +91,7 @@ namespace gum {
      * @param bn The bayes net written in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
-    virtual void write(const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) final;
+    void _doWrite(const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) final;
 
     private:
     std::string _extractAttribute_(const IBayesNet< GUM_SCALAR >& bn, NodeId node);

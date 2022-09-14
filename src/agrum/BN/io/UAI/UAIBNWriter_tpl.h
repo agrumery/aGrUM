@@ -49,8 +49,8 @@ namespace gum {
    * @throws IOError Raised if an I/O error occurs.
    */
   template < typename GUM_SCALAR >
-  INLINE void UAIBNWriter< GUM_SCALAR >::write(std::ostream&                  output,
-                                               const IBayesNet< GUM_SCALAR >& bn) {
+  INLINE void UAIBNWriter< GUM_SCALAR >::_doWrite(std::ostream&                  output,
+                                                  const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good()) { GUM_ERROR(IOError, "Input/Output error : stream not writable.") }
 
     output << _preambule_(bn) << std::endl;
@@ -75,14 +75,13 @@ namespace gum {
    * @throw IOError Raised if an I/O error occurs.
    */
   template < typename GUM_SCALAR >
-  INLINE void UAIBNWriter< GUM_SCALAR >::write(const std::string&             filePath,
-                                               const IBayesNet< GUM_SCALAR >& bn) {
+  INLINE void UAIBNWriter< GUM_SCALAR >::_doWrite(const std::string&             filePath,
+                                                  const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
 
-    write(output, bn);
+    _doWrite(output, bn);
 
     output.close();
-
     if (output.fail()) { GUM_ERROR(IOError, "Writing in the ostream failed.") }
   }
 

@@ -32,10 +32,11 @@
 #ifndef GUM_BN_WRITER_H
 #define GUM_BN_WRITER_H
 
-#include <agrum/BN/IBayesNet.h>
-#include <agrum/agrum.h>
 #include <iostream>
 #include <string>
+
+#include <agrum/BN/IBayesNet.h>
+#include <agrum/agrum.h>
 
 namespace gum {
 
@@ -45,34 +46,71 @@ namespace gum {
   /**
    * @class BNWriter
    * @headerfile BNWriter.h <agrum/BN/io/BNWriter.h>
-   * @brief Pure virtual class for writting a BN to a file.
+   * @brief virtual class for writing a BN to a file.
    * @ingroup bn_io
    *
    * Every class used to write the content of a Bayesian network in a stream, or
    * a file must be a subclass of BNWriter.
    */
   template < typename GUM_SCALAR >
-
   class BNWriter {
     public:
     /**
      * Default constructor.
      */
-    BNWriter();
+    explicit BNWriter();
 
     /**
      * Default destructor.
      */
     virtual ~BNWriter();
 
+    BNWriter(const BNWriter&)                = default;
+    BNWriter(BNWriter&&) noexcept            = default;
+    BNWriter& operator=(const BNWriter&)     = default;
+    BNWriter& operator=(BNWriter&&) noexcept = default;
+
+
     /**
-     * Writes a Bayesian network in the ouput stream.
+     * Writes a Bayesian network in the output stream.
+     *
+     * - If the bn can not be written for syntactical reasons, throw an error or try to correct it
+     * (conditioned by the value of _allowModification_
      *
      * @param output The output stream.
-     * @param bn The Bayesian network writed in output.
+     * @param bn The Bayesian network written in output.
+     * @throws IOError Raised if an I/O error occurs.
+     * @throws SyntaxError Raised if syntactical errors in the BN
+     */
+    void write(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn);
+
+    /**
+     * Writes a Bayesian network in the file referenced by filePath.
+     *
+     * - If the file doesn't exists, it is created.
+     * - If the file exists, it's content will be erased.
+     * - If the bn can not be written for syntactical reasons, throw an error or try to correct it
+     * (conditioned by the value of _allowModification_
+     *
+     *
+     * @param filePath The path to the file used to write the Bayesian network.
+     * @param bn The Bayesian network writen in the file.
+     * @throw IOError Raised if an I/O error occurs.
+     */
+    void write(const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn);
+
+    GUM_NODISCARD bool isModificationAllowed() const;
+    void               setAllowModification(bool am);
+
+    protected:
+    /**
+     * Writes a Bayesian network in the output stream.
+     *
+     * @param output The output stream.
+     * @param bn The Bayesian network written in output.
      * @throws IOError Raised if an I/O error occurs.
      */
-    virtual void write(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) = 0;
+    virtual void _doWrite(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) = 0;
 
     /**
      * Writes a Bayesian network in the file referenced by filePath.
@@ -83,7 +121,25 @@ namespace gum {
      * @param bn The Bayesian network writen in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
-    virtual void write(const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) = 0;
+    virtual void _doWrite(const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) = 0;
+
+    ///@{
+
+    /**
+     * Check whether the BN is syntactically correct for BIF format.
+     *
+     * @throw FatalError if found.
+     */
+    virtual void _syntacticalCheck(const IBayesNet< GUM_SCALAR >& bn);
+
+    void        _validCharInNamesCheck(const IBayesNet< GUM_SCALAR >& bn);
+    std::string _onlyValidCharsInName(const std::string& name);
+
+    ///}
+
+    private:
+    std::string _onlyValidCharsInName_(const std::string& name);
+    bool        _allowModification_ = false;
   };
 
 

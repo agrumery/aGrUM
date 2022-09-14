@@ -27,6 +27,8 @@
 
 #include <cxxtest/TestSuite.h>
 
+#define GUM_TEST(nom) [[maybe_unused]] static void test##1()
+
 #define TS_GUM_ASSERT_THROWS_NOTHING(block)      \
   TS_ASSERT_THROWS_NOTHING(                      \
      try { block; } catch (gum::Exception & e) { \

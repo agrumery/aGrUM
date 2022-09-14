@@ -52,7 +52,7 @@ namespace gum {
    * @throws Raised if an I/O error occurs.
    */
   template < typename GUM_SCALAR >
-  void DSLWriter< GUM_SCALAR >::write(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) {
+  void DSLWriter< GUM_SCALAR >::_doWrite(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good()) { GUM_ERROR(IOError, "Input/Output error : stream not writable.") }
 
     output << "net " << bn.propertyWithDefault("name", "unnamedBN") << std::endl
@@ -79,15 +79,14 @@ namespace gum {
    * @throws Raised if an I/O error occurs.
    */
   template < typename GUM_SCALAR >
-  void DSLWriter< GUM_SCALAR >::write(const std::string&             filePath,
-                                      const IBayesNet< GUM_SCALAR >& bn) {
-    std::filebuf fb;
-    fb.open(filePath.c_str(), std::ios::out);
-    std::ostream output(&fb);
+  void DSLWriter< GUM_SCALAR >::_doWrite(const std::string&             filePath,
+                                         const IBayesNet< GUM_SCALAR >& bn) {
+    std::ofstream output(filePath.c_str(), std::ios_base::trunc);
 
-    write(output, bn);
+    _doWrite(output, bn);
 
-    fb.close();
+    output.close();
+    if (output.fail()) { GUM_ERROR(IOError, "Writing in the ostream failed.") }
   }
 
   /**
@@ -101,13 +100,13 @@ namespace gum {
 
     id = bn.idFromName(var.name());
 
-    oss << "\tnode " << var.name() << "\n\t{\n";
+    oss << "\tnode " << this->_onlyValidCharsInName(var.name()) << "\n\t{\n";
 
     oss << "\t\tTYPE = CPT;\n";
 
     oss << "\t\tHEADER =\n\t\t{\n";
-    oss << "\t\t\tID = " << var.name() << ";\n";
-    oss << "\t\t\tNAME = \"" << var.name() << "\";\n";
+    oss << "\t\t\tID = " << this->_onlyValidCharsInName(var.name()) << ";\n";
+    oss << "\t\t\tNAME = \"" << this->_onlyValidCharsInName(var.name()) << "\";\n";
     oss << "\t\t};\n";
 
     oss << "\t\tPARENTS = (";
@@ -116,7 +115,7 @@ namespace gum {
     for (Idx i = tmp_vars.size() - 1; i > 0; i--) {
       if (i < tmp_vars.size() - 1) oss << ", ";
 
-      oss << tmp_vars[i]->name();
+      oss << this->_onlyValidCharsInName(tmp_vars[i]->name());
     }
 
     oss << ");\n";
@@ -129,7 +128,7 @@ namespace gum {
     for (Idx i = 0; i < var.domainSize(); i++) {
       if (i != 0) oss << ", ";
 
-      oss << var.label(i);
+      oss << this->_onlyValidCharsInName(var.label(i));
     }
 
     oss << ");\n";
@@ -157,6 +156,10 @@ namespace gum {
     return oss.str();
   }
 
+  template < typename GUM_SCALAR >
+  void DSLWriter< GUM_SCALAR >::_syntacticalCheck(const IBayesNet< GUM_SCALAR >& bn) {
+    this->_validCharInNamesCheck(bn);
+  }
 } /* namespace gum */
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS

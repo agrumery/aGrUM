@@ -176,8 +176,9 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
       return "";
   };
 
-  void saveBIF(std::string name) {
+  void saveBIF(std::string name,bool allowModificationWhenSaving=false) {
       gum::BIFWriter<GUM_SCALAR> writer;
+      writer.setAllowModification(allowModificationWhenSaving);
       writer.write( name, *self );
   };
 
@@ -207,9 +208,10 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
       return "";
   };
 
-  void saveDSL(std::string name) {
-      gum::DSLWriter<GUM_SCALAR> writer;
-      writer.write( name, *self );
+  void saveDSL(std::string name,bool allowModificationWhenSaving=false) {
+    gum::DSLWriter<GUM_SCALAR> writer;
+    writer.setAllowModification(allowModificationWhenSaving);
+    writer.write( name, *self );
   };
 
   std::string loadNET(std::string name, PyObject *l=(PyObject*)0)
@@ -238,9 +240,10 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
       return "";
   };
 
-  void saveNET(std::string name) {
-      gum::NetWriter<GUM_SCALAR> writer;
-      writer.write( name, *self );
+  void saveNET(std::string name,bool allowModificationWhenSaving=false) {
+    gum::NetWriter<GUM_SCALAR> writer;
+    writer.setAllowModification(allowModificationWhenSaving);
+    writer.write( name, *self );
   };
 
   std::string loadO3PRM(std::string name, std::string system="",std::string classpath="",PyObject *l=(PyObject*)0)
@@ -265,9 +268,10 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
       return "";
   };
 
-  void saveO3PRM(std::string name) {
-      gum::O3prmBNWriter<GUM_SCALAR> writer;
-      writer.write( name, *self );
+  void saveO3PRM(std::string name,bool allowModificationWhenSaving=false) {
+    gum::O3prmBNWriter<GUM_SCALAR> writer;
+    writer.setAllowModification(allowModificationWhenSaving);
+    writer.write( name, *self );
   };
 
   std::string loadBIFXML(std::string name, PyObject *l=(PyObject*)0)
@@ -290,9 +294,10 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
       return "";
   };
 
-  void saveBIFXML(std::string name) {
-      gum::BIFXMLBNWriter<GUM_SCALAR> writer;
-      writer.write( name, *self );
+  void saveBIFXML(std::string name,bool allowModificationWhenSaving=false) {
+    gum::BIFXMLBNWriter<GUM_SCALAR> writer;
+    writer.setAllowModification(allowModificationWhenSaving);
+    writer.write( name, *self );
   };
 
   std::string loadUAI(std::string name, PyObject *l=(PyObject*)0)
@@ -321,8 +326,9 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
       return "";
   };
 
-  void saveUAI(std::string name) {
-      gum::UAIBNWriter<GUM_SCALAR> writer;
-      writer.write( name, *self );
+  void saveUAI(std::string name,bool allowModificationWhenSaving=false) {
+    gum::UAIBNWriter<GUM_SCALAR> writer;
+    writer.setAllowModification(allowModificationWhenSaving);
+    writer.write( name, *self );
   };
 }

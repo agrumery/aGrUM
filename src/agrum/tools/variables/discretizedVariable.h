@@ -125,11 +125,11 @@ namespace gum {
     /// @}
 
     /// a virtual clone
-    virtual DiscretizedVariable< T_TICKS >* clone() const;
+    DiscretizedVariable< T_TICKS >* clone() const final;
 
     /// returns the type of variable
 
-    virtual VarType varType() const;
+    VarType varType() const final;
 
     /**
      * operator =

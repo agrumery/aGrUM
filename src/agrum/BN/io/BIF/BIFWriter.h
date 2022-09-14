@@ -21,7 +21,7 @@
 
 /**
  * @file
- * @brief Definition of classe for BIF file output manipulation
+ * @brief Definition of class for BIF file output manipulation
  *
  * This class servers to write the content of a Bayesian network in
  * the BIF format.
@@ -38,7 +38,6 @@
 #include <string>
 
 #include <agrum/BN/io/BNWriter.h>
-
 #include <agrum/agrum.h>
 
 namespace gum {
@@ -71,10 +70,15 @@ namespace gum {
     /**
      * Destructor.
      */
-    ~BIFWriter();
+    ~BIFWriter() override;
+
+    BIFWriter(const BIFWriter&)                = default;
+    BIFWriter(BIFWriter&&) noexcept            = default;
+    BIFWriter& operator=(const BIFWriter&)     = default;
+    BIFWriter& operator=(BIFWriter&&) noexcept = default;
 
     /// @}
-
+    protected:
     /**
      * Writes a Bayesian network in the output stream using the BIF format.
      *
@@ -82,7 +86,7 @@ namespace gum {
      * @param bn The Bayesian network writen in output.
      * @throws IOError Raised if and I/O error occurs.
      */
-    void write(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) final;
+    void _doWrite(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) final;
 
     /**
      * Writes a Bayesian network in the referenced file using the BIF format.
@@ -92,7 +96,14 @@ namespace gum {
      * @param bn The Bayesian network writed in the file.
      * @throws IOError Raised if and I/O error occurs.
      */
-    void write(const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) final;
+    void _doWrite(const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) final;
+
+    /**
+     * Check whether the BN is syntactically correct for BIF format.
+     *
+     * @throw FatalError if found.
+     */
+    void _syntacticalCheck(const IBayesNet< GUM_SCALAR >& bn) final;
 
     private:
     // Returns the header of the BIF file.

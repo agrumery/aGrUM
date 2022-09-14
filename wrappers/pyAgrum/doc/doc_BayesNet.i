@@ -492,7 +492,7 @@ Create a Bayesian network with a dot-like syntax which specifies:
     - the structure 'a->b->c;b->d<-e;'.
     - the type of the variables with different syntax:
 
-      - by default, a variable is a pyAgrum.RangeVariable using the default domain size (second argument)
+      - by default, a variable is a pyAgrum.RangeVariable using the default domain size ([2])
       - with 'a[10]', the variable is a pyAgrum.RangeVariable using 10 as domain size (from 0 to 9)
       - with 'a[3,7]', the variable is a pyAgrum.RangeVariable using a domainSize from 3 to 7
       - with 'a[1,3.14,5,6.2]', the variable is a pyAgrum.DiscretizedVariable using the given ticks (at least 3 values)
@@ -692,6 +692,9 @@ Parameters
 ----------
 name : str
 	the file's name
+allowModificationWhenSaving: bool
+        False by default.
+        if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
 "
 
 %feature("docstring") gum::BayesNet::saveBIFXML
@@ -702,6 +705,9 @@ Parameters
 ----------
 name : str
 	the file's name
+allowModificationWhenSaving: bool
+        False by default.
+        if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
 "
 
 %feature("docstring") gum::BayesNet::saveDSL
@@ -712,6 +718,9 @@ Parameters
 ----------
 name : str
 	the file's name
+allowModificationWhenSaving: bool
+        False by default.
+        if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
 "
 
 %feature("docstring") gum::BayesNet::saveNET
@@ -722,6 +731,9 @@ Parameters
 ----------
 name : str
 	the file's name
+allowModificationWhenSaving: bool
+        False by default.
+        if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
 "
 
 %feature("docstring") gum::BayesNet::saveO3PRM
@@ -736,6 +748,9 @@ Parameters
 ----------
 name : str
 	the file's name
+allowModificationWhenSaving: bool
+        False by default.
+        if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
 "
 
 %feature("docstring") gum::BayesNet::saveUAI
@@ -746,6 +761,9 @@ Parameters
 ----------
 name : str
 	the file's name
+allowModificationWhenSaving: bool
+        False by default.
+        if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
 "
 
 %feature("docstring") gum::BayesNet::cpt

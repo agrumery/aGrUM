@@ -72,10 +72,15 @@ namespace gum {
     /**
      * Destructor.
      */
-    ~BIFXMLBNWriter();
+    ~BIFXMLBNWriter() override;
+
+    BIFXMLBNWriter(const BIFXMLBNWriter&)                = default;
+    BIFXMLBNWriter(BIFXMLBNWriter&&) noexcept            = default;
+    BIFXMLBNWriter& operator=(const BIFXMLBNWriter&)     = default;
+    BIFXMLBNWriter& operator=(BIFXMLBNWriter&&) noexcept = default;
 
     /// @}
-
+    protected:
     /**
      * Writes an bayes net in the given ouput stream.
      *
@@ -83,7 +88,7 @@ namespace gum {
      * @param infdiag The bayes net writen in the stream.
      * @throws IOError Raised if an I/O error occurs.
      */
-    void write(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) final;
+    void _doWrite(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) final;
 
     /**
      * Writes an bayes net in the file referenced by filePath.
@@ -94,7 +99,7 @@ namespace gum {
      * @param infdiag The bayes net writen in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
-    void write(const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) final;
+    void _doWrite(const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) final;
 
     private:
     /**

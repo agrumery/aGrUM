@@ -394,11 +394,10 @@ namespace gum_tests {
         // One implementation of the gum::BNWriter class
         auto writer = gum::BIFWriter< double >();
         try {
-          std::stringstream buff;   // Don't want to write in files for this test
+          writer.setAllowModification(true);   // BIF does not allow spaces in name. So we have to
+                                               // change spaces when writing BIF files.
+          std::stringstream buff;              // Don't want to write in files for this test
           // This will print the asia BayesNet on the standard output stream
-          writer.write(buff, asia);
-
-          // This will write the asia BayesNet in the given file
           writer.write(buff, asia);
         } catch (gum::IOError& e) {
           TS_FAIL(e.errorContent());

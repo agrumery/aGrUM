@@ -86,6 +86,43 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn))
     }
 
+    void testSyntaxicError() {
+      gum::DSLWriter< double > writer;
+      {
+        TS_ASSERT(!writer.isModificationAllowed())
+        std::string file = GET_RESSOURCES_PATH("outputs/shouldNotBeWrittenDSL.txt");
+        {
+          auto bn = gum::BayesNet< double >::fastPrototype("A->Hello World !->c");
+          TS_ASSERT_THROWS(writer.write(file, bn), gum::FatalError&)
+        }
+        {
+          auto bn = gum::BayesNet< double >::fastPrototype("A->Hello World->c");
+          TS_ASSERT_THROWS(writer.write(file, bn), gum::FatalError&)
+        }
+        {
+          auto bn = gum::BayesNet< double >::fastPrototype("A->HelloWorld!->c");
+          TS_ASSERT_THROWS(writer.write(file, bn), gum::FatalError&)
+        }
+      }
+      {
+        writer.setAllowModification(true);
+        TS_ASSERT(writer.isModificationAllowed())
+        std::string file = GET_RESSOURCES_PATH("outputs/shouldBeWrittenDSL.txt");
+        {
+          auto bn = gum::BayesNet< double >::fastPrototype("A->Hello World !->c");
+          TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, bn))
+        }
+        {
+          auto bn = gum::BayesNet< double >::fastPrototype("A->Hello World->c");
+          TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, bn))
+        }
+        {
+          auto bn = gum::BayesNet< double >::fastPrototype("A->HelloWorld!->c");
+          TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, bn))
+        }
+      }
+    }
+
     private:
     // Builds a BN to test the inference
     void fill(gum::BayesNet< double >& bn) {

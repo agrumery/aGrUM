@@ -42,15 +42,12 @@
 
 namespace gum {
   /**
-   * @class UAIBNWriter UAIBNWriter.h
-   *<agrum/BN/io/UAI/UAIBNWriter.h>
+   * @class UAIBNWriter UAIBNWriter.h <agrum/BN/io/UAI/UAIBNWriter.h>
    * @ingroup bn_io
    * @brief Writes an bayes net in a text file with UAI format
    *
    * This class export a bayes net into an text file, using UAI format
-   *
    * cf. http://www.cs.huji.ac.il/project/PASCAL/fileFormat.php
-   *
    */
   template < typename GUM_SCALAR >
   class UAIBNWriter: public BNWriter< GUM_SCALAR > {
@@ -68,10 +65,15 @@ namespace gum {
     /**
      * Destructor.
      */
-    ~UAIBNWriter();
+    ~UAIBNWriter() override;
+
+    UAIBNWriter(const UAIBNWriter&)                = default;
+    UAIBNWriter(UAIBNWriter&&) noexcept            = default;
+    UAIBNWriter& operator=(const UAIBNWriter&)     = default;
+    UAIBNWriter& operator=(UAIBNWriter&&) noexcept = default;
 
     /// @}
-
+    protected:
     /**
      * Writes an bayes net in the given ouput stream.
      *
@@ -79,7 +81,7 @@ namespace gum {
      * @param bn The bayes net writen in the stream.
      * @throws IOError Raised if an I/O error occurs.
      */
-    void write(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) final;
+    void _doWrite(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) final;
 
     /**
      * Writes an bayes net in the file referenced by filePath.
@@ -90,7 +92,7 @@ namespace gum {
      * @param bn The bayes net writen in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
-    void write(const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) final;
+    void _doWrite(const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) final;
 
     private:
     /**

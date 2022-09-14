@@ -50,8 +50,8 @@ namespace gum {
    * @throws IOError Raised if an I/O error occurs.
    */
   template < typename GUM_SCALAR >
-  INLINE void O3prmBNWriter< GUM_SCALAR >::write(std::ostream&                  output,
-                                                 const IBayesNet< GUM_SCALAR >& bn) {
+  INLINE void O3prmBNWriter< GUM_SCALAR >::_doWrite(std::ostream&                  output,
+                                                    const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good()) { GUM_ERROR(IOError, "Input/Output error : stream not writable.") }
     std::string bnName = bn.propertyWithDefault("name", "");
     if (bnName.empty()) bnName = "bayesnet";
@@ -228,11 +228,11 @@ namespace gum {
    * @throw IOError Raised if an I/O error occurs.
    */
   template < typename GUM_SCALAR >
-  INLINE void O3prmBNWriter< GUM_SCALAR >::write(const std::string&             filePath,
-                                                 const IBayesNet< GUM_SCALAR >& bn) {
+  INLINE void O3prmBNWriter< GUM_SCALAR >::_doWrite(const std::string&             filePath,
+                                                    const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
 
-    write(output, bn);
+    _doWrite(output, bn);
 
     output.close();
 

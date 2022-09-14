@@ -60,10 +60,15 @@ namespace gum {
     /**
      * Destructor.
      */
-    ~DSLWriter();
+    ~DSLWriter() override;
+
+    DSLWriter(const DSLWriter&)                = default;
+    DSLWriter(DSLWriter&&) noexcept            = default;
+    DSLWriter& operator=(const DSLWriter&)     = default;
+    DSLWriter& operator=(DSLWriter&&) noexcept = default;
 
     /// @}
-
+    protected:
     /**
      * Writes a Bayesian network in the output stream using the DSL format.
      *
@@ -71,7 +76,7 @@ namespace gum {
      * @param bn The Bayesian network writen in output.
      * @throws IOError Raised if and I/O error occurs.
      */
-    void write(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) final;
+    void _doWrite(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) final;
 
     /**
      * Writes a Bayesian network in the referenced file using the DSL format.
@@ -81,7 +86,14 @@ namespace gum {
      * @param bn The Bayesian network writed in the file.
      * @throws IOError Raised if and I/O error occurs.
      */
-    void write(const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) final;
+    void _doWrite(const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) final;
+
+    /**
+     * Check whether the BN is syntactically correct for BIF format.
+     *
+     * @throw FatalError if found.
+     */
+    void _syntacticalCheck(const IBayesNet< GUM_SCALAR >& bn) final;
 
     private:
     // Returns a bloc defining a variable in the DSL format.

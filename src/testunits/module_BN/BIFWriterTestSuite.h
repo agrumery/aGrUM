@@ -22,8 +22,6 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
-#include <stdio.h>
-#include <string.h>
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
@@ -45,15 +43,37 @@ namespace gum_tests {
 
   class BIFWriterTestSuite: public CxxTest::TestSuite {
     private:
-    bool __compareFile(std::string f1, std::string f2) {
-      std::ifstream file1, file2;
+    // Builds a BN to test the inference
+    void fill(gum::BayesNet< double >& bn) {
+      bn.cpt(i1).fillWith({0.2, 0.8});
+      bn.cpt(i2).fillWith({0.3, 0.7});
+      bn.cpt(i3).fillWith({0.1, 0.9, 0.9, 0.1});
+      bn.cpt(i4).fillWith(   // clang-format off
+                             {0.4, 0.6,
+                              0.5, 0.5,
+                              0.5, 0.5,
+                              1.0, 0.0} );   // clang-format on
+      bn.cpt(i5).fillWith(                             // clang-format off
+                             {0.3, 0.6, 0.1,
+                              0.5, 0.5, 0.0,
+                              0.5, 0.5, 0.0,
+                              1.0, 0.0, 0.0,
+                              0.4, 0.6, 0.0,
+                              0.5, 0.5, 0.0,
+                              0.5, 0.5, 0.0,
+                              0.0, 0.0, 1.0} );
+      // clang-format on
+    }
+    static bool _compareFile_(const std::string& f1, const std::string& f2) {
+      std::ifstream file1;
+      std::ifstream file2;
       file1.open(f1, std::ios::binary);
       file2.open(f2, std::ios::binary);
 
       //---------- compare number of lines in both files ------------------//
-      int c1, c2;
-      c1 = 0;
-      c2 = 0;
+      int c1 = 0;
+      int c2 = 0;
+
       std::string str;
       while (!file1.eof()) {
         getline(file1, str);
@@ -72,7 +92,8 @@ namespace gum_tests {
       file2.clear();
       file2.seekg(0, std::ios::beg);
 
-      char string1[256], string2[256];
+      char string1[256];
+      char string2[256];
       int  j = 0;
       while (!file1.eof()) {
         file1.getline(string1, 256);
@@ -105,9 +126,13 @@ namespace gum_tests {
 
     public:
     gum::BayesNet< double >* bn;
-    gum::NodeId              i1, i2, i3, i4, i5;
+    gum::NodeId              i1;
+    gum::NodeId              i2;
+    gum::NodeId              i3;
+    gum::NodeId              i4;
+    gum::NodeId              i5;
 
-    void setUp() {
+    void setUp() final {
       bn = new gum::BayesNet< double >();
 
       gum::LabelizedVariable n1("1", "", 2);
@@ -132,7 +157,8 @@ namespace gum_tests {
       fill(*bn);
     }
 
-    void tearDown() { delete bn; }
+    void tearDown() final { delete bn; }
+
 
     void testConstuctor() {
       gum::BIFWriter< double >* writer = nullptr;
@@ -150,30 +176,44 @@ namespace gum_tests {
       gum::BIFWriter< double > writer;
       std::string              file = GET_RESSOURCES_PATH("outputs/BIFWriter_TestFile.txt");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn))
-      TS_ASSERT(__compareFile(file, GET_RESSOURCES_PATH("txt/BIFWriter_Model.txt")))
+      TS_ASSERT(_compareFile_(file, GET_RESSOURCES_PATH("txt/BIFWriter_Model.txt")))
     }
 
-    private:
-    // Builds a BN to test the inference
-    void fill(gum::BayesNet< double >& bn) {
-      bn.cpt(i1).fillWith({0.2, 0.8});
-      bn.cpt(i2).fillWith({0.3, 0.7});
-      bn.cpt(i3).fillWith({0.1, 0.9, 0.9, 0.1});
-      bn.cpt(i4).fillWith(   // clang-format off
-                             {0.4, 0.6,
-                              0.5, 0.5,
-                              0.5, 0.5,
-                              1.0, 0.0} );   // clang-format on
-      bn.cpt(i5).fillWith(                             // clang-format off
-                             {0.3, 0.6, 0.1,
-                              0.5, 0.5, 0.0,
-                              0.5, 0.5, 0.0,
-                              1.0, 0.0, 0.0,
-                              0.4, 0.6, 0.0,
-                              0.5, 0.5, 0.0,
-                              0.5, 0.5, 0.0,
-                              0.0, 0.0, 1.0} );
-      // clang-format on
+    void testSyntaxicError() {
+      gum::BIFWriter< double > writer;
+      {
+        TS_ASSERT(!writer.isModificationAllowed())
+        std::string file = GET_RESSOURCES_PATH("outputs/shouldNotBeWrittenBIF.txt");
+        {
+          auto bn = gum::BayesNet< double >::fastPrototype("A->Hello World !->c");
+          TS_ASSERT_THROWS(writer.write(file, bn), gum::FatalError&)
+        }
+        {
+          auto bn = gum::BayesNet< double >::fastPrototype("A->Hello World->c");
+          TS_ASSERT_THROWS(writer.write(file, bn), gum::FatalError&)
+        }
+        {
+          auto bn = gum::BayesNet< double >::fastPrototype("A->HelloWorld!->c");
+          TS_ASSERT_THROWS(writer.write(file, bn), gum::FatalError&)
+        }
+      }
+      {
+        writer.setAllowModification(true);
+        TS_ASSERT(writer.isModificationAllowed())
+        std::string file = GET_RESSOURCES_PATH("outputs/shouldBeWrittenBIF.txt");
+        {
+          auto bn = gum::BayesNet< double >::fastPrototype("A->Hello World !->c");
+          TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, bn))
+        }
+        {
+          auto bn = gum::BayesNet< double >::fastPrototype("A->Hello World->c");
+          TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, bn))
+        }
+        {
+          auto bn = gum::BayesNet< double >::fastPrototype("A->HelloWorld!->c");
+          TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, bn))
+        }
+      }
     }
   };
 }   // namespace gum_tests

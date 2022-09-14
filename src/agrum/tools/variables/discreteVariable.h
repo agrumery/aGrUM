@@ -94,11 +94,9 @@ namespace gum {
     /// @{
 
     /// @return true if the domainSize() < 2;
-
     bool empty() const;
 
     /// @return the number of modalities of the random discrete
-
     virtual Size domainSize() const = 0;
 
     /// vector of labels
