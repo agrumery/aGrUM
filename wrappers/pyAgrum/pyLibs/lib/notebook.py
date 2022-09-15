@@ -969,10 +969,9 @@ def _reprPotential(pot, digits=None, withColors=True, varnames=None, asString=Fa
   r1, g1, b1 = gumcols.hex2rgb(gum.config['notebook', 'potential_color_1'])
 
   if digits is None:
-    digits = gum.config['notebook', 'potential_visible_digits']
+    digits = gum.config.asInt['notebook', 'potential_visible_digits']
 
-  if gum.config["notebook", "potential_with_colors"] == "False":
-    withColors = False
+  withColors = gum.config.asBool["notebook", "potential_with_colors"]
 
   with_fraction = gum.config['notebook', 'potential_with_fraction'] == "True"
   if with_fraction:
@@ -1148,10 +1147,10 @@ def showPotential(pot, digits=None, withColors=None, varnames=None):
     the aliases for variables name in the table
   """
   if withColors is None:
-    if gum.config["notebook", "potential_with_colors"] == "False":
-      withColors = False
-    else:
-      withColors = __isKindOfProba(pot)
+    withColors = gum.config.asBool["notebook", "potential_with_colors"]
+
+  if withColors:
+    withColors = __isKindOfProba(pot)
 
   s = _reprPotential(pot, digits, withColors, varnames, asString=False)
   IPython.display.display(s)
@@ -1179,10 +1178,10 @@ def getPotential(pot, digits=None, withColors=None, varnames=None):
     the html representation of the Potential (as a string)
   """
   if withColors is None:
-    if gum.config["notebook", "potential_with_colors"] == "False":
-      withColors = False
-    else:
-      withColors = __isKindOfProba(pot)
+    withColors=gum.config.asBool["notebook", "potential_with_colors"]
+
+  if withColors:
+    withColors = __isKindOfProba(pot)
 
   return _reprPotential(pot, digits, withColors, varnames, asString=True)
 
@@ -1299,7 +1298,7 @@ def getInferenceEngine(ie, inferenceCaption):
 
 
 def getJT(jt, size=None):
-  if gum.config["notebook", "junctiontree_with_names"] == "True":
+  if gum.config.asBool["notebook", "junctiontree_with_names"]:
     def cliqlabels(c):
       labels = ",".join(
         sorted([model.variable(n).name() for n in jt.clique(c)])

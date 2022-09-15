@@ -127,7 +127,7 @@ config = PyAgrumConfiguration()
 
 def _update_config_core():
     # hook to control some parameters for core params
-    setNumberOfThreads(int(config['core', 'default_maxNumberOfThreads']))
+    setNumberOfThreads(config.asInt['core', 'default_maxNumberOfThreads'])
 
 
 config.add_hook(_update_config_core)
@@ -254,7 +254,7 @@ def saveBN(bn, filename, allowModificationWhenSaving=None):
         whether syntax errors in the BN should throw a FatalError or can be corrected. Also controlled by `pyAgrum.config["BN","allow_modification_when_saving"]`.
     """
     if allowModificationWhenSaving is None:
-        allowModificationWhenSaving = config["BN", "allow_modification_when_saving"] == "True"
+        allowModificationWhenSaving = config.asBool["BN", "allow_modification_when_saving"]
 
     extension = filename.split('.')[-1].upper()
     if extension == "BIF":

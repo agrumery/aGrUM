@@ -268,7 +268,7 @@ def MNinference2UGdot(mn, size=None, engine=None, evs=None, targets=None, nodeCo
   dotstr = "graph structs {\n  fontcolor=\"" + \
            gumcols.getBlackInTheme() + "\";bgcolor=\"transparent\";"
 
-  if gum.config["notebook", "show_inference_time"]=="True":
+  if gum.config.asBool["notebook", "show_inference_time"]:
     dotstr += f'  label="Inference in {1000 * (stopTime - startTime):6.2f}ms";\n'
 
   dotstr += '  node [fillcolor="' + gum.config["notebook", "default_node_bgcolor"] + \
@@ -385,7 +385,7 @@ def MNinference2FactorGraphdot(mn, size=None, engine=None, evs=None, targets=Non
   dotstr = "graph {\n  layout=\"neato\";\n  fontcolor=\"" + \
            gumcols.getBlackInTheme() + "\";bgcolor=\"transparent\";"
 
-  if gum.config["notebook", "show_inference_time"]=="True":
+  if gum.config.asBool["notebook", "show_inference_time"]:
     dotstr += f'  label="Inference in {1000 * (stopTime - startTime):6.2f}ms";\n'
 
   dotstr += '  node [fillcolor="' + gum.config["notebook", 'default_node_bgcolor'] + \

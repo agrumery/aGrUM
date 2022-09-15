@@ -147,16 +147,16 @@ def LIMIDinference2dot(diag, size, engine, evs, targets):
            gumcols.getBlackInTheme() + "\";bgcolor=\"transparent\";"
 
   fmt = '.' + gum.config["influenceDiagram", "utility_visible_digits"] + 'f'
-  if gum.config["influenceDiagram", "utility_show_loss"] == "True":
+  if gum.config.asBool["influenceDiagram", "utility_show_loss"]:
     titut = f'mEL {-meu["mean"]:{fmt}}'
   else:
     titut = f'MEU {meu["mean"]:{fmt}}'
-  if gum.config["influenceDiagram", "utility_show_stdev"] == "True":
+  if gum.config.asBool["influenceDiagram", "utility_show_stdev"]:
     titut += f' (stdev={math.sqrt(meu["variance"]):{fmt}})'
 
   slabel = f'label="{titut}'
 
-  if gum.config["notebook", "show_inference_time"] == "True":
+  if gum.config.asBool["notebook", "show_inference_time"]:
     slabel += f"\nInference in {1000 * (stopTime - startTime):6.2f}ms"
   dotstr += slabel + "\";\n"
 
@@ -198,14 +198,14 @@ def LIMIDinference2dot(diag, size, engine, evs, targets):
     else:  # utility node
       mv = ie.meanVar(name)
 
-      if gum.config["influenceDiagram", "utility_show_loss"] == "True":
+      if gum.config.asBool["influenceDiagram", "utility_show_loss"]:
         coef = -1
       else:
         coef = 1
 
-      fmt = "." + gum.config["influenceDiagram", "utility_visible_digits"] + "f"
+      fmt = f'.{gum.config.asInt["influenceDiagram", "utility_visible_digits"]}f'
       labut = f'{name} : {coef * mv["mean"]:{fmt}}'
-      if gum.config["influenceDiagram", "utility_show_stdev"] == "True":
+      if gum.config.asBool["influenceDiagram", "utility_show_stdev"]:
         labut += f' ({math.sqrt(mv["variance"]):{fmt}})'
 
       dotstr += f' "{name}" [label="{labut}",{colorattribute},{styleattribute},shape={shape}]'

@@ -202,7 +202,7 @@ def BNinference2dot(bn, size=None, engine=None, evs=None, targets=None, nodeColo
   dotstr = "digraph structs {\n  fontcolor=\"" + \
            gumcols.getBlackInTheme() + "\";bgcolor=\"transparent\";"
 
-  if gum.config["notebook", "show_inference_time"]=="True":
+  if gum.config.asBool["notebook", "show_inference_time"]:
     dotstr += f"  label=\"Inference in {1000 * (stopTime - startTime):6.2f}ms\";\n"
 
   dotstr += '  node [fillcolor="' + gum.config["notebook", "default_node_bgcolor"] + \

@@ -130,7 +130,7 @@ class CausalModel:
     res = "digraph {"
 
     # latent variables
-    if pyAgrum.config['causal', 'show_latent_names'] == 'True':
+    if pyAgrum.config.asBool['causal', 'show_latent_names']:
       shap = "ellipse"
     else:
       shap = "point"

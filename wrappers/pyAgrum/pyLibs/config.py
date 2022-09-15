@@ -50,6 +50,66 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
     "10"
   """
 
+  def check_int(self, s):
+    if s[0] in ('-', '+'):
+      return s[1:].isdigit()
+    return s.isdigit()
+
+  def check_float(self, s):
+    t = s.split(".")
+    if len(t) == 1:
+      return self.check_int(t[0])
+    elif len(t) == 2:
+      return self.check_int(t[0]) and t[1].isdigit()
+    else:
+      return False
+
+  def check_bool(self, s):
+    return self.check_bool_true(s) or self.check_bool_false(s)
+
+  def check_bool_true(self, s):
+    return s.upper() in ["TRUE", "1", "ON", "YES"]
+
+  def check_bool_false(self, s):
+    return s.upper() in ["FALSE", "0", "OFF", "NO"]
+
+  class Casterization:
+    def __init__(self, container):
+      self.container = container
+
+  class CastAsInt(Casterization):
+    def __getitem__(self, x):
+      return int(self.container[x])
+
+    def __setitem__(self, x, v):
+      s = str(v)
+      if self.container.check_int(s):
+        self.container[x] = s
+      else:
+        raise ValueError(f"'{s}' must contain an int.")
+
+  class CastAsFloat(Casterization):
+    def __getitem__(self, x):
+      return float(self.container[x])
+
+    def __setitem__(self, x, v):
+      s = str(v)
+      if self.container.check_float(s):
+        self.container[x] = s
+      else:
+        raise ValueError(f"'{s}' must contain a float.")
+
+  class CastAsBool(Casterization):
+    def __getitem__(self, x):
+      return self.container.check_bool_true(self.container[x])
+
+    def __setitem__(self, x, v):
+      s = str(v)
+      if self.container.check_bool(s):
+        self.container[x] = s
+      else:
+        raise ValueError(f"'{s}' must contain a boolean (False/True, 0/1, Off/On).")
+
   def __init__(self):
     self.__parser = ConfigParser(allow_no_value=False)
 
@@ -57,6 +117,10 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
     self.__parser.read(defaultsfn)
     self.__defaults = self.__str__()
     self.__hooks = []
+
+    self.asInt=self.CastAsInt(self)
+    self.asFloat=self.CastAsFloat(self)
+    self.asBool=self.CastAsBool(self)
 
   def add_hook(self, fn):
     self.__hooks.append(fn)
@@ -163,7 +227,7 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
     """ grep in the configuration any section or properties matching the argument. If a section match the argume, all the section is displayed.
 
     Arguments:
-        search {str} -- the string to find    
+        search {str} -- the string to find
     """
     mine = self.__parser
     lowsearch = search.lower()

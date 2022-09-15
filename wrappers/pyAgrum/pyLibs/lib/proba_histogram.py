@@ -163,8 +163,8 @@ def _getProbaV(p, scale=1.0, util=None, txtcolor="black"):
     var = p.variable(0)
     if util is not None:
       lu = util.toarray()
-      coef = -1 if gum.config["influenceDiagram", "utility_show_loss"] == "True" else 1
-      fmt = "." + gum.config["influenceDiagram", "utility_visible_digits"] + "f"
+      coef = -1 if gum.config.asBool["influenceDiagram", "utility_show_loss"] else 1
+      fmt = f".{gum.config.asInt['influenceDiagram', 'utility_visible_digits']}f"
       lv = [f"{var.label(int(i))} [{coef * lu[i]:{fmt}}]"
             for i in np.arange(var.domainSize())]
     else:
@@ -183,7 +183,7 @@ def _getProbaV(p, scale=1.0, util=None, txtcolor="black"):
                 color=gum.config['notebook', 'histogram_color'])
   ma = p.max()
 
-  if gum.config['notebook', 'histogram_use_percent'] == "True":
+  if gum.config.asBool['notebook', 'histogram_use_percent']:
     perc = 100
     suffix = "%"
   else:
@@ -191,7 +191,7 @@ def _getProbaV(p, scale=1.0, util=None, txtcolor="black"):
     suffix = ""
   for b in bars:
     if b.get_height() != 0:
-      txt = f"{b.get_height()*perc:.{gum.config['notebook', 'histogram_vertical_visible_digits']}f}{suffix}"
+      txt = f"{b.get_height()*perc:.{gum.config.asInt['notebook', 'histogram_vertical_visible_digits']}f}{suffix}"
       ax.text(b.get_x()+0.5, ma, txt, ha='center', va='top', rotation='vertical')
 
   ax.set_ylim(bottom=0, top=p.max())
@@ -232,9 +232,9 @@ def _getProbaH(p, scale=1.0, util=None, txtcolor="black"):
 
   if util is not None:
     lu = util.toarray()
-    fmt = "." + gum.config["influenceDiagram", "utility_visible_digits"] + "f"
+    fmt = f'.{gum.config.asInt["influenceDiagram", "utility_visible_digits"]}f'
 
-    if gum.config["influenceDiagram", "utility_show_loss"] == "True":
+    if gum.config.asBool["influenceDiagram", "utility_show_loss"]:
       vx = [f"{var.label(int(i))} [{-lu[i] if lu[i] != 0 else 0:{fmt}}]" for i in ra_reverse]
     else:
       vx = [f"{var.label(int(i))} [{lu[i]:{fmt}}]" for i in ra_reverse]
@@ -254,7 +254,7 @@ def _getProbaH(p, scale=1.0, util=None, txtcolor="black"):
                  align='center',
                  color=gum.config['notebook', 'histogram_color'])
 
-  if gum.config['notebook', 'histogram_use_percent'] == "True":
+  if gum.config.asBool['notebook', 'histogram_use_percent']:
     perc = 100
     suffix = "%"
   else:
@@ -262,7 +262,7 @@ def _getProbaH(p, scale=1.0, util=None, txtcolor="black"):
     suffix = ""
   for b in bars:
     if b.get_width() != 0:
-      txt = f"{b.get_width()*perc:.{gum.config['notebook', 'histogram_horizontal_visible_digits']}f}{suffix}"
+      txt = f"{b.get_width()*perc:.{gum.config.asInt['notebook', 'histogram_horizontal_visible_digits']}f}{suffix}"
       ax.text(1, b.get_y(), txt, ha='right', va='bottom')
 
   ax.set_xlim(0, 1)
@@ -381,7 +381,7 @@ def probaMinMaxH(pmin, pmax, scale=1.0, txtcolor="black"):
                     align='center',
                     color=gum.config['notebook', 'histogram_color'])
 
-  if gum.config['notebook', 'histogram_use_percent'] == "True":
+  if gum.config.asBool['notebook', 'histogram_use_percent']:
     perc = 100
     suffix = "%"
   else:
@@ -389,10 +389,10 @@ def probaMinMaxH(pmin, pmax, scale=1.0, txtcolor="black"):
     suffix = ""
 
   for b in barsmax:
-    txt = f"{b.get_width()*perc:.{gum.config['notebook', 'histogram_horizontal_visible_digits']}f}{suffix}"
+    txt = f"{b.get_width()*perc:.{gum.config.asInt['notebook', 'histogram_horizontal_visible_digits']}f}{suffix}"
     ax.text(1, b.get_y(), txt, ha='right', va='bottom')
   for b in barsmin:
-    txt = f"{b.get_width()*perc:.{gum.config['notebook', 'histogram_horizontal_visible_digits']}f}{suffix}"
+    txt = f"{b.get_width()*perc:.{gum.config.asInt['notebook', 'histogram_horizontal_visible_digits']}f}{suffix}"
     ax.text(0, b.get_y(), txt, ha='left', va='bottom')
 
   ax.set_xlim(0, 1)
