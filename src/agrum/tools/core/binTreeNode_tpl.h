@@ -32,7 +32,7 @@ namespace gum {
 
   template < typename Val >
   INLINE BinTreeNode< Val >::BinTreeNode(const Val& v) :
-      val_(v), parent_(0), parent_dir_(BinTreeDir::NO_PARENT) {
+      val_(v), parent_(nullptr), parent_dir_(BinTreeDir::NO_PARENT) {
     GUM_CONSTRUCTOR(BinTreeNode);
 
     // set the children
@@ -42,7 +42,7 @@ namespace gum {
 
   template < typename Val >
   INLINE BinTreeNode< Val >::BinTreeNode(const BinTreeNode< Val >& from) :
-      val_(from.val_), parent_(0), parent_dir_(BinTreeDir::NO_PARENT) {
+      val_(from.val_), parent_(nullptr), parent_dir_(BinTreeDir::NO_PARENT) {
     GUM_CONS_CPY(BinTreeNode);
 
     // set the children
@@ -55,16 +55,16 @@ namespace gum {
     GUM_DESTRUCTOR(BinTreeNode);
 
     // update the tree accordingly to the removal of this
-    if (parent_)
+    if (parent_ != nullptr)
       parent_->children_[static_cast< int >(parent_dir_)]
          = nullptr;   // parent_dir can not be NO_PARENT (... sure ?)
 
-    if (children_[0]) {
+    if (children_[0] != nullptr) {
       children_[0]->parent_     = nullptr;
       children_[0]->parent_dir_ = BinTreeDir::NO_PARENT;
     }
 
-    if (children_[1]) {
+    if (children_[1] != nullptr) {
       children_[1]->parent_     = nullptr;
       children_[1]->parent_dir_ = BinTreeDir::NO_PARENT;
     }
@@ -121,11 +121,11 @@ namespace gum {
 
   template < typename Val >
   INLINE void BinTreeNode< Val >::insertLeftChild(BinTreeNode< Val >& new_child) {
-    if (new_child.parent_) {
+    if (new_child.parent_ != nullptr) {
       GUM_ERROR(DuplicateElement, "this child already has a parent in the BST")
     }
 
-    if (children_[static_cast< int >(BinTreeDir::LEFT_CHILD)]) {
+    if (children_[static_cast< int >(BinTreeDir::LEFT_CHILD)] != nullptr) {
       GUM_ERROR(DuplicateElement, "this child already has a parent in the BST")
     }
 
@@ -137,7 +137,7 @@ namespace gum {
 
   template < typename Val >
   INLINE BinTreeNode< Val >* BinTreeNode< Val >::insertLeftChild(const Val& val) {
-    if (children_[static_cast< int >(BinTreeDir::LEFT_CHILD)]) {
+    if (children_[static_cast< int >(BinTreeDir::LEFT_CHILD)] != nullptr) {
       GUM_ERROR(DuplicateElement, "this child already has a parent in the BST")
     }
 
@@ -153,11 +153,11 @@ namespace gum {
 
   template < typename Val >
   INLINE void BinTreeNode< Val >::insertRightChild(BinTreeNode< Val >& new_child) {
-    if (new_child.parent_) {
+    if (new_child.parent_ != nullptr) {
       GUM_ERROR(DuplicateElement, "this child already has a parent in the BST")
     }
 
-    if (children_[static_cast< int >(BinTreeDir::RIGHT_CHILD)]) {
+    if (children_[static_cast< int >(BinTreeDir::RIGHT_CHILD)] != nullptr) {
       GUM_ERROR(DuplicateElement, "this node already has a right child")
     }
 
@@ -169,7 +169,7 @@ namespace gum {
 
   template < typename Val >
   INLINE BinTreeNode< Val >* BinTreeNode< Val >::insertRightChild(const Val& val) {
-    if (children_[static_cast< int >(BinTreeDir::RIGHT_CHILD)]) {
+    if (children_[static_cast< int >(BinTreeDir::RIGHT_CHILD)] != nullptr) {
       GUM_ERROR(DuplicateElement, "this node already has a right child")
     }
 
@@ -185,9 +185,11 @@ namespace gum {
 
   template < typename Val >
   INLINE void BinTreeNode< Val >::insertChild(BinTreeNode< Val >& new_child, BinTreeDir child_dir) {
-    if (new_child.parent_) { GUM_ERROR(DuplicateElement, "this child has already a parent") }
+    if (new_child.parent_ != nullptr) {
+      GUM_ERROR(DuplicateElement, "this child has already a parent")
+    }
 
-    if (children_[static_cast< int >(child_dir)]) {
+    if (children_[static_cast< int >(child_dir)] != nullptr) {
       GUM_ERROR(DuplicateElement, "this node has already this child")
     }
 
@@ -199,7 +201,7 @@ namespace gum {
 
   template < typename Val >
   INLINE BinTreeNode< Val >* BinTreeNode< Val >::insertChild(const Val& val, BinTreeDir child_dir) {
-    if (children_[static_cast< int >(child_dir)]) {
+    if (children_[static_cast< int >(child_dir)] != nullptr) {
       GUM_ERROR(DuplicateElement, "this node has already this child")
     }
 
@@ -215,7 +217,7 @@ namespace gum {
 
   template < typename Val >
   INLINE void BinTreeNode< Val >::eraseLeftLink() {
-    if (children_[static_cast< int >(BinTreeDir::LEFT_CHILD)]) {
+    if (children_[static_cast< int >(BinTreeDir::LEFT_CHILD)] != nullptr) {
       children_[static_cast< int >(BinTreeDir::LEFT_CHILD)]->parent_     = nullptr;
       children_[static_cast< int >(BinTreeDir::LEFT_CHILD)]->parent_dir_ = BinTreeDir::NO_PARENT;
       children_[static_cast< int >(BinTreeDir::LEFT_CHILD)]              = nullptr;
@@ -224,7 +226,7 @@ namespace gum {
 
   template < typename Val >
   INLINE void BinTreeNode< Val >::eraseRightLink() {
-    if (children_[static_cast< int >(BinTreeDir::RIGHT_CHILD)]) {
+    if (children_[static_cast< int >(BinTreeDir::RIGHT_CHILD)] != nullptr) {
       children_[static_cast< int >(BinTreeDir::RIGHT_CHILD)]->parent_     = nullptr;
       children_[static_cast< int >(BinTreeDir::RIGHT_CHILD)]->parent_dir_ = BinTreeDir::NO_PARENT;
       children_[static_cast< int >(BinTreeDir::RIGHT_CHILD)]              = nullptr;
@@ -233,7 +235,7 @@ namespace gum {
 
   template < typename Val >
   INLINE void BinTreeNode< Val >::eraseLink(BinTreeDir tree_dir) {
-    if (children_[static_cast< int >(tree_dir)]) {
+    if (children_[static_cast< int >(tree_dir)] != nullptr) {
       children_[static_cast< int >(tree_dir)]->parent_     = nullptr;
       children_[static_cast< int >(tree_dir)]->parent_dir_ = BinTreeDir::NO_PARENT;
       children_[static_cast< int >(tree_dir)]              = nullptr;
@@ -244,7 +246,7 @@ namespace gum {
   INLINE BinTreeNode< Val >* BinTreeNode< Val >::leftmostNode() const {
     BinTreeNode< Val >* node = const_cast< BinTreeNode< Val >* >(this);
 
-    while (node->children_[static_cast< int >(BinTreeDir::LEFT_CHILD)])
+    while (node->children_[static_cast< int >(BinTreeDir::LEFT_CHILD)] != nullptr)
       node = node->children_[static_cast< int >(BinTreeDir::LEFT_CHILD)];
 
     return node;
@@ -254,7 +256,7 @@ namespace gum {
   INLINE BinTreeNode< Val >* BinTreeNode< Val >::rightmostNode() const {
     BinTreeNode< Val >* node = const_cast< BinTreeNode< Val >* >(this);
 
-    while (node->children_[static_cast< int >(BinTreeDir::RIGHT_CHILD)])
+    while (node->children_[static_cast< int >(BinTreeDir::RIGHT_CHILD)] != nullptr)
       node = node->children_[static_cast< int >(BinTreeDir::RIGHT_CHILD)];
 
     return node;
@@ -264,7 +266,7 @@ namespace gum {
   INLINE BinTreeNode< Val >* BinTreeNode< Val >::root() const {
     BinTreeNode< Val >* node = const_cast< BinTreeNode< Val >* >(this);
 
-    while (node->parent_)
+    while (node->parent_ != nullptr)
       node = node->parent_;
 
     return node;

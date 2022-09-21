@@ -581,20 +581,20 @@ namespace gum {
     /// The current node pointed to by the iterator.
     Node* node_;
 
-    /// The next node to be used when node_=0 (if a ++ operator is applied).
+    /// The next node to be used when node_=nullptr (if a ++ operator is applied).
     Node* next_node_;
 
-    /// The preceding node to be used when node_=0 (if a -- operator is
+    /// The preceding node to be used when node_=nullptr (if a -- operator is
     /// applied).
     Node* prev_node_;
 
-    /// The parent to be used when node_=0 (if operation up is applied).
+    /// The parent to be used when node_=nullptr (if operation up is applied).
     Node* parent_;
 
-    /// The left child to be used when node_=0 and leftdown() is applied.
+    /// The left child to be used when node_=nullptr and leftdown() is applied.
     Node* left_child_;
 
-    /// The right child to be used when node_=0 and rightdown() is applied.
+    /// The right child to be used when node_=nullptr and rightdown() is applied.
     Node* right_child_;
 
     /// The binary search tree pointed to by the iterator.
