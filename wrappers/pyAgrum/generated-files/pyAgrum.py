@@ -4648,10 +4648,13 @@ class MixedGraph(UndiGraph, DiGraph):
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     def adjacents(self, id: int) -> object:
 =======
 =======
 >>>>>>> ed043b3a5 ([skip-ci] small typo in skbn's documentation.)
+=======
+>>>>>>> 66779da41 ([aGrUM/pyAgrum] renaming `pyAgrum.MixedGraph.adjacents` with correct graph notion : `pyAgrum.MixedGraph.boundary`.)
 <<<<<<< HEAD
     def adjacents(self, id: "gum::NodeId") -> "PyObject *":
 =======
@@ -4661,12 +4664,26 @@ class MixedGraph(UndiGraph, DiGraph):
 >>>>>>> 2a40291a2 ([aGrUM/pyAgrum] renaming `pyAgrum.MixedGraph.adjacents` with correct graph notion : `pyAgrum.MixedGraph.boundary`.)
 =======
 =======
+=======
+>>>>>>> f63b57b9a ([aGrUM/pyAgrum] renaming `pyAgrum.MixedGraph.adjacents` with correct graph notion : `pyAgrum.MixedGraph.boundary`.)
     def boundary(self, id: int) -> object:
 =======
     def adjacents(self, id: "gum::NodeId") -> "PyObject *":
 >>>>>>> a99b0d21f ([skip-ci] small typo in skbn's documentation.)
+<<<<<<< HEAD
 >>>>>>> 662d62799 ([skip-ci] small typo in skbn's documentation.)
+<<<<<<< HEAD
 >>>>>>> ed043b3a5 ([skip-ci] small typo in skbn's documentation.)
+=======
+=======
+=======
+    def adjacents(self, id: "gum::NodeId") -> "PyObject *":
+=======
+    def boundary(self, id: int) -> object:
+>>>>>>> 12646be65 ([aGrUM/pyAgrum] renaming `pyAgrum.MixedGraph.adjacents` with correct graph notion : `pyAgrum.MixedGraph.boundary`.)
+>>>>>>> 94604167c ([aGrUM/pyAgrum] renaming `pyAgrum.MixedGraph.adjacents` with correct graph notion : `pyAgrum.MixedGraph.boundary`.)
+>>>>>>> f63b57b9a ([aGrUM/pyAgrum] renaming `pyAgrum.MixedGraph.adjacents` with correct graph notion : `pyAgrum.MixedGraph.boundary`.)
+>>>>>>> 66779da41 ([aGrUM/pyAgrum] renaming `pyAgrum.MixedGraph.adjacents` with correct graph notion : `pyAgrum.MixedGraph.boundary`.)
         r"""
 
         Boundary are neighbours (not oriented), children and parents
