@@ -97,7 +97,7 @@ namespace gum {
      * exception is raised.
      * @throw InvalidNode if first and/or second do not belong to the
      * graph nodes */
-    virtual void addEdge(const NodeId first, const NodeId second);
+    virtual void addEdge(NodeId first, NodeId second);
 
     /// removes an edge (and its separator) from the clique graph
     /** @param edge the edge to be removed

@@ -181,8 +181,8 @@ ADD_ARCGRAPHPART_API(gum::MixedGraph);
 
 %define ADD_MIXEDGRAPHPART_API(classname)
 %extend classname {
-  NodeSet adjacents(NodeId id) const {
-    return self->adjacents(id);
+  NodeSet boundary(NodeId id) const {
+    return self->boundary(id);
   }
   std::vector< NodeId > mixedOrientedPath(NodeId node1, NodeId node2) const {
     return self->mixedOrientedPath(node1,node2);

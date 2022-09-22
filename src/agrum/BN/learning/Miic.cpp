@@ -828,7 +828,7 @@ namespace gum {
       }
 
       // R1
-      if (!(graph.parents(xi) - graph.adjacents(xj)).empty()) {
+      if (!(graph.parents(xi) - graph.boundary(xj)).empty()) {
         // GUM_TRACE("R1(" << xi << "-" << xj << ")")
         return true;
       }

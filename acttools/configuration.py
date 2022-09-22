@@ -217,7 +217,7 @@ def configureOptions(current):
                         metavar="FOLDER",
                         dest="gccpath",
                         default=current['gccpath'])
-  cfg.parser.add_argument("--threads",
+  cfg.parser.add_argument("-tt","--threads",
                         help="defines the preferred kind of threads used by aGrUM: {omp|stl}.",
                         choices=["omp", "stl"],
                         dest="threads",

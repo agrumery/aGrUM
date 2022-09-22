@@ -27,13 +27,13 @@
 #ifndef GUM_DAG_H
 #define GUM_DAG_H
 
-#include <agrum/tools/graphs/undiGraph.h>
 #include <agrum/tools/graphs/diGraph.h>
+#include <agrum/tools/graphs/undiGraph.h>
 
 namespace gum {
 
   /* ====================================================================== */
-  /* ===      BASE CLASS FOR MANIPULATING GRAPHS WITH BOTH EDGES AND ARCS     */
+  /* ===      BASE CLASS FOR MANIPULATING DIRECTED GRAPHS WITHOUT CYCLE     */
   /* ====================================================================== */
   /** @class DAG
    * @brief Base class for dag
@@ -87,7 +87,7 @@ namespace gum {
    * for ( const auto& arc= g3.arcs()) // type of arc : gum::Arc&
    *   cerr << iter << endl;
    *
-   * for ( const auto node :g3.pare nts( gum::NodeId(3) ))
+   * for ( const auto node :g3.parents( gum::NodeId(3) ))
    *   cerr << "  -  "<<*iter;
    *
    * cerr<<endl;

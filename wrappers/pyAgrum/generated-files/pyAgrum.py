@@ -4646,10 +4646,18 @@ class MixedGraph(UndiGraph, DiGraph):
         """
         return _pyAgrum.MixedGraph_addNodes(self, n)
 
+<<<<<<< HEAD
     def adjacents(self, id: int) -> object:
+=======
+<<<<<<< HEAD
+    def adjacents(self, id: "gum::NodeId") -> "PyObject *":
+=======
+    def boundary(self, id: int) -> object:
+>>>>>>> 12646be65 ([aGrUM/pyAgrum] renaming `pyAgrum.MixedGraph.adjacents` with correct graph notion : `pyAgrum.MixedGraph.boundary`.)
+>>>>>>> 2a40291a2 ([aGrUM/pyAgrum] renaming `pyAgrum.MixedGraph.adjacents` with correct graph notion : `pyAgrum.MixedGraph.boundary`.)
         r"""
 
-        adjacents nodes are neighbours (not oriented), children and parents
+        Boundary are neighbours (not oriented), children and parents
 
         Parameters
         ----------
@@ -4662,7 +4670,7 @@ class MixedGraph(UndiGraph, DiGraph):
             the set of node ids.
 
         """
-        return _pyAgrum.MixedGraph_adjacents(self, id)
+        return _pyAgrum.MixedGraph_boundary(self, id)
 
     def mixedOrientedPath(self, node1: int, node2: int) -> object:
         r"""

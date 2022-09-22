@@ -60,6 +60,15 @@ def ShaferShenoyIDInference(infdiag):
 
 
 def _addDeprecatedMethods():
+  def deprecated_adjacents(mixed_graph,n):
+    """
+    Deprecated methods in MixedGraph for pyAgrum>1.3.1
+    """
+    warnings.warn("""
+** pyAgrum.MixedGraph.adjacents() is deprecated from pyAgrum>1.3.1. Please use boundary() instead.
+""", DeprecationWarning, stacklevel=2)
+    return mixed_graph.boundary(n)
+
   def deprecated_useNoApriori(learner):
     """
     Deprecated methods in BNLearner for pyAgrum>1.1.1
@@ -100,7 +109,7 @@ def _addDeprecatedMethods():
   BNLearner.useAprioriBDeu = deprecated_useAprioriBDeu
   BNLearner.useAprioriSmoothing = deprecated_useAprioriSmoothing
   BNLearner.useAprioriDirichlet = deprecated_useAprioriDirichlet
-
+  MixedGraph.adjacents = deprecated_adjacents
 
 def getNumberOfRunningThreads():
   warnings.warn(""""

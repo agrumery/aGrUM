@@ -29,7 +29,7 @@
 namespace gum {
 
   INLINE MixedGraph& MixedGraph::operator=(const MixedGraph& g) {
-    // avoid self assigment
+    // avoid self assignment
     if (this != &g) {
       // remove the old graph properly
       EdgeGraphPart::clearEdges();
@@ -65,7 +65,7 @@ namespace gum {
 
   INLINE bool MixedGraph::operator!=(const MixedGraph& p) const { return !operator==(p); }
 
-  INLINE NodeSet MixedGraph::adjacents(NodeId id) const {
+  INLINE NodeSet MixedGraph::boundary(NodeId id) const {
     return neighbours(id) + parents(id) + children(id);
   }
 } /* namespace gum */
