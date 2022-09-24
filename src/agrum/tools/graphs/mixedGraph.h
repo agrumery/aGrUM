@@ -202,6 +202,14 @@ namespace gum {
      * if no path can be found between the two nodes, the returned vector is empty*/
     std::vector< NodeId > mixedOrientedPath(NodeId node1, NodeId node2) const;
 
+    /** @brief returns true if a mixed edge/directed arc path from node1 to node2 in the
+     * arc/edge set exists.
+     *
+     * @param node1 the id from which the path begins
+     * @param node2 the id to which the path ends
+     */
+    bool hasMixedOrientedPath(NodeId node1, NodeId node2) const;
+
     /// returns a mixed/directed path from node1 to node2 in the arc/edge set
     /** This function returns, if any, a path from node1 to node2, using edges
      * and/or arcs (not necessarily following the direction of th arcs)

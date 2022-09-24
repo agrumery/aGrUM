@@ -127,6 +127,48 @@ namespace gum {
     return v;
   }
 
+  bool MixedGraph::hasMixedOrientedPath(NodeId n1, NodeId n2) const {
+    // not recursive version => use a FIFO for simulating the recursion
+    List< NodeId > node_fifo;
+    node_fifo.pushBack(n2);
+
+    // mark[node] = successor if visited, else mark[node] does not exist
+    NodeProperty< NodeId > mark;
+    mark.insert(n2, n2);
+
+    NodeId current;
+    while (!node_fifo.empty()) {
+      current = node_fifo.front();
+      node_fifo.popFront();
+
+      // check the neighbours
+      for (const auto new_one: neighbours(current)) {
+        if (mark.exists(new_one))   // if the node has already been visited
+          continue;                 // do not check it again
+
+        mark.insert(new_one, current);
+
+        if (new_one == n1) { return true; }
+
+        node_fifo.pushBack(new_one);
+      }
+
+      // check the parents
+      for (const auto new_one: parents(current)) {
+        if (mark.exists(new_one))   // if this node is already marked, do not
+          continue;                 // check it again
+
+        mark.insert(new_one, current);
+
+        if (new_one == n1) { return true; }
+
+        node_fifo.pushBack(new_one);
+      }
+    }
+
+    return false;
+  }
+
   std::vector< NodeId > MixedGraph::mixedUnorientedPath(NodeId n1, NodeId n2) const {
     std::vector< NodeId > v;
     // not recursive version => use a FIFO for simulating the recursion

@@ -528,6 +528,7 @@ namespace gum {
   GUM_MAKE_ERROR(InvalidNode, GraphError, "Invalid node")
   GUM_MAKE_ERROR(DefaultInLabel, GraphError, "Error on label")
   GUM_MAKE_ERROR(InvalidDirectedCycle, GraphError, "Directed cycle detected")
+  GUM_MAKE_ERROR(InvalidPartiallyDirectedCycle, GraphError, "Partially directed cycle detected")
   GUM_MAKE_ERROR(CPTError, Exception, "CPT error")
   GUM_MAKE_ERROR(ScheduleMultiDimError, Exception, "ScheduleMultiDim error")
   GUM_MAKE_ERROR(AbstractScheduleMultiDim,
