@@ -76,22 +76,20 @@ namespace gum {
     if (_allowModification_)
       return;   // we do anything if the names will be modified when saved ...
 
-    std::string pat = "[^_a-z0-9]+";
-    std::regex  reg(pat, std::regex::icase);
-    std::smatch sm;
-
     for (const auto& nod: bn.nodes()) {
       auto& v = bn.variable(nod);
-      if (std::regex_search(v.name(), sm, reg))
+      std::string valid_n = _onlyValidCharsInName_(v.name());
+      if (v.name()!=valid_n)
         GUM_ERROR(FatalError,
                   "The variable name '" << v.name() << "' contains invalid characters ('"
-                                        << _onlyValidCharsInName_(v.name()) << "').")
+                                        << valid_n << "').")
       for (const auto& lab: v.labels()) {
-        if (std::regex_search(lab, sm, reg))
+        std::string valid_l = _onlyValidCharsInName_(lab);
+        if (lab!=valid_l)
           GUM_ERROR(FatalError,
                     "The variable  '" << v << "' contains label '" << lab
                                       << "' with invalid characters ('"
-                                      << _onlyValidCharsInName_(lab) << "').")
+                                      << valid_l << "').")
       }
     }
   }
@@ -113,6 +111,12 @@ namespace gum {
     while (std::regex_search(out, sm, reg)) {
       out = std::regex_replace(out, reg, "_");
     }
+    // first char can not be a digit
+    if (std::isdigit(out[0])) 
+      // we allow name containing only an int
+      if (out.find_first_not_of( "0123456789" ) != std::string::npos)
+        out = "_" + out;
+
     return out;
   }
 } /* namespace gum */
