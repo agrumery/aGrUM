@@ -4647,14 +4647,26 @@ class MixedGraph(UndiGraph, DiGraph):
         return _pyAgrum.MixedGraph_addNodes(self, n)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     def adjacents(self, id: int) -> object:
 =======
+=======
+>>>>>>> ed043b3a5 ([skip-ci] small typo in skbn's documentation.)
 <<<<<<< HEAD
     def adjacents(self, id: "gum::NodeId") -> "PyObject *":
 =======
     def boundary(self, id: int) -> object:
 >>>>>>> 12646be65 ([aGrUM/pyAgrum] renaming `pyAgrum.MixedGraph.adjacents` with correct graph notion : `pyAgrum.MixedGraph.boundary`.)
+<<<<<<< HEAD
 >>>>>>> 2a40291a2 ([aGrUM/pyAgrum] renaming `pyAgrum.MixedGraph.adjacents` with correct graph notion : `pyAgrum.MixedGraph.boundary`.)
+=======
+=======
+    def boundary(self, id: int) -> object:
+=======
+    def adjacents(self, id: "gum::NodeId") -> "PyObject *":
+>>>>>>> a99b0d21f ([skip-ci] small typo in skbn's documentation.)
+>>>>>>> 662d62799 ([skip-ci] small typo in skbn's documentation.)
+>>>>>>> ed043b3a5 ([skip-ci] small typo in skbn's documentation.)
         r"""
 
         Boundary are neighbours (not oriented), children and parents
