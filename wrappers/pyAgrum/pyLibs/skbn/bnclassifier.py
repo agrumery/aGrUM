@@ -302,20 +302,20 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     if data is None:
       if targetName is not None:
         raise ValueError(
-          "This function should be used either as fit(X,y) or fit(data=...,targetAttribute=...). You have set "
+          "This function should be used either as fit(X,y) or fit(data=...,targetName=...). You have set "
           "data to None, but have entered a targetName")
       if X is None or y is None:
         raise ValueError(
-          "This function should be used either as fit(X,y) or fit(data=...,targetAttribute=...). You have not "
+          "This function should be used either as fit(X,y) or fit(data=...,targetName=...). You have not "
           "entered a data source (filename or pandas.DataFrame) and not specified the X and y matrices that should be used")
     else:
       if targetName is None:
         raise ValueError(
-          "This function should be used either as fit(X,y) or fit(data=...,targetAttribute=...). The name of the "
+          "This function should be used either as fit(X,y) or fit(data=...,targetName=...). The name of the "
           "target must be specified if using this function with data  containing a csv filename or a pandas.DataFrame.")
       if X is not None or y is not None:
         raise ValueError(
-          "This function should be used either as fit(X,y) or fit(data=...,targetAttribute=...). You can not give "
+          "This function should be used either as fit(X,y) or fit(data=...,targetName=...). You can not give "
           "a data and the X and y matrices at the same time.")
       if type(data) == str:
         X, y = self.XYfromCSV(data, True, targetName)
