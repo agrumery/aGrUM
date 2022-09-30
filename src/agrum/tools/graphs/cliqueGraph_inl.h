@@ -171,10 +171,6 @@ namespace gum {
     _separators_.clear();
   }
 
-  /// checks whether two clique graphs are different
-
-  INLINE bool CliqueGraph::operator!=(const CliqueGraph& from) const { return (!operator==(from)); }
-
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

@@ -234,9 +234,6 @@ namespace gum {
 
     CliqueGraph& operator=(const CliqueGraph& from);
 
-    /// checks whether two clique graphs are different
-
-    bool operator!=(const CliqueGraph& from) const;
 
     /// checks whether two clique graphs are equal
 

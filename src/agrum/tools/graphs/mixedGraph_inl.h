@@ -58,12 +58,10 @@ namespace gum {
     NodeGraphPart::eraseNode(id);
   }
 
-  INLINE bool MixedGraph::operator==(const MixedGraph& p) const {
-    return ArcGraphPart::operator==(p) && EdgeGraphPart::operator==(p)
-        && NodeGraphPart::                               operator==(p);
+  INLINE bool MixedGraph::operator==(const MixedGraph& g) const {
+    return ArcGraphPart::operator==(g) && EdgeGraphPart::operator==(g)
+        && NodeGraphPart::                               operator==(g);
   }
-
-  INLINE bool MixedGraph::operator!=(const MixedGraph& p) const { return !operator==(p); }
 
   INLINE NodeSet MixedGraph::boundary(NodeId id) const {
     return neighbours(id) + parents(id) + children(id);

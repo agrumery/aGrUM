@@ -46,6 +46,7 @@ namespace gum {
   }
 
   UndiGraph::UndiGraph(const UndiGraph& g) : NodeGraphPart(g), EdgeGraphPart(g) {
+    GUM_TRACE("          -> IN UNDIGRAPH CONSTR")
     GUM_CONS_CPY(UndiGraph);
   }
 

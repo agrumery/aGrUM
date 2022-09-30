@@ -58,6 +58,7 @@ namespace gum {
 
   MixedGraph::MixedGraph(const MixedGraph& g) :
       NodeGraphPart(g), UndiGraph(g), DiGraph(g) {   // for debugging purposes
+    GUM_TRACE(" -> IN MIXEDGRAPH CONSTR")
     GUM_CONS_CPY(MixedGraph);
   }
 

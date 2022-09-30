@@ -190,10 +190,7 @@ namespace gum {
   // ===========================================================================
 
   class Debug: public std::string {
-    public:
-    Debug(const std::string& str) : std::string(str) {}
-
-    Debug(const char* const str) : std::string(str) {}
+    using std::string::string;
   };
 
 } /* namespace gum */

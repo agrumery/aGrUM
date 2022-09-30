@@ -171,11 +171,6 @@ namespace gum {
     // not virtual : it is a feature !!! :)
     bool operator==(const MixedGraph& g) const;
 
-    /// tests whether two MixedGraphs are different
-    /** @param g the MixedGraph with which "this" is compared */
-    // not virtual : it is a feature !!! :)
-    bool operator!=(const MixedGraph& g) const;
-
     /// @}
 
     // ############################################################################
@@ -187,10 +182,10 @@ namespace gum {
     /** @param id the id of the node to be removed
      * @warning if the node does not exist, nothing is done. In particular, no
      * exception is raised.*/
-    virtual void eraseNode(const NodeId id);
+    void eraseNode(const NodeId id) override;
 
     /// removes all the nodes, arcs and edges from the graph
-    virtual void clear();
+    void clear() override;
 
     /** @brief returns a mixed edge/directed arc path from node1 to node2 in the
      * arc/edge set
@@ -219,10 +214,10 @@ namespace gum {
     std::vector< NodeId > mixedUnorientedPath(NodeId node1, NodeId node2) const;
 
     /// to friendly display mixed graph in DOT format
-    virtual std::string toDot() const;
+    std::string toDot() const override;
 
     /// to friendly display the content of the MixedGraph
-    virtual std::string toString() const;
+    std::string toString() const override;
 
     /// returns the set of node adjacent to a given node
     /** Note that the set of node returned may be empty.
