@@ -43,12 +43,10 @@ namespace gum {
   // diamond structure require to explicitly initialize NodeGraphPart
   DAG::DAG(const DAG& g) : NodeGraphPart(g), DiGraph(g) {
     GUM_CONS_CPY(DAG);
-    ;
   }
 
   DAG::~DAG() {
     GUM_DESTRUCTOR(DAG);
-    ;
   }
 
 

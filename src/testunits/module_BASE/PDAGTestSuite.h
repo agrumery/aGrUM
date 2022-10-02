@@ -121,8 +121,6 @@ namespace gum_tests {
     void testInsert2() {
       gum::PDAG graph = buildGraph();
 
-      GUM_TRACE(graph.toDot())
-
       TS_ASSERT_THROWS(graph.addArc(id4, id1), const gum::InvalidPartiallyDirectedCycle&)
       TS_ASSERT_THROWS(graph.addArc(id8, id1), const gum::InvalidPartiallyDirectedCycle&)
       TS_ASSERT_THROWS(graph.addEdge(id0, id4), const gum::InvalidPartiallyDirectedCycle&)
@@ -138,8 +136,6 @@ namespace gum_tests {
 
       gum::PDAG* copy = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(copy = new gum::PDAG(graph))
-      GUM_TRACE_VAR(graph)
-      GUM_TRACE_VAR(*copy)
       TS_ASSERT_EQUALS(graph, *copy)
       delete (copy);
 

@@ -40,6 +40,7 @@ namespace gum {
              bool arcs_resize_policy,
              Size edges_size,
              bool edges_resize_policy) :
+      NodeGraphPart(nodes_size,nodes_resize_policy),
       MixedGraph(nodes_size,
                  nodes_resize_policy,
                  arcs_size,
@@ -49,7 +50,7 @@ namespace gum {
     GUM_CONSTRUCTOR(PDAG);
   }
 
-  PDAG::PDAG(const PDAG& g) : MixedGraph(g) { GUM_TRACE("IN PDAG CSTR !!");GUM_CONS_CPY(PDAG); }
+  PDAG::PDAG(const PDAG& g) : NodeGraphPart(g),MixedGraph(g) {GUM_CONS_CPY(PDAG); }
 
   PDAG::~PDAG() { GUM_DESTRUCTOR(PDAG); }
 
