@@ -40,7 +40,7 @@ namespace gum {
              bool arcs_resize_policy,
              Size edges_size,
              bool edges_resize_policy) :
-      NodeGraphPart(nodes_size,nodes_resize_policy),
+      NodeGraphPart(nodes_size, nodes_resize_policy),
       MixedGraph(nodes_size,
                  nodes_resize_policy,
                  arcs_size,
@@ -50,7 +50,10 @@ namespace gum {
     GUM_CONSTRUCTOR(PDAG);
   }
 
-  PDAG::PDAG(const PDAG& g) : NodeGraphPart(g),MixedGraph(g) {GUM_CONS_CPY(PDAG); }
+  PDAG::PDAG(const PDAG& g) : NodeGraphPart(g), MixedGraph(g) {
+    GUM_CONS_CPY(PDAG);
+  }
+
 
   PDAG::~PDAG() { GUM_DESTRUCTOR(PDAG); }
 
@@ -99,7 +102,7 @@ namespace gum {
     return false;
   }
   bool PDAG::hasMixedReallyOrientedPath(gum::NodeId n1, gum::NodeId n2) const {
-    if (n1==n2) return false;
+    if (n1 == n2) return false;
     NodeSet marked;   // marked as already explored
     for (const auto nod: this->children(n1))
       if (rec_hasMixedReallyOrientedPath(*this, marked, nod, n2, true)) return true;

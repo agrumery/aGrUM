@@ -166,6 +166,7 @@ namespace gum {
     /** @param g the MixedGraph to copy */
     MixedGraph& operator=(const MixedGraph& g);
 
+
     /// tests whether two MixedGraphs are identical (same nodes, arcs and edges)
     /** @param g the MixedGraph with which "this" is compared */
     // not virtual : it is a feature !!! :)

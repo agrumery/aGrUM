@@ -60,7 +60,6 @@ namespace gum {
 
     // checking whether tail and head do belong to the graph is performed
     // within class DiGraph
-    GUM_TRACE(tail<<" -- "<<head)
     MixedGraph::addEdge(tail, head);
   }
 } /* namespace gum */

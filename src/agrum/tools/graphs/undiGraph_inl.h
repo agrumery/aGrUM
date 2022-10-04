@@ -36,7 +36,6 @@ namespace gum {
 
     if (!exists(second)) { GUM_ERROR(InvalidNode, "Node (" << second << ") does not exist.") }
 
-    GUM_TRACE("  ===> "<<second<<" -- "<<first);
     EdgeGraphPart::addEdge(second, first);
   }
 

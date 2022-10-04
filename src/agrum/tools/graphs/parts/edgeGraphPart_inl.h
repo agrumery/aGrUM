@@ -32,7 +32,6 @@
 namespace gum {
 
   INLINE bool EdgeGraphPart::emptyEdges() const {
-    GUM_TRACE_VAR(_edges_);
     return _edges_.empty();
   }
 
@@ -52,7 +51,6 @@ namespace gum {
 
   INLINE void EdgeGraphPart::addEdge(NodeId first, NodeId second) {
     Edge edge(first, second);
-    GUM_TRACE("we are here")
     _edges_.insert(edge);
     _checkNeighbours_(first);
     _checkNeighbours_(second);
@@ -60,7 +58,6 @@ namespace gum {
     _neighbours_[second]->insert(first);
 
     GUM_EMIT2(onEdgeAdded, first, second);
-    GUM_TRACE_VAR(_edges_)
   }
 
   INLINE void EdgeGraphPart::eraseEdge(const Edge& edge) {
