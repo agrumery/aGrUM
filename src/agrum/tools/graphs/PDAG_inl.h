@@ -34,7 +34,7 @@ namespace gum {
 
   INLINE PDAG& PDAG::operator=(const PDAG& g) {
     // avoid self assignment
-    if (this != &g) { DiGraph::operator=(g); }
+    if (this != &g) { MixedGraph::operator=(g); }
 
     return *this;
   }
