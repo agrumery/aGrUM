@@ -37,7 +37,7 @@ from pyAgrum.lib import proba_histogram
 import pyAgrum.lib._colors as gumcols
 
 
-def BN2dot(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None, cmapArc=None, showMsg=None):
+def BN2dot(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None, showMsg=None):
   """
   create a pydot representation of the BN
 
@@ -47,12 +47,14 @@ def BN2dot(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmapNode
       the Bayesian network
     size: str
       size of the rendered graph
-    nodeColor: dict
+    nodeColor: dict[Tuple(int,int),float]
       a nodeMap of values to be shown as color nodes (with special color for 0 and 1)
-    arcWidth: dict
-      a arcMap of values to be shown as bold arcs
-    arcColor: dict
-      a arcMap of values (between 0 and 1) to be shown as color of arcs
+    arcWidth: dict[Tuple(int,int),float]
+      an arcMap of values to be shown as bold arcs
+    arcLabel: dict[Tuple(int,int),str]
+        an arcMap of labels to be shown next to arcs
+    arcColor: dict[Tuple(int,int),float]
+      an arcMap of values (between 0 and 1) to be shown as color of arcs
     cmapNode: ColorMap
       color map to show the vals of Nodes
     cmapArc: ColorMap
@@ -62,6 +64,7 @@ def BN2dot(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmapNode
 
   Returns
   -------
+  pydot.Dot
     the desired representation of the Bayesian network
   """
   if cmapNode is None:
@@ -119,7 +122,16 @@ def BN2dot(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmapNode
       else:
         col = gumcols.getBlackInTheme()
 
+    if arcLabel is None :
+        lb=""
+    else:
+        if a in arcLabel:
+            lb=arcLabel[a]
+        else:
+            lb=""
+
     edge = dot.Edge('"' + bn.variable(a[0]).name() + '"', '"' + bn.variable(a[1]).name() + '"',
+                    label=lb, fontsize="10",
                     penwidth=pw, color=col,
                     tooltip=f"{a} : {av}"
                     )
@@ -133,6 +145,7 @@ def BN2dot(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmapNode
   dotobj.set_size(size)
 
   return dotobj
+
 
 
 def BNinference2dot(bn, size=None, engine=None, evs=None, targets=None, nodeColor=None, arcWidth=None, arcColor=None,

@@ -37,32 +37,35 @@ import pyAgrum.lib._colors as gumcols
 from pyAgrum.lib.proba_histogram import saveFigProbaMinMax
 
 
-def CN2dot(cn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None, cmapArc=None, showMsg=None):
+def CN2dot(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None, showMsg=None):
   """
-  create a pydot representation of the BN
+  create a pydot representation of the Credal Network
 
   Parameters
   ----------
-    cn : pyAgrum.CredalNey
+    cn : pyAgrum.CredalNet
       the Credal network
     size: str
       size of the rendered graph
-    nodeColor: dict
+    nodeColor: dict[int,float]
       a nodeMap of values to be shown as color nodes (with special color for 0 and 1)
-    arcWidth: dict
-      a arcMap of values to be shown as bold arcs
-    arcColor: dict
-      a arcMap of values (between 0 and 1) to be shown as color of arcs
-    cmapNode: ColorMap
+    arcWidth: dict[Tuple(int,int),float]
+      an arcMap of values to be shown as bold arcs
+    arcLabel: dict[Tuple(int,int),float]
+        an arcMap of labels to be shown next to arcs
+    arcColor: dict[Tuple(int,int),float]
+      an arcMap of values (between 0 and 1) to be shown as color of arcs
+    cmapNode: matplotlib.color.colormap
       color map to show the vals of Nodes
-    cmapArc: ColorMap
+    cmapArc: matplotlib.color.colormap
       color map to show the vals of Arcs
-    showMsg: dict
+    showMsg : dict[int,str]
       a nodeMap of values to be shown as tooltip
 
   Returns
   -------
-    the desired representation of the Bayesian network
+  pydot.Dot
+    the desired representation of the Credal Network
   """
   bn = cn.current_bn()
   if cmapNode is None:
@@ -122,8 +125,16 @@ def CN2dot(cn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmapNode
         col = gumcols.proba2color(arcColor[a], cmapArc)
       else:
         col = gumcols.getBlackInTheme()
+    if arcLabel is None :
+        lb=""
+    else:
+        if a in arcLabel:
+            lb=arcLabel[a]
+        else:
+            lb=""
 
     edge = dot.Edge('"' + bn.variable(a[0]).name() + '"', '"' + bn.variable(a[1]).name() + '"',
+                    label=lb, fontsize="10",
                     penwidth=pw, color=col,
                     tooltip=f"{a} : {av}"
                     )

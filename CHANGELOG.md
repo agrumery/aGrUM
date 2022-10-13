@@ -1,5 +1,25 @@
 # aGrUM Changelog
 
+## Changelog for 1.3.2
+
+* aGrUM
+
+  * `gum::BNDataGenerator` : Add a way to generate sampls from Bayesian Network with evidence
+  * More informative error message for `gum::DatabaseTable::insertRow()`.
+  * Code structure for checking syntax before saving a Bayesian Network. Instantiated for BFI and DSL format.
+  * Improving code for `gum::BinSearchTree`.
+  * Better error messages for `gum::DSLReader`.
+  
+
+* pyAgrum
+  * `pyAgrum.BNDataGenerator.drawSamples()` : Add a way to generate sampls from Bayesian Network with evidence.  
+  * More informative error message for `gum::DatabaseTable::insertRow()`.
+  * `pyAgrum.lib.dBN` : better dot representation of unrolled BNs.
+  * `pyAgrum.lib.notebook.show()` : bugs fixed for some types of parameters.
+  * `pyAgrum.config` : new types accessors : `config.as{Int|Float|Bool}`.
+  * Updating documentations for `pyAgrum.lib.notebook.show()`, `pyAgrum.BNDatabaseGenerator.drawSamples()`, `pyAgrum.skbn`.
+  * New argument when drawing graphs : label on arcs (thanks to Mahdi Hadl Ali).
+
 ## Changelog for 1.3.1
 
 * aGrUM

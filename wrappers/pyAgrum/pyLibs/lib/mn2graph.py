@@ -37,7 +37,7 @@ import pyAgrum.lib._colors as gumcols
 from .proba_histogram import saveFigProba
 
 
-def MN2UGdot(mn, size="4", nodeColor=None, edgeWidth=None, edgeColor=None, cmapNode=None, cmapEdge=None, showMsg=None):
+def MN2UGdot(mn, size="4", nodeColor=None, edgeWidth=None, edgeLabel=None, edgeColor=None, cmapNode=None, cmapEdge=None, showMsg=None):
   """
   Create a pydot representation of the Markov Network as an undirected graph
 
@@ -51,11 +51,13 @@ def MN2UGdot(mn, size="4", nodeColor=None, edgeWidth=None, edgeColor=None, cmapN
     a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
   edgeWidth : Dict[Tuple(int,int),float]
     a edgeMap of values to be shown as width of edges
+  edgeLabel: Dict[Tuple(int,int),str]
+    an edgeMap of labels to be shown next to edges
   edgeColor: Dict[Tuple(int,int),float]
     a edgeMap of values to be shown as color of edges
   cmapNode : matplotlib.color.colormap
     color map to show the vals of Nodes
-  cmapEdge
+  cmapEdge : matplotlib.color.colormap
     color map to show the vals of Edges.
   showMsg : Dict[int,str]
      a nodeMap of values to be shown as tooltip
@@ -119,9 +121,18 @@ def MN2UGdot(mn, size="4", nodeColor=None, edgeWidth=None, edgeColor=None, cmapN
         col = gumcols.proba2color(edgeColor[a], cmapEdge)
       else:
         col = gumcols.getBlackInTheme()
+    
+    if edgeLabel is None :
+        lb=""
+    else:
+        if a in edgeLabel:
+            lb=edgeLabel[a]
+        else:
+            lb=""
 
     edge = dot.Edge('"' + mn.variable(a[0]).name() + '"',
                     '"' + mn.variable(a[1]).name() + '"',
+                    label=lb, fontsize="10",
                     penwidth=pw, color=col,
                     tooltip=f"{a} : {av}"
                     )
