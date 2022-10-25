@@ -154,7 +154,7 @@ namespace gum {
     if (dSize > 6) s << "domainSize: 10^" << dSize;
     else s << "domainSize: " << std::round(std::pow(10.0, dSize));
 
-    s << ", dim: " << param << "}";
+    s << ", dim: " << dim() << ", param: " << param << "}";
 
     return s.str();
   }

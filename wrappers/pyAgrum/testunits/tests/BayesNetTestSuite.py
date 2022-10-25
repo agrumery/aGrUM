@@ -240,7 +240,7 @@ class TestFeatures(BayesNetTestCase):
     with self.assertRaises(gum.DuplicateElement):
       bn.addArc("A", "C")
 
-    self.assertEqual(str(bn), "BN{nodes: 3, arcs: 2, domainSize: 8, dim: 12}")
+    self.assertEqual(str(bn), "BN{nodes: 3, arcs: 2, domainSize: 8, dim: 6, param: 12}")
 
     bn.cpt("A").fillWith(1).normalize()
     bn.generateCPT("B")
@@ -249,7 +249,7 @@ class TestFeatures(BayesNetTestCase):
       bn.cpt("XX")
 
     bn.reverseArc("A", "C")
-    self.assertEqual(str(bn), "BN{nodes: 3, arcs: 3, domainSize: 8, dim: 14}")
+    self.assertEqual(str(bn), "BN{nodes: 3, arcs: 3, domainSize: 8, dim: 7, param: 14}")
 
     with self.assertRaises(gum.InvalidArc):
       bn.reverseArc("A", "C")
@@ -259,7 +259,7 @@ class TestFeatures(BayesNetTestCase):
       bn.reverseArc("A", "X")
 
     bn.erase("A")
-    self.assertEqual(str(bn), "BN{nodes: 2, arcs: 1, domainSize: 4, dim: 6}")
+    self.assertEqual(str(bn), "BN{nodes: 2, arcs: 1, domainSize: 4, dim: 3, param: 6}")
 
     self.assertEqual(bn.parents(bn.idFromName("C")), bn.parents("C"))
 
@@ -267,7 +267,7 @@ class TestFeatures(BayesNetTestCase):
       bn.erase("A")
 
     bn.eraseArc("B", "C")
-    self.assertEqual(str(bn), "BN{nodes: 2, arcs: 0, domainSize: 4, dim: 4}")
+    self.assertEqual(str(bn), "BN{nodes: 2, arcs: 0, domainSize: 4, dim: 2, param: 4}")
 
     with self.assertRaises(gum.NotFound):
       bn.eraseArc("B", "C")

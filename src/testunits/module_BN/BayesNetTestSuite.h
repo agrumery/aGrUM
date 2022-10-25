@@ -46,7 +46,7 @@
 namespace gum_tests {
   class BayesNetTestSuite: public CxxTest::TestSuite {
     private:
-    void fillTopo(gum::BayesNet< double >& bn, gum::List< gum::NodeId >& idList) {
+    void fillTopo(gum::BayesNet< double >& bn, gum::List< gum::NodeId >& idList) const {
       try {
         idList.insert(bn.add(*var1));
         idList.insert(bn.add(*var2));
@@ -61,7 +61,7 @@ namespace gum_tests {
         bn.addArc(idList[3], idList[4]);
         bn.addArc(idList[1], idList[4]);
 
-      } catch (gum::Exception& e) {
+      } catch (const gum::Exception& e) {
         std::cerr << std::endl << e.errorContent() << std::endl;
         throw;
       }
@@ -93,14 +93,14 @@ namespace gum_tests {
              0.5f, 0.5f, 0.0f,
              0.0f, 0.0f, 1.0f});   // clang-format on
 
-      } catch (gum::Exception& e) {
+      } catch (const gum::Exception& e) {
         std::cerr << std::endl << e.errorContent() << std::endl;
         throw;
       }
     }
 
-    gum::UndiGraph getRealMoralGraph(const gum::BayesNet< double >&  bn,
-                                     const gum::List< gum::NodeId >& idList) {
+    static gum::UndiGraph getRealMoralGraph(const gum::BayesNet< double >&  bn,
+                                            const gum::List< gum::NodeId >& idList) {
       gum::UndiGraph graph;
       graph.populateNodes(bn.dag());
 
@@ -118,9 +118,13 @@ namespace gum_tests {
     }
 
     public:
-    gum::LabelizedVariable *var1, *var2, *var3, *var4, *var5;
+    gum::LabelizedVariable* var1;
+    gum::LabelizedVariable* var2;
+    gum::LabelizedVariable* var3;
+    gum::LabelizedVariable* var4;
+    gum::LabelizedVariable* var5;
 
-    void setUp() {
+    void setUp() override {
       var1 = new gum::LabelizedVariable("var1", "1", 2);
       var2 = new gum::LabelizedVariable("var2", "2", 2);
       var3 = new gum::LabelizedVariable("var3", "3", 2);
@@ -128,7 +132,7 @@ namespace gum_tests {
       var5 = new gum::LabelizedVariable("var5", "(gum::Size) 3", 3);
     }
 
-    void tearDown() {
+    void tearDown() override {
       delete var1;
       delete var2;
       delete var3;
@@ -151,7 +155,7 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(topology->toString(),
                        "BN{nodes: 5, arcs: 6, domainSize: 48, "
-                       "dim: 40}");
+                       "dim: 24, param: 40}")
       TS_ASSERT_EQUALS(topology->size(), (gum::Idx)5)
       TS_ASSERT_EQUALS(topology->sizeArcs(), (gum::Idx)6)
       TS_ASSERT_EQUALS(topology->dim(), (gum::Idx)24)
@@ -169,10 +173,8 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(source.dag().size(), copy->dag().size())
       TS_ASSERT_EQUALS(source.dag().sizeArcs(), copy->dag().sizeArcs())
-      // const gum::NodeSet& nodes=source.nodes();
-      const gum::DAG dag = source.dag();
 
-      for (const auto node: dag.nodes()) {
+      for (const gum::DAG dag = source.dag(); const auto node: dag.nodes()) {
         TS_ASSERT(copy->dag().exists(node))
 
         const gum::DiscreteVariable& srcVar = source.variable(node);
@@ -221,10 +223,8 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(source.dag().size(), copy.dag().size())
       TS_ASSERT_EQUALS(source.dag().sizeArcs(), copy.dag().sizeArcs())
-      // const gum::NodeSet& nodes=source.nodes();
-      const gum::DAG dag = source.dag();
 
-      for (const auto node: dag.nodes()) {
+      for (const gum::DAG dag = source.dag(); const auto node: dag.nodes()) {
         TS_ASSERT(copy.dag().exists(node))
 
         const gum::DiscreteVariable& srcVar = source.variable(node);
@@ -342,7 +342,7 @@ namespace gum_tests {
       gum::List< gum::NodeId > idList;
       TS_GUM_ASSERT_THROWS_NOTHING(fill(bn, idList))
 
-      gum::Size cpt = (gum::Size)0;
+      auto cpt = (gum::Size)0;
 
       for (const auto node: bn.nodes()) {
         GUM_UNUSED(node);
@@ -456,14 +456,14 @@ namespace gum_tests {
         for (const auto& x: {"A", "B", "C"}) {
           bn.add(gum::LabelizedVariable(x, x, 2));
         }
-        for (const auto& a: {std::make_pair("A", "C"), std::make_pair("B", "C")}) {
-          bn.addArc(a.first, a.second);
+        for (const auto& [first, second]: {std::make_pair("A", "C"), std::make_pair("B", "C")}) {
+          bn.addArc(first, second);
         }
         TS_ASSERT_THROWS(bn.addArc("A", "C"), const gum::DuplicateElement&)
 
         TS_ASSERT_EQUALS(bn.toString(),
                          "BN{nodes: 3, arcs: 2, domainSize: 8, "
-                         "dim: 12}");
+                         "dim: 6, param: 12}")
 
         bn.cpt("A").fillWith(1.0f).normalize();
         bn.generateCPT("B");
@@ -473,7 +473,7 @@ namespace gum_tests {
         bn.reverseArc("A", "C");
         TS_ASSERT_EQUALS(bn.toString(),
                          "BN{nodes: 3, arcs: 3, domainSize: 8, "
-                         "dim: 14}");
+                         "dim: 7, param: 14}")
 
         TS_ASSERT_THROWS(bn.reverseArc("A", "C"), const gum::InvalidArc&)
         TS_ASSERT_THROWS(bn.reverseArc("A", "C"), const gum::GraphError&)
@@ -482,17 +482,17 @@ namespace gum_tests {
         bn.erase("A");
         TS_ASSERT_EQUALS(bn.toString(),
                          "BN{nodes: 2, arcs: 1, domainSize: 4, "
-                         "dim: 6}");
+                         "dim: 3, param: 6}")
 
         TS_ASSERT_THROWS(bn.erase("A"), const gum::NotFound&)
 
         bn.eraseArc("B", "C");
         TS_ASSERT_EQUALS(bn.toString(),
                          "BN{nodes: 2, arcs: 0, domainSize: 4, "
-                         "dim: 4}");
+                         "dim: 2, param: 4}")
 
         TS_ASSERT_THROWS(bn.eraseArc("B", "C"), const gum::NotFound&)
-      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
+      } catch (const gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
 
@@ -512,7 +512,8 @@ namespace gum_tests {
       fill(bn, idList);
 
       for (const auto node: bn.nodes()) {
-        std::stringstream s1, s2;
+        std::stringstream s1;
+        std::stringstream s2;
         s1 << bn.cpt(node);
 
         bn.generateCPTs();
@@ -654,11 +655,11 @@ namespace gum_tests {
     }
 
     void testCopyAndEqualityOperators() {
-      gum::BayesNet< double >*               bn_1 = new gum::BayesNet< double >();
+      auto                                   bn_1 = new gum::BayesNet< double >();
       gum::SimpleBayesNetGenerator< double > generator(20, 30, 4);
       generator.generateBN(*bn_1);
 
-      gum::BayesNet< double >* bn_2 = new gum::BayesNet< double >();
+      auto bn_2 = new gum::BayesNet< double >();
 
       generator.generateBN(*bn_2);
 
@@ -790,7 +791,7 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(bn.variable(0).toString(), "var1:Labelized({0|1})")
       TS_ASSERT_THROWS_NOTHING(
-         dynamic_cast< const gum::LabelizedVariable& >(bn.variable(0)).changeLabel(0, "x"));
+         dynamic_cast< const gum::LabelizedVariable& >(bn.variable(0)).changeLabel(0, "x"))
       TS_ASSERT_EQUALS(bn.variable(0).toString(), "var1:Labelized({x|1})")
     }
 
@@ -874,8 +875,7 @@ namespace gum_tests {
 
       // for set of targets
       TS_ASSERT_EQUALS(bn.minimalCondSet({e, d}, {a, b, c, d, e, f, g, h}), gum::NodeSet({d, e}))
-      TS_ASSERT_EQUALS(bn.minimalCondSet({e, d}, {a, b, c, d, f, g, h}),
-                       gum::NodeSet({c, d, h, f}));
+      TS_ASSERT_EQUALS(bn.minimalCondSet({e, d}, {a, b, c, d, f, g, h}), gum::NodeSet({c, d, h, f}))
       TS_ASSERT_EQUALS(bn.minimalCondSet({e, d}, {a, b, c, f, g, h}), gum::NodeSet({b, c, f, h}))
     }
 
@@ -902,7 +902,7 @@ namespace gum_tests {
       bn.addArc("F", "B");
 
       TS_ASSERT_EQUALS(bn.minimalCondSet(4, gum::NodeSet({0, 1, 2, 3, 5, 6})),
-                       gum::NodeSet({0, 2, 3}));
+                       gum::NodeSet({0, 2, 3}))
 
       TS_ASSERT_EQUALS(bn.minimalCondSet(4, gum::NodeSet({0, 1, 5})), gum::NodeSet({0}))
 
@@ -978,7 +978,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(bn.size(), (gum::Size)6)
         TS_ASSERT_EQUALS(bn.sizeArcs(), (gum::Size)5)
         TS_ASSERT_EQUALS(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4))
-      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
+      } catch (const gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
     void testFastPrototypeVarType() {
@@ -1003,7 +1003,7 @@ namespace gum_tests {
 
       bn = gum::BayesNet< float >::fastPrototype("a[-0.4,0.1,0.5,3.14,10]");
       TS_ASSERT_EQUALS(bn.variable("a").toString(),
-                       "a:Discretized(<[-0.4;0.1[,[0.1;0.5[,[0.5;3.14[,[3.14;10]>)");
+                       "a:Discretized(<[-0.4;0.1[,[0.1;0.5[,[0.5;3.14[,[3.14;10]>)")
 
       bn = gum::BayesNet< float >::fastPrototype(
          "a{1|4|6}->b{1|-4|6}->c{1|toto|6}->d{1.0|-4.0|6.0}->e{1|-4|6.0}->f{1.0|-4.0|+6.0}");
