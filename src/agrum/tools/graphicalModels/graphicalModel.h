@@ -172,6 +172,16 @@ namespace gum {
      */
     virtual bool isIndependent(const NodeSet& X, const NodeSet& Y, const NodeSet& Z) const = 0;
 
+
+    /**
+     * send to the stream the space complexity with 3 parametrs
+     * @param s the stream
+     * @param dSize the log10domainSize
+     * @param dim  the dimension
+     * @param usedMem the memory needed for the params
+     */
+    static void spaceCplxToStream(std::stringstream& s, double dSize, int dim, Size usedMem);
+
     protected:
     /**
      * Private copy operator.
@@ -181,7 +191,7 @@ namespace gum {
     private:
     /// The properties of this Directed Graphical Model.
     /// Initialized using a lazy instantiation.
-    mutable HashTable< std::string, std::string >* _propertiesMap_;
+    mutable HashTable< std::string, std::string >* _propertiesMap_=nullptr;
 
     /// Return the properties of this Directed Graphical Model and initialize
     /// the hash table is necessary.

@@ -130,7 +130,7 @@ namespace gum {
      * @brief The compression ratio of the table (depending on the type of
      * implementation).
      *
-     * This method uses domainSize() and realSize() to compute the ration,
+     * This method uses domainSize() and realSize() to compute the ratio,
      * both methods are virtual and should be surcharge if a subclass has a
      * special policies about memory management.
      *

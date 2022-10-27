@@ -26,10 +26,10 @@
 #endif /* GUM_NO_INLINE */
 
 namespace gum {
-  GraphicalModel::GraphicalModel() : _propertiesMap_(nullptr) { GUM_CONSTRUCTOR(GraphicalModel); }
+  GraphicalModel::GraphicalModel(){GUM_CONSTRUCTOR(GraphicalModel)}
 
-  GraphicalModel::GraphicalModel(const GraphicalModel& from) : _propertiesMap_(nullptr) {
-    GUM_CONS_CPY(GraphicalModel);
+  GraphicalModel::GraphicalModel(const GraphicalModel& from) {
+    GUM_CONS_CPY(GraphicalModel)
 
     if (from._propertiesMap_) {
       _propertiesMap_ = new HashTable< std::string, std::string >(*(from._propertiesMap_));
@@ -37,8 +37,9 @@ namespace gum {
   }
 
   GraphicalModel::~GraphicalModel() {
-    GUM_DESTRUCTOR(GraphicalModel);
-    if (_propertiesMap_) { delete _propertiesMap_; }
+    GUM_DESTRUCTOR(GraphicalModel)
+
+    if (_propertiesMap_ != nullptr) { delete _propertiesMap_; }
   }
 
   GraphicalModel& GraphicalModel::operator=(const GraphicalModel& source) {
@@ -48,7 +49,7 @@ namespace gum {
         _propertiesMap_ = nullptr;
       }
 
-      if (source._propertiesMap_ != 0) {
+      if (source._propertiesMap_ != nullptr) {
         _propertiesMap_ = new HashTable< std::string, std::string >(*(source._propertiesMap_));
       }
     }
@@ -63,4 +64,16 @@ namespace gum {
     return res;
   }
 
+  void
+     GraphicalModel::spaceCplxToStream(std::stringstream& s, double dSize, int dim, Size usedMem) {
+    if (dSize > 6) s << "domainSize: 10^" << dSize;
+    else s << "domainSize: " << std::round(std::pow(10.0, dSize));
+
+    s << ", dim: " << dim << ", mem: ";
+
+    if (const Size go = usedMem / (1024 * 1024 * 1024); go > 0) s << go << "Go ";
+    if (const Size mo = (usedMem / (1024 * 1024)) % 1024; mo > 0) s << mo << "Mo ";
+    if (const Size ko = (usedMem / 1024) % 1024; ko > 0) s << ko << "Ko ";
+    s << usedMem % 1024 << "o";
+  }
 }   // namespace gum
