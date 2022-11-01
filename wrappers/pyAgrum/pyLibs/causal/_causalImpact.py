@@ -112,8 +112,9 @@ def causalImpact(cm: CausalModel,
     potfinal = potential.extract(extract_values)
 
   # doCalculous can change doing and knowing
-  formula._setDoing(doing)
-  formula._setKnowing(knowing)
+  if formula is not None:
+    formula._setDoing(doing)
+    formula._setKnowing(knowing)
 
   return formula, potfinal, explanation
 
