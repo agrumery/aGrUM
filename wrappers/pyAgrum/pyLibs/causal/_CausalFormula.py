@@ -73,16 +73,33 @@ class CausalFormula:
     """
     self._cm = cm
     self._root = root
+
     if isinstance(on, str):
       self._on = {on}
     else:
       self._on = on
+      
     if isinstance(doing, str):
       self._doing = {doing}
     else:
       self._doing = doing
+
     if knowing is None:
       self._knowing = set()
+    elif isinstance(knowing, str):
+      self._knowing = {knowing}
+    else:
+      self._knowing = knowing
+
+  def _setDoing(self,doing: Union[str, NameSet]):
+    if isinstance(doing, str):
+      self._doing = {doing}
+    else:
+      self._doing = doing
+
+  def _setKnowing(self,knowing: Union[str, NameSet]):
+    if isinstance(knowing, str):
+      self._knowing = {knowing}
     else:
       self._knowing = knowing
 

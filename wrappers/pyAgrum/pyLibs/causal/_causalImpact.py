@@ -104,13 +104,18 @@ def causalImpact(cm: CausalModel,
 
   # no need to contextualize the potential
   if potential is None or values is None:
-    return formula, potential, explanation
-
-  sv = set(potential.names)
-  extract_values = {k: _getLabelIdx(cm.observationalBN(), k, v)
+    potfinal=potential
+  else:
+    sv = set(potential.names)
+    extract_values = {k: _getLabelIdx(cm.observationalBN(), k, v)
                     for k, v in values.items() if k in sv}
-  potextract = potential.extract(extract_values)
-  return formula, potextract, explanation
+    potfinal = potential.extract(extract_values)
+
+  # doCalculous can change doing and knowing
+  formula._setDoing(doing)
+  formula._setKnowing(knowing)
+
+  return formula, potfinal, explanation
 
 
 def _causalImpact(cm: CausalModel, on: Union[str,NameSet],
