@@ -235,7 +235,7 @@ windows_pyagrum_2019:
       - build/
   stage: build
   script:
-    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" python=3.11
+    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.11
     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
     - call conda.bat install -y -c conda-forge --file wrappers\pyAgrum\testunits\requirements.txt
     - call pip install cmake
