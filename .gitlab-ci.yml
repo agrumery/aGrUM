@@ -237,7 +237,7 @@ windows_pyagrum_2019:
   script:
     - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.11
     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
-    - call conda.bat install -y -c conda-forge --file wrappers\pyAgrum\testunits\requirements.txt
+    - call pip install -r wrappers\pyAgrum\testunits\requirements.txt
     - call pip install cmake
     - python act clean
     - python act --no-fun test release pyAgrum --no-fun --compiler=mvsc19 -d build -j halfexcept1 -t quick
@@ -264,7 +264,7 @@ windows_pyagrum_2022:
   script:
     - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.11
     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
-    - call conda.bat install -y -c conda-forge --file wrappers\pyAgrum\testunits\requirements.txt
+    - call pip install -r wrappers\pyAgrum\testunits\requirements.txt
     - call pip install cmake
     - python act clean
     - python act --no-fun test release pyAgrum --no-fun --compiler=mvsc22 -d build -j except1 -t quick
