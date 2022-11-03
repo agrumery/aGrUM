@@ -7,7 +7,7 @@ stages:
 ################################################################################
 
 linux_agrum:
-  image: agrumery/ubuntu_py310
+  image: agrumery/ubuntu_py311
   tags:
     - docker
     - linux
@@ -37,8 +37,8 @@ linux_pyagrum_py38:
     - pip3 install -r wrappers/pyAgrum/testunits/requirements.txt
     - python3 act --no-fun test release pyAgrum -j halfexcept1 -t quick
 
-linux_pyagrum:
-  image: agrumery/ubuntu_py310
+linux_pyagrum_py311:
+  image: agrumery/ubuntu_py311
   tags:
     - docker
     - linux
@@ -58,7 +58,7 @@ linux_pyagrum:
 ################################################################################
 
 linux_agrum_merge_requests:
-  image: agrumery/ubuntu_py310
+  image: agrumery/ubuntu_py311
   only:
     - merge_requests
   tags:
@@ -92,10 +92,10 @@ linux_pyagrum_merge_requests_py38:
     - pip3 install -r wrappers/pyAgrum/testunits/requirements.txt
     - python3 act --no-fun test release pyAgrum -j halfexcept1 -t quick
 
-linux_pyagrum_merge_requests:
+linux_pyagrum_merge_requests_py311:
   only:
     - merge_requests
-  image: agrumery/ubuntu_py310
+  image: agrumery/ubuntu_py311
   tags:
     - docker
     - linux
@@ -132,7 +132,7 @@ macos_agrum:
       - build/
   script:
     - . /Users/agrum/miniconda3/etc/profile.d/conda.sh
-    - conda activate py310
+    - conda activate py311
     - python act clean
     - python act --no-fun test release aGrUM -j halfexcept1
     - conda deactivate
@@ -155,7 +155,7 @@ macos_pyagrum:
       - build/
   script:
     - . /Users/agrum/miniconda3/etc/profile.d/conda.sh
-    - conda activate py310
+    - conda activate py311
     - python act clean
     - python act --no-fun test release pyAgrum -t quick -j halfexcept1
     - conda deactivate
@@ -164,7 +164,7 @@ macos_pyagrum:
 # Windows / MVSC
 ################################################################################
 
-windows_agrum_2019_64:
+windows_agrum_2019:
   only:
    - master@agrumery/aGrUM
    - web@agrumery/aGrUM
@@ -191,7 +191,7 @@ windows_agrum_2019_64:
     - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
   retry: 1
 
-windows_agrum_2022_64:
+windows_agrum_2022:
   only:
    - master@agrumery/aGrUM
    - web@agrumery/aGrUM
@@ -235,7 +235,7 @@ windows_pyagrum_2019:
       - build/
   stage: build
   script:
-    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" python=3.10
+    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" python=3.11
     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
     - call conda.bat install -y -c conda-forge --file wrappers\pyAgrum\testunits\requirements.txt
     - call pip install cmake
@@ -262,7 +262,7 @@ windows_pyagrum_2022:
       - build/
   stage: build
   script:
-    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.10
+    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.11
     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
     - call conda.bat install -y -c conda-forge --file wrappers\pyAgrum\testunits\requirements.txt
     - call pip install cmake
