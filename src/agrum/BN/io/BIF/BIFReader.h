@@ -132,7 +132,7 @@ namespace gum {
     /// @throws IOError if file not exists
     BIF::Scanner& scanner();
 
-    /// name of readen file
+    /// name of read file
     const std::string& streamName() const;
 
     /// accessor to trace function (just write the number of parser line)
