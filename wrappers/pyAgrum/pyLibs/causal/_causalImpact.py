@@ -113,8 +113,8 @@ def causalImpact(cm: CausalModel,
 
   # doCalculous can change doing and knowing
   if formula is not None:
-    formula._setDoing(doing)
-    formula._setKnowing(knowing)
+    formula._setDoing(sdoing)
+    formula._setKnowing(sk)
 
   return formula, potfinal, explanation
 

@@ -263,7 +263,8 @@ def _reprGraph(gr, size, asString, format=None):
     format = gum.config["notebook", "graph_format"]
 
   if format == "svg":
-    gsvg = IPython.display.SVG(prepareLinksForSVG(gr.create_svg(encoding="utf-8").decode('utf-8')))
+    gsvg = IPython.display.SVG(prepareLinksForSVG(
+        gr.create_svg(encoding="utf-8").decode('utf-8')))
     if asString:
       return gsvg.data
     else:
@@ -439,6 +440,7 @@ def showInformation(*args, **kwargs):
   import pyAgrum.lib.explain as explain
   explain.showInformation(*args, **kwargs)
 
+
 def getJunctionTreeMap(bn, size:str=None,scaleClique: float = None, scaleSep: float = None, lenEdge: float = None, colorClique: str = None,
           colorSep: str = None):
   """
@@ -464,6 +466,7 @@ def getJunctionTreeMap(bn, size:str=None,scaleClique: float = None, scaleSep: fl
 
   return getGraph(jt.map(scaleClique,scaleSep,lenEdge,colorClique,colorSep),size)
 
+
 def showJunctionTreeMap(bn, size:str=None,scaleClique: float = None, scaleSep: float = None, lenEdge: float = None, colorClique: str = None,
           colorSep: str = None):
   """
@@ -488,6 +491,7 @@ def showJunctionTreeMap(bn, size:str=None,scaleClique: float = None, scaleSep: f
   jt = jtg.junctionTree(bn)
 
   showGraph(jt.map(scaleClique,scaleSep,lenEdge,colorClique,colorSep),size)
+
 
 def showJunctionTree(bn, withNames=True, size=None):
   """
@@ -559,7 +563,8 @@ def showProba(p, scale=1.0):
 
 def _getMatplotFig(fig):
   bio = io.BytesIO()  # bytes buffer for the plot
-  fig.savefig(bio, format='png', bbox_inches='tight')  # .canvas.print_png(bio)  # make a png of the plot in the buffer
+  # .canvas.print_png(bio)  # make a png of the plot in the buffer
+  fig.savefig(bio, format='png', bbox_inches='tight')
 
   # encode the bytes as string using base 64
   sB64Img = base64.b64encode(bio.getvalue()).decode()
@@ -766,18 +771,30 @@ def getInfluenceDiagram(diag, size=None):
   return getGraph(ID2dot(diag), size)
 
 
-def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
+def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmap=None, cmapArc=None):
   """
   show a Bayesian network
 
-  :param bn: the Bayesian network
-  :param size: size of the rendered graph
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
-  :param arcWidth: a arcMap of values to be shown as width of arcs
-  :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
-  :param cmap: color map to show the colors
-  :param cmapArc: color map to show the arc color if distinction is needed
-  :return: the graph
+  Parameters
+  ----------
+    bn : pyAgrum.BayesNet
+      the Bayesian network
+    size: str
+      size of the rendered graph
+    nodeColor: dict[Tuple(int,int),float]
+      a nodeMap of values to be shown as color nodes (with special color for 0 and 1)
+    arcWidth: dict[Tuple(int,int),float]
+      an arcMap of values to be shown as bold arcs
+    arcLabel: dict[Tuple(int,int),str]
+        an arcMap of labels to be shown next to arcs
+    arcColor: dict[Tuple(int,int),float]
+      an arcMap of values (between 0 and 1) to be shown as color of arcs
+    cmapNode: ColorMap
+      color map to show the vals of Nodes
+    cmapArc: ColorMap
+      color map to show the vals of Arcs
+    showMsg: dict
+      a nodeMap of values to be shown as tooltip
   """
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
@@ -785,21 +802,37 @@ def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=Non
   if cmapArc is None:
     cmapArc = cmap
 
-  return showGraph(BN2dot(bn, size, nodeColor, arcWidth, arcColor, cmap, cmapArc), size)
+  return showGraph(BN2dot(bn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel, arcColor=arcColor, cmapNode=cmap, cmapArc=cmapArc), size)
 
 
-def showCN(cn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
+def showCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmap=None, cmapArc=None):
   """
   show a credal network
 
-  :param cn: the credal network
-  :param size: size of the rendered graph
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
-  :param arcWidth: a arcMap of values to be shown as width of arcs
-  :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
-  :param cmap: color map to show the colors
-  :param cmapArc: color map to show the arc color if distinction is needed
-  :return: the graph
+  Parameters
+  ----------
+    cn : pyAgrum.CredalNet
+      the Credal network
+    size: str
+      size of the rendered graph
+    nodeColor: dict[int,float]
+      a nodeMap of values to be shown as color nodes (with special color for 0 and 1)
+    arcWidth: dict[Tuple(int,int),float]
+      an arcMap of values to be shown as bold arcs
+    arcLabel: dict[Tuple(int,int),float]
+        an arcMap of labels to be shown next to arcs
+    arcColor: dict[Tuple(int,int),float]
+      an arcMap of values (between 0 and 1) to be shown as color of arcs
+    cmapNode: matplotlib.color.colormap
+      color map to show the vals of Nodes
+    cmapArc: matplotlib.color.colormap
+      color map to show the vals of Arcs
+    showMsg : dict[int,str]
+      a nodeMap of values to be shown as tooltip
+
+  Returns
+  -------
+    the graph
   """
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
@@ -807,7 +840,7 @@ def showCN(cn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=Non
   if cmapArc is None:
     cmapArc = cmap
 
-  return showGraph(CN2dot(cn, size, nodeColor, arcWidth, arcColor, cmap, cmapArc), size)
+  return showGraph(CN2dot(cn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel, arcColor=arcColor, cmapNode=cmap, cmapArc=cmapArc), size)
 
 
 def getMN(mn, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=None, edgeColor=None, cmap=None,
@@ -846,19 +879,35 @@ def getMN(mn, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=
   return getGraph(dottxt, size)
 
 
-def getBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
+def getBN(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmap=None, cmapArc=None):
   """
   get a HTML string for a Bayesian network
 
-  :param bn: the Bayesian network
-  :param size: size of the rendered graph
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
-  :param arcWidth: a arcMap of values to be shown as width of arcs
-  :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
-  :param cmap: color map to show the colors
-  :param cmapArc: color map to show the arc color if distinction is needed
+  Parameters
+  ----------
+    bn : pyAgrum.BayesNet
+      the Bayesian network
+    size: str
+      size of the rendered graph
+    nodeColor: dict[Tuple(int,int),float]
+      a nodeMap of values to be shown as color nodes (with special color for 0 and 1)
+    arcWidth: dict[Tuple(int,int),float]
+      an arcMap of values to be shown as bold arcs
+    arcLabel: dict[Tuple(int,int),str]
+        an arcMap of labels to be shown next to arcs
+    arcColor: dict[Tuple(int,int),float]
+      an arcMap of values (between 0 and 1) to be shown as color of arcs
+    cmapNode: ColorMap
+      color map to show the vals of Nodes
+    cmapArc: ColorMap
+      color map to show the vals of Arcs
+    showMsg: dict
+      a nodeMap of values to be shown as tooltip
 
-  :return: the graph
+  Returns
+  -------
+  pydot.Dot
+    the desired representation of the Bayesian network
   """
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
@@ -866,22 +915,38 @@ def getBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=None
   if cmapArc is None:
     cmapArc = cmap
 
-  return getGraph(BN2dot(bn, size, nodeColor, arcWidth, arcColor, cmap, cmapArc), size)
+  return getGraph(BN2dot(bn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel,arcColor=arcColor, cmapNode=cmap, cmapArc=cmapArc), size)
 
 
-def getCN(cn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
+def getCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmap=None, cmapArc=None):
   """
   get a HTML string for a credal network
 
-  :param cn: the credal network
-  :param size: size of the rendered graph
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
-  :param arcWidth: a arcMap of values to be shown as width of arcs
-  :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
-  :param cmap: color map to show the colors
-  :param cmapArc: color map to show the arc color if distinction is needed
+  Parameters
+  ----------
+    cn : pyAgrum.CredalNet
+      the Credal network
+    size: str
+      size of the rendered graph
+    nodeColor: dict[int,float]
+      a nodeMap of values to be shown as color nodes (with special color for 0 and 1)
+    arcWidth: dict[Tuple(int,int),float]
+      an arcMap of values to be shown as bold arcs
+    arcLabel: dict[Tuple(int,int),float]
+        an arcMap of labels to be shown next to arcs
+    arcColor: dict[Tuple(int,int),float]
+      an arcMap of values (between 0 and 1) to be shown as color of arcs
+    cmapNode: matplotlib.color.colormap
+      color map to show the vals of Nodes
+    cmapArc: matplotlib.color.colormap
+      color map to show the vals of Arcs
+    showMsg : dict[int,str]
+      a nodeMap of values to be shown as tooltip
 
-  :return: the graph
+  Returns
+  -------
+  pydot.Dot
+    the desired representation of the Credal Network
   """
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
@@ -889,7 +954,7 @@ def getCN(cn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=None
   if cmapArc is None:
     cmapArc = cmap
 
-  return getGraph(CN2dot(cn, size, nodeColor, arcWidth, arcColor, cmap, cmapArc), size)
+  return getGraph(CN2dot(cn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel,arcColor=arcColor, cmapNode=cmap, cmapArc=cmapArc), size)
 
 
 def showInference(model, **kwargs):
@@ -976,8 +1041,10 @@ def _reprPotential(pot, digits=None, withColors=True, varnames=None, asString=Fa
   with_fraction = gum.config['notebook', 'potential_with_fraction'] == "True"
   if with_fraction:
     fraction_limit = int(gum.config['notebook', 'potential_fraction_limit'])
-    fraction_round_error = float(gum.config['notebook', 'potential_fraction_round_error'])
-    fraction_with_latex = gum.config['notebook', 'potential_fraction_with_latex'] == "True"
+    fraction_round_error = float(
+        gum.config['notebook', 'potential_fraction_round_error'])
+    fraction_with_latex = gum.config['notebook',
+                                     'potential_fraction_with_latex'] == "True"
 
   def _rgb(r, g, b):
     return '#%02x%02x%02x' % (r, g, b)
@@ -1205,7 +1272,8 @@ def getSideBySide(*args, **kwargs):
   """
   vals = {'captions', 'valign', 'ncols'}
   if not set(kwargs.keys()).issubset(vals):
-    raise TypeError(f"sideBySide() got unexpected keyword argument(s) : '{set(kwargs.keys()).difference(vals)}'")
+    raise TypeError(
+        f"sideBySide() got unexpected keyword argument(s) : '{set(kwargs.keys()).difference(vals)}'")
 
   if 'captions' in kwargs:
     captions = kwargs['captions']
@@ -1344,7 +1412,8 @@ def getJT(jt, size=None):
                                                  "junctiontree_clique_bgcolor"],
                             fontcolor=gum.config["notebook",
                                                  "junctiontree_clique_fgcolor"],
-                            fontsize=gum.config["notebook", "junctiontree_clique_fontsize"]
+                            fontsize=gum.config["notebook",
+                                                "junctiontree_clique_fontsize"]
                             )
                    )
   for c1, c2 in jt.edges():
@@ -1356,7 +1425,8 @@ def getJT(jt, size=None):
                                                  "junctiontree_separator_bgcolor"],
                             fontcolor=gum.config["notebook",
                                                  "junctiontree_separator_fgcolor"],
-                            fontsize=gum.config["notebook", "junctiontree_separator_fontsize"]
+                            fontsize=gum.config["notebook",
+                                                "junctiontree_separator_fontsize"]
                             )
                    )
   for c1, c2 in jt.edges():
@@ -1454,7 +1524,8 @@ else:
       color for the separator nodes
     """
     if scaleClique is None:
-      scaleClique = float(gum.config["notebook", "junctiontree_map_cliquescale"])
+      scaleClique = float(
+          gum.config["notebook", "junctiontree_map_cliquescale"])
     if scaleSep is None:
       scaleSep = float(gum.config["notebook", "junctiontree_map_sepscale"])
     if lenEdge is None:

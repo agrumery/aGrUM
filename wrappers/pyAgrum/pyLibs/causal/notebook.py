@@ -96,10 +96,12 @@ def getCausalImpact(model: csl.CausalModel, on: Union[str, NameSet], doing: Unio
 
   gnb.flow.clear()
   gnb.flow.add(getCausalModel(model),caption="Causal Model")
+
   if formula is None:
     gnb.flow.add(explanation,caption="Impossible")
   else:
     gnb.flow.add('$$\\begin{equation*}' + formula.toLatex() + '\\end{equation*}$$',caption="Explanation : "+explanation )
+
   gnb.flow.add("No result" if formula is None else impact,caption="Impact") # : $" + ("?" if formula is None else formula.latexQuery(values)) + "$")
 
   return gnb.flow.html()
