@@ -1,5 +1,11 @@
 # aGrUM Changelog
 
+## Changelog for 1.4.1
+
+* pyAgrum
+
+  * bugfixes in `pyAgrum.lib.[causal.]notebook`.
+
 ## Changelog for 1.4.0
 
 * aGrUM
