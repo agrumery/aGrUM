@@ -30,7 +30,14 @@ from .utils import notif, safe_cd
 
 
 def simple_stats(n, s, s2):
-  return (s / n), sqrt(s2 / n - pow(s / n, 2))
+  v = (s2/n - pow(s/n,2))
+  if n==1:
+    sig=sqrt(v)
+    halfA=0
+  else:
+    sig=sqrt(v/(n-1))
+    halfA=1.96*sig
+  return (s / n), sig, halfA
 
 
 def profileAgrum(current):
@@ -66,7 +73,11 @@ def profileAgrum(current):
   notif(f"[{cfg.nbr_tests_for_stats} runs] (please be patient) ...")
   sdt = 0
   sdt2 = 0
-  notif("  n :     duration   mean      stdev   final time")
+
+  notif("")
+  notif("-------------|------------------|-------------------|")
+  notif("  time   #it |  XP:mean (stdev) | confid. interval  |")
+  notif("-------------|------------------|-------------------|")
   for i in range(cfg.nbr_tests_for_stats):
     dt=0
     while dt==0:
@@ -79,12 +90,17 @@ def profileAgrum(current):
           v=t[4] if len(t[3])==0 else t[3]
           dt = float(v) / 1000.0
       if dt==0:
-        notif("[error]")
+        notif(f"[error : duration=0]")
 
     sdt += dt
     sdt2 += dt * dt
-    mean, stdev = simple_stats(i + 1, sdt, sdt2)
-    notif(f" {i:2} : [{dt:10.3f}] [{mean:10.3f}] [{stdev:10.3f}]   {localtime().tm_hour}:{localtime().tm_min}")
+    mean, stdev, halfA = simple_stats(i + 1, sdt, sdt2)
+    t=localtime()
+    notif(f"{t.tm_hour:02d}:{t.tm_min:02d}:{t.tm_sec:02d} #[{i+1:02d}] | {dt:7.3f}s ({stdev:3.3f}) | [{mean:8.3f} ± {halfA:3.3f}]s |")
+
+  notif("-------------|------------------|-------------------|")
+  notif("  time   #it |  XP:mean (stdev) | confid. interval  |")
+  notif("-------------|------------------|-------------------|")
 
   safe_cd(current, "..")
   safe_cd(current, "..")
