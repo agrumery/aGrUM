@@ -105,38 +105,30 @@ def CN2dot(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor
     graph.add_node(node)
 
   for a in bn.arcs():
-    if arcWidth is None:
-      pw = 1
-      av = ""
-    else:
+    (n, j) = a
+    pw = 1
+    av = f"{n}&nbsp;&rarr;&nbsp;{j}"
+    col = gumcols.getBlackInTheme()
+    lb = ""
+
+    if arcWidth is not None:
       if a in arcWidth:
-        if maxarcs == minarcs:
-          pw = 1
-        else:
+        if maxarcs != minarcs:
           pw = 0.1 + 5 * (arcWidth[a] - minarcs) / (maxarcs - minarcs)
-        av = arcWidth[a]
-      else:
-        pw = 1
-        av = 1
-    if arcColor is None:
-      col = gumcols.getBlackInTheme()
-    else:
+        av = f"{n}&nbsp;&rarr;&nbsp;{j} : {arcWidth[a]}"
+
+    if arcColor is not None:
       if a in arcColor:
         col = gumcols.proba2color(arcColor[a], cmapArc)
-      else:
-        col = gumcols.getBlackInTheme()
-    if arcLabel is None :
-        lb=""
-    else:
+
+    if arcLabel is not None:
         if a in arcLabel:
             lb=arcLabel[a]
-        else:
-            lb=""
 
     edge = dot.Edge('"' + bn.variable(a[0]).name() + '"', '"' + bn.variable(a[1]).name() + '"',
                     label=lb, fontsize="10",
                     penwidth=pw, color=col,
-                    tooltip=f"{a} : {av}"
+                    tooltip=av
                     )
     graph.add_edge(edge)
 
@@ -255,30 +247,23 @@ def CNinference2dot(cn, size=None, engine=None, evs=None, targets=None, nodeColo
     else:
       dotstr += f' "{name}" [shape=polygon,sides=7,peripheries=1,{colorattribute}]'
 
-  for n, j in showdag.arcs():
-    if arcWidth is None:
-      pw = 1
-      av = ""
-    else:
-      if (n, j) in arcWidth:
-        if maxarcs == minarcs:
-          pw = 1
-        else:
+  for a in showdag.arcs():
+    (n, j) = a
+    pw = 1
+    av = f"{n}&nbsp;&rarr;&nbsp;{j}"
+    col = gumcols.getBlackInTheme()
+
+    if arcWidth is not None:
+      if a in arcWidth:
+        if maxarcs != minarcs:
           pw = 0.1 + 5 * (arcWidth[n, j] - minarcs) / (maxarcs - minarcs)
-        av = arcWidth[n, j]
-      else:
-        pw = 1
-        av = ""
+        av = f"{n}&nbsp;&rarr;&nbsp;{j} : {arcWidth[a]}"
 
-    if arcColor is None:
-      col = gumcols.getBlackInTheme()
-    else:
-      if (n, j) in arcColor:
+    if arcColor is not None:
+      if a in arcColor:
         col = gumcols.proba2color(arcColor[n, j], cmapArc)
-      else:
-        col = gumcols.getBlackInTheme()
 
-    dotstr += f' "{bn.variable(n).name()}"->"{bn.variable(j).name()}" [penwidth="{pw}",tooltip="{n}&rarr;{j}:{av}",color="{col}"];'
+    dotstr += f' "{bn.variable(n).name()}"->"{bn.variable(j).name()}" [penwidth="{pw}",tooltip="{av}",color="{col}"];'
 
   dotstr += '}'
 
