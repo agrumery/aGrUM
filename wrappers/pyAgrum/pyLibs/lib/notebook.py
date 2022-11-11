@@ -81,16 +81,16 @@ class FlowLayout(object):
     clear the flow
     """
     # string buffer for the HTML: initially some CSS; images to be appended
-    self.sHtml = """
+    self.sHtml = f"""
       <style>
-      .floating-box {
+      .floating-box {{
       display: inline-block;
       margin: 7px;
       padding : 3px;
-      border: 2px solid #FFFFFF;  
+      border: {gum.config.asInt["notebook","flow_border_width"]}px solid {gum.config["notebook","flow_border_color"]};  
       valign:middle;
-      background-color: #FDFDFD;
-      }
+      background-color: {gum.config["notebook","flow_background_color"]};
+      }}
       </style>
       """
     return self
@@ -1492,6 +1492,10 @@ def _update_config_notebooks():
   # hook to control some parameters for notebook when config changes
   mpl.rcParams['figure.facecolor'] = gum.config["notebook", "figure_facecolor"]
   set_matplotlib_formats(gum.config["notebook", "graph_format"])
+  if gum.config.asBool["notebook","dark_theme"]:
+    setDarkTheme()
+  else:
+    setLightTheme()
 
 
 # check if an instance of ipython exists

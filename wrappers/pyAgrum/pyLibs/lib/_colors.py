@@ -28,29 +28,22 @@ import matplotlib.colors
 import pyAgrum as gum
 
 
-def forDarkTheme():
-  print(
-    "** pyAgrum : forDarkTheme() is obsolete since 0.21.0. Please use setDarkTheme() instead. setDarkTheme() called.")
-  setDarkTheme()
-
-
-def forLightTheme():
-  print(
-    "** pyAgrum : forLightTheme() is obsolete since 0.21.0. Please use setLightTheme() instead. setLightTheme() called.")
-  setLightTheme()
-
-
 def setDarkTheme():
   """ change the color for arcs and text in graphs to be more visible in dark theme
   """
-  gum.config["notebook", "default_arc_color"] = "#AAAAAA"
+  gum.config.set("notebook", "dark_theme","True",
+                 no_hook=True)
+  gum.config.set("notebook", "default_arc_color",gum.config["notebook","default_arc_color_dark"],
+                 no_hook=True)
 
 
 def setLightTheme():
   """ change the color for arcs and text in graphs to be more visible in light theme
   """
-  gum.config["notebook", "default_arc_color"] = "#202020"
-
+  gum.config.set("notebook", "dark_theme","False",
+                 no_hook=True)
+  gum.config.set("notebook", "default_arc_color",gum.config["notebook","default_arc_color_light"],
+                 no_hook=True)
 
 def getBlackInTheme():
   """ return the color used for arc and text in graphs
