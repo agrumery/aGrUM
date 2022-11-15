@@ -37,7 +37,7 @@
 
 namespace gum_tests {
 
-  class UndiGraphTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] UndiGraphTestSuite: public CxxTest::TestSuite {
     private:
     static gum::Size simpleDoubleFunction(const gum::NodeId& aNodeId) { return aNodeId * 2; }
 

@@ -37,7 +37,7 @@
 //          5_/             2 -> 4
 //                          2 -> 5
 namespace gum_tests {
-  class DSLReaderTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] DSLReaderTestSuite: public CxxTest::TestSuite {
     public:
     void testConstuctor() {
       std::string             file = GET_RESSOURCES_PATH("DSL/DSLReader_file1.txt");

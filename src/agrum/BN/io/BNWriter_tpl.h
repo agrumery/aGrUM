@@ -77,19 +77,18 @@ namespace gum {
       return;   // we do anything if the names will be modified when saved ...
 
     for (const auto& nod: bn.nodes()) {
-      auto& v = bn.variable(nod);
+      auto&       v       = bn.variable(nod);
       std::string valid_n = _onlyValidCharsInName_(v.name());
-      if (v.name()!=valid_n)
+      if (v.name() != valid_n)
         GUM_ERROR(FatalError,
-                  "The variable name '" << v.name() << "' contains invalid characters ('"
-                                        << valid_n << "').")
+                  "The variable name '" << v.name() << "' contains invalid characters ('" << valid_n
+                                        << "').")
       for (const auto& lab: v.labels()) {
         std::string valid_l = _onlyValidCharsInName_(lab);
-        if (lab!=valid_l)
+        if (lab != valid_l)
           GUM_ERROR(FatalError,
                     "The variable  '" << v << "' contains label '" << lab
-                                      << "' with invalid characters ('"
-                                      << valid_l << "').")
+                                      << "' with invalid characters ('" << valid_l << "').")
       }
     }
   }
@@ -112,10 +111,9 @@ namespace gum {
       out = std::regex_replace(out, reg, "_");
     }
     // first char can not be a digit
-    if (std::isdigit(out[0])) 
+    if (std::isdigit(out[0]))
       // we allow name containing only an int
-      if (out.find_first_not_of( "0123456789" ) != std::string::npos)
-        out = "_" + out;
+      if (out.find_first_not_of("0123456789") != std::string::npos) out = "_" + out;
 
     return out;
   }

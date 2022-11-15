@@ -50,7 +50,7 @@
 namespace gum_tests {
 
 
-  class ShaferShenoyIncrementalTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] ShaferShenoyIncrementalTestSuite: public CxxTest::TestSuite {
     using __Potential    = std::unique_ptr< gum::Potential< double > >;
     using __PotentialSet = gum::Set< const gum::Potential< double >* >;
 

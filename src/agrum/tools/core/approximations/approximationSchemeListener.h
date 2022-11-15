@@ -53,7 +53,7 @@ namespace gum {
      * @brief Class constructor.
      * @param sch The scheme configuration.
      */
-    ApproximationSchemeListener(IApproximationSchemeConfiguration& sch);
+    explicit ApproximationSchemeListener(IApproximationSchemeConfiguration& sch);
 
     /**
      * @brief Class destructor.
@@ -76,7 +76,7 @@ namespace gum {
      * @param src The signal source.
      * @param message A message.
      */
-    virtual void whenStop(const void* src, const std::string message) = 0;
+    virtual void whenStop(const void* src, const std::string& message) = 0;
 
     protected:
     /**

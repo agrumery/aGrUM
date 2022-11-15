@@ -63,7 +63,7 @@ namespace gum_tests {
     int getNbr() { return _nbr_; };
   };
 
-  class BIFXMLIDReaderTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] BIFXMLIDReaderTestSuite: public CxxTest::TestSuite {
     public:
     void testConstuctor() {
       std::string file = GET_RESSOURCES_PATH("ID/IDBIFXMLIO_file.xml");

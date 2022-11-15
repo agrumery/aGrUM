@@ -32,7 +32,7 @@
 
 namespace gum_tests {
 
-  class ScheduleDeletionTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] ScheduleDeletionTestSuite: public CxxTest::TestSuite {
     public:
     void test_construct() {
       // reset the ids of the ScheduleMultiDim to avoid conflicts with other

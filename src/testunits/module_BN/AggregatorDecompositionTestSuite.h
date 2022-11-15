@@ -42,7 +42,7 @@
 
 namespace gum_tests {
 
-  class AggregatorDecompositionTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] AggregatorDecompositionTestSuite: public CxxTest::TestSuite {
     private:
     gum::prm::PRM< double >*                _prm_;
     float                                   _epsilon_{1e-6f};

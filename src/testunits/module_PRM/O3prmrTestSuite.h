@@ -29,7 +29,7 @@
 
 namespace gum_tests {
 
-  class O3prmrTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] O3prmrTestSuite: public CxxTest::TestSuite {
     public:
     void setUp() {
       // std::cerr << std::endl;

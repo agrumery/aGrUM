@@ -30,7 +30,7 @@
 
 
 namespace gum_tests {
-  class DAGModelTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] DAGModelTestSuite: public CxxTest::TestSuite {
     public:
     void testEquality() {
       auto bn = gum::BayesNet< float >::fastPrototype("a->b->c;a->c");

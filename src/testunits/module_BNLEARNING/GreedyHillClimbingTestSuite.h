@@ -72,7 +72,7 @@ namespace gum_tests {
       std::cout << _nbr_ << ": error = " << b << std::endl;
     }
 
-    void whenStop(const void* buffer, const std::string s) { _mess_ = s; }
+    void whenStop(const void* buffer, const std::string& s) { _mess_ = s; }
 
     int getNbr() { return _nbr_; }
 
@@ -80,7 +80,7 @@ namespace gum_tests {
   };
 
 
-  class GreedyHillClimbingTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] GreedyHillClimbingTestSuite: public CxxTest::TestSuite {
     private:
     double _score_(gum::learning::ScoreBIC& score, const gum::NodeId& node, const gum::DAG& dag) {
       std::vector< gum::NodeId > cond_set;

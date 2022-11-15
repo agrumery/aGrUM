@@ -421,7 +421,7 @@ namespace gum {
     DAG _fullDAG_() const;
 
     /// returns the adjective corresponding to a parameter index (1st, 2nd, etc.)
-    std::string _paramString_(Idx i) const;
+    static std::string _paramString_(Idx i);
 
     /// returns a new distinct version for each schedule
     static Idx _newVersionNumber_();

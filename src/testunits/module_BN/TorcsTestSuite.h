@@ -34,7 +34,7 @@
 
 namespace gum_tests {
 
-  class TorcsTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] TorcsTestSuite: public CxxTest::TestSuite {
     public:
     gum::BayesNet< double >* bn;
 

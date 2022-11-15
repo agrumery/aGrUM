@@ -40,7 +40,7 @@
 
 namespace gum_tests {
 
-  class MixedGraphTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] MixedGraphTestSuite: public CxxTest::TestSuite {
     private:
     gum::MixedGraph buildGraph() {
       gum::MixedGraph g;

@@ -26,7 +26,7 @@
  *
  * ApproximationSettings provides as well 2 signals :
  *   - onProgress(int pourcent,double error)
- *   - onStop(std::string message)
+ *   - onStop(const std::string& message)
  * @see gum::ApproximationListener for dedicated listener.
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6)
@@ -110,7 +110,7 @@ namespace gum {
     // ========================================================================
     /// @{
 
-    ApproximationScheme(bool verbosity = false);
+    explicit ApproximationScheme(bool verbosity = false);
 
     virtual ~ApproximationScheme();
 
@@ -129,23 +129,23 @@ namespace gum {
      * @param eps The new epsilon value.
      * @throw OutOfBounds Raised if eps < 0.
      */
-    void setEpsilon(double eps);
+    void setEpsilon(double eps) override;
 
     /**
      * @brief Returns the value of epsilon.
      * @return Returns the value of epsilon.
      */
-    double epsilon() const;
+    double epsilon() const override;
 
     /**
      * @brief Disable stopping criterion on epsilon.
      */
-    void disableEpsilon();
+    void disableEpsilon() override;
 
     /**
      * @brief Enable stopping criterion on epsilon.
      */
-    void enableEpsilon();
+    void enableEpsilon() override;
 
     /**
      * @brief Returns true if stopping criterion on epsilon is enabled, false
@@ -153,7 +153,7 @@ namespace gum {
      * @return Returns true if stopping criterion on epsilon is enabled, false
      * otherwise.
      */
-    bool isEnabledEpsilon() const;
+    bool isEnabledEpsilon() const override;
 
     /**
      * @brief Given that we approximate f(t), stopping criterion on
@@ -164,23 +164,23 @@ namespace gum {
      * @param rate The minimal epsilon rate.
      * @throw OutOfBounds if rate<0
      */
-    void setMinEpsilonRate(double rate);
+    void setMinEpsilonRate(double rate) override;
 
     /**
      * @brief Returns the value of the minimal epsilon rate.
      * @return Returns the value of the minimal epsilon rate.
      */
-    double minEpsilonRate() const;
+    double minEpsilonRate() const override;
 
     /**
      * @brief Disable stopping criterion on epsilon rate.
      */
-    void disableMinEpsilonRate();
+    void disableMinEpsilonRate() override;
 
     /**
      * @brief Enable stopping criterion on epsilon rate.
      */
-    void enableMinEpsilonRate();
+    void enableMinEpsilonRate() override;
 
     /**
      * @brief Returns true if stopping criterion on epsilon rate is enabled,
@@ -188,7 +188,7 @@ namespace gum {
      * @return Returns true if stopping criterion on epsilon rate is enabled,
      * false otherwise.
      */
-    bool isEnabledMinEpsilonRate() const;
+    bool isEnabledMinEpsilonRate() const override;
 
     /**
      * @brief Stopping criterion on number of iterations.
@@ -198,23 +198,23 @@ namespace gum {
      * @param max The maximum number of iterations.
      * @throw OutOfBounds Raised if max <= 1.
      */
-    void setMaxIter(Size max);
+    void setMaxIter(Size max) override;
 
     /**
      * @brief Returns the criterion on number of iterations.
      * @return Returns the criterion on number of iterations.
      */
-    Size maxIter() const;
+    Size maxIter() const override;
 
     /**
      * @brief Disable stopping criterion on max iterations.
      */
-    void disableMaxIter();
+    void disableMaxIter() override;
 
     /**
      * @brief Enable stopping criterion on max iterations.
      */
-    void enableMaxIter();
+    void enableMaxIter() override;
 
     /**
      * @brief Returns true if stopping criterion on max iterations is enabled,
@@ -222,7 +222,7 @@ namespace gum {
      * @return Returns true if stopping criterion on max iterations is enabled,
      * false otherwise.
      */
-    bool isEnabledMaxIter() const;
+    bool isEnabledMaxIter() const override;
 
     /**
      * @brief Stopping criterion on timeout.
@@ -232,30 +232,30 @@ namespace gum {
      * @param timeout The timeout value in seconds.
      * @throw OutOfBounds Raised if timeout <= 0.0.
      */
-    void setMaxTime(double timeout);
+    void setMaxTime(double timeout) override;
 
     /**
      * @brief Returns the timeout (in seconds).
      * @return Returns the timeout (in seconds).
      */
-    double maxTime() const;
+    double maxTime() const override;
 
     /**
      * @brief Returns the current running time in second.
      * @return Returns the current running time in second.
      */
-    double currentTime() const;
+    double currentTime() const override;
 
     /**
      * @brief Disable stopping criterion on timeout.
      * @return Disable stopping criterion on timeout.
      */
-    void disableMaxTime();
+    void disableMaxTime() override;
 
     /**
      * @brief Enable stopping criterion on timeout.
      */
-    void enableMaxTime();
+    void enableMaxTime() override;
 
     /**
      * @brief Returns true if stopping criterion on timeout is enabled, false
@@ -263,45 +263,45 @@ namespace gum {
      * @return Returns true if stopping criterion on timeout is enabled, false
      * otherwise.
      */
-    bool isEnabledMaxTime() const;
+    bool isEnabledMaxTime() const override;
 
     /**
      * @brief How many samples between two stopping is enable.
      * @param p The new period value.
      * @throw OutOfBounds Raised if p < 1.
      */
-    void setPeriodSize(Size p);
+    void setPeriodSize(Size p) override;
 
     /**
      * @brief Returns the period size.
      * @return Returns the period size.
      */
-    Size periodSize() const;
+    Size periodSize() const override;
 
     /**
      * @brief Set the verbosity on (true) or off (false).
      * @param v If true, then verbosity is turned on.
      */
-    void setVerbosity(bool v);
+    void setVerbosity(bool v) override;
 
     /**
      * @brief Returns true if verbosity is enabled.
      * @return Returns true if verbosity is enabled.
      */
-    bool verbosity() const;
+    bool verbosity() const override;
 
     /**
      * @brief Returns the approximation scheme state.
      * @return Returns the approximation scheme state.
      */
-    ApproximationSchemeSTATE stateApproximationScheme() const;
+    ApproximationSchemeSTATE stateApproximationScheme() const override;
 
     /**
      * @brief Returns the number of iterations.
      * @return Returns the number of iterations.
      * @throw OperationNotAllowed Raised if the scheme did not perform.
      */
-    Size nbrIterations() const;
+    Size nbrIterations() const override;
 
     /**
      * @brief Returns the scheme history.
@@ -309,7 +309,7 @@ namespace gum {
      * @throw OperationNotAllowed Raised if the scheme did not performed or
      * if verbosity is set to false.
      */
-    const std::vector< double >& history() const;
+    const std::vector< double >& history() const override;
 
     /**
      * @brief Initialise the scheme.
@@ -322,7 +322,7 @@ namespace gum {
      * @return Returns true if we are at the beginning of a period (compute
      * error is mandatory).
      */
-    bool startOfPeriod();
+    bool startOfPeriod() const;
 
     /**
      * @brief Update the scheme w.r.t the new error and increment steps.
@@ -334,7 +334,7 @@ namespace gum {
      * @brief Returns the remaining burn in.
      * @return Returns the remaining burn in.
      */
-    Size remainingBurnIn();
+    Size remainingBurnIn() const;
 
     /**
      * @brief Stop the approximation scheme.

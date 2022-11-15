@@ -40,7 +40,7 @@
 
 namespace gum_tests {
 
-  class NetReaderTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] NetReaderTestSuite: public CxxTest::TestSuite {
     public:
     void testConstuctor() {
       std::string file = GET_RESSOURCES_PATH("net/test1.net");

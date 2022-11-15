@@ -34,7 +34,7 @@
 
 namespace gum_tests {
 
-  class MultiDimBucketTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] MultiDimBucketTestSuite: public CxxTest::TestSuite {
     private:
     std::vector< gum::LabelizedVariable* >*   _variables_;
     std::vector< gum::Potential< double >* >* _potentials_;

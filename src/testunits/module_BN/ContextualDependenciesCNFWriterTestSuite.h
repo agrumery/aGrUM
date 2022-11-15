@@ -41,7 +41,7 @@
 
 namespace gum_tests {
 
-  class ContextualDependenciesCNFWriterTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] ContextualDependenciesCNFWriterTestSuite: public CxxTest::TestSuite {
     public:
     gum::BayesNet< double >* bn;
     gum::NodeId              i1, i2, i3, i4, i5;

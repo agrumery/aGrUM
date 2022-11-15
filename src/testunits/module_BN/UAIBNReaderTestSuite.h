@@ -39,7 +39,7 @@
 
 namespace gum_tests {
 
-  class UAIBNReaderTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] UAIBNReaderTestSuite: public CxxTest::TestSuite {
     public:
     void testConstuctor() {
       std::string             file = GET_RESSOURCES_PATH("uai/BNUAIReader_file1.uai");

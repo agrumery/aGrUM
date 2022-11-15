@@ -29,7 +29,7 @@
 
 namespace gum_tests {
 
-  class K2PriorTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] K2PriorTestSuite: public CxxTest::TestSuite {
     public:
     void test1() {
       // create the translator set

@@ -40,7 +40,7 @@
 
 namespace gum_tests {
 
-  class VariableNodeMapTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] VariableNodeMapTestSuite: public CxxTest::TestSuite {
     public:
     gum::LabelizedVariable *var1, *var2, *var3, *var4, *var5;
 

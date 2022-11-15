@@ -45,27 +45,20 @@ namespace gum {
   }
 
   INLINE
-  HashTable< std::string, std::string >& GraphicalModel::_properties_() const {
-    if (_propertiesMap_ == nullptr) {
-      _propertiesMap_ = new HashTable< std::string, std::string >();
-    }
-
-    return *_propertiesMap_;
+  const HashTable< std::string, std::string >& GraphicalModel::_properties_() const {
+    return _propertiesMap_;
   }
 
   INLINE
   const std::string& GraphicalModel::propertyWithDefault(const std::string& name,
                                                          const std::string& byDefault) const {
-    try {
-      return _properties_()[name];
-    } catch (NotFound const&) { return byDefault; }
+    return (_propertiesMap_.exists(name)) ? _propertiesMap_[name] : byDefault;
   }
 
   INLINE
   void GraphicalModel::setProperty(const std::string& name, const std::string& value) {
-    try {
-      _properties_()[name] = value;
-    } catch (NotFound const&) { _properties_().insert(name, value); }
+    if (_propertiesMap_.exists(name)) _propertiesMap_[name] = value;
+    else _propertiesMap_.insert(name, value);
   }
 
 

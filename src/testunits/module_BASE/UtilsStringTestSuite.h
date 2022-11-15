@@ -26,7 +26,7 @@
 
 namespace gum_tests {
 
-  class UtilsStringTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] UtilsStringTestSuite: public CxxTest::TestSuite {
     public:
     void TestIsInteger() {
       TS_ASSERT(gum::isInteger("12"))

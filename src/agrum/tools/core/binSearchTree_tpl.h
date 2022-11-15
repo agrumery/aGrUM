@@ -45,8 +45,7 @@ namespace gum {
   template < typename Val, class Cmp, class Node >
   INLINE BinSearchTreeIterator< Val, Cmp, Node >::BinSearchTreeIterator() :
       node_(nullptr), next_node_(nullptr), prev_node_(nullptr), parent_(nullptr),
-      left_child_(nullptr), right_child_(nullptr), tree_(nullptr),
-      next_iter_(nullptr) {
+      left_child_(nullptr), right_child_(nullptr), tree_(nullptr), next_iter_(nullptr) {
     GUM_CONSTRUCTOR(BinSearchTreeIterator);
   }
 
@@ -83,7 +82,7 @@ namespace gum {
 
   template < typename Val, class Cmp, class Node >
   INLINE void BinSearchTreeIterator< Val, Cmp, Node >::detachFromTree_() {
-    if (tree_!=nullptr) {
+    if (tree_ != nullptr) {
       BinSearchTreeIterator< Val, Cmp, Node >*iter, *prev_iter = nullptr;
 
       for (iter      = tree_->iterator_list_; iter != this && iter != nullptr;
@@ -185,7 +184,7 @@ namespace gum {
 
     Node* par = node->parent();
 
-    while ((par  != nullptr) && (node->parentDir() == BinTreeDir::RIGHT_CHILD)) {
+    while ((par != nullptr) && (node->parentDir() == BinTreeDir::RIGHT_CHILD)) {
       node = par;
       par  = par->parent();
     }
@@ -201,7 +200,7 @@ namespace gum {
 
     Node* par = node->parent();
 
-    while ((par  != nullptr) && (node->parentDir() == BinTreeDir::LEFT_CHILD)) {
+    while ((par != nullptr) && (node->parentDir() == BinTreeDir::LEFT_CHILD)) {
       node = par;
       par  = par->parent();
     }
@@ -333,7 +332,8 @@ namespace gum {
 
   template < typename Val, class Cmp, class Node >
   BinSearchTree< Val, Cmp, Node >::BinSearchTree(bool uniqueness_policy) :
-      root_(nullptr), iterator_list_(nullptr), uniqueness_policy_(uniqueness_policy), nb_elements_(0) {
+      root_(nullptr), iterator_list_(nullptr), uniqueness_policy_(uniqueness_policy),
+      nb_elements_(0) {
     GUM_CONSTRUCTOR(BinSearchTree);
     iter_end_.initialize_(this, nullptr, false);
   }

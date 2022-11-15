@@ -29,7 +29,7 @@
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/tools/graphs/parts/edgeGraphPart_inl.h>
-#endif   // GUM_NOINLINE
+#endif   // GUM_NO_INLINE
 #include "agrum/tools/graphs/graphElements.h"
 
 namespace gum {
@@ -41,14 +41,14 @@ namespace gum {
   }
 
   EdgeGraphPart::EdgeGraphPart(const EdgeGraphPart& s) : _edges_(s._edges_) {
-    GUM_CONS_CPY(EdgeGraphPart);
+    GUM_CONS_CPY(EdgeGraphPart)
 
     // copy the set of neighbours
     _neighbours_.resize(s._neighbours_.capacity());
 
-    for (const auto& elt: s._neighbours_) {
-      NodeSet* newneigh = new NodeSet(*elt.second);
-      _neighbours_.insert(elt.first, newneigh);
+    for (const auto& [key, nodeset]: s._neighbours_) {
+      NodeSet* newneigh = new NodeSet(*nodeset);
+      _neighbours_.insert(key, newneigh);
     }
 
     // send signals to indicate that there are new edges
@@ -58,12 +58,13 @@ namespace gum {
   }
 
   EdgeGraphPart::~EdgeGraphPart() {
-    GUM_DESTRUCTOR(EdgeGraphPart);
+    GUM_DESTRUCTOR(EdgeGraphPart)
     // be sure to deallocate all the neighbours sets
-    clearEdges();
+    _clearEdges_();
   }
 
-  void EdgeGraphPart::clearEdges() {
+  void EdgeGraphPart::clearEdges() { _clearEdges_(); }
+  void EdgeGraphPart::_clearEdges_() {
     for (const auto& elt: _neighbours_)
       delete elt.second;
 
@@ -90,9 +91,9 @@ namespace gum {
       // copy the set of neighbours
       _neighbours_.resize(s._neighbours_.capacity());
 
-      for (const auto& elt: s._neighbours_) {
-        NodeSet* newneigh = new NodeSet(*elt.second);
-        _neighbours_.insert(elt.first, newneigh);
+      for (const auto& [key, nodeset]: s._neighbours_) {
+        NodeSet* newneigh = new NodeSet(*nodeset);
+        _neighbours_.insert(key, newneigh);
       }
 
       if (onEdgeAdded.hasListener())
@@ -120,8 +121,7 @@ namespace gum {
     return s.str();
   }
 
-  const std::vector< NodeId > EdgeGraphPart::undirectedPath(const NodeId n1,
-                                                            const NodeId n2) const {
+  std::vector< NodeId > EdgeGraphPart::undirectedPath(NodeId n1, NodeId n2) const {
     // not recursive version => use a FIFO for simulating the recursion
     List< NodeId > nodeFIFO;
     nodeFIFO.pushBack(n2);

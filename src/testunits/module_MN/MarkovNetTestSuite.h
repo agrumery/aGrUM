@@ -41,7 +41,7 @@
 //
 
 namespace gum_tests {
-  class MarkovNetTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] MarkovNetTestSuite: public CxxTest::TestSuite {
     private:
     void _fill(gum::MarkovNet< double >& mn) {
       for (const auto i: {11, 21, 31, 41}) {

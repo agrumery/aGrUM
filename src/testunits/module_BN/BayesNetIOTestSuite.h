@@ -35,7 +35,7 @@
 
 namespace gum_tests {
 
-  class BayesNetIOTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] BayesNetIOTestSuite: public CxxTest::TestSuite {
     public:
     void testNetImportExport() {
       std::string filebif = GET_RESSOURCES_PATH("bif/alarm.bif");

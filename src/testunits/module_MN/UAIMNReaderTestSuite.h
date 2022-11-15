@@ -39,7 +39,7 @@
 
 namespace gum_tests {
 
-  class UAIMNReaderTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] UAIMNReaderTestSuite: public CxxTest::TestSuite {
     public:
     void testConstructor() {
       std::string              file = GET_RESSOURCES_PATH("uai/markov_example.uai");

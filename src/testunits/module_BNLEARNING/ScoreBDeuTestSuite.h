@@ -31,7 +31,7 @@
 
 namespace gum_tests {
 
-  class ScoreBDeuTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] ScoreBDeuTestSuite: public CxxTest::TestSuite {
     private:
     gum::GammaLog2 _gammalog2_;
     bool           _gum_destructor_increased_{false};

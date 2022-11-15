@@ -33,7 +33,7 @@
 
 namespace gum_tests {
 
-  class DecisionPotentialTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] DecisionPotentialTestSuite: public CxxTest::TestSuite {
     public:
     void testConstruction() {
       gum::DecisionPotential< double > d1, d2;

@@ -110,11 +110,6 @@ namespace gum {
     /// tests whether two EdgeGraphParts contain the same edges
     /** @param p the EdgeGraphPart that we compare with this */
     bool operator==(const EdgeGraphPart& p) const;
-
-    ///  tests whether two EdgeGraphParts contain different edges
-    /** @param p the EdgeGraphPart that we compare with this */
-    bool operator!=(const EdgeGraphPart& p) const;
-
     /// @}
 
     // ############################################################################
@@ -127,7 +122,7 @@ namespace gum {
      * @param n2 the id of the other extremity of the new edge to be inserted
      * @warning if the edge already exists, nothing is done. In particular, no
      * exception is raised. */
-    virtual void addEdge(const NodeId n1, const NodeId n2);
+    virtual void addEdge(NodeId n1, NodeId n2);
 
     /// removes an edge from the EdgeGraphPart
     /** @param edge the edge to be removed
@@ -146,7 +141,7 @@ namespace gum {
      * the EdgeGraphPart
      * @param n2 the id of the other extremity of the edge we test the existence
      * in the EdgeGraphPart */
-    bool existsEdge(const NodeId n1, const NodeId n2) const;
+    bool existsEdge(NodeId n1, NodeId n2) const;
 
     /// indicates wether the EdgeGraphPart contains any edge
     bool emptyEdges() const;
@@ -164,7 +159,7 @@ namespace gum {
     /** Note that the set of nodes returned may be empty if no edge within the
      * EdgeGraphPart is adjacent the given node.
      * @param id the node to which the edges are adjacent */
-    const NodeSet& neighbours(const NodeId id) const;
+    const NodeSet& neighbours(NodeId id) const;
 
     /// erase all the edges adjacent to a given node
     /** @param id the node the adjacent edges of which will be removed
@@ -172,12 +167,12 @@ namespace gum {
      * exception is thrown.
      * @warning although this method is not virtual, it calls method
      * eraseEdge( const Edge& edge ) and, as such, has a "virtual" behaviour */
-    void eraseNeighbours(const NodeId id);
+    void eraseNeighbours(NodeId id);
 
     /// same function as eraseNeighbours but without any virtual call to an
     /// erase
     /** @param id the node whose ingoing arcs will be removed */
-    void unvirtualizedEraseNeighbours(const NodeId id);
+    void unvirtualizedEraseNeighbours(NodeId id);
 
     /// to friendly display the content of the EdgeGraphPart
     std::string toString() const;
@@ -202,7 +197,7 @@ namespace gum {
      * method
      * will assign it for you. */
     template < typename VAL >
-    EdgeProperty< VAL > edgesProperty(const VAL& a, Size size = 0) const;
+    EdgeProperty< VAL > edgesProperty(const VAL& val, Size size = 0) const;
 
     /** @brief a method to create a list of VAL from a set of edges
      * (using for every edge, say x, the VAL f(x))
@@ -215,14 +210,14 @@ namespace gum {
      * @param node2 the id to which the path ends
      * @throw NotFound exception is raised if no path can be found between the
      * two nodes */
-    const std::vector< NodeId > undirectedPath(const NodeId node1, const NodeId node2) const;
+    std::vector< NodeId > undirectedPath(NodeId node1, NodeId node2) const;
     /**
      * return true if n1 and n2 are connected (by an undirected path) in the graph.
      * @param n1 NodeId
      * @param n2 NodeId
      * @return bool
      */
-    bool hasUndirectedPath(const NodeId n1, const NodeId n2) const;
+    bool hasUndirectedPath(NodeId n1, NodeId n2) const;
 
     /**
      * return true if n1 and n2 are connected (by an undirected path not using the
@@ -234,7 +229,7 @@ namespace gum {
      * leads to 'false'
      * @return bool
      */
-    bool hasUndirectedPath(const NodeId n1, const NodeId n2, const NodeSet& except) const;
+    bool hasUndirectedPath(NodeId n1, NodeId n2, const NodeSet& except) const;
     /**
      * return true if n1 and n2 are connected (by an undirected path not using the
      * nodes of except) in the graph.
@@ -251,12 +246,14 @@ namespace gum {
     EdgeSet _edges_;
 
     /// for each node, the set of its adjacent edges
-    mutable NodeProperty< NodeSet* > _neighbours_;
+    NodeProperty< NodeSet* > _neighbours_;
 
     /** @brief when the EdgeGraphPart contains no edge adjacent to a given node,
      * this function adds an empty set entry to  _neighbours_[id]
      * @param id the node whose  _neighbours_[id] is checked */
-    void _checkNeighbours_(const NodeId id) const;
+    void _checkNeighbours_(NodeId id);
+
+    void _clearEdges_();
   };
 
   /// for friendly displaying the content of an edge set
@@ -266,8 +263,8 @@ namespace gum {
 
 #ifndef GUM_NO_INLINE
 #  include <agrum/tools/graphs/parts/edgeGraphPart_inl.h>
-#endif   // GUM_NOINLINE
+#endif   // GUM_NO_INLINE
 
 #include <agrum/tools/graphs/parts/edgeGraphPart_tpl.h>
 
-#endif   // GUM_EDGEGRAPHPART_H
+#endif   // GUM_EDGE_GRAPH_PART_H

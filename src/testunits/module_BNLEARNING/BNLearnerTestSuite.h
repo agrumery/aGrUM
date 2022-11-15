@@ -48,14 +48,14 @@ namespace gum_tests {
       _nbr_++;
     }
 
-    void whenStop(const void* buffer, const std::string s) { _mess_ = s; }
+    void whenStop(const void* buffer, const std::string& s) { _mess_ = s; }
 
     gum::Size getNbr() { return _nbr_; }
 
     std::string getMess() { return _mess_; }
   };
 
-  class BNLearnerTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] BNLearnerTestSuite: public CxxTest::TestSuite {
     public:
     void test_asia() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"));

@@ -31,7 +31,7 @@
 
 namespace gum_tests {
 
-  class LpInterfacetTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] LpInterfacetTestSuite: public CxxTest::TestSuite {
     public:
     void testLpExpr() {
       gum::credal::lp::LpInterface< double > pl;

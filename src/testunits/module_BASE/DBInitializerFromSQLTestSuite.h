@@ -37,7 +37,7 @@
 
 namespace gum_tests {
 
-  class DBInitializerFromSQLTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] DBInitializerFromSQLTestSuite: public CxxTest::TestSuite {
     public:
     void test_init1() {
 #ifdef ODBC_

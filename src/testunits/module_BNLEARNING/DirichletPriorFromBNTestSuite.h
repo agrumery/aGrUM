@@ -31,7 +31,7 @@
 
 namespace gum_tests {
 
-  class DirichletPriorFromBNTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] DirichletPriorFromBNTestSuite: public CxxTest::TestSuite {
     private:
     void _test_prior_(gum::learning::DirichletPriorFromBN< double >& prior) {
       prior.setWeight(100.0);

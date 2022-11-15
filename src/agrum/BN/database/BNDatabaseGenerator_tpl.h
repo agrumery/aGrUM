@@ -81,7 +81,7 @@ namespace gum::learning {
       row.resize(_nbVars_);
     }
     // get the order in which the nodes will be sampled
-    const auto&        topOrder = _bn_.topologicalOrder();
+    const auto         topOrder = _bn_.topologicalOrder();
     gum::Instantiation particule;
 
     // create instantiations in advance

@@ -36,7 +36,7 @@
  */
 namespace gum_tests {
 
-  class SlotChainTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] SlotChainTestSuite: public CxxTest::TestSuite {
     private:
     using PRMSlotChain = gum::prm::PRMSlotChain< double >;
 

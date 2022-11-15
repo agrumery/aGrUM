@@ -42,7 +42,7 @@
 
 namespace gum_tests {
 
-  class UAIMNWriterTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] UAIMNWriterTestSuite: public CxxTest::TestSuite {
     public:
     gum::MarkovNet< double >* mn;
     gum::NodeId               i1, i2, i3, i4, i5;

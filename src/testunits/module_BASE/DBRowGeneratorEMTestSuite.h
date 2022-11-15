@@ -29,7 +29,7 @@
 
 namespace gum_tests {
 
-  class DBRowGeneratorEMTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] DBRowGeneratorEMTestSuite: public CxxTest::TestSuite {
     private:
     gum::Potential< double >
        _infer_(const gum::BayesNet< double >&                                  bn,

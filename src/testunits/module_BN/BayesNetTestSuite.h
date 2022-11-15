@@ -35,6 +35,8 @@
 #include <agrum/tools/variables/rangeVariable.h>
 #include <agrum/tools/variables/discretizedVariable.h>
 
+#include <agrum/BN/io/BIFXML/BIFXMLBNReader.h>
+
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -44,7 +46,7 @@
 //                          2 -> 5
 
 namespace gum_tests {
-  class BayesNetTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] BayesNetTestSuite: public CxxTest::TestSuite {
     private:
     void fillTopo(gum::BayesNet< double >& bn, gum::List< gum::NodeId >& idList) const {
       try {
@@ -1076,5 +1078,25 @@ namespace gum_tests {
       bn2.cpt("Z1").scale(12);
       TS_ASSERT_EQUALS(bn2.check().size(), gum::Size(2))
     }
-  };
-}   // namespace gum_tests
+
+    void testThreads() {
+      const std::string bn_model_path = GET_RESSOURCES_PATH("bifxml/hailfinder.bifxml");
+      const std::string bn_name       = "myBN";
+
+      try {
+        gum::BayesNet< double > bn(bn_name);
+        auto                    reader = gum::BIFXMLBNReader(&bn, bn_model_path);
+        reader.proceed();
+        /*
+        auto opExecute
+           = [&bn](const std::size_t this_thread, const std::size_t nb_threads) -> void {
+          gum::BayesNet< double > bn_local(bn);   // local copy
+                                                  // ...
+        };
+
+        gum::ThreadExecutor::execute(20, opExecute);
+*/
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
+      }
+    };
+  }   // namespace gum_tests

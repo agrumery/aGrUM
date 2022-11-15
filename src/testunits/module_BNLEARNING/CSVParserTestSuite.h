@@ -27,7 +27,7 @@
 
 namespace gum_tests {
 
-  class CSVParserTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] CSVParserTestSuite: public CxxTest::TestSuite {
     private:
     std::size_t _noParsedLine_;
 

@@ -29,11 +29,11 @@
 #  include <sstream>
 #  include <string>
 
-#  define LBP_DEFAULT_MAXITER          100
-#  define LBP_DEFAULT_EPSILON          1e-8
-#  define LBP_DEFAULT_MIN_EPSILON_RATE 1e-10
-#  define LBP_DEFAULT_PERIOD_SIZE      1
-#  define LBP_DEFAULT_VERBOSITY        false
+constexpr auto LBP_DEFAULT_MAXITER          = 100;
+constexpr auto LBP_DEFAULT_EPSILON          = 1e-8;
+constexpr auto LBP_DEFAULT_MIN_EPSILON_RATE = 1e-10;
+constexpr auto LBP_DEFAULT_PERIOD_SIZE      = 1;
+constexpr auto LBP_DEFAULT_VERBOSITY        = false;
 
 
 // to ease parsing for IDE
@@ -47,7 +47,7 @@ namespace gum {
   LoopyBeliefPropagation< GUM_SCALAR >::LoopyBeliefPropagation(const IBayesNet< GUM_SCALAR >* bn) :
       ApproximateInference< GUM_SCALAR >(bn) {
     // for debugging purposes
-    GUM_CONSTRUCTOR(LoopyBeliefPropagation);
+    GUM_CONSTRUCTOR(LoopyBeliefPropagation)
 
     this->setEpsilon(LBP_DEFAULT_EPSILON);
     this->setMinEpsilonRate(LBP_DEFAULT_MIN_EPSILON_RATE);
@@ -61,7 +61,7 @@ namespace gum {
   /// destructor
   template < typename GUM_SCALAR >
   INLINE LoopyBeliefPropagation< GUM_SCALAR >::~LoopyBeliefPropagation() {
-    GUM_DESTRUCTOR(LoopyBeliefPropagation);
+    GUM_DESTRUCTOR(LoopyBeliefPropagation)
   }
 
 

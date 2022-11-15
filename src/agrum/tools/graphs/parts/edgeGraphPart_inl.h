@@ -39,15 +39,15 @@ namespace gum {
 
   INLINE bool EdgeGraphPart::existsEdge(const Edge& edge) const { return _edges_.contains(edge); }
 
-  INLINE bool EdgeGraphPart::existsEdge(const NodeId first, const NodeId second) const {
+  INLINE bool EdgeGraphPart::existsEdge(NodeId first, NodeId second) const {
     return _neighbours_.exists(first) && _neighbours_[first]->exists(second);
   }
 
-  INLINE void EdgeGraphPart::_checkNeighbours_(const NodeId id) const {
+  INLINE void EdgeGraphPart::_checkNeighbours_(NodeId id) {
     if (!_neighbours_.exists(id)) { _neighbours_.insert(id, new NodeSet); }
   }
 
-  INLINE void EdgeGraphPart::addEdge(const NodeId first, const NodeId second) {
+  INLINE void EdgeGraphPart::addEdge(NodeId first, NodeId second) {
     Edge edge(first, second);
     _edges_.insert(edge);
     _checkNeighbours_(first);
@@ -62,7 +62,8 @@ namespace gum {
     if (existsEdge(edge)) {
       // ASSUMING first and second exists in  _neighbours_ (if not, it is an
       // error)
-      NodeId id1 = edge.first(), id2 = edge.second();
+      NodeId id1 = edge.first();
+      NodeId id2 = edge.second();
 
       _neighbours_[id1]->erase(id2);
       _neighbours_[id2]->erase(id1);
@@ -71,27 +72,27 @@ namespace gum {
     }
   }
 
-  INLINE const NodeSet& EdgeGraphPart::neighbours(const NodeId id) const {
-    _checkNeighbours_(id);
-    return *(_neighbours_[id]);
+  INLINE const NodeSet& EdgeGraphPart::neighbours(NodeId id) const {
+    if (_neighbours_.exists(id)) return *(_neighbours_[id]);
+    else return emptyNodeSet;
   }
 
-  INLINE void EdgeGraphPart::eraseNeighbours(const NodeId id) {
+  INLINE void EdgeGraphPart::eraseNeighbours(NodeId id) {
     if (_neighbours_.exists(id)) {
-      const NodeSet& set = neighbours(id);
+      const NodeSet& set = *(_neighbours_[id]);
 
       for (auto iter = set.beginSafe(); iter != set.endSafe();
            ++iter) {   // safe iterator needed here
-        // warning: use this erase so that you actually use the virtualized
+        // warning: use this erases so that you actually use the virtualized
         // edge removal function
         eraseEdge(Edge(*iter, id));
       }
     }
   }
 
-  INLINE void EdgeGraphPart::unvirtualizedEraseNeighbours(const NodeId id) {
+  INLINE void EdgeGraphPart::unvirtualizedEraseNeighbours(NodeId id) {
     if (_neighbours_.exists(id)) {
-      const NodeSet& set = neighbours(id);
+      const NodeSet& set = *(_neighbours_[id]);
 
       for (auto iter = set.beginSafe(); iter != set.endSafe();
            ++iter) {   // safe iterator needed here
@@ -102,10 +103,6 @@ namespace gum {
 
   INLINE bool EdgeGraphPart::operator==(const EdgeGraphPart& p) const {
     return _edges_ == p._edges_;
-  }
-
-  INLINE bool EdgeGraphPart::operator!=(const EdgeGraphPart& p) const {
-    return _edges_ != p._edges_;
   }
 
 } /* namespace gum */

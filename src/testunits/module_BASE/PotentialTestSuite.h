@@ -35,7 +35,7 @@
 
 namespace gum_tests {
 
-  class PotentialTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] PotentialTestSuite: public CxxTest::TestSuite {
     public:
     void setUp() {}
 

@@ -35,7 +35,7 @@
  */
 namespace gum_tests {
 
-  class FuncAttributeTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] FuncAttributeTestSuite: public CxxTest::TestSuite {
     private:
     using PRMAttribute = gum::prm::PRMFuncAttribute< double >;
 

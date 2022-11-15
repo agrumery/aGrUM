@@ -27,7 +27,7 @@
 
 namespace gum_tests {
 
-  class DBTranslator4DiscretizedVariableTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] DBTranslator4DiscretizedVariableTestSuite: public CxxTest::TestSuite {
     public:
     void test_trans1() {
       gum::DiscretizedVariable< int > var("X1", "");

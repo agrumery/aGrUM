@@ -35,7 +35,7 @@
 
 namespace gum_tests {
 
-  class DatabaseTableTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] DatabaseTableTestSuite: public CxxTest::TestSuite {
     public:
     void test_db1() {
       {

@@ -29,7 +29,7 @@
 
 namespace gum_tests {
 
-  class MultiDimFormulaTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] MultiDimFormulaTestSuite: public CxxTest::TestSuite {
     public:
     void setUp() {}
 

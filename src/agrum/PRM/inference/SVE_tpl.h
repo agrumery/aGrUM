@@ -151,7 +151,8 @@ namespace gum {
 
       // Eliminating all nodes in query instance, except query
       InstanceBayesNet< GUM_SCALAR >         bn(*query);
-      DefaultTriangulation                   t(&(bn.moralGraph()), &(bn.modalities()));
+      const auto                             moralg = bn.moralGraph();
+      DefaultTriangulation                   t(&moralg, &(bn.modalities()));
       std::vector< const DiscreteVariable* > elim_order;
 
       if (this->hasEvidence(query)) { _insertEvidence_(query, pool); }
@@ -398,7 +399,8 @@ namespace gum {
         }
 
         InstanceBayesNet< GUM_SCALAR > bn(*i);
-        DefaultTriangulation           t(&(bn.moralGraph()), &(bn.modalities()));
+        const auto moralg=bn.moralGraph();
+        DefaultTriangulation           t(&moralg, &(bn.modalities()));
         const std::vector< NodeId >&   full_elim_order = t.eliminationOrder();
         // Removing Output nodes of elimination order
         std::vector< const DiscreteVariable* > inner_elim_order;
@@ -508,7 +510,8 @@ namespace gum {
 
       if (outers.size()) partial_ordering.push_back(outers);
 
-      PartialOrderedTriangulation t(&(bn.moralGraph()), &(bn.modalities()), &partial_ordering);
+      const auto                  moralg = bn.moralGraph();
+      PartialOrderedTriangulation t(&moralg, &(bn.modalities()), &partial_ordering);
 
       for (size_t idx = 0; idx < inners.size(); ++idx)
         eliminateNode(&(c.get(t.eliminationOrder()[idx]).type().variable()),
@@ -616,7 +619,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE std::vector< NodeId >&
            SVE< GUM_SCALAR >::_getElimOrder_(const PRMClass< GUM_SCALAR >& c) {
-          return *(_elim_orders_[&c]);
+      return *(_elim_orders_[&c]);
     }
 
     template < typename GUM_SCALAR >
@@ -640,7 +643,7 @@ namespace gum {
     INLINE Potential< GUM_SCALAR >*
            SVE< GUM_SCALAR >::_getAggPotential_(const PRMInstance< GUM_SCALAR >*  i,
                                             const PRMAggregate< GUM_SCALAR >* agg) {
-          return &(const_cast< Potential< GUM_SCALAR >& >(i->get(agg->id()).cpf()));
+      return &(const_cast< Potential< GUM_SCALAR >& >(i->get(agg->id()).cpf()));
     }
 
     template < typename GUM_SCALAR >

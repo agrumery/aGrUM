@@ -27,7 +27,7 @@
 
 namespace gum_tests {
 
-  class CPlusPlusTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] CPlusPlusTestSuite: public CxxTest::TestSuite {
     public:
     void test_CPP17_binding_array() {
       int arry[3]    = {3, 4, 5};

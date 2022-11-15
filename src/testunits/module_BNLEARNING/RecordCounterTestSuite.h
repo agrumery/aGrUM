@@ -31,7 +31,7 @@
 
 namespace gum_tests {
 
-  class RecordCounterTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] RecordCounterTestSuite: public CxxTest::TestSuite {
     private:
     gum::Potential< double >
        _infer_(const gum::BayesNet< double >&                                  bn,

@@ -28,7 +28,7 @@
 
 namespace gum_tests {
 
-  class DBTranslator4ContinuousVariableTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] DBTranslator4ContinuousVariableTestSuite: public CxxTest::TestSuite {
     public:
     void test_trans1() {
       gum::learning::DBTranslator4ContinuousVariable translator;

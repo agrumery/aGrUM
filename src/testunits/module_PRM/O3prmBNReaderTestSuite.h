@@ -27,7 +27,7 @@
 
 namespace gum_tests {
 
-  class O3prmBNReaderTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] O3prmBNReaderTestSuite: public CxxTest::TestSuite {
     public:
     void testClassWithoutSystem() {
       gum::BayesNet< double >      bn;

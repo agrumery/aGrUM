@@ -30,7 +30,7 @@
 
 namespace gum_tests {
 
-  class SetTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] SetTestSuite: public CxxTest::TestSuite {
     public:
     void testConstructor() {
       gum::Set< int >* set = nullptr;

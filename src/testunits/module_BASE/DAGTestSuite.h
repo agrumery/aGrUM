@@ -36,7 +36,7 @@
 
 namespace gum_tests {
 
-  class DAGTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] DAGTestSuite: public CxxTest::TestSuite {
     private:
     static gum::Size simpleDoubleFunction(const gum::NodeId& aNodeId) { return aNodeId * 2; }
 

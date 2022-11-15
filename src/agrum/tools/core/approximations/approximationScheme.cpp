@@ -25,7 +25,7 @@
  *
  * ApproximationSettings provides as well 2 signals :
  *   - onProgress(int pourcent,double error)
- *   - onStop(std::string message)
+ *   - onStop(const std::string& message)
  * @see gum::ApproximationListener for dedicated listener.
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6)

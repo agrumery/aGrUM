@@ -35,6 +35,14 @@
   $result=q;
 }
 
+%typemap(out) gum::Sequence<gum::NodeId> {
+  PyObject *q=PyList_New(0);
+  for(auto i : static_cast<gum::Sequence<gum::NodeId>>($1)) {
+    PyList_Append(q,PyInt_FromLong(i));
+  }
+  $result=q;
+}
+
 // for gum::IMarkovNet::factors
 %typemap(out) const gum::FactorTable<double> & {
   $result = PyList_New(0);

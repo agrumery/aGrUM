@@ -250,6 +250,7 @@ namespace std {
 %exceptionclass gum::UnknownLabelInDatabase;
 
 %rename gum::Exception GumException;
+%ignore gum::GraphicalModel::spaceCplxToStream(std::stringstream& s, double dSize, int dim, Size usedMem);
 
 /* WRAPPED HEADERS (pyAgrum API) */
 %import <agrum/config.h>

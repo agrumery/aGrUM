@@ -31,7 +31,7 @@
 
 namespace gum_tests {
 
-  class IncrementalTriangulationTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] IncrementalTriangulationTestSuite: public CxxTest::TestSuite {
     public:
     void test1() {
       gum::DefaultTriangulation     tr;

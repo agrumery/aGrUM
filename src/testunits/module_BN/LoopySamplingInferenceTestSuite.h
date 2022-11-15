@@ -56,13 +56,13 @@ namespace gum_tests {
     void whenProgress(const void* buffer, const gum::Size a, const double b, const double c) {
       __nbr++;
     }
-    void whenStop(const void* buffer, const std::string s) { __mess = s; }
+    void whenStop(const void* buffer, const std::string& s) { __mess = s; }
 
     int         getNbr() { return __nbr; }
     std::string getMess() { return __mess; }
   };
 
-  class loopySamplingInferenceTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] loopySamplingInferenceTestSuite: public CxxTest::TestSuite {
     public:
     void testHybridBinaryTreeWithoutEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");

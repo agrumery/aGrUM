@@ -34,7 +34,7 @@
 
 namespace gum_tests {
 
-  class DiGraphTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] DiGraphTestSuite: public CxxTest::TestSuite {
     private:
     static gum::Size simpleDoubleFunction(const gum::NodeId& aNodeId) { return aNodeId * 2; }
 
@@ -346,27 +346,29 @@ namespace gum_tests {
     }
 
     void testDirectedPaths() {
-      gum::DiGraph graph = buildGraph();
+      try {
+        gum::DiGraph graph = buildGraph();
 
-      std::vector< gum::NodeId > path = graph.directedPath(0, 1);
-      TS_ASSERT_EQUALS(path.size(), 4U)
-      TS_ASSERT_EQUALS(path[0], 0U)
-      TS_ASSERT_EQUALS(path[1], 3U)
-      TS_ASSERT_EQUALS(path[2], 4U)
-      TS_ASSERT_EQUALS(path[3], 1U)
+        std::vector< gum::NodeId > path = graph.directedPath(0, 1);
+        TS_ASSERT_EQUALS(path.size(), 4U)
+        TS_ASSERT_EQUALS(path[0], 0U)
+        TS_ASSERT_EQUALS(path[1], 3U)
+        TS_ASSERT_EQUALS(path[2], 4U)
+        TS_ASSERT_EQUALS(path[3], 1U)
 
-      TS_ASSERT_EQUALS(graph.hasDirectedPath(0, 1), true)
-      TS_ASSERT_EQUALS(graph.hasDirectedPath(0, 0), false)
-      TS_ASSERT_EQUALS(graph.hasDirectedPath(0, 4), true)
-      TS_ASSERT_EQUALS(graph.hasDirectedPath(1, 1), true)
+        TS_ASSERT_EQUALS(graph.hasDirectedPath(0, 1), true)
+        TS_ASSERT_EQUALS(graph.hasDirectedPath(0, 0), false)
+        TS_ASSERT_EQUALS(graph.hasDirectedPath(0, 4), true)
+        TS_ASSERT_EQUALS(graph.hasDirectedPath(1, 1), true)
 
-      TS_ASSERT_THROWS(graph.directedPath(1, 2), const gum::NotFound&)
+        TS_ASSERT_THROWS(graph.directedPath(1, 2), const gum::NotFound&)
 
-      std::vector< gum::NodeId > path2 = graph.directedUnorientedPath(1, 2);
-      TS_ASSERT_EQUALS(path2.size(), 3U)
-      TS_ASSERT_EQUALS(path2[0], 1U)
-      TS_ASSERT_EQUALS(path2[1], 4U)
-      TS_ASSERT_EQUALS(path2[2], 2U)
+        std::vector< gum::NodeId > path2 = graph.directedUnorientedPath(1, 2);
+        TS_ASSERT_EQUALS(path2.size(), 3U)
+        TS_ASSERT_EQUALS(path2[0], 1U)
+        TS_ASSERT_EQUALS(path2[1], 4U)
+        TS_ASSERT_EQUALS(path2[2], 2U)
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
     // void testToDot() {

@@ -121,7 +121,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE InfluenceDiagram< GUM_SCALAR >::InfluenceDiagram() : DAGmodel() {
-    GUM_CONSTRUCTOR(InfluenceDiagram);
+    GUM_CONSTRUCTOR(InfluenceDiagram)
   }
 
   /*
@@ -129,7 +129,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   InfluenceDiagram< GUM_SCALAR >::~InfluenceDiagram() {
-    GUM_DESTRUCTOR(InfluenceDiagram);
+    GUM_DESTRUCTOR(InfluenceDiagram)
     removeTables_();
   }
 
@@ -138,7 +138,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   InfluenceDiagram< GUM_SCALAR >::InfluenceDiagram(const InfluenceDiagram< GUM_SCALAR >& source) {
-    GUM_CONS_CPY(InfluenceDiagram);
+    GUM_CONS_CPY(InfluenceDiagram)
     copyStructureAndTables_(source);
   }
 
@@ -200,7 +200,7 @@ namespace gum {
         for (Idx par = 1; par <= IDsource.parents(node).size(); par++)
           addArc(IDsource.utility(node).variable(par).name(), s);
       } else {   // decision node
-        // here the order does not depends on a Potential
+        // here the order does not depend on a Potential
         for (NodeId par: IDsource.parents(node))
           addArc(par, node);
       }
@@ -279,9 +279,8 @@ namespace gum {
     output << "  decision: " << decisionNodeSize() << "," << std::endl;
     output << "  arcs: " << dag().sizeArcs() << "," << std::endl;
 
-    double dSize = log10DomainSize();
 
-    if (dSize > 6) output << "  domainSize: 10^" << dSize;
+    if (double dSize = log10DomainSize(); dSize > 6) output << "  domainSize: 10^" << dSize;
     else output << "  domainSize: " << std::round(std::pow(10.0, dSize));
 
     output << std::endl << "}";
@@ -596,7 +595,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void InfluenceDiagram< GUM_SCALAR >::eraseArc(const Arc& arc) {
     if (dag_.existsArc(arc)) {
-      NodeId head = arc.head(), tail = arc.tail();
+      NodeId head = arc.head();
+      NodeId tail = arc.tail();
       dag_.eraseArc(arc);
 
       if (isChanceNode(head))
@@ -646,7 +646,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   bool InfluenceDiagram< GUM_SCALAR >::decisionOrderExists() const {
-    const Sequence< NodeId >& order = topologicalOrder(true);
+    const Sequence< NodeId > order = topologicalOrder();
 
     // Finding first decision node
     Sequence< NodeId >::const_iterator orderIter = order.begin();
@@ -681,7 +681,7 @@ namespace gum {
     List< NodeId > nodeFIFO;
     // mark[node] contains 0 if not visited
     // mark[node] = predecessor if visited
-    NodeProperty< int > mark = dag_.nodesProperty((int)-1);
+    NodeProperty< int > mark = dag_.nodesProperty(-1);
     NodeId              current;
 
     mark[src] = (int)src;
@@ -775,7 +775,7 @@ namespace gum {
 
     std::vector< NodeId > decisionSequence;
 
-    for (const auto elt: topologicalOrder(false))
+    for (const auto elt: topologicalOrder())
       if (isDecisionNode(elt)) decisionSequence.push_back(elt);
 
     return decisionSequence;
@@ -853,15 +853,9 @@ namespace gum {
                                              unsigned int       default_nbrmod) {
     std::string node = fast_description;
     switch (*(node.begin())) {
-      case '*':
-        node.erase(0, 1);
-        return addDecisionNode(node, default_nbrmod);
-        break;
-      case '$':
-        node.erase(0, 1);
-        return addUtilityNode(node);
-        break;
+      case '*': node.erase(0, 1); return addDecisionNode(node, default_nbrmod);
+      case '$': node.erase(0, 1); return addUtilityNode(node);
+      default: return addChanceNode(fast_description, default_nbrmod);
     }
-    return addChanceNode(fast_description, default_nbrmod);
   }
 }   // namespace gum

@@ -30,7 +30,7 @@
 
 namespace gum_tests {
 
-  class HashTableTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] HashTableTestSuite: public CxxTest::TestSuite {
     public:
     void testConstructor() {
       gum::HashTable< int, int >* table = nullptr;

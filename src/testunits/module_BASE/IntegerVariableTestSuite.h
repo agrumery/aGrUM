@@ -30,7 +30,7 @@
 
 namespace gum_tests {
 
-  class IntegerVariableTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] IntegerVariableTestSuite: public CxxTest::TestSuite {
     public:
     void testAll() {
       gum::IntegerVariable var1("var1", "this is var1");

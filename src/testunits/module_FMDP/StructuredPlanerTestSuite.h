@@ -33,7 +33,7 @@
 
 namespace gum_tests {
 
-  class StructuredPlanerTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] StructuredPlanerTestSuite: public CxxTest::TestSuite {
     private:
     std::string file;
 

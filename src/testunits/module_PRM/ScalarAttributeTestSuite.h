@@ -35,7 +35,7 @@
  */
 namespace gum_tests {
 
-  class ScalarAttributeTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] ScalarAttributeTestSuite: public CxxTest::TestSuite {
     private:
     using PRMAttribute = gum::prm::PRMScalarAttribute< double >;
 

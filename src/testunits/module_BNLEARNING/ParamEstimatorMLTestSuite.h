@@ -33,7 +33,7 @@
 
 namespace gum_tests {
 
-  class ParamEstimatorMLTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] ParamEstimatorMLTestSuite: public CxxTest::TestSuite {
     private:
     std::vector< double > _normalize_(const std::vector< double >& vin) {
       double sum = 0;

@@ -36,7 +36,7 @@
 
 namespace gum_tests {
 
-  class GraphChangesSelector4DiGraphTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] GraphChangesSelector4DiGraphTestSuite: public CxxTest::TestSuite {
     private:
     void _order_nodes_(const std::vector< std::vector< double > >&      all_scores,
                        const std::vector< gum::NodeId >&                best_nodes,

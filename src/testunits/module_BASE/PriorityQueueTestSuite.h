@@ -42,7 +42,7 @@ namespace gum {
 
 namespace gum_tests {
 
-  class PriorityQueueTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] PriorityQueueTestSuite: public CxxTest::TestSuite {
     public:
     void testConstruct() {
       gum::PriorityQueue< std::string > queue1;

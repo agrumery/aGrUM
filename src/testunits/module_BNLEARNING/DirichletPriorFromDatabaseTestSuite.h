@@ -29,7 +29,7 @@
 
 namespace gum_tests {
 
-  class DirichletPriorFromDatabaseTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] DirichletPriorFromDatabaseTestSuite: public CxxTest::TestSuite {
     public:
     void test1() {
       // create the translator set

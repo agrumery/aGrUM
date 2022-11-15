@@ -35,7 +35,7 @@
  */
 namespace gum_tests {
 
-  class ReferenceSlotTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] ReferenceSlotTestSuite: public CxxTest::TestSuite {
     private:
     using PRMReferenceSlot = gum::prm::PRMReferenceSlot< double >;
 

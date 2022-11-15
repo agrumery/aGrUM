@@ -26,7 +26,7 @@
 
 namespace gum_tests {
 
-  class RefPtrTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] RefPtrTestSuite: public CxxTest::TestSuite {
     public:
     void testConstructors() {
       gum::RefPtr< int > ptr1(new int(4));

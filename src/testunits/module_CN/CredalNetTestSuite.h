@@ -43,7 +43,7 @@
 
 namespace gum_tests {
 
-  class CredalNetTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] CredalNetTestSuite: public CxxTest::TestSuite {
     private:
     protected:
     public:

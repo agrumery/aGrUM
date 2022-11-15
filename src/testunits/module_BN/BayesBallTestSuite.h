@@ -33,7 +33,7 @@
 
 namespace gum_tests {
 
-  class BayesBallTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] BayesBallTestSuite: public CxxTest::TestSuite {
     public:
     void setUp() {}
 

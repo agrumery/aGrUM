@@ -36,7 +36,7 @@
 
 namespace gum_tests {
 
-  class MultiDimCompleteProjectionTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] MultiDimCompleteProjectionTestSuite: public CxxTest::TestSuite {
     private:
     // ==========================================================================
     /// initialize randomly a table

@@ -50,7 +50,6 @@ namespace gum_tests {
     int         __nbr;
     std::string __msg;
 
-    protected:
     public:
     explicit L2UListener(gum::ApproximationScheme& aS) :
         gum::ApproximationSchemeListener(aS), __nbr(0), __msg(""){};
@@ -59,7 +58,7 @@ namespace gum_tests {
       __nbr++;
     }
 
-    void whenStop(const void* buffer, const std::string s) { __msg = s; }
+    void whenStop(const void* buffer, const std::string& s) { __msg = s; }
 
     int nbr() { return __nbr; }
 
@@ -67,7 +66,7 @@ namespace gum_tests {
   };   // end of : class l2uListener
 
   ////////////////////////////////////////////////////////////////
-  class CNLooopyPropagationTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] CNLooopyPropagationTestSuite: public CxxTest::TestSuite {
     private:
     protected:
     public:

@@ -47,18 +47,18 @@ namespace gum {
     const NodeProperty< NodeSet* >& pars = s._parents_;
     _parents_.resize(pars.capacity());
 
-    for (const auto& elt: pars) {
-      NodeSet* newpar = new NodeSet(*elt.second);
-      _parents_.insert(elt.first, newpar);
+    for (const auto& [key, nodeset]: pars) {
+      NodeSet* newpar = new NodeSet(*nodeset);
+      _parents_.insert(key, newpar);
     }
 
     // copy the sets of children
     const NodeProperty< NodeSet* >& children = s._children_;
     _children_.resize(children.capacity());
 
-    for (const auto& elt: children) {
-      NodeSet* newchildren = new NodeSet(*elt.second);
-      _children_.insert(elt.first, newchildren);
+    for (const auto& [key, nodeset]: children) {
+      NodeSet* newchildren = new NodeSet(*nodeset);
+      _children_.insert(key, newchildren);
     }
 
     // send signals to indicate that there are new arcs
@@ -108,17 +108,17 @@ namespace gum {
       // copy the sets of parents
       _parents_.resize(s._parents_.capacity());
 
-      for (const auto& elt: s._parents_) {
-        NodeSet* newpar = new NodeSet(*elt.second);
-        _parents_.insert(elt.first, newpar);
+      for (const auto& [key, nodeset]: s._parents_) {
+        NodeSet* newpar = new NodeSet(*nodeset);
+        _parents_.insert(key, newpar);
       }
 
       // copy the sets of children
       _children_.resize(s._children_.capacity());
 
-      for (const auto& elt: s._children_) {
-        NodeSet* newchildren = new NodeSet(*elt.second);
-        _children_.insert(elt.first, newchildren);
+      for (const auto& [key, nodeset]: s._children_) {
+        NodeSet* newchildren = new NodeSet(*nodeset);
+        _children_.insert(key, newchildren);
       }
 
       if (onArcAdded.hasListener()) {

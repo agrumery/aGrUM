@@ -114,11 +114,6 @@ namespace gum {
     /// tests whether two ArcGraphParts contain the same arcs
     /** @param p the ArcGraphPart that we compare with this */
     bool operator==(const ArcGraphPart& p) const;
-
-    ///  tests whether two ArcGraphParts contain different arcs
-    /** @param p the ArcGraphPart that we compare with this */
-    bool operator!=(const ArcGraphPart& p) const;
-
     /// @}
 
     // ############################################################################
@@ -301,20 +296,20 @@ namespace gum {
     Set< Arc > _arcs_;
 
     /// for each arc, the sets of its parents
-    mutable NodeProperty< NodeSet* > _parents_;
+    NodeProperty< NodeSet* > _parents_;
 
     /// for each arc, the set of its children
-    mutable NodeProperty< NodeSet* > _children_;
+    NodeProperty< NodeSet* > _children_;
 
     /** @brief when the ArcGraphPart contains no arc ingoing into a given node,
      * this function adds an empty set entry to  _parents_[id]
      * @param id the node whose  _parents_[id] is checked */
-    void _checkParents_(NodeId id) const;
+    void _checkParents_(NodeId id);
 
     /** @brief when the ArcGraphPart contains no arc outgoing from a given node,
      * this function adds an empty set entry to  _children_[id]
      * @param id the node whose  _children_[id] is checked */
-    void _checkChildren_(NodeId id) const;
+    void _checkChildren_(NodeId id);
   };
 
   /// for friendly displaying the content of arc set

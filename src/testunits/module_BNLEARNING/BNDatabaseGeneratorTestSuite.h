@@ -55,7 +55,7 @@ namespace gum_tests {
   };
 
 
-  class BNDatabaseGeneratorTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] BNDatabaseGeneratorTestSuite: public CxxTest::TestSuite {
     public:
     gum::BayesNet< double >* bn;
 

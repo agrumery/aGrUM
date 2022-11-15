@@ -58,7 +58,7 @@ namespace gum {
     Signaler3< Size, double, double > onProgress;
 
     /// Criteria messageApproximationScheme
-    Signaler1< std::string > onStop;
+    Signaler1< const std::string& > onStop;
 
     /// The different state of an approximation scheme.
     enum class ApproximationSchemeSTATE : char {
@@ -83,7 +83,7 @@ namespace gum {
     /**
      * @brief Class destructor.
      */
-    ~IApproximationSchemeConfiguration();
+    virtual ~IApproximationSchemeConfiguration();
     /// @}
 
     // ======================================================================

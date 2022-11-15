@@ -43,7 +43,7 @@
 
 namespace gum_tests {
 
-  class BNdistanceTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] BNdistanceTestSuite: public CxxTest::TestSuite {
     public:
     void testConstructor() {
       gum::BayesNet< double > net1;

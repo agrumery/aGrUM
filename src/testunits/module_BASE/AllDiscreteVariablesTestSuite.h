@@ -30,7 +30,7 @@
 
 namespace gum_tests {
 
-  class AllVariablesTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] AllVariablesTestSuite: public CxxTest::TestSuite {
     public:
     void testCreationRange() {
       try {

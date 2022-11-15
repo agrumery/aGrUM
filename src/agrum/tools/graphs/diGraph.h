@@ -185,12 +185,11 @@ namespace gum {
     virtual std::string toDot() const;
 
     /**
-     * The topological order stays the same as long as no variable or arcs are
-     * added or erased src the topology.
-     * @param clear If false returns the previously created topology.
+     * Build and return a topological order
+     *
      * @throw InvalidDirectedCycle Raised if this DiGraph contains cycles.
      */
-    const Sequence< NodeId >& topologicalOrder(bool clear = true) const;
+    Sequence< NodeId > topologicalOrder() const;
     /// @}
 
     /** checks whether there exists a directed path from \e from to \e to
@@ -202,15 +201,7 @@ namespace gum {
      * @return true if a directed path exists
      *
      */
-    bool hasDirectedPath(const NodeId from, const NodeId to);
-
-    private:
-    /// The topology sequence of this Directed Graphical Model.
-    mutable Sequence< NodeId >* _mutableTopologicalOrder_;
-
-    /// Returns a topological order of this DAGModel.
-    /// @warning  _mutableTopologicalOrder_ is assumed to be valid and empty
-    void _topologicalOrder_() const;
+    bool hasDirectedPath(NodeId from, NodeId to);
   };
 
   /// for friendly displaying the content of directed graphs

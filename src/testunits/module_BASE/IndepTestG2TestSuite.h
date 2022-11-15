@@ -33,7 +33,7 @@
 
 namespace gum_tests {
 
-  class IndepTestG2TestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] IndepTestG2TestSuite: public CxxTest::TestSuite {
     public:
     void test_G2() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));

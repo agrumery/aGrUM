@@ -36,7 +36,7 @@
 
 namespace gum_tests {
 
-  class SDynaTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] SDynaTestSuite: public CxxTest::TestSuite {
     private:
     void run(gum::AbstractSimulator& sim) {
       // *********************************************************************************************

@@ -42,7 +42,7 @@
 
 namespace gum_tests {
 
-  class DefaultTriangulationTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] DefaultTriangulationTestSuite: public CxxTest::TestSuite {
     public:
     gum::LabelizedVariable *var1, *var2, *var3, *var4, *var5;
 

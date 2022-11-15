@@ -51,9 +51,9 @@
 
 namespace gum_tests {
 
-  class InfluenceDiagramTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] InfluenceDiagramTestSuite: public CxxTest::TestSuite {
     private:
-    void fillTopo(gum::InfluenceDiagram< double >& id, gum::List< gum::NodeId >& idList) {
+    void fillTopo(gum::InfluenceDiagram< double >& id, gum::List< gum::NodeId >& idList) const {
       try {
         idList.insert(id.addDecisionNode(*decisionVar1));   // 0
         idList.insert(id.addDecisionNode(*decisionVar2));   // 1
@@ -80,7 +80,7 @@ namespace gum_tests {
         id.addArc(idList[8], idList[10]);
         id.addArc(idList[3], idList[10]);
 
-      } catch (gum::Exception& e) {
+      } catch (const gum::Exception& e) {
         std::cerr << std::endl << e.errorContent() << std::endl;
         throw;
       }
@@ -98,16 +98,24 @@ namespace gum_tests {
 
         id.utility(idList[9]).populate({42.0f, 69.0f, 666.0f, 84.0f});     // U1
         id.utility(idList[10]).populate({42.0f, -69.0f, 666.0f, 84.0f});   // U2
-      } catch (gum::Exception& e) {
+      } catch (const gum::Exception& e) {
         std::cerr << std::endl << e.errorContent() << std::endl;
         throw;
       }
     }
 
     public:
-    gum::LabelizedVariable *decisionVar1, *decisionVar2, *decisionVar3, *decisionVar4;
-    gum::LabelizedVariable *chanceVar1, *chanceVar2, *chanceVar3, *chanceVar4, *chanceVar5;
-    gum::LabelizedVariable *utilityVar1, *utilityVar2;
+    gum::LabelizedVariable* decisionVar1;
+    gum::LabelizedVariable* decisionVar2;
+    gum::LabelizedVariable* decisionVar3;
+    gum::LabelizedVariable* decisionVar4;
+    gum::LabelizedVariable* chanceVar1;
+    gum::LabelizedVariable* chanceVar2;
+    gum::LabelizedVariable* chanceVar3;
+    gum::LabelizedVariable* chanceVar4;
+    gum::LabelizedVariable* chanceVar5;
+    gum::LabelizedVariable* utilityVar1;
+    gum::LabelizedVariable* utilityVar2;
 
     void setUp() {
       decisionVar1 = new gum::LabelizedVariable("decisionVar1", "D1", 2);
@@ -279,7 +287,7 @@ namespace gum_tests {
         }
       }
 
-      if (copy) delete copy;
+      if (copy != nullptr) delete copy;
     }
 
     void testInsertion_1() {
@@ -307,7 +315,7 @@ namespace gum_tests {
         }
       }
 
-      gum::LabelizedVariable* varPtr = nullptr;
+      gum::LabelizedVariable const* varPtr = nullptr;
 
       TS_GUM_ASSERT_THROWS_NOTHING(varPtr = (gum::LabelizedVariable*)&id.variable(idList[0]))
       TS_ASSERT_EQUALS(*varPtr, *decisionVar1)
@@ -332,7 +340,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(id.size(), (gum::Size)5)
       TS_ASSERT_EQUALS(id.dag().size(), (gum::Size)5)
 
-      gum::LabelizedVariable* varPtr = nullptr;
+      gum::LabelizedVariable const* varPtr = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(varPtr = (gum::LabelizedVariable*)&id.variable(idList[0]))
       TS_ASSERT_EQUALS(*varPtr, *decisionVar2)
 
@@ -342,7 +350,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[3])), *chanceVar4)
       TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[4])), *utilityVar2)
 
-      gum::LabelizedVariable* utilityVar3 = new gum::LabelizedVariable("utilityVar3", "U3", 2);
+      auto utilityVar3 = new gum::LabelizedVariable("utilityVar3", "U3", 2);
       TS_ASSERT_THROWS(id.addUtilityNode(*utilityVar3), const gum::InvalidArgument&)
       delete utilityVar3;
     }
@@ -738,7 +746,7 @@ namespace gum_tests {
       id.addArc(idList[15], idList[19]);
 
       gum::UndiGraph moralGraph;
-      TS_ASSERT_THROWS_NOTHING(moralGraph = id.moralGraph(true))
+      TS_ASSERT_THROWS_NOTHING(moralGraph = id.moralGraph())
 
       // For comparison with what readers will return
       std::string   dotfile = GET_RESSOURCES_PATH("outputs/IDBeforeMoralisation.dot");

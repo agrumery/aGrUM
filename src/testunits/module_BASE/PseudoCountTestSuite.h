@@ -34,7 +34,7 @@
 
 namespace gum_tests {
 
-  class PseudoCountTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] PseudoCountTestSuite: public CxxTest::TestSuite {
     public:
     void test_simple_counts() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/minimal.csv"));

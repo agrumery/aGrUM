@@ -26,7 +26,7 @@
 
 namespace gum_tests {
 
-  class NodeGraphPartTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] NodeGraphPartTestSuite: public CxxTest::TestSuite {
     public:
     void testConstructor() { TS_GUM_ASSERT_THROWS_NOTHING(gum::NodeGraphPart ngp); }
 

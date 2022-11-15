@@ -43,7 +43,7 @@
 
 namespace gum_tests {
 
-  class ThreeOffTwoTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] ThreeOffTwoTestSuite: public CxxTest::TestSuite {
     public:
     void test_3off2_asia_nocorr() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));

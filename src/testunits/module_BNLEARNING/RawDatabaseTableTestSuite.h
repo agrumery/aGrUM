@@ -28,7 +28,7 @@
 
 namespace gum_tests {
 
-  class RawDatabaseTableTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] RawDatabaseTableTestSuite: public CxxTest::TestSuite {
     public:
     void test_db1() {
       gum::learning::RawDatabaseTable database;

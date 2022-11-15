@@ -36,7 +36,7 @@
 #include <agrum/tools/variables/discretizedVariable.h>
 
 namespace gum_tests {
-  class ShaferShenoyMNTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] ShaferShenoyMNTestSuite: public CxxTest::TestSuite {
     public:
     void testConstructor() {
       auto mn = gum::MarkovNet< double >::fastPrototype("A--B--C;C--D;C--E--F");

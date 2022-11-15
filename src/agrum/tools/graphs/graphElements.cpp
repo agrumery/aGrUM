@@ -43,13 +43,11 @@ namespace gum {
   // we need to provide hash functions for some Edge and Arc
 
   /// A \c << operator for edges
-
   std::ostream& operator<<(std::ostream& stream, const Edge& edge) {
     return (stream << edge.first() << "--" << edge.second());
   }
 
   /// A \c << operator for arcs
-
   std::ostream& operator<<(std::ostream& stream, const Arc& arc) {
     return (stream << arc.first() << "->" << arc.second());
   }

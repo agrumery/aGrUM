@@ -43,7 +43,7 @@
 
 namespace gum_tests {
 
-  class MultiDimAggregratorsTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] MultiDimAggregratorsTestSuite: public CxxTest::TestSuite {
     private:
     float _is_min_(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp = b;

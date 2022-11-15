@@ -167,13 +167,13 @@ namespace gum {
     /// @{
 
     /// returns an extremal node of an edge given the ID of the other one
-    NodeId other(NodeId id) const;
+    GUM_NODISCARD NodeId other(NodeId id) const;
 
     /// returns one extremal node ID (whichever one it is is unspecified)
-    NodeId first() const;
+    GUM_NODISCARD NodeId first() const;
 
     /// returns the node ID of the other extremal node ID
-    NodeId second() const;
+    GUM_NODISCARD NodeId second() const;
 
     ///@}
 
@@ -186,32 +186,23 @@ namespace gum {
     Edge& operator=(const Edge& src);
 
     /// checks whether two undirected edges are equal
-    /** Two Edge are equal if they have the same extremal nodes, whetever their
+    /** Two Edge are equal if they have the same extremal nodes, whatever their
      * order. For instance (3,4) == (4,3). */
-    bool operator==(const Edge& src) const;
-
-    /// checks whether two undirected edges are different
-    /** Two Edge are different if at least one extremal node of an edge is not
-     * an extremal node of the other edge. For instance, (4,5) != (5,6). */
-    bool operator!=(const Edge& src) const;
+    bool operator==(const Edge& src) const = default;
 
     /// @}
 
     private:
     /// the extremal nodes of the edge (their order is unimportant)
-    NodeId n1, n2;
+    NodeId n1;
+    NodeId n2;
   };
 
-  /* ===========================================================================
-   */
-  /* ===========================================================================
-   */
-  /* ===                        GENERIC DIRECTED EDGES                       ===
-   */
-  /* ===========================================================================
-   */
-  /* ===========================================================================
-   */
+  /* =========================================================================*/
+  /* =========================================================================*/
+  /* ==                        GENERIC DIRECTED EDGES                       ==*/
+  /* =========================================================================*/
+  /* =========================================================================*/
   /** @class Arc
    * @brief The base class for all directed edges
    * \ingroup graph_group
@@ -272,19 +263,19 @@ namespace gum {
     /// @{
 
     /// returns the tail of the arc
-    NodeId tail() const;
+    GUM_NODISCARD NodeId tail() const;
 
     /// returns the head of the arc
-    NodeId head() const;
+    GUM_NODISCARD NodeId head() const;
 
     /// returns an extremal node of an edge given the ID of the other one
-    NodeId other(NodeId id) const;
+    GUM_NODISCARD NodeId other(NodeId id) const;
 
     /// returns one extremal node ID (whichever one it is is unspecified)
-    NodeId first() const;
+    GUM_NODISCARD NodeId first() const;
 
     /// returns the node ID of the other extremal node ID
-    NodeId second() const;
+    GUM_NODISCARD NodeId second() const;
 
     /// @}
 
@@ -299,19 +290,14 @@ namespace gum {
     /// checks whether two arcs are equal
     /** Two arcs are considered equal if they have the same head and tail
      * (by same we mean they have the same ID). */
-    bool operator==(const Arc& src) const;
-
-    /// check if two arcs are different
-    /** Two arcs are considered different if they have different head and/or
-     * tail
-     * (by different we mean they have different ID). */
-    bool operator!=(const Arc& src) const;
+    bool operator==(const Arc& src) const = default;
 
     /// @}
 
     private:
     /// the extremal nodes of the edge (their order is unimportant)
-    NodeId n1, n2;
+    NodeId n1;
+    NodeId n2;
 
     /// modifies the tail of the arc
     void _setTail_(NodeId id);
@@ -343,7 +329,7 @@ namespace gum {
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    virtual Size operator()(const Edge& key) const override final;
+    Size operator()(const Edge& key) const final;
   };
 
 
@@ -362,7 +348,7 @@ namespace gum {
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    virtual Size operator()(const Arc& key) const override final;
+    Size operator()(const Arc& key) const final;
   };
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
@@ -378,6 +364,8 @@ namespace gum {
   using ArcSetIterator  = ArcSet::const_iterator;
   using EdgeSetIterator = EdgeSet::const_iterator;
   using NodeSetIterator = NodeSet::const_iterator;
+
+  inline const NodeSet emptyNodeSet;
   /** @} */
 
   /** \ingroup graph_group
@@ -409,4 +397,4 @@ extern template class gum::HashFunc< gum::NodeSet >;
 #  include <agrum/tools/graphs/graphElements_inl.h>
 #endif /* GUM_NO_INLINE */
 
-#endif   // GUM_GRAPHELEMENTS_H
+#endif   // GUM_GRAPH_ELEMENTS_H

@@ -39,7 +39,7 @@
 
 namespace gum_tests {
 
-  class BIFXMLBNReaderTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] BIFXMLBNReaderTestSuite: public CxxTest::TestSuite {
     public:
     void testConstuctor() {
       std::string             file = GET_RESSOURCES_PATH("bifxml/BNBIFXMLReader_file1.bifxml");

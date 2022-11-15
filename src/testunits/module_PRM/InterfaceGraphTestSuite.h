@@ -30,7 +30,7 @@
 
 namespace gum_tests {
 
-  class InterfaceGraphTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] InterfaceGraphTestSuite: public CxxTest::TestSuite {
     private:
     gum::prm::PRM< double >* _prm_;
     std::string              source_dir;

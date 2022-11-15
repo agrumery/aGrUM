@@ -49,7 +49,7 @@
 
 namespace gum_tests {
 
-  class ShaferShenoyInferenceBNTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] ShaferShenoyInferenceBNTestSuite: public CxxTest::TestSuite {
     public:
     gum::BayesNet< double >* bn;
     gum::NodeId              i1, i2, i3, i4, i5;

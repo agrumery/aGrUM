@@ -27,7 +27,7 @@
 
 namespace gum_tests {
 
-  class IdtCondSetTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] IdtCondSetTestSuite: public CxxTest::TestSuite {
     public:
     void test1() {
       gum::learning::IdCondSet set;

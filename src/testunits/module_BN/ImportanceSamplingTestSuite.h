@@ -52,7 +52,7 @@ namespace gum_tests {
     void whenProgress(const void* buffer, const gum::Size a, const double b, const double c) {
       __nbr++;
     }
-    void whenStop(const void* buffer, const std::string s) {
+    void whenStop(const void* buffer, const std::string& s) {
       __nbr++;
       __mess = s;
     }
@@ -61,7 +61,7 @@ namespace gum_tests {
     std::string getMess() { return __mess; }
   };
 
-  class ImportanceSamplingTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] ImportanceSamplingTestSuite: public CxxTest::TestSuite {
     public:
     void testImportanceBinaryTreeWithoutEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");

@@ -31,7 +31,7 @@
 
 namespace gum_tests {
 
-  class ContinuousVariableTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] ContinuousVariableTestSuite: public CxxTest::TestSuite {
     public:
     void test_constructors() {
       gum::ContinuousVariable<> var1("x1", "");

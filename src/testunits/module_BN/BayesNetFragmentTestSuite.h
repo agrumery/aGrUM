@@ -44,7 +44,7 @@
 
 namespace gum_tests {
 
-  class BayesNetFragmentTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] BayesNetFragmentTestSuite: public CxxTest::TestSuite {
     private:
     void fill(gum::BayesNet< double >& bn) {
       try {
@@ -321,7 +321,7 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(count, frag.sizeArcs())
 
-      const auto& order = frag.topologicalOrder();
+      const auto order = frag.topologicalOrder();
       TS_ASSERT_EQUALS(order.size(), (gum::Size)3)
       TS_ASSERT_EQUALS(frag.variable(order.atPos(0)).name(), "v1")
       TS_ASSERT_EQUALS(frag.variable(order.atPos(1)).name(), "v3")
@@ -383,7 +383,7 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(count, frag.sizeArcs())
 
-      const auto& order = frag.topologicalOrder();
+      const auto order = frag.topologicalOrder();
       TS_ASSERT_EQUALS(order.size(), (gum::Size)3)
       TS_ASSERT_EQUALS(frag.variable(order.atPos(0)).name(), "v1")
       TS_ASSERT_EQUALS(frag.variable(order.atPos(1)).name(), "v3")

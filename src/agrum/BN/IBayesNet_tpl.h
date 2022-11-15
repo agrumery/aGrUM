@@ -142,7 +142,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE std::string IBayesNet< GUM_SCALAR >::toString() const {
-    Size   usedMem = 0;
+    Size usedMem = 0;
 
     for (auto node: nodes())
       usedMem += cpt(node).content()->realSize();
@@ -151,7 +151,7 @@ namespace gum {
     std::stringstream s;
     s << "BN{nodes: " << size() << ", arcs: " << dag().sizeArcs() << ", ";
     spaceCplxToStream(s, log10DomainSize(), dim(), usedMem);
-    s<<"}";
+    s << "}";
     return s.str();
   }
 

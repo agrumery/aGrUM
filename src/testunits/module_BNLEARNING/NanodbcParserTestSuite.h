@@ -28,7 +28,7 @@
 
 namespace gum_tests {
 
-  class NanodbcParserTestSuite : public CxxTest::TestSuite {
+  class [[maybe_unused]] NanodbcParserTestSuite : public CxxTest::TestSuite {
     public:
     void testSimpleSQL() {
 

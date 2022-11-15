@@ -29,7 +29,7 @@
 
 namespace gum_tests {
 
-  class GammaLog2TestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] GammaLog2TestSuite: public CxxTest::TestSuite {
     public:
     void test1() {
       gum::GammaLog2 f;

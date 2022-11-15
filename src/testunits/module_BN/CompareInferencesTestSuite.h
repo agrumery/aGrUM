@@ -44,7 +44,7 @@
 
 namespace gum_tests {
 
-  class CompareInferencesTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] CompareInferencesTestSuite: public CxxTest::TestSuite {
     private:
     // Builds a BN to test the inference
     void fill_bn1(gum::BayesNet< double >& bn) {

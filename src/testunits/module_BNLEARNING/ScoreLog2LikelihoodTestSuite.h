@@ -30,7 +30,7 @@
 
 namespace gum_tests {
 
-  class ScoreLog2LikelihoodTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] ScoreLog2LikelihoodTestSuite: public CxxTest::TestSuite {
     private:
     double _score_(const std::vector< double >& N_ijk, const std::vector< double >& N_ij) const {
       double score = 0.0;

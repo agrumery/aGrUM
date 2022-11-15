@@ -39,10 +39,11 @@ def checkAgrumMemoryLeak(x, percent):
   proc = Popen(cmd + " --no-fun", shell=True, stdout=PIPE, stderr=STDOUT)
   out = proc.stdout.readlines()
   for line in out:
-    if "NO MEMORY LEAK" in line:
+    if b"NO MEMORY LEAK" in line:
       last = cfg.C_VALUE + "ok" + cfg.C_END
       flag = 1
-    elif "Memory leaks found" in line:
+    elif b"Memory leaks found" in line:
+      line=str(line)
       last = cfg.C_ERROR + line.split("|")[2].strip() + cfg.C_END
       flag = 2
 

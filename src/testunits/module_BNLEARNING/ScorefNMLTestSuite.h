@@ -30,7 +30,7 @@
 
 namespace gum_tests {
 
-  class ScorefNMLTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] ScorefNMLTestSuite: public CxxTest::TestSuite {
     private:
     double _score_(const std::vector< double >& N_ijk, const std::vector< double >& N_ij) const {
       double score   = 0;

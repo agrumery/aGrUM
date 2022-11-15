@@ -47,19 +47,27 @@
 
 namespace gum_tests {
 
-  class VariableElimination: public CxxTest::TestSuite {
+  class [[maybe_unused]] VariableEliminationTestSuite: public CxxTest::TestSuite {
     public:
-    gum::BayesNet< double >* bn;
-    gum::NodeId              i1, i2, i3, i4, i5;
-    gum::Potential< double >*e_i1, *e_i4;
+    gum::BayesNet< double >*  bn;
+    gum::NodeId               i1;
+    gum::NodeId               i2;
+    gum::NodeId               i3;
+    gum::NodeId               i4;
+    gum::NodeId               i5;
+    gum::Potential< double >* e_i1;
+    gum::Potential< double >* e_i4;
 
-    float __epsilon{1e-6f};
+    float _epsilon_{1e-6f};
 
     void setUp() {
       bn = new gum::BayesNet< double >();
 
-      gum::LabelizedVariable n1("1", "", 2), n2("2", "", 2), n3("3", "", 2), n4("4", "", 2),
-         n5("5", "", 3);
+      gum::LabelizedVariable n1("1", "", 2);
+      gum::LabelizedVariable n2("2", "", 2);
+      gum::LabelizedVariable n3("3", "", 2);
+      gum::LabelizedVariable n4("4", "", 2);
+      gum::LabelizedVariable n5("5", "", 3);
 
       i1 = bn->add(n1);
       i2 = bn->add(n2);
@@ -100,11 +108,11 @@ namespace gum_tests {
       gum::Instantiation i2(p2);
 
       for (i1.setFirst(), i2.setFirst(); !i1.end(); i1.inc(), i2.inc()) {
-        if ((p1[i1] == 0) && (std::fabs(p2[i2]) > __epsilon)) return false;
+        if ((p1[i1] == 0) && (std::fabs(p2[i2]) > _epsilon_)) return false;
         if (p1[i1] > p2[i2]) {
-          if (std::fabs((p1[i1] - p2[i2]) / p1[i1]) > __epsilon) return false;
+          if (std::fabs((p1[i1] - p2[i2]) / p1[i1]) > _epsilon_) return false;
         } else {
-          if (std::fabs((p1[i1] - p2[i2]) / p1[i2]) > __epsilon) return false;
+          if (std::fabs((p1[i1] - p2[i2]) / p1[i2]) > _epsilon_) return false;
         }
       }
 

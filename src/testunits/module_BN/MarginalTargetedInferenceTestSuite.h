@@ -39,7 +39,7 @@
 
 namespace gum_tests {
 
-  class MarginalTargetedInferenceTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] MarginalTargetedInferenceTestSuite: public CxxTest::TestSuite {
     public:
     void testAddTarget() {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");

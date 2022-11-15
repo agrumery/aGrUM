@@ -30,7 +30,7 @@
 
 namespace gum_tests {
 
-  class DAGCycleDetectorTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] DAGCycleDetectorTestSuite: public CxxTest::TestSuite {
     gum::DAG _createDAG_(gum::Size nb_nodes, gum::Size nb_arcs) {
       std::default_random_engine generator = gum::getRandomGenerator();
       gum::DAG                   dag;

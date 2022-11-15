@@ -35,34 +35,31 @@
 
 #include <gumtest/AgrumApproximationUtils.h>   // must be last include
 
-
-#define EPSILON_FOR_WEIGHTED_SIMPLE_TEST 15e-2
-#define EPSILON_FOR_WEIGHTED             2e-1
-
-
 namespace gum_tests {
+  constexpr auto EPSILON_FOR_WEIGHTED_SIMPLE_TEST = 15e-2;
+  constexpr auto EPSILON_FOR_WEIGHTED             = 2e-1;
 
   class aSimpleWeightedListener: public gum::ApproximationSchemeListener {
     private:
-    int         __nbr;
-    std::string __mess;
+    int         _nbr_ = 0;
+    std::string _mess_;
 
     public:
-    aSimpleWeightedListener(gum::ApproximationScheme& sch) :
-        gum::ApproximationSchemeListener(sch), __nbr(0), __mess(""){};
-    void whenProgress(const void* buffer, const gum::Size a, const double b, const double c) {
-      __nbr++;
+    explicit aSimpleWeightedListener(gum::ApproximationScheme& sch) :
+        gum::ApproximationSchemeListener(sch){};
+    void whenProgress(const void* buffer, const gum::Size a, const double b, const double c) final {
+      _nbr_++;
     }
-    void whenStop(const void* buffer, const std::string s) {
-      __nbr++;
-      __mess = s;
+    void whenStop(const void* buffer, const std::string& s) final {
+      _nbr_++;
+      _mess_ = s;
     }
 
-    int         getNbr() { return __nbr; }
-    std::string getMess() { return __mess; }
+    int         getNbr() { return _nbr_; }
+    std::string getMess() { return _mess_; }
   };
 
-  class WeightedSamplingTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] WeightedSamplingTestSuite: public CxxTest::TestSuite {
     public:
     void testWeightedBinaryTreeWithoutEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
@@ -70,7 +67,6 @@ namespace gum_tests {
 
       gum::LazyPropagation< double > lazy(&bn);
       lazy.makeInference();
-
 
       try {
         GUM_APPROX_TEST_BEGIN_ITERATION

@@ -34,7 +34,7 @@
 
 namespace gum_tests {
 
-  class DAG2BNLearnerTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] DAG2BNLearnerTestSuite: public CxxTest::TestSuite {
     private:
     std::vector< double > _normalize_(const std::vector< double >& vin) {
       double sum = 0;

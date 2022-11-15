@@ -56,13 +56,13 @@ namespace gum {
     // arguments
     for (auto iter = _node2op_.cbegin(); iter != _node2op_.cend(); ++iter) {
       const NodeId node = iter.first();
-      const auto   op   = iter.second();
+      const auto*  op   = iter.second();
 
       for (const auto arg: op->args()) {
         // get the arguments used by node/op that are not sources and add arcs
         // from the operations/nodes that created them to the current node.
-        const auto arg_location = _multidim_location_[arg].first;
-        if (arg_location != nullptr) {
+
+        if (const auto arg_location = _multidim_location_[arg].first; arg_location != nullptr) {
           const NodeId arg_node = _node2op_.first(arg_location);
           dag.addArc(arg_node, node);
         }
@@ -105,13 +105,12 @@ namespace gum {
     // we copy the source multidims, i.e., those that are not the result of any
     // operation, and we store the mapping from these IScheduleMultiDim contained
     // into from to those contained into this
-    for (const auto& source: from._multidim_location_) {
-      if (source.second.first == nullptr) {   // here, this is a source
-        IScheduleMultiDim* new_multidim = from._emplaced_multidims_.exists(source.first)
-                                           ? const_cast< IScheduleMultiDim* >(source.first)
-                                           : source.first->clone();
-        multidim_from2this.insert(source.first, new_multidim);
-        _multidim_location_.insert(new_multidim, source.second);
+    for (const auto& [first, second]: from._multidim_location_) {
+      if (second.first == nullptr) {   // here, this is a source
+        const IScheduleMultiDim* new_multidim
+           = from._emplaced_multidims_.exists(first) ? first : first->clone();
+        multidim_from2this.insert(first, new_multidim);
+        _multidim_location_.insert(new_multidim, second);
         _multidim2id_.insert(new_multidim, new_multidim->id());
         _multidim2nodes_.insert(new_multidim, NodeSet());
       }
@@ -136,7 +135,7 @@ namespace gum {
       ScheduleOperator*       new_op  = from_op->clone();
       _node2op_.insert(node, new_op);
 
-      // we get the ScheduleMultiDims passed as parameters to from_op and we
+      // we get the ScheduleMultiDims passed as parameters to from_op, and we
       // compute the corresponding ScheduleMultiDims in the current schedule,
       // and we update accordingly the parameters of new_op. In addition,
       // we store the information that the ScheduleMultiDims are used by our
@@ -157,7 +156,7 @@ namespace gum {
         }
       }
 
-      // we get the ScheduleMultiDims resulting from from_op and we compute their
+      // we get the ScheduleMultiDims resulting from from_op, and we compute their
       // mapping with those resulting from new_op. We also store the location and
       // id of the new results
       const Sequence< const IScheduleMultiDim* > from_res = from_op->results();
@@ -180,9 +179,9 @@ namespace gum {
     }
 
     // remove all the source ScheduleMultiDims
-    for (auto& source: _multidim_location_) {
-      if ((source.second.first == nullptr) && !_emplaced_multidims_.exists(source.first)) {
-        IScheduleMultiDim* multidim = const_cast< IScheduleMultiDim* >(source.first);
+    for (const auto& [first, second]: _multidim_location_) {
+      if ((second.first == nullptr) && !_emplaced_multidims_.exists(first)) {
+        const IScheduleMultiDim* multidim = first;
         delete multidim;
       }
     }
@@ -213,19 +212,19 @@ namespace gum {
   Schedule::Schedule(const Size nb_ops) :
       _dag_(nb_ops, true, 2 * nb_ops, true), _node2op_(nb_ops), _multidim_location_(2 * nb_ops),
       _multidim2id_(2 * nb_ops), _emplaced_multidims_(2 * nb_ops), _multidim2nodes_(2 * nb_ops),
-      _deleted_multidim2node_(2 * nb_ops), _version_number_(_newVersionNumber_()) {
-    // for debugging purposes
-    GUM_CONSTRUCTOR(Schedule);
-  }
+      _deleted_multidim2node_(2 * nb_ops),
+      _version_number_(_newVersionNumber_()){// for debugging purposes
+                                             GUM_CONSTRUCTOR(Schedule)}
 
 
-  /// copy constructor
-  Schedule::Schedule(const Schedule& from) {
+      /// copy constructor
+      Schedule::Schedule(const Schedule& from) :
+      _version_number_(from._version_number_) {
     // really perform the copy
     _copy_(from);
 
     // for debugging purposes
-    GUM_CONS_CPY(Schedule);
+    GUM_CONS_CPY(Schedule)
   }
 
 
@@ -249,7 +248,7 @@ namespace gum {
     from._deleted_multidim2node_.clear();
 
     // for debugging purposes
-    GUM_CONS_MOV(Schedule);
+    GUM_CONS_MOV(Schedule)
   }
 
 
@@ -259,7 +258,7 @@ namespace gum {
     _destroy_();
 
     // for debugging purposes
-    GUM_DESTRUCTOR(Schedule);
+    GUM_DESTRUCTOR(Schedule)
   }
 
 
@@ -327,12 +326,11 @@ namespace gum {
     // get a topological order of the full graph. We will use it to compare the
     // parameters of the operations. This order enforces that the parameters are
     // already known before we examine them in the operations.
-    const Sequence< NodeId > order = (_dag_.sizeNodes() == _node2op_.size())
-                                      ? _dag_.topologicalOrder()
-                                      : _fullDAG_().topologicalOrder();
-
     // check if all the operations have the same type and the same parameters
-    for (const auto node: order) {
+    for (const Sequence< NodeId > order = (_dag_.sizeNodes() == _node2op_.size())
+                                           ? _dag_.topologicalOrder()
+                                           : _fullDAG_().topologicalOrder();
+         const auto               node: order) {
       // get the operations corresponding to node
       const ScheduleOperator* this_op = _node2op_.second(node);
       const ScheduleOperator* from_op = from._node2op_.second(node);
@@ -346,18 +344,18 @@ namespace gum {
       if (this_args.size() != from_args.size()) return false;
 
       for (Idx i = 0, end = this_args.size(); i < end; ++i) {
-        const auto& this_location = _multidim_location_[this_args[i]];
-        const auto& from_location = from._multidim_location_[from_args[i]];
+        const auto& [first, second]           = _multidim_location_[this_args[i]];
+        const auto& [from_first, from_second] = from._multidim_location_[from_args[i]];
 
-        if (this_location.first != nullptr) {
+        if (first != nullptr) {
           // here, this's and from's locations are the same if they correspond
           // to the same operation, with the same argument's index
-          if ((from_location.first == nullptr) || (this_location.second != from_location.second)
-              || (from_location.first != this_op2from[this_location.first]))
+          if ((from_first == nullptr) || (second != from_second)
+              || (from_first != this_op2from[first]))
             return false;
         } else {
           // here, this_args[i] and from_args[i] should both be source multidims
-          if (from_location.first != nullptr) return false;
+          if (from_first != nullptr) return false;
 
           // here, we know that they are truly source multidims. If we have
           // already examined these multidims, we have already put the mapping
@@ -387,7 +385,7 @@ namespace gum {
     }
 
     // here, source multidims and operations, including their parameters, are
-    // identical. Hence both schedules should be considered equal
+    // identical. Hence, both schedules should be considered equal
     return true;
   }
 
@@ -400,18 +398,17 @@ namespace gum {
     // be possible to execute the schedule
     if (_multidim2id_.existsSecond(multidim.id())) {
       GUM_ERROR(DuplicateScheduleMultiDim,
-                "A ScheduleMultiDim with Id " << multidim.id()
-                                              << " already exists in the schedule");
+                "A ScheduleMultiDim with Id " << multidim.id() << " already exists in the schedule")
     }
     if (multidim.isAbstract()) {
       GUM_ERROR(AbstractScheduleMultiDim,
                 "It is impossible to insert an abstract ScheduleMultiDim "
-                   << "into a Schedule");
+                   << "into a Schedule")
     }
 
     // now, everything is ok, so we should insert a copy of the ScheduleMultiDim
     // into the schedule
-    IScheduleMultiDim* new_multidim = multidim.clone();
+    const IScheduleMultiDim* new_multidim = multidim.clone();
     _multidim2nodes_.insert(new_multidim, NodeSet());
     _multidim_location_.insert(new_multidim, std::pair< ScheduleOperator*, Idx >(nullptr, Idx(0)));
     _multidim2id_.insert(new_multidim, new_multidim->id());
@@ -431,13 +428,12 @@ namespace gum {
     // be possible to execute the schedule
     if (_multidim2id_.existsSecond(multidim.id())) {
       GUM_ERROR(DuplicateScheduleMultiDim,
-                "A ScheduleMultiDim with Id " << multidim.id()
-                                              << " already exists in the schedule");
+                "A ScheduleMultiDim with Id " << multidim.id() << " already exists in the schedule")
     }
     if (multidim.isAbstract()) {
       GUM_ERROR(AbstractScheduleMultiDim,
                 "It is impossible to insert an abstract ScheduleMultiDim "
-                   << "into a Schedule");
+                   << "into a Schedule")
     }
 
     // now, everything is ok, so we should insert the ScheduleMultiDim
@@ -453,7 +449,7 @@ namespace gum {
 
 
   /// returns the adjective corresponding to a parameter index (1st, 2nd, etc.)
-  std::string Schedule::_paramString_(Idx i) const {
+  std::string Schedule::_paramString_(Idx i) {
     if (i == 0) return "1st";
     else if (i == 1) return "2nd";
     else if (i == 2) return "3rd";
@@ -476,7 +472,7 @@ namespace gum {
                   "Schedule::insertOperation: the "
                      << _paramString_(i + 1) << " (id: " << op_args[i]->id()
                      << ") operation's argument does not already belong to"
-                     << " the schedule");
+                     << " the schedule")
       }
     }
 
@@ -492,7 +488,7 @@ namespace gum {
               || op.implyDeletion())) {
         GUM_ERROR(OperationNotAllowed,
                   "Schedule::insertOperation: The operation deletes its "
-                     << _paramString_(i + 1) << " argument, already deleted by another operation.");
+                     << _paramString_(i + 1) << " argument, already deleted by another operation.")
       }
     }
 
@@ -508,7 +504,7 @@ namespace gum {
                       "Schedule::insertOperation: the operation has"
                          << " deleted its " << _paramString_(i + 1)
                          << " argument, which is used by another operation"
-                         << " not executed yet.");
+                         << " not executed yet.")
           }
         }
       }
@@ -531,7 +527,7 @@ namespace gum {
 
         GUM_ERROR(UnknownScheduleMultiDim,
                   "the " << _paramString_(i + 1) << " argument of the operation is not known by"
-                         << " the schedule");
+                         << " the schedule")
       }
     }
     new_op->updateArgs(new_args);
@@ -587,8 +583,7 @@ namespace gum {
 
       // if Parameter arg has been created by another operation, then new_node
       // should be a child of this node
-      const auto arg_location = _multidim_location_[arg].first;
-      if (arg_location != nullptr) {
+      if (const auto arg_location = _multidim_location_[arg].first; arg_location != nullptr) {
         const NodeId parent_node = _node2op_.first(arg_location);
         if ((parent_node != new_node) && !arg_location->isExecuted()) {
           _dag_.addArc(parent_node, new_node);
@@ -644,7 +639,7 @@ namespace gum {
       if (!_dag_.existsNode(exec_node)) {
         GUM_ERROR(UnknownScheduleOperation,
                   "the schedule cannot be updated because Operation of Id "
-                     << exec_node << " that has been executed does not belong to its DAG.");
+                     << exec_node << " that has been executed does not belong to its DAG.")
       }
 
       // before performing the update, check that the operation was available
@@ -652,14 +647,14 @@ namespace gum {
       if (!_dag_.parents(exec_node).empty()) {
         GUM_ERROR(UnavailableScheduleOperation,
                   "the schedule cannot be updated because Operation of Id "
-                     << exec_node << " is not available yet and should not have been executed.");
+                     << exec_node << " is not available yet and should not have been executed.")
       }
 
       // check that the operation has really been executed
       if (!_node2op_.second(exec_node)->isExecuted()) {
         GUM_ERROR(UnexecutedScheduleOperation,
                   "the schedule cannot be updated because Operation of Id "
-                     << exec_node << " has not been executed yet.");
+                     << exec_node << " has not been executed yet.")
       }
     }
 

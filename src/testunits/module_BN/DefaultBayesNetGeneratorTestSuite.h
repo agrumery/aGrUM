@@ -35,7 +35,7 @@
 
 namespace gum_tests {
 
-  class SimpleBayesNetGeneratorTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] SimpleBayesNetGeneratorTestSuite: public CxxTest::TestSuite {
     public:
     void setUp() {}
 

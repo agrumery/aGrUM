@@ -26,7 +26,7 @@
 #include <string>
 
 namespace gum_tests {
-  class SequenceTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] SequenceTestSuite: public CxxTest::TestSuite {
     private:
     void fill(gum::Sequence< int >& seq) { seq << 1 << 3 << 5 << 2 << 4; }
 

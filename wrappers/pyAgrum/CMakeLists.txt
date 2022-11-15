@@ -1,4 +1,3 @@
-
 if (PYTHON_TARGET)
   set(PYTHON_EXECUTABLE ${PYTHON_TARGET})
   unset(PYTHON_INCLUDE_DIRS CACHE)
@@ -9,10 +8,10 @@ endif (PYTHON_TARGET)
 
 find_package (PythonInterp ${PYAGRUM_REQUIRED_PYTHON_VERSION} REQUIRED)
 find_package (PythonLibs   ${PYTHON_VERSION_STRING} EXACT  REQUIRED)
-# for linux wheels only 
+# for linux wheels only
 #set(PYTHON_INCLUDE_DIR "@PYTHON_INCLUDE_PATH@")
 
-list (APPEND CMAKE_SWIG_FLAGS "-py3")
+#list (APPEND CMAKE_SWIG_FLAGS "-py3")
 list (APPEND CMAKE_SWIG_FLAGS "-fastdispatch")
 
 add_definitions ("-DSWIG_TYPE_TABLE=pyproba")
@@ -89,7 +88,7 @@ include_directories (${PYTHON_INCLUDE_DIR})
 include_directories (${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/swigsrc)
 include_directories(${AGRUM_SOURCE_DIR})
-#inutile ? 
+#inutile ?
 #include_directories(BEFORE ${AGRUM_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/generated_files)
 include_directories(BEFORE ${AGRUM_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/doc)
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})

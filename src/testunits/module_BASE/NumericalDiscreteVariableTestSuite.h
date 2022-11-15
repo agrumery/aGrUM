@@ -30,7 +30,7 @@
 
 namespace gum_tests {
 
-  class NumericalDiscreteVariableTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] NumericalDiscreteVariableTestSuite: public CxxTest::TestSuite {
     public:
     void testAll() {
       gum::NumericalDiscreteVariable var1("var1", "this is var1");

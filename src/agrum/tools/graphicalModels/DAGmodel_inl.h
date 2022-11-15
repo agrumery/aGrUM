@@ -83,9 +83,7 @@ namespace gum {
 
   INLINE const NodeGraphPart& DAGmodel::nodes() const { return (NodeGraphPart&)dag_; }
 
-  INLINE const Sequence< NodeId >& DAGmodel::topologicalOrder(bool clear) const {
-    return dag().topologicalOrder(clear);
-  }
+  INLINE Sequence< NodeId > DAGmodel::topologicalOrder() const { return dag().topologicalOrder(); }
 
   INLINE NodeSet DAGmodel::descendants(const NodeId id) const { return dag().descendants(id); }
 

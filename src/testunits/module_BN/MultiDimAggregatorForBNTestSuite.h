@@ -50,7 +50,7 @@
 
 namespace gum_tests {
 
-  class MultiDimAggregratorsForBNTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] MultiDimAggregratorsForBNTestSuite: public CxxTest::TestSuite {
     public:
     void testBNwithMin() {
       gum::List< gum::NodeId > idList;

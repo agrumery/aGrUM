@@ -73,10 +73,13 @@ def profileAgrum(current):
   notif(f"[{cfg.nbr_tests_for_stats} runs] (please be patient) ...")
   sdt = 0
   sdt2 = 0
+  
+  dmin=float('inf')
+  dmax=float('-inf')
 
   notif("")
   notif("-------------|------------------|-------------------|")
-  notif("  time   #it |  XP:mean (stdev) | confid. interval  |")
+  notif("  time   #it |    XP (stdev)    | confid. interval  |")
   notif("-------------|------------------|-------------------|")
   for i in range(cfg.nbr_tests_for_stats):
     dt=0
@@ -91,6 +94,10 @@ def profileAgrum(current):
           dt = float(v) / 1000.0
       if dt==0:
         notif(f"[error : duration=0]")
+      if dt>dmax:
+        dmax=dt
+      if dt<dmin:
+        dmin=dt
 
     sdt += dt
     sdt2 += dt * dt
@@ -99,8 +106,9 @@ def profileAgrum(current):
     notif(f"{t.tm_hour:02d}:{t.tm_min:02d}:{t.tm_sec:02d} #[{i+1:02d}] | {dt:7.3f}s ({stdev:3.3f}) | [{mean:8.3f} ± {halfA:3.3f}]s |")
 
   notif("-------------|------------------|-------------------|")
-  notif("  time   #it |  XP:mean (stdev) | confid. interval  |")
+  notif("  time   #it |    XP (stdev)    | confid. interval  |")
   notif("-------------|------------------|-------------------|")
+  notif(f"=> Conclusion on {cfg.nbr_tests_for_stats} iteration(s) : {dmin:8.3f} <-- [{mean:8.3f} ± {halfA:3.3f}] --> {dmax:8.3f}")
 
   safe_cd(current, "..")
   safe_cd(current, "..")

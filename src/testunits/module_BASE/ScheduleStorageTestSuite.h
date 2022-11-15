@@ -33,7 +33,7 @@
 
 namespace gum_tests {
 
-  class ScheduleStorageTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] ScheduleStorageTestSuite: public CxxTest::TestSuite {
     public:
     void test_construct() {
       // reset the ids of the ScheduleMultiDim to avoid conflicts with other

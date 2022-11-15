@@ -46,7 +46,7 @@
 
 namespace gum_tests {
 
-  class CliqueGraphTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] CliqueGraphTestSuite: public CxxTest::TestSuite {
     private:
     void fillSets(gum::NodeSet& A,
                   gum::NodeSet& B,

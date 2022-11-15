@@ -27,7 +27,7 @@
 
 namespace gum_tests {
 
-  class DBCellTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] DBCellTestSuite: public CxxTest::TestSuite {
     public:
     void test_cell1() {
       const std::vector< std::string > miss{"N/A", "???"};

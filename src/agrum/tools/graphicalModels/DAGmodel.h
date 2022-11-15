@@ -195,17 +195,15 @@ namespace gum {
     };
     /**
      * The node's id are coherent with the variables and nodes of the topology.
-     * @param clear If false returns the previously created moral graph.
      */
-    const UndiGraph& moralGraph(bool clear = true) const;
+    UndiGraph moralGraph() const;
 
     /**
      * The topological order stays the same as long as no variable or arcs are
      * added or erased src the topology.
      * @param clear If false returns the previously created topology.
      */
-    const Sequence< NodeId >& topologicalOrder(bool clear = true) const;
-
+    Sequence< NodeId > topologicalOrder() const;
     /// @}
 
     /// @return true if all the named node are the same and all the named arcs are
@@ -220,14 +218,6 @@ namespace gum {
 
     /// The DAG of this Directed Graphical Model.
     DAG dag_;
-
-    private:
-    /// Returns the moral graph of this DAGModel.
-    /// @warning  _mutableMoralGraph_ is assumed to be valid and empty
-    void _moralGraph_() const;
-
-    /// The moral graph of this Directed Graphical Model.
-    mutable UndiGraph* _mutableMoralGraph_;
   };
 }   // namespace gum
 

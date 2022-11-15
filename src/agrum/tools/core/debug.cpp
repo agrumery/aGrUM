@@ -31,11 +31,9 @@
 #include <algorithm>
 #include <iomanip>
 #include <iostream>
-#include <sstream>
 #include <string>
 #include <vector>
 #include <mutex>
-#include <atomic>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -46,7 +44,7 @@ namespace gum {
 #  ifdef GUM_DEBUG_MODE
 
   namespace __debug__ {
-    typedef std::map< std::string, int > DEBUG_MAP;
+    using DEBUG_MAP = std::map< std::string, int >;
 
 
     static std::mutex& _debug_mutex_() {
@@ -81,7 +79,7 @@ namespace gum {
 
     std::string _getFile_(const char* f) {
       std::string s(f);
-      return s.erase(0, s.rfind("/") + 1);
+      return s.erase(0, s.rfind('/') + 1);
     }
 
 
@@ -104,15 +102,13 @@ namespace gum {
                         const char* zeMsg,
                         const void* zePtr,
                         int         zeSize) {
-      static DEBUG_MAP&  creation = _creation_();
-      static DEBUG_MAP&  size     = _sizeof_();
-      static std::mutex& mutex    = _debug_mutex_();
+      static DEBUG_MAP& creation = _creation_();
+      static DEBUG_MAP& size     = _sizeof_();
+      std::unique_lock  lck{_debug_mutex_()};
 
-      mutex.lock();
       _show_trace_(zeKey, zeFile, zeLine, zeMsg, zePtr);
       creation[zeKey]++;
       size[zeKey] = zeSize;
-      mutex.unlock();
     }
 
     // to handle static element of agrum library
@@ -121,13 +117,11 @@ namespace gum {
                         long        zeLine,
                         const char* zeMsg,
                         const void* zePtr) {
-      static DEBUG_MAP&  creation = _creation_();
-      static std::mutex& mutex    = _debug_mutex_();
+      static DEBUG_MAP& creation = _creation_();
+      std::unique_lock  lck{_debug_mutex_()};
 
-      mutex.lock();
       _show_trace_(zeKey, zeFile, zeLine, zeMsg, zePtr);
       creation[zeKey]--;
-      mutex.unlock();
     }
 
     void _inc_deletion_(const char* zeKey,
@@ -135,12 +129,11 @@ namespace gum {
                         long        zeLine,
                         const char* zeMsg,
                         const void* zePtr) {
-      static DEBUG_MAP&  deletion = _deletion_();
-      static std::mutex& mutex    = _debug_mutex_();
-      mutex.lock();
+      static DEBUG_MAP& deletion = _deletion_();
+      std::unique_lock  lck{_debug_mutex_()};
+
       _show_trace_(zeKey, zeFile, zeLine, zeMsg, zePtr);
       deletion[zeKey]++;
-      mutex.unlock();
     }
 
     void _dumpObjects_() {
@@ -195,7 +188,6 @@ namespace gum {
         }
 
         stream << " |";
-        ;
 
         if (zeCreatedObjs != zeDeletedObjts) {
           nb_err += std::abs(zeDeletedObjts - zeCreatedObjs);
@@ -203,7 +195,6 @@ namespace gum {
         }
 
         res.insert(make_pair(xx->first, stream.str()));
-        // res.push_back( stream.str() );
       }
 
       // list of deleted objects, but not created (?)
@@ -219,14 +210,14 @@ namespace gum {
                  << std::setw(widthColItemsNumber) << "?????"
                  << " | " << std::setw(widthColItemsNumber) << xx->second << " |<--- failed";
           res.insert(make_pair(xx->first, stream.str()));
-          // res.push_back( stream.str() );
+
           nb_err += xx->second;
         }
       }
 
-      for (const auto& iter: res) {
-        std::cout << iter.second << std::endl;
-      }
+      for (const auto& [fisrt, second]: res)
+        std::cout << second << std::endl;
+
 
       std::cout << std::setfill('-');
 
@@ -262,7 +253,11 @@ namespace gum {
 
     // take into account static objects in agrum (no called destructor before
     // exit())
-    void _staticCorrections_() {}
+    void _staticCorrections_() {
+      /// for emptyNodeSet
+      _inc_deletion_("HashTable", "GraphElements.cpp", 40, "destructor of", nullptr);
+      _inc_deletion_("Set", "GraphElements.cpp", 40, "destructor of", nullptr);
+    }
 
     void _atexit_() {
       _staticCorrections_();

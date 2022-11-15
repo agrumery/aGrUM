@@ -36,7 +36,7 @@
 
 namespace gum_tests {
 
-  class MaxInducedWidthMCBayesNetGeneratorTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] MaxInducedWidthMCBayesNetGeneratorTestSuite: public CxxTest::TestSuite {
     public:
     void setUp() {}
 

@@ -32,7 +32,7 @@
 
 namespace gum_tests {
 
-  class DeprecatedO3TypeTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] DeprecatedO3TypeTestSuite: public CxxTest::TestSuite {
     public:
     void setUp() {}
 

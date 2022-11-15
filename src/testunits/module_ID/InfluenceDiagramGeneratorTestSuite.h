@@ -33,7 +33,7 @@
 
 namespace gum_tests {
 
-  class InfluenceDiagramGeneratorTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] InfluenceDiagramGeneratorTestSuite: public CxxTest::TestSuite {
     public:
     void setUp() {}
 

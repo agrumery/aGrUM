@@ -35,7 +35,7 @@
 
 namespace gum_tests {
 
-  class MultiDimOperatorsTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] MultiDimOperatorsTestSuite: public CxxTest::TestSuite {
     public:
     void test_op_multidimArray() {
       std::vector< gum::LabelizedVariable* > vars(10);

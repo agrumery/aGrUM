@@ -59,7 +59,7 @@ namespace gum_tests {
       __nbr++;
     }
 
-    void whenStop(const void* buffer, const std::string s) { __msg = s; }
+    void whenStop(const void* buffer, const std::string& s) { __msg = s; }
 
     int nbr() { return __nbr; }
 
@@ -67,7 +67,7 @@ namespace gum_tests {
   };   // end of : class mcSamplingListener
 
   ////////////////////////////////////////////////////////////////
-  class CNMonteCarloSamplingInferenceTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] CNMonteCarloSamplingInferenceTestSuite: public CxxTest::TestSuite {
     private:
     protected:
     public:

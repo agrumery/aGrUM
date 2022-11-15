@@ -39,7 +39,7 @@
 #define GET_RESSOURCES_PATH_O3PRM(x) xstrfy(GUM_SRC_PATH) "/testunits/ressources/o3prm/" #x
 namespace gum_tests {
 
-  class PRMTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] PRMTestSuite: public CxxTest::TestSuite {
     private:
     gum::prm::PRM< double >* prm;
     gum::prm::PRM< double >* small;

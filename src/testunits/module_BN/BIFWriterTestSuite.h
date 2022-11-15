@@ -41,7 +41,7 @@
 
 namespace gum_tests {
 
-  class BIFWriterTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] BIFWriterTestSuite: public CxxTest::TestSuite {
     private:
     // Builds a BN to test the inference
     void fill(gum::BayesNet< double >& bn) {

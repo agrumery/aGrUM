@@ -34,7 +34,7 @@
  */
 namespace gum_tests {
 
-  class PRMClassTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] PRMClassTestSuite: public CxxTest::TestSuite {
     private:
     using PRMClass     = gum::prm::PRMClass< double >;
     using PRMInterface = gum::prm::PRMInterface< double >;

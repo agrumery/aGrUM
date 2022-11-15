@@ -56,12 +56,12 @@ namespace gum_tests {
     void whenProgress(const void* buffer, const gum::Size a, const double b, const double c) {
       __nbr++;
     }
-    void whenStop(const void* buffer, const std::string s) { __mess = s; }
+    void whenStop(const void* buffer, const std::string& s) { __mess = s; }
 
     int         getNbr() { return __nbr; }
     std::string getMess() { return __mess; }
   };
-  class GibbsSamplingTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] GibbsSamplingTestSuite: public CxxTest::TestSuite {
     public:
     void testGibbsSimpleBN() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->b->c->f;d->b->e->f;e->g");

@@ -27,7 +27,7 @@
 
 namespace gum_tests {
 
-  class DirichletTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] DirichletTestSuite: public CxxTest::TestSuite {
     public:
     void testXX() {
       std::vector< float > param{1.0f, 1.0f};

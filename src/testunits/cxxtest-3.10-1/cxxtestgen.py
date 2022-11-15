@@ -248,12 +248,18 @@ def scanLineForExceptionHandling( line ):
             haveExceptionHandling = 1
 
 suite_re = re.compile( r'\bclass\s+(\w+)\s*:\s*public\s+((::)?\s*CxxTest\s*::\s*)?TestSuite\b' )
+unusedsuite_re = re.compile( r'\bclass\s+\[\[maybe_unused\]\]\s+(\w+)\s*:\s*public\s+((::)?\s*CxxTest\s*::\s*)?TestSuite\b' )
 generatedSuite_re = re.compile( r'\bCXXTEST_SUITE\s*\(\s*(\w*)\s*\)' )
 def scanLineForSuiteStart( fileName, lineNo, line ):
     '''Check if current line starts a new test suite'''
+    m = unusedsuite_re.search( line )
+    if m:
+        startSuite( m.group(1), fileName, lineNo, 0 )
+        return
     m = suite_re.search( line )
     if m:
         startSuite( m.group(1), fileName, lineNo, 0 )
+        return
     m = generatedSuite_re.search( line )
     if m:
         sys.stdout.write( "%s:%s: Warning: Inline test suites are deprecated.\n" % (fileName, lineNo) )

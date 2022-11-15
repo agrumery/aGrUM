@@ -34,7 +34,7 @@
 
 namespace gum_tests {
 
-  class StructuredInferenceTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] StructuredInferenceTestSuite: public CxxTest::TestSuite {
     public:
     void setUp() {}
 

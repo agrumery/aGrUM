@@ -38,7 +38,7 @@
 
 namespace gum_tests {
 
-  class PRMInferenceTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] PRMInferenceTestSuite: public CxxTest::TestSuite {
     private:
     gum::prm::PRM< double >* prm;
     gum::prm::PRM< double >* small;

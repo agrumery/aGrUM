@@ -40,7 +40,7 @@
 
 namespace gum_tests {
 
-  class Operators4MultiDimFunctionGraphTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] Operators4MultiDimFunctionGraphTestSuite: public CxxTest::TestSuite {
     private:
     /// Defines the maximal number of modalities for a var (which is choose
     /// randomly).

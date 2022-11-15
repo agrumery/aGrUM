@@ -33,7 +33,7 @@
 
 namespace gum_tests {
 
-  class CorrectedMutualInformationTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] CorrectedMutualInformationTestSuite: public CxxTest::TestSuite {
     private:
     double _entropy_(const std::vector< double >& vect) {
       double res = 0.0;

@@ -51,7 +51,7 @@ namespace gum_tests {
     void whenProgress(const void* buffer, const gum::Size a, const double b, const double c) {
       __nbr++;
     }
-    void whenStop(const void* buffer, const std::string s) {
+    void whenStop(const void* buffer, const std::string& s) {
       __nbr++;
       __mess = s;
     }
@@ -60,7 +60,7 @@ namespace gum_tests {
     std::string getMess() { return __mess; }
   };
 
-  class MonteCarloSamplingTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] MonteCarloSamplingTestSuite: public CxxTest::TestSuite {
     public:
     void testMCbasic() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->h->c");

@@ -26,7 +26,7 @@
 
 namespace gum_tests {
 
-  class ArcTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] ArcTestSuite: public CxxTest::TestSuite {
     public:
     void testConstructor1() {
       TS_GUM_ASSERT_THROWS_NOTHING(gum::Arc arc1(1, 2))
@@ -62,22 +62,24 @@ namespace gum_tests {
 
       gum::Arc copy(arc1);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(arc1.first())
-      TS_GUM_ASSERT_THROWS_NOTHING(arc1.second())
+      gum::NodeId n;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(copy.first())
-      TS_GUM_ASSERT_THROWS_NOTHING(copy.second())
+      TS_GUM_ASSERT_THROWS_NOTHING(n = arc1.first())
+      TS_GUM_ASSERT_THROWS_NOTHING(n = arc1.second())
 
-      TS_ASSERT_EQUALS(arc2.first(), (gum::NodeId)2)
-      TS_ASSERT_EQUALS(arc2.second(), (gum::NodeId)1)
+      TS_GUM_ASSERT_THROWS_NOTHING(n = copy.first())
+      TS_GUM_ASSERT_THROWS_NOTHING(n = copy.second())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(arc3.other((gum::NodeId)3))
-      TS_GUM_ASSERT_THROWS_NOTHING(arc3.other((gum::NodeId)4))
+      TS_ASSERT_EQUALS(n = arc2.first(), (gum::NodeId)2)
+      TS_ASSERT_EQUALS(n = arc2.second(), (gum::NodeId)1)
 
-      TS_ASSERT_EQUALS(arc3.other((gum::NodeId)3), (gum::NodeId)4)
-      TS_ASSERT_EQUALS(arc3.other((gum::NodeId)4), (gum::NodeId)3)
+      TS_GUM_ASSERT_THROWS_NOTHING(n = arc3.other((gum::NodeId)3))
+      TS_GUM_ASSERT_THROWS_NOTHING(n = arc3.other((gum::NodeId)4))
 
-      TS_ASSERT_THROWS_ANYTHING(copy.other((gum::NodeId)42))
+      TS_ASSERT_EQUALS(n = arc3.other((gum::NodeId)3), (gum::NodeId)4)
+      TS_ASSERT_EQUALS(n = arc3.other((gum::NodeId)4), (gum::NodeId)3)
+
+      TS_ASSERT_THROWS_ANYTHING(n = copy.other((gum::NodeId)42))
     }
 
     void testGetters2() {

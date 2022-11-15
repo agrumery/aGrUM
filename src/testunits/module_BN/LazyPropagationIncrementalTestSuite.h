@@ -50,7 +50,7 @@
 namespace gum_tests {
 
 
-  class LazyPropagationIncrementalTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] LazyPropagationIncrementalTestSuite: public CxxTest::TestSuite {
     using __Potential    = std::unique_ptr< gum::Potential< double > >;
     using __PotentialSet = gum::Set< const gum::Potential< double >* >;
 

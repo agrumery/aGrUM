@@ -44,7 +44,7 @@
 
 namespace gum_tests {
 
-  class GraphListenerTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] GraphListenerTestSuite: public CxxTest::TestSuite {
     class CountListener: public gum::Listener {
       private:
       int  _nbrNode_, _nbrArcs_, _nbrEdges_;

@@ -54,7 +54,7 @@ namespace gum_tests {
     void whenProgress(const void* buffer, const gum::Size a, const double b, const double c) {
       __nbr++;
     }
-    void whenStop(const void* buffer, const std::string s) {
+    void whenStop(const void* buffer, const std::string& s) {
       __nbr++;
       __mess = s;
     }
@@ -65,7 +65,7 @@ namespace gum_tests {
 
 #define MAX_ITER 10
 
-  class LoopyBeliefPropagationTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] LoopyBeliefPropagationTestSuite: public CxxTest::TestSuite {
     public:
     void testLBPBinaryTreeWithoutEvidence() {
       for (int i = 0; i < MAX_ITER; i++) {

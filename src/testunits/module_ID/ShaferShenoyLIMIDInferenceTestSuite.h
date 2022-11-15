@@ -58,7 +58,7 @@
 //          U2
 namespace gum_tests {
 
-  class ShaferShenoyLIMIDInferenceTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] ShaferShenoyLIMIDInferenceTestSuite: public CxxTest::TestSuite {
     public:
     void testConstructor() {
       std::string                     file = GET_RESSOURCES_PATH("ID/decAsia.xml");

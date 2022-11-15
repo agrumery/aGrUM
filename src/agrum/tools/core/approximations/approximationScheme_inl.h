@@ -25,7 +25,7 @@
  *
  * ApproximationSettings provides as well 2 signals :
  *   - onProgress(int pourcent,double error)
- *   - onStop(std::string message)
+ *   - onStop(const std::string& message)
  * @see gum::ApproximationListener for dedicated listener.
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6)
@@ -159,7 +159,7 @@ namespace gum {
       GUM_ERROR(OperationNotAllowed, "state of the approximation scheme is udefined")
     }
 
-    if (verbosity() == false) { GUM_ERROR(OperationNotAllowed, "No history when verbosity=false") }
+    if (!verbosity()) GUM_ERROR(OperationNotAllowed, "No history when verbosity=false")
 
     return history_;
   }
@@ -175,7 +175,7 @@ namespace gum {
 
   // @return true if we are at the beginning of a period (compute error is
   // mandatory)
-  INLINE bool ApproximationScheme::startOfPeriod() {
+  INLINE bool ApproximationScheme::startOfPeriod() const {
     if (current_step_ < burn_in_) { return false; }
 
     if (period_size_ == 1) { return true; }
@@ -188,7 +188,7 @@ namespace gum {
     current_step_ += incr;
   }
 
-  INLINE Size ApproximationScheme::remainingBurnIn() {
+  INLINE Size ApproximationScheme::remainingBurnIn() const {
     if (burn_in_ > current_step_) {
       return burn_in_ - current_step_;
     } else {
@@ -220,9 +220,9 @@ namespace gum {
     if (!startOfPeriod()) { return true; }
 
     if (current_state_ != ApproximationSchemeSTATE::Continue) {
-      GUM_ERROR(OperationNotAllowed,
-                "state of the approximation scheme is not correct : "
-                   + messageApproximationScheme());
+      GUM_ERROR(
+         OperationNotAllowed,
+         "state of the approximation scheme is not correct : " << messageApproximationScheme());
     }
 
     if (verbosity()) { history_.push_back(error); }

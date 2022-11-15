@@ -53,7 +53,7 @@
 
 namespace gum_tests {
 
-  class LocalSearchWithTabuListTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] LocalSearchWithTabuListTestSuite: public CxxTest::TestSuite {
     public:
     void test_asia() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));

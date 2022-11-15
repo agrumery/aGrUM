@@ -37,7 +37,7 @@
 
 namespace gum_tests {
 
-  class MultiDimCombineAndProjectTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] MultiDimCombineAndProjectTestSuite: public CxxTest::TestSuite {
     public:
     void testDouble() {
       gum::IScheduleMultiDim::resetIdGenerator();

@@ -39,7 +39,7 @@
  */
 namespace gum_tests {
 
-  class PRMAggregateTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] PRMAggregateTestSuite: public CxxTest::TestSuite {
     private:
     using PRMAggregate = gum::prm::PRMAggregate< double >;
     using AggType      = gum::prm::PRMAggregate< double >::AggregateType;

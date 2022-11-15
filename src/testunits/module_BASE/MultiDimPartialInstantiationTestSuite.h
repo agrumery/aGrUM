@@ -39,7 +39,7 @@
 
 namespace gum_tests {
 
-  class MultiDimPartialInstantiationTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] MultiDimPartialInstantiationTestSuite: public CxxTest::TestSuite {
     private:
     // ==========================================================================
     /// initialize randomly a table

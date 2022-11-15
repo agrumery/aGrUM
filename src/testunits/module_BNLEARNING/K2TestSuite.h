@@ -52,7 +52,7 @@
 
 namespace gum_tests {
 
-  class K2TestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] K2TestSuite: public CxxTest::TestSuite {
     public:
     void test_k2_asia() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));

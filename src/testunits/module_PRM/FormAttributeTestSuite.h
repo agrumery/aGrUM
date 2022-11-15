@@ -35,7 +35,7 @@
  */
 namespace gum_tests {
 
-  class FormAttributeTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] FormAttributeTestSuite: public CxxTest::TestSuite {
     private:
     using PRMAttribute = gum::prm::PRMFormAttribute< double >;
 

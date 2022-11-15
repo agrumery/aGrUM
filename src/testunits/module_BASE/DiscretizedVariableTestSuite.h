@@ -31,7 +31,7 @@
 
 namespace gum_tests {
 
-  class DiscretizedVariableTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] DiscretizedVariableTestSuite: public CxxTest::TestSuite {
     public:
     void testCreation() {
       TS_GUM_ASSERT_THROWS_NOTHING(gum::DiscretizedVariable< int > v("var", "a var"))

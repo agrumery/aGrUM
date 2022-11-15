@@ -26,7 +26,7 @@
 
 namespace gum_tests {
 
-  class EdgeTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] EdgeTestSuite: public CxxTest::TestSuite {
     public:
     void testConstructor1() {
       TS_GUM_ASSERT_THROWS_NOTHING(gum::Edge edge1(1, 2))
@@ -63,22 +63,24 @@ namespace gum_tests {
 
       gum::Edge copy(edge1);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(edge1.first())
-      TS_GUM_ASSERT_THROWS_NOTHING(edge1.second())
+      gum::NodeId n;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(copy.first())
-      TS_GUM_ASSERT_THROWS_NOTHING(copy.second())
+      TS_GUM_ASSERT_THROWS_NOTHING(n = edge1.first())
+      TS_GUM_ASSERT_THROWS_NOTHING(n = edge1.second())
 
-      TS_ASSERT_EQUALS(edge2.first(), (gum::NodeId)1)
-      TS_ASSERT_EQUALS(edge2.second(), (gum::NodeId)2)
+      TS_GUM_ASSERT_THROWS_NOTHING(n = copy.first())
+      TS_GUM_ASSERT_THROWS_NOTHING(n = copy.second())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(edge3.other((gum::NodeId)3))
-      TS_GUM_ASSERT_THROWS_NOTHING(edge3.other((gum::NodeId)4))
+      TS_ASSERT_EQUALS(n = edge2.first(), (gum::NodeId)1)
+      TS_ASSERT_EQUALS(n = edge2.second(), (gum::NodeId)2)
 
-      TS_ASSERT_EQUALS(edge3.other((gum::NodeId)3), (gum::NodeId)4)
-      TS_ASSERT_EQUALS(edge3.other((gum::NodeId)4), (gum::NodeId)3)
+      TS_GUM_ASSERT_THROWS_NOTHING(n = edge3.other((gum::NodeId)3))
+      TS_GUM_ASSERT_THROWS_NOTHING(n = edge3.other((gum::NodeId)4))
 
-      TS_ASSERT_THROWS_ANYTHING(copy.other((gum::NodeId)42))
+      TS_ASSERT_EQUALS(n = edge3.other((gum::NodeId)3), (gum::NodeId)4)
+      TS_ASSERT_EQUALS(n = edge3.other((gum::NodeId)4), (gum::NodeId)3)
+
+      TS_ASSERT_THROWS_ANYTHING(n = copy.other((gum::NodeId)42))
     }
 
     void testHash() {
