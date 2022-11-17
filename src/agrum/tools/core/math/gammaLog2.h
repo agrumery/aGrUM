@@ -55,7 +55,7 @@ namespace gum {
      * @brief Default constructor.
      * @param requires_precision Set if precision is required or not.
      */
-    GammaLog2(bool requires_precision = false);
+    explicit GammaLog2(bool requires_precision = false);
 
     /**
      * @brief Copy constructor.

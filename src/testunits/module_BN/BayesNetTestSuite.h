@@ -1097,6 +1097,6 @@ namespace gum_tests {
         gum::ThreadExecutor::execute(20, opExecute);
 */
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
-      }
-    };
-  }   // namespace gum_tests
+    }
+  };
+}   // namespace gum_tests

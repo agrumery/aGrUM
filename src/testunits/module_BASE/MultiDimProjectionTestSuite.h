@@ -678,9 +678,6 @@ namespace gum_tests {
 
     void test_projections_init() {
       gum::projections4MultiDimInit< double >();
-      // why 3 times ?
-      // projections4MultiDimInit<double> ();
-      // projections4MultiDimInit<double> ();
 
       std::vector< gum::LabelizedVariable* > vars(10);
 
@@ -787,9 +784,6 @@ namespace gum_tests {
 
     void test_Pointer_init() {
       gum::pointerProjections4MultiDimInit< double >();
-      // why 3 times  ?
-      // pointerProjections4MultiDimInit<double> ();
-      // pointerProjections4MultiDimInit<double> ();
 
       std::vector< gum::LabelizedVariable* > vars(10);
 
@@ -1047,9 +1041,12 @@ namespace gum_tests {
     }
 
     void testConstants() {
-      gum::Potential< double > t1, t2;
-      gum::Instantiation       inst1(t1), inst2(t2);
+      gum::Potential< double > t1;
+      gum::Instantiation       inst1(t1);
       t1.set(inst1, 3.0);
+
+      gum::Potential< double > t2;
+      gum::Instantiation       inst2(t2);
       t2.set(inst2, 4.0);
 
       gum::MultiDimProjection< gum::Potential< double > > proj(mySum);
@@ -1062,6 +1059,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(t1, *t3)
         gum::Instantiation inst(t3);
         TS_ASSERT(t3->get(inst) == 3.0)
+        delete (t3);
       }
 
 
@@ -1082,6 +1080,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(t1, *t3)
         gum::Instantiation inst(t3);
         TS_ASSERT(t3->get(inst) == 3.0)
+        delete (t3);
       }
 
       del_vars.insert(vars[1]);
@@ -1092,6 +1091,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(t1, *t3)
         gum::Instantiation inst(t3);
         TS_ASSERT(t3->get(inst) == 3.0)
+        delete (t3);
       }
 
 
@@ -1109,6 +1109,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(t3->variablesSequence().size(), gum::Size(0))
         gum::Instantiation inst3(t3);
         TS_ASSERT_DELTA((*t3)[inst3], 2.0, 0.001)
+        delete (t3);
       }
 
       t1 << *(vars[1]);
@@ -1125,7 +1126,11 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(t3->variablesSequence().size(), gum::Size(0))
         gum::Instantiation inst3(t3);
         TS_ASSERT_DELTA((*t3)[inst3], 5.0, 0.001)
+        delete (t3);
       }
+
+      for (gum::Idx i = 0; i < 5; ++i)
+        delete (vars[i]);
     }
 
 
@@ -1305,7 +1310,7 @@ namespace gum_tests {
         auto t2 = t1.margSumOut(proj_set);
         auto t3 = Proj.execute(t1, proj_set);
         TS_ASSERT_EQUALS(t2, *t3)
-        delete (t3);
+        delete t3;
       }
 
       proj_set.insert(vars[0]);

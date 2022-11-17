@@ -399,7 +399,7 @@ namespace gum {
         }
 
         InstanceBayesNet< GUM_SCALAR > bn(*i);
-        const auto moralg=bn.moralGraph();
+        const auto                     moralg = bn.moralGraph();
         DefaultTriangulation           t(&moralg, &(bn.modalities()));
         const std::vector< NodeId >&   full_elim_order = t.eliminationOrder();
         // Removing Output nodes of elimination order
@@ -619,7 +619,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE std::vector< NodeId >&
            SVE< GUM_SCALAR >::_getElimOrder_(const PRMClass< GUM_SCALAR >& c) {
-      return *(_elim_orders_[&c]);
+          return *(_elim_orders_[&c]);
     }
 
     template < typename GUM_SCALAR >
@@ -643,7 +643,7 @@ namespace gum {
     INLINE Potential< GUM_SCALAR >*
            SVE< GUM_SCALAR >::_getAggPotential_(const PRMInstance< GUM_SCALAR >*  i,
                                             const PRMAggregate< GUM_SCALAR >* agg) {
-      return &(const_cast< Potential< GUM_SCALAR >& >(i->get(agg->id()).cpf()));
+          return &(const_cast< Potential< GUM_SCALAR >& >(i->get(agg->id()).cpf()));
     }
 
     template < typename GUM_SCALAR >

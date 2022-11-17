@@ -23,6 +23,7 @@
 #include <gumtest/testsuite_utils.h>
 #include <iostream>
 
+#include <agrum/tools/core/math/gammaLog2.h>
 #include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/tools/database/DBTranslatorSet.h>
 #include <agrum/BN/learning/priors/smoothingPrior.h>
@@ -37,7 +38,7 @@ namespace gum_tests {
       double N       = 0;
       double penalty = 0;
       for (const auto n_ijk: N_ijk) {
-        if (n_ijk) {
+        if (n_ijk != 0.0) {
           score += n_ijk * std::log2(n_ijk);
           N += n_ijk;
         }
@@ -47,7 +48,7 @@ namespace gum_tests {
       if (!N_ij.empty()) {
         const std::size_t r = N_ijk.size() / N_ij.size();
         for (const auto n_ij: N_ij) {
-          if (n_ij) {
+          if (n_ij != 0.0) {
             score -= n_ij * std::log2(n_ij);
 
             // compute the penalty:

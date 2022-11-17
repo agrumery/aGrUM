@@ -111,7 +111,7 @@ namespace gum {
     for (auto node: this->bayesNet_.nodes())
       _modalitiesMap_.insert(node, this->bayesNet_.variable(node).domainSize());
 
-    const auto moralg=this->bayesNet_.moralGraph();
+    const auto           moralg = this->bayesNet_.moralGraph();
     DefaultTriangulation tri(&moralg, &_modalitiesMap_);
 
     if (tri.maxLog10CliqueDomainSize() > maxlog10InducedWidth_) return false;

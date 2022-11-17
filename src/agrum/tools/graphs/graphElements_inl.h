@@ -79,7 +79,7 @@ namespace gum {
 
   // returns the second extremal node
   INLINE NodeId Edge::second() const { return n2; }
- 
+
 
   // Returns the value of a key as a Size
   INLINE Size HashFunc< Edge >::castToSize(const Edge& key) {

@@ -38,10 +38,6 @@ namespace gum_tests {
 
   class [[maybe_unused]] MCBayesNetGeneratorTestSuite: public CxxTest::TestSuite {
     public:
-    void setUp() {}
-
-    void tearDown() {}
-
     void testCreationDeletionFloat() {
       gum::MCBayesNetGenerator< float >* gen = nullptr;
 
