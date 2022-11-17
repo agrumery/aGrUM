@@ -13,12 +13,6 @@ from typing import List,Set,Dict,Tuple
 import pyAgrum
 ## end of added by passForType (pyAgrum)
 
-## added by passForType (pyAgrum)
-from typing import List,Set,Dict,Tuple
-# recursive import for typehints annotation
-import pyAgrum
-## end of added by passForType (pyAgrum)
-
 # Import the low-level C/C++ module
 if __package__ or "." in __name__:
     from . import _pyAgrum
@@ -382,10 +376,6 @@ class PythonLoadListener(object):
 # Register PythonLoadListener in _pyAgrum:
 _pyAgrum.PythonLoadListener_swigregister(PythonLoadListener)
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 8dc375db6 ([aGrUM] still working on PDAG)
 def _fillLoadListeners_(py_listener: List["pyAgrum.PythonLoadListener"], l: object) -> int:
     return _pyAgrum._fillLoadListeners_(py_listener, l)
 class PythonApproximationListener(object):
@@ -1624,10 +1614,6 @@ class GumException(Exception):
 # Register GumException in _pyAgrum:
 _pyAgrum.GumException_swigregister(GumException)
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 8dc375db6 ([aGrUM] still working on PDAG)
 def _createMsg_(filename: str, function: str, line: int, msg: str) -> str:
     return _pyAgrum._createMsg_(filename, function, line, msg)
 class FatalError(GumException):
@@ -1900,9 +1886,6 @@ class InvalidDirectedCycle(GraphError):
 
 # Register InvalidDirectedCycle in _pyAgrum:
 _pyAgrum.InvalidDirectedCycle_swigregister(InvalidDirectedCycle)
-<<<<<<< HEAD
-=======
-
 class InvalidPartiallyDirectedCycle(GraphError):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
@@ -1913,8 +1896,6 @@ class InvalidPartiallyDirectedCycle(GraphError):
 
 # Register InvalidPartiallyDirectedCycle in _pyAgrum:
 _pyAgrum.InvalidPartiallyDirectedCycle_swigregister(InvalidPartiallyDirectedCycle)
-
->>>>>>> 8dc375db6 ([aGrUM] still working on PDAG)
 class CPTError(GumException):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
@@ -2171,10 +2152,6 @@ class SyntaxError(IOError):
 # Register SyntaxError in _pyAgrum:
 _pyAgrum.SyntaxError_swigregister(SyntaxError)
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 8dc375db6 ([aGrUM] still working on PDAG)
 def setNumberOfThreads(number: int) -> None:
     r"""
 
@@ -3598,12 +3575,6 @@ class Edge(object):
     def __eq__(self, src: "pyAgrum.Edge") -> bool:
         return _pyAgrum.Edge___eq__(self, src)
 
-<<<<<<< HEAD
-=======
-    def __ne__(self, src: "pyAgrum.Edge") -> bool:
-        return _pyAgrum.Edge___ne__(self, src)
-
->>>>>>> 8dc375db6 ([aGrUM] still working on PDAG)
 # Register Edge in _pyAgrum:
 _pyAgrum.Edge_swigregister(Edge)
 class Arc(object):
@@ -3693,12 +3664,6 @@ class Arc(object):
     def __eq__(self, src: "pyAgrum.Arc") -> bool:
         return _pyAgrum.Arc___eq__(self, src)
 
-<<<<<<< HEAD
-=======
-    def __ne__(self, src: "pyAgrum.Arc") -> bool:
-        return _pyAgrum.Arc___ne__(self, src)
-
->>>>>>> 8dc375db6 ([aGrUM] still working on PDAG)
 # Register Arc in _pyAgrum:
 _pyAgrum.Arc_swigregister(Arc)
 class UndiGraph(object):
@@ -4126,11 +4091,7 @@ class DiGraph(object):
         """
         return _pyAgrum.DiGraph_toDot(self)
 
-<<<<<<< HEAD
     def topologicalOrder(self) -> List[int]:
-=======
-    def topologicalOrder(self, clear: bool=True) -> List[int]:
->>>>>>> 8dc375db6 ([aGrUM] still working on PDAG)
         r"""
 
         Returns
@@ -4636,12 +4597,6 @@ class MixedGraph(UndiGraph, DiGraph):
     def __eq__(self, g: "MixedGraph") -> bool:
         return _pyAgrum.MixedGraph___eq__(self, g)
 
-<<<<<<< HEAD
-    def __ne__(self, g: "MixedGraph") -> bool:
-        return _pyAgrum.MixedGraph___ne__(self, g)
-
-=======
->>>>>>> 8dc375db6 ([aGrUM] still working on PDAG)
     def eraseNode(self, id: int) -> None:
         r"""
 
@@ -4663,12 +4618,9 @@ class MixedGraph(UndiGraph, DiGraph):
         """
         return _pyAgrum.MixedGraph_clear(self)
 
-<<<<<<< HEAD
-=======
     def hasMixedOrientedPath(self, node1: int, node2: int) -> bool:
         return _pyAgrum.MixedGraph_hasMixedOrientedPath(self, node1, node2)
 
->>>>>>> 8dc375db6 ([aGrUM] still working on PDAG)
     def toDot(self) -> str:
         r"""
 
@@ -4704,48 +4656,7 @@ class MixedGraph(UndiGraph, DiGraph):
         """
         return _pyAgrum.MixedGraph_addNodes(self, n)
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    def adjacents(self, id: int) -> object:
-=======
-=======
->>>>>>> ed043b3a5 ([skip-ci] small typo in skbn's documentation.)
-=======
->>>>>>> 66779da41 ([aGrUM/pyAgrum] renaming `pyAgrum.MixedGraph.adjacents` with correct graph notion : `pyAgrum.MixedGraph.boundary`.)
-<<<<<<< HEAD
-    def adjacents(self, id: "gum::NodeId") -> "PyObject *":
-=======
     def boundary(self, id: int) -> object:
->>>>>>> 12646be65 ([aGrUM/pyAgrum] renaming `pyAgrum.MixedGraph.adjacents` with correct graph notion : `pyAgrum.MixedGraph.boundary`.)
-<<<<<<< HEAD
->>>>>>> 2a40291a2 ([aGrUM/pyAgrum] renaming `pyAgrum.MixedGraph.adjacents` with correct graph notion : `pyAgrum.MixedGraph.boundary`.)
-=======
-=======
-=======
->>>>>>> f63b57b9a ([aGrUM/pyAgrum] renaming `pyAgrum.MixedGraph.adjacents` with correct graph notion : `pyAgrum.MixedGraph.boundary`.)
-    def boundary(self, id: int) -> object:
-=======
-    def adjacents(self, id: "gum::NodeId") -> "PyObject *":
->>>>>>> a99b0d21f ([skip-ci] small typo in skbn's documentation.)
-<<<<<<< HEAD
->>>>>>> 662d62799 ([skip-ci] small typo in skbn's documentation.)
-<<<<<<< HEAD
->>>>>>> ed043b3a5 ([skip-ci] small typo in skbn's documentation.)
-=======
-=======
-=======
-    def adjacents(self, id: "gum::NodeId") -> "PyObject *":
-=======
-    def boundary(self, id: int) -> object:
->>>>>>> 12646be65 ([aGrUM/pyAgrum] renaming `pyAgrum.MixedGraph.adjacents` with correct graph notion : `pyAgrum.MixedGraph.boundary`.)
->>>>>>> 94604167c ([aGrUM/pyAgrum] renaming `pyAgrum.MixedGraph.adjacents` with correct graph notion : `pyAgrum.MixedGraph.boundary`.)
->>>>>>> f63b57b9a ([aGrUM/pyAgrum] renaming `pyAgrum.MixedGraph.adjacents` with correct graph notion : `pyAgrum.MixedGraph.boundary`.)
->>>>>>> 66779da41 ([aGrUM/pyAgrum] renaming `pyAgrum.MixedGraph.adjacents` with correct graph notion : `pyAgrum.MixedGraph.boundary`.)
-=======
-    def boundary(self, id: int) -> object:
->>>>>>> 8dc375db6 ([aGrUM] still working on PDAG)
         r"""
 
         Boundary are neighbours (not oriented), children and parents
@@ -5308,12 +5219,6 @@ class CliqueGraph(UndiGraph):
     def __map_str__(self, *args) -> str:
         return _pyAgrum.CliqueGraph___map_str__(self, *args)
 
-<<<<<<< HEAD
-    def __ne__(self, _from: "CliqueGraph") -> bool:
-        return _pyAgrum.CliqueGraph___ne__(self, _from)
-
-=======
->>>>>>> 8dc375db6 ([aGrUM] still working on PDAG)
     def __eq__(self, _from: "CliqueGraph") -> bool:
         return _pyAgrum.CliqueGraph___eq__(self, _from)
 
@@ -6249,11 +6154,7 @@ class DAGmodel(GraphicalModel):
     def isIndependent(self, *args) -> bool:
         return _pyAgrum.DAGmodel_isIndependent(self, *args)
 
-<<<<<<< HEAD
     def moralGraph(self) -> "pyAgrum.UndiGraph":
-=======
-    def moralGraph(self, clear: bool=True) -> "pyAgrum.UndiGraph":
->>>>>>> 8dc375db6 ([aGrUM] still working on PDAG)
         r"""
 
         Returns the moral graph of the BayesNet, formed by adding edges between all pairs of nodes that have a common child, and then making all edges in the graph undirected.
@@ -6266,11 +6167,7 @@ class DAGmodel(GraphicalModel):
         """
         return _pyAgrum.DAGmodel_moralGraph(self)
 
-<<<<<<< HEAD
     def topologicalOrder(self) -> List[int]:
-=======
-    def topologicalOrder(self, clear: bool=True) -> List[int]:
->>>>>>> 8dc375db6 ([aGrUM] still working on PDAG)
         r"""
 
         Returns
@@ -10469,51 +10366,6 @@ class BayesNet(IBayesNet):
 
 # Register BayesNet in _pyAgrum:
 _pyAgrum.BayesNet_swigregister(BayesNet)
-<<<<<<< HEAD
-=======
-
-def BayesNet_fastPrototype(dotlike: str, domainSize: int=2) -> "pyAgrum.BayesNet":
-    r"""
-
-    Create a Bayesian network with a dot-like syntax which specifies:
-        - the structure 'a->b->c;b->d<-e;'.
-        - the type of the variables with different syntax:
-
-          - by default, a variable is a pyAgrum.RangeVariable using the default domain size ([2])
-          - with 'a[10]', the variable is a pyAgrum.RangeVariable using 10 as domain size (from 0 to 9)
-          - with 'a[3,7]', the variable is a pyAgrum.RangeVariable using a domainSize from 3 to 7
-          - with 'a[1,3.14,5,6.2]', the variable is a pyAgrum.DiscretizedVariable using the given ticks (at least 3 values)
-          - with 'a{top|middle|bottom}', the variable is a pyAgrum.LabelizedVariable using the given labels.
-          - with 'a{-1|5|0|3}', the variable is a pyAgrum.IntegerVariable using the sorted given values.
-          - with 'a{-0.5|5.01|0|3.1415}', the variable is a pyAgrum.NumericalDiscreteVariable using the sorted given values.
-
-    Note
-    ----
-      - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
-      - the CPTs are randomly generated.
-      - see also pyAgrum.fastBN.
-
-    Examples
-    --------
-    >>> import pyAgrum as gum
-    >>> bn=pyAgrum.BayesNet.fastPrototype('A->B[1,3]<-C{yes|No}->D[2,4]<-E[1,2.5,3.9]',6)
-
-    Parameters
-    ----------
-    dotlike : str
-            the string containing the specification
-    domainSize : int
-            the default domain size for variables
-
-    Returns
-    -------
-    pyAgrum.BayesNet
-            the resulting Bayesian network
-
-    """
-    return _pyAgrum.BayesNet_fastPrototype(dotlike, domainSize)
-
->>>>>>> 8dc375db6 ([aGrUM] still working on PDAG)
 class BayesNetFragment(IBayesNet, ):
     r"""
 
@@ -11647,40 +11499,6 @@ class MarkovNet(IMarkovNet):
 
 # Register MarkovNet in _pyAgrum:
 _pyAgrum.MarkovNet_swigregister(MarkovNet)
-<<<<<<< HEAD
-=======
-
-def MarkovNet_fastPrototype(dotlike: str, domainSize: int=2) -> "pyAgrum.MarkovNet":
-    r"""
-
-    Create a Markov network with a modified dot-like syntax which specifies:
-        - the structure ``a-b-c;b-d-e;``. The substring ``a-b-c`` indicates a factor with the scope (a,b,c).
-        - the type of the variables with different syntax (cf documentation).
-
-    Examples
-    --------
-    >>> import pyAgrum as gum
-    >>> bn=pyAgrum.MarkovNet.fastPrototype('A--B[1,3]-C{yes|No}--D[2,4]--E[1,2.5,3.9]',6)
-
-    Parameters
-    ----------
-    dotlike : str
-            the string containing the specification
-    domainSize : int
-            the default domain size for variables
-
-    Returns
-    -------
-    pyAgrum.MarkovNet
-            the resulting Markov network
-
-    """
-    return _pyAgrum.MarkovNet_fastPrototype(dotlike, domainSize)
-
-def MarkovNet_fromBN(bn: "pyAgrum.BayesNet") -> "pyAgrum.MarkovNet":
-    return _pyAgrum.MarkovNet_fromBN(bn)
-
->>>>>>> 8dc375db6 ([aGrUM] still working on PDAG)
 class ShaferShenoyMNInference(object):
     r"""
 
@@ -24322,57 +24140,6 @@ class InfluenceDiagram(DAGmodel):
 
 # Register InfluenceDiagram in _pyAgrum:
 _pyAgrum.InfluenceDiagram_swigregister(InfluenceDiagram)
-<<<<<<< HEAD
-=======
-
-def InfluenceDiagram_fastPrototype(dotlike: str, domainSize: int=2) -> "pyAgrum.InfluenceDiagram":
-    r"""
-
-    Create an Influence Diagram with a dot-like syntax which specifies:
-        - the structure 'a->b<-c;b->d;c<-e;'.
-        - a prefix for the type of node (chance/decision/utiliy nodes):
-
-          - `a` : a chance node named 'a' (by default)
-          - `$a` : a utility node named 'a'
-          - `*a` : a decision node named 'a'
-
-        - the type of the variables with different syntax as postfix:
-
-          - by default, a variable is a pyAgrum.RangeVariable using the default domain size (second argument)
-          - with `'a[10]'`, the variable is a pyAgrum.RangeVariable using 10 as domain size (from 0 to 9)
-          - with `'a[3,7]'`, the variable is a pyAgrum.RangeVariable using a domainSize from 3 to 7
-          - with `'a[1,3.14,5,6.2]'`, the variable is a pyAgrum.DiscretizedVariable using the given ticks (at least 3 values)
-          - with `'a{top|middle|bottom}'`, the variable is a pyAgrum.LabelizedVariable using the given labels.
-          - with 'a{-1|5|0|3}', the variable is a pyAgrum.IntegerVariable using the sorted given values.
-          - with 'a{-0.5|5.01|0|3.1415}', the variable is a pyAgrum.NumericalDiscreteVariable using the sorted given values.
-
-    Note
-    ----
-      - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
-      - the potentials (probabilities, utilities) are randomly generated.
-      - see also pyAgrum.fastID.
-
-    Examples
-    --------
-    >>> import pyAgrum as gum
-    >>> bn=pyAgrum.fastID('A->B[1,3]<-*C{yes|No}->$D<-E[1,2.5,3.9]',6)
-
-    Parameters
-    ----------
-    dotlike : str
-            the string containing the specification
-    domainSize : int
-            the default domain size for variables
-
-    Returns
-    -------
-    pyAgrum.InfluenceDiagram
-            the resulting Influence Diagram
-
-    """
-    return _pyAgrum.InfluenceDiagram_fastPrototype(dotlike, domainSize)
-
->>>>>>> 8dc375db6 ([aGrUM] still working on PDAG)
 class ShaferShenoyLIMIDInference(object):
     r"""
 
@@ -25651,10 +25418,6 @@ class BNDatabaseGenerator(object):
 # Register BNDatabaseGenerator in _pyAgrum:
 _pyAgrum.BNDatabaseGenerator_swigregister(BNDatabaseGenerator)
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 8dc375db6 ([aGrUM] still working on PDAG)
 def statsObj() -> None:
     return _pyAgrum.statsObj()
 
