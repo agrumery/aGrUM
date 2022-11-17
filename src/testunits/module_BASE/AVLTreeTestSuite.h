@@ -48,7 +48,7 @@ namespace gum_tests {
       tree2 = tree1;
 
       std::sort(vect.begin(), vect.end());
-      gum::AVLTreeIterator< int > tree1_beg(tree1, true), tree1_end;
+      gum::AVLTreeIterator< int > tree1_beg(tree1, true), tree1_end = tree1.end();
       for (int i = 0; tree1_beg != tree1_end; ++tree1_beg, ++i)
         TS_GUM_ASSERT_EQUALS(*tree1_beg, vect[i]);
       int i = 0;
@@ -69,7 +69,7 @@ namespace gum_tests {
       gum::AVLTree< int > tree4;
       for (int i = 0; i < 100; ++i)
         tree4.insert(i);
-      i = tree4.size() - 1;
+      i = (int) tree4.size() - 1;
       for (auto iter = tree4.rbegin(); iter != tree4.rend(); ++iter, --i) {
         TS_GUM_ASSERT_EQUALS(*iter, i)
       }
@@ -192,7 +192,7 @@ namespace gum_tests {
       tree2 = tree1;
 
       std::sort(vect.begin(), vect.end());
-      gum::AVLTreeIterator< std::pair< int, int >, Mycmp > tree1_beg(tree1, true), tree1_end;
+      gum::AVLTreeIterator< std::pair< int, int >, Mycmp > tree1_beg(tree1, true), tree1_end = tree1.end();
       for (int i = 0; tree1_beg != tree1_end; ++tree1_beg, ++i) {
         TS_GUM_ASSERT_EQUALS(*tree1_beg, vect[i]);
       }
@@ -214,7 +214,7 @@ namespace gum_tests {
       gum::AVLTree< std::pair< int, int >, Mycmp > tree4;
       for (int i = 0; i < 100; ++i)
         tree4.emplace(i,i+5);
-      i = tree4.size() - 1;
+      i = (int) tree4.size() - 1;
       for (auto iter = tree4.rbegin(); iter != tree4.rend(); ++iter, --i) {
         std::pair< int, int > pair(i,i+5);
         TS_GUM_ASSERT_EQUALS(*iter, pair)

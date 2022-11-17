@@ -393,9 +393,10 @@ namespace gum {
     AVLTreeIterator(AVLTreeIterator< Val, Cmp >&& from) noexcept;
 
     /// destructor
-    constexpr ~AVLTreeIterator() noexcept {}
+    ~AVLTreeIterator() noexcept;
 
     /// @}
+
 
     // ============================================================================
     /// @name Operators
@@ -517,9 +518,6 @@ namespace gum {
      */
     explicit AVLTreeIteratorSafe(AVLTree< Val, Cmp >& tree, const bool rbegin = true);
 
-    /// constructor for end safe iterators
-    explicit constexpr AVLTreeIteratorSafe() noexcept {}
-
     /// copy constructor
     AVLTreeIteratorSafe(const AVLTreeIteratorSafe< Val, Cmp >& from);
 
@@ -623,9 +621,6 @@ namespace gum {
     explicit AVLTreeReverseIterator(const AVLTree< Val, Cmp >& tree,
                                     const bool                 rbegin = true) noexcept;
 
-    /// constructor for rend iterators
-    explicit constexpr AVLTreeReverseIterator() noexcept {}
-
     /// copy constructor
     AVLTreeReverseIterator(const AVLTreeReverseIterator< Val, Cmp >& from) noexcept;
 
@@ -633,7 +628,7 @@ namespace gum {
     AVLTreeReverseIterator(AVLTreeReverseIterator< Val, Cmp >&& from) noexcept;
 
     /// destructor
-    constexpr ~AVLTreeReverseIterator() noexcept {}
+    ~AVLTreeReverseIterator() noexcept;
 
     /// @}
 
@@ -730,9 +725,6 @@ namespace gum {
      */
     explicit AVLTreeReverseIteratorSafe(AVLTree< Val, Cmp >& tree, const bool rbegin = true);
 
-    /// constructor for rend safe iterators
-    explicit constexpr AVLTreeReverseIteratorSafe() noexcept {}
-
     /// copy constructor
     AVLTreeReverseIteratorSafe(const AVLTreeReverseIteratorSafe< Val, Cmp >& from);
 
@@ -740,7 +732,7 @@ namespace gum {
     AVLTreeReverseIteratorSafe(AVLTreeReverseIteratorSafe< Val, Cmp >&& from);
 
     /// destructor
-    ~AVLTreeReverseIteratorSafe() noexcept {}
+    ~AVLTreeReverseIteratorSafe() noexcept;
 
     /// @}
 
@@ -800,15 +792,15 @@ namespace gum {
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-  // _static_AVLTree_end_rend_ is a 'constant' iterator that represents both
-  // end and rend iterators for all AVL trees (whatever their type). This global
-  // variable avoids creating the same iterators within every AVL tree instance
-  // (this would be quite inefficient as end and rend are precisely identical for
-  // all AVL trees).
+  // _static_AVLTree_end_rend_ is a 'constant' iterator initialized at compile time
+  // that represents both end and rend iterators for all AVL trees (whatever their
+  // type). This global variable avoids creating the same iterators within every
+  // AVL tree instance (this would be quite inefficient as end and rend are
+  // precisely identical for all AVL trees).
   // The type of _AVLTree_end_rend_ is a pointer to void because C++ allows
   // pointers to void to be cast into pointers to other types (and conversely).
   // This avoids the painful strict-aliasing rule warning
-  inline constexpr AVLTreeIterator< int, std::less< int > > _static_AVLTree_end_rend_;
+  extern constinit const AVLTreeIterator< int, std::less< int > > _static_AVLTree_end_rend_;
   inline constexpr void* _AVLTree_end_rend_ = (void* const)&_static_AVLTree_end_rend_;
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 

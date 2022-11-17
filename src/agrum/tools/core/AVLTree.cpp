@@ -27,3 +27,12 @@
 
 #include <agrum/tools/core/AVLTree.h>
 
+namespace gum {
+
+  // The global static variable representing end and rend for all the AVL trees.
+  // The constinit ensures it is created at compile time. Here, we use the
+  // constinit keyword rather than constexpr because, in debugging mode, the
+  // iterators' destructor cannot be declared as constepxr.
+  constinit const AVLTreeIterator< int, std::less< int > > _static_AVLTree_end_rend_;
+
+} // namespace gum
