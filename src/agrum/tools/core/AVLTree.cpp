@@ -25,19 +25,5 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#include <agrum/agrum.h>
 #include <agrum/tools/core/AVLTree.h>
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
-namespace gum {
-
-  // end/rend iterator for all the types of data. This is mainly what stroustrup suggests
-  // in his C++ programming language, third edition, page 854
-  static constexpr const AVLTreeIterator< int > _static_AVLTree_end_rend_;
-  static constexpr const void* _get_AVLTree_end_rend_() { return &_static_AVLTree_end_rend_; }
-  constexpr const void* const  _AVLTree_end_rend_ = _get_AVLTree_end_rend_();
-
-} /* namespace gum */
-
-#endif   // DOXYGEN_SHOULD_SKIP_THIS

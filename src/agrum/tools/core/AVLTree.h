@@ -48,17 +48,6 @@ namespace gum {
   class AVLTreeReverseIterator;
   template < typename Val, typename Cmp >
   class AVLTreeReverseIteratorSafe;
-
-  // _AVLTree_end_rend_ is a 'pseudo static' iterator that represents both end
-  // and rend iterators for all AVL trees (whatever their type). This global
-  // variable avoids creating the same iterators within every AVL tree instance
-  // (this would be quite inefficient as end and rend are precisely identical for
-  // all AVL trees).
-  // The type of  _AVLTree_end_rend_ is a pointer to void because C++ allows
-  // pointers to void to be cast into pointers to other types (and conversely).
-  // This avoids the weird strict-aliasing rule warning
-  extern const void* const _AVLTree_end_rend_;
-
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 
   /**
@@ -243,25 +232,25 @@ namespace gum {
     iterator begin();
 
     /// returns an iterator pointing just after the maximal element
-    const iterator& end() const;
+    constexpr const iterator& end() const;
 
     /// returns a new iterator pointing to the maximal element of the tree
     reverse_iterator rbegin();
 
     /// returns an iterator pointing just before the minimal element
-    const reverse_iterator& rend() const;
+    constexpr const reverse_iterator& rend() const;
 
     /// returns a new safe iterator pointing to the minimal element of the tree
     iterator_safe beginSafe();
 
     /// returns a safe iterator pointing just after the maximal element
-    const iterator_safe& endSafe() const;
+    constexpr const iterator_safe& endSafe() const;
 
     /// returns a safe iterator pointing to the maximal element of the tree
     reverse_iterator_safe rbeginSafe();
 
     /// returns a safe iterator pointing just before the minimal element
-    const reverse_iterator_safe& rendSafe() const;
+    constexpr const reverse_iterator_safe& rendSafe() const;
 
     /// @}
 
@@ -808,6 +797,20 @@ namespace gum {
     /// allow AVL trees to access the content of the iterators
     friend AVLTree< Val, Cmp >;
   };
+
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+  // _static_AVLTree_end_rend_ is a 'constant' iterator that represents both
+  // end and rend iterators for all AVL trees (whatever their type). This global
+  // variable avoids creating the same iterators within every AVL tree instance
+  // (this would be quite inefficient as end and rend are precisely identical for
+  // all AVL trees).
+  // The type of _AVLTree_end_rend_ is a pointer to void because C++ allows
+  // pointers to void to be cast into pointers to other types (and conversely).
+  // This avoids the painful strict-aliasing rule warning
+  inline constexpr AVLTreeIterator< int, std::less< int > > _static_AVLTree_end_rend_;
+  inline constexpr void* _AVLTree_end_rend_ = (void* const)&_static_AVLTree_end_rend_;
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 
 }   // namespace gum

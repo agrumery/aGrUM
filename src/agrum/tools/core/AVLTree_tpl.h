@@ -772,7 +772,7 @@ namespace gum {
 
   /// returns an iterator pointing just after the maximal element
   template < typename Val, typename Cmp >
-  INLINE const typename AVLTree< Val, Cmp >::iterator& AVLTree< Val, Cmp >::end() const {
+  constexpr const typename AVLTree< Val, Cmp >::iterator& AVLTree< Val, Cmp >::end() const {
     return *(reinterpret_cast< const typename AVLTree< Val, Cmp >::iterator* >(_AVLTree_end_rend_));
   }
 
@@ -784,7 +784,7 @@ namespace gum {
 
   /// returns an iterator pointing just before the minimal element
   template < typename Val, typename Cmp >
-  INLINE const typename AVLTree< Val, Cmp >::reverse_iterator& AVLTree< Val, Cmp >::rend() const {
+  constexpr const typename AVLTree< Val, Cmp >::reverse_iterator& AVLTree< Val, Cmp >::rend() const {
     return *(reinterpret_cast< const typename AVLTree< Val, Cmp >::reverse_iterator* >(
        _AVLTree_end_rend_));
   }
@@ -797,7 +797,7 @@ namespace gum {
 
   /// returns a safe iterator pointing just after the maximal element
   template < typename Val, typename Cmp >
-  INLINE const typename AVLTree< Val, Cmp >::iterator_safe& AVLTree< Val, Cmp >::endSafe() const {
+  constexpr const typename AVLTree< Val, Cmp >::iterator_safe& AVLTree< Val, Cmp >::endSafe() const {
     return *(
        reinterpret_cast< const typename AVLTree< Val, Cmp >::iterator_safe* >(_AVLTree_end_rend_));
   }
@@ -810,7 +810,7 @@ namespace gum {
 
   /// returns a safe iterator pointing just before the minimal element
   template < typename Val, typename Cmp >
-  INLINE const typename AVLTree< Val, Cmp >::reverse_iterator_safe&
+  constexpr const typename AVLTree< Val, Cmp >::reverse_iterator_safe&
      AVLTree< Val, Cmp >::rendSafe() const {
     return *(reinterpret_cast< const typename AVLTree< Val, Cmp >::reverse_iterator_safe* >(
        _AVLTree_end_rend_));
