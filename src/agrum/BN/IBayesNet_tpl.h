@@ -150,7 +150,7 @@ namespace gum {
 
     std::stringstream s;
     s << "BN{nodes: " << size() << ", arcs: " << dag().sizeArcs() << ", ";
-    spaceCplxToStream(s, log10DomainSize(), dim(), usedMem);
+    spaceCplxToStream(s, log10DomainSize(), (int) dim(), usedMem);
     s << "}";
     return s.str();
   }
