@@ -410,10 +410,10 @@ namespace gum {
     AVLTreeIterator< Val, Cmp >& operator=(AVLTreeIterator< Val, Cmp >&& from) noexcept;
 
     /// indicates whether two iterator point to the same element
-    bool operator==(const AVLTreeIterator< Val, Cmp >& from);
+    bool operator==(const AVLTreeIterator< Val, Cmp >& from) const;
 
     /// indicates whether two iterator point to different element
-    bool operator!=(const AVLTreeIterator< Val, Cmp >& from);
+    bool operator!=(const AVLTreeIterator< Val, Cmp >& from) const;
 
     /// move to the next element in the tree
     /** @warning Applying this operator to an iterator equal to the end iterator
@@ -544,10 +544,10 @@ namespace gum {
     AVLTreeIteratorSafe< Val, Cmp >& operator=(AVLTreeIteratorSafe< Val, Cmp >&& from);
 
     /// indicates whether two iterator point to the same element
-    bool operator==(const AVLTreeIteratorSafe< Val, Cmp >& from);
+    bool operator==(const AVLTreeIteratorSafe< Val, Cmp >& from) const;
 
     /// indicates whether two iterator point to different element
-    bool operator!=(const AVLTreeIteratorSafe< Val, Cmp >& from);
+    bool operator!=(const AVLTreeIteratorSafe< Val, Cmp >& from) const;
 
     /// move to the next element in the tree
     /** @warning Applying this operator to an iterator equal to the end iterator
@@ -652,10 +652,10 @@ namespace gum {
        operator=(AVLTreeReverseIterator< Val, Cmp >&& from) noexcept;
 
     /// indicates whether two iterator point to the same element
-    bool operator==(const AVLTreeReverseIterator< Val, Cmp >& from);
+    bool operator==(const AVLTreeReverseIterator< Val, Cmp >& from) const;
 
     /// indicates whether two iterator point to different element
-    bool operator!=(const AVLTreeReverseIterator< Val, Cmp >& from);
+    bool operator!=(const AVLTreeReverseIterator< Val, Cmp >& from) const;
 
     /// move to the next element in the tree
     /** @warning Applying this operator to an iterator equal to the rend iterator
@@ -759,10 +759,10 @@ namespace gum {
        operator=(AVLTreeReverseIteratorSafe< Val, Cmp >&& from);
 
     /// indicates whether two iterator point to the same element
-    bool operator==(const AVLTreeReverseIteratorSafe< Val, Cmp >& from);
+    bool operator==(const AVLTreeReverseIteratorSafe< Val, Cmp >& from) const;
 
     /// indicates whether two iterator point to different element
-    bool operator!=(const AVLTreeReverseIteratorSafe< Val, Cmp >& from);
+    bool operator!=(const AVLTreeReverseIteratorSafe< Val, Cmp >& from) const;
 
     /// move to the next element in the tree
     /** @warning Applying this operator to an iterator equal to the rend iterator
