@@ -150,7 +150,7 @@ namespace gum {
   INLINE AVLTree< Val, Cmp >::AVLTree(AVLTree< Val, Cmp >&& from) noexcept :
       _root_node_(from._root_node_), _lowest_node_(from._lowest_node_),
       _highest_node_(from._highest_node_), _nb_elements_(from._nb_elements_),
-      _cmp_(std::move(from._cmp_)), _safe_iterators_(std::move(_safe_iterators_)) {
+      _cmp_(std::move(from._cmp_)), _safe_iterators_(std::move(from._safe_iterators_)) {
     from._root_node_    = nullptr;
     from._lowest_node_  = nullptr;
     from._highest_node_ = nullptr;
@@ -773,7 +773,7 @@ namespace gum {
   /// returns an iterator pointing just after the maximal element
   template < typename Val, typename Cmp >
   constexpr const typename AVLTree< Val, Cmp >::iterator& AVLTree< Val, Cmp >::end() const {
-    return *(reinterpret_cast< const typename AVLTree< Val, Cmp >::iterator* >(_AVLTree_end_rend_));
+    return *(reinterpret_cast< const typename AVLTree< Val, Cmp >::iterator* >(_AVLTree_end_));
   }
 
   /// returns a new iterator pointing to the maximal element of the tree
@@ -784,9 +784,10 @@ namespace gum {
 
   /// returns an iterator pointing just before the minimal element
   template < typename Val, typename Cmp >
-  constexpr const typename AVLTree< Val, Cmp >::reverse_iterator& AVLTree< Val, Cmp >::rend() const {
-    return *(reinterpret_cast< const typename AVLTree< Val, Cmp >::reverse_iterator* >(
-       _AVLTree_end_rend_));
+  constexpr const typename AVLTree< Val, Cmp >::reverse_iterator&
+     AVLTree< Val, Cmp >::rend() const {
+    return *(
+       reinterpret_cast< const typename AVLTree< Val, Cmp >::reverse_iterator* >(_AVLTree_rend_));
   }
 
   /// returns a new safe iterator pointing to the minimal element of the tree
@@ -797,9 +798,10 @@ namespace gum {
 
   /// returns a safe iterator pointing just after the maximal element
   template < typename Val, typename Cmp >
-  constexpr const typename AVLTree< Val, Cmp >::iterator_safe& AVLTree< Val, Cmp >::endSafe() const {
+  constexpr const typename AVLTree< Val, Cmp >::iterator_safe&
+     AVLTree< Val, Cmp >::endSafe() const {
     return *(
-       reinterpret_cast< const typename AVLTree< Val, Cmp >::iterator_safe* >(_AVLTree_end_rend_));
+       reinterpret_cast< const typename AVLTree< Val, Cmp >::iterator_safe* >(_AVLTree_end_safe_));
   }
 
   /// returns a new safe iterator pointing to the maximal element of the tree
@@ -813,7 +815,7 @@ namespace gum {
   constexpr const typename AVLTree< Val, Cmp >::reverse_iterator_safe&
      AVLTree< Val, Cmp >::rendSafe() const {
     return *(reinterpret_cast< const typename AVLTree< Val, Cmp >::reverse_iterator_safe* >(
-       _AVLTree_end_rend_));
+       _AVLTree_rend_safe_));
   }
 
 
@@ -1095,7 +1097,7 @@ namespace gum {
   INLINE AVLTreeIteratorSafe< Val, Cmp >::AVLTreeIteratorSafe(
      const AVLTreeIteratorSafe< Val, Cmp >& from) :
       AVLTreeIterator< Val, Cmp >(from) {
-    this->tree_->_insertIntoSafeList_(this);
+    if (this->tree_ != nullptr) this->tree_->_insertIntoSafeList_(this);
     GUM_CONS_CPY(AVLTreeIteratorSafe)
   }
 
@@ -1105,8 +1107,10 @@ namespace gum {
   INLINE
      AVLTreeIteratorSafe< Val, Cmp >::AVLTreeIteratorSafe(AVLTreeIteratorSafe< Val, Cmp >&& from) :
       AVLTreeIterator< Val, Cmp >(std::move(from)) {
-    this->tree_->_insertIntoSafeList_(this);
-    this->tree_->_removeFromSafeList_(&from);
+    if (this->tree_ != nullptr) {
+      this->tree_->_insertIntoSafeList_(this);
+      this->tree_->_removeFromSafeList_(&from);
+    }
     GUM_CONS_MOV(AVLTreeIteratorSafe)
   }
 
@@ -1125,8 +1129,8 @@ namespace gum {
      AVLTreeIteratorSafe< Val, Cmp >::operator=(const AVLTreeIteratorSafe< Val, Cmp >& from) {
     if (this != &from) {
       if (from.tree_ != this->tree_) {
-        this->tree_->_removeFromSafeList_(this);
-        from.tree_->_insertIntoSafeList_(this);
+        if (this->tree_ != nullptr) { this->tree_->_removeFromSafeList_(this); }
+        if (from.tree_ != nullptr) { from.tree_->_insertIntoSafeList_(this); }
       }
       AVLTreeIterator< Val, Cmp >::operator=(from);
     }
@@ -1140,8 +1144,8 @@ namespace gum {
      AVLTreeIteratorSafe< Val, Cmp >::operator=(AVLTreeIteratorSafe< Val, Cmp >&& from) {
     if (this != &from) {
       if (from.tree_ != this->tree_) {
-        this->tree_->_removeFromSafeList_(this);
-        from.tree_->_insertIntoSafeList_(this);
+        if (this->tree_ != nullptr) { this->tree_->_removeFromSafeList_(this); }
+        if (from.tree_ != nullptr) { from.tree_->_insertIntoSafeList_(this); }
       }
       AVLTreeIterator< Val, Cmp >::operator=(std::move(from));
     }
@@ -1203,21 +1207,27 @@ namespace gum {
   template < typename Val, typename Cmp >
   INLINE AVLTreeReverseIterator< Val, Cmp >::AVLTreeReverseIterator(const AVLTree< Val, Cmp >& tree,
                                                                     const bool rbegin) noexcept :
-      AVLTreeIterator< Val, Cmp >(tree, !rbegin) { GUM_CONSTRUCTOR(AVLTreeReverseIterator) }
+      AVLTreeIterator< Val, Cmp >(tree, !rbegin) {
+    GUM_CONSTRUCTOR(AVLTreeReverseIterator)
+  }
 
 
   /// copy constructor
   template < typename Val, typename Cmp >
   INLINE AVLTreeReverseIterator< Val, Cmp >::AVLTreeReverseIterator(
      const AVLTreeReverseIterator< Val, Cmp >& from) noexcept :
-      AVLTreeIterator< Val, Cmp >(from) { GUM_CONS_CPY(AVLTreeReverseIterator) }
+      AVLTreeIterator< Val, Cmp >(from) {
+    GUM_CONS_CPY(AVLTreeReverseIterator)
+  }
 
 
   /// move constructor
   template < typename Val, typename Cmp >
   INLINE AVLTreeReverseIterator< Val, Cmp >::AVLTreeReverseIterator(
      AVLTreeReverseIterator< Val, Cmp >&& from) noexcept :
-      AVLTreeIterator< Val, Cmp >(std::move(from)) { GUM_CONS_MOV(AVLTreeReverseIterator) }
+      AVLTreeIterator< Val, Cmp >(std::move(from)) {
+    GUM_CONS_MOV(AVLTreeReverseIterator)
+  }
 
 
   /// destructor
@@ -1317,21 +1327,27 @@ namespace gum {
   INLINE
      AVLTreeReverseIteratorSafe< Val, Cmp >::AVLTreeReverseIteratorSafe(AVLTree< Val, Cmp >& tree,
                                                                         const bool rbegin) :
-      AVLTreeIteratorSafe< Val, Cmp >(tree, !rbegin) { GUM_CONSTRUCTOR(AVLTreeReverseIteratorSafe) }
+      AVLTreeIteratorSafe< Val, Cmp >(tree, !rbegin) {
+    GUM_CONSTRUCTOR(AVLTreeReverseIteratorSafe)
+  }
 
 
   /// copy constructor
   template < typename Val, typename Cmp >
   INLINE AVLTreeReverseIteratorSafe< Val, Cmp >::AVLTreeReverseIteratorSafe(
      const AVLTreeReverseIteratorSafe< Val, Cmp >& from) :
-      AVLTreeIteratorSafe< Val, Cmp >(from) { GUM_CONS_CPY(AVLTreeReverseIteratorSafe) }
+      AVLTreeIteratorSafe< Val, Cmp >(from) {
+    GUM_CONS_CPY(AVLTreeReverseIteratorSafe)
+  }
 
 
   /// move constructor
   template < typename Val, typename Cmp >
   INLINE AVLTreeReverseIteratorSafe< Val, Cmp >::AVLTreeReverseIteratorSafe(
      AVLTreeReverseIteratorSafe< Val, Cmp >&& from) :
-      AVLTreeIteratorSafe< Val, Cmp >(std::move(from)) { GUM_CONS_MOV(AVLTreeReverseIteratorSafe) }
+      AVLTreeIteratorSafe< Val, Cmp >(std::move(from)) {
+    GUM_CONS_MOV(AVLTreeReverseIteratorSafe)
+  }
 
 
   /// destructor

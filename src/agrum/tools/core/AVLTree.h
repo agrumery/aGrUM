@@ -383,7 +383,7 @@ namespace gum {
      */
     explicit AVLTreeIterator(const AVLTree< Val, Cmp >& tree, const bool begin = true) noexcept;
 
-    /// constructor for end iterators
+    // constructor for the static end iterator
     explicit constexpr AVLTreeIterator() noexcept {}
 
     /// copy constructor
@@ -518,6 +518,9 @@ namespace gum {
      */
     explicit AVLTreeIteratorSafe(AVLTree< Val, Cmp >& tree, const bool rbegin = true);
 
+    // constructor for the static endSafe iterator
+    explicit constexpr AVLTreeIteratorSafe() noexcept : AVLTreeIterator< Val, Cmp >() {}
+
     /// copy constructor
     AVLTreeIteratorSafe(const AVLTreeIteratorSafe< Val, Cmp >& from);
 
@@ -620,6 +623,9 @@ namespace gum {
      */
     explicit AVLTreeReverseIterator(const AVLTree< Val, Cmp >& tree,
                                     const bool                 rbegin = true) noexcept;
+
+    // constructor for the static rend iterator
+    explicit constexpr AVLTreeReverseIterator() noexcept : AVLTreeIterator< Val, Cmp >() {}
 
     /// copy constructor
     AVLTreeReverseIterator(const AVLTreeReverseIterator< Val, Cmp >& from) noexcept;
@@ -725,6 +731,9 @@ namespace gum {
      */
     explicit AVLTreeReverseIteratorSafe(AVLTree< Val, Cmp >& tree, const bool rbegin = true);
 
+    // constructor for the static rendSafe iterator
+    explicit constexpr AVLTreeReverseIteratorSafe() noexcept : AVLTreeIteratorSafe< Val, Cmp >() {}
+
     /// copy constructor
     AVLTreeReverseIteratorSafe(const AVLTreeReverseIteratorSafe< Val, Cmp >& from);
 
@@ -792,16 +801,24 @@ namespace gum {
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-  // _static_AVLTree_end_rend_ is a 'constant' iterator initialized at compile time
-  // that represents both end and rend iterators for all AVL trees (whatever their
+  // _static_AVLTree_end_ is a 'constant' iterator initialized at compile time
+  // that represents the end iterators for all AVL trees (whatever their
   // type). This global variable avoids creating the same iterators within every
-  // AVL tree instance (this would be quite inefficient as end and rend are
-  // precisely identical for all AVL trees).
-  // The type of _AVLTree_end_rend_ is a pointer to void because C++ allows
+  // AVL tree instance (this would be quite inefficient as end is precisely
+  // identical for all AVL trees). The same hold for reverse and safe end iterators.
+  // The type of _AVLTree_end_ is a pointer to void because C++ allows
   // pointers to void to be cast into pointers to other types (and conversely).
   // This avoids the painful strict-aliasing rule warning
-  extern constinit const AVLTreeIterator< int, std::less< int > > _static_AVLTree_end_rend_;
-  inline constexpr void* _AVLTree_end_rend_ = (void* const)&_static_AVLTree_end_rend_;
+  extern constinit const AVLTreeIterator< int, std::less< int > >        _static_AVLTree_end_;
+  extern constinit const AVLTreeReverseIterator< int, std::less< int > > _static_AVLTree_rend_;
+  extern constinit const AVLTreeIteratorSafe< int, std::less< int > >    _static_AVLTree_end_safe_;
+  extern constinit const AVLTreeReverseIteratorSafe< int, std::less< int > >
+     _static_AVLTree_rend_safe_;
+
+  inline constexpr void* _AVLTree_end_       = (void* const)&_static_AVLTree_end_;
+  inline constexpr void* _AVLTree_rend_      = (void* const)&_static_AVLTree_rend_;
+  inline constexpr void* _AVLTree_end_safe_  = (void* const)&_static_AVLTree_end_safe_;
+  inline constexpr void* _AVLTree_rend_safe_ = (void* const)&_static_AVLTree_rend_safe_;
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 

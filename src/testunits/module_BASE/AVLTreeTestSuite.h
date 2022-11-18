@@ -59,7 +59,6 @@ namespace gum_tests {
       for (const auto val: tree2) {
         TS_GUM_ASSERT_EQUALS(val, vect[i++]);
       }
-
       gum::AVLTree< int > tree3(std::move(tree2));
       i = 0;
       for (const auto val: tree3) {
