@@ -41,6 +41,11 @@ namespace gum_tests {
     void testEquality() {
       gum::Arc arc1(1, 2);
       gum::Arc arc2(2, 1);
+
+      TS_ASSERT_EQUALS(arc1, arc1)
+      TS_ASSERT_DIFFERS(arc1, arc2)
+      TS_ASSERT_DIFFERS(arc2, arc1)
+
       gum::Arc copy(arc1);
       gum::Arc arc3(6, 7);
 

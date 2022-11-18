@@ -57,19 +57,23 @@ namespace gum_tests {
     }
 
     void testGetters() {
-      gum::Edge edge1((gum::NodeId)1, (gum::NodeId)2);
-      gum::Edge edge2((gum::NodeId)2, (gum::NodeId)1);
-      gum::Edge edge3((gum::NodeId)3, (gum::NodeId)4);
+      const gum::Edge edge1((gum::NodeId)1, (gum::NodeId)2);
+      const gum::Edge edge2((gum::NodeId)2, (gum::NodeId)1);
 
-      gum::Edge copy(edge1);
+      TS_ASSERT_EQUALS(edge1, edge1)
+      TS_ASSERT_EQUALS(edge1, edge2)
+      TS_ASSERT_EQUALS(edge2, edge1)
+
+      const gum::Edge edge3((gum::NodeId)3, (gum::NodeId)4);
+      const gum::Edge edge4((gum::NodeId)1, (gum::NodeId)2);
 
       gum::NodeId n;
 
       TS_GUM_ASSERT_THROWS_NOTHING(n = edge1.first())
       TS_GUM_ASSERT_THROWS_NOTHING(n = edge1.second())
 
-      TS_GUM_ASSERT_THROWS_NOTHING(n = copy.first())
-      TS_GUM_ASSERT_THROWS_NOTHING(n = copy.second())
+      TS_GUM_ASSERT_THROWS_NOTHING(n = edge4.first())
+      TS_GUM_ASSERT_THROWS_NOTHING(n = edge4.second())
 
       TS_ASSERT_EQUALS(n = edge2.first(), (gum::NodeId)1)
       TS_ASSERT_EQUALS(n = edge2.second(), (gum::NodeId)2)
@@ -80,7 +84,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(n = edge3.other((gum::NodeId)3), (gum::NodeId)4)
       TS_ASSERT_EQUALS(n = edge3.other((gum::NodeId)4), (gum::NodeId)3)
 
-      TS_ASSERT_THROWS_ANYTHING(n = copy.other((gum::NodeId)42))
+      TS_ASSERT_THROWS_ANYTHING(n = edge4.other((gum::NodeId)42))
     }
 
     void testHash() {
