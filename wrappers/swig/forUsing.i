@@ -123,6 +123,7 @@ ADD_NODEGRAPHPART_API(gum::DiGraph)
 ADD_ARCGRAPHPART_API(gum::DAG);
 ADD_NODEGRAPHPART_API(gum::UndiGraph)
 ADD_NODEGRAPHPART_API(gum::MixedGraph)
+ADD_NODEGRAPHPART_API(gum::PDAG)
 
 %define ADD_EDGEGRAPHPART_API(classname)
 %extend classname {
@@ -148,6 +149,7 @@ ADD_NODEGRAPHPART_API(gum::MixedGraph)
 %enddef
 ADD_EDGEGRAPHPART_API(gum::UndiGraph)
 ADD_EDGEGRAPHPART_API(gum::MixedGraph)
+ADD_EDGEGRAPHPART_API(gum::PDAG)
 
 %define ADD_ARCGRAPHPART_API(classname)
 %extend classname {
@@ -174,10 +176,10 @@ ADD_EDGEGRAPHPART_API(gum::MixedGraph)
   }
 }
 %enddef
-ADD_ARCGRAPHPART_API(gum::DiGraph);
-ADD_ARCGRAPHPART_API(gum::DAG);
-ADD_ARCGRAPHPART_API(gum::MixedGraph);
-
+ADD_ARCGRAPHPART_API(gum::DiGraph)
+ADD_ARCGRAPHPART_API(gum::DAG)
+ADD_ARCGRAPHPART_API(gum::MixedGraph)
+ADD_ARCGRAPHPART_API(gum::PDAG)
 
 %define ADD_MIXEDGRAPHPART_API(classname)
 %extend classname {
@@ -192,7 +194,8 @@ ADD_ARCGRAPHPART_API(gum::MixedGraph);
   }
 }
 %enddef
-ADD_MIXEDGRAPHPART_API(gum::MixedGraph);
+ADD_MIXEDGRAPHPART_API(gum::MixedGraph)
+ADD_MIXEDGRAPHPART_API(gum::PDAG)
 
 #####################################
 %define ADD_MULTIDIMDECORATOR_API(classname)

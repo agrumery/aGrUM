@@ -82,7 +82,7 @@
 };
 %enddef // ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS
 
-ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::DiGraph); // add for the sub-classes (including MixedGraph)
+ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::DiGraph); // add for the sub-classes (including MixedGraph and pdag)
 ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::UndiGraph);
 ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::EssentialGraph);
 ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::MarkovBlanket);
@@ -105,14 +105,16 @@ ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::MarkovBlanket);
 };
 %enddef
 ADD_NODES_METHOD_TO_GRAPHCLASS(gum::DiGraph);
+ADD_NODES_METHOD_TO_GRAPHCLASS(gum::DAG);
 ADD_NODES_METHOD_TO_GRAPHCLASS(gum::UndiGraph);
 ADD_NODES_METHOD_TO_GRAPHCLASS(gum::MixedGraph);
+ADD_NODES_METHOD_TO_GRAPHCLASS(gum::PDAG);
 // automatically done for subclass
 //ADD_NODES_METHOD_TO_GRAPHCLASS(gum::DAG);
 
 %define ADD_DI_METHOD_TO_GRAPHCLASS(classname)
 %extend classname {
-  PyObject *arcs() const { // add for the sub-classes (including MixedGraph)
+  PyObject *arcs() const { // add for the sub-classes (including MixedGraph and PDAG)
     return PyAgrumHelper::PySetFromArcSet(self->arcs());
   };
   PyObject *parents(gum::NodeId id) const {
@@ -123,7 +125,11 @@ ADD_NODES_METHOD_TO_GRAPHCLASS(gum::MixedGraph);
   };
 };
 %enddef
-ADD_DI_METHOD_TO_GRAPHCLASS(gum::DiGraph); // add for the sub-classes (including MixedGraph)
+ADD_DI_METHOD_TO_GRAPHCLASS(gum::DiGraph);
+ADD_DI_METHOD_TO_GRAPHCLASS(gum::DAG);
+ADD_DI_METHOD_TO_GRAPHCLASS(gum::MixedGraph);
+ADD_DI_METHOD_TO_GRAPHCLASS(gum::PDAG);
+
 ADD_DI_METHOD_TO_GRAPHCLASS(gum::EssentialGraph);
 %ignore gum::EssentialGraph::arcs const;
 %ignore gum::EssentialGraph::parents const;
@@ -146,7 +152,10 @@ ADD_DI_METHOD_TO_GRAPHCLASS(gum::MarkovBlanket);
 %ignore classname::edges const;
 %ignore classname::neighbours const;
 %enddef
-ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::UndiGraph); // add for the sub-classes (including MixedGraph)
+ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::UndiGraph);
+ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::MixedGraph);
+ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::PDAG);
+
 ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::EssentialGraph);
 
 
@@ -167,6 +176,7 @@ ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::EssentialGraph);
 %ignore classname::mixedUnorientedPath const;
 %enddef
 ADD_MIXED_METHOD_TO_GRAPHCLASS(gum::MixedGraph);
+ADD_MIXED_METHOD_TO_GRAPHCLASS(gum::PDAG);
 
 
 %extend gum::CliqueGraph {

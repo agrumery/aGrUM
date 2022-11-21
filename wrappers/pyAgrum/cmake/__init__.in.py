@@ -38,7 +38,7 @@ from .deprecated import *
 
 # selection of imports extracted from dir(.pyAgrum)
 from .pyAgrum import statsObj
-from .pyAgrum import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, CliqueGraph
+from .pyAgrum import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, PDAG, CliqueGraph
 from .pyAgrum import BayesNet, BayesNetFragment, EssentialGraph, MarkovBlanket
 from .pyAgrum import MarkovNet, ShaferShenoyMNInference
 from .pyAgrum import DiscretizedVariable, LabelizedVariable, RangeVariable, DiscreteVariable, IntegerVariable, \
@@ -79,7 +79,7 @@ __all__ = [
     'getPosterior',
     'statsObj',
 
-    'Arc', 'Edge', 'DiGraph', 'UndiGraph', 'MixedGraph', 'DAG', 'CliqueGraph',
+    'Arc', 'Edge', 'DiGraph', 'UndiGraph', 'MixedGraph', 'DAG', 'PDAG', 'CliqueGraph',
     'BayesNet', 'BayesNetFragment', 'EssentialGraph', 'MarkovBlanket',
     'MarkovNet', 'ShaferShenoyMNInference',
     'DiscretizedVariable', 'LabelizedVariable', 'RangeVariable', 'DiscreteVariable', 'IntegerVariable',

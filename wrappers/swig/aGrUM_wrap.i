@@ -70,6 +70,7 @@
 #include <agrum/tools/graphs/DAG.h>
 #include <agrum/tools/graphs/undiGraph.h>
 #include <agrum/tools/graphs/mixedGraph.h>
+#include <agrum/tools/graphs/PDAG.h>
 #include <agrum/tools/graphs/cliqueGraph.h>
 #include <agrum/tools/graphs/algorithms/triangulations/defaultTriangulation.h>
 #include <agrum/tools/variables/discreteVariable.h>
@@ -286,6 +287,7 @@ namespace std {
 %include <agrum/tools/graphs/diGraph.h>
 %include <agrum/tools/graphs/DAG.h>
 %include <agrum/tools/graphs/mixedGraph.h>
+%include <agrum/tools/graphs/PDAG.h>
 %include <agrum/tools/graphs/cliqueGraph.h>
 %import <agrum/tools/graphs/algorithms/triangulations/defaultTriangulation.h>
 %import <agrum/tools/graphs/algorithms/triangulations/triangulation.h>

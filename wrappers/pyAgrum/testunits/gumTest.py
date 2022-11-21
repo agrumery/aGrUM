@@ -59,9 +59,9 @@ log.info("Testing notebooks : " + str(testNotebooks))
 
 if mod != "standAlone":
   if mod == "debug":
-    libagrum = os.path.abspath("../../../build/debug/wrappers")
+    libagrum = os.path.abspath("../../../build/pyAgrum/debug/wrappers")
   else:
-    libagrum = os.path.abspath("../../../build/release/wrappers")
+    libagrum = os.path.abspath("../../../build/pyAgrum/release/wrappers")
   sys.path.insert(0, libagrum)  # to force using local pyAgrum for the tests (and not installed one)
 
 import pyAgrum as gum

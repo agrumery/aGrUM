@@ -50,3 +50,8 @@ Mixed Graph
 -----------
 
 .. autoclass:: pyAgrum.MixedGraph
+
+Partially Directed Graph (DAG)
+------------------------------
+
+.. autoclass:: pyAgrum.PDAG

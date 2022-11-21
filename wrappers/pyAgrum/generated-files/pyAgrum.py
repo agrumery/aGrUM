@@ -4464,6 +4464,67 @@ class DAG(DiGraph):
     def __str__(self) -> str:
         return _pyAgrum.DAG___str__(self)
 
+    def addNodes(self, n: int) -> object:
+        r"""
+
+        Add n nodes.
+
+        Parameters
+        ----------
+        n : int
+          the number of nodes to add.
+
+        Returns
+        -------
+        Set of int
+          the new ids
+
+        """
+        return _pyAgrum.DAG_addNodes(self, n)
+
+    def arcs(self) -> object:
+        r"""
+
+        Returns
+        -------
+        List
+        	the list of the arcs
+
+        """
+        return _pyAgrum.DAG_arcs(self)
+
+    def parents(self, id: int) -> object:
+        r"""
+
+        Parameters
+        ----------
+        id :
+        	The id of the child node
+
+        Returns
+        -------
+        Set
+            the set of the parents ids.
+
+        """
+        return _pyAgrum.DAG_parents(self, id)
+
+    def children(self, id: int) -> object:
+        r"""
+
+        Parameters
+        ----------
+        id : int
+          the id of the parent
+
+        Returns
+        -------
+        Set
+        	the set of all the children
+
+        """
+        return _pyAgrum.DAG_children(self, id)
+
     def addArc(self, *args) -> None:
         r"""
 
@@ -4655,6 +4716,21 @@ class MixedGraph(UndiGraph, DiGraph):
 
         """
         return _pyAgrum.MixedGraph_addNodes(self, n)
+
+    def arcs(self) -> object:
+        return _pyAgrum.MixedGraph_arcs(self)
+
+    def parents(self, id: int) -> object:
+        return _pyAgrum.MixedGraph_parents(self, id)
+
+    def children(self, id: int) -> object:
+        return _pyAgrum.MixedGraph_children(self, id)
+
+    def edges(self) -> object:
+        return _pyAgrum.MixedGraph_edges(self)
+
+    def neighbours(self, id: int) -> object:
+        return _pyAgrum.MixedGraph_neighbours(self, id)
 
     def boundary(self, id: int) -> object:
         r"""
@@ -4981,6 +5057,387 @@ class MixedGraph(UndiGraph, DiGraph):
 
 # Register MixedGraph in _pyAgrum:
 _pyAgrum.MixedGraph_swigregister(MixedGraph)
+class PDAG(MixedGraph):
+    r"""
+
+    PDAG represents a graph with both arcs and edges.
+
+    PDAG() -> PDAG
+        default constructor
+
+    PDAG(src) -> PDAG
+        Parameters:
+            * **src** (*pyAgrum.PDAG*) --the PDAG to copy
+
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+
+    def __init__(self, *args):
+        _pyAgrum.PDAG_swiginit(self, _pyAgrum.new_PDAG(*args))
+    __swig_destroy__ = _pyAgrum.delete_PDAG
+
+    def moralGraph(self) -> "pyAgrum.UndiGraph":
+        return _pyAgrum.PDAG_moralGraph(self)
+
+    def moralizedAncestralGraph(self, nodes: List[int]) -> "pyAgrum.UndiGraph":
+        return _pyAgrum.PDAG_moralizedAncestralGraph(self, nodes)
+
+    def hasMixedReallyOrientedPath(self, n1: int, n2: int) -> bool:
+        return _pyAgrum.PDAG_hasMixedReallyOrientedPath(self, n1, n2)
+
+    def cSeparation(self, *args) -> bool:
+        return _pyAgrum.PDAG_cSeparation(self, *args)
+
+    def __repr__(self) -> str:
+        return _pyAgrum.PDAG___repr__(self)
+
+    def __str__(self) -> str:
+        return _pyAgrum.PDAG___str__(self)
+
+    def addNodes(self, n: int) -> object:
+        r"""
+
+        Add n nodes.
+
+        Parameters
+        ----------
+        n : int
+          the number of nodes to add.
+
+        Returns
+        -------
+        Set of int
+          the new ids
+
+        """
+        return _pyAgrum.PDAG_addNodes(self, n)
+
+    def arcs(self) -> object:
+        return _pyAgrum.PDAG_arcs(self)
+
+    def parents(self, id: int) -> object:
+        return _pyAgrum.PDAG_parents(self, id)
+
+    def children(self, id: int) -> object:
+        return _pyAgrum.PDAG_children(self, id)
+
+    def edges(self) -> object:
+        return _pyAgrum.PDAG_edges(self)
+
+    def neighbours(self, id: int) -> object:
+        return _pyAgrum.PDAG_neighbours(self, id)
+
+    def boundary(self, id: int) -> object:
+        return _pyAgrum.PDAG_boundary(self, id)
+
+    def mixedOrientedPath(self, node1: int, node2: int) -> object:
+        r"""
+
+        Parameters
+        ----------
+        node1 : int
+        	the id form which the path begins
+        node2 : int
+        	the id to witch the path ends
+
+        Returns
+        -------
+        List
+        	 a path from node1 to node2, using edges and/or arcs (following the direction of the arcs). If no path is found, the returned list is empty.
+
+        """
+        return _pyAgrum.PDAG_mixedOrientedPath(self, node1, node2)
+
+    def mixedUnorientedPath(self, node1: int, node2: int) -> object:
+        r"""
+
+        Parameters
+        ----------
+        node1 : int
+        	the id from which the path begins
+        node2 : int
+        	the id to which the path ends
+
+        Returns
+        -------
+        List
+        	 a path from node1 to node2, using edges and/or arcs (not necessarily following the direction of the arcs). If no path is found, the list is empty.
+
+
+        """
+        return _pyAgrum.PDAG_mixedUnorientedPath(self, node1, node2)
+
+    def addNode(self) -> int:
+        r"""
+
+        Returns
+        -------
+        int
+          the new NodeId
+
+        """
+        return _pyAgrum.PDAG_addNode(self)
+
+    def addNodeWithId(self, id: int) -> None:
+        r"""
+
+        Add a node by choosing a new NodeId.
+
+        Parameters
+        ----------
+        id : int
+          The id of the new node
+
+        Raises
+        ------
+          pyAgrum.DuplicateElement
+            If the given id is already used
+
+        """
+        return _pyAgrum.PDAG_addNodeWithId(self, id)
+
+    def existsNode(self, id: int) -> bool:
+        r"""
+
+        Check if a node with a certain id exists in the graph.
+
+        Parameters
+        ----------
+        id : int
+            the checked id
+
+        Returns
+        -------
+        bool
+            True if the node exists
+
+        """
+        return _pyAgrum.PDAG_existsNode(self, id)
+
+    def size(self) -> int:
+        r"""
+
+        Returns
+        -------
+        int
+            the number of nodes in the graph
+
+        """
+        return _pyAgrum.PDAG_size(self)
+
+    def empty(self) -> bool:
+        r"""
+
+        Check if the graph is empty.
+
+        Returns
+        -------
+        bool
+            True if the graph is empty
+
+        """
+        return _pyAgrum.PDAG_empty(self)
+
+    def addEdge(self, *args) -> None:
+        r"""
+
+        Insert a new edge into the graph.
+
+        Parameters
+        ----------
+        n1 : int
+          the id of one node of the new inserted edge
+        n2 : int
+          the id of the other node of the new inserted edge
+
+        Raises
+        ------
+          pyAgrum.InvalidNode
+            If n1 or n2 does not belong to the graph nodes.
+
+        """
+        return _pyAgrum.PDAG_addEdge(self, *args)
+
+    def eraseEdge(self, n1: int, n2: int) -> None:
+        r"""
+
+        Erase the edge between n1 and n2.
+
+        Parameters
+        ----------
+        n1 : int
+          the id of the tail node
+        n2 : int
+          the id of the head node
+
+        """
+        return _pyAgrum.PDAG_eraseEdge(self, n1, n2)
+
+    def existsEdge(self, n1: int, n2: int) -> bool:
+        r"""
+
+        Check if an edge exists bewteen n1 and n2.
+
+        Parameters
+        ----------
+        n1 : int
+          the id of one extremity of the edge
+        n2 : int
+          the id of the other extremity if tge edge
+
+        Returns
+        -------
+        bool
+            True if the arc exists
+
+        """
+        return _pyAgrum.PDAG_existsEdge(self, n1, n2)
+
+    def sizeEdges(self) -> int:
+        r"""
+
+        Returns
+        -------
+        int
+            the number of edges in the graph
+
+        """
+        return _pyAgrum.PDAG_sizeEdges(self)
+
+    def emptyEdges(self) -> bool:
+        r"""
+
+        Check if the graph doesn't contains edges.
+
+        Returns
+        -------
+        bool
+            True if the graph doesn't contains edges
+
+        """
+        return _pyAgrum.PDAG_emptyEdges(self)
+
+    def eraseNeighbours(self, n: int) -> None:
+        r"""
+
+        Erase all the edges adjacent to a given node.
+
+        Parameters
+        ----------
+        n : int
+          the id of the node
+
+        """
+        return _pyAgrum.PDAG_eraseNeighbours(self, n)
+
+    def addArc(self, *args) -> None:
+        r"""
+
+        Add an arc from tail to head.
+
+        Parameters
+        ----------
+        tail : int
+          the id of the tail node
+        head : int
+          the id of the head node
+
+        Raises
+        ------
+          pyAgrum.InvalidNode
+            If head or tail does not belong to the graph nodes.
+
+        """
+        return _pyAgrum.PDAG_addArc(self, *args)
+
+    def eraseArc(self, n1: int, n2: int) -> None:
+        r"""
+
+        Erase the arc between n1 and n2.
+
+        Parameters
+        ----------
+        n1 : int
+        	the id of the tail node
+        n2 : int
+        	the id of the head node
+
+        """
+        return _pyAgrum.PDAG_eraseArc(self, n1, n2)
+
+    def existsArc(self, n1: int, n2: int) -> bool:
+        r"""
+
+        Check if an arc exists between n1 and n2.
+
+        Parameters
+        ----------
+        n1 : int
+        	the id of the tail node
+        n2 : int
+        	the id of the head node
+
+        Returns
+        -------
+        bool
+            True if the arc exists
+
+        """
+        return _pyAgrum.PDAG_existsArc(self, n1, n2)
+
+    def eraseParents(self, n: int) -> None:
+        r"""
+
+        Erase the arcs coming to the node.
+
+        Parameters
+        ----------
+        n : int
+        	the id of the child node
+
+        """
+        return _pyAgrum.PDAG_eraseParents(self, n)
+
+    def eraseChildren(self, n: int) -> None:
+        r"""
+
+        Erase the arcs heading through the node's children.
+
+        Parameters
+        ----------
+        n : int
+        	the id of the parent node
+
+        """
+        return _pyAgrum.PDAG_eraseChildren(self, n)
+
+    def sizeArcs(self) -> int:
+        r"""
+
+        Returns
+        -------
+        int
+            the number of arcs in the graph
+
+        """
+        return _pyAgrum.PDAG_sizeArcs(self)
+
+    def emptyArcs(self) -> bool:
+        r"""
+
+        Check if the graph doesn't contains arcs.
+
+        Returns
+        -------
+        bool
+            True if the graph doesn't contains arcs
+
+        """
+        return _pyAgrum.PDAG_emptyArcs(self)
+
+# Register PDAG in _pyAgrum:
+_pyAgrum.PDAG_swigregister(PDAG)
 class CliqueGraph(UndiGraph):
     r"""
 

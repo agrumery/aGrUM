@@ -54,7 +54,7 @@ def processNotebook(notebook_filename):
             'deletable': True
           },
           'cell_type': 'code',
-          'source': 'import os,sys\nsys.path.insert(0, os.path.abspath("../../../build/release/wrappers"))'
+          'source': 'import os,sys\nsys.path.insert(0, os.path.abspath("../../../build/pyAgrum/release/wrappers"))'
         }))
         ep.preprocess(nb, {'metadata': {'path': '../doc/sphinx/notebooks/'}})
         break

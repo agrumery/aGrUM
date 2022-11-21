@@ -5,6 +5,7 @@
 %include "doc_UndiGraph.i"
 %include "doc_CliqueGraph.i"
 %include "doc_MixedGraph.i"
+%include "doc_PDAG.i"
 
 %include "doc_Variable.i"
 %include "doc_DiscreteVariable.i"
