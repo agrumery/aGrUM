@@ -2,8 +2,8 @@
 # for instance using
 # python act lib pyAgrum release --python3
 SRCDIR=../../..
-DESTDIR=${SRCDIR}/build/release/wrappers/pyAgrum
+DESTDIR=${SRCDIR}/build/pyAgrum/release/wrappers/pyAgrum
 
 run:
-	swig -c++ -python -outdir $(DESTDIR) -py3 -I../../swig -I../../../src -I../../../build/release -I.. -I../swigsrc pyAgrum.i
+	swig -c++ -python -outdir $(DESTDIR) -py3 -I../../swig -I../../../src -I../../../build/pyAgrum/release -I.. -I../swigsrc pyAgrum.i
 	cd sphinx && make html

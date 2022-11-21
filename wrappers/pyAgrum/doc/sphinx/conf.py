@@ -28,7 +28,7 @@ author = 'Pierre-henri Wuillemin'
 #
 import os
 import sys
-#sys.path.insert(0,os.path.abspath('../../../../build/release/wrappers/'))
+#sys.path.insert(0,os.path.abspath('../../../../build/pyAgrum/release/wrappers/'))
 
 import pyAgrum
 

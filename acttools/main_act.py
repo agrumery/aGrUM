@@ -81,10 +81,12 @@ def main():
   gc = gm = gb = 0
   if not specialActions(current):
     # creating "classical" compilation from cmake/make/postprocess
-    safe_cd(current, "build")
-    safe_cd(current, current["mode"])
 
     for target in current["targets"]:
+      safe_cd(current, "build")
+      safe_cd(current, target)
+      safe_cd(current, current["mode"])
+
       t0 = time.time()
       if options.build == "all":
         buildCmake(current, target)
@@ -98,7 +100,8 @@ def main():
       gm += t2 - t1
       gb += t3 - t2
 
-    safe_cd(current, "..")
-    safe_cd(current, "..")
+      safe_cd(current, "..")
+      safe_cd(current, "..")
+      safe_cd(current, "..")
 
   return (gc, gm, gb)

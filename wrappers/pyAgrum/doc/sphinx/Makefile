@@ -16,8 +16,8 @@ endif
 SPHINXOPTS    = -c . -a -E -w sphinx_warnings.txt
 
 PAPER         =
-BUILDDIR      = ../../../../build/release/wrappers/pyAgrum/docs
-AGRUMBUILDDIR = "{agrum}/build/release/wrappers/pyAgrum/docs"
+BUILDDIR      = ../../../../build/pyAgrum/release/wrappers/pyAgrum/docs
+AGRUMBUILDDIR = "{agrum}/build/pyAgrum/release/wrappers/pyAgrum/docs"
 
 # Internal variables.
 PAPEROPT_a4     = -D latex_paper_size=a4

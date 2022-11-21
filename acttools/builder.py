@@ -29,7 +29,7 @@ from .utils import trace, setifyString, critic, notif
 
 
 def getCmake(current, target):
-  line = cfg.cmake + " ../.."  # we are in build/[release|target]
+  line = cfg.cmake + " ../../.."  # we are in build/[release|target]
 
   line += " -DCMAKE_EXPORT_COMPILE_COMMANDS=ON "  # for clang-tidy
 
@@ -259,9 +259,9 @@ def getPost(current, target):
 
       if cfg.os_platform == "win32":
         line = 'copy /Y "wrappers\pyAgrum\Release\_pyAgrum.pyd" "wrappers\pyAgrum\." & ' + \
-            cfg.python + " ..\\..\\wrappers\\pyAgrum\\testunits\\" + gumTest
+            cfg.python + " ..\\..\\..\\wrappers\\pyAgrum\\testunits\\" + gumTest
       else:
-        line = cfg.python + " ../../wrappers/pyAgrum/testunits/" + gumTest
+        line = cfg.python + " ../../../wrappers/pyAgrum/testunits/" + gumTest
       line += " " + current['mode']
       return line, True
   return "", False
