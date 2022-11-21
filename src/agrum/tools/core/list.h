@@ -37,6 +37,7 @@
 
 #include <agrum/agrum.h>
 #include <agrum/tools/core/refPtr.h>
+#include <agrum/tools/core/staticInitializer.h>
 
 #define GUM_DEFAULT_ITERATOR_NUMBER 4
 
@@ -68,19 +69,6 @@ namespace gum {
   template < typename Val >
   std::ostream& operator<<(std::ostream& stream, const List< Val >& list);
 #endif   // SWIG
-
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-  //  _list_end_ is a 'pseudo static' iterator that represents both end and rend
-  // iterators for all Lists (whatever their type). This global variable
-  // avoids creating the same iterators within every List instance (this would
-  // be quite inefficient as end and rend are precisely identical for all
-  // lists).
-  // The type of  _list_end_ is a pointer to void because C++ allows pointers to
-  // void to be cast into pointers to other types (and conversely). This avoids
-  // the weird strict-aliasing rule warning
-  extern const void* const _list_end_safe_;
-  extern const void* const _list_end_;
-#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 
   // ===========================================================================
@@ -400,7 +388,7 @@ namespace gum {
     /**
      * @brief A basic constructor that creates an empty list.
      */
-    List();
+    explicit List();
 
     /**
      * @brief Copy constructor.
@@ -418,7 +406,7 @@ namespace gum {
      * @brief Move constructor.
      * @param src The gum::List to move.
      */
-    List(List< Val >&& src);
+    List(List< Val >&& src) noexcept;
 
     /**
      * @brief Initializer_list constructor.
@@ -1465,7 +1453,11 @@ namespace gum {
      *
      * Returns an iterator pointing toward nothing.
      */
-    ListConstIterator() noexcept;
+    explicit ListConstIterator() noexcept;
+
+    // constructor for the static cend/crend iterator
+    // only list.cpp should use this constructor
+    explicit constexpr ListConstIterator(StaticInitializer init) noexcept {}
 
     /**
      * @brief Constructor for a begin.
@@ -1746,7 +1738,12 @@ namespace gum {
      *
      * Returns an iterator pointing toward nothing.
      */
-    ListIterator() noexcept;
+    explicit ListIterator() noexcept;
+
+    // constructor for the static end/rend iterator
+    // only list.cpp should use this constructor
+    explicit constexpr ListIterator(StaticInitializer init) noexcept :
+        ListConstIterator< Val >(init) {}
 
     /**
      * @brief Constructor for a begin.
@@ -2008,7 +2005,11 @@ namespace gum {
      *
      * Returns an iterator pointing toward nothing.
      */
-    ListConstIteratorSafe() noexcept;
+    explicit ListConstIteratorSafe() noexcept;
+
+    // constructor for the static cendSafe/crendSafe iterator
+    // only list.cpp should use this constructor
+    explicit constexpr ListConstIteratorSafe(StaticInitializer init) noexcept {}
 
     /**
      * @brief Constructor for a begin.
@@ -2315,7 +2316,12 @@ namespace gum {
      *
      * Returns an iterator pointing toward nothing.
      */
-    ListIteratorSafe() noexcept;
+    explicit ListIteratorSafe() noexcept;
+
+    // constructor for the static endSafe/rendSafe iterator
+    // only list.cpp should use this constructor
+    explicit constexpr ListIteratorSafe(StaticInitializer init) noexcept :
+        ListConstIteratorSafe< Val >(init) {}
 
     /**
      * @brief Constructor for a begin.
@@ -2496,40 +2502,28 @@ namespace gum {
   };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-  // constructor and destructor for the iterator that represents end and rend
-  template <>
-  ListConstIteratorSafe< Debug >::ListConstIteratorSafe() noexcept;
-  template <>
-  ListConstIteratorSafe< Debug >::~ListConstIteratorSafe();
-  template <>
-  ListConstIterator< Debug >::ListConstIterator() noexcept;
-  template <>
-  ListConstIterator< Debug >::~ListConstIterator() noexcept;
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+  // _static_list_end_ is a 'constant' iterator initialized at compile time
+  // that represents the end iterators for all lists (whatever their content).
+  // This global variable avoids creating the same iterators within every
+  // List instance (this would be quite inefficient as end is precisely
+  // identical for all lists). The same holds for reverse and safe end iterators.
+  // The type of _list_end_ is a pointer to void because C++ allows
+  // pointers to void to be cast into pointers to other types (and conversely).
+  // This avoids the painful strict-aliasing rule warning
+  extern constinit const ListConstIteratorSafe< Debug > _static_list_end_safe_;
+  extern constinit const ListConstIterator< Debug >     _static_list_end_;
+
+  inline constexpr void* const _list_end_safe_ = (void* const)&_static_list_end_safe_;
+  inline constexpr void* const _list_end_      = (void* const)&_static_list_end_;
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 } /* namespace gum */
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::List< bool >;
-#    endif
-#  endif
-#endif
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::List< int >;
-#    endif
-#  endif
-#endif
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::List< unsigned int >;
-#    endif
-#  endif
 #endif
 
 

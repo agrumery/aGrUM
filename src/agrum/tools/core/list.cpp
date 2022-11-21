@@ -50,33 +50,11 @@ namespace gum {
 #    define GCC_DIAG_ON(x)
 #  endif
 
-  // Destructor for end/rend
-  template <>
-  ListConstIteratorSafe< Debug >::~ListConstIteratorSafe() {}
-
-  // constructor for end/rend
-  template <>
-  ListConstIteratorSafe< Debug >::ListConstIteratorSafe() noexcept {}
-
-  // Destructor for end/rend
-  template <>
-  ListConstIterator< Debug >::~ListConstIterator() noexcept {}
-
-  // constructor for end/rend
-  template <>
-  ListConstIterator< Debug >::ListConstIterator() noexcept {}
-
-  // an iterator that represents both end and rend for all the Lists
-  // (whatever their type). This is mainly what stroustrup suggests
-  // in his C++ programming language, third edition, page 854
-  static const ListConstIteratorSafe< Debug > _static_list_end_safe_;
-  static const ListConstIterator< Debug >     _static_list_end_;
-
-  static constexpr const void* _get_list_end_safe_() { return &_static_list_end_safe_; }
-  static constexpr const void* _get_list_end_() { return &_static_list_end_; }
-
-  const void* const _list_end_safe_ = _get_list_end_safe_();
-  const void* const _list_end_      = _get_list_end_();
+  // an iterator that represents both end and rend for all the Lists (whatever
+  // their type). Here, we use the constinit keyword rather than constexpr because,
+  // in debugging mode, the iterators' destructors cannot be declared as constepxr.
+  constinit const ListConstIteratorSafe< Debug > _static_list_end_safe_(StaticInitializer::CONSTINIT);
+  constinit const ListConstIterator< Debug >     _static_list_end_(StaticInitializer::CONSTINIT);
 
 } /* namespace gum */
 

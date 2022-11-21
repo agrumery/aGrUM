@@ -35,6 +35,7 @@
 #include <algorithm>
 
 #include <agrum/agrum.h>
+#include <agrum/tools/core/staticInitializer.h>
 
 namespace gum {
 
@@ -384,7 +385,8 @@ namespace gum {
     explicit AVLTreeIterator(const AVLTree< Val, Cmp >& tree, const bool begin = true) noexcept;
 
     // constructor for the static end iterator
-    explicit constexpr AVLTreeIterator() noexcept {}
+    // only AVLTree.cpp should use this constructor
+    explicit constexpr AVLTreeIterator(StaticInitializer init) noexcept {}
 
     /// copy constructor
     AVLTreeIterator(const AVLTreeIterator< Val, Cmp >& from) noexcept;
@@ -519,7 +521,9 @@ namespace gum {
     explicit AVLTreeIteratorSafe(AVLTree< Val, Cmp >& tree, const bool rbegin = true);
 
     // constructor for the static endSafe iterator
-    explicit constexpr AVLTreeIteratorSafe() noexcept : AVLTreeIterator< Val, Cmp >() {}
+    // only AVLTree.cpp should use this constructor
+    explicit constexpr AVLTreeIteratorSafe(StaticInitializer init) noexcept :
+        AVLTreeIterator< Val, Cmp >(init) {}
 
     /// copy constructor
     AVLTreeIteratorSafe(const AVLTreeIteratorSafe< Val, Cmp >& from);
@@ -625,7 +629,9 @@ namespace gum {
                                     const bool                 rbegin = true) noexcept;
 
     // constructor for the static rend iterator
-    explicit constexpr AVLTreeReverseIterator() noexcept : AVLTreeIterator< Val, Cmp >() {}
+    // only AVLTree.cpp should use this constructor
+    explicit constexpr AVLTreeReverseIterator(StaticInitializer init) noexcept :
+        AVLTreeIterator< Val, Cmp >(init) {}
 
     /// copy constructor
     AVLTreeReverseIterator(const AVLTreeReverseIterator< Val, Cmp >& from) noexcept;
@@ -732,7 +738,9 @@ namespace gum {
     explicit AVLTreeReverseIteratorSafe(AVLTree< Val, Cmp >& tree, const bool rbegin = true);
 
     // constructor for the static rendSafe iterator
-    explicit constexpr AVLTreeReverseIteratorSafe() noexcept : AVLTreeIteratorSafe< Val, Cmp >() {}
+    // only AVLTree.cpp should use this constructor
+    explicit constexpr AVLTreeReverseIteratorSafe(StaticInitializer init) noexcept :
+        AVLTreeIteratorSafe< Val, Cmp >(init) {}
 
     /// copy constructor
     AVLTreeReverseIteratorSafe(const AVLTreeReverseIteratorSafe< Val, Cmp >& from);
@@ -815,10 +823,10 @@ namespace gum {
   extern constinit const AVLTreeReverseIteratorSafe< int, std::less< int > >
      _static_AVLTree_rend_safe_;
 
-  inline constexpr void* _AVLTree_end_       = (void* const)&_static_AVLTree_end_;
-  inline constexpr void* _AVLTree_rend_      = (void* const)&_static_AVLTree_rend_;
-  inline constexpr void* _AVLTree_end_safe_  = (void* const)&_static_AVLTree_end_safe_;
-  inline constexpr void* _AVLTree_rend_safe_ = (void* const)&_static_AVLTree_rend_safe_;
+  inline constexpr void* const _AVLTree_end_       = (void* const)&_static_AVLTree_end_;
+  inline constexpr void* const _AVLTree_rend_      = (void* const)&_static_AVLTree_rend_;
+  inline constexpr void* const _AVLTree_end_safe_  = (void* const)&_static_AVLTree_end_safe_;
+  inline constexpr void* const _AVLTree_rend_safe_ = (void* const)&_static_AVLTree_rend_safe_;
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 

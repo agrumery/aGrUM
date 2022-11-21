@@ -33,9 +33,13 @@ namespace gum {
   // The constinit ensures it is created at compile time. Here, we use the
   // constinit keyword rather than constexpr because, in debugging mode, the
   // iterators' destructors cannot be declared as constepxr.
-  constinit const AVLTreeIterator< int, std::less< int > >            _static_AVLTree_end_;
-  constinit const AVLTreeReverseIterator< int, std::less< int > >     _static_AVLTree_rend_;
-  constinit const AVLTreeIteratorSafe< int, std::less< int > >        _static_AVLTree_end_safe_;
-  constinit const AVLTreeReverseIteratorSafe< int, std::less< int > > _static_AVLTree_rend_safe_;
+  constinit const AVLTreeIterator< int, std::less< int > >
+     _static_AVLTree_end_(StaticInitializer::CONSTINIT);
+  constinit const AVLTreeReverseIterator< int, std::less< int > >
+     _static_AVLTree_rend_(StaticInitializer::CONSTINIT);
+  constinit const AVLTreeIteratorSafe< int, std::less< int > >
+     _static_AVLTree_end_safe_(StaticInitializer::CONSTINIT);
+  constinit const AVLTreeReverseIteratorSafe< int, std::less< int > >
+     _static_AVLTree_rend_safe_(StaticInitializer::CONSTINIT);
 
 }   // namespace gum

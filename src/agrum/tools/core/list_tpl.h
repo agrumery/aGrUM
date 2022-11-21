@@ -1176,7 +1176,7 @@ namespace gum {
 
   // move constructor
   template < typename Val >
-  INLINE List< Val >::List(List< Val >&& src) :
+  INLINE List< Val >::List(List< Val >&& src) noexcept :
       _deb_list_{std::move(src._deb_list_)}, _end_list_{std::move(src._end_list_)},
       _nb_elements_{std::move(src._nb_elements_)}, _safe_iterators_{
                                                       std::move(src._safe_iterators_)} {
