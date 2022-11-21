@@ -386,7 +386,7 @@ namespace gum {
 
     // constructor for the static end iterator
     // only AVLTree.cpp should use this constructor
-    explicit constexpr AVLTreeIterator(StaticInitializer init) noexcept {}
+    explicit consteval AVLTreeIterator(StaticInitializer init) noexcept {}
 
     /// copy constructor
     AVLTreeIterator(const AVLTreeIterator< Val, Cmp >& from) noexcept;
@@ -522,7 +522,7 @@ namespace gum {
 
     // constructor for the static endSafe iterator
     // only AVLTree.cpp should use this constructor
-    explicit constexpr AVLTreeIteratorSafe(StaticInitializer init) noexcept :
+    explicit consteval AVLTreeIteratorSafe(StaticInitializer init) noexcept :
         AVLTreeIterator< Val, Cmp >(init) {}
 
     /// copy constructor
@@ -630,7 +630,7 @@ namespace gum {
 
     // constructor for the static rend iterator
     // only AVLTree.cpp should use this constructor
-    explicit constexpr AVLTreeReverseIterator(StaticInitializer init) noexcept :
+    explicit consteval AVLTreeReverseIterator(StaticInitializer init) noexcept :
         AVLTreeIterator< Val, Cmp >(init) {}
 
     /// copy constructor
@@ -739,7 +739,7 @@ namespace gum {
 
     // constructor for the static rendSafe iterator
     // only AVLTree.cpp should use this constructor
-    explicit constexpr AVLTreeReverseIteratorSafe(StaticInitializer init) noexcept :
+    explicit consteval AVLTreeReverseIteratorSafe(StaticInitializer init) noexcept :
         AVLTreeIteratorSafe< Val, Cmp >(init) {}
 
     /// copy constructor

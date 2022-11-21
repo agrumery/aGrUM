@@ -31,7 +31,7 @@
 
 namespace gum {
 
-  // A dummy enum that, when passed as argument to a constexpr constructor, will
+  // A dummy enum that, when passed as argument to a consteval constructor, will
   // mean that we want this constructor to be used to initialize a static variable
   // at compile time.
   // Basically, the idea is the following:

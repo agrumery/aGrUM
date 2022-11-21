@@ -40,6 +40,7 @@
 
 #include <agrum/agrum.h>
 #include <agrum/tools/core/hashFunc.h>
+#include <agrum/tools/core/staticInitializer.h>
 
 namespace gum {
 
@@ -1813,7 +1814,11 @@ namespace gum {
     /**
      * @brief Basic constructor: creates an iterator pointing to nothing.
      */
-    HashTableConstIteratorSafe();
+    explicit HashTableConstIteratorSafe();
+
+    // constructor for the static cendSafe/crendSafe iterator
+    // only hashTable.cpp should use this constructor
+    explicit consteval HashTableConstIteratorSafe(StaticInitializer init) noexcept {}
 
     /**
      * @brief Constructor for an iterator pointing to the first element of a
@@ -2106,7 +2111,12 @@ namespace gum {
     /**
      * @brief Basic constructor: creates an iterator pointing to nothing.
      */
-    HashTableIteratorSafe();
+    explicit HashTableIteratorSafe();
+
+    // constructor for the static endSafe/rendSafe iterator
+    // only hashTable.cpp should use this constructor
+    explicit consteval HashTableIteratorSafe(StaticInitializer init) noexcept :
+        HashTableConstIteratorSafe< Key, Val >(init) {}
 
     /**
      * @brief Constructor for an iterator pointing to the first element of a
@@ -2344,7 +2354,11 @@ namespace gum {
     /**
      * @brief Basic constructor: creates an iterator pointing to nothing.
      */
-    HashTableConstIterator() noexcept;
+    explicit HashTableConstIterator() noexcept;
+
+    // constructor for the static cend/crend iterator
+    // only hashTable.cpp should use this constructor
+    explicit consteval HashTableConstIterator(StaticInitializer init) noexcept {}
 
     /**
      * @brief Constructor for an iterator pointing to the first element of a
@@ -2622,6 +2636,11 @@ namespace gum {
      */
     HashTableIterator() noexcept;
 
+    // constructor for the static end/rend iterator
+    // only hashTable.cpp should use this constructor
+    explicit consteval HashTableIterator(StaticInitializer init) noexcept :
+        HashTableConstIterator< Key, Val >(init) {}
+
     /**
      * @brief Constructor for an iterator pointing to the first element of a
      * hashtable.
@@ -2781,40 +2800,10 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::HashTable< int, int >;
-#      endif
-#    endif
-#  endif
-#endif
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::HashTable< int, std::string >;
-#      endif
-#    endif
-#  endif
-#endif
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::HashTable< std::string, std::string >;
-#      endif
-#    endif
-#  endif
-#endif
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::HashTable< std::string, int >;
-#      endif
-#    endif
-#  endif
 #endif
 
 

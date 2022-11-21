@@ -1457,7 +1457,7 @@ namespace gum {
 
     // constructor for the static cend/crend iterator
     // only list.cpp should use this constructor
-    explicit constexpr ListConstIterator(StaticInitializer init) noexcept {}
+    explicit consteval ListConstIterator(StaticInitializer init) noexcept {}
 
     /**
      * @brief Constructor for a begin.
@@ -1742,7 +1742,7 @@ namespace gum {
 
     // constructor for the static end/rend iterator
     // only list.cpp should use this constructor
-    explicit constexpr ListIterator(StaticInitializer init) noexcept :
+    explicit consteval ListIterator(StaticInitializer init) noexcept :
         ListConstIterator< Val >(init) {}
 
     /**
@@ -2009,7 +2009,7 @@ namespace gum {
 
     // constructor for the static cendSafe/crendSafe iterator
     // only list.cpp should use this constructor
-    explicit constexpr ListConstIteratorSafe(StaticInitializer init) noexcept {}
+    explicit consteval ListConstIteratorSafe(StaticInitializer init) noexcept {}
 
     /**
      * @brief Constructor for a begin.
@@ -2320,7 +2320,7 @@ namespace gum {
 
     // constructor for the static endSafe/rendSafe iterator
     // only list.cpp should use this constructor
-    explicit constexpr ListIteratorSafe(StaticInitializer init) noexcept :
+    explicit consteval ListIteratorSafe(StaticInitializer init) noexcept :
         ListConstIteratorSafe< Val >(init) {}
 
     /**
