@@ -50,10 +50,11 @@ namespace gum {
     GUM_CONSTRUCTOR(PDAG);
   }
 
-  PDAG::PDAG(const PDAG& g) : NodeGraphPart(g), MixedGraph(g) {
-    GUM_CONS_CPY(PDAG);
-  }
+  PDAG::PDAG(const UndiGraph& g) : NodeGraphPart(g), MixedGraph(g) { GUM_CONSTRUCTOR(PDAG); }
 
+  PDAG::PDAG(const DAG& g) : NodeGraphPart(g), MixedGraph(g) { GUM_CONSTRUCTOR(PDAG); }
+
+  PDAG::PDAG(const PDAG& g) : NodeGraphPart(g), MixedGraph(g) { GUM_CONS_CPY(PDAG); }
 
   PDAG::~PDAG() { GUM_DESTRUCTOR(PDAG); }
 
