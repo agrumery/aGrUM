@@ -55,59 +55,6 @@ namespace gum {
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
-  /**
-   * @class SetIteratorStaticEnd
-   * @headerfile set.h <agrum/tools/core/set.h>
-   * @brief A class used to create the static iterator used by Sets.
-   * @ingroup set_group
-   *
-   * The aim of using this class rather than just creating  _SetIterEnd_ as a
-   * global variable is to prevent other classes to access and modify
-   *  _SetIterEnd_.
-   */
-  class SetIteratorStaticEnd {
-    private:
-    /**
-     * @brief The safe iterator used by everyone.
-     * @return Returns the safe iterator used by everyone.
-     */
-    static const SetIteratorSafe< int >* _SetIterEndSafe_;
-
-    /**
-     * @brief The unsafe iterator used by everyone.
-     * @return Returns the unsafe iterator used by everyone.
-     */
-    static const SetIterator< int >* _SetIterEnd_;
-
-    /**
-     * @brief Creates (if needed) and returns the iterator  _SetIterEndSafe_.
-     * @return Returns the iterator  _SetIterEndSafe_.
-     */
-    static const SetIteratorSafe< int >* endSafe4Statics();
-
-    /**
-     * @brief Creates (if needed) and returns the iterator  _SetIterEndSafe_.
-     * @return Returns the iterator  _SetIterEndSafe_.
-     */
-    static const SetIteratorSafe< int >* constEndSafe4Statics();
-
-    /**
-     * @brief Creates (if needed) and returns the iterator  _SetIterEnd_.
-     * @return Returns the iterator  _SetIterEnd_.
-     */
-    static const SetIterator< int >* end4Statics();
-
-    /**
-     * @brief Creates (if needed) and returns the iterator  _SetIterEnd_.
-     * @return Returns the iterator  _SetIterEnd_.
-     */
-    static const SetIterator< int >* constEnd4Statics();
-
-    /// Friends that have access to the iterator.
-    template < typename Key >
-    friend class Set;
-  };
-
 
   // ===========================================================================
   // ===                               GUM_SET                               ===
@@ -476,155 +423,8 @@ namespace gum {
      */
     const const_iterator& cend() const noexcept;
 
-    /**
-     * @brief Returns the end iterator for other classes' statics (read the
-     * detailed description of this method).
-     *
-     * To reduce the Sets memory consumption (which are heavily used in aGrUM)
-     * while allowing fast for(iter=begin(); iter!=end();++iter) loops, end
-     * iterators are created just once as a static member of a non-template
-     * Set.  While this scheme is efficient and it works quite effectively when
-     * manipulating sets, it has a drawback: other classes with static members
-     * using the Set's end() iterator may fail to work due to the well known
-     * "static initialization order fiasco" (see Marshall Cline's C++ FAQ for
-     * more details about this C++ feature). OK, so what is the problem?
-     * Consider a class, say X, containing a Set that stores all its elements
-     * in a convenient way. To reduce memory consumption, X::end iterator is a
-     * static member that is initialized with a Set::end iterator. If the
-     * compiler decides to initialize X::end before initializing Set::end, then
-     * X::end will be in an incoherent state. Unfortunately, we cannot know for
-     * sure in which order static members will be initialized (the order is a
-     * compiler's decision).  Hence, we shall enfore the fact that Set::end is
-     * initialized before X::end.  Using method Set::end4Statics will ensure
-     * this fact: it uses the C++ "construct on first use" idiom (see the C++
-     * FAQ) that ensures that the order fiasco is avoided. More precisely,
-     * end4Statics uses a global variable that is the very end iterator used by
-     * all Sets. Now, this induces a small overhead. So, we also provide a
-     * Set::end() method that returns the Set::end iterator without this small
-     * overhead, but assuming that function end4Statics has already been called
-     * once (which is always the case) when a Set has been created.
-     *
-     * So, to summarize: when initializing static members, use end4Statics()
-     * rather than end(). In all the other cases, use simply the usual method
-     * end().
-     *
-     * @return Returns the end iterator for other classes' statics (read the
-     * detailed description of this method).
-     */
-    static const iterator& end4Statics();
-
-    /**
-     * @brief Returns the end iterator for other classes' statics (read the
-     * detailed description of this method).
-     *
-     * To reduce the Sets memory consumption (which are heavily used in aGrUM)
-     * while allowing fast for(iter=begin(); iter!=end();++iter) loops, end
-     * iterators are created just once as a static member of a non-template
-     * Set.  While this scheme is efficient and it works quite effectively when
-     * manipulating sets, it has a drawback: other classes with static members
-     * using the Set's end() iterator may fail to work due to the well known
-     * "static initialization order fiasco" (see Marshall Cline's C++ FAQ for
-     * more details about this C++ feature). OK, so what is the problem?
-     * Consider a class, say X, containing a Set that stores all its elements
-     * in a convenient way. To reduce memory consumption, X::end iterator is a
-     * static member that is initialized with a Set::end iterator. If the
-     * compiler decides to initialize X::end before initializing Set::end, then
-     * X::end will be in an incoherent state. Unfortunately, we cannot know for
-     * sure in which order static members will be initialized (the order is a
-     * compiler's decision).  Hence, we shall enfore the fact that Set::end is
-     * initialized before X::end.  Using method Set::end4Statics will ensure
-     * this fact: it uses the C++ "construct on first use" idiom (see the C++
-     * FAQ) that ensures that the order fiasco is avoided. More precisely,
-     * end4Statics uses a global variable that is the very end iterator used by
-     * all Sets. Now, this induces a small overhead. So, we also provide a
-     * Set::end() method that returns the Set::end iterator without this small
-     * overhead, but assuming that function end4Statics has already been called
-     * once (which is always the case) when a Set has been created.
-     *
-     * So, to summarize: when initializing static members, use
-     * constEnd4Statics() rather than cend(). In all the other cases, use
-     * simply the usual method cend().
-     *
-     * @return Returns the end iterator for other classes' statics (read the
-     * detailed description of this method).
-     */
-    static const const_iterator& constEnd4Statics();
-
-    /**
-     * @brief Returns the end iterator for other classes' statics (read the
-     * detailed description of this method).
-     *
-     * To reduce the Sets memory consumption (which are heavily used in aGrUM)
-     * while allowing fast for(iter=begin(); iter!=end();++iter) loops, end
-     * iterators are created just once as a static member of a non-template
-     * Set.  While this scheme is efficient and it works quite effectively when
-     * manipulating sets, it has a drawback: other classes with static members
-     * using the Set's end() iterator may fail to work due to the well known
-     * "static initialization order fiasco" (see Marshall Cline's C++ FAQ for
-     * more details about this C++ feature). OK, so what is the problem?
-     * Consider a class, say X, containing a Set that stores all its elements
-     * in a convenient way. To reduce memory consumption, X::end iterator is a
-     * static member that is initialized with a Set::end iterator. If the
-     * compiler decides to initialize X::end before initializing Set::end, then
-     * X::end will be in an incoherent state. Unfortunately, we cannot know for
-     * sure in which order static members will be initialized (the order is a
-     * compiler's decision).  Hence, we shall enfore the fact that Set::end is
-     * initialized before X::end.  Using method Set::end4Statics will ensure
-     * this fact: it uses the C++ "construct on first use" idiom (see the C++
-     * FAQ) that ensures that the order fiasco is avoided. More precisely,
-     * end4Statics uses a global variable that is the very end iterator used by
-     * all Sets. Now, this induces a small overhead. So, we also provide a
-     * Set::end() method that returns the Set::end iterator without this small
-     * overhead, but assuming that function end4Statics has already been called
-     * once (which is always the case) when a Set has been created.
-     *
-     * So, to summarize: when initializing static members, use
-     * endSafe4Statics() rather than endSafe (). In all the other cases, use
-     * simply the usual method endSafe ().
-     *
-     * @return Returns the end iterator for other classes' statics (read the
-     * detailed description of this method).
-     */
-    static const iterator_safe& endSafe4Statics();
-
-    /**
-     * @brief Returns the end iterator for other classes' statics (read the
-     * detailed description of this method).
-     *
-     * To reduce the Sets memory consumption (which are heavily used in aGrUM)
-     * while allowing fast for(iter=begin(); iter!=end();++iter) loops, end
-     * iterators are created just once as a static member of a non-template
-     * Set.  While this scheme is efficient and it works quite effectively when
-     * manipulating sets, it has a drawback: other classes with static members
-     * using the Set's end() iterator may fail to work due to the well known
-     * "static initialization order fiasco" (see Marshall Cline's C++ FAQ for
-     * more details about this C++ feature). OK, so what is the problem?
-     * Consider a class, say X, containing a Set that stores all its elements
-     * in a convenient way. To reduce memory consumption, X::end iterator is a
-     * static member that is initialized with a Set::end iterator. If the
-     * compiler decides to initialize X::end before initializing Set::end, then
-     * X::end will be in an incoherent state. Unfortunately, we cannot know for
-     * sure in which order static members will be initialized (the order is a
-     * compiler's decision).  Hence, we shall enfore the fact that Set::end is
-     * initialized before X::end.  Using method Set::end4Statics will ensure
-     * this fact: it uses the C++ "construct on first use" idiom (see the C++
-     * FAQ) that ensures that the order fiasco is avoided. More precisely,
-     * end4Statics uses a global variable that is the very end iterator used by
-     * all Sets. Now, this induces a small overhead. So, we also provide a
-     * Set::end() method that returns the Set::end iterator without this small
-     * overhead, but assuming that function end4Statics has already been called
-     * once (which is always the case) when a Set has been created.
-     *
-     * So, to summarize: when initializing static members, use
-     * constEndSafe4Statics() rather than cendSafe(). In all the other cases,
-     * use simply the usual method cendSafe ().
-     *
-     * @return Returns the end iterator for other classes' statics (read the
-     * detailed description of this method).
-     */
-    static const const_iterator_safe& constEndSafe4Statics();
-
     /// @}
+
     // ============================================================================
     /// @name Fine tuning
     // ============================================================================
@@ -802,6 +602,13 @@ namespace gum {
      * @brief Default constructor: the iterator points toward nothing.
      */
     SetIteratorSafe();
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+    // constructor for the static endSafe iterator
+    // only set.cpp should use this constructor
+    explicit consteval SetIteratorSafe(StaticInitializer init) noexcept :
+        _ht_iter_(init) {}
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
     /**
      * @brief Creates an iterator for a given set.
@@ -1017,6 +824,13 @@ namespace gum {
      */
     SetIterator() noexcept;
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+    // constructor for the static end iterator
+    // only set.cpp should use this constructor
+    explicit consteval SetIterator(StaticInitializer init) noexcept :
+        _ht_iter_(init) {}
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
+
     /**
      * @brief Creates an iterator for a given set.
      *
@@ -1167,87 +981,32 @@ namespace gum {
     virtual Size operator()(const Set< T >& key) const override final;
   };
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+  // _static_Set_end_ is a 'constant' iterator initialized at compile time
+  // that represents the end iterators for all sets (whatever their
+  // type). This global variable avoids creating the same iterators within every
+  // Set instance (this would be quite inefficient as end is precisely
+  // identical for all sets). The same hold for safe end iterators.
+  // The type of _Set_end_ is a pointer to void because C++ allows
+  // pointers to void to be cast into pointers to other types (and conversely).
+  // This avoids the painful strict-aliasing rule warning
+  extern constinit const SetIterator< int >     _static_Set_end_;
+  extern constinit const SetIteratorSafe< int > _static_Set_end_safe_;
+
+  inline constexpr void* const _Set_end_      = (void* const)&_static_Set_end_;
+  inline constexpr void* const _Set_end_safe_ = (void* const)&_static_Set_end_safe_;
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
+
 } /* namespace gum */
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#        ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#          ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::Set< int >;
-#          endif
-#        endif
-#      endif
-#    endif
-#  endif
-#endif
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#        ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#          ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::Set< long >;
-#          endif
-#        endif
-#      endif
-#    endif
-#  endif
-#endif
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#        ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#          ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::Set< unsigned int >;
-#          endif
-#        endif
-#      endif
-#    endif
-#  endif
-#endif
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#        ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#          ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::Set< unsigned long >;
-#          endif
-#        endif
-#      endif
-#    endif
-#  endif
-#endif
-
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#        ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#          ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::Set< double >;
-#          endif
-#        endif
-#      endif
-#    endif
-#  endif
-#endif
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#        ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#          ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::Set< std::string >;
-#          endif
-#        endif
-#      endif
-#    endif
-#  endif
 #endif
 
 

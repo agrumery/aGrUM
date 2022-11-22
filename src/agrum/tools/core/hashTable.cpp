@@ -28,10 +28,6 @@
 
 #include <agrum/tools/core/hashTable.h>
 
-#ifdef GUM_DEBUG_MODE
-#  include <agrum/tools/core/debug.h>
-#endif
-
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {

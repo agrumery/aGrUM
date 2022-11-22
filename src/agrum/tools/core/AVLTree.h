@@ -743,7 +743,7 @@ namespace gum {
      */
     explicit AVLTreeReverseIteratorSafe(AVLTree< Val, Cmp >& tree, const bool rbegin = true);
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS \
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
     // constructor for the static rendSafe iterator
     // only AVLTree.cpp should use this constructor
     explicit consteval AVLTreeReverseIteratorSafe(StaticInitializer init) noexcept :

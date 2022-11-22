@@ -31,69 +31,12 @@
 
 namespace gum {
 
-  // creates (if needed) and returns the iterator  _SetIterEndSafe_
-  const SetIteratorSafe< int >* SetIteratorStaticEnd::endSafe4Statics() {
-    static bool first_time = true;
-
-    if (first_time) {
-      first_time       = false;
-      _SetIterEndSafe_ = new SetIteratorSafe< int >;
-#  ifdef GUM_DEBUG_MODE
-      __debug__::_dec_creation_("SetIteratorSafe",
-                                " __set_static_end",
-                                0,
-                                "static variable correction",
-                                0);
-      __debug__::_dec_creation_("HashTableConstIteratorSafe",
-                                " __set_static_end",
-                                0,
-                                "static variable correction",
-                                0);
-#  endif
-    }
-
-    return _SetIterEndSafe_;
-  }
-
-  // creates (if needed) and returns the iterator  _SetIterEndSafe_
-  const SetIteratorSafe< int >* SetIteratorStaticEnd::constEndSafe4Statics() {
-    return endSafe4Statics();
-  }
-
-  // creates (if needed) and returns the iterator  _SetIterEnd_
-  const SetIterator< int >* SetIteratorStaticEnd::end4Statics() {
-    static bool first_time = true;
-
-    if (first_time) {
-      first_time   = false;
-      _SetIterEnd_ = new SetIterator< int >;
-#  ifdef GUM_DEBUG_MODE
-      __debug__::_dec_creation_("SetIterator",
-                                " __set_static_end",
-                                0,
-                                "static variable correction",
-                                0);
-      __debug__::_dec_creation_("HashTableConstIterator",
-                                " __set_static_end",
-                                0,
-                                "static variable correction",
-                                0);
-#  endif
-    }
-
-    return _SetIterEnd_;
-  }
-
-  // creates (if needed) and returns the iterator  _SetIterEnd_
-  const SetIterator< int >* SetIteratorStaticEnd::constEnd4Statics() { return end4Statics(); }
-
-  // create the end iterator for all Sets
-  const SetIteratorSafe< int >* SetIteratorStaticEnd::_SetIterEndSafe_
-     = SetIteratorStaticEnd::endSafe4Statics();
-
-  // create the end iterator for all Sets
-  const SetIterator< int >* SetIteratorStaticEnd::_SetIterEnd_
-     = SetIteratorStaticEnd::end4Statics();
+  // The global static variable representing end and rend for all the AVL trees.
+  // The constinit ensures it is created at compile time. Here, we use the
+  // constinit keyword rather than constexpr because, in debugging mode, the
+  // iterators' destructors cannot be declared as constepxr.
+  constinit const SetIterator< int >     _static_Set_end_(StaticInitializer::CONSTINIT);
+  constinit const SetIteratorSafe< int > _static_Set_end_safe_(StaticInitializer::CONSTINIT);
 
 } /* namespace gum */
 

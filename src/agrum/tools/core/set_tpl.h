@@ -274,33 +274,6 @@ namespace gum {
   // ===                                 SETS                                ===
   // ===========================================================================
 
-  // returns the end iterator for other classes' statics
-  template < typename Key >
-  INLINE const SetIteratorSafe< Key >& Set< Key >::endSafe4Statics() {
-    return *(
-       reinterpret_cast< const SetIteratorSafe< Key >* >(SetIteratorStaticEnd::endSafe4Statics()));
-  }
-
-  // returns the end iterator for other classes' statics
-  template < typename Key >
-  INLINE const SetIteratorSafe< Key >& Set< Key >::constEndSafe4Statics() {
-    return *(reinterpret_cast< const SetIteratorSafe< Key >* >(
-       SetIteratorStaticEnd::constEndSafe4Statics()));
-  }
-
-  // returns the end iterator for other classes' statics
-  template < typename Key >
-  INLINE const SetIterator< Key >& Set< Key >::end4Statics() {
-    return *(reinterpret_cast< const SetIterator< Key >* >(SetIteratorStaticEnd::end4Statics()));
-  }
-
-  // returns the end iterator for other classes' statics
-  template < typename Key >
-  INLINE const SetIterator< Key >& Set< Key >::constEnd4Statics() {
-    return *(
-       reinterpret_cast< const SetIterator< Key >* >(SetIteratorStaticEnd::constEnd4Statics()));
-  }
-
   // default constructor
   template < typename Key >
   INLINE Set< Key >::Set(Size capacity, bool resize_policy) :
@@ -309,10 +282,6 @@ namespace gum {
       // ourselves the uniqueness of Keys before inserting new elements)
       _inside_(capacity, resize_policy, false) {
     GUM_CONSTRUCTOR(Set);
-
-    // make sure the end() iterator is constructed properly
-    endSafe4Statics();
-    end4Statics();
   }
 
   // initializer list constructor
@@ -323,10 +292,6 @@ namespace gum {
     for (const auto& elt: list) {
       insert(elt);
     }
-
-    // make sure the end() iterator is constructed properly
-    endSafe4Statics();
-    end4Statics();
   }
 
   // copy constructor
@@ -438,15 +403,13 @@ namespace gum {
   // the usual end iterator to parse the set
   template < typename Key >
   INLINE const typename Set< Key >::iterator_safe& Set< Key >::endSafe() const noexcept {
-    return *(
-       reinterpret_cast< const SetIteratorSafe< Key >* >(SetIteratorStaticEnd::_SetIterEndSafe_));
+    return *(reinterpret_cast< const SetIteratorSafe< Key >* >(_Set_end_safe_));
   }
 
   // the usual end iterator to parse the set
   template < typename Key >
   INLINE const typename Set< Key >::const_iterator_safe& Set< Key >::cendSafe() const noexcept {
-    return *(
-       reinterpret_cast< const SetIteratorSafe< Key >* >(SetIteratorStaticEnd::_SetIterEndSafe_));
+    return *(reinterpret_cast< const SetIteratorSafe< Key >* >(_Set_end_safe_));
   }
 
   // the usual begin iterator to parse the set
@@ -464,13 +427,13 @@ namespace gum {
   // the usual end iterator to parse the set
   template < typename Key >
   INLINE const typename Set< Key >::iterator& Set< Key >::end() const noexcept {
-    return *(reinterpret_cast< const SetIterator< Key >* >(SetIteratorStaticEnd::_SetIterEnd_));
+    return *(reinterpret_cast< const SetIterator< Key >* >(_Set_end_));
   }
 
   // the usual end iterator to parse the set
   template < typename Key >
   INLINE const typename Set< Key >::const_iterator& Set< Key >::cend() const noexcept {
-    return *(reinterpret_cast< const SetIterator< Key >* >(SetIteratorStaticEnd::_SetIterEnd_));
+    return *(reinterpret_cast< const SetIterator< Key >* >(_Set_end_));
   }
 
   // returns the size of the underlying hashtable containing the set
