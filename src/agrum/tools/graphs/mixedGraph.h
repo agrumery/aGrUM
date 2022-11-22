@@ -183,7 +183,7 @@ namespace gum {
     /** @param id the id of the node to be removed
      * @warning if the node does not exist, nothing is done. In particular, no
      * exception is raised.*/
-    void eraseNode(const NodeId id) override;
+    void eraseNode(const NodeId node) override;
 
     /// removes all the nodes, arcs and edges from the graph
     void clear() override;
@@ -223,7 +223,12 @@ namespace gum {
     /// returns the set of node adjacent to a given node
     /** Note that the set of node returned may be empty.
      * @param id the node to which the edges are adjacent */
-    NodeSet boundary(NodeId id) const;
+    NodeSet boundary(NodeId node) const;
+
+    /// returns the set of nodes reachable by undirected path
+    /** Note that the set of node returned may be empty.
+     * @param id the node to which the edges are adjacent */
+    NodeSet chainComponent(NodeId node) const;
     /// @}
   };
 

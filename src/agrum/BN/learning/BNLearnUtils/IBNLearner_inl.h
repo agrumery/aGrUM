@@ -464,7 +464,7 @@ namespace gum::learning {
   /// returns the current database rows' ranges used for learning
   INLINE const std::vector< std::pair< std::size_t, std::size_t > >&
                IBNLearner::databaseRanges() const {
-    return ranges_;
+              return ranges_;
   }
 
   /// reset the ranges to the one range corresponding to the whole database

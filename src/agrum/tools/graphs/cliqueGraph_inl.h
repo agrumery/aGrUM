@@ -43,7 +43,7 @@ namespace gum {
     return *this;
   }
 
-  INLINE void CliqueGraph::addEdge(NodeId first,NodeId second) {
+  INLINE void CliqueGraph::addEdge(NodeId first, NodeId second) {
     Edge edge(first, second);
 
     if (!existsEdge(edge)) {

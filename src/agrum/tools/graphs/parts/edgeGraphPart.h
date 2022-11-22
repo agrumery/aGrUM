@@ -175,7 +175,7 @@ namespace gum {
     void unvirtualizedEraseNeighbours(NodeId id);
 
     /// to friendly display the content of the EdgeGraphPart
-    std::string toString() const;
+    virtual std::string toString() const;
 
     /** @brief a method to create a hashMap of VAL from a set of edges
      * (using for every edge, say x, the VAL f(x))

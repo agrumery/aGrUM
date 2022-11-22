@@ -31,6 +31,7 @@ src/testunits/testList.all
 src/testunits/ressources/outputs
 src/testunits/testList.cmake
 
+
 wrappers/pyAgrum/doc/sphinx/notebooks/EM_missing.csv
 wrappers/pyAgrum/doc/sphinx/notebooks/EM_naive_missing.csv
 wrappers/pyAgrum/doc/sphinx/notebooks/EM_naive_nomissing.csv
@@ -40,6 +41,11 @@ wrappers/pyAgrum/doc/sphinx/notebooks/data2.csv
 wrappers/pyAgrum/doc/sphinx/notebooks/database.csv
 wrappers/pyAgrum/doc/sphinx/notebooks/dirichlet.csv
 wrappers/pyAgrum/doc/sphinx/notebooks/res/EM.csv
+wrappers/pyAgrum/testunits/tests/resources/dataW.csv
+wrappers/pyAgrum/testunits/tests/resources/database.csv
+wrappers/pyAgrum/testunits/tests/resources/dirichlet.csv
+wrappers/pyAgrum/testunits/tests/resources/genere.csv
+wrappers/pyAgrum/testunits/tests/resources/o3prm/BNO3PRMIO_file.o3prm
 
 
 #other resources

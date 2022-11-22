@@ -170,4 +170,54 @@ namespace gum {
         Ycc.insert(cc[node]);
     return (Xcc * Ycc).empty();
   }
+
+
+  std::string PDAG::toDot() const {
+    std::stringstream output;
+    List< NodeId >    treatedNodes;
+    output << "digraph \""
+           << "no_name\" {" << std::endl;
+
+    std::string tab = "  ";
+    output << tab << "rankdir = TD;" << std::endl;
+    output << tab << "node [style=filled,fillcolor=white,color=black];" << std::endl;
+    output << tab << "graph [style=filled,color=\"#F5F5F5\",margin=2];" << std::endl;
+
+    output << std::endl;
+    for (const auto node: nodes()) {
+      if (neighbours(node).empty()) {
+        output << tab << node << ";" << std::endl;
+        treatedNodes.insert(node);
+      }
+    }
+    output << std::endl;
+
+    int cluster = 0;
+    for (const auto node: nodes()) {
+      if (!treatedNodes.exists(node)) {
+        output << tab << "subgraph cluster_" << cluster++ << "{{" << std::endl;
+        output << tab << tab << "rank=same;" << std::endl << tab << tab;
+        for (const auto cc: chainComponent(node)) {
+          output << cc << ";";
+          treatedNodes.insert(cc);
+        }
+        output << std::endl << tab << "}}" << std::endl << std::endl;
+      }
+    }
+
+    for (const auto node: nodes()) {
+      for (const auto child: children(node)) {
+        output << tab << node << "->" << child << ";\n";
+      }
+    }
+    output << std::endl << tab << "edge [dir=none];" << std::endl;
+
+    for (const auto node: nodes()) {
+      for (const auto other: neighbours(node))
+        if (other > node) output << tab << node << "->" << other << ";\n";
+    }
+    output << "}\n";
+    return output.str();
+  }
+
 } /* namespace gum */

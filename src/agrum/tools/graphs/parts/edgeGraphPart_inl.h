@@ -31,9 +31,7 @@
 
 namespace gum {
 
-  INLINE bool EdgeGraphPart::emptyEdges() const {
-    return _edges_.empty();
-  }
+  INLINE bool EdgeGraphPart::emptyEdges() const { return _edges_.empty(); }
 
   INLINE Size EdgeGraphPart::sizeEdges() const { return _edges_.size(); }
 

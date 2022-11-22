@@ -204,7 +204,7 @@ namespace gum {
     UndiGraph moralizedAncestralGraph(const NodeSet& nodes) const;
 
     /** @brief returns true if a mixed edge/directed arc path from node1 to node2 in the
-     * arc/edge set exists. Reeally mean that we need at least one arc in the path (undirected path
+     * arc/edge set exists. Really mean that we need at least one arc in the path (undirected path
      * are not OK).
      *
      * @param node1 the id from which the path begins
@@ -219,6 +219,9 @@ namespace gum {
     /** check if nodes X and nodes  Y are independent given Z (in the sense of
      * d-separation)*/
     bool cSeparation(const NodeSet& X, const NodeSet& Y, const NodeSet& Z) const;
+
+    /// to friendly display mixed graph in DOT format
+    std::string toDot() const override;
   };
 
 } /* namespace gum */

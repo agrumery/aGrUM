@@ -51,11 +51,11 @@ namespace gum {
     NodeGraphPart::clearNodes();
   }
 
-  INLINE void MixedGraph::eraseNode(const NodeId id) {
-    EdgeGraphPart::unvirtualizedEraseNeighbours(id);
-    ArcGraphPart::unvirtualizedEraseParents(id);
-    ArcGraphPart::unvirtualizedEraseChildren(id);
-    NodeGraphPart::eraseNode(id);
+  INLINE void MixedGraph::eraseNode(const NodeId node) {
+    EdgeGraphPart::unvirtualizedEraseNeighbours(node);
+    ArcGraphPart::unvirtualizedEraseParents(node);
+    ArcGraphPart::unvirtualizedEraseChildren(node);
+    NodeGraphPart::eraseNode(node);
   }
 
   INLINE bool MixedGraph::operator==(const MixedGraph& g) const {
@@ -63,7 +63,7 @@ namespace gum {
         && NodeGraphPart::                               operator==(g);
   }
 
-  INLINE NodeSet MixedGraph::boundary(NodeId id) const {
-    return neighbours(id) + parents(id) + children(id);
+  INLINE NodeSet MixedGraph::boundary(NodeId node) const {
+    return neighbours(node) + parents(node) + children(node);
   }
 } /* namespace gum */

@@ -237,12 +237,29 @@ namespace gum {
 
     return v;
   }
+  NodeSet MixedGraph::chainComponent(NodeId node) const {
+    NodeSet res;
+    NodeSet stack{node};
+
+    while (!stack.empty()) {
+      const NodeId n = *(stack.begin());
+      stack.erase(n);
+      if (!res.exists(n)) {
+        res.insert(n);
+        stack += neighbours(n);
+      }
+    }
+
+    return res;
+  }
 
   std::string MixedGraph::toDot() const {
     std::stringstream output;
     std::stringstream nodeStream;
     std::stringstream edgeStream;
-    List< NodeId >    treatedNodes;
+
+    NodeSet treatedNodes;
+
     output << "digraph \""
            << "no_name\" {" << std::endl;
     nodeStream << "node [shape = ellipse];" << std::endl;

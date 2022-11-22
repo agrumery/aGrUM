@@ -4658,7 +4658,7 @@ class MixedGraph(UndiGraph, DiGraph):
     def __eq__(self, g: "MixedGraph") -> bool:
         return _pyAgrum.MixedGraph___eq__(self, g)
 
-    def eraseNode(self, id: int) -> None:
+    def eraseNode(self, node: int) -> None:
         r"""
 
         Erase the node and all the related arcs and edges.
@@ -4669,7 +4669,7 @@ class MixedGraph(UndiGraph, DiGraph):
         	the id of the node
 
         """
-        return _pyAgrum.MixedGraph_eraseNode(self, id)
+        return _pyAgrum.MixedGraph_eraseNode(self, node)
 
     def clear(self) -> None:
         r"""
@@ -4692,6 +4692,9 @@ class MixedGraph(UndiGraph, DiGraph):
 
         """
         return _pyAgrum.MixedGraph_toDot(self)
+
+    def chainComponent(self, node: int) -> List[int]:
+        return _pyAgrum.MixedGraph_chainComponent(self, node)
 
     def __repr__(self) -> str:
         return _pyAgrum.MixedGraph___repr__(self)
@@ -5088,6 +5091,17 @@ class PDAG(MixedGraph):
 
     def cSeparation(self, *args) -> bool:
         return _pyAgrum.PDAG_cSeparation(self, *args)
+
+    def toDot(self) -> str:
+        r"""
+
+        Returns
+        -------
+        str
+            a friendly display of the graph in DOT format
+
+        """
+        return _pyAgrum.PDAG_toDot(self)
 
     def __repr__(self) -> str:
         return _pyAgrum.PDAG___repr__(self)

@@ -983,7 +983,8 @@ namespace gum {
 
   /// indicates whether two iterator point to the same element
   template < typename Val, typename Cmp >
-  INLINE bool AVLTreeIterator< Val, Cmp >::operator==(const AVLTreeIterator< Val, Cmp >& from) const {
+  INLINE bool
+     AVLTreeIterator< Val, Cmp >::operator==(const AVLTreeIterator< Val, Cmp >& from) const {
     // when node_ is different from nullptr, testing whether "this" is equal to from
     // simply amounts to comparing their node_ fields. However, due to erasures in
     // the graph, it may happen that two iterators pointing to different nodes have
@@ -999,7 +1000,8 @@ namespace gum {
 
   /// indicates whether two iterator point to different element
   template < typename Val, typename Cmp >
-  INLINE bool AVLTreeIterator< Val, Cmp >::operator!=(const AVLTreeIterator< Val, Cmp >& from) const {
+  INLINE bool
+     AVLTreeIterator< Val, Cmp >::operator!=(const AVLTreeIterator< Val, Cmp >& from) const {
     // for the reason of this or test, see operator== above.
     return (node_ != from.node_) || (next_node_ != from.next_node_);
   }
@@ -1155,16 +1157,16 @@ namespace gum {
 
   /// indicates whether two iterator point to the same element
   template < typename Val, typename Cmp >
-  INLINE bool
-     AVLTreeIteratorSafe< Val, Cmp >::operator==(const AVLTreeIteratorSafe< Val, Cmp >& from) const {
+  INLINE bool AVLTreeIteratorSafe< Val, Cmp >::operator==(
+     const AVLTreeIteratorSafe< Val, Cmp >& from) const {
     return AVLTreeIterator< Val, Cmp >::operator==(from);
   }
 
 
   /// indicates whether two iterator point to different element
   template < typename Val, typename Cmp >
-  INLINE bool
-     AVLTreeIteratorSafe< Val, Cmp >::operator!=(const AVLTreeIteratorSafe< Val, Cmp >& from) const {
+  INLINE bool AVLTreeIteratorSafe< Val, Cmp >::operator!=(
+     const AVLTreeIteratorSafe< Val, Cmp >& from) const {
     return AVLTreeIterator< Val, Cmp >::operator!=(from);
   }
 

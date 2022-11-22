@@ -105,7 +105,6 @@ namespace gum::learning {
    * @ingroup learning_group
    */
   class IBNLearner: public gum::IApproximationSchemeConfiguration, public ThreadNumberManager {
-
     public:
     /// an enumeration enabling to select easily the score we wish to use
     enum class ScoreType {
@@ -278,7 +277,6 @@ namespace gum::learning {
       /// @}
 
       protected:
-
       /// the database itself
       DatabaseTable _database_;
 
