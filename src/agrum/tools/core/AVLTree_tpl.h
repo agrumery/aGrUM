@@ -773,7 +773,7 @@ namespace gum {
   /// returns an iterator pointing just after the maximal element
   template < typename Val, typename Cmp >
   constexpr const typename AVLTree< Val, Cmp >::iterator& AVLTree< Val, Cmp >::end() const {
-    return *(reinterpret_cast< const typename AVLTree< Val, Cmp >::iterator* >(_AVLTree_end_));
+    return *(reinterpret_cast< const iterator* >(_AVLTree_end_));
   }
 
   /// returns a new iterator pointing to the maximal element of the tree
@@ -786,8 +786,7 @@ namespace gum {
   template < typename Val, typename Cmp >
   constexpr const typename AVLTree< Val, Cmp >::reverse_iterator&
      AVLTree< Val, Cmp >::rend() const {
-    return *(
-       reinterpret_cast< const typename AVLTree< Val, Cmp >::reverse_iterator* >(_AVLTree_rend_));
+    return *(reinterpret_cast< const reverse_iterator* >(_AVLTree_rend_));
   }
 
   /// returns a new safe iterator pointing to the minimal element of the tree
@@ -801,7 +800,7 @@ namespace gum {
   constexpr const typename AVLTree< Val, Cmp >::iterator_safe&
      AVLTree< Val, Cmp >::endSafe() const {
     return *(
-       reinterpret_cast< const typename AVLTree< Val, Cmp >::iterator_safe* >(_AVLTree_end_safe_));
+       reinterpret_cast< const iterator_safe* >(_AVLTree_end_safe_));
   }
 
   /// returns a new safe iterator pointing to the maximal element of the tree
@@ -814,8 +813,7 @@ namespace gum {
   template < typename Val, typename Cmp >
   constexpr const typename AVLTree< Val, Cmp >::reverse_iterator_safe&
      AVLTree< Val, Cmp >::rendSafe() const {
-    return *(reinterpret_cast< const typename AVLTree< Val, Cmp >::reverse_iterator_safe* >(
-       _AVLTree_rend_safe_));
+    return *(reinterpret_cast< const reverse_iterator_safe* >(_AVLTree_rend_safe_));
   }
 
 

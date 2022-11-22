@@ -384,9 +384,11 @@ namespace gum {
      */
     explicit AVLTreeIterator(const AVLTree< Val, Cmp >& tree, const bool begin = true) noexcept;
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
     // constructor for the static end iterator
     // only AVLTree.cpp should use this constructor
     explicit consteval AVLTreeIterator(StaticInitializer init) noexcept {}
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
     /// copy constructor
     AVLTreeIterator(const AVLTreeIterator< Val, Cmp >& from) noexcept;
@@ -520,10 +522,12 @@ namespace gum {
      */
     explicit AVLTreeIteratorSafe(AVLTree< Val, Cmp >& tree, const bool rbegin = true);
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
     // constructor for the static endSafe iterator
     // only AVLTree.cpp should use this constructor
     explicit consteval AVLTreeIteratorSafe(StaticInitializer init) noexcept :
         AVLTreeIterator< Val, Cmp >(init) {}
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
     /// copy constructor
     AVLTreeIteratorSafe(const AVLTreeIteratorSafe< Val, Cmp >& from);
@@ -628,10 +632,12 @@ namespace gum {
     explicit AVLTreeReverseIterator(const AVLTree< Val, Cmp >& tree,
                                     const bool                 rbegin = true) noexcept;
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
     // constructor for the static rend iterator
     // only AVLTree.cpp should use this constructor
     explicit consteval AVLTreeReverseIterator(StaticInitializer init) noexcept :
         AVLTreeIterator< Val, Cmp >(init) {}
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
     /// copy constructor
     AVLTreeReverseIterator(const AVLTreeReverseIterator< Val, Cmp >& from) noexcept;
@@ -737,10 +743,12 @@ namespace gum {
      */
     explicit AVLTreeReverseIteratorSafe(AVLTree< Val, Cmp >& tree, const bool rbegin = true);
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS \
     // constructor for the static rendSafe iterator
     // only AVLTree.cpp should use this constructor
     explicit consteval AVLTreeReverseIteratorSafe(StaticInitializer init) noexcept :
         AVLTreeIteratorSafe< Val, Cmp >(init) {}
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
     /// copy constructor
     AVLTreeReverseIteratorSafe(const AVLTreeReverseIteratorSafe< Val, Cmp >& from);
@@ -827,7 +835,7 @@ namespace gum {
   inline constexpr void* const _AVLTree_rend_      = (void* const)&_static_AVLTree_rend_;
   inline constexpr void* const _AVLTree_end_safe_  = (void* const)&_static_AVLTree_end_safe_;
   inline constexpr void* const _AVLTree_rend_safe_ = (void* const)&_static_AVLTree_rend_safe_;
-#endif   // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
 
 }   // namespace gum

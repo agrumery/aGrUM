@@ -858,162 +858,6 @@ namespace gum {
      */
     const_iterator_safe cbeginSafe() const;
 
-    /**
-     * @brief Returns the end iterator for other classes' statics (read the
-     * detailed description of this method).
-     *
-     * To reduce memory consumption of hash tables (which are heavily used in
-     * aGrUM) while allowing fast for(iter=begin(); iter!=end();++iter) loops,
-     * end iterators are created just once as a static member of a non-template
-     * hashtable. While this scheme is efficient and it works quite effectively
-     * when manipulating hashtables, it has a drawback: other classes with
-     * static members using the HashTable's end() iterator may fail to work due
-     * to the well known "static initialization order fiasco" (see Marshall
-     * Cline's C++ FAQ for more details about this C++ feature). OK, so what is
-     * the problem? Consider for instance class Set. A Set contains a hashtable
-     * that stores all its elements in a convenient way. To reduce memory
-     * consumption, Set::end iterator is a static member that is initialized
-     * with a HashTable's end iterator. If the compiler decides to initialize
-     * Set::end before initializing HashTable::end, then Set::end will be in an
-     * incoherent state. Unfortunately, we cannot know for sure in which order
-     * static members will be initialized (the order is a compiler's decision).
-     * Hence, we shall enforce the fact that HashTable::end is initialized
-     * before Set::end.  Using method HashTable::end4Statics will ensure this
-     * fact: it uses the C++ "construct on first use" idiom (see the C++ FAQ)
-     * that ensures that the order fiasco is avoided. More precisely,
-     * end4Statics initializes a global variable that is the very end iterator
-     * used by all hashtables. Now, this induces a small overhead. So, we also
-     * provide a HashTable::end() method that returns the end iterator without
-     * this small overhead, but assuming that function end4Statics has already
-     * been called once (which is always the case) when a hashtable has been
-     * created.
-     *
-     * So, to summarize: when initializing static members, use end4Statics()
-     * rather than end(). In all the other cases, use simply the usual method
-     * end().
-     *
-     * @return Returns the end iterator for other classes' statics (read the
-     * detailed description of this method).
-     */
-    static const iterator& end4Statics();
-
-    /**
-     * @brief Returns the end iterator for other classes' statics (read the
-     * detailed description of this method).
-     *
-     * To reduce memory consumption of hash tables (which are heavily used in
-     * aGrUM) while allowing fast for(iter=begin(); iter!=end();++iter) loops,
-     * end iterators are created just once as a static member of a non-template
-     * hashtable. While this scheme is efficient and it works quite effectively
-     * when manipulating hashtables, it has a drawback: other classes with
-     * static members using the HashTable's end() iterator may fail to work due
-     * to the well known "static initialization order fiasco" (see Marshall
-     * Cline's C++ FAQ for more details about this C++ feature). OK, so what is
-     * the problem? Consider for instance class Set. A Set contains a hashtable
-     * that stores all its elements in a convenient way. To reduce memory
-     * consumption, Set::end iterator is a static member that is initialized
-     * with a HashTable's end iterator. If the compiler decides to initialize
-     * Set::end before initializing HashTable::end, then Set::end will be in an
-     * incoherent state. Unfortunately, we cannot know for sure in which order
-     * static members will be initialized (the order is a compiler's decision).
-     * Hence, we shall enforce the fact that HashTable::end is initialized
-     * before Set::end.  Using method HashTable::end4Statics will ensure this
-     * fact: it uses the C++ "construct on first use" idiom (see the C++ FAQ)
-     * that ensures that the order fiasco is avoided. More precisely,
-     * end4Statics initializes a global variable that is the very end iterator
-     * used by all hashtables. Now, this induces a small overhead. So, we also
-     * provide a HashTable::end() method that returns the end iterator without
-     * this small overhead, but assuming that function end4Statics has already
-     * been called once (which is always the case) when a hashtable has been
-     * created.
-     *
-     * So, to summarize: when initializing static members, use
-     * constEnd4Statics() rather than cend(). In all the other cases, use
-     * simply the usual method cend().
-     *
-     * @return Returns the end iterator for other classes' statics (read the
-     * detailed description of this method).
-     */
-    static const const_iterator& constEnd4Statics();
-
-    /**
-     * @brief Returns the end iterator for other classes' statics (read the
-     * detailed description of this method).
-     *
-     * To reduce memory consumption of hash tables (which are heavily used in
-     * aGrUM) while allowing fast for(iter=begin(); iter!=end();++iter) loops,
-     * end iterators are created just once as a static member of a non-template
-     * hashtable. While this scheme is efficient and it works quite effectively
-     * when manipulating hashtables, it has a drawback: other classes with
-     * static members using the HashTable's end() iterator may fail to work due
-     * to the well known "static initialization order fiasco" (see Marshall
-     * Cline's C++ FAQ for more details about this C++ feature). OK, so what is
-     * the problem? Consider for instance class Set. A Set contains a hashtable
-     * that stores all its elements in a convenient way. To reduce memory
-     * consumption, Set::end iterator is a static member that is initialized
-     * with a HashTable's end iterator. If the compiler decides to initialize
-     * Set::end before initializing HashTable::end, then Set::end will be in an
-     * incoherent state. Unfortunately, we cannot know for sure in which order
-     * static members will be initialized (the order is a compiler's decision).
-     * Hence, we shall enforce the fact that HashTable::end is initialized
-     * before Set::end.  Using method HashTable::end4Statics will ensure this
-     * fact: it uses the C++ "construct on first use" idiom (see the C++ FAQ)
-     * that ensures that the order fiasco is avoided. More precisely,
-     * end4Statics initializes a global variable that is the very end iterator
-     * used by all hashtables. Now, this induces a small overhead. So, we also
-     * provide a HashTable::end() method that returns the end iterator without
-     * this small overhead, but assuming that function end4Statics has already
-     * been called once (which is always the case) when a hashtable has been
-     * created.
-     *
-     * So, to summarize: when initializing static members, use
-     * endSafe4Statics() rather than endSafe(). In all the other cases, use
-     * simply the usual method endSafe().
-     *
-     * @return Returns the end iterator for other classes' statics (read the
-     * detailed description of this method).
-     */
-    static const iterator_safe& endSafe4Statics();
-
-    /**
-     * @brief Returns the end iterator for other classes' statics (read the
-     * detailed description of this method).
-     *
-     * To reduce memory consumption of hash tables (which are heavily used in
-     * aGrUM) while allowing fast for(iter=begin(); iter!=end();++iter) loops,
-     * end iterators are created just once as a static member of a non-template
-     * hashtable. While this scheme is efficient and it works quite effectively
-     * when manipulating hashtables, it has a drawback: other classes with
-     * static members using the HashTable's end() iterator may fail to work due
-     * to the well known "static initialization order fiasco" (see Marshall
-     * Cline's C++ FAQ for more details about this C++ feature). OK, so what is
-     * the problem? Consider for instance class Set. A Set contains a hashtable
-     * that stores all its elements in a convenient way. To reduce memory
-     * consumption, Set::end iterator is a static member that is initialized
-     * with a HashTable's end iterator. If the compiler decides to initialize
-     * Set::end before initializing HashTable::end, then Set::end will be in an
-     * incoherent state. Unfortunately, we cannot know for sure in which order
-     * static members will be initialized (the order is a compiler's decision).
-     * Hence, we shall enforce the fact that HashTable::end is initialized
-     * before Set::end.  Using method HashTable::end4Statics will ensure this
-     * fact: it uses the C++ "construct on first use" idiom (see the C++ FAQ)
-     * that ensures that the order fiasco is avoided. More precisely,
-     * end4Statics initializes a global variable that is the very end iterator
-     * used by all hashtables. Now, this induces a small overhead. So, we also
-     * provide a HashTable::end() method that returns the end iterator without
-     * this small overhead, but assuming that function end4Statics has already
-     * been called once (which is always the case) when a hashtable has been
-     * created.
-     *
-     * So, to summarize: when initializing static members, use
-     * constEndSafe4Statics() rather than cendSafe(). In all the other cases,
-     * use simply the usual method cendSafe().
-     *
-     * @return Returns the end iterator for other classes' statics (read the
-     * detailed description of this method).
-     */
-    static const const_iterator_safe& constEndSafe4Statics();
-
     /// @}
     // ============================================================================
     /// @name Operators
@@ -1693,60 +1537,6 @@ namespace gum {
   // ===========================================================================
   // ===                   SAFE HASH TABLES CONST ITERATORS                  ===
   // ===========================================================================
-
-  /**
-   * @class HashTableIteratorStaticEnd
-   * @headerfile hashTable.h <agrum/tools/core/hashTable.h>
-   * @brief A class used to create the static iterator used by HashTables.
-   * @ingroup hashtable_group
-   *
-   * The aim of using this class rather than just creating  _HashTableIterEnd_
-   * as a global variable is to prevent other classes to access and modify
-   *  _HashTableIterEnd_.
-   */
-  class HashTableIteratorStaticEnd {
-    private:
-    /// The unsafe iterator used by everyone.
-    static const HashTableIterator< int, int >* _HashTableIterEnd_;
-
-    /// The safe iterator used by everyone.
-    static const HashTableIteratorSafe< int, int >* _HashTableIterEndSafe_;
-
-    /**
-     * @brief Creates (if needed) and returns the iterator  _HashTableIterEnd_.
-     * @return Returns the iterator  _HashTableIterEnd_.
-     */
-    static const HashTableIterator< int, int >* end4Statics();
-
-    /**
-     * @brief Creates (if needed) and returns the iterator  _HashTableIterEnd_.
-     * @return Returns the iterator  _HashTableIterEnd_.
-     */
-    static const HashTableConstIterator< int, int >* constEnd4Statics();
-
-    /**
-     * @brief Creates (if needed) and returns the iterator
-     *  _HashTableIterEndSafe_.
-     * @return Returns the iterator  _HashTableIterEndSafe_.
-     */
-    static const HashTableIteratorSafe< int, int >* endSafe4Statics();
-
-    /**
-     * @brief Creates (if needed) and returns the iterator
-     *  _HashTableIterEndSafe_.
-     * @return Returns the iterator  _HashTableIterEndSafe_.
-     */
-    static const HashTableConstIteratorSafe< int, int >* constEndSafe4Statics();
-
-    /// Friends that have access to the iterator.
-    template < typename Key, typename Val >
-    friend class HashTable;
-  };
-
-
-  // ===========================================================================
-  // ===                   SAFE HASH TABLES CONST ITERATORS                  ===
-  // ===========================================================================
   /**
    * @class HashTableConstIteratorSafe
    * @headerfile hashTable.h <agrum/tools/core/hashTable.h>
@@ -1816,9 +1606,11 @@ namespace gum {
      */
     explicit HashTableConstIteratorSafe();
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
     // constructor for the static cendSafe/crendSafe iterator
     // only hashTable.cpp should use this constructor
     explicit consteval HashTableConstIteratorSafe(StaticInitializer init) noexcept {}
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
     /**
      * @brief Constructor for an iterator pointing to the first element of a
@@ -2113,10 +1905,12 @@ namespace gum {
      */
     explicit HashTableIteratorSafe();
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
     // constructor for the static endSafe/rendSafe iterator
     // only hashTable.cpp should use this constructor
     explicit consteval HashTableIteratorSafe(StaticInitializer init) noexcept :
         HashTableConstIteratorSafe< Key, Val >(init) {}
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
     /**
      * @brief Constructor for an iterator pointing to the first element of a
@@ -2356,9 +2150,11 @@ namespace gum {
      */
     explicit HashTableConstIterator() noexcept;
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
     // constructor for the static cend/crend iterator
     // only hashTable.cpp should use this constructor
     explicit consteval HashTableConstIterator(StaticInitializer init) noexcept {}
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
     /**
      * @brief Constructor for an iterator pointing to the first element of a
@@ -2636,10 +2432,12 @@ namespace gum {
      */
     HashTableIterator() noexcept;
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
     // constructor for the static end/rend iterator
     // only hashTable.cpp should use this constructor
     explicit consteval HashTableIterator(StaticInitializer init) noexcept :
         HashTableConstIterator< Key, Val >(init) {}
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
     /**
      * @brief Constructor for an iterator pointing to the first element of a
@@ -2795,6 +2593,27 @@ namespace gum {
 
     /// @}
   };
+
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+  // _static_HashTable_end_ is a 'constant' iterator initialized at compile time
+  // that represents the end/rend iterators for all hash tables (whatever their
+  // type). This global variable avoids creating the same iterators within every
+  // HashTable instance (this would be quite inefficient as end is precisely
+  // identical for all AVL trees). The same hold for const and safe end iterators.
+  // The type of _HashTable_end_ is a pointer to void because C++ allows
+  // pointers to void to be cast into pointers to other types (and conversely).
+  // This avoids the painful strict-aliasing rule warning
+  extern constinit const HashTableIterator< int, int > _static_HashTable_end_;
+  extern constinit const HashTableConstIterator< int, int > _static_HashTable_cend_;
+  extern constinit const HashTableIteratorSafe< int, int > _static_HashTable_end_safe_;
+  extern constinit const HashTableConstIteratorSafe< int, int > _static_HashTable_cend_safe_;
+
+  inline constexpr void* const _HashTable_end_       = (void* const)&_static_HashTable_end_;
+  inline constexpr void* const _HashTable_cend_      = (void* const)&_static_HashTable_cend_;
+  inline constexpr void* const _HashTable_end_safe_  = (void* const)&_static_HashTable_end_safe_;
+  inline constexpr void* const _HashTable_cend_safe_ = (void* const)&_static_HashTable_cend_safe_;
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
 }   // namespace gum
 

@@ -27,6 +27,8 @@
 
 #include <agrum/tools/core/AVLTree.h>
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
 namespace gum {
 
   // The global static variable representing end and rend for all the AVL trees.
@@ -43,3 +45,5 @@ namespace gum {
      _static_AVLTree_rend_safe_(StaticInitializer::CONSTINIT);
 
 }   // namespace gum
+
+#endif  // DOXYGEN_SHOULD_SKIP_THIS

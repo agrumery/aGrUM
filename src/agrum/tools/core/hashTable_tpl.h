@@ -269,42 +269,12 @@ namespace gum {
   }
 
   template < typename Key, typename Val >
-  INLINE const typename HashTable< Key, Val >::iterator& HashTable< Key, Val >::end4Statics() {
-    return *(reinterpret_cast< const iterator* >(HashTableIteratorStaticEnd::end4Statics()));
-  }
-
-  template < typename Key, typename Val >
-  INLINE const typename HashTable< Key, Val >::const_iterator&
-     HashTable< Key, Val >::constEnd4Statics() {
-    return *(
-       reinterpret_cast< const const_iterator* >(HashTableIteratorStaticEnd::constEnd4Statics()));
-  }
-
-  template < typename Key, typename Val >
-  INLINE const typename HashTable< Key, Val >::iterator_safe&
-     HashTable< Key, Val >::endSafe4Statics() {
-    return *(
-       reinterpret_cast< const iterator_safe* >(HashTableIteratorStaticEnd::endSafe4Statics()));
-  }
-
-  template < typename Key, typename Val >
-  INLINE const typename HashTable< Key, Val >::const_iterator_safe&
-     HashTable< Key, Val >::constEndSafe4Statics() {
-    return *(reinterpret_cast< const const_iterator_safe* >(
-       HashTableIteratorStaticEnd::constEndSafe4Statics()));
-  }
-
-  template < typename Key, typename Val >
   INLINE void HashTable< Key, Val >::_create_(Size size) {
     // setup the  _nodes_ vector (contains only empty lists)
     _nodes_.resize(size);
 
     // set up properly the hash function
     _hash_func_.resize(size);
-
-    // make sure the end() iterator is constructed properly
-    end4Statics();
-    endSafe4Statics();
   }
 
   template < typename Key, typename Val >
@@ -454,30 +424,19 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE const typename HashTable< Key, Val >::iterator& HashTable< Key, Val >::end() noexcept {
-    // note that, here, we know for sure that HashTableIterEnd has been properly
-    // initialized as it is initialized by end4Statics, which is called by
-    // all hashtables' constructors
-    return *(reinterpret_cast< const iterator* >(HashTableIteratorStaticEnd::_HashTableIterEnd_));
+    return *(reinterpret_cast< const iterator* >(_HashTable_end_));
   }
 
   template < typename Key, typename Val >
   INLINE const typename HashTable< Key, Val >::const_iterator&
      HashTable< Key, Val >::end() const noexcept {
-    // note that, here, we know for sure that HashTableIterEnd has been properly
-    // initialized as it is initialized by end4Statics, which is called by
-    // all hashtables' constructors
-    return *(
-       reinterpret_cast< const const_iterator* >(HashTableIteratorStaticEnd::_HashTableIterEnd_));
+    return *(reinterpret_cast< const const_iterator* >(_HashTable_cend_));
   }
 
   template < typename Key, typename Val >
   INLINE const typename HashTable< Key, Val >::const_iterator&
      HashTable< Key, Val >::cend() const noexcept {
-    // note that, here, we know for sure that HashTableIterEnd has been properly
-    // initialized as it is initialized by end4Statics, which is called by
-    // all hashtables' constructors
-    return *(
-       reinterpret_cast< const const_iterator* >(HashTableIteratorStaticEnd::_HashTableIterEnd_));
+    return *(reinterpret_cast< const const_iterator* >(_HashTable_cend_));
   }
 
   template < typename Key, typename Val >
@@ -504,31 +463,19 @@ namespace gum {
   template < typename Key, typename Val >
   INLINE const typename HashTable< Key, Val >::iterator_safe&
      HashTable< Key, Val >::endSafe() noexcept {
-    // note that, here, we know for sure that HashTableIterEnd has been properly
-    // initialized as it is initialized by end4Statics, which is called by
-    // all hashtables' constructors
-    return *(reinterpret_cast< const iterator_safe* >(
-       HashTableIteratorStaticEnd::_HashTableIterEndSafe_));
+    return *(reinterpret_cast< const iterator_safe* >(_HashTable_end_safe_));
   }
 
   template < typename Key, typename Val >
   INLINE const typename HashTable< Key, Val >::const_iterator_safe&
      HashTable< Key, Val >::endSafe() const noexcept {
-    // note that, here, we know for sure that HashTableIterEnd has been properly
-    // initialized as it is initialized by end4Statics, which is called by
-    // all hashtables' constructors
-    return *(reinterpret_cast< const const_iterator_safe* >(
-       HashTableIteratorStaticEnd::_HashTableIterEndSafe_));
+    return *(reinterpret_cast< const const_iterator_safe* >(_HashTable_cend_safe_));
   }
 
   template < typename Key, typename Val >
   INLINE const typename HashTable< Key, Val >::const_iterator_safe&
      HashTable< Key, Val >::cendSafe() const noexcept {
-    // note that, here, we know for sure that HashTableIterEnd has been properly
-    // initialized as it is initialized by end4Statics, which is called by
-    // all hashtables' constructors
-    return *(reinterpret_cast< const const_iterator_safe* >(
-       HashTableIteratorStaticEnd::_HashTableIterEndSafe_));
+    return *(reinterpret_cast< const const_iterator_safe* >(_HashTable_cend_safe_));
   }
 
   template < typename Key, typename Val >

@@ -32,73 +32,26 @@
 #  include <agrum/tools/core/debug.h>
 #endif
 
-namespace gum {
-
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-  const HashTableIterator< int, int >* HashTableIteratorStaticEnd::end4Statics() {
-    static bool first_time = true;
+namespace gum {
 
-    if (first_time) {
-      first_time         = false;
-      _HashTableIterEnd_ = new HashTableIterator< int, int >;
-#  ifdef GUM_DEBUG_MODE
-      __debug__::_dec_creation_("HashTableIterator",
-                                " __hash_static_end",
-                                0,
-                                "static variable correction",
-                                0);
-      __debug__::_dec_creation_("HashTableConstIterator",
-                                " __hash_static_end",
-                                0,
-                                "static variable correction",
-                                0);
-#  endif
-    }
-
-    return _HashTableIterEnd_;
-  }
-
-  const HashTableConstIterator< int, int >* HashTableIteratorStaticEnd::constEnd4Statics() {
-    return reinterpret_cast< const HashTableConstIterator< int, int >* >(end4Statics());
-  }
-
-  const HashTableIteratorSafe< int, int >* HashTableIteratorStaticEnd::endSafe4Statics() {
-    static bool first_time = true;
-
-    if (first_time) {
-      first_time             = false;
-      _HashTableIterEndSafe_ = new HashTableIteratorSafe< int, int >;
-#  ifdef GUM_DEBUG_MODE
-      __debug__::_dec_creation_("HashTableIteratorSafe",
-                                " __hash_static_end",
-                                0,
-                                "static variable correction",
-                                0);
-      __debug__::_dec_creation_("HashTableConstIteratorSafe",
-                                " __hash_static_end",
-                                0,
-                                "static variable correction",
-                                0);
-#  endif
-    }
-
-    return _HashTableIterEndSafe_;
-  }
-
-  const HashTableConstIteratorSafe< int, int >* HashTableIteratorStaticEnd::constEndSafe4Statics() {
-    return reinterpret_cast< const HashTableConstIteratorSafe< int, int >* >(endSafe4Statics());
-  }
-
-  const HashTableIterator< int, int >* HashTableIteratorStaticEnd::_HashTableIterEnd_
-     = HashTableIteratorStaticEnd::end4Statics();
-
-  const HashTableIteratorSafe< int, int >* HashTableIteratorStaticEnd::_HashTableIterEndSafe_
-     = HashTableIteratorStaticEnd::endSafe4Statics();
-
-#endif   // DOXYGEN_SHOULD_SKIP_THIS
+  // The global static variable representing end and rend for all the hash tables.
+  // The constinit ensures it is created at compile time. Here, we use the
+  // constinit keyword rather than constexpr because, in debugging mode, the
+  // iterators' destructors cannot be declared as constepxr.
+  constinit const HashTableIterator< int, int >
+     _static_HashTable_end_(StaticInitializer::CONSTINIT);
+  constinit const HashTableConstIterator< int, int >
+     _static_HashTable_cend_(StaticInitializer::CONSTINIT);
+  constinit const HashTableIteratorSafe< int, int >
+     _static_HashTable_end_safe_(StaticInitializer::CONSTINIT);
+  constinit const HashTableConstIteratorSafe< int, int >
+     _static_HashTable_cend_safe_(StaticInitializer::CONSTINIT);
 
 } /* namespace gum */
+
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
