@@ -39,6 +39,7 @@
 #include <type_traits>
 
 #include <agrum/tools/core/hashTable.h>
+#include <agrum/tools/core/staticInitializer.h>
 
 namespace gum {
 
@@ -350,81 +351,8 @@ namespace gum {
      */
     const const_iterator_safe& cendSafe() const noexcept;
 
-    /**
-     * @brief Returns the safe end iterator for other classes' statics.
-     *
-     * To reduce the gum::Bijection memory consumption (which are heavily used
-     * in aGrUM) while allowing fast for loops, end iterators are created just
-     * once as a static member of a non-template gum::Bijection. While this
-     * scheme is efficient and it works quite effectively, it has a drawback:
-     * other classes with static members using the
-     * BijectionImplementation::end() iterator may fail to work due to the well
-     * known "static initialization order fiasco" (see Marshall Cline's C++ FAQ
-     * for more details about this C++ feature).
-     *
-     * So what is the problem?  Consider a class, say X, containing a
-     * gum::Bijection that stores all its elements in a convenient way. To
-     * reduce memory consumption, X::end iterator is a static member that is
-     * initialized with a gum::Bijection::end iterator. If the compiler decides
-     * to initialize X::end before initializing gum::Bijection::end, then
-     * X::end will be in an incoherent state.
-     *
-     * Unfortunately, we cannot know for sure in which order static members
-     * will be initialized (the order is a compiler's decision). Hence, we
-     * shall enfore the fact that gum::Bijection::end is initialized before
-     * X::end. Using method gum::Bijection::end4Statics will ensure this fact:
-     * it uses the C++ "construct on first use" idiom (see the C++ FAQ) that
-     * ensures that the order fiasco is avoided. More precisely, end4Statics
-     * uses a global variable that is the very end iterator used by all
-     * gum::Bijection. Now, this induces a small overhead. So, we also provide
-     * a gum::Bijection::end() method that returns the gum::Bijection::end
-     * iterator without this small overhead, but assuming that function
-     * end4Statics has already been called once (which is always the case) when
-     * a gum::Bijection has been created.
-     *
-     * So, to summarize: when initializing static members use endSafe4Statics()
-     * and in all the other cases, use endSafe().
-     */
-    static const iterator_safe& endSafe4Statics();
-
-    /**
-     * @brief Returns the unsafe end iterator for other classes' statics.
-     *
-     * To reduce the gum::Bijection memory consumption (which are heavily used
-     * in aGrUM) while allowing fast for loops, end iterators are created just
-     * once as a static member of a non-template gum::Bijection. While this
-     * scheme is efficient and it works quite effectively, it has a drawback:
-     * other classes with static members using the
-     * BijectionImplementation::end() iterator may fail to work due to the well
-     * known "static initialization order fiasco" (see Marshall Cline's C++ FAQ
-     * for more details about this C++ feature).
-     *
-     * So what is the problem?  Consider a class, say X, containing a
-     * gum::Bijection that stores all its elements in a convenient way. To
-     * reduce memory consumption, X::end iterator is a static member that is
-     * initialized with a gum::Bijection::end iterator. If the compiler decides
-     * to initialize X::end before initializing gum::Bijection::end, then
-     * X::end will be in an incoherent state.
-     *
-     * Unfortunately, we cannot know for sure in which order static members
-     * will be initialized (the order is a compiler's decision). Hence, we
-     * shall enfore the fact that gum::Bijection::end is initialized before
-     * X::end. Using method gum::Bijection::end4Statics will ensure this fact:
-     * it uses the C++ "construct on first use" idiom (see the C++ FAQ) that
-     * ensures that the order fiasco is avoided. More precisely, end4Statics
-     * uses a global variable that is the very end iterator used by all
-     * gum::Bijection. Now, this induces a small overhead. So, we also provide
-     * a gum::Bijection::end() method that returns the gum::Bijection::end
-     * iterator without this small overhead, but assuming that function
-     * end4Statics has already been called once (which is always the case) when
-     * a gum::Bijection has been created.
-     *
-     * So, to summarize: when initializing static members use end4Statics()
-     * and in all the other cases, use end().
-     */
-    static const iterator& end4Statics();
-
     /// @}
+
     // ============================================================================
     /// @name Accessors / Modifiers
     // ============================================================================
@@ -962,81 +890,8 @@ namespace gum {
      */
     const const_iterator_safe& cendSafe() const noexcept;
 
-    /**
-     * @brief Returns the safe end iterator for other classes' statics.
-     *
-     * To reduce the gum::Bijection memory consumption (which are heavily used
-     * in aGrUM) while allowing fast for loops, end iterators are created just
-     * once as a static member of a non-template gum::Bijection. While this
-     * scheme is efficient and it works quite effectively, it has a drawback:
-     * other classes with static members using the
-     * BijectionImplementation::end() iterator may fail to work due to the well
-     * known "static initialization order fiasco" (see Marshall Cline's C++ FAQ
-     * for more details about this C++ feature).
-     *
-     * So what is the problem?  Consider a class, say X, containing a
-     * gum::Bijection that stores all its elements in a convenient way. To
-     * reduce memory consumption, X::end iterator is a static member that is
-     * initialized with a gum::Bijection::end iterator. If the compiler decides
-     * to initialize X::end before initializing gum::Bijection::end, then
-     * X::end will be in an incoherent state.
-     *
-     * Unfortunately, we cannot know for sure in which order static members
-     * will be initialized (the order is a compiler's decision). Hence, we
-     * shall enfore the fact that gum::Bijection::end is initialized before
-     * X::end. Using method gum::Bijection::end4Statics will ensure this fact:
-     * it uses the C++ "construct on first use" idiom (see the C++ FAQ) that
-     * ensures that the order fiasco is avoided. More precisely, end4Statics
-     * uses a global variable that is the very end iterator used by all
-     * gum::Bijection. Now, this induces a small overhead. So, we also provide
-     * a gum::Bijection::end() method that returns the gum::Bijection::end
-     * iterator without this small overhead, but assuming that function
-     * end4Statics has already been called once (which is always the case) when
-     * a gum::Bijection has been created.
-     *
-     * So, to summarize: when initializing static members use endSafe4Statics()
-     * and in all the other cases, use endSafe().
-     */
-    static const iterator_safe& endSafe4Statics();
-
-    /**
-     * @brief Returns the unsafe end iterator for other classes' statics.
-     *
-     * To reduce the gum::Bijection memory consumption (which are heavily used
-     * in aGrUM) while allowing fast for loops, end iterators are created just
-     * once as a static member of a non-template gum::Bijection. While this
-     * scheme is efficient and it works quite effectively, it has a drawback:
-     * other classes with static members using the
-     * BijectionImplementation::end() iterator may fail to work due to the well
-     * known "static initialization order fiasco" (see Marshall Cline's C++ FAQ
-     * for more details about this C++ feature).
-     *
-     * So what is the problem?  Consider a class, say X, containing a
-     * gum::Bijection that stores all its elements in a convenient way. To
-     * reduce memory consumption, X::end iterator is a static member that is
-     * initialized with a gum::Bijection::end iterator. If the compiler decides
-     * to initialize X::end before initializing gum::Bijection::end, then
-     * X::end will be in an incoherent state.
-     *
-     * Unfortunately, we cannot know for sure in which order static members
-     * will be initialized (the order is a compiler's decision). Hence, we
-     * shall enfore the fact that gum::Bijection::end is initialized before
-     * X::end. Using method gum::Bijection::end4Statics will ensure this fact:
-     * it uses the C++ "construct on first use" idiom (see the C++ FAQ) that
-     * ensures that the order fiasco is avoided. More precisely, end4Statics
-     * uses a global variable that is the very end iterator used by all
-     * gum::Bijection. Now, this induces a small overhead. So, we also provide
-     * a gum::Bijection::end() method that returns the gum::Bijection::end
-     * iterator without this small overhead, but assuming that function
-     * end4Statics has already been called once (which is always the case) when
-     * a gum::Bijection has been created.
-     *
-     * So, to summarize: when initializing static members use end4Statics()
-     * and in all the other cases, use end().
-     */
-    static const iterator& end4Statics();
-
     /// @}
+
     // ============================================================================
     /// @name Accessors / Modifiers
     // ============================================================================
@@ -1259,42 +1114,6 @@ namespace gum {
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
   /**
-   * @class BijectionIteratorStaticEnd
-   * @headerfile bijection.h <agrum/tools/core/bijection.h>
-   * @brief A class which creates the static iterator used by gim::Bijections.
-   * @ingroup bijection_group
-   *
-   * The aim of using this class rather than just creating  _BijectionIterEnd_
-   * as a global variable is to prevent other classes to access and modify
-   *  _BijectionIterEnd_.
-   */
-  class BijectionIteratorStaticEnd {
-    /// Friends that have access to the iterator
-    template < typename T1, typename T2, bool >
-    friend class BijectionImplementation;
-
-    private:
-    /// The safe iterator used by everyone
-    static const BijectionIteratorSafe< int, int >* _BijectionIterEndSafe_;
-
-    /// The unsafe iterator used by everyone.
-    static const BijectionIterator< int, int >* _BijectionIterEnd_;
-
-    /**
-     * @brief Creates (if needed) and returns the iterator
-     *  _BijectionIterEndSafe_
-     * @return Returns  _BijectionIterEndSafe_.
-     */
-    static const BijectionIteratorSafe< int, int >* endSafe4Statics();
-
-    /**
-     * @brief Creates (if needed) and returns the iterator  _BijectionIterEnd_.
-     * @return Returns  _BijectionIterEnd_;
-     */
-    static const BijectionIterator< int, int >* end4Statics();
-  };
-
-  /**
    * @class BijectionIteratorGet
    * @headerfile bijection.h <agrum/tools/core/bijection.h>
    * @brief Dummy classes for discriminating scalars and non-scalars operators
@@ -1400,6 +1219,12 @@ namespace gum {
      * @brief Default constructor.
      */
     BijectionIteratorSafe() noexcept;
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+    // constructor for the static endSafe iterator
+    // only bijection.cpp should use this constructor
+    explicit consteval BijectionIteratorSafe(StaticInitializer init) noexcept : _iter_(init) {}
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
     /**
      * @brief Begin constructor.
@@ -1592,6 +1417,12 @@ namespace gum {
      * @brief Default constructor.
      */
     BijectionIterator() noexcept;
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+    // constructor for the static end iterator
+    // only bijection.cpp should use this constructor
+    explicit consteval BijectionIterator(StaticInitializer init) noexcept : _iter_(init) {}
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
     /**
      * @brief Default constructor.
@@ -1827,6 +1658,24 @@ namespace gum {
 
     /// @}
   };
+
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+  // _static_Bijection_end_ is a 'constant' iterator initialized at compile time
+  // that represents the end iterators for all bijections (whatever their
+  // type). This global variable avoids creating the same iterators within every
+  // Bijection instance (this would be quite inefficient as end is precisely
+  // identical for all bijections). The same hold for safe end iterators.
+  // The type of _Bijection_end_ is a pointer to void because C++ allows
+  // pointers to void to be cast into pointers to other types (and conversely).
+  // This avoids the painful strict-aliasing rule warning
+  extern constinit const BijectionIterator< int, int >     _static_Bijection_end_;
+  extern constinit const BijectionIteratorSafe< int, int > _static_Bijection_end_safe_;
+
+  inline constexpr void* const _Bijection_end_      = (void* const)&_static_Bijection_end_;
+  inline constexpr void* const _Bijection_end_safe_ = (void* const)&_static_Bijection_end_safe_;
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
+
 
   /**
    * @brief For friendly display of the content of the gum::Bijection.

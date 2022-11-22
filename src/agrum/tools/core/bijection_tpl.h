@@ -36,20 +36,6 @@ namespace gum {
   // ===                NON SCALAR BIJECTION IMPLEMENTATION                  ===
   // ===========================================================================
 
-  // returns the end iterator for other classes' statics
-  template < typename T1, typename T2, bool Gen >
-  const BijectionIteratorSafe< T1, T2 >& BijectionImplementation< T1, T2, Gen >::endSafe4Statics() {
-    return *(reinterpret_cast< const BijectionIteratorSafe< T1, T2 >* >(
-       BijectionIteratorStaticEnd::endSafe4Statics()));
-  }
-
-  // returns the end iterator for other classes' statics
-  template < typename T1, typename T2, bool Gen >
-  const BijectionIterator< T1, T2 >& BijectionImplementation< T1, T2, Gen >::end4Statics() {
-    return *(reinterpret_cast< const BijectionIterator< T1, T2 >* >(
-       BijectionIteratorStaticEnd::end4Statics()));
-  }
-
   // a function that performs a complete copy of another bijection
   template < typename T1, typename T2, bool Gen >
   INLINE void BijectionImplementation< T1, T2, Gen >::_copy_(const HashTable< T1, T2* >& f2s) {
@@ -86,10 +72,6 @@ namespace gum {
       _firstToSecond_(size, resize_policy, false),
       _secondToFirst_(size, resize_policy, false) {
     GUM_CONSTRUCTOR(BijectionImplementation);
-
-    // make sure the end() iterator is constructed properly
-    end4Statics();
-    endSafe4Statics();
   }
 
   // initializer list constructor
@@ -103,10 +85,6 @@ namespace gum {
     for (const auto& elt: list) {
       insert(elt.first, elt.second);
     }
-
-    // make sure the end() iterator is constructed properly
-    end4Statics();
-    endSafe4Statics();
   }
 
   // Copy constructor
@@ -195,16 +173,14 @@ namespace gum {
   template < typename T1, typename T2, bool Gen >
   INLINE const typename BijectionImplementation< T1, T2, Gen >::iterator&
      BijectionImplementation< T1, T2, Gen >::end() const noexcept {
-    return *(reinterpret_cast< const BijectionIterator< T1, T2 >* >(
-       BijectionIteratorStaticEnd::_BijectionIterEnd_));
+    return *(reinterpret_cast< const BijectionIterator< T1, T2 >* >(_Bijection_end_));
   }
 
   // returns the iterator to the end of the bijection
   template < typename T1, typename T2, bool Gen >
   INLINE const typename BijectionImplementation< T1, T2, Gen >::const_iterator&
      BijectionImplementation< T1, T2, Gen >::cend() const noexcept {
-    return *(reinterpret_cast< const BijectionIterator< T1, T2 >* >(
-       BijectionIteratorStaticEnd::_BijectionIterEnd_));
+    return *(reinterpret_cast< const BijectionIterator< T1, T2 >* >(_Bijection_end_));
   }
 
   // returns the iterator at the beginning of the bijection
@@ -225,16 +201,14 @@ namespace gum {
   template < typename T1, typename T2, bool Gen >
   INLINE const typename BijectionImplementation< T1, T2, Gen >::iterator_safe&
      BijectionImplementation< T1, T2, Gen >::endSafe() const noexcept {
-    return *(reinterpret_cast< const BijectionIteratorSafe< T1, T2 >* >(
-       BijectionIteratorStaticEnd::_BijectionIterEndSafe_));
+    return *(reinterpret_cast< const BijectionIteratorSafe< T1, T2 >* >(_Bijection_end_safe_));
   }
 
   // returns the iterator to the end of the bijection
   template < typename T1, typename T2, bool Gen >
   INLINE const typename BijectionImplementation< T1, T2, Gen >::const_iterator_safe&
      BijectionImplementation< T1, T2, Gen >::cendSafe() const noexcept {
-    return *(reinterpret_cast< const BijectionIteratorSafe< T1, T2 >* >(
-       BijectionIteratorStaticEnd::_BijectionIterEndSafe_));
+    return *(reinterpret_cast< const BijectionIteratorSafe< T1, T2 >* >(_Bijection_end_safe_));
   }
 
   // returns the value associated to the element passed in argument
@@ -438,21 +412,6 @@ namespace gum {
   // ===                  SCALAR BIJECTION IMPLEMENTATION                    ===
   // ===========================================================================
 
-  // returns the end iterator for other classes' statics
-  template < typename T1, typename T2 >
-  const BijectionIteratorSafe< T1, T2 >&
-     BijectionImplementation< T1, T2, true >::endSafe4Statics() {
-    return *(reinterpret_cast< const BijectionIteratorSafe< T1, T2 >* >(
-       BijectionIteratorStaticEnd::endSafe4Statics()));
-  }
-
-  // returns the end iterator for other classes' statics
-  template < typename T1, typename T2 >
-  const BijectionIterator< T1, T2 >& BijectionImplementation< T1, T2, true >::end4Statics() {
-    return *(reinterpret_cast< const BijectionIterator< T1, T2 >* >(
-       BijectionIteratorStaticEnd::end4Statics()));
-  }
-
   // Default constructor: creates a bijection without association
   template < typename T1, typename T2 >
   INLINE BijectionImplementation< T1, T2, true >::BijectionImplementation(Size size,
@@ -465,10 +424,6 @@ namespace gum {
       _firstToSecond_(size, resize_policy, false),
       _secondToFirst_(size, resize_policy, false) {
     GUM_CONSTRUCTOR(BijectionImplementation);
-
-    // make sure the end() iterator is constructed properly
-    end4Statics();
-    endSafe4Statics();
   }
 
   // initializer list constructor
@@ -482,10 +437,6 @@ namespace gum {
     for (const auto& elt: list) {
       insert(elt.first, elt.second);
     }
-
-    // make sure the end() iterator is constructed properly
-    end4Statics();
-    endSafe4Statics();
   }
 
   // a function that performs a complete copy of another bijection
@@ -551,16 +502,14 @@ namespace gum {
   template < typename T1, typename T2 >
   INLINE const typename BijectionImplementation< T1, T2, true >::iterator&
      BijectionImplementation< T1, T2, true >::end() const noexcept {
-    return *(reinterpret_cast< const BijectionIterator< T1, T2 >* >(
-       BijectionIteratorStaticEnd::_BijectionIterEnd_));
+    return *(reinterpret_cast< const BijectionIterator< T1, T2 >* >(_Bijection_end_));
   }
 
   // returns the iterator to the end of the bijection
   template < typename T1, typename T2 >
   INLINE const typename BijectionImplementation< T1, T2, true >::const_iterator&
      BijectionImplementation< T1, T2, true >::cend() const noexcept {
-    return *(reinterpret_cast< const BijectionIterator< T1, T2 >* >(
-       BijectionIteratorStaticEnd::_BijectionIterEnd_));
+    return *(reinterpret_cast< const BijectionIterator< T1, T2 >* >(_Bijection_end_));
   }
 
   // returns the iterator at the beginning of the bijection
@@ -581,16 +530,14 @@ namespace gum {
   template < typename T1, typename T2 >
   INLINE const typename BijectionImplementation< T1, T2, true >::iterator_safe&
      BijectionImplementation< T1, T2, true >::endSafe() const noexcept {
-    return *(reinterpret_cast< const BijectionIteratorSafe< T1, T2 >* >(
-       BijectionIteratorStaticEnd::_BijectionIterEndSafe_));
+    return *(reinterpret_cast< const BijectionIteratorSafe< T1, T2 >* >(_Bijection_end_safe_));
   }
 
   // returns the iterator to the end of the bijection
   template < typename T1, typename T2 >
   INLINE const typename BijectionImplementation< T1, T2, true >::const_iterator_safe&
      BijectionImplementation< T1, T2, true >::cendSafe() const noexcept {
-    return *(reinterpret_cast< const BijectionIteratorSafe< T1, T2 >* >(
-       BijectionIteratorStaticEnd::_BijectionIterEndSafe_));
+    return *(reinterpret_cast< const BijectionIteratorSafe< T1, T2 >* >(_Bijection_end_safe_));
   }
 
   // removes all the associations from the bijection

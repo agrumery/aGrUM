@@ -30,69 +30,18 @@
 
 #include <agrum/tools/core/bijection.h>
 
-#ifdef GUM_DEBUG_MODE
-#  include <agrum/tools/core/debug.h>
-#endif
-
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
 
-  // creates (if needed) and returns the safe iterator  _BijectionIterEndSafe_
-  const BijectionIteratorSafe< int, int >* BijectionIteratorStaticEnd::endSafe4Statics() {
-    static bool first_time = true;
-
-    if (first_time) {
-      first_time             = false;
-      _BijectionIterEndSafe_ = new BijectionIteratorSafe< int, int >;
-#  ifdef GUM_DEBUG_MODE
-      __debug__::_dec_creation_("BijectionIteratorSafe",
-                                " __bijection_static_end",
-                                0,
-                                "static variable correction",
-                                0);
-      __debug__::_dec_creation_("HashTableConstIteratorSafe",
-                                " __bijection_static_end",
-                                0,
-                                "static variable correction",
-                                0);
-#  endif
-    }
-
-    return _BijectionIterEndSafe_;
-  }
-
-  // creates (if needed) and returns the unsafe iterator  _BijectionIterEnd_
-  const BijectionIterator< int, int >* BijectionIteratorStaticEnd::end4Statics() {
-    static bool first_time = true;
-
-    if (first_time) {
-      first_time         = false;
-      _BijectionIterEnd_ = new BijectionIterator< int, int >;
-#  ifdef GUM_DEBUG_MODE
-      __debug__::_dec_creation_("BijectionIterator",
-                                " __bijection_static_end",
-                                0,
-                                "static variable correction",
-                                0);
-      __debug__::_dec_creation_("HashTableConstIterator",
-                                " __bijection_static_end",
-                                0,
-                                "static variable correction",
-                                0);
-#  endif
-    }
-
-    return _BijectionIterEnd_;
-  }
-
-  // create the end iterator for all Bijections
-  const BijectionIteratorSafe< int, int >* BijectionIteratorStaticEnd::_BijectionIterEndSafe_
-     = BijectionIteratorStaticEnd::endSafe4Statics();
-
-  // create the end iterator for all Bijections
-  const BijectionIterator< int, int >* BijectionIteratorStaticEnd::_BijectionIterEnd_
-     = BijectionIteratorStaticEnd::end4Statics();
+  // The global static variable representing end and rend for all the AVL trees.
+  // The constinit ensures it is created at compile time. Here, we use the
+  // constinit keyword rather than constexpr because, in debugging mode, the
+  // iterators' destructors cannot be declared as constepxr.
+  constinit const BijectionIterator< int, int >
+     _static_Bijection_end_(StaticInitializer::CONSTINIT);
+  constinit const BijectionIteratorSafe< int, int >
+     _static_Bijection_end_safe_(StaticInitializer::CONSTINIT);
 
 } /* namespace gum */
 
