@@ -35,6 +35,14 @@
 // 509 : Overloaded method effectively ignore
 #pragma SWIG nowarn=317,320,325,327,401,503,509
 
+// ignore constexpr constructor redefinition
+%ignorewarn("302") SetIteratorSafe;
+%ignorewarn("302") SetIterator;
+%ignorewarn("302") ListIteratorSafe;
+%ignorewarn("302") ListIterator;
+%ignorewarn("302") ListConstIteratorSafe;
+%ignorewarn("302") ListConstIterator;
+
 %feature("python:annotations", "c");  // Turn on function annotations and variable annotations globally
 %feature("python:annotations:novar"); // Turn off variable annotations globally
 

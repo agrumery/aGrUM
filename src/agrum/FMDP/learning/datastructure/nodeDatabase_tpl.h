@@ -55,7 +55,7 @@ namespace gum {
 
 
   // ###################################################################
-  // Default desstructor
+  // Default destructor
   // ###################################################################
   template < TESTNAME AttributeSelection, bool isScalar >
   NodeDatabase< AttributeSelection, isScalar >::~NodeDatabase() {
