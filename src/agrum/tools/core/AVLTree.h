@@ -825,10 +825,10 @@ namespace gum {
   // The type of _AVLTree_end_ is a pointer to void because C++ allows
   // pointers to void to be cast into pointers to other types (and conversely).
   // This avoids the painful strict-aliasing rule warning
-  extern constinit const AVLTreeIterator< int, std::less< int > >        _static_AVLTree_end_;
-  extern constinit const AVLTreeReverseIterator< int, std::less< int > > _static_AVLTree_rend_;
-  extern constinit const AVLTreeIteratorSafe< int, std::less< int > >    _static_AVLTree_end_safe_;
-  extern constinit const AVLTreeReverseIteratorSafe< int, std::less< int > >
+  extern const AVLTreeIterator< int, std::less< int > >        _static_AVLTree_end_;
+  extern const AVLTreeReverseIterator< int, std::less< int > > _static_AVLTree_rend_;
+  extern const AVLTreeIteratorSafe< int, std::less< int > >    _static_AVLTree_end_safe_;
+  extern const AVLTreeReverseIteratorSafe< int, std::less< int > >
      _static_AVLTree_rend_safe_;
 
   inline constexpr void* const _AVLTree_end_       = (void* const)&_static_AVLTree_end_;

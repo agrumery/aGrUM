@@ -45,7 +45,8 @@ namespace gum {
   //    having a lot of strict-aliasing rule warnings). See the very end of
   //    file AVLTree.h for an example.
   enum class StaticInitializer : char {
-    CONSTINIT
+    CONSTINIT,
+    CONSTEXPR
   };
 
 } // namespace gum

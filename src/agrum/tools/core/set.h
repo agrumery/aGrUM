@@ -601,7 +601,7 @@ namespace gum {
     /**
      * @brief Default constructor: the iterator points toward nothing.
      */
-    SetIteratorSafe();
+    explicit SetIteratorSafe();
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
     // constructor for the static endSafe iterator
@@ -822,7 +822,7 @@ namespace gum {
     /**
      * @brief Default constructor: the iterator points toward nothing.
      */
-    SetIterator() noexcept;
+    explicit SetIterator() noexcept;
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
     // constructor for the static end iterator
@@ -990,8 +990,8 @@ namespace gum {
   // The type of _Set_end_ is a pointer to void because C++ allows
   // pointers to void to be cast into pointers to other types (and conversely).
   // This avoids the painful strict-aliasing rule warning
-  extern constinit const SetIterator< int >     _static_Set_end_;
-  extern constinit const SetIteratorSafe< int > _static_Set_end_safe_;
+  extern const SetIterator< int >     _static_Set_end_;
+  extern const SetIteratorSafe< int > _static_Set_end_safe_;
 
   inline constexpr void* const _Set_end_      = (void* const)&_static_Set_end_;
   inline constexpr void* const _Set_end_safe_ = (void* const)&_static_Set_end_safe_;

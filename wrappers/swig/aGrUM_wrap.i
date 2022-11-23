@@ -45,6 +45,7 @@
 #include <typeinfo>
 
 #include <agrum/tools/core/types.h>
+#include <agrum/tools/core/staticInitializer.h>
 #include <agrum/tools/core/utils_misc.h>
 #include <agrum/tools/core/hashFunc.h>
 #include <agrum/tools/core/bijection.h>
@@ -258,6 +259,7 @@ namespace std {
 %import <agrum/tools/core/inline.h>
 
 %import <agrum/tools/core/types.h>
+%import <agrum/tools/core/staticInitializer.h>
 %include <agrum/tools/core/set.h>
 %include <agrum/tools/core/exceptions.h>
 %include <agrum/tools/core/sequence.h>

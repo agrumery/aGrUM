@@ -1218,7 +1218,7 @@ namespace gum {
     /**
      * @brief Default constructor.
      */
-    BijectionIteratorSafe() noexcept;
+    explicit BijectionIteratorSafe() noexcept;
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
     // constructor for the static endSafe iterator
@@ -1416,7 +1416,7 @@ namespace gum {
     /**
      * @brief Default constructor.
      */
-    BijectionIterator() noexcept;
+    explicit BijectionIterator() noexcept;
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
     // constructor for the static end iterator
@@ -1669,8 +1669,8 @@ namespace gum {
   // The type of _Bijection_end_ is a pointer to void because C++ allows
   // pointers to void to be cast into pointers to other types (and conversely).
   // This avoids the painful strict-aliasing rule warning
-  extern constinit const BijectionIterator< int, int >     _static_Bijection_end_;
-  extern constinit const BijectionIteratorSafe< int, int > _static_Bijection_end_safe_;
+  extern const BijectionIterator< int, int >     _static_Bijection_end_;
+  extern const BijectionIteratorSafe< int, int > _static_Bijection_end_safe_;
 
   inline constexpr void* const _Bijection_end_      = (void* const)&_static_Bijection_end_;
   inline constexpr void* const _Bijection_end_safe_ = (void* const)&_static_Bijection_end_safe_;

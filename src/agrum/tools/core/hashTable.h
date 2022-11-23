@@ -1610,7 +1610,7 @@ namespace gum {
     // constructor for the static cendSafe/crendSafe iterator
     // only hashTable.cpp should use this constructor
     explicit consteval HashTableConstIteratorSafe(StaticInitializer init) noexcept {}
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
     /**
      * @brief Constructor for an iterator pointing to the first element of a
@@ -1874,7 +1874,7 @@ namespace gum {
    *
    * // make iter1 point toward nothing
    * iter1.clear ();
-   * @endcode
+   * @endcodesetset
    *
    * @tparam Key The gum::HashTable key.
    * @tparam Val The gum::HashTable Value.
@@ -1910,7 +1910,7 @@ namespace gum {
     // only hashTable.cpp should use this constructor
     explicit consteval HashTableIteratorSafe(StaticInitializer init) noexcept :
         HashTableConstIteratorSafe< Key, Val >(init) {}
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
     /**
      * @brief Constructor for an iterator pointing to the first element of a
@@ -2154,7 +2154,7 @@ namespace gum {
     // constructor for the static cend/crend iterator
     // only hashTable.cpp should use this constructor
     explicit consteval HashTableConstIterator(StaticInitializer init) noexcept {}
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
     /**
      * @brief Constructor for an iterator pointing to the first element of a
@@ -2430,14 +2430,14 @@ namespace gum {
     /**
      * @brief Basic constructor: creates an iterator pointing to nothing.
      */
-    HashTableIterator() noexcept;
+    explicit HashTableIterator() noexcept;
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
     // constructor for the static end/rend iterator
     // only hashTable.cpp should use this constructor
     explicit consteval HashTableIterator(StaticInitializer init) noexcept :
         HashTableConstIterator< Key, Val >(init) {}
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
     /**
      * @brief Constructor for an iterator pointing to the first element of a
@@ -2604,16 +2604,16 @@ namespace gum {
   // The type of _HashTable_end_ is a pointer to void because C++ allows
   // pointers to void to be cast into pointers to other types (and conversely).
   // This avoids the painful strict-aliasing rule warning
-  extern constinit const HashTableIterator< int, int > _static_HashTable_end_;
-  extern constinit const HashTableConstIterator< int, int > _static_HashTable_cend_;
-  extern constinit const HashTableIteratorSafe< int, int > _static_HashTable_end_safe_;
-  extern constinit const HashTableConstIteratorSafe< int, int > _static_HashTable_cend_safe_;
+  extern const HashTableIterator< int, int >          _static_HashTable_end_;
+  extern const HashTableConstIterator< int, int >     _static_HashTable_cend_;
+  extern const HashTableIteratorSafe< int, int >      _static_HashTable_end_safe_;
+  extern const HashTableConstIteratorSafe< int, int > _static_HashTable_cend_safe_;
 
   inline constexpr void* const _HashTable_end_       = (void* const)&_static_HashTable_end_;
   inline constexpr void* const _HashTable_cend_      = (void* const)&_static_HashTable_cend_;
   inline constexpr void* const _HashTable_end_safe_  = (void* const)&_static_HashTable_end_safe_;
   inline constexpr void* const _HashTable_cend_safe_ = (void* const)&_static_HashTable_cend_safe_;
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 }   // namespace gum
 

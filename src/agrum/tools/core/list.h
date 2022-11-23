@@ -2518,8 +2518,8 @@ namespace gum {
   // The type of _list_end_ is a pointer to void because C++ allows
   // pointers to void to be cast into pointers to other types (and conversely).
   // This avoids the painful strict-aliasing rule warning
-  extern constinit const ListConstIteratorSafe< Debug > _static_list_end_safe_;
-  extern constinit const ListConstIterator< Debug >     _static_list_end_;
+  extern const ListConstIteratorSafe< Debug > _static_list_end_safe_;
+  extern const ListConstIterator< Debug >     _static_list_end_;
 
   inline constexpr void* const _list_end_safe_ = (void* const)&_static_list_end_safe_;
   inline constexpr void* const _list_end_      = (void* const)&_static_list_end_;
