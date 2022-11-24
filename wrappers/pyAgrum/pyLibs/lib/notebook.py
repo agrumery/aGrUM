@@ -1015,7 +1015,7 @@ def getInference(model, **kwargs):
   return getGraph(grinf, size)
 
 
-def _reprPotential(pot, digits=None, withColors=True, varnames=None, asString=False):
+def _reprPotential(pot, digits=None, withColors=None, varnames=None, asString=False):
   """
   return a representation of a gum.Potential as a HTML table.
   The first dimension is special (horizontal) due to the representation of conditional probability table
@@ -1036,7 +1036,8 @@ def _reprPotential(pot, digits=None, withColors=True, varnames=None, asString=Fa
   if digits is None:
     digits = gum.config.asInt['notebook', 'potential_visible_digits']
 
-  withColors = gum.config.asBool["notebook", "potential_with_colors"]
+  if withColors is None:
+    withColors = gum.config.asBool["notebook", "potential_with_colors"]
 
   with_fraction = gum.config['notebook', 'potential_with_fraction'] == "True"
   if with_fraction:
