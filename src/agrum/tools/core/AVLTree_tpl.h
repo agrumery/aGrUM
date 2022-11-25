@@ -189,7 +189,7 @@ namespace gum {
                   "It is forbidden to copy an AVLTree into a tree that does not own its nodes")
       }
 
-      deleteSubtree_(root_node_);
+      if (owns_nodes_) deleteSubtree_(root_node_);
 
       // make the safe iterators point to end/rend
       for (auto iter: safe_iterators_) {
@@ -225,7 +225,7 @@ namespace gum {
                   "It is forbidden to move an AVLTree into a tree that does not own its nodes")
       }
 
-      deleteSubtree_(root_node_);
+      if (owns_nodes_) deleteSubtree_(root_node_);
 
       // make the safe iterators point to end/rend
       for (auto iter: safe_iterators_) {
@@ -753,7 +753,7 @@ namespace gum {
   template < typename Val, typename Cmp >
   void AVLTree< Val, Cmp >::clear() {
     // remove the elements from memory
-    deleteSubtree_(root_node_);
+    if (owns_nodes_) deleteSubtree_(root_node_);
     root_node_    = nullptr;
     lowest_node_  = nullptr;
     highest_node_ = nullptr;
@@ -986,7 +986,7 @@ namespace gum {
      AVLTreeIterator< Val, Cmp >::operator==(const AVLTreeIterator< Val, Cmp >& from) const {
     // when node_ is different from nullptr, testing whether "this" is equal to from
     // simply amounts to comparing their node_ fields. However, due to erasures in
-    // the graph, it may happen that two iterators pointing to different nodes have
+    // the tree, it may happen that two iterators pointing to different nodes have
     // a nullptr node_ field. In this case, they will be equal if and only if their
     // next_node_ fields are equal. Here, it is important to use the next_node_
     // rather than their preceding_node_ field because the end iterator has nullptr
@@ -1070,7 +1070,7 @@ namespace gum {
   /// returns the element pointed to by the iterator
   template < typename Val, typename Cmp >
   INLINE typename AVLTreeIterator< Val, Cmp >::const_reference
-     AVLTreeIterator< Val, Cmp >::operator*() {
+     AVLTreeIterator< Val, Cmp >::operator*() const {
     if (node_ != nullptr) return node_->value;
     else {
       if ((next_node_ == nullptr) || (preceding_node_ == nullptr)) {
@@ -1262,7 +1262,7 @@ namespace gum {
      const AVLTreeReverseIterator< Val, Cmp >& from) const {
     // when node_ is different from nullptr, testing whether "this" is equal to from
     // simply amounts to comparing their node_ fields. However, due to erasures in
-    // the graph, it may happen that two iterators pointing to different nodes have
+    // the tree, it may happen that two iterators pointing to different nodes have
     // a nullptr node_ field. In this case, they will be equal if and only if their
     // preceding_node_ fields are equal. Here, it is important to use the preceding_node_
     // rather than their next_node_ field because the rend iterator has nullptr
@@ -1382,7 +1382,7 @@ namespace gum {
      const AVLTreeReverseIteratorSafe< Val, Cmp >& from) const {
     // when node_ is different from nullptr, testing whether "this" is equal to from
     // simply amounts to comparing their node_ fields. However, due to erasures in
-    // the graph, it may happen that two iterators pointing to different nodes have
+    // the tree, it may happen that two iterators pointing to different nodes have
     // a nullptr node_ field. In this case, they will be equal if and only if their
     // preceding_node_ fields are equal. Here, it is important to use the preceding_node_
     // rather than their next_node_ field because the rend iterator has nullptr

@@ -147,12 +147,20 @@ namespace gum {
      */
     using AVLTree< Val, Cmp >::exists;
 
+    /// returns the node containing the max element (w.r.t. Cmp) in the tree
+    /** @warning If the tree is empty, nullptr is returned */
+    AVLNode* highestNode() const noexcept;
+
     /// returns the max element (w.r.t. Cmp) in the tree
-    /** @throw NotFound Raised if the queue is empty */
+    /** @throw NotFound Raised if the tree is empty */
     using AVLTree< Val, Cmp >::highestValue;
 
+    /// returns the node containing the min element (w.r.t. Cmp) in the tree
+    /** @warning If the tree is empty, nullptr is returned */
+    AVLNode* lowestNode() const noexcept;
+
     /// returns the min element (w.r.t. Cmp) in the tree
-    /** @throw NotFound Raised if the queue is empty */
+    /** @throw NotFound Raised if the tree is empty */
     using AVLTree< Val, Cmp >::lowestValue;
 
     /// adds a new node into the tree
@@ -181,7 +189,7 @@ namespace gum {
     void erase(reverse_iterator_safe& iter);
 
     /// remove all the elements in the tree
-    void clear();
+    using AVLTree< Val, Cmp >::clear;
 
     /// @}
 
@@ -242,7 +250,7 @@ namespace gum {
    * queues.
    */
   template < typename Val, typename Cmp = std::less< Val > >
-  class SharedAVLTreeIterator {
+  class SharedAVLTreeIterator : protected AVLTreeIterator< Val, Cmp > {
     public:
     /// Types for STL compliance.
     /// @{
@@ -273,7 +281,8 @@ namespace gum {
 #  ifndef DOXYGEN_SHOULD_SKIP_THIS
     // constructor for the static end iterator
     // only AVLTree.cpp should use this constructor
-    explicit consteval SharedAVLTreeIterator(StaticInitializer init) noexcept {}
+    explicit consteval SharedAVLTreeIterator(StaticInitializer init) noexcept :
+        AVLTreeIterator< Val, Cmp >(init) {}
 #  endif   // DOXYGEN_SHOULD_SKIP_THIS
 
     /// copy constructor
@@ -326,18 +335,22 @@ namespace gum {
      * has no effect. In particular, it does not raise any exception. */
     SharedAVLTreeIterator< Val, Cmp >& operator-=(const Size k) noexcept;
 
-    /** @brief returns the element pointed to by the iterator
+    /** @brief returns the node pointed to by the iterator
      *
-     * @return the element pointed to by the iterator, if the iterator actually points
+     * @return the node pointed to by the iterator, if the iterator actually points
      * to an element
-     * @throws NotFound is raised if the iterator does not point to any element
+     * @throws NotFound is raised if the iterator points to a nullptr node
      */
-    pointer operator*();
+    const_reference operator*() const;
+
+    /// returns a pointer on the node pointed to by the iterator
+    const_pointer operator->() const;
 
     /// @}
 
     /// allow AVL trees to access the content of the iterators
     friend AVLTree< Val, Cmp >;
+    friend SharedAVLTree< Val, Cmp >;
   };
 
 
@@ -352,7 +365,7 @@ namespace gum {
    * queues.
    */
   template < typename Val, typename Cmp = std::less< Val > >
-  class SharedAVLTreeIteratorSafe: protected SharedAVLTreeIterator< Val, Cmp > {
+  class SharedAVLTreeIteratorSafe: protected AVLTreeIteratorSafe< Val, Cmp > {
     public:
     /// Types for STL compliance.
     /// @{
@@ -383,7 +396,7 @@ namespace gum {
     // constructor for the static endSafe iterator
     // only AVLTree.cpp should use this constructor
     explicit consteval SharedAVLTreeIteratorSafe(StaticInitializer init) noexcept :
-        SharedAVLTreeIterator< Val, Cmp >(init) {}
+        AVLTreeIteratorSafe< Val, Cmp >(init) {}
 #  endif   // DOXYGEN_SHOULD_SKIP_THIS
 
     /// copy constructor
@@ -435,13 +448,16 @@ namespace gum {
      * has no effect. In particular, it does not raise any exception. */
     SharedAVLTreeIteratorSafe< Val, Cmp >& operator-=(const Size k) noexcept;
 
-    /** @brief returns the element pointed to by the iterator
+    /** @brief returns the node pointed to by the iterator
      *
-     * @return the element pointed to by the iterator, if the iterator actually points
+     * @return the node pointed to by the iterator, if the iterator actually points
      * to an element
-     * @throws NotFound is raised if the iterator does not point to any element
+     * @throws NotFound is raised if the iterator points to a nullptr node
      */
-    using SharedAVLTreeIterator< Val, Cmp >::operator*;
+    const_reference operator*() const;
+
+    /// returns a pointer on the node pointed to by the iterator
+    const_pointer operator->() const;
 
     /// @}
 
@@ -449,6 +465,7 @@ namespace gum {
     protected:
     /// allow AVL trees to access the content of the iterators
     friend AVLTree< Val, Cmp >;
+    friend SharedAVLTree< Val, Cmp >;
   };
 
 
@@ -548,13 +565,16 @@ namespace gum {
      * has no effect. In particular, it does not raise any exception. */
     SharedAVLTreeReverseIterator< Val, Cmp >& operator-=(const Size k) noexcept;
 
-    /** @brief returns the element pointed to by the iterator
+    /** @brief returns the node pointed to by the iterator
      *
-     * @return the element pointed to by the iterator, if the iterator actually points
+     * @return the node pointed to by the iterator, if the iterator actually points
      * to an element
-     * @throws NotFound is raised if the iterator does not point to any element
+     * @throws NotFound is raised if the iterator points to a nullptr node
      */
     using SharedAVLTreeIterator< Val, Cmp >::operator*;
+
+    /// returns a pointer on the node pointed to by the iterator
+    using SharedAVLTreeIterator< Val, Cmp >::operator->;
 
     /// @}
 
@@ -562,6 +582,7 @@ namespace gum {
     protected:
     /// allow AVL trees to access the content of the iterators
     friend AVLTree< Val, Cmp >;
+    friend SharedAVLTree< Val, Cmp >;
   };
 
 
@@ -661,19 +682,23 @@ namespace gum {
      * has no effect. In particular, it does not raise any exception. */
     SharedAVLTreeReverseIteratorSafe< Val, Cmp >& operator-=(const Size k) noexcept;
 
-    /** @brief returns the element pointed to by the iterator
+    /** @brief returns the node pointed to by the iterator
      *
-     * @return the element pointed to by the iterator, if the iterator actually points
+     * @return the node pointed to by the iterator, if the iterator actually points
      * to an element
-     * @throws NotFound is raised if the iterator does not point to any element
+     * @throws NotFound is raised if the iterator points to a nullptr node
      */
     using SharedAVLTreeIteratorSafe< Val, Cmp >::operator*;
+
+    /// returns a pointer on the node pointed to by the iterator
+    using SharedAVLTreeIteratorSafe< Val, Cmp >::operator->;
 
     /// @}
 
     protected:
     /// allow AVL trees to access the content of the iterators
     friend AVLTree< Val, Cmp >;
+    friend SharedAVLTree< Val, Cmp >;
   };
 
 

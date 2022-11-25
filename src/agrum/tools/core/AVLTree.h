@@ -176,11 +176,11 @@ namespace gum {
     bool exists(const value_type& val) const;
 
     /// returns the max element (w.r.t. Cmp) in the tree
-    /** @throw NotFound Raised if the queue is empty */
+    /** @throw NotFound Raised if the tree is empty */
     const value_type& highestValue() const;
 
     /// returns the min element (w.r.t. Cmp) in the tree
-    /** @throw NotFound Raised if the queue is empty */
+    /** @throw NotFound Raised if the tree is empty */
     const value_type& lowestValue() const;
 
     /// adds (by copy) a new element into the tree
@@ -276,12 +276,18 @@ namespace gum {
       };
 
       AVLNode(const Val& val) : value(val) { GUM_CONSTRUCTOR(AVLNode); };
-      AVLNode(Val&& val) noexcept : value(std::move(val)) { GUM_CONS_CPY(AVLNode); };
-
+      AVLNode(Val&& val) noexcept : value(std::move(val)) { GUM_CONSTRUCTOR(AVLNode); };
       template < typename... Args >
       AVLNode(const Emplace& emplace, Args&&... args) : value(std::forward< Args >(args)...) {
         GUM_CONSTRUCTOR(AVLNode);
       }
+
+      AVLNode(const AVLNode& from) : parent(from.parent),
+          left_child(from.left_child), right_child(from.right_child),
+          height(from.height), value(from.value) { GUM_CONS_CPY(AVLNode); }
+      AVLNode(AVLNode&& from) : parent(from.parent),
+          left_child(from.left_child), right_child(from.right_child),
+          height(from.height), value(std::move(from.value)) { GUM_CONS_MOV(AVLNode); }
 
       ~AVLNode() { GUM_DESTRUCTOR(AVLNode); }
     };
@@ -466,7 +472,7 @@ namespace gum {
      * to an element
      * @throws NotFound is raised if the iterator does not point to any element
      */
-    const_reference operator*();
+    const_reference operator*() const;
 
     /// @}
 
@@ -541,7 +547,7 @@ namespace gum {
      * @param begin if true, the iterator points to the highest value in the tree,
      * else it points to the lowest value
      */
-    explicit AVLTreeIteratorSafe(AVLTree< Val, Cmp >& tree, const bool rbegin = true);
+    explicit AVLTreeIteratorSafe(AVLTree< Val, Cmp >& tree, const bool begin = true);
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
     // constructor for the static endSafe iterator
