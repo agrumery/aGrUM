@@ -21,9 +21,6 @@
 """
 configuration tool for pyAgrum
 """
-
-FileNotFoundError
-
 from configparser import ConfigParser
 import os
 
@@ -50,27 +47,27 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
     "10"
   """
 
-  def check_int(self, s):
+  def _check_int(self, s):
     if s[0] in ('-', '+'):
       return s[1:].isdigit()
     return s.isdigit()
 
-  def check_float(self, s):
+  def _check_float(self, s):
     t = s.split(".")
     if len(t) == 1:
-      return self.check_int(t[0])
+      return self._check_int(t[0])
     elif len(t) == 2:
-      return self.check_int(t[0]) and t[1].isdigit()
+      return self._check_int(t[0]) and t[1].isdigit()
     else:
       return False
 
-  def check_bool(self, s):
-    return self.check_bool_true(s) or self.check_bool_false(s)
+  def _check_bool(self, s):
+    return self._check_bool_true(s) or self._check_bool_false(s)
 
-  def check_bool_true(self, s):
+  def _check_bool_true(self, s):
     return s.upper() in ["TRUE", "1", "ON", "YES"]
 
-  def check_bool_false(self, s):
+  def _check_bool_false(self, s):
     return s.upper() in ["FALSE", "0", "OFF", "NO"]
 
   class Casterization:
@@ -83,7 +80,7 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
 
     def __setitem__(self, x, v):
       s = str(v)
-      if self.container.check_int(s):
+      if self.container._check_int(s):
         self.container[x] = s
       else:
         raise ValueError(f"'{s}' must contain an int.")
@@ -94,18 +91,18 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
 
     def __setitem__(self, x, v):
       s = str(v)
-      if self.container.check_float(s):
+      if self.container._check_float(s):
         self.container[x] = s
       else:
         raise ValueError(f"'{s}' must contain a float.")
 
   class CastAsBool(Casterization):
     def __getitem__(self, x):
-      return self.container.check_bool_true(self.container[x])
+      return self.container._check_bool_true(self.container[x])
 
     def __setitem__(self, x, v):
       s = str(v)
-      if self.container.check_bool(s):
+      if self.container._check_bool(s):
         self.container[x] = s
       else:
         raise ValueError(f"'{s}' must contain a boolean (False/True, 0/1, Off/On).")

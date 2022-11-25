@@ -358,29 +358,36 @@ namespace gum {
   template < typename GUM_SCALAR >
   std::vector< std::string > IBayesNet< GUM_SCALAR >::check() const {
     std::vector< std::string > comments;
-    const double               epsilon = 1e-8;
+    const double               epsilon       = 1e-8;
+    const double               error_epsilon = 1e-1;
 
-    for (const auto i: this->nodes())
-      if (this->variable(i).domainSize() < 2) {
+    for (const auto i: nodes())
+      if (variable(i).domainSize() < 2) {
         std::stringstream s;
-        s << "Variable " << this->variable(i).name() << " is not consistent (domainSize=1).";
+        s << "Variable " << variable(i).name() << ": not consistent (domainSize=1).";
         comments.push_back(s.str());
       }
-    for (const auto i: this->nodes()) {
-      const auto p              = this->cpt(i).margSumOut({&this->variable(i)});
+    for (const auto i: nodes()) {
+      const auto p              = cpt(i).margSumOut({&variable(i)});
       const auto [amin, minval] = p.argmin();
       if (minval < (GUM_SCALAR)(1.0 - epsilon)) {
         std::stringstream s;
-        s << "For variable " << this->variable(i).name() << ", with (at least) parents "
-          << *(amin.begin()) << ", the CPT sum to less than 1.";
+        s << "Variable " << variable(i).name() << " : ";
+        if (!parents(i).empty()) s << "with (at least) parents " << *(amin.begin()) << ", ";
+        s << "the CPT sum to less than 1";
+        if (minval > (GUM_SCALAR)(1.0 - error_epsilon)) s << " (normalization problem ?)";
+        s << ".";
         comments.push_back(s.str());
         continue;
       }
       const auto [amax, maxval] = p.argmax();
       if (maxval > (GUM_SCALAR)(1.0 + epsilon)) {
         std::stringstream s;
-        s << "For variable " << this->variable(i).name() << ", with (at least) parents "
-          << *(amax.begin()) << ", the CPT sum to more than 1.";
+        s << "Variable " << variable(i).name() << " : ";
+        if (!parents(i).empty()) s << "with (at least) parents " << *(amax.begin()) << ", ";
+        s << "the CPT sum to more than 1";
+        if (maxval < (GUM_SCALAR)(1.0 + error_epsilon)) s << " (normalization problem ?)";
+        s << ".";
         comments.push_back(s.str());
       }
     }

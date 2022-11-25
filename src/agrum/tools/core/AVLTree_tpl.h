@@ -799,8 +799,7 @@ namespace gum {
   template < typename Val, typename Cmp >
   constexpr const typename AVLTree< Val, Cmp >::iterator_safe&
      AVLTree< Val, Cmp >::endSafe() const {
-    return *(
-       reinterpret_cast< const iterator_safe* >(_AVLTree_end_safe_));
+    return *(reinterpret_cast< const iterator_safe* >(_AVLTree_end_safe_));
   }
 
   /// returns a new safe iterator pointing to the maximal element of the tree

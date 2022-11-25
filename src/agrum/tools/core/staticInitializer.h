@@ -49,6 +49,6 @@ namespace gum {
     CONSTEXPR
   };
 
-} // namespace gum
+}   // namespace gum
 
-#endif // GUM_STATIC_INITIALIZER_H
+#endif   // GUM_STATIC_INITIALIZER_H

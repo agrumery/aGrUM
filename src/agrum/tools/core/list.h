@@ -1459,7 +1459,7 @@ namespace gum {
     // constructor for the static cend/crend iterator
     // only list.cpp should use this constructor
     explicit consteval ListConstIterator(StaticInitializer init) noexcept {}
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
     /**
      * @brief Constructor for a begin.
@@ -1747,7 +1747,7 @@ namespace gum {
     // only list.cpp should use this constructor
     explicit consteval ListIterator(StaticInitializer init) noexcept :
         ListConstIterator< Val >(init) {}
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
     /**
      * @brief Constructor for a begin.
@@ -2015,7 +2015,7 @@ namespace gum {
     // constructor for the static cendSafe/crendSafe iterator
     // only list.cpp should use this constructor
     explicit consteval ListConstIteratorSafe(StaticInitializer init) noexcept {}
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
     /**
      * @brief Constructor for a begin.
@@ -2329,7 +2329,7 @@ namespace gum {
     // only list.cpp should use this constructor
     explicit consteval ListIteratorSafe(StaticInitializer init) noexcept :
         ListConstIteratorSafe< Val >(init) {}
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
     /**
      * @brief Constructor for a begin.
@@ -2523,7 +2523,7 @@ namespace gum {
 
   inline constexpr void* const _list_end_safe_ = (void* const)&_static_list_end_safe_;
   inline constexpr void* const _list_end_      = (void* const)&_static_list_end_;
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 } /* namespace gum */
 

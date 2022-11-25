@@ -388,7 +388,7 @@ namespace gum {
     // constructor for the static end iterator
     // only AVLTree.cpp should use this constructor
     explicit consteval AVLTreeIterator(StaticInitializer init) noexcept {}
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
     /// copy constructor
     AVLTreeIterator(const AVLTreeIterator< Val, Cmp >& from) noexcept;
@@ -527,7 +527,7 @@ namespace gum {
     // only AVLTree.cpp should use this constructor
     explicit consteval AVLTreeIteratorSafe(StaticInitializer init) noexcept :
         AVLTreeIterator< Val, Cmp >(init) {}
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
     /// copy constructor
     AVLTreeIteratorSafe(const AVLTreeIteratorSafe< Val, Cmp >& from);
@@ -637,7 +637,7 @@ namespace gum {
     // only AVLTree.cpp should use this constructor
     explicit consteval AVLTreeReverseIterator(StaticInitializer init) noexcept :
         AVLTreeIterator< Val, Cmp >(init) {}
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
     /// copy constructor
     AVLTreeReverseIterator(const AVLTreeReverseIterator< Val, Cmp >& from) noexcept;
@@ -748,7 +748,7 @@ namespace gum {
     // only AVLTree.cpp should use this constructor
     explicit consteval AVLTreeReverseIteratorSafe(StaticInitializer init) noexcept :
         AVLTreeIteratorSafe< Val, Cmp >(init) {}
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
     /// copy constructor
     AVLTreeReverseIteratorSafe(const AVLTreeReverseIteratorSafe< Val, Cmp >& from);
@@ -825,17 +825,16 @@ namespace gum {
   // The type of _AVLTree_end_ is a pointer to void because C++ allows
   // pointers to void to be cast into pointers to other types (and conversely).
   // This avoids the painful strict-aliasing rule warning
-  extern const AVLTreeIterator< int, std::less< int > >        _static_AVLTree_end_;
-  extern const AVLTreeReverseIterator< int, std::less< int > > _static_AVLTree_rend_;
-  extern const AVLTreeIteratorSafe< int, std::less< int > >    _static_AVLTree_end_safe_;
-  extern const AVLTreeReverseIteratorSafe< int, std::less< int > >
-     _static_AVLTree_rend_safe_;
+  extern const AVLTreeIterator< int, std::less< int > >            _static_AVLTree_end_;
+  extern const AVLTreeReverseIterator< int, std::less< int > >     _static_AVLTree_rend_;
+  extern const AVLTreeIteratorSafe< int, std::less< int > >        _static_AVLTree_end_safe_;
+  extern const AVLTreeReverseIteratorSafe< int, std::less< int > > _static_AVLTree_rend_safe_;
 
   inline constexpr void* const _AVLTree_end_       = (void* const)&_static_AVLTree_end_;
   inline constexpr void* const _AVLTree_rend_      = (void* const)&_static_AVLTree_rend_;
   inline constexpr void* const _AVLTree_end_safe_  = (void* const)&_static_AVLTree_end_safe_;
   inline constexpr void* const _AVLTree_rend_safe_ = (void* const)&_static_AVLTree_rend_safe_;
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 
 }   // namespace gum
