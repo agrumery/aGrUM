@@ -383,7 +383,7 @@ namespace gum {
     // <1
     for (const auto i: nodes()) {
       const auto [amax, maxval] = cpt(i).argmax();
-      if (maxval < (GUM_SCALAR)1.0) {
+      if (maxval > (GUM_SCALAR)1.0) {
         std::stringstream s;
         s << "Variable " << variable(i).name() << " : P(" << *(amax.begin()) << ") > 1.0";
         comments.push_back(s.str());
