@@ -358,15 +358,39 @@ namespace gum {
   template < typename GUM_SCALAR >
   std::vector< std::string > IBayesNet< GUM_SCALAR >::check() const {
     std::vector< std::string > comments;
-    const double               epsilon       = 1e-8;
-    const double               error_epsilon = 1e-1;
 
+    const double epsilon       = 1e-8;
+    const double error_epsilon = 1e-1;
+
+    // CHECKING domain
     for (const auto i: nodes())
       if (variable(i).domainSize() < 2) {
         std::stringstream s;
         s << "Variable " << variable(i).name() << ": not consistent (domainSize=1).";
         comments.push_back(s.str());
       }
+
+    // CHECKING parameters are probabilities
+    // >0
+    for (const auto i: nodes()) {
+      const auto [amin, minval] = cpt(i).argmin();
+      if (minval < (GUM_SCALAR)0.0) {
+        std::stringstream s;
+        s << "Variable " << variable(i).name() << " : P(" << *(amin.begin()) << ") < 0.0";
+        comments.push_back(s.str());
+      }
+    }
+    // <1
+    for (const auto i: nodes()) {
+      const auto [amax, maxval] = cpt(i).argmax();
+      if (maxval < (GUM_SCALAR)1.0) {
+        std::stringstream s;
+        s << "Variable " << variable(i).name() << " : P(" << *(amax.begin()) << ") > 1.0";
+        comments.push_back(s.str());
+      }
+    }
+
+    // CHECKING distributions sum to 1
     for (const auto i: nodes()) {
       const auto p              = cpt(i).margSumOut({&variable(i)});
       const auto [amin, minval] = p.argmin();
