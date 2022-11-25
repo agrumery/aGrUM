@@ -215,6 +215,7 @@ def BNinference2dot(bn, size=None, engine=None, evs=None, targets=None, nodeColo
   dotstr += '  edge [color="' + gumcols.getBlackInTheme() + '"];' + "\n"
 
   showdag = bn.dag() if dag is None else dag
+
   for nid in showdag.nodes():
     name = bn.variable(nid).name()
 

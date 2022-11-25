@@ -25,6 +25,7 @@ import math
 from typing import Dict
 import itertools
 from base64 import encodebytes
+import warnings
 
 import numpy as np
 import pandas as pd
@@ -171,9 +172,12 @@ def _normalizeVals(vals, hilightExtrema=False):
     vmi = 0
     vma = 1
 
-  return {name: vmi + (val - mi) * (vma - vmi) / (ma - mi) for name, val in vals.items()}
+  res= {name: vmi + (val - mi) * (vma - vmi) / (ma - mi) for name, val in vals.items()}
+  return res
 
-def getInformationGraph(bn, evs=None, size=None, cmap=_INFOcmap,withMinMax=False):
+
+
+def getInformationGraph(bn, evs=None, size=None, cmap=_INFOcmap, withMinMax=False):
   """
   Create a dot representation of the information graph for this BN
 
@@ -206,21 +210,35 @@ def getInformationGraph(bn, evs=None, size=None, cmap=_INFOcmap,withMinMax=False
   ie.makeInference()
 
   idEvs = {bn.idFromName(name) for name in evs}
-  nodevals = {bn.variable(n).name(): ie.H(n)
-              for n in bn.nodes() if not n in idEvs}
-  arcvals = {(x, y): ie.I(x, y) for x, y in bn.arcs()}
+
+  nodevals = dict()
+  for n in bn.nodes():
+    if n not in idEvs:
+      v = ie.H(n)
+      if v != v:  # is NaN
+        warnings.warn(f"For {bn.variable(n).name()}, entropy is NaN.")
+        v = 0
+      nodevals[bn.variable(n).name()] = v
+
+  arcvals = dict()
+  for x, y in bn.arcs():
+    v = ie.I(x, y)
+    if v != v:  # is NaN
+      warnings.warn(f"For {bn.variable(x).name()}->{bn.variable(y).name()}, mutual information is Nan.")
+      v = 0
+    arcvals[(x, y)] = v
+
   gr = BN2dot(bn, size, nodeColor=_normalizeVals(nodevals, hilightExtrema=False), arcWidth=arcvals, cmapNode=cmap,
-              cmapArc=cmap,
-              showMsg=nodevals
-              )
+              cmapArc=cmap, showMsg=nodevals)
 
   mi = min(nodevals.values())
   ma = max(nodevals.values())
 
   if withMinMax:
-    return gr,mi,ma
+    return gr, mi, ma
   else:
     return gr
+
 
 def _reprInformation(bn, evs=None, size=None, cmap=_INFOcmap, asString=False):
   """
@@ -250,14 +268,14 @@ def _reprInformation(bn, evs=None, size=None, cmap=_INFOcmap, asString=False):
   if evs is None:
     evs = {}
 
-  gr,mi,ma = getInformationGraph(bn,evs,size,cmap,withMinMax=True)
+  gr, mi, ma = getInformationGraph(bn, evs, size, cmap, withMinMax=True)
   # dynamic member makes pylink unhappy
   # pylint: disable=no-member
   gsvg = IPython.display.SVG(gr.create_svg(encoding="utf-8"))
   width = int(gsvg.data.split("width=")[1].split('"')[1].split("pt")[0]) / mpl.pyplot.rcParams[
     'figure.dpi']  # pixel in inches
-  if width<5:
-    width=5
+  if width < 5:
+    width = 5
 
   fig = mpl.figure.Figure(figsize=(width, 1))
   fig.patch.set_alpha(0)
@@ -269,8 +287,8 @@ def _reprInformation(bn, evs=None, size=None, cmap=_INFOcmap, asString=False):
                                   orientation='horizontal'
                                   )
   cb1.set_label('Entropy')
-  cb1.ax.text(mi,-2,f"{mi:.4f}", ha='left', va='top',color=gumcols.proba2bgcolor(0.01, cmap))
-  cb1.ax.text(ma,-2,f"{ma:.4f}", ha='right', va='top',color=gumcols.proba2bgcolor(0.99, cmap))
+  cb1.ax.text(mi, -2, f"{mi:.4f}", ha='left', va='top', color=gumcols.proba2bgcolor(0.01, cmap))
+  cb1.ax.text(ma, -2, f"{ma:.4f}", ha='right', va='top', color=gumcols.proba2bgcolor(0.99, cmap))
   png = IPython.core.pylabtools.print_figure(canvas.figure, "png")  # from IPython.core.pylabtools
   png_legend = f"<img style='vertical-align:middle' src='data:image/png;base64,{encodebytes(png).decode('ascii')}'>"
 
@@ -282,7 +300,7 @@ def _reprInformation(bn, evs=None, size=None, cmap=_INFOcmap, asString=False):
   return IPython.display.display(IPython.display.HTML(sss))
 
 
-def getInformation(bn, evs=None, size=None, cmap=_INFOcmap)->str:
+def getInformation(bn, evs=None, size=None, cmap=_INFOcmap) -> str:
   """
   get a HTML string for a bn annotated with results from inference : entropy and mutual information
 
