@@ -1,0 +1,377 @@
+/**
+ *
+ *   Copyright (c) 2005-2022 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
+ *   info_at_agrum_dot_org
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public License
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+#include <agrum/tools/core/sortedPriorityQueue.h>
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+namespace gum {
+
+  // basic constructor
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE SortedPriorityQueue< Val, Priority, Cmp >::SortedPriorityQueue(
+     Cmp  compare,
+     Size capacity) :
+      _nodes_(capacity >> 1, true, true), _tree_cmp_(compare) {
+    GUM_CONSTRUCTOR(SortedPriorityQueue);
+  }
+
+  // initializer list constructor
+  template < typename Val, typename Priority, typename Cmp >
+  SortedPriorityQueue< Val, Priority, Cmp >::SortedPriorityQueue(
+     std::initializer_list< std::pair< Val, Priority > > list) :
+      _nodes_(Size(list.size()) / 2, true, true) {
+    // fill the queue
+    for (const auto& elt: list) {
+      insert(elt.first, elt.second);
+    }
+
+    GUM_CONSTRUCTOR(SortedPriorityQueue);
+  }
+
+  // copy constructor
+  template < typename Val, typename Priority, typename Cmp >
+  SortedPriorityQueue< Val, Priority, Cmp >::SortedPriorityQueue(
+     const SortedPriorityQueue< Val, Priority, Cmp >& from) :
+      _nodes_(from._nodes_), _tree_cmp_(from._tree_cmp_) {
+    // fill the heap structure
+    for (const auto& node_prio: _nodes_) {
+      _tree_.insert(&node_prio.first);
+    }
+
+    GUM_CONS_CPY(SortedPriorityQueue);
+  }
+
+  // move constructor
+  template < typename Val, typename Priority, typename Cmp >
+  SortedPriorityQueue< Val, Priority, Cmp >::SortedPriorityQueue(
+     SortedPriorityQueue< Val, Priority, Cmp >&& from) noexcept :
+      _tree_(std::move(from._tree_)), _nodes_(std::move(from._nodes_)),
+      _tree_cmp_(std::move(from._tree_cmp_)) {
+    GUM_CONS_MOV(SortedPriorityQueue)
+  }
+
+  // destructor
+  template < typename Val, typename Priority, typename Cmp >
+  SortedPriorityQueue< Val, Priority, Cmp >::~SortedPriorityQueue() {
+    GUM_DESTRUCTOR(SortedPriorityQueue);
+  }
+
+  // copy operator
+  template < typename Val, typename Priority, typename Cmp >
+  SortedPriorityQueue< Val, Priority, Cmp >&
+     SortedPriorityQueue< Val, Priority, Cmp >::operator=(
+        const SortedPriorityQueue< Val, Priority, Cmp >& from) {
+    // avoid self assignment
+    if (this != &from) {
+      GUM_OP_CPY(SortedPriorityQueue)
+
+      try {
+        // set the comparison function
+        _tree_cmp_ = from._tree_cmp_;
+
+        // copy the nodes within the hash table
+        _nodes_ = from._nodes_;
+
+        // fill the AVL tree
+        for (const auto& node_prio: _nodes_)
+          _tree_.insert(&node_prio.first);
+      } catch (...) {
+        _tree_.clear();
+        _nodes_.clear();
+        throw;
+      }
+    }
+
+    return *this;
+  }
+
+  // move operator
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE SortedPriorityQueue< Val, Priority, Cmp >&
+     SortedPriorityQueue< Val, Priority, Cmp >::operator=(
+        SortedPriorityQueue< Val, Priority, Cmp >&& from) noexcept {
+    // avoid self assignment
+    if (this != &from) {
+      GUM_OP_MOV(SortedPriorityQueue)
+
+      _nodes_    = std::move(from._nodes_);
+      _tree_     = std::move(from._tree_);
+      _tree_cmp_ = std::move(from._tree_cmp_);
+    }
+
+    return *this;
+  }
+
+  // returns the number of elements in the priority queue
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE Size SortedPriorityQueue< Val, Priority, Cmp >::size() const noexcept {
+    return _tree_.size();
+  }
+
+  // indicates whether the priority queue is empty
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE bool SortedPriorityQueue< Val, Priority, Cmp >::empty() const noexcept {
+    return (_tree_.empty());
+  }
+
+  // indicates whether the priority queue contains a given value
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE bool
+     SortedPriorityQueue< Val, Priority, Cmp >::contains(const Val& val) const noexcept {
+    return _nodes_.exists(_tree_cmp_.getNode(val));
+  }
+
+  // returns the element at the top of the priority queue
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE const Val& SortedPriorityQueue< Val, Priority, Cmp >::top() const {
+    if (_tree_.empty()) {
+      GUM_ERROR(NotFound, "An empty sorted priority queue has no top element")
+    }
+
+    return _tree_.highestNode()->value;
+  }
+
+  // returns the element at the bottom of the priority queue
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE const Val& SortedPriorityQueue< Val, Priority, Cmp >::bottom() const {
+    if (_tree_.empty()) {
+      GUM_ERROR(NotFound, "An empty sorted priority queue has no bottom element")
+    }
+
+    return _tree_.highestNode()->value;
+  }
+
+  // returns the priority of the top element
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE const Priority&
+     SortedPriorityQueue< Val, Priority, Cmp >::topPriority() const {
+    if (_tree_.empty()) {
+      GUM_ERROR(NotFound, "An empty priority queue has no top priority")
+    }
+
+    return _tree_cmp_.getPriority(_tree_.highestNode()->value);
+  }
+
+   // returns the priority of the top element
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE const Priority&
+     SortedPriorityQueue< Val, Priority, Cmp >::bottomPriority() const {
+    if (_tree_.empty()) {
+      GUM_ERROR(NotFound, "An empty priority queue has no bottom priority")
+    }
+
+    return _tree_cmp_.getPriority(_tree_.lowestNode()->value);
+  }
+
+  // removes the top element from the priority queue and return it
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE Val SortedPriorityQueue< Val, Priority, Cmp >::popTop() {
+    if (_tree_.empty()) {
+      GUM_ERROR(NotFound, "An empty sorted priority queue has no top element")
+    }
+
+    // erase the node from the tree
+    AVLNode* node = _tree_.highestNode();
+    _tree_.erase(node);
+
+    // erase the node from the hash table
+    Val v = std::move(node->value);
+    _nodes_.erase(*node);
+
+    return v;
+  }
+
+  // removes the top element from the priority queue and return it
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE Val SortedPriorityQueue< Val, Priority, Cmp >::pop() { return popTop(); }
+
+  // removes the bottom element from the priority queue and return it
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE Val SortedPriorityQueue< Val, Priority, Cmp >::popBottom() {
+    if (_tree_.empty()) {
+      GUM_ERROR(NotFound, "An empty sorted priority queue has no bottom element")
+    }
+
+    // erase the node from the tree
+    AVLNode* node = _tree_.lowestNode();
+    _tree_.erase(node);
+
+    // erase the node from the hash table
+    Val v = std::move(node->value);
+    _nodes_.erase(*node);
+
+    return v;
+  }
+
+  // inserts a new (a copy) element in the priority queue
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE typename SortedPriorityQueue< Val, Priority, Cmp >::const_reference
+     SortedPriorityQueue< Val, Priority, Cmp >::insert(const Val&      val,
+                                                       const Priority& priority) {
+    // create the entry in the _nodes_ hashtable (if the element already exists,
+    // _nodes_.insert will raise a Duplicateelement exception)
+    Priority new_priority;
+    typename HashTable< Val, Size >::value_type& new_elt =
+       _nodes_.insert(AVLNode(val), std::move(new_priority));
+
+    // update the tree
+    _tree_.insert(&new_elt.first);
+
+    return new_elt.first.value;
+  }
+
+
+  // inserts by move a new element in the priority queue
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE typename SortedPriorityQueue< Val, Priority, Cmp >::const_reference
+     SortedPriorityQueue< Val, Priority, Cmp >::insert(Val&&      val,
+                                                       Priority&& priority) {
+    // create the entry in the indices hashtable (if the element already exists,
+    // _nodes_.insert will raise a Duplicateelement exception)
+    typename HashTable< Val, Size >::value_type& new_elt
+       = _nodes_.insert(AVLNode(std::move(val)), std::move(priority));
+
+    // update the tree
+    _tree_.insert(&new_elt.first);
+
+    return new_elt.first.value;
+  }
+
+
+  // emplace a new element into the priority queue
+  template < typename Val, typename Priority, typename Cmp >
+  template < typename... Args >
+  INLINE typename SortedPriorityQueue< Val, Priority, Cmp >::const_reference
+     SortedPriorityQueue< Val, Priority, Cmp >::emplace(Args&&... args) {
+    std::pair< AVLNode, Priority > new_elt
+       = std::make_pair< Val, Priority >(std::forward< Args >(args)...);
+
+    return insert(std::move(new_elt.first), std::move(new_elt.second));
+  }
+
+
+  // removes the top of the priority queue (but does not return it)
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE void SortedPriorityQueue< Val, Priority, Cmp >::eraseTop() {
+    if (_tree_.empty()) return;
+    AVLNode* node = _tree_.highestNode();
+    _tree_.erase(node);
+    _nodes_.erase(*node);
+  }
+
+
+  // removes the bottom of the priority queue (but does not return it)
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE void SortedPriorityQueue< Val, Priority, Cmp >::eraseBottom() {
+    if (_tree_.empty()) return;
+    AVLNode* node = _tree_.lowestNode();
+    _tree_.erase(node);
+    _nodes_.erase(*node);
+  }
+
+
+  // removes a given element from the priority queue (but does not return it)
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE void SortedPriorityQueue< Val, Priority, Cmp >::erase(const Val& val) {
+    try {
+      const AVLNode& node = _nodes_.key(_tree_cmp_.getNode(val));
+      _tree_.erase(&node);
+      _nodes_.erase(node);
+    } catch (NotFound const&) {}
+  }
+
+
+  // modifies the priority of a given element
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE void SortedPriorityQueue< Val, Priority, Cmp >::setPriority(
+     const Val&      elt,
+     const Priority& new_priority) {
+    const AVLNode& node = _nodes_.key(_tree_cmp_.getNode(elt));
+    _tree_.erase(node);
+    _nodes_[node] = new_priority;
+    _tree_.insert(&node);
+  }
+
+
+  // modifies the priority of a given element
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE void
+     SortedPriorityQueue< Val, Priority, Cmp >::setPriority(const Val& elt,
+                                                            Priority&& new_priority) {
+    const AVLNode& node = _nodes_.key(_tree_cmp_.getNode(elt));
+    _tree_.erase(node);
+    _nodes_[node] = std::move(new_priority);
+    _tree_.insert(&node);
+  }
+
+
+  // returns the priority of a given element
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE const Priority&
+     SortedPriorityQueue< Val, Priority, Cmp >::priority(const Val& elt) const {
+    return _nodes_[_tree_cmp_.getNode(elt)];
+  }
+
+
+  // removes all the elements from the queue
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE void SortedPriorityQueue< Val, Priority, Cmp >::clear() {
+    _tree_.clear();
+    _nodes_.clear();
+  }
+
+
+  // displays the content of the queue
+  template < typename Val, typename Priority, typename Cmp >
+  std::string SortedPriorityQueue< Val, Priority, Cmp >::toString() const {
+    bool              deja = false;
+    std::stringstream stream;
+    stream << "[";
+
+    for (const auto& val: _tree_) {
+      if (deja) stream << " , ";
+
+      stream << "(" << val << " , " << _tree_cmp_.getPriority(val) << ")";
+    }
+
+    stream << "]";
+
+    return stream.str();
+  }
+
+
+  // return the size of the array storing the priority queue
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE Size SortedPriorityQueue< Val, Priority, Cmp >::capacity() const noexcept {
+    return Size(_nodes_.capacity());
+  }
+
+
+  // changes the size of the array storing the priority queue
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE void SortedPriorityQueue< Val, Priority, Cmp >::resize(Size new_size) {
+    if (new_size < _tree_.size() / 2) return;
+    _nodes_.resize(new_size / 2);
+  }
+
+}   // namespace gum
+
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

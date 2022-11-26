@@ -883,7 +883,7 @@ namespace gum {
      * @brief Basic constructor. Creates an empty priority queue.
      *
      * @param compare a function taking two elements in argument, say e1 and
-     * e2, and returning a Boolean indicating wether e1 < e2, i.e., whether e1
+     * e2, and returning a Boolean indicating whether e1 < e2, i.e., whether e1
      * should be nearer than e2 to the top of the heap.
      * @param capacity the size of the internal data structures containing the
      * elements (could be for instance vectors or hashtables).

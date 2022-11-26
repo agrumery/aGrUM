@@ -32,9 +32,8 @@ namespace gum {
 
   /// copies recursively the nodes of the tree
   template < typename Val, typename Cmp >
-  typename AVLTree< Val, Cmp >::AVLNode*
-     AVLTree< Val, Cmp >::copySubtree_(const typename AVLTree< Val, Cmp >::AVLNode* from_node,
-                                       typename AVLTree< Val, Cmp >::AVLNode*       new_parent) {
+  typename AVLTree< Val, Cmp >::AVLNode* AVLTree< Val, Cmp >::copySubtree_(const AVLNode* from_node,
+                                                                           AVLNode* new_parent) {
     if (from_node == nullptr) return nullptr;
 
     AVLNode* new_node       = nullptr;
@@ -64,8 +63,7 @@ namespace gum {
 
   /// deletes recursively a subtree of the AVL tree
   template < typename Val, typename Cmp >
-  void
-     AVLTree< Val, Cmp >::deleteSubtree_(typename AVLTree< Val, Cmp >::AVLNode* subtree_root_node) {
+  void AVLTree< Val, Cmp >::deleteSubtree_(AVLNode* subtree_root_node) {
     if (subtree_root_node == nullptr) return;
 
     deleteSubtree_(subtree_root_node->left_child);
@@ -324,8 +322,7 @@ namespace gum {
   // +---+ +---+                           +---+ +---+
   */
   template < typename Val, typename Cmp >
-  typename AVLTree< Val, Cmp >::AVLNode*
-     AVLTree< Val, Cmp >::rightRotation_(typename AVLTree< Val, Cmp >::AVLNode* node_q) {
+  typename AVLTree< Val, Cmp >::AVLNode* AVLTree< Val, Cmp >::rightRotation_(AVLNode* node_q) {
     AVLNode* node_p    = node_q->left_child;
     AVLNode* parent_q  = node_q->parent;
     AVLNode* subtree_u = node_p->left_child;
@@ -370,8 +367,7 @@ namespace gum {
   // +---+ +---+                           +---+ +---+
   */
   template < typename Val, typename Cmp >
-  typename AVLTree< Val, Cmp >::AVLNode*
-     AVLTree< Val, Cmp >::leftRotation_(typename AVLTree< Val, Cmp >::AVLNode* node_p) {
+  typename AVLTree< Val, Cmp >::AVLNode* AVLTree< Val, Cmp >::leftRotation_(AVLNode* node_p) {
     AVLNode* node_q    = node_p->right_child;
     AVLNode* parent_p  = node_p->parent;
     AVLNode* subtree_u = node_p->left_child;
@@ -405,7 +401,7 @@ namespace gum {
 
   /// rebalance the tree moving up recursively from a given node
   template < typename Val, typename Cmp >
-  void AVLTree< Val, Cmp >::rebalanceTree_(typename AVLTree< Val, Cmp >::AVLNode* node) {
+  void AVLTree< Val, Cmp >::rebalanceTree_(AVLNode* node) {
     AVLNode* top_node = nullptr;
     while (node != nullptr) {
       const int left_height  = node->left_child != nullptr ? node->left_child->height : 0;
@@ -457,8 +453,7 @@ namespace gum {
 
   /// insert a node into the tree
   template < typename Val, typename Cmp >
-  const typename AVLTree< Val, Cmp >::value_type&
-     AVLTree< Val, Cmp >::insert_(typename AVLTree< Val, Cmp >::AVLNode* new_node) {
+  const typename AVLTree< Val, Cmp >::value_type& AVLTree< Val, Cmp >::insert_(AVLNode* new_node) {
     // if the tree is empty, just create a new node
     if (root_node_ == nullptr) {
       root_node_    = new_node;
@@ -522,8 +517,7 @@ namespace gum {
 
   /// remove a node from the tree
   template < typename Val, typename Cmp >
-  typename AVLTree< Val, Cmp >::AVLNode*
-     AVLTree< Val, Cmp >::removeNodeFromTree_(typename AVLTree< Val, Cmp >::AVLNode* node) {
+  typename AVLTree< Val, Cmp >::AVLNode* AVLTree< Val, Cmp >::removeNodeFromTree_(AVLNode* node) {
     // if val cannot be found, do nothing
     if (node == nullptr) return nullptr;
 
@@ -844,7 +838,7 @@ namespace gum {
 
   /// move to the next element in the tree
   template < typename Val, typename Cmp >
-  typename AVLTree< Val, Cmp >::AVLNode*
+  typename AVLTreeIterator< Val, Cmp >::AVLNode*
      AVLTreeIterator< Val, Cmp >::nextNode_(AVLNode* node) const noexcept {
     if (node != nullptr) {
       // here, the iterator points toward an element of the tree
@@ -881,7 +875,7 @@ namespace gum {
 
   /// move to the preceding element in the tree
   template < typename Val, typename Cmp >
-  typename AVLTree< Val, Cmp >::AVLNode*
+  typename AVLTreeIterator< Val, Cmp >::AVLNode*
      AVLTreeIterator< Val, Cmp >::precedingNode_(AVLNode* node) const noexcept {
     if (node != nullptr) {
       // here, the iterator points toward an element of the tree

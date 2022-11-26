@@ -71,7 +71,7 @@ namespace gum {
     using iterator_safe         = SharedAVLTreeIteratorSafe< Val, Cmp >;
     using reverse_iterator      = SharedAVLTreeReverseIterator< Val, Cmp >;
     using reverse_iterator_safe = SharedAVLTreeReverseIteratorSafe< Val, Cmp >;
-    using AVLNode               = typename AVLTree< Val, Cmp >::AVLNode;
+    using AVLNode               = AVLTreeNode< Val >;
     /// @}
 
     // ============================================================================
@@ -255,7 +255,7 @@ namespace gum {
     /// Types for STL compliance.
     /// @{
     using iterator_category = std::bidirectional_iterator_tag;
-    using AVLNode           = typename AVLTree< Val, Cmp >::AVLNode;
+    using AVLNode           = AVLTreeNode< Val >;
     using value_type        = AVLNode;
     using reference         = value_type&;
     using const_reference   = const value_type&;
@@ -370,7 +370,7 @@ namespace gum {
     /// Types for STL compliance.
     /// @{
     using iterator_category = std::bidirectional_iterator_tag;
-    using AVLNode           = typename AVLTree< Val, Cmp >::AVLNode;
+    using AVLNode           = AVLTreeNode< Val >;
     using value_type        = AVLNode;
     using reference         = value_type&;
     using const_reference   = const value_type&;
@@ -485,7 +485,7 @@ namespace gum {
     /// Types for STL compliance.
     /// @{
     using iterator_category = std::bidirectional_iterator_tag;
-    using AVLNode           = typename AVLTree< Val, Cmp >::AVLNode;
+    using AVLNode           = AVLTreeNode< Val >;
     using value_type        = AVLNode;
     using reference         = value_type&;
     using const_reference   = const value_type&;
@@ -602,7 +602,7 @@ namespace gum {
     /// Types for STL compliance.
     /// @{
     using iterator_category = std::bidirectional_iterator_tag;
-    using AVLNode           = typename AVLTree< Val, Cmp >::AVLNode;
+    using AVLNode           = AVLTreeNode< Val >;
     using value_type        = AVLNode;
     using reference         = value_type&;
     using const_reference   = const value_type&;

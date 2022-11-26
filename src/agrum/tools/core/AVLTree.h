@@ -18,7 +18,6 @@
  *
  */
 
-
 /**
  * @file
  * @brief AVL binary search trees
@@ -35,11 +34,13 @@
 #include <algorithm>
 
 #include <agrum/agrum.h>
+#include <agrum/tools/core/hashFunc.h>
 #include <agrum/tools/core/staticInitializer.h>
 
 namespace gum {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
+
   template < typename Val, typename Cmp >
   class AVLTreeIterator;
   template < typename Val, typename Cmp >
@@ -49,7 +50,66 @@ namespace gum {
   class AVLTreeReverseIterator;
   template < typename Val, typename Cmp >
   class AVLTreeReverseIteratorSafe;
+
+
+  /// the nodes of the AVL tree used to sort the elements of the queue
+  template < typename Val >
+  struct AVLTreeNode {
+    // the neighbors in our AVL tree
+    AVLTreeNode* parent{nullptr};
+    AVLTreeNode* left_child{nullptr};
+    AVLTreeNode* right_child{nullptr};
+
+    // the height of the node in the AVL tree
+    int height{1};
+
+    // the element to be stored into the node
+    Val value;
+
+    // a class to enabling emplacing values in AVLNodes
+    enum class Emplace {
+      EMPLACE
+    };
+
+    AVLTreeNode(const Val& val) : value(val) { GUM_CONSTRUCTOR(AVLTreeNode); };
+    AVLTreeNode(Val&& val) noexcept : value(std::move(val)) { GUM_CONSTRUCTOR(AVLTreeNode); };
+    template < typename... Args >
+    AVLTreeNode(const Emplace& emplace, Args&&... args) : value(std::forward< Args >(args)...) {
+      GUM_CONSTRUCTOR(AVLTreeNode);
+    }
+
+    AVLTreeNode(const AVLTreeNode< Val >& from) : parent(from.parent),
+        left_child(from.left_child), right_child(from.right_child),
+        height(from.height), value(from.value) { GUM_CONS_CPY(AVLTreeNode); }
+    AVLTreeNode(AVLTreeNode< Val >&& from) : parent(from.parent),
+        left_child(from.left_child), right_child(from.right_child),
+        height(from.height), value(std::move(from.value)) { GUM_CONS_MOV(AVLTreeNode); }
+
+    ~AVLTreeNode() { GUM_DESTRUCTOR(AVLTreeNode); }
+  };
+
+
+  /// the hash function for AVLTreeNodes
+  template < typename Val >
+  class HashFunc< AVLTreeNode< Val > >: public HashFunc< Val > {
+    public:
+    /**
+     * @brief Returns the value of a key as a Size.
+     * @param key The value to return as a Size.
+     * @return Returns the value of a key as a Size.
+     */
+    static Size castToSize(const AVLTreeNode< Val >& key) {
+       return HashFunc< Val >::castToSize(key);
+    }
+
+    /// computes the hashed value of a key
+    INLINE Size operator()(const AVLTreeNode< Val >& key) const final {
+      return HashFunc< Val >::operator()(key);
+    }
+  };
+
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
+
 
   /**
    * @class AVLTree
@@ -75,6 +135,7 @@ namespace gum {
     using iterator_safe         = AVLTreeIteratorSafe< Val, Cmp >;
     using reverse_iterator      = AVLTreeReverseIterator< Val, Cmp >;
     using reverse_iterator_safe = AVLTreeReverseIteratorSafe< Val, Cmp >;
+    using AVLNode               = AVLTreeNode< Val >;
     /// @}
 
     // ============================================================================
@@ -254,45 +315,6 @@ namespace gum {
     constexpr const reverse_iterator_safe& rendSafe() const;
 
     /// @}
-
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
-    // the nodes of the AVL tree used to sort the elements of the queue
-    struct AVLNode {
-      // the neighbors in our AVL tree
-      AVLNode* parent{nullptr};
-      AVLNode* left_child{nullptr};
-      AVLNode* right_child{nullptr};
-
-      // the height of the node in the AVL tree
-      int height{1};
-
-      // the element to be stored into the node
-      Val value;
-
-      // a class to enabling emplacing values in AVLNodes
-      enum class Emplace {
-        EMPLACE
-      };
-
-      AVLNode(const Val& val) : value(val) { GUM_CONSTRUCTOR(AVLNode); };
-      AVLNode(Val&& val) noexcept : value(std::move(val)) { GUM_CONSTRUCTOR(AVLNode); };
-      template < typename... Args >
-      AVLNode(const Emplace& emplace, Args&&... args) : value(std::forward< Args >(args)...) {
-        GUM_CONSTRUCTOR(AVLNode);
-      }
-
-      AVLNode(const AVLNode& from) : parent(from.parent),
-          left_child(from.left_child), right_child(from.right_child),
-          height(from.height), value(from.value) { GUM_CONS_CPY(AVLNode); }
-      AVLNode(AVLNode&& from) : parent(from.parent),
-          left_child(from.left_child), right_child(from.right_child),
-          height(from.height), value(std::move(from.value)) { GUM_CONS_MOV(AVLNode); }
-
-      ~AVLNode() { GUM_DESTRUCTOR(AVLNode); }
-    };
-
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
     protected:
     /// the root of the AVL tree
@@ -479,7 +501,7 @@ namespace gum {
 
     protected:
     /// the type of the nodes of the tree
-    using AVLNode = typename AVLTree< Val, Cmp >::AVLNode;
+    using AVLNode = AVLTreeNode< Val >;
 
     /// the tree the iterator points to
     AVLTree< Val, Cmp >* tree_{nullptr};
