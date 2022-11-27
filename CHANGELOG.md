@@ -1,5 +1,31 @@
 # aGrUM Changelog
 
+## Changelog for 1.5.0
+
+* aGrUM
+
+  * (internals) Updating `act --stats`.
+  * (internals) Reorganizing build folder : `build/{aGrUM|pyAgrum}/{debug|release}`.
+  * Threadsafe graphs and Graphical Models.
+  * Adding `gum::AVLTree` to core.
+  * Adding new graph `gum::PDAG` (Partially Directed Acyclic Graph).
+  * Renaming `gum::MixedGraph::adjacents` with correct graph notion : `gum::MixedGraph::boundary`.
+  * Adding `constinit` iterators for some core classes.
+  * Better messages for `gum::BayesNet::check()`
+
+* pyAgrum
+
+  * (internals) New docker images with linux gcc 11 for wheels.
+  * Fixing NaN bugs for new versions of Graphviz.
+  * Improving gum.lib.notebooks.flow and light/dark theme compatibility.
+  * Renaming `pyAgrum.MixedGraph.adjacents` with correct graph notion : `pyAgrum.MixedGraph.boundary`.
+  * New graph class `gum.PDAG` (Partially Directed Acyclic Graph).
+  * Fixing typos in documentation.
+  * (internals) Removing some (false positive) warning notifications from swig.
+  * Fixing a small typo when displaying function as Potential.
+  * better messages for `pyAgrum.BayesNet.check()`.
+  * More robust `gum.explain.showInformation()` w.r.t. NaN.
+  
 ## Changelog for 1.4.1
 
 * pyAgrum
