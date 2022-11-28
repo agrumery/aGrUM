@@ -86,7 +86,18 @@ namespace gum {
         height(from.height), value(std::move(from.value)) { GUM_CONS_MOV(AVLTreeNode); }
 
     ~AVLTreeNode() { GUM_DESTRUCTOR(AVLTreeNode); }
+
+    // two nodes are equal if and only if they contain the same value
+    bool operator==(const AVLTreeNode< Val >& from) const { return value == from.value; }
+    bool operator!=(const AVLTreeNode< Val >& from) const { return value != from.value; }
   };
+
+
+  /// the content of an AVLTreeNode is just the value it contains
+  template < typename Val >
+  std::ostream& operator<<(std::ostream& stream, const AVLTreeNode< Val >& node) {
+    return stream << '<' << node.value << '>';
+  }
 
 
   /// the hash function for AVLTreeNodes
@@ -99,12 +110,12 @@ namespace gum {
      * @return Returns the value of a key as a Size.
      */
     static Size castToSize(const AVLTreeNode< Val >& key) {
-       return HashFunc< Val >::castToSize(key);
+       return HashFunc< Val >::castToSize(key.value);
     }
 
     /// computes the hashed value of a key
-    INLINE Size operator()(const AVLTreeNode< Val >& key) const final {
-      return HashFunc< Val >::operator()(key);
+    INLINE Size operator()(const AVLTreeNode< Val >& key) const {
+      return HashFunc< Val >::operator()(key.value);
     }
   };
 
@@ -283,6 +294,11 @@ namespace gum {
     /// remove all the elements in the tree
     void clear();
 
+    /** @brief returns a string with the content of the tree, order from the lowest
+     * to the highest element
+     */
+    std::string toString() const;
+
     /// @}
 
     // ============================================================================
@@ -291,13 +307,13 @@ namespace gum {
     /// @{
 
     /// returns a new iterator pointing to the minimal element of the tree
-    iterator begin();
+    iterator begin() const;
 
     /// returns an iterator pointing just after the maximal element
     constexpr const iterator& end() const;
 
     /// returns a new iterator pointing to the maximal element of the tree
-    reverse_iterator rbegin();
+    reverse_iterator rbegin() const;
 
     /// returns an iterator pointing just before the minimal element
     constexpr const reverse_iterator& rend() const;
@@ -863,6 +879,13 @@ namespace gum {
     /// allow AVL trees to access the content of the iterators
     friend AVLTree< Val, Cmp >;
   };
+
+
+  /// display the content of a tree
+  template < typename Val, typename Cmp >
+  std::ostream& operator<<(std::ostream& stream, const AVLTree< Val, Cmp >& tree) {
+    return stream << tree.toString();
+  }
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

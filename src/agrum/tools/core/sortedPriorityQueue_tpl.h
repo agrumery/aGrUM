@@ -136,7 +136,14 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp >
   INLINE bool
      SortedPriorityQueue< Val, Priority, Cmp >::contains(const Val& val) const noexcept {
-    return _nodes_.exists(_tree_cmp_.getNode(val));
+    if constexpr(std::is_scalar_v< Val >) {
+      return _nodes_.exists(AVLTreeNode< Val >(val));
+    } else {
+      AVLTreeNode< Val > xval(std::move(const_cast< Val& >(val)));
+      bool res = _nodes_.exists(xval);
+      const_cast< Val& >(val)= std::move(xval.value);
+      return res;
+    }
   }
 
   // returns the element at the top of the priority queue
@@ -156,7 +163,7 @@ namespace gum {
       GUM_ERROR(NotFound, "An empty sorted priority queue has no bottom element")
     }
 
-    return _tree_.highestNode()->value;
+    return _tree_.lowestNode()->value;
   }
 
   // returns the priority of the top element
@@ -227,13 +234,12 @@ namespace gum {
      SortedPriorityQueue< Val, Priority, Cmp >::insert(const Val&      val,
                                                        const Priority& priority) {
     // create the entry in the _nodes_ hashtable (if the element already exists,
-    // _nodes_.insert will raise a Duplicateelement exception)
-    Priority new_priority;
-    typename HashTable< Val, Size >::value_type& new_elt =
-       _nodes_.insert(AVLNode(val), std::move(new_priority));
+    // _nodes_.insert will raise a DuplicateElement exception)
+    Priority new_priority (priority);
+    const auto& new_elt = _nodes_.insert(AVLNode(val), std::move(new_priority));
 
     // update the tree
-    _tree_.insert(&new_elt.first);
+    _tree_.insert(const_cast<AVLTreeNode< Val >* >(&new_elt.first));
 
     return new_elt.first.value;
   }
@@ -245,12 +251,11 @@ namespace gum {
      SortedPriorityQueue< Val, Priority, Cmp >::insert(Val&&      val,
                                                        Priority&& priority) {
     // create the entry in the indices hashtable (if the element already exists,
-    // _nodes_.insert will raise a Duplicateelement exception)
-    typename HashTable< Val, Size >::value_type& new_elt
-       = _nodes_.insert(AVLNode(std::move(val)), std::move(priority));
+    // _nodes_.insert will raise a DuplicateElement exception)
+    const auto& new_elt = _nodes_.insert(AVLNode(std::move(val)), std::move(priority));
 
     // update the tree
-    _tree_.insert(&new_elt.first);
+    _tree_.insert(const_cast<AVLTreeNode< Val >* >(&new_elt.first));
 
     return new_elt.first.value;
   }
@@ -261,9 +266,7 @@ namespace gum {
   template < typename... Args >
   INLINE typename SortedPriorityQueue< Val, Priority, Cmp >::const_reference
      SortedPriorityQueue< Val, Priority, Cmp >::emplace(Args&&... args) {
-    std::pair< AVLNode, Priority > new_elt
-       = std::make_pair< Val, Priority >(std::forward< Args >(args)...);
-
+    auto new_elt = std::make_pair< Val, Priority >(std::forward< Args >(args)...);
     return insert(std::move(new_elt.first), std::move(new_elt.second));
   }
 
@@ -287,12 +290,31 @@ namespace gum {
     _nodes_.erase(*node);
   }
 
+  // returns the node in the hash table corresponding to a given value
+  template < typename Val, typename Priority, typename Cmp >
+   INLINE AVLTreeNode< Val >&
+      SortedPriorityQueue< Val, Priority, Cmp >::getNode_(const Val& val) const {
+    if constexpr (std::is_scalar_v< Val >) {
+      return const_cast< AVLTreeNode< Val >& >(_nodes_.key(AVLTreeNode< Val >(val)));
+    } else {
+      AVLTreeNode< Val > xval(std::move(const_cast< Val& >(val)));
+      try {
+        auto& node              = const_cast< AVLTreeNode< Val >& >(_nodes_.key(xval));
+        const_cast< Val& >(val) = std::move(xval.value);
+        return node;
+      } catch (NotFound const&) {
+        // restore into val the value that was moved
+        const_cast< Val& >(val) = std::move(xval.value);
+        throw;
+      }
+    }
+  }
 
   // removes a given element from the priority queue (but does not return it)
   template < typename Val, typename Priority, typename Cmp >
   INLINE void SortedPriorityQueue< Val, Priority, Cmp >::erase(const Val& val) {
     try {
-      const AVLNode& node = _nodes_.key(_tree_cmp_.getNode(val));
+      AVLNode& node = getNode_(val);
       _tree_.erase(&node);
       _nodes_.erase(node);
     } catch (NotFound const&) {}
@@ -304,10 +326,16 @@ namespace gum {
   INLINE void SortedPriorityQueue< Val, Priority, Cmp >::setPriority(
      const Val&      elt,
      const Priority& new_priority) {
-    const AVLNode& node = _nodes_.key(_tree_cmp_.getNode(elt));
-    _tree_.erase(node);
-    _nodes_[node] = new_priority;
-    _tree_.insert(&node);
+    try {
+      AVLNode& node = getNode_(elt);
+      _tree_.erase(&node);
+      _nodes_[node] = new_priority;
+      _tree_.insert(&node);
+    } catch (NotFound const&) {
+      GUM_ERROR(NotFound,
+                "The sorted priority queue does not contain"
+                   << elt << ". Hence it is not possible to change its priority")
+    }
   }
 
 
@@ -316,10 +344,16 @@ namespace gum {
   INLINE void
      SortedPriorityQueue< Val, Priority, Cmp >::setPriority(const Val& elt,
                                                             Priority&& new_priority) {
-    const AVLNode& node = _nodes_.key(_tree_cmp_.getNode(elt));
-    _tree_.erase(node);
-    _nodes_[node] = std::move(new_priority);
-    _tree_.insert(&node);
+    try {
+      AVLNode& node = getNode_(elt);
+      _tree_.erase(&node);
+      _nodes_[node] = std::move(new_priority);
+      _tree_.insert(&node);
+    } catch (NotFound const&) {
+      GUM_ERROR(NotFound,
+                "The sorted priority queue does not contain"
+                   << elt << ". Hence it is not possible to change its priority")
+    }
   }
 
 
@@ -327,7 +361,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp >
   INLINE const Priority&
      SortedPriorityQueue< Val, Priority, Cmp >::priority(const Val& elt) const {
-    return _nodes_[_tree_cmp_.getNode(elt)];
+    return _nodes_[getNode_(elt)];
   }
 
 
@@ -346,10 +380,12 @@ namespace gum {
     std::stringstream stream;
     stream << "[";
 
-    for (const auto& val: _tree_) {
-      if (deja) stream << " , ";
+    // parse the tree from the highest element to the lowest
+    for (auto iter = _tree_.rbegin(); iter != _tree_.rend(); ++iter) {
+      if (deja) stream << " ; ";
+      else deja = true;
 
-      stream << "(" << val << " , " << _tree_cmp_.getPriority(val) << ")";
+      stream << "(" << iter->value << ", " << _tree_cmp_.getPriority(iter->value) << ")";
     }
 
     stream << "]";

@@ -80,6 +80,11 @@ namespace gum {
   /// adds a new node into the tree
   template < typename Val, typename Cmp >
   INLINE void SharedAVLTree< Val, Cmp >::insert(AVLNode* node) {
+    // the insert_ method will update the parent of node, but we should also
+    // guarantee that the children are null pointers before the insertion (as the
+    // node will be added to the
+    node->left_child  = nullptr;
+    node->right_child = nullptr;
     this->insert_(node);
   }
 
@@ -103,7 +108,7 @@ namespace gum {
 
   /// returns a new iterator pointing to the minimal element of the tree
   template < typename Val, typename Cmp >
-  INLINE typename SharedAVLTree< Val, Cmp >::iterator SharedAVLTree< Val, Cmp >::begin() {
+  INLINE typename SharedAVLTree< Val, Cmp >::iterator SharedAVLTree< Val, Cmp >::begin() const {
     return SharedAVLTreeIterator(*this);
   }
 
@@ -116,7 +121,7 @@ namespace gum {
 
   /// returns a new iterator pointing to the maximal element of the tree
   template < typename Val, typename Cmp >
-  INLINE typename SharedAVLTree< Val, Cmp >::reverse_iterator SharedAVLTree< Val, Cmp >::rbegin() {
+  INLINE typename SharedAVLTree< Val, Cmp >::reverse_iterator SharedAVLTree< Val, Cmp >::rbegin() const {
     return SharedAVLTreeReverseIterator(*this, true);
   }
 

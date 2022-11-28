@@ -61,6 +61,23 @@ namespace gum_tests {
         TS_GUM_ASSERT_EQUALS(node.value, vect[i++]);
       }
 
+      {
+        const std::string sss = tree2.toString();
+        std::stringstream str;
+        str << '{';
+        bool first = true;
+        for (const auto val: vect) {
+          if (!first) str << " , ";
+          else first = false;
+          str << val;
+        }
+        str << '}';
+        TS_GUM_ASSERT_EQUALS(sss, str.str())
+        std::stringstream str2;
+        str2 << tree2;
+        TS_GUM_ASSERT_EQUALS(str.str(), str2.str())
+      }
+
       gum::SharedAVLTree< int > tree4;
       std::vector< gum::SharedAVLTree< int >::AVLNode > nodevect4;
       for (int i = 0; i < 100; ++i) nodevect4.emplace_back(i);

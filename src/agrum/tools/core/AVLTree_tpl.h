@@ -456,9 +456,10 @@ namespace gum {
   const typename AVLTree< Val, Cmp >::value_type& AVLTree< Val, Cmp >::insert_(AVLNode* new_node) {
     // if the tree is empty, just create a new node
     if (root_node_ == nullptr) {
-      root_node_    = new_node;
-      lowest_node_  = root_node_;
-      highest_node_ = root_node_;
+      new_node->parent = nullptr;
+      root_node_       = new_node;
+      lowest_node_     = root_node_;
+      highest_node_    = root_node_;
       ++nb_elements_;
       return new_node->value;
     }
@@ -672,11 +673,11 @@ namespace gum {
         if (parent_node->left_child == node) {
           parent_node->left_child = child;
           child->parent           = parent_node;
-          if (node == lowest_node_) lowest_node_ = parent_node;
+          if (node == lowest_node_) lowest_node_ = child;
         } else {
           parent_node->right_child = child;
           child->parent            = parent_node;
-          if (node == highest_node_) highest_node_ = parent_node;
+          if (node == highest_node_) highest_node_ = child;
         }
       } else {
         // here, the parent does not exist. Hence, the new root node should
@@ -762,7 +763,7 @@ namespace gum {
 
   /// returns a new iterator pointing to the minimal element of the tree
   template < typename Val, typename Cmp >
-  INLINE typename AVLTree< Val, Cmp >::iterator AVLTree< Val, Cmp >::begin() {
+  INLINE typename AVLTree< Val, Cmp >::iterator AVLTree< Val, Cmp >::begin() const {
     return AVLTreeIterator(*this);
   }
 
@@ -774,7 +775,7 @@ namespace gum {
 
   /// returns a new iterator pointing to the maximal element of the tree
   template < typename Val, typename Cmp >
-  INLINE typename AVLTree< Val, Cmp >::reverse_iterator AVLTree< Val, Cmp >::rbegin() {
+  INLINE typename AVLTree< Val, Cmp >::reverse_iterator AVLTree< Val, Cmp >::rbegin() const {
     return AVLTreeReverseIterator(*this, true);
   }
 
@@ -832,6 +833,22 @@ namespace gum {
         return;
       }
     }
+  }
+
+
+  /// returns a string with the content of the tree, order from lowest to highest
+  template < typename Val, typename Cmp >
+  std::string AVLTree< Val, Cmp >::toString() const {
+    std::stringstream str;
+    str << '{';
+    bool first = true;
+    for (const auto& val: *this) {
+      if (!first) str << " , ";
+      else first = false;
+      str << val;
+    }
+    str << '}';
+    return str.str();
   }
 
   /// ======================================================================================

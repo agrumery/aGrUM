@@ -104,7 +104,7 @@ namespace gum {
    * @tparam Priority The priorities type.
    * @tparam Cmp The priorities comparator.
    */
-  template < typename Val, typename Priority, typename Cmp >
+  template < typename Val, typename Priority = int, typename Cmp  = std::less< Priority > >
   class SortedPriorityQueue {
     public:
     /// Types for STL compliance.
@@ -117,7 +117,7 @@ namespace gum {
     using difference_type = std::ptrdiff_t;
     /// @}
 
-    private:
+
     // ============================================================================
     /// @name Constructors / Destructors
     // ============================================================================
@@ -132,7 +132,7 @@ namespace gum {
      * @param capacity The size of the internal data structures containing the
      * elements (could be for instance vectors or hashtables)
      */
-    explicit SortedPriorityQueue(Cmp compare,
+    explicit SortedPriorityQueue(Cmp compare = Cmp(),
                                  Size capacity = GUM_PRIORITY_QUEUE_DEFAULT_CAPACITY);
 
     /**
@@ -391,6 +391,7 @@ namespace gum {
 
     /// the comparison function used to sort the elements in the tree
     struct TreeCmp {
+      TreeCmp() = default;
       TreeCmp(const Cmp& cmp) : _cmp_(cmp) {}
       TreeCmp(Cmp&& cmp) : _cmp_(std::move(cmp)) {}
 
@@ -399,15 +400,8 @@ namespace gum {
       // above. Now, the constexpr offset defined below contains precisely the
       // offset in bytes between Value v and its priority. Function getPriority
       // therefore just computes the location of the priority and returns it.
-      inline const Priority& getPriority(const Val& v) {
+      inline const Priority& getPriority(const Val& v) const {
         return *((Priority*)((char*)&v + offset_from_value_to_priority));
-      }
-
-      // from a Val instance stored into memory, get the address of the start of
-      // the AVLNode structure that would have contained it. This is useful for
-      // comparing elements in the hashTable without having to create dummy AVLNodes
-      inline const AVLNode& getNode(const Val& v) {
-        return *((AVLNode*)((char*)&v - offset_to_value));
       }
 
       // the comparison function betwwen two contents of two nodes of the AVL tree:
@@ -445,7 +439,19 @@ namespace gum {
 
     /// Comparison function.
     TreeCmp _tree_cmp_;
+
+    /** @brief returns the node in the hash table corresponding to a given value
+     * @throws NotFound is raised if the node cannot be found
+     */
+    AVLNode& getNode_(const Val& val) const;
   };
+
+
+  /// display the content of a sorted priority queue
+  template < typename Val, typename Priority, typename Cmp >
+  std::ostream& operator<<(std::ostream& stream, const SortedPriorityQueue< Val, Priority, Cmp >& queue) {
+    return stream << queue.toString();
+  }
 
 } /* namespace gum */
 
