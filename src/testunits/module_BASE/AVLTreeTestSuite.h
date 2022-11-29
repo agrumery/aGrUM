@@ -26,6 +26,8 @@
 #include <agrum/tools/core/heap.h>
 #include <string>
 #include <algorithm>
+#include <random>
+#include <chrono>
 
 namespace gum_tests {
 
@@ -390,6 +392,63 @@ namespace gum_tests {
       tree.erase(tree.lowestValue()); // remains: {}
       TS_ASSERT_THROWS(tree.lowestValue(), gum::NotFound&)
     }
+
+    void test_shuffle() {
+      gum::AVLTree< std::pair< int, int >, Mycmp > tree;
+      TS_GUM_ASSERT_EQUALS(tree.empty(), true)
+      TS_GUM_ASSERT_EQUALS(tree.size(), gum::Size(0))
+      TS_ASSERT_THROWS(tree.lowestValue(), const gum::NotFound&)
+      TS_ASSERT_THROWS(tree.highestValue(), const gum::NotFound&)
+
+      std::vector< std::pair< int, int > > vect;
+      for (int i = 0; i < 100; ++i) {
+        vect.emplace_back(i, i + 10);
+      }
+      auto vect2 = vect;
+      auto rng = std::default_random_engine {};
+      rng.seed((unsigned int)std::chrono::system_clock::now().time_since_epoch().count());
+      std::shuffle(std::begin(vect2), std::end(vect2), rng);
+      for (const auto& elt: vect2) {
+        if (tree.size() % 2 == 0)
+          tree.insert(elt);
+        else {
+          auto elt2 = elt;
+          tree.insert(std::move(elt2));
+        }
+      }
+      TS_GUM_ASSERT_EQUALS(vect2string(vect), tree.toString())
+
+      std::shuffle(std::begin(vect2), std::end(vect2), rng);
+      for (const auto& elt: vect2) {
+        tree.erase(elt);
+        vect.erase(vect.begin() + pos2vect(vect, elt));
+        TS_GUM_ASSERT_EQUALS(vect2string(vect), tree.toString())
+      }
+    }
+
+    private:
+
+    std::size_t pos2vect(const std::vector< std::pair< int, int > >& vect,
+                         const std::pair< int, int >& elt) {
+      for (std::size_t i = 0, size=vect.size(); i < size; ++i) {
+        if (vect[i] == elt) return i;
+      }
+      throw(gum::NotFound(0));
+    }
+
+    std::string vect2string(const std::vector< std::pair< int, int > >& vect) {
+      bool              deja = false;
+      std::stringstream stream;
+      stream << "{";
+      for (const auto& elt: vect) {
+        if (deja) stream << " , ";
+        else deja = true;
+        stream << elt;
+      }
+      stream << "}";
+      return stream.str();
+    }
+
   };
 
 }   // namespace gum_tests

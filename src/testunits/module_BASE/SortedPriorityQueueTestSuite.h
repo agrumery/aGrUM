@@ -21,6 +21,7 @@
 
 #include <string>
 #include <random>
+#include <chrono>
 
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/testsuite_utils.h>
@@ -117,7 +118,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(queue1.bottom(), const gum::NotFound&)
     }
 
-    void testInt() {
+    void xtestInt() {
       gum::SortedPriorityQueue< std::pair< int, int >, double > queue;
       TS_ASSERT_EQUALS(queue.size(), (gum::Size)0)
       TS_ASSERT_EQUALS(queue.empty(), true)
@@ -130,6 +131,7 @@ namespace gum_tests {
       std::reverse(vect.begin(), vect.end());
       auto vect2 = vect;
       auto rng = std::default_random_engine {};
+      rng.seed((unsigned int)std::chrono::system_clock::now().time_since_epoch().count());
       std::shuffle(std::begin(vect2), std::end(vect2), rng);
       for (const auto& elt: vect2) {
         if (queue.size() % 2 == 0)

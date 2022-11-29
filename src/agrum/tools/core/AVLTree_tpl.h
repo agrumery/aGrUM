@@ -548,7 +548,7 @@ namespace gum {
 
       // now, remove node from the tree: to do so, just swap node and its successor
       AVLNode *removed_node, *kept_node;
-      if (false) {
+      if (owns_nodes_) {
         // here, we perform the swap just by swapping the contents of the nodes
         std::swap(node->value, successor->value);
 
@@ -558,15 +558,14 @@ namespace gum {
       } else {
         // here, we perform the swap by updating the parents/children of the nodes
         successor->parent = node->parent;
-        successor_parent  = successor->parent;
-        if (successor_parent != nullptr) {
-          if (successor_parent->right_child == node) successor_parent->right_child = successor;
-          else successor_parent->left_child = successor;
+        if (node->parent != nullptr) {
+          if (node->parent->right_child == node) node->parent->right_child = successor;
+          else node->parent->left_child = successor;
         }
         successor->right_child = node->right_child;
-        if (successor->right_child != nullptr) successor->right_child->parent = successor;
+        if (node->right_child != nullptr) node->right_child->parent = successor;
         successor->left_child = node->left_child;
-        if (successor->left_child != nullptr) successor->left_child->parent = successor;
+        if (node->left_child != nullptr) node->left_child->parent = successor;
 
         // keep track of the node that will be freed from memory and the one remaining
         removed_node = node;
@@ -575,14 +574,21 @@ namespace gum {
       --nb_elements_;
 
       // rebalance the tree (it also recomputes the root node)
-      rebalanceTree_(successor_parent);
+      // here, we should rebalance from the parent that successor had before we removed
+      // node, i.e., from successor_parent. However, if this parent was equal to node,
+      // we cannot do this since node has been removed from the tree. In such a case,
+      // this node has been substituted by kept_node. Hence we should rebalance the
+      // tree from kept_node
+      rebalanceTree_(successor_parent != node ? successor_parent : kept_node);
 
-      // if the successor was the highest node, we substitute it by its parent, which,
-      // necessarily had successor as its right child. Hence, now that successor has
-      // been removed, successor_parent is the rightmost leaf.
-      // There is no need to update the lowest node because we did not change the
+      // if the successor was the highest node, we must update the highest_node_ field
+      // so that it still points to a node containing the value that successor had
+      // before we removed node. This corresponds precisely to kept_node. Note that
+      // there is no need to update the lowest node because we did not change the
       // left subtree of node
-      if (highest_node_ == successor) highest_node_ = successor_parent;
+      if (highest_node_ == successor) {
+        highest_node_ = kept_node;
+      }
 
       // if there are safe iterators, update their content:
       //   a1/ if their node_ field points to node, then make them point on nullptr
@@ -621,7 +627,7 @@ namespace gum {
     AVLNode* child = node->left_child == nullptr ? node->right_child : node->left_child;
 
     // if there are safe iterators, update their content:
-    // * here, if the node_ field point to node, make it point to nullptr
+    // * here, if the node_ field points to node, make it point to nullptr
     // * if preceding_node_ points to node, make it point to the predecessor
     //   of node
     // * if next_node_ points to node, make it point to the new successor
@@ -641,8 +647,7 @@ namespace gum {
       }
     }
 
-    if (child == nullptr) {
-      // here, node has no children
+    if (child == nullptr) { // here, node has no children
       // simply remove node and indicate to its parent that node disappeared
       if (parent_node != nullptr) {
         if (parent_node->left_child == node) {
@@ -654,7 +659,6 @@ namespace gum {
         }
 
         --nb_elements_;
-        return node;
       } else {
         // here, the parent dos not exist. So, the tree becomes empty
         root_node_    = nullptr;
@@ -664,8 +668,7 @@ namespace gum {
         --nb_elements_;
         return node;
       }
-    } else {
-      // here, node has precisely one child
+    } else { // here, node has precisely one child
       // so substitute node by its child in the tree
       --nb_elements_;
 
@@ -673,7 +676,14 @@ namespace gum {
         if (parent_node->left_child == node) {
           parent_node->left_child = child;
           child->parent           = parent_node;
-          if (node == lowest_node_) lowest_node_ = child;
+          if (node == lowest_node_) {
+            // if node is the lowest node of the tree, it has no left child. But
+            // since, here, it has a child, this one must be a right child. This
+            // child cannot have a left child, else the tree would have been
+            // imbalanced (because node would have a height of 0 on the left and
+            // of at least 2 on the right). Therefore, child is now the lowest node
+            lowest_node_ = child;
+          }
         } else {
           parent_node->right_child = child;
           child->parent            = parent_node;

@@ -29,7 +29,7 @@ namespace gum {
   INLINE SortedPriorityQueue< Val, Priority, Cmp >::SortedPriorityQueue(
      Cmp  compare,
      Size capacity) :
-      _nodes_(capacity >> 1, true, true), _tree_cmp_(compare) {
+      _nodes_(capacity, true, true), _tree_cmp_(compare) {
     GUM_CONSTRUCTOR(SortedPriorityQueue);
   }
 
@@ -409,7 +409,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp >
   INLINE void SortedPriorityQueue< Val, Priority, Cmp >::resize(Size new_size) {
     if (new_size < _tree_.size() / 2) return;
-    _nodes_.resize(new_size / 2);
+    _nodes_.resize(new_size);
   }
 
 }   // namespace gum
