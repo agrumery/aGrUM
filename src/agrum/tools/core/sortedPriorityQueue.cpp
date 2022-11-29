@@ -31,6 +31,18 @@
 
 namespace gum {
 
+  // The global static variable representing end and rend for all the shared sorted
+  // priority queues. The constinit ensures it is created at compile time. Here, we
+  // use the constinit keyword rather than constexpr because, in debugging mode,
+  // the iterators' destructors cannot be declared as constepxr.
+  constinit const SortedPriorityQueueIterator< int, std::less< int > >
+     _static_SortedPriorityQueue_end_(StaticInitializer::CONSTINIT);
+  constinit const SortedPriorityQueueReverseIterator< int, std::less< int > >
+     _static_SortedPriorityQueue_rend_(StaticInitializer::CONSTINIT);
+  constinit const SortedPriorityQueueIteratorSafe< int, std::less< int > >
+     _static_SortedPriorityQueue_end_safe_(StaticInitializer::CONSTINIT);
+  constinit const SortedPriorityQueueReverseIteratorSafe< int, std::less< int > >
+     _static_SortedPriorityQueue_rend_safe_(StaticInitializer::CONSTINIT);
 
 }   // namespace gum
 

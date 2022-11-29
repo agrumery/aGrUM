@@ -46,6 +46,17 @@
 
 namespace gum {
 
+  template < typename Val, typename Priority, typename Cmp >
+  class SortedPriorityQueueIterator;
+  template < typename Val, typename Priority, typename Cmp >
+  class SortedPriorityQueueIteratorSafe;
+
+  template < typename Val, typename Priority, typename Cmp >
+  class SortedPriorityQueueReverseIterator;
+  template < typename Val, typename Priority, typename Cmp >
+  class SortedPriorityQueueReverseIteratorSafe;
+
+
   /**
    * @class SortedPriorityQueue
    * @headerfile sortedPriorityQueue.h <agrum/tools/core/sortedPriorityQueue.h>
@@ -104,17 +115,21 @@ namespace gum {
    * @tparam Priority The priorities type.
    * @tparam Cmp The priorities comparator.
    */
-  template < typename Val, typename Priority = int, typename Cmp  = std::less< Priority > >
+  template < typename Val, typename Priority = int, typename Cmp = std::less< Priority > >
   class SortedPriorityQueue {
     public:
     /// Types for STL compliance.
     /// @{
-    using value_type      = Val;
-    using reference       = Val&;
-    using const_reference = const Val&;
-    using pointer         = Val*;
-    using const_pointer   = const Val*;
-    using difference_type = std::ptrdiff_t;
+    using value_type            = Val;
+    using reference             = Val&;
+    using const_reference       = const Val&;
+    using pointer               = Val*;
+    using const_pointer         = const Val*;
+    using difference_type       = std::ptrdiff_t;
+    using iterator              = SortedPriorityQueueIterator< Val, Priority, Cmp >;
+    using iterator_safe         = SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >;
+    using reverse_iterator      = SortedPriorityQueueReverseIterator< Val, Priority, Cmp >;
+    using reverse_iterator_safe = SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >;
     /// @}
 
 
@@ -132,7 +147,7 @@ namespace gum {
      * @param capacity The size of the internal data structures containing the
      * elements (could be for instance vectors or hashtables)
      */
-    explicit SortedPriorityQueue(Cmp compare = Cmp(),
+    explicit SortedPriorityQueue(Cmp  compare  = Cmp(),
                                  Size capacity = GUM_PRIORITY_QUEUE_DEFAULT_CAPACITY);
 
     /**
@@ -360,6 +375,37 @@ namespace gum {
     /// @}
 
     // ============================================================================
+    /// @name Iterators
+    // ============================================================================
+    /// @{
+
+    /// returns a new iterator pointing to the minimal element of the tree
+    iterator begin() const;
+
+    /// returns an iterator pointing just after the maximal element
+    constexpr const iterator& end() const;
+
+    /// returns a new iterator pointing to the maximal element of the tree
+    reverse_iterator rbegin() const;
+
+    /// returns an iterator pointing just before the minimal element
+    constexpr const reverse_iterator& rend() const;
+
+    /// returns a new safe iterator pointing to the minimal element of the tree
+    iterator_safe beginSafe();
+
+    /// returns a safe iterator pointing just after the maximal element
+    constexpr const iterator_safe& endSafe() const;
+
+    /// returns a safe iterator pointing to the maximal element of the tree
+    reverse_iterator_safe rbeginSafe();
+
+    /// returns a safe iterator pointing just before the minimal element
+    constexpr const reverse_iterator_safe& rendSafe() const;
+
+    /// @}
+
+    // ============================================================================
     /// @name Fine tuning
     // ============================================================================
     /// @{
@@ -381,13 +427,12 @@ namespace gum {
 
     /// @}
 
-    private:
 
     /// the types of the nodes in the AVL tree
     using AVLNode = AVLTreeNode< Val >;
 
     /// the types of the elements stored into the hash table
-    using HashElt = typename std::pair< const AVLTreeNode< Val>, Priority >;
+    using HashElt = typename std::pair< const AVLTreeNode< Val >, Priority >;
 
     /// the comparison function used to sort the elements in the tree
     struct TreeCmp {
@@ -421,13 +466,13 @@ namespace gum {
 
       // compute the offset in bytes between the location of Val and Priority in
       // the elements stored into the hash table
-      static constexpr std::size_t offset_to_priority = offsetof(HashElt , second);
+      static constexpr std::size_t offset_to_priority = offsetof(HashElt, second);
       static constexpr std::size_t offset_to_value    = offsetof(AVLTreeNode< Val >, value);
-      static constexpr std::size_t offset_from_value_to_priority =
-         offset_to_priority - offset_to_value;
+      static constexpr std::size_t offset_from_value_to_priority
+         = offset_to_priority - offset_to_value;
     };
 
-
+    private:
     /**
      * @brief A binary search tree storing all the values of the queue.
      *
@@ -458,20 +503,535 @@ namespace gum {
     // to avoid this, the getNode_ function above executes different codes depending
     // on whether Val is different from a string or not. The structs below allow
     // to make this discrimination at compile time.
-    template<typename T>
-    struct is_basic_string : std::false_type {};
-    template<typename T1, typename T2, typename T3>
-    struct is_basic_string<std::basic_string<T1,T2,T3>> : std::true_type { };
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+    template < typename T >
+    struct is_basic_string: std::false_type {};
+    template < typename T1, typename T2, typename T3 >
+    struct is_basic_string< std::basic_string< T1, T2, T3 > >: std::true_type {};
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
+    /// make the iterators access to the AVLNodes
+    friend iterator;
+    friend reverse_iterator;
+    friend iterator_safe;
+    friend reverse_iterator_safe;
+  };
+
+
+  /**
+   * @class SortedPriorityQueueIterator
+   * @headerfile sortedPriorityQueue.h <agrum/tools/core/sortedPriorityQueue.h>
+   * @ingroup basicstruct_group
+   * @brief Sorted priority queue iterator
+   *
+   * @tparam Val The type of the elements stored into the queue.
+   * @tparam Priority The type of the priorities assigned to the elements.
+   * @tparam Cmp The function used for sorting the priorities.
+   */
+  template < typename Val, typename Priority = int, typename Cmp = std::less< Priority > >
+  class SortedPriorityQueueIterator:
+      protected SharedAVLTreeReverseIterator<
+         Val,
+         typename SortedPriorityQueue< Val, Priority, Cmp >::TreeCmp > {
+    public:
+    /// Types for STL compliance.
+    /// @{
+    using iterator_category = std::bidirectional_iterator_tag;
+    using value_type        = Val;
+    using reference         = value_type&;
+    using const_reference   = const value_type&;
+    using pointer           = value_type*;
+    using const_pointer     = const value_type*;
+    using TreeCmp           = typename SortedPriorityQueue< Val, Priority, Cmp >::TreeCmp;
+    /// @}
+
+
+    // ============================================================================
+    /// @name Constructors / Destructors
+    // ============================================================================
+    /// @{
+
+    /** @brief constructor for begin iterators
+     *
+     * @param queue the sorted priority queue which parses the iterator
+     * @param begin if true, the iterator points to the highest value in the queue,
+     * else it points to the lowest value
+     */
+    explicit SortedPriorityQueueIterator(const SortedPriorityQueue< Val, Priority, Cmp >& queue,
+                                         const bool begin = true) noexcept;
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+    // constructor for the static end iterator
+    // only sortedPriorityQueue.cpp should use this constructor
+    explicit consteval SortedPriorityQueueIterator(StaticInitializer init) noexcept :
+        SharedAVLTreeReverseIterator< Val, TreeCmp >(init) {}
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
+
+    /// copy constructor
+    SortedPriorityQueueIterator(
+       const SortedPriorityQueueIterator< Val, Priority, Cmp >& from) noexcept;
+
+    /// move constructor
+    SortedPriorityQueueIterator(SortedPriorityQueueIterator< Val, Priority, Cmp >&& from) noexcept;
+
+    /// destructor
+    ~SortedPriorityQueueIterator() noexcept;
+
+    /// @}
+
+
+    // ============================================================================
+    /// @name Operators
+    // ============================================================================
+    /// @{
+
+    /// copy operator
+    SortedPriorityQueueIterator< Val, Priority, Cmp >&
+       operator=(const SortedPriorityQueueIterator< Val, Priority, Cmp >& from) noexcept;
+
+    /// move operator
+    SortedPriorityQueueIterator< Val, Priority, Cmp >&
+       operator=(SortedPriorityQueueIterator< Val, Priority, Cmp >&& from) noexcept;
+
+    /// indicates whether two iterator point to the same element
+    bool operator==(const SortedPriorityQueueIterator< Val, Priority, Cmp >& from) const;
+
+    /// indicates whether two iterator point to different element
+    bool operator!=(const SortedPriorityQueueIterator< Val, Priority, Cmp >& from) const;
+
+    /// move to the next element in the queue
+    /** @warning Applying this operator to an iterator equal to the end iterator
+     * has no effect. In particular, it does not raise any exception. */
+    SortedPriorityQueueIterator< Val, Priority, Cmp >& operator++() noexcept;
+
+    /// move to the next k element
+    /** @warning Applying this operator to an iterator equal to the end iterator
+     * has no effect. In particular, it does not raise any exception. */
+    SortedPriorityQueueIterator< Val, Priority, Cmp >& operator+=(const Size k) noexcept;
+
+    /// move to the preceding element in the queue
+    /** @warning Applying this operator to an iterator equal to the begin iterator
+     * has no effect. In particular, it does not raise any exception. */
+    SortedPriorityQueueIterator< Val, Priority, Cmp >& operator--() noexcept;
+
+    /// move to the preceding k element
+    /** @warning Applying this operator to an iterator equal to the begin iterator
+     * has no effect. In particular, it does not raise any exception. */
+    SortedPriorityQueueIterator< Val, Priority, Cmp >& operator-=(const Size k) noexcept;
+
+    /** @brief returns the value pointed to by the iterator
+     *
+     * @return the value pointed to by the iterator, if the iterator actually points
+     * to an element
+     * @throws NotFound is raised if the iterator points to nothing
+     */
+    const_reference operator*() const;
+
+    /// returns a pointer on the value pointed to by the iterator
+    const_pointer operator->() const;
+
+    /// @}
+
+    /// allow sorted priority queues to access the content of the iterators
+    friend SortedPriorityQueue< Val, Priority, Cmp >;
+  };
+
+
+  /**
+   * @class SortedPriorityQueueIteratorSafe
+   * @headerfile sortedPriorityQueue.h <agrum/tools/core/sortedPriorityQueue.h>
+   * @ingroup basicstruct_group
+   * @brief Sorted priority queues safe (w.r.t. erasures) iterator
+   *
+   * @tparam Val The type of the elements stored into the queue.
+   * @tparam Priority The type of the priorities assigned to the elements.
+   * @tparam Cmp The function used for sorting the priorities.
+   */
+  template < typename Val, typename Priority = int, typename Cmp = std::less< Val > >
+  class SortedPriorityQueueIteratorSafe:
+      protected SharedAVLTreeReverseIteratorSafe<
+         Val,
+         typename SortedPriorityQueue< Val, Priority, Cmp >::TreeCmp > {
+    public:
+    /// Types for STL compliance.
+    /// @{
+    using iterator_category = std::bidirectional_iterator_tag;
+    using value_type        = Val;
+    using reference         = value_type&;
+    using const_reference   = const value_type&;
+    using pointer           = value_type*;
+    using const_pointer     = const value_type*;
+    using TreeCmp           = typename SortedPriorityQueue< Val, Priority, Cmp >::TreeCmp;
+    /// @}
+
+
+    // ============================================================================
+    /// @name Constructors / Destructors
+    // ============================================================================
+    /// @{
+
+    /** @brief constructor for begin safe iterators
+     *
+     * @param queue the sorted priority queue which parses the iterator
+     * @param begin if true, the iterator points to the highest value in the queue,
+     * else it points to the lowest value
+     */
+    explicit SortedPriorityQueueIteratorSafe(SortedPriorityQueue< Val, Priority, Cmp >& queue,
+                                             const bool rbegin = true);
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+    // constructor for the static endSafe iterator
+    // only sortedPriorityQueue.cpp should use this constructor
+    explicit consteval SortedPriorityQueueIteratorSafe(StaticInitializer init) noexcept :
+        SharedAVLTreeReverseIteratorSafe< Val, TreeCmp >(init) {}
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
+
+    /// copy constructor
+    SortedPriorityQueueIteratorSafe(
+       const SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >& from);
+
+    /// move constructor
+    SortedPriorityQueueIteratorSafe(SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >&& from);
+
+    /// destructor
+    ~SortedPriorityQueueIteratorSafe() noexcept;
+
+    /// @}
+
+    // ============================================================================
+    /// @name Operators
+    // ============================================================================
+    /// @{
+
+    /// copy operator
+    SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >&
+       operator=(const SortedPriorityQueueIteratorSafe< Val, Cmp >& from);
+
+    /// move operator
+    SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >&
+       operator=(SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >&& from);
+
+    /// indicates whether two iterator point to the same element
+    bool operator==(const SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >& from) const;
+
+    /// indicates whether two iterator point to different element
+    bool operator!=(const SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >& from) const;
+
+    /// move to the next element in the queue
+    /** @warning Applying this operator to an iterator equal to the end iterator
+     * has no effect. In particular, it does not raise any exception. */
+    SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >& operator++() noexcept;
+
+    /// move to the next k elements
+    /** @warning Applying this operator to an iterator equal to the end iterator
+     * has no effect. In particular, it does not raise any exception. */
+    SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >& operator+=(const Size k) noexcept;
+
+    /// move to the preceding element in the queue
+    /** @warning Applying this operator to an iterator equal to the begin iterator
+     * has no effect. In particular, it does not raise any exception. */
+    SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >& operator--() noexcept;
+
+    /// move to the preceding k element
+    /** @warning Applying this operator to an iterator equal to the begin iterator
+     * has no effect. In particular, it does not raise any exception. */
+    SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >& operator-=(const Size k) noexcept;
+
+    /** @brief returns the value pointed to by the iterator
+     *
+     * @return the value pointed to by the iterator, if the iterator actually points
+     * to an element
+     * @throws NotFound is raised if the iterator points to nothing
+     */
+    const_reference operator*() const;
+
+    /// returns a pointer on the value pointed to by the iterator
+    const_pointer operator->() const;
+
+    /// @}
+
+    protected:
+    /// allow sorted priority queues to access the content of the iterators
+    friend SortedPriorityQueue< Val, Cmp >;
+  };
+
+
+  /**
+   * @class SortedPriorityQueueReverseIterator
+   * @headerfile sortedPriorityQueue.h <agrum/tools/core/sortedPriorityQueue.h>
+   * @ingroup basicstruct_group
+   * @brief Sorted priority queue reverse iterator
+   *
+   * @tparam Val The type of the elements stored into the queue.
+   * @tparam Priority The type of the priorities assigned to the elements.
+   * @tparam Cmp The function used for sorting the priorities.
+   */
+  template < typename Val, typename Priority = int, typename Cmp = std::less< Val > >
+  class SortedPriorityQueueReverseIterator:
+      protected SortedPriorityQueueIterator< Val, Priority, Cmp > {
+    public:
+    /// Types for STL compliance.
+    /// @{
+    using iterator_category = std::bidirectional_iterator_tag;
+    using AVLNode           = AVLTreeNode< Val >;
+    using value_type        = AVLNode;
+    using reference         = value_type&;
+    using const_reference   = const value_type&;
+    using pointer           = value_type*;
+    using const_pointer     = const value_type*;
+    using TreeCmp           = typename SortedPriorityQueue< Val, Priority, Cmp >::TreeCmp;
+    /// @}
+
+
+    // ============================================================================
+    /// @name Constructors / Destructors
+    // ============================================================================
+    /// @{
+
+    /** @brief constructor for rbegin iterators
+     *
+     * @param queue the sorted priority queue which parses the iterator
+     * @param begin if true, the iterator points to the lowest value in the queue,
+     * else it points to the highest value
+     */
+    explicit SortedPriorityQueueReverseIterator(
+       const SortedPriorityQueue< Val, Priority, Cmp >& queue,
+       const bool                                       rbegin = true) noexcept;
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+    // constructor for the static rend iterator
+    // only sortedPriorityQueue.cpp should use this constructor
+    explicit consteval SortedPriorityQueueReverseIterator(StaticInitializer init) noexcept :
+        SortedPriorityQueueIterator< Val, Priority, Cmp >(init) {}
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
+
+    /// copy constructor
+    SortedPriorityQueueReverseIterator(
+       const SortedPriorityQueueReverseIterator< Val, Priority, Cmp >& from) noexcept;
+
+    /// move constructor
+    SortedPriorityQueueReverseIterator(
+       SortedPriorityQueueReverseIterator< Val, Priority, Cmp >&& from) noexcept;
+
+    /// destructor
+    ~SortedPriorityQueueReverseIterator() noexcept;
+
+    /// @}
+
+    // ============================================================================
+    /// @name Operators
+    // ============================================================================
+    /// @{
+
+    /// copy operator
+    SortedPriorityQueueReverseIterator< Val, Priority, Cmp >&
+       operator=(const SortedPriorityQueueReverseIterator< Val, Priority, Cmp >& from) noexcept;
+
+    /// move operator
+    SortedPriorityQueueReverseIterator< Val, Priority, Cmp >&
+       operator=(SortedPriorityQueueReverseIterator< Val, Priority, Cmp >&& from) noexcept;
+
+    /// indicates whether two iterator point to the same element
+    bool operator==(const SortedPriorityQueueReverseIterator< Val, Priority, Cmp >& from) const;
+
+    /// indicates whether two iterator point to different element
+    bool operator!=(const SortedPriorityQueueReverseIterator< Val, Priority, Cmp >& from) const;
+
+    /// move to the next element in the queue
+    /** @warning Applying this operator to an iterator equal to the rend iterator
+     * has no effect. In particular, it does not raise any exception. */
+    SortedPriorityQueueReverseIterator< Val, Priority, Cmp >& operator++() noexcept;
+
+    /// move to the next k element
+    /** @warning Applying this operator to an iterator equal to the rend iterator
+     * has no effect. In particular, it does not raise any exception. */
+    SortedPriorityQueueReverseIterator< Val, Priority, Cmp >& operator+=(const Size k) noexcept;
+
+    /// move to the preceding element in the queue
+    /** @warning Applying this operator to an iterator equal to the rbegin iterator
+     * has no effect. In particular, it does not raise any exception. */
+    SortedPriorityQueueReverseIterator< Val, Priority, Cmp >& operator--() noexcept;
+
+    /// move to the preceding k element
+    /** @warning Applying this operator to an iterator equal to the rbegin iterator
+     * has no effect. In particular, it does not raise any exception. */
+    SortedPriorityQueueReverseIterator< Val, Priority, Cmp >& operator-=(const Size k) noexcept;
+
+    /** @brief returns the value pointed to by the iterator
+     *
+     * @return the value pointed to by the iterator, if the iterator actually points
+     * to an element
+     * @throws NotFound is raised if the iterator points to nothing
+     */
+    using SortedPriorityQueueIterator< Val, Priority, Cmp >::operator*;
+
+    /// returns a pointer on the node pointed to by the iterator
+    using SortedPriorityQueueIterator< Val, Priority, Cmp >::operator->;
+
+    /// @}
+
+
+    protected:
+    /// allow sorted priority queues to access the content of the iterators
+    friend SortedPriorityQueue< Val, Priority, Cmp >;
+  };
+
+
+  /**
+   * @class SortedPriorityQueueReverseIteratorSafe
+   * @headerfile sortedPriorityQueue.h <agrum/tools/core/sortedPriorityQueue.h>
+   * @ingroup basicstruct_group
+   * @brief Sorted priority queue safe (w.r.t. erasures) reverse iterator
+   *
+   * @tparam Val The type of the elements stored into the queue.
+   * @tparam Priority The type of the priorities assigned to the elements.
+   * @tparam Cmp The function used for sorting the priorities.
+   */
+  template < typename Val, typename Priority = int, typename Cmp = std::less< Val > >
+  class SortedPriorityQueueReverseIteratorSafe:
+      protected SortedPriorityQueueIteratorSafe< Val, Priority, Cmp > {
+    public:
+    /// Types for STL compliance.
+    /// @{
+    using iterator_category = std::bidirectional_iterator_tag;
+    using value_type        = Val;
+    using reference         = value_type&;
+    using const_reference   = const value_type&;
+    using pointer           = value_type*;
+    using const_pointer     = const value_type*;
+    using TreeCmp           = typename SortedPriorityQueue< Val, Priority, Cmp >::TreeCmp;
+    /// @}
+
+
+    // ============================================================================
+    /// @name Constructors / Destructors
+    // ============================================================================
+    /// @{
+
+    /** @brief constructor for rbegin safe iterators
+     *
+     * @param queue the sorted priority queue which parses the iterator
+     * @param begin if true, the iterator points to the lowest value in the queue,
+     * else it points to the highest value
+     */
+    explicit SortedPriorityQueueReverseIteratorSafe(
+       SortedPriorityQueue< Val, Priority, Cmp >& queue,
+       const bool                                 rbegin = true);
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+    // constructor for the static rendSafe iterator
+    // only sortedPriorityQueue.cpp should use this constructor
+    explicit consteval SortedPriorityQueueReverseIteratorSafe(StaticInitializer init) noexcept :
+        SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >(init) {}
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
+
+    /// copy constructor
+    SortedPriorityQueueReverseIteratorSafe(
+       const SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >& from);
+
+    /// move constructor
+    SortedPriorityQueueReverseIteratorSafe(
+       SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >&& from);
+
+    /// destructor
+    ~SortedPriorityQueueReverseIteratorSafe() noexcept;
+
+    /// @}
+
+    // ============================================================================
+    /// @name Operators
+    // ============================================================================
+    /// @{
+
+    /// copy operator
+    SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >&
+       operator=(const SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >& from);
+
+    /// move operator
+    SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >&
+       operator=(SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >&& from);
+
+    /// indicates whether two iterator point to the same element
+    bool operator==(const SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >& from) const;
+
+    /// indicates whether two iterator point to different element
+    bool operator!=(const SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >& from) const;
+
+    /// move to the next element in the queue
+    /** @warning Applying this operator to an iterator equal to the rend iterator
+     * has no effect. In particular, it does not raise any exception. */
+    SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >& operator++() noexcept;
+
+    /// move to the next k element
+    /** @warning Applying this operator to an iterator equal to the rend iterator
+     * has no effect. In particular, it does not raise any exception. */
+    SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >& operator+=(const Size k) noexcept;
+
+    /// move to the preceding element in the queue
+    /** @warning Applying this operator to an iterator equal to the rbegin iterator
+     * has no effect. In particular, it does not raise any exception. */
+    SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >& operator--() noexcept;
+
+    /// move to the preceding k element
+    /** @warning Applying this operator to an iterator equal to the rbegin iterator
+     * has no effect. In particular, it does not raise any exception. */
+    SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >& operator-=(const Size k) noexcept;
+
+    /** @brief returns the value pointed to by the iterator
+     *
+     * @return the value pointed to by the iterator, if the iterator actually points
+     * to an element
+     * @throws NotFound is raised if the iterator points to nothing
+     */
+    using SortedPriorityQueueIteratorSafe< Val, Cmp >::operator*;
+
+    /// returns a pointer on the node pointed to by the iterator
+    using SortedPriorityQueueIteratorSafe< Val, Cmp >::operator->;
+
+    /// @}
+
+    protected:
+    /// allow AVL trees to access the content of the iterators
+    friend AVLTree< Val, Cmp >;
+    friend SortedPriorityQueue< Val, Cmp >;
   };
 
 
   /// display the content of a sorted priority queue
   template < typename Val, typename Priority, typename Cmp >
-  std::ostream& operator<<(std::ostream& stream, const SortedPriorityQueue< Val, Priority, Cmp >& queue) {
+  std::ostream& operator<<(std::ostream&                                    stream,
+                           const SortedPriorityQueue< Val, Priority, Cmp >& queue) {
     return stream << queue.toString();
   }
+
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+  // _static_SortedPriorityQueue_end_ is a 'constant' iterator initialized at
+  // compile time that represents the end iterators for all the sorted priority
+  // queues (whatever their type). This global variable avoids creating the same
+  // iterators within every sorted priority queue instance (this would be quite
+  // inefficient as end is precisely identical for all these queues). The same hold
+  // for reverse and safe end iterators.
+  // The type of _SortedPriorityQueue_end_ is a pointer to void because C++ allows
+  // pointers to void to be cast into pointers to other types (and conversely).
+  // This avoids the painful strict-aliasing rule warning
+  extern const SortedPriorityQueueIterator< int, std::less< int > >
+     _static_SortedPriorityQueue_end_;
+  extern const SortedPriorityQueueReverseIterator< int, std::less< int > >
+     _static_SortedPriorityQueue_rend_;
+  extern const SortedPriorityQueueIteratorSafe< int, std::less< int > >
+     _static_SortedPriorityQueue_end_safe_;
+  extern const SortedPriorityQueueReverseIteratorSafe< int, std::less< int > >
+     _static_SortedPriorityQueue_rend_safe_;
+
+  inline constexpr void* const _SortedPriorityQueue_end_
+     = (void* const)&_static_SortedPriorityQueue_end_;
+  inline constexpr void* const _SortedPriorityQueue_rend_
+     = (void* const)&_static_SortedPriorityQueue_rend_;
+  inline constexpr void* const _SortedPriorityQueue_end_safe_
+     = (void* const)&_static_SortedPriorityQueue_end_safe_;
+  inline constexpr void* const _SortedPriorityQueue_rend_safe_
+     = (void* const)&_static_SortedPriorityQueue_rend_safe_;
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 } /* namespace gum */
 

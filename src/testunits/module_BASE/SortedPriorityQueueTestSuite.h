@@ -61,6 +61,20 @@ namespace gum_tests {
         TS_GUM_ASSERT_EQUALS(str.str(), str2)
       }
 
+      {
+        std::vector< std::string > vect = {"EEE", "DDD", "BBB", "AAA", "CCC"};
+        int i = 0;
+        for (const auto& val: queue1) {
+          TS_GUM_ASSERT_EQUALS(val, vect[i++])
+        }
+        i = 0;
+        for (auto iter = queue1.beginSafe(); iter != queue1.endSafe(); ++iter)
+          TS_GUM_ASSERT_EQUALS(*iter, vect[i++])
+        i = 4;
+        //for (auto iter = queue1.rbegin(); iter != queue1.rend(); ++iter)
+        //  TS_GUM_ASSERT_EQUALS(*iter, vect[i--])
+      }
+
       TS_ASSERT_EQUALS(queue1.size(), (gum::Size)5)
       TS_ASSERT_EQUALS(queue1.empty(), false)
       TS_ASSERT_EQUALS(queue1.contains("AAA"), true)
@@ -118,7 +132,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(queue1.bottom(), const gum::NotFound&)
     }
 
-    void xtestInt() {
+    void testInt() {
       gum::SortedPriorityQueue< std::pair< int, int >, double > queue;
       TS_ASSERT_EQUALS(queue.size(), (gum::Size)0)
       TS_ASSERT_EQUALS(queue.empty(), true)
