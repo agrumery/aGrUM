@@ -292,11 +292,14 @@ namespace gum {
 
   // returns the node in the hash table corresponding to a given value
   template < typename Val, typename Priority, typename Cmp >
-   INLINE AVLTreeNode< Val >&
+  INLINE AVLTreeNode< Val >&
       SortedPriorityQueue< Val, Priority, Cmp >::getNode_(const Val& val) const {
-    if constexpr (std::is_scalar_v< Val >) {
-      return const_cast< AVLTreeNode< Val >& >(_nodes_.key(AVLTreeNode< Val >(val)));
-    } else {
+    // Some compilers are optimizing _tree_cmp_.getNode(val) for Val=string. This
+    // induces a lot of warnings. To prevent this, we have an optimized code for
+    // non-strings and a less optimal but warning-free
+    if constexpr (!is_basic_string< Val >::value)
+      return const_cast< AVLTreeNode< Val >& >(_nodes_.key(*(_tree_cmp_.getNode(val))));
+    else {
       AVLTreeNode< Val > xval(std::move(const_cast< Val& >(val)));
       try {
         auto& node              = const_cast< AVLTreeNode< Val >& >(_nodes_.key(xval));
@@ -309,6 +312,7 @@ namespace gum {
       }
     }
   }
+
 
   // removes a given element from the priority queue (but does not return it)
   template < typename Val, typename Priority, typename Cmp >

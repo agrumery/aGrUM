@@ -404,6 +404,13 @@ namespace gum {
         return *((Priority*)((char*)&v + offset_from_value_to_priority));
       }
 
+      // from a Val instance stored into memory, get the address of the start of
+      // the AVLNode structure that would have contained it. This is useful for
+      // comparing elements in the hashTable without having to create dummy AVLNodes
+      inline AVLTreeNode< Val >* getNode(const Val& v) const {
+        return (AVLTreeNode< Val >*)((char*)&v - offset_to_value);
+      }
+
       // the comparison function betwwen two contents of two nodes of the AVL tree:
       // the nodes should be sorted according to their priority
       constexpr bool operator()(const Val& x, const Val& y) const {
@@ -444,6 +451,19 @@ namespace gum {
      * @throws NotFound is raised if the node cannot be found
      */
     AVLNode& getNode_(const Val& val) const;
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+    // the TreeCmp getnode function induces some warning on some compilers when Val
+    // is a string because some optimizations are made by the compiler in this case.
+    // to avoid this, the getNode_ function above executes different codes depending
+    // on whether Val is different from a string or not. The structs below allow
+    // to make this discrimination at compile time.
+    template<typename T>
+    struct is_basic_string : std::false_type {};
+    template<typename T1, typename T2, typename T3>
+    struct is_basic_string<std::basic_string<T1,T2,T3>> : std::true_type { };
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
+
   };
 
 
