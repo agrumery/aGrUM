@@ -1,15 +1,12 @@
 if (PYTHON_TARGET)
-  set(PYTHON_EXECUTABLE ${PYTHON_TARGET})
-  unset(PYTHON_INCLUDE_DIRS CACHE)
-  unset(PYTHON_LIBRARIES CACHE)
-  unset(PYTHON_VERSION_STRING CACHE)
-  unset(PYTHON_VERSION_MAJOR CACHE)
+  set(Python_EXECUTABLE ${PYTHON_TARGET})
+  unset(Python_INCLUDE_DIRS CACHE)
+  unset(Python_LIBRARIES CACHE)
+  unset(Python_VERSION CACHE)
+  unset(Python_VERSION_MAJOR CACHE)
 endif (PYTHON_TARGET)
 
-find_package (PythonInterp ${PYAGRUM_REQUIRED_PYTHON_VERSION} REQUIRED)
-find_package (PythonLibs   ${PYTHON_VERSION_STRING} EXACT  REQUIRED)
-# for linux wheels only
-#set(PYTHON_INCLUDE_DIR "@PYTHON_INCLUDE_PATH@")
+find_package (Python ${PYAGRUM_REQUIRED_PYTHON_VERSION} COMPONENTS Interpreter Development REQUIRED)
 
 #list (APPEND CMAKE_SWIG_FLAGS "-py3")
 list (APPEND CMAKE_SWIG_FLAGS "-fastdispatch")
@@ -19,14 +16,14 @@ add_definitions ("-DSWIG_TYPE_TABLE=pyproba")
 # PYTHON_INSTALL
 if (NOT DEFINED PYTHON_INSTALL)
   execute_process(
-    COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print(sysconfig.get_python_lib(1,0,prefix='${CMAKE_INSTALL_PREFIX}'))"
+    COMMAND ${Python_EXECUTABLE} -c "from distutils import sysconfig; print(sysconfig.get_python_lib(1,0,prefix='${CMAKE_INSTALL_PREFIX}'))"
     OUTPUT_VARIABLE PYTHON_INSTALL
     OUTPUT_STRIP_TRAILING_WHITESPACE
   )
 endif ()
 
 if (NOT DEFINED PYTHON_EXTENSION_MODULE_SUFFIX AND NOT CMAKE_CROSSCOMPILING)
-  execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "import importlib.machinery; print(importlib.machinery.EXTENSION_SUFFIXES[0])"
+  execute_process (COMMAND ${Python_EXECUTABLE} -c "import importlib.machinery; print(importlib.machinery.EXTENSION_SUFFIXES[0])"
                    OUTPUT_VARIABLE PYTHON_EXTENSION_MODULE_SUFFIX OUTPUT_STRIP_TRAILING_WHITESPACE)
 endif ()
 
@@ -34,12 +31,12 @@ set(GENERATED_PYTHON "${CMAKE_CURRENT_SOURCE_DIR}/generated-files")
 
 
 message(STATUS "================================")
-message(STATUS "python version : ${PYTHON_VERSION_STRING}")
+message(STATUS "python version : ${Python_VERSION}")
 message(STATUS "python installation : ${PYTHON_INSTALL}")
-message(STATUS "python include : ${PYTHON_INCLUDE_DIR}")
-message(STATUS "python library : ${PYTHON_LIBRARY}")
+message(STATUS "python include : ${Python_INCLUDE_DIRS}")
+message(STATUS "python library : ${Python_LIBRARIES}")
 message(STATUS "================================")
-link_directories( ${PYTHON_LIBRARY})
+link_directories( ${Python_LIBRARY})
 
 #== Initializing aGrUM
 set(AGRUM_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../src")
@@ -84,7 +81,7 @@ endforeach(EXTFILE ${PYAGRUM_EXTENSIONS})
 #==
 #== Adding agrum sources
 #==
-include_directories (${PYTHON_INCLUDE_DIR})
+include_directories (${Python_INCLUDE_DIRS})
 include_directories (${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/swigsrc)
 include_directories(${AGRUM_SOURCE_DIR})
@@ -99,11 +96,7 @@ set(CMAKE_SWIG_OUTDIR ${GENERATED_PYTHON})
 if (SWIG_FOUND)
   set(_PYAGRUMLIB "pyAgrum")
   set(SWIG_MODULE_${_PYAGRUMLIB}_EXTRA_DEPS ${BUILDSWIGFILES})
-  if (CMAKE_VERSION VERSION_LESS 3.8)
-    swig_add_module (pyAgrum python ${CMAKE_CURRENT_SOURCE_DIR}/pyAgrum.i)
-  else ()
-    swig_add_library (pyAgrum LANGUAGE python SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/pyAgrum.i)
-  endif ()
+  swig_add_library (pyAgrum LANGUAGE python SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/pyAgrum.i)
   if (CMAKE_VERSION VERSION_LESS 3.13)
     set(_PYAGRUMLIB ${SWIG_MODULE_pyAgrum_REAL_NAME})
   else ()
@@ -124,7 +117,12 @@ endif (SWIG_FOUND)
 
 
 target_link_libraries (${_PYAGRUMLIB} ${LIBAGRUM})
-target_link_libraries_with_dynamic_lookup (${_PYAGRUMLIB} ${PYTHON_LIBRARIES})
+if (TARGET Python::Module)
+  target_link_libraries (${_PYAGRUMLIB} Python::Module)
+else ()
+  include (TargetLinkLibrariesWithDynamicLookup)
+  target_link_libraries_with_dynamic_lookup (${_PYAGRUMLIB} ${Python_LIBRARIES})
+endif ()
 
 set_target_properties(${_PYAGRUMLIB} PROPERTIES INSTALL_RPATH_USE_LINK_PATH TRUE INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX})
 
@@ -136,7 +134,7 @@ set_target_properties(${_PYAGRUMLIB} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE
 target_sources (${_PYAGRUMLIB} PUBLIC ${AGRUM_SOURCES})
 
 # for additionnal rule such test pyAgrum
-add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${PYTHON_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/passForPyType.py" "${CMAKE_SWIG_OUTDIR}/pyAgrum.py")
+add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${Python_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/passForPyType.py" "${CMAKE_SWIG_OUTDIR}/pyAgrum.py")
 add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SWIG_OUTDIR}/pyAgrum.py" "${CMAKE_CURRENT_BINARY_DIR}/.")
 add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs" "${CMAKE_CURRENT_BINARY_DIR}")
 add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/causal" "${CMAKE_CURRENT_BINARY_DIR}/causal")
@@ -180,7 +178,7 @@ if (DEFINED AGRUM_VERSION_TWEAK)
   set(PAGRUM_VERSION "${PYAGRUM_VERSION}.{$AGRUM_VERSION_TWEAK}")
 endif ()
 
-set(PYAGRUM_EGGFILE "pyAgrum-${PYAGRUM_VERSION}-py${PYTHON_VERSION_MAJOR}.egg-info")
+set(PYAGRUM_EGGFILE "pyAgrum-${PYAGRUM_VERSION}-py${Python_VERSION_MAJOR}.egg-info")
 set(PYAGRUM_DISTDIR "pyAgrum-${PYAGRUM_VERSION}.dist-info")
 
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/__init__.in.py" "${CMAKE_CURRENT_BINARY_DIR}/__init__.py")
@@ -202,7 +200,7 @@ install(TARGETS ${_PYAGRUMLIB} DESTINATION ${PYTHON_INSTALL}/pyAgrum)
 install(FILES ${GUMPY_FILES} DESTINATION ${PYTHON_INSTALL}/pyAgrum)
 install(FILES ${GUMPY_CONFIG_FILES} DESTINATION ${PYTHON_INSTALL}/pyAgrum)
 install(FILES ${GUMLIB_FILES} DESTINATION ${PYTHON_INSTALL}/pyAgrum/lib)
-if (NOT PYTHON_VERSION_STRING VERSION_LESS 3.7)
+if (NOT Python_VERSION VERSION_LESS 3.7)
   install(FILES ${GUMCAUSAL_FILES} DESTINATION ${PYTHON_INSTALL}/pyAgrum/causal)
 endif ()
 install(FILES ${GUMSKBN_FILES} DESTINATION ${PYTHON_INSTALL}/pyAgrum/skbn)

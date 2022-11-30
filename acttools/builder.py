@@ -76,10 +76,10 @@ def getCmake(current, target):
 
 
   if current["python3lib"] != "":
-    line += " -DPYTHON_LIBRARY=" + current["python3lib"]
+    line += " -DPython_LIBRARY=" + current["python3lib"]
 
   if current["python3include"] != "":
-    line += " -DPYTHON_INCLUDE_DIR=" + current["python3include"]
+    line += " -DPython_INCLUDE_DIR=" + current["python3include"]
 
   if platform.system() == "Windows":
     if current["compiler"] in ['clang','gcc']:

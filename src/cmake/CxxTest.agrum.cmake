@@ -1,5 +1,5 @@
 #enable_testing()
-find_package(PythonInterp ${PYAGRUM_REQUIRED_PYTHON_VERSION})
+find_package(Python ${PYAGRUM_REQUIRED_PYTHON_VERSION} COMPONENTS Interpreter)
 
 set(CXXTESTPATH ${AGRUM_SOURCE_DIR}/testunits/cxxtest-3.10-1)
 set(GUMTESTPATH ${AGRUM_SOURCE_DIR}/testunits/gumtest)
@@ -11,7 +11,7 @@ include_directories(${AGRUM_SOURCE_DIR}/testunits/cxxtest)
 include_directories(${AGRUM_SOURCE_DIR}/testunits)
 
 MACRO(ADD_CXXTEST NAME)
-  IF(PYTHONINTERP_FOUND)
+  IF(Python_FOUND)
     set(PATH_FILES "")
     foreach(part ${ARGN})
       set(PATH_FILES "testunits/${part}" ${PATH_FILES})
@@ -19,13 +19,13 @@ MACRO(ADD_CXXTEST NAME)
     ADD_CUSTOM_COMMAND(
       OUTPUT ${AGRUM_BINARY_DIR}/${NAME}.cpp
       COMMAND
-        ${PYTHON_EXECUTABLE} ${CXXTESTGEN}
+        ${Python_EXECUTABLE} ${CXXTESTGEN}
         --runner=AgrumErrorPrinter
         -o ${AGRUM_BINARY_DIR}/${NAME}.cpp ${ARGN}
       DEPENDS ${PATH_FILES}
       WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/testunits
     )
-  ENDIF(PYTHONINTERP_FOUND)
+  ENDIF()
 
   ADD_EXECUTABLE(${NAME} EXCLUDE_FROM_ALL ${AGRUM_BINARY_DIR}/${NAME}.cpp ${PATH_FILES})
 
@@ -41,7 +41,7 @@ MACRO(add_agrum_test NAME)
     ADD_CUSTOM_COMMAND(
       OUTPUT ${AGRUM_BINARY_DIR}/${NAME}.cpp
       COMMAND
-        ${PYTHON_EXECUTABLE} ${CXXTESTGEN}
+        ${Python_EXECUTABLE} ${CXXTESTGEN}
         --runner=AgrumErrorPrinter
         -o ${AGRUM_BINARY_DIR}/${NAME}.cpp ${ARGN}
       DEPENDS ${PATH_FILES}
@@ -51,7 +51,7 @@ MACRO(add_agrum_test NAME)
   ADD_EXECUTABLE(${NAME} EXCLUDE_FROM_ALL ${AGRUM_BINARY_DIR}/${NAME}.cpp ${PATH_FILES})
 ENDMACRO(add_agrum_test NAME)
 
-IF(PYTHONINTERP_FOUND)
+IF(Python_FOUND)
   IF ( EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/testunits/testList.cmake )
     INCLUDE ( testunits/testList.cmake )
   ELSE ()
@@ -70,6 +70,6 @@ IF(PYTHONINTERP_FOUND)
   ELSE ()
     target_link_libraries(gumTest ${LIBAGRUM})
   ENDIF (GUM_COVERAGE)
-ELSE(PYTHONINTERP_FOUND)
+ELSE()
     message(WARNING "** aGrUM Warning: Python not found : you cannot generate tests !")
-ENDIF(PYTHONINTERP_FOUND)
+ENDIF()

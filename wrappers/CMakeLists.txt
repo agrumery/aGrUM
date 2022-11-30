@@ -1,5 +1,3 @@
-include (TargetLinkLibrariesWithDynamicLookup)
-
 ## if you do not want to use swig
 option (USE_SWIG "use swig to generate bindings" ON)
 
