@@ -340,8 +340,8 @@ namespace gum_tests {
     }
 
     void test_erase() {
-      gum::AVLTree<int> tree {8, 10, 2, 23, 24};
-      const std::vector< int > vect {2, 8, 10, 23, 24};
+      gum::AVLTree< int >      tree{8, 10, 2, 23, 24};
+      const std::vector< int > vect{2, 8, 10, 23, 24};
       {
         const std::string sss = tree.toString();
         std::stringstream str;
@@ -369,16 +369,17 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(high, 23)
       TS_ASSERT_EQUALS(tree.highestValue(), 23)
 
-      tree.erase(tree.highestValue()); // remains: {2, 8, 10}
+      tree.erase(tree.highestValue());   // remains: {2, 8, 10}
       TS_ASSERT_EQUALS(tree.highestValue(), 10)
-      tree.erase(tree.highestValue()); // remains: {2, 8}
+      tree.erase(tree.highestValue());   // remains: {2, 8}
       TS_ASSERT_EQUALS(tree.highestValue(), 8)
-      tree.erase(tree.highestValue()); // remains: {2}
+      tree.erase(tree.highestValue());   // remains: {2}
       TS_ASSERT_EQUALS(tree.highestValue(), 2)
-      tree.erase(tree.highestValue()); // remains: {}
+      tree.erase(tree.highestValue());   // remains: {}
       TS_ASSERT_THROWS(tree.highestValue(), gum::NotFound&)
 
-      for (const auto val: vect) tree.insert(val);
+      for (const auto val: vect)
+        tree.insert(val);
       {
         const std::string sss = tree.toString();
         std::stringstream str;
@@ -396,18 +397,18 @@ namespace gum_tests {
         TS_GUM_ASSERT_EQUALS(str.str(), str2.str())
       }
 
-      tree.erase(tree.lowestValue()); // remains: {8, 10, 23, 24}
+      tree.erase(tree.lowestValue());   // remains: {8, 10, 23, 24}
       const int low = tree.lowestValue();
       TS_ASSERT_EQUALS(low, 8)
       TS_ASSERT_EQUALS(tree.lowestValue(), 8)
 
-      tree.erase(tree.lowestValue()); // remains: {10, 23, 24}
+      tree.erase(tree.lowestValue());   // remains: {10, 23, 24}
       TS_ASSERT_EQUALS(tree.lowestValue(), 10)
-      tree.erase(tree.lowestValue()); // remains: {23, 24}
+      tree.erase(tree.lowestValue());   // remains: {23, 24}
       TS_ASSERT_EQUALS(tree.lowestValue(), 23)
-      tree.erase(tree.lowestValue()); // remains: {24}
+      tree.erase(tree.lowestValue());   // remains: {24}
       TS_ASSERT_EQUALS(tree.lowestValue(), 24)
-      tree.erase(tree.lowestValue()); // remains: {}
+      tree.erase(tree.lowestValue());   // remains: {}
       TS_ASSERT_THROWS(tree.lowestValue(), gum::NotFound&)
     }
 
@@ -423,12 +424,11 @@ namespace gum_tests {
         vect.emplace_back(i, i + 10);
       }
       auto vect2 = vect;
-      auto rng = std::default_random_engine {};
+      auto rng   = std::default_random_engine{};
       rng.seed((unsigned int)std::chrono::system_clock::now().time_since_epoch().count());
       std::shuffle(std::begin(vect2), std::end(vect2), rng);
       for (const auto& elt: vect2) {
-        if (tree.size() % 2 == 0)
-          tree.insert(elt);
+        if (tree.size() % 2 == 0) tree.insert(elt);
         else {
           auto elt2 = elt;
           tree.insert(std::move(elt2));
@@ -445,10 +445,9 @@ namespace gum_tests {
     }
 
     private:
-
     std::size_t pos2vect(const std::vector< std::pair< int, int > >& vect,
-                         const std::pair< int, int >& elt) {
-      for (std::size_t i = 0, size=vect.size(); i < size; ++i) {
+                         const std::pair< int, int >&                elt) {
+      for (std::size_t i = 0, size = vect.size(); i < size; ++i) {
         if (vect[i] == elt) return i;
       }
       throw(gum::NotFound(0));
@@ -466,7 +465,6 @@ namespace gum_tests {
       stream << "}";
       return stream.str();
     }
-
   };
 
 }   // namespace gum_tests

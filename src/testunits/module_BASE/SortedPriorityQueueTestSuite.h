@@ -63,7 +63,7 @@ namespace gum_tests {
 
       {
         std::vector< std::string > vect = {"EEE", "DDD", "BBB", "AAA", "CCC"};
-        int i = 0;
+        int                        i    = 0;
         for (const auto& val: queue1) {
           TS_GUM_ASSERT_EQUALS(val, vect[i++])
         }
@@ -93,8 +93,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(queue1.top(), "BBB")
       TS_ASSERT_EQUALS(queue1.topPriority(), 10)
 
-      queue1.insert("EEE", 24); // queue = [(EEE, 24), (BBB, 10), (AAA, 8), (CCC, 2)]
-      queue1.eraseBottom();     // queue = [(EEE, 24), (BBB, 10), (AAA, 8)]
+      queue1.insert("EEE", 24);   // queue = [(EEE, 24), (BBB, 10), (AAA, 8), (CCC, 2)]
+      queue1.eraseBottom();       // queue = [(EEE, 24), (BBB, 10), (AAA, 8)]
       str = queue1.bottom();
       TS_ASSERT_EQUALS(str, "AAA")
       TS_ASSERT_EQUALS(queue1.bottomPriority(), 8)
@@ -108,8 +108,7 @@ namespace gum_tests {
       nb = 2;
       queue1.setPriority("BBB", nb);
       TS_ASSERT_EQUALS(queue1.bottom(), "BBB")
-      TS_ASSERT_EQUALS(queue1.bottomPriority(), 2)
-      {
+      TS_ASSERT_EQUALS(queue1.bottomPriority(), 2) {
         std::string str2 = "[(EEE, 24) ; (AAA, 8) ; (BBB, 2)]";
         TS_GUM_ASSERT_EQUALS(queue1.toString(), str2)
       }
@@ -142,17 +141,16 @@ namespace gum_tests {
 
       std::vector< std::pair< std::pair< int, int >, double > > vect;
       for (int i = 0; i < 100; ++i) {
-        const std::pair< int, int > x (i, i + 10);
+        const std::pair< int, int > x(i, i + 10);
         vect.emplace_back(x, i * 10.0);
       }
       std::reverse(vect.begin(), vect.end());
       auto vect2 = vect;
-      auto rng = std::default_random_engine {};
+      auto rng   = std::default_random_engine{};
       rng.seed((unsigned int)std::chrono::system_clock::now().time_since_epoch().count());
       std::shuffle(std::begin(vect2), std::end(vect2), rng);
       for (const auto& elt: vect2) {
-        if (queue.size() % 2 == 0)
-          queue.insert(elt.first, elt.second);
+        if (queue.size() % 2 == 0) queue.insert(elt.first, elt.second);
         else {
           auto elt2 = elt;
           queue.insert(std::move(elt2.first), std::move(elt2.second));
@@ -162,17 +160,17 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(queue.size(), (gum::Size)100)
       TS_ASSERT_EQUALS(queue.empty(), false)
-      TS_ASSERT_EQUALS(queue.contains(std::pair< int, int >(15,25)), true)
-      TS_ASSERT_EQUALS(queue.contains(std::pair< int, int >(15,15)), false)
+      TS_ASSERT_EQUALS(queue.contains(std::pair< int, int >(15, 25)), true)
+      TS_ASSERT_EQUALS(queue.contains(std::pair< int, int >(15, 15)), false)
 
       queue.eraseTop();
       vect.erase(vect.begin());
-      auto res = queue.top();
-      std::pair< int, int > res2(98,108);
+      auto                  res = queue.top();
+      std::pair< int, int > res2(98, 108);
       TS_ASSERT_EQUALS(res, res2)
       TS_ASSERT_EQUALS(queue.topPriority(), 980.0)
       res2 = {0, 10};
-      res = queue.bottom();
+      res  = queue.bottom();
       TS_ASSERT_EQUALS(res, res2)
       TS_ASSERT_EQUALS(queue.bottomPriority(), 0.0)
 
@@ -194,7 +192,7 @@ namespace gum_tests {
       vect2 = vect;
       std::shuffle(std::begin(vect2), std::end(vect2), rng);
       for (const auto& elt: vect2) {
-        const auto& value    = elt.first;
+        const auto& value = elt.first;
         vect.erase(vect.begin() + pos2vect(vect, value));
         queue.erase(value);
         TS_GUM_ASSERT_EQUALS(vect2string(vect), queue.toString())
@@ -205,12 +203,12 @@ namespace gum_tests {
       gum::SortedPriorityQueue< std::pair< int, int >, double > queue;
       std::vector< std::pair< std::pair< int, int >, double > > vect;
       for (int i = 0; i < 100; ++i) {
-        const std::pair< int, int > x (i, i + 10);
+        const std::pair< int, int > x(i, i + 10);
         vect.emplace_back(x, i * 10.0);
       }
       std::reverse(vect.begin(), vect.end());
       auto vect2 = vect;
-      auto rng = std::default_random_engine {};
+      auto rng   = std::default_random_engine{};
       rng.seed((unsigned int)std::chrono::system_clock::now().time_since_epoch().count());
       std::shuffle(std::begin(vect2), std::end(vect2), rng);
       for (const auto& elt: vect2) {
@@ -223,30 +221,33 @@ namespace gum_tests {
         const auto& value = elt.first;
 
         auto iter1 = queue.beginSafe(), iter2 = queue.beginSafe(), iter3 = queue.beginSafe();
-        while (*iter1 != elt.first) ++iter1;
+        while (*iter1 != elt.first)
+          ++iter1;
         iter2 = iter1;
         --iter2;
         iter3 = iter1;
         ++iter3;
         int i2 = 0, i3 = 0;
-        try { *iter2; } catch (gum::NotFound&) { i2 = 1; }
-        try { *iter3; } catch (gum::NotFound&) { i3 = 1; }
+        try {
+          *iter2;
+        } catch (gum::NotFound&) { i2 = 1; }
+        try {
+          *iter3;
+        } catch (gum::NotFound&) { i3 = 1; }
         queue.erase(value);
         TS_ASSERT_THROWS(*iter1, gum::NotFound&)
-        if (i2 == 0) TS_ASSERT_THROWS_NOTHING( *iter2 );
-        if (i3 == 0) TS_ASSERT_THROWS_NOTHING( *iter3 );
+        if (i2 == 0) TS_ASSERT_THROWS_NOTHING(*iter2);
+        if (i3 == 0) TS_ASSERT_THROWS_NOTHING(*iter3);
 
         vect.erase(vect.begin() + pos2vect(vect, value));
         TS_GUM_ASSERT_EQUALS(vect2string(vect), queue.toString())
       }
-
     }
 
     private:
-
     std::size_t pos2vect(const std::vector< std::pair< std::pair< int, int >, double > >& vect,
-                         const std::pair< int, int >& elt) {
-      for (std::size_t i = 0, size=vect.size(); i < size; ++i) {
+                         const std::pair< int, int >&                                     elt) {
+      for (std::size_t i = 0, size = vect.size(); i < size; ++i) {
         if (vect[i].first == elt) return i;
       }
       throw(gum::NotFound(0));
@@ -264,7 +265,6 @@ namespace gum_tests {
       stream << "]";
       return stream.str();
     }
-
   };
 
-} // namespace gum_tests
+}   // namespace gum_tests

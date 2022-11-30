@@ -121,7 +121,8 @@ namespace gum {
 
   /// returns a new iterator pointing to the maximal element of the tree
   template < typename Val, typename Cmp >
-  INLINE typename SharedAVLTree< Val, Cmp >::reverse_iterator SharedAVLTree< Val, Cmp >::rbegin() const {
+  INLINE typename SharedAVLTree< Val, Cmp >::reverse_iterator
+     SharedAVLTree< Val, Cmp >::rbegin() const {
     return SharedAVLTreeReverseIterator(*this, true);
   }
 

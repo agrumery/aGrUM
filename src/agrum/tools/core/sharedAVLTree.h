@@ -255,7 +255,7 @@ namespace gum {
    * queues.
    */
   template < typename Val, typename Cmp = std::less< Val > >
-  class SharedAVLTreeIterator : protected AVLTreeIterator< Val, Cmp > {
+  class SharedAVLTreeIterator: protected AVLTreeIterator< Val, Cmp > {
     public:
     /// Types for STL compliance.
     /// @{
@@ -741,7 +741,7 @@ namespace gum {
 }   // namespace gum
 
 // always include the implementation of the templates
-#include <agrum/tools/core/sharedAVLTree_tpl.h>
+#  include <agrum/tools/core/sharedAVLTree_tpl.h>
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 

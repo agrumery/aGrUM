@@ -78,12 +78,16 @@ namespace gum {
       GUM_CONSTRUCTOR(AVLTreeNode);
     }
 
-    AVLTreeNode(const AVLTreeNode< Val >& from) : parent(from.parent),
-        left_child(from.left_child), right_child(from.right_child),
-        height(from.height), value(from.value) { GUM_CONS_CPY(AVLTreeNode); }
-    AVLTreeNode(AVLTreeNode< Val >&& from) : parent(from.parent),
-        left_child(from.left_child), right_child(from.right_child),
-        height(from.height), value(std::move(from.value)) { GUM_CONS_MOV(AVLTreeNode); }
+    AVLTreeNode(const AVLTreeNode< Val >& from) :
+        parent(from.parent), left_child(from.left_child), right_child(from.right_child),
+        height(from.height), value(from.value) {
+      GUM_CONS_CPY(AVLTreeNode);
+    }
+    AVLTreeNode(AVLTreeNode< Val >&& from) :
+        parent(from.parent), left_child(from.left_child), right_child(from.right_child),
+        height(from.height), value(std::move(from.value)) {
+      GUM_CONS_MOV(AVLTreeNode);
+    }
 
     ~AVLTreeNode() { GUM_DESTRUCTOR(AVLTreeNode); }
 
@@ -110,7 +114,7 @@ namespace gum {
      * @return Returns the value of a key as a Size.
      */
     static Size castToSize(const AVLTreeNode< Val >& key) {
-       return HashFunc< Val >::castToSize(key.value);
+      return HashFunc< Val >::castToSize(key.value);
     }
 
     /// computes the hashed value of a key
@@ -346,7 +350,7 @@ namespace gum {
     Size nb_elements_{Size(0)};
 
     /// indicates whether the tree owns its nodes. If not, it won't delete them
-    bool owns_nodes_ {true};
+    bool owns_nodes_{true};
 
     /// the comparison function
     Cmp cmp_;
