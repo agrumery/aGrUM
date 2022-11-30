@@ -10,8 +10,10 @@
   * Adding `gum::AVLTree` to core.
   * Adding new graph `gum::PDAG` (Partially Directed Acyclic Graph).
   * Renaming `gum::MixedGraph::adjacents` with correct graph notion : `gum::MixedGraph::boundary`.
-  * Adding `constinit` iterators for some core classes.
-  * Better messages for `gum::BayesNet::check()`
+  * Initializing the majority of the end/rend iterators at compile time.
+  * Adding AVL binary search trees: `gum::AVLTree`.
+  * Adding priority queues that can be iterated in order: `gum::SortedPriorityQueue`.
+  * Better messages for `gum::BayesNet::check()`.
 
 * pyAgrum
 
