@@ -30,7 +30,7 @@
 
 namespace gum_tests {
 
-  class [[maybe_unused]] PriorityQueueTestSuite: public CxxTest::TestSuite {
+  class [[maybe_unused]] SortedPriorityQueueTestSuite: public CxxTest::TestSuite {
     public:
     void testString() {
       gum::SortedPriorityQueue< std::string > queue1;
@@ -71,8 +71,11 @@ namespace gum_tests {
         for (auto iter = queue1.beginSafe(); iter != queue1.endSafe(); ++iter)
           TS_GUM_ASSERT_EQUALS(*iter, vect[i++])
         i = 4;
-        //for (auto iter = queue1.rbegin(); iter != queue1.rend(); ++iter)
-        //  TS_GUM_ASSERT_EQUALS(*iter, vect[i--])
+        for (auto iter = queue1.rbegin(); iter != queue1.rend(); ++iter)
+          TS_GUM_ASSERT_EQUALS(*iter, vect[i--])
+        i = 4;
+        for (auto iter = queue1.rbeginSafe(); iter != queue1.rendSafe(); ++iter)
+          TS_GUM_ASSERT_EQUALS(*iter, vect[i--])
       }
 
       TS_ASSERT_EQUALS(queue1.size(), (gum::Size)5)
@@ -198,6 +201,46 @@ namespace gum_tests {
       }
     }
 
+    void test_erase() {
+      gum::SortedPriorityQueue< std::pair< int, int >, double > queue;
+      std::vector< std::pair< std::pair< int, int >, double > > vect;
+      for (int i = 0; i < 100; ++i) {
+        const std::pair< int, int > x (i, i + 10);
+        vect.emplace_back(x, i * 10.0);
+      }
+      std::reverse(vect.begin(), vect.end());
+      auto vect2 = vect;
+      auto rng = std::default_random_engine {};
+      rng.seed((unsigned int)std::chrono::system_clock::now().time_since_epoch().count());
+      std::shuffle(std::begin(vect2), std::end(vect2), rng);
+      for (const auto& elt: vect2) {
+        queue.insert(elt.first, elt.second);
+      }
+      TS_GUM_ASSERT_EQUALS(vect2string(vect), queue.toString())
+
+      std::shuffle(std::begin(vect2), std::end(vect2), rng);
+      for (const auto& elt: vect2) {
+        const auto& value = elt.first;
+
+        auto iter1 = queue.beginSafe(), iter2 = queue.beginSafe(), iter3 = queue.beginSafe();
+        while (*iter1 != elt.first) ++iter1;
+        iter2 = iter1;
+        --iter2;
+        iter3 = iter1;
+        ++iter3;
+        int i2 = 0, i3 = 0;
+        try { *iter2; } catch (gum::NotFound&) { i2 = 1; }
+        try { *iter3; } catch (gum::NotFound&) { i3 = 1; }
+        queue.erase(value);
+        TS_ASSERT_THROWS(*iter1, gum::NotFound&)
+        if (i2 == 0) TS_ASSERT_THROWS_NOTHING( *iter2 );
+        if (i3 == 0) TS_ASSERT_THROWS_NOTHING( *iter3 );
+
+        vect.erase(vect.begin() + pos2vect(vect, value));
+        TS_GUM_ASSERT_EQUALS(vect2string(vect), queue.toString())
+      }
+
+    }
 
     private:
 

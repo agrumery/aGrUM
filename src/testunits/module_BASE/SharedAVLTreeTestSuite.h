@@ -97,6 +97,24 @@ namespace gum_tests {
       }
       TS_GUM_ASSERT_EQUALS(tree4.size(), gum::Size(100))
 
+      {
+        auto xiter1 = tree4.begin();
+        xiter1      = tree4.end();
+        xiter1      = tree4.begin();
+
+        auto xiter2 = tree4.rbegin();
+        xiter2      = tree4.rend();
+        xiter2      = tree4.rbegin();
+
+        auto xiter3 = tree4.beginSafe();
+        xiter3      = tree4.endSafe();
+        xiter3      = tree4.beginSafe();
+
+        auto xiter4 = tree4.rbeginSafe();
+        xiter4      = tree4.rendSafe();
+        xiter4      = tree4.rbeginSafe();
+      }
+
       i = 0;
       auto iter3 = tree4.beginSafe();
       iter3 += 3;

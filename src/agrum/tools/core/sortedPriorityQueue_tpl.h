@@ -608,7 +608,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp >
   INLINE SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >&
      SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >::operator=(
-        const SortedPriorityQueueIteratorSafe< Val, Cmp >& from) {
+        const SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >& from) {
     SharedAVLTreeReverseIteratorSafe< Val, TreeCmp >::operator=(from);
     return *this;
   }
@@ -692,7 +692,7 @@ namespace gum {
      SortedPriorityQueueReverseIterator< Val, Priority, Cmp >::SortedPriorityQueueReverseIterator(
         const SortedPriorityQueue< Val, Priority, Cmp >& queue,
         const bool                                       rbegin) noexcept :
-      SortedPriorityQueueIterator< Val, Priority, Cmp >(queue, !rbegin) {
+      SharedAVLTreeIterator< Val, TreeCmp >(queue._tree_, rbegin) {
     GUM_CONSTRUCTOR(SortedPriorityQueueReverseIterator)
   }
 
@@ -701,7 +701,7 @@ namespace gum {
   INLINE
      SortedPriorityQueueReverseIterator< Val, Priority, Cmp >::SortedPriorityQueueReverseIterator(
         const SortedPriorityQueueReverseIterator< Val, Priority, Cmp >& from) noexcept :
-      SortedPriorityQueueIterator< Val, Priority, Cmp >(from) {
+      SharedAVLTreeIterator< Val, TreeCmp >(from) {
     GUM_CONS_CPY(SortedPriorityQueueReverseIterator)
   }
 
@@ -710,7 +710,7 @@ namespace gum {
   INLINE
      SortedPriorityQueueReverseIterator< Val, Priority, Cmp >::SortedPriorityQueueReverseIterator(
         SortedPriorityQueueReverseIterator< Val, Priority, Cmp >&& from) noexcept :
-      SortedPriorityQueueIterator< Val, Priority, Cmp >(std::move(from)) {
+      SharedAVLTreeIterator< Val, TreeCmp >(std::move(from)) {
     GUM_CONS_MOV(SortedPriorityQueueReverseIterator)
   }
 
@@ -727,7 +727,7 @@ namespace gum {
   INLINE SortedPriorityQueueReverseIterator< Val, Priority, Cmp >&
      SortedPriorityQueueReverseIterator< Val, Priority, Cmp >::operator=(
         const SortedPriorityQueueReverseIterator< Val, Priority, Cmp >& from) noexcept {
-    SortedPriorityQueueIterator< Val, Priority, Cmp >::operator=(from);
+    SharedAVLTreeIterator< Val, TreeCmp >::operator=(from);
     return *this;
   }
 
@@ -736,7 +736,7 @@ namespace gum {
   INLINE SortedPriorityQueueReverseIterator< Val, Priority, Cmp >&
      SortedPriorityQueueReverseIterator< Val, Priority, Cmp >::operator=(
         SortedPriorityQueueReverseIterator< Val, Priority, Cmp >&& from) noexcept {
-    SortedPriorityQueueIterator< Val, Priority, Cmp >::operator=(std::move(from));
+    SharedAVLTreeIterator< Val, TreeCmp >::operator=(std::move(from));
     return *this;
   }
 
@@ -744,7 +744,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp >
   INLINE bool SortedPriorityQueueReverseIterator< Val, Priority, Cmp >::operator==(
      const SortedPriorityQueueReverseIterator< Val, Priority, Cmp >& from) const {
-    return SortedPriorityQueueIterator< Val, Priority, Cmp >::operator==(from);
+    return SharedAVLTreeIterator< Val, TreeCmp >::operator==(from);
   }
 
   /// indicates whether two iterator point to different element
@@ -758,7 +758,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp >
   INLINE SortedPriorityQueueReverseIterator< Val, Priority, Cmp >&
      SortedPriorityQueueReverseIterator< Val, Priority, Cmp >::operator++() noexcept {
-    SortedPriorityQueueIterator< Val, Priority, Cmp >::operator--();
+    SharedAVLTreeIterator< Val, TreeCmp >::operator++();
     return *this;
   }
 
@@ -766,7 +766,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp >
   INLINE SortedPriorityQueueReverseIterator< Val, Priority, Cmp >&
      SortedPriorityQueueReverseIterator< Val, Priority, Cmp >::operator+=(const Size k) noexcept {
-    SortedPriorityQueueIterator< Val, Priority, Cmp >::operator-=(k);
+    SharedAVLTreeIterator< Val, TreeCmp >::operator+=(k);
     return *this;
   }
 
@@ -774,7 +774,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp >
   INLINE SortedPriorityQueueReverseIterator< Val, Priority, Cmp >&
      SortedPriorityQueueReverseIterator< Val, Priority, Cmp >::operator--() noexcept {
-    SortedPriorityQueueIterator< Val, Priority, Cmp >::operator++();
+    SharedAVLTreeIterator< Val, TreeCmp >::operator--();
     return *this;
   }
 
@@ -782,8 +782,24 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp >
   INLINE SortedPriorityQueueReverseIterator< Val, Priority, Cmp >&
      SortedPriorityQueueReverseIterator< Val, Priority, Cmp >::operator-=(const Size k) noexcept {
-    SortedPriorityQueueIterator< Val, Priority, Cmp >::operator+=(k);
+    SharedAVLTreeIterator< Val, TreeCmp >::operator-=(k);
     return *this;
+  }
+
+  /// returns the value pointed to by the iterator
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE typename SortedPriorityQueueReverseIterator< Val, Priority, Cmp >::const_reference
+     SortedPriorityQueueReverseIterator< Val, Priority, Cmp >::operator*() const {
+    return SharedAVLTreeIterator< Val, TreeCmp >::operator*().value;
+  }
+
+  /// returns a pointer on the value pointed to by the iterator
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE typename SortedPriorityQueueReverseIterator< Val, Priority, Cmp >::const_pointer
+     SortedPriorityQueueReverseIterator< Val, Priority, Cmp >::operator->() const {
+    auto node = SharedAVLTreeIterator< Val, TreeCmp >::operator->();
+    if (node != nullptr) return &(node->value);
+    else { GUM_ERROR(NotFound, "The sorted priority queue iterator does not point on any value") }
   }
 
   /// ======================================================================================
@@ -793,7 +809,7 @@ namespace gum {
   INLINE SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >::
      SortedPriorityQueueReverseIteratorSafe(SortedPriorityQueue< Val, Priority, Cmp >& queue,
                                             const bool                                 rbegin) :
-      SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >(queue, !rbegin) {
+      SharedAVLTreeIteratorSafe< Val, TreeCmp >(queue._tree_, rbegin) {
     GUM_CONSTRUCTOR(SortedPriorityQueueReverseIteratorSafe)
   }
 
@@ -802,7 +818,7 @@ namespace gum {
   INLINE SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >::
      SortedPriorityQueueReverseIteratorSafe(
         const SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >& from) :
-      SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >(from) {
+      SharedAVLTreeIteratorSafe< Val, TreeCmp >(from) {
     GUM_CONS_CPY(SortedPriorityQueueReverseIteratorSafe)
   }
 
@@ -811,7 +827,7 @@ namespace gum {
   INLINE SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >::
      SortedPriorityQueueReverseIteratorSafe(
         SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >&& from) :
-      SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >(std::move(from)) {
+      SharedAVLTreeIteratorSafe< Val, TreeCmp >(std::move(from)) {
     GUM_CONS_MOV(SortedPriorityQueueReverseIteratorSafe)
   }
 
@@ -827,7 +843,7 @@ namespace gum {
   INLINE SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >&
      SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >::operator=(
         const SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >& from) {
-    SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >::operator=(from);
+    SharedAVLTreeIteratorSafe< Val, TreeCmp >::operator=(from);
     return *this;
   }
 
@@ -836,7 +852,7 @@ namespace gum {
   INLINE SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >&
      SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >::operator=(
         SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >&& from) {
-    SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >::operator=(std::move(from));
+    SharedAVLTreeIteratorSafe< Val, TreeCmp >::operator=(std::move(from));
     return *this;
   }
 
@@ -844,7 +860,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp >
   INLINE bool SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >::operator==(
      const SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >& from) const {
-    return SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >::operator==(from);
+    return SharedAVLTreeIteratorSafe< Val, TreeCmp >::operator==(from);
   }
 
   /// indicates whether two iterator point to different element
@@ -858,7 +874,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp >
   INLINE SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >&
      SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >::operator++() noexcept {
-    SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >::operator--();
+    SharedAVLTreeIteratorSafe< Val, TreeCmp >::operator++();
     return *this;
   }
 
@@ -867,7 +883,7 @@ namespace gum {
   INLINE SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >&
      SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >::operator+=(
         const Size k) noexcept {
-    SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >::operator-=(k);
+    SharedAVLTreeIteratorSafe< Val, TreeCmp >::operator+=(k);
     return *this;
   }
 
@@ -875,7 +891,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp >
   INLINE SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >&
      SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >::operator--() noexcept {
-    SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >::operator++();
+    SharedAVLTreeIteratorSafe< Val, TreeCmp >::operator--();
     return *this;
   }
 
@@ -884,8 +900,24 @@ namespace gum {
   INLINE SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >&
      SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >::operator-=(
         const Size k) noexcept {
-    SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >::operator+=(k);
+    SharedAVLTreeIteratorSafe< Val, TreeCmp >::operator-=(k);
     return *this;
+  }
+
+  /// returns the value pointed to by the iterator
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE typename SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >::const_reference
+     SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >::operator*() const {
+    return SharedAVLTreeIteratorSafe< Val, TreeCmp >::operator*().value;
+  }
+
+  /// returns a pointer on the value pointed to by the iterator
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE typename SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >::const_pointer
+     SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >::operator->() const {
+    auto node = SharedAVLTreeIteratorSafe< Val, TreeCmp >::operator->();
+    if (node != nullptr) return &(node->value);
+    else { GUM_ERROR(NotFound, "The sorted priority queue iterator does not point on any value") }
   }
 
 

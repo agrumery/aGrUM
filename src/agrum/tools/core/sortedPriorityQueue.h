@@ -427,7 +427,7 @@ namespace gum {
 
     /// @}
 
-
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
     /// the types of the nodes in the AVL tree
     using AVLNode = AVLTreeNode< Val >;
 
@@ -471,6 +471,7 @@ namespace gum {
       static constexpr std::size_t offset_from_value_to_priority
          = offset_to_priority - offset_to_value;
     };
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
     private:
     /**
@@ -704,7 +705,7 @@ namespace gum {
 
     /// copy operator
     SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >&
-       operator=(const SortedPriorityQueueIteratorSafe< Val, Cmp >& from);
+       operator=(const SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >& from);
 
     /// move operator
     SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >&
@@ -767,13 +768,14 @@ namespace gum {
    */
   template < typename Val, typename Priority = int, typename Cmp = std::less< Val > >
   class SortedPriorityQueueReverseIterator:
-      protected SortedPriorityQueueIterator< Val, Priority, Cmp > {
+      protected SharedAVLTreeIterator<
+         Val,
+         typename SortedPriorityQueue< Val, Priority, Cmp >::TreeCmp > {
     public:
     /// Types for STL compliance.
     /// @{
     using iterator_category = std::bidirectional_iterator_tag;
-    using AVLNode           = AVLTreeNode< Val >;
-    using value_type        = AVLNode;
+    using value_type        = Val;
     using reference         = value_type&;
     using const_reference   = const value_type&;
     using pointer           = value_type*;
@@ -801,7 +803,7 @@ namespace gum {
     // constructor for the static rend iterator
     // only sortedPriorityQueue.cpp should use this constructor
     explicit consteval SortedPriorityQueueReverseIterator(StaticInitializer init) noexcept :
-        SortedPriorityQueueIterator< Val, Priority, Cmp >(init) {}
+        SharedAVLTreeIterator< Val, TreeCmp >(init) {}
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 
     /// copy constructor
@@ -862,10 +864,10 @@ namespace gum {
      * to an element
      * @throws NotFound is raised if the iterator points to nothing
      */
-    using SortedPriorityQueueIterator< Val, Priority, Cmp >::operator*;
+    const_reference operator*() const;
 
-    /// returns a pointer on the node pointed to by the iterator
-    using SortedPriorityQueueIterator< Val, Priority, Cmp >::operator->;
+    /// returns a pointer on the value pointed to by the iterator
+    const_pointer operator->() const;
 
     /// @}
 
@@ -888,7 +890,9 @@ namespace gum {
    */
   template < typename Val, typename Priority = int, typename Cmp = std::less< Val > >
   class SortedPriorityQueueReverseIteratorSafe:
-      protected SortedPriorityQueueIteratorSafe< Val, Priority, Cmp > {
+      protected SharedAVLTreeIteratorSafe<
+         Val,
+         typename SortedPriorityQueue< Val, Priority, Cmp >::TreeCmp > {
     public:
     /// Types for STL compliance.
     /// @{
@@ -921,7 +925,7 @@ namespace gum {
     // constructor for the static rendSafe iterator
     // only sortedPriorityQueue.cpp should use this constructor
     explicit consteval SortedPriorityQueueReverseIteratorSafe(StaticInitializer init) noexcept :
-        SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >(init) {}
+        SharedAVLTreeIteratorSafe< Val, TreeCmp >(init) {}
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 
     /// copy constructor
@@ -982,10 +986,10 @@ namespace gum {
      * to an element
      * @throws NotFound is raised if the iterator points to nothing
      */
-    using SortedPriorityQueueIteratorSafe< Val, Cmp >::operator*;
+    const_reference operator*() const;
 
-    /// returns a pointer on the node pointed to by the iterator
-    using SortedPriorityQueueIteratorSafe< Val, Cmp >::operator->;
+    /// returns a pointer on the value pointed to by the iterator
+    const_pointer operator->() const;
 
     /// @}
 
