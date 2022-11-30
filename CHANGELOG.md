@@ -7,7 +7,6 @@
   * (internals) Updating `act --stats`.
   * (internals) Reorganizing build folder : `build/{aGrUM|pyAgrum}/{debug|release}`.
   * Threadsafe graphs and Graphical Models.
-  * Adding `gum::AVLTree` to core.
   * Adding new graph `gum::PDAG` (Partially Directed Acyclic Graph).
   * Renaming `gum::MixedGraph::adjacents` with correct graph notion : `gum::MixedGraph::boundary`.
   * Initializing the majority of the end/rend iterators at compile time.
