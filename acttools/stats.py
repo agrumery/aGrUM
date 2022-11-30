@@ -50,6 +50,7 @@ def profileAgrum(current):
 
   target = "+".join(current['targets'])
   safe_cd(current, "build")
+  safe_cd(current, "agrum")
   safe_cd(current, current["mode"])
 
   notif("[cmake]")

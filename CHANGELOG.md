@@ -26,6 +26,7 @@
   * Fixing a small typo when displaying function as Potential.
   * better messages for `pyAgrum.BayesNet.check()`.
   * More robust `gum.explain.showInformation()` w.r.t. NaN.
+  * CMake: Use FindPython module
   
 ## Changelog for 1.4.1
 

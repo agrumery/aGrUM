@@ -586,9 +586,7 @@ namespace gum {
       // before we removed node. This corresponds precisely to kept_node. Note that
       // there is no need to update the lowest node because we did not change the
       // left subtree of node
-      if (highest_node_ == successor) {
-        highest_node_ = kept_node;
-      }
+      if (highest_node_ == successor) { highest_node_ = kept_node; }
 
       // if there are safe iterators, update their content:
       //   a1/ if their node_ field points to node, then make them point on nullptr
@@ -647,7 +645,7 @@ namespace gum {
       }
     }
 
-    if (child == nullptr) { // here, node has no children
+    if (child == nullptr) {   // here, node has no children
       // simply remove node and indicate to its parent that node disappeared
       if (parent_node != nullptr) {
         if (parent_node->left_child == node) {
@@ -668,7 +666,7 @@ namespace gum {
         --nb_elements_;
         return node;
       }
-    } else { // here, node has precisely one child
+    } else {   // here, node has precisely one child
       // so substitute node by its child in the tree
       --nb_elements_;
 
