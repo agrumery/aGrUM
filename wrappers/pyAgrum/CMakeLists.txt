@@ -6,7 +6,11 @@ if (PYTHON_TARGET)
   unset(Python_VERSION_MAJOR CACHE)
 endif (PYTHON_TARGET)
 
-find_package (Python ${PYAGRUM_REQUIRED_PYTHON_VERSION} COMPONENTS Interpreter Development REQUIRED)
+if (CMAKE_VERSION VERSION_LESS 3.24)
+  find_package (Python ${PYAGRUM_REQUIRED_PYTHON_VERSION} COMPONENTS Interpreter Development REQUIRED)
+else ()
+  find_package (Python ${PYAGRUM_REQUIRED_PYTHON_VERSION} COMPONENTS Interpreter Development.Module REQUIRED)
+endif ()
 
 #list (APPEND CMAKE_SWIG_FLAGS "-py3")
 list (APPEND CMAKE_SWIG_FLAGS "-fastdispatch")
