@@ -23,7 +23,7 @@
 Specification of options and default values for the configuration of act
 """
 from argparse import ArgumentParser
-from sys import platform
+import sys
 
 from . import const as cfg
 from .modules import parseModulesTxt
@@ -64,7 +64,7 @@ cfg.nbr_tests_for_stats = 100
 cfg.prefixe_line = "-- "
 cfg.prefixe_trace = "==> "
 
-cfg.os_platform = platform
+cfg.os_platform = sys.platform
 
 
 def initParams():
@@ -82,9 +82,7 @@ def initParams():
   cfg.default['stats'] = False
   cfg.default['oneByOne'] = False
   cfg.default['tests'] = 'all'
-  cfg.default['python'] = "3"
-  cfg.default['python3lib'] = ""
-  cfg.default['python3include'] = ""
+  cfg.default['python3target'] = sys.executable
   cfg.default['clangpath'] = ""
   cfg.default['gccpath'] = ""
   cfg.default['threads'] = "omp"
@@ -197,16 +195,11 @@ def configureOptions(current):
                         action="store_true",
                         dest="static_lib",
                         default=False)
-  cfg.parser.add_argument("--python3lib",
-                        help="root folder for lib python3.",
-                        metavar="FOLDER",
-                        dest="python3lib",
-                        default=current['python3lib'])
-  cfg.parser.add_argument("--python3include",
-                        help="root folder for include python3.",
-                        metavar="FOLDER",
-                        dest="python3include",
-                        default=current['python3include'])
+  cfg.parser.add_argument("--python3target",
+                        help="python3 target.",
+                        metavar="PATH",
+                        dest="python3target",
+                        default=current['python3target'])
   cfg.parser.add_argument("--clangpath",
                         help="path for clang.",
                         metavar="FOLDER",

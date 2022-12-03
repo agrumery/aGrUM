@@ -2,56 +2,61 @@ stages:
 - build
 - deploy
 
+variables:
+  LINUX_64_IMAGE: "agrumery/manylinux_2_28_x86_64"
+  LINUX_WHEELHOUSE: "wrappers/pyAgrum/wheelhouse/build_wheels_manylinux.sh"
+
+
 ################################################################################
 # Linux / gcc
 ################################################################################
 
-linux_agrum:
-  image: agrumery/ubuntu_py311
-  tags:
-    - docker
-    - linux
-    - triskele
-  cache:
-    key: linux
-    paths:
-      - build/
-  stage: build
-  script:
-    - python3 act clean
-    - python3 act --no-fun test release aGrUM -j halfexcept1
+# linux_agrum:
+#   image: agrumery/ubuntu_py311
+#   tags:
+#     - docker
+#     - linux
+#     - triskele
+#   cache:
+#     key: linux
+#     paths:
+#       - build/
+#   stage: build
+#   script:
+#     - python3 act clean
+#     - python3 act --no-fun test release aGrUM -j halfexcept1
 
-linux_pyagrum_py38:
-  image: agrumery/ubuntu_py38
-  tags:
-    - docker
-    - linux
-    - triskele
-  cache:
-    key: linux
-    paths:
-      - build/
-  stage: build
-  script:
-    - python3 act clean
-    - pip3 install -r wrappers/pyAgrum/testunits/requirements.txt
-    - python3 act --no-fun test release pyAgrum -j halfexcept1 -t quick
+# linux_pyagrum_py38:
+#   image: agrumery/ubuntu_py38
+#   tags:
+#     - docker
+#     - linux
+#     - triskele
+#   cache:
+#     key: linux
+#     paths:
+#       - build/
+#   stage: build
+#   script:
+#     - python3 act clean
+#     - pip3 install -r wrappers/pyAgrum/testunits/requirements.txt
+#     - python3 act --no-fun test release pyAgrum -j halfexcept1 -t quick
 
-linux_pyagrum_py311:
-  image: agrumery/ubuntu_py311
-  tags:
-    - docker
-    - linux
-    - triskele
-  cache:
-    key: linux
-    paths:
-      - build/
-  stage: build
-  script:
-    - python3 act clean
-    - pip3 install -r wrappers/pyAgrum/testunits/requirements.txt
-    - python3 act --no-fun test release pyAgrum -j halfexcept1 -t quick
+# linux_pyagrum_py311:
+#   image: agrumery/ubuntu_py311
+#   tags:
+#     - docker
+#     - linux
+#     - triskele
+#   cache:
+#     key: linux
+#     paths:
+#       - build/
+#   stage: build
+#   script:
+#     - python3 act clean
+#     - pip3 install -r wrappers/pyAgrum/testunits/requirements.txt
+#     - python3 act --no-fun test release pyAgrum -j halfexcept1 -t quick
 
 ################################################################################
 # Linux / gcc merge requests
@@ -109,6 +114,34 @@ linux_pyagrum_merge_requests_py311:
     - python3 act clean
     - pip3 install -r wrappers/pyAgrum/testunits/requirements.txt
     - python3 act --no-fun test release pyAgrum -j halfexcept1 -t quick
+
+build_wheel_manylinux_py38:
+  only:
+    - tags
+    - branches
+    - merge_requests
+  image: $LINUX_64_IMAGE
+  tags:
+    - docker
+    - linux
+    - manylinux1
+  stage: build
+  script:
+    - bash $LINUX_WHEELHOUSE $AGRUM_BUILD cp38-cp38
+
+build_wheel_manylinux_py311:
+  only:
+    - tags
+    - branches
+    - merge_requests
+  image: $LINUX_64_IMAGE
+  tags:
+    - docker
+    - linux
+    - manylinux1
+  stage: build
+  script:
+    - bash $LINUX_WHEELHOUSE $AGRUM_BUILD cp311-cp311
 
 ################################################################################
 # MacOS / clang

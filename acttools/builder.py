@@ -22,6 +22,7 @@
 import platform
 import multiprocessing
 import os
+from distutils import sysconfig
 
 from .configuration import cfg
 from .multijobs import execCde
@@ -74,12 +75,7 @@ def getCmake(current, target):
   else:
     line += " -DBUILD_PYTHON=ON"
 
-
-  if current["python3lib"] != "":
-    line += " -DPython_LIBRARY=" + current["python3lib"]
-
-  if current["python3include"] != "":
-    line += " -DPython_INCLUDE_DIR=" + current["python3include"]
+  line += " -DPython_EXECUTABLE="+ current["python3target"]
 
   if platform.system() == "Windows":
     if current["compiler"] in ['clang','gcc']:
