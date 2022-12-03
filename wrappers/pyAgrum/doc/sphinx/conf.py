@@ -158,7 +158,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 show_authors = True
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = 'zenburn'
 
 # A list of ignored prefixes for module index sorting.
 # modindex_common_prefix = []

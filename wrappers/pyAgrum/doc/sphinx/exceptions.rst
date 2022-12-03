@@ -1,9 +1,15 @@
 Exceptions from aGrUM
 =====================
 
-.. autoexception:: pyAgrum.GumException
+Exception in pyAgrum
+--------------------
 
 All the exception classes inherit pyAgrum.GumException's functions errorType, errorCallStack and errorContent.
+
+.. autoexception:: pyAgrum.GumException
+
+List of pyAgrum's exceptions
+----------------------------
 
 .. autoexception:: pyAgrum.DefaultInLabel
 	:exclude-members: errorCallStack, errorContent, errorType, with_traceback, what

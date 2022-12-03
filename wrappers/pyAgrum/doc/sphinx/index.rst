@@ -1,7 +1,7 @@
 .. pyAgrum documentation master file, created by
-   sphinx-quickstart on Mon Oct 17 16:59:01 2016.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+sphinx-quickstart on Mon Oct 17 16:59:01 2016.
+You can adapt this file completely to your liking, but it should at least
+contain the root `toctree` directive.
 
 Introduction to pyAgrum
 =======================
@@ -28,11 +28,19 @@ pyAgrum aims to allow to easily use (as well as to prototype new algorithms on)
 Bayesian network and other graphical models.
 
 pyAgrum contains :
-  * a :ref:`comprehensive API documentation <Reference manual>`.
   * :ref:`tutorials as jupyter notebooks <Notebooks>`.
+  * a :ref:`comprehensive API documentation <Reference manual>`.
   * a `gitlab repository <https://gitlab.com/agrumery/aGrUM>`_.
   * and a `website <http://agrum.org>`_.
 
+
+.. toctree::
+  :caption: Tutorials and notebooks
+  :name: Notebooks
+  :maxdepth: 1
+
+  tutorials
+  notebooks
 
 ================
 Reference manual
@@ -91,17 +99,10 @@ Reference manual
 
   .. toctree::
     :caption: 7-Customizing pyAgrum
-    :maxdepth: 2
+    :maxdepth: 1
 
     PyAgrumConfiguration
 
-
-.. toctree::
-  :caption: Notebooks
-  :name: Notebooks
-  :maxdepth: 1
-
-  notebooks
 
 Indices and tables
 ==================
