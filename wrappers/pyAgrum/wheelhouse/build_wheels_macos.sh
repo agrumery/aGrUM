@@ -16,6 +16,8 @@ CONDA_ENV=$1
 
 python ${CI_PROJECT_DIR}/wrappers/pyAgrum/wheelhouse/scripts/update_version.py ${CI_PROJECT_DIR} ${BUILD_NUMBER}
 
+mkdir -p ${CI_PROJECT_DIR}/wheels
+
 . /Users/agrum/miniconda3/etc/profile.d/conda.sh
 conda activate $CONDA_ENV
 python act clean

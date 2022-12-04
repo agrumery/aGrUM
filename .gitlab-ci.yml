@@ -206,7 +206,7 @@ build_wheel_windows_py311:
   script:
     - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.11
     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
-    - pip install -r "%CI_PROJECT_DIR%\aGrUM\wrappers\pyAgrum\testunits\requirements.txt"
+    - pip install -r "%CI_PROJECT_DIR%\wrappers\pyAgrum\testunits\requirements.txt"
     - call conda.bat install -y -c conda-forge cmake
     - python %CI_PROJECT_DIR%\wrappers\pyAgrum\wheelhouse\scripts\update_version.py %CI_PROJECT_DIR% 0
     - cd "%CI_PROJECT_DIR%\aGrUM" & python act %ACT_OPTIONS% release wheel pyAgrum -j halfexcept1
