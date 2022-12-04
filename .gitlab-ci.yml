@@ -186,7 +186,7 @@ build_wheel_windows_py38:
     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
     - call conda.bat install -y -c conda-forge --file "%CI_PROJECT_DIR%\wrappers\pyAgrum\testunits\requirements.txt"
     - call conda.bat install -y -c conda-forge cmake
-    - python %CI_PROJECT_DIR%\wrappers\pyAgrum\wheelhouse\scripts\update_version.py %CI_PROJECT_DIR% %AGRUM_BUILD%
+    - python %CI_PROJECT_DIR%\wrappers\pyAgrum\wheelhouse\scripts\update_version.py %CI_PROJECT_DIR% 0
     - cd "%CI_PROJECT_DIR%\aGrUM" & python act %ACT_OPTIONS% release wheel pyAgrum -j halfexcept1
     - call conda.bat activate "py37"
     - call conda.bat remove -y -n "gitlab-ci-%CI_JOB_ID%" --all --force
@@ -208,7 +208,7 @@ build_wheel_windows_py311:
     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
     - call conda.bat install -y -c conda-forge --file "%CI_PROJECT_DIR%\wrappers\pyAgrum\testunits\requirements.txt"
     - call conda.bat install -y -c conda-forge cmake
-    - python %CI_PROJECT_DIR%\wrappers\pyAgrum\wheelhouse\scripts\update_version.py %CI_PROJECT_DIR% %AGRUM_BUILD%
+    - python %CI_PROJECT_DIR%\wrappers\pyAgrum\wheelhouse\scripts\update_version.py %CI_PROJECT_DIR% 0
     - cd "%CI_PROJECT_DIR%\aGrUM" & python act %ACT_OPTIONS% release wheel pyAgrum -j halfexcept1
     - call conda.bat activate "py37"
     - call conda.bat remove -y -n "gitlab-ci-%CI_JOB_ID%" --all --force
