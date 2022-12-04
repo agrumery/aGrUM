@@ -177,7 +177,7 @@ build_wheel_windows_py38:
     - windows
     - conda
     - agrumerie2
-  stage: buid
+  stage: build
   variables:
     PATH: $PATH_64_MVSC22_AGRUMERIE2
   script:
