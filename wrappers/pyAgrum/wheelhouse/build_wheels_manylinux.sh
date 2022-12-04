@@ -16,17 +16,5 @@ python ${CI_PROJECT_DIR}/wrappers/pyAgrum/wheelhouse/scripts/update_version.py $
 
 PYDIR=$1
 
-#OLDPATH=$PATH
-#export PATH=/opt/python/${PYDIR}/bin:${PATH}
-
-#PYINCLUDEDIR=$(ls -1 /opt/python/${PYDIR}/include)
-
-#virtualenv venv  -p /opt/python/${PYDIR}/bin/python
-#source venv/bin/activate
-echo "*************************"
-/opt/python/${PYDIR}/bin/python -c 'from distutils import sysconfig; print(sysconfig.get_python_inc())'
-echo "*************************"
 /opt/python/${PYDIR}/bin/python act clean
-#python act release nightly_wheel pyAgrum -j 7 --python3target=/opt/python/${PYDIR}/bin/python
-/opt/python/${PYDIR}/bin/python act install release pyAgrum -j 7 --dry-run
-/opt/python/${PYDIR}/bin/python act install release pyAgrum -j 7
+/opt/python/${PYDIR}/bin/python act release nightly_wheel pyAgrum -j 7

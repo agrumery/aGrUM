@@ -5,6 +5,8 @@ stages:
 variables:
   LINUX_64_IMAGE: "agrumery/manylinux_2_28_x86_64"
   LINUX_WHEELHOUSE: "wrappers/pyAgrum/wheelhouse/build_wheels_manylinux.sh"
+  OSX_WHEELHOUSE: "wrappers/pyAgrum/wheelhouse/build_wheels_macos.sh"
+  ACT_OPTIONS: "--no-fun --compiler=mvsc22 -d build"
 
 
 ################################################################################
@@ -127,7 +129,7 @@ build_wheel_manylinux_py38:
     - manylinux1
   stage: build
   script:
-    - bash $LINUX_WHEELHOUSE $AGRUM_BUILD cp38-cp38
+    - bash $LINUX_WHEELHOUSE cp38-cp38
 
 build_wheel_manylinux_py311:
   only:
@@ -141,7 +143,84 @@ build_wheel_manylinux_py311:
     - manylinux1
   stage: build
   script:
-    - bash $LINUX_WHEELHOUSE $AGRUM_BUILD cp311-cp311
+    - bash $LINUX_WHEELHOUSE cp311-cp311
+
+build_wheel_osx_py38:
+  only:
+    - tags
+    - branches
+    - merge_requests
+  tags:
+    - macos
+    - python3
+  stage: build
+  script:
+    - bash $OSX_WHEELHOUSE cp38-cp38
+
+build_wheel_osx_py311:
+  only:
+    - tags
+    - merge_requests
+  tags:
+    - macos
+    - python3
+  stage: build
+  script:
+    - bash $OSX_WHEELHOUSE cp311-cp311
+
+build_wheel_windows_py38:
+  only:
+    - tags
+    - branches
+    - merge_requests
+  tags:
+    - windows
+    - conda
+    - agrumerie2
+  stage: buid
+  variables:
+    PATH: $PATH_64_MVSC22_AGRUMERIE2
+  script:
+    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.8
+    - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
+    - IF EXIST "%CI_PROJECT_DIR%\aGrUM" ( rmdir /s /q "%CI_PROJECT_DIR%\aGrUM" )
+    - IF EXIST "%CI_PROJECT_DIR%\wheels" ( rmdir /s /q "%CI_PROJECT_DIR%\wheels" )
+    - git.exe clone https://gitlab.com/agrumery/aGrUM.git "%CI_PROJECT_DIR%\aGrUM"
+    - cd "%CI_PROJECT_DIR%\aGrUM" & git checkout %AGRUM_TAG%
+    - call conda.bat install -y -c conda-forge --file "%CI_PROJECT_DIR%\aGrUM\wrappers\pyAgrum\testunits\requirements.txt"
+    - call conda.bat install -y -c conda-forge cmake
+    - cd "%CI_PROJECT_DIR%\scripts" & python update_version.py %CI_PROJECT_DIR% %AGRUM_BUILD%
+    - md "%CI_PROJECT_DIR%\wheels"
+    - cd "%CI_PROJECT_DIR%\aGrUM" & python act %ACT_OPTIONS% release wheel pyAgrum -j halfexcept1 -d "../wheels"
+    - call conda.bat activate "py37"
+    - call conda.bat remove -y -n "gitlab-ci-%CI_JOB_ID%" --all --force
+
+build_wheel_windows_py311:
+  only:
+    - tags
+    - branches
+    - merge_requests
+  tags:
+    - windows
+    - conda
+    - agrumerie2
+  stage: build
+  variables:
+    PATH: $PATH_64_MVSC22_AGRUMERIE2
+  script:
+    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.11
+    - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
+    - IF EXIST "%CI_PROJECT_DIR%\aGrUM" ( rmdir /s /q "%CI_PROJECT_DIR%\aGrUM" )
+    - IF EXIST "%CI_PROJECT_DIR%\wheels" ( rmdir /s /q "%CI_PROJECT_DIR%\wheels" )
+    - git.exe clone https://gitlab.com/agrumery/aGrUM.git "%CI_PROJECT_DIR%\aGrUM"
+    - cd "%CI_PROJECT_DIR%\aGrUM" & git checkout %AGRUM_TAG%
+    - pip install -r "%CI_PROJECT_DIR%\aGrUM\wrappers\pyAgrum\testunits\requirements.txt"
+    - call conda.bat install -y -c conda-forge cmake
+    - cd "%CI_PROJECT_DIR%\scripts" & python update_version.py %CI_PROJECT_DIR% %AGRUM_BUILD%
+    - md "%CI_PROJECT_DIR%\wheels"
+    - cd "%CI_PROJECT_DIR%\aGrUM" & python act %ACT_OPTIONS% release wheel pyAgrum -j halfexcept1 -d "../wheels"
+    - call conda.bat activate "py37"
+    - call conda.bat remove -y -n "gitlab-ci-%CI_JOB_ID%" --all --force
 
 ################################################################################
 # MacOS / clang
