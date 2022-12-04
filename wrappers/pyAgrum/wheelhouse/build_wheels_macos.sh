@@ -19,5 +19,5 @@ python ${CI_PROJECT_DIR}/wrappers/pyAgrum/wheelhouse/scripts/update_version.py $
 . /Users/agrum/miniconda3/etc/profile.d/conda.sh
 conda activate $CONDA_ENV
 python act clean
-python act release wheel pyAgrum -j 3 -d ${CI_PROJECT_DIR}/wheels
+python act release wheel pyAgrum -j halfexcept1 -d ${CI_PROJECT_DIR}/wheels
 conda deactivate

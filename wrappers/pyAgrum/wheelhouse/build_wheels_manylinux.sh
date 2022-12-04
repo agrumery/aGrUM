@@ -17,4 +17,4 @@ python ${CI_PROJECT_DIR}/wrappers/pyAgrum/wheelhouse/scripts/update_version.py $
 PYDIR=$1
 
 /opt/python/${PYDIR}/bin/python act clean
-/opt/python/${PYDIR}/bin/python act release nightly_wheel pyAgrum -j 7
+/opt/python/${PYDIR}/bin/python act release nightly_wheel pyAgrum -j halfexcept1
