@@ -170,26 +170,26 @@ build_wheel_osx_py311:
   script:
     - bash $OSX_WHEELHOUSE py311
 
-build_wheel_windows_py38:
-  only:
-    - tags
-    - merge_requests
-  tags:
-    - windows
-    - conda
-    - agrumerie2
-  stage: build
-  variables:
-    PATH: $PATH_64_MVSC22_AGRUMERIE2
-  script:
-    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.8
-    - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
-    - call conda.bat install -y -c conda-forge --file "%CI_PROJECT_DIR%\wrappers\pyAgrum\testunits\requirements.txt"
-    - call conda.bat install -y -c conda-forge cmake
-    - python %CI_PROJECT_DIR%\wrappers\pyAgrum\wheelhouse\scripts\update_version.py %CI_PROJECT_DIR% 0
-    - cd "%CI_PROJECT_DIR%\aGrUM" & python act %ACT_OPTIONS% release wheel pyAgrum -j halfexcept1
-    - call conda.bat activate "py37"
-    - call conda.bat remove -y -n "gitlab-ci-%CI_JOB_ID%" --all --force
+# build_wheel_windows_py38:
+#   only:
+#     - tags
+#     - merge_requests
+#   tags:
+#     - windows
+#     - conda
+#     - agrumerie2
+#   stage: build
+#   variables:
+#     PATH: $PATH_64_MVSC22_AGRUMERIE2
+#   script:
+#     - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.8
+#     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
+#     - call conda.bat install -y -c conda-forge --file "%CI_PROJECT_DIR%\wrappers\pyAgrum\testunits\requirements.txt"
+#     - call conda.bat install -y -c conda-forge cmake
+#     - python %CI_PROJECT_DIR%\wrappers\pyAgrum\wheelhouse\scripts\update_version.py %CI_PROJECT_DIR% 0
+#     - cd "%CI_PROJECT_DIR%\aGrUM" & python act %ACT_OPTIONS% release wheel pyAgrum -j halfexcept1
+#     - call conda.bat activate "py37"
+#     - call conda.bat remove -y -n "gitlab-ci-%CI_JOB_ID%" --all --force
 
 build_wheel_windows_py311:
   only:
@@ -320,32 +320,32 @@ windows_agrum_2022:
     - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
   retry: 1
 
-windows_pyagrum_2019:
-  only:
-   - master@agrumery/aGrUM
-   - web@agrumery/aGrUM
-   - merge_requests
-  tags:
-    - windows
-    - conda
-    - agrumerie2
-  variables:
-    PATH: $PATH_64_MVSC19_AGRUMERIE2
-  cache:
-    key: mvsc19
-    paths:
-      - build/
-  stage: build
-  script:
-    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.11
-    - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
-    - call pip install -r wrappers\pyAgrum\testunits\requirements.txt
-    - call pip install cmake
-    - python act clean
-    - python act --no-fun test release pyAgrum --no-fun --compiler=mvsc19 -d build -j halfexcept1 -t quick
-    - call conda.bat deactivate
-    - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
-  retry: 2
+# windows_pyagrum_2019:
+#   only:
+#    - master@agrumery/aGrUM
+#    - web@agrumery/aGrUM
+#    - merge_requests
+#   tags:
+#     - windows
+#     - conda
+#     - agrumerie2
+#   variables:
+#     PATH: $PATH_64_MVSC19_AGRUMERIE2
+#   cache:
+#     key: mvsc19
+#     paths:
+#       - build/
+#   stage: build
+#   script:
+#     - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.11
+#     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
+#     - call pip install -r wrappers\pyAgrum\testunits\requirements.txt
+#     - call pip install cmake
+#     - python act clean
+#     - python act --no-fun test release pyAgrum --no-fun --compiler=mvsc19 -d build -j halfexcept1 -t quick
+#     - call conda.bat deactivate
+#     - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
+#   retry: 2
 
 windows_pyagrum_2022:
   only:
