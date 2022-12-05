@@ -6,6 +6,7 @@
 
   * (internals) Updating `act --stats`.
   * (internals) Reorganizing build folder : `build/{aGrUM|pyAgrum}/{debug|release}`.
+  * (internals) Improving cmake & CIs.
   * Threadsafe graphs and Graphical Models.
   * Adding new graph `gum::PDAG` (Partially Directed Acyclic Graph).
   * Renaming `gum::MixedGraph::adjacents` with correct graph notion : `gum::MixedGraph::boundary`.
@@ -17,16 +18,17 @@
 * pyAgrum
 
   * (internals) New docker images with linux gcc 11 for wheels.
+  * (internals) CMake: Use FindPython module.
+  * (internals) Removing some (false positive) warning notifications from swig.
   * Fixing NaN bugs for new versions of Graphviz.
   * Improving gum.lib.notebooks.flow and light/dark theme compatibility.
   * Renaming `pyAgrum.MixedGraph.adjacents` with correct graph notion : `pyAgrum.MixedGraph.boundary`.
   * New graph class `gum.PDAG` (Partially Directed Acyclic Graph).
-  * Fixing typos in documentation.
-  * (internals) Removing some (false positive) warning notifications from swig.
   * Fixing a small typo when displaying function as Potential.
   * better messages for `pyAgrum.BayesNet.check()`.
   * More robust `gum.explain.showInformation()` w.r.t. NaN.
-  * CMake: Use FindPython module
+  * Fixing typos in documentation.
+  * Improving the organization of ReadTheDoc documentation.
   
 ## Changelog for 1.4.1
 
