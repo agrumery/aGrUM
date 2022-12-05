@@ -108,7 +108,7 @@ namespace gum_tests {
     }
 
     public:
-    void test_K2() {
+    GUM_TEST(_K2) {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("0");

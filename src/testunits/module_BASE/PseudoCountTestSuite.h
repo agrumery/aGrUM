@@ -36,7 +36,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] PseudoCountTestSuite: public CxxTest::TestSuite {
     public:
-    void test_simple_counts() {
+    GUM_TEST(_simple_counts) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/minimal.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();

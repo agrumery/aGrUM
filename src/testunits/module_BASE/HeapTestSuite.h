@@ -28,7 +28,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] HeapTestSuite: public CxxTest::TestSuite {
     public:
-    void testConstructor() {
+    GUM_TEST(Constructor) {
       gum::Heap< int > heap1;
 
       heap1.insert(8);
@@ -61,7 +61,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(heap1.top(), 23)
     }
 
-    void testConstructor2() {
+    GUM_TEST(Constructor2) {
       gum::Heap< int, std::greater< int > > heap1;
 
       heap1.insert(8);
@@ -94,7 +94,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(heap1.top(), 8)
     }
 
-    void testMoves() {
+    GUM_TEST(Moves) {
       gum::Heap< int, std::greater< int > > heap1{1, 5, 2, 4};
       gum::Heap< int, std::greater< int > > heap2{3, 9};
       gum::Heap< int, std::greater< int > > heap3{1, 10, 20};
@@ -106,7 +106,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(heap2.top(), 5)
     }
 
-    void testCopy() {
+    GUM_TEST(Copy) {
       gum::Heap< int > heap1;
       heap1.insert(8);
       heap1.insert(10);
@@ -128,7 +128,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(heap3.size(), (gum::Size)heap1.size())
     }
 
-    void testErase() {
+    GUM_TEST(Erase) {
       gum::Heap< int > heap1;
 
       heap1.insert(8);
@@ -157,7 +157,7 @@ namespace gum_tests {
       }
     };
 
-    void testObj() {
+    GUM_TEST(Obj) {
       gum::Heap< gum::Set< int >, SetCmp > heap1;
 
       gum::Set< int > s1, s2, s3, s4, s5;

@@ -38,7 +38,7 @@ namespace gum_tests {
 
     void tearDown() {}
 
-    void testEmptyInterface() {
+    GUM_TEST(EmptyInterface) {
       // Arrange
       std::stringstream input;
       input << "interface IBar { }";
@@ -57,7 +57,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(i_bar.super(), const gum::NotFound&)
     }
 
-    void testEmptyInterfaceError1() {
+    GUM_TEST(EmptyInterfaceError1) {
       // Arrange
       std::stringstream input;
       input << "interfaces IBar { }";
@@ -76,7 +76,7 @@ namespace gum_tests {
       TS_ASSERT(!prm.isInterface("IBar"))
     }
 
-    void testEmptyInterfaceError2() {
+    GUM_TEST(EmptyInterfaceError2) {
       // Arrange
       std::stringstream input;
       input << "interface { }";
@@ -95,7 +95,7 @@ namespace gum_tests {
       TS_ASSERT(!prm.isInterface("IBar"))
     }
 
-    void testEmptyInterfaceError3() {
+    GUM_TEST(EmptyInterfaceError3) {
       // Arrange
       std::stringstream input;
       input << "interface ++++/ze { }";
@@ -114,7 +114,7 @@ namespace gum_tests {
       TS_ASSERT(!prm.isInterface("IBar"))
     }
 
-    void testSimpleInterface() {
+    GUM_TEST(SimpleInterface) {
       // Arrange
       std::stringstream input;
       input << "interface IBar { " << std::endl << "boolean state;" << std::endl << "}";
@@ -133,7 +133,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(i_bar.super(), const gum::NotFound&)
     }
 
-    void testSimpleInterfaceError1() {
+    GUM_TEST(SimpleInterfaceError1) {
       // Arrange
       std::stringstream input;
       input << "interface IBar { " << std::endl << "t_state state;" << std::endl << "}";
@@ -156,7 +156,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(i_bar.super(), const gum::NotFound&)
     }
 
-    void testSimpleInterfaceError2() {
+    GUM_TEST(SimpleInterfaceError2) {
       // Arrange
       std::stringstream input;
       input << "interface IBar { " << std::endl << "=%+ state;" << std::endl << "}";
@@ -175,7 +175,7 @@ namespace gum_tests {
       TS_ASSERT(!prm.isInterface("IBar"))
     }
 
-    void testSimpleInterfaceError3() {
+    GUM_TEST(SimpleInterfaceError3) {
       // Arrange
       std::stringstream input;
       input << "interface IBar { " << std::endl << "state;" << std::endl << "}";
@@ -194,7 +194,7 @@ namespace gum_tests {
       TS_ASSERT(!prm.isInterface("IBar"))
     }
 
-    void testSimpleInterfaceError4() {
+    GUM_TEST(SimpleInterfaceError4) {
       // Arrange
       std::stringstream input;
       input << "interface IBar { " << std::endl << "boolean state" << std::endl << "}";
@@ -213,7 +213,7 @@ namespace gum_tests {
       TS_ASSERT(!prm.isInterface("IBar"))
     }
 
-    void testSimpleInterfaceError5() {
+    GUM_TEST(SimpleInterfaceError5) {
       // Arrange
       std::stringstream input;
       input << "interface IBar { " << std::endl << "boolean +/+/;" << std::endl << "}";
@@ -232,7 +232,7 @@ namespace gum_tests {
       TS_ASSERT(!prm.isInterface("IBar"))
     }
 
-    void testWeAreOKWithSemicolons() {
+    GUM_TEST(WeAreOKWithSemicolons) {
       // Arrange
       std::stringstream input;
       input << "interface IBar { " << std::endl << "boolean state;" << std::endl << "};";
@@ -251,7 +251,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(i_bar.super(), const gum::NotFound&)
     }
 
-    void testSimpleInterfaceError6() {
+    GUM_TEST(SimpleInterfaceError6) {
       // Arrange
       std::stringstream input;
       input << "interface IBar { " << std::endl
@@ -277,7 +277,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(i_bar.super(), const gum::NotFound&)
     }
 
-    void testInterfaceWithReference() {
+    GUM_TEST(InterfaceWithReference) {
       // Arrange
       std::stringstream input;
       input << "interface IFoo { " << std::endl << "boolean state;" << std::endl << "}";
@@ -305,7 +305,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(i_bar.super(), const gum::NotFound&)
     }
 
-    void testSuperInterface() {
+    GUM_TEST(SuperInterface) {
       // Arrange
       std::stringstream input;
       input << "interface IFoo { " << std::endl << "boolean state;" << std::endl << "}";
@@ -331,7 +331,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(i_bar.super(), i_foo)
     }
 
-    void testSuperInterfaceError1() {
+    GUM_TEST(SuperInterfaceError1) {
       // Arrange
       std::stringstream input;
       input << "interface IFoo { " << std::endl
@@ -356,7 +356,7 @@ namespace gum_tests {
       TS_ASSERT(!prm.isInterface("IBar"))
     }
 
-    void testSuperInterfaceError2() {
+    GUM_TEST(SuperInterfaceError2) {
       // Arrange
       std::stringstream input;
       input << "type t_state labels(OK, NOK);" << std::endl;
@@ -382,7 +382,7 @@ namespace gum_tests {
       TS_ASSERT(!prm.isInterface("IBar"))
     }
 
-    void testSuperInterfaceError3() {
+    GUM_TEST(SuperInterfaceError3) {
       // Arrange
       std::stringstream input;
       input << "interface IFoo { " << std::endl
@@ -405,7 +405,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(prm.interfaces().size(), (gum::Size)0)
     }
 
-    void testSuperInterfaceWithAttributeOverload() {
+    GUM_TEST(SuperInterfaceWithAttributeOverload) {
       // Arrange
       std::stringstream input;
       input << "type t_state extends boolean (" << std::endl;
@@ -435,7 +435,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(i_bar.super(), i_foo)
     }
 
-    void testSuperInterfaceWithReferenceOverload() {
+    GUM_TEST(SuperInterfaceWithReferenceOverload) {
       // Arrange
       std::stringstream input;
       input << "interface IFoo { " << std::endl
@@ -466,7 +466,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(i_ploc.super(), i_plop)
     }
 
-    void testOrderDoesNotMatter1() {
+    GUM_TEST(OrderDoesNotMatter1) {
       // Arrange
       std::stringstream input;
       input << "interface IBar { " << std::endl
@@ -489,7 +489,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(i_bar.super(), const gum::NotFound&)
     }
 
-    void testOrderDoesNotMatter2() {
+    GUM_TEST(OrderDoesNotMatter2) {
       // Arrange
       std::stringstream input;
       input << "interface IBar extends IFoo { " << std::endl
@@ -518,7 +518,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(i_bar.super(), i_foo)
     }
 
-    void testOrderDoesNotMatter3() {
+    GUM_TEST(OrderDoesNotMatter3) {
       // Arrange
       std::stringstream input;
       input << "interface IBar { " << std::endl
@@ -547,7 +547,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(i_bar.super(), const gum::NotFound&)
     }
 
-    void testOrderDoesNotMatter4() {
+    GUM_TEST(OrderDoesNotMatter4) {
       // Arrange
       std::stringstream input;
       input << "interface IBar { " << std::endl
@@ -578,7 +578,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(i_bar.super(), const gum::NotFound&)
     }
 
-    void testInterfaceWithReferenceError() {
+    GUM_TEST(InterfaceWithReferenceError) {
       // Arrange
       std::stringstream input;
       input << "interface IFoo { " << std::endl
@@ -600,7 +600,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(prm.interfaces().size(), (gum::Size)1)
     }
 
-    void testInterfaceWithOverloading() {
+    GUM_TEST(InterfaceWithOverloading) {
       // Arrange
       std::stringstream input;
       input << "type state extends boolean (OK: true, NOK: false);";
@@ -661,7 +661,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(&(ref_subplop.slotType()), &sub_plop)
     }
 
-    void testInterfaceWithOverloadingError1() {
+    GUM_TEST(InterfaceWithOverloadingError1) {
       // Arrange
       std::stringstream input;
       input << "type state extends boolean (OK: true, NOK: false);";
@@ -695,7 +695,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(line, msg.str())
     }
 
-    void testInterfaceWithOverloadingError2() {
+    GUM_TEST(InterfaceWithOverloadingError2) {
       // Arrange
       std::stringstream input;
       input << "type state labels(OK, NOK);";

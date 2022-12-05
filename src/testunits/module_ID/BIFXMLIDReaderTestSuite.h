@@ -65,7 +65,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] BIFXMLIDReaderTestSuite: public CxxTest::TestSuite {
     public:
-    void testConstuctor() {
+    GUM_TEST(Constuctor) {
       std::string file = GET_RESSOURCES_PATH("ID/IDBIFXMLIO_file.xml");
 
       gum::InfluenceDiagram< double > net;
@@ -79,7 +79,7 @@ namespace gum_tests {
       // delete reader;
     }
 
-    void testRead_file1() {
+    GUM_TEST(Read_file1) {
       std::string file = GET_RESSOURCES_PATH("ID/IDBIFXMLIO_file.xml");
 
       gum::InfluenceDiagram< double >* net = new gum::InfluenceDiagram< double >();
@@ -107,7 +107,7 @@ namespace gum_tests {
       delete net;
     }
 
-    void testRead_file2_float() {
+    GUM_TEST(Read_file2_float) {
       std::string file = GET_RESSOURCES_PATH("ID/IDBIFXMLIO_file.xml");
 
       gum::InfluenceDiagram< double >* net = new gum::InfluenceDiagram< double >();
@@ -348,7 +348,7 @@ namespace gum_tests {
       delete net;
     }
 
-    void testRead_file3_float() {
+    GUM_TEST(Read_file3_float) {
       std::string file = GET_RESSOURCES_PATH("ID/IDBIFXMLIO_file.xml");
 
       gum::InfluenceDiagram< double >* net = new gum::InfluenceDiagram< double >();

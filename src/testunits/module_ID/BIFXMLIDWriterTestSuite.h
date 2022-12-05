@@ -141,13 +141,13 @@ namespace gum_tests {
       delete utilityVar2;
     }
 
-    void testConstuctor() {
+    GUM_TEST(Constuctor) {
       gum::BIFXMLIDWriter< double >* writer = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::BIFXMLIDWriter< double >())
       delete writer;
     }
 
-    void testWriter_ostream() {
+    GUM_TEST(Writer_ostream) {
       gum::BIFXMLIDWriter< double > writer;
       std::stringstream             s;
 
@@ -155,7 +155,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(s /*cerr*/, *id))
     }
 
-    void testWriter_file() {
+    GUM_TEST(Writer_file) {
       gum::BIFXMLIDWriter< double > writer;
       std::string                   file = GET_RESSOURCES_PATH("outputs/IDBIFXMLIO_file.xml");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *id))

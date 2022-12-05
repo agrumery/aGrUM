@@ -31,7 +31,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] PartialOrderedTriangulationTestSuite: public CxxTest::TestSuite {
     public:
-    void testTriangulatedGraph1() {
+    GUM_TEST(TriangulatedGraph1) {
       gum::NodeSet c1, c2, c3, c4, c5;
       c1 << 10 << 20 << 30 << 40;
       c2 << 20 << 40 << 50;
@@ -142,7 +142,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(*(edges.begin()), gum::Edge(20, 50))
     }
 
-    void testTriangulatedGraph2() {
+    GUM_TEST(TriangulatedGraph2) {
       gum::NodeSet c1, c2, c3, c4, c5;
       c1 << 10 << 20 << 30 << 40;
       c2 << 20 << 40 << 50;
@@ -188,7 +188,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(gr2.sizeEdges(), 14U)
     }
 
-    void testTriangulatedGraph3() {
+    GUM_TEST(TriangulatedGraph3) {
       gum::UndiGraph graph;
 
       for (gum::NodeId i = 1; i <= 8; ++i)

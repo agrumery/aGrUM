@@ -41,21 +41,21 @@ namespace gum_tests {
 
     void tearDown() {}
 
-    void testCreationDeletion_1() {
+    GUM_TEST(CreationDeletion_1) {
       gum::SimpleBayesNetGenerator< double >* gen = nullptr;
 
       TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::SimpleBayesNetGenerator< double >(10, 20))
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen)
     }
 
-    void testCreationDeletion_2() {
+    GUM_TEST(CreationDeletion_2) {
       gum::SimpleBayesNetGenerator< double >* gen = nullptr;
 
       TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::SimpleBayesNetGenerator< double >(10, 20))
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen)
     }
 
-    void testGenerationFloat_1() {
+    GUM_TEST(GenerationFloat_1) {
       gum::SimpleBayesNetGenerator< double > gen(10, 20);
       gum::BayesNet< double >*               bn = new gum::BayesNet< double >();
 
@@ -64,7 +64,7 @@ namespace gum_tests {
       if (bn != 0) delete bn;
     }
 
-    void testGenerationFloat_2() {
+    GUM_TEST(GenerationFloat_2) {
       gum::SimpleBayesNetGenerator< double > gen(100, 500);
       ;
 
@@ -82,7 +82,7 @@ namespace gum_tests {
       if (bn != 0) delete bn;
     }
 
-    void testGenerationFloat_3() {
+    GUM_TEST(GenerationFloat_3) {
       gum::SimpleBayesNetGenerator< double > gen(10, 45);
 
       gum::BayesNet< double >* bn = new gum::BayesNet< double >();
@@ -94,7 +94,7 @@ namespace gum_tests {
       if (bn != 0) delete bn;
     }
 
-    void testGenerationFloat_4() {
+    GUM_TEST(GenerationFloat_4) {
       gum::SimpleBayesNetGenerator< double > gen(10, 35);
 
       gum::BayesNet< double >* bn = new gum::BayesNet< double >();
@@ -106,7 +106,7 @@ namespace gum_tests {
       if (bn != 0) delete bn;
     }
 
-    void testGenerationFloat_5() {
+    GUM_TEST(GenerationFloat_5) {
       gum::SimpleBayesNetGenerator< double > gen(10, 45);
       gum::BayesNet< double >*               bn = 0;
 
@@ -124,7 +124,7 @@ namespace gum_tests {
                                    delete bn)
     }
 
-    void testGenerationDouble_1() {
+    GUM_TEST(GenerationDouble_1) {
       gum::SimpleBayesNetGenerator< double > gen(10, 35);
       gum::BayesNet< double >*               bn = new gum::BayesNet< double >();
 
@@ -133,7 +133,7 @@ namespace gum_tests {
       if (bn != 0) delete bn;
     }
 
-    void testGenerationDouble_2() {
+    GUM_TEST(GenerationDouble_2) {
       // Test for cicuits
       gum::SimpleBayesNetGenerator< double > gen(10, 45);
       gum::BayesNet< double >*               bn = new gum::BayesNet< double >();
@@ -150,7 +150,7 @@ namespace gum_tests {
       if (bn != 0) delete bn;
     }
 
-    void testGenerationDouble_3() {
+    GUM_TEST(GenerationDouble_3) {
       gum::SimpleBayesNetGenerator< double > gen(10, 45);
       gum::BayesNet< double >*               bn = new gum::BayesNet< double >();
       gen.generateBN(*bn);
@@ -161,7 +161,7 @@ namespace gum_tests {
       if (bn != 0) delete bn;
     }
 
-    void testGenerationDouble_4() {
+    GUM_TEST(GenerationDouble_4) {
       gum::SimpleBayesNetGenerator< double > gen(10, 45);
       gum::BayesNet< double >*               bn = new gum::BayesNet< double >();
       gen.generateBN(*bn);

@@ -41,7 +41,7 @@ namespace gum_tests {
 
     void tearDown() {}
 
-    void testTypes() {
+    GUM_TEST(Types) {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile(GET_RESSOURCES_PATH("o3prm/types.o3prm")))
@@ -58,7 +58,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testSubTypes() {
+    GUM_TEST(SubTypes) {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile(GET_RESSOURCES_PATH("o3prm/types.o3prm")))
@@ -87,7 +87,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testClasses() {
+    GUM_TEST(Classes) {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile(GET_RESSOURCES_PATH("o3prm/printers.o3prm")))
@@ -105,7 +105,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testPrintersPowerSupply() {
+    GUM_TEST(PrintersPowerSupply) {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile(GET_RESSOURCES_PATH("o3prm/printers.o3prm")))
@@ -120,7 +120,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testPrintersRoom() {
+    GUM_TEST(PrintersRoom) {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile(GET_RESSOURCES_PATH("o3prm/printers.o3prm")))
@@ -135,7 +135,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testPrintersEquipment() {
+    GUM_TEST(PrintersEquipment) {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile(GET_RESSOURCES_PATH("o3prm/printers.o3prm")))
@@ -150,7 +150,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testPrintersPrinter() {
+    GUM_TEST(PrintersPrinter) {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile(GET_RESSOURCES_PATH("o3prm/printers.o3prm")))
@@ -165,7 +165,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testPrintersComputer() {
+    GUM_TEST(PrintersComputer) {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile(GET_RESSOURCES_PATH("o3prm/printers.o3prm")))
@@ -181,7 +181,7 @@ namespace gum_tests {
     }
 
     /// Testing classes and interfaces
-    void testComplexPrinters_1() {
+    GUM_TEST(ComplexPrinters_1) {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         std::string file    = GET_RESSOURCES_PATH("o3prm/complexprinters.o3prm");
@@ -208,7 +208,7 @@ namespace gum_tests {
     }
 
     /// Testing classes and interfaces inheritance with subtypes methods
-    void testComplexPrinters_2() {
+    GUM_TEST(ComplexPrinters_2) {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         std::string file    = GET_RESSOURCES_PATH("o3prm/complexprinters.o3prm");
@@ -286,7 +286,7 @@ namespace gum_tests {
     }
 
     /// Testing classes and interfaces inheritance with supertypes methods
-    void testComplexPrinters_3() {
+    GUM_TEST(ComplexPrinters_3) {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         std::string file    = GET_RESSOURCES_PATH("o3prm/complexprinters.o3prm");
@@ -364,7 +364,7 @@ namespace gum_tests {
     }
 
     // Testing class PowerSupply
-    void testComplexPrinters_4() {
+    GUM_TEST(ComplexPrinters_4) {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         std::string file    = GET_RESSOURCES_PATH("o3prm/complexprinters.o3prm");
@@ -404,7 +404,7 @@ namespace gum_tests {
     }
 
     // Testing class Room
-    void testComplexPrinters_5() {
+    GUM_TEST(ComplexPrinters_5) {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         std::string file    = GET_RESSOURCES_PATH("o3prm/complexprinters.o3prm");
@@ -421,7 +421,7 @@ namespace gum_tests {
     }
 
     // Testing interface Equipment
-    void testComplexPrinters_6() {
+    GUM_TEST(ComplexPrinters_6) {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         std::string file    = GET_RESSOURCES_PATH("o3prm/complexprinters.o3prm");
@@ -465,7 +465,7 @@ namespace gum_tests {
     }
 
     // Testing interface Printer
-    void testComplexPrinters_7() {
+    GUM_TEST(ComplexPrinters_7) {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         std::string file    = GET_RESSOURCES_PATH("o3prm/complexprinters.o3prm");
@@ -524,7 +524,7 @@ namespace gum_tests {
 
     /// @TODO Make this test past for IO flags optimisation
     // Testing class BWPrinter
-    // void testComplexPrinters_8() {
+    // GUM_TEST(ComplexPrinters_8) {
     //   try {
     //     gum::prm::o3prm::O3prmReader<double> reader;
     //     std::string file = GET_RESSOURCES_PATH( "o3prm/complexprinters.o3prm"
@@ -642,7 +642,7 @@ namespace gum_tests {
 
     /// @TODO Make this test pass for IO Flags optimisation
     // Testing class ColorPrinter
-    // void testComplexPrinters_9() {
+    // GUM_TEST(ComplexPrinters_9) {
     //  try {
     //    gum::prm::o3prm::O3prmReader<double> reader;
     //    std::string file = GET_RESSOURCES_PATH( "o3prm/complexprinters.o3prm"
@@ -896,7 +896,7 @@ namespace gum_tests {
     //}
 
     // Testing class Computer
-    void testComplexPrinters_10() {
+    GUM_TEST(ComplexPrinters_10) {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         std::string file    = GET_RESSOURCES_PATH("o3prm/complexprinters.o3prm");
@@ -927,7 +927,7 @@ namespace gum_tests {
     }
 
     // Testing class Computer
-    void testComplexPrinters_11() {
+    GUM_TEST(ComplexPrinters_11) {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         std::string file    = GET_RESSOURCES_PATH("o3prm/complexprinters.o3prm");
@@ -960,7 +960,7 @@ namespace gum_tests {
     }
 
     // Testing class Computer
-    void testComplexPrinters_12() {
+    GUM_TEST(ComplexPrinters_12) {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         std::string file    = GET_RESSOURCES_PATH("o3prm/complexprinters.o3prm");
@@ -984,7 +984,7 @@ namespace gum_tests {
     }
 
     // Testing class Computer
-    void testComplexPrinters_13() {
+    GUM_TEST(ComplexPrinters_13) {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         std::string file    = GET_RESSOURCES_PATH("o3prm/complexprinters.o3prm");
@@ -1007,7 +1007,7 @@ namespace gum_tests {
     }
 
     // Testing class Computer
-    void testComplexPrinters_14() {
+    GUM_TEST(ComplexPrinters_14) {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         std::string file    = GET_RESSOURCES_PATH("o3prm/complexprinters.o3prm");
@@ -1030,7 +1030,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testPrintersSystems1() {
+    GUM_TEST(PrintersSystems1) {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         TS_GUM_ASSERT_THROWS_NOTHING(
@@ -1045,7 +1045,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testComplexPrintersSystems1() {
+    GUM_TEST(ComplexPrintersSystems1) {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         TS_GUM_ASSERT_THROWS_NOTHING(
@@ -1088,7 +1088,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testCPF() {
+    GUM_TEST(CPF) {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         TS_GUM_ASSERT_THROWS_NOTHING(reader.readFile(GET_RESSOURCES_PATH("o3prm/inference.o3prm")))
@@ -1124,7 +1124,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testImports() {
+    GUM_TEST(Imports) {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         reader.addClassPath(GET_RESSOURCES_PATH("o3prmr"));
@@ -1205,7 +1205,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testParamClass() {
+    GUM_TEST(ParamClass) {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         std::string file    = GET_RESSOURCES_PATH("o3prm/complexprinters.o3prm");
@@ -1227,7 +1227,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testSystemParamClass() {
+    GUM_TEST(SystemParamClass) {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         std::string file    = GET_RESSOURCES_PATH("o3prm/complexprinters_system.o3prm");
@@ -1244,7 +1244,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testParamClassHasInk() {
+    GUM_TEST(ParamClassHasInk) {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         std::string file    = GET_RESSOURCES_PATH("o3prm/complexprinters.o3prm");
@@ -1270,7 +1270,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testParamClassHasPaper() {
+    GUM_TEST(ParamClassHasPaper) {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         std::string file    = GET_RESSOURCES_PATH("o3prm/complexprinters.o3prm");
@@ -1298,7 +1298,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testInstanceParamClassHasInk() {
+    GUM_TEST(InstanceParamClassHasInk) {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         std::string file    = GET_RESSOURCES_PATH("o3prm/complexprinters_system.o3prm");
@@ -1325,7 +1325,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testAsiaBN() {
+    GUM_TEST(AsiaBN) {
       try {
         // Arrange
         gum::prm::o3prm::O3prmReader< double > reader;
@@ -1343,7 +1343,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testAsiaBNGrd() {
+    GUM_TEST(AsiaBNGrd) {
       try {
         // Arrange
         gum::prm::o3prm::O3prmReader< double > reader;
@@ -1368,7 +1368,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testVisitAsiaTwoClassesBN() {
+    GUM_TEST(VisitAsiaTwoClassesBN) {
       try {
         // Arrange
         gum::prm::o3prm::O3prmReader< double > reader;
@@ -1386,7 +1386,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testAsiaTwoClassesBN() {
+    GUM_TEST(AsiaTwoClassesBN) {
       try {
         // Arrange
         gum::prm::o3prm::O3prmReader< double > reader;
@@ -1405,7 +1405,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testAsiaTwoClassBNGrd() {
+    GUM_TEST(AsiaTwoClassBNGrd) {
       try {
         // Arrange
         gum::prm::o3prm::O3prmReader< double > reader;
@@ -1427,7 +1427,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testFileNotFound() {
+    GUM_TEST(FileNotFound) {
       // Arrange
       gum::prm::o3prm::O3prmReader< double > reader;
       std::string                            file    = "ThisFileDoesNotExist.o3prm";
@@ -1438,7 +1438,7 @@ namespace gum_tests {
       if (reader.prm()) { delete reader.prm(); }
     }
 
-    void testFileNotFoundInResDir() {
+    GUM_TEST(FileNotFoundInResDir) {
       // Arrange
       gum::prm::o3prm::O3prmReader< double > reader;
       std::string file    = GET_RESSOURCES_PATH("o3prm/ThisFileDoesNotExist.o3prm");
@@ -1449,7 +1449,7 @@ namespace gum_tests {
       if (reader.prm()) { delete reader.prm(); }
     }
 
-    void testAsiaWithErrors() {
+    GUM_TEST(AsiaWithErrors) {
       try {
         // Arrange
         gum::prm::o3prm::O3prmReader< double > reader;
@@ -1464,7 +1464,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testAggOrAnd() {
+    GUM_TEST(AggOrAnd) {
       try {
         // Arrange
         gum::prm::o3prm::O3prmReader< double > reader;
@@ -1480,7 +1480,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testActors() {
+    GUM_TEST(Actors) {
       try {
         // Arrange
         gum::prm::o3prm::O3prmReader< double > reader;
@@ -1496,7 +1496,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testStudents() {
+    GUM_TEST(Students) {
       try {
         // Arrange
         gum::prm::o3prm::O3prmReader< double > reader;
@@ -1528,7 +1528,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testReferenceID() {
+    GUM_TEST(ReferenceID) {
       try {
         // Arrange
         gum::prm::o3prm::O3prmReader< double > reader;
@@ -1568,7 +1568,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testAttributeID() {
+    GUM_TEST(AttributeID) {
       try {
         // Arrange
         gum::prm::o3prm::O3prmReader< double > reader;
@@ -1603,7 +1603,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testArrays() {
+    GUM_TEST(Arrays) {
       try {
         // Arrange
         gum::prm::o3prm::O3prmReader< double > reader;

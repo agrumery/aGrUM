@@ -59,12 +59,12 @@ namespace gum_tests {
 
     void tearDown() {}
 
-    void testSimpleConstructor(){TS_GUM_ASSERT_THROWS_NOTHING({
+    GUM_TEST(SimpleConstructor){TS_GUM_ASSERT_THROWS_NOTHING({
       gum::MarkovNet< double > mn;
       GUM_UNUSED(mn);
     })};
 
-    void testConstructor() {
+    GUM_TEST(Constructor) {
       gum::MarkovNet< double > mn;
       _fill(mn);
 
@@ -87,7 +87,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(mn.maxNonOneParam(), 0.97)
     }
 
-    void testCopyConstructor() {
+    GUM_TEST(CopyConstructor) {
       gum::MarkovNet< double > mn;
       _fill(mn);
       gum::MarkovNet< double > mn2(mn);
@@ -101,7 +101,7 @@ namespace gum_tests {
       });
     }
 
-    void testCopyOperator() {
+    GUM_TEST(CopyOperator) {
       gum::MarkovNet< double > mn;
       gum::MarkovNet< double > mn2;
       _fill(mn);
@@ -113,7 +113,7 @@ namespace gum_tests {
       }
     }
 
-    void testEqualityOperators() {
+    GUM_TEST(EqualityOperators) {
       gum::MarkovNet< double > mn1;
       _fill(mn1);
       gum::MarkovNet< double > mn2;
@@ -124,7 +124,7 @@ namespace gum_tests {
       TS_ASSERT_DIFFERS(mn1, mn2)
     }
 
-    void testOrderInsertion() {
+    GUM_TEST(OrderInsertion) {
       gum::MarkovNet< double > mn;
       mn.add("V0", 2);
       mn.add("V1", 2);
@@ -152,7 +152,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(mn.factor(s2).variable(0).name(), mn.variable(1).name())
     }
 
-    void testInsertionFromPotential() {
+    GUM_TEST(InsertionFromPotential) {
       gum::MarkovNet< double > mn;
       _fill(mn);
       TS_ASSERT_THROWS(mn.addFactor(gum::Potential< double >()),
@@ -191,7 +191,7 @@ namespace gum_tests {
       }
     }
 
-    void testIterations() {
+    GUM_TEST(Iterations) {
       gum::MarkovNet< double > mn;
       _fill(mn);
       gum::Size cpt = (gum::Size)0;
@@ -213,7 +213,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(cpt, mn.sizeEdges())
     }
 
-    void testEraseFactor() {
+    GUM_TEST(EraseFactor) {
       gum::MarkovNet< double > mn;
       _fill(mn);
       TS_ASSERT_THROWS(mn.eraseFactor({12, 14}), const gum::InvalidArgument&)
@@ -225,7 +225,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(mn.toString(), "MN{nodes: 5, edges: 5, domainSize: 567, dim: 81}")
     }
 
-    void testEraseFactorWithNames() {
+    GUM_TEST(EraseFactorWithNames) {
       gum::MarkovNet< double > mn;
       _fill(mn);
       TS_ASSERT_THROWS(mn.eraseFactor({"31", "21"}), const gum::InvalidArgument&)
@@ -237,7 +237,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(mn.toString(), "MN{nodes: 5, edges: 5, domainSize: 567, dim: 81}")
     }
 
-    void testErase() {
+    GUM_TEST(Erase) {
       gum::MarkovNet< double > mn;
       _fill(mn);
       TS_ASSERT_THROWS(mn.erase(36), const gum::InvalidArgument&)
@@ -249,7 +249,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(mn.toString(), "MN{nodes: 4, edges: 3, domainSize: 189, dim: 51}")
     }
 
-    void testEraseWithNames() {
+    GUM_TEST(EraseWithNames) {
       gum::MarkovNet< double > mn;
       _fill(mn);
       TS_ASSERT_THROWS(mn.erase("36"), const gum::NotFound&)
@@ -261,7 +261,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(mn.toString(), "MN{nodes: 4, edges: 3, domainSize: 189, dim: 51}")
     }
 
-    void testToDot() {
+    GUM_TEST(ToDot) {
       gum::MarkovNet< double > mn
          = gum::MarkovNet< double >::fastPrototype("A--B--C;B--D;C--E;D--E--F");
       const auto s1 = mn.toDot();
@@ -270,7 +270,7 @@ namespace gum_tests {
       GUM_UNUSED(s2);
     }
 
-    void testFromBN() {
+    GUM_TEST(FromBN) {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D;C<-E->F<-G;F<-A");
       auto mn = gum::MarkovNet< double >::fromBN(bn);
 
@@ -307,7 +307,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(mn.graph(), bn.moralGraph())
     }
 
-    void testExistsEdge() {
+    GUM_TEST(ExistsEdge) {
       auto mn = gum::MarkovNet< double >::fastPrototype("A--B--C;C--D;E--F--G");
 
       TS_ASSERT(mn.existsEdge(0, 1))
@@ -320,7 +320,7 @@ namespace gum_tests {
       TS_ASSERT(!mn.existsEdge("C", "G"))
     }
 
-    void testMinimalCondSet() {
+    GUM_TEST(MinimalCondSet) {
       auto mn = gum::MarkovNet< double >::fastPrototype("A--B--C;C--D;E--F--G;B--E");
 
       TS_ASSERT_EQUALS(mn.minimalCondSet(0, {1, 2, 3, 4, 5, 6}), gum::NodeSet({1, 2}))
@@ -328,7 +328,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(mn.minimalCondSet(3, {0, 4, 5, 6}), gum::NodeSet({0, 4}))
     }
 
-    void testIndependence() {
+    GUM_TEST(Independence) {
       auto mn = gum::MarkovNet< double >::fastPrototype("A--B--C;C--D;E--F--G;B--E;D--G;X");
       TS_ASSERT(mn.isIndependent("D", "X", {}))
       TS_ASSERT(!mn.isIndependent("D", "A", {"C"}))
@@ -338,7 +338,7 @@ namespace gum_tests {
     }
 
 
-    void testFastPrototypeVarType() {
+    GUM_TEST(FastPrototypeVarType) {
       auto mn = gum::MarkovNet< float >::fastPrototype(
          "a{1|4|6}--b{1|-4|6};c{1|toto|6}--d{1.0|-4.0|6.0};e{1|-4|6.0}--f{1.0|-4.0|+6.0}");
       TS_ASSERT_EQUALS(mn.variable("a").varType(), gum::VarType::Integer)
@@ -349,12 +349,12 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(mn.variable("f").varType(), gum::VarType::Numerical)
     }
 
-    void testMonoClique() {
+    GUM_TEST(MonoClique) {
       auto mn2 = gum::MarkovNet< float >::fastPrototype("A--B");
       TS_GUM_ASSERT_THROWS_NOTHING(mn2.factor({"A", "B"}))
     }
 
-    void testShortCutAddFastVar() {
+    GUM_TEST(ShortCutAddFastVar) {
       gum::MarkovNet< double > mn;
 
       gum::NodeId i1, i2, i3;

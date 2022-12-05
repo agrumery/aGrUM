@@ -32,7 +32,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] LabelizedVariableTestSuite: public CxxTest::TestSuite {
     public:
-    void testCopy() {
+    GUM_TEST(Copy) {
       gum::LabelizedVariable var1("var1", "this is var1", 2);
       gum::LabelizedVariable var2("var2", "this is var2", 2);
 
@@ -45,7 +45,7 @@ namespace gum_tests {
       TS_ASSERT_DIFFERS(var4, var1)
     }
 
-    void testLabels() {
+    GUM_TEST(Labels) {
       gum::LabelizedVariable var1("var1", "this is var1", 0);
       TS_ASSERT_EQUALS(var1.domainSize(), (gum::Size)0)
       TS_ASSERT(var1.empty())
@@ -64,7 +64,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(var1.toString(), "var1:Labelized({4|3|2|1})")
     }
 
-    void testChangeLabel() {
+    GUM_TEST(ChangeLabel) {
       gum::LabelizedVariable var1("var1", "this is var1", 0);
       var1.addLabel("4").addLabel("3").addLabel("2").addLabel("1");
 
@@ -84,7 +84,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(var1.changeLabel(1000, "x"), const gum::OutOfBounds&)
     }
 
-    void testNumerical() {
+    GUM_TEST(Numerical) {
       gum::LabelizedVariable var1("var1", "this is var1", 0);
       var1.addLabel("4").addLabel("3").addLabel("2").addLabel("1");
 
@@ -95,7 +95,7 @@ namespace gum_tests {
     }
 
 
-    void testAndConstructorWithLabels() {
+    GUM_TEST(AndConstructorWithLabels) {
       gum::LabelizedVariable var1("var1", "this is var1", {"rouge", "vert", "bleu"});
       TS_ASSERT_EQUALS(var1.toString(), "var1:Labelized({rouge|vert|bleu})")
       TS_ASSERT_EQUALS(var1.posLabel("vert"), gum::Idx(1))

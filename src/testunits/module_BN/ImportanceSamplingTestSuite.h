@@ -63,7 +63,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] ImportanceSamplingTestSuite: public CxxTest::TestSuite {
     public:
-    void testImportanceBinaryTreeWithoutEvidence() {
+    GUM_TEST(ImportanceBinaryTreeWithoutEvidence) {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
 
@@ -86,7 +86,7 @@ namespace gum_tests {
     }
 
 
-    void testImportanceBinaryTreeWithEvidenceOnRoot() {
+    GUM_TEST(ImportanceBinaryTreeWithEvidenceOnRoot) {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "b";
@@ -109,7 +109,7 @@ namespace gum_tests {
     }
 
 
-    void testImportanceBinaryTreeWithEvidenceOnLeaf() {
+    GUM_TEST(ImportanceBinaryTreeWithEvidenceOnLeaf) {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "h";
@@ -133,7 +133,7 @@ namespace gum_tests {
       }
     }
 
-    void testImportanceBinaryTreeWithEvidenceOnMid() {
+    GUM_TEST(ImportanceBinaryTreeWithEvidenceOnMid) {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "e";
@@ -158,7 +158,7 @@ namespace gum_tests {
     }
 
 
-    void testImportanceBinaryTreeWithMultipleEvidence() {
+    GUM_TEST(ImportanceBinaryTreeWithMultipleEvidence) {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
 
@@ -186,7 +186,7 @@ namespace gum_tests {
     }
 
 
-    void testImportanceNaryTreeWithMultipleEvidence() {
+    GUM_TEST(ImportanceNaryTreeWithMultipleEvidence) {
       auto bn = gum::BayesNet< double >::fastPrototype(
          "a[4]->d[8]->f[3];b->d->g[5];b->e[4]->h;c->e;i[10]->j[3]->h");
       unsharpen(bn);
@@ -215,7 +215,7 @@ namespace gum_tests {
     }
 
 
-    void testImportanceSimpleBN() {
+    GUM_TEST(ImportanceSimpleBN) {
       auto bn = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
       unsharpen(bn);
 
@@ -273,7 +273,7 @@ namespace gum_tests {
     }
 
 
-    void testImportanceCplxBN() {
+    GUM_TEST(ImportanceCplxBN) {
       auto bn = gum::BayesNet< double >::fastPrototype(
          "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
          3);
@@ -333,7 +333,7 @@ namespace gum_tests {
       }
     }
 
-    void testImportanceEvidenceAsTargetOnCplxBN() {
+    GUM_TEST(ImportanceEvidenceAsTargetOnCplxBN) {
       auto bn = gum::BayesNet< double >::fastPrototype(
          "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
          3);
@@ -357,7 +357,7 @@ namespace gum_tests {
       }
     }
 
-    void testImportanceAsia() {
+    GUM_TEST(ImportanceAsia) {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/asia.bif"));
       gum::Size                nbrErr = (gum::Size)0;
@@ -382,7 +382,7 @@ namespace gum_tests {
     }
 
 
-    void testImportanceAlarm() {
+    GUM_TEST(ImportanceAlarm) {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = (gum::Size)0;
@@ -406,7 +406,7 @@ namespace gum_tests {
       }
     }
 
-    void testImportanceDiabetes() {
+    GUM_TEST(ImportanceDiabetes) {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/Diabetes.bif"));
       gum::Size                nbrErr = (gum::Size)0;
@@ -428,7 +428,7 @@ namespace gum_tests {
     }
 
 
-    void testImportanceInfListener() {
+    GUM_TEST(ImportanceInfListener) {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = (gum::Size)0;

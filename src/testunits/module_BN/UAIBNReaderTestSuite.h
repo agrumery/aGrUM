@@ -41,7 +41,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] UAIBNReaderTestSuite: public CxxTest::TestSuite {
     public:
-    void testConstuctor() {
+    GUM_TEST(Constuctor) {
       std::string             file = GET_RESSOURCES_PATH("uai/BNUAIReader_file1.uai");
       gum::BayesNet< double > net;
 
@@ -50,7 +50,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(delete reader)
     }
 
-    void testRead_file1() {
+    GUM_TEST(Read_file1) {
       std::string              file = GET_RESSOURCES_PATH("uai/BNUAIReader_file1.uai");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
 
@@ -65,7 +65,7 @@ namespace gum_tests {
       }
     }
 
-    void testRead_file2_float() {
+    GUM_TEST(Read_file2_float) {
       std::string                file = GET_RESSOURCES_PATH("uai/BNUAIReader_file2.uai");
       gum::BayesNet< double >*   net  = new gum::BayesNet< double >();
       gum::UAIBNReader< double > reader(net, file);
@@ -114,7 +114,7 @@ namespace gum_tests {
       }
     }
 
-    void testRead_dog_double() {
+    GUM_TEST(Read_dog_double) {
       // from Charniak, Bayesian networks Without Tears, AI Magazine, 1991
       std::string                file = GET_RESSOURCES_PATH("uai/dog.uai");
       gum::BayesNet< double >*   net  = new gum::BayesNet< double >();
@@ -137,7 +137,7 @@ namespace gum_tests {
       }
     }
 
-    void testRead_file3() {
+    GUM_TEST(Read_file3) {
       std::string                file = GET_RESSOURCES_PATH("uai/BNUAIReader_file3.uai");
       gum::BayesNet< double >*   net  = new gum::BayesNet< double >();
       gum::UAIBNReader< double > reader(net, file);
@@ -477,7 +477,7 @@ namespace gum_tests {
       }
     }
 
-    void testDogRead() {
+    GUM_TEST(DogRead) {
       std::string                file = GET_RESSOURCES_PATH("uai/dog.uai");
       gum::BayesNet< double >    net;
       gum::UAIBNReader< double > reader(&net, file);
@@ -486,7 +486,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed())
       TS_ASSERT_EQUALS(nbErr, (gum::Size)0)
     }
-    void testAsiaRead() {
+    GUM_TEST(AsiaRead) {
       std::string                file = GET_RESSOURCES_PATH("uai/asia.uai");
       gum::BayesNet< double >    net;
       gum::UAIBNReader< double > reader(&net, file);

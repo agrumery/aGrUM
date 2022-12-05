@@ -71,13 +71,13 @@ namespace gum_tests {
 
     void tearDown() { delete bn; }
 
-    void testConstructor() {
+    GUM_TEST(Constructor) {
       gum::UAIBNWriter< double >* writer = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::UAIBNWriter< double >())
       delete writer;
     }
 
-    void testWriter_ostream() {
+    GUM_TEST(Writer_ostream) {
       gum::UAIBNWriter< double > writer;
       std::string                file = GET_RESSOURCES_PATH("outputs/uaibn_generated.uai");
       // Uncomment this to check the ouput

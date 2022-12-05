@@ -60,14 +60,14 @@ namespace gum_tests {
       delete var5;
     }
 
-    void testConstructor() {
+    GUM_TEST(Constructor) {
       gum::BayesNet< double >* topology = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(topology = new gum::BayesNet< double >())
 
       TS_GUM_ASSERT_THROWS_NOTHING(if (topology) delete topology)
     }
 
-    void testInsertion() {
+    GUM_TEST(Insertion) {
       gum::BayesNet< double >  topo;
       gum::List< gum::NodeId > idList;
 
@@ -92,7 +92,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&topo.variable(idList[4])), *var5)
     }
 
-    void testArcInsertion() {
+    GUM_TEST(ArcInsertion) {
       gum::BayesNet< double >  topo;
       gum::List< gum::NodeId > idList;
 
@@ -112,7 +112,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(topo.dag().sizeArcs(), (gum::Size)6)
     }
 
-    void testEraseVar() {
+    GUM_TEST(EraseVar) {
       gum::BayesNet< double >  topo;
       gum::List< gum::NodeId > idList;
 
@@ -143,7 +143,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(topo.dag().sizeArcs(), (gum::Size)0)
     }
 
-    void testEraseArc() {
+    GUM_TEST(EraseArc) {
       gum::BayesNet< double >  topo;
       gum::List< gum::NodeId > idList;
 
@@ -173,7 +173,7 @@ namespace gum_tests {
       TS_ASSERT(topo.dag().emptyArcs())
     }
 
-    void testIterator() {
+    GUM_TEST(Iterator) {
       gum::BayesNet< double >  topo;
       gum::List< gum::NodeId > idList;
 
@@ -181,7 +181,7 @@ namespace gum_tests {
         TS_ASSERT(idList.exists(node))
     }
 
-    void testMoralGraph() {
+    GUM_TEST(MoralGraph) {
       gum::BayesNet< double >  topo;
       gum::List< gum::NodeId > idList;
 
@@ -192,7 +192,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(graph, getRealMoralGraph(topo, idList))
     }
 
-    void testTopologicalOrder() {
+    GUM_TEST(TopologicalOrder) {
       gum::BayesNet< double >  topo;
       gum::List< gum::NodeId > idList;
 

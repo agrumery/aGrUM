@@ -45,7 +45,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] ThreeOffTwoTestSuite: public CxxTest::TestSuite {
     public:
-    void test_3off2_asia_nocorr() {
+    GUM_TEST(_3off2_asia_nocorr) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -83,7 +83,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(graph.arcs().size(), (gum::Size)0)
     }
 
-    void test_3off2_asia_MDLcorr() {
+    GUM_TEST(_3off2_asia_MDLcorr) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -127,7 +127,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(graph.edges().size(), (gum::Size)3)
     }
 
-    void test_3off2_asia_NMLcorr() {
+    GUM_TEST(_3off2_asia_NMLcorr) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -173,7 +173,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(latents.size(), (gum::Size)2)
     }
 
-    void test_3off2_asia_dag() {
+    GUM_TEST(_3off2_asia_dag) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -264,7 +264,7 @@ namespace gum_tests {
       */
     }
 
-    void test_3off2_asia_constraints() {
+    GUM_TEST(_3off2_asia_constraints) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -318,7 +318,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(latents.size(), (gum::Size)3)
     }
 
-    void test_MIIC_asia_NMLcorr() {
+    GUM_TEST(_MIIC_asia_NMLcorr) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -367,7 +367,7 @@ namespace gum_tests {
       gum::DAG dag = search.learnStructure(cI, graph);
     }
 
-    void test_MIIC_asia_constraints() {
+    GUM_TEST(_MIIC_asia_constraints) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();

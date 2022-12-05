@@ -29,7 +29,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] ScoringCacheTestSuite: public CxxTest::TestSuite {
     public:
-    void test1() {
+    GUM_TEST(1) {
       gum::learning::IdCondSet    set1;
       gum::learning::ScoringCache cache;
 

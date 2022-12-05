@@ -55,7 +55,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] LocalSearchWithTabuListTestSuite: public CxxTest::TestSuite {
     public:
-    void test_asia() {
+    GUM_TEST(_asia) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();

@@ -115,7 +115,7 @@ namespace gum_tests {
     void clearCNet() { delete cn; }
 
     // not dynamic (2U network) - with evidence
-    void testCNMonteCarloSamplingInference() {
+    GUM_TEST(CNMonteCarloSamplingInference) {
       initCNet();
 
       // using gum::LazyPropagation<double> by default
@@ -193,7 +193,7 @@ namespace gum_tests {
     }   // end of : testCNMonteCarloSamplingInference (2U network)
 
     // dynamic (dynaCheese) - strong indep
-    void testCNMonteCarloSamplingInferenceDStrong() {
+    GUM_TEST(CNMonteCarloSamplingInferenceDStrong) {
       initDCNet();
 
       using exp = std::vector< double >;
@@ -249,7 +249,7 @@ namespace gum_tests {
     }   // end of : testCNMonteCarloSamplingInferenceDStrong
 
     // dynamic (dynaCheese) - repetitive indep
-    void testCNMonteCarloSamplingInferenceDRep() {
+    GUM_TEST(CNMonteCarloSamplingInferenceDRep) {
       initDCNet();
       using exp = std::vector< double >;
 
@@ -302,7 +302,7 @@ namespace gum_tests {
     }   // end of : testCNMonteCarloSamplingInferenceDRep (dynamic - dynacheese)
 
     // with dynamic network
-    void testCNMonteCarloSamplingListener() {
+    GUM_TEST(CNMonteCarloSamplingListener) {
       initDCNet();
       gum::credal::CNMonteCarloSampling< double > mcs(*cn);
 

@@ -28,17 +28,17 @@ namespace gum_tests {
 
   class [[maybe_unused]] ArcTestSuite: public CxxTest::TestSuite {
     public:
-    void testConstructor1() {
+    GUM_TEST(Constructor1) {
       TS_GUM_ASSERT_THROWS_NOTHING(gum::Arc arc1(1, 2))
       TS_GUM_ASSERT_THROWS_NOTHING(gum::Arc arc1(1, 1))
     }
 
-    void testConstructor2() {
+    GUM_TEST(Constructor2) {
       gum::Arc arc1(1, 2);
       TS_GUM_ASSERT_THROWS_NOTHING(gum::Arc copy(arc1))
     }
 
-    void testEquality() {
+    GUM_TEST(Equality) {
       gum::Arc arc1(1, 2);
       gum::Arc arc2(2, 1);
 
@@ -60,7 +60,7 @@ namespace gum_tests {
       TS_ASSERT_DIFFERS(arc1, arc2)
     }
 
-    void testGetters1() {
+    GUM_TEST(Getters1) {
       gum::Arc arc1((gum::NodeId)1, (gum::NodeId)2);
       gum::Arc arc2((gum::NodeId)2, (gum::NodeId)1);
       gum::Arc arc3((gum::NodeId)3, (gum::NodeId)4);
@@ -87,14 +87,14 @@ namespace gum_tests {
       TS_ASSERT_THROWS_ANYTHING(n = copy.other((gum::NodeId)42))
     }
 
-    void testGetters2() {
+    GUM_TEST(Getters2) {
       gum::Arc arc1(1, 2);
 
       TS_ASSERT_EQUALS(arc1.tail(), (gum::NodeId)1)
       TS_ASSERT_EQUALS(arc1.head(), (gum::NodeId)2)
     }
 
-    void testHash() {
+    GUM_TEST(Hash) {
       gum::HashTable< gum::Arc, gum::NodeId > hash;
 
       for (gum::NodeId x = 0; x < 1000; ++x) {

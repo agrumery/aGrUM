@@ -242,7 +242,7 @@ namespace gum_tests {
     }
 
     public:
-    void testCreationMin() {
+    GUM_TEST(CreationMin) {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3);
       gum::aggregator::Min< double > p;
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d)
@@ -256,7 +256,7 @@ namespace gum_tests {
       }
     }
 
-    void testCreationMax() {
+    GUM_TEST(CreationMax) {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3);
       gum::aggregator::Max< double > p;
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d)
@@ -270,7 +270,7 @@ namespace gum_tests {
       }
     }
 
-    void testCreationCount() {
+    GUM_TEST(CreationCount) {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3);
       gum::aggregator::Count< double > p((gum::Idx)2);
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d)
@@ -284,7 +284,7 @@ namespace gum_tests {
       }
     }
 
-    void testCreationForall() {
+    GUM_TEST(CreationForall) {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3);
       gum::aggregator::Forall< double > p((gum::Idx)2);
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d)
@@ -298,7 +298,7 @@ namespace gum_tests {
       }
     }
 
-    void testCreationExists() {
+    GUM_TEST(CreationExists) {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3);
       gum::aggregator::Exists< double > p((gum::Idx)2);
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d)
@@ -312,7 +312,7 @@ namespace gum_tests {
       }
     }
 
-    void testCreationOR() {
+    GUM_TEST(CreationOR) {
       gum::LabelizedVariable        a("a", "", 2), b("b", "", 4), c("c", "", 2), d("d", "", 2);
       gum::aggregator::Or< double > p;
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d)
@@ -327,7 +327,7 @@ namespace gum_tests {
       }
     }
 
-    void testCreationAND() {
+    GUM_TEST(CreationAND) {
       gum::LabelizedVariable         a("a", "", 2), b("b", "", 4), c("c", "", 2), d("d", "", 2);
       gum::aggregator::And< double > p;
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d)
@@ -342,7 +342,7 @@ namespace gum_tests {
       }
     }
 
-    void testCreationMedian3() {
+    GUM_TEST(CreationMedian3) {
       gum::LabelizedVariable            a("a", "", 4), b("b", "", 4), c("c", "", 4), d("d", "", 4);
       gum::aggregator::Median< double > p;
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d)
@@ -357,7 +357,7 @@ namespace gum_tests {
       }
     }
 
-    void testCreationMedian4() {
+    GUM_TEST(CreationMedian4) {
       gum::LabelizedVariable a("a", "", 4), b("b", "", 4), c("c", "", 4), d("d", "", 4),
          e("e", "", 4);
       gum::aggregator::Median< double > p;
@@ -373,7 +373,7 @@ namespace gum_tests {
       }
     }
 
-    void testCreationAmplitude() {
+    GUM_TEST(CreationAmplitude) {
       gum::LabelizedVariable a("a", "", 4), b("b", "", 4), c("c", "", 4), d("d", "", 4),
          e("e", "", 4);
       gum::aggregator::Amplitude< double > p;
@@ -389,7 +389,7 @@ namespace gum_tests {
       }
     }
 
-    void testPotentialMin() {
+    GUM_TEST(PotentialMin) {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3);
 
       gum::Potential< int > p(new gum::aggregator::Min< int >());
@@ -411,7 +411,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(p.fill(0), const gum::OperationNotAllowed&)
     }
 
-    void testCreationSum() {
+    GUM_TEST(CreationSum) {
       try {
         gum::RangeVariable a("a", "", 0, 8), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3);
         gum::aggregator::Sum< double > p;
@@ -444,7 +444,7 @@ namespace gum_tests {
     }
 
     public:
-    void testOr_ZeroParent() {
+    GUM_TEST(Or_ZeroParent) {
       gum::LabelizedVariable a("a", "", 2), b("b", "", 2);
 
       std::string                   res0 = "1-0";
@@ -466,7 +466,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(s, res1)
     }
 
-    void testAnd_ZeroParent() {
+    GUM_TEST(And_ZeroParent) {
       gum::LabelizedVariable a("a", "", 2), b("b", "", 2);
 
       std::string                    res0 = "0-1";
@@ -488,7 +488,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(s, res1)
     }
 
-    void testExists_ZeroParent() {
+    GUM_TEST(Exists_ZeroParent) {
       gum::LabelizedVariable a("a", "", 2), b("b", "", 4);
 
       std::string                       res0 = "1-0";
@@ -510,7 +510,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(s, res1)
     }
 
-    void testForall_ZeroParent() {
+    GUM_TEST(Forall_ZeroParent) {
       gum::LabelizedVariable a("a", "", 2), b("b", "", 4);
 
       std::string                       res0 = "0-1";
@@ -532,7 +532,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(s, res1)
     }
 
-    void testMin_ZeroParent() {
+    GUM_TEST(Min_ZeroParent) {
       gum::LabelizedVariable a("a", "", 4), b("b", "", 4);
 
       std::string                    res0 = "0-0-0-1";   // min of zero value is +infinity
@@ -554,7 +554,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(s, res1)
     }
 
-    void testMax_ZeroParent() {
+    GUM_TEST(Max_ZeroParent) {
       gum::LabelizedVariable a("a", "", 4), b("b", "", 4);
 
       std::string                    res0 = "1-0-0-0";   // max of zero value is -infinity
@@ -576,7 +576,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(s, res1)
     }
 
-    void testCount_ZeroParent() {
+    GUM_TEST(Count_ZeroParent) {
       gum::LabelizedVariable a("a", "", 4), b("b", "", 2);
 
       std::string                      res0 = "1-0-0-0";
@@ -598,7 +598,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(s, res1)
     }
 
-    void testAmplitude_ZeroParent() {
+    GUM_TEST(Amplitude_ZeroParent) {
       gum::LabelizedVariable a("a", "", 4), b("b", "", 2);
 
       std::string                          res0 = "1-0-0-0";
@@ -620,7 +620,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(s, res1)
     }
 
-    void testMedian_ZeroParent() {
+    GUM_TEST(Median_ZeroParent) {
       gum::LabelizedVariable a("a", "", 4), b("b", "", 2);
 
       std::string                       res0 = "1-0-0-0";

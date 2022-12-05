@@ -45,7 +45,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] BNdistanceTestSuite: public CxxTest::TestSuite {
     public:
-    void testConstructor() {
+    GUM_TEST(Constructor) {
       gum::BayesNet< double > net1;
       {
         gum::BIFReader< double > reader(&net1, GET_RESSOURCES_PATH("bif/BIFReader_file2.bif"));
@@ -73,7 +73,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(gum::ExactBNdistance< double > kl(net2, net3))
     }
 
-    void testDifficulty1() {
+    GUM_TEST(Difficulty1) {
       gum::BayesNet< double > net2;
       {
         gum::BIFReader< double > reader(&net2, GET_RESSOURCES_PATH("bif/BIFReader_file3.bif"));
@@ -95,7 +95,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(kl2.difficulty(), gum::Complexity::Heavy)
     }
 
-    void testKLComputation() {
+    GUM_TEST(KLComputation) {
       gum::BayesNet< double > net3;
       {
         gum::BIFReader< double > reader(&net3, GET_RESSOURCES_PATH("bif/BIFReader_file3.bif"));
@@ -144,7 +144,7 @@ namespace gum_tests {
       }
     }
 
-    void testExactValues() {
+    GUM_TEST(ExactValues) {
       gum::BayesNet< double > netP;
       {
         gum::BIFReader< double > reader(&netP, GET_RESSOURCES_PATH("bif/bnP.bif"));
@@ -170,7 +170,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(kl.bhattacharya(), 0.0529255, 1e-7)
     }
 
-    void testGibbsValues() {
+    GUM_TEST(GibbsValues) {
       gum::BayesNet< double > netP;
       {
         gum::BIFReader< double > reader(&netP, GET_RESSOURCES_PATH("bif/bnP.bif"));

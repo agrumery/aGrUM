@@ -60,7 +60,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] ShaferShenoyLIMIDInferenceTestSuite: public CxxTest::TestSuite {
     public:
-    void testConstructor() {
+    GUM_TEST(Constructor) {
       std::string                     file = GET_RESSOURCES_PATH("ID/decAsia.xml");
       gum::InfluenceDiagram< double > net;
       gum::BIFXMLIDReader< double >   reader(&net, file);
@@ -71,7 +71,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(if (dIDI != nullptr) delete dIDI)
     }
 
-    void testInferenceWithOilWildCater() {
+    GUM_TEST(InferenceWithOilWildCater) {
       std::string                     file = GET_RESSOURCES_PATH("ID/OilWildcatter.xml");
       gum::InfluenceDiagram< double > net;
       gum::BIFXMLIDReader< double >   reader(&net, file);
@@ -115,7 +115,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(dIDI.meanVar("Reward").second, 7648.750, TS_GUM_SMALL_ERROR)
     }
 
-    void testInferenceWithOilWildCaterWithEvidenceOnDecisionNode() {
+    GUM_TEST(InferenceWithOilWildCaterWithEvidenceOnDecisionNode) {
       std::string                     file = GET_RESSOURCES_PATH("ID/OilWildcatter.xml");
       gum::InfluenceDiagram< double > net;
       gum::BIFXMLIDReader< double >   reader(&net, file);
@@ -169,7 +169,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(dIDI.MEU().first, 20, TS_GUM_SMALL_ERROR)
       TS_ASSERT_DELTA(dIDI.MEU().second, 10800, TS_GUM_SMALL_ERROR)
     }
-    void testInferenceWithOilWildCaterWithEvidenceOnChanceNode() {
+    GUM_TEST(InferenceWithOilWildCaterWithEvidenceOnChanceNode) {
       std::string                     file = GET_RESSOURCES_PATH("ID/OilWildcatter.xml");
       gum::InfluenceDiagram< double > net;
       gum::BIFXMLIDReader< double >   reader(&net, file);
@@ -223,7 +223,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(dIDI.MEU().first, 50, TS_GUM_SMALL_ERROR)
       TS_ASSERT_DELTA(dIDI.MEU().second, 0, TS_GUM_SMALL_ERROR)
     }
-    void testInferenceWithDecAsia() {
+    GUM_TEST(InferenceWithDecAsia) {
       std::string                     file = GET_RESSOURCES_PATH("ID/decAsia.xml");
       gum::InfluenceDiagram< double > net;
       gum::BIFXMLIDReader< double >   reader(&net, file);
@@ -243,7 +243,7 @@ namespace gum_tests {
       delete dIDI;
     }
 
-    void testFromBug() {
+    GUM_TEST(FromBug) {
       gum::InfluenceDiagram< double > net;
 
       auto c  = net.add(gum::LabelizedVariable("c", "chance variable", 2));
@@ -348,7 +348,7 @@ namespace gum_tests {
       return model;
     }
 
-    void testBugFromNeapolitan1() {
+    GUM_TEST(BugFromNeapolitan1) {
       auto                                      model = buildNeapolitanModel_();
       gum::ShaferShenoyLIMIDInference< double > inf(&model);
       inf.makeInference();
@@ -356,7 +356,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(inf.optimalDecision("Buy").sum(), 9)
     }
 
-    void testBugFromNeapolitan2() {
+    GUM_TEST(BugFromNeapolitan2) {
       auto                                      model = buildNeapolitanModel_();
       gum::ShaferShenoyLIMIDInference< double > inf(&model);
 
@@ -383,7 +383,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(inf.optimalDecision("Buy").sum(), 9)
     }
 
-    void testNewStructure() {
+    GUM_TEST(NewStructure) {
       {
         auto infdiag = gum::InfluenceDiagram< double >::fastPrototype("*D1->Z->*D2->X->$U");
         auto ieid    = gum::ShaferShenoyLIMIDInference< double >(&infdiag);
@@ -414,7 +414,7 @@ namespace gum_tests {
       }
     }
 
-    void testSolvability() {
+    GUM_TEST(Solvability) {
       {
         auto infdiag = gum::InfluenceDiagram< double >::fastPrototype("*D1->Z->*D2->X->$U<-Y");
         auto ieid    = gum::ShaferShenoyLIMIDInference< double >(&infdiag);
@@ -433,7 +433,7 @@ namespace gum_tests {
       }
     }
 
-    void testNoForgettingAssumption() {
+    GUM_TEST(NoForgettingAssumption) {
       // From Evaluating IDs using LIMIDS, Nillson et Lauritzen, 2000
       auto infdiag = gum::InfluenceDiagram< double >::fastPrototype(
          "*D1->$U3<-R1->R2->R3<-*D4->$U4<-R4<-R1<-*D2;"
@@ -478,7 +478,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(dag.parents(infdiag.idFromName("U4")), infdiag.nodeset({"R4", "D4"}))
     }
 
-    void testNoForgettingAssumption2() {
+    GUM_TEST(NoForgettingAssumption2) {
       // from LIMIDS of decision Problems, Lauritzen et Nilsson, 1999
       // p33
       auto limids = gum::InfluenceDiagram< double >::fastPrototype(
@@ -511,7 +511,7 @@ namespace gum_tests {
       // GUM_TRACE_VAR(noForgetting.toDot());
     }
 
-    void testJunctionTree() {
+    GUM_TEST(JunctionTree) {
       // From Evaluating IDs using LIMIDS, Nillson et Lauritzen, 2000
       auto infdiag = gum::InfluenceDiagram< double >::fastPrototype(
          "*D1->$U3<-R1->R2->R3<-*D4->$U4<-R4<-R1<-*D2;"
@@ -526,7 +526,7 @@ namespace gum_tests {
       ieid.makeInference();
     }
 
-    void testPinball() {
+    GUM_TEST(Pinball) {
       std::string                     file = GET_RESSOURCES_PATH("ID/Pinball.xml");
       gum::InfluenceDiagram< double > net;
       gum::BIFXMLIDReader< double >   reader(&net, file);
@@ -549,7 +549,7 @@ namespace gum_tests {
                           .fillWith({0.185, 0.63, 0.185}))
     }
 
-    void testDavidAndescavage() {
+    GUM_TEST(DavidAndescavage) {
       std::string                     file = GET_RESSOURCES_PATH("ID/testFromDavidAndescavage.xml");
       gum::InfluenceDiagram< double > net;
       gum::BIFXMLIDReader< double >   reader(&net, file);
@@ -577,7 +577,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
-    void testBugWithEvidence() {
+    GUM_TEST(BugWithEvidence) {
       auto net = gum::InfluenceDiagram< double >::fastPrototype("c1<-c->$u<-*d");
       net.cpt("c").fillWith({0.5, 0.5});
       net.cpt("c1").fillWith({1, 0, 0, 1});
@@ -598,7 +598,7 @@ namespace gum_tests {
          TS_GUM_SMALL_ERROR)
     }
 
-    void testBugWithEvidence2() {
+    GUM_TEST(BugWithEvidence2) {
       auto net = gum::InfluenceDiagram< double >::fastPrototype("c1<-c->$u<-*d");
       net.cpt("c").fillWith({0.5, 0.5});
       net.cpt("c1").fillWith({1, 0, 0, 1});
@@ -618,7 +618,7 @@ namespace gum_tests {
     }
 
 
-    void testBugWithEvidence3() {
+    GUM_TEST(BugWithEvidence3) {
       auto net = gum::InfluenceDiagram< double >::fastPrototype("c1<-c->$u<-*d");
       net.cpt("c").fillWith({0.5, 0.5});
       net.cpt("c1").fillWith({1, 0, 0, 1});
@@ -643,7 +643,7 @@ namespace gum_tests {
     }
 
 
-    void testBugWithEvidence4() {
+    GUM_TEST(BugWithEvidence4) {
       auto net = gum::InfluenceDiagram< double >::fastPrototype("c1<-c->$u<-*d");
       net.cpt("c").fillWith({0.5, 0.5});
       net.cpt("c1").fillWith({1, 0, 0, 1});
@@ -666,7 +666,7 @@ namespace gum_tests {
          TS_GUM_SMALL_ERROR)
     }
 
-    void testInferenceWithClemenFigure4_12() {
+    GUM_TEST(InferenceWithClemenFigure4_12) {
       try {
         std::string                     file = GET_RESSOURCES_PATH("ID/ClemenFigure04.12.xml");
         gum::InfluenceDiagram< double > net;
@@ -692,7 +692,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
-    void testNegativeUtilityNonRegression() {
+    GUM_TEST(NegativeUtilityNonRegression) {
       auto fs = gum::InfluenceDiagram< double >::fastPrototype(
          "ActualUtility{U1|U2}->$Utility<-*Options{Opt0|Opt1}");
       fs.cpt("ActualUtility").fillWith(1).normalize();
@@ -707,7 +707,7 @@ namespace gum_tests {
          TS_GUM_SMALL_ERROR)
     }
 
-    void testUtilityForDeterministicDecision() {
+    GUM_TEST(UtilityForDeterministicDecision) {
       auto defer = gum::InfluenceDiagram< double >::fastPrototype(
          "*D{D1|D2}->$L<-A{A1|A2}<-H->E{E1|E2|E3}->A;E->L");
       defer.cpt("H").fillWith(1).normalize();   // uniform for H
@@ -743,7 +743,7 @@ namespace gum_tests {
     }
 
 
-    void testOtherNonRegression() {
+    GUM_TEST(OtherNonRegression) {
       auto infdiag
          = gum::InfluenceDiagram< double >::fastPrototype("C1->*D1->C2->$U<-C3<-*D2<-C1->U");
       infdiag.cpt("C1").fillWith({0.6, 0.4});
@@ -764,7 +764,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(meu.second, m2 - m * m, TS_GUM_SMALL_ERROR)
     }
 
-    void testNonRegressionFromMikailo() {
+    GUM_TEST(NonRegressionFromMikailo) {
       auto diag   = gum::InfluenceDiagram< double >::fastPrototype("*D->L2->L3->$U");
       auto iediag = gum::ShaferShenoyLIMIDInference< double >(&diag);
       iediag.addEvidence("D", 0);
@@ -795,7 +795,7 @@ namespace gum_tests {
          TS_GUM_SMALL_ERROR);
     }
 
-    void testNonRegressionFromMikailo2() {
+    GUM_TEST(NonRegressionFromMikailo2) {
       std::string                     file = GET_RESSOURCES_PATH("ID/mikailo.bifxml");
       gum::InfluenceDiagram< double > diag;
       gum::BIFXMLIDReader< double >   reader(&diag, file);
@@ -828,7 +828,7 @@ namespace gum_tests {
       }
     }
 
-    void testNonRegression_BDatko() {
+    GUM_TEST(NonRegression_BDatko) {
       // from Learning Bayesian Networks by Richard E. Neapolitan page 264, Chapter 5.
       auto diag = gum::InfluenceDiagram< double >::fastPrototype(
          "Test{positive|negative}->*D{Buy Spiffycar|Do not buy}->$U<-Tran{bad|good};"

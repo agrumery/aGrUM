@@ -29,7 +29,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] DBCellTestSuite: public CxxTest::TestSuite {
     public:
-    void test_cell1() {
+    GUM_TEST(_cell1) {
       const std::vector< std::string > miss{"N/A", "???"};
 
       gum::learning::DBCell cell1;

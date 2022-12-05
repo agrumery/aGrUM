@@ -32,7 +32,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] SpanningForesPrimTestSuite: public CxxTest::TestSuite {
     public:
-    void test1() {
+    GUM_TEST(1) {
       gum::UndiGraph g;
 
       gum::NodeId id1  = g.addNode();

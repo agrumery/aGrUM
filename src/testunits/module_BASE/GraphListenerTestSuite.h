@@ -210,7 +210,7 @@ namespace gum_tests {
     }
 
     public:
-    void testDAG() {
+    GUM_TEST(DAG) {
       gum::DAG g1;
       gum::DAG g2;
 
@@ -275,7 +275,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(c2.arcs(), 0 + 0)
     }
 
-    void testUndiGraph() {
+    GUM_TEST(UndiGraph) {
       gum::UndiGraph g1;
       gum::UndiGraph g2;
 
@@ -340,7 +340,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(c2.edges(), 0 + 0)
     }
 
-    void testMixedGraph() {
+    GUM_TEST(MixedGraph) {
       gum::MixedGraph g1;
       gum::MixedGraph g2;
 
@@ -446,7 +446,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(c2.arcs(), 0 + 0)
     }
 
-    void testUndiGraphWithGraphListener() {
+    GUM_TEST(UndiGraphWithGraphListener) {
       gum::UndiGraph g;
 
       UndiGraphCounter c(&g);
@@ -472,7 +472,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(c.edges(), 0)
     }
 
-    void testDiGraphWithGraphListener() {
+    GUM_TEST(DiGraphWithGraphListener) {
       gum::DiGraph g;
 
       DiGraphCounter c(&g);
@@ -498,7 +498,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(c.arcs(), 0)
     }
 
-    void testDAGWithGraphListener() {
+    GUM_TEST(DAGWithGraphListener) {
       gum::DAG g;
 
       DiGraphCounter c(&g);
@@ -529,7 +529,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(c.arcs(), 0)
     }
 
-    void testMixedGraphWithGraphListener() {
+    GUM_TEST(MixedGraphWithGraphListener) {
       gum::MixedGraph g;
 
       MixedGraphCounter c(&g);

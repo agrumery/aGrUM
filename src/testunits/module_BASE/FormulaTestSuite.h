@@ -35,7 +35,7 @@ namespace gum_tests {
 
     void tearDown() {}
 
-    void testConstantInt() {
+    GUM_TEST(ConstantInt) {
       try {
         // Arrange
         std::string  eq       = "1";
@@ -48,7 +48,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testConstantFloat() {
+    GUM_TEST(ConstantFloat) {
       try {
         // Arrange
         std::string  eq       = "0.99";
@@ -61,7 +61,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testMultiplication() {
+    GUM_TEST(Multiplication) {
       try {
         // Arrange
         std::string  eq       = "10 * 2";
@@ -74,7 +74,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testDivision() {
+    GUM_TEST(Division) {
       try {
         // Arrange
         std::string  eq       = "10 / 2";
@@ -87,7 +87,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testAddition() {
+    GUM_TEST(Addition) {
       try {
         // Arrange
         std::string  eq       = "10 + 2";
@@ -100,7 +100,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testSubstraction() {
+    GUM_TEST(Substraction) {
       try {
         // Arrange
         std::string  eq       = "10 - 2";
@@ -113,7 +113,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testSimplePriority1() {
+    GUM_TEST(SimplePriority1) {
       try {
         // Arrange
         std::string  eq       = "10 - 2 * 5";
@@ -126,7 +126,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testSimplePriority2() {
+    GUM_TEST(SimplePriority2) {
       try {
         // Arrange
         std::string  eq       = "10 * 2 - 5";
@@ -139,7 +139,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testComplexPriority() {
+    GUM_TEST(ComplexPriority) {
       try {
         // Arrange
         std::string  eq       = "5 + ( ( 1 + 2 ) * 4 ) - 3";
@@ -152,7 +152,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testMinusSign() {
+    GUM_TEST(MinusSign) {
       try {
         // Arrange
         std::string  eq       = "-3";
@@ -165,7 +165,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testExp() {
+    GUM_TEST(Exp) {
       try {
         // Arrange
         std::string  eq       = "exp(0.001)";
@@ -178,7 +178,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testLog() {
+    GUM_TEST(Log) {
       try {
         // Arrange
         std::string  eq       = "1 + log(1)";
@@ -191,7 +191,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testLn() {
+    GUM_TEST(Ln) {
       try {
         // Arrange
         std::string  eq       = "2 + ln(1)";
@@ -204,7 +204,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testSqrt() {
+    GUM_TEST(Sqrt) {
       try {
         // Arrange
         std::string  eq       = "1 + sqrt(4)";
@@ -217,7 +217,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testPow() {
+    GUM_TEST(Pow) {
       try {
         // Arrange
         std::string  eq       = "1 + pow(2,2)";
@@ -230,7 +230,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testGoal() {
+    GUM_TEST(Goal) {
       try {
         // Arrange
         std::string  eq       = "1-exp(-0.001*2)";
@@ -243,7 +243,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testVariables() {
+    GUM_TEST(Variables) {
       try {
         // Arrange
         double       lambda   = 0.001;
@@ -265,7 +265,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testScientificNotation1() {
+    GUM_TEST(ScientificNotation1) {
       try {
         // Arrange
         std::string  eq       = "3.72663E-06";
@@ -278,7 +278,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testScientificNotation2() {
+    GUM_TEST(ScientificNotation2) {
       try {
         // Arrange
         std::string  eq       = "1 - 1.0e-9";
@@ -291,7 +291,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testScientificNotation3() {
+    GUM_TEST(ScientificNotation3) {
       try {
         // Arrange
         std::string  eq       = "1 - 1e-9";
@@ -304,7 +304,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testOperatorUnary() {
+    GUM_TEST(OperatorUnary) {
       try {
         // Arrange
         auto a        = gum::Formula("2*5-6");
@@ -317,7 +317,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testOperatorPlus() {
+    GUM_TEST(OperatorPlus) {
       try {
         // Arrange
         auto a        = gum::Formula("2*5-6");
@@ -331,7 +331,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testOperatorMinus() {
+    GUM_TEST(OperatorMinus) {
       try {
         // Arrange
         auto a        = gum::Formula("2*5-6");
@@ -345,7 +345,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testOperatorTimes() {
+    GUM_TEST(OperatorTimes) {
       try {
         // Arrange
         auto a        = gum::Formula("2*5-6");
@@ -359,7 +359,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testOperatorDivides() {
+    GUM_TEST(OperatorDivides) {
       try {
         // Arrange
         auto a        = gum::Formula("2*5-6");
@@ -373,7 +373,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testDoubleImplicitConversion() {
+    GUM_TEST(DoubleImplicitConversion) {
       try {
         // Arrange
         auto a        = gum::Formula("2*5-6");
@@ -386,7 +386,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testDoubleExplicitConversion() {
+    GUM_TEST(DoubleExplicitConversion) {
       try {
         // Arrange
         auto a        = gum::Formula("2*5-6");
@@ -399,7 +399,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testDoubleInitialisation() {
+    GUM_TEST(DoubleInitialisation) {
       // Arrange
       try {
         auto expected = 3.14;
@@ -410,7 +410,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testToString() {
+    GUM_TEST(ToString) {
       // Arrange
       auto f        = gum::Formula("2*5+6");
       auto expected = std::to_string(2.0 * 5.0 + 6.0);
@@ -421,7 +421,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(result, expected)
     }
 
-    void testToStream() {
+    GUM_TEST(ToStream) {
       // Arrange
       auto              f        = gum::Formula("2*5+6");
       auto              expected = std::to_string(2 * 5 + 6);

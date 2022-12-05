@@ -30,7 +30,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] DBRowGeneratorTestSuite: public CxxTest::TestSuite {
     public:
-    void test_identity() {
+    GUM_TEST(_identity) {
       const std::vector< gum::learning::DBTranslatedValueType > col_types{
          gum::learning::DBTranslatedValueType::DISCRETE,
          gum::learning::DBTranslatedValueType::DISCRETE,
@@ -195,7 +195,7 @@ namespace gum_tests {
     }
 
 
-    void test_duplications() {
+    GUM_TEST(_duplications) {
       const std::vector< gum::learning::DBTranslatedValueType > col_types{
          gum::learning::DBTranslatedValueType::DISCRETE,
          gum::learning::DBTranslatedValueType::DISCRETE,

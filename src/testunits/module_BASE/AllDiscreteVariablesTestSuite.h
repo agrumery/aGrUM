@@ -32,7 +32,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] AllVariablesTestSuite: public CxxTest::TestSuite {
     public:
-    void testCreationRange() {
+    GUM_TEST(CreationRange) {
       try {
         {
           auto a = gum::fastVariable< double >("A", 2);
@@ -73,7 +73,7 @@ namespace gum_tests {
       } catch (gum::Exception const& e) GUM_SHOWERROR(e)
     }
 
-      void testCreationLabelized() {
+      GUM_TEST(CreationLabelized) {
         try {
           {
             auto a = gum::fastVariable< double >("A{a|b|c}", 4);
@@ -89,7 +89,7 @@ namespace gum_tests {
         } catch (gum::Exception const& e) { GUM_SHOWERROR(e) }
       }
 
-      void testCreationInteger() {
+      GUM_TEST(CreationInteger) {
         {
           auto a = gum::fastVariable< double >("A{0|3|5}", 4);
           TS_ASSERT_EQUALS(a->toString(), "A:Integer({0|3|5})")
@@ -110,7 +110,7 @@ namespace gum_tests {
         }
       }
 
-      void testCreationDiscretized() {
+      GUM_TEST(CreationDiscretized) {
         {
           auto a = gum::fastVariable< double >("A[1,2,3,4,5,6]", 4);
           TS_ASSERT_EQUALS(a->toString(), "A:Discretized(<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>)")

@@ -99,7 +99,7 @@ namespace gum_tests {
       delete gamma;
     }
 
-    void testLesserThan() {
+    GUM_TEST(LesserThan) {
       TS_ASSERT((*gamma) < (*alpha))
       TS_ASSERT((*gamma) < (*beta))
       TS_ASSERT((*alpha) < (*beta))
@@ -111,7 +111,7 @@ namespace gum_tests {
       TS_ASSERT(!((*beta) < (*alpha)))
     }
 
-    void testLesserOrEqualThan() {
+    GUM_TEST(LesserOrEqualThan) {
       TS_ASSERT((*gamma) <= (*alpha))
       TS_ASSERT((*gamma) <= (*beta))
       TS_ASSERT((*alpha) <= (*beta))
@@ -123,7 +123,7 @@ namespace gum_tests {
       TS_ASSERT(!((*beta) <= (*alpha)))
     }
 
-    void testAlphaNeighbors() {
+    GUM_TEST(AlphaNeighbors) {
       for (gum::prm::gspan::DFSCode::iterator iter = alpha->codes.begin() + 1;
            iter != alpha->codes.end();
            ++iter) {
@@ -131,7 +131,7 @@ namespace gum_tests {
       }
     }
 
-    void testBetaNeighbors() {
+    GUM_TEST(BetaNeighbors) {
       for (gum::prm::gspan::DFSCode::iterator iter = beta->codes.begin() + 1;
            iter != beta->codes.end();
            ++iter) {
@@ -139,7 +139,7 @@ namespace gum_tests {
       }
     }
 
-    void testGammaNeighbors() {
+    GUM_TEST(GammaNeighbors) {
       for (gum::prm::gspan::DFSCode::iterator iter = gamma->codes.begin() + 1;
            iter != gamma->codes.end();
            ++iter) {
@@ -147,21 +147,21 @@ namespace gum_tests {
       }
     }
 
-    void testAlphaPrint() {
+    GUM_TEST(AlphaPrint) {
       TS_ASSERT_THROWS_NOTHING({
         std::stringstream ss;
         ss << std::endl << (*alpha) << std::endl;
       });
     }
 
-    void testBetaPrint() {
+    GUM_TEST(BetaPrint) {
       TS_ASSERT_THROWS_NOTHING({
         std::stringstream ss;
         ss << std::endl << (*beta) << std::endl;
       });
     }
 
-    void testGammaPrint() {
+    GUM_TEST(GammaPrint) {
       TS_ASSERT_THROWS_NOTHING({
         std::stringstream ss;
         ss << std::endl << (*gamma) << std::endl;

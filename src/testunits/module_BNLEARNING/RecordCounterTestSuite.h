@@ -504,7 +504,7 @@ namespace gum_tests {
     }
 
 
-    void test_partial_nodes() {
+    GUM_TEST(_partial_nodes) {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("0");
@@ -586,7 +586,7 @@ namespace gum_tests {
     }
 
 
-    void test_has_range_no_nodeId2col() {
+    GUM_TEST(_has_range_no_nodeId2col) {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("0");
@@ -798,7 +798,7 @@ namespace gum_tests {
     }
 
 
-    void test_multicore() {
+    GUM_TEST(_multicore) {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("0");
@@ -1012,7 +1012,7 @@ namespace gum_tests {
       }
     }
 
-    void testEM() {
+    GUM_TEST(EM) {
       gum::LabelizedVariable var("x", "", 0);
       var.addLabel("0");
       var.addLabel("1");

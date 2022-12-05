@@ -30,7 +30,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] DBTranslator4ContinuousVariableTestSuite: public CxxTest::TestSuite {
     public:
-    void test_trans1() {
+    GUM_TEST(_trans1) {
       gum::learning::DBTranslator4ContinuousVariable translator;
       TS_ASSERT(translator.isLossless())
       TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("3"))
@@ -128,7 +128,7 @@ namespace gum_tests {
     }
 
 
-    void test_trans2() {
+    GUM_TEST(_trans2) {
       {
         gum::ContinuousVariable< double > var("X2", "", -2, 10);
         std::vector< std::string >        missing{"2", "N/A", "20", "4", "xxx", "-10"};

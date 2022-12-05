@@ -154,9 +154,11 @@ namespace gum_tests {
       _nodeMap_->insert(name, id);
     }
 
-    void testClassConstruction() { TS_ASSERT_EQUALS(_asia_->attributes().size(), (gum::Size)8); }
+    GUM_TEST(ClassConstruction) {
+      TS_ASSERT_EQUAL(_asia_->attributes().size(), )gum::Size)8);
+    }
 
-    void testAddInstance() {
+    GUM_TEST(AddInstance) {
       // Arrange
       PRMSystem sys("asia");
       auto      inst = new PRMInstance("asia", *_asia_);
@@ -168,7 +170,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(sys.size(), (gum::Size)1)
     }
 
-    void testInstantiate() {
+    GUM_TEST(Instantiate) {
       // Arrange
       PRMSystem sys("asia");
       auto      inst = new PRMInstance("asia", *_asia_);
@@ -181,7 +183,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(sys.size(), (gum::Size)1)
     }
 
-    void testGroundBN() {
+    GUM_TEST(GroundBN) {
       // Arrange
       std::string x0, y0, x1, y1;
       auto        bn = new gum::BayesNet< double >("asia");
@@ -206,7 +208,7 @@ namespace gum_tests {
       delete bn;
     }
 
-    void testGroundBNAfterDelete() {
+    GUM_TEST(GroundBNAfterDelete) {
       // Arrange
       PRMSystem* sys  = new PRMSystem("asia");
       auto       inst = new PRMInstance("asia", *_asia_);
@@ -231,7 +233,7 @@ namespace gum_tests {
       delete bn;
     }
 
-    void testVisitToAsiaId() {
+    GUM_TEST(VisitToAsiaId) {
       // Arrange
       PRMSystem sys("asia");
       auto      inst = new PRMInstance("asia", *_asia_);
@@ -246,7 +248,7 @@ namespace gum_tests {
       delete bn;
     }
 
-    void testVisitToAsia() {
+    GUM_TEST(VisitToAsia) {
       // Arrange
       PRMSystem sys("asia");
       auto      inst = new PRMInstance("asia", *_asia_);
@@ -270,7 +272,7 @@ namespace gum_tests {
       delete bn;
     }
 
-    void testTuberculosis() {
+    GUM_TEST(Tuberculosis) {
       // Arrange
       PRMSystem sys("asia");
       auto      inst = new PRMInstance("asia", *_asia_);
@@ -294,7 +296,7 @@ namespace gum_tests {
       delete bn;
     }
 
-    void testSmoking() {
+    GUM_TEST(Smoking) {
       // Arrange
       PRMSystem sys("asia");
       auto      inst = new PRMInstance("asia", *_asia_);
@@ -318,7 +320,7 @@ namespace gum_tests {
       delete bn;
     }
 
-    void testLungCancer() {
+    GUM_TEST(LungCancer) {
       // Arrange
       PRMSystem sys("asia");
       auto      inst = new PRMInstance("asia", *_asia_);
@@ -342,7 +344,7 @@ namespace gum_tests {
       delete bn;
     }
 
-    void testBronchitis() {
+    GUM_TEST(Bronchitis) {
       // Arrange
       PRMSystem sys("asia");
       auto      inst = new PRMInstance("asia", *_asia_);
@@ -366,7 +368,7 @@ namespace gum_tests {
       delete bn;
     }
 
-    void testTubOrCancer() {
+    GUM_TEST(TubOrCancer) {
       // Arrange
       PRMSystem sys("asia");
       auto      inst = new PRMInstance("asia", *_asia_);
@@ -390,7 +392,7 @@ namespace gum_tests {
       delete bn;
     }
 
-    void testPositiveXRay() {
+    GUM_TEST(PositiveXRay) {
       // Arrange
       PRMSystem sys("asia");
       auto      inst = new PRMInstance("asia", *_asia_);
@@ -414,7 +416,7 @@ namespace gum_tests {
       delete bn;
     }
 
-    void testDyspnea() {
+    GUM_TEST(Dyspnea) {
       // Arrange
       PRMSystem sys("asia");
       auto      inst = new PRMInstance("asia", *_asia_);

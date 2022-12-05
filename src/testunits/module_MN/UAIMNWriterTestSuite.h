@@ -69,13 +69,13 @@ namespace gum_tests {
 
     void tearDown() { delete mn; }
 
-    void testConstructor() {
+    GUM_TEST(Constructor) {
       gum::UAIMNWriter< double >* writer = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::UAIMNWriter< double >())
       delete writer;
     }
 
-    void testWriter_ostream() {
+    GUM_TEST(Writer_ostream) {
       gum::UAIMNWriter< double > writer;
       std::string                file = GET_RESSOURCES_PATH("outputs/uaimn_generated.uai");
       writer.write(file, *mn);

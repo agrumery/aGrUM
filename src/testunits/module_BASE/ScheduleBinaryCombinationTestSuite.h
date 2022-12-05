@@ -32,7 +32,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] ScheduleBinaryCombinationTestSuite: public CxxTest::TestSuite {
     public:
-    void test_construct() {
+    GUM_TEST(_construct) {
       // reset the ids of the ScheduleMultiDim to avoid conflicts with other
       // testunits
       gum::IScheduleMultiDim::resetIdGenerator();
@@ -250,7 +250,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    void testConstants() {
+    GUM_TEST(Constants) {
       gum::IScheduleMultiDim::resetIdGenerator();
 
       gum::Potential< double > p1;

@@ -56,7 +56,7 @@ namespace gum_tests {
 
 
     public:
-    void test_basic() {
+    GUM_TEST(_basic) {
       const std::vector< gum::learning::DBTranslatedValueType > col_types{
          gum::learning::DBTranslatedValueType::DISCRETE,
          gum::learning::DBTranslatedValueType::DISCRETE,

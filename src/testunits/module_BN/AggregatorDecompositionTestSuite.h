@@ -77,7 +77,7 @@ namespace gum_tests {
       delete _aggregatorDecomposition_;
     }
 
-    void testDecomposition() {
+    GUM_TEST(Decomposition) {
       gum::BayesNetFactory< double >* factory  = nullptr;
       gum::BayesNetFactory< double >* factory2 = nullptr;
       gum::NodeId                     node     = 0;

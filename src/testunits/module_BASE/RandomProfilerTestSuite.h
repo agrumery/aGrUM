@@ -29,7 +29,7 @@ namespace gum_tests {
   // a test to see if GUM_RANDOMSEED is working
   class [[maybe_unused]] RandomProfilerTestSuite: public CxxTest::TestSuite {
     public:
-    void testRandomSeed() {
+    GUM_TEST(RandomSeed) {
       TS_ASSERT((GUM_RANDOMSEED == 0) || (GUM_RANDOMSEED == 10))
 
       if (GUM_RANDOMSEED == 0) {

@@ -109,13 +109,13 @@ namespace gum_tests {
 
     void teardDown() {}
 
-    void testConstructor() {
+    GUM_TEST(Constructor) {
       gum::CliqueGraph* graph = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING((graph = new gum::CliqueGraph()))
       TS_GUM_ASSERT_THROWS_NOTHING(delete graph)
     };
 
-    void testFillG1() {
+    GUM_TEST(FillG1) {
       gum::NodeSet A, B, C, D, E;
       fillSets(A, B, C, D, E);
 
@@ -135,7 +135,7 @@ namespace gum_tests {
       TS_ASSERT(graph.existsEdge(2, 3))
     }
 
-    void testFillG2() {
+    GUM_TEST(FillG2) {
       gum::NodeSet A, B, C, D, E;
       fillSets(A, B, C, D, E);
 
@@ -156,7 +156,7 @@ namespace gum_tests {
       TS_ASSERT(graph.existsEdge(3, 4))
     }
 
-    void testFillG3() {
+    GUM_TEST(FillG3) {
       gum::NodeSet A, B, C, D, E;
       fillSets(A, B, C, D, E);
 
@@ -176,7 +176,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(graph.clique(4), E)
     }
 
-    void testEquality() {
+    GUM_TEST(Equality) {
       gum::CliqueGraph g1, g2, g3, g4;
       fillG1(g1);
       fillG2(g2);
@@ -201,7 +201,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(g4, g4)
     }
 
-    void testCopyConstructor() {
+    GUM_TEST(CopyConstructor) {
       gum::CliqueGraph g1, g2, g3;
       fillG1(g1);
       fillG2(g2);
@@ -230,7 +230,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING((delete copy3))
     }
 
-    void testIsJoinTree() {
+    GUM_TEST(IsJoinTree) {
       gum::CliqueGraph g1, g2, g3;
       fillG1(g1);
       fillG2(g2);
@@ -254,7 +254,7 @@ namespace gum_tests {
       TS_ASSERT(!g3.isJoinTree())
     }
 
-    void testHasRunningIntersection() {
+    GUM_TEST(HasRunningIntersection) {
       gum::CliqueGraph g1, g2, g3;
       fillG1(g1);
       fillG2(g2);
@@ -265,7 +265,7 @@ namespace gum_tests {
       TS_ASSERT(!g3.hasRunningIntersection())
     }
 
-    void testGetNbrEdges() {
+    GUM_TEST(GetNbrEdges) {
       gum::CliqueGraph g1, g2, g3;
       fillG1(g1);
       fillG2(g2);
@@ -276,7 +276,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(g3.sizeEdges(), (gum::Size)3)
     }
 
-    void testClearNodes() {
+    GUM_TEST(ClearNodes) {
       gum::CliqueGraph g1, g2, g3;
       fillG1(g1);
       fillG2(g2);
@@ -295,7 +295,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(g3.sizeEdges(), (gum::Size)0)
     }
 
-    void testClearEdges() {
+    GUM_TEST(ClearEdges) {
       gum::CliqueGraph g1, g2, g3;
       fillG1(g1);
       fillG2(g2);
@@ -317,7 +317,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(g3.sizeEdges(), (gum::Size)0)
     }
 
-    void testEraseNode() {
+    GUM_TEST(EraseNode) {
       gum::CliqueGraph g1, g2, g3;
       fillG1(g1);
       fillG2(g2);
@@ -348,7 +348,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(g3.size(), nodeG3Count - 1)
     }
 
-    void testEraseNodeStubborn() {
+    GUM_TEST(EraseNodeStubborn) {
       gum::CliqueGraph g1;
       fillG1(g1);
 
@@ -360,7 +360,7 @@ namespace gum_tests {
       }
     }
 
-    void testGetSeparatorByEdgeG1() {
+    GUM_TEST(GetSeparatorByEdgeG1) {
       gum::CliqueGraph g1;
       fillG1(g1);
 
@@ -381,7 +381,7 @@ namespace gum_tests {
       TS_ASSERT(separator.contains(4))
     }
 
-    void testGetSeparatorByEdgeG2() {
+    GUM_TEST(GetSeparatorByEdgeG2) {
       gum::CliqueGraph g2;
       fillG2(g2);
 
@@ -416,7 +416,7 @@ namespace gum_tests {
       TS_ASSERT(separator.contains(4))
     }
 
-    void testGetSeparatorByEdgeG3() {
+    GUM_TEST(GetSeparatorByEdgeG3) {
       gum::CliqueGraph g3;
       fillG3(g3);
 
@@ -441,7 +441,7 @@ namespace gum_tests {
       TS_ASSERT(separator.contains(4))
     }
 
-    void testEraseEdgeG1() {
+    GUM_TEST(EraseEdgeG1) {
       gum::CliqueGraph g1;
       fillG1(g1);
 
@@ -456,7 +456,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS_ANYTHING(g1.separator(1, 2))
     }
 
-    void testEraseEdgeG2() {
+    GUM_TEST(EraseEdgeG2) {
       gum::CliqueGraph g2;
       fillG2(g2);
 
@@ -468,7 +468,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(g2.sizeEdges(), gum::Size(countEdgeG2 - 2))
     }
 
-    void testEraseEdgeG3() {
+    GUM_TEST(EraseEdgeG3) {
       gum::CliqueGraph g3;
       fillG3(g3);
 
@@ -479,7 +479,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(g3.sizeEdges(), gum::Size(countEdgeG3 - 1))
     }
 
-    void testGetClique_1() {
+    GUM_TEST(GetClique_1) {
       gum::CliqueGraph graph;
       fillG1(graph);
 
@@ -493,7 +493,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS_ANYTHING(graph.clique(10))
     }
 
-    void testGetClique_2() {
+    GUM_TEST(GetClique_2) {
       gum::CliqueGraph graph;
       fillG1(graph);
 
@@ -513,7 +513,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(clique, graph.clique(new_1))
     }
 
-    void testGetContainerNode() {
+    GUM_TEST(GetContainerNode) {
       gum::NodeSet A, B, C, D, E;
       fillSets(A, B, C, D, E);
 
@@ -548,7 +548,7 @@ namespace gum_tests {
                 && secondClique != thirdClique);
     }
 
-    void testSetClique_1() {
+    GUM_TEST(SetClique_1) {
       gum::CliqueGraph graph;
       fillG3(graph);
 
@@ -562,7 +562,7 @@ namespace gum_tests {
       TS_ASSERT(graph.hasRunningIntersection())
     }
 
-    void testSetClique_2() {
+    GUM_TEST(SetClique_2) {
       gum::CliqueGraph graph;
       fillG3(graph);
 
@@ -572,7 +572,7 @@ namespace gum_tests {
       TS_ASSERT(graph.hasRunningIntersection())
     }
 
-    void testAddToClique() {
+    GUM_TEST(AddToClique) {
       gum::CliqueGraph graph;
       fillG3(graph);
 
@@ -587,7 +587,7 @@ namespace gum_tests {
       TS_ASSERT(graph.hasRunningIntersection())
     }
 
-    void testAddToCliqueByID() {
+    GUM_TEST(AddToCliqueByID) {
       gum::CliqueGraph graph;
       fillG3(graph);
 
@@ -601,7 +601,7 @@ namespace gum_tests {
       TS_ASSERT(graph.hasRunningIntersection())
     }
 
-    void testEraseFromClique() {
+    GUM_TEST(EraseFromClique) {
       gum::CliqueGraph graph;
       fillG3(graph);
 
@@ -619,7 +619,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS_ANYTHING(graph.eraseFromClique(42, 1))
     }
 
-    void testGetPath() {
+    GUM_TEST(GetPath) {
       gum::CliqueGraph graph;
       fillG2(graph);
 
@@ -661,7 +661,7 @@ namespace gum_tests {
       }
     }
 
-    void testCopyOperator() {
+    GUM_TEST(CopyOperator) {
       gum::CliqueGraph g1, g2, g3;
       fillG1(g1);
       fillG2(g2);
@@ -684,7 +684,7 @@ namespace gum_tests {
       TS_ASSERT_DIFFERS(g2, copy2)
     }
 
-    void testRunningIntProp() {
+    GUM_TEST(RunningIntProp) {
       gum::CliqueGraph g;
 
       gum::NodeSet n1;   // ABC

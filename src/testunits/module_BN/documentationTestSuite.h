@@ -37,7 +37,7 @@
 namespace gum_tests {
   class [[maybe_unused]] DocumentationTestSuite: public CxxTest::TestSuite {
     public:
-    void testBayesNet() {
+    GUM_TEST(BayesNet) {
       try {
         auto bn = gum::BayesNet< double >("Asia");
         // Variables are added by copy to the BayesNet, so you can use a single
@@ -121,7 +121,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { TS_FAIL(e.errorContent()); }
     }
 
-    void testBayesNetFactory() {
+    GUM_TEST(BayesNetFactory) {
       try {
         auto asia    = gum::BayesNet< double >();
         auto factory = gum::BayesNetFactory< double >(&asia);
@@ -262,7 +262,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { TS_FAIL(e.errorContent()); }
     }
 
-    void testInference() {
+    GUM_TEST(Inference) {
       auto asia = gum::BayesNet< double >("Asia");
       // Constructing the BayesNet...
       {
@@ -336,7 +336,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { TS_FAIL(e.errorContent()); }
     }
 
-    void testSerialization() {
+    GUM_TEST(Serialization) {
       try {
         auto asia = gum::BayesNet< double >("Asia");
         // One implementation of the gum::BNReader class
@@ -349,7 +349,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { TS_FAIL(e.errorContent()); }
     }
 
-    void testDeserialization() {
+    GUM_TEST(Deserialization) {
       try {
         auto asia = gum::BayesNet< double >("Asia");
         // Constructing BayesNet...

@@ -39,7 +39,7 @@ namespace gum_tests {
 
     void tearDown() {}
 
-    void testEmptyClass() {
+    GUM_TEST(EmptyClass) {
       // Arrange
       std::stringstream input;
       input << "class Bar { }";
@@ -58,7 +58,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
-    void testEmptyClassError1() {
+    GUM_TEST(EmptyClassError1) {
       // Arrange
       std::stringstream input;
       input << "clas Bar { }";
@@ -77,7 +77,7 @@ namespace gum_tests {
       TS_ASSERT(!prm.isClass("Bar"))
     }
 
-    void testEmptyClassError2() {
+    GUM_TEST(EmptyClassError2) {
       // Arrange
       std::stringstream input;
       input << "class { }";
@@ -96,7 +96,7 @@ namespace gum_tests {
       TS_ASSERT(!prm.isClass("Bar"))
     }
 
-    void testEmptyClassError3() {
+    GUM_TEST(EmptyClassError3) {
       // Arrange
       std::stringstream input;
       input << "class ++++/ze { }";
@@ -115,7 +115,7 @@ namespace gum_tests {
       TS_ASSERT(!prm.isClass("Bar"))
     }
 
-    void testSimpleClass1() {
+    GUM_TEST(SimpleClass1) {
       // Arrange
       std::stringstream input;
       input << "class Bar { " << std::endl << "boolean state {[0.2, 0.8]};" << std::endl << "}";
@@ -143,7 +143,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
-    void testSimpleClass2() {
+    GUM_TEST(SimpleClass2) {
       // Arrange
       std::stringstream input;
       input << "type t_state labels(OK, NOK);" << std::endl;
@@ -172,7 +172,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
-    void testSimpleClass3() {
+    GUM_TEST(SimpleClass3) {
       // Arrange
       std::stringstream input;
       input << "type t_state labels(OK, NOK);" << std::endl;
@@ -216,7 +216,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
-    void testSimpleClassError1() {
+    GUM_TEST(SimpleClassError1) {
       // Arrange
       std::stringstream input;
       input << "type t_state labels(OK, NOK);" << std::endl;
@@ -243,7 +243,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
     }
 
-    void testSimpleClassError2() {
+    GUM_TEST(SimpleClassError2) {
       // Arrange
       std::stringstream input;
       input << "type t_state labels(OK, NOK);" << std::endl;
@@ -268,7 +268,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
     }
 
-    void testSimpleClassError3() {
+    GUM_TEST(SimpleClassError3) {
       // Arrange
       std::stringstream input;
       input << "type t_state labels(OK, NOK);" << std::endl;
@@ -295,7 +295,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
     }
 
-    void testSimpleRules1() {
+    GUM_TEST(SimpleRules1) {
       // Arrange
       std::stringstream input;
       input << "type t_state labels(OK, NOK);" << std::endl;
@@ -339,7 +339,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
-    void testSimpleRules2() {
+    GUM_TEST(SimpleRules2) {
       // Arrange
       std::stringstream input;
       input << "type t_state labels(OK, NOK);" << std::endl;
@@ -383,7 +383,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
-    void testSimpleRules3() {
+    GUM_TEST(SimpleRules3) {
       // Arrange
       std::stringstream input;
       input << "type t_state labels(OK, NOK);" << std::endl;
@@ -427,7 +427,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
-    void testSimpleRules4() {
+    GUM_TEST(SimpleRules4) {
       // Arrange
       std::stringstream input;
       input << "type t_state labels(OK, NOK);" << std::endl;
@@ -471,7 +471,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
-    void testSimpleRulesError1() {
+    GUM_TEST(SimpleRulesError1) {
       // Arrange
       std::stringstream input;
       input << "type t_state labels(OK, NOK);" << std::endl;
@@ -497,7 +497,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
     }
 
-    void testSimpleRulesError2() {
+    GUM_TEST(SimpleRulesError2) {
       // Arrange
       std::stringstream input;
       input << "type t_state labels(OK, NOK);" << std::endl;
@@ -522,7 +522,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
     }
 
-    void testSimpleRulesError3() {
+    GUM_TEST(SimpleRulesError3) {
       // Arrange
       std::stringstream input;
       input << "type t_state labels(OK, NOK);" << std::endl;
@@ -548,7 +548,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
     }
 
-    void testSimpleRulesError4() {
+    GUM_TEST(SimpleRulesError4) {
       // Arrange
       std::stringstream input;
       input << "type t_state labels(OK, NOK);" << std::endl;
@@ -575,7 +575,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
     }
 
-    void testSimpleParameter1() {
+    GUM_TEST(SimpleParameter1) {
       // Arrange
       std::stringstream input;
       input << "class Bar { " << std::endl
@@ -610,7 +610,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
-    void testSimpleParameter2() {
+    GUM_TEST(SimpleParameter2) {
       // Arrange
       std::stringstream input;
       input << "type t_state labels(OK, NOK);" << std::endl;
@@ -655,7 +655,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
-    void testClassWithReference1() {
+    GUM_TEST(ClassWithReference1) {
       // Arrange
       std::stringstream input;
       input << "interface Foo { " << std::endl << "boolean state;" << std::endl << "}" << std::endl;
@@ -687,7 +687,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
-    void testClassWithReference2() {
+    GUM_TEST(ClassWithReference2) {
       // Arrange
       std::stringstream input;
       input << "interface Foo { " << std::endl << "boolean state;" << std::endl << "}" << std::endl;
@@ -719,7 +719,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
-    void testClassWithReference3() {
+    GUM_TEST(ClassWithReference3) {
       // Arrange
       std::stringstream input;
       input << "type state labels(OK, NOK);" << std::endl;
@@ -778,7 +778,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
-    void testClassWithReference4() {
+    GUM_TEST(ClassWithReference4) {
       // Arrange
       std::stringstream input;
       input << "type state labels(OK, NOK);" << std::endl;
@@ -839,7 +839,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
-    void testClassWithReferenceError1() {
+    GUM_TEST(ClassWithReferenceError1) {
       // Arrange
       std::stringstream input;
       input << "type state labels(OK, NOK);" << std::endl;
@@ -868,7 +868,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
     }
 
-    void testClassWithReferenceError2() {
+    GUM_TEST(ClassWithReferenceError2) {
       // Arrange
       std::stringstream input;
       input << "type state labels(OK, NOK);" << std::endl;
@@ -897,7 +897,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
     }
 
-    void testClassWithReferenceError3() {
+    GUM_TEST(ClassWithReferenceError3) {
       // Arrange
       std::stringstream input;
       input << "type state labels(OK, NOK);" << std::endl;
@@ -925,7 +925,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1)
     }
 
-    void testClassWithReferenceError4() {
+    GUM_TEST(ClassWithReferenceError4) {
       // Arrange
       std::stringstream input;
       input << "class Bar extends Foo { " << std::endl
@@ -956,7 +956,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)2)
     }
 
-    void testClassWithReferenceError6() {
+    GUM_TEST(ClassWithReferenceError6) {
       // Arrange
       std::stringstream input;
       input << "class Bar extends Foo { " << std::endl
@@ -987,7 +987,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(line, msg.str())
     }
 
-    void testOrAggregate() {
+    GUM_TEST(OrAggregate) {
       // Arrange
       std::stringstream input;
       input << "interface Foo { " << std::endl << "boolean state;" << std::endl << "}" << std::endl;
@@ -1027,7 +1027,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::OR)
     }
 
-    void testOrAggregateArray() {
+    GUM_TEST(OrAggregateArray) {
       // Arrange
       std::stringstream input;
       input << "interface Foo { " << std::endl << "boolean state;" << std::endl << "}" << std::endl;
@@ -1068,7 +1068,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::OR)
     }
 
-    void testAndAggregate() {
+    GUM_TEST(AndAggregate) {
       // Arrange
       std::stringstream input;
       input << "interface Foo { " << std::endl << "boolean state;" << std::endl << "}" << std::endl;
@@ -1108,7 +1108,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::AND)
     }
 
-    void testAndAggregateArray() {
+    GUM_TEST(AndAggregateArray) {
       // Arrange
       std::stringstream input;
       input << "interface Foo { " << std::endl << "boolean state;" << std::endl << "}" << std::endl;
@@ -1149,7 +1149,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::AND)
     }
 
-    void testForAllAggregate() {
+    GUM_TEST(ForAllAggregate) {
       // Arrange
       std::stringstream input;
       input << "type state labels(OK, NOK);" << std::endl;
@@ -1190,7 +1190,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::FORALL)
     }
 
-    void testForAllAggregateArray() {
+    GUM_TEST(ForAllAggregateArray) {
       // Arrange
       std::stringstream input;
       input << "type state labels(OK, NOK);" << std::endl;
@@ -1232,7 +1232,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::FORALL)
     }
 
-    void testExistsAggregate() {
+    GUM_TEST(ExistsAggregate) {
       // Arrange
       std::stringstream input;
       input << "type state labels(OK, NOK);" << std::endl;
@@ -1273,7 +1273,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::EXISTS)
     }
 
-    void testExistsAggregateArray() {
+    GUM_TEST(ExistsAggregateArray) {
       // Arrange
       std::stringstream input;
       input << "type state labels(OK, NOK);" << std::endl;
@@ -1315,7 +1315,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::EXISTS)
     }
 
-    void testMinAggregate() {
+    GUM_TEST(MinAggregate) {
       // Arrange
       std::stringstream input;
       input << "type state int(0,10);" << std::endl;
@@ -1356,7 +1356,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::MIN)
     }
 
-    void testMinAggregateArray() {
+    GUM_TEST(MinAggregateArray) {
       // Arrange
       std::stringstream input;
       input << "type state int(0,10);" << std::endl;
@@ -1398,7 +1398,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::MIN)
     }
 
-    void testMaxAggregate() {
+    GUM_TEST(MaxAggregate) {
       // Arrange
       std::stringstream input;
       input << "type state int(0,10);" << std::endl;
@@ -1439,7 +1439,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::MAX)
     }
 
-    void testMaxAggregateArray() {
+    GUM_TEST(MaxAggregateArray) {
       // Arrange
       std::stringstream input;
       input << "type state int(0,10);" << std::endl;
@@ -1481,7 +1481,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::MAX)
     }
 
-    void testMedianAggregate() {
+    GUM_TEST(MedianAggregate) {
       // Arrange
       std::stringstream input;
       input << "type state int(0,10);" << std::endl;
@@ -1522,7 +1522,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::MEDIAN)
     }
 
-    void testMedianAggregateArray() {
+    GUM_TEST(MedianAggregateArray) {
       // Arrange
       std::stringstream input;
       input << "type state int(0,10);" << std::endl;
@@ -1564,7 +1564,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::MEDIAN)
     }
 
-    void testAmplitudeAggregate() {
+    GUM_TEST(AmplitudeAggregate) {
       // Arrange
       std::stringstream input;
       input << "type state int(0,10);" << std::endl;
@@ -1605,7 +1605,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::AMPLITUDE)
     }
 
-    void testAmplitudeAggregateArray() {
+    GUM_TEST(AmplitudeAggregateArray) {
       // Arrange
       std::stringstream input;
       input << "type state int(0,10);" << std::endl;
@@ -1647,7 +1647,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::AMPLITUDE)
     }
 
-    void testCountAggregate() {
+    GUM_TEST(CountAggregate) {
       // Arrange
       std::stringstream input;
       input << "type state int(0,10);" << std::endl;
@@ -1688,7 +1688,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::COUNT)
     }
 
-    void testCountAggregateArray() {
+    GUM_TEST(CountAggregateArray) {
       // Arrange
       std::stringstream input;
       input << "type state int(0,10);" << std::endl;
@@ -1730,7 +1730,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::COUNT)
     }
 
-    void testSumAggregate() {
+    GUM_TEST(SumAggregate) {
       // Arrange
       std::stringstream input;
       input << "type state int(0,10);" << std::endl;
@@ -1771,7 +1771,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::SUM)
     }
 
-    void testSumAggregateArray() {
+    GUM_TEST(SumAggregateArray) {
       // Arrange
       std::stringstream input;
       input << "type state int(0,10);" << std::endl;
@@ -1814,7 +1814,7 @@ namespace gum_tests {
     }
 
 
-    void testOrAggregateWithErrors1() {
+    GUM_TEST(OrAggregateWithErrors1) {
       // Arrange
       std::stringstream input;
       input << "interface Foo { " << std::endl << "boolean state;" << std::endl << "}" << std::endl;
@@ -1836,7 +1836,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(line, msg.str())
     }
 
-    void testOrAggregateWithErrors2() {
+    GUM_TEST(OrAggregateWithErrors2) {
       // Arrange
       std::stringstream input;
       input << "interface Foo { " << std::endl << "boolean state;" << std::endl << "}" << std::endl;
@@ -1858,7 +1858,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(line, msg.str())
     }
 
-    void testOrAggregateWithErrors3() {
+    GUM_TEST(OrAggregateWithErrors3) {
       // Arrange
       std::stringstream input;
       input << "interface Foo { " << std::endl << "boolean state;" << std::endl << "}" << std::endl;
@@ -1879,7 +1879,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(line, msg.str())
     }
 
-    void testOrAggregateWithErrors4() {
+    GUM_TEST(OrAggregateWithErrors4) {
       // Arrange
       std::stringstream input;
       input << "interface Foo { " << std::endl << "boolean state;" << std::endl << "}" << std::endl;
@@ -1904,7 +1904,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(line, msg.str())
     }
 
-    void testCountAggregateWithErrors5() {
+    GUM_TEST(CountAggregateWithErrors5) {
       // Arrange
       std::stringstream input;
       input << "type state int(0,10);" << std::endl;
@@ -1927,7 +1927,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(line, msg.str())
     }
 
-    void testInheritance1() {
+    GUM_TEST(Inheritance1) {
       // Arrange
       std::stringstream input;
       input << "interface Foo { " << std::endl << "boolean state;" << std::endl << "}" << std::endl;
@@ -1955,7 +1955,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)1)
     }
 
-    void testInheritance2() {
+    GUM_TEST(Inheritance2) {
       // Arrange
       std::stringstream input;
       input << "interface Foo { " << std::endl << "boolean state;" << std::endl << "}" << std::endl;
@@ -1983,7 +1983,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bar.attributes().size(), (gum::Size)1)
     }
 
-    void testInheritance3() {
+    GUM_TEST(Inheritance3) {
       // Arrange
       std::stringstream input;
       input << "interface iFoo { " << std::endl
@@ -2019,7 +2019,7 @@ namespace gum_tests {
       TS_ASSERT(bar.implements().contains(const_cast< gum::prm::PRMInterface< double >* >(&ifoo)))
     }
 
-    void testInheritanceError1() {
+    GUM_TEST(InheritanceError1) {
       // Arrange
       std::stringstream input;
       input << "interface iFoo { " << std::endl
@@ -2041,7 +2041,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(line, msg.str())
     }
 
-    void testInheritanceError2() {
+    GUM_TEST(InheritanceError2) {
       // Arrange
       std::stringstream input;
       input << "interface iFoo { " << std::endl
@@ -2064,7 +2064,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(line, msg.str())
     }
 
-    void testInheritanceError3() {
+    GUM_TEST(InheritanceError3) {
       // Arrange
       std::stringstream input;
       input << "interface iFoo { " << std::endl
@@ -2088,7 +2088,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(line, msg.str())
     }
 
-    void testInheritanceError4() {
+    GUM_TEST(InheritanceError4) {
       // Arrange
       std::stringstream input;
       input << "class Foo { " << std::endl
@@ -2110,7 +2110,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(line, msg.str())
     }
 
-    void testInheritanceError5() {
+    GUM_TEST(InheritanceError5) {
       // Arrange
       std::stringstream input;
       input << "class Foo { " << std::endl
@@ -2134,7 +2134,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(line, msg.str())
     }
 
-    void testOrderDoesNotMatter1() {
+    GUM_TEST(OrderDoesNotMatter1) {
       // Arrange
       std::stringstream input;
       input << "class Bar extends Foo { " << std::endl
@@ -2170,7 +2170,7 @@ namespace gum_tests {
       TS_ASSERT(bar.implements().contains(const_cast< gum::prm::PRMInterface< double >* >(&ifoo)))
     }
 
-    void testOrderDoesNotMatter2() {
+    GUM_TEST(OrderDoesNotMatter2) {
       // Arrange
       std::stringstream input;
       input << "class Bar extends Foo { " << std::endl
@@ -2206,7 +2206,7 @@ namespace gum_tests {
       TS_ASSERT(bar.implements().contains(const_cast< gum::prm::PRMInterface< double >* >(&ifoo)))
     }
 
-    void testPrinters() {
+    GUM_TEST(Printers) {
       // Arrange
       auto                    path = GET_RESSOURCES_PATH("o3prm/printers.o3prm");
       gum::prm::PRM< double > prm;
@@ -2219,7 +2219,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS("", output.str())
     }
 
-    void testClassWithOverloading() {
+    GUM_TEST(ClassWithOverloading) {
       // Arrange
       std::stringstream input;
       input << "type state extends boolean (OK: true, NOK: false);";
@@ -2297,7 +2297,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(&(ref_subplop.slotType()), &sub_plop)
     }
 
-    void testClassWithOverloadingError1() {
+    GUM_TEST(ClassWithOverloadingError1) {
       // Arrange
       std::stringstream input;
       input << "type state extends boolean (OK: true, NOK: false);";
@@ -2334,7 +2334,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(line, msg.str())
     }
 
-    void testAggregateWithError() {
+    GUM_TEST(AggregateWithError) {
       // Arrange
       std::stringstream input;
       input << "type state int(0,10);" << std::endl;
@@ -2357,7 +2357,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(line, msg.str())
     }
 
-    void testAnonymousType1() {
+    GUM_TEST(AnonymousType1) {
       // Arrange
       std::stringstream input;
       input << "class Bar { " << std::endl
@@ -2400,7 +2400,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
-    void testAnonymousType2() {
+    GUM_TEST(AnonymousType2) {
       // Arrange
       std::stringstream input;
       input << "class Bar { " << std::endl
@@ -2443,7 +2443,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
-    void testAnonymousType3() {
+    GUM_TEST(AnonymousType3) {
       // Arrange
       std::stringstream input;
       input << "class Bar { " << std::endl
@@ -2486,7 +2486,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
-    void testAnonymousType4() {
+    GUM_TEST(AnonymousType4) {
       // Arrange
       std::stringstream input;
       input << "class Bar { " << std::endl
@@ -2529,7 +2529,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(bar.super(), const gum::NotFound&)
     }
 
-    void testAnonymousTypeError1() {
+    GUM_TEST(AnonymousTypeError1) {
       // Arrange
       std::stringstream input;
       input << "class Bar { " << std::endl
@@ -2549,7 +2549,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)0)
     }
 
-    void testAnonymousTypeError2() {
+    GUM_TEST(AnonymousTypeError2) {
       // Arrange
       std::stringstream input;
       input << "class Bar { " << std::endl
@@ -2569,7 +2569,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)0)
     }
 
-    void testAnonymousTypeError3() {
+    GUM_TEST(AnonymousTypeError3) {
       // Arrange
       std::stringstream input;
       input << "class Bar { " << std::endl
@@ -2589,7 +2589,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)0)
     }
 
-    void testAnonymousTypeError4() {
+    GUM_TEST(AnonymousTypeError4) {
       // Arrange
       std::stringstream input;
       input << "class Bar { " << std::endl
@@ -2609,7 +2609,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)0)
     }
 
-    void testAnonymousTypeError5() {
+    GUM_TEST(AnonymousTypeError5) {
       // Arrange
       std::stringstream input;
       input << "class Bar { " << std::endl
@@ -2629,7 +2629,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)0)
     }
 
-    void testAnonymousTypeError6() {
+    GUM_TEST(AnonymousTypeError6) {
       // Arrange
       std::stringstream input;
       input << "class Bar { " << std::endl

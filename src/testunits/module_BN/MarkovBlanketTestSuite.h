@@ -32,7 +32,7 @@
 namespace gum_tests {
   class [[maybe_unused]] MarkovBlanketTestSuite: public CxxTest::TestSuite {
     public:
-    void testChain() {
+    GUM_TEST(Chain) {
       auto bn = gum::BayesNet< float >::fastPrototype("a->b->c");
       {
         auto mb = gum::MarkovBlanket(bn, "a");
@@ -74,7 +74,7 @@ namespace gum_tests {
       }
     }
 
-    void testMarkovBlanketStructure() {
+    GUM_TEST(MarkovBlanketStructure) {
       const auto bn = gum::BayesNet< float >::fastPrototype("a->b->c->d->e;f->d->g;h->i->g");
       TS_ASSERT(!gum::MarkovBlanket(bn, "a").hasSameStructure(
          gum::BayesNet< float >::fastPrototype("b->a")));
@@ -99,7 +99,7 @@ namespace gum_tests {
          gum::BayesNet< float >::fastPrototype("d->g;h->i->g;;")));
     }
 
-    void testMarkovBlanketSpecialArcs() {
+    GUM_TEST(MarkovBlanketSpecialArcs) {
       const auto bn = gum::BayesNet< float >::fastPrototype(
          "aa->bb->cc->dd->ee;ff->dd->gg;hh->ii->gg;ff->ii;ff->gg");
       const auto mb
@@ -107,7 +107,7 @@ namespace gum_tests {
       TS_ASSERT(gum::MarkovBlanket(bn, "dd").hasSameStructure(mb))
     }
 
-    void testMarkovBlanketMultiLevel() {
+    GUM_TEST(MarkovBlanketMultiLevel) {
       const auto bn
          = gum::BayesNet< float >::fastPrototype("Z<-A->B->C->D->E<-Y;X->G<-F<-C<-I<-H->W");
       TS_ASSERT_THROWS(gum::MarkovBlanket(bn, "C", 0).size(), const gum::InvalidArgument&)

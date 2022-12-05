@@ -39,7 +39,7 @@ namespace gum_tests {
     // ==============================================================================
     // Test CREATION et DESTRUCTION dun Fixed Allocator
     // ==============================================================================
-    void test_Fixed_Allocator_CONST_AND_DEST() {
+    GUM_TEST(_Fixed_Allocator_CONST_AND_DEST) {
       gum::FixedAllocator* fa = nullptr;
       // Test constructor
       TS_ASSERT_THROWS_NOTHING(fa = new gum::FixedAllocator(5 * sizeof(gum::Idx), 50))
@@ -50,7 +50,7 @@ namespace gum_tests {
     // ==============================================================================
     // Test Allocation et Deallocation d'un élément
     // ==============================================================================
-    void test_Fixed_Allocator_ALLOC_DEALLOC_1_ELEM() {
+    GUM_TEST(_Fixed_Allocator_ALLOC_DEALLOC_1_ELEM) {
       gum::FixedAllocator* fa    = new gum::FixedAllocator(5 * sizeof(gum::Idx), 50);
       void*                pVoid = nullptr;
       TS_ASSERT_THROWS_NOTHING(pVoid = fa->allocate())
@@ -61,7 +61,7 @@ namespace gum_tests {
     // ==============================================================================
     // Test Allocation de 50 et 1 élément => création d'un nouveau chunk
     // ==============================================================================
-    void test_Fixed_Allocator_ALLOC_DEALLOC_51_ELEM() {
+    GUM_TEST(_Fixed_Allocator_ALLOC_DEALLOC_51_ELEM) {
       gum::FixedAllocator* fa = new gum::FixedAllocator(5 * sizeof(gum::Idx), 50);
       std::vector< void* > vVoid;
       // Alocation des 50 premiers éléments
@@ -79,7 +79,7 @@ namespace gum_tests {
     // Test d'allocation et déallocation cascade coirsée
     // Au terme de ce test, seul 7 Chunk supplémentaire doivent avoir été créé
     // ==============================================================================
-    void test_Fixed_Allocator_ALLOC_DEALLOC_CROISEE() {
+    GUM_TEST(_Fixed_Allocator_ALLOC_DEALLOC_CROISEE) {
       gum::FixedAllocator*                 fa = new gum::FixedAllocator(5 * sizeof(gum::Idx), 50);
       std::vector< std::vector< void* >* > vvVoid;
       for (int i = 0; i < 7; ++i)
@@ -116,7 +116,7 @@ namespace gum_tests {
     // ==============================================================================
     // Test CREATION et DESTRUCTION dun SmallObjectAllocator
     // ==============================================================================
-    void test_Small_Object_Allocator_CONST_AND_DEST() {
+    GUM_TEST(_Small_Object_Allocator_CONST_AND_DEST) {
       // Test constructor
       TS_ASSERT_THROWS_NOTHING(gum::SmallObjectAllocator::instance())
 
@@ -127,7 +127,7 @@ namespace gum_tests {
     // ==============================================================================
     // Test Allocation et Deallocation d'un élément
     // ==============================================================================
-    void test_Small_Object_Allocator_ALLOC_DEALLOC_1_ELEM() {
+    GUM_TEST(_Small_Object_Allocator_ALLOC_DEALLOC_1_ELEM) {
       void* pVoid = nullptr;
       TS_ASSERT_THROWS_NOTHING(
          pVoid = gum::SmallObjectAllocator::instance().allocate(5 * sizeof(gum::Idx)));
@@ -138,7 +138,7 @@ namespace gum_tests {
     // ==============================================================================
     // Test Allocation et Deallocation d'un élément
     // ==============================================================================
-    void test_Small_Object_Allocator_ALLOC_DEALLOC_ELEMS() {
+    GUM_TEST(_Small_Object_Allocator_ALLOC_DEALLOC_ELEMS) {
       std::vector< void* > vVoid;
       for (std::size_t i = 1; i < 13; ++i)
         TS_ASSERT_THROWS_NOTHING(vVoid.push_back(

@@ -33,7 +33,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] CrossMultiDimTestSuite: public CxxTest::TestSuite {
     public:
-    void testComparaisonMin() {
+    GUM_TEST(ComparaisonMin) {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3);
       gum::MultiDimArray< double >   full;
       gum::MultiDimSparse< double >  sparse((float)0);

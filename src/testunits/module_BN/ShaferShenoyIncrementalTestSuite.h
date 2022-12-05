@@ -227,7 +227,7 @@ namespace gum_tests {
 
     // ============================================================================
     // ============================================================================
-    void test_prior() {
+    GUM_TEST(_prior) {
       gum::ShaferShenoyInference< double > inf(bn);
       TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
@@ -244,7 +244,7 @@ namespace gum_tests {
 
     // ============================================================================
     // ============================================================================
-    void test_prior_with_targets() {
+    GUM_TEST(_prior_with_targets) {
       gum::ShaferShenoyInference< double > inf(bn);
       inf.eraseAllTargets();
       inf.addTarget(0);   // A
@@ -266,7 +266,7 @@ namespace gum_tests {
 
     // ============================================================================
     // ============================================================================
-    void test_prior_with_targets_evidence() {
+    GUM_TEST(_prior_with_targets_evidence) {
       gum::ShaferShenoyInference< double > inf(bn);
       inf.eraseAllTargets();
       inf.addTarget(0);   // A
@@ -296,7 +296,7 @@ namespace gum_tests {
 
     // ============================================================================
     // ============================================================================
-    void test_prior_with_targets_outside_evidence() {
+    GUM_TEST(_prior_with_targets_outside_evidence) {
       gum::ShaferShenoyInference< double > inf(bn);
       inf.eraseAllTargets();
       inf.addTarget(0);   // A
@@ -329,7 +329,7 @@ namespace gum_tests {
 
     // ============================================================================
     // ============================================================================
-    void test_prior_with_targets_evidence_values_changed() {
+    GUM_TEST(_prior_with_targets_evidence_values_changed) {
       gum::ShaferShenoyInference< double > inf(bn);
       inf.eraseAllTargets();
       inf.addTarget(0);   // A
@@ -476,7 +476,7 @@ namespace gum_tests {
 
     // ============================================================================
     // ============================================================================
-    void test_prior_with_targets_hard_evidence_values_changed() {
+    GUM_TEST(_prior_with_targets_hard_evidence_values_changed) {
       gum::ShaferShenoyInference< double > inf(bn);
       inf.eraseAllTargets();
       inf.addTarget(0);   // A
@@ -621,7 +621,7 @@ namespace gum_tests {
 
     // ============================================================================
     // ============================================================================
-    void test_prior_with_targets_evidence_changed() {
+    GUM_TEST(_prior_with_targets_evidence_changed) {
       gum::ShaferShenoyInference< double > inf(bn);
       inf.eraseAllTargets();
       inf.addTarget(0);   // A
@@ -706,6 +706,6 @@ namespace gum_tests {
     }
 
 
-    void testEnd() { theEnd(); }
+    GUM_TEST(End() { theEnd); }
   };
 }   // namespace gum_tests

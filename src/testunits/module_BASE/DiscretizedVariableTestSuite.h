@@ -33,11 +33,11 @@ namespace gum_tests {
 
   class [[maybe_unused]] DiscretizedVariableTestSuite: public CxxTest::TestSuite {
     public:
-    void testCreation() {
+    GUM_TEST(Creation) {
       TS_GUM_ASSERT_THROWS_NOTHING(gum::DiscretizedVariable< int > v("var", "a var"))
     }
 
-    void testDiscreteVariableProperties() {
+    GUM_TEST(DiscreteVariableProperties) {
       gum::DiscretizedVariable< int > v("var", "a var");
       TS_ASSERT_EQUALS(v.name(), "var")
       v.setName("toto");
@@ -53,7 +53,7 @@ namespace gum_tests {
       w.setDescription("Lol");   // change description does not change a variable
     }
 
-    void testConstructorWithTicks() {
+    GUM_TEST(ConstructorWithTicks) {
       gum::DiscretizedVariable< double > d("d", "Discretized variable", {3.1, 2.0, 4.0});
 
       TS_GUM_ASSERT_THROWS_NOTHING(d["2.5"])
@@ -71,7 +71,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(d["4.5"])
     }
 
-    void testAddTicks() {
+    GUM_TEST(AddTicks) {
       gum::DiscretizedVariable< int > v("var", "a var");
 
       TS_ASSERT_THROWS(v.tick((gum::Idx)1), const gum::OutOfBounds&)
@@ -102,7 +102,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(v.tick((gum::Idx)3), const gum::OutOfBounds&)
     }
 
-    void testNormalLimits() {
+    GUM_TEST(NormalLimits) {
       gum::DiscretizedVariable< unsigned int > v("var", "a var");
       v.addTick(1).addTick(5).addTick(3).addTick(7);
 
@@ -136,7 +136,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(v["8"], const gum::OutOfBounds&)
     }
 
-    void testNormalLimitsWithEmpirical() {
+    GUM_TEST(NormalLimitsWithEmpirical) {
       gum::DiscretizedVariable< unsigned int > v("var", "a var");
       v.addTick(1).addTick(5).addTick(3).addTick(7);
 
@@ -174,7 +174,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(vv, (gum::Size)2)
     }
 
-    void testNormalLimitsWithEmpiricalInConstructor() {
+    GUM_TEST(NormalLimitsWithEmpiricalInConstructor) {
       gum::DiscretizedVariable< unsigned int > v("var",
                                                  "a var",
                                                  {1, 3, 5, 7},
@@ -213,7 +213,7 @@ namespace gum_tests {
     }
 
 
-    void testNormalLimitsWithNoEmpiricalInConstructor() {
+    GUM_TEST(NormalLimitsWithNoEmpiricalInConstructor) {
       gum::DiscretizedVariable< unsigned int > v("var",
                                                  "a var",
                                                  {1, 3, 5, 7});   // empirical is false
@@ -248,7 +248,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(vv = v["8"], gum::OutOfBounds&)
     }
 
-    void testOrderTicks() {
+    GUM_TEST(OrderTicks) {
       for (int i = 1; i < 7; i++)
         for (int j = 1; j < 7; j++)
           for (int k = 1; k < 7; k++)
@@ -269,7 +269,7 @@ namespace gum_tests {
                 }
     }
 
-    void testFloatLimits() {
+    GUM_TEST(FloatLimits) {
       gum::DiscretizedVariable< double > d("d", "Discretized variable");
       d.addTick(3.1).addTick(2.0).addTick(4.0);
 
@@ -285,7 +285,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(d["4.5"])
     }
 
-    void testFloatLimitsEmpirical() {
+    GUM_TEST(FloatLimitsEmpirical) {
       gum::DiscretizedVariable< double > d("d", "Discretized variable");
       d.addTick(3.1).addTick(2.0).addTick(4.0);
 
@@ -296,7 +296,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(d["4.5"])
     }
 
-    void testNumerical() {
+    GUM_TEST(Numerical) {
       gum::DiscretizedVariable< double > d("d", "Discretized variable");
       d.addTick(3.1).addTick(2.0).addTick(4.0);
 
@@ -304,7 +304,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(d.numerical(1), (4.0 + 3.1) / 2)
     }
 
-    void testCopyEmptyVariableWithZeros() {
+    GUM_TEST(CopyEmptyVariableWithZeros) {
       gum::DiscretizedVariable< double > source("angle", "");
 
       auto copy = source;
@@ -318,7 +318,7 @@ namespace gum_tests {
       TS_ASSERT(!copy.empty())
     }
 
-    void testCopyEmptyVariableWithoutZeros() {
+    GUM_TEST(CopyEmptyVariableWithoutZeros) {
       gum::DiscretizedVariable< double > source("angle", "");
       auto                               copy = source;
 

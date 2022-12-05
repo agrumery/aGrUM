@@ -29,7 +29,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] DBTranslator4LabelizedVariableTestSuite: public CxxTest::TestSuite {
     public:
-    void test_trans1() {
+    GUM_TEST(_trans1) {
       gum::learning::DBTranslator4LabelizedVariable translator;
       TS_ASSERT(translator.isLossless())
       TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("toto"))
@@ -95,7 +95,7 @@ namespace gum_tests {
     }
 
 
-    void test_trans2() {
+    GUM_TEST(_trans2) {
       gum::learning::DBTranslator4LabelizedVariable translator;
       TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("toto"))
       TS_ASSERT_EQUALS(translator.translate("toto").discr_val, (std::size_t)0)
@@ -158,7 +158,7 @@ namespace gum_tests {
     }
 
 
-    void test_trans3() {
+    GUM_TEST(_trans3) {
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("toto");
       var.addLabel("titi");
@@ -231,7 +231,7 @@ namespace gum_tests {
     }
 
 
-    void test_trans4() {
+    GUM_TEST(_trans4) {
       {
         gum::LabelizedVariable var("X1", "", 0);
         var.addLabel("1");
@@ -504,7 +504,7 @@ namespace gum_tests {
     }
 
 
-    void test_trans6() {
+    GUM_TEST(_trans6) {
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("toto");
       var.addLabel("titi");
@@ -529,7 +529,7 @@ namespace gum_tests {
                 == "???");
     }
 
-    void test_trans7() {
+    GUM_TEST(_trans7) {
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("7");
       var.addLabel("1");

@@ -28,7 +28,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] UtilsStringTestSuite: public CxxTest::TestSuite {
     public:
-    void TestIsInteger() {
+    GUM_TEST(IsInteger) {
       TS_ASSERT(gum::isInteger("12"))
       TS_ASSERT(!gum::isInteger("foo"))
       TS_ASSERT(!gum::isInteger("12foo"))
@@ -42,7 +42,7 @@ namespace gum_tests {
       TS_ASSERT(!gum::isInteger("1-2"))
     }
 
-    void TestisNumerical() {
+    GUM_TEST(isNumerical) {
       TS_ASSERT(gum::isNumerical("12"))
       TS_ASSERT(!gum::isNumerical("foo"))
       TS_ASSERT(!gum::isNumerical("12foo"))
@@ -67,7 +67,7 @@ namespace gum_tests {
     }
 
 
-    void TestIsIntegerWithResult() {
+    GUM_TEST(IsIntegerWithResult) {
       int res;
       TS_ASSERT(gum::isIntegerWithResult("12", &res))
       TS_ASSERT_EQUALS(res, 12)
@@ -85,7 +85,7 @@ namespace gum_tests {
       TS_ASSERT(!gum::isIntegerWithResult("1-2", &res))
     }
 
-    void TestisNumericalWithResWithResult() {
+    GUM_TEST(isNumericalWithResWithResult) {
       double res;
       TS_ASSERT(gum::isNumericalWithResult("12", &res))
       TS_ASSERT_EQUALS(res, 12.0)

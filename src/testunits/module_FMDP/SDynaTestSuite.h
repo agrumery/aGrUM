@@ -81,7 +81,7 @@ namespace gum_tests {
     // *******************************************************************************
     // Run the tests on a Coffee FMDP
     // *******************************************************************************
-    void test_Coffee() {
+    GUM_TEST(_Coffee) {
       // **************************************************************
       // Chargement du fmdp servant de base
       gum::FMDPSimulator sim(GET_RESSOURCES_PATH("FMDP/coffee/coffee.dat"));
@@ -109,7 +109,7 @@ namespace gum_tests {
     // *******************************************************************************
     // Run the tests on a Taxi instance
     // *******************************************************************************
-    void test_Taxi() {
+    GUM_TEST(_Taxi) {
       // **************************************************************
       // Chargement du simulateur
       gum::TaxiSimulator sim;

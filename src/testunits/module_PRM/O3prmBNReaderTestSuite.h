@@ -29,7 +29,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] O3prmBNReaderTestSuite: public CxxTest::TestSuite {
     public:
-    void testClassWithoutSystem() {
+    GUM_TEST(ClassWithoutSystem) {
       gum::BayesNet< double >      bn;
       gum::O3prmBNReader< double > reader(&bn, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
       gum::Size                    res = 0;
@@ -40,7 +40,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn.size(), (gum::Size)8)
     }
 
-    void testClassWithoutSystemWithOtherClassName() {
+    GUM_TEST(ClassWithoutSystemWithOtherClassName) {
       try {
         gum::BayesNet< double >      bn;
         gum::O3prmBNReader< double > reader(&bn,
@@ -54,7 +54,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-    void testDoublingClassWithoutSystem() {
+    GUM_TEST(DoublingClassWithoutSystem) {
       gum::BayesNet< double >      bn;
       gum::O3prmBNReader< double > reader(&bn, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
       gum::Size                    res = 0;
@@ -73,7 +73,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn2.size(), (gum::Size)8)
     }
 
-    void testClassWithoutSystemAfterDeletingReader() {
+    GUM_TEST(ClassWithoutSystemAfterDeletingReader) {
       gum::BayesNet< double > bn;
       {
         gum::O3prmBNReader< double > reader(&bn, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
@@ -85,7 +85,7 @@ namespace gum_tests {
       }
     }
 
-    void testClassesWithSystem() {
+    GUM_TEST(ClassesWithSystem) {
       gum::BayesNet< double >      bn;
       gum::O3prmBNReader< double > reader(
          &bn,
@@ -98,7 +98,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn.size(), (gum::Size)8)
     }
 
-    void testWithError() {
+    GUM_TEST(WithError) {
       gum::BayesNet< double >      bn;
       gum::O3prmBNReader< double > reader(&bn,
                                           GET_RESSOURCES_PATH("o3prm/DoesNotExists.o3prm"),
@@ -119,7 +119,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn.size(), (gum::Size)0)
     }
 
-    void testWithCplxFile() {
+    GUM_TEST(WithCplxFile) {
       gum::BayesNet< double >      bn;
       gum::O3prmBNReader< double > reader(&bn,
                                           GET_RESSOURCES_PATH("o3prm/inference.o3prm"),
@@ -131,7 +131,7 @@ namespace gum_tests {
     }
 
 
-    void testWithClassPathAndSystem() {
+    GUM_TEST(WithClassPathAndSystem) {
       gum::BayesNet< double >      bn;
       gum::O3prmBNReader< double > reader(
          &bn,
@@ -145,7 +145,7 @@ namespace gum_tests {
       reader.showElegantErrorsAndWarnings();
     }
 
-    void testNameWithOrWithoutSystem() {
+    GUM_TEST(NameWithOrWithoutSystem) {
       // in a file with only one class and no system, there should not be any "."
       // in the names
       {
@@ -175,7 +175,7 @@ namespace gum_tests {
       }
     }
 
-    void testReadAndWriteAndRead() {
+    GUM_TEST(ReadAndWriteAndRead) {
       gum::BayesNet< double >      bn;
       gum::O3prmBNReader< double > reader(&bn, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
       gum::Size                    res = 0;

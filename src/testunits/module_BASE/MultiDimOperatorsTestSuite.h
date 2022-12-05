@@ -37,7 +37,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] MultiDimOperatorsTestSuite: public CxxTest::TestSuite {
     public:
-    void test_op_multidimArray() {
+    GUM_TEST(_op_multidimArray) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -114,7 +114,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    void test_op_multidimImplementationOfMultiDimArray() {
+    GUM_TEST(_op_multidimImplementationOfMultiDimArray) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -196,7 +196,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    void test_operators_init() {
+    GUM_TEST(_operators_init) {
       gum::operators4MultiDimInit< double >();
       // why 3 times ?
       // gum::operators4MultiDimInit<double> ();
@@ -239,7 +239,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    void test_potentials() {
+    GUM_TEST(_potentials) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -320,7 +320,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    void test_op_multidimArray4Pointers() {
+    GUM_TEST(_op_multidimArray4Pointers) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -397,7 +397,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    void test_op_multidimImplementationOfMultiDimArray4Pointers() {
+    GUM_TEST(_op_multidimImplementationOfMultiDimArray4Pointers) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -478,7 +478,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    void test_operators_init4Pointers() {
+    GUM_TEST(_operators_init4Pointers) {
       gum::pointerOperators4MultiDimInit< double >();
       // why 3 times ?
       // gum::pointerOperators4MultiDimInit<double> ();
@@ -521,7 +521,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    void test_op_optimizeArrays() {
+    GUM_TEST(_op_optimizeArrays) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -634,7 +634,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    void test_op_optimizeMultiDimImplementations() {
+    GUM_TEST(_op_optimizeMultiDimImplementations) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {

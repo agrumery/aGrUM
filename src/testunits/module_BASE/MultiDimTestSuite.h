@@ -32,7 +32,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] MultidimTestSuite: public CxxTest::TestSuite {
     public:
-    void testCreation() {
+    GUM_TEST(Creation) {
       gum::MultiDimArray< double > m;
       TS_ASSERT_EQUALS(m.nbrDim(), (gum::Size)0)
       TS_ASSERT_EQUALS(m.domainSize(), (gum::Size)1)
@@ -50,7 +50,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(mm.domainSize(), (gum::Size)20)
     }
 
-    void testMemoryCrash() {
+    GUM_TEST(MemoryCrash) {
       gum::MultiDimArray< double > m;
       gum::LabelizedVariable*      v[100];
 

@@ -60,7 +60,7 @@ namespace gum_tests {
 
 
     public:
-    void test_simple() {
+    GUM_TEST(_simple) {
       const std::vector< gum::learning::DBTranslatedValueType > col_types{
          gum::learning::DBTranslatedValueType::DISCRETE,
          gum::learning::DBTranslatedValueType::DISCRETE,
@@ -243,7 +243,7 @@ namespace gum_tests {
       TS_ASSERT(!genset.hasRows())
     }
 
-    void test_simple2() {
+    GUM_TEST(_simple2) {
       const std::vector< gum::learning::DBTranslatedValueType > col_types{
          gum::learning::DBTranslatedValueType::DISCRETE,
          gum::learning::DBTranslatedValueType::DISCRETE,
@@ -299,7 +299,7 @@ namespace gum_tests {
     }
 
 
-    void test_incomplete() {
+    GUM_TEST(_incomplete) {
       const std::vector< gum::learning::DBTranslatedValueType > col_types{
          gum::learning::DBTranslatedValueType::DISCRETE,
          gum::learning::DBTranslatedValueType::DISCRETE,
@@ -361,7 +361,7 @@ namespace gum_tests {
     }
 
 
-    void test_basic() {
+    GUM_TEST(_basic) {
       const std::vector< gum::learning::DBTranslatedValueType > col_types{
          gum::learning::DBTranslatedValueType::DISCRETE,
          gum::learning::DBTranslatedValueType::DISCRETE,

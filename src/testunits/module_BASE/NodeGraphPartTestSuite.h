@@ -28,9 +28,11 @@ namespace gum_tests {
 
   class [[maybe_unused]] NodeGraphPartTestSuite: public CxxTest::TestSuite {
     public:
-    void testConstructor() { TS_GUM_ASSERT_THROWS_NOTHING(gum::NodeGraphPart ngp); }
+    GUM_TEST(Constructor() {
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::NodeGraphPart ngp);
+    }
 
-    void testInsertion() {
+    GUM_TEST(Insertion) {
       gum::NodeGraphPart ngp;
       TS_ASSERT_EQUALS(ngp.size(), (gum::Size)0)
       TS_ASSERT(ngp.empty())
@@ -54,7 +56,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(ngp.addNodeWithId(next2 + 1), const gum::DuplicateElement&)
     }
 
-    void testSuppression() {
+    GUM_TEST(Suppression) {
       gum::NodeGraphPart ngp;
       ngp.addNode();
       ngp.addNode();
@@ -73,7 +75,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(ngp.size(), (gum::Size)0)
     }
 
-    void testAdd2() {
+    GUM_TEST(Add2) {
       gum::NodeGraphPart ngp;
       ngp.addNodeWithId(gum::NodeId(3));
       TS_ASSERT_EQUALS(ngp._sizeHoles_(), (gum::Size)3)
@@ -91,7 +93,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(ngp, ngp2)
     }
 
-    void testCopy() {
+    GUM_TEST(Copy) {
       gum::NodeGraphPart ngp;
       ngp.addNode();
       ngp.addNode();
@@ -108,7 +110,7 @@ namespace gum_tests {
                        (gum::Size)0);   // 2 last hole has vanished
     }
 
-    void testInsertionForcee() {
+    GUM_TEST(InsertionForcee) {
       gum::NodeGraphPart ngp;
       gum::NodeId        a = 1;
       gum::NodeId        b = 2;
@@ -162,7 +164,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(ngp.addNodeWithId(f), const gum::DuplicateElement&)
     }
 
-    void testGarbageCollecting() {
+    GUM_TEST(GarbageCollecting) {
       gum::NodeGraphPart ngp;
       gum::NodeId        node = 6;
 
@@ -197,7 +199,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(ngp2.nextNodeId(), gum::NodeId(node + 1))
     }
 
-    void testUnsafeIterator() {
+    GUM_TEST(UnsafeIterator) {
       gum::NodeGraphPart ngp;
 
       for (gum::NodeId i = 0; i < 20; ++i) {
@@ -225,9 +227,11 @@ namespace gum_tests {
       TS_ASSERT(nb2 > gum::Size(0))
     }
 
-    void testBigNodeGraphPart() { TS_GUM_ASSERT_THROWS_NOTHING(_privateTestBigNodeGraphPart_()); }
+    GUM_TEST(BigNodeGraphPart) {
+      TS_GUM_ASSERT_THROWS_NOTHING(_privateTestBigNodeGraphPart_());
+    }
 
-    void testIteratorEnd() {
+    GUM_TEST(IteratorEnd) {
       gum::NodeGraphPart nodeset;
       nodeset.addNode();
       gum::Size cpt = 0;
@@ -246,7 +250,7 @@ namespace gum_tests {
       }
     }
 
-    void testIteratorEraseNode() {
+    GUM_TEST(IteratorEraseNode) {
       gum::NodeGraphPart nodeset;
       const gum::Size    max_cpt = 100;
 
@@ -271,7 +275,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(cpt, max_cpt)
     }
 
-    void testIteratorAddNodes() {
+    GUM_TEST(IteratorAddNodes) {
       gum::NodeGraphPart nodeset;
 
       auto v = nodeset.addNodes(100);
@@ -310,17 +314,17 @@ namespace gum_tests {
     }
 
     private:
-#define NBR_PROFILING_NODES 50000
+
     void _privateTestBigNodeGraphPart_() {
       {
         gum::NodeGraphPart ngp;
         // direct
 
-        for (gum::NodeId node = 1; node < NBR_PROFILING_NODES; node++) {
+        for (gum::NodeId node = 1; node < _NBR_PROFILING_NODES_; node++) {
           ngp.addNode();
         }
 
-        for (gum::NodeId node = 1; node < NBR_PROFILING_NODES; node++) {
+        for (gum::NodeId node = 1; node < _NBR_PROFILING_NODES_; node++) {
           ngp.eraseNode(node);
         }
       }
@@ -329,12 +333,12 @@ namespace gum_tests {
         gum::NodeGraphPart ngp;
         // reverse
 
-        for (gum::NodeId node = 1; node < NBR_PROFILING_NODES; node++) {
+        for (gum::NodeId node = 1; node < _NBR_PROFILING_NODES_; node++) {
           ngp.addNode();
         }
 
-        for (gum::NodeId node = 1; node < NBR_PROFILING_NODES; node++) {
-          ngp.eraseNode(NBR_PROFILING_NODES - node);
+        for (gum::NodeId node = 1; node < _NBR_PROFILING_NODES_; node++) {
+          ngp.eraseNode(_NBR_PROFILING_NODES_ - node);
         }
       }
 
@@ -343,11 +347,11 @@ namespace gum_tests {
 
         // direct with id
 
-        for (gum::NodeId node = 1; node < NBR_PROFILING_NODES; node++) {
+        for (gum::NodeId node = 1; node < _NBR_PROFILING_NODES_; node++) {
           ngp.addNodeWithId(node);
         }
 
-        for (gum::NodeId node = 1; node < NBR_PROFILING_NODES; node++) {
+        for (gum::NodeId node = 1; node < _NBR_PROFILING_NODES_; node++) {
           ngp.eraseNode(node);
         }
       }
@@ -357,11 +361,11 @@ namespace gum_tests {
 
         // reverse with id
 
-        for (gum::NodeId node = 1; node < NBR_PROFILING_NODES; node++) {
-          ngp.addNodeWithId(NBR_PROFILING_NODES - node);
+        for (gum::NodeId node = 1; node < _NBR_PROFILING_NODES_; node++) {
+          ngp.addNodeWithId(_NBR_PROFILING_NODES_ - node);
         }
 
-        for (gum::NodeId node = 1; node < NBR_PROFILING_NODES; node++) {
+        for (gum::NodeId node = 1; node < _NBR_PROFILING_NODES_; node++) {
           ngp.eraseNode(10000 - node);
         }
       }
@@ -379,5 +383,7 @@ namespace gum_tests {
       ngp4 = ngp;
       TS_ASSERT_EQUALS(ngp.toString(), ngp3.toString())
     }
+
+    constexpr const int _NBR_PROFILING_NODES_=50000;
   };
 }   // namespace gum_tests

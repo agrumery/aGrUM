@@ -37,7 +37,7 @@ namespace gum_tests {
 
     void tearDown() {}
 
-    void testParseFile1() {
+    GUM_TEST(ParseFile1) {
       try {
         gum::prm::o3prmr::O3prmrInterpreter* si = new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode(true);
@@ -54,7 +54,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testParseFile2() {
+    GUM_TEST(ParseFile2) {
       try {
         gum::prm::o3prmr::O3prmrInterpreter* si = new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode(true);
@@ -71,7 +71,7 @@ namespace gum_tests {
     }
 
     // ->
-    void testInference() {
+    GUM_TEST(Inference) {
       try {
         gum::prm::o3prmr::O3prmrInterpreter* si = new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode(false);
@@ -87,7 +87,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testObserve() {
+    GUM_TEST(Observe) {
       try {
         gum::prm::o3prmr::O3prmrInterpreter* si = new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode(false);
@@ -131,7 +131,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testUnobserve() {
+    GUM_TEST(Unobserve) {
       try {
         gum::prm::o3prmr::O3prmrInterpreter* si = new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode(false);
@@ -162,7 +162,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testQuery() {
+    GUM_TEST(Query) {
       try {
         gum::prm::o3prmr::O3prmrInterpreter* si = new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode(false);
@@ -211,7 +211,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testAsiaBN() {
+    GUM_TEST(AsiaBN) {
       try {
         // Arrange
         auto si = new gum::prm::o3prmr::O3prmrInterpreter();
@@ -229,7 +229,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testAsiaBNGrd() {
+    GUM_TEST(AsiaBNGrd) {
       try {
         // Arrange
         auto si = new gum::prm::o3prmr::O3prmrInterpreter();
@@ -250,7 +250,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testAsiaOneFileBNGrd() {
+    GUM_TEST(AsiaOneFileBNGrd) {
       try {
         // Arrange
         auto si = new gum::prm::o3prmr::O3prmrInterpreter();
@@ -276,7 +276,7 @@ namespace gum_tests {
     }
 
     // ->
-    void testComplexPrintersGrd() {
+    GUM_TEST(ComplexPrintersGrd) {
       try {
         // Arrange
         auto si = new gum::prm::o3prmr::O3prmrInterpreter();
@@ -299,7 +299,7 @@ namespace gum_tests {
     }
 
     // ->
-    void testADDWithoutSlash() {
+    GUM_TEST(ADDWithoutSlash) {
       try {
         gum::prm::o3prmr::O3prmrInterpreter si;
         si.setSyntaxMode(false);
@@ -317,7 +317,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testADD() {
+    GUM_TEST(ADD) {
       try {
         gum::prm::o3prmr::O3prmrInterpreter si;
         si.setSyntaxMode(false);
@@ -337,7 +337,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testOrAnd() {
+    GUM_TEST(OrAnd) {
       try {
         gum::prm::o3prmr::O3prmrInterpreter si;
         si.setSyntaxMode(false);
@@ -357,7 +357,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testStudents() {
+    GUM_TEST(Students) {
       try {
         gum::prm::o3prmr::O3prmrInterpreter si;
         si.setSyntaxMode(false);

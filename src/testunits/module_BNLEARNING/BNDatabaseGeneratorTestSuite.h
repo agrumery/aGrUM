@@ -72,7 +72,7 @@ namespace gum_tests {
 
     void tearDown() { delete bn; }
 
-    void testConstuctor() {
+    GUM_TEST(Constuctor) {
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn))
 
@@ -96,7 +96,7 @@ namespace gum_tests {
       delete dbgen;
     }
 
-    void testSetVarOrder() {
+    GUM_TEST(SetVarOrder) {
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn))
 
@@ -149,7 +149,7 @@ namespace gum_tests {
       delete dbgen;
     }
 
-    void testDrawSamples() {
+    GUM_TEST(DrawSamples) {
       gum::Size domSizeA  = 3;
       gum::Size domSizeS  = 2;
       gum::Size domSizeE  = 2;
@@ -203,7 +203,7 @@ namespace gum_tests {
       delete dbgen;
     }
 
-    void testDrawSamplesLog2likelihood() {
+    GUM_TEST(DrawSamplesLog2likelihood) {
       gum::Size nbSamples1 = 100;
       gum::Size nbSamples2 = nbSamples1 * 100;
       gum::Size nbSamples3 = nbSamples1 * 1000;
@@ -236,7 +236,7 @@ namespace gum_tests {
       delete (dbgen);
     }
 
-    void testToCSV_1() {
+    GUM_TEST(ToCSV_1) {
       gum::Size nbSamples = 5;
 
       std::vector< std::string > domA = {"young", "adult", "old"};
@@ -307,7 +307,7 @@ namespace gum_tests {
       delete (dbgen);
     }
 
-    void testToCSV_2() {
+    GUM_TEST(ToCSV_2) {
       gum::Size nbSamples = 5;
 
       gum::Size domSizeA = 3;
@@ -379,7 +379,7 @@ namespace gum_tests {
       delete (dbgen);
     }
 
-    void testToDatabaseTable() {
+    GUM_TEST(ToDatabaseTable) {
       gum::Size domSizeA  = 3;
       gum::Size domSizeS  = 2;
       gum::Size domSizeE  = 2;
@@ -490,7 +490,7 @@ namespace gum_tests {
       delete (dbgen);
     }
 
-    void testListenToDrawSamples() {
+    GUM_TEST(ListenToDrawSamples) {
       gum::learning::BNDatabaseGenerator< double > dbgen(*bn);
 
       ASimpleDBGeneratorListener gener(dbgen);
@@ -508,7 +508,7 @@ namespace gum_tests {
       TS_ASSERT_DIFFERS(gener2.getMess(), "")
     }
 
-    void testDrawingWithEvidence() {
+    GUM_TEST(DrawingWithEvidence) {
       gum::learning::BNDatabaseGenerator< double > dbgen(*bn);
       ASimpleDBGeneratorListener                   gener(dbgen);
 
@@ -519,7 +519,7 @@ namespace gum_tests {
       TS_ASSERT_LESS_THAN(dbgen.samplesNbRows(), 100u)   // some samples have been rejected
     }
 
-    void testDrawingWithImpossibleEvidence() {
+    GUM_TEST(DrawingWithImpossibleEvidence) {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B");
       bn.cpt("B").fillWith({0, 1, 0, 1});   // value 0 for B is impossible
 
@@ -533,7 +533,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(dbgen.samplesNbRows(), 0u)   // some samples have been rejected
     }
 
-    void testAccuracy() {
+    GUM_TEST(Accuracy) {
       std::string csvFileURL = GET_RESSOURCES_PATH("outputs/dbgen2.csv");
       auto        bn         = gum::BayesNet< double >::fastPrototype("A->B");
       gum::learning::BNDatabaseGenerator< double > dbgen(bn);
@@ -561,7 +561,7 @@ namespace gum_tests {
          1e-2)
     }
 
-    void testAccuracyWithEvidence() {
+    GUM_TEST(AccuracyWithEvidence) {
       std::string csvFileURL = GET_RESSOURCES_PATH("outputs/dbgen2.csv");
       auto        bn         = gum::BayesNet< double >::fastPrototype("A->B");
       gum::learning::BNDatabaseGenerator< double > dbgen(bn);

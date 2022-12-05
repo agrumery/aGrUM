@@ -31,7 +31,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] NoPriorTestSuite: public CxxTest::TestSuite {
     public:
-    void test1() {
+    GUM_TEST(1) {
       // create the translator set
       gum::LabelizedVariable var1("X1", "", 0);
       var1.addLabel("0");
@@ -309,7 +309,7 @@ namespace gum_tests {
     }
 
 
-    void test2() {
+    GUM_TEST(2) {
       // create the translator set
       gum::LabelizedVariable var1("X1", "", 0);
       var1.addLabel("0");

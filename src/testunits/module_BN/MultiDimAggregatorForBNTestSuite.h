@@ -52,7 +52,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] MultiDimAggregratorsForBNTestSuite: public CxxTest::TestSuite {
     public:
-    void testBNwithMin() {
+    GUM_TEST(BNwithMin) {
       gum::List< gum::NodeId > idList;
       gum::BayesNet< double >  bn;
 
@@ -129,7 +129,7 @@ namespace gum_tests {
       }
     }
 
-    void testNoisyORNetInBN() {
+    GUM_TEST(NoisyORNetInBN) {
       gum::BayesNet< double > bn;
 
       gum::LabelizedVariable cold("Cold", "", 2);
@@ -212,7 +212,7 @@ namespace gum_tests {
       inf_LazyProp.makeInference();
     }
 
-    void testNoisyORCompoundInBN() {
+    GUM_TEST(NoisyORCompoundInBN) {
       gum::BayesNet< double > bn;
 
       gum::LabelizedVariable cold("Cold", "", 2);
@@ -298,7 +298,7 @@ namespace gum_tests {
       inf_LazyProp.makeInference();
     }
 
-    void testNoisyANDInBN() {
+    GUM_TEST(NoisyANDInBN) {
       gum::BayesNet< double > bn;
 
       gum::LabelizedVariable cold("Cold", "", 2);
@@ -386,7 +386,7 @@ namespace gum_tests {
       inf_LazyProp.makeInference();
     }
 
-    void testBNwithMinNoParents() {
+    GUM_TEST(BNwithMinNoParents) {
       auto                   bn = gum::BayesNet< double >::fastPrototype("A->B->C");
       gum::LabelizedVariable var("min", "min", 4);
       bn.add(var, new gum::aggregator::Min< double >());

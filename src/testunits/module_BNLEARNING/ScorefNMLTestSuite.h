@@ -654,7 +654,7 @@ namespace gum_tests {
     }
 
 
-    void test_multicore() {
+    GUM_TEST(_multicore) {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("0");

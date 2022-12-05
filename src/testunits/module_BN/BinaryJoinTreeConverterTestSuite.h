@@ -31,7 +31,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] BinaryJoinTreeConverterTestSuite: public CxxTest::TestSuite {
     public:
-    void test1() {
+    GUM_TEST(1) {
       gum::CliqueGraph            graph;
       std::vector< gum::NodeSet > cliques(11);
 

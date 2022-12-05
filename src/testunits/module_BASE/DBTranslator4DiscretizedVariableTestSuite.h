@@ -29,7 +29,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] DBTranslator4DiscretizedVariableTestSuite: public CxxTest::TestSuite {
     public:
-    void test_trans1() {
+    GUM_TEST(_trans1) {
       gum::DiscretizedVariable< int > var("X1", "");
       var.addTick(1);
       var.addTick(3);
@@ -116,7 +116,7 @@ namespace gum_tests {
     }
 
 
-    void test_trans2() {
+    GUM_TEST(_trans2) {
       {
         gum::DiscretizedVariable< double > var("X1", "");
         var.addTick(1);
@@ -428,7 +428,7 @@ namespace gum_tests {
     }
 
 
-    void test_trans6() {
+    GUM_TEST(_trans6) {
       gum::DiscretizedVariable< double > var("X1", "");
       var.addTick(1);
       var.addTick(3);

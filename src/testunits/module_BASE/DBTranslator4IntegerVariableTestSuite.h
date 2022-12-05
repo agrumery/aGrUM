@@ -29,7 +29,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] DBTranslator4IntegerVariableTestSuite: public CxxTest::TestSuite {
     public:
-    void test_trans1() {
+    GUM_TEST(_trans1) {
       gum::IntegerVariable var("X1", "");
       var.addValue(1);
       var.addValue(3);
@@ -121,7 +121,7 @@ namespace gum_tests {
     }
 
 
-    void test_trans2() {
+    GUM_TEST(_trans2) {
       {
         gum::IntegerVariable var("X1", "");
         var.addValue(1);

@@ -28,7 +28,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] TimerTestSuite: public CxxTest::TestSuite {
     public:
-    void testConstructors() {
+    GUM_TEST(Constructors) {
       TS_GUM_ASSERT_THROWS_NOTHING(gum::Timer t1)
       TS_GUM_ASSERT_THROWS_NOTHING(gum::Timer* t2 = new gum::Timer(); delete (t2);) {
         gum::Timer t1;
@@ -54,7 +54,7 @@ namespace gum_tests {
       }
     }
 
-    void testTrivial() {
+    GUM_TEST(Trivial) {
       bool test_pass = false;
       // The test randomly fails for reasons, it have to fails three times in
       // a row to be considered trully as failed

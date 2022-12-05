@@ -106,7 +106,7 @@ namespace gum_tests {
     };
 
     /// network : A --> C <-- B built manually
-    void testCredalNetByLP() {
+    GUM_TEST(CredalNetByLP) {
       initCNet();
 
       std::vector< gum::NodeId > ids;
@@ -306,7 +306,7 @@ namespace gum_tests {
       clearCNet();
     }
 
-    void testBinarization() {
+    GUM_TEST(Binarization) {
       auto bn = gum::BayesNet< double >::fastPrototype("A[2]->B[3]");
       for (const auto nod: bn.nodes())
         bn.cpt(nod).translate(1).scale(0.25).normalizeAsCPT();
@@ -339,7 +339,7 @@ namespace gum_tests {
     }
 
 
-    void testBadMinMaxFile() {
+    GUM_TEST(BadMinMaxFile) {
       gum::BayesNet< double >  monBNa;
       gum::BIFReader< double > readera(
          &monBNa,

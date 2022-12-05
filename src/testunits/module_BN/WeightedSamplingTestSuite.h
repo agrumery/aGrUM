@@ -61,7 +61,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] WeightedSamplingTestSuite: public CxxTest::TestSuite {
     public:
-    void testWeightedBinaryTreeWithoutEvidence() {
+    GUM_TEST(WeightedBinaryTreeWithoutEvidence) {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
 
@@ -80,7 +80,7 @@ namespace gum_tests {
       }
     }
 
-    void testWeightedBinaryTreeWithEvidenceOnRoot() {
+    GUM_TEST(WeightedBinaryTreeWithEvidenceOnRoot) {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "b";
@@ -103,7 +103,7 @@ namespace gum_tests {
       }
     }
 
-    void testWeightedBinaryTreeWithEvidenceOnLeaf() {
+    GUM_TEST(WeightedBinaryTreeWithEvidenceOnLeaf) {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "h";
@@ -127,7 +127,7 @@ namespace gum_tests {
       }
     }
 
-    void testWeightedBinaryTreeWithEvidenceOnMid() {
+    GUM_TEST(WeightedBinaryTreeWithEvidenceOnMid) {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "e";
@@ -151,7 +151,7 @@ namespace gum_tests {
       }
     }
 
-    void testWeightedBinaryTreeWithMultipleEvidence() {
+    GUM_TEST(WeightedBinaryTreeWithMultipleEvidence) {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
 
@@ -177,7 +177,7 @@ namespace gum_tests {
       }
     }
 
-    void testWeightedNaryTreeWithMultipleEvidence() {
+    GUM_TEST(WeightedNaryTreeWithMultipleEvidence) {
       auto bn = gum::BayesNet< double >::fastPrototype(
          "a[4]->d[8]->f[3];b->d->g[5];b->e[4]->h;c->e;i[10]->j[3]->h");
       unsharpen(bn);
@@ -206,7 +206,7 @@ namespace gum_tests {
     }
 
 
-    void testWeightedSimpleBN() {
+    GUM_TEST(WeightedSimpleBN) {
       auto bn = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
       unsharpen(bn);
 
@@ -265,7 +265,7 @@ namespace gum_tests {
     }
 
 
-    void testWeightedCplxBN() {
+    GUM_TEST(WeightedCplxBN) {
       auto bn = gum::BayesNet< double >::fastPrototype(
          "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
          3);
@@ -324,7 +324,7 @@ namespace gum_tests {
       }
     }
 
-    void testWeightedAsia() {
+    GUM_TEST(WeightedAsia) {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/asia.bif"));
       gum::Size                nbrErr = (gum::Size)0;
@@ -349,7 +349,7 @@ namespace gum_tests {
     }
 
 
-    void testWeightedAlarm() {
+    GUM_TEST(WeightedAlarm) {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = (gum::Size)0;
@@ -374,7 +374,7 @@ namespace gum_tests {
     }
 
 
-    void testWeightedInfListener() {
+    GUM_TEST(WeightedInfListener) {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = (gum::Size)0;
@@ -394,7 +394,7 @@ namespace gum_tests {
     }
 
 
-    void testEvidenceAsTargetOnCplxBN() {
+    GUM_TEST(EvidenceAsTargetOnCplxBN) {
       auto bn = gum::BayesNet< double >::fastPrototype(
          "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
          3);

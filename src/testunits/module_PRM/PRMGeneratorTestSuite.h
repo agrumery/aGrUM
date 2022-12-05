@@ -38,7 +38,7 @@ namespace gum_tests {
 
     void tearDown() {}
 
-    void testConstructors() {
+    GUM_TEST(Constructors) {
       gum::prm::LayerGenerator< double >* gen = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::prm::LayerGenerator< double >())
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen)
@@ -57,7 +57,7 @@ namespace gum_tests {
       }
     }
 
-    void testLayerGenerator() {
+    GUM_TEST(LayerGenerator) {
       gum::prm::LayerGenerator< double >* gen = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::prm::LayerGenerator< double >())
       gen->setDomainSize(6);
@@ -128,7 +128,7 @@ namespace gum_tests {
       if (gen) { TS_GUM_ASSERT_THROWS_NOTHING(delete gen); }
     }
 
-    void testClusterGenerator() {
+    GUM_TEST(ClusterGenerator) {
       gum::prm::ClusteredLayerGenerator< double >* gen = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::prm::ClusteredLayerGenerator< double >())
       gen->setDomainSize(6);

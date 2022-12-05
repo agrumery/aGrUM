@@ -35,7 +35,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] IndepTestChi2TestSuite: public CxxTest::TestSuite {
     public:
-    void test_chi2() {
+    GUM_TEST(_chi2) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -73,7 +73,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(score.score(1, 3, std::vector< gum::NodeId >{4}), -0.648, 0.01)
     }
 
-    void test_cache() {
+    GUM_TEST(_cache) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -107,7 +107,7 @@ namespace gum_tests {
       }
     }
 
-    void test_clearcache() {
+    GUM_TEST(_clearcache) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -140,7 +140,7 @@ namespace gum_tests {
       }
     }
 
-    void test_statistics() {
+    GUM_TEST(_statistics) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/chi2.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -182,7 +182,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(stat.second, 0.0005, 1e-4)
     }
 
-    void test_statistics_2() {
+    GUM_TEST(_statistics_2) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/testXYbase.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -207,7 +207,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(stats.second, 0.0177784, 1e-3)
     }
 
-    void test_statistics_3() {
+    GUM_TEST(_statistics_3) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/indepXYZ1Z2.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -231,7 +231,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(stats.first, 2.0, 1e-3)
       TS_ASSERT_DELTA(stats.second, 0.7357588823428847, 1e-3)
     }
-    void test_statistics_4() {
+    GUM_TEST(_statistics_4) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/indepXYZ.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();

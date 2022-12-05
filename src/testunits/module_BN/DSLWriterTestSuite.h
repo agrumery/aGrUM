@@ -68,25 +68,25 @@ namespace gum_tests {
 
     void tearDown() { delete bn; }
 
-    void testConstuctor() {
+    GUM_TEST(Constuctor) {
       gum::DSLWriter< double >* writer = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::DSLWriter< double >())
       delete writer;
     }
 
-    void testWriter_ostream() {
+    GUM_TEST(Writer_ostream) {
       gum::DSLWriter< double > writer;
       // Uncomment this to check the output
       // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn))
     }
 
-    void testWriter_string() {
+    GUM_TEST(Writer_string) {
       gum::DSLWriter< double > writer;
       std::string              file = GET_RESSOURCES_PATH("outputs/DSLWriter_TestFile.txt");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn))
     }
 
-    void testSyntaxicError() {
+    GUM_TEST(SyntaxicError) {
       gum::DSLWriter< double > writer;
       {
         TS_ASSERT(!writer.isModificationAllowed())

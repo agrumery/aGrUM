@@ -107,7 +107,7 @@ namespace gum_tests {
       return *(seq.atPos(std::rand() % seq.size()));
     }
 
-    void testStructuredInference_gen1() {
+    GUM_TEST(StructuredInference_gen1) {
       try {
         std::vector< gum::prm::LayerGenerator< double >::LayerData > layers;
         generateLayer1(5, 2, layers);
@@ -136,7 +136,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testStructuredInference_gen2() {
+    GUM_TEST(StructuredInference_gen2) {
       try {
         std::vector< gum::prm::LayerGenerator< double >::LayerData > layers;
         generateLayer2(5, 2, layers);
@@ -165,7 +165,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    void testStructuredInference_gen3() {
+    GUM_TEST(StructuredInference_gen3) {
       try {
         std::vector< gum::prm::LayerGenerator< double >::LayerData > layers;
         generateLayer3(5, 2, layers);
@@ -194,7 +194,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false) }
     }
 
-    // void testFrequenceSearch_gen1() {
+    // GUM_TEST(FrequenceSearch_gen1) {
     //  try {
     //    std::vector<gum::prm::LayerGenerator<double>::LayerData> layers;
     //    generateLayer1( 5, 2, layers );

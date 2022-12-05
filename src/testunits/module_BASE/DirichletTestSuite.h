@@ -29,7 +29,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] DirichletTestSuite: public CxxTest::TestSuite {
     public:
-    void testXX() {
+    GUM_TEST(XX) {
       std::vector< float > param{1.0f, 1.0f};
       gum::Dirichlet       dir(param);
 

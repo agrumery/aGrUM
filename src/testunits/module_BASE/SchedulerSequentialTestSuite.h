@@ -33,7 +33,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] SchedulerSequentialTestSuite: public CxxTest::TestSuite {
     public:
-    void test_construct1() {
+    GUM_TEST(_construct1) {
       // reset the ids of the ScheduleMultiDim to avoid conflicts with other
       // testunits
       gum::IScheduleMultiDim::resetIdGenerator();

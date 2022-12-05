@@ -188,7 +188,7 @@ namespace gum_tests {
     }
 
     public:
-    void test_MultiDimArray() {
+    GUM_TEST(_MultiDimArray) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -222,7 +222,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    void test_MultiDimImplementation() {
+    GUM_TEST(_MultiDimImplementation) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -261,7 +261,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    void test_MultiDimArrayPointer() {
+    GUM_TEST(_MultiDimArrayPointer) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -295,7 +295,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    void test_MultiDimImplementationPointer() {
+    GUM_TEST(_MultiDimImplementationPointer) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -330,7 +330,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    void test_projections_init() {
+    GUM_TEST(_projections_init) {
       gum::completeProjections4MultiDimInit< double >();
       gum::completeProjections4MultiDimInit< double >();
       gum::completeProjections4MultiDimInit< double >();
@@ -364,7 +364,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    void test_potentials() {
+    GUM_TEST(_potentials) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -389,7 +389,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    void test_Pointer_init() {
+    GUM_TEST(_Pointer_init) {
       gum::pointerCompleteProjections4MultiDimInit< double >();
       gum::pointerCompleteProjections4MultiDimInit< double >();
       gum::pointerCompleteProjections4MultiDimInit< double >();
@@ -431,7 +431,7 @@ namespace gum_tests {
       return table.max();
     }
 
-    void test_MultiDimCompleteProjection() {
+    GUM_TEST(_MultiDimCompleteProjection) {
       std::vector< gum::LabelizedVariable* > vars(10);
       for (gum::Idx i = 0; i < 10; ++i) {
         std::stringstream str;

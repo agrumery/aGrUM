@@ -358,7 +358,7 @@ namespace gum_tests {
     // ************************************************************************************************
     /// Test sur les fonctions avec valeurs exactes
     // ************************************************************************************************
-    void test_Projections_Functions_on_MultiDimFunctionGraphs() {
+    GUM_TEST(_Projections_Functions_on_MultiDimFunctionGraphs) {
       gum::Timer time;
       double     tempsGene   = 0;
       double     tempsCalcul = 0;

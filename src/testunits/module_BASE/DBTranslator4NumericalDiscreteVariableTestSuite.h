@@ -29,7 +29,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] DBTransl4NumerDiscrVariaTestSuite: public CxxTest::TestSuite {
     public:
-    void test_trans1() {
+    GUM_TEST(_trans1) {
       gum::NumericalDiscreteVariable var("X1", "");
       var.addValue(1);
       var.addValue(3.5);
@@ -123,7 +123,7 @@ namespace gum_tests {
     }
 
 
-    void test_trans2() {
+    GUM_TEST(_trans2) {
       {
         gum::NumericalDiscreteVariable var("X1", "");
         var.addValue(1);

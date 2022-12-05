@@ -39,11 +39,11 @@ namespace gum_tests {
 
   class [[maybe_unused]] FMDPDatReaderTestSuite: public CxxTest::TestSuite {
     private:
-    std::string file;
+    std::string _file_;
 
-    void run() {
+    void _run_() {
       gum::FMDP< double >          fmdp(true);
-      gum::FMDPDatReader< double > reader(&fmdp, file);
+      gum::FMDPDatReader< double > reader(&fmdp, _file_);
 
       reader.trace(false);
       auto nbrErr = (gum::Size)0;
@@ -63,7 +63,7 @@ namespace gum_tests {
       _traceAlgoSaveFile_.close();
 
       int deletedFile = std::remove(GET_RESSOURCES_PATH("outputs/FMDPDatRead.dot"));
-      if (deletedFile != 0) std::cout << "Couldn't delete output file." << std::endl;
+      if (deletedFile != 0) std::cout << "Couldn't delete output _file_." << std::endl;
 
 
       // Only way to ensure diagrams are read correctly
@@ -82,35 +82,35 @@ namespace gum_tests {
     }
 
     public:
-    void testConstuctor() {
-      std::string file = GET_RESSOURCES_PATH("");
+    GUM_TEST(Constuctor) {
+      std::string _file_ = GET_RESSOURCES_PATH("");
 
       gum::FMDP< double >           fmdp(true);
       gum::FMDPDatReader< double >* reader = nullptr;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(reader = new gum::FMDPDatReader< double >(&fmdp, file))
+      TS_GUM_ASSERT_THROWS_NOTHING(reader = new gum::FMDPDatReader< double >(&fmdp, _file_))
 
       TS_GUM_ASSERT_THROWS_NOTHING(if (reader != nullptr) delete reader)
     }
 
-    void testReadFileCoffeeRobot() {
-      file = GET_RESSOURCES_PATH("FMDP/coffee/coffee.dat");
-      run();
+    GUM_TEST(ReadFileCoffeeRobot) {
+      _file_ = GET_RESSOURCES_PATH("FMDP/coffee/coffee.dat");
+      _run_();
     }
 
-    void testReadFileTinyFactory() {
-      file = GET_RESSOURCES_PATH("FMDP/factory/tiny-factory.dat");
-      run();
+    GUM_TEST(ReadFileTinyFactory) {
+      _file_ = GET_RESSOURCES_PATH("FMDP/factory/tiny-factory.dat");
+      _run_();
     }
 
-    void testReadFileFactory() {
-      file = GET_RESSOURCES_PATH("FMDP/factory/factory.dat");
-      run();
+    GUM_TEST(ReadFileFactory) {
+      _file_ = GET_RESSOURCES_PATH("FMDP/factory/factory.dat");
+      _run_();
     }
 
-    void testReadFileTaxi() {
-      file = GET_RESSOURCES_PATH("FMDP/taxi/taxi.dat");
-      run();
+    GUM_TEST(ReadFileTaxi) {
+      _file_ = GET_RESSOURCES_PATH("FMDP/taxi/taxi.dat");
+      _run_();
     }
   };
 }   // namespace gum_tests

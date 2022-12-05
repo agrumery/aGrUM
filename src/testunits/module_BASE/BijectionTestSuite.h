@@ -33,7 +33,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] BijectionTestSuite: public CxxTest::TestSuite {
     public:
-    void test_constructors1() {
+    GUM_TEST(_constructors1) {
       gum::Bijection< int, int > bijection;
 
       TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert(1, 2))
@@ -82,7 +82,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bij5.size(), (gum::Size)3)
     }
 
-    void test_constructors2() {
+    GUM_TEST(_constructors2) {
       gum::Bijection< std::string, std::string > bijection;
 
       TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert("a", "ba"))
@@ -134,7 +134,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bij5.size(), (gum::Size)3)
     }
 
-    void testMoves() {
+    GUM_TEST(Moves) {
       gum::Bijection< int, int > bij1;
       gum::Bijection< int, int > bij2;
       gum::Bijection< int, int > bij3;
@@ -157,7 +157,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bij2.second(3), 4)
     }
 
-    void testAccess1() {
+    GUM_TEST(Access1) {
       gum::Bijection< int, int > bijection;
 
       int x1 = 1, x2 = 2;
@@ -194,7 +194,7 @@ namespace gum_tests {
       TS_ASSERT(bijection.empty())
     }
 
-    void testAccess2() {
+    GUM_TEST(Access2) {
       gum::Bijection< std::string, std::string > bijection;
 
       std::string x1 = "1", x2 = "2";
@@ -231,7 +231,7 @@ namespace gum_tests {
       TS_ASSERT(bijection.empty())
     }
 
-    void testEmplace1() {
+    GUM_TEST(Emplace1) {
       gum::Bijection< std::string, std::string > bijection;
 
       TS_GUM_ASSERT_THROWS_NOTHING(bijection.emplace("3", "4"))
@@ -239,7 +239,7 @@ namespace gum_tests {
       TS_ASSERT(bijection.existsFirst("3"))
     }
 
-    void testEmplace2() {
+    GUM_TEST(Emplace2) {
       gum::Bijection< int, int > bijection;
 
       TS_GUM_ASSERT_THROWS_NOTHING(bijection.emplace(3, 4))
@@ -247,7 +247,7 @@ namespace gum_tests {
       TS_ASSERT(bijection.existsFirst(3))
     }
 
-    void test_ph() {
+    GUM_TEST(_ph) {
       gum::Bijection< int, int > carre;
       carre.insert(1, 1);
       carre.insert(2, 4);
@@ -260,7 +260,7 @@ namespace gum_tests {
       TS_ASSERT(!carre.existsFirst(4))
     }
 
-    void testResize() {
+    GUM_TEST(Resize) {
       gum::Bijection< std::string, std::string > bijection(2);
 
       TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert("1", "2"))
@@ -277,7 +277,7 @@ namespace gum_tests {
       TS_ASSERT_DIFFERS(bijection.capacity(), (gum::Size)2)
     }
 
-    void testResize2() {
+    GUM_TEST(Resize2) {
       gum::Bijection< int, int > bijection((gum::Size)2);
 
       TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert(1, 2))
@@ -294,7 +294,7 @@ namespace gum_tests {
       TS_ASSERT_DIFFERS(bijection.capacity(), (gum::Size)2)
     }
 
-    void testIterators1() {
+    GUM_TEST(Iterators1) {
       gum::Bijection< int, int > bijection;
 
       bijection.insert(1, 2);
@@ -338,7 +338,7 @@ namespace gum_tests {
       nb   = iter.second();
     }
 
-    void testIterators2() {
+    GUM_TEST(Iterators2) {
       gum::Bijection< int, int > bijection;
 
       bijection.insert(1, 2);
@@ -383,7 +383,7 @@ namespace gum_tests {
       nb   = iter.second();
     }
 
-    void testIterators3() {
+    GUM_TEST(Iterators3) {
       gum::Bijection< std::string, std::string > bijection;
 
       bijection.insert("1", "2");
@@ -427,7 +427,7 @@ namespace gum_tests {
       str             = iter.second();
     }
 
-    void testIterators4() {
+    GUM_TEST(Iterators4) {
       gum::Bijection< std::string, std::string > bijection;
 
       bijection.insert("1", "2");
@@ -473,7 +473,7 @@ namespace gum_tests {
       str             = iter.second();
     }
 
-    void test_constructorsStar() {
+    GUM_TEST(_constructorsStar) {
       gum::Bijection< int*, int* > bijection;
 
       TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int*)1, (int*)2))
@@ -500,7 +500,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bijection4.second((int*)3), (int*)3)
     }
 
-    void testAccessStar() {
+    GUM_TEST(AccessStar) {
       gum::Bijection< int*, int* > bijection;
 
       TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int*)1, (int*)2))
@@ -536,7 +536,7 @@ namespace gum_tests {
       TS_ASSERT(bijection.empty())
     }
 
-    void test_phStar() {
+    GUM_TEST(_phStar) {
       gum::Bijection< int*, int* > carre;
       carre.insert((int*)1, (int*)1);
       carre.insert((int*)2, (int*)4);
@@ -549,7 +549,7 @@ namespace gum_tests {
       TS_ASSERT(!carre.existsFirst((int*)4))
     }
 
-    void testResizeStar() {
+    GUM_TEST(ResizeStar) {
       gum::Bijection< int*, int* > bijection(2);
 
       TS_GUM_ASSERT_THROWS_NOTHING(bijection.insert((int*)1, (int*)2))
@@ -566,7 +566,7 @@ namespace gum_tests {
       TS_ASSERT_DIFFERS(bijection.capacity(), (gum::Size)2)
     }
 
-    void testIteratorsStar() {
+    GUM_TEST(IteratorsStar) {
       gum::Bijection< int*, int* > bijection;
 
       bijection.insert((int*)1, (int*)2);
@@ -610,7 +610,7 @@ namespace gum_tests {
       iter.second();
     }
 
-    void testcopyConstructor() {
+    GUM_TEST(copyConstructor) {
       gum::Bijection< gum::NodeId, const gum::LabelizedVariable* > b;
       b.insert(1, new gum::LabelizedVariable("A"));
       b.insert(2, new gum::LabelizedVariable("B"));

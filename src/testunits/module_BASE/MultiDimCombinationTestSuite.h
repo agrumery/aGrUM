@@ -58,7 +58,7 @@ namespace gum_tests {
     }
 
     public:
-    void test_op_multidimArray() {
+    GUM_TEST(_op_multidimArray) {
       try {
         std::vector< gum::LabelizedVariable* > vars(10);
 
@@ -180,7 +180,7 @@ namespace gum_tests {
     }
 
 
-    void testConstants() {
+    GUM_TEST(Constants) {
       gum::Potential< double > t1, t2;
       gum::Instantiation       inst1(t1), inst2(t2);
       t1.set(inst1, 3.0);
@@ -288,7 +288,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    void test_op_persitence() {
+    GUM_TEST(_op_persitence) {
       try {
         std::vector< gum::LabelizedVariable* > vars(10);
 

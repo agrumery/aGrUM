@@ -29,7 +29,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] CPlusPlusTestSuite: public CxxTest::TestSuite {
     public:
-    void test_CPP17_binding_array() {
+    GUM_TEST(_CPP17_binding_array) {
       int arry[3]    = {3, 4, 5};
       auto [a, b, c] = arry;
       TS_ASSERT_EQUALS(a, 3);
@@ -37,7 +37,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(c, 5);
     }
 
-    void test_CPP17_autobinding() {
+    GUM_TEST(_CPP17_autobinding) {
       std::tuple tplex(1, 'a', 3.14);
       auto [a, b, c] = tplex;
       TS_ASSERT_EQUALS(a, 1);
@@ -45,18 +45,18 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(c, 3.14);
     }
 
-    void test_CPP17_enumInit() {
+    GUM_TEST(_CPP17_enumInit) {
       enum byte : unsigned char {
       };
       byte b0 [[maybe_unused]]{0};
       byte b1 [[maybe_unused]] = byte{255};
     }
 
-    void test_CPP17_ifWithInit() {
+    GUM_TEST(_CPP17_ifWithInit) {
       if (int i = 3; i % 2 == 0) { TS_ABORT(); }
     }
 
-    void test_CPP20_likelyAttributes() {
+    GUM_TEST(_CPP20_likelyAttributes) {
       bool b = false;
       if (b) [[likely]] {
         TS_ABORT();
@@ -65,12 +65,12 @@ namespace gum_tests {
       }
     }
 
-    void test_CPP20_array_size_deduction() {
+    GUM_TEST(_CPP20_array_size_deduction) {
       int* p2 = new int[]{1, 2, 3};
       delete[](p2);
     }
 
-    void test_CPP20_int_two_cplt() {
+    GUM_TEST(_CPP20_int_two_cplt) {
       int i1 = -1;
       TS_ASSERT_EQUALS(
          i1 <<= 1,
@@ -82,7 +82,7 @@ namespace gum_tests {
          -2)   // "unrepresentable" left-shift for signed integers(previously undefined behavior)
     }
 
-    void test_CPP20_lambda_implicit_this_capture() {
+    GUM_TEST(_CPP20_lambda_implicit_this_capture) {
       struct S {
         int x{1};
         int y{[&] { return x + 1; }()};   // OK, captures 'this'

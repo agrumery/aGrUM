@@ -33,7 +33,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] LpInterfacetTestSuite: public CxxTest::TestSuite {
     public:
-    void testLpExpr() {
+    GUM_TEST(LpExpr) {
       gum::credal::lp::LpInterface< double > pl;
       auto                                   v = pl.addCols(3);
       const gum::credal::lp::LpCol&          a = v[0];
@@ -41,7 +41,7 @@ namespace gum_tests {
       gum::credal::lp::LpExpr expr = 2 + a <= 5;
       gum::credal::lp::LpRow  row(expr, v);
     }
-    void testLpCreation() {
+    GUM_TEST(LpCreation) {
       gum::credal::lp::LpInterface< double > pl;
 
       auto A = pl.addCols(3);   // 3 variables for the lp

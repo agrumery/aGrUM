@@ -33,7 +33,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] IncrementalTriangulationTestSuite: public CxxTest::TestSuite {
     public:
-    void test1() {
+    GUM_TEST(1) {
       gum::DefaultTriangulation     tr;
       gum::IncrementalTriangulation triang(tr);
 
@@ -116,7 +116,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(triang._check_(), true)
     }
 
-    void testPaperError() {
+    GUM_TEST(PaperError) {
       // check whether Incremental triangulations fix a bug in the paper by
       // Flores et al.
       gum::DefaultTriangulation     tr;
@@ -160,7 +160,7 @@ namespace gum_tests {
       if (!triang._check_()) return;
     }
 
-    void testRandom() {
+    GUM_TEST(Random) {
       for (gum::Idx k = 1; k < 100; ++k) {
         gum::DefaultTriangulation     tr;
         gum::IncrementalTriangulation triang(tr);
@@ -198,7 +198,7 @@ namespace gum_tests {
       }
     }
 
-    void testElimSeq() {
+    GUM_TEST(ElimSeq) {
       gum::DefaultTriangulation     tr;
       gum::IncrementalTriangulation triang(tr);
 

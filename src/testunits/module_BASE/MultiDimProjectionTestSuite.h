@@ -301,7 +301,7 @@ namespace gum_tests {
     }
 
     public:
-    void test_MultiDimArray_time() {
+    GUM_TEST(_MultiDimArray_time) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -355,7 +355,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    void test_MultiDimArray() {
+    GUM_TEST(_MultiDimArray) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -407,7 +407,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    void test_MultiDimArrayDeb() {
+    GUM_TEST(_MultiDimArrayDeb) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -459,7 +459,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    void test_MultiDimArrayEnd() {
+    GUM_TEST(_MultiDimArrayEnd) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -511,7 +511,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    void test_MultiDimImplementation() {
+    GUM_TEST(_MultiDimImplementation) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -565,7 +565,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    void test_MultiDimArrayPointer() {
+    GUM_TEST(_MultiDimArrayPointer) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -620,7 +620,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    void test_MultiDimImplementationPointer() {
+    GUM_TEST(_MultiDimImplementationPointer) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -676,7 +676,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    void test_projections_init() {
+    GUM_TEST(_projections_init) {
       gum::projections4MultiDimInit< double >();
 
       std::vector< gum::LabelizedVariable* > vars(10);
@@ -730,7 +730,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    void test_potentials() {
+    GUM_TEST(_potentials) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -782,7 +782,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    void test_Pointer_init() {
+    GUM_TEST(_Pointer_init) {
       gum::pointerProjections4MultiDimInit< double >();
 
       std::vector< gum::LabelizedVariable* > vars(10);
@@ -839,7 +839,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    void test_Pointer_potential() {
+    GUM_TEST(_Pointer_potential) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -893,7 +893,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    void test_MultiDimProjection() {
+    GUM_TEST(_MultiDimProjection) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -1040,7 +1040,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    void testConstants() {
+    GUM_TEST(Constants) {
       gum::Potential< double > t1;
       gum::Instantiation       inst1(t1);
       t1.set(inst1, 3.0);
@@ -1134,7 +1134,7 @@ namespace gum_tests {
     }
 
 
-    void test_persistence() {
+    GUM_TEST(_persistence) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -1271,7 +1271,7 @@ namespace gum_tests {
     }
 
 
-    void test_MultiDimSumProjection() {
+    GUM_TEST(_MultiDimSumProjection) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
