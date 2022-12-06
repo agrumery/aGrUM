@@ -25,7 +25,7 @@ import inspect
 import sys
 from os.path import join, dirname
 
-gumPath = join(dirname(sys.argv[0]), "build/release/wrappers")
+gumPath = join(dirname(sys.argv[0]), "build/pyAgrum/release/wrappers")
 
 
 class PyAgrumDocCoverage:
