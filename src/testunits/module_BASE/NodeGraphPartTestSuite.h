@@ -28,9 +28,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] NodeGraphPartTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(Constructor() {
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::NodeGraphPart ngp);
-    }
+    GUM_TEST(Constructor) { TS_GUM_ASSERT_THROWS_NOTHING(gum::NodeGraphPart ngp); }
 
     GUM_TEST(Insertion) {
       gum::NodeGraphPart ngp;
@@ -227,9 +225,7 @@ namespace gum_tests {
       TS_ASSERT(nb2 > gum::Size(0))
     }
 
-    GUM_TEST(BigNodeGraphPart) {
-      TS_GUM_ASSERT_THROWS_NOTHING(_privateTestBigNodeGraphPart_());
-    }
+    GUM_TEST(BigNodeGraphPart) { TS_GUM_ASSERT_THROWS_NOTHING(_privateTestBigNodeGraphPart_()); }
 
     GUM_TEST(IteratorEnd) {
       gum::NodeGraphPart nodeset;
@@ -314,7 +310,6 @@ namespace gum_tests {
     }
 
     private:
-
     void _privateTestBigNodeGraphPart_() {
       {
         gum::NodeGraphPart ngp;
@@ -384,6 +379,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(ngp.toString(), ngp3.toString())
     }
 
-    constexpr const int _NBR_PROFILING_NODES_=50000;
+    static constexpr const int _NBR_PROFILING_NODES_ = 50000;
   };
 }   // namespace gum_tests

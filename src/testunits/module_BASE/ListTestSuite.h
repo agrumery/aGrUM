@@ -33,10 +33,8 @@ namespace gum_tests {
 
   class [[maybe_unused]] ListTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(PrivateMethods) {
-      TS_GUM_ASSERT_THROWS_NOTHING(initializeList(7))
-      TS_GUM_ASSERT_THROWS_NOTHING(initializeList(-7))
-    }
+    GUM_TEST(PrivateMethods){TS_GUM_ASSERT_THROWS_NOTHING(initializeList(7))
+                                TS_GUM_ASSERT_THROWS_NOTHING(initializeList(-7))}
 
     GUM_TEST(Constructor) {
       gum::List< int > liste1{1, 2, 3, 4};

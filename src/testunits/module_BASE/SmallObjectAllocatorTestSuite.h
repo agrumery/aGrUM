@@ -116,12 +116,12 @@ namespace gum_tests {
     // ==============================================================================
     // Test CREATION et DESTRUCTION dun SmallObjectAllocator
     // ==============================================================================
-    GUM_TEST(_Small_Object_Allocator_CONST_AND_DEST) {
-      // Test constructor
-      TS_ASSERT_THROWS_NOTHING(gum::SmallObjectAllocator::instance())
+    GUM_TEST(_Small_Object_Allocator_CONST_AND_DEST){
+       // Test constructor
+       TS_ASSERT_THROWS_NOTHING(gum::SmallObjectAllocator::instance())
 
-      // Test destructor
-      // TS_ASSERT_THROWS_NOTHING( delete soa )
+       // Test destructor
+       // TS_ASSERT_THROWS_NOTHING( delete soa )
     }
 
     // ==============================================================================

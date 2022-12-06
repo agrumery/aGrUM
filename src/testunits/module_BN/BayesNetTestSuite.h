@@ -303,7 +303,7 @@ namespace gum_tests {
         }
       }
 
-      gum::LabelizedVariable* varPtr = nullptr;
+      gum::LabelizedVariable const* varPtr = nullptr;
 
       TS_GUM_ASSERT_THROWS_NOTHING(varPtr = (gum::LabelizedVariable*)&bn.variable(idList[0]))
       TS_ASSERT_EQUALS(*varPtr, *var1)
@@ -328,7 +328,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn.size(), (gum::Size)5)
       TS_ASSERT_EQUALS(bn.dag().size(), (gum::Size)5)
 
-      gum::LabelizedVariable* varPtr = nullptr;
+      gum::LabelizedVariable const* varPtr = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(varPtr = (gum::LabelizedVariable*)&bn.variable(idList[0]))
       TS_ASSERT_EQUALS(*varPtr, *var1)
 
@@ -800,7 +800,9 @@ namespace gum_tests {
     GUM_TEST(ShortCutAddFastVar) {
       gum::BayesNet< double > bn;
 
-      gum::NodeId i1, i2, i3;
+      gum::NodeId i1;
+      gum::NodeId i2;
+      gum::NodeId i3;
 
       TS_ASSERT_THROWS_NOTHING(i1 = bn.add("A", 2))
       TS_ASSERT_THROWS_NOTHING(i2 = bn.add("B", 3))
@@ -1096,15 +1098,14 @@ namespace gum_tests {
         gum::BayesNet< double > bn(bn_name);
         auto                    reader = gum::BIFXMLBNReader(&bn, bn_model_path);
         reader.proceed();
-        /*
-        auto opExecute
-           = [&bn](const std::size_t this_thread, const std::size_t nb_threads) -> void {
-          gum::BayesNet< double > bn_local(bn);   // local copy
-                                                  // ...
-        };
 
+        std::atomic< gum::Size > nbth{0};
+        auto opExecute = [&bn, &nbth](const std::size_t this_thread, const std::size_t nb_threads) {
+          nbth += bn.maxVarDomainSize();
+        };
         gum::ThreadExecutor::execute(20, opExecute);
-*/
+
+        TS_ASSERT_EQUALS(gum::Size(nbth), 20 * bn.maxVarDomainSize())
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
   };

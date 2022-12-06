@@ -50,7 +50,7 @@ namespace gum_tests {
       return anEdge.first() + anEdge.second();
     }
 
-    static gum::Size twistedMapFunction(const gum::NodeId& aNode) { throw(aNode); }
+    static gum::Size twistedMapFunction(const gum::NodeId& aNode) { throw aNode; }
 
     void buildPDAG(gum::PDAG& g) {
       id0 = g.addNode();
@@ -140,7 +140,7 @@ namespace gum_tests {
       gum::PDAG* copy = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(copy = new gum::PDAG(graph))
       TS_ASSERT_EQUALS(graph, *copy)
-      delete (copy);
+      delete copy;
 
       TS_GUM_ASSERT_THROWS_NOTHING(gum::PDAG copy2 = graph)
       TS_GUM_ASSERT_THROWS_NOTHING(gum::PDAG copy3(graph))
@@ -354,8 +354,8 @@ namespace gum_tests {
 
       gum::Size s = 0;
 
-      for (auto iter = list.begin(); iter != list.end(); ++iter)
-        s += *iter;
+      for (const auto elt: list)
+        s += elt;
 
       TS_ASSERT_EQUALS(s, 2 * (id0 + id1 + id2 + id3 + id4 + id5 + id6 + id7 + id8))
     }
@@ -407,8 +407,8 @@ namespace gum_tests {
 
       gum::Size s = 0;
 
-      for (auto iter = list.begin(); iter != list.end(); ++iter)
-        s += *iter;
+      for (const auto elt: list)
+        s += elt;
 
       TS_ASSERT_EQUALS(s,
                        (gum::Size)(0 + 2 + 0 + 3 + 1 + 6 + 1 + 4 + +1 + 3 + 2 + 4 + 7 + 6 + 6 + 8))
@@ -442,8 +442,8 @@ namespace gum_tests {
 
       gum::Size s = 0;
 
-      for (auto iter = list.begin(); iter != list.end(); ++iter)
-        s += *iter;
+      for (const auto& elt: list)
+        s += elt;
 
       TS_ASSERT_EQUALS(s, (gum::Size)(3 + 5 + 5 + 6))
     }
@@ -499,7 +499,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(graph.family(4), gum::NodeSet({1, 2, 3, 4}))
     }
 
-    void /*test*/ MonoCycle() {
+    GUM_TEST(MonoCycle) {
       gum::PDAG graph;
       auto      x = graph.addNode();
       TS_ASSERT_THROWS(graph.addArc(x, x), const gum::Exception&)

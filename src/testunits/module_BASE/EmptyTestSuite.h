@@ -28,7 +28,6 @@ namespace gum_tests {
 
   class [[maybe_unused]] EmptyTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(1() {
-      TS_ASSERT(true); }
+    GUM_TEST(1) { TS_ASSERT(true); }
   };
 }   // namespace gum_tests

@@ -28,10 +28,8 @@ namespace gum_tests {
 
   class [[maybe_unused]] EdgeTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(Constructor1) {
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::Edge edge1(1, 2))
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::Edge edge1(1, 1))
-    }
+    GUM_TEST(Constructor1){TS_GUM_ASSERT_THROWS_NOTHING(gum::Edge edge1(1, 2))
+                              TS_GUM_ASSERT_THROWS_NOTHING(gum::Edge edge1(1, 1))}
 
     GUM_TEST(Constructor2) {
       gum::Edge edge1(1, 2);

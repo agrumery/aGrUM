@@ -59,24 +59,21 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(Valid) {
-      TS_ASSERT(gum::Directory("./").isValid())
-      TS_ASSERT(gum::Directory("../").isValid())
-      TS_ASSERT(gum::Directory("../dir/").isValid())
-      TS_ASSERT(!gum::Directory("./undossierauhasard/").isValid())
-      TS_ASSERT(!gum::Directory("/undossierauhasard/").isValid())
-      TS_ASSERT(!gum::Directory("undossierauhasard/").isValid())
-      TS_ASSERT(!gum::Directory("../dir1/").isValid())
-    }
+    GUM_TEST(Valid){TS_ASSERT(gum::Directory("./").isValid())
+                       TS_ASSERT(gum::Directory("../").isValid())
+                          TS_ASSERT(gum::Directory("../dir/").isValid())
+                             TS_ASSERT(!gum::Directory("./undossierauhasard/").isValid())
+                                TS_ASSERT(!gum::Directory("/undossierauhasard/").isValid())
+                                   TS_ASSERT(!gum::Directory("undossierauhasard/").isValid())
+                                      TS_ASSERT(!gum::Directory("../dir1/").isValid())}
 
-    GUM_TEST(Path) {
-      TS_ASSERT_EQUALS(gum::Directory("./").path(), "./")
-      TS_ASSERT_EQUALS(gum::Directory("../").path(), "../")
-      TS_ASSERT_EQUALS(gum::Directory("../dir/").path(), "../dir/")
-      TS_ASSERT_EQUALS(gum::Directory("/usr/").path(), "/usr/")
-      TS_ASSERT_EQUALS(gum::Directory("/usr/../usr/").path(), "/usr/../usr/")
-      TS_ASSERT_EQUALS(gum::Directory("./undossierauhasard/").path(), "./undossierauhasard/")
-    }
+    GUM_TEST(Path){TS_ASSERT_EQUALS(gum::Directory("./").path(),
+                                    "./") TS_ASSERT_EQUALS(gum::Directory("../").path(), "../")
+                      TS_ASSERT_EQUALS(gum::Directory("../dir/").path(), "../dir/")
+                         TS_ASSERT_EQUALS(gum::Directory("/usr/").path(), "/usr/")
+                            TS_ASSERT_EQUALS(gum::Directory("/usr/../usr/").path(), "/usr/../usr/")
+                               TS_ASSERT_EQUALS(gum::Directory("./undossierauhasard/").path(),
+                                                "./undossierauhasard/")}
 
     GUM_TEST(AbsolutePath) {
       TS_ASSERT_EQUALS(gum::Directory("./undossierauhasard/").absolutePath(), "")
