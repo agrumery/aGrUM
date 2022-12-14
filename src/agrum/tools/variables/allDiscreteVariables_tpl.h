@@ -25,7 +25,7 @@
 #include <agrum/tools/variables/allDiscreteVariables.h>
 
 namespace gum {
-  template < typename GUM_SCALAR = double >
+  template < typename GUM_SCALAR >
   std::unique_ptr< DiscreteVariable > fastVariable(const std::string& var_description,
                                                    Size               default_domain_size) {
     if (default_domain_size == 0) GUM_ERROR(InvalidArgument, "default_domain_size can not be 0")
