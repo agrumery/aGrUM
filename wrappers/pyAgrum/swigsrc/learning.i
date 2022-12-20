@@ -33,7 +33,6 @@
 %ignore gum::learning::BNLearner::learnParameters(const gum::DAG& dag);
 %ignore gum::learning::BNLearner::state() const;
 
-
 %pythonprepend gum::learning::BNLearner<double>::BNLearner %{
   if not type(args[0]) is str:
     if hasattr(args[0],"to_csv"):
@@ -54,52 +53,7 @@
         return self
 %}
 %enddef
-SETPROP_THEN_RETURN_SELF(setInitialDAG)
-SETPROP_THEN_RETURN_SELF(useEM)
-SETPROP_THEN_RETURN_SELF(useScoreAIC)
-SETPROP_THEN_RETURN_SELF(useScoreBD)
-SETPROP_THEN_RETURN_SELF(useScoreBDeu)
-SETPROP_THEN_RETURN_SELF(useScoreBIC)
-SETPROP_THEN_RETURN_SELF(useScoreK2)
-SETPROP_THEN_RETURN_SELF(useScoreLog2Likelihood)
-SETPROP_THEN_RETURN_SELF(useNoPrior)
-SETPROP_THEN_RETURN_SELF(useBDeuPrior)
-SETPROP_THEN_RETURN_SELF(useSmoothingPrior)
-SETPROP_THEN_RETURN_SELF(useDirichletPrior)
-SETPROP_THEN_RETURN_SELF(useGreedyHillClimbing)
-SETPROP_THEN_RETURN_SELF(useLocalSearchWithTabuList)
-SETPROP_THEN_RETURN_SELF(useK2)
-SETPROP_THEN_RETURN_SELF(useK2)
-SETPROP_THEN_RETURN_SELF(use3off2)
-SETPROP_THEN_RETURN_SELF(useMIIC)
-SETPROP_THEN_RETURN_SELF(useNMLCorrection)
-SETPROP_THEN_RETURN_SELF(useMDLCorrection)
-SETPROP_THEN_RETURN_SELF(useNoCorrection)
-SETPROP_THEN_RETURN_SELF(setMaxIndegree)
-SETPROP_THEN_RETURN_SELF(setSliceOrder)
-SETPROP_THEN_RETURN_SELF(setSliceOrder)
-SETPROP_THEN_RETURN_SELF(setForbiddenArcs)
-SETPROP_THEN_RETURN_SELF(addForbiddenArc)
-SETPROP_THEN_RETURN_SELF(addForbiddenArc)
-SETPROP_THEN_RETURN_SELF(addForbiddenArc)
-SETPROP_THEN_RETURN_SELF(eraseForbiddenArc)
-SETPROP_THEN_RETURN_SELF(eraseForbiddenArc)
-SETPROP_THEN_RETURN_SELF(eraseForbiddenArc)
-SETPROP_THEN_RETURN_SELF(addMandatoryArc)
-SETPROP_THEN_RETURN_SELF(addMandatoryArc)
-SETPROP_THEN_RETURN_SELF(addMandatoryArc)
-SETPROP_THEN_RETURN_SELF(eraseMandatoryArc)
-SETPROP_THEN_RETURN_SELF(eraseMandatoryArc)
-SETPROP_THEN_RETURN_SELF(eraseMandatoryArc)
-SETPROP_THEN_RETURN_SELF(addPossibleEdge)
-SETPROP_THEN_RETURN_SELF(addPossibleEdge)
-SETPROP_THEN_RETURN_SELF(addPossibleEdge)
-SETPROP_THEN_RETURN_SELF(erasePossibleEdge)
-SETPROP_THEN_RETURN_SELF(erasePossibleEdge)
-SETPROP_THEN_RETURN_SELF(erasePossibleEdge)
-SETPROP_THEN_RETURN_SELF(setMandatoryArcs)
-SETPROP_THEN_RETURN_SELF(setPossibleEdges)
-SETPROP_THEN_RETURN_SELF(setPossibleSkeleton)
+
 SETPROP_THEN_RETURN_SELF(setNumberOfThreads);
 
 %extend gum::learning::BNLearner< double > {

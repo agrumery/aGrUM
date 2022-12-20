@@ -618,7 +618,7 @@ namespace gum::learning {
     double score(const std::string& vars, const std::vector< std::string >& knowing = {});
 
     /**
-     * Return the pseudoconts ofNodeIds vars in the base in a raw array
+     * Return the pseudo-counts of NodeIds vars in the base in a raw array
      * @param vars a vector of
      * @return a a std::vector<double> containing the contingency table
      */
@@ -818,8 +818,9 @@ namespace gum::learning {
     /// @}
 
     /// @name assign a new possible edge
-    /// @warning Once at least one possible edge is defined, all other edges are
-    /// not possible anymore
+    /// @warning By default, all edge is possible. However, once at least one possible edge is
+    /// defined, all other edges not declared possible
+    //  are considered as impossible.
     /// @{
     void addPossibleEdge(const Edge& edge);
     void addPossibleEdge(const NodeId tail, const NodeId head);

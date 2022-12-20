@@ -95,7 +95,7 @@ Indicate that we wish to use the MDL correction for 3off2 or MIIC
 Indicate that we wish to use the NoCorr correction for 3off2 or MIIC
 "
 
-%feature("docstring") gum::learning::BNLearner::learnMixedStructure
+%feature("docstring") gum::learning::IBNLearner::learnMixedStructure
 "
 Warnings
 --------
@@ -120,7 +120,7 @@ list
 "
 
 
-%feature("docstring") gum::learning::genericBNLearner::setSliceOrder
+%feature("docstring") gum::learning::BNLearner::setSliceOrder
 "
 Set a partial order on the nodes.
 
@@ -158,7 +158,7 @@ weight : float
 Indicate that we wish to use a greedy hill climbing algorithm.
 "
 
-%feature("docstring") gum::learning::genericBNLearner::useK2
+%feature("docstring") gum::learning::BNLearner::useK2
 "
 Indicate to use the K2 algorithm (which needs a total ordering of the variables).
 
@@ -168,7 +168,7 @@ order : list[int or str]
       sequences of (ids or name)
 "
 
-%feature("docstring") gum::learning::genericBNLearner::useLocalSearchWithTabuList
+%feature("docstring") gum::learning::BNLearner::useLocalSearchWithTabuList
 "
 Indicate that we wish to use a local search with tabu list
 
@@ -181,7 +181,7 @@ nb_decrease : int
         The max number of changes decreasing the score consecutively that we allow to apply
 "
 
-%feature("docstring") gum::learning::genericBNLearner::hasMissingValues
+%feature("docstring") gum::learning::IBNLearner::hasMissingValues
 "
 Indicates whether there are missing values in the database.
 
@@ -196,7 +196,7 @@ bool
 Use no prior.
 "
 
-%feature("docstring") gum::learning::genericBNLearner::useBDeuPrior
+%feature("docstring") gum::learning::BNLearner::useBDeuPrior
 "
 The BDeu prior adds weight to all the cells of the counting tables.
 In other words, it adds weight rows in the database with equally probable
@@ -239,7 +239,7 @@ Indicate that we wish to use a Log2Likelihood score.
 "
 
 
-%feature("docstring") gum::learning::genericBNLearner::idFromName
+%feature("docstring") gum::learning::IBNLearner::idFromName
 "
 Parameters
 ----------
@@ -257,7 +257,7 @@ pyAgrum.MissingVariableInDatabase
 	If a variable of the BN is not found in the database.
 "
 
-%feature("docstring") gum::learning::genericBNLearner::learnDAG
+%feature("docstring") gum::learning::IBNLearner::learnDAG
 "
 learn a structure from a file
 
@@ -268,13 +268,13 @@ pyAgrum.DAG
 "
 
 
-%feature("docstring") gum::learning::genericBNLearner::erasePossibleEdge
+%feature("docstring") gum::learning::BNLearner::erasePossibleEdge
 "
 Allow the 2 arcs to be added if necessary.
 
 Parameters
 ----------
-arc : pyAgrum
+arc : pyAgrum.Arc
 	an arc
 head :
 	a variable's id (int)
@@ -285,13 +285,13 @@ head :
 tail :
 	a variable's name (str)
 "
-%feature("docstring") gum::learning::genericBNLearner::eraseForbiddenArc
+%feature("docstring") gum::learning::BNLearner::eraseForbiddenArc
 "
 Allow the arc to be added if necessary.
 
 Parameters
 ----------
-arc : pyAgrum
+arc: pyAgrum.Arc
 	an arc
 head :
 	a variable's id (int)
@@ -303,11 +303,11 @@ tail :
 	a variable's name (str)
 "
 
-%feature("docstring") gum::learning::genericBNLearner::eraseMandatoryArc
+%feature("docstring") gum::learning::BNLearner::eraseMandatoryArc
 "
 Parameters
 ----------
-arc : pyAgrum
+arc: pyAgrum.Arc
 	an arc
 head :
 	a variable's id (int)
@@ -319,7 +319,7 @@ tail :
 	a variable's name (str)
 "
 
-%feature("docstring") gum::learning::genericBNLearner::addForbiddenArc
+%feature("docstring") gum::learning::BNLearner::addForbiddenArc
 "
 The arc in parameters won't be added.
 
@@ -337,7 +337,16 @@ tail :
 	a variable's name (str)
 "
 
-%feature("docstring") gum::learning::genericBNLearner::addMandatoryArc
+%feature("docstring") gum::learning::BNLearner::setForbiddenArcs
+"
+assign a set of forbidden arcs
+
+Parameters
+----------
+arcs: Set[Tuple[int|str,int|str]]
+"
+
+%feature("docstring") gum::learning::BNLearner::addMandatoryArc
 "
 Allow to add prior structural knowledge.
 
@@ -361,15 +370,30 @@ pyAgrum.InvalidDirectedCycle
 "
 
 
-%feature("docstring") gum::learning::BNLearner::modalities
+%feature("docstring") gum::learning::BNLearner::addPossibleEdge
 "
-Returns
--------
-vector<pos,size>
-	the number of modalities of the database's variables.
+assign a new possible edge
+
+Warnings
+--------
+  By default, all edge is possible. However, once at least one possible edge is defined, all other edges not declared possible
+  are considered as impossible.
+
+Parameters
+----------
+arc : pyAgrum.Arc
+	an arc
+head :
+	a variable's id (int)
+tail :
+	a variable's id (int)
+head :
+	a variable's name (str)
+tail :
+	a variable's name (str)
 "
 
-%feature("docstring") gum::learning::genericBNLearner::nameFromId
+%feature("docstring") gum::learning::IBNLearner::nameFromId
 "
 Parameters
 ----------
@@ -382,11 +406,11 @@ str
 	the variable's name
 "
 
-%feature("docstring") gum::learning::genericBNLearner::names
+%feature("docstring") gum::learning::IBNLearner::names
 "
 Returns
 -------
-Set[str]
+Tuple[str]
 	the names of the variables in the database
 "
 
@@ -399,9 +423,14 @@ max_indegree : int
 	the limit number of parents
 "
 
-%feature("docstring") gum::learning::genericBNLearner::setDatabaseWeight
+%feature("docstring") gum::learning::IBNLearner::setDatabaseWeight
 "
 Set the database weight which is given as an equivalent sample size.
+
+Warnings
+--------
+The same weight is assigned to all the rows of the learning database so that the sum of their
+weights is equal to the value of the parameter `weight`.
 
 Parameters
 ----------
@@ -409,9 +438,90 @@ weight : float
 	the database weight
 "
 
+%feature("docstring") gum::learning::IBNLearner::setRecordWeight
+"
+Set the weight of the ith record
+
+Parameters
+----------
+i : int
+  the position  of the record in the database
+weight : float
+  the weight assigned to this record
+
+Raises
+------
+pyAgrum.OutOfBounds
+  if i is outside the set of indices of the records
+"
+
+
+%feature("docstring") gum::learning::IBNLearner::databaseWeight
+"
+Get the database weight which is given as an equivalent sample size.
+
+Returns
+-------
+float
+  The weight of the database
+"
+
+%feature("docstring") gum::learning::IBNLearner::recordWeight
+"
+Get the weight of the ith record
+
+Parameters
+----------
+i : int
+  the position  of the record in the database
+
+Raises
+------
+pyAgrum.OutOfBounds
+  if i is outside the set of indices of the records
+
+Returns
+-------
+float
+  The weight of the ith record of the database
+"
+
+
+%feature("docstring") gum::learning::BNLearner::pseudoCount
+"
+computes the pseudoCount (taking priors into account) of the list of variables
+
+
+Parameters
+----------
+li: List[int|str]
+	the list of variables
+
+Returns
+-------
+pyAgrum.Potential
+	the pseudo-count as a Potential
+"
+
+%feature("docstring") gum::learning::BNLearner::rawPseudoCount
+"
+computes the pseudoCount (taking priors into account) of the list of variables as a list of floats.
+
+
+Parameters
+----------
+li: List[int|str]
+	the list of variables
+
+Returns
+-------
+List[float]
+	the pseudo-count as a list of float
+"
+
 %feature("docstring") gum::learning::BNLearner::chi2
 "
-chi2 computes the chi2 statistic and pvalue for two columns, given a list of other columns.
+chi2 computes the chi2 statistic and p-value for two columns, given a list of other columns.
 
 
 Parameters
@@ -422,19 +532,19 @@ name1: str
 name2 : str
 	the name of the second column
 
-knowing : [str]
+knowing : List[str]
 	the list of names of conditioning columns
 
 Returns
 -------
-statistic,pvalue
+Tuple[float,float]
 	the chi2 statistic and the associated p-value as a Tuple
 "
 
 
 %feature("docstring") gum::learning::BNLearner::G2
 "
-G2 computes the G2 statistic and pvalue for two columns, given a list of other columns.
+G2 computes the G2 statistic and p-value for two columns, given a list of other columns.
 
 
 Parameters
@@ -445,21 +555,21 @@ name1: str
 name2 : str
 	the name of the second column
 
-knowing : [str]
+knowing : List[str]
 	the list of names of conditioning columns
 
 Returns
 -------
-statistic,pvalue
+Tuple[float,float]
 	the G2 statistic and the associated p-value as a Tuple
 "
 
-%feature("docstring") gum::learning::BNLearner::mutualInformation
+%feature("docstring") gum::learning::IBNLearner::mutualInformation
 "
 computes the mutual information between two columns, given a list of other columns (log2).
 
-warning
--------
+Warnings
+--------
 This function gives the 'raw' mutual information. If you want a version taking into account correction and prior, use
 gum.BNLearner.correctedMutualInformation
 
@@ -471,21 +581,21 @@ name1: str
 name2 : str
 	the name of the second column
 
-knowing : [str]
+knowing : List[str]
 	the list of names of conditioning columns
 
 Returns
 -------
-statistic,pvalue
+Tuple[float,float]
 	the G2 statistic and the associated p-value as a Tuple
 "
 
-%feature("docstring") gum::learning::BNLearner::correctedMutualInformation
+%feature("docstring") gum::learning::IBNLearner::correctedMutualInformation
 "
 computes the mutual information between two columns, given a list of other columns (log2).
 
-warning
--------
+Warnings
+--------
 This function takes into account correction and prior. If you want the 'raw' mutual information, use
 gum.BNLearner.mutualInformation
 
@@ -498,16 +608,16 @@ name1: str
 name2 : str
 	the name of the second column
 
-knowing : [str]
+knowing : List[str]
 	the list of names of conditioning columns
 
 Returns
 -------
-statistic,pvalue
+Tuple[float,float]
 	the G2 statistic and the associated p-value as a Tuple
 "
 
-%feature("docstring") gum::learning::genericBNLearner::score
+%feature("docstring") gum::learning::IBNLearner::score
 "
 Returns the value of the score currently in use by the BNLearner of a variable given a set of other variables
 
@@ -516,7 +626,7 @@ Parameters
 name1: str
 	the name of the variable at the LHS of the conditioning bar
 
-knowing : [str]
+knowing : List[str]
 	the list of names of the conditioning variables
 
 Returns
@@ -526,7 +636,7 @@ float
 "
 
 
-%feature("docstring") gum::learning::genericBNLearner::logLikelihood
+%feature("docstring") gum::learning::IBNLearner::logLikelihood
 "
 logLikelihood computes the log-likelihood for the columns in vars, given the columns in the list knowing (optional)
 
@@ -545,7 +655,7 @@ float
 	the log-likelihood (base 2)
 "
 
-%feature("docstring") gum::learning::genericBNLearner::nbRows
+%feature("docstring") gum::learning::BNLearner::nbRows
 "
 Return the number of row in the database
 
@@ -557,7 +667,7 @@ int
 "
 
 
-%feature("docstring") gum::learning::genericBNLearner::nbCols
+%feature("docstring") gum::learning::BNLearner::nbCols
 "
 Return the number of columns in the database
 
@@ -580,8 +690,8 @@ int
 
 %feature("docstring") gum::learning::BNLearner::setNumberOfThreads
 "
-If the parameter n passed in argument is different from 0, the BNLearner will use n threads during learning, hence overriding aGrUM's default number of threads.
-If, on the contrary, n is equal to 0, the BNLearner will comply with aGrUM's default number of threads.
+If the parameter n passed in argument is different from 0, the BNLearner will use n threads during learning, hence overriding pyAgrum default number of threads.
+If, on the contrary, n is equal to 0, the BNLearner will comply with pyAgrum default number of threads.
 
 Parameters
 ----------
@@ -591,10 +701,10 @@ n : int
 
 %feature("docstring") gum::learning::BNLearner::isGumNumberOfThreadsOverriden
 "
-Indicates whether the BNLearner currently overrides aGrUM's default number of threads (see method setNumberOfThreads).
+Indicates whether the BNLearner currently overrides pyAgrum default number of threads (see method setNumberOfThreads).
 
 Returns
 -------
 bool
-	A Boolean indicating whether the BNLearner currently overrides aGrUM's default number of threads
+	A Boolean indicating whether the BNLearner currently overrides pyAgrum default number of threads
 "
