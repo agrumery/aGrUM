@@ -311,31 +311,31 @@ namespace gum {
         default: vals.emplace_back(key, "(unknown)", "?"); break;
       }
 
-      if (selectedAlgo_ != AlgoType::MIIC && selectedAlgo_ != AlgoType::THREE_OFF_TWO) {
-        key = "Score";
-        switch (scoreType_) {
-          case ScoreType::K2: vals.emplace_back(key, "K2", ""); break;
-          case ScoreType::AIC: vals.emplace_back(key, "AIC", ""); break;
-          case ScoreType::BIC: vals.emplace_back(key, "BIC", ""); break;
-          case ScoreType::BD: vals.emplace_back(key, "BD", ""); break;
-          case ScoreType::BDeu: vals.emplace_back(key, "BDeu", ""); break;
-          case ScoreType::LOG2LIKELIHOOD: vals.emplace_back(key, "Log2Likelihood", ""); break;
-          default: vals.emplace_back(key, "(unknown)", "?"); break;
-        }
-      } else {
-        key = "Correction";
-        switch (kmode3Off2_) {
-          case CorrectedMutualInformation::KModeTypes::MDL:
-            vals.emplace_back(key, "MDL", "");
-            break;
-          case CorrectedMutualInformation::KModeTypes::NML:
-            vals.emplace_back(key, "NML", "");
-            break;
-          case CorrectedMutualInformation::KModeTypes::NoCorr:
-            vals.emplace_back(key, "No correction", "");
-            break;
-          default: vals.emplace_back(key, "(unknown)", "?"); break;
-        }
+
+      key = "Score";
+      switch (scoreType_) {
+        case ScoreType::K2: vals.emplace_back(key, "K2", ""); break;
+        case ScoreType::AIC: vals.emplace_back(key, "AIC", ""); break;
+        case ScoreType::BIC: vals.emplace_back(key, "BIC", ""); break;
+        case ScoreType::BD: vals.emplace_back(key, "BD", ""); break;
+        case ScoreType::BDeu: vals.emplace_back(key, "BDeu", ""); break;
+        case ScoreType::LOG2LIKELIHOOD: vals.emplace_back(key, "Log2Likelihood", ""); break;
+        default: vals.emplace_back(key, "(unknown)", "?"); break;
+      }
+
+      key                                        = "Correction";
+      const std::string NotUsedForScoreBasedAlgo = "Not used for score-based algorithms";
+      switch (kmode3Off2_) {
+        case CorrectedMutualInformation::KModeTypes::MDL:
+          vals.emplace_back(key, "MDL", NotUsedForScoreBasedAlgo);
+          break;
+        case CorrectedMutualInformation::KModeTypes::NML:
+          vals.emplace_back(key, "NML", NotUsedForScoreBasedAlgo);
+          break;
+        case CorrectedMutualInformation::KModeTypes::NoCorr:
+          vals.emplace_back(key, "No correction", "");
+          break;
+        default: vals.emplace_back(key, "(unknown)", "?"); break;
       }
 
 

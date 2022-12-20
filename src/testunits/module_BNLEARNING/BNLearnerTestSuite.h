@@ -1576,7 +1576,7 @@ GUM_TEST(State) {
   gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/renewal.csv"));
   {
     auto state = learner.state();
-    TS_ASSERT_EQUALS(state.size(), (gum::Size)8)
+    TS_ASSERT_EQUALS(state.size(), (gum::Size)9)
     TS_ASSERT_EQUALS(std::get< 0 >(state[0]), "Filename")
     TS_ASSERT_EQUALS(std::get< 1 >(state[0]), GET_RESSOURCES_PATH("csv/renewal.csv"))
 
@@ -1600,8 +1600,11 @@ GUM_TEST(State) {
     TS_ASSERT_EQUALS(std::get< 0 >(state[6]), "Score")
     TS_ASSERT_EQUALS(std::get< 1 >(state[6]), "BDeu")
 
-    TS_ASSERT_EQUALS(std::get< 0 >(state[7]), "Prior")
-    TS_ASSERT_EQUALS(std::get< 1 >(state[7]), "-")
+    TS_ASSERT_EQUALS(std::get< 0 >(state[7]), "Correction")
+    TS_ASSERT_EQUALS(std::get< 1 >(state[7]), "MDL")
+
+    TS_ASSERT_EQUALS(std::get< 0 >(state[8]), "Prior")
+    TS_ASSERT_EQUALS(std::get< 1 >(state[8]), "-")
   }
 
   learner.useMIIC();
@@ -1609,7 +1612,7 @@ GUM_TEST(State) {
 
   {
     auto state = learner.state();
-    TS_ASSERT_EQUALS(state.size(), (gum::Size)8)
+    TS_ASSERT_EQUALS(state.size(), (gum::Size)9)
     TS_ASSERT_EQUALS(std::get< 0 >(state[0]), "Filename")
     TS_ASSERT_EQUALS(std::get< 1 >(state[0]), GET_RESSOURCES_PATH("csv/renewal.csv"))
 
@@ -1631,18 +1634,21 @@ GUM_TEST(State) {
     TS_ASSERT_EQUALS(std::get< 0 >(state[5]), "Algorithm")
     TS_ASSERT_EQUALS(std::get< 1 >(state[5]), "MIIC")
 
-    TS_ASSERT_EQUALS(std::get< 0 >(state[6]), "Correction")
-    TS_ASSERT_EQUALS(std::get< 1 >(state[6]), "NML")
+    TS_ASSERT_EQUALS(std::get< 0 >(state[6]), "Score")
+    TS_ASSERT_EQUALS(std::get< 1 >(state[6]), "BDeu")
 
-    TS_ASSERT_EQUALS(std::get< 0 >(state[7]), "Prior")
-    TS_ASSERT_EQUALS(std::get< 1 >(state[7]), "-")
+    TS_ASSERT_EQUALS(std::get< 0 >(state[7]), "Correction")
+    TS_ASSERT_EQUALS(std::get< 1 >(state[7]), "NML")
+
+    TS_ASSERT_EQUALS(std::get< 0 >(state[8]), "Prior")
+    TS_ASSERT_EQUALS(std::get< 1 >(state[8]), "-")
   }
 
   learner.addPossibleEdge("loyalty", "renewal");
   learner.setSliceOrder({{"loyalty", "renewal"}, {"recent visit", "corporate customer"}});
   {
     auto state = learner.state();
-    TS_ASSERT_EQUALS(state.size(), (gum::Size)10)
+    TS_ASSERT_EQUALS(state.size(), (gum::Size)11)
     TS_ASSERT_EQUALS(std::get< 0 >(state[0]), "Filename")
     TS_ASSERT_EQUALS(std::get< 1 >(state[0]), GET_RESSOURCES_PATH("csv/renewal.csv"))
 
@@ -1664,17 +1670,20 @@ GUM_TEST(State) {
     TS_ASSERT_EQUALS(std::get< 0 >(state[5]), "Algorithm")
     TS_ASSERT_EQUALS(std::get< 1 >(state[5]), "MIIC")
 
-    TS_ASSERT_EQUALS(std::get< 0 >(state[6]), "Correction")
-    TS_ASSERT_EQUALS(std::get< 1 >(state[6]), "NML")
+    TS_ASSERT_EQUALS(std::get< 0 >(state[6]), "Score")
+    TS_ASSERT_EQUALS(std::get< 1 >(state[6]), "BDeu")
 
-    TS_ASSERT_EQUALS(std::get< 0 >(state[7]), "Prior")
-    TS_ASSERT_EQUALS(std::get< 1 >(state[7]), "-")
+    TS_ASSERT_EQUALS(std::get< 0 >(state[7]), "Correction")
+    TS_ASSERT_EQUALS(std::get< 1 >(state[7]), "NML")
 
-    TS_ASSERT_EQUALS(std::get< 0 >(state[8]), "Constraint Possible Edges")
-    TS_ASSERT_EQUALS(std::get< 1 >(state[8]), "{loyalty--renewal}")
+    TS_ASSERT_EQUALS(std::get< 0 >(state[8]), "Prior")
+    TS_ASSERT_EQUALS(std::get< 1 >(state[8]), "-")
 
-    TS_ASSERT_EQUALS(std::get< 0 >(state[9]), "Constraint Slice Order")
-    TS_ASSERT_EQUALS(std::get< 1 >(state[9]),
+    TS_ASSERT_EQUALS(std::get< 0 >(state[9]), "Constraint Possible Edges")
+    TS_ASSERT_EQUALS(std::get< 1 >(state[9]), "{loyalty--renewal}")
+
+    TS_ASSERT_EQUALS(std::get< 0 >(state[10]), "Constraint Slice Order")
+    TS_ASSERT_EQUALS(std::get< 1 >(state[10]),
                      "{corporate customer:1, renewal:0, loyalty:0, recent visit:1}")
   }
 
@@ -1684,9 +1693,9 @@ GUM_TEST(State) {
   learner.setInitialDAG(dag);
   {
     auto state = learner.state();
-    TS_ASSERT_EQUALS(state.size(), (gum::Size)11)
-    TS_ASSERT_EQUALS(std::get< 0 >(state[10]), "Initial DAG")
-    TS_ASSERT_EQUALS(std::get< 1 >(state[10]), "True")
+    TS_ASSERT_EQUALS(state.size(), (gum::Size)12)
+    TS_ASSERT_EQUALS(std::get< 0 >(state[11]), "Initial DAG")
+    TS_ASSERT_EQUALS(std::get< 1 >(state[11]), "True")
   }
 }
 
@@ -1696,22 +1705,22 @@ GUM_TEST(StateContinued) {
   learner.useK2(std::vector< gum::NodeId >{5, 4, 3, 2, 1, 0});
   {
     auto state = learner.state();
-    TS_ASSERT_EQUALS(state.size(), (gum::Size)10)
+    TS_ASSERT_EQUALS(state.size(), (gum::Size)11)
     TS_ASSERT_EQUALS(std::get< 0 >(state[6]), "K2 order")
     TS_ASSERT_EQUALS(
        std::get< 1 >(state[6]),
        "recent visit, coupon, corporate customer, yearly consumption, renewal, loyalty")
 
-    TS_ASSERT_EQUALS(std::get< 0 >(state[9]), "Database weight")
-    TS_ASSERT_EQUALS(std::get< 1 >(state[9]), "1000.000000")
+    TS_ASSERT_EQUALS(std::get< 0 >(state[10]), "Database weight")
+    TS_ASSERT_EQUALS(std::get< 1 >(state[10]), "1000.000000")
   }
   learner.useScoreAIC();
   learner.useBDeuPrior();
   {
     auto state = learner.state();
-    TS_ASSERT_EQUALS(state.size(), (gum::Size)11)
-    TS_ASSERT_EQUALS(std::get< 0 >(state[8]), "Prior")
-    TS_ASSERT_DIFFERS(std::get< 2 >(state[8]), "")   // there is a comment about AIC versus BDeu
+    TS_ASSERT_EQUALS(state.size(), (gum::Size)12)
+    TS_ASSERT_EQUALS(std::get< 0 >(state[9]), "Prior")
+    TS_ASSERT_DIFFERS(std::get< 2 >(state[9]), "")   // there is a comment about AIC versus BDeu
   }
 }
 
