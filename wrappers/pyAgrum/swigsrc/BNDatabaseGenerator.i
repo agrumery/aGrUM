@@ -21,7 +21,7 @@
 %ignore gum::learning::BNDatabaseGenerator< double>::database const;
 
 %extend gum::learning::BNDatabaseGenerator< double > {
-  PyObject* varOrder() const { return PyAgrumHelper::PyListFromNodeVect(self->varOrder()); };
+  PyObject* varOrder() const { return PyAgrumHelper::PyTupleFromNodeVect(self->varOrder()); };
 };
 %ignore gum::learning::BNDatabaseGenerator< double >::varOrder const;
 

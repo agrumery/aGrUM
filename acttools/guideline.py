@@ -19,7 +19,7 @@
 # *   Free Software Foundation, Inc.,                                       *
 # *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 # **************************************************************************
-import os.path
+import os
 from subprocess import call
 
 from .utils import trace, notif, critic, warn, error, recglob, srcAgrum, notif_oneline
@@ -55,7 +55,7 @@ def _checkForFormat(current, modif):
   else:
     with open(os.devnull, "w") as blackhole:
       for src in srcAgrum():
-        exceptions = ['/external/', 'Parser', 'Scanner']
+        exceptions = [f'{os.sep}external{os.sep}', 'Parser', 'Scanner']
         if any(subs in src for subs in exceptions):
           continue
 
@@ -93,7 +93,7 @@ def __addLGPLatTop(filename):
 def _checkForLGPLlicense(current, modif):
   nbrError = 0
 
-  exceptions = ['/mvsc/', '/external/', '/cxxtest/', 'Parser', 'Scanner']
+  exceptions = [f'{os.sep}mvsc{os.sep}', f'{os.sep}external{os.sep}', f'{os.sep}cxxtest{os.sep}', 'Parser', 'Scanner']
   for agrumfile in srcAgrum():
     if any(subs in agrumfile for subs in exceptions):
       continue
@@ -130,9 +130,9 @@ def __addCppFileForHeader(header, cppfile):
 def _checkCppFileExists(current, modif):
   nbrError = 0
 
-  exceptions = ['/mvsc/', '/signal/', '/external/',
-                'multidim/patterns/', 'agrum.h', 'inline.h']
-  for header in recglob("src/agrum", "*.h"):
+  exceptions = [f'{os.sep}mvsc{os.sep}', f'{os.sep}signal{os.sep}', f'{os.sep}external{os.sep}',
+                f'multidim{os.sep}patterns{os.sep}', 'agrum.h', 'inline.h']
+  for header in recglob(f"src{os.sep}agrum", "*.h"):
     if any(subs in header for subs in exceptions):
       continue
 

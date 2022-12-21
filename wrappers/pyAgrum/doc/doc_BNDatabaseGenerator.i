@@ -76,3 +76,118 @@ return the number of rows in the samples
 "
 return the number of columns in the samples
 "
+
+%feature("docstring") gum::learning::BNDatabaseGenerator::bn
+"
+Get the Bayesian network used to generate the samples
+
+Returns
+-------
+pyAgrum.BayesNet
+  The Bayesian network
+
+"
+
+%feature("docstring") gum::learning::BNDatabaseGenerator::log2likelihood
+"
+Get the  log2likelihood of the generated database
+
+Raises
+------
+pyAgrum.OperationNotAllowed
+  if nothing has been sampled yet (using `gum.BNDatabaseGenerator.drawSamples()` for instance)
+
+Returns
+-------
+float
+  the log2likelihood
+"
+
+%feature("docstring") gum::learning::BNDatabaseGenerator::samplesAt
+"
+Get the value of the database in (row,col)
+
+Parameters
+----------
+row : int
+  the row
+col : int
+  the column (using the ordered list of variables)
+
+Returns
+-------
+int
+  the index of the modality of the variable in this position
+"
+
+%feature("docstring") gum::learning::BNDatabaseGenerator::samplesLabelAt
+"
+Get the label of the database in (row,col)
+
+Parameters
+----------
+row : int
+  the row
+col : int
+  the column (using the ordered list of variables)
+
+Returns
+-------
+str
+  the label of the modality of the variable in this position
+"
+
+%feature("docstring") gum::learning::BNDatabaseGenerator::setAntiTopologicalVarOrder
+"
+Select an anti-topological order for the variables in the database.
+"
+
+%feature("docstring") gum::learning::BNDatabaseGenerator::setRandomVarOrder
+"
+Select an random order for the variables in the database.
+"
+
+%feature("docstring") gum::learning::BNDatabaseGenerator::setTopologicalVarOrder
+"
+Select a topological order for the variables in the database.
+"
+
+%feature("docstring") gum::learning::BNDatabaseGenerator::setVarOrder
+"
+Set a specific order with a list of names
+
+Parameters
+----------
+vars : List[str]
+  order specified by the list of variable names.
+"
+
+%feature("docstring") gum::learning::BNDatabaseGenerator::setVarOrderFromCSV
+"
+Set the same order than in a csv file
+
+Parameters
+----------
+filename:str
+  the name of the CSV file
+"
+
+%feature("docstring") gum::learning::BNDatabaseGenerator::varOrder
+"
+The actual order for the variable (as a tuple of NodeId)
+
+Returns
+-------
+Tuple[int]
+  the tuple of NodeId
+"
+
+%feature("docstring") gum::learning::BNDatabaseGenerator::varOrderNames
+"
+The actual order for the variable (as a tuple of NodeId)
+
+Returns
+-------
+Tuple[str]
+  the tuple of names
+"

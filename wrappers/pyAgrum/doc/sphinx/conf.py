@@ -71,6 +71,7 @@ extensions = [
   'sphinx_autodoc_typehints',
   'sphinx_gallery.load_style',
   'sphinx_search.extension',
+  'IPython.sphinxext.ipython_console_highlighting',
   #'sphinx.ext.todo',
   #'sphinx.ext.viewcode',
   #'sphinx.ext.coverage'

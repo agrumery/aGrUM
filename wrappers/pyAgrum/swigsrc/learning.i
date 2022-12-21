@@ -21,7 +21,7 @@
 %ignore gum::learning::BNLearner::setSliceOrder(const std::vector< std::vector< std::string > >& slices);
 %ignore gum::learning::BNLearner<double>::useK2(const gum::Sequence< gum::NodeId >& order);
 %ignore gum::learning::BNLearner<double>::useK2(const std::vector< gum::NodeId >& order);
-%ignore gum::learning::BNLearner::setForbiddenArcs(const gum::ArcSet& set);
+%ignore gum::learning::BNLearner::setForbiddenArcs(const gum::ArcSet& set) const;
 %ignore gum::learning::BNLearner::addForbiddenArc(const gum::Arc& arc);
 %ignore gum::learning::BNLearner::eraseForbiddenArc(const gum::Arc& arc);
 %ignore gum::learning::BNLearner::setPossibleEdges(const gum::EdgeSet& set);

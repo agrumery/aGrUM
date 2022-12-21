@@ -303,6 +303,30 @@ namespace PyAgrumHelper {
     return q;
   }
 
+  PyObject* PyTupleFromNodeVect(const std::vector< gum::NodeId >& nodevect) {
+    PyObject* q = PyTuple_New(nodevect.size());
+
+    int i=0;
+    for (auto node: nodevect) {
+      PyTuple_SET_ITEM(q,i, PyLong_FromUnsignedLong((unsigned long)node));
+      i++;
+    }
+
+    return q;
+  }
+
+  PyObject* PyTupleFromNodeSet(const gum::NodeSet& nodeset) {
+    PyObject* q =  PyTuple_New(nodeset.size());
+
+    int i=0;
+    for (auto node: nodeset) {
+      PyTuple_SET_ITEM(q,i, PyLong_FromUnsignedLong((unsigned long)node));
+      i++;
+    }
+
+    return q;
+  }
+
   PyObject* PySetFromNodeSet(const gum::NodeSet& nodeset) {
     PyObject* q = PySet_New(0);
 

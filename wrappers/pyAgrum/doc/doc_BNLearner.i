@@ -346,6 +346,15 @@ Parameters
 arcs: Set[Tuple[int|str,int|str]]
 "
 
+%feature("docstring") gum::learning::BNLearner::setMandatoryArcs
+"
+assign a set of mandatory arcs
+
+Parameters
+----------
+arcs: Set[Tuple[int|str,int|str]]
+"
+
 %feature("docstring") gum::learning::BNLearner::addMandatoryArc
 "
 Allow to add prior structural knowledge.
@@ -494,7 +503,7 @@ computes the pseudoCount (taking priors into account) of the list of variables
 
 Parameters
 ----------
-li: List[int|str]
+vars: List[int|str]
 	the list of variables
 
 Returns
@@ -503,14 +512,14 @@ pyAgrum.Potential
 	the pseudo-count as a Potential
 "
 
-%feature("docstring") gum::learning::BNLearner::rawPseudoCount
+%feature("docstring") gum::learning::IBNLearner::rawPseudoCount
 "
 computes the pseudoCount (taking priors into account) of the list of variables as a list of floats.
 
 
 Parameters
 ----------
-li: List[int|str]
+vars: List[int|str]
 	the list of variables
 
 Returns
@@ -655,7 +664,7 @@ float
 	the log-likelihood (base 2)
 "
 
-%feature("docstring") gum::learning::BNLearner::nbRows
+%feature("docstring") gum::learning::IBNLearner::nbRows
 "
 Return the number of row in the database
 
@@ -667,7 +676,7 @@ int
 "
 
 
-%feature("docstring") gum::learning::BNLearner::nbCols
+%feature("docstring") gum::learning::IBNLearner::nbCols
 "
 Return the number of columns in the database
 
@@ -678,7 +687,7 @@ int
 	the number of columns in the database
 "
 
-%feature("docstring") gum::learning::BNLearner::getNumberOfThreads
+%feature("docstring") gum::learning::IBNLearner::getNumberOfThreads
 "
 Return the number of threads used by the BNLearner during structure and parameter learning.
 
@@ -688,7 +697,7 @@ int
 	the number of threads used by the BNLearner during structure and parameter learning
 "
 
-%feature("docstring") gum::learning::BNLearner::setNumberOfThreads
+%feature("docstring") gum::learning::IBNLearner::setNumberOfThreads
 "
 If the parameter n passed in argument is different from 0, the BNLearner will use n threads during learning, hence overriding pyAgrum default number of threads.
 If, on the contrary, n is equal to 0, the BNLearner will comply with pyAgrum default number of threads.
@@ -699,7 +708,7 @@ n : int
 	the number of threads to be used by the BNLearner
 "
 
-%feature("docstring") gum::learning::BNLearner::isGumNumberOfThreadsOverriden
+%feature("docstring") gum::learning::IBNLearner::isGumNumberOfThreadsOverriden
 "
 Indicates whether the BNLearner currently overrides pyAgrum default number of threads (see method setNumberOfThreads).
 
