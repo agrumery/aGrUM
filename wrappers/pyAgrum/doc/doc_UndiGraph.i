@@ -173,12 +173,6 @@ bool
     True if the graph contains a cycle
 "
 
-%feature("docstring") gum::UndiGraph::ids
-"
-.. note:: Deprecated in pyAgrum>0.13.0
-    Please use nodes() instead
-"
-
 %feature("docstring") gum::UndiGraph::nodes
 "
 Returns

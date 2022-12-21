@@ -218,3 +218,68 @@ Returns
 pyAgrum.variableNodeMap
 	the variable node map
 "
+
+
+%feature("docstring") gum::DAGmodel::ancestors
+"
+give the set of nodeid of ancestors of a node
+
+Parameters
+----------
+norid : str|int
+  the name or the id of the node
+
+Returns
+-------
+Set[int]
+  the set of ids of the ancestors of node `norid`.
+"
+
+
+%feature("docstring") gum::DAGmodel::descendants
+"
+give the set of nodeid of descendants of a node
+
+Parameters
+----------
+norid : str|int
+  the name or the id of the node
+
+Returns
+-------
+Set[int]
+  the set of ids of the descendants of node `norid`.
+"
+
+%feature("docstring") gum::DAGmodel::existsArc
+"
+Check if an arc exists
+
+Parameters
+---------
+tail : str|int
+  the name or id of the tail of the arc
+
+head : str|int
+  the name or the id of the head of the arc
+
+Returns
+-------
+bool
+  True if `tail->head` is an arc.
+"
+
+%feature("docstring") gum::DAGmodel::family
+"
+give the set of parents of a node and the node
+
+Parameters
+---------
+norid : str|int
+  the node
+
+Returns
+-------
+Set[int]
+  the set of nodeId of the family of the node `norid`
+"

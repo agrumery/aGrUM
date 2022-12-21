@@ -38,6 +38,9 @@
 
 %define IMPROVE_BAYESNET_API(classname)
 %extend classname {
+  PyObject*ids(const std::vector<std::string>& names) {
+    return PyAgrumHelper::PyListFromNodeVect(self->ids(names));
+  }
 
   PyObject *minimalCondSet(gum::NodeId target,PyObject* list) const {
     gum::NodeSet soids;

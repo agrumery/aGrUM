@@ -1493,11 +1493,6 @@ def _update_config_notebooks():
   # hook to control some parameters for notebook when config changes
   mpl.rcParams['figure.facecolor'] = gum.config["notebook", "figure_facecolor"]
   set_matplotlib_formats(gum.config["notebook", "graph_format"])
-  if gum.config.asBool["notebook","dark_theme"]:
-    setDarkTheme()
-  else:
-    setLightTheme()
-
 
 # check if an instance of ipython exists
 try:

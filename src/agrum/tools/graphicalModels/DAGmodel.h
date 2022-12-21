@@ -120,8 +120,7 @@ namespace gum {
     NodeSet parents(const std::vector< std::string >& names) const;
 
     /// returns the parents of a node and the node
-    /** Note that the set of nodes returned may be empty if no arc within the
-     * ArcGraphPart is ingoing into the given node.
+    /**
      * @param id the node which is the head of an arc with the returned nodes
      * @param name the name of the node the node which is the head of an arc with
      * the returned nodes*/

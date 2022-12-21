@@ -785,3 +785,13 @@ Raises
 pyAgrum.NotFound
     If no variable's id matches varId.
 "
+
+%feature("docstring") gum::IBayesNet::check
+"
+Check if the BayesNet is consistent (variables, CPT, ...)
+
+Returns
+-------
+List[str]
+  list of found issues
+"

@@ -303,12 +303,6 @@ pyAgrum.NotFound
 	If no such name exists in the graph.
 "
 
-%feature("docstring") gum::InfluenceDiagram::ids
-"
-.. note:: Deprecated in pyAgrum>0.13.0
-    Please use nodes() instead
-"
-
 %feature("docstring") gum::InfluenceDiagram::nodes
 "
 Returns

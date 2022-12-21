@@ -151,12 +151,6 @@ Set
     the set of the parents ids.
 "
 
-%feature("docstring") gum::IBayesNet::ids
-"
-.. note:: Deprecated in pyAgrum>0.13.0
-    Please use nodes() instead
-"
-
 %feature("docstring") gum::IBayesNet::nodes
 "
 Returns

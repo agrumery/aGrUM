@@ -51,8 +51,6 @@ def doTheJob(target, resultat, backup, debugmode):
     ("gum::IApproximationSchemeConfiguration::ApproximationSchemeSTATE", "int"),
     ("gum::IApproximationSchemeConfiguration", '"pyAgrum.YetUnWrapped"'),
     ("gum::learning::DatabaseTable", '"pyAgrum.YetUnWrapped"'),
-    ("std::vector< gum::NodeId,std::allocator< gum::NodeId > >", '"pyAgrum.YetUnWrapped"'),
-    ("std::vector< gum::Idx,std::allocator< gum::Idx > >", '"pyAgrum.YetUnWrapped"'),
     ("std::vector< gum::NodeSet,std::allocator< gum::NodeSet > >", '"pyAgrum.YetUnWrapped"'),
 
     # complicated std types
@@ -82,10 +80,13 @@ def doTheJob(target, resultat, backup, debugmode):
 
 
     # containers
+    ("std::vector< gum::Idx,std::allocator< gum::Idx > >", 'List[int]'),
+    ("std::vector< gum::NodeId,std::allocator< gum::NodeId > >", 'List[int]'),
     ("std::vector< double,std::allocator< double > >", "List[float]"),
     ("std::vector< int,std::allocator< int > >", "List[int]"),
     ("std::vector< unsigned int,std::allocator< unsigned int > >", "List[int]"),
     ("std::vector< std::string,std::allocator< std::string > >", "List[str]"),
+    ("\"Vector_string\"", "List[str]"),
     ("std::vector< PythonLoadListener,std::allocator< PythonLoadListener > >", 'List["pyAgrum.PythonLoadListener"]'),
     ("std::vector< gum::Arc,std::allocator< gum::Arc > >", 'List[Tuple[int,int]]'),
     ("gum::NodeProperty< gum::NodeId >", "Dict[int,int]"),

@@ -31,19 +31,14 @@ import pyAgrum as gum
 def setDarkTheme():
   """ change the color for arcs and text in graphs to be more visible in dark theme
   """
-  gum.config.set("notebook", "dark_theme","True",
-                 no_hook=True)
-  gum.config.set("notebook", "default_arc_color",gum.config["notebook","default_arc_color_dark"],
-                 no_hook=True)
+  gum.config["notebook", "default_arc_color"] = "#AAAAAA"
 
 
 def setLightTheme():
   """ change the color for arcs and text in graphs to be more visible in light theme
   """
-  gum.config.set("notebook", "dark_theme","False",
-                 no_hook=True)
-  gum.config.set("notebook", "default_arc_color",gum.config["notebook","default_arc_color_light"],
-                 no_hook=True)
+  gum.config["notebook", "default_arc_color"] = "#4A4A4A"
+
 
 def getBlackInTheme():
   """ return the color used for arc and text in graphs

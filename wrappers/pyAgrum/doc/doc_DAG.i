@@ -187,12 +187,6 @@ bool
     True if the node exists
 "
 
-%feature("docstring") gum::DAG::ids
-"
-.. note:: Deprecated in pyAgrum>0.13.0
-    Please use nodes() instead
-"
-
 %feature("docstring") gum::DAG::nodes
 "
 Returns

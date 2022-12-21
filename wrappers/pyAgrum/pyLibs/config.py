@@ -115,9 +115,9 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
     self.__defaults = self.__str__()
     self.__hooks = []
 
-    self.asInt=self.CastAsInt(self)
-    self.asFloat=self.CastAsFloat(self)
-    self.asBool=self.CastAsBool(self)
+    self.asInt = self.CastAsInt(self)
+    self.asFloat = self.CastAsFloat(self)
+    self.asBool = self.CastAsBool(self)
 
   def add_hook(self, fn):
     self.__hooks.append(fn)
@@ -205,18 +205,23 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
         FileNotFoundError: if there is no pyagrum.ini in the current directory
     """
     if os.path.isfile("pyagrum.ini"):
-      # to force the use of the protected set() method
+      # to force to use the protected set() method
       c = ConfigParser()
       c.read("pyagrum.ini")
+      error_found = False
       for section in c.sections():
         if section not in self.__parser.sections():
+          error_found = True
           print(f"[pyagrum.ini] Section '{section}' does not exist.")
         for option in c[section]:
           try:
-            self.set(section, option, c[section][option],no_hooks=True)
+            self.set(section, option, c[section][option], no_hooks=True)
           except SyntaxError:
+            error_found = True
             print(f"[pyagrum.ini] Option '{section}.{option}' does not exist.")
         self.run_hooks()
+      if error_found:
+        self.save()
     else:
       raise FileNotFoundError("No file 'pyagrum.ini' in current directory.")
 
