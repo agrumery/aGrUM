@@ -283,3 +283,23 @@ Returns
 Set[int]
   the set of nodeId of the family of the node `norid`
 "
+
+%feature("docstring") gum::DAGmodel::moralizedAncestralGraph
+"
+build a UndiGraph by moralizing the Ancestral Graph of a list of nodes
+
+Parameters
+----------
+nodes : str|int|List[str|int]
+  the list of of nodeIds or names
+
+Warnings
+--------
+  gum.UndiGraph only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph
+
+Returns
+-------
+gum.UndiGraph
+  the moralized ancestral graph of the nodes
+"
+

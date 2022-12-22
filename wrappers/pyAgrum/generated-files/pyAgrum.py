@@ -6452,12 +6452,67 @@ class GraphicalModel(object):
     __swig_destroy__ = _pyAgrum.delete_GraphicalModel
 
     def property(self, name: str) -> str:
+        r"""
+
+        Returns the value associated to this property.
+
+        Properties are a way to keep some (name,value) together with de model.
+
+        Parameters
+        ----------
+        name : str
+          the name of the property
+
+        Raises
+        ------
+        NotFound
+          if no name property is found
+
+        Returns
+        -------
+        str
+          The value associated to this name
+
+        """
         return _pyAgrum.GraphicalModel_property(self, name)
 
     def propertyWithDefault(self, name: str, byDefault: str) -> str:
+        r"""
+
+        Returns the value associated to this property or the default value if there is no such property.
+
+        Properties are a way to keep some information (name,value) together with de model.
+
+        Parameters
+        ----------
+        name : str
+          the name of the property
+        byDefault: str
+          the value by default if no property has been found.
+
+        Returns
+        -------
+        str
+          The value associated to this name or the value by default.
+
+        """
         return _pyAgrum.GraphicalModel_propertyWithDefault(self, name, byDefault)
 
     def setProperty(self, name: str, value: str) -> None:
+        r"""
+
+        Create or change the couple (name,value) in the properties.
+
+        Properties are a way to keep some information (name,value) together with de model.
+
+        Parameters
+        ----------
+        name : str
+          the name of the property
+        value: str
+          the value of the property.
+
+        """
         return _pyAgrum.GraphicalModel_setProperty(self, name, value)
 
     def variableNodeMap(self) -> "pyAgrum.VariableNodeMap":
@@ -6467,9 +6522,34 @@ class GraphicalModel(object):
         return _pyAgrum.GraphicalModel_size(self)
 
     def empty(self) -> bool:
+        r"""
+
+        Check if there are some variables in the model.
+
+        Returns
+        -------
+        bool
+        	True if there is no variable in the model.
+
+        """
         return _pyAgrum.GraphicalModel_empty(self)
 
     def exists(self, *args) -> bool:
+        r"""
+
+        Check if a node with this name or id exists
+
+        Parameters
+        ----------
+        norid: str|int
+          name or id of the searched node
+
+        Returns
+        -------
+        bool
+        	True if there is a node with such a name or id
+
+        """
         return _pyAgrum.GraphicalModel_exists(self, *args)
 
     def names(self, *args) -> List[str]:
@@ -6488,6 +6568,24 @@ class GraphicalModel(object):
     def ids(self, names: List[str]) -> List[int]:
         r"""
 
+        List of ids for a list of names of variables in the model
+
+        Parameters
+        ----------
+        lov : List[str]
+          List of variable names
+
+        Returns
+        -------
+        List[int]
+        	The ids for the list of names of the graph variables
+
+        """
+        return _pyAgrum.GraphicalModel_ids(self, names)
+
+    def nodeset(self, names: List[str]) -> List[int]:
+        r"""
+
         Set of ids for a list of names of variables in the model
 
         Parameters
@@ -6498,18 +6596,25 @@ class GraphicalModel(object):
         Returns
         -------
         Set[int]
-        	The ids for the list of names of the graph variables
+        	The set of ids for the list of names of the graph variables
 
         """
-        return _pyAgrum.GraphicalModel_ids(self, names)
-
-    def nodeset(self, names: List[str]) -> List[int]:
         return _pyAgrum.GraphicalModel_nodeset(self, names)
 
     def nodes(self) -> Set[int]:
         return _pyAgrum.GraphicalModel_nodes(self)
 
     def completeInstantiation(self) -> "pyAgrum.Instantiation":
+        r"""
+
+        Give an instantiation over all the variables of the model
+
+        Returns
+        -------
+        pyAgrum.Instantiation
+          a complete Instantiation for the model
+
+        """
         return _pyAgrum.GraphicalModel_completeInstantiation(self)
 
     def variable(self, id: int) -> "pyAgrum.DiscreteVariable":
@@ -6525,9 +6630,43 @@ class GraphicalModel(object):
         return _pyAgrum.GraphicalModel_variableFromName(self, name)
 
     def log10DomainSize(self) -> float:
+        r"""
+
+        returns the log10 of the domain size of the model defined as the product of the domain sizes of the variables in the model.
+
+        Returns
+        -------
+        float
+        	the log10 domain size.
+
+        """
         return _pyAgrum.GraphicalModel_log10DomainSize(self)
 
     def isIndependent(self, *args) -> bool:
+        r"""
+
+        check if nodes X and nodes Y are independent given nodes Z
+
+        Parameters
+        ----------
+        X : str|intList[str|int]
+              a list of of nodeIds or names
+        Y : str|intList[str|int]
+              a list of of nodeIds or names
+        Z : str|intList[str|int]
+              a list of of nodeIds or names
+
+        Raises
+        ------
+        InvalidArgument
+          if X and Y share variables
+
+        Returns
+        -------
+        bool
+          True if X and Y are independent given Z in the model
+
+        """
         return _pyAgrum.GraphicalModel_isIndependent(self, *args)
 
 # Register GraphicalModel in _pyAgrum:
@@ -6602,6 +6741,21 @@ class DAGmodel(GraphicalModel):
         return _pyAgrum.DAGmodel_nodes(self)
 
     def exists(self, node: int) -> bool:
+        r"""
+
+        Check if a node with this name or id exists
+
+        Parameters
+        ----------
+        norid: str|int
+          name or id of the searched node
+
+        Returns
+        -------
+        bool
+        	True if there is a node with such a name or id
+
+        """
         return _pyAgrum.DAGmodel_exists(self, node)
 
     def arcs(self) -> Set[Tuple[int,int]]:
@@ -6697,9 +6851,52 @@ class DAGmodel(GraphicalModel):
         return _pyAgrum.DAGmodel_ancestors(self, *args)
 
     def moralizedAncestralGraph(self, *args) -> "pyAgrum.UndiGraph":
+        r"""
+
+        build a UndiGraph by moralizing the Ancestral Graph of a list of nodes
+
+        Parameters
+        ----------
+        nodes : str|intList[str|int]
+          the list of of nodeIds or names
+
+        Warnings
+        --------
+          gum.UndiGraph only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph
+
+        Returns
+        -------
+        gum.UndiGraph
+          the moralized ancestral graph of the nodes
+
+        """
         return _pyAgrum.DAGmodel_moralizedAncestralGraph(self, *args)
 
     def isIndependent(self, *args) -> bool:
+        r"""
+
+        check if nodes X and nodes Y are independent given nodes Z
+
+        Parameters
+        ----------
+        X : str|intList[str|int]
+              a list of of nodeIds or names
+        Y : str|intList[str|int]
+              a list of of nodeIds or names
+        Z : str|intList[str|int]
+              a list of of nodeIds or names
+
+        Raises
+        ------
+        InvalidArgument
+          if X and Y share variables
+
+        Returns
+        -------
+        bool
+          True if X and Y are independent given Z in the model
+
+        """
         return _pyAgrum.DAGmodel_isIndependent(self, *args)
 
     def moralGraph(self) -> "pyAgrum.UndiGraph":
@@ -6770,6 +6967,21 @@ class UGmodel(GraphicalModel):
         return _pyAgrum.UGmodel_nodes(self)
 
     def exists(self, node: int) -> bool:
+        r"""
+
+        Check if a node with this name or id exists
+
+        Parameters
+        ----------
+        norid: str|int
+          name or id of the searched node
+
+        Returns
+        -------
+        bool
+        	True if there is a node with such a name or id
+
+        """
         return _pyAgrum.UGmodel_exists(self, node)
 
     def edges(self) -> Set[Tuple[int,int]]:
@@ -6782,6 +6994,30 @@ class UGmodel(GraphicalModel):
         return _pyAgrum.UGmodel_neighbours(self, *args)
 
     def isIndependent(self, *args) -> bool:
+        r"""
+
+        check if nodes X and nodes Y are independent given nodes Z
+
+        Parameters
+        ----------
+        X : str|intList[str|int]
+              a list of of nodeIds or names
+        Y : str|intList[str|int]
+              a list of of nodeIds or names
+        Z : str|intList[str|int]
+              a list of of nodeIds or names
+
+        Raises
+        ------
+        InvalidArgument
+          if X and Y share variables
+
+        Returns
+        -------
+        bool
+          True if X and Y are independent given Z in the model
+
+        """
         return _pyAgrum.UGmodel_isIndependent(self, *args)
 
     def hasSameStructure(self, other: "pyAgrum.UGmodel") -> bool:
@@ -9494,6 +9730,24 @@ class IBayesNet(DAGmodel):
     def ids(self, names: List[str]) -> object:
         r"""
 
+        List of ids for a list of names of variables in the model
+
+        Parameters
+        ----------
+        lov : List[str]
+          List of variable names
+
+        Returns
+        -------
+        List[int]
+        	The ids for the list of names of the graph variables
+
+        """
+        return _pyAgrum.IBayesNet_ids(self, names)
+
+    def nodeset(self, names: List[str]) -> object:
+        r"""
+
         Set of ids for a list of names of variables in the model
 
         Parameters
@@ -9504,10 +9758,10 @@ class IBayesNet(DAGmodel):
         Returns
         -------
         Set[int]
-        	The ids for the list of names of the graph variables
+        	The set of ids for the list of names of the graph variables
 
         """
-        return _pyAgrum.IBayesNet_ids(self, names)
+        return _pyAgrum.IBayesNet_nodeset(self, names)
 
     def minimalCondSet(self, *args) -> object:
         r"""
@@ -9532,6 +9786,30 @@ class IBayesNet(DAGmodel):
         return _pyAgrum.IBayesNet_minimalCondSet(self, *args)
 
     def isIndependent(self, *args) -> bool:
+        r"""
+
+        check if nodes X and nodes Y are independent given nodes Z
+
+        Parameters
+        ----------
+        X : str|intList[str|int]
+              a list of of nodeIds or names
+        Y : str|intList[str|int]
+              a list of of nodeIds or names
+        Z : str|intList[str|int]
+              a list of of nodeIds or names
+
+        Raises
+        ------
+        InvalidArgument
+          if X and Y share variables
+
+        Returns
+        -------
+        bool
+          True if X and Y are independent given Z in the model
+
+        """
         return _pyAgrum.IBayesNet_isIndependent(self, *args)
 
     def names(self) -> object:
@@ -9702,6 +9980,25 @@ class IBayesNet(DAGmodel):
         return _pyAgrum.IBayesNet_ancestors(self, norid)
 
     def moralizedAncestralGraph(self, nodes: object) -> "pyAgrum.UndiGraph":
+        r"""
+
+        build a UndiGraph by moralizing the Ancestral Graph of a list of nodes
+
+        Parameters
+        ----------
+        nodes : str|intList[str|int]
+          the list of of nodeIds or names
+
+        Warnings
+        --------
+          gum.UndiGraph only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph
+
+        Returns
+        -------
+        gum.UndiGraph
+          the moralized ancestral graph of the nodes
+
+        """
         return _pyAgrum.IBayesNet_moralizedAncestralGraph(self, nodes)
 
     def __repr__(self) -> str:
@@ -10526,9 +10823,37 @@ class BayesNet(IBayesNet):
         return _pyAgrum.BayesNet_size(self)
 
     def log10DomainSize(self) -> float:
+        r"""
+
+        returns the log10 of the domain size of the model defined as the product of the domain sizes of the variables in the model.
+
+        Returns
+        -------
+        float
+        	the log10 domain size.
+
+        """
         return _pyAgrum.BayesNet_log10DomainSize(self)
 
     def ids(self, names: List[str]) -> object:
+        r"""
+
+        List of ids for a list of names of variables in the model
+
+        Parameters
+        ----------
+        lov : List[str]
+          List of variable names
+
+        Returns
+        -------
+        List[int]
+        	The ids for the list of names of the graph variables
+
+        """
+        return _pyAgrum.BayesNet_ids(self, names)
+
+    def nodeset(self, names: List[str]) -> object:
         r"""
 
         Set of ids for a list of names of variables in the model
@@ -10541,10 +10866,10 @@ class BayesNet(IBayesNet):
         Returns
         -------
         Set[int]
-        	The ids for the list of names of the graph variables
+        	The set of ids for the list of names of the graph variables
 
         """
-        return _pyAgrum.BayesNet_ids(self, names)
+        return _pyAgrum.BayesNet_nodeset(self, names)
 
     def minimalCondSet(self, *args) -> object:
         r"""
@@ -10569,6 +10894,30 @@ class BayesNet(IBayesNet):
         return _pyAgrum.BayesNet_minimalCondSet(self, *args)
 
     def isIndependent(self, *args) -> bool:
+        r"""
+
+        check if nodes X and nodes Y are independent given nodes Z
+
+        Parameters
+        ----------
+        X : str|intList[str|int]
+              a list of of nodeIds or names
+        Y : str|intList[str|int]
+              a list of of nodeIds or names
+        Z : str|intList[str|int]
+              a list of of nodeIds or names
+
+        Raises
+        ------
+        InvalidArgument
+          if X and Y share variables
+
+        Returns
+        -------
+        bool
+          True if X and Y are independent given Z in the model
+
+        """
         return _pyAgrum.BayesNet_isIndependent(self, *args)
 
     def names(self) -> object:
@@ -10739,6 +11088,25 @@ class BayesNet(IBayesNet):
         return _pyAgrum.BayesNet_ancestors(self, norid)
 
     def moralizedAncestralGraph(self, nodes: object) -> "pyAgrum.UndiGraph":
+        r"""
+
+        build a UndiGraph by moralizing the Ancestral Graph of a list of nodes
+
+        Parameters
+        ----------
+        nodes : str|intList[str|int]
+          the list of of nodeIds or names
+
+        Warnings
+        --------
+          gum.UndiGraph only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph
+
+        Returns
+        -------
+        gum.UndiGraph
+          the moralized ancestral graph of the nodes
+
+        """
         return _pyAgrum.BayesNet_moralizedAncestralGraph(self, nodes)
 
     def addVariables(self,listFastVariables,default_nbr_mod=2):
@@ -11403,6 +11771,24 @@ class BayesNetFragment(IBayesNet, ):
     def ids(self, names: List[str]) -> object:
         r"""
 
+        List of ids for a list of names of variables in the model
+
+        Parameters
+        ----------
+        lov : List[str]
+          List of variable names
+
+        Returns
+        -------
+        List[int]
+        	The ids for the list of names of the graph variables
+
+        """
+        return _pyAgrum.BayesNetFragment_ids(self, names)
+
+    def nodeset(self, names: List[str]) -> object:
+        r"""
+
         Set of ids for a list of names of variables in the model
 
         Parameters
@@ -11413,10 +11799,10 @@ class BayesNetFragment(IBayesNet, ):
         Returns
         -------
         Set[int]
-        	The ids for the list of names of the graph variables
+        	The set of ids for the list of names of the graph variables
 
         """
-        return _pyAgrum.BayesNetFragment_ids(self, names)
+        return _pyAgrum.BayesNetFragment_nodeset(self, names)
 
     def minimalCondSet(self, *args) -> object:
         r"""
@@ -11441,6 +11827,30 @@ class BayesNetFragment(IBayesNet, ):
         return _pyAgrum.BayesNetFragment_minimalCondSet(self, *args)
 
     def isIndependent(self, *args) -> bool:
+        r"""
+
+        check if nodes X and nodes Y are independent given nodes Z
+
+        Parameters
+        ----------
+        X : str|intList[str|int]
+              a list of of nodeIds or names
+        Y : str|intList[str|int]
+              a list of of nodeIds or names
+        Z : str|intList[str|int]
+              a list of of nodeIds or names
+
+        Raises
+        ------
+        InvalidArgument
+          if X and Y share variables
+
+        Returns
+        -------
+        bool
+          True if X and Y are independent given Z in the model
+
+        """
         return _pyAgrum.BayesNetFragment_isIndependent(self, *args)
 
     def names(self) -> object:
@@ -11611,6 +12021,25 @@ class BayesNetFragment(IBayesNet, ):
         return _pyAgrum.BayesNetFragment_ancestors(self, norid)
 
     def moralizedAncestralGraph(self, nodes: object) -> "pyAgrum.UndiGraph":
+        r"""
+
+        build a UndiGraph by moralizing the Ancestral Graph of a list of nodes
+
+        Parameters
+        ----------
+        nodes : str|intList[str|int]
+          the list of of nodeIds or names
+
+        Warnings
+        --------
+          gum.UndiGraph only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph
+
+        Returns
+        -------
+        gum.UndiGraph
+          the moralized ancestral graph of the nodes
+
+        """
         return _pyAgrum.BayesNetFragment_moralizedAncestralGraph(self, nodes)
 
     def addVariables(self,listFastVariables,default_nbr_mod=2):
@@ -11813,6 +12242,30 @@ class IMarkovNet(UGmodel):
         return _pyAgrum.IMarkovNet_factor(self, *args)
 
     def isIndependent(self, *args) -> bool:
+        r"""
+
+        check if nodes X and nodes Y are independent given nodes Z
+
+        Parameters
+        ----------
+        X : str|intList[str|int]
+              a list of of nodeIds or names
+        Y : str|intList[str|int]
+              a list of of nodeIds or names
+        Z : str|intList[str|int]
+              a list of of nodeIds or names
+
+        Raises
+        ------
+        InvalidArgument
+          if X and Y share variables
+
+        Returns
+        -------
+        bool
+          True if X and Y are independent given Z in the model
+
+        """
         return _pyAgrum.IMarkovNet_isIndependent(self, *args)
 
     def __repr__(self) -> str:
@@ -12045,6 +12498,16 @@ class MarkovNet(IMarkovNet):
         return _pyAgrum.MarkovNet_size(self)
 
     def log10DomainSize(self) -> float:
+        r"""
+
+        returns the log10 of the domain size of the model defined as the product of the domain sizes of the variables in the model.
+
+        Returns
+        -------
+        float
+        	the log10 domain size.
+
+        """
         return _pyAgrum.MarkovNet_log10DomainSize(self)
 
     def names(self) -> object:
@@ -12142,6 +12605,30 @@ class MarkovNet(IMarkovNet):
         return _pyAgrum.MarkovNet_factor(self, *args)
 
     def isIndependent(self, *args) -> bool:
+        r"""
+
+        check if nodes X and nodes Y are independent given nodes Z
+
+        Parameters
+        ----------
+        X : str|intList[str|int]
+              a list of of nodeIds or names
+        Y : str|intList[str|int]
+              a list of of nodeIds or names
+        Z : str|intList[str|int]
+              a list of of nodeIds or names
+
+        Raises
+        ------
+        InvalidArgument
+          if X and Y share variables
+
+        Returns
+        -------
+        bool
+          True if X and Y are independent given Z in the model
+
+        """
         return _pyAgrum.MarkovNet_isIndependent(self, *args)
 
     def loadUAI(self, *args) -> str:
@@ -24932,6 +25419,25 @@ class InfluenceDiagram(DAGmodel):
         return _pyAgrum.InfluenceDiagram_ancestors(self, norid)
 
     def moralizedAncestralGraph(self, nodes: object) -> "pyAgrum.UndiGraph":
+        r"""
+
+        build a UndiGraph by moralizing the Ancestral Graph of a list of nodes
+
+        Parameters
+        ----------
+        nodes : str|intList[str|int]
+          the list of of nodeIds or names
+
+        Warnings
+        --------
+          gum.UndiGraph only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph
+
+        Returns
+        -------
+        gum.UndiGraph
+          the moralized ancestral graph of the nodes
+
+        """
         return _pyAgrum.InfluenceDiagram_moralizedAncestralGraph(self, nodes)
 
     def __repr__(self) -> str:
