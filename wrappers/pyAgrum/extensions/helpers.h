@@ -337,6 +337,16 @@ namespace PyAgrumHelper {
     return q;
   }
 
+  PyObject* PySetFromNodeVect(const std::vector< gum::NodeId >& nodevect) {
+    PyObject* q = PySet_New(0);
+
+    for (auto node: nodevect) {
+      PySet_Add(q, PyLong_FromUnsignedLong((unsigned long)node));
+    }
+
+    return q;
+  }
+
   PyObject* PySetFromNodeSet(const gum::NodeGraphPart& nodeset) {
     PyObject* q = PySet_New(0);
 

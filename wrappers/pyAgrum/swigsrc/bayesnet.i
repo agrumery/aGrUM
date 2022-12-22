@@ -42,6 +42,10 @@
     return PyAgrumHelper::PyListFromNodeVect(self->ids(names));
   }
 
+  PyObject*nodeset(const std::vector<std::string>& names) {
+    return PyAgrumHelper::PySetFromNodeVect(self->ids(names));
+  }
+
   PyObject *minimalCondSet(gum::NodeId target,PyObject* list) const {
     gum::NodeSet soids;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,self->variableNodeMap());
