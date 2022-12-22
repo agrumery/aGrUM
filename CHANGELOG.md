@@ -1,5 +1,16 @@
 # aGrUM Changelog
 
+## Changelog for 1.5.1
+
+* aGrUM
+  * Improving `gum::BNLearner::state()`.
+  * (internals) new macro `GUM_TEST` and `GUM_INACTIVE_TEST` for CI
+  
+* pyAgrum
+  * Improving `gum.BNLearner.state()`.
+  * Improving style for readthedoc (pygments and no StickySideBar)
+  * Improving documentation coverage (for methods) from 84.9% to 90.7% : more than 100 newly covered methods.
+
 ## Changelog for 1.5.0
 
 * aGrUM
