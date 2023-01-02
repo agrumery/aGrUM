@@ -43,7 +43,7 @@ idClique : int
 
 Returns
 -------
-Set
+Set[int]
   The set of nodes included in the clique
 
 Raises
@@ -54,22 +54,22 @@ pyAgrum.NotFound
 
 %feature("docstring") gum::CliqueGraph::separator
 "
-        Parameters
-        ----------
-        clique1 : int
-          one extremity of the edge
-        clique : int
-          the other extremity of the edge
+Parameters
+----------
+clique1 : int
+  one extremity of the edge
+clique : int
+  the other extremity of the edge
 
-        Returns
-        -------
-        Set
-          the separator included in a given edge
+Returns
+-------
+Set[int]
+  the separator included in a given edge
 
-        Raises
-        ------
-        pyAgrum.NotFound
-          If the edge does not belong to the clique graph
+Raises
+------
+pyAgrum.NotFound
+  If the edge does not belong to the clique graph
 "
 
 %feature("docstring") gum::CliqueGraph::container
@@ -150,13 +150,13 @@ Parameters
 edge : pyAgrum.Edge
   the edge to be checked
 clique1 : int
-  one extremity of the edge
+    one extremity of the edge
 clique : int
   the other extremity of the edge
 
 Returns
 -------
-Set
+Set[int]
   the separator included in a given edge
 
 Raises
@@ -173,7 +173,7 @@ Parameters
 ----------
 idClique : int
   the id of the clique
-new_clique : Set
+new_clique : Set[int]
   the new set of nodes to be included in the clique
 
 Raises
