@@ -1,6 +1,6 @@
-include (GenerateExportHeader)
+include(GenerateExportHeader)
 
-set (CMAKE_CURRENT_CMAKE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+set(CMAKE_CURRENT_CMAKE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 include(Config.agrum)
 
@@ -14,18 +14,18 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/config.h.in" "${AGRUM_BINARY_D
 
 ### CONDITIONAL RULES (if COCO/R has been found, we add rules) ####
 include(CocoR.agrum)
-if(NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
-     message(STATUS "** aGrUM notification: Coco/R targets")
-     CocoRTarget(tools/core/math/cocoR SyntaxFormula gum:formula BASE)
-     CocoRTarget(BN/io/UAI/cocoR SyntaxUAIBN gum:UAIBN BN)
-     CocoRTarget(BN/io/BIF/cocoR SyntaxBIF gum:BIF BN)
-     CocoRTarget(BN/io/DSL/cocoR SyntaxDSL gum:DSL BN)
-     CocoRTarget(BN/io/net/cocoR SyntaxNet gum:net BN)
-     CocoRTarget(PRM/o3prmr/cocoR SyntaxO3PRMR gum:prm:o3prmr PRM)
-     CocoRTarget(PRM/o3prm/cocoR SyntaxO3PRM gum:prm:o3prm PRM)
-     CocoRTarget(FMDP/io/dat/cocoR SyntaxDat gum:MDPDAT FMDP)
-     CocoRTarget(MN/io/UAI/cocoR SyntaxUAIMN gum:UAIMN MN)
-endif(NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
+if (NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
+    message(STATUS "** aGrUM notification: Coco/R targets")
+    CocoRTarget(tools/core/math/cocoR SyntaxFormula gum:formula BASE)
+    CocoRTarget(BN/io/UAI/cocoR SyntaxUAIBN gum:UAIBN BN)
+    CocoRTarget(BN/io/BIF/cocoR SyntaxBIF gum:BIF BN)
+    CocoRTarget(BN/io/DSL/cocoR SyntaxDSL gum:DSL BN)
+    CocoRTarget(BN/io/net/cocoR SyntaxNet gum:net BN)
+    CocoRTarget(PRM/o3prmr/cocoR SyntaxO3PRMR gum:prm:o3prmr PRM)
+    CocoRTarget(PRM/o3prm/cocoR SyntaxO3PRM gum:prm:o3prm PRM)
+    CocoRTarget(FMDP/io/dat/cocoR SyntaxDat gum:MDPDAT FMDP)
+    CocoRTarget(MN/io/UAI/cocoR SyntaxUAIMN gum:UAIMN MN)
+endif (NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
 ####################################################################
 
 #collect all source files 
@@ -44,28 +44,28 @@ set(SOURCE_FILES ${AGRUM_FILES})
 ## TARGET library
 add_library(${LIBAGRUM} ${AGRUM_FILES})
 target_compile_features(${LIBAGRUM} PUBLIC cxx_std_20)
-set_target_properties (${LIBAGRUM} PROPERTIES POSITION_INDEPENDENT_CODE ON) 
-set_target_properties (${LIBAGRUM} PROPERTIES DEBUG_POSTFIX "-dbg")
+set_target_properties(${LIBAGRUM} PROPERTIES POSITION_INDEPENDENT_CODE ON)
+set_target_properties(${LIBAGRUM} PROPERTIES DEBUG_POSTFIX "-dbg")
 set_target_properties(${LIBAGRUM} PROPERTIES VERSION ${AGRUM_VERSION} SOVERSION ${AGRUM_VERSION_MAJOR})
-target_link_libraries( ${LIBAGRUM} ${ODBC_LIBRARIES} ${GUM_COVERAGE_LINK_LIBRARY})
+target_link_libraries(${LIBAGRUM} ${ODBC_LIBRARIES} ${GUM_COVERAGE_LINK_LIBRARY})
 if (OPENMP_FOUND)
-  set_target_properties (${LIBAGRUM} PROPERTIES LINK_FLAGS ${OpenMP_CXX_FLAGS})
+    set_target_properties(${LIBAGRUM} PROPERTIES LINK_FLAGS ${OpenMP_CXX_FLAGS})
 endif ()
 if (MINGW)
-  target_compile_definitions (${LIBAGRUM} PUBLIC GUM_NO_EXTERN_TEMPLATE_CLASS)
+    target_compile_definitions(${LIBAGRUM} PUBLIC GUM_NO_EXTERN_TEMPLATE_CLASS)
 endif ()
-GENERATE_EXPORT_HEADER( ${LIBAGRUM}
-             BASE_NAME ${LIBAGRUM}
-             EXPORT_MACRO_NAME ${LIBAGRUM}_EXPORT
-             EXPORT_FILE_NAME ${LIBAGRUM}_Export.h
-             STATIC_DEFINE ${LIBAGRUM}_BUILT_AS_STATIC
-)
+GENERATE_EXPORT_HEADER(${LIBAGRUM}
+        BASE_NAME ${LIBAGRUM}
+        EXPORT_MACRO_NAME ${LIBAGRUM}_EXPORT
+        EXPORT_FILE_NAME ${LIBAGRUM}_Export.h
+        STATIC_DEFINE ${LIBAGRUM}_BUILT_AS_STATIC
+        )
 target_include_directories(${LIBAGRUM} INTERFACE
-  $<INSTALL_INTERFACE:include>
-)
+        $<INSTALL_INTERFACE:include>
+        )
 
 # Add targets to the build-tree export set
-export (TARGETS ${LIBAGRUM} FILE ${LIBAGRUM}-targets.cmake)
+export(TARGETS ${LIBAGRUM} FILE ${LIBAGRUM}-targets.cmake)
 
 ####################################################################
 ## TARGET docs
@@ -85,12 +85,12 @@ include(Pack.agrum)
 
 ####################################################################
 # TARGET uninstall
-configure_file (
-  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in
-  ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
-  IMMEDIATE @ONLY
+configure_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in
+        ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
+        IMMEDIATE @ONLY
 )
 
-add_custom_target ( uninstall
-  COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
-)
+add_custom_target(uninstall
+        COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
+        )

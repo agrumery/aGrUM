@@ -25,6 +25,7 @@ different c++ oddities in generated pyAgrum.py
 # ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 # OR PERFORMANCE OF THIS SOFTWARE!
 import os
+import shutil
 import sys
 import re
 
@@ -33,7 +34,7 @@ def notif(s):
   print(f"** pyAgrum : {s}")
 
 
-def doTheJob(target, resultat, backup, debugmode):
+def process_filters(src_filename: str, target_filename: str, debugmode: bool):
   list_rules = [  # ("T","N",stop) : replace ["] [const] T [*|&] ["] by N (N is a type in python)
     # not wrapped
     (
@@ -77,7 +78,6 @@ def doTheJob(target, resultat, backup, debugmode):
     ("std::vector< double >::value_type", "float"),
     ("std::vector< unsigned int >::value_type", "int"),
     ("std::vector< std::string >::value_type", "str"),
-
 
     # containers
     ("std::vector< gum::Idx,std::allocator< gum::Idx > >", 'List[int]'),
@@ -130,7 +130,7 @@ def doTheJob(target, resultat, backup, debugmode):
     ('gum::Variable', '"pyAgrum.Variable"'),
     ('gum::IDiscretizedVariable', '"pyAgrum.DiscretizedVariable"'),
     ('gum::DAG', '"pyAgrum.DAG"'),
-    ('gum::learning::BNLearner< double >','"pyAgrum.BNLearner"'),
+    ('gum::learning::BNLearner< double >', '"pyAgrum.BNLearner"'),
 
     # enum
     ('gum::RelevantPotentialsFinderType', "int"),
@@ -161,7 +161,7 @@ def doTheJob(target, resultat, backup, debugmode):
     ("std::string", "str"),
     ("char const *", "str"),
     ("std::size_t", "int"),
-    ("object_type","object"),
+    ("object_type", "object"),
 
     # remove type decorators (const, &, etc.) ... to be treated as complete word : \b
     ("\\bbool\\b", "bool"),
@@ -184,16 +184,9 @@ def doTheJob(target, resultat, backup, debugmode):
               rules}
   triggered = {k: 0 for k in rules}
 
-  notif(f"Pythonizing types for {target} via {resultat}, backup in {backup}")
-  if debugmode:
-    notif("  (debug mode)")
-
-  if not os.path.exists(target):
-    raise IOError(f"File '{target}' not found.")
-
   typing_added = False
-  with open(target, "r") as src:
-    with open(resultat, "w") as dst:
+  with open(src_filename, "r") as src:
+    with open(target_filename, "w") as dst:
       for noline, line in enumerate(src.read().splitlines()):
         originalline = line
         num = 1
@@ -232,24 +225,35 @@ def doTheJob(target, resultat, backup, debugmode):
   notif("-" * 85)
   notif(f"     | total : {total}")
 
+
+def do_the_job(src_filename: str, target_filename: str, backup_filename: str, debugmode: bool):
+  notif(f"Pythonizing types from {src_filename} to {target_filename}")
   if debugmode:
-    notif("No move here (debug mode).")
-  else:
-    notif(f"backup in {backup}.")
-    if os.path.exists(backup):
-      os.remove(backup)  # file exits, delete it
-    os.rename(target, backup)
-    notif(f"{target} updated.")
-    os.rename(resultat, target)
+    notif("  - debug mode")
+
+  if not os.path.exists(src_filename):
+    raise IOError(f"File '{src_filename}' not found.")
+
+  notif(f"  - backup in {backup_filename}.")
+  if os.path.exists(target_filename):
+    if os.path.exists(backup_filename):
+      os.remove(backup_filename)  # file exits, delete it
+    shutil.copy(target_filename, backup_filename)
+
+  process_filters(src_filename, target_filename, debugmode)
+
+  notif(f"  - {target_filename} updated.")
 
 
-if len(sys.argv) == 2:  # normal mode
-  doTheJob(target=sys.argv[1],
-           resultat=sys.argv[1] + "new.py",
-           backup=sys.argv[1] + "old.py",
-           debugmode=False)
+if len(sys.argv) == 3:  # normal mode
+  do_the_job(src_filename=sys.argv[1],
+             target_filename=sys.argv[2],
+             backup_filename=sys.argv[2] + "old.py",
+             debugmode=False)
+elif len(sys.argv) == 2:  # normal mode
+  do_the_job(src_filename=sys.argv[1],
+             target_filename='debug_' + sys.argv[1],
+             backup_filename="NO MOVE",
+             debugmode=True)
 else:
-  doTheJob(target=sys.argv[1] + "old.py",
-           resultat=sys.argv[1],
-           backup="NO MOVE",
-           debugmode=True)
+  notif(f"{sys.argv[0]} src [dest]")
