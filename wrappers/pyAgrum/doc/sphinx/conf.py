@@ -584,7 +584,7 @@ def check_config(app):
         raise ExtensionError("'googleanalytics_id' config value must be set for ga statistics to function properly.")
 
 #googleanalytics_id = 'UA-97418814-1'
-googleanalytics_id = 'G-J6JL8NQP91'
+googleanalytics_id = 'G-QXXE80HBQJ'
 
 def setup(app):
   #app.connect('autodoc-process-docstring', process_docstring)
