@@ -1,6 +1,7 @@
 Inference
----------
-Inference is the process that consists in computing new probabilistc information from a Bayesian network and some evidence. aGrUM/pyAgrum mainly focus and the computation of (joint) posterior for some variables of the Bayesian networks given soft or hard evidence that are the form of likelihoods on some variables.
+^^^^^^^^^
+
+Inference is the process that consists in computing new probabilistc information from a Bayesian network and some evidence. aGrUM/pyAgrum mainly focus on the computation of (joint) posterior for some variables of the Bayesian networks given soft or hard evidence that are the form of likelihoods on some variables.
 Inference is a hard task (NP-complete). aGrUM/pyAgrum implements exact inference but also approximated inference that can converge slowly and (even) not exactly but thant can in many cases be useful for applications.
 
 Exact Inference
@@ -16,7 +17,7 @@ Lazy Propagation is the main exact inference for classical Bayesian networks in 
 			:exclude-members: setFindBarrenNodesType, setRelevantPotentialsFinderType, setTriangulation
 
 
-Shafer Shenoy Inference
+Shafer-Shenoy Inference
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autoclass:: pyAgrum.ShaferShenoyInference

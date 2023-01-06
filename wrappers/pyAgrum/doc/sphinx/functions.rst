@@ -6,16 +6,16 @@ Useful functions in pyAgrum
 
 .. autofunction:: pyAgrum.about
 
+.. autofunction:: pyAgrum.randomBN
+
 .. autofunction:: pyAgrum.getPosterior
 
 .. autofunction:: pyAgrum.generateSample
 
-.. autofunction:: pyAgrum.generateCSV
-
 Quick specification of (randomly parameterized) graphical models
 ----------------------------------------------------------------
 
-aGrUM/pyAgrum offers a so-called "fact" syntax that allows to quickly and compactly specify prototypes of graphical models. These `fastPrototype` aGrUM's methods have also been wrapped in functions of pyAgrum.
+aGrUM/pyAgrum offers a so-called "fast" syntax that allows to quickly and compactly specify prototypes of graphical models. These `fastPrototype` aGrUM's methods have also been wrapped in functions of pyAgrum.
 
 .. code:: python
 

@@ -9,8 +9,9 @@ with Bayesian networks.
 
 
 .. toctree::
-  :maxdepth: 3
+  :maxdepth: 2
 
+  BNToolsRandom
   BNToolsGener
   BNToolsCompar
   BNToolsExplain
