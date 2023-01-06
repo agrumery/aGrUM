@@ -187,7 +187,7 @@ todo_include_todos = False
 html_theme = 'sphinx_rtd_theme'
 html_theme_options = {
     'canonical_url': '',
-    'analytics_id': 'UA-97418814-1',  #  Provided by Google in your dashboard
+    'analytics_id': 'G-J6JL8NQP91',  #  Provided by Google in your dashboard
     'logo_only': True,
     'display_version': True,
     'prev_next_buttons_location': 'top',
@@ -584,7 +584,7 @@ def check_config(app):
         raise ExtensionError("'googleanalytics_id' config value must be set for ga statistics to function properly.")
 
 #googleanalytics_id = 'UA-97418814-1'
-googleanalytics_id = 'G-QXXE80HBQJ'
+googleanalytics_id = 'G-J6JL8NQP91'
 
 def setup(app):
   #app.connect('autodoc-process-docstring', process_docstring)
