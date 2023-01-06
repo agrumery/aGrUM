@@ -99,9 +99,9 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
     raise (NotImplementedError("This class is a generic class for Incremental Inference"))
 
   def testGetPosterior(self):
-    self.assertEqual(gum.getPosterior(self.bn, {}, "A"), self.joint.margSumIn(["A"]))
-    self.assertEqual(gum.getPosterior(self.bn, {}, 2), self.joint.margSumIn(["C"]))
-    self.assertEqual(gum.getPosterior(self.bn, {}, 'D'), self.joint.margSumIn(["D"]))
+    self.assertEqual(gum.getPosterior(self.bn, evs={}, target="A"), self.joint.margSumIn(["A"]))
+    self.assertEqual(gum.getPosterior(self.bn, evs={}, target=2), self.joint.margSumIn(["C"]))
+    self.assertEqual(gum.getPosterior(self.bn, evs={}, target='D'), self.joint.margSumIn(["D"]))
 
     self.ie.eraseAllTargets()
     self.ie.addTarget("A")
@@ -116,9 +116,9 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
                       gum.Potential().add(self.bn.variable("B")).fillWith([0, 0, 1]) * \
                       gum.Potential().add(self.bn.variable("D")).fillWith([0.2, 0.6, 0.6])
 
-    self.assertEqual(gum.getPosterior(self.bn, {1: 2, "D": [0.2, 0.6, 0.6]}, "A"),
+    self.assertEqual(gum.getPosterior(self.bn, evs={1: 2, "D": [0.2, 0.6, 0.6]}, target="A"),
                      posterior_joint.margSumIn(["A"]).normalize())
-    self.assertEqual(gum.getPosterior(self.bn, {"B": 2, 3: [0.2, 0.6, 0.6]}, "F"),
+    self.assertEqual(gum.getPosterior(self.bn, evs={"B": 2, 3: [0.2, 0.6, 0.6]}, target="F"),
                      posterior_joint.margSumIn(["F"]).normalize())
 
   def testPrior(self):

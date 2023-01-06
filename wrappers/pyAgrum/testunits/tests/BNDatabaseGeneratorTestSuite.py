@@ -27,7 +27,7 @@ from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 class GenerateCSVTestCase(pyAgrumTestCase):
   def testSimpleUse(self):
     bn = gum.fastBN("A->B->C;A->D->C;D->E;")
-    gum.generateCSV(bn, self.agrumSrcDir('genere.csv'), 30)
+    gum.generateSample(bn, 30, self.agrumSrcDir('genere.csv'))
 
 
 class BNDatabaseGeneratorTestCase(pyAgrumTestCase):
