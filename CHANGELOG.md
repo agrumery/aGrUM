@@ -1,5 +1,14 @@
 # aGrUM Changelog
 
+## Changelog for 1.5.2
+
+Mainly documentation and new analytics for the different sites.
+
+* pyAgrum
+  * Adding a new and very easy to use `pyAgrum.randomBN` that creates a BN from a list of names.
+  * Removing obsolete `pyAgrum.generateCSV` replaced by `pyAgrum.generateSample`. Fixing tests.
+  * Fixing and improving pyAgrum documentation.
+
 ## Changelog for 1.5.1
 
 * aGrUM
