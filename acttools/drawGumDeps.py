@@ -56,30 +56,37 @@ def _gumScan(file: Path):
 
   return s
 
+def _getDepth():
+  deps = {}
+  p = Path('../src/agrum')
+  for file in p.glob('**/*.h'):
+    if _filter(file.parts):
+      key = "/".join(file.parts[3:])
+      deps[key] = _gumScan(file)
 
-def drawGumDeps():
+  return deps
+
+def drawGumDeps(complete=False,optimized=False):
   colors = {
-    "tools/core": "sandybrown",
-    "tools/database": "#b5610e",
-    "tools/variables": "#dd9282",
-    "tools/graphicalModels": "#e08254",
-    "tools/graphs": "darksalmon",
-    "tools/multidim": "#e3670b",
-    "tools/stattests": "#b7410e",
+    "tools/core":            ("blues9","#6677AA"),
+    "tools/database":        ("blues9","#8899AA"),
+    "tools/variables":       ("blues9","#8899BB"),
+    "tools/graphicalModels": ("blues9","#99AACC"),
+    "tools/graphs":          ("blues9","#99AADD"),
+    "tools/multidim":        ("blues9","#AAAAEE"),
+    "tools/stattests":       ("blues9","#AABBFF"),
 
-    "BN": "#EA80E6",
-    "PRM": "#cc41ff",
-    "CN": "yellowgreen",
-    "learning": "lightskyblue",
-    "learning": "lightskyblue",
-    "FMDP": "#006447",
-    "ID": "aquamarine",
-    "MN": "yellow",
+    "BN": ("set38",4),
+    "PRM": ("set38",2),
+    "MN": ("set38",3),
+    "CN": ("set38",1),
+    "learning": ("set38",6),
+    "FMDP": ("set38",7),
+    "ID": ("set38",8),
 
-    "tools/external": "white",
-
-    "legend": "white",
-    "legend_tools": "white"
+    "tools/external": ("greys9",3),
+    "legend": ("greys9",1),
+    "legend_tools": ("greys9",2)
   }
 
   def _getNode(name, label=None, theme=None):
@@ -103,7 +110,9 @@ def drawGumDeps():
       print(f"Missing (or irrelevant) type : {theme}")
       nod.set("fillcolor", "green")
     else:
-      nod.set("fillcolor", colors[theme])
+      cs,c=colors[theme]
+      nod.set("fillcolor", c)
+      nod.set("colorscheme", cs)
 
     return nod
 
@@ -130,44 +139,86 @@ def drawGumDeps():
   arcsiz = 0
   nodsiz = 0
 
-  deps = {}
-  p = Path('../src/agrum')
-  for file in p.glob('**/*.h'):
-    if _filter(file.parts):
-      key = "/".join(file.parts[3:])
-      deps[key] = _gumScan(file)
-
   agru.set_name("gum")
   agru.set_type("digraph")
   agru.set_suppress_disconnected(True)
   agru.set("splines", "compound")
   agru.set("background", "transparent")
 
-  for k in deps.keys():
-    parts = k.split("/")
-    if len(parts)>1 and parts[1]=="learning":
-      theme="learning"
-    else:
-      theme = parts[0]
-      if theme == "tools":
-        theme+="/"+parts[1]
+  if complete:
+    deps=_getDepth()
 
-    nod = _getNode(k, parts[-1][:-2], theme)
-    agru.add_node(nod)
-    nodsiz += 1
+    if optimized:
+      ancestrals={}
+      for k in deps.keys():
+        _buildAncestral(ancestrals,deps,k)
+      _simplyfyDeps(ancestrals,deps)
 
-  for k in deps.keys():
-    for l in deps[k]:
-      agru.add_edge(pdp.Edge(l, k))
-      arcsiz += 1
+    for k in deps.keys():
+      parts = k.split("/")
+      if len(parts)>1 and parts[1]=="learning":
+        theme="learning"
+      else:
+        theme = parts[0]
+        if theme == "tools":
+          theme+="/"+parts[1]
+
+      nod = _getNode(k, parts[-1][:-2], theme)
+      agru.add_node(nod)
+      nodsiz += 1
+
+    for k in deps.keys():
+      for l in deps[k]:
+        agru.add_edge(pdp.Edge(l, k))
+        arcsiz += 1
 
   print("# aGrUM headers map")
   print(f"#  + Nbr of nodes : {nodsiz}")
   print(f"#  + Nbr of arcs : {arcsiz}")
-  #print(agru.to_string())
+
   agru.write_pdf("agrum-map.pdf", prog="fdp")
 
+def _buildAncestral(ancestrals,deps,k):
+  if k not in ancestrals:
+    ancestrals[k]=None
+    anc_k={}
+    for f in deps[k]:
+      anc_k[f]=1 if f not in anc_k else anc_k[f]+1
+      b = _buildAncestral(ancestrals,deps,f)
+      if b is None:
+        raise ValueError(f"Cycle detected from {f}->{k}")
+      for pf in _buildAncestral(ancestrals,deps,f):
+        anc_k[pf]=1 if pf not in anc_k else anc_k[pf]+1
+    ancestrals[k]=anc_k
+  return ancestrals[k]
+
+def _simplyfyDeps(ancestral,deps):
+  nbr=0
+  for k in deps.keys():
+    first=0
+    l=list(deps[k])
+    for p in l:
+      if ancestral[k][p]>1:
+        if first==0:
+          print("")
+          print("-"*len(k))
+          print(k)
+          print("-"*len(k))
+          first=1
+        nbr+=1
+        print(f"{nbr:03d} {p}->{k} can be removed")
+        deps[k].remove(p)
+
+
+
+def analyzeDeps():
+  deps=_getDepth()
+  ancestrals={}
+  for k in deps.keys():
+    _buildAncestral(ancestrals,deps,k)
+  _simplyfyDeps(ancestrals,deps)
 
 if __name__ == "__main__":
   # execute only if run as a script
-  drawGumDeps()
+  drawGumDeps(complete=True,optimized=False)
+  #analyzeDeps()

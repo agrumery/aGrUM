@@ -90,7 +90,7 @@
 #include <agrum/BN/learning/greedyHillClimbing.h>
 #include <agrum/BN/learning/localSearchWithTabuList.h>
 
-#include <agrum/tools/core/signal/signaler.h>
+#include <agrum/tools/core/signal/signalers.h>
 
 namespace gum::learning {
 

@@ -33,7 +33,6 @@
 
 #  include <agrum/agrum.h>
 #  include <agrum/tools/graphs/parts/nodeGraphPart.h>
-#  include <agrum/tools/multidim/implementations/multiDimFunctionGraph.h>
 #  include <agrum/tools/multidim/utils/FunctionGraphUtilities/internalNode.h>
 
 namespace gum {

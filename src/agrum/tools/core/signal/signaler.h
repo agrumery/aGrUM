@@ -34,13 +34,4 @@
 
 #include <agrum/tools/core/signal/listener.h>
 
-#include <agrum/tools/core/signal/signaler0.h>
-#include <agrum/tools/core/signal/signaler1.h>
-#include <agrum/tools/core/signal/signaler2.h>
-#include <agrum/tools/core/signal/signaler3.h>
-#include <agrum/tools/core/signal/signaler4.h>
-#include <agrum/tools/core/signal/signaler5.h>
-#include <agrum/tools/core/signal/signaler6.h>
-#include <agrum/tools/core/signal/signaler7.h>
-
 #endif   // GUM_SIGNALER_H

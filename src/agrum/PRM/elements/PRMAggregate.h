@@ -39,7 +39,6 @@
 #include <agrum/PRM/elements/PRMType.h>
 #include <agrum/PRM/elements/PRMClassElement.h>
 #include <agrum/PRM/elements/PRMAttribute.h>
-#include <agrum/PRM/elements/PRMAggregate.h>
 #include <agrum/PRM/elements/PRMScalarAttribute.h>
 
 

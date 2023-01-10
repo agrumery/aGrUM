@@ -30,7 +30,7 @@
 #ifndef AGRUM_PROGRESSNOTIFICATION_H
 #define AGRUM_PROGRESSNOTIFICATION_H
 
-#include <agrum/tools/core/signal/signaler.h>
+#include <agrum/tools/core/signal/signalers.h>
 #include <agrum/tools/core/timer.h>
 
 namespace gum {

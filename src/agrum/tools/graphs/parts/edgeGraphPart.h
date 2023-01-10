@@ -27,7 +27,7 @@
 #include <algorithm>
 #include <utility>
 
-#include <agrum/tools/core/signal/signaler.h>
+#include <agrum/tools/core/signal/signalers.h>
 
 #include <agrum/tools/graphs/graphElements.h>
 

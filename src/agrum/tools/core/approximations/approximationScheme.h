@@ -37,7 +37,7 @@
 #include <agrum/agrum.h>
 #include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/core/approximations/IApproximationSchemeConfiguration.h>
-#include <agrum/tools/core/signal/signaler.h>
+#include <agrum/tools/core/signal/signalers.h>
 #include <agrum/tools/core/timer.h>
 
 namespace gum {

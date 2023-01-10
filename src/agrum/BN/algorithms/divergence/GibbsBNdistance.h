@@ -37,7 +37,7 @@
 #include <agrum/BN/inference/tools/gibbsOperator.h>
 #include <agrum/tools/core/approximations/approximationScheme.h>
 
-#include <agrum/tools/core/signal/signaler.h>
+#include <agrum/tools/core/signal/signalers.h>
 
 namespace gum {
 
