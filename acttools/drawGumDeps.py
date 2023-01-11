@@ -20,28 +20,30 @@
 # *   Free Software Foundation, Inc.,                                       *
 # *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 # ***************************************************************************
+import pydot as pdp
 from pathlib import Path
 import re
-import pydot as pdp
+from typing import Dict, List, Set
 
 
-def _filter(tab):
-  if len(tab[-1]) > 5:
-    if tab[-1][-6:] == "_tpl.h":
+def _header_filter(splitted_filename:str)->bool:
+  filename=splitted_filename[-1]
+  if len(filename) > 5:
+    if filename[-6:] == "_tpl.h":
       return False
-    if tab[-1][-6:] == "_inl.h":
+    if filename[-6:] == "_inl.h":
       return False
 
-  if tab[-1] == "agrum.h":
+  if filename == "agrum.h":
     return False
 
-  if tab[-1] == "config.h":
+  if filename == "config.h":
     return False  
 
   return True
 
 
-def _gumScan(file: Path):
+def _gumScan(file: Path)->List[str]:
   patt = re.compile(r"^#[\s]*include <agrum/([^>]*)>")
   s = []
 
@@ -51,21 +53,58 @@ def _gumScan(file: Path):
       if m:
         filename = m.group(1)
         parts = filename.split("/")
-        if _filter(parts):
+        if _header_filter(parts):
           s.append(filename)
 
   return s
 
-def _getDepth():
+def _getDependencies()->Dict[str,List[str]]:
   deps = {}
   p = Path('../src/agrum')
   for file in p.glob('**/*.h'):
-    if _filter(file.parts):
+    if _header_filter(file.parts):
       key = "/".join(file.parts[3:])
       deps[key] = _gumScan(file)
 
   return deps
 
+def _buildAncestral(ancestrals:Dict[str,Set[str]],deps:Dict[str,List[str]],k:str):
+  if k not in ancestrals:
+    ancestrals[k]=None
+    anc_k={}
+    for f in deps[k]:
+      anc_k[f]=1 if f not in anc_k else anc_k[f]+1
+      b = _buildAncestral(ancestrals,deps,f)
+      if b is None:
+        raise ValueError(f"Cycle detected from {f}->{k}")
+      for pf in _buildAncestral(ancestrals,deps,f):
+        anc_k[pf]=1 if pf not in anc_k else anc_k[pf]+1
+    ancestrals[k]=anc_k
+  return ancestrals[k]
+
+def _simplyfyDependencies(ancestral,deps):
+  nbr=0
+  for k in deps.keys():
+    first=0
+    l=list(deps[k])
+    for p in l:
+      if ancestral[k][p]>1:
+        if first==0:
+          warn("")
+          warn("-"*len(k))
+          warn(k)
+          warn("-"*len(k))
+          first=1
+        nbr+=1
+        warn(f"{nbr:03d} {p}->{k} can be removed")
+        deps[k].remove(p)
+
+def analyzeDeps():
+  deps=_getDependencies()
+  ancestrals={}
+  for k in deps.keys():
+    _buildAncestral(ancestrals,deps,k)
+  _simplyfyDependencies(ancestrals,deps)
 def drawGumDeps(complete=False,optimized=False):
   colors = {
     "tools/core":            ("blues9","#6677AA"),
@@ -146,7 +185,7 @@ def drawGumDeps(complete=False,optimized=False):
   agru.set("background", "transparent")
 
   if complete:
-    deps=_getDepth()
+    deps=_getDependencies()
 
     if optimized:
       ancestrals={}
@@ -177,46 +216,6 @@ def drawGumDeps(complete=False,optimized=False):
   print(f"#  + Nbr of arcs : {arcsiz}")
 
   agru.write_pdf("agrum-map.pdf", prog="fdp")
-
-def _buildAncestral(ancestrals,deps,k):
-  if k not in ancestrals:
-    ancestrals[k]=None
-    anc_k={}
-    for f in deps[k]:
-      anc_k[f]=1 if f not in anc_k else anc_k[f]+1
-      b = _buildAncestral(ancestrals,deps,f)
-      if b is None:
-        raise ValueError(f"Cycle detected from {f}->{k}")
-      for pf in _buildAncestral(ancestrals,deps,f):
-        anc_k[pf]=1 if pf not in anc_k else anc_k[pf]+1
-    ancestrals[k]=anc_k
-  return ancestrals[k]
-
-def _simplyfyDeps(ancestral,deps):
-  nbr=0
-  for k in deps.keys():
-    first=0
-    l=list(deps[k])
-    for p in l:
-      if ancestral[k][p]>1:
-        if first==0:
-          print("")
-          print("-"*len(k))
-          print(k)
-          print("-"*len(k))
-          first=1
-        nbr+=1
-        print(f"{nbr:03d} {p}->{k} can be removed")
-        deps[k].remove(p)
-
-
-
-def analyzeDeps():
-  deps=_getDepth()
-  ancestrals={}
-  for k in deps.keys():
-    _buildAncestral(ancestrals,deps,k)
-  _simplyfyDeps(ancestrals,deps)
 
 if __name__ == "__main__":
   # execute only if run as a script
