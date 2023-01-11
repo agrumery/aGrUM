@@ -20,7 +20,6 @@
 # *   Free Software Foundation, Inc.,                                       *
 # *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 # ***************************************************************************
-import pydot as pdp
 from pathlib import Path
 import re
 from typing import Dict, List, Set, Optional
@@ -106,6 +105,8 @@ def _simplyfy_dependencies(ancestrals: Dict[str, Set[str]], deps: Dict[str, List
 
 
 def draw_gum_dependencies(deps: Dict[str, List[str]]):
+  import pydot as pdp
+
   colors = {
     "tools/core": ("blues9", "#6677AA"),
     "tools/database": ("blues9", "#8899AA"),
@@ -133,7 +134,7 @@ def draw_gum_dependencies(deps: Dict[str, List[str]]):
       label = name
     if th is None:
       th = name
-
+    
     nod = pdp.Node(name)
 
     nod.set("fontname", "Arial")
@@ -155,6 +156,7 @@ def draw_gum_dependencies(deps: Dict[str, List[str]]):
 
     return nod
 
+  notif("    - building the graph")
   deps_graph = pdp.Dot()
 
   for col in colors:
@@ -195,7 +197,8 @@ def draw_gum_dependencies(deps: Dict[str, List[str]]):
   for k in deps.keys():
     for l in deps[k]:
       deps_graph.add_edge(pdp.Edge(l, k))
-
+  
+  notif("    - drawing in pdf (please be patient...)")
   deps_graph.write_pdf("agrum-map.pdf", prog="fdp")
 
 
@@ -209,7 +212,7 @@ def check_gum_dependencies(graph=True):
   notif(f"  + Nbr of dependencies : {nb_arcs}")
 
   if graph:
-    notif("  + drawing headers map in [agrum-map.pdf] (please be patient)")
+    notif("  + drawing headers map in [agrum-map.pdf]")
     draw_gum_dependencies(deps)
 
   ancestrals = {}
