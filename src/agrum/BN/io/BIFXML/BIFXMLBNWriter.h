@@ -84,7 +84,7 @@ namespace gum {
      * Writes an bayes net in the given ouput stream.
      *
      * @param output The output stream.
-     * @param bn The bayes net writen in the stream.
+     * @param infdiag The bayes net writen in the stream.
      * @throws IOError Raised if an I/O error occurs.
      */
     void _doWrite(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) final;
@@ -95,7 +95,7 @@ namespace gum {
      * If the file exists, it's content will be erased.
      *
      * @param filePath The path to the file used to write the bayes net.
-     * @param bn The bayes net writen in the file.
+     * @param infdiag The bayes net writen in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
     void _doWrite(const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) final;

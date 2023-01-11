@@ -1,6 +1,6 @@
 /**
  *
- *  Copyright 2005-2022 Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ *  Copyright 2005-2023 Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
  *   {prenom.nom}_at_lip6.fr
  *
  *  This library is free software: you can redistribute it and/or modify

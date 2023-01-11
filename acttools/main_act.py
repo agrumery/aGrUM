@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # ***************************************************************************
-# *   Copyright (C) 2015 by Pierre-Henri WUILLEMIN (@LIP6)                  *
+# *   Copyright (c) 2015-2023 by Pierre-Henri WUILLEMIN (@LIP6)             *
 # *   info_at_agrum_dot_org                                                 *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
