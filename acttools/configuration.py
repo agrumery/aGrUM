@@ -98,6 +98,8 @@ def initParams():
   cfg.default['build'] = "all"
   cfg.default['noSaveParams'] = False
   cfg.default['correction'] = False
+  cfg.default['build_graph'] = False
+  cfg.default['correction'] = False
   cfg.default['profiling'] = False
 
   cfg.actions = set(
@@ -108,7 +110,7 @@ def initParams():
   cfg.modules = set(cfg.moduleLabels)
 
   cfg.non_persistent = ["fixed_seed", "stats", "no_fun", "static_lib", "oneByOne", "dry_run", "coverage",
-                        "noSaveParams", "correction"]
+                        "noSaveParams", "correction","build_graph"]
   cfg.mains = ["action", "targets", "mode"]
   cfg.specialActions = ["show", "clean", "guideline"]
   cfg.swapOptions = {
@@ -247,6 +249,11 @@ def configureOptions(current):
                         action="store_true",
                         dest="correction",
                         default=False)
+  cfg.parser.add_argument("--build_graph",
+                          help="act guideline will build the dependency graph",
+                          action="store_true",
+                          dest="build_graph",
+                          default=False)
   cfg.parser.add_argument("--profiling",
                         help="act will add options for profiling",
                         action="store_true",

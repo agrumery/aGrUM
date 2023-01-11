@@ -25,6 +25,8 @@ import inspect
 import sys
 from os.path import join, dirname
 
+from .utils import notif
+
 gumPath = join(dirname(sys.argv[0]), "build/pyAgrum/release/wrappers")
 
 
@@ -86,7 +88,7 @@ class PyAgrumDocCoverage:
         res = "partial"
 
     if self._verbose:
-      print(self._prefix(name) + name + " : " + res)
+      notif(self._prefix(name) + name + " : " + res)
 
   def _checkClassDoc(self, name, clas):
     res = "check"
@@ -102,7 +104,7 @@ class PyAgrumDocCoverage:
         res = "partial"
 
     if self._verbose:
-      print(self._prefix(name) + name + " : " + res)
+      notif(self._prefix(name) + name + " : " + res)
 
   def _ignoredClass(self, name, clas):
     if not gumPath in sys.path:
@@ -152,39 +154,37 @@ class PyAgrumDocCoverage:
     pm = 1.0 - (len(self.undocMeth) + len(self.partialDocMeth)) / (1.0 * self.nbMeth)
     pf = 1.0 - (len(self.undocFunc) + len(self.partialDocFunc)) / (1.0 * self.nbFunc)
 
-    print()
-    print(f'Documentation in pyAgrum {gum.__version__}')
+    notif(f'Documentation in pyAgrum {gum.__version__}')
 
-    print(f"  Classes   : coverage={(pc * 100.0):6.2f}% [{self.nbClass}]")
+    notif(f"  Classes   : coverage={(pc * 100.0):6.2f}% [{self.nbClass}]")
     if self._verbose:
-      print("---------")
-      print("  - nbr of classes : " + str(self.nbClass))
-      print("  - nbr of partially documented classes : " + str(len(self.partialDocClass)))
-      print("\n    + ".join([""] + self.partialDocClass))
-      print()
-      print("  - nbr of undocumented classes : " + str(len(self.undocClass)))
-      print("\n    + ".join([""] + self.undocClass))
+      notif("---------")
+      notif("  - nbr of classes : " + str(self.nbClass))
+      notif("  - nbr of partially documented classes : " + str(len(self.partialDocClass)))
+      notif("\n    + ".join([""] + self.partialDocClass))
+      notif()
+      notif("  - nbr of undocumented classes : " + str(len(self.undocClass)))
+      notif("\n    + ".join([""] + self.undocClass))
 
-    print(f"  Methods   : coverage={(pm * 100.0):6.2f}% [{self.nbMeth}]")
+    notif(f"  Methods   : coverage={(pm * 100.0):6.2f}% [{self.nbMeth}]")
     if self._verbose:
-      print("---------")
-      print("  - nbr of methods: " + str(self.nbMeth))
-      print("  - nbr of partially documented methods : " + str(len(self.partialDocMeth)))
-      print("\n    + ".join([""] + self.partialDocMeth))
-      print()
-      print("  - nbr of undocumented methods : " + str(len(self.undocMeth)))
-      print("\n    + ".join([""] + self.undocMeth))
+      notif("---------")
+      notif("  - nbr of methods: " + str(self.nbMeth))
+      notif("  - nbr of partially documented methods : " + str(len(self.partialDocMeth)))
+      notif("\n    + ".join([""] + self.partialDocMeth))
+      notif()
+      notif("  - nbr of undocumented methods : " + str(len(self.undocMeth)))
+      notif("\n    + ".join([""] + self.undocMeth))
 
-    print(f"  Functions : coverage={(pf * 100.0):6.2f}% [{self.nbFunc}]")
+    notif(f"  Functions : coverage={(pf * 100.0):6.2f}% [{self.nbFunc}]")
     if self._verbose:
-      print("-----------")
-      print("  - nbr of functions: " + str(self.nbFunc))
-      print("  - nbr of partially documented functions : " + str(len(self.partialDocFunc)))
-      print("\n    + ".join([""] + self.partialDocFunc))
-      print()
-      print("  - nbr of undocumented functions : " + str(len(self.undocFunc)))
-      print("\n    + ".join([""] + self.undocFunc))
-    print()
+      notif("-----------")
+      notif("  - nbr of functions: " + str(self.nbFunc))
+      notif("  - nbr of partially documented functions : " + str(len(self.partialDocFunc)))
+      notif("\n    + ".join([""] + self.partialDocFunc))
+      notif()
+      notif("  - nbr of undocumented functions : " + str(len(self.undocFunc)))
+      notif("\n    + ".join([""] + self.undocFunc))
 
     return len(self.undocClass) + len(self.partialDocClass) + \
            len(self.undocMeth) + len(self.partialDocMeth) + \
@@ -199,4 +199,4 @@ def computeNbrError(showFunct):
 if __name__ == "__main__":
   # execute only if run as a script
   parser = PyAgrumDocCoverage(verbose=True)
-  print(f"\nNbr of documentation errors: {parser.checkMissingDocs()}")
+  notif(f"\nNbr of documentation errors: {parser.checkMissingDocs()}")

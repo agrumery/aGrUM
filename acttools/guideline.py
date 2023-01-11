@@ -26,6 +26,13 @@ from .utils import trace, notif, critic, warn, error, recglob, srcAgrum, notif_o
 from .configuration import cfg
 
 from .missingDocs import computeNbrError
+from .checkDependencies import check_gum_dependencies
+
+
+def _aff_errors(nb: int, typ: str):
+  if nb > 0:
+    error(f"{nb} {typ} error{'s' if nb > 1 else ''}{' '*40}") # spaces to remove others possible characters
+  return nb
 
 
 def guideline(current, modif=False):
@@ -36,14 +43,16 @@ def guideline(current, modif=False):
 
   nbrError = 0
 
-  notif("  (1) [*.cpp] file for every [*.h] file ")
-  nbrError += _checkCppFileExists(current, modif)
-  notif("  (2) check for GPL license")
-  nbrError += _checkForLGPLlicense(current, modif)
-  notif("  (3) check for missing documentation in pyAgrum")
-  nbrError += _checkForMissingDocs(modif)
-  notif("  (4) check for format")
-  nbrError += _checkForFormat(current, modif)
+  notif("  [(1) }*.cpp[ file for every ]*.h[ file]")
+  nbrError += _aff_errors(_checkCppFileExists(current, modif),"missing cppfile")
+  notif("  [(2) check for ]LGPL[ license]")
+  nbrError += _aff_errors(_checkForLGPLlicense(current, modif),"missing LGPL licence")
+  notif("  [(3) check for missing documentation in pyAgrum]")
+  nbrError += _aff_errors(_checkForMissingDocs(modif),"missing documentation")
+  notif("  [(5) check for format]")
+  #nbrError += _aff_errors(_checkForFormat(current, modif),"format")
+  notif("  [(4) check for deps]")
+  nbrError += _aff_errors(check_gum_dependencies(graph=current['build_graph']),"redundant dependency")
 
   return nbrError
 
@@ -112,7 +121,7 @@ def _checkForLGPLlicense(current, modif):
       if modif:
         __addLGPLatTop(agrumfile)
         notif(
-            "    [" + agrumfile + "] has no LGPL copyright in its first lines : [changed]")
+          "    [" + agrumfile + "] has no LGPL copyright in its first lines : [changed]")
       else:
         notif("    [" + agrumfile + "] has no LGPL copyright in its first lines")
 
@@ -154,19 +163,13 @@ def _checkCppFileExists(current, modif):
 
 
 def _checkForMissingDocs(modif):
-  nbrError = computeNbrError(modif)
-  if (nbrError > 0):
-    if (nbrError == 1):
-      error(str(nbrError) + " documentation error")
-    else:
-      error(str(nbrError) + " documentation errors")
-  return nbrError
+  return computeNbrError(modif)
 
 
 _template_license = """
 /**
  *
- *  Copyright 2005-2021 Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ *  Copyright 2005-2023 Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
  *   {prenom.nom}_at_lip6.fr
  *
  *  This library is free software: you can redistribute it and/or modify

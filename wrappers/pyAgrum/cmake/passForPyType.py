@@ -119,6 +119,7 @@ def process_filters(src_filename: str, target_filename: str, debugmode: bool):
     ("gum::DAG", '"pyAgrum.DAG"'),
     ("gum::UndiGraph", '"pyAgrum.UndiGraph"'),
     ("gum::MixedGraph", '"pyAgrum.MixedGraph"'),
+    ("gum::PDAG", '"pyAgrum.PDAG"'),
     ("gum::JoinTree", '"pyAgrum.CliqueGraph"'),
     ("gum::IBayesNet< double >", '"pyAgrum.IBayesNet"'),
     ("gum::IMarkovNet< double >", '"pyAgrum.IMarkovNet"'),

@@ -68,7 +68,7 @@ def notif_oneline(s, pref=None):
         end="                                       \r")
 
 
-def notif(s, pref=None):
+def notif(s="", pref=None):
   if pref is None:
     pref = cfg.prefixe_line
 
@@ -80,14 +80,14 @@ def warn(s, pref=None):
     pref = cfg.prefixe_line
 
   if cfg.verbosity:
-    print(pref + colFormat("** act Warning : " + s, cfg.C_WARNING) + cfg.C_END)
+    print(pref + colFormat("** act Warning      : " + s, cfg.C_WARNING) + cfg.C_END)
 
 
 def error(s, pref=None):
   if pref is None:
     pref = cfg.prefixe_line
 
-  print(pref + colFormat("** act Error : " + s, cfg.C_ERROR) + cfg.C_END)
+  print(pref + colFormat("** act Error        : " + s, cfg.C_ERROR) + cfg.C_END)
 
 
 def critic(s, pref=None, rc=1):
