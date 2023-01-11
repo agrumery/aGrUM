@@ -24,22 +24,22 @@ from pathlib import Path
 import re
 from typing import Dict, List, Set, Optional
 
-from .utils import warn,error,notif
+from .utils import warn, error, notif, notif_oneline
 
 
-def _header_filter(split_filename: str) -> bool:
+def _header_filter(split_filename: List[str]) -> bool:
   filename = split_filename[-1]
-  if len(filename) > 5:
-    if filename[-6:] == "_tpl.h":
-      return False
-    if filename[-6:] == "_inl.h":
-      return False
-
   if filename == "agrum.h":
     return False
 
   if filename == "config.h":
     return False
+
+  if len(filename) > 5:
+    if filename[-6:] == "_tpl.h":
+      return False
+    if filename[-6:] == "_inl.h":
+      return False
 
   return True
 
@@ -53,8 +53,7 @@ def _gum_scan(file: Path) -> List[str]:
       m = patt.match(line)
       if m:
         filename = m.group(1)
-        parts = filename.split("/")
-        if _header_filter(parts):
+        if _header_filter(filename.split("/")):
           s.append(filename)
 
   return s
@@ -64,6 +63,11 @@ def _get_dependencies() -> Dict[str, List[str]]:
   deps = {}
   p = Path('src/agrum')
   for file in p.glob('**/*.h'):
+    if _header_filter(file.parts):
+      key = "/".join(file.parts[2:])
+      deps[key] = _gum_scan(file)
+
+  for file in p.glob('**/*.cpp'):
     if _header_filter(file.parts):
       key = "/".join(file.parts[2:])
       deps[key] = _gum_scan(file)
@@ -134,7 +138,7 @@ def draw_gum_dependencies(deps: Dict[str, List[str]]):
       label = name
     if th is None:
       th = name
-    
+
     nod = pdp.Node(name)
 
     nod.set("fontname", "Arial")
@@ -197,13 +201,38 @@ def draw_gum_dependencies(deps: Dict[str, List[str]]):
   for k in deps.keys():
     for l in deps[k]:
       deps_graph.add_edge(pdp.Edge(l, k))
-  
+
   notif("    - drawing in pdf (please be patient...)")
   deps_graph.write_pdf("agrum-map.pdf", prog="fdp")
 
 
-def check_gum_dependencies(graph=True):
+def remove_redundant_dependencies(target, includes):
+  patt = re.compile(r"^#[\s]*include <agrum/([^>]*)>")
+
+  to_keep = set(includes)
+
+  res = ""
+  with open(f"./src/agrum/{target}", "r") as f:
+    for line in f.readlines():
+      keep_line = True
+      m = patt.match(line)
+      if m:
+        filename = m.group(1)
+        if not _header_filter(filename.split("/")):
+          continue
+
+        if filename not in to_keep:
+          keep_line = False
+      if keep_line:
+        res += line
+
+  with open(f"./src/agrum/{target}", "w") as f:
+    print(res, file=f)
+
+
+def check_gum_dependencies(graph=True, correction=False):
   deps = _get_dependencies()
+  nb_non_opt = {k: len(v) for k, v in deps.items()}
 
   nb_arcs = sum([len(c) for c in deps.values()])
 
@@ -222,5 +251,12 @@ def check_gum_dependencies(graph=True):
 
   nb_opt_arcs = sum([len(c) for c in deps.values()])
   notif(f"  + Nbr of dependencies optimized : {nb_opt_arcs}")
+
+  if correction:
+    notif("Correction in progress")
+    for k in deps.keys():
+      if nb_non_opt[k] != len(deps[k]):  # if some include have to be removed
+        notif_oneline(k)
+        remove_redundant_dependencies(k, deps[k])
 
   return nb_arcs - nb_opt_arcs
