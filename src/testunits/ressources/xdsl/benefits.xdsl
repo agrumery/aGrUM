@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This network was created in GeNIe Academic, which can be used for academic teaching and research purposes only -->
+<smile version="1.0" id="Network3" numsamples="10000" discsamples="10000">
+	<nodes>
+		<cpt id="Business_planning">
+			<state id="LOW" />
+			<state id="HIGH" />
+			<probabilities>0.554 0.446</probabilities>
+		</cpt>
+		<cpt id="Org_arrangements">
+			<state id="LOW" />
+			<state id="HIGH" />
+			<parents>Business_planning</parents>
+			<probabilities>0.6909999999999999 0.3090000000000001 0.426 0.5740000000000001</probabilities>
+		</cpt>
+		<cpt id="IT_management">
+			<state id="LOW" />
+			<state id="HIGH" />
+			<parents>Business_planning</parents>
+			<probabilities>0.737 0.263 0.44 0.5600000000000001</probabilities>
+		</cpt>
+		<cpt id="Function_management">
+			<state id="LOW" />
+			<state id="HIGH" />
+			<parents>Business_planning</parents>
+			<probabilities>0.907 0.09299999999999997 0.263 0.737</probabilities>
+		</cpt>
+		<cpt id="Maintenance">
+			<state id="LOW" />
+			<state id="HIGH" />
+			<parents>Org_arrangements IT_management</parents>
+			<probabilities>0.862 0.138 0.546 0.454 0.804 0.196 0.261 0.739</probabilities>
+		</cpt>
+		<cpt id="User_interaction">
+			<state id="LOW" />
+			<state id="HIGH" />
+			<parents>Org_arrangements IT_management</parents>
+			<probabilities>0.759 0.241 0.454 0.546 0.492 0.508 0.177 0.823</probabilities>
+		</cpt>
+		<cpt id="Standards_integration">
+			<state id="LOW" />
+			<state id="HIGH" />
+			<parents>Org_arrangements Business_planning</parents>
+			<probabilities>0.731 0.269 0.399 0.601 0.525 0.475 0.279 0.721</probabilities>
+		</cpt>
+		<cpt id="Application_analysis">
+			<state id="LOW" />
+			<state id="HIGH" />
+			<parents>Org_arrangements User_interaction</parents>
+			<probabilities>0.739 0.261 0.508 0.492 0.466 0.534 0.259 0.741</probabilities>
+		</cpt>
+		<cpt id="Application_complexity">
+			<state id="LOW" />
+			<state id="HIGH" />
+			<parents>Application_analysis</parents>
+			<probabilities>0.676 0.324 0.546 0.454</probabilities>
+		</cpt>
+		<cpt id="Vendor_support">
+			<state id="LOW" />
+			<state id="HIGH" />
+			<parents>Standards_integration</parents>
+			<probabilities>0.628 0.372 0.421 0.579</probabilities>
+		</cpt>
+		<cpt id="Project_management">
+			<state id="LOW" />
+			<state id="HIGH" />
+			<parents>Vendor_support Business_planning Application_complexity Application_analysis</parents>
+			<probabilities>0.996 0.004000000000000004 0.59 0.41 0.724 0.276 0.597 0.403 0.837 0.163 0.336 0.6639999999999999 0.439 0.5609999999999999 0.371 0.629 0.791 0.209 0.422 0.5780000000000001 0.694 0.306 0.529 0.471 0.391 0.609 0.264 0.736 0.5 0.5 0.231 0.769</probabilities>
+		</cpt>
+		<cpt id="Reengineering_iintention">
+			<state id="LOW" />
+			<state id="HIGH" />
+			<parents>Org_arrangements Application_analysis</parents>
+			<probabilities>0.745 0.255 0.516 0.484 0.489 0.511 0.325 0.675</probabilities>
+		</cpt>
+		<cpt id="Application_suitability">
+			<state id="LOW" />
+			<state id="HIGH" />
+			<parents>Maintenance Reengineering_iintention</parents>
+			<probabilities>0.729 0.271 0.57 0.43 0.365 0.635 0.162 0.838</probabilities>
+		</cpt>
+		<cpt id="Benefits">
+			<state id="LOW" />
+			<state id="HIGH" />
+			<parents>Project_management Application_suitability Reengineering_iintention</parents>
+			<probabilities>0.8110000000000001 0.1889999999999999 0.57 0.43 0.542 0.458 0.336 0.6639999999999999 0.715 0.285 0.5 0.5 0.605 0.395 0.168 0.832</probabilities>
+		</cpt>
+	</nodes>
+	<extensions>
+		<genie version="1.0" app="GeNIe 3.0.6518.0 ACADEMIC" name="Network3">
+			<node id="Business_planning">
+				<name>Business planning</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>522 39 621 100</position>
+				<barchart active="true" />
+			</node>
+			<node id="Org_arrangements">
+				<name>Org arrangements</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>492 133 591 194</position>
+				<barchart active="true" />
+			</node>
+			<node id="IT_management">
+				<name>IT management</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>333 138 431 196</position>
+				<barchart active="true" />
+			</node>
+			<node id="Function_management">
+				<name>Function management</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>714 142 799 195</position>
+				<barchart active="true" />
+			</node>
+			<node id="Maintenance">
+				<name>Maintenance</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>178 254 262 306</position>
+				<barchart active="true" />
+			</node>
+			<node id="User_interaction">
+				<name>User interaction</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>321 258 409 313</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="Standards_integration">
+				<name>Standards integration</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>567 222 666 281</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="Application_analysis">
+				<name>Application analysis</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>496 299 586 362</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="Application_complexity">
+				<name>Application complexity</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>491 412 582 470</position>
+				<barchart active="true" />
+			</node>
+			<node id="Project_management">
+				<name>Project management</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>767 406 866 469</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="Reengineering_iintention">
+				<name>Reengineering iintentopn</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>337 369 428 425</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="Application_suitability">
+				<name>Application suitability</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>264 476 359 543</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="Benefits">
+				<name>Benefits</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>449 516 527 574</position>
+				<barchart active="true" />
+			</node>
+			<node id="Vendor_support">
+				<name>Vendor support</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>740 307 828 362</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+		</genie>
+	</extensions>
+</smile>

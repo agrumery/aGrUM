@@ -49,7 +49,7 @@ namespace gum {
    * Reads the bayes net from the file referenced by filePath  given at the
    * creation
    * of class
-   * @return Returns the number of error during the parsing (0 if none).
+   * @return Returns the number of errors during the parsing (0 if none).
    */
   template < typename GUM_SCALAR >
   Size BIFXMLBNReader< GUM_SCALAR >::proceed() {
@@ -78,18 +78,18 @@ namespace gum {
       ticpp::Element* networkElement = bifElement->FirstChildElement("NETWORK");
 
       // Finding id variables
-      status = "Network found. Now proceedind variables instanciation...";
+      status = "Network found. Now proceeding variables instantiation...";
       GUM_EMIT2(onProceed, 10, status);
 
       _parsingVariables_(networkElement);
 
       // Filling diagram
-      status = "All variables have been instancied. Now filling up diagram...";
+      status = "All variables have been instantiated. Now filling up diagram...";
       GUM_EMIT2(onProceed, 55, status);
 
       _fillingBN_(networkElement);
 
-      status = "Instanciation of network completed";
+      status = "Instantiation of network completed";
       GUM_EMIT2(onProceed, 100, status);
 
       return 0;
