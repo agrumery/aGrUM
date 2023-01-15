@@ -26,7 +26,7 @@
 #include <gumtest/testsuite_utils.h>
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/io/xdsl/XDSLBNReader.h>
+#include <agrum/BN/io/XDSL/XDSLBNReader.h>
 #include <agrum/tools/variables/labelizedVariable.h>
 
 // The graph used for the tests:
@@ -60,7 +60,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed())
 
       TS_ASSERT_EQUALS(net->propertyWithDefault("name", ""), "Network3")
-      
+
       if (net != nullptr) {
         TS_ASSERT(!net->empty())
         delete net;
