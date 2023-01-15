@@ -596,6 +596,25 @@ pyAgrum.FatalError
     If file is not valid
 "
 
+%feature("docstring") gum::BayesNet::loadXDSL
+"
+Load a XDSL file.
+
+Parameters
+----------
+name : str
+	the file's name
+l : list
+	list of functions to execute
+
+Raises
+------
+pyAgrum.IOError
+    If file not found
+pyAgrum.FatalError
+    If file is not valid
+"
+
 %feature("docstring") gum::BayesNet::loadNET
 "
 Load a NET file.
@@ -720,6 +739,19 @@ name : str
 	the file's name
 allowModificationWhenSaving: bool
         False by default.
+        if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
+"
+
+%feature("docstring") gum::BayesNet::saveXDSL
+"
+Save the BayesNet in a XDSL file.
+
+Parameters
+----------
+name : str
+	the file's name
+allowModificationWhenSaving: bool
+        (not used).
         if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
 "
 

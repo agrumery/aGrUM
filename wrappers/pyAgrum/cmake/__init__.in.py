@@ -160,7 +160,7 @@ def availableBNExts():
 
   :return: a string which lists all suffixes for supported BN file formats.
   """
-  return "bif|dsl|net|bifxml|o3prm|uai"
+  return "bif|dsl|net|bifxml|o3prm|uai|xdsl"
 
 
 def loadBN(filename, listeners=None, verbose=False, **opts):
@@ -223,6 +223,8 @@ def loadBN(filename, listeners=None, verbose=False, **opts):
     warns = bn.loadBIFXML(filename, listeners)
   elif extension == "DSL":
     warns = bn.loadDSL(filename, listeners)
+  elif extension == "XDSL":
+    warns = bn.loadXDSL(filename, listeners)
   elif extension == "NET":
     warns = bn.loadNET(filename, listeners)
   elif extension == "O3PRM":
@@ -264,6 +266,8 @@ def saveBN(bn, filename, allowModificationWhenSaving=None):
     bn.saveBIFXML(filename, allowModificationWhenSaving)
   elif extension == "DSL":
     bn.saveDSL(filename, allowModificationWhenSaving)
+  elif extension == "XDSL":
+    bn.saveXDSL(filename, allowModificationWhenSaving)
   elif extension == "NET":
     bn.saveNET(filename, allowModificationWhenSaving)
   elif extension == "UAI":
@@ -635,11 +639,12 @@ def randomBN(*, n: int = 5, names: List[str] = None, ratio_arc: float = 1.2, dom
   """
   nbr = n if names is None else len(names)
   gen = BNGenerator()
-  bn = gen.generate(n, int(n * ratio_arc), domain_size)
+  bn = gen.generate(nbr, int(nbr * ratio_arc), domain_size)
 
-  for i, n in enumerate(bn.topologicalOrder()):
+  for i, nod in enumerate(bn.topologicalOrder()):
     name = names[i] if names is not None else f"X{i}"
-    bn.changeVariableName(n, name)
+    bn.changeVariableName(nod, name)
+
   return bn
 
 

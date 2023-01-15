@@ -157,7 +157,7 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNet);
 IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
 
 %extend gum::BayesNet {
-  std::string loadBIF(std::string name, PyObject *l=(PyObject*)0)
+  std::string loadBIF(std::string name, PyObject *l=nullptr)
   {
       std::stringstream stream;
       std::vector<PythonLoadListener> py_listener;
@@ -189,7 +189,7 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
       writer.write( name, *self );
   };
 
-  std::string loadDSL(std::string name, PyObject *l=(PyObject*)0)
+  std::string loadDSL(std::string name, PyObject *l=nullptr)
   {
       std::stringstream stream;
       std::vector<PythonLoadListener> py_listener;
@@ -212,6 +212,23 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
       } catch (gum::IOError& e) {
         throw(e);
       }
+      return "plop";
+  };
+
+  std::string loadXDSL(std::string name, PyObject *l=nullptr)
+  {
+      try {
+          gum::XDSLBNReader<GUM_SCALAR> reader(self,name);
+
+          int isOK=reader.proceed();// for BIFXML, proceed() returns 0 or 1
+          if (isOK==1) {
+              GUM_ERROR(gum::FatalError,"Errors found in XML file")
+          } else {
+              return "";
+          }
+      } catch (gum::IOError& e) {
+        throw(e);
+      }
       return "";
   };
 
@@ -221,7 +238,13 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
     writer.write( name, *self );
   };
 
-  std::string loadNET(std::string name, PyObject *l=(PyObject*)0)
+  void saveXDSL(std::string name,bool allowModificationWhenSaving=false) {
+    gum::XDSLBNWriter<GUM_SCALAR> writer;
+    writer.setAllowModification(allowModificationWhenSaving);
+    writer.write( name, *self );
+  };
+
+  std::string loadNET(std::string name, PyObject *l=nullptr)
   {
       std::stringstream stream;
       std::vector<PythonLoadListener> py_listener;
@@ -253,7 +276,7 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
     writer.write( name, *self );
   };
 
-  std::string loadO3PRM(std::string name, std::string system="",std::string classpath="",PyObject *l=(PyObject*)0)
+  std::string loadO3PRM(std::string name, std::string system="",std::string classpath="",PyObject *l=nullptr)
   {
       std::stringstream stream;
       std::vector<PythonLoadListener> py_listener;
@@ -281,7 +304,7 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
     writer.write( name, *self );
   };
 
-  std::string loadBIFXML(std::string name, PyObject *l=(PyObject*)0)
+  std::string loadBIFXML(std::string name, PyObject *l=nullptr)
   {
       std::stringstream stream;
       std::vector<PythonLoadListener> py_listener;
@@ -307,7 +330,7 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
     writer.write( name, *self );
   };
 
-  std::string loadUAI(std::string name, PyObject *l=(PyObject*)0)
+  std::string loadUAI(std::string name, PyObject *l=nullptr)
   {
       std::stringstream stream;
       std::vector<PythonLoadListener> py_listener;
