@@ -78,13 +78,13 @@ namespace gum {
 
     for (const auto& nod: bn.nodes()) {
       auto&       v       = bn.variable(nod);
-      std::string valid_n = _onlyValidCharsInName_(v.name());
+      std::string valid_n = _buildNameWithOnlyValidChars(v.name());
       if (v.name() != valid_n)
         GUM_ERROR(FatalError,
                   "The variable name '" << v.name() << "' contains invalid characters ('" << valid_n
                                         << "').")
       for (const auto& lab: v.labels()) {
-        std::string valid_l = _onlyValidCharsInName_(lab);
+        std::string valid_l = _buildNameWithOnlyValidChars(lab);
         if (lab != valid_l)
           GUM_ERROR(FatalError,
                     "The variable  '" << v << "' contains label '" << lab
@@ -97,11 +97,11 @@ namespace gum {
   std::string BNWriter< GUM_SCALAR >::_onlyValidCharsInName(const std::string& name) {
     if (!_allowModification_)
       return name;   // we do anything if the names will be modified when saved ...
-    return _onlyValidCharsInName_(name);
+    return _buildNameWithOnlyValidChars(name);
   }
 
   template < typename GUM_SCALAR >
-  std::string BNWriter< GUM_SCALAR >::_onlyValidCharsInName_(const std::string& name) {
+  std::string BNWriter< GUM_SCALAR >::_buildNameWithOnlyValidChars(const std::string& name) {
     std::string pat = "[^_a-z0-9]+";
     std::regex  reg(pat, std::regex::icase);
     std::smatch sm;

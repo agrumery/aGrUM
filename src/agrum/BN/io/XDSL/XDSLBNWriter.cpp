@@ -19,14 +19,14 @@
 
 
 /** @file
-* @brief Outlined implementation of XDSLBNReader
+* @brief Outlined implementation of XDSKBNReader
 *
 * @author Pierre-Henri WUILLEMIN(_at_LIP6) and Jean-Christophe MAGNAN and Christophe
 * GONZALES(_at_AMU)
 */
-#include <agrum/BN/io/XDSL/XDSLBNReader.h>
+#include <agrum/BN/io/XDSL/XDSLBNWriter.h>
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::XDSLBNReader< double >;
+template class gum::XDSLBNWriter< double >;
 #endif

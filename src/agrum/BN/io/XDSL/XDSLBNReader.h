@@ -1,6 +1,5 @@
 /**
-*
-*   Copyright (c) 2005-2022 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
+*   Copyright (c) 2005-2023 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
 *   info_at_agrum_dot_org
 *
 *  This library is free software: you can redistribute it and/or modify
@@ -132,7 +131,12 @@ namespace gum {
     *
     * @return the number of variables found in the file
     */
-   Size _parsingVariables_(ticpp::Element* parentNetwork);
+   Size _parsingCpts_(ticpp::Element* cptsNetwork);
+
+   /**
+    * Parsing xml element containing extentions on variables
+    */
+   void _parsingExtension_(ticpp::Element* nodesNetwork);
 
    /**
     * An handle to the bayes net in which will be load the content of the xml

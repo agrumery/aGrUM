@@ -134,11 +134,11 @@ namespace gum {
 
     void        _validCharInNamesCheck(const IBayesNet< GUM_SCALAR >& bn);
     std::string _onlyValidCharsInName(const std::string& name);
+    std::string _buildNameWithOnlyValidChars(const std::string& name);
 
     ///}
 
     private:
-    std::string _onlyValidCharsInName_(const std::string& name);
     bool        _allowModification_ = false;
   };
 

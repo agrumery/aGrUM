@@ -20,16 +20,16 @@
 
 /**
  * @file
- * @brief Definition file for BIF XML exportation class
+ * @brief Definition file for XDSL XML exportation class
  *
- * Writes an bayes net in XML files with BIF format
+ * Writes an bayes net in XML files with XDSL format
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) and Jean-Christophe MAGNAN and Christophe
  * GONZALES(_at_AMU)
  */
 
-#ifndef GUM_BIF_XML_BN_WRITER_H
-#define GUM_BIF_XML_BN_WRITER_H
+#ifndef GUM_XDSL_BN_WRITER_H
+#define GUM_XDSL_BN_WRITER_H
 
 #define TIXML_USE_TICPP
 
@@ -44,19 +44,16 @@
 namespace gum {
 
   /**
-   * @class BIFXMLBNWriter BIFXMLBNWriter.h
-   *<agrum/BN/io/BIFXML/BIFXMLBNWriter.h>
+   * @class XDSLBNWriter XDSLBNWriter.h
+   *<agrum/BN/io/XDSLXML/XDSLBNWriter.h>
    * @ingroup bn_io
-   * @brief Writes an bayes net in a XML file with BIF format
+   * @brief Writes an bayes net in a XML file with XDSL format
    *
-   * This class export a bayes net into an XML files, using BIF format
-   * See
-   *http://www-2.cs.cmu.edu/afs/cs/user/fgcozman/www/Research/InterchangeFormat/
-   * for information about this format.
+   * This class export a bayes net into an XML files, using XDSL format
    *
    */
   template < typename GUM_SCALAR >
-  class BIFXMLBNWriter: public BNWriter< GUM_SCALAR > {
+  class XDSLBNWriter: public BNWriter< GUM_SCALAR > {
     public:
     // ==========================================================================
     /// @name Constructor & destructor
@@ -66,17 +63,17 @@ namespace gum {
     /**
      * Default constructor.
      */
-    BIFXMLBNWriter();
+    XDSLBNWriter();
 
     /**
      * Destructor.
      */
-    ~BIFXMLBNWriter() override;
+    ~XDSLBNWriter() override;
 
-    BIFXMLBNWriter(const BIFXMLBNWriter&)                = default;
-    BIFXMLBNWriter(BIFXMLBNWriter&&) noexcept            = default;
-    BIFXMLBNWriter& operator=(const BIFXMLBNWriter&)     = default;
-    BIFXMLBNWriter& operator=(BIFXMLBNWriter&&) noexcept = default;
+    XDSLBNWriter(const XDSLBNWriter&)                = default;
+    XDSLBNWriter(XDSLBNWriter&&) noexcept            = default;
+    XDSLBNWriter& operator=(const XDSLBNWriter&)     = default;
+    XDSLBNWriter& operator=(XDSLBNWriter&&) noexcept = default;
 
     /// @}
     protected:
@@ -102,33 +99,39 @@ namespace gum {
 
     private:
     /**
-     * Returns the header of the BIF file.
+     * send to output the header of the XDSL file.
      */
-    std::string _heading_(const IBayesNet< GUM_SCALAR >& bn);
+    void _heading_(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn);
 
     /**
-     * Returns the end of the BIF file.
+     * send to output the end of the XDSL file.
      */
-    std::string _documentend_();
+    void _documentEnd_(std::ostream& output);
+
+    void _headingExtension_(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn);
+    void _endExtension_(std::ostream& output);
 
     /**
-     * Returns a bloc defining a variable in the BIF format.
+     * send to output a bloc defining a variable in the XDSL format.
      */
-    std::string _variableBloc_(const DiscreteVariable& var);
+    void _variableBloc_(std::ostream&                  output,
+                        const NodeId&                  varNodeId,
+                        const IBayesNet< GUM_SCALAR >& bn);
 
     /**
-     * Returns a bloc defining a variable's table (if she has) in the BIF
-     * format.
+     * send to output a bloc defining a variable's extensoion in the XDSL
      */
-    std::string _variableDefinition_(const NodeId& varNodeId, const IBayesNet< GUM_SCALAR >& bn);
+    void _variableExtension_(std::ostream&                  output,
+                             const NodeId&                  varNodeId,
+                             const IBayesNet< GUM_SCALAR >& bn);
   };
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class BIFXMLBNWriter< double >;
+  extern template class XDSLBNWriter< double >;
 #endif
 
 } /* namespace gum */
 
-#include <agrum/BN/io/BIFXML/BIFXMLBNWriter_tpl.h>
-#endif   // GUM_BIF_XML_BN_WRITER_H
+#include <agrum/BN/io/XDSL/XDSLBNWriter_tpl.h>
+#endif   // GUM_XDSL_BN_WRITER_H
