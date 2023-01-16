@@ -84,7 +84,7 @@ namespace gum {
       status = "Network found. Now proceeding variables instantiation...";
       GUM_EMIT2(onProceed, 10, status);
 
-      Size nbVar = _parsingCpts_(nodesElement);
+      _parsingCpts_(nodesElement);
 
       // Filling diagram
       status = "All variables have been instantiated. Now filling up diagram...";
