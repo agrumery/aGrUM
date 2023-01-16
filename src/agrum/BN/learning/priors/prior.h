@@ -31,7 +31,6 @@
 #include <vector>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/bijection.h>
 #include <agrum/tools/database/databaseTable.h>
 #include <agrum/tools/stattests/idCondSet.h>
 

@@ -33,12 +33,9 @@
 // =========================================================================
 #include <thread>
 // =========================================================================
-#include <agrum/tools/core/argMaxSet.h>
 #include <agrum/tools/core/functors.h>
 #include <agrum/tools/core/inline.h>
-#include <agrum/tools/core/smallobjectallocator/smallObjectAllocator.h>
 // =========================================================================
-#include <agrum/tools/multidim/implementations/multiDimFunctionGraph.h>
 #include <agrum/tools/multidim/utils/FunctionGraphUtilities/terminalNodePolicies/SetTerminalNodePolicy.h>
 // =========================================================================
 #include <agrum/FMDP/fmdp.h>

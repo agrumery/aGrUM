@@ -31,12 +31,7 @@
 #include <vector>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/priorityQueue.h>
-#include <agrum/tools/core/sequence.h>
-#include <agrum/tools/core/set.h>
-#include <agrum/tools/graphs/diGraph.h>
 #include <agrum/BN/learning/scores_and_tests/score.h>
-#include <agrum/BN/learning/structureUtils/graphChange.h>
 
 namespace gum {
 

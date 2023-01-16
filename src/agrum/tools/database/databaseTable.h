@@ -40,12 +40,6 @@
 
 #include <agrum/agrum.h>
 #include <agrum/tools/core/math/math_utils.h>
-#include <agrum/tools/core/set.h>
-#include <agrum/tools/core/threads.h>
-#include <agrum/tools/core/threadExecutor.h>
-#include <agrum/tools/database/DBCell.h>
-#include <agrum/tools/database/DBRow.h>
-#include <agrum/tools/database/DBTranslatedValue.h>
 #include <agrum/tools/database/IDatabaseTable.h>
 #include <agrum/tools/database/DBTranslatorSet.h>
 

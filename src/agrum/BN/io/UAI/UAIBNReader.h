@@ -32,7 +32,6 @@
 #ifndef UAIBNREADER_H
 #define UAIBNREADER_H
 
-#include <agrum/BN/BayesNet.h>
 #include <agrum/BN/BayesNetFactory.h>
 #include <agrum/BN/io/BNReader.h>
 #include <agrum/agrum.h>

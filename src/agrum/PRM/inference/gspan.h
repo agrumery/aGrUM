@@ -39,9 +39,7 @@
 
 #include <agrum/BN/inference/variableElimination.h>
 
-#include <agrum/PRM/PRM.h>
 #include <agrum/PRM/gspan/DFSTree.h>
-#include <agrum/PRM/gspan/interfaceGraph.h>
 
 namespace gum {
   namespace prm {

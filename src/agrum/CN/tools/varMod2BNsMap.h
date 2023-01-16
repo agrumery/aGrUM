@@ -33,8 +33,6 @@
 
 //#include <tr1/functional>
 
-#include <agrum/tools/core/hashTable.h>
-#include <agrum/tools/core/math/pow.h>
 
 #include <agrum/CN/credalNet.h>
 

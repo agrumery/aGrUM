@@ -33,8 +33,6 @@
 #include <string>
 
 #include <agrum/PRM/PRM.h>
-#include <agrum/tools/core/hashTable.h>
-#include <agrum/tools/graphs/undiGraph.h>
 
 namespace gum {
   namespace prm {

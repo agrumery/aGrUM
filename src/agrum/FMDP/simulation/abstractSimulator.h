@@ -28,7 +28,6 @@
 #ifndef GUM_ABSTRACT_SIMULATOR_H
 #define GUM_ABSTRACT_SIMULATOR_H
 //======================================================================
-#include <agrum/tools/multidim/instantiation.h>
 //======================================================================
 #include <agrum/FMDP/fmdp.h>
 //======================================================================

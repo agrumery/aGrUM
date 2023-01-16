@@ -33,7 +33,6 @@
 #ifndef GUM_PARTIAL_ORDERED_ELIMINATION_SEQUENCE_STRATEGY_H
 #define GUM_PARTIAL_ORDERED_ELIMINATION_SEQUENCE_STRATEGY_H
 
-#include <agrum/tools/core/list.h>
 #include <agrum/tools/graphs/algorithms/triangulations/eliminationStrategies/eliminationSequenceStrategy.h>
 
 namespace gum {

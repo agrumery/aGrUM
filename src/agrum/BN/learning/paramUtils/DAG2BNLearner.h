@@ -35,8 +35,6 @@
 #include <agrum/agrum.h>
 #include <agrum/tools/core/approximations/approximationScheme.h>
 #include <agrum/tools/core/approximations/approximationSchemeListener.h>
-#include <agrum/BN/BayesNet.h>
-#include <agrum/tools/graphs/DAG.h>
 #include <agrum/BN/learning/paramUtils/paramEstimator.h>
 
 namespace gum {

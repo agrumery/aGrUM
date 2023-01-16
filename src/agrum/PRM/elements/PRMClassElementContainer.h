@@ -29,15 +29,9 @@
 #ifndef GUM_CLASS_ELEMENT_CONTAINER_H
 #define GUM_CLASS_ELEMENT_CONTAINER_H
 
-#include <agrum/tools/core/hashTable.h>
-#include <agrum/tools/core/set.h>
-
-#include <agrum/tools/graphs/DAG.h>
-#include <agrum/tools/graphs/graphElements.h>
 
 #include <agrum/PRM/utils_prm.h>
 
-#include <agrum/PRM/elements/PRMObject.h>
 
 namespace gum {
   namespace prm {

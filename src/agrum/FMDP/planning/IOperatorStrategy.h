@@ -32,11 +32,9 @@
 #ifndef GUM_SDYNA_OPERATOR_STRATEGY_H
 #define GUM_SDYNA_OPERATOR_STRATEGY_H
 // =========================================================================
-#include <agrum/tools/core/types.h>
 // =========================================================================
 #include <agrum/FMDP/planning/actionSet.h>
 // =========================================================================
-#include <agrum/tools/variables/discreteVariable.h>
 // =========================================================================
 
 namespace gum {

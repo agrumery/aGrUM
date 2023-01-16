@@ -31,7 +31,6 @@
 #include <agrum/agrum.h>
 #include <agrum/tools/graphs/undiGraph.h>
 #include <agrum/BN/learning/constraints/structuralConstraint.h>
-#include <agrum/BN/learning/structureUtils/graphChange.h>
 
 namespace gum {
 

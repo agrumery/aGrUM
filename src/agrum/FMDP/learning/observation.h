@@ -32,7 +32,6 @@
 #ifndef GUM_OBSERVATION_H
 #define GUM_OBSERVATION_H
 // =========================================================================
-#include <agrum/tools/core/hashTable.h>
 #include <agrum/tools/core/smallobjectallocator/smallObjectAllocator.h>
 // =========================================================================
 #include <agrum/tools/variables/discreteVariable.h>

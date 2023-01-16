@@ -29,10 +29,8 @@
 #ifndef GUM_PARAMETER_H
 #define GUM_PARAMETER_H
 
-#include <agrum/tools/multidim/potential.h>
 
 #include <agrum/PRM/elements/PRMType.h>
-#include <agrum/PRM/elements/PRMClassElement.h>
 #include <agrum/PRM/elements/PRMAttribute.h>
 
 

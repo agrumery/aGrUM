@@ -34,11 +34,7 @@
 #include <algorithm>
 #include <vector>
 
-#include <agrum/BN/BayesNet.h>
 #include <agrum/agrum.h>
-#include <agrum/tools/core/bijection.h>
-#include <agrum/tools/core/sequence.h>
-#include <agrum/tools/graphs/DAG.h>
 
 #include <agrum/BN/learning/BNLearnUtils/IBNLearner.h>
 #include <agrum/BN/learning/priors/DirichletPriorFromBN.h>

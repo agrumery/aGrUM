@@ -34,7 +34,6 @@
 #include <string>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/core/math/gammaLog2.h>
 #include <agrum/BN/learning/scores_and_tests/score.h>
 #include <agrum/BN/learning/priors/noPrior.h>

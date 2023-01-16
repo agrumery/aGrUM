@@ -32,7 +32,6 @@
 #include <agrum/agrum.h>
 
 #include <agrum/tools/graphs/cliqueGraph.h>
-#include <agrum/tools/graphs/graphElements.h>
 
 namespace gum {
 

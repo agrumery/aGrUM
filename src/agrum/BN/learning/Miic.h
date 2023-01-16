@@ -42,12 +42,9 @@
 #include <string>
 #include <vector>
 
-#include <agrum/BN/BayesNet.h>
 #include <agrum/config.h>
-#include <agrum/tools/core/approximations/IApproximationSchemeConfiguration.h>
 #include <agrum/tools/core/approximations/approximationScheme.h>
 #include <agrum/tools/core/heap.h>
-#include <agrum/tools/graphs/DAG.h>
 #include <agrum/tools/graphs/mixedGraph.h>
 #include <agrum/tools/stattests/correctedMutualInformation.h>
 

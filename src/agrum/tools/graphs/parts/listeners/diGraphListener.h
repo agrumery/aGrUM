@@ -27,7 +27,6 @@
 #ifndef GUM_DIGRAPH_LISTENER_H
 #define GUM_DIGRAPH_LISTENER_H
 
-#include <agrum/tools/core/signal/listener.h>
 #include <agrum/tools/graphs/diGraph.h>
 
 namespace gum {

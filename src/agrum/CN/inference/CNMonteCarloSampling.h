@@ -33,7 +33,6 @@
 #include <agrum/CN/inference/multipleInferenceEngine.h>
 #include <limits>
 
-#include <agrum/BN/inference/lazyPropagation.h>
 
 namespace gum {
   namespace credal {

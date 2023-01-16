@@ -30,7 +30,6 @@
 #define GUM_KL_H
 
 #include <agrum/BN/IBayesNet.h>
-#include <agrum/tools/core/sequence.h>
 
 namespace gum {
 

@@ -22,7 +22,6 @@
 #ifndef NETREADER_H
 #define NETREADER_H
 
-#include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BNReader.h>
 #include <agrum/agrum.h>
 #include <iostream>

@@ -32,7 +32,6 @@
 #include <agrum/tools/multidim/instantiation.h>
 
 #include <agrum/tools/graphs/DAG.h>
-#include <agrum/tools/graphs/undiGraph.h>
 
 #include <agrum/tools/graphicalModels/variableNodeMap.h>
 

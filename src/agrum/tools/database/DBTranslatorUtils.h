@@ -28,7 +28,6 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/database/DBTranslator.h>
 #include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/tools/database/DBTranslator4DiscretizedVariable.h>
 #include <agrum/tools/database/DBTranslator4IntegerVariable.h>

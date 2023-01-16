@@ -34,12 +34,8 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/multidim/implementations/multiDimArray.h>
-#include <agrum/tools/multidim/implementations/multiDimImplementation.h>
-#include <agrum/tools/variables/discreteVariable.h>
 #include <agrum/tools/variables/labelizedVariable.h>
 
-#include <agrum/PRM/elements/PRMObject.h>
 #include <agrum/PRM/utils_prm.h>
 
 namespace gum {

@@ -28,8 +28,6 @@
 #define GUM_LEARNING_DB_TRANSLATOR_4_RANGE_VARIABLE_H
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/hashTable.h>
-#include <agrum/tools/core/set.h>
 #include <agrum/tools/database/DBTranslator.h>
 #include <agrum/tools/variables/rangeVariable.h>
 

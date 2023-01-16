@@ -31,18 +31,8 @@
 
 #include <string>
 
-#include <agrum/tools/core/hashTable.h>
-#include <agrum/tools/core/sequence.h>
 
-#include <agrum/PRM/elements/PRMAggregate.h>
-#include <agrum/PRM/elements/PRMAttribute.h>
-#include <agrum/PRM/elements/PRMClass.h>
 #include <agrum/PRM/elements/PRMFuncAttribute.h>
-#include <agrum/PRM/elements/PRMInstance.h>
-#include <agrum/PRM/elements/PRMObject.h>
-#include <agrum/PRM/elements/PRMReferenceSlot.h>
-#include <agrum/PRM/elements/PRMSlotChain.h>
-#include <agrum/PRM/elements/PRMType.h>
 
 #include <agrum/PRM/elements/PRMSystem.h>
 

@@ -31,7 +31,6 @@
 #define GUM_MULTI_DIM_FUNCTION_GRAPH_EXACT_TERMINAL_NODE_POLICY_H
 
 #include <agrum/tools/core/bijection.h>
-#include <agrum/tools/graphs/parts/nodeGraphPart.h>
 #include <agrum/tools/multidim/utils/FunctionGraphUtilities/terminalNodePolicies/ITerminalNodePolicy.h>
 
 namespace gum {

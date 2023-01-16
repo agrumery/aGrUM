@@ -31,20 +31,7 @@
 
 #include <string>
 
-#include <agrum/tools/core/timer.h>
 
-#include <agrum/BN/inference/variableElimination.h>
-
-#include <agrum/tools/multidim/ICIModels/multiDimNoisyORCompound.h>
-#include <agrum/tools/multidim/ICIModels/multiDimNoisyORNet.h>
-#include <agrum/tools/multidim/implementations/multiDimSparse.h>
-#include <agrum/tools/multidim/potential.h>
-#include <agrum/tools/multidim/utils/operators/multiDimCombinationDefault.h>
-#include <agrum/tools/multidim/utils/operators/projections4MultiDim.h>
-
-#include <agrum/tools/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
-
-#include <agrum/PRM/PRM.h>
 #include <agrum/PRM/inference/PRMInference.h>
 #include <agrum/PRM/inference/gspan.h>
 

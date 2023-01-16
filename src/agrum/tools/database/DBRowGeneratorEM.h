@@ -30,9 +30,6 @@
 #include <vector>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/bijection.h>
-#include <agrum/BN/BayesNet.h>
-#include <agrum/BN/inference/variableElimination.h>
 #include <agrum/tools/database/DBRowGeneratorWithBN.h>
 
 namespace gum {

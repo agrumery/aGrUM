@@ -29,9 +29,6 @@
 #ifndef AGRUM_DECISIONPOTENTIAL_H
 #define AGRUM_DECISIONPOTENTIAL_H
 
-#include <agrum/tools/core/set.h>
-#include <agrum/tools/variables/discreteVariable.h>
-#include <agrum/tools/multidim/instantiation.h>
 #include <agrum/tools/multidim/potential.h>
 
 namespace gum {

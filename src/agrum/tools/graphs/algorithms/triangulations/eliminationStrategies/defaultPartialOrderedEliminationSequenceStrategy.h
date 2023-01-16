@@ -45,10 +45,8 @@
 #ifndef GUM_DEFAULT_PARTIAL_ORDERED_ELIMINATION_SEQUENCE_STRATEGY_H
 #define GUM_DEFAULT_PARTIAL_ORDERED_ELIMINATION_SEQUENCE_STRATEGY_H
 
-#include <agrum/tools/core/priorityQueue.h>
 #include <agrum/tools/graphs/algorithms/simplicialSet.h>
 #include <agrum/tools/graphs/algorithms/triangulations/eliminationStrategies/partialOrderedEliminationSequenceStrategy.h>
-#include <agrum/tools/graphs/graphElements.h>
 
 namespace gum {
 

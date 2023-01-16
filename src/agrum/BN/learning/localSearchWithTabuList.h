@@ -39,7 +39,6 @@
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/tools/core/approximations/approximationScheme.h>
-#include <agrum/tools/graphs/DAG.h>
 
 namespace gum {
 

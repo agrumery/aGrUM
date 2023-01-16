@@ -36,9 +36,6 @@
 #include <agrum/agrum.h>
 
 #include <agrum/tools/core/bijection.h>
-#include <agrum/tools/core/hashTable.h>
-#include <agrum/tools/core/list.h>
-#include <agrum/tools/core/set.h>
 #include <agrum/tools/graphs/DAG.h>
 
 #include <agrum/tools/graphicalModels/inference/scheduler/scheduleBinaryCombination.h>

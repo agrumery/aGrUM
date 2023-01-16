@@ -33,11 +33,7 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/graphs/graphElements.h>
 
-#include <agrum/tools/multidim/potential.h>
-
-#include <agrum/PRM/elements/PRMObject.h>
 #include <agrum/PRM/utils_prm.h>
 
 namespace gum {

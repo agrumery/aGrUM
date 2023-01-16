@@ -30,10 +30,8 @@
 #define GUM_UGMODEL_H
 
 #include <agrum/agrum.h>
-#include <agrum/tools/multidim/instantiation.h>
 #include <agrum/tools/graphicalModels/graphicalModel.h>
 
-#include <agrum/tools/graphs/undiGraph.h>
 
 namespace gum {
 

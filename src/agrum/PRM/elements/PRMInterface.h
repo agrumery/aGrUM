@@ -34,12 +34,7 @@
 #include <string>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/sequence.h>
-#include <agrum/tools/core/set.h>
 
-#include <agrum/PRM/elements/PRMClassElement.h>
-#include <agrum/PRM/elements/PRMClassElementContainer.h>
-#include <agrum/PRM/elements/PRMAttribute.h>
 #include <agrum/PRM/elements/PRMReferenceSlot.h>
 #include <agrum/PRM/elements/PRMScalarAttribute.h>
 

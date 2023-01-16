@@ -34,7 +34,6 @@
 
 #include <agrum/tools/graphs/graphElements.h>
 
-#include <agrum/tools/core/signal/listener.h>
 #include <agrum/tools/core/signal/signalers.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

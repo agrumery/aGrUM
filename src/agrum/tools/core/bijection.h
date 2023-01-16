@@ -39,7 +39,6 @@
 #include <type_traits>
 
 #include <agrum/tools/core/hashTable.h>
-#include <agrum/tools/core/staticInitializer.h>
 
 namespace gum {
 

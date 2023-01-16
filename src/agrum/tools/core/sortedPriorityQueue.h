@@ -40,7 +40,6 @@
 #include <cstddef>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/hashTable.h>
 #include <agrum/tools/core/sharedAVLTree.h>
 #include <agrum/tools/core/priorityQueue.h>
 

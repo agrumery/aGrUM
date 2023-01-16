@@ -30,10 +30,6 @@
 #include <utility>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/math/math_utils.h>
-#include <agrum/tools/core/threads.h>
-#include <agrum/tools/core/threadExecutor.h>
-#include <agrum/tools/core/IThreadNumberManager.h>
 
 #include <agrum/tools/stattests/recordCounter.h>
 #include <agrum/BN/learning/scores_and_tests/scoringCache.h>

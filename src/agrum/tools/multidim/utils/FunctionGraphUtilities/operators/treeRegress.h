@@ -34,7 +34,6 @@
 #include <functional>
 
 #include <agrum/tools/multidim/implementations/multiDimFunctionGraph.h>
-#include <agrum/tools/multidim/utils/FunctionGraphUtilities/terminalNodePolicies/ExactTerminalNodePolicy.h>
 
 namespace gum {
 

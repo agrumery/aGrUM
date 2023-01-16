@@ -37,18 +37,13 @@
 #include <string>
 #include <vector>
 
-#include <agrum/PRM/PRM.h>
 #include <agrum/PRM/o3prm/O3ClassFactory.h>
 #include <agrum/PRM/o3prm/O3InterfaceFactory.h>
-#include <agrum/PRM/o3prm/O3NameSolver.h>
 #include <agrum/PRM/o3prm/O3SystemFactory.h>
 #include <agrum/PRM/o3prm/O3TypeFactory.h>
-#include <agrum/PRM/o3prm/O3prm.h>
 #include <agrum/PRM/o3prm/cocoR/Parser.h>
 #include <agrum/PRM/o3prm/cocoR/Scanner.h>
 #include <agrum/agrum.h>
-#include <agrum/tools/core/errorsContainer.h>
-#include <agrum/tools/core/utils_string.h>
 
 namespace gum {
   namespace prm {

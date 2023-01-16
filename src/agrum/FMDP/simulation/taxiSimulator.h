@@ -29,9 +29,7 @@
 #ifndef GUM_TAXI_SIMULATOR_H
 #define GUM_TAXI_SIMULATOR_H
 //======================================================================
-#include <agrum/tools/multidim/instantiation.h>
 //======================================================================
-#include <agrum/FMDP/fmdp.h>
 //======================================================================
 #include <agrum/FMDP/simulation/abstractSimulator.h>
 //======================================================================

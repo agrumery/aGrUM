@@ -32,12 +32,9 @@
 // =========================================================================
 #include <agrum/tools/core/multiPriorityQueue.h>
 // =========================================================================
-#include <agrum/tools/multidim/implementations/multiDimFunctionGraph.h>
 // =========================================================================
-#include <agrum/FMDP/learning/core/templateStrategy.h>
 #include <agrum/FMDP/learning/datastructure/incrementalGraphLearner.h>
 // =========================================================================
-#include <agrum/tools/variables/discreteVariable.h>
 // =========================================================================
 
 namespace gum {

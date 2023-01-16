@@ -43,7 +43,6 @@
 
 
 #include <agrum/agrum.h>
-#include <agrum/tools/database/DBCell.h>
 #include <agrum/tools/database/IDatabaseTable.h>
 
 namespace gum {

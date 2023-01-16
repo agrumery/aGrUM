@@ -30,9 +30,6 @@
 #include <string>
 #include <vector>
 
-#include <agrum/BN/BayesNet.h>
-#include <agrum/tools/core/sequence.h>
-#include <agrum/tools/graphs/DAG.h>
 #include <agrum/BN/learning/greedyHillClimbing.h>
 
 namespace gum {

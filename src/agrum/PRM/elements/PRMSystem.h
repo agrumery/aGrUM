@@ -32,19 +32,12 @@
 #include <utility>
 #include <string>
 
-#include <agrum/tools/core/hashTable.h>
-#include <agrum/tools/core/sequence.h>
-#include <agrum/tools/core/set.h>
-
-#include <agrum/tools/graphs/diGraph.h>
 
 #include <agrum/tools/variables/integerVariable.h>
 
 #include <agrum/BN/BayesNetFactory.h>
 
-#include <agrum/PRM/elements/PRMObject.h>
 #include <agrum/PRM/elements/PRMInstance.h>
-#include <agrum/PRM/elements/PRMClass.h>
 
 namespace gum {
   namespace prm {

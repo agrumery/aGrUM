@@ -31,12 +31,8 @@
 #define GUM_SAMPLING_INFERENCE_H
 
 #include <agrum/BN/BayesNetFragment.h>
-#include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/inference/tools/estimator.h>
 #include <agrum/BN/inference/tools/gibbsOperator.h>
-#include <agrum/BN/inference/tools/marginalTargetedInference.h>
-#include <agrum/tools/core/approximations/approximationScheme.h>
-#include <agrum/tools/multidim/instantiation.h>
 
 namespace gum {
   /**

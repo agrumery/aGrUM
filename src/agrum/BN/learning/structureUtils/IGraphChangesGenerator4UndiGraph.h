@@ -29,7 +29,6 @@
 #define GUM_LEARNING_IGRAPH_CHANGES_GENERATOR_4_UNDIGRAPH_H
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/set.h>
 #include <agrum/tools/graphs/undiGraph.h>
 #include <agrum/BN/learning/structureUtils/graphChange.h>
 

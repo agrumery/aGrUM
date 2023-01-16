@@ -30,7 +30,6 @@
 #ifndef UAI_MN_READER_H
 #define UAI_MN_READER_H
 
-#include <agrum/MN/MarkovNet.h>
 #include <agrum/MN/io/MNReader.h>
 #include <agrum/agrum.h>
 #include <iostream>

@@ -34,7 +34,6 @@
 #include <string>
 
 #include <agrum/CN/polytope/LrsWrapper.h>
-#include <agrum/tools/core/hashFunc.h>
 #include <agrum/tools/core/hashTable.h>
 #include <agrum/tools/core/utils_misc.h>
 

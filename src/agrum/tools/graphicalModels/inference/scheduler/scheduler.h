@@ -32,7 +32,6 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/core/threads.h>
 #include <agrum/tools/core/threadNumberManager.h>
 #include <agrum/tools/graphicalModels/inference/scheduler/schedule.h>
 

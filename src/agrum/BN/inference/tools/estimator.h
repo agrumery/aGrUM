@@ -28,9 +28,7 @@
 #ifndef GUM_ESTIMATOR_H
 #define GUM_ESTIMATOR_H
 
-#include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/inference/loopyBeliefPropagation.h>
-#include <agrum/tools/core/hashTable.h>
 #include <vector>
 
 namespace gum {

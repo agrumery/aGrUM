@@ -33,10 +33,8 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/core/hashTable.h>
 
 #include <agrum/MN/IMarkovNet.h>
-#include <agrum/tools/multidim/potential.h>
 
 #include <agrum/BN/BayesNet.h>
 

@@ -30,8 +30,6 @@
 #define GUM_MARKOVBLANKET_H
 
 #include <agrum/tools/graphicalModels/DAGmodel.h>
-#include <agrum/tools/graphs/diGraph.h>
-#include <agrum/tools/graphs/graphElements.h>
 
 namespace gum {
 

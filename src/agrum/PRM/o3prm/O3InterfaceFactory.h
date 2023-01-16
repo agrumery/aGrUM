@@ -30,13 +30,8 @@
 #include <memory>
 #include <string>
 
-#include <agrum/PRM/PRM.h>
 #include <agrum/PRM/PRMFactory.h>
 #include <agrum/PRM/o3prm/O3NameSolver.h>
-#include <agrum/PRM/o3prm/O3prm.h>
-#include <agrum/PRM/o3prm/errors.h>
-#include <agrum/tools/core/hashTable.h>
-#include <agrum/tools/core/set.h>
 
 #ifndef GUM_PRM_O3PRM_O3INTERFACE_FACTORY_H
 #  define GUM_PRM_O3PRM_O3INTERFACE_FACTORY_H

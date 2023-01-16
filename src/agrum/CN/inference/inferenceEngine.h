@@ -29,15 +29,9 @@
  */
 #include <map>
 
-#include <agrum/CN/polytope/LrsWrapper.h>
 #include <agrum/CN/tools/varMod2BNsMap.h>
 #include <agrum/tools/core/approximations/approximationScheme.h>
-#include <agrum/tools/core/exceptions.h>
-#include <agrum/tools/core/math/pow.h>
-#include <agrum/tools/core/math/rational.h>
 
-#include <agrum/tools/core/threads.h>
-#include <agrum/tools/core/threadExecutor.h>
 #include <agrum/tools/core/threadData.h>
 #include <agrum/tools/core/threadNumberManager.h>
 

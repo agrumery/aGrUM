@@ -1,21 +1,21 @@
 /**
-*   Copyright (c) 2005-2023 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
-*   info_at_agrum_dot_org
-*
-*  This library is free software: you can redistribute it and/or modify
-*  it under the terms of the GNU Lesser General Public License as published by
-*  the Free Software Foundation, either version 3 of the License, or
-*  (at your option) any later version.
-*
-*  This library is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU Lesser General Public License for more details.
-*
-*  You should have received a copy of the GNU Lesser General Public License
-*  along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*
-*/
+ *   Copyright (c) 2005-2023 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
+ *   info_at_agrum_dot_org
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public License
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 
 
 /**
@@ -78,81 +78,79 @@ GONZALES(_at_AMU)
 
 #include <agrum/BN/io/BNReader.h>
 #include <agrum/agrum.h>
-#include <agrum/tools/core/signal/signaler.h>
-#include <agrum/tools/core/signal/signaler2.h>
 #include <agrum/tools/external/tinyxml/ticpp/ticpp.h>
 #include <agrum/tools/variables/labelizedVariable.h>
 
 namespace gum {
 
- /**
-  * @class XDSLBNReader XDSLBNReader.h
-  *<agrum/BN/io/XDSL/XDSLBNReader.h>
-  * @ingroup bn_io
-  * @brief Read an bayes net from an XML file with BIF format.
-  *
-  * This class import an bayes net from an XML files using DSL format
-  * for information about this format.
-  *
-  */
- template < typename GUM_SCALAR >
- class XDSLBNReader: BNReader< GUM_SCALAR > {
-   public:
-   /**
-    * Constructor
-    * A reader is created to reading a defined file.
-    * Note that an BN as to be created before and given in parameter.
-    */
-   XDSLBNReader(BayesNet< GUM_SCALAR >* bn, const std::string& filePath);
+  /**
+   * @class XDSLBNReader XDSLBNReader.h
+   *<agrum/BN/io/XDSL/XDSLBNReader.h>
+   * @ingroup bn_io
+   * @brief Read an bayes net from an XML file with BIF format.
+   *
+   * This class import an bayes net from an XML files using DSL format
+   * for information about this format.
+   *
+   */
+  template < typename GUM_SCALAR >
+  class XDSLBNReader: BNReader< GUM_SCALAR > {
+    public:
+    /**
+     * Constructor
+     * A reader is created to reading a defined file.
+     * Note that an BN as to be created before and given in parameter.
+     */
+    XDSLBNReader(BayesNet< GUM_SCALAR >* bn, const std::string& filePath);
 
-   /**
-    * Default destructor.
-    */
-   ~XDSLBNReader();
+    /**
+     * Default destructor.
+     */
+    ~XDSLBNReader();
 
-   /**
-    * Reads the bayes net from the file referenced by filePath  given at the
-    * creation of class
-    * @return Returns 0 if no error, 1 if any
-    * @warning XMLBNReader can not give the number of errors.
-    */
-   Size proceed() final;
+    /**
+     * Reads the bayes net from the file referenced by filePath  given at the
+     * creation of class
+     * @return Returns 0 if no error, 1 if any
+     * @warning XMLBNReader can not give the number of errors.
+     */
+    Size proceed() final;
 
-   /**
-    * Signaler used to indicates how many percent of the Xml files have been
-    * parsed
-    * yet
-    */
-   typename gum::Signaler2< int, std::string > onProceed;
+    /**
+     * Signaler used to indicates how many percent of the Xml files have been
+     * parsed
+     * yet
+     */
+    typename gum::Signaler2< int, std::string > onProceed;
 
-   private:
-   /**
-    * Parsing xml element containing data on variables
-    *
-    * @return the number of variables found in the file
-    */
-   Size _parsingCpts_(ticpp::Element* cptsNetwork);
+    private:
+    /**
+     * Parsing xml element containing data on variables
+     *
+     * @return the number of variables found in the file
+     */
+    Size _parsingCpts_(ticpp::Element* cptsNetwork);
 
-   /**
-    * Parsing xml element containing extentions on variables
-    */
-   void _parsingExtension_(ticpp::Element* nodesNetwork);
+    /**
+     * Parsing xml element containing extentions on variables
+     */
+    void _parsingExtension_(ticpp::Element* nodesNetwork);
 
-   /**
-    * An handle to the bayes net in which will be load the content of the xml
-    * filePath
-    */
-   BayesNet< GUM_SCALAR >* _bn_;
+    /**
+     * An handle to the bayes net in which will be load the content of the xml
+     * filePath
+     */
+    BayesNet< GUM_SCALAR >* _bn_;
 
-   /**
-    * the path to the xml filePath
-    */
-   std::string _filePath_;
- };
+    /**
+     * the path to the xml filePath
+     */
+    std::string _filePath_;
+  };
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
- extern template class XDSLBNReader< double >;
+  extern template class XDSLBNReader< double >;
 #endif
 
 } /* namespace gum */

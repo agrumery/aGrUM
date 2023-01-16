@@ -33,8 +33,6 @@
 #include <vector>
 
 #include <agrum/tools/graphs/algorithms/triangulations/unconstrainedTriangulation.h>
-#include <agrum/tools/graphs/cliqueGraph.h>
-#include <agrum/tools/graphs/graphElements.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 namespace gum_tests {

@@ -30,7 +30,6 @@
 #ifndef GUM_PROJECTION_REGISTER_4_MULTI_DIM_H
 #define GUM_PROJECTION_REGISTER_4_MULTI_DIM_H
 
-#include <agrum/tools/core/hashTable.h>
 #include <agrum/tools/core/set.h>
 #include <agrum/tools/variables/discreteVariable.h>
 #include <iostream>

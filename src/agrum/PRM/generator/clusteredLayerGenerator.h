@@ -36,10 +36,7 @@
 #include <string>
 #include <vector>
 
-#include <agrum/BN/generator/simpleBayesNetGenerator.h>
 
-#include <agrum/PRM/PRMFactory.h>
-#include <agrum/PRM/generator/PRMGenerator.h>
 #include <agrum/PRM/generator/layerGenerator.h>
 
 namespace gum {

@@ -58,10 +58,7 @@
 #include <agrum/agrum.h>
 #include <agrum/tools/core/threads.h>
 #include <agrum/tools/core/threadExecutor.h>
-#include <agrum/tools/core/set.h>
-#include <agrum/tools/graphs/undiGraph.h>
 #include <agrum/BN/learning/structureUtils/IGraphChangesGenerator4UndiGraph.h>
-#include <agrum/BN/learning/structureUtils/graphChange.h>
 
 namespace gum {
 

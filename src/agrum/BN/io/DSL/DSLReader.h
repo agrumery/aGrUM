@@ -22,7 +22,6 @@
 #ifndef DSLREADER_H
 #define DSLREADER_H
 
-#include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/io/BNReader.h>
 #include <agrum/agrum.h>
 #include <iostream>

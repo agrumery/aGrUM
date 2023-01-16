@@ -33,7 +33,6 @@
 #include <string>
 #include <vector>
 
-#include <agrum/PRM/elements/PRMSystem.h>
 
 #include <agrum/PRM/inference/PRMInference.h>
 

@@ -30,7 +30,6 @@
 #ifndef GUM_GIBBS_SAMPLING_H
 #define GUM_GIBBS_SAMPLING_H
 
-#include <agrum/BN/inference/tools/gibbsOperator.h>
 #include <agrum/BN/inference/tools/samplingInference.h>
 
 

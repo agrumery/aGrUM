@@ -27,7 +27,6 @@
 #ifndef GUM_UNDIGRAPH_LISTENER_H
 #define GUM_UNDIGRAPH_LISTENER_H
 
-#include <agrum/tools/core/signal/listener.h>
 #include <agrum/tools/graphs/undiGraph.h>
 
 namespace gum {

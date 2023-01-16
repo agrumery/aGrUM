@@ -39,7 +39,6 @@
 
 #include <agrum/PRM/PRMFactory.h>
 #include <agrum/PRM/generator/PRMGenerator.h>
-#include <agrum/PRM/generator/nameGenerator.h>
 
 namespace gum {
   namespace prm {

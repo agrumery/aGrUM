@@ -32,12 +32,7 @@
 #include <utility>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/sequence.h>
-#include <agrum/tools/core/set.h>
 #include <agrum/tools/graphicalModels/inference/scheduler/schedule.h>
-#include <agrum/tools/graphicalModels/inference/scheduler/scheduleBinaryCombination.h>
-#include <agrum/tools/graphicalModels/inference/scheduler/scheduleDeletion.h>
-#include <agrum/tools/variables/discreteVariable.h>
 #include <utility>
 
 namespace gum {

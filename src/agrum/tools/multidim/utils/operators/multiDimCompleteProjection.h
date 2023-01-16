@@ -28,9 +28,7 @@
 #ifndef GUM_MULTI_DIM_COMPLETE_PROJECTION_H
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_H
 
-#include <agrum/tools/core/set.h>
 #include <agrum/tools/multidim/instantiation.h>
-#include <agrum/tools/variables/discreteVariable.h>
 #include <utility>
 
 namespace gum {

@@ -34,13 +34,11 @@
 // =========================================================================
 #include <string>
 // =========================================================================
-#include <agrum/tools/core/types.h>
 // =========================================================================
 #include <agrum/FMDP/fmdp.h>
 #include <agrum/FMDP/learning/datastructure/IVisitableGraphLearner.h>
 #include <agrum/FMDP/learning/observation.h>
 // =========================================================================
-#include <agrum/tools/variables/discreteVariable.h>
 // =========================================================================
 
 namespace gum {

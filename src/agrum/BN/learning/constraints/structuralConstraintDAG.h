@@ -30,7 +30,6 @@
 #include <agrum/agrum.h>
 #include <agrum/tools/graphs/algorithms/DAGCycleDetector.h>
 #include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>
-#include <agrum/BN/learning/constraints/structuralConstraintSetStatic.h>
 
 namespace gum {
 

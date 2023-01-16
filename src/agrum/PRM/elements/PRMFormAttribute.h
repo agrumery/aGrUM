@@ -29,7 +29,6 @@
 #ifndef GUM_FORM_ATTRIBUTE_H
 #define GUM_FORM_ATTRIBUTE_H
 
-#include <agrum/PRM/elements/PRMAttribute.h>
 
 #include <agrum/PRM/elements/PRMClass.h>
 

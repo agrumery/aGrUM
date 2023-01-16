@@ -35,46 +35,29 @@
 #include <sstream>
 #include <memory>
 
-#include <agrum/BN/BayesNet.h>
 #include <agrum/agrum.h>
-#include <agrum/tools/core/bijection.h>
-#include <agrum/tools/core/sequence.h>
-#include <agrum/tools/graphs/DAG.h>
 
-#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
-#include <agrum/tools/database/DBRowGeneratorParser.h>
 #include <agrum/tools/database/DBInitializerFromCSV.h>
-#include <agrum/tools/database/databaseTable.h>
-#include <agrum/tools/database/DBRowGeneratorParser.h>
 #include <agrum/tools/database/DBRowGenerator4CompleteRows.h>
 #include <agrum/tools/database/DBRowGeneratorEM.h>
-#include <agrum/tools/database/DBRowGeneratorSet.h>
 
 #include <agrum/BN/algorithms/essentialGraph.h>
 
 #include <agrum/BN/learning/scores_and_tests/scoreAIC.h>
 #include <agrum/BN/learning/scores_and_tests/scoreBD.h>
 #include <agrum/BN/learning/scores_and_tests/scoreBDeu.h>
-#include <agrum/BN/learning/scores_and_tests/scoreBIC.h>
 #include <agrum/BN/learning/scores_and_tests/scoreK2.h>
-#include <agrum/BN/learning/scores_and_tests/scoreLog2Likelihood.h>
 
 #include <agrum/BN/learning/priors/DirichletPriorFromDatabase.h>
-#include <agrum/BN/learning/priors/noPrior.h>
-#include <agrum/BN/learning/priors/smoothingPrior.h>
-#include <agrum/BN/learning/priors/bdeuPrior.h>
 
 #include <agrum/BN/learning/constraints/structuralConstraintDAG.h>
-#include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>
 #include <agrum/BN/learning/constraints/structuralConstraintForbiddenArcs.h>
 #include <agrum/BN/learning/constraints/structuralConstraintPossibleEdges.h>
 #include <agrum/BN/learning/constraints/structuralConstraintIndegree.h>
 #include <agrum/BN/learning/constraints/structuralConstraintMandatoryArcs.h>
-#include <agrum/BN/learning/constraints/structuralConstraintSetStatic.h>
 #include <agrum/BN/learning/constraints/structuralConstraintSliceOrder.h>
 #include <agrum/BN/learning/constraints/structuralConstraintTabuList.h>
 
-#include <agrum/BN/learning/structureUtils/graphChange.h>
 #include <agrum/BN/learning/structureUtils/graphChangesGenerator4DiGraph.h>
 #include <agrum/BN/learning/structureUtils/graphChangesGenerator4K2.h>
 #include <agrum/BN/learning/structureUtils/graphChangesSelector4DiGraph.h>
@@ -82,15 +65,11 @@
 #include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
 #include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
 
-#include <agrum/tools/core/approximations/IApproximationSchemeConfiguration.h>
-#include <agrum/tools/core/approximations/approximationSchemeListener.h>
 
 #include <agrum/BN/learning/K2.h>
 #include <agrum/BN/learning/Miic.h>
-#include <agrum/BN/learning/greedyHillClimbing.h>
 #include <agrum/BN/learning/localSearchWithTabuList.h>
 
-#include <agrum/tools/core/signal/signalers.h>
 
 namespace gum::learning {
 

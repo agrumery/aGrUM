@@ -32,10 +32,8 @@
 #include <set>
 #include <utility>
 
-#include <agrum/tools/core/bijection.h>
 
 #include <agrum/PRM/elements/PRMClass.h>
-#include <agrum/PRM/elements/PRMClassElementContainer.h>
 
 namespace gum {
   namespace prm {

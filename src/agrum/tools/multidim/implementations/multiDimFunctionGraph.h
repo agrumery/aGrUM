@@ -30,21 +30,14 @@
 #ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_H
 #define GUM_MULTI_DIM_FUNCTION_GRAPH_H
 
-#include <agrum/tools/core/bijection.h>
-#include <agrum/tools/core/list.h>
-#include <agrum/tools/core/smallobjectallocator/smallObjectAllocator.h>
 #include <agrum/tools/core/types.h>
 
 #include <agrum/FMDP/learning/core/templateStrategy.h>
 
-#include <agrum/tools/graphs/graphElements.h>
 
 #include <agrum/tools/multidim/implementations/multiDimFunctionGraphManager.h>
 #include <agrum/tools/multidim/implementations/multiDimImplementation.h>
-#include <agrum/tools/multidim/utils/FunctionGraphUtilities/internalNode.h>
-#include <agrum/tools/multidim/utils/FunctionGraphUtilities/link.h>
 #include <agrum/tools/multidim/utils/FunctionGraphUtilities/terminalNodePolicies/ExactTerminalNodePolicy.h>
-#include <agrum/tools/multidim/utils/FunctionGraphUtilities/terminalNodePolicies/ITerminalNodePolicy.h>
 
 namespace gum {
 

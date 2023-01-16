@@ -28,8 +28,6 @@
 #define GUM_SCHEDULED_INFERENCE_H
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/threadNumberManager.h>
-#include <agrum/tools/graphicalModels/inference/scheduler/schedulerSequential.h>
 #include <agrum/tools/graphicalModels/inference/scheduler/schedulerParallel.h>
 
 namespace gum {

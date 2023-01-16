@@ -30,10 +30,7 @@
 #include <string>
 #include <utility>
 
-#include <agrum/tools/core/hashTable.h>
-#include <agrum/tools/core/set.h>
 
-#include <agrum/PRM/PRM.h>
 #include <agrum/PRM/inference/PRMInference.h>
 
 #ifndef GUM_STRUCTURED_BB_H

@@ -35,10 +35,7 @@
 #include <utility>
 #include <atomic>
 
-#include <agrum/tools/core/hashTable.h>
-#include <agrum/tools/core/set.h>
 #include <agrum/tools/multidim/instantiation.h>
-#include <agrum/tools/variables/discreteVariable.h>
 
 namespace gum {
 

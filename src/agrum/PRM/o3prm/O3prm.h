@@ -32,7 +32,6 @@
 #include <vector>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/hashTable.h>
 #include <agrum/tools/core/math/formula.h>
 
 #ifndef GUM_PRM_O3PRM_PRM_H

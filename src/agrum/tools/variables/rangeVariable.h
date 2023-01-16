@@ -35,7 +35,6 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/core/hashFunc.h>
 #include <agrum/tools/variables/discreteVariable.h>
 
 namespace gum {

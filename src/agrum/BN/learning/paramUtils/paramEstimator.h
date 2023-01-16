@@ -30,11 +30,8 @@
 #include <type_traits>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/database/databaseTable.h>
 #include <agrum/BN/learning/priors/prior.h>
 #include <agrum/tools/stattests/recordCounter.h>
-#include <agrum/tools/multidim/potential.h>
-#include <agrum/tools/core/IThreadNumberManager.h>
 
 namespace gum {
 

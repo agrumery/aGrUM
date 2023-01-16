@@ -37,8 +37,6 @@
 
 #  include <agrum/tools/core/functors.h>
 
-#  include <agrum/tools/multidim/implementations/multiDimFunctionGraph.h>
-#  include <agrum/tools/multidim/implementations/multiDimImplementation.h>
 #  include <agrum/tools/multidim/utils/FunctionGraphUtilities/operators/multiDimFunctionGraphOperator.h>
 
 namespace gum {

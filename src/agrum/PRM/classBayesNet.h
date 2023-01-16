@@ -30,7 +30,6 @@
 
 #include <list>
 
-#include <agrum/BN/IBayesNet.h>
 
 #include <agrum/PRM/PRM.h>
 namespace gum {

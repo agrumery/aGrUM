@@ -49,11 +49,11 @@ def guideline(current, modif=False):
   nbrError += _aff_errors(_checkForLGPLlicense(current, modif), "missing LGPL licence")
   notif("  [(3) check for missing documentation in pyAgrum]")
   nbrError += _aff_errors(_checkForMissingDocs(modif), "missing documentation")
-  notif("  [(5) check for format]")
-  nbrError += _aff_errors(_checkForFormat(current, modif), "format")
   notif("  [(4) check for deps]")
   nbrError += _aff_errors(check_gum_dependencies(graph=current['build_graph'], correction=modif),
                           "redundant dependency")
+  notif("  [(5) check for format]")
+  nbrError += _aff_errors(_checkForFormat(current, modif), "format")
 
   return nbrError
 

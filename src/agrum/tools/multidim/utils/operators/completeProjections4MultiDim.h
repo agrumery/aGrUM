@@ -31,8 +31,6 @@
 #define GUM_COMPLETE_PROJECTIONS_4_MULTI_DIM_H
 
 #include <agrum/tools/multidim/implementations/multiDimArray.h>
-#include <agrum/tools/multidim/implementations/multiDimImplementation.h>
-#include <agrum/tools/multidim/instantiation.h>
 #include <atomic>
 #include <mutex>
 

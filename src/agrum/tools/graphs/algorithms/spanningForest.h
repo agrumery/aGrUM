@@ -28,7 +28,6 @@
 #define GUM_SPANNING_FOREST_H
 #include <agrum/agrum.h>
 
-#include <agrum/tools/graphs/graphElements.h>
 #include <agrum/tools/graphs/undiGraph.h>
 
 namespace gum {

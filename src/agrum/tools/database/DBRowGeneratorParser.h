@@ -28,7 +28,6 @@
 #include <limits>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/database/DBHandler.h>
 #include <agrum/tools/database/databaseTable.h>
 #include <agrum/tools/database/DBRowGeneratorSet.h>
 
@@ -273,3 +272,4 @@ namespace gum {
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_DB_ROW_GENERATOR_PARSER_H */
+

@@ -30,8 +30,6 @@
 #define GUM_SCALAR_ATTRIBUTE_H
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/bijection.h>
-#include <agrum/tools/multidim/potential.h>
 #include <agrum/PRM/elements/PRMAttribute.h>
 
 

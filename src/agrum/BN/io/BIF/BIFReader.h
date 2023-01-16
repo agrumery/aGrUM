@@ -68,8 +68,6 @@ between 0 and 100
 #include <iostream>
 #include <string>
 
-#include <agrum/BN/BayesNetFactory.h>
-#include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/io/BNReader.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

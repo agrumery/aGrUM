@@ -31,7 +31,6 @@
 #include <algorithm>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/list.h>
 
 #include <agrum/tools/graphicalModels/inference/scheduler/scheduler.h>
 

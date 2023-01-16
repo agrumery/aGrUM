@@ -42,7 +42,6 @@
 #include <agrum/tools/core/threads.h>
 #include <agrum/tools/core/threadExecutor.h>
 #include <agrum/tools/database/DBCell.h>
-#include <agrum/tools/database/DBRow.h>
 #include <agrum/tools/database/DBHandler.h>
 #include <agrum/tools/database/DBTranslator.h>
 

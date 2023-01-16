@@ -31,7 +31,6 @@
 
 #include <vector>
 
-#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/core/math/variableLog2ParamComplexity.h>
 #include <agrum/tools/stattests/independenceTest.h>
 

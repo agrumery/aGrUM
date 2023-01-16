@@ -34,7 +34,6 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/core/list.h>
 #include <agrum/tools/core/sequence.h>
 
 #include <agrum/tools/variables/discreteVariable.h>

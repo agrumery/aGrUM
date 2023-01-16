@@ -32,7 +32,6 @@
 #define GUM_STATES_CHECKER_H
 // =========================================================================
 // =========================================================================
-#include <agrum/tools/core/sequence.h>
 #include <agrum/tools/multidim/implementations/multiDimFunctionGraph.h>
 // =========================================================================
 

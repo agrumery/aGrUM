@@ -29,7 +29,6 @@
 #define AGRUM_AGGREGATORDECOMPOSITION_H
 
 #include <agrum/PRM/PRM.h>
-#include <agrum/PRM/elements/PRMSystem.h>
 #include <ctime>
 
 namespace gum {

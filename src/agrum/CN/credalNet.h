@@ -36,7 +36,6 @@
 #ifdef HAVE_UNISTD_H
 #  include <unistd.h>
 #else
-#  include <agrum/tools/core/mvsc/unistd.h>
 #endif
 
 //#include <sys/wait.h>
@@ -51,14 +50,11 @@
 
 #include <utility>   /// c++11 stuff, like declval ( decltype from prototype without a default constructor )
 
-#include <agrum/tools/core/math/math_utils.h>
-#include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/BN/io/BIF/BIFWriter.h>
 #include <agrum/tools/core/exceptions.h>
 
 #include <agrum/tools/core/math/pow.h>   // custom pow functions with integers, faster implementation
-#include <agrum/tools/core/math/rational.h>   // custom decimal to rational
 
 #include <agrum/CN/polytope/LrsWrapper.h>
 

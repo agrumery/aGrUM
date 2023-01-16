@@ -30,7 +30,6 @@
 #define GUM_ATTRIBUTE_H
 
 #include <agrum/PRM/elements/PRMClassElement.h>
-#include <agrum/tools/multidim/implementations/multiDimImplementation.h>
 
 namespace gum {
   namespace prm {

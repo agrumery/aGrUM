@@ -30,9 +30,7 @@
 #include <vector>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/set.h>
 #include <agrum/tools/multidim/implementations/multiDimDecorator.h>
-#include <agrum/tools/multidim/implementations/multiDimImplementation.h>
 
 namespace gum {
 

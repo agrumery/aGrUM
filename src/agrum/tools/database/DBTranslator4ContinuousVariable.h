@@ -30,7 +30,6 @@
 #include <string>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/hashTable.h>
 #include <agrum/tools/database/DBTranslator.h>
 #include <agrum/tools/variables/continuousVariable.h>
 

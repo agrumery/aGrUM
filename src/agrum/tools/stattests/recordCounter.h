@@ -36,13 +36,7 @@
 #include <string>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/bijection.h>
-#include <agrum/tools/core/sequence.h>
-#include <agrum/tools/core/threads.h>
-#include <agrum/tools/core/threadExecutor.h>
 #include <agrum/tools/core/threadData.h>
-#include <agrum/tools/core/threadNumberManager.h>
-#include <agrum/tools/graphs/DAG.h>
 #include <agrum/tools/database/DBRowGeneratorParser.h>
 #include <agrum/tools/stattests/idCondSet.h>
 

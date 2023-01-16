@@ -34,7 +34,6 @@
 #include <agrum/tools/graphs/algorithms/triangulations/eliminationStrategies/eliminationSequenceStrategy.h>
 #include <agrum/tools/graphs/algorithms/triangulations/junctionTreeStrategies/junctionTreeStrategy.h>
 #include <agrum/tools/graphs/algorithms/triangulations/triangulation.h>
-#include <agrum/tools/graphs/cliqueGraph.h>
 
 
 namespace gum {

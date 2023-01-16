@@ -36,7 +36,6 @@
 
 #include <agrum/tools/core/bijection.h>
 #include <agrum/tools/multidim/implementations/multiDimAdressable.h>
-#include <agrum/tools/multidim/implementations/multiDimInterface.h>
 
 namespace gum {
 

@@ -32,8 +32,6 @@
 #include <agrum/PRM/elements/PRMType.h>
 
 #include <agrum/PRM/elements/PRMScalarAttribute.h>
-#include <agrum/tools/multidim/implementations/multiDimImplementation.h>
-#include <agrum/tools/multidim/potential.h>
 
 namespace gum {
   namespace prm {

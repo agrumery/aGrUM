@@ -28,7 +28,6 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#include <agrum/tools/multidim/instantiation.h>
 
 // check if we allowed these patterns to be used
 #ifndef GUM_PROJECTION_PATTERN_ALLOWED
@@ -38,8 +37,6 @@
 
 #else
 
-#  include <agrum/tools/multidim/implementations/multiDimFunctionGraph.h>
-#  include <agrum/tools/multidim/implementations/multiDimImplementation.h>
 #  include <agrum/tools/multidim/utils/FunctionGraphUtilities/operators/multiDimFunctionGraphProjector.h>
 
 namespace gum {

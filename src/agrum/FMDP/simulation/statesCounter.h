@@ -31,11 +31,9 @@
 #ifndef GUM_STATES_COUNTER_H
 #define GUM_STATES_COUNTER_H
 // =========================================================================
-#include <agrum/tools/core/sequence.h>
 // =========================================================================
 #include <agrum/FMDP/learning/datastructure/IVisitableGraphLearner.h>
 // =========================================================================
-#include <agrum/tools/multidim/implementations/multiDimFunctionGraph.h>
 // =========================================================================
 
 namespace gum {

@@ -30,7 +30,6 @@
 #define APPROXIMATIONSCHEMELISTENER_H
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/signal/listener.h>
 
 #include <agrum/tools/core/approximations/IApproximationSchemeConfiguration.h>
 

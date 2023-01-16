@@ -34,18 +34,8 @@
 #include <utility>
 #include <vector>
 
-#include <agrum/tools/core/math/math_utils.h>
-#include <agrum/tools/core/bijection.h>
-#include <agrum/tools/core/sequence.h>
-#include <agrum/tools/core/set.h>
-
-#include <agrum/tools/graphs/diGraph.h>
-
-#include <agrum/tools/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
 
 #include <agrum/PRM/gspan/edgeGrowth.h>
-#include <agrum/PRM/gspan/interfaceGraph.h>
-#include <agrum/PRM/gspan/pattern.h>
 
 namespace gum {
   namespace prm {

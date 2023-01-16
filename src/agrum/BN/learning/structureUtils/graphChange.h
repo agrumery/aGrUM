@@ -35,7 +35,6 @@
 #include <string>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/hashFunc.h>
 #include <agrum/tools/graphs/parts/nodeGraphPart.h>
 
 namespace gum {

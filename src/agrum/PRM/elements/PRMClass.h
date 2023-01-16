@@ -32,17 +32,7 @@
 #include <utility>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/hashFunc.h>
-#include <agrum/tools/core/bijection.h>
-#include <agrum/tools/core/sequence.h>
-#include <agrum/tools/core/set.h>
-#include <agrum/tools/multidim/implementations/multiDimImplementation.h>
-#include <agrum/tools/multidim/implementations/multiDimSparse.h>
-#include <agrum/PRM/elements/PRMAggregate.h>
-#include <agrum/PRM/elements/PRMAttribute.h>
-#include <agrum/PRM/elements/PRMClassElementContainer.h>
 #include <agrum/PRM/elements/PRMParameter.h>
-#include <agrum/PRM/elements/PRMReferenceSlot.h>
 #include <agrum/PRM/elements/PRMSlotChain.h>
 
 

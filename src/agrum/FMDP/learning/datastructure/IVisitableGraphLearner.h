@@ -32,13 +32,10 @@
 #ifndef GUM_INTERFACE_VISITABLE_GRAPH_LEARNER_H
 #define GUM_INTERFACE_VISITABLE_GRAPH_LEARNER_H
 // =========================================================================
-#include <agrum/tools/core/sequence.h>
 // =========================================================================
-#include <agrum/tools/graphs/parts/nodeGraphPart.h>
 // =========================================================================
 #include <agrum/tools/multidim/implementations/multiDimFunctionGraph.h>
 // =========================================================================
-#include <agrum/tools/variables/discreteVariable.h>
 // =========================================================================
 
 namespace gum {

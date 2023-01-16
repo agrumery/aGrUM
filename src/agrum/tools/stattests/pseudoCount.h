@@ -30,14 +30,9 @@
 #include <utility>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/math/math_utils.h>
-#include <agrum/tools/core/threads.h>
-#include <agrum/tools/core/IThreadNumberManager.h>
 
 #include <agrum/tools/stattests/recordCounter.h>
 #include <agrum/BN/learning/priors/prior.h>
-#include <agrum/tools/variables/discreteVariable.h>
-#include <agrum/tools/multidim/potential.h>
 
 namespace gum {
 

@@ -30,9 +30,6 @@
 #include <vector>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/database/DBRow.h>
-#include <agrum/tools/database/DBTranslatedValue.h>
-#include <agrum/tools/database/DBRowGenerator.h>
 #include <agrum/tools/database/DBRowGeneratorWithBN.h>
 
 namespace gum {

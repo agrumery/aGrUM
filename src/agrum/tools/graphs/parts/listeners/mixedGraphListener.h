@@ -27,7 +27,6 @@
 #ifndef GUM_MIXEDGRAPH_LISTENER_H
 #define GUM_MIXEDGRAPH_LISTENER_H
 
-#include <agrum/tools/core/signal/listener.h>
 #include <agrum/tools/graphs/mixedGraph.h>
 
 namespace gum {

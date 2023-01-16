@@ -32,12 +32,10 @@
 #include <utility>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/MN/inference/tools/evidenceMNInference.h>
 #include <agrum/MN/inference/tools/jointTargetedMNInference.h>
 #include <agrum/tools/graphs/algorithms/triangulations/defaultTriangulation.h>
 
-#include <agrum/tools/graphicalModels/inference/scheduler/schedule.h>
 #include <agrum/tools/graphicalModels/inference/scheduler/scheduledInference.h>
 
 

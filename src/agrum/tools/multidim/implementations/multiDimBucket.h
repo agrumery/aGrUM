@@ -34,9 +34,6 @@
 #include <sstream>
 
 #include <agrum/tools/core/bijection.h>
-#include <agrum/tools/core/hashTable.h>
-#include <agrum/tools/core/sequence.h>
-#include <agrum/tools/core/set.h>
 
 #include <agrum/tools/multidim/implementations/multiDimArray.h>
 #include <agrum/tools/multidim/implementations/multiDimReadOnly.h>

@@ -44,14 +44,9 @@
 #  include <agrum/tools/core/mvsc/dirent.h>
 #endif
 
-#include <agrum/BN/BayesNet.h>
 #include <agrum/BN/generator/IBayesNetGenerator.h>
 #include <agrum/BN/generator/simpleCPTDisturber.h>
-#include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/tools/core/hashTable.h>
-#include <agrum/tools/multidim/potential.h>
-#include <agrum/tools/variables/labelizedVariable.h>
 
 namespace gum {
   /**

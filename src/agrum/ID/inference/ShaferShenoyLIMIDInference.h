@@ -36,9 +36,7 @@
 #include <agrum/agrum.h>
 
 #include <agrum/tools/core/exceptions.h>
-#include <agrum/tools/core/list.h>
 
-#include <agrum/tools/graphs/DAG.h>
 #include <agrum/tools/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
 
 #include <agrum/tools/multidim/implementations/multiDimBucket.h>

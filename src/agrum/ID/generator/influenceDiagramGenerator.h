@@ -34,7 +34,6 @@
 #include <vector>
 
 #include <agrum/BN/generator/simpleCPTGenerator.h>
-#include <agrum/ID/generator/UTGenerator.h>
 #include <agrum/ID/generator/simpleUTGenerator.h>
 #include <agrum/ID/influenceDiagram.h>
 #include <agrum/tools/variables/labelizedVariable.h>

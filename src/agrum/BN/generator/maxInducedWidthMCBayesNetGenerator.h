@@ -41,14 +41,9 @@
 #ifdef HAVE_DIRENT_H
 #  include <dirent.h>
 #else
-#  include <agrum/tools/core/mvsc/dirent.h>
 #endif
 
-#include <agrum/BN/BayesNet.h>
 #include <agrum/BN/generator/MCBayesNetGenerator.h>
-#include <agrum/BN/generator/simpleCPTDisturber.h>
-#include <agrum/BN/generator/simpleCPTGenerator.h>
-#include <agrum/tools/variables/labelizedVariable.h>
 
 namespace gum {
   /**

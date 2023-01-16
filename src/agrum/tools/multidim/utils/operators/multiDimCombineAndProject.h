@@ -30,9 +30,6 @@
 
 #include <utility>
 
-#include <agrum/tools/core/sequence.h>
-#include <agrum/tools/core/set.h>
-#include <agrum/tools/variables/discreteVariable.h>
 #include <agrum/tools/multidim/utils/operators/multiDimCombinationDefault.h>
 #include <agrum/tools/multidim/utils/operators/multiDimProjection.h>
 

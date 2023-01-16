@@ -30,7 +30,6 @@
 #ifndef GUM_ABSTRACT_LEAF_H
 #define GUM_ABSTRACT_LEAF_H
 // =========================================================================
-#include <agrum/tools/core/hashTable.h>
 #include <agrum/tools/core/multiPriorityQueue.h>
 #include <agrum/tools/core/sequence.h>
 #include <agrum/tools/core/smallobjectallocator/smallObjectAllocator.h>

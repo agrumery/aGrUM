@@ -31,7 +31,6 @@
 /// @todo virtual for all functions that MAY be one day redefined in any derived
 /// class
 
-#include <agrum/tools/core/threadData.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/CN/inference/inferenceEngine.h>
 

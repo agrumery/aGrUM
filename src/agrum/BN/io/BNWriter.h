@@ -139,7 +139,7 @@ namespace gum {
     ///}
 
     private:
-    bool        _allowModification_ = false;
+    bool _allowModification_ = false;
   };
 
 

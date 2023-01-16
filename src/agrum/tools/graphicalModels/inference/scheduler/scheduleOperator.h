@@ -33,7 +33,6 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/core/sequence.h>
 #include <agrum/tools/graphicalModels/inference/scheduler/IScheduleMultiDim.h>
 
 namespace gum {

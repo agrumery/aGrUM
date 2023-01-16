@@ -81,7 +81,6 @@ GONZALES(_at_AMU)
 
 #include <agrum/ID/io/IDReader.h>
 #include <agrum/agrum.h>
-#include <agrum/tools/core/signal/signalers.h>
 #include <agrum/tools/external/tinyxml/ticpp/ticpp.h>
 #include <agrum/tools/variables/labelizedVariable.h>
 
