@@ -29,7 +29,9 @@ from .utils import warn, error, notif, notif_oneline
 
 def _header_filter(split_filename: List[str]) -> bool:
   filename = split_filename[-1]
-  if filename == "agrum.h":
+  # exceptions
+  exceptions = {"agrum.h", "structuralConstraintPatternHeader.h"}
+  if filename in exceptions:
     return False
 
   if filename == "config.h":
@@ -66,12 +68,6 @@ def _get_dependencies() -> Dict[str, List[str]]:
     if _header_filter(file.parts):
       key = "/".join(file.parts[2:])
       deps[key] = _gum_scan(file)
-
-  for file in p.glob('**/*.cpp'):
-    if _header_filter(file.parts):
-      key = "/".join(file.parts[2:])
-      deps[key] = _gum_scan(file)
-
   return deps
 
 
@@ -218,11 +214,9 @@ def remove_redundant_dependencies(target, includes):
       m = patt.match(line)
       if m:
         filename = m.group(1)
-        if not _header_filter(filename.split("/")):
-          continue
-
-        if filename not in to_keep:
-          keep_line = False
+        if _header_filter(filename.split("/")):
+          if filename not in to_keep:
+            keep_line = False
       if keep_line:
         res += line
 
@@ -256,7 +250,7 @@ def check_gum_dependencies(graph=True, correction=False):
     notif("Correction in progress")
     for k in deps.keys():
       if nb_non_opt[k] != len(deps[k]):  # if some include have to be removed
-        notif_oneline(k)
+        notif_oneline(f"[{k}]")
         remove_redundant_dependencies(k, deps[k])
 
   return nb_arcs - nb_opt_arcs

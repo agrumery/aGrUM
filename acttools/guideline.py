@@ -31,7 +31,7 @@ from .checkDependencies import check_gum_dependencies
 
 def _aff_errors(nb: int, typ: str):
   if nb > 0:
-    error(f"{nb} {typ} error{'s' if nb > 1 else ''}{' '*40}") # spaces to remove others possible characters
+    error(f"{nb} {typ} error{'s' if nb > 1 else ''}{' ' * 40}")  # spaces to remove others possible characters
   return nb
 
 
@@ -44,15 +44,16 @@ def guideline(current, modif=False):
   nbrError = 0
 
   notif("  [(1) ]*.cpp[ file for every ]*.h[ file]")
-  #nbrError += _aff_errors(_checkCppFileExists(current, modif),"missing cppfile")
+  nbrError += _aff_errors(_checkCppFileExists(current, modif), "missing cppfile")
   notif("  [(2) check for ]LGPL[ license]")
-  #nbrError += _aff_errors(_checkForLGPLlicense(current, modif),"missing LGPL licence")
+  nbrError += _aff_errors(_checkForLGPLlicense(current, modif), "missing LGPL licence")
   notif("  [(3) check for missing documentation in pyAgrum]")
-  #nbrError += _aff_errors(_checkForMissingDocs(modif),"missing documentation")
+  nbrError += _aff_errors(_checkForMissingDocs(modif), "missing documentation")
   notif("  [(5) check for format]")
-  #nbrError += _aff_errors(_checkForFormat(current, modif),"format")
+  nbrError += _aff_errors(_checkForFormat(current, modif), "format")
   notif("  [(4) check for deps]")
-  nbrError += _aff_errors(check_gum_dependencies(graph=current['build_graph'],correction=modif),"redundant dependency")
+  nbrError += _aff_errors(check_gum_dependencies(graph=current['build_graph'], correction=modif),
+                          "redundant dependency")
 
   return nbrError
 
