@@ -70,7 +70,7 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::IBNLearner,gum::learning::BNLearner<d
   using gum::learning::IBNLearner::currentTime;
 
   using gum::learning::IBNLearner::learnDAG;
-  using gum::learning::IBNLearner::learnMixedStructure;
+  using gum::learning::IBNLearner::learnPDAG;
   using gum::learning::IBNLearner::names;
   using gum::learning::IBNLearner::idFromName;
   using gum::learning::IBNLearner::nameFromId;

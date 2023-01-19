@@ -26541,6 +26541,9 @@ class BNLearner(object):
         """
         return _pyAgrum.BNLearner_learnDAG(self)
 
+    def learnPDAG(self) -> "pyAgrum.PDAG":
+        return _pyAgrum.BNLearner_learnPDAG(self)
+
     def names(self) -> List[str]:
         r"""
 
