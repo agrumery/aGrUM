@@ -7045,16 +7045,16 @@ class EssentialGraph(object):
         _pyAgrum.EssentialGraph_swiginit(self, _pyAgrum.new_EssentialGraph(*args))
     __swig_destroy__ = _pyAgrum.delete_EssentialGraph
 
-    def mixedGraph(self) -> "pyAgrum.MixedGraph":
+    def pdag(self) -> "pyAgrum.PDAG":
         r"""
 
         Returns
         -------
-        pyAgrum.MixedGraph
-        	the mixed graph
+        pyAgrum.PDAG
+        	the PDAG (Partially Directed Graph)
 
         """
-        return _pyAgrum.EssentialGraph_mixedGraph(self)
+        return _pyAgrum.EssentialGraph_pdag(self)
 
     def toDot(self) -> str:
         r"""
@@ -26313,7 +26313,7 @@ class BNLearner(object):
       bn=BayesNet()
       for i in range(len(self.names())):
         bn.add(self.nameFromId(i),2)
-      ge=EssentialGraph(bn,self.learnMixedStructure())
+      ge=EssentialGraph(bn,self.learnPDAG())
       ge._bn=bn
       return ge
 
@@ -26540,21 +26540,6 @@ class BNLearner(object):
 
         """
         return _pyAgrum.BNLearner_learnDAG(self)
-
-    def learnMixedStructure(self) -> "pyAgrum.MixedGraph":
-        r"""
-
-        Warnings
-        --------
-        learner must be using 3off2 or MIIC algorithm
-
-        Returns
-        -------
-        pyAgrum.EssentialGraph
-        	the learned structure as an EssentialGraph
-
-        """
-        return _pyAgrum.BNLearner_learnMixedStructure(self)
 
     def names(self) -> List[str]:
         r"""

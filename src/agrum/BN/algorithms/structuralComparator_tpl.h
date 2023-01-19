@@ -22,7 +22,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #  include <agrum/BN/algorithms/essentialGraph.h>
-#  include <agrum/tools/graphs/mixedGraph.h>
+#  include <agrum/tools/graphs/PDAG.h>
 
 namespace gum {
 
@@ -34,22 +34,22 @@ namespace gum {
         GUM_ERROR(InvalidNode, "Test doesn't contain node " << node << " from ref")
       }
     }
-
-    MixedGraph ref_eg  = EssentialGraph(ref).mixedGraph();
-    MixedGraph test_eg = EssentialGraph(test).mixedGraph();
+    PDAG ref_eg = EssentialGraph(ref).pdag();
+    auto eg = EssentialGraph(test);
+    PDAG test_eg = eg.pdag();
 
     this->compare(ref_eg, test_eg);
   }
 
   template < typename GUM_SCALAR >
-  void StructuralComparator::compare(const BayesNet< GUM_SCALAR >& ref, const MixedGraph& test) {
-    MixedGraph ref_eg = EssentialGraph(ref).mixedGraph();
+  void StructuralComparator::compare(const BayesNet< GUM_SCALAR >& ref, const PDAG& test) {
+    PDAG ref_eg = EssentialGraph(ref).pdag();
     this->compare(ref_eg, test);
   }
 
   template < typename GUM_SCALAR >
-  void StructuralComparator::compare(const MixedGraph& ref, const BayesNet< GUM_SCALAR >& test) {
-    MixedGraph test_eg = EssentialGraph(test).mixedGraph();
+  void StructuralComparator::compare(const PDAG& ref, const BayesNet< GUM_SCALAR >& test) {
+    PDAG test_eg = EssentialGraph(test).pdag();
 
     this->compare(ref, test_eg);
   }

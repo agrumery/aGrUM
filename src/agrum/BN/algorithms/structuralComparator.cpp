@@ -104,7 +104,7 @@ namespace gum {
        = ref.size() * (ref.size() - 1) / 2 - _true_edge_ - _wrong_edge_none_ - _wrong_none_edge_;
   }
 
-  void StructuralComparator::compare(const MixedGraph& ref, const MixedGraph& test) {
+  void StructuralComparator::compare(const PDAG& ref, const PDAG& test) {
     if (ref.size() != test.size()) { GUM_ERROR(OperationNotAllowed, "Graphs of different sizes") }
     for (const NodeId node: ref.asNodeSet()) {
       if (!test.existsNode(node)) {

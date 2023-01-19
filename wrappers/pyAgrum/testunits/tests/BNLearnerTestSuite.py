@@ -193,7 +193,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertTrue(bn.dag().existsArc(7, 5))
 
     try:
-      mg = learner.learnMixedStructure()
+      mg = learner.learnPDAG()
     except:
       self.fail("Exception has been raised and should not")
     self.assertEqual(mg.sizeArcs(), 8)

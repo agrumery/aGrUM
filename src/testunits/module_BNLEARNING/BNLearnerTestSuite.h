@@ -331,7 +331,7 @@ namespace gum_tests {
         TS_ASSERT(!bn.dag().existsArc(4, 1))
         TS_ASSERT(bn.dag().existsArc(7, 5))
 
-        gum::MixedGraph mg = learner.learnMixedStructure();
+        auto mg = learner.learnPDAG();
         TS_ASSERT_EQUALS(mg.arcs().size(), (gum::Size)8)
         TS_ASSERT_EQUALS(mg.edges().size(), (gum::Size)1)
         TS_ASSERT(!mg.existsArc(4, 1))
@@ -1353,7 +1353,7 @@ GUM_TEST(_errorFromPyagrum) {
     gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/sample_asia.csv"));
     learner.use3off2();
     learner.useNMLCorrection();
-    auto ge3off2 = learner.learnMixedStructure();
+    auto ge3off2 = learner.learnPDAG();
   } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
 }
 

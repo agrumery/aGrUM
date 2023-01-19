@@ -146,6 +146,34 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(gum::PDAG copy3(graph))
     }
 
+    GUM_TEST(UndiGraphCopyConstructor) {
+      gum::UndiGraph ug;
+      ug.addNodes(10);
+      ug.addEdge(1, 2);
+      ug.addEdge(1, 3);
+      ug.addEdge(3, 2);
+      ug.addEdge(4, 5);
+
+      gum::PDAG g(ug);
+      TS_ASSERT_EQUALS(g.size(), 10u)
+      TS_ASSERT_EQUALS(g.sizeArcs(), 0u)
+      TS_ASSERT_EQUALS(g.sizeEdges(), 4u)
+    }
+
+    GUM_TEST(DAGCopyConstructor) {
+      gum::DAG dag;
+      dag.addNodes(10);
+      dag.addArc(1, 2);
+      dag.addArc(1, 3);
+      dag.addArc(3, 2);
+      dag.addArc(4, 5);
+
+      gum::PDAG g(dag);
+      TS_ASSERT_EQUALS(g.size(), 10u)
+      TS_ASSERT_EQUALS(g.sizeArcs(), 4u)
+      TS_ASSERT_EQUALS(g.sizeEdges(), 0u)
+    }
+
     GUM_TEST(EmptyNodes) {
       gum::PDAG graph;
 

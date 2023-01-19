@@ -344,8 +344,8 @@ class GraphicalBNComparator:
     """
     # convert graphs to cpdags
 
-    cpdag1 = gum.EssentialGraph(self._bn1).mixedGraph()
-    cpdag2 = gum.EssentialGraph(self._bn2).mixedGraph()
+    cpdag1 = gum.EssentialGraph(self._bn1).pdag()
+    cpdag2 = gum.EssentialGraph(self._bn2).pdag()
 
     # We look at all combinations
     listVariables = self._bn1.names()

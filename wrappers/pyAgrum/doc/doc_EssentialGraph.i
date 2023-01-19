@@ -126,10 +126,10 @@ int
 	the number of nodes in the graph
 "
 
-%feature("docstring") gum::EssentialGraph::mixedGraph
+%feature("docstring") gum::EssentialGraph::pdag
 "
 Returns
 -------
-pyAgrum.MixedGraph
-	the mixed graph
+pyAgrum.PDAG
+	the PDAG (Partially Directed Graph)
 "

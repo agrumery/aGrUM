@@ -30,7 +30,7 @@
 #define GUM_ESSENTIALGRAPH_H
 
 #include <agrum/tools/graphicalModels/DAGmodel.h>
-#include <agrum/tools/graphs/mixedGraph.h>
+#include <agrum/tools/graphs/PDAG.h>
 
 namespace gum {
 
@@ -55,14 +55,14 @@ namespace gum {
     // this constructor will build the essential graph
     explicit EssentialGraph(const DAGmodel& m);
     // this constructor will use mh as essential graph for m
-    EssentialGraph(const DAGmodel& m, const MixedGraph& mg);
+    EssentialGraph(const DAGmodel& m, const PDAG& mg);
     EssentialGraph(const EssentialGraph& g);
     EssentialGraph& operator=(const EssentialGraph& g);
 
     ~EssentialGraph();
 
     /// @return a copy of the mixed graph
-    MixedGraph mixedGraph() const;
+    PDAG pdag() const;
 
     /// @return a dot representation of this essentialGraph
     std::string toDot() const;
@@ -105,10 +105,12 @@ namespace gum {
 
     private:
     void _buildEssentialGraph_();
-    bool _strongly_protected_(NodeId a, NodeId b);
+    bool _strongly_protected_(NodeId a, NodeId b) const;
+
+    static bool _strongly_protected_(MixedGraph mg, NodeId a, NodeId b);
 
     const DAGmodel* _dagmodel_;
-    MixedGraph      _mg_;
+    PDAG            _pdag_;
   };
 }   // namespace gum
 

@@ -35,8 +35,7 @@
 namespace gum {
   EssentialGraph::EssentialGraph(const DAGmodel& m) : _dagmodel_(&m) { _buildEssentialGraph_(); }
 
-  EssentialGraph::EssentialGraph(const DAGmodel& m, const MixedGraph& mg) :
-      _dagmodel_(&m), _mg_(mg) {}
+  EssentialGraph::EssentialGraph(const DAGmodel& m, const PDAG& mg) : _dagmodel_(&m), _pdag_(mg) {}
   EssentialGraph::EssentialGraph(const EssentialGraph& g) {
     _dagmodel_ = g._dagmodel_;
     _buildEssentialGraph_();
@@ -52,56 +51,69 @@ namespace gum {
   EssentialGraph::~EssentialGraph() = default;
 
   void EssentialGraph::_buildEssentialGraph_() {
-    _mg_.clear();
+    MixedGraph mg;   // during the process, the graph may not be a PDAG
+    _pdag_.clear();
     if (_dagmodel_ == nullptr) return;
 
     for (const auto& node: _dagmodel_->nodes()) {
-      _mg_.addNodeWithId(node);
+      mg.addNodeWithId(node);
+      _pdag_.addNodeWithId(node);
     }
     for (const auto& arc: _dagmodel_->arcs()) {
-      _mg_.addArc(arc.tail(), arc.head());
+      mg.addArc(arc.tail(), arc.head());
     }
 
     std::vector< Arc > v;
     do {
       v.clear();
       for (const auto x: _dagmodel_->topologicalOrder())
-        for (const auto y: _mg_.children(x))
-          if (!_strongly_protected_(x, y)) v.emplace_back(x, y);
+        for (const auto y: mg.children(x))
+          if (!_strongly_protected_(mg, x, y)) v.emplace_back(x, y);
 
       for (const auto& arc: v) {
-        _mg_.eraseArc(arc);
-        _mg_.addEdge(arc.tail(), arc.head());
+        mg.eraseArc(arc);
+        mg.addEdge(arc.tail(), arc.head());
       }
     } while (!v.empty());
+
+    for (const auto& arc: mg.arcs()) {
+      _pdag_.addArc(arc.tail(), arc.head());
+    }
+    for (const auto& edge: mg.edges()) {
+      _pdag_.addEdge(edge.first(), edge.second());
+    }
   }
 
-  bool EssentialGraph::_strongly_protected_(NodeId a, NodeId b) {
+  bool EssentialGraph::_strongly_protected_(NodeId a, NodeId b) const {
+    return _strongly_protected_(_pdag_, a, b);
+  }
+
+  bool EssentialGraph::_strongly_protected_(MixedGraph mg, NodeId a, NodeId b) {
     // testing a->b from
     // A Characterization of Markov Equivalence Classes for Acyclic Digraphs (2001)
     //  Steen A. Andersson, David Madigan, and Michael D. Perlman*
 
     // condition (a)
-    for (const auto& c: _mg_.parents(a)) {
-      if (!_mg_.existsArc(c, b)) { return true; }
+    for (const auto& c: mg.parents(a)) {
+      if (!mg.existsArc(c, b)) { return true; }
     }
 
 
-    for (const auto& c: _mg_.parents(b)) {
+    for (const auto& c: mg.parents(b)) {
       if (c == a) { continue; }
       // condition (c)
-      if (_mg_.existsArc(a, c)) { return true; }
+      if (mg.existsArc(a, c)) { return true; }
 
       // condition (b) knowing that a can not be a parent of c (condition below)
-      if (!_mg_.existsEdge(a, c) && !_mg_.existsArc(c, a)) { return true; }
+      if (!mg.existsEdge(a, c) && !mg.existsArc(c, a)) { return true; }
     }
 
     // condition (d)
     bool oneFound = false;
-    for (const auto& c: _mg_.parents(b)) {
+    for (const auto& c: mg.parents(b)) {
       if (c == a) { continue; }
       // condition (d)
-      if (_mg_.existsEdge(c, a)) {
+      if (mg.existsEdge(c, a)) {
         if (oneFound) {   // this is the second found
           return true;
         }
@@ -122,14 +134,14 @@ namespace gum {
     nodeStream << "node [shape = ellipse];" << std::endl;
     std::string tab = "  ";
     if (_dagmodel_ != nullptr) {
-      for (const auto node: _mg_.nodes()) {
+      for (const auto node: _pdag_.nodes()) {
         nodeStream << tab << node << "[label=\"" << _dagmodel_->variable(node).name() << "\"];";
 
-        for (const auto nei: _mg_.neighbours(node))
+        for (const auto nei: _pdag_.neighbours(node))
           if (!treatedNodes.exists(nei))
             edgeStream << tab << node << " -> " << nei << " [dir=none];" << std::endl;
 
-        for (const auto chi: _mg_.children(node))
+        for (const auto chi: _pdag_.children(node))
           edgeStream << tab << node << " -> " << chi << " [color=red];" << std::endl;
 
         treatedNodes.insert(node);

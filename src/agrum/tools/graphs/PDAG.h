@@ -132,7 +132,6 @@ namespace gum {
          bool edges_resize_policy = true);
 
     explicit PDAG(const UndiGraph& g);
-
     explicit PDAG(const DAG& g);
 
     /// copy constructor

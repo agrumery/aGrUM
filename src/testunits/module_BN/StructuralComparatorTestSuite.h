@@ -27,7 +27,7 @@
 #include <agrum/BN/algorithms/structuralComparator.h>
 #include <agrum/tools/graphs/DAG.h>
 #include <agrum/tools/graphs/diGraph.h>
-#include <agrum/tools/graphs/mixedGraph.h>
+#include <agrum/tools/graphs/PDAG.h>
 #include <agrum/tools/graphs/undiGraph.h>
 
 namespace gum_tests {
@@ -85,7 +85,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(comp.f_score_skeleton(), 0.8, 1e-3)
 
       // creating complete graph
-      gum::MixedGraph graph;
+      gum::PDAG graph;
       for (gum::Size i = 0; i < 8; ++i) {
         graph.addNodeWithId(i);
         for (gum::Size j = 0; j < i; ++j) {
@@ -93,7 +93,7 @@ namespace gum_tests {
         }
       }
       // creating Asia
-      gum::MixedGraph asia;
+      gum::PDAG asia;
       for (gum::Size i = 0; i < 8; ++i) {
         asia.addNodeWithId(i);
       }
@@ -106,7 +106,7 @@ namespace gum_tests {
       asia.addArc(5, 7);
       asia.addArc(5, 6);
 
-      gum::MixedGraph g;
+      gum::PDAG g;
 
       TS_ASSERT_THROWS(comp.compare(asia, g), const gum::OperationNotAllowed&)
 
@@ -145,7 +145,7 @@ namespace gum_tests {
       // asia = asia.fastPrototype("0->1;0->2;3->4->5->6;1->5->6;2->6");
       // bn1 = bn1.fastPrototype("3->4;7->5->6;5->4->1->0->2->6;5->1");
 
-      gum::MixedGraph mg;
+      gum::PDAG mg;
       for (gum::Idx i = 0; i < 8; ++i) {
         mg.addNodeWithId(i);
       }
@@ -156,18 +156,17 @@ namespace gum_tests {
       mg.addArc(2, 6);
       mg.addEdge(4, 5);
       mg.addEdge(4, 7);
-      mg.addEdge(5, 2);
       mg.addEdge(2, 3);
 
       TS_GUM_ASSERT_THROWS_NOTHING(comp.compare(mg, asia))
 
       comp.compare(asia, mg);
-      TS_ASSERT_DELTA(comp.precision(), 0.4444, 1e-3)
-      TS_ASSERT_DELTA(comp.recall(), 1, 1e-3)
-      TS_ASSERT_DELTA(comp.f_score(), 0.615385, 1e-3)
-      TS_ASSERT_DELTA(comp.precision_skeleton(), 0.8888, 1e-3)
-      TS_ASSERT_DELTA(comp.recall_skeleton(), 1, 1e-3)
-      TS_ASSERT_DELTA(comp.f_score_skeleton(), 0.9412, 1e-3)
+      TS_ASSERT_DELTA(comp.precision(), 0.5, 1e-3)
+      TS_ASSERT_DELTA(comp.recall(), 0.8, 1e-3)
+      TS_ASSERT_DELTA(comp.f_score(), 0.615384, 1e-3)
+      TS_ASSERT_DELTA(comp.precision_skeleton(), 0.875, 1e-3)
+      TS_ASSERT_DELTA(comp.recall_skeleton(), 0.875, 1e-3)
+      TS_ASSERT_DELTA(comp.f_score_skeleton(), 0.875, 1e-3)
     }
   };
 

@@ -193,19 +193,9 @@ def learnEssentialGraph(self):
   bn=BayesNet()
   for i in range(len(self.names())):
     bn.add(self.nameFromId(i),2)
-  ge=EssentialGraph(bn,self.learnMixedStructure())
+  ge=EssentialGraph(bn,self.learnPDAG())
   ge._bn=bn
   return ge
 
   }
 };
-
-
-%pythonappend gum::learning::BNLearner< double >::learnMixedStructure %{
-        bn=BayesNet()
-        for i in range(len(self.names())):
-          bn.add(self.nameFromId(i),2)
-        ge=EssentialGraph(bn,val)
-        ge._bn=bn
-        return ge
-%}

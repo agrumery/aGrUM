@@ -360,7 +360,7 @@ namespace gum::learning {
 
     /// learn a partial structure from a file (must have read the db before and
     /// must have selected miic or 3off2)
-    MixedGraph learnMixedStructure();
+    PDAG learnPDAG();
 
     /// sets an initial DAG structure
     void setInitialDAG(const DAG&);

@@ -31,7 +31,7 @@
 #define GUM_LEARNING_STRUCTURAL_COMPARATOR_H
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/tools/graphs/mixedGraph.h>
+#include <agrum/tools/graphs/PDAG.h>
 
 
 namespace gum {
@@ -64,17 +64,17 @@ namespace gum {
     void compare(const DiGraph& ref, const DiGraph& test);
     /// compare two UndiGraphs
     void compare(const UndiGraph& ref, const UndiGraph& test);
-    /// compare two MixedGraphs
-    void compare(const MixedGraph& ref, const MixedGraph& test);
+    /// compare two PDAGs
+    void compare(const PDAG& ref, const PDAG& test);
     /// compare two BNs based on their DAG
     template < typename GS1, typename GS2 >
     void compare(const BayesNet< GS1 >& ref, const BayesNet< GS2 >& test);
-    /// compare a MixedGraph with the essential graph of a reference BN
+    /// compare a PDAG with the essential graph of a reference BN
     template < typename GUM_SCALAR >
-    void compare(const BayesNet< GUM_SCALAR >& ref, const MixedGraph& test);
-    /// compare the essential graph of a BN with a reference MixedGraph
+    void compare(const BayesNet< GUM_SCALAR >& ref, const PDAG& test);
+    /// compare the essential graph of a BN with a reference PDAG
     template < typename GUM_SCALAR >
-    void compare(const MixedGraph& ref, const BayesNet< GUM_SCALAR >& test);
+    void compare(const PDAG& ref, const BayesNet< GUM_SCALAR >& test);
 
     /// Measures for the skeleton, aka graph without orientations
     double precision_skeleton() const;

@@ -565,7 +565,7 @@ namespace gum::learning {
     return mgraph;
   }
 
-  MixedGraph IBNLearner::learnMixedStructure() {
+  PDAG IBNLearner::learnPDAG() {
     if (selectedAlgo_ != AlgoType::MIIC && selectedAlgo_ != AlgoType::THREE_OFF_TWO) {
       GUM_ERROR(OperationNotAllowed, "Must be using the miic/3off2 algorithm")
     }
@@ -580,7 +580,16 @@ namespace gum::learning {
     // create the mixedGraph_constraint_MandatoryArcs.arcs
     MixedGraph mgraph = this->prepareMiic3Off2_();
 
-    return algoMiic3off2_.learnMixedStructure(*mutualInfo_, mgraph);
+    auto mg = algoMiic3off2_.learnMixedStructure(*mutualInfo_, mgraph);
+
+    PDAG res;
+    for (auto n: mg.nodes())
+      res.addNodeWithId(n);
+    for (auto& edge: mg.edges())
+      res.addEdge(edge.first(),edge.second());
+    for (auto& arc: mg.arcs())
+      res.addArc(arc.tail(),arc.head());
+    return res;
   }
 
   DAG IBNLearner::learnDAG() {
