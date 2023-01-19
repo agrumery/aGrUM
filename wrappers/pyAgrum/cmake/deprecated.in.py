@@ -104,11 +104,21 @@ def _addDeprecatedMethods():
 ** pyAgrum.BNLearner.useAprioriDirichlet() is deprecated from pyAgrum>1.1.1. Please use useDirichletPrior() methods instead.
 """, DeprecationWarning, stacklevel=2)
     return learner.useDirichletPrior()
+  
+  def deprecated_learnMixedGraph(learner):
+    """
+    Deprecated methods in BNLearner for pyAgrum>1.5.2
+    """
+    warnings.warn("""
+** pyAgrum.BNLearner.learnMixedGraph() is deprecated from pyAgrum>1.5.2. Please use learnPDAG() methods instead.
+""", DeprecationWarning, stacklevel=2)
+    return learner.learnPDAG()
 
   BNLearner.useNoApriori = deprecated_useNoApriori
   BNLearner.useAprioriBDeu = deprecated_useAprioriBDeu
   BNLearner.useAprioriSmoothing = deprecated_useAprioriSmoothing
   BNLearner.useAprioriDirichlet = deprecated_useAprioriDirichlet
+  BNLearner.learnMixedGraph = deprecated_learnMixedGraph
   MixedGraph.adjacents = deprecated_adjacents
 
 def getNumberOfRunningThreads():

@@ -514,7 +514,7 @@ def fastID(structure, domain_size=2):
   return InfluenceDiagram.fastPrototype(structure, domain_size)
 
 
-def getPosterior(model, * , evs, target):
+def getPosterior(model, * , target,evs=None):
   """
   Compute the posterior of a single target (variable) in a BN given evidence
 
@@ -528,10 +528,10 @@ def getPosterior(model, * , evs, target):
   ----------
   bn : pyAgrum.BayesNet or pyAgrum.MarkovNet
     The probabilistic Graphical Model
-  evs:  dictionaryDict
-    {name|id:val, name|id : [ val1, val2 ], ...}. (forced keyword argument)
   target: string or int
     variable name or id (forced keyword argument)
+  evs:  Dict[name|id:val, name|id : List[ val1, val2 ], ...]. (optional forced keyword argument)
+    the (hard and soft) evidence
 
   Returns
   -------
@@ -544,7 +544,8 @@ def getPosterior(model, * , evs, target):
   else:
     raise InvalidArgument("Argument model should be a PGM (BayesNet or MarkovNet")
 
-  inf.setEvidence(evs)
+  if evs is not None:
+    inf.setEvidence(evs)
   inf.addTarget(target)
   inf.makeInference()
   # creating a new Potential from posterior(will disappear with ie)
