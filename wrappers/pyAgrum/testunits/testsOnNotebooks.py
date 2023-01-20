@@ -59,7 +59,6 @@ def processNotebook(notebook_filename):
         ep.preprocess(nb, {'metadata': {'path': '../doc/sphinx/notebooks/'}})
         break
       except RuntimeError as e:
-        print(str(e))
         if str(e) == "Kernel died before replying to kernel_info" or str(e)=="Kernel didn't respond in 60 seconds":
           time.sleep(random.randint(5, 10) / 10.0)
         else:
@@ -113,7 +112,6 @@ def runNotebooks():
     if not os.path.basename(filename) in excludes:
       l.append(filename)
 
-  print(l)
   startTime = time.time()
 
   # concurrent

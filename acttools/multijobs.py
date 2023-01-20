@@ -232,7 +232,10 @@ def threaded_execution(cde, verbose):
           if line[0] == "/":
             print(prettifying_errors(line))
           else:
-            error(line)
+            if "IPKernelApp" in line:
+              pass # do nothing for Kernel App warnings
+            else:
+              error(line)
     return lastline
 
   while p.poll() is None:
