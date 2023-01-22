@@ -586,9 +586,9 @@ namespace gum::learning {
     for (auto n: mg.nodes())
       res.addNodeWithId(n);
     for (auto& edge: mg.edges())
-      res.addEdge(edge.first(),edge.second());
+      res.addEdge(edge.first(), edge.second());
     for (auto& arc: mg.arcs())
-      res.addArc(arc.tail(),arc.head());
+      res.addArc(arc.tail(), arc.head());
     return res;
   }
 

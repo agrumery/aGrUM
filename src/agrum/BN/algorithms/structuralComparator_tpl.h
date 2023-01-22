@@ -34,8 +34,8 @@ namespace gum {
         GUM_ERROR(InvalidNode, "Test doesn't contain node " << node << " from ref")
       }
     }
-    PDAG ref_eg = EssentialGraph(ref).pdag();
-    auto eg = EssentialGraph(test);
+    PDAG ref_eg  = EssentialGraph(ref).pdag();
+    auto eg      = EssentialGraph(test);
     PDAG test_eg = eg.pdag();
 
     this->compare(ref_eg, test_eg);
