@@ -3,7 +3,7 @@ Random Variables
 
 aGrUM/pyAgrum is currently dedicated for discrete probability distributions.
 
-There are 5 types of discrete random variables in aGrUM/pyAgrum: LabelizedVariable, DiscretizedVariable, IntegerVariable, RangeVariable and NumericalDiscreteVariable. The 5 types are mainly provided in order to ease modelization. Derived from DiscreteVariable, they share a common API. They essentially differ by the means to create, name and access to their modalities.
+There are 5 types of discrete random variables in aGrUM/pyAgrum: `gum.LabelizedVariable`, `gum.DiscretizedVariable`, `gum.IntegerVariable`, `gum.RangeVariable` and `gum.NumericalDiscreteVariable`. The 5 types are mainly provided in order to ease modelization. Derived from DiscreteVariable, they share a common API. They essentially differ by the means to create, name and access to their modalities.
 
 Common API for Random Discrete Variables
 ----------------------------------------

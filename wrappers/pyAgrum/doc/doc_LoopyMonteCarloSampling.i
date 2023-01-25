@@ -1,4 +1,4 @@
-%feature("docstring") gum::LoopySamplingInference<float,gum::MonteCarloSampling>
+%feature("docstring") gum::LoopySamplingInference
 "
 Class used for inferences using a loopy version of Monte Carlo sampling.
 

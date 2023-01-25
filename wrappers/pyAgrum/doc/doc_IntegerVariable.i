@@ -2,7 +2,7 @@
 "
 IntegerVariable is a discrete random variable with a customizable sequence of int.
 
-IntegerVariable(aName, aDesc='', values) -> IntegerVariable
+IntegerVariable(aName, aDesc='', values=None) -> IntegerVariable
     Parameters:
         * **aName** (str) -- the name of the variable
         * **aDesc** (str) -- the (optional) description of the variable
@@ -21,7 +21,7 @@ Examples
 a:Integer(<1,34,142>)
 >>> va.addValue(25)
 (pyAgrum.IntegerVariable@000001E4F5D07490) a:Integer(<1,25,34,142>)
->>> va.changeLabel(34,43)
+>>> va.changeValue(34,43)
 >>> print(va)
 a:Integer(<1,25,43,142>)
 >>> vb=gum.IntegerVariable('b','b').addValue(34).addValue(142).addValue(1)

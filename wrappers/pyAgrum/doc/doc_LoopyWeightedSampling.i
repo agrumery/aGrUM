@@ -1,4 +1,4 @@
-%feature("docstring") gum::LoopySamplingInference<float,gum::WeightedSampling>
+%feature("docstring") gum::LoopySamplingInference
 "
 Class used for inferences using a loopy version of weighted sampling.
 

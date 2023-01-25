@@ -3055,7 +3055,7 @@ class IntegerVariable(DiscreteVariable):
 
     IntegerVariable is a discrete random variable with a customizable sequence of int.
 
-    IntegerVariable(aName, aDesc='', values) -> IntegerVariable
+    IntegerVariable(aName, aDesc='', values=None) -> IntegerVariable
         Parameters:
             * **aName** (str) -- the name of the variable
             * **aDesc** (str) -- the (optional) description of the variable
@@ -3074,7 +3074,7 @@ class IntegerVariable(DiscreteVariable):
     a:Integer(<1,34,142>)
     >>> va.addValue(25)
     (pyAgrum.IntegerVariable@000001E4F5D07490) a:Integer(<1,25,34,142>)
-    >>> va.changeLabel(34,43)
+    >>> va.changeValue(34,43)
     >>> print(va)
     a:Integer(<1,25,43,142>)
     >>> vb=gum.IntegerVariable('b','b').addValue(34).addValue(142).addValue(1)
@@ -3302,6 +3302,40 @@ class IntegerVariable(DiscreteVariable):
 # Register IntegerVariable in _pyAgrum:
 _pyAgrum.IntegerVariable_swigregister(IntegerVariable)
 class NumericalDiscreteVariable(DiscreteVariable):
+    r"""
+
+    NumericalDiscreteVariable is a discrete random variable with a customizable sequence of float.
+
+    NumericalDiscreteVariable(aName, aDesc='', values=None) -> NumericalDiscreteVariable
+        Parameters:
+            * **aName** (str) -- the name of the variable
+            * **aDesc** (str) -- the (optional) description of the variable
+            * **values** (List[float]) -- the values to create
+
+    NumericalDiscreteVariable(aIDRV) -> NumericalDiscreteVariable
+        Parameters:
+            * **aIDRV** (*pyAgrum.NumericalDiscreteVariable*) -- The pyAgrum.NumericalDiscreteVariable that will be copied
+
+    Examples
+    --------
+    >>> import pyAgrum as gum
+    >>> # creating a variable with 3 values : 1.5,3.14,1.42
+    >>> va=gum.NumericalDiscreteVariable('a','a numerica variable',[1.5,3.14,1.42])
+    >>> print(va)
+    a:NumericalDiscrete({1.42|1.5|3.14})
+    >>> va.addValue(2.01)
+    (pyAgrum.NumericalDiscreteVariable@0x55ea157b8d60) a:NumericalDiscrete({1.42|1.5|2.01|3.14})
+    >>> va.changeValue(3.14,3.1415)
+    >>> print(va)
+    a:NumericalDiscrete({1.42|1.5|2.01|3.1415})
+    >>> vb=gum.NumericalDiscreteVariable('b','b').addValue(3.14).addValue(1.42).addValue(1.5)
+    >>> print(vb)
+    b:NumericalDiscrete({1.42|1.5|3.14})
+    >>> vb.labels()
+    ('1.42', '1.5', '3.14')
+
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
 
     def __init__(self, *args):
@@ -3451,15 +3485,52 @@ class NumericalDiscreteVariable(DiscreteVariable):
 
 
     def isValue(self, value: float) -> bool:
+        r"""
+
+        Parameters
+        ----------
+        value: int
+            the value to look at.
+
+        Returns
+        -------
+        bool
+            True if the value is in the domain.
+
+        """
         return _pyAgrum.NumericalDiscreteVariable_isValue(self, value)
 
     def changeValue(self, old_value: float, new_value: float) -> None:
+        r"""
+
+        Parameters
+        ----------
+        old_value : int
+            the value to be changed
+
+        new_value : int
+            the new value
+
+        """
         return _pyAgrum.NumericalDiscreteVariable_changeValue(self, old_value, new_value)
 
     def eraseValue(self, value: float) -> None:
+        r"""
+
+        Parameters
+        ----------
+        value: int
+            the value to erase. If the value is not in the domain, the function does nothing (no exception raised)
+
+        """
         return _pyAgrum.NumericalDiscreteVariable_eraseValue(self, value)
 
     def eraseValues(self) -> None:
+        r"""
+
+        Remove all the domain.
+
+        """
         return _pyAgrum.NumericalDiscreteVariable_eraseValues(self)
 
     def closestIndex(self, val: float) -> int:
@@ -3475,6 +3546,14 @@ class NumericalDiscreteVariable(DiscreteVariable):
         return _pyAgrum.NumericalDiscreteVariable___str__(self)
 
     def numericalDomain(self) -> object:
+        r"""
+
+        Returns
+        -------
+        list[float]
+            the list of float values that form the domain of this variable
+
+        """
         return _pyAgrum.NumericalDiscreteVariable_numericalDomain(self)
 
 # Register NumericalDiscreteVariable in _pyAgrum:
@@ -19182,6 +19261,16 @@ class MonteCarloSampling(object):
 # Register MonteCarloSampling in _pyAgrum:
 _pyAgrum.MonteCarloSampling_swigregister(MonteCarloSampling)
 class LoopyImportanceSampling(ImportanceSampling):
+    r"""
+
+    Class used for inferences using a loopy version of importance sampling.
+
+    LoopyImportanceSampling(bn) -> LoopyImportanceSampling
+        Parameters:
+            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
+
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
@@ -19946,6 +20035,16 @@ class LoopyImportanceSampling(ImportanceSampling):
 # Register LoopyImportanceSampling in _pyAgrum:
 _pyAgrum.LoopyImportanceSampling_swigregister(LoopyImportanceSampling)
 class LoopyWeightedSampling(WeightedSampling):
+    r"""
+
+    Class used for inferences using a loopy version of importance sampling.
+
+    LoopyImportanceSampling(bn) -> LoopyImportanceSampling
+        Parameters:
+            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
+
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
@@ -20710,6 +20809,16 @@ class LoopyWeightedSampling(WeightedSampling):
 # Register LoopyWeightedSampling in _pyAgrum:
 _pyAgrum.LoopyWeightedSampling_swigregister(LoopyWeightedSampling)
 class LoopyGibbsSampling(GibbsSampling):
+    r"""
+
+    Class used for inferences using a loopy version of importance sampling.
+
+    LoopyImportanceSampling(bn) -> LoopyImportanceSampling
+        Parameters:
+            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
+
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
@@ -21540,6 +21649,16 @@ class LoopyGibbsSampling(GibbsSampling):
 # Register LoopyGibbsSampling in _pyAgrum:
 _pyAgrum.LoopyGibbsSampling_swigregister(LoopyGibbsSampling)
 class LoopyMonteCarloSampling(MonteCarloSampling):
+    r"""
+
+    Class used for inferences using a loopy version of importance sampling.
+
+    LoopyImportanceSampling(bn) -> LoopyImportanceSampling
+        Parameters:
+            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
+
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 

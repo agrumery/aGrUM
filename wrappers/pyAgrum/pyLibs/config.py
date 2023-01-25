@@ -70,11 +70,11 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
   def _check_bool_false(self, s):
     return s.upper() in ["FALSE", "0", "OFF", "NO"]
 
-  class Casterization:
+  class _Casterization:
     def __init__(self, container):
       self.container = container
 
-  class CastAsInt(Casterization):
+  class _CastAsInt(_Casterization):
     def __getitem__(self, x):
       return int(self.container[x])
 
@@ -85,7 +85,7 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
       else:
         raise ValueError(f"'{s}' must contain an int.")
 
-  class CastAsFloat(Casterization):
+  class _CastAsFloat(_Casterization):
     def __getitem__(self, x):
       return float(self.container[x])
 
@@ -96,7 +96,7 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
       else:
         raise ValueError(f"'{s}' must contain a float.")
 
-  class CastAsBool(Casterization):
+  class _CastAsBool(_Casterization):
     def __getitem__(self, x):
       return self.container._check_bool_true(self.container[x])
 
@@ -115,9 +115,9 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
     self.__defaults = self.__str__()
     self.__hooks = []
 
-    self.asInt = self.CastAsInt(self)
-    self.asFloat = self.CastAsFloat(self)
-    self.asBool = self.CastAsBool(self)
+    self.asInt = self._CastAsInt(self)
+    self.asFloat = self._CastAsFloat(self)
+    self.asBool = self._CastAsBool(self)
 
   def add_hook(self, fn):
     self.__hooks.append(fn)
