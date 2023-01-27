@@ -153,3 +153,73 @@ int :
 
 	0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: RangeVariable, 4:
 "
+
+%feature("docstring") gum::DiscreteVariable::asLabelizedVar
+"
+Tries to cast the variable as a `gum.LabelizedVar`.
+
+Raises
+------
+gum.OperationNotAllowed if this is not possible
+
+Returns
+-------
+gum.LabelizedVar
+  the variable as a gum.LabelizedVar
+"
+
+%feature("docstring") gum::DiscreteVariable::asRangeVar
+"
+Tries to cast the variable as a `gum.RangeVar`.
+
+Raises
+------
+gum.OperationNotAllowed if this is not possible
+
+Returns
+-------
+gum.RangeVar
+  the variable as a gum.RangeVar
+"
+
+%feature("docstring") gum::DiscreteVariable::asIntegerVar
+"
+Tries to cast the variable as a `gum.IntegerVar`.
+
+Raises
+------
+gum.OperationNotAllowed if this is not possible
+
+Returns
+-------
+gum.IntegerVar
+  the variable as a gum.IntegerVar
+"
+
+%feature("docstring") gum::DiscreteVariable::asNumericalDiscreteVar
+"
+Tries to cast the variable as a `gum.NumericalDiscreteVar`.
+
+Raises
+------
+gum.OperationNotAllowed if this is not possible
+
+Returns
+-------
+gum.NumericalDiscreteVar
+  the variable as a gum.NumericalDiscreteVar
+"
+
+%feature("docstring") gum::DiscreteVariable::asDiscretizedVar
+"
+Tries to cast the variable as a `gum.DiscretizedVar`.
+
+Raises
+------
+gum.OperationNotAllowed if this is not possible
+
+Returns
+-------
+gum.DiscretizedVar
+  the variable as a gum.DiscretizedVar
+"

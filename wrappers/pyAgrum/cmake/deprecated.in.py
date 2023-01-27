@@ -11,6 +11,7 @@ from .pyAgrum import BayesNet, EssentialGraph, MarkovBlanket
 from .pyAgrum import InfluenceDiagram, ShaferShenoyLIMIDInference
 from .pyAgrum import ExactBNdistance, GibbsBNdistance
 from .pyAgrum import BNLearner, JunctionTreeGenerator
+from .pyAgrum import DiscreteVariable
 
 
 def deprecated_arg(newA, oldA, version):
@@ -113,13 +114,66 @@ def _addDeprecatedMethods():
 ** pyAgrum.BNLearner.learnMixedGraph() is deprecated from pyAgrum>1.5.2. Please use learnPDAG() methods instead.
 """, DeprecationWarning, stacklevel=2)
     return learner.learnPDAG()
+  
+  def deprecated_toLabelizedVar(var):
+    """
+    Deprecated method in gum.DiscreteVariable for pyAgrum>1.5.2
+    """
+    warnings.warn("""
+** pyAgrum.DiscreteVariable.toLabelizedVar() is deprecated from pyAgrum>1.5.2. Please use pyAgrum.DiscreteVariable.asLabelizedVar() method instead.
+""", DeprecationWarning, stacklevel=2)
+    return var.asLabelizedVar()
+
+  def deprecated_toRangeVar(var):
+    """
+    Deprecated method in gum.DiscreteVariable for pyAgrum>1.5.2
+    """
+    warnings.warn("""
+** pyAgrum.DiscreteVariable.toRangeVar() is deprecated from pyAgrum>1.5.2. Please use pyAgrum.DiscreteVariable.asRangeVar() method instead.
+""", DeprecationWarning, stacklevel=2)
+    return var.asRangeVar()
+
+  def deprecated_toIntegerVar(var):
+    """
+    Deprecated method in gum.DiscreteVariable for pyAgrum>1.5.2
+    """
+    warnings.warn("""
+** pyAgrum.DiscreteVariable.toIntegerVar() is deprecated from pyAgrum>1.5.2. Please use pyAgrum.DiscreteVariable.asIntegerVar() method instead.
+""", DeprecationWarning, stacklevel=2)
+    return var.asIntegerVar()
+
+  def deprecated_toNumericalDiscreteVar(var):
+    """
+    Deprecated method in gum.DiscreteVariable for pyAgrum>1.5.2
+    """
+    warnings.warn("""
+** pyAgrum.DiscreteVariable.toNumericalDiscreteVar() is deprecated from pyAgrum>1.5.2. Please use pyAgrum.DiscreteVariable.asNumericalDiscreteVar() method instead.
+""", DeprecationWarning, stacklevel=2)
+    return var.asNumericalDiscreteVar()
+
+  def deprecated_toDiscretizedVar(var):
+    """
+    Deprecated method in gum.DiscreteVariable for pyAgrum>1.5.2
+    """
+    warnings.warn("""
+** pyAgrum.DiscreteVariable.toDiscretizedVar() is deprecated from pyAgrum>1.5.2. Please use pyAgrum.DiscreteVariable.asDiscretizedVar() methods instead.
+""", DeprecationWarning, stacklevel=2)
+    return var.asDiscretizedVar()
+
 
   BNLearner.useNoApriori = deprecated_useNoApriori
   BNLearner.useAprioriBDeu = deprecated_useAprioriBDeu
   BNLearner.useAprioriSmoothing = deprecated_useAprioriSmoothing
   BNLearner.useAprioriDirichlet = deprecated_useAprioriDirichlet
   BNLearner.learnMixedGraph = deprecated_learnMixedGraph
+
   MixedGraph.adjacents = deprecated_adjacents
+
+  DiscreteVariable.toLabelizedVar = deprecated_toLabelizedVar
+  DiscreteVariable.toRangeVar = deprecated_toRangeVar
+  DiscreteVariable.toIntegerVar = deprecated_toIntegerVar
+  DiscreteVariable.toNumericalDiscreteVar = deprecated_toNumericalDiscreteVar
+  DiscreteVariable.toDiscretizedVar = deprecated_toDiscretizedVar
 
 def getNumberOfRunningThreads():
   warnings.warn(""""

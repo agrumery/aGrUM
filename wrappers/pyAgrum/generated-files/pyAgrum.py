@@ -2506,59 +2506,90 @@ class DiscreteVariable(Variable):
         return self.index(label)
 
 
-    def toLabelizedVar(self) -> "pyAgrum.LabelizedVariable":
+    def asLabelizedVar(self) -> "pyAgrum.LabelizedVariable":
         r"""
 
-        Returns
-        -------
-        pyAgrum.LabelizedVariable
-        	the labelized variable
+        Tries to cast the variable as a `gum.LabelizedVar`.
 
         Raises
         ------
-        pyAgrum.RuntimeError
-        	If the variable is not a LabelizedVariable
-
-        """
-        return _pyAgrum.DiscreteVariable_toLabelizedVar(self)
-
-    def toRangeVar(self) -> "pyAgrum.RangeVariable":
-        r"""
+        gum.OperationNotAllowed if this is not possible
 
         Returns
         -------
-        pyAgrum.RangeVariable
-        	the range variable
+        gum.LabelizedVar
+          the variable as a gum.LabelizedVar
+
+        """
+        return _pyAgrum.DiscreteVariable_asLabelizedVar(self)
+
+    def asRangeVar(self) -> "pyAgrum.RangeVariable":
+        r"""
+
+        Tries to cast the variable as a `gum.RangeVar`.
 
         Raises
         ------
-        pyAgrum.RuntimeError
-        	If the variable is not a RangeVariable
-
-        """
-        return _pyAgrum.DiscreteVariable_toRangeVar(self)
-
-    def toIntegerVar(self) -> "pyAgrum.IntegerVariable":
-        return _pyAgrum.DiscreteVariable_toIntegerVar(self)
-
-    def toNumericalDiscreteVar(self) -> "pyAgrum.NumericalDiscreteVariable":
-        return _pyAgrum.DiscreteVariable_toNumericalDiscreteVar(self)
-
-    def toDiscretizedVar(self) -> "pyAgrum.DiscretizedVariable":
-        r"""
+        gum.OperationNotAllowed if this is not possible
 
         Returns
         -------
-        pyAgrum.DiscretizedVariable
-        	the discretized variable
+        gum.RangeVar
+          the variable as a gum.RangeVar
+
+        """
+        return _pyAgrum.DiscreteVariable_asRangeVar(self)
+
+    def asIntegerVar(self) -> "pyAgrum.IntegerVariable":
+        r"""
+
+        Tries to cast the variable as a `gum.IntegerVar`.
 
         Raises
         ------
-        pyAgrum.RuntimeError
-        	If the variable is not a DiscretizedVariable
+        gum.OperationNotAllowed if this is not possible
+
+        Returns
+        -------
+        gum.IntegerVar
+          the variable as a gum.IntegerVar
 
         """
-        return _pyAgrum.DiscreteVariable_toDiscretizedVar(self)
+        return _pyAgrum.DiscreteVariable_asIntegerVar(self)
+
+    def asNumericalDiscreteVar(self) -> "pyAgrum.NumericalDiscreteVariable":
+        r"""
+
+        Tries to cast the variable as a `gum.NumericalDiscreteVar`.
+
+        Raises
+        ------
+        gum.OperationNotAllowed if this is not possible
+
+        Returns
+        -------
+        gum.NumericalDiscreteVar
+          the variable as a gum.NumericalDiscreteVar
+
+        """
+        return _pyAgrum.DiscreteVariable_asNumericalDiscreteVar(self)
+
+    def asDiscretizedVar(self) -> "pyAgrum.DiscretizedVariable":
+        r"""
+
+        Tries to cast the variable as a `gum.DiscretizedVar`.
+
+        Raises
+        ------
+        gum.OperationNotAllowed if this is not possible
+
+        Returns
+        -------
+        gum.DiscretizedVar
+          the variable as a gum.DiscretizedVar
+
+        """
+        return _pyAgrum.DiscreteVariable_asDiscretizedVar(self)
 
 # Register DiscreteVariable in _pyAgrum:
 _pyAgrum.DiscreteVariable_swigregister(DiscreteVariable)
