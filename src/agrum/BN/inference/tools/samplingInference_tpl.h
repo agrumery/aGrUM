@@ -29,7 +29,7 @@
 
 #include <agrum/BN/BayesNetFragment.h>
 #include <agrum/BN/algorithms/barrenNodesFinder.h>
-#include <agrum/BN/algorithms/dSeparation.h>
+#include <agrum/BN/algorithms/dSeparationAlgorithm.h>
 #include <agrum/BN/inference/tools/samplingInference.h>
 
 
@@ -119,7 +119,7 @@ namespace gum {
 
     // D-separated nodes
 
-    dSeparation dsep = gum::dSeparation();
+    dSeparationAlgorithm dsep = gum::dSeparationAlgorithm();
     NodeSet     requisite;
     dsep.requisiteNodes(this->BN().dag(),
                         this->BN().nodes().asNodeSet(),   // no target for approximateInference

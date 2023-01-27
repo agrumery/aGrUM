@@ -30,33 +30,33 @@ namespace gum {
 
 
   // default constructor
-  INLINE dSeparation::dSeparation() {
-    GUM_CONSTRUCTOR(dSeparation);
+  INLINE dSeparationAlgorithm::dSeparationAlgorithm() {
+    GUM_CONSTRUCTOR(dSeparationAlgorithm);
     ;
   }
 
 
   // copy constructor
-  INLINE dSeparation::dSeparation(const dSeparation& from) { GUM_CONS_CPY(dSeparation); }
+  INLINE dSeparationAlgorithm::dSeparationAlgorithm(const dSeparationAlgorithm& from) { GUM_CONS_CPY(dSeparationAlgorithm); }
 
 
   // move constructor
-  INLINE dSeparation::dSeparation(dSeparation&& from) { GUM_CONS_MOV(dSeparation); }
+  INLINE dSeparationAlgorithm::dSeparationAlgorithm(dSeparationAlgorithm&& from) { GUM_CONS_MOV(dSeparationAlgorithm); }
 
 
   // destructor
-  INLINE dSeparation::~dSeparation() {
-    GUM_DESTRUCTOR(dSeparation);
+  INLINE dSeparationAlgorithm::~dSeparationAlgorithm() {
+    GUM_DESTRUCTOR(dSeparationAlgorithm);
     ;
   }
 
 
   // copy operator
-  INLINE dSeparation& dSeparation::operator=(const dSeparation& from) { return *this; }
+  INLINE dSeparationAlgorithm& dSeparationAlgorithm::operator=(const dSeparationAlgorithm& from) { return *this; }
 
 
   // move operator
-  INLINE dSeparation& dSeparation::operator=(dSeparation&& from) { return *this; }
+  INLINE dSeparationAlgorithm& dSeparationAlgorithm::operator=(dSeparationAlgorithm&& from) { return *this; }
 
 
 } /* namespace gum */

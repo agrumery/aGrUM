@@ -26,8 +26,8 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#ifndef GUM_D_SEPARATION_H
-#define GUM_D_SEPARATION_H
+#ifndef GUM_D_SEPARATION_ALGORITHM_H
+#define GUM_D_SEPARATION_ALGORITHM_H
 
 
 #include <agrum/BN/IBayesNet.h>
@@ -36,11 +36,11 @@
 
 namespace gum {
 
-  /** @class dSeparation
+  /** @class dSeparationAlgorithm
    * @brief the d-separation algorithm as described in Koller & Friedman (2009)
    * @ingroup bn_inference
    */
-  class dSeparation {
+  class dSeparationAlgorithm {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -48,16 +48,16 @@ namespace gum {
     /// @{
 
     /// default constructor
-    dSeparation();
+    dSeparationAlgorithm();
 
     /// copy constructor
-    dSeparation(const dSeparation& from);
+    dSeparationAlgorithm(const dSeparationAlgorithm& from);
 
     /// move constructor
-    dSeparation(dSeparation&& from);
+    dSeparationAlgorithm(dSeparationAlgorithm&& from);
 
     /// destructor
-    ~dSeparation();
+    ~dSeparationAlgorithm();
 
     /// @}
 
@@ -68,10 +68,10 @@ namespace gum {
     /// @{
 
     /// copy operator
-    dSeparation& operator=(const dSeparation& from);
+    dSeparationAlgorithm& operator=(const dSeparationAlgorithm& from);
 
     /// move operator
-    dSeparation& operator=(dSeparation&& from);
+    dSeparationAlgorithm& operator=(dSeparationAlgorithm&& from);
 
     /// @}
 
@@ -110,10 +110,10 @@ namespace gum {
 
 
 #ifndef GUM_NO_INLINE
-#  include <agrum/BN/algorithms/dSeparation_inl.h>
+#  include <agrum/BN/algorithms/dSeparationAlgorithm_inl.h>
 #endif   // GUM_NO_INLINE
 
-#include <agrum/BN/algorithms/dSeparation_tpl.h>
+#include <agrum/BN/algorithms/dSeparationAlgorithm_tpl.h>
 
 
-#endif /* GUM_D_SEPARATION_H */
+#endif /* GUM_D_SEPARATION_ALGORITHM_H */

@@ -26,24 +26,19 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#include <agrum/BN/algorithms/dSeparation.h>
-#include <agrum/tools/core/list.h>
-
-#ifdef GUM_NO_INLINE
-#  include <agrum/BN/algorithms/dSeparation_inl.h>
-#endif   // GUM_NO_INLINE
 
 namespace gum {
 
-  // Fill 'requisite' with the requisite nodes in dag given a query and
-  // evidence.
-  void dSeparation::requisiteNodes(const DAG&     dag,
-                                   const NodeSet& query,
-                                   const NodeSet& hardEvidence,
-                                   const NodeSet& softEvidence,
-                                   NodeSet&       requisite) const {
-    // for the moment, no node is requisite
-    requisite.clear();
+
+  // update a set of potentials, keeping only those d-connected with
+  // query variables given evidence
+  template < typename GUM_SCALAR, class TABLE >
+  void dSeparationAlgorithm::relevantPotentials(const IBayesNet< GUM_SCALAR >& bn,
+                                       const NodeSet&                 query,
+                                       const NodeSet&                 hardEvidence,
+                                       const NodeSet&                 softEvidence,
+                                       Set< const TABLE* >&           potentials) {
+    const DAG& dag = bn.dag();
 
     // mark the set of ancestors of the evidence
     NodeSet ev_ancestors(dag.size());
@@ -70,6 +65,18 @@ namespace gum {
     NodeSet visited_from_child(dag.size());
     NodeSet visited_from_parent(dag.size());
 
+    /// for relevant potentials: indicate which tables contain a variable
+    /// (nodeId)
+    HashTable< NodeId, Set< const TABLE* > > node2potentials;
+    for (const auto pot: potentials) {
+      const Sequence< const DiscreteVariable* >& vars = pot->variablesSequence();
+      for (const auto var: vars) {
+        const NodeId id = bn.nodeId(*var);
+        if (!node2potentials.exists(id)) { node2potentials.insert(id, Set< const TABLE* >()); }
+        node2potentials[id].insert(pot);
+      }
+    }
+
     // indicate that we will send the ball to all the query nodes (as children):
     // in list nodes_to_visit, the first element is the next node to send the
     // ball to and the Boolean indicates whether we shall reach it from one of
@@ -81,7 +88,7 @@ namespace gum {
 
     // perform the bouncing ball until there is no node in the graph to send
     // the ball to
-    while (!nodes_to_visit.empty()) {
+    while (!nodes_to_visit.empty() && !node2potentials.empty()) {
       // get the next node to visit
       const NodeId node      = nodes_to_visit.front().first;
       const bool   direction = nodes_to_visit.front().second;
@@ -97,11 +104,31 @@ namespace gum {
         if (!already_visited) { visited_from_parent.insert(node); }
       }
 
+      // if the node belongs to the query, update  _node2potentials_: remove all
+      // the potentials containing the node
+      if (node2potentials.exists(node)) {
+        auto& pot_set = node2potentials[node];
+        for (const auto pot: pot_set) {
+          const auto& vars = pot->variablesSequence();
+          for (const auto var: vars) {
+            const NodeId id = bn.nodeId(*var);
+            if (id != node) {
+              node2potentials[id].erase(pot);
+              if (node2potentials[id].empty()) { node2potentials.erase(id); }
+            }
+          }
+        }
+        node2potentials.erase(node);
+
+        // if  _node2potentials_ is empty, no need to go on: all the potentials
+        // are d-connected to the query
+        if (node2potentials.empty()) return;
+      }
+
       // if this is the first time we meet the node, then visit it
       if (!already_visited) {
         // mark the node as reachable if this is not a hard evidence
         const bool is_hard_evidence = hardEvidence.exists(node);
-        if (!is_hard_evidence) { requisite.insert(node); }
 
         // bounce the ball toward the neighbors
         if (direction && !is_hard_evidence) {   // visit from a child
@@ -130,6 +157,15 @@ namespace gum {
         }
       }
     }
+
+    // here, all the potentials that belong to  _node2potentials_ are d-separated
+    // from the query
+    for (const auto& elt: node2potentials) {
+      for (const auto pot: elt.second) {
+        potentials.erase(pot);
+      }
+    }
   }
+
 
 } /* namespace gum */

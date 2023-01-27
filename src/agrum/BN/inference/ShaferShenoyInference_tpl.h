@@ -32,7 +32,7 @@
 
 #  include <agrum/BN/algorithms/BayesBall.h>
 #  include <agrum/BN/algorithms/barrenNodesFinder.h>
-#  include <agrum/BN/algorithms/dSeparation.h>
+#  include <agrum/BN/algorithms/dSeparationAlgorithm.h>
 #  include <agrum/tools/graphs/algorithms/binaryJoinTreeConverterDefault.h>
 #  include <agrum/tools/multidim/instantiation.h>
 #  include <agrum/tools/multidim/utils/operators/multiDimCombineAndProjectDefault.h>
@@ -580,7 +580,7 @@ namespace gum {
         } break;
 
         case RelevantPotentialsFinderType::DSEP_KOLLER_FRIEDMAN_2009: {
-          dSeparation dsep;
+          dSeparationAlgorithm dsep;
           dsep.requisiteNodes(bn.dag(),
                               target_nodes,
                               this->hardEvidenceNodes(),
@@ -1572,7 +1572,7 @@ namespace gum {
     }
 
     // determine the set of potentials d-connected with the kept variables
-    dSeparation dsep;
+    dSeparationAlgorithm dsep;
     dsep.relevantPotentials(bn,
                             kept_ids,
                             this->hardEvidenceNodes(),
