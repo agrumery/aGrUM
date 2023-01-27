@@ -89,9 +89,13 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::IBNLearner,gum::learning::BNLearner<d
   using gum::learning::IBNLearner::domainSize;
 
   using gum::learning::IBNLearner::setNumberOfThreads;
-  using gum::learning::IBNLearner::getNumberOfThreads;
-  using gum::learning::IBNLearner::isGumNumberOfThreadsOverriden;
 
+  Size getNumberOfThreads() const override {
+     return self->getNumberOfThreads();
+  }
+  bool isGumNumberOfThreadsOverriden() const override {
+     return self->isGumNumberOfThreadsOverriden();
+  }
 }
 
 #####################################

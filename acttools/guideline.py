@@ -48,7 +48,7 @@ def guideline(current, modif=False):
   notif("  [(2) check for ]LGPL[ license]")
   #nbrError += _aff_errors(_checkForLGPLlicense(current, modif), "missing LGPL licence")
   notif("  [(3) check for missing documentation in pyAgrum]")
-  nbrError += _aff_errors(_checkForMissingDocs(True), "missing documentation")
+  nbrError += _aff_errors(_checkForMissingDocs(modif), "missing documentation")
   notif("  [(4) check for deps]")
   #nbrError += _aff_errors(check_gum_dependencies(graph=current['build_graph'], correction=modif),
   #                        "redundant dependency")

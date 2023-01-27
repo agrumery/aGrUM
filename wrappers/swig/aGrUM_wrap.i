@@ -192,35 +192,35 @@ namespace std {
 
 /* CLASS EXTENSIONS */
 %extend gum::DiscreteVariable {
-  gum::LabelizedVariable& asLabelizedVar() {
+  gum::LabelizedVariable asLabelizedVar() {
     gum::LabelizedVariable* p = dynamic_cast<gum::LabelizedVariable*>(self );
     if (p==nullptr)
       GUM_ERROR(gum::OperationNotAllowed,"impossible cast as gum.LabelizedVar for "<<*self);
     return *p;
   }
 
-  gum::RangeVariable& asRangeVar() {
+  gum::RangeVariable asRangeVar() {
     gum::RangeVariable* p = dynamic_cast<gum::RangeVariable*>(self );
     if (p==nullptr)
       GUM_ERROR(gum::OperationNotAllowed,"impossible cast as gum.RangeVar for "<<*self);
     return *p;
   }
 
-  gum::IntegerVariable& asIntegerVar() {
+  gum::IntegerVariable asIntegerVar() {
     gum::IntegerVariable* p = dynamic_cast<gum::IntegerVariable*>(self );
     if (p==nullptr)
       GUM_ERROR(gum::OperationNotAllowed,"impossible cast as gum.IntegerVar for "<<*self);
     return *p;
   }
 
-  gum::NumericalDiscreteVariable& asNumericalDiscreteVar() {
+  gum::NumericalDiscreteVariable asNumericalDiscreteVar() {
     gum::NumericalDiscreteVariable* p = dynamic_cast<gum::NumericalDiscreteVariable *>(self);
     if (p==nullptr)
       GUM_ERROR(gum::OperationNotAllowed,"impossible cast as gum.NumericalDiscreteVar for "<<*self);
     return *p;
   }
 
-  gum::DiscretizedVariable<double>& asDiscretizedVar() {
+  gum::DiscretizedVariable<double> asDiscretizedVar() {
     gum::DiscretizedVariable<double>* p = dynamic_cast<gum::DiscretizedVariable<double> *>(self);
     if (p==nullptr)
       GUM_ERROR(gum::OperationNotAllowed,"impossible cast as gum.DiscretizedVar for "<<*self);
