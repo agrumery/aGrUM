@@ -17,7 +17,22 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+%extend gum::DAG {
+   bool dSeparation(PyObject* X,PyObject* Y,PyObject* Z) {
+     gum::NodeSet sX,sY,sZ;
+     PyAgrumHelper::populateNodeSetFromIntOrPySequenceOfInt(sX,X);
+     PyAgrumHelper::populateNodeSetFromIntOrPySequenceOfInt(sY,Y);
+     PyAgrumHelper::populateNodeSetFromIntOrPySequenceOfInt(sZ,Z);
+     return self->dSeparation(sX,sY,sZ);
+   }
 
+   bool dSeparation(PyObject* X,PyObject* Y) {
+     gum::NodeSet sX,sY,sZ;
+     PyAgrumHelper::populateNodeSetFromIntOrPySequenceOfInt(sX,X);
+     PyAgrumHelper::populateNodeSetFromIntOrPySequenceOfInt(sY,Y);
+     return self->dSeparation(sX,sY,sZ);
+   }
+ }
 
 %define ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(classname)
 %extend classname {

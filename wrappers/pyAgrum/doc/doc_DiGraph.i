@@ -24,7 +24,7 @@ head : int
 Raises
 ------
   pyAgrum.InvalidNode
-  If head or tail does not belong to the graph nodes.
+    If head or tail does not belong to the graph nodes.
 "
 
 %feature("docstring") gum::DiGraph::addNode
@@ -37,7 +37,7 @@ int
 
 %feature("docstring") gum::DiGraph::addNodes
 "
-Add n nodes.
+Add a set of n nodes.
 
 Parameters
 ----------
@@ -67,10 +67,12 @@ Raises
 
 %feature("docstring") gum::DiGraph::arcs
 "
+Returns the set of arcs in the graph.
+
 Returns
 -------
-List
-	the list of the arcs
+Set
+	the set of the arcs
 "
 
 %feature("docstring") gum::DiGraph::children

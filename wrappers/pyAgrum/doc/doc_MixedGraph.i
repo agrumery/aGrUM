@@ -9,22 +9,6 @@ MixedGraph(src) -> MixedGraph
     Parameters:
         * **src** (*pyAgrum.MixedGraph*) --the MixedGraph to copy
 "
-%feature("docstring") gum::MixedGraph::addArc
-"
-Add an arc from tail to head.
-
-Parameters
-----------
-tail : int
-  the id of the tail node
-head : int
-  the id of the head node
-
-Raises
-------
-  pyAgrum.InvalidNode
-    If head or tail does not belong to the graph nodes.
-"
 
 %feature("docstring") gum::MixedGraph::addNode
 "

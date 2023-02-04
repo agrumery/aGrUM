@@ -255,6 +255,33 @@ namespace PyAgrumHelper {
     }
   }
 
+  void populateNodeSetFromIntOrPySequenceOfInt(gum::NodeSet&               nodeset,
+                                               PyObject*                   seq) {
+    // if seq is just a nodeId
+    if (PyInt_Check(seq) || PyLong_Check(seq)) {
+      nodeset.insert(gum::NodeId(PyLong_AsLong(seq)));
+      return;
+    }
+
+    // seq really is a sequence
+    PyObject* iter = PyObject_GetIter(seq);
+    if (iter != NULL) {
+      PyObject* item;
+      while ((item = PyIter_Next(iter))) {
+          if (PyInt_Check(item)) {
+            nodeset.insert( gum::NodeId(PyInt_AsLong(item)));
+          } else if (PyLong_Check(item)) {
+            nodeset.insert( gum::NodeId(PyLong_AsLong(item)));
+          } else {
+            GUM_ERROR(gum::InvalidArgument, "An elmement in the sequence is not a int nor a long")
+          }
+      }
+    } else {
+      GUM_ERROR(gum::InvalidArgument, "Argument <seq> is not an int, a list nor a set")
+    }
+  }
+
+
   void populateNodeSetFromPySequenceOfIntOrString(gum::NodeSet&               nodeset,
                                                   PyObject*                   seq,
                                                   const gum::VariableNodeMap& map) {
