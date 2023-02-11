@@ -98,7 +98,7 @@ NETWORK = (.
 VARIABLE =  (.
               std::string name_of_var;
               std::string name_of_type;
-              int nbrMod;
+              Size nbrMod;
               factory().startVariableDeclaration();
             .)
   "variable" IDENT<name_of_var> (. TRY( factory().variableName(name_of_var)); .)
@@ -106,7 +106,7 @@ VARIABLE =  (.
   { PROPERTY }
   LABELIZE_VAR<nbrMod>  (.
                               TRY(factory().endVariableDeclaration());
-                              int nbr=0;
+                              Size nbr=0;
                               TRY(nbr=factory().varInBN(factory().variableId(name_of_var)).domainSize());
                               if (nbrMod<nbr) SemErr("Too much modalities for variable "+name_of_var);
                               if (nbrMod>nbr) SemErr("Too many modalities for variable "+name_of_var);

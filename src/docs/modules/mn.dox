@@ -19,12 +19,12 @@
 ***************************************************************************/
 /**
  * @file
- * @brief Markov Network module documentation.
+ * @brief Markov random field module documentation.
  *
  * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  */
 
 
 /**
- * \defgroup bn_group Markov Networks
+ * \defgroup bn_group Markov random fields
  */

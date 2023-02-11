@@ -118,7 +118,7 @@ def draw_gum_dependencies(deps: Dict[str, List[str]]):
 
     "BN": ("set38", 4),
     "PRM": ("set38", 2),
-    "MN": ("set38", 3),
+    "MRF": ("set38", 3),
     "CN": ("set38", 1),
     "learning": ("set38", 6),
     "FMDP": ("set38", 7),

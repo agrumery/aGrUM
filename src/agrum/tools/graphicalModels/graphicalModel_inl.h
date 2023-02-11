@@ -22,7 +22,7 @@
 /**
  * @file
  * @brief  Interface-like class encapsulating basic functionalities for both a
- *IBayesNet and IMarkovNet
+ *IBayesNet and IMarkovRandomField
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN(_at_LIP6)
  */

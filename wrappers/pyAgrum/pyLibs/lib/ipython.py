@@ -197,9 +197,9 @@ def showPosterior(bn, evs, target):
 def showMN(mn, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=None, edgeColor=None, cmap=None,
            cmapEdge=None):
   """
-  show a Markov network
+  show a Markov random field
 
-  :param mn: the markov network
+  :param mn: the Markov random field
   :param view: 'graph' | 'factorgraph’ | None (default)
   :param size: size of the rendered graph
   :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)

@@ -545,7 +545,7 @@ ADD_JOINT_INFERENCE_API(gum::ShaferShenoyInference<double>)
 ADD_PARALLELIZED_INFERENCE_API(gum::LazyPropagation<double>)
 ADD_PARALLELIZED_INFERENCE_API(gum::ShaferShenoyInference<double>)
 ADD_PARALLELIZED_INFERENCE_API(gum::VariableElimination<double>)
-ADD_PARALLELIZED_INFERENCE_API(gum::ShaferShenoyMNInference<double>)
+ADD_PARALLELIZED_INFERENCE_API(gum::ShaferShenoyMRFInference<double>)
 
 %define ADD_GIBBS_OPERATOR_API(classname...)
 %extend classname {
@@ -571,52 +571,52 @@ ADD_GIBBS_OPERATOR_API(gum::GibbsBNdistance<double>)
 }
 
 #################
-%define ADD_MN_INFERENCE_API(classname...)
-ADD_MONOTARGET_INFERENCE_API (gum::MarginalTargetedMNInference<double>,classname)
+%define ADD_MRF_INFERENCE_API(classname...)
+ADD_MONOTARGET_INFERENCE_API (gum::MarginalTargetedMRFInference<double>,classname)
 %extend classname {
-   const IMarkovNet<double>& MN() const { return self->gum::MarginalTargetedMNInference<double>::MN(); }
+   const IMarkovRandomField<double>& MRF() const { return self->gum::MarginalTargetedMRFInference<double>::MRF(); }
 }
 %enddef
 
-%define ADD_JOINT_MN_INFERENCE_API(classname)
-ADD_MN_INFERENCE_API(classname)
+%define ADD_JOINT_MRF_INFERENCE_API(classname)
+ADD_MRF_INFERENCE_API(classname)
 %extend classname {
   const Potential<double> posterior( const NodeId var ) {
-    return self->JointTargetedMNInference<double>::posterior(var);
+    return self->JointTargetedMRFInference<double>::posterior(var);
   }
   const Potential<double> posterior( const std::string nodeName ) {
-    return self->JointTargetedMNInference<double>::posterior(nodeName);
+    return self->JointTargetedMRFInference<double>::posterior(nodeName);
   }
   void eraseAllTargets() {
-    self->gum::JointTargetedMNInference<double>::eraseAllTargets();
+    self->gum::JointTargetedMRFInference<double>::eraseAllTargets();
   }
   void eraseAllJointTargets() {
-    self->gum::JointTargetedMNInference<double>::eraseAllJointTargets();
+    self->gum::JointTargetedMRFInference<double>::eraseAllJointTargets();
   }
   void eraseAllMarginalTargets() {
-    self->gum::JointTargetedMNInference<double>::eraseAllMarginalTargets();
+    self->gum::JointTargetedMRFInference<double>::eraseAllMarginalTargets();
   }
 
   gum::Size nbrJointTargets() {
-    return self->gum::JointTargetedMNInference<double>::nbrJointTargets();
+    return self->gum::JointTargetedMRFInference<double>::nbrJointTargets();
   }
 
   double I( const NodeId X, const NodeId Y ) {
-    return self->gum::JointTargetedMNInference<double>::I(X,Y);
+    return self->gum::JointTargetedMRFInference<double>::I(X,Y);
   }
   double VI( const NodeId X, const NodeId Y ) {
-    return self->gum::JointTargetedMNInference<double>::VI(X,Y);
+    return self->gum::JointTargetedMRFInference<double>::VI(X,Y);
   }
 
   Potential<double> evidenceJointImpact(const NodeSet& targets,const NodeSet& evs){
-    return self->gum::JointTargetedMNInference<double>::evidenceJointImpact(targets,evs);
+    return self->gum::JointTargetedMRFInference<double>::evidenceJointImpact(targets,evs);
   }
   Potential<double> evidenceJointImpact(const std::vector<std::string>& targets,const std::vector<std::string>& evs){
-   return self->gum::JointTargetedMNInference<double>::evidenceJointImpact(targets,evs);
+   return self->gum::JointTargetedMRFInference<double>::evidenceJointImpact(targets,evs);
   }
 }
 %enddef
-ADD_JOINT_MN_INFERENCE_API(gum::ShaferShenoyMNInference<double>)
+ADD_JOINT_MRF_INFERENCE_API(gum::ShaferShenoyMRFInference<double>)
 
 
 #################

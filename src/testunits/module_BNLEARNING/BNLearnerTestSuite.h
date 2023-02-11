@@ -946,30 +946,30 @@ GUM_TEST(_BugDoumenc) {
                                      "AM",
                                      "PR",
                                      "AR",
-                                     "DFM"};   // les vraibles booléennes du RB
+                                     "DFM"};   // binary variables for the BN
 
   std::vector< std::string > varTer{
      "NBC",
      "MED",
      "DEM",
-     "SP"};   // les variables pouvant prendre 3 valeurs possibles du RB
+     "SP"};   // ternary variables for the bN
 
-  std::vector< std::string > varContinuous{"A", "ADL"};   // les variables continues du RB
+  std::vector< std::string > varContinuous{"A", "ADL"};   // continuous variables for the BN
 
 
-  std::vector< gum::NodeId > nodeList;   // Liste des noeuds du RB
+  std::vector< gum::NodeId > nodeList;   // nodes list for the BN
 
   for (const auto& var: varBool)
     nodeList.push_back(templ.add(
        gum::LabelizedVariable(var,
                               var,
-                              2)));   // Ajout des variables booléennes à la liste des noeuds
+                              2)));   // adding binary variables
 
   for (const auto& var: varTer)
     nodeList.push_back(templ.add(
        gum::LabelizedVariable(var,
                               var,
-                              3)));   // Ajout des variables ternaires à la liste des noeuds
+                              3)));   // adding ternary variables
 
   gum::DiscretizedVariable< double > A("A", "A");
   for (int i = 60; i <= 105; i += 5) {
@@ -977,10 +977,9 @@ GUM_TEST(_BugDoumenc) {
   }
 
   gum::NodeId a_id = templ.add(A);
-  nodeList.push_back(a_id);   // Ajout de la variable Age allant de 60
-  // à 100 ans à la liste des noeuds
+  nodeList.push_back(a_id);   // adding continuous variable
 
-  // Ajout de la variable ADL allant de 0 à 6 à la liste des noeuds
+  // adding continuous variable
   nodeList.push_back(templ.add(gum::RangeVariable("ADL", "ADL", 0, 6)));
   // Création du noeud central NRC (niveau de risque de chute)
   gum::LabelizedVariable NRC("NRC", "NRC", 0);
@@ -990,7 +989,7 @@ GUM_TEST(_BugDoumenc) {
   NRC.addLabel("eleve");
   auto iNRC = templ.add(NRC);
 
-  // Création des arcs partant du noeud NRC vers les autres noeuds
+  // adding arcs from NRC
   for (auto node: nodeList) {
     templ.addArc(iNRC, node);
   }

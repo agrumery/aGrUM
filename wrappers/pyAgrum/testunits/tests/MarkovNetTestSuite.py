@@ -45,7 +45,7 @@ class MarkovNetTestCase(pyAgrumTestCase):
     self.assertEqual(mn.sizeEdges(), 6)
     self.assertEqual(mn.dim(), (3 * 3 + 3 * 3 + 3 * 7 + 3 * 3 * 7))
     self.assertEqual(mn.__str__(),
-                      "MN{nodes: 5, edges: 6, domainSize: 567, dim: 102}")
+                      "MRF{nodes: 5, edges: 6, domainSize: 567, dim: 102}")
     self.assertEqual(mn.neighbours("41"), {0, 1, 4})
     self.assertEqual(mn.neighbours(3), {0, 1, 4})
 
@@ -65,7 +65,7 @@ class MarkovNetTestCase(pyAgrumTestCase):
     self._fill(mn)
     mn2 = gum.MarkovNet(mn)
     self.assertEqual(
-        mn2.__str__(), "MN{nodes: 5, edges: 6, domainSize: 567, dim: 102}")
+        mn2.__str__(), "MRF{nodes: 5, edges: 6, domainSize: 567, dim: 102}")
 
     for n in mn.nodes():
       self.assertEqual(mn.variable(n).name(), mn2.variable(n).name())
@@ -77,7 +77,7 @@ class MarkovNetTestCase(pyAgrumTestCase):
     self._fill(mn)
     mn2 = mn
     self.assertEqual(mn2.__str__(),
-                      "MN{nodes: 5, edges: 6, domainSize: 567, dim: 102}")
+                      "MRF{nodes: 5, edges: 6, domainSize: 567, dim: 102}")
     for n in mn.nodes():
       self.assertEqual(mn.variable(n).name(), mn2.variable(n).name())
       self.assertEqual(mn.neighbours(n), mn2.neighbours(n))
@@ -151,7 +151,7 @@ class MarkovNetTestCase(pyAgrumTestCase):
     self.assertEqual(mn.sizeEdges(), 5)
     self.assertEqual(mn.dim(), (3 * 3 + 3 * 3 + 3 * 3 * 7))
     self.assertEqual(mn.__str__(),
-                      "MN{nodes: 5, edges: 5, domainSize: 567, dim: 81}")
+                      "MRF{nodes: 5, edges: 5, domainSize: 567, dim: 81}")
 
   def testEraseFactorWithNames(self):
     mn = gum.MarkovNet()
@@ -164,7 +164,7 @@ class MarkovNetTestCase(pyAgrumTestCase):
     self.assertEqual(mn.sizeEdges(), 5)
     self.assertEqual(mn.dim(), (3 * 3 + 3 * 3 + 3 * 3 * 7))
     self.assertEqual(mn.__str__(),
-                      "MN{nodes: 5, edges: 5, domainSize: 567, dim: 81}")
+                      "MRF{nodes: 5, edges: 5, domainSize: 567, dim: 81}")
 
   def testErase(self):
     mn = gum.MarkovNet()
@@ -176,7 +176,7 @@ class MarkovNetTestCase(pyAgrumTestCase):
     self.assertEqual(mn.sizeEdges(), 3)
     self.assertEqual(mn.dim(), (3 * 3 + 3 * 7 + 3 * 7))
     self.assertEqual(mn.__str__(),
-                      "MN{nodes: 4, edges: 3, domainSize: 189, dim: 51}")
+                      "MRF{nodes: 4, edges: 3, domainSize: 189, dim: 51}")
 
   def testEraseWithNames(self):
     mn = gum.MarkovNet()
@@ -188,7 +188,7 @@ class MarkovNetTestCase(pyAgrumTestCase):
     self.assertEqual(mn.sizeEdges(), 3)
     self.assertEqual(mn.dim(), (3 * 3 + 3 * 7 + 3 * 7))
     self.assertEqual(mn.__str__(),
-                      "MN{nodes: 4, edges: 3, domainSize: 189, dim: 51}")
+                      "MRF{nodes: 4, edges: 3, domainSize: 189, dim: 51}")
 
   def testToDot(self):
     mn = gum.fastMN("A--B--C;B--D;C--E;D--E--F")

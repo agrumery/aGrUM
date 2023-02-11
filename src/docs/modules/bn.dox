@@ -37,9 +37,9 @@
  */
 
 /**
- * \defgroup bn_group Markov Network
+ * \defgroup bn_group Markov random field
  * @{
- * \defgroup mn_inference Inference Algorithms for Markov Networks
- * \defgroup mn_io Serialization of Markov Networks
+ * \defgroup mn_inference Inference Algorithms for Markov random fields
+ * \defgroup mn_io Serialization of Markov random fields
  * @}
  */

@@ -132,7 +132,7 @@ def prepareShowInference(model, engine=None, evs=None, targets=None, size=None,
   graph: pyAgrum.Graph
       only shows nodes that have their id in the graph (and not in the whole BN)
   view: str
-      graph | factorgraph | None (default) for Markov network
+      graph | factorgraph | None (default) for Markov random field
 
   Raises
   ------
@@ -295,7 +295,7 @@ def exportInference(model, filename=None, **kwargs):
   graph: pyAgrum.Graph
       only shows nodes that have their id in the graph (and not in the whole BN)
   view: str
-      graph | factorgraph | None (default) for Markov network
+      graph | factorgraph | None (default) for Markov random field
 
   Returns
   -------

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-`pyAgrum <http://agrum.org>`_ a scientific C++ and Python library dedicated to Bayesian Networks and other Probabilistic Graphical Models. Based on the C++ `aGrUM <https://agrum.lip6.fr>`_ library, it provides a high-level interface to the C++ part of aGrUM allowing to create, manage and perform efficient computations with Bayesian networks and others probabilsitic graphical models (Markov networks, influence diagrams and LIMIDs, dynamic BN, probabilistic relational models).
+`pyAgrum <http://agrum.org>`_ a scientific C++ and Python library dedicated to Bayesian Networks and other Probabilistic Graphical Models. Based on the C++ `aGrUM <https://agrum.lip6.fr>`_ library, it provides a high-level interface to the C++ part of aGrUM allowing to create, manage and perform efficient computations with Bayesian networks and others probabilsitic graphical models (Markov random fields, influence diagrams and LIMIDs, dynamic BN, probabilistic relational models).
 
 The module is generated using the `SWIG <https://www.swig.org>`_ interface generator. Custom-written code was added to make the interface more friendly.
 
@@ -82,7 +82,7 @@ __all__ = [
 
   'Arc', 'Edge', 'DiGraph', 'UndiGraph', 'MixedGraph', 'DAG', 'PDAG', 'CliqueGraph',
   'BayesNet', 'BayesNetFragment', 'EssentialGraph', 'MarkovBlanket',
-  'MarkovNet', 'ShaferShenoyMNInference',
+  'MarkovRandomField', 'ShaferShenoyMRFInference',
   'DiscretizedVariable', 'LabelizedVariable', 'RangeVariable', 'DiscreteVariable', 'IntegerVariable',
   'NumericalDiscreteVariable',
   'Potential', 'Instantiation', 'Potential',
@@ -280,12 +280,12 @@ def saveBN(bn, filename, allowModificationWhenSaving=None):
 
 
 def availableMNExts():
-  """ Give the list of all formats known by pyAgrum to save a Markov network.
+  """ Give the list of all formats known by pyAgrum to save a Markov random field.
 
   Returns
   ------
   str
-    a string which lists all suffixes for supported MN file formats.
+    a string which lists all suffixes for supported MRF file formats.
   """
   return "uai"
 
@@ -302,7 +302,7 @@ def availableIDExts():
 
 
 def loadMN(filename, listeners=None, verbose=False):
-  """load a MN from a file with optional listeners and arguments
+  """load a MRF from a file with optional listeners and arguments
 
   Parameters
   ----------
@@ -315,8 +315,8 @@ def loadMN(filename, listeners=None, verbose=False):
 
   Returns
   -------
-  pyAgrum.MarkovNet
-    a MN from a file using one of the availableMNExts() suffixes.
+  pyAgrum.MarkovRandomField
+    a MRF from a file using one of the availableMNExts() suffixes.
 
   Listeners could be added in order to monitor its loading.
 
@@ -364,12 +364,12 @@ def loadMN(filename, listeners=None, verbose=False):
 
 def saveMN(mn, filename):
   """
-  save a MN into a file using the format corresponding to one of the availableWriteMNExts() suffixes.
+  save a MRF into a file using the format corresponding to one of the availableWriteMNExts() suffixes.
 
   Parameters
   ----------
-  mn : pyAgrum.MarkovNet)
-    the MN to save
+  mn : pyAgrum.MarkovRandomField)
+    the MRF to save
   filename : str
     the name of the output file
   """
@@ -460,7 +460,7 @@ def fastBN(structure, domain_size=2):
 
 def fastMN(structure, domain_size=2):
   """
-  Create a Markov network with a modified dot-like syntax which specifies:
+  Create a Markov random field with a modified dot-like syntax which specifies:
       - the structure 'a-b-c;b-d;c-e;' where each chain 'a-b-c' specifies a factor,
       - the type of the variables with different syntax (cf documentation).
 
@@ -478,8 +478,8 @@ def fastMN(structure, domain_size=2):
 
   Returns
   -------
-  pyAgrum.MarkovNet
-          the resulting Markov network
+  pyAgrum.MarkovRandomField
+          the resulting Markov random field
   """
   return MarkovNet.fastPrototype(structure, domain_size)
 
@@ -526,7 +526,7 @@ def getPosterior(model, * , target,evs=None):
 
   Parameters
   ----------
-  bn : pyAgrum.BayesNet or pyAgrum.MarkovNet
+  bn : pyAgrum.BayesNet or pyAgrum.MarkovRandomField
     The probabilistic Graphical Model
   target: string or int
     variable name or id (forced keyword argument)
@@ -542,7 +542,7 @@ def getPosterior(model, * , target,evs=None):
   elif isinstance(model, MarkovNet):
     inf = ShaferShenoyMNInference(model)
   else:
-    raise InvalidArgument("Argument model should be a PGM (BayesNet or MarkovNet")
+    raise InvalidArgument("Argument model should be a PGM (BayesNet or MarkovRandomField")
 
   if evs is not None:
     inf.setEvidence(evs)

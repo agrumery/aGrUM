@@ -43,7 +43,7 @@
   $result=q;
 }
 
-// for gum::IMarkovNet::factors
+// for gum::IMarkovRandomField::factors
 %typemap(out) const gum::FactorTable<double> & {
   $result = PyList_New(0);
 

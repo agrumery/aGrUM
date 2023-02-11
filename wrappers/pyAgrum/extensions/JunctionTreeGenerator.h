@@ -32,7 +32,7 @@
 #include <agrum/tools/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
 #include <agrum/tools/graphs/algorithms/binaryJoinTreeConverterDefault.h>
 #include <agrum/BN/BayesNet.h>
-#include <agrum/MN/MarkovNet.h>
+#include <agrum/MRF/MarkovNet.h>
 
 class JunctionTreeGenerator {
   public:

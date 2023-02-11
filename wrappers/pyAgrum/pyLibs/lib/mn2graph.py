@@ -1,5 +1,5 @@
 """
-The purpose of this module is to provide tools for mapping Markov network (and inference) in dot language in order to
+The purpose of this module is to provide tools for mapping Markov random field (and inference) in dot language in order to
 be displayed/saved as image.
 """
 
@@ -40,12 +40,12 @@ from .proba_histogram import saveFigProba
 def MN2UGdot(mn, size="4", nodeColor=None, edgeWidth=None, edgeLabel=None, edgeColor=None, cmapNode=None, cmapEdge=None,
              showMsg=None):
   """
-  Create a pydot representation of the Markov Network as an undirected graph
+  Create a pydot representation of the Markov random field as an undirected graph
 
   Parameters
   ----------
   mn : pyAgrum.MarkovNet
-    The Markov network
+    The Markov random field
   size : int |str
     Size of the rendered graph
   nodeColor : Dict[int,float]
@@ -66,7 +66,7 @@ def MN2UGdot(mn, size="4", nodeColor=None, edgeWidth=None, edgeLabel=None, edgeC
   Returns
   -------
   pydot.Dot
-    the desired representation of the MN as a dot graph
+    the desired representation of the MRF as a dot graph
   """
   if cmapNode is None:
     cmapNode = plt.get_cmap(gum.config["notebook", "default_node_cmap"])
@@ -138,7 +138,7 @@ def MN2UGdot(mn, size="4", nodeColor=None, edgeWidth=None, edgeLabel=None, edgeC
 
 def MN2FactorGraphdot(mn, size=None, nodeColor=None, factorColor=None, cmapNode=None, showMsg=None):
   """
-  Create a pydot representation of the Markov Network as a factor graph
+  Create a pydot representation of the Markov random field as a factor graph
 
   Parameters
   ----------
@@ -158,7 +158,7 @@ def MN2FactorGraphdot(mn, size=None, nodeColor=None, factorColor=None, cmapNode=
   Returns
   -------
   pydot.Dot
-    the desired representation of the MN as a dot graph
+    the desired representation of the MRF as a dot graph
   """
   if cmapNode is None:
     cmapNode = plt.get_cmap(gum.config["notebook", "default_node_cmap"])
@@ -222,7 +222,7 @@ def MNinference2UGdot(mn, size=None, engine=None, evs=None, targets=None, nodeCo
                       cmapNode=None, cmapArc=None, view=None
                       ):
   """
-  create a pydot representation of an inference in a MN as an UG
+  create a pydot representation of an inference in a MRF as an UG
 
   :param pyAgrum.MarkovNet mn:
   :param string size: size of the rendered graph
@@ -346,7 +346,7 @@ def MNinference2FactorGraphdot(mn, size=None, engine=None, evs=None, targets=Non
                                cmapNode=None
                                ):
   """
-  create a pydot representation of an inference in a MN as an factor graph
+  create a pydot representation of an inference in a MRF as an factor graph
 
   :param pyAgrum.MarkovNet mn:
   :param string size: size of the rendered graph

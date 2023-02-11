@@ -22,7 +22,7 @@
 /**
  * @file
  * @brief  Interface-like class encapsulating basic functionalities for a
- *IMarkovNetwork.
+ *IMarkovRandomFieldwork.
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */

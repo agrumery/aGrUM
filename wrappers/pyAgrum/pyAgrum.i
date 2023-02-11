@@ -94,8 +94,8 @@
 %include "bndistance.i"
 %include "BNDatabaseGenerator.i"
 
-%include "markovnet.i"
-%include "MNinference.i"
+%include "markovrandomfield.i"
+%include "MRFinference.i"
 
 %include "credalnet.i"
 %include "CNinference.i"

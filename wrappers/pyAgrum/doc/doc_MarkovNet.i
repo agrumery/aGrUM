@@ -1,6 +1,6 @@
 %feature("docstring") gum::MarkovNet
 "
-MarkovNet represents a Markov Network.
+MarkovNet represents a Markov random field.
 
 MarkovNet(name='') -> MarkovNet
     Parameters:
@@ -8,7 +8,7 @@ MarkovNet(name='') -> MarkovNet
 
 MarkovNet(source) -> MarkovNet
     Parameters:
-      * **source** (*pyAgrum.MarkovNet*) -- the Markov network to copy
+      * **source** (*pyAgrum.MarkovNet*) -- the Markov random field to copy
 "
 
 %feature("docstring") gum::MarkovNet::add
@@ -138,7 +138,7 @@ tail : Union[int,str]
 
 %feature("docstring") gum::MarkovNet::fastPrototype
 "
-Create a Markov network with a modified dot-like syntax which specifies:
+Create a Markov random field with a modified dot-like syntax which specifies:
     - the structure ``a-b-c;b-d-e;``. The substring ``a-b-c`` indicates a factor with the scope (a,b,c).
     - the type of the variables with different syntax (cf documentation).
 
@@ -157,7 +157,7 @@ domainSize : int
 Returns
 -------
 pyAgrum.MarkovNet
-        the resulting Markov network
+        the resulting Markov random field
 "
 
 %feature("docstring") gum::MarkovNet::generateFactor

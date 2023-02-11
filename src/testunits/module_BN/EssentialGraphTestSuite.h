@@ -44,7 +44,6 @@ namespace gum_tests {
     GUM_TEST(Vstructure) {
       auto bn = gum::BayesNet< float >::fastPrototype("a->b;c->b");
       auto eg = gum::EssentialGraph(bn);
-      GUM_TRACE_VAR(eg.pdag());
 
       TS_ASSERT_EQUALS(eg.size(), 3u)
       TS_ASSERT_EQUALS(eg.sizeArcs(), 2u)

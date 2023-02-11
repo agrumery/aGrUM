@@ -122,7 +122,7 @@ def process_filters(src_filename: str, target_filename: str, debugmode: bool):
     ("gum::PDAG", '"pyAgrum.PDAG"'),
     ("gum::JoinTree", '"pyAgrum.CliqueGraph"'),
     ("gum::IBayesNet< double >", '"pyAgrum.IBayesNet"'),
-    ("gum::IMarkovNet< double >", '"pyAgrum.IMarkovNet"'),
+    ("gum::IMarkovRandomField< double >", '"pyAgrum.IMarkovRandomField"'),
     ('gum::VariableNodeMap', '"pyAgrum.VariableNodeMap"'),
     ('gum::FactorTable< double >', 'List[Set[int]]'),
     ('gum::MultiDimContainer< double >', '"pyAgrum.Potential"'),

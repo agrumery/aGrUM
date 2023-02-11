@@ -108,11 +108,11 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/BayesNetFragment.h>
 
-#include <agrum/MN/IMarkovNet.h>
-#include <agrum/MN/MarkovNet.h>
-#include <agrum/MN/inference/ShaferShenoyMNInference.h>
-#include <agrum/MN/io/UAI/UAIMNReader.h>
-#include <agrum/MN/io/UAI/UAIMNWriter.h>
+#include <agrum/MRF/IMarkovRandomField.h>
+#include <agrum/MRF/MarkovRandomField.h>
+#include <agrum/MRF/inference/ShaferShenoyMRFInference.h>
+#include <agrum/MRF/io/UAI/UAIMRFReader.h>
+#include <agrum/MRF/io/UAI/UAIMRFWriter.h>
 
 #include <agrum/BN/algorithms/essentialGraph.h>
 #include <agrum/BN/algorithms/MarkovBlanket.h>
@@ -339,9 +339,9 @@ namespace std {
 %include <agrum/BN/BayesNet.h>
 %include <agrum/BN/BayesNetFragment.h>
 
-%include <agrum/MN/IMarkovNet.h>
-%include <agrum/MN/MarkovNet.h>
-%include <agrum/MN/inference/ShaferShenoyMNInference.h>
+%include <agrum/MRF/IMarkovRandomField.h>
+%include <agrum/MRF/MarkovRandomField.h>
+%include <agrum/MRF/inference/ShaferShenoyMRFInference.h>
 
 
 %include <agrum/BN/algorithms/essentialGraph.h>
@@ -409,9 +409,9 @@ namespace std {
 %template ( BayesNet ) gum::BayesNet<double>;
 %template ( BayesNetFragment ) gum::BayesNetFragment<double>;
 
-%template (IMarkovNet ) gum::IMarkovNet<double>;
-%template ( MarkovNet ) gum::MarkovNet<double>;
-%template ( ShaferShenoyMNInference ) gum::ShaferShenoyMNInference<double>;
+%template (IMarkovRandomField ) gum::IMarkovRandomField<double>;
+%template ( MarkovRandomField ) gum::MarkovRandomField<double>;
+%template ( ShaferShenoyMRFInference ) gum::ShaferShenoyMRFInference<double>;
 
 //%template ( BayesNetInference ) gum::BayesNetInference<double>;
 %template ( LazyPropagation ) gum::LazyPropagation<double>;

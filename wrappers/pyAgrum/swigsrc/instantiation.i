@@ -114,7 +114,7 @@
     Parameters
     ----------
     model : pyAgrum.GraphicalModel
-    a (discrete) graphical model such as Bayesian network, Markov network, Influence Diagram, etc.
+    a (discrete) graphical model such as Bayesian network, Markov random field, Influence Diagram, etc.
 
     names : iterable of strings
     a list/set/etc of names of variables (as string)

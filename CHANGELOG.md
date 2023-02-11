@@ -278,7 +278,7 @@ Mostly several quick fixes.
 
 * aGrUM
 
-  * Small bugfix on Markov Network with only one factor.
+  * Small bugfix on Markov random field with only one factor.
   * Better behavior for ordering nodes when `gum::MarkovNetwork::addFactor`.
   * Better behavior for `gum::ShaferShenoyMNInference::jointPosterior` when a node of the joint is hard-observed.
 

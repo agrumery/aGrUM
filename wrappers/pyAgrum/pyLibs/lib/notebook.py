@@ -711,9 +711,9 @@ def showMN(mn, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth
            cmapEdge=None
            ):
   """
-  show a Markov network
+  show a Markov random field
 
-  :param mn: the markov network
+  :param mn: the Markov random field
   :param view: 'graph' | 'factorgraph’ | None (default)
   :param size: size of the rendered graph
   :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
@@ -847,9 +847,9 @@ def getMN(mn, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=
           cmapEdge=None
           ):
   """
-  get an HTML string for a Markov network
+  get an HTML string for a Markov random field
 
-  :param mn: the markov network
+  :param mn: the Markov random field
   :param view: 'graph' | 'factorgraph’ | None (default)
   :param size: size of the rendered graph
   :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
@@ -973,7 +973,7 @@ def showInference(model, **kwargs):
   :param cmap: color map to show the color of nodes and arcs
   :param cmapArc: color map to show the vals of Arcs.
   :param graph: only shows nodes that have their id in the graph (and not in the whole BN)
-  :param view: graph | factorgraph | None (default) for Markov network
+  :param view: graph | factorgraph | None (default) for Markov random field
   :return: the desired representation of the inference
   """
   if "size" in kwargs:
@@ -1002,7 +1002,7 @@ def getInference(model, **kwargs):
   :param cmap: color map to show the color of nodes and arcs
   :param cmapArc: color map to show the vals of Arcs.
   :param graph: only shows nodes that have their id in the graph (and not in the whole BN)
-  :param view: graph | factorgraph | None (default) for Markov network
+  :param view: graph | factorgraph | None (default) for Markov random field
 
   :return: the desired representation of the inference
   """
