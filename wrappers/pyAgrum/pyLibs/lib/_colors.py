@@ -24,6 +24,7 @@ Color manipulations for pyAgrum.lib module
 # OR PERFORMANCE OF THIS SOFTWARE!
 from typing import List, Tuple
 
+import matplotlib as mpl
 import matplotlib.colors
 import pyAgrum as gum
 
@@ -183,3 +184,17 @@ def proba2fgcolor(p: float, cmap: matplotlib.colors.Colormap) -> str:
   """
   a, b, c = hextuple2rgb(list(proba2hex(p, cmap, withSpecialColor=True)))
   return rgb2brightness(a, b, c)
+
+
+def fontFromMatplotlib():
+  """
+  Find the font name and the font size ysed by matplotlib
+
+  Returns
+  -------
+    fontname,size : font name and size from matplotlib
+  """
+  family = mpl.rcParams['font.family'][0]
+  if family == "sans-serif":
+    family = mpl.rcParams['font.sans-serif'][0]
+  return family, mpl.rcParams['font.size']

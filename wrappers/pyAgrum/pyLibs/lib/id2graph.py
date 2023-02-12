@@ -35,6 +35,7 @@ import pyAgrum as gum
 import pyAgrum.lib._colors as gumcols
 from pyAgrum.lib.proba_histogram import saveFigProba
 
+
 def ID2dot(diag, size=None):
   """
   create a pydot representation of the influence diagram
@@ -145,6 +146,9 @@ def LIMIDinference2dot(diag, size, engine, evs, targets):
 
   dotstr = "digraph structs {\n  fontcolor=\"" + \
            gumcols.getBlackInTheme() + "\";bgcolor=\"transparent\";"
+
+  fontname, fontsize = gumcols.fontFromMatplotlib()
+  dotstr += f'node[fontname="{fontname}",fontsize="{fontsize}"];'
 
   fmt = '.' + gum.config["influenceDiagram", "utility_visible_digits"] + 'f'
   if gum.config.asBool["influenceDiagram", "utility_show_loss"]:
