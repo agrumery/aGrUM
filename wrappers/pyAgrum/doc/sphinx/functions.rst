@@ -37,7 +37,7 @@ The type of the random variables can be specifiy with different syntaxes:
 
 .. autofunction:: pyAgrum.fastBN
 
-.. autofunction:: pyAgrum.fastMN
+.. autofunction:: pyAgrum.fastMRF
 
 .. autofunction:: pyAgrum.fastID
 

@@ -10,7 +10,7 @@ Introduction to pyAgrum
 Bayesian networks (BN) and other Probabilistic Graphical Models. Based on the C++
 `aGrUM <https://agrum.lip6.fr>`_ library, it provides a high-level interface to
 the C++ part of aGrUM allowing to create, manage and perform efficient computations
-with Bayesian networks  and others probabilistic graphical models : Markov random fields (MN),
+with Bayesian networks  and others probabilistic graphical models : Markov random fields (MRF),
 influence diagrams (ID) and LIMIDs, credal networks (CN), dynamic BN (dBN), probabilistic relational models (PRM).
 
 .. image::  _static/fastModelsWithPyAgrum.png
@@ -56,7 +56,7 @@ Reference manual
     bayesianNetwork
     influenceDiagram
     credalNetwork
-    markovNetwork
+    markovRandomField
     PRM
 
   .. toctree::

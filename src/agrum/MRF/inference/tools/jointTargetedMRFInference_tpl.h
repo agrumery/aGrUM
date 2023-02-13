@@ -22,7 +22,7 @@
 /**
  * @file
  * @brief Implementation of the non pure virtual methods of class
- * JointTargetedMNInference.
+ * JointTargetedMRFInference.
  */
 #include <agrum/MRF/inference/tools/jointTargetedMRFInference.h>
 #include <agrum/tools/variables/rangeVariable.h>
@@ -32,27 +32,27 @@ namespace gum {
 
   // Default Constructor
   template < typename GUM_SCALAR >
-  JointTargetedMNInference< GUM_SCALAR >::JointTargetedMNInference(
+  JointTargetedMRFInference< GUM_SCALAR >::JointTargetedMRFInference(
      const IMarkovRandomField< GUM_SCALAR >* mn) :
-      MarginalTargetedMNInference< GUM_SCALAR >(mn) {
+      MarginalTargetedMRFInference< GUM_SCALAR >(mn) {
     // assign a MRF if this has not been done before (due to virtual inheritance)
     if (this->hasNoModel_()) { MRFInference< GUM_SCALAR >::_setMarkovNetDuringConstruction_(mn);
     }
-    GUM_CONSTRUCTOR(JointTargetedMNInference);
+    GUM_CONSTRUCTOR(JointTargetedMRFInference);
   }
 
 
   // Destructor
   template < typename GUM_SCALAR >
-  JointTargetedMNInference< GUM_SCALAR >::~JointTargetedMNInference() {
-    GUM_DESTRUCTOR(JointTargetedMNInference);
+  JointTargetedMRFInference< GUM_SCALAR >::~JointTargetedMRFInference() {
+    GUM_DESTRUCTOR(JointTargetedMRFInference);
   }
 
 
   // assigns a new MRF to the inference engine
   template < typename GUM_SCALAR >
-  void JointTargetedMNInference< GUM_SCALAR >::onModelChanged_(const GraphicalModel* mn) {
-    MarginalTargetedMNInference< GUM_SCALAR >::onModelChanged_(mn);
+  void JointTargetedMRFInference< GUM_SCALAR >::onModelChanged_(const GraphicalModel* mn) {
+    MarginalTargetedMRFInference< GUM_SCALAR >::onModelChanged_(mn);
     onAllJointTargetsErased_();
     _joint_targets_.clear();
   }
@@ -64,13 +64,13 @@ namespace gum {
 
   // return true if target is a nodeset target.
   template < typename GUM_SCALAR >
-  INLINE bool JointTargetedMNInference< GUM_SCALAR >::isJointTarget(const NodeSet& vars) const {
+  INLINE bool JointTargetedMRFInference< GUM_SCALAR >::isJointTarget(const NodeSet& vars) const {
     if (this->hasNoModel_())
       GUM_ERROR(NullElement,
                 "No Markov net has been assigned to the "
                 "inference algorithm");
 
-    const auto& gra = this->MN().graph();
+    const auto& gra = this->MRF().graph();
     for (const auto var: vars) {
       if (!gra.exists(var)) {
         GUM_ERROR(UndefinedElement, var << " is not a NodeId in the Markov random field")
@@ -83,14 +83,14 @@ namespace gum {
 
   // Clear all previously defined single targets
   template < typename GUM_SCALAR >
-  INLINE void JointTargetedMNInference< GUM_SCALAR >::eraseAllMarginalTargets() {
-    MarginalTargetedMNInference< GUM_SCALAR >::eraseAllTargets();
+  INLINE void JointTargetedMRFInference< GUM_SCALAR >::eraseAllMarginalTargets() {
+    MarginalTargetedMRFInference< GUM_SCALAR >::eraseAllTargets();
   }
 
 
   // Clear all previously defined targets (single targets and sets of targets)
   template < typename GUM_SCALAR >
-  INLINE void JointTargetedMNInference< GUM_SCALAR >::eraseAllJointTargets() {
+  INLINE void JointTargetedMRFInference< GUM_SCALAR >::eraseAllJointTargets() {
     if (_joint_targets_.size() > 0) {
       // we already are in target mode. So no this->setTargetedMode_();  is needed
       onAllJointTargetsErased_();
@@ -102,7 +102,7 @@ namespace gum {
 
   // Clear all previously defined targets (single and joint targets)
   template < typename GUM_SCALAR >
-  INLINE void JointTargetedMNInference< GUM_SCALAR >::eraseAllTargets() {
+  INLINE void JointTargetedMRFInference< GUM_SCALAR >::eraseAllTargets() {
     eraseAllMarginalTargets();
     eraseAllJointTargets();
   }
@@ -110,14 +110,14 @@ namespace gum {
 
   // Add a set of nodes as a new target
   template < typename GUM_SCALAR >
-  void JointTargetedMNInference< GUM_SCALAR >::addJointTarget(const NodeSet& joint_target) {
+  void JointTargetedMRFInference< GUM_SCALAR >::addJointTarget(const NodeSet& joint_target) {
     // check if the nodes in the target belong to the Markov random field
     if (this->hasNoModel_())
       GUM_ERROR(NullElement,
                 "No Markov net has been assigned to the "
                 "inference algorithm");
 
-    const auto& dag = this->MN().graph();
+    const auto& dag = this->MRF().graph();
     for (const auto node: joint_target) {
       if (!dag.exists(node)) {
         GUM_ERROR(UndefinedElement,
@@ -148,14 +148,14 @@ namespace gum {
 
   // removes an existing set target
   template < typename GUM_SCALAR >
-  void JointTargetedMNInference< GUM_SCALAR >::eraseJointTarget(const NodeSet& joint_target) {
+  void JointTargetedMRFInference< GUM_SCALAR >::eraseJointTarget(const NodeSet& joint_target) {
     // check if the nodes in the target belong to the Markov random field
     if (this->hasNoModel_())
       GUM_ERROR(NullElement,
                 "No Markov net has been assigned to the "
                 "inference algorithm");
 
-    const auto& dag = this->MN().graph();
+    const auto& dag = this->MRF().graph();
     for (const auto node: joint_target) {
       if (!dag.exists(node)) {
         GUM_ERROR(UndefinedElement,
@@ -177,13 +177,13 @@ namespace gum {
   /// returns the list of target sets
   template < typename GUM_SCALAR >
   INLINE const Set< NodeSet >&
-               JointTargetedMNInference< GUM_SCALAR >::jointTargets() const noexcept {
+               JointTargetedMRFInference< GUM_SCALAR >::jointTargets() const noexcept {
               return _joint_targets_;
   }
 
   /// returns the number of target sets
   template < typename GUM_SCALAR >
-  INLINE Size JointTargetedMNInference< GUM_SCALAR >::nbrJointTargets() const noexcept {
+  INLINE Size JointTargetedMRFInference< GUM_SCALAR >::nbrJointTargets() const noexcept {
     return _joint_targets_.size();
   }
 
@@ -195,7 +195,7 @@ namespace gum {
   // Compute the posterior of a nodeset.
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-     JointTargetedMNInference< GUM_SCALAR >::jointPosterior(const NodeSet& nodes) {
+     JointTargetedMRFInference< GUM_SCALAR >::jointPosterior(const NodeSet& nodes) {
     NodeSet real_nodes;
     for (const auto& node: nodes) {
       if (!this->hasHardEvidence(node)) { real_nodes.insert(node); }
@@ -224,31 +224,31 @@ namespace gum {
 
   // Compute the posterior of a node
   template < typename GUM_SCALAR >
-  const Potential< GUM_SCALAR >& JointTargetedMNInference< GUM_SCALAR >::posterior(NodeId node) {
-    if (this->isTarget(node)) return MarginalTargetedMNInference< GUM_SCALAR >::posterior(node);
+  const Potential< GUM_SCALAR >& JointTargetedMRFInference< GUM_SCALAR >::posterior(NodeId node) {
+    if (this->isTarget(node)) return MarginalTargetedMRFInference< GUM_SCALAR >::posterior(node);
     else return jointPosterior(NodeSet{node});
   }
 
   // Compute the posterior of a node
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-     JointTargetedMNInference< GUM_SCALAR >::posterior(const std::string& nodeName) {
-    return posterior(this->MN().idFromName(nodeName));
+     JointTargetedMRFInference< GUM_SCALAR >::posterior(const std::string& nodeName) {
+    return posterior(this->MRF().idFromName(nodeName));
   }
 
   // ##############################################################################
   // Entropy
   // ##############################################################################
   template < typename GUM_SCALAR >
-  GUM_SCALAR JointTargetedMNInference< GUM_SCALAR >::I(const std::string& Xname,
+  GUM_SCALAR JointTargetedMRFInference< GUM_SCALAR >::I(const std::string& Xname,
                                                        const std::string& Yname) {
-    return I(this->MN().idFromName(Xname), this->MN().idFromName(Yname));
+    return I(this->MRF().idFromName(Xname), this->MRF().idFromName(Yname));
   }
 
   template < typename GUM_SCALAR >
-  GUM_SCALAR JointTargetedMNInference< GUM_SCALAR >::VI(const std::string& Xname,
+  GUM_SCALAR JointTargetedMRFInference< GUM_SCALAR >::VI(const std::string& Xname,
                                                         const std::string& Yname) {
-    return VI(this->MN().idFromName(Xname), this->MN().idFromName(Yname));
+    return VI(this->MRF().idFromName(Xname), this->MRF().idFromName(Yname));
   }
 
 
@@ -259,7 +259,7 @@ namespace gum {
    * @throw OperationNotAllowed in these cases
    */
   template < typename GUM_SCALAR >
-  GUM_SCALAR JointTargetedMNInference< GUM_SCALAR >::I(NodeId X, NodeId Y) {
+  GUM_SCALAR JointTargetedMRFInference< GUM_SCALAR >::I(NodeId X, NodeId Y) {
     Potential< GUM_SCALAR > pX, pY, *pXY = nullptr;
     if (X == Y) { GUM_ERROR(OperationNotAllowed, "Mutual Information I(X,Y) with X==Y") }
 
@@ -269,8 +269,8 @@ namespace gum {
       // like LazyPropagation or Shafer-Shenoy.
       pXY = this->unnormalizedJointPosterior_({X, Y});
       pXY->normalize();
-      pX = pXY->margSumOut({&(this->MN().variable(Y))});
-      pY = pXY->margSumOut({&(this->MN().variable(X))});
+      pX = pXY->margSumOut({&(this->MRF().variable(Y))});
+      pY = pXY->margSumOut({&(this->MRF().variable(X))});
     } catch (...) {
       if (pXY != nullptr) { delete pXY; }
       throw;
@@ -308,20 +308,20 @@ namespace gum {
    * @throw OperationNotAllowed in these cases
    */
   template < typename GUM_SCALAR >
-  INLINE GUM_SCALAR JointTargetedMNInference< GUM_SCALAR >::VI(NodeId X, NodeId Y) {
+  INLINE GUM_SCALAR JointTargetedMRFInference< GUM_SCALAR >::VI(NodeId X, NodeId Y) {
     return this->H(X) + this->H(Y) - 2 * I(X, Y);
   }
 
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-     JointTargetedMNInference< GUM_SCALAR >::evidenceJointImpact(const NodeSet& targets,
+     JointTargetedMRFInference< GUM_SCALAR >::evidenceJointImpact(const NodeSet& targets,
                                                                  const NodeSet& evs) {
     if (!(evs * targets).empty()) {
       GUM_ERROR(InvalidArgument,
                 "Targets (" << targets << ") can not intersect evs (" << evs << ").");
     }
-    auto condset = this->MN().minimalCondSet(targets, evs);
+    auto condset = this->MRF().minimalCondSet(targets, evs);
 
     this->eraseAllTargets();
     this->eraseAllEvidence();
@@ -329,13 +329,13 @@ namespace gum {
     Instantiation           iTarget;
     Potential< GUM_SCALAR > res;
     for (const auto& target: targets) {
-      res.add(this->MN().variable(target));
-      iTarget.add(this->MN().variable(target));
+      res.add(this->MRF().variable(target));
+      iTarget.add(this->MRF().variable(target));
     }
     this->addJointTarget(targets);
 
     for (const auto& n: condset) {
-      res.add(this->MN().variable(n));
+      res.add(this->MRF().variable(n));
       this->addEvidence(n, 0);
     }
 
@@ -343,7 +343,7 @@ namespace gum {
     for (inst.setFirstOut(iTarget); !inst.end(); inst.incOut(iTarget)) {
       // inferring
       for (const auto& n: condset)
-        this->chgEvidence(n, inst.val(this->MN().variable(n)));
+        this->chgEvidence(n, inst.val(this->MRF().variable(n)));
       this->makeInference();
       // populate res
       for (inst.setFirstIn(iTarget); !inst.end(); inst.incIn(iTarget)) {
@@ -356,18 +356,18 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  Potential< GUM_SCALAR > JointTargetedMNInference< GUM_SCALAR >::evidenceJointImpact(
+  Potential< GUM_SCALAR > JointTargetedMRFInference< GUM_SCALAR >::evidenceJointImpact(
      const std::vector< std::string >& targets,
      const std::vector< std::string >& evs) {
-    const auto& mn = this->MN();
+    const auto& mn = this->MRF();
     return evidenceJointImpact(mn.nodeset(targets), mn.nodeset(evs));
   }
 
 
   template < typename GUM_SCALAR >
   GUM_SCALAR
-     JointTargetedMNInference< GUM_SCALAR >::jointMutualInformation(const NodeSet& targets) {
-    const auto& mn  = this->MN();
+     JointTargetedMRFInference< GUM_SCALAR >::jointMutualInformation(const NodeSet& targets) {
+    const auto& mn  = this->MRF();
     const Size  siz = targets.size();
     if (siz <= 1) {
       GUM_ERROR(InvalidArgument,
@@ -416,24 +416,24 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  GUM_SCALAR JointTargetedMNInference< GUM_SCALAR >::jointMutualInformation(
+  GUM_SCALAR JointTargetedMRFInference< GUM_SCALAR >::jointMutualInformation(
      const std::vector< std::string >& targets) {
-    return jointMutualInformation(this->MN().nodeset(targets));
+    return jointMutualInformation(this->MRF().nodeset(targets));
   }
 
   template < typename GUM_SCALAR >
-  bool JointTargetedMNInference< GUM_SCALAR >::isExactJointComputable_(const NodeSet& vars) {
+  bool JointTargetedMRFInference< GUM_SCALAR >::isExactJointComputable_(const NodeSet& vars) {
     if (_joint_targets_.contains(vars)) return true;
 
     return false;
   }
 
   template < typename GUM_SCALAR >
-  NodeSet JointTargetedMNInference< GUM_SCALAR >::superForJointComputable_(const NodeSet& vars) {
+  NodeSet JointTargetedMRFInference< GUM_SCALAR >::superForJointComputable_(const NodeSet& vars) {
     for (const auto& target: _joint_targets_)
       if (vars.isProperSubsetOf(target)) return target;
 
-    for (const auto& factor: this->MN().factors())
+    for (const auto& factor: this->MRF().factors())
       if (vars.isProperSubsetOf(factor.first)) return factor.first;
 
     return NodeSet();

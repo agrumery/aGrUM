@@ -67,8 +67,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   class ShaferShenoyMRFInference:
-      public JointTargetedMNInference< GUM_SCALAR >,
-      public EvidenceMNInference< GUM_SCALAR >,
+      public JointTargetedMRFInference< GUM_SCALAR >,
+      public EvidenceMRFInference< GUM_SCALAR >,
       public ScheduledInference {
     public:
     // ############################################################################
@@ -177,13 +177,13 @@ namespace gum {
     /// prepares inference when the latter is in OutdatedStructure state
     /** Note that the values of evidence are not necessarily
      * known and can be changed between updateOutdatedStructure_ and
-     * makeMNInference_. */
+     * makeMRFInference_. */
     void updateOutdatedStructure_() final;
 
     /// prepares inference when the latter is in OutdatedPotentials state
     /** Note that the values of evidence are not necessarily
      * known and can be changed between updateOutdatedStructure_ and
-     * makeMNInference_. */
+     * makeMRFInference_. */
     void updateOutdatedPotentials_() final;
 
     /// called when the inference has to be performed effectively

@@ -27,8 +27,8 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#ifndef GUM_MARKOV_NET_JOINT_TARGETED_INFERENCE_H
-#define GUM_MARKOV_NET_JOINT_TARGETED_INFERENCE_H
+#ifndef GUM_MARKOV_RANDOM_FIELD_JOINT_TARGETED_INFERENCE_H
+#define GUM_MARKOV_RANDOM_FIELD_JOINT_TARGETED_INFERENCE_H
 
 
 #include <agrum/MRF/inference/tools/marginalTargetedMRFInference.h>
@@ -39,21 +39,21 @@ namespace gum {
 
 
   /**
-   * @class JointTargetedMNInference jointTargetedMNInference.h
-   * <agrum/MRF/inference/jointTargetedMNInference.h>
+   * @class JointTargetedMRFInference jointTargetedMRFInference.h
+   * <agrum/MRF/inference/jointTargetedMRFInference.h>
    * @brief A generic class for the computation of (possibly incrementally)
    * joint posteriors
    * @ingroup mn_group
    *
    * The goal of this class is to take care of the joint targets used
-   * for computing joint posteriors. The JointTargetedMNInference class
+   * for computing joint posteriors. The JointTargetedMRFInference class
    * inherits from Inference that takes care of handling both evidence and
-   * the current state of the inference and from MarginalTargetedMNInference
-   * for the handling of marginal targets. Note that the JointTargetedMNInference
+   * the current state of the inference and from MarginalTargetedMRFInference
+   * for the handling of marginal targets. Note that the JointTargetedMRFInference
    * is designed to be used in incremental inference engines.
    */
   template < typename GUM_SCALAR >
-  class JointTargetedMNInference: public MarginalTargetedMNInference< GUM_SCALAR > {
+  class JointTargetedMRFInference: public MarginalTargetedMRFInference< GUM_SCALAR > {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -63,10 +63,10 @@ namespace gum {
     /// default constructor
     /** @warning note that, by aGrUM's rule, the MRF is not copied but only
      * referenced by the inference algorithm. */
-    explicit JointTargetedMNInference(const IMarkovRandomField< GUM_SCALAR >* mn);
+    explicit JointTargetedMRFInference(const IMarkovRandomField< GUM_SCALAR >* mn);
 
     /// destructor
-    virtual ~JointTargetedMNInference();
+    virtual ~JointTargetedMRFInference();
 
     /// @}
 
@@ -317,4 +317,4 @@ namespace gum {
 #include <agrum/MRF/inference/tools/jointTargetedMRFInference_tpl.h>
 
 
-#endif   // GUM_MARKOV_NET_JOINT_TARGETED_INFERENCE_H
+#endif   // GUM_MARKOV_RANDOM_FIELD_JOINT_TARGETED_INFERENCE_H

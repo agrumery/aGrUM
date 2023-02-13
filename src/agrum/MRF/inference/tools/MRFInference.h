@@ -27,8 +27,8 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#ifndef GUM_MARKOV_NET_INFERENCE_H
-#define GUM_MARKOV_NET_INFERENCE_H
+#ifndef GUM_MARKOV_RANDOM_FIELD_INFERENCE_H
+#define GUM_MARKOV_RANDOM_FIELD_INFERENCE_H
 
 
 #include <agrum/agrum.h>
@@ -37,23 +37,23 @@
 
 namespace gum {
 
-  // JointTargetedMNInference, the class for computing joint posteriors, should
+  // JointTargetedMRFInference, the class for computing joint posteriors, should
   // have access to the states of Inference and change them when needed: this
   // will be a friend of Inference
   template < typename GUM_SCALAR >
-  class JointTargetedMNInference;
+  class JointTargetedMRFInference;
 
-  // MarginalTargetedMNInference, the class for computing marginal posteriors,
+  // MarginalTargetedMRFInference, the class for computing marginal posteriors,
   // should have access to the states of Inference and change them when needed:
   // this should be a friend of Inference
   template < typename GUM_SCALAR >
-  class MarginalTargetedMNInference;
+  class MarginalTargetedMRFInference;
 
-  // EvidenceMNInference, the class for computing the probability of evidence,
+  // EvidenceMRFInference, the class for computing the probability of evidence,
   // should have access to the states of Inference and change them when needed:
   // this will be a friend of Inference
   template < typename GUM_SCALAR >
-  class EvidenceMNInference;
+  class EvidenceMRFInference;
 
 
   /**
@@ -74,7 +74,7 @@ namespace gum {
    *
    * 1- ie=SpecificInference(mn);              // state <- OutdatedStructure
    * 2- set targets and evidence in ie
-   * 3- ie.prepareInference();                 // state <- ReadyForMNInference
+   * 3- ie.prepareInference();                 // state <- ReadyForMRFInference
    * 4.a- change values of evidence in ie      // state <- OutdatedPotentials
    * 4.b- change some hard evidence or targets // state <- OutdatedStructure
    * 5- ie.makeInference();                    // state <- Done
@@ -100,7 +100,7 @@ namespace gum {
    *   the inference probably just needs to invalidate some already computed
    *   potentials to be ready. Only a light amount of preparation is needed to
    *   be able to perform inference.
-   * - ReadyForMNInference: in this state, all the data structures are ready for
+   * - ReadyForMRFInference: in this state, all the data structures are ready for
    *   inference. There just remains to perform the inference computations.
    * - Done: the heavy computations of inference have been done. There might
    *   still remain a few light computations to perform to get the posterior
@@ -136,7 +136,7 @@ namespace gum {
      *   the inference probably just needs to invalidate some already computed
      *   potentials to be ready. Only a light amount of preparation is needed to
      *   be able to perform inference.
-     * - ReadyForMNInference: in this state, all the data structures are ready for
+     * - ReadyForMRFInference: in this state, all the data structures are ready for
      *   inference. There just remains to perform the inference computations.
      * - Done: the heavy computations of inference have been done. There might
      *   still remain a few light computations to perform to get the posterior
@@ -159,12 +159,12 @@ namespace gum {
 
     /// default constructor with a null MRF (useful for virtual inheritance)
     /** @warning MRFInference is virtually inherited by
-     * MarginalTargetedMNInference. As a result, the lowest descendant of
+     * MarginalTargetedMRFInference. As a result, the lowest descendant of
      * MRFInference will create the latter. To avoid requiring developpers
      * to add in the constructors of their inference algorithms a call to
      * MRFInference( mn ), we added constructor MRFInference(),
      * which will be called automatically by the lowest descendant.
-     * Then, MarginalTargetedMNInference and JointTargetedMNInference will take
+     * Then, MarginalTargetedMRFInference and JointTargetedMRFInference will take
      * care of setting the appropriate mn into MRFInference. */
     MRFInference();
 
@@ -185,12 +185,12 @@ namespace gum {
      * @warning By default, all the nodes of the Markov net are targets.
      * @warning note that, by aGrUM's rule, the mn is not copied into the
      * inference engine but only referenced. */
-    virtual void setMN(const IMarkovRandomField< GUM_SCALAR >* mn);
+    virtual void setMRF(const IMarkovRandomField< GUM_SCALAR >* mrf);
 
     /// Returns a constant reference over the IMarkovRandomField referenced by this class
     /** @throws UndefinedElement is raised if no Markov net has been assigned to
      * the inference. */
-    virtual const IMarkovRandomField< GUM_SCALAR >& MN() const final;
+    virtual const IMarkovRandomField< GUM_SCALAR >& MRF() const final;
 
     private:
     /// assigns a MRF during the inference engine construction
@@ -198,9 +198,9 @@ namespace gum {
 
 
     /// allow JointInference to access the single targets and inference states
-    friend MarginalTargetedMNInference< GUM_SCALAR >;
-    friend JointTargetedMNInference< GUM_SCALAR >;
-    friend EvidenceMNInference< GUM_SCALAR >;
+    friend MarginalTargetedMRFInference< GUM_SCALAR >;
+    friend JointTargetedMRFInference< GUM_SCALAR >;
+    friend EvidenceMRFInference< GUM_SCALAR >;
   };
 
 
@@ -210,4 +210,4 @@ namespace gum {
 #include <agrum/MRF/inference/tools/MRFInference_tpl.h>
 
 
-#endif   // GUM_MARKOV_NET_INFERENCE_H
+#endif   // GUM_MARKOV_RANDOM_FIELD_INFERENCE_H

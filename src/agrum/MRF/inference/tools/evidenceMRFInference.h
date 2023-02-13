@@ -27,8 +27,8 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#ifndef GUM_MARKOV_NET_EVIDENCE_INFERENCE_H
-#define GUM_MARKOV_NET_EVIDENCE_INFERENCE_H
+#ifndef GUM_MARKOV_RANDOM_FIELD_EVIDENCE_INFERENCE_H
+#define GUM_MARKOV_RANDOM_FIELD_EVIDENCE_INFERENCE_H
 
 #include <agrum/MRF/inference/tools/MRFInference.h>
 #include <agrum/agrum.h>
@@ -38,8 +38,8 @@ namespace gum {
 
 
   /**
-   * @class EvidenceMNInference evidenceMNInference.h
-   * <agrum/MRF/inference/evidenceMNInference.h>
+   * @class EvidenceMRFInference evidenceMRFInference.h
+   * <agrum/MRF/inference/evidenceMRFInference.h>
    * @brief A generic class for the computation of the probability of
    * evidence entered in Markov random fields
    * @ingroup mn_group
@@ -48,7 +48,7 @@ namespace gum {
    * of the probability of evidence entered in Markov random fields
    */
   template < typename GUM_SCALAR >
-  class EvidenceMNInference: public virtual MRFInference< GUM_SCALAR > {
+  class EvidenceMRFInference: public virtual MRFInference< GUM_SCALAR > {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -58,10 +58,10 @@ namespace gum {
     /// default constructor
     /** @warning note that, by aGrUM's rule, the MRF is not copied but only
      * referenced by the inference algorithm. */
-    explicit EvidenceMNInference(const IMarkovRandomField< GUM_SCALAR >* mn);
+    explicit EvidenceMRFInference(const IMarkovRandomField< GUM_SCALAR >* mn);
 
     /// destructor
-    virtual ~EvidenceMNInference();
+    virtual ~EvidenceMRFInference();
 
     /// @}
 
@@ -84,4 +84,4 @@ namespace gum {
 #include <agrum/MRF/inference/tools/evidenceMRFInference_tpl.h>
 
 
-#endif   // GUM_MARKOV_NET_EVIDENCE_INFERENCE_H
+#endif   // GUM_MARKOV_RANDOM_FIELD_EVIDENCE_INFERENCE_H

@@ -40,7 +40,7 @@ def export(model, filename=None, **kwargs):
   Parameters
   ----------
   model: pyAgrum.GraphicalModel
-      the model to show (pyAgrum.BayesNet, pyAgrum.MarkovNet, pyAgrum.InfluenceDiagram or pyAgrum.Potential)
+      the model to show (pyAgrum.BayesNet, pyAgrum.MarkovRandomField, pyAgrum.InfluenceDiagram or pyAgrum.Potential)
   filename: str
       the name of the resulting file (suffix in ['pdf', 'png', 'fig', 'jpg', 'svg', 'ps']). If filename is None, the result is a np.array ready to be used with imshow().
 
@@ -66,7 +66,7 @@ def export(model, filename=None, **kwargs):
 
   if isinstance(model, gum.BayesNet):
     fig = BN2dot(model, **kwargs)
-  elif isinstance(model, gum.MarkovNet):
+  elif isinstance(model, gum.MarkovRandomField):
     if gum.config["notebook", "default_markovnetwork_view"] == "graph":
       fig = MN2UGdot(model, **kwargs)
     else:
@@ -91,7 +91,7 @@ def export(model, filename=None, **kwargs):
     fig.del_node('"\\n\\n"')
   else:
     raise gum.InvalidArgument(
-      "Argument model should be a PGM (BayesNet, MarkovNet or Influence Diagram) or has a method `toDot()` or is a string"
+      "Argument model should be a PGM (BayesNet, MarkovRandomField or Influence Diagram) or has a method `toDot()` or is a string"
     )
   fig.write(filename, format=fmt_image)
 
@@ -106,11 +106,11 @@ def prepareShowInference(model, engine=None, evs=None, targets=None, size=None,
   Parameters
   ----------
   model: pyAgrum:GraphicalModel
-      the model in which to infer (pyAgrum.BayesNet, pyAgrum.MarkovNet or pyAgrum.InfluenceDiagram)
+      the model in which to infer (pyAgrum.BayesNet, pyAgrum.MarkovRandomField or pyAgrum.InfluenceDiagram)
   filename: str
       the name of the resulting file (suffix in ['pdf', 'png', 'ps']). If filename is None, the result is a np.array ready to be used with imshow().
   engine: pyAgrum.Inference
-      inference algorithm used. If None, gum.LazyPropagation will be used for BayesNet,gum.ShaferShenoy for gum.MarkovNet and gum.ShaferShenoyLIMIDInference for gum.InfluenceDiagram.
+      inference algorithm used. If None, gum.LazyPropagation will be used for BayesNet,gum.ShaferShenoy for gum.MarkovRandomField and gum.ShaferShenoyLIMIDInference for gum.InfluenceDiagram.
   evs: Dict[str,str|int]
       map of evidence
   targets: Set[str|int]
@@ -120,7 +120,7 @@ def prepareShowInference(model, engine=None, evs=None, targets=None, size=None,
   nodeColor: Dict[int,float]
       a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
   factorColor: Dict[int,float]
-      a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovNet representation)
+      a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovRandomField representation)
   arcWidth: Dict[(int,int),float]
       a arcMap of values to be shown as width of arcs
   arcColor: Dict[(int,int),float]
@@ -161,7 +161,7 @@ def prepareShowInference(model, engine=None, evs=None, targets=None, size=None,
                            arcColor=arcColor,
                            cmapNode=cmap, cmapArc=cmapArc
                            )
-  if isinstance(model, gum.MarkovNet):
+  if isinstance(model, gum.MarkovRandomField):
     if view is None:
       view = gum.config["notebook", "default_markovnetwork_view"]
     if engine is None:
@@ -189,7 +189,7 @@ def prepareShowInference(model, engine=None, evs=None, targets=None, size=None,
                            )
 
   raise gum.InvalidArgument(
-    "Argument model should be a PGM (BayesNet, MarkovNet or Influence Diagram)"
+    "Argument model should be a PGM (BayesNet, MarkovRandomField or Influence Diagram)"
   )
 
 
@@ -269,11 +269,11 @@ def exportInference(model, filename=None, **kwargs):
   Parameters
   ----------
   model: pyAgrum:GraphicalModel
-      the model in which to infer (pyAgrum.BayesNet, pyAgrum.MarkovNet or pyAgrum.InfluenceDiagram)
+      the model in which to infer (pyAgrum.BayesNet, pyAgrum.MarkovRandomField or pyAgrum.InfluenceDiagram)
   filename: str
       the name of the resulting file (suffix in ['pdf', 'png', 'ps']). If filename is None, the result is a np.array ready to be used with imshow().
   engine: pyAgrum.Inference
-      inference algorithm used. If None, gum.LazyPropagation will be used for BayesNet,gum.ShaferShenoy for gum.MarkovNet and gum.ShaferShenoyLIMIDInference for gum.InfluenceDiagram.
+      inference algorithm used. If None, gum.LazyPropagation will be used for BayesNet,gum.ShaferShenoy for gum.MarkovRandomField and gum.ShaferShenoyLIMIDInference for gum.InfluenceDiagram.
   evs: Dict[str,str|int]
       map of evidence
   targets: Set[str|int]
@@ -283,7 +283,7 @@ def exportInference(model, filename=None, **kwargs):
   nodeColor: Dict[int,float]
       a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
   factorColor: Dict[int,float]
-      a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovNet representation)
+      a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovRandomField representation)
   arcWidth: Dict[(int,int),float]
       a arcMap of values to be shown as width of arcs
   arcColor: Dict[(int,int),float]

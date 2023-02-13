@@ -55,8 +55,8 @@ import pyAgrum as gum
 from pyAgrum.lib.bn2graph import BN2dot, BNinference2dot
 from pyAgrum.lib.cn2graph import CN2dot, CNinference2dot
 from pyAgrum.lib.id2graph import ID2dot, LIMIDinference2dot
-from pyAgrum.lib.mn2graph import MN2UGdot, MNinference2UGdot
-from pyAgrum.lib.mn2graph import MN2FactorGraphdot, MNinference2FactorGraphdot
+from pyAgrum.lib.mrf2graph import MRF2UGdot, MRFinference2UGdot
+from pyAgrum.lib.mrf2graph import MRF2FactorGraphdot, MRFinference2FactorGraphdot
 from pyAgrum.lib.bn_vs_bn import GraphicalBNComparator, graphDiff
 from pyAgrum.lib.proba_histogram import proba2histo, probaMinMaxH
 from pyAgrum.lib.image import prepareShowInference, prepareLinksForSVG
@@ -87,9 +87,9 @@ class FlowLayout(object):
       display: inline-block;
       margin: 7px;
       padding : 3px;
-      border: {gum.config.asInt["notebook","flow_border_width"]}px solid {gum.config["notebook","flow_border_color"]};  
+      border: {gum.config.asInt["notebook", "flow_border_width"]}px solid {gum.config["notebook", "flow_border_color"]};  
       valign:middle;
-      background-color: {gum.config["notebook","flow_background_color"]};
+      background-color: {gum.config["notebook", "flow_background_color"]};
       }}
       </style>
       """
@@ -264,7 +264,7 @@ def _reprGraph(gr, size, asString, format=None):
 
   if format == "svg":
     gsvg = IPython.display.SVG(prepareLinksForSVG(
-        gr.create_svg(encoding="utf-8").decode('utf-8')))
+      gr.create_svg(encoding="utf-8").decode('utf-8')))
     if asString:
       return gsvg.data
     else:
@@ -441,8 +441,9 @@ def showInformation(*args, **kwargs):
   explain.showInformation(*args, **kwargs)
 
 
-def getJunctionTreeMap(bn, size:str=None,scaleClique: float = None, scaleSep: float = None, lenEdge: float = None, colorClique: str = None,
-          colorSep: str = None):
+def getJunctionTreeMap(bn, size: str = None, scaleClique: float = None, scaleSep: float = None, lenEdge: float = None,
+                       colorClique: str = None,
+                       colorSep: str = None):
   """
   Return a representation of the map of the junction tree of a Bayesian network
 
@@ -464,11 +465,12 @@ def getJunctionTreeMap(bn, size:str=None,scaleClique: float = None, scaleSep: fl
   jtg = gum.JunctionTreeGenerator()
   jt = jtg.junctionTree(bn)
 
-  return getGraph(jt.map(scaleClique,scaleSep,lenEdge,colorClique,colorSep),size)
+  return getGraph(jt.map(scaleClique, scaleSep, lenEdge, colorClique, colorSep), size)
 
 
-def showJunctionTreeMap(bn, size:str=None,scaleClique: float = None, scaleSep: float = None, lenEdge: float = None, colorClique: str = None,
-          colorSep: str = None):
+def showJunctionTreeMap(bn, size: str = None, scaleClique: float = None, scaleSep: float = None, lenEdge: float = None,
+                        colorClique: str = None,
+                        colorSep: str = None):
   """
   Show the map of the junction tree of a Bayesian network
 
@@ -490,7 +492,7 @@ def showJunctionTreeMap(bn, size:str=None,scaleClique: float = None, scaleSep: f
   jtg = gum.JunctionTreeGenerator()
   jt = jtg.junctionTree(bn)
 
-  showGraph(jt.map(scaleClique,scaleSep,lenEdge,colorClique,colorSep),size)
+  showGraph(jt.map(scaleClique, scaleSep, lenEdge, colorClique, colorSep), size)
 
 
 def showJunctionTree(bn, withNames=True, size=None):
@@ -707,13 +709,20 @@ def showApproximationScheme(apsc, scale=np.log10):
     plt.plot(scale(apsc.history()), 'g')
 
 
-def showMN(mn, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=None, edgeColor=None, cmap=None,
+def showMN(*args, **kwargs):
+  warnings.warn(""""
+** pyAgrum.lib.notebook.showMN is obsolete in pyAgrum>1.5.2. Please use showMRF()
+""", DeprecationWarning, stacklevel=2)
+  showMRF(*args, **kwargs)
+
+
+def showRF(mrf, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=None, edgeColor=None, cmap=None,
            cmapEdge=None
            ):
   """
   show a Markov random field
 
-  :param mn: the Markov random field
+  :param mrf: the Markov random field
   :param view: 'graph' | 'factorgraph’ | None (default)
   :param size: size of the rendered graph
   :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
@@ -734,11 +743,11 @@ def showMN(mn, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth
     cmapEdge = cmap
 
   if view == "graph":
-    dottxt = MN2UGdot(mn, size, nodeColor, edgeWidth,
-                      edgeColor, cmap, cmapEdge
-                      )
+    dottxt = MRF2UGdot(mrf, size, nodeColor, edgeWidth,
+                       edgeColor, cmap, cmapEdge
+                       )
   else:
-    dottxt = MN2FactorGraphdot(mn, size, nodeColor, factorColor, cmapNode=cmap)
+    dottxt = MRF2FactorGraphdot(mrf, size, nodeColor, factorColor, cmapNode=cmap)
 
   return showGraph(dottxt, size)
 
@@ -802,7 +811,9 @@ def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor
   if cmapArc is None:
     cmapArc = cmap
 
-  return showGraph(BN2dot(bn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel, arcColor=arcColor, cmapNode=cmap, cmapArc=cmapArc), size)
+  return showGraph(
+    BN2dot(bn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel, arcColor=arcColor, cmapNode=cmap,
+           cmapArc=cmapArc), size)
 
 
 def showCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmap=None, cmapArc=None):
@@ -840,16 +851,24 @@ def showCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor
   if cmapArc is None:
     cmapArc = cmap
 
-  return showGraph(CN2dot(cn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel, arcColor=arcColor, cmapNode=cmap, cmapArc=cmapArc), size)
+  return showGraph(
+    CN2dot(cn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel, arcColor=arcColor, cmapNode=cmap,
+           cmapArc=cmapArc), size)
 
 
-def getMN(mn, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=None, edgeColor=None, cmap=None,
-          cmapEdge=None
-          ):
+def showMNgetMN(*args, **kwargs):
+  warnings.warn(""""
+** pyAgrum.lib.notebook.getMN is obsolete in pyAgrum>1.5.2. Please use getMRF()
+""", DeprecationWarning, stacklevel=2)
+  showMRF(*args, **kwargs)
+
+
+def getMRF(mrf, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=None, edgeColor=None, cmap=None,
+           cmapEdge=None):
   """
   get an HTML string for a Markov random field
 
-  :param mn: the Markov random field
+  :param mrf: the Markov random field
   :param view: 'graph' | 'factorgraph’ | None (default)
   :param size: size of the rendered graph
   :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
@@ -870,11 +889,11 @@ def getMN(mn, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=
     view = gum.config["notebook", "default_markovnetwork_view"]
 
   if view == "graph":
-    dottxt = MN2UGdot(mn, size, nodeColor, edgeWidth,
+    dottxt = MRF2UGdot(mrf, size, nodeColor, edgeWidth,
                       edgeColor, cmap, cmapEdge
                       )
   else:
-    dottxt = MN2FactorGraphdot(mn, size, nodeColor, factorColor, cmapNode=cmap)
+    dottxt = MRF2FactorGraphdot(mrf, size, nodeColor, factorColor, cmapNode=cmap)
 
   return getGraph(dottxt, size)
 
@@ -915,7 +934,9 @@ def getBN(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=
   if cmapArc is None:
     cmapArc = cmap
 
-  return getGraph(BN2dot(bn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel,arcColor=arcColor, cmapNode=cmap, cmapArc=cmapArc), size)
+  return getGraph(
+    BN2dot(bn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel, arcColor=arcColor, cmapNode=cmap,
+           cmapArc=cmapArc), size)
 
 
 def getCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmap=None, cmapArc=None):
@@ -954,20 +975,22 @@ def getCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=
   if cmapArc is None:
     cmapArc = cmap
 
-  return getGraph(CN2dot(cn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel,arcColor=arcColor, cmapNode=cmap, cmapArc=cmapArc), size)
+  return getGraph(
+    CN2dot(cn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel, arcColor=arcColor, cmapNode=cmap,
+           cmapArc=cmapArc), size)
 
 
 def showInference(model, **kwargs):
   """
   show pydot graph for an inference in a notebook
 
-  :param GraphicalModel model: the model in which to infer (pyAgrum.BayesNet, pyAgrum.MarkovNet or pyAgrum.InfluenceDiagram)
-  :param gum.Inference engine: inference algorithm used. If None, gum.LazyPropagation will be used for BayesNet, gum.ShaferShenoy for gum.MarkovNet and gum.ShaferShenoyLIMIDInference for gum.InfluenceDiagram.
+  :param GraphicalModel model: the model in which to infer (pyAgrum.BayesNet, pyAgrum.MarkovRandomField or pyAgrum.InfluenceDiagram)
+  :param gum.Inference engine: inference algorithm used. If None, gum.LazyPropagation will be used for BayesNet, gum.ShaferShenoy for gum.MarkovRandomField and gum.ShaferShenoyLIMIDInference for gum.InfluenceDiagram.
   :param dictionnary evs: map of evidence
   :param set targets: set of targets
   :param string size: size of the rendered graph
   :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
-  :param factorColor: a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovNet representation)
+  :param factorColor: a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovRandomField representation)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
   :param cmap: color map to show the color of nodes and arcs
@@ -988,15 +1011,15 @@ def getInference(model, **kwargs):
   """
   get a HTML string for an inference in a notebook
 
-  :param GraphicalModel model: the model in which to infer (pyAgrum.BayesNet, pyAgrum.MarkovNet or
+  :param GraphicalModel model: the model in which to infer (pyAgrum.BayesNet, pyAgrum.MarkovRandomField or
           pyAgrum.InfluenceDiagram)
   :param gum.Inference engine: inference algorithm used. If None, gum.LazyPropagation will be used for BayesNet,
-          gum.ShaferShenoy for gum.MarkovNet and gum.ShaferShenoyLIMIDInference for gum.InfluenceDiagram.
+          gum.ShaferShenoy for gum.MarkovRandomField and gum.ShaferShenoyLIMIDInference for gum.InfluenceDiagram.
   :param dictionnary evs: map of evidence
   :param set targets: set of targets
   :param string size: size of the rendered graph
   :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
-  :param factorColor: a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovNet representation)
+  :param factorColor: a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovRandomField representation)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
   :param cmap: color map to show the color of nodes and arcs
@@ -1043,9 +1066,9 @@ def _reprPotential(pot, digits=None, withColors=None, varnames=None, asString=Fa
   if with_fraction:
     fraction_limit = int(gum.config['notebook', 'potential_fraction_limit'])
     fraction_round_error = float(
-        gum.config['notebook', 'potential_fraction_round_error'])
+      gum.config['notebook', 'potential_fraction_round_error'])
     fraction_with_latex = gum.config['notebook',
-                                     'potential_fraction_with_latex'] == "True"
+    'potential_fraction_with_latex'] == "True"
 
   def _rgb(r, g, b):
     return '#%02x%02x%02x' % (r, g, b)
@@ -1069,7 +1092,7 @@ def _reprPotential(pot, digits=None, withColors=None, varnames=None, asString=Fa
         str_val = "text-align:center;'>"
         if fraction_with_latex:
           str_val += "$$"
-          if frac_val.denominator>1:
+          if frac_val.denominator > 1:
             str_val += f"\\frac{{{frac_val.numerator}}}{{{frac_val.denominator}}}"
           else:
             str_val += f"{frac_val.numerator}"
@@ -1246,7 +1269,7 @@ def getPotential(pot, digits=None, withColors=None, varnames=None):
     the html representation of the Potential (as a string)
   """
   if withColors is None:
-    withColors=gum.config.asBool["notebook", "potential_with_colors"]
+    withColors = gum.config.asBool["notebook", "potential_with_colors"]
 
   if withColors:
     withColors = __isKindOfProba(pot)
@@ -1274,7 +1297,7 @@ def getSideBySide(*args, **kwargs):
   vals = {'captions', 'valign', 'ncols'}
   if not set(kwargs.keys()).issubset(vals):
     raise TypeError(
-        f"sideBySide() got unexpected keyword argument(s) : '{set(kwargs.keys()).difference(vals)}'")
+      f"sideBySide() got unexpected keyword argument(s) : '{set(kwargs.keys()).difference(vals)}'")
 
   if 'captions' in kwargs:
     captions = kwargs['captions']
@@ -1410,11 +1433,11 @@ def getJT(jt, size=None):
                             label='"' + cliqlabels(c) + '"',
                             style="filled",
                             fillcolor=gum.config["notebook",
-                                                 "junctiontree_clique_bgcolor"],
+                            "junctiontree_clique_bgcolor"],
                             fontcolor=gum.config["notebook",
-                                                 "junctiontree_clique_fgcolor"],
+                            "junctiontree_clique_fgcolor"],
                             fontsize=gum.config["notebook",
-                                                "junctiontree_clique_fontsize"]
+                            "junctiontree_clique_fontsize"]
                             )
                    )
   for c1, c2 in jt.edges():
@@ -1423,11 +1446,11 @@ def getJT(jt, size=None):
                             style="filled",
                             shape="box", width="0", height="0", margin="0.02",
                             fillcolor=gum.config["notebook",
-                                                 "junctiontree_separator_bgcolor"],
+                            "junctiontree_separator_bgcolor"],
                             fontcolor=gum.config["notebook",
-                                                 "junctiontree_separator_fgcolor"],
+                            "junctiontree_separator_fgcolor"],
                             fontsize=gum.config["notebook",
-                                                "junctiontree_separator_fontsize"]
+                            "junctiontree_separator_fontsize"]
                             )
                    )
   for c1, c2 in jt.edges():
@@ -1465,14 +1488,14 @@ def show(model, **kwargs):
   """
   propose a (visual) representation of a model in a notebook
 
-  :param model: the model to show (pyAgrum.BayesNet, pyAgrum.MarkovNet, pyAgrum.InfluenceDiagram or pyAgrum.Potential) or a dot string, or a `pydot.Dot` or even just an object with a method `toDot()`.
+  :param model: the model to show (pyAgrum.BayesNet, pyAgrum.MarkovRandomField, pyAgrum.InfluenceDiagram or pyAgrum.Potential) or a dot string, or a `pydot.Dot` or even just an object with a method `toDot()`.
 
   :param int size: optional size for the graphical model (no effect for Potential)
   """
   if isinstance(model, gum.BayesNet):
     showBN(model, **kwargs)
-  elif isinstance(model, gum.MarkovNet):
-    showMN(model, **kwargs)
+  elif isinstance(model, gum.MarkovRandomField):
+    showMRF(model, **kwargs)
   elif isinstance(model, gum.InfluenceDiagram):
     showInfluenceDiagram(model, **kwargs)
   elif isinstance(model, gum.CredalNet):
@@ -1485,7 +1508,7 @@ def show(model, **kwargs):
     showGraph(model, **kwargs)
   else:
     raise gum.InvalidArgument(
-      "Argument model should be a PGM (BayesNet, MarkovNet, Influence Diagram or Potential or ..."
+      "Argument model should be a PGM (BayesNet, MarkovRandomField, Influence Diagram or Potential or ..."
     )
 
 
@@ -1493,6 +1516,7 @@ def _update_config_notebooks():
   # hook to control some parameters for notebook when config changes
   mpl.rcParams['figure.facecolor'] = gum.config["notebook", "figure_facecolor"]
   set_matplotlib_formats(gum.config["notebook", "graph_format"])
+
 
 # check if an instance of ipython exists
 try:
@@ -1525,7 +1549,7 @@ else:
     """
     if scaleClique is None:
       scaleClique = float(
-          gum.config["notebook", "junctiontree_map_cliquescale"])
+        gum.config["notebook", "junctiontree_map_cliquescale"])
     if scaleSep is None:
       scaleSep = float(gum.config["notebook", "junctiontree_map_sepscale"])
     if lenEdge is None:
@@ -1534,7 +1558,8 @@ else:
       colorClique = gum.config["notebook", "junctiontree_clique_bgcolor"]
     if colorSep is None:
       colorSep = gum.config["notebook", "junctiontree_separator_bgcolor"]
-    return _from_dotstring(self.__map_str__(scaleClique, scaleSep, lenEdge,colorClique,colorSep))
+    return _from_dotstring(self.__map_str__(scaleClique, scaleSep, lenEdge, colorClique, colorSep))
+
 
   setattr(gum.CliqueGraph, "map", map)
 
@@ -1544,7 +1569,7 @@ else:
   # adding _repr_html_ to some pyAgrum classes !
   gum.BayesNet._repr_html_ = lambda self: getBN(self)
   gum.BayesNetFragment._repr_html_ = lambda self: getBN(self)
-  gum.MarkovNet._repr_html_ = lambda self: getMN(self)
+  gum.MarkovRandomField._repr_html_ = lambda self: getMRF(self)
   gum.BayesNetFragment._repr_html_ = lambda self: getBN(self)
   gum.InfluenceDiagram._repr_html_ = lambda self: getInfluenceDiagram(self)
   gum.CredalNet._repr_html_ = lambda self: getCN(self)

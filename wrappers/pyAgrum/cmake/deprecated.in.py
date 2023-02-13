@@ -59,6 +59,15 @@ def ShaferShenoyIDInference(infdiag):
 """, DeprecationWarning, stacklevel=2)
   return ShaferShenoyLIMIDInference(infdiag)
 
+def MarkovNet(*arg,**kwargs):
+  """
+  Deprecated class. Use pyAgrum.MarkovRandomField instead.
+  """
+  warnings.warn(""""
+** pyAgrum.MarkovNet is deprecated in pyAgrum>1.5.2.
+** A pyAgrum.MarkovRandomField has been created.
+""", DeprecationWarning, stacklevel=2)
+  return MarkovRandomField(*args,**kwargs)
 
 def _addDeprecatedMethods():
   def deprecated_adjacents(mixed_graph,n):
@@ -209,6 +218,5 @@ def getThreadNumber():
   warnings.warn(""""
 ** pyAgrum.getThreadNumber is obsolete in pyAgrum>0.22.7.
 """, DeprecationWarning, stacklevel=2)
-
 
 _addDeprecatedMethods()

@@ -32,8 +32,8 @@ from IPython.display import Image, display
 import pyAgrum as gum
 from pyAgrum.lib.bn2graph import BN2dot, BNinference2dot
 from pyAgrum.lib.id2graph import ID2dot, LIMIDinference2dot
-from pyAgrum.lib.mn2graph import MN2UGdot, MNinference2UGdot
-from pyAgrum.lib.mn2graph import MN2FactorGraphdot, MNinference2FactorGraphdot
+from pyAgrum.lib.mrf2graph import MN2UGdot, MNinference2UGdot
+from pyAgrum.lib.mrf2graph import MN2FactorGraphdot, MNinference2FactorGraphdot
 from pyAgrum.lib.bn_vs_bn import GraphicalBNComparator
 from pyAgrum.lib.proba_histogram import proba2histo
 
@@ -273,13 +273,13 @@ def show(model, size=None):
   """
   propose a (visual) representation of a model in ipython console
 
-  :param GraphicalModel model: the model to show (pyAgrum.BayesNet, pyAgrum.MarkovNet, pyAgrum.InfluenceDiagram or pyAgrum.Potential)
+  :param GraphicalModel model: the model to show (pyAgrum.BayesNet, pyAgrum.MarkovRandomField, pyAgrum.InfluenceDiagram or pyAgrum.Potential)
 
   :param int size: optional size for the graphical model (no effect for Potential)
   """
   if isinstance(model, gum.BayesNet):
     showBN(model, size)
-  elif isinstance(model, gum.MarkovNet):
+  elif isinstance(model, gum.MarkovRandomField):
     showMN(model, size)
   elif isinstance(model, gum.InfluenceDiagram):
     showInfluenceDiagram(model, size)
@@ -287,7 +287,7 @@ def show(model, size=None):
     showPotential(model)
   else:
     raise gum.InvalidArgument(
-      "Argument model should be a PGM (BayesNet, MarkovNet or Influence Diagram")
+      "Argument model should be a PGM (BayesNet, MarkovRandomField or Influence Diagram")
 
 
 # check if an instance of ipython exists

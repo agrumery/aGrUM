@@ -27,8 +27,8 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#ifndef GUM_MARKOV_NET_MARGINAL_TARGETED_INFERENCE_H
-#define GUM_MARKOV_NET_MARGINAL_TARGETED_INFERENCE_H
+#ifndef GUM_MARKOV_RANDOM_FIELD_MARGINAL_TARGETED_INFERENCE_H
+#define GUM_MARKOV_RANDOM_FIELD_MARGINAL_TARGETED_INFERENCE_H
 
 #include <string>
 
@@ -40,20 +40,20 @@ namespace gum {
 
 
   /**
-   * @class MarginalTargetedMNInference marginalTargetedMNInference.h
-   * <agrum/MRF/inference/marginalTargetedMNInference.h>
+   * @class MarginalTargetedMRFInference marginalTargetedMRFInference.h
+   * <agrum/MRF/inference/marginalTargetedMRFInference.h>
    * @brief A generic class for the computation of (possibly incrementally)
    * marginal posteriors
    * @ingroup mn_group
    *
    * The goal of this class is to take care of the marginal targets used
-   * for computing marginal posteriors. The MarginalTargetedMNInference class
+   * for computing marginal posteriors. The MarginalTargetedMRFInference class
    * inherits from Inference that takes care of handling both evidence and
-   * the current state of the inference. Note that the MarginalTargetedMNInference
+   * the current state of the inference. Note that the MarginalTargetedMRFInference
    * is designed to be used in incremental inference engines.
    */
   template < typename GUM_SCALAR >
-  class MarginalTargetedMNInference: public virtual MRFInference< GUM_SCALAR > {
+  class MarginalTargetedMRFInference: public virtual MRFInference< GUM_SCALAR > {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -64,10 +64,10 @@ namespace gum {
     /** @warning By default, all the nodes of the Markov net are targets.
      * @warning note that, by aGrUM's rule, the MRF is not copied but only
      * referenced by the inference algorithm. */
-    explicit MarginalTargetedMNInference(const IMarkovRandomField< GUM_SCALAR >* mn);
+    explicit MarginalTargetedMRFInference(const IMarkovRandomField< GUM_SCALAR >* mn);
 
     /// destructor
-    virtual ~MarginalTargetedMNInference();
+    virtual ~MarginalTargetedMRFInference();
 
     /// @}
 
@@ -256,4 +256,4 @@ namespace gum {
 #include <agrum/MRF/inference/tools/marginalTargetedMRFInference_tpl.h>
 
 
-#endif   // GUM_MARKOV_NET_MARGINAL_TARGETED_INFERENCE_H
+#endif   // GUM_MARKOV_RANDOM_FIELD_MARGINAL_TARGETED_INFERENCE_H

@@ -43,18 +43,18 @@ namespace gum {
   INLINE ShaferShenoyMRFInference< GUM_SCALAR >::ShaferShenoyMRFInference(
      const IMarkovRandomField< GUM_SCALAR >* MN,
      bool                            use_binary_join_tree) :
-      JointTargetedMNInference< GUM_SCALAR >(MN),
-      EvidenceMNInference< GUM_SCALAR >(MN), _use_binary_join_tree_(use_binary_join_tree) {
+      JointTargetedMRFInference< GUM_SCALAR >(MN),
+      EvidenceMRFInference< GUM_SCALAR >(MN), _use_binary_join_tree_(use_binary_join_tree) {
     // create a default triangulation (the user can change it afterwards)
     _triangulation_ = new DefaultTriangulation;
 
     // for each node in the MRF, assign the set of factors that contain it
-    const auto& graph = this->MN().graph();
+    const auto& graph = this->MRF().graph();
     _node_to_factors_.resize(graph.size());
     _PotentialSet_ empty;
     for (const auto node: graph)
       _node_to_factors_.insert(node, empty);
-    for (const auto& factor: this->MN().factors()) {
+    for (const auto& factor: this->MRF().factors()) {
       for (const auto node: factor.first) {
         _node_to_factors_[node].insert(factor.second);
       }
@@ -392,7 +392,7 @@ namespace gum {
     // it to get the new junction tree
 
     // 1/ copy the undirected graph of the MRF
-    const auto& mn = this->MN();
+    const auto& mn = this->MRF();
     _graph_        = mn.graph();
 
     // 2/ if there exist some joint targets, we shall add new edges into the
@@ -613,7 +613,7 @@ namespace gum {
   /// put all the CPTs into the cliques when creating the JT without using a schedule
   template < typename GUM_SCALAR >
   void ShaferShenoyMRFInference< GUM_SCALAR >::_initializeJTCliques_() {
-    const auto& mn = this->MN();
+    const auto& mn = this->MRF();
 
     // put all the factors of the MRF into the cliques
     // here, beware: all the potentials that are defined over some nodes
@@ -729,7 +729,7 @@ namespace gum {
   /// put all the CPTs into the cliques when creating the JT using a schedule
   template < typename GUM_SCALAR >
   void ShaferShenoyMRFInference< GUM_SCALAR >::_initializeJTCliques_(Schedule& schedule) {
-    const auto& mn = this->MN();
+    const auto& mn = this->MRF();
 
     // put all the factors of the MRF into the cliques
     // here, beware: all the potentials that are defined over some nodes
@@ -912,7 +912,7 @@ namespace gum {
     // fully new join tree would have been computed).
     // Note also that we know that the factors still contain some variable(s) after
     // the projection (else they should be constants)
-    const auto&                           mn = this->MN();
+    const auto&                           mn = this->MRF();
     NodeSet                               hard_nodes_changed(_hard_ev_nodes_.size());
     Set< const Potential< GUM_SCALAR >* > hard_projected_factors_changed(mn.factors().size());
     for (const auto node: _hard_ev_nodes_) {
@@ -1214,7 +1214,7 @@ namespace gum {
 
     // put in a vector these cliques and their sizes
     std::vector< std::pair< NodeId, Size > > possible_roots(clique_targets.size());
-    const auto&                              mn = this->MN();
+    const auto&                              mn = this->MRF();
     std::size_t                              i  = 0;
     for (const auto clique_id: clique_targets) {
       const auto& clique   = _JT_->clique(clique_id);
@@ -1376,7 +1376,7 @@ namespace gum {
     const NodeSet&                 separator   = _JT_->separator(from_id, to_id);
     Set< const DiscreteVariable* > del_vars(from_clique.size());
     Set< const DiscreteVariable* > kept_vars(separator.size());
-    const auto&                    mn = this->MN();
+    const auto&                    mn = this->MRF();
 
     for (const auto node: from_clique) {
       if (!separator.contains(node)) {
@@ -1427,7 +1427,7 @@ namespace gum {
     const NodeSet&                 separator   = _JT_->separator(from_id, to_id);
     Set< const DiscreteVariable* > del_vars(from_clique.size());
     Set< const DiscreteVariable* > kept_vars(separator.size());
-    const auto&                    mn = this->MN();
+    const auto&                    mn = this->MRF();
 
     for (const auto node: from_clique) {
       if (!separator.contains(node)) {
@@ -1457,7 +1457,7 @@ namespace gum {
   // fired after a new Markov net has been assigned to the inference engine
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::onModelChanged_(const GraphicalModel* mn) {
-    JointTargetedMNInference< GUM_SCALAR >::onModelChanged_(mn);
+    JointTargetedMRFInference< GUM_SCALAR >::onModelChanged_(mn);
   }
 
 
@@ -1525,7 +1525,7 @@ namespace gum {
   Potential< GUM_SCALAR >*
      ShaferShenoyMRFInference< GUM_SCALAR >::_unnormalizedJointPosterior_(Schedule& schedule,
                                                                          NodeId    id) {
-    const auto& mn = this->MN();
+    const auto& mn = this->MRF();
 
     // hard evidence do not belong to the join tree
     // # TODO: check for sets of inconsistent hard evidence
@@ -1601,7 +1601,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >*
      ShaferShenoyMRFInference< GUM_SCALAR >::_unnormalizedJointPosterior_(NodeId id) {
-    const auto& mn = this->MN();
+    const auto& mn = this->MRF();
 
     // hard evidence do not belong to the join tree
     // # TODO: check for sets of inconsistent hard evidence
@@ -1812,7 +1812,7 @@ namespace gum {
     const NodeSet&                 nodes = _JT_->clique(clique_of_set);
     Set< const DiscreteVariable* > del_vars(nodes.size());
     Set< const DiscreteVariable* > kept_vars(targets.size());
-    const auto&                    mn = this->MN();
+    const auto&                    mn = this->MRF();
     for (const auto node: nodes) {
       if (!targets.contains(node)) {
         del_vars.insert(&(mn.variable(node)));
@@ -1963,7 +1963,7 @@ namespace gum {
     const NodeSet&                 nodes = _JT_->clique(clique_of_set);
     Set< const DiscreteVariable* > del_vars(nodes.size());
     Set< const DiscreteVariable* > kept_vars(targets.size());
-    const auto&                    mn = this->MN();
+    const auto&                    mn = this->MRF();
     for (const auto node: nodes) {
       if (!targets.contains(node)) {
         del_vars.insert(&(mn.variable(node)));
@@ -2042,7 +2042,7 @@ namespace gum {
     if (!_joint_target_posteriors_.exists(declared_target)) { jointPosterior_(declared_target); }
 
     // marginalize out all the variables that do not belong to wanted_target
-    const auto&                    mn = this->MN();
+    const auto&                    mn = this->MRF();
     Set< const DiscreteVariable* > del_vars;
     for (const auto node: declared_target)
       if (!wanted_target.contains(node)) del_vars.insert(&(mn.variable(node)));
@@ -2085,7 +2085,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   bool ShaferShenoyMRFInference< GUM_SCALAR >::isExactJointComputable_(const NodeSet& vars) {
-    if (JointTargetedMNInference< GUM_SCALAR >::isExactJointComputable_(vars)) return true;
+    if (JointTargetedMRFInference< GUM_SCALAR >::isExactJointComputable_(vars)) return true;
 
     this->prepareInference();
 
@@ -2098,7 +2098,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   NodeSet ShaferShenoyMRFInference< GUM_SCALAR >::superForJointComputable_(const NodeSet& vars) {
-    const auto superset = JointTargetedMNInference< GUM_SCALAR >::superForJointComputable_(vars);
+    const auto superset = JointTargetedMRFInference< GUM_SCALAR >::superForJointComputable_(vars);
     if (!superset.empty()) return superset;
 
     this->prepareInference();

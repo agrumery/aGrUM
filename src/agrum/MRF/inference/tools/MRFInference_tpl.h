@@ -54,15 +54,15 @@ namespace gum {
 
   // Returns a constant reference over the IMarkovRandomField referenced by this class
   template < typename GUM_SCALAR >
-  INLINE const IMarkovRandomField< GUM_SCALAR >& MRFInference< GUM_SCALAR >::MN() const {
+  INLINE const IMarkovRandomField< GUM_SCALAR >& MRFInference< GUM_SCALAR >::MRF() const {
     return static_cast< const IMarkovRandomField< GUM_SCALAR >& >(this->model());
   }
 
 
   // assigns a new MRF to the inference engine
   template < typename GUM_SCALAR >
-  void MRFInference< GUM_SCALAR >::setMN(const IMarkovRandomField< GUM_SCALAR >* mn) {
-    this->setModel_(mn);
+  void MRFInference< GUM_SCALAR >::setMRF(const IMarkovRandomField< GUM_SCALAR >* mrf) {
+    this->setModel_(mrf);
   }
 
 

@@ -41,7 +41,7 @@ from .deprecated import *
 from .pyAgrum import statsObj
 from .pyAgrum import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, PDAG, CliqueGraph
 from .pyAgrum import BayesNet, BayesNetFragment, EssentialGraph, MarkovBlanket
-from .pyAgrum import MarkovNet, ShaferShenoyMNInference
+from .pyAgrum import MarkovRandomField, ShaferShenoyMNInference
 from .pyAgrum import DiscretizedVariable, LabelizedVariable, RangeVariable, DiscreteVariable, IntegerVariable, \
   NumericalDiscreteVariable
 from .pyAgrum import Potential, Instantiation, Potential
@@ -346,7 +346,7 @@ def loadMN(filename, listeners=None, verbose=False):
   >>> # .........#.........#.........#.........#..50%
   >>> # .......#.........#.........#.........#.........#.........% | bn loaded
   """
-  mn = MarkovNet()
+  mn = MarkovRandomField()
 
   extension = filename.split('.')[-1].upper()
   if extension == "UAI":
@@ -457,8 +457,14 @@ def fastBN(structure, domain_size=2):
   """
   return BayesNet.fastPrototype(structure, domain_size)
 
-
 def fastMN(structure, domain_size=2):
+  warnings.warn("""
+** pyAgrum.fastMN is deprecated in pyAgrum>1.5.2.
+** pyAgrum.fastMRF is calles instead.
+""", DeprecationWarning, stacklevel=2)
+  return fastMRF(structure,domain_size)
+
+def fastMRF(structure, domain_size=2):
   """
   Create a Markov random field with a modified dot-like syntax which specifies:
       - the structure 'a-b-c;b-d;c-e;' where each chain 'a-b-c' specifies a factor,
@@ -467,7 +473,7 @@ def fastMN(structure, domain_size=2):
   Examples
   --------
   >>> import pyAgrum as gum
-  >>> bn=gum.fastMN('A--B[1,3]--C{yes|No};C--D[2,4]--E[1,2.5,3.9]',6)
+  >>> bn=gum.fastMRF('A--B[1,3]--C{yes|No};C--D[2,4]--E[1,2.5,3.9]',6)
 
   Parameters
   ----------
@@ -481,7 +487,7 @@ def fastMN(structure, domain_size=2):
   pyAgrum.MarkovRandomField
           the resulting Markov random field
   """
-  return MarkovNet.fastPrototype(structure, domain_size)
+  return MarkovRandomField.fastPrototype(structure, domain_size)
 
 
 def fastID(structure, domain_size=2):
@@ -539,7 +545,7 @@ def getPosterior(model, * , target,evs=None):
   """
   if isinstance(model, BayesNet):
     inf = VariableElimination(model)
-  elif isinstance(model, MarkovNet):
+  elif isinstance(model, MarkovRandomField):
     inf = ShaferShenoyMNInference(model)
   else:
     raise InvalidArgument("Argument model should be a PGM (BayesNet or MarkovRandomField")

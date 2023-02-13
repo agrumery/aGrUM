@@ -22,7 +22,7 @@
 /**
  * @file
  * @brief Implementation of the non pure virtual methods of class
- * JointTargetedMNInference.
+ * JointTargetedMRFInference.
  */
 
 
@@ -31,20 +31,20 @@ namespace gum {
 
   // Default Constructor
   template < typename GUM_SCALAR >
-  EvidenceMNInference< GUM_SCALAR >::EvidenceMNInference(const IMarkovRandomField< GUM_SCALAR >* mn) :
+  EvidenceMRFInference< GUM_SCALAR >::EvidenceMRFInference(const IMarkovRandomField< GUM_SCALAR >* mn) :
       MRFInference< GUM_SCALAR >(mn) {
     // assign a MRF if this has not been done before (due to virtual inheritance)
     if (this->hasNoModel_()) { MRFInference< GUM_SCALAR >::_setMarkovNetDuringConstruction_(mn);
     }
 
-    GUM_CONSTRUCTOR(EvidenceMNInference);
+    GUM_CONSTRUCTOR(EvidenceMRFInference);
   }
 
 
   // Destructor
   template < typename GUM_SCALAR >
-  EvidenceMNInference< GUM_SCALAR >::~EvidenceMNInference() {
-    GUM_DESTRUCTOR(EvidenceMNInference);
+  EvidenceMRFInference< GUM_SCALAR >::~EvidenceMRFInference() {
+    GUM_DESTRUCTOR(EvidenceMRFInference);
   }
 
 
