@@ -650,7 +650,7 @@ pyAgrum.InvalidArgument
 
 ADD_GENERIC_INFERENCE_DOC(LazyPropagation<double>)
 ADD_GENERIC_INFERENCE_DOC(ShaferShenoyInference<double>)
-ADD_GENERIC_INFERENCE_DOC(ShaferShenoyMNInference<double>)
+ADD_GENERIC_INFERENCE_DOC(ShaferShenoyMRFInference<double>)
 ADD_GENERIC_INFERENCE_DOC(VariableElimination<double>)
 ADD_GENERIC_INFERENCE_DOC(GibbsSampling<double>)
 ADD_GENERIC_INFERENCE_DOC(ImportanceSampling<double>)
@@ -673,7 +673,7 @@ If, on the contrary, nb is equal to 0, the parallelized inference engine will co
 Parameters
 ----------
 nb : int
-	the number of threads to be used by ShaferShenoyMNInference
+	the number of threads to be used by ShaferShenoyMRFInference
 "
 
 %feature("docstring") gum::classname::getNumberOfThreads
@@ -711,4 +711,4 @@ gigabytes: float
 ADD_GENERIC_PARALLELIZED_INFERENCE_DOC(LazyPropagation<double>)
 ADD_GENERIC_PARALLELIZED_INFERENCE_DOC(ShaferShenoyInference<double>)
 ADD_GENERIC_PARALLELIZED_INFERENCE_DOC(VariableElimination<double>)
-ADD_GENERIC_PARALLELIZED_INFERENCE_DOC(ShaferShenoyMNInference<double>)
+ADD_GENERIC_PARALLELIZED_INFERENCE_DOC(ShaferShenoyMRFInference<double>)

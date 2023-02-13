@@ -30,8 +30,8 @@ import pyAgrum as gum
 from pyAgrum.lib.bn2graph import BN2dot, BNinference2dot
 from pyAgrum.lib.cn2graph import CN2dot, CNinference2dot
 from pyAgrum.lib.id2graph import ID2dot, LIMIDinference2dot
-from pyAgrum.lib.mn2graph import MN2UGdot, MNinference2UGdot
-from pyAgrum.lib.mn2graph import MN2FactorGraphdot, MNinference2FactorGraphdot
+from pyAgrum.lib.mrf2graph import MRF2UGdot, MRFinference2UGdot
+from pyAgrum.lib.mrf2graph import MRF2FactorGraphdot, MRFinference2FactorGraphdot
 
 def export(model, filename=None, **kwargs):
   """
@@ -165,15 +165,15 @@ def prepareShowInference(model, engine=None, evs=None, targets=None, size=None,
     if view is None:
       view = gum.config["notebook", "default_markovnetwork_view"]
     if engine is None:
-      engine = gum.ShaferShenoyMNInference(model)
+      engine = gum.ShaferShenoyMRFInference(model)
 
     if view == "graph":
-      return MNinference2UGdot(model, size=size, engine=engine, evs=evs, targets=targets, nodeColor=nodeColor,
+      return MRFinference2UGdot(model, size=size, engine=engine, evs=evs, targets=targets, nodeColor=nodeColor,
                                factorColor=factorColor,
                                arcWidth=arcWidth, arcColor=arcColor, cmapNode=cmap, cmapArc=cmapArc
                                )
     # view=factor graph
-    return MNinference2FactorGraphdot(model, size=size, engine=engine, evs=evs, targets=targets,
+    return MRFinference2FactorGraphdot(model, size=size, engine=engine, evs=evs, targets=targets,
                                       nodeColor=nodeColor,
                                       factorColor=factorColor, cmapNode=cmap
                                       )

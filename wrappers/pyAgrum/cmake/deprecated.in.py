@@ -7,7 +7,7 @@ import functools
 
 from .pyAgrum import GibbsSampling, Potential
 from .pyAgrum import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, CliqueGraph
-from .pyAgrum import BayesNet, EssentialGraph, MarkovBlanket
+from .pyAgrum import BayesNet, EssentialGraph, MarkovBlanket, MarkovRandomField
 from .pyAgrum import InfluenceDiagram, ShaferShenoyLIMIDInference
 from .pyAgrum import ExactBNdistance, GibbsBNdistance
 from .pyAgrum import BNLearner, JunctionTreeGenerator
@@ -59,7 +59,7 @@ def ShaferShenoyIDInference(infdiag):
 """, DeprecationWarning, stacklevel=2)
   return ShaferShenoyLIMIDInference(infdiag)
 
-def MarkovNet(*arg,**kwargs):
+def MarkovNet(*args,**kwargs):
   """
   Deprecated class. Use pyAgrum.MarkovRandomField instead.
   """

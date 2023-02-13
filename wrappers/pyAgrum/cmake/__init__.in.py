@@ -41,7 +41,7 @@ from .deprecated import *
 from .pyAgrum import statsObj
 from .pyAgrum import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, PDAG, CliqueGraph
 from .pyAgrum import BayesNet, BayesNetFragment, EssentialGraph, MarkovBlanket
-from .pyAgrum import MarkovRandomField, ShaferShenoyMNInference
+from .pyAgrum import MarkovRandomField, ShaferShenoyMRFInference
 from .pyAgrum import DiscretizedVariable, LabelizedVariable, RangeVariable, DiscreteVariable, IntegerVariable, \
   NumericalDiscreteVariable
 from .pyAgrum import Potential, Instantiation, Potential
@@ -546,7 +546,7 @@ def getPosterior(model, * , target,evs=None):
   if isinstance(model, BayesNet):
     inf = VariableElimination(model)
   elif isinstance(model, MarkovRandomField):
-    inf = ShaferShenoyMNInference(model)
+    inf = ShaferShenoyMRFInference(model)
   else:
     raise InvalidArgument("Argument model should be a PGM (BayesNet or MarkovRandomField")
 

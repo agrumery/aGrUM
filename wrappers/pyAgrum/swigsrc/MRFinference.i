@@ -197,7 +197,7 @@ IMPROVE_JOINT_MRF_INFERENCE_API(gum::ShaferShenoyMRFInference<double>)
 // create a reference to python BN into python inference
 %define IMPROVE_EXACT_MRF_INFERENCE_API(classname)
 %pythonappend gum::classname<double>::classname %{
-  self._model=MRF # first arg of the constructor
+  self._model=MN # first arg of the constructor
 %}
 %pythonappend gum::classname<double>::junctionTree %{
    val._engine=self

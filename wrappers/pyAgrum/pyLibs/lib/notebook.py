@@ -716,7 +716,7 @@ def showMN(*args, **kwargs):
   showMRF(*args, **kwargs)
 
 
-def showRF(mrf, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=None, edgeColor=None, cmap=None,
+def showMRF(mrf, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=None, edgeColor=None, cmap=None,
            cmapEdge=None
            ):
   """
