@@ -31,7 +31,7 @@
 
 #include <list>
 
-//#include <tr1/functional>
+// #include <tr1/functional>
 
 
 #include <agrum/CN/credalNet.h>

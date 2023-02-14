@@ -42,7 +42,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE ShaferShenoyMRFInference< GUM_SCALAR >::ShaferShenoyMRFInference(
      const IMarkovRandomField< GUM_SCALAR >* MN,
-     bool                            use_binary_join_tree) :
+     bool                                    use_binary_join_tree) :
       JointTargetedMRFInference< GUM_SCALAR >(MN),
       EvidenceMRFInference< GUM_SCALAR >(MN), _use_binary_join_tree_(use_binary_join_tree) {
     // create a default triangulation (the user can change it afterwards)
@@ -187,7 +187,7 @@ namespace gum {
   /// fired when a new evidence is inserted
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::onEvidenceAdded_(const NodeId id,
-                                                                      bool         isHardEvidence) {
+                                                                       bool isHardEvidence) {
     // if we have a new hard evidence, this modifies the undigraph over which
     // the join tree is created. This is also the case if id is not a node of
     // of the undigraph
@@ -209,7 +209,7 @@ namespace gum {
   /// fired when an evidence is removed
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::onEvidenceErased_(const NodeId id,
-                                                                       bool isHardEvidence) {
+                                                                        bool isHardEvidence) {
     // if we delete a hard evidence, this modifies the undigraph over which
     // the join tree is created.
     if (isHardEvidence) _is_new_jt_needed_ = true;
@@ -256,7 +256,7 @@ namespace gum {
   /// fired when an evidence is changed
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::onEvidenceChanged_(const NodeId id,
-                                                                        bool hasChangedSoftHard) {
+                                                                         bool hasChangedSoftHard) {
     if (hasChangedSoftHard) _is_new_jt_needed_ = true;
     else {
       try {
@@ -301,7 +301,7 @@ namespace gum {
 
   /// fired after a new Markov net has been assigned to the engine
   template < typename GUM_SCALAR >
-  INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::onMarkovNetChanged_(
+  INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::onMRFChanged_(
      const IMarkovRandomField< GUM_SCALAR >* mn) {}
 
   /// fired before a all the joint_targets are removed
@@ -1257,8 +1257,8 @@ namespace gum {
   // performs the collect phase of Shafer-Shenoy using schedules
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::_collectMessage_(Schedule& schedule,
-                                                                      NodeId    id,
-                                                                      NodeId    from) {
+                                                                       NodeId    id,
+                                                                       NodeId    from) {
     for (const auto other: _JT_->neighbours(id)) {
       if ((other != from) && !_messages_computed_[Arc(other, id)])
         _collectMessage_(schedule, other, id);
@@ -1357,8 +1357,8 @@ namespace gum {
   // creates the message sent by clique from_id to clique to_id
   template < typename GUM_SCALAR >
   void ShaferShenoyMRFInference< GUM_SCALAR >::_produceMessage_(Schedule& schedule,
-                                                               NodeId    from_id,
-                                                               NodeId    to_id) {
+                                                                NodeId    from_id,
+                                                                NodeId    to_id) {
     // get the potentials of the clique.
     _ScheduleMultiDimSet_ pot_list;
     if (_clique_ss_potential_[from_id] != nullptr) pot_list.insert(_clique_ss_potential_[from_id]);
@@ -1524,7 +1524,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >*
      ShaferShenoyMRFInference< GUM_SCALAR >::_unnormalizedJointPosterior_(Schedule& schedule,
-                                                                         NodeId    id) {
+                                                                          NodeId    id) {
     const auto& mn = this->MRF();
 
     // hard evidence do not belong to the join tree
@@ -1703,7 +1703,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >*
      ShaferShenoyMRFInference< GUM_SCALAR >::_unnormalizedJointPosterior_(Schedule&      schedule,
-                                                                         const NodeSet& set) {
+                                                                          const NodeSet& set) {
     // hard evidence do not belong to the join tree, so extract the nodes
     // from targets that are not hard evidence
     NodeSet targets = set, hard_ev_nodes;
@@ -2030,7 +2030,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
      ShaferShenoyMRFInference< GUM_SCALAR >::jointPosterior_(const NodeSet& wanted_target,
-                                                            const NodeSet& declared_target) {
+                                                             const NodeSet& declared_target) {
     // check if we have already computed the posterior of wanted_target
     if (_joint_target_posteriors_.exists(wanted_target))
       return *(_joint_target_posteriors_[wanted_target]);

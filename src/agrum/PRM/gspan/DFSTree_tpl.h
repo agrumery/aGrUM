@@ -447,13 +447,13 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE Sequence< PRMInstance< GUM_SCALAR >* >&
              DFSTree< GUM_SCALAR >::iso_map(const Pattern& p, NodeId node) {
-            try {
-              return *(_data_[const_cast< Pattern* >(&p)]->iso_map[node]);
+        try {
+          return *(_data_[const_cast< Pattern* >(&p)]->iso_map[node]);
         } catch (NotFound const&) {
-              if (_data_.exists(const_cast< Pattern* >(&p))) {
-                GUM_ERROR(NotFound, "node not found in Pattern's isomorphism graph")
+          if (_data_.exists(const_cast< Pattern* >(&p))) {
+            GUM_ERROR(NotFound, "node not found in Pattern's isomorphism graph")
           } else {
-                GUM_ERROR(NotFound, "pattern not found in this DFSTree")
+            GUM_ERROR(NotFound, "pattern not found in this DFSTree")
           }
         }
       }

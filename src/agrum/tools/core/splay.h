@@ -30,7 +30,7 @@
 #define GUM_SPLAY_H
 
 #include <iostream>
-//#include <stdlib.h>
+// #include <stdlib.h>
 
 #include <agrum/agrum.h>
 #include <agrum/tools/core/hashTable.h>

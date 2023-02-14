@@ -48,7 +48,9 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  IMarkovRandomField< GUM_SCALAR >::IMarkovRandomField(const IMarkovRandomField< GUM_SCALAR >& source) : UGmodel(source) {
+  IMarkovRandomField< GUM_SCALAR >::IMarkovRandomField(
+     const IMarkovRandomField< GUM_SCALAR >& source) :
+      UGmodel(source) {
     GUM_CONS_CPY(IMarkovRandomField);
   }
 
@@ -289,7 +291,8 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE std::ostream& operator<<(std::ostream& output, const IMarkovRandomField< GUM_SCALAR >& bn) {
+  INLINE std::ostream& operator<<(std::ostream&                           output,
+                                  const IMarkovRandomField< GUM_SCALAR >& bn) {
     output << bn.toString();
     return output;
   }
@@ -307,9 +310,9 @@ namespace gum {
   // visit the nodes and add some of node from soids in minimal
   template < typename GUM_SCALAR >
   void IMarkovRandomField< GUM_SCALAR >::_minimalCondSetVisit_(NodeId         node,
-                                                       const NodeSet& soids,
-                                                       NodeSet&       minimal,
-                                                       NodeSet&       alreadyVisited) const {
+                                                               const NodeSet& soids,
+                                                               NodeSet&       minimal,
+                                                               NodeSet& alreadyVisited) const {
     if (alreadyVisited.contains(node)) return;
     alreadyVisited << node;
 
@@ -323,7 +326,8 @@ namespace gum {
 
 
   template < typename GUM_SCALAR >
-  NodeSet IMarkovRandomField< GUM_SCALAR >::minimalCondSet(NodeId target, const NodeSet& soids) const {
+  NodeSet IMarkovRandomField< GUM_SCALAR >::minimalCondSet(NodeId         target,
+                                                           const NodeSet& soids) const {
     if (soids.contains(target)) return NodeSet({target});
 
     NodeSet res;
@@ -337,7 +341,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   NodeSet IMarkovRandomField< GUM_SCALAR >::minimalCondSet(const NodeSet& targets,
-                                                   const NodeSet& soids) const {
+                                                           const NodeSet& soids) const {
     NodeSet res;
     for (auto node: targets) {
       res += minimalCondSet(node, soids);

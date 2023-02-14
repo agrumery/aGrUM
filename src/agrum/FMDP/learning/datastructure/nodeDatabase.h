@@ -81,7 +81,7 @@ namespace gum {
     // ============================================================================
     void* operator new(size_t s) { return SmallObjectAllocator::instance().allocate(s); }
     void  operator delete(void* p) {
-       SmallObjectAllocator::instance().deallocate(p, sizeof(NodeDatabase));
+      SmallObjectAllocator::instance().deallocate(p, sizeof(NodeDatabase));
     }
 
     /// @}

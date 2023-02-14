@@ -306,7 +306,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >&
                InfluenceDiagram< GUM_SCALAR >::utility(NodeId varId) const {
-              return *(_utilityMap_[varId]);
+    return *(_utilityMap_[varId]);
   }
 
   /*

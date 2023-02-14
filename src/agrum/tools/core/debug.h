@@ -137,7 +137,7 @@
 
 #    define GUM_CHECKPOINT     _GUM_PRINT(__FILE__, __LINE__, "******** checkpoint ********")
 #    define GUM_TRACE(msg)     _GUM_PRINT(__FILE__, __LINE__, msg)
-#    define GUM_TRACE_VAR(var) _GUM_PRINT(__FILE__, __LINE__, "<" << #    var << ">: " << var)
+#    define GUM_TRACE_VAR(var) _GUM_PRINT(__FILE__, __LINE__, "<" << #var << ">: " << var)
 
 #    define GUM_TRACE_NEWLINE \
       { std::cout << std::endl; }

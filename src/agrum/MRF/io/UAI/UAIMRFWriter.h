@@ -98,7 +98,7 @@ namespace gum {
     std::string _preambule_(const IMarkovRandomField< GUM_SCALAR >& MN);
 
     std::string _factorBloc_(const IMarkovRandomField< GUM_SCALAR >& MN,
-                             const Potential< GUM_SCALAR >&  clikpot);
+                             const Potential< GUM_SCALAR >&          clikpot);
   };
 
 

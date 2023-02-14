@@ -7,7 +7,8 @@ import functools
 
 from .pyAgrum import GibbsSampling, Potential
 from .pyAgrum import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, CliqueGraph
-from .pyAgrum import BayesNet, EssentialGraph, MarkovBlanket, MarkovRandomField
+from .pyAgrum import BayesNet, EssentialGraph, MarkovBlanket
+from .pyAgrum import MarkovRandomField, ShaferShenoyMRFInference
 from .pyAgrum import InfluenceDiagram, ShaferShenoyLIMIDInference
 from .pyAgrum import ExactBNdistance, GibbsBNdistance
 from .pyAgrum import BNLearner, JunctionTreeGenerator
@@ -58,6 +59,17 @@ def ShaferShenoyIDInference(infdiag):
 ** A pyAgrum.ShaferShenoyLIMIDInference has been created.
 """, DeprecationWarning, stacklevel=2)
   return ShaferShenoyLIMIDInference(infdiag)
+
+
+def ShaferShenoyMNInference(mrf):
+  """
+  Deprecated class. Use pyAgrum.ShaferShenoyMRFInference instead.
+  """
+  warnings.warn(""""
+** pyAgrum.ShaferShenoyMNInference is deprecated in pyAgrum>1.5.2.
+** A pyAgrum.ShaferShenoyMRFInference has been created.
+""", DeprecationWarning, stacklevel=2)
+  return ShaferShenoyMRFInference(mrf)
 
 def MarkovNet(*args,**kwargs):
   """
@@ -170,6 +182,15 @@ def _addDeprecatedMethods():
     return var.asDiscretizedVar()
 
 
+  def deprecated_MN(mrfie):
+    """
+    Deprecated method in gum.ShaferShenoyMRFInference for pyAgrum>1.5.2
+    """
+    warnings.warn("""
+** pyAgrum.ShaferShenoyMRFInference.MN() is deprecated from pyAgrum>1.5.2. Please use pyAgrum.ShaferShenoyMRFInference.MRF() methods instead.
+""", DeprecationWarning, stacklevel=2)
+    return mrfie.MRF()
+
   BNLearner.useNoApriori = deprecated_useNoApriori
   BNLearner.useAprioriBDeu = deprecated_useAprioriBDeu
   BNLearner.useAprioriSmoothing = deprecated_useAprioriSmoothing
@@ -183,6 +204,8 @@ def _addDeprecatedMethods():
   DiscreteVariable.toIntegerVar = deprecated_toIntegerVar
   DiscreteVariable.toNumericalDiscreteVar = deprecated_toNumericalDiscreteVar
   DiscreteVariable.toDiscretizedVar = deprecated_toDiscretizedVar
+
+  ShaferShenoyMRFInference.MN = deprecated_MN
 
 def getNumberOfRunningThreads():
   warnings.warn(""""

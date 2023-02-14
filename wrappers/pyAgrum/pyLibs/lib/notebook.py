@@ -24,6 +24,7 @@ tools for BN in jupyter notebook
 import time
 import re
 import sys
+import warnings
 
 # fix DeprecationWarning of base64.encodestring()
 try:
@@ -856,7 +857,7 @@ def showCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor
            cmapArc=cmapArc), size)
 
 
-def showMNgetMN(*args, **kwargs):
+def getMN(*args, **kwargs):
   warnings.warn(""""
 ** pyAgrum.lib.notebook.getMN is obsolete in pyAgrum>1.5.2. Please use getMRF()
 """, DeprecationWarning, stacklevel=2)

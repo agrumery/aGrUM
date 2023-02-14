@@ -374,6 +374,6 @@ namespace gum {
 } /* namespace gum */
 
 /// always include templated methods
-//#include <agrum/BN/learning/threeOffTwo_tpl.h>
+// #include <agrum/BN/learning/threeOffTwo_tpl.h>
 
 #endif /* GUM_LEARNING_3_OFF_2_H */

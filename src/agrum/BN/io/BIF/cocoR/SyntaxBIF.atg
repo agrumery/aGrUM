@@ -116,7 +116,7 @@ VARIABLE =  (.
 .
 
 //==============
-LABELIZE_VAR<int& nbrMod> = "type" "discrete" '[' NBR<nbrMod> ']' (. if (nbrMod<=1) SemErr("Not enough modalities for a discrete variable"); .)
+LABELIZE_VAR<gum::Size& nbrMod> = "type" "discrete" '[' NBR<nbrMod> ']' (. if (nbrMod<=1) SemErr("Not enough modalities for a discrete variable"); .)
   '{' MODALITY_LIST '}' ';'
 .
 
@@ -274,7 +274,7 @@ IDENT_OR_INTEGER<std::string& name> =
 .
 
 //==============
-NBR<int& val> = integer (. val=coco_atoi(t->val); .).
+NBR<gum::Size& val> = integer (. val=coco_atoi(t->val); .).
 
 //==============
 FLOAT<float& val> =

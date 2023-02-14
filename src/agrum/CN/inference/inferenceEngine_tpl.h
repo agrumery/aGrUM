@@ -431,13 +431,13 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE Potential< GUM_SCALAR >
            InferenceEngine< GUM_SCALAR >::marginalMin(const std::string& varName) const {
-          return marginalMin(credalNet_->current_bn().idFromName(varName));
+      return marginalMin(credalNet_->current_bn().idFromName(varName));
     }
 
     template < typename GUM_SCALAR >
     INLINE Potential< GUM_SCALAR >
            InferenceEngine< GUM_SCALAR >::marginalMax(const std::string& varName) const {
-          return marginalMax(credalNet_->current_bn().idFromName(varName));
+      return marginalMax(credalNet_->current_bn().idFromName(varName));
     }
 
     template < typename GUM_SCALAR >

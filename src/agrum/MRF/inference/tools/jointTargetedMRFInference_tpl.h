@@ -36,8 +36,7 @@ namespace gum {
      const IMarkovRandomField< GUM_SCALAR >* mn) :
       MarginalTargetedMRFInference< GUM_SCALAR >(mn) {
     // assign a MRF if this has not been done before (due to virtual inheritance)
-    if (this->hasNoModel_()) { MRFInference< GUM_SCALAR >::_setMarkovNetDuringConstruction_(mn);
-    }
+    if (this->hasNoModel_()) { MRFInference< GUM_SCALAR >::_setMRFDuringConstruction_(mn); }
     GUM_CONSTRUCTOR(JointTargetedMRFInference);
   }
 
@@ -178,7 +177,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const Set< NodeSet >&
                JointTargetedMRFInference< GUM_SCALAR >::jointTargets() const noexcept {
-              return _joint_targets_;
+    return _joint_targets_;
   }
 
   /// returns the number of target sets
@@ -241,13 +240,13 @@ namespace gum {
   // ##############################################################################
   template < typename GUM_SCALAR >
   GUM_SCALAR JointTargetedMRFInference< GUM_SCALAR >::I(const std::string& Xname,
-                                                       const std::string& Yname) {
+                                                        const std::string& Yname) {
     return I(this->MRF().idFromName(Xname), this->MRF().idFromName(Yname));
   }
 
   template < typename GUM_SCALAR >
   GUM_SCALAR JointTargetedMRFInference< GUM_SCALAR >::VI(const std::string& Xname,
-                                                        const std::string& Yname) {
+                                                         const std::string& Yname) {
     return VI(this->MRF().idFromName(Xname), this->MRF().idFromName(Yname));
   }
 
@@ -316,7 +315,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
      JointTargetedMRFInference< GUM_SCALAR >::evidenceJointImpact(const NodeSet& targets,
-                                                                 const NodeSet& evs) {
+                                                                  const NodeSet& evs) {
     if (!(evs * targets).empty()) {
       GUM_ERROR(InvalidArgument,
                 "Targets (" << targets << ") can not intersect evs (" << evs << ").");

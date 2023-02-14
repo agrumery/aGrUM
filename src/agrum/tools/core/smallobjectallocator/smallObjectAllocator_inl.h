@@ -122,7 +122,7 @@ namespace gum {
 
     // If objectSize is greater than maxObjectSize, normal new is called
     if (objectSize > _maxObjectSize_) {
-      delete[](unsigned char*) pDeallocatedObject;
+      delete[] (unsigned char*)pDeallocatedObject;
       return;
     }
 

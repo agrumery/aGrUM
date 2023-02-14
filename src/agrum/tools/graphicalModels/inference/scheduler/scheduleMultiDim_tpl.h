@@ -365,7 +365,7 @@ namespace gum {
   template < typename TABLE >
   INLINE const Sequence< const DiscreteVariable* >&
                ScheduleMultiDim< TABLE >::variablesSequence() const {
-              return _var_sequence_;
+    return _var_sequence_;
   }
 
 

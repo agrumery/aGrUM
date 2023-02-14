@@ -24,7 +24,8 @@
 namespace gum {
 
   template < typename GUM_SCALAR >
-  UAIMRFReader< GUM_SCALAR >::UAIMRFReader(MarkovRandomField< GUM_SCALAR >* MN, const std::string& filename) :
+  UAIMRFReader< GUM_SCALAR >::UAIMRFReader(MarkovRandomField< GUM_SCALAR >* MN,
+                                           const std::string&               filename) :
       MRFReader< GUM_SCALAR >(MN, filename) {
     GUM_CONSTRUCTOR(UAIMRFReader);
     _mn_ = MN;
@@ -36,8 +37,8 @@ namespace gum {
     _ioerror_ = false;
 
     try {
-      _scanner_ = new UAIMN::Scanner(_streamName_.c_str());
-      _parser_  = new UAIMN::Parser(_scanner_);
+      _scanner_ = new UAIMRF::Scanner(_streamName_.c_str());
+      _parser_  = new UAIMRF::Parser(_scanner_);
     } catch (IOError const&) { _ioerror_ = true; }
   }
 
@@ -54,7 +55,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE UAIMN::Scanner& UAIMRFReader< GUM_SCALAR >::scanner() {
+  INLINE UAIMRF::Scanner& UAIMRFReader< GUM_SCALAR >::scanner() {
     if (_ioerror_) { GUM_ERROR(gum::IOError, "No such file " + streamName()) }
 
     return *_scanner_;
@@ -143,7 +144,8 @@ namespace gum {
       for (NodeId j = 0; j < nbrVar; j++) {
         incCurrent();
         NodeId nod = (NodeId)getInt();
-        if (nod >= nbrNode) _addError_(lig(), col(), "Not enough variables in the MarkovRandomField");
+        if (nod >= nbrNode)
+          _addError_(lig(), col(), "Not enough variables in the MarkovRandomField");
         vars.insert(nod);
       }
       _mn_->addFactor(vars);

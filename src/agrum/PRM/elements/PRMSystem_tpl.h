@@ -436,10 +436,10 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const PRMInstance< GUM_SCALAR >&
                  PRMSystem< GUM_SCALAR >::get(const std::string& name) const {
-                try {
-                  return *(nameMap_[name]);
+      try {
+        return *(nameMap_[name]);
       } catch (NotFound const&) {
-                  GUM_ERROR(NotFound, "found no Instance<GUM_SCALAR> matching the given name")
+        GUM_ERROR(NotFound, "found no Instance<GUM_SCALAR> matching the given name")
       }
     }
 
@@ -466,16 +466,16 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE PRMClassElementContainer< GUM_SCALAR >&
            PRMSystem< GUM_SCALAR >::getArrayType(const std::string& name) {
-          try {
-            return *(arrayMap_[name].first);
+      try {
+        return *(arrayMap_[name].first);
       } catch (NotFound const&) { GUM_ERROR(NotFound, "found no array matching the given name") }
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElementContainer< GUM_SCALAR >&
                  PRMSystem< GUM_SCALAR >::getArrayType(const std::string& name) const {
-                try {
-                  return *(arrayMap_[name].first);
+      try {
+        return *(arrayMap_[name].first);
       } catch (NotFound const&) { GUM_ERROR(NotFound, "found no array matching the given name") }
     }
 

@@ -10,7 +10,7 @@
 
 #  include <io.h>
 #  include <stdlib.h>
-//#include <getopt.h> /* getopt at: https://gist.github.com/ashelly/7776712 */
+// #include <getopt.h> /* getopt at: https://gist.github.com/ashelly/7776712 */
 #  include <direct.h>  /* for _getcwd() and _chdir() */
 #  include <process.h> /* for getpid() and the exec..() family */
 
@@ -21,7 +21,7 @@
    These may be OR'd together.  */
 #  define R_OK 4 /* Test for read permission.  */
 #  define W_OK 2 /* Test for write permission.  */
-//#define   X_OK    1       /* execute permission - unsupported in windows*/
+// #define   X_OK    1       /* execute permission - unsupported in windows*/
 #  define F_OK 0 /* Test for existence.  */
 
 #  define access    _access

@@ -206,76 +206,76 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >&
                Potential< GUM_SCALAR >::fillWith(const std::vector< GUM_SCALAR >& data) const {
-              this->populate(data);
-              return *this;
+    this->populate(data);
+    return *this;
   }
 
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >&
                Potential< GUM_SCALAR >::fillWith(const GUM_SCALAR& val) const {
-              this->fill(val);
-              return *this;
+    this->fill(val);
+    return *this;
   }
 
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >&
                Potential< GUM_SCALAR >::fillWith(const Potential< GUM_SCALAR >& src) const {
-              if (src.domainSize() != this->domainSize()) {
-                GUM_ERROR(InvalidArgument, "Potential to copy has not the same domainSize.")
+    if (src.domainSize() != this->domainSize()) {
+      GUM_ERROR(InvalidArgument, "Potential to copy has not the same domainSize.")
     }
-              gum::Set< std::string > son;   // set of names
-              for (const auto& v: src.variablesSequence()) {
-                son.insert(v->name());
+    gum::Set< std::string > son;   // set of names
+    for (const auto& v: src.variablesSequence()) {
+      son.insert(v->name());
     }
-              for (const auto& v: this->variablesSequence()) {
-                if (!son.contains(v->name())) {
-                  GUM_ERROR(InvalidArgument,
+    for (const auto& v: this->variablesSequence()) {
+      if (!son.contains(v->name())) {
+        GUM_ERROR(InvalidArgument,
                   "Variable <" << v->name() << "> not present in src (" << son << ").");
       }
-                // we check size, labels and order of labels in the same time
-                if (v->toString() != src.variable(v->name()).toString()) {
-                  GUM_ERROR(InvalidArgument, "Variables <" << v->name() << "> are not identical.")
+      // we check size, labels and order of labels in the same time
+      if (v->toString() != src.variable(v->name()).toString()) {
+        GUM_ERROR(InvalidArgument, "Variables <" << v->name() << "> are not identical.")
       }
     }
 
-              Instantiation Isrc(src);
-              Instantiation Idst(*this);
-              for (Isrc.setFirst(); !Isrc.end(); ++Isrc) {
-                for (Idx i = 0; i < this->nbrDim(); i++) {
-                  Idst.chgVal(Isrc.variable(i).name(), Isrc.val(i));
+    Instantiation Isrc(src);
+    Instantiation Idst(*this);
+    for (Isrc.setFirst(); !Isrc.end(); ++Isrc) {
+      for (Idx i = 0; i < this->nbrDim(); i++) {
+        Idst.chgVal(Isrc.variable(i).name(), Isrc.val(i));
       }
-                this->set(Idst, src.get(Isrc));
+      this->set(Idst, src.get(Isrc));
     }
 
-              return *this;
+    return *this;
   }
 
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >&
                Potential< GUM_SCALAR >::fillWith(const Potential< GUM_SCALAR >&    src,
                                        const std::vector< std::string >& mapSrc) const {
-              if (src.nbrDim() != this->nbrDim()) {
-                GUM_ERROR(InvalidArgument, "Potential to copy has not the same size.")
+    if (src.nbrDim() != this->nbrDim()) {
+      GUM_ERROR(InvalidArgument, "Potential to copy has not the same size.")
     }
-              if (src.nbrDim() != mapSrc.size()) {
-                GUM_ERROR(InvalidArgument, "Potential and vector have not the same size.")
+    if (src.nbrDim() != mapSrc.size()) {
+      GUM_ERROR(InvalidArgument, "Potential and vector have not the same size.")
     }
-              Instantiation Isrc;
-              for (Idx i = 0; i < src.nbrDim(); i++) {
-                if (src.variable(mapSrc[i]).domainSize() != this->variable(i).domainSize()) {
-                  GUM_ERROR(InvalidArgument,
+    Instantiation Isrc;
+    for (Idx i = 0; i < src.nbrDim(); i++) {
+      if (src.variable(mapSrc[i]).domainSize() != this->variable(i).domainSize()) {
+        GUM_ERROR(InvalidArgument,
                   "Variables " << mapSrc[i] << " (in the argument) and " << this->variable(i).name()
                                << " have not the same dimension.");
       } else {
-                  Isrc.add(src.variable(mapSrc[i]));
+        Isrc.add(src.variable(mapSrc[i]));
       }
     }
-              Instantiation Idst(*this);
-              for (Isrc.setFirst(); !Isrc.end(); ++Isrc, ++Idst) {
-                this->set(Idst, src.get(Isrc));
+    Instantiation Idst(*this);
+    for (Isrc.setFirst(); !Isrc.end(); ++Isrc, ++Idst) {
+      this->set(Idst, src.get(Isrc));
     }
 
-              return *this;
+    return *this;
   }
 
   template < typename GUM_SCALAR >
@@ -350,34 +350,34 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >&
                Potential< GUM_SCALAR >::normalizeAsCPT(const Idx& varId) const {
-              if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
-                if (this->empty_value_ != static_cast< GUM_SCALAR >(0)) {
-                  this->empty_value_ = static_cast< GUM_SCALAR >(1.0);
+    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
+      if (this->empty_value_ != static_cast< GUM_SCALAR >(0)) {
+        this->empty_value_ = static_cast< GUM_SCALAR >(1.0);
       } else {
-                  GUM_ERROR(FatalError, "Normalization for a potential that sum to 0 in " << *this)
+        GUM_ERROR(FatalError, "Normalization for a potential that sum to 0 in " << *this)
       }
     } else {
-                if (varId >= this->nbrDim()) {
-                  GUM_ERROR(FatalError, varId << " is not a position for " << *this)
+      if (varId >= this->nbrDim()) {
+        GUM_ERROR(FatalError, varId << " is not a position for " << *this)
       }
-                Instantiation inst(*this);
-                const auto&   v = this->variable(varId);
+      Instantiation inst(*this);
+      const auto&   v = this->variable(varId);
 
-                for (inst.setFirst(); !inst.end(); inst.incNotVar(v)) {
-                  GUM_SCALAR s = (GUM_SCALAR)0.0;
-                  for (inst.setFirstVar(v); !inst.end(); inst.incVar(v))
+      for (inst.setFirst(); !inst.end(); inst.incNotVar(v)) {
+        GUM_SCALAR s = (GUM_SCALAR)0.0;
+        for (inst.setFirstVar(v); !inst.end(); inst.incVar(v))
           s += this->get(inst);
         if (s == (GUM_SCALAR)0.0) {
-                    GUM_ERROR(FatalError, "Normalization for a potential that sum to 0 in " << *this)
+          GUM_ERROR(FatalError, "Normalization for a potential that sum to 0 in " << *this)
         }
-                  if (s != (GUM_SCALAR)1.0) {
-                    for (inst.setFirstVar(v); !inst.end(); inst.incVar(v))
+        if (s != (GUM_SCALAR)1.0) {
+          for (inst.setFirstVar(v); !inst.end(); inst.incVar(v))
             this->set(inst, this->get(inst) / s);
         }
-                  inst.setFirstVar(v);   // to remove inst.end()
+        inst.setFirstVar(v);   // to remove inst.end()
       }
     }
-              return *this;
+    return *this;
   }
 
   template < typename GUM_SCALAR >
@@ -401,24 +401,24 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >
          Potential< GUM_SCALAR >::margSumOut(const Set< const DiscreteVariable* >& del_vars) const {
-        if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
-          return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
+    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
+      return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
     }
 
-        // if we remove all the variables, create an empty potential
-        // TODO: remove this test when operations will be able to handle empty potentials
-        if (this->variablesSequence().size() <= del_vars.size()) {
-          bool equal = true;
-          for (const auto var: this->variablesSequence()) {
-            if (!del_vars.exists(var)) {
-              equal = false;
-              break;
+    // if we remove all the variables, create an empty potential
+    // TODO: remove this test when operations will be able to handle empty potentials
+    if (this->variablesSequence().size() <= del_vars.size()) {
+      bool equal = true;
+      for (const auto var: this->variablesSequence()) {
+        if (!del_vars.exists(var)) {
+          equal = false;
+          break;
         }
       }
-          if (equal) { return Potential< GUM_SCALAR >().fillWith(this->sum()); }
+      if (equal) { return Potential< GUM_SCALAR >().fillWith(this->sum()); }
     }
 
-        return Potential< GUM_SCALAR >(gum::projectSum(*this->content(), del_vars));
+    return Potential< GUM_SCALAR >(gum::projectSum(*this->content(), del_vars));
   }
 
   template < typename GUM_SCALAR >
@@ -447,61 +447,61 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >
          Potential< GUM_SCALAR >::margMinOut(const Set< const DiscreteVariable* >& del_vars) const {
-        if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
-          return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
+    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
+      return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
     }
 
-        // if we remove all the variables, create an empty potential
-        // TODO: remove this test when operations will be able to handle empty potentials
-        if (this->variablesSequence().size() <= del_vars.size()) {
-          bool equal = true;
-          for (const auto var: this->variablesSequence()) {
-            if (!del_vars.exists(var)) {
-              equal = false;
-              break;
+    // if we remove all the variables, create an empty potential
+    // TODO: remove this test when operations will be able to handle empty potentials
+    if (this->variablesSequence().size() <= del_vars.size()) {
+      bool equal = true;
+      for (const auto var: this->variablesSequence()) {
+        if (!del_vars.exists(var)) {
+          equal = false;
+          break;
         }
       }
-          if (equal) { return Potential< GUM_SCALAR >().fillWith(this->min()); }
+      if (equal) { return Potential< GUM_SCALAR >().fillWith(this->min()); }
     }
 
-        return Potential< GUM_SCALAR >(gum::projectMin(*this->content(), del_vars));
+    return Potential< GUM_SCALAR >(gum::projectMin(*this->content(), del_vars));
   }
 
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >
          Potential< GUM_SCALAR >::margMaxOut(const Set< const DiscreteVariable* >& del_vars) const {
-        if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
-          return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
+    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
+      return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
     }
 
-        // if we remove all the variables, create an empty potential
-        // TODO: remove this test when operations will be able to handle empty potentials
-        if (this->variablesSequence().size() <= del_vars.size()) {
-          bool equal = true;
-          for (const auto var: this->variablesSequence()) {
-            if (!del_vars.exists(var)) {
-              equal = false;
-              break;
+    // if we remove all the variables, create an empty potential
+    // TODO: remove this test when operations will be able to handle empty potentials
+    if (this->variablesSequence().size() <= del_vars.size()) {
+      bool equal = true;
+      for (const auto var: this->variablesSequence()) {
+        if (!del_vars.exists(var)) {
+          equal = false;
+          break;
         }
       }
-          if (equal) { return Potential< GUM_SCALAR >().fillWith(this->max()); }
+      if (equal) { return Potential< GUM_SCALAR >().fillWith(this->max()); }
     }
 
-        return Potential< GUM_SCALAR >(gum::projectMax(*this->content(), del_vars));
+    return Potential< GUM_SCALAR >(gum::projectMax(*this->content(), del_vars));
   }
 
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >
          Potential< GUM_SCALAR >::margSumIn(const Set< const DiscreteVariable* >& kept_vars) const {
-        if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
-          return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
+    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
+      return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
     }
 
-        // if kept_var is empty, create an empty potential
-        // TODO: remove this test when operations will be able to handle empty potentials
-        if (kept_vars.empty()) { return Potential< GUM_SCALAR >().fillWith(this->sum()); }
+    // if kept_var is empty, create an empty potential
+    // TODO: remove this test when operations will be able to handle empty potentials
+    if (kept_vars.empty()) { return Potential< GUM_SCALAR >().fillWith(this->sum()); }
 
-        return Potential< GUM_SCALAR >(gum::projectSum(*this->content(), complementVars_(kept_vars)));
+    return Potential< GUM_SCALAR >(gum::projectSum(*this->content(), complementVars_(kept_vars)));
   }
 
   template < typename GUM_SCALAR >
@@ -522,29 +522,29 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >
          Potential< GUM_SCALAR >::margMinIn(const Set< const DiscreteVariable* >& kept_vars) const {
-        if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
-          return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
+    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
+      return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
     }
 
-        // if kept_var is empty, create an empty potential
-        // TODO: remove this test when operations will be able to handle empty potentials
-        if (kept_vars.empty()) { return Potential< GUM_SCALAR >().fillWith(this->min()); }
+    // if kept_var is empty, create an empty potential
+    // TODO: remove this test when operations will be able to handle empty potentials
+    if (kept_vars.empty()) { return Potential< GUM_SCALAR >().fillWith(this->min()); }
 
-        return Potential< GUM_SCALAR >(gum::projectMin(*this->content(), complementVars_(kept_vars)));
+    return Potential< GUM_SCALAR >(gum::projectMin(*this->content(), complementVars_(kept_vars)));
   }
 
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >
          Potential< GUM_SCALAR >::margMaxIn(const Set< const DiscreteVariable* >& kept_vars) const {
-        if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
-          return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
+    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
+      return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
     }
 
-        // if kept_var is empty, create an empty potential
-        // TODO: remove this test when operations will be able to handle empty potentials
-        if (kept_vars.empty()) { return Potential< GUM_SCALAR >().fillWith(this->max()); }
+    // if kept_var is empty, create an empty potential
+    // TODO: remove this test when operations will be able to handle empty potentials
+    if (kept_vars.empty()) { return Potential< GUM_SCALAR >().fillWith(this->max()); }
 
-        return Potential< GUM_SCALAR >(gum::projectMax(*this->content(), complementVars_(kept_vars)));
+    return Potential< GUM_SCALAR >(gum::projectMax(*this->content(), complementVars_(kept_vars)));
   }
 
   template < typename GUM_SCALAR >

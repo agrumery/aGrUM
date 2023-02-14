@@ -1,7 +1,7 @@
 Markov random field
-================
+===================
 
-.. figure:: _static/MarkovNet.png
+.. figure:: _static/MarkovRandomField.png
     :align: center
     :alt: a Markov random field as an unoriented graph and as a factor graph
 
@@ -16,9 +16,12 @@ Where the :math:`\phi_i` are potentials over the :math:`n_c` cliques of the undi
 
 Moreover, inference algorithms can also use this graph to speed up the computations.
 
+.. note::
+  `Markov Random Field` are alse called `Markov Network`. After tag 1.5.2, pyAgrum uses the terminology `Markov Random Field`.
+  
 **Tutorial**
 
-* `Tutorial on Markov random field <notebooks/23-Models_MarkovNetwork.ipynb>`_
+* `Tutorial on Markov random field <notebooks/23-Models_MarkovRandomField.ipynb>`_
 
 **Reference**
 

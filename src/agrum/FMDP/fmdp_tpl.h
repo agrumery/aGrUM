@@ -206,7 +206,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const MultiDimImplementation< GUM_SCALAR >*
                FMDP< GUM_SCALAR >::transition(Idx actionId, const DiscreteVariable* v) const {
-              if (!_actionTransitionTable_.exists(actionId))
+    if (!_actionTransitionTable_.exists(actionId))
       GUM_ERROR(NotFound, " Action " << actionName(actionId) << " has not been declared before.");
 
     if (_actionTransitionTable_[actionId]->exists(v))
@@ -291,7 +291,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const MultiDimImplementation< GUM_SCALAR >*
                FMDP< GUM_SCALAR >::reward(Idx actionId) const {
-              if (!_actionRewardTable_.exists(actionId))
+    if (!_actionRewardTable_.exists(actionId))
       GUM_ERROR(NotFound, " Action " << actionName(actionId) << " has not been declared before.");
 
     if (_actionRewardTable_[actionId]) return _actionRewardTable_[actionId];

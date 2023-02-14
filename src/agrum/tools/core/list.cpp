@@ -32,11 +32,11 @@
 
 namespace gum {
 
-#  define GCC_STR(s)        #  s
+#  define GCC_STR(s)        #s
 #  define GCC_JOINSTR(x, y) GCC_STR(x##y)
 
 #  if ((__GNUC__ * 100) + __GNUC_MINOR__) >= 405
-#    define GCC_DIAG_DO_PRAGMA(x) Pragma_(#    x)
+#    define GCC_DIAG_DO_PRAGMA(x) Pragma_(#x)
 #    define GCC_DIAG_PRAGMA(x)    GCC_DIAG_DO_PRAGMA(GCC diagnostic x)
 #    if ((__GNUC__ * 100) + __GNUC_MINOR__) >= 406
 #      define GCC_DIAG_OFF(x) GCC_DIAG_PRAGMA(push) GCC_DIAG_PRAGMA(ignored GCC_JOINSTR(-W, x))

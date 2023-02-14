@@ -143,7 +143,7 @@ void Parser::NETWORK() {
 void Parser::VARIABLE() {
 		std::string name_of_var;
 		std::string name_of_type;
-		int nbrMod;
+		Size nbrMod;
 		factory().startVariableDeclaration();
 		
 		Expect(9 /* "variable" */);
@@ -155,7 +155,7 @@ void Parser::VARIABLE() {
 		}
 		LABELIZE_VAR(nbrMod);
 		TRY(factory().endVariableDeclaration());
-		int nbr=0;
+		Size nbr=0;
 		TRY(nbr=factory().varInBN(factory().variableId(name_of_var)).domainSize());
 		if (nbrMod<nbr) SemErr("Too much modalities for variable "+name_of_var);
 		if (nbrMod>nbr) SemErr("Too many modalities for variable "+name_of_var);
@@ -246,7 +246,7 @@ void Parser::PROPERTY() {
 		Warning("Properties are not supported yet"); 
 }
 
-void Parser::LABELIZE_VAR(int& nbrMod) {
+void Parser::LABELIZE_VAR(gum::Size& nbrMod) {
 		Expect(10 /* "type" */);
 		Expect(11 /* "discrete" */);
 		Expect(12 /* "[" */);
@@ -259,7 +259,7 @@ void Parser::LABELIZE_VAR(int& nbrMod) {
 		Expect(14 /* ";" */);
 }
 
-void Parser::NBR(int& val) {
+void Parser::NBR(gum::Size& val) {
 		Expect(_integer);
 		val=coco_atoi(t->val); 
 }

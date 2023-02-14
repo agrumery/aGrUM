@@ -948,11 +948,7 @@ GUM_TEST(_BugDoumenc) {
                                      "AR",
                                      "DFM"};   // binary variables for the BN
 
-  std::vector< std::string > varTer{
-     "NBC",
-     "MED",
-     "DEM",
-     "SP"};   // ternary variables for the bN
+  std::vector< std::string > varTer{"NBC", "MED", "DEM", "SP"};   // ternary variables for the bN
 
   std::vector< std::string > varContinuous{"A", "ADL"};   // continuous variables for the BN
 
@@ -960,16 +956,13 @@ GUM_TEST(_BugDoumenc) {
   std::vector< gum::NodeId > nodeList;   // nodes list for the BN
 
   for (const auto& var: varBool)
-    nodeList.push_back(templ.add(
-       gum::LabelizedVariable(var,
-                              var,
-                              2)));   // adding binary variables
+    nodeList.push_back(templ.add(gum::LabelizedVariable(var, var,
+                                                        2)));   // adding binary variables
 
   for (const auto& var: varTer)
-    nodeList.push_back(templ.add(
-       gum::LabelizedVariable(var,
-                              var,
-                              3)));   // adding ternary variables
+    nodeList.push_back(templ.add(gum::LabelizedVariable(var,
+                                                        var,
+                                                        3)));   // adding ternary variables
 
   gum::DiscretizedVariable< double > A("A", "A");
   for (int i = 60; i <= 105; i += 5) {

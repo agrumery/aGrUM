@@ -76,7 +76,7 @@ namespace gum {
 
     /// Direct access to DSL scanner (mandatory for listener connection)
     /// @throws IOError if file not exists
-    UAIMN::Scanner& scanner();
+    UAIMRF::Scanner& scanner();
 
     /// name of read file
     const std::string& streamName() const;
@@ -124,8 +124,8 @@ namespace gum {
 
     protected:
     MarkovRandomField< GUM_SCALAR >* _mn_;
-    UAIMN::Scanner*          _scanner_;
-    UAIMN::Parser*           _parser_;
+    UAIMRF::Scanner*                 _scanner_;
+    UAIMRF::Parser*                  _parser_;
 
     std::string _streamName_;
     bool        _traceScanning_;

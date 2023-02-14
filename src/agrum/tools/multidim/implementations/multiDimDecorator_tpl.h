@@ -298,7 +298,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const Sequence< const DiscreteVariable* >&
                MultiDimDecorator< GUM_SCALAR >::variablesSequence() const {
-              return static_cast< MultiDimContainer< GUM_SCALAR >* >(content_)->variablesSequence();
+    return static_cast< MultiDimContainer< GUM_SCALAR >* >(content_)->variablesSequence();
   }
 
   // get the nbr of vars in the sequence. final method
@@ -351,7 +351,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const MultiDimImplementation< GUM_SCALAR >*
                MultiDimDecorator< GUM_SCALAR >::content() const {
-              return content_;
+    return content_;
   }
 
   template < typename GUM_SCALAR >

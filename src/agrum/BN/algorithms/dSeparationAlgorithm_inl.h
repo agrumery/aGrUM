@@ -37,11 +37,15 @@ namespace gum {
 
 
   // copy constructor
-  INLINE dSeparationAlgorithm::dSeparationAlgorithm(const dSeparationAlgorithm& from) { GUM_CONS_CPY(dSeparationAlgorithm); }
+  INLINE dSeparationAlgorithm::dSeparationAlgorithm(const dSeparationAlgorithm& from) {
+    GUM_CONS_CPY(dSeparationAlgorithm);
+  }
 
 
   // move constructor
-  INLINE dSeparationAlgorithm::dSeparationAlgorithm(dSeparationAlgorithm&& from) { GUM_CONS_MOV(dSeparationAlgorithm); }
+  INLINE dSeparationAlgorithm::dSeparationAlgorithm(dSeparationAlgorithm&& from) {
+    GUM_CONS_MOV(dSeparationAlgorithm);
+  }
 
 
   // destructor
@@ -52,11 +56,15 @@ namespace gum {
 
 
   // copy operator
-  INLINE dSeparationAlgorithm& dSeparationAlgorithm::operator=(const dSeparationAlgorithm& from) { return *this; }
+  INLINE dSeparationAlgorithm& dSeparationAlgorithm::operator=(const dSeparationAlgorithm& from) {
+    return *this;
+  }
 
 
   // move operator
-  INLINE dSeparationAlgorithm& dSeparationAlgorithm::operator=(dSeparationAlgorithm&& from) { return *this; }
+  INLINE dSeparationAlgorithm& dSeparationAlgorithm::operator=(dSeparationAlgorithm&& from) {
+    return *this;
+  }
 
 
 } /* namespace gum */

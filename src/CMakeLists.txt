@@ -24,7 +24,7 @@ if (NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
     CocoRTarget(PRM/o3prmr/cocoR SyntaxO3PRMR gum:prm:o3prmr PRM)
     CocoRTarget(PRM/o3prm/cocoR SyntaxO3PRM gum:prm:o3prm PRM)
     CocoRTarget(FMDP/io/dat/cocoR SyntaxDat gum:MDPDAT FMDP)
-    CocoRTarget(MRF/io/UAI/cocoR SyntaxUAIMN gum:UAIMN MN)
+    CocoRTarget(MRF/io/UAI/cocoR SyntaxUAIMRF gum:UAIMRF MRF)
 endif (NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
 ####################################################################
 

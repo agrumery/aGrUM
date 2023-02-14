@@ -1412,7 +1412,7 @@ namespace gum {
   template < typename Key, typename Val >
   INLINE HashTableBucket< Key, Val >*
          HashTableConstIteratorSafe< Key, Val >::_getBucket_() const noexcept {
-        return _bucket_;
+    return _bucket_;
   }
 
   template < typename Key, typename Val >

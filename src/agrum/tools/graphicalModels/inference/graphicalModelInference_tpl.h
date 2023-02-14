@@ -603,7 +603,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const NodeProperty< const Potential< GUM_SCALAR >* >&
                GraphicalModelInference< GUM_SCALAR >::evidence() const {
-              return _evidence_;
+    return _evidence_;
   }
 
 

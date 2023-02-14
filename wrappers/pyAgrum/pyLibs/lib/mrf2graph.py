@@ -27,6 +27,7 @@ be displayed/saved as image.
 
 import time
 import hashlib
+import warnings
 
 import matplotlib.pyplot as plt
 import pydot as dot
@@ -35,6 +36,13 @@ import pyAgrum as gum
 import pyAgrum.lib._colors as gumcols
 
 from .proba_histogram import saveFigProba
+
+
+def MN2UGdot(*args, **kwargs):
+  warnings.warn(""""
+** pyAgrum.lib.mrf2graph.MN2UGdot is obsolete in pyAgrum>1.5.2. Please use MRF2UGdot()
+""", DeprecationWarning, stacklevel=2)
+  return MRF2UGdot(*args, **kwargs)
 
 
 def MRF2UGdot(mrf, size="4", nodeColor=None, edgeWidth=None, edgeLabel=None, edgeColor=None, cmapNode=None,
@@ -137,6 +145,12 @@ def MRF2UGdot(mrf, size="4", nodeColor=None, edgeWidth=None, edgeLabel=None, edg
   return graph
 
 
+def MN2FactorGraphdot(*args, **kwargs):
+  warnings.warn(""""
+** pyAgrum.lib.mrf2graph.MN2FactorGraphdot is obsolete in pyAgrum>1.5.2. Please use MRF2FactorGraphdot()
+""", DeprecationWarning, stacklevel=2)
+  return MRF2FactorGraphdot(*args, **kwargs)
+
 def MRF2FactorGraphdot(mrf, size=None, nodeColor=None, factorColor=None, cmapNode=None, showMsg=None):
   """
   Create a pydot representation of the Markov random field as a factor graph
@@ -217,6 +231,12 @@ def MRF2FactorGraphdot(mrf, size=None, nodeColor=None, factorColor=None, cmapNod
   graph.set_size(size)
   return graph
 
+
+def MNinference2UGdot(*args, **kwargs):
+  warnings.warn(""""
+** pyAgrum.lib.mrf2graph.MNinference2UGdot is obsolete in pyAgrum>1.5.2. Please use MRFinference2UGdot()
+""", DeprecationWarning, stacklevel=2)
+  return MRFinference2UGdot(*args, **kwargs)
 
 def MRFinference2UGdot(mrf, size=None, engine=None, evs=None, targets=None, nodeColor=None, factorColor=None,
                        arcWidth=None, arcColor=None,
@@ -341,6 +361,12 @@ def MRFinference2UGdot(mrf, size=None, engine=None, evs=None, targets=None, node
 
   return g
 
+
+def MNinference2FactorGraphdot(*args, **kwargs):
+  warnings.warn(""""
+** pyAgrum.lib.mrf2graph.MNinference2FactorGraphdot is obsolete in pyAgrum>1.5.2. Please use MRFinference2FactorGraphdot()
+""", DeprecationWarning, stacklevel=2)
+  return MRFinference2FactorGraphdot(*args, **kwargs)
 
 def MRFinference2FactorGraphdot(mrf, size=None, engine=None, evs=None, targets=None,
                                 nodeColor=None, factorColor=None,

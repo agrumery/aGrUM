@@ -120,7 +120,7 @@ namespace gum {
     // D-separated nodes
 
     dSeparationAlgorithm dsep = gum::dSeparationAlgorithm();
-    NodeSet     requisite;
+    NodeSet              requisite;
     dsep.requisiteNodes(this->BN().dag(),
                         this->BN().nodes().asNodeSet(),   // no target for approximateInference
                         this->hardEvidenceNodes(),

@@ -79,7 +79,7 @@ namespace gum {
     /// returns the pair <statistics,pvalue> corresponding to a given IdCondSet
     INLINE std::pair< double, double >
            IndepTestG2::statistics(NodeId var1, NodeId var2, const std::vector< NodeId >& rhs_ids) {
-          return statistics_(IdCondSet(var1, var2, rhs_ids, false));
+      return statistics_(IdCondSet(var1, var2, rhs_ids, false));
     }
 
   } /* namespace learning */

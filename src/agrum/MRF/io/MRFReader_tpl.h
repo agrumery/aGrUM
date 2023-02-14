@@ -33,7 +33,7 @@ namespace gum {
   /* =========================================================================*/
   template < typename GUM_SCALAR >
   INLINE MRFReader< GUM_SCALAR >::MRFReader(MarkovRandomField< GUM_SCALAR >* MN,
-                                          const std::string&       filename) {
+                                            const std::string&               filename) {
     GUM_CONSTRUCTOR(MRFReader);
   }
 

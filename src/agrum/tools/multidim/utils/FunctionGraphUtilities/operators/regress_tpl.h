@@ -96,29 +96,29 @@ namespace gum {
              class TerminalNodePolicy >
   INLINE MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
          Regress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::compute() {
-        _establishVarOrder_();
-        _findRetrogradeVariables_(_DG1_, _DG1InstantiationNeeded_);
-        _findRetrogradeVariables_(_DG2_, _DG2InstantiationNeeded_);
+    _establishVarOrder_();
+    _findRetrogradeVariables_(_DG1_, _DG1InstantiationNeeded_);
+    _findRetrogradeVariables_(_DG2_, _DG2InstantiationNeeded_);
 
-        Idx* varInst = nullptr;
-        if (_nbVar_ != 0) {
-          varInst = static_cast< Idx* >(ALLOCATE(sizeof(Idx) * _nbVar_));
-          for (Idx i = 0; i < _nbVar_; i++)
+    Idx* varInst = nullptr;
+    if (_nbVar_ != 0) {
+      varInst = static_cast< Idx* >(ALLOCATE(sizeof(Idx) * _nbVar_));
+      for (Idx i = 0; i < _nbVar_; i++)
         varInst[i] = (Idx)0;
     }
 
-        O4DGContext conti(varInst, _nbVar_);
-        conti.setDG1Node(_DG1_->root());
-        conti.setDG2Node(_DG2_->root());
+    O4DGContext conti(varInst, _nbVar_);
+    conti.setDG1Node(_DG1_->root());
+    conti.setDG2Node(_DG2_->root());
 
-        NodeId root = _compute_(conti, (Idx)0 - 1);
-        _rd_->manager()->setRootNode(root);
+    NodeId root = _compute_(conti, (Idx)0 - 1);
+    _rd_->manager()->setRootNode(root);
 
-        if (_nbVar_ != 0) DEALLOCATE(varInst, sizeof(Idx) * _nbVar_);
+    if (_nbVar_ != 0) DEALLOCATE(varInst, sizeof(Idx) * _nbVar_);
 
     _rd_->erase(*_targetVar_);
 
-        return _rd_;
+    return _rd_;
   }
 
   // This function computes an efficient order for the final decision diagrams.

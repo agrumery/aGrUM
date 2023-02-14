@@ -35,8 +35,7 @@ namespace gum {
      const IMarkovRandomField< GUM_SCALAR >* mn) :
       MRFInference< GUM_SCALAR >(mn) {
     // assign a MRF if this has not been done before (due to virtual inheritance)
-    if (this->hasNoModel_()) { MRFInference< GUM_SCALAR >::_setMarkovNetDuringConstruction_(mn);
-    }
+    if (this->hasNoModel_()) { MRFInference< GUM_SCALAR >::_setMRFDuringConstruction_(mn); }
 
     // sets all the nodes as targets
     if (mn != nullptr) {
@@ -226,7 +225,8 @@ namespace gum {
 
   // Compute the posterior of a node.
   template < typename GUM_SCALAR >
-  const Potential< GUM_SCALAR >& MarginalTargetedMRFInference< GUM_SCALAR >::posterior(NodeId node) {
+  const Potential< GUM_SCALAR >&
+     MarginalTargetedMRFInference< GUM_SCALAR >::posterior(NodeId node) {
     if (this->hardEvidenceNodes().contains(node)) { return *(this->evidence()[node]); }
 
     if (!isTarget(node)) {

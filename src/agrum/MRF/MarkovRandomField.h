@@ -91,7 +91,8 @@ namespace gum {
      * @param domainSize the default domain size for variables
      * @return the resulting Bayesian network
      */
-    static MarkovRandomField< GUM_SCALAR > fastPrototype(const std::string& dotlike, Size domainSize = 2);
+    static MarkovRandomField< GUM_SCALAR > fastPrototype(const std::string& dotlike,
+                                                         Size               domainSize = 2);
 
     /**
      * build a Markov random field from a Bayesian network
@@ -367,8 +368,8 @@ namespace gum {
     /// @{
 
     /**
-     * @brief Add a factor (a clique) to the gum::MarkovRandomField using the order sequence as an order for
-     * the factor.
+     * @brief Add a factor (a clique) to the gum::MarkovRandomField using the order sequence as an
+     * order for the factor.
      *
      * @param varnames the scope of the factor as vector of variable names
      *
@@ -389,8 +390,8 @@ namespace gum {
     const Potential< GUM_SCALAR >& addFactor(const NodeSet& vars);
 
     /**
-     * @brief Add a factor (a clique) to the gum::MarkovRandomField using the order sequence as an order for
-     * the factor.
+     * @brief Add a factor (a clique) to the gum::MarkovRandomField using the order sequence as an
+     * order for the factor.
      *
      * @param aContent The gum::MultiDimImplementation to use for this
      *                 variable's gum::Potential implementation (will be copied).

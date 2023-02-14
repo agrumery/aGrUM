@@ -283,19 +283,19 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp >
   INLINE AVLTreeNode< Val >&
          SortedPriorityQueue< Val, Priority, Cmp >::getNode_(const Val& val) const {
-        // Some compilers are optimizing _tree_cmp_.getNode(val) for Val=string. This
+    // Some compilers are optimizing _tree_cmp_.getNode(val) for Val=string. This
     // induces a lot of warnings. To prevent this, we have an optimized code for
     // non-strings and a less optimal but warning-free
     if constexpr (!is_basic_string< Val >::value)
       return const_cast< AVLTreeNode< Val >& >(_nodes_.key(*(_tree_cmp_.getNode(val))));
     else {
-          AVLTreeNode< Val > xval(std::move(const_cast< Val& >(val)));
-          try {
-            auto& node              = const_cast< AVLTreeNode< Val >& >(_nodes_.key(xval));
-            const_cast< Val& >(val) = std::move(xval.value);
-            return node;
+      AVLTreeNode< Val > xval(std::move(const_cast< Val& >(val)));
+      try {
+        auto& node              = const_cast< AVLTreeNode< Val >& >(_nodes_.key(xval));
+        const_cast< Val& >(val) = std::move(xval.value);
+        return node;
       } catch (NotFound const&) {
-            // restore into val the value that was moved
+        // restore into val the value that was moved
         const_cast< Val& >(val) = std::move(xval.value);
         throw;
       }

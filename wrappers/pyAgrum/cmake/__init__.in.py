@@ -460,7 +460,7 @@ def fastBN(structure, domain_size=2):
 def fastMN(structure, domain_size=2):
   warnings.warn("""
 ** pyAgrum.fastMN is deprecated in pyAgrum>1.5.2.
-** pyAgrum.fastMRF is calles instead.
+** pyAgrum.fastMRF is called instead.
 """, DeprecationWarning, stacklevel=2)
   return fastMRF(structure,domain_size)
 

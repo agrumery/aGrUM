@@ -75,13 +75,13 @@ namespace gum {
   INLINE std::string
          O3prmBNWriter< GUM_SCALAR >::_extractAttribute_(const IBayesNet< GUM_SCALAR >& bn,
                                                      NodeId                         node) {
-        std::stringstream str;
-        str << O3PRM_INDENT;
-        str << _extractType_(bn, node) << " ";
-        str << _extractName_(bn, node) << " ";
-        if (bn.parents(node).size() > 0) { str << "dependson " << _extractParents_(bn, node) << " "; }
-        str << " {" << _extractCPT_(bn, node) << "};" << std::endl;
-        return str.str();
+    std::stringstream str;
+    str << O3PRM_INDENT;
+    str << _extractType_(bn, node) << " ";
+    str << _extractName_(bn, node) << " ";
+    if (bn.parents(node).size() > 0) { str << "dependson " << _extractParents_(bn, node) << " "; }
+    str << " {" << _extractCPT_(bn, node) << "};" << std::endl;
+    return str.str();
   }
 
   template < typename GUM_SCALAR >
@@ -173,22 +173,22 @@ namespace gum {
   INLINE std::string
          O3prmBNWriter< GUM_SCALAR >::_extractRangeType_(const IBayesNet< GUM_SCALAR >& bn,
                                                      NodeId                         node) {
-        const auto&       var = static_cast< const RangeVariable& >(bn.variable(node));
-        std::stringstream str;
-        str << "int (" << var.minVal() << ", " << var.maxVal() << ")";
-        return str.str();
+    const auto&       var = static_cast< const RangeVariable& >(bn.variable(node));
+    std::stringstream str;
+    str << "int (" << var.minVal() << ", " << var.maxVal() << ")";
+    return str.str();
   }
 
   template < typename GUM_SCALAR >
   INLINE std::string
          O3prmBNWriter< GUM_SCALAR >::_extractLabelizedType_(const IBayesNet< GUM_SCALAR >& bn,
                                                          NodeId                         node) {
-        std::stringstream str;
-        str << "labels(";
-        for (auto l: bn.variable(node).labels()) {
-          str << l << ", ";
+    std::stringstream str;
+    str << "labels(";
+    for (auto l: bn.variable(node).labels()) {
+      str << l << ", ";
     }
-        return str.str().substr(0, str.str().size() - 2) + ")";
+    return str.str().substr(0, str.str().size() - 2) + ")";
   }
 
   template < typename GUM_SCALAR >

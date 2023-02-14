@@ -122,8 +122,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE MultiDimImplementation< GUM_SCALAR >&
          operator<<(MultiDimImplementation< GUM_SCALAR >& array, const DiscreteVariable& v) {
-        array.add(v);
-        return array;
+    array.add(v);
+    return array;
   }
 
   // add a Instantiation to the list of slave instantiations
@@ -193,7 +193,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const Sequence< const DiscreteVariable* >&
                MultiDimImplementation< GUM_SCALAR >::variablesSequence() const {
-              return _vars_;
+    return _vars_;
   }
 
   // is this empty ?
@@ -310,6 +310,6 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const MultiDimImplementation< GUM_SCALAR >*
                MultiDimImplementation< GUM_SCALAR >::content() const {
-              return this;
+    return this;
   }
 } /* namespace gum */

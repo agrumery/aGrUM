@@ -645,7 +645,7 @@ namespace gum {
     template < typename T_DATA >
     INLINE const std::vector< std::string >&
                  IDatabaseTable< T_DATA >::variableNames() const noexcept {
-                return variable_names_;
+      return variable_names_;
     }
 
 
@@ -662,8 +662,8 @@ namespace gum {
     template < typename T_DATA >
     INLINE std::size_t
            IDatabaseTable< T_DATA >::columnFromVariableName(const std::string& name) const {
-          const std::size_t size = variable_names_.size();
-          for (std::size_t i = 0; i < size; ++i)
+      const std::size_t size = variable_names_.size();
+      for (std::size_t i = 0; i < size; ++i)
         if (variable_names_[i] == name) return i;
 
       GUM_ERROR(UndefinedElement, "the database contains no column whose name is " << name)

@@ -41,9 +41,6 @@ namespace gum {
   template < typename GUM_SCALAR >
   using FactorTable = HashTable< NodeSet, const Potential< GUM_SCALAR >* >;
 
-  // template < typename GUM_SCALAR >
-  // class MarkovNetFactory;
-
   /**
    * @class IMarkovRandomField
    * @headerfile IMarkovRandomField.h <agrum/BN/IMarkovRandomField.h>

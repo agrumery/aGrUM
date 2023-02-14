@@ -120,18 +120,18 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
                  ClassBayesNet< GUM_SCALAR >::_get_(NodeId id) const {
-                if (this->dag_.exists(id)) {
-                  return _class_->get(id);
+      if (this->dag_.exists(id)) {
+        return _class_->get(id);
       } else {
-                  GUM_ERROR(NotFound, "no element found with that id.")
+        GUM_ERROR(NotFound, "no element found with that id.")
       }
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
                  ClassBayesNet< GUM_SCALAR >::_get_(const std::string& name) const {
-                try {
-                  return _class_->get(name);
+      try {
+        return _class_->get(name);
       } catch (NotFound const&) { GUM_ERROR(NotFound, "no element found with that id.") }
     }
 

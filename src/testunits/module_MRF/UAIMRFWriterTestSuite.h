@@ -45,7 +45,7 @@ namespace gum_tests {
   class [[maybe_unused]] UAIMRFWriterTestSuite: public CxxTest::TestSuite {
     public:
     gum::MarkovRandomField< double >* mn;
-    gum::NodeId               i1, i2, i3, i4, i5;
+    gum::NodeId                       i1, i2, i3, i4, i5;
 
     void setUp() {
       mn = new gum::MarkovRandomField< double >();
@@ -77,11 +77,11 @@ namespace gum_tests {
 
     GUM_TEST(Writer_ostream) {
       gum::UAIMRFWriter< double > writer;
-      std::string                file = GET_RESSOURCES_PATH("outputs/uaimn_generated.uai");
+      std::string                 file = GET_RESSOURCES_PATH("outputs/uaimn_generated.uai");
       writer.write(file, *mn);
 
-      gum::MarkovRandomField< double >   net;
-      gum::UAIMRFReader< double > reader(&net, file);
+      gum::MarkovRandomField< double > net;
+      gum::UAIMRFReader< double >      reader(&net, file);
 
       gum::Size nbErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed())

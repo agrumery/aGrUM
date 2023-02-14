@@ -258,28 +258,28 @@ namespace gum {
   INLINE SplayBinaryNode< Element >*
          SplayBinaryNode< Element >::join(const SplayBinaryNode< Element >*                  e,
                                       HashTable< Element, SplayBinaryNode< Element >* >& addr) {
-        SplayBinaryNode< Element >* b = new SplayBinaryNode< Element >(*e, addr);
-        GUM_ASSERT(b != 0);
-        SplayBinaryNode< Element >* act = this;
+    SplayBinaryNode< Element >* b = new SplayBinaryNode< Element >(*e, addr);
+    GUM_ASSERT(b != 0);
+    SplayBinaryNode< Element >* act = this;
 
-        for (; act->fd; act = act->fd)
+    for (; act->fd; act = act->fd)
       ;
 
     // act is the rightmost element
-        act->splay();
+    act->splay();
 
-        // insertion
-        act->fd = b;
+    // insertion
+    act->fd = b;
 
-        b->pere = act;
+    b->pere = act;
 
-        act->size = 1;
+    act->size = 1;
 
-        if (act->fg) act->size += act->fg->size;
+    if (act->fg) act->size += act->fg->size;
 
     act->size += act->fd->size;
 
-        return act;
+    return act;
   }
 
   // Get the position of the node

@@ -921,21 +921,21 @@ namespace gum {
     INLINE std::string
            StructuredInference< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
                                                 const PRMAttribute< GUM_SCALAR >* a) const {
-          return i->name() + _dot_ + a->safeName();
+      return i->name() + _dot_ + a->safeName();
     }
 
     template < typename GUM_SCALAR >
     INLINE std::string
            StructuredInference< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
                                                 const PRMAttribute< GUM_SCALAR >& a) const {
-          return i->name() + _dot_ + a.safeName();
+      return i->name() + _dot_ + a.safeName();
     }
 
     template < typename GUM_SCALAR >
     INLINE std::string
            StructuredInference< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
                                                 const PRMSlotChain< GUM_SCALAR >& a) const {
-          return i->name() + _dot_ + a.lastElt().safeName();
+      return i->name() + _dot_ + a.lastElt().safeName();
     }
 
     template < typename GUM_SCALAR >

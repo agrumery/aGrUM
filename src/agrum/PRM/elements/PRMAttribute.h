@@ -75,7 +75,8 @@ namespace gum {
 
       virtual PRMAttribute< GUM_SCALAR >* newFactory(const PRMClass< GUM_SCALAR >& c) const = 0;
       virtual PRMAttribute< GUM_SCALAR >*
-         copy(Bijection< const DiscreteVariable*, const DiscreteVariable* > bij) const = 0;
+         copy(Bijection< const DiscreteVariable*, const DiscreteVariable* > bij) const
+         = 0;
 
       virtual void copyCpf(const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bif,
                            const PRMAttribute< GUM_SCALAR >& source)

@@ -42,7 +42,7 @@ namespace gum_tests {
   class [[maybe_unused]] UAIMRFReaderTestSuite: public CxxTest::TestSuite {
     public:
     GUM_TEST(Constructor) {
-      std::string              file = GET_RESSOURCES_PATH("uai/markov_example.uai");
+      std::string                      file = GET_RESSOURCES_PATH("uai/markov_example.uai");
       gum::MarkovRandomField< double > net;
 
       gum::UAIMRFReader< double >* reader = nullptr;
@@ -51,7 +51,7 @@ namespace gum_tests {
     }
 
     GUM_TEST(Read_file1) {
-      std::string               file = GET_RESSOURCES_PATH("uai/markov_example.uai");
+      std::string                       file = GET_RESSOURCES_PATH("uai/markov_example.uai");
       gum::MarkovRandomField< double >* net  = new gum::MarkovRandomField< double >();
 
       TS_ASSERT_DIFFERS(net, nullptr)
@@ -66,9 +66,9 @@ namespace gum_tests {
     }
 
     GUM_TEST(Read_file2) {
-      std::string                file = GET_RESSOURCES_PATH("uai/markov_example.uai");
-      gum::MarkovRandomField< double >*  net  = new gum::MarkovRandomField< double >();
-      gum::UAIMRFReader< double > reader(net, file);
+      std::string                       file = GET_RESSOURCES_PATH("uai/markov_example.uai");
+      gum::MarkovRandomField< double >* net  = new gum::MarkovRandomField< double >();
+      gum::UAIMRFReader< double >       reader(net, file);
 
       gum::Size nbErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed())
@@ -120,9 +120,9 @@ namespace gum_tests {
     }
 
     GUM_TEST(ReadInFilledMN) {
-      std::string                file = GET_RESSOURCES_PATH("uai/markov_example.uai");
-      gum::MarkovRandomField< double >   net;
-      gum::UAIMRFReader< double > reader(&net, file);
+      std::string                      file = GET_RESSOURCES_PATH("uai/markov_example.uai");
+      gum::MarkovRandomField< double > net;
+      gum::UAIMRFReader< double >      reader(&net, file);
 
       gum::Size nbErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed())

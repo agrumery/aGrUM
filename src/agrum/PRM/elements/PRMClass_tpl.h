@@ -1005,10 +1005,10 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
                  PRMClass< GUM_SCALAR >::get(const std::string& name) const {
-                try {
-                  return *(_nameMap_[name]);
+      try {
+        return *(_nameMap_[name]);
       } catch (NotFound const&) {
-                  GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given name (" << name << ")");
+        GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given name (" << name << ")");
       }
     }
 
@@ -1037,41 +1037,41 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE HashTable< std::string, const PRMParameter< GUM_SCALAR >* >
            PRMClass< GUM_SCALAR >::scope() const {
-          HashTable< std::string, const PRMParameter< GUM_SCALAR >* > params;
+      HashTable< std::string, const PRMParameter< GUM_SCALAR >* > params;
 
-          for (const auto p: parameters()) {
-            params.insert(p->name(), p);
+      for (const auto p: parameters()) {
+        params.insert(p->name(), p);
       }
 
-          std::queue< ParamScopeData< GUM_SCALAR > > queue;
+      std::queue< ParamScopeData< GUM_SCALAR > > queue;
 
-          for (const auto ref: referenceSlots()) {
-            if (PRMObject::isClass(ref->slotType())) {
-              queue.push(ParamScopeData< GUM_SCALAR >("", *ref, 1));
+      for (const auto ref: referenceSlots()) {
+        if (PRMObject::isClass(ref->slotType())) {
+          queue.push(ParamScopeData< GUM_SCALAR >("", *ref, 1));
         }
       }
 
-          while (!queue.empty()) {
-            auto data = queue.front();
-            queue.pop();
+      while (!queue.empty()) {
+        auto data = queue.front();
+        queue.pop();
 
-            if (data.depth < 5) {
-              for (const auto p: data.c->parameters()) {
-                params.insert(data.prefix + p->name(), p);
+        if (data.depth < 5) {
+          for (const auto p: data.c->parameters()) {
+            params.insert(data.prefix + p->name(), p);
           }
 
-              for (const auto ref: data.c->referenceSlots()) {
-                if (PRMObject::isClass(ref->slotType())) {
-                  queue.push(ParamScopeData< GUM_SCALAR >(data.prefix, *ref, data.depth + 1));
+          for (const auto ref: data.c->referenceSlots()) {
+            if (PRMObject::isClass(ref->slotType())) {
+              queue.push(ParamScopeData< GUM_SCALAR >(data.prefix, *ref, data.depth + 1));
             }
           }
         } else {
-              // @todo depth>5 is a workaround. Cycle detection is needed here !
+          // @todo depth>5 is a workaround. Cycle detection is needed here !
           GUM_ERROR(FatalError, "Depth limit reached when looking up parameters")
         }
       }
 
-          return params;
+      return params;
     }
 
     template < typename GUM_SCALAR >
@@ -1082,7 +1082,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const Set< PRMReferenceSlot< GUM_SCALAR >* >&
                  PRMClass< GUM_SCALAR >::referenceSlots() const {
-                return _referenceSlots_;
+      return _referenceSlots_;
     }
 
     template < typename GUM_SCALAR >

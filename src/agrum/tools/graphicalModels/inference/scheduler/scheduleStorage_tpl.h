@@ -247,7 +247,7 @@ namespace gum {
   template < typename TABLE, template < typename... > class CONTAINER >
   INLINE const ScheduleMultiDim< typename std::remove_pointer< TABLE >::type >&
                ScheduleStorage< TABLE, CONTAINER >::arg() const {
-              return *_arg_;
+    return *_arg_;
   }
 
 

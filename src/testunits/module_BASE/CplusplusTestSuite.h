@@ -67,7 +67,7 @@ namespace gum_tests {
 
     GUM_TEST(_CPP20_array_size_deduction) {
       int* p2 = new int[]{1, 2, 3};
-      delete[](p2);
+      delete[] (p2);
     }
 
     GUM_TEST(_CPP20_int_two_cplt) {

@@ -49,8 +49,8 @@ namespace gum {
    * @throws IOError Raised if an I/O error occurs.
    */
   template < typename GUM_SCALAR >
-  INLINE void UAIMRFWriter< GUM_SCALAR >::write(std::ostream&                   output,
-                                               const IMarkovRandomField< GUM_SCALAR >& MN) {
+  INLINE void UAIMRFWriter< GUM_SCALAR >::write(std::ostream&                           output,
+                                                const IMarkovRandomField< GUM_SCALAR >& MN) {
     if (!output.good()) { GUM_ERROR(IOError, "Input/Output error : stream not writable.") }
 
     output << _preambule_(MN) << std::endl;
@@ -75,8 +75,8 @@ namespace gum {
    * @throw IOError Raised if an I/O error occurs.
    */
   template < typename GUM_SCALAR >
-  INLINE void UAIMRFWriter< GUM_SCALAR >::write(const std::string&              filePath,
-                                               const IMarkovRandomField< GUM_SCALAR >& MN) {
+  INLINE void UAIMRFWriter< GUM_SCALAR >::write(const std::string&                      filePath,
+                                                const IMarkovRandomField< GUM_SCALAR >& MN) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
 
     write(output, MN);
@@ -116,24 +116,24 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE std::string
          UAIMRFWriter< GUM_SCALAR >::_factorBloc_(const IMarkovRandomField< GUM_SCALAR >& MN,
-                                             const Potential< GUM_SCALAR >&  clikpot) {
-        std::stringstream str;
+                                              const Potential< GUM_SCALAR >&          clikpot) {
+    std::stringstream str;
 
-        str << clikpot.domainSize() << " # {";
+    str << clikpot.domainSize() << " # {";
 
-        for (Idx k = 0; k < clikpot.nbrDim(); k++) {
-          str << MN.idFromName(clikpot.variable(k).name());
-          if (k == clikpot.nbrDim() - 1) str << "}";
+    for (Idx k = 0; k < clikpot.nbrDim(); k++) {
+      str << MN.idFromName(clikpot.variable(k).name());
+      if (k == clikpot.nbrDim() - 1) str << "}";
       else str << ", ";
     }
-        Instantiation I(clikpot);
-        for (I.setFirst(); !I.end(); ++I) {
-          if (I.val(0) == 0) str << std::endl << "  ";
+    Instantiation I(clikpot);
+    for (I.setFirst(); !I.end(); ++I) {
+      if (I.val(0) == 0) str << std::endl << "  ";
       str << clikpot[I] << " ";
     }
-        str << std::endl;
+    str << std::endl;
 
-        return str.str();
+    return str.str();
   }
 
 } /* namespace gum */

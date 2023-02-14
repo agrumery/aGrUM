@@ -112,7 +112,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const PRMClass< GUM_SCALAR >&
                  PRM< GUM_SCALAR >::getClass(const std::string& name) const {
-                return *(_classMap_[name]);
+      return *(_classMap_[name]);
     }
 
     template < typename GUM_SCALAR >
@@ -128,7 +128,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const PRMInterface< GUM_SCALAR >&
                  PRM< GUM_SCALAR >::getInterface(const std::string& name) const {
-                return *_interfaceMap_[name];
+      return *_interfaceMap_[name];
     }
 
     template < typename GUM_SCALAR >
@@ -144,7 +144,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const PRMSystem< GUM_SCALAR >&
                  PRM< GUM_SCALAR >::getSystem(const std::string& name) const {
-                return *(_systemMap_[name]);
+      return *(_systemMap_[name]);
     }
 
     template < typename GUM_SCALAR >

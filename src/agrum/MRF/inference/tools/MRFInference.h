@@ -194,7 +194,7 @@ namespace gum {
 
     private:
     /// assigns a MRF during the inference engine construction
-    void _setMarkovNetDuringConstruction_(const IMarkovRandomField< GUM_SCALAR >* mn);
+    void _setMRFDuringConstruction_(const IMarkovRandomField< GUM_SCALAR >* mn);
 
 
     /// allow JointInference to access the single targets and inference states

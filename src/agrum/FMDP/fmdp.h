@@ -109,7 +109,7 @@ namespace gum {
      */
     INLINE const Bijection< const DiscreteVariable*, const DiscreteVariable* >&
                  mapMainPrime() const {
-                return _main2primed_;
+      return _main2primed_;
     }
 
     /// @}

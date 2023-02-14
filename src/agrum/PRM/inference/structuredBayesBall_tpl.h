@@ -264,13 +264,13 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const std::string&
                  StructuredBayesBall< GUM_SCALAR >::key(const PRMInstance< GUM_SCALAR >* i) const {
-                return _keyMap_[i].first;
+      return _keyMap_[i].first;
     }
 
     template < typename GUM_SCALAR >
     INLINE const std::string&
                  StructuredBayesBall< GUM_SCALAR >::key(const PRMInstance< GUM_SCALAR >& i) const {
-                return _keyMap_[&i].first;
+      return _keyMap_[&i].first;
     }
 
     template < typename GUM_SCALAR >
@@ -330,7 +330,7 @@ namespace gum {
            StructuredBayesBall< GUM_SCALAR >::_getMark_(InstanceMap&                     marks,
                                                     const PRMInstance< GUM_SCALAR >* i,
                                                     NodeId                           n) {
-          return (*(marks[i]))[n];
+      return (*(marks[i]))[n];
     }
 
   } /* namespace prm */

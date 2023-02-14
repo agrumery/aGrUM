@@ -54,7 +54,7 @@ namespace gum_tests {
       gum::LazyPropagation< double > iebn(&bn);
       iebn.makeInference();
 
-      auto                                   mn = gum::MarkovRandomField< double >::fromBN(bn);
+      auto                                    mn = gum::MarkovRandomField< double >::fromBN(bn);
       gum::ShaferShenoyMRFInference< double > iemn(&mn);
       iemn.makeInference();
 
@@ -75,7 +75,7 @@ namespace gum_tests {
       gum::LazyPropagation< double > iebn(&bn);
       iebn.makeInference();
 
-      auto                                   mn = gum::MarkovRandomField< double >::fromBN(bn);
+      auto                                    mn = gum::MarkovRandomField< double >::fromBN(bn);
       gum::ShaferShenoyMRFInference< double > iemn(&mn);
       iemn.makeInference();
 
@@ -98,7 +98,7 @@ namespace gum_tests {
       iebn.addEvidence("B", 1);
       iebn.makeInference();
 
-      auto                                   mn = gum::MarkovRandomField< double >::fromBN(bn);
+      auto                                    mn = gum::MarkovRandomField< double >::fromBN(bn);
       gum::ShaferShenoyMRFInference< double > iemn(&mn);
       iemn.addEvidence("B", 1);
       iemn.makeInference();
@@ -121,7 +121,7 @@ namespace gum_tests {
       iebn.addEvidence("B", 1);
       iebn.makeInference();
 
-      auto                                   mn = gum::MarkovRandomField< double >::fromBN(bn);
+      auto                                    mn = gum::MarkovRandomField< double >::fromBN(bn);
       gum::ShaferShenoyMRFInference< double > iemn(&mn);
       iemn.addEvidence("B", 1);
       iemn.makeInference();
@@ -144,7 +144,7 @@ namespace gum_tests {
       iebn.addEvidence("B", std::vector< double >{0.8, 0.5});
       iebn.makeInference();
 
-      auto                                   mn = gum::MarkovRandomField< double >::fromBN(bn);
+      auto                                    mn = gum::MarkovRandomField< double >::fromBN(bn);
       gum::ShaferShenoyMRFInference< double > iemn(&mn);
       iemn.addEvidence("B", std::vector< double >{0.8, 0.5});
       iemn.makeInference();

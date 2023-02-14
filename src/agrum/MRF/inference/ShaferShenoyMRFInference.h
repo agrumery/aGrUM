@@ -78,7 +78,7 @@ namespace gum {
 
     /// default constructor
     explicit ShaferShenoyMRFInference(const IMarkovRandomField< GUM_SCALAR >* MN,
-                                     bool                            use_binary_join_tree = true);
+                                      bool use_binary_join_tree = true);
 
     /// destructor
     ~ShaferShenoyMRFInference();
@@ -149,7 +149,7 @@ namespace gum {
     void onModelChanged_(const GraphicalModel* mn) final;
 
     /// fired after a new Markov net has been assigned to the inference engine
-    virtual void onMarkovNetChanged_(const IMarkovRandomField< GUM_SCALAR >* mn) final;
+    virtual void onMRFChanged_(const IMarkovRandomField< GUM_SCALAR >* mn) final;
 
     /// fired after a new joint target is inserted
     /** @param set The set of target variable's ids. */

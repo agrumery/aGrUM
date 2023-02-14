@@ -252,7 +252,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp, bool Gen >
   INLINE const HashTable< Val, Size >&
                PriorityQueueImplementation< Val, Priority, Cmp, Gen >::allValues() const noexcept {
-              return reinterpret_cast< const HashTable< Val, Size >& >(_indices_);
+    return reinterpret_cast< const HashTable< Val, Size >& >(_indices_);
   }
 
   // inserts a new (a copy) element in the priority queue
@@ -717,7 +717,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp >
   INLINE const HashTable< Val, Size >&
                PriorityQueueImplementation< Val, Priority, Cmp, true >::allValues() const noexcept {
-              return reinterpret_cast< const HashTable< Val, Size >& >(_indices_);
+    return reinterpret_cast< const HashTable< Val, Size >& >(_indices_);
   }
 
   // inserts a new (a copy) element in the priority queue

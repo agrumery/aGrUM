@@ -102,7 +102,8 @@ def process_filters(src_filename: str, target_filename: str, debugmode: bool):
     # removing templates and correct namespace for pyAgrum's classes
     ("gum::Potential< double >", '"pyAgrum.Potential"'),
     ("gum::BayesNet< double >", '"pyAgrum.BayesNet"'),
-    ("gum::MarkovNet< double >", '"pyAgrum.MarkovNet"'),
+    ("gum::MarkovNet< double >", '"pyAgrum.MarkovRandomField"'),
+    ("gum::MarkovRandomField< double >", '"pyAgrum.MarkovRandomField"'),
     ("gum::InfluenceDiagram< double >", '"pyAgrum.InfluenceDiagram"'),
     ("gum::DiscreteVariable", '"pyAgrum.DiscreteVariable"'),
     ("gum::Instantiation", '"pyAgrum.Instantiation"'),
@@ -176,7 +177,7 @@ def process_filters(src_filename: str, target_filename: str, debugmode: bool):
     ("< float >", "< double >"),
     ("gum::BayesNet", 'pyAgrum.BayesNet'),
     ("gum::Potential", 'pyAgrum.Potential'),
-    ("gum::MarkovNet", 'pyAgrum.MarkovNet'),
+    ("gum::MarkovNet", 'pyAgrum.MarkovRandomField'),
   ]
 
   rules = {f"R{i + 1}": cpl for i, cpl in enumerate(list_rules)}

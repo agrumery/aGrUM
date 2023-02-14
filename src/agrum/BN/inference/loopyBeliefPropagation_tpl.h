@@ -233,11 +233,11 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >&
                LoopyBeliefPropagation< GUM_SCALAR >::posterior_(NodeId id) {
-              auto p = _computeProdPi_(id) * _computeProdLambda_(id);
-              p.normalize();
-              _posteriors_.set(id, p);
+    auto p = _computeProdPi_(id) * _computeProdLambda_(id);
+    p.normalize();
+    _posteriors_.set(id, p);
 
-              return _posteriors_[id];
+    return _posteriors_[id];
   }
 } /* namespace gum */
 

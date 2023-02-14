@@ -428,23 +428,23 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
                  PRMInterface< GUM_SCALAR >::get(const std::string& name) const {
-                try {
-                  return *(_nameMap_[name]);
+      try {
+        return *(_nameMap_[name]);
       } catch (NotFound const&) {
-                  GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given name")
+        GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given name")
       }
     }
 
     template < typename GUM_SCALAR >
     INLINE const Set< PRMAttribute< GUM_SCALAR >* >&
                  PRMInterface< GUM_SCALAR >::attributes() const {
-                return _attributes_;
+      return _attributes_;
     }
 
     template < typename GUM_SCALAR >
     INLINE const Set< PRMReferenceSlot< GUM_SCALAR >* >&
                  PRMInterface< GUM_SCALAR >::referenceSlots() const {
-                return _referenceSlots_;
+      return _referenceSlots_;
     }
 
     template < typename GUM_SCALAR >
@@ -455,7 +455,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const Set< PRMClass< GUM_SCALAR >* >&
                  PRMInterface< GUM_SCALAR >::implementations() const {
-                return _implementations_;
+      return _implementations_;
     }
 
     template < typename GUM_SCALAR >

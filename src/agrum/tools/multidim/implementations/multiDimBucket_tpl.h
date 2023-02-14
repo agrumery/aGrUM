@@ -534,7 +534,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const HashTable< const MultiDimContainer< GUM_SCALAR >*, Instantiation* >&
                MultiDimBucket< GUM_SCALAR >::multidims() const {
-              return _multiDims_;
+    return _multiDims_;
   }
 
 } /* namespace gum */

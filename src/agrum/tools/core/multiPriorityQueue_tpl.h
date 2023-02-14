@@ -278,7 +278,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp >
   INLINE const HashTable< Val, std::vector< Size > >&
                MultiPriorityQueue< Val, Priority, Cmp >::allValues() const {
-              return reinterpret_cast< const HashTable< Val, std::vector< Size > >& >(_indices_);
+    return reinterpret_cast< const HashTable< Val, std::vector< Size > >& >(_indices_);
   }
 
   // inserts a new (a copy) element in the priority queue

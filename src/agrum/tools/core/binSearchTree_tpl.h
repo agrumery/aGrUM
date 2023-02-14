@@ -288,17 +288,17 @@ namespace gum {
   template < typename Val, class Cmp, class Node >
   INLINE BinSearchTreeIterator< Val, Cmp, Node >&
          BinSearchTreeIterator< Val, Cmp, Node >::downLeft() {
-        // if there is a current node, use it to compute its left child, else use
+    // if there is a current node, use it to compute its left child, else use
     // directly left_child_ (this case obtains when the iterator was pointing
     // toward a node that has been deleted before we use operation downLeft)
     node_ = node_ != nullptr ? node_->leftChild() : left_child_;
 
     if (node_ == nullptr) {
-          next_node_   = nullptr;
-          prev_node_   = nullptr;
-          parent_      = nullptr;
-          left_child_  = nullptr;
-          right_child_ = nullptr;
+      next_node_   = nullptr;
+      prev_node_   = nullptr;
+      parent_      = nullptr;
+      left_child_  = nullptr;
+      right_child_ = nullptr;
     }
 
     return *this;
@@ -307,17 +307,17 @@ namespace gum {
   template < typename Val, class Cmp, class Node >
   INLINE BinSearchTreeIterator< Val, Cmp, Node >&
          BinSearchTreeIterator< Val, Cmp, Node >::downRight() {
-        // if there is a current node, use it to compute its right child, else use
+    // if there is a current node, use it to compute its right child, else use
     // directly right_child_ (this case obtains when the iterator was pointing
     // toward a node that has been deleted before we use operation downRight)
     node_ = node_ != nullptr ? node_->rightChild() : right_child_;
 
     if (node_ == nullptr) {
-          next_node_   = nullptr;
-          prev_node_   = nullptr;
-          parent_      = nullptr;
-          left_child_  = nullptr;
-          right_child_ = nullptr;
+      next_node_   = nullptr;
+      prev_node_   = nullptr;
+      parent_      = nullptr;
+      left_child_  = nullptr;
+      right_child_ = nullptr;
     }
 
     return *this;
@@ -596,7 +596,7 @@ namespace gum {
   template < typename Val, class Cmp, class Node >
   INLINE const BinSearchTreeIterator< Val, Cmp, Node >&
                BinSearchTree< Val, Cmp, Node >::end() const {
-              return iter_end_;
+    return iter_end_;
   }
 
   template < typename Val, class Cmp, class Node >
@@ -607,7 +607,7 @@ namespace gum {
   template < typename Val, class Cmp, class Node >
   INLINE const BinSearchTreeIterator< Val, Cmp, Node >&
                BinSearchTree< Val, Cmp, Node >::rend() const {
-              return iter_end_;
+    return iter_end_;
   }
 
   template < typename Val, class Cmp, class Node >

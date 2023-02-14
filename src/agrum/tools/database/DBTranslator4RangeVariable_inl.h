@@ -48,16 +48,16 @@ namespace gum {
     /// returns the original value for a given translation
     INLINE std::string
            DBTranslator4RangeVariable::translateBack(const DBTranslatedValue translated_val) const {
-          try {
-            return this->back_dico_.second(translated_val.discr_val);
+      try {
+        return this->back_dico_.second(translated_val.discr_val);
       } catch (Exception const&) {
-            // check if this is a missing value
+        // check if this is a missing value
         if (translated_val.discr_val == std::numeric_limits< std::size_t >::max()) {
-              if (!_nonint_missing_symbol_.empty()) return _nonint_missing_symbol_;
+          if (!_nonint_missing_symbol_.empty()) return _nonint_missing_symbol_;
           if (this->missing_symbols_.empty()) return *(this->missing_symbols_.begin());
         }
 
-            GUM_ERROR(UnknownLabelInDatabase,
+        GUM_ERROR(UnknownLabelInDatabase,
                   "The back translation of \"" << translated_val.discr_val
                                                << "\" could not be found");
       }

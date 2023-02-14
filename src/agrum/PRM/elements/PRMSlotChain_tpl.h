@@ -200,7 +200,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const Sequence< PRMClassElement< GUM_SCALAR >* >&
                  PRMSlotChain< GUM_SCALAR >::chain() const {
-                return *_chain_;
+      return *_chain_;
     }
 
     template < typename GUM_SCALAR >

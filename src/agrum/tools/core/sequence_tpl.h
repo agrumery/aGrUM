@@ -567,7 +567,7 @@ namespace gum {
   template < typename Key, bool Gen >
   INLINE const SequenceIteratorSafe< Key >&
                SequenceImplementation< Key, Gen >::endSafe() const noexcept {
-              return _end_safe_;
+    return _end_safe_;
   }
 
   // return an iterator pointing to the last element
@@ -582,7 +582,7 @@ namespace gum {
   template < typename Key, bool Gen >
   INLINE const SequenceIteratorSafe< Key >&
                SequenceImplementation< Key, Gen >::rendSafe() const noexcept {
-              return _rend_safe_;
+    return _rend_safe_;
   }
 
   // returns the unsafe begin iterator
@@ -920,7 +920,7 @@ namespace gum {
   template < typename Key >
   INLINE const SequenceIteratorSafe< Key >&
                SequenceImplementation< Key, true >::endSafe() const noexcept {
-              return _end_safe_;
+    return _end_safe_;
   }
 
   // return an iterator pointing to the last element
@@ -935,7 +935,7 @@ namespace gum {
   template < typename Key >
   INLINE const SequenceIteratorSafe< Key >&
                SequenceImplementation< Key, true >::rendSafe() const noexcept {
-              return _rend_safe_;
+    return _rend_safe_;
   }
 
   // returns the unsafe begin iterator

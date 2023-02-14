@@ -129,8 +129,8 @@ void checkSizeOfProbabilityAssignation__(const std::vector<float>&v,const std::s
 	void IDENT(std::string& name);
 	void STRING(std::string& str);
 	void PROPERTY();
-	void LABELIZE_VAR(int& nbrMod);
-	void NBR(int& val);
+	void LABELIZE_VAR(gum::Size& nbrMod);
+	void NBR(gum::Size& val);
 	void MODALITY_LIST();
 	void IDENT_OR_INTEGER(std::string& name);
 	void LISTE_PARENTS(std::vector<std::string>& parents );

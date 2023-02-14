@@ -75,7 +75,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const PRMClassElementContainer< GUM_SCALAR >&
                  PRMReferenceSlot< GUM_SCALAR >::slotType() const {
-                return _slotType_;
+      return _slotType_;
     }
 
     template < typename GUM_SCALAR >

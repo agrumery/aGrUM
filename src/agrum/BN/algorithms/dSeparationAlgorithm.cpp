@@ -38,10 +38,10 @@ namespace gum {
   // Fill 'requisite' with the requisite nodes in dag given a query and
   // evidence.
   void dSeparationAlgorithm::requisiteNodes(const DAG&     dag,
-                                   const NodeSet& query,
-                                   const NodeSet& hardEvidence,
-                                   const NodeSet& softEvidence,
-                                   NodeSet&       requisite) const {
+                                            const NodeSet& query,
+                                            const NodeSet& hardEvidence,
+                                            const NodeSet& softEvidence,
+                                            NodeSet&       requisite) const {
     // for the moment, no node is requisite
     requisite.clear();
 

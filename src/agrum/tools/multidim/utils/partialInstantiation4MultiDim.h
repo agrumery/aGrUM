@@ -33,9 +33,9 @@
 #include <agrum/tools/variables/discreteVariable.h>
 #include <atomic>
 #include <mutex>
-//#include <agrum/tools/multidim/implementations/multiDimImplementation.h>
-//#include <agrum/tools/multidim/implementations/multiDimArray.h>
-//#include <agrum/tools/multidim/implementations/multiDimDecorator.h>
+// #include <agrum/tools/multidim/implementations/multiDimImplementation.h>
+// #include <agrum/tools/multidim/implementations/multiDimArray.h>
+// #include <agrum/tools/multidim/implementations/multiDimDecorator.h>
 
 namespace gum {
 
