@@ -1,5 +1,26 @@
 # aGrUM Changelog
 
+## Changelog for 1.6.0
+
+The main points of this tag is the renaming of *Markov network* (`MarkovNet`, `MN`) for the better known *Markov Random Field* (`MarkovRandomField`, `MRF`) and a new reader/writer of XDSL format (Genie/Smile) for Bayesian networks. Other improvements and corrections have naturally also been made.
+
+* aGrUM
+  * Renaming `gum::MarkovNet` to `gum::MarkovRandomField`. Renaming `gum::*MN*` to `gum::*MRF*` when necessary.
+  * Fixing glitches and bugs induced or revealed by `gum::MarkovNet`->`gum::MarkovRandomField`.
+  * new `XDSL` Reader/writer for Bayesian network.
+  * Renaming `gum::Learning::BNLearner::learnMixedStructure` to `gum::Learning::BNLearner::learnPDAG`
+  * working on documentation : better rendering for doxygen pages.
+  * Renaming `gum::dSeparation` to `gum::dSeparationAlgorithm`.
+
+* pyAgrum
+  * Renaming `pyAgrum.MarkovNet` to `pyAgrum.MarkovRandomField`. Renaming `pyAgrum.*MN*` to `pyAgrum.*MRF*` when necessary.
+  * new `XDSL` Reader/writer for Bayesian network.
+  * Renaming `pyAgrum.BNLearner.learnMixedStructure()` to `pyAgrum.BNLearner.learnPDAG()`.
+  * For figure containing nodes drawn by matplotlib (e.g. inference), use the same font for all nodes (default from matplotlib) (thanks to Jonathon Blackford).
+  * Working on documentation : better rendering for readthedocs pages.
+  * Significant improvement of the documentation coverage. 
+  * Improving `gum.DiscreteVariable.to[typeOfVariable]`, renaming as `gum.DiscreteVariable.as[typeOfVariable]` and adding documentations.
+
 ## Changelog for 1.5.2
 
 Mainly documentation and new analytics for the different sites.
