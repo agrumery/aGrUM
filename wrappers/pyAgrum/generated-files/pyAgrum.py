@@ -2600,19 +2600,19 @@ class LabelizedVariable(DiscreteVariable):
 
     LabelizedVariable(aName, aDesc='', nbrLabel=2) -> LabelizedVariable
         Parameters:
-            * **aName** (str) -- the name of the variable
-            * **aDesc** (str) -- the (optional) description of the variable
-            * **nbrLabel** (int) -- the number of labels to create (2 by default)
+            - **aName** (str) -- the name of the variable
+            - **aDesc** (str) -- the (optional) description of the variable
+            - **nbrLabel** (int) -- the number of labels to create (2 by default)
 
     LabelizedVariable(aName, aDesc='', labels) -> LabelizedVariable
         Parameters:
-            * **aName** (str) -- the name of the variable
-            * **aDesc** (str) -- the (optional) description of the variable
-            * **labels** (List[str]) -- the labels to create
+            - **aName** (str) -- the name of the variable
+            - **aDesc** (str) -- the (optional) description of the variable
+            - **labels** (List[str]) -- the labels to create
 
     LabelizedVariable(aLDRV) -> LabelizedVariable
         Parameters:
-            * **aLDRV** (*pyAgrum.LabelizedVariable*) -- The pyAgrum.LabelizedVariable that will be copied
+            - **aLDRV** (*pyAgrum.LabelizedVariable*) -- The pyAgrum.LabelizedVariable that will be copied
 
     Examples
     --------
@@ -2849,21 +2849,21 @@ class RangeVariable(DiscreteVariable):
 
     RangeVariable(aName, aDesc,minVal, maxVal) -> RangeVariable
         Parameters:
-            * **aName** (*str*) -- the name of the variable
-            * **aDesc** (*str*) -- the description of the variable
-            * **minVal** (int) -- the minimal integer of the interval
-            * **maxVal** (int) -- the maximal integer of the interval
+            - **aName** (*str*) -- the name of the variable
+            - **aDesc** (*str*) -- the description of the variable
+            - **minVal** (int) -- the minimal integer of the interval
+            - **maxVal** (int) -- the maximal integer of the interval
 
     RangeVariable(aName, aDesc='') -> RangeVariable
         Parameters:
-            * **aName** (*str*) -- the name of the variable
-            * **aDesc** (*str*) -- the description of the variable
+            - **aName** (*str*) -- the name of the variable
+            - **aDesc** (*str*) -- the description of the variable
 
         By default ``minVal=0`` and ``maxVal=1``
 
     RangeVariable(aRV) -> RangeVariable
         Parameters:
-            * **aDV** (*RangeVariable*) -- the pyAgrum.RangeVariable that will be copied
+            - **aDV** (*RangeVariable*) -- the pyAgrum.RangeVariable that will be copied
 
     Examples
     --------
@@ -3088,13 +3088,13 @@ class IntegerVariable(DiscreteVariable):
 
     IntegerVariable(aName, aDesc='', values=None) -> IntegerVariable
         Parameters:
-            * **aName** (str) -- the name of the variable
-            * **aDesc** (str) -- the (optional) description of the variable
-            * **values** (List[int]) -- the values to create
+            - **aName** (str) -- the name of the variable
+            - **aDesc** (str) -- the (optional) description of the variable
+            - **values** (List[int]) -- the values to create
 
     IntegerVariable(aIDRV) -> IntegerVariable
         Parameters:
-            * **aIDRV** (*pyAgrum.IntegerVariable*) -- The pyAgrum.IntegerVariable that will be copied
+            - **aIDRV** (*pyAgrum.IntegerVariable*) -- The pyAgrum.IntegerVariable that will be copied
 
     Examples
     --------
@@ -3339,13 +3339,13 @@ class NumericalDiscreteVariable(DiscreteVariable):
 
     NumericalDiscreteVariable(aName, aDesc='', values=None) -> NumericalDiscreteVariable
         Parameters:
-            * **aName** (str) -- the name of the variable
-            * **aDesc** (str) -- the (optional) description of the variable
-            * **values** (List[float]) -- the values to create
+            - **aName** (str) -- the name of the variable
+            - **aDesc** (str) -- the (optional) description of the variable
+            - **values** (List[float]) -- the values to create
 
     NumericalDiscreteVariable(aIDRV) -> NumericalDiscreteVariable
         Parameters:
-            * **aIDRV** (*pyAgrum.NumericalDiscreteVariable*) -- The pyAgrum.NumericalDiscreteVariable that will be copied
+            - **aIDRV** (*pyAgrum.NumericalDiscreteVariable*) -- The pyAgrum.NumericalDiscreteVariable that will be copied
 
     Examples
     --------
@@ -3623,12 +3623,12 @@ class Edge(object):
 
     Edge(aN1,aN2) -> Edge
         Parameters:
-            * **aN1** (int) -- the nodeId of the first node
-            * **aN2** (int) -- the nodeId of the secondnode
+            - **aN1** (int) -- the nodeId of the first node
+            - **aN2** (int) -- the nodeId of the secondnode
 
     Edge(src) -> Edge
         Parameters:
-            * **src** (*yAgrum.Edge*) -- the Edge to copy
+            - **src** (*yAgrum.Edge*) -- the Edge to copy
 
     """
 
@@ -3690,12 +3690,12 @@ class Arc(object):
 
     Arc(tail, head) -> Arc
         Parameters:
-            * **tail** (int) -- the tail
-            * **head** (int) -- the head
+            - **tail** (int) -- the tail
+            - **head** (int) -- the head
 
     Arc(src) -> Arc
         Parameters:
-            * **src** (*Arc*) -- the pyAgrum.Arc to copy
+            - **src** (*Arc*) -- the pyAgrum.Arc to copy
 
     """
 
@@ -3782,7 +3782,7 @@ class UndiGraph(object):
 
     UndiGraph(src) -> UndiGraph
         Parameters!
-            * **src** (*UndiGraph*) -- the pyAgrum.UndiGraph to copy
+            - **src** (*UndiGraph*) -- the pyAgrum.UndiGraph to copy
 
 
     """
@@ -4148,7 +4148,7 @@ class DiGraph(object):
 
     DiGraph(src) -> DiGraph
         Parameters:
-            * **src** (*pyAgrum.DiGraph*) -- the digraph to copy
+            - **src** (*pyAgrum.DiGraph*) -- the digraph to copy
 
     """
 
@@ -4546,7 +4546,7 @@ class DAG(DiGraph):
 
     DAG(src) -> DAG
         Parameters:
-            * **src** (*pyAgrum.DAG*) -- the digraph to copy
+            - **src** (*pyAgrum.DAG*) -- the digraph to copy
 
     """
 
@@ -4665,7 +4665,7 @@ class MixedGraph(UndiGraph, DiGraph):
 
     MixedGraph(src) -> MixedGraph
         Parameters:
-            * **src** (*pyAgrum.MixedGraph*) --the MixedGraph to copy
+            - **src** (*pyAgrum.MixedGraph*) --the MixedGraph to copy
 
     """
 
@@ -5073,7 +5073,7 @@ class PDAG(MixedGraph):
 
     PDAG(src) -> PDAG
         Parameters:
-            * **src** (*pyAgrum.PDAG*) --the PDAG to copy
+            - **src** (*pyAgrum.PDAG*) --the PDAG to copy
 
     """
 
@@ -5276,7 +5276,7 @@ class CliqueGraph(UndiGraph):
 
     CliqueGraph(src) -> CliqueGraph
         Parameter
-            * **src** (*pyAgrum.CliqueGraph*) -- the CliqueGraph to copy
+            - **src** (*pyAgrum.CliqueGraph*) -- the CliqueGraph to copy
 
     """
 
@@ -5587,7 +5587,7 @@ class Instantiation(object):
 
     Instantiation(aI) -> Instantiation
         Parameters:
-          * **aI** (*pyAgrum.Instantiation*) -- the Instantiation we copy
+          - **aI** (*pyAgrum.Instantiation*) -- the Instantiation we copy
 
     Returns
     -------
@@ -6853,7 +6853,7 @@ class EssentialGraph(object):
 
     EssentialGraph(m) -> EssentialGraph
         Parameters:
-          * **m** (*pyAgrum.DAGmodel*) -- a DAGmodel
+          - **m** (*pyAgrum.DAGmodel*) -- a DAGmodel
 
     """
 
@@ -7061,13 +7061,13 @@ class MarkovBlanket(object):
 
     MarkovBlanket(m,n) -> MarkovBlanket
         Parameters:
-            * **m** (*pyAgrum.DAGmodel*) -- a DAGmodel
-            * **n** (int) -- a node id
+            - **m** (*pyAgrum.DAGmodel*) -- a DAGmodel
+            - **n** (int) -- a node id
 
     MarkovBlanket(m,name) -> MarkovBlanket
         Parameters:
-            * **m** (*pyAgrum.DAGmodel*) -- a DAGmodel
-            * **name** (*str*) -- a node name
+            - **m** (*pyAgrum.DAGmodel*) -- a DAGmodel
+            - **name** (*str*) -- a node name
 
     """
 
@@ -7363,7 +7363,7 @@ class ApproximationScheme(object):
 
     ApproximationScheme(verbosity=False) -> ApproximationScheme
         Parameters:
-          * **verbosity** (*bool) -- to keep (or not) tracks of the learning process (history of epsilons)
+          - **verbosity** (*bool) -- to keep (or not) tracks of the learning process (history of epsilons)
 
     """
 
@@ -7772,15 +7772,15 @@ class DiscretizedVariable(IDiscretizedVariable):
 
     DiscretizedVariable(aName, aDesc ,ticks=None,is_empirical=False) -> DiscretizedVariable`
         Parameters:
-            * **aName** (*str*) -- the name of the variable
-            * **aDesc** (*str*) -- the description of the variable
-            * **ticks (*list[float]*) -- the list of ticks to add
-            * **is_empirical** (*bool) -- if False, raise an error if a value is out of bound.
+            - **aName** (*str*) -- the name of the variable
+            - **aDesc** (*str*) -- the description of the variable
+            - **ticks (*list[float]*) -- the list of ticks to add
+            - **is_empirical** (*bool) -- if False, raise an error if a value is out of bound.
 
 
     DiscretizedVariable(aDDRV) -> DiscretizedVariable
         Parameters:
-            * **aDDRV** (*pyAgrum.DiscretizedVariable*) -- the pyAgrum.DiscretizedVariable that will be copied
+            - **aDDRV** (*pyAgrum.DiscretizedVariable*) -- the pyAgrum.DiscretizedVariable that will be copied
 
     Examples
     --------
@@ -8075,7 +8075,7 @@ class Potential(object):
 
     Potential(src) -> Potential
         Parameters:
-            * **src** (*pyAgrum.Potential*) -- the Potential to copy
+            - **src** (*pyAgrum.Potential*) -- the Potential to copy
 
     """
 
@@ -9835,11 +9835,11 @@ class BayesNet(IBayesNet):
 
     BayesNet(name='') -> BayesNet
         Parameters:
-          * **name** (*str*) -- the name of the Bayes Net
+          - **name** (*str*) -- the name of the Bayes Net
 
     BayesNet(source) -> BayesNet
         Parameters:
-          * **source** (*pyAgrum.BayesNet*) -- the Bayesian network to copy
+          - **source** (*pyAgrum.BayesNet*) -- the Bayesian network to copy
 
     """
 
@@ -11286,7 +11286,7 @@ class BayesNetFragment(IBayesNet, ):
 
     BayesNetFragment(BayesNet bn) -> BayesNetFragment
         Parameters:
-          * **bn** (*pyAgrum.BayesNet*) -- the bn refered by the fragment
+          - **bn** (*pyAgrum.BayesNet*) -- the bn refered by the fragment
 
     """
 
@@ -12140,11 +12140,11 @@ class MarkovRandomField(IMarkovRandomField):
 
     MarkovRandomField(name='') -> MarkovRandomField
         Parameters:
-          * **name** (*str*) -- the name of the Bayes Net
+          - **name** (*str*) -- the name of the Bayes Net
 
     MarkovRandomField(source) -> MarkovRandomField
         Parameters:
-          * **source** (*pyAgrum.MarkovRandomField*) -- the Markov random field to copy
+          - **source** (*pyAgrum.MarkovRandomField*) -- the Markov random field to copy
 
     """
 
@@ -12607,7 +12607,7 @@ class ShaferShenoyMRFInference(object):
 
     ShaferShenoyMRFInference(bn) -> ShaferShenoyMRFInference
         Parameters:
-            * **mrf** (*pyAgrum.MarkovRandomField*) -- a Markov random field
+            - **mrf** (*pyAgrum.MarkovRandomField*) -- a Markov random field
 
     """
 
@@ -13406,7 +13406,7 @@ class LazyPropagation(object):
 
     LazyPropagation(bn) -> LazyPropagation
         Parameters:
-            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
+            - **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
@@ -14266,7 +14266,7 @@ class ShaferShenoyInference(object):
 
     ShaferShenoyInference(bn) -> ShaferShenoyInference
         Parameters:
-            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
+            - **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
@@ -15126,7 +15126,7 @@ class VariableElimination(object):
 
     VariableElimination(bn) -> VariableElimination
         Parameters:
-            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
+            - **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
@@ -15901,7 +15901,7 @@ class GibbsSampling(object):
 
     GibbsSampling(bn) -> GibbsSampling
         Parameters:
-          * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
+          - **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
@@ -16727,7 +16727,7 @@ class ImportanceSampling(object):
 
     ImportanceSampling(bn) -> ImportanceSampling
         Parameters:
-            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
+            - **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
@@ -17487,7 +17487,7 @@ class WeightedSampling(object):
 
     WeightedSampling(bn) -> WeightedSampling
         Parameters:
-            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
+            - **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
@@ -18247,7 +18247,7 @@ class MonteCarloSampling(object):
 
     MonteCarloSampling(bn) -> MonteCarloSampling
         Parameters:
-            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
+            - **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
@@ -19007,7 +19007,7 @@ class LoopyImportanceSampling(ImportanceSampling):
 
     LoopyImportanceSampling(bn) -> LoopyImportanceSampling
         Parameters:
-            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
+            - **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
@@ -19781,7 +19781,7 @@ class LoopyWeightedSampling(WeightedSampling):
 
     LoopyImportanceSampling(bn) -> LoopyImportanceSampling
         Parameters:
-            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
+            - **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
@@ -20555,7 +20555,7 @@ class LoopyGibbsSampling(GibbsSampling):
 
     LoopyImportanceSampling(bn) -> LoopyImportanceSampling
         Parameters:
-            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
+            - **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
@@ -21395,7 +21395,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
 
     LoopyImportanceSampling(bn) -> LoopyImportanceSampling
         Parameters:
-            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
+            - **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
@@ -22169,7 +22169,7 @@ class LoopyBeliefPropagation(object):
 
     LoopyBeliefPropagation(bn) -> LoopyBeliefPropagation
         Parameters:
-            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
+            - **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
@@ -22904,14 +22904,14 @@ class ExactBNdistance(object):
 
     ExactBNdistance(P,Q) -> ExactBNdistance
         Parameters:
-            * **P** (*pyAgrum.BayesNet*)
+            - **P** (*pyAgrum.BayesNet*)
               a Bayesian network
-            * **Q** (*pyAgrum.BayesNet*)
+            - **Q** (*pyAgrum.BayesNet*)
               another Bayesian network to compare with the first one
 
     ExactBNdistance(ebnd) -> ExactBNdistance
         Parameters:
-            * **ebnd** (*pyAgrum.ExactBNdistance*)
+            - **ebnd** (*pyAgrum.ExactBNdistance*)
               the exact BNdistance to copy
 
     Raises
@@ -22949,12 +22949,12 @@ class GibbsBNdistance(ApproximationScheme):
 
     GibbsBNdistance(P,Q) -> GibbsBNdistance
         Parameters:
-            * **P** (*pyAgrum.BayesNet*) -- a Bayesian network
-            * **Q** (*pyAgrum.BayesNet*) -- another Bayesian network to compare with the first one
+            - **P** (*pyAgrum.BayesNet*) -- a Bayesian network
+            - **Q** (*pyAgrum.BayesNet*) -- another Bayesian network to compare with the first one
 
     GibbsBNdistance(gbnd) -> GibbsBNdistance
         Parameters:
-            * **gbnd** (*pyAgrum.GibbsBNdistance*) -- the Gibbs BNdistance to copy
+            - **gbnd** (*pyAgrum.GibbsBNdistance*) -- the Gibbs BNdistance to copy
 
     Raises
     ------
@@ -23753,7 +23753,7 @@ class CNMonteCarloSampling(object):
 
     CNMonteCarloSampling(cn) -> CNMonteCarloSampling
         Parameters:
-            * **cn** (*pyAgrum.CredalNet*) -- a credal network
+            - **cn** (*pyAgrum.CredalNet*) -- a credal network
 
     """
 
@@ -24121,7 +24121,7 @@ class CNLoopyPropagation(object):
 
     CNLoopyPropagation(cn) -> CNLoopyPropagation
         Parameters:
-          * **cn** (*pyAgrum.CredalNet*) -- a Credal network
+          - **cn** (*pyAgrum.CredalNet*) -- a Credal network
 
     """
 
@@ -24529,7 +24529,7 @@ class InfluenceDiagram(DAGmodel):
 
     InfluenceDiagram(source) -> InfluenceDiagram
         Parameters:
-            * **source** (*pyAgrum.InfluenceDiagram*) -- the InfluenceDiagram to copy
+            - **source** (*pyAgrum.InfluenceDiagram*) -- the InfluenceDiagram to copy
 
     """
 
@@ -25581,19 +25581,19 @@ class BNLearner(object):
 
     BNLearner(filename,inducedTypes=True) -> BNLearner
         Parameters:
-            * **source** (*str* or *pandas.DataFrame*) -- the data to learn from
-            * **missingSymbols** (*List[str]*) -- list of string that will be interpreted as missing values (by default : ['?'])
-            * **inducedTypes** (*Bool*) -- whether BNLearner should try to automatically find the type of each variable
+            - **source** (*str* or *pandas.DataFrame*) -- the data to learn from
+            - **missingSymbols** (*List[str]*) -- list of string that will be interpreted as missing values (by default : ['?'])
+            - **inducedTypes** (*Bool*) -- whether BNLearner should try to automatically find the type of each variable
 
     BNLearner(filename,src) -> BNLearner
         Parameters:
-            * **source** (*str* or *pandas.DataFrame) -- the data to learn from
-            * **src** (*pyAgrum.BayesNet*) -- the Bayesian network used to find those modalities
-            * **missingSymbols** (*List[str]*) -- list of string that will be interpreted as missing values (by default : ['?'])
+            - **source** (*str* or *pandas.DataFrame) -- the data to learn from
+            - **src** (*pyAgrum.BayesNet*) -- the Bayesian network used to find those modalities
+            - **missingSymbols** (*List[str]*) -- list of string that will be interpreted as missing values (by default : ['?'])
 
     BNLearner(learner) -> BNLearner
         Parameters:
-            * **learner** (*pyAgrum.BNLearner*) -- the BNLearner to copy
+            - **learner** (*pyAgrum.BNLearner*) -- the BNLearner to copy
 
     """
 

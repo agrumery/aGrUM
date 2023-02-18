@@ -4,13 +4,13 @@ NumericalDiscreteVariable is a discrete random variable with a customizable sequ
 
 NumericalDiscreteVariable(aName, aDesc='', values=None) -> NumericalDiscreteVariable
     Parameters:
-        * **aName** (str) -- the name of the variable
-        * **aDesc** (str) -- the (optional) description of the variable
-        * **values** (List[float]) -- the values to create
+        - **aName** (str) -- the name of the variable
+        - **aDesc** (str) -- the (optional) description of the variable
+        - **values** (List[float]) -- the values to create
 
 NumericalDiscreteVariable(aIDRV) -> NumericalDiscreteVariable
     Parameters:
-        * **aIDRV** (*pyAgrum.NumericalDiscreteVariable*) -- The pyAgrum.NumericalDiscreteVariable that will be copied
+        - **aIDRV** (*pyAgrum.NumericalDiscreteVariable*) -- The pyAgrum.NumericalDiscreteVariable that will be copied
 
 Examples
 --------

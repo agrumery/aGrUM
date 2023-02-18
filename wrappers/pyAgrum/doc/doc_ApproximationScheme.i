@@ -4,7 +4,7 @@ Used to parametrize stopping criteria in approximate inference or learning algor
 
 ApproximationScheme(verbosity=False) -> ApproximationScheme
     Parameters:
-      * **verbosity** (*bool*) -- to keep (or not) tracks of the learning process (history of epsilons)
+      - **verbosity** (*bool*) -- to keep (or not) tracks of the learning process (history of epsilons)
 "
 
 %feature("docstring") gum::ApproximationScheme::disableEpsilon

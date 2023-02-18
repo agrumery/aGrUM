@@ -9,7 +9,7 @@ Instantiation() -> Instantiation
 
 Instantiation(aI) -> Instantiation
     Parameters:
-      * **aI** (*pyAgrum.Instantiation*) -- the Instantiation we copy
+      - **aI** (*pyAgrum.Instantiation*) -- the Instantiation we copy
 
 Returns
 -------

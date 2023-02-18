@@ -4,11 +4,11 @@ MarkovRandomField represents a Markov random field.
 
 MarkovRandomField(name='') -> MarkovRandomField
     Parameters:
-      * **name** (*str*) -- the name of the Bayes Net
+      - **name** (*str*) -- the name of the Bayes Net
 
 MarkovRandomField(source) -> MarkovRandomField
     Parameters:
-      * **source** (*pyAgrum.MarkovRandomField*) -- the Markov random field to copy
+      - **source** (*pyAgrum.MarkovRandomField*) -- the Markov random field to copy
 "
 
 %feature("docstring") gum::MarkovRandomField::add

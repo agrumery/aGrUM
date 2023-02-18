@@ -4,5 +4,5 @@ Class used for inferences in credal networks with Loopy Propagation algorithm.
 
 CNLoopyPropagation(cn) -> CNLoopyPropagation
     Parameters:
-      * **cn** (*pyAgrum.CredalNet*) -- a Credal network
+      - **cn** (*pyAgrum.CredalNet*) -- a Credal network
 "

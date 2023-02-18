@@ -8,7 +8,7 @@ DAG() -> DAG
 
 DAG(src) -> DAG
     Parameters:
-        * **src** (*pyAgrum.DAG*) -- the digraph to copy
+        - **src** (*pyAgrum.DAG*) -- the digraph to copy
 "
 
 %feature("docstring") gum::DAG::addArc

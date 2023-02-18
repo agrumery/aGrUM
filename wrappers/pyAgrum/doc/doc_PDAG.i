@@ -7,7 +7,7 @@ PDAG() -> PDAG
 
 PDAG(src) -> PDAG
     Parameters:
-        * **src** (*pyAgrum.PDAG*) --the PDAG to copy
+        - **src** (*pyAgrum.PDAG*) --the PDAG to copy
 "
 %feature("docstring") gum::PDAG::addArc
 "

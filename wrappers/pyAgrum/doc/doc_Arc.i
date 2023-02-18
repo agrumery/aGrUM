@@ -4,12 +4,12 @@ pyAgrum.Arc is the representation of an arc between two nodes represented by int
 
 Arc(tail, head) -> Arc
     Parameters:
-        * **tail** (int) -- the tail
-        * **head** (int) -- the head
+        - **tail** (int) -- the tail
+        - **head** (int) -- the head
 
 Arc(src) -> Arc
     Parameters:
-        * **src** (*Arc*) -- the pyAgrum.Arc to copy
+        - **src** (*Arc*) -- the pyAgrum.Arc to copy
 "
 
 %feature("docstring") gum::Arc::tail

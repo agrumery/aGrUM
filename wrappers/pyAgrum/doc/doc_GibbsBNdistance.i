@@ -5,12 +5,12 @@ Class representing a Gibbs-Approximated computation of divergence and distance b
 
 GibbsBNdistance(P,Q) -> GibbsBNdistance
     Parameters:
-        * **P** (*pyAgrum.BayesNet*) -- a Bayesian network
-        * **Q** (*pyAgrum.BayesNet*) -- another Bayesian network to compare with the first one
+        - **P** (*pyAgrum.BayesNet*) -- a Bayesian network
+        - **Q** (*pyAgrum.BayesNet*) -- another Bayesian network to compare with the first one
 
 GibbsBNdistance(gbnd) -> GibbsBNdistance
     Parameters:
-        * **gbnd** (*pyAgrum.GibbsBNdistance*) -- the Gibbs BNdistance to copy
+        - **gbnd** (*pyAgrum.GibbsBNdistance*) -- the Gibbs BNdistance to copy
 
 Raises
 ------

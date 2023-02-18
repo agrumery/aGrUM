@@ -7,7 +7,7 @@ Potential() -> Potential
 
 Potential(src) -> Potential
     Parameters:
-        * **src** (*pyAgrum.Potential*) -- the Potential to copy
+        - **src** (*pyAgrum.Potential*) -- the Potential to copy
 "
 
 %feature("docstring") gum::Potential::KL

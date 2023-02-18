@@ -7,7 +7,7 @@ CliqueGraph() -> CliqueGraph
 
 CliqueGraph(src) -> CliqueGraph
     Parameter
-        * **src** (*pyAgrum.CliqueGraph*) -- the CliqueGraph to copy
+        - **src** (*pyAgrum.CliqueGraph*) -- the CliqueGraph to copy
 "
 
 %feature("docstring") gum::CliqueGraph::addToClique

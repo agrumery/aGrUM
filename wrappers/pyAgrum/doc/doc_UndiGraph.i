@@ -7,7 +7,7 @@ UndiGraph() -> UndiGraph
 
 UndiGraph(src) -> UndiGraph
     Parameters!
-        * **src** (*UndiGraph*) -- the pyAgrum.UndiGraph to copy
+        - **src** (*UndiGraph*) -- the pyAgrum.UndiGraph to copy
 
 "
 

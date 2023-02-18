@@ -4,13 +4,13 @@ Class building the Markov blanket of a node in a graph.
 
 MarkovBlanket(m,n) -> MarkovBlanket
     Parameters:
-        * **m** (*pyAgrum.DAGmodel*) -- a DAGmodel
-        * **n** (int) -- a node id
+        - **m** (*pyAgrum.DAGmodel*) -- a DAGmodel
+        - **n** (int) -- a node id
 
 MarkovBlanket(m,name) -> MarkovBlanket
     Parameters:
-        * **m** (*pyAgrum.DAGmodel*) -- a DAGmodel
-        * **name** (*str*) -- a node name
+        - **m** (*pyAgrum.DAGmodel*) -- a DAGmodel
+        - **name** (*str*) -- a node name
 "
 
 %feature("docstring") gum::MarkovBlanket::dag

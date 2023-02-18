@@ -4,5 +4,5 @@ Class used for Lazy Propagation
 
 LazyPropagation(bn) -> LazyPropagation
     Parameters:
-        * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
+        - **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 "

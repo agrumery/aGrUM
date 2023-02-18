@@ -7,7 +7,7 @@ DiGraph() -> DiGraph
 
 DiGraph(src) -> DiGraph
     Parameters:
-        * **src** (*pyAgrum.DiGraph*) -- the digraph to copy
+        - **src** (*pyAgrum.DiGraph*) -- the digraph to copy
 "
 
 %feature("docstring") gum::DiGraph::addArc

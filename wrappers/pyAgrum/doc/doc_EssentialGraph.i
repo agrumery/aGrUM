@@ -6,7 +6,7 @@ Essential graph is a mixed graph (Chain Graph) that represents the class of mark
 
 EssentialGraph(m) -> EssentialGraph
     Parameters:
-      * **m** (*pyAgrum.DAGmodel*) -- a DAGmodel
+      - **m** (*pyAgrum.DAGmodel*) -- a DAGmodel
 "
 
 %feature("docstring") gum::EssentialGraph::arcs

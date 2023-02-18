@@ -4,11 +4,11 @@ BayesNet represents a Bayesian network.
 
 BayesNet(name='') -> BayesNet
     Parameters:
-      * **name** (*str*) -- the name of the Bayes Net
+      - **name** (*str*) -- the name of the Bayes Net
 
 BayesNet(source) -> BayesNet
     Parameters:
-      * **source** (*pyAgrum.BayesNet*) -- the Bayesian network to copy
+      - **source** (*pyAgrum.BayesNet*) -- the Bayesian network to copy
 "
 
 %feature("docstring") gum::BayesNet::add

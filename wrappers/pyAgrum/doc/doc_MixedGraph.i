@@ -7,7 +7,7 @@ MixedGraph() -> MixedGraph
 
 MixedGraph(src) -> MixedGraph
     Parameters:
-        * **src** (*pyAgrum.MixedGraph*) --the MixedGraph to copy
+        - **src** (*pyAgrum.MixedGraph*) --the MixedGraph to copy
 "
 
 %feature("docstring") gum::MixedGraph::addNode

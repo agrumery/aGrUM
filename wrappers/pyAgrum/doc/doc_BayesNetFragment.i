@@ -4,7 +4,7 @@ BayesNetFragment represents a part of a Bayesian network (subset of nodes). By d
 
 BayesNetFragment(BayesNet bn) -> BayesNetFragment
     Parameters:
-      * **bn** (*pyAgrum.BayesNet*) -- the bn refered by the fragment
+      - **bn** (*pyAgrum.BayesNet*) -- the bn refered by the fragment
 "
 
 %feature("docstring") gum::BayesNetFragment::checkConsistency

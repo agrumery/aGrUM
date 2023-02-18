@@ -51,7 +51,7 @@ Input/Output for Bayesian networks
 .. autofunction:: pyAgrum.saveBN
 
 Input/Output for Markov random fields
-----------------------------------
+-------------------------------------
 
 .. autofunction:: pyAgrum.availableMNExts
 

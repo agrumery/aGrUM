@@ -7,7 +7,7 @@ InfluenceDiagram() -> InfluenceDiagram
 
 InfluenceDiagram(source) -> InfluenceDiagram
     Parameters:
-        * **source** (*pyAgrum.InfluenceDiagram*) -- the InfluenceDiagram to copy
+        - **source** (*pyAgrum.InfluenceDiagram*) -- the InfluenceDiagram to copy
 "
 
 %feature("docstring") gum::InfluenceDiagram::add

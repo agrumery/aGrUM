@@ -4,13 +4,13 @@ IntegerVariable is a discrete random variable with a customizable sequence of in
 
 IntegerVariable(aName, aDesc='', values=None) -> IntegerVariable
     Parameters:
-        * **aName** (str) -- the name of the variable
-        * **aDesc** (str) -- the (optional) description of the variable
-        * **values** (List[int]) -- the values to create
+        - **aName** (str) -- the name of the variable
+        - **aDesc** (str) -- the (optional) description of the variable
+        - **values** (List[int]) -- the values to create
 
 IntegerVariable(aIDRV) -> IntegerVariable
     Parameters:
-        * **aIDRV** (*pyAgrum.IntegerVariable*) -- The pyAgrum.IntegerVariable that will be copied
+        - **aIDRV** (*pyAgrum.IntegerVariable*) -- The pyAgrum.IntegerVariable that will be copied
 
 Examples
 --------
