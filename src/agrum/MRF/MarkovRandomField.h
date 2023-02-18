@@ -26,8 +26,8 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *
  */
-#ifndef GUM_MARKOV_NET_H
-#define GUM_MARKOV_NET_H
+#ifndef GUM_MARKOV_RANDOM_FIELD_H
+#define GUM_MARKOV_RANDOM_FIELD_H
 
 #include <utility>
 
@@ -467,4 +467,4 @@ namespace gum {
 
 #include <agrum/MRF/MarkovRandomField_tpl.h>
 
-#endif /* GUM_MARKOV_NET_H */
+#endif /* GUM_MARKOV_RANDOM_FIELD_H */
