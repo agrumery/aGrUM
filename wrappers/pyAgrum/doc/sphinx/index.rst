@@ -32,9 +32,9 @@ pyAgrum contains :
 .. toctree::
   :caption: Tutorials and notebooks
   :name: Notebooks
+  :titlesonly:
   :maxdepth: 1
 
-  tutorials
   notebooks
 
 ================
@@ -42,7 +42,7 @@ Reference manual
 ================
 
   .. toctree::
-    :caption: 1-Fundamental components
+    :caption: 1- Fundamental components
     :maxdepth: 2
 
     graph
@@ -50,8 +50,8 @@ Reference manual
     potential
 
   .. toctree::
-    :caption: 2-Graphical Models
-    :maxdepth: 2
+    :caption: 2- Graphical Models
+    :maxdepth: 1
 
     bayesianNetwork
     influenceDiagram
@@ -60,21 +60,21 @@ Reference manual
     PRM
 
   .. toctree::
-    :caption: 3-Causality
+    :caption: 3- Causality
     :maxdepth: 2
     :titlesonly:
 
     Causal
 
   .. toctree::
-    :caption: 4-scikit-learn-like BN Classifiers
+    :caption: 4- scikit-learn-like BN Classifiers
     :maxdepth: 2
     :titlesonly:
 
     Classifier
 
   .. toctree::
-    :caption: 5-pyAgrum.lib modules
+    :caption: 5- pyAgrum.lib modules
     :maxdepth: 2
     :titlesonly:
 
@@ -85,16 +85,18 @@ Reference manual
     pyAgrum.lib
 
   .. toctree::
-    :caption: 6-Miscellaneous
+    :caption: 6- Miscellaneous
     :maxdepth: 2
+    :titlesonly:
 
     functions
     miscellaneous
     exceptions
 
   .. toctree::
-    :caption: 7-Customizing pyAgrum
+    :caption: 7- Customizing pyAgrum
     :maxdepth: 1
+    :titlesonly:
 
     PyAgrumConfiguration
 

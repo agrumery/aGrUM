@@ -1,3 +1,11 @@
+Tutorials on pyAgrum
+====================
+
+.. nbgallery::
+    :glob:
+
+    notebooks/*-Tutorial*
+    
 Inference in Bayesian networks
 ==============================
 

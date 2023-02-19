@@ -35,7 +35,7 @@ Raises
 ------
 pyAgrum.DuplicateLabel
     If variable.name() is already used in this pyAgrum.MarkovRandomField.
-pyAgrum.NotAllowed
+pyAgrum.OperationNotAllowed
     If nbrmod is less than 2
 pyAgrum.DuplicateElement
     If id is already used.
