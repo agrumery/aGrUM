@@ -17,7 +17,7 @@ The main points of this tag is the renaming of *Markov network* (`MarkovNet`, `M
   * new `XDSL` Reader/writer for Bayesian network.
   * Renaming `pyAgrum.BNLearner.learnMixedStructure()` to `pyAgrum.BNLearner.learnPDAG()`.
   * For figure containing nodes drawn by matplotlib (e.g. inference), use the same font for all nodes (default from matplotlib) (thanks to Jonathon Blackford).
-  * Working on documentation : better rendering for readthedocs pages.
+  * Working on documentation : better rendering for readthedocs pages, improved structuration, new thumbnail image for some notebooks/tutorials.
   * Significant improvement of the documentation coverage. 
   * Improving `gum.DiscreteVariable.to[typeOfVariable]`, renaming as `gum.DiscreteVariable.as[typeOfVariable]` and adding documentations.
 
