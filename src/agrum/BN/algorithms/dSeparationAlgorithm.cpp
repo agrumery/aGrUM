@@ -30,7 +30,7 @@
 #include <agrum/tools/core/list.h>
 
 #ifdef GUM_NO_INLINE
-#  include <agrum/BN/algorithms/dSeparation_inl.h>
+#  include <agrum/BN/algorithms/dSeparationAlgorithm_inl.h>
 #endif   // GUM_NO_INLINE
 
 namespace gum {
