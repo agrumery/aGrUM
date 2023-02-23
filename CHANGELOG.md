@@ -1,5 +1,8 @@
 # aGrUM Changelog
 
+## Changelog for 1.6.1
+
+Quick fix for the configuration of pyAgrum documentation generation by readthedoc.
 ## Changelog for 1.6.0
 
 The main points of this tag is the renaming of *Markov network* (`MarkovNet`, `MN`) for the better known *Markov Random Field* (`MarkovRandomField`, `MRF`) and a new reader/writer of XDSL format (Genie/Smile) for Bayesian networks. Other improvements and corrections have naturally also been made.
