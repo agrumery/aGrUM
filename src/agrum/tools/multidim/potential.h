@@ -310,6 +310,13 @@ namespace gum {
     const Potential< GUM_SCALAR >& log2() const;
 
     /**
+     * @brief apply sgn(x)$ on every element of the container
+     *
+     * fill the potential with -1 for a GUM_SCALAR<0,1 if >0 and 0 if ==0
+     */
+    const Potential< GUM_SCALAR >& sgn() const;
+
+    /**
      * @brief Create a new potential and apply abs on every element of the
      * container
      */
@@ -326,6 +333,13 @@ namespace gum {
      * container
      */
     const Potential< GUM_SCALAR > new_log2() const;
+
+    /**
+     * @brief Create a new potential and apply sgn(x)$ on every element of the container
+     *
+     * fill the potential with -1 for a GUM_SCALAR<0,1 if >0 and 0 if ==0
+     */
+    const Potential< GUM_SCALAR > new_sgn() const;
 
 
     /**

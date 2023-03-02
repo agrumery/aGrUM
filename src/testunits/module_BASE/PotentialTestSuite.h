@@ -1212,6 +1212,23 @@ namespace gum_tests {
       TS_ASSERT_DELTA(p.max(), -150 + 4 * 2 * 3 - 1, 1e-7)
     }
 
+    GUM_TEST(Sgn) {
+      gum::LabelizedVariable   u("u", "u", 4), v("v", "v", 2), w("w", "w", 3);
+      gum::Potential< double > p;
+      p.add(u);
+      p.add(v);
+      p.add(w);
+      p.random();
+
+      auto r = p * 2;
+      TS_ASSERT_EQUALS((r - p).sgn().min(), 1.0);
+      TS_ASSERT_EQUALS((r - p).sgn().max(), 1.0);
+      TS_ASSERT_EQUALS((p - r).sgn().min(), -1.0);
+      TS_ASSERT_EQUALS((p - r).sgn().max(), -1.0);
+      TS_ASSERT_EQUALS((p - p).sgn().min(), 0.0);
+      TS_ASSERT_EQUALS((p - p).sgn().max(), 0.0);
+    }
+
     GUM_TEST(OperatorWithScalars) {
       gum::LabelizedVariable   u("u", "u", 4), v("v", "v", 2), w("w", "w", 3);
       gum::Potential< double > p;

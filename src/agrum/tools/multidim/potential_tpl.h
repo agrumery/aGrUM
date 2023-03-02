@@ -289,6 +289,11 @@ namespace gum {
     this->apply([](GUM_SCALAR x) { return std::log2(x); });
     return *this;
   }
+  template < typename GUM_SCALAR >
+  INLINE const Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::sgn() const {
+    this->apply([](GUM_SCALAR x) { return (GUM_SCALAR(0) < x) - (x < GUM_SCALAR(0));});
+    return *this;
+  }
 
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR Potential< GUM_SCALAR >::KL(const Potential< GUM_SCALAR >& p) const {
@@ -573,11 +578,11 @@ namespace gum {
      Potential< GUM_SCALAR >::reorganize(const std::vector< const DiscreteVariable* >& vars) const {
     if (vars.size() != this->nbrDim())
       GUM_ERROR(InvalidArgument,
-                "The vector contains " << vars.size() << " variables instead of " << this->nbrDim()
-                                       << ".");
+                "The argument contains " << vars.size() << " variables instead of "
+                                         << this->nbrDim() << ".");
     for (const auto var: vars) {
       if (!this->contains(*var))
-        GUM_ERROR(InvalidArgument, "A variable in the vector does not belong to the potential.")
+        GUM_ERROR(InvalidArgument, "A variable in the argument does not belong to the potential.")
     }
 
     Potential< GUM_SCALAR > p;
@@ -745,6 +750,11 @@ namespace gum {
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR > Potential< GUM_SCALAR >::new_log2() const {
     return Potential< GUM_SCALAR >(*this).log2();
+  }
+
+  template < typename GUM_SCALAR >
+  const Potential< GUM_SCALAR > Potential< GUM_SCALAR >::new_sgn() const {
+    return Potential< GUM_SCALAR >(*this).sgn();
   }
 
 } /* namespace gum */
