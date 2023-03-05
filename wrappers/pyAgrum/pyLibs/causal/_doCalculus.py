@@ -27,7 +27,7 @@ from typing import List, Set, Optional, Union
 
 import pyAgrum
 
-from pyAgrum.causal._types import NameSet,NodeSet
+from pyAgrum.causal._types import NameSet, NodeSet
 from pyAgrum.causal._dSeparation import dSep_reduce, isDSep, ancester
 from pyAgrum.causal._doAST import ASTtree, ASTdiv, ASTjointProba, ASTsum, ASTmult, ASTposteriorProba, productOfTrees
 from pyAgrum.causal._exceptions import HedgeException
@@ -37,6 +37,7 @@ from pyAgrum.causal._CausalFormula import CausalFormula
 
 # pylint: disable=unused-import
 import pyAgrum.causal  # for annotations
+
 
 def doCalculusWithObservation(cm: CausalModel, on: Set[str], doing: NameSet,
                               knowing: Optional[NameSet] = None) -> CausalFormula:
@@ -278,12 +279,11 @@ def identifyingIntervention(cm: CausalModel, Y: NameSet, X: NameSet, P: ASTtree 
 
     prod = productOfTrees(prb)
 
-    if len(S - Y) == 0:
+    remaining = S - Y
+    if len(remaining) == 0:
       return prod
-
-    lsy = list(S - Y)
-    ilsy = [cm.idFromName(i) for i in lsy]
-    return ASTsum(ilsy, prod)
+    else:
+      return ASTsum(list(remaining), prod)
 
   # 7------------------------------------------
   for ispr in cdg:
