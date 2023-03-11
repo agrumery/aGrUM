@@ -27,6 +27,9 @@
  */
 
 #include <agrum/tools/core/timer.h>
+#include <chrono>
+#include <cmath>
+#include <sstream>
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/tools/core/timer_inl.h>
@@ -57,4 +60,18 @@ namespace gum {
     return *this;
   }
 
+  std::string Timer::toString() const {
+    auto d     = step();
+    auto sec   = fmod(d, 60);
+    d          = (d - sec) / 60;
+    auto minut = fmod(d, 60);
+    d          = (d - minut) / 60;
+
+    std::stringstream s;
+    s << std::setfill('0') << std::setw(2) << int(d) << ":";
+    s << std::setfill('0') << std::setw(2) << int(minut) << ":";
+    s << ((sec < 10) ? "0" : "") << sec;
+
+    return s.str();
+  }
 } /* namespace gum */

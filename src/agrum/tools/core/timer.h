@@ -111,9 +111,18 @@ namespace gum {
      */
     double step() const;
 
+    /**
+     * @brief Returns the delta time between now and the last reset() in a human format
+     *
+     * @return a string representing the delta time
+     */
+     std::string toString() const;
+
     /// @}
 
     protected:
+    std::chrono::duration< double, std::milli > step_() const;
+
     /// Time of the last call to reset() or the constructor.
     std::chrono::high_resolution_clock::time_point start_;
 

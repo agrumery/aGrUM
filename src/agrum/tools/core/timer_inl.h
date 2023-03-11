@@ -38,12 +38,17 @@ namespace gum {
   }
 
   INLINE
-  double Timer::step() const {
+  std::chrono::duration< double, std::milli > Timer::step_() const {
     std::chrono::duration< double, std::milli > ms;
-    ;
     if (sleeping_) ms = pause_ - start_;
     else ms = std::chrono::high_resolution_clock::now() - start_;
-    return ms.count() / 1000.0;
+
+    return ms;
+  }
+
+  INLINE
+  double Timer::step() const {
+    return step_().count() / 1000.0;
   }
 
   INLINE
