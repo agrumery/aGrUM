@@ -38,8 +38,14 @@ namespace gum {
 
   INLINE
   Idx randomValue(const Size max) {
-    std::uniform_int_distribution< Idx > uni_int(0, max - 1);
+    std::uniform_int_distribution< Idx > uni_int(0, int(max) - 1);
     return uni_int(Generator_);
+  }
+
+  INLINE
+  Idx randomValue(std::mt19937& generator, const Size max) {
+    std::uniform_int_distribution< Idx > uni_int(0, int(max) - 1);
+    return uni_int(generator);
   }
 
   INLINE
@@ -51,14 +57,23 @@ namespace gum {
 
   INLINE
   void initRandom(unsigned int seed) {
-    if (seed) {
-      Generator_ = std::mt19937(seed);
+    GUM_TRACE_VAR(seed)
+    if (seed != 0) {
+      Generator_.seed(seed);
     } else {
-      Generator_ = std::mt19937(randomGeneratorSeed());
+      Generator_.seed((unsigned int)std::chrono::system_clock::now().time_since_epoch().count());
     }
   }
 
   /// returns the current generator's value
   INLINE unsigned int currentRandomGeneratorValue() { return Generator_(); }
 
+  // returns the aGrUM's seed used by the std::generators
+  INLINE unsigned int randomGeneratorSeed() {
+    return (unsigned int)((GUM_RANDOMSEED == 0)
+                             ? std::chrono::system_clock::now().time_since_epoch().count()
+                             : GUM_RANDOMSEED);
+  }
+
+  INLINE std::mt19937& randomGenerator() { return Generator_; }
 } /* namespace gum */

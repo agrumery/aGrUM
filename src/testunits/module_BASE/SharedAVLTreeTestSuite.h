@@ -26,7 +26,6 @@
 #include <agrum/tools/core/heap.h>
 #include <string>
 #include <algorithm>
-#include <random>
 #include <chrono>
 
 namespace gum_tests {

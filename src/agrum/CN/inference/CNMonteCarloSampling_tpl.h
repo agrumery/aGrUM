@@ -235,7 +235,7 @@ namespace gum::credal {
         Size pconfs = Size((*cpt)[elt.first].size());
 
         for (Size pconf = 0; pconf < pconfs; pconf++) {
-          Size choosen_vertex = randomValue(random_generator, (*cpt)[elt.first][pconf].size());
+          Size choosen_vertex = randomValue((*cpt)[elt.first][pconf].size());
 
           if (_infEs_::storeBNOpt_) { _binaryRep_(sample[elt.first][pconf], choosen_vertex); }
 

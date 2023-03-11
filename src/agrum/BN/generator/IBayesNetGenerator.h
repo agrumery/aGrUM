@@ -34,9 +34,9 @@
 #include <iostream>
 #include <vector>
 
-#include <agrum/BN/BayesNet.h>
-#include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/agrum.h>
+#include <agrum/tools/graphs/DAG.h>
+#include <agrum/BN/generator/simpleCPTGenerator.h>
 
 #include <agrum/tools/variables/labelizedVariable.h>
 
@@ -163,7 +163,7 @@ namespace gum {
     Size                   nbrNodes_;
     Size                   maxArcs_;
     Size                   maxModality_;
-    BayesNet< GUM_SCALAR > bayesNet_;
+    DAG g_;
   };
 
 } /* namespace gum */

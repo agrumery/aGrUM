@@ -89,8 +89,6 @@ namespace gum::learning {
       particule.add(_bn_.variable(node));
 
     // create the random generator
-    std::random_device             rd;
-    std::mt19937                   gen(rd());
     std::uniform_real_distribution distro(0.0, 1.0);
 
     // perform the sampling
@@ -111,7 +109,7 @@ namespace gum::learning {
         const auto&  var  = _bn_.variable(node);
         const auto&  cpt  = _bn_.cpt(node);
 
-        const double nb    = distro(gen);
+        const double nb    = gum::randomProba();
         double       cumul = 0.0;
         for (particule.setFirstVar(var); !particule.end(); particule.incVar(var)) {
           cumul += cpt[particule];
@@ -375,9 +373,7 @@ namespace gum::learning {
     for (const auto& var: _bn_.dag()) {
       varOrder.push_back(_bn_.variable(var).name());
     }
-    std::random_device rd;
-    std::mt19937       g(rd());
-    std::shuffle(varOrder.begin(), varOrder.end(), g);
+    std::shuffle(varOrder.begin(), varOrder.end(), gum::randomGenerator());
     setVarOrder(varOrder);
   }
 

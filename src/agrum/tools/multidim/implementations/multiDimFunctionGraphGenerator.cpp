@@ -146,9 +146,8 @@ namespace gum {
     Idx randOut = 0;
 
     if (span != 0) {
-      auto                                generator = gum::getRandomGenerator();
       std::weibull_distribution< double > distribution(double(span), 1.0);
-      randOut = (Idx)(distribution(generator) * span / 2);
+      randOut = (Idx)(distribution(gum::randomGenerator()) * span / 2);
       if (randOut > span) randOut = span;
     }
 

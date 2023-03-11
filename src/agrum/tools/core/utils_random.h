@@ -54,11 +54,12 @@ namespace gum {
 
   /**
    * @brief Returns a random Idx between 0 and max-1 included.
-   * @return Returns a random Odxbetween 0 and max-1 included (i.e. a proba).
+   * @return Returns a random Odxbetween 0 and max-1 included (i.e. a proba) using engine.
    * By default, max=2
+   *
+   * @warning This should be used only for thread-safe purpose
    */
-  template < typename GENERATOR >
-  Idx randomValue(GENERATOR& generator, const Size max = 2);
+  Idx randomValue(std::mt19937& generator,const Size max = 2);
 
   /**
    * @brief Returns a random double between 0 and 1 included (i.e. a proba).
@@ -92,7 +93,8 @@ namespace gum {
   /**
    * define a random_engine with correct seed
    */
-  std::default_random_engine getRandomGenerator(unsigned int seed = 0);
+  std::mt19937&  randomGenerator();
+  //std::default_random_engine getRandomGenerator(unsigned int seed = 0);
 
   /// @}
 } /* namespace gum */
@@ -101,7 +103,5 @@ namespace gum {
 #  include <agrum/tools/core/utils_random_inl.h>
 #endif   // GUM_NO_INLINE
 
-// always include the template implementations
-#include <agrum/tools/core/utils_random_tpl.h>
-
+#  include <agrum/tools/core/utils_random_tpl.h>
 #endif /* GUM_UTILS_RANDOM_H */

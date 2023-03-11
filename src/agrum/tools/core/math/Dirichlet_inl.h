@@ -28,21 +28,19 @@
 namespace gum {
 
   // default constructor
-  INLINE Dirichlet::Dirichlet(const param_type& params, unsigned int seed) :
-      _generator_(gum::getRandomGenerator(seed)), _params_(params) {
+  INLINE Dirichlet::Dirichlet(const param_type& params) : _params_(params) {
     GUM_CONSTRUCTOR(Dirichlet);
   }
 
   // copy constructor
   INLINE Dirichlet::Dirichlet(const Dirichlet& from) :
-      _generator_(from._generator_), _gamma_(from._gamma_), _params_(from._params_) {
+      _gamma_(from._gamma_), _params_(from._params_) {
     GUM_CONS_CPY(Dirichlet);
   }
 
   // move constructor
   INLINE Dirichlet::Dirichlet(Dirichlet&& from) :
-      _generator_(std::move(from._generator_)), _gamma_(std::move(from._gamma_)),
-      _params_(std::move(from._params_)) {
+      _gamma_(std::move(from._gamma_)), _params_(std::move(from._params_)) {
     GUM_CONS_MOV(Dirichlet);
   }
 
@@ -55,7 +53,6 @@ namespace gum {
   // copy operator
   INLINE Dirichlet& Dirichlet::operator=(const Dirichlet& from) {
     if (&from != this) {
-      _generator_ = from._generator_;
       _gamma_     = from._gamma_;
       _params_    = from._params_;
     }
@@ -65,7 +62,6 @@ namespace gum {
   // move operator
   INLINE Dirichlet& Dirichlet::operator=(Dirichlet&& from) {
     if (&from != this) {
-      _generator_ = std::move(from._generator_);
       _gamma_     = std::move(from._gamma_);
       _params_    = std::move(from._params_);
     }
@@ -80,7 +76,7 @@ namespace gum {
     while (sum == 0.0f) {
       for (Idx i = 0; i < size; ++i) {
         _gamma_.param(std::gamma_distribution< float >::param_type(_params_[i], 1));
-        res[i] = _gamma_(_generator_);
+        res[i] = _gamma_(gum::randomGenerator());
         sum += res[i];
       }
     }
@@ -98,7 +94,7 @@ namespace gum {
     while (sum == 0.0f) {
       for (Idx i = 0; i < size; ++i) {
         _gamma_.param(std::gamma_distribution< float >::param_type(parm[i], 1));
-        res[i] = _gamma_(_generator_);
+        res[i] = _gamma_(gum::randomGenerator());
         sum += res[i];
       }
     }
@@ -119,5 +115,4 @@ namespace gum {
 
   // Returns the lowest higher bound of the range of values possibly returned
   INLINE float Dirichlet::max() const noexcept { return 1.0f; }
-
 } /* namespace gum */

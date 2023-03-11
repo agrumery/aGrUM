@@ -32,15 +32,14 @@ namespace gum_tests {
 
   class [[maybe_unused]] DAGCycleDetectorTestSuite: public CxxTest::TestSuite {
     gum::DAG _createDAG_(gum::Size nb_nodes, gum::Size nb_arcs) {
-      std::default_random_engine generator = gum::getRandomGenerator();
       gum::DAG                   dag;
       for (gum::Idx i = 0; i < nb_nodes; ++i) {
         dag.addNodeWithId(i);
       }
       std::uniform_int_distribution< int > distribution(0, int(nb_nodes) - 1);
       while (nb_arcs) {
-        gum::NodeId id1 = distribution(generator);
-        gum::NodeId id2 = distribution(generator);
+        gum::NodeId id1 = gum::randomValue(nb_nodes);
+        gum::NodeId id2 = gum::randomValue(nb_nodes);
         if ((id1 != id2) && (!dag.existsArc(id1, id2))) {
           try {
             dag.addArc(id1, id2);
@@ -56,8 +55,6 @@ namespace gum_tests {
                          std::vector< gum::DAGCycleDetector::Change >& changes,
                          std::vector< gum::DAGCycleDetector::Change >& del_add_changes,
                          gum::Size                                     length) {
-      std::default_random_engine           generator = gum::getRandomGenerator();
-      std::uniform_int_distribution< int > distrib_type(0, 2);
       std::uniform_int_distribution< int > distrib_node(0, int(g.size()) - 1);
       std::uniform_int_distribution< int > distrib_arc(0, int(g.size() * g.size()));
 
@@ -67,7 +64,7 @@ namespace gum_tests {
       gum::DiGraph gg = g;
 
       for (; length; --length) {
-        gum::Idx chgt_type = distrib_type(generator);
+        gum::Idx chgt_type = gum::randomValue(2);
 
         switch (chgt_type) {
           case 0: {   // deletions
@@ -77,7 +74,7 @@ namespace gum_tests {
               break;
             }
             nb_arcs /= g.size() * g.size();
-            gum::Size nb_del_arc = (gum::Size)(distrib_arc(generator) * nb_arcs);
+            gum::Size nb_del_arc = (gum::Size)(gum::randomValue(g.size() * g.size()) * nb_arcs);
             if (nb_del_arc >= gg.sizeArcs()) nb_del_arc = gg.sizeArcs() - 1;
             for (auto iter = gg.arcs().begin(); iter != gg.arcs().end(); ++iter, --nb_del_arc) {
               if (!nb_del_arc) {
@@ -91,8 +88,8 @@ namespace gum_tests {
           case 1: {   // additions
             gum::NodeId node1, node2;
             while (true) {
-              node1 = distrib_node(generator);
-              node2 = distrib_node(generator);
+              node1 = gum::randomValue(g.size());
+              node2 = gum::randomValue(g.size());
               if ((node1 != node2) && !gg.existsArc(node1, node2) && !gg.existsArc(node2, node1)) {
                 changes.push_back(gum::DAGCycleDetector::ArcAdd(node1, node2));
                 gg.addArc(node1, node2);
@@ -108,7 +105,7 @@ namespace gum_tests {
               break;
             }
             nb_arcs /= g.size() * g.size();
-            gum::Size nb_del_arc = gum::Size(distrib_arc(generator) * nb_arcs);
+            gum::Size nb_del_arc = gum::Size(gum::randomValue(g.size() * g.size()) * nb_arcs);
             if (nb_del_arc >= gg.sizeArcs()) nb_del_arc = gg.sizeArcs() - 1;
             for (auto iter = gg.arcs().begin(); iter != gg.arcs().end(); ++iter, --nb_del_arc) {
               if (!nb_del_arc) {
@@ -253,11 +250,9 @@ namespace gum_tests {
     }
 
     GUM_TEST(Random) {
-      std::default_random_engine                   generator = gum::getRandomGenerator();
       gum::DAGCycleDetector                        detector;
       std::vector< gum::DAGCycleDetector::Change > changes;
       std::vector< gum::DAGCycleDetector::Change > del_add_changes;
-      std::uniform_int_distribution< int >         distrib_length(1, 10);
 
       for (gum::Idx i = 15; i < 25; ++i) {
         gum::DAG g = _createDAG_(20, i);
@@ -267,7 +262,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(detector.hasCycleFromModifications(changes), false)
 
         for (gum::Idx j = 0; j < 20; ++j) {
-          gum::Size length = distrib_length(generator);
+          gum::Size length = gum::randomValue(11);
           _createChanges_(g, changes, del_add_changes, length);
 
           bool hasCycle = false;

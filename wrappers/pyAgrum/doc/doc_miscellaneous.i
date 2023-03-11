@@ -5,7 +5,7 @@ Initialize random generator seed.
 Parameters
 ----------
 seed : int
-  the seed used to initialize the random generator
+  the seed used to initialize the random generator (0 if using time)
 "
 
 %feature("docstring") gum::randomProba
@@ -69,15 +69,6 @@ Returns
 int
   a randomly generated seed
 "
-
-%feature("docstring") gum::getRandomGenerator
-"
-Returns
--------
-tbw
-  the random generator
-"
-
 
 %feature("docstring") gum::randomValue
 "

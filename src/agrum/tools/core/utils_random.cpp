@@ -21,7 +21,7 @@
 
 /**
  * @file
- * @brief Contains usefull methods for random stuff.
+ * @brief Contains useful methods for random stuff.
  *
  * @author Vincent RENAUDINEAU and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
@@ -36,18 +36,5 @@
 
 namespace gum {
 
-  // returns the aGrUM's seed used by the std::generators
-  unsigned int randomGeneratorSeed() {
-    return (unsigned int)((GUM_RANDOMSEED == 0)
-                             ? std::chrono::system_clock::now().time_since_epoch().count()
-                             : GUM_RANDOMSEED);
-  }
-
-
-  std::default_random_engine getRandomGenerator(unsigned int seed) {
-    std::default_random_engine generator;
-    generator.seed(seed ? seed : randomGeneratorSeed());
-    return generator;
-  }
 
 } /* namespace gum */

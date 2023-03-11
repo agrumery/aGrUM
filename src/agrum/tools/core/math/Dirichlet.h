@@ -28,7 +28,6 @@
 #ifndef GUM_LEARNING_DIRICHLET_H
 #define GUM_LEARNING_DIRICHLET_H
 
-#include <random>
 #include <vector>
 
 #include <agrum/agrum.h>
@@ -64,7 +63,7 @@ namespace gum {
      * @param params The distribution parameters.
      * @param seed The distribution seed.
      */
-    Dirichlet(const param_type& params, unsigned int seed = GUM_RANDOMSEED);
+    Dirichlet(const param_type& params);
 
     /**
      * @brief Copy constructor.
@@ -116,18 +115,6 @@ namespace gum {
      */
     result_type operator()(const param_type& p);
 
-    /**
-     * @brief Returns a sample from the Dirichlet distribution.
-     *
-     * @param generator A uniform random number generator object, used as the
-     * source of randomness. URNG shall be a uniform random number generator
-     * type, such as one of the standard generator classes.
-     * @param p An object representing the distribution's parameters,
-     * obtained by a call to gum::Dirichlet::param(const param_type&).
-     */
-    template < class URNG >
-    result_type operator()(URNG& generator, const param_type& p);
-
     /// @}
     // ==========================================================================
     /// @name Accessors / Modifiers
@@ -166,9 +153,6 @@ namespace gum {
     /// @}
 
     private:
-    /// The random engine used by the unform random distribution.
-    std::default_random_engine _generator_;
-
     /// The gamma distribution used to compute the Dirichlet unnormalized
     /// samples.
     std::gamma_distribution< float > _gamma_;
@@ -183,8 +167,5 @@ namespace gum {
 #ifndef GUM_NO_INLINE
 #  include <agrum/tools/core/math/Dirichlet_inl.h>
 #endif /* GUM_NO_INLINE */
-
-// always include templates
-#include <agrum/tools/core/math/Dirichlet_tpl.h>
 
 #endif /* GUM_LEARNING_DIRICHLET_H */

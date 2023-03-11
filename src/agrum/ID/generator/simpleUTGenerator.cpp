@@ -49,7 +49,7 @@ namespace gum {
     std::vector< float > v;
 
     for (Size i = 0; i < ut.domainSize(); ++i)
-      v.push_back((float)rand() * 1000);
+      v.push_back((float)gum::randomProba() * 1000);
 
     ut.populate(v);
   }
@@ -61,7 +61,7 @@ namespace gum {
     std::vector< double > v;
 
     for (Size i = 0; i < ut.domainSize(); ++i)
-      v.push_back((double)rand() * 1000);
+      v.push_back((double)gum::randomProba() * 1000);
 
     ut.populate(v);
   }

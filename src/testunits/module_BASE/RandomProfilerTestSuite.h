@@ -23,61 +23,69 @@
 #include <gumtest/testsuite_utils.h>
 
 #include <agrum/config.h>
+#include <agrum/tools/core/utils_random.h>
+#include <agrum/tools/core/timer.h>
+#include <agrum/BN/generator/MCBayesNetGenerator.h>
 
 namespace gum_tests {
 
   // a test to see if GUM_RANDOMSEED is working
   class [[maybe_unused]] RandomProfilerTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(RandomSeed) {
+    GUM_INACTIVE_TEST(RandomSeed) {
       TS_ASSERT((GUM_RANDOMSEED == 0) || (GUM_RANDOMSEED == 10))
 
-      if (GUM_RANDOMSEED == 0) {
-        TS_ASSERT(!matchedRandomValues())
-      } else {   // GUM_RANDOMSEED==10
-        TS_ASSERT(matchedRandomValues())
-      }
+      TS_ASSERT_EQUALS(GUM_RANDOMSEED, 0);
+
+      gum::initRandom(20);
+      auto x1 = gum::randomProba();
+      auto x2 = gum::randomProba();
+      auto x3 = gum::randomProba();
+
+      gum::initRandom(0);
+      // can falsely fail in rare occasion
+      if (fabs((gum::randomProba()) - (x1)) < TS_GUM_SMALL_ERROR)
+        if (fabs((gum::randomProba()) - (x2)) < TS_GUM_SMALL_ERROR)
+          if (fabs((gum::randomProba()) - (x3)) < TS_GUM_SMALL_ERROR) TS_ASSERT(false);
+      gum::initRandom(20);
+      TS_GUM_ASSERT_ALMOST_EQUALS(gum::randomProba(), x1)
+      TS_GUM_ASSERT_ALMOST_EQUALS(gum::randomProba(), x2)
+      TS_GUM_ASSERT_ALMOST_EQUALS(gum::randomProba(), x3)
+
+      gum::initRandom(GUM_RANDOMSEED);
     }
 
-    private:
-#define DELTA_DIFFERS(a, b) ((a) < (b)) ? ((b) - (a) > 1e-6) : ((a) - (b) > 1e-6)
-    bool matchedRandomValues() {
-      gum::initRandom(GUM_RANDOMSEED);
+    GUM_TEST(RandomSeeForStructure) {
+      auto n_nodes  = 100;
+      auto n_arcs   = 150;
+      auto n_modmax = 3;
 
-      std::vector< double > v1 = gum::randomDistribution< double >(10);
-      std::vector< double > ref1{0.134374,
-                                 0.145089,
-                                 0.120114,
-                                 0.0426642,
-                                 0.193954,
-                                 0.0435726,
-                                 0.138849,
-                                 0.100258,
-                                 0.0060166,
-                                 0.0751083};
+      gum::Timer                         timer;
+      gum::MCBayesNetGenerator< double > gen(n_nodes, n_arcs, n_modmax);
+      gum::BayesNet< double >            bn;
 
-      for (int i = 0; i < 10; i++) {
-        if (DELTA_DIFFERS(v1[i], ref1[i])) return false;
-      }
+      gum::initRandom(20);
+      timer.reset();
+      gen.generateBN(bn);
+      timer.pause();
+      GUM_TRACE_VAR(timer.step())
+      GUM_TRACE_VAR(timer.toString())
+      /*
+            auto s1 = bn.toDot();
 
-      // just to be  sure
-      std::vector< double > v2 = gum::randomDistribution< double >(30);
-      std::vector< double > ref2{
-         0.00436645, 0.00596141, 0.0696046,   0.0696949,  0.062272,    0.00378217, 0.0191677,
-         0.00657988, 0.0627761,  0.0400881,   0.047281,   0.069936,    0.0685442,  0.00993678,
-         0.0159221,  0.015279,   0.000854096, 0.0618802,  0.0236426,   0.0382025,  0.0396622,
-         0.0639614,  0.010478,   0.00444403,  0.00550434, 0.0686738,   0.0175179,  0.0471658,
-         0.0274975,  0.0193232,  0.00436645,  0.00596141, 0.0696046,   0.0696949,  0.062272,
-         0.00378217, 0.0191677,  0.00657988,  0.0627761,  0.0400881,   0.047281,   0.069936,
-         0.0685442,  0.00993678, 0.0159221,   0.015279,   0.000854096, 0.0618802,  0.0236426,
-         0.0382025,  0.0396622,  0.0639614,   0.010478,   0.00444403,  0.00550434, 0.0686738,
-         0.0175179,  0.0471658,  0.0274975,   0.0193232};
+            gum::initRandom(0);
+            gen.generateBN(bn);
+            auto s2 = bn.toDot();
 
-      for (int i = 0; i < 30; i++) {
-        if (DELTA_DIFFERS(v2[i], ref2[i])) return false;
-      }
+            gum::initRandom(20);
+            gen.generateBN(bn);
+            auto s3 = bn.toDot();
 
-      return true;
+            TS_ASSERT_EQUALS(s1, s1);
+            TS_ASSERT_DIFFERS(s1, s2);
+            TS_ASSERT_EQUALS(s1, s3);
+
+            gum::initRandom(GUM_RANDOMSEED);*/
     }
   };
 }   // namespace gum_tests

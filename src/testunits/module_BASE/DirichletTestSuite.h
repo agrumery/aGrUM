@@ -48,14 +48,13 @@ namespace gum_tests {
 
       TS_ASSERT(fabs(res[0] - res[1]) < 0.03)
 
-      std::default_random_engine gen;
 
       param[0] = 10000;
       param[1] = 1;
       sum      = 0;
       res[0] = res[1] = 0;
       for (gum::Idx i = 0; i < 10000; ++i) {
-        std::vector< float > sample = dir(gen, param);
+        std::vector< float > sample = dir(param);
         for (gum::Idx j = 0; j < sample.size(); ++j) {
           res[j] += sample[j];
           sum += sample[j];
@@ -83,7 +82,7 @@ namespace gum_tests {
       sum    = 0;
       res[0] = res[1] = 0;
       for (gum::Idx i = 0; i < 10000; ++i) {
-        std::vector< float > sample = dir(gen, dir.param());
+        std::vector< float > sample = dir(dir.param());
         for (gum::Idx j = 0; j < sample.size(); ++j) {
           res[j] += sample[j];
           sum += sample[j];

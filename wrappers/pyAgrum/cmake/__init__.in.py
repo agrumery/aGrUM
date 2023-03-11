@@ -59,7 +59,7 @@ from .pyAgrum import PRMexplorer
 
 from .pyAgrum import ApproximationScheme
 
-from .pyAgrum import initRandom, randomProba, randomDistribution, randomGeneratorSeed, getRandomGenerator, randomValue
+from .pyAgrum import initRandom, randomProba, randomDistribution, randomGeneratorSeed, randomValue
 from .pyAgrum import isOMP, getNumberOfThreads, getMaxNumberOfThreads, getNumberOfLogicalProcessors, setNumberOfThreads
 
 from .pyAgrum import VarType_Discretized, VarType_Labelized, VarType_Range, VarType_Integer, VarType_Numerical
@@ -100,7 +100,7 @@ __all__ = [
   'PRMexplorer',
 
   'ApproximationScheme',
-  'initRandom', 'randomProba', 'randomDistribution', 'randomGeneratorSeed', 'getRandomGenerator', 'randomValue',
+  'initRandom', 'randomProba', 'randomDistribution', 'randomGeneratorSeed', 'randomValue',
 
   'isOMP', 'setNumberOfThreads', 'getNumberOfThreads', 'getMaxNumberOfThreads', 'getNumberOfLogicalProcessors',
   # 'getThreadNumber','getNumberOfRunningThreads','getDynamicThreadsNumber','setDynamicThreadsNumber','getNestedParallelism', 'setNestedParallelism',
@@ -618,6 +618,10 @@ def randomBN(*, n: int = 5, names: List[str] = None, ratio_arc: float = 1.2, dom
   Creates a random BN using the (forced) keyword parameters. This function use :class:`pyAgrum.BNGenerator` but the random
   variables will be named w.r.t. a topological order.
 
+  Warning
+  -------
+  Number of nodes given with arg `n`or `names` must be bigger than 4, in order to be consistant
+
   Examples
   --------
   >>> bn=gum.randomBN()
@@ -645,6 +649,9 @@ def randomBN(*, n: int = 5, names: List[str] = None, ratio_arc: float = 1.2, dom
     pyAgrum.BayesNet
   """
   nbr = n if names is None else len(names)
+  if nbr<=4:
+    raise ArgumentError("A BN can be randomly generated from 4 nodes")
+
   gen = BNGenerator()
   bn = gen.generate(nbr, int(nbr * ratio_arc), domain_size)
 
