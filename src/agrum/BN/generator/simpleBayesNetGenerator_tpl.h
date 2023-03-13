@@ -66,26 +66,16 @@ namespace gum {
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
   void SimpleBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::generateBN(
      BayesNet< GUM_SCALAR >& bayesNet) {
-    this->bayesNet_ = bayesNet;
-    HashTable< Size, NodeId > map;
-    std::stringstream         strBuff;
-
-    for (Size i = 0; this->nbrNodes_ > i; ++i) {
-      strBuff << "n" << i;
-      Size nb_mod = (this->maxModality_ == 2) ? 2 : 2 + randomValue(this->maxModality_ - 1);
-      map.insert(i, this->bayesNet_.add(LabelizedVariable(strBuff.str(), "", nb_mod)));
-      strBuff.str("");
-    }
+    this->dag_.clear();
+    this->dag_.addNodes(this->nbrNodes_);
 
     // We add arcs
     float density = (float)(this->maxArcs_ * 2) / (float)(this->nbrNodes_ * (this->nbrNodes_ - 1));
-
     for (Size i = 0; i < this->nbrNodes_; ++i)
       for (Size j = i + 1; j < this->nbrNodes_; ++j)
-        if (randomProba() < density) this->bayesNet_.addArc(map[i], map[j]);
+        if (randomProba() < density) bayesNet.addArc(i,j);
 
-    this->fillCPT();
-
-    bayesNet = this->bayesNet_;
+    this->fromDAG(bayesNet);
+    this->fillCPT(bayesNet);
   }
 } /* namespace gum */

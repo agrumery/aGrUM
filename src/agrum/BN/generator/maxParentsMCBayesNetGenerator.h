@@ -113,7 +113,7 @@ namespace gum {
                                   Size maxArcs,
                                   Size maxModality = 2,
                                   Size maxParents  = 1,
-                                  Idx  iteration   = 5000,
+                                  Idx  iteration   = NB_INIT_ITERATIONS,
                                   Idx  p           = 30,
                                   Idx  q           = 40);
 
@@ -138,7 +138,7 @@ namespace gum {
      */
     explicit MaxParentsMCBayesNetGenerator(BayesNet< GUM_SCALAR > bayesNet,
                                            Size                   maxParents = 2,
-                                           Idx                    iteration  = 5000,
+                                           Idx                    iteration  = NB_INIT_ITERATIONS,
                                            Idx                    p          = 30,
                                            Idx                    q          = 40);
 

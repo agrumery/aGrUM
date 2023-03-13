@@ -30,5 +30,5 @@
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::MCBayesNetGenerator< double >;
+template class gum::MCBayesNetGenerator< double > ;
 #endif

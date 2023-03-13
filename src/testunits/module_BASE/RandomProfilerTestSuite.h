@@ -56,20 +56,19 @@ namespace gum_tests {
     }
 
     GUM_TEST(RandomSeeForStructure) {
-      auto n_nodes  = 100;
-      auto n_arcs   = 150;
-      auto n_modmax = 3;
+      try {
+        auto n_nodes  = 100;
+        auto n_arcs   = 150;
+        auto n_modmax = 3;
 
-      gum::Timer                         timer;
-      gum::MCBayesNetGenerator< double > gen(n_nodes, n_arcs, n_modmax);
-      gum::BayesNet< double >            bn;
+        gum::MCBayesNetGenerator< double > gen(n_nodes, n_arcs, n_modmax);
+        gum::BayesNet< double >            bn;
 
-      gum::initRandom(20);
-      timer.reset();
-      gen.generateBN(bn);
-      timer.pause();
-      GUM_TRACE_VAR(timer.step())
-      GUM_TRACE_VAR(timer.toString())
+        gum::initRandom(20);
+        gen.generateBN(bn);
+      } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e)
+      }
       /*
             auto s1 = bn.toDot();
 

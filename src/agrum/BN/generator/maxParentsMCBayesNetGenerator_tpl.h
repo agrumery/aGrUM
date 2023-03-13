@@ -93,8 +93,8 @@ namespace gum {
              class ICPTDisturber >
   bool MaxParentsMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
      _checkConditions_() {
-    for (auto node: this->bayesNet_.nodes())
-      if (this->bayesNet_.parents(node).size() > maxParents_) return false;
+    for (auto node: this->dag_.nodes())
+      if (this->dag_.parents(node).size() > maxParents_) return false;
 
     return MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::_checkConditions_();
   }

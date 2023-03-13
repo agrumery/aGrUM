@@ -57,7 +57,6 @@ namespace gum {
 
   INLINE
   void initRandom(unsigned int seed) {
-    GUM_TRACE_VAR(seed)
     if (seed != 0) {
       Generator_.seed(seed);
     } else {

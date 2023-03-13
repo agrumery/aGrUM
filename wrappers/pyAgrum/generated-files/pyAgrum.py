@@ -2175,7 +2175,7 @@ def isOMP() -> bool:
 def dispatchRangeToThreads(beg: int, end: int, nb_threads: int) -> "std::vector< std::pair< int,int >,std::allocator< std::pair< int,int > > >":
     return _pyAgrum.dispatchRangeToThreads(beg, end, nb_threads)
 
-def randomValue(max: int=2) -> int:
+def randomValue(*args) -> int:
     r"""
 
     Returns
@@ -2184,7 +2184,7 @@ def randomValue(max: int=2) -> int:
       a value randomly drawn (0 or 1)
 
     """
-    return _pyAgrum.randomValue(max)
+    return _pyAgrum.randomValue(*args)
 
 def randomProba() -> float:
     r"""
@@ -2219,21 +2219,10 @@ def initRandom(seed: int=0) -> None:
     Parameters
     ----------
     seed : int
-      the seed used to initialize the random generator
+      the seed used to initialize the random generator (0 if using time)
 
     """
     return _pyAgrum.initRandom(seed)
-
-def getRandomGenerator(seed: int=0) -> "std::default_random_engine":
-    r"""
-
-    Returns
-    -------
-    tbw
-      the random generator
-
-    """
-    return _pyAgrum.getRandomGenerator(seed)
 VarType_Discretized = _pyAgrum.VarType_Discretized
 VarType_Labelized = _pyAgrum.VarType_Labelized
 VarType_Integer = _pyAgrum.VarType_Integer

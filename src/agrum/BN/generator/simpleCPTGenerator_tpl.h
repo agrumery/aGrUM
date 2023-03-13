@@ -49,7 +49,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void SimpleCPTGenerator< GUM_SCALAR >::generateCPT(const Idx&                     varId,
-                                                     const Potential< GUM_SCALAR >& cpt) {
+                                                     const Potential< GUM_SCALAR >& cpt) const {
     cpt.random().normalizeAsCPT(varId);
   }
 

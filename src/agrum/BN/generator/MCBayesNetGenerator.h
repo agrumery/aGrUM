@@ -29,6 +29,8 @@
 #ifndef GUM_MC_BAYES_NET_GENERATOR
 #define GUM_MC_BAYES_NET_GENERATOR
 
+#define NB_INIT_ITERATIONS 5000
+
 #include <agrum/agrum.h>
 
 #include <fstream>
@@ -179,7 +181,7 @@ namespace gum {
     MCBayesNetGenerator(Size nbrNodes,
                         Size maxArcs,
                         Idx  maxModality = 2,
-                        Size iteration   = 5000,
+                        Size iteration   = NB_INIT_ITERATIONS,
                         Idx  p           = 30,
                         Idx  q           = 40);
 
@@ -198,7 +200,7 @@ namespace gum {
      * )
      */
     explicit MCBayesNetGenerator(BayesNet< GUM_SCALAR > bayesNet,
-                                 Size                   iteration = 5000,
+                                 Size                   iteration = NB_INIT_ITERATIONS,
                                  Idx                    p         = 30,
                                  Idx                    q         = 40);
 
@@ -231,8 +233,9 @@ namespace gum {
      * if iteration = 0, it is assumed that the number of iteration wanted is the
      * same
      * as the one specified in the constructor
-     */
+
     void disturbBN(BayesNet< GUM_SCALAR >& bayesNetinit, Size iteration = 0);
+    */
 
     ///@}
 
@@ -280,9 +283,10 @@ namespace gum {
     protected:
     Size                                          iteration_;
     Idx                                           p_, q_;
-    bool                                          disturbing_;
+    /*
+       bool                                          disturbing_;
     BayesNet< GUM_SCALAR >                        bayesNettemp_;
-    HashTable< NodeId, Potential< GUM_SCALAR >* > hashMarginal_;
+    HashTable< NodeId, Potential< GUM_SCALAR >* > hashMarginal_;*/
 
     /**
      * The function that verify if graph is a polytree.
@@ -370,14 +374,14 @@ namespace gum {
     // );
 
     /**
-     * The internal function used by the previous  _connect_. It asserts the
+     * The internal function used by the previous  _is_connected_. It asserts the
      *existence
      *of an unoriented path between node i and node j avoiding passing through
      *nodes
      *listed in excluded.
      **/
 
-    bool _connect_(NodeId i, NodeId j, NodeSet& excluded);
+    bool _is_connected_(const NodeId i, const NodeId j, NodeSet& excluded);
 
     /**
      * The internal function used by the previous  _directedPath_. It asserts the

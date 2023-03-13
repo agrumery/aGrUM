@@ -108,10 +108,11 @@ namespace gum {
      _checkConditions_() {
     NodeProperty< Size > _modalitiesMap_;
 
-    for (auto node: this->bayesNet_.nodes())
-      _modalitiesMap_.insert(node, this->bayesNet_.variable(node).domainSize());
+    for (auto node: this->dag_.nodes())
+      _modalitiesMap_.insert(node, 2);   //@todo take modalities into account...by randomly add a
+                                         //_modalitiesMap_ for instance  ...
 
-    const auto           moralg = this->bayesNet_.moralGraph();
+    const auto           moralg = this->dag_.moralGraph();
     DefaultTriangulation tri(&moralg, &_modalitiesMap_);
 
     if (tri.maxLog10CliqueDomainSize() > maxlog10InducedWidth_) return false;

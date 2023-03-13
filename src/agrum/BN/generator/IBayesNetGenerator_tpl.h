@@ -26,7 +26,7 @@
  *and Ariele-Paolo MAESANO
  *
  */
-
+#include <agrum/tools/variables/rangeVariable.h>
 #include <agrum/BN/generator/IBayesNetGenerator.h>
 
 namespace gum {
@@ -37,7 +37,7 @@ namespace gum {
   INLINE IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::IBayesNetGenerator(Size nbrNodes,
                                                                              Size maxArcs,
                                                                              Size maxModality) :
-      bayesNet_() {
+      dag_() {
     GUM_CONSTRUCTOR(IBayesNetGenerator);
     nbrNodes_ = nbrNodes;
 
@@ -59,9 +59,9 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
-  void IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::fillCPT() {
-    for (auto node: bayesNet_.nodes())
-      this->generateCPT(bayesNet_.cpt(node).pos(bayesNet_.variable(node)), bayesNet_.cpt(node));
+  void IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::fillCPT(BayesNet< GUM_SCALAR >& bn) const {
+    for (auto node: bn.nodes())
+      this->generateCPT(bn.cpt(node).pos(bn.variable(node)), bn.cpt(node));
   }
 
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
@@ -101,10 +101,25 @@ namespace gum {
 
     maxArcs_ = maxArcs;
   }
+  template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
+  INLINE void IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::fromDAG(BayesNet< GUM_SCALAR >& bn) {
+    bn.clear();
 
-  // Generates a Bayesian network using floats.
-  // @param nbrNodes The number of nodes in the generated BN.
-  // @param density The probability of adding an arc between two nodes.
-  // @return A BNs randomly generated.
+    auto width = (this->dag_.size() >= 100) ? 3 : 2;
+    int  n     = 0;
+    const auto& topo=this->dag_.topologicalOrder();
+    for (const auto node: topo) {
+      Size              nb_mod = 2 + randomValue(this->maxModality_ - 1);
+      std::stringstream strBuff;
+      strBuff << "X" << std::setfill('0') << std::setw(width) << n++;
+      bn.add(RangeVariable(strBuff.str(), "", 0, nb_mod), node);
+    }
+    bn.beginTopologyTransformation();
+    for(auto arc : this->dag_.arcs()) {
+      bn.addArc(arc.tail(),arc.head());
+    }
+    bn.endTopologyTransformation();
+  }
+
 
 } /* namespace gum */
