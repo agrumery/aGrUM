@@ -175,7 +175,7 @@ namespace gum {
           switch (_type_) {
             case EltType::REAL: {
               char buffer[100];
-              sprintf(buffer, "%g", _val_real_);
+              snprintf(buffer, 100, "%g", _val_real_);
               const std::string str(buffer);
               if (!_strings_().existsFirst(str)) {
                 _strings_().insert(str, _string_max_index_);
@@ -248,7 +248,7 @@ namespace gum {
 
         case EltType::REAL: {
           char buffer[100];
-          sprintf(buffer, "%g", _val_real_);
+          snprintf(buffer, 100, "%g", _val_real_);
           return std::string(buffer);
         }
 

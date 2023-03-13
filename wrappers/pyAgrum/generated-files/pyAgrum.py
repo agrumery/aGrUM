@@ -2223,6 +2223,9 @@ def initRandom(seed: int=0) -> None:
 
     """
     return _pyAgrum.initRandom(seed)
+
+def randomGenerator() -> "std::mt19937 &":
+    return _pyAgrum.randomGenerator()
 VarType_Discretized = _pyAgrum.VarType_Discretized
 VarType_Labelized = _pyAgrum.VarType_Labelized
 VarType_Integer = _pyAgrum.VarType_Integer

@@ -50,7 +50,7 @@ namespace gum {
 
   INLINE
   double randomProba() {
-    std::uniform_real_distribution<> uni_real(0.0, 1.0);
+    std::uniform_real_distribution uni_real(0.0, 1.0);
     return uni_real(Generator_);
   }
 

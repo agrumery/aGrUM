@@ -88,7 +88,7 @@ namespace gum {
               // WARNING: using a get<string> to get the content of a
               // real-valued field will provide incorrect results
               if ((type >= SQL_NUMERIC) && (type <= SQL_DOUBLE)) {
-                sprintf(str, "%g", _result_.get< float >(pos));
+                snprintf(str, 100, "%g", _result_.get< float >(pos));
                 _data_[i] = str;
               } else {
                 _data_[i] = _result_.get< std::string >(pos);

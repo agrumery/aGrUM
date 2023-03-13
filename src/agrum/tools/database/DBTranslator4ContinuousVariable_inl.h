@@ -52,7 +52,7 @@ namespace gum {
       }
 
       char buffer[100];
-      sprintf(buffer, "%g", translated_val.cont_val);
+      snprintf(buffer, 100, "%g", translated_val.cont_val);
       return std::string(buffer);
     }
 

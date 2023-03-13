@@ -215,7 +215,7 @@ namespace CxxTest {
       unsigned length = strlen( _programName ) + strlen( suiteName ) +
                         strlen( testName ) + sizeof( " - ::()" );
       char* name = (char*)malloc( length );
-      sprintf( name, "%s - %s::%s()", _programName, suiteName, testName );
+      snprintf( name, length, "%s - %s::%s()", _programName, suiteName, testName );
       XSetStandardProperties( _display, _window, name, 0, 0, 0, 0, 0 );
       free( name );
     }
@@ -258,9 +258,8 @@ namespace CxxTest {
     void drawPercentage() {
       XSetForeground( _display, _gc, _foreground );
 
-      char str[sizeof( "1000000000 of " ) + sizeof( _strTotalTests ) +
-               sizeof( " (100%)" )];
-      sprintf( str,
+      char str[256];
+      sprintf( str,256,
                "%u of %s (%u%%)",
                _testsDone,
                _strTotalTests,

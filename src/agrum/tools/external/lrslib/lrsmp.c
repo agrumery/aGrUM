@@ -1072,7 +1072,7 @@ xcalloc (int64_t n, int64_t s, int64_t l, char *f)
     {
       char buf[200];
 
-      sprintf (buf, "\n\nFatal error on line %lld of %s", (long long int)(l), f);
+      snprintf (buf, 200, "\n\nFatal error on line %lld of %s", (long long int)(l), f);
       perror (buf);
       exit (1);
     }

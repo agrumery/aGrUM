@@ -313,7 +313,7 @@ void Parser::FACTORIZED_PROBA(std::string& var,const std::vector<std::string>& p
 }
 
 void Parser::LISTE_FLOAT(std::vector<float>& v ) {
-		float value; 
+		float value=0.0;
 		FLOAT(value);
 		v.push_back(value); 
 		if (StartOf(2)) {
