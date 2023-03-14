@@ -145,9 +145,7 @@ namespace gum_tests {
       }
       std::reverse(vect.begin(), vect.end());
       auto vect2 = vect;
-      auto rng   = std::default_random_engine{};
-      rng.seed((unsigned int)std::chrono::system_clock::now().time_since_epoch().count());
-      std::shuffle(std::begin(vect2), std::end(vect2), rng);
+      std::shuffle(std::begin(vect2), std::end(vect2), gum::randomGenerator());
       for (const auto& elt: vect2) {
         if (queue.size() % 2 == 0) queue.insert(elt.first, elt.second);
         else {
@@ -207,9 +205,8 @@ namespace gum_tests {
       }
       std::reverse(vect.begin(), vect.end());
       auto vect2 = vect;
-      auto rng   = std::default_random_engine{};
-      rng.seed((unsigned int)std::chrono::system_clock::now().time_since_epoch().count());
-      std::shuffle(std::begin(vect2), std::end(vect2), rng);
+
+      std::shuffle(std::begin(vect2), std::end(vect2), gum::randomGenerator());
       for (const auto& elt: vect2) {
         queue.insert(elt.first, elt.second);
       }

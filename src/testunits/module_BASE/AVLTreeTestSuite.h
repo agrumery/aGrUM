@@ -423,9 +423,7 @@ namespace gum_tests {
         vect.emplace_back(i, i + 10);
       }
       auto vect2 = vect;
-      auto rng   = std::default_random_engine{};
-      rng.seed((unsigned int)std::chrono::system_clock::now().time_since_epoch().count());
-      std::shuffle(std::begin(vect2), std::end(vect2), rng);
+      std::shuffle(std::begin(vect2), std::end(vect2), gum::randomGenerator());
       for (const auto& elt: vect2) {
         if (tree.size() % 2 == 0) tree.insert(elt);
         else {
