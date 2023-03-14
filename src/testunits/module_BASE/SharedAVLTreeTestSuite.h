@@ -333,7 +333,7 @@ namespace gum_tests {
       }
       TS_GUM_ASSERT_EQUALS(vect2string(vect), tree.toString())
 
-      std::shuffle(std::begin(vect2), std::end(vect2), rng);
+      std::shuffle(std::begin(vect2), std::end(vect2), gum::randomGenerator());
       for (const auto elt: vect2) {
         const auto pos = pos2vect(vect, elt);
         tree.erase(elt);

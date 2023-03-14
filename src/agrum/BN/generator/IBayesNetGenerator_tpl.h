@@ -105,18 +105,19 @@ namespace gum {
   INLINE void IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::fromDAG(BayesNet< GUM_SCALAR >& bn) {
     bn.clear();
 
-    auto width = (this->dag_.size() >= 100) ? 3 : 2;
-    int  n     = 0;
-    const auto& topo=this->dag_.topologicalOrder();
+    const auto  width = (this->dag_.size() >= 100) ? 3 : 2;
+    int         n     = 0;
+    const auto& topo  = this->dag_.topologicalOrder();
     for (const auto node: topo) {
-      Size              nb_mod = 2 + randomValue(this->maxModality_ - 1);
       std::stringstream strBuff;
       strBuff << "X" << std::setfill('0') << std::setw(width) << n++;
-      bn.add(RangeVariable(strBuff.str(), "", 0, nb_mod), node);
+      bn.add(
+         RangeVariable(strBuff.str(), "", 0, long(2 + randomValue(this->maxModality_ - 1))),
+         node);
     }
     bn.beginTopologyTransformation();
-    for(auto arc : this->dag_.arcs()) {
-      bn.addArc(arc.tail(),arc.head());
+    for (auto arc: this->dag_.arcs()) {
+      bn.addArc(arc.tail(), arc.head());
     }
     bn.endTopologyTransformation();
   }

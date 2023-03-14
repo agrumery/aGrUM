@@ -187,7 +187,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_EQUALS(vect2string(vect), queue.toString())
 
       vect2 = vect;
-      std::shuffle(std::begin(vect2), std::end(vect2), rng);
+      std::shuffle(std::begin(vect2), std::end(vect2), gum::randomGenerator());
       for (const auto& elt: vect2) {
         const auto& value = elt.first;
         vect.erase(vect.begin() + pos2vect(vect, value));
@@ -212,7 +212,7 @@ namespace gum_tests {
       }
       TS_GUM_ASSERT_EQUALS(vect2string(vect), queue.toString())
 
-      std::shuffle(std::begin(vect2), std::end(vect2), rng);
+      std::shuffle(std::begin(vect2), std::end(vect2),gum::randomGenerator());
       for (const auto& elt: vect2) {
         const auto& value = elt.first;
 
