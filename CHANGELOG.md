@@ -1,5 +1,26 @@
 # aGrUM Changelog
 
+## Changelog for 1.7.0
+
+* aGrUM
+  * Add `gum::Potential::sign` and `gum::Potential::new_sign` 
+  * Bug fix in causalImpact found by Musfiqur Rahman
+  * Generalization and rationalization of access of aGrUM's generator of pseudo-random values
+  * Adding `gum::Timer::toString()`.
+  * Improving BN random generator.
+  * get rid of `sprintf` as much as possible.
+  * Fixing random seed.
+  * Fixing `gum::Potential::random()` : not a distribution.
+
+* pyAgrum
+  * Add `pyAgrum.Potential.sign` and `pyAgrum.Potential.new_sign` 
+  * Bug fix in causalImpact found by Musfiqur Rahman
+  * Adding `pyAgrum.Timer.__str()__`.
+  * Improving BN random generator.
+  * Fixing random seed.
+  * Fixing `pyAgrum.Potential.random()` : not a distribution.
+  * Adding access to `gum.fastVariable()`.
+
 ## Changelog for 1.6.1
 
 Quick fix for the configuration of pyAgrum documentation generation by readthedoc.
