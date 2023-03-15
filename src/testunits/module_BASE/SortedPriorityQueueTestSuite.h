@@ -20,7 +20,6 @@
 
 
 #include <string>
-#include <chrono>
 
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/testsuite_utils.h>

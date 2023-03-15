@@ -23,7 +23,7 @@
  * @file
  * @brief Contains useful methods for random stuff.
  *
- * @author Vincent RENAUDINEAU and Pierre-Henri WUILLEMIN(_at_LIP6)
+ * @author  Pierre-Henri WUILLEMIN(_at_LIP6) and Christophe GONZALES (_at_AMU)
  */
 
 // to ease IDE parser
@@ -32,14 +32,10 @@
 
 namespace gum {
 
-  namespace {
-    static std::mt19937 Generator_;
-  }
-
   INLINE
   Idx randomValue(const Size max) {
     std::uniform_int_distribution< Idx > uni_int(0, int(max) - 1);
-    return uni_int(Generator_);
+    return uni_int(_rand_namespace_::Generator_);
   }
 
   INLINE
@@ -51,21 +47,19 @@ namespace gum {
   INLINE
   double randomProba() {
     std::uniform_real_distribution uni_real(0.0, 1.0);
-    return uni_real(Generator_);
+    return uni_real(_rand_namespace_::Generator_);
   }
 
 
   INLINE
   void initRandom(unsigned int seed) {
-    if (seed != 0) {
-      Generator_.seed(seed);
-    } else {
-      Generator_.seed((unsigned int)std::chrono::system_clock::now().time_since_epoch().count());
-    }
+    if (seed == 0) seed = (unsigned int) std::chrono::system_clock::now().time_since_epoch().count();
+    std::seed_seq seq{seed + 1, seed + 2, seed + 3, seed + 4, seed + 5};
+    _rand_namespace_::Generator_.seed(seq);
   }
 
   /// returns the current generator's value
-  INLINE unsigned int currentRandomGeneratorValue() { return Generator_(); }
+  INLINE unsigned int currentRandomGeneratorValue() { return _rand_namespace_::Generator_(); }
 
   // returns the aGrUM's seed used by the std::generators
   INLINE unsigned int randomGeneratorSeed() {
@@ -74,5 +68,6 @@ namespace gum {
                              : GUM_RANDOMSEED);
   }
 
-  INLINE std::mt19937& randomGenerator() { return Generator_; }
+  INLINE std::mt19937& randomGenerator() { return _rand_namespace_::Generator_; }
+
 } /* namespace gum */

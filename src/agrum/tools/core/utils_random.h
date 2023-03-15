@@ -21,9 +21,9 @@
 
 /**
  * @file
- * @brief Contains usefull methods for random stuff.
+ * @brief Contains useful methods for random stuff.
  *
- * @author Vincent RENAUDINEAU and Pierre-Henri WUILLEMIN(_at_LIP6)
+ * @author Pierre-Henri WUILLEMIN(_at_LIP6) and Christophe GONZALES (_at_AMU)
  */
 
 #ifndef GUM_UTILS_RANDOM_H
@@ -41,20 +41,23 @@
 #include <agrum/agrum.h>
 
 namespace gum {
+  namespace _rand_namespace_ {
+    extern std::mt19937 Generator_;
+  }
 
   /// @ingroup utilities_group
   /// @{
 
   /**
    * @brief Returns a random Idx between 0 and max-1 included.
-   * @return Returns a random Odxbetween 0 and max-1 included (i.e. a proba).
+   * @return Returns a random idx between 0 and max-1 included .
    * By default, max=2
    */
   Idx randomValue(const Size max = 2);
 
   /**
    * @brief Returns a random Idx between 0 and max-1 included.
-   * @return Returns a random Odxbetween 0 and max-1 included (i.e. a proba) using engine.
+   * @return Returns a random Idx between 0 and max-1 included using engine.
    * By default, max=2
    *
    * @warning This should be used only for thread-safe purpose

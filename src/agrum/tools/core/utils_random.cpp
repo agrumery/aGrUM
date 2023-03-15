@@ -35,6 +35,7 @@
 #endif   // GUM_NO_INLINE
 
 namespace gum {
-
-
+  namespace _rand_namespace_ {
+    std::mt19937 Generator_;
+  }
 } /* namespace gum */
