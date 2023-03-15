@@ -712,14 +712,14 @@ namespace gum {
       v.push_back(r);
       sum += r;
     }
-    if (sum == 0.0) v[gum::randomValue(this->domainSize())] = 1.0;   // a 1 somewhere
-
     this->fillWith(v);
     return *this;
   }
 
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::randomDistribution() const {
+    if (this->sum() == 0.0) this->fillWith(1.0);   // a 1 somewhere
+
     return this->random().normalize();
   }
 
