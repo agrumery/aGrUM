@@ -7743,6 +7743,9 @@ _pyAgrum.ApproximationScheme_swigregister(ApproximationScheme)
 FindBarrenNodesType_FIND_NO_BARREN_NODES = _pyAgrum.FindBarrenNodesType_FIND_NO_BARREN_NODES
 FindBarrenNodesType_FIND_BARREN_NODES = _pyAgrum.FindBarrenNodesType_FIND_BARREN_NODES
 
+def fastVariable(var_description: str, default_domain_size: int=2) -> "pyAgrum.DiscreteVariable":
+    return _pyAgrum.fastVariable(var_description, default_domain_size)
+
 def randomDistribution(n: int) -> List[float]:
     r"""
 

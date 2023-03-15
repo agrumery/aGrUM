@@ -58,6 +58,7 @@ from .pyAgrum import CredalNet, CNMonteCarloSampling, CNLoopyPropagation
 from .pyAgrum import PRMexplorer
 
 from .pyAgrum import ApproximationScheme
+from .pyAgrum import fastVariable
 
 from .pyAgrum import initRandom, randomProba, randomDistribution, randomGeneratorSeed, randomValue
 from .pyAgrum import isOMP, getNumberOfThreads, getMaxNumberOfThreads, getNumberOfLogicalProcessors, setNumberOfThreads
@@ -100,6 +101,7 @@ __all__ = [
   'PRMexplorer',
 
   'ApproximationScheme',
+  'fastVariable',
   'initRandom', 'randomProba', 'randomDistribution', 'randomGeneratorSeed', 'randomValue',
 
   'isOMP', 'setNumberOfThreads', 'getNumberOfThreads', 'getMaxNumberOfThreads', 'getNumberOfLogicalProcessors',

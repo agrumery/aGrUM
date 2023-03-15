@@ -75,6 +75,8 @@
 #include <agrum/tools/graphs/cliqueGraph.h>
 #include <agrum/tools/graphs/algorithms/triangulations/defaultTriangulation.h>
 #include <agrum/tools/variables/discreteVariable.h>
+#include <agrum/tools/variables/allDiscreteVariables.h>
+
 #include <agrum/tools/multidim/implementations/multiDimInterface.h>
 #include <agrum/tools/multidim/implementations/multiDimAdressable.h>
 #include <agrum/tools/multidim/instantiation.h>
@@ -182,6 +184,9 @@
 %include "typemaps.i"
 %include "std_vector.i"
 %include "std_string.i"
+
+%include "std_unique_ptr.i"
+%unique_ptr(gum::DiscreteVariable) // to handle gum::fastVariable
 
 namespace std {
     %template ( Vector) vector<double>;
@@ -295,6 +300,7 @@ namespace std {
 %include <agrum/tools/variables/numericalDiscreteVariable.h>
 %include <agrum/tools/variables/IDiscretizedVariable.h>
 %include <agrum/tools/variables/discretizedVariable.h>
+%include <agrum/tools/variables/allDiscreteVariables.h>
 
 %include <agrum/tools/graphs/graphElements.h>
 
@@ -391,8 +397,10 @@ namespace std {
 %include <agrum/ID/influenceDiagram.h>
 %include <agrum/ID/inference/ShaferShenoyLIMIDInference.h>
 
-/* TEMPLATES INSTANTIATIONS */
+/* TEMPLATES FOR FUNCTIONS */
+%template ( fastVariable) gum::fastVariable<double>;
 
+/* TEMPLATES FOR CLASSES */
 %template ( randomDistribution ) gum::randomDistribution<double>;
 
 %template ( DiscretizedVariable ) gum::DiscretizedVariable<double>;
