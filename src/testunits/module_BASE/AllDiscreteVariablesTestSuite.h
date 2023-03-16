@@ -108,6 +108,10 @@ namespace gum_tests {
           auto a = gum::fastVariable< double >("A{15}", 1);
           TS_ASSERT_EQUALS(a->toString(), "A:Integer({15})")
         }
+        {
+          auto a = gum::fastVariable< double >("A{15|14|12|13|11}");
+          TS_ASSERT_EQUALS(a->toString(), "A:Range([11,15])")
+        }
       }
 
       GUM_TEST(CreationDiscretized) {
