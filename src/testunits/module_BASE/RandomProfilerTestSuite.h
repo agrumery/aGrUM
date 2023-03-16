@@ -66,9 +66,7 @@ namespace gum_tests {
 
         gum::initRandom(20);
         gen.generateBN(bn);
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e)
-      }
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
       /*
             auto s1 = bn.toDot();
 

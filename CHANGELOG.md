@@ -11,7 +11,7 @@
   * get rid of `sprintf` as much as possible.
   * Fixing random seed.
   * Fixing `gum::Potential::random()` : not a distribution.
-
+  * Updating *Fast* syntax : enumerating consecutive integers (e.g `{1|2|3|4}`) creates a `gum::RangeVariable[1,4]` rather than an `gum::IntegerVariable{1|2|3|4}`.
 * pyAgrum
   * Add `pyAgrum.Potential.sign` and `pyAgrum.Potential.new_sign` 
   * Bug fix in causalImpact found by Musfiqur Rahman
@@ -20,6 +20,7 @@
   * Fixing random seed.
   * Fixing `pyAgrum.Potential.random()` : not a distribution.
   * Adding access to `gum.fastVariable()`.
+  * Updating *Fast* syntax : enumerating consecutive integers (e.g `{1|2|3|4}`) creates a `pyAgrum.RangeVariable[1,4]` rather than an `pyAgrum.IntegerVariable{1|2|3|4}`.
 
 ## Changelog for 1.6.1
 

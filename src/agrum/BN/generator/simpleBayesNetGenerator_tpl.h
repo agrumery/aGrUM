@@ -73,7 +73,7 @@ namespace gum {
     float density = (float)(this->maxArcs_ * 2) / (float)(this->nbrNodes_ * (this->nbrNodes_ - 1));
     for (Size i = 0; i < this->nbrNodes_; ++i)
       for (Size j = i + 1; j < this->nbrNodes_; ++j)
-        if (randomProba() < density) this->dag_.addArc(i,j);
+        if (randomProba() < density) this->dag_.addArc(i, j);
 
     this->fromDAG(bayesNet);
     this->fillCPT(bayesNet);

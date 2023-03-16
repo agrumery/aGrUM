@@ -53,8 +53,8 @@ namespace gum {
   // copy operator
   INLINE Dirichlet& Dirichlet::operator=(const Dirichlet& from) {
     if (&from != this) {
-      _gamma_     = from._gamma_;
-      _params_    = from._params_;
+      _gamma_  = from._gamma_;
+      _params_ = from._params_;
     }
     return *this;
   }
@@ -62,8 +62,8 @@ namespace gum {
   // move operator
   INLINE Dirichlet& Dirichlet::operator=(Dirichlet&& from) {
     if (&from != this) {
-      _gamma_     = std::move(from._gamma_);
-      _params_    = std::move(from._params_);
+      _gamma_  = std::move(from._gamma_);
+      _params_ = std::move(from._params_);
     }
     return *this;
   }

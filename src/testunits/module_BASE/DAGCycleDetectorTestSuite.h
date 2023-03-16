@@ -32,7 +32,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] DAGCycleDetectorTestSuite: public CxxTest::TestSuite {
     gum::DAG _createDAG_(gum::Size nb_nodes, gum::Size nb_arcs) {
-      gum::DAG                   dag;
+      gum::DAG dag;
       for (gum::Idx i = 0; i < nb_nodes; ++i) {
         dag.addNodeWithId(i);
       }

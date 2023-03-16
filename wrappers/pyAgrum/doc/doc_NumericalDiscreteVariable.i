@@ -4,7 +4,7 @@ NumericalDiscreteVariable is a discrete random variable with a customizable sequ
 
 NumericalDiscreteVariable(aName, aDesc='', values=None) -> NumericalDiscreteVariable
     Parameters:
-        - **aName** (str) -- the name of the variable
+        - aName** (str) -- the name of the variable
         - **aDesc** (str) -- the (optional) description of the variable
         - **values** (List[float]) -- the values to create
 

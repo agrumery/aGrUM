@@ -53,7 +53,7 @@ namespace gum {
 
   INLINE
   void initRandom(unsigned int seed) {
-    if (seed == 0) seed = (unsigned int) std::chrono::system_clock::now().time_since_epoch().count();
+    if (seed == 0) seed = (unsigned int)std::chrono::system_clock::now().time_since_epoch().count();
     std::seed_seq seq{seed + 1, seed + 2, seed + 3, seed + 4, seed + 5};
     _rand_namespace_::Generator_.seed(seq);
   }

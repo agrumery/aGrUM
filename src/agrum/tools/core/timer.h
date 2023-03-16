@@ -116,7 +116,7 @@ namespace gum {
      *
      * @return a string representing the delta time
      */
-     std::string toString() const;
+    std::string toString() const;
 
     /// @}
 

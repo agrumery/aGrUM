@@ -100,7 +100,7 @@ namespace gum_tests {
           gum::MCBayesNetGenerator< float > gen(10, 15, 3, 15, 20, 25);
           gum::BayesNet< float >            bn;
           gen.generateBN(bn);
-          //gen.disturbBN(bn);
+          // gen.disturbBN(bn);
           GUM_UNUSED(bn);
           return;   // first OK : go
         } catch (gum::Exception& e) {
@@ -118,7 +118,7 @@ namespace gum_tests {
       gum::MCBayesNetGenerator< double > gen(10, 15, 3, 15, 20, 25);
       gum::BayesNet< double >            bn;
       gen.generateBN(bn);
-      //TS_GUM_ASSERT_THROWS_NOTHING(gen.disturbBN(bn))
+      // TS_GUM_ASSERT_THROWS_NOTHING(gen.disturbBN(bn))
     }
 
     GUM_TEST(InferenceFloat) {

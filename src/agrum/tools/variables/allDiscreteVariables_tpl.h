@@ -101,10 +101,24 @@ namespace gum {
     std::vector< int >    values;
     std::vector< double > double_values;
     if (!labels.empty()) {
-      if (std::all_of(labels.cbegin(), labels.cend(), isInteger))
+      if (std::all_of(labels.cbegin(), labels.cend(), isInteger)) {
         for (const auto& label: labels)
           values.push_back(std::stoi(label));
-      else if (std::all_of(labels.cbegin(), labels.cend(), isNumerical))
+
+        std::sort(values.begin(),values.end());
+        range_min     = values[0];
+        auto v        = range_min;
+        bool is_range = true;
+        for (const auto item: values) {
+          if (item != v) { is_range = false; }
+          v += 1;
+        }
+        if (is_range) {
+          values.clear();   // not an IntegerVariable but rather a RangeVariable
+          labels.clear();
+          range_max = v - 1;
+        }
+      } else if (std::all_of(labels.cbegin(), labels.cend(), isNumerical))
         for (const auto& label: labels)
           double_values.push_back(std::stod(label));
     }

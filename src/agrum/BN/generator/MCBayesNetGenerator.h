@@ -281,8 +281,8 @@ namespace gum {
 
     /// @}
     protected:
-    Size                                          iteration_;
-    Idx                                           p_, q_;
+    Size iteration_;
+    Idx  p_, q_;
     /*
        bool                                          disturbing_;
     BayesNet< GUM_SCALAR >                        bayesNettemp_;

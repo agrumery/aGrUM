@@ -291,7 +291,7 @@ namespace gum {
   }
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::sgn() const {
-    this->apply([](GUM_SCALAR x) { return (GUM_SCALAR(0) < x) - (x < GUM_SCALAR(0));});
+    this->apply([](GUM_SCALAR x) { return (GUM_SCALAR(0) < x) - (x < GUM_SCALAR(0)); });
     return *this;
   }
 

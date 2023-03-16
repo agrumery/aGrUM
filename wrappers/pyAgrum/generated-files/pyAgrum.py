@@ -3331,7 +3331,7 @@ class NumericalDiscreteVariable(DiscreteVariable):
 
     NumericalDiscreteVariable(aName, aDesc='', values=None) -> NumericalDiscreteVariable
         Parameters:
-            - **aName** (str) -- the name of the variable
+            - aName** (str) -- the name of the variable
             - **aDesc** (str) -- the (optional) description of the variable
             - **values** (List[float]) -- the values to create
 
@@ -7744,6 +7744,39 @@ FindBarrenNodesType_FIND_NO_BARREN_NODES = _pyAgrum.FindBarrenNodesType_FIND_NO_
 FindBarrenNodesType_FIND_BARREN_NODES = _pyAgrum.FindBarrenNodesType_FIND_BARREN_NODES
 
 def fastVariable(var_description: str, default_domain_size: int=2) -> "pyAgrum.DiscreteVariable":
+    r"""
+
+    Use *fast* syntax to add a variable in the BayesNet.
+
+    Parameters
+    ----------
+    fast_description: str
+      string following *fast* syntax description
+    default_nbrmod: int
+      nbr of modality if fast_description does not indicate it.
+      `default_nbrmod=1` is the way to create a variable with only one value (for instance for reward in influence diagram).
+
+    Examples
+    --------
+    >>> print(gum.fastVariable('A{On|Off|Defun}'))
+    A:Labelized({On|Off|Defun})
+    >>> print(gum.fastVariable('A{3.14|0|1.15}'))
+    A:NumericalDiscrete({0|1.15|3.14})
+    >>> print(gum.fastVariable('A{1|3|9}'))
+    A:Integer({1|3|9})
+    >>> print(gum.fastVariable('A[4,6]'))
+    A:Range([4,6])
+    >>> print(gum.fastVariable('A[5]'))
+    A:Range([0,4])
+    >>> print(gum.fastVariable('A[4,6,10]'))
+    A:Discretized(<[4;6[,[6;10]>)
+
+
+    Raises
+    ------
+    gum.NotAllowed if nbrmod<2
+
+    """
     return _pyAgrum.fastVariable(var_description, default_domain_size)
 
 def randomDistribution(n: int) -> List[float]:

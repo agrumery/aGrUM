@@ -47,9 +47,7 @@ namespace gum {
   }
 
   INLINE
-  double Timer::step() const {
-    return step_().count() / 1000.0;
-  }
+  double Timer::step() const { return step_().count() / 1000.0; }
 
   INLINE
   double Timer::pause() {

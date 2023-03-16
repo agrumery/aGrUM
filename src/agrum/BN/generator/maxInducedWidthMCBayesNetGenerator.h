@@ -124,9 +124,9 @@ namespace gum {
      */
     explicit MaxInducedWidthMCBayesNetGenerator(BayesNet< GUM_SCALAR > bayesNet,
                                                 Size                   maxInducedWidth = 3,
-                                                Idx                    iteration       = NB_INIT_ITERATIONS,
-                                                Idx                    p               = 30,
-                                                Idx                    q               = 40);
+                                                Idx iteration = NB_INIT_ITERATIONS,
+                                                Idx p         = 30,
+                                                Idx q         = 40);
 
     /**
      * Destructor.

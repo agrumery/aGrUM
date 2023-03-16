@@ -35,7 +35,6 @@
 #include <vector>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/graphs/DAG.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 
@@ -101,7 +100,7 @@ namespace gum {
 
     virtual void generateBN(BayesNet< GUM_SCALAR >& bayesNet) = 0;
 
-    void fromDAG(BayesNet<GUM_SCALAR>& bayesNet);
+    void fromDAG(BayesNet< GUM_SCALAR >& bayesNet);
     /**
      * function that insert random values in the CPT of each nodes according to
      * the
@@ -109,7 +108,7 @@ namespace gum {
      * @return null but modify inputed empty Bayesian network
      */
 
-    void fillCPT(BayesNet<GUM_SCALAR>& bn) const;
+    void fillCPT(BayesNet< GUM_SCALAR >& bn) const;
 
     /// @}
     // ===========================================================================

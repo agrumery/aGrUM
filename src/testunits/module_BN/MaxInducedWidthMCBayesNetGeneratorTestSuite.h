@@ -117,7 +117,7 @@ namespace gum_tests {
           gum::MaxInducedWidthMCBayesNetGenerator< double > gen(30, 100, 8, 30, 40, 50);
           gum::BayesNet< double >                           bn;
           gen.generateBN(bn);
-          //gen.disturbBN(bn);
+          // gen.disturbBN(bn);
           GUM_UNUSED(bn);
           return;
         } catch (gum::Exception& e) {
@@ -135,7 +135,7 @@ namespace gum_tests {
       gum::MaxInducedWidthMCBayesNetGenerator< double > gen(50, 100, 8, 4, 30, 40, 50);
       gum::BayesNet< double >*                          bn = new gum::BayesNet< double >();
       gen.generateBN(*bn);
-      //TS_GUM_ASSERT_THROWS_NOTHING(gen.disturbBN(*bn))
+      // TS_GUM_ASSERT_THROWS_NOTHING(gen.disturbBN(*bn))
 
       if (bn != 0) delete bn;
     }
