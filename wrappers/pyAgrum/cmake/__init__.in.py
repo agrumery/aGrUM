@@ -657,9 +657,12 @@ def randomBN(*, n: int = 5, names: List[str] = None, ratio_arc: float = 1.2, dom
   gen = BNGenerator()
   bn = gen.generate(nbr, int(nbr * ratio_arc), domain_size)
 
-  for i, nod in enumerate(bn.topologicalOrder()):
-    name = names[i] if names is not None else f"X{i}"
-    bn.changeVariableName(nod, name)
+  if names is not None:
+    # try to find very rare name
+    for i in bn.nodes(): 
+      bn.changeVariableName(i,f"__{i}{i}__{i}{i}__")
+    for i, nod in enumerate(bn.topologicalOrder()):
+      bn.changeVariableName(nod, names[i])
 
   return bn
 
