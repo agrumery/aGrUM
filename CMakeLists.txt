@@ -17,9 +17,9 @@ include("VERSION.txt")
 set(AGRUM_VERSION "${AGRUM_VERSION_MAJOR}.${AGRUM_VERSION_MINOR}.${AGRUM_VERSION_PATCH}")
 
 cmake_policy(SET CMP0048 NEW) # VERSION arg in 'project'
-cmake_minimum_required(VERSION 3.12)
 
 project(agrum VERSION ${AGRUM_VERSION})
+cmake_minimum_required(VERSION 3.12)
 
 set(CMAKE_INSTALL_PREFIX ${BACKUP_CMAKE_INSTALL_PREFIX})
 
