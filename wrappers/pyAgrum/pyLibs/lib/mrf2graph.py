@@ -3,7 +3,7 @@ The purpose of this module is to provide tools for mapping Markov random field (
 be displayed/saved as image.
 """
 
-# (c) Copyright by Pierre-Henri Wuillemin, 2022
+# (c) Copyright by Pierre-Henri Wuillemin, 2023
 # (pierre-henri.wuillemin@lip6.fr)
 
 # Permission to use, copy, modify, and distribute this

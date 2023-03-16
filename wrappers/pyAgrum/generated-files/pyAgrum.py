@@ -2214,7 +2214,7 @@ def currentRandomGeneratorValue() -> int:
 def initRandom(seed: int=0) -> None:
     r"""
 
-    Initialize random generator seed.
+    Initialize random generator seed. If `seed=0`, the generator is initialized from the current time in ms. `seed!=0` allows to fix the generator in a certain stage and then allows to repeat the same pseudo-random numbers sequence.
 
     Parameters
     ----------
@@ -7748,6 +7748,10 @@ def fastVariable(var_description: str, default_domain_size: int=2) -> "pyAgrum.D
 
     Use *fast* syntax to add a variable in the BayesNet.
 
+    Raises
+    ------
+    gum.NotAllowed 
+
     Parameters
     ----------
     fast_description: str
@@ -7772,9 +7776,6 @@ def fastVariable(var_description: str, default_domain_size: int=2) -> "pyAgrum.D
     A:Discretized(<[4;6[,[6;10]>)
 
 
-    Raises
-    ------
-    gum.NotAllowed if nbrmod<2
 
     """
     return _pyAgrum.fastVariable(var_description, default_domain_size)

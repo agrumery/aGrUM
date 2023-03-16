@@ -2,6 +2,10 @@
 "
 Use *fast* syntax to add a variable in the BayesNet.
 
+Raises
+------
+gum.NotAllowed 
+
 Parameters
 ----------
 fast_description: str
@@ -26,9 +30,6 @@ A:Range([0,4])
 A:Discretized(<[4;6[,[6;10]>)
 
 
-Raises
-------
-gum.NotAllowed if nbrmod<2
 "
 
 %feature("docstring") gum::Variable

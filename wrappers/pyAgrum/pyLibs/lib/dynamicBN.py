@@ -2,7 +2,7 @@
 The purpose of this module is to provide basic tools for dealing with dynamic Bayesian Network (and inference) : modeling, visualisation, inference.
 """
 
-# (c) Copyright by Pierre-Henri Wuillemin, 2022
+# (c) Copyright by Pierre-Henri Wuillemin, 2023
 #   (pierre-henri.wuillemin@lip6.fr)
 
 # Permission to use, copy, modify, and distribute this

@@ -1,6 +1,6 @@
 aGrUM samples
 (c) Pierre-henri Wuillemin & Christophe Gonzales
-LIP6 2011-2022
+LIP6 2011-2023
 
 
 In each directory, 

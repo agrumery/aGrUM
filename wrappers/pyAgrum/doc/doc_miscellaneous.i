@@ -1,6 +1,6 @@
 %feature("docstring") gum::initRandom
 "
-Initialize random generator seed.
+Initialize random generator seed. If `seed=0`, the generator is initialized from the current time in ms. `seed!=0` allows to fix the generator in a certain stage and then allows to repeat the same pseudo-random numbers sequence.
 
 Parameters
 ----------

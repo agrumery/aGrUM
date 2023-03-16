@@ -4,7 +4,7 @@ types for wrapped function. This utility change many
 different c++ oddities in generated pyAgrum.py
 """
 
-# (c) Copyright by Pierre-Henri Wuillemin, 2022
+# (c) Copyright by Pierre-Henri Wuillemin, 2023
 # (pierre-henri.wuillemin@lip6.fr)
 
 # Permission to use, copy, modify, and distribute this

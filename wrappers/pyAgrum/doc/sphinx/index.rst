@@ -89,8 +89,10 @@ Reference manual
     :maxdepth: 2
     :titlesonly:
 
+    random
+    fastSyntax
     functions
-    miscellaneous
+    listeners
     exceptions
 
   .. toctree::
