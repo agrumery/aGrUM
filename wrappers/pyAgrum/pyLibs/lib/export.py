@@ -22,11 +22,12 @@ Tools for exporting graphical models and inference as other formats.
 
 For each function `pyAgrum.lib.export.to...(model,filename)`, it is assumed that the filename is complete (including the correct suffix).
 """
+import sys
 
 import pyAgrum as gum
 
 
-def toGML(model, filename: str):
+def toGML(model, filename: str =None):
   """
   Export directed graphical models as a graph to the graph GML format (https://gephi.org/users/supported-graph-formats/gml-format/)
 
@@ -34,10 +35,10 @@ def toGML(model, filename: str):
   ----------
   model :
     the directed graphical model to export
-  filename : str
-    the name of the file (including the prefix)
+  filename : Optional[str]
+    the name of the file (including the prefix), if None , use sys.stdout
   """
-  with open(filename, "w") as gmlfile:
+  def _toGML(model,gmlfile):
     print("graph", file=gmlfile)
     print("[", file=gmlfile)
     for i in model.nodes():
@@ -54,3 +55,46 @@ def toGML(model, filename: str):
       print(f"    target X{j}", file=gmlfile)
       print("  ]", file=gmlfile)
     print("]", file=gmlfile)
+  if filename is None:
+    _toGML(model,sys.stdout)
+  else:
+    with open(filename, "w") as gmlfile:
+      _toGML(model,gmlfile)
+
+def toFastBN(bn, filename: str = None):
+  """
+  Export the Bayesian network as *fast* syntax (in a python file)
+
+  Parameters
+  ----------
+  bn :
+    the Bayesian network to export
+  filename : Optional[str]
+    the name of the file (including the prefix), if None , use sys.stdout
+  """
+  def _toFastBN(bn,zefile):
+    print('bn=gum.fastBN("""', end="",file=zefile)
+    vars = set()
+    first=True
+    for x, y in bn.arcs():
+      if not first:
+        print('\n                 ', end="", file=zefile)
+      else:
+        first=False
+      if x in vars:
+        print(bn.variable(x).name(), end="", file=zefile)
+      else:
+        print(bn.variable(x).toFast(), end="", file=zefile)
+        vars.add(x)
+      print("->", end="", file=zefile)
+      if y in vars:
+        print(bn.variable(y).name(), end=";", file=zefile)
+      else:
+        print(bn.variable(y).toFast(), end=";", file=zefile)
+        vars.add(y)
+    print('""")')
+  if filename is None:
+    _toFastBN(bn,sys.stdout)
+  else:
+    with open(filename, "w") as pyfile:
+      _toFastBN(bn,pyfile)
