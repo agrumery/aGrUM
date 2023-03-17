@@ -63,6 +63,9 @@ namespace gum_tests {
         TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A[7,3]", 4),
                          const gum::InvalidArgument&)
 
+        TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A[-5]", 4),
+                         const gum::InvalidArgument&)
+
         TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A[1,1]", 4),
                          const gum::InvalidArgument&)
 
@@ -114,14 +117,29 @@ namespace gum_tests {
         }
       }
 
-      GUM_TEST(CreationDiscretized) {
-        {
-          auto a = gum::fastVariable< double >("A[1,2,3,4,5,6]", 4);
-          TS_ASSERT_EQUALS(a->toString(), "A:Discretized(<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>)")
-        }
+      GUM_TEST(CreationDiscretized){{auto a = gum::fastVariable< double >("A[1,2,3,4,5,6]", 4);
+      TS_ASSERT_EQUALS(a->toString(), "A:Discretized(<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>)")
+  }
 
-        TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A[0.3]", 4), gum::InvalidArgument&)
-        TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A[0.3]", 1), gum::InvalidArgument&)
-      }
-  };
+  TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A[0.3]", 4), gum::InvalidArgument&)
+     TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A[0.3]", 1), gum::InvalidArgument&)
+}   // namespace gum_tests
+
+GUM_TEST(ToFastMethod) {
+  std::string s;
+  s = "A{On|Off|Defun}";
+  TS_ASSERT_EQUALS(s, (gum::fastVariable< double >(s)->toFast()))   // labelized
+  s = "A{0|1.15|3.14}";
+  TS_ASSERT_EQUALS(s, (gum::fastVariable< double >(s)->toFast()))   // NumericalDiscrete
+  s = "A{1|3|9}";
+  TS_ASSERT_EQUALS(s, (gum::fastVariable< double >(s)->toFast()))   // Integer
+  s = "A[3,5]";
+  TS_ASSERT_EQUALS(s, (gum::fastVariable< double >(s)->toFast()))   // Range
+  s = "A[5]";
+  TS_ASSERT_EQUALS(s, (gum::fastVariable< double >(s)->toFast()))   // RAnge
+  s = "A[1,2,3,4,5,6]";
+  TS_ASSERT_EQUALS(s, (gum::fastVariable< double >(s)->toFast()))   // Discretized
+}
+}
+;
 }   // namespace gum_tests

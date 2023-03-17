@@ -120,7 +120,7 @@ namespace gum {
     /**
      * Destructor.
      */
-    virtual ~DiscretizedVariable();
+    ~DiscretizedVariable() final;
 
     /// @}
 
@@ -162,21 +162,22 @@ namespace gum {
      * @return the ith label
      * @throw OutOfBound
      */
-    virtual std::string label(Idx i) const;
+    std::string label(Idx i) const final;
 
     /// get a numerical representation of he indice-the value.
-    virtual double numerical(Idx indice) const;
+    double numerical(Idx indice) const final;
 
     /// from the label to its index in var.
     /// @throws NotFound
-    virtual Idx index(const std::string& label) const;
+    Idx index(const std::string& label) const final;
 
     /**
      *
      * @return the size of the random discrete variable domain
      */
-    virtual Size domainSize() const;
-    std::string  domain() const final;
+    Size domainSize() const final;
+
+    std::string domain() const final;
 
     /// string represent the type of the variable
     std::string stype() const final { return "Discretized"; };
@@ -189,7 +190,10 @@ namespace gum {
     const std::vector< T_TICKS >& ticks() const;
 
     /// return the list of ticks as a vector of doubles
-    virtual std::vector< double > ticksAsDoubles() const;
+    std::vector< double > ticksAsDoubles() const final;
+
+    // returns the variable in fast syntax
+    std::string toFast() const final;
   };
 
 } /* namespace gum */

@@ -74,4 +74,15 @@ namespace gum {
     s << "[" << minVal() << "," << maxVal() << "]";
     return s.str();
   }
+
+  std::string RangeVariable::toFast() const {
+    std::stringstream s;
+    s << name();
+    if (const auto m = minVal(); m != 0) {
+      s << "[" << m << "," << maxVal() << "]";
+    } else {
+      s << "[" << maxVal() + 1 << "]";
+    }
+    return s.str();
+  }
 } /* namespace gum */

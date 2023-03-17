@@ -58,7 +58,7 @@ namespace gum {
     virtual ~IDiscretizedVariable();
 
     /// Copy Factory
-    virtual IDiscretizedVariable* clone() const = 0;
+    IDiscretizedVariable* clone() const = 0;
 
     /// @}
 
@@ -82,7 +82,6 @@ namespace gum {
 
     /// return the list of ticks as a vector of doubles
     virtual std::vector< double > ticksAsDoubles() const = 0;
-
     /// @}
 
 

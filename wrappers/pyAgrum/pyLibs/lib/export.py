@@ -20,7 +20,7 @@
 """
 Tools for exporting graphical models and inference as other formats.
 
-For each function `pyAgrum.lib.export.to...(bn,filename)`, it is assumed that the filename is complete (including the correct suffix).
+For each function `pyAgrum.lib.export.to...(model,filename)`, it is assumed that the filename is complete (including the correct suffix).
 """
 
 import pyAgrum as gum
@@ -29,12 +29,13 @@ import pyAgrum as gum
 def toGML(model, filename: str):
   """
   Export directed graphical models as a graph to the graph GML format (https://gephi.org/users/supported-graph-formats/gml-format/)
+
   Parameters
   ----------
   model :
     the directed graphical model to export
   filename : str
-    the name of the file (including the prefixe)
+    the name of the file (including the prefix)
   """
   with open(filename, "w") as gmlfile:
     print("graph", file=gmlfile)

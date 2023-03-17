@@ -69,11 +69,11 @@ namespace gum {
     RangeVariable(const RangeVariable& aDRV);
 
     /// destructor
-    virtual ~RangeVariable();
+    ~RangeVariable() final;
 
     /// Copy Factory.
     /// @return Returns a pointer on a new copy of this.
-    virtual RangeVariable* clone() const;
+    RangeVariable* clone() const final;
 
     /// @}
 
@@ -86,22 +86,24 @@ namespace gum {
     ///   (or modify in that way an already created RangeVariable). The result is
     ///   an empty variable (i.e. empty() returns true).
     ///   If maxVal - minVal < 0, then domainsize() = 0.
-    virtual Size domainSize() const;
+    Size domainSize() const final;
 
     /// returns the type of variable
 
-    virtual VarType varType() const;
+    VarType varType() const final;
 
+    // returns the variable in fast syntax
+    std::string toFast() const final;
     ///
     /**
      * Get the index-th label.
      * @param index the index of the label we wish to return
      * @throw OutOfBound
      */
-    virtual std::string label(Idx index) const;
+    std::string label(Idx index) const final;
 
     /// get a numerical representation of the index-the value.
-    virtual double numerical(Idx index) const;
+    double numerical(Idx index) const final;
 
     /**
      * Returns the lower bound.
@@ -132,7 +134,7 @@ namespace gum {
      * @return the modality index from the label
      * @throw NotFound
      */
-    virtual Idx index(const std::string&) const;
+    Idx index(const std::string&) const final;
 
     /// @}
 

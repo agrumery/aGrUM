@@ -191,6 +191,12 @@ namespace gum {
   INLINE std::string NumericalDiscreteVariable::_generateLabel(double f) const {
     return compact_tostr(f);
   }
+
+  INLINE std::string NumericalDiscreteVariable::toFast() const {
+    std::stringstream s;
+    s << name() << domain();
+    return s.str();
+  }
 } /* namespace gum */
 
 #endif /* DOXYGEN SHOULD SKIP THIS */

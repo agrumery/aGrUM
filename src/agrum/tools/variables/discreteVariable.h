@@ -106,8 +106,11 @@ namespace gum {
     virtual double numerical(Idx indice) const = 0;
 
     /// returns the varType of variable
-
     virtual VarType varType() const = 0;
+
+    // returns the variable in fast syntax
+    virtual std::string toFast() const = 0;
+
     /// @}
 
     // ############################################################################

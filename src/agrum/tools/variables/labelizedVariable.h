@@ -84,10 +84,10 @@ namespace gum {
 
     /// destructor
 
-    virtual ~LabelizedVariable();
+    ~LabelizedVariable() final;
 
     /// a virtual clone ...
-    virtual LabelizedVariable* clone() const;
+    LabelizedVariable* clone() const final;
 
     /// @}
 
@@ -105,7 +105,7 @@ namespace gum {
     /** @param label searched label
      * @return the index of this label
      * @throw NotFound */
-    virtual Idx index(const std::string& label) const;
+    Idx index(const std::string& label) const final;
 
     /// @}
 
@@ -148,25 +148,28 @@ namespace gum {
     /// returns the ith label
     /** @param i
      * @return the ith label */
-    virtual std::string label(Idx i) const;
+    std::string label(Idx i) const final;
 
     /// return the pos from label
     Idx posLabel(const std::string& label) const;
 
     /// get a numerical representation of the index-the value.
-    virtual double numerical(Idx index) const;
+    double numerical(Idx index) const final;
 
     /// returns the size of the random discrete variable domain
-    virtual Size domainSize() const;
+    Size domainSize() const final;
 
     /// returns the type of variable
-    virtual VarType varType() const;
+    VarType varType() const final;
 
     /// Returns the domain
     std::string domain() const final;
 
     /// string represent the type of the variable
     std::string stype() const final { return "Labelized"; };
+
+    // returns the variable in fast syntax
+    std::string toFast() const final;
 
     /// @}
 

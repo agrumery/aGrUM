@@ -58,7 +58,7 @@ namespace gum {
 
 
   /// move constructor
-  INLINE IntegerVariable::IntegerVariable(IntegerVariable&& from) :
+  INLINE IntegerVariable::IntegerVariable(IntegerVariable&& from) noexcept :
       DiscreteVariable(std::move(from)), _domain_(std::move(from._domain_)) {
     from._domain_.clear();
     // for debugging purposes
@@ -83,6 +83,13 @@ namespace gum {
     }
 
     return *this;
+  }
+
+
+  INLINE std::string IntegerVariable::toFast() const {
+    std::stringstream s;
+    s << name() << domain();
+    return s.str();
   }
 
 

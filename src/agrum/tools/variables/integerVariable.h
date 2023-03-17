@@ -86,13 +86,13 @@ namespace gum {
     IntegerVariable(const IntegerVariable& from);
 
     /// move constructor
-    IntegerVariable(IntegerVariable&& from);
+    IntegerVariable(IntegerVariable&& from) noexcept;
 
     /// virtual copy constructor
-    virtual IntegerVariable* clone() const;
+    IntegerVariable* clone() const final;
 
     /// destructor
-    virtual ~IntegerVariable();
+    ~IntegerVariable() final;
 
     /// @}
 
@@ -127,22 +127,25 @@ namespace gum {
 
     /// @{
     /// returns the domain size of the discrete random variable
-    virtual Size domainSize() const;
+    Size domainSize() const final;
 
     /// returns the type of variable
-    virtual VarType varType() const;
+    VarType varType() const final;
+
+    // returns the variable in fast syntax
+    std::string toFast() const final;
 
     /// returns the index of a given label
     /** @param label searched label
      * @return the index of this label
      * @throw NotFound */
-    virtual Idx index(const std::string& label) const;
+    Idx index(const std::string& label) const final;
 
     /// returns a string corresponding to the ith value of the domain
-    virtual std::string label(Idx index) const;
+    std::string label(Idx index) const final;
 
     /// get a integer representation of the value at a given index
-    virtual double numerical(Idx index) const;
+    double numerical(Idx index) const final;
 
     /// Returns the domain as a string
     std::string domain() const final;

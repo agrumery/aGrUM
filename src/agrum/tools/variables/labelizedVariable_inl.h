@@ -149,6 +149,13 @@ namespace gum {
 
   INLINE VarType LabelizedVariable::varType() const { return VarType::Labelized; }
 
+
+  INLINE std::string LabelizedVariable::toFast() const {
+    std::stringstream s;
+    s << name() << domain();
+    return s.str();
+  }
+
 } /* namespace gum */
 
 #endif /* DOXYGEN SHOULD SKIP THIS */

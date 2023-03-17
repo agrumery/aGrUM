@@ -262,6 +262,7 @@ namespace gum {
     return s.str();
   }
 
+
   template < typename T_TICKS >
   INLINE const std::vector< T_TICKS >& DiscretizedVariable< T_TICKS >::ticks() const {
     return this->_ticks_;
@@ -274,6 +275,20 @@ namespace gum {
     for (auto i = std::size_t(0); i < size; ++i)
       ticks[i] = (double)_ticks_[i];
     return ticks;
+  }
+
+  template < typename T_TICKS >
+  std::string DiscretizedVariable< T_TICKS >::toFast() const {
+    std::stringstream s;
+    bool              first = true;
+    s << name() << "[";
+    for (const auto& t: _ticks_) {
+      if (!first) s << ",";
+      else first = false;
+      s << t;
+    }
+    s << "]";
+    return s.str();
   }
 
 } /* namespace gum */

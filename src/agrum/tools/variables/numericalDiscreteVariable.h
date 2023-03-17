@@ -89,7 +89,7 @@ namespace gum {
     NumericalDiscreteVariable(NumericalDiscreteVariable&& from);
 
     /// virtual copy constructor
-    virtual NumericalDiscreteVariable* clone() const;
+    NumericalDiscreteVariable* clone() const final;
 
     /// destructor
     virtual ~NumericalDiscreteVariable();
@@ -111,12 +111,12 @@ namespace gum {
     NumericalDiscreteVariable& operator=(NumericalDiscreteVariable&& from);
 
     /// equality operator
-    bool         operator==(const NumericalDiscreteVariable& var) const;
-    virtual bool operator==(const Variable& var) const;
+    bool operator==(const NumericalDiscreteVariable& var) const;
+    bool operator==(const Variable& var) const final;
 
     /// inequality operator
-    bool         operator!=(const NumericalDiscreteVariable& var) const;
-    virtual bool operator!=(const Variable& var) const;
+    bool operator!=(const NumericalDiscreteVariable& var) const;
+    bool operator!=(const Variable& var) const final;
 
     /// @}
 
@@ -127,10 +127,13 @@ namespace gum {
 
     /// @{
     /// returns the domain size of the discrete random variable
-    virtual Size domainSize() const;
+    Size domainSize() const final;
 
     /// returns the type of variable
-    virtual VarType varType() const;
+    VarType varType() const final;
+
+    // returns the variable in fast syntax
+    std::string toFast() const final;
 
     /// returns the index of a given label
     /** @param label searched label

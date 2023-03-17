@@ -101,7 +101,6 @@ namespace gum {
     return s.str();
   }
 
-
   /// add a new value to the domain size
   void IntegerVariable::addValue(int value) {
     const Size size = _domain_.size();
