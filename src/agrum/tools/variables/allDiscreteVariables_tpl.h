@@ -48,6 +48,8 @@ namespace gum {
           GUM_ERROR(InvalidArgument, "Empty range for variable " << var_description)
         } else if (args.size() == 1) {   // n[4]
           int n     = std::stoi(args[0]);
+          if (n<2)
+            GUM_ERROR(InvalidArgument, n<<" is not >=2 for variable " << var_description)
           ds        = static_cast< Size >(n);
           range_min = 0;
           range_max = long(ds) - 1;
