@@ -2409,6 +2409,9 @@ class DiscreteVariable(Variable):
         """
         return _pyAgrum.DiscreteVariable_varType(self)
 
+    def toFast(self) -> str:
+        return _pyAgrum.DiscreteVariable_toFast(self)
+
     def __eq__(self, aRV: "pyAgrum.DiscreteVariable") -> bool:
         return _pyAgrum.DiscreteVariable___eq__(self, aRV)
 
@@ -2826,6 +2829,9 @@ class LabelizedVariable(DiscreteVariable):
         """
         return _pyAgrum.LabelizedVariable_stype(self)
 
+    def toFast(self) -> str:
+        return _pyAgrum.LabelizedVariable_toFast(self)
+
     def __repr__(self) -> str:
         return _pyAgrum.LabelizedVariable___repr__(self)
 
@@ -2917,6 +2923,9 @@ class RangeVariable(DiscreteVariable):
 
         """
         return _pyAgrum.RangeVariable_varType(self)
+
+    def toFast(self) -> str:
+        return _pyAgrum.RangeVariable_toFast(self)
 
     def label(self, index: int) -> str:
         r"""
@@ -3156,6 +3165,9 @@ class IntegerVariable(DiscreteVariable):
 
         """
         return _pyAgrum.IntegerVariable_varType(self)
+
+    def toFast(self) -> str:
+        return _pyAgrum.IntegerVariable_toFast(self)
 
     def index(self, label: str) -> int:
         r"""
@@ -3407,6 +3419,9 @@ class NumericalDiscreteVariable(DiscreteVariable):
 
         """
         return _pyAgrum.NumericalDiscreteVariable_varType(self)
+
+    def toFast(self) -> str:
+        return _pyAgrum.NumericalDiscreteVariable_toFast(self)
 
     def index(self, label: str) -> int:
         r"""
@@ -8024,6 +8039,9 @@ class DiscretizedVariable(IDiscretizedVariable):
 
         """
         return _pyAgrum.DiscretizedVariable_ticks(self)
+
+    def toFast(self) -> str:
+        return _pyAgrum.DiscretizedVariable_toFast(self)
 
     def __repr__(self) -> str:
         return _pyAgrum.DiscretizedVariable___repr__(self)
