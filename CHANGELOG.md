@@ -21,6 +21,7 @@
   * Fixing `pyAgrum.Potential.random()` : not a distribution.
   * Adding access to `gum.fastVariable()`.
   * Updating *Fast* syntax : enumerating consecutive integers (e.g `{1|2|3|4}`) creates a `pyAgrum.RangeVariable[1,4]` rather than an `pyAgrum.IntegerVariable{1|2|3|4}`.
+  * add a new module to export in different formats (for now just GML).
 
 ## Changelog for 1.6.1
 

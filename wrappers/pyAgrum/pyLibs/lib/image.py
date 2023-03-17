@@ -18,7 +18,7 @@
 # OR PERFORMANCE OF THIS SOFTWARE!
 
 """
-tools for exporting model and infernece as image
+tools for exporting model and inference as image
 """
 import os
 import tempfile
