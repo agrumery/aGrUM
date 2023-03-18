@@ -9,9 +9,7 @@
 
 * pyAgrum
   * Adding `pyAgrum.{AllDiscreteVariable}.toFast()` to write the variable in *fast* syntax.
-  * Fixing a bug in BN's random generators (e.g. `pyAgrum.randomBN`) : `domain_size` incremented by 1 (thanks to 
-    Kenneth 
-    Lee).
+  * Fixing a bug in BN's random generators (e.g. `pyAgrum.randomBN`) : `domain_size` incremented by 1 (thanks to Kenneth Lee).
   * Fixing a bug in *fast* syntax : `'A[n]' with n<2`.
   * Modifying (lightly) the structure for documentation.
 
