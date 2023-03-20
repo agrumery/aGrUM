@@ -108,7 +108,7 @@ namespace gum {
      * Return true if this node exists in this graphical model.
      */
     virtual bool exists(NodeId node) const = 0;
-    bool         exists(const std::string& name) const { return exists(idFromName(name)); };
+    virtual bool exists(const std::string& name) const =0;
 
     /**
      * transform a vector of NodeId in a vector of names

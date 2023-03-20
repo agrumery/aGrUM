@@ -6566,7 +6566,7 @@ class DAGmodel(GraphicalModel):
         """
         return _pyAgrum.DAGmodel_nodes(self)
 
-    def exists(self, node: int) -> bool:
+    def exists(self, *args) -> bool:
         r"""
 
         Check if a node with this name or id exists
@@ -6582,7 +6582,7 @@ class DAGmodel(GraphicalModel):
         	True if there is a node with such a name or id
 
         """
-        return _pyAgrum.DAGmodel_exists(self, node)
+        return _pyAgrum.DAGmodel_exists(self, *args)
 
     def arcs(self) -> Set[Tuple[int,int]]:
         r"""
@@ -6792,7 +6792,7 @@ class UGmodel(GraphicalModel):
     def nodes(self) -> Set[int]:
         return _pyAgrum.UGmodel_nodes(self)
 
-    def exists(self, node: int) -> bool:
+    def exists(self, *args) -> bool:
         r"""
 
         Check if a node with this name or id exists
@@ -6808,7 +6808,7 @@ class UGmodel(GraphicalModel):
         	True if there is a node with such a name or id
 
         """
-        return _pyAgrum.UGmodel_exists(self, node)
+        return _pyAgrum.UGmodel_exists(self, *args)
 
     def edges(self) -> Set[Tuple[int,int]]:
         return _pyAgrum.UGmodel_edges(self)

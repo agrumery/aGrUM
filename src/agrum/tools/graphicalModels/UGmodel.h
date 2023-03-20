@@ -89,6 +89,7 @@ namespace gum {
      * Return true if this node exists in this graphical model.
      */
     bool exists(NodeId node) const final;
+    bool exists(const std::string& name) const final;
 
     /// @}
 
