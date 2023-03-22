@@ -38,7 +38,7 @@ namespace gum {
     std::string                name;
 
     std::vector< int >    values;
-    std::vector< GUM_SCALAR > numerical_values;
+    std::vector< double > numerical_values;
 
     if (*(var_description.rbegin()) == ']') {
       auto posBrack = var_description.find('[');
@@ -50,9 +50,8 @@ namespace gum {
         if (args.empty()) {   // n[]
           GUM_ERROR(InvalidArgument, "Empty range for variable " << var_description)
         } else if (args.size() == 1) {   // n[4]
-          int n     = std::stoi(args[0]);
-          if (n<2)
-            GUM_ERROR(InvalidArgument, n<<" is not >=2 for variable " << var_description)
+          int n = std::stoi(args[0]);
+          if (n < 2) GUM_ERROR(InvalidArgument, n << " is not >=2 for variable " << var_description)
           ds        = static_cast< Size >(n);
           range_min = 0;
           range_max = long(ds) - 1;
@@ -76,30 +75,27 @@ namespace gum {
           ds = args.size() - 1;
         }
       }
-    } else if (*(var_description.rbegin()) == '}') {   // var_description like "n{one|two|three}" or b{1.1:3.31:5}
+    } else if (*(var_description.rbegin())
+               == '}') {   // var_description like "n{one|two|three}" or b{1.1:3.31:5}
       auto posBrack = var_description.find('{');
       if (posBrack != std::string::npos) {
         name   = var_description.substr(0, posBrack);
-        labels= split(var_description.substr(posBrack + 1, var_description.size() - posBrack - 2),
+        labels = split(var_description.substr(posBrack + 1, var_description.size() - posBrack - 2),
                        ":");
-        if (labels.size()==3) { //b{1.1:3.31:5}
-          const auto fmin=(GUM_SCALAR)std::stod(labels[0]);
-          const auto fmax=(GUM_SCALAR)std::stod(labels[1]);
-          const int nbr= std::stoi(labels[2]);
+        if (labels.size() == 3) {   // b{1.1:3.31:5}
+          const auto fmin = std::stod(labels[0]);
+          const auto fmax = std::stod(labels[1]);
+          const int  nbr  = std::stoi(labels[2]);
 
-          if (fmax<=fmin) {
-            GUM_ERROR(InvalidArgument, "last<=first in " << var_description)
-          }
-          if (nbr<=1){
-            GUM_ERROR(InvalidArgument, "nbr<=1 in " << var_description)
-          }
-          const GUM_SCALAR step=(GUM_SCALAR)((fmax-fmin)/(nbr-1));
+          if (fmax <= fmin) { GUM_ERROR(InvalidArgument, "last<=first in " << var_description) }
+          if (nbr <= 1) { GUM_ERROR(InvalidArgument, "nbr<=1 in " << var_description) }
+          const double step = double((fmax - fmin) / (nbr - 1));
           labels.clear();
-          ds=nbr;
-          GUM_SCALAR v=fmin;
+          ds       = nbr;
+          double v = fmin;
           numerical_values.push_back(v);
-          for(auto i=1;i<nbr;i++) {
-            v+=step;
+          for (auto i = 1; i < nbr - 1; i++) {
+            v += step;
             numerical_values.push_back(v);
           }
           numerical_values.push_back(fmax);
