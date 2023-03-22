@@ -125,6 +125,27 @@ namespace gum_tests {
      TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A[0.3]", 1), gum::InvalidArgument&)
 }   // namespace gum_tests
 
+GUM_TEST(CreationNumerical) {
+  try {
+      {
+        auto a = gum::fastVariable< double >("A{1|1.5|6|2.9|3.14}", 4);
+        TS_ASSERT_EQUALS(a->toString(), "A:NumericalDiscrete({1|1.5|2.9|3.14|6})")
+      }
+      TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A{3.14}", 4),
+                       const gum::InvalidArgument&)
+
+      {
+        auto a = gum::fastVariable< double >("A{3.14}", 1);
+        TS_ASSERT_EQUALS(a->toString(), "A:NumericalDiscrete({3.14})")
+      }
+
+      {
+        auto a = gum::fastVariable< double >("A{0.2:5.2:5}", 5);
+        TS_ASSERT_EQUALS(a->toString(), "A:NumericalDiscrete({1|1.5|2.9|3.14|6})")
+      }
+  } catch (gum::Exception const& e) { GUM_SHOWERROR(e) }
+}
+
 GUM_TEST(ToFastMethod) {
   std::string s;
   s = "A{On|Off|Defun}";

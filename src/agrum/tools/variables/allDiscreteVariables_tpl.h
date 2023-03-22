@@ -37,6 +37,9 @@ namespace gum {
     std::vector< GUM_SCALAR >  ticks;
     std::string                name;
 
+    std::vector< int >    values;
+    std::vector< GUM_SCALAR > numerical_values;
+
     if (*(var_description.rbegin()) == ']') {
       auto posBrack = var_description.find('[');
       if (posBrack != std::string::npos) {
@@ -73,20 +76,46 @@ namespace gum {
           ds = args.size() - 1;
         }
       }
-    } else if (*(var_description.rbegin()) == '}') {   // var_description like "n{one|two|three}"
+    } else if (*(var_description.rbegin()) == '}') {   // var_description like "n{one|two|three}" or b{1.1:3.31:5}
       auto posBrack = var_description.find('{');
       if (posBrack != std::string::npos) {
         name   = var_description.substr(0, posBrack);
-        labels = split(var_description.substr(posBrack + 1, var_description.size() - posBrack - 2),
-                       "|");
-        if (labels.size() < 2) {
-          if (labels.size() != default_domain_size)   // 1 is ok if default_domain_size==1
-            GUM_ERROR(InvalidArgument, "Not enough labels in var_description " << var_description)
+        labels= split(var_description.substr(posBrack + 1, var_description.size() - posBrack - 2),
+                       ":");
+        if (labels.size()==3) { //b{1.1:3.31:5}
+          const auto fmin=(GUM_SCALAR)std::stod(labels[0]);
+          const auto fmax=(GUM_SCALAR)std::stod(labels[1]);
+          const int nbr= std::stoi(labels[2]);
+
+          if (fmax<=fmin) {
+            GUM_ERROR(InvalidArgument, "last<=first in " << var_description)
+          }
+          if (nbr<=1){
+            GUM_ERROR(InvalidArgument, "nbr<=1 in " << var_description)
+          }
+          const GUM_SCALAR step=(GUM_SCALAR)((fmax-fmin)/(nbr-1));
+          labels.clear();
+          ds=nbr;
+          GUM_SCALAR v=fmin;
+          numerical_values.push_back(v);
+          for(auto i=1;i<nbr;i++) {
+            v+=step;
+            numerical_values.push_back(v);
+          }
+          numerical_values.push_back(fmax);
+        } else {
+          labels
+             = split(var_description.substr(posBrack + 1, var_description.size() - posBrack - 2),
+                     "|");
+          if (labels.size() < 2) {
+            if (labels.size() != default_domain_size)   // 1 is ok if default_domain_size==1
+              GUM_ERROR(InvalidArgument, "Not enough labels in var_description " << var_description)
+          }
+          if (!hasUniqueElts(labels)) {
+            GUM_ERROR(InvalidArgument, "Duplicate labels in var_description " << var_description)
+          }
+          ds = labels.size();
         }
-        if (!hasUniqueElts(labels)) {
-          GUM_ERROR(InvalidArgument, "Duplicate labels in var_description " << var_description)
-        }
-        ds = labels.size();
       }
     } else {
       name = var_description;
@@ -100,8 +129,6 @@ namespace gum {
                   "Only one value for variable " << var_description << " (2 at least are needed).")
     }
 
-    std::vector< int >    values;
-    std::vector< double > double_values;
     if (!labels.empty()) {
       if (std::all_of(labels.cbegin(), labels.cend(), isInteger)) {
         for (const auto& label: labels)
@@ -123,15 +150,15 @@ namespace gum {
         }
       } else if (std::all_of(labels.cbegin(), labels.cend(), isNumerical))
         for (const auto& label: labels)
-          double_values.push_back(std::stod(label));
+          numerical_values.push_back(std::stod(label));
     }
 
     trim(name);
 
     if (!values.empty()) {
       return std::make_unique< IntegerVariable >(name, name, values);
-    } else if (!double_values.empty()) {
-      return std::make_unique< NumericalDiscreteVariable >(name, name, double_values);
+    } else if (!numerical_values.empty()) {
+      return std::make_unique< NumericalDiscreteVariable >(name, name, numerical_values);
     } else if (!labels.empty()) {
       return std::make_unique< LabelizedVariable >(name, name, labels);
     } else if (!ticks.empty()) {

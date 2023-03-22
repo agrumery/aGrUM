@@ -3343,9 +3343,17 @@ class NumericalDiscreteVariable(DiscreteVariable):
 
     NumericalDiscreteVariable(aName, aDesc='', values=None) -> NumericalDiscreteVariable
         Parameters:
-            - aName** (str) -- the name of the variable
+            - **aName** (str) -- the name of the variable
             - **aDesc** (str) -- the (optional) description of the variable
-            - **values** (List[float]) -- the values to create
+            - **values** (List[float]) -- the values to create equivalent to *fast* syntax `{v1|v2|v3|...|vn}`
+
+    NumericalDiscreteVariable(aName, aDesc='', first, last, nbr) -> NumericalDiscreteVariable
+        Parameters:
+            - **aName** (str) -- the name of the variable
+            - **aDesc** (str) -- the (optional) description of the variable
+            - **first** (float) -- specify a list of floats from `first` to `last` in `nbr` steps.
+            - **last** (float) --
+            - **nbr** (int)  -- equivalent to fast syntax `{first:last:nbr}`
 
     NumericalDiscreteVariable(aIDRV) -> NumericalDiscreteVariable
         Parameters:
@@ -3368,6 +3376,9 @@ class NumericalDiscreteVariable(DiscreteVariable):
     b:NumericalDiscrete({1.42|1.5|3.14})
     >>> vb.labels()
     ('1.42', '1.5', '3.14')
+    >>>> vc=gum.NumericalDiscreteVariable('c','c',1.2,3.8,5)
+    >>> print(vc)
+    c:NumericalDiscrete({1.2|1.85|2.5|3.15|3.8})
 
     """
 
