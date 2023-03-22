@@ -16,9 +16,9 @@ NumericalDiscreteVariable(aName, aDesc='', first, last, nbr) -> NumericalDiscret
         - **last** (float) --
         - **nbr** (int)  -- equivalent to fast syntax `{first:last:nbr}`
 
-NumericalDiscreteVariable(aIDRV) -> NumericalDiscreteVariable
+NumericalDiscreteVariable(aNDRV) -> NumericalDiscreteVariable
     Parameters:
-        - **aIDRV** (*pyAgrum.NumericalDiscreteVariable*) -- The pyAgrum.NumericalDiscreteVariable that will be copied
+        - **aNDRV** (*pyAgrum.NumericalDiscreteVariable*) -- The pyAgrum.NumericalDiscreteVariable that will be copied
 
 Examples
 --------

@@ -10,11 +10,12 @@ The type of the random variables can be specifiy with different syntaxes:
 
       - by default, a variable is a :class:`pyAgrum.RangeVariable` using the default domain size (second argument of the functions).
       - with ``a[10]``, the variable is a :class:`pyAgrum.RangeVariable` using 10 as domain size (from 0 to 9)
-      - with ``a[3,7]``, the variable is a :class:`pyAgrum.RangeVariable` using a domainSize from 3 to 7
+      - with ``a[3,7]``, the variable is a :class:`pyAgrum.RangeVariable` using the integer values from 3 to 7
       - with ``a[1,3.14,5,6.2]``, the variable is a :class:`pyAgrum.DiscretizedVariable` using the given ticks (at least 3 values)
       - with ``a{top|middle|bottom}``, the variable is a :class:`pyAgrum.LabelizedVariable` using the given labels (here : `top`, `middle` and `bottom`).
       - with ``a{-1|5|0|3}``, the variable is a :class:`pyAgrum.IntegerVariable` using the sorted given values.
       - with ``a{-0.5|5.01|0|3.1415}``, the variable is a :class:`pyAgrum.NumericalDiscreteVariable` using the sorted given values.
+      - with ``a{-0.5:3.1415:5}``, the variable is a :class:`pyAgrum.NumericalDiscreteVariable` using the values from -0.5 to 3.1415 in 5 steps (the domain size is 5).
 
 .. autofunction:: pyAgrum.fastVariable
   

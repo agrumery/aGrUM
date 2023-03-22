@@ -48,7 +48,7 @@ class DiscreteVariableTestCase(VariablesTestCase):
     self.assertNotEqual(v.labels(), ("1", "0"))
 
     v = gum.LabelizedVariable("b", "b", 0).addLabel(
-        "toto").addLabel("titi").addLabel("yes")
+      "toto").addLabel("titi").addLabel("yes")
     self.assertEqual(v.labels(), ("toto", "titi", "yes"))
 
     v = gum.RangeVariable("c", "c", 0, 5)
@@ -58,11 +58,11 @@ class DiscreteVariableTestCase(VariablesTestCase):
     self.assertEqual(v.labels(), ("3", "4", "5"))
 
     v = gum.DiscretizedVariable("e", "e").addTick(
-        1).addTick(2).addTick(3).addTick(4)
+      1).addTick(2).addTick(3).addTick(4)
     self.assertEqual(v.labels(), ("[1;2[", "[2;3[", "[3;4]"))
 
     v = gum.DiscretizedVariable("e", "e").addTick(
-        1).addTick(2).addTick(3).addTick(4)
+      1).addTick(2).addTick(3).addTick(4)
     v.setEmpirical(True)
     self.assertEqual(v.labels(), ("(1;2[", "[2;3[", "[3;4)"))
 
@@ -73,22 +73,22 @@ class DiscreteVariableTestCase(VariablesTestCase):
     v.setEmpirical(True)
     self.assertEqual(v.labels(), ("(1;2[", "[2;4[", "[4;5)"))
 
-    v = gum.DiscretizedVariable("f", "f", [1, 5, 2, 4],True)
+    v = gum.DiscretizedVariable("f", "f", [1, 5, 2, 4], True)
     self.assertEqual(v.labels(), ("(1;2[", "[2;4[", "[4;5)"))
 
-    v = gum.DiscretizedVariable("f", "f", [1, 5, 2, 4],True)
+    v = gum.DiscretizedVariable("f", "f", [1, 5, 2, 4], True)
     v.setEmpirical(False)
     self.assertEqual(v.labels(), ("[1;2[", "[2;4[", "[4;5]"))
 
   def testHashableDiscreteVariable(self):
     va = gum.LabelizedVariable("a", "a")
-    vb = gum.LabelizedVariable("b", "b", ["toto","titi","yes"])
-    vc=gum.RangeVariable("c", "c", 0, 5)
-    vd=gum.RangeVariable("d", "d", 3, 5)
-    ve=gum.DiscretizedVariable("e", "e").addTick(1).addTick(2).addTick(3).addTick(4)
+    vb = gum.LabelizedVariable("b", "b", ["toto", "titi", "yes"])
+    vc = gum.RangeVariable("c", "c", 0, 5)
+    vd = gum.RangeVariable("d", "d", 3, 5)
+    ve = gum.DiscretizedVariable("e", "e").addTick(1).addTick(2).addTick(3).addTick(4)
 
-    s=set([va,vb,vc]+[vc,vd,ve]+[va,ve])
-    self.assertEqual(len(s),5)
+    s = set([va, vb, vc] + [vc, vd, ve] + [va, ve])
+    self.assertEqual(len(s), 5)
 
 
 class LabelizedVariableTestCase(VariablesTestCase):
@@ -105,12 +105,12 @@ class LabelizedVariableTestCase(VariablesTestCase):
     self.assertEqual(var.varType(), gum.VarType_Labelized)
 
     c.setDescription("this is a test")
-    self.assertEqual(c.description(),"this is a test")
+    self.assertEqual(c.description(), "this is a test")
 
   def testLabels(self):
     gum.LabelizedVariable('a', '', 0).addLabel('a1').addLabel('a2') \
-        .addLabel('a3').addLabel('a4') \
-        .addLabel('a5').addLabel('a6')
+      .addLabel('a3').addLabel('a4') \
+      .addLabel('a5').addLabel('a6')
     self.assertEqual(self.varL2.domainSize(), 5)
     self.varL1.addLabel("coucou")
     self.varL1.addLabel("super")
@@ -163,7 +163,7 @@ class RangeVariableTestCase(VariablesTestCase):
 class DiscretizedVariableTestCase(VariablesTestCase):
   def testAddTicks(self):
     v = gum.DiscretizedVariable('a', '').addTick(0.5).addTick(
-        5.9).addTick(5.99).addTick(0.1).addTick(0.23).addTick(12)
+      5.9).addTick(5.99).addTick(0.1).addTick(0.23).addTick(12)
     self.assertEqual(v.varType(), gum.VarType_Discretized)
 
     var = gum.DiscretizedVariable("var", "test var")
@@ -219,12 +219,10 @@ class DiscretizedVariableTestCase(VariablesTestCase):
                   _testOrderTicks(i, j, k, l, m, n)
 
 
-
-
 class NumericalDiscreteVariableTestCase(VariablesTestCase):
   def testAddValue(self):
     v = gum.NumericalDiscreteVariable('a', '').addValue(0.5).addValue(
-        5.9).addValue(5.99).addValue(0.1).addValue(0.23).addValue(12)
+      5.9).addValue(5.99).addValue(0.1).addValue(0.23).addValue(12)
     self.assertEqual(v.varType(), gum.VarType_Numerical)
 
     var = gum.NumericalDiscreteVariable("var", "test var")
@@ -243,6 +241,40 @@ class NumericalDiscreteVariableTestCase(VariablesTestCase):
 
     self.assertRaises(gum.DuplicateElement, var.addValue, 2.25)
     self.assertEqual(str(var), "var:NumericalDiscrete({0.2|2.25|3})")
+
+  def testConstructor1(self):
+    var = gum.NumericalDiscreteVariable("var", "test var", [1, 3.15, 2])
+    self.assertFalse(var.empty())
+    self.assertEqual(var.domainSize(), 3)
+    self.assertEqual(str(var), "var:NumericalDiscrete({1|2|3.15})")
+
+  def testConstructor2(self):
+    var = gum.NumericalDiscreteVariable("var", "test var", 1.2, 5.2, 5)
+    self.assertFalse(var.empty())
+    self.assertEqual(var.domainSize(), 5)
+    self.assertEqual(str(var), "var:NumericalDiscrete({1.2|2.2|3.2|4.2|5.2})")
+
+  def testFastSyntax(self):
+    var = gum.fastVariable("A{1|1.5|6|2.9|3.14}", 4)
+    self.assertEqual(str(var), "A:NumericalDiscrete({1|1.5|2.9|3.14|6})")
+    with self.assertRaises(gum.InvalidArgument):
+      var = gum.fastVariable("A{3.14}", 4)
+
+    var = gum.fastVariable("A{3.14}", 1)
+    self.assertEqual(str(var), "A:NumericalDiscrete({3.14})")
+
+    var = gum.fastVariable("A{1.2:5.2:5}", 5)
+    self.assertEqual(str(var), "A:NumericalDiscrete({1.2|2.2|3.2|4.2|5.2})")
+
+    var = gum.fastVariable("A{1.2:5.2:2}", 2)
+    self.assertEqual(str(var), "A:NumericalDiscrete({1.2|5.2})")
+
+    var = gum.fastVariable("A{1.2|5.2}", 2)
+    self.assertEqual(str(var), "A:NumericalDiscrete({1.2|5.2})")
+
+    var = gum.fastVariable("A{1.2:5.2:2.8}", 2)
+    self.assertEqual(str(var), "A:NumericalDiscrete({1.2|5.2})")
+
 
 ts = unittest.TestSuite()
 addTests(ts, DiscreteVariableTestCase)
