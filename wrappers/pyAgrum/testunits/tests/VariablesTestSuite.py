@@ -90,6 +90,39 @@ class DiscreteVariableTestCase(VariablesTestCase):
     s = set([va, vb, vc] + [vc, vd, ve] + [va, ve])
     self.assertEqual(len(s), 5)
 
+  def testExportDerivedReadOnlyAPIforDiscreteVariable(self):
+    bn = gum.fastBN("A{yes|no}->B{3.14|5|10|9.2}->C->D{1|3|9|5}->E[1,3.15,9.23,4.5]")
+    self.assertEqual(bn.variable("A").isLabel("no"), True)
+    self.assertEqual(bn.variable("A").posLabel("no"), 1)
+    self.assertEqual(bn.variable("C").belongs(1), True)
+    self.assertEqual(bn.variable("C").minVal(), 0)
+    self.assertEqual(bn.variable("C").maxVal(), 1)
+    self.assertEqual(bn.variable("B").numericalDomain(), [3.14, 5.0, 9.2, 10.])
+    self.assertEqual(bn.variable("B").closestLabel(3), '3.14')
+    self.assertEqual(bn.variable("B").closestIndex(3), 0)
+    self.assertEqual(bn.variable("B").isValue(3), False)
+    self.assertEqual(bn.variable("D").integerDomain(), [1, 3, 5, 9])
+    self.assertEqual(bn.variable("D").isValue(3), True)
+    self.assertEqual(bn.variable("E").isTick(3.14), False)
+    self.assertEqual(bn.variable("E").ticks(), (1.0, 3.15, 4.5, 9.23))
+    self.assertEqual(bn.variable("E").isEmpirical(), False)
+    self.assertEqual(bn.variable("E").tick(1), 3.15)
+
+  def testCheckDerivedReadOnlyAPIforDiscreteVariable(self):
+    def not_imported_api(typ: str):
+      bn = gum.fastBN("X")
+      y = bn.variable("X")
+      x = eval(f'gum.{typ}("X","X")')
+      return set(x.__dir__()) - set(y.__dir__())
+
+    # these methods are not down-exported in variables.i
+    self.assertEquals(not_imported_api("LabelizedVariable"), {'addLabel', 'eraseLabels', 'changeLabel'})
+    self.assertEquals(not_imported_api("RangeVariable"), {'setMinVal', 'setMaxVal'})
+    self.assertEquals(not_imported_api("NumericalDiscreteVariable"),
+                      {'eraseValue', 'eraseValues', 'addValue', 'changeValue'})
+    self.assertEquals(not_imported_api("DiscretizedVariable"), {'eraseTicks', 'setEmpirical', 'addTick'})
+    self.assertEquals(not_imported_api("IntegerVariable"), {'eraseValue', 'eraseValues', 'addValue', 'changeValue'})
+
 
 class LabelizedVariableTestCase(VariablesTestCase):
   def testCopyConstructor(self):
