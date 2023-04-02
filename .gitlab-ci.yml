@@ -325,6 +325,39 @@ windows_pyagrum_2022:
   retry: 1
 
 ################################################################################
+# Windows / MINGW
+################################################################################
+
+windows_pyagrum_mingw:
+  only:
+   - master@agrumery/aGrUM
+   - web@agrumery/aGrUM
+   - merge_requests
+  tags:
+    - windows
+    - conda
+    - agrumerie2
+  variables:
+    PATH: $PATH_64_MINGW_AGRUMERIE2
+  cache:
+    key: mingw
+    paths:
+      - build/
+  stage: build
+  script:
+    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.11
+    - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
+    - call pip install -r wrappers\pyAgrum\testunits\requirements.txt
+    - call pip install cmake
+    - python act clean
+    - python act install release pyAgrum --compiler=mingw64 -d build -j except1 -t quick
+    - '@For %%A In (libgcc_s_seh-1 libgomp-1 libssp-0 libstdc++-6 libwinpthread-1) Do @Copy /-Y "C:\msys64\mingw64\bin\%%A.dll" %CD%"\build\pyAgrum\release\wrappers\pyAgrum"'
+    - python act test release pyAgrum
+    - call conda.bat deactivate
+    - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
+  retry: 1
+
+################################################################################
 # Deploy  wheels
 ################################################################################
 

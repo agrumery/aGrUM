@@ -135,7 +135,7 @@ def buildCmake(current, target):
 
 
 def getMake(current, target):
-  if platform.system() == "Windows":
+  if platform.system() == "Windows" and current["compiler"] != "mingw64":
     return getForMsBuildSystem(current, target)
   else:
     return getForMakeSystem(current, target)
