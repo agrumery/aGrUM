@@ -1,4 +1,6 @@
 ################################
+### Specific requirements for notebooks
+
 # generated : do not change it !
 ################################
 matplotlib

@@ -1,6 +1,24 @@
-################################
+#### optional requirements #####
 # generated : do not change it !
+y
+scikit-learn
+pandas
+tqdm
 ################################
+################################
+### Specific requirements for sphinx
+pyAgrum
+sphinx
+IPython
+ipykernel
+sphinx_rtd_theme>1.1.0
+sphinx-autodoc-typehints
+nbsphinx>0.8.11
+pandoc
+sphinx-copybutton
+sphinx-gallery
+readthedocs-sphinx-search>0.1.1
+sphinxcontrib-jsmath>1.0.0
 matplotlib
 matplotlib-inline
 pydot

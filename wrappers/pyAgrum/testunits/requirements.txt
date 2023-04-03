@@ -1,5 +1,15 @@
 ################################
+nbformat
+nbconvert
+jupyter
+scipy
+scikit-learn
+pandas
+tqdm
+################################
 # generated : do not change it !
+### Specific requirements for tests
+
 ################################
 matplotlib
 matplotlib-inline

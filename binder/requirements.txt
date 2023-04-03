@@ -1,5 +1,9 @@
 ################################
+################################
 # generated : do not change it !
+### Specific requirements for binder
+pyAgrum
+
 ################################
 matplotlib
 matplotlib-inline
