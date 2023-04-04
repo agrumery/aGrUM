@@ -32,23 +32,33 @@
 #ifndef GUM_INFORMATION_THEORY
 #  define GUM_INFORMATION_THEORY
 
-#include <agrum/tools/multidim/potential.h>
+#  include <agrum/tools/multidim/potential.h>
 
 namespace gum {
-  template < typename T>
+  template < typename T >
   concept JointTargettable = requires(T t, const NodeSet& target) {
     { t.addJointTarget(target) } -> std::same_as< void >;
   };
 
   template < template < typename > class INFERENCE_ENGINE, typename GUM_SCALAR >
-    requires JointTargettable< INFERENCE_ENGINE< GUM_SCALAR >>
+    requires JointTargettable< INFERENCE_ENGINE< GUM_SCALAR > >
   class InformationTheory {
     public:
     InformationTheory(INFERENCE_ENGINE< GUM_SCALAR >& engine,
                       const gum::NodeSet&             X,
                       const gum::NodeSet&             Y);
+    InformationTheory(INFERENCE_ENGINE< GUM_SCALAR >&   engine,
+                      const std::vector< std::string >& Xnames,
+                      const std::vector< std::string >& Ynames);
+
+    protected:
+    INFERENCE_ENGINE< GUM_SCALAR >& engine_;
+    const gum::NodeSet&             X_;
+    const gum::NodeSet&             Y_;
+
+    void makeInference_();
   };
 }   // namespace gum
 
-#include <agrum/tools/graphicalModels/algorithm/informationTheory_tpl.h>
+#  include <agrum/tools/graphicalModels/algorithms/informationTheory_tpl.h>
 #endif   // GUM_INFORMATION_THEORY

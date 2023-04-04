@@ -1,5 +1,19 @@
 # aGrUM Changelog
 
+## Changelog for 1.7.2
+
+* aGrUM
+  * Adding the alternative *fast* syntax for NumericalDiscreteVariable : `{1.5:3.5:3}` meaning from 1.5 to 3.5 in 3 steps.
+  * Updating `GraphicalModel::exists(const std::string&)` : return false instead of throw an exception.
+  * Adding mingw as a target for CI
+
+* pyAgrum
+  * Updating notebooks to the new down-exported read-only API of `pyAgrum.DiscreteVariable`.
+  * Down-exporting the read-only API for every types of discrete Variable to `pyAgrum.DiscreteVariable`. (see `VariablesTestSuite.testExportDerivedReadOnlyAPIforDiscreteVariable`)
+  * Updating docs for new *fast* syntax.
+  * Adding the alternative *fast* syntax for NumericalDiscreteVariable : `{1.5:3.5:3}` meaning from 1.5 to 3.5 in 3 steps.
+  * Updating `GraphicalModel::exists(const std::string&)` : return false instead of throw an exception.
+
 ## Changelog for 1.7.1
 
 * aGrUM

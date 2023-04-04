@@ -114,7 +114,6 @@ namespace gum {
 
     /// @}
 
-
     // ############################################################################
     /// @name Targets
     // ############################################################################
@@ -230,7 +229,6 @@ namespace gum {
     /** @param id The variable's id. */
     virtual const Potential< GUM_SCALAR >& posterior_(NodeId id) = 0;
 
-    protected:
     void setTargetedMode_();
     bool isTargetedMode_() const;
 
@@ -240,10 +238,6 @@ namespace gum {
 
     /// the set of marginal targets
     NodeSet _targets_;
-
-
-    /*/// remove all the marginal posteriors computed
-    void  _invalidatePosteriors_() noexcept;*/
 
     /// sets all the nodes of the Bayes net as targets
     void _setAllMarginalTargets_();

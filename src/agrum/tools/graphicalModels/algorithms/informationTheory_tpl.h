@@ -25,7 +25,7 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 
-#include <agrum/tools/graphicalModels/algorithm/informationTheory.h>
+#include <agrum/tools/graphicalModels/algorithms/informationTheory.h>
 
 #define INFORMATION_THEORY_TEMPLATE                                              \
   template < template < typename > class INFERENCE_ENGINE, typename GUM_SCALAR > \
@@ -36,9 +36,29 @@ namespace gum {
   InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::InformationTheory(
      INFERENCE_ENGINE< GUM_SCALAR >& engine,
      const gum::NodeSet&             X,
-     const gum::NodeSet&             Y) {
-    std::cout << "In Information Theory" << std::endl;
+     const gum::NodeSet&             Y) :
+      engine_(engine),
+      X_(X), Y_(Y) {
+    makeInference_();
     GUM_CONSTRUCTOR(InformationTheory)
+  }
+
+  INFORMATION_THEORY_TEMPLATE
+  InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::InformationTheory(
+     INFERENCE_ENGINE< GUM_SCALAR >&   engine,
+     const std::vector< std::string >& Xnames,
+     const std::vector< std::string >& Ynames) :
+      InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >(engine,
+                                                        engine.model().ids(Xnames),
+                                                        engine.model().ids(Ynames)) {
+    makeInference_();
+    GUM_CONSTRUCTOR(InformationTheory)
+  }
+
+
+  INFORMATION_THEORY_TEMPLATE
+  void InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::makeInference_() {
+    std::cout << "In Information Theory" << std::endl;
   }
 
 #undef INFORMATION_THEORY_TEMPLATE

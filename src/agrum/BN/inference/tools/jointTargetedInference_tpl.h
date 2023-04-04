@@ -266,7 +266,7 @@ namespace gum {
     try {
       // here use unnormalized joint posterior rather than just posterior
       // to avoid saving the posterior in the cache of the inference engines
-      // like LazyPropagation or SahferShenoy.
+      // like LazyPropagation or ShaferShenoy.
       pXY = this->unnormalizedJointPosterior_({X, Y});
       pXY->normalize();
       pX = pXY->margSumOut({&(this->BN().variable(Y))});

@@ -34,13 +34,12 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE AggregatorDecomposition< GUM_SCALAR >::AggregatorDecomposition() {
-    _arity_ = 2;
-    GUM_CONSTRUCTOR(AggregatorDecomposition);
+    GUM_CONSTRUCTOR(AggregatorDecomposition)
   }
 
   template < typename GUM_SCALAR >
   AggregatorDecomposition< GUM_SCALAR >::~AggregatorDecomposition() {
-    GUM_DESTRUCTOR(AggregatorDecomposition);
+    GUM_DESTRUCTOR(AggregatorDecomposition)
   }
 
   template < typename GUM_SCALAR >
@@ -57,7 +56,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   NodeId AggregatorDecomposition< GUM_SCALAR >::addAggregator_(BayesNet< GUM_SCALAR >& bn,
-                                                               std::string             aggType,
+                                                               const std::string&      aggType,
                                                                const DiscreteVariable& var,
                                                                Idx                     value) {
     if (toLower(aggType) == "min") {
@@ -105,12 +104,12 @@ namespace gum {
 
     orderedParents.sort();
 
-    Set< NodeId >  newAggs = Set< NodeId >();
+    auto           newAggs = Set< NodeId >();
     List< NodeId > newAggParents;
 
-    gum::Size arity = getMaximumArity();
-    gum::Size q     = 0;
-    gum::Size i     = 0;
+    const gum::Size arity = getMaximumArity();
+    gum::Size       q     = 0;
+    gum::Size       i     = 0;
 
     long minVal = 0;
     long maxVal = 0;
@@ -119,7 +118,7 @@ namespace gum {
 
     std::string newName
        = std::string(bn.variable(initialAggregator).name()) + "_" + std::to_string(j);
-    std::string aggType = p->aggregatorName();
+    const std::string aggType = p->aggregatorName();
 
     for (auto parent: parents) {
       bn.eraseArc(parent, initialAggregator);
@@ -132,7 +131,8 @@ namespace gum {
     newAgg->setDescription(aggType);
 
     // for(Set<NodeId>::iterator it = parents.begin(); it!= parents.end(); ++it){
-    for (auto it = orderedParents.begin(); it != orderedParents.end(); ++it) {
+    // for (auto it = orderedParents.begin(); it != orderedParents.end(); ++it) {
+    for (const auto& parent: orderedParents) {
       if (q < parents.size() - parents.size() % arity) {
         if (i == arity) {
           i = 0;
@@ -173,24 +173,24 @@ namespace gum {
           newAgg->setName(newName);
           newAgg->setDescription(aggType);
 
-          if (bn.variable(*it).varType() == VarType::Range) {
-            minVal += static_cast< const RangeVariable& >(bn.variable(*it)).minVal();
-            maxVal += static_cast< const RangeVariable& >(bn.variable(*it)).maxVal();
+          if (bn.variable(parent).varType() == VarType::Range) {
+            minVal += static_cast< const RangeVariable& >(bn.variable(parent)).minVal();
+            maxVal += static_cast< const RangeVariable& >(bn.variable(parent)).maxVal();
           }
 
-          newAggParents.push_back(*it);
+          newAggParents.push_back(parent);
           i++;
         } else {
-          if (bn.variable(*it).varType() == VarType::Range) {
-            minVal += static_cast< const RangeVariable& >(bn.variable(*it)).minVal();
-            maxVal += static_cast< const RangeVariable& >(bn.variable(*it)).maxVal();
+          if (bn.variable(parent).varType() == VarType::Range) {
+            minVal += static_cast< const RangeVariable& >(bn.variable(parent)).minVal();
+            maxVal += static_cast< const RangeVariable& >(bn.variable(parent)).maxVal();
           }
 
-          newAggParents.push_back(*it);
+          newAggParents.push_back(parent);
           i++;
         }
       } else {
-        newAggs.insert(*it);
+        newAggs.insert(parent);
       }
       q++;
     }
@@ -211,9 +211,7 @@ namespace gum {
       bn.addArc(node, bn.idFromName(newName));
     }
 
-    Set< NodeId > final = addDepthLayer_(bn, newAggs, initialAggregator, j);
-
-    for (auto agg: final) {
+    for (auto agg: addDepthLayer_(bn, newAggs, initialAggregator, j)) {
       bn.addArc(agg, initialAggregator);
     }
 
@@ -237,7 +235,7 @@ namespace gum {
     } else {
       auto newAgg = bn.variable(initialAggregator).clone();
 
-      Set< NodeId > newAggs = Set< NodeId >();
+      auto newAggs = Set< NodeId >();
 
       List< NodeId > newAggParents;
 
@@ -263,7 +261,8 @@ namespace gum {
       newAgg->setDescription(aggType);
 
       // for(Set<NodeId>::iterator it = nodes.begin(); it!= nodes.end(); ++it){
-      for (auto it = orderedParents.begin(); it != orderedParents.end(); ++it) {
+      // for (auto it = orderedParents.begin(); it != orderedParents.end(); ++it) {
+      for (const auto parent: orderedParents) {
         if (q < nodes.size() - nodes.size() % arity) {
           if (i == arity) {
             i = 0;
@@ -292,29 +291,29 @@ namespace gum {
 
             newName = std::string(bn.variable(initialAggregator).name()) + "_" + std::to_string(j);
 
-            delete (newAgg);
+            delete newAgg;
             newAgg = bn.variable(initialAggregator).clone();
             newAgg->setName(newName);
             newAgg->setDescription(aggType);
 
-            if (bn.variable(*it).varType() == VarType::Range) {
-              minVal += static_cast< const RangeVariable& >(bn.variable(*it)).minVal();
-              maxVal += static_cast< const RangeVariable& >(bn.variable(*it)).maxVal();
+            if (bn.variable(parent).varType() == VarType::Range) {
+              minVal += static_cast< const RangeVariable& >(bn.variable(parent)).minVal();
+              maxVal += static_cast< const RangeVariable& >(bn.variable(parent)).maxVal();
             }
 
-            newAggParents.push_back(*it);
+            newAggParents.push_back(parent);
             i++;
           } else {
-            if (bn.variable(*it).varType() == VarType::Range) {
-              minVal += static_cast< const RangeVariable& >(bn.variable(*it)).minVal();
-              maxVal += static_cast< const RangeVariable& >(bn.variable(*it)).maxVal();
+            if (bn.variable(parent).varType() == VarType::Range) {
+              minVal += static_cast< const RangeVariable& >(bn.variable(parent)).minVal();
+              maxVal += static_cast< const RangeVariable& >(bn.variable(parent)).maxVal();
             }
 
-            newAggParents.push_back(*it);
+            newAggParents.push_back(parent);
             i++;
           }
         } else {
-          newAggs.insert(*it);
+          newAggs.insert(parent);
         }
         q++;
       }
@@ -335,7 +334,7 @@ namespace gum {
         bn.addArc(node, bn.idFromName(newName));
       }
 
-      delete (newAgg);
+      delete newAgg;
       return addDepthLayer_(bn, newAggs, initialAggregator, j);
     }
   }

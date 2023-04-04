@@ -19,4 +19,4 @@
 */
 
 
-#include <agrum/tools/graphicalModels/algorithm/informationTheory.h>
+#include <agrum/tools/graphicalModels/algorithms/informationTheory.h>
