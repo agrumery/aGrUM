@@ -1,26 +1,12 @@
+################################
+# generated : do not change it !
+################################
 matplotlib
 matplotlib-inline
 pydot
 numpy
 
 #### optional requirements #####
-# generated : do not change it !
-nbformat
-nbconvert
-jupyter
-scipy
-scikit-learn
-pandas
-tqdm
-################################
-################################
-ot
-numpy
-
-#### optional requirements #####
-### Specific requirements for binder
-pyAgrum
-
 nbformat
 nbconvert
 jupyter

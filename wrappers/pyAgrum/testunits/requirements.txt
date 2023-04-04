@@ -1,21 +1,10 @@
 ################################
-ot
-numpy
-
-#### optional requirements #####
-nbformat
-nbconvert
-jupyter
-scipy
-scikit-learn
-pandas
-tqdm
+# generated : do not change it !
 ################################
-################################
-ot
+matplotlib
+matplotlib-inline
+pydot
 numpy
-
-### Specific requirements for tests
 
 #### optional requirements #####
 nbformat
