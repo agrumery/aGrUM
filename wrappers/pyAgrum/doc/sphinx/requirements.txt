@@ -1,11 +1,25 @@
-#### optional requirements #####
+################################
+matplotlib
+matplotlib-inline
+pydot
+numpy
+
 # generated : do not change it !
-y
+#### optional requirements #####
+################################
+nbformat
+nbconvert
+jupyter
+scipy
 scikit-learn
 pandas
 tqdm
 ################################
-################################
+matplotlib
+matplotlib-inline
+pydot
+numpy
+
 ### Specific requirements for sphinx
 pyAgrum
 sphinx
@@ -19,11 +33,6 @@ sphinx-copybutton
 sphinx-gallery
 readthedocs-sphinx-search>0.1.1
 sphinxcontrib-jsmath>1.0.0
-matplotlib
-matplotlib-inline
-pydot
-numpy
-
 #### optional requirements #####
 nbformat
 nbconvert

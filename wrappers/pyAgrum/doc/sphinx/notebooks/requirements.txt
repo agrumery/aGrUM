@@ -1,12 +1,21 @@
 ################################
-### Specific requirements for notebooks
+ot
+numpy
 
+#### optional requirements #####
 # generated : do not change it !
 ################################
+y
+scikit-learn
+pandas
+tqdm
 matplotlib
 matplotlib-inline
 pydot
 numpy
+
+################################
+### Specific requirements for notebooks
 
 #### optional requirements #####
 nbformat

@@ -25,11 +25,21 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 
+#include <agrum/tools/graphicalModels/algorithm/informationTheory.h>
 
-template < template < typename > class INFERENCE_ENGINE, typename GUM_SCALAR >
-InformationTheory::InformationTheory(INFERENCE_ENGINE< GUM_SCALAR >& engine,
-                                     const gum::NodeSet&             X,
-                                     const gum::NodeSet&             Y) {
-  std::cout<<"In Information Theory"<<std::endl;
-  GUM_CONSTRUCTOR(InformationTheory)
-}
+#define INFORMATION_THEORY_TEMPLATE                                              \
+  template < template < typename > class INFERENCE_ENGINE, typename GUM_SCALAR > \
+    requires JointTargettable< INFERENCE_ENGINE< GUM_SCALAR > >
+
+namespace gum {
+  INFORMATION_THEORY_TEMPLATE
+  InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::InformationTheory(
+     INFERENCE_ENGINE< GUM_SCALAR >& engine,
+     const gum::NodeSet&             X,
+     const gum::NodeSet&             Y) {
+    std::cout << "In Information Theory" << std::endl;
+    GUM_CONSTRUCTOR(InformationTheory)
+  }
+
+#undef INFORMATION_THEORY_TEMPLATE
+}   // namespace gum

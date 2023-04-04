@@ -26,7 +26,7 @@
 #include <gumtest/testsuite_utils.h>
 
 #include <agrum/BN/inference/lazyPropagation.h>
-#include<agrum/tools/graphicalModels/algorithm/informationTheory.h>
+#include <agrum/tools/graphicalModels/algorithm/informationTheory.h>
 
 namespace gum_tests {
 
@@ -34,9 +34,9 @@ namespace gum_tests {
     public:
     GUM_TEST(Constructor) {
       gum::NodeSet         X, Y;
-      auto bn=gum::BayesNet<double>::fastPrototype("A->B");
+      auto                 bn = gum::BayesNet< double >::fastPrototype("A->B");
       gum::LazyPropagation ie(&bn);
-      auto ig=gum::InformationTheory(ie,X,Y);
-    };
+      auto                 ig = gum::InformationTheory(ie, X, Y);
+    }
   };
-} // namespace gum_tests
+}   // namespace gum_tests

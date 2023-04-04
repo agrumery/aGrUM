@@ -35,14 +35,13 @@
 #include <agrum/tools/multidim/potential.h>
 
 namespace gum {
-  template < typename T, typename GUM_SCALAR >
+  template < typename T>
   concept JointTargettable = requires(T t, const NodeSet& target) {
     { t.addJointTarget(target) } -> std::same_as< void >;
-    { t.jointPosterior(target) } -> std::same_as< Potential<GUM_SCALAR> >;
   };
 
   template < template < typename > class INFERENCE_ENGINE, typename GUM_SCALAR >
-    requires JointTargettable< INFERENCE_ENGINE< GUM_SCALAR >, GUM_SCALAR >
+    requires JointTargettable< INFERENCE_ENGINE< GUM_SCALAR >>
   class InformationTheory {
     public:
     InformationTheory(INFERENCE_ENGINE< GUM_SCALAR >& engine,
@@ -51,4 +50,5 @@ namespace gum {
   };
 }   // namespace gum
 
+#include <agrum/tools/graphicalModels/algorithm/informationTheory_tpl.h>
 #endif   // GUM_INFORMATION_THEORY

@@ -1,4 +1,8 @@
 ################################
+ot
+numpy
+
+#### optional requirements #####
 nbformat
 nbconvert
 jupyter
@@ -7,14 +11,11 @@ scikit-learn
 pandas
 tqdm
 ################################
-# generated : do not change it !
-### Specific requirements for tests
-
 ################################
-matplotlib
-matplotlib-inline
-pydot
+ot
 numpy
+
+### Specific requirements for tests
 
 #### optional requirements #####
 nbformat
