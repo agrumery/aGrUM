@@ -18,6 +18,7 @@
  *
  */
 #include <concepts>
+#include "agrum/tools/variables/discreteVariable.h"
 
 #include <agrum/agrum.h>
 
@@ -32,6 +33,8 @@
 #ifndef GUM_INFORMATION_THEORY
 #  define GUM_INFORMATION_THEORY
 
+#  include <functional>
+
 #  include <agrum/tools/multidim/potential.h>
 
 namespace gum {
@@ -40,23 +43,57 @@ namespace gum {
     { t.addJointTarget(target) } -> std::same_as< void >;
   };
 
+  /** InformationTheory is a template class which aims at gathering the implementation of
+   * informational functions (entropy, mutual information, etc.). All these operations start with
+   * the inference of a joint distribution. Moreover, it is possible to want to condition these
+   * calculations. The inference (able to compute joint distributions) passed as an argument can
+   * therefore have previously defined evidence.
+   *
+   * @warning The joint distribution underlying the computations has a definition domain of
+   * exponential size depending on the number of variables passed as arguments. One must be aware of
+   * the complexity of the inference that will initially be carried out.
+   *
+   * @note All computations are made with std::log2
+   *
+   * @tparam INFERENCE_ENGINE : the inference engine
+   * @tparam GUM_SCALAR : the numeric type of parameters
+   */
   template < template < typename > class INFERENCE_ENGINE, typename GUM_SCALAR >
     requires JointTargettable< INFERENCE_ENGINE< GUM_SCALAR > >
   class InformationTheory {
     public:
     InformationTheory(INFERENCE_ENGINE< GUM_SCALAR >& engine,
-                      const gum::NodeSet&             X,
-                      const gum::NodeSet&             Y);
+                      gum::NodeSet              X,
+                      gum::NodeSet              Y);
     InformationTheory(INFERENCE_ENGINE< GUM_SCALAR >&   engine,
                       const std::vector< std::string >& Xnames,
                       const std::vector< std::string >& Ynames);
 
+    GUM_SCALAR entropyXY();
+    GUM_SCALAR entropyX();
+    GUM_SCALAR entropyY();
+
+    GUM_SCALAR expectedValueXY(std::function< GUM_SCALAR(const gum::Instantiation&) >);
+
+        GUM_SCALAR entropyXgivenY();
+        GUM_SCALAR entropyYgivenX();
+    GUM_SCALAR mutualInformationXY();
+
     protected:
     INFERENCE_ENGINE< GUM_SCALAR >& engine_;
-    const gum::NodeSet&             X_;
-    const gum::NodeSet&             Y_;
+
+    const gum::NodeSet X_;
+    const gum::NodeSet Y_;
+
+    gum::Set< const DiscreteVariable* > vX_;
+    gum::Set< const DiscreteVariable* > vY_;
+
+    gum::Potential< GUM_SCALAR > pXY_;
+    gum::Potential< GUM_SCALAR > pX_;
+    gum::Potential< GUM_SCALAR > pY_;
 
     void makeInference_();
+    GUM_SCALAR logOr0_(GUM_SCALAR x); //
   };
 }   // namespace gum
 
