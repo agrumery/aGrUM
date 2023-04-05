@@ -40,12 +40,20 @@ namespace gum {
   InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::InformationTheory(
      INFERENCE_ENGINE< GUM_SCALAR >& engine,
      gum::NodeSet                    X,
-     gum::NodeSet                    Y) :
+     gum::NodeSet                    Y,
+     gum::NodeSet                    Z) :
       engine_(engine),
-      X_(std::move(X)), Y_(std::move(Y)) {
+      X_(std::move(X)), Y_(std::move(Y)), Z_(std::move(Z)) {
     makeInference_();
     GUM_CONSTRUCTOR(InformationTheory)
   }
+
+  INFORMATION_THEORY_TEMPLATE
+  InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::InformationTheory(
+     INFERENCE_ENGINE< GUM_SCALAR >& engine,
+     gum::NodeSet                    X,
+     gum::NodeSet                    Y) :
+      InformationTheory(engine, X, Y, NodeSet()) {}
 
   INFORMATION_THEORY_TEMPLATE
   InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::InformationTheory(
@@ -54,8 +62,19 @@ namespace gum {
      const std::vector< std::string >& Ynames) :
       InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >(engine,
                                                         engine.model().nodeset(Xnames),
-                                                        engine.model().nodeset(Ynames)) {}
+                                                        engine.model().nodeset(Ynames),
+                                                        NodeSet()) {}
 
+  INFORMATION_THEORY_TEMPLATE
+  InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::InformationTheory(
+     INFERENCE_ENGINE< GUM_SCALAR >&   engine,
+     const std::vector< std::string >& Xnames,
+     const std::vector< std::string >& Ynames,
+     const std::vector< std::string >& Znames) :
+      InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >(engine,
+                                                        engine.model().nodeset(Xnames),
+                                                        engine.model().nodeset(Ynames),
+                                                        engine.model().nodeset(Znames)) {}
 
   INFORMATION_THEORY_TEMPLATE
   void InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::makeInference_() {
@@ -67,13 +86,25 @@ namespace gum {
     for (const auto y: Y_)
       vY_.insert(&engine_.model().variable(y));
 
+    vZ_.clear();
+    for (const auto z: Z_)
+      vZ_.insert(&engine_.model().variable(z));
+
     engine_.eraseAllTargets();
-    engine_.addJointTarget(X_ + Y_);
+    engine_.addJointTarget(X_ + Y_ + Z_);
     engine_.makeInference();
 
-    pXY_ = engine_.jointPosterior(X_ + Y_);
-    pX_  = pXY_.margSumIn(vX_);
-    pY_  = pXY_.margSumIn(vY_);
+    if (!Z_.empty()) {
+      pXYZ_ = engine_.jointPosterior(X_ + Y_ + Z_);
+      pXZ_  = pXYZ_.margSumIn(vX_ + vZ_);
+      pYZ_  = pXYZ_.margSumIn(vY_ + vZ_);
+      pZ_   = pXZ_.margSumIn(vZ_);
+      pXY_  = pXYZ_.margSumIn(vX_ + vY_);
+    } else {
+      pXY_ = engine_.jointPosterior(X_ + Y_);
+    }
+    pX_ = pXY_.margSumIn(vX_);
+    pY_ = pXY_.margSumIn(vY_);
   }
 
   INFORMATION_THEORY_TEMPLATE
@@ -134,6 +165,36 @@ namespace gum {
   }
 
   INFORMATION_THEORY_TEMPLATE
+  GUM_SCALAR InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::entropyXYgivenZ() {
+    if (Z_.empty()) GUM_ERROR(ArgumentError, "Z has not been specified.")
+    return expectedValueXYZ([this](const gum::Instantiation& i) -> GUM_SCALAR {
+      // f(x,y)=log (p(x,y)/p(y))
+      const auto& pxyz = pXYZ_[i];
+      if (pxyz == GUM_SCALAR(0.0)) return GUM_SCALAR(0.0);
+
+      const auto& pz = pZ_[i];
+      if (pz == GUM_SCALAR(0.0)) return GUM_SCALAR(0.0);
+
+      return -logOr0_(pxyz / pz);
+    });
+  }
+
+  INFORMATION_THEORY_TEMPLATE
+  GUM_SCALAR InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::mutualInformationXYgivenZ() {
+    if (Z_.empty()) GUM_ERROR(ArgumentError, "Z has not been specified.")
+    return expectedValueXYZ([this](const gum::Instantiation& i) -> GUM_SCALAR {
+      // f(x,y)=log (p(x,y)/p(x)p(y))
+      const auto& pzpxyz = pXYZ_[i] * pZ_[i];
+      if (pzpxyz == GUM_SCALAR(0.0)) return GUM_SCALAR(0.0);
+
+      const auto& pxzpyz = pXZ_[i] * pYZ_[i];
+      if (pxzpyz == GUM_SCALAR(0.0)) return GUM_SCALAR(0.0);
+
+      return logOr0_(pzpxyz / pxzpyz);
+    });
+  }
+
+  INFORMATION_THEORY_TEMPLATE
   GUM_SCALAR InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::expectedValueXY(
      std::function< GUM_SCALAR(const Instantiation&) > f) {
     GUM_SCALAR res = 0;
@@ -141,6 +202,18 @@ namespace gum {
     for (i.setFirst(); !i.end(); i.inc()) {
       const GUM_SCALAR v_f = f(i);
       if (v_f != GUM_SCALAR(0.0)) res += pXY_[i] * v_f;
+    }
+    return res;
+  }
+
+  INFORMATION_THEORY_TEMPLATE
+  GUM_SCALAR InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::expectedValueXYZ(
+     std::function< GUM_SCALAR(const Instantiation&) > f) {
+    GUM_SCALAR res = 0;
+    auto       i   = Instantiation(pXYZ_);
+    for (i.setFirst(); !i.end(); i.inc()) {
+      const GUM_SCALAR v_f = f(i);
+      if (v_f != GUM_SCALAR(0.0)) res += pXYZ_[i] * v_f;
     }
     return res;
   }

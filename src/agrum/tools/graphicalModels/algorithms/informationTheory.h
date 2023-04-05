@@ -63,37 +63,54 @@ namespace gum {
   class InformationTheory {
     public:
     InformationTheory(INFERENCE_ENGINE< GUM_SCALAR >& engine,
-                      gum::NodeSet              X,
-                      gum::NodeSet              Y);
+                      gum::NodeSet                    X,
+                      gum::NodeSet                    Y,
+                      gum::NodeSet                    Z);
+    InformationTheory(INFERENCE_ENGINE< GUM_SCALAR >& engine, gum::NodeSet X, gum::NodeSet Y);
     InformationTheory(INFERENCE_ENGINE< GUM_SCALAR >&   engine,
                       const std::vector< std::string >& Xnames,
                       const std::vector< std::string >& Ynames);
+    InformationTheory(INFERENCE_ENGINE< GUM_SCALAR >&   engine,
+                      const std::vector< std::string >& Xnames,
+                      const std::vector< std::string >& Ynames,
+                      const std::vector< std::string >& Znames);
 
+
+    GUM_SCALAR expectedValueXY(std::function< GUM_SCALAR(const gum::Instantiation&) >);
+    GUM_SCALAR expectedValueXYZ(std::function< GUM_SCALAR(const gum::Instantiation&) >);
+        
     GUM_SCALAR entropyXY();
     GUM_SCALAR entropyX();
     GUM_SCALAR entropyY();
 
-    GUM_SCALAR expectedValueXY(std::function< GUM_SCALAR(const gum::Instantiation&) >);
-
-        GUM_SCALAR entropyXgivenY();
-        GUM_SCALAR entropyYgivenX();
+    GUM_SCALAR entropyXgivenY();
+    GUM_SCALAR entropyYgivenX();
     GUM_SCALAR mutualInformationXY();
+
+    GUM_SCALAR entropyXYgivenZ();
+    GUM_SCALAR mutualInformationXYgivenZ();
 
     protected:
     INFERENCE_ENGINE< GUM_SCALAR >& engine_;
 
     const gum::NodeSet X_;
     const gum::NodeSet Y_;
+    const gum::NodeSet Z_;
 
     gum::Set< const DiscreteVariable* > vX_;
     gum::Set< const DiscreteVariable* > vY_;
+    gum::Set< const DiscreteVariable* > vZ_;
 
+    gum::Potential< GUM_SCALAR > pXYZ_;
     gum::Potential< GUM_SCALAR > pXY_;
+    gum::Potential< GUM_SCALAR > pXZ_;
+    gum::Potential< GUM_SCALAR > pYZ_;
     gum::Potential< GUM_SCALAR > pX_;
     gum::Potential< GUM_SCALAR > pY_;
+    gum::Potential< GUM_SCALAR > pZ_;
 
-    void makeInference_();
-    GUM_SCALAR logOr0_(GUM_SCALAR x); //
+    void       makeInference_();
+    GUM_SCALAR logOr0_(GUM_SCALAR x);   //
   };
 }   // namespace gum
 
