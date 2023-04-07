@@ -26,6 +26,7 @@
  */
 #include <agrum/MRF/inference/tools/jointTargetedMRFInference.h>
 #include <agrum/tools/variables/rangeVariable.h>
+#include <agrum/tools/graphicalModels/algorithms/informationTheory.h>
 
 namespace gum {
 
@@ -258,45 +259,10 @@ namespace gum {
    * @throw OperationNotAllowed in these cases
    */
   template < typename GUM_SCALAR >
-  GUM_SCALAR JointTargetedMRFInference< GUM_SCALAR >::I(NodeId X, NodeId Y) {
-    Potential< GUM_SCALAR > pX, pY, *pXY = nullptr;
-    if (X == Y) { GUM_ERROR(OperationNotAllowed, "Mutual Information I(X,Y) with X==Y") }
-
-    try {
-      // here use unnormalized joint posterior rather than just posterior
-      // to avoid saving the posterior in the cache of the inference engines
-      // like LazyPropagation or Shafer-Shenoy.
-      pXY = this->unnormalizedJointPosterior_({X, Y});
-      pXY->normalize();
-      pX = pXY->margSumOut({&(this->MRF().variable(Y))});
-      pY = pXY->margSumOut({&(this->MRF().variable(X))});
-    } catch (...) {
-      if (pXY != nullptr) { delete pXY; }
-      throw;
-    }
-
-    Instantiation i(*pXY);
-    auto          res = (GUM_SCALAR)0;
-
-    for (i.setFirst(); !i.end(); ++i) {
-      GUM_SCALAR vXY = (*pXY)[i];
-      GUM_SCALAR vX  = pX[i];
-      GUM_SCALAR vY  = pY[i];
-
-      if (vXY > (GUM_SCALAR)0) {
-        if (vX == (GUM_SCALAR)0 || vY == (GUM_SCALAR)0) {
-          GUM_ERROR(OperationNotAllowed,
-                    "Mutual Information (X,Y) with P(X)=0 or P(Y)=0 "
-                    "and P(X,Y)>0");
-        }
-
-        res += vXY * (std::log2(vXY) - std::log2(vX) - std::log2(vY));
-      }
-    }
-
-    delete pXY;
-
-    return res;
+  [[deprecated("Please directly use class gum::InformationTheory (since 1.7.1)")]] GUM_SCALAR
+     JointTargetedMRFInference< GUM_SCALAR >::I(NodeId X, NodeId Y) {
+    InformationTheory it(*this);
+    return it.I(NodeSet{X}, NodeSet{Y});
   }
 
 

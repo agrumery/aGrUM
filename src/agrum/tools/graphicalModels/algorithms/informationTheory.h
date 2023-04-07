@@ -86,6 +86,8 @@ namespace gum {
     GUM_SCALAR entropyXgivenY();
     GUM_SCALAR entropyYgivenX();
     GUM_SCALAR mutualInformationXY();
+    GUM_SCALAR variationOfInformationXY();
+
 
     GUM_SCALAR entropyXYgivenZ();
     GUM_SCALAR mutualInformationXYgivenZ();

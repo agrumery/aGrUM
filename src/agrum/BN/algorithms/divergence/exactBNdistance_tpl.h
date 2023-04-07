@@ -70,10 +70,9 @@ namespace gum {
       pp    = p_.jointProbability(Ip);
       pq    = q_.jointProbability(Iq);
       pmid  = (pp + pq) / 2.0;
-      lpmid = lpq = lpp = (GUM_SCALAR)0.0;
-      if (pmid != (GUM_SCALAR)0.0) lpmid = std::log2(pmid);
-      if (pp != (GUM_SCALAR)0.0) lpp = std::log2(pp);
-      if (pq != (GUM_SCALAR)0.0) lpq = std::log2(pq);
+      lpmid = GUM_LOG2_OR_0(pmid);
+      lpp   = GUM_LOG2_OR_0(pp);
+      lpq   = GUM_LOG2_OR_0(pq);
 
 
       hellinger_ += std::pow(std::sqrt(pp) - std::sqrt(pq), 2);

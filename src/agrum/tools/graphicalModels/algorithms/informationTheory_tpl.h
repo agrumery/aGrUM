@@ -24,12 +24,13 @@
  * @brief Implementation of the Class encapsulating computations of notions from Information Theory
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
-#include <cmath>
 #include <utility>
+
+#include <agrum/tools/core/exceptions.h>
+#include <agrum/tools/core/math/math_utils.h>
 
 #include <agrum/tools/graphicalModels/algorithms/informationTheory.h>
 #include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/tools/core/exceptions.h>
 
 #define INFORMATION_THEORY_TEMPLATE                                              \
   template < template < typename > class INFERENCE_ENGINE, typename GUM_SCALAR > \
@@ -44,6 +45,8 @@ namespace gum {
      gum::NodeSet                    Z) :
       engine_(engine),
       X_(std::move(X)), Y_(std::move(Y)), Z_(std::move(Z)) {
+    if ((!(X_ * Y_).empty()) || (!(X_ * Z_).empty()) || (!(Z_ * Y_).empty()))
+      GUM_ERROR(OperationNotAllowed, "The intersection between the set of variables must be empty")
     makeInference_();
     GUM_CONSTRUCTOR(InformationTheory)
   }
@@ -90,8 +93,11 @@ namespace gum {
     for (const auto z: Z_)
       vZ_.insert(&engine_.model().variable(z));
 
-    engine_.eraseAllTargets();
-    engine_.addJointTarget(X_ + Y_ + Z_);
+    const NodeSet joint_vars = X_ + Y_ + Z_;
+    if (!engine_.isJointTarget(joint_vars)) {
+      engine_.eraseAllTargets();
+      engine_.addJointTarget(joint_vars);
+    }
     engine_.makeInference();
 
     if (!Z_.empty()) {
@@ -119,13 +125,8 @@ namespace gum {
   }
 
   INFORMATION_THEORY_TEMPLATE
-  GUM_SCALAR InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::logOr0_(GUM_SCALAR x) {
-    return (x == GUM_SCALAR(0.0)) ? GUM_SCALAR(0.0) : std::log2(x);
-  }
-
-  INFORMATION_THEORY_TEMPLATE
   GUM_SCALAR InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::entropyXgivenY() {
-    return expectedValueXY([this](const gum::Instantiation& i) -> GUM_SCALAR {
+    return -expectedValueXY([this](const gum::Instantiation& i) -> GUM_SCALAR {
       // f(x,y)=log (p(x,y)/p(y))
       const auto& pxy = pXY_[i];
       if (pxy == GUM_SCALAR(0.0)) return GUM_SCALAR(0.0);
@@ -133,12 +134,12 @@ namespace gum {
       const auto& py = pY_[i];
       if (py == GUM_SCALAR(0.0)) return GUM_SCALAR(0.0);
 
-      return -logOr0_(pxy / py);
+      return GUM_LOG2_OR_0(pxy / py);
     });
   }
   INFORMATION_THEORY_TEMPLATE
   GUM_SCALAR InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::entropyYgivenX() {
-    return expectedValueXY([this](const gum::Instantiation& i) -> GUM_SCALAR {
+    return -expectedValueXY([this](const gum::Instantiation& i) -> GUM_SCALAR {
       // f(x,y)=log (p(x,y)/p(x))
       const auto& pxy = pXY_[i];
       if (pxy == GUM_SCALAR(0.0)) return GUM_SCALAR(0.0);
@@ -146,7 +147,7 @@ namespace gum {
       const auto& px = pX_[i];
       if (px == GUM_SCALAR(0.0)) return GUM_SCALAR(0.0);
 
-      return -logOr0_(pxy / px);
+      return GUM_LOG2_OR_0(pxy / px);
     });
   }
 
@@ -160,7 +161,15 @@ namespace gum {
       const auto& pxpy = pY_[i] * pX_[i];
       if (pxpy == GUM_SCALAR(0.0)) return GUM_SCALAR(0.0);
 
-      return logOr0_(pxy / pxpy);
+      return GUM_LOG2_OR_0(pxy / pxpy);
+    });
+  }
+
+  INFORMATION_THEORY_TEMPLATE
+  GUM_SCALAR InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::variationOfInformationXY() {
+    return -expectedValueXY([this](const gum::Instantiation& i) -> GUM_SCALAR {
+      // f(x,y)= p(x)p(y))
+      return GUM_LOG2_OR_0(pY_[i] * pX_[i]);
     });
   }
 
@@ -175,7 +184,7 @@ namespace gum {
       const auto& pz = pZ_[i];
       if (pz == GUM_SCALAR(0.0)) return GUM_SCALAR(0.0);
 
-      return -logOr0_(pxyz / pz);
+      return -GUM_LOG2_OR_0(pxyz / pz);
     });
   }
 
@@ -190,7 +199,7 @@ namespace gum {
       const auto& pxzpyz = pXZ_[i] * pYZ_[i];
       if (pxzpyz == GUM_SCALAR(0.0)) return GUM_SCALAR(0.0);
 
-      return logOr0_(pzpxyz / pxzpyz);
+      return GUM_LOG2_OR_0(pzpxyz / pxzpyz);
     });
   }
 
