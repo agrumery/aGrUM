@@ -99,19 +99,19 @@ namespace gum_tests {
       delete gamma;
     }
 
-    GUM_TEST(LesserThan){TS_ASSERT((*gamma) < (*alpha)) TS_ASSERT((*gamma) < (*beta))
+    GUM_ACTIVE_TEST(LesserThan){TS_ASSERT((*gamma) < (*alpha)) TS_ASSERT((*gamma) < (*beta))
                             TS_ASSERT((*alpha) < (*beta)) TS_ASSERT(!((*alpha) < (*alpha)))
                                TS_ASSERT(!((*beta) < (*beta))) TS_ASSERT(!((*gamma) < (*gamma)))
                                   TS_ASSERT(!((*alpha) < (*gamma))) TS_ASSERT(!((*beta) < (*gamma)))
                                      TS_ASSERT(!((*beta) < (*alpha)))}
 
-    GUM_TEST(LesserOrEqualThan){
+    GUM_ACTIVE_TEST(LesserOrEqualThan){
        TS_ASSERT((*gamma) <= (*alpha)) TS_ASSERT((*gamma) <= (*beta)) TS_ASSERT((*alpha) <= (*beta))
           TS_ASSERT((*alpha) <= (*alpha)) TS_ASSERT((*beta) <= (*beta))
              TS_ASSERT((*gamma) <= (*gamma)) TS_ASSERT(!((*alpha) <= (*gamma)))
                 TS_ASSERT(!((*beta) <= (*gamma))) TS_ASSERT(!((*beta) <= (*alpha)))}
 
-    GUM_TEST(AlphaNeighbors) {
+    GUM_ACTIVE_TEST(AlphaNeighbors) {
       for (gum::prm::gspan::DFSCode::iterator iter = alpha->codes.begin() + 1;
            iter != alpha->codes.end();
            ++iter) {
@@ -119,7 +119,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(BetaNeighbors) {
+    GUM_ACTIVE_TEST(BetaNeighbors) {
       for (gum::prm::gspan::DFSCode::iterator iter = beta->codes.begin() + 1;
            iter != beta->codes.end();
            ++iter) {
@@ -127,7 +127,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(GammaNeighbors) {
+    GUM_ACTIVE_TEST(GammaNeighbors) {
       for (gum::prm::gspan::DFSCode::iterator iter = gamma->codes.begin() + 1;
            iter != gamma->codes.end();
            ++iter) {
@@ -135,21 +135,21 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(AlphaPrint) {
+    GUM_ACTIVE_TEST(AlphaPrint) {
       TS_ASSERT_THROWS_NOTHING({
         std::stringstream ss;
         ss << std::endl << (*alpha) << std::endl;
       });
     }
 
-    GUM_TEST(BetaPrint) {
+    GUM_ACTIVE_TEST(BetaPrint) {
       TS_ASSERT_THROWS_NOTHING({
         std::stringstream ss;
         ss << std::endl << (*beta) << std::endl;
       });
     }
 
-    GUM_TEST(GammaPrint) {
+    GUM_ACTIVE_TEST(GammaPrint) {
       TS_ASSERT_THROWS_NOTHING({
         std::stringstream ss;
         ss << std::endl << (*gamma) << std::endl;

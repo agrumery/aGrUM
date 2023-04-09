@@ -67,7 +67,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] LoopyBeliefPropagationTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(LBPBinaryTreeWithoutEvidence) {
+    GUM_ACTIVE_TEST(LBPBinaryTreeWithoutEvidence) {
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn
            = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
@@ -87,7 +87,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(LBPBinaryTreeWithEvidenceOnRoot) {
+    GUM_ACTIVE_TEST(LBPBinaryTreeWithEvidenceOnRoot) {
       const std::string ev = "b";
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn
@@ -129,7 +129,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(LBPBinaryTreeWithEvidenceOnLeaf) {
+    GUM_ACTIVE_TEST(LBPBinaryTreeWithEvidenceOnLeaf) {
       const std::string ev = "h";
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn
@@ -170,7 +170,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(LBPBinaryTreeWithEvidenceOnMid) {
+    GUM_ACTIVE_TEST(LBPBinaryTreeWithEvidenceOnMid) {
       const std::string ev = "e";
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn
@@ -211,7 +211,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(LBPBinaryTreeWithMultipleEvidence) {
+    GUM_ACTIVE_TEST(LBPBinaryTreeWithMultipleEvidence) {
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn
            = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
@@ -258,7 +258,7 @@ namespace gum_tests {
         }
       }
     }
-    GUM_TEST(LBPNaryTreeWithMultipleEvidence) {
+    GUM_ACTIVE_TEST(LBPNaryTreeWithMultipleEvidence) {
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn = gum::BayesNet< double >::fastPrototype(
            "a[4]->d[8]->f[3];b->d->g[5];b->e[4]->h;c->e;i[10]->j[3]->h");
@@ -306,7 +306,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(LBPSimpleBN) {
+    GUM_ACTIVE_TEST(LBPSimpleBN) {
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
 
@@ -397,7 +397,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(LBPCplxBN) {
+    GUM_ACTIVE_TEST(LBPCplxBN) {
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn = gum::BayesNet< double >::fastPrototype(
            "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
@@ -498,7 +498,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(LBPAsia) {
+    GUM_ACTIVE_TEST(LBPAsia) {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/asia.bif"));
       gum::Size                nbrErr = (gum::Size)0;
@@ -521,7 +521,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(LBPAlarm) {
+    GUM_ACTIVE_TEST(LBPAlarm) {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = (gum::Size)0;
@@ -546,7 +546,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(LBPInfListener) {
+    GUM_ACTIVE_TEST(LBPInfListener) {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = (gum::Size)0;
@@ -563,7 +563,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(AggregatorsInLBP) {
+    GUM_ACTIVE_TEST(AggregatorsInLBP) {
       gum::BayesNet< double > bn;
       for (const auto& e: {"a", "b", "c", "d"})
         bn.add(e, 2);
@@ -588,7 +588,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(ie.makeInference();)
     }
 
-    GUM_TEST(LogitInLBP) {
+    GUM_ACTIVE_TEST(LogitInLBP) {
       gum::BayesNet< double > bn;
       for (const auto& item: {"Cold", "Flu", "Malaria", "X", "Y", "Z"})
         bn.add(item, 2);

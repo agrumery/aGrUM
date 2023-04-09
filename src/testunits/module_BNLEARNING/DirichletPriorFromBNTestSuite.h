@@ -170,7 +170,7 @@ namespace gum_tests {
     }
 
     public:
-    GUM_TEST(1) {
+    GUM_ACTIVE_TEST(1) {
       std::vector< std::string > names{"A", "B", "C", "D", "E", "F"};
       gum::BayesNet< double >    bn
          = gum::BayesNet< double >::fastPrototype("A[3];B[3];C<-D[3];E[3];F[3]");

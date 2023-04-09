@@ -33,7 +33,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] MultiDimNoisyORCompoundTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(CreationNoisyOr) {
+    GUM_ACTIVE_TEST(CreationNoisyOr) {
       gum::LabelizedVariable a("a", "", 2), b("b", "", 2), c("c", "", 2), d("d", "", 2);
       gum::MultiDimNoisyORCompound< double > p(0.2f);
 
@@ -62,7 +62,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4)
     }
 
-    GUM_TEST(CompatibleWithHardOR) {
+    GUM_ACTIVE_TEST(CompatibleWithHardOR) {
       gum::LabelizedVariable cold("Cold", "", 2);
       gum::LabelizedVariable flu("Flu", "", 2);
       gum::LabelizedVariable malaria("Malaria", "", 2);
@@ -99,7 +99,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(ComputationInNoisyORCompound) {
+    GUM_ACTIVE_TEST(ComputationInNoisyORCompound) {
       gum::LabelizedVariable cold("Cold", "", 2);
       gum::LabelizedVariable flu("Flu", "", 2);
       gum::LabelizedVariable malaria("Malaria", "", 2);
@@ -144,7 +144,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(ComputationInNoisyORCompound2) {
+    GUM_ACTIVE_TEST(ComputationInNoisyORCompound2) {
       gum::LabelizedVariable lazy("lazy", "", 2);
       gum::LabelizedVariable degree("degree", "", 2);
       gum::LabelizedVariable motivation("motivation", "", 2);

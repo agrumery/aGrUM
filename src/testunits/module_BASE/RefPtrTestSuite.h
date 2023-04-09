@@ -28,7 +28,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] RefPtrTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(Constructors) {
+    GUM_ACTIVE_TEST(Constructors) {
       gum::RefPtr< int > ptr1(new int(4));
 
       TS_ASSERT(ptr1)
@@ -44,7 +44,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(ptr1, ptr3)
     }
 
-    GUM_TEST(Modify) {
+    GUM_ACTIVE_TEST(Modify) {
       gum::RefPtr< int > ptr1(new int(4));
       gum::RefPtr< int > ptr2 = ptr1, ptr3;
       ptr3                    = ptr1;
@@ -82,7 +82,7 @@ namespace gum_tests {
       int getY() { return yyy; }
     };
 
-    GUM_TEST(Downcast) {
+    GUM_ACTIVE_TEST(Downcast) {
       gum::RefPtr< titi > ptr1(new titi);
 
       TS_ASSERT_EQUALS(ptr1->getY(), 3)

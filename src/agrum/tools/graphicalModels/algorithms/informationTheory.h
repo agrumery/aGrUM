@@ -74,6 +74,7 @@ namespace gum {
                       const std::vector< std::string >& Xnames,
                       const std::vector< std::string >& Ynames,
                       const std::vector< std::string >& Znames);
+    ~InformationTheory();
 
 
     GUM_SCALAR expectedValueXY(std::function< GUM_SCALAR(const gum::Instantiation&) >);

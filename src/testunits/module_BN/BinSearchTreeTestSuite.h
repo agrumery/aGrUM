@@ -28,7 +28,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] binSearchTreeTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(Constructors) {
+    GUM_ACTIVE_TEST(Constructors) {
       gum::BinSearchTree< int >* tree = 0;
 
       TS_GUM_ASSERT_THROWS_NOTHING(tree = new gum::BinSearchTree< int >)
@@ -54,7 +54,7 @@ namespace gum_tests {
       delete tree;
     }
 
-    GUM_TEST(Values) {
+    GUM_ACTIVE_TEST(Values) {
       gum::BinSearchTree< int > tree;
       tree.insert(5);
       tree.insert(3);
@@ -83,7 +83,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(tree.empty(), true)
     }
 
-    GUM_TEST(Erase) {
+    GUM_ACTIVE_TEST(Erase) {
       gum::BinSearchTree< int > tree;
       tree.insert(5);
       tree.insert(3);
@@ -115,7 +115,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(tree.empty(), true)
     }
 
-    GUM_TEST(Uniqueness) {
+    GUM_ACTIVE_TEST(Uniqueness) {
       gum::BinSearchTree< int > tree;
       tree.insert(5);
       tree.insert(3);
@@ -132,7 +132,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS_ANYTHING(tree.insert(5);)
     }
 
-    GUM_TEST(Iterators) {
+    GUM_ACTIVE_TEST(Iterators) {
       gum::BinSearchTree< int > tree;
       tree.insert(5);
       tree.insert(5);
@@ -184,7 +184,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(*iter, 5)
     }
 
-    GUM_TEST(EraseIterator) {
+    GUM_ACTIVE_TEST(EraseIterator) {
       gum::BinSearchTree< int > tree;
       tree.insert(5);
       tree.insert(3);

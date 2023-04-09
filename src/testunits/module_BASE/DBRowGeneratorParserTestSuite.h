@@ -60,7 +60,7 @@ namespace gum_tests {
 
 
     public:
-    GUM_TEST(_simple) {
+    GUM_ACTIVE_TEST(_simple) {
       gum::learning::DBTranslator4LabelizedVariable  translator_lab;
       gum::learning::DBTranslator4ContinuousVariable translator_cont;
       gum::learning::DBTranslatorSet                 set;
@@ -327,7 +327,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(EM) {
+    GUM_ACTIVE_TEST(EM) {
       const std::vector< gum::learning::DBTranslatedValueType > col_types{
          gum::learning::DBTranslatedValueType::DISCRETE,
          gum::learning::DBTranslatedValueType::DISCRETE,

@@ -178,7 +178,7 @@ namespace gum_tests {
     }
 
     public:
-    GUM_TEST(SmallGraph) {
+    GUM_ACTIVE_TEST(SmallGraph) {
       gum::DAG    g;
       gum::NodeId id1, id2, id3, id4, id5;
       id1 = g.addNode();
@@ -218,7 +218,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(detector.hasCycleFromModifications(changes), false)
     }
 
-    GUM_TEST(G1) {
+    GUM_ACTIVE_TEST(G1) {
       gum::DAG g;
       for (gum::Idx i = 0; i < 10; ++i) {
         g.addNodeWithId(i);
@@ -249,7 +249,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(detector.hasCycleFromModifications(changes), true)
     }
 
-    GUM_TEST(Random) {
+    GUM_ACTIVE_TEST(Random) {
       gum::DAGCycleDetector                        detector;
       std::vector< gum::DAGCycleDetector::Change > changes;
       std::vector< gum::DAGCycleDetector::Change > del_add_changes;
@@ -298,7 +298,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(Modifications) {
+    GUM_ACTIVE_TEST(Modifications) {
       gum::DAGCycleDetector                        detector1, detector2;
       std::vector< gum::DAGCycleDetector::Change > changes;
       std::vector< gum::DAGCycleDetector::Change > del_add_changes;
@@ -346,7 +346,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(Modifications2) {
+    GUM_ACTIVE_TEST(Modifications2) {
       gum::DAGCycleDetector                        detector1, detector2;
       std::vector< gum::DAGCycleDetector::Change > changes;
       std::vector< gum::DAGCycleDetector::Change > del_add_changes;

@@ -32,7 +32,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] HashTableTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(Constructor) {
+    GUM_ACTIVE_TEST(Constructor) {
       gum::HashTable< int, int >* table = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING((table = new gum::HashTable< int, int >()))
       TS_GUM_ASSERT_THROWS_NOTHING(delete table)
@@ -59,7 +59,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(t5.size(), (gum::Size)1)
     }
 
-    GUM_TEST(Moves) {
+    GUM_ACTIVE_TEST(Moves) {
       gum::HashTable< int, int > t1{std::pair< int, int >(3, 4), std::pair< int, int >(5, 6)};
 
       gum::HashTable< int, int > t2{std::pair< int, int >(1, 4),
@@ -76,7 +76,7 @@ namespace gum_tests {
       TS_ASSERT(t2.exists(5))
     }
 
-    GUM_TEST(Insert) {
+    GUM_ACTIVE_TEST(Insert) {
       gum::HashTable< int, std::string > table;
       TS_GUM_ASSERT_THROWS_NOTHING(table.insert(1, "a"))
       TS_GUM_ASSERT_THROWS_NOTHING(table.insert(2, "b"))
@@ -103,7 +103,7 @@ namespace gum_tests {
       TS_ASSERT(!table.exists(11))
     }
 
-    GUM_TEST(Equality) {
+    GUM_ACTIVE_TEST(Equality) {
       gum::HashTable< int, std::string > t1, t2, t3;
       fill(t1);
       fill(t2);
@@ -136,7 +136,7 @@ namespace gum_tests {
       TS_ASSERT_DIFFERS(t3, t2)
     }
 
-    GUM_TEST(size) {
+    GUM_ACTIVE_TEST(size) {
       gum::HashTable< int, std::string > table;
 
       TS_ASSERT_EQUALS(table.size(), (gum::Size)0)
@@ -144,7 +144,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(table.size(), (gum::Size)6)
     }
 
-    GUM_TEST(Erase) {
+    GUM_ACTIVE_TEST(Erase) {
       gum::HashTable< int, std::string > table;
       fill(table);
 
@@ -167,7 +167,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(table.size(), (gum::Size)1)
     }
 
-    GUM_TEST(EraseIterator) {
+    GUM_ACTIVE_TEST(EraseIterator) {
       gum::HashTable< int, std::string > table(4);
       fill(table);
       TS_ASSERT_EQUALS(table.size(), (gum::Size)6)
@@ -197,7 +197,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(table.size(), (gum::Size)3)
     }
 
-    GUM_TEST(EraseByVal) {
+    GUM_ACTIVE_TEST(EraseByVal) {
       gum::HashTable< int, std::string > table;
       fill(table);
 
@@ -220,7 +220,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(table.size(), (gum::Size)1)
     }
 
-    GUM_TEST(EraseAllVal) {
+    GUM_ACTIVE_TEST(EraseAllVal) {
       gum::HashTable< int, std::string > table;
 
       TS_GUM_ASSERT_THROWS_NOTHING(table.insert(1, "Space, the final frontiere"))
@@ -246,7 +246,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(table.size(), (gum::Size)2)
     }
 
-    GUM_TEST(Clear) {
+    GUM_ACTIVE_TEST(Clear) {
       gum::HashTable< int, std::string > table;
 
       TS_ASSERT_EQUALS(table.size(), (gum::Size)0)
@@ -259,7 +259,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(table.size(), (gum::Size)0)
     }
 
-    GUM_TEST(IsEmpty) {
+    GUM_ACTIVE_TEST(IsEmpty) {
       gum::HashTable< int, std::string > table;
 
       TS_ASSERT(table.empty())
@@ -269,7 +269,7 @@ namespace gum_tests {
       TS_ASSERT(table.empty())
     }
 
-    GUM_TEST(Exist) {
+    GUM_ACTIVE_TEST(Exist) {
       gum::HashTable< int, std::string > table;
 
       TS_ASSERT(!table.exists(1))
@@ -294,7 +294,7 @@ namespace gum_tests {
       TS_ASSERT(table.exists(6))
     }
 
-    GUM_TEST(key) {
+    GUM_ACTIVE_TEST(key) {
       gum::HashTable< int, std::string > table;
       fill(table);
       int val = -1;
@@ -317,7 +317,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS_ANYTHING(table.key(6))
     }
 
-    GUM_TEST(keyByVal) {
+    GUM_ACTIVE_TEST(keyByVal) {
       gum::HashTable< int, std::string > table;
       fill(table);
 
@@ -341,7 +341,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS_ANYTHING(table.keyByVal("f"))
     }
 
-    GUM_TEST(CopyOperator) {
+    GUM_ACTIVE_TEST(CopyOperator) {
       gum::HashTable< int, std::string > t1, t2, t3;
       fill(t1);
 
@@ -359,7 +359,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(t1, t3)
     }
 
-    GUM_TEST(GenCopyOperator) {
+    GUM_ACTIVE_TEST(GenCopyOperator) {
       gum::HashTable< int, std::string > t2;
       gum::HashTable< int, std::string > t1, t3;
       fill(t1);
@@ -378,7 +378,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(t1, t3)
     }
 
-    GUM_TEST(GetOperator) {
+    GUM_ACTIVE_TEST(GetOperator) {
       gum::HashTable< int, std::string > t1;
       fill(t1);
 
@@ -393,7 +393,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS_ANYTHING(t1[-1])
     }
 
-    GUM_TEST(GetCopyOperator) {
+    GUM_ACTIVE_TEST(GetCopyOperator) {
       gum::HashTable< int, std::string > t1, t2;
       fill(t1);
 
@@ -410,7 +410,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(t2[4], t1[4])
     }
 
-    GUM_TEST(KeyUniqueness) {
+    GUM_ACTIVE_TEST(KeyUniqueness) {
       gum::HashTable< int, std::string > t1, t2;
       fill(t1);
       fill(t2);
@@ -423,7 +423,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(t1, t2)
     }
 
-    GUM_TEST(ResizePolicy) {
+    GUM_ACTIVE_TEST(ResizePolicy) {
       gum::HashTable< int, std::string > t1, t2;
       fill(t1);
       fill(t2);
@@ -436,7 +436,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(t1, t2)
     }
 
-    GUM_TEST(Size) {
+    GUM_ACTIVE_TEST(Size) {
       gum::HashTable< int, int > t1, t2;
 
       TS_GUM_ASSERT_THROWS_NOTHING(t2.setResizePolicy(false))
@@ -454,7 +454,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(t2.capacity(), (gum::Size)4)
     }
 
-    GUM_TEST(Map) {
+    GUM_ACTIVE_TEST(Map) {
       gum::HashTable< int, std::string > t1, map1, map2, map3, map4;
       fill(t1);
 
@@ -472,7 +472,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(Map2) {
+    GUM_ACTIVE_TEST(Map2) {
       gum::HashTable< int, std::string > t1, map1, map2, map4;
       gum::HashTable< int, int >         map3, map5;
       fill(t1);
@@ -492,7 +492,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(Iterator_1) {
+    GUM_ACTIVE_TEST(Iterator_1) {
       gum::HashTable< int, std::string > t1;
       fill(t1);
 
@@ -512,7 +512,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(Iterator_2) {
+    GUM_ACTIVE_TEST(Iterator_2) {
       gum::HashTable< int, std::string > t1;
       fill(t1);
 
@@ -532,7 +532,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(_float_hash) {
+    GUM_ACTIVE_TEST(_float_hash) {
       gum::Size                             size = 20;
       gum::HashTable< float, unsigned int > t1;
 
@@ -553,7 +553,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(_float_pair_hash) {
+    GUM_ACTIVE_TEST(_float_pair_hash) {
       gum::Size                                                 size = 20;
       gum::HashTable< std::pair< float, float >, unsigned int > t1;
 
@@ -576,7 +576,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(_double_hash) {
+    GUM_ACTIVE_TEST(_double_hash) {
       gum::Size                              size = 20;
       gum::HashTable< double, unsigned int > t1;
 
@@ -597,7 +597,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(_double_pair_hash) {
+    GUM_ACTIVE_TEST(_double_pair_hash) {
       gum::Size                                                   size = 20;
       gum::HashTable< std::pair< double, double >, unsigned int > t1;
 
@@ -620,7 +620,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(Initializer_list) {
+    GUM_ACTIVE_TEST(Initializer_list) {
       gum::HashTable< unsigned int, std::string > table{std::make_pair(3U, "a"),
                                                         std::make_pair(2U, "b")};
 

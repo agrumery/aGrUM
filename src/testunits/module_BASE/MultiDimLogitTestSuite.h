@@ -35,7 +35,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] MultiDimLogitTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(CreationLogit) {
+    GUM_ACTIVE_TEST(CreationLogit) {
       gum::LabelizedVariable       a("a", "", 2), b("b", "", 2), c("c", "", 2), d("d", "", 2);
       gum::MultiDimLogit< double > p(0.2f);
 
@@ -70,7 +70,7 @@ namespace gum_tests {
                        "-1.3*c:Labelized({0|1}) +0.7*d:Labelized({0|1}))");
     }
 
-    GUM_TEST(ComputationInLogit) {
+    GUM_ACTIVE_TEST(ComputationInLogit) {
       // from "Pratique de la Régression Logique" / Ricco Rakotomalala / p33
       gum::RangeVariable     age("age", "", 35, 67);
       gum::RangeVariable     taux("taux", "", 115, 171);
@@ -119,7 +119,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(ComputationInLogit2) {
+    GUM_ACTIVE_TEST(ComputationInLogit2) {
       gum::LabelizedVariable lazy("lazy", "", 2);
       gum::LabelizedVariable degree("degree", "", 2);
       gum::LabelizedVariable motivation("motivation", "", 2);

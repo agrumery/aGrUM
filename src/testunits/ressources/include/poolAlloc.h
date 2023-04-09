@@ -1,5 +1,5 @@
-#ifndef GUM_TEST_LEARNING_ALLOC_H
-#define GUM_TEST_LEARNING_ALLOC_H
+#ifndef GUM_ACTIVE_TEST_LEARNING_ALLOC_H
+#define GUM_ACTIVE_TEST_LEARNING_ALLOC_H
 
 #include <vector>
 #include <utility>
@@ -156,4 +156,4 @@ namespace gum_tests {
 
 } /* namespace gum_tests */
 
-#endif /* GUM_TEST_LEARNING_ALLOC_H */
+#endif /* GUM_ACTIVE_TEST_LEARNING_ALLOC_H */

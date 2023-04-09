@@ -28,15 +28,15 @@ namespace gum_tests {
 
   class [[maybe_unused]] EdgeTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(Constructor1){TS_GUM_ASSERT_THROWS_NOTHING(gum::Edge edge1(1, 2))
+    GUM_ACTIVE_TEST(Constructor1){TS_GUM_ASSERT_THROWS_NOTHING(gum::Edge edge1(1, 2))
                               TS_GUM_ASSERT_THROWS_NOTHING(gum::Edge edge1(1, 1))}
 
-    GUM_TEST(Constructor2) {
+    GUM_ACTIVE_TEST(Constructor2) {
       gum::Edge edge1(1, 2);
       TS_GUM_ASSERT_THROWS_NOTHING(gum::Edge copy(edge1))
     }
 
-    GUM_TEST(Equality) {
+    GUM_ACTIVE_TEST(Equality) {
       gum::Edge edge1(1, 2);
       gum::Edge edge2(2, 1);
       gum::Edge copy(edge1);
@@ -54,7 +54,7 @@ namespace gum_tests {
       TS_ASSERT_DIFFERS(edge2, edge3)
     }
 
-    GUM_TEST(Getters) {
+    GUM_ACTIVE_TEST(Getters) {
       const gum::Edge edge1((gum::NodeId)1, (gum::NodeId)2);
       const gum::Edge edge2((gum::NodeId)2, (gum::NodeId)1);
 
@@ -85,7 +85,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS_ANYTHING(n = edge4.other((gum::NodeId)42))
     }
 
-    GUM_TEST(Hash) {
+    GUM_ACTIVE_TEST(Hash) {
       gum::HashTable< gum::Edge, gum::NodeId > hash;
 
       for (gum::NodeId x = 0; x < 1000; ++x) {

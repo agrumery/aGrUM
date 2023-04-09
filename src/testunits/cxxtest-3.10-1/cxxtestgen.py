@@ -284,7 +284,7 @@ def lineStartsBlock( line ):
     '''Check if current line starts a new CXXTEST_CODE() block'''
     return re.search( r'\bCXXTEST_CODE\s*\(', line ) is not None
 
-test_re1 = re.compile( r'^\s*GUM_TEST\s*\(\s*(\w+)\s*\)' )
+test_re1 = re.compile( r'^\s*GUM_ACTIVE_TEST\s*\(\s*(\w+)\s*\)' )
 test_re2= re.compile( r'^([^/]|/[^/])*\bvoid\s+([Tt]est\w+)\s*\(\s*()?\s*\)' )
 def scanLineForTest( suite, lineNo, line ):
     '''Check if current line starts a test'''

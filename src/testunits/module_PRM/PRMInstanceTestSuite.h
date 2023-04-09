@@ -88,7 +88,7 @@ namespace gum_tests {
 
     /// Constructor & Destructor
     /// @{
-    GUM_TEST(Constructor) {
+    GUM_ACTIVE_TEST(Constructor) {
       // Arrange
       PRMInstance* i = nullptr;
       // Act & Assert
@@ -99,7 +99,7 @@ namespace gum_tests {
 
     /// Getters & setters
     /// @{
-    GUM_TEST(ObjType) {
+    GUM_ACTIVE_TEST(ObjType) {
       // Arrange
       PRMInstance i("i", *_classA_);
       auto        expected = PRMObject::prm_type::INSTANCE;
@@ -109,7 +109,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(actual, expected)
     }
 
-    GUM_TEST(Type) {
+    GUM_ACTIVE_TEST(Type) {
       // Arrange
       PRMInstance i("i", *_classA_);
       auto        expected = _classA_;
@@ -119,7 +119,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(actual, expected)
     }
 
-    GUM_TEST(TypeConst) {
+    GUM_ACTIVE_TEST(TypeConst) {
       // Arrange
       PRMInstance i("i", *_classA_);
       const auto& const_i  = i;
@@ -130,7 +130,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(actual, expected)
     }
 
-    GUM_TEST(ExistsById) {
+    GUM_ACTIVE_TEST(ExistsById) {
       // Arrange
       PRMInstance i("i", *_classA_);
       auto        id       = _classA_->get("a").id();
@@ -141,7 +141,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(actual, expected)
     }
 
-    GUM_TEST(NotExistsById) {
+    GUM_ACTIVE_TEST(NotExistsById) {
       // Arrange
       PRMInstance i("i", *_classA_);
       bool        expected = false;
@@ -151,7 +151,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(actual, expected)
     }
 
-    GUM_TEST(ExistsByName) {
+    GUM_ACTIVE_TEST(ExistsByName) {
       // Arrange
       PRMInstance i("i", *_classA_);
       bool        expected = true;
@@ -161,7 +161,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(actual, expected)
     }
 
-    GUM_TEST(NotExistsByName) {
+    GUM_ACTIVE_TEST(NotExistsByName) {
       // Arrange
       PRMInstance i("i", *_classA_);
       bool        expected = false;
@@ -171,7 +171,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(actual, expected)
     }
 
-    GUM_TEST(GetByName) {
+    GUM_ACTIVE_TEST(GetByName) {
       // Arrange
       PRMInstance                       i("i", *_classA_);
       gum::prm::PRMAttribute< double >* attr       = nullptr;
@@ -185,7 +185,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(attr->cpf().nbrDim(), class_attr.cpf().nbrDim())
     }
 
-    GUM_TEST(GetByNameConst) {
+    GUM_ACTIVE_TEST(GetByNameConst) {
       // Arrange
       PRMInstance                             i("i", *_classA_);
       const auto&                             const_i    = i;
@@ -200,14 +200,14 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(attr->cpf().nbrDim(), class_attr.cpf().nbrDim())
     }
 
-    GUM_TEST(GetByNameNotFound) {
+    GUM_ACTIVE_TEST(GetByNameNotFound) {
       // Arrange
       PRMInstance i("i", *_classA_);
       // Act & Assert
       TS_ASSERT_THROWS(i.get("azeaze"), const gum::NotFound&)
     }
 
-    GUM_TEST(GetByNameConstNotFound) {
+    GUM_ACTIVE_TEST(GetByNameConstNotFound) {
       // Arrange
       PRMInstance i("i", *_classA_);
       const auto& const_i = i;
@@ -215,7 +215,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(const_i.get("azeaze"), const gum::NotFound&)
     }
 
-    GUM_TEST(GetById) {
+    GUM_ACTIVE_TEST(GetById) {
       // Arrange
       PRMInstance                       i("i", *_classA_);
       gum::prm::PRMAttribute< double >* attr       = nullptr;
@@ -229,7 +229,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(attr->cpf().nbrDim(), class_attr.cpf().nbrDim())
     }
 
-    GUM_TEST(GetByIdConst) {
+    GUM_ACTIVE_TEST(GetByIdConst) {
       // Arrange
       PRMInstance                             i("i", *_classA_);
       const auto&                             const_i    = i;
@@ -244,14 +244,14 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(attr->cpf().nbrDim(), class_attr.cpf().nbrDim())
     }
 
-    GUM_TEST(GetByIdNotFound) {
+    GUM_ACTIVE_TEST(GetByIdNotFound) {
       // Arrange
       PRMInstance i("i", *_classA_);
       // Act & Assert
       TS_ASSERT_THROWS(i.get(666), const gum::NotFound&)
     }
 
-    GUM_TEST(GetByIdConstNotFound) {
+    GUM_ACTIVE_TEST(GetByIdConstNotFound) {
       // Arrange
       PRMInstance i("i", *_classA_);
       const auto& const_i = i;
@@ -259,7 +259,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(const_i.get(666), const gum::NotFound&)
     }
 
-    GUM_TEST(Size) {
+    GUM_ACTIVE_TEST(Size) {
       // Arrage
       PRMInstance i("i", *_classA_);
       gum::Size   expected = 3;   // 2 Attributes + 1 cast descendant
@@ -272,14 +272,14 @@ namespace gum_tests {
 
     /// Instantiation methods
     /// @{
-    GUM_TEST(Instiate) {
+    GUM_ACTIVE_TEST(Instiate) {
       // Arrange
       PRMInstance i("i", *_classA_);
       // Act && Assert
       TS_ASSERT_THROWS_NOTHING(i.instantiate())
     }
 
-    GUM_TEST(Bijection) {
+    GUM_ACTIVE_TEST(Bijection) {
       // Arrange
       PRMInstance      i("i", *_classA_);
       Bijection const* bij   = nullptr;

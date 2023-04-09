@@ -28,7 +28,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] binTreeNodeTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(Constructors) {
+    GUM_ACTIVE_TEST(Constructors) {
       gum::BinTreeNode< int >* node = 0;
 
       TS_GUM_ASSERT_THROWS_NOTHING(node = new gum::BinTreeNode< int >(33))
@@ -45,7 +45,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(*node2, *node4)
     }
 
-    GUM_TEST(InsertChildren) {
+    GUM_ACTIVE_TEST(InsertChildren) {
       gum::BinTreeNode< int > node(0);
 
       TS_ASSERT_EQUALS(node.parent(), nullptr)
@@ -94,7 +94,7 @@ namespace gum_tests {
       delete (node7);
     }
 
-    GUM_TEST(EraseLink) {
+    GUM_ACTIVE_TEST(EraseLink) {
       gum::BinTreeNode< int > node1(0);
       gum::BinTreeNode< int > node2(1);
       gum::BinTreeNode< int > node3(2);

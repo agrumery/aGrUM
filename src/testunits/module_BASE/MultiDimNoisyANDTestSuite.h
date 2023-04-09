@@ -35,7 +35,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] MultiDimNoisyANDTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(CreationNoisyOr) {
+    GUM_ACTIVE_TEST(CreationNoisyOr) {
       gum::LabelizedVariable          a("a", "", 2), b("b", "", 2), c("c", "", 2), d("d", "", 2);
       gum::MultiDimNoisyAND< double > p(0.2f);
 
@@ -69,7 +69,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(gum::MultiDimNoisyAND< double > qq(0.0f), const gum::InvalidArgument&)
     }
 
-    GUM_TEST(CompatibleWithHardAND) {
+    GUM_ACTIVE_TEST(CompatibleWithHardAND) {
       gum::LabelizedVariable cold("Cold", "", 2);
       gum::LabelizedVariable flu("Flu", "", 2);
       gum::LabelizedVariable malaria("Malaria", "", 2);
@@ -106,7 +106,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(ComputationInNoisyAND) {
+    GUM_ACTIVE_TEST(ComputationInNoisyAND) {
       gum::LabelizedVariable cold("Cold", "", 2);
       gum::LabelizedVariable flu("Flu", "", 2);
       gum::LabelizedVariable malaria("Malaria", "", 2);
@@ -151,7 +151,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(ComputationInNoisyAND2) {
+    GUM_ACTIVE_TEST(ComputationInNoisyAND2) {
       gum::LabelizedVariable lazy("lazy", "", 2);
       gum::LabelizedVariable degree("degree", "", 2);
       gum::LabelizedVariable motivation("motivation", "", 2);

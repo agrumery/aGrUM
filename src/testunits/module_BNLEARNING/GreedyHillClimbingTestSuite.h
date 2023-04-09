@@ -190,7 +190,7 @@ namespace gum_tests {
 
 
     public:
-    GUM_TEST(_k2_asia) {
+    GUM_ACTIVE_TEST(_k2_asia) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -257,7 +257,7 @@ namespace gum_tests {
       // modalities );
     }
 
-    GUM_TEST(_asia_with_ordered_values) {
+    GUM_ACTIVE_TEST(_asia_with_ordered_values) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -327,7 +327,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(_alarm_with_ordered_values) {
+    GUM_ACTIVE_TEST(_alarm_with_ordered_values) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/alarm.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -399,7 +399,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(_alarm_with_ordered_values2) {
+    GUM_ACTIVE_TEST(_alarm_with_ordered_values2) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/alarm.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -474,7 +474,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(_dirichlet) {
+    GUM_ACTIVE_TEST(_dirichlet) {
       // read the learning database
       gum::learning::DBInitializerFromCSV initializer(
          GET_RESSOURCES_PATH("csv/db_dirichlet_learning.csv"));

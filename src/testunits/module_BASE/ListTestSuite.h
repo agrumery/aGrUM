@@ -33,17 +33,17 @@ namespace gum_tests {
 
   class [[maybe_unused]] ListTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(PrivateMethods){TS_GUM_ASSERT_THROWS_NOTHING(initializeList(7))
+    GUM_ACTIVE_TEST(PrivateMethods){TS_GUM_ASSERT_THROWS_NOTHING(initializeList(7))
                                 TS_GUM_ASSERT_THROWS_NOTHING(initializeList(-7))}
 
-    GUM_TEST(Constructor) {
+    GUM_ACTIVE_TEST(Constructor) {
       gum::List< int > liste1{1, 2, 3, 4};
       TS_ASSERT_EQUALS(liste1.size(), (gum::Size)4)
       TS_ASSERT_EQUALS(liste1.front(), 1)
       TS_ASSERT_EQUALS(liste1.back(), 4)
     }
 
-    GUM_TEST(Moves) {
+    GUM_ACTIVE_TEST(Moves) {
       gum::List< int > liste1{1, 2, 3, 4};
       gum::List< int > liste2{7, 8};
       gum::List< int > liste3{1, 9, 10, 20, 30, 40};
@@ -57,7 +57,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(liste2.back(), 4)
     }
 
-    GUM_TEST(Push) {
+    GUM_ACTIVE_TEST(Push) {
       gum::List< int > liste1;
       liste1.pushFront(3);
       TS_ASSERT_EQUALS(liste1.size(), (gum::Size)1)
@@ -86,7 +86,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(liste1.size(), (gum::Size)13)
     }
 
-    GUM_TEST(Copy) {
+    GUM_ACTIVE_TEST(Copy) {
       gum::List< int > liste1;
       liste1.pushFront(3);
       liste1.pushFront(4);
@@ -109,7 +109,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(liste3.size(), (gum::Size)0)
     }
 
-    GUM_TEST(Move) {
+    GUM_ACTIVE_TEST(Move) {
       gum::List< int > liste1;
       liste1.pushFront(3);
       liste1.pushFront(4);
@@ -125,39 +125,39 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(liste3.front(), 5)
     }
 
-    GUM_TEST(Insert) {
+    GUM_ACTIVE_TEST(Insert) {
       gum::List< int > list = initializeList(6);
       list.insert(7);
 
       TS_ASSERT_EQUALS(list.size(), (gum::Size)7)
     }
 
-    GUM_TEST(Front) {
+    GUM_ACTIVE_TEST(Front) {
       gum::List< int > list = initializeList(7);
       TS_ASSERT_EQUALS(list.front(), 1)
       list.front() = 34;
       TS_ASSERT_EQUALS(list.front(), 34)
     }
 
-    GUM_TEST(Back) {
+    GUM_ACTIVE_TEST(Back) {
       gum::List< int > list = initializeList(7);
       TS_ASSERT_EQUALS(list.back(), 7)
       list.back() = 42;
       TS_ASSERT_EQUALS(list.back(), 42)
     }
 
-    GUM_TEST(size) {
+    GUM_ACTIVE_TEST(size) {
       gum::List< int > list = initializeList(7);
       TS_ASSERT_EQUALS(list.size(), (gum::Size)7)
     }
 
-    GUM_TEST(Exists) {
+    GUM_ACTIVE_TEST(Exists) {
       gum::List< int > list = initializeList(7);
       TS_ASSERT(list.exists(3))
       TS_ASSERT(!list.exists(42))
     }
 
-    GUM_TEST(Insert2) {
+    GUM_ACTIVE_TEST(Insert2) {
       gum::List< int > list1{1, 2, 3, 4};
       gum::List< int > list2{2, 4};
       list2.insert(0, 1);
@@ -200,7 +200,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(list6, list1)
     }
 
-    GUM_TEST(EraseByVal) {
+    GUM_ACTIVE_TEST(EraseByVal) {
       gum::List< int > list = initializeList(7);
       TS_GUM_ASSERT_THROWS_NOTHING(list.eraseByVal(20))
       list.pushBack(3);
@@ -208,7 +208,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(list.size(), (gum::Size)7)
     }
 
-    GUM_TEST(EraseAllVal) {
+    GUM_ACTIVE_TEST(EraseAllVal) {
       gum::List< int > list;
 
       for (int i = 0; i < 7; i++)
@@ -223,7 +223,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(list.size(), (gum::Size)2)
     }
 
-    GUM_TEST(Erase) {
+    GUM_ACTIVE_TEST(Erase) {
       gum::List< int > list;
 
       for (int i = 0; i < 7; i++)
@@ -242,7 +242,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(list.size(), (gum::Size)5)
     }
 
-    GUM_TEST(EraseIterator) {
+    GUM_ACTIVE_TEST(EraseIterator) {
       gum::List< int > list;
 
       for (int i = 0; i < 6; i++)
@@ -295,7 +295,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(list.size(), (gum::Size)1)
     }
 
-    GUM_TEST(IteratorStep) {
+    GUM_ACTIVE_TEST(IteratorStep) {
       gum::List< int > list{1, 2, 3, 4, 5, 6};
       auto             iter = list.beginSafe();   // safe iterator needed here
       list.erase(iter);
@@ -322,7 +322,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(list.size(), (gum::Size)0)
     }
 
-    GUM_TEST(IteratorStep2) {
+    GUM_ACTIVE_TEST(IteratorStep2) {
       gum::List< int >           xlist{1, 2, 3, 4, 5, 6, 7, 8};
       gum::List< int >::iterator iter = xlist.begin();
       iter += 4;
@@ -377,7 +377,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(PopBack) {
+    GUM_ACTIVE_TEST(PopBack) {
       gum::List< int > list = initializeList(7);
       int              last = list.back();
       list.popBack();
@@ -385,7 +385,7 @@ namespace gum_tests {
       TS_ASSERT_DIFFERS(list.back(), last)
     }
 
-    GUM_TEST(PopFront) {
+    GUM_ACTIVE_TEST(PopFront) {
       gum::List< int > list  = initializeList(7);
       int              first = list.front();
       list.popFront();
@@ -393,7 +393,7 @@ namespace gum_tests {
       TS_ASSERT_DIFFERS(list.front(), first)
     }
 
-    GUM_TEST(STL) {
+    GUM_ACTIVE_TEST(STL) {
       gum::List< int > xlist{1, 2, 3, 4, 5, 6, 7, 8};
       int              xx = 0;
       std::for_each(xlist.begin(), xlist.end(), [&xx](int x) { xx += x; });

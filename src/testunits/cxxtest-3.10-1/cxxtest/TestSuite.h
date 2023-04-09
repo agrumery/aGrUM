@@ -4,7 +4,7 @@
 //
 // class TestSuite is the base class for all test suites.
 // To define a test suite, derive from this class and add
-// member functions called GUM_TEST(*);
+// member functions called GUM_ACTIVE_TEST(*);
 //
 
 #include <cxxtest/Descriptions.h>

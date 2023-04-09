@@ -151,7 +151,7 @@ namespace gum_tests {
     /** Testing creation, filling and destrcution of a function graph */
     /**
      * **********************************************************************************/
-    GUM_TEST(_Simple_Creation) {
+    GUM_ACTIVE_TEST(_Simple_Creation) {
       try {
         // *********************************************************************
         // Création of the Function Graph
@@ -181,7 +181,7 @@ namespace gum_tests {
     /** Testing access method in the graph */
     /**
      * **********************************************************************************/
-    GUM_TEST(_MultiDimFunctionGraph_Diagram_Handlers_Methods) {
+    GUM_ACTIVE_TEST(_MultiDimFunctionGraph_Diagram_Handlers_Methods) {
       try {
         // *********************************************************************
         // Création du multidim
@@ -238,7 +238,7 @@ namespace gum_tests {
     /** Testing export method */
     /**
      * **********************************************************************************/
-    GUM_TEST(_toDot) {
+    GUM_ACTIVE_TEST(_toDot) {
       try {
         // *********************************************************************
         // Création du multidim
@@ -272,7 +272,7 @@ namespace gum_tests {
     /**  Test on manager graph handling methods */
     /**
      * *******************************************************************************/
-    GUM_TEST(_Manager_Graphical_Functions) {
+    GUM_ACTIVE_TEST(_Manager_Graphical_Functions) {
       try {
         // *********************************************************************
         // Creation of the multidim
@@ -345,7 +345,7 @@ namespace gum_tests {
     /**   Testing access and modification function on multidim */
     /**
      * **********************************************************************************/
-    GUM_TEST(_MultiDimFunctionGraph_Accessors_Modifiers_Methods) {
+    GUM_ACTIVE_TEST(_MultiDimFunctionGraph_Accessors_Modifiers_Methods) {
       try {
         // *********************************************************************
         // Creation of multidim
@@ -529,7 +529,7 @@ namespace gum_tests {
     /**   Tests on Function Graph implementation of MultiDimImplementation */
     /**
      * **********************************************************************************/
-    GUM_TEST(_MultiDimFunctionGraph_Implementation_Methods) {
+    GUM_ACTIVE_TEST(_MultiDimFunctionGraph_Implementation_Methods) {
       try {
         // *********************************************************************
         // Creation of the multidim
@@ -584,7 +584,7 @@ namespace gum_tests {
     /**   Tests on Copy Methods */
     /**
      * **********************************************************************************/
-    GUM_TEST(_MultiDimFunctionGraph_Copy_Methods) {
+    GUM_ACTIVE_TEST(_MultiDimFunctionGraph_Copy_Methods) {
       try {
         // *********************************************************************
         // Création du multidim
@@ -687,7 +687,7 @@ namespace gum_tests {
     /**   Tests on several miscelleanous methods */
     /**
      * **********************************************************************************/
-    GUM_TEST(_MultiDimFunctionGraph_Various_Methods) {
+    GUM_ACTIVE_TEST(_MultiDimFunctionGraph_Various_Methods) {
       try {
         // *********************************************************************
         // Creation of severals multidims
@@ -737,7 +737,7 @@ namespace gum_tests {
     /**   Tests on moveTo function and minimize */
     /**
      * **********************************************************************************/
-    GUM_TEST(_MoveTo) {
+    GUM_ACTIVE_TEST(_MoveTo) {
       try {
         // *********************************************************************
         // Creation of the multidim

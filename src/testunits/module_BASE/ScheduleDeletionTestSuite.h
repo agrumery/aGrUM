@@ -34,7 +34,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] ScheduleDeletionTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(_construct) {
+    GUM_ACTIVE_TEST(_construct) {
       // reset the ids of the ScheduleMultiDim to avoid conflicts with other
       // testunits
       gum::IScheduleMultiDim::resetIdGenerator();

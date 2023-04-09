@@ -30,7 +30,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] NanodbcParserTestSuite : public CxxTest::TestSuite {
     public:
-    GUM_TEST(SimpleSQL) {
+    GUM_ACTIVE_TEST(SimpleSQL) {
 
 #ifdef ODBC_
 
@@ -165,7 +165,7 @@ namespace gum_tests {
     }
 
     
-    GUM_TEST(AlarmSQL) {
+    GUM_ACTIVE_TEST(AlarmSQL) {
 #ifdef ODBC_
       const std::string driver_name = "SQLite3";
 #ifdef _WIN32
@@ -190,7 +190,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(AsiaSQL) {
+    GUM_ACTIVE_TEST(AsiaSQL) {
 #ifdef _ODBC
       const std::string driver_name = "SQLite3";
 #ifdef _WIN32

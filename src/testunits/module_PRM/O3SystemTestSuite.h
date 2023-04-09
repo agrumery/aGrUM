@@ -70,7 +70,7 @@ namespace gum_tests {
       delete complex_printers;
     }
 
-    GUM_TEST(SimpleSystem) {
+    GUM_ACTIVE_TEST(SimpleSystem) {
       // Arrange
       std::stringstream input;
       input << "system Foo { }";
@@ -86,7 +86,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(foo.size(), (gum::Size)0)
     }
 
-    GUM_TEST(MicroSystem) {
+    GUM_ACTIVE_TEST(MicroSystem) {
       // Arrange
       std::stringstream input;
       input << "system microSys {" << std::endl
@@ -113,7 +113,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(foo.size(), (gum::Size)5)
     }
 
-    GUM_TEST(MicroSystemWithError1) {
+    GUM_ACTIVE_TEST(MicroSystemWithError1) {
       // Arrange
       std::stringstream input;
       input << "system microSys {" << std::endl << "PowerSupply;" << std::endl << "}" << std::endl;
@@ -130,7 +130,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(simple_printers->systems().size(), (gum::Size)0)
     }
 
-    GUM_TEST(MicroSystemWithError2) {
+    GUM_ACTIVE_TEST(MicroSystemWithError2) {
       // Arrange
       std::stringstream input;
       input << "system microSys {" << std::endl << "FOO bar;" << std::endl << "}" << std::endl;
@@ -147,7 +147,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(simple_printers->systems().size(), (gum::Size)0)
     }
 
-    GUM_TEST(MicroSystemWithError3) {
+    GUM_ACTIVE_TEST(MicroSystemWithError3) {
       // Arrange
       std::stringstream input;
       input << "system {" << std::endl << "PowerSupply pow;" << std::endl << "}" << std::endl;
@@ -164,7 +164,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(simple_printers->systems().size(), (gum::Size)0)
     }
 
-    GUM_TEST(MicroSystemWithError4) {
+    GUM_ACTIVE_TEST(MicroSystemWithError4) {
       // Arrange
       std::stringstream input;
       input << "system microSys {" << std::endl
@@ -184,7 +184,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(simple_printers->systems().size(), (gum::Size)0)
     }
 
-    GUM_TEST(MicroSystemWithError5) {
+    GUM_ACTIVE_TEST(MicroSystemWithError5) {
       // Arrange
       std::stringstream input;
       input << "system microSys {" << std::endl
@@ -207,7 +207,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(simple_printers->systems().size(), (gum::Size)0)
     }
 
-    GUM_TEST(MicroSystemWithError6) {
+    GUM_ACTIVE_TEST(MicroSystemWithError6) {
       // Arrange
       std::stringstream input;
       input << "system microSys {" << std::endl
@@ -234,7 +234,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(simple_printers->systems().size(), (gum::Size)1)
     }
 
-    GUM_TEST(MicroSystemWithError7) {
+    GUM_ACTIVE_TEST(MicroSystemWithError7) {
       // Arrange
       std::stringstream input;
       input << "system microSys {" << std::endl
@@ -261,7 +261,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(simple_printers->systems().size(), (gum::Size)0)
     }
 
-    GUM_TEST(SmallSystem) {
+    GUM_ACTIVE_TEST(SmallSystem) {
       // Arrange
       std::stringstream input;
       input << "system smallSys {" << std::endl
@@ -303,7 +303,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(foo.size(), (gum::Size)10)
     }
 
-    GUM_TEST(ComplexSystem) {
+    GUM_ACTIVE_TEST(ComplexSystem) {
       // Arrange
       std::stringstream input;
       input << "system aSys {" << std::endl

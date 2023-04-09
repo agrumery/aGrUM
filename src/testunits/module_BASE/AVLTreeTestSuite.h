@@ -31,7 +31,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] AVLTreeTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(_int) {
+    GUM_ACTIVE_TEST(_int) {
       gum::AVLTree< int > tree1;
       TS_GUM_ASSERT_EQUALS(tree1.empty(), true)
       TS_GUM_ASSERT_EQUALS(tree1.size(), gum::Size(0))
@@ -175,7 +175,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_EQUALS(tree2.size(), gum::Size(0))
     }
 
-    GUM_TEST(_safe) {
+    GUM_ACTIVE_TEST(_safe) {
       gum::AVLTree< int > tree1;
       std::vector< int >  vect  = {3, 1, 7, -5, 2, 4, 3, 6, 7, 7};
       auto                iter1 = tree1.beginSafe();
@@ -204,7 +204,7 @@ namespace gum_tests {
       }
     };
 
-    GUM_TEST(_pairs) {
+    GUM_ACTIVE_TEST(_pairs) {
       gum::AVLTree< std::pair< int, int >, Mycmp > tree1;
       TS_GUM_ASSERT_EQUALS(tree1.empty(), true)
       TS_GUM_ASSERT_EQUALS(tree1.size(), gum::Size(0))
@@ -337,7 +337,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_EQUALS(tree2.size(), gum::Size(0))
     }
 
-    GUM_TEST(_erase) {
+    GUM_ACTIVE_TEST(_erase) {
       gum::AVLTree< int >      tree{8, 10, 2, 23, 24};
       const std::vector< int > vect{2, 8, 10, 23, 24};
       {
@@ -410,7 +410,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(tree.lowestValue(), gum::NotFound&)
     }
 
-    GUM_TEST(_shuffle) {
+    GUM_ACTIVE_TEST(_shuffle) {
       gum::AVLTree< std::pair< int, int >, Mycmp > tree;
       TS_GUM_ASSERT_EQUALS(tree.empty(), true)
       TS_GUM_ASSERT_EQUALS(tree.size(), gum::Size(0))

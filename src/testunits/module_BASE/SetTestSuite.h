@@ -32,7 +32,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] SetTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(Constructor) {
+    GUM_ACTIVE_TEST(Constructor) {
       gum::Set< int >* set = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(set = new gum::Set< int >())
       TS_GUM_ASSERT_THROWS_NOTHING(delete set)
@@ -64,7 +64,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(set4.size(), (gum::Size)3)
     }
 
-    GUM_TEST(Moves) {
+    GUM_ACTIVE_TEST(Moves) {
       gum::Set< int > set1{1, 2, 3};
       gum::Set< int > set2{4, 5, 7};
       gum::Set< int > set3{8, 10};
@@ -78,7 +78,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(set2.size(), (gum::Size)3)
     }
 
-    GUM_TEST(Insert) {
+    GUM_ACTIVE_TEST(Insert) {
       gum::Set< std::string > set;
       TS_GUM_ASSERT_THROWS_NOTHING(set.insert("a"))
       TS_GUM_ASSERT_THROWS_NOTHING(set.insert("b"))
@@ -101,7 +101,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(set << x)
     }
 
-    GUM_TEST(Equality) {
+    GUM_ACTIVE_TEST(Equality) {
       gum::Set< int > t1, t2, t3;
       fill(t1);
       fill(t2);
@@ -141,7 +141,7 @@ namespace gum_tests {
       TS_ASSERT_DIFFERS(t5, t4)
     }
 
-    GUM_TEST(Size) {
+    GUM_ACTIVE_TEST(Size) {
       gum::Set< int > set;
 
       TS_ASSERT_EQUALS(set.size(), (gum::Size)0)
@@ -149,7 +149,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(set.size(), (gum::Size)6)
     }
 
-    GUM_TEST(Erase) {
+    GUM_ACTIVE_TEST(Erase) {
       gum::Set< int > set;
       fill(set);
 
@@ -176,7 +176,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(set2 >> 4)
     }
 
-    GUM_TEST(Iterator) {
+    GUM_ACTIVE_TEST(Iterator) {
       gum::Set< int > set;
       fill(set);
 
@@ -209,7 +209,7 @@ namespace gum_tests {
       TS_ASSERT_DIFFERS(iter8, set.cend())
     }
 
-    GUM_TEST(EraseIterator) {
+    GUM_ACTIVE_TEST(EraseIterator) {
       gum::Set< int > set;
       fill(set);
       TS_ASSERT_EQUALS(set.size(), (gum::Size)6)
@@ -239,7 +239,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(set2.size(), (gum::Size)5)
     }
 
-    GUM_TEST(Clear) {
+    GUM_ACTIVE_TEST(Clear) {
       gum::Set< int > set;
 
       TS_ASSERT_EQUALS(set.size(), (gum::Size)0)
@@ -252,7 +252,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(set.size(), (gum::Size)0)
     }
 
-    GUM_TEST(IsEmpty) {
+    GUM_ACTIVE_TEST(IsEmpty) {
       gum::Set< int > set;
 
       TS_ASSERT(set.empty())
@@ -262,7 +262,7 @@ namespace gum_tests {
       TS_ASSERT(set.empty())
     }
 
-    GUM_TEST(Exist) {
+    GUM_ACTIVE_TEST(Exist) {
       gum::Set< int > set;
 
       TS_ASSERT(!set.contains(1))
@@ -287,7 +287,7 @@ namespace gum_tests {
       TS_ASSERT(set.contains(6))
     }
 
-    GUM_TEST(CopyOperator) {
+    GUM_ACTIVE_TEST(CopyOperator) {
       gum::Set< int > t1, t2, t3;
       fill(t1);
 
@@ -305,7 +305,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(t1, t3)
     }
 
-    GUM_TEST(IntersectionOperator) {
+    GUM_ACTIVE_TEST(IntersectionOperator) {
       gum::Set< int > t1, t2, t3, empty, inter;
       gum::Set< int > fakeInter;
       fill(t1);
@@ -341,7 +341,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(inter, empty)
     }
 
-    GUM_TEST(UnionOperator) {
+    GUM_ACTIVE_TEST(UnionOperator) {
       gum::Set< int > t1, t2, t3, empty, unionSet;
       gum::Set< int > fakeUnion;
       fill(t1);
@@ -377,7 +377,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(unionSet, t1)
     }
 
-    GUM_TEST(DisjunctionOperator) {
+    GUM_ACTIVE_TEST(DisjunctionOperator) {
       gum::Set< int > t1, t2, t3, empty, disjunction;
       fill(t1);
       fillEven(t2);
@@ -420,7 +420,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(disjunction, empty)
     }
 
-    GUM_TEST(Map1) {
+    GUM_ACTIVE_TEST(Map1) {
       gum::Set< std::string > t1;
       t1 << "a"
          << "b"
@@ -436,7 +436,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(map2 = t1.listMap(&mappingTestFunc_1))
     }
 
-    GUM_TEST(Iterator_1) {
+    GUM_ACTIVE_TEST(Iterator_1) {
       gum::Set< int > t1;
       fill(t1);
 
@@ -499,7 +499,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(iter7, t1.begin() + 3)
     }
 
-    GUM_TEST(Iterator_2) {
+    GUM_ACTIVE_TEST(Iterator_2) {
       gum::Set< int > t1;
       fill(t1);
 
@@ -553,13 +553,13 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(iter7, t1.begin() + 3)
     }
 
-    GUM_TEST(InitializerList) {
+    GUM_ACTIVE_TEST(InitializerList) {
       gum::Set< int > t{1};
       TS_ASSERT_EQUALS(t.size(), 1u)
       TS_ASSERT_EQUALS(t.toString(), "{1}")
     }
 
-    GUM_TEST(SubsetSuperset) {
+    GUM_ACTIVE_TEST(SubsetSuperset) {
       gum::Set< int > t1{1, 2, 3};
       gum::Set< int > t2{1, 3};
       gum::Set< int > t3{4};

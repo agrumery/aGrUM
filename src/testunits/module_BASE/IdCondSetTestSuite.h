@@ -29,7 +29,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] IdtCondSetTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(1) {
+    GUM_ACTIVE_TEST(1) {
       gum::learning::IdCondSet set;
       TS_ASSERT_EQUALS(set.nbLHSIds(), std::size_t(0))
 

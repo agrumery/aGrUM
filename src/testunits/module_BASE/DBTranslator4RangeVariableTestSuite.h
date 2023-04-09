@@ -29,7 +29,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] DBTranslator4RangeVariableTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(_trans1) {
+    GUM_ACTIVE_TEST(_trans1) {
       gum::learning::DBTranslator4RangeVariable translator;
       TS_ASSERT(translator.isLossless())
       TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("3"))
@@ -163,7 +163,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(_trans2) {
+    GUM_ACTIVE_TEST(_trans2) {
       gum::learning::DBTranslator4RangeVariable translator;
       TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("3"))
       TS_ASSERT_EQUALS(translator.translate("3").discr_val, (std::size_t)0)
@@ -304,7 +304,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(_trans4) {
+    GUM_ACTIVE_TEST(_trans4) {
       {
         gum::RangeVariable var("X1", "", 2, 3);
 
@@ -770,7 +770,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(_trans6) {
+    GUM_ACTIVE_TEST(_trans6) {
       gum::RangeVariable         var("X1", "", 2, 4);
       std::vector< std::string > missing{"N/A", "3", "toto"};
 

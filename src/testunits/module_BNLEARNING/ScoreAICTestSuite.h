@@ -616,7 +616,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(_multicore) {
+    GUM_ACTIVE_TEST(_multicore) {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("0");
@@ -754,7 +754,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(ChangeRanges) {
+    GUM_ACTIVE_TEST(ChangeRanges) {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("0");

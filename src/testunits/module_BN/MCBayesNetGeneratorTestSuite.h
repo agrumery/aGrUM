@@ -38,7 +38,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] MCBayesNetGeneratorTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(CreationDeletionFloat) {
+    GUM_ACTIVE_TEST(CreationDeletionFloat) {
       gum::MCBayesNetGenerator< float >* gen = nullptr;
 
       TS_GUM_ASSERT_THROWS_NOTHING(gen
@@ -46,7 +46,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen)
     }
 
-    GUM_TEST(CreationDeletionDouble) {
+    GUM_ACTIVE_TEST(CreationDeletionDouble) {
       gum::MCBayesNetGenerator< double >* gen = nullptr;
 
       TS_GUM_ASSERT_THROWS_NOTHING(gen
@@ -54,19 +54,19 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen)
     }
 
-    GUM_TEST(GenerationBNFloat) {
+    GUM_ACTIVE_TEST(GenerationBNFloat) {
       gum::MCBayesNetGenerator< float > gen(10, 15, 3, 15, 20, 25);
       gum::BayesNet< float >            bn;
       TS_GUM_ASSERT_THROWS_NOTHING(gen.generateBN(bn))
     }
 
-    GUM_TEST(GenerationBNDouble) {
+    GUM_ACTIVE_TEST(GenerationBNDouble) {
       gum::MCBayesNetGenerator< double > gen(10, 15, 3, 15, 20, 25);
       gum::BayesNet< double >            bn;
       TS_GUM_ASSERT_THROWS_NOTHING(gen.generateBN(bn))
     }
 
-    GUM_TEST(GenerationfromBNDouble) {
+    GUM_ACTIVE_TEST(GenerationfromBNDouble) {
       int nbrtests = 0;
       while (true) {
         try {
@@ -93,7 +93,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(DisturbBNFloatCPT) {
+    GUM_ACTIVE_TEST(DisturbBNFloatCPT) {
       int nbrtests = 0;
       while (true) {
         try {
@@ -114,14 +114,14 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(GenerationBNDoubleCPT) {
+    GUM_ACTIVE_TEST(GenerationBNDoubleCPT) {
       gum::MCBayesNetGenerator< double > gen(10, 15, 3, 15, 20, 25);
       gum::BayesNet< double >            bn;
       gen.generateBN(bn);
       // TS_GUM_ASSERT_THROWS_NOTHING(gen.disturbBN(bn))
     }
 
-    GUM_TEST(InferenceFloat) {
+    GUM_ACTIVE_TEST(InferenceFloat) {
       gum::MCBayesNetGenerator< double > gen(10, 15, 3, 15, 20, 25);
       gum::BayesNet< double >            bn;
       gen.generateBN(bn);
@@ -130,7 +130,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(lazyInf.makeInference())
     }
 
-    GUM_TEST(InferenceDouble) {
+    GUM_ACTIVE_TEST(InferenceDouble) {
       gum::MCBayesNetGenerator< double > gen(10, 15, 3, 15, 20, 25);
       gum::BayesNet< double >            bn;
       gen.generateBN(bn);

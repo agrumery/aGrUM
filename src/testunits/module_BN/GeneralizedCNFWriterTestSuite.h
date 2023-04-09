@@ -70,13 +70,13 @@ namespace gum_tests {
 
     void tearDown() { delete bn; }
 
-    GUM_TEST(Constuctor) {
+    GUM_ACTIVE_TEST(Constuctor) {
       gum::GeneralizedCNFWriter< double >* writer = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::GeneralizedCNFWriter< double >())
       delete writer;
     }
 
-    GUM_TEST(Constuctor_With_Aproximation) {
+    GUM_ACTIVE_TEST(Constuctor_With_Aproximation) {
       using typCNF   = gum::GeneralizedCNFWriter< double, gum::LinearApproximationPolicy >;
       typCNF* writer = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(writer = new typCNF())
@@ -87,13 +87,13 @@ namespace gum_tests {
       delete writer;
     }
 
-    GUM_TEST(Writer_ostream) {
+    GUM_ACTIVE_TEST(Writer_ostream) {
       gum::GeneralizedCNFWriter< double > writer;
       // Uncomment this to check the ouput
       // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn))
     }
 
-    GUM_TEST(Writer_ostream_With_Approximation) {
+    GUM_ACTIVE_TEST(Writer_ostream_With_Approximation) {
       gum::GeneralizedCNFWriter< double, gum::LinearApproximationPolicy > writer;
       writer.setEpsilon(0.2);
       writer.setLowLimit(0);
@@ -103,13 +103,13 @@ namespace gum_tests {
       // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn))
     }
 
-    GUM_TEST(Writer_string) {
+    GUM_ACTIVE_TEST(Writer_string) {
       gum::GeneralizedCNFWriter< double > writer;
       std::string file = GET_RESSOURCES_PATH("outputs/O2CNFWriter_TestFile.cnf");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn))
     }
 
-    GUM_TEST(Writer_string_With_Approximation) {
+    GUM_ACTIVE_TEST(Writer_string_With_Approximation) {
       gum::GeneralizedCNFWriter< double, gum::LinearApproximationPolicy > writer;
       writer.setEpsilon(0.2);
       writer.setLowLimit(0);

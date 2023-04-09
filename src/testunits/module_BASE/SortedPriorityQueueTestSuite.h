@@ -30,7 +30,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] SortedPriorityQueueTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(String) {
+    GUM_ACTIVE_TEST(String) {
       gum::SortedPriorityQueue< std::string > queue1;
 
       TS_ASSERT_EQUALS(queue1.size(), (gum::Size)0)
@@ -132,7 +132,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(queue1.bottom(), const gum::NotFound&)
     }
 
-    GUM_TEST(Int) {
+    GUM_ACTIVE_TEST(Int) {
       gum::SortedPriorityQueue< std::pair< int, int >, double > queue;
       TS_ASSERT_EQUALS(queue.size(), (gum::Size)0)
       TS_ASSERT_EQUALS(queue.empty(), true)
@@ -195,7 +195,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(_erase) {
+    GUM_ACTIVE_TEST(_erase) {
       gum::SortedPriorityQueue< std::pair< int, int >, double > queue;
       std::vector< std::pair< std::pair< int, int >, double > > vect;
       for (int i = 0; i < 100; ++i) {

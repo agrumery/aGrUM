@@ -32,7 +32,7 @@
 namespace gum_tests {
   class [[maybe_unused]] DAGModelTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(Equality) {
+    GUM_ACTIVE_TEST(Equality) {
       auto bn = gum::BayesNet< float >::fastPrototype("a->b->c;a->c");
 
       TS_ASSERT(bn.hasSameStructure(bn))
@@ -49,7 +49,7 @@ namespace gum_tests {
          gum::BayesNet< float >::fastPrototype("a ->b  [1,\n5]->c ;\n  a->c  ")));
     }
 
-    GUM_TEST(Ancestors) {
+    GUM_ACTIVE_TEST(Ancestors) {
       auto bn = gum::BayesNet< float >::fastPrototype("A->B<-C->D->E<-A->F;G->A;D->H;G<-I->C<-J");
       TS_ASSERT_EQUALS(bn.descendants(6), gum::NodeSet({0, 1, 4, 5}))
       TS_ASSERT_EQUALS(bn.descendants("G"), gum::NodeSet({0, 1, 4, 5}))
@@ -64,7 +64,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn.ancestors("J"), gum::NodeSet())
     }
 
-    GUM_TEST(MoralizedAncestralGraph) {
+    GUM_ACTIVE_TEST(MoralizedAncestralGraph) {
       auto bn = gum::BayesNet< float >::fastPrototype("A->B<-C->D->E<-A->F;G->A;D->H;G<-I->C<-J");
 
       auto g = bn.moralizedAncestralGraph({"I", "J"});
@@ -113,7 +113,7 @@ namespace gum_tests {
                                      gum::Edge(1, 2)}));
     }
 
-    GUM_TEST(Independence) {
+    GUM_ACTIVE_TEST(Independence) {
       auto bn = gum::BayesNet< float >::fastPrototype("A->B<-C->D->E<-A->F;G->A;D->H;G<-I->C<-J");
 
       TS_ASSERT(bn.isIndependent("I", "J", {}))
@@ -132,7 +132,7 @@ namespace gum_tests {
       TS_ASSERT(bn.isIndependent("I", "H", {"C", "E", "B", "G"}))
     }
 
-    GUM_TEST(MultiIndependence) {
+    GUM_ACTIVE_TEST(MultiIndependence) {
       auto bn = gum::BayesNet< float >::fastPrototype("A->B->C<-F;C->G;D->B->E");
 
       TS_ASSERT_THROWS(bn.isIndependent(std::vector< std::string >{"A", "E"}, {"A", "G"}, {"F"}),

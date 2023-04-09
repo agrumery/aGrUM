@@ -71,25 +71,25 @@ namespace gum_tests {
 
     void tearDown() { delete bn; }
 
-    GUM_TEST(Constuctor) {
+    GUM_ACTIVE_TEST(Constuctor) {
       gum::NetWriter< double >* writer = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::NetWriter< double >())
       delete writer;
     }
 
-    GUM_TEST(Writer_ostream) {
+    GUM_ACTIVE_TEST(Writer_ostream) {
       gum::NetWriter< double > writer;
       // Uncomment this to check the ouput
       // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn))
     }
 
-    GUM_TEST(Writer_string) {
+    GUM_ACTIVE_TEST(Writer_string) {
       gum::NetWriter< double > writer;
       std::string              file = GET_RESSOURCES_PATH("outputs/NetWriter_TestFile.net");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn))
     }
 
-    GUM_TEST(_isreadable) {
+    GUM_ACTIVE_TEST(_isreadable) {
       std::string              file = GET_RESSOURCES_PATH("net/NetWriter_RO_TestFile.net");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
 

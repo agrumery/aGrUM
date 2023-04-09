@@ -52,13 +52,13 @@ namespace gum_tests {
 
     void tearDown() final { delete __bn_d; }
 
-    GUM_TEST(Creation) {
+    GUM_ACTIVE_TEST(Creation) {
       gum::BayesNetFactory< double >* factory = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(factory = new gum::BayesNetFactory< double >(__bn_d))
       TS_GUM_ASSERT_THROWS_NOTHING(delete factory)
     }
 
-    GUM_TEST(IllegalCallsInNONE) {
+    GUM_ACTIVE_TEST(IllegalCallsInNONE) {
       std::vector< float >            aSequence;
       gum::BayesNetFactory< double >* factory = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(factory = new gum::BayesNetFactory< double >(__bn_d))
@@ -84,7 +84,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(delete factory)
     }
 
-    GUM_TEST(LegalsCallsInNONE) {
+    GUM_ACTIVE_TEST(LegalsCallsInNONE) {
       gum::BayesNetFactory< double >* factory = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(factory = new gum::BayesNetFactory< double >(__bn_d))
 
@@ -102,7 +102,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(delete factory)
     }
 
-    GUM_TEST(IllegalCallsInNETWORK) {
+    GUM_ACTIVE_TEST(IllegalCallsInNETWORK) {
       std::vector< float >            aSequence;
       gum::BayesNetFactory< double >* factory = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(factory = new gum::BayesNetFactory< double >(__bn_d))
@@ -133,7 +133,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(delete factory)
     }
 
-    GUM_TEST(BayesNetCreation) {
+    GUM_ACTIVE_TEST(BayesNetCreation) {
       gum::BayesNetFactory< double >* factory = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(factory = new gum::BayesNetFactory< double >(__bn_d))
 
@@ -267,7 +267,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(delete factory)
     }
 
-    GUM_TEST(DefiningWithAlltypes) {
+    GUM_ACTIVE_TEST(DefiningWithAlltypes) {
       gum::BayesNetFactory< double >* factory = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(factory = new gum::BayesNetFactory< double >(__bn_d))
 
@@ -324,7 +324,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(delete factory)
     }
 
-    GUM_TEST(DefiningWithCPT) {
+    GUM_ACTIVE_TEST(DefiningWithCPT) {
       gum::BayesNetFactory< double >* factory = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(factory = new gum::BayesNetFactory< double >(__bn_d))
 

@@ -41,7 +41,7 @@ namespace gum_tests {
 
     void tearDown() {}
 
-    GUM_TEST(Creation) {
+    GUM_ACTIVE_TEST(Creation) {
       gum::Potential< double > p(new gum::MultiDimArray< double >());
       TS_ASSERT(p.empty())
 
@@ -52,7 +52,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(p << a << other_a, const gum::DuplicateElement&)
     }
 
-    GUM_TEST(Normalisation) {
+    GUM_ACTIVE_TEST(Normalisation) {
       gum::Potential< double > p(new gum::MultiDimArray< double >());
 
       gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
@@ -82,7 +82,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-    GUM_TEST(DomainSizeChanges) {
+    GUM_ACTIVE_TEST(DomainSizeChanges) {
       gum::Potential< double > p1(new gum::MultiDimArray< double >());
       gum::LabelizedVariable   var1("var1", "first var", 2), var2("var2", "second var", 2),
          var3("var3", "third var", 2);
@@ -92,7 +92,7 @@ namespace gum_tests {
                        (var1.domainSize() * var2.domainSize() * var3.domainSize()));
     }
 
-    GUM_TEST(AddAnyNumber) {
+    GUM_ACTIVE_TEST(AddAnyNumber) {
       gum::Potential< double > proba(new gum::MultiDimArray< double >());
       gum::LabelizedVariable   a("a", "first var", 2), b("b", "second var", 4),
          c("c", "third var", 5);
@@ -104,7 +104,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(proba.set(i, (double)-1))
     }
 
-    GUM_TEST(CopyProba) {
+    GUM_ACTIVE_TEST(CopyProba) {
       gum::Potential< double > m(new gum::MultiDimArray< double >());
       gum::LabelizedVariable   a("a", "first var", 2), b("b", "second var", 4),
          c("c", "third var", 5);
@@ -134,7 +134,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(m[i], mm[j])
     }
 
-    GUM_TEST(RegressionCopy) {
+    GUM_ACTIVE_TEST(RegressionCopy) {
       gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
          c("c", "third var", 5);
 
@@ -160,7 +160,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(Equality) {
+    GUM_ACTIVE_TEST(Equality) {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
       auto c = gum::LabelizedVariable("c", "cfoo", 3);
@@ -187,7 +187,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(p, u)
     }
 
-    GUM_TEST(MinMax) {
+    GUM_ACTIVE_TEST(MinMax) {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
 
@@ -207,7 +207,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(p.minNonZero(), 0)
     }
 
-    GUM_TEST(IsNonZeroMap) {
+    GUM_ACTIVE_TEST(IsNonZeroMap) {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
 
@@ -220,7 +220,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(p.isNonZeroMap(), q)
     }
 
-    GUM_TEST(Operators) {
+    GUM_ACTIVE_TEST(Operators) {
       auto a = gum::LabelizedVariable("a", "afoo");
       auto b = gum::LabelizedVariable("b", "bfoo");
       auto c = gum::LabelizedVariable("c", "cfoo");
@@ -267,7 +267,7 @@ namespace gum_tests {
          (gum::Potential< int >() << b << a << c).fillWith({1, 19, 10, 27, 1, 25, 13, 34}))
     }
 
-    GUM_TEST(MargOutFunctions) {
+    GUM_ACTIVE_TEST(MargOutFunctions) {
       try {
         auto a = gum::LabelizedVariable("a", "afoo", 3);
         auto b = gum::LabelizedVariable("b", "bfoo", 3);
@@ -314,7 +314,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-    GUM_TEST(MargInFunctions) {
+    GUM_ACTIVE_TEST(MargInFunctions) {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
       auto c = gum::LabelizedVariable("c", "cfoo", 3);
@@ -340,7 +340,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(joint.margMaxOut({&c, &d}), joint.margMaxIn({&a, &b}))
     }
 
-    GUM_TEST(AbsPotential) {
+    GUM_ACTIVE_TEST(AbsPotential) {
       auto a = gum::LabelizedVariable("a", "afoo", 2);
       auto b = gum::LabelizedVariable("b", "bfoo", 2);
 
@@ -358,7 +358,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS((q - p).abs().min(), 0)
     }
 
-    GUM_TEST(SqPotential) {
+    GUM_ACTIVE_TEST(SqPotential) {
       auto a = gum::LabelizedVariable("a", "afoo", 2);
       auto b = gum::LabelizedVariable("b", "bfoo", 2);
 
@@ -376,7 +376,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS((q - p).sq().min(), 0)
     }
 
-    GUM_TEST(EntropyPotential) {
+    GUM_ACTIVE_TEST(EntropyPotential) {
       auto                     a = gum::LabelizedVariable("a", "afoo", 2);
       gum::Potential< double > p;
       p.add(a);
@@ -385,7 +385,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(p.fillWith({0.5, 0.5}).entropy(), 1.0)
     }
 
-    GUM_TEST(ReorganizePotential) {
+    GUM_ACTIVE_TEST(ReorganizePotential) {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
       auto c = gum::LabelizedVariable("c", "cfoo", 3);
@@ -419,7 +419,7 @@ namespace gum_tests {
                        const gum::InvalidArgument&)
     }
 
-    GUM_TEST(ReorganizePotentialFromNames) {
+    GUM_ACTIVE_TEST(ReorganizePotentialFromNames) {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
       auto c = gum::LabelizedVariable("c", "cfoo", 3);
@@ -452,7 +452,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(p.reorganize({std::string("héhé")}), const gum::InvalidArgument&)
     }
 
-    GUM_TEST(PutFirst) {
+    GUM_ACTIVE_TEST(PutFirst) {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
       auto c = gum::LabelizedVariable("b", "bfoo", 3);
@@ -468,7 +468,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(p.putFirst(&c), const gum::InvalidArgument&)
     }
 
-    GUM_TEST(PutFirstWithName) {
+    GUM_ACTIVE_TEST(PutFirstWithName) {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
       auto c = gum::LabelizedVariable("b", "bfoo", 3);
@@ -484,7 +484,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(p.putFirst("c"), const gum::InvalidArgument&)
     }
 
-    GUM_TEST(Extraction) {
+    GUM_ACTIVE_TEST(Extraction) {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
       auto c = gum::LabelizedVariable("c", "cfoo", 3);
@@ -510,7 +510,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(pot.reorganize({&b, &c, &a}).extract(I), r)
     }
 
-    GUM_TEST(OperatorEqual) {
+    GUM_ACTIVE_TEST(OperatorEqual) {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
 
@@ -552,7 +552,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(ScaleAndTranslate) {
+    GUM_ACTIVE_TEST(ScaleAndTranslate) {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
 
       gum::Potential< double > p;
@@ -586,7 +586,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(p, p1)
     }
 
-    GUM_TEST(NormalizeAsCPT) {
+    GUM_ACTIVE_TEST(NormalizeAsCPT) {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
 
@@ -619,7 +619,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(p4, witness)
     }
 
-    GUM_TEST(EmptyPotential) {
+    GUM_ACTIVE_TEST(EmptyPotential) {
       gum::Potential< double > p;
       gum::Instantiation       inst(p);
       double                   a     = 0;
@@ -701,7 +701,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(p.fillWith(-0.5f).isNonZeroMap()[inst], 1.0f)
     }
 
-    GUM_TEST(OperationForEmptyPotential) {
+    GUM_ACTIVE_TEST(OperationForEmptyPotential) {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
 
@@ -780,7 +780,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(tmp, res)
     }
 
-    GUM_TEST(OperationForTwoEmptyPotentials) {
+    GUM_ACTIVE_TEST(OperationForTwoEmptyPotentials) {
       gum::Potential< double > p;
       p.fill(3);
 
@@ -836,7 +836,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(LoopsForEmptyPotential) {
+    GUM_ACTIVE_TEST(LoopsForEmptyPotential) {
       gum::Potential< double > p;
       gum::Instantiation       inst(p);
       p.fill(3);
@@ -870,7 +870,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(p.margSumOut({&a, &b}).toString(), "[45]")
     }
 
-    GUM_TEST(KL) {
+    GUM_ACTIVE_TEST(KL) {
       gum::LabelizedVariable   v("v", "v", 2), w("w", "w", 2);
       gum::Potential< double > p, q, r, s;
       p.add(v);
@@ -906,7 +906,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(res, 0.7 * log2(0.7 / 0.5) + 0.3 * log2(0.3 / 0.5), TS_GUM_SMALL_ERROR)
     }
 
-    GUM_TEST(PotentialDraw) {
+    GUM_ACTIVE_TEST(PotentialDraw) {
       try {
         constexpr int          DELTA   = 200;
         constexpr int          NBRITER = 10000;
@@ -940,7 +940,7 @@ namespace gum_tests {
       } catch (const gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-    GUM_TEST(VariableAccessor) {
+    GUM_ACTIVE_TEST(VariableAccessor) {
       gum::LabelizedVariable   v("v", "v", 2), w("w", "w", 3);
       gum::Potential< double > p;
       p.add(v);
@@ -954,7 +954,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(p.variable("ZZ"), const gum::NotFound&)
     }
 
-    GUM_TEST(FillWithPotentialMethod) {
+    GUM_ACTIVE_TEST(FillWithPotentialMethod) {
       gum::LabelizedVariable v("v", "v", 2), w("w", "w", 3);
       gum::LabelizedVariable z("z", "z", 2);
       gum::LabelizedVariable vv("v", "v", 2), ww("w", "w", 3);
@@ -1008,7 +1008,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(bad_p4.fillWith(p), const gum::InvalidArgument&)
     }
 
-    GUM_TEST(FillWithPotentialAndMapMethod) {
+    GUM_ACTIVE_TEST(FillWithPotentialAndMapMethod) {
       gum::LabelizedVariable v("v", "v", 2), w("w", "w", 3);
       gum::Potential< int >  p;
       p.add(v);
@@ -1027,7 +1027,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(pp.fillWith(p, {"v", "w"}), const gum::InvalidArgument&)
     }
 
-    GUM_TEST(ArgMaxMinFindAll) {
+    GUM_ACTIVE_TEST(ArgMaxMinFindAll) {
       gum::LabelizedVariable v("v", "v", 2), w("w", "w", 3);
       gum::Potential< int >  p;
       _testval_for_set_(p, 4, p.findAll(4), 0);
@@ -1046,7 +1046,7 @@ namespace gum_tests {
       _testval_for_set_(p, 1, amin, 2);
     }
 
-    GUM_TEST(AddDummyVariables) {
+    GUM_ACTIVE_TEST(AddDummyVariables) {
       {
         gum::LabelizedVariable v("v", "v", 0);
 
@@ -1103,7 +1103,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(RandomPotential) {
+    GUM_ACTIVE_TEST(RandomPotential) {
       gum::LabelizedVariable   u("u", "u", 4), v("v", "v", 2), w("w", "w", 3);
       gum::Potential< double > p;
       p.add(u);
@@ -1153,7 +1153,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(Equalities) {
+    GUM_ACTIVE_TEST(Equalities) {
       gum::LabelizedVariable   u("u", "u", 4), v("v", "v", 2), w("w", "w", 3);
       gum::Potential< double > p;
       p.add(u);
@@ -1183,7 +1183,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(Inverse) {
+    GUM_ACTIVE_TEST(Inverse) {
       gum::LabelizedVariable   u("u", "u", 4), v("v", "v", 2), w("w", "w", 3);
       gum::Potential< double > p;
       p.add(u);
@@ -1196,7 +1196,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA((p * q).max(), 1.0, 1e-7)
     }
 
-    GUM_TEST(MinNegatif) {
+    GUM_ACTIVE_TEST(MinNegatif) {
       gum::LabelizedVariable   u("u", "u", 4), v("v", "v", 2), w("w", "w", 3);
       gum::Potential< double > p;
       p.add(u);
@@ -1212,7 +1212,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(p.max(), -150 + 4 * 2 * 3 - 1, 1e-7)
     }
 
-    GUM_TEST(Sgn) {
+    GUM_ACTIVE_TEST(Sgn) {
       gum::LabelizedVariable   u("u", "u", 4), v("v", "v", 2), w("w", "w", 3);
       gum::Potential< double > p;
       p.add(u);
@@ -1229,7 +1229,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS((p - p).sgn().max(), 0.0);
     }
 
-    GUM_TEST(OperatorWithScalars) {
+    GUM_ACTIVE_TEST(OperatorWithScalars) {
       gum::LabelizedVariable   u("u", "u", 4), v("v", "v", 2), w("w", "w", 3);
       gum::Potential< double > p;
       p.add(u);

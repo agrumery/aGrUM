@@ -37,7 +37,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] DatabaseTableTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(_db1) {
+    GUM_ACTIVE_TEST(_db1) {
       {
         gum::learning::DatabaseTable database1;
         TS_ASSERT_EQUALS(database1.content().size(), (gum::Size)0)
@@ -156,7 +156,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(_db2) {
+    GUM_ACTIVE_TEST(_db2) {
       gum::learning::DBTranslatorSet set;
       std::vector< std::string >     missing{"?", "N/A", "???"};
       gum::LabelizedVariable         var("var", "", 0);
@@ -303,7 +303,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(uxhandler2 = uhandler2, std::bad_cast&)
     }
 
-    GUM_TEST(_db3) {
+    GUM_ACTIVE_TEST(_db3) {
       gum::learning::DBTranslatorSet set;
       std::vector< std::string >     missing{"?", "N/A", "???"};
       gum::LabelizedVariable         var("var", "", 0);
@@ -396,7 +396,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(_db4) {
+    GUM_ACTIVE_TEST(_db4) {
       gum::learning::DBTranslatorSet                 set;
       std::vector< std::string >                     missing{"?", "N/A", "???"};
       gum::ContinuousVariable< double >              var("var", "");
@@ -490,7 +490,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(_db5) {
+    GUM_ACTIVE_TEST(_db5) {
       {
         gum::learning::DBTranslatorSet                 set;
         std::vector< std::string >                     missing{"?", "N/A", "???"};
@@ -551,7 +551,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(_db6) {
+    GUM_ACTIVE_TEST(_db6) {
       std::vector< std::string >                     missing{"?", "N/A", "???"};
       gum::ContinuousVariable< double >              var("var", "");
       gum::learning::DBTranslator4ContinuousVariable translator(var, missing, true);
@@ -624,7 +624,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(database.content().size(), (gum::Size)8)
     }
 
-    GUM_TEST(_db_parallel) {
+    GUM_ACTIVE_TEST(_db_parallel) {
       {
         gum::learning::DBTranslatorSet                 set;
         std::vector< std::string >                     missing{"?", "N/A", "???"};
@@ -698,7 +698,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(_db_parallel2) {
+    GUM_ACTIVE_TEST(_db_parallel2) {
       {
         gum::learning::DBTranslatorSet                 set;
         std::vector< std::string >                     missing{"?", "N/A", "???"};
@@ -772,7 +772,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(_iterators) {
+    GUM_ACTIVE_TEST(_iterators) {
       {
         gum::learning::DBTranslatorSet                 set;
         std::vector< std::string >                     missing{"?", "N/A", "???"};
@@ -878,7 +878,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(_ignored_colums) {
+    GUM_ACTIVE_TEST(_ignored_colums) {
       gum::learning::DBTranslatorSet                 set;
       std::vector< std::string >                     missing{"?", "N/A", "???"};
       gum::ContinuousVariable< double >              var("var", "");
@@ -1011,7 +1011,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(_insert_translators) {
+    GUM_ACTIVE_TEST(_insert_translators) {
       std::vector< std::string >   missing{"?", "N/A", "???"};
       gum::learning::DatabaseTable database;
 
@@ -1080,7 +1080,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(_reordering) {
+    GUM_ACTIVE_TEST(_reordering) {
       std::vector< std::string >   missing{"?", "N/A", "???"};
       gum::learning::DatabaseTable database;
 
@@ -1168,7 +1168,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(_missing_vals) {
+    GUM_ACTIVE_TEST(_missing_vals) {
       std::vector< std::string >   missing{"?", "N/A", "???"};
       gum::learning::DatabaseTable database;
 
@@ -1266,7 +1266,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(_threads) {
+    GUM_ACTIVE_TEST(_threads) {
       std::vector< std::string >                     missing{"?", "N/A", "???"};
       gum::ContinuousVariable< double >              var("var", "");
       gum::learning::DBTranslator4ContinuousVariable translator(var, missing, true);
@@ -1313,7 +1313,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(_changeTranslator) {
+    GUM_ACTIVE_TEST(_changeTranslator) {
       gum::learning::DBTranslatorSet                set;
       std::vector< std::string >                    missing{"?", "N/A", "???"};
       gum::learning::DBTranslator4LabelizedVariable translator(missing);
@@ -1375,7 +1375,7 @@ namespace gum_tests {
       TS_ASSERT(!better.empty())
     }
 
-    GUM_TEST(Better) {
+    GUM_ACTIVE_TEST(Better) {
       gum::learning::DBTranslatorSet                set;
       std::vector< std::string >                    missing{"?", "N/A", "???"};
       gum::learning::DBTranslator4LabelizedVariable translator1(missing);

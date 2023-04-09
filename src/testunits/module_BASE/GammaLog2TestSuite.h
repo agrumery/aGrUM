@@ -31,7 +31,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] GammaLog2TestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(1) {
+    GUM_ACTIVE_TEST(1) {
       gum::GammaLog2 f;
       gum::GammaLog2 g(true);
 

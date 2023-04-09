@@ -31,7 +31,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] BDeuPriorTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(1) {
+    GUM_ACTIVE_TEST(1) {
       // create the translator set
       gum::LabelizedVariable var1("X1", "", 0);
       var1.addLabel("0");
@@ -310,7 +310,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(2) {
+    GUM_ACTIVE_TEST(2) {
       // create the translator set
       gum::LabelizedVariable var1("X1", "", 0);
       var1.addLabel("0");

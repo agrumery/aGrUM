@@ -96,7 +96,7 @@ namespace gum_tests {
 
     void tearDown() { delete (bn); }
 
-    GUM_TEST(InferencesWithNoEvidence) {
+    GUM_ACTIVE_TEST(InferencesWithNoEvidence) {
       try {
         begin_test_waiting();
 
@@ -152,7 +152,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(InferencesWithHardEvidence) {
+    GUM_ACTIVE_TEST(InferencesWithHardEvidence) {
       begin_test_waiting();
       gum::Potential< double > e_i1;
       e_i1 << bn->variable(i1);
@@ -222,7 +222,7 @@ namespace gum_tests {
       end_test_waiting();
     }
 
-    GUM_TEST(InferencesWithSoftEvidence) {
+    GUM_ACTIVE_TEST(InferencesWithSoftEvidence) {
       begin_test_waiting();
 
       gum::Potential< double > e_i1;
@@ -280,7 +280,7 @@ namespace gum_tests {
       end_test_waiting();
     }
 
-  GUM_TEST(MultipleInference) {
+  GUM_ACTIVE_TEST(MultipleInference) {
       try {
         gum::BayesNet< double > bn;
         gum::NodeId            c, s, r, w;
@@ -419,7 +419,7 @@ namespace gum_tests {
     }
   }
 
-  GUM_TEST(AlarmWithHardEvidence) {
+  GUM_ACTIVE_TEST(AlarmWithHardEvidence) {
     // Arrange
     std::string              file = GET_RESSOURCES_PATH("bif/alarm.bif");
     gum::BayesNet< double >  bn;
@@ -449,7 +449,7 @@ namespace gum_tests {
     }
   }
 
-  GUM_TEST(AlarmWithSoftEvidence) {
+  GUM_ACTIVE_TEST(AlarmWithSoftEvidence) {
     // Arrange
     std::string              file = GET_RESSOURCES_PATH("bif/alarm.bif");
     gum::BayesNet< double >  bn;
@@ -490,7 +490,7 @@ namespace gum_tests {
     }
   }
 
-  GUM_TEST(Asia) {
+  GUM_ACTIVE_TEST(Asia) {
     // Arrange
     std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
     gum::BayesNet< double >  bn;
@@ -517,7 +517,7 @@ namespace gum_tests {
     }
   }
 
-  GUM_TEST(AsiaWithHardEvidence) {
+  GUM_ACTIVE_TEST(AsiaWithHardEvidence) {
     // Arrange
     std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
     gum::BayesNet< double >  bn;
@@ -550,7 +550,7 @@ namespace gum_tests {
     }
   }
 
-  GUM_TEST(AsiaWithSoftEvidence) {
+  GUM_ACTIVE_TEST(AsiaWithSoftEvidence) {
     // Arrange
     std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
     gum::BayesNet< double >  bn;

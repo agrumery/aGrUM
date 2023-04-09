@@ -39,7 +39,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] DBInitializerFromSQLTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(_init1) {
+    GUM_ACTIVE_TEST(_init1) {
 #ifdef ODBC_
       try {
         const std::string dataSource = "PostgreSQL";
@@ -245,7 +245,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(_init_sqlite) {
+    GUM_ACTIVE_TEST(_init_sqlite) {
 #ifdef ODBC_
       const std::string driver_name = "SQLite3";
 #  ifdef WIN32_

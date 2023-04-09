@@ -81,7 +81,7 @@ namespace gum_tests {
 
     /// PRMClassElement Tests
     /// @{
-    GUM_TEST(IsReferenceSlot) {
+    GUM_ACTIVE_TEST(IsReferenceSlot) {
       // Arrange
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
       var.addLabel("False");
@@ -93,7 +93,7 @@ namespace gum_tests {
       _classEltTestSuite_->testIsReferenceSlot(agg, expected);
     }
 
-    GUM_TEST(IsAttribute) {
+    GUM_ACTIVE_TEST(IsAttribute) {
       // Arrange
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
       var.addLabel("False");
@@ -105,7 +105,7 @@ namespace gum_tests {
       _classEltTestSuite_->testIsAttribute(agg, expected);
     }
 
-    GUM_TEST(IsSlotChain) {
+    GUM_ACTIVE_TEST(IsSlotChain) {
       // Arrange
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
       var.addLabel("False");
@@ -117,7 +117,7 @@ namespace gum_tests {
       _classEltTestSuite_->testIsSlotChain(agg, expected);
     }
 
-    GUM_TEST(SetNodeId) {
+    GUM_ACTIVE_TEST(SetNodeId) {
       // Arrange
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
       var.addLabel("False");
@@ -128,7 +128,7 @@ namespace gum_tests {
       _classEltTestSuite_->testSetNodeId(agg);
     }
 
-    GUM_TEST(ObjType) {
+    GUM_ACTIVE_TEST(ObjType) {
       // Arrange
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
       var.addLabel("False");
@@ -139,7 +139,7 @@ namespace gum_tests {
       _classEltTestSuite_->test_obj_type(agg);
     }
 
-    GUM_TEST(SafeName) {
+    GUM_ACTIVE_TEST(SafeName) {
       // Arrange
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
       var.addLabel("False");
@@ -151,7 +151,7 @@ namespace gum_tests {
       _classEltTestSuite_->testSafeName(agg);
     }
 
-    GUM_TEST(Cast_NotAllowed) {
+    GUM_ACTIVE_TEST(Cast_NotAllowed) {
       // Arrange
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
       var.addLabel("False");
@@ -163,7 +163,7 @@ namespace gum_tests {
       _classEltTestSuite_->testCast_NotAllowed(agg);
     }
 
-    GUM_TEST(Cast) {
+    GUM_ACTIVE_TEST(Cast) {
       // Arrange
       gum::LabelizedVariable boolean_var{"boolean", "A boolean discrete variable", 0};
       boolean_var.addLabel("False");
@@ -190,7 +190,7 @@ namespace gum_tests {
 
     /// Constructors & destructors
     /// @{
-    GUM_TEST(FirstConstructor) {
+    GUM_ACTIVE_TEST(FirstConstructor) {
       // Arrange
       PRMAggregate* agg = nullptr;
       for (auto t: *_types_) {
@@ -201,7 +201,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(SecondConstructor) {
+    GUM_ACTIVE_TEST(SecondConstructor) {
       // Arrange
       PRMAggregate* agg = nullptr;
       for (auto t: *_types_) {
@@ -215,7 +215,7 @@ namespace gum_tests {
 
     /// Getters & setters
     /// @{
-    GUM_TEST(AggTypeNoLabel) {
+    GUM_ACTIVE_TEST(AggTypeNoLabel) {
       // Arrange
       for (auto t: *_types_) {
         // Act
@@ -225,7 +225,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(Label) {
+    GUM_ACTIVE_TEST(Label) {
       // Arrange
       gum::Idx     actual = 1;
       PRMAggregate agg("my_agg", AggType::MIN, *_boolean_, actual);
@@ -236,7 +236,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(actual, expected)
     }
 
-    GUM_TEST(LabelOperationNotAllowed) {
+    GUM_ACTIVE_TEST(LabelOperationNotAllowed) {
       // Arrange
       PRMAggregate agg("my_agg", AggType::MIN, *_boolean_);
       // Act
@@ -244,7 +244,7 @@ namespace gum_tests {
       // Assert
     }
 
-    GUM_TEST(AddParent) {
+    GUM_ACTIVE_TEST(AddParent) {
       // Arrange
       gum::prm::PRMFormAttribute< double > parent(*_class_, "attr", *_boolean_);
       PRMAggregate                         child("my_agg", AggType::MIN, *_boolean_);
@@ -257,7 +257,7 @@ namespace gum_tests {
       TS_ASSERT(!parent.cpf().contains(child.type().variable()))
     }
 
-    GUM_TEST(AddChild) {
+    GUM_ACTIVE_TEST(AddChild) {
       // Arrange
       gum::prm::PRMFormAttribute< double > child(*_class_, "attr", *_boolean_);
       PRMAggregate                         parent("my_agg", AggType::MIN, *_boolean_);
@@ -270,14 +270,14 @@ namespace gum_tests {
       TS_ASSERT(!child.cpf().contains(parent.type().variable()))
     }
 
-    GUM_TEST(Cpf) {
+    GUM_ACTIVE_TEST(Cpf) {
       // Arrange
       PRMAggregate agg("my_agg", AggType::MIN, *_boolean_);
       // Act & Assert
       TS_ASSERT_THROWS(agg.cpf(), const gum::OperationNotAllowed&)
     }
 
-    GUM_TEST(CpfConst) {
+    GUM_ACTIVE_TEST(CpfConst) {
       // Arrange
       PRMAggregate agg("my_agg", AggType::MIN, *_boolean_);
       const auto&  const_agg = agg;
@@ -285,7 +285,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(const_agg.cpf(), const gum::OperationNotAllowed&)
     }
 
-    GUM_TEST(BuildImplMin) {
+    GUM_ACTIVE_TEST(BuildImplMin) {
       // Arrange
       PRMAggregate                           agg("my_agg", AggType::MIN, *_boolean_);
       gum::MultiDimImplementation< double >* impl = nullptr;
@@ -296,7 +296,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING(delete impl)
     }
 
-    GUM_TEST(BuildImplMax) {
+    GUM_ACTIVE_TEST(BuildImplMax) {
       // Arrange
       PRMAggregate                           agg("my_agg", AggType::MAX, *_boolean_);
       gum::MultiDimImplementation< double >* impl = nullptr;
@@ -307,7 +307,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING(delete impl)
     }
 
-    GUM_TEST(BuildImplExists) {
+    GUM_ACTIVE_TEST(BuildImplExists) {
       // Arrange
       PRMAggregate                           agg("my_agg", AggType::EXISTS, *_boolean_, 0);
       gum::MultiDimImplementation< double >* impl = nullptr;
@@ -318,7 +318,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING(delete impl)
     }
 
-    GUM_TEST(BuildImplForAll) {
+    GUM_ACTIVE_TEST(BuildImplForAll) {
       // Arrange
       PRMAggregate                           agg("my_agg", AggType::FORALL, *_boolean_, 0);
       gum::MultiDimImplementation< double >* impl = nullptr;
@@ -329,7 +329,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING(delete impl)
     }
 
-    GUM_TEST(BuildImplCount) {
+    GUM_ACTIVE_TEST(BuildImplCount) {
       // Arrange
       PRMAggregate                           agg("my_agg", AggType::COUNT, *_boolean_, 0);
       gum::MultiDimImplementation< double >* impl = nullptr;
@@ -340,7 +340,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING(delete impl)
     }
 
-    GUM_TEST(BuildImplOr) {
+    GUM_ACTIVE_TEST(BuildImplOr) {
       // Arrange
       PRMAggregate                           agg("my_agg", AggType::OR, *_boolean_, 0);
       gum::MultiDimImplementation< double >* impl = nullptr;
@@ -351,7 +351,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING(delete impl)
     }
 
-    GUM_TEST(BuildImplAnd) {
+    GUM_ACTIVE_TEST(BuildImplAnd) {
       // Arrange
       PRMAggregate                           agg("my_agg", AggType::AND, *_boolean_, 0);
       gum::MultiDimImplementation< double >* impl = nullptr;

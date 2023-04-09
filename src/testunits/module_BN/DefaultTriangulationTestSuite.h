@@ -62,7 +62,7 @@ namespace gum_tests {
       delete var5;
     };
 
-    GUM_TEST(triangulatedGraph) {
+    GUM_ACTIVE_TEST(triangulatedGraph) {
       gum::BayesNet< double >  topo;
       gum::List< gum::NodeId > idList;
 
@@ -89,7 +89,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(if (triangle) delete triangle)
     };
 
-    GUM_TEST(junctionTree) {
+    GUM_ACTIVE_TEST(junctionTree) {
       gum::BayesNet< double >  topo;
       gum::List< gum::NodeId > idList;
 
@@ -150,7 +150,7 @@ namespace gum_tests {
     void xxtestBIFtriangulation10(){
        TS_GUM_ASSERT_THROWS_NOTHING(__triangulate_bif(GET_RESSOURCES_PATH("bif/insurance.bif")))};
 
-    GUM_TEST(TriangulatedGraph1) {
+    GUM_ACTIVE_TEST(TriangulatedGraph1) {
       gum::NodeSet c1, c2, c3, c4, c5;
       c1 << 1 << 2 << 3 << 4;
       c2 << 2 << 4 << 5;
@@ -211,7 +211,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(*(edges.begin()), gum::Edge(2, 5))
     }
 
-    GUM_TEST(TriangulatedGraph2) {
+    GUM_ACTIVE_TEST(TriangulatedGraph2) {
       gum::UndiGraph graph;
 
       for (unsigned int i = 1; i <= 8; ++i)

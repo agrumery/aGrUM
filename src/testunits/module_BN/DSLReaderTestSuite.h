@@ -39,7 +39,7 @@
 namespace gum_tests {
   class [[maybe_unused]] DSLReaderTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(Constuctor) {
+    GUM_ACTIVE_TEST(Constuctor) {
       std::string             file = GET_RESSOURCES_PATH("DSL/DSLReader_file1.txt");
       gum::BayesNet< double > net;
 
@@ -47,7 +47,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(reader = new gum::DSLReader< double >(&net, file))
       TS_GUM_ASSERT_THROWS_NOTHING(delete reader)
     }
-    GUM_TEST(Read_file1) {
+    GUM_ACTIVE_TEST(Read_file1) {
       std::string              file = GET_RESSOURCES_PATH("DSL/DSLReader_file1.txt");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
@@ -67,7 +67,7 @@ namespace gum_tests {
         delete net;
       }
     }
-    GUM_TEST(Read_file2_float) {
+    GUM_ACTIVE_TEST(Read_file2_float) {
       std::string              file = GET_RESSOURCES_PATH("DSL/DSLReader_file2.txt");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
@@ -114,7 +114,7 @@ namespace gum_tests {
         delete net;
       }
     }
-    GUM_TEST(Read_file2_double) {
+    GUM_ACTIVE_TEST(Read_file2_double) {
       std::string              file = GET_RESSOURCES_PATH("DSL/DSLReader_file2.txt");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
@@ -161,7 +161,7 @@ namespace gum_tests {
         delete net;
       }
     }
-    GUM_TEST(Read_file3) {
+    GUM_ACTIVE_TEST(Read_file3) {
       std::string              file = GET_RESSOURCES_PATH("DSL/DSLReader_file3.txt");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
@@ -179,7 +179,7 @@ namespace gum_tests {
 
       if (net) delete net;
     }
-    GUM_TEST(Read_file_completeDSL) {
+    GUM_ACTIVE_TEST(Read_file_completeDSL) {
       std::string              file = GET_RESSOURCES_PATH("DSL/Ling.dsl");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
@@ -198,7 +198,7 @@ namespace gum_tests {
 
       if (net) delete net;
     }
-    GUM_TEST(Alarm) {
+    GUM_ACTIVE_TEST(Alarm) {
       std::string              file = GET_RESSOURCES_PATH("DSL/alarm.dsl");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
@@ -330,7 +330,7 @@ namespace gum_tests {
 
       delete net;
     }
-    GUM_TEST(Unexisting) {
+    GUM_ACTIVE_TEST(Unexisting) {
       std::string              file = "Schmurtz";
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       TS_GUM_ASSERT_THROWS_NOTHING(gum::DSLReader< double > reader(net, file))
@@ -339,7 +339,7 @@ namespace gum_tests {
 
       if (net) delete net;
     }
-    GUM_TEST(Barley) {
+    GUM_ACTIVE_TEST(Barley) {
       std::string              file = GET_RESSOURCES_PATH("DSL/Barley.dsl");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
@@ -351,7 +351,7 @@ namespace gum_tests {
 
       if (net) delete net;
     }
-    GUM_TEST(Carpo) {
+    GUM_ACTIVE_TEST(Carpo) {
       std::string              file = GET_RESSOURCES_PATH("DSL/carpo.dsl");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
@@ -363,7 +363,7 @@ namespace gum_tests {
 
       if (net) delete net;
     }
-    GUM_TEST(Diabetes) {
+    GUM_ACTIVE_TEST(Diabetes) {
       std::string              file = GET_RESSOURCES_PATH("DSL/Diabetes.dsl");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
@@ -375,7 +375,7 @@ namespace gum_tests {
 
       if (net) delete net;
     }
-    GUM_TEST(Hailfinder) {
+    GUM_ACTIVE_TEST(Hailfinder) {
       std::string              file = GET_RESSOURCES_PATH("DSL/hailfinder.dsl");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
@@ -387,7 +387,7 @@ namespace gum_tests {
 
       if (net) delete net;
     }
-    GUM_TEST(Insurance) {
+    GUM_ACTIVE_TEST(Insurance) {
       std::string              file = GET_RESSOURCES_PATH("DSL/insurance.dsl");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
@@ -399,7 +399,7 @@ namespace gum_tests {
 
       if (net) delete net;
     }
-    GUM_TEST(Link) {
+    GUM_ACTIVE_TEST(Link) {
       std::string              file = GET_RESSOURCES_PATH("DSL/Link.dsl");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
@@ -426,7 +426,7 @@ namespace gum_tests {
 
       if (net) delete net;
     }
-    GUM_TEST(Munin1) {
+    GUM_ACTIVE_TEST(Munin1) {
       std::string              file = GET_RESSOURCES_PATH("DSL/Munin1.dsl");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
@@ -438,7 +438,7 @@ namespace gum_tests {
 
       if (net) delete net;
     }
-    GUM_TEST(Pigs) {
+    GUM_ACTIVE_TEST(Pigs) {
       std::string              file = GET_RESSOURCES_PATH("DSL/Pigs.dsl");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);
@@ -450,7 +450,7 @@ namespace gum_tests {
 
       if (net) delete net;
     }
-    GUM_TEST(Water) {
+    GUM_ACTIVE_TEST(Water) {
       std::string              file = GET_RESSOURCES_PATH("DSL/Water.dsl");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       gum::DSLReader< double > reader(net, file);

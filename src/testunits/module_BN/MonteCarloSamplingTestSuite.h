@@ -62,7 +62,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] MonteCarloSamplingTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(MCbasic) {
+    GUM_ACTIVE_TEST(MCbasic) {
       auto bn = gum::BayesNet< double >::fastPrototype("a->h->c");
       bn.cpt("a").fillWith({0.2f, 0.8f});
       bn.cpt("h").fillWith({0.4f, 0.6f, 0.7f, 0.3f});
@@ -83,7 +83,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(MCBinaryTreeWithoutEvidence) {
+    GUM_ACTIVE_TEST(MCBinaryTreeWithoutEvidence) {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
 
@@ -102,7 +102,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(MCBinaryTreeWithEvidenceOnRoot) {
+    GUM_ACTIVE_TEST(MCBinaryTreeWithEvidenceOnRoot) {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
 
@@ -125,7 +125,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(MCBinaryTreeWithEvidenceOnLeaf) {
+    GUM_ACTIVE_TEST(MCBinaryTreeWithEvidenceOnLeaf) {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "h";
@@ -149,7 +149,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(MCBinaryTreeWithEvidenceOnMid) {
+    GUM_ACTIVE_TEST(MCBinaryTreeWithEvidenceOnMid) {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "e";
@@ -173,7 +173,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(MCBinaryTreeWithMultipleEvidence) {
+    GUM_ACTIVE_TEST(MCBinaryTreeWithMultipleEvidence) {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
 
@@ -200,7 +200,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(MCNaryTreeWithMultipleEvidence) {
+    GUM_ACTIVE_TEST(MCNaryTreeWithMultipleEvidence) {
       auto bn = gum::BayesNet< double >::fastPrototype(
          "a[4]->d[8]->f[3];b->d->g[5];b->e[4]->h;c->e;i[10]->j[3]->h");
       unsharpen(bn);
@@ -229,7 +229,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(MCSimpleBN) {
+    GUM_ACTIVE_TEST(MCSimpleBN) {
       auto bn = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
       unsharpen(bn);
 
@@ -287,7 +287,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(MCCplxBN) {
+    GUM_ACTIVE_TEST(MCCplxBN) {
       auto bn = gum::BayesNet< double >::fastPrototype(
          "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
          3);
@@ -345,7 +345,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(MCAsia) {
+    GUM_ACTIVE_TEST(MCAsia) {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/asia.bif"));
       gum::Size                nbrErr = (gum::Size)0;
@@ -370,7 +370,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(MCAlarm) {
+    GUM_ACTIVE_TEST(MCAlarm) {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = (gum::Size)0;
@@ -395,7 +395,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(MCInfListener) {
+    GUM_ACTIVE_TEST(MCInfListener) {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = (gum::Size)0;
@@ -421,7 +421,7 @@ namespace gum_tests {
       TS_ASSERT_DIFFERS(agsl.getMess(), std::string(""))
     }
 
-    GUM_TEST(Constructor) {
+    GUM_ACTIVE_TEST(Constructor) {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = (gum::Size)0;
@@ -437,7 +437,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(EvidenceAsTargetOnCplxBN) {
+    GUM_ACTIVE_TEST(EvidenceAsTargetOnCplxBN) {
       auto bn = gum::BayesNet< double >::fastPrototype(
          "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;",
          3);

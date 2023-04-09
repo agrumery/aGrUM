@@ -138,14 +138,14 @@ namespace gum_tests {
       delete _potentials_;
     }
 
-    GUM_TEST(Creation) {
+    GUM_ACTIVE_TEST(Creation) {
       gum::MultiDimBucket< double >* bucket = 0;
 
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >())
       TS_ASSERT_THROWS_NOTHING(delete bucket)
     }
 
-    GUM_TEST(AddEraseTables) {
+    GUM_ACTIVE_TEST(AddEraseTables) {
       gum::MultiDimBucket< double >* bucket = 0;
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >())
 
@@ -173,7 +173,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(Computation) {
+    GUM_ACTIVE_TEST(Computation) {
       gum::MultiDimBucket< double >* bucket = 0;
       gum::Potential< double >       product;
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >())
@@ -199,7 +199,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(OnTheFly) {
+    GUM_ACTIVE_TEST(OnTheFly) {
       gum::MultiDimBucket< double >* bucket = 0;
       gum::Potential< double >       product;
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >(0))
@@ -228,7 +228,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(InstantiationsWithBuffer) {
+    GUM_ACTIVE_TEST(InstantiationsWithBuffer) {
       gum::MultiDimBucket< double >* bucket = 0;
       gum::Potential< double >       product;
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >())
@@ -263,7 +263,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(InstantiationsWithBufferAndAutoCompute) {
+    GUM_ACTIVE_TEST(InstantiationsWithBufferAndAutoCompute) {
       gum::MultiDimBucket< double >* bucket = 0;
       gum::Potential< double >       product;
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >())
@@ -296,7 +296,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(InstantiationsOnTheFly) {
+    GUM_ACTIVE_TEST(InstantiationsOnTheFly) {
       gum::MultiDimBucket< double >* bucket = 0;
       gum::Potential< double >       product;
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >(0))
@@ -331,7 +331,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(BucketSizeChanges) {
+    GUM_ACTIVE_TEST(BucketSizeChanges) {
       gum::MultiDimBucket< double >* bucket = 0;
       gum::Potential< double >       product;
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >(0))
@@ -388,7 +388,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(AllVariables) {
+    GUM_ACTIVE_TEST(AllVariables) {
       gum::MultiDimBucket< double >* bucket = 0;
       TS_ASSERT_THROWS_NOTHING(bucket = new gum::MultiDimBucket< double >(0))
 
@@ -414,7 +414,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(WithSmallBN) {
+    GUM_ACTIVE_TEST(WithSmallBN) {
       gum::BayesNet< double >* bn = new gum::BayesNet< double >();
       gum::LabelizedVariable   vc("c", "cloudy", 2), vs("s", "sprinklet", 2);
       gum::LabelizedVariable   vr("r", "rain", 2), vw("w", "wet grass", 2);

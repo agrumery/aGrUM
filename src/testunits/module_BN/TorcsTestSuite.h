@@ -121,7 +121,7 @@ namespace gum_tests {
       delete evidence;
     }
 
-    GUM_TEST(Inference) {
+    GUM_ACTIVE_TEST(Inference) {
       gum::LazyPropagation< double > inf(bn);
 
       try {

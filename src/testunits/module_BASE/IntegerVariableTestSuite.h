@@ -32,7 +32,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] IntegerVariableTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(All) {
+    GUM_ACTIVE_TEST(All) {
       gum::IntegerVariable var1("var1", "this is var1");
       gum::IntegerVariable var2("var2", "this is var2", {1, 9, 7});
 
@@ -204,7 +204,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(SecondConstructor) {
+    GUM_ACTIVE_TEST(SecondConstructor) {
       {
         gum::IntegerVariable var("var", "this is var2", 0, 10, gum::Size(6));
 

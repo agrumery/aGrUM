@@ -36,7 +36,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] DBTranslatorSetTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(_trans1) {
+    GUM_ACTIVE_TEST(_trans1) {
       gum::learning::DBTranslatorSet set;
 
       std::vector< std::string >                    missing{"?", "N/A", "???"};
@@ -150,7 +150,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(set.nbTranslators(), (std::size_t)0)
     }
 
-    GUM_TEST(_trans2) {
+    GUM_ACTIVE_TEST(_trans2) {
       {
         gum::learning::DBTranslatorSet set;
 
@@ -259,7 +259,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(_trans3) {
+    GUM_ACTIVE_TEST(_trans3) {
       gum::learning::DBTranslatorSet set;
 
       std::vector< std::string >                    missing{"?", "N/A", "???"};
@@ -308,7 +308,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(_trans4) {
+    GUM_ACTIVE_TEST(_trans4) {
       {
         gum::learning::DBTranslatorSet set;
 
@@ -390,7 +390,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(_trans5) {
+    GUM_ACTIVE_TEST(_trans5) {
       gum::learning::DBTranslatorSet set;
       std::size_t                    pos;
 
@@ -428,7 +428,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(_trans6) {
+    GUM_ACTIVE_TEST(_trans6) {
       gum::learning::DBTranslatorSet set;
 
       std::vector< std::string >                    missing{"?", "N/A", "???"};
@@ -496,7 +496,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(set.domainSizeSafe(3), (std::size_t)2)
     }
 
-    GUM_TEST(_trans7) {
+    GUM_ACTIVE_TEST(_trans7) {
       gum::learning::DBTranslatorSet set;
       std::size_t                    pos;
 
@@ -523,7 +523,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(_trans8) {
+    GUM_ACTIVE_TEST(_trans8) {
       gum::learning::DBTranslatorSet set;
 
       std::vector< std::string >                    missing{"?", "N/A", "???"};

@@ -59,12 +59,12 @@ namespace gum_tests {
     void tearDown() { delete bn; }
 
     public:
-    GUM_TEST(Creation) {
+    GUM_ACTIVE_TEST(Creation) {
       gum::Instantiation i;
       TS_ASSERT_EQUALS(i.nbrDim(), (gum::Size)0)
     }
 
-    GUM_TEST(InsertSupprVariables) {
+    GUM_ACTIVE_TEST(InsertSupprVariables) {
       gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
          c("c", "third var", 5);
       gum::Instantiation i;
@@ -92,7 +92,7 @@ namespace gum_tests {
       TS_ASSERT(!i.contains(b))
     }
 
-    GUM_TEST(Incrementations) {
+    GUM_ACTIVE_TEST(Incrementations) {
       gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
          c("c", "third var", 5);
       gum::Instantiation i;
@@ -128,7 +128,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(nb, (gum::Size)2)
     }
 
-    GUM_TEST(Decrementations) {
+    GUM_ACTIVE_TEST(Decrementations) {
       gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
          c("c", "third var", 5);
       gum::Instantiation i;
@@ -163,7 +163,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(nb, (gum::Size)2)
     }
 
-    GUM_TEST(Reordering) {
+    GUM_ACTIVE_TEST(Reordering) {
       gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
          c("c", "third var", 5);
       gum::Instantiation i;
@@ -186,7 +186,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(i.toString(), "<c:0|a:1|b:0>")
     }
 
-    GUM_TEST(Reordering_cpt) {
+    GUM_ACTIVE_TEST(Reordering_cpt) {
       gum::Instantiation Order;
 
       for (const auto node: bn->topologicalOrder())
@@ -217,7 +217,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(Slavery) {
+    GUM_ACTIVE_TEST(Slavery) {
       gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
          c("c", "third var", 5);
       gum::MultiDimArray< double > t;
@@ -251,7 +251,7 @@ namespace gum_tests {
       TS_ASSERT(!j.actAsSlave(t))
     }
 
-    GUM_TEST(ChgValIn) {
+    GUM_ACTIVE_TEST(ChgValIn) {
       gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
          c("c", "third var", 5), d("d", "fourth var", 2);
 
@@ -274,7 +274,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(j.toString(), "<b:0|a:1|c:2>")
     }
 
-    GUM_TEST(OperatorEgal) {
+    GUM_ACTIVE_TEST(OperatorEgal) {
       gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
          c("c", "third var", 5), d("d", "fourth var", 2);
       gum::MultiDimArray< char > p, q;
@@ -311,7 +311,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(iq = ip, const gum::OperationNotAllowed&)
     }
 
-    GUM_TEST(OffsetOperation) {
+    GUM_ACTIVE_TEST(OffsetOperation) {
       gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
          c("c", "third var", 5), d("d", "fourth var", 2);
       gum::MultiDimArray< char > p;
@@ -326,7 +326,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(OperatorEqual) {
+    GUM_ACTIVE_TEST(OperatorEqual) {
       gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
          c("c", "third var", 5), d("d", "fourth var", 2);
       gum::MultiDimArray< char > p;

@@ -66,7 +66,7 @@ namespace gum_tests {
       delete small;
     }
 
-    GUM_TEST(Evidence) {
+    GUM_ACTIVE_TEST(Evidence) {
       gum::prm::GroundedInference< double >* g_ve = nullptr;
       gum::VariableElimination< double >*    ve   = nullptr;
       gum::BayesNet< double >                bn;
@@ -90,7 +90,7 @@ namespace gum_tests {
       delete g_ve;
     }
 
-    GUM_TEST(SmallGrdInference) {
+    GUM_ACTIVE_TEST(SmallGrdInference) {
       // Creating the inference engine
       gum::prm::GroundedInference< double >* g_ve = 0;
       gum::VariableElimination< double >*    ve   = 0;
@@ -141,7 +141,7 @@ namespace gum_tests {
       delete g_ve;
     }
 
-    GUM_TEST(SmallSVEInference) {
+    GUM_ACTIVE_TEST(SmallSVEInference) {
       gum::prm::SVE< double >* sve = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(
          sve = new gum::prm::SVE< double >(*small, small->getSystem("microSys")));
@@ -195,7 +195,7 @@ namespace gum_tests {
       delete sve;
     }
 
-    GUM_TEST(SmallSVEDInference) {
+    GUM_ACTIVE_TEST(SmallSVEDInference) {
       gum::prm::SVED< double >* sved = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(
          sved = new gum::prm::SVED< double >(*small, small->getSystem("microSys")));
@@ -238,7 +238,7 @@ namespace gum_tests {
       delete sved;
     }
 
-    GUM_TEST(SmallStructInference) {
+    GUM_ACTIVE_TEST(SmallStructInference) {
       gum::prm::StructuredInference< double >* inf = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(
          inf = new gum::prm::StructuredInference< double >(*small, small->getSystem("microSys")));
@@ -281,7 +281,7 @@ namespace gum_tests {
       delete inf;
     }
 
-    GUM_TEST(Inference) {
+    GUM_ACTIVE_TEST(Inference) {
       gum::prm::GroundedInference< double >* g_ve = 0;
       gum::prm::GroundedInference< double >* g_ss = 0;
       gum::VariableElimination< double >*    ve   = 0;
@@ -353,7 +353,7 @@ namespace gum_tests {
       delete g_ss;
     }
 
-    GUM_TEST(StructuredBB) {
+    GUM_ACTIVE_TEST(StructuredBB) {
       gum::prm::SVE< double >                  sve(*prm, prm->getSystem("aSys"));
       gum::prm::StructuredBayesBall< double >* bb = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(bb = new gum::prm::StructuredBayesBall< double >(sve))
@@ -362,7 +362,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(delete bb)
     }
 
-    GUM_TEST(EvidenceSioux) {
+    GUM_ACTIVE_TEST(EvidenceSioux) {
       gum::prm::GroundedInference< double >* g_ve = 0;
       gum::VariableElimination< double >*    ve   = 0;
       gum::BayesNet< double >                bn;
@@ -445,7 +445,7 @@ namespace gum_tests {
       delete g_ve;
     }
 
-    GUM_TEST(EvidenceSioux2) {
+    GUM_ACTIVE_TEST(EvidenceSioux2) {
       gum::prm::SVE< double >* g_ve = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(g_ve
                                    = new gum::prm::SVE< double >(*prm, prm->getSystem("aSys")));
@@ -523,7 +523,7 @@ namespace gum_tests {
       delete g_ve;
     }
 
-    GUM_TEST(EvidenceSioux3withSVE) {
+    GUM_ACTIVE_TEST(EvidenceSioux3withSVE) {
       gum::prm::PRMInference< double >* g_ve = nullptr;
 
       TS_GUM_ASSERT_THROWS_NOTHING(g_ve

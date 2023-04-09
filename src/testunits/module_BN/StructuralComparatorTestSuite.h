@@ -34,7 +34,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] StructuralComparatorTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(_graph) {
+    GUM_ACTIVE_TEST(_graph) {
       gum::StructuralComparator comp;
 
       gum::DiGraph   dig1, dig2;
@@ -124,7 +124,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(comp.precision(), 0, 1e-3)
     }
 
-    GUM_TEST(_bn) {
+    GUM_ACTIVE_TEST(_bn) {
       gum::StructuralComparator comp;
 
       gum::BayesNet< double > bn1, bn2;

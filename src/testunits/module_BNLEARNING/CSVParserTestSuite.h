@@ -57,7 +57,7 @@ namespace gum_tests {
     }
 
     public:
-    GUM_TEST(SimpleCSV) {
+    GUM_ACTIVE_TEST(SimpleCSV) {
       std::string res;
       std::size_t count;
 
@@ -90,7 +90,7 @@ namespace gum_tests {
     };
 
 
-    GUM_TEST(SimpleCSVwithComment) {
+    GUM_ACTIVE_TEST(SimpleCSVwithComment) {
       std::string res;
       std::size_t count;
 
@@ -131,7 +131,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(res, std::string("1:2|5:6:7:8|9:10:11:12|"))
     };
 
-    GUM_TEST(SimpleCSVwithDoubleQuote) {
+    GUM_ACTIVE_TEST(SimpleCSVwithDoubleQuote) {
       std::string res;
       std::size_t count;
 
@@ -202,7 +202,7 @@ namespace gum_tests {
       }
     };
 
-    GUM_TEST(SimpleCSVwithLabelsBeginningWithNumbers) {
+    GUM_ACTIVE_TEST(SimpleCSVwithLabelsBeginningWithNumbers) {
       std::string res;
       std::size_t count;
 
@@ -214,7 +214,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(UseNewStream) {
+    GUM_ACTIVE_TEST(UseNewStream) {
       std::string              csvstring1 = "1,2,3,4 \n 5,6,7,8 \n 9,10,11,12";
       std::istringstream       in1(csvstring1);
       gum::learning::CSVParser parser(in1, "(stream)");
@@ -240,7 +240,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(v2[2], "c")
     }
 
-    GUM_TEST(Guillemet) {
+    GUM_ACTIVE_TEST(Guillemet) {
       {
         std::string              csvstring1 = "\"a\",\"b\",\"c d,e\" \n 9,10,11";
         std::istringstream       in1(csvstring1);
@@ -270,7 +270,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(v1[2], "c d,e")
       }
     }
-    GUM_TEST(Apostrophe) {
+    GUM_ACTIVE_TEST(Apostrophe) {
       {
         std::string              csvstring1 = "'a','b','c d,e' \n 9,10,11";
         std::istringstream       in1(csvstring1);

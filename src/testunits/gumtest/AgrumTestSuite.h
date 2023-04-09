@@ -27,7 +27,7 @@
 
 #include <cxxtest/TestSuite.h>
 
-#define GUM_TEST(nom)          [[maybe_unused]] void test##nom()
+#define GUM_ACTIVE_TEST(nom)          [[maybe_unused]] void test##nom()
 #define GUM_INACTIVE_TEST(nom) [[maybe_unused]] void inactive_test##nom()
 
 #define TS_GUM_ASSERT_THROWS_NOTHING(block)      \

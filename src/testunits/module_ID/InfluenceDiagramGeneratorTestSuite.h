@@ -39,14 +39,14 @@ namespace gum_tests {
 
     void tearDown() {}
 
-    GUM_TEST(CreationDeletion_1) {
+    GUM_ACTIVE_TEST(CreationDeletion_1) {
       gum::InfluenceDiagramGenerator< double >* gen = nullptr;
 
       TS_GUM_ASSERT_THROWS_NOTHING(gen = new gum::InfluenceDiagramGenerator< double >())
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen)
     }
 
-    GUM_TEST(CreationDeletion_2) {
+    GUM_ACTIVE_TEST(CreationDeletion_2) {
       gum::InfluenceDiagramGenerator< double >* gen = nullptr;
 
       gum::SimpleCPTGenerator< double >* cptGen = new gum::SimpleCPTGenerator< double >();
@@ -54,7 +54,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen)
     }
 
-    GUM_TEST(CreationDeletion_3) {
+    GUM_ACTIVE_TEST(CreationDeletion_3) {
       gum::InfluenceDiagramGenerator< double >* gen = nullptr;
 
       gum::SimpleUTGenerator* utGen = new gum::SimpleUTGenerator();
@@ -62,7 +62,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen)
     }
 
-    GUM_TEST(CreationDeletion_4) {
+    GUM_ACTIVE_TEST(CreationDeletion_4) {
       gum::InfluenceDiagramGenerator< double >* gen = nullptr;
 
       gum::SimpleCPTGenerator< double >* cptGen = new gum::SimpleCPTGenerator< double >();
@@ -72,7 +72,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen)
     }
 
-    GUM_TEST(GenerationFloat_1) {
+    GUM_ACTIVE_TEST(GenerationFloat_1) {
       gum::InfluenceDiagramGenerator< double > gen;
       gum::InfluenceDiagram< double >*         id = 0;
 
@@ -83,7 +83,7 @@ namespace gum_tests {
       if (id != 0) delete id;
     }
 
-    GUM_TEST(GenerationFloat_2) {
+    GUM_ACTIVE_TEST(GenerationFloat_2) {
       gum::InfluenceDiagramGenerator< double > gen;
 
       gum::InfluenceDiagram< double >* id = gen.generateID(25, 0.3f, 0.3f, 0.1f, 4);
@@ -99,7 +99,7 @@ namespace gum_tests {
       if (id != 0) delete id;
     }
 
-    GUM_TEST(GenerationDouble_1) {
+    GUM_ACTIVE_TEST(GenerationDouble_1) {
       gum::InfluenceDiagramGenerator< double > gen;
       gum::InfluenceDiagram< double >*         id = 0;
 
@@ -110,7 +110,7 @@ namespace gum_tests {
       if (id != 0) delete id;
     }
 
-    GUM_TEST(GenerationDouble_2) {
+    GUM_ACTIVE_TEST(GenerationDouble_2) {
       gum::InfluenceDiagramGenerator< double > gen;
 
       gum::InfluenceDiagram< double >* id = gen.generateID(25, 0.3f, 0.3f, 0.1f, 4);

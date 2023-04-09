@@ -32,7 +32,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] NumericalDiscreteVariableTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(All) {
+    GUM_ACTIVE_TEST(All) {
       gum::NumericalDiscreteVariable var1("var1", "this is var1");
       gum::NumericalDiscreteVariable var2("var2", "this is var2", {1.0, 9.45, 7.0});
 
@@ -204,7 +204,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(SecondConstructor) {
+    GUM_ACTIVE_TEST(SecondConstructor) {
       {
         gum::NumericalDiscreteVariable var("var", "this is var2", 0.0, 2.5, gum::Size(6));
 
@@ -234,7 +234,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(Positions) {
+    GUM_ACTIVE_TEST(Positions) {
       gum::NumericalDiscreteVariable var("var", "this is var2", {-2.1, 0.0, 2.5, 3.7, 4.9});
       TS_ASSERT_EQUALS(var.closestIndex(-3.9), gum::Idx(0))
       TS_ASSERT_EQUALS(var.closestIndex(532.2), gum::Idx(4))

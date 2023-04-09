@@ -32,7 +32,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] RangeVariableTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(Copy) {
+    GUM_ACTIVE_TEST(Copy) {
       gum::RangeVariable var1("var1", "this is var1");
       gum::RangeVariable var2("var2", "this is var2", 1, 4);
 
@@ -45,7 +45,7 @@ namespace gum_tests {
       TS_ASSERT_DIFFERS(var4.minVal(), var1.minVal())
     }
 
-    GUM_TEST(Labels) {
+    GUM_ACTIVE_TEST(Labels) {
       gum::RangeVariable var1("var1", "this is var1");
       TS_ASSERT_EQUALS(var1.domainSize(), (gum::Size)2)
       TS_ASSERT(!var1.empty())
@@ -77,7 +77,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(v.toString(), "var1:Range([3,9])")
     }
 
-    GUM_TEST(Numerical) {
+    GUM_ACTIVE_TEST(Numerical) {
       gum::RangeVariable var1("var1", "this is var1", 10, 20);
       TS_ASSERT_EQUALS(var1.domainSize(), (gum::Size)11)
 

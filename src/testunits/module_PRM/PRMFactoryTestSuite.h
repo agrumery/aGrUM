@@ -29,12 +29,12 @@
 namespace gum_tests {
   class [[maybe_unused]] PRMFactoryTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(Init) {
+    GUM_ACTIVE_TEST(Init) {
       gum::prm::PRMFactory< double > f;
       delete f.prm();
     }
 
-    GUM_TEST(AddParameter) {
+    GUM_ACTIVE_TEST(AddParameter) {
       try {
         gum::prm::PRMFactory< double > f;
         auto                           prm = f.prm();
@@ -62,7 +62,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(ParameterSubClass) {
+    GUM_ACTIVE_TEST(ParameterSubClass) {
       try {
         gum::prm::PRMFactory< double > f;
         auto                           prm = f.prm();
@@ -102,7 +102,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(ParameterInstantiation) {
+    GUM_ACTIVE_TEST(ParameterInstantiation) {
       try {
         gum::prm::PRMFactory< double > f;
         auto                           prm = f.prm();
@@ -135,7 +135,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(ParameterSpecificInstantiation) {
+    GUM_ACTIVE_TEST(ParameterSpecificInstantiation) {
       try {
         gum::prm::PRMFactory< double > f;
         auto                           prm = f.prm();

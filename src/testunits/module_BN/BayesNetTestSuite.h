@@ -142,7 +142,7 @@ namespace gum_tests {
       delete var5;
     }
 
-    GUM_TEST(Constructor) {
+    GUM_ACTIVE_TEST(Constructor) {
       gum::BayesNet< double >* topology = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(topology = new gum::BayesNet< double >())
       TS_ASSERT_EQUALS(topology->size(), (gum::Idx)0)
@@ -165,7 +165,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(delete topology)
     }
 
-    GUM_TEST(CopyConstructor) {
+    GUM_ACTIVE_TEST(CopyConstructor) {
       gum::BayesNet< double >  source;
       gum::List< gum::NodeId > idList;
       TS_GUM_ASSERT_THROWS_NOTHING(fill(source, idList))
@@ -215,7 +215,7 @@ namespace gum_tests {
       if (copy) { delete copy; }
     }
 
-    GUM_TEST(CopyOperator) {
+    GUM_ACTIVE_TEST(CopyOperator) {
       gum::BayesNet< double >  source;
       gum::BayesNet< double >  copy;
       gum::List< gum::NodeId > idList;
@@ -277,7 +277,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(Insertion_1) {
+    GUM_ACTIVE_TEST(Insertion_1) {
       gum::BayesNet< double >  bn;
       gum::List< gum::NodeId > idList;
 
@@ -315,7 +315,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&bn.variable(idList[4])), *var5)
     }
 
-    GUM_TEST(Insertion_2) {
+    GUM_ACTIVE_TEST(Insertion_2) {
       gum::BayesNet< double >  bn;
       gum::List< gum::NodeId > idList;
 
@@ -339,7 +339,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&bn.variable(idList[4])), *var5)
     }
 
-    GUM_TEST(Iterations) {
+    GUM_ACTIVE_TEST(Iterations) {
       gum::BayesNet< double >  bn;
       gum::List< gum::NodeId > idList;
       TS_GUM_ASSERT_THROWS_NOTHING(fill(bn, idList))
@@ -362,7 +362,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(cpt, bn.sizeArcs())
     }
 
-    GUM_TEST(ArcInsertion) {
+    GUM_ACTIVE_TEST(ArcInsertion) {
       gum::BayesNet< double >  bn;
       gum::List< gum::NodeId > idList;
 
@@ -384,7 +384,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn.dag().sizeArcs(), (gum::Size)6)
     }
 
-    GUM_TEST(EraseVar) {
+    GUM_ACTIVE_TEST(EraseVar) {
       gum::BayesNet< double >  bn;
       gum::List< gum::NodeId > idList;
 
@@ -425,7 +425,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn.dag().sizeArcs(), (gum::Size)6)
     }
 
-    GUM_TEST(EraseArc) {
+    GUM_ACTIVE_TEST(EraseArc) {
       gum::BayesNet< double >  bn;
       gum::List< gum::NodeId > idList;
 
@@ -452,7 +452,7 @@ namespace gum_tests {
       TS_ASSERT(bn.dag().emptyArcs())
     }
 
-    GUM_TEST(StringAccessors) {
+    GUM_ACTIVE_TEST(StringAccessors) {
       try {
         gum::BayesNet< double > bn;
         for (const auto& x: {"A", "B", "C"}) {
@@ -498,7 +498,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(Iterator) {
+    GUM_ACTIVE_TEST(Iterator) {
       gum::BayesNet< double >  bn;
       gum::List< gum::NodeId > idList;
 
@@ -507,7 +507,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(RandomlyFilled) {
+    GUM_ACTIVE_TEST(RandomlyFilled) {
       gum::BayesNet< double >  bn;
       gum::List< gum::NodeId > idList;
 
@@ -524,7 +524,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(MoralGraph) {
+    GUM_ACTIVE_TEST(MoralGraph) {
       gum::BayesNet< double >  bn;
       gum::List< gum::NodeId > idList;
 
@@ -535,7 +535,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(graph, getRealMoralGraph(bn, idList))
     }
 
-    GUM_TEST(TopologicalOrder) {
+    GUM_ACTIVE_TEST(TopologicalOrder) {
       gum::BayesNet< double >  bn;
       gum::List< gum::NodeId > idList;
 
@@ -547,7 +547,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(topoOrder.size(), (gum::Size)5)
     }
 
-    GUM_TEST(cpt) {
+    GUM_ACTIVE_TEST(cpt) {
       gum::BayesNet< double >  bn;
       gum::List< gum::NodeId > idList;
 
@@ -559,7 +559,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn.cpt(idList[4]).domainSize(), (gum::Size)24)
     }
 
-    GUM_TEST(CPTCoherencyVarRemoval) {
+    GUM_ACTIVE_TEST(CPTCoherencyVarRemoval) {
       gum::BayesNet< double >  bn;
       gum::List< gum::NodeId > idList;
 
@@ -593,7 +593,7 @@ namespace gum_tests {
       TS_ASSERT(bn.cpt(idList[3]).contains(bn.variable(idList[3])))
     }
 
-    GUM_TEST(CPTCoherencyArcRemoval) {
+    GUM_ACTIVE_TEST(CPTCoherencyArcRemoval) {
       gum::BayesNet< double >  bn;
       gum::List< gum::NodeId > idList;
 
@@ -627,7 +627,7 @@ namespace gum_tests {
       TS_ASSERT(bn.cpt(idList[3]).contains(bn.variable(idList[3])))
     }
 
-    GUM_TEST(StreamOperator) {
+    GUM_ACTIVE_TEST(StreamOperator) {
       gum::BayesNet< double >  bn;
       gum::List< gum::NodeId > idList;
 
@@ -636,7 +636,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(sBuff << bn)
     }
 
-    GUM_TEST(AccessorByName) {
+    GUM_ACTIVE_TEST(AccessorByName) {
       gum::BayesNet< double >  bn;
       gum::List< gum::NodeId > idList;
 
@@ -656,7 +656,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(bn.idFromName("var1"), const gum::NotFound&)
     }
 
-    GUM_TEST(CopyAndEqualityOperators) {
+    GUM_ACTIVE_TEST(CopyAndEqualityOperators) {
       auto                                   bn_1 = new gum::BayesNet< double >();
       gum::SimpleBayesNetGenerator< double > generator(20, 30, 4);
       generator.generateBN(*bn_1);
@@ -709,7 +709,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(s1, s2)
     }
 
-    GUM_TEST(AggregatorNodes) {
+    GUM_ACTIVE_TEST(AggregatorNodes) {
       {
         gum::BayesNet< double > bn;
         gum::Idx                i1 = 0;
@@ -734,7 +734,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(JointProbability) {
+    GUM_ACTIVE_TEST(JointProbability) {
       gum::BayesNet< double >  bn;
       gum::List< gum::NodeId > idList;
 
@@ -761,7 +761,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(a, b)
     }
 
-    GUM_TEST(ArcReversal) {
+    GUM_ACTIVE_TEST(ArcReversal) {
       gum::BayesNet< double >  bn;
       gum::List< gum::NodeId > idList;
       fill(bn, idList);
@@ -786,7 +786,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(ChangeLabelOfVariable) {
+    GUM_ACTIVE_TEST(ChangeLabelOfVariable) {
       gum::BayesNet< double >  bn;
       gum::List< gum::NodeId > idList;
       fill(bn, idList);
@@ -797,7 +797,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn.variable(0).toString(), "var1:Labelized({x|1})")
     }
 
-    GUM_TEST(ShortCutAddFastVar) {
+    GUM_ACTIVE_TEST(ShortCutAddFastVar) {
       gum::BayesNet< double > bn;
 
       gum::NodeId i1;
@@ -827,7 +827,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(bn.add("Y[1,1]", 1), const gum::OperationNotAllowed&)
     }
 
-    GUM_TEST(SomeFunctions) {
+    GUM_ACTIVE_TEST(SomeFunctions) {
       gum::BayesNet< double >  bn;
       gum::List< gum::NodeId > idList;
       TS_GUM_ASSERT_THROWS_NOTHING(fill(bn, idList))
@@ -839,7 +839,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn.maxNonOneParam(), 0.9f)
     }
 
-    GUM_TEST(MinimalCondSet) {
+    GUM_ACTIVE_TEST(MinimalCondSet) {
       /*
        A   B        0   1
         \ / \        \ / \
@@ -883,7 +883,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn.minimalCondSet({e, d}, {a, b, c, f, g, h}), gum::NodeSet({b, c, f, h}))
     }
 
-    GUM_TEST(MinimalCondSet2) {
+    GUM_ACTIVE_TEST(MinimalCondSet2) {
       /*
       F  A
       \ / \
@@ -913,7 +913,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn.minimalCondSet(4, gum::NodeSet({0, 1, 3, 5})), gum::NodeSet({0, 1, 3}))
     }
 
-    GUM_TEST(FastPrototype) {
+    GUM_ACTIVE_TEST(FastPrototype) {
       try {
         auto bn = gum::BayesNet< float >::fastPrototype("a->b->c;a->c");
         TS_ASSERT_EQUALS(bn.size(), (gum::Size)3)
@@ -985,7 +985,7 @@ namespace gum_tests {
       } catch (const gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
-    GUM_TEST(FastPrototypeVarType) {
+    GUM_ACTIVE_TEST(FastPrototypeVarType) {
       auto bn = gum::BayesNet< float >::fastPrototype("a");
       TS_ASSERT_EQUALS(bn.variable("a").toString(), "a:Range([0,1])")
 
@@ -1019,7 +1019,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn.variable("f").varType(), gum::VarType::Numerical)
     }
 
-    GUM_TEST(NonRegressionCPTinReverseArc) {
+    GUM_ACTIVE_TEST(NonRegressionCPTinReverseArc) {
       const auto bn1 = gum::BayesNet< double >::fastPrototype("A->B->C");
       auto       bn2 = gum::BayesNet< double >(bn1);
       bn2.reverseArc("A", "B");
@@ -1029,7 +1029,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn2.cpt("B").variable(0).name(), "B")
     }
 
-    GUM_TEST(ClearBN) {
+    GUM_ACTIVE_TEST(ClearBN) {
       const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D->E<-A<-G->F");
       {   // by hand
         auto bn_instance = gum::BayesNet< double >(bn);
@@ -1048,7 +1048,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(ExistsArc) {
+    GUM_ACTIVE_TEST(ExistsArc) {
       const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D->E<-A<-G->F");
 
       TS_ASSERT(bn.existsArc(0, 1))
@@ -1059,7 +1059,7 @@ namespace gum_tests {
       TS_ASSERT(!bn.existsArc("A", "C"))
     }
 
-    GUM_TEST(Check) {
+    GUM_ACTIVE_TEST(Check) {
       {
         const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D->E<-A<-G->F");
         TS_ASSERT_EQUALS(bn.check().size(), gum::Size(0))
@@ -1090,7 +1090,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(Threads) {
+    GUM_ACTIVE_TEST(Threads) {
       const std::string bn_model_path = GET_RESSOURCES_PATH("bifxml/hailfinder.bifxml");
       const std::string bn_name       = "myBN";
 

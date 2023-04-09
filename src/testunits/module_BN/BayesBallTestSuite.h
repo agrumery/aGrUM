@@ -39,7 +39,7 @@ namespace gum_tests {
 
     void tearDown() {}
 
-    GUM_TEST(RequisiteNodes) {
+    GUM_ACTIVE_TEST(RequisiteNodes) {
       gum::SimpleBayesNetGenerator< double > gen(50, 200, 2);
       gum::BayesNet< double >                bn;
       gen.generateBN(bn);
@@ -62,7 +62,7 @@ namespace gum_tests {
       TS_ASSERT(requisite.size() >= 5)
     }
 
-    GUM_TEST(RelevantPotentials) {
+    GUM_ACTIVE_TEST(RelevantPotentials) {
       std::string file = GET_RESSOURCES_PATH("bif/asia.bif");
 
       gum::BayesNet< double >  bn;
@@ -93,7 +93,7 @@ namespace gum_tests {
       TS_ASSERT(potentials.size() == 5)
     }
 
-    GUM_TEST(RelevantScheduleMultiDims) {
+    GUM_ACTIVE_TEST(RelevantScheduleMultiDims) {
       std::string file = GET_RESSOURCES_PATH("bif/asia.bif");
 
       gum::BayesNet< double >  bn;

@@ -75,13 +75,13 @@ namespace gum_tests {
     public:
     gum::NodeId id1, id2, id3, id4, id5;
 
-    GUM_TEST(Constructor1) {
+    GUM_ACTIVE_TEST(Constructor1) {
       gum::MixedGraph* graph = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING((graph = new gum::MixedGraph()))
       TS_GUM_ASSERT_THROWS_NOTHING(delete (graph))
     }
 
-    GUM_TEST(ConstructorFromUG) {
+    GUM_ACTIVE_TEST(ConstructorFromUG) {
       gum::UndiGraph ug;
       ug.addNode();
       ug.addNode();
@@ -108,7 +108,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(delete (mixed_graph))
     }
 
-    GUM_TEST(ConstructorFromDG) {
+    GUM_ACTIVE_TEST(ConstructorFromDG) {
       gum::DiGraph dg;
       dg.addNode();
       dg.addNode();
@@ -135,7 +135,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(delete (mixed_graph))
     }
 
-    GUM_TEST(Insert1) {
+    GUM_ACTIVE_TEST(Insert1) {
       gum::MixedGraph graph;
 
       TS_GUM_ASSERT_THROWS_NOTHING(graph.addNode())
@@ -153,7 +153,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(graph.addArc(4, 1))
     }
 
-    GUM_TEST(CopyConstructor) {
+    GUM_ACTIVE_TEST(CopyConstructor) {
       gum::MixedGraph graph = buildGraph();
 
       gum::MixedGraph* copy = nullptr;
@@ -165,35 +165,35 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(gum::MixedGraph copy3(graph))
     }
 
-    GUM_TEST(EmptyNodes) {
+    GUM_ACTIVE_TEST(EmptyNodes) {
       gum::MixedGraph graph;
       TS_ASSERT(graph.empty())
       graph = buildGraph();
       TS_ASSERT(!graph.empty())
     }
 
-    GUM_TEST(EmptyEdges) {
+    GUM_ACTIVE_TEST(EmptyEdges) {
       gum::MixedGraph graph;
       TS_ASSERT(graph.emptyEdges())
       graph = buildGraph();
       TS_ASSERT(!graph.emptyEdges())
     }
 
-    GUM_TEST(EmptyArcs) {
+    GUM_ACTIVE_TEST(EmptyArcs) {
       gum::MixedGraph graph;
       TS_ASSERT(graph.emptyArcs())
       graph = buildGraph();
       TS_ASSERT(!graph.emptyArcs())
     }
 
-    GUM_TEST(ClearNodes) {
+    GUM_ACTIVE_TEST(ClearNodes) {
       gum::MixedGraph graph = buildGraph();
       TS_ASSERT(!graph.empty())
       TS_GUM_ASSERT_THROWS_NOTHING(graph.clear())
       TS_ASSERT(graph.empty() && graph.emptyArcs())
     }
 
-    GUM_TEST(ClearArcs) {
+    GUM_ACTIVE_TEST(ClearArcs) {
       gum::MixedGraph graph = buildGraph();
       TS_ASSERT(!graph.emptyArcs())
       TS_GUM_ASSERT_THROWS_NOTHING(graph.clearArcs())
@@ -201,7 +201,7 @@ namespace gum_tests {
       TS_ASSERT(!graph.empty())
     }
 
-    GUM_TEST(ClearEdges) {
+    GUM_ACTIVE_TEST(ClearEdges) {
       gum::MixedGraph graph = buildGraph();
       TS_ASSERT(!graph.emptyEdges())
       TS_GUM_ASSERT_THROWS_NOTHING(graph.clearEdges())
@@ -209,7 +209,7 @@ namespace gum_tests {
       TS_ASSERT(!graph.empty())
     }
 
-    GUM_TEST(AddDelNodes_2) {
+    GUM_ACTIVE_TEST(AddDelNodes_2) {
       gum::MixedGraph graph = buildGraph();
 
       TS_ASSERT(graph.exists(id1))
@@ -239,7 +239,7 @@ namespace gum_tests {
       TS_ASSERT(!graph.existsEdge(id2, id5))
     }
 
-    GUM_TEST(RemoveNodesFunky_1) {
+    GUM_ACTIVE_TEST(RemoveNodesFunky_1) {
       gum::MixedGraph graph = buildGraph();
 
       gum::Size nodeCount = graph.size();
@@ -264,7 +264,7 @@ namespace gum_tests {
       TS_ASSERT(!graph.existsEdge(4, 1))
     }
 
-    GUM_TEST(AddDelEdges_1) {
+    GUM_ACTIVE_TEST(AddDelEdges_1) {
       gum::MixedGraph graph = buildGraph();
 
       TS_ASSERT(graph.existsEdge(0, 2))
@@ -282,7 +282,7 @@ namespace gum_tests {
       TS_ASSERT(!graph.existsEdge(2, 4))
     }
 
-    GUM_TEST(AddDelEdges_2) {
+    GUM_ACTIVE_TEST(AddDelEdges_2) {
       gum::MixedGraph graph = buildGraph();
 
       TS_ASSERT(graph.existsEdge(id1, id3))
@@ -300,7 +300,7 @@ namespace gum_tests {
       TS_ASSERT(!graph.existsEdge(id3, id5))
     }
 
-    GUM_TEST(AddDelArcs_2) {
+    GUM_ACTIVE_TEST(AddDelArcs_2) {
       gum::MixedGraph graph = buildGraph();
 
       TS_ASSERT(graph.existsArc(id1, id4))
@@ -318,7 +318,7 @@ namespace gum_tests {
       TS_ASSERT(!graph.existsArc(id5, id2))
     }
 
-    GUM_TEST(GetNodes) {
+    GUM_ACTIVE_TEST(GetNodes) {
       gum::MixedGraph graph = buildGraph();
 
       const gum::NodeSet nodeset = graph.asNodeSet();
@@ -333,7 +333,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(nodeCount, nodeset.size())
     }
 
-    GUM_TEST(GetArcs) {
+    GUM_ACTIVE_TEST(GetArcs) {
       gum::MixedGraph graph = buildGraph();
 
       gum::ArcSet arclist = graph.arcs();
@@ -348,7 +348,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(arcCount, arclist.size())
     }
 
-    GUM_TEST(GetEdges) {
+    GUM_ACTIVE_TEST(GetEdges) {
       gum::MixedGraph graph = buildGraph();
 
       gum::EdgeSet edgeset = graph.edges();
@@ -363,7 +363,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(edgeCount, edgeset.size())
     }
 
-    GUM_TEST(NodeListMapNodes) {
+    GUM_ACTIVE_TEST(NodeListMapNodes) {
       gum::MixedGraph graph = buildGraph();
 
       gum::List< gum::Size > list = graph.listMapNodes(&simpleDoubleFunction);
@@ -378,7 +378,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(s, 2 * (id1 + id2 + id3 + id4 + id5))
     }
 
-    GUM_TEST(TwistedNodeListMapNodes) {
+    GUM_ACTIVE_TEST(TwistedNodeListMapNodes) {
       gum::MixedGraph graph = buildGraph();
 
       gum::List< gum::Size > list;
@@ -387,7 +387,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(list.size(), (gum::Size)0)
     }
 
-    GUM_TEST(HashMapNodes) {
+    GUM_ACTIVE_TEST(HashMapNodes) {
       gum::MixedGraph graph = buildGraph();
 
       gum::NodeProperty< gum::Size > hashmap = graph.nodesProperty(&simpleDoubleFunction);
@@ -404,7 +404,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(sk * 2, sv)
     }
 
-    GUM_TEST(TwistedHashMapNodes) {
+    GUM_ACTIVE_TEST(TwistedHashMapNodes) {
       gum::MixedGraph graph = buildGraph();
 
       gum::NodeProperty< gum::Size > hashmap;
@@ -413,7 +413,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(hashmap.size(), (gum::Size)0)
     }
 
-    GUM_TEST(ListMapEdges) {
+    GUM_ACTIVE_TEST(ListMapEdges) {
       gum::MixedGraph graph = buildGraph();
 
       gum::List< gum::Size > list = graph.listMapEdges(&simpleEdgeMapFunction);
@@ -435,7 +435,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(s, (gum::Size)(0 + 2 + 2 + 4 + 1 + 3))
     }
 
-    GUM_TEST(HashMapEdges) {
+    GUM_ACTIVE_TEST(HashMapEdges) {
       gum::MixedGraph graph = buildGraph();
 
       gum::EdgeProperty< gum::Size > hashmap = graph.edgesProperty(&simpleEdgeMapFunction);
@@ -452,7 +452,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(sk, sv)
     }
 
-    GUM_TEST(ListMapArcs) {
+    GUM_ACTIVE_TEST(ListMapArcs) {
       gum::MixedGraph graph = buildGraph();
 
       gum::List< gum::Size > list = graph.listMapArcs(&simpleArcMapFunction);
@@ -474,7 +474,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(s, (gum::Size)(0 + 3 + 3 + 4 + 4 + 1))
     }
 
-    GUM_TEST(HashMapArcs) {
+    GUM_ACTIVE_TEST(HashMapArcs) {
       gum::MixedGraph graph = buildGraph();
 
       gum::ArcProperty< gum::Size > hashmap = graph.arcsProperty(&simpleArcMapFunction);
@@ -491,7 +491,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(sk, sv)
     }
 
-    GUM_TEST(CopyOperator) {
+    GUM_ACTIVE_TEST(CopyOperator) {
       gum::MixedGraph graph = buildGraph();
 
       gum::MixedGraph g2 = buildGraph();

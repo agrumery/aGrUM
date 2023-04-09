@@ -145,7 +145,7 @@ namespace gum_tests {
       delete utilityVar2;
     }
 
-    GUM_TEST(Constructor) {
+    GUM_ACTIVE_TEST(Constructor) {
       gum::InfluenceDiagram< double >* topology = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(topology = new gum::InfluenceDiagram< double >())
 
@@ -158,7 +158,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(delete topology)
     }
 
-    GUM_TEST(NodeType) {
+    GUM_ACTIVE_TEST(NodeType) {
       gum::InfluenceDiagram< double > topology;
       gum::List< gum::NodeId >        idList;
       TS_GUM_ASSERT_THROWS_NOTHING(fill(topology, idList))
@@ -204,7 +204,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(topology.utilityNodeSize(), (gum::Size)2)
     }
 
-    GUM_TEST(ToDot) {
+    GUM_ACTIVE_TEST(ToDot) {
       gum::InfluenceDiagram< double > id;
       gum::List< gum::NodeId >        idList;
       fill(id, idList);
@@ -224,7 +224,7 @@ namespace gum_tests {
       if (output.fail()) { GUM_ERROR(gum::IOError, "Writing in the ostream failed.") }
     }
 
-    GUM_TEST(CopyConstructor) {
+    GUM_ACTIVE_TEST(CopyConstructor) {
       gum::InfluenceDiagram< double > source;
       gum::List< gum::NodeId >        idList;
       TS_GUM_ASSERT_THROWS_NOTHING(fill(source, idList))
@@ -290,7 +290,7 @@ namespace gum_tests {
       if (copy != nullptr) delete copy;
     }
 
-    GUM_TEST(Insertion_1) {
+    GUM_ACTIVE_TEST(Insertion_1) {
       gum::InfluenceDiagram< double > id;
       gum::List< gum::NodeId >        idList;
 
@@ -327,7 +327,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&id.variable(idList[4])), *utilityVar1)
     }
 
-    GUM_TEST(Insertion_2) {
+    GUM_ACTIVE_TEST(Insertion_2) {
       gum::InfluenceDiagram< double > id;
       gum::List< gum::NodeId >        idList;
 
@@ -355,7 +355,7 @@ namespace gum_tests {
       delete utilityVar3;
     }
 
-    GUM_TEST(ArcInsertion) {
+    GUM_ACTIVE_TEST(ArcInsertion) {
       gum::InfluenceDiagram< double > id;
       gum::List< gum::NodeId >        idList;
 
@@ -378,7 +378,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(id.dag().sizeArcs(), (gum::Size)6)
     }
 
-    GUM_TEST(EraseVar) {
+    GUM_ACTIVE_TEST(EraseVar) {
       gum::InfluenceDiagram< double > id;
       gum::List< gum::NodeId >        idList;
 
@@ -426,7 +426,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(id.chanceNodeSize(), (gum::Size)5)
     }
 
-    GUM_TEST(EraseArc) {
+    GUM_ACTIVE_TEST(EraseArc) {
       gum::InfluenceDiagram< double > id;
       gum::List< gum::NodeId >        idList;
 
@@ -461,7 +461,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[0], idList[4])))
     }
 
-    GUM_TEST(Iterator) {
+    GUM_ACTIVE_TEST(Iterator) {
       gum::InfluenceDiagram< double > id;
       gum::List< gum::NodeId >        idList;
 
@@ -470,7 +470,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(TopologicalOrder) {
+    GUM_ACTIVE_TEST(TopologicalOrder) {
       gum::InfluenceDiagram< double > id;
       gum::List< gum::NodeId >        idList;
 
@@ -482,7 +482,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(topoOrder.size(), (gum::Size)11)
     }
 
-    GUM_TEST(Table) {
+    GUM_ACTIVE_TEST(Table) {
       gum::InfluenceDiagram< double > id;
       gum::List< gum::NodeId >        idList;
 
@@ -496,7 +496,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(id.utility(idList[10]).domainSize(), (gum::Size)4)
     }
 
-    GUM_TEST(TableCoherencyVarRemoval) {
+    GUM_ACTIVE_TEST(TableCoherencyVarRemoval) {
       gum::InfluenceDiagram< double > id;
       gum::List< gum::NodeId >        idList;
 
@@ -558,7 +558,7 @@ namespace gum_tests {
       TS_ASSERT(id.utility(idList[10]).contains(id.variable(idList[10])))
     }
 
-    GUM_TEST(TableCoherencyArcRemoval) {
+    GUM_ACTIVE_TEST(TableCoherencyArcRemoval) {
       gum::InfluenceDiagram< double > id;
       gum::List< gum::NodeId >        idList;
 
@@ -621,7 +621,7 @@ namespace gum_tests {
       TS_ASSERT(id.utility(idList[10]).contains(id.variable(idList[10])))
     }
 
-    GUM_TEST(AccessorByName) {
+    GUM_ACTIVE_TEST(AccessorByName) {
       gum::InfluenceDiagram< double > id;
       gum::List< gum::NodeId >        idList;
 
@@ -641,7 +641,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(id.idFromName("decisionVar1"), const gum::NotFound&)
     }
 
-    GUM_TEST(DecisionPath) {
+    GUM_ACTIVE_TEST(DecisionPath) {
       gum::InfluenceDiagram< double > id;
       gum::List< gum::NodeId >        idList;
 
@@ -671,7 +671,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(Moralisation) {
+    GUM_ACTIVE_TEST(Moralisation) {
       gum::InfluenceDiagram< double > id;
       gum::List< gum::NodeId >        idList;
 
@@ -778,7 +778,7 @@ namespace gum_tests {
       if (moralOutput.fail()) { GUM_ERROR(gum::IOError, "Writing in the ostream failed.") }
     }
 
-    GUM_TEST(WithNames) {
+    GUM_ACTIVE_TEST(WithNames) {
       gum::InfluenceDiagram< double > diag;
       diag.add(gum::LabelizedVariable("A", "A", 2));
       diag.addDecisionNode(gum::LabelizedVariable("D", "D", 2));
@@ -806,7 +806,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(diag.addArc("foo", "bar"), const gum::NotFound&)
     }
 
-    GUM_TEST(FastPrototype) {
+    GUM_ACTIVE_TEST(FastPrototype) {
       auto infdiag = gum::InfluenceDiagram< double >::fastPrototype("A->*B<-C;E<-B->$D");
       TS_ASSERT_EQUALS(infdiag.size(), (gum::Size)5)
       TS_ASSERT_EQUALS(infdiag.chanceNodeSize(), (gum::Size)3)
@@ -816,7 +816,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(FastPrototypeVarType) {
+    GUM_ACTIVE_TEST(FastPrototypeVarType) {
       auto infdiag = gum::InfluenceDiagram< float >::fastPrototype(
          "a{1|4|6}->b{1|-4|6}->c{1|toto|6}->d{1.0|-4.0|6.0}->e{1|-4|6.0}->f{1.0|-4.0|+6.0}");
       TS_ASSERT_EQUALS(infdiag.variable("a").varType(), gum::VarType::Integer)
@@ -827,7 +827,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(infdiag.variable("f").varType(), gum::VarType::Numerical)
     }
 
-    GUM_TEST(FastVariable) {
+    GUM_ACTIVE_TEST(FastVariable) {
       {
         gum::InfluenceDiagram< float > infdiag;
         infdiag.addChanceNode("a{1|4|6}");

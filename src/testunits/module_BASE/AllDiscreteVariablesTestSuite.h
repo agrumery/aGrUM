@@ -32,7 +32,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] AllVariablesTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(CreationRange) {
+    GUM_ACTIVE_TEST(CreationRange) {
       try {
         {
           auto a = gum::fastVariable< double >("A", 2);
@@ -76,7 +76,7 @@ namespace gum_tests {
       } catch (gum::Exception const& e) GUM_SHOWERROR(e)
     }
 
-      GUM_TEST(CreationLabelized) {
+      GUM_ACTIVE_TEST(CreationLabelized) {
         try {
           {
             auto a = gum::fastVariable< double >("A{a|b|c}", 4);
@@ -92,7 +92,7 @@ namespace gum_tests {
         } catch (gum::Exception const& e) { GUM_SHOWERROR(e) }
       }
 
-      GUM_TEST(CreationInteger) {
+      GUM_ACTIVE_TEST(CreationInteger) {
         {
           auto a = gum::fastVariable< double >("A{0|3|5}", 4);
           TS_ASSERT_EQUALS(a->toString(), "A:Integer({0|3|5})")
@@ -117,7 +117,7 @@ namespace gum_tests {
         }
       }
 
-      GUM_TEST(CreationDiscretized){{auto a = gum::fastVariable< double >("A[1,2,3,4,5,6]", 4);
+      GUM_ACTIVE_TEST(CreationDiscretized){{auto a = gum::fastVariable< double >("A[1,2,3,4,5,6]", 4);
       TS_ASSERT_EQUALS(a->toString(), "A:Discretized(<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>)")
   }
 
@@ -125,7 +125,7 @@ namespace gum_tests {
      TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A[0.3]", 1), gum::InvalidArgument&)
 }   // namespace gum_tests
 
-GUM_TEST(CreationNumerical) {
+GUM_ACTIVE_TEST(CreationNumerical) {
   try {
       {
         auto a = gum::fastVariable< double >("A{1|1.5|6|2.9|3.14}", 4);
@@ -153,7 +153,7 @@ GUM_TEST(CreationNumerical) {
   } catch (gum::Exception const& e) { GUM_SHOWERROR(e) GUM_TRACE(e.errorCallStack()) }
 }
 
-GUM_TEST(ToFastMethod) {
+GUM_ACTIVE_TEST(ToFastMethod) {
   std::string s;
   s = "A{On|Off|Defun}";
   TS_ASSERT_EQUALS(s, (gum::fastVariable< double >(s)->toFast()))   // labelized

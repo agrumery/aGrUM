@@ -42,7 +42,7 @@ namespace gum_tests {
 
     void tearDown() {}
 
-    GUM_TEST(CreationDeletionFloat) {
+    GUM_ACTIVE_TEST(CreationDeletionFloat) {
       gum::MaxParentsMCBayesNetGenerator< double >* gen = nullptr;
 
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -50,7 +50,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen)
     }
 
-    GUM_TEST(CreationDeletionFloatCPT) {
+    GUM_ACTIVE_TEST(CreationDeletionFloatCPT) {
       gum::MaxParentsMCBayesNetGenerator< double >* gen = nullptr;
 
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -58,7 +58,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen)
     }
 
-    GUM_TEST(CreationDeletionDouble) {
+    GUM_ACTIVE_TEST(CreationDeletionDouble) {
       gum::MaxParentsMCBayesNetGenerator< double >* gen = nullptr;
 
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -66,7 +66,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen)
     }
 
-    GUM_TEST(CreationDeletionDoubleCPT) {
+    GUM_ACTIVE_TEST(CreationDeletionDoubleCPT) {
       gum::MaxParentsMCBayesNetGenerator< double >* gen = nullptr;
 
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -74,7 +74,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen)
     }
 
-    GUM_TEST(GenerationBNFloat) {
+    GUM_ACTIVE_TEST(GenerationBNFloat) {
       gum::MaxParentsMCBayesNetGenerator< double > gen(30, 70, 5, 4, 30, 40, 50);
       gum::BayesNet< double >*                     bn = new gum::BayesNet< double >();
       TS_GUM_ASSERT_THROWS_NOTHING(gen.generateBN(*bn))
@@ -82,7 +82,7 @@ namespace gum_tests {
       if (bn != 0) delete bn;
     }
 
-    GUM_TEST(GenerationBNDouble) {
+    GUM_ACTIVE_TEST(GenerationBNDouble) {
       gum::MaxParentsMCBayesNetGenerator< double > gen(30, 70, 5, 4, 30, 40, 50);
       gum::BayesNet< double >*                     bn = new gum::BayesNet< double >();
       TS_GUM_ASSERT_THROWS_NOTHING(gen.generateBN(*bn))
@@ -90,7 +90,7 @@ namespace gum_tests {
       if (bn != 0) delete bn;
     }
 
-    GUM_TEST(GenerationfromBNFloat) {
+    GUM_ACTIVE_TEST(GenerationfromBNFloat) {
       gum::MaxParentsMCBayesNetGenerator< double > gen(30, 70, 10, 4, 30, 40, 50);
       gum::BayesNet< double >*                     bn = new gum::BayesNet< double >();
       gen.generateBN(*bn);
@@ -100,7 +100,7 @@ namespace gum_tests {
       if (bn != 0) delete bn;
     }
 
-    GUM_TEST(GenerationfromBNDouble) {
+    GUM_ACTIVE_TEST(GenerationfromBNDouble) {
       gum::MaxParentsMCBayesNetGenerator< double > gen(30, 70, 5, 4, 30, 40, 50);
       gum::BayesNet< double >*                     bn = new gum::BayesNet< double >();
       gen.generateBN(*bn);
@@ -110,7 +110,7 @@ namespace gum_tests {
       if (bn != 0) delete bn;
     }
 
-    GUM_TEST(DisturbBNFloatCPT) {
+    GUM_ACTIVE_TEST(DisturbBNFloatCPT) {
       gum::MaxParentsMCBayesNetGenerator< double > gen(30, 70, 4, 30, 40, 50);
       gum::BayesNet< double >*                     bn = new gum::BayesNet< double >();
       gen.generateBN(*bn);
@@ -119,7 +119,7 @@ namespace gum_tests {
       if (bn != 0) delete bn;
     }
 
-    GUM_TEST(GenerationBNDoubleCPT) {
+    GUM_ACTIVE_TEST(GenerationBNDoubleCPT) {
       gum::MaxParentsMCBayesNetGenerator< double > gen(30, 70, 3, 4, 30, 40, 50);
       gum::BayesNet< double >*                     bn = new gum::BayesNet< double >();
       gen.generateBN(*bn);
@@ -128,7 +128,7 @@ namespace gum_tests {
       if (bn != 0) delete bn;
     }
 
-    GUM_TEST(InferenceFloat) {
+    GUM_ACTIVE_TEST(InferenceFloat) {
       gum::MaxParentsMCBayesNetGenerator< double > gen(30, 70, 8, 4, 30, 40, 50);
       gum::BayesNet< double >*                     bn = new gum::BayesNet< double >();
       gen.generateBN(*bn);
@@ -139,7 +139,7 @@ namespace gum_tests {
       if (bn != 0) delete bn;
     }
 
-    GUM_TEST(InferenceDouble) {
+    GUM_ACTIVE_TEST(InferenceDouble) {
       gum::MaxParentsMCBayesNetGenerator< double > gen(30, 70, 8, 4, 30, 40, 50);
       gum::BayesNet< double >*                     bn = new gum::BayesNet< double >();
       gen.generateBN(*bn);

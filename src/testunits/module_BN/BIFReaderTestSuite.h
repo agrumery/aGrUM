@@ -42,7 +42,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] BIFReaderTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(Constuctor) {
+    GUM_ACTIVE_TEST(Constuctor) {
       std::string file = GET_RESSOURCES_PATH("bif/BIFReader_file1.bif");
 
       gum::BayesNet< double >   net;
@@ -52,7 +52,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(delete reader)
     }
 
-    GUM_TEST(Read_file1) {
+    GUM_ACTIVE_TEST(Read_file1) {
       std::string file = GET_RESSOURCES_PATH("bif/BIFReader_file1.bif");
 
       auto                     net = new gum::BayesNet< double >();
@@ -74,7 +74,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(Read_file2_float) {
+    GUM_ACTIVE_TEST(Read_file2_float) {
       std::string file = GET_RESSOURCES_PATH("bif/BIFReader_file2.bif");
       auto        net  = new gum::BayesNet< double >();
 
@@ -128,7 +128,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(Read_file2_double) {
+    GUM_ACTIVE_TEST(Read_file2_double) {
       std::string              file = GET_RESSOURCES_PATH("bif/BIFReader_file2.bif");
       auto                     net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
@@ -194,7 +194,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(Read_file3) {
+    GUM_ACTIVE_TEST(Read_file3) {
       std::string              file = GET_RESSOURCES_PATH("bif/BIFReader_file3.bif");
       auto                     net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
@@ -538,7 +538,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(Alarm) {
+    GUM_ACTIVE_TEST(Alarm) {
       std::string file = GET_RESSOURCES_PATH("bif/alarm.bif");
 
       auto net = new gum::BayesNet< double >();
@@ -739,7 +739,7 @@ namespace gum_tests {
       delete net;
     }
 
-    GUM_TEST(Unexisting) {
+    GUM_ACTIVE_TEST(Unexisting) {
       std::string file = "Schmurtz";
       auto        net  = new gum::BayesNet< double >();
 
@@ -751,7 +751,7 @@ namespace gum_tests {
       if (net) delete net;
     }
 
-    GUM_TEST(Barley) {
+    GUM_ACTIVE_TEST(Barley) {
       std::string              file = GET_RESSOURCES_PATH("bif/Barley.bif");
       auto                     net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
@@ -770,7 +770,7 @@ namespace gum_tests {
       if (net != nullptr) delete net;
     }
 
-    GUM_TEST(Carpo) {
+    GUM_ACTIVE_TEST(Carpo) {
       std::string              file = GET_RESSOURCES_PATH("bif/carpo.bif");
       auto                     net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
@@ -788,7 +788,7 @@ namespace gum_tests {
       if (net) delete net;
     }
 
-    GUM_TEST(Diabetes) {
+    GUM_ACTIVE_TEST(Diabetes) {
       std::string              file = GET_RESSOURCES_PATH("bif/Diabetes.bif");
       auto                     net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
@@ -807,7 +807,7 @@ namespace gum_tests {
       if (net) delete net;
     }
 
-    GUM_TEST(Hailfinder) {
+    GUM_ACTIVE_TEST(Hailfinder) {
       std::string              file = GET_RESSOURCES_PATH("bif/hailfinder.bif");
       auto                     net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
@@ -825,7 +825,7 @@ namespace gum_tests {
       if (net) delete net;
     }
 
-    GUM_TEST(Insurance) {
+    GUM_ACTIVE_TEST(Insurance) {
       std::string              file = GET_RESSOURCES_PATH("bif/insurance.bif");
       auto                     net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
@@ -843,7 +843,7 @@ namespace gum_tests {
       if (net != nullptr) delete net;
     }
 
-    GUM_TEST(Link) {
+    GUM_ACTIVE_TEST(Link) {
       std::string              file = GET_RESSOURCES_PATH("bif/Link.bif");
       auto                     net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
@@ -862,7 +862,7 @@ namespace gum_tests {
       if (net) delete net;
     }
 
-    GUM_TEST(Mildew) {
+    GUM_ACTIVE_TEST(Mildew) {
       std::string              file = GET_RESSOURCES_PATH("bif/Mildew.bif");
       auto                     net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
@@ -881,7 +881,7 @@ namespace gum_tests {
       if (net) delete net;
     }
 
-    GUM_TEST(Munin1) {
+    GUM_ACTIVE_TEST(Munin1) {
       std::string              file = GET_RESSOURCES_PATH("bif/Munin1.bif");
       auto                     net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
@@ -896,7 +896,7 @@ namespace gum_tests {
       if (net) delete net;
     }
 
-    GUM_TEST(Pigs) {
+    GUM_ACTIVE_TEST(Pigs) {
       std::string              file = GET_RESSOURCES_PATH("bif/Pigs.bif");
       auto                     net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);
@@ -932,7 +932,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(Water) {
+    GUM_ACTIVE_TEST(Water) {
       std::string              file = GET_RESSOURCES_PATH("bif/Water.bif");
       auto                     net  = new gum::BayesNet< double >();
       gum::BIFReader< double > reader(net, file);

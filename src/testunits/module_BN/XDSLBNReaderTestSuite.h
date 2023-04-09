@@ -41,7 +41,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] XDSLBNReaderTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(Constuctor) {
+    GUM_ACTIVE_TEST(Constuctor) {
       std::string             file = GET_RESSOURCES_PATH("xdsl/benefits.xdsl");
       gum::BayesNet< double > net;
 
@@ -50,7 +50,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(delete reader)
     }
 
-    GUM_TEST(Read_file1) {
+    GUM_ACTIVE_TEST(Read_file1) {
       std::string              file = GET_RESSOURCES_PATH("xdsl/benefits.xdsl");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
 

@@ -80,6 +80,11 @@ namespace gum {
                                                         engine.model().nodeset(Znames)) {}
 
   INFORMATION_THEORY_TEMPLATE
+  InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::~InformationTheory() {
+    GUM_DESTRUCTOR(InformationTheory);
+  }
+
+  INFORMATION_THEORY_TEMPLATE
   void InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::makeInference_() {
     vX_.clear();
     for (const auto x: X_)
@@ -95,19 +100,19 @@ namespace gum {
 
     const NodeSet joint_vars = X_ + Y_ + Z_;
     if (!engine_.isJointTarget(joint_vars)) {
-      engine_.eraseAllTargets();
+      engine_.eraseAllJointTargets();
       engine_.addJointTarget(joint_vars);
     }
     engine_.makeInference();
 
     if (!Z_.empty()) {
-      pXYZ_ = engine_.jointPosterior(X_ + Y_ + Z_);
+      pXYZ_ = engine_.jointPosterior(joint_vars);
       pXZ_  = pXYZ_.margSumIn(vX_ + vZ_);
       pYZ_  = pXYZ_.margSumIn(vY_ + vZ_);
       pZ_   = pXZ_.margSumIn(vZ_);
       pXY_  = pXYZ_.margSumIn(vX_ + vY_);
     } else {
-      pXY_ = engine_.jointPosterior(X_ + Y_);
+      pXY_ = engine_.jointPosterior(joint_vars);
     }
     pX_ = pXY_.margSumIn(vX_);
     pY_ = pXY_.margSumIn(vY_);

@@ -44,7 +44,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] PriorityQueueTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(Construct) {
+    GUM_ACTIVE_TEST(Construct) {
       gum::PriorityQueue< std::string > queue1;
 
       TS_ASSERT_EQUALS(queue1.size(), (gum::Size)0)
@@ -103,7 +103,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(queue10.top(), "bb")
     }
 
-    GUM_TEST(MoveScalar) {
+    GUM_ACTIVE_TEST(MoveScalar) {
       gum::PriorityQueue< int > queue1{std::pair< int, int >(1, 3),
                                        std::pair< int, int >(2, 1),
                                        std::pair< int, int >(3, 10)};
@@ -136,7 +136,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(queue6.size(), (gum::Size)3)
     }
 
-    GUM_TEST(MoveGen) {
+    GUM_ACTIVE_TEST(MoveGen) {
       gum::PriorityQueue< std::string > queue1{std::pair< std::string, int >("a", 3),
                                                std::pair< std::string, int >("b", 1),
                                                std::pair< std::string, int >("c", 10)};
@@ -169,7 +169,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(queue6.size(), (gum::Size)3)
     }
 
-    GUM_TEST(Scalar) {
+    GUM_ACTIVE_TEST(Scalar) {
       gum::PriorityQueue< int > queue1;
 
       TS_ASSERT_EQUALS(queue1.size(), (gum::Size)0)
@@ -223,7 +223,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(vals.size(), (gum::Size)4)
     }
 
-    GUM_TEST(Copy) {
+    GUM_ACTIVE_TEST(Copy) {
       gum::PriorityQueue< std::string > queue1;
       queue1.insert("AAA", 8);
       queue1.insert("BBB", 10);
@@ -268,7 +268,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(str1, "BBB")
     }
 
-    GUM_TEST(ConstObj) {
+    GUM_ACTIVE_TEST(ConstObj) {
       gum::Set< int > set1, set2, set3, set4, set5, set6;
       set1 << 1;
       set2 << 1 << 2;
@@ -363,7 +363,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(str4, set4)
     }
 
-    GUM_TEST(MultiConstruct) {
+    GUM_ACTIVE_TEST(MultiConstruct) {
       gum::MultiPriorityQueue< std::string > queue1;
       TS_ASSERT_EQUALS(queue1.size(), (gum::Size)0)
       TS_ASSERT_EQUALS(queue1.empty(), true)
@@ -413,7 +413,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(vals.size(), (gum::Size)4)
     }
 
-    GUM_TEST(MultiCopy) {
+    GUM_ACTIVE_TEST(MultiCopy) {
       gum::MultiPriorityQueue< std::string > queue1;
       queue1.insert("AAA", 8);
       queue1.insert("BBB", 10);
@@ -461,7 +461,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(str2, "DDD")
     }
 
-    GUM_TEST(MultiConstObj) {
+    GUM_ACTIVE_TEST(MultiConstObj) {
       gum::Set< int > set1, set2, set3, set4, set5, set6;
       set1 << 1;
       set2 << 1 << 2;
@@ -555,7 +555,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(str4, set4)
     }
 
-    GUM_TEST(MultiMoveScalar) {
+    GUM_ACTIVE_TEST(MultiMoveScalar) {
       gum::MultiPriorityQueue< int > queue1{std::pair< int, int >(1, 3),
                                             std::pair< int, int >(2, 1),
                                             std::pair< int, int >(3, 10)};

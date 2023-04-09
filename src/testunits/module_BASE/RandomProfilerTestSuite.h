@@ -55,7 +55,7 @@ namespace gum_tests {
       gum::initRandom(GUM_RANDOMSEED);
     }
 
-    GUM_TEST(RandomSeeForStructure) {
+    GUM_ACTIVE_TEST(RandomSeeForStructure) {
       try {
         auto n_nodes  = 100;
         auto n_arcs   = 150;

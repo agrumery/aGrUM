@@ -64,7 +64,7 @@ namespace gum_tests {
       delete small_inf;
     }
 
-    GUM_TEST(Constructors) {
+    GUM_ACTIVE_TEST(Constructors) {
       gum::prm::StructuredBayesBall< double >* bb = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(bb = new gum::prm::StructuredBayesBall< double >(*prm_inf))
       TS_GUM_ASSERT_THROWS_NOTHING(delete bb)
@@ -74,7 +74,7 @@ namespace gum_tests {
 
     /// Checking that when a root is queried and there is no evidence, the
     /// requisite nodes set contains only the root node.
-    GUM_TEST(RootsNoObs) {
+    GUM_ACTIVE_TEST(RootsNoObs) {
       gum::prm::StructuredBayesBall< double >* bb = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(bb = new gum::prm::StructuredBayesBall< double >(*prm_inf))
 
@@ -102,7 +102,7 @@ namespace gum_tests {
 
     /// Checking that when a root is queried and there is no evidence, the
     /// requisite nodes set contains only the root node.
-    GUM_TEST(RootsNoObsSmall) {
+    GUM_ACTIVE_TEST(RootsNoObsSmall) {
       gum::prm::StructuredBayesBall< double >* bb = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(bb = new gum::prm::StructuredBayesBall< double >(*small_inf))
 

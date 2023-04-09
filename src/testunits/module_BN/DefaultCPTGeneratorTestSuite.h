@@ -135,14 +135,14 @@ namespace gum_tests {
       delete pot3D;
     }
 
-    GUM_TEST(CreationDeletion) {
+    GUM_ACTIVE_TEST(CreationDeletion) {
       gum::SimpleCPTGenerator< double >* aCptGen = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(aCptGen = new gum::SimpleCPTGenerator< double >())
       TS_GUM_ASSERT_THROWS_NOTHING(delete aCptGen)
     }
 
     // Test the generator on root variables
-    GUM_TEST(RootVariablesFloat) {
+    GUM_ACTIVE_TEST(RootVariablesFloat) {
       gum::SimpleCPTGenerator< double > aCPTGen;
       TS_GUM_ASSERT_THROWS_NOTHING(aCPTGen.generateCPT(rootPot1F->pos(*binVar1), *rootPot1F))
 
@@ -157,7 +157,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(sum, (float)1, 0.0001)
     }
 
-    GUM_TEST(RootVariablesDouble) {
+    GUM_ACTIVE_TEST(RootVariablesDouble) {
       gum::SimpleCPTGenerator< double > aCPTGen;
       TS_GUM_ASSERT_THROWS_NOTHING(aCPTGen.generateCPT(rootPot1F->pos(*binVar1), *rootPot1D))
 
@@ -173,7 +173,7 @@ namespace gum_tests {
     }
 
     // Testing with one parent - float version
-    GUM_TEST(BinaryVariableFloat_1) {
+    GUM_ACTIVE_TEST(BinaryVariableFloat_1) {
       gum::SimpleCPTGenerator< double > aCPTGen;
       TS_GUM_ASSERT_THROWS_NOTHING(aCPTGen.generateCPT(pot1F->pos(*binVar1), *pot1F))
 
@@ -201,7 +201,7 @@ namespace gum_tests {
     }
 
     // Testing with many parents - float version
-    GUM_TEST(BinaryVariableFloat_2) {
+    GUM_ACTIVE_TEST(BinaryVariableFloat_2) {
       gum::SimpleCPTGenerator< double > aCPTGen;
       TS_GUM_ASSERT_THROWS_NOTHING(aCPTGen.generateCPT(pot2F->pos(*binVar3), *pot2F))
 
@@ -229,7 +229,7 @@ namespace gum_tests {
     }
 
     // Testing with one parent - double version
-    GUM_TEST(BinaryVariableDouble_1) {
+    GUM_ACTIVE_TEST(BinaryVariableDouble_1) {
       gum::SimpleCPTGenerator< double > aCPTGen;
       TS_GUM_ASSERT_THROWS_NOTHING(aCPTGen.generateCPT(pot1D->pos(*binVar1), *pot1D))
 
@@ -252,7 +252,7 @@ namespace gum_tests {
     }
 
     // Testing with many parents - double version
-    GUM_TEST(BinaryVariableDouble_2) {
+    GUM_ACTIVE_TEST(BinaryVariableDouble_2) {
       gum::SimpleCPTGenerator< double > aCPTGen;
       TS_GUM_ASSERT_THROWS_NOTHING(aCPTGen.generateCPT(pot2D->pos(*binVar4), *pot2D))
 
@@ -275,7 +275,7 @@ namespace gum_tests {
     }
 
     // Testing with no parents - float version
-    GUM_TEST(NAryVariableFloat_1) {
+    GUM_ACTIVE_TEST(NAryVariableFloat_1) {
       gum::SimpleCPTGenerator< double > cptGen;
 
       for (int i = 2; i < 100; ++i) {
@@ -296,7 +296,7 @@ namespace gum_tests {
     }
 
     // Testing with 4 parents, with domain size > 2
-    GUM_TEST(NAryVariableFloat_2) {
+    GUM_ACTIVE_TEST(NAryVariableFloat_2) {
       gum::SimpleCPTGenerator< double > cptGen;
       TS_GUM_ASSERT_THROWS_NOTHING(cptGen.generateCPT(pot3F->pos(*nVar3), *pot3F))
       gum::Instantiation instVar3;
@@ -317,7 +317,7 @@ namespace gum_tests {
     }
 
     // Testing with no parents - double version
-    GUM_TEST(NAryVariableDouble_1) {
+    GUM_ACTIVE_TEST(NAryVariableDouble_1) {
       gum::SimpleCPTGenerator< double > cptGen;
 
       for (int i = 2; i < 100; ++i) {
@@ -338,7 +338,7 @@ namespace gum_tests {
     }
 
     // Testing with 4 parents, with domain size > 2
-    GUM_TEST(NAryVariableDouble_2) {
+    GUM_ACTIVE_TEST(NAryVariableDouble_2) {
       gum::SimpleCPTGenerator< double > cptGen;
       TS_GUM_ASSERT_THROWS_NOTHING(cptGen.generateCPT(pot3D->pos(*nVar3), *pot3D))
 

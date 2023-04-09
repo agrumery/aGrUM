@@ -160,26 +160,26 @@ namespace gum_tests {
     void tearDown() final { delete bn; }
 
 
-    GUM_TEST(Constuctor) {
+    GUM_ACTIVE_TEST(Constuctor) {
       gum::BIFWriter< double >* writer = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::BIFWriter< double >())
       delete writer;
     }
 
-    GUM_TEST(Writer_ostream) {
+    GUM_ACTIVE_TEST(Writer_ostream) {
       gum::BIFWriter< double > writer;
       // Uncomment this to check the ouput
       // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn))
     }
 
-    GUM_TEST(Writer_string) {
+    GUM_ACTIVE_TEST(Writer_string) {
       gum::BIFWriter< double > writer;
       std::string              file = GET_RESSOURCES_PATH("outputs/BIFWriter_TestFile.txt");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn))
       TS_ASSERT(_compareFile_(file, GET_RESSOURCES_PATH("txt/BIFWriter_Model.txt")))
     }
 
-    GUM_TEST(SyntaxicError) {
+    GUM_ACTIVE_TEST(SyntaxicError) {
       gum::BIFWriter< double > writer;
       {
         TS_ASSERT(!writer.isModificationAllowed())

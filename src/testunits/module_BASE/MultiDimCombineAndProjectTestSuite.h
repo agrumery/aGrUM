@@ -39,7 +39,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] MultiDimCombineAndProjectTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(Double) {
+    GUM_ACTIVE_TEST(Double) {
       gum::IScheduleMultiDim::resetIdGenerator();
       std::vector< gum::LabelizedVariable* > vars(11);
 
@@ -177,7 +177,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_TEST(Schedules) {
+    GUM_ACTIVE_TEST(Schedules) {
       gum::IScheduleMultiDim::resetIdGenerator();
       std::vector< gum::LabelizedVariable* > vars(11);
 
@@ -293,7 +293,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_TEST(OpPersistence) {
+    GUM_ACTIVE_TEST(OpPersistence) {
       gum::IScheduleMultiDim::resetIdGenerator();
       std::vector< gum::LabelizedVariable* > vars(11);
 
@@ -378,7 +378,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_TEST(SchedulesPersistence) {
+    GUM_ACTIVE_TEST(SchedulesPersistence) {
       gum::IScheduleMultiDim::resetIdGenerator();
       std::vector< gum::LabelizedVariable* > vars(11);
 
@@ -500,7 +500,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_TEST(Float) {
+    GUM_ACTIVE_TEST(Float) {
       std::vector< gum::LabelizedVariable* > vars(11);
 
       for (gum::Idx i = 0; i < 11; ++i) {
@@ -598,7 +598,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(Constants) {
+    GUM_ACTIVE_TEST(Constants) {
       gum::MultiDimCombineAndProjectDefault< gum::Potential< float > > projcomb(multPot, mySum);
 
       gum::Potential< float > t1, t2;

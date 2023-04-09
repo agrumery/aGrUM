@@ -230,7 +230,7 @@ namespace gum_tests {
 
     // ============================================================================
     // ============================================================================
-    GUM_TEST(_prior) {
+    GUM_ACTIVE_TEST(_prior) {
       gum::LazyPropagation< double > inf(bn);
       TS_ASSERT_THROWS_NOTHING(inf.makeInference())
 
@@ -247,7 +247,7 @@ namespace gum_tests {
 
     // ============================================================================
     // ============================================================================
-    GUM_TEST(_prior_with_targets) {
+    GUM_ACTIVE_TEST(_prior_with_targets) {
       gum::LazyPropagation< double > inf(bn);
       inf.eraseAllTargets();
       inf.addTarget(0);   // A
@@ -269,7 +269,7 @@ namespace gum_tests {
 
     // ============================================================================
     // ============================================================================
-    GUM_TEST(_prior_with_targets_evidence) {
+    GUM_ACTIVE_TEST(_prior_with_targets_evidence) {
       gum::LazyPropagation< double > inf(bn);
       inf.eraseAllTargets();
       inf.addTarget(0);   // A
@@ -299,7 +299,7 @@ namespace gum_tests {
 
     // ============================================================================
     // ============================================================================
-    GUM_TEST(_prior_with_targets_outside_evidence) {
+    GUM_ACTIVE_TEST(_prior_with_targets_outside_evidence) {
       gum::LazyPropagation< double > inf(bn);
       inf.eraseAllTargets();
       inf.addTarget(0);   // A
@@ -332,7 +332,7 @@ namespace gum_tests {
 
     // ============================================================================
     // ============================================================================
-    GUM_TEST(_prior_with_targets_evidence_values_changed) {
+    GUM_ACTIVE_TEST(_prior_with_targets_evidence_values_changed) {
       gum::LazyPropagation< double > inf(bn);
       inf.eraseAllTargets();
       inf.addTarget(0);   // A
@@ -479,7 +479,7 @@ namespace gum_tests {
 
     // ============================================================================
     // ============================================================================
-    GUM_TEST(_prior_with_targets_hard_evidence_values_changed) {
+    GUM_ACTIVE_TEST(_prior_with_targets_hard_evidence_values_changed) {
       gum::LazyPropagation< double > inf(bn);
       inf.eraseAllTargets();
       inf.addTarget(0);   // A
@@ -624,7 +624,7 @@ namespace gum_tests {
 
     // ============================================================================
     // ============================================================================
-    GUM_TEST(_prior_with_targets_evidence_changed) {
+    GUM_ACTIVE_TEST(_prior_with_targets_evidence_changed) {
       gum::LazyPropagation< double > inf(bn);
       inf.eraseAllTargets();
       inf.addTarget(0);   // A
@@ -709,6 +709,6 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(End() { theEnd); }
+    GUM_ACTIVE_TEST(End() { theEnd); }
   };
 }   // namespace gum_tests

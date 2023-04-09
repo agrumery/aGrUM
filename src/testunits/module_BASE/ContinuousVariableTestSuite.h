@@ -33,7 +33,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] ContinuousVariableTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(_constructors) {
+    GUM_ACTIVE_TEST(_constructors) {
       gum::ContinuousVariable<> var1("x1", "");
       TS_ASSERT_EQUALS(var1.upperBound(), std::numeric_limits< double >::infinity())
       TS_ASSERT_EQUALS(var1.lowerBound(), -std::numeric_limits< double >::infinity())
@@ -77,7 +77,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(_methods) {
+    GUM_ACTIVE_TEST(_methods) {
       gum::ContinuousVariable<> var1("x1", "");
       TS_ASSERT_EQUALS(var1.upperBound(), std::numeric_limits< double >::infinity())
       TS_ASSERT_EQUALS(var1.lowerBound(), -std::numeric_limits< double >::infinity())

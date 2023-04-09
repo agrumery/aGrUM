@@ -59,7 +59,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(Valid){TS_ASSERT(gum::Directory("./").isValid())
+    GUM_ACTIVE_TEST(Valid){TS_ASSERT(gum::Directory("./").isValid())
                        TS_ASSERT(gum::Directory("../").isValid())
                           TS_ASSERT(gum::Directory("../dir/").isValid())
                              TS_ASSERT(!gum::Directory("./undossierauhasard/").isValid())
@@ -67,7 +67,7 @@ namespace gum_tests {
                                    TS_ASSERT(!gum::Directory("undossierauhasard/").isValid())
                                       TS_ASSERT(!gum::Directory("../dir1/").isValid())}
 
-    GUM_TEST(Path){TS_ASSERT_EQUALS(gum::Directory("./").path(),
+    GUM_ACTIVE_TEST(Path){TS_ASSERT_EQUALS(gum::Directory("./").path(),
                                     "./") TS_ASSERT_EQUALS(gum::Directory("../").path(), "../")
                       TS_ASSERT_EQUALS(gum::Directory("../dir/").path(), "../dir/")
                          TS_ASSERT_EQUALS(gum::Directory("/usr/").path(), "/usr/")
@@ -75,7 +75,7 @@ namespace gum_tests {
                                TS_ASSERT_EQUALS(gum::Directory("./undossierauhasard/").path(),
                                                 "./undossierauhasard/")}
 
-    GUM_TEST(AbsolutePath) {
+    GUM_ACTIVE_TEST(AbsolutePath) {
       TS_ASSERT_EQUALS(gum::Directory("./undossierauhasard/").absolutePath(), "")
       TS_ASSERT_EQUALS(gum::Directory("./").absolutePath(),
                        gum::Directory("../dir/").absolutePath());
@@ -89,7 +89,7 @@ namespace gum_tests {
                 != gum::Directory("./dir1/../dir2/").absolutePath());
     }
 
-    GUM_TEST(Entries) {
+    GUM_ACTIVE_TEST(Entries) {
       std::vector< std::string > entries;
 
       gum::Directory d0("../undossierauhasard/");
@@ -148,7 +148,7 @@ namespace gum_tests {
       TS_ASSERT_DIFFERS(find(entries.begin(), entries.end(), "file3.txt"), entries.end())
     }
 
-    GUM_TEST(Parent) {
+    GUM_ACTIVE_TEST(Parent) {
       TS_ASSERT_EQUALS(gum::Directory("./undossierauhasard/").parent().path(), "")
       TS_ASSERT(gum::Directory("./").parent().absolutePath()
                 == gum::Directory("../dir/").parent().absolutePath());

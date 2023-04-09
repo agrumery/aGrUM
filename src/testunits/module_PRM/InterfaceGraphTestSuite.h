@@ -46,14 +46,14 @@ namespace gum_tests {
 
     void tearDown() { delete _prm_; }
 
-    GUM_TEST(ConstructorDestructor) {
+    GUM_ACTIVE_TEST(ConstructorDestructor) {
       gum::prm::gspan::InterfaceGraph< double >* ig = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(
          ig = new gum::prm::gspan::InterfaceGraph< double >(_prm_->getSystem("microSys")));
       TS_GUM_ASSERT_THROWS_NOTHING(delete ig)
     }
 
-    GUM_TEST(MicroTopologie) {
+    GUM_ACTIVE_TEST(MicroTopologie) {
       gum::prm::gspan::InterfaceGraph< double >* ig = 0;
       gum::prm::PRMSystem< double >&             m  = _prm_->getSystem("microSys");
       TS_GUM_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m))
@@ -73,7 +73,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(delete ig)
     }
 
-    GUM_TEST(MicroLabelsOnNodes) {
+    GUM_ACTIVE_TEST(MicroLabelsOnNodes) {
       gum::prm::gspan::InterfaceGraph< double >* ig = 0;
       gum::prm::PRMSystem< double >&             m  = _prm_->getSystem("microSys");
       TS_GUM_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m))
@@ -92,7 +92,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(delete ig)
     }
 
-    GUM_TEST(MicroLabelsOnEdges) {
+    GUM_ACTIVE_TEST(MicroLabelsOnEdges) {
       gum::prm::gspan::InterfaceGraph< double >* ig = 0;
       gum::prm::PRMSystem< double >&             m  = _prm_->getSystem("microSys");
       TS_GUM_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m))
@@ -118,7 +118,7 @@ namespace gum_tests {
       return sBuff.str();
     }
 
-    GUM_TEST(SmallTopologie) {
+    GUM_ACTIVE_TEST(SmallTopologie) {
       gum::prm::gspan::InterfaceGraph< double >* ig = 0;
       gum::prm::PRMSystem< double >&             m  = _prm_->getSystem("smallSys");
       TS_GUM_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m))
@@ -187,7 +187,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(delete ig)
     }
 
-    GUM_TEST(SmallLabelsOnNodes) {
+    GUM_ACTIVE_TEST(SmallLabelsOnNodes) {
       gum::prm::gspan::InterfaceGraph< double >* ig = 0;
       gum::prm::PRMSystem< double >&             m  = _prm_->getSystem("smallSys");
       TS_GUM_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m))
@@ -199,7 +199,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(delete ig)
     }
 
-    GUM_TEST(SmallLabelsOnEdges) {
+    GUM_ACTIVE_TEST(SmallLabelsOnEdges) {
       gum::prm::gspan::InterfaceGraph< double >* ig = 0;
       gum::prm::PRMSystem< double >&             m  = _prm_->getSystem("smallSys");
       TS_GUM_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m))
@@ -233,7 +233,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(WithLayerGeneration) {
+    GUM_ACTIVE_TEST(WithLayerGeneration) {
       std::vector< gum::prm::LayerGenerator< double >::LayerData > layers;
       generateLayer(layers, 10);
       gum::prm::LayerGenerator< double > generator;

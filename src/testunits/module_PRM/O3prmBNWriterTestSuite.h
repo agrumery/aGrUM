@@ -75,19 +75,19 @@ namespace gum_tests {
 
     void tearDown() { delete bn; }
 
-    GUM_TEST(Constuctor) {
+    GUM_ACTIVE_TEST(Constuctor) {
       gum::O3prmBNWriter< double >* writer = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::O3prmBNWriter< double >())
       delete writer;
     }
 
-    GUM_TEST(Writer_ostream) {
+    GUM_ACTIVE_TEST(Writer_ostream) {
       gum::O3prmBNWriter< double > writer;
       // Uncomment this to check the ouput
       // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn))
     }
 
-    GUM_TEST(ReadAfterWrite) {
+    GUM_ACTIVE_TEST(ReadAfterWrite) {
       std::string                  rfile = GET_RESSOURCES_PATH("o3prm/alarm.o3prm");
       gum::BayesNet< double >      bn;
       gum::O3prmBNReader< double > reader(&bn, rfile);
@@ -125,7 +125,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(ReadAfterWriteRandom) {
+    GUM_ACTIVE_TEST(ReadAfterWriteRandom) {
       gum::BayesNet< double > bn = gum::BayesNet< double >::fastPrototype(
          "A[5]->B{yes|maybe|no}<-C[4];D[3,6]->E[1,2,3,4,5,6,7]->F<-G;F<-H");
       bn.setProperty("name", "random_written");

@@ -37,7 +37,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] BayesNetIOTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(NetImportExport) {
+    GUM_ACTIVE_TEST(NetImportExport) {
       std::string filebif = GET_RESSOURCES_PATH("bif/alarm.bif");
       std::string filenet = GET_RESSOURCES_PATH("net/alarm.net");
 

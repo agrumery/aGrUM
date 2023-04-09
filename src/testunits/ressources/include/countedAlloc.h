@@ -1,5 +1,5 @@
-#ifndef GUM_TEST_COUNTEDALLOC_H
-#define GUM_TEST_COUNTEDALLOC_H
+#ifndef GUM_ACTIVE_TEST_COUNTEDALLOC_H
+#define GUM_ACTIVE_TEST_COUNTEDALLOC_H
 
 #include <vector>
 
@@ -58,4 +58,4 @@ namespace gum_tests {
 
 } /* namespace gum_tests */
 
-#endif /* GUM_TEST_COUNTEDALLOC_H */
+#endif /* GUM_ACTIVE_TEST_COUNTEDALLOC_H */

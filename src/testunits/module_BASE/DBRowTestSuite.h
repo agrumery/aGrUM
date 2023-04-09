@@ -30,7 +30,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] DBRowTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(_row1) {
+    GUM_ACTIVE_TEST(_row1) {
       {
         gum::learning::DBRow< double > row;
         TS_ASSERT_EQUALS(row.weight(), 1.0f)
@@ -121,7 +121,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(_row2) {
+    GUM_ACTIVE_TEST(_row2) {
       {
         gum::learning::DBRow< gum::learning::DBCell > row;
         TS_ASSERT_EQUALS(row.weight(), 1.0f)
@@ -214,7 +214,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(_row3) {
+    GUM_ACTIVE_TEST(_row3) {
       gum::learning::DBRow< gum::learning::DBCell > row1(4, gum::learning::DBCell(1), 2);
       TS_ASSERT_EQUALS(row1.size(), (gum::Size)4)
       TS_ASSERT_EQUALS(row1[3], gum::learning::DBCell(1))

@@ -82,7 +82,7 @@ namespace gum_tests {
 
 
     public:
-    GUM_TEST(1) {
+    GUM_ACTIVE_TEST(1) {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("0");
@@ -215,7 +215,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(2) {
+    GUM_ACTIVE_TEST(2) {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("0");
@@ -350,7 +350,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(3) {
+    GUM_ACTIVE_TEST(3) {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("0");
@@ -491,7 +491,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(4) {
+    GUM_ACTIVE_TEST(4) {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("0");
@@ -634,7 +634,7 @@ namespace gum_tests {
       delete param_estimator4;
     }
 
-    GUM_TEST(ChangeRanges) {
+    GUM_ACTIVE_TEST(ChangeRanges) {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("0");
@@ -794,7 +794,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(EM) {
+    GUM_ACTIVE_TEST(EM) {
       gum::LabelizedVariable var("x", "", 0);
       var.addLabel("0");
       var.addLabel("1");
@@ -904,7 +904,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(ZeroInPseudoCounts) {
+    GUM_ACTIVE_TEST(ZeroInPseudoCounts) {
       gum::learning::DBTranslatorSet trans_set;
       {
         // create the translator set
@@ -946,7 +946,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(_multicore) {
+    GUM_ACTIVE_TEST(_multicore) {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("0");

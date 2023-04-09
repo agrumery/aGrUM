@@ -65,17 +65,17 @@ namespace gum_tests {
     }
 
     public:
-    GUM_TEST(PlanningCoffee) {
+    GUM_ACTIVE_TEST(PlanningCoffee) {
       file = GET_RESSOURCES_PATH("FMDP/coffee/coffee.dat");
       run();
     }
 
-    GUM_TEST(PlanningTinyFactory) {
+    GUM_ACTIVE_TEST(PlanningTinyFactory) {
       file = GET_RESSOURCES_PATH("FMDP/factory/tiny-factory.dat");
       run();
     }
 
-    GUM_TEST(PlanningTaxi) {
+    GUM_ACTIVE_TEST(PlanningTaxi) {
       file = GET_RESSOURCES_PATH("FMDP/taxi/taxi.dat");
       run();
     }

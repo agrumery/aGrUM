@@ -35,7 +35,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] DecisionPotentialTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(Construction) {
+    GUM_ACTIVE_TEST(Construction) {
       gum::DecisionPotential< double > d1, d2;
       TS_ASSERT_EQUALS(d1, d2)
       TS_ASSERT_EQUALS(d1, d1 * d2)
@@ -68,7 +68,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(d1, d4)
     }
 
-    GUM_TEST(Construction2) {
+    GUM_ACTIVE_TEST(Construction2) {
       auto infdiag = gum::InfluenceDiagram< double >::fastPrototype("A->$B<-*C");
       infdiag.cpt("A").fillWith({0.3, 0.7});
       infdiag.utility("B").fillWith({100, 10, 30, 70});
@@ -83,7 +83,7 @@ namespace gum_tests {
          (gum::Potential< double >() << infdiag.variableFromName("C")).fillWith({37, 58}));
     }
 
-    GUM_TEST(Equalities) {
+    GUM_ACTIVE_TEST(Equalities) {
       auto infdiag = gum::InfluenceDiagram< double >::fastPrototype("A->$B<-*C");
       infdiag.cpt("A").fillWith({1.0, 0.0});
       infdiag.utility("B").fillWith({100, 10, 30, 70});
@@ -101,7 +101,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(d1, d2);   // d1 and d2 differ for utility with proba is 0
     }
 
-    GUM_TEST(SuperSetForMarginalization) {
+    GUM_ACTIVE_TEST(SuperSetForMarginalization) {
       auto infdiag = gum::InfluenceDiagram< double >::fastPrototype("D<-A->$B<-*C");
       infdiag.cpt("A").fillWith({0.3, 0.7});
       infdiag.cpt("D").fillWith({0.1, 0.9, 0.9, 0.1});

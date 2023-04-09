@@ -126,7 +126,7 @@ namespace gum_tests {
     }
 
     public:
-    GUM_TEST(Creation) {
+    GUM_ACTIVE_TEST(Creation) {
       gum::BayesNet< double > bn;
       fill(bn);
 
@@ -134,7 +134,7 @@ namespace gum_tests {
       gum::BayesNetFragment< double > frag2(static_cast< const gum::IBayesNet< double >& >(frag));
     }
 
-    GUM_TEST(InstallNodes) {
+    GUM_ACTIVE_TEST(InstallNodes) {
       gum::BayesNet< double > bn;
       fill(bn);
 
@@ -183,7 +183,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag2.sizeArcs(), (gum::Size)6)
     }
 
-    GUM_TEST(InstallNodesWithVar) {
+    GUM_ACTIVE_TEST(InstallNodesWithVar) {
       gum::BayesNet< double > bn;
       fill(bn);
 
@@ -231,7 +231,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag2.sizeArcs(), (gum::Size)6)
     }
 
-    GUM_TEST(UninstallNode) {
+    GUM_ACTIVE_TEST(UninstallNode) {
       gum::BayesNet< double > bn;
       fill(bn);
 
@@ -248,7 +248,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)0)
     }
 
-    GUM_TEST(UninstallNodeWithNames) {
+    GUM_ACTIVE_TEST(UninstallNodeWithNames) {
       gum::BayesNet< double > bn;
       fill(bn);
 
@@ -265,7 +265,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)0)
     }
 
-    GUM_TEST(IBayetNetMethodsWithoutLocalCPTs) {
+    GUM_ACTIVE_TEST(IBayetNetMethodsWithoutLocalCPTs) {
       gum::BayesNet< double > bn;
       fill(bn);
 
@@ -328,7 +328,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.variable(order.atPos(2)).name(), "v6")
     }
 
-    GUM_TEST(IBayetNetMethodsWithoutLocalCPTsWithNames) {
+    GUM_ACTIVE_TEST(IBayetNetMethodsWithoutLocalCPTsWithNames) {
       gum::BayesNet< double > bn;
       fill(bn);
 
@@ -390,7 +390,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.variable(order.atPos(2)).name(), "v6")
     }
 
-    GUM_TEST(Listeners) {
+    GUM_ACTIVE_TEST(Listeners) {
       gum::BayesNet< double > bn;
       fill(bn);
 
@@ -449,7 +449,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag2.toString(), tostr2)
     }
 
-    GUM_TEST(RelevantForRelevantReasonning) {
+    GUM_ACTIVE_TEST(RelevantForRelevantReasonning) {
       // an inference for all the bn with an hard evidence and an inference for
       // the right fragment with a local CPT should be the same
       try {
@@ -495,7 +495,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-    GUM_TEST(InstallCPTs) {
+    GUM_ACTIVE_TEST(InstallCPTs) {
       gum::BayesNet< double > bn;
       fill(bn);
       gum::BayesNetFragment< double > frag(bn);
@@ -553,7 +553,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)4)
     }
 
-    GUM_TEST(InferenceWithLocalCPTs) {
+    GUM_ACTIVE_TEST(InferenceWithLocalCPTs) {
       gum::BayesNet< double > bn;
       fill(bn);
       gum::BayesNet< double > bn2;
@@ -604,7 +604,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(CopyToBN) {
+    GUM_ACTIVE_TEST(CopyToBN) {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;E<-C<-F;");
       TS_ASSERT_EQUALS(&bn.cpt("B").variable(1), &bn.variable("A"))
 
@@ -636,7 +636,7 @@ namespace gum_tests {
       TS_ASSERT_DIFFERS(&minibn.cpt("B").variable(1), &frag.variable("A"))
     }
 
-    GUM_TEST(GraphicalMethods) {
+    GUM_ACTIVE_TEST(GraphicalMethods) {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;E<-C<-F;");
       TS_ASSERT_EQUALS(&bn.cpt("B").variable(1), &bn.variable("A"))
 

@@ -28,7 +28,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] HeapTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(Constructor) {
+    GUM_ACTIVE_TEST(Constructor) {
       gum::Heap< int > heap1;
 
       heap1.insert(8);
@@ -61,7 +61,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(heap1.top(), 23)
     }
 
-    GUM_TEST(Constructor2) {
+    GUM_ACTIVE_TEST(Constructor2) {
       gum::Heap< int, std::greater< int > > heap1;
 
       heap1.insert(8);
@@ -94,7 +94,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(heap1.top(), 8)
     }
 
-    GUM_TEST(Moves) {
+    GUM_ACTIVE_TEST(Moves) {
       gum::Heap< int, std::greater< int > > heap1{1, 5, 2, 4};
       gum::Heap< int, std::greater< int > > heap2{3, 9};
       gum::Heap< int, std::greater< int > > heap3{1, 10, 20};
@@ -106,7 +106,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(heap2.top(), 5)
     }
 
-    GUM_TEST(Copy) {
+    GUM_ACTIVE_TEST(Copy) {
       gum::Heap< int > heap1;
       heap1.insert(8);
       heap1.insert(10);
@@ -128,7 +128,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(heap3.size(), (gum::Size)heap1.size())
     }
 
-    GUM_TEST(Erase) {
+    GUM_ACTIVE_TEST(Erase) {
       gum::Heap< int > heap1;
 
       heap1.insert(8);
@@ -157,7 +157,7 @@ namespace gum_tests {
       }
     };
 
-    GUM_TEST(Obj) {
+    GUM_ACTIVE_TEST(Obj) {
       gum::Heap< gum::Set< int >, SetCmp > heap1;
 
       gum::Set< int > s1, s2, s3, s4, s5;

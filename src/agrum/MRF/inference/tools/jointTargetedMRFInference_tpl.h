@@ -111,6 +111,7 @@ namespace gum {
   // Add a set of nodes as a new target
   template < typename GUM_SCALAR >
   void JointTargetedMRFInference< GUM_SCALAR >::addJointTarget(const NodeSet& joint_target) {
+    GUM_TRACE_VAR(joint_target)
     // check if the nodes in the target belong to the Markov random field
     if (this->hasNoModel_())
       GUM_ERROR(NullElement,
@@ -141,6 +142,7 @@ namespace gum {
 
     this->setTargetedMode_();   // does nothing if already in targeted mode
     _joint_targets_.insert(joint_target);
+    GUM_TRACE_VAR(joint_target);
     onJointTargetAdded_(joint_target);
     this->setState_(MRFInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
   }

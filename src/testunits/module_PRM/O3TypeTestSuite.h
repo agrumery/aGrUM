@@ -38,7 +38,7 @@ namespace gum_tests {
 
     void tearDown() {}
 
-    GUM_TEST(SimpleType) {
+    GUM_ACTIVE_TEST(SimpleType) {
       // Arrange
       std::stringstream input;
       input << "type t_state labels(OK, NOK);";
@@ -57,7 +57,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(state.variable().label(1), "NOK")
     }
 
-    GUM_TEST(SimpleTypeError1) {
+    GUM_ACTIVE_TEST(SimpleTypeError1) {
       // Arrange
       std::stringstream input;
       input << "types t_state labels(OK, NOK);";
@@ -74,7 +74,7 @@ namespace gum_tests {
       TS_ASSERT(!prm.isType("t_state"))
     }
 
-    GUM_TEST(SimpleTypeError2) {
+    GUM_ACTIVE_TEST(SimpleTypeError2) {
       // Arrange
       std::stringstream input;
       input << "type t_state labels(OK, NOK)";
@@ -91,7 +91,7 @@ namespace gum_tests {
       TS_ASSERT(!prm.isType("t_state"))
     }
 
-    GUM_TEST(SimpleTypeError3) {
+    GUM_ACTIVE_TEST(SimpleTypeError3) {
       // Arrange
       std::stringstream input;
       input << "type t_state labels(OK, NOK)" << std::endl << "type t_ink labels(empty, full);";
@@ -109,7 +109,7 @@ namespace gum_tests {
       TS_ASSERT(!prm.isType("t_ink"))
     }
 
-    GUM_TEST(SimpleTypeError4) {
+    GUM_ACTIVE_TEST(SimpleTypeError4) {
       // Arrange
       std::stringstream input;
       input << "type t_state labels(OK);";
@@ -126,7 +126,7 @@ namespace gum_tests {
       TS_ASSERT(!prm.isType("t_state"))
     }
 
-    GUM_TEST(SimpleTypeError5) {
+    GUM_ACTIVE_TEST(SimpleTypeError5) {
       // Arrange
       std::stringstream input;
       input << "type t_state labels(OK,);";
@@ -143,7 +143,7 @@ namespace gum_tests {
       TS_ASSERT(!prm.isType("t_state"))
     }
 
-    GUM_TEST(SimpleTypeError6) {
+    GUM_ACTIVE_TEST(SimpleTypeError6) {
       // Arrange
       std::stringstream input;
       input << "type +==+ labels(OK, NOK);";
@@ -160,7 +160,7 @@ namespace gum_tests {
       TS_ASSERT(!prm.isType("t_state"))
     }
 
-    GUM_TEST(SimpleTypeError7) {
+    GUM_ACTIVE_TEST(SimpleTypeError7) {
       // Arrange
       std::stringstream input;
       input << "type t_state labels(+=%./, NOK);";
@@ -177,7 +177,7 @@ namespace gum_tests {
       TS_ASSERT(!prm.isType("t_state"))
     }
 
-    GUM_TEST(SimpleTypeError8) {
+    GUM_ACTIVE_TEST(SimpleTypeError8) {
       // Arrange
       std::stringstream input;
       input << "type t_state labels(OK, +NOK);";
@@ -194,7 +194,7 @@ namespace gum_tests {
       TS_ASSERT(!prm.isType("t_state"))
     }
 
-    GUM_TEST(SimpleTypeError9) {
+    GUM_ACTIVE_TEST(SimpleTypeError9) {
       // Arrange
       std::stringstream input;
       input << "type t_state labels(OK, NOK);" << std::endl << "type t_state labels(OK, YEA, GOO);";
@@ -211,7 +211,7 @@ namespace gum_tests {
       TS_ASSERT(!prm.isType("t_state"))
     }
 
-    GUM_TEST(ExtendedType) {
+    GUM_ACTIVE_TEST(ExtendedType) {
       // Arrange
       std::stringstream input;
       input << "type t_state extends boolean ("
@@ -235,7 +235,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(map[1], (gum::Size)0)
     }
 
-    GUM_TEST(ExtendedTypeError1) {
+    GUM_ACTIVE_TEST(ExtendedTypeError1) {
       // Arrange
       std::stringstream input;
       input << "type t_state extend boolean ("
@@ -256,7 +256,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(line, msg.str())
     }
 
-    GUM_TEST(ExtendedTypeError2) {
+    GUM_ACTIVE_TEST(ExtendedTypeError2) {
       // Arrange
       std::stringstream input;
       input << "type t_state extends foobar ("
@@ -275,7 +275,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(output.str(), msg.str())
     }
 
-    GUM_TEST(ExtendedTypeError3) {
+    GUM_ACTIVE_TEST(ExtendedTypeError3) {
       // Arrange
       std::stringstream input;
       input << "type t_state extends boolean (" << std::endl
@@ -294,7 +294,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(output.str(), msg.str())
     }
 
-    GUM_TEST(OrderDoesNotMatter) {
+    GUM_ACTIVE_TEST(OrderDoesNotMatter) {
       // Arrange
       std::stringstream input;
       input << "type t_degraded extends t_state (" << std::endl
@@ -316,7 +316,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(output.str(), "")
     }
 
-    GUM_TEST(IntType) {
+    GUM_ACTIVE_TEST(IntType) {
       // Arrange
       std::stringstream input;
       input << "type t_power int (0,9);";
@@ -343,7 +343,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(power.variable().label(9), "9")
     }
 
-    GUM_TEST(IntTypeWithNegatives) {
+    GUM_ACTIVE_TEST(IntTypeWithNegatives) {
       try {
         // Arrange
         std::stringstream input;
@@ -380,7 +380,7 @@ namespace gum_tests {
       } catch (gum::OutOfBounds& e) { GUM_SHOWERROR(e); }
     }
 
-    GUM_TEST(IntTypeError1) {
+    GUM_ACTIVE_TEST(IntTypeError1) {
       // Arrange
       std::stringstream input;
       input << "type t_power ints (0,9);";
@@ -399,7 +399,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(line, msg.str())
     }
 
-    GUM_TEST(IntTypeError2) {
+    GUM_ACTIVE_TEST(IntTypeError2) {
       // Arrange
       std::stringstream input;
       input << "type t_power int 0,9;";
@@ -418,7 +418,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(line, msg.str())
     }
 
-    GUM_TEST(IntTypeError3) {
+    GUM_ACTIVE_TEST(IntTypeError3) {
       // Arrange
       std::stringstream input;
       input << "type t_power int (0 9);";
@@ -437,7 +437,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(line, msg.str())
     }
 
-    GUM_TEST(IntTypeError4) {
+    GUM_ACTIVE_TEST(IntTypeError4) {
       // Arrange
       std::stringstream input;
       input << "type +==++ int (0, 9);";
@@ -456,7 +456,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(line, msg.str())
     }
 
-    GUM_TEST(IntTypeError5) {
+    GUM_ACTIVE_TEST(IntTypeError5) {
       // Arrange
       std::stringstream input;
       input << "type t_power int (plop, 9);";
@@ -475,7 +475,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(line, msg.str())
     }
 
-    GUM_TEST(IntTypeError6) {
+    GUM_ACTIVE_TEST(IntTypeError6) {
       // Arrange
       std::stringstream input;
       input << "type t_power int (0, 9, 15);";
@@ -494,7 +494,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(line, msg.str())
     }
 
-    GUM_TEST(IntTypeError7) {
+    GUM_ACTIVE_TEST(IntTypeError7) {
       // Arrange
       std::stringstream input;
       input << "type t_power int (0.0, 9);";
@@ -513,7 +513,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(line, msg.str())
     }
 
-    GUM_TEST(IntTypeError8) {
+    GUM_ACTIVE_TEST(IntTypeError8) {
       // Arrange
       std::stringstream input;
       input << "type t_power int (9, 9)";
@@ -532,7 +532,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(line, msg.str())
     }
 
-    GUM_TEST(IntTypeError9) {
+    GUM_ACTIVE_TEST(IntTypeError9) {
       // Arrange
       std::stringstream input;
       input << "type t_power int (10, 9)";
@@ -551,7 +551,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(line, msg.str())
     }
 
-    GUM_TEST(IntTypeError10) {
+    GUM_ACTIVE_TEST(IntTypeError10) {
       // Arrange
       std::stringstream input;
       input << "type t_power int (9, 0)";
@@ -570,7 +570,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(line, msg.str())
     }
 
-    GUM_TEST(TypeInModule1) {
+    GUM_ACTIVE_TEST(TypeInModule1) {
       // Arrange
       std::stringstream input;
       input << "type t_state labels(OK, NOK);";
@@ -586,7 +586,7 @@ namespace gum_tests {
       TS_ASSERT(prm.isType("fr.agrum.t_state"))
     }
 
-    GUM_TEST(TypeInModule2) {
+    GUM_ACTIVE_TEST(TypeInModule2) {
       // Arrange
       std::stringstream input;
       input << "type t_degraded extends t_state (" << std::endl
@@ -610,7 +610,7 @@ namespace gum_tests {
       TS_ASSERT(prm.isType("fr.agrum.t_degraded"))
     }
 
-    GUM_TEST(RangeType) {
+    GUM_ACTIVE_TEST(RangeType) {
       // Arrange
       std::stringstream input;
       input << "type range int(1, 10);" << std::endl;
@@ -632,7 +632,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(range.variable().labels().at(9), "10")
     }
 
-    GUM_TEST(RealType1) {
+    GUM_ACTIVE_TEST(RealType1) {
       // Arrange
       std::stringstream input;
       input << "type angle real(0, 90, 180);" << std::endl;
@@ -652,7 +652,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(angle.variable().labels().at(1), "[90;180]")
     }
 
-    GUM_TEST(RealType2) {
+    GUM_ACTIVE_TEST(RealType2) {
       // Arrange
       std::stringstream input;
       input << "type angle real(0, 90, 180, 360);" << std::endl;
@@ -672,7 +672,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(angle.variable().labels().at(2), "[180;360]")
     }
 
-    GUM_TEST(RealTypeError1) {
+    GUM_ACTIVE_TEST(RealTypeError1) {
       // Arrange
       std::stringstream input;
       input << "type angle real(0, 90);" << std::endl;
@@ -687,7 +687,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(output.str(), msg.str())
     }
 
-    GUM_TEST(RealTypeError2) {
+    GUM_ACTIVE_TEST(RealTypeError2) {
       // Arrange
       std::stringstream input;
       input << "type angle real(0);" << std::endl;
@@ -702,7 +702,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(output.str(), msg.str())
     }
 
-    GUM_TEST(RealTypeError3) {
+    GUM_ACTIVE_TEST(RealTypeError3) {
       // Arrange
       std::stringstream input;
       input << "type angle real(0, plop);" << std::endl;

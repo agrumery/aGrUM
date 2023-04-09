@@ -120,7 +120,7 @@ namespace gum_tests {
 
 
     public:
-    GUM_TEST(_Ixy_NoCorr) {
+    GUM_ACTIVE_TEST(_Ixy_NoCorr) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -178,7 +178,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(_Ixy_Kmdl) {
+    GUM_ACTIVE_TEST(_Ixy_Kmdl) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();

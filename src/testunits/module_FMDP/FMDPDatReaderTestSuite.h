@@ -82,7 +82,7 @@ namespace gum_tests {
     }
 
     public:
-    GUM_TEST(Constuctor) {
+    GUM_ACTIVE_TEST(Constuctor) {
       std::string _file_ = GET_RESSOURCES_PATH("");
 
       gum::FMDP< double >           fmdp(true);
@@ -93,22 +93,22 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(if (reader != nullptr) delete reader)
     }
 
-    GUM_TEST(ReadFileCoffeeRobot) {
+    GUM_ACTIVE_TEST(ReadFileCoffeeRobot) {
       _file_ = GET_RESSOURCES_PATH("FMDP/coffee/coffee.dat");
       _run_();
     }
 
-    GUM_TEST(ReadFileTinyFactory) {
+    GUM_ACTIVE_TEST(ReadFileTinyFactory) {
       _file_ = GET_RESSOURCES_PATH("FMDP/factory/tiny-factory.dat");
       _run_();
     }
 
-    GUM_TEST(ReadFileFactory) {
+    GUM_ACTIVE_TEST(ReadFileFactory) {
       _file_ = GET_RESSOURCES_PATH("FMDP/factory/factory.dat");
       _run_();
     }
 
-    GUM_TEST(ReadFileTaxi) {
+    GUM_ACTIVE_TEST(ReadFileTaxi) {
       _file_ = GET_RESSOURCES_PATH("FMDP/taxi/taxi.dat");
       _run_();
     }

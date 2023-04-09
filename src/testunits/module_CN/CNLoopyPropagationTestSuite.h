@@ -113,7 +113,7 @@ namespace gum_tests {
     void clearCNet() { delete cn; }
 
     // not dynamic (2U network) - with evidence
-    GUM_TEST(L2UInference) {
+    GUM_ACTIVE_TEST(L2UInference) {
       initCNet();
 
       gum::credal::CNLoopyPropagation< double > lp = gum::credal::CNLoopyPropagation< double >(*cn);
@@ -183,7 +183,7 @@ namespace gum_tests {
     }   // end of : testL2UInference (2U network)
 
     // dynamic (dynaCheese) - strong indep
-    GUM_TEST(L2UInferenceD) {
+    GUM_ACTIVE_TEST(L2UInferenceD) {
       initDCNet();
 
       gum::credal::CNLoopyPropagation< double > lp = gum::credal::CNLoopyPropagation< double >(*cn);
@@ -245,7 +245,7 @@ namespace gum_tests {
     }   // end of : testL2UInferenceD
 
     // with dynamic network
-    GUM_TEST(L2UListener) {
+    GUM_ACTIVE_TEST(L2UListener) {
       initDCNet();
       gum::credal::CNLoopyPropagation< double > lp = gum::credal::CNLoopyPropagation< double >(*cn);
 
@@ -272,7 +272,7 @@ namespace gum_tests {
     }   // end of : testL2UListener
 
     // not dynamic (2U network) - with evidence
-    GUM_TEST(L2UInferenceFromBug) {
+    GUM_ACTIVE_TEST(L2UInferenceFromBug) {
       initCNet();
 
       gum::credal::CNLoopyPropagation< double > lp = gum::credal::CNLoopyPropagation< double >(*cn);

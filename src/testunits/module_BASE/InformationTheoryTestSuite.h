@@ -36,7 +36,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] InformationTheoryTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_TEST(Constructor1) {
+    GUM_ACTIVE_TEST(Constructor1) {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C");
 
       gum::LazyPropagation ie(&bn);
@@ -53,7 +53,7 @@ namespace gum_tests {
          1.0)
     }
 
-    GUM_TEST(CheckSimpleBN) {
+    GUM_ACTIVE_TEST(CheckSimpleBN) {
       const auto bn = gum::BayesNet< double >::fastPrototype("A->B");
       bn.cpt("A").fillWith({0.8, 0.2});
       bn.cpt("B").fillWith({0.1, 0.9, 0.3, 0.7});
@@ -69,7 +69,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_ALMOST_EQUALS(it.mutualInformationXY(), 0.03278416)
     }
 
-    GUM_TEST(CheckSimpleBNwithEvidence) {
+    GUM_ACTIVE_TEST(CheckSimpleBNwithEvidence) {
       const auto bn = gum::BayesNet< double >::fastPrototype("C->A->B");
       bn.cpt("C").fillWith({0.5, 0.5});
       bn.cpt("A").fillWith(
@@ -101,7 +101,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_TEST(ShafShenCheckSimpleBNwithEvidence) {
+    GUM_ACTIVE_TEST(ShafShenCheckSimpleBNwithEvidence) {
       const auto bn = gum::BayesNet< double >::fastPrototype("C->A->B");
       bn.cpt("C").fillWith({0.5, 0.5});
       bn.cpt("A").fillWith(
@@ -134,7 +134,7 @@ namespace gum_tests {
     }
 
 
-    GUM_TEST(CheckConsistency) {
+    GUM_ACTIVE_TEST(CheckConsistency) {
       const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C");
 
       gum::LazyPropagation ie(&bn);
@@ -143,7 +143,7 @@ namespace gum_tests {
       check_this_information_theory(it);
     }
     
-    GUM_TEST(ShafShenCheckConsistency) {
+    GUM_ACTIVE_TEST(ShafShenCheckConsistency) {
       const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C");
 
       gum::ShaferShenoyInference ie(&bn);
@@ -152,7 +152,7 @@ namespace gum_tests {
       check_this_information_theory(it);
     }
 
-    GUM_TEST(MRFCheckConsistency) {
+    GUM_ACTIVE_TEST(MRFCheckConsistency) {
       const auto mrf = gum::MarkovRandomField< double >::fastPrototype("A--B--C;A--B");
 
       gum::ShaferShenoyMRFInference ie(&mrf);

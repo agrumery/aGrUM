@@ -55,7 +55,7 @@ namespace gum_tests {
     }
 
     public:
-    GUM_TEST(Init) {
+    GUM_ACTIVE_TEST(Init) {
       gum::prm::o3prm::O3prmReader< double > driver;
       driver.readFile(GET_RESSOURCES_PATH("o3prm/specialprinters.o3prm"));
       TS_ASSERT_DIFFERS(driver.prm(), nullptr)
@@ -63,7 +63,7 @@ namespace gum_tests {
       if (driver.prm() != nullptr) delete driver.prm();
     }
 
-    GUM_TEST(InterfaceGraph) {
+    GUM_ACTIVE_TEST(InterfaceGraph) {
       try {
         _local_setUp();
         TS_ASSERT_EQUALS(_ig_->graph().size(), (gum::Size)1 + 5 * 2 + 4 * 3 + 4 * 3 + 5 + 3 + 4)
@@ -73,7 +73,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-    GUM_TEST(Tree) {
+    GUM_ACTIVE_TEST(Tree) {
       _local_setUp();
       gum::prm::GSpan< double >* gspan = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(

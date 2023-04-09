@@ -310,7 +310,7 @@ namespace gum_tests {
     }
 
     public:
-    GUM_TEST(_MultiDimArray) {
+    GUM_ACTIVE_TEST(_MultiDimArray) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -367,7 +367,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_TEST(_MultiDimImplementation) {
+    GUM_ACTIVE_TEST(_MultiDimImplementation) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -425,7 +425,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_TEST(_MultiDimArrayPointer) {
+    GUM_ACTIVE_TEST(_MultiDimArrayPointer) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -482,7 +482,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_TEST(_MultiDimImplementationPointer) {
+    GUM_ACTIVE_TEST(_MultiDimImplementationPointer) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -540,7 +540,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_TEST(_partialInstantiation_init) {
+    GUM_ACTIVE_TEST(_partialInstantiation_init) {
       gum::partialInstantiation4MultiDimInit< double >();
 
       std::vector< gum::LabelizedVariable* > vars(10);
@@ -598,7 +598,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_TEST(_partialInstantiationPointer_init) {
+    GUM_ACTIVE_TEST(_partialInstantiationPointer_init) {
       gum::pointerPartialInstantiation4MultiDimInit< double >();
 
       std::vector< gum::LabelizedVariable* > vars(10);
@@ -656,7 +656,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_TEST(_potential) {
+    GUM_ACTIVE_TEST(_potential) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -713,7 +713,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_TEST(_potential_pointer) {
+    GUM_ACTIVE_TEST(_potential_pointer) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -770,7 +770,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_TEST(_multidimPartialInstantiation) {
+    GUM_ACTIVE_TEST(_multidimPartialInstantiation) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
