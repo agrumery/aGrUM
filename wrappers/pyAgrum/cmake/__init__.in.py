@@ -651,8 +651,8 @@ def randomBN(*, n: int = 5, names: List[str] = None, ratio_arc: float = 1.2, dom
     pyAgrum.BayesNet
   """
   nbr = n if names is None else len(names)
-  if nbr<=4:
-    raise ArgumentError("A BN can be randomly generated from 4 nodes")
+  if nbr<=3:
+    raise ArgumentError("A BN can not be randomly generated from less than 4 nodes.")
 
   gen = BNGenerator()
   bn = gen.generate(nbr, int(nbr * ratio_arc), domain_size)
