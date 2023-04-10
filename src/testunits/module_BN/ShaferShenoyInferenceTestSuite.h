@@ -182,15 +182,6 @@ namespace gum_tests {
       fill(*bn);
 
       gum::ShaferShenoyInference< double > inf(bn);
-      gum::NodeSet                         nodeset;
-      nodeset.insert(0);
-      nodeset.insert(4);
-      inf.addJointTarget(nodeset);
-      nodeset.clear();
-      nodeset.insert(2);
-      nodeset.insert(4);
-      inf.addJointTarget(nodeset);
-      inf.makeInference();
 
       TS_GUM_ASSERT_THROWS_NOTHING(inf.H((gum::NodeId)2))
       TS_GUM_ASSERT_THROWS_NOTHING(inf.I((gum::NodeId)2, (gum::NodeId)4))
