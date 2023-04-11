@@ -47,10 +47,6 @@ namespace gum_tests {
       auto         it2 = gum::InformationTheory(ie, {"A", "C"}, {"B"});
       TS_ASSERT_EQUALS(it.entropyX(), it2.entropyX())
       TS_ASSERT_EQUALS(it.entropyY(), it2.entropyY())
-
-      TS_GUM_ASSERT_QUASI_EQUALS(
-         it.expectedValueXY([](const gum::Instantiation&) -> auto { return 1.0; }),
-         1.0)
     }
 
     GUM_ACTIVE_TEST(CheckSimpleBN) {

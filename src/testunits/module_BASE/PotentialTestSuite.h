@@ -1154,7 +1154,9 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(Equalities) {
-      gum::LabelizedVariable   u("u", "u", 4), v("v", "v", 2), w("w", "w", 3);
+      gum::LabelizedVariable   u("u", "u", 4);
+      gum::LabelizedVariable   v("v", "v", 2);
+      gum::LabelizedVariable   w("w", "w", 3);
       gum::Potential< double > p;
       p.add(u);
       p.add(v);
@@ -1182,9 +1184,41 @@ namespace gum_tests {
       TS_ASSERT_DIFFERS(p, q)
     }
 
+    GUM_ACTIVE_TEST(ExpectedValue) {
+      gum::LabelizedVariable   u("u", "u", 4);
+      gum::LabelizedVariable   v("v", "v", 2);
+      gum::LabelizedVariable   w("w", "w", 3);
+      gum::Potential< double > p;
+      p.add(u);
+      p.add(v);
+      p.add(w);
+      p.randomDistribution();
+
+      TS_GUM_ASSERT_QUASI_EQUALS(
+         p.expectedValue([](const gum::Instantiation&) -> auto { return 1.0; }),
+         1.0)
+
+      gum::Potential< double > q;
+      q.add(u);
+      q.randomDistribution();
+
+      // maean by hand
+      auto   I    = gum::Instantiation(q);
+      double mean = q[I] * I.val(0);
+      for (gum::Idx i = 1; i < u.domainSize(); i++) {
+        I.inc();
+        mean += q[I] * I.val(0);
+      }
+
+      TS_GUM_ASSERT_QUASI_EQUALS(
+         q.expectedValue([](const gum::Instantiation& i) -> auto { return i.val(0); }),
+         mean);
+    }
 
     GUM_ACTIVE_TEST(Inverse) {
-      gum::LabelizedVariable   u("u", "u", 4), v("v", "v", 2), w("w", "w", 3);
+      gum::LabelizedVariable   u("u", "u", 4);
+      gum::LabelizedVariable   v("v", "v", 2);
+      gum::LabelizedVariable   w("w", "w", 3);
       gum::Potential< double > p;
       p.add(u);
       p.add(v);
@@ -1197,7 +1231,9 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(MinNegatif) {
-      gum::LabelizedVariable   u("u", "u", 4), v("v", "v", 2), w("w", "w", 3);
+      gum::LabelizedVariable   u("u", "u", 4);
+      gum::LabelizedVariable   v("v", "v", 2);
+      gum::LabelizedVariable   w("w", "w", 3);
       gum::Potential< double > p;
       p.add(u);
       p.add(v);
@@ -1213,7 +1249,9 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(Sgn) {
-      gum::LabelizedVariable   u("u", "u", 4), v("v", "v", 2), w("w", "w", 3);
+      gum::LabelizedVariable   u("u", "u", 4);
+      gum::LabelizedVariable   v("v", "v", 2);
+      gum::LabelizedVariable   w("w", "w", 3);
       gum::Potential< double > p;
       p.add(u);
       p.add(v);
@@ -1230,7 +1268,9 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(OperatorWithScalars) {
-      gum::LabelizedVariable   u("u", "u", 4), v("v", "v", 2), w("w", "w", 3);
+      gum::LabelizedVariable   u("u", "u", 4);
+      gum::LabelizedVariable   v("v", "v", 2);
+      gum::LabelizedVariable   w("w", "w", 3);
       gum::Potential< double > p;
       p.add(u);
       p.add(v);
@@ -1288,10 +1328,10 @@ namespace gum_tests {
 
 
     private:
-    void _testval_for_set_(const gum::Potential< int >&         p,
-                           int                                  val,
-                           const gum::Set< gum::Instantiation > s,
-                           gum::Size                            expected_size) {
+    static void _testval_for_set_(const gum::Potential< int >&         p,
+                                  int                                  val,
+                                  const gum::Set< gum::Instantiation > s,
+                                  gum::Size                            expected_size) {
       gum::Instantiation ip(p);
 
       TS_ASSERT_EQUALS(s.size(), expected_size)

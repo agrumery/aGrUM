@@ -17,10 +17,6 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <concepts>
-#include "agrum/tools/variables/discreteVariable.h"
-
-#include <agrum/agrum.h>
 
 /**
  * @file
@@ -31,11 +27,13 @@
  */
 
 #ifndef GUM_INFORMATION_THEORY
-#  define GUM_INFORMATION_THEORY
+#define GUM_INFORMATION_THEORY
+#include <concepts>
+#include <functional>
 
-#  include <functional>
-
-#  include <agrum/tools/multidim/potential.h>
+#include <agrum/agrum.h>
+#include <agrum/tools/variables/discreteVariable.h>
+#include <agrum/tools/multidim/potential.h>
 
 namespace gum {
   template < typename T >
@@ -76,10 +74,6 @@ namespace gum {
                       const std::vector< std::string >& Znames);
     ~InformationTheory();
 
-
-    GUM_SCALAR expectedValueXY(std::function< GUM_SCALAR(const gum::Instantiation&) >);
-    GUM_SCALAR expectedValueXYZ(std::function< GUM_SCALAR(const gum::Instantiation&) >);
-        
     GUM_SCALAR entropyXY();
     GUM_SCALAR entropyX();
     GUM_SCALAR entropyY();
@@ -117,5 +111,5 @@ namespace gum {
   };
 }   // namespace gum
 
-#  include <agrum/tools/graphicalModels/algorithms/informationTheory_tpl.h>
+#include <agrum/tools/graphicalModels/algorithms/informationTheory_tpl.h>
 #endif   // GUM_INFORMATION_THEORY

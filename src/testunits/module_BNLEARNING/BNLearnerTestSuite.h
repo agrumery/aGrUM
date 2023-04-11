@@ -472,7 +472,7 @@ GUM_ACTIVE_TEST(_asia_with_user_modalities_string_incorrect) {
      "smoking{False|true|big};lung_cancer{big|bigbig|true|bigbigbig|false}");
   TS_ASSERT_THROWS(
      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"), bn),
-     gum::UnknownLabelInDatabase)
+     gum::UnknownLabelInDatabase&)
 }
 
 GUM_ACTIVE_TEST(_asia_with_user_modalities_numbers) {

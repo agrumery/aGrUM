@@ -191,16 +191,26 @@ namespace gum {
     return res;
   }
 
-  // entropy of this
   template < typename GUM_SCALAR >
-  INLINE GUM_SCALAR Potential< GUM_SCALAR >::entropy() const {
+  GUM_SCALAR Potential< GUM_SCALAR >::expectedValue(std::function< GUM_SCALAR(const gum::Instantiation&) > f) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return static_cast< GUM_SCALAR >(0);
     }
 
-    return this->reduce(
-       [](GUM_SCALAR z, GUM_SCALAR p) { return (p == 0.0) ? z : (z - p * std::log2(p)); },
-       0.0);
+    GUM_SCALAR res = 0;
+    auto       i   = Instantiation(*this);
+    for (i.setFirst(); !i.end(); i.inc()) {
+      const GUM_SCALAR v_f = f(i);
+      if (v_f != GUM_SCALAR(0.0)) res += this->get(i) * v_f;
+    }
+    return res;
+  }
+
+  // entropy of this
+  template < typename GUM_SCALAR >
+  INLINE GUM_SCALAR Potential< GUM_SCALAR >::entropy() const {
+    return -this->expectedValue(
+       [this](const gum::Instantiation& i) -> GUM_SCALAR { return GUM_LOG2_OR_0(this->get(i)); });
   }
 
   template < typename GUM_SCALAR >

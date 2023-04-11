@@ -28,6 +28,7 @@
 #define GUM_POTENTIAL_H
 
 #include <vector>
+#include <functional>
 
 #include <agrum/agrum.h>
 #include <agrum/tools/multidim/implementations/multiDimDecorator.h>
@@ -216,6 +217,14 @@ namespace gum {
 
     /// Pair of the set of instantiation corresponding to the min and this min in the Potential
     std::pair< Set< Instantiation >, GUM_SCALAR > argmin() const;
+
+    /** ExpectedValue computes the expectation of f over *this
+     *
+     * Warnings
+     * --------
+     * ExpectedValue assumes (and does not check) that the Potential contains a joint distribution.
+     */
+     GUM_SCALAR expectedValue(std::function< GUM_SCALAR(const gum::Instantiation&) >) const;
 
     /// entropy of the Potential
     GUM_SCALAR entropy() const;
