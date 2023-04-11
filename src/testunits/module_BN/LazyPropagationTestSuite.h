@@ -115,11 +115,11 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(CreationAndInference) {
       fill(*_bn);
       // Testing the inference
-      gum::LazyPropagation< double >* inf;
-      TS_ASSERT_THROWS_NOTHING(inf = new gum::LazyPropagation(_bn))
-      TS_ASSERT_THROWS_NOTHING(inf->makeInference())
-
-      TS_ASSERT_THROWS_NOTHING(delete inf)
+      TS_ASSERT_THROWS_NOTHING({
+        auto inf = new gum::LazyPropagation(_bn);
+        inf->makeInference();
+        delete inf;
+      })
     }
 
     // Testing when no evidence
@@ -128,7 +128,7 @@ namespace gum_tests {
       // Testing the inference
       gum::LazyPropagation inf(_bn);
       inf.setNumberOfThreads(1);
-      TS_ASSERT(inf.getNumberOfThreads() == 1)
+      TS_ASSERT(inf.getNumberOfThreads() == gum::Size(1))
       TS_ASSERT_THROWS_NOTHING(inf.makeInference())
     }
 
@@ -474,7 +474,7 @@ namespace gum_tests {
         (*ev_pot) << bn.variable(node);
         ev_pot->fill(0.0f);
         gum::Instantiation inst(*ev_pot);
-        if (node <= 10) {
+        if (node <= gum::Size(10)) {
           inst.chgVal(bn.variable(node), 0);
           ev_pot->set(inst, 1.0f);
         } else {
@@ -695,10 +695,10 @@ namespace gum_tests {
                     if (node2 == gum::NodeId(2)) {
                       // node2 = tuberculos_or_cancer, then node =
                       // tuberculosis
-                      TS_ASSERT((inst2_index == 1) && (inst_index == 0))
+                      TS_ASSERT((inst2_index == gum::Size(1)) && (inst_index == 0))
                     } else {   // node2 = lung_cancer & node =
                       // tuberculos_or_cancer
-                      TS_ASSERT((inst2_index == 0) && (inst_index == 1))
+                      TS_ASSERT((inst2_index == 0) && (inst_index == gum::Size(1)))
                     }
                   }
                 }
@@ -1096,10 +1096,10 @@ namespace gum_tests {
       gum::LazyPropagation inf(_bn);
 
       TS_ASSERT_EQUALS(inf.getNumberOfThreads(), gum::getNumberOfThreads())
-      inf.setNumberOfThreads(10);
-      TS_ASSERT_EQUALS(inf.getNumberOfThreads(), 10)
+      inf.setNumberOfThreads(gum::Size(10));
+      TS_ASSERT_EQUALS(inf.getNumberOfThreads(), gum::Size(10))
       gum::setNumberOfThreads(25);
-      TS_ASSERT_EQUALS(inf.getNumberOfThreads(), 10)
+      TS_ASSERT_EQUALS(inf.getNumberOfThreads(), gum::Size(10))
       inf.setNumberOfThreads(0);
       TS_ASSERT_EQUALS(inf.getNumberOfThreads(), gum::getNumberOfThreads())
       gum::setNumberOfThreads(32);
@@ -1107,7 +1107,7 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(ProbaEvidence) {
-      std::vector< gum::LabelizedVariable* > vars(10);
+      std::vector< gum::LabelizedVariable* > vars(gum::Size(10));
 
       for (gum::Idx i = 0; i < 10; ++i) {
         std::stringstream str;
@@ -1149,8 +1149,8 @@ namespace gum_tests {
       }
 
       gum::NodeId ii1 = bn.add(*vars[1]);
-      auto&       x1  = bn.variable(ii1);
-      auto&       p1  = bn.cpt(ii1);
+      auto&       x1 = bn.variable(ii1);
+      auto&       p1 = bn.cpt(ii1);
       p1.fillWith({0.4, 0.6});
 
       gum::Potential< double > ev1;
@@ -1399,15 +1399,16 @@ namespace gum_tests {
       p2.fillWith({0.2, 0.8, 0.3, 0.7, 0.4, 0.6, 0.5, 0.5});
       p3.fillWith({0.8, 0.2, 0.2, 0.8});
       p4.fillWith({0.4, 0.6, 0.3, 0.7});
+
       {
         gum::LazyPropagation inf(&xbn);
         inf.addTarget("x0");
-        TS_ASSERT(inf.targets().size() == 1)
+        TS_ASSERT(inf.targets().size() == gum::Size(1))
         inf.makeInference();
         TS_ASSERT_THROWS(inf.posterior(n3), const gum::UndefinedElement&)
         inf.addTarget("x3");
         const auto& pot3 = inf.posterior(n3);
-        TS_ASSERT(inf.junctionTree()->sizeNodes() == 2)
+        TS_ASSERT(inf.junctionTree()->sizeNodes() == gum::Size(2))
 
         gum::Set< const gum::DiscreteVariable* > set3{&x0, &x1, &x2, &x4};
         const gum::Potential< double >           pot3bis
@@ -1419,13 +1420,41 @@ namespace gum_tests {
         gum::LazyPropagation inf(&xbn);
         inf.addTarget("x0");
         inf.addTarget("x2");
-        TS_ASSERT(inf.targets().size() == 2)
+
+        TS_ASSERT(inf.targets().size() == gum::Size(2))
         inf.makeInference();
-        TS_ASSERT(inf.junctionTree()->sizeNodes() == 1)
+
+        TS_ASSERT(inf.junctionTree()->sizeNodes() == gum::Size(1))
 
         inf.addEvidence(n4, 1);
+        inf.makeInference();
+
         const auto& pot2 = inf.posterior(n2);
-        TS_ASSERT(inf.junctionTree()->sizeNodes() == 2)
+        TS_ASSERT(inf.junctionTree()->sizeNodes() == gum::Size(2))
+
+        gum::Set< const gum::DiscreteVariable* > set2{&x0, &x1, &x3, &x4};
+        gum::Potential< double >                 ev4;
+        ev4 << x4;
+        ev4.fillWith({0.0, 1.0});
+
+        const gum::Potential< double > pot2bis
+           = (p0 * p1 * p2 * p3 * p4 * ev4).margSumOut(set2).normalize();
+
+        TS_ASSERT(equalPotentials(pot2, pot2bis))
+      }
+
+      {
+        gum::LazyPropagation inf(&xbn);
+        inf.addTarget("x0");
+        TS_ASSERT(inf.targets().size() == gum::Size(1))
+        inf.makeInference();
+        TS_ASSERT_THROWS(inf.posterior(n2), const gum::UndefinedElement&)
+        TS_ASSERT(inf.junctionTree()->sizeNodes() == gum::Size(1))
+
+        inf.addTarget("x2");
+        inf.addEvidence(n4, 1);
+        const auto& pot2 = inf.posterior(n2);
+        TS_ASSERT(inf.junctionTree()->sizeNodes() == gum::Size(2))
 
         gum::Set< const gum::DiscreteVariable* > set2{&x0, &x1, &x3, &x4};
         gum::Potential< double >                 ev4;
@@ -1439,40 +1468,16 @@ namespace gum_tests {
       {
         gum::LazyPropagation inf(&xbn);
         inf.addTarget("x0");
-        TS_ASSERT(inf.targets().size() == 1)
+        TS_ASSERT(inf.targets().size() == gum::Size(1))
         inf.makeInference();
-
         TS_ASSERT_THROWS(inf.posterior(n2), const gum::UndefinedElement&)
-        TS_ASSERT(inf.junctionTree()->sizeNodes() == 1)
-
-        inf.addTarget("x2");
-        inf.addEvidence(n4, 1);
-        const auto& pot2 = inf.posterior(n2);
-        TS_ASSERT(inf.junctionTree()->sizeNodes() == 2)
-
-        gum::Set< const gum::DiscreteVariable* > set2{&x0, &x1, &x3, &x4};
-        gum::Potential< double >                 ev4;
-        ev4 << x4;
-        ev4.fillWith({0.0, 1.0});
-        const gum::Potential< double > pot2bis
-           = (p0 * p1 * p2 * p3 * p4 * ev4).margSumOut(set2).normalize();
-        TS_ASSERT(equalPotentials(pot2, pot2bis))
-      }
-
-      {
-        gum::LazyPropagation inf(&xbn);
-        inf.addTarget("x0");
-        TS_ASSERT(inf.targets().size() == 1)
-        inf.makeInference();
-
-        TS_ASSERT_THROWS(inf.posterior(n2), const gum::UndefinedElement&)
-        TS_ASSERT(inf.junctionTree()->sizeNodes() == 1)
+        TS_ASSERT(inf.junctionTree()->sizeNodes() == gum::Size(1))
 
         inf.addTarget("x2");
         inf.addEvidence(n4, 1);
         inf.makeInference();
         const auto& pot2 = inf.posterior(n2);
-        TS_ASSERT(inf.junctionTree()->sizeNodes() == 2)
+        TS_ASSERT(inf.junctionTree()->sizeNodes() == gum::Size(2))
 
         gum::Set< const gum::DiscreteVariable* > set2{&x0, &x1, &x3, &x4};
         gum::Potential< double >                 ev4;

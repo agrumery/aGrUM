@@ -241,15 +241,21 @@ namespace gum {
   // Mutual Information
   // ##############################################################################
   template < typename GUM_SCALAR >
-  GUM_SCALAR JointTargetedInference< GUM_SCALAR >::I(const std::string& Xname,
-                                                     const std::string& Yname) {
-    return I(this->BN().idFromName(Xname), this->BN().idFromName(Yname));
+  [[deprecated("Please directly use class gum::InformationTheory (since 1.7.1)")]] GUM_SCALAR
+     JointTargetedInference< GUM_SCALAR >::I(const std::string& Xname, const std::string& Yname) {
+    InformationTheory it(*this,
+                         NodeSet{this->model().idFromName(Xname)},
+                         NodeSet{this->model().idFromName(Yname)});
+    return it.mutualInformationXY();
   }
 
   template < typename GUM_SCALAR >
-  GUM_SCALAR JointTargetedInference< GUM_SCALAR >::VI(const std::string& Xname,
-                                                      const std::string& Yname) {
-    return VI(this->BN().idFromName(Xname), this->BN().idFromName(Yname));
+  [[deprecated("Please directly use class gum::InformationTheory (since 1.7.1)")]] GUM_SCALAR
+     JointTargetedInference< GUM_SCALAR >::VI(const std::string& Xname, const std::string& Yname) {
+    InformationTheory it(*this,
+                         NodeSet{this->model().idFromName(Xname)},
+                         NodeSet{this->model().idFromName(Yname)});
+    return it.variationOfInformationXY();
   }
 
   /* Mutual information between X and Y
@@ -274,8 +280,10 @@ namespace gum {
    * @throw OperationNotAllowed in these cases
    */
   template < typename GUM_SCALAR >
-  INLINE GUM_SCALAR JointTargetedInference< GUM_SCALAR >::VI(NodeId X, NodeId Y) {
-    return this->H(X) + this->H(Y) - 2 * I(X, Y);
+  [[deprecated("Please directly use class gum::InformationTheory (since 1.7.1)")]] INLINE GUM_SCALAR
+     JointTargetedInference< GUM_SCALAR >::VI(NodeId X, NodeId Y) {
+    InformationTheory it(*this, NodeSet{X}, NodeSet{Y});
+    return it.variationOfInformationXY();
   }
 
 

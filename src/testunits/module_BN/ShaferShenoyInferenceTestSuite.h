@@ -207,7 +207,7 @@ namespace gum_tests {
       for (int i = 0; i < trial_nb; ++i) {
         gum::SimpleBayesNetGenerator< double > bnGen(10, density[i]);
 
-        gum::BayesNet< double >* bayesNet = new gum::BayesNet< double >();
+        auto bayesNet = new gum::BayesNet< double >();
         bnGen.generateBN(*bayesNet);
 
         gum::ShaferShenoyInference< double >* inf = nullptr;
