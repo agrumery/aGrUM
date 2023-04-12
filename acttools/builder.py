@@ -75,7 +75,7 @@ def getCmake(current, target):
   else:
     line += " -DBUILD_PYTHON=ON"
 
-  line += " -DPython_EXECUTABLE="+ current["python3target"]
+  line += f' -DPython_EXECUTABLE="{current["python3target"]}"'
 
   if platform.system() == "Windows":
     if current["compiler"] in ['clang','gcc']:
