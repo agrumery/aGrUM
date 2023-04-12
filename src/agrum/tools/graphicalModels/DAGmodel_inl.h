@@ -83,11 +83,7 @@ namespace gum {
   INLINE bool DAGmodel::exists(const std::string& name) const {
     try {
       return exists(idFromName(name));
-<<<<<<< HEAD
     } catch ([[maybe_unused]] gum::NotFound& e) { return false; }
-=======
-    } catch (gum::NotFound&) { return false; }
->>>>>>> ac3849312 ([aGrUM] testing concept.)
   }
 
   INLINE const NodeGraphPart& DAGmodel::nodes() const { return (NodeGraphPart&)dag_; }

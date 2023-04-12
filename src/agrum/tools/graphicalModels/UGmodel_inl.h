@@ -59,11 +59,7 @@ namespace gum {
   INLINE bool UGmodel::exists(const std::string& name) const {
     try {
       return exists(idFromName(name));
-<<<<<<< HEAD
     } catch ([[maybe_unused]] gum::NotFound& e) { return false; }
-=======
-    } catch ([[maybe_unused]]gum::NotFound& e) { return false; }
->>>>>>> 295a48397 ([aGrUM] GUM_TEST -> GUM_ACTIVE_TEST.)
   }
 
   INLINE const NodeGraphPart& UGmodel::nodes() const { return (NodeGraphPart&)graph_; }
