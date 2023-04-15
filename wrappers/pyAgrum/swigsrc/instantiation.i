@@ -36,7 +36,7 @@
   }
 
   PyObject* todict(bool withLabels=true) const {
-    return PyAgrumHelper::instantiationToDict(*self);
+    return PyAgrumHelper::instantiationToDict(*self,withLabels);
   }
 
 

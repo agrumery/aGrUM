@@ -86,7 +86,7 @@ if len(args)>1:
     if (!PyCallable_Check(pyfunc)) { PyErr_SetString(PyExc_TypeError, "Need a callable object!"); }
     double res=self->expectedValue([&](const gum::Instantiation& i) -> double {
       double val;
-      PyObject* arg=PyAgrumHelper::instantiationToDict(i);
+      PyObject* arg=PyAgrumHelper::instantiationToDict(i,false);
       PyObject* args=PyTuple_New(1);
       PyTuple_SetItem(args,0,arg);
       PyObject* res=PyObject_Call(pyfunc,args,NULL);
