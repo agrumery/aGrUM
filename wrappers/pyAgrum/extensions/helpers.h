@@ -123,7 +123,22 @@ namespace PyAgrumHelper {
     }
   }
 
-  // filling a Instantiation from a dictionnary<string,int> and a Potential (to find variable and labvels)
+  // filling a Instantiation from a dictionnary<string,int> and a Potential (to find variable and labels) and vice-versa
+  
+  PyObject* instantiationToDict(const gum::Instantiation& inst,bool withLabels=true) {
+    auto res=PyDict_New();
+    for(gum::Idx i=0;i<inst.nbrDim();i++) {
+      auto key=PyString_FromString(inst.variable(i).name().c_str());
+      PyObject* val;
+      if (withLabels) {
+        val=PyString_FromString(inst.variable(i).label(inst.val(i)).c_str());
+      } else {
+        val=PyLong_FromUnsignedLong(inst.val(i));
+      }
+      PyDict_SetItem(res,key,val);
+    }
+    return res;
+  }
   void fillInstantiationFromPyObject(const gum::Potential< double >* pot,
                                      gum::Instantiation&             inst,
                                      PyObject*                       dict) {

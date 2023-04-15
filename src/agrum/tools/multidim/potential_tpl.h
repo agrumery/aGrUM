@@ -192,7 +192,8 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  GUM_SCALAR Potential< GUM_SCALAR >::expectedValue(std::function< GUM_SCALAR(const gum::Instantiation&) > f) const {
+  GUM_SCALAR Potential< GUM_SCALAR >::expectedValue(
+     std::function< GUM_SCALAR(const gum::Instantiation&) > f) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return static_cast< GUM_SCALAR >(0);
     }
@@ -209,8 +210,9 @@ namespace gum {
   // entropy of this
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR Potential< GUM_SCALAR >::entropy() const {
-    return -this->expectedValue(
-       [this](const gum::Instantiation& i) -> GUM_SCALAR { return GUM_LOG2_OR_0(this->get(i)); });
+    return -this->expectedValue([this](const gum::Instantiation& i) -> GUM_SCALAR {
+      return GUM_SCALAR(GUM_LOG2_OR_0(this->get(i)));
+    });
   }
 
   template < typename GUM_SCALAR >
@@ -748,23 +750,250 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  const Potential< GUM_SCALAR > Potential< GUM_SCALAR >::new_abs() const {
+  Potential< GUM_SCALAR > Potential< GUM_SCALAR >::new_abs() const {
     return Potential< GUM_SCALAR >(*this).abs();
   }
 
   template < typename GUM_SCALAR >
-  const Potential< GUM_SCALAR > Potential< GUM_SCALAR >::new_sq() const {
+  Potential< GUM_SCALAR > Potential< GUM_SCALAR >::new_sq() const {
     return Potential< GUM_SCALAR >(*this).sq();
   }
 
   template < typename GUM_SCALAR >
-  const Potential< GUM_SCALAR > Potential< GUM_SCALAR >::new_log2() const {
+  Potential< GUM_SCALAR > Potential< GUM_SCALAR >::new_log2() const {
     return Potential< GUM_SCALAR >(*this).log2();
   }
 
   template < typename GUM_SCALAR >
-  const Potential< GUM_SCALAR > Potential< GUM_SCALAR >::new_sgn() const {
+  Potential< GUM_SCALAR > Potential< GUM_SCALAR >::new_sgn() const {
     return Potential< GUM_SCALAR >(*this).sgn();
   }
 
+  template < typename GUM_SCALAR >
+  Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::operator<<(const DiscreteVariable& v) {
+    this->add(v);
+    return *this;
+  }
+
+
+  /// the function to be used to add two Potentials
+  template < typename GUM_SCALAR >
+  Potential< GUM_SCALAR >
+     Potential< GUM_SCALAR >::operator+(const Potential< GUM_SCALAR >& p2) const {
+    if (p2.empty()) return Potential< GUM_SCALAR >(*this).translate(p2.empty_value_);
+    if (this->empty()) return Potential< GUM_SCALAR >(p2).translate(this->empty_value_);
+
+    return Potential< GUM_SCALAR >(*this->content() + *p2.content());
+  }
+
+  /// the function to be used to add a GUM_SCALAR to a Potential
+  template < typename GUM_SCALAR >
+  Potential< GUM_SCALAR > Potential< GUM_SCALAR >::operator+(const GUM_SCALAR& v) const {
+    return Potential< GUM_SCALAR >(*this).translate(v);
+  }
+
+  /// the function to be used to subtract two Potentials
+  template < typename GUM_SCALAR >
+  Potential< GUM_SCALAR >
+     Potential< GUM_SCALAR >::operator-(const Potential< GUM_SCALAR >& p2) const {
+    if (p2.empty()) return Potential< GUM_SCALAR >(*this).translate(-p2.empty_value_);
+    if (this->empty()) {
+      auto p = Potential< GUM_SCALAR >(p2);
+      p.apply([this](GUM_SCALAR x) { return this->empty_value_ - x; });
+      return p;
+    }
+    return Potential< GUM_SCALAR >(*this->content() - *p2.content());
+  }
+
+  /// the function to be used to substract a GUM_SCALAR from a Potential
+  template < typename GUM_SCALAR >
+  Potential< GUM_SCALAR > Potential< GUM_SCALAR >::operator-(const GUM_SCALAR& v) const {
+    return Potential< GUM_SCALAR >(*this).translate(-v);
+  }
+
+  /// the function to be used to multiply two Potentials
+  template < typename GUM_SCALAR >
+  Potential< GUM_SCALAR >
+     Potential< GUM_SCALAR >::operator*(const Potential< GUM_SCALAR >& p2) const {
+    if (p2.empty()) return Potential< GUM_SCALAR >(*this).scale(p2.empty_value_);
+    if (this->empty()) return Potential< GUM_SCALAR >(p2).scale(this->empty_value_);
+
+    return Potential< GUM_SCALAR >(*this->content() * *p2.content());
+  }
+
+  /// the function to be used to multiply a Potential and a scalar
+  template < typename GUM_SCALAR >
+  Potential< GUM_SCALAR > Potential< GUM_SCALAR >::operator*(const GUM_SCALAR& v) const {
+    return Potential< GUM_SCALAR >(*this).scale(v);
+  }
+
+  /// the function to be used to divide two Potentials
+  template < typename GUM_SCALAR >
+  Potential< GUM_SCALAR >
+     Potential< GUM_SCALAR >::operator/(const Potential< GUM_SCALAR >& p2) const {
+    if (p2.empty()) return Potential< GUM_SCALAR >(*this).scale(1 / p2.empty_value_);
+    if (this->empty()) {
+      auto p = Potential< GUM_SCALAR >(p2);
+      p.apply([this](GUM_SCALAR x) { return this->empty_value_ / x; });
+      return p;
+    }
+    return Potential< GUM_SCALAR >(*this->content() / *p2.content());
+  }
+  /// the function to be used to divide a Potential by a scalar
+  template < typename GUM_SCALAR >
+  Potential< GUM_SCALAR > Potential< GUM_SCALAR >::operator/(const GUM_SCALAR& v) const {
+    return Potential< GUM_SCALAR >(*this).scale(1 / v);
+  }
+
+  template < typename GUM_SCALAR >
+  Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::operator+=(const Potential< GUM_SCALAR >& r) {
+    *this = *this + r;
+    return *this;
+  }
+
+  template < typename GUM_SCALAR >
+  Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::operator+=(const GUM_SCALAR& v) {
+    this->translate(v);
+    return *this;
+  }
+
+  template < typename GUM_SCALAR >
+  Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::operator*=(const Potential< GUM_SCALAR >& r) {
+    *this = *this * r;
+    return *this;
+  }
+
+  template < typename GUM_SCALAR >
+  Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::operator*=(const GUM_SCALAR& v) {
+    this->scale(v);
+    return *this;
+  }
+
+  template < typename GUM_SCALAR >
+  Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::operator-=(const Potential< GUM_SCALAR >& r) {
+    *this = *this - r;
+    return *this;
+  }
+
+  template < typename GUM_SCALAR >
+  Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::operator-=(const GUM_SCALAR& v) {
+    this->translate(-v);
+    return *this;
+  }
+
+  template < typename GUM_SCALAR >
+  Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::operator/=(const Potential< GUM_SCALAR >& r) {
+    *this = *this / r;
+    return *this;
+  }
+
+  template < typename GUM_SCALAR >
+  Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::operator/=(const GUM_SCALAR& v) {
+    this->scale(1 / v);
+    return *this;
+  }
+
+  template < typename GUM_SCALAR >
+  bool Potential< GUM_SCALAR >::operator==(const Potential< GUM_SCALAR >& r) const {
+    if (this->empty()) {
+      if (r.empty()) return this->empty_value_ == r.empty_value_;
+      else return false;
+    } else {
+      if (r.empty()) return false;
+      else return (*this->content_) == (*r.content_);
+    }
+  }
+
+  template < typename GUM_SCALAR >
+  bool Potential< GUM_SCALAR >::operator!=(const Potential< GUM_SCALAR >& r) const {
+    return !operator==(r);
+  }
+
+
+  template < typename GUM_SCALAR >
+  std::string Potential< GUM_SCALAR >::toString() const {
+    auto              table = this->content();
+    std::stringstream ss;
+
+    if (table->nbrDim() == 0) {
+      Instantiation I(this);
+      ss << "[" << this->get(I) << "]";
+      return ss.str();
+    }
+    const Size colwidth    = 6;
+    const Size numberwidth = 9;
+    const Size nbrLigMax   = 6;
+
+    ss << std::left << std::fixed << std::endl;
+    ss.precision(numberwidth - 5);
+
+    const auto& var = table->variable(0);
+
+    const Size        nbparents = table->nbrDim() - 1;
+    const Size        nbcol     = var.domainSize();
+    const std::string maskparent(colwidth, '-');
+    const std::string masknumber(numberwidth, '-');
+
+    if (nbparents > 0)
+      ss << std::setw(nbparents * (colwidth + 1) - 1) << " "
+         << "||";
+    ss << "  " << std::setw(nbcol * (numberwidth + 1) - 3)
+       << var.name().substr(0, nbcol * (numberwidth + 1) - 3) << "|";
+    ss << std::endl;
+
+    if (nbparents > 0) {
+      for (Idx i = 1; i <= nbparents; i++)
+        ss << std::setw(colwidth) << table->variable(i).name().substr(0, colwidth) << "|";
+      ss << "|";
+    }
+    for (Idx i = 0; i < nbcol; i++)
+      ss << std::setw(numberwidth) << var.label(i).substr(0, numberwidth) << "|";
+    ss << std::endl;
+
+
+    if (nbparents > 0) {
+      for (Idx i = 1; i <= nbparents; i++)
+        ss << maskparent << "|";
+      ss << "|";
+    }
+    for (Idx i = 0; i < nbcol; i++)
+      ss << masknumber << "|";
+    ss << std::endl;
+    Instantiation I(*table);
+
+    auto drawligne = [&]() {
+      if (nbparents > 0) {
+        for (Idx i = 1; i <= nbparents; i++)
+          ss << std::setw(colwidth) << table->variable(i).label(I.val(i)).substr(0, colwidth)
+             << "|";
+        ss << "|";
+      }
+      for (I.setFirstVar(var); !I.end(); I.incVar(var))
+        ss << " " << std::setw(numberwidth - 1) << table->get(I) << "|";
+      I.setFirstVar(var);
+      ss << std::endl;
+    };
+
+    Size nbrLig = table->domainSize() / var.domainSize();
+    if (nbrLig < nbrLigMax * 2 + 1) {
+      for (I.setFirst(); !I.end(); I.incNotVar(var))
+        drawligne();
+    } else {
+      Size cpt = 0;
+      for (I.setFirst(); !I.end(); I.incNotVar(var)) {
+        cpt++;
+        if (cpt > nbrLigMax) break;
+        drawligne();
+      }
+      ss << "[..." << nbrLig - nbrLigMax * 2 << " more line(s) ...]" << std::endl;
+      I.setLast();
+      for (Idx revi = 1; revi < nbrLigMax; revi++)
+        I.decNotVar(var);
+      for (I.setFirstVar(var); !I.end(); I.incNotVar(var)) {
+        drawligne();
+      }
+    }
+
+    return ss.str();
+  }
 } /* namespace gum */

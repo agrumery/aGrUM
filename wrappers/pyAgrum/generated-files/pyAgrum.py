@@ -8695,6 +8695,9 @@ class Potential(object):
     def __str__(self) -> str:
         return _pyAgrum.Potential___str__(self)
 
+    def expectedValue(self, *args) -> object:
+        return _pyAgrum.Potential_expectedValue(self, *args)
+
     def extract(self, *args) -> "pyAgrum.Potential":
         r"""
 
@@ -15280,7 +15283,7 @@ class VariableElimination(object):
 
     Warnings
     --------
-      Even if this inference has the same API than the other (exact) inferences, its mode of operation is different and is specifically dedicated to the calculation of a single posterior. Any other use (for instancte for multiple targets) is possibly inefficient.
+      Even if this inference has the same API than the other (exact) inferences, its mode of operation is different and is specifically dedicated to the calculation of a single posterior. Any other use (for instance for multiple targets) is possibly inefficient.
 
     VariableElimination(bn) -> VariableElimination
         Parameters:

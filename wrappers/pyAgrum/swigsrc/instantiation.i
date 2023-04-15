@@ -36,18 +36,7 @@
   }
 
   PyObject* todict(bool withLabels=true) const {
-    auto res=PyDict_New();
-    for(gum::Idx i=0;i<self->nbrDim();i++) {
-      auto key=PyString_FromString(self->variable(i).name().c_str());
-      PyObject* val;
-      if (withLabels) {
-        val=PyString_FromString(self->variable(i).label(self->val(i)).c_str());
-      } else {
-        val=PyLong_FromUnsignedLong(self->val(i));
-      }
-      PyDict_SetItem(res,key,val);
-    }
-    return res;
+    return PyAgrumHelper::instantiationToDict(*self);
   }
 
 

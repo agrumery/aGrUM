@@ -82,6 +82,28 @@ if len(args)>1:
 
 
 %extend gum::Potential<double> {
+  PyObject *expectedValue(PyObject* pyfunc) const {
+    if (!PyCallable_Check(pyfunc)) { PyErr_SetString(PyExc_TypeError, "Need a callable object!"); }
+    double res=self->expectedValue([&](const gum::Instantiation& i) -> double {
+      double val;
+      PyObject* arg=PyAgrumHelper::instantiationToDict(i);
+      PyObject* args=PyTuple_New(1);
+      PyTuple_SetItem(args,0,arg);
+      PyObject* res=PyObject_Call(pyfunc,args,NULL);
+      Py_DECREF(args);
+      Py_DECREF(arg);
+
+      if (res==NULL) {
+        val=0;
+      } else {
+        val=PyFloat_AsDouble(res);
+        Py_DECREF(res);
+      }
+      return val;
+      });
+    return PyFloat_FromDouble(res);
+  }
+
   Potential<double> extract(PyObject* arg) {
     if (PyDict_Check(arg)) {
       gum::Instantiation inst;

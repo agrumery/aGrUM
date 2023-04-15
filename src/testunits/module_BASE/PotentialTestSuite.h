@@ -1211,7 +1211,7 @@ namespace gum_tests {
       }
 
       TS_GUM_ASSERT_QUASI_EQUALS(
-         q.expectedValue([](const gum::Instantiation& i) -> auto { return i.val(0); }),
+         q.expectedValue([](const gum::Instantiation& i) -> auto { return double(i.val(0)); }),
          mean);
     }
 
