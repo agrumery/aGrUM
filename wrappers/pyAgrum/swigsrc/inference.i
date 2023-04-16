@@ -18,9 +18,9 @@
  *
  */
 
-%include "extensions/informationTheory.h"
+%include "extensions/InformationTheory.h"
 %{
-#include "extensions/informationTheory.h"
+#include "extensions/InformationTheory.h"
 %}
 
 %define IMPROVE_INFERENCE_API(classname...)
