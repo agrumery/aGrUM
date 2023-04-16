@@ -18,6 +18,11 @@
  *
  */
 
+%include "extensions/informationTheory.h"
+%{
+#include "extensions/informationTheory.h"
+%}
+
 %define IMPROVE_INFERENCE_API(classname...)
 %feature("shadow") gum::classname::setEvidence %{
 def setEvidence(self, evidces):

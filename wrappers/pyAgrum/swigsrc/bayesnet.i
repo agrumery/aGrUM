@@ -31,7 +31,6 @@
 %ignore *::endEdges;
 
 %include "extensions/BNGenerator.h"
-
 %{
 #include "extensions/BNGenerator.h"
 %}

@@ -607,3 +607,28 @@ Returns
 int
   the index of the drawn value
 "
+
+%feature("docstring") gum::Potential::expectedValue
+"
+Calculate the mathematical expected value of a (joint) random variable using the given function as an argument.
+
+Parameters
+----------
+func : function(Dict[str,int])->float
+    A function that takes a single argument, representing the value of a python representation of a `gum.Instantiation` (as a dictionary), and returns a float.
+
+Warnings
+--------
+The `gum.Potential` is assumed to contain a joint distribution.
+
+Example
+-------
+def log2cptA(x):
+ return -math.log2(bn.cpt('A')[x])
+entropy_of_A=bn.cpt('A').expectedValue(log2cptA) # OK it A has no parents.
+
+Returns
+-------
+float
+    The mathematical expected value of the random variable calculated using the given function as an argument.
+"

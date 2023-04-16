@@ -31,6 +31,9 @@
 #include <agrum/tools/multidim/potential.h>
 #include <agrum/BN/BayesNet.h>
 
+#ifndef PYAGRUM_HELPER
+#  define PYAGRUM_HELPER
+
 namespace PyAgrumHelper {
 
   std::string stringFromPyObject(PyObject* o) {
@@ -41,7 +44,7 @@ namespace PyAgrumHelper {
       Py_DECREF(asbytes);
     } else if (PyString_Check(o)) {   // python2 string
       name = PyString_AsString(o);
-    } else if (PyBytes_Check(o)) {   // other python3 string
+    } else if (PyBytes_Check(o)) {    // other python3 string
       name = PyBytes_AsString(o);
     }
     return name;
@@ -123,19 +126,20 @@ namespace PyAgrumHelper {
     }
   }
 
-  // filling a Instantiation from a dictionnary<string,int> and a Potential (to find variable and labels) and vice-versa
-  
-  PyObject* instantiationToDict(const gum::Instantiation& inst,bool withLabels=true) {
-    auto res=PyDict_New();
-    for(gum::Idx i=0;i<inst.nbrDim();i++) {
-      auto key=PyString_FromString(inst.variable(i).name().c_str());
+  // filling a Instantiation from a dictionnary<string,int> and a Potential (to find variable and
+  // labels) and vice-versa
+
+  PyObject* instantiationToDict(const gum::Instantiation& inst, bool withLabels = true) {
+    auto res = PyDict_New();
+    for (gum::Idx i = 0; i < inst.nbrDim(); i++) {
+      auto      key = PyString_FromString(inst.variable(i).name().c_str());
       PyObject* val;
       if (withLabels) {
-        val=PyString_FromString(inst.variable(i).label(inst.val(i)).c_str());
+        val = PyString_FromString(inst.variable(i).label(inst.val(i)).c_str());
       } else {
-        val=PyLong_FromUnsignedLong(inst.val(i));
+        val = PyLong_FromUnsignedLong(inst.val(i));
       }
-      PyDict_SetItem(res,key,val);
+      PyDict_SetItem(res, key, val);
     }
     return res;
   }
@@ -151,7 +155,7 @@ namespace PyAgrumHelper {
 
     PyObject*  key;
     PyObject*  value;
-    Py_ssize_t pos=0;
+    Py_ssize_t pos = 0;
     inst.clear();
     while (PyDict_Next(dict, &pos, &key, &value)) {
       std::string name = stringFromPyObject(key);
@@ -180,21 +184,22 @@ namespace PyAgrumHelper {
     }
   }
 
-  // filling a Instantiation from a dictionnary<string,int> and a BayesNet (to find variable and labels)
-  void fillInstantiationFromPyObject(const gum::BayesNet<double>& map,
-                                     gum::Instantiation&             inst,
-                                     PyObject*                       dict) {
+  // filling a Instantiation from a dictionnary<string,int> and a BayesNet (to find variable and
+  // labels)
+  void fillInstantiationFromPyObject(const gum::BayesNet< double >& map,
+                                     gum::Instantiation&            inst,
+                                     PyObject*                      dict) {
     if (!PyDict_Check(dict)) { GUM_ERROR(gum::InvalidArgument, "Argument is not a dictionary") }
 
     inst.clear();
     PyObject*  key;
     PyObject*  value;
-    Py_ssize_t pos=0;
+    Py_ssize_t pos = 0;
     while (PyDict_Next(dict, &pos, &key, &value)) {
       std::string name = stringFromPyObject(key);
       if (name == "") { GUM_ERROR(gum::InvalidArgument, "A key is not a string"); }
 
-      const auto& variable=map.variable(name);
+      const auto& variable = map.variable(name);
 
       std::string label = stringFromPyObject(value);
       gum::Idx    v;
@@ -270,8 +275,7 @@ namespace PyAgrumHelper {
     }
   }
 
-  void populateNodeSetFromIntOrPySequenceOfInt(gum::NodeSet&               nodeset,
-                                               PyObject*                   seq) {
+  void populateNodeSetFromIntOrPySequenceOfInt(gum::NodeSet& nodeset, PyObject* seq) {
     // if seq is just a nodeId
     if (PyInt_Check(seq) || PyLong_Check(seq)) {
       nodeset.insert(gum::NodeId(PyLong_AsLong(seq)));
@@ -283,13 +287,13 @@ namespace PyAgrumHelper {
     if (iter != NULL) {
       PyObject* item;
       while ((item = PyIter_Next(iter))) {
-          if (PyInt_Check(item)) {
-            nodeset.insert( gum::NodeId(PyInt_AsLong(item)));
-          } else if (PyLong_Check(item)) {
-            nodeset.insert( gum::NodeId(PyLong_AsLong(item)));
-          } else {
-            GUM_ERROR(gum::InvalidArgument, "An elmement in the sequence is not a int nor a long")
-          }
+        if (PyInt_Check(item)) {
+          nodeset.insert(gum::NodeId(PyInt_AsLong(item)));
+        } else if (PyLong_Check(item)) {
+          nodeset.insert(gum::NodeId(PyLong_AsLong(item)));
+        } else {
+          GUM_ERROR(gum::InvalidArgument, "An elmement in the sequence is not a int nor a long")
+        }
       }
     } else {
       GUM_ERROR(gum::InvalidArgument, "Argument <seq> is not an int, a list nor a set")
@@ -348,9 +352,9 @@ namespace PyAgrumHelper {
   PyObject* PyTupleFromNodeVect(const std::vector< gum::NodeId >& nodevect) {
     PyObject* q = PyTuple_New(nodevect.size());
 
-    int i=0;
+    int i = 0;
     for (auto node: nodevect) {
-      PyTuple_SET_ITEM(q,i, PyLong_FromUnsignedLong((unsigned long)node));
+      PyTuple_SET_ITEM(q, i, PyLong_FromUnsignedLong((unsigned long)node));
       i++;
     }
 
@@ -358,11 +362,11 @@ namespace PyAgrumHelper {
   }
 
   PyObject* PyTupleFromNodeSet(const gum::NodeSet& nodeset) {
-    PyObject* q =  PyTuple_New(nodeset.size());
+    PyObject* q = PyTuple_New(nodeset.size());
 
-    int i=0;
+    int i = 0;
     for (auto node: nodeset) {
-      PyTuple_SET_ITEM(q,i, PyLong_FromUnsignedLong((unsigned long)node));
+      PyTuple_SET_ITEM(q, i, PyLong_FromUnsignedLong((unsigned long)node));
       i++;
     }
 
@@ -464,3 +468,4 @@ namespace PyAgrumHelper {
     return q;
   }
 }   // namespace PyAgrumHelper
+#endif   // PYAGRUM_HELPER

@@ -511,6 +511,43 @@ class BNGenerator(object):
 
 # Register BNGenerator in _pyAgrum:
 _pyAgrum.BNGenerator_swigregister(BNGenerator)
+class InformationTheory(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, engine: "LazyPropagation", Xnames: object, Ynames: object):
+        _pyAgrum.InformationTheory_swiginit(self, _pyAgrum.new_InformationTheory(engine, Xnames, Ynames))
+
+    def entropyXY(self) -> float:
+        return _pyAgrum.InformationTheory_entropyXY(self)
+
+    def entropyX(self) -> float:
+        return _pyAgrum.InformationTheory_entropyX(self)
+
+    def entropyY(self) -> float:
+        return _pyAgrum.InformationTheory_entropyY(self)
+
+    def entropyXgivenY(self) -> float:
+        return _pyAgrum.InformationTheory_entropyXgivenY(self)
+
+    def entropyYgivenX(self) -> float:
+        return _pyAgrum.InformationTheory_entropyYgivenX(self)
+
+    def mutualInformationXY(self) -> float:
+        return _pyAgrum.InformationTheory_mutualInformationXY(self)
+
+    def variationOfInformationXY(self) -> float:
+        return _pyAgrum.InformationTheory_variationOfInformationXY(self)
+
+    def entropyXYgivenZ(self) -> float:
+        return _pyAgrum.InformationTheory_entropyXYgivenZ(self)
+
+    def mutualInformationXYgivenZ(self) -> float:
+        return _pyAgrum.InformationTheory_mutualInformationXYgivenZ(self)
+    __swig_destroy__ = _pyAgrum.delete_InformationTheory
+
+# Register InformationTheory in _pyAgrum:
+_pyAgrum.InformationTheory_swigregister(InformationTheory)
 class IDGenerator(object):
     r"""
 
@@ -8696,6 +8733,31 @@ class Potential(object):
         return _pyAgrum.Potential___str__(self)
 
     def expectedValue(self, *args) -> object:
+        r"""
+
+        Calculate the mathematical expected value of a (joint) random variable using the given function as an argument.
+
+        Parameters
+        ----------
+        func : function(Dict[str,int])->float
+            A function that takes a single argument, representing the value of a python representation of a `gum.Instantiation` (as a dictionary), and returns a float.
+
+        Warnings
+        --------
+        The `gum.Potential` is assumed to contain a joint distribution.
+
+        Example
+        -------
+        def log2cptA(x):
+         return -math.log2(bn.cpt('A')[x])
+        entropy_of_A=bn.cpt('A').expectedValue(log2cptA) # OK it A has no parents.
+
+        Returns
+        -------
+        float
+            The mathematical expected value of the random variable calculated using the given function as an argument.
+
+        """
         return _pyAgrum.Potential_expectedValue(self, *args)
 
     def extract(self, *args) -> "pyAgrum.Potential":

@@ -51,7 +51,7 @@ from .pyAgrum import LoopyBeliefPropagation, GibbsSampling, MonteCarloSampling, 
 from .pyAgrum import LoopyImportanceSampling, LoopyGibbsSampling, LoopyWeightedSampling, LoopyMonteCarloSampling
 from .pyAgrum import PythonApproximationListener, PythonBNListener, PythonLoadListener, PythonDatabaseGeneratorListener
 from .pyAgrum import BNGenerator, IDGenerator, JunctionTreeGenerator
-from .pyAgrum import BNLearner
+from .pyAgrum import BNLearner,InformationTheory
 from .pyAgrum import BNDatabaseGenerator
 from .pyAgrum import InfluenceDiagram, ShaferShenoyLIMIDInference
 from .pyAgrum import CredalNet, CNMonteCarloSampling, CNLoopyPropagation
@@ -94,7 +94,7 @@ __all__ = [
   'ShaferShenoyInference', 'VariableElimination',
   'PythonApproximationListener', 'PythonBNListener', 'PythonLoadListener', 'PythonDatabaseGeneratorListener',
   'BNGenerator', 'IDGenerator', 'JunctionTreeGenerator',
-  'BNLearner',
+  'BNLearner','InformationTheory'
   'BNDatabaseGenerator',
   'InfluenceDiagram', 'ShaferShenoyLIMIDInference',
   'CredalNet', 'CNMonteCarloSampling', 'CNLoopyPropagation',
