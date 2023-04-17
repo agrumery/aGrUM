@@ -34,17 +34,47 @@
 
 class InformationTheory {
   public:
-  InformationTheory(gum::LazyPropagation< double >& engine, PyObject* Xnames, PyObject* Ynames) {
+  InformationTheory(gum::LazyPropagation< double >& engine,
+                    PyObject*                       Xnames,
+                    PyObject*                       Ynames,
+                    PyObject*                       Znames = nullptr) {
     gum::NodeSet X;
     gum::NodeSet Y;
+    gum::NodeSet Z;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(X,
                                                               Xnames,
                                                               engine.model().variableNodeMap());
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(Y,
                                                               Ynames,
                                                               engine.model().variableNodeMap());
-    _bnIT_  = new gum::InformationTheory(engine, X, Y, gum::NodeSet());
+    if (Znames)
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(Z,
+                                                                Znames,
+                                                                engine.model().variableNodeMap());
+    _bnIT_  = new gum::InformationTheory(engine, X, Y, Z);
     _mrfIT_ = nullptr;
+  }
+
+
+  InformationTheory(gum::ShaferShenoyMRFInference< double >& engine,
+                    PyObject*                                Xnames,
+                    PyObject*                                Ynames,
+                    PyObject*                                Znames = nullptr) {
+    gum::NodeSet X;
+    gum::NodeSet Y;
+    gum::NodeSet Z;
+    PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(X,
+                                                              Xnames,
+                                                              engine.model().variableNodeMap());
+    PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(Y,
+                                                              Ynames,
+                                                              engine.model().variableNodeMap());
+    if (Znames)
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(Z,
+                                                                Znames,
+                                                                engine.model().variableNodeMap());
+    _bnIT_  = nullptr;
+    _mrfIT_ = new gum::InformationTheory(engine, X, Y, Z);
   }
   /*
   InformationTheory(gum::LazyPropagation< double >& engine,

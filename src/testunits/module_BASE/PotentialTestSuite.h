@@ -1328,10 +1328,10 @@ namespace gum_tests {
 
 
     private:
-    static void _testval_for_set_(const gum::Potential< int >&         p,
-                                  int                                  val,
-                                  const gum::Set< gum::Instantiation > s,
-                                  gum::Size                            expected_size) {
+    static void _testval_for_set_(const gum::Potential< int >&          p,
+                                  int                                   val,
+                                  const gum::Set< gum::Instantiation >& s,
+                                  gum::Size                             expected_size) {
       gum::Instantiation ip(p);
 
       TS_ASSERT_EQUALS(s.size(), expected_size)

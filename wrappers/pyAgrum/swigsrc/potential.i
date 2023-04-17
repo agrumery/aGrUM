@@ -23,6 +23,7 @@
 %ignore gum::MultiDimDecorator;
 %ignore gum::MultiDimArray;
 
+
 /* keep tracks of variables to trick with  garbage collector */
 %pythonappend gum::Potential<double>::Potential %{
         self._list_vars=list()

@@ -107,7 +107,6 @@ namespace gum {
     gum::Potential< GUM_SCALAR > pZ_;
 
     void       makeInference_();
-    GUM_SCALAR logOr0_(GUM_SCALAR x);   //
   };
 }   // namespace gum
 

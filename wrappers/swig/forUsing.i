@@ -499,20 +499,6 @@ ADD_BN_MONOTARGET_INFERENCE_API(gum::MarginalTargetedInference<double>,classname
     return self->gum::JointTargetedInference<double>::nbrJointTargets();
   }
 
-  double I( const NodeId X, const NodeId Y ) {
-    return self->gum::JointTargetedInference<double>::I(X,Y);
-  }
-  double VI( const NodeId X, const NodeId Y ) {
-    return self->gum::JointTargetedInference<double>::VI(X,Y);
-  }
-
-  double I( const std::string& X, const std::string& Y ) {
-    return self->gum::JointTargetedInference<double>::I(X,Y);
-  }
-  double VI( const std::string& X, const std::string& Y ) {
-    return self->gum::JointTargetedInference<double>::VI(X,Y);
-  }
-
   Potential<double> evidenceJointImpact(const NodeSet& targets,const NodeSet& evs){
     return self->gum::JointTargetedInference<double>::evidenceJointImpact(targets,evs);
   }
@@ -599,13 +585,6 @@ ADD_MRF_INFERENCE_API(classname)
 
   gum::Size nbrJointTargets() {
     return self->gum::JointTargetedMRFInference<double>::nbrJointTargets();
-  }
-
-  double I( const NodeId X, const NodeId Y ) {
-    return self->gum::JointTargetedMRFInference<double>::I(X,Y);
-  }
-  double VI( const NodeId X, const NodeId Y ) {
-    return self->gum::JointTargetedMRFInference<double>::VI(X,Y);
   }
 
   Potential<double> evidenceJointImpact(const NodeSet& targets,const NodeSet& evs){
