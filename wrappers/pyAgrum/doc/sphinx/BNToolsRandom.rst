@@ -1,7 +1,6 @@
-Generation of Bayesian network
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Random generation of Bayesian network
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. autofunction:: pyAgrum.randomBN
-  :noindex:
 
 .. autoclass:: pyAgrum.BNGenerator

@@ -50,31 +50,28 @@ Reference manual
     potential
 
   .. toctree::
-    :caption: 2- Graphical Models
-    :maxdepth: 1
+    :caption: 2- Bayesian networks
+    :maxdepth: 2
 
-    bayesianNetwork
+    BNModel
+    BNInference
+    BNLearning
+    BNTools
+    Causal
+    Classifier
+
+
+  .. toctree::
+    :caption: 3- Other graphical models
+    :maxdepth: 2
+
     influenceDiagram
     credalNetwork
     markovRandomField
     PRM
 
   .. toctree::
-    :caption: 3- Causality
-    :maxdepth: 2
-    :titlesonly:
-
-    Causal
-
-  .. toctree::
-    :caption: 4- scikit-learn-like BN Classifiers
-    :maxdepth: 2
-    :titlesonly:
-
-    Classifier
-
-  .. toctree::
-    :caption: 5- pyAgrum.lib modules
+    :caption: 4- pyAgrum.lib modules
     :maxdepth: 2
     :titlesonly:
 
@@ -85,7 +82,7 @@ Reference manual
     pyAgrum.lib
 
   .. toctree::
-    :caption: 6- Miscellaneous
+    :caption: 5- Miscellaneous
     :maxdepth: 2
     :titlesonly:
 
@@ -96,7 +93,7 @@ Reference manual
     exceptions
 
   .. toctree::
-    :caption: 7- Customizing pyAgrum
+    :caption: 6- Customizing pyAgrum
     :maxdepth: 1
     :titlesonly:
 

@@ -1,5 +1,5 @@
-pyAgrum.causal documentation
-============================
+Causality
+=========
 
 .. figure:: _static/causal.png
     :align: center
