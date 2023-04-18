@@ -5,12 +5,10 @@ Deprecated for older pyAgrum
 import warnings
 import functools
 
-from .pyAgrum import GibbsSampling, Potential
 from .pyAgrum import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, CliqueGraph
-from .pyAgrum import BayesNet, EssentialGraph, MarkovBlanket
 from .pyAgrum import MarkovRandomField, ShaferShenoyMRFInference
+from .pyAgrum import InformationTheory, LazyPropagation
 from .pyAgrum import InfluenceDiagram, ShaferShenoyLIMIDInference
-from .pyAgrum import ExactBNdistance, GibbsBNdistance
 from .pyAgrum import BNLearner, JunctionTreeGenerator
 from .pyAgrum import DiscreteVariable
 
@@ -71,7 +69,8 @@ def ShaferShenoyMNInference(mrf):
 """, DeprecationWarning, stacklevel=2)
   return ShaferShenoyMRFInference(mrf)
 
-def MarkovNet(*args,**kwargs):
+
+def MarkovNet(*args, **kwargs):
   """
   Deprecated class. Use pyAgrum.MarkovRandomField instead.
   """
@@ -79,10 +78,11 @@ def MarkovNet(*args,**kwargs):
 ** pyAgrum.MarkovNet is deprecated in pyAgrum>1.5.2.
 ** A pyAgrum.MarkovRandomField has been created.
 """, DeprecationWarning, stacklevel=2)
-  return MarkovRandomField(*args,**kwargs)
+  return MarkovRandomField(*args, **kwargs)
+
 
 def _addDeprecatedMethods():
-  def deprecated_adjacents(mixed_graph,n):
+  def deprecated_adjacents(mixed_graph, n):
     """
     Deprecated methods in MixedGraph for pyAgrum>1.3.1
     """
@@ -126,7 +126,7 @@ def _addDeprecatedMethods():
 ** pyAgrum.BNLearner.useAprioriDirichlet() is deprecated from pyAgrum>1.1.1. Please use useDirichletPrior() methods instead.
 """, DeprecationWarning, stacklevel=2)
     return learner.useDirichletPrior()
-  
+
   def deprecated_learnMixedGraph(learner):
     """
     Deprecated methods in BNLearner for pyAgrum>1.5.2
@@ -135,7 +135,7 @@ def _addDeprecatedMethods():
 ** pyAgrum.BNLearner.learnMixedGraph() is deprecated from pyAgrum>1.5.2. Please use learnPDAG() methods instead.
 """, DeprecationWarning, stacklevel=2)
     return learner.learnPDAG()
-  
+
   def deprecated_toLabelizedVar(var):
     """
     Deprecated method in gum.DiscreteVariable for pyAgrum>1.5.2
@@ -181,7 +181,6 @@ def _addDeprecatedMethods():
 """, DeprecationWarning, stacklevel=2)
     return var.asDiscretizedVar()
 
-
   def deprecated_MN(mrfie):
     """
     Deprecated method in gum.ShaferShenoyMRFInference for pyAgrum>1.5.2
@@ -190,6 +189,26 @@ def _addDeprecatedMethods():
 ** pyAgrum.ShaferShenoyMRFInference.MN() is deprecated from pyAgrum>1.5.2. Please use pyAgrum.ShaferShenoyMRFInference.MRF() methods instead.
 """, DeprecationWarning, stacklevel=2)
     return mrfie.MRF()
+
+  def deprecatedVI(self, X, Y):
+    """
+    Deprecated VI in LazyPropagation/ShaferShenoyMRFInference
+    """
+    warnings.warn("""
+  ** pyAgrum.{inference}.VI() is deprecated from pyAgrum>1.7.1. Please use class pyAgrum.InformationTheory instead.
+  """, DeprecationWarning, stacklevel=2)
+    it = InformationTheory(self, X, Y)
+    return it.variationOfInformationXY()
+
+  def deprecatedI(self, X, Y):
+    """
+    Deprecated I in LazyPropagation/ShaferShenoyMRFInference
+    """
+    warnings.warn("""
+  ** pyAgrum.{inference}.I() is deprecated from pyAgrum>1.7.1. Please use class pyAgrum.InformationTheory instead.
+  """, DeprecationWarning, stacklevel=2)
+    it = InformationTheory(self, X, Y)
+    return it.mutualInformationXY()
 
   BNLearner.useNoApriori = deprecated_useNoApriori
   BNLearner.useAprioriBDeu = deprecated_useAprioriBDeu
@@ -207,39 +226,10 @@ def _addDeprecatedMethods():
 
   ShaferShenoyMRFInference.MN = deprecated_MN
 
-def getNumberOfRunningThreads():
-  warnings.warn(""""
-** pyAgrum.getNumberOfRunningThreads is obsolete in pyAgrum>0.22.7.
-""", DeprecationWarning, stacklevel=2)
+  ShaferShenoyMRFInference.I = deprecatedI
+  ShaferShenoyMRFInference.VI = deprecatedVI
+  LazyPropagation.I = deprecatedI
+  LazyPropagation.VI = deprecatedVI
 
-
-def getDynamicThreadsNumber():
-  warnings.warn(""""
-** pyAgrum.getDynamicThreadsNumber is obsolete in pyAgrum>0.22.7.
-""", DeprecationWarning, stacklevel=2)
-
-
-def setDynamicThreadsNumber(n):
-  warnings.warn(""""
-** pyAgrum.setDynamicThreadsNumber is obsolete in pyAgrum>0.22.7.
-""", DeprecationWarning, stacklevel=2)
-
-
-def getNestedParallelism():
-  warnings.warn(""""
-** pyAgrum.getNestedParallelism is obsolete in pyAgrum>0.22.7.
-""", DeprecationWarning, stacklevel=2)
-
-
-def setNestedParallelism(n):
-  warnings.warn(""""
-** pyAgrum.setNestedParallelism is obsolete in pyAgrum>0.22.7.
-""", DeprecationWarning, stacklevel=2)
-
-
-def getThreadNumber():
-  warnings.warn(""""
-** pyAgrum.getThreadNumber is obsolete in pyAgrum>0.22.7.
-""", DeprecationWarning, stacklevel=2)
 
 _addDeprecatedMethods()
