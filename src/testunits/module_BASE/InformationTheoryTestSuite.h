@@ -138,7 +138,7 @@ namespace gum_tests {
       auto it = gum::InformationTheory(ie, {"A", "C"}, {"B"});
       check_this_information_theory(it);
     }
-    
+
     GUM_ACTIVE_TEST(ShafShenCheckConsistency) {
       const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C");
 

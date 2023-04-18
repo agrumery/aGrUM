@@ -388,7 +388,7 @@ namespace gum {
     /**
      * @brief the function to inverse (each value of) *this
      */
-    const  Potential< GUM_SCALAR >& inverse(void) const;
+    const Potential< GUM_SCALAR >& inverse(void) const;
 
     /**
      * @brief get a value at random from a 1-D distribution

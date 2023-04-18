@@ -283,7 +283,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   [[deprecated("Please directly use class gum::InformationTheory (since 1.7.1)")]] INLINE GUM_SCALAR
      JointTargetedMRFInference< GUM_SCALAR >::VI(NodeId X, NodeId Y) {
-    InformationTheory it(*this,NodeSet{X},NodeSet{Y});
+    InformationTheory it(*this, NodeSet{X}, NodeSet{Y});
     return it.variationOfInformationXY();
   }
 

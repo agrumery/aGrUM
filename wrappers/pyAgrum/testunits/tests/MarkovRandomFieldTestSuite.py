@@ -294,6 +294,5 @@ class MarkovRandomFieldTestCase(pyAgrumTestCase):
     mrf.addFactor({2, 0})
     self.assertEquals(mrf.factor({2, 0}).variable(0).name(), mrf.variable(0).name())
 
-
 ts = unittest.TestSuite()
 addTests(ts, MarkovRandomFieldTestCase)

@@ -47,5 +47,5 @@
 #  define GUM_LOG_SQRT_2PI .91893853320467274177
 #endif
 
-#define GUM_LOG2_OR_0(x) ((x==0.0)?0.0:std::log2((x)))
+#define GUM_LOG2_OR_0(x) ((x == 0.0) ? 0.0 : std::log2((x)))
 #endif /* GUM_MATH_H */

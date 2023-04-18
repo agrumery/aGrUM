@@ -1149,8 +1149,8 @@ namespace gum_tests {
       }
 
       gum::NodeId ii1 = bn.add(*vars[1]);
-      auto&       x1 = bn.variable(ii1);
-      auto&       p1 = bn.cpt(ii1);
+      auto&       x1  = bn.variable(ii1);
+      auto&       p1  = bn.cpt(ii1);
       p1.fillWith({0.4, 0.6});
 
       gum::Potential< double > ev1;

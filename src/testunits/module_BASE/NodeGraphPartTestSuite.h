@@ -225,7 +225,9 @@ namespace gum_tests {
       TS_ASSERT(nb2 > gum::Size(0))
     }
 
-    GUM_ACTIVE_TEST(BigNodeGraphPart) { TS_GUM_ASSERT_THROWS_NOTHING(_privateTestBigNodeGraphPart_()); }
+    GUM_ACTIVE_TEST(BigNodeGraphPart) {
+      TS_GUM_ASSERT_THROWS_NOTHING(_privateTestBigNodeGraphPart_());
+    }
 
     GUM_ACTIVE_TEST(IteratorEnd) {
       gum::NodeGraphPart nodeset;

@@ -76,59 +76,7 @@ class InformationTheory {
     _bnIT_  = nullptr;
     _mrfIT_ = new gum::InformationTheory(engine, X, Y, Z);
   }
-  /*
-  InformationTheory(gum::LazyPropagation< double >& engine,
-                    gum::NodeSet                    X,
-                    gum::NodeSet                    Y,
-                    gum::NodeSet                    Z) {
-    _bnIT_  = new gum::InformationTheory(engine, X, Y, Z);
-    _mrfIT_ = nullptr;
-  };
-  InformationTheory(gum::LazyPropagation< double >& engine, gum::NodeSet X, gum::NodeSet Y) :
-      InformationTheory(engine, X, Y, gum::NodeSet()){};
-  InformationTheory(gum::LazyPropagation< double >&   engine,
-                    const std::vector< std::string >& Xnames,
-                    const std::vector< std::string >& Ynames) :
-      InformationTheory(engine,
-                        engine.model().nodeset(Xnames),
-                        engine.model().nodeset(Ynames),
-                        gum::NodeSet()){};
-  InformationTheory(gum::LazyPropagation< double >&   engine,
-                    const std::vector< std::string >& Xnames,
-                    const std::vector< std::string >& Ynames,
-                    const std::vector< std::string >& Znames) :
-      InformationTheory(engine,
-                        engine.model().nodeset(Xnames),
-                        engine.model().nodeset(Ynames),
-                        engine.model().nodeset(Znames)){};
 
-  InformationTheory(gum::ShaferShenoyMRFInference< double >& engine,
-                    gum::NodeSet                             X,
-                    gum::NodeSet                             Y,
-                    gum::NodeSet                             Z) {
-    _bnIT_  = nullptr;
-    _mrfIT_ = new gum::InformationTheory(engine, X, Y, Z);
-  }
-  InformationTheory(gum::ShaferShenoyMRFInference< double >& engine,
-                    gum::NodeSet                             X,
-                    gum::NodeSet                             Y) :
-      InformationTheory(engine, X, Y, gum::NodeSet()){};
-  InformationTheory(gum::ShaferShenoyMRFInference< double >& engine,
-                    const std::vector< std::string >&        Xnames,
-                    const std::vector< std::string >&        Ynames) :
-      InformationTheory(engine,
-                        engine.model().nodeset(Xnames),
-                        engine.model().nodeset(Ynames),
-                        gum::NodeSet()){};
-  InformationTheory(gum::ShaferShenoyMRFInference< double >& engine,
-                    const std::vector< std::string >&        Xnames,
-                    const std::vector< std::string >&        Ynames,
-                    const std::vector< std::string >&        Znames) :
-      InformationTheory(engine,
-                        engine.model().nodeset(Xnames),
-                        engine.model().nodeset(Ynames),
-                        engine.model().nodeset(Znames)){};
-    */
 #  define DEFINE_IT_FUNC(func) \
     double func() { return (_bnIT_ != nullptr) ? _bnIT_->func() : _mrfIT_->func(); }
 

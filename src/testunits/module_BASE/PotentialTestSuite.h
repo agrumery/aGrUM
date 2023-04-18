@@ -1195,7 +1195,7 @@ namespace gum_tests {
       p.randomDistribution();
 
       TS_GUM_ASSERT_QUASI_EQUALS(
-         p.expectedValue([](const gum::Instantiation&) -> auto { return 1.0; }),
+         p.expectedValue([](const gum::Instantiation&) -> auto{ return 1.0; }),
          1.0)
 
       gum::Potential< double > q;
@@ -1211,7 +1211,7 @@ namespace gum_tests {
       }
 
       TS_GUM_ASSERT_QUASI_EQUALS(
-         q.expectedValue([](const gum::Instantiation& i) -> auto { return double(i.val(0)); }),
+         q.expectedValue([](const gum::Instantiation& i) -> auto{ return double(i.val(0)); }),
          mean);
     }
 

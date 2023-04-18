@@ -515,8 +515,9 @@ GUM_ACTIVE_TEST(_asia_with_user_modalities_numbers) {
 GUM_ACTIVE_TEST(test_asia_with_user_modalities_numbers_incorrect) {
   auto bn = gum::BayesNet< double >::fastPrototype(
      "smoking{1|2|big};lung_cancer{big|bigbig|3|bigbigbig|0}");
-  TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia.csv")))
-//,                   gum::UnknownLabelInDatabase&)
+  TS_GUM_ASSERT_THROWS_NOTHING(
+     gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia.csv")))
+  //,                   gum::UnknownLabelInDatabase&)
 }
 
 GUM_ACTIVE_TEST(_asia_param) {
@@ -896,11 +897,11 @@ GUM_ACTIVE_TEST(_BugDoumenc) {
                                      "AM",
                                      "PR",
                                      "AR",
-                                     "DFM"};                      // binary variables for the BN
+                                     "DFM"};   // binary variables for the BN
 
   std::vector< std::string > varTer{"NBC", "MED", "DEM", "SP"};   // ternary variables for the bN
 
-  std::vector< std::string > varContinuous{"A", "ADL"};           // continuous variables for the BN
+  std::vector< std::string > varContinuous{"A", "ADL"};   // continuous variables for the BN
 
 
   std::vector< gum::NodeId > nodeList;   // nodes list for the BN
@@ -1271,20 +1272,20 @@ GUM_ACTIVE_TEST(_loglikelihood) {
   double siz = -1.0 * learner.database().size();
   learner.useNoPrior();
 
-  auto stat = learner.logLikelihood({"A"}) / siz;                  // LL=-N.H
+  auto stat = learner.logLikelihood({"A"}) / siz;   // LL=-N.H
   TS_ASSERT_DELTA(stat, 0.99943499, TS_GUM_SMALL_ERROR)
-  stat = learner.logLikelihood({"B"}) / siz;                       // LL=-N.H
+  stat = learner.logLikelihood({"B"}) / siz;   // LL=-N.H
   TS_ASSERT_DELTA(stat, 0.9986032, TS_GUM_SMALL_ERROR)
-  stat = learner.logLikelihood({std::string("A"), "B"}) / siz;     // LL=-N.H
+  stat = learner.logLikelihood({std::string("A"), "B"}) / siz;   // LL=-N.H
   TS_ASSERT_DELTA(stat, 1.9668973, TS_GUM_SMALL_ERROR)
   stat = learner.logLikelihood({std::string("A")}, {"B"}) / siz;   // LL=-N.H
   TS_ASSERT_DELTA(stat, 1.9668973 - 0.9986032, TS_GUM_SMALL_ERROR)
 
-  stat = learner.logLikelihood({"C"}) / siz;                       // LL=-N.H
+  stat = learner.logLikelihood({"C"}) / siz;   // LL=-N.H
   TS_ASSERT_DELTA(stat, 0.99860302, TS_GUM_SMALL_ERROR)
-  stat = learner.logLikelihood({"D"}) / siz;                       // LL=-N.H
+  stat = learner.logLikelihood({"D"}) / siz;   // LL=-N.H
   TS_ASSERT_DELTA(stat, 0.40217919, TS_GUM_SMALL_ERROR)
-  stat = learner.logLikelihood({std::string("C"), "D"}) / siz;     // LL=-N.H
+  stat = learner.logLikelihood({std::string("C"), "D"}) / siz;   // LL=-N.H
   TS_ASSERT_DELTA(stat, 1.40077995, TS_GUM_SMALL_ERROR)
   stat = learner.logLikelihood({std::string("C")}, {"D"}) / siz;   // LL=-N.H
   TS_ASSERT_DELTA(stat, 1.40077995 - 0.40217919, TS_GUM_SMALL_ERROR)
@@ -1850,7 +1851,7 @@ void _test_dirichlet(const gum::BayesNet< double >& model) {
     gum::learning::BNLearner learner(parts[num_part], model);
     if (num_part == 0) {   // first part
       learner.useNoPrior();
-    } else {               // other parts, using partial(i-1) as prior
+    } else {   // other parts, using partial(i-1) as prior
       learner.useDirichletPrior(partial, double(nb_elt));
     }
     partial = learner.learnParameters(model.dag(), true);

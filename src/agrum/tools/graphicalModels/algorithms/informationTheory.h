@@ -32,14 +32,13 @@
 #include <functional>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/variables/discreteVariable.h>
 #include <agrum/tools/multidim/potential.h>
 
 namespace gum {
   template < typename T >
   concept JointTargettable = requires(T t, const NodeSet& target) {
-    { t.addJointTarget(target) } -> std::same_as< void >;
-  };
+                               { t.addJointTarget(target) } -> std::same_as< void >;
+                             };
 
   /** InformationTheory is a template class which aims at gathering the implementation of
    * informational functions (entropy, mutual information, etc.). All these operations start with
@@ -106,7 +105,7 @@ namespace gum {
     gum::Potential< GUM_SCALAR > pY_;
     gum::Potential< GUM_SCALAR > pZ_;
 
-    void       makeInference_();
+    void makeInference_();
   };
 }   // namespace gum
 

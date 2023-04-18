@@ -117,7 +117,8 @@ namespace gum_tests {
         }
       }
 
-      GUM_ACTIVE_TEST(CreationDiscretized){{auto a = gum::fastVariable< double >("A[1,2,3,4,5,6]", 4);
+      GUM_ACTIVE_TEST(CreationDiscretized){
+         {auto a = gum::fastVariable< double >("A[1,2,3,4,5,6]", 4);
       TS_ASSERT_EQUALS(a->toString(), "A:Discretized(<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>)")
   }
 
