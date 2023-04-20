@@ -48,12 +48,12 @@ namespace gum_tests {
 
       gum::Potential< double > pot1;
       pot1 << *(vars[0]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
-      randomInit(pot1);
-      gum::ScheduleMultiDim< gum::Potential< double > > f1(pot1, true);
-      gum::Set< const gum::DiscreteVariable* >          del_vars;
+      pot1.random();
+      gum::ScheduleMultiDim                    f1(pot1, true);
+      gum::Set< const gum::DiscreteVariable* > del_vars;
       del_vars << vars[0] << vars[3];
 
-      gum::ScheduleProjection< gum::Potential< double > > real_myproj(f1, del_vars, myProjectMax);
+      gum::ScheduleProjection real_myproj(f1, del_vars, myProjectMax);
       const gum::ScheduleMultiDim< gum::Potential< double > >& res    = real_myproj.result();
       gum::ScheduleOperator&                                   myproj = real_myproj;
 
@@ -91,15 +91,6 @@ namespace gum_tests {
       return gum::Potential< double >(gum::projectMax(*(pot.content()), del_vars));
     }
 
-    // ==========================================================================
-    /// initialize randomly a table
-    // ==========================================================================
-    void randomInit(gum::Potential< double >& t) {
-      gum::Instantiation i(t);
-
-      for (i.setFirst(); !i.end(); ++i)
-        t.set(i, rand() * 100000.0f / RAND_MAX);
-    }
 
     // projection of a table over a set
     gum::Potential< double >* proj(const gum::Potential< double >&                 table,

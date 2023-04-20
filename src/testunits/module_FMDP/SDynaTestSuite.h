@@ -56,14 +56,11 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(sim.setInitialStateRandomly())
       TS_GUM_ASSERT_THROWS_NOTHING(sdyna->initialize(sim.currentState()))
 
-      gum::Idx nbObs = 0;
       for (gum::Idx nbRun = 0; nbRun < 10; ++nbRun) {
         sim.setInitialStateRandomly();
         TS_GUM_ASSERT_THROWS_NOTHING(sdyna->setCurrentState(sim.currentState()))
         gum::Idx nbDec = 0;
         while (!sim.hasReachEnd() && nbDec < 25) {
-          nbObs++;
-
           // Normal Iteration Part
           gum::Idx actionChosenId = 0;
           TS_GUM_ASSERT_THROWS_NOTHING(actionChosenId = sdyna->takeAction();)

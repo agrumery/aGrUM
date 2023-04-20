@@ -49,22 +49,22 @@ namespace gum_tests {
 
       gum::Potential< double > pot1;
       pot1 << *(vars[0]) << *(vars[2]) << *(vars[4]);
-      randomInit(pot1);
+      pot1.random();
       gum::ScheduleMultiDim< gum::Potential< double > > f1(pot1, false);
 
       gum::Potential< double > pot2;
       pot2 << *(vars[1]) << *(vars[2]) << *(vars[3]);
-      randomInit(pot2);
+      pot2.random();
       gum::ScheduleMultiDim< gum::Potential< double > > f2(pot2, false);
 
       gum::Potential< double > pot3;
       pot3 << *(vars[0]) << *(vars[3]) << *(vars[5]);
-      randomInit(pot3);
+      pot3.random();
       gum::ScheduleMultiDim< gum::Potential< double > > f3(pot3, false);
 
       gum::Potential< double > pot4;
       pot4 << *(vars[3]) << *(vars[4]) << *(vars[5]);
-      randomInit(pot4);
+      pot4.random();
       gum::ScheduleMultiDim< gum::Potential< double > > f4(pot4, false);
 
       gum::ScheduleBinaryCombination< gum::Potential< double >,
@@ -126,9 +126,8 @@ namespace gum_tests {
       TS_ASSERT_DELTA(scheduler.nbOperations(schedule), 2200000.0, 10);
       scheduler.execute(schedule);
 
-      gum::ScheduleOperator& op4
-         = const_cast< gum::ScheduleOperator& >(schedule.operation(gum::NodeId(4)));
-      const gum::ScheduleMultiDim< gum::Potential< double > >& op4_res
+      auto&       op4 = const_cast< gum::ScheduleOperator& >(schedule.operation(gum::NodeId(4)));
+      const auto& op4_res
          = dynamic_cast< const gum::ScheduleMultiDim< gum::Potential< double > >& >(
             *op4.results()[0]);
       TS_ASSERT(result4.hasSameVariables(op4_res));
@@ -162,16 +161,6 @@ namespace gum_tests {
     static gum::Potential< double > myadd(const gum::Potential< double >& f1,
                                           const gum::Potential< double >& f2) {
       return f1 + f2;
-    }
-
-    // ==========================================================================
-    /// initialize randomly a table
-    // ==========================================================================
-    void randomInit(gum::Potential< double >& t) {
-      gum::Instantiation i(t);
-
-      for (i.setFirst(); !i.end(); ++i)
-        t.set(i, rand() * 100000.0f / RAND_MAX);
     }
   };
 

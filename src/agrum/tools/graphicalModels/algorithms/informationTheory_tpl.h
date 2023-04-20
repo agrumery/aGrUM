@@ -32,17 +32,18 @@
 #include <agrum/tools/graphicalModels/algorithms/informationTheory.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 
-#define INFORMATION_THEORY_TEMPLATE                                              \
-  template < template < typename > class INFERENCE_ENGINE, typename GUM_SCALAR > \
-    requires JointTargettable< INFERENCE_ENGINE< GUM_SCALAR > >
+#define INFORMATION_THEORY_TEMPLATE                        \
+  template < template < typename > class INFERENCE_ENGINE, \
+             typename GUM_SCALAR >   //@todo when CLANG-compliant for virtual class :  requires
+                                     //JointTargettable< INFERENCE_ENGINE< GUM_SCALAR > >
 
 namespace gum {
   INFORMATION_THEORY_TEMPLATE
   InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::InformationTheory(
      INFERENCE_ENGINE< GUM_SCALAR >& engine,
-     gum::NodeSet              X,
-     gum::NodeSet              Y,
-     gum::NodeSet              Z) :
+     gum::NodeSet                    X,
+     gum::NodeSet                    Y,
+     gum::NodeSet                    Z) :
       engine_(engine),
       X_(std::move(X)), Y_(std::move(Y)), Z_(std::move(Z)) {
     if ((!(X_ * Y_).empty()) || (!(X_ * Z_).empty()) || (!(Z_ * Y_).empty()))

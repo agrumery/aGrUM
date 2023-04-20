@@ -37,8 +37,8 @@
 namespace gum {
   template < typename T >
   concept JointTargettable = requires(T t, const NodeSet& target) {
-    { t.addJointTarget(target) } -> std::same_as< void >;
-  };
+                               { t.addJointTarget(target) } -> std::same_as< void >;
+                             };
 
   /** InformationTheory is a template class which aims at gathering the implementation of
    * informational functions (entropy, mutual information, etc.). All these operations start with
@@ -56,7 +56,8 @@ namespace gum {
    * @tparam GUM_SCALAR : the numeric type of parameters
    */
   template < template < typename > class INFERENCE_ENGINE, typename GUM_SCALAR >
-    requires JointTargettable< INFERENCE_ENGINE< GUM_SCALAR > >
+  //@todo when CLANG-compliant for virtual class:  requires JointTargettable< INFERENCE_ENGINE<
+  //GUM_SCALAR > >
   class InformationTheory {
     public:
     InformationTheory(INFERENCE_ENGINE< GUM_SCALAR >& engine,

@@ -44,7 +44,7 @@ namespace gum {
    */
   /* =========================================================================*/
 
-  class IntegerVariable: public DiscreteVariable {
+  class IntegerVariable final: public DiscreteVariable {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

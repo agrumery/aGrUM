@@ -52,12 +52,12 @@ namespace gum_tests {
       gum::Potential< double > pot1, pot2;
       pot1 << *(vars[0]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
       pot2 << *(vars[0]) << *(vars[2]);
-      randomInit(pot1);
-      randomInit(pot2);
-      gum::ScheduleMultiDim< gum::Potential< double > > f1(pot1, true);
-      gum::ScheduleMultiDim< gum::Potential< double > > f1b(pot1, false);
-      gum::ScheduleMultiDim< gum::Potential< double > > f2(pot2, true);
-      gum::ScheduleMultiDim< gum::Potential< double > > f2b(pot2, false);
+      pot1.random();
+      pot2.random();
+      gum::ScheduleMultiDim f1(pot1, true);
+      gum::ScheduleMultiDim f1b(pot1, false);
+      gum::ScheduleMultiDim f2(pot2, true);
+      gum::ScheduleMultiDim f2b(pot2, false);
 
       std::vector< gum::Potential< double > >                       v1;
       gum::ScheduleStorage< gum::Potential< double >, std::vector > store1(f1, v1);
@@ -70,130 +70,131 @@ namespace gum_tests {
       gum::ScheduleStorage< gum::Potential< double >*, gum::Set > store2ter(f2b, set2b);
 
 
-      TS_ASSERT(store1.implyDeletion());
-      TS_ASSERT(store1bis.implyDeletion());
-      TS_ASSERT(store2.implyDeletion());
-      TS_ASSERT(store2bis.implyDeletion());
+      TS_ASSERT(store1.implyDeletion())
+      TS_ASSERT(store1bis.implyDeletion())
+      TS_ASSERT(store2.implyDeletion())
+      TS_ASSERT(store2bis.implyDeletion())
 
-      TS_ASSERT(store1 != store1bis);
-      TS_ASSERT(store1.isSameOperator(store1bis));
-      TS_ASSERT(!(store1 == store1bis));
-      TS_ASSERT(store1.hasSimilarArguments(store1bis));
-      TS_ASSERT(store1.hasSameArguments(store1bis));
+      TS_ASSERT_DIFFERS(store1, store1bis)
+      TS_ASSERT(store1.isSameOperator(store1bis))
+      TS_ASSERT(!(store1 == store1bis))
+      TS_ASSERT(store1.hasSimilarArguments(store1bis))
+      TS_ASSERT(store1.hasSameArguments(store1bis))
 
-      TS_ASSERT(store2 != store2bis);
-      TS_ASSERT(store2.isSameOperator(store2bis));
-      TS_ASSERT(!(store2 == store2bis));
-      TS_ASSERT(store2.hasSimilarArguments(store2bis));
-      TS_ASSERT(!store2.hasSameArguments(store2bis));
+      TS_ASSERT_DIFFERS(store2, store2bis)
+      TS_ASSERT(store2.isSameOperator(store2bis))
+      TS_ASSERT(!(store2 == store2bis))
+      TS_ASSERT(store2.hasSimilarArguments(store2bis))
+      TS_ASSERT(!store2.hasSameArguments(store2bis))
 
       const gum::ScheduleOperator& store1const = store1;
-      TS_ASSERT(store1const.implyDeletion());
-      TS_ASSERT(store1 == store1const);
-      TS_ASSERT(!(store1 != store1const));
-      TS_ASSERT(store1.isSameOperator(store1const));
-      TS_ASSERT(store1.hasSimilarArguments(store1const));
-      TS_ASSERT(store1.hasSameArguments(store1const));
+      TS_ASSERT(store1const.implyDeletion())
+      TS_ASSERT(store1 == store1const)
+      TS_ASSERT(!(store1 != store1const))
+      TS_ASSERT(store1.isSameOperator(store1const))
+      TS_ASSERT(store1.hasSimilarArguments(store1const))
+      TS_ASSERT(store1.hasSameArguments(store1const))
 
       const gum::Sequence< const gum::IScheduleMultiDim* >& res1 = store1.results();
-      TS_ASSERT(res1.empty());
-      TS_ASSERT(store1const.implyDeletion());
+      TS_ASSERT(res1.empty())
+      TS_ASSERT(store1const.implyDeletion())
       const gum::Sequence< const gum::IScheduleMultiDim* >& xres1 = store1const.results();
-      TS_ASSERT(xres1.empty());
+      TS_ASSERT(xres1.empty())
 
       const auto& arg1 = store1.arg();
-      TS_ASSERT(&arg1 == &f1);
-      TS_ASSERT(arg1 == f1);
+      TS_ASSERT_EQUALS(&arg1, &f1)
+      TS_ASSERT_EQUALS(arg1, f1)
 
       const auto& args1 = store1.args();
-      TS_ASSERT(args1.size() == gum::Size(1));
-      TS_ASSERT(arg1 == *args1[0]);
+      TS_ASSERT_EQUALS(args1.size(), gum::Size(1))
+      TS_ASSERT(arg1 == *args1[0])
 
       store1.execute();
-      TS_ASSERT(f1.isAbstract());
-      TS_ASSERT(store1.arg().isAbstract());
-      TS_ASSERT(v1.size() == std::size_t(1));
-      TS_ASSERT(pot1 == v1[0]);
-      TS_ASSERT_THROWS(store1.undo(), const gum::OperationNotAllowed&);
+      TS_ASSERT(f1.isAbstract())
+      TS_ASSERT(store1.arg().isAbstract())
+      TS_ASSERT_EQUALS(v1.size(), 1u)
+      TS_ASSERT_EQUALS(pot1, v1[0])
+      TS_ASSERT_THROWS(store1.undo(), const gum::OperationNotAllowed&)
 
       store1bis.execute();
-      TS_ASSERT(f1b.isAbstract());
-      TS_ASSERT(v1.size() == std::size_t(2));
-      TS_ASSERT(v1[0] == v1[1]);
+      TS_ASSERT(f1b.isAbstract())
+      TS_ASSERT_EQUALS(v1.size(), 2u)
+      TS_ASSERT_EQUALS(v1[0], v1[1])
 
       store2.execute();
-      TS_ASSERT(store2.isExecuted());
-      TS_ASSERT(f2.isAbstract());
-      TS_ASSERT(store2.arg().isAbstract());
-      TS_ASSERT(set2.size() == gum::Size(1));
-      TS_ASSERT(**(set2.begin()) == pot2);
-      TS_ASSERT_THROWS(store2bis.execute(), const gum::NullElement&);
+      TS_ASSERT(store2.isExecuted())
+      TS_ASSERT(f2.isAbstract())
+      TS_ASSERT(store2.arg().isAbstract())
+      TS_ASSERT_EQUALS(set2.size(), gum::Size(1))
+      TS_ASSERT_EQUALS(**(set2.begin()), pot2)
+      TS_ASSERT_THROWS(store2bis.execute(), const gum::NullElement&)
 
       store2ter.execute();
-      TS_ASSERT(store2ter.isExecuted());
-      TS_ASSERT(f2b.isAbstract());
-      TS_ASSERT(store2ter.arg().isAbstract());
-      TS_ASSERT(set2b.size() == gum::Size(1));
-      TS_ASSERT(**(set2.begin()) == **(set2b.begin()));
+      TS_ASSERT(store2ter.isExecuted())
+      TS_ASSERT(f2b.isAbstract())
+      TS_ASSERT(store2ter.arg().isAbstract())
+      TS_ASSERT_EQUALS(set2b.size(), gum::Size(1))
+      TS_ASSERT_EQUALS(**(set2.begin()), **(set2b.begin()))
 
-      TS_ASSERT(store2.nbOperations() == 1.0);
-      const std::pair< double, double > xxx2 = store2.memoryUsage();
-      TS_ASSERT(xxx2.first == -4.0 * sizeof(double) - sizeof(gum::Potential< double >*));
-      TS_ASSERT(xxx2.second == -4.0 * sizeof(double) - sizeof(gum::Potential< double >*));
+      TS_ASSERT(store2.nbOperations() == 1.0)
+
+      const auto [xfirst, xsecond] = store2.memoryUsage();
+      TS_ASSERT_EQUALS(xfirst, -4.0 * sizeof(double) - sizeof(gum::Potential< double >*))
+      TS_ASSERT_EQUALS(xsecond, -4.0 * sizeof(double) - sizeof(gum::Potential< double >*))
 
       const std::pair< double, double > xxx1 = store1.memoryUsage();
-      TS_ASSERT(xxx1.first == -16.0 * sizeof(double) - sizeof(gum::Potential< double >));
-      TS_ASSERT(xxx1.second == -16.0 * sizeof(double) - sizeof(gum::Potential< double >));
+      TS_ASSERT_EQUALS(xxx1.first, -16.0 * sizeof(double) - sizeof(gum::Potential< double >))
+      TS_ASSERT_EQUALS(xxx1.second, -16.0 * sizeof(double) - sizeof(gum::Potential< double >))
 
       gum::ScheduleMultiDim< gum::Potential< double > >             f1c(pot1, true);
       gum::ScheduleStorage< gum::Potential< double >, std::vector > store4(f1c, v1);
       gum::ScheduleStorage< gum::Potential< double >, std::vector > store4b(store4);
-      TS_ASSERT(store4b.implyDeletion());
-      TS_ASSERT(!store4b.arg().isAbstract());
+      TS_ASSERT(store4b.implyDeletion())
+      TS_ASSERT(!store4b.arg().isAbstract())
 
       gum::ScheduleStorage< gum::Potential< double >, std::vector > store5(std::move(store4));
-      TS_ASSERT(store5.implyDeletion());
-      TS_ASSERT(!store5.arg().isAbstract());
+      TS_ASSERT(store5.implyDeletion())
+      TS_ASSERT(!store5.arg().isAbstract())
       store5.execute();
-      TS_ASSERT(store5.arg().isAbstract());
+      TS_ASSERT(store5.arg().isAbstract())
 
-      gum::ScheduleMultiDim< gum::Potential< double > > f3(pot2, true);
-      TS_ASSERT(store1.isExecuted());
+      gum::ScheduleMultiDim f3(pot2, true);
+      TS_ASSERT(store1.isExecuted())
       store1.updateArgs({&f3});
-      TS_ASSERT(!store1.arg().isAbstract());
-      TS_ASSERT(!store1.isExecuted());
-      TS_ASSERT(store1.implyDeletion());
+      TS_ASSERT(!store1.arg().isAbstract())
+      TS_ASSERT(!store1.isExecuted())
+      TS_ASSERT(store1.implyDeletion())
 
-      gum::ScheduleMultiDim< gum::Potential< double > > f4(pot2, true);
+      gum::ScheduleMultiDim f4(pot2, true);
       store2.updateArgs({&f4});
       gum::ScheduleOperator& xstore2 = store2;
-      TS_ASSERT(store1 != xstore2);
+      TS_ASSERT(store1 != xstore2)
 
       store2bis.updateArgs({&f4});
       gum::ScheduleStorage< gum::Potential< double >*, gum::Set > store3bis = store2bis;
       store3bis                                                             = store2ter;
-      TS_ASSERT(store3bis.implyDeletion());
-      TS_ASSERT(store3bis == store2ter);
-      TS_ASSERT(store3bis != store2bis);
+      TS_ASSERT(store3bis.implyDeletion())
+      TS_ASSERT_EQUALS(store3bis, store2ter)
+      TS_ASSERT(store3bis != store2bis)
 
       gum::ScheduleStorage< gum::Potential< double >*, gum::Set > store6 = store2bis;
       store3bis                                                          = std::move(store2bis);
-      TS_ASSERT(store6 == store3bis);
+      TS_ASSERT_EQUALS(store6, store3bis)
 
       gum::ScheduleStorage< gum::Potential< double >*, gum::Set >* store7 = store6.clone();
-      TS_ASSERT(store7->implyDeletion());
-      TS_ASSERT(store6 == *store7);
+      TS_ASSERT(store7->implyDeletion())
+      TS_ASSERT_EQUALS(store6, *store7)
       delete store7;
 
       std::stringstream s;
       s << "store ( " << f1b.toString() << " )";
-      TS_ASSERT(s.str() == store1bis.toString());
+      TS_ASSERT_EQUALS(s.str(), store1bis.toString())
 
       gum::Set< const gum::DiscreteVariable* > del_vars1;
       del_vars1 << vars[0] << vars[3];
       gum::ScheduleProjection< gum::Potential< double > > myproj(f1b, del_vars1, myProjectMax);
-      TS_ASSERT(!store1bis.isSameOperator(myproj));
-      TS_ASSERT(!store1bis.hasSimilarArguments(myproj));
+      TS_ASSERT(!store1bis.isSameOperator(myproj))
+      TS_ASSERT(!store1bis.hasSimilarArguments(myproj))
 
       for (const auto ptr: set2)
         delete ptr;
@@ -209,16 +210,6 @@ namespace gum_tests {
        myProjectMax(const gum::Potential< double >&                 pot,
                     const gum::Set< const gum::DiscreteVariable* >& del_vars) {
       return gum::Potential< double >(gum::projectMax(*(pot.content()), del_vars));
-    }
-
-    // ==========================================================================
-    /// initialize randomly a table
-    // ==========================================================================
-    void randomInit(gum::Potential< double >& t) {
-      gum::Instantiation i(t);
-
-      for (i.setFirst(); !i.end(); ++i)
-        t.set(i, rand() * 100000.0f / RAND_MAX);
     }
   };
 

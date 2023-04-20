@@ -47,22 +47,22 @@ namespace gum_tests {
 
       gum::Potential< double > pot1;
       pot1 << *(vars[0]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
-      randomInit(pot1);
-      gum::ScheduleMultiDim< gum::Potential< double > > f1(pot1, true);
-      gum::Set< const gum::DiscreteVariable* >          del_vars1;
+      pot1.random();
+      gum::ScheduleMultiDim                    f1(pot1, true);
+      gum::Set< const gum::DiscreteVariable* > del_vars1;
       del_vars1 << vars[0] << vars[3];
 
       gum::Potential< double > pot2;
       pot2 << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
-      randomInit(pot2);
-      gum::ScheduleMultiDim< gum::Potential< double > > f2(pot2, true);
-      gum::Set< const gum::DiscreteVariable* >          del_vars2;
+      pot2.random();
+      gum::ScheduleMultiDim                    f2(pot2, true);
+      gum::Set< const gum::DiscreteVariable* > del_vars2;
       del_vars2 << vars[0] << vars[3] << vars[2];
 
-      gum::ScheduleProjection< gum::Potential< double > > myproj(f1, del_vars1, myProjectMax);
+      gum::ScheduleProjection myproj(f1, del_vars1, myProjectMax);
       TS_ASSERT(!myproj.implyDeletion());
 
-      const gum::ScheduleMultiDim< gum::Potential< double > >& res = myproj.result();
+      const auto& res = myproj.result();
       TS_ASSERT(res.isAbstract());
 
       const gum::ScheduleProjection< gum::Potential< double > >& myprojconst(myproj);
@@ -71,9 +71,9 @@ namespace gum_tests {
       TS_ASSERT(resconst.isAbstract());
 
       TS_ASSERT(myproj.nbOperations() == 16.0);
-      std::pair< double, double > xxx = myproj.memoryUsage();
-      TS_ASSERT(xxx.first == 4.0 * sizeof(double) + sizeof(gum::Potential< double >));
-      TS_ASSERT(xxx.second == 4.0 * sizeof(double) + sizeof(gum::Potential< double >));
+      const auto [xfirst, xsecond] = myproj.memoryUsage();
+      TS_ASSERT_EQUALS(xfirst, 4.0 * sizeof(double) + sizeof(gum::Potential< double >))
+      TS_ASSERT_EQUALS(xsecond, 4.0 * sizeof(double) + sizeof(gum::Potential< double >))
 
       TS_ASSERT(myproj.arg() == f1);
 
@@ -83,22 +83,22 @@ namespace gum_tests {
       TS_ASSERT(s1.str() == myproj.toString());
 
       gum::ScheduleProjection< gum::Potential< double > > myproj2(myproj);
-      TS_ASSERT(!myproj2.implyDeletion());
-      TS_ASSERT(myproj2.result().isAbstract());
-      TS_ASSERT(!myproj2.isExecuted());
-      TS_ASSERT(myproj2 == myproj);
-      TS_ASSERT(!(myproj2 != myproj));
+      TS_ASSERT(!myproj2.implyDeletion())
+      TS_ASSERT(myproj2.result().isAbstract())
+      TS_ASSERT(!myproj2.isExecuted())
+      TS_ASSERT_EQUALS(myproj2, myproj)
+      TS_ASSERT(!(myproj2 != myproj))
 
       myproj.execute();
-      TS_ASSERT(!myproj.implyDeletion());
-      TS_ASSERT(!res.isAbstract());
-      TS_ASSERT(myproj2.result().isAbstract());
+      TS_ASSERT(!myproj.implyDeletion())
+      TS_ASSERT(!res.isAbstract())
+      TS_ASSERT(myproj2.result().isAbstract())
       myproj2.execute();
-      TS_ASSERT(!myproj2.result().isAbstract());
-      TS_ASSERT(myproj2.isExecuted());
+      TS_ASSERT(!myproj2.result().isAbstract())
+      TS_ASSERT(myproj2.isExecuted())
       myproj2.undo();
-      TS_ASSERT(myproj2.result().isAbstract());
-      TS_ASSERT(!myproj2.isExecuted());
+      TS_ASSERT(myproj2.result().isAbstract())
+      TS_ASSERT(!myproj2.isExecuted())
 
       gum::Potential< double > res2 = proj(pot1, del_vars1, 0);
       myproj2.execute();
@@ -106,7 +106,7 @@ namespace gum_tests {
       TS_ASSERT(xres2.multiDim() == res.multiDim());
       TS_ASSERT(xres2.multiDim() == res2);
 
-      gum::ScheduleProjection< gum::Potential< double > > myproj3(f2, del_vars2, myProjectMin);
+      gum::ScheduleProjection myproj3(f2, del_vars2, myProjectMin);
       TS_ASSERT(!myproj3.implyDeletion());
       TS_ASSERT(myproj3 != myproj);
       const gum::ScheduleMultiDim< gum::Potential< double > >& xxres3 = myproj3.result();
@@ -235,8 +235,8 @@ namespace gum_tests {
 
       gum::Potential< double > pot1;
       pot1 << *(vars[0]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
-      randomInit(pot1);
-      gum::ScheduleMultiDim< gum::Potential< double > > f1(pot1, false);
+      pot1.random();
+      gum::ScheduleMultiDim f1(pot1, false);
 
       gum::Set< const gum::DiscreteVariable* >            del_vars1;
       gum::ScheduleProjection< gum::Potential< double > > myproj1(f1, del_vars1, myProjectMax);
@@ -276,8 +276,8 @@ namespace gum_tests {
       myproj2.execute();
       gum::Potential< double > pot2 = myProjectMax(pot1, del_vars1);
       TS_ASSERT(pot2 == myproj2.result().multiDim())
-      gum::Sequence< const gum::IScheduleMultiDim* >    seq;
-      gum::ScheduleMultiDim< gum::Potential< double > > xpot2(pot2, false);
+      gum::Sequence< const gum::IScheduleMultiDim* > seq;
+      gum::ScheduleMultiDim                          xpot2(pot2, false);
       seq << &xpot2;
       myproj2.updateArgs(seq);
       TS_ASSERT(myproj2.result().domainSize() == 8)
@@ -292,8 +292,8 @@ namespace gum_tests {
 
       gum::Potential< double > pot3;
       pot3 << *(vars[2]) << *(vars[3]) << *(vars[4]);
-      randomInit(pot3);
-      gum::ScheduleMultiDim< gum::Potential< double > > f3(pot3, false);
+      pot3.random();
+      gum::ScheduleMultiDim f3(pot3, false);
       seq.clear();
       seq << &f3;
       myproj2.updateArgs(seq);
@@ -302,7 +302,7 @@ namespace gum_tests {
 
       gum::Potential< double > pot4;
       pot4.fillWith({3.0});
-      gum::ScheduleMultiDim< gum::Potential< double > > f4(pot4, false);
+      gum::ScheduleMultiDim f4(pot4, false);
       seq.clear();
       seq << &f4;
       myproj2.updateArgs(seq);
@@ -365,16 +365,6 @@ namespace gum_tests {
        myProjectMin(const gum::Potential< double >&                 pot,
                     const gum::Set< const gum::DiscreteVariable* >& del_vars) {
       return gum::Potential< double >(gum::projectMin(*(pot.content()), del_vars));
-    }
-
-    // ==========================================================================
-    /// initialize randomly a table
-    // ==========================================================================
-    void randomInit(gum::Potential< double >& t) {
-      gum::Instantiation i(t);
-
-      for (i.setFirst(); !i.end(); ++i)
-        t.set(i, rand() * 100000.0f / RAND_MAX);
     }
 
     // projection of a table over a set

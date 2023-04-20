@@ -48,23 +48,23 @@ namespace gum_tests {
 
       gum::Potential< double > pot1;
       pot1 << *(vars[0]) << *(vars[2]) << *(vars[4]);
-      randomInit(pot1);
-      gum::ScheduleMultiDim< gum::Potential< double > > f1(pot1, false);
+      pot1.random();
+      gum::ScheduleMultiDim f1(pot1, false);
 
       gum::Potential< double > pot2;
       pot2 << *(vars[1]) << *(vars[2]) << *(vars[3]);
-      randomInit(pot2);
-      gum::ScheduleMultiDim< gum::Potential< double > > f2(pot2, false);
+      pot2.random();
+      gum::ScheduleMultiDim f2(pot2, false);
 
       gum::Potential< double > pot3;
       pot3 << *(vars[0]) << *(vars[3]) << *(vars[5]);
-      randomInit(pot3);
-      gum::ScheduleMultiDim< gum::Potential< double > > f3(pot3, false);
+      pot3.random();
+      gum::ScheduleMultiDim f3(pot3, false);
 
       gum::Potential< double > pot4;
       pot4 << *(vars[3]) << *(vars[4]) << *(vars[5]);
-      randomInit(pot4);
-      gum::ScheduleMultiDim< gum::Potential< double > > f4(pot4, false);
+      pot4.random();
+      gum::ScheduleMultiDim f4(pot4, false);
 
       gum::ScheduleBinaryCombination< gum::Potential< double >,
                                       gum::Potential< double >,
@@ -373,18 +373,18 @@ namespace gum_tests {
 
       gum::Potential< double > pot1;
       pot1 << *(vars[0]) << *(vars[2]) << *(vars[4]);
-      randomInit(pot1);
-      gum::ScheduleMultiDim< gum::Potential< double > > f1(pot1, false);
+      pot1.random();
+      gum::ScheduleMultiDim f1(pot1, false);
 
       gum::Potential< double > pot2;
       pot2 << *(vars[1]) << *(vars[2]) << *(vars[3]);
-      randomInit(pot2);
-      gum::ScheduleMultiDim< gum::Potential< double > > f2(pot2, false);
+      pot2.random();
+      gum::ScheduleMultiDim f2(pot2, false);
 
       gum::Potential< double > pot3;
       pot3 << *(vars[4]) << *(vars[6]) << *(vars[3]);
-      randomInit(pot3);
-      gum::ScheduleMultiDim< gum::Potential< double > > f3(pot3, false);
+      pot3.random();
+      gum::ScheduleMultiDim f3(pot3, false);
 
       gum::ScheduleBinaryCombination< gum::Potential< double >,
                                       gum::Potential< double >,
@@ -513,16 +513,6 @@ namespace gum_tests {
        myProjectSum(const gum::Potential< double >&                 pot,
                     const gum::Set< const gum::DiscreteVariable* >& del_vars) {
       return gum::Potential< double >(gum::projectSum(*(pot.content()), del_vars));
-    }
-
-    // ==========================================================================
-    /// initialize randomly a table
-    // ==========================================================================
-    void randomInit(gum::Potential< double >& t) {
-      gum::Instantiation i(t);
-
-      for (i.setFirst(); !i.end(); ++i)
-        t.set(i, rand() * 100000.0f / RAND_MAX);
     }
   };
 

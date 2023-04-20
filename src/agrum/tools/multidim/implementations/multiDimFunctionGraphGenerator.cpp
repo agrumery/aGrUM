@@ -63,7 +63,6 @@ namespace gum {
     }
 
     HashTable< NodeId, Idx > node2MinVar;
-    Idx                      nbIter = 0;
 
     std::vector< NodeId > filo;
 
@@ -72,8 +71,7 @@ namespace gum {
     node2MinVar.insert(generatedFunctionGraph->root(), 0);
     filo.push_back(generatedFunctionGraph->root());
 
-    while (!filo.empty()) {   //&& nbIter < 20 ){
-
+    while (!filo.empty()) {
       NodeId currentNodeId = filo.back();
       filo.pop_back();
       Idx                 cvp         = node2MinVar[currentNodeId];
@@ -123,7 +121,6 @@ namespace gum {
           generatedFunctionGraph->manager()->setSon(currentNodeId, modality, nicleIter->element());
         }
       }
-      ++nbIter;
     }
 
     generatedFunctionGraph->manager()->reduce();
