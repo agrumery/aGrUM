@@ -37,8 +37,8 @@
 namespace gum {
   template < typename T >
   concept JointTargettable = requires(T t, const NodeSet& target) {
-                               { t.addJointTarget(target) } -> std::same_as< void >;
-                             };
+    { t.addJointTarget(target) } -> std::same_as< void >;
+  };
 
   /** InformationTheory is a template class which aims at gathering the implementation of
    * informational functions (entropy, mutual information, etc.). All these operations start with
@@ -60,10 +60,12 @@ namespace gum {
   class InformationTheory {
     public:
     InformationTheory(INFERENCE_ENGINE< GUM_SCALAR >& engine,
-                      gum::NodeSet                    X,
+                      gum::NodeSet                    X,   // X,Y,Z passed by Value & move
                       gum::NodeSet                    Y,
                       gum::NodeSet                    Z);
-    InformationTheory(INFERENCE_ENGINE< GUM_SCALAR >& engine, gum::NodeSet X, gum::NodeSet Y);
+    InformationTheory(INFERENCE_ENGINE< GUM_SCALAR >& engine,
+                      const gum::NodeSet&             X,
+                      const gum::NodeSet&             Y);
     InformationTheory(INFERENCE_ENGINE< GUM_SCALAR >&   engine,
                       const std::vector< std::string >& Xnames,
                       const std::vector< std::string >& Ynames);

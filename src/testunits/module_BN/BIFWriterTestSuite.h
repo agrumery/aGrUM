@@ -94,7 +94,6 @@ namespace gum_tests {
 
       char string1[256];
       char string2[256];
-      int  j = 0;
       while (!file1.eof()) {
         file1.getline(string1, 256);
         file2.getline(string2, 256);
@@ -115,7 +114,6 @@ namespace gum_tests {
           }
         }
 
-        j++;
         // we do not compare the comments (can contain version number of agrum
         if ((strncmp(string1, "//", 2) == 0) && (strncmp(string2, "//", 2) == 0)) continue;
         if (strcmp(string1, string2) != 0) { return false; }

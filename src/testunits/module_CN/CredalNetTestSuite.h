@@ -72,28 +72,23 @@ namespace gum_tests {
       auto c8 = lp.addCol();
 
       gum::Timer tim;
-      gum::Size  tmp = 0;
 
       while (tim.step() < 10) {
         gum::credal::lp::LpExpr expr(c1 + c2 + c3 + c4 + c5 + c6 + c7 + c8);
         lp.addRow(1 <= expr <= 1);
         lp.clearRows();
-        tmp++;
       }
 
       tim.reset();
-      tmp = 0;
       tim.resume();
 
       while (tim.step() < 10) {
         gum::credal::lp::LpExpr expr(c1 + c2 + c3 + c4 + c5 + c6 + c7 + c8);
         lp.addRow(1 <= std::move(expr) <= 1);
         lp.clearRows();
-        tmp++;
       }
 
       tim.reset();
-      tmp = 0;
       tim.resume();
 
       while (tim.step() < 10) {
@@ -101,7 +96,6 @@ namespace gum_tests {
         lp.addRow(1 <= expr);
         lp.addRow(expr <= 1);
         lp.clearRows();
-        tmp++;
       }
     };
 

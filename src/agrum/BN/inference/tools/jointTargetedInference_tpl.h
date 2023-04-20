@@ -268,7 +268,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   [[deprecated("Please directly use class gum::InformationTheory (since 1.7.1)")]] GUM_SCALAR
      JointTargetedInference< GUM_SCALAR >::I(NodeId X, NodeId Y) {
-    InformationTheory it(*this, NodeSet{X}, NodeSet{Y});
+    InformationTheory<JointTargetedInference,GUM_SCALAR> it(*this, NodeSet{X}, NodeSet{Y});
     return it.mutualInformationXY();
   }
 

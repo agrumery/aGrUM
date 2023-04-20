@@ -347,7 +347,7 @@ namespace gum_tests {
       gum::learning::IdCondSet set28(0, std::vector< gum::NodeId >{2, 1}, true);
       xnb = 0;
       TS_ASSERT_EQUALS(set28.nbLHSIds(), (std::size_t)1)
-      for (auto id: set28) {
+      for ([[maybe_unused]] auto id: set28) {
         id++;
         xnb++;
       }
