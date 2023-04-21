@@ -54,10 +54,10 @@ namespace gum_tests {
       pot2 << *(vars[0]) << *(vars[2]);
       pot1.random();
       pot2.random();
-      gum::ScheduleMultiDim f1(pot1, true);
-      gum::ScheduleMultiDim f1b(pot1, false);
-      gum::ScheduleMultiDim f2(pot2, true);
-      gum::ScheduleMultiDim f2b(pot2, false);
+      gum::ScheduleMultiDim< gum::Potential< double > > f1(pot1, true);
+      gum::ScheduleMultiDim< gum::Potential< double > > f1b(pot1, false);
+      gum::ScheduleMultiDim< gum::Potential< double > > f2(pot2, true);
+      gum::ScheduleMultiDim< gum::Potential< double > > f2b(pot2, false);
 
       std::vector< gum::Potential< double > >                       v1;
       gum::ScheduleStorage< gum::Potential< double >, std::vector > store1(f1, v1);
@@ -158,14 +158,14 @@ namespace gum_tests {
       store5.execute();
       TS_ASSERT(store5.arg().isAbstract())
 
-      gum::ScheduleMultiDim f3(pot2, true);
+      gum::ScheduleMultiDim< gum::Potential< double > > f3(pot2, true);
       TS_ASSERT(store1.isExecuted())
       store1.updateArgs({&f3});
       TS_ASSERT(!store1.arg().isAbstract())
       TS_ASSERT(!store1.isExecuted())
       TS_ASSERT(store1.implyDeletion())
 
-      gum::ScheduleMultiDim f4(pot2, true);
+      gum::ScheduleMultiDim< gum::Potential< double > > f4(pot2, true);
       store2.updateArgs({&f4});
       gum::ScheduleOperator& xstore2 = store2;
       TS_ASSERT(store1 != xstore2)

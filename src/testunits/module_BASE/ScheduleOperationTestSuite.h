@@ -49,11 +49,11 @@ namespace gum_tests {
       gum::Potential< double > pot1;
       pot1 << *(vars[0]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
       pot1.random();
-      gum::ScheduleMultiDim                    f1(pot1, true);
-      gum::Set< const gum::DiscreteVariable* > del_vars;
+      gum::ScheduleMultiDimn< gum::Potential< double > > f1(pot1, true);
+      gum::Set< const gum::DiscreteVariable* >           del_vars;
       del_vars << vars[0] << vars[3];
 
-      gum::ScheduleProjection real_myproj(f1, del_vars, myProjectMax);
+      gum::ScheduleProjection< gum::Potential< double > > real_myproj(f1, del_vars, myProjectMax);
       const gum::ScheduleMultiDim< gum::Potential< double > >& res    = real_myproj.result();
       gum::ScheduleOperator&                                   myproj = real_myproj;
 

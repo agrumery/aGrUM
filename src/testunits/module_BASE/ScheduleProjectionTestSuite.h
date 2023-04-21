@@ -48,18 +48,18 @@ namespace gum_tests {
       gum::Potential< double > pot1;
       pot1 << *(vars[0]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
       pot1.random();
-      gum::ScheduleMultiDim                    f1(pot1, true);
-      gum::Set< const gum::DiscreteVariable* > del_vars1;
+      gum::ScheduleMultiDim< gum::Potential< double > > f1(pot1, true);
+      gum::Set< const gum::DiscreteVariable* >          del_vars1;
       del_vars1 << vars[0] << vars[3];
 
       gum::Potential< double > pot2;
       pot2 << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
       pot2.random();
-      gum::ScheduleMultiDim                    f2(pot2, true);
-      gum::Set< const gum::DiscreteVariable* > del_vars2;
+      gum::ScheduleMultiDim< gum::Potential< double > > f2(pot2, true);
+      gum::Set< const gum::DiscreteVariable* >          del_vars2;
       del_vars2 << vars[0] << vars[3] << vars[2];
 
-      gum::ScheduleProjection myproj(f1, del_vars1, myProjectMax);
+      gum::ScheduleProjection< gum::Potential< double > > myproj(f1, del_vars1, myProjectMax);
       TS_ASSERT(!myproj.implyDeletion());
 
       const auto& res = myproj.result();
@@ -106,7 +106,7 @@ namespace gum_tests {
       TS_ASSERT(xres2.multiDim() == res.multiDim());
       TS_ASSERT(xres2.multiDim() == res2);
 
-      gum::ScheduleProjection myproj3(f2, del_vars2, myProjectMin);
+      gum::ScheduleProjection< gum::Potential< double > > myproj3(f2, del_vars2, myProjectMin);
       TS_ASSERT(!myproj3.implyDeletion());
       TS_ASSERT(myproj3 != myproj);
       const gum::ScheduleMultiDim< gum::Potential< double > >& xxres3 = myproj3.result();
@@ -236,7 +236,7 @@ namespace gum_tests {
       gum::Potential< double > pot1;
       pot1 << *(vars[0]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
       pot1.random();
-      gum::ScheduleMultiDim f1(pot1, false);
+      gum::ScheduleMultiDim< gum::Potential< double > > f1(pot1, false);
 
       gum::Set< const gum::DiscreteVariable* >            del_vars1;
       gum::ScheduleProjection< gum::Potential< double > > myproj1(f1, del_vars1, myProjectMax);
@@ -276,8 +276,8 @@ namespace gum_tests {
       myproj2.execute();
       gum::Potential< double > pot2 = myProjectMax(pot1, del_vars1);
       TS_ASSERT(pot2 == myproj2.result().multiDim())
-      gum::Sequence< const gum::IScheduleMultiDim* > seq;
-      gum::ScheduleMultiDim                          xpot2(pot2, false);
+      gum::Sequence< const gum::IScheduleMultiDim* >    seq;
+      gum::ScheduleMultiDim< gum::Potential< double > > xpot2(pot2, false);
       seq << &xpot2;
       myproj2.updateArgs(seq);
       TS_ASSERT(myproj2.result().domainSize() == 8)
@@ -293,7 +293,7 @@ namespace gum_tests {
       gum::Potential< double > pot3;
       pot3 << *(vars[2]) << *(vars[3]) << *(vars[4]);
       pot3.random();
-      gum::ScheduleMultiDim f3(pot3, false);
+      gum::ScheduleMultiDim< gum::Potential< double > > f3(pot3, false);
       seq.clear();
       seq << &f3;
       myproj2.updateArgs(seq);
@@ -302,7 +302,7 @@ namespace gum_tests {
 
       gum::Potential< double > pot4;
       pot4.fillWith({3.0});
-      gum::ScheduleMultiDim f4(pot4, false);
+      gum::ScheduleMultiDim< gum::Potential< double > > f4(pot4, false);
       seq.clear();
       seq << &f4;
       myproj2.updateArgs(seq);
