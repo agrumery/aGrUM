@@ -302,3 +302,18 @@ def deprecatedI(self, X, Y):
 
 ShaferShenoyMRFInference.I = deprecatedI
 LazyPropagation.I = deprecatedI
+
+########################################################################################################
+def deprecatedH(self, X):
+  """
+  Deprecated I in LazyPropagation/ShaferShenoyMRFInference
+  """
+  warnings.warn("""
+** pyAgrum.{inference}.H() is deprecated from pyAgrum>1.7.1. Please use class pyAgrum.InformationTheory instead.
+""", DeprecationWarning, stacklevel=2)
+  it = InformationTheory(self, X, [])
+  return it.entropyX()
+
+
+ShaferShenoyMRFInference.H = deprecatedH
+LazyPropagation.H = deprecatedH
