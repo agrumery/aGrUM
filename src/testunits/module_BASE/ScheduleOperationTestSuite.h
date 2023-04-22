@@ -43,14 +43,14 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         const std::string& s = str.str();
-        vars[i]       = new gum::LabelizedVariable(s, s, 2);
+        vars[i]              = new gum::LabelizedVariable(s, s, 2);
       }
 
       gum::Potential< double > pot1;
       pot1 << *(vars[0]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
       pot1.random();
       gum::ScheduleMultiDim< gum::Potential< double > > f1(pot1, true);
-      gum::Set< const gum::DiscreteVariable* >           del_vars;
+      gum::Set< const gum::DiscreteVariable* >          del_vars;
       del_vars << vars[0] << vars[3];
 
       gum::ScheduleProjection< gum::Potential< double > > real_myproj(f1, del_vars, myProjectMax);

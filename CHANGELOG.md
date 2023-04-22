@@ -1,13 +1,20 @@
 # aGrUM Changelog
 
-## Changelog for 1.7.2
+## Changelog for 1.8.0
 
 * aGrUM
-  * Adding the alternative *fast* syntax for NumericalDiscreteVariable : `{1.5:3.5:3}` meaning from 1.5 to 3.5 in 3 steps.
-  * Updating `GraphicalModel::exists(const std::string&)` : return false instead of throw an exception.
-  * Adding mingw as a target for CI
+    * Adding new class `gum::InfomationTheory` that regroup every information theory concepts (entropies, conditionnal 
+      entropies and mutual information, ...) with only one inference, which allows also conditioned information 
+      theory concepts.  
+    * Adding `gum::Potential::expectedValue()`
+    * Adding the alternative *fast* syntax for NumericalDiscreteVariable : `{1.5:3.5:3}` meaning from 1.5 to 3.5 in 3 steps.
+    * Updating `GraphicalModel::exists(const std::string&)` : return false instead of throw an exception.
+    * Adding mingw as a target for CI
 
 * pyAgrum
+  * Adding new class `pyAgrum.InfomationTheory` that regroup every information theory concepts (entropies, conditionnal entropies and mutual information, ...) with only one inference, which allows also conditioned information theory concepts.
+  * Adding `pyAgrum.Potential.expectedValue()`.
+  * Restructuring a bit the sphinx documentation.
   * Updating notebooks to the new down-exported read-only API of `pyAgrum.DiscreteVariable`.
   * Down-exporting the read-only API for every types of discrete Variable to `pyAgrum.DiscreteVariable`. (see `VariablesTestSuite.testExportDerivedReadOnlyAPIforDiscreteVariable`)
   * Updating docs for new *fast* syntax.

@@ -35,7 +35,7 @@
 #define INFORMATION_THEORY_TEMPLATE                        \
   template < template < typename > class INFERENCE_ENGINE, \
              typename GUM_SCALAR >   //@todo when CLANG-compliant for virtual class :  requires
-                                     //JointTargettable< INFERENCE_ENGINE< GUM_SCALAR > >
+                                     // JointTargettable< INFERENCE_ENGINE< GUM_SCALAR > >
 
 namespace gum {
   INFORMATION_THEORY_TEMPLATE
