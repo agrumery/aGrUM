@@ -55,7 +55,7 @@ namespace gum_tests {
       gum::Potential< double > pot2;
       pot2 << *(vars[1]) << *(vars[2]) << *(vars[3]);
       pot2.random();
-      gum::ScheduleMultiDim< gum::Potential< double > > f1(pot1, true);
+      gum::ScheduleMultiDim< gum::Potential< double > > f2(pot2, true);
 
       gum::Potential< double > pot3;
       pot3 << *(vars[0]) << *(vars[3]) << *(vars[5]);
@@ -288,12 +288,12 @@ namespace gum_tests {
       gum::Potential< double > p3;
       p3 << *(vars[0]);
       p3.random();
-      gum::ScheduleMultiDim f3(p3, false);
+      gum::ScheduleMultiDim< gum::Potential< double > > f3(p3, false);
 
       gum::Potential< double > p4;
       p4 << *(vars[1]) << *(vars[2]);
       p4.random();
-      gum::ScheduleMultiDim f4(p4, true);
+      gum::ScheduleMultiDim< gum::Potential< double > > f4(p4, true);
 
       gum::ScheduleBinaryCombination< gum::Potential< double >,
                                       gum::Potential< double >,
