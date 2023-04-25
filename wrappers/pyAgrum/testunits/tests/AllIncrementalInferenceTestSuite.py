@@ -127,17 +127,26 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
     self.assertEqual(self.ie.posterior("D"), self.joint.margSumIn(["D"]))
     self.assertEqual(self.ie.posterior("H"), self.joint.margSumIn(["H"]))
 
-  def testPriorWithTargert(self):
+  def testPriorWithTarget(self):
     self.ie.eraseAllTargets()
     self.ie.addTarget("A")
     self.ie.addTarget("C")
     self.assertEqual(self.ie.posterior("A"), self.joint.margSumIn(["A"]))
     self.assertEqual(self.ie.posterior("C"), self.joint.margSumIn(["C"]))
 
-    with self.assertRaises(gum.UndefinedElement):
+    try:
       p = self.ie.posterior("D")
-    with self.assertRaises(gum.UndefinedElement):
+      self.assertTrue(type(self.ie)==gum.VariableElimination)
+      self.assertEqual(p, self.joint.margSumIn(["D"]))
+    except gum.UndefinedElement as e:
+      self.assertTrue(type(self.ie)!=gum.VariableElimination) # error not correctly caught by with ...
+
+    try:
       p = self.ie.posterior("H")
+      self.assertTrue(type(self.ie)==gum.VariableElimination)
+      self.assertEqual(p, self.joint.margSumIn(["H"]))
+    except gum.UndefinedElement as e:
+      self.assertTrue(type(self.ie)!=gum.VariableElimination) # error not correctly caught by with ...
 
   def testPriorWithTargetsEvidence(self):
     self.ie.eraseAllTargets()
@@ -379,9 +388,7 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
 
     pjoint = self.joint * gum.Potential().add(self.bn.variable("A")).fillWith([0.3, 0.7])
     self.assertEqual(self.ie.jointPosterior({'A', 'D'}), pjoint.margSumIn(["A", "D"]).normalize())
-
-    with self.assertRaises(gum.UndefinedElement):
-      self.ie.jointPosterior({'A', 'C'})
+    self.assertEqual(self.ie.jointPosterior({'A', 'C'}), pjoint.margSumIn(["A", "C"]).normalize())
 
 
 class IncrementalLazyPropagationTestCase(IncrementalLazyPropagationTestCase):

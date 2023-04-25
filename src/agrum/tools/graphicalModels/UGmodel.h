@@ -143,6 +143,14 @@ namespace gum {
     /// the same
     bool hasSameStructure(const UGmodel& other);
 
+    /// returns the the node as a NodeSet (in mixed graph : family is the node and its parents
+    /**
+     * @param id the node which is the head of an arc with the returned nodes
+     * @param name the name of the node the node which is the head of an arc with
+     * the returned nodes*/
+    NodeSet family(const NodeId id) const final;
+    NodeSet family(const std::string& name) const final;
+
     protected:
     /**
      * Private copy operator.

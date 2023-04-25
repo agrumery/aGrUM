@@ -23,7 +23,6 @@
 #include <iostream>
 #include <sstream>
 #include <utility>
-#include <string.h>
 
 #include <agrum/agrum.h>
 #include <agrum/tools/core/exceptions.h>

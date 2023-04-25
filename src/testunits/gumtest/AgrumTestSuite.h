@@ -22,7 +22,7 @@
 #ifndef AGRUM_TEST_SUITE_H
 #define AGRUM_TEST_SUITE_H
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <gumtest/testsuite_utils.h>
 
 #include <cxxtest/TestSuite.h>
@@ -33,7 +33,7 @@
 #define TS_GUM_ASSERT_THROWS_NOTHING(block)      \
   TS_ASSERT_THROWS_NOTHING(                      \
      try { block; } catch (gum::Exception & e) { \
-       GUM_TRACE_NEWLINE                         \
+       GUM_TRACE_NEWLINE;                        \
        GUM_SHOWERROR(e);                         \
        TS_FAIL("gum::Exception thrown");         \
      })

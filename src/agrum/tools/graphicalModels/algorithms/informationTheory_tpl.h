@@ -46,10 +46,10 @@ namespace gum {
      gum::NodeSet                    Z) :
       engine_(engine),
       X_(std::move(X)), Y_(std::move(Y)), Z_(std::move(Z)) {
+    GUM_CONSTRUCTOR(InformationTheory)
     if ((!(X_ * Y_).empty()) || (!(X_ * Z_).empty()) || (!(Z_ * Y_).empty()))
       GUM_ERROR(OperationNotAllowed, "The intersection between the set of variables must be empty")
     makeInference_();
-    GUM_CONSTRUCTOR(InformationTheory)
   }
 
   INFORMATION_THEORY_TEMPLATE
@@ -101,8 +101,18 @@ namespace gum {
 
     const NodeSet joint_vars = X_ + Y_ + Z_;
     if (!engine_.isJointTarget(joint_vars)) {
-      engine_.eraseAllJointTargets();
-      engine_.addJointTarget(joint_vars);
+      // we check if it is not an implicit target : containng a node and some of its parent (could
+      // be better)
+      bool                    implicit_target = false;
+      for (const auto node: joint_vars)
+        if (engine_.model().family(node).isSupersetOrEqual(joint_vars)) {
+          implicit_target = true;
+          break;
+        }
+      if (!implicit_target) {
+        engine_.eraseAllJointTargets();
+        engine_.addJointTarget(joint_vars);
+      }
     }
     engine_.makeInference();
 
@@ -158,6 +168,35 @@ namespace gum {
   }
 
   INFORMATION_THEORY_TEMPLATE
+  GUM_SCALAR InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::entropyXgivenZ() {
+    if (Z_.empty()) GUM_ERROR(ArgumentError, "Z has not been specified.")
+    return -pXZ_.expectedValue([this](const gum::Instantiation& i) -> GUM_SCALAR {
+      // f(x,z)=log (p(x,z)/p(y))
+      const auto& pxz = pXZ_[i];
+      if (pxz == GUM_SCALAR(0.0)) return GUM_SCALAR(0.0);
+
+      const auto& pz = pZ_[i];
+      if (pz == GUM_SCALAR(0.0)) return GUM_SCALAR(0.0);
+
+      return GUM_LOG2_OR_0(pxz / pz);
+    });
+  }
+  INFORMATION_THEORY_TEMPLATE
+  GUM_SCALAR InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::entropyYgivenZ() {
+    if (Z_.empty()) GUM_ERROR(ArgumentError, "Z has not been specified.")
+    return -pYZ_.expectedValue([this](const gum::Instantiation& i) -> GUM_SCALAR {
+      // f(y,z)=log (p(y,z)/p(z))
+      const auto& pyz = pYZ_[i];
+      if (pyz == GUM_SCALAR(0.0)) return GUM_SCALAR(0.0);
+
+      const auto& pz = pZ_[i];
+      if (pz == GUM_SCALAR(0.0)) return GUM_SCALAR(0.0);
+
+      return GUM_LOG2_OR_0(pyz / pz);
+    });
+  }
+
+  INFORMATION_THEORY_TEMPLATE
   GUM_SCALAR InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::mutualInformationXY() {
     return pXY_.expectedValue([this](const gum::Instantiation& i) -> GUM_SCALAR {
       // f(x,y)=log (p(x,y)/p(x)p(y))
@@ -191,6 +230,21 @@ namespace gum {
       if (pz == GUM_SCALAR(0.0)) return GUM_SCALAR(0.0);
 
       return -GUM_LOG2_OR_0(pxyz / pz);
+    });
+  }
+
+  INFORMATION_THEORY_TEMPLATE
+  GUM_SCALAR InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::entropyXgivenYZ() {
+    if (Z_.empty()) GUM_ERROR(ArgumentError, "Z has not been specified.")
+    return pXYZ_.expectedValue([this](const gum::Instantiation& i) -> GUM_SCALAR {
+      // f(x,y)=log (p(x,y)/p(y))
+      const auto& pxyz = pXYZ_[i];
+      if (pxyz == GUM_SCALAR(0.0)) return GUM_SCALAR(0.0);
+
+      const auto& pyz = pYZ_[i];
+      if (pyz == GUM_SCALAR(0.0)) return GUM_SCALAR(0.0);
+
+      return -GUM_LOG2_OR_0(pxyz / pyz);
     });
   }
 

@@ -39,6 +39,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <vector>
 #include <utility>
 #include <agrum/tools/core/debug.h>
+#include <agrum/tools/core/hashTable.h>
 #include <agrum/PRM/o3prm/O3prm.h>
 
 #include <iostream>
@@ -355,5 +356,4 @@ O3InterfaceElementList& elts);
 
 
 #endif // !defined(COCO_PARSER_H__)
-
 

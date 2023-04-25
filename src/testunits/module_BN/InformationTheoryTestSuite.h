@@ -21,15 +21,17 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "agrum/tools/multidim/potential.h"
 #include "cxxtest/TestSuite.h"
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include "testunits/gumtest/AgrumTestSuite.h"
+#include "testunits/gumtest/testsuite_utils.h"
 
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/MRF/inference/ShaferShenoyMRFInference.h>
 #include <agrum/MRF/MarkovRandomField.h>
 #include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/tools/graphicalModels/algorithms/informationTheory.h>
 
 namespace gum_tests {
@@ -136,7 +138,7 @@ namespace gum_tests {
       gum::LazyPropagation ie(&bn);
 
       auto it = gum::InformationTheory(ie, {"A", "C"}, {"B"});
-      check_this_information_theory(it);
+      check_this_information_theoryXY(it);
     }
 
     GUM_ACTIVE_TEST(ShafShenCheckConsistency) {
@@ -145,7 +147,7 @@ namespace gum_tests {
       gum::ShaferShenoyInference ie(&bn);
 
       auto it = gum::InformationTheory(ie, {"A", "C"}, {"B"});
-      check_this_information_theory(it);
+      check_this_information_theoryXY(it);
     }
 
     GUM_ACTIVE_TEST(MRFCheckConsistency) {
@@ -154,15 +156,99 @@ namespace gum_tests {
       gum::ShaferShenoyMRFInference ie(&mrf);
 
       auto it = gum::InformationTheory(ie, {"A", "C"}, {"B"});
-      check_this_information_theory(it);
+      check_this_information_theoryXY(it);
+    }
+
+    GUM_ACTIVE_TEST(CheckConsistency3points) {
+      const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D->E");
+
+      gum::LazyPropagation ie(&bn);
+
+      auto it = gum::InformationTheory(ie, {"A", "E"}, {"B"}, {"C", "D"});
+      check_this_information_theoryXY(it);
+      check_this_information_theoryXYZ(it);
+    }
+
+    GUM_ACTIVE_TEST(ShafShenCheckConsistency3points) {
+      const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D->E");
+
+      gum::ShaferShenoyInference ie(&bn);
+
+      auto it = gum::InformationTheory(ie, {"A", "E"}, {"B"}, {"C", "D"});
+      check_this_information_theoryXY(it);
+      check_this_information_theoryXYZ(it);
+    }
+
+    GUM_ACTIVE_TEST(MRFCheckConsistency3points) {
+      const auto mrf = gum::MarkovRandomField< double >::fastPrototype("A--B--C;A--D--E--B");
+
+      gum::ShaferShenoyMRFInference ie(&mrf);
+
+      auto it = gum::InformationTheory(ie, {"A", "E"}, {"B"}, {"C", "D"});
+      check_this_information_theoryXY(it);
+      check_this_information_theoryXYZ(it);
+    }
+
+    GUM_ACTIVE_TEST(CheckCrossInferenceConsistency) {
+      std::string             file = GET_RESSOURCES_PATH("bif/alarm.bif");
+      gum::BayesNet< double > bn;
+      gum::BIFReader          reader(&bn, file);
+
+      auto lazy = gum::LazyPropagation(&bn);
+      auto shaf = gum::ShaferShenoyInference(&bn);
+      for (const auto& arc: bn.arcs()) {
+        gum::InformationTheory itlazy(lazy, gum::NodeSet{arc.first()}, gum::NodeSet{arc.second()});
+        gum::InformationTheory itshaf(shaf, gum::NodeSet{arc.first()}, gum::NodeSet{arc.second()});
+        TS_GUM_ASSERT_QUASI_EQUALS(itlazy.mutualInformationXY(), itshaf.mutualInformationXY())
+      }
+    }
+
+    GUM_ACTIVE_TEST(checkMutalInformationOnArc) {
+      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;C->E;D->F;C<-G->H->E", 4);
+      gum::Potential< double > joint;
+      for (auto n: bn.nodes())
+        joint *= bn.cpt(n);
+      
+      auto mi = [&](gum::NodeId x, gum::NodeId y) -> double {
+        using VarSet   = gum::Set< const gum::DiscreteVariable* >;
+        const auto vx  = &bn.variable(x);
+        const auto vy  = &bn.variable(y);
+        const auto hxy = joint.margSumIn(VarSet{vx, vy}).entropy();
+        const auto hx  = joint.margSumIn(VarSet{vx}).entropy();
+        const auto hy  = joint.margSumIn(VarSet{vy}).entropy();
+        return hx + hy - hxy;
+      };
+      auto h = [&](gum::NodeId x) -> double {
+        using VarSet   = gum::Set< const gum::DiscreteVariable* >;
+        const auto vx  = &bn.variable(x);
+        return joint.margSumIn(VarSet{vx}).entropy();
+      };
+
+      gum::LazyPropagation lazy(&bn);
+
+      for (const auto& arc: bn.arcs()) {
+        gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
+                                                                  gum::NodeSet{arc.first()},
+                                                                  gum::NodeSet{arc.second()});
+        TS_GUM_ASSERT_QUASI_EQUALS(mi(arc.first(), arc.second()), it.mutualInformationXY())
+      }
+      for(const auto& node: bn.nodes()) {
+        gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
+                                                                  gum::NodeSet{node},
+                                                                  gum::NodeSet{});
+        TS_GUM_ASSERT_QUASI_EQUALS(h(node), it.entropyX())
+      }
     }
 
     private:
     template < class IT >
-    static void check_this_information_theory(IT it) {
+    static void check_this_information_theoryXY(IT& it) {
       // H(X|Y)=H(X,Y)-H(Y)
       TS_GUM_ASSERT_QUASI_EQUALS(it.entropyXgivenY(), it.entropyXY() - it.entropyY())
 
+      // H(Y|X)=H(X|Y)-H(X)+H(Y)
+      TS_GUM_ASSERT_QUASI_EQUALS(it.entropyYgivenX(),
+                                 it.entropyXgivenY() - it.entropyX() + it.entropyY())
 
       // I(X,Y)=H(X)-H(X|Y)=H(Y)-H(Y|X)
       TS_GUM_ASSERT_QUASI_EQUALS(it.mutualInformationXY(), it.entropyX() - it.entropyXgivenY())
@@ -175,6 +261,20 @@ namespace gum_tests {
       // I(X,Y)=H(X,Y)-H(X|Y)-H(Y|X)
       TS_GUM_ASSERT_QUASI_EQUALS(it.mutualInformationXY(),
                                  it.entropyXY() - it.entropyXgivenY() - it.entropyYgivenX())
+
+      // V(X,Y)=2H(X,Y)-H(X)-H(Y)
+      TS_GUM_ASSERT_QUASI_EQUALS(it.variationOfInformationXY(),
+                                 2 * it.entropyXY() - it.entropyXgivenY() - it.entropyYgivenX())
+    }
+
+    template < class IT >
+    static void check_this_information_theoryXYZ(IT& it) {
+      // H(X|Y);Z=H(X,Y|Z)-H(Y|Z)
+      TS_GUM_ASSERT_QUASI_EQUALS(it.entropyXgivenYZ(), it.entropyXYgivenZ() - it.entropyYgivenZ())
+
+      // I(X,Y|Z)=H(X|Z)+H(Y|Z)-H(X,Y|Z)
+      TS_GUM_ASSERT_QUASI_EQUALS(it.mutualInformationXYgivenZ(),
+                                 it.entropyXgivenZ() + it.entropyYgivenZ() - it.entropyXYgivenZ())
     }
   };
 }   // namespace gum_tests

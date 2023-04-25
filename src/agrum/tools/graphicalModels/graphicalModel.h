@@ -181,6 +181,14 @@ namespace gum {
      */
     static void spaceCplxToStream(std::stringstream& s, double dSize, int dim, Size usedMem);
 
+    /// returns the family of a noe (parents or neighbours) of a node and the node
+    /**
+     * @param id the node which is the head of an arc with the returned nodes
+     * @param name the name of the node the node which is the head of an arc with
+     * the returned nodes*/
+    virtual NodeSet family(const NodeId id) const = 0;
+    virtual NodeSet family(const std::string& name) const =0;
+
     protected:
     /**
      * Private copy operator.
@@ -193,6 +201,8 @@ namespace gum {
 
     /// Return the properties of this Directed Graphical Model
     const HashTable< std::string, std::string >& _properties_() const;
+
+
   };
 }   // namespace gum
 

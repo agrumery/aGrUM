@@ -122,8 +122,8 @@ namespace gum {
      * @param id the node which is the head of an arc with the returned nodes
      * @param name the name of the node the node which is the head of an arc with
      * the returned nodes*/
-    NodeSet family(const NodeId id) const;
-    NodeSet family(const std::string& name) const;
+    NodeSet family(const NodeId id) const final;
+    NodeSet family(const std::string& name) const final;
 
     /// returns the set of nodes with arc outgoing from a given node
     /** Note that the set of nodes returned may be empty if no node

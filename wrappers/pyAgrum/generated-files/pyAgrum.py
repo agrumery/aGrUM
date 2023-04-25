@@ -6627,6 +6627,9 @@ class GraphicalModel(object):
         """
         return _pyAgrum.GraphicalModel_isIndependent(self, *args)
 
+    def family(self, *args) -> List[int]:
+        return _pyAgrum.GraphicalModel_family(self, *args)
+
 # Register GraphicalModel in _pyAgrum:
 _pyAgrum.GraphicalModel_swigregister(GraphicalModel)
 _static_list_end_safe_ = cvar._static_list_end_safe_
@@ -6980,6 +6983,9 @@ class UGmodel(GraphicalModel):
 
     def hasSameStructure(self, other: "pyAgrum.UGmodel") -> bool:
         return _pyAgrum.UGmodel_hasSameStructure(self, other)
+
+    def family(self, *args) -> List[int]:
+        return _pyAgrum.UGmodel_family(self, *args)
 
 # Register UGmodel in _pyAgrum:
 _pyAgrum.UGmodel_swigregister(UGmodel)

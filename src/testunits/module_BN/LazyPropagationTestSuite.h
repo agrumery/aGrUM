@@ -1,5 +1,4 @@
-/**
- *
+/*
  *   Copyright (c) 2005-2023 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
@@ -1492,6 +1491,44 @@ namespace gum_tests {
         delete var;
     }
 
+    GUM_ACTIVE_TEST(ImplicitTarget) {
+      // there always is a clique containing a node and its parent
+      auto bn= gum::BayesNet<double>::fastPrototype("A->B->C->D");
+
+      // {0,1} is an implicit target
+      gum::LazyPropagation ie(&bn);
+      TS_GUM_ASSERT_THROWS_NOTHING(ie.jointPosterior(gum::NodeSet{0, 1}))
+      TS_ASSERT_THROWS(ie.jointPosterior(gum::NodeSet{0, 3}),gum::UndefinedElement&)
+
+      auto p1=ie.jointPosterior(gum::NodeSet{0, 1});
+
+      // expliciting target {0,1}
+      gum::LazyPropagation ie2(&bn);
+      ie2.addJointTarget((gum::NodeSet{0, 1}));
+      auto p2=ie2.jointPosterior(gum::NodeSet{0, 1});
+
+      TS_GUM_POTENTIAL_DELTA(p1,p2,1e-8) // no diff !
+    }
+
+
+    GUM_ACTIVE_TEST(ImplicitTarget2) {
+      // there always is a clique containing the parents of the same node
+      auto bn= gum::BayesNet<double>::fastPrototype("A->B<-C->D");
+
+      // {0,2} is an implicit target
+      gum::LazyPropagation ie(&bn);
+      TS_GUM_ASSERT_THROWS_NOTHING(ie.jointPosterior(gum::NodeSet{0, 2}))
+      TS_ASSERT_THROWS(ie.jointPosterior(gum::NodeSet{0, 3}),gum::UndefinedElement&)
+
+      auto p1=ie.jointPosterior(gum::NodeSet{0, 2});
+
+      // expliciting target {0,2}
+      gum::LazyPropagation ie2(&bn);
+      ie2.addJointTarget((gum::NodeSet{0, 2}));
+      auto p2=ie2.jointPosterior(gum::NodeSet{0, 2});
+
+      TS_GUM_POTENTIAL_DELTA(p1,p2,1e-8) // no diff !
+    }
 
     private:
     // Builds a _bn to test the inference
