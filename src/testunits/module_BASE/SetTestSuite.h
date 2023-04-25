@@ -564,29 +564,29 @@ namespace gum_tests {
       gum::Set< int > t2{1, 3};
       gum::Set< int > t3{4};
 
-      TS_ASSERT(!t1.isProperSubsetOf(t1))
-      TS_ASSERT(!t1.isProperSubsetOf(t2))
-      TS_ASSERT(!t1.isProperSubsetOf(t3))
+      TS_ASSERT(!t1.isStrictSubsetOf(t1))
+      TS_ASSERT(!t1.isStrictSubsetOf(t2))
+      TS_ASSERT(!t1.isStrictSubsetOf(t3))
 
-      TS_ASSERT(t2.isProperSubsetOf(t1))
-      TS_ASSERT(!t2.isProperSubsetOf(t2))
-      TS_ASSERT(!t2.isProperSubsetOf(t3))
+      TS_ASSERT(t2.isStrictSubsetOf(t1))
+      TS_ASSERT(!t2.isStrictSubsetOf(t2))
+      TS_ASSERT(!t2.isStrictSubsetOf(t3))
 
-      TS_ASSERT(!t3.isProperSubsetOf(t1))
-      TS_ASSERT(!t3.isProperSubsetOf(t2))
-      TS_ASSERT(!t3.isProperSubsetOf(t3))
+      TS_ASSERT(!t3.isStrictSubsetOf(t1))
+      TS_ASSERT(!t3.isStrictSubsetOf(t2))
+      TS_ASSERT(!t3.isStrictSubsetOf(t3))
 
-      TS_ASSERT(!t1.isProperSupersetOf(t1))
-      TS_ASSERT(t1.isProperSupersetOf(t2))
-      TS_ASSERT(!t1.isProperSupersetOf(t3))
+      TS_ASSERT(!t1.isStrictSupersetOf(t1))
+      TS_ASSERT(t1.isStrictSupersetOf(t2))
+      TS_ASSERT(!t1.isStrictSupersetOf(t3))
 
-      TS_ASSERT(!t2.isProperSupersetOf(t1))
-      TS_ASSERT(!t2.isProperSupersetOf(t2))
-      TS_ASSERT(!t2.isProperSupersetOf(t3))
+      TS_ASSERT(!t2.isStrictSupersetOf(t1))
+      TS_ASSERT(!t2.isStrictSupersetOf(t2))
+      TS_ASSERT(!t2.isStrictSupersetOf(t3))
 
-      TS_ASSERT(!t3.isProperSupersetOf(t1))
-      TS_ASSERT(!t3.isProperSupersetOf(t2))
-      TS_ASSERT(!t3.isProperSupersetOf(t3))
+      TS_ASSERT(!t3.isStrictSupersetOf(t1))
+      TS_ASSERT(!t3.isStrictSupersetOf(t2))
+      TS_ASSERT(!t3.isStrictSupersetOf(t3))
     }
 
     private:

@@ -479,7 +479,7 @@ namespace gum {
 
 
   template < typename Key >
-  INLINE bool Set< Key >::isProperSubsetOf(const Set< Key >& s) const {
+  INLINE bool Set< Key >::isStrictSubsetOf(const Set< Key >& s) const {
     if (this->size() >= s.size()) { return false; }
 
     for (const auto& elt: *this) {
@@ -489,8 +489,8 @@ namespace gum {
   }
 
   template < typename Key >
-  INLINE bool Set< Key >::isProperSupersetOf(const Set< Key >& s) const {
-    return s.isProperSubsetOf(*this);
+  INLINE bool Set< Key >::isStrictSupersetOf(const Set< Key >& s) const {
+    return s.isStrictSubsetOf(*this);
   }
 
 

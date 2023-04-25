@@ -334,12 +334,12 @@ namespace gum {
     /**
      * @return Returns true if *this is a proper subset of s
      */
-    bool isProperSubsetOf(const Set< Key >& s) const;
+    bool isStrictSubsetOf(const Set< Key >& s) const;
 
     /**
      * @return Returns true if *this is a proper superset of s
      */
-    bool isProperSupersetOf(const Set< Key >& s) const;
+    bool isStrictSupersetOf(const Set< Key >& s) const;
 
     /**
      * @return Returns true if *this is a subset of s (or equal to s)
