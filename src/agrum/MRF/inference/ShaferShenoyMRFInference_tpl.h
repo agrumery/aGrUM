@@ -2039,7 +2039,7 @@ namespace gum {
     // marginalize out all the variables that do not belong to wanted_target
 
     // check if we have already computed the posterior of declared_target
-    if (!_joint_target_posteriors_.exists(declared_target)) { jointPosterior_(declared_target); }
+    if (!_joint_target_posteriors_.exists(declared_target)) { return jointPosterior_(declared_target); }
 
     // marginalize out all the variables that do not belong to wanted_target
     const auto&                    mn = this->MRF();

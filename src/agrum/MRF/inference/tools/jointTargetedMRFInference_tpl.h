@@ -218,7 +218,9 @@ namespace gum {
     if (!this->isInferenceDone()) { this->makeInference(); }
 
     if (found_exact_target) return jointPosterior_(real_nodes);
-    else return jointPosterior_(real_nodes, super_target);
+    else {
+      return jointPosterior_(real_nodes, super_target);
+    }
   }
 
 
@@ -406,10 +408,11 @@ namespace gum {
   template < typename GUM_SCALAR >
   NodeSet JointTargetedMRFInference< GUM_SCALAR >::superForJointComputable_(const NodeSet& vars) {
     for (const auto& target: _joint_targets_)
-      if (vars.isProperSubsetOf(target)) return target;
+      if (vars.isSubsetOrEqual(target)) return target;
 
-    for (const auto& factor: this->MRF().factors())
-      if (vars.isProperSubsetOf(factor.first)) return factor.first;
+    for (const auto& factor: this->MRF().factors()) {
+      if (vars.isSubsetOrEqual(factor.first)) return factor.first;
+    }
 
     return NodeSet();
   }

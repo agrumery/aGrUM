@@ -2247,7 +2247,8 @@ namespace gum {
      LazyPropagation< GUM_SCALAR >::_unnormalizedJointPosterior_(const NodeSet& set) {
     // hard evidence do not belong to the join tree, so extract the nodes
     // from targets that are not hard evidence
-    NodeSet targets = set, hard_ev_nodes;
+    NodeSet targets = set;
+    NodeSet hard_ev_nodes;
     for (const auto node: this->hardEvidenceNodes()) {
       if (targets.contains(node)) {
         targets.erase(node);

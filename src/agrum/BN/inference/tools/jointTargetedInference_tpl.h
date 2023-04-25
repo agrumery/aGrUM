@@ -210,15 +210,15 @@ namespace gum {
       }
     }
 
-    if (set.empty()) {
-      GUM_ERROR(UndefinedElement,
-                " no joint target containing " << nodes << " could be found among "
-                                               << _joint_targets_);
-    }
+   // if (set.empty()) {
+   //   GUM_ERROR(UndefinedElement,
+   //             " no joint target containing " << nodes << " could be found among "
+   //                                            << _joint_targets_);
+   // }
 
     if (!this->isInferenceDone()) { this->makeInference(); }
 
-    if (found_exact_target) return jointPosterior_(nodes);
+    if (found_exact_target|| set.empty()) return jointPosterior_(nodes);
     else return jointPosterior_(nodes, set);
   }
 

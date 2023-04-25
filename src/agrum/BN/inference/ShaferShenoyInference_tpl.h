@@ -2422,7 +2422,7 @@ namespace gum {
 
       // 1/ we should check that all the nodes belong to the join tree
       for (const auto node: targets) {
-        if (!_graph_.exists(node)) { GUM_ERROR(UndefinedElement, node << " is not a target node") }
+        if (!_graph_.exists(node)) { GUM_ERROR(UndefinedElement, node << " can not be a query in the optimized inference (w.r.t the declared targets/evidence)") }
       }
 
       // 2/ the clique created by the first eliminated node among target is the
