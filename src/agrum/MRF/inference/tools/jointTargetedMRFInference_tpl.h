@@ -130,13 +130,13 @@ namespace gum {
 
     // check if joint_target is a subset of an already existing target
     for (const auto& target: _joint_targets_) {
-      if (target.isProperSupersetOf(joint_target)) return;
+      if (target.isStrictSupersetOf(joint_target)) return;
     }
 
     // check if joint_target is not a superset of an already existing target
     // in this case, we need to remove old existing target
     for (auto iter = _joint_targets_.beginSafe(); iter != _joint_targets_.endSafe(); ++iter) {
-      if (iter->isProperSubsetOf(joint_target)) eraseJointTarget(*iter);
+      if (iter->isStrictSubsetOf(joint_target)) eraseJointTarget(*iter);
     }
 
     this->setTargetedMode_();   // does nothing if already in targeted mode

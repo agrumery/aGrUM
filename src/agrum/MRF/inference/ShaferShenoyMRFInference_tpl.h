@@ -2105,7 +2105,7 @@ namespace gum {
 
     for (const auto& node: _JT_->nodes()) {
       const auto clique = _JT_->clique(node);
-      if (vars.isProperSubsetOf(clique)) return clique;
+      if (vars.isStrictSubsetOf(clique)) return clique;
     }
 
 
