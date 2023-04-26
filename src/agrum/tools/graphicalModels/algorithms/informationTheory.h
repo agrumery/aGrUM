@@ -37,8 +37,8 @@
 namespace gum {
   template < typename T >
   concept JointTargettable = requires(T t, const NodeSet& target) {
-    { t.addJointTarget(target) } -> std::same_as< void >;
-  };
+                               { t.addJointTarget(target) } -> std::same_as< void >;
+                             };
 
   /** InformationTheory is a template class which aims at gathering the implementation of
    * informational functions (entropy, mutual information, etc.). All these operations start with

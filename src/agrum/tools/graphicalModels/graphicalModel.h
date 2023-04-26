@@ -186,8 +186,8 @@ namespace gum {
      * @param id the node which is the head of an arc with the returned nodes
      * @param name the name of the node the node which is the head of an arc with
      * the returned nodes*/
-    virtual NodeSet family(const NodeId id) const = 0;
-    virtual NodeSet family(const std::string& name) const =0;
+    virtual NodeSet family(const NodeId id) const         = 0;
+    virtual NodeSet family(const std::string& name) const = 0;
 
     protected:
     /**
@@ -201,8 +201,6 @@ namespace gum {
 
     /// Return the properties of this Directed Graphical Model
     const HashTable< std::string, std::string >& _properties_() const;
-
-
   };
 }   // namespace gum
 

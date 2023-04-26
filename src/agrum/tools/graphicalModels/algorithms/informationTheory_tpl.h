@@ -103,7 +103,7 @@ namespace gum {
     if (!engine_.isJointTarget(joint_vars)) {
       // we check if it is not an implicit target : containng a node and some of its parent (could
       // be better)
-      bool                    implicit_target = false;
+      bool implicit_target = false;
       for (const auto node: joint_vars)
         if (engine_.model().family(node).isSupersetOrEqual(joint_vars)) {
           implicit_target = true;

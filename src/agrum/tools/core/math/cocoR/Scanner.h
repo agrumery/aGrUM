@@ -43,7 +43,6 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <locale.h>
 
 #include <agrum/tools/core/signal/signaler1.h>
-#include <agrum/tools/core/cocoR/common.h>
 #include <agrum/tools/core/errorsContainer.h>
 
 namespace gum {

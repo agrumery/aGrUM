@@ -208,7 +208,7 @@ namespace gum_tests {
       gum::Potential< double > joint;
       for (auto n: bn.nodes())
         joint *= bn.cpt(n);
-      
+
       auto mi = [&](gum::NodeId x, gum::NodeId y) -> double {
         using VarSet   = gum::Set< const gum::DiscreteVariable* >;
         const auto vx  = &bn.variable(x);
@@ -219,24 +219,125 @@ namespace gum_tests {
         return hx + hy - hxy;
       };
       auto h = [&](gum::NodeId x) -> double {
-        using VarSet   = gum::Set< const gum::DiscreteVariable* >;
-        const auto vx  = &bn.variable(x);
+        using VarSet  = gum::Set< const gum::DiscreteVariable* >;
+        const auto vx = &bn.variable(x);
         return joint.margSumIn(VarSet{vx}).entropy();
       };
 
       gum::LazyPropagation lazy(&bn);
 
+      for (const auto& node: bn.nodes()) {
+        TS_GUM_POTENTIAL_DELTA(lazy.posterior(node),
+                               joint.margSumIn({&bn.variable(node)}),
+                               TS_GUM_SMALL_ERROR);
+      }
       for (const auto& arc: bn.arcs()) {
         gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
                                                                   gum::NodeSet{arc.first()},
                                                                   gum::NodeSet{arc.second()});
         TS_GUM_ASSERT_QUASI_EQUALS(mi(arc.first(), arc.second()), it.mutualInformationXY())
       }
-      for(const auto& node: bn.nodes()) {
+      for (const auto& node: bn.nodes()) {
         gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
                                                                   gum::NodeSet{node},
                                                                   gum::NodeSet{});
         TS_GUM_ASSERT_QUASI_EQUALS(h(node), it.entropyX())
+      }
+    }
+
+    GUM_ACTIVE_TEST(checkMutalInformationOnArcWithEvidence) {
+      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;C->E;D->F;C<-G->H->E", 4);
+      gum::Potential< double > joint;
+      for (auto n: bn.nodes())
+        joint *= bn.cpt(n);
+      gum::Potential< double > evc;
+      evc.add(bn.variable("C"));
+      evc.fillWith({0, 1, 0, 0});
+      joint *= evc;
+      joint.normalize();
+
+      auto mi = [&](gum::NodeId x, gum::NodeId y) -> double {
+        using VarSet   = gum::Set< const gum::DiscreteVariable* >;
+        const auto vx  = &bn.variable(x);
+        const auto vy  = &bn.variable(y);
+        const auto hxy = joint.margSumIn(VarSet{vx, vy}).entropy();
+        const auto hx  = joint.margSumIn(VarSet{vx}).entropy();
+        const auto hy  = joint.margSumIn(VarSet{vy}).entropy();
+        return hx + hy - hxy;
+      };
+      auto h = [&](gum::NodeId x) -> double {
+        using VarSet  = gum::Set< const gum::DiscreteVariable* >;
+        const auto vx = &bn.variable(x);
+        return joint.margSumIn(VarSet{vx}).entropy();
+      };
+
+      gum::LazyPropagation lazy(&bn);
+      lazy.addEvidence(evc);
+
+      for (const auto& node: bn.nodes()) {
+        TS_GUM_POTENTIAL_DELTA(lazy.posterior(node),
+                               joint.margSumIn({&bn.variable(node)}),
+                               TS_GUM_SMALL_ERROR);
+      }
+      for (const auto& node: bn.nodes()) {
+        gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
+                                                                  gum::NodeSet{node},
+                                                                  gum::NodeSet{});
+        TS_GUM_ASSERT_QUASI_EQUALS(h(node), it.entropyX())
+      }
+      for (const auto& arc: bn.arcs()) {
+        gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
+                                                                  gum::NodeSet{arc.first()},
+                                                                  gum::NodeSet{arc.second()});
+        TS_GUM_ASSERT_QUASI_EQUALS(mi(arc.first(), arc.second()), it.mutualInformationXY())
+      }
+    }
+
+    GUM_ACTIVE_TEST(checkMutalInformationOnArcWithSoftEvidence) {
+      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;C->E;D->F;C<-G->H->E", 4);
+      gum::Potential< double > joint;
+      for (auto n: bn.nodes())
+        joint *= bn.cpt(n);
+      gum::Potential< double > evc;
+      evc.add(bn.variable("D"));
+      evc.fillWith({0, 1, 1, 0});
+      joint *= evc;
+      joint.normalize();
+
+      auto mi = [&](gum::NodeId x, gum::NodeId y) -> double {
+        using VarSet   = gum::Set< const gum::DiscreteVariable* >;
+        const auto vx  = &bn.variable(x);
+        const auto vy  = &bn.variable(y);
+        const auto hxy = joint.margSumIn(VarSet{vx, vy}).entropy();
+        const auto hx  = joint.margSumIn(VarSet{vx}).entropy();
+        const auto hy  = joint.margSumIn(VarSet{vy}).entropy();
+        return hx + hy - hxy;
+      };
+      auto h = [&](gum::NodeId x) -> double {
+        using VarSet  = gum::Set< const gum::DiscreteVariable* >;
+        const auto vx = &bn.variable(x);
+        return joint.margSumIn(VarSet{vx}).entropy();
+      };
+
+      gum::LazyPropagation lazy(&bn);
+      lazy.addEvidence(evc);
+
+      for (const auto& node: bn.nodes()) {
+        TS_GUM_POTENTIAL_DELTA(lazy.posterior(node),
+                               joint.margSumIn({&bn.variable(node)}),
+                               TS_GUM_SMALL_ERROR);
+      }
+      for (const auto& node: bn.nodes()) {
+        gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
+                                                                  gum::NodeSet{node},
+                                                                  gum::NodeSet{});
+        TS_GUM_ASSERT_QUASI_EQUALS(h(node), it.entropyX())
+      }
+      for (const auto& arc: bn.arcs()) {
+        gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
+                                                                  gum::NodeSet{arc.first()},
+                                                                  gum::NodeSet{arc.second()});
+        TS_GUM_ASSERT_QUASI_EQUALS(mi(arc.first(), arc.second()), it.mutualInformationXY())
       }
     }
 
