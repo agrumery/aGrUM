@@ -157,9 +157,13 @@ class PyAgrumDocCoverage:
     pm = 1.0 - (len(self.undoc_meth) + len(self.partial_doc_meth)) / (1.0 * self.nb_meth)
     pf = 1.0 - (len(self.undoc_func) + len(self.partial_doc_func)) / (1.0 * self.nb_func)
 
+    tc=self.nb_class-(len(self.undoc_class) + len(self.partial_doc_class))
+    tm=self.nb_meth-(len(self.undoc_meth) + len(self.partial_doc_meth)) 
+    tf=self.nb_func- (len(self.undoc_func) + len(self.partial_doc_func)) 
+
     notif(f'Documentation in pyAgrum {gum.__version__}')
 
-    notif(f"  Classes   : coverage={(pc * 100.0):6.2f}% [{self.nb_class}]")
+    notif(f"  Classes   : coverage={(pc * 100.0):6.2f}% [({tc}/{self.nb_class})]")
     if self._verbose:
       notif("---------")
       notif("  - nbr of classes : " + str(self.nb_class))
@@ -169,7 +173,7 @@ class PyAgrumDocCoverage:
       notif("  - nbr of undocumented classes : " + str(len(self.undoc_class)))
       notif(DELIM.join([""] + self.undoc_class))
 
-    notif(f"  Methods   : coverage={(pm * 100.0):6.2f}% [{self.nb_meth}]")
+    notif(f"  Methods   : coverage={(pm * 100.0):6.2f}% [({tm}/{self.nb_meth})]")
     if self._verbose:
       notif("---------")
       notif("  - nbr of methods: " + str(self.nb_meth))
@@ -179,7 +183,7 @@ class PyAgrumDocCoverage:
       notif("  - nbr of undocumented methods : " + str(len(self.undoc_meth)))
       notif(DELIM.join([""] + self.undoc_meth))
 
-    notif(f"  Functions : coverage={(pf * 100.0):6.2f}% [{self.nb_func}]")
+    notif(f"  Functions : coverage={(pf * 100.0):6.2f}% [({tf}/{self.nb_func})]")
     if self._verbose:
       notif("-----------")
       notif("  - nbr of functions: " + str(self.nb_func))
