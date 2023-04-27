@@ -1755,7 +1755,11 @@ namespace gum {
 
       // 1/ we should check that all the nodes belong to the join tree
       for (const auto node: targets) {
-        if (!_graph_.exists(node)) { GUM_ERROR(UndefinedElement, node << " is not a target node") }
+        if (!_graph_.exists(node)) {
+          GUM_ERROR(UndefinedElement,
+                    "Node " << this->MRF().variable(node).name() << "(" << node
+                            << ") does not belong to this optimized inference.")
+        }
       }
 
       // 2/ the clique created by the first eliminated node among target is the
@@ -1780,7 +1784,9 @@ namespace gum {
       const NodeSet& clique_nodes = _JT_->clique(clique_of_set);
       for (const auto node: targets) {
         if (!clique_nodes.contains(node)) {
-          GUM_ERROR(UndefinedElement, set << " is not a joint target")
+          GUM_ERROR(UndefinedElement,
+                    this->MRF().names(set) << "(" << set << ")"
+                               << " is not addressable in this optimized inference.")
         }
       }
 
@@ -1907,7 +1913,11 @@ namespace gum {
 
       // 1/ we should check that all the nodes belong to the join tree
       for (const auto node: targets) {
-        if (!_graph_.exists(node)) { GUM_ERROR(UndefinedElement, node << " is not a target node") }
+        if (!_graph_.exists(node)) {
+          GUM_ERROR(UndefinedElement,
+                    "Node " << this->MRF().variable(node).name() << "(" << node
+                            << ") does not belong to this optimized inference.")
+        }
       }
 
       // 2/ the clique created by the first eliminated node among target is the

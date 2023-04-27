@@ -1529,6 +1529,38 @@ namespace gum_tests {
 
       TS_GUM_POTENTIAL_DELTA(p1, p2, 1e-8)   // no diff !
     }
+    GUM_ACTIVE_TEST(ImplicitTargetAllCheck) {
+      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->Y->E->F->G;W->E<-Z;X->E");
+      auto ie = gum::LazyPropagation(&bn);
+      ie.addJointTarget(bn.nodeset({"B", "Y", "F"}));
+      auto p = gum::Potential< double >();
+      for (const auto n: bn.nodes())
+        p *= bn.cpt(n);
+
+      auto variables
+         = [&bn](const std::vector< std::string >& l) -> gum::Set< const gum::DiscreteVariable* > {
+        gum::Set< const gum::DiscreteVariable* > s;
+        for (const auto& name: l) {
+          s.insert(&bn.variable(name));
+        }
+        return s;
+      };
+      // target
+      TS_GUM_POTENTIAL_DELTA(ie.jointPosterior(bn.nodeset({"B", "Y", "F"})),
+                             p.margSumIn(variables({"B", "Y", "F"})),
+                             TS_GUM_SMALL_ERROR)
+      // subtargets
+      TS_GUM_POTENTIAL_DELTA(ie.jointPosterior(bn.nodeset({"B", "Y"})),
+                             p.margSumIn(variables({"B", "Y"})),
+                             TS_GUM_SMALL_ERROR)
+      TS_GUM_POTENTIAL_DELTA(ie.jointPosterior(bn.nodeset({"F", "Y"})),
+                             p.margSumIn(variables({"F", "Y"})),
+                             TS_GUM_SMALL_ERROR)
+      // implicit target
+      TS_GUM_POTENTIAL_DELTA(ie.jointPosterior(bn.nodeset({"W", "Z", "X"})),
+                             p.margSumIn(variables({"W", "Z", "X"})),
+                             TS_GUM_SMALL_ERROR)
+    }
 
     private:
     // Builds a _bn to test the inference
