@@ -31,6 +31,7 @@ import numpy as np
 import pandas as pd
 
 import pylab
+import pydot as dot
 
 import IPython.display
 import IPython.core.pylabtools
@@ -172,9 +173,8 @@ def _normalizeVals(vals, hilightExtrema=False):
     vmi = 0
     vma = 1
 
-  res= {name: vmi + (val - mi) * (vma - vmi) / (ma - mi) for name, val in vals.items()}
+  res = {name: vmi + (val - mi) * (vma - vmi) / (ma - mi) for name, val in vals.items()}
   return res
-
 
 
 def getInformationGraph(bn, evs=None, size=None, cmap=_INFOcmap, withMinMax=False):
@@ -814,3 +814,144 @@ class ShapValues:
                cmapNode=cm
                )
     return g
+
+
+########################## MB(k) #####################################
+
+def _buildMB(model, x: int, k: int = 1):
+  """
+  Build the nodes and arcs of Markov Blanket (of order k) of node x
+
+  Parameters
+  ----------
+  model: pyAgrum.DirectedGraphicalModel
+      i.e. a class with methods parents, children, variable(i), idFromName(name)
+  x : int
+      the nodeId of the node for the Markov blanket
+  k: int
+      the order of the Markov blanket. If k=2, build the MarkovBlanket(MarkovBlanket())
+
+  Returns
+  -------
+      (nodes,arcs,depth) : the set of nodes, the set of arcs of the Markov Blanket and a dict[Str,int] that gives the MB-depth of each node in nodes.
+  """
+  nodes = {x}
+  arcs = set()
+  depth = dict()
+
+  def _internal_build_markov_blanket(bn, x: int, k: int):
+    nodes.add(x)
+    depth[x] = k
+    if k == 0:
+      return
+    for y in bn.parents(x):
+      visit(y, k - 1)
+      arcs.add((y, x))
+    for y in bn.children(x):
+      visit(y, k - 1)
+      arcs.add((x, y))
+      for z in bn.parents(y):
+        visit(z, k - 1)
+        arcs.add((z, y))
+
+  def visit(x, k):
+    if x in nodes:
+      if depth[x] >= k:
+        return
+    _internal_build_markov_blanket(model, x, k)
+
+  _internal_build_markov_blanket(model, x, k)
+  return nodes, arcs, depth
+
+
+def nestedMarkovBlankets(bn, x, k: int = 1, cmapNode=None):
+  """
+  Build a pydot.Dot representation of the nested Markov Blankets (of order k) of node x
+
+  Warnings
+  --------
+  It is assumed that k<=8. If not, every thing is fine except that the colorscale will change in order to accept more colors.
+
+  Parameters
+  ----------
+  bn: pyAgrum.DirectedGraphicalModel
+      i.e. a class with methods parents, children, variable(i), idFromName(name)
+  x : str|int
+      the name or nodeId of the node for the Markov blanket
+  k: int
+      the order of the Markov blanket. If k=1, build the MarkovBlanket(MarkovBlanket())
+  cmap: maplotlib.ColorMap
+      the colormap used (if not, inferno is used)
+
+  Returns
+  -------
+      pydotplus.Dot object
+
+  Remarks
+  -------
+  `pyAgrum.lib.notebook.{get|show}Graph()` in order to visualize thie dot object
+  """
+  if cmapNode is None:
+    cmapNode = plt.get_cmap("inferno")  # gum.config["notebook", "default_arc_cmap"])
+
+  maxcols = max(8,
+                k)  # It is assumed that k<=8. If not, every thing is fine except that the colorscale will change in order to accept more colors.
+
+  mb = dot.Dot(f'MB({x},{k}', graph_type='digraph', bgcolor='transparent')
+
+  if type(x) == str:
+    nx = bn.idFromName(x)
+  else:
+    nx = x
+  nodes, arcs, visited = _buildMB(bn, nx, k)
+  names = dict()
+
+  for n in nodes:
+    protected_name = f"\"{bn.variable(n).name()}\""
+    pnode = dot.Node(protected_name, style="filled")
+    if n == x:
+      bgcol = "#99FF99"
+      fgcol = "black"
+    else:
+      bgcol = gumcols.proba2bgcolor(1 - (k - visited[n]) / maxcols, cmapNode)
+      fgcol = gumcols.proba2fgcolor(1 - (k - visited[n]) / maxcols, cmapNode)
+    pnode.set_fillcolor(bgcol)
+    pnode.set_fontcolor(fgcol)
+    mb.add_node(pnode)
+    names[n] = protected_name
+  for n in nodes:
+    for u in bn.parents(n).intersection(nodes):
+      edge = dot.Edge(names[u], names[n])
+      if (u, n) in arcs:
+        edge.set_color('black')
+      else:
+        edge.set_color('#DDDDDD')
+      mb.add_edge(edge)
+
+  return mb
+
+
+def nestedMarkovBlanketsNames(bn, x, k: int = 1):
+  """
+  List the name of all nodes in the nested Markov Blankets (of order k) in association with their depth
+
+  Parameters
+  ----------
+  bn: pyAgrum.DirectedGraphicalModel
+      i.e. a class with methods parents, children, variable(i), idFromName(name)
+  x : str|int
+      the name or nodeId of the node for the Markov blanket
+  k: int
+      the order of the Markov blanket. If k=1, build the MarkovBlanket(MarkovBlanket()
+
+  Returns
+  -------
+  Dict[str,int]
+    the list of names and their depth.
+  """
+  if type(x) == str:
+    nx = bn.idFromName(x)
+  else:
+    nx = x
+  nodes, arcs, visited = _buildMB(bn, nx, k)
+  return {bn.variable(node).name(): k - visited[node] for node in nodes}
