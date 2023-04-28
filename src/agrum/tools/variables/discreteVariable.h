@@ -32,8 +32,7 @@
 #include <string>
 
 #include <agrum/agrum.h>
-
-#include <agrum/tools/core/hashFunc.h>
+#include <agrum/tools/core/set.h>
 #include <agrum/tools/variables/variable.h>
 
 namespace gum {
@@ -171,6 +170,7 @@ namespace gum {
 
   std::ostream& operator<<(std::ostream&, const DiscreteVariable&);
 
+  using VariableSet = Set< const DiscreteVariable* >;
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE

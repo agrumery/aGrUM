@@ -134,6 +134,18 @@ namespace gum {
      */
     NodeSet nodeset(const std::vector< std::string >& names) const;
 
+    /**
+     * transform a vector of names into a VariableeSet
+     * @return NodeSet
+     */
+    gum::VariableSet variables(const std::vector< std::string >& l) const;
+
+    /**
+     * transform a vector of NodeId into a VariableeSet
+     * @return NodeSet
+     */
+    gum::VariableSet variables(const NodeSet& ids) const;
+
     virtual const NodeGraphPart& nodes() const = 0;
 
     /// Get an instantiation over all the variables of the model

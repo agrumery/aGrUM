@@ -116,4 +116,25 @@ namespace gum {
                    [v](const std::string& n) { return v.idFromName(n); });
     return res;
   }
+
+  INLINE
+  gum::VariableSet GraphicalModel::variables(const std::vector< std::string >& l) const {
+    gum::VariableSet       s;
+    const VariableNodeMap& v = variableNodeMap();
+    for (const auto& name: l) {
+      s.insert(&v.variableFromName(name));
+    }
+    return s;
+  }
+
+  INLINE
+  gum::VariableSet GraphicalModel::variables(const NodeSet& l) const {
+    gum::VariableSet       s;
+    const VariableNodeMap& v = variableNodeMap();
+    for (const auto& node: l) {
+      s.insert(&v.get(node));
+    }
+    return s;
+  }
+
 } /* namespace gum */
