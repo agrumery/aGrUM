@@ -8792,7 +8792,7 @@ class Potential(object):
         """
         return _pyAgrum.Potential_extract(self, *args)
 
-    def margSumOut(self, varnames: object) -> "pyAgrum.Potential":
+    def margSumOut(self, *args) -> "pyAgrum.Potential":
         r"""
 
         Projection using sum as operation.
@@ -8813,9 +8813,9 @@ class Potential(object):
           If varnames contains only one variable that does not exist in the Potential
 
         """
-        return _pyAgrum.Potential_margSumOut(self, varnames)
+        return _pyAgrum.Potential_margSumOut(self, *args)
 
-    def margProdOut(self, varnames: object) -> "pyAgrum.Potential":
+    def margProdOut(self, *args) -> "pyAgrum.Potential":
         r"""
 
         Projection using multiplication as operation.
@@ -8836,9 +8836,9 @@ class Potential(object):
           If varnames contains only one variable that does not exist in the Potential
 
         """
-        return _pyAgrum.Potential_margProdOut(self, varnames)
+        return _pyAgrum.Potential_margProdOut(self, *args)
 
-    def margMaxOut(self, varnames: object) -> "pyAgrum.Potential":
+    def margMaxOut(self, *args) -> "pyAgrum.Potential":
         r"""
 
         Projection using `max` as operation.
@@ -8859,9 +8859,9 @@ class Potential(object):
           If varnames contains only one variable that does not exist in the Potential
 
         """
-        return _pyAgrum.Potential_margMaxOut(self, varnames)
+        return _pyAgrum.Potential_margMaxOut(self, *args)
 
-    def margMinOut(self, varnames: object) -> "pyAgrum.Potential":
+    def margMinOut(self, *args) -> "pyAgrum.Potential":
         r"""
 
         Projection using `min` as operation.
@@ -8881,9 +8881,9 @@ class Potential(object):
         InvalidArgument raised if varnames contains only one variable that does not exist in the Potential
 
         """
-        return _pyAgrum.Potential_margMinOut(self, varnames)
+        return _pyAgrum.Potential_margMinOut(self, *args)
 
-    def margSumIn(self, varnames: object) -> "pyAgrum.Potential":
+    def margSumIn(self, *args) -> "pyAgrum.Potential":
         r"""
 
         Projection using sum as operation.
@@ -8899,9 +8899,9 @@ class Potential(object):
           the projected Potential
 
         """
-        return _pyAgrum.Potential_margSumIn(self, varnames)
+        return _pyAgrum.Potential_margSumIn(self, *args)
 
-    def margProdIn(self, varnames: object) -> "pyAgrum.Potential":
+    def margProdIn(self, *args) -> "pyAgrum.Potential":
         r"""
 
         Projection using multiplication as operation.
@@ -8917,9 +8917,9 @@ class Potential(object):
           the projected Potential
 
         """
-        return _pyAgrum.Potential_margProdIn(self, varnames)
+        return _pyAgrum.Potential_margProdIn(self, *args)
 
-    def margMaxIn(self, varnames: object) -> "pyAgrum.Potential":
+    def margMaxIn(self, *args) -> "pyAgrum.Potential":
         r"""
 
         Projection using `max` as operation.
@@ -8935,9 +8935,9 @@ class Potential(object):
           the projected Potential
 
         """
-        return _pyAgrum.Potential_margMaxIn(self, varnames)
+        return _pyAgrum.Potential_margMaxIn(self, *args)
 
-    def margMinIn(self, varnames: object) -> "pyAgrum.Potential":
+    def margMinIn(self, *args) -> "pyAgrum.Potential":
         r"""
 
         Projection using `min` as operation.
@@ -8953,7 +8953,7 @@ class Potential(object):
           the projected Potential
 
         """
-        return _pyAgrum.Potential_margMinIn(self, varnames)
+        return _pyAgrum.Potential_margMinIn(self, *args)
 
     def argmin(self) -> object:
         r"""

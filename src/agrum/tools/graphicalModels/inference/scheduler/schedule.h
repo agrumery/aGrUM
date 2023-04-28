@@ -227,11 +227,11 @@ namespace gum {
      * and they have not been executed yet.
      */
     template < typename TABLE >
-    const ScheduleOperator&
-       emplaceProjection(const ScheduleMultiDim< TABLE >&      table,
-                         const Set< const DiscreteVariable* >& del_vars,
-                         TABLE (*project)(const TABLE&, const Set< const DiscreteVariable* >&),
-                         const bool is_result_persistent = false);
+    const ScheduleOperator& emplaceProjection(const ScheduleMultiDim< TABLE >& table,
+                                              const gum::VariableSet&          del_vars,
+                                              TABLE (*project)(const TABLE&,
+                                                               const gum::VariableSet&),
+                                              const bool is_result_persistent = false);
 
     /// emplace a new schedule deletion operation
     /** @throws UnknownScheduleMultiDim if some of the arguments of op do not

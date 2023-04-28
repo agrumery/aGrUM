@@ -3,7 +3,7 @@ Deprecated. Please see pyAgrum.skbn
 """
 
 
-# (c) Copyright by Pierre-Henri Wuillemin, 2023
+# (c) Copyright 2015-2023 by Pierre-Henri Wuillemin(@LIP6)
 # (pierre-henri.wuillemin@lip6.fr)
 
 # Permission to use, copy, modify, and distribute this

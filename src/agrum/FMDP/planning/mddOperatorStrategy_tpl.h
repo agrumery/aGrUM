@@ -95,7 +95,7 @@ namespace gum {
      MDDOperatorStrategy< GUM_SCALAR >::regress(const MultiDimFunctionGraph< GUM_SCALAR >* Vold,
                                                 Idx                                        actionId,
                                                 const FMDP< GUM_SCALAR >*                  fmdp,
-                                                const Set< const DiscreteVariable* >& elVarSeq) {
+                                                const gum::VariableSet& elVarSeq) {
     MultiDimFunctionGraph< GUM_SCALAR >* qAction
        = MultiDimFunctionGraph< GUM_SCALAR >::getReducedAndOrderedInstance();
     qAction->copy(*Vold);

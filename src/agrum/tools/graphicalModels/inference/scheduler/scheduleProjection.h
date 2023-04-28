@@ -56,18 +56,18 @@ namespace gum {
    * @code
    * // two functions used to project a Potential<float>:
    * Potential<float> MinPot ( const Potential<float>& table,
-   *                           const Set<const DiscreteVariable*>& del_vars ) {
+   *                           const VariableSet& del_vars ) {
    *   return Potential<float> (...);
    * }
    *
    * Potential<float> MaxPot ( const Potential<float>& table,
-   *                           const Set<const DiscreteVariable*>& del_vars ) {
+   *                           const VariableSet& del_vars ) {
    *   return Potential<float> (...);
    * }
    *
    *
    * ScheduleMultiDim< Potential< float > > t1(...), t2(...);
-   * Set<const DiscreteVariable*> set1, set2;
+   * VariableSet set1, set2;
    * ScheduleProjection< Potential<float> > proj1 ( t1, set1, MinPot );
    * proj1.execute();
    * ScheduleProjection< Potential<float> > proj2 ( proj1.result(), set1, MaxPot );
@@ -100,10 +100,9 @@ namespace gum {
      * @warning table is stored only by reference within the ScheduleProjection.
      * But the set of variables to remove (del_vars) is stored by copy
      * within the ScheduleProjection */
-    explicit ScheduleProjection(const ScheduleMultiDim< TABLE >&      table,
-                                const Set< const DiscreteVariable* >& del_vars,
-                                TABLE (*project)(const TABLE&,
-                                                 const Set< const DiscreteVariable* >&),
+    explicit ScheduleProjection(const ScheduleMultiDim< TABLE >& table,
+                                const gum::VariableSet&          del_vars,
+                                TABLE (*project)(const TABLE&, const gum::VariableSet&),
                                 const bool is_result_persistent = false);
 
     /// copy constructor
@@ -266,8 +265,7 @@ namespace gum {
     std::string toString() const final;
 
     /// use a new projection function
-    void setProjectionFunction(TABLE (*project)(const TABLE&,
-                                                const Set< const DiscreteVariable* >&));
+    void setProjectionFunction(TABLE (*project)(const TABLE&, const gum::VariableSet&));
 
     /// @}
 
@@ -291,10 +289,10 @@ namespace gum {
     Sequence< const IScheduleMultiDim* > _results_;
 
     /// the set of variables that should be removed from the _arg_ table
-    Set< const DiscreteVariable* > _del_vars_;
+    gum::VariableSet _del_vars_;
 
     /// the projection operator
-    TABLE (*_project_)(const TABLE&, const Set< const DiscreteVariable* >&);
+    TABLE (*_project_)(const TABLE&, const gum::VariableSet&);
   };
 
 } /* namespace gum */

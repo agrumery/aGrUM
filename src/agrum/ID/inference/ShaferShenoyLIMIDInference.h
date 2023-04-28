@@ -63,7 +63,7 @@ namespace gum {
   class ShaferShenoyLIMIDInference: public InfluenceDiagramInference< GUM_SCALAR > {
     using PhiNodeProperty = NodeProperty< DecisionPotential< GUM_SCALAR > >;
     using PsiArcProperty  = ArcProperty< DecisionPotential< GUM_SCALAR > >;
-    using SetOfVars       = Set< const DiscreteVariable* >;
+    using SetOfVars       = gum::VariableSet;
 
 
     public:

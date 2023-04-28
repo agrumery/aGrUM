@@ -49,14 +49,14 @@ namespace gum_tests {
       pot1 << *(vars[0]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
       pot1.random();
       gum::ScheduleMultiDim< gum::Potential< double > > f1(pot1, true);
-      gum::Set< const gum::DiscreteVariable* >          del_vars1;
+      gum::VariableSet                                  del_vars1;
       del_vars1 << vars[0] << vars[3];
 
       gum::Potential< double > pot2;
       pot2 << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
       pot2.random();
       gum::ScheduleMultiDim< gum::Potential< double > > f2(pot2, true);
-      gum::Set< const gum::DiscreteVariable* >          del_vars2;
+      gum::VariableSet                                  del_vars2;
       del_vars2 << vars[0] << vars[3] << vars[2];
 
       gum::ScheduleProjection< gum::Potential< double > > myproj(f1, del_vars1, myProjectMax);
@@ -238,7 +238,7 @@ namespace gum_tests {
       pot1.random();
       gum::ScheduleMultiDim< gum::Potential< double > > f1(pot1, false);
 
-      gum::Set< const gum::DiscreteVariable* >            del_vars1;
+      gum::VariableSet                                    del_vars1;
       gum::ScheduleProjection< gum::Potential< double > > myproj1(f1, del_vars1, myProjectMax);
       TS_ASSERT(myproj1.result().domainSize() == 16)
       TS_ASSERT(myproj1.nbOperations() == 16.0)
@@ -355,22 +355,20 @@ namespace gum_tests {
     }
 
     private:
-    static gum::Potential< double >
-       myProjectMax(const gum::Potential< double >&                 pot,
-                    const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+    static gum::Potential< double > myProjectMax(const gum::Potential< double >& pot,
+                                                 const gum::VariableSet&         del_vars) {
       return gum::Potential< double >(gum::projectMax(*(pot.content()), del_vars));
     }
 
-    static gum::Potential< double >
-       myProjectMin(const gum::Potential< double >&                 pot,
-                    const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+    static gum::Potential< double > myProjectMin(const gum::Potential< double >& pot,
+                                                 const gum::VariableSet&         del_vars) {
       return gum::Potential< double >(gum::projectMin(*(pot.content()), del_vars));
     }
 
     // projection of a table over a set
-    gum::Potential< double > proj(const gum::Potential< double >&                 table,
-                                  const gum::Set< const gum::DiscreteVariable* >& del_vars,
-                                  float                                           neutral_elt) {
+    gum::Potential< double > proj(const gum::Potential< double >& table,
+                                  const gum::VariableSet&         del_vars,
+                                  float                           neutral_elt) {
       gum::Potential< double >                             result;
       const gum::Sequence< const gum::DiscreteVariable* >& vars = table.variablesSequence();
       result.beginMultipleChanges();

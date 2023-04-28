@@ -119,16 +119,14 @@ namespace gum_tests {
     }
 
 
-    static gum::Potential< double >
-       myMax(const gum::Potential< double >&                 table,
-             const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+    static gum::Potential< double > myMax(const gum::Potential< double >& table,
+                                          const gum::VariableSet&         del_vars) {
       return table.margMaxOut(del_vars);
     }
 
 
-    static gum::Potential< double >
-       mySum(const gum::Potential< double >&                 table,
-             const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+    static gum::Potential< double > mySum(const gum::Potential< double >& table,
+                                          const gum::VariableSet&         del_vars) {
       return table.margSumOut(del_vars);
     }
 
@@ -186,9 +184,9 @@ namespace gum_tests {
     }
 
     // projection of a table over a set
-    gum::MultiDimArray< double >* proj(const gum::MultiDimArray< double >&             table,
-                                       const gum::Set< const gum::DiscreteVariable* >& del_vars,
-                                       double neutral_elt) {
+    gum::MultiDimArray< double >* proj(const gum::MultiDimArray< double >& table,
+                                       const gum::VariableSet&             del_vars,
+                                       double                              neutral_elt) {
       gum::MultiDimArray< double >* result = new gum::MultiDimArray< double >;
 
       const gum::Sequence< const gum::DiscreteVariable* >& vars = table.variablesSequence();
@@ -213,9 +211,9 @@ namespace gum_tests {
     }
 
     // projection of a table over a set
-    gum::MultiDimArray< double* >* proj(const gum::MultiDimArray< double* >&            table,
-                                        const gum::Set< const gum::DiscreteVariable* >& del_vars,
-                                        double neutral_elt) {
+    gum::MultiDimArray< double* >* proj(const gum::MultiDimArray< double* >& table,
+                                        const gum::VariableSet&              del_vars,
+                                        double                               neutral_elt) {
       gum::MultiDimArray< double* >* result                     = new gum::MultiDimArray< double* >;
       const gum::Sequence< const gum::DiscreteVariable* >& vars = table.variablesSequence();
       result->beginMultipleChanges();
@@ -244,9 +242,9 @@ namespace gum_tests {
     }
 
     // projection of a table over a set
-    gum::Potential< double >* proj(const gum::Potential< double >&                 table,
-                                   const gum::Set< const gum::DiscreteVariable* >& del_vars,
-                                   double                                          neutral_elt) {
+    gum::Potential< double >* proj(const gum::Potential< double >& table,
+                                   const gum::VariableSet&         del_vars,
+                                   double                          neutral_elt) {
       gum::Potential< double >*                            result = new gum::Potential< double >;
       const gum::Sequence< const gum::DiscreteVariable* >& vars   = table.variablesSequence();
       result->beginMultipleChanges();
@@ -270,9 +268,9 @@ namespace gum_tests {
     }
 
     // projection of a table over a set
-    gum::Potential< double* >* proj(const gum::Potential< double* >&                table,
-                                    const gum::Set< const gum::DiscreteVariable* >& del_vars,
-                                    double                                          neutral_elt) {
+    gum::Potential< double* >* proj(const gum::Potential< double* >& table,
+                                    const gum::VariableSet&          del_vars,
+                                    double                           neutral_elt) {
       gum::Potential< double* >*                           result = new gum::Potential< double* >;
       const gum::Sequence< const gum::DiscreteVariable* >& vars   = table.variablesSequence();
       result->beginMultipleChanges();
@@ -316,7 +314,7 @@ namespace gum_tests {
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
          << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInit(&t1);
-      gum::Set< const gum::DiscreteVariable* > proj_set;
+      gum::VariableSet proj_set;
       proj_set.insert(vars[2]);
       proj_set.insert(vars[3]);
       proj_set.insert(vars[6]);
@@ -324,7 +322,7 @@ namespace gum_tests {
       proj_set.insert(vars[4]);
       proj_set.insert(vars[5]);
       proj_set.insert(vars[8]);
-      gum::Set< const gum::DiscreteVariable* > del_vars;
+      gum::VariableSet del_vars;
       del_vars.insert(vars[0]);
       del_vars.insert(vars[9]);
       del_vars.insert(vars[1]);
@@ -370,7 +368,7 @@ namespace gum_tests {
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
          << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInit(&t1);
-      gum::Set< const gum::DiscreteVariable* > proj_set;
+      gum::VariableSet proj_set;
       proj_set.insert(vars[2]);
       proj_set.insert(vars[3]);
       proj_set.insert(vars[6]);
@@ -378,7 +376,7 @@ namespace gum_tests {
       proj_set.insert(vars[4]);
       proj_set.insert(vars[5]);
       proj_set.insert(vars[8]);
-      gum::Set< const gum::DiscreteVariable* > del_vars;
+      gum::VariableSet del_vars;
       del_vars.insert(vars[0]);
       del_vars.insert(vars[9]);
       del_vars.insert(vars[1]);
@@ -422,7 +420,7 @@ namespace gum_tests {
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
          << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInit(&t1);
-      gum::Set< const gum::DiscreteVariable* > proj_set;
+      gum::VariableSet proj_set;
       proj_set.insert(vars[3]);
       proj_set.insert(vars[4]);
       proj_set.insert(vars[5]);
@@ -430,7 +428,7 @@ namespace gum_tests {
       proj_set.insert(vars[7]);
       proj_set.insert(vars[8]);
       proj_set.insert(vars[9]);
-      gum::Set< const gum::DiscreteVariable* > del_vars;
+      gum::VariableSet del_vars;
       del_vars.insert(vars[1]);
       del_vars.insert(vars[0]);
       del_vars.insert(vars[2]);
@@ -474,7 +472,7 @@ namespace gum_tests {
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
          << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInit(&t1);
-      gum::Set< const gum::DiscreteVariable* > proj_set;
+      gum::VariableSet proj_set;
       proj_set.insert(vars[0]);
       proj_set.insert(vars[1]);
       proj_set.insert(vars[2]);
@@ -482,7 +480,7 @@ namespace gum_tests {
       proj_set.insert(vars[4]);
       proj_set.insert(vars[5]);
       proj_set.insert(vars[6]);
-      gum::Set< const gum::DiscreteVariable* > del_vars;
+      gum::VariableSet del_vars;
       del_vars.insert(vars[8]);
       del_vars.insert(vars[9]);
       del_vars.insert(vars[7]);
@@ -527,8 +525,8 @@ namespace gum_tests {
           << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInit(&tt1);
 
-      gum::MultiDimImplementation< double >&   t1 = tt1;
-      gum::Set< const gum::DiscreteVariable* > proj_set;
+      gum::MultiDimImplementation< double >& t1 = tt1;
+      gum::VariableSet                       proj_set;
       proj_set.insert(vars[2]);
       proj_set.insert(vars[3]);
       proj_set.insert(vars[6]);
@@ -536,7 +534,7 @@ namespace gum_tests {
       proj_set.insert(vars[4]);
       proj_set.insert(vars[5]);
       proj_set.insert(vars[8]);
-      gum::Set< const gum::DiscreteVariable* > del_vars;
+      gum::VariableSet del_vars;
       del_vars.insert(vars[0]);
       del_vars.insert(vars[9]);
       del_vars.insert(vars[1]);
@@ -580,7 +578,7 @@ namespace gum_tests {
       *t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
           << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInitPointer(t1);
-      gum::Set< const gum::DiscreteVariable* > proj_set;
+      gum::VariableSet proj_set;
       proj_set.insert(vars[2]);
       proj_set.insert(vars[3]);
       proj_set.insert(vars[6]);
@@ -588,7 +586,7 @@ namespace gum_tests {
       proj_set.insert(vars[4]);
       proj_set.insert(vars[5]);
       proj_set.insert(vars[8]);
-      gum::Set< const gum::DiscreteVariable* > del_vars;
+      gum::VariableSet del_vars;
       del_vars.insert(vars[0]);
       del_vars.insert(vars[9]);
       del_vars.insert(vars[1]);
@@ -635,8 +633,8 @@ namespace gum_tests {
       *tt1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
            << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInitPointer(tt1);
-      gum::MultiDimImplementation< double* >*  t1 = tt1;
-      gum::Set< const gum::DiscreteVariable* > proj_set;
+      gum::MultiDimImplementation< double* >* t1 = tt1;
+      gum::VariableSet                        proj_set;
       proj_set.insert(vars[2]);
       proj_set.insert(vars[3]);
       proj_set.insert(vars[6]);
@@ -644,7 +642,7 @@ namespace gum_tests {
       proj_set.insert(vars[4]);
       proj_set.insert(vars[5]);
       proj_set.insert(vars[8]);
-      gum::Set< const gum::DiscreteVariable* > del_vars;
+      gum::VariableSet del_vars;
       del_vars.insert(vars[0]);
       del_vars.insert(vars[9]);
       del_vars.insert(vars[1]);
@@ -693,7 +691,7 @@ namespace gum_tests {
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
          << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInit(&t1);
-      gum::Set< const gum::DiscreteVariable* > proj_set;
+      gum::VariableSet proj_set;
       proj_set.insert(vars[2]);
       proj_set.insert(vars[3]);
       proj_set.insert(vars[6]);
@@ -701,7 +699,7 @@ namespace gum_tests {
       proj_set.insert(vars[4]);
       proj_set.insert(vars[5]);
       proj_set.insert(vars[8]);
-      gum::Set< const gum::DiscreteVariable* > del_vars;
+      gum::VariableSet del_vars;
       del_vars.insert(vars[0]);
       del_vars.insert(vars[9]);
       del_vars.insert(vars[1]);
@@ -745,7 +743,7 @@ namespace gum_tests {
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
          << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInitP(t1);
-      gum::Set< const gum::DiscreteVariable* > proj_set;
+      gum::VariableSet proj_set;
       proj_set.insert(vars[2]);
       proj_set.insert(vars[3]);
       proj_set.insert(vars[6]);
@@ -753,7 +751,7 @@ namespace gum_tests {
       proj_set.insert(vars[4]);
       proj_set.insert(vars[5]);
       proj_set.insert(vars[8]);
-      gum::Set< const gum::DiscreteVariable* > del_vars;
+      gum::VariableSet del_vars;
       del_vars.insert(vars[0]);
       del_vars.insert(vars[9]);
       del_vars.insert(vars[1]);
@@ -799,7 +797,7 @@ namespace gum_tests {
       *t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
           << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInitPointer(t1);
-      gum::Set< const gum::DiscreteVariable* > proj_set;
+      gum::VariableSet proj_set;
       proj_set.insert(vars[2]);
       proj_set.insert(vars[3]);
       proj_set.insert(vars[6]);
@@ -807,7 +805,7 @@ namespace gum_tests {
       proj_set.insert(vars[4]);
       proj_set.insert(vars[5]);
       proj_set.insert(vars[8]);
-      gum::Set< const gum::DiscreteVariable* > del_vars;
+      gum::VariableSet del_vars;
       del_vars.insert(vars[0]);
       del_vars.insert(vars[9]);
       del_vars.insert(vars[1]);
@@ -854,7 +852,7 @@ namespace gum_tests {
       *t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
           << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInitPPointer(*t1);
-      gum::Set< const gum::DiscreteVariable* > proj_set;
+      gum::VariableSet proj_set;
       proj_set.insert(vars[2]);
       proj_set.insert(vars[3]);
       proj_set.insert(vars[6]);
@@ -862,7 +860,7 @@ namespace gum_tests {
       proj_set.insert(vars[4]);
       proj_set.insert(vars[5]);
       proj_set.insert(vars[8]);
-      gum::Set< const gum::DiscreteVariable* > del_vars;
+      gum::VariableSet del_vars;
       del_vars.insert(vars[0]);
       del_vars.insert(vars[9]);
       del_vars.insert(vars[1]);
@@ -908,7 +906,7 @@ namespace gum_tests {
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
          << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInitP(t1);
-      gum::Set< const gum::DiscreteVariable* > proj_set;
+      gum::VariableSet proj_set;
       proj_set.insert(vars[2]);
       proj_set.insert(vars[3]);
       proj_set.insert(vars[6]);
@@ -916,7 +914,7 @@ namespace gum_tests {
       proj_set.insert(vars[4]);
       proj_set.insert(vars[5]);
       proj_set.insert(vars[8]);
-      gum::Set< const gum::DiscreteVariable* > del_vars;
+      gum::VariableSet del_vars;
       del_vars.insert(vars[0]);
       del_vars.insert(vars[9]);
       del_vars.insert(vars[1]);
@@ -1050,7 +1048,7 @@ namespace gum_tests {
       t2.set(inst2, 4.0);
 
       gum::MultiDimProjection< gum::Potential< double > > proj(mySum);
-      gum::Set< const gum::DiscreteVariable* >            del_vars;
+      gum::VariableSet                                    del_vars;
 
       {
         gum::Potential< double >* t3 = proj.execute(t1, del_vars);
@@ -1149,7 +1147,7 @@ namespace gum_tests {
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4]) << *(vars[5])
          << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInitP(t1);
-      gum::Set< const gum::DiscreteVariable* > proj_set;
+      gum::VariableSet proj_set;
       proj_set.insert(vars[2]);
       proj_set.insert(vars[3]);
       proj_set.insert(vars[6]);
@@ -1157,7 +1155,7 @@ namespace gum_tests {
       proj_set.insert(vars[4]);
       proj_set.insert(vars[5]);
       proj_set.insert(vars[8]);
-      gum::Set< const gum::DiscreteVariable* > del_vars;
+      gum::VariableSet del_vars;
       del_vars.insert(vars[0]);
       del_vars.insert(vars[9]);
       del_vars.insert(vars[1]);
@@ -1287,7 +1285,7 @@ namespace gum_tests {
          << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInitP(t1);
       t1.normalize();
-      gum::Set< const gum::DiscreteVariable* > proj_set;
+      gum::VariableSet proj_set;
       proj_set.insert(vars[2]);
       proj_set.insert(vars[3]);
       proj_set.insert(vars[6]);
@@ -1295,7 +1293,7 @@ namespace gum_tests {
       proj_set.insert(vars[4]);
       proj_set.insert(vars[5]);
       proj_set.insert(vars[8]);
-      gum::Set< const gum::DiscreteVariable* > del_vars;
+      gum::VariableSet del_vars;
       del_vars.insert(vars[0]);
       del_vars.insert(vars[9]);
       del_vars.insert(vars[1]);

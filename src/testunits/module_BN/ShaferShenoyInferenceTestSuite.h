@@ -1106,8 +1106,8 @@ namespace gum_tests {
         const auto& pot3 = inf.posterior(i3);
         TS_ASSERT(inf.junctionTree()->sizeNodes() == 2)
 
-        gum::Set< const gum::DiscreteVariable* > set3{&x0, &x1, &x2, &x4};
-        const gum::Potential< double >           pot3bis
+        gum::VariableSet               set3{&x0, &x1, &x2, &x4};
+        const gum::Potential< double > pot3bis
            = (p0 * p1 * p2 * p3 * p4).margSumOut(set3).normalize();
         TS_ASSERT(equalPotentials(pot3, pot3bis))
       }
@@ -1124,8 +1124,8 @@ namespace gum_tests {
         const auto& pot2 = inf.posterior(i2);
         TS_ASSERT(inf.junctionTree()->sizeNodes() == 2)
 
-        gum::Set< const gum::DiscreteVariable* > set2{&x0, &x1, &x3, &x4};
-        gum::Potential< double >                 ev4;
+        gum::VariableSet         set2{&x0, &x1, &x3, &x4};
+        gum::Potential< double > ev4;
         ev4 << x4;
         ev4.fillWith({0.0, 1.0});
         const gum::Potential< double > pot2bis
@@ -1146,8 +1146,8 @@ namespace gum_tests {
         const auto& pot2 = inf.posterior(i2);
         TS_ASSERT(inf.junctionTree()->sizeNodes() == 2)
 
-        gum::Set< const gum::DiscreteVariable* > set2{&x0, &x1, &x3, &x4};
-        gum::Potential< double >                 ev4;
+        gum::VariableSet         set2{&x0, &x1, &x3, &x4};
+        gum::Potential< double > ev4;
         ev4 << x4;
         ev4.fillWith({0.0, 1.0});
         const gum::Potential< double > pot2bis
@@ -1169,8 +1169,8 @@ namespace gum_tests {
         const auto& pot2 = inf.posterior(i2);
         TS_ASSERT(inf.junctionTree()->sizeNodes() == 2)
 
-        gum::Set< const gum::DiscreteVariable* > set2{&x0, &x1, &x3, &x4};
-        gum::Potential< double >                 ev4;
+        gum::VariableSet         set2{&x0, &x1, &x3, &x4};
+        gum::Potential< double > ev4;
         ev4 << x4;
         ev4.fillWith({0.0, 1.0});
         const gum::Potential< double > pot2bis

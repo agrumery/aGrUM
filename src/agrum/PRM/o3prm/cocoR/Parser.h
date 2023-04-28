@@ -1,6 +1,6 @@
 /***************************************************************************
  *  aGrUM modified frames and atg files for cocoR
- *   Copyright (c) 2005 by Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)  *
+ *   Copyright (c) 2005-2023 by Pierre-Henri WUILLEMIN(@LIP6) and Christophe GONZALES(@AMU) 
  *   info_at_agrum_dot_org
 ***************************************************************************/
 /*----------------------------------------------------------------------
@@ -39,6 +39,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <vector>
 #include <utility>
 #include <agrum/tools/core/debug.h>
+#include <agrum/tools/core/hashTable.h>
 #include <agrum/PRM/o3prm/O3prm.h>
 
 #include <iostream>
@@ -355,5 +356,4 @@ O3InterfaceElementList& elts);
 
 
 #endif // !defined(COCO_PARSER_H__)
-
 

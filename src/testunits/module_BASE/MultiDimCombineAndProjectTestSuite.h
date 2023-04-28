@@ -69,7 +69,7 @@ namespace gum_tests {
 
       gum::Set< const gum::Potential< double >* > to_comb;
       to_comb << &t1 << &t2 << &t3 << &t4 << &t5 << &t6;
-      gum::Set< const gum::DiscreteVariable* > del_vars;
+      gum::VariableSet del_vars;
       del_vars << vars[1] << vars[4] << vars[5] << vars[6] << vars[9] << vars[10];
 
       gum::Set< const gum::Potential< double >* > res = projcomb.execute(to_comb, del_vars);
@@ -96,7 +96,7 @@ namespace gum_tests {
 
       gum::Set< const gum::Potential< double >* > comb_set;
       comb_set << &t1 << &t2;
-      gum::Set< const gum::DiscreteVariable* > del_vars2;
+      gum::VariableSet del_vars2;
       del_vars2 << vars[1];
       gum::Potential< double >* tt1 = comb.execute(comb_set);
       gum::Potential< double >* tt2 = proj.execute(*tt1, del_vars2);
@@ -211,7 +211,7 @@ namespace gum_tests {
 
       gum::Set< const gum::Potential< double >* > to_comb;
       to_comb << &t1 << &t2 << &t3 << &t4 << &t5 << &t6 << &t7 << &t8;
-      gum::Set< const gum::DiscreteVariable* > del_vars;
+      gum::VariableSet del_vars;
       del_vars << vars[1] << vars[4] << vars[5] << vars[6] << vars[9] << vars[10];
 
       gum::ScheduleMultiDim< gum::Potential< double > > xt1(t1, false);
@@ -323,7 +323,7 @@ namespace gum_tests {
 
       gum::Set< const gum::Potential< double >* > to_comb;
       to_comb << &t1 << &t2 << &t3 << &t4 << &t5 << &t6;
-      gum::Set< const gum::DiscreteVariable* > del_vars;
+      gum::VariableSet del_vars;
       del_vars << vars[1] << vars[4] << vars[5] << vars[6] << vars[9] << vars[10];
 
       gum::MultiDimCombinationDefault< gum::Potential< double > > comb(multPot);
@@ -412,7 +412,7 @@ namespace gum_tests {
 
       gum::Set< const gum::Potential< double >* > to_comb;
       to_comb << &t1 << &t2 << &t3 << &t4 << &t5 << &t6 << &t7 << &t8;
-      gum::Set< const gum::DiscreteVariable* > del_vars;
+      gum::VariableSet del_vars;
       del_vars << vars[1] << vars[4] << vars[5] << vars[6] << vars[9] << vars[10];
 
       gum::ScheduleMultiDim< gum::Potential< double > > xt1(t1, false);
@@ -529,7 +529,7 @@ namespace gum_tests {
 
       gum::Set< const gum::Potential< float >* > to_comb;
       to_comb << &t1 << &t2 << &t3 << &t4 << &t5 << &t6;
-      gum::Set< const gum::DiscreteVariable* > del_vars;
+      gum::VariableSet del_vars;
       del_vars << vars[1] << vars[4] << vars[5] << vars[6] << vars[9] << vars[10];
 
       gum::Set< const gum::Potential< float >* > res = projcomb.execute(to_comb, del_vars);
@@ -556,7 +556,7 @@ namespace gum_tests {
 
       gum::Set< const gum::Potential< float >* > comb_set;
       comb_set << &t1 << &t2;
-      gum::Set< const gum::DiscreteVariable* > del_vars2;
+      gum::VariableSet del_vars2;
       del_vars2 << vars[1];
       gum::Potential< float >* tt1 = comb.execute(comb_set);
       gum::Potential< float >* tt2 = proj.execute(*tt1, del_vars2);
@@ -608,7 +608,7 @@ namespace gum_tests {
 
       gum::Set< const gum::Potential< float >* > to_comb;
       to_comb << &t1 << &t2;
-      gum::Set< const gum::DiscreteVariable* > del_vars;
+      gum::VariableSet del_vars;
 
       {
         gum::Set< const gum::Potential< float >* > res = projcomb.execute(to_comb, del_vars);
@@ -770,15 +770,13 @@ namespace gum_tests {
       return t1 * t2;
     }
 
-    static gum::Potential< double >
-       mySum(const gum::Potential< double >&                 table,
-             const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+    static gum::Potential< double > mySum(const gum::Potential< double >& table,
+                                          const gum::VariableSet&         del_vars) {
       return table.margSumOut(del_vars);
     }
 
-    static gum::Potential< double >
-       myMax(const gum::Potential< double >&                 table,
-             const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+    static gum::Potential< double > myMax(const gum::Potential< double >& table,
+                                          const gum::VariableSet&         del_vars) {
       return table.margMaxOut(del_vars);
     }
 
@@ -801,13 +799,13 @@ namespace gum_tests {
       return t1 * t2;
     }
 
-    static gum::Potential< float > mySum(const gum::Potential< float >&                  table,
-                                         const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+    static gum::Potential< float > mySum(const gum::Potential< float >& table,
+                                         const gum::VariableSet&        del_vars) {
       return table.margSumOut(del_vars);
     }
 
-    static gum::Potential< float > myMax(const gum::Potential< float >&                  table,
-                                         const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+    static gum::Potential< float > myMax(const gum::Potential< float >& table,
+                                         const gum::VariableSet&        del_vars) {
       return table.margMaxOut(del_vars);
     }
   };

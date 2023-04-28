@@ -46,7 +46,7 @@ namespace gum {
   INLINE Regress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::Regress(
      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* DG1,
      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* DG2,
-     const Set< const DiscreteVariable* >*                          primedVars,
+     const gum::VariableSet*                                        primedVars,
      const DiscreteVariable*                                        targetVar,
      const GUM_SCALAR                                               neutral) :
       _DG1_(DG1),

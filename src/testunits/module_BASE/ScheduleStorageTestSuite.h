@@ -190,7 +190,7 @@ namespace gum_tests {
       s << "store ( " << f1b.toString() << " )";
       TS_ASSERT_EQUALS(s.str(), store1bis.toString())
 
-      gum::Set< const gum::DiscreteVariable* > del_vars1;
+      gum::VariableSet del_vars1;
       del_vars1 << vars[0] << vars[3];
       gum::ScheduleProjection< gum::Potential< double > > myproj(f1b, del_vars1, myProjectMax);
       TS_ASSERT(!store1bis.isSameOperator(myproj))
@@ -206,9 +206,8 @@ namespace gum_tests {
     }
 
     private:
-    static gum::Potential< double >
-       myProjectMax(const gum::Potential< double >&                 pot,
-                    const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+    static gum::Potential< double > myProjectMax(const gum::Potential< double >& pot,
+                                                 const gum::VariableSet&         del_vars) {
       return gum::Potential< double >(gum::projectMax(*(pot.content()), del_vars));
     }
   };

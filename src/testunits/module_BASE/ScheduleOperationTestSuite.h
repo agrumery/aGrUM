@@ -50,7 +50,7 @@ namespace gum_tests {
       pot1 << *(vars[0]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
       pot1.random();
       gum::ScheduleMultiDim< gum::Potential< double > > f1(pot1, true);
-      gum::Set< const gum::DiscreteVariable* >          del_vars;
+      gum::VariableSet                                  del_vars;
       del_vars << vars[0] << vars[3];
 
       gum::ScheduleProjection< gum::Potential< double > > real_myproj(f1, del_vars, myProjectMax);
@@ -85,17 +85,16 @@ namespace gum_tests {
     }
 
     private:
-    static gum::Potential< double >
-       myProjectMax(const gum::Potential< double >&                 pot,
-                    const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+    static gum::Potential< double > myProjectMax(const gum::Potential< double >& pot,
+                                                 const gum::VariableSet&         del_vars) {
       return gum::Potential< double >(gum::projectMax(*(pot.content()), del_vars));
     }
 
 
     // projection of a table over a set
-    gum::Potential< double >* proj(const gum::Potential< double >&                 table,
-                                   const gum::Set< const gum::DiscreteVariable* >& del_vars,
-                                   double                                          neutral_elt) {
+    gum::Potential< double >* proj(const gum::Potential< double >& table,
+                                   const gum::VariableSet&         del_vars,
+                                   double                          neutral_elt) {
       gum::Potential< double >* result = new gum::Potential< double >;
 
       const gum::Sequence< const gum::DiscreteVariable* >& vars = table.variablesSequence();

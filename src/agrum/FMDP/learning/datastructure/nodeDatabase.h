@@ -69,7 +69,7 @@ namespace gum {
     // ###################################################################
     /// Default constructor
     // ###################################################################
-    NodeDatabase(const Set< const DiscreteVariable* >*, const DiscreteVariable* = nullptr);
+    NodeDatabase(const gum::VariableSet*, const DiscreteVariable* = nullptr);
 
     // ###################################################################
     /// Default destructor

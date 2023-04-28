@@ -141,7 +141,7 @@ namespace gum {
      * @return Returns the sequence of all the variables contained in the
      * bucket.
      */
-    const Set< const DiscreteVariable* >& allVariables() const;
+    const gum::VariableSet& allVariables() const;
 
     /**
      * @brief Returns the number of MultiDimContainer in in this bukcet.
@@ -287,7 +287,7 @@ namespace gum {
     mutable HashTable< const MultiDimContainer< GUM_SCALAR >*, Instantiation* > _multiDims_;
 
     /// The set of all variables of the multidims in this bucket.
-    Set< const DiscreteVariable* > _allVariables_;
+    gum::VariableSet _allVariables_;
 
     /// Instantiation over all variable in this
     mutable Instantiation _allVarsInst_;

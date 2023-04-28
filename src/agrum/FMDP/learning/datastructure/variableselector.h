@@ -31,7 +31,6 @@
 #define GUM_VARIABLE_SELECTOR_H
 // =========================================================================
 #include <agrum/tools/core/multiPriorityQueue.h>
-#include <agrum/tools/core/set.h>
 // =========================================================================
 #include <agrum/tools/variables/discreteVariable.h>
 // =========================================================================
@@ -58,7 +57,7 @@ namespace gum {
     // ###################################################################
     /// Default constructor
     // ###################################################################
-    explicit VariableSelector(const Set< const DiscreteVariable* >& startingSet);
+    explicit VariableSelector(const gum::VariableSet& startingSet);
 
     // ###################################################################
     /// Default destructor
@@ -96,7 +95,7 @@ namespace gum {
     void _removeVar_(const DiscreteVariable* var);
 
     /// The set of remaining vars to select among
-    Set< const DiscreteVariable* >             _remainingVars_;
+    gum::VariableSet                           _remainingVars_;
     SetIteratorSafe< const DiscreteVariable* > _rvi_;
 
     /// Heap keeping best score on top for immediate access
@@ -104,7 +103,7 @@ namespace gum {
 
     /// HashTable associating to each score the set of variable having that
     /// score
-    HashTable< double, Set< const DiscreteVariable* >* > _remainingVarsByScore_;
+    HashTable< double, gum::VariableSet* > _remainingVarsByScore_;
 
     /// HashTable associating to each variable its score
     HashTable< const DiscreteVariable*, double > _remainingVarsScore_;

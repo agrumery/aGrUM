@@ -61,12 +61,10 @@ namespace gum {
   class InformationTheory {
     public:
     InformationTheory(INFERENCE_ENGINE< GUM_SCALAR >& engine,
-                      gum::NodeSet                    X,   // X,Y,Z passed by Value & move
-                      gum::NodeSet                    Y,
-                      gum::NodeSet                    Z);
-    InformationTheory(INFERENCE_ENGINE< GUM_SCALAR >& engine,
-                      const gum::NodeSet&             X,
-                      const gum::NodeSet&             Y);
+                      NodeSet                         X,   // X,Y,Z passed by Value & move
+                      NodeSet                         Y,
+                      NodeSet                         Z);
+    InformationTheory(INFERENCE_ENGINE< GUM_SCALAR >& engine, const NodeSet& X, const NodeSet& Y);
     InformationTheory(INFERENCE_ENGINE< GUM_SCALAR >&   engine,
                       const std::vector< std::string >& Xnames,
                       const std::vector< std::string >& Ynames);
@@ -95,21 +93,21 @@ namespace gum {
     protected:
     INFERENCE_ENGINE< GUM_SCALAR >& engine_;
 
-    const gum::NodeSet X_;
-    const gum::NodeSet Y_;
-    const gum::NodeSet Z_;
+    const NodeSet X_;
+    const NodeSet Y_;
+    const NodeSet Z_;
 
-    gum::Set< const DiscreteVariable* > vX_;
-    gum::Set< const DiscreteVariable* > vY_;
-    gum::Set< const DiscreteVariable* > vZ_;
+    VariableSet vX_;
+    VariableSet vY_;
+    VariableSet vZ_;
 
-    gum::Potential< GUM_SCALAR > pXYZ_;
-    gum::Potential< GUM_SCALAR > pXY_;
-    gum::Potential< GUM_SCALAR > pXZ_;
-    gum::Potential< GUM_SCALAR > pYZ_;
-    gum::Potential< GUM_SCALAR > pX_;
-    gum::Potential< GUM_SCALAR > pY_;
-    gum::Potential< GUM_SCALAR > pZ_;
+    Potential< GUM_SCALAR > pXYZ_;
+    Potential< GUM_SCALAR > pXY_;
+    Potential< GUM_SCALAR > pXZ_;
+    Potential< GUM_SCALAR > pYZ_;
+    Potential< GUM_SCALAR > pX_;
+    Potential< GUM_SCALAR > pY_;
+    Potential< GUM_SCALAR > pZ_;
 
     void makeInference_();
   };

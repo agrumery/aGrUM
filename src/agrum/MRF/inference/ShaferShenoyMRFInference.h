@@ -51,9 +51,8 @@ namespace gum {
 
   // the function used to combine two tables
   template < typename GUM_SCALAR >
-  INLINE static Potential< GUM_SCALAR >
-     SSNewMNprojPotential(const Potential< GUM_SCALAR >&        t1,
-                          const Set< const DiscreteVariable* >& del_vars) {
+  INLINE static Potential< GUM_SCALAR > SSNewMNprojPotential(const Potential< GUM_SCALAR >& t1,
+                                                             const gum::VariableSet& del_vars) {
     return t1.margSumOut(del_vars);
   }
 
@@ -224,8 +223,7 @@ namespace gum {
 
     /// the operator for performing the projections
     Potential< GUM_SCALAR > (*_projection_op_)(const Potential< GUM_SCALAR >&,
-                                               const Set< const DiscreteVariable* >&){
-       SSNewMNprojPotential};
+                                               const gum::VariableSet&){SSNewMNprojPotential};
 
     /// the operator for performing the combinations
     Potential< GUM_SCALAR > (*_combination_op_)(const Potential< GUM_SCALAR >&,
@@ -389,8 +387,8 @@ namespace gum {
     void _initializeJTCliques_();
 
     /// sets the operator for performing the projections
-    void _setProjectionFunction_(Potential< GUM_SCALAR > (
-       *proj)(const Potential< GUM_SCALAR >&, const Set< const DiscreteVariable* >&));
+    void _setProjectionFunction_(Potential< GUM_SCALAR > (*proj)(const Potential< GUM_SCALAR >&,
+                                                                 const gum::VariableSet&));
 
     /// sets the operator for performing the combinations
     void _setCombinationFunction_(Potential< GUM_SCALAR > (*comb)(const Potential< GUM_SCALAR >&,
@@ -407,16 +405,16 @@ namespace gum {
 
     /** @brief removes variables del_vars from a list of potentials and
      * returns the resulting list using schedules */
-    const IScheduleMultiDim* _marginalizeOut_(Schedule&                       schedule,
-                                              _ScheduleMultiDimSet_           pot_list,
-                                              Set< const DiscreteVariable* >& del_vars,
-                                              Set< const DiscreteVariable* >& kept_vars);
+    const IScheduleMultiDim* _marginalizeOut_(Schedule&             schedule,
+                                              _ScheduleMultiDimSet_ pot_list,
+                                              gum::VariableSet&     del_vars,
+                                              gum::VariableSet&     kept_vars);
 
     /** @brief removes variables del_vars from a list of potentials and
      * returns the resulting list directly without schedules */
-    const IScheduleMultiDim* _marginalizeOut_(_ScheduleMultiDimSet_&          pot_list,
-                                              Set< const DiscreteVariable* >& del_vars,
-                                              Set< const DiscreteVariable* >& kept_vars);
+    const IScheduleMultiDim* _marginalizeOut_(_ScheduleMultiDimSet_& pot_list,
+                                              gum::VariableSet&      del_vars,
+                                              gum::VariableSet&      kept_vars);
 
     /// creates the message sent by clique from_id to clique to_id using schedules
     void _produceMessage_(Schedule& schedule, NodeId from_id, NodeId to_id);

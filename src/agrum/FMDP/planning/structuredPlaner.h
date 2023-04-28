@@ -333,7 +333,7 @@ namespace gum {
     // ==========================================================================
     /// A Set to eleminate primed variables
     // ==========================================================================
-    Set< const DiscreteVariable* > elVarSeq_;
+    gum::VariableSet elVarSeq_;
 
     // ==========================================================================
     /// Discount Factor used for infinite horizon planning

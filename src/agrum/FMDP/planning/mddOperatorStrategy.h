@@ -99,9 +99,9 @@ namespace gum {
      */
     // ==========================================================================
     MultiDimFunctionGraph< GUM_SCALAR >* regress(const MultiDimFunctionGraph< GUM_SCALAR >* Vold,
-                                                 Idx                                   actionId,
-                                                 const FMDP< GUM_SCALAR >*             fmdp,
-                                                 const Set< const DiscreteVariable* >& elVarSeq);
+                                                 Idx                       actionId,
+                                                 const FMDP< GUM_SCALAR >* fmdp,
+                                                 const gum::VariableSet&   elVarSeq);
 
     // ==========================================================================
     /// @warning given vFunction and qAction are deleted, returns the new one

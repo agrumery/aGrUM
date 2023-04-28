@@ -215,11 +215,10 @@ namespace gum_tests {
       learner.setEpsilon(1e-3);
       bool ok;
       for (int i = 0; i < 10; i++) {
-        ok       = true;
-        auto bn1 = learner.createBN(param_estimator_id, param_estimator_EM, dag);
-        auto margB
-           = (bn1.cpt("D") * bn1.cpt("C") * bn1.cpt("B"))
-                .margSumIn(gum::Set< const gum::DiscreteVariable* >({&bn1.variableFromName("B")}));
+        ok         = true;
+        auto bn1   = learner.createBN(param_estimator_id, param_estimator_EM, dag);
+        auto margB = (bn1.cpt("D") * bn1.cpt("C") * bn1.cpt("B"))
+                        .margSumIn(gum::VariableSet({&bn1.variableFromName("B")}));
         if ((bn1.cpt("D").max() < 0.8) && (bn1.cpt("D").max() > 0.6) && (margB.max() > 0.5)
             && (margB.max() < 0.6))
           break;

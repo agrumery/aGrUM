@@ -39,9 +39,8 @@ namespace gum {
   // Default constructor
   // ###################################################################
   template < TESTNAME AttributeSelection, bool isScalar >
-  NodeDatabase< AttributeSelection, isScalar >::NodeDatabase(
-     const Set< const DiscreteVariable* >* attrSet,
-     const DiscreteVariable*               value) :
+  NodeDatabase< AttributeSelection, isScalar >::NodeDatabase(const gum::VariableSet* attrSet,
+                                                             const DiscreteVariable* value) :
       _value_(value) {
     GUM_CONSTRUCTOR(NodeDatabase);
 

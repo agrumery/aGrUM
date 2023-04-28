@@ -59,9 +59,9 @@ namespace gum {
   // ###################################################################
   template < TESTNAME AttributeSelection, bool isScalar >
   ITI< AttributeSelection, isScalar >::ITI(MultiDimFunctionGraph< double >* target,
-                                           double attributeSelectionThreshold,
-                                           Set< const DiscreteVariable* > attributeListe,
-                                           const DiscreteVariable*        learnedValue) :
+                                           double                  attributeSelectionThreshold,
+                                           gum::VariableSet        attributeListe,
+                                           const DiscreteVariable* learnedValue) :
       IncrementalGraphLearner< AttributeSelection, isScalar >(target, attributeListe, learnedValue),
       _nbTotalObservation_(0), _attributeSelectionThreshold_(attributeSelectionThreshold) {
     GUM_CONSTRUCTOR(ITI);
@@ -82,8 +82,8 @@ namespace gum {
   // ###################################################################
   template < TESTNAME AttributeSelection, bool isScalar >
   ITI< AttributeSelection, isScalar >::ITI(MultiDimFunctionGraph< double >* target,
-                                           double attributeSelectionThreshold,
-                                           Set< const DiscreteVariable* > attributeListe) :
+                                           double           attributeSelectionThreshold,
+                                           gum::VariableSet attributeListe) :
       IncrementalGraphLearner< AttributeSelection, isScalar >(
          target,
          attributeListe,
@@ -139,8 +139,8 @@ namespace gum {
   void ITI< AttributeSelection, isScalar >::updateGraph() {
     std::vector< NodeId > filo;
     filo.push_back(this->root_);
-    HashTable< NodeId, Set< const DiscreteVariable* >* > potentialVars;
-    potentialVars.insert(this->root_, new Set< const DiscreteVariable* >(this->setOfVars_));
+    HashTable< NodeId, gum::VariableSet* > potentialVars;
+    potentialVars.insert(this->root_, new gum::VariableSet(this->setOfVars_));
 
 
     while (!filo.empty()) {
@@ -148,8 +148,8 @@ namespace gum {
       filo.pop_back();
 
       // First we look for the best var to install on the node
-      double                         bestValue = _attributeSelectionThreshold_;
-      Set< const DiscreteVariable* > bestVars;
+      double           bestValue = _attributeSelectionThreshold_;
+      gum::VariableSet bestVars;
 
       for (auto varIter = potentialVars[currentNodeId]->cbeginSafe();
            varIter != potentialVars[currentNodeId]->cendSafe();
@@ -171,8 +171,7 @@ namespace gum {
       // The we move on the children if needed
       if (this->nodeVarMap_[currentNodeId] != this->value_) {
         for (Idx moda = 0; moda < this->nodeVarMap_[currentNodeId]->domainSize(); moda++) {
-          Set< const DiscreteVariable* >* itsPotentialVars
-             = new Set< const DiscreteVariable* >(*potentialVars[currentNodeId]);
+          gum::VariableSet* itsPotentialVars = new gum::VariableSet(*potentialVars[currentNodeId]);
           itsPotentialVars->erase(this->nodeVarMap_[currentNodeId]);
           NodeId sonId = this->nodeSonsMap_[currentNodeId][moda];
           if (_staleTable_[sonId]) {
@@ -183,8 +182,7 @@ namespace gum {
       }
     }
 
-    for (HashTableIteratorSafe< NodeId, Set< const DiscreteVariable* >* > nodeIter
-         = potentialVars.beginSafe();
+    for (HashTableIteratorSafe< NodeId, gum::VariableSet* > nodeIter = potentialVars.beginSafe();
          nodeIter != potentialVars.endSafe();
          ++nodeIter)
       delete nodeIter.val();

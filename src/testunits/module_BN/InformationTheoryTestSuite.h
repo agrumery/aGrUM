@@ -210,7 +210,7 @@ namespace gum_tests {
         joint *= bn.cpt(n);
 
       auto mi = [&](gum::NodeId x, gum::NodeId y) -> double {
-        using VarSet   = gum::Set< const gum::DiscreteVariable* >;
+        using VarSet   = gum::VariableSet;
         const auto vx  = &bn.variable(x);
         const auto vy  = &bn.variable(y);
         const auto hxy = joint.margSumIn(VarSet{vx, vy}).entropy();
@@ -219,7 +219,7 @@ namespace gum_tests {
         return hx + hy - hxy;
       };
       auto h = [&](gum::NodeId x) -> double {
-        using VarSet  = gum::Set< const gum::DiscreteVariable* >;
+        using VarSet  = gum::VariableSet;
         const auto vx = &bn.variable(x);
         return joint.margSumIn(VarSet{vx}).entropy();
       };
@@ -257,7 +257,7 @@ namespace gum_tests {
       joint.normalize();
 
       auto mi = [&](gum::NodeId x, gum::NodeId y) -> double {
-        using VarSet   = gum::Set< const gum::DiscreteVariable* >;
+        using VarSet   = gum::VariableSet;
         const auto vx  = &bn.variable(x);
         const auto vy  = &bn.variable(y);
         const auto hxy = joint.margSumIn(VarSet{vx, vy}).entropy();
@@ -266,7 +266,7 @@ namespace gum_tests {
         return hx + hy - hxy;
       };
       auto h = [&](gum::NodeId x) -> double {
-        using VarSet  = gum::Set< const gum::DiscreteVariable* >;
+        using VarSet  = gum::VariableSet;
         const auto vx = &bn.variable(x);
         return joint.margSumIn(VarSet{vx}).entropy();
       };
@@ -305,7 +305,7 @@ namespace gum_tests {
       joint.normalize();
 
       auto mi = [&](gum::NodeId x, gum::NodeId y) -> double {
-        using VarSet   = gum::Set< const gum::DiscreteVariable* >;
+        using VarSet   = gum::VariableSet;
         const auto vx  = &bn.variable(x);
         const auto vy  = &bn.variable(y);
         const auto hxy = joint.margSumIn(VarSet{vx, vy}).entropy();
@@ -314,7 +314,7 @@ namespace gum_tests {
         return hx + hy - hxy;
       };
       auto h = [&](gum::NodeId x) -> double {
-        using VarSet  = gum::Set< const gum::DiscreteVariable* >;
+        using VarSet  = gum::VariableSet;
         const auto vx = &bn.variable(x);
         return joint.margSumIn(VarSet{vx}).entropy();
       };

@@ -111,8 +111,7 @@ namespace gum {
 
       Sequence< std::string >* _class_elim_order_;
 
-      HashTable< const PRMInstance< GUM_SCALAR >*, Set< const DiscreteVariable* >* >
-         _delayedVariables_;
+      HashTable< const PRMInstance< GUM_SCALAR >*, gum::VariableSet* > _delayedVariables_;
 
       /// Some variable must be delayed for more than one
       /// PRMInstance<GUM_SCALAR>,

@@ -29,6 +29,7 @@
 %ignore *::endArcs;
 %ignore *::beginEdges;
 %ignore *::endEdges;
+%ignore *::variables;
 
 %include "extensions/BNGenerator.h"
 %{

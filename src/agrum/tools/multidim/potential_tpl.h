@@ -417,7 +417,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >
-         Potential< GUM_SCALAR >::margSumOut(const Set< const DiscreteVariable* >& del_vars) const {
+         Potential< GUM_SCALAR >::margSumOut(const gum::VariableSet& del_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
     }
@@ -440,7 +440,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >
-     Potential< GUM_SCALAR >::margProdOut(const Set< const DiscreteVariable* >& del_vars) const {
+         Potential< GUM_SCALAR >::margProdOut(const gum::VariableSet& del_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
     }
@@ -463,7 +463,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >
-         Potential< GUM_SCALAR >::margMinOut(const Set< const DiscreteVariable* >& del_vars) const {
+         Potential< GUM_SCALAR >::margMinOut(const gum::VariableSet& del_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
     }
@@ -486,7 +486,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >
-         Potential< GUM_SCALAR >::margMaxOut(const Set< const DiscreteVariable* >& del_vars) const {
+         Potential< GUM_SCALAR >::margMaxOut(const gum::VariableSet& del_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
     }
@@ -509,7 +509,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >
-         Potential< GUM_SCALAR >::margSumIn(const Set< const DiscreteVariable* >& kept_vars) const {
+         Potential< GUM_SCALAR >::margSumIn(const gum::VariableSet& kept_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
     }
@@ -523,7 +523,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >
-     Potential< GUM_SCALAR >::margProdIn(const Set< const DiscreteVariable* >& kept_vars) const {
+         Potential< GUM_SCALAR >::margProdIn(const gum::VariableSet& kept_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
     }
@@ -538,7 +538,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >
-         Potential< GUM_SCALAR >::margMinIn(const Set< const DiscreteVariable* >& kept_vars) const {
+         Potential< GUM_SCALAR >::margMinIn(const gum::VariableSet& kept_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
     }
@@ -552,7 +552,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >
-         Potential< GUM_SCALAR >::margMaxIn(const Set< const DiscreteVariable* >& kept_vars) const {
+         Potential< GUM_SCALAR >::margMaxIn(const gum::VariableSet& kept_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return Potential< GUM_SCALAR >().fillWith(this->empty_value_);
     }
@@ -575,9 +575,8 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  Set< const DiscreteVariable* >
-     Potential< GUM_SCALAR >::complementVars_(const Set< const DiscreteVariable* >& vars) const {
-    Set< const DiscreteVariable* > cplt;
+  gum::VariableSet Potential< GUM_SCALAR >::complementVars_(const gum::VariableSet& vars) const {
+    gum::VariableSet cplt;
 
     for (const auto x: this->variablesSequence())
       if (!vars.contains(x)) cplt.insert(x);

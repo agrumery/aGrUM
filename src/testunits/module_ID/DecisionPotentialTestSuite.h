@@ -110,7 +110,7 @@ namespace gum_tests {
       d1.insertProba(infdiag.cpt("A"));
       d1.insertUtility(infdiag.utility("B"));
 
-      gum::Set< const gum::DiscreteVariable* > vars;
+      gum::VariableSet vars;
       vars.insert(&infdiag.variableFromName("C"));
       auto res1 = d1 ^ vars;
 

@@ -126,7 +126,7 @@ namespace gum {
       return *this;
     }
 
-    DecisionPotential< GUM_SCALAR > operator^(const Set< const DiscreteVariable* >& onto) const {
+    DecisionPotential< GUM_SCALAR > operator^(const gum::VariableSet& onto) const {
       return DecisionPotential< GUM_SCALAR >::marginalization(*this, onto);
     }
 
@@ -151,8 +151,7 @@ namespace gum {
     }
 
     static DecisionPotential< GUM_SCALAR >
-       marginalization(const DecisionPotential< GUM_SCALAR >& dp,
-                       const Set< const DiscreteVariable* >&  onto) {
+       marginalization(const DecisionPotential< GUM_SCALAR >& dp, const gum::VariableSet& onto) {
       const auto pr = dp.probPot.margSumIn(onto);
       return DecisionPotential(pr, divideEvenZero((dp.probPot * dp.utilPot).margSumIn(onto), pr));
     }
@@ -160,7 +159,7 @@ namespace gum {
     static DecisionPotential< GUM_SCALAR >
        marginalization(const DecisionPotential< GUM_SCALAR >& dp,
                        const std::vector< std::string >&      ontonames) {
-      Set< const DiscreteVariable* > onto;
+      gum::VariableSet onto;
       for (const auto& varname: ontonames) {
         onto.insert(dp.variable(varname));
       }

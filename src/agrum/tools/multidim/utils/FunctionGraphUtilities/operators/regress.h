@@ -58,7 +58,7 @@ namespace gum {
     /// Default constructor.
     Regress(const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* vfunction,
             const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* probDist,
-            const Set< const DiscreteVariable* >*                          primedVars,
+            const gum::VariableSet*                                        primedVars,
             const DiscreteVariable*                                        targetVar,
             const GUM_SCALAR                                               neutral);
 
@@ -104,7 +104,7 @@ namespace gum {
     MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* _rd_;
 
     /// The set of variables we want to keep at the end
-    const Set< const DiscreteVariable* >* _primedVars_;
+    const gum::VariableSet* _primedVars_;
 
     /// The variable we work on to eleminate
     const DiscreteVariable* _targetVar_;

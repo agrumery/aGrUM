@@ -49,10 +49,10 @@ namespace gum {
   // ============================================================================
   template < TESTNAME AttributeSelection, bool isScalar >
   IMDDI< AttributeSelection, isScalar >::IMDDI(MultiDimFunctionGraph< double >* target,
-                                               double attributeSelectionThreshold,
-                                               double pairSelectionThreshold,
-                                               Set< const DiscreteVariable* > attributeListe,
-                                               const DiscreteVariable*        learnedValue) :
+                                               double                  attributeSelectionThreshold,
+                                               double                  pairSelectionThreshold,
+                                               gum::VariableSet        attributeListe,
+                                               const DiscreteVariable* learnedValue) :
       IncrementalGraphLearner< AttributeSelection, isScalar >(target, attributeListe, learnedValue),
       _lg_(&(this->model_), pairSelectionThreshold), _nbTotalObservation_(0),
       _attributeSelectionThreshold_(attributeSelectionThreshold) {
@@ -65,9 +65,9 @@ namespace gum {
   // ============================================================================
   template < TESTNAME AttributeSelection, bool isScalar >
   IMDDI< AttributeSelection, isScalar >::IMDDI(MultiDimFunctionGraph< double >* target,
-                                               double attributeSelectionThreshold,
-                                               double pairSelectionThreshold,
-                                               Set< const DiscreteVariable* > attributeListe) :
+                                               double           attributeSelectionThreshold,
+                                               double           pairSelectionThreshold,
+                                               gum::VariableSet attributeListe) :
       IncrementalGraphLearner< AttributeSelection, isScalar >(
          target,
          attributeListe,

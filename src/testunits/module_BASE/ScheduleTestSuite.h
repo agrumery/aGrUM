@@ -394,7 +394,7 @@ namespace gum_tests {
 
       gum::ScheduleDeletion< gum::Potential< double > > del(result1);
 
-      gum::Set< const gum::DiscreteVariable* > del_vars;
+      gum::VariableSet del_vars;
       del_vars << vars[2] << vars[1];
       gum::ScheduleProjection< gum::Potential< double > > myproj(result1, del_vars, myProjectSum);
       const gum::ScheduleMultiDim< gum::Potential< double > >& result2 = myproj.result();
@@ -509,9 +509,8 @@ namespace gum_tests {
       return f1 + f2;
     }
 
-    static gum::Potential< double >
-       myProjectSum(const gum::Potential< double >&                 pot,
-                    const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+    static gum::Potential< double > myProjectSum(const gum::Potential< double >& pot,
+                                                 const gum::VariableSet&         del_vars) {
       return gum::Potential< double >(gum::projectSum(*(pot.content()), del_vars));
     }
   };

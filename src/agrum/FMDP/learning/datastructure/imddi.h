@@ -63,7 +63,7 @@ namespace gum {
     IMDDI(MultiDimFunctionGraph< double >* target,
           double                           attributeSelectionThreshold,
           double                           pairSelectionThreshold,
-          Set< const DiscreteVariable* >   attributeListe,
+          gum::VariableSet                 attributeListe,
           const DiscreteVariable*          learnedValue);
 
     // ==========================================================================
@@ -72,7 +72,7 @@ namespace gum {
     IMDDI(MultiDimFunctionGraph< double >* target,
           double                           attributeSelectionThreshold,
           double                           pairSelectionThreshold,
-          Set< const DiscreteVariable* >   attributeListe);
+          gum::VariableSet                 attributeListe);
 
     // ==========================================================================
     /// Default destructor

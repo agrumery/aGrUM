@@ -43,8 +43,8 @@ namespace gum {
 #    define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
   template < typename GUM_SCALAR >
   MultiDimArray< GUM_SCALAR >* GUM_MULTI_DIM_PROJECTION_NAME(
-     const MultiDimArray< GUM_SCALAR >*    table,
-     const Set< const DiscreteVariable* >& del_vars)
+     const MultiDimArray< GUM_SCALAR >* table,
+     const gum::VariableSet&            del_vars)
 #  endif
 
   // clang-format off
@@ -55,7 +55,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   MultiDimArray<GUM_SCALAR*>* GUM_MULTI_DIM_PROJECTION_POINTER_NAME(
       const MultiDimArray<GUM_SCALAR*>* table,
-      const Set<const DiscreteVariable*>& del_vars )
+      const VariableSet& del_vars )
 #endif
 
 #ifdef GUM_MULTI_DIM_PROJECTION_NAME_F
@@ -63,7 +63,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   MultiDimArray<GUM_SCALAR>* GUM_MULTI_DIM_PROJECTION_NAME_F(
       const MultiDimArray<GUM_SCALAR>* table,
-      const Set<const DiscreteVariable*>& del_vars,
+      const VariableSet& del_vars,
       GUM_SCALAR ( *f )( const GUM_SCALAR&, const GUM_SCALAR& ) )
 #endif
 
@@ -73,7 +73,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   MultiDimArray<GUM_SCALAR*>* GUM_MULTI_DIM_PROJECTION_POINTER_NAME_F(
       const MultiDimArray<GUM_SCALAR*>* table,
-      const Set<const DiscreteVariable*>& del_vars,
+      const VariableSet& del_vars,
       GUM_SCALAR* ( *f )( const GUM_SCALAR const*,
                           const GUM_SCALAR const* ) )
 #endif
@@ -84,7 +84,7 @@ namespace gum {
   MultiDimImplementation<GUM_SCALAR>*
   GUM_MULTI_DIM_PROJECTION_IMPL2ARRAY_NAME(
       const MultiDimImplementation<GUM_SCALAR>* ttable,
-      const Set<const DiscreteVariable*>& del_vars )
+      const VariableSet& del_vars )
 #endif
 
 #ifdef GUM_MULTI_DIM_PROJECTION_POINTER_IMPL2ARRAY_NAME
@@ -94,7 +94,7 @@ namespace gum {
             MultiDimImplementation<GUM_SCALAR*>*
             GUM_MULTI_DIM_PROJECTION_POINTER_IMPL2ARRAY_NAME(
                 const MultiDimImplementation<GUM_SCALAR*>* ttable,
-                const Set<const DiscreteVariable*>& del_vars )
+                const VariableSet& del_vars )
 #endif
 
   // clang-format on

@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# (c) Copyright by Pierre-Henri Wuillemin, Sorbonne univerqir&, 2023
+# (c) Copyright 2022-2023 by Pierre-Henri Wuillemin(@LIP6)
 # (pierre-henri.wuillemin@lip6.fr)
 # Permission to use, copy, modify, and distribute this
 # software and its documentation for any purpose and

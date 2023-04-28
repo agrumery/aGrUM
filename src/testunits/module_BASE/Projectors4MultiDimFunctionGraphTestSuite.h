@@ -143,9 +143,9 @@ namespace gum_tests {
     // ************************************************************************************************
     /// Sauvegarde des diagrammes générant une erreur dans un fichier log
     // ************************************************************************************************
-    void _saveDiagrams_(gum::MultiDimFunctionGraph< double >*    a1,
-                        gum::MultiDimFunctionGraph< double >*    a3,
-                        gum::Set< const gum::DiscreteVariable* > delVars) {
+    void _saveDiagrams_(gum::MultiDimFunctionGraph< double >* a1,
+                        gum::MultiDimFunctionGraph< double >* a3,
+                        gum::VariableSet                      delVars) {
       std::string   dotfile = GET_RESSOURCES_PATH("FunctionGraphError.log");
       std::ofstream output(dotfile.c_str(), std::ios::out);
 
@@ -198,12 +198,12 @@ namespace gum_tests {
     /// Evals given in parameter operation. Returned boolean parameter indicates
     /// if all went well or not
     // ************************************************************************************************
-    bool _evalOperation_(int                                      operationId,
-                         gum::MultiDimFunctionGraph< double >*    a1,
-                         gum::Set< const gum::DiscreteVariable* > del_vars,
-                         double&                                  tempsCalcul,
-                         double&                                  tempsEval,
-                         double                                   delta = 0.01) {
+    bool _evalOperation_(int                                   operationId,
+                         gum::MultiDimFunctionGraph< double >* a1,
+                         gum::VariableSet                      del_vars,
+                         double&                               tempsCalcul,
+                         double&                               tempsEval,
+                         double                                delta = 0.01) {
       bool                                  hasNoError = true;
       gum::MultiDimFunctionGraph< double >* a3         = nullptr;
 
@@ -374,7 +374,7 @@ namespace gum_tests {
         gum::MultiDimFunctionGraph< double >* a1 = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING(a1 = _generateFunctionGraph1_(varList))
 
-        gum::Set< const gum::DiscreteVariable* > del_vars;
+        gum::VariableSet del_vars;
         del_vars << varList->atPos(0);
         //        del_vars << varList->atPos( 1 );
 
@@ -515,7 +515,7 @@ namespace gum_tests {
 
         dg1->manager()->setRootNode(n01);
 
-        gum::Set< const gum::DiscreteVariable* > del_vars;
+        gum::VariableSet del_vars;
         del_vars << vB;
 
         double a = 0.0, b = 0.0, c = 0.0;
@@ -631,7 +631,7 @@ namespace gum_tests {
 
         dg1->manager()->setRootNode(n01);
 
-        gum::Set< const gum::DiscreteVariable* > del_vars;
+        gum::VariableSet del_vars;
         del_vars << vD;
         del_vars << vB;
         del_vars << vC;
@@ -855,7 +855,7 @@ namespace gum_tests {
 
         dg1->manager()->setRootNode(n01);
 
-        gum::Set< const gum::DiscreteVariable* > del_vars;
+        gum::VariableSet del_vars;
         del_vars << v4;
         del_vars << v2;
         del_vars << v5;

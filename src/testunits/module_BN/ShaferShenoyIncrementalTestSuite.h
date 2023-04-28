@@ -104,7 +104,7 @@ namespace gum_tests {
                                        const gum::NodeSet&            target_ids,
                                        const gum::BayesNet< double >& bn) {
       // get the set of variables to erase
-      gum::Set< const gum::DiscreteVariable* > kept;
+      gum::VariableSet kept;
       for (const auto n: target_ids)
         kept.insert(&bn.variable(n));
       return joint.margSumIn(kept).normalize();

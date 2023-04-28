@@ -113,7 +113,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE const Set< const DiscreteVariable* >& MultiDimBucket< GUM_SCALAR >::allVariables() const {
+  INLINE const gum::VariableSet& MultiDimBucket< GUM_SCALAR >::allVariables() const {
     return _allVariables_;
   }
 

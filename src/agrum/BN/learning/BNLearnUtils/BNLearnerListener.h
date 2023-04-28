@@ -20,7 +20,7 @@
 
 /*
     <one line to give the program's name and a brief idea of what it does.>
-    Copyright (c) 2012  Pierre-Henri WUILLEMIN(_at_LIP6)
+    Copyright (c) 2012 -2023 Pierre-Henri WUILLEMIN(_@LIP6)
    <pierre-henri.wuillemin@lip6.fr>
 
     This program is free software: you can redistribute it and/or modify

@@ -30,7 +30,6 @@
 #ifndef GUM_PROJECTION_REGISTER_4_MULTI_DIM_H
 #define GUM_PROJECTION_REGISTER_4_MULTI_DIM_H
 
-#include <agrum/tools/core/set.h>
 #include <agrum/tools/variables/discreteVariable.h>
 #include <iostream>
 #include <string>
@@ -63,7 +62,7 @@ namespace gum {
     /// the type of functions used by the register
     using ProjectionPtr
        = MultiDimImplementation< GUM_SCALAR >* (*)(const MultiDimImplementation< GUM_SCALAR >*,
-                                                   const Set< const DiscreteVariable* >&);
+                                                   const gum::VariableSet&);
 
     // ========================================================================
     /// @name Accessors / Modifiers

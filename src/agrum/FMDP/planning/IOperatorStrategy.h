@@ -90,7 +90,7 @@ namespace gum {
        regress(const MultiDimFunctionGraph< GUM_SCALAR >* Vold,
                Idx                                        actionId,
                const FMDP< GUM_SCALAR >*                  fmdp,
-               const Set< const DiscreteVariable* >&      elVarSeq)
+               const gum::VariableSet&                    elVarSeq)
        = 0;
 
     // ==========================================================================

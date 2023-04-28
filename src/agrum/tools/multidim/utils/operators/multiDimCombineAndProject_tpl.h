@@ -58,7 +58,7 @@ namespace gum {
   Set< const IScheduleMultiDim* > MultiDimCombineAndProject< TABLE >::schedule(
      Schedule&                              schedule,
      const Set< const IScheduleMultiDim* >& original_tables,
-     const Set< const DiscreteVariable* >&  del_vars,
+     const gum::VariableSet&                del_vars,
      const bool                             is_result_persistent) const {
     // compute the set of operations to perform and insert them into the schedule
     auto ops_res = operations(original_tables, del_vars, false);

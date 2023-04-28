@@ -360,7 +360,7 @@ namespace gum {
     endTopologyTransformation();
 
     // update the conditional distributions of head and tail
-    Set< const DiscreteVariable* > del_vars;
+    gum::VariableSet del_vars;
     del_vars << &(variable(tail));
     Potential< GUM_SCALAR > new_cpt_head = prod.margSumOut(del_vars).putFirst(&variable(head));
 

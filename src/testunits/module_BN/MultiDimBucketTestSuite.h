@@ -59,7 +59,7 @@ namespace gum_tests {
         temp.pop_back();
       }
 
-      auto del_vars = gum::Set< const gum::DiscreteVariable* >();
+      auto del_vars = gum::VariableSet();
       for (auto var: result.variablesSequence()) {
         if (!product.contains(*var)) { del_vars.insert(var); }
       }
@@ -478,7 +478,7 @@ namespace gum_tests {
       sep_sr.add(bn->variable(r));
       bucket_sr.add(bn->variable(r));
 
-      auto del_vars = gum::Set< const gum::DiscreteVariable* >();
+      auto del_vars = gum::VariableSet();
       for (auto var: clique_csr.variablesSequence()) {
         if (!sep_sr.contains(*var)) { del_vars.insert(var); }
       }
@@ -532,7 +532,7 @@ namespace gum_tests {
       gum::Potential< double > marg_w;
       marg_w.add(bn->variable(w));
 
-      del_vars = gum::Set< const gum::DiscreteVariable* >();
+      del_vars = gum::VariableSet();
       for (auto var: tmp.variablesSequence()) {
         if (!marg_w.contains(*var)) { del_vars.insert(var); }
       }

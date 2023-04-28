@@ -81,7 +81,7 @@ namespace gum {
      */
     // ==========================================================================
     IncrementalGraphLearner(MultiDimFunctionGraph< double >* target,
-                            Set< const DiscreteVariable* >   attributesSet,
+                            gum::VariableSet                 attributesSet,
                             const DiscreteVariable*          learnVariable);
 
     // ==========================================================================
@@ -197,7 +197,7 @@ namespace gum {
      * @param bestVars : the set of interessting vars to be installed here
      */
     // ==========================================================================
-    void updateNode_(NodeId nody, Set< const DiscreteVariable* >& bestVars);
+    void updateNode_(NodeId nody, gum::VariableSet& bestVars);
 
     // ==========================================================================
     /// Turns the given node into a leaf if not already so
@@ -381,7 +381,7 @@ namespace gum {
     /// The final diagram we're building
     MultiDimFunctionGraph< double >* target_;
 
-    Set< const DiscreteVariable* > setOfVars_;
+    gum::VariableSet setOfVars_;
 
     const DiscreteVariable* value_;
     Sequence< ValueType >   valueAssumed_;

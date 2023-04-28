@@ -47,11 +47,14 @@ namespace gum_tests {
 
   class [[maybe_unused]] LazyPropagationTestSuite: public CxxTest::TestSuite {
     public:
-    gum::BayesNet< double >* _bn;
-    gum::NodeId              i1, i2, i3, i4, i5;
-    gum::Potential< double >*e_i1, *e_i4;
-
-    float _epsilon_{1e-6f};
+    gum::BayesNet< double >*  _bn;
+    gum::NodeId               i1;
+    gum::NodeId               i2;
+    gum::NodeId               i3;
+    gum::NodeId               i4;
+    gum::NodeId               i5;
+    gum::Potential< double >* e_i1;
+    gum::Potential< double >* e_i4;
 
     void setUp() final {
       _bn = new gum::BayesNet< double >();
@@ -99,11 +102,11 @@ namespace gum_tests {
       gum::Instantiation ii2(p2);
 
       for (ii1.setFirst(), ii2.setFirst(); !ii1.end(); ii1.inc(), ii2.inc()) {
-        if ((p1[ii1] == 0) && (std::fabs(p2[ii2]) > _epsilon_)) return false;
+        if ((p1[ii1] == 0) && (std::fabs(p2[ii2]) > TS_GUM_SMALL_ERROR)) return false;
         if (p1[ii1] > p2[ii2]) {
-          if (std::fabs((p1[ii1] - p2[ii2]) / p1[ii1]) > _epsilon_) return false;
+          if (std::fabs((p1[ii1] - p2[ii2]) / p1[ii1]) > TS_GUM_SMALL_ERROR) return false;
         } else {
-          if (std::fabs((p1[ii1] - p2[ii2]) / p1[ii2]) > _epsilon_) return false;
+          if (std::fabs((p1[ii1] - p2[ii2]) / p1[ii2]) > TS_GUM_SMALL_ERROR) return false;
         }
       }
 
@@ -1409,8 +1412,8 @@ namespace gum_tests {
         const auto& pot3 = inf.posterior(n3);
         TS_ASSERT(inf.junctionTree()->sizeNodes() == gum::Size(2))
 
-        gum::Set< const gum::DiscreteVariable* > set3{&x0, &x1, &x2, &x4};
-        const gum::Potential< double >           pot3bis
+        gum::VariableSet               set3{&x0, &x1, &x2, &x4};
+        const gum::Potential< double > pot3bis
            = (p0 * p1 * p2 * p3 * p4).margSumOut(set3).normalize();
         TS_ASSERT(equalPotentials(pot3, pot3bis))
       }
@@ -1431,8 +1434,8 @@ namespace gum_tests {
         const auto& pot2 = inf.posterior(n2);
         TS_ASSERT(inf.junctionTree()->sizeNodes() == gum::Size(2))
 
-        gum::Set< const gum::DiscreteVariable* > set2{&x0, &x1, &x3, &x4};
-        gum::Potential< double >                 ev4;
+        gum::VariableSet         set2{&x0, &x1, &x3, &x4};
+        gum::Potential< double > ev4;
         ev4 << x4;
         ev4.fillWith({0.0, 1.0});
 
@@ -1455,8 +1458,8 @@ namespace gum_tests {
         const auto& pot2 = inf.posterior(n2);
         TS_ASSERT(inf.junctionTree()->sizeNodes() == gum::Size(2))
 
-        gum::Set< const gum::DiscreteVariable* > set2{&x0, &x1, &x3, &x4};
-        gum::Potential< double >                 ev4;
+        gum::VariableSet         set2{&x0, &x1, &x3, &x4};
+        gum::Potential< double > ev4;
         ev4 << x4;
         ev4.fillWith({0.0, 1.0});
         const gum::Potential< double > pot2bis
@@ -1478,8 +1481,8 @@ namespace gum_tests {
         const auto& pot2 = inf.posterior(n2);
         TS_ASSERT(inf.junctionTree()->sizeNodes() == gum::Size(2))
 
-        gum::Set< const gum::DiscreteVariable* > set2{&x0, &x1, &x3, &x4};
-        gum::Potential< double >                 ev4;
+        gum::VariableSet         set2{&x0, &x1, &x3, &x4};
+        gum::Potential< double > ev4;
         ev4 << x4;
         ev4.fillWith({0.0, 1.0});
         const gum::Potential< double > pot2bis
@@ -1537,32 +1540,44 @@ namespace gum_tests {
       for (const auto n: bn.nodes())
         p *= bn.cpt(n);
 
-      auto variables
-         = [&bn](const std::vector< std::string >& l) -> gum::Set< const gum::DiscreteVariable* > {
-        gum::Set< const gum::DiscreteVariable* > s;
-        for (const auto& name: l) {
-          s.insert(&bn.variable(name));
-        }
-        return s;
-      };
       // target
       TS_GUM_POTENTIAL_DELTA(ie.jointPosterior(bn.nodeset({"B", "Y", "F"})),
-                             p.margSumIn(variables({"B", "Y", "F"})),
+                             p.margSumIn(bn.variables({"B", "Y", "F"})),
                              TS_GUM_SMALL_ERROR)
       // subtargets
       TS_GUM_POTENTIAL_DELTA(ie.jointPosterior(bn.nodeset({"B", "Y"})),
-                             p.margSumIn(variables({"B", "Y"})),
+                             p.margSumIn(bn.variables({"B", "Y"})),
                              TS_GUM_SMALL_ERROR)
       TS_GUM_POTENTIAL_DELTA(ie.jointPosterior(bn.nodeset({"F", "Y"})),
-                             p.margSumIn(variables({"F", "Y"})),
+                             p.margSumIn(bn.variables({"F", "Y"})),
                              TS_GUM_SMALL_ERROR)
       // implicit target
       TS_GUM_POTENTIAL_DELTA(ie.jointPosterior(bn.nodeset({"W", "Z", "X"})),
-                             p.margSumIn(variables({"W", "Z", "X"})),
+                             p.margSumIn(bn.variables({"W", "Z", "X"})),
                              TS_GUM_SMALL_ERROR)
     }
 
+    /*
+            GUM_ACTIVE(ImplicitTargetWithHardEvidence) {
+              const auto model = gum::BayesNet< double
+       >::fastPrototype("A->B->C->Y->E->F->G;W->E<-Z;X->E");
+
+              gum::Potential< double > joint;
+              for (const auto n: model.nodes()) {
+                joint *= model.cpt(n);
+              }
+
+              gum::LazyPropagation ie(model);
+            }
+    */
+
     private:
+    void checkInference(gum::LazyPropagation< double >& ie,
+                        const gum::Potential< double >& joint,
+                        const gum::NodeSet&             nodes) {
+      // p=ie.jointPosterior(ie.BN().nam)
+    }
+
     // Builds a _bn to test the inference
     void fill(gum::BayesNet< double >& bn) const {
       bn.cpt(i1).fillWith({0.2f, 0.8f});

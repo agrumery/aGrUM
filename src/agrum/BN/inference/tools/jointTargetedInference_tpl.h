@@ -362,7 +362,7 @@ namespace gum {
       variables.add(var);
     }
 
-    Set< const DiscreteVariable* > sov;
+    gum::VariableSet sov;
 
     const GUM_SCALAR start = (siz % 2 == 0) ? GUM_SCALAR(-1.0) : GUM_SCALAR(1.0);
     GUM_SCALAR       sign;

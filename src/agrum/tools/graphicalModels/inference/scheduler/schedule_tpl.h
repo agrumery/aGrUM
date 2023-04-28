@@ -71,11 +71,11 @@ namespace gum {
 
   /// emplace a new schedule projection operator
   template < typename TABLE >
-  const ScheduleOperator& Schedule::emplaceProjection(
-     const ScheduleMultiDim< TABLE >&      table,
-     const Set< const DiscreteVariable* >& del_vars,
-     TABLE (*project)(const TABLE&, const Set< const DiscreteVariable* >&),
-     const bool is_result_persistent) {
+  const ScheduleOperator& Schedule::emplaceProjection(const ScheduleMultiDim< TABLE >& table,
+                                                      const gum::VariableSet&          del_vars,
+                                                      TABLE (*project)(const TABLE&,
+                                                                       const gum::VariableSet&),
+                                                      const bool is_result_persistent) {
     // note that the insertOperation will check that table already belongs
     // to the schedule
     return insertOperation(ScheduleProjection< TABLE >(table, del_vars, project, false),

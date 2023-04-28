@@ -53,8 +53,7 @@ namespace gum {
 
     /// Default constructor
     MultiDimCombineAndProjectDefault(TABLE (*combine)(const TABLE&, const TABLE&),
-                                     TABLE (*project)(const TABLE&,
-                                                      const Set< const DiscreteVariable* >&));
+                                     TABLE (*project)(const TABLE&, const gum::VariableSet&));
 
     /// Copy constructor
     MultiDimCombineAndProjectDefault(const MultiDimCombineAndProjectDefault< TABLE >&);
@@ -86,8 +85,8 @@ namespace gum {
      * @throws InvalidArgumentsNumber exception is thrown if the set passed in
      * argument contains less than two elements.
      */
-    Set< const TABLE* > execute(const Set< const TABLE* >&            set,
-                                const Set< const DiscreteVariable* >& del_vars) final;
+    Set< const TABLE* > execute(const Set< const TABLE* >& set,
+                                const gum::VariableSet&    del_vars) final;
 
 
     /** @brief returns the set of operations to perform to make all the combinations
@@ -95,11 +94,11 @@ namespace gum {
      */
     std::pair< std::vector< ScheduleOperator* >, Set< const IScheduleMultiDim* > >
        operations(const Set< const IScheduleMultiDim* >& original_tables,
-                  const Set< const DiscreteVariable* >&  del_vars,
+                  const gum::VariableSet&                del_vars,
                   const bool                             is_result_persistent = false) const final;
     std::pair< std::vector< ScheduleOperator* >, Set< const IScheduleMultiDim* > >
        operations(const std::vector< const IScheduleMultiDim* >& original_tables,
-                  const Set< const DiscreteVariable* >&          del_vars,
+                  const gum::VariableSet&                        del_vars,
                   const bool is_result_persistent = false) const final;
 
     /** @brief add to a given schedule the set of operations needed to perform all
@@ -130,8 +129,7 @@ namespace gum {
     TABLE (*combinationFunction())(const TABLE&, const TABLE&) final;
 
     /// Changes the function used for projecting TABLES
-    void setProjectionFunction(TABLE (*proj)(const TABLE&,
-                                             const Set< const DiscreteVariable* >&)) final;
+    void setProjectionFunction(TABLE (*proj)(const TABLE&, const gum::VariableSet&)) final;
 
     /**
      * @brief Changes the class that performs the projections.
@@ -142,21 +140,21 @@ namespace gum {
     void setProjectionClass(const MultiDimProjection< TABLE >& proj_class) final;
 
     /// returns the current projection function
-    TABLE (*projectionFunction())(const TABLE&, const Set< const DiscreteVariable* >&) final;
+    TABLE (*projectionFunction())(const TABLE&, const gum::VariableSet&) final;
 
     /**
      * @brief returns a rough estimate of the number of operations that will be
      * performed to compute the combination.
      */
-    double nbOperations(const Set< const TABLE* >&            set,
-                        const Set< const DiscreteVariable* >& del_vars) const final;
+    double nbOperations(const Set< const TABLE* >& set,
+                        const gum::VariableSet&    del_vars) const final;
 
     /**
      * @brief returns a rough estimate of the number of operations that will be
      * performed to compute the combination.
      */
     double nbOperations(const Set< const Sequence< const DiscreteVariable* >* >& set,
-                        const Set< const DiscreteVariable* >& del_vars) const final;
+                        const gum::VariableSet& del_vars) const final;
 
     /**
      * @brief returns the memory consumption used during the combinations and
@@ -171,9 +169,8 @@ namespace gum {
      * performed, and the second one is the amount of memory still used at the
      * end of the function ( the memory used by the resulting tables )
      */
-    std::pair< double, double >
-       memoryUsage(const Set< const TABLE* >&            set,
-                   const Set< const DiscreteVariable* >& del_vars) const final;
+    std::pair< double, double > memoryUsage(const Set< const TABLE* >& set,
+                                            const gum::VariableSet&    del_vars) const final;
 
     /**
      * @brief returns the memory consumption used during the combinations and
@@ -190,7 +187,7 @@ namespace gum {
      */
     std::pair< double, double >
        memoryUsage(const Set< const Sequence< const DiscreteVariable* >* >& set,
-                   const Set< const DiscreteVariable* >&                    del_vars) const final;
+                   const gum::VariableSet&                                  del_vars) const final;
 
     /// @}
 

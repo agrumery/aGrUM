@@ -44,7 +44,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   MultiDimImplementation< GUM_SCALAR >*
      GUM_MULTI_DIM_PROJECTION_NAME(const MultiDimImplementation< GUM_SCALAR >* table,
-                                   const Set< const DiscreteVariable* >&       del_vars)
+                                   const gum::VariableSet&                     del_vars)
 #  endif
 
   // clang-format off
@@ -55,7 +55,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   MultiDimImplementation<GUM_SCALAR*>* GUM_MULTI_DIM_PROJECTION_POINTER_NAME(
       const MultiDimImplementation<GUM_SCALAR*>* table,
-      const Set<const DiscreteVariable*>& del_vars )
+      const VariableSet& del_vars )
 #endif
 
 #ifdef GUM_MULTI_DIM_PROJECTION_NAME_F
@@ -63,7 +63,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   MultiDimImplementation<GUM_SCALAR>* GUM_MULTI_DIM_PROJECTION_NAME_F(
       const MultiDimImplementation<GUM_SCALAR>* table,
-      const Set<const DiscreteVariable*>& del_vars,
+      const VariableSet& del_vars,
       GUM_SCALAR ( *f )( const GUM_SCALAR&, const GUM_SCALAR& ) )
 #endif
 
@@ -74,7 +74,7 @@ namespace gum {
   MultiDimImplementation<GUM_SCALAR*>*
   GUM_MULTI_DIM_PROJECTION_POINTER_NAME_F(
       const MultiDimImplementation<GUM_SCALAR*>* table,
-      const Set<const DiscreteVariable*>& del_vars,
+      const VariableSet& del_vars,
       GUM_SCALAR* ( *f )( const GUM_SCALAR const*,
                           const GUM_SCALAR const* ) )
 #endif

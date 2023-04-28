@@ -105,7 +105,7 @@ namespace gum {
       Potential< GUM_SCALAR >* pot = nullptr;
       Potential< GUM_SCALAR >* tmp = nullptr;
 
-      Set< const DiscreteVariable* > var_set;
+      gum::VariableSet var_set;
       var_set.insert(var);
       Set< const Potential< GUM_SCALAR >* > pots;
 

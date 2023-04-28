@@ -43,7 +43,7 @@ namespace gum {
   MultiDimFunctionGraphProjector< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
      MultiDimFunctionGraphProjector(
         const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* src,
-        const Set< const DiscreteVariable* >&                          delVars,
+        const gum::VariableSet&                                        delVars,
         const GUM_SCALAR                                               neutral) :
       _src_(src),
       _delVars_(delVars), _function_(), _neutral_(neutral) {

@@ -67,7 +67,7 @@ Example
 LICENSE
 =======
 
-Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES
+Copyright (C) 2005-2023 by Pierre-Henri WUILLEMIN[@LIP6) and Christophe GONZALES(@AMU)
 {prenom.nom}_at_lip6.fr                                               
                                                                       
 This program is free software; you can redistribute it and/or modify  it under

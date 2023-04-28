@@ -61,7 +61,7 @@ namespace gum {
   template < TESTNAME AttributeSelection, bool isScalar >
   IncrementalGraphLearner< AttributeSelection, isScalar >::IncrementalGraphLearner(
      MultiDimFunctionGraph< double >* target,
-     Set< const DiscreteVariable* >   varList,
+     gum::VariableSet                 varList,
      const DiscreteVariable*          value) :
       target_(target),
       setOfVars_(varList), value_(value) {
@@ -168,8 +168,8 @@ namespace gum {
   // ############################################################################
   template < TESTNAME AttributeSelection, bool isScalar >
   void IncrementalGraphLearner< AttributeSelection, isScalar >::updateNode_(
-     NodeId                          updatedNode,
-     Set< const DiscreteVariable* >& varsOfInterest) {
+     NodeId            updatedNode,
+     gum::VariableSet& varsOfInterest) {
     // If this node has no interesting variable, we turn it into a leaf
     if (varsOfInterest.empty()) {
       convertNode2Leaf_(updatedNode);

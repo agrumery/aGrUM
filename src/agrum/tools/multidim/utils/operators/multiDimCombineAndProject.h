@@ -102,8 +102,8 @@ namespace gum {
      * @throws InvalidArgumentsNumber exception is thrown if the set passed in
      * argument contains less than two elements
      */
-    virtual Set< const TABLE* > execute(const Set< const TABLE* >&            set,
-                                        const Set< const DiscreteVariable* >& del_vars)
+    virtual Set< const TABLE* > execute(const Set< const TABLE* >& set,
+                                        const gum::VariableSet&    del_vars)
        = 0;
 
     /** @brief returns the set of operations to perform to make all the combinations
@@ -111,12 +111,12 @@ namespace gum {
      */
     virtual std::pair< std::vector< ScheduleOperator* >, Set< const IScheduleMultiDim* > >
        operations(const Set< const IScheduleMultiDim* >& original_tables,
-                  const Set< const DiscreteVariable* >&  del_vars,
+                  const gum::VariableSet&                del_vars,
                   const bool                             is_result_persistent = false) const
        = 0;
     virtual std::pair< std::vector< ScheduleOperator* >, Set< const IScheduleMultiDim* > >
        operations(const std::vector< const IScheduleMultiDim* >& original_tables,
-                  const Set< const DiscreteVariable* >&          del_vars,
+                  const gum::VariableSet&                        del_vars,
                   const bool                                     is_result_persistent = false) const
        = 0;
 
@@ -125,7 +125,7 @@ namespace gum {
      */
     Set< const IScheduleMultiDim* > schedule(Schedule&                              schedule,
                                              const Set< const IScheduleMultiDim* >& original_tables,
-                                             const Set< const DiscreteVariable* >&  del_vars,
+                                             const gum::VariableSet&                del_vars,
                                              const bool is_result_persistent = false) const;
 
     /// changes the function used for combining two TABLES
@@ -151,12 +151,10 @@ namespace gum {
     virtual TABLE (*combinationFunction())(const TABLE&, const TABLE&) = 0;
 
     /// changes the function used for projecting TABLES
-    virtual void setProjectionFunction(TABLE (*proj)(const TABLE&,
-                                                     const Set< const DiscreteVariable* >&))
-       = 0;
+    virtual void setProjectionFunction(TABLE (*proj)(const TABLE&, const gum::VariableSet&)) = 0;
 
     /// returns the current projection function
-    virtual TABLE (*projectionFunction())(const TABLE&, const Set< const DiscreteVariable* >&) = 0;
+    virtual TABLE (*projectionFunction())(const TABLE&, const gum::VariableSet&) = 0;
 
     /**
      * @brief Changes the class that performs the projections.
@@ -170,8 +168,8 @@ namespace gum {
      * @brief returns a rough estimate of the number of operations that will be
      * performed to compute the combination.
      */
-    virtual double nbOperations(const Set< const TABLE* >&            set,
-                                const Set< const DiscreteVariable* >& del_vars) const
+    virtual double nbOperations(const Set< const TABLE* >& set,
+                                const gum::VariableSet&    del_vars) const
        = 0;
 
     /**
@@ -179,7 +177,7 @@ namespace gum {
      * performed to compute the combination.
      */
     virtual double nbOperations(const Set< const Sequence< const DiscreteVariable* >* >& set,
-                                const Set< const DiscreteVariable* >& del_vars) const
+                                const gum::VariableSet& del_vars) const
        = 0;
 
     /**
@@ -195,9 +193,8 @@ namespace gum {
      * performed, and the second one is the amount of memory still used at the
      * end of the function ( the memory used by the resulting tables )
      */
-    virtual std::pair< double, double >
-       memoryUsage(const Set< const TABLE* >&            set,
-                   const Set< const DiscreteVariable* >& del_vars) const
+    virtual std::pair< double, double > memoryUsage(const Set< const TABLE* >& set,
+                                                    const gum::VariableSet&    del_vars) const
        = 0;
 
     /**
@@ -215,7 +212,7 @@ namespace gum {
      */
     virtual std::pair< double, double >
        memoryUsage(const Set< const Sequence< const DiscreteVariable* >* >& set,
-                   const Set< const DiscreteVariable* >&                    del_vars) const
+                   const gum::VariableSet&                                  del_vars) const
        = 0;
 
     /// @}

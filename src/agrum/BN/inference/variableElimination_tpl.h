@@ -133,8 +133,8 @@ namespace gum {
 
   /// sets the operator for performing the projections
   template < typename GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::_setProjectionFunction_(Potential< GUM_SCALAR > (
-     *proj)(const Potential< GUM_SCALAR >&, const Set< const DiscreteVariable* >&)) {
+  INLINE void VariableElimination< GUM_SCALAR >::_setProjectionFunction_(
+     Potential< GUM_SCALAR > (*proj)(const Potential< GUM_SCALAR >&, const gum::VariableSet&)) {
     _projection_op_ = proj;
   }
 
@@ -465,14 +465,14 @@ namespace gum {
   template < typename GUM_SCALAR >
   void VariableElimination< GUM_SCALAR >::_findRelevantPotentialsGetAll_(
      Set< const IScheduleMultiDim* >& pot_list,
-     Set< const DiscreteVariable* >&  kept_vars) {}
+     gum::VariableSet&                kept_vars) {}
 
 
   // find the potentials d-connected to a set of variables
   template < typename GUM_SCALAR >
   void VariableElimination< GUM_SCALAR >::_findRelevantPotentialsWithdSeparation_(
      Set< const IScheduleMultiDim* >& pot_list,
-     Set< const DiscreteVariable* >&  kept_vars) {
+     gum::VariableSet&                kept_vars) {
     // find the node ids of the kept variables
     NodeSet     kept_ids(kept_vars.size());
     const auto& bn = this->BN();
@@ -506,7 +506,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   void VariableElimination< GUM_SCALAR >::_findRelevantPotentialsWithdSeparation2_(
      Set< const IScheduleMultiDim* >& pot_list,
-     Set< const DiscreteVariable* >&  kept_vars) {
+     gum::VariableSet&                kept_vars) {
     // find the node ids of the kept variables
     NodeSet     kept_ids(kept_vars.size());
     const auto& bn = this->BN();
@@ -527,7 +527,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   void VariableElimination< GUM_SCALAR >::_findRelevantPotentialsWithdSeparation3_(
      Set< const IScheduleMultiDim* >& pot_list,
-     Set< const DiscreteVariable* >&  kept_vars) {
+     gum::VariableSet&                kept_vars) {
     // find the node ids of the kept variables
     NodeSet     kept_ids(kept_vars.size());
     const auto& bn = this->BN();
@@ -549,7 +549,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   void VariableElimination< GUM_SCALAR >::_findRelevantPotentialsXX_(
      Set< const IScheduleMultiDim* >& pot_list,
-     Set< const DiscreteVariable* >&  kept_vars) {
+     gum::VariableSet&                kept_vars) {
     switch (_find_relevant_potential_type_) {
       case RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS:
         _findRelevantPotentialsWithdSeparation2_(pot_list, kept_vars);
@@ -574,13 +574,13 @@ namespace gum {
 
   // remove barren variables using schedules
   template < typename GUM_SCALAR >
-  Set< const IScheduleMultiDim* > VariableElimination< GUM_SCALAR >::_removeBarrenVariables_(
-     Schedule&                       schedule,
-     _ScheduleMultiDimSet_&          pot_list,
-     Set< const DiscreteVariable* >& del_vars) {
+  Set< const IScheduleMultiDim* >
+     VariableElimination< GUM_SCALAR >::_removeBarrenVariables_(Schedule&              schedule,
+                                                                _ScheduleMultiDimSet_& pot_list,
+                                                                gum::VariableSet&      del_vars) {
     // remove from del_vars the variables that received some evidence:
     // only those that did not receive evidence can be barren variables
-    Set< const DiscreteVariable* > the_del_vars = del_vars;
+    gum::VariableSet the_del_vars = del_vars;
     for (auto iter = the_del_vars.beginSafe(); iter != the_del_vars.endSafe(); ++iter) {
       NodeId id = this->BN().nodeId(**iter);
       if (this->hardEvidenceNodes().exists(id) || this->softEvidenceNodes().exists(id)) {
@@ -603,8 +603,8 @@ namespace gum {
 
     // each variable with only one potential is necessarily a barren variable
     // assign to each potential with barren nodes its set of barren variables
-    HashTable< const IScheduleMultiDim*, Set< const DiscreteVariable* > > pot2barren_var;
-    Set< const DiscreteVariable* >                                        empty_var_set;
+    HashTable< const IScheduleMultiDim*, gum::VariableSet > pot2barren_var;
+    gum::VariableSet                                        empty_var_set;
     for (const auto& elt: var2pots) {
       if (elt.second.size() == 1) {   // here we have a barren variable
         const IScheduleMultiDim* pot = *(elt.second.begin());
@@ -641,12 +641,12 @@ namespace gum {
 
   // remove barren variables directly without schedules
   template < typename GUM_SCALAR >
-  Set< const Potential< GUM_SCALAR >* > VariableElimination< GUM_SCALAR >::_removeBarrenVariables_(
-     _PotentialSet_&                 pot_list,
-     Set< const DiscreteVariable* >& del_vars) {
+  Set< const Potential< GUM_SCALAR >* >
+     VariableElimination< GUM_SCALAR >::_removeBarrenVariables_(_PotentialSet_&   pot_list,
+                                                                gum::VariableSet& del_vars) {
     // remove from del_vars the variables that received some evidence:
     // only those that did not receive evidence can be barren variables
-    Set< const DiscreteVariable* > the_del_vars = del_vars;
+    gum::VariableSet the_del_vars = del_vars;
     for (auto iter = the_del_vars.beginSafe(); iter != the_del_vars.endSafe(); ++iter) {
       NodeId id = this->BN().nodeId(**iter);
       if (this->hardEvidenceNodes().exists(id) || this->softEvidenceNodes().exists(id)) {
@@ -669,8 +669,8 @@ namespace gum {
 
     // each variable with only one potential is a barren variable
     // assign to each potential with barren nodes its set of barren variables
-    HashTable< const Potential< GUM_SCALAR >*, Set< const DiscreteVariable* > > pot2barren_var;
-    Set< const DiscreteVariable* >                                              empty_var_set;
+    HashTable< const Potential< GUM_SCALAR >*, gum::VariableSet > pot2barren_var;
+    gum::VariableSet                                              empty_var_set;
     for (const auto& elt: var2pots) {
       if (elt.second.size() == 1) {   // here we have a barren variable
         const Potential< GUM_SCALAR >* pot = *(elt.second.begin());
@@ -794,9 +794,9 @@ namespace gum {
         // as a potential anymore
         if (hard_nodes.size() != variables.size()) {
           // perform the projection with a combine and project instance
-          Set< const DiscreteVariable* > hard_variables;
-          _ScheduleMultiDimSet_          marg_cpt_set(1 + hard_nodes.size());
-          const IScheduleMultiDim*       sched_cpt
+          gum::VariableSet         hard_variables;
+          _ScheduleMultiDimSet_    marg_cpt_set(1 + hard_nodes.size());
+          const IScheduleMultiDim* sched_cpt
              = schedule.insertTable< Potential< GUM_SCALAR > >(cpt, false);
           marg_cpt_set.insert(sched_cpt);
 
@@ -890,8 +890,8 @@ namespace gum {
         // as a potential anymore
         if (hard_nodes.size() != variables.size()) {
           // perform the projection with a combine and project instance
-          Set< const DiscreteVariable* > hard_variables;
-          _PotentialSet_                 marg_cpt_set(1 + hard_nodes.size());
+          gum::VariableSet hard_variables;
+          _PotentialSet_   marg_cpt_set(1 + hard_nodes.size());
           marg_cpt_set.insert(&cpt);
 
           for (const auto xnode: hard_nodes) {
@@ -953,11 +953,11 @@ namespace gum {
       return pot_list;
     } else {
       // get the set of variables that need to be removed from the potentials
-      const NodeSet&                 from_clique = _JT_->clique(from_id);
-      const NodeSet&                 separator   = _JT_->separator(from_id, to_id);
-      Set< const DiscreteVariable* > del_vars(from_clique.size());
-      Set< const DiscreteVariable* > kept_vars(separator.size());
-      const auto&                    bn = this->BN();
+      const NodeSet&   from_clique = _JT_->clique(from_id);
+      const NodeSet&   separator   = _JT_->separator(from_id, to_id);
+      gum::VariableSet del_vars(from_clique.size());
+      gum::VariableSet kept_vars(separator.size());
+      const auto&      bn = this->BN();
 
       for (const auto node: from_clique) {
         if (!separator.contains(node)) {
@@ -1011,11 +1011,11 @@ namespace gum {
       return pot_list;
     } else {
       // get the set of variables that need be removed from the potentials
-      const NodeSet&                 from_clique = _JT_->clique(from_id);
-      const NodeSet&                 separator   = _JT_->separator(from_id, to_id);
-      Set< const DiscreteVariable* > del_vars(from_clique.size());
-      Set< const DiscreteVariable* > kept_vars(separator.size());
-      const auto&                    bn = this->BN();
+      const NodeSet&   from_clique = _JT_->clique(from_id);
+      const NodeSet&   separator   = _JT_->separator(from_id, to_id);
+      gum::VariableSet del_vars(from_clique.size());
+      gum::VariableSet kept_vars(separator.size());
+      const auto&      bn = this->BN();
 
       for (const auto node: from_clique) {
         if (!separator.contains(node)) {
@@ -1049,8 +1049,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   Set< const Potential< GUM_SCALAR >* > VariableElimination< GUM_SCALAR >::_marginalizeOut_(
      Set< const Potential< GUM_SCALAR >* > pot_list,
-     Set< const DiscreteVariable* >&       del_vars,
-     Set< const DiscreteVariable* >&       kept_vars) {
+     gum::VariableSet&                     del_vars,
+     gum::VariableSet&                     kept_vars) {
     // use d-separation analysis to check which potentials shall be combined
     // _findRelevantPotentialsXX_(pot_list, kept_vars);
 
@@ -1083,11 +1083,11 @@ namespace gum {
 
   // remove variables del_vars from the list of potentials pot_list
   template < typename GUM_SCALAR >
-  Set< const IScheduleMultiDim* > VariableElimination< GUM_SCALAR >::_marginalizeOut_(
-     Schedule&                       schedule,
-     Set< const IScheduleMultiDim* > pot_list,
-     Set< const DiscreteVariable* >& del_vars,
-     Set< const DiscreteVariable* >& kept_vars) {
+  Set< const IScheduleMultiDim* >
+     VariableElimination< GUM_SCALAR >::_marginalizeOut_(Schedule&                       schedule,
+                                                         Set< const IScheduleMultiDim* > pot_list,
+                                                         gum::VariableSet&               del_vars,
+                                                         gum::VariableSet& kept_vars) {
     // use d-separation analysis to check which potentials shall be combined
     // _findRelevantPotentialsXX_(pot_list, kept_vars);
 
@@ -1170,9 +1170,9 @@ namespace gum {
        = _collectMessage_(clique_of_id, clique_of_id);
 
     // get the set of variables that need be removed from the potentials
-    const NodeSet&                 nodes = _JT_->clique(clique_of_id);
-    Set< const DiscreteVariable* > kept_vars{&(bn.variable(id))};
-    Set< const DiscreteVariable* > del_vars(nodes.size());
+    const NodeSet&   nodes = _JT_->clique(clique_of_id);
+    gum::VariableSet kept_vars{&(bn.variable(id))};
+    gum::VariableSet del_vars(nodes.size());
     for (const auto node: nodes) {
       if (node != id) del_vars.insert(&(bn.variable(node)));
     }
@@ -1239,9 +1239,9 @@ namespace gum {
     _ScheduleMultiDimSet_ pot_list     = _collectMessage_(schedule, clique_of_id, clique_of_id);
 
     // get the set of variables that need be removed from the potentials
-    const NodeSet&                 nodes = _JT_->clique(clique_of_id);
-    Set< const DiscreteVariable* > kept_vars{&(bn.variable(id))};
-    Set< const DiscreteVariable* > del_vars(nodes.size());
+    const NodeSet&   nodes = _JT_->clique(clique_of_id);
+    gum::VariableSet kept_vars{&(bn.variable(id))};
+    gum::VariableSet del_vars(nodes.size());
     for (const auto node: nodes) {
       if (node != id) del_vars.insert(&(bn.variable(node)));
     }
@@ -1374,10 +1374,10 @@ namespace gum {
        = _collectMessage_(_targets2clique_, _targets2clique_);
 
     // get the set of variables that need be removed from the potentials
-    const NodeSet&                 nodes = _JT_->clique(_targets2clique_);
-    Set< const DiscreteVariable* > del_vars(nodes.size());
-    Set< const DiscreteVariable* > kept_vars(targets.size());
-    const auto&                    bn = this->BN();
+    const NodeSet&   nodes = _JT_->clique(_targets2clique_);
+    gum::VariableSet del_vars(nodes.size());
+    gum::VariableSet kept_vars(targets.size());
+    const auto&      bn = this->BN();
     for (const auto node: nodes) {
       if (!targets.contains(node)) {
         del_vars.insert(&(bn.variable(node)));
@@ -1453,10 +1453,10 @@ namespace gum {
     _ScheduleMultiDimSet_ pot_list = _collectMessage_(schedule, _targets2clique_, _targets2clique_);
 
     // get the set of variables that need be removed from the potentials
-    const NodeSet&                 nodes = _JT_->clique(_targets2clique_);
-    Set< const DiscreteVariable* > del_vars(nodes.size());
-    Set< const DiscreteVariable* > kept_vars(targets.size());
-    const auto&                    bn = this->BN();
+    const NodeSet&   nodes = _JT_->clique(_targets2clique_);
+    gum::VariableSet del_vars(nodes.size());
+    gum::VariableSet kept_vars(targets.size());
+    const auto&      bn = this->BN();
     for (const auto node: nodes) {
       if (!targets.contains(node)) {
         del_vars.insert(&(bn.variable(node)));

@@ -92,9 +92,9 @@ namespace gum {
   template < typename GUM_SCALAR >
   MultiDimFunctionGraph< GUM_SCALAR >*
      TreeOperatorStrategy< GUM_SCALAR >::regress(const MultiDimFunctionGraph< GUM_SCALAR >* Vold,
-                                                 Idx                                   actionId,
-                                                 const FMDP< GUM_SCALAR >*             fmdp,
-                                                 const Set< const DiscreteVariable* >& elVarSeq) {
+                                                 Idx                       actionId,
+                                                 const FMDP< GUM_SCALAR >* fmdp,
+                                                 const gum::VariableSet&   elVarSeq) {
     // ******************************************************************************
     // Initialisation :
     // Creating a copy of last Vfunction to deduce from the new Qaction

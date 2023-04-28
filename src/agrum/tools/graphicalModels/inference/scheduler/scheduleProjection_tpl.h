@@ -34,11 +34,11 @@ namespace gum {
 
   /// default constructor
   template < typename TABLE >
-  ScheduleProjection< TABLE >::ScheduleProjection(
-     const ScheduleMultiDim< TABLE >&      table,
-     const Set< const DiscreteVariable* >& del_vars,
-     TABLE (*project)(const TABLE&, const Set< const DiscreteVariable* >&),
-     const bool is_result_persistent) :
+  ScheduleProjection< TABLE >::ScheduleProjection(const ScheduleMultiDim< TABLE >& table,
+                                                  const gum::VariableSet&          del_vars,
+                                                  TABLE (*project)(const TABLE&,
+                                                                   const gum::VariableSet&),
+                                                  const bool is_result_persistent) :
       ScheduleOperator(ScheduleOperatorType::PROJECT_MULTIDIM, false, is_result_persistent),
       _arg_(&table), _del_vars_(del_vars), _project_(project) {
     // compute the variables that shall belong to the result of the projection
@@ -122,7 +122,7 @@ namespace gum {
     if (this != &from) {
       // copy the set of variables to delete in a temporary variable, just
       // in case something goes wrong below
-      const Set< const DiscreteVariable* > new_del_vars = from._del_vars_;
+      const gum::VariableSet new_del_vars = from._del_vars_;
 
       // try to copy result (no need to update _results_)
       *_result_ = *(from._result_);
@@ -378,7 +378,7 @@ namespace gum {
   /// use a new projection function
   template < typename TABLE >
   void ScheduleProjection< TABLE >::setProjectionFunction(
-     TABLE (*project)(const TABLE&, const Set< const DiscreteVariable* >&)) {
+     TABLE (*project)(const TABLE&, const gum::VariableSet&)) {
     _project_ = project;
     _result_->makeAbstract();
   }

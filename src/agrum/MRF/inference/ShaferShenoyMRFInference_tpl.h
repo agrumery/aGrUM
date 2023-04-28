@@ -133,8 +133,7 @@ namespace gum {
   /// sets the operator for performing the projections
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::_setProjectionFunction_(
-     Potential< GUM_SCALAR > (*proj)(const Potential< GUM_SCALAR >&,
-                                     const Set< const DiscreteVariable* >&)) {
+     Potential< GUM_SCALAR > (*proj)(const Potential< GUM_SCALAR >&, const gum::VariableSet&)) {
     _projection_op_ = proj;
 
     // indicate that all messages need be reconstructed to take into account
@@ -659,8 +658,8 @@ namespace gum {
           if (!graph_contains_nodes) continue;
 
           // prepare the projection with a combine and project instance
-          Set< const DiscreteVariable* > hard_variables;
-          _PotentialSet_                 marg_factor_set(1 + hard_nodes.size());
+          gum::VariableSet hard_variables;
+          _PotentialSet_   marg_factor_set(1 + hard_nodes.size());
           marg_factor_set.insert(&pot);
           for (const auto node: hard_nodes) {
             marg_factor_set.insert(evidence[node]);
@@ -775,9 +774,9 @@ namespace gum {
           if (!graph_contains_nodes) continue;
 
           // prepare the projection with a combine and project instance
-          Set< const DiscreteVariable* > hard_variables;
-          _ScheduleMultiDimSet_          marg_factor_set(1 + hard_nodes.size());
-          const IScheduleMultiDim*       sched_pot
+          gum::VariableSet         hard_variables;
+          _ScheduleMultiDimSet_    marg_factor_set(1 + hard_nodes.size());
+          const IScheduleMultiDim* sched_pot
              = schedule.insertTable< Potential< GUM_SCALAR > >(pot, false);
           marg_factor_set.insert(sched_pot);
 
@@ -1047,8 +1046,8 @@ namespace gum {
         _ScheduleMultiDimSet_ marg_pot_set;
         const auto sched_pot = schedule.insertTable< Potential< GUM_SCALAR > >(*pot, false);
         marg_pot_set.insert(sched_pot);
-        const auto&                    variables = pot->variablesSequence();
-        Set< const DiscreteVariable* > hard_variables(variables.size());
+        const auto&      variables = pot->variablesSequence();
+        gum::VariableSet hard_variables(variables.size());
         for (const auto var: variables) {
           NodeId xnode = mn.nodeId(*var);
           if (_hard_ev_nodes_.exists(xnode)) {
@@ -1116,7 +1115,7 @@ namespace gum {
         marg_pot_set.insert(pot);
         const auto& variables = pot->variablesSequence();
 
-        Set< const DiscreteVariable* > hard_variables(variables.size());
+        gum::VariableSet hard_variables(variables.size());
         for (const auto var: variables) {
           NodeId xnode = mn.nodeId(*var);
           if (_hard_ev_nodes_.exists(xnode)) {
@@ -1286,8 +1285,8 @@ namespace gum {
   const IScheduleMultiDim* ShaferShenoyMRFInference< GUM_SCALAR >::_marginalizeOut_(
      Schedule&                       schedule,
      Set< const IScheduleMultiDim* > pot_list,
-     Set< const DiscreteVariable* >& del_vars,
-     Set< const DiscreteVariable* >& kept_vars) {
+     gum::VariableSet&               del_vars,
+     gum::VariableSet&               kept_vars) {
     // let's guarantee that all the potentials to be combined and projected
     // belong to the schedule
     for (const auto pot: pot_list) {
@@ -1312,8 +1311,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   const IScheduleMultiDim* ShaferShenoyMRFInference< GUM_SCALAR >::_marginalizeOut_(
      Set< const IScheduleMultiDim* >& pot_list,
-     Set< const DiscreteVariable* >&  del_vars,
-     Set< const DiscreteVariable* >&  kept_vars) {
+     gum::VariableSet&                del_vars,
+     gum::VariableSet&                kept_vars) {
     _PotentialSet_ xpot_list(pot_list.size());
     for (auto pot: pot_list)
       xpot_list.insert(
@@ -1372,11 +1371,11 @@ namespace gum {
     }
 
     // get the set of variables that need be removed from the potentials
-    const NodeSet&                 from_clique = _JT_->clique(from_id);
-    const NodeSet&                 separator   = _JT_->separator(from_id, to_id);
-    Set< const DiscreteVariable* > del_vars(from_clique.size());
-    Set< const DiscreteVariable* > kept_vars(separator.size());
-    const auto&                    mn = this->MRF();
+    const NodeSet&   from_clique = _JT_->clique(from_id);
+    const NodeSet&   separator   = _JT_->separator(from_id, to_id);
+    gum::VariableSet del_vars(from_clique.size());
+    gum::VariableSet kept_vars(separator.size());
+    const auto&      mn = this->MRF();
 
     for (const auto node: from_clique) {
       if (!separator.contains(node)) {
@@ -1423,11 +1422,11 @@ namespace gum {
     }
 
     // get the set of variables that need be removed from the potentials
-    const NodeSet&                 from_clique = _JT_->clique(from_id);
-    const NodeSet&                 separator   = _JT_->separator(from_id, to_id);
-    Set< const DiscreteVariable* > del_vars(from_clique.size());
-    Set< const DiscreteVariable* > kept_vars(separator.size());
-    const auto&                    mn = this->MRF();
+    const NodeSet&   from_clique = _JT_->clique(from_id);
+    const NodeSet&   separator   = _JT_->separator(from_id, to_id);
+    gum::VariableSet del_vars(from_clique.size());
+    gum::VariableSet kept_vars(separator.size());
+    const auto&      mn = this->MRF();
 
     for (const auto node: from_clique) {
       if (!separator.contains(node)) {
@@ -1552,9 +1551,9 @@ namespace gum {
       pot_list.insert(_separator_potentials_[Arc(other, clique_of_id)]);
 
     // get the set of variables that need be removed from the potentials
-    const NodeSet&                 nodes = _JT_->clique(clique_of_id);
-    Set< const DiscreteVariable* > kept_vars{&(mn.variable(id))};
-    Set< const DiscreteVariable* > del_vars(nodes.size());
+    const NodeSet&   nodes = _JT_->clique(clique_of_id);
+    gum::VariableSet kept_vars{&(mn.variable(id))};
+    gum::VariableSet del_vars(nodes.size());
     for (const auto node: nodes) {
       if (node != id) del_vars.insert(&(mn.variable(node)));
     }
@@ -1626,9 +1625,9 @@ namespace gum {
       pot_list.insert(_separator_potentials_[Arc(other, clique_of_id)]);
 
     // get the set of variables that need be removed from the potentials
-    const NodeSet&                 nodes = _JT_->clique(clique_of_id);
-    Set< const DiscreteVariable* > kept_vars{&(mn.variable(id))};
-    Set< const DiscreteVariable* > del_vars(nodes.size());
+    const NodeSet&   nodes = _JT_->clique(clique_of_id);
+    gum::VariableSet kept_vars{&(mn.variable(id))};
+    gum::VariableSet del_vars(nodes.size());
     for (const auto node: nodes) {
       if (node != id) del_vars.insert(&(mn.variable(node)));
     }
@@ -1786,7 +1785,7 @@ namespace gum {
         if (!clique_nodes.contains(node)) {
           GUM_ERROR(UndefinedElement,
                     this->MRF().names(set) << "(" << set << ")"
-                               << " is not addressable in this optimized inference.")
+                                           << " is not addressable in this optimized inference.")
         }
       }
 
@@ -1815,10 +1814,10 @@ namespace gum {
 
 
     // get the set of variables that need be removed from the potentials
-    const NodeSet&                 nodes = _JT_->clique(clique_of_set);
-    Set< const DiscreteVariable* > del_vars(nodes.size());
-    Set< const DiscreteVariable* > kept_vars(targets.size());
-    const auto&                    mn = this->MRF();
+    const NodeSet&   nodes = _JT_->clique(clique_of_set);
+    gum::VariableSet del_vars(nodes.size());
+    gum::VariableSet kept_vars(targets.size());
+    const auto&      mn = this->MRF();
     for (const auto node: nodes) {
       if (!targets.contains(node)) {
         del_vars.insert(&(mn.variable(node)));
@@ -1970,10 +1969,10 @@ namespace gum {
 
 
     // get the set of variables that need be removed from the potentials
-    const NodeSet&                 nodes = _JT_->clique(clique_of_set);
-    Set< const DiscreteVariable* > del_vars(nodes.size());
-    Set< const DiscreteVariable* > kept_vars(targets.size());
-    const auto&                    mn = this->MRF();
+    const NodeSet&   nodes = _JT_->clique(clique_of_set);
+    gum::VariableSet del_vars(nodes.size());
+    gum::VariableSet kept_vars(targets.size());
+    const auto&      mn = this->MRF();
     for (const auto node: nodes) {
       if (!targets.contains(node)) {
         del_vars.insert(&(mn.variable(node)));
@@ -2054,8 +2053,8 @@ namespace gum {
     }
 
     // marginalize out all the variables that do not belong to wanted_target
-    const auto&                    mn = this->MRF();
-    Set< const DiscreteVariable* > del_vars;
+    const auto&      mn = this->MRF();
+    gum::VariableSet del_vars;
     for (const auto node: declared_target)
       if (!wanted_target.contains(node)) del_vars.insert(&(mn.variable(node)));
     auto pot = new Potential< GUM_SCALAR >(

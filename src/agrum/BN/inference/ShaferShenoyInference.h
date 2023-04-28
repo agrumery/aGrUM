@@ -53,9 +53,8 @@ namespace gum {
 
   // the function used to combine two tables
   template < typename GUM_SCALAR >
-  INLINE static Potential< GUM_SCALAR >
-     SSNewprojPotential(const Potential< GUM_SCALAR >&        t1,
-                        const Set< const DiscreteVariable* >& del_vars) {
+  INLINE static Potential< GUM_SCALAR > SSNewprojPotential(const Potential< GUM_SCALAR >& t1,
+                                                           const gum::VariableSet& del_vars) {
     return t1.margSumOut(del_vars);
   }
 
@@ -256,15 +255,14 @@ namespace gum {
      * combined to produce a message on a separator */
     void (ShaferShenoyInference< GUM_SCALAR >::*_findRelevantPotentials_)(
        Set< const IScheduleMultiDim* >& pot_list,
-       Set< const DiscreteVariable* >&  kept_vars);
+       gum::VariableSet&                kept_vars);
 
     /// the type of barren nodes computation we wish
     FindBarrenNodesType _barren_nodes_type_{FindBarrenNodesType::FIND_BARREN_NODES};
 
     /// the operator for performing the projections
     Potential< GUM_SCALAR > (*_projection_op_)(const Potential< GUM_SCALAR >&,
-                                               const Set< const DiscreteVariable* >&){
-       SSNewprojPotential};
+                                               const gum::VariableSet&){SSNewprojPotential};
 
     /// the operator for performing the combinations
     Potential< GUM_SCALAR > (*_combination_op_)(const Potential< GUM_SCALAR >&,
@@ -418,8 +416,8 @@ namespace gum {
     void _initializeJTCliques_();
 
     /// sets the operator for performing the projections
-    void _setProjectionFunction_(Potential< GUM_SCALAR > (
-       *proj)(const Potential< GUM_SCALAR >&, const Set< const DiscreteVariable* >&));
+    void _setProjectionFunction_(Potential< GUM_SCALAR > (*proj)(const Potential< GUM_SCALAR >&,
+                                                                 const gum::VariableSet&));
 
     /// sets the operator for performing the combinations
     void _setCombinationFunction_(Potential< GUM_SCALAR > (*comb)(const Potential< GUM_SCALAR >&,
@@ -436,51 +434,49 @@ namespace gum {
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined to produce a message on a separator */
-    void _findRelevantPotentialsWithdSeparation_(_ScheduleMultiDimSet_&          pot_list,
-                                                 Set< const DiscreteVariable* >& kept_vars);
+    void _findRelevantPotentialsWithdSeparation_(_ScheduleMultiDimSet_& pot_list,
+                                                 gum::VariableSet&      kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined to produce a message on a separator */
-    void _findRelevantPotentialsWithdSeparation2_(_ScheduleMultiDimSet_&          pot_list,
-                                                  Set< const DiscreteVariable* >& kept_vars);
+    void _findRelevantPotentialsWithdSeparation2_(_ScheduleMultiDimSet_& pot_list,
+                                                  gum::VariableSet&      kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined to produce a message on a separator */
-    void _findRelevantPotentialsWithdSeparation3_(_ScheduleMultiDimSet_&          pot_list,
-                                                  Set< const DiscreteVariable* >& kept_vars);
+    void _findRelevantPotentialsWithdSeparation3_(_ScheduleMultiDimSet_& pot_list,
+                                                  gum::VariableSet&      kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void _findRelevantPotentialsGetAll_(_ScheduleMultiDimSet_&          pot_list,
-                                        Set< const DiscreteVariable* >& kept_vars);
+    void _findRelevantPotentialsGetAll_(_ScheduleMultiDimSet_& pot_list,
+                                        gum::VariableSet&      kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined to produce a message on a separator */
-    void _findRelevantPotentialsXX_(_ScheduleMultiDimSet_&          pot_list,
-                                    Set< const DiscreteVariable* >& kept_vars);
+    void _findRelevantPotentialsXX_(_ScheduleMultiDimSet_& pot_list, gum::VariableSet& kept_vars);
 
     /// remove barren variables and return the newly created projected potentials
-    _ScheduleMultiDimSet_ _removeBarrenVariables_(Schedule&                       schedule,
-                                                  _ScheduleMultiDimSet_&          pot_list,
-                                                  Set< const DiscreteVariable* >& del_vars);
+    _ScheduleMultiDimSet_ _removeBarrenVariables_(Schedule&              schedule,
+                                                  _ScheduleMultiDimSet_& pot_list,
+                                                  gum::VariableSet&      del_vars);
 
     /// remove barren variables without schedules and return the newly created projected potentials
-    _PotentialSet_ _removeBarrenVariables_(_PotentialSet_&                 pot_list,
-                                           Set< const DiscreteVariable* >& del_vars);
+    _PotentialSet_ _removeBarrenVariables_(_PotentialSet_& pot_list, gum::VariableSet& del_vars);
 
     /** @brief removes variables del_vars from a list of potentials and
      * returns the resulting list using schedules */
-    const IScheduleMultiDim* _marginalizeOut_(Schedule&                       schedule,
-                                              _ScheduleMultiDimSet_           pot_list,
-                                              Set< const DiscreteVariable* >& del_vars,
-                                              Set< const DiscreteVariable* >& kept_vars);
+    const IScheduleMultiDim* _marginalizeOut_(Schedule&             schedule,
+                                              _ScheduleMultiDimSet_ pot_list,
+                                              gum::VariableSet&     del_vars,
+                                              gum::VariableSet&     kept_vars);
 
     /** @brief removes variables del_vars from a list of potentials and
      * returns the resulting list directly without schedules */
-    const IScheduleMultiDim* _marginalizeOut_(_ScheduleMultiDimSet_&          pot_list,
-                                              Set< const DiscreteVariable* >& del_vars,
-                                              Set< const DiscreteVariable* >& kept_vars);
+    const IScheduleMultiDim* _marginalizeOut_(_ScheduleMultiDimSet_& pot_list,
+                                              gum::VariableSet&      del_vars,
+                                              gum::VariableSet&      kept_vars);
 
     /// creates the message sent by clique from_id to clique to_id using schedules
     void _produceMessage_(Schedule& schedule, NodeId from_id, NodeId to_id);

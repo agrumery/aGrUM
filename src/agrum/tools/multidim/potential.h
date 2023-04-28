@@ -138,56 +138,56 @@ namespace gum {
      * operations)
      * @param del_vars is the set of vars to eliminate
      */
-    Potential< GUM_SCALAR > margSumOut(const Set< const DiscreteVariable* >& del_vars) const;
+    Potential< GUM_SCALAR > margSumOut(const gum::VariableSet& del_vars) const;
 
     /**
      * Projection using sum as operation (and implementation-optimized
      * operations)
      * @param kept_vars is the set of vars to keep
      */
-    Potential< GUM_SCALAR > margSumIn(const Set< const DiscreteVariable* >& kept_vars) const;
+    Potential< GUM_SCALAR > margSumIn(const gum::VariableSet& kept_vars) const;
 
     /**
      * Projection using multiplication as operation (and
      * implementation-optimized operations)
      * @param del_vars is the set of vars to eliminate
      */
-    Potential< GUM_SCALAR > margProdOut(const Set< const DiscreteVariable* >& del_vars) const;
+    Potential< GUM_SCALAR > margProdOut(const gum::VariableSet& del_vars) const;
 
     /**
      * Projection using multiplication as operation (and
      * implementation-optimized operations)
      * @param kept_vars is the set of vars to keep
      */
-    Potential< GUM_SCALAR > margProdIn(const Set< const DiscreteVariable* >& kept_vars) const;
+    Potential< GUM_SCALAR > margProdIn(const gum::VariableSet& kept_vars) const;
 
     /**
      * Projection using min as operation (and implementation-optimized
      * operations)
      * @param del_vars is the set of vars to eliminate
      */
-    Potential< GUM_SCALAR > margMinOut(const Set< const DiscreteVariable* >& del_vars) const;
+    Potential< GUM_SCALAR > margMinOut(const gum::VariableSet& del_vars) const;
 
     /**
      * Projection using min as operation (and implementation-optimized
      * operations)
      * @param kept_vars is the set of vars to keep
      */
-    Potential< GUM_SCALAR > margMinIn(const Set< const DiscreteVariable* >& kept_vars) const;
+    Potential< GUM_SCALAR > margMinIn(const gum::VariableSet& kept_vars) const;
 
     /**
      * Projection using max as operation (and implementation-optimized
      * operations)
      * @param del_vars is the set of vars to eliminate
      */
-    Potential< GUM_SCALAR > margMaxOut(const Set< const DiscreteVariable* >& del_vars) const;
+    Potential< GUM_SCALAR > margMaxOut(const gum::VariableSet& del_vars) const;
 
     /**
      * Projection using max as operation (and implementation-optimized
      * operations)
      * @param kept_vars is the set of vars to keep
      */
-    Potential< GUM_SCALAR > margMaxIn(const Set< const DiscreteVariable* >& kept_vars) const;
+    Potential< GUM_SCALAR > margMaxIn(const gum::VariableSet& kept_vars) const;
 
     /**
      * create a boolean-like potential using the predicate isNonZero
@@ -429,8 +429,7 @@ namespace gum {
     ///@}
 
     protected:
-    Set< const DiscreteVariable* >
-       complementVars_(const Set< const DiscreteVariable* >& del_vars) const;
+    gum::VariableSet complementVars_(const gum::VariableSet& del_vars) const;
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

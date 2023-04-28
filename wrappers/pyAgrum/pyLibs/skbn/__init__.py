@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# (c) Copyright by Pierre-Henri Wuillemin (LIP6), 2020  (pierre-henri.wuillemin@lip6.fr)
+# (c) Copyright 2020-2023 by Pierre-Henri Wuillemin(@LIP6)  (pierre-henri.wuillemin@lip6.fr)
 
 # Permission to use, copy, modify, and distribute this
 # software and its documentation for any purpose and
@@ -24,7 +24,7 @@
 """
 
 __author__ = "Pierre-Henri Wuillemin, Nikola Matevski, Louise Mouillé"
-__copyright__ = "(c) 2020 PARIS"
+__copyright__ = "(c) 2020-2023 PARIS"
 
 from .bnclassifier import BNClassifier
 from .discretizer import BNDiscretizer

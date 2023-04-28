@@ -93,7 +93,7 @@ namespace gum {
     _modaMax_ = 0;
     _rmax_    = 0.0;
 
-    Set< const DiscreteVariable* > mainVariables;
+    gum::VariableSet mainVariables;
     for (auto varIter = _fmdp_->beginVariables(); varIter != _fmdp_->endVariables(); ++varIter) {
       mainVariables.insert(*varIter);
       _modaMax_ = _modaMax_ < (*varIter)->domainSize() ? (*varIter)->domainSize() : _modaMax_;

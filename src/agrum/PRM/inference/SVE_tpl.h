@@ -663,7 +663,7 @@ namespace gum {
       try {
         _delayedVariables_[i]->insert(&(j->get(id).type().variable()));
       } catch (NotFound const&) {
-        _delayedVariables_.insert(i, new Set< const DiscreteVariable* >());
+        _delayedVariables_.insert(i, new gum::VariableSet());
         _delayedVariables_[i]->insert(&(j->get(id).type().variable()));
       } catch (DuplicateElement const&) {
         // happends if j->get(id) is parent of more than one variable in i

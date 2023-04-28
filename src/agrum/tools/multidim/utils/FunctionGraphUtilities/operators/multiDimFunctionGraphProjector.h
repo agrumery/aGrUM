@@ -62,7 +62,7 @@ namespace gum {
      */
     MultiDimFunctionGraphProjector(
        const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* src,
-       const Set< const DiscreteVariable* >&                          delVars,
+       const gum::VariableSet&                                        delVars,
        const GUM_SCALAR                                               neutral);
 
     /**
@@ -89,7 +89,7 @@ namespace gum {
     const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* _src_;
 
     /// The list of variables on which the projection is performed
-    const Set< const DiscreteVariable* >& _delVars_;
+    const gum::VariableSet& _delVars_;
 
     /// The resulting function graph
     MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* _rd_;

@@ -38,11 +38,11 @@ namespace gum {
   // ###################################################################
   // Default constructor
   // ###################################################################
-  VariableSelector::VariableSelector(const Set< const DiscreteVariable* >& startingSet) :
+  VariableSelector::VariableSelector(const gum::VariableSet& startingSet) :
       _remainingVars_(startingSet) {
     GUM_CONSTRUCTOR(VariableSelector)
     _remainingScores_.insert(0.0, 0.0);
-    _remainingVarsByScore_.insert(0.0, new Set< const DiscreteVariable* >(_remainingVars_));
+    _remainingVarsByScore_.insert(0.0, new gum::VariableSet(_remainingVars_));
 
     for (auto varIter = _remainingVars_.cbeginSafe(); varIter != _remainingVars_.cendSafe();
          ++varIter) {
@@ -87,9 +87,9 @@ namespace gum {
   // Select the most relevant variable
   // ###################################################################
   const DiscreteVariable* VariableSelector::select() {
-    double                                bestScore = _remainingScores_.top();
-    const Set< const DiscreteVariable* >* bestSet   = _remainingVarsByScore_[bestScore];
-    const DiscreteVariable*               bestVar   = nullptr;
+    double                  bestScore = _remainingScores_.top();
+    const gum::VariableSet* bestSet   = _remainingVarsByScore_[bestScore];
+    const DiscreteVariable* bestVar   = nullptr;
 
     for (auto varIter = bestSet->beginSafe(); varIter != bestSet->endSafe(); ++varIter) {
       if (bestVar == nullptr
@@ -111,7 +111,7 @@ namespace gum {
     double varScore = _remainingVarsScore_[var];
 
     if (!_remainingVarsByScore_.exists(varScore)) {
-      _remainingVarsByScore_.insert(varScore, new Set< const DiscreteVariable* >());
+      _remainingVarsByScore_.insert(varScore, new gum::VariableSet());
       _remainingScores_.insert(varScore, varScore);
     }
     _remainingVarsByScore_[varScore]->insert(var);
@@ -122,8 +122,8 @@ namespace gum {
   // Select the most relevant variable
   // ###################################################################
   void VariableSelector::_removeVar_(const DiscreteVariable* var) {
-    double                          varScore = _remainingVarsScore_[var];
-    Set< const DiscreteVariable* >* varSet   = _remainingVarsByScore_[varScore];
+    double            varScore = _remainingVarsScore_[var];
+    gum::VariableSet* varSet   = _remainingVarsByScore_[varScore];
     *varSet >> var;
     if (varSet->empty()) {
       _remainingScores_.erase(varScore);
