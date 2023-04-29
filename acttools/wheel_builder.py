@@ -28,6 +28,8 @@ import platform
 import os
 import time
 
+from base64 import urlsafe_b64encode
+
 from shutil import move, rmtree
 
 from tempfile import mkdtemp, mkstemp
@@ -170,10 +172,11 @@ def build_wheel(tmp, nightly=False):
 
   update_wheel_file(dist_info)
   clean_up(install_dir)
-  write_record_file(install_dir, version, nightly)
 
   if (nightly):
     update_metadata(join(install_dir, dist_info), version)
+
+  write_record_file(install_dir, version, nightly)
 
   return install_dir, version
 
@@ -258,13 +261,10 @@ def write_record_file(install_dir, version, nightly=False):
   files_hash = []
   for root, dirs, files in walk(install_dir):
     for f in files:
-      try:
-        path = join(root, f)
-        sha = sha256_checksum(path)
-        path = path[len(install_dir):]
-        files_hash.append(f"{path},sha256={sha}\n")
-      except:
-        critic(f"Could not compute sha256 for file: {join(root, f)}")
+      path = join(root, f)
+      sha, size = sha256_checksum(path)
+      path = path[len(install_dir)+1:]
+      files_hash.append(f"{path},{sha},{size}\n")
   try:
     if (nightly):
       commit_time = os.popen('git log -1 --format="%at"').read().split('\n')[0]
@@ -276,18 +276,26 @@ def write_record_file(install_dir, version, nightly=False):
     with open(join(install_dir, dist_info_dir, "RECORD"), 'w') as f:
       for l in files_hash:
         f.write(l)
+      f.write(f"{join(dist_info_dir,'RECORD')},,")
   except:
     critic("Could not write RECORD file.")
 
+def sha256_checksum(file_path, block_size=65536):
+  """Returns the sha256 checksum of file."""
+  try:
+    h = hashlib.sha256()
+    length = 0
+    with open(file_path, 'rb') as f:
+      for block in iter(lambda: f.read(block_size), b''):
+        h.update(block)
+        length += len(block)
 
-def sha256_checksum(filename, block_size=65536):
-  """Returns the sha256 checksum of filename."""
-  sha256 = hashlib.sha256()
-  with open(filename, 'rb') as f:
-    for block in iter(lambda: f.read(block_size), b''):
-      sha256.update(block)
-  return sha256.hexdigest()
-
+    digest = 'sha256=' + urlsafe_b64encode(
+        h.digest()
+    ).decode('latin1').rstrip('=')
+    return (digest, str(length))
+  except:
+    critic(f"Could not compute sha256 for file: {file_path}")
 
 def update_metadata(dist_info_dir, version):
   replace(join(dist_info_dir, 'METADATA'),
