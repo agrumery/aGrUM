@@ -1590,19 +1590,37 @@ namespace gum_tests {
                              TS_GUM_SMALL_ERROR)
     }
 
-    /*
-            GUM_ACTIVE(ImplicitTargetWithHardEvidence) {
-              const auto model = gum::BayesNet< double
-       >::fastPrototype("A->B->C->Y->E->F->G;W->E<-Z;X->E");
+    GUM_ACTIVE_TEST(ImplicitTargetAllCheckWithEvidenceOutOFTarget) {
+      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->Y->E->F->G;W->E<-Z;X->E");
+      auto ie = gum::ShaferShenoyInference(&bn);
+      ie.addEvidence("E", 1);
+      ie.addJointTarget(bn.nodeset({"B", "Y", "F"}));
 
-              gum::Potential< double > joint;
-              for (const auto n: model.nodes()) {
-                joint *= model.cpt(n);
-              }
+      auto p = gum::Potential< double >();
+      for (const auto n: bn.nodes())
+        p *= bn.cpt(n);
+      gum::Potential evY1 = gum::Potential< double >();
+      evY1.add(bn.variableFromName("E"));
+      evY1.fillWith({0, 1});
+      p *= evY1;
+      p.normalize();
 
-              gum::LazyPropagation ie(model);
-            }
-    */
+      // target
+      TS_GUM_POTENTIAL_DELTA(ie.jointPosterior(bn.nodeset({"B", "Y", "F"})),
+                             p.margSumIn(bn.variables({"B", "Y", "F"})),
+                             TS_GUM_SMALL_ERROR)
+      // subtargets
+      TS_GUM_POTENTIAL_DELTA(ie.jointPosterior(bn.nodeset({"B", "Y"})),
+                             p.margSumIn(bn.variables({"B", "Y"})),
+                             TS_GUM_SMALL_ERROR)
+      TS_GUM_POTENTIAL_DELTA(ie.jointPosterior(bn.nodeset({"F", "Y"})),
+                             p.margSumIn(bn.variables({"F", "Y"})),
+                             TS_GUM_SMALL_ERROR)
+      // implicit target
+      TS_GUM_POTENTIAL_DELTA(ie.jointPosterior(bn.nodeset({"W", "Z", "X"})),
+                             p.margSumIn(bn.variables({"W", "Z", "X"})),
+                             TS_GUM_SMALL_ERROR)
+    }
 
     private:
     void checkInference(gum::LazyPropagation< double >& ie,
