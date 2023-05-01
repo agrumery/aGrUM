@@ -28,7 +28,7 @@
 #ifndef AGRUM_AGGREGATORDECOMPOSITION_H
 #define AGRUM_AGGREGATORDECOMPOSITION_H
 
-#include <agrum/PRM/PRM.h>
+#include <agrum/BN/BayesNet.h>
 #include <ctime>
 
 namespace gum {
