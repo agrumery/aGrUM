@@ -1556,21 +1556,24 @@ namespace gum_tests {
       TS_GUM_POTENTIAL_DELTA(ie.jointPosterior(bn.nodeset({"W", "Z", "X"})),
                              p.margSumIn(bn.variables({"W", "Z", "X"})),
                              TS_GUM_SMALL_ERROR)
+
+      // impossible target in optimized inference
+      TS_ASSERT_THROWS(ie.jointPosterior(bn.nodeset({"A", "E"})),gum::UndefinedElement&)
     }
 
-    GUM_ACTIVE_TEST(ImplicitTargetAllCheckWithEvidenceInTarget) {
+    GUM_ACTIVE_TEST(ImplicitTargetAllCheckWithEvidenceOutOFTarget) {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->Y->E->F->G;W->E<-Z;X->E");
-      auto ie = gum::LazyPropagation(&bn);
-      ie.addEvidence("Y",1);
+      auto ie = gum::ShaferShenoyInference(&bn);
+      ie.addEvidence("E", 1);
       ie.addJointTarget(bn.nodeset({"B", "Y", "F"}));
 
       auto p = gum::Potential< double >();
       for (const auto n: bn.nodes())
         p *= bn.cpt(n);
-      gum::Potential evY1 = gum::Potential<double>();
-      evY1.add(bn.variableFromName("Y"));
-      evY1.fillWith({0,1});
-      p*=evY1;
+      gum::Potential evY1 = gum::Potential< double >();
+      evY1.add(bn.variableFromName("E"));
+      evY1.fillWith({0, 1});
+      p *= evY1;
       p.normalize();
 
       // target
@@ -1590,19 +1593,19 @@ namespace gum_tests {
                              TS_GUM_SMALL_ERROR)
     }
 
-    GUM_ACTIVE_TEST(ImplicitTargetAllCheckWithEvidenceOutOFTarget) {
+    GUM_ACTIVE_TEST(ImplicitTargetAllCheckWithEvidenceInTarget) {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->Y->E->F->G;W->E<-Z;X->E");
-      auto ie = gum::ShaferShenoyInference(&bn);
-      ie.addEvidence("E", 1);
+      auto ie = gum::LazyPropagation(&bn);
+      ie.addEvidence("Y",1);
       ie.addJointTarget(bn.nodeset({"B", "Y", "F"}));
 
       auto p = gum::Potential< double >();
       for (const auto n: bn.nodes())
         p *= bn.cpt(n);
-      gum::Potential evY1 = gum::Potential< double >();
-      evY1.add(bn.variableFromName("E"));
-      evY1.fillWith({0, 1});
-      p *= evY1;
+      gum::Potential evY1 = gum::Potential<double>();
+      evY1.add(bn.variableFromName("Y"));
+      evY1.fillWith({0,1});
+      p*=evY1;
       p.normalize();
 
       // target
