@@ -2375,6 +2375,21 @@ namespace gum {
                 "net are incompatible (their joint proba = 0)");
     }
 
+    // if there exists some nodes in the set of targets that received hard evidence,
+    // then the joint Potential needs be multiplied by the evidence potentials of
+    // these nodes
+    if (!hard_ev_nodes.empty()) {
+      _PotentialSet_ pot_list;
+      pot_list.insert(joint);
+      const auto& hard_evidence = this->evidence();
+      for (const auto node: hard_ev_nodes)
+        pot_list.insert(hard_evidence[node]);
+      MultiDimCombinationDefault< Potential< GUM_SCALAR > > combine(_combination_op_);
+      Potential< GUM_SCALAR >* new_joint = combine.execute(pot_list);
+      delete joint;
+      joint = new_joint;
+    }
+
     return joint;
   }
 
@@ -2429,7 +2444,7 @@ namespace gum {
       for (const auto node: targets) {
         if (!_graph_.exists(node)) {
           GUM_ERROR(UndefinedElement,
-                    node << " can not be a query in the optimized inference (w.r.t the declared "
+                    node << " cannot be a query in the optimized inference (w.r.t the declared "
                             "targets/evidence)")
         }
       }
@@ -2451,7 +2466,6 @@ namespace gum {
       }
 
       clique_of_set = _triangulation_->createdJunctionTreeClique(first_eliminated_node);
-
 
       // 3/ check that clique_of_set contains the all the nodes in the target
       const NodeSet& clique_nodes = _JT_->clique(clique_of_set);
@@ -2484,7 +2498,6 @@ namespace gum {
       const auto pot = _separator_potentials_[Arc(other, clique_of_set)];
       if (pot != nullptr) pot_list.insert(pot);
     }
-
 
     // get the set of variables that need be removed from the potentials
     const NodeSet&   nodes = _JT_->clique(clique_of_set);
@@ -2531,6 +2544,21 @@ namespace gum {
       GUM_ERROR(IncompatibleEvidence,
                 "some evidence entered into the Bayes "
                 "net are incompatible (their joint proba = 0)");
+    }
+
+    // if there exists some nodes in the set of targets that received hard evidence,
+    // then the joint Potential needs be multiplied by the evidence potentials of
+    // these nodes
+    if (!hard_ev_nodes.empty()) {
+      _PotentialSet_ pot_list;
+      pot_list.insert(joint);
+      const auto& hard_evidence = this->evidence();
+      for (const auto node: hard_ev_nodes)
+        pot_list.insert(hard_evidence[node]);
+      MultiDimCombinationDefault< Potential< GUM_SCALAR > > combine(_combination_op_);
+      Potential< GUM_SCALAR >* new_joint = combine.execute(pot_list);
+      delete joint;
+      joint = new_joint;
     }
 
     return joint;
