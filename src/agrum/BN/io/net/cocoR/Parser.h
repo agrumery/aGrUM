@@ -37,7 +37,6 @@ Coco/R itself) does not fall under the GNU General Public License.
 
 #include <agrum/tools/core/cast_unicode.h>
 
-#include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/BayesNetFactory.h>
 
 #undef TRY

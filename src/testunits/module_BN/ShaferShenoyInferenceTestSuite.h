@@ -1208,7 +1208,7 @@ namespace gum_tests {
                              TS_GUM_SMALL_ERROR)
 
       // impossible target in optimized inference
-      TS_ASSERT_THROWS(ie.jointPosterior(bn.nodeset({"A", "E"})),gum::UndefinedElement&)
+      TS_ASSERT_THROWS(ie.jointPosterior(bn.nodeset({"A", "E"})), gum::UndefinedElement&)
     }
 
     GUM_ACTIVE_TEST(ImplicitTargetAllCheckWithEvidenceOutOFTarget) {

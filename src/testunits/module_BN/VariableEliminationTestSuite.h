@@ -917,7 +917,7 @@ namespace gum_tests {
                               0.5f, 0.5f,
                               1.0f, 0.0f}   // clang-format on
       );
-      bn.cpt(i5).fillWith({        // clang-format off
+      bn.cpt(i5).fillWith({// clang-format off
                 0.3f, 0.6f, 0.1f,
                 0.5f, 0.5f, 0.0f,
                 0.5f, 0.5f, 0.0f,

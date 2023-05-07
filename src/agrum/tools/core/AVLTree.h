@@ -71,10 +71,13 @@ namespace gum {
       EMPLACE
     };
 
-    AVLTreeNode(const Val& val) : value(val) { GUM_CONSTRUCTOR(AVLTreeNode); };
-    AVLTreeNode(Val&& val) noexcept : value(std::move(val)) { GUM_CONSTRUCTOR(AVLTreeNode); };
+    explicit AVLTreeNode(const Val& val) : value(val) { GUM_CONSTRUCTOR(AVLTreeNode); };
+    explicit AVLTreeNode(Val&& val) noexcept : value(std::move(val)) {
+      GUM_CONSTRUCTOR(AVLTreeNode);
+    };
     template < typename... Args >
-    AVLTreeNode(const Emplace& emplace, Args&&... args) : value(std::forward< Args >(args)...) {
+    explicit AVLTreeNode(const Emplace& emplace, Args&&... args) :
+        value(std::forward< Args >(args)...) {
       GUM_CONSTRUCTOR(AVLTreeNode);
     }
 
@@ -93,7 +96,6 @@ namespace gum {
 
     // two nodes are equal if and only if they contain the same value
     bool operator==(const AVLTreeNode< Val >& from) const { return value == from.value; }
-    bool operator!=(const AVLTreeNode< Val >& from) const { return value != from.value; }
   };
 
 

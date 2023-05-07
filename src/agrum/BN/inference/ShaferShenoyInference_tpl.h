@@ -2385,7 +2385,7 @@ namespace gum {
       for (const auto node: hard_ev_nodes)
         pot_list.insert(hard_evidence[node]);
       MultiDimCombinationDefault< Potential< GUM_SCALAR > > combine(_combination_op_);
-      Potential< GUM_SCALAR >* new_joint = combine.execute(pot_list);
+      Potential< GUM_SCALAR >*                              new_joint = combine.execute(pot_list);
       delete joint;
       joint = new_joint;
     }
@@ -2556,7 +2556,7 @@ namespace gum {
       for (const auto node: hard_ev_nodes)
         pot_list.insert(hard_evidence[node]);
       MultiDimCombinationDefault< Potential< GUM_SCALAR > > combine(_combination_op_);
-      Potential< GUM_SCALAR >* new_joint = combine.execute(pot_list);
+      Potential< GUM_SCALAR >*                              new_joint = combine.execute(pot_list);
       delete joint;
       joint = new_joint;
     }
