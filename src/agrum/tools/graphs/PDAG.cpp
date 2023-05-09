@@ -133,8 +133,10 @@ namespace gum {
 
   UndiGraph PDAG::moralizedAncestralGraph(const NodeSet& nodes) const {
     PDAG ancestral;
-    for (const auto n: nodes)
+    for (const auto n: nodes) {
+      if (!ancestral.existsNode(n)) { ancestral.addNodeWithId(n); }
       rec_ancestral(*this, ancestral, n);
+    }
 
     return ancestral.moralGraph();
   }

@@ -5231,9 +5231,6 @@ class PDAG(MixedGraph):
     def hasMixedReallyOrientedPath(self, n1: int, n2: int) -> bool:
         return _pyAgrum.PDAG_hasMixedReallyOrientedPath(self, n1, n2)
 
-    def cSeparation(self, *args) -> bool:
-        return _pyAgrum.PDAG_cSeparation(self, *args)
-
     def toDot(self) -> str:
         r"""
 
@@ -5250,6 +5247,9 @@ class PDAG(MixedGraph):
 
     def __str__(self) -> str:
         return _pyAgrum.PDAG___str__(self)
+
+    def cSeparation(self, *args) -> bool:
+        return _pyAgrum.PDAG_cSeparation(self, *args)
 
     def addNodes(self, n: int) -> object:
         return _pyAgrum.PDAG_addNodes(self, n)

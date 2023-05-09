@@ -17,6 +17,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 %extend gum::DAG {
    bool dSeparation(PyObject* X,PyObject* Y,PyObject* Z) {
      gum::NodeSet sX,sY,sZ;
@@ -31,6 +32,23 @@
      PyAgrumHelper::populateNodeSetFromIntOrPySequenceOfInt(sX,X);
      PyAgrumHelper::populateNodeSetFromIntOrPySequenceOfInt(sY,Y);
      return self->dSeparation(sX,sY,sZ);
+   }
+ }
+
+%extend gum::PDAG {
+   bool cSeparation(PyObject* X,PyObject* Y,PyObject* Z) {
+     gum::NodeSet sX,sY,sZ;
+     PyAgrumHelper::populateNodeSetFromIntOrPySequenceOfInt(sX,X);
+     PyAgrumHelper::populateNodeSetFromIntOrPySequenceOfInt(sY,Y);
+     PyAgrumHelper::populateNodeSetFromIntOrPySequenceOfInt(sZ,Z);
+     return self->cSeparation(sX,sY,sZ);
+   }
+
+   bool cSeparation(PyObject* X,PyObject* Y) {
+     gum::NodeSet sX,sY,sZ;
+     PyAgrumHelper::populateNodeSetFromIntOrPySequenceOfInt(sX,X);
+     PyAgrumHelper::populateNodeSetFromIntOrPySequenceOfInt(sY,Y);
+     return self->cSeparation(sX,sY,sZ);
    }
  }
 
