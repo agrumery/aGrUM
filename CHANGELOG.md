@@ -12,6 +12,7 @@
   * Improving error message w.r.t `gum::*::jointPosterior`.
   * Adding mingw as a target for CI.
   * Fixing dangling pointers in testsuite, only detected by MSVC.
+  * Optimized `gum::PDAG::cSeparation`
   * Renaming `gum::Set::isProper{Sub|Super}Set` to `gum::Set::isStrict{Sub|Super}Set`.
 
 * pyAgrum
@@ -26,6 +27,7 @@
   * Updating docs for new *fast* syntax.
   * Updating `GraphicalModel::exists(const std::string&)` : return false instead of throw an exception.
   * Initiating a new notebook about the interaction with ipywidget
+  * Optimized and correctly wrapped `gum::PDAG::cSeparation` (thanks to Kenneth Lee).
   * New functions `pyAgrum.lib.explain.nestedMarkovBlankets` and `pyAgrum.lib.explain.nestedMarkovBlanketsNames`.
 
 
