@@ -17,10 +17,6 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# General information about the project.
-project = 'pyAgrum'
-copyright = '2018-22, aGrUM/pyAgrum Team <info_at_agrum_dot_org>'
-author = 'Pierre-henri Wuillemin'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -31,6 +27,11 @@ import sys
 #sys.path.insert(0,os.path.abspath('../../../../build/pyAgrum/release/wrappers/'))
 
 import pyAgrum
+
+# General information about the project.
+project = 'pyAgrum '
+copyright = '2018-23, aGrUM/pyAgrum Team <info_at_agrum_dot_org> (pyAgrum re'+pyAgrum.__version__+')'
+author = 'Pierre-henri Wuillemin'
 
 import matplotlib
 matplotlib.use('agg') # work around for tkinter.file_dialog not found
