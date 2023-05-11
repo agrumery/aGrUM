@@ -133,7 +133,9 @@ namespace gum {
     bool sleeping_;
   };
 
+  std::ostream& operator<<(std::ostream& os, const Timer& t);
 } /* namespace gum */
+
 
 #ifndef GUM_NO_INLINE
 #  include <agrum/tools/core/timer_inl.h>

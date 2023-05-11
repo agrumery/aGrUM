@@ -68,4 +68,7 @@ namespace gum {
 
     return step();
   }
+
+  INLINE
+  std::ostream& operator<<(std::ostream& os, const Timer& t) { return os << t.toString(); };
 } /* namespace gum */
