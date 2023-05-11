@@ -20,6 +20,7 @@
 
 #include <iostream>
 #include <string>
+#include "agrum/tools/variables/discreteVariable.h"
 
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/testsuite_utils.h>
@@ -949,6 +950,23 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
 
       if (net) delete net;
+    }
+
+    GUM_INACTIVE_TEST(BenchFillingCpt) {
+      std::string              file = GET_RESSOURCES_PATH("bif/Diabetes.bif");
+      gum::BayesNet< double >  net;
+      gum::BIFReader< double > reader(&net, file);
+      reader.trace(false);
+      gum::Size nbrErr = 0;
+
+      gum::Timer t;
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
+      GUM_TRACE_VAR(t);
+
+      TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)826)
+      // 2 warnings : properties
+      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0)
     }
   };
 }   // namespace gum_tests

@@ -84,7 +84,10 @@ namespace gum_tests {
         c2++;
       }
 
-      if (c1 != c2) return false;
+      if (c1 != c2) {
+        GUM_TRACE("Not the same number of lines : "<<c1<<" != "<<c2)
+        return false;
+      }
 
       //---------- compare two files line by line ------------------//
       file1.clear();   //  set new value for error control state  //
@@ -116,7 +119,13 @@ namespace gum_tests {
 
         // we do not compare the comments (can contain version number of agrum
         if ((strncmp(string1, "//", 2) == 0) && (strncmp(string2, "//", 2) == 0)) continue;
-        if (strcmp(string1, string2) != 0) { return false; }
+        if (strcmp(string1, string2) != 0) {
+          GUM_TRACE("The two files differ : ")
+          GUM_TRACE_VAR(string1)
+          GUM_TRACE_NEWLINE
+          GUM_TRACE_VAR(string2)
+          return false;
+        }
       }
 
       return true;

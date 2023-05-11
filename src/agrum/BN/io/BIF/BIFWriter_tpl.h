@@ -100,7 +100,7 @@ namespace gum {
       Instantiation inst(cpt);
       str << "probability (" << this->_onlyValidCharsInName(cpt.variable(0).name()) << ") {"
           << std::endl;
-      str << tab << "default";
+      str << tab << "table";
 
       for (inst.setFirst(); !inst.end(); ++inst) {
         str << " " << cpt[inst];
