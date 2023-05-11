@@ -251,7 +251,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void BayesNetFactory< GUM_SCALAR >::addMax(const long& max) {
     if (state() != factory_state::VARIABLE) {
-      _illegalStateError_("addMin");
+      _illegalStateError_("addMax");
     } else {
       _stringBag_.push_back(std::to_string(max));
     }
@@ -483,6 +483,7 @@ namespace gum {
     Instantiation                  cptInst(table);
 
     List< const DiscreteVariable* > varList;
+    table.fillWith(GUM_SCALAR(0.0));
 
     for (size_t i = 0; i < variables.size(); ++i) {
       varList.pushBack(&(_bn_->variable(_varNameMap_[variables[i]])));
@@ -497,21 +498,14 @@ namespace gum {
       modCounter.push_back(Idx(0));
     }
 
-    Idx j = 0;
-
-    do {
+    for (Idx j = 0; j < rawTable.size(); j++) {
       for (NodeId i = 0; i < nbrVar; i++) {
         cptInst.chgVal(*(varList[i]), modCounter[i]);
       }
 
-      if (j < rawTable.size()) {
-        table.set(cptInst, (GUM_SCALAR)rawTable[j]);
-      } else {
-        table.set(cptInst, (GUM_SCALAR)0);
-      }
-
-      j++;
-    } while (_increment_(modCounter, varList));
+      table.set(cptInst, (GUM_SCALAR)rawTable[j]);
+      if (!_increment_(modCounter, varList)) { break; }   // too many values (just not read)
+    }
   }
 
   template < typename GUM_SCALAR >
