@@ -36,6 +36,8 @@
 %include "doc_ShaferShenoyInference.i"
 %include "doc_VariableElimination.i"
 
+%include "doc_InformationTheory.i"
+
 %include "doc_LoopyBeliefPropagation.i"
 %include "doc_GibbsSampling.i"
 %include "doc_MonteCarloSampling.i"

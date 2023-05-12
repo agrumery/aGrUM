@@ -1,4 +1,4 @@
-Tools for Bayesian networks
+-Tools for Bayesian networks
 ---------------------------
 .. figure:: _static/BNcomparison.png
     :align: center
@@ -13,6 +13,7 @@ with Bayesian networks.
 
   BNToolsRandom
   BNToolsGener
+  BNToolsInformationTheory
   BNToolsCompar
   BNToolsExplain
   BNToolsFragment

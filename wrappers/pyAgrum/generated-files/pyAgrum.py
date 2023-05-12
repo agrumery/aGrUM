@@ -512,37 +512,116 @@ class BNGenerator(object):
 # Register BNGenerator in _pyAgrum:
 _pyAgrum.BNGenerator_swigregister(BNGenerator)
 class InformationTheory(object):
+    r"""
+
+    This class gathers information theory concepts for subsets named X,Y and Z computed with only one inference.
+
+    Parameters
+    ----------
+        - **X** (*intstr* or *iterable[intstr]* ) -- a first nodeset
+        - **Y** (*intstr* or *iterable[intstr]* ) -- a second nodeset
+        - **Z** (*intstr* or *iterable[intstr]* ) -- a third (an optional) nodeset
+
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
+        r"""
+
+        This class gathers information theory concepts for subsets named X,Y and Z computed with only one inference.
+
+        Parameters
+        ----------
+            - **X** (*intstr* or *iterable[intstr]* ) -- a first nodeset
+            - **Y** (*intstr* or *iterable[intstr]* ) -- a second nodeset
+            - **Z** (*intstr* or *iterable[intstr]* ) -- a third (an optional) nodeset
+
+        """
         _pyAgrum.InformationTheory_swiginit(self, _pyAgrum.new_InformationTheory(*args))
 
     def entropyXY(self) -> float:
+        r"""
+
+        Returns
+        -------
+          float
+            The entropy of nodeset, union of X and Y.
+
+        """
         return _pyAgrum.InformationTheory_entropyXY(self)
 
     def entropyX(self) -> float:
+        r"""
+
+        Returns
+        -------
+        float
+          The entropy of nodeset X.
+
+        """
         return _pyAgrum.InformationTheory_entropyX(self)
 
     def entropyY(self) -> float:
+        r"""
+
+        Returns
+        -------
+          float
+            The entropy of nodeset X.
+
+        """
         return _pyAgrum.InformationTheory_entropyY(self)
 
     def entropyXgivenY(self) -> float:
+        r"""
+
+        Returns
+        -------
+          float
+            The conditional entropy of nodeset X conditionned by nodeset Y
+
+        """
         return _pyAgrum.InformationTheory_entropyXgivenY(self)
 
     def entropyYgivenX(self) -> float:
+        r"""
+
+        Returns
+        -------
+          float
+            The conditional entropy of nodeset Y conditionned by nodeset X
+
+        """
         return _pyAgrum.InformationTheory_entropyYgivenX(self)
 
     def mutualInformationXY(self) -> float:
         return _pyAgrum.InformationTheory_mutualInformationXY(self)
 
     def variationOfInformationXY(self) -> float:
+        r"""
+
+        Returns
+        -------
+          float
+            The variation of information between nodeset X and nodeset Y
+
+        """
         return _pyAgrum.InformationTheory_variationOfInformationXY(self)
 
     def entropyXYgivenZ(self) -> float:
         return _pyAgrum.InformationTheory_entropyXYgivenZ(self)
 
     def mutualInformationXYgivenZ(self) -> float:
+        r"""
+
+        Returns
+        -------
+          float
+            The conditional mutual information between nodeset X and nodeset Y conditionned by nodeset Z
+
+        """
         return _pyAgrum.InformationTheory_mutualInformationXYgivenZ(self)
     __swig_destroy__ = _pyAgrum.delete_InformationTheory
 

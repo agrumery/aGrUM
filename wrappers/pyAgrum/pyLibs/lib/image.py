@@ -33,6 +33,7 @@ from pyAgrum.lib.id2graph import ID2dot, LIMIDinference2dot
 from pyAgrum.lib.mrf2graph import MRF2UGdot, MRFinference2UGdot
 from pyAgrum.lib.mrf2graph import MRF2FactorGraphdot, MRFinference2FactorGraphdot
 
+
 def export(model, filename=None, **kwargs):
   """
   export the graphical representation of the model in filename (png, pdf,etc.)
@@ -50,11 +51,11 @@ def export(model, filename=None, **kwargs):
   """
   if filename is None:
     tmp = tempfile.NamedTemporaryFile(suffix='.png', delete=False)
-    export(model, tmp.name,**kwargs)
+    export(model, tmp.name, **kwargs)
     img = mpimg.imread(tmp.name)
     try:
       os.remove(tmp.name)
-    except PermissionError: # probably windows error : file still 'used' ... grrr...
+    except PermissionError:  # probably windows error : file still 'used' ... grrr...
       pass
     return img
 
@@ -75,15 +76,15 @@ def export(model, filename=None, **kwargs):
     fig = ID2dot(model, **kwargs)
   elif isinstance(model, gum.CredalNet):
     fig = CN2dot(model, **kwargs)
-  elif isinstance(model,dot.Dot):
-    fig=model
+  elif isinstance(model, dot.Dot):
+    fig = model
   elif hasattr(model, "toDot"):
     fig = dot.graph_from_dot_data(model.toDot())[0]
 
     # workaround for some badly parsed graph (pyparsing>=3.03)
     fig.del_node('"\\n"')
     fig.del_node('"\\n\\n"')
-  elif isinstance(model,str):
+  elif isinstance(model, str):
     fig = dot.graph_from_dot_data(model)[0]
 
     # workaround for some badly parsed graph (pyparsing>=3.03)
@@ -96,9 +97,10 @@ def export(model, filename=None, **kwargs):
   fig.write(filename, format=fmt_image)
 
 
+@gum.deprecated_arg("cmapNode", "cmap", "1.8.1")
 def prepareShowInference(model, engine=None, evs=None, targets=None, size=None,
                          nodeColor=None, factorColor=None, arcWidth=None,
-                         arcColor=None, cmap=None, cmapArc=None, graph=None, view=None
+                         arcColor=None, cmapNode=None, cmapArc=None, graph=None, view=None
                          ):
   """
   Transform an inference for a model in a dot representation
@@ -125,7 +127,7 @@ def prepareShowInference(model, engine=None, evs=None, targets=None, size=None,
       a arcMap of values to be shown as width of arcs
   arcColor: Dict[(int,int),float]
       a arcMap of values (between 0 and 1) to be shown as color of arcs
-  cmap: matplotlib.colors.ColorMap
+  cmapNode: matplotlib.colors.ColorMap
       color map to show the color of nodes and arcs
   cmapArc: matplotlib.colors.ColorMap
       color map to show the vals of Arcs.
@@ -159,7 +161,7 @@ def prepareShowInference(model, engine=None, evs=None, targets=None, size=None,
     return BNinference2dot(model, size=size, engine=engine, evs=evs, targets=targets, nodeColor=nodeColor,
                            arcWidth=arcWidth,
                            arcColor=arcColor,
-                           cmapNode=cmap, cmapArc=cmapArc
+                           cmapNode=cmapNode, cmapArc=cmapArc
                            )
   if isinstance(model, gum.MarkovRandomField):
     if view is None:
@@ -169,14 +171,14 @@ def prepareShowInference(model, engine=None, evs=None, targets=None, size=None,
 
     if view == "graph":
       return MRFinference2UGdot(model, size=size, engine=engine, evs=evs, targets=targets, nodeColor=nodeColor,
-                               factorColor=factorColor,
-                               arcWidth=arcWidth, arcColor=arcColor, cmapNode=cmap, cmapArc=cmapArc
-                               )
+                                factorColor=factorColor,
+                                arcWidth=arcWidth, arcColor=arcColor, cmapNode=cmapNode, cmapArc=cmapArc
+                                )
     # view=factor graph
     return MRFinference2FactorGraphdot(model, size=size, engine=engine, evs=evs, targets=targets,
-                                      nodeColor=nodeColor,
-                                      factorColor=factorColor, cmapNode=cmap
-                                      )
+                                       nodeColor=nodeColor,
+                                       factorColor=factorColor, cmapNode=cmapNode
+                                       )
   if isinstance(model, gum.InfluenceDiagram):
     if engine is None:
       engine = gum.ShaferShenoyLIMIDInference(model)
@@ -185,7 +187,7 @@ def prepareShowInference(model, engine=None, evs=None, targets=None, size=None,
     if engine is None:
       engine = gum.CNMonteCarloSampling(model)
     return CNinference2dot(model, size=size, engine=engine, evs=evs, targets=targets, nodeColor=nodeColor,
-                           arcWidth=arcWidth, arcColor=arcColor, cmapNode=cmap
+                           arcWidth=arcWidth, arcColor=arcColor, cmapNode=cmapNode
                            )
 
   raise gum.InvalidArgument(
@@ -304,11 +306,11 @@ def exportInference(model, filename=None, **kwargs):
   """
   if filename is None:
     tmp = tempfile.NamedTemporaryFile(suffix='.png', delete=False)
-    exportInference(model, tmp.name,**kwargs)
+    exportInference(model, tmp.name, **kwargs)
     img = mpimg.imread(tmp.name)
     try:
       os.remove(tmp.name)
-    except PermissionError: # probably windows error : file still 'used' ... grrr...
+    except PermissionError:  # probably windows error : file still 'used' ... grrr...
       pass
     return img
 

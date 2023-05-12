@@ -85,7 +85,7 @@ namespace gum_tests {
       }
 
       if (c1 != c2) {
-        GUM_TRACE("Not the same number of lines : "<<c1<<" != "<<c2)
+        GUM_TRACE("Not the same number of lines : " << c1 << " != " << c2)
         return false;
       }
 

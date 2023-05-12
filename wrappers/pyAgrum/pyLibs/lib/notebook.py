@@ -717,9 +717,10 @@ def showMN(*args, **kwargs):
   showMRF(*args, **kwargs)
 
 
-def showMRF(mrf, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=None, edgeColor=None, cmap=None,
-           cmapEdge=None
-           ):
+@gum.deprecated_arg("cmapNode","cmap","1.8.1")
+def showMRF(mrf, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=None, edgeColor=None, cmapNode=None,
+            cmapEdge=None
+            ):
   """
   show a Markov random field
 
@@ -730,7 +731,7 @@ def showMRF(mrf, view=None, size=None, nodeColor=None, factorColor=None, edgeWid
   :param factorColor: a function returning a value (beeween 0 and 1) to be shown as a color of factor. (used when view='factorgraph')
   :param edgeWidth: a edgeMap of values to be shown as width of edges  (used when view='graph')
   :param edgeColor: a edgeMap of values (between 0 and 1) to be shown as color of edges (used when view='graph')
-  :param cmap: color map to show the colors
+  :param cmapNode: color map to show the colors
   :param cmapEdge: color map to show the edge color if distinction is needed
   :return: the graph
   """
@@ -741,14 +742,13 @@ def showMRF(mrf, view=None, size=None, nodeColor=None, factorColor=None, edgeWid
     size = gum.config["notebook", "default_graph_size"]
 
   if cmapEdge is None:
-    cmapEdge = cmap
+    cmapEdge = cmapNode
 
   if view == "graph":
-    dottxt = MRF2UGdot(mrf, size, nodeColor, edgeWidth,
-                       edgeColor, cmap, cmapEdge
-                       )
+    dottxt = MRF2UGdot(mrf, size, nodeColor=nodeColor, edgeWidth=edgeWidth,
+                       edgeColor=edgeColor, cmapNode=cmapNode, cmapEdge=cmapEdge)
   else:
-    dottxt = MRF2FactorGraphdot(mrf, size, nodeColor, factorColor, cmapNode=cmap)
+    dottxt = MRF2FactorGraphdot(mrf, size, nodeColor=nodeColor, factorColor=factorColor, cmapNode=cmapNode)
 
   return showGraph(dottxt, size)
 
@@ -781,7 +781,8 @@ def getInfluenceDiagram(diag, size=None):
   return getGraph(ID2dot(diag), size)
 
 
-def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmap=None, cmapArc=None):
+@gum.deprecated_arg("cmapNode","cmap","1.8.1")
+def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None):
   """
   show a Bayesian network
 
@@ -810,14 +811,15 @@ def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor
     size = gum.config["notebook", "default_graph_size"]
 
   if cmapArc is None:
-    cmapArc = cmap
+    cmapArc = cmapNode
 
   return showGraph(
-    BN2dot(bn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel, arcColor=arcColor, cmapNode=cmap,
+    BN2dot(bn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel, arcColor=arcColor, cmapNode=cmapNode,
            cmapArc=cmapArc), size)
 
 
-def showCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmap=None, cmapArc=None):
+@gum.deprecated_arg("cmapNode","cmap","1.8.1")
+def showCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None):
   """
   show a credal network
 
@@ -850,10 +852,10 @@ def showCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor
     size = gum.config["notebook", "default_graph_size"]
 
   if cmapArc is None:
-    cmapArc = cmap
+    cmapArc = cmapNode
 
   return showGraph(
-    CN2dot(cn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel, arcColor=arcColor, cmapNode=cmap,
+    CN2dot(cn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel, arcColor=arcColor, cmapNode=cmapNode,
            cmapArc=cmapArc), size)
 
 
@@ -864,7 +866,8 @@ def getMN(*args, **kwargs):
   showMRF(*args, **kwargs)
 
 
-def getMRF(mrf, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=None, edgeColor=None, cmap=None,
+@gum.deprecated_arg("cmapNode","cmap","1.8.1")
+def getMRF(mrf, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=None, edgeColor=None, cmapNode=None,
            cmapEdge=None):
   """
   get an HTML string for a Markov random field
@@ -876,7 +879,7 @@ def getMRF(mrf, view=None, size=None, nodeColor=None, factorColor=None, edgeWidt
   :param factorColor: a function returning a value (beeween 0 and 1) to be shown as a color of factor. (used when view='factorgraph')
   :param edgeWidth: a edgeMap of values to be shown as width of edges  (used when view='graph')
   :param edgeColor: a edgeMap of values (between 0 and 1) to be shown as color of edges (used when view='graph')
-  :param cmap: color map to show the colors
+  :param cmapNode: color map to show the colors
   :param cmapEdge: color map to show the edge color if distinction is needed
   :return: the graph
   """
@@ -884,22 +887,22 @@ def getMRF(mrf, view=None, size=None, nodeColor=None, factorColor=None, edgeWidt
     size = gum.config["notebook", "default_graph_size"]
 
   if cmapEdge is None:
-    cmapEdge = cmap
+    cmapEdge = cmapNode
 
   if view is None:
     view = gum.config["notebook", "default_markovnetwork_view"]
 
   if view == "graph":
     dottxt = MRF2UGdot(mrf, size, nodeColor, edgeWidth,
-                      edgeColor, cmap, cmapEdge
-                      )
+                       edgeColor, cmapNode, cmapEdge
+                       )
   else:
-    dottxt = MRF2FactorGraphdot(mrf, size, nodeColor, factorColor, cmapNode=cmap)
+    dottxt = MRF2FactorGraphdot(mrf, size, nodeColor, factorColor, cmapNode=cmapNode)
 
   return getGraph(dottxt, size)
 
-
-def getBN(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmap=None, cmapArc=None):
+@gum.deprecated_arg("cmapNode","cmap","1.8")
+def getBN(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None):
   """
   get a HTML string for a Bayesian network
 
@@ -933,14 +936,15 @@ def getBN(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=
     size = gum.config["notebook", "default_graph_size"]
 
   if cmapArc is None:
-    cmapArc = cmap
+    cmapArc = cmapNode
 
   return getGraph(
-    BN2dot(bn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel, arcColor=arcColor, cmapNode=cmap,
+    BN2dot(bn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel, arcColor=arcColor, cmapNode=cmapNode,
            cmapArc=cmapArc), size)
 
 
-def getCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmap=None, cmapArc=None):
+@gum.deprecated_arg("cmapNode","cmap","1.8.1")
+def getCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None):
   """
   get a HTML string for a credal network
 
@@ -974,10 +978,10 @@ def getCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=
     size = gum.config["notebook", "default_graph_size"]
 
   if cmapArc is None:
-    cmapArc = cmap
+    cmapArc = cmapNode
 
   return getGraph(
-    CN2dot(cn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel, arcColor=arcColor, cmapNode=cmap,
+    CN2dot(cn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel, arcColor=arcColor, cmapNode=cmapNode,
            cmapArc=cmapArc), size)
 
 
@@ -994,7 +998,7 @@ def showInference(model, **kwargs):
   :param factorColor: a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovRandomField representation)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
-  :param cmap: color map to show the color of nodes and arcs
+  :param cmapNode: color map to show the color of nodes and arcs
   :param cmapArc: color map to show the vals of Arcs.
   :param graph: only shows nodes that have their id in the graph (and not in the whole BN)
   :param view: graph | factorgraph | None (default) for Markov random field
@@ -1023,7 +1027,7 @@ def getInference(model, **kwargs):
   :param factorColor: a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovRandomField representation)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
-  :param cmap: color map to show the color of nodes and arcs
+  :param cmapNode: color map to show the color of nodes and arcs
   :param cmapArc: color map to show the vals of Arcs.
   :param graph: only shows nodes that have their id in the graph (and not in the whole BN)
   :param view: graph | factorgraph | None (default) for Markov random field

@@ -19,7 +19,7 @@ def deprecated_arg(newA: str, oldA: str, version: str):
 
   Example
   ------
-  @deprecated_arg("x","old_x","1.8")
+  @gum.deprecated_arg("x","old_x","1.8")
   def f(x:int):
     return 2*X
 
