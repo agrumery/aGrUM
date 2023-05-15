@@ -484,6 +484,4 @@ namespace gum::learning {
     ThreadNumberManager::setNumberOfThreads(nb);
     if (score_ != nullptr) score_->setNumberOfThreads(nb);
   }
-
-  /* namespace learning */
 }   // namespace gum::learning

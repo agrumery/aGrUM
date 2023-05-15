@@ -889,7 +889,7 @@ def nestedMarkovBlankets(bn, x, k: int = 1, cmapNode=None):
 
   Remarks
   -------
-  `pyAgrum.lib.notebook.{get|show}Graph()` in order to visualize thie dot object
+  `pyAgrum.lib.notebook.{get|show}Graph()` in order to visualize this dot object
   """
   if cmapNode is None:
     cmapNode = plt.get_cmap("inferno")  # gum.config["notebook", "default_arc_cmap"])
