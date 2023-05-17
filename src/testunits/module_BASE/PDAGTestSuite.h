@@ -533,12 +533,20 @@ namespace gum_tests {
       TS_ASSERT_THROWS(graph.addArc(x, x), const gum::Exception&)
     }
 
-    GUM_ACTIVE_TEST(Weird) {
+    GUM_ACTIVE_TEST(WeirdnessFromKennethLee) {
+      {
       gum::PDAG p;
       p.addNodes(10);
-      p.addArc(0,1);
-      p.addArc(1,2);
-      TS_GUM_ASSERT_THROWS_NOTHING(p.cSeparation(0,2,gum::NodeSet({1})))
+      p.addArc(0, 1);
+      p.addArc(1, 2);
+      TS_GUM_ASSERT_THROWS_NOTHING(p.cSeparation(0, 2, gum::NodeSet({1})))
+      }
+      {
+        gum::PDAG p;
+        p.addNodes(10);
+        p.addEdge(0,1);
+        TS_ASSERT(! p.cSeparation(0,1,gum::NodeSet({2})))
+      }
     }
   };
 }   // namespace gum_tests

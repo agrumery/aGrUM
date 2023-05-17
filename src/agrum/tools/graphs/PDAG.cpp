@@ -60,11 +60,11 @@ namespace gum {
 
 
   UndiGraph PDAG::moralGraph() const {
-    UndiGraph moralgraph;
-    moralgraph.populateNodes(*this);
+    UndiGraph mg;
+    mg.populateNodes(*this);
     // transform the arcs into edges
-    for (const auto& arc: arcs())
-      moralgraph.addEdge(arc.first(), arc.second());
+    for (const auto& arc: edges())
+      mg.addEdge(arc.first(), arc.second());
 
     // marry the parents
     NodeSet already;
@@ -82,11 +82,11 @@ namespace gum {
         auto it2 = it1;
         for (++it2; it2 != par.end(); ++it2) {
           // will automatically check if this edge already exists
-          moralgraph.addEdge(*it1, *it2);
+          mg.addEdge(*it1, *it2);
         }
       }
     }
-    return moralgraph;
+    return mg;
   }
   bool rec_hasMixedReallyOrientedPath(const PDAG& gr,
                                       NodeSet&    marked,
@@ -145,8 +145,10 @@ namespace gum {
     NodeSet cumul{Z};
     cumul << X << Y;
     auto g = moralizedAncestralGraph(cumul);
+
     for (auto node: Z)
       g.eraseNode(node);
+
     return !g.hasUndirectedPath(X, Y);
   }
 
