@@ -20,12 +20,18 @@ list(APPEND CMAKE_SWIG_FLAGS "rawPyAgrum")
 add_definitions("-DSWIG_TYPE_TABLE=pyproba")
 
 # PYTHON_INSTALL
+if (NOT DEFINED PYTHON_INSTALL AND NOT CMAKE_CROSSCOMPILING)
+    execute_process (COMMAND ${Python_EXECUTABLE} -c "import sysconfig, os; print(sysconfig.get_path('platlib').replace(sysconfig.get_path('data'), '').lstrip(os.path.sep))"
+                       OUTPUT_VARIABLE PYTHON_INSTALL OUTPUT_STRIP_TRAILING_WHITESPACE)
+    file (TO_CMAKE_PATH "${PYTHON_INSTALL}" PYTHON_INSTALL)
+endif ()
+
 if (NOT DEFINED PYTHON_INSTALL)
-    execute_process(
-            COMMAND ${Python_EXECUTABLE} -c "from distutils import sysconfig; print(sysconfig.get_python_lib(1,0,prefix='${CMAKE_INSTALL_PREFIX}'))"
-            OUTPUT_VARIABLE PYTHON_INSTALL
-            OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
+    if (WIN32)
+       set (PYTHON_INSTALL Lib/site-packages)
+    else ()
+       set (PYTHON_INSTALL ${CMAKE_INSTALL_LIBDIR}/python${Python_VERSION_MAJOR}.${Python_VERSION_MINOR}/site-packages)
+    endif ()
 endif ()
 
 if (NOT DEFINED PYTHON_EXTENSION_MODULE_SUFFIX AND NOT CMAKE_CROSSCOMPILING)
