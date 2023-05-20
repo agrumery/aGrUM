@@ -65,6 +65,8 @@ namespace gum {
     // transform the arcs into edges
     for (const auto& arc: edges())
       mg.addEdge(arc.first(), arc.second());
+    for (const auto& arc: arcs())
+      mg.addEdge(arc.first(), arc.second());
 
     // marry the parents
     NodeSet already;

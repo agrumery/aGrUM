@@ -533,19 +533,28 @@ namespace gum_tests {
       TS_ASSERT_THROWS(graph.addArc(x, x), const gum::Exception&)
     }
 
-    GUM_ACTIVE_TEST(WeirdnessFromKennethLee) {
+    GUM_ACTIVE_TEST(cSeparationFromKennethLee) {
       {
-      gum::PDAG p;
-      p.addNodes(10);
-      p.addArc(0, 1);
-      p.addArc(1, 2);
-      TS_GUM_ASSERT_THROWS_NOTHING(p.cSeparation(0, 2, gum::NodeSet({1})))
+        gum::PDAG p;
+        p.addNodes(10);
+        p.addArc(0, 1);
+        p.addArc(1, 2);
+        TS_GUM_ASSERT_THROWS_NOTHING(p.cSeparation(0, 2, gum::NodeSet({1})))
       }
       {
         gum::PDAG p;
         p.addNodes(10);
-        p.addEdge(0,1);
-        TS_ASSERT(! p.cSeparation(0,1,gum::NodeSet({2})))
+        p.addEdge(0, 1);
+        TS_ASSERT(!p.cSeparation(0, 1, gum::NodeSet({2})))
+      }
+      {
+        gum::PDAG p;
+        p.addNodes(4);
+        p.addEdge(0, 1);
+        p.addArc(1, 2);
+        p.addArc(3, 2);
+        TS_ASSERT(!p.cSeparation(0, 2, gum::NodeSet()))
+        TS_ASSERT(!p.cSeparation(3, 2, gum::NodeSet()))
       }
     }
   };
