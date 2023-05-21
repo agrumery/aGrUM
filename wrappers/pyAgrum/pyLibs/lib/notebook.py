@@ -287,7 +287,7 @@ def showGraph(gr: dot.Dot, size=None):
   gr: pydot.Dot
     the graph
   size: float|str
-    the size of the rendered graph
+    the size (for graphviz) of the rendered graph
   """
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
@@ -304,10 +304,11 @@ def getGraph(gr: dot.Dot, size=None) -> str:
   gr: pydot.Dot
     the graph
   size: float|str
-    the size of the rendered graph
+    the size (for graphviz) of the rendered graph
 
   Returns
   -------
+  str
     the HTML representation of the graph (as a string)
   """
   if size is None:
@@ -348,7 +349,7 @@ def showDot(dotstring: str, size=None):
   dotstring:str
     the dot string
   size: float|str
-    size of the rendered graph
+    size (for graphviz) of the rendered graph
   """
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
@@ -364,7 +365,7 @@ def getDot(dotstring: str, size=None) -> str:
   dotstring:str
     the dot string
   size: float|str
-    size of the rendered graph
+    size (for graphviz) of the rendered graph
 
   Returns
   -------
@@ -393,12 +394,13 @@ def getBNDiff(bn1, bn2, size=None, noStyle=False):
   bn2: pyAgrum.BayesNet
     the compared one
   size: float|str
-    size of the rendered graph
+    size (for graphviz) of the rendered graph
   noStyle: bool
     with style or not.
 
   Returns
   -------
+  str
     the HTML representation of the comparison
   """
   if size is None:
@@ -424,7 +426,7 @@ def showBNDiff(bn1, bn2, size=None, noStyle=False):
   bn2: pyAgrum.BayesNet
     the compared one
   size: float|str
-    size of the rendered graph
+    size (for graphviz) of the rendered graph
   noStyle: bool
     with style or not.
   """
@@ -507,7 +509,7 @@ def showJunctionTree(bn, withNames=True, size=None):
   withNames: bool
     names or id in the graph (names can created very large nodes)
   size: float|str
-    size of the rendered graph
+    size (for graphviz) of the rendered graph
   """
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
@@ -528,9 +530,12 @@ def getJunctionTree(bn, withNames=True, size=None):
   """
   get a HTML string for a junction tree (more specifically a join tree)
 
-  :param bn: the Bayesian network
-  :param boolean withNames: display the variable names or the node id in the clique
-  :param size: size of the rendered graph
+    bn: "pyAgrum.BayesNet"
+     the Bayesian network
+    withNames: Boolean
+     display the variable names or the node id in the clique
+    size: str
+     size (for graphviz) of the rendered graph
   :return: the HTML representation of the graph
   """
   if size is None:
@@ -640,13 +645,18 @@ def getPosterior(bn, evs, target):
   """
   shortcut for proba2histo(gum.getPosterior(bn,evs,target))
 
-  :param bn: the BayesNet
-  :type bn: gum.BayesNet
-  :param evs: map of evidence
-  :type evs: dict(str->int)
-  :param target: name of target variable
-  :type target: str
-  :return: the matplotlib graph
+  Parameters
+  ----------
+  bn: "pyAgrum.BayesNet"
+    the BayesNet
+  evs: Dict[str|int:int|str|List[float]]
+    map of evidence
+  target: str|int
+    name of target variable
+
+  Returns
+  ------
+    the matplotlib graph
   """
   fig = proba2histo(gum.getPosterior(bn, evs=evs, target=target))
   plt.close()
@@ -657,9 +667,14 @@ def showPosterior(bn, evs, target):
   """
   shortcut for showProba(gum.getPosterior(bn,evs,target))
 
-  :param bn: the BayesNet
-  :param evs: map of evidence
-  :param target: name of target variable
+  Parameters
+  ----------
+  bn: "pyAgrum.BayesNet"
+    the BayesNet
+  evs: Dict[str|int:int|str|List[float]]
+    map of evidence
+  target: str|int
+    name of target variable
   """
   showProba(gum.getPosterior(bn, evs=evs, target=target))
 
@@ -668,8 +683,12 @@ def animApproximationScheme(apsc, scale=np.log10):
   """
   show an animated version of an approximation algorithm
 
-  :param apsc: the approximation algorithm
-  :param scale: a function to apply to the figure
+  Parameters
+  ----------
+  apsc
+    the approximation algorithm
+  scale
+    a function to apply to the figure
   """
   f = plt.gcf()
 
@@ -699,6 +718,16 @@ def animApproximationScheme(apsc, scale=np.log10):
 
 
 def showApproximationScheme(apsc, scale=np.log10):
+  """
+  show the state of an approximation algorithm
+
+  Parameters
+  ----------
+  apsc
+    the approximation algorithm
+  scale
+    a function to apply to the figure
+  """
   if apsc.verbosity():
     if len(apsc.history()) < 10:
       plt.xlim(1, 10)
@@ -724,16 +753,30 @@ def showMRF(mrf, view=None, size=None, nodeColor=None, factorColor=None, edgeWid
   """
   show a Markov random field
 
-  :param mrf: the Markov random field
-  :param view: 'graph' | 'factorgraph’ | None (default)
-  :param size: size of the rendered graph
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
-  :param factorColor: a function returning a value (beeween 0 and 1) to be shown as a color of factor. (used when view='factorgraph')
-  :param edgeWidth: a edgeMap of values to be shown as width of edges  (used when view='graph')
-  :param edgeColor: a edgeMap of values (between 0 and 1) to be shown as color of edges (used when view='graph')
-  :param cmapNode: color map to show the colors
-  :param cmapEdge: color map to show the edge color if distinction is needed
-  :return: the graph
+  Parameters
+  ----------
+  mrf : "pyAgrum.MarkovRandomField"
+   the Markov random field
+  view : str
+   'graph' | 'factorgraph’ | None (default)
+  size : str
+   size (for graphviz) of the rendered graph
+  nodeColor: Dict[int,float]
+   a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  factorColor: Dict[int,float]
+   a function returning a value (between 0 and 1) to be shown as a color of factor. (used when view='factorgraph')
+  edgeWidth: Dict[Tuple[int,int],float]
+   a edgeMap of values to be shown as width of edges  (used when view='graph')
+  edgeColor: Dict[int,float]
+   a edgeMap of values (between 0 and 1) to be shown as color of edges (used when view='graph')
+  cmapNode: Dict[Tuple[int,int],float]
+   color map to show the colors (if cmapEdge is None, this color map is used also for edges)
+  cmapEdge: "matplotlib.ColorMap"
+   color map to show the edge color if distinction is needed
+
+  Returns
+  ------
+   the graph
   """
   if view is None:
     view = gum.config["notebook", "default_markovnetwork_view"]
@@ -757,9 +800,16 @@ def showInfluenceDiagram(diag, size=None):
   """
   show an influence diagram as a graph
 
-  :param diag: the influence diagram
-  :param size: size of the rendered graph
-  :return: the representation of the influence diagram
+  Parameters
+  ----------
+  diag : "pyAgrum.InfluenceDiagram"
+    the influence diagram
+  size : str
+    size (for graphviz) of the rendered graph
+
+  Returns
+  -------
+    the representation of the influence diagram
   """
   if size is None:
     size = gum.config["influenceDiagram", "default_id_size"]
@@ -771,9 +821,17 @@ def getInfluenceDiagram(diag, size=None):
   """
   get a HTML string for an influence diagram as a graph
 
-  :param diag: the influence diagram
-  :param size: size of the rendered graph
-  :return: the HTML representation of the influence diagram
+  Parameters
+  ----------
+  diag : "pyAgrum.InfluenceDiagram"
+    the influence diagram
+  size : str
+    size (for graphviz) of the rendered graph
+
+  Returns
+  -------
+  str
+    the HTML representation of the influence diagram
   """
   if size is None:
     size = gum.config["influenceDiagram", "default_id_size"]
@@ -788,24 +846,24 @@ def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor
 
   Parameters
   ----------
-    bn : pyAgrum.BayesNet
-      the Bayesian network
-    size: str
-      size of the rendered graph
-    nodeColor: dict[Tuple(int,int),float]
-      a nodeMap of values to be shown as color nodes (with special color for 0 and 1)
-    arcWidth: dict[Tuple(int,int),float]
-      an arcMap of values to be shown as bold arcs
-    arcLabel: dict[Tuple(int,int),str]
-        an arcMap of labels to be shown next to arcs
-    arcColor: dict[Tuple(int,int),float]
-      an arcMap of values (between 0 and 1) to be shown as color of arcs
-    cmapNode: ColorMap
-      color map to show the vals of Nodes
-    cmapArc: ColorMap
-      color map to show the vals of Arcs
-    showMsg: dict
-      a nodeMap of values to be shown as tooltip
+  bn : pyAgrum.BayesNet
+    the Bayesian network
+  size: str
+    size (for graphviz) of the rendered graph
+  nodeColor: dict[Tuple(int,int),float]
+    a nodeMap of values to be shown as color nodes (with special color for 0 and 1)
+  arcWidth: dict[Tuple(int,int),float]
+    an arcMap of values to be shown as bold arcs
+  arcLabel: dict[Tuple(int,int),str]
+      an arcMap of labels to be shown next to arcs
+  arcColor: dict[Tuple(int,int),float]
+    an arcMap of values (between 0 and 1) to be shown as color of arcs
+  cmapNode: ColorMap
+    color map to show the vals of Nodes ( (if cmapEdge is None, this color map is used also for edges)
+  cmapArc: ColorMap
+    color map to show the vals of Arcs
+  showMsg: dict
+    a nodeMap of values to be shown as tooltip
   """
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
@@ -825,24 +883,24 @@ def showCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor
 
   Parameters
   ----------
-    cn : pyAgrum.CredalNet
-      the Credal network
-    size: str
-      size of the rendered graph
-    nodeColor: dict[int,float]
-      a nodeMap of values to be shown as color nodes (with special color for 0 and 1)
-    arcWidth: dict[Tuple(int,int),float]
-      an arcMap of values to be shown as bold arcs
-    arcLabel: dict[Tuple(int,int),float]
-        an arcMap of labels to be shown next to arcs
-    arcColor: dict[Tuple(int,int),float]
-      an arcMap of values (between 0 and 1) to be shown as color of arcs
-    cmapNode: matplotlib.color.colormap
-      color map to show the vals of Nodes
-    cmapArc: matplotlib.color.colormap
-      color map to show the vals of Arcs
-    showMsg : dict[int,str]
-      a nodeMap of values to be shown as tooltip
+  cn : pyAgrum.CredalNet
+    the Credal network
+  size: str
+    size (for graphviz) of the rendered graph
+  nodeColor: dict[int,float]
+    a nodeMap of values to be shown as color nodes (with special color for 0 and 1)
+  arcWidth: dict[Tuple(int,int),float]
+    an arcMap of values to be shown as bold arcs
+  arcLabel: dict[Tuple(int,int),float]
+      an arcMap of labels to be shown next to arcs
+  arcColor: dict[Tuple(int,int),float]
+    an arcMap of values (between 0 and 1) to be shown as color of arcs
+  cmapNode: matplotlib.color.colormap
+    color map to show the vals of Nodes
+  cmapArc: matplotlib.color.colormap
+    color map to show the vals of Arcs
+  showMsg : dict[int,str]
+    a nodeMap of values to be shown as tooltip
 
   Returns
   -------
@@ -872,16 +930,30 @@ def getMRF(mrf, view=None, size=None, nodeColor=None, factorColor=None, edgeWidt
   """
   get an HTML string for a Markov random field
 
-  :param mrf: the Markov random field
-  :param view: 'graph' | 'factorgraph’ | None (default)
-  :param size: size of the rendered graph
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
-  :param factorColor: a function returning a value (beeween 0 and 1) to be shown as a color of factor. (used when view='factorgraph')
-  :param edgeWidth: a edgeMap of values to be shown as width of edges  (used when view='graph')
-  :param edgeColor: a edgeMap of values (between 0 and 1) to be shown as color of edges (used when view='graph')
-  :param cmapNode: color map to show the colors
-  :param cmapEdge: color map to show the edge color if distinction is needed
-  :return: the graph
+  Parameters
+  ----------
+  mrf : "pyAgrum.MarkovRandomField"
+    the Markov random field
+  view: str
+    'graph' | 'factorgraph’ | None (default)
+  size: str
+    size (for graphviz) of the rendered graph
+  nodeColor: Dict[str,float]
+    a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  factorColor: Dict[str,float]
+    a function returning a value (beeween 0 and 1) to be shown as a color of factor. (used when view='factorgraph')
+  edgeWidth: Dict[Tuple[str,str],float]
+    a edgeMap of values to be shown as width of edges  (used when view='graph')
+  edgeColor: Dict[Tuple[str,str],float]
+    a edgeMap of values (between 0 and 1) to be shown as color of edges (used when view='graph')
+  cmapNode: matplotlib.ColorMap
+    color map to show the colors (if cmapEdge is None, cmapNode is used for edges)
+  cmapEdge: matplotlib.ColorMap
+    color map to show the edge color if distinction is needed
+
+  Returns
+  -------
+    the graph
   """
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
@@ -908,24 +980,24 @@ def getBN(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=
 
   Parameters
   ----------
-    bn : pyAgrum.BayesNet
-      the Bayesian network
-    size: str
-      size of the rendered graph
-    nodeColor: dict[Tuple(int,int),float]
-      a nodeMap of values to be shown as color nodes (with special color for 0 and 1)
-    arcWidth: dict[Tuple(int,int),float]
-      an arcMap of values to be shown as bold arcs
-    arcLabel: dict[Tuple(int,int),str]
-        an arcMap of labels to be shown next to arcs
-    arcColor: dict[Tuple(int,int),float]
-      an arcMap of values (between 0 and 1) to be shown as color of arcs
-    cmapNode: ColorMap
-      color map to show the vals of Nodes
-    cmapArc: ColorMap
-      color map to show the vals of Arcs
-    showMsg: dict
-      a nodeMap of values to be shown as tooltip
+  bn : pyAgrum.BayesNet
+    the Bayesian network
+  size: str
+    size (for graphviz) of the rendered graph
+  nodeColor: dict[Tuple(int,int),float]
+    a nodeMap of values to be shown as color nodes (with special color for 0 and 1)
+  arcWidth: dict[Tuple(int,int),float]
+    an arcMap of values to be shown as bold arcs
+  arcLabel: dict[Tuple(int,int),str]
+      an arcMap of labels to be shown next to arcs
+  arcColor: dict[Tuple(int,int),float]
+    an arcMap of values (between 0 and 1) to be shown as color of arcs
+  cmapNode: ColorMap
+    color map to show the vals of Nodes
+  cmapArc: ColorMap
+    color map to show the vals of Arcs
+  showMsg: dict
+    a nodeMap of values to be shown as tooltip
 
   Returns
   -------
@@ -950,24 +1022,24 @@ def getCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=
 
   Parameters
   ----------
-    cn : pyAgrum.CredalNet
-      the Credal network
-    size: str
-      size of the rendered graph
-    nodeColor: dict[int,float]
-      a nodeMap of values to be shown as color nodes (with special color for 0 and 1)
-    arcWidth: dict[Tuple(int,int),float]
-      an arcMap of values to be shown as bold arcs
-    arcLabel: dict[Tuple(int,int),float]
-        an arcMap of labels to be shown next to arcs
-    arcColor: dict[Tuple(int,int),float]
-      an arcMap of values (between 0 and 1) to be shown as color of arcs
-    cmapNode: matplotlib.color.colormap
-      color map to show the vals of Nodes
-    cmapArc: matplotlib.color.colormap
-      color map to show the vals of Arcs
-    showMsg : dict[int,str]
-      a nodeMap of values to be shown as tooltip
+  cn : pyAgrum.CredalNet
+    the Credal network
+  size: str
+    size (for graphviz) of the rendered graph
+  nodeColor: dict[int,float]
+    a nodeMap of values to be shown as color nodes (with special color for 0 and 1)
+  arcWidth: dict[Tuple(int,int),float]
+    an arcMap of values to be shown as bold arcs
+  arcLabel: dict[Tuple(int,int),float]
+      an arcMap of labels to be shown next to arcs
+  arcColor: dict[Tuple(int,int),float]
+    an arcMap of values (between 0 and 1) to be shown as color of arcs
+  cmapNode: matplotlib.color.colormap
+    color map to show the vals of Nodes
+  cmapArc: matplotlib.color.colormap
+    color map to show the vals of Arcs
+  showMsg : dict[int,str]
+    a nodeMap of values to be shown as tooltip
 
   Returns
   -------
@@ -989,20 +1061,38 @@ def showInference(model, **kwargs):
   """
   show pydot graph for an inference in a notebook
 
-  :param GraphicalModel model: the model in which to infer (pyAgrum.BayesNet, pyAgrum.MarkovRandomField or pyAgrum.InfluenceDiagram)
-  :param gum.Inference engine: inference algorithm used. If None, gum.LazyPropagation will be used for BayesNet, gum.ShaferShenoy for gum.MarkovRandomField and gum.ShaferShenoyLIMIDInference for gum.InfluenceDiagram.
-  :param dictionnary evs: map of evidence
-  :param set targets: set of targets
-  :param string size: size of the rendered graph
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
-  :param factorColor: a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovRandomField representation)
-  :param arcWidth: a arcMap of values to be shown as width of arcs
-  :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
-  :param cmapNode: color map to show the color of nodes and arcs
-  :param cmapArc: color map to show the vals of Arcs.
-  :param graph: only shows nodes that have their id in the graph (and not in the whole BN)
-  :param view: graph | factorgraph | None (default) for Markov random field
-  :return: the desired representation of the inference
+  Parameters
+  ----------
+  model: pyAgrum.GraphicalModel
+    the model in which to infer (pyAgrum.BayesNet, pyAgrum.MarkovRandomField or pyAgrum.InfluenceDiagram)
+  engine: gum.Inference
+    inference algorithm used. If None, gum.LazyPropagation will be used for BayesNet, gum.ShaferShenoy for gum.MarkovRandomField and gum.ShaferShenoyLIMIDInference for gum.InfluenceDiagram.
+  evs: Dict[int|str,int|str|List[float]]
+    map of evidence
+  targets: Set[str]
+    set of targets
+  size: string
+    size (for graphviz) of the rendered graph
+  nodeColor: Dict[str,float]
+    a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  factorColor: Dict[int,float]
+    a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovRandomField representation)
+  arcWidth: : Dict[(str,str),float]
+    an arcMap of values to be shown as width of arcs
+  arcColor: : Dict[(str,str),float]
+    a arcMap of values (between 0 and 1) to be shown as color of arcs
+  cmapNode: matplotlib.ColorMap
+     map to show the color of nodes and arcs
+  cmapArc: matplotlib.ColorMap
+    color map to show the vals of Arcs.
+  graph: pyAgrum.Graph
+    only shows nodes that have their id in the graph (and not in the whole BN)
+  view: str
+    graph | factorgraph | None (default) for Markov random field
+
+  Returns
+  -------
+    the desired representation of the inference
   """
   if "size" in kwargs:
     size = kwargs['size']
@@ -1016,23 +1106,38 @@ def getInference(model, **kwargs):
   """
   get a HTML string for an inference in a notebook
 
-  :param GraphicalModel model: the model in which to infer (pyAgrum.BayesNet, pyAgrum.MarkovRandomField or
-          pyAgrum.InfluenceDiagram)
-  :param gum.Inference engine: inference algorithm used. If None, gum.LazyPropagation will be used for BayesNet,
-          gum.ShaferShenoy for gum.MarkovRandomField and gum.ShaferShenoyLIMIDInference for gum.InfluenceDiagram.
-  :param dictionnary evs: map of evidence
-  :param set targets: set of targets
-  :param string size: size of the rendered graph
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
-  :param factorColor: a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovRandomField representation)
-  :param arcWidth: a arcMap of values to be shown as width of arcs
-  :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
-  :param cmapNode: color map to show the color of nodes and arcs
-  :param cmapArc: color map to show the vals of Arcs.
-  :param graph: only shows nodes that have their id in the graph (and not in the whole BN)
-  :param view: graph | factorgraph | None (default) for Markov random field
+  Parameters
+  ----------
+  model: pyAgrum.GraphicalModel
+    the model in which to infer (pyAgrum.BayesNet, pyAgrum.MarkovRandomField or pyAgrum.InfluenceDiagram)
+  engine: gum.Inference
+    inference algorithm used. If None, gum.LazyPropagation will be used for BayesNet, gum.ShaferShenoy for gum.MarkovRandomField and gum.ShaferShenoyLIMIDInference for gum.InfluenceDiagram.
+  evs: Dict[int|str,int|str|List[float]]
+    map of evidence
+  targets: Set[str]
+    set of targets
+  size: string
+    size (for graphviz) of the rendered graph
+  nodeColor: Dict[str,float]
+    a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  factorColor: Dict[int,float]
+    a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovRandomField representation)
+  arcWidth: : Dict[(str,str),float]
+    an arcMap of values to be shown as width of arcs
+  arcColor: : Dict[(str,str),float]
+    a arcMap of values (between 0 and 1) to be shown as color of arcs
+  cmapNode: matplotlib.ColorMap
+     map to show the color of nodes and arcs
+  cmapArc: matplotlib.ColorMap
+    color map to show the vals of Arcs.
+  graph: pyAgrum.Graph
+    only shows nodes that have their id in the graph (and not in the whole BN)
+  view: str
+    graph | factorgraph | None (default) for Markov random field
 
-  :return: the desired representation of the inference
+  Returns
+  -------
+    the desired representation of the inference
   """
   if "size" in kwargs:
     size = kwargs['size']
@@ -1048,13 +1153,23 @@ def _reprPotential(pot, digits=None, withColors=None, varnames=None, asString=Fa
   return a representation of a gum.Potential as a HTML table.
   The first dimension is special (horizontal) due to the representation of conditional probability table
 
-  :param pot: the potential to get
-  :param digits: number of digits to show
-  :param withColors: bgcolor for proba cells or not
-  :param varnames: the aliases for variables name in the table
-  :param asString: display the table or a HTML string
+  Parameters
+  ---------
+  pot: gum.Potential
+   the potential to get
+  digits: int
+   number of digits to show
+  withColors: Boolean
+   background color for proba cells or not
+  varnames: Dict[str,str]
+   a mapping that gives the aliases for variables name in the table
+  asString: Boolean
+   display the table or a HTML string
 
-  :return: the representation
+  Returns
+  -------
+  str
+    the HTML table that represents the potential
   """
   from fractions import Fraction
 
@@ -1200,8 +1315,15 @@ def _reprPotential(pot, digits=None, withColors=None, varnames=None, asString=Fa
 def __isKindOfProba(pot):
   """
   check if pot is a joint proba or a CPT
-  :param pot: the potential
-  :return: True or False
+
+  Parameters
+  ----------
+  pot: gum.Potential
+    the potential
+
+  Returns
+  -------
+  True or False
   """
   epsilon = 1e-5
   if pot.min() < -epsilon:
@@ -1223,6 +1345,7 @@ def __isKindOfProba(pot):
     return False
   if abs(q.min() - 1) > epsilon:
     return False
+
   return True
 
 
@@ -1238,7 +1361,7 @@ def showPotential(pot, digits=None, withColors=None, varnames=None):
   digits : int
     number of digits to show
   withColors : bool
-    bgcolor for proba cells or not
+    background color for proba cells or not
   varnames : List[str]
     the aliases for variables name in the table
   """
@@ -1264,7 +1387,7 @@ def getPotential(pot, digits=None, withColors=None, varnames=None):
   digits : int
     number of digits to show
   withColors : bool
-    bgcolor for proba cells or not
+    background for proba cells or not
   varnames : List[str]
     the aliases for variables name in the table
 
@@ -1293,11 +1416,21 @@ def getSideBySide(*args, **kwargs):
   """
   create an HTML table for args as string (using string, _repr_html_() or str())
 
-  :param args: HMTL fragments as string arg, arg._repr_html_() or str(arg)
-  :param captions: list of strings (optional)
-  :param valign: vertical position in the row (top|middle|bottom, middle by default)
-  :param ncols: number of columns (infinite by default)
-  :return: a string representing the table
+  Parameters
+  ----------
+  args: str
+    HMTL fragments as string arg, arg._repr_html_() or str(arg)
+  captions: List[str], optional
+    list of captions
+  valign: str
+    vertical position in the row (top|middle|bottom, middle by default)
+  ncols: int
+    number of columns (infinite by default)
+
+  Returns
+  -------
+  str
+    a string representing the table
   """
   vals = {'captions', 'valign', 'ncols'}
   if not set(kwargs.keys()).issubset(vals):
@@ -1345,8 +1478,16 @@ def sideBySide(*args, **kwargs):
   """
   display side by side args as HMTL fragment (using string, _repr_html_() or str())
 
-  :param args: HMTL fragments as string arg, arg._repr_html_() or str(arg)
-  :param captions: list of strings (captions)
+  Parameters
+  ----------
+  args: str
+    HMTL fragments as string arg, arg._repr_html_() or str(arg)
+  captions: List[str], optional
+    list of captions
+  valign: str
+    vertical position in the row (top|middle|bottom, middle by default)
+  ncols: int
+    number of columns (infinite by default)
   """
   IPython.display.display(IPython.display.HTML(getSideBySide(*args, **kwargs)))
 
@@ -1355,9 +1496,17 @@ def getInferenceEngine(ie, inferenceCaption):
   """
   display an inference as a BN+ lists of hard/soft evidence and list of targets
 
-  :param gum.InferenceEngine ie: inference engine
-  :param string inferenceCaption: caption for the inference
+  Parameters
+  ---------
+  ie : "pyAgrum.InferenceEngine"
+    Inference engine
+  caption: str
+    inferenceCaption: caption for the inference
 
+  Returns
+  -------
+  str
+    the HTML representation
   """
   t = '<div align="left"><ul>'
   if ie.nbrHardEvidence() > 0:
@@ -1395,6 +1544,22 @@ def getInferenceEngine(ie, inferenceCaption):
 
 
 def getJT(jt, size=None):
+  """
+  returns the representation of a junction tree as a HTML string
+
+  Parameters
+  ----------
+  jt: pyAgrum.JunctionTree
+    the junction tree
+  size: str
+    the size (for graphviz) of the graph
+
+  Returns
+  -------
+  str
+    the representation of a junction tree as a HTML string
+
+  """
   if gum.config.asBool["notebook", "junctiontree_with_names"]:
     def cliqlabels(c):
       labels = ",".join(
@@ -1479,9 +1644,14 @@ def getCliqueGraph(cg, size=None):
   """get a representation for clique graph. Special case for junction tree
   (clique graph with an attribute `_engine`)
 
-  Args:
+  Parameters
       cg (gum.CliqueGraph): the clique graph (maybe junction tree for a _model) to
                             represent
+
+  Returns
+  -------
+  pydot.Dot
+    the dot representation of the graph
   """
   if hasattr(cg, "_engine"):
     return getDot(getJT(cg), size)
@@ -1491,11 +1661,15 @@ def getCliqueGraph(cg, size=None):
 
 def show(model, **kwargs):
   """
-  propose a (visual) representation of a model in a notebook
+  propose a (visual) representation of a graphical model or a graph or a Potential in a notebook
 
-  :param model: the model to show (pyAgrum.BayesNet, pyAgrum.MarkovRandomField, pyAgrum.InfluenceDiagram or pyAgrum.Potential) or a dot string, or a `pydot.Dot` or even just an object with a method `toDot()`.
+  Parameters
+  ----------
+  model
+    the model to show (pyAgrum.BayesNet, pyAgrum.MarkovRandomField, pyAgrum.InfluenceDiagram or pyAgrum.Potential) or a dot string, or a `pydot.Dot` or even just an object with a method `toDot()`.
 
-  :param int size: optional size for the graphical model (no effect for Potential)
+  size: str
+    size for graphviz to represent the graphical model (no effect for Potential)
   """
   if isinstance(model, gum.BayesNet):
     showBN(model, **kwargs)
