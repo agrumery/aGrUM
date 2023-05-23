@@ -39,6 +39,9 @@ import IPython.core.pylabtools
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_agg import FigureCanvasAgg as fc
+from copy import deepcopy
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+import matplotlib.colors as mcolors
 
 import pyAgrum as gum
 from pyAgrum.lib.bn2graph import BN2dot
@@ -550,7 +553,7 @@ class ShapValues:
         somme = somme + self._compute_SHAP_i(S_U_i, S, v, size_S)
       df[feat] = somme
     self.results = df
-    return df
+    return df, v
 
   def conditional(self, train, plot=False, plot_importance=False, percentage=False):
     """
@@ -571,12 +574,12 @@ class ShapValues:
     -------
       a dictionary Dict[str,float]
     """
-    results = self._conditional(train)
+    results, v = self._conditional(train)
     res = {}
     for col in results.columns:
       res[col] = abs(results[col]).mean()
 
-    self._plotResults(results, plot, plot_importance, percentage)
+    self._plotResults(results, v, plot, plot_importance, percentage)
 
     return res
 
@@ -612,18 +615,7 @@ class ShapValues:
       df[feat] = somme
 
     self.results = df
-    return df
-
-  def _plotResults(self, results, plot=False, plot_importance=False, percentage=False):
-    ax1 = ax2 = None
-    if plot and plot_importance:
-      fig = plt.figure(figsize=(15, 0.5 * len(results.columns)))
-      ax1 = fig.add_subplot(1, 2, 1)
-      ax2 = fig.add_subplot(1, 2, 2)
-    if plot:
-      self._plot_violin(results, ax=ax1)
-    if plot_importance:
-      self._plot_importance(results, percentage, ax=ax2)
+    return df, v
 
   def marginal(self, train, sample_size=200, plot=False, plot_importance=False, percentage=False):
     """
@@ -646,12 +638,12 @@ class ShapValues:
     -------
       a dictionary Dict[str,float]
     """
-    results = self._marginal(train, sample_size)
+    results, v = self._marginal(train, sample_size)
     res = {}
     for col in results.columns:
       res[col] = abs(results[col]).mean()
 
-    self._plotResults(results, plot, plot_importance, percentage)
+    self._plotResults(results, v, plot, plot_importance, percentage)
 
     return res
 
@@ -700,7 +692,7 @@ class ShapValues:
       df[feat] = somme
 
     self.results = df
-    return df
+    return df,v
 
   def causal(self, train, plot=False, plot_importance=False, percentage=False):
     """
@@ -721,16 +713,129 @@ class ShapValues:
     -------
       a dictionary Dict[str,float]
     """
-    results = self._causal(train)
+    results, v = self._causal(train)
+    n_feats = len(self.feats_names)
     res = {}
     for col in results.columns:
       res[col] = abs(results[col]).mean()
 
-    self._plotResults(results, plot, plot_importance, percentage)
+    self._plotResults(results, v, plot, plot_importance, percentage)
 
     return res
 
     ################################## PLOT SHAP Value ##################################
+
+  def _plotResults(self, results, v, plot=True, plot_importance=False, percentage=False):
+    ax1 = ax2 = None
+    if plot and plot_importance:
+      fig = plt.figure(figsize=(15, 0.5 * len(results.columns)))
+      ax1 = fig.add_subplot(1, 2, 1)
+      ax2 = fig.add_subplot(1, 2, 2)
+    if plot:
+      shap_dict = results.to_dict(orient='list')
+      sorted_dict = dict(sorted(shap_dict.items(), key=lambda x: sum(abs(i) for i in x[1]) / len(x[1])))
+      data = np.array([sorted_dict[key] for key in sorted_dict])
+      features = sorted_dict.keys()
+      v = v[features]
+      colors = v.transpose().to_numpy()
+      self._plot_beeswarm_(data, colors, 250, 1.5, features, ax=ax1)
+    if plot_importance:
+      self._plot_importance(results, percentage, ax=ax2)
+
+  @staticmethod
+  def _plot_beeswarm_(data, colors, N, K, features, cmap=None, ax=None):
+    """
+    returns a beeswarm plot (or stripplot) from a given data.
+
+    Parameters
+    ----------
+    data: list of numpy array.
+    Each elements of the list is a numpy array containing the shapley values for the feature to be displayed for a category.
+
+    colors: list of numpy array.
+    Each elements of the list is a numpy array containing the values of the data point to be displayed for a category.
+
+    Returns
+    -------
+    matplotlib.pyplot.scatter
+    """
+    min_value = np.min(data, axis=(0, 1))
+    max_value = np.max(data, axis=(0, 1))
+    # horiz_shift = (max_value - min_value)/100
+    # N=150
+    # K=0
+    bin_size = (max_value - min_value) / N
+    horiz_shift = K * bin_size
+
+    # fig, axs = plt.subplots()
+    if ax is None:
+      _, ax = plt.subplots()
+    if cmap is None:
+      # Set Color Map
+      ## Define the hex colors
+      color1 = gum.config["notebook", "potential_color_0"]
+      color2 = gum.config["notebook", "potential_color_1"]
+
+      ## Create the custom colormap
+      cmap = mcolors.LinearSegmentedColormap.from_list("", [color1, color2])
+
+    for n, d in enumerate(data):
+      pos = n + 1
+
+      d_shifted = d + np.random.normal(0, horiz_shift, len(d))
+      # Sorting values
+      d_sort = np.sort(d_shifted)
+
+      # Creation of bins
+      d_x = bin_size
+      if (np.max(d_sort) - np.min(d_sort)) % d_x == 0:
+        nb_bins = (np.max(d_sort) - np.min(d_sort)) // d_x
+      else:
+        nb_bins = (np.max(d_sort) - np.min(d_sort)) // d_x + 1
+      bins = [np.min(d_sort) + i * d_x for i in range(int(nb_bins) + 1)]
+
+      # Group by Bins
+      subarr = []
+      for k in range(1, len(bins)):
+        group = d_sort[np.logical_and(d_sort >= bins[k - 1], d_sort < bins[k])]
+        subarr.append(group)
+
+      # For each bin compute the d_y (vertical shift)
+      d_y = 0.025
+      subarr_jitter = deepcopy(subarr)
+      for i in range(len(subarr)):
+        L = subarr[i].size
+        if L > 0:
+          for j in range(L):
+            shift = d_y * (L - 1) / 2 - d_y * j
+            subarr_jitter[i][j] = shift
+
+      jitter = np.concatenate(subarr_jitter)
+
+      sc = ax.scatter(d_shifted, pos + jitter, s=10, c=colors[n], cmap=cmap, alpha=0.7)
+
+    ## Create the colorbar
+    divider = make_axes_locatable(ax)
+    cax = divider.append_axes("right", size="5%", pad=0.1)
+
+    cbar = plt.colorbar(sc, cax=cax, aspect=80)
+    cbar.set_label('Data Point Value')
+
+    ## Add text above and below the colorbar
+    cax.text(0.5, 1.025, 'High', transform=cax.transAxes, ha='center', va='center', fontsize=10)
+    cax.text(0.5, -0.025, 'Low', transform=cax.transAxes, ha='center', va='center', fontsize=10)
+
+    ## Add x-axis tick labels
+    ax.set_yticks([i + 1 for i in range(len(features))])
+    ax.set_yticklabels(features)
+
+    ## Set axis labels and title
+    ax.set_ylabel('Features')
+    ax.set_xlabel('Impact on output')
+    ax.set_title('Shapley value (impact on model output)')
+
+    # Show plot
+    return ax.get_figure()
 
   @staticmethod
   def _plot_importance(results, percentage=False, ax=None):
