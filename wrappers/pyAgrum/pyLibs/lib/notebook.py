@@ -1056,7 +1056,7 @@ def getCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=
     CN2dot(cn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel, arcColor=arcColor, cmapNode=cmapNode,
            cmapArc=cmapArc), size)
 
-
+@gum.deprecated_arg("cmapNode","cmap","1.8.1")
 def showInference(model, **kwargs):
   """
   show pydot graph for an inference in a notebook
@@ -1101,7 +1101,7 @@ def showInference(model, **kwargs):
 
   showGraph(prepareShowInference(model, **kwargs), size)
 
-
+@gum.deprecated_arg("cmapNode","cmap","1.8.1")
 def getInference(model, **kwargs):
   """
   get a HTML string for an inference in a notebook
@@ -1658,7 +1658,7 @@ def getCliqueGraph(cg, size=None):
   else:
     return getDot(cg.toDot())
 
-
+@gum.deprecated_arg("cmapNode","cmap","1.8.1")
 def show(model, **kwargs):
   """
   propose a (visual) representation of a graphical model or a graph or a Potential in a notebook
@@ -1669,7 +1669,23 @@ def show(model, **kwargs):
     the model to show (pyAgrum.BayesNet, pyAgrum.MarkovRandomField, pyAgrum.InfluenceDiagram or pyAgrum.Potential) or a dot string, or a `pydot.Dot` or even just an object with a method `toDot()`.
 
   size: str
-    size for graphviz to represent the graphical model (no effect for Potential)
+    size (for graphviz) to represent the graphical model (no effect for Potential)
+  nodeColor: Dict[str,float]
+    a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  factorColor: Dict[int,float]
+    a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovRandomField representation)
+  arcWidth: : Dict[(str,str),float]
+    an arcMap of values to be shown as width of arcs
+  arcColor: : Dict[(str,str),float]
+    a arcMap of values (between 0 and 1) to be shown as color of arcs
+  cmapNode: matplotlib.ColorMap
+     map to show the color of nodes and arcs
+  cmapArc: matplotlib.ColorMap
+    color map to show the vals of Arcs.
+  graph: pyAgrum.Graph
+    only shows nodes that have their id in the graph (and not in the whole BN)
+  view: str
+    graph | factorgraph | None (default) for Markov random field
   """
   if isinstance(model, gum.BayesNet):
     showBN(model, **kwargs)

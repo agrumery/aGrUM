@@ -1,5 +1,18 @@
 # aGrUM Changelog
 
+## Changelog for 1.8.1
+
+* aGrUM
+  * Bugfixes in `gum::PDAG::cSeparation` (thanks to Keneth Lee).
+  * Using 'table' instead of 'default' for marginal cpt in `gum::BIFWriter`.
+  * Adding `std::cout<<(gum::Timer& t)`
+
+* pyAgrum
+  * Updating build image for rtd.
+  * Improving documentations.
+  * Documentation for pyAgrum.InformationTheory.
+  * Uniformizing argume `cmap` to `cmapNode` in `pyAgrum.lib.notebook`.
+
 ## Changelog for 1.8.0
 
 * aGrUM
