@@ -25877,8 +25877,8 @@ class BNLearner(object):
         Parameters
         ----------
         epsilon : float
-        	if epsilon=0.0 then EM is not used
-        	if epsilon>0 then EM is used and stops when the sum of the cumulative squared error on parameters is les than epsilon.
+        	if epsilon=0.0 then EM is not used.
+        	if epsilon>0 then EM is used and stops when the sum of the cumulative squared error on parameters is less than epsilon.
 
         """
         return _pyAgrum.BNLearner_useEM(self, epsilon)
