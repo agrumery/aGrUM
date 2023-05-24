@@ -12,6 +12,7 @@
   * Improving documentations.
   * Documentation for pyAgrum.InformationTheory.
   * Uniformizing argume `cmap` to `cmapNode` in `pyAgrum.lib.notebook`.
+  * Adding beeswarmplot for shapley values figures in `pyAgrum.lib.explain`.
 
 ## Changelog for 1.8.0
 
