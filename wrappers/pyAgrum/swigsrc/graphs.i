@@ -50,6 +50,12 @@
      PyAgrumHelper::populateNodeSetFromIntOrPySequenceOfInt(sY,Y);
      return self->cSeparation(sX,sY,sZ);
    }
+
+   gum::UndiGraph moralizedAncestralGraph(PyObject* nodes) {
+     gum::NodeSet sonodes;
+     PyAgrumHelper::populateNodeSetFromIntOrPySequenceOfInt(sonodes,nodes);
+     return self->moralizedAncestralGraph(sonodes);
+   }
  }
 
 %define ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(classname)

@@ -5304,9 +5304,6 @@ class PDAG(MixedGraph):
     def moralGraph(self) -> "pyAgrum.UndiGraph":
         return _pyAgrum.PDAG_moralGraph(self)
 
-    def moralizedAncestralGraph(self, nodes: List[int]) -> "pyAgrum.UndiGraph":
-        return _pyAgrum.PDAG_moralizedAncestralGraph(self, nodes)
-
     def hasMixedReallyOrientedPath(self, n1: int, n2: int) -> bool:
         return _pyAgrum.PDAG_hasMixedReallyOrientedPath(self, n1, n2)
 
@@ -5329,6 +5326,9 @@ class PDAG(MixedGraph):
 
     def cSeparation(self, *args) -> bool:
         return _pyAgrum.PDAG_cSeparation(self, *args)
+
+    def moralizedAncestralGraph(self, *args) -> "pyAgrum.UndiGraph":
+        return _pyAgrum.PDAG_moralizedAncestralGraph(self, *args)
 
     def addNodes(self, n: int) -> object:
         return _pyAgrum.PDAG_addNodes(self, n)
