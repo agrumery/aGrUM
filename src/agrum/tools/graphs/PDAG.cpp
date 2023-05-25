@@ -187,7 +187,7 @@ namespace gum {
     std::string tab = "  ";
     output << tab << "rankdir = TD;" << std::endl;
     output << tab << "node [style=filled,fillcolor=white,color=black];" << std::endl;
-    output << tab << "graph [style=filled,color=\"#F5F5F5\",margin=2];" << std::endl;
+    output << tab << "graph [style=filled,color=\"#F5F5F5\"];" << std::endl;
 
     output << std::endl;
     for (const auto node: nodes()) {
