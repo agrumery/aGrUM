@@ -48,6 +48,13 @@ except ImportError:  # because of python 2.7, matplotlib-inline cannot be part o
 import numpy as np
 import pydot as dot
 
+try:
+  dot.call_graphviz("dot",["--help"],".")
+except FileNotFoundError:
+  print("""Graphviz is not installed. 
+  Please install this program in order to visualize graphical models in pyAgrum. 
+  See https://graphviz.org/download/""")
+
 import IPython.core.display
 import IPython.core.pylabtools
 import IPython.display

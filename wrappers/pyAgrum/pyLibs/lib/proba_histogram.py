@@ -39,11 +39,15 @@ def _stats(pot):
 
 def _getTitleHisto(p, show_mu_sigma=True):
   var = p.variable(0)
+
   if var.varType() == 1 or not show_mu_sigma:  # type=1 is for gum.LabelizedVariable
     return var.name()
 
   (mu, std) = _stats(p)
-  return f"{var.name()}\n$\\mu={mu:.2f}$; $\\sigma={std:.2f}$"
+  if std==0.0:
+    return var.name()
+  else:
+    return f"{var.name()}\n$\\mu={mu:.2f}$; $\\sigma={std:.2f}$"
 
 
 def __limits(p):
@@ -197,8 +201,8 @@ def _getProbaV(p, scale=1.0, util=None, txtcolor="black"):
   ax.set_ylim(bottom=0, top=p.max())
   ax.set_xticks(ra)
   ax.set_xticklabels(lv, rotation='vertical', color=txtcolor)
-  # if utility, we do not show the mean/sigma of the distribution.
-  ax.set_title(_getTitleHisto(p, util is None), color=txtcolor)
+  # even if utility, now we do show the mean/sigma of the distribution.
+  ax.set_title(_getTitleHisto(p, True), color=txtcolor)
   ax.get_yaxis().grid(True)
   ax.margins(0)
   ax.set_facecolor('w')
@@ -270,8 +274,8 @@ def _getProbaH(p, scale=1.0, util=None, txtcolor="black"):
   ax.set_yticklabels(vx, color=txtcolor)
   ax.set_xticklabels([])
   # ax.set_xlabel('Probability')
-  # if utility, we do not show the mean/sigma of the distribution.
-  ax.set_title(_getTitleHisto(p, util is None), color=txtcolor)
+  # Even if utility, now we do show the mean/sigma of the distribution.
+  ax.set_title(_getTitleHisto(p,True), color=txtcolor)
   ax.get_xaxis().grid(True)
   ax.margins(0)
 
