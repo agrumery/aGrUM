@@ -292,17 +292,6 @@ def availableMNExts():
   return "uai"
 
 
-def availableIDExts():
-  """ Give the list of all formats known by pyAgrum to save a influence diagram.
-
-  Returns
-  ------
-  str
-    a string which lists all suffixes for supported ID file formats.
-  """
-  return "bifxml"
-
-
 def loadMN(filename, listeners=None, verbose=False):
   """load a MRF from a file with optional listeners and arguments
 
@@ -383,6 +372,15 @@ def saveMN(mn, filename):
   # for now, just one format
   mn.saveUAI(filename)
 
+def availableIDExts():
+  """ Give the list of all formats known by pyAgrum to save a influence diagram.
+
+  Returns
+  ------
+  str
+    a string which lists all suffixes for supported ID file formats.
+  """
+  return "bifxml|xml"
 
 def loadID(filename):
   """
@@ -398,17 +396,16 @@ def loadID(filename):
   pyAgrum.InfluenceDiagram
     the InfluenceDiagram
   """
-  extension = filename.split('.')[-1].upper()
-  if extension != "BIFXML":
-    raise InvalidArgument("extension " + extension +
-                          " unknown. Please use bifxml.")
+  extension = filename.split('.')[-1].lower()
+  if extension not in availableIDExts().split("|"):
+    raise InvalidArgument(f"extension '{extension}' unknown. Please use among '{availableIDExts()}'")
 
   diag = InfluenceDiagram()
   # for now, just one format
   res = diag.loadBIFXML(filename)
 
   if not res:
-    raise Exception("Error(s) in " + filename)
+    raise Exception(f"Error(s) in {filename}")
 
   diag.setProperty("name", filename)
   return diag
@@ -425,10 +422,9 @@ def saveID(infdiag, filename):
   filename : str
     the name of the output file
   """
-  extension = filename.split('.')[-1].upper()
-  if extension not in availableIDExts():
-    raise InvalidArgument("[pyAgrum] extension " + filename.split('.')
-    [-1] + " unknown. Please use among " + availableIDExts())
+  extension = filename.split('.')[-1].lower()
+  if extension not in availableIDExts().split("|"):
+    raise InvalidArgument(f"[pyAgrum] extension {extension} unknown. Please use among {availableIDExts()}.")
 
   # for now, just one format
   infdiag.saveBIFXML(filename)
