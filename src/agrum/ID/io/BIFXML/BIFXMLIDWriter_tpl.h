@@ -175,7 +175,6 @@ namespace gum {
     str << "\t<PROPERTY>" << var.description() << "</PROPERTY>" << std::endl;
 
     // Outcomes
-
     for (Idx i = 0; i < var.domainSize(); i++)
       str << "\t<OUTCOME>" << var.label(i) << "</OUTCOME>" << std::endl;
 
@@ -204,18 +203,34 @@ namespace gum {
       str << "<DEFINITION>" << std::endl;
 
       // Variable
-      str << "\t<FOR>" << infdiag.variable(varNodeId).name() << "</FOR>" << std::endl;
+      str << "\t<FOR>" << infdiag.variable(varNodeId).name() << "</FOR>";
 
-      // Conditional Parents
-      List< std::string > parentList;
+      str << "<!--"<< infdiag.variable(varNodeId).name()<<" | ";
+      for(const auto n : infdiag.parents(varNodeId))
+        str << infdiag.variable(n).name()<<",";
+      str <<"-->\n";
 
-      for (const auto par: infdiag.parents(varNodeId))
-        parentList.pushBack(infdiag.variable(par).name());
+      // Conditional Parents for decision node
+      if (infdiag.isDecisionNode(varNodeId)) {   // finding the parents in the graph
+        List< std::string > parentList;
 
-      for (List< std::string >::iterator parentListIte = parentList.rbegin();
-           parentListIte != parentList.rend();
-           --parentListIte)
-        str << "\t<GIVEN>" << (*parentListIte) << "</GIVEN>" << std::endl;
+        for (const auto par: infdiag.parents(varNodeId))
+          parentList.pushBack(infdiag.variable(par).name());
+
+        for (auto parentListIte = parentList.rbegin(); parentListIte != parentList.rend();
+             --parentListIte)
+          str << "\t<GIVEN>" << (*parentListIte) << "</GIVEN>" << std::endl;
+      } else if (infdiag.isChanceNode(varNodeId))   // finding the parents in the cpt
+        for (Idx i = infdiag.cpt(varNodeId).nbrDim() ; i > 1;
+             i--)                                   // the first dimension is not a parent
+          str << "\t<GIVEN>" << infdiag.cpt(varNodeId).variable(i-1).name() << "</GIVEN>"
+              << std::endl;
+      else if (infdiag.isUtilityNode(varNodeId))   // finding the parents in the utility
+        for (Idx i = infdiag.utility(varNodeId).nbrDim() ; i > 1;
+             i--)                                  // the first dimension is not a parent
+          str << "\t<GIVEN>" << infdiag.utility(varNodeId).variable(i-1).name() << "</GIVEN>"
+              << std::endl;
+
 
       if (infdiag.isChanceNode(varNodeId)) {
         Instantiation inst(infdiag.cpt(varNodeId));

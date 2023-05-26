@@ -27,7 +27,9 @@
 
 #include <agrum/ID/influenceDiagram.h>
 #include <agrum/ID/io/BIFXML/BIFXMLIDWriter.h>
+#include <agrum/ID/io/BIFXML/BIFXMLIDReader.h>
 #include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/ID/generator/influenceDiagramGenerator.h>
 
 // The graph used for the tests:
 //           D1
@@ -171,6 +173,39 @@ namespace gum_tests {
       output.close();
 
       if (output.fail()) { GUM_ERROR(gum::IOError, "Writing in the ostream failed.") }
+    }
+
+
+    GUM_ACTIVE_TEST(GenerationReadWrite) {
+      gum::InfluenceDiagramGenerator< double > gen;
+
+      for (int i = 0; i < 5; i++) {
+        gum::InfluenceDiagram< double >* net = gen.generateID(25, 0.3f, 0.3f, 0.1f, 4);
+
+        gum::BIFXMLIDWriter< double > writer;
+        std::string                   file = GET_RESSOURCES_PATH("outputs/random.xml");
+        writer.write(file, *net);
+
+        gum::InfluenceDiagram< double > net2;
+        gum::BIFXMLIDReader< double >   reader(&net2, file);
+        reader.proceed();
+        for (const auto n: net->nodes()) {
+          if (net->isChanceNode(n)) {
+            const std::string&       name = net->variable(n).name();
+            gum::Potential< double > p(net->cpt(name));
+            p.fillWith(net2.cpt(name));
+            if (net->cpt(name) != p) { TS_ASSERT(false) }
+          }
+          if (net->isUtilityNode(n)) {
+            const std::string&       name = net->variable(n).name();
+            gum::Potential< double > p(net->utility(name));
+            p.fillWith(net2.utility(name));
+            if (net->utility(name) != p) { TS_ASSERT(false) }
+          }
+        }
+
+        delete net;
+      }
     }
   };
 }   // namespace gum_tests

@@ -68,7 +68,7 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(Constuctor) {
       std::string file = GET_RESSOURCES_PATH("ID/IDBIFXMLIO_file.xml");
 
-      gum::InfluenceDiagram< double > net;
+            gum::InfluenceDiagram< double > net;
 
       gum::BIFXMLIDReader< double >* reader = 0;
 
