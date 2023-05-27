@@ -119,62 +119,6 @@ MixedGraph.adjacents = deprecated_adjacents
 
 
 ########################################################################################################
-def deprecated_useNoApriori(learner):
-  """
-  Deprecated methods in BNLearner for pyAgrum>1.1.1
-  """
-  warnings.warn("""
-** pyAgrum.BNLearner.useNoAriori() is deprecated from pyAgrum>1.1.1. Please use useNoPrior() instead.
-""", DeprecationWarning, stacklevel=2)
-  return learner.useNoPrior()
-
-
-BNLearner.useNoApriori = deprecated_useNoApriori
-
-
-########################################################################################################
-def deprecated_useAprioriBDeu(learner):
-  """
-  Deprecated methods in BNLearner for pyAgrum>1.1.1
-  """
-  warnings.warn("""
-** pyAgrum.BNLearner.useAprioriBDeu() is deprecated from pyAgrum>1.1.1. Please use useBDeuPrior() instead.
-""", DeprecationWarning, stacklevel=2)
-  return learner.useBDeuPrior()
-
-
-BNLearner.useAprioriBDeu = deprecated_useAprioriBDeu
-
-
-########################################################################################################
-def deprecated_useAprioriSmoothing(learner):
-  """
-  Deprecated methods in BNLearner for pyAgrum>1.1.1
-  """
-  warnings.warn("""
-** pyAgrum.BNLearner.useAprioriSmoothing() is deprecated from pyAgrum>1.1.1. Please use useSmoothingPrior() methods instead.
-""", DeprecationWarning, stacklevel=2)
-  return learner.useSmoothingPrior()
-
-
-BNLearner.useAprioriSmoothing = deprecated_useAprioriSmoothing
-
-
-########################################################################################################
-def deprecated_useAprioriDirichlet(learner):
-  """
-  Deprecated methods in BNLearner for pyAgrum>1.1.1
-  """
-  warnings.warn("""
-** pyAgrum.BNLearner.useAprioriDirichlet() is deprecated from pyAgrum>1.1.1. Please use useDirichletPrior() methods instead.
-""", DeprecationWarning, stacklevel=2)
-  return learner.useDirichletPrior()
-
-
-BNLearner.useAprioriDirichlet = deprecated_useAprioriDirichlet
-
-
-########################################################################################################
 def deprecated_learnMixedGraph(learner):
   """
   Deprecated methods in BNLearner for pyAgrum>1.5.2
