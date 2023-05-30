@@ -1,9 +1,22 @@
 # aGrUM Changelog
 
+## Changelog for 1.8.2
+
+* aGrUM
+  * Fixing a bug (still) in `gum::PDAG::cSeparation` (thanks to Keneth Lee).
+  * Fixing a bug in `gum::BIFXMLIdWriter::save`.
+  * typos in `gum::PDAG::toDot()`.
+
+* pyAgrum
+  * Fixing a bug in `pyAgrum/{load|save}ID`.
+  * Wrapping `gum::PDAG::moralizedAncestralGraph()`.
+  * Adding a warning when importing `pyAgrum.lib.notebook` if graphviz is not installed.
+
+
 ## Changelog for 1.8.1
 
 * aGrUM
-  * Bugfixes in `gum::PDAG::cSeparation` (thanks to Keneth Lee).
+  * Fixing bugs in `gum::PDAG::cSeparation` (thanks to Keneth Lee).
   * Using 'table' instead of 'default' for marginal cpt in `gum::BIFWriter`.
   * Adding `std::cout<<(gum::Timer& t)`
 
