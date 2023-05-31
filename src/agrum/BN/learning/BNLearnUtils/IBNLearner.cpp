@@ -22,7 +22,7 @@
 /** @file
  * @brief A pack of learning algorithms that can easily be used
  *
- * The pack currently contains K2, GreedyHillClimbing, miic, 3off2 and
+ * The pack currently contains K2, GreedyHillClimbing, miic and
  *LocalSearchWithTabuList
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
@@ -209,7 +209,8 @@ namespace gum::learning {
       constraintIndegree_(from.constraintIndegree_), constraintTabuList_(from.constraintTabuList_),
       constraintForbiddenArcs_(from.constraintForbiddenArcs_),
       constraintMandatoryArcs_(from.constraintMandatoryArcs_), selectedAlgo_(from.selectedAlgo_),
-      algoK2_(from.algoK2_), algoMiic3off2_(from.algoMiic3off2_), kmode3Off2_(from.kmode3Off2_),
+      algoK2_(from.algoK2_), algoMiic_(from.algoMiic_), constraintMiic_(from.constraintMiic_),
+      kmode3Off2_(from.kmode3Off2_),
       greedyHillClimbing_(from.greedyHillClimbing_),
       localSearchWithTabuList_(from.localSearchWithTabuList_), scoreDatabase_(from.scoreDatabase_),
       ranges_(from.ranges_), priorDbname_(from.priorDbname_), initialDag_(from.initialDag_),
@@ -229,7 +230,8 @@ namespace gum::learning {
       constraintForbiddenArcs_(std::move(from.constraintForbiddenArcs_)),
       constraintMandatoryArcs_(std::move(from.constraintMandatoryArcs_)),
       selectedAlgo_(from.selectedAlgo_), algoK2_(std::move(from.algoK2_)),
-      algoMiic3off2_(std::move(from.algoMiic3off2_)), kmode3Off2_(from.kmode3Off2_),
+      algoMiic_(std::move(from.algoMiic_)), constraintMiic_(std::move(from.constraintMiic_)),
+      kmode3Off2_(from.kmode3Off2_),
       greedyHillClimbing_(std::move(from.greedyHillClimbing_)),
       localSearchWithTabuList_(std::move(from.localSearchWithTabuList_)),
       scoreDatabase_(std::move(from.scoreDatabase_)), ranges_(std::move(from.ranges_)),
@@ -290,7 +292,8 @@ namespace gum::learning {
       constraintMandatoryArcs_ = from.constraintMandatoryArcs_;
       selectedAlgo_            = from.selectedAlgo_;
       algoK2_                  = from.algoK2_;
-      algoMiic3off2_           = from.algoMiic3off2_;
+      algoMiic_                = from.algoMiic_;
+      constraintMiic_          = from.constraintMiic_;
       kmode3Off2_              = from.kmode3Off2_;
       greedyHillClimbing_      = from.greedyHillClimbing_;
       localSearchWithTabuList_ = from.localSearchWithTabuList_;
@@ -341,7 +344,8 @@ namespace gum::learning {
       constraintMandatoryArcs_ = std::move(from.constraintMandatoryArcs_);
       selectedAlgo_            = from.selectedAlgo_;
       algoK2_                  = from.algoK2_;
-      algoMiic3off2_           = std::move(from.algoMiic3off2_);
+      algoMiic_                = std::move(from.algoMiic_);
+      constraintMiic_          = std::move(from.constraintMiic_);      
       kmode3Off2_              = from.kmode3Off2_;
       greedyHillClimbing_      = std::move(from.greedyHillClimbing_);
       localSearchWithTabuList_ = std::move(from.localSearchWithTabuList_);
@@ -537,8 +541,8 @@ namespace gum::learning {
     return param_estimator;
   }
 
-  /// prepares the initial graph for 3off2 or miic
-  MixedGraph IBNLearner::prepareMiic3Off2_() {
+  /// prepares the initial graph for miic
+  MixedGraph IBNLearner::prepareMiic_() {
     // Initialize the mixed graph to the fully connected graph
     MixedGraph mgraph;
     for (Size i = 0; i < scoreDatabase_.databaseTable().nbVariables(); ++i) {
@@ -548,7 +552,7 @@ namespace gum::learning {
       }
     }
 
-    // translating the constraints for 3off2 or miic
+    // translating the constraints for miic
     HashTable< std::pair< NodeId, NodeId >, char > initial_marks;
     for (const auto& arc: constraintMandatoryArcs_.arcs()) {
       initial_marks.insert({arc.tail(), arc.head()}, '>');
@@ -557,7 +561,7 @@ namespace gum::learning {
     for (const auto& arc: constraintForbiddenArcs_.arcs()) {
       initial_marks.insert({arc.tail(), arc.head()}, '-');
     }
-    algoMiic3off2_.addConstraints(initial_marks);
+    algoMiic_.addConstraints(initial_marks);
 
     // create the mutual entropy object
     createCorrectedMutualInformation_();
@@ -565,22 +569,104 @@ namespace gum::learning {
     return mgraph;
   }
 
+  // prepares the initial graph for constraintMiic
+  MixedGraph IBNLearner::prepareConstraintMiic_() {
+      // Initialize the mixed graph to the fully connected graph
+      MixedGraph mgraph;
+      DiGraph forbiddenGraph;
+      DAG mandatoryGraph;
+
+      for (Size i = 0; i < scoreDatabase_.databaseTable().nbVariables(); ++i) {
+        mgraph.addNodeWithId(i);
+        forbiddenGraph.addNodeWithId(i);
+        mandatoryGraph.addNodeWithId(i);
+        for (Size j = 0; j < i; ++j) {
+          mgraph.addEdge(j, i);
+        }
+      }
+
+      const EdgeSet& possible_edges = constraintPossibleEdges_.edges();
+      const EdgeSet& all_edges = mgraph.edges();
+      const EdgeSet& impossible_edges = all_edges - possible_edges;
+
+      for (const auto& edge: impossible_edges) {
+        forbiddenGraph.addArc(edge.first(), edge.second());
+        forbiddenGraph.addArc(edge.second(),edge.first());
+      }
+      mgraph.clear();
+      for (const auto& edge: possible_edges) {
+        mgraph.addEdge(edge.first(), edge.second());
+      }
+
+      // translating the mandatory arcs for constraintMiic
+      HashTable< std::pair< NodeId, NodeId >, char > initial_marks;
+      const ArcSet& mandatory_arcs = constraintMandatoryArcs_.arcs();
+    
+      for (const auto& arc: mandatory_arcs) {
+        mandatoryGraph.addArc(arc.tail(), arc.head());
+        forbiddenGraph.addArc(arc.head(),arc.head());
+        //initial_marks.insert({arc.tail(), arc.head()}, '>');
+      }
+
+      // translating the forbidden arcs for constraintMiic
+      const ArcSet& forbidden_arcs = constraintForbiddenArcs_.arcs();
+      for (const auto& arc: forbidden_arcs) {
+        forbiddenGraph.addArc(arc.tail(),arc.head());
+        // initial_marks.insert({arc.tail(), arc.head()}, '-');
+      }
+
+      const gum::NodeProperty< gum::Size > sliceOrder = constraintSliceOrder_.sliceOrder();
+      gum::NodeProperty< gum::Size > copyOrder = gum::HashTable(sliceOrder);
+      for (const auto& [n1,r1]: sliceOrder) {
+        for (const auto& [n2,r2]: copyOrder){
+          if(r1 > r2){
+            forbiddenGraph.addArc(n1,n2);
+            // initial_marks.insert({n1, n2}, '-'); 
+          }
+          else if (r2 > r1) {
+            forbiddenGraph.addArc(n2,n1);
+            // initial_marks.insert({n2, n1}, '-');
+          }
+        }
+        copyOrder.erase(n1);  
+      }
+
+      constraintMiic_.setMaxIndegree(constraintIndegree_.maxIndegree());
+      constraintMiic_.addConstraints(initial_marks);
+      constraintMiic_.setMandatoryGraph(mandatoryGraph);
+      constraintMiic_.setForbiddenGraph(forbiddenGraph);
+
+      // create the mutual entropy object
+      // if ( _mutual_info_ == nullptr) { this->useNMLCorrection(); }
+      createCorrectedMutualInformation_();
+
+      return mgraph;
+  }
+
   PDAG IBNLearner::learnPDAG() {
-    if (selectedAlgo_ != AlgoType::MIIC && selectedAlgo_ != AlgoType::THREE_OFF_TWO) {
-      GUM_ERROR(OperationNotAllowed, "Must be using the miic/3off2 algorithm")
+    if (selectedAlgo_ != AlgoType::MIIC && selectedAlgo_ != AlgoType::CONSTRAINT_MIIC) {
+      GUM_ERROR(OperationNotAllowed, "Must be using the miic algorithm")
     }
     // check that the database does not contain any missing value
     if (scoreDatabase_.databaseTable().hasMissingValues()) {
       GUM_ERROR(MissingValueInDatabase,
                 "For the moment, the BNLearner is unable to learn "
                    << "structures with missing values in databases")
+    
     }
-    BNLearnerListener listener(this, algoMiic3off2_);
+    MixedGraph mg;
+    if (selectedAlgo_ == AlgoType::MIIC) {
+      BNLearnerListener listener(this, algoMiic_);
+      // create the mixedGraph_constraint_MandatoryArcs.arcs
+      MixedGraph mgraph = this->prepareMiic_();
+      mg= algoMiic_.learnMixedStructure(*mutualInfo_, mgraph);
 
-    // create the mixedGraph_constraint_MandatoryArcs.arcs
-    MixedGraph mgraph = this->prepareMiic3Off2_();
-
-    auto mg = algoMiic3off2_.learnMixedStructure(*mutualInfo_, mgraph);
+    } else {
+      BNLearnerListener listener(this, constraintMiic_);
+      // create the mixedGraph_constraint_MandatoryArcs.arcs
+      MixedGraph mgraph = this->prepareConstraintMiic_();
+      mg= constraintMiic_.learnMixedStructure(*mutualInfo_, mgraph);
+    }
 
     PDAG res;
     for (auto n: mg.nodes())
@@ -647,13 +733,20 @@ namespace gum::learning {
 
     switch (selectedAlgo_) {
       // ========================================================================
-      case AlgoType::MIIC:
-      case AlgoType::THREE_OFF_TWO: {
-        BNLearnerListener listener(this, algoMiic3off2_);
+      case AlgoType::MIIC:{
+        BNLearnerListener listener(this, algoMiic_);
         // create the mixedGraph and the corrected mutual information
-        MixedGraph mgraph = this->prepareMiic3Off2_();
+        MixedGraph mgraph = this->prepareMiic_();
 
-        return algoMiic3off2_.learnStructure(*mutualInfo_, mgraph);
+        return algoMiic_.learnStructure(*mutualInfo_, mgraph);
+      }
+
+      case AlgoType::CONSTRAINT_MIIC: {
+        BNLearnerListener listener(this, constraintMiic_);
+        // create the mixedGraph and the corrected mutual information
+        MixedGraph mgraph = this->prepareConstraintMiic_();
+
+        return constraintMiic_.learnStructure(*mutualInfo_, mgraph);
       }
 
       // ========================================================================

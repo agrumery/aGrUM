@@ -22,7 +22,7 @@
 /** @file
  * @brief A pack of learning algorithms that can easily be used
  *
- * The pack currently contains K2, GreedyHillClimbing, 3off2 and
+ * The pack currently contains K2, GreedyHillClimbing, MIIC and
  *LocalSearchWithTabuList
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
@@ -194,36 +194,34 @@ namespace gum::learning {
     constraintIndegree_.setMaxIndegree(max_indegree);
   }
 
-  // indicate that we wish to use 3off2
-  INLINE void IBNLearner::use3off2() {
-    selectedAlgo_ = AlgoType::THREE_OFF_TWO;
-    algoMiic3off2_.set3of2Behaviour();
-  }
-
-  // indicate that we wish to use 3off2
+  // indicate that we wish to use MIIC
   INLINE void IBNLearner::useMIIC() {
     selectedAlgo_ = AlgoType::MIIC;
-    algoMiic3off2_.setMiicBehaviour();
   }
 
-  /// indicate that we wish to use the NML correction for 3off2
+  // indicate that we wish to use ConstraintMIIC
+  INLINE void IBNLearner::useConstraintMIIC() {
+    selectedAlgo_ = AlgoType::CONSTRAINT_MIIC;
+  }
+
+  /// indicate that we wish to use the NML correction for MIIC
   INLINE void IBNLearner::useNMLCorrection() {
     kmode3Off2_ = CorrectedMutualInformation::KModeTypes::NML;
   }
 
-  /// indicate that we wish to use the MDL correction for 3off2
+  /// indicate that we wish to use the MDL correction for MIIC
   INLINE void IBNLearner::useMDLCorrection() {
     kmode3Off2_ = CorrectedMutualInformation::KModeTypes::MDL;
   }
 
-  /// indicate that we wish to use the NoCorr correction for 3off2
+  /// indicate that we wish to use the NoCorr correction for MIIC
   INLINE void IBNLearner::useNoCorrection() {
     kmode3Off2_ = CorrectedMutualInformation::KModeTypes::NoCorr;
   }
 
   /// get the list of arcs hiding latent variables
   INLINE std::vector< Arc > IBNLearner::latentVariables() const {
-    return algoMiic3off2_.latentVariables();
+    return algoMiic_.latentVariables();
   }
 
   // indicate that we wish to use a K2 algorithm
@@ -484,4 +482,6 @@ namespace gum::learning {
     ThreadNumberManager::setNumberOfThreads(nb);
     if (score_ != nullptr) score_->setNumberOfThreads(nb);
   }
+
+  /* namespace learning */
 }   // namespace gum::learning

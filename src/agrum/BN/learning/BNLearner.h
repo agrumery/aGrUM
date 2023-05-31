@@ -239,12 +239,12 @@ namespace gum {
         IBNLearner::useK2(order);
         return *this;
       }
-      BNLearner< GUM_SCALAR >& use3off2() {
-        IBNLearner::use3off2();
-        return *this;
-      }
       BNLearner< GUM_SCALAR >& useMIIC() {
         IBNLearner::useMIIC();
+        return *this;
+      }
+      BNLearner< GUM_SCALAR >& useConstraintMIIC() {
+        IBNLearner::useConstraintMIIC();
         return *this;
       }
       BNLearner< GUM_SCALAR >& useNMLCorrection() {

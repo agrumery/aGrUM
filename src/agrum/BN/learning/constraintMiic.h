@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2023  by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe
+ *   Copyright (c) 2005-2023 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe
  * GONZALES(_at_AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -20,55 +20,88 @@
 
 
 /**
- * @file
- * @brief The Miic algorithm
- *
- * The MIIC class implements the Miic algorithm https://doi.org/10.1371/journal.pcbi.1005662. Only the orientation phase differs
- * from 3off2, with a diffferent ranking method and different propagation rules.
- * It starts by eliminating edges that correspond to independent variables to
- * build the skeleton of the graph, and then directs the remaining edges to get an
- * essential graph. Latent variables can be detected using bi-directed arcs.
- *
- *
- * @author Quentin FALCAND and Pierre-Henri WUILLEMIN(_at_LIP6) and Maria Virginia
- * RUIZ CUEVAS
- */
-#ifndef GUM_LEARNING_MIIC_H
-#define GUM_LEARNING_MIIC_H
+  * @file
+  * @brief The constraintMiic algorithm
+  *
+  * The constraintMiic class implements the miic algorithm based on
+  * https://doi.org/10.1371/journal.pcbi.1005662.
+  * It starts by eliminating edges that correspond to independent variables to
+  * build the skeleton of the graph, and then directs the remaining edges to get
+  * an essential graph. Latent variables can be detected using bi-directed arcs.
+  *
+  * constraintMiic allows the option of adding constraints on the skeleton construction
+  * such as: a maximum number of parents, mandatory arcs, forbidden arcs or an order between the variables.
+  * 
+  * @author Quentin FALCAND and Pierre-Henri WUILLEMIN(_at_LIP6) and Maria Virginia
+  * RUIZ CUEVAS
+*/
+#ifndef GUM_LEARNING_CONSTRAINT_MIIC_H
+#define GUM_LEARNING_CONSTRAINT_MIIC_H
 
 #include <string>
 #include <vector>
 
+#include <agrum/BN/BayesNet.h>
 #include <agrum/config.h>
+#include <agrum/tools/core/approximations/IApproximationSchemeConfiguration.h>
 #include <agrum/tools/core/approximations/approximationScheme.h>
 #include <agrum/tools/core/heap.h>
+#include <agrum/tools/graphs/DAG.h>
 #include <agrum/tools/graphs/mixedGraph.h>
 #include <agrum/tools/stattests/correctedMutualInformation.h>
-#include <agrum/BN/learning/constraintMiic.h>
+
+#  define GUM_SL_EMIT(x,y,action, explain)         \
+    {                                  \
+      std::ostringstream action_stream; \
+      action_stream << action;             \
+      std::ostringstream explain_stream; \
+      explain_stream << explain;             \
+      GUM_EMIT4(onStructuralModification, x, y, action_stream.str(), explain_stream.str()); \
+    }
 
 namespace gum {
 
   namespace learning {
+    using CondThreePoints = std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >;
+    using CondRanking     = std::pair< CondThreePoints*, double >;
+
+    using ThreePoints = std::tuple< NodeId, NodeId, NodeId >;
+    using Ranking     = std::pair< ThreePoints*, double >;
+
+    using ProbabilisticRanking = std::tuple< ThreePoints*, double, double, double >;
+
+    class GreaterPairOn2nd {
+      public:
+      bool operator()(const CondRanking& e1, const CondRanking& e2) const;
+    };
+
+    class GreaterAbsPairOn2nd {
+      public:
+      bool operator()(const Ranking& e1, const Ranking& e2) const;
+    };
+
+    class GreaterTupleOnLast {
+      public:
+      bool operator()(const ProbabilisticRanking& e1, const ProbabilisticRanking& e2) const;
+    };
 
     /**
-     * @class Miic
-     * @brief The miic learning algorithm
+     * @class constraintMiic
+     * @brief The constraintMiic learning algorithm
      *
-     * The miic class implements the miic algorithm based on
+     * The constraintMiic class implements the miic algorithm based on
      * https://doi.org/10.1371/journal.pcbi.1005662.
      * It starts by eliminating edges that correspond to independent variables to
      * build the skeleton of the graph, and then directs the remaining edges to get
-     * an
-     * essential graph. Latent variables can be detected using bi-directed arcs.
+     * an essential graph. Latent variables can be detected using bi-directed arcs.
+     * 
+     * constraintMiic allows the option of adding constraints on the skeleton construction
+     * such as: a maximum number of parents, mandatory arcs, forbidden arcs or an order between the variables.
      *
-     * The variant 3off2 is also implemented as proposed by Affeldt and
-     * al. in https://doi.org/10.1186/s12859-015-0856-x.  Only the orientation
-     * phase differs from miic, with a different ranking method and different
-     * propagation rules.
      *
      * @ingroup learning_group
      */
-    class Miic: public ApproximationScheme {
+    class ConstraintMiic: public ApproximationScheme {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -76,27 +109,27 @@ namespace gum {
       /// @{
 
       /// default constructor
-      Miic();
+      ConstraintMiic();
 
       /// default constructor with maxLog
-      explicit Miic(int maxLog);
+      explicit ConstraintMiic(int maxLog);
 
       /// copy constructor
-      Miic(const Miic& from);
+      ConstraintMiic(const ConstraintMiic& from);
 
       /// move constructor
-      Miic(Miic&& from);
+      ConstraintMiic(ConstraintMiic&& from);
 
       /// destructor
-      ~Miic() override;
+      ~ConstraintMiic() override;
 
       /// @}
 
       /// copy operator
-      Miic& operator=(const Miic& from);
+      ConstraintMiic& operator=(const ConstraintMiic& from);
 
       /// move operator
-      Miic& operator=(Miic&& from);
+      ConstraintMiic& operator=(ConstraintMiic&& from);
 
       // ##########################################################################
       /// @name Accessors / Modifiers
@@ -144,6 +177,15 @@ namespace gum {
       /// Set a ensemble of constraints for the orientation phase
       void addConstraints(HashTable< std::pair< NodeId, NodeId >, char > constraints);
       /// @}
+
+      /// Set ForbiddenGraph (resp. MadatoryGraph) which contains the forbidden (resp. mandatory) arcs.
+      void setForbiddenGraph(gum::DiGraph forbidGraph);
+      void setMandatoryGraph(gum::DAG mandaGraph);
+      void testNodeProperty(const NodeProperty<NodeId>& order);
+      void setMaxIndegree(gum:: Size n);
+
+      /// Set a ensemble of constraints for the learning/orientation phase
+      // void testNodeProperty(const NodeProperty< NodeId >& order);
 
       protected:
       // ##########################################################################
@@ -257,8 +299,13 @@ namespace gum {
       void propagatesOrientationInChainOfRemainingEdges_(MixedGraph& graph);
 
       protected:
-      bool isForbidenArc_(NodeId x, NodeId y) const;
       bool isOrientable_(const MixedGraph& graph, NodeId xi, NodeId xj) const;
+      /// Check constraints
+      bool _isForbiddenArc_(NodeId x, NodeId y) const;
+      bool _isForbiddenEdge_(NodeId x, NodeId y);
+      bool _isMandatoryArc_(NodeId x, NodeId y) const;
+      bool _isMaxIndegree_(MixedGraph graph, NodeId x);
+      bool _isArcValid_(MixedGraph graph, NodeId x, NodeId y);
 
       private:
       /// Fixes the maximum log that we accept in exponential computations
@@ -268,6 +315,9 @@ namespace gum {
       /// an empty vector of arcs
       std::vector< Arc > _latentCouples_;
 
+      /// maximum number of parents 
+      gum::Size _maxIndegree_;  
+
       /// size of the database
       Size _size_;
 
@@ -276,6 +326,12 @@ namespace gum {
 
       /// Initial marks for the orientation phase, used to convey constraints
       HashTable< std::pair< NodeId, NodeId >, char > _initialMarks_;
+
+      /// Graph that contains the mandatories arcs
+      gum::DAG mandatoryGraph;
+
+      /// Graph that contains the forbidden arcs
+      gum::DiGraph forbiddenGraph;
 
       /** @brief checks for directed paths in a graph, considering double arcs like
        * edges, not considering arc as a directed path.
@@ -310,10 +366,14 @@ namespace gum {
                                         double                                          p2);
 
       bool _isNotLatentCouple_(NodeId x, NodeId y);
+
+      public:
+      Signaler4<gum::NodeId, gum::NodeId ,std::string, std::string> onStructuralModification;
+    
     };
 
   } /* namespace learning */
 
 } /* namespace gum */
 
-#endif /* GUM_LEARNING_MIIC_H */
+#endif /* GUM_LEARNING_CONSTRAINT_MIIC_H */

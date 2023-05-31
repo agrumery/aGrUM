@@ -306,10 +306,11 @@ namespace gum {
           vals.emplace_back(key, "Local Search with Tabu List", "");
           vals.emplace_back("Tabu list size", std::to_string(nbDecreasingChanges_), "");
           break;
-        case AlgoType::THREE_OFF_TWO: vals.emplace_back(key, "3off2", ""); break;
+        case AlgoType::CONSTRAINT_MIIC: vals.emplace_back(key, "Constraint MIIC", ""); break;
         case AlgoType::MIIC: vals.emplace_back(key, "MIIC", ""); break;
         default: vals.emplace_back(key, "(unknown)", "?"); break;
       }
+
 
 
       key = "Score";

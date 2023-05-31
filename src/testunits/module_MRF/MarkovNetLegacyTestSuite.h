@@ -26,9 +26,13 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/testsuite_utils.h>
 
+<<<<<<<< HEAD:src/testunits/module_MRF/MarkovNetLegacyTestSuite.h
 #include "agrum/MN/MarkovNet.h"
 #include "agrum/MN/inference/ShaferShenoyMNInference.h"
 
+========
+#include <agrum/MRF/MarkovRandomField.h>
+>>>>>>>> df1b713db ([aGrUM] renaming gum::MarkovNetwok to gum::MarkovRandomField. Using MRF instead of MN when needed.):src/testunits/module_MRF/MarkovRandomFieldTestSuite.h
 #include <agrum/tools/multidim/potential.h>
 #include <agrum/tools/variables/labelizedVariable.h>
 #include <agrum/tools/variables/rangeVariable.h>
@@ -43,9 +47,13 @@
 //
 
 namespace gum_tests {
+<<<<<<<< HEAD:src/testunits/module_MRF/MarkovNetLegacyTestSuite.h
   class [[maybe_unused]] MarkovNetLegacyTestSuite: public CxxTest::TestSuite {
+========
+  class [[maybe_unused]] MarkovRandomFieldTestSuite: public CxxTest::TestSuite {
+>>>>>>>> df1b713db ([aGrUM] renaming gum::MarkovNetwok to gum::MarkovRandomField. Using MRF instead of MN when needed.):src/testunits/module_MRF/MarkovRandomFieldTestSuite.h
     private:
-    void _fill(gum::MarkovNet< double >& mn) {
+    void _fill(gum::MarkovRandomField< double >& mn) {
       for (const auto i: {11, 21, 31, 41}) {
         mn.add(std::to_string(i), 3);
       }
@@ -61,13 +69,13 @@ namespace gum_tests {
 
     void tearDown() {}
 
-    GUM_ACTIVE_TEST(SimpleConstructor){TS_GUM_ASSERT_THROWS_NOTHING({
-      gum::MarkovNet< double > mn;
+    GUM_TEST(SimpleConstructor){TS_GUM_ASSERT_THROWS_NOTHING({
+      gum::MarkovRandomField< double > mn;
       GUM_UNUSED(mn);
     })};
 
-    GUM_ACTIVE_TEST(Constructor) {
-      gum::MarkovNet< double > mn;
+    GUM_TEST(Constructor) {
+      gum::MarkovRandomField< double > mn;
       _fill(mn);
 
       TS_ASSERT_EQUALS(mn.size(), (gum::Idx)5)
@@ -89,10 +97,14 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(mn.maxNonOneParam(), 0.97)
     }
 
-    GUM_ACTIVE_TEST(CopyConstructor) {
-      gum::MarkovNet< double > mn;
+    GUM_TEST(CopyConstructor) {
+      gum::MarkovRandomField< double > mn;
       _fill(mn);
+<<<<<<<< HEAD:src/testunits/module_MRF/MarkovNetLegacyTestSuite.h
       gum::MarkovNet< double > mn2(mn);
+========
+      gum::MarkovRandomField< double > mn2(mn);
+>>>>>>>> df1b713db ([aGrUM] renaming gum::MarkovNetwok to gum::MarkovRandomField. Using MRF instead of MN when needed.):src/testunits/module_MRF/MarkovRandomFieldTestSuite.h
       TS_ASSERT_EQUALS(mn2.toString(), "MRF{nodes: 5, edges: 6, domainSize: 567, dim: 102}")
 
       TS_GUM_ASSERT_THROWS_NOTHING({
@@ -103,9 +115,9 @@ namespace gum_tests {
       });
     }
 
-    GUM_ACTIVE_TEST(CopyOperator) {
-      gum::MarkovNet< double > mn;
-      gum::MarkovNet< double > mn2;
+    GUM_TEST(CopyOperator) {
+      gum::MarkovRandomField< double > mn;
+      gum::MarkovRandomField< double > mn2;
       _fill(mn);
       mn2 = mn;
       TS_ASSERT_EQUALS(mn2.toString(), "MRF{nodes: 5, edges: 6, domainSize: 567, dim: 102}")
@@ -115,10 +127,10 @@ namespace gum_tests {
       }
     }
 
-    GUM_ACTIVE_TEST(EqualityOperators) {
-      gum::MarkovNet< double > mn1;
+    GUM_TEST(EqualityOperators) {
+      gum::MarkovRandomField< double > mn1;
       _fill(mn1);
-      gum::MarkovNet< double > mn2;
+      gum::MarkovRandomField< double > mn2;
       TS_ASSERT_DIFFERS(mn1, mn2)
       _fill(mn2);
       TS_ASSERT_EQUALS(mn1, mn2)
@@ -126,8 +138,8 @@ namespace gum_tests {
       TS_ASSERT_DIFFERS(mn1, mn2)
     }
 
-    GUM_ACTIVE_TEST(OrderInsertion) {
-      gum::MarkovNet< double > mn;
+    GUM_TEST(OrderInsertion) {
+      gum::MarkovRandomField< double > mn;
       mn.add("V0", 2);
       mn.add("V1", 2);
       mn.add("V2", 2);
@@ -154,8 +166,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(mn.factor(s2).variable(0).name(), mn.variable(1).name())
     }
 
-    GUM_ACTIVE_TEST(InsertionFromPotential) {
-      gum::MarkovNet< double > mn;
+    GUM_TEST(InsertionFromPotential) {
+      gum::MarkovRandomField< double > mn;
       _fill(mn);
       TS_ASSERT_THROWS(mn.addFactor(gum::Potential< double >()),
                        const gum::InvalidArgument&)   // no empty factor
@@ -163,7 +175,7 @@ namespace gum_tests {
                        const gum::InvalidArgument&)   // already exists
 
       {
-        gum::MarkovNet< double > mn1;
+        gum::MarkovRandomField< double > mn1;
         _fill(mn1);
         gum::Potential< double > pot;
         pot.add(mn1.variable("11"));
@@ -173,7 +185,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(pot.toString(), mn1.factor({"11", "21"}).toString())
       }
       {
-        gum::MarkovNet< double > mn1;
+        gum::MarkovRandomField< double > mn1;
         _fill(mn1);
         gum::Potential< double > pot;
         pot.add(mn1.variable("21"));
@@ -193,8 +205,8 @@ namespace gum_tests {
       }
     }
 
-    GUM_ACTIVE_TEST(Iterations) {
-      gum::MarkovNet< double > mn;
+    GUM_TEST(Iterations) {
+      gum::MarkovRandomField< double > mn;
       _fill(mn);
       gum::Size cpt = (gum::Size)0;
 
@@ -215,8 +227,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(cpt, mn.sizeEdges())
     }
 
-    GUM_ACTIVE_TEST(EraseFactor) {
-      gum::MarkovNet< double > mn;
+    GUM_TEST(EraseFactor) {
+      gum::MarkovRandomField< double > mn;
       _fill(mn);
       TS_ASSERT_THROWS(mn.eraseFactor({12, 14}), const gum::InvalidArgument&)
       TS_GUM_ASSERT_THROWS_NOTHING(mn.eraseFactor({2, 4}))
@@ -227,8 +239,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(mn.toString(), "MRF{nodes: 5, edges: 5, domainSize: 567, dim: 81}")
     }
 
-    GUM_ACTIVE_TEST(EraseFactorWithNames) {
-      gum::MarkovNet< double > mn;
+    GUM_TEST(EraseFactorWithNames) {
+      gum::MarkovRandomField< double > mn;
       _fill(mn);
       TS_ASSERT_THROWS(mn.eraseFactor({"31", "21"}), const gum::InvalidArgument&)
       TS_GUM_ASSERT_THROWS_NOTHING(mn.eraseFactor({"31", "51"}))
@@ -239,8 +251,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(mn.toString(), "MRF{nodes: 5, edges: 5, domainSize: 567, dim: 81}")
     }
 
-    GUM_ACTIVE_TEST(Erase) {
-      gum::MarkovNet< double > mn;
+    GUM_TEST(Erase) {
+      gum::MarkovRandomField< double > mn;
       _fill(mn);
       TS_ASSERT_THROWS(mn.erase(36), const gum::InvalidArgument&)
       TS_GUM_ASSERT_THROWS_NOTHING(mn.erase(3))
@@ -251,8 +263,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(mn.toString(), "MRF{nodes: 4, edges: 3, domainSize: 189, dim: 51}")
     }
 
-    GUM_ACTIVE_TEST(EraseWithNames) {
-      gum::MarkovNet< double > mn;
+    GUM_TEST(EraseWithNames) {
+      gum::MarkovRandomField< double > mn;
       _fill(mn);
       TS_ASSERT_THROWS(mn.erase("36"), const gum::NotFound&)
       TS_GUM_ASSERT_THROWS_NOTHING(mn.erase("41"))
@@ -263,17 +275,22 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(mn.toString(), "MRF{nodes: 4, edges: 3, domainSize: 189, dim: 51}")
     }
 
-    GUM_ACTIVE_TEST(ToDot) {
+    GUM_TEST(ToDot) {
+<<<<<<<< HEAD:src/testunits/module_MRF/MarkovNetLegacyTestSuite.h
       auto       mn = gum::MarkovNet< double >::fastPrototype("A--B--C;B--D;C--E;D--E--F");
+========
+      gum::MarkovRandomField< double > mn
+         = gum::MarkovRandomField< double >::fastPrototype("A--B--C;B--D;C--E;D--E--F");
+>>>>>>>> df1b713db ([aGrUM] renaming gum::MarkovNetwok to gum::MarkovRandomField. Using MRF instead of MN when needed.):src/testunits/module_MRF/MarkovRandomFieldTestSuite.h
       const auto s1 = mn.toDot();
       const auto s2 = mn.toDotAsFactorGraph();
       GUM_UNUSED(s1);
       GUM_UNUSED(s2);
     }
 
-    GUM_ACTIVE_TEST(FromBN) {
+    GUM_TEST(FromBN) {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D;C<-E->F<-G;F<-A");
-      auto mn = gum::MarkovNet< double >::fromBN(bn);
+      auto mn = gum::MarkovRandomField< double >::fromBN(bn);
 
       gum::Potential< double > pbn;
       pbn.fill(1);
@@ -308,8 +325,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(mn.graph(), bn.moralGraph())
     }
 
-    GUM_ACTIVE_TEST(ExistsEdge) {
-      auto mn = gum::MarkovNet< double >::fastPrototype("A--B--C;C--D;E--F--G");
+    GUM_TEST(ExistsEdge) {
+      auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;C--D;E--F--G");
 
       TS_ASSERT(mn.existsEdge(0, 1))
       TS_ASSERT(mn.existsEdge("A", "B"))
@@ -321,16 +338,16 @@ namespace gum_tests {
       TS_ASSERT(!mn.existsEdge("C", "G"))
     }
 
-    GUM_ACTIVE_TEST(MinimalCondSet) {
-      auto mn = gum::MarkovNet< double >::fastPrototype("A--B--C;C--D;E--F--G;B--E");
+    GUM_TEST(MinimalCondSet) {
+      auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;C--D;E--F--G;B--E");
 
       TS_ASSERT_EQUALS(mn.minimalCondSet(0, {1, 2, 3, 4, 5, 6}), gum::NodeSet({1, 2}))
       TS_ASSERT_EQUALS(mn.minimalCondSet({0, 6}, {1, 2, 3, 4, 5}), gum::NodeSet({1, 2, 4, 5}))
       TS_ASSERT_EQUALS(mn.minimalCondSet(3, {0, 4, 5, 6}), gum::NodeSet({0, 4}))
     }
 
-    GUM_ACTIVE_TEST(Independence) {
-      auto mn = gum::MarkovNet< double >::fastPrototype("A--B--C;C--D;E--F--G;B--E;D--G;X");
+    GUM_TEST(Independence) {
+      auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;C--D;E--F--G;B--E;D--G;X");
       TS_ASSERT(mn.isIndependent("D", "X", {}))
       TS_ASSERT(!mn.isIndependent("D", "A", {"C"}))
       TS_ASSERT(mn.isIndependent("D", "A", {"C", "G"}))
@@ -339,8 +356,8 @@ namespace gum_tests {
     }
 
 
-    GUM_ACTIVE_TEST(FastPrototypeVarType) {
-      auto mn = gum::MarkovNet< float >::fastPrototype(
+    GUM_TEST(FastPrototypeVarType) {
+      auto mn = gum::MarkovRandomField< float >::fastPrototype(
          "a{1|4|6}--b{1|-4|6};c{1|toto|6}--d{1.0|-4.0|6.0};e{1|-4|6.0}--f{1.0|-4.0|+6.0}");
       TS_ASSERT_EQUALS(mn.variable("a").varType(), gum::VarType::Integer)
       TS_ASSERT_EQUALS(mn.variable("b").varType(), gum::VarType::Integer)
@@ -350,13 +367,13 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(mn.variable("f").varType(), gum::VarType::Numerical)
     }
 
-    GUM_ACTIVE_TEST(MonoClique) {
-      auto mn2 = gum::MarkovNet< float >::fastPrototype("A--B");
+    GUM_TEST(MonoClique) {
+      auto mn2 = gum::MarkovRandomField< float >::fastPrototype("A--B");
       TS_GUM_ASSERT_THROWS_NOTHING(mn2.factor({"A", "B"}))
     }
 
-    GUM_ACTIVE_TEST(ShortCutAddFastVar) {
-      gum::MarkovNet< double > mn;
+    GUM_TEST(ShortCutAddFastVar) {
+      gum::MarkovRandomField< double > mn;
 
       gum::NodeId i1, i2, i3;
 
@@ -380,7 +397,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(mn.add("Y[1,1]", 1), const gum::OperationNotAllowed&)
     }
 
-    GUM_ACTIVE_TEST(Inference) {
+    GUM_TEST(Inference) {
       {
         auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B;B--C");
         gum::ShaferShenoyMNInference< double > ie(&mn);

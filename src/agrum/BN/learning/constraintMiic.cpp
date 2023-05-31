@@ -1,7 +1,7 @@
 
 /**
  *
- *   Copyright (c) 2005-2023  by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe
+ *   Copyright (c) 2005-2023 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe
  * GONZALES(_at_AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 
 /** @file
- * @brief Implementation of gum::learning:: MIIC
+ * @brief Implementation of gum::learning::Constraint MIIC
  *
  * @author Quentin FALCAND, Marvin LASSERRE and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
@@ -31,7 +31,7 @@
 #include <agrum/tools/core/heap.h>
 #include <agrum/tools/core/timer.h>
 #include <agrum/tools/graphs/mixedGraph.h>
-#include <agrum/BN/learning/Miic.h>
+#include <agrum/BN/learning/constraintMiic.h>
 #include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
 #include <agrum/tools/stattests/correctedMutualInformation.h>
 
@@ -41,42 +41,73 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    Miic::Miic() : _maxLog_(100), _size_(0) { GUM_CONSTRUCTOR(Miic); }
+    ConstraintMiic::ConstraintMiic() : _maxLog_(100), _size_(0) { GUM_CONSTRUCTOR(ConstraintMiic); }
 
     /// default constructor with maxLog
-    Miic::Miic(int maxLog) : _maxLog_(maxLog), _size_(0) { GUM_CONSTRUCTOR(Miic); }
+    ConstraintMiic::ConstraintMiic(int maxLog) : _maxLog_(maxLog), _size_(0) { GUM_CONSTRUCTOR(ConstraintMiic); }
 
     /// copy constructor
-    Miic::Miic(const Miic& from) : ApproximationScheme(from), _size_(from._size_) {
-      GUM_CONS_CPY(Miic);
+    ConstraintMiic::ConstraintMiic(const ConstraintMiic& from) : ApproximationScheme(from), _size_(from._size_) {
+      GUM_CONS_CPY(CoonstraintMiic);
     }
 
     /// move constructor
-    Miic::Miic(Miic&& from) : ApproximationScheme(std::move(from)), _size_(from._size_) {
-      GUM_CONS_MOV(Miic);
+    ConstraintMiic::ConstraintMiic(ConstraintMiic&& from) : ApproximationScheme(std::move(from)), _size_(from._size_) {
+      GUM_CONS_MOV(ConstraintMiic);
     }
 
     /// destructor
-    Miic::~Miic() { GUM_DESTRUCTOR(Miic); }
+    ConstraintMiic::~ConstraintMiic() { GUM_DESTRUCTOR(ConstraintMiic); }
 
     /// copy operator
-    Miic& Miic::operator=(const Miic& from) {
+    ConstraintMiic& ConstraintMiic::operator=(const ConstraintMiic& from) {
       ApproximationScheme::operator=(from);
       return *this;
     }
 
     /// move operator
-    Miic& Miic::operator=(Miic&& from) {
+    ConstraintMiic& ConstraintMiic::operator=(ConstraintMiic&& from) {
       ApproximationScheme::operator=(std::move(from));
       return *this;
     }
 
+
+    bool GreaterPairOn2nd::operator()(const CondRanking& e1, const CondRanking& e2) const {
+      return e1.second > e2.second;
+    }
+
+    bool GreaterAbsPairOn2nd::operator()(const Ranking& e1, const Ranking& e2) const {
+      return std::abs(e1.second) > std::abs(e2.second);
+    }
+
+    bool GreaterTupleOnLast::operator()(const ProbabilisticRanking& e1,
+                                        const ProbabilisticRanking& e2) const {
+      double p1xz = std::get< 2 >(e1);
+      double p1yz = std::get< 3 >(e1);
+      double p2xz = std::get< 2 >(e2);
+      double p2yz = std::get< 3 >(e2);
+      double I1   = std::get< 1 >(e1);
+      double I2   = std::get< 1 >(e2);
+      // First, we look at the sign of information.
+      // Then, the probability values
+      // and finally the abs value of information.
+      if ((I1 < 0 && I2 < 0) || (I1 >= 0 && I2 >= 0)) {
+        if (std::max(p1xz, p1yz) == std::max(p2xz, p2yz)) {
+          return std::abs(I1) > std::abs(I2);
+        } else {
+          return std::max(p1xz, p1yz) > std::max(p2xz, p2yz);
+        }
+      } else {
+        return I1 < I2;
+      }
+    }
+
     /// learns the structure of a MixedGraph
-    MixedGraph Miic::learnMixedStructure(CorrectedMutualInformation& mutualInformation,
+    MixedGraph ConstraintMiic::learnMixedStructure(CorrectedMutualInformation& mutualInformation,
                                          MixedGraph                  graph) {
       timer_.reset();
       current_step_ = 0;
-
+      GUM_TRACE_VAR(graph.nodes_size())
       // clear the vector of latent arcs to be sure
       _latentCouples_.clear();
 
@@ -102,10 +133,13 @@ namespace gum {
      * are,
      * the edge is deleted. If not, the best contributor is found.
      */
-    void Miic::initiation_(CorrectedMutualInformation& mutualInformation,
+    void ConstraintMiic::initiation_(CorrectedMutualInformation& mutualInformation,
                            MixedGraph&                 graph,
                            HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet,
                            Heap< CondRanking, GreaterPairOn2nd >&                           rank) {
+
+
+
       NodeId  x, y;
       EdgeSet edges      = graph.edges();
       Size    steps_init = edges.size();
@@ -113,13 +147,23 @@ namespace gum {
       for (const Edge& edge: edges) {
         x          = edge.first();
         y          = edge.second();
+        if (_isForbiddenEdge_(x, y)){
+          graph.eraseEdge(edge);
+        }
         double Ixy = mutualInformation.score(x, y);
 
         if (Ixy <= 0) {   //< K
           graph.eraseEdge(edge);
+          GUM_SL_EMIT(x, y, 
+                      "Remove "<<x<<" - "<<y, 
+                      "Independent based on Mutual Information :" << Ixy)
+
           sepSet.insert(std::make_pair(x, y), _emptySet_);
         } else {
           findBestContributor_(x, y, _emptySet_, graph, mutualInformation, rank);
+          GUM_SL_EMIT(x, y, 
+            "Keep "<<x<<" - "<<y, 
+            "Dependent based on Mutual Information :" << Ixy)
         }
 
         ++current_step_;
@@ -135,13 +179,13 @@ namespace gum {
      * As long as we find important nodes for edges, we go over them to see if
      * we can assess the independence of the variables.
      */
-    void Miic::iteration_(CorrectedMutualInformation& mutualInformation,
+    void ConstraintMiic::iteration_(CorrectedMutualInformation& mutualInformation,
                           MixedGraph&                 graph,
                           HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet,
                           Heap< CondRanking, GreaterPairOn2nd >&                           rank) {
+      
       // if no triples to further examine pass
       CondRanking best;
-
       Size steps_init = current_step_;
       Size steps_iter = rank.size();
 
@@ -158,6 +202,10 @@ namespace gum {
           const double i_xy_ui = mutualInformation.score(x, y, ui);
           if (i_xy_ui < 0) {
             graph.eraseEdge(Edge(x, y));
+            GUM_SL_EMIT(x, y, 
+                      "Remove " <<x<< " - " <<y, 
+                      "Independent based on MutualInformation knowing Sep " << ui )
+
             sepSet.insert(std::make_pair(x, y), std::move(ui));
           } else {
             findBestContributor_(x, y, ui, graph, mutualInformation, rank);
@@ -185,8 +233,8 @@ namespace gum {
      * Try to assess v-structures and propagate them.
      */
 
-    /// Orientation protocol of MIIC
-    void Miic::orientationMiic_(
+    /// The orientation protocol of MIIC
+    void ConstraintMiic::orientationMiic_(
        CorrectedMutualInformation&                                            mutualInformation,
        MixedGraph&                                                            graph,
        const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet) {
@@ -197,12 +245,24 @@ namespace gum {
       // marks always correspond to the head of the arc/edge. - is for a forbidden
       // arc, > for a mandatory arc
       // we start by adding the mandatory arcs
-      for (auto iter = marks.begin(); iter != marks.end(); ++iter) {
-        if (graph.existsEdge(iter.key().first, iter.key().second) && iter.val() == '>') {
-          graph.eraseEdge(Edge(iter.key().first, iter.key().second));
-          graph.addArc(iter.key().first, iter.key().second);
+
+      gum::ArcSet mandaArcs = mandatoryGraph.arcs();
+
+      // for (auto& iter = mandaArcs.begin(); iter != mandaArcs.end(); ++iter) {
+      //   if (graph.existsEdge(iter.value_type().head(), iter.tail()) && _isMandatoryArc_(iter.head(), iter.tail())) {
+      //     graph.eraseEdge(Edge(iter.head(), iter.tail()));
+      //     graph.addArc(iter.head(), iter.tail());
+      //   }
+      // }
+
+        for (const auto& arc: mandaArcs) {
+          if (graph.existsEdge(arc.head(), arc.tail()) && mandatoryGraph.existsArc(arc) ) {
+            std::cout << "test" << std::endl;
+            graph.eraseEdge(Edge(arc.head(), arc.tail()));
+            graph.addArc(arc.tail(), arc.head());
+          }
+          else { graph.addArc(arc.tail(), arc.head());}
         }
-      }
 
       std::vector< ProbabilisticRanking > proba_triples
          = unshieldedTriplesMiic_(graph, mutualInformation, sepSet, marks);
@@ -213,7 +273,7 @@ namespace gum {
       ProbabilisticRanking best;
       if (steps_orient > 0) { best = proba_triples[0]; }
 
-      while (!proba_triples.empty() && std::max(std::get< 2 >(best), std::get< 3 >(best)) > 0.5) {
+      while (!proba_triples.empty() && std::max(std::get< 2 >(best), std::get< 3 >(best)) >= 0.5) {
         const NodeId x = std::get< 0 >(*std::get< 0 >(best));
         const NodeId y = std::get< 1 >(*std::get< 0 >(best));
         const NodeId z = std::get< 2 >(*std::get< 0 >(best));
@@ -222,9 +282,12 @@ namespace gum {
 
         const double p1 = std::get< 2 >(best);
         const double p2 = std::get< 3 >(best);
+
         if (i3 <= 0) {
+
           _orientingVstructureMiic_(graph, marks, x, y, z, p1, p2);
         } else {
+
           _propagatingOrientationMiic_(graph, marks, x, y, z, p1, p2);
         }
 
@@ -259,7 +322,7 @@ namespace gum {
     }
 
     /// finds the best contributor node for a pair given a conditioning set
-    void Miic::findBestContributor_(NodeId                                 x,
+    void ConstraintMiic::findBestContributor_(NodeId                                 x,
                                     NodeId                                 y,
                                     const std::vector< NodeId >&           ui,
                                     const MixedGraph&                      graph,
@@ -335,7 +398,7 @@ namespace gum {
 
     /// gets the list of unshielded triples in the graph in decreasing value of
     ///|I'(x, y, z|{ui})|
-    std::vector< Ranking > Miic::unshieldedTriples_(
+    std::vector< Ranking > ConstraintMiic::unshieldedTriples_(
        const MixedGraph&                                                      graph,
        CorrectedMutualInformation&                                            mutualInformation,
        const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet) {
@@ -372,7 +435,7 @@ namespace gum {
 
     /// gets the list of unshielded triples in the graph in decreasing value of
     ///|I'(x, y, z|{ui})|, prepares the orientation matrix for MIIC
-    std::vector< ProbabilisticRanking > Miic::unshieldedTriplesMiic_(
+    std::vector< ProbabilisticRanking > ConstraintMiic::unshieldedTriplesMiic_(
        const MixedGraph&                                                      graph,
        CorrectedMutualInformation&                                            mutualInformation,
        const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet,
@@ -413,7 +476,7 @@ namespace gum {
 
     /// Gets the orientation probabilities like MIIC for the orientation phase
     std::vector< ProbabilisticRanking >
-       Miic::updateProbaTriples_(const MixedGraph&                   graph,
+       ConstraintMiic::updateProbaTriples_(const MixedGraph&                   graph,
                                  std::vector< ProbabilisticRanking > probaTriples) {
       for (auto& triple: probaTriples) {
         NodeId x, y, z;
@@ -453,7 +516,7 @@ namespace gum {
 
     /// learns the structure of an Bayesian network, ie a DAG, from an Essential
     /// graph.
-    DAG Miic::learnStructure(CorrectedMutualInformation& I, MixedGraph initialGraph) {
+    DAG ConstraintMiic::learnStructure(CorrectedMutualInformation& I, MixedGraph initialGraph) {
       MixedGraph essentialGraph = learnMixedStructure(I, initialGraph);
       // orientate remaining edges
 
@@ -463,15 +526,15 @@ namespace gum {
       for (NodeId x: order) {
         const auto nei_x = essentialGraph.neighbours(x);
         for (NodeId y: nei_x)
-          if (isForbidenArc_(x, y)) {
+          if (_isForbiddenArc_(x, y)) {
             essentialGraph.eraseEdge(Edge(x, y));
-            if (isForbidenArc_(y, x)) {
+            if (_isForbiddenArc_(y, x)) {
               // GUM_TRACE("Neither arc allowed for edge (" << x << "," << y << ")")
             } else {
               // GUM_TRACE("Forced orientation : " << y << "->" << x)
               essentialGraph.addArc(y, x);
             }
-          } else if (isForbidenArc_(y, x)) {
+          } else if (_isForbiddenArc_(y, x)) {
             essentialGraph.eraseEdge(Edge(x, y));
             // GUM_TRACE("Forced orientation : " << x << "->" << y)
             essentialGraph.addArc(x, y);
@@ -512,7 +575,7 @@ namespace gum {
       return dag;
     }
 
-    bool Miic::isOrientable_(const MixedGraph& graph, NodeId xi, NodeId xj) const {
+    bool ConstraintMiic::isOrientable_(const MixedGraph& graph, NodeId xi, NodeId xj) const {
       // no cycle
       if (_existsDirectedPath_(graph, xj, xi)) {
         // GUM_TRACE("cycle(" << xi << "-" << xj << ")")
@@ -545,7 +608,7 @@ namespace gum {
       return false;
     }
 
-    void Miic::propagatesOrientationInChainOfRemainingEdges_(MixedGraph& essentialGraph) {
+    void ConstraintMiic::propagatesOrientationInChainOfRemainingEdges_(MixedGraph& essentialGraph) {
       // then decide the orientation for remaining edges
       while (!essentialGraph.edges().empty()) {
         const auto& edge               = *(essentialGraph.edges().begin());
@@ -587,7 +650,7 @@ namespace gum {
     }
 
     /// Propagates the orientation from a node to its neighbours
-    bool Miic::propagatesRemainingOrientableEdges_(MixedGraph& graph, NodeId xj) {
+    bool ConstraintMiic::propagatesRemainingOrientableEdges_(MixedGraph& graph, NodeId xj) {
       bool       res        = false;
       const auto neighbours = graph.neighbours(xj);
       for (auto& xi: neighbours) {
@@ -618,28 +681,27 @@ namespace gum {
     }
 
     /// get the list of arcs hiding latent variables
-    const std::vector< Arc > Miic::latentVariables() const { return _latentCouples_; }
+    const std::vector< Arc > ConstraintMiic::latentVariables() const { return _latentCouples_; }
 
     /// learns the structure and the parameters of a BN
     template < typename GUM_SCALAR, typename GRAPH_CHANGES_SELECTOR, typename PARAM_ESTIMATOR >
-    BayesNet< GUM_SCALAR > Miic::learnBN(GRAPH_CHANGES_SELECTOR& selector,
+    BayesNet< GUM_SCALAR > ConstraintMiic::learnBN(GRAPH_CHANGES_SELECTOR& selector,
                                          PARAM_ESTIMATOR&        estimator,
                                          DAG                     initial_dag) {
       return DAG2BNLearner::createBN< GUM_SCALAR >(estimator,
                                                    learnStructure(selector, initial_dag));
     }
 
-
-    void Miic::addConstraints(HashTable< std::pair< NodeId, NodeId >, char > constraints) {
+    void ConstraintMiic::addConstraints(HashTable< std::pair< NodeId, NodeId >, char > constraints) {
       this->_initialMarks_ = constraints;
     }
 
-    bool Miic::_existsNonTrivialDirectedPath_(const MixedGraph& graph,
+    bool ConstraintMiic::_existsNonTrivialDirectedPath_(const MixedGraph& graph,
                                               const NodeId      n1,
                                               const NodeId      n2) {
       for (const auto parent: graph.parents(n2)) {
         if (graph.existsArc(parent,
-                            n2))   // if there is a double arc, pass
+                            n2))   // if there is a double arc, pass 
           continue;
         if (parent == n1)   // trivial directed path => not recognized
           continue;
@@ -648,7 +710,7 @@ namespace gum {
       return false;
     }
 
-    bool Miic::_existsDirectedPath_(const MixedGraph& graph, const NodeId n1, const NodeId n2) {
+    bool ConstraintMiic::_existsDirectedPath_(const MixedGraph& graph, const NodeId n1, const NodeId n2) {
       // not recursive version => use a FIFO for simulating the recursion
       List< NodeId > nodeFIFO;
       // mark[node] = successor if visited, else mark[node] does not exist
@@ -682,7 +744,7 @@ namespace gum {
       return false;
     }
 
-    void Miic::_orientingVstructureMiic_(MixedGraph&                                     graph,
+    void ConstraintMiic::_orientingVstructureMiic_(MixedGraph&                                     graph,
                                          HashTable< std::pair< NodeId, NodeId >, char >& marks,
                                          NodeId                                          x,
                                          NodeId                                          y,
@@ -692,90 +754,142 @@ namespace gum {
       // v-structure discovery
       if (marks[{x, z}] == 'o' && marks[{y, z}] == 'o') {   // If x-z-y
         if (!_existsNonTrivialDirectedPath_(graph, z, x)) {
-          graph.eraseEdge(Edge(x, z));
-          graph.addArc(x, z);
-          // GUM_TRACE("1.a Removing edge (" << x << "," << z << ")")
-          // GUM_TRACE("1.a Adding arc (" << x << "," << z << ")")
-          marks[{x, z}] = '>';
-          if (graph.existsArc(z, x) && _isNotLatentCouple_(z, x)) {
-            // GUM_TRACE("Adding latent couple (" << z << "," << x << ")")
-            _latentCouples_.emplace_back(z, x);
-          }
-          if (!_arcProbas_.exists(Arc(x, z))) _arcProbas_.insert(Arc(x, z), p1);
+            if (_isArcValid_(graph, x, z))
+            {
+                graph.eraseEdge(Edge(x, z));
+                graph.addArc(x, z);
+                GUM_SL_EMIT(x, z, 
+                "Add Arc " <<x <<" -> "<<z, 
+                "V-structure Orientation")
+                // GUM_TRACE("1.a Removing edge (" << x << "," << z << ")")
+                // GUM_TRACE("1.a Adding arc (" << x << "," << z << ")")
+                
+                marks[{x, z}] = '>';
+                if (graph.existsArc(z, x) && _isNotLatentCouple_(z, x)) {
+                // GUM_TRACE("Adding latent couple (" << z << "," << x << ")")
+                _latentCouples_.emplace_back(z, x);
+                }
+                if (!_arcProbas_.exists(Arc(x, z))) _arcProbas_.insert(Arc(x, z), p1);
+            }
+        
         } else {
           graph.eraseEdge(Edge(x, z));
           // GUM_TRACE("1.b Adding arc (" << x << "," << z << ")")
           if (!_existsNonTrivialDirectedPath_(graph, x, z)) {
-            graph.addArc(z, x);
-            // GUM_TRACE("1.b Removing edge (" << x << "," << z << ")")
-            marks[{z, x}] = '>';
+            if (_isArcValid_(graph, z, x))
+            {
+                graph.addArc(z, x);
+                GUM_SL_EMIT(z, x, 
+                "Add Arc " <<z <<" -> "<<x, 
+                "V-structure Orientation")            
+                // GUM_TRACE("1.b Removing edge (" << x << "," << z << ")")
+                marks[{z, x}] = '>';
+            }
           }
         }
 
         if (!_existsNonTrivialDirectedPath_(graph, z, y)) {
-          graph.eraseEdge(Edge(y, z));
-          graph.addArc(y, z);
-          // GUM_TRACE("1.c Removing edge (" << y << "," << z << ")")
-          // GUM_TRACE("1.c Adding arc (" << y << "," << z << ")")
-          marks[{y, z}] = '>';
-          if (graph.existsArc(z, y) && _isNotLatentCouple_(z, y)) {
-            _latentCouples_.emplace_back(z, y);
-          }
-          if (!_arcProbas_.exists(Arc(y, z))) _arcProbas_.insert(Arc(y, z), p2);
+            if (_isArcValid_(graph, y, z))
+            {
+                graph.eraseEdge(Edge(y, z));
+                graph.addArc(y, z);
+                GUM_SL_EMIT(y, z, 
+                "Add Arc " << y <<" -> "<< z, 
+                "V-structure Orientation") 
+                // GUM_TRACE("1.c Removing edge (" << y << "," << z << ")")
+                // GUM_TRACE("1.c Adding arc (" << y << "," << z << ")")
+                marks[{y, z}] = '>';
+                if (graph.existsArc(z, y) && _isNotLatentCouple_(z, y)) {
+                    _latentCouples_.emplace_back(z, y);
+                }
+                if (!_arcProbas_.exists(Arc(y, z))) _arcProbas_.insert(Arc(y, z), p2);
+            }
         } else {
           graph.eraseEdge(Edge(y, z));
           // GUM_TRACE("1.d Removing edge (" << y << "," << z << ")")
           if (!_existsNonTrivialDirectedPath_(graph, y, z)) {
-            graph.addArc(z, y);
-            // GUM_TRACE("1.d Adding arc (" << z << "," << y << ")")
-            marks[{z, y}] = '>';
+            if (_isArcValid_(graph, z, y))
+            {
+                graph.addArc(z, y);
+                GUM_SL_EMIT(z, y, 
+                "Add Arc " <<z <<" -> "<<y, 
+                "V-structure Orientation") 
+                // GUM_TRACE("1.d Adding arc (" << z << "," << y << ")")
+                marks[{z, y}] = '>';
+            }
           }
         }
       } else if (marks[{x, z}] == '>' && marks[{y, z}] == 'o') {   // If x->z-y
         if (!_existsNonTrivialDirectedPath_(graph, z, y)) {
-          graph.eraseEdge(Edge(y, z));
-          graph.addArc(y, z);
-          // GUM_TRACE("2.a Removing edge (" << y << "," << z << ")")
-          // GUM_TRACE("2.a Adding arc (" << y << "," << z << ")")
-          marks[{y, z}] = '>';
-          if (graph.existsArc(z, y) && _isNotLatentCouple_(z, y)) {
-            _latentCouples_.emplace_back(z, y);
-          }
-          if (!_arcProbas_.exists(Arc(y, z))) _arcProbas_.insert(Arc(y, z), p2);
+            if (_isArcValid_(graph, y, z))
+            {
+            graph.eraseEdge(Edge(y, z));
+            graph.addArc(y, z);
+            GUM_SL_EMIT(y, z, 
+                "Add Arc " <<y <<" -> "<<z, 
+                "V-structure Orientation | existing " << x <<" -> "<< z << ", then orienting " << y <<" -> "<< z)
+            // GUM_TRACE("2.a Removing edge (" << y << "," << z << ")")
+            // GUM_TRACE("2.a Adding arc (" << y << "," << z << ")")
+            marks[{y, z}] = '>';
+            if (graph.existsArc(z, y) && _isNotLatentCouple_(z, y)) {
+                _latentCouples_.emplace_back(z, y);
+            }
+            if (!_arcProbas_.exists(Arc(y, z))) _arcProbas_.insert(Arc(y, z), p2);
+            }
         } else {
           graph.eraseEdge(Edge(y, z));
           // GUM_TRACE("2.b Removing edge (" << y << "," << z << ")")
           if (!_existsNonTrivialDirectedPath_(graph, y, z)) {
-            graph.addArc(z, y);
-            // GUM_TRACE("2.b Adding arc (" << y << "," << z << ")")
-            marks[{z, y}] = '>';
+            if (_isArcValid_(graph, z, y))
+            {
+                graph.addArc(z, y);
+                GUM_SL_EMIT(z, y, 
+                "Add Arc " << z << " -> " << y, 
+                "V-structure Orientation | existing " << x <<" -> "<< z << ", then orienting " << z <<" -> "<< y)
+                // GUM_TRACE("2.b Adding arc (" << y << "," << z << ")")
+                marks[{z, y}] = '>';
+            }
           }
         }
-      } else if (marks[{y, z}] == '>' && marks[{x, z}] == 'o') {
+
+      } else if (marks[{y, z}] == '>' && marks[{x, z}] == 'o') { // If y->z-x
         if (!_existsNonTrivialDirectedPath_(graph, z, x)) {
-          graph.eraseEdge(Edge(x, z));
-          graph.addArc(x, z);
-          // GUM_TRACE("3.a Removing edge (" << x << "," << z << ")")
-          // GUM_TRACE("3.a Adding arc (" << x << "," << z << ")")
-          marks[{x, z}] = '>';
-          if (graph.existsArc(z, x) && _isNotLatentCouple_(z, x)) {
-            _latentCouples_.emplace_back(z, x);
-          }
-          if (!_arcProbas_.exists(Arc(x, z))) _arcProbas_.insert(Arc(x, z), p1);
-        } else {
+            if (_isArcValid_(graph, x, z))
+            {
+                graph.eraseEdge(Edge(x, z));
+                graph.addArc(x, z);
+                GUM_SL_EMIT(x, z, 
+                "Add Arc " <<x <<" -> "<<z, 
+                "V-structure Orientation")
+                // GUM_TRACE("3.a Removing edge (" << x << "," << z << ")")
+                // GUM_TRACE("3.a Adding arc (" << x << "," << z << ")")
+                marks[{x, z}] = '>';
+                if (graph.existsArc(z, x) && _isNotLatentCouple_(z, x)) {
+                _latentCouples_.emplace_back(z, x);
+                }
+                if (!_arcProbas_.exists(Arc(x, z))) _arcProbas_.insert(Arc(x, z), p1);
+            }
+
+        }  else {
           graph.eraseEdge(Edge(x, z));
           // GUM_TRACE("3.b Removing edge (" << x << "," << z << ")")
           if (!_existsNonTrivialDirectedPath_(graph, x, z)) {
-            graph.addArc(z, x);
-            // GUM_TRACE("3.b Adding arc (" << x << "," << z << ")")
-            marks[{z, x}] = '>';
+            if (_isArcValid_(graph, z, x))
+            {
+                graph.addArc(z, x);
+                GUM_SL_EMIT(z, x, 
+                "Add Arc " <<z <<" -> "<<x, 
+                "V-structure Orientation")
+                // GUM_TRACE("3.b Adding arc (" << x << "," << z << ")")
+                marks[{z, x}] = '>';
+            }
           }
         }
       }
     }
 
 
-    void Miic::_propagatingOrientationMiic_(MixedGraph&                                     graph,
+    void ConstraintMiic::_propagatingOrientationMiic_(MixedGraph&                                     graph,
                                             HashTable< std::pair< NodeId, NodeId >, char >& marks,
                                             NodeId                                          x,
                                             NodeId                                          y,
@@ -785,69 +899,121 @@ namespace gum {
       // orientation propagation
       if (marks[{x, z}] == '>' && marks[{y, z}] == 'o' && marks[{z, y}] != '-') {
         graph.eraseEdge(Edge(z, y));
-        // std::cout << "4. Removing edge (" << z << "," << y << ")" <<
-        // std::endl;
         if (!_existsDirectedPath_(graph, y, z) && graph.parents(y).empty()) {
-          graph.addArc(z, y);
-          // GUM_TRACE("4.a Adding arc (" << z << "," << y << ")")
-          marks[{z, y}] = '>';
-          marks[{y, z}] = '-';
-          if (!_arcProbas_.exists(Arc(z, y))) _arcProbas_.insert(Arc(z, y), p2);
+            if (_isArcValid_(graph, z, y))
+            {
+            graph.addArc(z, y);
+            GUM_SL_EMIT(z, y, 
+                "Add Arc " <<z <<" -> "<<y, 
+                "Propagation MIIC (1183) | existing x -> "<< z << " and " << z <<" -> "<<y)
+            // GUM_TRACE("4.a Adding arc (" << z << "," << y << ")")
+            marks[{z, y}] = '>';
+            marks[{y, z}] = '-';
+            if (!_arcProbas_.exists(Arc(z, y))) _arcProbas_.insert(Arc(z, y), p2);
+            }
+
         } else if (!_existsDirectedPath_(graph, z, y) && graph.parents(z).empty()) {
-          graph.addArc(y, z);
-          // GUM_TRACE("4.b Adding arc (" << y << "," << z << ")")
-          marks[{z, y}] = '-';
-          marks[{y, z}] = '>';
-          _latentCouples_.emplace_back(y, z);
-          if (!_arcProbas_.exists(Arc(y, z))) _arcProbas_.insert(Arc(y, z), p2);
+            if (_isArcValid_(graph, y, z))
+            {
+                graph.addArc(y, z);
+                GUM_SL_EMIT(y, z, 
+                    "Add Arc " <<y <<" -> "<<z, 
+                    "Propagation MIIC line 1192 ")
+                // GUM_TRACE("4.b Adding arc (" << y << "," << z << ")")
+                
+                marks[{z, y}] = '-';
+                marks[{y, z}] = '>';
+                _latentCouples_.emplace_back(y, z);
+                if (!_arcProbas_.exists(Arc(y, z))) _arcProbas_.insert(Arc(y, z), p2);
+            }
+
         } else if (!_existsDirectedPath_(graph, y, z)) {
-          graph.addArc(z, y);
-          // GUM_TRACE("4.c Adding arc (" << z << "," << y << ")")
-          marks[{z, y}] = '>';
-          marks[{y, z}] = '-';
-          if (!_arcProbas_.exists(Arc(z, y))) _arcProbas_.insert(Arc(z, y), p2);
+            if (_isArcValid_(graph, z, y))
+            {
+                graph.addArc(z, y);
+                GUM_SL_EMIT(z, y, 
+                "Add Arc " <<z <<"->"<<y, 
+                "Propagation MIIC 1203 ")
+                // GUM_TRACE("4.c Adding arc (" << z << "," << y << ")")
+                marks[{z, y}] = '>';
+                marks[{y, z}] = '-';
+                if (!_arcProbas_.exists(Arc(z, y))) _arcProbas_.insert(Arc(z, y), p2);
+            }
+
         } else if (!_existsDirectedPath_(graph, z, y)) {
-          graph.addArc(y, z);
-          // GUM_TRACE("4.d Adding arc (" << y << "," << z << ")")
-          _latentCouples_.emplace_back(y, z);
-          marks[{z, y}] = '-';
-          marks[{y, z}] = '>';
-          if (!_arcProbas_.exists(Arc(y, z))) _arcProbas_.insert(Arc(y, z), p2);
+            if (_isArcValid_(graph, y, z)){
+                graph.addArc(y, z);
+                GUM_SL_EMIT(z, y, 
+                    "Add Arc " <<z <<"->"<<y, 
+                    "Propagation MIIC 1213")
+                // GUM_TRACE("4.d Adding arc (" << y << "," << z << ")")
+                
+                _latentCouples_.emplace_back(y, z);
+                marks[{z, y}] = '-';
+                marks[{y, z}] = '>';
+                if (!_arcProbas_.exists(Arc(y, z))) _arcProbas_.insert(Arc(y, z), p2);
+            }
         }
       } else if (marks[{y, z}] == '>' && marks[{x, z}] == 'o' && marks[{z, x}] != '-') {
         graph.eraseEdge(Edge(z, x));
         // GUM_TRACE("5. Removing edge (" << z << "," << x << ")")
         if (!_existsDirectedPath_(graph, x, z) && graph.parents(x).empty()) {
-          graph.addArc(z, x);
-          // GUM_TRACE("5.a Adding arc (" << z << "," << x << ")")
-          marks[{z, x}] = '>';
-          marks[{x, z}] = '-';
-          if (!_arcProbas_.exists(Arc(z, x))) _arcProbas_.insert(Arc(z, x), p1);
+            if (_isArcValid_(graph, z, x))
+            {
+            graph.addArc(z, x);
+            GUM_SL_EMIT(z, x, 
+                "Add Arc " <<z <<"->"<<x, 
+                "Propagation MIIC 1228")
+            // GUM_TRACE("5.a Adding arc (" << z << "," << x << ")")
+            marks[{z, x}] = '>';
+            marks[{x, z}] = '-';
+            if (!_arcProbas_.exists(Arc(z, x))) _arcProbas_.insert(Arc(z, x), p1);
+            }
+
         } else if (!_existsDirectedPath_(graph, z, x) && graph.parents(z).empty()) {
-          graph.addArc(x, z);
-          // GUM_TRACE("5.b Adding arc (" << x << "," << z << ")")
-          marks[{z, x}] = '-';
-          marks[{x, z}] = '>';
-          _latentCouples_.emplace_back(x, z);
-          if (!_arcProbas_.exists(Arc(x, z))) _arcProbas_.insert(Arc(x, z), p1);
+            if (_isArcValid_(graph, x, z))
+            {
+                graph.addArc(x, z);
+                GUM_SL_EMIT(x, z, 
+                    "Add Arc " <<x <<"->"<<z, 
+                    "Propagation MIIC 1237")
+                // GUM_TRACE("5.b Adding arc (" << x << "," << z << ")")
+                marks[{z, x}] = '-';
+                marks[{x, z}] = '>';
+                _latentCouples_.emplace_back(x, z);
+                if (!_arcProbas_.exists(Arc(x, z))) _arcProbas_.insert(Arc(x, z), p1);
+            }
+
         } else if (!_existsDirectedPath_(graph, x, z)) {
-          graph.addArc(z, x);
-          // GUM_TRACE("5.c Adding arc (" << z << "," << x << ")")
-          marks[{z, x}] = '>';
-          marks[{x, z}] = '-';
-          if (!_arcProbas_.exists(Arc(z, x))) _arcProbas_.insert(Arc(z, x), p1);
+            if (_isArcValid_(graph, z, x))
+            {
+                graph.addArc(z, x);
+                GUM_SL_EMIT(z, x, 
+                    "Add Arc " << z << " -> " << x, 
+                    "Propagation MIIC 1247")
+                // GUM_TRACE("5.c Adding arc (" << z << "," << x << ")")
+                marks[{z, x}] = '>';
+                marks[{x, z}] = '-';
+                if (!_arcProbas_.exists(Arc(z, x))) _arcProbas_.insert(Arc(z, x), p1);
+            }
         } else if (!_existsDirectedPath_(graph, z, x)) {
-          graph.addArc(x, z);
-          // GUM_TRACE("5.d Adding arc (" << x << "," << z << ")")
-          marks[{z, x}] = '-';
-          marks[{x, z}] = '>';
-          _latentCouples_.emplace_back(x, z);
-          if (!_arcProbas_.exists(Arc(x, z))) _arcProbas_.insert(Arc(x, z), p1);
+            if (_isArcValid_(graph, x, z))
+            {
+                graph.addArc(x, z);
+                GUM_SL_EMIT(x, z, 
+                    "Add Arc " <<x <<" -> "<<z, 
+                    "Propagation MIIC 1256")
+                // GUM_TRACE("5.d Adding arc (" << x << "," << z << ")")
+                marks[{z, x}] = '-';
+                marks[{x, z}] = '>';
+                _latentCouples_.emplace_back(x, z);
+                if (!_arcProbas_.exists(Arc(x, z))) _arcProbas_.insert(Arc(x, z), p1);
+            }
         }
       }
     }
 
-    bool Miic::_isNotLatentCouple_(const NodeId x, const NodeId y) {
+    bool ConstraintMiic::_isNotLatentCouple_(const NodeId x, const NodeId y) {
       const auto& lbeg = _latentCouples_.begin();
       const auto& lend = _latentCouples_.end();
 
@@ -855,9 +1021,38 @@ namespace gum {
           && (std::find(lbeg, lend, Arc(y, x)) == lend);
     }
 
-    bool Miic::isForbidenArc_(NodeId x, NodeId y) const {
-      return (_initialMarks_.exists({x, y}) && _initialMarks_[{x, y}] == '-');
+    void ConstraintMiic::setMandatoryGraph(gum::DAG mandaGraph){
+      this->mandatoryGraph = mandaGraph;  
     }
+    
+    void ConstraintMiic::setForbiddenGraph(gum::DiGraph forbidGraph){
+      this->forbiddenGraph = forbidGraph;
+    }
+
+    void ConstraintMiic::setMaxIndegree(gum::Size n){
+      this->_maxIndegree_ = n;
+    }
+
+    bool ConstraintMiic::_isMaxIndegree_(MixedGraph graph, NodeId x) {
+      return( (graph.parents(x).size() >= _maxIndegree_) );
+    }
+
+    bool ConstraintMiic::_isForbiddenArc_(NodeId x, NodeId y) const {
+      return (forbiddenGraph.existsArc(x, y));
+    }
+
+    bool ConstraintMiic::_isMandatoryArc_(NodeId x, NodeId y) const {
+      return (mandatoryGraph.existsArc(x, y));
+    }
+
+    bool ConstraintMiic::_isArcValid_(MixedGraph graph, NodeId x, NodeId y){
+      return(_isForbiddenArc_(x,y) == false && _isMaxIndegree_(graph, y) == false);
+    }
+
+    bool ConstraintMiic::_isForbiddenEdge_(NodeId x, NodeId y){
+      return (forbiddenGraph.existsArc(x, y) && forbiddenGraph.existsArc(y, x));
+    }
+
   } /* namespace learning */
 
 } /* namespace gum */

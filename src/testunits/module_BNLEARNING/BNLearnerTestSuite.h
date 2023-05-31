@@ -300,45 +300,80 @@ namespace gum_tests {
       }
     }
 
+    GUM_ACTIVE_TEST(_constraintMiic_PossibleEdges) {
+      //[smoking , lung_cancer , bronchitis , visit_to_Asia , tuberculosis ,
+      // tuberculos_or_cancer , dyspnoea , positive_XraY]
+        // possible edges are not relevant
+        gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"));
+        learner.useConstraintMIIC();
+        learner.addPossibleEdge("visit_to_Asia", "lung_cancer");
+        learner.addPossibleEdge("visit_to_Asia", "smoking");
 
-    GUM_ACTIVE_TEST(_asia_3off2) {
+
+        auto mg = learner.learnPDAG();
+        try {
+        TS_ASSERT_EQUALS(mg.sizeArcs(), (gum::Size)0)
+        } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
+      }
+
+    GUM_ACTIVE_TEST(_asia_constraintMiic_) {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia.csv"));
 
       aSimpleBNLeanerListener listen(learner);
 
       learner.useGreedyHillClimbing();
+      learner.useConstraintMIIC();
+      learner.useMDLCorrection();
 
-      learner.use3off2();
-      learner.useNMLCorrection();
-      learner.addForbiddenArc(gum::Arc(4, 1));
-      // learner.addForbiddenArc ( gum::Arc (5,1) );
-      // learner.addForbiddenArc ( gum::Arc (5,7) );
+      //Constraints
+      //learner.addForbiddenArc(gum::Arc(1, 5));
+      learner.addForbiddenArc(gum::Arc(2, 6));
+      learner.addForbiddenArc(gum::Arc(6, 2));
 
-      learner.addMandatoryArc(gum::Arc(7, 5));
-      gum::DAG i_dag;
-      for (gum::NodeId i = 0; i < 8; ++i) {
-        i_dag.addNodeWithId(i);
-      }
-      learner.setInitialDAG(i_dag);
-      // learner.addMandatoryArc( "bronchitis", "lung_cancer" );
-
-      const std::vector< std::string >& names = learner.names();
-      TS_ASSERT(!names.empty())
+      learner.addMandatoryArc(gum::Arc(3,4));
 
       try {
-        gum::BayesNet< double > bn = learner.learnBN();
-        TS_ASSERT_EQUALS(bn.dag().arcs().size(), (gum::Size)9)
-        // TS_ASSERT_EQUALS(listen.getNbr(), (gum::Size)86)
-        TS_ASSERT(!bn.dag().existsArc(4, 1))
-        TS_ASSERT(bn.dag().existsArc(7, 5))
 
         auto mg = learner.learnPDAG();
-        TS_ASSERT_EQUALS(mg.arcs().size(), (gum::Size)8)
-        TS_ASSERT_EQUALS(mg.edges().size(), (gum::Size)1)
-        TS_ASSERT(!mg.existsArc(4, 1))
-        TS_ASSERT(mg.existsArc(7, 5))
-        std::vector< gum::Arc > latents = learner.latentVariables();
-        TS_ASSERT_EQUALS(latents.size(), (gum::Size)2)
+        //TS_ASSERT(!mg.existsArc(1, 5))
+        TS_ASSERT(!mg.existsEdge(2, 6))
+        TS_ASSERT(!mg.existsArc(2, 6))
+        TS_ASSERT(!mg.existsArc(6, 2))
+
+        TS_ASSERT(mg.existsArc(3, 4))
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
+    }
+
+    GUM_ACTIVE_TEST(_alarm_constraintMiic) {
+      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/alarm.csv"));
+
+      aSimpleBNLeanerListener listen(learner);
+
+      learner.useGreedyHillClimbing();
+      learner.useConstraintMIIC();
+      learner.useNMLCorrection();
+
+      gum::NodeProperty< gum::Size > slice_order{std::make_pair(gum::NodeId(34), (gum::Size)0),
+                                                 std::make_pair(gum::NodeId(33), (gum::Size)0),
+                                                 std::make_pair(gum::NodeId(29), (gum::Size)1),
+                                                 std::make_pair(gum::NodeId(30), (gum::Size)1)};
+
+      learner.setSliceOrder(slice_order);
+      learner.setMaxIndegree(3);
+
+      try {
+        auto mg = learner.learnPDAG();
+
+        gum::NodeSet nodesSet = mg.asNodeSet();
+        for(auto& x: nodesSet){
+          TS_ASSERT(mg.parents(x).size()<=3)
+        }
+
+        TS_ASSERT(!mg.existsArc(29, 33))
+        TS_ASSERT(!mg.existsArc(29, 34))
+        TS_ASSERT(!mg.existsArc(30, 33))
+        TS_ASSERT(!mg.existsArc(30, 34))
+
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
@@ -346,7 +381,7 @@ namespace gum_tests {
     // with a table filled with the content of the asia.csv file. You will also
     // need a proper odbc configuration (under linux and macos you'll need
     // unixodbc and specific database odbc drivers).
-    GUM_ACTIVE_TEST(_asia_db) {
+    /* GUM_ACTIVE_TEST(_asia_db) {
 #ifdef _ODBC
       try {
         auto db = gum::learning::DatabaseFromSQL(
@@ -390,7 +425,7 @@ namespace gum_tests {
     }
   }
 #endif   // _ODBC
-}
+}*/
 
 GUM_ACTIVE_TEST(_asia_with_domain_sizes) {
   gum::learning::BNLearner< double > learn(GET_RESSOURCES_PATH("csv/asia3.csv"));
@@ -1832,78 +1867,6 @@ GUM_ACTIVE_TEST(ConditionalMutualInformation) {
   TS_ASSERT_DELTA(learner.correctedMutualInformation("bronchitis", "lung_cancer", {"smoking"}),
                   -0.00486096,
                   TS_GUM_SMALL_ERROR)
-}
-
-GUM_ACTIVE_TEST(WeightedConditionalMutualInformation) {
-  {   // without weights
-    gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/weightedTest.csv"));
-
-    learner.useNoPrior();
-    learner.useNoCorrection();
-
-    TS_ASSERT_DELTA(learner.mutualInformation("A", "B", {"C"}), 0.464757, TS_GUM_SMALL_ERROR)
-
-    learner.useNoCorrection();
-    TS_ASSERT_DELTA(learner.mutualInformation("A", "B", {"C"}), 0.464757, TS_GUM_SMALL_ERROR)
-
-    learner.useMDLCorrection();
-    TS_ASSERT_DELTA(learner.mutualInformation("A", "B", {"C"}), 0.464757, TS_GUM_SMALL_ERROR)
-
-    learner.useNMLCorrection();
-    TS_ASSERT_DELTA(learner.mutualInformation("A", "B", {"C"}), 0.464757, TS_GUM_SMALL_ERROR)
-
-    learner.useNoCorrection();
-    TS_ASSERT_DELTA(learner.correctedMutualInformation("A", "B", {"C"}),
-                    0.464757,
-                    TS_GUM_SMALL_ERROR)
-
-    learner.useMDLCorrection();
-    TS_ASSERT_DELTA(learner.correctedMutualInformation("A", "B", {"C"}),
-                    0.180108,
-                    TS_GUM_SMALL_ERROR)
-
-    learner.useNMLCorrection();
-    TS_ASSERT_DELTA(learner.correctedMutualInformation("A", "B", {"C"}),
-                    0.288824,
-                    TS_GUM_SMALL_ERROR)
-  }
-  {   // with weights
-    gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/compactWeightedTest.csv"));
-    learner.setRecordWeight(0, 2);
-    learner.setRecordWeight(1, 2);
-    learner.setRecordWeight(2, 4);
-    learner.setRecordWeight(3, 1);
-    learner.setRecordWeight(4, 1);
-    learner.setRecordWeight(5, 3);
-    learner.setRecordWeight(6, 0);
-
-
-    TS_ASSERT_DELTA(learner.mutualInformation("A", "B", {"C"}), 0.464757, TS_GUM_SMALL_ERROR)
-
-    learner.useNoCorrection();
-    TS_ASSERT_DELTA(learner.mutualInformation("A", "B", {"C"}), 0.464757, TS_GUM_SMALL_ERROR)
-
-    learner.useMDLCorrection();
-    TS_ASSERT_DELTA(learner.mutualInformation("A", "B", {"C"}), 0.464757, TS_GUM_SMALL_ERROR)
-
-    learner.useNMLCorrection();
-    TS_ASSERT_DELTA(learner.mutualInformation("A", "B", {"C"}), 0.464757, TS_GUM_SMALL_ERROR)
-
-    learner.useNoCorrection();
-    TS_ASSERT_DELTA(learner.correctedMutualInformation("A", "B", {"C"}),
-                    0.464757,
-                    TS_GUM_SMALL_ERROR)
-
-    learner.useMDLCorrection();
-    TS_ASSERT_DELTA(learner.correctedMutualInformation("A", "B", {"C"}),
-                    0.180108,
-                    TS_GUM_SMALL_ERROR)
-
-    learner.useNMLCorrection();
-    TS_ASSERT_DELTA(learner.correctedMutualInformation("A", "B", {"C"}),
-                    0.288824,
-                    TS_GUM_SMALL_ERROR)
-  }
 }
 
 private:

@@ -24,7 +24,7 @@
  * @brief A class for generic framework of learning algorithms that can easily
  * be used.
  *
- * The pack currently contains K2, GreedyHillClimbing, miic, 3off2 and
+ * The pack currently contains K2, GreedyHillClimbing, miic and
  * LocalSearchWithTabuList
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
@@ -68,6 +68,8 @@
 
 #include <agrum/BN/learning/K2.h>
 #include <agrum/BN/learning/Miic.h>
+#include <agrum/BN/learning/constraintMiic.h>
+#include <agrum/BN/learning/greedyHillClimbing.h>
 #include <agrum/BN/learning/localSearchWithTabuList.h>
 
 
@@ -80,7 +82,7 @@ namespace gum::learning {
    * @brief A pack of learning algorithms that can easily be used
    *
    * The pack currently contains K2, GreedyHillClimbing and
-   * LocalSearchWithTabuList also 3off2/miic
+   * LocalSearchWithTabuList also miic
    * @ingroup learning_group
    */
   class IBNLearner: public gum::IApproximationSchemeConfiguration, public ThreadNumberManager {
@@ -116,7 +118,7 @@ namespace gum::learning {
       GREEDY_HILL_CLIMBING,
       LOCAL_SEARCH_WITH_TABU_LIST,
       MIIC,
-      THREE_OFF_TWO
+      CONSTRAINT_MIIC
     };
 
 
@@ -359,7 +361,7 @@ namespace gum::learning {
     DAG learnDAG();
 
     /// learn a partial structure from a file (must have read the db before and
-    /// must have selected miic or 3off2)
+    /// must have selected miic)
     PDAG learnPDAG();
 
     /// sets an initial DAG structure
@@ -706,30 +708,30 @@ namespace gum::learning {
     /// indicate that we wish to use K2
     void useK2(const std::vector< NodeId >& order);
 
-    /// indicate that we wish to use 3off2
-    void use3off2();
-
     /// indicate that we wish to use MIIC
     void useMIIC();
+
+    /// indicate that we wish to use MIIC
+    void useConstraintMIIC();
 
     /// @}
 
     // ##########################################################################
-    /// @name 3off2/MIIC parameterization and specific results
+    /// @name MIIC parameterization and specific results
     // ##########################################################################
     /// @{
-    /// indicate that we wish to use the NML correction for 3off2 and MIIC
-    /// @throws OperationNotAllowed when 3off2 is not the selected algorithm
+    /// indicate that we wish to use the NML correction for and MIIC
+    /// @throws OperationNotAllowed when MIIC is not the selected algorithm
     void useNMLCorrection();
-    /// indicate that we wish to use the MDL correction for 3off2 and MIIC
-    /// @throws OperationNotAllowed when 3off2 is not the selected algorithm
+    /// indicate that we wish to use the MDL correction for  MIIC
+    /// @throws OperationNotAllowed when MIIC is not the selected algorithm
     void useMDLCorrection();
-    /// indicate that we wish to use the NoCorr correction for 3off2 and MIIC
-    /// @throws OperationNotAllowed when 3off2 is not the selected algorithm
+    /// indicate that we wish to use the NoCorr correction for MIIC
+    /// @throws OperationNotAllowed when MIIC is not the selected algorithm
     void useNoCorrection();
 
     /// get the list of arcs hiding latent variables
-    /// @throws OperationNotAllowed when 3off2 or MIIC is not the selected algorithm
+    /// @throws OperationNotAllowed when MIIC is not the selected algorithm
     std::vector< Arc > latentVariables() const;
 
     /// @}
@@ -771,24 +773,24 @@ namespace gum::learning {
     void eraseForbiddenArc(const std::string& tail, const std::string& head);
     ///@}
 
-    /// assign a set of forbidden arcs
+    /// assign a set of mandatory arcs
     void setMandatoryArcs(const ArcSet& set);
 
-    /// @name assign a new forbidden arc
+    /// @name assign a new mandatory arc
     ///@{
     void addMandatoryArc(const Arc& arc);
     void addMandatoryArc(const NodeId tail, const NodeId head);
     void addMandatoryArc(const std::string& tail, const std::string& head);
     ///@}
 
-    /// @name remove a forbidden arc
+    /// @name remove a mandatory arc
     ///@{
     void eraseMandatoryArc(const Arc& arc);
     void eraseMandatoryArc(const NodeId tail, const NodeId head);
     void eraseMandatoryArc(const std::string& tail, const std::string& head);
     /// @}
 
-    /// assign a set of forbidden edges
+    /// assign a set of possible edges
     /// @warning Once at least one possible edge is defined, all other edges are
     /// not possible anymore
     /// @{
@@ -848,7 +850,7 @@ namespace gum::learning {
     /// epsilon for EM. if espilon=0.0 : no EM
     double epsilonEM_{0.0};
 
-    /// the selected correction for 3off2 and miic
+    /// the selected correction for miic
     CorrectedMutualInformation* mutualInfo_{nullptr};
 
     /// the a priorselected for the score and parameters
@@ -886,10 +888,13 @@ namespace gum::learning {
     /// the K2 algorithm
     K2 algoK2_;
 
-    /// the MIIC or 3off2 algorithm
-    Miic algoMiic3off2_;
+    /// the MIIC algorithm
+    Miic algoMiic_;
 
-    /// the penalty used in 3off2
+    /// the Constraint MIIC algorithm
+    ConstraintMiic constraintMiic_;
+
+    /// the penalty used in MIIC
     typename CorrectedMutualInformation::KModeTypes kmode3Off2_{
        CorrectedMutualInformation::KModeTypes::MDL};
 
@@ -946,13 +951,16 @@ namespace gum::learning {
     /// returns the DAG learnt
     DAG learnDag_();
 
-    /// prepares the initial graph for 3off2 or miic
-    MixedGraph prepareMiic3Off2_();
+    /// prepares the initial graph for miic
+    MixedGraph prepareMiic_();
+
+    /// prepares the initial graph for miic
+    MixedGraph prepareConstraintMiic_();
 
     /// returns the type (as a string) of a given prior
     PriorType getPriorType_() const;
 
-    /// create the Corrected Mutual Information instance for Miic/3off2
+    /// create the Corrected Mutual Information instance for Miic
     void createCorrectedMutualInformation_();
 
 
