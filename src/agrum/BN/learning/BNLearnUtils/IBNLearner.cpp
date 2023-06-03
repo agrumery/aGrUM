@@ -576,6 +576,7 @@ namespace gum::learning {
       DiGraph forbiddenGraph;
       DAG mandatoryGraph;
 
+            GUM_CHECKPOINT
       for (Size i = 0; i < scoreDatabase_.databaseTable().nbVariables(); ++i) {
         mgraph.addNodeWithId(i);
         forbiddenGraph.addNodeWithId(i);
@@ -585,29 +586,36 @@ namespace gum::learning {
         }
       }
 
+            GUM_CHECKPOINT
       const EdgeSet& possible_edges = constraintPossibleEdges_.edges();
       const EdgeSet& all_edges = mgraph.edges();
       const EdgeSet& impossible_edges = all_edges - possible_edges;
 
+            GUM_CHECKPOINT
       for (const auto& edge: impossible_edges) {
         forbiddenGraph.addArc(edge.first(), edge.second());
         forbiddenGraph.addArc(edge.second(),edge.first());
       }
+      GUM_CHECKPOINT
       mgraph.clear();
+      GUM_TRACE(mgraph);
       for (const auto& edge: possible_edges) {
         mgraph.addEdge(edge.first(), edge.second());
       }
+      GUM_CHECKPOINT
 
       // translating the mandatory arcs for constraintMiic
       HashTable< std::pair< NodeId, NodeId >, char > initial_marks;
       const ArcSet& mandatory_arcs = constraintMandatoryArcs_.arcs();
-    
+
+        GUM_CHECKPOINT
       for (const auto& arc: mandatory_arcs) {
         mandatoryGraph.addArc(arc.tail(), arc.head());
         forbiddenGraph.addArc(arc.head(),arc.head());
         //initial_marks.insert({arc.tail(), arc.head()}, '>');
       }
 
+            GUM_CHECKPOINT
       // translating the forbidden arcs for constraintMiic
       const ArcSet& forbidden_arcs = constraintForbiddenArcs_.arcs();
       for (const auto& arc: forbidden_arcs) {
@@ -615,6 +623,7 @@ namespace gum::learning {
         // initial_marks.insert({arc.tail(), arc.head()}, '-');
       }
 
+            GUM_CHECKPOINT
       const gum::NodeProperty< gum::Size > sliceOrder = constraintSliceOrder_.sliceOrder();
       gum::NodeProperty< gum::Size > copyOrder = gum::HashTable(sliceOrder);
       for (const auto& [n1,r1]: sliceOrder) {
@@ -631,15 +640,18 @@ namespace gum::learning {
         copyOrder.erase(n1);  
       }
 
+            GUM_CHECKPOINT
       constraintMiic_.setMaxIndegree(constraintIndegree_.maxIndegree());
       constraintMiic_.addConstraints(initial_marks);
       constraintMiic_.setMandatoryGraph(mandatoryGraph);
       constraintMiic_.setForbiddenGraph(forbiddenGraph);
 
+            GUM_CHECKPOINT
       // create the mutual entropy object
       // if ( _mutual_info_ == nullptr) { this->useNMLCorrection(); }
       createCorrectedMutualInformation_();
 
+            GUM_CHECKPOINT
       return mgraph;
   }
 
@@ -664,8 +676,11 @@ namespace gum::learning {
     } else {
       BNLearnerListener listener(this, constraintMiic_);
       // create the mixedGraph_constraint_MandatoryArcs.arcs
+      GUM_CHECKPOINT
       MixedGraph mgraph = this->prepareConstraintMiic_();
+      GUM_CHECKPOINT
       mg= constraintMiic_.learnMixedStructure(*mutualInfo_, mgraph);
+      GUM_CHECKPOINT
     }
 
     PDAG res;

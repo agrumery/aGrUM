@@ -23,10 +23,11 @@
 #include <vector>
 #include <string>
 #include <iostream>
-#include "agrum/tools/core/exceptions.h"
 
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/testsuite_utils.h>
+
+#include <agrum/tools/core/exceptions.h>
 
 #include <agrum/tools/variables/allDiscreteVariables.h>
 #include <agrum/BN/learning/BNLearner.h>
@@ -934,7 +935,10 @@ GUM_ACTIVE_TEST(_BugDoumenc) {
                                      "AR",
                                      "DFM"};   // binary variables for the BN
 
-  std::vector< std::string > varTer{"NBC", "MED", "DEM", "SP"};   // ternary variables for the bN
+      std::vector< std::string > varTer{"NBC",
+                                        "MED",
+                                        "DEM",
+                                        "SP"};                // ternary variables for the bN
 
   std::vector< std::string > varContinuous{"A", "ADL"};   // continuous variables for the BN
 
@@ -1077,7 +1081,8 @@ GUM_ACTIVE_TEST(_setSliceOrderWithNames) {
                    const gum::DuplicateElement&)
 
   gum::learning::BNLearner< double > learner3(GET_RESSOURCES_PATH("csv/asia3.csv"));
-  TS_ASSERT_THROWS(learner3.setSliceOrder(
+      TS_ASSERT_THROWS(
+         learner3.setSliceOrder(
                       {{"smoking", "lung_cancer"}, {"bronchitis", "visit_to_Asia"}, {"CRUCRU"}}),
                    const gum::MissingVariableInDatabase&)
 }
@@ -1151,7 +1156,8 @@ GUM_ACTIVE_TEST(_dirichlet2) {
 
   std::vector< double > weights{0, 1.0, 5.0, 10.0, 1000.0, 7000.0, 100000.0};
 
-  gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/db_dirichlet_learning.csv"));
+      gum::learning::BNLearner< double > learner(
+         GET_RESSOURCES_PATH("csv/db_dirichlet_learning.csv"));
   learner.useScoreBIC();
 
   for (const auto weight: weights) {
@@ -1307,20 +1313,20 @@ GUM_ACTIVE_TEST(_loglikelihood) {
   double siz = -1.0 * learner.database().size();
   learner.useNoPrior();
 
-  auto stat = learner.logLikelihood({"A"}) / siz;   // LL=-N.H
+  auto stat = learner.logLikelihood({"A"}) / siz;                  // LL=-N.H
   TS_ASSERT_DELTA(stat, 0.99943499, TS_GUM_SMALL_ERROR)
-  stat = learner.logLikelihood({"B"}) / siz;   // LL=-N.H
+  stat = learner.logLikelihood({"B"}) / siz;                       // LL=-N.H
   TS_ASSERT_DELTA(stat, 0.9986032, TS_GUM_SMALL_ERROR)
-  stat = learner.logLikelihood({std::string("A"), "B"}) / siz;   // LL=-N.H
+  stat = learner.logLikelihood({std::string("A"), "B"}) / siz;     // LL=-N.H
   TS_ASSERT_DELTA(stat, 1.9668973, TS_GUM_SMALL_ERROR)
   stat = learner.logLikelihood({std::string("A")}, {"B"}) / siz;   // LL=-N.H
   TS_ASSERT_DELTA(stat, 1.9668973 - 0.9986032, TS_GUM_SMALL_ERROR)
 
-  stat = learner.logLikelihood({"C"}) / siz;   // LL=-N.H
+  stat = learner.logLikelihood({"C"}) / siz;                       // LL=-N.H
   TS_ASSERT_DELTA(stat, 0.99860302, TS_GUM_SMALL_ERROR)
-  stat = learner.logLikelihood({"D"}) / siz;   // LL=-N.H
+  stat = learner.logLikelihood({"D"}) / siz;                       // LL=-N.H
   TS_ASSERT_DELTA(stat, 0.40217919, TS_GUM_SMALL_ERROR)
-  stat = learner.logLikelihood({std::string("C"), "D"}) / siz;   // LL=-N.H
+  stat = learner.logLikelihood({std::string("C"), "D"}) / siz;     // LL=-N.H
   TS_ASSERT_DELTA(stat, 1.40077995, TS_GUM_SMALL_ERROR)
   stat = learner.logLikelihood({std::string("C")}, {"D"}) / siz;   // LL=-N.H
   TS_ASSERT_DELTA(stat, 1.40077995 - 0.40217919, TS_GUM_SMALL_ERROR)
@@ -1329,7 +1335,7 @@ GUM_ACTIVE_TEST(_loglikelihood) {
 GUM_ACTIVE_TEST(_errorFromPyagrum) {
   try {
     gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/sample_asia.csv"));
-    learner.use3off2();
+        learner.useMIIC();
     learner.useNMLCorrection();
     auto ge3off2 = learner.learnPDAG();
   } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
@@ -1886,7 +1892,7 @@ void _test_dirichlet(const gum::BayesNet< double >& model) {
     gum::learning::BNLearner learner(parts[num_part], model);
     if (num_part == 0) {   // first part
       learner.useNoPrior();
-    } else {   // other parts, using partial(i-1) as prior
+    } else {               // other parts, using partial(i-1) as prior
       learner.useDirichletPrior(partial, double(nb_elt));
     }
     partial = learner.learnParameters(model.dag(), true);
@@ -1908,6 +1914,5 @@ GUM_ACTIVE_TEST(_DirichletFromBN) {
   _test_dirichlet(gum::BayesNet< double >::fastPrototype("A<-B<-C->D", 3));
   _test_dirichlet(gum::BayesNet< double >::fastPrototype("A<-B->C->D", 3));
 }
-}
-;   // class BNLearnerTestSuite
+  };   // class BNLearnerTestSuite
 } /* namespace gum_tests */
