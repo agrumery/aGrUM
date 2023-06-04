@@ -408,6 +408,19 @@ if len(args)>1:
       else:
         if isinstance(value,list):
             value=numpy.array(value)
+        elif isinstance(value,dict):
+            if loopvars.nbrDim()>1:
+                raise ArgumentError("The value can be a dict only when specifying 1D-marginal.")
+            var=loopvars.variable(0)
+            for label in var.labels():
+                if label not in value:
+                  raise ArgumentError(f"The label '{label}' can not be found in the value.")
+            for label in value.keys():
+                if not var.isLabel(label):
+                  raise ArgumentError(f"The label '{label}' can not be found in variable {var}.")
+            value=numpy.array([value[item] for item in var.labels()])
+        else:
+            raise ArgumentError(f"{value} is not a correct value for a potential.")
 
         shape=tuple([loopvars.variable(i-1).domainSize() for i in range(loopvars.nbrDim(),0,-1)])
         if value.shape!=shape:
