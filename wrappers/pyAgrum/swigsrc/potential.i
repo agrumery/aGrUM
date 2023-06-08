@@ -420,7 +420,8 @@ if len(args)>1:
                   raise ArgumentError(f"The label '{label}' can not be found in variable {var}.")
             value=numpy.array([value[item] for item in var.labels()])
         else:
-            raise ArgumentError(f"{value} is not a correct value for a potential.")
+            if not isinstance(value,numpy.ndarray):
+                raise ArgumentError(f"{value} is not a correct value for a potential.")
 
         shape=tuple([loopvars.variable(i-1).domainSize() for i in range(loopvars.nbrDim(),0,-1)])
         if value.shape!=shape:
