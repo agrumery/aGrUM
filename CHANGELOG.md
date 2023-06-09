@@ -1,5 +1,17 @@
 # aGrUM Changelog
 
+## Changelog for 1.8.3
+
+* aGrUM
+  * Removing GCC warnings about overloaded virtual methods.
+  * Fixing a bug in jointree inference in rare cases (when an irrelevant soft evidence is added).
+  
+* pyAgrum
+  * Fixing a bug in jointree inference in rare cases (when an irrelevant soft evidence is added).
+  * Removing deprecated methods from pyAgrum<1.1.0.
+  * Adding new syntax for set (conditional) marginal with dict : `p[{"A":0,"C":1}]={"no":0.3,"yes":0.7}`.
+  * small updates for pyAgrum's documentation.
+
 ## Changelog for 1.8.2
 
 * aGrUM
