@@ -1,4 +1,4 @@
--Tools for Bayesian networks
+Tools for Bayesian networks
 ---------------------------
 .. figure:: _static/BNcomparison.png
     :align: center
