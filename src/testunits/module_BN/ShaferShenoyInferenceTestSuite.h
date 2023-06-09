@@ -1275,6 +1275,36 @@ namespace gum_tests {
                              TS_GUM_SMALL_ERROR)
     }
 
+    GUM_ACTIVE_TEST(IrrelevantSoftEvidence) {
+      auto                     bn = gum::BayesNet< double >::fastPrototype("A->B<-C");
+      gum::Potential< double > psoft;
+      gum::Potential< double > phard;
+      {
+        auto hardev = gum::Potential< double >();
+        hardev.add(bn.variable("A"));
+        hardev.fillWith({0, 1});
+
+        gum::ShaferShenoyInference ie(&bn);
+        ie.addEvidence(hardev);
+        ie.addTarget("C");
+        TS_GUM_ASSERT_THROWS_NOTHING(ie.makeInference());
+        phard = gum::Potential(ie.posterior("C"));
+      }
+      {
+        auto softev = gum::Potential< double >();
+        softev.add(bn.variable("A"));
+        softev.fillWith({0.5, 1});
+
+        gum::ShaferShenoyInference ie(&bn);
+        ie.addEvidence(softev);
+        ie.addTarget("C");
+        TS_GUM_ASSERT_THROWS_NOTHING(ie.makeInference());
+        psoft = gum::Potential(ie.posterior("C"));
+      }
+      TS_GUM_POTENTIAL_DELTA(phard, psoft, TS_GUM_VERY_SMALL_ERROR)
+    }
+
+
     private:
     void randomInitP(const gum::Potential< double >& tt) {
       auto&              t = const_cast< gum::Potential< double >& >(tt);

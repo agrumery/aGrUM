@@ -817,9 +817,11 @@ namespace gum {
     // we shall now add all the potentials of the soft evidence to the cliques
     const NodeProperty< const Potential< GUM_SCALAR >* >& evidence = this->evidence();
     for (const auto node: this->softEvidenceNodes()) {
-      auto ev_pot = new ScheduleMultiDim< Potential< GUM_SCALAR > >(*evidence[node], false);
-      _node_to_soft_evidence_.insert(node, ev_pot);
-      _clique_potentials_[_node_to_clique_[node]].insert(ev_pot);
+      if (_node_to_clique_.exists(node)) {
+        auto ev_pot = new ScheduleMultiDim< Potential< GUM_SCALAR > >(*evidence[node], false);
+        _node_to_soft_evidence_.insert(node, ev_pot);
+        _clique_potentials_[_node_to_clique_[node]].insert(ev_pot);
+      }
     }
 
     // put all the CPTs of the Bayes net nodes into the cliques

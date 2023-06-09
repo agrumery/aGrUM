@@ -370,5 +370,41 @@ namespace gum_tests {
         TS_GUM_POTENTIAL_DELTA(p, pAC(mn), TS_GUM_SMALL_ERROR)
       }
     }
+
+    GUM_ACTIVE_TEST(IrrelevantSoftEvidence) {
+      auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;D--C--E");
+      gum::Potential< double > psoft;
+      gum::Potential< double > phard;
+
+      auto hardevC = gum::Potential< double >();
+      hardevC.add(mn.variable("C"));
+      hardevC.fillWith({0, 1});
+
+      {
+        auto hardev = gum::Potential< double >();
+        hardev.add(mn.variable("A"));
+        hardev.fillWith({0, 1});
+
+        gum::ShaferShenoyMRFInference ie(&mn);
+        ie.addEvidence(hardevC);
+        ie.addEvidence(hardev);
+        ie.addTarget("E");
+        TS_GUM_ASSERT_THROWS_NOTHING(ie.makeInference());
+        phard = gum::Potential(ie.posterior("E"));
+      }
+      {
+        auto softev = gum::Potential< double >();
+        softev.add(mn.variable("A"));
+        softev.fillWith({0.5, 1});
+
+        gum::ShaferShenoyMRFInference ie(&mn);
+        ie.addEvidence(hardevC);
+        ie.addEvidence(softev);
+        ie.addTarget("E");
+        TS_GUM_ASSERT_THROWS_NOTHING(ie.makeInference());
+        psoft = gum::Potential(ie.posterior("E"));
+      }
+      TS_GUM_POTENTIAL_DELTA(phard, psoft, TS_GUM_VERY_SMALL_ERROR)
+    }
   };
 }   // namespace gum_tests

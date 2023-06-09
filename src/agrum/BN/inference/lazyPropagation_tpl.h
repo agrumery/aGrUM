@@ -539,7 +539,9 @@ namespace gum {
         for (const auto& pair: this->evidence()) {
           evidence_nodes.insert(pair.first);
         }
+
         finder.setEvidence(&evidence_nodes);
+
 
         NodeSet barren_nodes = finder.barrenNodes();
 
@@ -703,7 +705,6 @@ namespace gum {
                                 _triangulation_->createdJunctionTreeClique(first_eliminated_node));
       }
     }
-
     // indicate for each joint_target a clique that contains it
     _joint_target_to_clique_.clear();
     for (const auto& set: this->jointTargets()) {
@@ -810,13 +811,17 @@ namespace gum {
       _initializeJTCliques_();
     }
 
+
     // we shall now add all the potentials of the soft evidence
     const NodeProperty< const Potential< GUM_SCALAR >* >& evidence = this->evidence();
     for (const auto node: this->softEvidenceNodes()) {
-      auto ev_pot = new ScheduleMultiDim< Potential< GUM_SCALAR > >(*evidence[node], false);
-      _node_to_soft_evidence_.insert(node, ev_pot);
-      _clique_potentials_[_node_to_clique_[node]].insert(ev_pot);
+      if (_node_to_clique_.exists(node)) {
+        auto ev_pot = new ScheduleMultiDim< Potential< GUM_SCALAR > >(*evidence[node], false);
+        _node_to_soft_evidence_.insert(node, ev_pot);
+        _clique_potentials_[_node_to_clique_[node]].insert(ev_pot);
+      }
     }
+
 
     // indicate that the data structures are up to date.
     _evidence_changes_.clear();
@@ -1061,6 +1066,8 @@ namespace gum {
     // fully new join tree would have been computed).
     // Note also that we know that the CPTs still contain some variable(s) after
     // the projection (else they should be constants)
+
+
     NodeSet hard_nodes_changed(_hard_ev_nodes_.size());
     for (const auto node: _hard_ev_nodes_)
       if (_evidence_changes_.exists(node)) hard_nodes_changed.insert(node);
@@ -1261,6 +1268,7 @@ namespace gum {
         _node_to_hard_ev_projected_CPTs_.insert(node, projected_pot);
       }
     }
+
 
     // update the constants
     const auto& hard_evidence = this->hardEvidence();
