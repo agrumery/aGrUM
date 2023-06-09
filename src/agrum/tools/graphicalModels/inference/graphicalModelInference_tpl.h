@@ -302,7 +302,7 @@ namespace gum {
     // check whether we have a hard evidence (and also check whether the
     // potential only contains 0 (in this case, this will automatically raise
     // an exception) )
-    Idx  val;
+    Idx  val=0;
     bool is_hard_evidence = _isHardEvidence_(pot, val);
 
     // insert the evidence

@@ -257,6 +257,9 @@ namespace gum {
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
+    private:   // best attempt to get rid of overloaded virtual warnings
+    using HashFuncBase< Key >::operator();
+    public:
     virtual Size operator()(const Key& key) const override final;
   };
 

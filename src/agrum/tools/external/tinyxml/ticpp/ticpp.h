@@ -1347,6 +1347,9 @@ It will take care of the conversion and throwing the exception.
 
   /** Wrapper around TiXmlComment */
   class Comment : public NodeImp< TiXmlComment > {
+    private:   // best attempt to get rid of overloaded virtual warnings
+    using  NodeImp< TiXmlComment >::operator=;
+
     public:
     /**
     Constructor.
@@ -1366,6 +1369,8 @@ It will take care of the conversion and throwing the exception.
 
   /** Wrapper around TiXmlText */
   class Text : public NodeImp< TiXmlText > {
+    private:   // best attempt to get rid of overloaded virtual warnings
+    using  NodeImp< TiXmlText >::operator=;
     public:
     /**
     Constructor.
@@ -1402,6 +1407,8 @@ It will take care of the conversion and throwing the exception.
 
   /** Wrapper around TiXmlDocument */
   class Document : public NodeImp< TiXmlDocument > {
+    private:   // best attempt to get rid of overloaded virtual warnings
+    using  NodeImp< TiXmlDocument >::operator=;
     public:
     /**
     Default Constructor.
@@ -1491,6 +1498,9 @@ It will take care of the conversion and throwing the exception.
 
   /** Wrapper around TiXmlElement */
   class Element : public NodeImp< TiXmlElement > {
+    private:   // best attempt to get rid of overloaded virtual warnings
+    using  NodeImp< TiXmlElement >::operator=;
+
     public:
     /**
     Default Constructor.
@@ -1884,6 +1894,8 @@ It will take care of the conversion and throwing the exception.
 
   /** Wrapper around TiXmlDeclaration */
   class Declaration : public NodeImp< TiXmlDeclaration > {
+    private:   // best attempt to get rid of overloaded virtual warnings
+    using  NodeImp< TiXmlDeclaration >::operator=;
     public:
     /**
     Default Constructor. Construct an empty declaration.
@@ -1920,6 +1932,8 @@ It will take care of the conversion and throwing the exception.
 
   /** Wrapper around TiXmlStylesheetReference */
   class StylesheetReference : public NodeImp< TiXmlStylesheetReference > {
+    private:   // best attempt to get rid of overloaded virtual warnings
+    using  NodeImp< TiXmlStylesheetReference >::operator=;
     public:
     /**
     Default Constructor. Construct an empty declaration.

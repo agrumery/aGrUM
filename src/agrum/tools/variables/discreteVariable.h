@@ -123,12 +123,21 @@ namespace gum {
 
     DiscreteVariable& operator=(const DiscreteVariable& aRV);
 
+    private:   // best attempt to get rid of overloaded virtual warnings
+    using Variable::operator==;
+
+    public:
     /// equality operator
     virtual bool operator==(const DiscreteVariable& aRV) const;
 
-    /// inequality operator
+    private:   // best attempt to get rid of overloaded virtual warnings
+    using Variable::operator!=;
 
+    public:
+    /// inequality operator
     virtual bool operator!=(const DiscreteVariable& aRV) const;
+
+#pragma GCC diagnostic pop
 
     /// @}
 
@@ -152,7 +161,7 @@ namespace gum {
     std::string toStringWithDescription() const;
 
     /// string represent the domain of the variable
-    virtual std::string domain() const = 0;
+    std::string domain() const override = 0;
 
     /// string represent the type of the variable
     virtual std::string stype() const = 0;
@@ -160,10 +169,7 @@ namespace gum {
 
     protected:
     /// (protected) Default constructor
-    DiscreteVariable() {
-      GUM_CONSTRUCTOR(DiscreteVariable);
-      ;
-    }
+    DiscreteVariable() { GUM_CONSTRUCTOR(DiscreteVariable) }
   };
 
   /// for friendly displaying the content of the variable

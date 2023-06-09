@@ -120,6 +120,9 @@ namespace gum {
     }
 
     /// computes the hashed value of a key
+    private:   // best attempt to get rid of overloaded virtual warnings
+    using HashFunc< Val >::operator();
+    public:
     INLINE Size operator()(const AVLTreeNode< Val >& key) const {
       return HashFunc< Val >::operator()(key.value);
     }

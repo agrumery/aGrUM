@@ -516,6 +516,10 @@ namespace gum {
         O3RawCPT(O3RawCPT&& src);
         ~O3RawCPT();
 
+        private:   // best attempt to get rid of overloaded virtual warnings
+        using O3Attribute::operator=;
+
+        public:
         virtual O3RawCPT& operator=(const O3RawCPT& src);
         virtual O3RawCPT& operator=(O3RawCPT&& src);
 
@@ -551,6 +555,10 @@ namespace gum {
         O3RuleCPT(O3RuleCPT&& src);
         ~O3RuleCPT();
 
+        private:   // best attempt to get rid of overloaded virtual warnings
+        using O3Attribute::operator=;
+
+        public:
         virtual O3RuleCPT& operator=(const O3RuleCPT& src);
         virtual O3RuleCPT& operator=(O3RuleCPT&& src);
 
