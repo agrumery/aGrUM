@@ -137,8 +137,6 @@ namespace gum {
     /// inequality operator
     virtual bool operator!=(const DiscreteVariable& aRV) const;
 
-#pragma GCC diagnostic pop
-
     /// @}
 
     /// from the label to its index in var.
