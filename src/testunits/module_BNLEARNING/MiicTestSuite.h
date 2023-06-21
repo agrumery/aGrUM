@@ -167,50 +167,6 @@ namespace gum_tests {
       TS_ASSERT(graph.existsEdge(5, 7))
     }
 
-    GUM_ACTIVE_TEST(_MIIC_ms_order1_) {
-      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/ms_data_order1.csv"));
-      const auto&                         var_names = initializer.variableNames();
-      const std::size_t                   nb_vars   = var_names.size();
-
-      gum::learning::DBTranslatorSet translator_set;
-      gum::LabelizedVariable         var_lab("x", "", 0);
-      var_lab.addLabel("0");
-      var_lab.addLabel("1");
-      gum::learning::DBTranslator4LabelizedVariable translator(var_lab);
-      for (std::size_t i = 0; i < nb_vars; ++i) {
-        translator_set.insertTranslator(translator, i);
-      }
-
-      gum::learning::DatabaseTable database(translator_set);
-      database.setVariableNames(initializer.variableNames());
-      initializer.fillDatabase(database);
-
-      gum::learning::DBRowGeneratorSet    genset;
-      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-
-      std::vector< gum::Size > modalities(nb_vars, 2);
-
-      gum::learning::NoPrior                    prior(database);
-      gum::learning::CorrectedMutualInformation cI(parser, prior);
-      cI.useMDL();
-      // cI.useCache( false );
-
-      gum::learning::Miic search;
-
-      SimpleListenerForMiic listener ( search );
-
-      // creating complete graph
-      gum::MixedGraph graph, g;
-      for (gum::Size i = 0; i < modalities.size(); ++i) {
-        graph.addNodeWithId(i);
-        for (gum::Size j = 0; j < i; ++j) {
-          graph.addEdge(j, i);
-        }
-      }
-
-      graph = search.learnMixedStructure(cI, graph);
-    }
-
     void xtest_tonda() {
       /*
       gum::learning::DatabaseFromCSV database(
