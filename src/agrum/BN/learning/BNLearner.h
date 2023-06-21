@@ -243,8 +243,8 @@ namespace gum {
         IBNLearner::useSimpleMIIC();
         return *this;
       }
-      BNLearner< GUM_SCALAR >& useConstraintMIIC() {
-        IBNLearner::useConstraintMIIC();
+      BNLearner< GUM_SCALAR >& useMIIC() {
+        IBNLearner::useMIIC();
         return *this;
       }
       BNLearner< GUM_SCALAR >& useNMLCorrection() {

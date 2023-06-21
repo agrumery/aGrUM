@@ -200,8 +200,8 @@ namespace gum::learning {
   }
 
   // indicate that we wish to use MIIC with constraints
-  INLINE void IBNLearner::useConstraintMIIC() {
-    selectedAlgo_ = AlgoType::CONSTRAINT_MIIC;
+  INLINE void IBNLearner::useMIIC() {
+    selectedAlgo_ = AlgoType::MIIC;
   }
 
   /// indicate that we wish to use the NML correction for MIIC

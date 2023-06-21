@@ -296,7 +296,6 @@ namespace gum_tests {
           LL1 += bn1.log2JointProbability(I1) * row.weight();
           LL2 += bn2.log2JointProbability(I2) * row.weight();
         }
-
         TS_ASSERT_EQUALS(LL1, LL2)
       }
     }
@@ -305,12 +304,13 @@ namespace gum_tests {
       //[smoking , lung_cancer , bronchitis , visit_to_Asia , tuberculosis ,
       // tuberculos_or_cancer , dyspnoea , positive_XraY]
       // possible edges are not relevant
-      try {
-        gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"));
-        learner.useConstraintMIIC();
-        learner.addPossibleEdge("visit_to_Asia", "lung_cancer");
-        learner.addPossibleEdge("visit_to_Asia", "smoking");
 
+      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"));
+      learner.useMIIC();
+      learner.addPossibleEdge("visit_to_Asia", "lung_cancer");
+      learner.addPossibleEdge("visit_to_Asia", "smoking");
+
+      try {
         auto mg = learner.learnPDAG();
         TS_ASSERT_EQUALS(mg.sizeArcs(), (gum::Size)0)
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
@@ -321,15 +321,13 @@ namespace gum_tests {
 
       aSimpleBNLeanerListener listen(learner);
 
-      learner.useGreedyHillClimbing();
-      learner.useConstraintMIIC();
+      learner.useMIIC();
       learner.useMDLCorrection();
 
       // Constraints
       // learner.addForbiddenArc(gum::Arc(1, 5));
       learner.addForbiddenArc(gum::Arc(2, 6));
       learner.addForbiddenArc(gum::Arc(6, 2));
-
       learner.addMandatoryArc(gum::Arc(3, 4));
 
       try {
@@ -349,7 +347,7 @@ namespace gum_tests {
       aSimpleBNLeanerListener listen(learner);
 
       learner.useGreedyHillClimbing();
-      learner.useConstraintMIIC();
+      learner.useMIIC();
       learner.useNMLCorrection();
 
       gum::NodeProperty< gum::Size > slice_order{std::make_pair(gum::NodeId(34), (gum::Size)0),
@@ -380,7 +378,7 @@ namespace gum_tests {
     // with a table filled with the content of the asia.csv file. You will also
     // need a proper odbc configuration (under linux and macos you'll need
     // unixodbc and specific database odbc drivers).
-    /* GUM_INACTIVE_TEST(_asia_db) {
+    /* GUM_ACTIVE_TEST(_asia_db) {
 #ifdef _ODBC
       try {
         auto db = gum::learning::DatabaseFromSQL(

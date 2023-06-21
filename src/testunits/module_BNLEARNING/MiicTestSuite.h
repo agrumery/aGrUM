@@ -37,7 +37,7 @@
 
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
-#include <agrum/BN/learning/constraintMiic.h>
+#include <agrum/BN/learning/Miic.h>
 #include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
 
 #include <agrum/tools/core/approximations/approximationScheme.h>
@@ -67,7 +67,7 @@ namespace gum_tests {
     };
   };
 
-  class ConstraintMiicTestSuite: public CxxTest::TestSuite {
+  class MiicTestSuite: public CxxTest::TestSuite {
     public:
     GUM_INACTIVE_TEST(_asia_MDLcorr) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
@@ -97,7 +97,7 @@ namespace gum_tests {
       cI.useMDL();
       // cI.useCache( false );
 
-      gum::learning::ConstraintMiic search;
+      gum::learning::Miic search;
       // creating complete graph
       gum::MixedGraph graph, g;
       for (gum::Size i = 0; i < modalities.size(); ++i) {
@@ -140,7 +140,7 @@ namespace gum_tests {
       gum::learning::CorrectedMutualInformation cI(parser, prior);
       cI.useMDL();
 
-      gum::learning::ConstraintMiic   search;
+      gum::learning::Miic   search;
 
       // creating complete graph
       gum::MixedGraph graph;
@@ -191,7 +191,7 @@ namespace gum_tests {
       gum::learning::CorrectedMutualInformation cI(parser, prior);
       cI.useMDL();
 
-      gum::learning::ConstraintMiic   search;
+      gum::learning::Miic   search;
 
       // creating complete graph
       gum::MixedGraph graph;
@@ -243,7 +243,7 @@ namespace gum_tests {
       cI.useMDL();
       // cI.useCache( false );
 
-      gum::learning::ConstraintMiic search;
+      gum::learning::Miic search;
       // creating complete graph
       gum::MixedGraph graph, g;
       for (gum::Size i = 0; i < modalities.size(); ++i) {
@@ -288,7 +288,7 @@ namespace gum_tests {
       cI.useMDL();
       // cI.useCache( false );
 
-      gum::learning::ConstraintMiic search;
+      gum::learning::Miic search;
       // creating complete graph
       gum::MixedGraph graph, g;
       for (gum::Size i = 0; i < modalities.size(); ++i) {
@@ -346,7 +346,7 @@ namespace gum_tests {
       gum::learning::CorrectedMutualInformation cI(parser, prior);
       // cI.useCache( false );
 
-      gum::learning::ConstraintMiic search;
+      gum::learning::Miic search;
 
       //SimpleListenerForMiic listener;
       // FilterListenerForMiic filterlistener;
@@ -405,7 +405,7 @@ namespace gum_tests {
       gum::learning::CorrectedMutualInformation cI(parser, prior);
       // cI.useCache( false );
 
-      gum::learning::ConstraintMiic search;
+      gum::learning::Miic search;
 
       //SimpleListenerForMiic listener;
       // FilterListenerForMiic filterlistener;
@@ -430,5 +430,5 @@ namespace gum_tests {
     }
 
 
-  }; // ConstraintMiicTestSuite
+  }; // MiicTestSuite
 }   // namespace gum_test

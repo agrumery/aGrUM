@@ -306,11 +306,10 @@ namespace gum {
           vals.emplace_back(key, "Local Search with Tabu List", "");
           vals.emplace_back("Tabu list size", std::to_string(nbDecreasingChanges_), "");
           break;
-        case AlgoType::CONSTRAINT_MIIC: vals.emplace_back(key, "Constraint MIIC", ""); break;
         case AlgoType::MIIC: vals.emplace_back(key, "MIIC", ""); break;
+        case AlgoType::SIMPLE_MIIC: vals.emplace_back(key, "Simple MIIC", ""); break;
         default: vals.emplace_back(key, "(unknown)", "?"); break;
       }
-
 
 
       key = "Score";
@@ -326,7 +325,7 @@ namespace gum {
 
       key                                        = "Correction";
       const std::string NotUsedForScoreBasedAlgo = "Not used for score-based algorithms";
-      switch (kmode3Off2_) {
+      switch (kmodeMiic_) {
         case CorrectedMutualInformation::KModeTypes::MDL:
           vals.emplace_back(key, "MDL", NotUsedForScoreBasedAlgo);
           break;

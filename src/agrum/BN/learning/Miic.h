@@ -21,22 +21,22 @@
 
 /**
   * @file
-  * @brief The constraintMiic algorithm
+  * @brief The Miic algorithm
   *
-  * The constraintMiic class implements the miic algorithm based on
+  * The Miic class implements the miic algorithm based on
   * https://doi.org/10.1371/journal.pcbi.1005662.
   * It starts by eliminating edges that correspond to independent variables to
   * build the skeleton of the graph, and then directs the remaining edges to get
   * an essential graph. Latent variables can be detected using bi-directed arcs.
   *
-  * constraintMiic allows the option of adding constraints on the skeleton construction
+  * Miic allows the option of adding constraints on the skeleton construction
   * such as: a maximum number of parents, mandatory arcs, forbidden arcs or an order between the variables.
   * 
   * @author Quentin FALCAND and Pierre-Henri WUILLEMIN(_at_LIP6) and Maria Virginia
   * RUIZ CUEVAS
 */
-#ifndef GUM_LEARNING_CONSTRAINT_MIIC_H
-#define GUM_LEARNING_CONSTRAINT_MIIC_H
+#ifndef GUM_LEARNING_MIIC_H
+#define GUM_LEARNING_MIIC_H
 
 #include <string>
 #include <vector>
@@ -86,22 +86,22 @@ namespace gum {
     };
 
     /**
-     * @class constraintMiic
-     * @brief The constraintMiic learning algorithm
+     * @class Miic
+     * @brief The Miic learning algorithm
      *
-     * The constraintMiic class implements the miic algorithm based on
+     * The Miic class implements the miic algorithm based on
      * https://doi.org/10.1371/journal.pcbi.1005662.
      * It starts by eliminating edges that correspond to independent variables to
      * build the skeleton of the graph, and then directs the remaining edges to get
      * an essential graph. Latent variables can be detected using bi-directed arcs.
      * 
-     * constraintMiic allows the option of adding constraints on the skeleton construction
+     * Miic allows the option of adding constraints on the skeleton construction
      * such as: a maximum number of parents, mandatory arcs, forbidden arcs or an order between the variables.
      *
      *
      * @ingroup learning_group
      */
-    class ConstraintMiic: public ApproximationScheme {
+    class Miic: public ApproximationScheme {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -109,27 +109,27 @@ namespace gum {
       /// @{
 
       /// default constructor
-      ConstraintMiic();
+      Miic();
 
       /// default constructor with maxLog
-      explicit ConstraintMiic(int maxLog);
+      explicit Miic(int maxLog);
 
       /// copy constructor
-      ConstraintMiic(const ConstraintMiic& from);
+      Miic(const Miic& from);
 
       /// move constructor
-      ConstraintMiic(ConstraintMiic&& from);
+      Miic(Miic&& from);
 
       /// destructor
-      ~ConstraintMiic() override;
+      ~Miic() override;
 
       /// @}
 
       /// copy operator
-      ConstraintMiic& operator=(const ConstraintMiic& from);
+      Miic& operator=(const Miic& from);
 
       /// move operator
-      ConstraintMiic& operator=(ConstraintMiic&& from);
+      Miic& operator=(Miic&& from);
 
       // ##########################################################################
       /// @name Accessors / Modifiers

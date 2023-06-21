@@ -578,7 +578,10 @@ namespace gum {
           for (const auto n: nei) {
             if (!stack.contains(n) && !visited.contains(n)) stack.insert(n);
             // GUM_TRACE(" + amap reasonably orientation for " << n << "->" << next);
-            essentialGraph.eraseEdge(Edge(n, next));
+            if (propagatesRemainingOrientableEdges_(essentialGraph,next))
+              continue;
+            else
+              essentialGraph.eraseEdge(Edge(n, next));
             essentialGraph.addArc(n, next);
           }
           visited.insert(next);

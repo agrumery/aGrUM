@@ -68,7 +68,7 @@
 
 #include <agrum/BN/learning/K2.h>
 #include <agrum/BN/learning/SimpleMiic.h>
-#include <agrum/BN/learning/constraintMiic.h>
+#include <agrum/BN/learning/Miic.h>
 #include <agrum/BN/learning/greedyHillClimbing.h>
 #include <agrum/BN/learning/localSearchWithTabuList.h>
 
@@ -118,7 +118,7 @@ namespace gum::learning {
       GREEDY_HILL_CLIMBING,
       LOCAL_SEARCH_WITH_TABU_LIST,
       SIMPLE_MIIC,
-      CONSTRAINT_MIIC
+      MIIC
     };
 
 
@@ -712,7 +712,7 @@ namespace gum::learning {
     void useSimpleMIIC();
 
     /// indicate that we wish to use MIIC
-    void useConstraintMIIC();
+    void useMIIC();
 
     /// @}
 
@@ -892,7 +892,7 @@ namespace gum::learning {
     SimpleMiic algoSimpleMiic_;
 
     /// the Constraint MIIC algorithm
-    ConstraintMiic constraintMiic_;
+    Miic algoMiic_;
 
     /// the penalty used in MIIC
     typename CorrectedMutualInformation::KModeTypes kmodeMiic_{
@@ -955,7 +955,7 @@ namespace gum::learning {
     MixedGraph prepareSimpleMiic_();
 
     /// prepares the initial graph for miic
-    MixedGraph prepareConstraintMiic_();
+    MixedGraph prepareMiic_();
 
     /// returns the type (as a string) of a given prior
     PriorType getPriorType_() const;

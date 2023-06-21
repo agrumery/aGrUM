@@ -33,8 +33,8 @@
  * @author Quentin FALCAND and Pierre-Henri WUILLEMIN(_at_LIP6) and Maria Virginia
  * RUIZ CUEVAS
  */
-#ifndef GUM_LEARNING_MIIC_H
-#define GUM_LEARNING_MIIC_H
+#ifndef GUM_LEARNING_SIMPLE_MIIC_H
+#define GUM_LEARNING_SIMPLE_MIIC_H
 
 #include <string>
 #include <vector>
@@ -44,7 +44,7 @@
 #include <agrum/tools/core/heap.h>
 #include <agrum/tools/graphs/mixedGraph.h>
 #include <agrum/tools/stattests/correctedMutualInformation.h>
-#include <agrum/BN/learning/constraintMiic.h>
+#include <agrum/BN/learning/Miic.h>
 
 namespace gum {
 
