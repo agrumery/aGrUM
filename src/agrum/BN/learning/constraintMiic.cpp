@@ -204,7 +204,7 @@ namespace gum {
             graph.eraseEdge(Edge(x, y));
             GUM_SL_EMIT(x, y, 
                       "Remove " <<x<< " - " <<y, 
-                      "Independent based on MutualInformation knowing Sep " << ui )
+                      "Independent based on MutualInformation knowing Sep " << ui << "Mutual information:" << i_xy_ui)
 
             sepSet.insert(std::make_pair(x, y), std::move(ui));
           } else {
@@ -518,6 +518,8 @@ namespace gum {
     /// graph.
     DAG ConstraintMiic::learnStructure(CorrectedMutualInformation& I, MixedGraph initialGraph) {
       MixedGraph essentialGraph = learnMixedStructure(I, initialGraph);
+
+      std::cout << essentialGraph.edges() << std::endl;
       // orientate remaining edges
 
       const Sequence< NodeId > order = essentialGraph.topologicalOrder();
@@ -553,7 +555,7 @@ namespace gum {
         }
       }
       // GUM_TRACE(essentialGraph.toDot());
-      propagatesOrientationInChainOfRemainingEdges_(essentialGraph);
+      // propagatesOrientationInChainOfRemainingEdges_(essentialGraph);
       // GUM_TRACE(essentialGraph.toDot());
 
       // then decide the orientation for double arcs
@@ -617,6 +619,7 @@ namespace gum {
         NodeSet     visited;
         NodeSet     stack{root};
         // check the best root for the set of neighbours
+        std::cout << "First root: " << root << std::endl;
         while (!stack.empty()) {
           NodeId next = *(stack.begin());
           stack.erase(next);
@@ -633,6 +636,7 @@ namespace gum {
         visited.clear();
         stack.clear();
         stack.insert(root);
+        std::cout << "Root chosen: " << root << std::endl;
         while (!stack.empty()) {
           NodeId next = *(stack.begin());
           stack.erase(next);
@@ -642,7 +646,9 @@ namespace gum {
             if (!stack.contains(n) && !visited.contains(n)) stack.insert(n);
             // GUM_TRACE(" + amap reasonably orientation for " << n << "->" << next);
             essentialGraph.eraseEdge(Edge(n, next));
+            GUM_SL_EMIT(n, next, "Add Arc " << n << " to " << next, " line 647")
             essentialGraph.addArc(n, next);
+            //propagatesRemainingOrientableEdges_(essentialGraph, n);
           }
           visited.insert(next);
         }
@@ -657,17 +663,19 @@ namespace gum {
         bool i_j = isOrientable_(graph, xi, xj);
         bool j_i = isOrientable_(graph, xj, xi);
         if (i_j || j_i) {
-          // GUM_TRACE(" + Removing edge (" << xi << "," << xj << ")")
+          GUM_SL_EMIT(xi, xj, "Removing Edge", "line 660")
           graph.eraseEdge(Edge(xi, xj));
           res = true;
         }
         if (i_j) {
           // GUM_TRACE(" + add arc (" << xi << "," << xj << ")")
+          GUM_SL_EMIT(xi, xj, "Add Arc", "line 666")
           graph.addArc(xi, xj);
           propagatesRemainingOrientableEdges_(graph, xj);
         }
         if (j_i) {
           // GUM_TRACE(" + add arc (" << xi << "," << xj << ")")
+          GUM_SL_EMIT(xj, xi, "Add Arc", "line 672")
           graph.addArc(xj, xi);
           propagatesRemainingOrientableEdges_(graph, xi);
         }

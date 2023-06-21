@@ -210,8 +210,7 @@ namespace gum::learning {
       constraintForbiddenArcs_(from.constraintForbiddenArcs_),
       constraintMandatoryArcs_(from.constraintMandatoryArcs_), selectedAlgo_(from.selectedAlgo_),
       algoK2_(from.algoK2_), algoMiic_(from.algoMiic_), constraintMiic_(from.constraintMiic_),
-      kmode3Off2_(from.kmode3Off2_),
-      greedyHillClimbing_(from.greedyHillClimbing_),
+      kmode3Off2_(from.kmode3Off2_), greedyHillClimbing_(from.greedyHillClimbing_),
       localSearchWithTabuList_(from.localSearchWithTabuList_), scoreDatabase_(from.scoreDatabase_),
       ranges_(from.ranges_), priorDbname_(from.priorDbname_), initialDag_(from.initialDag_),
       filename_(from.filename_), nbDecreasingChanges_(from.nbDecreasingChanges_) {
@@ -231,8 +230,7 @@ namespace gum::learning {
       constraintMandatoryArcs_(std::move(from.constraintMandatoryArcs_)),
       selectedAlgo_(from.selectedAlgo_), algoK2_(std::move(from.algoK2_)),
       algoMiic_(std::move(from.algoMiic_)), constraintMiic_(std::move(from.constraintMiic_)),
-      kmode3Off2_(from.kmode3Off2_),
-      greedyHillClimbing_(std::move(from.greedyHillClimbing_)),
+      kmode3Off2_(from.kmode3Off2_), greedyHillClimbing_(std::move(from.greedyHillClimbing_)),
       localSearchWithTabuList_(std::move(from.localSearchWithTabuList_)),
       scoreDatabase_(std::move(from.scoreDatabase_)), ranges_(std::move(from.ranges_)),
       priorDbname_(std::move(from.priorDbname_)), initialDag_(std::move(from.initialDag_)),
@@ -345,7 +343,7 @@ namespace gum::learning {
       selectedAlgo_            = from.selectedAlgo_;
       algoK2_                  = from.algoK2_;
       algoMiic_                = std::move(from.algoMiic_);
-      constraintMiic_          = std::move(from.constraintMiic_);      
+      constraintMiic_          = std::move(from.constraintMiic_);
       kmode3Off2_              = from.kmode3Off2_;
       greedyHillClimbing_      = std::move(from.greedyHillClimbing_);
       localSearchWithTabuList_ = std::move(from.localSearchWithTabuList_);
@@ -571,88 +569,83 @@ namespace gum::learning {
 
   // prepares the initial graph for constraintMiic
   MixedGraph IBNLearner::prepareConstraintMiic_() {
-      // Initialize the mixed graph to the fully connected graph
-      MixedGraph mgraph;
-      DiGraph forbiddenGraph;
-      DAG mandatoryGraph;
+    // Initialize the mixed graph to the fully connected graph
+    MixedGraph mgraph;
+    DiGraph    forbiddenGraph;
+    DAG        mandatoryGraph;
 
-            GUM_CHECKPOINT
-      for (Size i = 0; i < scoreDatabase_.databaseTable().nbVariables(); ++i) {
-        mgraph.addNodeWithId(i);
-        forbiddenGraph.addNodeWithId(i);
-        mandatoryGraph.addNodeWithId(i);
-        for (Size j = 0; j < i; ++j) {
+    GUM_CHECKPOINT
+    for (Size i = 0; i < scoreDatabase_.databaseTable().nbVariables(); ++i) {
+      mgraph.addNodeWithId(i);
+      forbiddenGraph.addNodeWithId(i);
+      mandatoryGraph.addNodeWithId(i);
+    }
+
+    GUM_CHECKPOINT
+    const EdgeSet& possible_edges = constraintPossibleEdges_.edges();
+
+    GUM_CHECKPOINT
+    GUM_TRACE(mgraph);
+    if (possible_edges.empty()) {
+      for (const NodeId i: mgraph.nodes()) {
+        for (NodeId j = 0; j < i; ++j) {   // contiguous nodeIds !
           mgraph.addEdge(j, i);
         }
       }
-
-            GUM_CHECKPOINT
-      const EdgeSet& possible_edges = constraintPossibleEdges_.edges();
-      const EdgeSet& all_edges = mgraph.edges();
-      const EdgeSet& impossible_edges = all_edges - possible_edges;
-
-            GUM_CHECKPOINT
-      for (const auto& edge: impossible_edges) {
-        forbiddenGraph.addArc(edge.first(), edge.second());
-        forbiddenGraph.addArc(edge.second(),edge.first());
-      }
-      GUM_CHECKPOINT
-      mgraph.clear();
-      GUM_TRACE(mgraph);
+    }
+    else {
       for (const auto& edge: possible_edges) {
         mgraph.addEdge(edge.first(), edge.second());
       }
-      GUM_CHECKPOINT
+    }
+    GUM_CHECKPOINT
 
-      // translating the mandatory arcs for constraintMiic
-      HashTable< std::pair< NodeId, NodeId >, char > initial_marks;
-      const ArcSet& mandatory_arcs = constraintMandatoryArcs_.arcs();
+    // translating the mandatory arcs for constraintMiic
+    HashTable< std::pair< NodeId, NodeId >, char > initial_marks;
+    const ArcSet&                                  mandatory_arcs = constraintMandatoryArcs_.arcs();
 
-        GUM_CHECKPOINT
-      for (const auto& arc: mandatory_arcs) {
-        mandatoryGraph.addArc(arc.tail(), arc.head());
-        forbiddenGraph.addArc(arc.head(),arc.head());
-        //initial_marks.insert({arc.tail(), arc.head()}, '>');
-      }
+    GUM_CHECKPOINT
+    for (const auto& arc: mandatory_arcs) {
+      mandatoryGraph.addArc(arc.tail(), arc.head());
+      forbiddenGraph.addArc(arc.head(), arc.head());
+    }
 
-            GUM_CHECKPOINT
-      // translating the forbidden arcs for constraintMiic
-      const ArcSet& forbidden_arcs = constraintForbiddenArcs_.arcs();
-      for (const auto& arc: forbidden_arcs) {
-        forbiddenGraph.addArc(arc.tail(),arc.head());
-        // initial_marks.insert({arc.tail(), arc.head()}, '-');
-      }
+    GUM_CHECKPOINT
+    // translating the forbidden arcs for constraintMiic
+    const ArcSet& forbidden_arcs = constraintForbiddenArcs_.arcs();
+    for (const auto& arc: forbidden_arcs) {
+      forbiddenGraph.addArc(arc.tail(), arc.head());
+    }
 
-            GUM_CHECKPOINT
-      const gum::NodeProperty< gum::Size > sliceOrder = constraintSliceOrder_.sliceOrder();
-      gum::NodeProperty< gum::Size > copyOrder = gum::HashTable(sliceOrder);
-      for (const auto& [n1,r1]: sliceOrder) {
-        for (const auto& [n2,r2]: copyOrder){
-          if(r1 > r2){
-            forbiddenGraph.addArc(n1,n2);
-            // initial_marks.insert({n1, n2}, '-'); 
-          }
-          else if (r2 > r1) {
-            forbiddenGraph.addArc(n2,n1);
-            // initial_marks.insert({n2, n1}, '-');
-          }
+    GUM_CHECKPOINT
+    const gum::NodeProperty< gum::Size > sliceOrder = constraintSliceOrder_.sliceOrder();
+    gum::NodeProperty< gum::Size >       copyOrder  = gum::HashTable(sliceOrder);
+    for (const auto& [n1, r1]: sliceOrder) {
+      for (const auto& [n2, r2]: copyOrder) {
+        if (r1 > r2) {
+          forbiddenGraph.addArc(n1, n2);
+          // initial_marks.insert({n1, n2}, '-');
+        } else if (r2 > r1) {
+          forbiddenGraph.addArc(n2, n1);
+          // initial_marks.insert({n2, n1}, '-');
         }
-        copyOrder.erase(n1);  
       }
+      copyOrder.erase(n1);
+    }
 
-            GUM_CHECKPOINT
-      constraintMiic_.setMaxIndegree(constraintIndegree_.maxIndegree());
-      constraintMiic_.addConstraints(initial_marks);
-      constraintMiic_.setMandatoryGraph(mandatoryGraph);
-      constraintMiic_.setForbiddenGraph(forbiddenGraph);
+    GUM_CHECKPOINT
+    constraintMiic_.setMaxIndegree(constraintIndegree_.maxIndegree());
+    constraintMiic_.addConstraints(initial_marks);
+    constraintMiic_.setMandatoryGraph(mandatoryGraph);
+    constraintMiic_.setForbiddenGraph(forbiddenGraph);
 
-            GUM_CHECKPOINT
-      // create the mutual entropy object
-      // if ( _mutual_info_ == nullptr) { this->useNMLCorrection(); }
-      createCorrectedMutualInformation_();
+    GUM_CHECKPOINT
+    // create the mutual entropy object
+    // if ( _mutual_info_ == nullptr) { this->useNMLCorrection(); }
+    createCorrectedMutualInformation_();
 
-            GUM_CHECKPOINT
-      return mgraph;
+    GUM_CHECKPOINT
+    return mgraph;
   }
 
   PDAG IBNLearner::learnPDAG() {
@@ -664,14 +657,13 @@ namespace gum::learning {
       GUM_ERROR(MissingValueInDatabase,
                 "For the moment, the BNLearner is unable to learn "
                    << "structures with missing values in databases")
-    
     }
     MixedGraph mg;
     if (selectedAlgo_ == AlgoType::MIIC) {
       BNLearnerListener listener(this, algoMiic_);
       // create the mixedGraph_constraint_MandatoryArcs.arcs
       MixedGraph mgraph = this->prepareMiic_();
-      mg= algoMiic_.learnMixedStructure(*mutualInfo_, mgraph);
+      mg                = algoMiic_.learnMixedStructure(*mutualInfo_, mgraph);
 
     } else {
       BNLearnerListener listener(this, constraintMiic_);
@@ -679,7 +671,7 @@ namespace gum::learning {
       GUM_CHECKPOINT
       MixedGraph mgraph = this->prepareConstraintMiic_();
       GUM_CHECKPOINT
-      mg= constraintMiic_.learnMixedStructure(*mutualInfo_, mgraph);
+      mg = constraintMiic_.learnMixedStructure(*mutualInfo_, mgraph);
       GUM_CHECKPOINT
     }
 
@@ -748,7 +740,7 @@ namespace gum::learning {
 
     switch (selectedAlgo_) {
       // ========================================================================
-      case AlgoType::MIIC:{
+      case AlgoType::MIIC: {
         BNLearnerListener listener(this, algoMiic_);
         // create the mixedGraph and the corrected mutual information
         MixedGraph mgraph = this->prepareMiic_();
