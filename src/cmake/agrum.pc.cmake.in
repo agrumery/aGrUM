@@ -1,5 +1,5 @@
-libdir=@CMAKE_INSTALL_PREFIX@/lib
-includedir=@CMAKE_INSTALL_PREFIX@/include
+libdir=@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_LIBDIR@
+includedir=@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_INCLUDEDIR@
 
 Name: aGrUM @AGRUM_VERSION@ (@CMAKE_BUILD_TYPE@)
 Description: C++ library designed for easily building applications using graphical models.
