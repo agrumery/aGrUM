@@ -38,7 +38,7 @@
 
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
-#include <agrum/BN/learning/Miic.h>
+#include <agrum/BN/learning/SimpleMiic.h>
 #include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
 
 namespace gum_tests {
@@ -65,7 +65,7 @@ namespace gum_tests {
     };
   };
 
-  class MiicTestSuite: public CxxTest::TestSuite {
+  class SimpleMiicTestSuite: public CxxTest::TestSuite {
     public:
     GUM_ACTIVE_TEST(_MIIC_asia_NMLcorr) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
@@ -95,7 +95,7 @@ namespace gum_tests {
       cI.useMDL();
       // cI.useCache( false );
 
-      gum::learning::Miic search;
+      gum::learning::SimpleMiic search;
       // creating complete graph
       gum::MixedGraph graph, g;
       for (gum::Size i = 0; i < modalities.size(); ++i) {
@@ -141,7 +141,7 @@ namespace gum_tests {
       cI.useMDL();
       // cI.useCache( false );
 
-      gum::learning::Miic search;
+      gum::learning::SimpleMiic search;
 
       // adding constraints
       gum::HashTable< std::pair< gum::NodeId, gum::NodeId >, char > initial_marks;
@@ -191,7 +191,7 @@ namespace gum_tests {
       // cI.useMDL();
       // cI.useNoCorr();
 
-      gum::learning::Miic search;
+      gum::learning::SimpleMiic search;
 
       // creating complete graph
       gum::MixedGraph graph;

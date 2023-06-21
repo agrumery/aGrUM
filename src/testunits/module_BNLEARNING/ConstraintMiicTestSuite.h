@@ -348,15 +348,15 @@ namespace gum_tests {
 
       gum::learning::ConstraintMiic search;
 
-      SimpleListenerForMiic listener;
+      //SimpleListenerForMiic listener;
       // FilterListenerForMiic filterlistener;
 
       std::cout << "TEST ORDER 1 :" << std::endl;
 
-      GUM_CONNECT(search,
+      /*GUM_CONNECT(search,
                   onStructuralModification,
                   listener,
-                  SimpleListenerForMiic::whenStructuralModification);
+                  SimpleListenerForMiic::whenStructuralModification);*/
 
       // creating complete graph
       gum::MixedGraph graph, g;
@@ -367,7 +367,7 @@ namespace gum_tests {
         }
       }
       gum::DAG dag = search.learnStructure(cI, graph);
-      std::cout << dag.arcs() << std::endl;
+      GUM_TRACE("Arcs Order 1: " << dag.arcs())
     }
 
     GUM_ACTIVE_TEST(_MIIC_ms_order2_) {
@@ -407,18 +407,18 @@ namespace gum_tests {
 
       gum::learning::ConstraintMiic search;
 
-      SimpleListenerForMiic listener;
+      //SimpleListenerForMiic listener;
       // FilterListenerForMiic filterlistener;
 
       std::cout << "TEST ORDER 2 :" << std::endl;
 
-      GUM_CONNECT(search,
+      /*GUM_CONNECT(search,
                   onStructuralModification,
                   listener,
-                  SimpleListenerForMiic::whenStructuralModification);
+                  SimpleListenerForMiic::whenStructuralModification);*/
 
       // creating complete graph
-      gum::MixedGraph graph, g;
+      gum::MixedGraph graph;
       for (gum::Size i = 0; i < modalities.size(); ++i) {
         graph.addNodeWithId(i);
         for (gum::Size j = 0; j < i; ++j) {
@@ -426,7 +426,7 @@ namespace gum_tests {
         }
       }
       gum::DAG dag = search.learnStructure(cI, graph);
-      std::cout << dag.arcs() << std::endl;
+      GUM_TRACE("Arcs Order 2: " << dag.arcs())
     }
 
 

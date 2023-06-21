@@ -239,8 +239,8 @@ namespace gum {
         IBNLearner::useK2(order);
         return *this;
       }
-      BNLearner< GUM_SCALAR >& useMIIC() {
-        IBNLearner::useMIIC();
+      BNLearner< GUM_SCALAR >& useSimpleMIIC() {
+        IBNLearner::useSimpleMIIC();
         return *this;
       }
       BNLearner< GUM_SCALAR >& useConstraintMIIC() {

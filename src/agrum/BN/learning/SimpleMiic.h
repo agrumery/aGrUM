@@ -21,9 +21,9 @@
 
 /**
  * @file
- * @brief The Miic algorithm
+ * @brief The SimpleMiic algorithm
  *
- * The MIIC class implements the Miic algorithm https://doi.org/10.1371/journal.pcbi.1005662. Only the orientation phase differs
+ * The MIIC class implements the SimpleMiic algorithm https://doi.org/10.1371/journal.pcbi.1005662. Only the orientation phase differs
  * from 3off2, with a diffferent ranking method and different propagation rules.
  * It starts by eliminating edges that correspond to independent variables to
  * build the skeleton of the graph, and then directs the remaining edges to get an
@@ -51,7 +51,7 @@ namespace gum {
   namespace learning {
 
     /**
-     * @class Miic
+     * @class SimpleMiic
      * @brief The miic learning algorithm
      *
      * The miic class implements the miic algorithm based on
@@ -68,7 +68,7 @@ namespace gum {
      *
      * @ingroup learning_group
      */
-    class Miic: public ApproximationScheme {
+    class SimpleMiic: public ApproximationScheme {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -76,27 +76,27 @@ namespace gum {
       /// @{
 
       /// default constructor
-      Miic();
+      SimpleMiic();
 
       /// default constructor with maxLog
-      explicit Miic(int maxLog);
+      explicit SimpleMiic(int maxLog);
 
       /// copy constructor
-      Miic(const Miic& from);
+      SimpleMiic(const SimpleMiic& from);
 
       /// move constructor
-      Miic(Miic&& from);
+      SimpleMiic(SimpleMiic&& from);
 
       /// destructor
-      ~Miic() override;
+      ~SimpleMiic() override;
 
       /// @}
 
       /// copy operator
-      Miic& operator=(const Miic& from);
+      SimpleMiic& operator=(const SimpleMiic& from);
 
       /// move operator
-      Miic& operator=(Miic&& from);
+      SimpleMiic& operator=(SimpleMiic&& from);
 
       // ##########################################################################
       /// @name Accessors / Modifiers

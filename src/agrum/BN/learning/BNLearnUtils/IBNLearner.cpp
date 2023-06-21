@@ -209,7 +209,7 @@ namespace gum::learning {
       constraintIndegree_(from.constraintIndegree_), constraintTabuList_(from.constraintTabuList_),
       constraintForbiddenArcs_(from.constraintForbiddenArcs_),
       constraintMandatoryArcs_(from.constraintMandatoryArcs_), selectedAlgo_(from.selectedAlgo_),
-      algoK2_(from.algoK2_), algoMiic_(from.algoMiic_), constraintMiic_(from.constraintMiic_),
+      algoK2_(from.algoK2_), algoSimpleMiic_(from.algoSimpleMiic_), constraintMiic_(from.constraintMiic_),
       kmode3Off2_(from.kmode3Off2_), greedyHillClimbing_(from.greedyHillClimbing_),
       localSearchWithTabuList_(from.localSearchWithTabuList_), scoreDatabase_(from.scoreDatabase_),
       ranges_(from.ranges_), priorDbname_(from.priorDbname_), initialDag_(from.initialDag_),
@@ -229,7 +229,7 @@ namespace gum::learning {
       constraintForbiddenArcs_(std::move(from.constraintForbiddenArcs_)),
       constraintMandatoryArcs_(std::move(from.constraintMandatoryArcs_)),
       selectedAlgo_(from.selectedAlgo_), algoK2_(std::move(from.algoK2_)),
-      algoMiic_(std::move(from.algoMiic_)), constraintMiic_(std::move(from.constraintMiic_)),
+      algoSimpleMiic_(std::move(from.algoSimpleMiic_)), constraintMiic_(std::move(from.constraintMiic_)),
       kmode3Off2_(from.kmode3Off2_), greedyHillClimbing_(std::move(from.greedyHillClimbing_)),
       localSearchWithTabuList_(std::move(from.localSearchWithTabuList_)),
       scoreDatabase_(std::move(from.scoreDatabase_)), ranges_(std::move(from.ranges_)),
@@ -290,7 +290,7 @@ namespace gum::learning {
       constraintMandatoryArcs_ = from.constraintMandatoryArcs_;
       selectedAlgo_            = from.selectedAlgo_;
       algoK2_                  = from.algoK2_;
-      algoMiic_                = from.algoMiic_;
+      algoSimpleMiic_                = from.algoSimpleMiic_;
       constraintMiic_          = from.constraintMiic_;
       kmode3Off2_              = from.kmode3Off2_;
       greedyHillClimbing_      = from.greedyHillClimbing_;
@@ -342,7 +342,7 @@ namespace gum::learning {
       constraintMandatoryArcs_ = std::move(from.constraintMandatoryArcs_);
       selectedAlgo_            = from.selectedAlgo_;
       algoK2_                  = from.algoK2_;
-      algoMiic_                = std::move(from.algoMiic_);
+      algoSimpleMiic_                = std::move(from.algoSimpleMiic_);
       constraintMiic_          = std::move(from.constraintMiic_);
       kmode3Off2_              = from.kmode3Off2_;
       greedyHillClimbing_      = std::move(from.greedyHillClimbing_);
@@ -540,7 +540,7 @@ namespace gum::learning {
   }
 
   /// prepares the initial graph for miic
-  MixedGraph IBNLearner::prepareMiic_() {
+  MixedGraph IBNLearner::prepareSimpleMiic_() {
     // Initialize the mixed graph to the fully connected graph
     MixedGraph mgraph;
     for (Size i = 0; i < scoreDatabase_.databaseTable().nbVariables(); ++i) {
@@ -559,7 +559,7 @@ namespace gum::learning {
     for (const auto& arc: constraintForbiddenArcs_.arcs()) {
       initial_marks.insert({arc.tail(), arc.head()}, '-');
     }
-    algoMiic_.addConstraints(initial_marks);
+    algoSimpleMiic_.addConstraints(initial_marks);
 
     // create the mutual entropy object
     createCorrectedMutualInformation_();
@@ -649,7 +649,7 @@ namespace gum::learning {
   }
 
   PDAG IBNLearner::learnPDAG() {
-    if (selectedAlgo_ != AlgoType::MIIC && selectedAlgo_ != AlgoType::CONSTRAINT_MIIC) {
+    if (selectedAlgo_ != AlgoType::SIMPLE_MIIC && selectedAlgo_ != AlgoType::CONSTRAINT_MIIC) {
       GUM_ERROR(OperationNotAllowed, "Must be using the miic algorithm")
     }
     // check that the database does not contain any missing value
@@ -659,11 +659,11 @@ namespace gum::learning {
                    << "structures with missing values in databases")
     }
     MixedGraph mg;
-    if (selectedAlgo_ == AlgoType::MIIC) {
-      BNLearnerListener listener(this, algoMiic_);
+    if (selectedAlgo_ == AlgoType::SIMPLE_MIIC) {
+      BNLearnerListener listener(this, algoSimpleMiic_);
       // create the mixedGraph_constraint_MandatoryArcs.arcs
-      MixedGraph mgraph = this->prepareMiic_();
-      mg                = algoMiic_.learnMixedStructure(*mutualInfo_, mgraph);
+      MixedGraph mgraph = this->prepareSimpleMiic_();
+      mg                = algoSimpleMiic_.learnMixedStructure(*mutualInfo_, mgraph);
 
     } else {
       BNLearnerListener listener(this, constraintMiic_);
@@ -740,12 +740,12 @@ namespace gum::learning {
 
     switch (selectedAlgo_) {
       // ========================================================================
-      case AlgoType::MIIC: {
-        BNLearnerListener listener(this, algoMiic_);
+      case AlgoType::SIMPLE_MIIC: {
+        BNLearnerListener listener(this, algoSimpleMiic_);
         // create the mixedGraph and the corrected mutual information
         MixedGraph mgraph = this->prepareMiic_();
 
-        return algoMiic_.learnStructure(*mutualInfo_, mgraph);
+        return algoSimpleMiic_.learnStructure(*mutualInfo_, mgraph);
       }
 
       case AlgoType::CONSTRAINT_MIIC: {

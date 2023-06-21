@@ -194,34 +194,34 @@ namespace gum::learning {
     constraintIndegree_.setMaxIndegree(max_indegree);
   }
 
-  // indicate that we wish to use MIIC
-  INLINE void IBNLearner::useMIIC() {
-    selectedAlgo_ = AlgoType::MIIC;
+  // indicate that we wish to use Simple MIIC
+  INLINE void IBNLearner::useSimpleMIIC() {
+    selectedAlgo_ = AlgoType::SIMPLE_MIIC;
   }
 
-  // indicate that we wish to use ConstraintMIIC
+  // indicate that we wish to use MIIC with constraints
   INLINE void IBNLearner::useConstraintMIIC() {
     selectedAlgo_ = AlgoType::CONSTRAINT_MIIC;
   }
 
   /// indicate that we wish to use the NML correction for MIIC
   INLINE void IBNLearner::useNMLCorrection() {
-    kmode3Off2_ = CorrectedMutualInformation::KModeTypes::NML;
+    kmodeMiic_ = CorrectedMutualInformation::KModeTypes::NML;
   }
 
   /// indicate that we wish to use the MDL correction for MIIC
   INLINE void IBNLearner::useMDLCorrection() {
-    kmode3Off2_ = CorrectedMutualInformation::KModeTypes::MDL;
+    kmodeMiic_ = CorrectedMutualInformation::KModeTypes::MDL;
   }
 
   /// indicate that we wish to use the NoCorr correction for MIIC
   INLINE void IBNLearner::useNoCorrection() {
-    kmode3Off2_ = CorrectedMutualInformation::KModeTypes::NoCorr;
+    kmodeMiic_ = CorrectedMutualInformation::KModeTypes::NoCorr;
   }
 
   /// get the list of arcs hiding latent variables
   INLINE std::vector< Arc > IBNLearner::latentVariables() const {
-    return algoMiic_.latentVariables();
+    return algoSimpleMiic_.latentVariables();
   }
 
   // indicate that we wish to use a K2 algorithm

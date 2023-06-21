@@ -31,7 +31,7 @@
 #include <agrum/tools/core/heap.h>
 #include <agrum/tools/core/timer.h>
 #include <agrum/tools/graphs/mixedGraph.h>
-#include <agrum/BN/learning/Miic.h>
+#include <agrum/BN/learning/SimpleMiic.h>
 #include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
 #include <agrum/tools/stattests/correctedMutualInformation.h>
 
@@ -41,38 +41,38 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    Miic::Miic() : _maxLog_(100), _size_(0) { GUM_CONSTRUCTOR(Miic); }
+    SimpleMiic::SimpleMiic() : _maxLog_(100), _size_(0) { GUM_CONSTRUCTOR(SimpleMiic); }
 
     /// default constructor with maxLog
-    Miic::Miic(int maxLog) : _maxLog_(maxLog), _size_(0) { GUM_CONSTRUCTOR(Miic); }
+    SimpleMiic::SimpleMiic(int maxLog) : _maxLog_(maxLog), _size_(0) { GUM_CONSTRUCTOR(SimpleMiic); }
 
     /// copy constructor
-    Miic::Miic(const Miic& from) : ApproximationScheme(from), _size_(from._size_) {
-      GUM_CONS_CPY(Miic);
+    SimpleMiic::SimpleMiic(const SimpleMiic& from) : ApproximationScheme(from), _size_(from._size_) {
+      GUM_CONS_CPY(SimpleMiic);
     }
 
     /// move constructor
-    Miic::Miic(Miic&& from) : ApproximationScheme(std::move(from)), _size_(from._size_) {
-      GUM_CONS_MOV(Miic);
+    SimpleMiic::SimpleMiic(SimpleMiic&& from) : ApproximationScheme(std::move(from)), _size_(from._size_) {
+      GUM_CONS_MOV(SimpleMiic);
     }
 
     /// destructor
-    Miic::~Miic() { GUM_DESTRUCTOR(Miic); }
+    SimpleMiic::~SimpleMiic() { GUM_DESTRUCTOR(SimpleMiic); }
 
     /// copy operator
-    Miic& Miic::operator=(const Miic& from) {
+    SimpleMiic& SimpleMiic::operator=(const SimpleMiic& from) {
       ApproximationScheme::operator=(from);
       return *this;
     }
 
     /// move operator
-    Miic& Miic::operator=(Miic&& from) {
+    SimpleMiic& SimpleMiic::operator=(SimpleMiic&& from) {
       ApproximationScheme::operator=(std::move(from));
       return *this;
     }
 
     /// learns the structure of a MixedGraph
-    MixedGraph Miic::learnMixedStructure(CorrectedMutualInformation& mutualInformation,
+    MixedGraph SimpleMiic::learnMixedStructure(CorrectedMutualInformation& mutualInformation,
                                          MixedGraph                  graph) {
       timer_.reset();
       current_step_ = 0;
@@ -102,7 +102,7 @@ namespace gum {
      * are,
      * the edge is deleted. If not, the best contributor is found.
      */
-    void Miic::initiation_(CorrectedMutualInformation& mutualInformation,
+    void SimpleMiic::initiation_(CorrectedMutualInformation& mutualInformation,
                            MixedGraph&                 graph,
                            HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet,
                            Heap< CondRanking, GreaterPairOn2nd >&                           rank) {
@@ -135,7 +135,7 @@ namespace gum {
      * As long as we find important nodes for edges, we go over them to see if
      * we can assess the independence of the variables.
      */
-    void Miic::iteration_(CorrectedMutualInformation& mutualInformation,
+    void SimpleMiic::iteration_(CorrectedMutualInformation& mutualInformation,
                           MixedGraph&                 graph,
                           HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet,
                           Heap< CondRanking, GreaterPairOn2nd >&                           rank) {
@@ -186,7 +186,7 @@ namespace gum {
      */
 
     /// Orientation protocol of MIIC
-    void Miic::orientationMiic_(
+    void SimpleMiic::orientationMiic_(
        CorrectedMutualInformation&                                            mutualInformation,
        MixedGraph&                                                            graph,
        const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet) {
@@ -259,7 +259,7 @@ namespace gum {
     }
 
     /// finds the best contributor node for a pair given a conditioning set
-    void Miic::findBestContributor_(NodeId                                 x,
+    void SimpleMiic::findBestContributor_(NodeId                                 x,
                                     NodeId                                 y,
                                     const std::vector< NodeId >&           ui,
                                     const MixedGraph&                      graph,
@@ -335,7 +335,7 @@ namespace gum {
 
     /// gets the list of unshielded triples in the graph in decreasing value of
     ///|I'(x, y, z|{ui})|
-    std::vector< Ranking > Miic::unshieldedTriples_(
+    std::vector< Ranking > SimpleMiic::unshieldedTriples_(
        const MixedGraph&                                                      graph,
        CorrectedMutualInformation&                                            mutualInformation,
        const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet) {
@@ -372,7 +372,7 @@ namespace gum {
 
     /// gets the list of unshielded triples in the graph in decreasing value of
     ///|I'(x, y, z|{ui})|, prepares the orientation matrix for MIIC
-    std::vector< ProbabilisticRanking > Miic::unshieldedTriplesMiic_(
+    std::vector< ProbabilisticRanking > SimpleMiic::unshieldedTriplesMiic_(
        const MixedGraph&                                                      graph,
        CorrectedMutualInformation&                                            mutualInformation,
        const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet,
@@ -413,7 +413,7 @@ namespace gum {
 
     /// Gets the orientation probabilities like MIIC for the orientation phase
     std::vector< ProbabilisticRanking >
-       Miic::updateProbaTriples_(const MixedGraph&                   graph,
+       SimpleMiic::updateProbaTriples_(const MixedGraph&                   graph,
                                  std::vector< ProbabilisticRanking > probaTriples) {
       for (auto& triple: probaTriples) {
         NodeId x, y, z;
@@ -453,7 +453,7 @@ namespace gum {
 
     /// learns the structure of an Bayesian network, ie a DAG, from an Essential
     /// graph.
-    DAG Miic::learnStructure(CorrectedMutualInformation& I, MixedGraph initialGraph) {
+    DAG SimpleMiic::learnStructure(CorrectedMutualInformation& I, MixedGraph initialGraph) {
       MixedGraph essentialGraph = learnMixedStructure(I, initialGraph);
       // orientate remaining edges
 
@@ -512,7 +512,7 @@ namespace gum {
       return dag;
     }
 
-    bool Miic::isOrientable_(const MixedGraph& graph, NodeId xi, NodeId xj) const {
+    bool SimpleMiic::isOrientable_(const MixedGraph& graph, NodeId xi, NodeId xj) const {
       // no cycle
       if (_existsDirectedPath_(graph, xj, xi)) {
         // GUM_TRACE("cycle(" << xi << "-" << xj << ")")
@@ -545,7 +545,7 @@ namespace gum {
       return false;
     }
 
-    void Miic::propagatesOrientationInChainOfRemainingEdges_(MixedGraph& essentialGraph) {
+    void SimpleMiic::propagatesOrientationInChainOfRemainingEdges_(MixedGraph& essentialGraph) {
       // then decide the orientation for remaining edges
       while (!essentialGraph.edges().empty()) {
         const auto& edge               = *(essentialGraph.edges().begin());
@@ -587,7 +587,7 @@ namespace gum {
     }
 
     /// Propagates the orientation from a node to its neighbours
-    bool Miic::propagatesRemainingOrientableEdges_(MixedGraph& graph, NodeId xj) {
+    bool SimpleMiic::propagatesRemainingOrientableEdges_(MixedGraph& graph, NodeId xj) {
       bool       res        = false;
       const auto neighbours = graph.neighbours(xj);
       for (auto& xi: neighbours) {
@@ -618,11 +618,11 @@ namespace gum {
     }
 
     /// get the list of arcs hiding latent variables
-    const std::vector< Arc > Miic::latentVariables() const { return _latentCouples_; }
+    const std::vector< Arc > SimpleMiic::latentVariables() const { return _latentCouples_; }
 
     /// learns the structure and the parameters of a BN
     template < typename GUM_SCALAR, typename GRAPH_CHANGES_SELECTOR, typename PARAM_ESTIMATOR >
-    BayesNet< GUM_SCALAR > Miic::learnBN(GRAPH_CHANGES_SELECTOR& selector,
+    BayesNet< GUM_SCALAR > SimpleMiic::learnBN(GRAPH_CHANGES_SELECTOR& selector,
                                          PARAM_ESTIMATOR&        estimator,
                                          DAG                     initial_dag) {
       return DAG2BNLearner::createBN< GUM_SCALAR >(estimator,
@@ -630,11 +630,11 @@ namespace gum {
     }
 
 
-    void Miic::addConstraints(HashTable< std::pair< NodeId, NodeId >, char > constraints) {
+    void SimpleMiic::addConstraints(HashTable< std::pair< NodeId, NodeId >, char > constraints) {
       this->_initialMarks_ = constraints;
     }
 
-    bool Miic::_existsNonTrivialDirectedPath_(const MixedGraph& graph,
+    bool SimpleMiic::_existsNonTrivialDirectedPath_(const MixedGraph& graph,
                                               const NodeId      n1,
                                               const NodeId      n2) {
       for (const auto parent: graph.parents(n2)) {
@@ -648,7 +648,8 @@ namespace gum {
       return false;
     }
 
-    bool Miic::_existsDirectedPath_(const MixedGraph& graph, const NodeId n1, const NodeId n2) {
+    bool
+       SimpleMiic::_existsDirectedPath_(const MixedGraph& graph, const NodeId n1, const NodeId n2) {
       // not recursive version => use a FIFO for simulating the recursion
       List< NodeId > nodeFIFO;
       // mark[node] = successor if visited, else mark[node] does not exist
@@ -682,7 +683,8 @@ namespace gum {
       return false;
     }
 
-    void Miic::_orientingVstructureMiic_(MixedGraph&                                     graph,
+    void
+       SimpleMiic::_orientingVstructureMiic_(MixedGraph&                                     graph,
                                          HashTable< std::pair< NodeId, NodeId >, char >& marks,
                                          NodeId                                          x,
                                          NodeId                                          y,
@@ -775,7 +777,7 @@ namespace gum {
     }
 
 
-    void Miic::_propagatingOrientationMiic_(MixedGraph&                                     graph,
+    void SimpleMiic::_propagatingOrientationMiic_(MixedGraph&                                     graph,
                                             HashTable< std::pair< NodeId, NodeId >, char >& marks,
                                             NodeId                                          x,
                                             NodeId                                          y,
@@ -847,7 +849,7 @@ namespace gum {
       }
     }
 
-    bool Miic::_isNotLatentCouple_(const NodeId x, const NodeId y) {
+    bool SimpleMiic::_isNotLatentCouple_(const NodeId x, const NodeId y) {
       const auto& lbeg = _latentCouples_.begin();
       const auto& lend = _latentCouples_.end();
 
@@ -855,7 +857,7 @@ namespace gum {
           && (std::find(lbeg, lend, Arc(y, x)) == lend);
     }
 
-    bool Miic::isForbidenArc_(NodeId x, NodeId y) const {
+    bool SimpleMiic::isForbidenArc_(NodeId x, NodeId y) const {
       return (_initialMarks_.exists({x, y}) && _initialMarks_[{x, y}] == '-');
     }
   } /* namespace learning */

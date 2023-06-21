@@ -67,7 +67,7 @@
 
 
 #include <agrum/BN/learning/K2.h>
-#include <agrum/BN/learning/Miic.h>
+#include <agrum/BN/learning/SimpleMiic.h>
 #include <agrum/BN/learning/constraintMiic.h>
 #include <agrum/BN/learning/greedyHillClimbing.h>
 #include <agrum/BN/learning/localSearchWithTabuList.h>
@@ -117,7 +117,7 @@ namespace gum::learning {
       K2,
       GREEDY_HILL_CLIMBING,
       LOCAL_SEARCH_WITH_TABU_LIST,
-      MIIC,
+      SIMPLE_MIIC,
       CONSTRAINT_MIIC
     };
 
@@ -709,7 +709,7 @@ namespace gum::learning {
     void useK2(const std::vector< NodeId >& order);
 
     /// indicate that we wish to use MIIC
-    void useMIIC();
+    void useSimpleMIIC();
 
     /// indicate that we wish to use MIIC
     void useConstraintMIIC();
@@ -889,13 +889,13 @@ namespace gum::learning {
     K2 algoK2_;
 
     /// the MIIC algorithm
-    Miic algoMiic_;
+    SimpleMiic algoSimpleMiic_;
 
     /// the Constraint MIIC algorithm
     ConstraintMiic constraintMiic_;
 
     /// the penalty used in MIIC
-    typename CorrectedMutualInformation::KModeTypes kmode3Off2_{
+    typename CorrectedMutualInformation::KModeTypes kmodeMiic_{
        CorrectedMutualInformation::KModeTypes::MDL};
 
     /// the parametric EM
@@ -951,8 +951,8 @@ namespace gum::learning {
     /// returns the DAG learnt
     DAG learnDag_();
 
-    /// prepares the initial graph for miic
-    MixedGraph prepareMiic_();
+    /// prepares the initial graph for Simple Miic
+    MixedGraph prepareSimpleMiic_();
 
     /// prepares the initial graph for miic
     MixedGraph prepareConstraintMiic_();
@@ -960,7 +960,7 @@ namespace gum::learning {
     /// returns the type (as a string) of a given prior
     PriorType getPriorType_() const;
 
-    /// create the Corrected Mutual Information instance for Miic
+    /// create the Corrected Mutual Information instance for SimpleMiic
     void createCorrectedMutualInformation_();
 
 
