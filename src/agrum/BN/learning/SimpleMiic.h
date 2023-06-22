@@ -23,8 +23,8 @@
  * @file
  * @brief The SimpleMiic algorithm
  *
- * The MIIC class implements the SimpleMiic algorithm https://doi.org/10.1371/journal.pcbi.1005662. Only the orientation phase differs
- * from 3off2, with a diffferent ranking method and different propagation rules.
+ * The SimpleMIIC class implements the Miic algorithm https://doi.org/10.1371/journal.pcbi.1005662.
+ * without constraints.
  * It starts by eliminating edges that correspond to independent variables to
  * build the skeleton of the graph, and then directs the remaining edges to get an
  * essential graph. Latent variables can be detected using bi-directed arcs.
@@ -60,11 +60,6 @@ namespace gum {
      * build the skeleton of the graph, and then directs the remaining edges to get
      * an
      * essential graph. Latent variables can be detected using bi-directed arcs.
-     *
-     * The variant 3off2 is also implemented as proposed by Affeldt and
-     * al. in https://doi.org/10.1186/s12859-015-0856-x.  Only the orientation
-     * phase differs from miic, with a different ranking method and different
-     * propagation rules.
      *
      * @ingroup learning_group
      */

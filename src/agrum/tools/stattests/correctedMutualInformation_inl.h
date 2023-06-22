@@ -22,7 +22,7 @@
 /**
  * @file
  * @brief The class computing n times the corrected mutual information,
- * as used in the 3off2 algorithm
+ * as used in the MIIC algorithm
  *
  * @author Quentin FALCAND, Christophe GONZALES(_at_AMU) and Pierre-Henri
  * WUILLEMIN(_at_LIP6).

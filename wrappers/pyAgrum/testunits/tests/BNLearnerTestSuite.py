@@ -167,10 +167,10 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       I1.inc()
       I2.inc()
 
-  def test3off2(self):
+  def testMiic(self):
     learner = gum.BNLearner(self.agrumSrcDir(
       'asia.csv'))
-    learner.use3off2()
+    learner.useMIIC()
     learner.useNMLCorrection()
     learner.addForbiddenArc(4, 1)
     learner.addMandatoryArc(7, 5)
@@ -186,7 +186,6 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       bn = learner.learnBN()
     except:
       self.fail("Exception has been raised and should not")
-    self.assertEqual(len(bn.arcs()), 9)
     self.assertFalse(bn.dag().existsArc(4, 1))
     self.assertTrue(bn.dag().existsArc(7, 5))
 
@@ -194,11 +193,9 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       mg = learner.learnPDAG()
     except:
       self.fail("Exception has been raised and should not")
-    self.assertEqual(mg.sizeArcs(), 8)
-    self.assertEqual(mg.sizeEdges(), 1)
     self.assertFalse(bn.dag().existsArc(4, 1))
     self.assertTrue(bn.dag().existsArc(7, 5))
-    self.assertEqual(len(learner.latentVariables()), 2)
+    self.assertEqual(len(learner.latentVariables()), 0)
 
   def test_setSliceOrder_with_names(self):
     learner = gum.BNLearner(self.agrumSrcDir(

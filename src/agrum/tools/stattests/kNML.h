@@ -21,7 +21,7 @@
 
 /**
  * @file
- * @brief The class for the NML penalty used in 3off2
+ * @brief The class for the NML penalty used in MIIC
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
@@ -40,7 +40,7 @@ namespace gum {
 
 
     /** @class KNML
-     * @brief the class for computing the NML penalty used by 3off2
+     * @brief the class for computing the NML penalty used by MIIC
      * @ingroup learning_scores
      *
      */

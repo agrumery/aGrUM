@@ -84,31 +84,26 @@ epsilon : float
 Indicate that we wish to use MIIC.
 "
 
-%feature("docstring") gum::learning::BNLearner::use3off2
-"
-Indicate that we wish to use 3off2.
-"
-
 %feature("docstring") gum::learning::BNLearner::useNMLCorrection
 "
-Indicate that we wish to use the NML correction for 3off2 or MIIC
+Indicate that we wish to use the NML correction for MIIC
 "
 
 %feature("docstring") gum::learning::BNLearner::useMDLCorrection
 "
-Indicate that we wish to use the MDL correction for 3off2 or MIIC
+Indicate that we wish to use the MDL correction for MIIC
 "
 
 %feature("docstring") gum::learning::BNLearner::useNoCorrection
 "
-Indicate that we wish to use the NoCorr correction for 3off2 or MIIC
+Indicate that we wish to use the NoCorr correction for MIIC
 "
 
 %feature("docstring") gum::learning::IBNLearner::learnMixedStructure
 "
 Warnings
 --------
-learner must be using 3off2 or MIIC algorithm
+learner must be using MIIC algorithm
 
 Returns
 -------
@@ -120,7 +115,7 @@ pyAgrum.EssentialGraph
 "
 Warnings
 --------
-learner must be using 3off2 or MIIC algorithm
+learner must be using MIIC algorithm
 
 Returns
 -------

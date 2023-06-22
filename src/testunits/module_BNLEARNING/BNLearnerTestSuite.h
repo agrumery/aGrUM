@@ -1335,7 +1335,7 @@ namespace gum_tests {
         gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/sample_asia.csv"));
         learner.useMIIC();
         learner.useNMLCorrection();
-        auto ge3off2 = learner.learnPDAG();
+        [[maybe_unused]] auto gemiic = learner.learnPDAG();
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 

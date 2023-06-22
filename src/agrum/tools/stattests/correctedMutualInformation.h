@@ -21,8 +21,8 @@
 
 /**
  * @file
- * @brief The class computing n times the corrected mutual information,
- * as used in the 3off2 algorithm
+ * @brief The class computing n times the corrected mutual information (where n is the size (or the weight) of the database)
+ * as used in the MIIC algorithm
  *
  * @author Quentin FALCAND, Christophe GONZALES(_at_AMU) and Pierre-Henri
  * WUILLEMIN(_at_LIP6).
@@ -42,10 +42,10 @@ namespace gum {
     /**
      * @class CorrectedMutualInformation
      * @brief The class computing n times the corrected mutual information,
-     * as used in the 3off2 algorithm
+     * as used in the MIIC algorithm
      *
      * This class handles the computations and storage of the mutual information
-     * values used in 3off2 and potential corrections.
+     * values used in MIIC and potential corrections.
      *
      * @WARNING Due to the common use of this quantity, the scores return database
      * weight*CorrectedMutualInformation where the weight of the database is the generalisation of
@@ -149,7 +149,7 @@ namespace gum {
       /// clears all the current caches
       /** There are 4 caches in the CorrectedMutualInformation class:
        * # The I cache is intended to cache the computations of the mutual
-       * informations used by 3off2
+       * informations used by MIIC
        * # the H cache is intended to store the results of the computations
        * of the entropies used in the mutual information formula
        * # the K cache is intended to store the penalties computed so far
@@ -160,7 +160,7 @@ namespace gum {
       /// turn on/off the use of all the caches
       /** There are 4 caches in the CorrectedMutualInformation class:
        * # The I cache is intended to cache the computations of the mutual
-       * informations used by 3off2
+       * informations used by MIIC
        * # the H cache is intended to store the results of the computations
        * of the entropies used in the mutual information formula
        * # the K cache is intended to store the penalties computed so far

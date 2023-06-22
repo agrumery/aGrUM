@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # (c) Copyright 2020-2023 by Pierre-Henri Wuillemin(@LIP6)  (pierre-henri.wuillemin@lip6.fr)
 
 # Permission to use, copy, modify, and distribute this
@@ -52,14 +53,6 @@ def _fitStandard(X, y, learner, learningMethod, possibleSkeleton, scoringType, c
     learner.useMDLCorrection()
   elif learningMethod == "MIICNML":
     learner.useMIIC()
-    learner.useNMLCorrection()
-  elif learningMethod == "3off2":
-    learner.use3off2()
-  elif learningMethod == "3off2MDL":
-    learner.use3off2()
-    learner.useMDLCorrection()
-  elif learningMethod == "3off2NML":
-    learner.use3off2()
     learner.useNMLCorrection()
   elif learningMethod == "GHC":  # default
     learner.useGreedyHillClimbing()
@@ -254,8 +247,6 @@ def _fitNaiveBayes(X, y, bn, learner, variableList, target, constraints):
       training data
       y: array-like of shape (n_samples)
       Target values
-
-
   """
 
   for variableName in variableList:
