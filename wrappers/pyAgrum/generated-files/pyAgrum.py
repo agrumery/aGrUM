@@ -12290,6 +12290,9 @@ class IMarkovRandomField(UGmodel):
         raise AttributeError("No constructor defined - class is abstract")
     __swig_destroy__ = _pyAgrum.delete_IMarkovRandomField
 
+    def factor(self, varIds: List[int]) -> "pyAgrum.Potential":
+        return _pyAgrum.IMarkovRandomField_factor(self, varIds)
+
     def smallestFactorFromNode(self, *args) -> List[int]:
         return _pyAgrum.IMarkovRandomField_smallestFactorFromNode(self, *args)
 
@@ -12341,106 +12344,8 @@ class IMarkovRandomField(UGmodel):
     def toDotAsFactorGraph(self) -> str:
         return _pyAgrum.IMarkovRandomField_toDotAsFactorGraph(self)
 
-    def names(self) -> object:
-        r"""
-
-        Set of names of variables in the model
-
-        Returns
-        -------
-        Set[str]
-        	The names of the graph variables
-
-        """
-        return _pyAgrum.IMarkovRandomField_names(self)
-
-    def nodes(self) -> object:
-        return _pyAgrum.IMarkovRandomField_nodes(self)
-
-    def connectedComponents(self):
-      """ connected components from a graph/BN
-
-      Compute the connected components of a pyAgrum's graph or Bayesian Network
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
-
-      The firstly visited node for each component is called a 'root' and is used as a key for the component.
-      This root has been arbitrarily chosen during the algorithm.
-
-      Returns
-      -------
-      dict(int,Set[int])
-        dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
-
-      """
-      nodes=self.nodes()
-      connected_components=dict()
-
-      def parcours(node,orig):
-          cc={node}
-          nodes.discard(node)
-          if hasattr(self,'children'):
-              for chi in self.children(node):
-                  if chi!=orig:
-                      if chi in nodes:
-                          cc|=parcours(chi,node)
-
-          if hasattr(self,'parents'):
-              for par in self.parents(node):
-                  if par!=orig:
-                      if par in nodes:
-                          cc|=parcours(par,node)
-
-          if hasattr(self,'neighbours'):
-              for nei in self.neighbours(node):
-                  if nei!=orig:
-                      if nei in nodes:
-                          cc|=parcours(nei,node)
-          return cc
-
-      while (len(nodes)>0):
-          root=nodes.pop()
-          connected_components[root]=parcours(root,None)
-      return connected_components
-
-
-    def neighbours(self, norid: object) -> object:
-        return _pyAgrum.IMarkovRandomField_neighbours(self, norid)
-
-    def edges(self) -> object:
-        return _pyAgrum.IMarkovRandomField_edges(self)
-
-    def minimalCondSet(self, *args) -> object:
+    def minimalCondSet(self, *args) -> List[int]:
         return _pyAgrum.IMarkovRandomField_minimalCondSet(self, *args)
-
-    def factor(self, *args) -> "pyAgrum.Potential":
-        return _pyAgrum.IMarkovRandomField_factor(self, *args)
-
-    def isIndependent(self, *args) -> bool:
-        r"""
-
-        check if nodes X and nodes Y are independent given nodes Z
-
-        Parameters
-        ----------
-        X : str|intList[str|int]
-              a list of of nodeIds or names
-        Y : str|intList[str|int]
-              a list of of nodeIds or names
-        Z : str|intList[str|int]
-              a list of of nodeIds or names
-
-        Raises
-        ------
-        InvalidArgument
-          if X and Y share variables
-
-        Returns
-        -------
-        bool
-          True if X and Y are independent given Z in the model
-
-        """
-        return _pyAgrum.IMarkovRandomField_isIndependent(self, *args)
 
     def __repr__(self) -> str:
         return _pyAgrum.IMarkovRandomField___repr__(self)
@@ -12502,6 +12407,29 @@ class MarkovRandomField(IMarkovRandomField):
 
     def __init__(self, *args):
         _pyAgrum.MarkovRandomField_swiginit(self, _pyAgrum.new_MarkovRandomField(*args))
+
+    def factor(self, *args) -> "pyAgrum.Potential":
+        r"""
+
+        Returns the factor of a set of variables (if existing).
+
+        Parameters
+        ----------
+        vars : Union[Set[int],Set[str]]
+        	A set of ids or names of variable the pyAgrum.MarkovRandomField.
+
+        Returns
+        -------
+        pyAgrum.Potential
+        	The factor of the set of nodes.
+
+        Raises
+        ------
+        pyAgrum.NotFound
+            If no variable's id matches varId.
+
+        """
+        return _pyAgrum.MarkovRandomField_factor(self, *args)
 
     def smallestFactorFromNode(self, node: int) -> List[int]:
         return _pyAgrum.MarkovRandomField_smallestFactorFromNode(self, node)
@@ -12628,6 +12556,22 @@ class MarkovRandomField(IMarkovRandomField):
     def variableFromName(self, name: str) -> "pyAgrum.DiscreteVariable":
         return _pyAgrum.MarkovRandomField_variableFromName(self, name)
 
+    def addFactor(self, *args) -> "pyAgrum.Potential":
+        r"""
+
+        Add a factor from a list or a set of id or str. If the argument is a set, the order is the order of the IDs of the variables
+
+        Parameters
+        ----------
+        seq : sequence (list or set) of int or string
+        	The sequence (ordered or not) of node id or names
+
+        """
+        return _pyAgrum.MarkovRandomField_addFactor(self, *args)
+
+    def eraseFactor(self, *args) -> None:
+        return _pyAgrum.MarkovRandomField_eraseFactor(self, *args)
+
     def generateFactors(self) -> None:
         r"""
 
@@ -12671,6 +12615,9 @@ class MarkovRandomField(IMarkovRandomField):
     def size(self) -> int:
         return _pyAgrum.MarkovRandomField_size(self)
 
+    def nodes(self) -> Set[int]:
+        return _pyAgrum.MarkovRandomField_nodes(self)
+
     def log10DomainSize(self) -> float:
         r"""
 
@@ -12684,236 +12631,11 @@ class MarkovRandomField(IMarkovRandomField):
         """
         return _pyAgrum.MarkovRandomField_log10DomainSize(self)
 
-    def names(self) -> object:
-        r"""
-
-        Set of names of variables in the model
-
-        Returns
-        -------
-        Set[str]
-        	The names of the graph variables
-
-        """
-        return _pyAgrum.MarkovRandomField_names(self)
-
-    def nodes(self) -> object:
-        return _pyAgrum.MarkovRandomField_nodes(self)
-
-    def connectedComponents(self):
-      """ connected components from a graph/BN
-
-      Compute the connected components of a pyAgrum's graph or Bayesian Network
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
-
-      The firstly visited node for each component is called a 'root' and is used as a key for the component.
-      This root has been arbitrarily chosen during the algorithm.
-
-      Returns
-      -------
-      dict(int,Set[int])
-        dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
-
-      """
-      nodes=self.nodes()
-      connected_components=dict()
-
-      def parcours(node,orig):
-          cc={node}
-          nodes.discard(node)
-          if hasattr(self,'children'):
-              for chi in self.children(node):
-                  if chi!=orig:
-                      if chi in nodes:
-                          cc|=parcours(chi,node)
-
-          if hasattr(self,'parents'):
-              for par in self.parents(node):
-                  if par!=orig:
-                      if par in nodes:
-                          cc|=parcours(par,node)
-
-          if hasattr(self,'neighbours'):
-              for nei in self.neighbours(node):
-                  if nei!=orig:
-                      if nei in nodes:
-                          cc|=parcours(nei,node)
-          return cc
-
-      while (len(nodes)>0):
-          root=nodes.pop()
-          connected_components[root]=parcours(root,None)
-      return connected_components
-
-
-    def neighbours(self, norid: object) -> object:
-        return _pyAgrum.MarkovRandomField_neighbours(self, norid)
-
-    def edges(self) -> object:
-        return _pyAgrum.MarkovRandomField_edges(self)
-
-    def minimalCondSet(self, *args) -> object:
-        return _pyAgrum.MarkovRandomField_minimalCondSet(self, *args)
-
-    def factor(self, *args) -> "pyAgrum.Potential":
-        r"""
-
-        Returns the factor of a set of variables (if existing).
-
-        Parameters
-        ----------
-        vars : Union[Set[int],Set[str]]
-        	A set of ids or names of variable the pyAgrum.MarkovRandomField.
-
-        Returns
-        -------
-        pyAgrum.Potential
-        	The factor of the set of nodes.
-
-        Raises
-        ------
-        pyAgrum.NotFound
-            If no variable's id matches varId.
-
-        """
-        return _pyAgrum.MarkovRandomField_factor(self, *args)
-
-    def isIndependent(self, *args) -> bool:
-        r"""
-
-        check if nodes X and nodes Y are independent given nodes Z
-
-        Parameters
-        ----------
-        X : str|intList[str|int]
-              a list of of nodeIds or names
-        Y : str|intList[str|int]
-              a list of of nodeIds or names
-        Z : str|intList[str|int]
-              a list of of nodeIds or names
-
-        Raises
-        ------
-        InvalidArgument
-          if X and Y share variables
-
-        Returns
-        -------
-        bool
-          True if X and Y are independent given Z in the model
-
-        """
-        return _pyAgrum.MarkovRandomField_isIndependent(self, *args)
-
-    def loadUAI(self, *args) -> str:
-        r"""
-
-        Load an UAI file.
-
-        Parameters
-        ----------
-        name : str
-        	the name's file
-        l : list
-        	list of functions to execute
-
-        Raises
-        ------
-        pyAgrum.IOError
-            If file not found
-        pyAgrum.FatalError
-            If file is not valid
-
-        """
-        return _pyAgrum.MarkovRandomField_loadUAI(self, *args)
-
-    def saveUAI(self, name: str) -> None:
-        r"""
-
-        Save the MarkovRandomField in an UAI file.
-
-        Parameters
-        ----------
-        name : str
-        	the file's name
-
-        """
-        return _pyAgrum.MarkovRandomField_saveUAI(self, name)
-
     def __repr__(self) -> str:
         return _pyAgrum.MarkovRandomField___repr__(self)
 
     def __str__(self) -> str:
         return _pyAgrum.MarkovRandomField___str__(self)
-
-    def addFactor(self, *args) -> "pyAgrum.Potential":
-        r"""
-
-        Add a factor from a list or a set of id or str. If the argument is a set, the order is the order of the IDs of the variables
-
-        Parameters
-        ----------
-        seq : sequence (list or set) of int or string
-        	The sequence (ordered or not) of node id or names
-
-        """
-        return _pyAgrum.MarkovRandomField_addFactor(self, *args)
-
-    def eraseFactor(self, *args) -> None:
-        return _pyAgrum.MarkovRandomField_eraseFactor(self, *args)
-
-    def addVariables(self,listFastVariables,default_nbr_mod=2):
-       """
-       Add a list of variable in the form of 'fast' syntax.
-
-       Parameters
-       ----------
-       listFastVariables: List[str]
-         the list of variables in 'fast' syntax.
-       default_nbr_mod: int
-         the number of modalities for the variable if not specified following :ref:`fast syntax<Quick specification of (randomly parameterized) graphical models>`. Note that default_nbr_mod=1 is
-         mandatory to create variables with only one modality (for utility for instance).
-
-       Returns
-       -------
-       List[int]
-         the list of created ids.
-       """
-       return [self.add(descr,default_nbr_mod) for descr in listFastVariables]
-
-    def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenEdgeAdded=None,whenedgeDeleted=None):
-        """
-        Add the listeners in parameters to the list of existing ones.
-
-        Parameters
-        ----------
-        whenNodeAdded : lambda expression
-          a function for when a node is added
-        whenNodeDeleted : lambda expression
-          a function for when a node is removed
-        whenEdgeAdded : lambda expression
-          a function for when an edge is added
-        whenEdgeDeleted : lambda expression
-          a function for when an edge is removed
-        """
-        if [whenNodeAdded,whenNodeDeleted,whenEdgeAdded,whenEdgeDeleted]==[None,None,None,None]:
-          return
-
-        if not hasattr(self,"_listeners"):
-          self._listeners=[]
-
-        nl = PythonBNListener(self, self.variableNodeMap())
-        if whenNodeAdded is not None:
-          nl.setWhenNodeAdded(whenNodeAdded)
-        if whenNodeDeleted is not None:
-          nl.setWhenNodeDeleted(whenNodeDeleted)
-        if whenEdgeAdded is not None:
-          nl.setWhenEdgeAdded(whenEdgeAdded)
-        if whenEdgeDeleted is not None:
-          nl.setWhenArcDeleted(whenEdgeDeleted)
-
-        self._listeners.append(nl)
-
 
 # Register MarkovRandomField in _pyAgrum:
 _pyAgrum.MarkovRandomField_swigregister(MarkovRandomField)
@@ -26037,13 +25759,8 @@ class BNLearner(object):
         """
         return _pyAgrum.BNLearner_useLocalSearchWithTabuList(self, tabu_size, nb_decrease)
 
-    def use3off2(self) -> "pyAgrum.BNLearner":
-        r"""
-
-        Indicate that we wish to use 3off2.
-
-        """
-        return _pyAgrum.BNLearner_use3off2(self)
+    def useSimpleMIIC(self) -> "pyAgrum.BNLearner":
+        return _pyAgrum.BNLearner_useSimpleMIIC(self)
 
     def useMIIC(self) -> "pyAgrum.BNLearner":
         r"""
