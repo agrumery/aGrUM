@@ -43,19 +43,20 @@
 
 namespace gum_tests {
 
-  class SimpleListenerForMiic : public gum::Listener {
+  class SimpleListenerForSimpleMiic : public gum::Listener {
     public:
-    SimpleListenerForMiic(){};
+    SimpleListenerForSimpleMiic(){};
+
     void whenStructuralModification(const void* src, gum::NodeId x, gum::NodeId y, std::string action, std::string explain) {
       static int s=0;
       std::cout << std::setfill('0') << std::setw(5) <<++s<<" : " << action << " | " << explain << std::endl;
     };
   };
 
-  class FilterListenerForMiic : public gum::Listener {
+  class FilterListenerForSimpleMiic : public gum::Listener {
     public:
     gum::Size filter;
-    FilterListenerForMiic(){};
+    FilterListenerForSimpleMiic(){};
 
     void whenStructuralModification(const void* src, gum::NodeId x, gum::NodeId y, std::string action, std::string explain) {
       static int s=0;

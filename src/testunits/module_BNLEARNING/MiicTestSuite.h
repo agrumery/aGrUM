@@ -69,7 +69,7 @@ namespace gum_tests {
 
   class MiicTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_INACTIVE_TEST(_asia_MDLcorr) {
+    GUM_ACTIVE_TEST(_asia_MDLcorr) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -115,7 +115,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(latents.size(), (gum::Size)0)
     }
 
-    GUM_INACTIVE_TEST(_asia_ForbiddenGraph) {
+    GUM_ACTIVE_TEST(_asia_ForbiddenGraph) {
       
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
@@ -166,7 +166,7 @@ namespace gum_tests {
       TS_ASSERT(!graph.existsArc(1, 5));
     }
 
-    GUM_INACTIVE_TEST(_asia_MandatoryGraph) {
+    GUM_ACTIVE_TEST(_asia_MandatoryGraph) {
       
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
@@ -213,7 +213,7 @@ namespace gum_tests {
       TS_ASSERT(graph.existsArc(3, 4))
     }
 
-    GUM_INACTIVE_TEST(_alarm_) {
+    GUM_ACTIVE_TEST(_alarm_) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/alarm.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -258,7 +258,7 @@ namespace gum_tests {
 
     }
 
-    GUM_INACTIVE_TEST(_alarm_MaxIndegree_) {
+    GUM_ACTIVE_TEST(_alarm_MaxIndegree_) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/alarm.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();

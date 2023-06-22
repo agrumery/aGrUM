@@ -649,11 +649,12 @@ namespace gum {
             // GUM_TRACE(" + amap reasonably orientation for " << n << "->" << next);
             if (propagatesRemainingOrientableEdges_(essentialGraph,next))
               continue;
-            else
+            else {
               essentialGraph.eraseEdge(Edge(n, next));
               essentialGraph.addArc(n, next);
+            }
 
-              // GUM_SL_EMIT(n, next, "Add Arc " << n << " to " << next, " line 647")
+            // GUM_SL_EMIT(n, next, "Add Arc " << n << " to " << next, " line 647")
             //essentialGraph.addArc(n, next);
             //propagatesRemainingOrientableEdges_(essentialGraph, next);
           }
