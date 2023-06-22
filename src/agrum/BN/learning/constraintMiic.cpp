@@ -48,7 +48,7 @@ namespace gum {
 
     /// copy constructor
     ConstraintMiic::ConstraintMiic(const ConstraintMiic& from) : ApproximationScheme(from), _size_(from._size_) {
-      GUM_CONS_CPY(CoonstraintMiic);
+      GUM_CONS_CPY(ConstraintMiic);
     }
 
     /// move constructor
@@ -107,7 +107,7 @@ namespace gum {
                                          MixedGraph                  graph) {
       timer_.reset();
       current_step_ = 0;
-      GUM_TRACE_VAR(graph.nodes_size())
+
       // clear the vector of latent arcs to be sure
       _latentCouples_.clear();
 
