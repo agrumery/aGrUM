@@ -38,9 +38,7 @@
 #include <agrum/BN/learning/scores_and_tests/scoreMDL.h>
 
 namespace gum {
-
   namespace learning {
-
     /**
      * @class CorrectedMutualInformation
      * @brief The class computing n times the corrected mutual information,
@@ -48,6 +46,10 @@ namespace gum {
      *
      * This class handles the computations and storage of the mutual information
      * values used in 3off2 and potential corrections.
+     *
+     * @WARNING Due to the common use of this quantity, the scores return database
+     * weight*CorrectedMutualInformation where the weight of the database is the generalisation of
+     * the size of the database to take into account possible weights on records (see EM for instance).
      *
      * @ingroup learning_scores
      */

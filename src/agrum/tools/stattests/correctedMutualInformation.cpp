@@ -185,11 +185,8 @@ namespace gum {
 
       // if the score has already been computed, get its value
       const IdCondSet idset_xyz(var_x, var_y, vars_z, false, false);
-      if (_use_ICache_) {
-        try {
-          return _ICache_.score(idset_xyz);
-        } catch (const NotFound&) {}
-      }
+      if (_use_ICache_)
+        if (_ICache_.exists(idset_xyz)) return _ICache_.score(idset_xyz);
 
       // compute the score
 
@@ -198,7 +195,6 @@ namespace gum {
       double score;
       if (!vars_z.empty()) {
         std::vector< NodeId > vars(vars_z);
-        // std::sort(vars.begin(), vars.end());
         vars.push_back(var_x);
         vars.push_back(var_y);
         const double NHxyz = -_NH_.score(IdCondSet(vars, false, true));
@@ -269,17 +265,16 @@ namespace gum {
 
 
       // If using the K cache, verify whether the set isn't already known
-      IdCondSet idset;
-      if (_use_KCache_) {
-        idset = IdCondSet(var1, var2, conditioning_ids, false);
-        try {
-          return _KCache_.score(idset);
-        } catch (const NotFound&) {}
-      }
+      IdCondSet idset = IdCondSet(var1, var2, conditioning_ids, false);
+      if (_use_KCache_)
+        if (_KCache_.exists(idset)) return _KCache_.score(idset);
+
 
       // compute the score
       double score;
-      size_t rx, ry, rui;
+      size_t rx;
+      size_t ry;
+      size_t rui;
       switch (_kmode_) {
         case KModeTypes::MDL: {
           const auto& database  = _NH_.database();
@@ -301,7 +296,6 @@ namespace gum {
           }
 
           // compute the size of the database, including the a priori
-          if (!_use_KCache_) { idset = IdCondSet(var1, var2, conditioning_ids, false); }
           const double N = _score_MDL_.N(idset);
 
           score = 0.5 * (rx - 1) * (ry - 1) * rui * std::log2(N);

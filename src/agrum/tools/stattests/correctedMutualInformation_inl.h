@@ -169,7 +169,7 @@ namespace gum {
     }
 
 
-    /// returns the 2-point mutual information corresponding to a given nodeset
+    /// returns the 2-point mutual information corresponding
     INLINE double CorrectedMutualInformation::score(NodeId var1, NodeId var2) {
       return score(var1, var2, _empty_conditioning_set_);
     }

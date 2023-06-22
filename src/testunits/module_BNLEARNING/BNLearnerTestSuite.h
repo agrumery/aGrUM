@@ -897,11 +897,11 @@ GUM_ACTIVE_TEST(_BugDoumenc) {
                                      "AM",
                                      "PR",
                                      "AR",
-                                     "DFM"};   // binary variables for the BN
+                                     "DFM"};                      // binary variables for the BN
 
   std::vector< std::string > varTer{"NBC", "MED", "DEM", "SP"};   // ternary variables for the bN
 
-  std::vector< std::string > varContinuous{"A", "ADL"};   // continuous variables for the BN
+  std::vector< std::string > varContinuous{"A", "ADL"};           // continuous variables for the BN
 
 
   std::vector< gum::NodeId > nodeList;   // nodes list for the BN
@@ -1272,20 +1272,20 @@ GUM_ACTIVE_TEST(_loglikelihood) {
   double siz = -1.0 * learner.database().size();
   learner.useNoPrior();
 
-  auto stat = learner.logLikelihood({"A"}) / siz;   // LL=-N.H
+  auto stat = learner.logLikelihood({"A"}) / siz;                  // LL=-N.H
   TS_ASSERT_DELTA(stat, 0.99943499, TS_GUM_SMALL_ERROR)
-  stat = learner.logLikelihood({"B"}) / siz;   // LL=-N.H
+  stat = learner.logLikelihood({"B"}) / siz;                       // LL=-N.H
   TS_ASSERT_DELTA(stat, 0.9986032, TS_GUM_SMALL_ERROR)
-  stat = learner.logLikelihood({std::string("A"), "B"}) / siz;   // LL=-N.H
+  stat = learner.logLikelihood({std::string("A"), "B"}) / siz;     // LL=-N.H
   TS_ASSERT_DELTA(stat, 1.9668973, TS_GUM_SMALL_ERROR)
   stat = learner.logLikelihood({std::string("A")}, {"B"}) / siz;   // LL=-N.H
   TS_ASSERT_DELTA(stat, 1.9668973 - 0.9986032, TS_GUM_SMALL_ERROR)
 
-  stat = learner.logLikelihood({"C"}) / siz;   // LL=-N.H
+  stat = learner.logLikelihood({"C"}) / siz;                       // LL=-N.H
   TS_ASSERT_DELTA(stat, 0.99860302, TS_GUM_SMALL_ERROR)
-  stat = learner.logLikelihood({"D"}) / siz;   // LL=-N.H
+  stat = learner.logLikelihood({"D"}) / siz;                       // LL=-N.H
   TS_ASSERT_DELTA(stat, 0.40217919, TS_GUM_SMALL_ERROR)
-  stat = learner.logLikelihood({std::string("C"), "D"}) / siz;   // LL=-N.H
+  stat = learner.logLikelihood({std::string("C"), "D"}) / siz;     // LL=-N.H
   TS_ASSERT_DELTA(stat, 1.40077995, TS_GUM_SMALL_ERROR)
   stat = learner.logLikelihood({std::string("C")}, {"D"}) / siz;   // LL=-N.H
   TS_ASSERT_DELTA(stat, 1.40077995 - 0.40217919, TS_GUM_SMALL_ERROR)
@@ -1834,6 +1834,78 @@ GUM_ACTIVE_TEST(ConditionalMutualInformation) {
                   TS_GUM_SMALL_ERROR)
 }
 
+GUM_ACTIVE_TEST(WeightedConditionalMutualInformation) {
+  {   // without weights
+    gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/weightedTest.csv"));
+
+    learner.useNoPrior();
+    learner.useNoCorrection();
+
+    TS_ASSERT_DELTA(learner.mutualInformation("A", "B", {"C"}), 0.464757, TS_GUM_SMALL_ERROR)
+
+    learner.useNoCorrection();
+    TS_ASSERT_DELTA(learner.mutualInformation("A", "B", {"C"}), 0.464757, TS_GUM_SMALL_ERROR)
+
+    learner.useMDLCorrection();
+    TS_ASSERT_DELTA(learner.mutualInformation("A", "B", {"C"}), 0.464757, TS_GUM_SMALL_ERROR)
+
+    learner.useNMLCorrection();
+    TS_ASSERT_DELTA(learner.mutualInformation("A", "B", {"C"}), 0.464757, TS_GUM_SMALL_ERROR)
+
+    learner.useNoCorrection();
+    TS_ASSERT_DELTA(learner.correctedMutualInformation("A", "B", {"C"}),
+                    0.464757,
+                    TS_GUM_SMALL_ERROR)
+
+    learner.useMDLCorrection();
+    TS_ASSERT_DELTA(learner.correctedMutualInformation("A", "B", {"C"}),
+                    0.180108,
+                    TS_GUM_SMALL_ERROR)
+
+    learner.useNMLCorrection();
+    TS_ASSERT_DELTA(learner.correctedMutualInformation("A", "B", {"C"}),
+                    0.288824,
+                    TS_GUM_SMALL_ERROR)
+  }
+  {   // with weights
+    gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/compactWeightedTest.csv"));
+    learner.setRecordWeight(0, 2);
+    learner.setRecordWeight(1, 2);
+    learner.setRecordWeight(2, 4);
+    learner.setRecordWeight(3, 1);
+    learner.setRecordWeight(4, 1);
+    learner.setRecordWeight(5, 3);
+    learner.setRecordWeight(6, 0);
+
+
+    TS_ASSERT_DELTA(learner.mutualInformation("A", "B", {"C"}), 0.464757, TS_GUM_SMALL_ERROR)
+
+    learner.useNoCorrection();
+    TS_ASSERT_DELTA(learner.mutualInformation("A", "B", {"C"}), 0.464757, TS_GUM_SMALL_ERROR)
+
+    learner.useMDLCorrection();
+    TS_ASSERT_DELTA(learner.mutualInformation("A", "B", {"C"}), 0.464757, TS_GUM_SMALL_ERROR)
+
+    learner.useNMLCorrection();
+    TS_ASSERT_DELTA(learner.mutualInformation("A", "B", {"C"}), 0.464757, TS_GUM_SMALL_ERROR)
+
+    learner.useNoCorrection();
+    TS_ASSERT_DELTA(learner.correctedMutualInformation("A", "B", {"C"}),
+                    0.464757,
+                    TS_GUM_SMALL_ERROR)
+
+    learner.useMDLCorrection();
+    TS_ASSERT_DELTA(learner.correctedMutualInformation("A", "B", {"C"}),
+                    0.180108,
+                    TS_GUM_SMALL_ERROR)
+
+    learner.useNMLCorrection();
+    TS_ASSERT_DELTA(learner.correctedMutualInformation("A", "B", {"C"}),
+                    0.288824,
+                    TS_GUM_SMALL_ERROR)
+  }
+}
+
 private:
 void _test_dirichlet(const gum::BayesNet< double >& model) {
   gum::learning::BNLearner all(GET_RESSOURCES_PATH("dirichlet/dirichlet.csv"), model);
@@ -1851,7 +1923,7 @@ void _test_dirichlet(const gum::BayesNet< double >& model) {
     gum::learning::BNLearner learner(parts[num_part], model);
     if (num_part == 0) {   // first part
       learner.useNoPrior();
-    } else {   // other parts, using partial(i-1) as prior
+    } else {               // other parts, using partial(i-1) as prior
       learner.useDirichletPrior(partial, double(nb_elt));
     }
     partial = learner.learnParameters(model.dag(), true);

@@ -919,9 +919,8 @@ namespace gum::learning {
                   "The BNLearner's corrected mutual information class does "
                      << "not implement yet this correction : " << int(kmode3Off2_))
     }
-
-    if (knowing.size() == (Size)0) return cmi.score(id1, id2) / (double)this->nbRows();
-    else return cmi.score(id1, id2, knowing) / (double)this->nbRows();
+    if (knowing.size() == (Size)0) return cmi.score(id1, id2) / scoreDatabase_.weight();
+    else return cmi.score(id1, id2, knowing) / scoreDatabase_.weight();
   }
 
   double IBNLearner::correctedMutualInformation(const std::string&                var1,
@@ -944,8 +943,8 @@ namespace gum::learning {
     gum::learning::CorrectedMutualInformation cmi(scoreDatabase_.parser(), prior, databaseRanges());
     cmi.useNoCorr();
 
-    if (knowing.size() == (Size)0) return cmi.score(id1, id2) / (double)this->nbRows();
-    else return cmi.score(id1, id2, knowing) / (double)this->nbRows();
+    if (knowing.size() == (Size)0) return cmi.score(id1, id2) / scoreDatabase_.weight();
+    else return cmi.score(id1, id2, knowing) / scoreDatabase_.weight();
   }
 
   double IBNLearner::mutualInformation(const std::string&                var1,

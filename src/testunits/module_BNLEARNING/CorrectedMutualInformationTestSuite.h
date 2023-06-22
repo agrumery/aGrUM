@@ -235,6 +235,119 @@ namespace gum_tests {
       TS_ASSERT_DELTA(score.score(7, 5, 4), _I_(parser, 7, 5, 4) + cst, 1e-4)
       TS_ASSERT_DELTA(score.score(7, 4, 5), _I_(parser, 7, 4, 5) + cst, 1e-4)
     }
-  };
 
+
+    private:
+    gum::learning::DatabaseTable _getDatabase() {
+      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/weightedTest.csv"));
+      const auto&                         var_names = initializer.variableNames();
+      const std::size_t                   nb_vars   = var_names.size();
+
+      gum::learning::DBTranslatorSet                translator_set;
+      gum::learning::DBTranslator4LabelizedVariable translator;
+      for (std::size_t i = 0; i < nb_vars; ++i) {
+        translator_set.insertTranslator(translator, i);
+      }
+
+      gum::learning::DatabaseTable database(translator_set);
+      database.setVariableNames(initializer.variableNames());
+      initializer.fillDatabase(database);
+
+      return database;
+    }
+    gum::learning::DatabaseTable _getCompactedDatabase() {
+      gum::learning::DBInitializerFromCSV initializer(
+         GET_RESSOURCES_PATH("csv/compactWeightedTest.csv"));
+      const auto&       var_names = initializer.variableNames();
+      const std::size_t nb_vars   = var_names.size();
+
+      gum::learning::DBTranslatorSet                translator_set;
+      gum::learning::DBTranslator4LabelizedVariable translator;
+      for (std::size_t i = 0; i < nb_vars; ++i) {
+        translator_set.insertTranslator(translator, i);
+      }
+
+      gum::learning::DatabaseTable database(translator_set);
+      database.setVariableNames(initializer.variableNames());
+      initializer.fillDatabase(database);
+      database.setWeight(0, 2);
+      database.setWeight(1, 2);
+      database.setWeight(2, 4);
+      database.setWeight(3, 1);
+      database.setWeight(4, 1);
+      database.setWeight(5, 3);
+      database.setWeight(6, 0);
+
+      return database;
+    }
+
+    public:
+    GUM_ACTIVE_TEST(_weighted) {
+      {
+        auto                                      database1 = _getDatabase();
+        gum::learning::DBRowGeneratorSet          genset1;
+        gum::learning::DBRowGeneratorParser       parser1(database1.handler(), genset1);
+        gum::learning::NoPrior                    prior1(database1);
+        gum::learning::CorrectedMutualInformation score1(parser1, prior1);
+        score1.useNoCorr();
+
+        auto                                      database2 = _getCompactedDatabase();
+        gum::learning::DBRowGeneratorSet          genset2;
+        gum::learning::DBRowGeneratorParser       parser2(database2.handler(), genset2);
+        gum::learning::NoPrior                    prior2(database2);
+        gum::learning::CorrectedMutualInformation score2(parser2, prior2);
+        score2.useNoCorr();
+
+        TS_ASSERT_DELTA(score1.score(0, 1, 2), score2.score(0, 1, 2), 1e-5)
+        score2.clear();
+        database2.setAllRowsWeight(1);
+        score2.useNoCorr();
+        TS_ASSERT(std::fabs(score1.score(0, 1, 2) - score2.score(0, 1, 2)) > 1e-5)
+
+        GUM_TRACE(score1.score(0, 1, std::vector< gum::Idx >({2}))/database1.weight())
+      }
+      {
+        auto                                      database1 = _getDatabase();
+        gum::learning::DBRowGeneratorSet          genset1;
+        gum::learning::DBRowGeneratorParser       parser1(database1.handler(), genset1);
+        gum::learning::NoPrior                    prior1(database1);
+        gum::learning::CorrectedMutualInformation score1(parser1, prior1);
+        score1.useMDL();
+
+        auto                                      database2 = _getCompactedDatabase();
+        gum::learning::DBRowGeneratorSet          genset2;
+        gum::learning::DBRowGeneratorParser       parser2(database2.handler(), genset2);
+        gum::learning::NoPrior                    prior2(database2);
+        gum::learning::CorrectedMutualInformation score2(parser2, prior2);
+        score2.useMDL();
+
+        TS_ASSERT_DELTA(score1.score(0, 1, 2), score2.score(0, 1, 2), 1e-5)
+        score2.clear();
+        database2.setAllRowsWeight(1);
+        score2.useMDL();
+        TS_ASSERT(std::fabs(score1.score(0, 1, 2) - score2.score(0, 1, 2)) > 1e-5)
+      }
+      {
+        auto                                      database1 = _getDatabase();
+        gum::learning::DBRowGeneratorSet          genset1;
+        gum::learning::DBRowGeneratorParser       parser1(database1.handler(), genset1);
+        gum::learning::NoPrior                    prior1(database1);
+        gum::learning::CorrectedMutualInformation score1(parser1, prior1);
+        score1.useNML();
+
+        auto                                      database2 = _getCompactedDatabase();
+        gum::learning::DBRowGeneratorSet          genset2;
+        gum::learning::DBRowGeneratorParser       parser2(database2.handler(), genset2);
+        gum::learning::NoPrior                    prior2(database2);
+        gum::learning::CorrectedMutualInformation score2(parser2, prior2);
+        score2.useNML();
+
+        TS_ASSERT_DELTA(score1.score(0, 1, 2), score2.score(0, 1, 2), 1e-5)
+        score2.clear();
+        database2.setAllRowsWeight(1);
+        score2.useNML();
+        TS_ASSERT(std::fabs(score1.score(0, 1, 2) - score2.score(0, 1, 2)) > 1e-5)
+      }
+    }
+  };
 } /* namespace gum_tests */

@@ -32,14 +32,21 @@ if os.path.isabs(__file__):
 else:
   os.chdir(os.path.dirname("./" + __file__))
 
+test_modules={'','main','skbn','causal'}
+
 mod = "standAlone"
 testNotebooks = False
 
 for cde in sys.argv:
   if cde in ["debug", "release"]:
     mod = cde
-  elif cde in ["all"]:
+  elif cde == "all":
     testNotebooks = (cde == "all")
+  elif cde[:5]=='quick':
+    test_module=cde[6:]
+    if test_module not in test_modules:
+      print(f"[-t quick_module] but module '{test_module}' not in {test_modules}")
+      sys.exit(1)
 
 logfilename = "/pyAgrumTests.log"
 if mod != "standAlone":
@@ -74,16 +81,9 @@ log.info("path : {}".format(gum.__file__))
 print("*****************")
 print("Python Test Suite")
 print("*****************")
-if True:
-  import testsOnPython
+import testsOnPython
 
-  try:
-    total_errs += testsOnPython.errs
-  except NameError:
-    pass
-  except:
-    total_errs += 1
-    print("=> Error in TestSuite")
+total_errs += testsOnPython.runTests(local= len(sys.argv)>1,test_module=test_module)
 
 if testNotebooks:
   print("\n")

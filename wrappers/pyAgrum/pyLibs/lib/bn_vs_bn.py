@@ -340,7 +340,7 @@ class GraphicalBNComparator:
     Returns
     -------
     dict[double,double]
-      A dictionnary containing 'hamming','structural hamming'
+      A dictionary containing 'hamming','structural hamming'
     """
     # convert graphs to cpdags
 
