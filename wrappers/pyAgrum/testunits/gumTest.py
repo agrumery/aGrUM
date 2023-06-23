@@ -34,9 +34,9 @@ else:
 
 test_modules={'','main','skbn','causal'}
 
-mod = "standAlone"
+mod = "release" # release|debug|standAlone (test the installed version)
 testNotebooks = False
-
+test_module="" # all modules
 for cde in sys.argv:
   if cde in ["debug", "release"]:
     mod = cde
