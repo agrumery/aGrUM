@@ -57,10 +57,13 @@ def check_modules(current):
   if cde == 'ALL':
     current['modules'] = '+'.join(sorted(cfg.modules))
   elif cde == 'LIST':
-    print("Modules is in")
+    print("Modules must be one of the following:")
     print("    - ALL")
     for x in sorted(cfg.modules):
       print("    - " + x + " (" + cfg.moduleLabels[x] + ")")
+    print("\nCurrent configuration contains the following modules which are outside of the scope:")
+    for x in sorted(list(setM - set(cfg.modules))):
+      print(f"    - {x} (unknown module)")
     sys.exit(1)
   else:
     current['modules'] = cde
