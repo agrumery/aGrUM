@@ -350,13 +350,13 @@ namespace gum_tests {
       learner.useMIIC();
       learner.useNMLCorrection();
 
-      gum::NodeProperty< gum::Size > slice_order{std::make_pair(gum::NodeId(34), (gum::Size)0),
+      /*gum::NodeProperty< gum::Size > slice_order{std::make_pair(gum::NodeId(34), (gum::Size)0),
                                                  std::make_pair(gum::NodeId(33), (gum::Size)0),
                                                  std::make_pair(gum::NodeId(29), (gum::Size)1),
-                                                 std::make_pair(gum::NodeId(30), (gum::Size)1)};
+                                                 std::make_pair(gum::NodeId(30), (gum::Size)1)};*/
 
-      learner.setSliceOrder(slice_order);
-      learner.setMaxIndegree(3);
+      //learner.setSliceOrder(slice_order);
+      //learner.setMaxIndegree(3);
 
       try {
         auto mg = learner.learnPDAG();

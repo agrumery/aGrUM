@@ -518,7 +518,7 @@ namespace gum {
     /// graph.
     DAG Miic::learnStructure(CorrectedMutualInformation& I, MixedGraph initialGraph) {
       MixedGraph essentialGraph = learnMixedStructure(I, initialGraph);
-      GUM_TRACE_VAR(essentialGraph.edges())
+      
       // orientate remaining edges
 
       const Sequence< NodeId > order = essentialGraph.topologicalOrder();
@@ -530,14 +530,14 @@ namespace gum {
           if (_isForbiddenArc_(x, y)) {
             essentialGraph.eraseEdge(Edge(x, y));
             if (_isForbiddenArc_(y, x)) {
-              GUM_TRACE("Neither arc allowed for edge (" << x << "," << y << ")")
+              // GUM_TRACE("Neither arc allowed for edge (" << x << "," << y << ")")
             } else {
-              GUM_TRACE("Forced orientation : " << y << "->" << x)
+              // GUM_TRACE("Forced orientation : " << y << "->" << x)
               essentialGraph.addArc(y, x);
             }
           } else if (_isForbiddenArc_(y, x)) {
             essentialGraph.eraseEdge(Edge(x, y));
-            GUM_TRACE("Forced orientation : " << x << "->" << y)
+            // GUM_TRACE("Forced orientation : " << x << "->" << y)
             essentialGraph.addArc(x, y);
           }
       }
@@ -547,7 +547,6 @@ namespace gum {
       while (newOrientation) {
         newOrientation = false;
         for (NodeId x: order) {
-          GUM_TRACE_VAR(!essentialGraph.parents(x).empty())
           if (!essentialGraph.parents(x).empty()) {
             newOrientation |= propagatesRemainingOrientableEdges_(essentialGraph, x);
           }
@@ -578,7 +577,7 @@ namespace gum {
     bool Miic::isOrientable_(const MixedGraph& graph, NodeId xi, NodeId xj) const {
       // no cycle
       if (_existsDirectedPath_(graph, xj, xi)) {
-        GUM_TRACE("cycle(" << xi << "-" << xj << ")")
+        // GUM_TRACE("cycle(" << xi << "-" << xj << ")")
         return false;
       }
 
@@ -590,7 +589,7 @@ namespace gum {
 
       // R2
       if (_existsDirectedPath_(graph, xi, xj)) {
-        GUM_TRACE("R2(" << xi << "-" << xj << ")")
+        //GUM_TRACE("R2(" << xi << "-" << xj << ")")
         return true;
       }
 
@@ -600,7 +599,7 @@ namespace gum {
         if (!graph.mixedOrientedPath(xi, p).empty()) {
           nbr += 1;
           if (nbr == 2) {
-            GUM_TRACE("R3(" << xi << "-" << xj << ")")
+            //GUM_TRACE("R3(" << xi << "-" << xj << ")")
             return true;
           }
         }
@@ -610,9 +609,7 @@ namespace gum {
 
     void Miic::propagatesOrientationInChainOfRemainingEdges_(MixedGraph& essentialGraph) {
       // then decide the orientation for remaining edges
-      GUM_TRACE_VAR(essentialGraph)
       while (!essentialGraph.edges().empty()) {
-        GUM_TRACE_VAR(essentialGraph.edges())
         const auto& edge               = *(essentialGraph.edges().begin());
         NodeId      root               = edge.first();
         Size        size_children_root = essentialGraph.children(root).size();
@@ -642,9 +639,7 @@ namespace gum {
           stack.erase(next);
           if (visited.contains(next)) continue;
           const auto nei = essentialGraph.neighbours(next);
-          GUM_TRACE_VAR(nei)
           for (const auto n: nei) {
-            GUM_TRACE_VAR(n)
             if (!stack.contains(n) && !visited.contains(n)) stack.insert(n);
             // GUM_TRACE(" + amap reasonably orientation for " << n << "->" << next);
             if (propagatesRemainingOrientableEdges_(essentialGraph,next))
@@ -667,7 +662,6 @@ namespace gum {
     bool Miic::propagatesRemainingOrientableEdges_(MixedGraph& graph, NodeId xj) {
       bool       res        = false;
       const auto neighbours = graph.neighbours(xj);
-      GUM_TRACE_VAR(graph)
       for (auto& xi: neighbours) {
         bool i_j = isOrientable_(graph, xi, xj);
         bool j_i = isOrientable_(graph, xj, xi);
@@ -677,19 +671,19 @@ namespace gum {
           res = true;
         }
         if (i_j) {
-          GUM_TRACE(" + add arc (" << xi << "," << xj << ")")
+          //GUM_TRACE(" + add arc (" << xi << "," << xj << ")")
           GUM_SL_EMIT(xi, xj, "Add Arc", "line 666")
           graph.addArc(xi, xj);
           propagatesRemainingOrientableEdges_(graph, xj);
         }
         if (j_i) {
-          GUM_TRACE(" + add arc (" << xi << "," << xj << ")")
+          //GUM_TRACE(" + add arc (" << xi << "," << xj << ")")
           GUM_SL_EMIT(xj, xi, "Add Arc", "line 672")
           graph.addArc(xj, xi);
           propagatesRemainingOrientableEdges_(graph, xi);
         }
         if (i_j && j_i) {
-          GUM_TRACE(" + add arc (" << xi << "," << xj << ")")
+          //GUM_TRACE(" + add arc (" << xi << "," << xj << ")")
           _latentCouples_.emplace_back(xi, xj);
         }
       }

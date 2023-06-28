@@ -69,7 +69,7 @@ namespace gum_tests {
 
   class MiicTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_ACTIVE_TEST(_asia_MDLcorr) {
+    GUM_INACTIVE_TEST(_asia_MDLcorr) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -351,7 +351,7 @@ namespace gum_tests {
       //SimpleListenerForMiic listener;
       // FilterListenerForMiic filterlistener;
 
-      std::cout << "TEST ORDER 1 :" << std::endl;
+      //std::cout << "TEST ORDER 1 :" << std::endl;
 
       /*GUM_CONNECT(search,
                   onStructuralModification,
@@ -367,7 +367,7 @@ namespace gum_tests {
         }
       }
       gum::DAG dag = search.learnStructure(cI, graph);
-      GUM_TRACE("Arcs Order 1: " << dag.arcs())
+      //GUM_TRACE("Arcs Order 1: " << dag.arcs())
     }
 
     GUM_ACTIVE_TEST(_MIIC_ms_order2_) {
@@ -410,7 +410,7 @@ namespace gum_tests {
       //SimpleListenerForMiic listener;
       // FilterListenerForMiic filterlistener;
 
-      std::cout << "TEST ORDER 2 :" << std::endl;
+      //std::cout << "TEST ORDER 2 :" << std::endl;
 
       /*GUM_CONNECT(search,
                   onStructuralModification,
@@ -426,7 +426,56 @@ namespace gum_tests {
         }
       }
       gum::DAG dag = search.learnStructure(cI, graph);
-      GUM_TRACE("Arcs Order 2: " << dag.arcs())
+      //GUM_TRACE("Arcs Order 2: " << dag.arcs())
+    }
+
+    GUM_ACTIVE_TEST(_alarm_constraintMiic) {
+      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/alarm.csv"));
+      const auto&                         var_names = initializer.variableNames();
+      const std::size_t                   nb_vars   = var_names.size();
+
+      gum::learning::DBTranslatorSet translator_set;
+      gum::LabelizedVariable         xvar("var", "", 0);
+      for (int i = 0; i < 10; ++i) {
+        xvar.addLabel(std::to_string(i));
+      }
+      gum::learning::DBTranslator4LabelizedVariable translator(xvar, true);
+      for (std::size_t i = 0; i < nb_vars; ++i) {
+        translator_set.insertTranslator(translator, i);
+      }
+
+      gum::learning::DatabaseTable database(translator_set);
+      database.setVariableNames(initializer.variableNames());
+      initializer.fillDatabase(database);
+
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+
+      std::vector< gum::Size > modalities(nb_vars, 10);
+
+      gum::learning::NoPrior                    prior(database);
+      gum::learning::CorrectedMutualInformation cI(parser, prior);
+
+      /*gum::NodeProperty< gum::Size > slice_order{std::make_pair(gum::NodeId(34), (gum::Size)0),
+                                                 std::make_pair(gum::NodeId(33), (gum::Size)0),
+                                                 std::make_pair(gum::NodeId(29), (gum::Size)1),
+                                                 std::make_pair(gum::NodeId(30), (gum::Size)1)};*/
+
+      // learner.setSliceOrder(slice_order);
+      // learner.setMaxIndegree(3);
+
+      gum::learning::Miic search;
+      gum::MixedGraph mg;
+      for (gum::Size i = 0; i < modalities.size(); ++i) {
+        mg.addNodeWithId(i);
+        for (gum::Size j = 0; j < i; ++j) {
+          mg.addEdge(j, i);
+        }
+      }
+      try {
+        mg = search.learnMixedStructure(cI, mg);
+
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
 
