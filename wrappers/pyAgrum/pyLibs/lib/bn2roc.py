@@ -119,7 +119,7 @@ def _computeF1(points, ind):
 
 def _computepoints(bn, csv_name, target, label, show_progress=True, with_labels=True, significant_digits=10):
   """
-  Compute the ROC curve points.
+  Compute the ROC points.
 
   Parameters
   ----------
@@ -130,9 +130,11 @@ def _computepoints(bn, csv_name, target, label, show_progress=True, with_labels=
   target : str
     the target
   label : str
-    the target's label
+    the target's label or id
   show_progress : bool
     indicates if the resulting curve must be printed
+  with_labels: bool
+    wheter we use label or id (especially for parameter label)
   significant_digits:
     number of significant digits when computing probabilities
 
@@ -270,6 +272,60 @@ def _computeROC_PR(values, totalP, totalN):
           thresholds)
 
 
+def getROCpoints(bn, csv_name, target, label, with_labels=True,significant_digits=10):
+  """
+  Compute the points of the ROC curve
+
+  Parameters
+  ----------
+  bn : pyAgrum.BayesNet
+    a Bayesian network
+  csv_name : str
+    a csv filename
+  target : str
+    the target
+  label : str
+    the target's label
+  with_labels: bool
+    whether we use label or id (especially for parameter label)
+  significant_digits:
+    number of significant digits when computing probabilities
+  """
+  show_progress=False
+  (res, totalP, totalN) = _computepoints(bn, csv_name, target,
+                                         label, show_progress, with_labels, significant_digits)
+  (pointsROC, ind_ROC, thresholdROC, AUC_ROC, f1_ROC, pointsPR, ind_PR,
+   thresholdPR, AUC_PR, f1_PR, thresholds) = _computeROC_PR(res, totalP, totalN)
+
+  return pointsROC
+
+def getPRpoints(bn, csv_name, target, label, with_labels=True,significant_digits=10):
+  """
+  Compute the points of the PR curve
+
+  Parameters
+  ----------
+  bn : pyAgrum.BayesNet
+    a Bayesian network
+  csv_name : str
+    a csv filename
+  target : str
+    the target
+  label : str
+    the target's label
+  with_labels: bool
+    whether we use label or id (especially for parameter label)
+  significant_digits:
+    number of significant digits when computing probabilities
+  """
+  show_progress=False
+  (res, totalP, totalN) = _computepoints(bn, csv_name, target,
+                                         label, show_progress, with_labels, significant_digits)
+  (pointsROC, ind_ROC, thresholdROC, AUC_ROC, f1_ROC, pointsPR, ind_PR,
+   thresholdPR, AUC_PR, f1_PR, thresholds) = _computeROC_PR(res, totalP, totalN)
+
+  return pointsPR
+
 def _getPoint(threshold: float, thresholds: List[float], points: List[Tuple[float, float]]) -> Tuple[float, float]:
   """
 
@@ -390,8 +446,8 @@ def _drawPR(points, zeTitle, f1_PR, AUC_PR, thresholds, thresholds_to_show, rate
   _basicDraw(ax, points, thresholds, f1=f1_PR, AUC=AUC_PR, main_color='#120af7', secondary_color='#DD5555',
              thresholds_to_show=thresholds_to_show, align_threshold="right")
   ax.plot([0.0, 1.0], [rate, rate], '-', color="#AAAAAA")
-  ax.set_xlabel('Precision')
-  ax.set_ylabel('Recall')
+  ax.set_xlabel('Recall')
+  ax.set_ylabel('Precision')
 
   ax.set_title(zeTitle)
 
