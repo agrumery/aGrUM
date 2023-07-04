@@ -54,8 +54,7 @@ namespace gum {
 
   // equality operator
   INLINE bool DiscreteVariable::operator==(const DiscreteVariable& aRV) const {
-    return (Variable::operator==(aRV) && (stype() == aRV.stype())
-            && (domainSize() == aRV.domainSize()));
+    return (Variable::operator==(aRV) && (stype() == aRV.stype()) && (labels() == aRV.labels()));
   }
 
   // inequality operator

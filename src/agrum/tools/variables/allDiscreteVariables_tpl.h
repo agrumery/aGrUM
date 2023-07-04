@@ -40,6 +40,7 @@ namespace gum {
     std::vector< int >    values;
     std::vector< double > numerical_values;
 
+    // [1,3,5]...
     if (*(var_description.rbegin()) == ']') {
       auto posBrack = var_description.find('[');
       if (posBrack != std::string::npos) {
@@ -77,8 +78,8 @@ namespace gum {
           ds = args.size() - 1;
         }
       }
-    } else if (*(var_description.rbegin())
-               == '}') {   // var_description like "n{one|two|three}" or b{1.1:3.31:5}
+      // var_description like "n{one|two|three}" or b{1.1:3.31:5}
+    } else if (*(var_description.rbegin()) == '}') {
       auto posBrack = var_description.find('{');
       if (posBrack != std::string::npos) {
         name   = var_description.substr(0, posBrack);
