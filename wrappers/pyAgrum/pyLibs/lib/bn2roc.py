@@ -290,6 +290,11 @@ def getROCpoints(bn, csv_name, target, label, with_labels=True,significant_digit
     whether we use label or id (especially for parameter label)
   significant_digits:
     number of significant digits when computing probabilities
+
+  Returns
+  -------
+    List[Tuple[int,int]]
+      the list of points (FalsePositifRate,TruePositifRate)
   """
   show_progress=False
   (res, totalP, totalN) = _computepoints(bn, csv_name, target,
@@ -317,6 +322,11 @@ def getPRpoints(bn, csv_name, target, label, with_labels=True,significant_digits
     whether we use label or id (especially for parameter label)
   significant_digits:
     number of significant digits when computing probabilities
+
+  Returns
+  -------
+    List[Tuple[float,float]]
+      the list of points (precision,recall)
   """
   show_progress=False
   (res, totalP, totalN) = _computepoints(bn, csv_name, target,
