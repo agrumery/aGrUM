@@ -333,6 +333,7 @@ def proba2histo(p, scale=1.0, util=None, txtcolor="Black"):
     return _getProbaH(p, scale, util=util, txtcolor=txtcolor)
 
   if p.variable(0).varType()==gum.VarType_Discretized:
+    if gum.config['notebook','histogram_discretized_visualisation']=="histogram":
       return _getHistoForDiscretized(p,scale,txtcolor)
       
   if p.variable(0).domainSize() > int(gum.config['notebook', 'histogram_line_threshold']):
