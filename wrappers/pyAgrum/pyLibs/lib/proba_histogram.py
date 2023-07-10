@@ -22,6 +22,7 @@ import math
 import numpy as np
 
 import matplotlib.pyplot as plt
+from matplotlib.ticker import (MultipleLocator, AutoMinorLocator)
 
 import pyAgrum as gum
 
@@ -281,6 +282,32 @@ def _getProbaH(p, scale=1.0, util=None, txtcolor="black"):
 
   return fig
 
+def _getHistoForDiscretized(p, scale=1.0, txtcolor="Black"):
+  var = p.variable(0)
+  vx=var.ticks()
+  widths=[vx[i+1]-vx[i] for i in range(len(vx)-1)]
+  vals=[v/w for v,w in zip(p.tolist(),widths)]
+    
+  fig = plt.figure()
+  fig.set_figwidth(scale * max(15,len(vx))/8 )
+  fig.set_figheight(scale)
+
+  ax = fig.add_subplot(111)
+  ax.set_facecolor('white')
+  ax.set_xticks([vx[0],(vx[-1]+vx[0])/2,vx[-1]])
+  ax.xaxis.set_minor_locator(AutoMinorLocator())
+  ax.tick_params(which="minor",length=4)
+  ax.get_xaxis().grid(True,which="minor",zorder=0)
+
+  bars = ax.bar(vx[:-1], height=vals,width=widths,
+                align='edge',
+                color=gum.config['notebook', 'histogram_color'],edgecolor=gum.config['notebook', 'histogram_edge_color'],zorder=3)
+
+    # Even if utility, now we do show the mean/sigma of the distribution.
+  ax.set_title(_getTitleHisto(p,True), color=txtcolor)
+  ax.margins(0)
+
+  return fig
 
 def proba2histo(p, scale=1.0, util=None, txtcolor="Black"):
   """
@@ -305,6 +332,9 @@ def proba2histo(p, scale=1.0, util=None, txtcolor="Black"):
   if util is not None:
     return _getProbaH(p, scale, util=util, txtcolor=txtcolor)
 
+  if p.variable(0).varType()==gum.VarType_Discretized:
+      return _getHistoForDiscretized(p,scale,txtcolor)
+      
   if p.variable(0).domainSize() > int(gum.config['notebook', 'histogram_line_threshold']):
     return _getProbaLine(p, scale, txtcolor=txtcolor)
 
