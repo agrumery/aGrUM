@@ -42,6 +42,8 @@ namespace gum {
   INLINE void PDAG::addArc(const NodeId tail, const NodeId head) {
     if (head == tail) { GUM_ERROR(InvalidDirectedCycle, "Add a mono-cycle in a PDAG !") }
     if (this->hasMixedOrientedPath(head, tail)) {
+      GUM_TRACE_VAR(head)
+      GUM_TRACE_VAR(tail)
       GUM_ERROR(InvalidPartiallyDirectedCycle, "Add a partially directed cycle in a PDAG !")
     }
 
@@ -55,6 +57,7 @@ namespace gum {
       GUM_ERROR(InvalidPartiallyDirectedCycle, "Add a partially directed cycle in a PDAG !")
     }
     if (this->hasMixedReallyOrientedPath(tail, head)) {
+      GUM_CHECKPOINT
       GUM_ERROR(InvalidPartiallyDirectedCycle, "Add a partially directed cycle in a PDAG !")
     }
 

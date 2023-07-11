@@ -98,6 +98,13 @@ namespace gum {
       // ##########################################################################
       /// @{
 
+      /// learns the structure of an Essential Graph
+      /** @param mutualInformation A mutual information instance that will do the
+       * computations and has loaded the database.
+       * @param graph the MixedGraph we start from for the learning
+       * */
+      MixedGraph learnPDAG(CorrectedMutualInformation& mutualInformation,
+                           MixedGraph                  graph);
 
       /// learns the structure of an Essential Graph
       /** @param mutualInformation A mutual information instance that will do the

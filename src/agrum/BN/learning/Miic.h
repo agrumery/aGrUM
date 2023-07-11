@@ -47,6 +47,7 @@
 #include <agrum/tools/core/approximations/approximationScheme.h>
 #include <agrum/tools/core/heap.h>
 #include <agrum/tools/graphs/DAG.h>
+#include <agrum/tools/graphs/PDAG.h>
 #include <agrum/tools/graphs/mixedGraph.h>
 #include <agrum/tools/stattests/correctedMutualInformation.h>
 
@@ -137,12 +138,20 @@ namespace gum {
       /// @{
 
 
-      /// learns the structure of an Essential Graph
+      /// learns the structure of a MixedGraph (Meek rules not used here).
       /** @param mutualInformation A mutual information instance that will do the
        * computations and has loaded the database.
        * @param graph the MixedGraph we start from for the learning
        * */
       MixedGraph learnMixedStructure(CorrectedMutualInformation& mutualInformation,
+                                     MixedGraph                  graph);
+
+      /// learns the structure of an Essential Graph
+      /** @param mutualInformation A mutual information instance that will do the
+       * computations and has loaded the database.
+       * @param graph the MixedGraph we start from for the learning
+       * */
+      MixedGraph learnPDAG(CorrectedMutualInformation& mutualInformation,
                                      MixedGraph                  graph);
 
       /// learns the structure of a Bayesian network, i.e. a DAG, by first learning
@@ -181,7 +190,6 @@ namespace gum {
       /// Set ForbiddenGraph (resp. MadatoryGraph) which contains the forbidden (resp. mandatory) arcs.
       void setForbiddenGraph(gum::DiGraph forbidGraph);
       void setMandatoryGraph(gum::DAG mandaGraph);
-      void testNodeProperty(const NodeProperty<NodeId>& order);
       void setMaxIndegree(gum:: Size n);
 
       /// Set a ensemble of constraints for the learning/orientation phase

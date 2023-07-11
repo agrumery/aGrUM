@@ -451,6 +451,48 @@ namespace gum {
       return probaTriples;
     }
 
+    /// learns the structure of a PDAG from à MixedGraph.
+    /// It returns a MixedGraph with the constraints of a PDAG, to avoid changing the dependencies
+    /// in the other methods of the MIIC class.
+
+    MixedGraph SimpleMiic::learnPDAG(CorrectedMutualInformation& I, MixedGraph initialGraph){
+      MixedGraph essentialGraph = learnMixedStructure(I, initialGraph);
+
+      // orientate remaining edges
+      const Sequence< NodeId > order = essentialGraph.topologicalOrder();
+
+      // first, forbidden arcs force arc in the other direction
+      for (NodeId x: order) {
+        const auto nei_x = essentialGraph.neighbours(x);
+        for (NodeId y: nei_x)
+          if (isForbidenArc_(x, y)) {
+            essentialGraph.eraseEdge(Edge(x, y));
+            if (isForbidenArc_(y, x)) {
+              // GUM_TRACE("Neither arc allowed for edge (" << x << "," << y << ")")
+            } else {
+              // GUM_TRACE("Forced orientation : " << y << "->" << x)
+              essentialGraph.addArc(y, x);
+            }
+          } else if (isForbidenArc_(y, x)) {
+            essentialGraph.eraseEdge(Edge(x, y));
+            // GUM_TRACE("Forced orientation : " << x << "->" << y)
+            essentialGraph.addArc(x, y);
+          }
+      }
+
+      // then propagates existing orientations thanks to Meek rules
+      bool newOrientation = true;
+      while (newOrientation) {
+        newOrientation = false;
+        for (NodeId x: order) {
+          if (!essentialGraph.parents(x).empty()) {
+            newOrientation |= propagatesRemainingOrientableEdges_(essentialGraph, x);
+          }
+        }
+      }
+      return essentialGraph;
+    }
+
     /// learns the structure of an Bayesian network, ie a DAG, from an Essential
     /// graph.
     DAG SimpleMiic::learnStructure(CorrectedMutualInformation& I, MixedGraph initialGraph) {
