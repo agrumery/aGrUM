@@ -166,14 +166,17 @@ def pseudoCount(self,vars):
     p.fillWith(self.rawPseudoCount(lv))
     return p
 
-def fitParameters(self,bn):
+def fitParameters(self,bn,take_into_account_score=True):
   """
-  Easy shortcut to LearnParameters method. fitParameters uses self to directly populate the CPTs of the bn.
+  Easy shortcut to LearnParameters method. fitParameters directly populates the CPTs of the argument.
 
   Parameters
   ----------
   bn : pyAgrum.BayesNet
-    a BN which will directly have its parameters learned.
+    a BN which will directly have its parameters learned inplace.
+
+  take_into_account_score : bool
+	The dag passed in argument may have been learnt from a structure learning. In this case, if the score used to learn the structure has an implicit prior (like K2 which has a 1-smoothing prior), it is important to also take into account this implicit prior for parameter learning. By default (`take_into_account_score=True`), we will learn parameters by taking into account the prior specified by methods usePriorXXX () + the implicit prior of the score (if any). If `take_into_account_score=False`, we just take into account the prior specified by `usePriorXXX()`.
 
   """
   if set(self.names())!=bn.names():
@@ -184,7 +187,7 @@ def fitParameters(self,bn):
     d.addNodeWithId(self.idFromName(n))
   for i1,i2 in bn.arcs():
     d.addArc(self.idFromName(bn.variable(i1).name()),self.idFromName(bn.variable(i2).name()))
-  tmp=self.learnParameters(d)
+  tmp=self.learnParameters(d,take_into_account_score)
   for n in tmp.names():
     bn.cpt(n).fillWith(tmp.cpt(n))
   return self
@@ -199,3 +202,12 @@ def learnEssentialGraph(self):
   return ge
   }
 };
+
+
+%pythonprepend gum::learning::BNLearner<double>::learnParameters %{
+if type(args[0])==pyAgrum.BayesNet:
+    res=pyAgrum.BayesNet(args[0])
+    self.fitParameters(res)
+    return res
+
+%}

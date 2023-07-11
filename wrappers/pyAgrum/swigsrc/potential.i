@@ -56,7 +56,6 @@ CHANGE_THEN_RETURN_SELF(translate)
 
 CHANGE_THEN_RETURN_SELF(fillWith)
 %pythonprepend gum::Potential<double>::fillWith %{
-# test
 if len(args)>1:
   d=args[1]
   if type(d)==dict:

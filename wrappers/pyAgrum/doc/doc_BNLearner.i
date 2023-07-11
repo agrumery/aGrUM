@@ -29,14 +29,19 @@ pyAgrum.BayesNet
 
 %feature("docstring") gum::learning::BNLearner::learnParameters
 "
-learns a BN (its parameters) when its structure is known.
+Create a new BN copying its structure from the argument (dag or BN) and learning its parameters from the database w.r.t the BNLearner's state (priors, etc.).
+
+Warnings
+--------
+When using a `pyAgrum.DAG` as input parameter, NodeIds in the dag and index of rows in the database must fit in order to coherently fix the structure of the BN.
+Generally, it is safer to use a `pyAgrum.BayesianNet` as input or even to use `pyAgrum.BNLearner.fitParameters`.
 
 Parameters
 ----------
 dag : pyAgrum.DAG
 bn : pyAgrum.BayesNet
 take_into_account_score : bool
-	The dag passed in argument may have been learnt from a structure learning. In this case, if the score used to learn the structure has an implicit prior (like K2 which has a 1-smoothing prior), it is important to also take into account this implicit prior for parameter learning. By default, if a score exists, we will learn parameters by taking into account the prior specified by methods usePriorXXX () + the implicit prior of the score, else we just take into account the prior specified by usePriorXXX ()
+	The dag passed in argument may have been learnt from a structure learning. In this case, if the score used to learn the structure has an implicit prior (like K2 which has a 1-smoothing prior), it is important to also take into account this implicit prior for parameter learning. By default (`take_into_account_score=True`), we will learn parameters by taking into account the prior specified by methods usePriorXXX () + the implicit prior of the score (if any). If `take_into_account_score=False`, we just take into account the prior specified by `usePriorXXX()`.
 
 Returns
 -------

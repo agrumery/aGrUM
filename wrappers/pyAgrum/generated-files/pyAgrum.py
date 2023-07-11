@@ -8555,7 +8555,6 @@ class Potential(object):
 
         """
 
-        # test
         if len(args)>1:
           d=args[1]
           if type(d)==dict:
@@ -25848,14 +25847,19 @@ class BNLearner(object):
     def learnParameters(self, *args) -> "pyAgrum.BayesNet":
         r"""
 
-        learns a BN (its parameters) when its structure is known.
+        Create a new BN copying its structure from the argument (dag or BN) and learning its parameters from the database w.r.t the BNLearner's state (priors, etc.).
+
+        Warnings
+        --------
+        When using a `pyAgrum.DAG` as input parameter, NodeIds in the dag and index of rows in the database must fit in order to coherently fix the structure of the BN.
+        Generally, it is safer to use a `pyAgrum.BayesianNet` as input or even to use `pyAgrum.BNLearner.fitParameters`.
 
         Parameters
         ----------
         dag : pyAgrum.DAG
         bn : pyAgrum.BayesNet
         take_into_account_score : bool
-        	The dag passed in argument may have been learnt from a structure learning. In this case, if the score used to learn the structure has an implicit prior (like K2 which has a 1-smoothing prior), it is important to also take into account this implicit prior for parameter learning. By default, if a score exists, we will learn parameters by taking into account the prior specified by methods usePriorXXX () + the implicit prior of the score, else we just take into account the prior specified by usePriorXXX ()
+        	The dag passed in argument may have been learnt from a structure learning. In this case, if the score used to learn the structure has an implicit prior (like K2 which has a 1-smoothing prior), it is important to also take into account this implicit prior for parameter learning. By default (`take_into_account_score=True`), we will learn parameters by taking into account the prior specified by methods usePriorXXX () + the implicit prior of the score (if any). If `take_into_account_score=False`, we just take into account the prior specified by `usePriorXXX()`.
 
         Returns
         -------
@@ -25870,7 +25874,16 @@ class BNLearner(object):
         	If a label is found in the database that do not correspond to the variable
 
         """
+
+        if type(args[0])==pyAgrum.BayesNet:
+            res=pyAgrum.BayesNet(args[0])
+            self.fitParameters(res)
+            return res
+
+
+
         return _pyAgrum.BNLearner_learnParameters(self, *args)
+
 
     def setInitialDAG(self, dag: "DAG") -> "pyAgrum.BNLearner":
         r"""
@@ -26359,14 +26372,17 @@ class BNLearner(object):
         p.fillWith(self.rawPseudoCount(lv))
         return p
 
-    def fitParameters(self,bn):
+    def fitParameters(self,bn,take_into_account_score=True):
       """
-      Easy shortcut to LearnParameters method. fitParameters uses self to directly populate the CPTs of the bn.
+      Easy shortcut to LearnParameters method. fitParameters directly populates the CPTs of the argument.
 
       Parameters
       ----------
       bn : pyAgrum.BayesNet
-        a BN which will directly have its parameters learned.
+        a BN which will directly have its parameters learned inplace.
+
+      take_into_account_score : bool
+    	The dag passed in argument may have been learnt from a structure learning. In this case, if the score used to learn the structure has an implicit prior (like K2 which has a 1-smoothing prior), it is important to also take into account this implicit prior for parameter learning. By default (`take_into_account_score=True`), we will learn parameters by taking into account the prior specified by methods usePriorXXX () + the implicit prior of the score (if any). If `take_into_account_score=False`, we just take into account the prior specified by `usePriorXXX()`.
 
       """
       if set(self.names())!=bn.names():
@@ -26377,7 +26393,7 @@ class BNLearner(object):
         d.addNodeWithId(self.idFromName(n))
       for i1,i2 in bn.arcs():
         d.addArc(self.idFromName(bn.variable(i1).name()),self.idFromName(bn.variable(i2).name()))
-      tmp=self.learnParameters(d)
+      tmp=self.learnParameters(d,take_into_account_score)
       for n in tmp.names():
         bn.cpt(n).fillWith(tmp.cpt(n))
       return self
