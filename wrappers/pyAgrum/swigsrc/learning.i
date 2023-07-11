@@ -168,7 +168,7 @@ def pseudoCount(self,vars):
 
 def fitParameters(self,bn):
   """
-  Easy shortcut to LearnParameters method. fitParameters uses self to direcuptly populate the CPTs of bn.0
+  Easy shortcut to LearnParameters method. fitParameters uses self to directly populate the CPTs of the bn.
 
   Parameters
   ----------
@@ -195,7 +195,7 @@ def learnEssentialGraph(self):
     bn.add(self.nameFromId(i),2)
   ge=EssentialGraph(bn,self.learnPDAG())
   ge._bn=bn
-  return ge
 
+  return ge
   }
 };
