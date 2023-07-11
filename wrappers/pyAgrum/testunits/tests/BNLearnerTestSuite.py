@@ -107,11 +107,10 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
     learner = gum.BNLearner(self.agrumSrcDir(
       'asia3.csv'), bn)
-    learner.setInitialDAG(bn.dag())
     learner.useScoreLog2Likelihood()
     learner.useSmoothingPrior(1.0)
 
-    bn2 = learner.learnParameters()
+    bn2 = learner.learnParameters(bn)
     for i in range(bn.size()):
       # self.assertEqual(str(bn2.variable(i)), str(bn.variable(bn.idFromName(bn2.variable(i).name()))))
       self.assertEqual(set(bn2.variable(i).labels()), set(
@@ -146,17 +145,16 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     dbn.addArc(dbn.idFromName("wl_0"), dbn.idFromName("wl_t"))
 
     csvfile = self.agrumSrcDir('DBN_Tonda.csv')
-    l1 = gum.BNLearner(csvfile)
-    l1.setInitialDAG(dbn.dag())
+    l1 = gum.BNLearner(csvfile,dbn)
     l1.useScoreLog2Likelihood()
     l1.useSmoothingPrior()
-    bn1 = l1.learnParameters()
+    bn1 = l1.learnParameters(dbn)
 
     l2 = gum.BNLearner(csvfile, dbn)
     l2.setInitialDAG(dbn.dag())
     l2.useScoreLog2Likelihood()
     l2.useSmoothingPrior()
-    bn2 = l2.learnParameters()
+    bn2 = l2.learnParameters(dbn)
 
     p1 = bn1.cpt(bn1.idFromName("c_0"))
     I1 = gum.Instantiation(p1)
