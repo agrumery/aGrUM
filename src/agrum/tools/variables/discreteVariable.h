@@ -67,7 +67,6 @@ namespace gum {
     DiscreteVariable(const std::string& aName, const std::string& aDesc);
 
     /// Copy constructor
-
     /** Copy Constructor.
      *
      * If aDRV haves any listener, it will not be copied.
@@ -77,13 +76,11 @@ namespace gum {
     DiscreteVariable(const DiscreteVariable& aDRV);
 
     /// destructor
-
     virtual ~DiscreteVariable();
 
     /// Copy Factory.
     /// @return Returns a pointer on a new copy of this.
-
-    virtual DiscreteVariable* clone() const = 0;
+    DiscreteVariable* clone() const override = 0;
 
     /// @}
 
@@ -105,7 +102,7 @@ namespace gum {
     virtual double numerical(Idx indice) const = 0;
 
     /// returns the varType of variable
-    virtual VarType varType() const = 0;
+    VarType varType() const override = 0;
 
     // returns the variable in fast syntax
     virtual std::string toFast() const = 0;
