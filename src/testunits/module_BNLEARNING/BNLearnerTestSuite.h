@@ -1535,7 +1535,7 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(_misorientation_MIIC) {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/renewal.csv"));
 
-      learner.useSimpleMIIC();
+      learner.useMIIC();
       learner.useNMLCorrection();
 
       auto bn            = learner.learnBN();

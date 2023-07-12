@@ -95,7 +95,7 @@ namespace gum {
 
     /// move operator
     template < typename GUM_SCALAR >
-    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::operator=(BNLearner< GUM_SCALAR >&& src) {
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::operator=(BNLearner< GUM_SCALAR >&& src) noexcept {
       IBNLearner::operator=(std::move(src));
       return *this;
     }
@@ -307,7 +307,6 @@ namespace gum {
           vals.emplace_back("Tabu list size", std::to_string(nbDecreasingChanges_), "");
           break;
         case AlgoType::MIIC: vals.emplace_back(key, "MIIC", ""); break;
-        case AlgoType::SIMPLE_MIIC: vals.emplace_back(key, "Simple MIIC", ""); break;
         default: vals.emplace_back(key, "(unknown)", "?"); break;
       }
 
@@ -375,7 +374,7 @@ namespace gum {
       if (constraintIndegree_.maxIndegree() < std::numeric_limits< Size >::max()) {
         vals.emplace_back("Constraint Max InDegree",
                           std::to_string(constraintIndegree_.maxIndegree()),
-                          "Used only for score-based algorithms.");
+                          "");
       }
       if (!constraintForbiddenArcs_.arcs().empty()) {
         res     = "{";
@@ -410,7 +409,7 @@ namespace gum {
         res += "}";
         vals.emplace_back("Constraint Possible Edges",
                           res,
-                          "Used only for score-based algorithms.");
+                          "");
       }
       if (!constraintSliceOrder_.sliceOrder().empty()) {
         res               = "{";
@@ -422,7 +421,7 @@ namespace gum {
           res += nameFromId(p.first) + ":" + std::to_string(p.second);
         }
         res += "}";
-        vals.emplace_back("Constraint Slice Order", res, "Used only for score-based algorithms.");
+        vals.emplace_back("Constraint Slice Order", res, "");
       }
       if (initialDag_.size() != 0) {
         vals.emplace_back("Initial DAG", "True", initialDag_.toDot());

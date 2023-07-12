@@ -574,50 +574,49 @@ namespace gum::learning {
     DiGraph    forbiddenGraph;
     DAG        mandatoryGraph;
 
-    //GUM_CHECKPOINT
+    // GUM_CHECKPOINT
     for (Size i = 0; i < scoreDatabase_.databaseTable().nbVariables(); ++i) {
       mgraph.addNodeWithId(i);
       forbiddenGraph.addNodeWithId(i);
       mandatoryGraph.addNodeWithId(i);
     }
 
-    //GUM_CHECKPOINT
+    // GUM_CHECKPOINT
     const EdgeSet& possible_edges = constraintPossibleEdges_.edges();
 
-    //GUM_CHECKPOINT
-    //GUM_TRACE(mgraph);
+    // GUM_CHECKPOINT
+    // GUM_TRACE(mgraph);
     if (possible_edges.empty()) {
       for (const NodeId i: mgraph.nodes()) {
         for (NodeId j = 0; j < i; ++j) {   // contiguous nodeIds !
           mgraph.addEdge(j, i);
         }
       }
-    }
-    else {
+    } else {
       for (const auto& edge: possible_edges) {
         mgraph.addEdge(edge.first(), edge.second());
       }
     }
-    //GUM_CHECKPOINT
+    // GUM_CHECKPOINT
 
     // translating the mandatory arcs for constraintMiic
     HashTable< std::pair< NodeId, NodeId >, char > initial_marks;
     const ArcSet&                                  mandatory_arcs = constraintMandatoryArcs_.arcs();
 
-    //GUM_CHECKPOINT
+    // GUM_CHECKPOINT
     for (const auto& arc: mandatory_arcs) {
       mandatoryGraph.addArc(arc.tail(), arc.head());
       forbiddenGraph.addArc(arc.head(), arc.head());
     }
 
-    //GUM_CHECKPOINT
-    // translating the forbidden arcs for constraintMiic
+    // GUM_CHECKPOINT
+    //  translating the forbidden arcs for constraintMiic
     const ArcSet& forbidden_arcs = constraintForbiddenArcs_.arcs();
     for (const auto& arc: forbidden_arcs) {
       forbiddenGraph.addArc(arc.tail(), arc.head());
     }
 
-    //GUM_CHECKPOINT
+    // GUM_CHECKPOINT
     const gum::NodeProperty< gum::Size > sliceOrder = constraintSliceOrder_.sliceOrder();
     gum::NodeProperty< gum::Size >       copyOrder  = gum::HashTable(sliceOrder);
     for (const auto& [n1, r1]: sliceOrder) {
@@ -649,7 +648,7 @@ namespace gum::learning {
   }
 
   PDAG IBNLearner::learnPDAG() {
-    if (selectedAlgo_ != AlgoType::SIMPLE_MIIC && selectedAlgo_ != AlgoType::MIIC) {
+    if (selectedAlgo_ != AlgoType::MIIC) {
       GUM_ERROR(OperationNotAllowed, "Must be using the MIIC algorithm")
     }
     // check that the database does not contain any missing value
@@ -658,21 +657,14 @@ namespace gum::learning {
                 "For the moment, the BNLearner is unable to learn "
                    << "structures with missing values in databases")
     }
-    MixedGraph mg;
-    if (selectedAlgo_ == AlgoType::SIMPLE_MIIC) {
-      BNLearnerListener listener(this, algoSimpleMiic_);
-      // create the mixedGraph_constraint_MandatoryArcs.arcs
-      MixedGraph mgraph = this->prepareSimpleMiic_();
-      mg                = algoSimpleMiic_.learnPDAG(*mutualInfo_, mgraph);
 
-    } else {
-      BNLearnerListener listener(this, algoMiic_);
-      // create the mixedGraph_constraint_MandatoryArcs.arcs
-      MixedGraph mgraph = this->prepareMiic_();
-      mg = algoMiic_.learnPDAG(*mutualInfo_, mgraph);
+    MixedGraph        mg;
+    BNLearnerListener listener(this, algoMiic_);
+    // create the mixedGraph_constraint_MandatoryArcs.arcs
+    MixedGraph mgraph = this->prepareMiic_();
+    mg                = algoMiic_.learnPDAG(*mutualInfo_, mgraph);
 
-    }
-    //GUM_TRACE_VAR(mg.toDot())
+    // GUM_TRACE_VAR(mg.toDot())
     PDAG res;
     for (auto n: mg.nodes())
       res.addNodeWithId(n);
@@ -738,14 +730,6 @@ namespace gum::learning {
 
     switch (selectedAlgo_) {
       // ========================================================================
-      case AlgoType::SIMPLE_MIIC: {
-        BNLearnerListener listener(this, algoSimpleMiic_);
-        // create the mixedGraph and the corrected mutual information
-        MixedGraph mgraph = this->prepareMiic_();
-
-        return algoSimpleMiic_.learnStructure(*mutualInfo_, mgraph);
-      }
-
       case AlgoType::MIIC: {
         BNLearnerListener listener(this, algoMiic_);
         // create the mixedGraph and the corrected mutual information

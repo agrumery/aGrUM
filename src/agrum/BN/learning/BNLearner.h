@@ -115,7 +115,7 @@ namespace gum {
       BNLearner& operator=(const BNLearner&);
 
       /// move operator
-      BNLearner& operator=(BNLearner&&);
+      BNLearner& operator=(BNLearner&&) noexcept;
 
       /// @}
 
@@ -237,10 +237,6 @@ namespace gum {
       }
       BNLearner< GUM_SCALAR >& useK2(const std::vector< NodeId >& order) {
         IBNLearner::useK2(order);
-        return *this;
-      }
-      BNLearner< GUM_SCALAR >& useSimpleMIIC() {
-        IBNLearner::useSimpleMIIC();
         return *this;
       }
       BNLearner< GUM_SCALAR >& useMIIC() {

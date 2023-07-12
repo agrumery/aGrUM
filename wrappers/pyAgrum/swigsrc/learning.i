@@ -17,20 +17,18 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-%ignore gum::learning::BNLearner::setSliceOrder(const NodeProperty< unsigned int >& slice_order);
-%ignore gum::learning::BNLearner::setSliceOrder(const std::vector< std::vector< std::string > >& slices);
-%ignore gum::learning::BNLearner<double>::useK2(const gum::Sequence< gum::NodeId >& order);
-%ignore gum::learning::BNLearner<double>::useK2(const std::vector< gum::NodeId >& order);
-%ignore gum::learning::BNLearner::setForbiddenArcs(const gum::ArcSet& set) const;
-%ignore gum::learning::BNLearner::addForbiddenArc(const gum::Arc& arc);
-%ignore gum::learning::BNLearner::eraseForbiddenArc(const gum::Arc& arc);
-%ignore gum::learning::BNLearner::setPossibleEdges(const gum::EdgeSet& set);
-%ignore gum::learning::BNLearner::addPossibleEdge(const gum::Edge& edge);
-%ignore gum::learning::BNLearner::erasePossibleEdge(const gum::Edge& edge);
-%ignore gum::learning::BNLearner::setMandatoryArcs(const gum::ArcSet& set);
-%ignore gum::learning::BNLearner::addMandatoryArc(const gum::Arc& arc);
-%ignore gum::learning::BNLearner::eraseMandatoryArc(const gum::Arc& arc);
-%ignore gum::learning::BNLearner::learnParameters(const gum::DAG& dag);
+%ignore *::useK2(const gum::Sequence< gum::NodeId >& order);
+%ignore *::useK2(const std::vector< gum::NodeId >& order);
+%ignore *::setForbiddenArcs;
+%ignore *::addForbiddenArc(const gum::Arc& arc);
+%ignore *::eraseForbiddenArc(const gum::Arc& arc);
+%ignore *::setPossibleEdges(const gum::EdgeSet& set);
+%ignore *::addPossibleEdge(const gum::Edge& edge);
+%ignore *::erasePossibleEdge(const gum::Edge& edge);
+%ignore *::setMandatoryArcs;
+%ignore *::addMandatoryArc(const gum::Arc& arc);
+%ignore *::eraseMandatoryArc(const gum::Arc& arc);
+%ignore *::learnParameters(const gum::DAG& dag);
 %ignore gum::learning::BNLearner::state() const;
 
 %pythonprepend gum::learning::BNLearner<double>::BNLearner %{
@@ -103,6 +101,8 @@ SETPROP_THEN_RETURN_SELF(setNumberOfThreads);
     $self->setSliceOrder(ranks);
     return  *$self;
   }
+
+    
 
   gum::learning::BNLearner< double >& useK2(PyObject * l) {
     std::vector< gum::NodeId > v;

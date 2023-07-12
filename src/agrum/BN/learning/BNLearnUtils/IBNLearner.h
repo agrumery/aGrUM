@@ -117,7 +117,6 @@ namespace gum::learning {
       K2,
       GREEDY_HILL_CLIMBING,
       LOCAL_SEARCH_WITH_TABU_LIST,
-      SIMPLE_MIIC,
       MIIC
     };
 
@@ -707,9 +706,6 @@ namespace gum::learning {
 
     /// indicate that we wish to use K2
     void useK2(const std::vector< NodeId >& order);
-
-    /// indicate that we wish to use MIIC
-    void useSimpleMIIC();
 
     /// indicate that we wish to use MIIC
     void useMIIC();

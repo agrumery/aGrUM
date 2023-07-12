@@ -194,11 +194,6 @@ namespace gum::learning {
     constraintIndegree_.setMaxIndegree(max_indegree);
   }
 
-  // indicate that we wish to use Simple MIIC
-  INLINE void IBNLearner::useSimpleMIIC() {
-    selectedAlgo_ = AlgoType::SIMPLE_MIIC;
-  }
-
   // indicate that we wish to use MIIC with constraints
   INLINE void IBNLearner::useMIIC() {
     selectedAlgo_ = AlgoType::MIIC;

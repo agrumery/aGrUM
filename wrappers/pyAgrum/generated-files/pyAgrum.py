@@ -26037,9 +26037,6 @@ class BNLearner(object):
         """
         return _pyAgrum.BNLearner_useLocalSearchWithTabuList(self, tabu_size, nb_decrease)
 
-    def useSimpleMIIC(self) -> "pyAgrum.BNLearner":
-        return _pyAgrum.BNLearner_useSimpleMIIC(self)
-
     def useMIIC(self) -> "pyAgrum.BNLearner":
         r"""
 
@@ -26082,18 +26079,6 @@ class BNLearner(object):
 
         """
         return _pyAgrum.BNLearner_setMaxIndegree(self, max_indegree)
-
-    def setForbiddenArcs(self, set: Set[Tuple[int,int]]) -> "pyAgrum.BNLearner":
-        r"""
-
-        assign a set of forbidden arcs
-
-        Parameters
-        ----------
-        arcs: Set[Tuple[intstr,intstr]]
-
-        """
-        return _pyAgrum.BNLearner_setForbiddenArcs(self, set)
 
     def addForbiddenArc(self, *args) -> "pyAgrum.BNLearner":
         r"""
@@ -26228,18 +26213,6 @@ class BNLearner(object):
 
         """
         return _pyAgrum.BNLearner_erasePossibleEdge(self, *args)
-
-    def setMandatoryArcs(self, set: Set[Tuple[int,int]]) -> "pyAgrum.BNLearner":
-        r"""
-
-        assign a set of mandatory arcs
-
-        Parameters
-        ----------
-        arcs: Set[Tuple[intstr,intstr]]
-
-        """
-        return _pyAgrum.BNLearner_setMandatoryArcs(self, set)
 
     def setPossibleEdges(self, set: Set[Tuple[int,int]]) -> "pyAgrum.BNLearner":
         return _pyAgrum.BNLearner_setPossibleEdges(self, set)

@@ -256,7 +256,6 @@ namespace gum {
 
       for (const auto& arc: mandaArcs) {
         if (graph.existsEdge(arc.head(), arc.tail()) && mandatoryGraph.existsArc(arc)) {
-          std::cout << "test" << std::endl;
           graph.eraseEdge(Edge(arc.head(), arc.tail()));
           graph.addArc(arc.tail(), arc.head());
         } else {
