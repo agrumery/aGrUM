@@ -25814,7 +25814,7 @@ class BNLearner(object):
 
     def __init__(self, *args):
 
-        if not type(args[0]) is str:
+        if type(args[0]) is not str:
           if hasattr(args[0],"to_csv"):
               import tempfile
               csvfile = tempfile.NamedTemporaryFile(delete=False)

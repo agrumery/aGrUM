@@ -118,10 +118,10 @@ def _ImplementPrior(prior, learner, priorWeight, DirichletCsv):
 
   Tells the Bayesian network which prior to use
   """
-  if (prior == 'Smoothing'):
+  if prior == 'Smoothing':
     learner.useSmoothingPrior(priorWeight)
   elif prior == 'Dirichlet':
-    if DirichletCsv == None:
+    if DirichletCsv is None:
       raise ValueError("Must specify file for dirichlet prior as a parameter to the classifier if using a dirichlet prior. DirichletCsv cannot be set to none if prior is set to Dirichlet")
     learner.useDirichletPrior(DirichletCsv, priorWeight)
   elif prior == 'BDeu':

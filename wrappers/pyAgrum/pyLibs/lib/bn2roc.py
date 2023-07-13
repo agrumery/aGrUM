@@ -34,6 +34,13 @@ from matplotlib import pylab
 import pyAgrum as gum
 from pyAgrum import skbn
 
+CSV_TMP_SUFFIX = ".x.csv"
+def _getFilename(datasrc):
+  "*.CSV_TMP_SUFFIXcsv is the signature of a temp csv file"
+  if datasrc[-len(CSV_TMP_SUFFIX):]==".x.csv":
+    return "dataframe"
+
+  return datasrc
 
 def _lines_count(filename):
   """
@@ -56,7 +63,8 @@ def _lines_count(filename):
   return numlines
 
 
-def _checkCompatibility(bn, fields, csv_name):
+@gum.deprecated_arg(newA="datasrc", oldA="csvname", version="1.8.3")
+def _checkCompatibility(bn, fields, datasrc):
   """
   check if variables of the bn are in the fields
 
@@ -66,8 +74,8 @@ def _checkCompatibility(bn, fields, csv_name):
     a Bayesian network
   fields : list
     a list of fields
-  csv_name : str
-    the name of the csv file
+  datasrc : str|DataFrame
+    a csv filename or a pandas.DataFrame
 
   Returns
   -------
@@ -78,7 +86,7 @@ def _checkCompatibility(bn, fields, csv_name):
   isOK = True
   for field in bn.names():
     if field not in fields:
-      print(f"** field '{field}' is missing in {csv_name}")
+      print(f"** field '{field}' is missing.")
       isOK = False
     else:
       res[bn.idFromName(field)] = fields[field]
@@ -117,7 +125,8 @@ def _computeF1(points, ind):
   return 2 * points[ind][0] * points[ind][1] / (points[ind][0] + points[ind][1])
 
 
-def _computepoints(bn, csv_name, target, label, show_progress=True, with_labels=True, significant_digits=10):
+@gum.deprecated_arg(newA="datasrc", oldA="csvname", version="1.8.3")
+def _computepoints(bn, datasrc, target, label, show_progress=True, with_labels=True, significant_digits=10):
   """
   Compute the ROC points.
 
@@ -125,8 +134,8 @@ def _computepoints(bn, csv_name, target, label, show_progress=True, with_labels=
   ----------
   bn : pyAgrum.BayesNet
     a Bayesian network
-  csv_name : str
-    a csv filename
+  datasrc : str|DataFrame
+    a csv filename or a pandas.DataFrame
   target : str
     the target
   label : str
@@ -134,14 +143,14 @@ def _computepoints(bn, csv_name, target, label, show_progress=True, with_labels=
   show_progress : bool
     indicates if the resulting curve must be printed
   with_labels: bool
-    wheter we use label or id (especially for parameter label)
+    whether we use label or id (especially for parameter label)
   significant_digits:
     number of significant digits when computing probabilities
 
   Returns
   -------
   tuple (res, totalP, totalN)
-    where res is a list of (proba,isWellClassified) for each line of csv_name.
+    where res is a list of (proba,isWellClassified) for each line of datasrc.
 
   """
   idTarget = bn.idFromName(target)
@@ -162,13 +171,14 @@ def _computepoints(bn, csv_name, target, label, show_progress=True, with_labels=
   if show_progress:
     # tqdm is optional:
     # pylint: disable=import-outside-toplevel
+    filename = _getFilename(datasrc)
     from tqdm import tqdm
-    pbar = tqdm(total=_lines_count(csv_name) - 1, desc=csv_name,
+    pbar = tqdm(total=_lines_count(datasrc) - 1, desc=filename,
                 bar_format='{desc}: {percentage:3.0f}%|{bar}|')
 
   Classifier.fromTrainedModel(bn, target, idLabel)
   # as a Binary classifier, y will be a list of True (good classification) and False (bad one)
-  X, y = Classifier.XYfromCSV(csv_name, with_labels=with_labels, target=target)
+  X, y = Classifier.XYfromCSV(datasrc, with_labels=with_labels, target=target)
   predictions = Classifier.predict_proba(X)
 
   totalP = np.count_nonzero(y)
@@ -272,7 +282,8 @@ def _computeROC_PR(values, totalP, totalN):
           thresholds)
 
 
-def getROCpoints(bn, csv_name, target, label, with_labels=True,significant_digits=10):
+@gum.deprecated_arg(newA="datasrc", oldA="csvname", version="1.8.3")
+def getROCpoints(bn, datasrc, target, label, with_labels=True, significant_digits=10):
   """
   Compute the points of the ROC curve
 
@@ -280,8 +291,8 @@ def getROCpoints(bn, csv_name, target, label, with_labels=True,significant_digit
   ----------
   bn : pyAgrum.BayesNet
     a Bayesian network
-  csv_name : str
-    a csv filename
+  datasrc : str | DataFrame
+    a csv filename or a DataFrame
   target : str
     the target
   label : str
@@ -296,15 +307,31 @@ def getROCpoints(bn, csv_name, target, label, with_labels=True,significant_digit
     List[Tuple[int,int]]
       the list of points (FalsePositifRate,TruePositifRate)
   """
-  show_progress=False
-  (res, totalP, totalN) = _computepoints(bn, csv_name, target,
+  if type(datasrc) is not str:
+    if hasattr(datasrc, "to_csv"):
+      import tempfile
+      csvfile = tempfile.NamedTemporaryFile(delete=False)
+      tmpfilename = csvfile.name
+      csvfilename = tmpfilename +CSV_TMP_SUFFIX
+      csvfile.close()
+      datasrc.to_csv(csvfilename, na_rep="?", index=False)
+
+      l=getROCpoints(bn, csvfilename, target, label, with_labels=with_labels, significant_digits=significant_digits)
+
+      os.remove(csvfilename)
+      return l
+
+  show_progress = False
+  (res, totalP, totalN) = _computepoints(bn, datasrc, target,
                                          label, show_progress, with_labels, significant_digits)
   (pointsROC, ind_ROC, thresholdROC, AUC_ROC, f1_ROC, pointsPR, ind_PR,
    thresholdPR, AUC_PR, f1_PR, thresholds) = _computeROC_PR(res, totalP, totalN)
 
   return pointsROC
 
-def getPRpoints(bn, csv_name, target, label, with_labels=True,significant_digits=10):
+
+@gum.deprecated_arg(newA="datasrc", oldA="csvname", version="1.8.3")
+def getPRpoints(bn, datasrc, target, label, with_labels=True, significant_digits=10):
   """
   Compute the points of the PR curve
 
@@ -312,8 +339,8 @@ def getPRpoints(bn, csv_name, target, label, with_labels=True,significant_digits
   ----------
   bn : pyAgrum.BayesNet
     a Bayesian network
-  csv_name : str
-    a csv filename
+  datasrc : str|DataFrame
+    a csv filename or a pandas.DataFrame
   target : str
     the target
   label : str
@@ -328,13 +355,28 @@ def getPRpoints(bn, csv_name, target, label, with_labels=True,significant_digits
     List[Tuple[float,float]]
       the list of points (precision,recall)
   """
-  show_progress=False
-  (res, totalP, totalN) = _computepoints(bn, csv_name, target,
+  if type(datasrc) is not str:
+    if hasattr(datasrc, "to_csv"):
+      import tempfile
+      csvfile = tempfile.NamedTemporaryFile(delete=False)
+      tmpfilename = csvfile.name
+      csvfilename = tmpfilename  +CSV_TMP_SUFFIX
+      csvfile.close()
+      
+      datasrc.to_csv(csvfilename, na_rep="?", index=False)
+
+      l=getPRpoints(bn, csvfilename, target, label, with_labels=with_labels, significant_digits=significant_digits)
+      os.remove(csvfilename)
+      return l
+
+  show_progress = False
+  (res, totalP, totalN) = _computepoints(bn, datasrc, target,
                                          label, show_progress, with_labels, significant_digits)
   (pointsROC, ind_ROC, thresholdROC, AUC_ROC, f1_ROC, pointsPR, ind_PR,
    thresholdPR, AUC_PR, f1_PR, thresholds) = _computeROC_PR(res, totalP, totalN)
 
   return pointsPR
+
 
 def _getPoint(threshold: float, thresholds: List[float], points: List[Tuple[float, float]]) -> Tuple[float, float]:
   """
@@ -462,7 +504,8 @@ def _drawPR(points, zeTitle, f1_PR, AUC_PR, thresholds, thresholds_to_show, rate
   ax.set_title(zeTitle)
 
 
-def showROC_PR(bn, csv_name, target, label, show_progress=True, show_fig=True, save_fig=False, with_labels=True,
+@gum.deprecated_arg(newA="datasrc", oldA="csvname", version="1.8.3")
+def showROC_PR(bn, datasrc, target, label, show_progress=True, show_fig=True, save_fig=False, with_labels=True,
                show_ROC=True, show_PR=True, significant_digits=10):
   """
   Compute the ROC curve and save the result in the folder of the csv file.
@@ -471,8 +514,8 @@ def showROC_PR(bn, csv_name, target, label, show_progress=True, show_fig=True, s
   ----------
   bn : pyAgrum.BayesNet
     a Bayesian network
-  csv_name : str
-    a csv filename
+  datasrc : str|DataFrame
+    a csv filename or a pandas.DataFrame
   target : str
     the target
   label : str
@@ -499,7 +542,25 @@ def showROC_PR(bn, csv_name, target, label, show_progress=True, show_fig=True, s
 
   """
 
-  (res, totalP, totalN) = _computepoints(bn, csv_name, target,
+  if type(datasrc) is not str:
+    if hasattr(datasrc, "to_csv"):
+      import tempfile
+      csvfile = tempfile.NamedTemporaryFile(delete=False)
+      tmpfilename = csvfile.name
+      csvfilename = tmpfilename +CSV_TMP_SUFFIX
+      csvfile.close()
+      datasrc.to_csv(csvfilename, na_rep="?", index=False)
+
+      showROC_PR(bn, csvfilename, target, label, show_progress=show_progress, show_fig=show_fig, save_fig=save_fig,
+                 with_labels=with_labels,
+                 show_ROC=show_ROC, show_PR=show_PR, significant_digits=significant_digits)
+
+      os.remove(csvfilename)
+      return
+
+
+  filename = _getFilename(datasrc)
+  (res, totalP, totalN) = _computepoints(bn, datasrc, target,
                                          label, show_progress, with_labels, significant_digits)
   (pointsROC, ind_ROC, thresholdROC, AUC_ROC, f1_ROC, pointsPR, ind_PR,
    thresholdPR, AUC_PR, f1_PR, thresholds) = _computeROC_PR(res, totalP, totalN)
@@ -507,12 +568,12 @@ def showROC_PR(bn, csv_name, target, label, show_progress=True, show_fig=True, s
     shortname = os.path.basename(bn.property("name"))
   except gum.NotFound:
     shortname = "unnamed"
-  title = shortname + " vs " + csv_name + " - " + target + "=" + str(label)
+  title = shortname + " vs " + filename + " - " + target + "=" + str(label)
 
   rate = totalP / (totalP + totalN)
 
   if show_ROC and show_PR:
-    figname = f"{csv_name}-ROCandPR_{shortname}-{target}-{label}.png"
+    figname = f"{filename}-ROCandPR_{shortname}-{target}-{label}.png"
     fig = pylab.figure(figsize=(10, 4))
     fig.suptitle(title)
     pylab.gcf().subplots_adjust(wspace=0.1)
@@ -528,12 +589,12 @@ def showROC_PR(bn, csv_name, target, label, show_progress=True, show_fig=True, s
     _drawPR(points=pointsPR, zeTitle="Precision-Recall", f1_PR=f1_PR, AUC_PR=AUC_PR,
             thresholds=thresholds, thresholds_to_show=[thresholdPR, thresholdROC], rate=rate, ax=ax2)
   elif show_ROC:
-    figname = f"{csv_name}-ROC_{shortname}-{target}-{label}.png"
+    figname = f"{filename}-ROC_{shortname}-{target}-{label}.png"
 
     _drawROC(points=pointsROC, zeTitle=title, f1_ROC=f1_ROC, AUC_ROC=AUC_ROC, thresholds=thresholds,
              thresholds_to_show=[thresholdROC])
   elif show_PR:
-    figname = f"{csv_name}-PR_{shortname}-{target}-{label}.png"
+    figname = f"{filename}-PR_{shortname}-{target}-{label}.png"
     _drawPR(points=pointsPR, zeTitle=title, f1_PR=f1_PR, AUC_PR=AUC_PR, thresholds=thresholds,
             thresholds_to_show=[thresholdPR], rate=rate)
 
@@ -546,7 +607,8 @@ def showROC_PR(bn, csv_name, target, label, show_progress=True, show_fig=True, s
   return AUC_ROC, thresholdROC, AUC_PR, thresholdPR
 
 
-def showROC(bn, csv_name, target, label, show_progress=True, show_fig=True, save_fig=False, with_labels=True,
+@gum.deprecated_arg(newA="datasrc", oldA="csvname", version="1.8.3")
+def showROC(bn, datasrc, target, label, show_progress=True, show_fig=True, save_fig=False, with_labels=True,
             significant_digits=10):
   """
   Compute the ROC curve and save the result in the folder of the csv file.
@@ -555,8 +617,8 @@ def showROC(bn, csv_name, target, label, show_progress=True, show_fig=True, save
   ----------
   bn : pyAgrum.BayesNet
     a Bayesian network
-  csv_name : str
-    a csv filename
+  datasrc : str|DataFrame
+    a csv filename or a pandas.DataFrame
   target : str
     the target
   label : str
@@ -573,11 +635,12 @@ def showROC(bn, csv_name, target, label, show_progress=True, show_fig=True, save
     number of significant digits when computing probabilities
   """
 
-  return showROC_PR(bn, csv_name, target, label, show_progress=show_progress, show_fig=show_fig, save_fig=save_fig,
+  return showROC_PR(bn, datasrc, target, label, show_progress=show_progress, show_fig=show_fig, save_fig=save_fig,
                     with_labels=with_labels, show_ROC=True, show_PR=False, significant_digits=significant_digits)
 
 
-def showPR(bn, csv_name, target, label, show_progress=True, show_fig=True, save_fig=False, with_labels=True,
+@gum.deprecated_arg(newA="datasrc", oldA="csvname", version="1.8.3")
+def showPR(bn, datasrc, target, label, show_progress=True, show_fig=True, save_fig=False, with_labels=True,
            significant_digits=10
            ):
   """
@@ -587,8 +650,8 @@ def showPR(bn, csv_name, target, label, show_progress=True, show_fig=True, save_
   ----------
   bn : pyAgrum.BayesNet
     a Bayesian network
-  csv_name : str
-    a csv filename
+  datasrc : str|DataFrame
+    a csv filename or a pandas.DataFrame
   target : str
     the target
   label : str
@@ -605,5 +668,5 @@ def showPR(bn, csv_name, target, label, show_progress=True, show_fig=True, save_
     number of significant digits when computing probabilities
   """
 
-  return showROC_PR(bn, csv_name, target, label, show_progress=show_progress, show_fig=show_fig, save_fig=save_fig,
+  return showROC_PR(bn, datasrc, target, label, show_progress=show_progress, show_fig=show_fig, save_fig=save_fig,
                     with_labels=with_labels, show_ROC=False, show_PR=True, significant_digits=significant_digits)

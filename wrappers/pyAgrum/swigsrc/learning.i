@@ -34,7 +34,7 @@
 %ignore gum::learning::BNLearner::state() const;
 
 %pythonprepend gum::learning::BNLearner<double>::BNLearner %{
-  if not type(args[0]) is str:
+  if type(args[0]) is not str:
     if hasattr(args[0],"to_csv"):
         import tempfile
         csvfile = tempfile.NamedTemporaryFile(delete=False)
