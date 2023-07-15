@@ -1,20 +1,24 @@
 %feature("docstring") gum::learning::BNLearner
 "
 BNLearner(filename,inducedTypes=True) -> BNLearner
-    Parameters:
+    Parameters
+    ----------
         - **source** (*str* or *pandas.DataFrame*) -- the data to learn from
-        - **missingSymbols** (*List[str]*) -- list of string that will be interpreted as missing values (by default : ['?'])
+        - **missingSymbols** (*List[str]*) -- list of string that will be interpreted as missing values (by default : `['?']`)
         - **inducedTypes** (*Bool*) -- whether BNLearner should try to automatically find the type of each variable
 
 BNLearner(filename,src) -> BNLearner
-    Parameters:
+    Parameters
+    ----------
         - **source** (*str* or *pandas.DataFrame) -- the data to learn from
         - **src** (*pyAgrum.BayesNet*) -- the Bayesian network used to find those modalities
-        - **missingSymbols** (*List[str]*) -- list of string that will be interpreted as missing values (by default : ['?'])
+        - **missingSymbols** (*List[str]*) -- list of string that will be interpreted as missing values (by default : `['?']`)
 
 BNLearner(learner) -> BNLearner
-    Parameters:
+    Parameters
+    ----------
         - **learner** (*pyAgrum.BNLearner*) -- the BNLearner to copy
+
 "
 
 %feature("docstring") gum::learning::BNLearner::learnBN

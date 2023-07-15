@@ -36,7 +36,7 @@ class BNDiscretizer():
   Bayesian networks.
 
   Parameters
-  -----------
+  ----------
       defaultDiscretizationMethod: str
             sets the default method of discretization for this discretizer. Possible values are: 'quantile', 'uniform',
             'kmeans', 'NML', 'CAIM' and 'MDLP'. This method will be used if the user has not specified another method
@@ -61,7 +61,7 @@ class BNDiscretizer():
     Creates the BNDiscretizer
 
     Parameters
-    -----------
+    ----------
         defaultDiscretizationMethod: str
             sets the default method of discretization for this discretizer. Possible values are: 'quantile', 'uniform',
             'kmeans', 'NML', 'CAIM' and 'MDLP'. This method will be used if the user has not specified another method
@@ -95,13 +95,9 @@ class BNDiscretizer():
     variable.
     
     Parameters
-    -----------
+    ----------
       clearDiscretizationParamaters: bool
         if True, this method also clears the parameters the user has set for each variable and resets them to the default.
-
-    Returns
-    -----------
-      void
    """
     self.numberOfContinous = 0
     self.totalNumberOfBins = 0
@@ -123,10 +119,6 @@ class BNDiscretizer():
           if the method used is NML, this parameter sets the the maximum number of bins up to which the NML algorithm
           searches for the optimal number of bins. In this case this parameter must be an int
           If any other discetization method is used, this parameter is ignored.
-
-    Returns
-    -----------
-      void
     """
     if variableName in self.discretizationParametersDictionary.keys():
       oldNbBins = self.discretizationParametersDictionary[variableName]['k']
@@ -181,7 +173,8 @@ class BNDiscretizer():
           Target values
     Returns
     -------
-      auditDict: dict()
+      Dict
+        for each variable, the proposition of audit
      """
 
     auditDict = dict()
@@ -247,14 +240,15 @@ class BNDiscretizer():
     and look for its minimum.
 
     Parameters
-    -----------
+    ----------
         discretizationStrategy: str
             The method of discretization that will be used. Possible values are: 'quantile' , 'kmeans' and 'uniform'
         X: one dimensional ndarray
             Contains the data that should be discretized
     Returns
-    -----------
-        binEdges: the edges of the bins the algorithm has chosen.
+    -------
+        List[float]
+          the edges of the bins the algorithm has chosen.
     """
 
     if discretizationStrategy not in {'kmeans', 'quantile', 'uniform'}:
@@ -309,7 +303,7 @@ class BNDiscretizer():
     Uses the MDLP algorithm described in Fayyad, 1995 to discretize the values of x.
 
     Parameters
-    -----------
+    ----------
         x: ndarray with shape (n,1) where n is the number of samples
             Column-vector that contains all the data that needs to be discretized
         y: ndarray with shape (n,1) where n is the number of samples
@@ -319,8 +313,9 @@ class BNDiscretizer():
         possibleValuesY: one dimensional ndarray
             Contains the possible values of y. There should be two possible values since this is a binary classifier
     Returns
-    -----------
-        binEdges: a list of the edges of the bins that are chosen by this algorithm
+    -------
+        List[float]
+         a list of the edges of the bins that are chosen by this algorithm
     """
     xAndY = numpy.concatenate((x, y), axis=1)
     xAndY = xAndY[xAndY[:, 0].argsort()]
@@ -450,7 +445,8 @@ class BNDiscretizer():
             Contains the possible values of y. There should be two possible values since this is a binary classifier
     Returns
     -------
-        binEdges: a list of the edges of the bins that are chosen by this algorithm
+        list[float]
+          a list of the edges of the bins that are chosen by this algorithm
     """
     xAndY = numpy.concatenate((x, y), axis=1)
     xAndY = xAndY[xAndY[:, 0].argsort()]
@@ -556,7 +552,7 @@ class BNDiscretizer():
     discretize.
 
     Parameters
-    -----------
+    ----------
         X: one dimensional ndarray
             array that that contains all the data that needs to be discretized
         possibleValuesX: one dimensional ndarray
@@ -569,7 +565,8 @@ class BNDiscretizer():
             automatically calculated.
     Returns
     -------
-        binEdges: a list of the edges of the bins that are chosen by this algorithm    
+        List[float]
+          a list of the edges of the bins that are chosen by this algorithm
     """
     Xsorted = X[X.argsort(axis=None)]
     if epsilon is None:
@@ -655,7 +652,7 @@ class BNDiscretizer():
     Creates a variable for the column passed in as a parameter
     
     Parameters
-    -----------
+    ----------
         variableName:
             the name of the created variable
         X: ndarray shape(n,1)
@@ -670,7 +667,7 @@ class BNDiscretizer():
             X could be modified by this function during
     Returns
     -------
-        var: pyagrum.DiscreteVariable
+        pyagrum.DiscreteVariable
             the created variable
     """
 

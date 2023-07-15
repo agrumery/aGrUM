@@ -29,7 +29,11 @@ import tempfile
 
 def _CalculateThreshold(bn, targetName, csvfilename, usePR, significant_digits):
   """
-  parameters:
+  The Bayesian network gives us the probability of the target knowing the values of the other variables. The value above which the probability needs to be for the input to be classified as that class is called the threshold.
+  This method calculates the optimal threshold using the roc or precision-recall curve.
+
+  Parameters
+  ----------
       bn: gum.BayesNet
           Bayesian network to work on
       targetName: str
@@ -42,12 +46,10 @@ def _CalculateThreshold(bn, targetName, csvfilename, usePR, significant_digits):
           Precision-Recall curves should be used when there is a moderate to large class imbalance especially for the target's class.
       significant_digit:
           number of significant digits when computing probabilities
-  returns:
-      threshold: float
+  Returns
+  -------
+      float
           optimal threshold for predictions
-
-  The Bayesian network gives us the probability of the target knowing the values of the other variables. The value above which the probability needs to be for the input to be classified as that class is called the threshold.
-  This method calculates the optimal threshold using the roc or precision-recall curve.
   """
   target = bn.variableFromName(targetName)
 
@@ -63,9 +65,12 @@ def _CalculateThreshold(bn, targetName, csvfilename, usePR, significant_digits):
 
 def _ImplementScore(scoringType, learner):
   """
-  parameters:
+  Tells the Bayesian network which scoring type to use.
+
+  Parameters
+  ----------
       scoringType: str
-          A string designating the type of scoring we want to use. Since scoring is used while constructing the network and not when learning its parameters, the scoring will be ignored if using a learning algorithm
+          A string designating the type of scoring we want to use. Since scoring is used while constructing the network and not when learning its Parameters, the scoring will be ignored if using a learning algorithm
           with a fixed network structure such as Chow-Liu, TAN or NaiveBayes.
           possible values are:  AIC, BIC, BD, BDeu, K2, Log2
           AIC means Akaike information criterion
@@ -75,10 +80,6 @@ def _ImplementScore(scoringType, learner):
           Log2 means log2 likelihood ratio test
       learner:
           learner object from pyAgrum to apply the score
-  returns:
-      void
-
-  Tells the Bayesian network which scoring type to use.
   """
   if scoringType is None:
     return
@@ -101,7 +102,10 @@ def _ImplementScore(scoringType, learner):
 
 def _ImplementPrior(prior, learner, priorWeight, DirichletCsv):
   """
-  parameters:
+  Tells the Bayesian network which prior to use
+
+  Parameters
+  ----------
       prior: str
           A string designating the type of a priorsmoothing we want to use.
           Possible values are Smoothing, BDeu , Dirichlet and NoPrior.
@@ -113,10 +117,6 @@ def _ImplementPrior(prior, learner, priorWeight, DirichletCsv):
       DirichletCsv: str
           the file name of the csv file we want to use for the dirichlet prior.
           Will be ignored if prior is not set to Dirichlet.
-   returns:
-      void
-
-  Tells the Bayesian network which prior to use
   """
   if prior == 'Smoothing':
     learner.useSmoothingPrior(priorWeight)
@@ -137,7 +137,11 @@ def _ImplementPrior(prior, learner, priorWeight, DirichletCsv):
 
 def _ImplementConstraints(constraints, learner):
   """
-  parameters:
+  Tells the Bayesian network which constraints should be put on the structure of the network.
+  More details on the nature of these constraints can be found in the documentation for the constructor of this class
+
+  Parameters
+  ----------
       constraints: dict()
           A dictionary designating the constraints that we want to put on the structure of the Bayesian network.
           Ignored if using a learning algorithm where the structure is fixed such as TAN or NaiveBayes.
@@ -147,11 +151,6 @@ def _ImplementConstraints(constraints, learner):
           Note: PossibleEdge between nodes x and y allows for either (x,y) or (y,x) (or none of them) to be added to the Bayesian network, while the others are not symmetric.
       learner:
           learner object from pyAgrum to apply the score
-  returns:
-      void
-
-  Tells the Bayesian network which constraints should be put on the structure of the network.
-  More details on the nature of these constraints can be found in the documentation for the constructor of this class
   """
   if constraints is None:  # default
     return
@@ -176,15 +175,17 @@ def _ImplementConstraints(constraints, learner):
 
 def _DFNames(X):
   """
-  parameters:
+  Return a dictionary of variable's name and his index from a DataFrame
+
+  Parameters
+  ----------
       X: pandas.DataFrame
           DataFrame to read
 
-  returns:
-      res: dict[str : int]
-          Dictionnary of variable's name and his index
-
-  Return a dictionnay of variable's name and his index from a DataFrame
+  Returns
+  -------
+      Dict[str,int]
+          Dictionary of variable's name and his index
   """
 
   res = dict()
@@ -198,24 +199,30 @@ def _DFNames(X):
 
 def _listIdtoName(bn, liste):
   """
-  parameters:
+  Return a list of names of the variable which have their id in list.
+
+  Parameters
+  ----------
       bn: gum.BayesNet
           Bayesian network to work on
       liste: list[int]
           List of id
 
-  returns:
-      liste: list[str]
+  Returns
+  -------
+      List[str]
           List of names
-
-  Return a list of names of the variable which have their id in liste
   """
   return [bn.variable(i).name() for i in liste]
 
 
 def _createCSVfromNDArrays(X, y, target, variableNameIndexDictionary, csvfilename):
   """
-  parameters:
+  Creates a csv file from the matrices passed as Parameters.
+  csvfilename  is used by the fit function to learn the network structure and its Parameters
+
+  Parameters
+  ----------
       X: {array-like, sparse matrix} of shape (n_samples, n_features)
           training data
       y: array-like of shape (n_samples)
@@ -226,12 +233,6 @@ def _createCSVfromNDArrays(X, y, target, variableNameIndexDictionary, csvfilenam
           dictionnary of the csvfilename of a variable and his column in the data base
       csvfilename: str
           csv's title
-
-  returns:
-      void
-
-  Creates a csv file from the matrices passed as parameters.
-  csvfilename  is used by the fit function to learn the network structure and its parameters
   """
 
   # verifies if the shape of
@@ -262,15 +263,16 @@ def checkInt(v):
 
 def checkFloat(v):
   """
-  Test is  a float or a str representing a float.
+  Test if v is a float or a str representing a float.
 
   Parameters
   ----------
-  v
+  v : Any
 
   Returns
   -------
-  True if v is a float
+  bool:
+    True if v is a float or a str representing a float
   """
   if isinstance(v,bool):
       return False

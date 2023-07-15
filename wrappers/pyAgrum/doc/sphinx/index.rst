@@ -37,72 +37,69 @@ pyAgrum contains :
 
   notebooks
 
-================
 Reference manual
 ================
 
-  .. toctree::
-    :caption: 1- Fundamental components
-    :maxdepth: 2
+.. toctree::
+  :caption: 1- Fundamental components
+  :maxdepth: 2
 
-    graph
-    randomVariables
-    potential
+  graph
+  randomVariables
+  potential
 
-  .. toctree::
-    :caption: 2- Bayesian networks
-    :maxdepth: 2
+.. toctree::
+  :caption: 2- Bayesian networks
+  :maxdepth: 2
 
-    BNModel
-    BNInference
-    BNLearning
-    BNTools
-    Causal
-    Classifier
+  BNModel
+  BNInference
+  BNLearning
+  BNTools
+  Causal
+  Classifier
 
 
-  .. toctree::
-    :caption: 3- Other graphical models
-    :maxdepth: 2
+.. toctree::
+  :caption: 3- Other graphical models
+  :maxdepth: 2
 
-    influenceDiagram
-    credalNetwork
-    markovRandomField
-    PRM
+  influenceDiagram
+  credalNetwork
+  markovRandomField
+  PRM
 
-  .. toctree::
-    :caption: 4- pyAgrum.lib modules
-    :maxdepth: 2
-    :titlesonly:
+.. toctree::
+  :caption: 4- pyAgrum.lib modules
+  :maxdepth: 2
+  :titlesonly:
 
-    lib.notebook
-    lib.image
-    lib.explain
-    lib.dBN
-    pyAgrum.lib
+  lib.notebook
+  lib.image
+  lib.explain
+  lib.dBN
+  pyAgrum.lib
 
-  .. toctree::
-    :caption: 5- Miscellaneous
-    :maxdepth: 2
-    :titlesonly:
+.. toctree::
+  :caption: 5- Miscellaneous
+  :maxdepth: 2
+  :titlesonly:
 
-    random
-    fastSyntax
-    functions
-    listeners
-    exceptions
+  random
+  fastSyntax
+  functions
+  listeners
+  exceptions
 
-  .. toctree::
-    :caption: 6- Customizing pyAgrum
-    :maxdepth: 1
-    :titlesonly:
+.. toctree::
+  :caption: 6- Customizing pyAgrum
+  :maxdepth: 1
+  :titlesonly:
 
-    PyAgrumConfiguration
+  PyAgrumConfiguration
 
 
 Indices and tables
 ==================
 
-   * :ref:`genindex`
-   * :ref:`modindex`
-   * :ref:`search`
+  * :ref:`genindex`

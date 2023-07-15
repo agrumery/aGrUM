@@ -6,8 +6,8 @@ Tutorials on pyAgrum
 
     notebooks/*-Tutorial*
     
-Inference in Bayesian networks
-==============================
+Exact and Approxiomated Inference
+=================================
 
 .. nbgallery::
     :glob:
@@ -54,6 +54,7 @@ Examples
     :glob:
 
     notebooks/*-Examples*
+    notebooks/*-Applications*
 
 pyAgrum's specific features
 ===========================
@@ -62,4 +63,3 @@ pyAgrum's specific features
     :glob:
 
     notebooks/*-Tools*
-

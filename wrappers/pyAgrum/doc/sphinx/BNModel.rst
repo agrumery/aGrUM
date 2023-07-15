@@ -1,5 +1,5 @@
-Model
------
+Model for Bayesian Network
+--------------------------
 
 .. figure:: _static/BayesNet.png
     :align: center
@@ -24,6 +24,6 @@ the computations. Finally, the Bayesian networks can be learnt from data.
 **Tutorial**
 
 * `Tutorials on Bayesian network <notebooks.html#tutorials-on-pyagrum>`_
-* 
+
 .. autoclass:: pyAgrum.BayesNet
     :exclude-members: setProperty, property, propertyWithDefault

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # (c) Copyright 2020-2023 by Pierre-Henri Wuillemin(@LIP6)  (pierre-henri.wuillemin@lip6.fr)
 
 # Permission to use, copy, modify, and distribute this
@@ -25,16 +24,18 @@ from ._utils import _listIdtoName as listIdtoName
 
 def compileMarkovBlanket(bn, target):
   """
-  parameters:
-      bn: gum.BayesNet
+  Create a Bayesian network with the children, their parents and the parents of the node target
+
+  Parameters
+  ----------
+      bn: pyAgrum.BayesNet
           Bayesian network to work on
       target: str or int
           Name or id of the target
-  returns:
-      MarkovBlanket: gum.BayesNet
+  Returns
+  -------
+      MarkovBlanket: pyAgrum.BayesNet
           Markov Blanket from bn
-
-  Create a Bayesian network with the children, their parents and the parents of the node target
   """
   mb = gum.BayesNet('MarkovBlanket')
 
@@ -107,18 +108,20 @@ def _calcul_proba_for_nary_class(row, local_inst, dictName, MarkovBlanket, targe
   """
   Calculate the posterior distribution of variable target (given its Markov blanket)
 
-  parameters:
+  Parameters
+  ----------
       row: numpyArray shape: (n features)
           test data
-      local_inst: Potential
-          Instanciation of the Markov Blanket EXCEPT the target
-      dictName: dict[str : int]
-          dictionnary of the name of a variable and his column in the data base
-      MarkovBlanket: gum.BayesNet
+      local_inst: pyAgrum.Potential
+          Instantiation of the Markov Blanket EXCEPT the target
+      dictName: Dict[str : int]
+          dictionary of the name of a variable and his column in the data base
+      MarkovBlanket: pyAgrum.BayesNet
           Markov Blanket to work on
       target: str
           Name of the target
-  returns:
+  Returns
+  -------
       proba:
           the probability distribution for target
   """
@@ -140,20 +143,22 @@ def _calcul_most_probable_for_nary_class(row, local_inst, dictName, MarkovBlanke
   """
   Calculate the most probable class for variable target
 
-  parameters:
+  Parameters
+  ----------
       row: numpyArray shape: (n features)
           test data
-      local_inst: Potential
-          Instanciation of the Markov Blanket EXCEPT the target
-      dictName: dict[str : int]
-          dictionnary of the name of a variable and his column in the data base
-      MarkovBlanket: gum.BayesNet
+      local_inst: pyAgrum.Potential
+          Instantiation of the Markov Blanket EXCEPT the target
+      dictName: Dict[str : int]
+          dictionary of the name of a variable and his column in the data base
+      MarkovBlanket: pyAgrum.BayesNet
           Markov Blanket to work on
       target: str
           Name of the target
-  returns:
-      proba:
-          the probability distribution for target
+  Returns
+  -------
+      Tuple[int,proba]:
+          the value and the probability of the most probable class
   """
   p = _calcul_proba_for_nary_class(
       row, local_inst, dictName, MarkovBlanket, target)
@@ -162,7 +167,10 @@ def _calcul_most_probable_for_nary_class(row, local_inst, dictName, MarkovBlanke
 
 def _calcul_proba_for_binary_class(row, label1, labels, Inst, dictName, MarkovBlanket, target):
   """
-  parameters:
+  Calculate the probability of having label1 to the binary variable y
+
+  Parameters
+  ----------
       row: numpyArray shape: (n features)
           test data
       label1:
@@ -170,18 +178,17 @@ def _calcul_proba_for_binary_class(row, label1, labels, Inst, dictName, MarkovBl
       labels:
           the False values of y
       Inst: Potential
-          Instanciation of the Markov Blanket
+          Instantiation of the Markov Blanket
       dictName: dict[str : int]
-          dictionnary of the name of a variable and his column in the data base
-      MarkovBlanket: gum.BayesNet
+          dictionary of the name of a variable and his column in the data base
+      MarkovBlanket: pyAgrum.BayesNet
           Markov Blanket to work on
       target: str
           Name of the target
-  returns:
-      res: double
+  Returns
+  -------
+      double
           probability of getting label1 to the variable y
-
-  Calculate the probability of having label1 to the binary variable y
   """
 
   # create Instantiation with Markov Blanket's variables

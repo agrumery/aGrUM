@@ -61,7 +61,7 @@ needs_sphinx = '1.8.4'
 
 
 extensions = [
-  #'sphinx.ext.autosummary',
+  'sphinx.ext.autosummary',
   'sphinx.ext.autosectionlabel',
   'nbsphinx',
   'sphinx_copybutton',

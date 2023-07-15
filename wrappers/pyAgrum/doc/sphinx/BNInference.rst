@@ -42,27 +42,27 @@ Loopy Belief Propagation
 Sampling
 ~~~~~~~~
 
-Gibbs Sampling
-++++++++++++++
+Gibbs Sampling for BN
++++++++++++++++++++++
 
 .. autoclass:: pyAgrum.GibbsSampling
 			:exclude-members: asIApproximationSchemeConfiguration
 
-Monte Carlo Sampling
-++++++++++++++++++++
+Simple Monte Carlo Sampling for BN
+++++++++++++++++++++++++++++++++++
 
 .. autoclass:: pyAgrum.MonteCarloSampling
 			:exclude-members: asIApproximationSchemeConfiguration
 
 
-Weighted Sampling
-+++++++++++++++++
+Weighted Sampling for BN
+++++++++++++++++++++++++
 
 .. autoclass:: pyAgrum.WeightedSampling
 			:exclude-members: asIApproximationSchemeConfiguration
 
-Importance Sampling
-+++++++++++++++++++
+Importance Sampling for BN
+++++++++++++++++++++++++++
 
 .. autoclass:: pyAgrum.ImportanceSampling
 			:exclude-members: asIApproximationSchemeConfiguration
@@ -70,8 +70,8 @@ Importance Sampling
 Loopy sampling
 ~~~~~~~~~~~~~~
 
-Loopy Gibbs Sampling
-++++++++++++++++++++
+Pure Loopy Gibbs Sampling
++++++++++++++++++++++++++
 
 .. autoclass:: pyAgrum.LoopyGibbsSampling
 			:exclude-members: asIApproximationSchemeConfiguration

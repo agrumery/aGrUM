@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # (c) Copyright 2020-2023 by Pierre-Henri Wuillemin(@LIP6)  (pierre-henri.wuillemin@lip6.fr)
 
 # Permission to use, copy, modify, and distribute this
@@ -34,16 +33,14 @@ from ._utils import _ImplementScore as implementScore
 
 def _fitStandard(X, y, learner, learningMethod, possibleSkeleton, scoringType, constraints):
   """
-  parameters:
+  The default fit function that uses MIIC, 3off2, Greedy Hill Climbing or Tabu list sorting depending on the learning method chosen.
+
+  Parameters
+  ---------
       X: {array-like, sparse matrix} of shape (n_samples, n_features)
       training data
       y: array-like of shape (n_samples)
       Target values
-
-  returns:
-      void
-
-  The default fit function that uses MIIC, 3off2, Greedy Hill Climbing or Tabu list sorting depending on the learning method chosen.
   """
 
   implementConstraints(constraints, learner)
@@ -81,16 +78,15 @@ def _fitStandard(X, y, learner, learningMethod, possibleSkeleton, scoringType, c
 
 def _fitTAN(X, y, bn, learner, variableList, target):
   """
-  parameters:
+  Uses Tree-Augmented NaiveBayes to learn the network structure and its parameters.
+
+  Parameters
+  ---------
       X: {array-like, sparse matrix} of shape (n_samples, n_features)
       training data
       y: array-like of shape (n_samples)
       Target values
 
-  returns:
-      void
-
-  Uses Tree-Augmented NaiveBayes to learn the network structure and its parameters.
   """
 
   # a list of all the variables in our Bayesian network sorted by their index
@@ -181,16 +177,15 @@ def _fitTAN(X, y, bn, learner, variableList, target):
 
 def _fitChowLiu(X, y, bn, learner, variableList, target):
   """
-  parameters:
+  Uses the Chow-Liu algorithm to learn the network structure and its parameters.
+
+  Parameters
+  ---------
       X: {array-like, sparse matrix} of shape (n_samples, n_features)
       training data
       y: array-like of shape (n_samples)
       Target values
-
-  returns:
-      void
-
-  Uses the Chow-Liu algorithm to learn the network structure and its parameters."""
+  """
 
   # since the chow liu algorithm doesn't differentiate between input and output variables, we construct a matrix that includes them both
   dimension = y.shape
@@ -251,16 +246,16 @@ def _fitChowLiu(X, y, bn, learner, variableList, target):
 
 def _fitNaiveBayes(X, y, bn, learner, variableList, target, constraints):
   """
-  parameters:
+  Uses the Naive Bayes algorithm to learn the network parameters. The network structure isn't learned since it is fixed.
+
+  Parameters
+  ---------
       X: {array-like, sparse matrix} of shape (n_samples, n_features)
       training data
       y: array-like of shape (n_samples)
       Target values
 
-  returns:
-      void
 
-  Uses the Naive Bayes algortihm to learn the network parameters. The network structure isn't learned since it is fixed.
   """
 
   for variableName in variableList:

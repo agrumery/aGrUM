@@ -619,13 +619,13 @@ func : function(Dict[str,int])->float
 
 Warnings
 --------
-The `gum.Potential` is assumed to contain a joint distribution.
+The `pyAgrum.Potential` is assumed to contain a joint distribution.
 
-Example
--------
-def log2cptA(x):
- return -math.log2(bn.cpt('A')[x])
-entropy_of_A=bn.cpt('A').expectedValue(log2cptA) # OK it A has no parents.
+Examples
+--------
+>>> def log2cptA(x):
+...   return -math.log2(bn.cpt('A')[x])
+>>> entropy_of_A=bn.cpt('A').expectedValue(log2cptA) # OK it A has no parents.
 
 Returns
 -------

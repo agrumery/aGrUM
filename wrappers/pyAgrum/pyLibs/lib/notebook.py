@@ -537,13 +537,18 @@ def getJunctionTree(bn, withNames=True, size=None):
   """
   get a HTML string for a junction tree (more specifically a join tree)
 
+  Parameters
+  ----------
     bn: "pyAgrum.BayesNet"
      the Bayesian network
     withNames: Boolean
      display the variable names or the node id in the clique
     size: str
      size (for graphviz) of the rendered graph
-  :return: the HTML representation of the graph
+  Returns
+  -------
+    str
+      the HTML representation of the graph
   """
   if size is None:
     size = gum.config["notebook", "junctiontree_graph_size"]

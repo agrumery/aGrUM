@@ -1,5 +1,5 @@
-Influence Diagram
-=================
+Influence Diagram and LIMIDS
+============================
 
 .. figure:: _static/InfluenceDiagram.png
     :align: center
