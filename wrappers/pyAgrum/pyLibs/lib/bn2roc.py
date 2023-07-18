@@ -83,7 +83,7 @@ def _checkCompatibility(bn, fields, datasrc):
     a list of position for variables in fields, None otherwise.
   """
   res = {}
-  isOK = True
+  isOK= True
   for field in bn.names():
     if field not in fields:
       print(f"** field '{field}' is missing.")
@@ -307,19 +307,18 @@ def getROCpoints(bn, datasrc, target, label, with_labels=True, significant_digit
     List[Tuple[int,int]]
       the list of points (FalsePositifRate,TruePositifRate)
   """
-  if type(datasrc) is not str:
-    if hasattr(datasrc, "to_csv"):
-      import tempfile
-      csvfile = tempfile.NamedTemporaryFile(delete=False)
-      tmpfilename = csvfile.name
-      csvfilename = tmpfilename +CSV_TMP_SUFFIX
-      csvfile.close()
-      datasrc.to_csv(csvfilename, na_rep="?", index=False)
+  if type(datasrc) is not str and hasattr(datasrc, "to_csv"):
+    import tempfile
+    csvfile = tempfile.NamedTemporaryFile(delete=False)
+    tmpfilename = csvfile.name
+    csvfilename = tmpfilename +CSV_TMP_SUFFIX
+    csvfile.close()
+    datasrc.to_csv(csvfilename, na_rep="?", index=False)
 
-      l=getROCpoints(bn, csvfilename, target, label, with_labels=with_labels, significant_digits=significant_digits)
+    l=getROCpoints(bn, csvfilename, target, label, with_labels=with_labels, significant_digits=significant_digits)
 
-      os.remove(csvfilename)
-      return l
+    os.remove(csvfilename)
+    return l
 
   show_progress = False
   (res, totalP, totalN) = _computepoints(bn, datasrc, target,
@@ -355,19 +354,18 @@ def getPRpoints(bn, datasrc, target, label, with_labels=True, significant_digits
     List[Tuple[float,float]]
       the list of points (precision,recall)
   """
-  if type(datasrc) is not str:
-    if hasattr(datasrc, "to_csv"):
-      import tempfile
-      csvfile = tempfile.NamedTemporaryFile(delete=False)
-      tmpfilename = csvfile.name
-      csvfilename = tmpfilename  +CSV_TMP_SUFFIX
-      csvfile.close()
-      
-      datasrc.to_csv(csvfilename, na_rep="?", index=False)
+  if type(datasrc) is not str and hasattr(datasrc, "to_csv"):
+    import tempfile
+    csvfile = tempfile.NamedTemporaryFile(delete=False)
+    tmpfilename = csvfile.name
+    csvfilename = tmpfilename  +CSV_TMP_SUFFIX
+    csvfile.close()
 
-      l=getPRpoints(bn, csvfilename, target, label, with_labels=with_labels, significant_digits=significant_digits)
-      os.remove(csvfilename)
-      return l
+    datasrc.to_csv(csvfilename, na_rep="?", index=False)
+
+    l=getPRpoints(bn, csvfilename, target, label, with_labels=with_labels, significant_digits=significant_digits)
+    os.remove(csvfilename)
+    return l
 
   show_progress = False
   (res, totalP, totalN) = _computepoints(bn, datasrc, target,
@@ -542,21 +540,20 @@ def showROC_PR(bn, datasrc, target, label, show_progress=True, show_fig=True, sa
 
   """
 
-  if type(datasrc) is not str:
-    if hasattr(datasrc, "to_csv"):
-      import tempfile
-      csvfile = tempfile.NamedTemporaryFile(delete=False)
-      tmpfilename = csvfile.name
-      csvfilename = tmpfilename +CSV_TMP_SUFFIX
-      csvfile.close()
-      datasrc.to_csv(csvfilename, na_rep="?", index=False)
+  if type(datasrc) is not str and hasattr(datasrc, "to_csv"):
+    import tempfile
+    csvfile = tempfile.NamedTemporaryFile(delete=False)
+    tmpfilename = csvfile.name
+    csvfilename = tmpfilename +CSV_TMP_SUFFIX
+    csvfile.close()
+    datasrc.to_csv(csvfilename, na_rep="?", index=False)
 
-      showROC_PR(bn, csvfilename, target, label, show_progress=show_progress, show_fig=show_fig, save_fig=save_fig,
-                 with_labels=with_labels,
-                 show_ROC=show_ROC, show_PR=show_PR, significant_digits=significant_digits)
+    showROC_PR(bn, csvfilename, target, label, show_progress=show_progress, show_fig=show_fig, save_fig=save_fig,
+               with_labels=with_labels,
+               show_ROC=show_ROC, show_PR=show_PR, significant_digits=significant_digits)
 
-      os.remove(csvfilename)
-      return
+    os.remove(csvfilename)
+    return
 
 
   filename = _getFilename(datasrc)
@@ -670,3 +667,58 @@ def showPR(bn, datasrc, target, label, show_progress=True, show_fig=True, save_f
 
   return showROC_PR(bn, datasrc, target, label, show_progress=show_progress, show_fig=show_fig, save_fig=save_fig,
                     with_labels=with_labels, show_ROC=False, show_PR=True, significant_digits=significant_digits)
+
+def animThreshold(bn,datasrc,target="Y",label="1"):
+  """
+  Interactive selection of a threshold using TPR and FPR for BN and data
+
+  Parameters
+  ----------
+  bn : pyAgrum.BayesNet
+    a Bayesian network
+  datasrc : str|DataFrame
+    a csv filename or a pandas.DataFrame
+  target : str
+    the target
+  label : str
+    the target label
+  """
+  import ipywidgets as widgets
+  import matplotlib.pyplot as plt
+  import matplotlib.ticker as mtick
+
+  class DisplayROC:
+    def __init__(self,points):
+      self._x=[i/len(points) for i in range(len(points))]
+      self._y1,self._y2=zip(*points)
+      self._points=points
+
+    def display(self,threshold):
+      rate=threshold/100.0
+      indexes=int((len(self._points)-1)*rate)
+
+      plt.rcParams["figure.figsize"] = (2.7,1)
+      plt.plot(viewer._x,viewer._y1,"g")
+      plt.plot(viewer._x,viewer._y2,"r")
+      plt.plot([rate,rate],[0,1])
+      plt.gca().xaxis.set_major_formatter(mtick.PercentFormatter(1.0))
+      plt.show()
+
+      plt.rcParams["figure.figsize"] = (2,1)
+      plt.barh([0,1],self._points[indexes],color=["g","r"])
+      plt.yticks(ticks=[0,1],labels=["FPR","TPR"])
+      plt.annotate(f" {self._points[indexes][0]:.1%}",xy=(1,0),xytext=(1,-0.2))
+      plt.annotate(f" {self._points[indexes][1]:.1%}",xy=(1,1),xytext=(1,0.8))
+      plt.xlim(0,1)
+      plt.show()
+
+  viewer=DisplayROC(getROCpoints(bn,datasrc,target="Y",label="1"))
+
+  def interactive_view(rate:float):
+    viewer.display(rate)
+
+  #widgets.interact(interactive_view, rate=(0,100,1))
+  interactive_plot = widgets.interactive(interactive_view, rate=(0,100,1))
+  output = interactive_plot.children[-1]
+  output.layout.height = '250px'
+  return interactive_plot
