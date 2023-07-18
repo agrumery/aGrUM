@@ -291,13 +291,6 @@ int
     the number of arcs in the graph
 "
 
-
-%feature("docstring") gum::MixedGraph::adjacents
-"
-.. note:: Deprecated in pyAgrum>=1.4.0
-    Please use boundary() instead
-"
-
 %feature("docstring") gum::MixedGraph::boundary
 "
 Boundary are neighbours (not oriented), children and parents

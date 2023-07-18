@@ -81,18 +81,3 @@ Raises
   PyAgrum.InvalidDirectedCycle
     if the edge would create a (mixed) cycle.
 "
-
-%feature("docstring") gum::PDAG::adjacents
-"
-adjacents nodes are neighbours (not oriented), children and parents
-
-Parameters
-----------
-id : int
-	the id of the node
-
-Returns
--------
-set
-    the set of node ids.
-"

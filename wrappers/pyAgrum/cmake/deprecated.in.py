@@ -103,21 +103,6 @@ def MarkovNet(*args, **kwargs):
 """, DeprecationWarning, stacklevel=2)
   return MarkovRandomField(*args, **kwargs)
 
-
-########################################################################################################
-def deprecated_adjacents(mixed_graph, n):
-  """
-  Deprecated methods in MixedGraph for pyAgrum>1.3.1
-  """
-  warnings.warn("""
-** pyAgrum.MixedGraph.adjacents() is deprecated from pyAgrum>1.3.1. Please use boundary() instead.
-""", DeprecationWarning, stacklevel=2)
-  return mixed_graph.boundary(n)
-
-
-MixedGraph.adjacents = deprecated_adjacents
-
-
 ########################################################################################################
 def deprecated_learnMixedGraph(learner):
   """
