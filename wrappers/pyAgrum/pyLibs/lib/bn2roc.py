@@ -35,12 +35,15 @@ import pyAgrum as gum
 from pyAgrum import skbn
 
 CSV_TMP_SUFFIX = ".x.csv"
+
+
 def _getFilename(datasrc):
   "*.CSV_TMP_SUFFIXcsv is the signature of a temp csv file"
-  if datasrc[-len(CSV_TMP_SUFFIX):]==".x.csv":
+  if datasrc[-len(CSV_TMP_SUFFIX):] == ".x.csv":
     return "dataframe"
 
   return datasrc
+
 
 def _lines_count(filename):
   """
@@ -83,7 +86,7 @@ def _checkCompatibility(bn, fields, datasrc):
     a list of position for variables in fields, None otherwise.
   """
   res = {}
-  isOK= True
+  isOK = True
   for field in bn.names():
     if field not in fields:
       print(f"** field '{field}' is missing.")
@@ -121,12 +124,12 @@ def _computeAUC(points):
   return somme / 2
 
 
-def _computeF1(points, ind):
-  return 2 * points[ind][0] * points[ind][1] / (points[ind][0] + points[ind][1])
+def _computeFbeta(points, ind, beta=1):
+  return (1 + beta ** 2) * points[ind][1] * points[ind][0] / ((beta ** 2 * points[ind][1]) + points[ind][0])
 
 
 @gum.deprecated_arg(newA="datasrc", oldA="csvname", version="1.8.3")
-def _computepoints(bn, datasrc, target, label, show_progress=True, with_labels=True, significant_digits=10):
+def _computepoints(bn, datasrc, target, label, beta=1, show_progress=True, with_labels=True, significant_digits=10):
   """
   Compute the ROC points.
 
@@ -140,6 +143,8 @@ def _computepoints(bn, datasrc, target, label, show_progress=True, with_labels=T
     the target
   label : str
     the target's label or id
+  beta : float
+    the value of beta for the F-beta score
   show_progress : bool
     indicates if the resulting curve must be printed
   with_labels: bool
@@ -166,7 +171,7 @@ def _computepoints(bn, datasrc, target, label, show_progress=True, with_labels=T
   else:
     idLabel = label
 
-  Classifier = skbn.BNClassifier(significant_digit=significant_digits)
+  Classifier = skbn.BNClassifier(beta=beta, significant_digit=significant_digits)
 
   if show_progress:
     # tqdm is optional:
@@ -197,7 +202,7 @@ def _computepoints(bn, datasrc, target, label, show_progress=True, with_labels=T
   return res, totalP, totalN
 
 
-def _computeROC_PR(values, totalP, totalN):
+def _computeROC_PR(values, totalP, totalN, beta):
   """
   Parameters
   ----------
@@ -207,6 +212,8 @@ def _computeROC_PR(values, totalP, totalN):
     the number of positive values
   totalN : int
     the number of negative values
+  beta : float
+    the value of beta for the F-beta score
 
   Returns
   -------
@@ -248,7 +255,9 @@ def _computeROC_PR(values, totalP, totalN):
         threshopt_ROC = (cur_threshold + old_threshold) / 2
 
       if prec + tpr > 0:
-        f = 2 * prec * tpr / (prec + tpr)  # f1
+        # f = 2 * prec * tpr / (prec + tpr)  # f1
+        f = (1 + beta ** 2) * prec * tpr / ((beta ** 2 * prec) + tpr)
+
         if f > fmax_PR:
           fmax_PR = f
           ind_PR = len(pointsPR)
@@ -274,11 +283,11 @@ def _computeROC_PR(values, totalP, totalN):
   AUC_ROC = _computeAUC(pointsROC)
   AUC_PR = _computeAUC(pointsPR)
 
-  f1_ROC = _computeF1(pointsPR, ind_ROC)
-  f1_PR = _computeF1(pointsPR, ind_PR)
+  fbeta_ROC = _computeFbeta(pointsPR, ind_ROC, beta)
+  fbeta_PR = _computeFbeta(pointsPR, ind_PR, beta)
 
-  return (pointsROC, ind_ROC, threshopt_ROC, AUC_ROC, f1_ROC,
-          pointsPR, ind_PR, threshopt_PR, AUC_PR, f1_PR,
+  return (pointsROC, ind_ROC, threshopt_ROC, AUC_ROC, fbeta_ROC,
+          pointsPR, ind_PR, threshopt_PR, AUC_PR, fbeta_PR,
           thresholds)
 
 
@@ -311,11 +320,11 @@ def getROCpoints(bn, datasrc, target, label, with_labels=True, significant_digit
     import tempfile
     csvfile = tempfile.NamedTemporaryFile(delete=False)
     tmpfilename = csvfile.name
-    csvfilename = tmpfilename +CSV_TMP_SUFFIX
+    csvfilename = tmpfilename + CSV_TMP_SUFFIX
     csvfile.close()
     datasrc.to_csv(csvfilename, na_rep="?", index=False)
 
-    l=getROCpoints(bn, csvfilename, target, label, with_labels=with_labels, significant_digits=significant_digits)
+    l = getROCpoints(bn, csvfilename, target, label, with_labels=with_labels, significant_digits=significant_digits)
 
     os.remove(csvfilename)
     return l
@@ -323,14 +332,14 @@ def getROCpoints(bn, datasrc, target, label, with_labels=True, significant_digit
   show_progress = False
   (res, totalP, totalN) = _computepoints(bn, datasrc, target,
                                          label, show_progress, with_labels, significant_digits)
-  (pointsROC, ind_ROC, thresholdROC, AUC_ROC, f1_ROC, pointsPR, ind_PR,
-   thresholdPR, AUC_PR, f1_PR, thresholds) = _computeROC_PR(res, totalP, totalN)
+  (pointsROC, ind_ROC, thresholdROC, AUC_ROC, fbeta_ROC, pointsPR, ind_PR,
+   thresholdPR, AUC_PR, fbeta_PR, thresholds) = _computeROC_PR(res, totalP, totalN)
 
   return pointsROC
 
 
 @gum.deprecated_arg(newA="datasrc", oldA="csvname", version="1.8.3")
-def getPRpoints(bn, datasrc, target, label, with_labels=True, significant_digits=10):
+def getPRpoints(bn, datasrc, target, label, beta=1, with_labels=True, significant_digits=10):
   """
   Compute the points of the PR curve
 
@@ -344,6 +353,8 @@ def getPRpoints(bn, datasrc, target, label, with_labels=True, significant_digits
     the target
   label : str
     the target's label
+  beta : float
+    the value of beta for the F-beta score
   with_labels: bool
     whether we use label or id (especially for parameter label)
   significant_digits:
@@ -358,20 +369,21 @@ def getPRpoints(bn, datasrc, target, label, with_labels=True, significant_digits
     import tempfile
     csvfile = tempfile.NamedTemporaryFile(delete=False)
     tmpfilename = csvfile.name
-    csvfilename = tmpfilename  +CSV_TMP_SUFFIX
+    csvfilename = tmpfilename + CSV_TMP_SUFFIX
     csvfile.close()
 
     datasrc.to_csv(csvfilename, na_rep="?", index=False)
 
-    l=getPRpoints(bn, csvfilename, target, label, with_labels=with_labels, significant_digits=significant_digits)
+    l = getPRpoints(bn, csvfilename, target, label, beta=beta, with_labels=with_labels,significant_digits=significant_digits)
+
     os.remove(csvfilename)
     return l
 
   show_progress = False
   (res, totalP, totalN) = _computepoints(bn, datasrc, target,
                                          label, show_progress, with_labels, significant_digits)
-  (pointsROC, ind_ROC, thresholdROC, AUC_ROC, f1_ROC, pointsPR, ind_PR,
-   thresholdPR, AUC_PR, f1_PR, thresholds) = _computeROC_PR(res, totalP, totalN)
+  (pointsROC, ind_ROC, thresholdROC, AUC_ROC, fbeta_ROC, pointsPR, ind_PR,
+   thresholdPR, AUC_PR, fbeta_PR, thresholds) = _computeROC_PR(res, totalP, totalN)
 
   return pointsPR
 
@@ -414,8 +426,8 @@ def _getPoint(threshold: float, thresholds: List[float], points: List[Tuple[floa
     return (points[ind][0] + points[ind + 1][0]) / 2, (points[ind][1] + points[ind + 1][1]) / 2
 
 
-def _basicDraw(ax, points, thresholds, f1, AUC, main_color, secondary_color, last_color="black",
-               thresholds_to_show=None, align_threshold="left"):
+def _basicDraw(ax, points, thresholds, fbeta, beta, AUC, main_color, secondary_color,
+               last_color="black", thresholds_to_show=None, align_threshold="left"):
   ax.grid(color='#aaaaaa', linestyle='-', linewidth=1, alpha=0.5)
 
   ax.plot([x[0] for x in points], [y[1] for y in points], '-',
@@ -472,16 +484,22 @@ def _basicDraw(ax, points, thresholds, f1, AUC, main_color, secondary_color, las
     AUC_x = 0.05
     AUC_halign = "left"
 
-  ax.text(AUC_x, 0.0, f'AUC={AUC:.4f}\nf1={f1:.4f}', {'color': main_color, 'fontsize': 18},
-          horizontalalignment=AUC_halign,
-          verticalalignment='bottom',
-          fontsize=18)
+  if beta == 1:
+    ax.text(AUC_x, 0.0, f'AUC={AUC:.4f}\nf1={fbeta:.4f}', {'color': main_color, 'fontsize': 18},
+            horizontalalignment=AUC_halign,
+            verticalalignment='bottom',
+            fontsize=18)
+  else:
+    ax.text(AUC_x, 0.0, f'AUC={AUC:.4f}\nF-beta={fbeta:.4f}', {'color': main_color, 'fontsize': 18},
+            horizontalalignment=AUC_halign,
+            verticalalignment='bottom',
+            fontsize=18)
 
 
-def _drawROC(points, zeTitle, f1_ROC, AUC_ROC, thresholds, thresholds_to_show, ax=None):
+def _drawROC(points, zeTitle, fbeta_ROC, AUC_ROC, thresholds, thresholds_to_show, ax=None):
   ax = ax or pylab.gca()
 
-  _basicDraw(ax, points, thresholds, f1=f1_ROC, AUC=AUC_ROC, main_color='#DD5555',
+  _basicDraw(ax, points, thresholds, fbeta=fbeta_ROC, beta=1, AUC=AUC_ROC, main_color='#DD5555',
              secondary_color='#120af7', thresholds_to_show=thresholds_to_show, align_threshold="left")
   ax.plot([0.0, 1.0], [0.0, 1.0], '-', color="#AAAAAA")
   ax.set_xlabel('False positive rate')
@@ -490,10 +508,11 @@ def _drawROC(points, zeTitle, f1_ROC, AUC_ROC, thresholds, thresholds_to_show, a
   ax.set_title(zeTitle)
 
 
-def _drawPR(points, zeTitle, f1_PR, AUC_PR, thresholds, thresholds_to_show, rate, ax=None):
+def _drawPR(points, zeTitle, fbeta_PR, beta, AUC_PR, thresholds, thresholds_to_show, rate, ax=None):
   ax = ax or pylab.gca()
 
-  _basicDraw(ax, points, thresholds, f1=f1_PR, AUC=AUC_PR, main_color='#120af7', secondary_color='#DD5555',
+  _basicDraw(ax, points, thresholds, fbeta=fbeta_PR, beta=beta, AUC=AUC_PR, main_color='#120af7',
+             secondary_color='#DD5555',
              thresholds_to_show=thresholds_to_show, align_threshold="right")
   ax.plot([0.0, 1.0], [rate, rate], '-', color="#AAAAAA")
   ax.set_xlabel('Recall')
@@ -503,8 +522,8 @@ def _drawPR(points, zeTitle, f1_PR, AUC_PR, thresholds, thresholds_to_show, rate
 
 
 @gum.deprecated_arg(newA="datasrc", oldA="csvname", version="1.8.3")
-def showROC_PR(bn, datasrc, target, label, show_progress=True, show_fig=True, save_fig=False, with_labels=True,
-               show_ROC=True, show_PR=True, significant_digits=10):
+def showROC_PR(bn, datasrc, target, label, beta=1, show_progress=True, show_fig=True, save_fig=False,
+               with_labels=True, show_ROC=True, show_PR=True, significant_digits=10):
   """
   Compute the ROC curve and save the result in the folder of the csv file.
 
@@ -518,6 +537,8 @@ def showROC_PR(bn, datasrc, target, label, show_progress=True, show_fig=True, sa
     the target
   label : str
     the target label
+  beta : float
+    the value of beta for the F-beta score
   show_progress : bool
     indicates if the progress bar must be printed
   save_fig:
@@ -544,13 +565,13 @@ def showROC_PR(bn, datasrc, target, label, show_progress=True, show_fig=True, sa
     import tempfile
     csvfile = tempfile.NamedTemporaryFile(delete=False)
     tmpfilename = csvfile.name
-    csvfilename = tmpfilename +CSV_TMP_SUFFIX
+    csvfilename = tmpfilename + CSV_TMP_SUFFIX
     csvfile.close()
     datasrc.to_csv(csvfilename, na_rep="?", index=False)
 
-    showROC_PR(bn, csvfilename, target, label, show_progress=show_progress, show_fig=show_fig, save_fig=save_fig,
-               with_labels=with_labels,
-               show_ROC=show_ROC, show_PR=show_PR, significant_digits=significant_digits)
+    showROC_PR(bn, csvfilename, target, label, beta=beta, show_progress=show_progress, show_fig=show_fig,
+               save_fig=save_fig, with_labels=with_labels, show_ROC=show_ROC, show_PR=show_PR,
+               significant_digits=significant_digits)
 
     os.remove(csvfilename)
     return
@@ -558,9 +579,9 @@ def showROC_PR(bn, datasrc, target, label, show_progress=True, show_fig=True, sa
 
   filename = _getFilename(datasrc)
   (res, totalP, totalN) = _computepoints(bn, datasrc, target,
-                                         label, show_progress, with_labels, significant_digits)
-  (pointsROC, ind_ROC, thresholdROC, AUC_ROC, f1_ROC, pointsPR, ind_PR,
-   thresholdPR, AUC_PR, f1_PR, thresholds) = _computeROC_PR(res, totalP, totalN)
+                                         label, beta, show_progress, with_labels, significant_digits)
+  (pointsROC, ind_ROC, thresholdROC, AUC_ROC, fbeta_ROC, pointsPR, ind_PR,
+   thresholdPR, AUC_PR, fbeta_PR, thresholds) = _computeROC_PR(res, totalP, totalN, beta)
   try:
     shortname = os.path.basename(bn.property("name"))
   except gum.NotFound:
@@ -576,23 +597,23 @@ def showROC_PR(bn, datasrc, target, label, show_progress=True, show_fig=True, sa
     pylab.gcf().subplots_adjust(wspace=0.1)
 
     ax1 = fig.add_subplot(1, 2, 1)
-    _drawROC(points=pointsROC, zeTitle="ROC", f1_ROC=f1_ROC, AUC_ROC=AUC_ROC, thresholds=thresholds,
+    _drawROC(points=pointsROC, zeTitle="ROC", fbeta_ROC=fbeta_ROC, AUC_ROC=AUC_ROC, thresholds=thresholds,
              thresholds_to_show=[thresholdROC, thresholdPR],
              ax=ax1)
 
     ax2 = fig.add_subplot(1, 2, 2)
     ax2.yaxis.tick_right()
     ax2.yaxis.set_label_position("right")
-    _drawPR(points=pointsPR, zeTitle="Precision-Recall", f1_PR=f1_PR, AUC_PR=AUC_PR,
+    _drawPR(points=pointsPR, zeTitle="Precision-Recall", fbeta_PR=fbeta_PR, beta=beta, AUC_PR=AUC_PR,
             thresholds=thresholds, thresholds_to_show=[thresholdPR, thresholdROC], rate=rate, ax=ax2)
   elif show_ROC:
     figname = f"{filename}-ROC_{shortname}-{target}-{label}.png"
 
-    _drawROC(points=pointsROC, zeTitle=title, f1_ROC=f1_ROC, AUC_ROC=AUC_ROC, thresholds=thresholds,
+    _drawROC(points=pointsROC, zeTitle=title, fbeta_ROC=fbeta_ROC, AUC_ROC=AUC_ROC, thresholds=thresholds,
              thresholds_to_show=[thresholdROC])
   elif show_PR:
     figname = f"{filename}-PR_{shortname}-{target}-{label}.png"
-    _drawPR(points=pointsPR, zeTitle=title, f1_PR=f1_PR, AUC_PR=AUC_PR, thresholds=thresholds,
+    _drawPR(points=pointsPR, zeTitle=title, fbeta_PR=fbeta_PR, beta=beta, AUC_PR=AUC_PR, thresholds=thresholds,
             thresholds_to_show=[thresholdPR], rate=rate)
 
   if save_fig:
@@ -637,9 +658,8 @@ def showROC(bn, datasrc, target, label, show_progress=True, show_fig=True, save_
 
 
 @gum.deprecated_arg(newA="datasrc", oldA="csvname", version="1.8.3")
-def showPR(bn, datasrc, target, label, show_progress=True, show_fig=True, save_fig=False, with_labels=True,
-           significant_digits=10
-           ):
+def showPR(bn, datasrc, target, label, beta=1, show_progress=True, show_fig=True, save_fig=False,
+           with_labels=True, significant_digits=10):
   """
   Compute the ROC curve and save the result in the folder of the csv file.
 
@@ -668,7 +688,8 @@ def showPR(bn, datasrc, target, label, show_progress=True, show_fig=True, save_f
   return showROC_PR(bn, datasrc, target, label, show_progress=show_progress, show_fig=show_fig, save_fig=save_fig,
                     with_labels=with_labels, show_ROC=False, show_PR=True, significant_digits=significant_digits)
 
-def animThreshold(bn,datasrc,target="Y",label="1"):
+
+def animThreshold(bn, datasrc, target="Y", label="1"):
   """
   Interactive selection of a threshold using TPR and FPR for BN and data
 
@@ -688,37 +709,37 @@ def animThreshold(bn,datasrc,target="Y",label="1"):
   import matplotlib.ticker as mtick
 
   class DisplayROC:
-    def __init__(self,points):
-      self._x=[i/len(points) for i in range(len(points))]
-      self._y1,self._y2=zip(*points)
-      self._points=points
+    def __init__(self, points):
+      self._x = [i / len(points) for i in range(len(points))]
+      self._y1, self._y2 = zip(*points)
+      self._points = points
 
-    def display(self,threshold):
-      rate=threshold/100.0
-      indexes=int((len(self._points)-1)*rate)
+    def display(self, threshold):
+      rate = threshold / 100.0
+      indexes = int((len(self._points) - 1) * rate)
 
-      plt.rcParams["figure.figsize"] = (2.7,1)
-      plt.plot(viewer._x,viewer._y1,"g")
-      plt.plot(viewer._x,viewer._y2,"r")
-      plt.plot([rate,rate],[0,1])
+      plt.rcParams["figure.figsize"] = (2.7, 1)
+      plt.plot(viewer._x, viewer._y1, "g")
+      plt.plot(viewer._x, viewer._y2, "r")
+      plt.plot([rate, rate], [0, 1])
       plt.gca().xaxis.set_major_formatter(mtick.PercentFormatter(1.0))
       plt.show()
 
-      plt.rcParams["figure.figsize"] = (2,1)
-      plt.barh([0,1],self._points[indexes],color=["g","r"])
-      plt.yticks(ticks=[0,1],labels=["FPR","TPR"])
-      plt.annotate(f" {self._points[indexes][0]:.1%}",xy=(1,0),xytext=(1,-0.2))
-      plt.annotate(f" {self._points[indexes][1]:.1%}",xy=(1,1),xytext=(1,0.8))
-      plt.xlim(0,1)
+      plt.rcParams["figure.figsize"] = (2, 1)
+      plt.barh([0, 1], self._points[indexes], color=["g", "r"])
+      plt.yticks(ticks=[0, 1], labels=["FPR", "TPR"])
+      plt.annotate(f" {self._points[indexes][0]:.1%}", xy=(1, 0), xytext=(1, -0.2))
+      plt.annotate(f" {self._points[indexes][1]:.1%}", xy=(1, 1), xytext=(1, 0.8))
+      plt.xlim(0, 1)
       plt.show()
 
-  viewer=DisplayROC(getROCpoints(bn,datasrc,target="Y",label="1"))
+  viewer = DisplayROC(getROCpoints(bn, datasrc, target="Y", label="1"))
 
-  def interactive_view(rate:float):
+  def interactive_view(rate: float):
     viewer.display(rate)
 
-  #widgets.interact(interactive_view, rate=(0,100,1))
-  interactive_plot = widgets.interactive(interactive_view, rate=(0,100,1))
+  # widgets.interact(interactive_view, rate=(0,100,1))
+  interactive_plot = widgets.interactive(interactive_view, rate=(0, 100, 1))
   output = interactive_plot.children[-1]
   output.layout.height = '250px'
   return interactive_plot

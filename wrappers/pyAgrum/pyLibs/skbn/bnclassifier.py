@@ -129,6 +129,13 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
         Precision-Recall curves should be used when there is a moderate to large class imbalance especially for
         the target's class.
 
+    beta: float
+        if you choose the Precision-Recall curve's threshold, the F1 score is maximized (beta=1 by default). If 
+        you choose a specific value for beta, the threshold will maximised the F-beta score. A value inferior 
+        of 1 will give more weight to precision. A value superior of 1 will give more weight to recall.
+        For example, beta = 0.5 makes precision twice as important as recall, while beta = 2 does the 
+        opposite.
+
     significant_digit:
         number of significant digits when computing probabilities
     """
@@ -136,7 +143,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
   @gum.deprecated_arg(newA="prior", oldA="apriori", version="1.1.2")
   def __init__(self, learningMethod="GHC", prior=None, scoringType="BIC", constraints=None, priorWeight=1,
                possibleSkeleton=None, DirichletCsv=None, discretizationStrategy="quantile", discretizationNbBins=5,
-               discretizationThreshold=25, usePR=False, significant_digit=10):
+               discretizationThreshold=25, usePR=False, beta=1, significant_digit=10):
     """ 
     Parameters
     ----------
@@ -229,6 +236,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     # The ROC curve is used to calculate the optimal threshold
     self.threshold = 0.5
     self.usePR = usePR
+    self.beta = beta
 
     # the type of prior used
     self.prior = prior
@@ -428,7 +436,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     if self.isBinaryClassifier:
       self.threshold = CThreshold(
-        self.MarkovBlanket, self.target, csvfilename, self.usePR, self.significant_digit)
+        self.MarkovBlanket, self.target, csvfilename, self.usePR, self.beta, self.significant_digit)
 
     os.remove(csvfilename)
     os.remove(tmpfilename)

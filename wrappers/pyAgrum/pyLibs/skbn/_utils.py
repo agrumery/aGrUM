@@ -27,7 +27,7 @@ import pandas as pd
 import tempfile
 
 
-def _CalculateThreshold(bn, targetName, csvfilename, usePR, significant_digits):
+def _CalculateThreshold(bn, targetName, csvfilename, usePR, beta, significant_digits):
   """
   The Bayesian network gives us the probability of the target knowing the values of the other variables. The value above which the probability needs to be for the input to be classified as that class is called the threshold.
   This method calculates the optimal threshold using the roc or precision-recall curve.
@@ -55,10 +55,10 @@ def _CalculateThreshold(bn, targetName, csvfilename, usePR, significant_digits):
 
   if usePR:
     _, _, _, threshold = bn2roc.showROC_PR(bn, csvfilename, targetName, target.labels(
-    )[1], show_fig=False, show_ROC=False, show_PR=False, significant_digits=significant_digits, show_progress=False)
+    )[1],beta=beta, show_fig=False, show_ROC=False, show_PR=False, significant_digits=significant_digits, show_progress=False)
   else:
     _, threshold, _, _ = bn2roc.showROC_PR(bn, csvfilename, targetName, target.labels(
-    )[1], show_fig=False, show_ROC=False, show_PR=False, significant_digits=significant_digits, show_progress=False)
+    )[1], beta=beta, show_fig=False, show_ROC=False, show_PR=False, significant_digits=significant_digits, show_progress=False)
 
   return threshold
 

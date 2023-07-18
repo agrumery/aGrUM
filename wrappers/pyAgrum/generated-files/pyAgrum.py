@@ -8828,13 +8828,13 @@ class Potential(object):
 
         Warnings
         --------
-        The `gum.Potential` is assumed to contain a joint distribution.
+        The `pyAgrum.Potential` is assumed to contain a joint distribution.
 
-        Example
-        -------
-        def log2cptA(x):
-         return -math.log2(bn.cpt('A')[x])
-        entropy_of_A=bn.cpt('A').expectedValue(log2cptA) # OK it A has no parents.
+        Examples
+        --------
+        >>> def log2cptA(x):
+        ...   return -math.log2(bn.cpt('A')[x])
+        >>> entropy_of_A=bn.cpt('A').expectedValue(log2cptA) # OK it A has no parents.
 
         Returns
         -------
@@ -25793,20 +25793,24 @@ class BNLearner(object):
     r"""
 
     BNLearner(filename,inducedTypes=True) -> BNLearner
-        Parameters:
+        Parameters
+        ----------
             - **source** (*str* or *pandas.DataFrame*) -- the data to learn from
-            - **missingSymbols** (*List[str]*) -- list of string that will be interpreted as missing values (by default : ['?'])
+            - **missingSymbols** (*List[str]*) -- list of string that will be interpreted as missing values (by default : `['?']`)
             - **inducedTypes** (*Bool*) -- whether BNLearner should try to automatically find the type of each variable
 
     BNLearner(filename,src) -> BNLearner
-        Parameters:
+        Parameters
+        ----------
             - **source** (*str* or *pandas.DataFrame) -- the data to learn from
             - **src** (*pyAgrum.BayesNet*) -- the Bayesian network used to find those modalities
-            - **missingSymbols** (*List[str]*) -- list of string that will be interpreted as missing values (by default : ['?'])
+            - **missingSymbols** (*List[str]*) -- list of string that will be interpreted as missing values (by default : `['?']`)
 
     BNLearner(learner) -> BNLearner
-        Parameters:
+        Parameters
+        ----------
             - **learner** (*pyAgrum.BNLearner*) -- the BNLearner to copy
+
 
     """
 
