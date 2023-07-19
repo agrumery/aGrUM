@@ -66,12 +66,11 @@ def __limits(p):
   nzmax = None
   l = len(v) - 1
   for i in range(l + 1):
-    if v[i] != 0:
-      if nzmin is None:
-        if i > 0:
-          nzmin = i - 1
-        else:
-          nzmin = -1
+    if v[i] != 0 and nzmin is None:
+      if i > 0:
+        nzmin = i - 1
+      else:
+        nzmin = -1
     if v[l - i] != 0:
       if nzmax is None:
         if i > 0:

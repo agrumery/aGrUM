@@ -1310,7 +1310,7 @@ def _reprPotential(pot, digits=None, withColors=None, varnames=None, asString=Fa
           if sum([inst.val(i) for i in range(1, par)]) == 0:
             s += f"""<th style='border:1px solid black;color:black;background-color:#BBBBBB;' rowspan = '{offset[par]}'>
             <center>{label}</center></th>"""
-      for j in range(pot.variable(0).domainSize()):
+      for _ in range(pot.variable(0).domainSize()):
         s += _mkCell(pot.get(inst))
         inst.inc()
       s += "</tr>"
@@ -1457,7 +1457,7 @@ def getSideBySide(*args, **kwargs):
   if 'valign' in kwargs and kwargs['valign'] in ['top', 'middle', 'bottom']:
     v_align = f"vertical-align:{kwargs['valign']};"
   else:
-    v_align = f"vertical-align:middle;"
+    v_align = "vertical-align:middle;"
 
   ncols = None
   if 'ncols' in kwargs:
@@ -1541,16 +1541,15 @@ def getInferenceEngine(ie, inferenceCaption):
       t += ", ".join([ie.BN().variable(n).name() for n in ie.targets()])
     t += "</li>"
 
-  if hasattr(ie, 'nbrJointTargets'):
-    if ie.nbrJointTargets() > 0:
-      t += "<li><b>Joint target(s)</b><br/>"
-      t += ", ".join(['['
-                      + (", ".join([ie.BN().variable(n).name()
-                                    for n in ns]
-                                   ))
-                      + ']' for ns in ie.jointTargets()]
-                     )
-      t += "</li>"
+  if hasattr(ie, 'nbrJointTargets') and ie.nbrJointTargets() > 0:
+    t += "<li><b>Joint target(s)</b><br/>"
+    t += ", ".join(['['
+                    + (", ".join([ie.BN().variable(n).name()
+                                  for n in ns]
+                                 ))
+                    + ']' for ns in ie.jointTargets()]
+                   )
+    t += "</li>"
   t += '</ul></div>'
   return getSideBySide(getBN(ie.BN()), t, captions=[inferenceCaption, "Evidence and targets"])
 
@@ -1645,8 +1644,6 @@ def getJT(jt, size=None):
                             )
                    )
 
-  if size is None:
-    size = gum.config["notebook", "default_graph_size"]
   graph.set_size(gum.config["notebook", "junctiontree_graph_size"])
 
   return graph.to_string()

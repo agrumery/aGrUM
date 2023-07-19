@@ -117,19 +117,16 @@ def MRF2UGdot(mrf, size="4", nodeColor=None, edgeWidth=None, edgeLabel=None, edg
     col = gumcols.getBlackInTheme()
     lb = ""
 
-    if edgeWidth is not None:
-      if a in edgeWidth:
-        if maxedges != minedges:
-          pw = 0.1 + 5 * (edgeWidth[a] - minedges) / (maxedges - minedges)
-        av = f"{n}&nbsp;&mdash;&nbsp;{j} : {edgeWidth[a]}"
+    if edgeWidth is not None and a in edgeWidth:
+      if maxedges != minedges:
+        pw = 0.1 + 5 * (edgeWidth[a] - minedges) / (maxedges - minedges)
+      av = f"{n}&nbsp;&mdash;&nbsp;{j} : {edgeWidth[a]}"
 
-    if edgeColor is not None:
-      if a in edgeColor:
-        col = gumcols.proba2color(edgeColor[a], cmapEdge)
+    if edgeColor is not None and a in edgeColor:
+      col = gumcols.proba2color(edgeColor[a], cmapEdge)
 
-    if edgeLabel is not None:
-      if a in edgeLabel:
-        lb = edgeLabel[a]
+    if edgeLabel is not None and a in edgeLabel:
+      lb = edgeLabel[a]
 
     edge = dot.Edge('"' + mrf.variable(a[0]).name() + '"',
                     '"' + mrf.variable(a[1]).name() + '"',
@@ -308,10 +305,9 @@ def MRFinference2UGdot(mrf, size=None, engine=None, evs=None, targets=None, node
     if len(targets) == 0 or name in targets or nid in targets:
       bgcol = gum.config["notebook", "figure_facecolor"]
 
-    if nodeColor is not None:
-      if name in nodeColor or nid in nodeColor:
-        bgcol = gumcols.proba2bgcolor(nodeColor[name], cmapNode)
-        fgcol = gumcols.proba2fgcolor(nodeColor[name], cmapNode)
+    if nodeColor is not None and (name in nodeColor or nid in nodeColor):
+      bgcol = gumcols.proba2bgcolor(nodeColor[name], cmapNode)
+      fgcol = gumcols.proba2fgcolor(nodeColor[name], cmapNode)
 
     # 'hard' colour for evidence (?)
     if name in evs or nid in evs:
@@ -334,17 +330,14 @@ def MRFinference2UGdot(mrf, size=None, engine=None, evs=None, targets=None, node
     pw = 1
     av = f"{n}&nbsp;&mdash;&nbsp;{j}"
     col = gumcols.getBlackInTheme()
-    lb = ""
 
-    if arcWidth is not None:
-      if (n, j) in arcWidth:
-        if maxarcs != minarcs:
-          pw = 0.1 + 5 * (arcWidth[a] - minarcs) / (maxarcs - minarcs)
-        av = f"{n}&nbsp;&mdash;&nbsp;{j} : {arcWidth[a]}"
+    if arcWidth is not None and (n, j) in arcWidth:
+      if maxarcs != minarcs:
+        pw = 0.1 + 5 * (arcWidth[a] - minarcs) / (maxarcs - minarcs)
+      av = f"{n}&nbsp;&mdash;&nbsp;{j} : {arcWidth[a]}"
 
-    if arcColor is not None:
-      if a in arcColor:
-        col = gumcols.proba2color(arcColor[a], cmapArc)
+    if arcColor is not None and a in arcColor:
+      col = gumcols.proba2color(arcColor[a], cmapArc)
 
     dotstr += f' "{mrf.variable(n).name()}"--"{mrf.variable(j).name()}" [penwidth="{pw}",tooltip="{av}",color="{col}"];'
   dotstr += '}'
@@ -424,10 +417,9 @@ def MRFinference2FactorGraphdot(mrf, size=None, engine=None, evs=None, targets=N
     if len(targets) == 0 or name in targets or nid in targets:
       bgcol = gum.config["notebook", "figure_facecolor"]
 
-    if nodeColor is not None:
-      if name in nodeColor or nid in nodeColor:
-        bgcol = gumcols.proba2bgcolor(nodeColor[name], cmapNode)
-        fgcol = gumcols.proba2fgcolor(nodeColor[name], cmapNode)
+    if nodeColor is not None and (name in nodeColor or nid in nodeColor):
+      bgcol = gumcols.proba2bgcolor(nodeColor[name], cmapNode)
+      fgcol = gumcols.proba2fgcolor(nodeColor[name], cmapNode)
 
     # 'hard' colour for evidence (?)
     if name in evs or nid in evs:

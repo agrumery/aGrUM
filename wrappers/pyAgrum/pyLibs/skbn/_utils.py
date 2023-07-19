@@ -157,7 +157,6 @@ def _ImplementConstraints(constraints, learner):
   if type(constraints) != dict:
     raise ValueError(
         "Invalid syntax for constraints. Constraints should be passed as a dictionary")
-    return
   for key in constraints:
     if key == 'MandatoryArcs':
       for (tail, head) in constraints[key]:

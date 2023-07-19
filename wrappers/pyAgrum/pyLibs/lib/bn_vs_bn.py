@@ -32,6 +32,9 @@ import pyAgrum as gum
 import pyAgrum.lib._colors as gumcols
 
 
+STRUCTURAL_HAMMING="structural hamming"
+PURE_HAMMING="hamming"
+
 class GraphicalBNComparator:
   """
   BNGraphicalComparator allows to compare in multiple way 2 BNs...The smallest assumption is that the names of the variables are the same in the 2 BNs. But some comparisons will have also to check the type and domainSize of the variables. The bns have not exactly the  same role : _bn1 is rather the referent model for the comparison whereas _bn2 is the compared one to the referent model.
@@ -271,7 +274,7 @@ class GraphicalBNComparator:
 
     precision and recall are computed considering BN1 as the reference
 
-    Fscor is 2*(recall* precision)/(recall+precision) and is the weighted average of Precision and Recall.
+    Fscore is 2*(recall* precision)/(recall+precision) and is the weighted average of Precision and Recall.
 
     dist2opt=square root of (1-precision)^2+(1-recall)^2 and represents the euclidian distance to the ideal point (precision=1, recall=1)
 
@@ -340,16 +343,15 @@ class GraphicalBNComparator:
     Returns
     -------
     dict[double,double]
-      A dictionary containing 'hamming','structural hamming'
+      A dictionary containing PURE_HAMMING,STRUCTURAL_HAMMING
     """
     # convert graphs to cpdags
-
     cpdag1 = gum.EssentialGraph(self._bn1).pdag()
     cpdag2 = gum.EssentialGraph(self._bn2).pdag()
 
     # We look at all combinations
     listVariables = self._bn1.names()
-    hamming_dico = {'hamming': 0, 'structural hamming': 0}
+    hamming_dico = {PURE_HAMMING: 0, STRUCTURAL_HAMMING: 0}
 
     for head, tail in combinations(listVariables, 2):
       idHead_1 = self._bn1.idFromName(head)
@@ -360,38 +362,38 @@ class GraphicalBNComparator:
 
       if cpdag1.existsArc(idHead_1, idTail_1):  # Check arcs head->tail
         if cpdag2.existsArc(idTail_2, idHead_2) or cpdag2.existsEdge(idTail_2, idHead_2):
-          hamming_dico["structural hamming"] += 1
+          hamming_dico[STRUCTURAL_HAMMING] += 1
         elif not cpdag2.existsArc(idTail_2, idHead_2) and not cpdag2.existsArc(idHead_2,
                                                                                idTail_2) and not cpdag2.existsEdge(
           idTail_2, idHead_2):
 
-          hamming_dico["structural hamming"] += 1
-          hamming_dico["hamming"] += 1
+          hamming_dico[STRUCTURAL_HAMMING] += 1
+          hamming_dico[PURE_HAMMING] += 1
 
       elif cpdag1.existsArc(idTail_1, idHead_1):  # Check arcs tail->head
         if cpdag2.existsArc(idHead_2, idTail_2) or cpdag2.existsEdge(idTail_2, idHead_2):
-          hamming_dico["structural hamming"] += 1
+          hamming_dico[STRUCTURAL_HAMMING] += 1
         elif not cpdag2.existsArc(idTail_2, idHead_2) and \
            not cpdag2.existsArc(idHead_2, idTail_2) and \
            not cpdag2.existsEdge(idTail_2, idHead_2):
-          hamming_dico["structural hamming"] += 1
-          hamming_dico["hamming"] += 1
+          hamming_dico[STRUCTURAL_HAMMING] += 1
+          hamming_dico[PURE_HAMMING] += 1
 
       elif cpdag1.existsEdge(idTail_1, idHead_1):  # Check edge
         if cpdag2.existsArc(idHead_2, idTail_2) or cpdag2.existsArc(idTail_2, idHead_2):
-          hamming_dico["structural hamming"] += 1
+          hamming_dico[STRUCTURAL_HAMMING] += 1
         elif not cpdag2.existsArc(idTail_2, idHead_2) and \
            not cpdag2.existsArc(idHead_2, idTail_2) and \
            not cpdag2.existsEdge(idTail_2, idHead_2):
-          hamming_dico["structural hamming"] += 1
-          hamming_dico["hamming"] += 1
+          hamming_dico[STRUCTURAL_HAMMING] += 1
+          hamming_dico[PURE_HAMMING] += 1
           # check no edge or arc on the ref graph, and yes on the other graph
 
       elif cpdag2.existsArc(idHead_2, idTail_2) or \
          cpdag2.existsEdge(idHead_2, idTail_2) or \
          cpdag2.existsArc(idTail_2, idHead_2):
-        hamming_dico["structural hamming"] += 1
-        hamming_dico["hamming"] += 1
+        hamming_dico[STRUCTURAL_HAMMING] += 1
+        hamming_dico[PURE_HAMMING] += 1
 
     return hamming_dico
 
@@ -474,7 +476,6 @@ def graphDiff(bnref, bncmp,noStyle=False):
                               color=gum.config["notebook", "graphdiff_missing_color"]))
         continue
 
-      keyarc = "graphdiff_correct"
       if bncmp.existsArc(n1, n2):  # arc is OK in BN2
         res.add_edge(dot.Edge(f'"{n1}"', f'"{n2}"',
                               style=gum.config["notebook", "graphdiff_correct_style"],

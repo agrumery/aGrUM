@@ -62,7 +62,7 @@ def checkCompatibility(bn, fields, csv_name):
   """
   res = {}
   for field in bn.names():
-    if not field in fields:
+    if field not in fields:
       raise gum.DatabaseError(f"** At least, field '{field}' is missing in {csv_name}")
     res[bn.idFromName(field)] = fields[field]
 

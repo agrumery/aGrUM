@@ -111,19 +111,16 @@ def CN2dot(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor
     col = gumcols.getBlackInTheme()
     lb = ""
 
-    if arcWidth is not None:
-      if a in arcWidth:
-        if maxarcs != minarcs:
-          pw = 0.1 + 5 * (arcWidth[a] - minarcs) / (maxarcs - minarcs)
-        av = f"{n}&nbsp;&rarr;&nbsp;{j} : {arcWidth[a]}"
+    if arcWidth is not None and a in arcWidth:
+      if maxarcs != minarcs:
+        pw = 0.1 + 5 * (arcWidth[a] - minarcs) / (maxarcs - minarcs)
+      av = f"{n}&nbsp;&rarr;&nbsp;{j} : {arcWidth[a]}"
 
-    if arcColor is not None:
-      if a in arcColor:
-        col = gumcols.proba2color(arcColor[a], cmapArc)
+    if arcColor is not None and a in arcColor:
+      col = gumcols.proba2color(arcColor[a], cmapArc)
 
-    if arcLabel is not None:
-        if a in arcLabel:
-            lb=arcLabel[a]
+    if arcLabel is not None and a in arcLabel:
+      lb=arcLabel[a]
 
     edge = dot.Edge('"' + bn.variable(a[0]).name() + '"', '"' + bn.variable(a[1]).name() + '"',
                     label=lb, fontsize="10",
@@ -226,10 +223,9 @@ def CNinference2dot(cn, size=None, engine=None, evs=None, targets=None, nodeColo
     if len(targets) == 0 or name in targets or nid in targets:
       bgcol = gum.config["notebook", "figure_facecolor"]
 
-    if nodeColor is not None:
-      if name in nodeColor or nid in nodeColor:
-        bgcol = gumcols.proba2bgcolor(nodeColor[name], cmapNode)
-        fgcol = gumcols.proba2fgcolor(nodeColor[name], cmapNode)
+    if nodeColor is not None and (name in nodeColor or nid in nodeColor):
+      bgcol = gumcols.proba2bgcolor(nodeColor[name], cmapNode)
+      fgcol = gumcols.proba2fgcolor(nodeColor[name], cmapNode)
 
     # 'hard' colour for evidence (?)
     if name in evs or nid in evs:
@@ -252,15 +248,13 @@ def CNinference2dot(cn, size=None, engine=None, evs=None, targets=None, nodeColo
     av = f"{n}&nbsp;&rarr;&nbsp;{j}"
     col = gumcols.getBlackInTheme()
 
-    if arcWidth is not None:
-      if a in arcWidth:
-        if maxarcs != minarcs:
-          pw = 0.1 + 5 * (arcWidth[n, j] - minarcs) / (maxarcs - minarcs)
-        av = f"{n}&nbsp;&rarr;&nbsp;{j} : {arcWidth[a]}"
+    if arcWidth is not None and a in arcWidth:
+      if maxarcs != minarcs:
+        pw = 0.1 + 5 * (arcWidth[n, j] - minarcs) / (maxarcs - minarcs)
+      av = f"{n}&nbsp;&rarr;&nbsp;{j} : {arcWidth[a]}"
 
-    if arcColor is not None:
-      if a in arcColor:
-        col = gumcols.proba2color(arcColor[n, j], cmapArc)
+    if arcColor is not None and a in arcColor:
+      col = gumcols.proba2color(arcColor[n, j], cmapArc)
 
     dotstr += f' "{bn.variable(n).name()}"->"{bn.variable(j).name()}" [penwidth="{pw}",tooltip="{av}",color="{col}"];'
 

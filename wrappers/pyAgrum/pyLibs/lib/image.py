@@ -61,7 +61,7 @@ def export(model, filename=None, **kwargs):
 
   fmt_image = filename.split(".")[-1]
   if fmt_image not in ['pdf', 'png', 'fig', 'jpg', 'svg', 'ps']:
-    raise Exception(
+    raise NameError(
       f"{filename} in not a correct filename for export : extension '{fmt_image}' not in [pdf,png,fig,jpg,svg]."
     )
 
@@ -316,7 +316,7 @@ def exportInference(model, filename=None, **kwargs):
 
   fmt_image = filename.split(".")[-1]
   if fmt_image not in ['pdf', 'png', 'ps']:
-    raise Exception(
+    raise NameError(
       f"{filename} in not a correct filename for export : extension '{fmt_image}' not in [pdf,png,ps]."
     )
 

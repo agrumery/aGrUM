@@ -191,7 +191,6 @@ def LIMIDinference2dot(diag, size, engine, evs, targets):
 
     if not diag.isUtilityNode(nid):
       if len(targets) == 0 or name in targets or nid in targets:
-        # shape="rectangle"
         filename = temp_dir + \
                    hashlib.md5(name.encode()).hexdigest() + "." + \
                    gum.config["notebook", "graph_format"]

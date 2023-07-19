@@ -714,7 +714,7 @@ class ShapValues:
       a dictionary Dict[str,float]
     """
     results, v = self._causal(train)
-    n_feats = len(self.feats_names)
+
     res = {}
     for col in results.columns:
       res[col] = abs(results[col]).mean()
@@ -761,13 +761,9 @@ class ShapValues:
     """
     min_value = np.min(data, axis=(0, 1))
     max_value = np.max(data, axis=(0, 1))
-    # horiz_shift = (max_value - min_value)/100
-    # N=150
-    # K=0
     bin_size = (max_value - min_value) / N
     horiz_shift = K * bin_size
 
-    # fig, axs = plt.subplots()
     if ax is None:
       _, ax = plt.subplots()
     if cmap is None:
@@ -1058,5 +1054,5 @@ def nestedMarkovBlanketsNames(bn, x, k: int = 1):
     nx = bn.idFromName(x)
   else:
     nx = x
-  nodes, arcs, visited = _buildMB(bn, nx, k)
+  nodes, _ , visited = _buildMB(bn, nx, k)
   return {bn.variable(node).name(): k - visited[node] for node in nodes}

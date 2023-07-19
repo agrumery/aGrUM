@@ -74,24 +74,24 @@ def toFastBN(bn, filename: str = None):
   """
   def _toFastBN(bn,zefile):
     print('bn=gum.fastBN("""', end="",file=zefile)
-    vars = set()
+    sovars = set()
     first=True
     for x, y in bn.arcs():
       if not first:
         print('\n                 ', end="", file=zefile)
       else:
         first=False
-      if x in vars:
+      if x in sovars:
         print(bn.variable(x).name(), end="", file=zefile)
       else:
         print(bn.variable(x).toFast(), end="", file=zefile)
-        vars.add(x)
+        sovars.add(x)
       print("->", end="", file=zefile)
-      if y in vars:
+      if y in sovars:
         print(bn.variable(y).name(), end=";", file=zefile)
       else:
         print(bn.variable(y).toFast(), end=";", file=zefile)
-        vars.add(y)
+        sovars.add(y)
     print('""")')
   if filename is None:
     _toFastBN(bn,sys.stdout)

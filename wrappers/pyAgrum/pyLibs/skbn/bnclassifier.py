@@ -705,7 +705,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
       vals = X.to_numpy()
     elif type(X) == str:
       vals, _ = self.XYfromCSV(X, target=self.target)
-      dictName = DFNames(vals, vals)
+      dictName = DFNames(vals)
       vals = vals.to_numpy()
     else:
       vals = X
@@ -779,7 +779,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
       for index in range(len(variableList)):
         variableList[index] = self.bn.variableFromName(variableList[index])
       for row in X:
-        for i in len(row):
+        for i in range(len(row)):
           row[i] = variableList[i].labels(row[i])
       if self.fromModel:
         if self.isBinaryClassifier:
