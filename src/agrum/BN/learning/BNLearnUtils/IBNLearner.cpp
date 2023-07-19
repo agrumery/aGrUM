@@ -581,11 +581,8 @@ namespace gum::learning {
       mandatoryGraph.addNodeWithId(i);
     }
 
-    // GUM_CHECKPOINT
     const EdgeSet& possible_edges = constraintPossibleEdges_.edges();
 
-    // GUM_CHECKPOINT
-    // GUM_TRACE(mgraph);
     if (possible_edges.empty()) {
       for (const NodeId i: mgraph.nodes()) {
         for (NodeId j = 0; j < i; ++j) {   // contiguous nodeIds !

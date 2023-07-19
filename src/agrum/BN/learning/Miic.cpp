@@ -517,7 +517,6 @@ namespace gum {
 
     MixedGraph Miic::learnPDAG(CorrectedMutualInformation& I, MixedGraph initialGraph){
       MixedGraph essentialGraph = learnMixedStructure(I, initialGraph);
-
       // orientate remaining edges
       const Sequence< NodeId > order = essentialGraph.topologicalOrder();
 
@@ -550,21 +549,18 @@ namespace gum {
           }
         }
       }
+
       return essentialGraph;
     }
 
     /// learns the structure of an Bayesian network, ie a DAG, from a PDAG.
-
     DAG Miic::learnStructure(CorrectedMutualInformation& I, MixedGraph initialGraph) {
       MixedGraph pdag = learnPDAG(I, initialGraph);
 
       // orientate remaining edges
 
       const Sequence< NodeId > order = pdag.topologicalOrder();
-
-      // GUM_TRACE(essentialGraph.toDot());
       propagatesOrientationInChainOfRemainingEdges_(pdag);
-      // GUM_TRACE(essentialGraph.toDot());
 
       // then decide the orientation for double arcs
       for (gum::NodeId x: order)
@@ -573,6 +569,7 @@ namespace gum {
             // GUM_TRACE(" + Resolving double arcs (poorly)")
             pdag.eraseArc(Arc(y, x));
           }
+
       DAG dag;
       for (auto node: pdag) {
         dag.addNodeWithId(node);
@@ -644,17 +641,25 @@ namespace gum {
         stack.clear();
         stack.insert(root);
         while (!stack.empty()) {
+          //GUM_TRACE("stack : " << stack)
           NodeId next = *(stack.begin());
           stack.erase(next);
+          //GUM_TRACE("next : " << next)
           if (visited.contains(next)) continue;
           const auto nei = essentialGraph.neighbours(next);
           for (const auto n: nei) {
+            //GUM_TRACE("n : "<< n)
             if (!stack.contains(n) && !visited.contains(n)) stack.insert(n);
             // GUM_TRACE(" + amap reasonably orientation for " << n << "->" << next);
-            if (propagatesRemainingOrientableEdges_(essentialGraph, next)) continue;
+            if (propagatesRemainingOrientableEdges_(essentialGraph, next)) {
+              continue;
+            }
             else {
-              essentialGraph.eraseEdge(Edge(n, next));
-              essentialGraph.addArc(n, next);
+              if (!essentialGraph.existsArc(next, n)){ // Checking that we're not creating a doubly-oriented arc by adding a "random" arc.
+                essentialGraph.eraseEdge(Edge(n, next));
+                //GUM_TRACE(" + add arc (" << n << "->" << next << ")")
+                essentialGraph.addArc(n, next);
+              }
             }
 
             // GUM_SL_EMIT(n, next, "Add Arc " << n << " to " << next, " line 647")
@@ -679,14 +684,16 @@ namespace gum {
           res = true;
         }
         if (i_j) {
-          // GUM_TRACE(" + add arc (" << xi << "," << xj << ")")
+          //GUM_TRACE(" + add arc (" << xi << "->" << xj << ")")
           GUM_SL_EMIT(xi, xj, "Add Arc", "line 666")
+          graph.eraseEdge(Edge(xi, xj));
           graph.addArc(xi, xj);
           propagatesRemainingOrientableEdges_(graph, xj);
         }
         if (j_i) {
-          // GUM_TRACE(" + add arc (" << xi << "," << xj << ")")
+          //GUM_TRACE(" + add arc (" << xj << "->" << xi << ")")
           GUM_SL_EMIT(xj, xi, "Add Arc", "line 672")
+          graph.eraseEdge(Edge(xi, xj));
           graph.addArc(xj, xi);
           propagatesRemainingOrientableEdges_(graph, xi);
         }
@@ -954,10 +961,6 @@ namespace gum {
         // GUM_TRACE("5. Removing edge (" << z << "," << x << ")")
         if (!_existsDirectedPath_(graph, x, z) && graph.parents(x).empty()) {
           if (_isArcValid_(graph, z, x)) {
-            //GUM_TRACE_VAR(graph.hasMixedOrientedPath(x, z))
-            //GUM_TRACE(y)
-            //GUM_TRACE(z)
-            //GUM_TRACE(x)
             graph.addArc(z, x);
             GUM_SL_EMIT(z, x, "Add Arc " << z << " -> " << x, "Propagation MIIC 977")
             // GUM_TRACE("5.a Adding arc (" << z << "," << x << ")")
