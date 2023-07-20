@@ -255,7 +255,6 @@ def _computeROC_PR(values, totalP, totalN, beta):
         threshopt_ROC = (cur_threshold + old_threshold) / 2
 
       if prec + tpr > 0:
-        # f = 2 * prec * tpr / (prec + tpr)  # f1
         f = (1 + beta ** 2) * prec * tpr / ((beta ** 2 * prec) + tpr)
 
         if f > fmax_PR:
@@ -333,13 +332,13 @@ def getROCpoints(bn, datasrc, target, label, with_labels=True, significant_digit
   (res, totalP, totalN) = _computepoints(bn, datasrc, target,
                                          label, show_progress, with_labels, significant_digits)
   (pointsROC, ind_ROC, thresholdROC, AUC_ROC, fbeta_ROC, pointsPR, ind_PR,
-   thresholdPR, AUC_PR, fbeta_PR, thresholds) = _computeROC_PR(res, totalP, totalN)
+   thresholdPR, AUC_PR, fbeta_PR, thresholds) = _computeROC_PR(res, totalP, totalN,beta=1)
 
   return pointsROC
 
 
 @gum.deprecated_arg(newA="datasrc", oldA="csvname", version="1.8.3")
-def getPRpoints(bn, datasrc, target, label, beta=1, with_labels=True, significant_digits=10):
+def getPRpoints(bn, datasrc, target, label, with_labels=True, significant_digits=10):
   """
   Compute the points of the PR curve
 
@@ -353,8 +352,6 @@ def getPRpoints(bn, datasrc, target, label, beta=1, with_labels=True, significan
     the target
   label : str
     the target's label
-  beta : float
-    the value of beta for the F-beta score
   with_labels: bool
     whether we use label or id (especially for parameter label)
   significant_digits:
@@ -374,7 +371,7 @@ def getPRpoints(bn, datasrc, target, label, beta=1, with_labels=True, significan
 
     datasrc.to_csv(csvfilename, na_rep="?", index=False)
 
-    l = getPRpoints(bn, csvfilename, target, label, beta=beta, with_labels=with_labels,significant_digits=significant_digits)
+    l = getPRpoints(bn, csvfilename, target, label, with_labels=with_labels,significant_digits=significant_digits)
 
     os.remove(csvfilename)
     return l
@@ -383,7 +380,7 @@ def getPRpoints(bn, datasrc, target, label, beta=1, with_labels=True, significan
   (res, totalP, totalN) = _computepoints(bn, datasrc, target,
                                          label, show_progress, with_labels, significant_digits)
   (pointsROC, ind_ROC, thresholdROC, AUC_ROC, fbeta_ROC, pointsPR, ind_PR,
-   thresholdPR, AUC_PR, fbeta_PR, thresholds) = _computeROC_PR(res, totalP, totalN)
+   thresholdPR, AUC_PR, fbeta_PR, thresholds) = _computeROC_PR(res, totalP, totalN,beta=1)
 
   return pointsPR
 
@@ -689,7 +686,7 @@ def showPR(bn, datasrc, target, label, beta=1, show_progress=True, show_fig=True
                     with_labels=with_labels, show_ROC=False, show_PR=True, significant_digits=significant_digits)
 
 
-def animThreshold(bn, datasrc, target="Y", label="1"):
+def animROC(bn, datasrc, target="Y", label="1"):
   """
   Interactive selection of a threshold using TPR and FPR for BN and data
 
@@ -718,22 +715,82 @@ def animThreshold(bn, datasrc, target="Y", label="1"):
       rate = threshold / 100.0
       indexes = int((len(self._points) - 1) * rate)
 
-      plt.rcParams["figure.figsize"] = (2.7, 1)
-      plt.plot(viewer._x, viewer._y1, "g")
-      plt.plot(viewer._x, viewer._y2, "r")
-      plt.plot([rate, rate], [0, 1])
-      plt.gca().xaxis.set_major_formatter(mtick.PercentFormatter(1.0))
+      plt.rcParams["figure.figsize"] = (4,3)
+
+      fig, (ax1, ax2) = plt.subplots(nrows=2)
+      ax1.plot(viewer._x, viewer._y1, "g")
+      ax1.plot(viewer._x, viewer._y2, "r")
+      ax1.plot([rate, rate], [0, 1])
+      ax1.xaxis.set_major_formatter(mtick.PercentFormatter(1.0))
+
+      ax2.barh([0, 1], self._points[indexes], color=["g", "r"])
+      ax2.set_yticks(ticks=[0, 1], labels=["FPR", "TPR"])
+      ax2.annotate(f" {self._points[indexes][0]:.1%}", xy=(1, 0), xytext=(1, -0.2))
+      ax2.annotate(f" {self._points[indexes][1]:.1%}", xy=(1, 1), xytext=(1, 0.8))
+      ax2.set_xlim(0, 1)
+
+      plt.tight_layout()
       plt.show()
 
-      plt.rcParams["figure.figsize"] = (2, 1)
-      plt.barh([0, 1], self._points[indexes], color=["g", "r"])
-      plt.yticks(ticks=[0, 1], labels=["FPR", "TPR"])
-      plt.annotate(f" {self._points[indexes][0]:.1%}", xy=(1, 0), xytext=(1, -0.2))
-      plt.annotate(f" {self._points[indexes][1]:.1%}", xy=(1, 1), xytext=(1, 0.8))
-      plt.xlim(0, 1)
-      plt.show()
 
   viewer = DisplayROC(getROCpoints(bn, datasrc, target="Y", label="1"))
+
+  def interactive_view(rate: float):
+    viewer.display(rate)
+
+  # widgets.interact(interactive_view, rate=(0,100,1))
+  interactive_plot = widgets.interactive(interactive_view, rate=(0, 100, 1))
+  output = interactive_plot.children[-1]
+  output.layout.height = '250px'
+  return interactive_plot
+
+def animPR(bn, datasrc, target="Y", label="1"):
+  """
+  Interactive selection of a threshold using TPR and FPR for BN and data
+
+  Parameters
+  ----------
+  bn : pyAgrum.BayesNet
+    a Bayesian network
+  datasrc : str|DataFrame
+    a csv filename or a pandas.DataFrame
+  target : str
+    the target
+  label : str
+    the target label
+  """
+  import ipywidgets as widgets
+  import matplotlib.pyplot as plt
+  import matplotlib.ticker as mtick
+
+  class DisplayPR:
+    def __init__(self, points):
+      self._x = [i / len(points) for i in range(len(points))]
+      self._y1, self._y2 = zip(*points)
+      self._points = points
+
+    def display(self, threshold):
+      rate = threshold / 100.0
+      indexes = int((len(self._points) - 1) * rate)
+
+      plt.rcParams["figure.figsize"] = (4,3)
+
+      fig, (ax1, ax2) = plt.subplots(nrows=2)
+      ax1.plot(viewer._x, viewer._y1, "r")
+      ax1.plot(viewer._x, viewer._y2, "g")
+      ax1.plot([rate, rate], [0, 1])
+      ax1.xaxis.set_major_formatter(mtick.PercentFormatter(1.0))
+
+      ax2.barh([1, 0], self._points[indexes], color=["r", "g"])
+      ax2.set_yticks(ticks=[0, 1], labels=["Precision", "Recall"])
+      ax2.annotate(f" {self._points[indexes][1]:.1%}", xy=(1, 0), xytext=(1, -0.2))
+      ax2.annotate(f" {self._points[indexes][0]:.1%}", xy=(1, 1), xytext=(1, 0.8))
+      ax2.set_xlim(0, 1)
+
+      plt.tight_layout()
+      plt.show()
+
+  viewer = DisplayPR(getPRpoints(bn, datasrc, target="Y", label="1"))
 
   def interactive_view(rate: float):
     viewer.display(rate)
