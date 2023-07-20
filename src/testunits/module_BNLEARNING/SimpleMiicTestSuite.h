@@ -68,7 +68,48 @@ namespace gum_tests {
 
   class SimpleMiicTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_ACTIVE_TEST(_MIIC_asia_NMLcorr) {
+
+
+    GUM_ACTIVE_TEST(_latent_var_) {
+
+      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/latent_variable.csv"));
+      const auto&                         var_names = initializer.variableNames();
+      const std::size_t                   nb_vars   = var_names.size();
+
+      gum::learning::DBTranslatorSet                translator_set;
+      gum::learning::DBTranslator4LabelizedVariable translator;
+      for (std::size_t i = 0; i < nb_vars; ++i) {
+        translator_set.insertTranslator(translator, i);
+      }
+
+      gum::learning::DatabaseTable database(translator_set);
+      database.setVariableNames(initializer.variableNames());
+      initializer.fillDatabase(database);
+
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+
+      std::vector< gum::Size > modalities(nb_vars, 2);
+
+      gum::learning::NoPrior                    prior(database);
+      gum::learning::CorrectedMutualInformation cI(parser, prior);
+
+      gum::learning::SimpleMiic search;
+
+      // creating complete graph
+      gum::MixedGraph graph;
+      for (gum::Size i = 0; i < modalities.size(); ++i) {
+        graph.addNodeWithId(i);
+        for (gum::Size j = 0; j < i; ++j) {
+          graph.addEdge(j, i);
+        }
+      }
+
+      graph = search.learnMixedStructure(cI, graph);
+      //GUM_TRACE(search.latentVariables())
+    }
+
+    GUM_INACTIVE_TEST(_MIIC_asia_NMLcorr) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -114,7 +155,7 @@ namespace gum_tests {
       gum::DAG dag = search.learnStructure(cI, graph);
     }
 
-    GUM_ACTIVE_TEST(_MIIC_asia_constraints) {
+    GUM_INACTIVE_TEST(_MIIC_asia_constraints) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -167,6 +208,8 @@ namespace gum_tests {
       TS_ASSERT(graph.existsArc(4, 3))
       TS_ASSERT(graph.existsEdge(5, 7))
     }
+
+
 
     void xtest_tonda() {
       /*

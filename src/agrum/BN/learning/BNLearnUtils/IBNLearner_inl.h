@@ -215,9 +215,7 @@ namespace gum::learning {
   }
 
   /// get the list of arcs hiding latent variables
-  INLINE std::vector< Arc > IBNLearner::latentVariables() const {
-    return algoSimpleMiic_.latentVariables();
-  }
+  INLINE std::vector< Arc > IBNLearner::latentVariables() const { return algoMiic_.latentVariables();}
 
   // indicate that we wish to use a K2 algorithm
   INLINE void IBNLearner::useK2(const Sequence< NodeId >& order) {

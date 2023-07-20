@@ -569,7 +569,6 @@ namespace gum {
             // GUM_TRACE(" + Resolving double arcs (poorly)")
             pdag.eraseArc(Arc(y, x));
           }
-
       DAG dag;
       for (auto node: pdag) {
         dag.addNodeWithId(node);

@@ -538,8 +538,7 @@ namespace gum::learning {
 
     return param_estimator;
   }
-
-  /// prepares the initial graph for miic
+/*  /// prepares the initial graph for miic
   MixedGraph IBNLearner::prepareSimpleMiic_() {
     // Initialize the mixed graph to the fully connected graph
     MixedGraph mgraph;
@@ -565,7 +564,7 @@ namespace gum::learning {
     createCorrectedMutualInformation_();
 
     return mgraph;
-  }
+  }*/
 
   // prepares the initial graph for constraintMiic
   MixedGraph IBNLearner::prepareMiic_() {

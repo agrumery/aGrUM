@@ -956,7 +956,7 @@ namespace gum::learning {
     /// returns the type (as a string) of a given prior
     PriorType getPriorType_() const;
 
-    /// create the Corrected Mutual Information instance for SimpleMiic
+    /// create the Corrected Mutual Information instance for Miic
     void createCorrectedMutualInformation_();
 
 

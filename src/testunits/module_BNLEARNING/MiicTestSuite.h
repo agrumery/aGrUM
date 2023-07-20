@@ -70,6 +70,45 @@ namespace gum_tests {
   class MiicTestSuite: public CxxTest::TestSuite {
     public:
 
+    GUM_ACTIVE_TEST(_latent_var_) {
+
+      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/latent_variable.csv"));
+      const auto&                         var_names = initializer.variableNames();
+      const std::size_t                   nb_vars   = var_names.size();
+
+      gum::learning::DBTranslatorSet                translator_set;
+      gum::learning::DBTranslator4LabelizedVariable translator;
+      for (std::size_t i = 0; i < nb_vars; ++i) {
+        translator_set.insertTranslator(translator, i);
+      }
+
+      gum::learning::DatabaseTable database(translator_set);
+      database.setVariableNames(initializer.variableNames());
+      initializer.fillDatabase(database);
+
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+
+      std::vector< gum::Size > modalities(nb_vars, 2);
+
+      gum::learning::NoPrior                    prior(database);
+      gum::learning::CorrectedMutualInformation cI(parser, prior);
+
+      gum::learning::Miic search;
+
+      // creating complete graph
+      gum::MixedGraph graph;
+      for (gum::Size i = 0; i < modalities.size(); ++i) {
+        graph.addNodeWithId(i);
+        for (gum::Size j = 0; j < i; ++j) {
+          graph.addEdge(j, i);
+        }
+      }
+
+      //graph = search.learnMixedStructure(cI, graph);
+      gum::DAG dag = search.learnStructure(cI, graph);
+    }
+
     GUM_ACTIVE_TEST(_titanic_) {
       
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/titanic.csv"));
@@ -108,7 +147,7 @@ namespace gum_tests {
       graph = search.learnMixedStructure(cI, graph);
     }
 
-    GUM_INACTIVE_TEST(_asia_ForbiddenGraph) {
+    GUM_ACTIVE_TEST(_asia_ForbiddenGraph) {
       
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
@@ -159,7 +198,7 @@ namespace gum_tests {
       TS_ASSERT(!graph.existsArc(1, 5));
     }
 
-    GUM_INACTIVE_TEST(_asia_MandatoryGraph) {
+    GUM_ACTIVE_TEST(_asia_MandatoryGraph) {
       
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
@@ -206,7 +245,7 @@ namespace gum_tests {
       TS_ASSERT(graph.existsArc(3, 4))
     }
 
-    GUM_INACTIVE_TEST(_alarm_MaxIndegree_) {
+    GUM_ACTIVE_TEST(_alarm_MaxIndegree_) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/alarm.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -259,7 +298,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_INACTIVE_TEST(_MIIC_ms_order1_) {
+    GUM_ACTIVE_TEST(_MIIC_ms_order1_) {
       // filterlistener.filter = 6;
       // GUM_CONNECT(search,
       //             onStructuralModification,
@@ -318,7 +357,7 @@ namespace gum_tests {
       //GUM_TRACE("Arcs Order 1: " << dag.arcs())
     }
 
-    GUM_INACTIVE_TEST(_MIIC_ms_order2_) {
+    GUM_ACTIVE_TEST(_MIIC_ms_order2_) {
       // filterlistener.filter = 6;
       // GUM_CONNECT(search,
       //             onStructuralModification,
@@ -377,7 +416,7 @@ namespace gum_tests {
       //GUM_TRACE("Arcs Order 2: " << dag.arcs())
     }
 
-    GUM_INACTIVE_TEST(_alarm_learnMixedStructure) {
+    GUM_ACTIVE_TEST(_alarm_learnMixedStructure) {
        FilterListenerForMiic filterlistener;
        filterlistener.filter = 24;
 
@@ -436,7 +475,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
-    GUM_INACTIVE_TEST(_alarm_learnPDAG) {
+    GUM_ACTIVE_TEST(_alarm_learnPDAG) {
       FilterListenerForMiic filterlistener;
       filterlistener.filter = 24;
 
@@ -482,7 +521,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
-    GUM_INACTIVE_TEST(_alarm_learnDAG) {
+    GUM_ACTIVE_TEST(_alarm_learnDAG) {
       FilterListenerForMiic filterlistener;
       filterlistener.filter = 22;
 

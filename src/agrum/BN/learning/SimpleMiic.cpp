@@ -245,6 +245,7 @@ namespace gum {
       }   // while
 
       // erasing the double headed arcs
+      GUM_TRACE(_latentCouples_)
       for (auto iter = _latentCouples_.rbegin(); iter != _latentCouples_.rend(); ++iter) {
         graph.eraseArc(Arc(iter->head(), iter->tail()));
         if (_existsDirectedPath_(graph, iter->head(), iter->tail())) {
@@ -654,7 +655,7 @@ namespace gum {
           propagatesRemainingOrientableEdges_(graph, xi);
         }
         if (i_j && j_i) {
-          // GUM_TRACE(" + add arc (" << xi << "," << xj << ")")
+          GUM_TRACE(" + add arc (" << xi << "," << xj << ")")
           _latentCouples_.emplace_back(xi, xj);
         }
       }
@@ -663,7 +664,9 @@ namespace gum {
     }
 
     /// get the list of arcs hiding latent variables
-    const std::vector< Arc > SimpleMiic::latentVariables() const { return _latentCouples_; }
+    const std::vector< Arc > SimpleMiic::latentVariables() const {
+      GUM_CHECKPOINT
+      return _latentCouples_; }
 
     /// learns the structure and the parameters of a BN
     template < typename GUM_SCALAR, typename GRAPH_CHANGES_SELECTOR, typename PARAM_ESTIMATOR >
@@ -745,7 +748,7 @@ namespace gum {
           // GUM_TRACE("1.a Adding arc (" << x << "," << z << ")")
           marks[{x, z}] = '>';
           if (graph.existsArc(z, x) && _isNotLatentCouple_(z, x)) {
-            // GUM_TRACE("Adding latent couple (" << z << "," << x << ")")
+            GUM_TRACE("Adding latent couple (" << z << "," << x << ")")
             _latentCouples_.emplace_back(z, x);
           }
           if (!_arcProbas_.exists(Arc(x, z))) _arcProbas_.insert(Arc(x, z), p1);
@@ -766,6 +769,7 @@ namespace gum {
           // GUM_TRACE("1.c Adding arc (" << y << "," << z << ")")
           marks[{y, z}] = '>';
           if (graph.existsArc(z, y) && _isNotLatentCouple_(z, y)) {
+            GUM_TRACE("Adding latent couple (" << z << "," << y << ")")
             _latentCouples_.emplace_back(z, y);
           }
           if (!_arcProbas_.exists(Arc(y, z))) _arcProbas_.insert(Arc(y, z), p2);
@@ -786,6 +790,7 @@ namespace gum {
           // GUM_TRACE("2.a Adding arc (" << y << "," << z << ")")
           marks[{y, z}] = '>';
           if (graph.existsArc(z, y) && _isNotLatentCouple_(z, y)) {
+            GUM_TRACE("Adding latent couple (" << z << "," << y << ")")
             _latentCouples_.emplace_back(z, y);
           }
           if (!_arcProbas_.exists(Arc(y, z))) _arcProbas_.insert(Arc(y, z), p2);
@@ -806,6 +811,7 @@ namespace gum {
           // GUM_TRACE("3.a Adding arc (" << x << "," << z << ")")
           marks[{x, z}] = '>';
           if (graph.existsArc(z, x) && _isNotLatentCouple_(z, x)) {
+            GUM_TRACE("Adding latent couple (" << z << "," << x << ")")
             _latentCouples_.emplace_back(z, x);
           }
           if (!_arcProbas_.exists(Arc(x, z))) _arcProbas_.insert(Arc(x, z), p1);
@@ -836,26 +842,26 @@ namespace gum {
         // std::endl;
         if (!_existsDirectedPath_(graph, y, z) && graph.parents(y).empty()) {
           graph.addArc(z, y);
-          // GUM_TRACE("4.a Adding arc (" << z << "," << y << ")")
+          //GUM_TRACE("4.a Adding arc (" << z << "," << y << ")")
           marks[{z, y}] = '>';
           marks[{y, z}] = '-';
           if (!_arcProbas_.exists(Arc(z, y))) _arcProbas_.insert(Arc(z, y), p2);
         } else if (!_existsDirectedPath_(graph, z, y) && graph.parents(z).empty()) {
           graph.addArc(y, z);
-          // GUM_TRACE("4.b Adding arc (" << y << "," << z << ")")
+          GUM_TRACE("4.b Adding arc (" << y << "," << z << ")")
           marks[{z, y}] = '-';
           marks[{y, z}] = '>';
           _latentCouples_.emplace_back(y, z);
           if (!_arcProbas_.exists(Arc(y, z))) _arcProbas_.insert(Arc(y, z), p2);
         } else if (!_existsDirectedPath_(graph, y, z)) {
           graph.addArc(z, y);
-          // GUM_TRACE("4.c Adding arc (" << z << "," << y << ")")
+          //GUM_TRACE("4.c Adding arc (" << z << "," << y << ")")
           marks[{z, y}] = '>';
           marks[{y, z}] = '-';
           if (!_arcProbas_.exists(Arc(z, y))) _arcProbas_.insert(Arc(z, y), p2);
         } else if (!_existsDirectedPath_(graph, z, y)) {
           graph.addArc(y, z);
-          // GUM_TRACE("4.d Adding arc (" << y << "," << z << ")")
+          GUM_TRACE("4.d Adding arc (" << y << "," << z << ")")
           _latentCouples_.emplace_back(y, z);
           marks[{z, y}] = '-';
           marks[{y, z}] = '>';
@@ -872,7 +878,7 @@ namespace gum {
           if (!_arcProbas_.exists(Arc(z, x))) _arcProbas_.insert(Arc(z, x), p1);
         } else if (!_existsDirectedPath_(graph, z, x) && graph.parents(z).empty()) {
           graph.addArc(x, z);
-          // GUM_TRACE("5.b Adding arc (" << x << "," << z << ")")
+          GUM_TRACE("5.b Adding arc (" << x << "," << z << ")")
           marks[{z, x}] = '-';
           marks[{x, z}] = '>';
           _latentCouples_.emplace_back(x, z);
@@ -885,7 +891,7 @@ namespace gum {
           if (!_arcProbas_.exists(Arc(z, x))) _arcProbas_.insert(Arc(z, x), p1);
         } else if (!_existsDirectedPath_(graph, z, x)) {
           graph.addArc(x, z);
-          // GUM_TRACE("5.d Adding arc (" << x << "," << z << ")")
+          GUM_TRACE("5.d Adding arc (" << x << "," << z << ")")
           marks[{z, x}] = '-';
           marks[{x, z}] = '>';
           _latentCouples_.emplace_back(x, z);

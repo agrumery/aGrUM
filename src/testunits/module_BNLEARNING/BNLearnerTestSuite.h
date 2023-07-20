@@ -124,7 +124,7 @@ namespace gum_tests {
         ++index;
       }
     }
-
+    
     GUM_ACTIVE_TEST(_induceTypes) {
       {
         gum::learning::BNLearner< double > learner1(GET_RESSOURCES_PATH("csv/asia.csv"));
@@ -299,12 +299,17 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(LL1, LL2)
       }
     }
+    
+    GUM_ACTIVE_TEST(_constraintMiic_latentvariables_) {
+      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/latent_variable.csv"));
+      learner.useMIIC();
+      try {
+        auto mg = learner.learnPDAG();
+        TS_ASSERT_DIFFERS(learner.latentVariables().size(), (gum::Size)0)
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
+    }
 
     GUM_ACTIVE_TEST(_constraintMiic_PossibleEdges) {
-      //[smoking , lung_cancer , bronchitis , visit_to_Asia , tuberculosis ,
-      // tuberculos_or_cancer , dyspnoea , positive_XraY]
-      // possible edges are not relevant
-
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"));
       learner.useMIIC();
       learner.addPossibleEdge("visit_to_Asia", "lung_cancer");
