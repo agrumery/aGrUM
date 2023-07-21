@@ -482,21 +482,21 @@ def _basicDraw(ax, points, thresholds, fbeta, beta, AUC, main_color, secondary_c
     AUC_halign = "left"
 
   if beta == 1:
-    ax.text(AUC_x, 0.0, f'AUC={AUC:.4f}\nf1={fbeta:.4f}', {'color': main_color, 'fontsize': 18},
+    ax.text(AUC_x, 0.0, f'AUC={AUC:.4f}\nF1={fbeta:.4f}', {'color': main_color, 'fontsize': 18},
             horizontalalignment=AUC_halign,
             verticalalignment='bottom',
             fontsize=18)
   else:
-    ax.text(AUC_x, 0.0, f'AUC={AUC:.4f}\nF-beta={fbeta:.4f}', {'color': main_color, 'fontsize': 18},
+    ax.text(AUC_x, 0.0, f'AUC={AUC:.4f}\nF-{beta:g}={fbeta:.4f}', {'color': main_color, 'fontsize': 18},
             horizontalalignment=AUC_halign,
             verticalalignment='bottom',
             fontsize=18)
 
 
-def _drawROC(points, zeTitle, fbeta_ROC, AUC_ROC, thresholds, thresholds_to_show, ax=None):
+def _drawROC(points, zeTitle, fbeta_ROC, beta, AUC_ROC, thresholds, thresholds_to_show, ax=None):
   ax = ax or pylab.gca()
 
-  _basicDraw(ax, points, thresholds, fbeta=fbeta_ROC, beta=1, AUC=AUC_ROC, main_color='#DD5555',
+  _basicDraw(ax, points, thresholds, fbeta=fbeta_ROC, beta=beta, AUC=AUC_ROC, main_color='#DD5555',
              secondary_color='#120af7', thresholds_to_show=thresholds_to_show, align_threshold="left")
   ax.plot([0.0, 1.0], [0.0, 1.0], '-', color="#AAAAAA")
   ax.set_xlabel('False positive rate')
@@ -594,7 +594,7 @@ def showROC_PR(bn, datasrc, target, label, beta=1, show_progress=True, show_fig=
     pylab.gcf().subplots_adjust(wspace=0.1)
 
     ax1 = fig.add_subplot(1, 2, 1)
-    _drawROC(points=pointsROC, zeTitle="ROC", fbeta_ROC=fbeta_ROC, AUC_ROC=AUC_ROC, thresholds=thresholds,
+    _drawROC(points=pointsROC, zeTitle="ROC", fbeta_ROC=fbeta_ROC, beta=beta, AUC_ROC=AUC_ROC, thresholds=thresholds,
              thresholds_to_show=[thresholdROC, thresholdPR],
              ax=ax1)
 
@@ -606,7 +606,7 @@ def showROC_PR(bn, datasrc, target, label, beta=1, show_progress=True, show_fig=
   elif show_ROC:
     figname = f"{filename}-ROC_{shortname}-{target}-{label}.png"
 
-    _drawROC(points=pointsROC, zeTitle=title, fbeta_ROC=fbeta_ROC, AUC_ROC=AUC_ROC, thresholds=thresholds,
+    _drawROC(points=pointsROC, zeTitle=title, fbeta_ROC=fbeta_ROC, beta=beta, AUC_ROC=AUC_ROC, thresholds=thresholds,
              thresholds_to_show=[thresholdROC])
   elif show_PR:
     figname = f"{filename}-PR_{shortname}-{target}-{label}.png"
