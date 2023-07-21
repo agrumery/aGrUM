@@ -130,11 +130,10 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
         the target's class.
 
     beta: float
-        if you choose the Precision-Recall curve's threshold, the F1 score is maximized (beta=1 by default). If 
-        you choose a specific value for beta, the threshold will maximised the F-beta score. A value inferior 
-        of 1 will give more weight to precision. A value superior of 1 will give more weight to recall.
-        For example, beta = 0.5 makes precision twice as important as recall, while beta = 2 does the 
-        opposite.
+        if you choose the Precision-Recall curve's threshold, the F-beta score is maximized. By default, beta=1
+        to have the F1 score. A value inferior of 1 will give more weight to precision. A value superior of 1
+        will give more weight to recall. For example, beta = 0.5 makes precision twice as important as recall, 
+        while beta = 2 does the opposite.
 
     significant_digit:
         number of significant digits when computing probabilities
