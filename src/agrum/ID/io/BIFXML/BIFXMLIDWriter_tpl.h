@@ -205,10 +205,10 @@ namespace gum {
       // Variable
       str << "\t<FOR>" << infdiag.variable(varNodeId).name() << "</FOR>";
 
-      str << "<!--"<< infdiag.variable(varNodeId).name()<<" | ";
-      for(const auto n : infdiag.parents(varNodeId))
-        str << infdiag.variable(n).name()<<",";
-      str <<"-->\n";
+      str << "<!--" << infdiag.variable(varNodeId).name() << " | ";
+      for (const auto n: infdiag.parents(varNodeId))
+        str << infdiag.variable(n).name() << ",";
+      str << "-->\n";
 
       // Conditional Parents for decision node
       if (infdiag.isDecisionNode(varNodeId)) {   // finding the parents in the graph
@@ -221,14 +221,14 @@ namespace gum {
              --parentListIte)
           str << "\t<GIVEN>" << (*parentListIte) << "</GIVEN>" << std::endl;
       } else if (infdiag.isChanceNode(varNodeId))   // finding the parents in the cpt
-        for (Idx i = infdiag.cpt(varNodeId).nbrDim() ; i > 1;
-             i--)                                   // the first dimension is not a parent
-          str << "\t<GIVEN>" << infdiag.cpt(varNodeId).variable(i-1).name() << "</GIVEN>"
+        for (Idx i = infdiag.cpt(varNodeId).nbrDim(); i > 1;
+             i--)   // the first dimension is not a parent
+          str << "\t<GIVEN>" << infdiag.cpt(varNodeId).variable(i - 1).name() << "</GIVEN>"
               << std::endl;
       else if (infdiag.isUtilityNode(varNodeId))   // finding the parents in the utility
-        for (Idx i = infdiag.utility(varNodeId).nbrDim() ; i > 1;
-             i--)                                  // the first dimension is not a parent
-          str << "\t<GIVEN>" << infdiag.utility(varNodeId).variable(i-1).name() << "</GIVEN>"
+        for (Idx i = infdiag.utility(varNodeId).nbrDim(); i > 1;
+             i--)   // the first dimension is not a parent
+          str << "\t<GIVEN>" << infdiag.utility(varNodeId).variable(i - 1).name() << "</GIVEN>"
               << std::endl;
 
 

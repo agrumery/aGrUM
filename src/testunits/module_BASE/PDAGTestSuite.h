@@ -559,8 +559,8 @@ namespace gum_tests {
         TS_ASSERT(p.cSeparation(0, 3, gum::NodeSet()))
         TS_ASSERT(!p.cSeparation(1, 3, gum::NodeSet({2})))
         TS_ASSERT(!p.cSeparation(0, 3, gum::NodeSet({2})))
-        TS_ASSERT(p.cSeparation(0, 3, gum::NodeSet({1,2})))
-        TS_ASSERT(!p.cSeparation(1, 3, gum::NodeSet({0,2})))
+        TS_ASSERT(p.cSeparation(0, 3, gum::NodeSet({1, 2})))
+        TS_ASSERT(!p.cSeparation(1, 3, gum::NodeSet({0, 2})))
         TS_ASSERT(p.cSeparation(1, 3, gum::NodeSet({0})))
       }
     }

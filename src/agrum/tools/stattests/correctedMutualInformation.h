@@ -49,7 +49,8 @@ namespace gum {
      *
      * @WARNING Due to the common use of this quantity, the scores return database
      * weight*CorrectedMutualInformation where the weight of the database is the generalisation of
-     * the size of the database to take into account possible weights on records (see EM for instance).
+     * the size of the database to take into account possible weights on records (see EM for
+     * instance).
      *
      * @ingroup learning_scores
      */

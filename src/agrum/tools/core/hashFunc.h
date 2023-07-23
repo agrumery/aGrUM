@@ -259,6 +259,7 @@ namespace gum {
      */
     private:   // best attempt to get rid of overloaded virtual warnings
     using HashFuncBase< Key >::operator();
+
     public:
     virtual Size operator()(const Key& key) const override final;
   };

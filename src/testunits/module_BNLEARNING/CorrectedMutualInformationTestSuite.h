@@ -304,7 +304,7 @@ namespace gum_tests {
         score2.useNoCorr();
         TS_ASSERT(std::fabs(score1.score(0, 1, 2) - score2.score(0, 1, 2)) > 1e-5)
 
-        GUM_TRACE(score1.score(0, 1, std::vector< gum::Idx >({2}))/database1.weight())
+        GUM_TRACE(score1.score(0, 1, std::vector< gum::Idx >({2})) / database1.weight())
       }
       {
         auto                                      database1 = _getDatabase();
