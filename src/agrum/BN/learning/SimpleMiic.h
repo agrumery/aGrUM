@@ -40,10 +40,6 @@
 #include <vector>
 
 #include <agrum/config.h>
-#include <agrum/tools/core/approximations/approximationScheme.h>
-#include <agrum/tools/core/heap.h>
-#include <agrum/tools/graphs/mixedGraph.h>
-#include <agrum/tools/stattests/correctedMutualInformation.h>
 #include <agrum/BN/learning/Miic.h>
 
 namespace gum {
@@ -103,8 +99,7 @@ namespace gum {
        * computations and has loaded the database.
        * @param graph the MixedGraph we start from for the learning
        * */
-      MixedGraph learnPDAG(CorrectedMutualInformation& mutualInformation,
-                           MixedGraph                  graph);
+      MixedGraph learnPDAG(CorrectedMutualInformation& mutualInformation, MixedGraph graph);
 
       /// learns the structure of an Essential Graph
       /** @param mutualInformation A mutual information instance that will do the

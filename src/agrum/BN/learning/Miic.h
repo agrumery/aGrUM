@@ -20,45 +20,42 @@
 
 
 /**
-  * @file
-  * @brief The Miic algorithm
-  *
-  * The Miic class implements the miic algorithm based on
-  * https://doi.org/10.1371/journal.pcbi.1005662.
-  * It starts by eliminating edges that correspond to independent variables to
-  * build the skeleton of the graph, and then directs the remaining edges to get
-  * an essential graph. Latent variables can be detected using bi-directed arcs.
-  *
-  * Miic allows the option of adding constraints on the skeleton construction
-  * such as: a maximum number of parents, mandatory arcs, forbidden arcs or an order between the variables.
-  * 
-  * @author Quentin FALCAND and Pierre-Henri WUILLEMIN(_at_LIP6) and Maria Virginia
-  * RUIZ CUEVAS
-*/
+ * @file
+ * @brief The Miic algorithm
+ *
+ * The Miic class implements the miic algorithm based on
+ * https://doi.org/10.1371/journal.pcbi.1005662.
+ * It starts by eliminating edges that correspond to independent variables to
+ * build the skeleton of the graph, and then directs the remaining edges to get
+ * an essential graph. Latent variables can be detected using bi-directed arcs.
+ *
+ * Miic allows the option of adding constraints on the skeleton construction
+ * such as: a maximum number of parents, mandatory arcs, forbidden arcs or an order between the
+ * variables.
+ *
+ * @author Quentin FALCAND and Pierre-Henri WUILLEMIN(_at_LIP6) and Maria Virginia
+ * RUIZ CUEVAS
+ */
 #ifndef GUM_LEARNING_MIIC_H
 #define GUM_LEARNING_MIIC_H
 
 #include <string>
 #include <vector>
 
-#include <agrum/BN/BayesNet.h>
 #include <agrum/config.h>
-#include <agrum/tools/core/approximations/IApproximationSchemeConfiguration.h>
 #include <agrum/tools/core/approximations/approximationScheme.h>
 #include <agrum/tools/core/heap.h>
-#include <agrum/tools/graphs/DAG.h>
 #include <agrum/tools/graphs/PDAG.h>
-#include <agrum/tools/graphs/mixedGraph.h>
 #include <agrum/tools/stattests/correctedMutualInformation.h>
 
-#  define GUM_SL_EMIT(x,y,action, explain)         \
-    {                                  \
-      std::ostringstream action_stream; \
-      action_stream << action;             \
-      std::ostringstream explain_stream; \
-      explain_stream << explain;             \
-      GUM_EMIT4(onStructuralModification, x, y, action_stream.str(), explain_stream.str()); \
-    }
+#define GUM_SL_EMIT(x, y, action, explain)                                                \
+  {                                                                                       \
+    std::ostringstream action_stream;                                                     \
+    action_stream << action;                                                              \
+    std::ostringstream explain_stream;                                                    \
+    explain_stream << explain;                                                            \
+    GUM_EMIT4(onStructuralModification, x, y, action_stream.str(), explain_stream.str()); \
+  }
 
 namespace gum {
 
@@ -95,9 +92,10 @@ namespace gum {
      * It starts by eliminating edges that correspond to independent variables to
      * build the skeleton of the graph, and then directs the remaining edges to get
      * an essential graph. Latent variables can be detected using bi-directed arcs.
-     * 
+     *
      * Miic allows the option of adding constraints on the skeleton construction
-     * such as: a maximum number of parents, mandatory arcs, forbidden arcs or an order between the variables.
+     * such as: a maximum number of parents, mandatory arcs, forbidden arcs or an order between the
+     * variables.
      *
      *
      * @ingroup learning_group
@@ -151,8 +149,7 @@ namespace gum {
        * computations and has loaded the database.
        * @param graph the MixedGraph we start from for the learning
        * */
-      MixedGraph learnPDAG(CorrectedMutualInformation& mutualInformation,
-                                     MixedGraph                  graph);
+      MixedGraph learnPDAG(CorrectedMutualInformation& mutualInformation, MixedGraph graph);
 
       /// learns the structure of a Bayesian network, i.e. a DAG, by first learning
       /// an Essential graph and then directing the remaining edges.
@@ -187,10 +184,11 @@ namespace gum {
       void addConstraints(HashTable< std::pair< NodeId, NodeId >, char > constraints);
       /// @}
 
-      /// Set ForbiddenGraph (resp. MadatoryGraph) which contains the forbidden (resp. mandatory) arcs.
+      /// Set ForbiddenGraph (resp. MadatoryGraph) which contains the forbidden (resp. mandatory)
+      /// arcs.
       void setForbiddenGraph(gum::DiGraph forbidGraph);
       void setMandatoryGraph(gum::DAG mandaGraph);
-      void setMaxIndegree(gum:: Size n);
+      void setMaxIndegree(gum::Size n);
 
       /// Set a ensemble of constraints for the learning/orientation phase
       // void testNodeProperty(const NodeProperty< NodeId >& order);
@@ -323,8 +321,8 @@ namespace gum {
       /// an empty vector of arcs
       std::vector< Arc > _latentCouples_;
 
-      /// maximum number of parents 
-      gum::Size _maxIndegree_;  
+      /// maximum number of parents
+      gum::Size _maxIndegree_;
 
       /// size of the database
       Size _size_;
@@ -376,8 +374,7 @@ namespace gum {
       bool _isNotLatentCouple_(NodeId x, NodeId y);
 
       public:
-      Signaler4<gum::NodeId, gum::NodeId ,std::string, std::string> onStructuralModification;
-    
+      Signaler4< gum::NodeId, gum::NodeId, std::string, std::string > onStructuralModification;
     };
 
   } /* namespace learning */

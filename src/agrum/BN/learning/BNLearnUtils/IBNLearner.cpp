@@ -538,33 +538,33 @@ namespace gum::learning {
 
     return param_estimator;
   }
-/*  /// prepares the initial graph for miic
-  MixedGraph IBNLearner::prepareSimpleMiic_() {
-    // Initialize the mixed graph to the fully connected graph
-    MixedGraph mgraph;
-    for (Size i = 0; i < scoreDatabase_.databaseTable().nbVariables(); ++i) {
-      mgraph.addNodeWithId(i);
-      for (Size j = 0; j < i; ++j) {
-        mgraph.addEdge(j, i);
+  /*  /// prepares the initial graph for miic
+    MixedGraph IBNLearner::prepareSimpleMiic_() {
+      // Initialize the mixed graph to the fully connected graph
+      MixedGraph mgraph;
+      for (Size i = 0; i < scoreDatabase_.databaseTable().nbVariables(); ++i) {
+        mgraph.addNodeWithId(i);
+        for (Size j = 0; j < i; ++j) {
+          mgraph.addEdge(j, i);
+        }
       }
-    }
 
-    // translating the constraints for miic
-    HashTable< std::pair< NodeId, NodeId >, char > initial_marks;
-    for (const auto& arc: constraintMandatoryArcs_.arcs()) {
-      initial_marks.insert({arc.tail(), arc.head()}, '>');
-    }
+      // translating the constraints for miic
+      HashTable< std::pair< NodeId, NodeId >, char > initial_marks;
+      for (const auto& arc: constraintMandatoryArcs_.arcs()) {
+        initial_marks.insert({arc.tail(), arc.head()}, '>');
+      }
 
-    for (const auto& arc: constraintForbiddenArcs_.arcs()) {
-      initial_marks.insert({arc.tail(), arc.head()}, '-');
-    }
-    algoSimpleMiic_.addConstraints(initial_marks);
+      for (const auto& arc: constraintForbiddenArcs_.arcs()) {
+        initial_marks.insert({arc.tail(), arc.head()}, '-');
+      }
+      algoSimpleMiic_.addConstraints(initial_marks);
 
-    // create the mutual entropy object
-    createCorrectedMutualInformation_();
+      // create the mutual entropy object
+      createCorrectedMutualInformation_();
 
-    return mgraph;
-  }*/
+      return mgraph;
+    }*/
 
   // prepares the initial graph for constraintMiic
   MixedGraph IBNLearner::prepareMiic_() {

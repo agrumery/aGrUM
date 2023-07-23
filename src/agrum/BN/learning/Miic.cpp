@@ -515,7 +515,7 @@ namespace gum {
     /// It returns a MixedGraph with the constraints of a PDAG, to avoid changing the dependencies
     /// in the other methods of the MIIC class.
 
-    MixedGraph Miic::learnPDAG(CorrectedMutualInformation& I, MixedGraph initialGraph){
+    MixedGraph Miic::learnPDAG(CorrectedMutualInformation& I, MixedGraph initialGraph) {
       MixedGraph essentialGraph = learnMixedStructure(I, initialGraph);
       // orientate remaining edges
       const Sequence< NodeId > order = essentialGraph.topologicalOrder();
@@ -640,23 +640,24 @@ namespace gum {
         stack.clear();
         stack.insert(root);
         while (!stack.empty()) {
-          //GUM_TRACE("stack : " << stack)
+          // GUM_TRACE("stack : " << stack)
           NodeId next = *(stack.begin());
           stack.erase(next);
-          //GUM_TRACE("next : " << next)
+          // GUM_TRACE("next : " << next)
           if (visited.contains(next)) continue;
           const auto nei = essentialGraph.neighbours(next);
           for (const auto n: nei) {
-            //GUM_TRACE("n : "<< n)
+            // GUM_TRACE("n : "<< n)
             if (!stack.contains(n) && !visited.contains(n)) stack.insert(n);
             // GUM_TRACE(" + amap reasonably orientation for " << n << "->" << next);
             if (propagatesRemainingOrientableEdges_(essentialGraph, next)) {
               continue;
-            }
-            else {
-              if (!essentialGraph.existsArc(next, n)){ // Checking that we're not creating a doubly-oriented arc by adding a "random" arc.
+            } else {
+              if (!essentialGraph.existsArc(next,
+                                            n)) {   // Checking that we're not creating a
+                                                    // doubly-oriented arc by adding a "random" arc.
                 essentialGraph.eraseEdge(Edge(n, next));
-                //GUM_TRACE(" + add arc (" << n << "->" << next << ")")
+                // GUM_TRACE(" + add arc (" << n << "->" << next << ")")
                 essentialGraph.addArc(n, next);
               }
             }
@@ -683,14 +684,14 @@ namespace gum {
           res = true;
         }
         if (i_j) {
-          //GUM_TRACE(" + add arc (" << xi << "->" << xj << ")")
+          // GUM_TRACE(" + add arc (" << xi << "->" << xj << ")")
           GUM_SL_EMIT(xi, xj, "Add Arc", "line 666")
           graph.eraseEdge(Edge(xi, xj));
           graph.addArc(xi, xj);
           propagatesRemainingOrientableEdges_(graph, xj);
         }
         if (j_i) {
-          //GUM_TRACE(" + add arc (" << xj << "->" << xi << ")")
+          // GUM_TRACE(" + add arc (" << xj << "->" << xi << ")")
           GUM_SL_EMIT(xj, xi, "Add Arc", "line 672")
           graph.eraseEdge(Edge(xi, xj));
           graph.addArc(xj, xi);
@@ -727,7 +728,7 @@ namespace gum {
         if (graph.existsArc(parent,
                             n2))   // if there is a double arc, pass
           continue;
-        if (parent == n1)          // trivial directed path => not recognized
+        if (parent == n1)   // trivial directed path => not recognized
           continue;
         if (_existsDirectedPath_(graph, n1, parent)) return true;
       }

@@ -44,15 +44,19 @@ namespace gum {
     SimpleMiic::SimpleMiic() : _maxLog_(100), _size_(0) { GUM_CONSTRUCTOR(SimpleMiic); }
 
     /// default constructor with maxLog
-    SimpleMiic::SimpleMiic(int maxLog) : _maxLog_(maxLog), _size_(0) { GUM_CONSTRUCTOR(SimpleMiic); }
+    SimpleMiic::SimpleMiic(int maxLog) : _maxLog_(maxLog), _size_(0) {
+      GUM_CONSTRUCTOR(SimpleMiic);
+    }
 
     /// copy constructor
-    SimpleMiic::SimpleMiic(const SimpleMiic& from) : ApproximationScheme(from), _size_(from._size_) {
+    SimpleMiic::SimpleMiic(const SimpleMiic& from) :
+        ApproximationScheme(from), _size_(from._size_) {
       GUM_CONS_CPY(SimpleMiic);
     }
 
     /// move constructor
-    SimpleMiic::SimpleMiic(SimpleMiic&& from) : ApproximationScheme(std::move(from)), _size_(from._size_) {
+    SimpleMiic::SimpleMiic(SimpleMiic&& from) :
+        ApproximationScheme(std::move(from)), _size_(from._size_) {
       GUM_CONS_MOV(SimpleMiic);
     }
 
@@ -73,7 +77,7 @@ namespace gum {
 
     /// learns the structure of a MixedGraph
     MixedGraph SimpleMiic::learnMixedStructure(CorrectedMutualInformation& mutualInformation,
-                                         MixedGraph                  graph) {
+                                               MixedGraph                  graph) {
       timer_.reset();
       current_step_ = 0;
 
@@ -102,10 +106,11 @@ namespace gum {
      * are,
      * the edge is deleted. If not, the best contributor is found.
      */
-    void SimpleMiic::initiation_(CorrectedMutualInformation& mutualInformation,
-                           MixedGraph&                 graph,
-                           HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet,
-                           Heap< CondRanking, GreaterPairOn2nd >&                           rank) {
+    void SimpleMiic::initiation_(
+       CorrectedMutualInformation&                                      mutualInformation,
+       MixedGraph&                                                      graph,
+       HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet,
+       Heap< CondRanking, GreaterPairOn2nd >&                           rank) {
       NodeId  x, y;
       EdgeSet edges      = graph.edges();
       Size    steps_init = edges.size();
@@ -135,10 +140,11 @@ namespace gum {
      * As long as we find important nodes for edges, we go over them to see if
      * we can assess the independence of the variables.
      */
-    void SimpleMiic::iteration_(CorrectedMutualInformation& mutualInformation,
-                          MixedGraph&                 graph,
-                          HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet,
-                          Heap< CondRanking, GreaterPairOn2nd >&                           rank) {
+    void SimpleMiic::iteration_(
+       CorrectedMutualInformation&                                      mutualInformation,
+       MixedGraph&                                                      graph,
+       HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet,
+       Heap< CondRanking, GreaterPairOn2nd >&                           rank) {
       // if no triples to further examine pass
       CondRanking best;
 
@@ -261,11 +267,11 @@ namespace gum {
 
     /// finds the best contributor node for a pair given a conditioning set
     void SimpleMiic::findBestContributor_(NodeId                                 x,
-                                    NodeId                                 y,
-                                    const std::vector< NodeId >&           ui,
-                                    const MixedGraph&                      graph,
-                                    CorrectedMutualInformation&            mutualInformation,
-                                    Heap< CondRanking, GreaterPairOn2nd >& rank) {
+                                          NodeId                                 y,
+                                          const std::vector< NodeId >&           ui,
+                                          const MixedGraph&                      graph,
+                                          CorrectedMutualInformation&            mutualInformation,
+                                          Heap< CondRanking, GreaterPairOn2nd >& rank) {
       double maxP = -1.0;
       NodeId maxZ = 0;
 
@@ -415,7 +421,7 @@ namespace gum {
     /// Gets the orientation probabilities like MIIC for the orientation phase
     std::vector< ProbabilisticRanking >
        SimpleMiic::updateProbaTriples_(const MixedGraph&                   graph,
-                                 std::vector< ProbabilisticRanking > probaTriples) {
+                                       std::vector< ProbabilisticRanking > probaTriples) {
       for (auto& triple: probaTriples) {
         NodeId x, y, z;
         x                 = std::get< 0 >(*std::get< 0 >(triple));
@@ -456,7 +462,7 @@ namespace gum {
     /// It returns a MixedGraph with the constraints of a PDAG, to avoid changing the dependencies
     /// in the other methods of the MIIC class.
 
-    MixedGraph SimpleMiic::learnPDAG(CorrectedMutualInformation& I, MixedGraph initialGraph){
+    MixedGraph SimpleMiic::learnPDAG(CorrectedMutualInformation& I, MixedGraph initialGraph) {
       MixedGraph essentialGraph = learnMixedStructure(I, initialGraph);
 
       // orientate remaining edges
@@ -621,10 +627,8 @@ namespace gum {
           for (const auto n: nei) {
             if (!stack.contains(n) && !visited.contains(n)) stack.insert(n);
             // GUM_TRACE(" + amap reasonably orientation for " << n << "->" << next);
-            if (propagatesRemainingOrientableEdges_(essentialGraph,next))
-              continue;
-            else
-              essentialGraph.eraseEdge(Edge(n, next));
+            if (propagatesRemainingOrientableEdges_(essentialGraph, next)) continue;
+            else essentialGraph.eraseEdge(Edge(n, next));
             essentialGraph.addArc(n, next);
           }
           visited.insert(next);
@@ -666,13 +670,14 @@ namespace gum {
     /// get the list of arcs hiding latent variables
     const std::vector< Arc > SimpleMiic::latentVariables() const {
       GUM_CHECKPOINT
-      return _latentCouples_; }
+      return _latentCouples_;
+    }
 
     /// learns the structure and the parameters of a BN
     template < typename GUM_SCALAR, typename GRAPH_CHANGES_SELECTOR, typename PARAM_ESTIMATOR >
     BayesNet< GUM_SCALAR > SimpleMiic::learnBN(GRAPH_CHANGES_SELECTOR& selector,
-                                         PARAM_ESTIMATOR&        estimator,
-                                         DAG                     initial_dag) {
+                                               PARAM_ESTIMATOR&        estimator,
+                                               DAG                     initial_dag) {
       return DAG2BNLearner::createBN< GUM_SCALAR >(estimator,
                                                    learnStructure(selector, initial_dag));
     }
@@ -683,8 +688,8 @@ namespace gum {
     }
 
     bool SimpleMiic::_existsNonTrivialDirectedPath_(const MixedGraph& graph,
-                                              const NodeId      n1,
-                                              const NodeId      n2) {
+                                                    const NodeId      n1,
+                                                    const NodeId      n2) {
       for (const auto parent: graph.parents(n2)) {
         if (graph.existsArc(parent,
                             n2))   // if there is a double arc, pass
@@ -733,12 +738,12 @@ namespace gum {
 
     void
        SimpleMiic::_orientingVstructureMiic_(MixedGraph&                                     graph,
-                                         HashTable< std::pair< NodeId, NodeId >, char >& marks,
-                                         NodeId                                          x,
-                                         NodeId                                          y,
-                                         NodeId                                          z,
-                                         double                                          p1,
-                                         double                                          p2) {
+                                             HashTable< std::pair< NodeId, NodeId >, char >& marks,
+                                             NodeId                                          x,
+                                             NodeId                                          y,
+                                             NodeId                                          z,
+                                             double                                          p1,
+                                             double                                          p2) {
       // v-structure discovery
       if (marks[{x, z}] == 'o' && marks[{y, z}] == 'o') {   // If x-z-y
         if (!_existsNonTrivialDirectedPath_(graph, z, x)) {
@@ -828,13 +833,14 @@ namespace gum {
     }
 
 
-    void SimpleMiic::_propagatingOrientationMiic_(MixedGraph&                                     graph,
-                                            HashTable< std::pair< NodeId, NodeId >, char >& marks,
-                                            NodeId                                          x,
-                                            NodeId                                          y,
-                                            NodeId                                          z,
-                                            double                                          p1,
-                                            double                                          p2) {
+    void SimpleMiic::_propagatingOrientationMiic_(
+       MixedGraph&                                     graph,
+       HashTable< std::pair< NodeId, NodeId >, char >& marks,
+       NodeId                                          x,
+       NodeId                                          y,
+       NodeId                                          z,
+       double                                          p1,
+       double                                          p2) {
       // orientation propagation
       if (marks[{x, z}] == '>' && marks[{y, z}] == 'o' && marks[{z, y}] != '-') {
         graph.eraseEdge(Edge(z, y));
@@ -842,7 +848,7 @@ namespace gum {
         // std::endl;
         if (!_existsDirectedPath_(graph, y, z) && graph.parents(y).empty()) {
           graph.addArc(z, y);
-          //GUM_TRACE("4.a Adding arc (" << z << "," << y << ")")
+          // GUM_TRACE("4.a Adding arc (" << z << "," << y << ")")
           marks[{z, y}] = '>';
           marks[{y, z}] = '-';
           if (!_arcProbas_.exists(Arc(z, y))) _arcProbas_.insert(Arc(z, y), p2);
@@ -855,7 +861,7 @@ namespace gum {
           if (!_arcProbas_.exists(Arc(y, z))) _arcProbas_.insert(Arc(y, z), p2);
         } else if (!_existsDirectedPath_(graph, y, z)) {
           graph.addArc(z, y);
-          //GUM_TRACE("4.c Adding arc (" << z << "," << y << ")")
+          // GUM_TRACE("4.c Adding arc (" << z << "," << y << ")")
           marks[{z, y}] = '>';
           marks[{y, z}] = '-';
           if (!_arcProbas_.exists(Arc(z, y))) _arcProbas_.insert(Arc(z, y), p2);

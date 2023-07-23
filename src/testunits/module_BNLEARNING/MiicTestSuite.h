@@ -45,36 +45,45 @@
 
 namespace gum_tests {
 
-  class SimpleListenerForMiic : public gum::Listener {
+  class SimpleListenerForMiic: public gum::Listener {
     public:
     SimpleListenerForMiic(){};
-    void whenStructuralModification(const void* src, gum::NodeId x, gum::NodeId y, std::string action, std::string explain) {
-      static int s=0;
-      std::cout << std::setfill('0') << std::setw(5) <<++s<<" : " << action << " | " << explain << std::endl;
+    void whenStructuralModification(const void* src,
+                                    gum::NodeId x,
+                                    gum::NodeId y,
+                                    std::string action,
+                                    std::string explain) {
+      static int s = 0;
+      std::cout << std::setfill('0') << std::setw(5) << ++s << " : " << action << " | " << explain
+                << std::endl;
     };
   };
 
-  class FilterListenerForMiic : public gum::Listener {
+  class FilterListenerForMiic: public gum::Listener {
     public:
     gum::Size filter;
     FilterListenerForMiic(){};
 
-    void whenStructuralModification(const void* src, gum::NodeId x, gum::NodeId y, std::string action, std::string explain) {
-      static int s=0;
+    void whenStructuralModification(const void* src,
+                                    gum::NodeId x,
+                                    gum::NodeId y,
+                                    std::string action,
+                                    std::string explain) {
+      static int s = 0;
       if (x == filter || y == filter) {
-        std::cout << std::setfill('0') << std::setw(5) <<++s<<" : " << action << " | " << explain << std::endl;
+        std::cout << std::setfill('0') << std::setw(5) << ++s << " : " << action << " | " << explain
+                  << std::endl;
       }
     };
   };
 
   class MiicTestSuite: public CxxTest::TestSuite {
     public:
-
     GUM_ACTIVE_TEST(_latent_var_) {
-
-      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/latent_variable.csv"));
-      const auto&                         var_names = initializer.variableNames();
-      const std::size_t                   nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV initializer(
+         GET_RESSOURCES_PATH("csv/latent_variable.csv"));
+      const auto&       var_names = initializer.variableNames();
+      const std::size_t nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet                translator_set;
       gum::learning::DBTranslator4LabelizedVariable translator;
@@ -105,12 +114,11 @@ namespace gum_tests {
         }
       }
 
-      //graph = search.learnMixedStructure(cI, graph);
+      // graph = search.learnMixedStructure(cI, graph);
       gum::DAG dag = search.learnStructure(cI, graph);
     }
 
     GUM_ACTIVE_TEST(_titanic_) {
-      
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/titanic.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -142,13 +150,12 @@ namespace gum_tests {
         for (gum::Size j = 0; j < i; ++j) {
           graph.addEdge(j, i);
         }
-      }    
+      }
 
       graph = search.learnMixedStructure(cI, graph);
     }
 
     GUM_ACTIVE_TEST(_asia_ForbiddenGraph) {
-      
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -172,23 +179,23 @@ namespace gum_tests {
       gum::learning::CorrectedMutualInformation cI(parser, prior);
       cI.useMDL();
 
-      gum::learning::Miic   search;
+      gum::learning::Miic search;
 
       // creating complete graph
       gum::MixedGraph graph;
-      gum::DiGraph forbidGraph;
+      gum::DiGraph    forbidGraph;
       for (gum::Size i = 0; i < modalities.size(); ++i) {
         forbidGraph.addNodeWithId(i);
         graph.addNodeWithId(i);
         for (gum::Size j = 0; j < i; ++j) {
           graph.addEdge(j, i);
         }
-      }    
+      }
 
       // adding constraints
-      forbidGraph.addArc(2,6);
-      forbidGraph.addArc(6,2);
-      forbidGraph.addArc(1,5);
+      forbidGraph.addArc(2, 6);
+      forbidGraph.addArc(6, 2);
+      forbidGraph.addArc(1, 5);
       search.setForbiddenGraph(forbidGraph);
 
       graph = search.learnMixedStructure(cI, graph);
@@ -199,7 +206,6 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(_asia_MandatoryGraph) {
-      
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -223,21 +229,21 @@ namespace gum_tests {
       gum::learning::CorrectedMutualInformation cI(parser, prior);
       cI.useMDL();
 
-      gum::learning::Miic   search;
+      gum::learning::Miic search;
 
       // creating complete graph
       gum::MixedGraph graph;
-      gum::DAG mandaGraph;
+      gum::DAG        mandaGraph;
       for (gum::Size i = 0; i < modalities.size(); ++i) {
         mandaGraph.addNodeWithId(i);
         graph.addNodeWithId(i);
         for (gum::Size j = 0; j < i; ++j) {
           graph.addEdge(j, i);
         }
-      }    
+      }
 
       // adding constraints
-      mandaGraph.addArc(3,4);
+      mandaGraph.addArc(3, 4);
       search.setMandatoryGraph(mandaGraph);
 
       graph = search.learnMixedStructure(cI, graph);
@@ -289,12 +295,12 @@ namespace gum_tests {
       gum::Size n = 2;
       search.setMaxIndegree(n);
 
-      //Learn Structure
+      // Learn Structure
       graph = search.learnMixedStructure(cI, graph);
 
       gum::NodeSet nodesSet = graph.asNodeSet();
-      for(auto& x: nodesSet){
-        TS_ASSERT(graph.parents(x).size()<=n)
+      for (auto& x: nodesSet) {
+        TS_ASSERT(graph.parents(x).size() <= n)
       }
     }
 
@@ -305,9 +311,10 @@ namespace gum_tests {
       //             filterlistener,
       //             FilterListenerForMiic::whenStructuralModification);
 
-      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/ordinal_ms_order_1.csv"));
-      const auto&                         var_names = initializer.variableNames();
-      const std::size_t                   nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV initializer(
+         GET_RESSOURCES_PATH("csv/ordinal_ms_order_1.csv"));
+      const auto&       var_names = initializer.variableNames();
+      const std::size_t nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet translator_set;
       gum::LabelizedVariable         xvar("var", "", 0);
@@ -335,10 +342,10 @@ namespace gum_tests {
 
       gum::learning::Miic search;
 
-      //SimpleListenerForMiic listener;
-      // FilterListenerForMiic filterlistener;
+      // SimpleListenerForMiic listener;
+      //  FilterListenerForMiic filterlistener;
 
-      //std::cout << "TEST ORDER 1 :" << std::endl;
+      // std::cout << "TEST ORDER 1 :" << std::endl;
 
       /*GUM_CONNECT(search,
                   onStructuralModification,
@@ -354,7 +361,7 @@ namespace gum_tests {
         }
       }
       gum::DAG dag = search.learnStructure(cI, graph);
-      //GUM_TRACE("Arcs Order 1: " << dag.arcs())
+      // GUM_TRACE("Arcs Order 1: " << dag.arcs())
     }
 
     GUM_ACTIVE_TEST(_MIIC_ms_order2_) {
@@ -364,9 +371,10 @@ namespace gum_tests {
       //             filterlistener,
       //             FilterListenerForMiic::whenStructuralModification);
 
-      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/ordinal_ms_order_2.csv"));
-      const auto&                         var_names = initializer.variableNames();
-      const std::size_t                   nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV initializer(
+         GET_RESSOURCES_PATH("csv/ordinal_ms_order_2.csv"));
+      const auto&       var_names = initializer.variableNames();
+      const std::size_t nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet translator_set;
       gum::LabelizedVariable         xvar("var", "", 0);
@@ -394,10 +402,10 @@ namespace gum_tests {
 
       gum::learning::Miic search;
 
-      //SimpleListenerForMiic listener;
-      // FilterListenerForMiic filterlistener;
+      // SimpleListenerForMiic listener;
+      //  FilterListenerForMiic filterlistener;
 
-      //std::cout << "TEST ORDER 2 :" << std::endl;
+      // std::cout << "TEST ORDER 2 :" << std::endl;
 
       /*GUM_CONNECT(search,
                   onStructuralModification,
@@ -413,12 +421,12 @@ namespace gum_tests {
         }
       }
       gum::DAG dag = search.learnStructure(cI, graph);
-      //GUM_TRACE("Arcs Order 2: " << dag.arcs())
+      // GUM_TRACE("Arcs Order 2: " << dag.arcs())
     }
 
     GUM_ACTIVE_TEST(_alarm_learnMixedStructure) {
-       FilterListenerForMiic filterlistener;
-       filterlistener.filter = 24;
+      FilterListenerForMiic filterlistener;
+      filterlistener.filter = 24;
 
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/alarm.csv"));
       const auto&                         var_names = initializer.variableNames();
@@ -456,12 +464,12 @@ namespace gum_tests {
       // learner.setMaxIndegree(3);
 
       gum::learning::Miic search;
-      gum::MixedGraph mg;
+      gum::MixedGraph     mg;
 
-      //GUM_CONNECT(search,
-      //            onStructuralModification,
-      //            filterlistener,
-      //            FilterListenerForMiic::whenStructuralModification);
+      // GUM_CONNECT(search,
+      //             onStructuralModification,
+      //             filterlistener,
+      //             FilterListenerForMiic::whenStructuralModification);
 
       for (gum::Size i = 0; i < modalities.size(); ++i) {
         mg.addNodeWithId(i);
@@ -471,7 +479,7 @@ namespace gum_tests {
       }
       try {
         auto graph = search.learnMixedStructure(cI, mg);
-        //GUM_TRACE_VAR(graph.toDot())
+        // GUM_TRACE_VAR(graph.toDot())
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
@@ -507,7 +515,7 @@ namespace gum_tests {
       cI.useNML();
 
       gum::learning::Miic search;
-      gum::MixedGraph mg;
+      gum::MixedGraph     mg;
 
       for (gum::Size i = 0; i < modalities.size(); ++i) {
         mg.addNodeWithId(i);
@@ -517,7 +525,7 @@ namespace gum_tests {
       }
       try {
         auto pdag = search.learnPDAG(cI, mg);
-        //GUM_TRACE_VAR(pdag.toDot())
+        // GUM_TRACE_VAR(pdag.toDot())
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
@@ -560,12 +568,12 @@ namespace gum_tests {
       // learner.setSliceOrder(slice_order);
 
       gum::learning::Miic search;
-      gum::MixedGraph mg;
+      gum::MixedGraph     mg;
       search.setMaxIndegree(3);
-      //GUM_CONNECT(search,
-      //            onStructuralModification,
-      //            filterlistener,
-      //            FilterListenerForMiic::whenStructuralModification);
+      // GUM_CONNECT(search,
+      //             onStructuralModification,
+      //             filterlistener,
+      //             FilterListenerForMiic::whenStructuralModification);
 
       for (gum::Size i = 0; i < modalities.size(); ++i) {
         mg.addNodeWithId(i);
@@ -575,9 +583,9 @@ namespace gum_tests {
       }
       try {
         auto dag = search.learnStructure(cI, mg);
-        //GUM_TRACE_VAR(dag.toDot())
+        // GUM_TRACE_VAR(dag.toDot())
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
-  }; // MiicTestSuite
-}   // namespace gum_test
+  };   // MiicTestSuite
+}   // namespace gum_tests

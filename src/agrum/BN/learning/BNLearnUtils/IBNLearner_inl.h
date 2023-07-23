@@ -195,9 +195,7 @@ namespace gum::learning {
   }
 
   // indicate that we wish to use MIIC with constraints
-  INLINE void IBNLearner::useMIIC() {
-    selectedAlgo_ = AlgoType::MIIC;
-  }
+  INLINE void IBNLearner::useMIIC() { selectedAlgo_ = AlgoType::MIIC; }
 
   /// indicate that we wish to use the NML correction for MIIC
   INLINE void IBNLearner::useNMLCorrection() {
@@ -215,7 +213,9 @@ namespace gum::learning {
   }
 
   /// get the list of arcs hiding latent variables
-  INLINE std::vector< Arc > IBNLearner::latentVariables() const { return algoMiic_.latentVariables();}
+  INLINE std::vector< Arc > IBNLearner::latentVariables() const {
+    return algoMiic_.latentVariables();
+  }
 
   // indicate that we wish to use a K2 algorithm
   INLINE void IBNLearner::useK2(const Sequence< NodeId >& order) {

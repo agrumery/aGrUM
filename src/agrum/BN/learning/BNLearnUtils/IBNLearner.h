@@ -68,8 +68,6 @@
 
 #include <agrum/BN/learning/K2.h>
 #include <agrum/BN/learning/SimpleMiic.h>
-#include <agrum/BN/learning/Miic.h>
-#include <agrum/BN/learning/greedyHillClimbing.h>
 #include <agrum/BN/learning/localSearchWithTabuList.h>
 
 

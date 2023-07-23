@@ -95,7 +95,8 @@ namespace gum {
 
     /// move operator
     template < typename GUM_SCALAR >
-    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::operator=(BNLearner< GUM_SCALAR >&& src) noexcept {
+    BNLearner< GUM_SCALAR >&
+       BNLearner< GUM_SCALAR >::operator=(BNLearner< GUM_SCALAR >&& src) noexcept {
       IBNLearner::operator=(std::move(src));
       return *this;
     }
@@ -407,9 +408,7 @@ namespace gum {
           res += nameFromId(edge.first()) + "--" + nameFromId(edge.second());
         }
         res += "}";
-        vals.emplace_back("Constraint Possible Edges",
-                          res,
-                          "");
+        vals.emplace_back("Constraint Possible Edges", res, "");
       }
       if (!constraintSliceOrder_.sliceOrder().empty()) {
         res               = "{";

@@ -43,38 +43,46 @@
 
 namespace gum_tests {
 
-  class SimpleListenerForSimpleMiic : public gum::Listener {
+  class SimpleListenerForSimpleMiic: public gum::Listener {
     public:
     SimpleListenerForSimpleMiic(){};
 
-    void whenStructuralModification(const void* src, gum::NodeId x, gum::NodeId y, std::string action, std::string explain) {
-      static int s=0;
-      std::cout << std::setfill('0') << std::setw(5) <<++s<<" : " << action << " | " << explain << std::endl;
+    void whenStructuralModification(const void* src,
+                                    gum::NodeId x,
+                                    gum::NodeId y,
+                                    std::string action,
+                                    std::string explain) {
+      static int s = 0;
+      std::cout << std::setfill('0') << std::setw(5) << ++s << " : " << action << " | " << explain
+                << std::endl;
     };
   };
 
-  class FilterListenerForSimpleMiic : public gum::Listener {
+  class FilterListenerForSimpleMiic: public gum::Listener {
     public:
     gum::Size filter;
     FilterListenerForSimpleMiic(){};
 
-    void whenStructuralModification(const void* src, gum::NodeId x, gum::NodeId y, std::string action, std::string explain) {
-      static int s=0;
+    void whenStructuralModification(const void* src,
+                                    gum::NodeId x,
+                                    gum::NodeId y,
+                                    std::string action,
+                                    std::string explain) {
+      static int s = 0;
       if (x == filter || y == filter) {
-        std::cout << std::setfill('0') << std::setw(5) <<++s<<" : " << action << " | " << explain << std::endl;
+        std::cout << std::setfill('0') << std::setw(5) << ++s << " : " << action << " | " << explain
+                  << std::endl;
       }
     };
   };
 
   class SimpleMiicTestSuite: public CxxTest::TestSuite {
     public:
-
-
     GUM_ACTIVE_TEST(_latent_var_) {
-
-      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/latent_variable.csv"));
-      const auto&                         var_names = initializer.variableNames();
-      const std::size_t                   nb_vars   = var_names.size();
+      gum::learning::DBInitializerFromCSV initializer(
+         GET_RESSOURCES_PATH("csv/latent_variable.csv"));
+      const auto&       var_names = initializer.variableNames();
+      const std::size_t nb_vars   = var_names.size();
 
       gum::learning::DBTranslatorSet                translator_set;
       gum::learning::DBTranslator4LabelizedVariable translator;
@@ -106,7 +114,7 @@ namespace gum_tests {
       }
 
       graph = search.learnMixedStructure(cI, graph);
-      //GUM_TRACE(search.latentVariables())
+      // GUM_TRACE(search.latentVariables())
     }
 
     GUM_INACTIVE_TEST(_MIIC_asia_NMLcorr) {
@@ -208,7 +216,6 @@ namespace gum_tests {
       TS_ASSERT(graph.existsArc(4, 3))
       TS_ASSERT(graph.existsEdge(5, 7))
     }
-
 
 
     void xtest_tonda() {
