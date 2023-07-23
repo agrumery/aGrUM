@@ -733,7 +733,7 @@ def animROC(bn, datasrc, target="Y", label="1"):
       plt.show()
 
 
-  viewer = DisplayROC(getROCpoints(bn, datasrc, target="Y", label="1"))
+  viewer = DisplayROC(getROCpoints(bn, datasrc, target=target, label=label))
 
   def interactive_view(rate: float):
     viewer.display(rate)
@@ -790,7 +790,7 @@ def animPR(bn, datasrc, target="Y", label="1"):
       plt.tight_layout()
       plt.show()
 
-  viewer = DisplayPR(getPRpoints(bn, datasrc, target="Y", label="1"))
+  viewer = DisplayPR(getPRpoints(bn, datasrc, target=target, label=label))
 
   def interactive_view(rate: float):
     viewer.display(rate)

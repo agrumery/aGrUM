@@ -30,8 +30,9 @@ import hashlib
 
 from tempfile import mkdtemp
 import matplotlib.pyplot as plt
-import pyAgrum as gum
 import pydot as dot
+
+import pyAgrum as gum
 
 from pyAgrum.lib import proba_histogram
 import pyAgrum.lib._colors as gumcols

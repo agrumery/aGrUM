@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # (c) Copyright 2020-2023 by Pierre-Henri Wuillemin(@LIP6)  (pierre-henri.wuillemin@lip6.fr)
 
 # Permission to use, copy, modify, and distribute this
@@ -19,8 +18,13 @@
 # ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 # OR PERFORMANCE OF THIS SOFTWARE!
 
-import numpy
+"""
+This module contains the BNDiscretizer class which is used to discretize the values of a database in order to learn
+a (discrete) Bayesian Network classifier
+"""
 import math
+
+import numpy
 import pandas
 import scipy
 import sklearn
@@ -28,7 +32,8 @@ import sklearn.preprocessing as skp
 
 import pyAgrum as gum
 
-from ._utils import checkInt,checkFloat
+from ._utils import checkInt, checkFloat
+
 
 class BNDiscretizer():
   """
@@ -46,12 +51,12 @@ class BNDiscretizer():
           be set to the string 'elbowMethod' so that the best number of bins is found automatically.
           If the method used is NML, this parameter sets the the maximum number of bins up to which the NML algorithm
           searches for the optimal number of bins. In this case this parameter must be an int
-          If any other discetization method is used, this parameter is ignored.
+          If any other discretization method is used, this parameter is ignored.
       discretizationThreshold: int or float
-          When using default parameters a variable will be treated as continous only if it has more unique values than
+          When using default parameters a variable will be treated as continuous only if it has more unique values than
           this number (if the number is an int greater than 1).
           If the number is a float between 0 and 1, we will test if the proportion of unique values is bigger than this
-          number. For example if you have entered 0.95, the variable will be treated as continous only if more than 95%
+          number. For example if you have entered 0.95, the variable will be treated as continuous only if more than 95%
           of its values are unique.
 
   """
@@ -71,93 +76,102 @@ class BNDiscretizer():
             also be set to the string 'elbowMethod' so that the best number of bins is found automatically.
             If the method used is NML, this parameter sets the the maximum number of bins up to which the NML algorithm
             searches for the optimal number of bins. In this case this parameter must be an int
-            If any other discetization method is used, this parameter is ignored.
+            If any other discretization method is used, this parameter is ignored.
         discretizationThreshold: int or float
-            When using default parameters a variable will be treated as continous only if it has more unique values than
+            When using default parameters a variable will be treated as continuous only if it has more unique values than
             this number (if the number is an int greater than 1).
             If the number is a float between 0 and 1, we will test if the proportion of unique values is bigger than
-            this number. For example if you have entered 0.95, the variable will be treated as continous only if more
+            this number. For example if you have entered 0.95, the variable will be treated as continuous only if more
             than 95% of its values are unique.
     """
-    self.discretizationParametersDictionary = dict()
-    self.numberOfContinous = 0
+    self.discretizationParametersDictionary = {}
+    self.numberOfContinuous = 0
     self.totalNumberOfBins = 0
     self.defaultMethod = None
-    self.defaultNbBins = None
+    self.defaultParamDiscretizationMethod = None
     self.setDiscretizationParameters(None, defaultDiscretizationMethod, defaultNumberOfBins)
 
     self.discretizationThreshold = discretizationThreshold
 
   def clear(self, clearDiscretizationParameters=False):
     """
-    Sets the number of continous variables and the total number of bins created by this discretizer to 0. If
+    Sets the number of continuous variables and the total number of bins created by this discretizer to 0. If
     clearDiscretizationParameters is True, also clears the the parameters for discretization the user has set for each
     variable.
     
     Parameters
     ----------
-      clearDiscretizationParamaters: bool
+      clearDiscretizationParameters: bool
         if True, this method also clears the parameters the user has set for each variable and resets them to the default.
    """
-    self.numberOfContinous = 0
+    self.numberOfContinuous = 0
     self.totalNumberOfBins = 0
     if clearDiscretizationParameters:
-      self.discretizationParametersDictionary = dict()
+      self.discretizationParametersDictionary = {}
 
-  def setDiscretizationParameters(self, variableName=None, method=None, numberOfBins=None):
+  @gum.deprecated_arg(newA="paramDiscretizationMethod",oldA="numberOfBins",version="1.9.0")
+  def setDiscretizationParameters(self, variableName=None, method=None, paramDiscretizationMethod=None):
     """
+    Sets the discretization parameters for a variable. If variableName is None, sets the default parameters for this
+
     parameters:
       variableName: str
-          the name of the variable you want to set the discretization paramaters of. Set to None to set the new
+          the name of the variable you want to set the discretization parameters of. Set to None to set the new
           default for this BNClassifier.
       method: str
           The method of discretization used for this variable. Type "NoDiscretization" if you do not want to discretize this
           variable. Possible values are: 'NoDiscretization', 'quantile', 'uniform', 'kmeans', 'NML', 'CAIM' and 'MDLP'
-      numberOfBins:
+      paramDiscretizationMethod:
           sets the number of bins if the method used is quantile, kmeans, uniform. In this case this parameter can also
           be set to the string 'elbowMethod' so that the best number of bins is found automatically.
           if the method used is NML, this parameter sets the the maximum number of bins up to which the NML algorithm
           searches for the optimal number of bins. In this case this parameter must be an int
-          If any other discetization method is used, this parameter is ignored.
+          If the method is NoDiscretization, this parameter can 
+          If any other discretization method is used, this parameter is ignored.
+  
     """
-    if variableName in self.discretizationParametersDictionary.keys():
-      oldNbBins = self.discretizationParametersDictionary[variableName]['k']
+    if variableName in self.discretizationParametersDictionary:
+      oldParamDiscretizationMethod = self.discretizationParametersDictionary[variableName]['param']
       oldMethod = self.discretizationParametersDictionary[variableName]['method']
     else:
-      oldNbBins = self.defaultNbBins
+      oldParamDiscretizationMethod = self.defaultParamDiscretizationMethod
       oldMethod = self.defaultMethod
 
     if method is None:
       method = oldMethod
 
-    if numberOfBins is None:
-      if method != 'NoDiscretization':
-        numberOfBins = oldNbBins
+    if paramDiscretizationMethod is None and method != 'NoDiscretization':
+      paramDiscretizationMethod = oldParamDiscretizationMethod
 
     if method not in {'kmeans', 'uniform', 'quantile', 'NML', 'MDLP', 'CAIM', 'NoDiscretization'}:
       raise ValueError(
-        "This discretization method is not recognized! Possible values are keans, uniform, quantile, NML, "
+        "This discretization method is not recognized! Possible values are kmeans, uniform, quantile, NML, "
         "CAIM and MDLP. You have entered " + str(
           method))
 
-    if numberOfBins == 'elbowMethod':
+    if paramDiscretizationMethod == 'elbowMethod':
       if method == "NML":
         raise ValueError(
-          "The elbow Method cannot be used as the number of bins for the algorithm NML. Please an integer value")
+          "The elbow Method cannot be used as the number of bins for the algorithm NML. Please select an integer value")
     elif method != 'NoDiscretization':
       try:
-        numberOfBins = int(numberOfBins)
+        paramDiscretizationMethod = int(paramDiscretizationMethod)
       except:
         raise ValueError(
-          "The possible values for numberOfBins are any integer or the string 'elbowMethod'. You have entered: " + str(
-            numberOfBins))
+          "The possible values for paramDiscretizationMethod are any integer or the string 'elbowMethod'. You have entered: " + str(
+            paramDiscretizationMethod))
+    else:
+      if paramDiscretizationMethod is not None and not isinstance(paramDiscretizationMethod,list):
+        raise ValueError(
+          "For a NotDiscretized variable, the parameter has to be None or a list of values (labels) but not '" + str(paramDiscretizationMethod))+"'."
+
     if variableName is None:
       self.defaultMethod = method
-      self.defaultNbBins = numberOfBins
+      self.defaultParamDiscretizationMethod = paramDiscretizationMethod
     else:
-      self.discretizationParametersDictionary[variableName] = dict()
-      self.discretizationParametersDictionary[variableName]['k'] = numberOfBins
+      self.discretizationParametersDictionary[variableName] = {}
       self.discretizationParametersDictionary[variableName]['method'] = method
+      self.discretizationParametersDictionary[variableName]['param'] = paramDiscretizationMethod
 
   def audit(self, X, y=None):
     """
@@ -177,9 +191,9 @@ class BNDiscretizer():
         for each variable, the proposition of audit
      """
 
-    auditDict = dict()
+    auditDict = {}
 
-    if isinstance(X,pandas.DataFrame): #type(X) == pandas.DataFrame:
+    if isinstance(X, pandas.DataFrame):
       variableNames = X.columns.tolist()
     elif type(X) == pandas.core.series.Series:
       variableNames = [X.name]
@@ -196,7 +210,7 @@ class BNDiscretizer():
     if variableNames is None:
       variableNames = ["x" + str(i) for i in range(d)]
 
-    possibleValues = dict()  # pour la ligne on compte les valeurs possibles
+    possibleValues = {}  # counting the possible values gor this line
 
     for i in range(d):
       possibleValues[i] = numpy.unique(X[:, i])
@@ -207,7 +221,7 @@ class BNDiscretizer():
         "BNClassifier is a binary classifier! There are more than 2 possible values for y in the data provided")
     for i in range(d):
       variable = variableNames[i]
-      auditDict[variable] = dict()
+      auditDict[variable] = {}
       try:
         sklearn.utils.check_array(X[:, i], dtype='float', ensure_2d=False)
         isNumeric = True
@@ -220,11 +234,11 @@ class BNDiscretizer():
 
       else:
         if len(possibleValues[i]) > self.discretizationThreshold and isNumeric:
-          auditDict[variable]['k'] = self.defaultNbBins
           auditDict[variable]['method'] = self.defaultMethod
+          auditDict[variable]['nbBins'] = self.defaultParamDiscretizationMethod
         else:
           auditDict[variable]['method'] = 'NoDiscretization'
-          auditDict[variable]['k'] = len(possibleValues[i])
+          auditDict[variable]['values'] = possibleValues[i]
       if auditDict[variable]['method'] == "NoDiscretization":
         auditDict[variable]['type'] = 'Discrete'
       else:
@@ -232,7 +246,8 @@ class BNDiscretizer():
 
     return auditDict
 
-  def discretizationElbowMethodRotation(self, discretizationStrategy, X):
+  @staticmethod
+  def discretizationElbowMethodRotation(discretizationStrategy, X):
     """
     Calculates the sum of squared errors as a function of the number of clusters using the discretization strategy
     that is passed as a parameter. Returns the bins that are optimal for minimizing the variation and the number of
@@ -270,7 +285,7 @@ class BNDiscretizer():
       variationArray[k - 2] = sumOfSquaredErrors
       binEdgeMatrix[k - 2] = binEdges.to_list()
 
-    # we caclulate the slope of the line that connects the first and last point on our graph
+    # we calculate the slope of the line that connects the first and last point on our graph
     slope = (variationArray[13] - variationArray[0]) / 13
 
     # we calculate the slope of the line perpendicular to it
@@ -298,13 +313,13 @@ class BNDiscretizer():
     # we return the list of bin edges found using said optimal number of k
     return binEdgeMatrix[int(round(minimumVector[0]))]
 
-  def discretizationMDLP(self, x, y, possibleValuesX, possibleValuesY):
+  def discretizationMDLP(self, X, y, possibleValuesX, possibleValuesY):
     """
     Uses the MDLP algorithm described in Fayyad, 1995 to discretize the values of x.
 
     Parameters
     ----------
-        x: ndarray with shape (n,1) where n is the number of samples
+        X: ndarray with shape (n,1) where n is the number of samples
             Column-vector that contains all the data that needs to be discretized
         y: ndarray with shape (n,1) where n is the number of samples
             Column-vector that contains the class for each sample. This vector will not be discretized, but the class-value of each sample is needed to properly apply the algorithm
@@ -317,19 +332,19 @@ class BNDiscretizer():
         List[float]
          a list of the edges of the bins that are chosen by this algorithm
     """
-    xAndY = numpy.concatenate((x, y), axis=1)
+    xAndY = numpy.concatenate((X, y), axis=1)
     xAndY = xAndY[xAndY[:, 0].argsort()]
     B = (possibleValuesX[1:] + possibleValuesX[:-1]) / 2
-    [class0, class1] = possibleValuesY
+    [class0, _] = possibleValuesY
 
     binEdgesIndex = []
     nbElementsByIntervalClass0 = numpy.zeros(len(B) + 1)
     nbElementsByIntervalClass1 = numpy.zeros(len(B) + 1)
     currentIntervalIndex = 0
-    for x in xAndY:
-      if currentIntervalIndex < len(B) and x[0] > B[currentIntervalIndex]:
+    for X in xAndY:
+      if currentIntervalIndex < len(B) and X[0] > B[currentIntervalIndex]:
         currentIntervalIndex += 1
-      if x[1] == class0:
+      if X[1] == class0:
         nbElementsByIntervalClass0[currentIntervalIndex] += 1
       else:
         nbElementsByIntervalClass1[currentIntervalIndex] += 1
@@ -346,8 +361,8 @@ class BNDiscretizer():
 
     continueDividingInterval = [True]
 
-    currentValues = dict()
-    minimalValues = dict()
+    currentValues = {}
+    minimalValues = {}
 
     while any(continueDividingInterval):
       minimalValues['classInformationEntropy'] = math.inf
@@ -363,7 +378,7 @@ class BNDiscretizer():
           currentValues['boundaryIndex'] = binEdgesIndex[position - 1] + 1
 
         if position < len(binEdgesIndex) and currentValues['boundaryIndex'] == binEdgesIndex[position]:
-          # this function decides whether to accept the cutpoint in this interval and updates the relevant lists if
+          # this function decides whether to accept the cut point in this interval and updates the relevant lists if
           # the value is accepted.
           self._divideIntervalMDLP(minimalValues, shannonEntropyByLargeInterval, Class0ByLargeInterval,
                                    Class1ByLargeInterval, continueDividingInterval, totalCountByLargeInterval, position,
@@ -429,13 +444,14 @@ class BNDiscretizer():
 
     return binEdges
 
-  def discretizationCAIM(self, x, y, possibleValuesX, possibleValuesY):
+  @staticmethod
+  def discretizationCAIM(X, y, possibleValuesX, possibleValuesY):
     """
     Applies the CAIM algorithm to discretize the values of x
 
     Parameters
     ----------
-        x: ndarray with shape (n,1) where n is the number of samples
+        X: ndarray with shape (n,1) where n is the number of samples
             Column-vector that contains all the data that needs to be discretized
         y: ndarray with shape (n,1) where n is the number of samples
             Column-vector that contains the class for each sample. This vector will not be discretized, but the class-value of each sample is needed to properly apply the algorithm
@@ -448,7 +464,7 @@ class BNDiscretizer():
         list[float]
           a list of the edges of the bins that are chosen by this algorithm
     """
-    xAndY = numpy.concatenate((x, y), axis=1)
+    xAndY = numpy.concatenate((X, y), axis=1)
     xAndY = xAndY[xAndY[:, 0].argsort()]
     B = (possibleValuesX[1:] + possibleValuesX[:-1]) / 2
     [class0, class1] = possibleValuesY
@@ -457,10 +473,10 @@ class BNDiscretizer():
     nbElementsByIntervalClass0 = numpy.zeros(len(B) + 1)
     nbElementsByIntervalClass1 = numpy.zeros(len(B) + 1)
     currentIntervalIndex = 0
-    for x in xAndY:
-      if currentIntervalIndex < len(B) and x[0] > B[currentIntervalIndex]:
+    for X in xAndY:
+      if currentIntervalIndex < len(B) and X[0] > B[currentIntervalIndex]:
         currentIntervalIndex += 1
-      if x[1] == class0:
+      if X[1] == class0:
         nbElementsByIntervalClass0[currentIntervalIndex] += 1
       else:
         nbElementsByIntervalClass1[currentIntervalIndex] += 1
@@ -476,8 +492,12 @@ class BNDiscretizer():
       maxPosition = 0
       maxBoundaryIndex = 0
       position = 0
-      currentsumClass0 = 0
-      currentsumClass1 = 0
+      currentSumClass0 = 0
+      currentSumClass1 = 0
+      maxLeftIntervalClass0 = currentSumClass0
+      maxLeftIntervalClass1 = currentSumClass1
+      maxRightIntervalClass0 = maxLeftIntervalClass0
+      maxRightIntervalClass1 = maxLeftIntervalClass1
 
       for boundaryIndex in range(len(B)):
         if position < len(binEdgesIndex) and boundaryIndex == binEdgesIndex[position]:
@@ -485,38 +505,38 @@ class BNDiscretizer():
           position += 1
           if Class0ByLargeInterval[position] > Class1ByLargeInterval[position]:
             oldCaim = globalCAIM * len(Class0ByLargeInterval) - math.pow(Class0ByLargeInterval[position], 2) / (
-                Class0ByLargeInterval[position] + Class1ByLargeInterval[position])
+               Class0ByLargeInterval[position] + Class1ByLargeInterval[position])
           else:
             oldCaim = globalCAIM * len(Class0ByLargeInterval) - math.pow(Class1ByLargeInterval[position], 2) / (
-                Class0ByLargeInterval[position] + Class1ByLargeInterval[position])
-          currentsumClass0 = 0
-          currentsumClass1 = 0
+               Class0ByLargeInterval[position] + Class1ByLargeInterval[position])
+          currentSumClass0 = 0
+          currentSumClass1 = 0
           continue
 
-        currentsumClass0 += nbElementsByIntervalClass0[boundaryIndex]
-        currentsumClass1 += nbElementsByIntervalClass1[boundaryIndex]
+        currentSumClass0 += nbElementsByIntervalClass0[boundaryIndex]
+        currentSumClass1 += nbElementsByIntervalClass1[boundaryIndex]
         caim = oldCaim
 
-        if currentsumClass0 > currentsumClass1:
-          caim = caim + math.pow(currentsumClass0, 2) / (currentsumClass0 + currentsumClass1)
+        if currentSumClass0 > currentSumClass1:
+          caim = caim + math.pow(currentSumClass0, 2) / (currentSumClass0 + currentSumClass1)
         else:
-          caim = caim + math.pow(currentsumClass1, 2) / (currentsumClass0 + currentsumClass1)
+          caim = caim + math.pow(currentSumClass1, 2) / (currentSumClass0 + currentSumClass1)
 
-        intervalclass0 = Class0ByLargeInterval[position] - currentsumClass0
-        intervalclass1 = Class1ByLargeInterval[position] - currentsumClass1
+        intervalClass0 = Class0ByLargeInterval[position] - currentSumClass0
+        intervalClass1 = Class1ByLargeInterval[position] - currentSumClass1
 
-        if intervalclass0 > intervalclass1:
-          caim = caim + math.pow(intervalclass0, 2) / (intervalclass0 + intervalclass1)
+        if intervalClass0 > intervalClass1:
+          caim = caim + math.pow(intervalClass0, 2) / (intervalClass0 + intervalClass1)
         else:
-          caim = caim + math.pow(intervalclass1, 2) / (intervalclass0 + intervalclass1)
+          caim = caim + math.pow(intervalClass1, 2) / (intervalClass0 + intervalClass1)
 
         caim = caim / (len(Class0ByLargeInterval) + 1)
 
         if caim > caimMax:
-          maxLeftIntervalClass0 = currentsumClass0
-          maxLeftIntervalClass1 = currentsumClass1
-          maxRightIntervalClass0 = intervalclass0
-          maxRightIntervalClass1 = intervalclass1
+          maxLeftIntervalClass0 = currentSumClass0
+          maxLeftIntervalClass1 = currentSumClass1
+          maxRightIntervalClass0 = intervalClass0
+          maxRightIntervalClass1 = intervalClass1
           caimMax = caim
           maxBoundaryIndex = boundaryIndex
           maxPosition = position
@@ -531,10 +551,10 @@ class BNDiscretizer():
         k = k + 1
         if Class0ByLargeInterval[0] > Class1ByLargeInterval[0]:
           oldCaim = globalCAIM * len(Class0ByLargeInterval) - math.pow(Class0ByLargeInterval[0], 2) / (
-              Class0ByLargeInterval[0] + Class1ByLargeInterval[0])
+             Class0ByLargeInterval[0] + Class1ByLargeInterval[0])
         else:
           oldCaim = globalCAIM * len(Class0ByLargeInterval) - math.pow(Class1ByLargeInterval[0], 2) / (
-              Class0ByLargeInterval[0] + Class1ByLargeInterval[0])
+             Class0ByLargeInterval[0] + Class1ByLargeInterval[0])
 
       else:
         break
@@ -546,9 +566,10 @@ class BNDiscretizer():
 
     return binEdges
 
-  def discretizationNML(self, X, possibleValuesX, kMax=10, epsilon=None):
+  @staticmethod
+  def discretizationNML(X, possibleValuesX, kMax=10, epsilon=None):
     """
-    Uses the disceretization algorithm described in "MDL Histogram Density Estimator", Kontkaken and Myllymaki, 2007 to
+    Uses the discretization algorithm described in "MDL Histogram Density Estimator", Kontkaken and Myllymaki, 2007 to
     discretize.
 
     Parameters
@@ -593,22 +614,23 @@ class BNDiscretizer():
     Rk = numpy.zeros(E)
     for i in range(1, E):
       ne = int(binCount[i])
-      sum = 0
+      total_amount = 0
       for h1 in range(ne + 1):
         h2 = ne - h1
-        sum += math.pow(h1 / ne, h1) * math.pow(h2 / ne, h2) * scipy.special.comb(ne, h1)
-      Rk[i] = sum
+        total_amount += math.pow(h1 / ne, h1) * math.pow(h2 / ne, h2) * scipy.special.comb(ne, h1)
+      Rk[i] = total_amount
 
     k = 2
 
     Bkminus1 = numpy.zeros(E)
     for e in range(1, E):
       ne = binCount[e]
-      Bkminus1[e] = -ne * (math.log(2 * epsilon * ne) - math.log(n * ((candidateCutPoints[e] - candidateCutPoints[0]))))
+      Bkminus1[e] = -ne * (math.log(2 * epsilon * ne) - math.log(n * (candidateCutPoints[e] - candidateCutPoints[0])))
 
     Bk = numpy.zeros(E)
     cutpoints = [candidateCutPoints[0]]
     Bvalues = [Bkminus1[-1]]
+    minimumeprime = 0
     while k <= kMax:
 
       for e in range(k, E):
@@ -618,7 +640,7 @@ class BNDiscretizer():
         for eprime in range(k - 1, e):
           if binCount[e] > binCount[eprime]:
             temp = Bkminus1[eprime] - (binCount[e] - binCount[eprime]) * (
-                math.log(2 * epsilon * (binCount[e] - binCount[eprime])) - math.log(
+               math.log(2 * epsilon * (binCount[e] - binCount[eprime])) - math.log(
               n * (candidateCutPoints[e] - candidateCutPoints[eprime])))
           else:
             temp = Bkminus1[eprime]
@@ -659,12 +681,8 @@ class BNDiscretizer():
             A column vector containing n samples of a feature. The column for which the variable will be created
         y: ndarray shape(n,1)
             A column vector containing the corresponding for each element in X.
-        possibleValuesX: onedimensional ndarray
-            An ndarray containing all the unique values of X
-        possibleValuesY: onedimensional ndarray
+        possibleValuesY: ndarray
             An ndarray containing all the unique values of y
-        returnModifiedX: bool
-            X could be modified by this function during
     Returns
     -------
         pyagrum.DiscreteVariable
@@ -680,18 +698,18 @@ class BNDiscretizer():
     except ValueError:
       Xtransformed = X
       isNumeric = False
-    possibleValuesX = numpy.unique(X)
+
+    foundValuesX= set(numpy.unique(X))
     n = len(X)
 
-    if variableName not in self.discretizationParametersDictionary.keys():  # The user has not manually set the discretization parameters for this variable
-      if isNumeric and \
-          ((self.discretizationThreshold >= 1 and len(possibleValuesX) > self.discretizationThreshold)
-           or (self.discretizationThreshold < 1 and len(possibleValuesX) / len(X) > self.discretizationThreshold)):
-        self.discretizationParametersDictionary[variableName] = dict()
+    if variableName not in self.discretizationParametersDictionary:  # The user has not manually set the discretization parameters for this variable
+      if isNumeric and 1 <= self.discretizationThreshold < len(foundValuesX) or (
+         self.discretizationThreshold < 1 and len(foundValuesX) / len(X) > self.discretizationThreshold):
+        self.discretizationParametersDictionary[variableName] = {}
         self.discretizationParametersDictionary[variableName]['method'] = self.defaultMethod
-        self.discretizationParametersDictionary[variableName]['k'] = self.defaultNbBins
+        self.discretizationParametersDictionary[variableName]['param'] = self.defaultParamDiscretizationMethod
       else:
-        self.discretizationParametersDictionary[variableName] = dict()
+        self.discretizationParametersDictionary[variableName] = {}
         self.discretizationParametersDictionary[variableName]['method'] = "NoDiscretization"
       usingDefaultParameters = True
     else:
@@ -700,37 +718,49 @@ class BNDiscretizer():
         raise ValueError("The variable " + variableName + " is not numeric and cannot be discretized!")
 
     if self.discretizationParametersDictionary[variableName]["method"] == "NoDiscretization":
-      is_int_var=True
-      min_v=max_v=None
+      is_int_var = True
+      min_v = max_v = None
+
+      possibleValuesX=None
+      if "param" in self.discretizationParametersDictionary[variableName]:
+        possibleValuesX= self.discretizationParametersDictionary[variableName]["param"]
+
+      if possibleValuesX is None:
+        possibleValuesX = foundValuesX
+      else:
+        # foundValuesX must be in possibleValuesX
+        if not foundValuesX.issubset(possibleValuesX):
+          raise ValueError(f"The values passed in possibleValues ({possibleValuesX}) do not match database values ({foundValuesX})")
+
       for value in possibleValuesX:
-        if not checkInt(value):
-          is_int_var=False
-          break
+        if checkInt(value):
+          v = int(value)
+          if min_v is None or min_v > v:
+            min_v = v
+          if max_v is None or max_v < v:
+            max_v = v
         else:
-          v=int(value)
-          if min_v is None or min_v>v:
-            min_v=v
-          if max_v is None or max_v<v:
-            max_v=v
+          is_int_var = False
+          break
 
       if is_int_var:
-        if len(possibleValuesX)==max_v-min_v+1: # no hole in the list of int
-          var =gum.RangeVariable(variableName, variableName, min_v,max_v)
+        if len(possibleValuesX) == max_v - min_v + 1:  # no hole in the list of int
+          var = gum.RangeVariable(variableName, variableName, min_v, max_v)
         else:
-          var=gum.IntegerVariable(variableName, variableName,[int(v) for v in possibleValuesX])
+          var = gum.IntegerVariable(variableName, variableName, [int(v) for v in possibleValuesX])
       else:
-        is_float_var=True
+        is_float_var = True
         for value in possibleValuesX:
           if not checkFloat(value):
-            is_float_var=False
+            is_float_var = False
             break
 
         if is_float_var:
           var = gum.NumericalDiscreteVariable(variableName, variableName, [float(v) for v in possibleValuesX])
         else:
-          var = gum.LabelizedVariable(variableName, variableName, [str(v) for v in possibleValuesX])
+          var = gum.LabelizedVariable(variableName, variableName, sorted([str(v) for v in possibleValuesX]))
     else:
-      self.numberOfContinous += 1
+      self.numberOfContinuous += 1
       if self.discretizationParametersDictionary[variableName]['method'] == "CAIM":
         if y is None:
           raise ValueError(
@@ -751,13 +781,13 @@ class BNDiscretizer():
                                            possibleValuesY)
       elif self.discretizationParametersDictionary[variableName]['method'] == "NML":
         binEdges = self.discretizationNML(Xtransformed.flatten(), numpy.unique(Xtransformed),
-                                          kMax=self.discretizationParametersDictionary[variableName]["k"])
+                                          kMax=self.discretizationParametersDictionary[variableName]["param"])
       else:
-        if self.discretizationParametersDictionary[variableName]['k'] == 'elbowMethod':
+        if self.discretizationParametersDictionary[variableName]['param'] == 'elbowMethod':
           binEdges = self.discretizationElbowMethodRotation(
             self.discretizationParametersDictionary[variableName]['method'], Xtransformed.flatten())
         else:
-          discre = skp.KBinsDiscretizer(self.discretizationParametersDictionary[variableName]['k'],
+          discre = skp.KBinsDiscretizer(self.discretizationParametersDictionary[variableName]['param'],
                                         strategy=self.discretizationParametersDictionary[variableName]['method'],
                                         subsample=None)
           discre.fit(X.reshape(-1, 1))
@@ -766,13 +796,13 @@ class BNDiscretizer():
       if len(binEdges) == 2:
         raise ValueError("Due to an error the discretization method " + str(
           self.discretizationParametersDictionary[variableName]['method']) + " using " + str(
-          self.discretizationParametersDictionary[variableName]['k']) + " bins for the variable " + str(
+          self.discretizationParametersDictionary[variableName]['param']) + " bins for the variable " + str(
           variableName) + "gave only 1 bin. Try increasing the number of bins used by this variable using "
-                          "setDiscetizationParameters to avoid this error")
+                          "setDiscretizationParameters to avoid this error")
 
-      #we replace infinity as min and max by the new empirical flag.
-      #binEdges[0] = -math.inf
-      #binEdges[-1] = math.inf
+      # we replace infinity as min and max by the new empirical flag.
+      # binEdges[0] = -math.inf
+      # binEdges[-1] = math.inf
       self.totalNumberOfBins += len(binEdges) - 1
       var = gum.DiscretizedVariable(variableName, variableName, binEdges)
       var.setEmpirical(True)
@@ -782,7 +812,8 @@ class BNDiscretizer():
 
     return var
 
-  def _divideIntervalMDLP(self, minimalValues, shannonEntropyByLargeInterval, Class0ByLargeInterval,
+  @staticmethod
+  def _divideIntervalMDLP(minimalValues, shannonEntropyByLargeInterval, Class0ByLargeInterval,
                           Class1ByLargeInterval, continueDividingInterval, totalCountByLargeInterval, position,
                           binEdgesIndex):
     shannonEntropy = shannonEntropyByLargeInterval[position]
@@ -793,8 +824,8 @@ class BNDiscretizer():
     # the number of classes in the interval is equal to 1, then the shannon entropy will be 0 so the product of the 2
     # will be 0.
     deltaS = math.log2(7) - (
-        2 * shannonEntropy - 2 * minimalValues['leftSubintervalShannonEntropy']
-        - 2 * minimalValues['rightSubintervalShannonEntropy'])
+       2 * shannonEntropy - 2 * minimalValues['leftSubintervalShannonEntropy']
+       - 2 * minimalValues['rightSubintervalShannonEntropy'])
 
     if gain > (math.log2(totalCountByLargeInterval[position] - 1) + deltaS) / totalCountByLargeInterval[
       position] or len(Class0ByLargeInterval) == 1:
@@ -833,16 +864,16 @@ class BNDiscretizer():
     else:
       continueDividingInterval[position] = False
 
-  def discretizedBN(self,X, y=None, possibleValuesY=None):
+  def discretizedBN(self, X, y=None, possibleValuesY=None):
     """
     return a BN discretized using the suggestion of the Discretized for date source X and for target y. This BN only contains the discretized variables. For instance, it can be used as a template for a BNLearner.
 
     Example
     -------
-    >>> discretizer=skbn.BNDiscretizer(defaultDiscretizationMethod='uniform',defaultNumberOfBins=7,discretizationThreshold=10)
+    >>> discretizer=skbn.BNDiscretizer(defaultDiscretizationMethod='uniform',defaultParamDiscretizationMethod=7,discretizationThreshold=10)
     >>> learner=gum.BNLearner(data,discretizer.discretizedBN(data))
     """
     template = gum.BayesNet()
     for name in X:
-      template.add(self.createVariable(name, X[name],y,possibleValuesY))
+      template.add(self.createVariable(name, X[name], y, possibleValuesY))
     return template

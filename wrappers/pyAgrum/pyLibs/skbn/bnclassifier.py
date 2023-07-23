@@ -357,7 +357,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     if variableNames is None:
       variableNames = ["x" + str(i) for i in range(d)]
 
-    self.variableNameIndexDictionary = dict()
+    self.variableNameIndexDictionary = {}
 
     for i in range(d):
       self.variableNameIndexDictionary[variableNames[i]] = i
@@ -888,7 +888,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     return df
 
-  def showROC_PR(self, filename, save_fig=False, show_progress=False):
+  def showROC_PR(self, filename, beta=1, save_fig=False, show_progress=False):
     """
     Use the `pyAgrum.lib.bn2roc` tools to create ROC and Precision-Recall curve
 

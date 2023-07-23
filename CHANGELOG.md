@@ -1,5 +1,24 @@
 # aGrUM Changelog
 
+## Changelog for 1.9.0
+
+* aGrUM
+  * Learning algorithm `gum::learning::MIIC` can use the weighted databases.
+  * Internal improvements for `act` tool, `cmake` and compilers (`clang`).
+  
+* pyAgrum
+  * New visualisation for `gum::DiscretizedVariable` + new config to select this visualisation.
+  * `pyAgrum.BNLearner` can use now the weighted databases for all learning algorithms.
+  * Documentation improvements.
+  * `pyAgrum.lib.bn2roc`
+    * new `get{ROC|PR}points()`.
+    * now accepts `pandas.DataFrame` as data source (`datasrc`).
+    * add Fbeta (beta!=1) scores to bn2roc.
+    * adding F-Beta threshold on ROC and PR curves.
+    * new `anim{ROC|PR}`.
+  * `pyAgrum.skbn.Discretizer` can propose a set of labels (that includes the labels from the database) when `"NoDiscretization"` is selected. (see tutorial 52-Classifier_Discretized).
+
+
 ## Changelog for 1.8.3
 
 * aGrUM

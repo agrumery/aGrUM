@@ -47,7 +47,7 @@ def getBlackInTheme():
   return gum.config["notebook", "default_arc_color"]
 
 
-def hex2rgb(vstr):
+def hex2rgb(vstr:str)->List[int]:
   """
   from "#FFFFFF" to [255,255,255]
 
