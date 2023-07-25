@@ -17,7 +17,7 @@
     * adding F-Beta threshold on ROC and PR curves.
     * `bn2roc` functions now force many parameters to be keyword-arguments in order to prevent the risk of mixing arguments.
     * adding new functions `anim{ROC|PR}`.
-  * `pyAgrum.skbn.Discretizer` can propose a set of labels (that includes the labels from the database) when `"NoDiscretization"` is selected. (see tutorial 52-Classifier_Discretized).
+  * `pyAgrum.skbn.Discretizer` can propose a set of labels (that includes the labels from the database) when `"NoDiscretization"` is selected. (see tutorial `52-Classifier_Discretizer`).
 
 
 ## Changelog for 1.8.3
