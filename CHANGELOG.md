@@ -11,11 +11,12 @@
   * `pyAgrum.BNLearner` can use now the weighted databases for all learning algorithms.
   * Documentation improvements.
   * `pyAgrum.lib.bn2roc`
-    * new `get{ROC|PR}points()`.
-    * now accepts `pandas.DataFrame` as data source (`datasrc`).
-    * add Fbeta (beta!=1) scores to bn2roc.
+    * adding new functions `get{ROC|PR}points()`.
+    * accepting `pandas.DataFrame` as data source (`datasrc`).
+    * adding Fbeta (beta!=1) scores to bn2roc.
     * adding F-Beta threshold on ROC and PR curves.
-    * new `anim{ROC|PR}`.
+    * `bn2roc` functions now force many parameters to be keyword-arguments in order to prevent the risk of mixing arguments.
+    * adding new functions `anim{ROC|PR}`.
   * `pyAgrum.skbn.Discretizer` can propose a set of labels (that includes the labels from the database) when `"NoDiscretization"` is selected. (see tutorial 52-Classifier_Discretized).
 
 

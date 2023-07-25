@@ -129,7 +129,7 @@ def _computeFbeta(points, ind, beta=1):
 
 
 @gum.deprecated_arg(newA="datasrc", oldA="csvname", version="1.8.3")
-def _computepoints(bn, datasrc, target, label, beta=1, show_progress=True, with_labels=True, significant_digits=10):
+def _computePoints(bn, datasrc, target, label, *, beta=1, show_progress=True, with_labels=True, significant_digits=10):
   """
   Compute the ROC points.
 
@@ -328,11 +328,11 @@ def getROCpoints(bn, datasrc, target, label, with_labels=True, significant_digit
     os.remove(csvfilename)
     return l
 
-  show_progress = False
-  (res, totalP, totalN) = _computepoints(bn, datasrc, target,
-                                         label, show_progress, with_labels, significant_digits)
+  (res, totalP, totalN) = _computePoints(bn, datasrc, target,
+                                         label, show_progress=False, with_labels=with_labels,
+                                         significant_digits=significant_digits)
   (pointsROC, ind_ROC, thresholdROC, AUC_ROC, fbeta_ROC, pointsPR, ind_PR,
-   thresholdPR, AUC_PR, fbeta_PR, thresholds) = _computeROC_PR(res, totalP, totalN,beta=1)
+   thresholdPR, AUC_PR, fbeta_PR, thresholds) = _computeROC_PR(res, totalP, totalN, beta=1)
 
   return pointsROC
 
@@ -371,16 +371,17 @@ def getPRpoints(bn, datasrc, target, label, with_labels=True, significant_digits
 
     datasrc.to_csv(csvfilename, na_rep="?", index=False)
 
-    l = getPRpoints(bn, csvfilename, target, label, with_labels=with_labels,significant_digits=significant_digits)
+    l = getPRpoints(bn, csvfilename, target, label, with_labels=with_labels, significant_digits=significant_digits)
 
     os.remove(csvfilename)
     return l
 
   show_progress = False
-  (res, totalP, totalN) = _computepoints(bn, datasrc, target,
-                                         label, show_progress, with_labels, significant_digits)
+  (res, totalP, totalN) = _computePoints(bn, datasrc, target,
+                                         label, show_progress=show_progress, with_labels=with_labels,
+                                         significant_digits=significant_digits)
   (pointsROC, ind_ROC, thresholdROC, AUC_ROC, fbeta_ROC, pointsPR, ind_PR,
-   thresholdPR, AUC_PR, fbeta_PR, thresholds) = _computeROC_PR(res, totalP, totalN,beta=1)
+   thresholdPR, AUC_PR, fbeta_PR, thresholds) = _computeROC_PR(res, totalP, totalN, beta=1)
 
   return pointsPR
 
@@ -519,7 +520,7 @@ def _drawPR(points, zeTitle, fbeta_PR, beta, AUC_PR, thresholds, thresholds_to_s
 
 
 @gum.deprecated_arg(newA="datasrc", oldA="csvname", version="1.8.3")
-def showROC_PR(bn, datasrc, target, label, beta=1, show_progress=True, show_fig=True, save_fig=False,
+def showROC_PR(bn, datasrc, target, label, *, beta=1, show_progress=True, show_fig=True, save_fig=False,
                with_labels=True, show_ROC=True, show_PR=True, significant_digits=10):
   """
   Compute the ROC curve and save the result in the folder of the csv file.
@@ -573,10 +574,10 @@ def showROC_PR(bn, datasrc, target, label, beta=1, show_progress=True, show_fig=
     os.remove(csvfilename)
     return
 
-
   filename = _getFilename(datasrc)
-  (res, totalP, totalN) = _computepoints(bn, datasrc, target,
-                                         label, beta, show_progress, with_labels, significant_digits)
+  (res, totalP, totalN) = _computePoints(bn, datasrc, target,
+                                         label, beta=beta, show_progress=show_progress, with_labels=with_labels,
+                                         significant_digits=significant_digits)
   (pointsROC, ind_ROC, thresholdROC, AUC_ROC, fbeta_ROC, pointsPR, ind_PR,
    thresholdPR, AUC_PR, fbeta_PR, thresholds) = _computeROC_PR(res, totalP, totalN, beta)
   try:
@@ -655,7 +656,7 @@ def showROC(bn, datasrc, target, label, show_progress=True, show_fig=True, save_
 
 
 @gum.deprecated_arg(newA="datasrc", oldA="csvname", version="1.8.3")
-def showPR(bn, datasrc, target, label, beta=1, show_progress=True, show_fig=True, save_fig=False,
+def showPR(bn, datasrc, target, label, *, beta=1, show_progress=True, show_fig=True, save_fig=False,
            with_labels=True, significant_digits=10):
   """
   Compute the ROC curve and save the result in the folder of the csv file.
@@ -715,7 +716,7 @@ def animROC(bn, datasrc, target="Y", label="1"):
       rate = threshold / 100.0
       indexes = int((len(self._points) - 1) * rate)
 
-      plt.rcParams["figure.figsize"] = (4,3)
+      plt.rcParams["figure.figsize"] = (4, 3)
 
       fig, (ax1, ax2) = plt.subplots(nrows=2)
       ax1.plot(viewer._x, viewer._y1, "g")
@@ -732,7 +733,6 @@ def animROC(bn, datasrc, target="Y", label="1"):
       plt.tight_layout()
       plt.show()
 
-
   viewer = DisplayROC(getROCpoints(bn, datasrc, target=target, label=label))
 
   def interactive_view(rate: float):
@@ -743,6 +743,7 @@ def animROC(bn, datasrc, target="Y", label="1"):
   output = interactive_plot.children[-1]
   output.layout.height = '250px'
   return interactive_plot
+
 
 def animPR(bn, datasrc, target="Y", label="1"):
   """
@@ -773,7 +774,7 @@ def animPR(bn, datasrc, target="Y", label="1"):
       rate = threshold / 100.0
       indexes = int((len(self._points) - 1) * rate)
 
-      plt.rcParams["figure.figsize"] = (4,3)
+      plt.rcParams["figure.figsize"] = (4, 3)
 
       fig, (ax1, ax2) = plt.subplots(nrows=2)
       ax1.plot(viewer._x, viewer._y1, "r")

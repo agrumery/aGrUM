@@ -305,7 +305,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
             if either X or y is not None. Raises ValueError if targetName is None.
     """
     if filename is not None:
-      print("**pyAgrum** : 'filename' is deprecated since 1.1.1. Please use 'data' instead.")
+      warnings.warn("**pyAgrum** : 'filename' is deprecated since 1.1.1. Please use 'data' instead.")
       if data is None:
         data = filename
 
@@ -827,7 +827,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     if self.variableNameIndexDictionary is None:
       raise ValueError("First, you need to fit a model !")
     if filename is not None:
-      print("pyAgrum ** : filename is deprecated. Please use data instead.")
+      warnings.warn("pyAgrum ** : filename is deprecated. Please use data instead.")
       if data is None:
         data = filename
 
@@ -888,7 +888,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     return df
 
-  def showROC_PR(self, filename, beta=1, save_fig=False, show_progress=False):
+  def showROC_PR(self, filename,*,  beta=1, save_fig=False, show_progress=False):
     """
     Use the `pyAgrum.lib.bn2roc` tools to create ROC and Precision-Recall curve
 
@@ -896,6 +896,8 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     ----------
     filename: str
         a csv filename
+    beta : float
+        the value of beta for the F-beta score
     save_fig : bool
         whether the graph should be saved
     show_progress : bool
