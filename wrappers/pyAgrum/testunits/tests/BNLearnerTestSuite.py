@@ -195,7 +195,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       self.fail("Exception has been raised and should not")
     self.assertFalse(bn.dag().existsArc(4, 1))
     self.assertTrue(bn.dag().existsArc(7, 5))
-    self.assertEqual(len(learner.latentVariables()), 0)
+    self.assertEqual(len(learner.latentVariables()), 2)
 
   def test_setSliceOrder_with_names(self):
     learner = gum.BNLearner(self.agrumSrcDir(

@@ -107,7 +107,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
                 not specified another method for that specific variable using the setDiscretizationParameters method
                 possible values are: 'quantile', 'uniform', 'kmeans', 'NML', 'CAIM' and 'MDLP'
 
-            defaultNumberOfBins: str or int
+            discretizationNbBins: str or int
                 sets the number of bins if the method used is quantile, kmeans, uniform. In this case this parameter can
                 also be set to the string 'elbowMethod' so that the best number of bins is found automatically.
                 If the method used is NML, this parameter sets the maximum number of bins up to which the NML
@@ -195,7 +195,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
                 not specified another method for that specific variable using the setDiscretizationParameters method
                 possible values are: 'quantile', 'uniform', 'kmeans', 'NML', 'CAIM' and 'MDLP'
 
-            defaultNumberOfBins: str or int
+            discretizationNbBins: str or int
                 sets the number of bins if the method used is quantile, kmeans, uniform. In this case this parameter can
                 also be set to the string 'elbowMethod' so that the best number of bins is found automatically.
                 If the method used is NML, this parameter sets the the maximum number of bins up to which the NML
@@ -435,7 +435,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     if self.isBinaryClassifier:
       self.threshold = CThreshold(
-        self.MarkovBlanket, self.target, csvfilename, self.usePR, self.significant_digit)
+        self.MarkovBlanket, self.target, csvfilename, self.usePR, self.beta, self.significant_digit)
 
     os.remove(csvfilename)
     os.remove(tmpfilename)
