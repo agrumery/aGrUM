@@ -60,7 +60,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
   ----------
             learningMethod: str
                 A string designating which type of learning we want to use. Possible values are: Chow-Liu, NaiveBayes,
-                TAN, MIIC + (MDL ou NML), GHC, 3off2 + (MDL ou NML), Tabu.
+                TAN, MIIC + (MDL ou NML), GHC, Tabu.
                 GHC designates Greedy Hill Climbing.
                 MIIC designates Multivariate Information based Inductive Causation
                 TAN designates Tree-augmented NaiveBayes

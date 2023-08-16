@@ -34,7 +34,7 @@ from ._utils import _ImplementScore as implementScore
 
 def _fitStandard(X, y, learner, learningMethod, possibleSkeleton, scoringType, constraints):
   """
-  The default fit function that uses MIIC, 3off2, Greedy Hill Climbing or Tabu list sorting depending on the learning method chosen.
+  The default fit function that uses MIIC, Greedy Hill Climbing or Tabu list sorting depending on the learning method chosen.
 
   Parameters
   ---------

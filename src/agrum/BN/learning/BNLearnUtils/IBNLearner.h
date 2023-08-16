@@ -877,7 +877,7 @@ namespace gum::learning {
     StructuralConstraintMandatoryArcs constraintMandatoryArcs_;
 
     /// the selected learning algorithm
-    AlgoType selectedAlgo_{AlgoType::GREEDY_HILL_CLIMBING};
+    AlgoType selectedAlgo_{AlgoType::MIIC};
 
     /// the K2 algorithm
     K2 algoK2_;
