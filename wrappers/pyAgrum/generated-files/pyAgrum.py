@@ -26342,8 +26342,24 @@ class BNLearner(object):
         """
     return _pyAgrum.BNLearner_useLocalSearchWithTabuList(self, tabu_size, nb_decrease)
 
+<<<<<<< Updated upstream
   def useMIIC(self) -> "pyAgrum.BNLearner":
     r"""
+=======
+<<<<<<< Updated upstream
+    def use3off2(self) -> "pyAgrum.BNLearner":
+        r"""
+
+        Indicate that we wish to use 3off2.
+
+        """
+        return _pyAgrum.BNLearner_use3off2(self)
+
+=======
+>>>>>>> Stashed changes
+    def useMIIC(self) -> "pyAgrum.BNLearner":
+        r"""
+>>>>>>> Stashed changes
 
         Indicate that we wish to use MIIC.
 
@@ -26385,8 +26401,28 @@ class BNLearner(object):
         """
     return _pyAgrum.BNLearner_setMaxIndegree(self, max_indegree)
 
+<<<<<<< Updated upstream
   def addForbiddenArc(self, *args) -> "pyAgrum.BNLearner":
     r"""
+=======
+<<<<<<< Updated upstream
+    def setForbiddenArcs(self, set: Set[Tuple[int,int]]) -> "pyAgrum.BNLearner":
+        r"""
+
+        assign a set of forbidden arcs
+
+        Parameters
+        ----------
+        arcs: Set[Tuple[intstr,intstr]]
+
+        """
+        return _pyAgrum.BNLearner_setForbiddenArcs(self, set)
+
+=======
+>>>>>>> Stashed changes
+    def addForbiddenArc(self, *args) -> "pyAgrum.BNLearner":
+        r"""
+>>>>>>> Stashed changes
 
         The arc in parameters won't be added.
 
@@ -26519,8 +26555,14 @@ class BNLearner(object):
         """
     return _pyAgrum.BNLearner_erasePossibleEdge(self, *args)
 
+<<<<<<< Updated upstream
   def setPossibleEdges(self, set: Set[Tuple[int, int]]) -> "pyAgrum.BNLearner":
     return _pyAgrum.BNLearner_setPossibleEdges(self, set)
+=======
+<<<<<<< Updated upstream
+    def setMandatoryArcs(self, set: Set[Tuple[int,int]]) -> "pyAgrum.BNLearner":
+        r"""
+>>>>>>> Stashed changes
 
   def setPossibleSkeleton(self, skeleton: "pyAgrum.UndiGraph") -> "pyAgrum.BNLearner":
     return _pyAgrum.BNLearner_setPossibleSkeleton(self, skeleton)
@@ -26531,8 +26573,39 @@ class BNLearner(object):
   def __str__(self) -> str:
     return _pyAgrum.BNLearner___str__(self)
 
+<<<<<<< Updated upstream
   def chi2(self, *args) -> object:
     r"""
+=======
+    def setPossibleEdges(self, set: Set[Tuple[int,int]]) -> "pyAgrum.BNLearner":
+        return _pyAgrum.BNLearner_setPossibleEdges(self, set)
+
+    def setPossibleSkeleton(self, skeleton: "pyAgrum.UndiGraph") -> "pyAgrum.BNLearner":
+        return _pyAgrum.BNLearner_setPossibleSkeleton(self, skeleton)
+
+    def __repr__(self) -> str:
+        return _pyAgrum.BNLearner___repr__(self)
+
+    def __str__(self) -> str:
+        return _pyAgrum.BNLearner___str__(self)
+
+=======
+    def setPossibleEdges(self, set: Set[Tuple[int,int]]) -> "pyAgrum.BNLearner":
+        return _pyAgrum.BNLearner_setPossibleEdges(self, set)
+
+    def setPossibleSkeleton(self, skeleton: "pyAgrum.UndiGraph") -> "pyAgrum.BNLearner":
+        return _pyAgrum.BNLearner_setPossibleSkeleton(self, skeleton)
+
+    def __repr__(self) -> str:
+        return _pyAgrum.BNLearner___repr__(self)
+
+    def __str__(self) -> str:
+        return _pyAgrum.BNLearner___str__(self)
+
+>>>>>>> Stashed changes
+    def chi2(self, *args) -> object:
+        r"""
+>>>>>>> Stashed changes
 
         chi2 computes the chi2 statistic and p-value for two columns, given a list of other columns.
 
