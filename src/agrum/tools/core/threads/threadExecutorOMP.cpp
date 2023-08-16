@@ -20,19 +20,8 @@
 
 /**
  * @file
- * @brief The base class used by all thread executors
+ * @brief A class to execute several threads by exploiting openMP
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-// to ease automatic parsers
-#include <agrum/agrum.h>
-#include <agrum/tools/core/threadExecutorBase.h>
-
-namespace gum {
-
-  // indicates how many threadExecutors are currently running
-  INLINE int ThreadExecutorBase::nbRunningThreadsExecutors() {
-    return int(nbRunningThreadsExecutors_);
-  }
-
-}   // namespace gum
+#include <agrum/tools/core/threads/threadExecutorOMP.h>

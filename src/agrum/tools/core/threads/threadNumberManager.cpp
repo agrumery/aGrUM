@@ -25,9 +25,9 @@
  */
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/threadNumberManager.h>
+#include <agrum/tools/core/threads/threadNumberManager.h>
 
 // include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
-#  include <agrum/tools/core/threadNumberManager_inl.h>
+#  include <agrum/tools/core/threads/threadNumberManager_inl.h>
 #endif /* GUM_NO_INLINE */

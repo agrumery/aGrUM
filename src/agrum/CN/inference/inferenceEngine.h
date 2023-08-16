@@ -32,8 +32,8 @@
 #include <agrum/CN/tools/varMod2BNsMap.h>
 #include <agrum/tools/core/approximations/approximationScheme.h>
 
-#include <agrum/tools/core/threadData.h>
-#include <agrum/tools/core/threadNumberManager.h>
+#include <agrum/tools/core/threads/threadData.h>
+#include <agrum/tools/core/threads/threadNumberManager.h>
 
 namespace gum {
   namespace credal {

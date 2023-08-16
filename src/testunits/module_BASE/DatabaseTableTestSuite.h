@@ -25,7 +25,7 @@
 #include <vector>
 #include <string>
 
-#include <agrum/tools/core/threads.h>
+#include <agrum/tools/core/threads/threads.h>
 #include <agrum/tools/database/databaseTable.h>
 #include <agrum/tools/database/DBTranslatorSet.h>
 #include <agrum/tools/database/DBTranslator4LabelizedVariable.h>

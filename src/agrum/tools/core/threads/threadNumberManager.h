@@ -28,7 +28,7 @@
 #define AGRUM_THREAD_NUMBER_MANAGER_H
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/threads.h>
+#include <agrum/tools/core/threads/threads.h>
 #include <agrum/tools/core/IThreadNumberManager.h>
 
 namespace gum {
@@ -36,7 +36,7 @@ namespace gum {
   /**
    * @class ThreadNumberManager
    * @brief A class to manage the number of threads to use in an algorithm
-   * @headerfile threadNumberManager.h <agrum/tools/core/threadNumberManager.h>
+   * @headerfile threadNumberManager.h <agrum/tools/core/threads/threadNumberManager.h>
    */
   class ThreadNumberManager: public IThreadNumberManager {
     public:
@@ -108,7 +108,7 @@ namespace gum {
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#  include <agrum/tools/core/threadNumberManager_inl.h>
+#  include <agrum/tools/core/threads/threadNumberManager_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif   // AGRUM_THREAD_NUMBER_MANAGER_H

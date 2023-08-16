@@ -31,8 +31,8 @@
 #include <utility>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/threadsSTL.h>
-#include <agrum/tools/core/threadsOMP.h>
+#include <agrum/tools/core/threads/threadsSTL.h>
+#include <agrum/tools/core/threads/threadsOMP.h>
 
 namespace gum {
 

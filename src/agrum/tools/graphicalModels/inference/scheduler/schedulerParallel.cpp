@@ -26,7 +26,7 @@
  */
 
 #include <agrum/tools/graphicalModels/inference/scheduler/schedulerParallel.h>
-#include <agrum/tools/core/threadData.h>
+#include <agrum/tools/core/threads/threadData.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 

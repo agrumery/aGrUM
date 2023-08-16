@@ -20,7 +20,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#  include <agrum/tools/core/threadNumberManager.h>
+#  include <agrum/tools/core/threads/threadNumberManager.h>
 
 namespace gum {
 

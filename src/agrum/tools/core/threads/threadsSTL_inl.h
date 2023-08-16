@@ -18,10 +18,32 @@
  *
  */
 
+
 /**
  * @file
- * @brief A class to execute several threads by exploiting openMP
+ * @brief C++17 STL threads convenience utilities for agrum.
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/tools/core/threadExecutorOMP.h>
+// to ease automatic parsers
+#include <agrum/agrum.h>
+#include <agrum/tools/core/threads/threadsSTL.h>
+
+namespace gum {
+
+  namespace threadsSTL {
+
+
+    // returns the maximum number of threads possible
+    INLINE unsigned int getMaxNumberOfThreads() { return std::thread::hardware_concurrency(); }
+
+
+    // returns the number of logical processors.
+    INLINE unsigned int getNumberOfLogicalProcessors() {
+      return std::thread::hardware_concurrency();
+    }
+
+
+  } /* namespace threadsSTL */
+
+} /* namespace gum */

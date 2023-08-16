@@ -27,7 +27,7 @@
 
 // to ease automatic parsers
 #include <agrum/agrum.h>
-#include <agrum/tools/core/threadsOMP.h>
+#include <agrum/tools/core/threads/threadsOMP.h>
 
 namespace gum {
 

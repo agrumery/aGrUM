@@ -36,7 +36,7 @@ namespace gum {
   /**
    * @class ThreadExecutorBase
    * @brief The base class used by all thread executors
-   * @headerfile threadExecutorBase.h <agrum/tools/core/threadExecutorBase.h>
+   * @headerfile threadExecutorBase.h <agrum/tools/core/threads/threadExecutorBase.h>
    */
   class ThreadExecutorBase
   /**
@@ -62,7 +62,7 @@ namespace gum {
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#  include <agrum/tools/core/threadExecutorBase_inl.h>
+#  include <agrum/tools/core/threads/threadExecutorBase_inl.h>
 #endif /* GUM_NO_INLINE */
 
 

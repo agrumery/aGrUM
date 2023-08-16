@@ -23,7 +23,7 @@
  * @brief A class to execute several threads by exploiting openMP
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#include <agrum/tools/core/threadExecutorOMP.h>
+#include <agrum/tools/core/threads/threadExecutorOMP.h>
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

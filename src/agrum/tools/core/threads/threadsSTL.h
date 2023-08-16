@@ -21,16 +21,13 @@
 
 /**
  * @file
- * @brief Wrappers for OpenMP.
- * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
+ * @brief C++17 STL threads convenience utilities for aGrUM.
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#ifndef GUM_THREADS_OPEMMP_H
-#define GUM_THREADS_OPEMMP_H
+#ifndef GUM_THREADS_STL_H
+#define GUM_THREADS_STL_H
 
-#ifdef _OPENMP
-#  include <omp.h>
-#endif
 
 #include <thread>
 #include <vector>
@@ -38,19 +35,13 @@
 
 #include <agrum/agrum.h>
 
+
 namespace gum {
 
-  namespace threadsOMP {
+  namespace threadsSTL {
 
     /**
-     * @brief Is OMP active ?
-     * @ingroup basicstruct_group
-     * @return \c True if OMP has been set at compilation, \c False otherwise.
-     */
-    bool hasOMPSupport();
-
-    /**
-     * @brief Returns the maximum number of threads that should be used at any time.
+     * @brief Returns the maximum number of threads you should use at any time.
      * @ingroup basicstruct_group
      *
      * By default, it should be the number of CPU cores available. Note that it
@@ -59,7 +50,7 @@ namespace gum {
      * is by default equal to getMaxNumberOfThreads(), but the user may wish to
      * change it for some reason).
      *
-     * @return Returns the maximum number of threads at any time.
+     * @return Returns the maximum number of threads that should be used at any time.
      */
     unsigned int getMaxNumberOfThreads();
 
@@ -85,7 +76,7 @@ namespace gum {
     unsigned int getNumberOfLogicalProcessors();
 
     /**
-     * @brief Set the number of threads to be used when entering the next
+     * @brief Set the max number of threads to be used when entering the next
      * parallel region.
      * @ingroup basicstruct_group
      *
@@ -95,75 +86,15 @@ namespace gum {
      */
     void setNumberOfThreads(unsigned int number);
 
-    /**
-     * @brief Get the calling thread id.
-     * @ingroup basicstruct_group
-     *
-     * Call this from a parallel region.
-     * @return The calling thread id.
-     */
-    unsigned int getThreadNumber();
+  }   // namespace threadsSTL
 
-    /**
-     * @brief Get the current number of running threads.
-     * @ingroup basicstruct_group
-     *
-     * Call this from a parallel region.
-     * @return The current number of running threads.
-     */
-    unsigned int getNumberOfRunningThreads();
+} /* namespace gum */
 
-    /**
-     * @brief Set nested parallelism (false bu default).
-     * @ingroup basicstruct_group
-     *
-     * Nested parallelism, i.e. parallel activity within another parallel
-     * activity : threads creating more threads.
-     *
-     * Off by default.
-     *
-     * @param value \c True if nested parallelism should be activated, \c False
-     * otherwise.
-     */
-    void setNestedParallelism(bool value);
-
-    /**
-     * @brief Get nested parallelism status.
-     * @ingroup basicstruct_group
-     * @return \c True if nested parallelism is enabled, \c False otherwise.
-     */
-    bool getNestedParallelism();
-
-    /**
-     * @brief Set the dynamic threads number (false by default).
-     * @ingroup basicstruct_group
-     *
-     * Automatically adjust the number of running threads within a parallel
-     * region.
-     *
-     * Desactivated by default.
-     *
-     * @param value \c True if dynamic thread number should be used, \c False
-     * otherwise.
-     */
-    void setDynamicThreadsNumber(bool value);
-
-    /**
-     * @brief Get the dynamic thread number adjustment status.
-     * @ingroup basicstruct_group
-     * @ingroup basicstruct_group
-     * @return \c True if dynamic adjustment is enabled, \c False otherwise.
-     */
-    bool getDynamicThreadsNumber();
-
-
-  } /* namespace threadsOMP */
-
-}   // namespace gum
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#  include <agrum/tools/core/threadsOMP_inl.h>
+#  include <agrum/tools/core/threads/threadsSTL_inl.h>
 #endif /* GUM_NO_INLINE */
 
-#endif   // GUM_THREADS_OPENMP_H
+
+#endif /* GUM_THREADS_STL */

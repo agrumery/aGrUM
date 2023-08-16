@@ -18,32 +18,23 @@
  *
  */
 
-
 /**
  * @file
- * @brief C++17 STL threads convenience utilities for agrum.
+ * @brief The base class used by all thread executors
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-// to ease automatic parsers
-#include <agrum/agrum.h>
-#include <agrum/tools/core/threadsSTL.h>
+#include <agrum/tools/core/threads/threadExecutorBase.h>
+
+// include the inlined functions if necessary
+#ifdef GUM_NO_INLINE
+#  include <agrum/tools/core/threads/threadExecutorBase_inl.h>
+#endif /* GUM_NO_INLINE */
+
 
 namespace gum {
 
-  namespace threadsSTL {
+  // the number of currently running ThreadExecutors
+  std::atomic< int > ThreadExecutorBase::nbRunningThreadsExecutors_{0};
 
-
-    // returns the maximum number of threads possible
-    INLINE unsigned int getMaxNumberOfThreads() { return std::thread::hardware_concurrency(); }
-
-
-    // returns the number of logical processors.
-    INLINE unsigned int getNumberOfLogicalProcessors() {
-      return std::thread::hardware_concurrency();
-    }
-
-
-  } /* namespace threadsSTL */
-
-} /* namespace gum */
+}   // namespace gum

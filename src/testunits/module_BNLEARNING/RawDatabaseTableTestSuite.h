@@ -23,7 +23,7 @@
 #include <gumtest/testsuite_utils.h>
 #include <iostream>
 
-#include <agrum/tools/core/threads.h>
+#include <agrum/tools/core/threads/threads.h>
 #include <agrum/tools/database/rawDatabaseTable.h>
 
 namespace gum_tests {

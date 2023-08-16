@@ -56,8 +56,8 @@
 #define GUM_LEARNING_GRAPH_CHANGES_GENERATOR_4_UNDIGRAPH_H
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/threads.h>
-#include <agrum/tools/core/threadExecutor.h>
+#include <agrum/tools/core/threads/threads.h>
+#include <agrum/tools/core/threads/threadExecutor.h>
 #include <agrum/BN/learning/structureUtils/IGraphChangesGenerator4UndiGraph.h>
 
 namespace gum {

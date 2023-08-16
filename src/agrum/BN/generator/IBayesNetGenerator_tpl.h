@@ -45,7 +45,7 @@ namespace gum {
       GUM_ERROR(OperationNotAllowed, " maxArcs value not possible ")
 
     if (maxModality < 2)
-      GUM_ERROR(OperationNotAllowed, " maxModality must be at least equal to two ")
+      GUM_ERROR(OperationNotAllowed, " maxModality must be at least equal to 2 ")
 
     maxArcs_     = maxArcs;
     maxModality_ = maxModality;

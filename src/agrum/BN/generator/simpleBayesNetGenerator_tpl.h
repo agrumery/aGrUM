@@ -25,7 +25,7 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) and Lionel TORTI and Ariele-Paolo MAESANO
  *
  */
-
+#include <agrum/tools/core/utils_random.h>
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
 
 namespace gum {
@@ -75,7 +75,18 @@ namespace gum {
       for (Size j = i + 1; j < this->nbrNodes_; ++j)
         if (randomProba() < density) this->dag_.addArc(i, j);
 
-    this->fromDAG(bayesNet);
-    this->fillCPT(bayesNet);
-  }
-} /* namespace gum */
+    // Adding arcs until we reach the maxArcs_ number
+    while (this->dag_.sizeArcs() < this->maxArcs_) {
+      Size i = randomValue(this->nbrNodes_);
+      Size j = randomValue(this->nbrNodes_);
+      if (i != j) {
+        if (i > j) std::swap(i, j);
+
+        if (!this->dag_.existsArc(i, j)) this->dag_.addArc(i, j);
+      }
+    }
+
+      this->fromDAG(bayesNet);
+      this->fillCPT(bayesNet);
+    }
+  } /* namespace gum */

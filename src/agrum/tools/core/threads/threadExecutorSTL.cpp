@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2023  by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
+ *   Copyright (c) 2005-2023 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -20,21 +20,8 @@
 
 /**
  * @file
- * @brief The base class used by all thread executors
+ * @brief A class to execute several threads by exploiting std::thread
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/tools/core/threadExecutorBase.h>
-
-// include the inlined functions if necessary
-#ifdef GUM_NO_INLINE
-#  include <agrum/tools/core/threadExecutorBase_inl.h>
-#endif /* GUM_NO_INLINE */
-
-
-namespace gum {
-
-  // the number of currently running ThreadExecutors
-  std::atomic< int > ThreadExecutorBase::nbRunningThreadsExecutors_{0};
-
-}   // namespace gum
+#include <agrum/tools/core/threads/threadExecutorSTL.h>

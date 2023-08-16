@@ -38,7 +38,7 @@ namespace gum {
   /** @class ThreadData
    * @brief A wrapper that enables to store data in a way that prevents false
    * cacheline sharing.
-   * @headerfile threadData.h <agrum/tools/core/threadData.h>
+   * @headerfile threadData.h <agrum/tools/core/threads/threadData.h>
    * @ingroup basicstruct_group
    *
    * When several threads access to some shared containers like vectors, it

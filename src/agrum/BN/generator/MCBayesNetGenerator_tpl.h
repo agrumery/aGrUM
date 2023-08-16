@@ -188,7 +188,7 @@ namespace gum {
       Idx per     = randomValue(100);
 
       if (per < p_) {
-        _AorR_();
+        _Add_or_Remove_();
 
         if (_checkConditions_()) {
           tmp_dag = this->dag_;
@@ -199,7 +199,7 @@ namespace gum {
         }
       } else {
         if (per < p_ + q_) {
-          _AR_();
+          _Add_and_Remove_();
 
           if (!_checkConditions_()) {
             this->dag_ = tmp_dag;
@@ -234,7 +234,7 @@ namespace gum {
       Idx per = randomValue(100);
 
       if (per < p_ + q_) {
-        _AorR_();
+        _Add_or_Remove_();
         if (_checkConditions_()) {
           if (_isPolytree_()) {
             if (per < p_) {
@@ -270,7 +270,7 @@ namespace gum {
              class ICPTGenerator,
              template < typename >
              class ICPTDisturber >
-  void MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::_AorR_() {
+  void MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::_Add_or_Remove_() {
     NodeId i, j;
     _chooseNodes_(i, j);
     if (this->dag_.existsArc(i, j)) {
@@ -285,7 +285,7 @@ namespace gum {
              class ICPTGenerator,
              template < typename >
              class ICPTDisturber >
-  void MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::_AR_() {
+  void MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::_Add_and_Remove_() {
     NodeId i, j, head, tail;
     _chooseNodes_(i, j);
 

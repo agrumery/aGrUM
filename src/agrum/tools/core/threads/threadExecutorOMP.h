@@ -20,43 +20,50 @@
 
 /**
  * @file
- * @brief A class to execute several threads by exploiting std::thread
+ * @brief A class to execute several threads by exploiting openMP
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#ifndef GUM_THREAD_EXECUTOR_STL_H
-#define GUM_THREAD_EXECUTOR_STL_H
+#ifndef GUM_THREAD_EXECUTOR_OMP_H
+#define GUM_THREAD_EXECUTOR_OMP_H
+
+#include <vector>
+#include <exception>
+#include <algorithm>
+#include <functional>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/threadsSTL.h>
-#include <agrum/tools/core/threadExecutorBase.h>
+#include <agrum/tools/core/threads/threadsOMP.h>
+#include <agrum/tools/core/threads/threadExecutorBase.h>
 
 namespace gum {
 
-  namespace threadsSTL {
+  namespace threadsOMP {
 
-    /** @class threadsSTL::ThreadExecutor
-     * @brief The class enables to launch std::threads to execute callables in
+    /** @class threadsOMP::ThreadExecutor
+     * @brief The class enables to uses openMP to execute callables in
      * parallel.
-     * @headerfile threadExecutorSTL.h <agrum/tools/core/threadExecutorSTL.h>
      *
-     * The threadsSTL::ThreadExecutor class is intended to easily parallelize
-     * algorithms by providing a simple interface to launch the threads. The
-     * class also catches exceptions raised by the threads, so that those do
-     * not terminate prematurely the program. It can then rethrow one such
-     * exception in a single-threaded manner, so that it can be caught by the
-     * main thread.
+     * @headerfile threadExecutorOMP.h <agrum/tools/core/threads/threadExecutorOMP.h>
+     *
+     * The threadsOMP::ThreadExecutor class is intended to easily
+     * parallelize algorithms by providing a simple interface to launch the
+     * threads. The class also catches exceptions raised by the threads, so that
+     * those do not terminate prematurely the program. It can then rethrow one
+     * such exception in a single-threaded manner, so that it can be caught by
+     * the main thread.
      *
      * @warning This class is not intended to be used explicitly by the user.
      * It is preferable to use class threads::ThreadExecutor, which will point to
-     * the threadsSTL::ThreadExecutor class if the threads infrastructure to
-     * use is STL.
+     * the threadsOMP::ThreadExecutor class if the threads infrastructure to
+     * use is openMP.
      *
      * @par Usage example:
      * @code
      * @endcode
      */
-    struct ThreadExecutor: private ThreadExecutorBase {
+    class ThreadExecutor: private ThreadExecutorBase {
+      public:
       /// indicates how many threadExecutors are currently running
       using ThreadExecutorBase::nbRunningThreadsExecutors;
 
@@ -64,8 +71,7 @@ namespace gum {
       template < typename FUNCTION, typename... ARGS >
       static void execute(std::size_t nb_threads, FUNCTION exec_func, ARGS&&... func_args);
 
-
-      /// executes in parallel a function and undoes it if execptions are raised
+      /// executes in parallel a function and undoes it if exceptions are raised
       template < typename FUNC1, typename FUNC2, typename... ARGS >
       static void executeOrUndo(std::size_t nb_threads,
                                 FUNC1       exec_func,
@@ -73,12 +79,12 @@ namespace gum {
                                 ARGS&&... func_args);
     };
 
-  } /* namespace threadsSTL */
+  } /* namespace threadsOMP */
 
 } /* namespace gum */
 
 
 /// always include the templated implementations
-#include <agrum/tools/core/threadExecutorSTL_tpl.h>
+#include <agrum/tools/core/threads/threadExecutorOMP_tpl.h>
 
-#endif /* GUM_THREAD_EXECUTOR_STL_H */
+#endif /* GUM_THREAD_EXECUTOR_OMP_H */

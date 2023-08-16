@@ -38,7 +38,7 @@
 
 #include <agrum/agrum.h>
 #include <agrum/tools/core/priorityQueue.h>
-#include <agrum/tools/core/threadExecutor.h>
+#include <agrum/tools/core/threads/threadExecutor.h>
 #include <agrum/tools/graphicalModels/inference/scheduler/schedulerSequential.h>
 
 namespace gum {

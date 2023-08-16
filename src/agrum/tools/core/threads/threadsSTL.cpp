@@ -27,11 +27,11 @@
 
 // to ease automatic parsers
 #include <agrum/agrum.h>
-#include <agrum/tools/core/threadsSTL.h>
+#include <agrum/tools/core/threads/threadsSTL.h>
 
 // include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
-#  include <agrum/tools/core/threadsSTL_inl.h>
+#  include <agrum/tools/core/threads/threadsSTL_inl.h>
 #endif /* GUM_NO_INLINE */
 
 

@@ -27,11 +27,11 @@
  */
 #include <agrum/agrum.h>
 
-#include <agrum/tools/core/threadsOMP.h>
+#include <agrum/tools/core/threads/threadsOMP.h>
 
 // include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
-#  include <agrum/tools/core/threadsOMP_inl.h>
+#  include <agrum/tools/core/threads/threadsOMP_inl.h>
 #endif /* GUM_NO_INLINE */
 
 namespace gum {

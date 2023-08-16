@@ -30,8 +30,8 @@
 #include <agrum/CN/polytope/LpInterface.h>
 #include <agrum/CN/credalNet.h>
 
-#include <agrum/tools/core/threads.h>
-#include <agrum/tools/core/threadExecutor.h>
+#include <agrum/tools/core/threads/threads.h>
+#include <agrum/tools/core/threads/threadExecutor.h>
 
 /**
  * @file

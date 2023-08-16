@@ -27,4 +27,4 @@
  * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
  */
 
-#include <agrum/tools/core/threadExecutor.h>
+#include <agrum/tools/core/threads/threadExecutor.h>

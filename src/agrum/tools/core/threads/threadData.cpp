@@ -1,6 +1,6 @@
 /**
  *
- *   Copyright (c) 2005-2023 by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
+ *   Copyright (c) 2005-2023  by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -18,10 +18,11 @@
  *
  */
 
-/**
- * @file
- * @brief A class to execute several threads by exploiting std::thread
- * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+
+/** @file
+ * @brief The class that computes counts of observations from the database.
+ *
+ * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#include <agrum/tools/core/threadExecutorSTL.h>
+#include <agrum/tools/core/threads/threadData.h>

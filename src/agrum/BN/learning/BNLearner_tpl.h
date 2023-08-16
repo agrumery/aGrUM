@@ -33,7 +33,6 @@
 
 // to help IDE parser
 #  include <agrum/BN/learning/BNLearner.h>
-
 #  include <agrum/BN/learning/BNLearnUtils/BNLearnerListener.h>
 
 namespace gum {
@@ -313,13 +312,14 @@ namespace gum {
 
 
       key = "Score";
+      const std::string NotUsedForConstraintBasedAlgo = "Not used for constraint-based algorithms";
       switch (scoreType_) {
-        case ScoreType::K2: vals.emplace_back(key, "K2", ""); break;
-        case ScoreType::AIC: vals.emplace_back(key, "AIC", ""); break;
-        case ScoreType::BIC: vals.emplace_back(key, "BIC", ""); break;
-        case ScoreType::BD: vals.emplace_back(key, "BD", ""); break;
-        case ScoreType::BDeu: vals.emplace_back(key, "BDeu", ""); break;
-        case ScoreType::LOG2LIKELIHOOD: vals.emplace_back(key, "Log2Likelihood", ""); break;
+        case ScoreType::K2: vals.emplace_back(key, "K2", NotUsedForConstraintBasedAlgo); break;
+        case ScoreType::AIC: vals.emplace_back(key, "AIC", NotUsedForConstraintBasedAlgo); break;
+        case ScoreType::BIC: vals.emplace_back(key, "BIC", NotUsedForConstraintBasedAlgo); break;
+        case ScoreType::BD: vals.emplace_back(key, "BD", NotUsedForConstraintBasedAlgo); break;
+        case ScoreType::BDeu: vals.emplace_back(key, "BDeu", NotUsedForConstraintBasedAlgo); break;
+        case ScoreType::LOG2LIKELIHOOD: vals.emplace_back(key, "Log2Likelihood", NotUsedForConstraintBasedAlgo); break;
         default: vals.emplace_back(key, "(unknown)", "?"); break;
       }
 

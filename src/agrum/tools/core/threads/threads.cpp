@@ -25,7 +25,7 @@
  */
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/threads.h>
+#include <agrum/tools/core/threads/threads.h>
 
 namespace gum {
 

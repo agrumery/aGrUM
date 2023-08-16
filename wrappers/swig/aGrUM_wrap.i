@@ -56,12 +56,12 @@
 #include <agrum/tools/core/refPtr.h>
 #include <agrum/tools/core/list.h>
 
-#include <agrum/tools/core/threadsOMP.h>
-#include <agrum/tools/core/threadsSTL.h>
-#include <agrum/tools/core/threads.h>
-#include <agrum/tools/core/threadExecutorOMP.h>
-#include <agrum/tools/core/threadExecutorSTL.h>
-#include <agrum/tools/core/threadExecutor.h>
+#include <agrum/tools/core/threads/threadsOMP.h>
+#include <agrum/tools/core/threads/threadsSTL.h>
+#include <agrum/tools/core/threads/threads.h>
+#include <agrum/tools/core/threads/threadExecutorOMP.h>
+#include <agrum/tools/core/threads/threadExecutorSTL.h>
+#include <agrum/tools/core/threads/threadExecutor.h>
 
 #include <agrum/tools/graphs/parts/edgeGraphPart.h>
 #include <agrum/tools/graphs/parts/arcGraphPart.h>
@@ -285,10 +285,10 @@ namespace std {
 %include <agrum/tools/core/set.h>
 %include <agrum/tools/core/exceptions.h>
 %include <agrum/tools/core/sequence.h>
-%import <agrum/tools/core/threadsOMP.h>
-%import <agrum/tools/core/threadsSTL.h>
-%include <agrum/tools/core/threads.h>
-%import <agrum/tools/core/threadNumberManager.h>
+%import <agrum/tools/core/threads/threadsOMP.h>
+%import <agrum/tools/core/threads/threadsSTL.h>
+%include <agrum/tools/core/threads/threads.h>
+%import <agrum/tools/core/threads/threadNumberManager.h>
 %include <agrum/tools/core/utils_random.h>
 
 

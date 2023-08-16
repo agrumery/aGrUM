@@ -18,11 +18,32 @@
  *
  */
 
-
-/** @file
- * @brief The class that computes counts of observations from the database.
- *
- * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
+/**
+ * @file
+ * @brief The class to use to execute a function by several threads
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/tools/core/threadData.h>
+#ifndef GUM_THREAD_EXECUTOR_H
+#define GUM_THREAD_EXECUTOR_H
+
+#include <agrum/agrum.h>
+#include <agrum/tools/core/threads/threadExecutorSTL.h>
+#include <agrum/tools/core/threads/threadExecutorOMP.h>
+
+namespace gum {
+
+  // use either the OMP or the STL thread executor, depending on the --threads
+  // aGrUM's compilation option
+  // @TODO substitute the lines below by
+  // using ThreadExecutor = GUM_THREADS::ThreadExecutor;
+  // when swig will support it
+#ifdef GUM_THREADS_USE_OMP
+  using ThreadExecutor = threadsOMP::ThreadExecutor;
+#else
+  using ThreadExecutor = threadsSTL::ThreadExecutor;
+#endif
+
+} /* namespace gum */
+
+#endif /* GUM_THREAD_EXECUTOR_H */

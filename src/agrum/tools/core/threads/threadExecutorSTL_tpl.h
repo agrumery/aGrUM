@@ -23,7 +23,7 @@
  * @brief A class to execute several threads by exploiting std::thread
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#include <agrum/tools/core/threadExecutorSTL.h>
+#include <agrum/tools/core/threads/threadExecutorSTL.h>
 
 #include <thread>
 #include <vector>

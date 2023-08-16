@@ -31,8 +31,8 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/tools/core/approximations/approximationSchemeListener.h>
 
-#include <agrum/tools/core/threads.h>
-#include <agrum/tools/core/threadExecutor.h>
+#include <agrum/tools/core/threads/threads.h>
+#include <agrum/tools/core/threads/threadExecutor.h>
 
 /**
  * @file

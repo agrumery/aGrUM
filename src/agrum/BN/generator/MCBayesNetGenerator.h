@@ -317,61 +317,47 @@ namespace gum {
 
     /**
      * In the case that the graph is a polytree, the function will, according to
-     *the
-     *probability p and q, choose which change of state must occure( AorR or AR
-     *or
-     *jump) then will assert that the imposed constraint are respected and if
-     *not,
-     *will return to the previous topology.
+     * the probability p and q, choose which change of state must occur (AorR or AR or jump)
+     * then will assert that the imposed constraints are respected and if not, will return to
+     * the previous topology.
      **/
-
     void _PMMx_poly_();
+
     /**
-     * In the case that the graph is a multiconnected graph, the function will,
-     *according to the probability p and q, choose which change of state must
-     *occure(
-     *AorR or jump) then will assert that the imposed constraint are respected
-     *and if
-     *not, will return to the previous topology.
+     * In the case that the graph is a multiconnected graph, the function will, according to the
+     * probability p and q, choose which change of state must occur (AorR or jump) then will assert
+     * that the imposed constraint are respected and if not, will return to the previous topology.
      **/
     void _PMMx_multi_();
-    /**
-     * In the case that the graph is a polytree, the function will add a ramdom
-     *arc
-     *by the use of the function  _insertArc_ if the arc does not exist allready.
-     **/
 
+    /**
+     * In the case that the graph is a polytree, the function will add a random arc by the use of
+     * the function  _insertArc_ if the arc does not exist already.  **/
     void _jump_poly_();
 
     /**
-     * In the case that the graph is a multiconnect graph, the function will
-     *choose
-     *randomly two nodes and will remove the arc between them by the use of the
-     *function  _insertArc_ if the arc exists.
+     * In the case that the graph is a multiconnect graph, the function will choose randomly two
+     * nodes and will remove the arc between them by the use of the function  _insertArc_ if the
+     * arc exists.
      **/
-
     void _jump_multi_();
 
     /**
-     * The function will add or remove a random arc in the graph using the
-     *functions
-     * _insertArc_ and  _removeArc_.
+     * The function will add or remove a random arc in the graph using the functions _insertArc_
+     * and  _removeArc_.
      **/
-    void _AorR_();
+    void _Add_or_Remove_();
+
     /**
      * The function will remove and add a random arc changing the topology of the
      *graph but asserting its connectivity.
      **/
-    void _AR_();
+    void _Add_and_Remove_();
+
     /**
      * The boolean function that will assert the respect of the constraint.
      **/
     virtual bool _checkConditions_();
-
-    // NOT USED ? void  _createDAG_( Size BNSize, Size iniRoot );
-
-    // NOT USED ? std::vector<Idx>*  _createPartDAG_( Size BNSize, Size iniRoot
-    // );
 
     /**
      * The internal function used by the previous  _is_connected_. It asserts the
@@ -380,7 +366,6 @@ namespace gum {
      *nodes
      *listed in excluded.
      **/
-
     bool _is_connected_(const NodeId i, const NodeId j, NodeSet& excluded);
 
     /**
