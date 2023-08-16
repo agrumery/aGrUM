@@ -110,7 +110,7 @@ def _fitTAN(X, y, bn, learner, variableList, target):
             if probabilityList[yIndex][xjIndex][xiIndex] > 0:
               temp = temp + probabilityList[yIndex][xjIndex][xiIndex] * math.log(
                 probabilityList[yIndex][xjIndex][xiIndex] * probabilityY[yIndex] / (
-                      probabilityXi[yIndex][xiIndex] * probabilityXj[yIndex][xjIndex]))
+                   probabilityXi[yIndex][xiIndex] * probabilityXj[yIndex][xjIndex]))
       mutualInformation[(i, j)] = temp
   # if the mutual information between two variables is bigger than this threshold, we add an edge between them
   threshold = 0

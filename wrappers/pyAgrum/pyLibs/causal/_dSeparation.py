@@ -26,7 +26,7 @@ from typing import Set
 
 import pyAgrum
 
-from pyAgrum.causal._types import NodeId,DirectedModel,NodeSet
+from pyAgrum.causal._types import NodeId, DirectedModel, NodeSet
 
 # pylint: disable=unused-import
 import pyAgrum.causal  # for annotations

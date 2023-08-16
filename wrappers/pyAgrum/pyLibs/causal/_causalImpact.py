@@ -45,7 +45,7 @@ def causalImpact(cm: CausalModel,
                  doing: Union[str, NameSet],
                  knowing: Optional[NameSet] = None,
                  values: Optional[Dict[str, int]] = None) -> Tuple[
-  'pyAgrum.causal.CausalFormula', 'pyAgrum.Potential' , str]:
+  'pyAgrum.causal.CausalFormula', 'pyAgrum.Potential', str]:
   """
   Determines the causal impact of interventions.
 
@@ -104,11 +104,11 @@ def causalImpact(cm: CausalModel,
 
   # no need to contextualize the potential
   if potential is None or values is None:
-    potfinal=potential
+    potfinal = potential
   else:
     sv = set(potential.names)
     extract_values = {k: _getLabelIdx(cm.observationalBN(), k, v)
-                    for k, v in values.items() if k in sv}
+                      for k, v in values.items() if k in sv}
     potfinal = potential.extract(extract_values)
 
   # doCalculous can change doing and knowing
@@ -119,9 +119,9 @@ def causalImpact(cm: CausalModel,
   return formula, potfinal, explanation
 
 
-def _causalImpact(cm: CausalModel, on: Union[str,NameSet],
-                  doing: Union[str,NameSet],
-                  knowing: Union[str,NameSet]) \
+def _causalImpact(cm: CausalModel, on: Union[str, NameSet],
+                  doing: Union[str, NameSet],
+                  knowing: Union[str, NameSet]) \
    -> Tuple['pyAgrum.causal.CausalFormula', 'pyAgrum.Potential', str]:
   """
   Determines the causal impact of interventions.

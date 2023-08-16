@@ -45,7 +45,7 @@ def _getTitleHisto(p, show_mu_sigma=True):
     return var.name()
 
   (mu, std) = _stats(p)
-  if std==0.0:
+  if std == 0.0:
     return var.name()
   else:
     return f"{var.name()}\n$\\mu={mu:.2f}$; $\\sigma={std:.2f}$"
@@ -111,16 +111,16 @@ def _getProbaLine(p, scale=1.0, txtcolor="black"):
   """
 
   var = p.variable(0)
-  #if gum.config['notebook', 'histogram_mode'] == "compact":
+  # if gum.config['notebook', 'histogram_mode'] == "compact":
   #  ra, v, lv = __limits(p)
-  #else:
+  # else:
   lv = [var.label(int(i)) for i in np.arange(var.domainSize())]
   v = p.tolist()
-  ra=range(var.domainSize())
-  if var.domainSize()>15:
-    step=int(var.domainSize()/15)
+  ra = range(var.domainSize())
+  if var.domainSize() > 15:
+    step = int(var.domainSize() / 15)
   else:
-    step=1
+    step = 1
 
   fig = plt.figure()
   fig.set_figwidth(min(scale * 6, scale * len(v) / 4.0))
@@ -128,7 +128,7 @@ def _getProbaLine(p, scale=1.0, txtcolor="black"):
 
   ax = fig.add_subplot(111)
   ax.set_xticks(ra[::step])
-  ax.set_xticklabels(lv[::step],rotation='vertical')
+  ax.set_xticklabels(lv[::step], rotation='vertical')
   ax.fill_between(ra, v, color=gum.config['notebook', 'histogram_color'])
 
   ax.set_ylim(bottom=0, top=1.05 * p.max())
@@ -195,8 +195,8 @@ def _getProbaV(p, scale=1.0, util=None, txtcolor="black"):
     suffix = ""
   for b in bars:
     if b.get_height() != 0:
-      txt = f"{b.get_height()*perc:.{gum.config.asInt['notebook', 'histogram_vertical_visible_digits']}f}{suffix}"
-      ax.text(b.get_x()+0.5, ma, txt, ha='center', va='top', rotation='vertical')
+      txt = f"{b.get_height() * perc:.{gum.config.asInt['notebook', 'histogram_vertical_visible_digits']}f}{suffix}"
+      ax.text(b.get_x() + 0.5, ma, txt, ha='center', va='top', rotation='vertical')
 
   ax.set_ylim(bottom=0, top=p.max())
   ax.set_xticks(ra)
@@ -266,7 +266,7 @@ def _getProbaH(p, scale=1.0, util=None, txtcolor="black"):
     suffix = ""
   for b in bars:
     if b.get_width() != 0:
-      txt = f"{b.get_width()*perc:.{gum.config.asInt['notebook', 'histogram_horizontal_visible_digits']}f}{suffix}"
+      txt = f"{b.get_width() * perc:.{gum.config.asInt['notebook', 'histogram_horizontal_visible_digits']}f}{suffix}"
       ax.text(1, b.get_y(), txt, ha='right', va='bottom')
 
   ax.set_xlim(0, 1)
@@ -275,38 +275,41 @@ def _getProbaH(p, scale=1.0, util=None, txtcolor="black"):
   ax.set_xticklabels([])
   # ax.set_xlabel('Probability')
   # Even if utility, now we do show the mean/sigma of the distribution.
-  ax.set_title(_getTitleHisto(p,True), color=txtcolor)
+  ax.set_title(_getTitleHisto(p, True), color=txtcolor)
   ax.get_xaxis().grid(True)
   ax.margins(0)
 
   return fig
 
+
 def _getHistoForDiscretized(p, scale=1.0, txtcolor="Black"):
   var = p.variable(0)
-  vx=var.ticks()
-  widths=[vx[i+1]-vx[i] for i in range(len(vx)-1)]
-  vals=[v/w for v,w in zip(p.tolist(),widths)]
-    
+  vx = var.ticks()
+  widths = [vx[i + 1] - vx[i] for i in range(len(vx) - 1)]
+  vals = [v / w for v, w in zip(p.tolist(), widths)]
+
   fig = plt.figure()
-  fig.set_figwidth(scale * max(15,len(vx))/8 )
+  fig.set_figwidth(scale * max(15, len(vx)) / 8)
   fig.set_figheight(scale)
 
   ax = fig.add_subplot(111)
   ax.set_facecolor('white')
-  ax.set_xticks([vx[0],(vx[-1]+vx[0])/2,vx[-1]])
+  ax.set_xticks([vx[0], (vx[-1] + vx[0]) / 2, vx[-1]])
   ax.xaxis.set_minor_locator(AutoMinorLocator())
-  ax.tick_params(which="minor",length=4)
-  ax.get_xaxis().grid(True,which="minor",zorder=0)
+  ax.tick_params(which="minor", length=4)
+  ax.get_xaxis().grid(True, which="minor", zorder=0)
 
-  bars = ax.bar(vx[:-1], height=vals,width=widths,
+  bars = ax.bar(vx[:-1], height=vals, width=widths,
                 align='edge',
-                color=gum.config['notebook', 'histogram_color'],edgecolor=gum.config['notebook', 'histogram_edge_color'],zorder=3)
+                color=gum.config['notebook', 'histogram_color'],
+                edgecolor=gum.config['notebook', 'histogram_edge_color'], zorder=3)
 
-    # Even if utility, now we do show the mean/sigma of the distribution.
-  ax.set_title(_getTitleHisto(p,True), color=txtcolor)
+  # Even if utility, now we do show the mean/sigma of the distribution.
+  ax.set_title(_getTitleHisto(p, True), color=txtcolor)
   ax.margins(0)
 
   return fig
+
 
 def proba2histo(p, scale=1.0, util=None, txtcolor="Black"):
   """
@@ -331,10 +334,10 @@ def proba2histo(p, scale=1.0, util=None, txtcolor="Black"):
   if util is not None:
     return _getProbaH(p, scale, util=util, txtcolor=txtcolor)
 
-  if p.variable(0).varType()==gum.VarType_Discretized:
-    if gum.config['notebook','histogram_discretized_visualisation']=="histogram":
-      return _getHistoForDiscretized(p,scale,txtcolor)
-      
+  if p.variable(0).varType() == gum.VarType_Discretized:
+    if gum.config['notebook', 'histogram_discretized_visualisation'] == "histogram":
+      return _getHistoForDiscretized(p, scale, txtcolor)
+
   if p.variable(0).domainSize() > int(gum.config['notebook', 'histogram_line_threshold']):
     return _getProbaLine(p, scale, txtcolor=txtcolor)
 
@@ -423,10 +426,10 @@ def probaMinMaxH(pmin, pmax, scale=1.0, txtcolor="black"):
     suffix = ""
 
   for b in barsmax:
-    txt = f"{b.get_width()*perc:.{gum.config.asInt['notebook', 'histogram_horizontal_visible_digits']}f}{suffix}"
+    txt = f"{b.get_width() * perc:.{gum.config.asInt['notebook', 'histogram_horizontal_visible_digits']}f}{suffix}"
     ax.text(1, b.get_y(), txt, ha='right', va='bottom')
   for b in barsmin:
-    txt = f"{b.get_width()*perc:.{gum.config.asInt['notebook', 'histogram_horizontal_visible_digits']}f}{suffix}"
+    txt = f"{b.get_width() * perc:.{gum.config.asInt['notebook', 'histogram_horizontal_visible_digits']}f}{suffix}"
     ax.text(0, b.get_y(), txt, ha='left', va='bottom')
 
   ax.set_xlim(0, 1)

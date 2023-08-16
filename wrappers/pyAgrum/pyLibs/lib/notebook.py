@@ -49,7 +49,7 @@ import numpy as np
 import pydot as dot
 
 try:
-  dot.call_graphviz("dot",["--help"],".")
+  dot.call_graphviz("dot", ["--help"], ".")
 except FileNotFoundError:
   print("""Graphviz is not installed. 
   Please install this program in order to visualize graphical models in pyAgrum. 
@@ -760,7 +760,7 @@ def showMN(*args, **kwargs):
   showMRF(*args, **kwargs)
 
 
-@gum.deprecated_arg("cmapNode","cmap","1.8.1")
+@gum.deprecated_arg("cmapNode", "cmap", "1.8.1")
 def showMRF(mrf, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=None, edgeColor=None, cmapNode=None,
             cmapEdge=None
             ):
@@ -853,7 +853,7 @@ def getInfluenceDiagram(diag, size=None):
   return getGraph(ID2dot(diag), size)
 
 
-@gum.deprecated_arg("cmapNode","cmap","1.8.1")
+@gum.deprecated_arg("cmapNode", "cmap", "1.8.1")
 def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None):
   """
   show a Bayesian network
@@ -886,11 +886,12 @@ def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor
     cmapArc = cmapNode
 
   return showGraph(
-    BN2dot(bn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel, arcColor=arcColor, cmapNode=cmapNode,
+    BN2dot(bn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel, arcColor=arcColor,
+           cmapNode=cmapNode,
            cmapArc=cmapArc), size)
 
 
-@gum.deprecated_arg("cmapNode","cmap","1.8.1")
+@gum.deprecated_arg("cmapNode", "cmap", "1.8.1")
 def showCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None):
   """
   show a credal network
@@ -927,7 +928,8 @@ def showCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor
     cmapArc = cmapNode
 
   return showGraph(
-    CN2dot(cn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel, arcColor=arcColor, cmapNode=cmapNode,
+    CN2dot(cn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel, arcColor=arcColor,
+           cmapNode=cmapNode,
            cmapArc=cmapArc), size)
 
 
@@ -938,7 +940,7 @@ def getMN(*args, **kwargs):
   showMRF(*args, **kwargs)
 
 
-@gum.deprecated_arg("cmapNode","cmap","1.8.1")
+@gum.deprecated_arg("cmapNode", "cmap", "1.8.1")
 def getMRF(mrf, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=None, edgeColor=None, cmapNode=None,
            cmapEdge=None):
   """
@@ -987,7 +989,8 @@ def getMRF(mrf, view=None, size=None, nodeColor=None, factorColor=None, edgeWidt
 
   return getGraph(dottxt, size)
 
-@gum.deprecated_arg("cmapNode","cmap","1.8")
+
+@gum.deprecated_arg("cmapNode", "cmap", "1.8")
 def getBN(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None):
   """
   get a HTML string for a Bayesian network
@@ -1025,11 +1028,12 @@ def getBN(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=
     cmapArc = cmapNode
 
   return getGraph(
-    BN2dot(bn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel, arcColor=arcColor, cmapNode=cmapNode,
+    BN2dot(bn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel, arcColor=arcColor,
+           cmapNode=cmapNode,
            cmapArc=cmapArc), size)
 
 
-@gum.deprecated_arg("cmapNode","cmap","1.8.1")
+@gum.deprecated_arg("cmapNode", "cmap", "1.8.1")
 def getCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None):
   """
   get a HTML string for a credal network
@@ -1067,10 +1071,12 @@ def getCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=
     cmapArc = cmapNode
 
   return getGraph(
-    CN2dot(cn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel, arcColor=arcColor, cmapNode=cmapNode,
+    CN2dot(cn, size=size, nodeColor=nodeColor, arcWidth=arcWidth, arcLabel=arcLabel, arcColor=arcColor,
+           cmapNode=cmapNode,
            cmapArc=cmapArc), size)
 
-@gum.deprecated_arg("cmapNode","cmap","1.8.1")
+
+@gum.deprecated_arg("cmapNode", "cmap", "1.8.1")
 def showInference(model, **kwargs):
   """
   show pydot graph for an inference in a notebook
@@ -1115,7 +1121,8 @@ def showInference(model, **kwargs):
 
   showGraph(prepareShowInference(model, **kwargs), size)
 
-@gum.deprecated_arg("cmapNode","cmap","1.8.1")
+
+@gum.deprecated_arg("cmapNode", "cmap", "1.8.1")
 def getInference(model, **kwargs):
   """
   get a HTML string for an inference in a notebook
@@ -1669,7 +1676,8 @@ def getCliqueGraph(cg, size=None):
   else:
     return getDot(cg.toDot())
 
-@gum.deprecated_arg("cmapNode","cmap","1.8.1")
+
+@gum.deprecated_arg("cmapNode", "cmap", "1.8.1")
 def show(model, **kwargs):
   """
   propose a (visual) representation of a graphical model or a graph or a Potential in a notebook

@@ -32,7 +32,7 @@ if __name__ == "__main__":
   print("Please use 'act test -t quick|all pyAgrum release'.")
   sys.exit(0)
 
-
+os.environ['PYDEVD_DISABLE_FILE_VALIDATION']="1"
 def processNotebook(notebook_filename):
   err = 0
   res = "ok"
@@ -59,7 +59,7 @@ def processNotebook(notebook_filename):
         ep.preprocess(nb, {'metadata': {'path': '../doc/sphinx/notebooks/'}})
         break
       except RuntimeError as e:
-        if str(e) == "Kernel died before replying to kernel_info" or str(e)=="Kernel didn't respond in 60 seconds":
+        if str(e) == "Kernel died before replying to kernel_info" or str(e) == "Kernel didn't respond in 60 seconds":
           time.sleep(random.randint(5, 10) / 10.0)
         else:
           raise CellExecutionError(traceback=str(e.__traceback__), ename=str(e), evalue="")
@@ -91,11 +91,15 @@ def done(fn):
     print(f"\033[{3 + len(futures)}A")
   print("=" * 58)
   for f in futures:
-    if f.running():
-      print(f"[ ......... ] {os.path.basename(f.filename)[0:40]:40} ...")
-    else:
+    if f.done():
       e, res, _ = f.result()
       print(res)
+    else:
+      if f.running():
+        state="..."
+      else:
+        state="zzz"        
+      print(f"[ ......... ] {os.path.basename(f.filename)[0:40]:40} {state}]")  
   print("=" * 58)
 
 
@@ -111,7 +115,7 @@ def runNotebooks():
   for filename in glob.glob("../doc/sphinx/notebooks/*.ipynb"):
     if not os.path.basename(filename) in excludes:
       l.append(filename)
-
+  
   startTime = time.time()
 
   # concurrent

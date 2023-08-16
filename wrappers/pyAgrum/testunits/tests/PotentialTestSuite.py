@@ -494,7 +494,6 @@ class TestOperators(pyAgrumTestCase):
     self.assertEqual((p - p).sgn().min(), 0.0);
     self.assertEqual((p - p).sgn().max(), 0.0);
 
-
   def testSqPotential(self):
     a, b = [gum.LabelizedVariable(s, s, 2) for s in "ab"]
 

@@ -37,7 +37,8 @@ import pyAgrum.lib._colors as gumcols
 from pyAgrum.lib.proba_histogram import saveFigProbaMinMax
 
 
-def CN2dot(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None, showMsg=None):
+def CN2dot(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None,
+           showMsg=None):
   """
   create a pydot representation of the Credal Network
 
@@ -120,7 +121,7 @@ def CN2dot(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor
       col = gumcols.proba2color(arcColor[a], cmapArc)
 
     if arcLabel is not None and a in arcLabel:
-      lb=arcLabel[a]
+      lb = arcLabel[a]
 
     edge = dot.Edge('"' + bn.variable(a[0]).name() + '"', '"' + bn.variable(a[1]).name() + '"',
                     label=lb, fontsize="10",

@@ -38,7 +38,8 @@ from pyAgrum.lib import proba_histogram
 import pyAgrum.lib._colors as gumcols
 
 
-def BN2dot(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None, showMsg=None):
+def BN2dot(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None,
+           showMsg=None):
   """
   create a pydot representation of the BN
 
@@ -102,11 +103,11 @@ def BN2dot(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor
     dotobj.add_node(node)
 
   for a in bn.arcs():
-    (n,j) = a
+    (n, j) = a
     pw = 1
-    av =f"{n}&nbsp;&rarr;&nbsp;{j}"
+    av = f"{n}&nbsp;&rarr;&nbsp;{j}"
     col = gumcols.getBlackInTheme()
-    lb=""
+    lb = ""
 
     if arcWidth is not None and a in arcWidth:
       if maxarcs != minarcs:
@@ -117,7 +118,7 @@ def BN2dot(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor
       col = gumcols.proba2color(arcColor[a], cmapArc)
 
     if arcLabel is not None and a in arcLabel:
-      lb=arcLabel[a]
+      lb = arcLabel[a]
 
     edge = dot.Edge('"' + bn.variable(a[0]).name() + '"', '"' + bn.variable(a[1]).name() + '"',
                     label=lb, fontsize="10",
@@ -134,7 +135,6 @@ def BN2dot(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor
   dotobj.set_size(size)
 
   return dotobj
-
 
 
 def BNinference2dot(bn, size=None, engine=None, evs=None, targets=None, nodeColor=None, arcWidth=None, arcColor=None,
@@ -203,7 +203,6 @@ def BNinference2dot(bn, size=None, engine=None, evs=None, targets=None, nodeColo
 
   dotstr = "digraph structs {\n  fontcolor=\"" + \
            gumcols.getBlackInTheme() + "\";bgcolor=\"transparent\";"
-
 
   if gum.config.asBool["notebook", "show_inference_time"]:
     dotstr += f"  label=\"Inference in {1000 * (stopTime - startTime):6.2f}ms\";\n"

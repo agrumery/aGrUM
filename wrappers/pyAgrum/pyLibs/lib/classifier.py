@@ -2,7 +2,6 @@
 Deprecated. Please see pyAgrum.skbn
 """
 
-
 # (c) Copyright 2015-2023 by Pierre-Henri Wuillemin(@LIP6)
 # (pierre-henri.wuillemin@lip6.fr)
 

@@ -171,7 +171,7 @@ def _getIdLabel(inst, i, label):
   int
     the id of label
   """
-  if isinstance(label,int):  # an idLabel
+  if isinstance(label, int):  # an idLabel
     return label
 
   return inst.variable(i)[label]

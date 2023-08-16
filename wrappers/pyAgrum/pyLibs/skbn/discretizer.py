@@ -109,7 +109,7 @@ class BNDiscretizer():
     if clearDiscretizationParameters:
       self.discretizationParametersDictionary = {}
 
-  @gum.deprecated_arg(newA="paramDiscretizationMethod",oldA="numberOfBins",version="1.9.0")
+  @gum.deprecated_arg(newA="paramDiscretizationMethod", oldA="numberOfBins", version="1.9.0")
   def setDiscretizationParameters(self, variableName=None, method=None, paramDiscretizationMethod=None):
     """
     Sets the discretization parameters for a variable. If variableName is None, sets the default parameters for this
@@ -161,9 +161,10 @@ class BNDiscretizer():
           "The possible values for paramDiscretizationMethod are any integer or the string 'elbowMethod'. You have entered: " + str(
             paramDiscretizationMethod))
     else:
-      if paramDiscretizationMethod is not None and not isinstance(paramDiscretizationMethod,list):
+      if paramDiscretizationMethod is not None and not isinstance(paramDiscretizationMethod, list):
         raise ValueError(
-          "For a NotDiscretized variable, the parameter has to be None or a list of values (labels) but not '" + str(paramDiscretizationMethod))+"'."
+          "For a NotDiscretized variable, the parameter has to be None or a list of values (labels) but not '" + str(
+            paramDiscretizationMethod)) + "'."
 
     if variableName is None:
       self.defaultMethod = method
@@ -699,7 +700,7 @@ class BNDiscretizer():
       Xtransformed = X
       isNumeric = False
 
-    foundValuesX= set(numpy.unique(X))
+    foundValuesX = set(numpy.unique(X))
     n = len(X)
 
     if variableName not in self.discretizationParametersDictionary:  # The user has not manually set the discretization parameters for this variable
@@ -721,16 +722,17 @@ class BNDiscretizer():
       is_int_var = True
       min_v = max_v = None
 
-      possibleValuesX=None
+      possibleValuesX = None
       if "param" in self.discretizationParametersDictionary[variableName]:
-        possibleValuesX= self.discretizationParametersDictionary[variableName]["param"]
+        possibleValuesX = self.discretizationParametersDictionary[variableName]["param"]
 
       if possibleValuesX is None:
         possibleValuesX = foundValuesX
       else:
         # foundValuesX must be in possibleValuesX
         if not foundValuesX.issubset(possibleValuesX):
-          raise ValueError(f"The values passed in possibleValues ({possibleValuesX}) do not match database values ({foundValuesX})")
+          raise ValueError(
+            f"The values passed in possibleValues ({possibleValuesX}) do not match database values ({foundValuesX})")
 
       for value in possibleValuesX:
         if checkInt(value):

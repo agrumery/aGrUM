@@ -161,7 +161,7 @@ def _calcul_most_probable_for_nary_class(row, local_inst, dictName, MarkovBlanke
           the value and the probability of the most probable class
   """
   p = _calcul_proba_for_nary_class(
-      row, local_inst, dictName, MarkovBlanket, target)
+    row, local_inst, dictName, MarkovBlanket, target)
   return p.argmax(), p.max()
 
 

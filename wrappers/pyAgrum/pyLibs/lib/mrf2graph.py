@@ -148,6 +148,7 @@ def MN2FactorGraphdot(*args, **kwargs):
 """, DeprecationWarning, stacklevel=2)
   return MRF2FactorGraphdot(*args, **kwargs)
 
+
 def MRF2FactorGraphdot(mrf, size=None, nodeColor=None, factorColor=None, cmapNode=None, showMsg=None):
   """
   Create a pydot representation of the Markov random field as a factor graph
@@ -234,6 +235,7 @@ def MNinference2UGdot(*args, **kwargs):
 ** pyAgrum.lib.mrf2graph.MNinference2UGdot is obsolete in pyAgrum>1.5.2. Please use MRFinference2UGdot()
 """, DeprecationWarning, stacklevel=2)
   return MRFinference2UGdot(*args, **kwargs)
+
 
 def MRFinference2UGdot(mrf, size=None, engine=None, evs=None, targets=None, nodeColor=None, factorColor=None,
                        arcWidth=None, arcColor=None,
@@ -360,6 +362,7 @@ def MNinference2FactorGraphdot(*args, **kwargs):
 ** pyAgrum.lib.mrf2graph.MNinference2FactorGraphdot is obsolete in pyAgrum>1.5.2. Please use MRFinference2FactorGraphdot()
 """, DeprecationWarning, stacklevel=2)
   return MRFinference2FactorGraphdot(*args, **kwargs)
+
 
 def MRFinference2FactorGraphdot(mrf, size=None, engine=None, evs=None, targets=None,
                                 nodeColor=None, factorColor=None,

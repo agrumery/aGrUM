@@ -27,7 +27,8 @@ if __name__ == "__main__":
   print("[pyAgrum] Please use 'act test pyAgrum release -t [module]|quick|quick_[module]|all'.")
   sys.exit(0)
 
-def runTests(local:bool,test_module)->int:
+
+def runTests(local: bool, test_module) -> int:
   if len(sys.argv) > 1:
     logging.info("[pyAgrum] Adding local pyAgrum's path")
     p = os.getcwd() + "\\" + sys.argv[1]
@@ -99,7 +100,7 @@ def runTests(local:bool,test_module)->int:
   import time
 
   tl = list()
-  if test_module in {"","main"}:
+  if test_module in {"", "main"}:
     tl.append(AggregatorsForBNTestSuite.ts)
     tl.append(AllIncrementalInferenceTestSuite.ts)
     tl.append(BayesNetTestSuite.ts)
@@ -126,13 +127,13 @@ def runTests(local:bool,test_module)->int:
     tl.append(VariablesTestSuite.ts)
     tl.append(WorkaroundTestSuite.ts)
 
-  if test_module in {"","causal"}:
+  if test_module in {"", "causal"}:
     tl.append(CausalASTTestSuite.ts)
     tl.append(CausalDSepTestSuite.ts)
     tl.append(CausalModelTestSuite.ts)
     tl.append(CausalNonRegressionTestSuite.ts)
 
-  if test_module in {"","skbn"}:
+  if test_module in {"", "skbn"}:
     if pandasFound and sklearnFound:
       tl.append(BNClassifierTestSuite.ts)
       tl.append(SkbnTestSuite.ts)

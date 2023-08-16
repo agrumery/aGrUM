@@ -31,5 +31,6 @@ class TestConfig(pyAgrumTestCase):
     with self.assertRaises(SyntaxError):
       gum.config["theme", "gaga"] = 0
 
+
 ts = unittest.TestSuite()
 addTests(ts, TestConfig)

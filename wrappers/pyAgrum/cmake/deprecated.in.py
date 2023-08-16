@@ -103,6 +103,7 @@ def MarkovNet(*args, **kwargs):
 """, DeprecationWarning, stacklevel=2)
   return MarkovRandomField(*args, **kwargs)
 
+
 ########################################################################################################
 def deprecated_learnMixedGraph(learner):
   """
@@ -231,6 +232,7 @@ def deprecatedI(self, X, Y):
 
 ShaferShenoyMRFInference.I = deprecatedI
 LazyPropagation.I = deprecatedI
+
 
 ########################################################################################################
 def deprecatedH(self, X):

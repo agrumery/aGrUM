@@ -824,17 +824,18 @@ class TestScore(BayesNetTestCase):
 
 class TestRandomBN(BayesNetTestCase):
   def testMaxMod(self):
-    bn=gum.randomBN(n=16,names=[f"X{i}" for i in range(16)],ratio_arc=3,domain_size=2)
+    bn = gum.randomBN(n=16, names=[f"X{i}" for i in range(16)], ratio_arc=3, domain_size=2)
     for i in bn.nodes():
-      self.assertEqual(bn.variable(i).domainSize(),2)
-    all2=True
+      self.assertEqual(bn.variable(i).domainSize(), 2)
+    all2 = True
 
-    bn=gum.randomBN(n=16,names=[f"X{i}" for i in range(16)],ratio_arc=3,domain_size=4)
+    bn = gum.randomBN(n=16, names=[f"X{i}" for i in range(16)], ratio_arc=3, domain_size=4)
     for i in bn.nodes():
-      if bn.variable(i).domainSize()>2:
-        all2=False
+      if bn.variable(i).domainSize() > 2:
+        all2 = False
         break
     self.assertFalse(all2)
+
 
 class TestGraphicalConcepts(BayesNetTestCase):
   def testChildren(self):

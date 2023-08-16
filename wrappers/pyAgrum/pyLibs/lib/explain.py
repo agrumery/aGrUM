@@ -692,7 +692,7 @@ class ShapValues:
       df[feat] = somme
 
     self.results = df
-    return df,v
+    return df, v
 
   def causal(self, train, plot=False, plot_importance=False, percentage=False):
     """
@@ -1054,5 +1054,5 @@ def nestedMarkovBlanketsNames(bn, x, k: int = 1):
     nx = bn.idFromName(x)
   else:
     nx = x
-  nodes, _ , visited = _buildMB(bn, nx, k)
+  nodes, _, visited = _buildMB(bn, nx, k)
   return {bn.variable(node).name(): k - visited[node] for node in nodes}

@@ -34,7 +34,8 @@ from pyAgrum.causal._dSeparation import isParent, dSep_reduce, descendants, isDS
 # pylint: disable=unused-import
 import pyAgrum.causal  # for annotations
 
-def backdoor_path(bn: "pyAgrum.BayesNet", x: str, y: str, zset: NameSet = None)->bool:
+
+def backdoor_path(bn: "pyAgrum.BayesNet", x: str, y: str, zset: NameSet = None) -> bool:
   """
   Predicate on the existence of an open back door path from ``x`` to ``y``,
   conditioning on the set of variables ``zset``
@@ -167,6 +168,7 @@ def backdoor_reach(bn: "pyAgrum.BayesNet", a: NodeId) -> NodeSet:
   Set[int]
     set of nodes
   """
+
   def inner_br(bn: "pyAgrum.BayesNet", x: NodeId, pht: bool, reach0: NodeSet, reach1: NodeSet):
     for c in bn.children(x):
       if c not in reach0 and c not in reach1:
@@ -204,6 +206,7 @@ def nodes_on_dipath(bn: "pyAgrum.BayesNet", x: NodeId, y: NodeId) -> Optional[No
   -------
   Set[int] (maybe None)
   """
+
   def inner_nod(g: "pyAgrum.BayesNet", a: NodeId, b: NodeId) -> Optional[NodeSet]:
     if b == a:
       return set()

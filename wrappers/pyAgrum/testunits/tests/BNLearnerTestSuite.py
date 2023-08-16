@@ -36,7 +36,6 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     with self.assertRaises(gum.IOError):
       gum.BNLearner("shouldNotExist.csv")
 
-
   def testHillClimbingAccurate(self):
     learner = gum.BNLearner(self.agrumSrcDir(
       'asia.csv'))
@@ -127,7 +126,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     dbn.addArc(dbn.idFromName("wl_0"), dbn.idFromName("wl_t"))
 
     csvfile = self.agrumSrcDir('DBN_Tonda.csv')
-    l1 = gum.BNLearner(csvfile,dbn)
+    l1 = gum.BNLearner(csvfile, dbn)
     l1.useScoreLog2Likelihood()
     l1.useSmoothingPrior()
     bn1 = l1.learnParameters(dbn)
@@ -368,9 +367,9 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
                   (bn.idFromName("bronchitis?"), bn.idFromName("smoking?")),
                   (bn.idFromName("smoking?"), bn.idFromName("bronchitis?")),
                   (bn.idFromName("visit_to_Asia?"), bn.idFromName("bronchitis?"))}
-    
-    forcedarcs={(bn.idFromName("visit_to_Asia?"), bn.idFromName("bronchitis?"))}
-    
+
+    forcedarcs = {(bn.idFromName("visit_to_Asia?"), bn.idFromName("bronchitis?"))}
+
     bn = learner.learnBN()
     self.assertLessEqual(bn.sizeArcs(), 2)
     self.assertGreaterEqual(bn.sizeArcs(), 1)
@@ -440,8 +439,6 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertEqual(bn.sizeArcs(), 3)
     self.assertTrue(testedarcs.issuperset(bn.arcs()))
 
-
-
   def testPossibleEdgeWithGHC(self):
     # possible edges are not relevant
     learner = gum.BNLearner(self.agrumSrcDir(
@@ -504,7 +501,6 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     bn = learner.learnBN()
     self.assertEqual(bn.sizeArcs(), 3)
     self.assertTrue(testedarcs.issuperset(bn.arcs()))
-
 
   def testHybridLearning(self):
     learner = gum.BNLearner(self.agrumSrcDir(
@@ -657,51 +653,60 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       learner.learnBN()
 
   def test_mutualInfo(self):
-    learner=gum.BNLearner(self.agrumSrcDir('asia3.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir('asia3.csv'))
 
-    self.assertAlmostEqual(learner.mutualInformation("lung_cancer?", "smoking?"),0.0332346154587978, delta=1e-6)
-
-    learner.useNoCorrection()
-    self.assertAlmostEqual(learner.mutualInformation("lung_cancer?", "smoking?"),0.0332346154587978, delta=1e-6)
-
-    learner.useMDLCorrection()
-    self.assertAlmostEqual(learner.mutualInformation("lung_cancer?", "smoking?"),0.0332346154587978, delta=1e-6)
-
-    learner.useNMLCorrection()
-    self.assertAlmostEqual(learner.mutualInformation("lung_cancer?", "smoking?"),0.0332346154587978, delta=1e-6)
+    self.assertAlmostEqual(learner.mutualInformation("lung_cancer?", "smoking?"), 0.0332346154587978, delta=1e-6)
 
     learner.useNoCorrection()
-    self.assertAlmostEqual(learner.correctedMutualInformation("lung_cancer?", "smoking?"),0.0332346154587978, delta=1e-6)
+    self.assertAlmostEqual(learner.mutualInformation("lung_cancer?", "smoking?"), 0.0332346154587978, delta=1e-6)
 
     learner.useMDLCorrection()
-    self.assertAlmostEqual(learner.correctedMutualInformation("lung_cancer?", "smoking?"),0.0279523, delta=1e-6)
+    self.assertAlmostEqual(learner.mutualInformation("lung_cancer?", "smoking?"), 0.0332346154587978, delta=1e-6)
 
     learner.useNMLCorrection()
-    self.assertAlmostEqual(learner.correctedMutualInformation("lung_cancer?", "smoking?"),0.0292368, delta=1e-6)
+    self.assertAlmostEqual(learner.mutualInformation("lung_cancer?", "smoking?"), 0.0332346154587978, delta=1e-6)
+
+    learner.useNoCorrection()
+    self.assertAlmostEqual(learner.correctedMutualInformation("lung_cancer?", "smoking?"), 0.0332346154587978,
+                           delta=1e-6)
+
+    learner.useMDLCorrection()
+    self.assertAlmostEqual(learner.correctedMutualInformation("lung_cancer?", "smoking?"), 0.0279523, delta=1e-6)
+
+    learner.useNMLCorrection()
+    self.assertAlmostEqual(learner.correctedMutualInformation("lung_cancer?", "smoking?"), 0.0292368, delta=1e-6)
 
   def test_conditionalMutualInfo(self):
     learner = gum.BNLearner(self.agrumSrcDir('asia3.csv'))
 
-    self.assertAlmostEqual(learner.mutualInformation("bronchitis?", "lung_cancer?", ["smoking?"]), 0.00159046091867418, delta=1e-6)
+    self.assertAlmostEqual(learner.mutualInformation("bronchitis?", "lung_cancer?", ["smoking?"]), 0.00159046091867418,
+                           delta=1e-6)
 
     learner.useNoCorrection()
-    self.assertAlmostEqual(learner.mutualInformation("bronchitis?", "lung_cancer?", ["smoking?"]), 0.00159046091867418, delta=1e-6)
-
-    learner.useMDLCorrection()
-    self.assertAlmostEqual(learner.mutualInformation("bronchitis?", "lung_cancer?", ["smoking?"]), 0.00159046091867418, delta=1e-6)
-
-    learner.useNMLCorrection()
-    self.assertAlmostEqual(learner.mutualInformation("bronchitis?", "lung_cancer?", ["smoking?"]), 0.00159046091867418, delta=1e-6)
-
-    learner.useNoCorrection()
-    self.assertAlmostEqual(learner.correctedMutualInformation("bronchitis?", "lung_cancer?", ["smoking?"]), 0.00159046091867418,
+    self.assertAlmostEqual(learner.mutualInformation("bronchitis?", "lung_cancer?", ["smoking?"]), 0.00159046091867418,
                            delta=1e-6)
 
     learner.useMDLCorrection()
-    self.assertAlmostEqual(learner.correctedMutualInformation("bronchitis?", "lung_cancer?", ["smoking?"]), -0.00897408, delta=1e-6)
+    self.assertAlmostEqual(learner.mutualInformation("bronchitis?", "lung_cancer?", ["smoking?"]), 0.00159046091867418,
+                           delta=1e-6)
 
     learner.useNMLCorrection()
-    self.assertAlmostEqual(learner.correctedMutualInformation("bronchitis?", "lung_cancer?", ["smoking?"]), -0.00486096, delta=1e-6)
+    self.assertAlmostEqual(learner.mutualInformation("bronchitis?", "lung_cancer?", ["smoking?"]), 0.00159046091867418,
+                           delta=1e-6)
+
+    learner.useNoCorrection()
+    self.assertAlmostEqual(learner.correctedMutualInformation("bronchitis?", "lung_cancer?", ["smoking?"]),
+                           0.00159046091867418,
+                           delta=1e-6)
+
+    learner.useMDLCorrection()
+    self.assertAlmostEqual(learner.correctedMutualInformation("bronchitis?", "lung_cancer?", ["smoking?"]), -0.00897408,
+                           delta=1e-6)
+
+    learner.useNMLCorrection()
+    self.assertAlmostEqual(learner.correctedMutualInformation("bronchitis?", "lung_cancer?", ["smoking?"]), -0.00486096,
+                           delta=1e-6)
+
 
 ts = unittest.TestSuite()
 addTests(ts, BNLearnerCSVTestCase)

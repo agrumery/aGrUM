@@ -26,24 +26,28 @@ from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 try:
   import sklearn
+
   sklearnFound = True
 except ImportError:
   sklearnFound = False
 
 try:
   import pandas
+
   pandasFound = True
 except ImportError:
   pandasFound = False
 
 try:
   import matplotlib
+
   matplotlibFound = True
 except ImportError:
   matplotlibFound = False
 
 try:
   import IPython
+
   ipythonFound = True
 except ImportError:
   ipythonFound = False
@@ -61,7 +65,7 @@ class TestImport(pyAgrumTestCase):
         import pyAgrum.lib.notebook
       else:
         self.log.warning(
-            "ipython and matplotlib are needed for modules lib.ipython and lib.notebook")
+          "ipython and matplotlib are needed for modules lib.ipython and lib.notebook")
 
       if matplotlibFound:
         import pyAgrum.lib.bn2graph
@@ -69,7 +73,7 @@ class TestImport(pyAgrumTestCase):
         import pyAgrum.lib.dynamicBN
       else:
         self.log.warning(
-            "matplotlib is needed for modules lib.ipython and lib.notebook")
+          "matplotlib is needed for modules lib.ipython and lib.notebook")
 
       if sklearnFound:
         import pyAgrum.lib.classifier
@@ -78,7 +82,7 @@ class TestImport(pyAgrumTestCase):
           "sklearn is needed for modules lib.classifier")
 
     except Exception as e:
-      self.assertFalse(False,"Import error : "+str(e))
+      self.assertFalse(False, "Import error : " + str(e))
 
 
 ts = unittest.TestSuite()

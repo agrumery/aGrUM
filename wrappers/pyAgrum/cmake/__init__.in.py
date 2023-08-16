@@ -51,7 +51,7 @@ from .pyAgrum import LoopyBeliefPropagation, GibbsSampling, MonteCarloSampling, 
 from .pyAgrum import LoopyImportanceSampling, LoopyGibbsSampling, LoopyWeightedSampling, LoopyMonteCarloSampling
 from .pyAgrum import PythonApproximationListener, PythonBNListener, PythonLoadListener, PythonDatabaseGeneratorListener
 from .pyAgrum import BNGenerator, IDGenerator, JunctionTreeGenerator
-from .pyAgrum import BNLearner,InformationTheory
+from .pyAgrum import BNLearner, InformationTheory
 from .pyAgrum import BNDatabaseGenerator
 from .pyAgrum import InfluenceDiagram, ShaferShenoyLIMIDInference
 from .pyAgrum import CredalNet, CNMonteCarloSampling, CNLoopyPropagation
@@ -94,8 +94,8 @@ __all__ = [
   'ShaferShenoyInference', 'VariableElimination',
   'PythonApproximationListener', 'PythonBNListener', 'PythonLoadListener', 'PythonDatabaseGeneratorListener',
   'BNGenerator', 'IDGenerator', 'JunctionTreeGenerator',
-  'BNLearner','InformationTheory'
-  'BNDatabaseGenerator',
+  'BNLearner', 'InformationTheory'
+               'BNDatabaseGenerator',
   'InfluenceDiagram', 'ShaferShenoyLIMIDInference',
   'CredalNet', 'CNMonteCarloSampling', 'CNLoopyPropagation',
   'PRMexplorer',
@@ -372,6 +372,7 @@ def saveMN(mn, filename):
   # for now, just one format
   mn.saveUAI(filename)
 
+
 def availableIDExts():
   """ Give the list of all formats known by pyAgrum to save a influence diagram.
 
@@ -381,6 +382,7 @@ def availableIDExts():
     a string which lists all suffixes for supported ID file formats.
   """
   return "bifxml|xml"
+
 
 def loadID(filename):
   """
@@ -455,12 +457,14 @@ def fastBN(structure, domain_size=2):
   """
   return BayesNet.fastPrototype(structure, domain_size)
 
+
 def fastMN(structure, domain_size=2):
   warnings.warn("""
 ** pyAgrum.fastMN is deprecated in pyAgrum>1.5.2.
 ** pyAgrum.fastMRF is called instead.
 """, DeprecationWarning, stacklevel=2)
-  return fastMRF(structure,domain_size)
+  return fastMRF(structure, domain_size)
+
 
 def fastMRF(structure, domain_size=2):
   """
@@ -518,7 +522,7 @@ def fastID(structure, domain_size=2):
   return InfluenceDiagram.fastPrototype(structure, domain_size)
 
 
-def getPosterior(model, * , target,evs=None):
+def getPosterior(model, *, target, evs=None):
   """
   Compute the posterior of a single target (variable) in a BN given evidence
 
@@ -647,7 +651,7 @@ def randomBN(*, n: int = 5, names: List[str] = None, ratio_arc: float = 1.2, dom
     pyAgrum.BayesNet
   """
   nbr = n if names is None else len(names)
-  if nbr<=3:
+  if nbr <= 3:
     raise ArgumentError("A BN can not be randomly generated from less than 4 nodes.")
 
   gen = BNGenerator()
@@ -655,8 +659,8 @@ def randomBN(*, n: int = 5, names: List[str] = None, ratio_arc: float = 1.2, dom
 
   if names is not None:
     # try to find very rare name
-    for i in bn.nodes(): 
-      bn.changeVariableName(i,f"__{i}{i}__{i}{i}__")
+    for i in bn.nodes():
+      bn.changeVariableName(i, f"__{i}{i}__{i}{i}__")
     for i, nod in enumerate(bn.topologicalOrder()):
       bn.changeVariableName(nod, names[i])
 

@@ -24,7 +24,7 @@ This file defines a representation of a causal query in a causal model
 """
 
 from collections import defaultdict
-from typing import Union,Optional,Dict
+from typing import Union, Optional, Dict
 
 import pyAgrum
 
@@ -78,7 +78,7 @@ class CausalFormula:
       self._on = {on}
     else:
       self._on = on
-      
+
     if isinstance(doing, str):
       self._doing = {doing}
     else:
@@ -91,13 +91,13 @@ class CausalFormula:
     else:
       self._knowing = knowing
 
-  def _setDoing(self,doing: Union[str, NameSet]):
+  def _setDoing(self, doing: Union[str, NameSet]):
     if isinstance(doing, str):
       self._doing = {doing}
     else:
       self._doing = doing
 
-  def _setKnowing(self,knowing: Union[str, NameSet]):
+  def _setKnowing(self, knowing: Union[str, NameSet]):
     if isinstance(knowing, str):
       self._knowing = {knowing}
     else:

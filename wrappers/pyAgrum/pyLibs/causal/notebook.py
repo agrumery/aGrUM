@@ -22,7 +22,7 @@
 """
 This file defines some helpers for handling causal concepts in notebooks
 """
-from typing import Union,Optional,Dict,Tuple
+from typing import Union, Optional, Dict, Tuple
 import IPython
 
 import pyAgrum
@@ -30,7 +30,6 @@ import pyAgrum.lib.notebook as gnb
 import pyAgrum.causal as csl
 
 from pyAgrum.causal._types import NameSet
-
 
 
 def getCausalModel(cm: csl.CausalModel, size=None) -> str:
@@ -50,11 +49,11 @@ def getCausalModel(cm: csl.CausalModel, size=None) -> str:
     the dot representation
   """
   if size is None:
-    size=pyAgrum.config['causal', 'default_graph_size']
-  return gnb.getDot(cm.toDot(),size)
+    size = pyAgrum.config['causal', 'default_graph_size']
+  return gnb.getDot(cm.toDot(), size)
 
 
-def showCausalModel(cm: csl.CausalModel, size= None):
+def showCausalModel(cm: csl.CausalModel, size=None):
   """
   Shows a pydot svg representation of the causal DAG
 
@@ -66,8 +65,8 @@ def showCausalModel(cm: csl.CausalModel, size= None):
     the size of the rendered graph
   """
   if size is None:
-    size=pyAgrum.config['causal', 'default_graph_size']
-  gnb.showDot(cm.toDot(),size=size)
+    size = pyAgrum.config['causal', 'default_graph_size']
+  gnb.showDot(cm.toDot(), size=size)
 
 
 def getCausalImpact(model: csl.CausalModel, on: Union[str, NameSet], doing: Union[str, NameSet],
@@ -95,14 +94,16 @@ def getCausalImpact(model: csl.CausalModel, on: Union[str, NameSet], doing: Unio
   formula, impact, explanation = csl.causalImpact(model, on, doing, knowing, values)
 
   gnb.flow.clear()
-  gnb.flow.add(getCausalModel(model),caption="Causal Model")
+  gnb.flow.add(getCausalModel(model), caption="Causal Model")
 
   if formula is None:
-    gnb.flow.add(explanation,caption="Impossible")
+    gnb.flow.add(explanation, caption="Impossible")
   else:
-    gnb.flow.add('$$\\begin{equation*}' + formula.toLatex() + '\\end{equation*}$$',caption="Explanation : "+explanation )
+    gnb.flow.add('$$\\begin{equation*}' + formula.toLatex() + '\\end{equation*}$$',
+                 caption="Explanation : " + explanation)
 
-  gnb.flow.add("No result" if formula is None else impact,caption="Impact") # : $" + ("?" if formula is None else formula.latexQuery(values)) + "$")
+  gnb.flow.add("No result" if formula is None else impact,
+               caption="Impact")  # : $" + ("?" if formula is None else formula.latexQuery(values)) + "$")
 
   return gnb.flow.html()
 
@@ -130,5 +131,5 @@ def showCausalImpact(model: csl.CausalModel, on: Union[str, NameSet], doing: Uni
 
 
 csl.CausalModel._repr_html_ = lambda self: gnb.getDot(
-    self.toDot(), size=pyAgrum.config['causal', 'default_graph_size'])
+  self.toDot(), size=pyAgrum.config['causal', 'default_graph_size'])
 csl.CausalFormula._repr_html_ = lambda self: f"$${self.toLatex()}$$"

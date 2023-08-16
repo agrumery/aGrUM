@@ -73,25 +73,22 @@ class BNCLassifierTestCase(pyAgrumTestCase):
 
     self.assertGreater(classif2.MarkovBlanket.size(), 0)
 
-
     classif3 = skbn.BNClassifier()
-    classif3.fit(data=csvfile,targetName="lung_cancer")
+    classif3.fit(data=csvfile, targetName="lung_cancer")
 
     self.assertEqual(classif3.bn.size(), 8)
 
     self.assertEqual(classif3.target, asia_target_column)
     self.assertTrue(classif3.threshold <= 1)
 
-
-    df=pd.read_csv(csvfile)
+    df = pd.read_csv(csvfile)
     classif4 = skbn.BNClassifier()
-    classif4.fit(data=df,targetName="lung_cancer")
+    classif4.fit(data=df, targetName="lung_cancer")
 
     self.assertEqual(classif4.bn.size(), 8)
 
     self.assertEqual(classif4.target, asia_target_column)
     self.assertTrue(classif4.threshold <= 1)
-
 
     # some instantiation of parents are missing : No prior should lead to division by 0
     classif3 = skbn.BNClassifier(prior="NoPrior")

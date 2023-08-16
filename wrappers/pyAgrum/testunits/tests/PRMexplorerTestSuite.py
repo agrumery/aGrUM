@@ -28,7 +28,7 @@ class PRMexplorerTestCase(pyAgrumTestCase):
   def testO3PRMLoad(self):
     prm = gum.PRMexplorer()
     prm.load(
-        self.agrumSrcDir('o3prm/Asia.o3prm'))  # verbose=False : don't want to see the warnings
+      self.agrumSrcDir('o3prm/Asia.o3prm'))  # verbose=False : don't want to see the warnings
 
   def testO3PRMLoadErrs(self):
     try:

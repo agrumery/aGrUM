@@ -55,10 +55,12 @@ def _CalculateThreshold(bn, targetName, csvfilename, usePR, beta, significant_di
 
   if usePR:
     _, _, _, threshold = bn2roc.showROC_PR(bn, csvfilename, targetName, target.labels(
-    )[1],beta=beta, show_fig=False, show_ROC=False, show_PR=False, significant_digits=significant_digits, show_progress=False)
+    )[1], beta=beta, show_fig=False, show_ROC=False, show_PR=False, significant_digits=significant_digits,
+                                           show_progress=False)
   else:
     _, threshold, _, _ = bn2roc.showROC_PR(bn, csvfilename, targetName, target.labels(
-    )[1], beta=beta, show_fig=False, show_ROC=False, show_PR=False, significant_digits=significant_digits, show_progress=False)
+    )[1], beta=beta, show_fig=False, show_ROC=False, show_PR=False, significant_digits=significant_digits,
+                                           show_progress=False)
 
   return threshold
 
@@ -122,7 +124,8 @@ def _ImplementPrior(prior, learner, priorWeight, DirichletCsv):
     learner.useSmoothingPrior(priorWeight)
   elif prior == 'Dirichlet':
     if DirichletCsv is None:
-      raise ValueError("Must specify file for dirichlet prior as a parameter to the classifier if using a dirichlet prior. DirichletCsv cannot be set to none if prior is set to Dirichlet")
+      raise ValueError(
+        "Must specify file for dirichlet prior as a parameter to the classifier if using a dirichlet prior. DirichletCsv cannot be set to none if prior is set to Dirichlet")
     learner.useDirichletPrior(DirichletCsv, priorWeight)
   elif prior == 'BDeu':
     learner.useBDeuPrior(priorWeight)
@@ -132,7 +135,7 @@ def _ImplementPrior(prior, learner, priorWeight, DirichletCsv):
     learner.useSmoothingPrior(0.01)
   else:
     raise ValueError(
-        "Invalid prior! Possible values are : Smoothing , Dirichlet , BDeu and NoPrior")
+      "Invalid prior! Possible values are : Smoothing , Dirichlet , BDeu and NoPrior")
 
 
 def _ImplementConstraints(constraints, learner):
@@ -156,7 +159,7 @@ def _ImplementConstraints(constraints, learner):
     return
   if type(constraints) != dict:
     raise ValueError(
-        "Invalid syntax for constraints. Constraints should be passed as a dictionary")
+      "Invalid syntax for constraints. Constraints should be passed as a dictionary")
   for key in constraints:
     if key == 'MandatoryArcs':
       for (tail, head) in constraints[key]:
@@ -238,7 +241,7 @@ def _createCSVfromNDArrays(X, y, target, variableNameIndexDictionary, csvfilenam
   X, y = sklearn.utils.check_X_y(X, y, dtype=None, accept_sparse=True)
   y = pd.DataFrame(y, columns=[target])
   variableList = [k for k, v in sorted(
-      variableNameIndexDictionary.items(), key=(lambda item: item[1]), reverse=False)]
+    variableNameIndexDictionary.items(), key=(lambda item: item[1]), reverse=False)]
   X = pd.DataFrame(X, columns=variableList)
 
   # We construct the list of variable names.
@@ -246,19 +249,21 @@ def _createCSVfromNDArrays(X, y, target, variableNameIndexDictionary, csvfilenam
   training_file = pd.concat([y, X], axis=1)
   training_file.to_csv(csvfilename, index=False)
 
+
 def checkInt(v):
   """
   Test if v is an int or a str representing an int
   """
-  if isinstance(v,bool):
-      return False
-  if numpy.issubdtype(type(v), numpy.integer): #isinstance(v, int)
+  if isinstance(v, bool):
+    return False
+  if numpy.issubdtype(type(v), numpy.integer):  # isinstance(v, int)
     return True
   if isinstance(v, str):
     if v[0] in ('-', '+'):
       return v[1:].isdigit()
     return v.isdigit()
   return False
+
 
 def checkFloat(v):
   """
@@ -273,8 +278,8 @@ def checkFloat(v):
   bool:
     True if v is a float or a str representing a float
   """
-  if isinstance(v,bool):
-      return False
+  if isinstance(v, bool):
+    return False
 
   try:
     float(v)

@@ -31,9 +31,9 @@ from itertools import product, combinations
 import pyAgrum as gum
 import pyAgrum.lib._colors as gumcols
 
+STRUCTURAL_HAMMING = "structural hamming"
+PURE_HAMMING = "hamming"
 
-STRUCTURAL_HAMMING="structural hamming"
-PURE_HAMMING="hamming"
 
 class GraphicalBNComparator:
   """
@@ -398,7 +398,7 @@ class GraphicalBNComparator:
     return hamming_dico
 
 
-def graphDiff(bnref, bncmp,noStyle=False):
+def graphDiff(bnref, bncmp, noStyle=False):
   """ Return a pydot graph that compares the arcs of bnref to bncmp.
   graphDiff allows bncmp to have less nodes than bnref. (this is not the case in GraphicalBNComparator.dotDiff())
 
@@ -502,6 +502,7 @@ def graphDiff(bnref, bncmp,noStyle=False):
                               constraint="false"))
 
   return res
+
 
 def graphDiffLegend():
   try:

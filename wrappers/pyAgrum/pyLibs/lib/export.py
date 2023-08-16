@@ -27,7 +27,7 @@ import sys
 import pyAgrum as gum
 
 
-def toGML(model, filename: str =None):
+def toGML(model, filename: str = None):
   """
   Export directed graphical models as a graph to the graph GML format (https://gephi.org/users/supported-graph-formats/gml-format/)
 
@@ -38,7 +38,8 @@ def toGML(model, filename: str =None):
   filename : Optional[str]
     the name of the file (including the prefix), if None , use sys.stdout
   """
-  def _toGML(model,gmlfile):
+
+  def _toGML(model, gmlfile):
     print("graph", file=gmlfile)
     print("[", file=gmlfile)
     for i in model.nodes():
@@ -55,11 +56,13 @@ def toGML(model, filename: str =None):
       print(f"    target X{j}", file=gmlfile)
       print("  ]", file=gmlfile)
     print("]", file=gmlfile)
+
   if filename is None:
-    _toGML(model,sys.stdout)
+    _toGML(model, sys.stdout)
   else:
     with open(filename, "w") as gmlfile:
-      _toGML(model,gmlfile)
+      _toGML(model, gmlfile)
+
 
 def toFastBN(bn, filename: str = None):
   """
@@ -72,15 +75,16 @@ def toFastBN(bn, filename: str = None):
   filename : Optional[str]
     the name of the file (including the prefix), if None , use sys.stdout
   """
-  def _toFastBN(bn,zefile):
-    print('bn=gum.fastBN("""', end="",file=zefile)
+
+  def _toFastBN(bn, zefile):
+    print('bn=gum.fastBN("""', end="", file=zefile)
     sovars = set()
-    first=True
+    first = True
     for x, y in bn.arcs():
       if not first:
         print('\n                 ', end="", file=zefile)
       else:
-        first=False
+        first = False
       if x in sovars:
         print(bn.variable(x).name(), end="", file=zefile)
       else:
@@ -93,8 +97,9 @@ def toFastBN(bn, filename: str = None):
         print(bn.variable(y).toFast(), end=";", file=zefile)
         sovars.add(y)
     print('""")')
+
   if filename is None:
-    _toFastBN(bn,sys.stdout)
+    _toFastBN(bn, sys.stdout)
   else:
     with open(filename, "w") as pyfile:
-      _toFastBN(bn,pyfile)
+      _toFastBN(bn, pyfile)

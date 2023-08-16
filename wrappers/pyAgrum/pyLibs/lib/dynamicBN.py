@@ -155,7 +155,7 @@ def _TimeSlicesToDot(dbn):
     a 2TBN or an unrolled BN
   """
   timeslices = getTimeSlicesRange(dbn)
-  kts= sorted(timeslices.keys(), key=lambda x: -1 if x == noTimeCluster else 1e8 if x == 't' else int(x))
+  kts = sorted(timeslices.keys(), key=lambda x: -1 if x == noTimeCluster else 1e8 if x == 't' else int(x))
 
   # dynamic member makes pylink unhappy
   # pylint: disable=no-member
@@ -178,16 +178,16 @@ def _TimeSlicesToDot(dbn):
     g.add_edge(dot.Edge('"' + dbn.variable(tail).name() + '"',
                         '"' + dbn.variable(head).name() + '"'))
 
-  g.set_edge_defaults(style="invis",constraint="True")
+  g.set_edge_defaults(style="invis", constraint="True")
   for x in timeslices["0"]:
-    name=x[1]
-    prec=None
+    name = x[1]
+    prec = None
     for k in kts:
       if k == noTimeCluster:
         continue
       if prec is not None:
         g.add_edge(dot.Edge(f'"{name}{prec}"', f'"{name}{k}"'))
-      prec=k
+      prec = k
 
   return g
 
@@ -278,7 +278,7 @@ def unroll2TBN(dbn, nbr):
     name = dbn.variable(dbn_id).name()
     # right order for parents
     lvarnames = list(reversed(dbn.cpt(dbn_id).names))
-    lvarnames.pop() # remove the node itself, parents remain
+    lvarnames.pop()  # remove the node itself, parents remain
     lvarnames.reverse()
 
     for name_parent in lvarnames:
@@ -338,17 +338,17 @@ def plotFollowUnrolled(lovars, dbn, T, evs, vars_title=None):
       lpots.append(serie)
 
     _, ax = plt.subplots()
-    plt.xlim(left=0, right=T-1)
+    plt.xlim(left=0, right=T - 1)
     plt.ylim(top=1, bottom=0)
     ax.xaxis.grid()
 
     # Setting a customized title
     if vars_title is None:
-        plt.title(f"Following variable {var}", fontsize=20)
+      plt.title(f"Following variable {var}", fontsize=20)
     elif len(vars_title) != 0:
-        plt.title(vars_title[var], fontsize=20)
+      plt.title(vars_title[var], fontsize=20)
     else:
-        raise TypeError("Incorrect format of the plots title dictionary")
+      raise TypeError("Incorrect format of the plots title dictionary")
 
     plt.xlabel('time')
 

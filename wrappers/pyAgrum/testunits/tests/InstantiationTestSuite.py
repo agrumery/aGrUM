@@ -77,25 +77,25 @@ class TestInstantiation(pyAgrumTestCase):
     self.assertEqual(i, m1)
     self.assertEqual(i, m2)
     m1.inc()
-    self.assertNotEqual(i,m1)
+    self.assertNotEqual(i, m1)
 
-    i=gum.Instantiation().addVarsFromModel(bn,["A","B"])
+    i = gum.Instantiation().addVarsFromModel(bn, ["A", "B"])
     m1 = gum.Instantiation().add(bn.variable("A")).add(bn.variable("B"))
     m2 = gum.Instantiation().add(bn.variable("B")).add(bn.variable("A"))
 
     self.assertEqual(i, m1)
     self.assertEqual(i, m2)
     m1.inc()
-    self.assertNotEqual(i,m1)
+    self.assertNotEqual(i, m1)
 
-    i=gum.Instantiation().addVarsFromModel(bn,["B","A"])
+    i = gum.Instantiation().addVarsFromModel(bn, ["B", "A"])
     m1 = gum.Instantiation().add(bn.variable("A")).add(bn.variable("B"))
     m2 = gum.Instantiation().add(bn.variable("B")).add(bn.variable("A"))
 
     self.assertEqual(i, m1)
     self.assertEqual(i, m2)
     m1.inc()
-    self.assertNotEqual(i,m1)
+    self.assertNotEqual(i, m1)
 
 
 ts = unittest.TestSuite()

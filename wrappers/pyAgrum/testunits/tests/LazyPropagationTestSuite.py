@@ -31,7 +31,7 @@ class LazyPropagationTestCase(pyAgrumTestCase):
 
     ie = gum.LazyPropagation(bn)
 
-    self.assertEqual(len(ie.BN().arcs()),8)
+    self.assertEqual(len(ie.BN().arcs()), 8)
 
     with self.assertRaises(gum.InvalidArgument):
       res = ie.evidenceImpact(0, [0, 1, 2])
@@ -94,7 +94,7 @@ class LazyPropagationTestCase(pyAgrumTestCase):
     byHandJMI = 0
     byHandJMI -= ie.jointPosterior({1, 3, 4}).entropy()
     byHandJMI += ie.jointPosterior({1, 4}).entropy() + ie.jointPosterior({1, 3}).entropy() + ie.jointPosterior(
-        {4, 3}).entropy()
+      {4, 3}).entropy()
     byHandJMI -= ie.posterior(1).entropy() + ie.posterior(4).entropy() + ie.posterior(3).entropy()
 
     ie2 = gum.LazyPropagation(bn)
@@ -109,16 +109,17 @@ class LazyPropagationTestCase(pyAgrumTestCase):
     byHandJMI = 0
     byHandJMI -= ie.jointPosterior({0, 1, 2, 3}).entropy()
     byHandJMI += ie.jointPosterior({0, 1, 2}).entropy() + ie.jointPosterior({0, 1, 3}).entropy() + ie.jointPosterior(
-        {0, 2, 3}).entropy() + ie.jointPosterior({1, 2, 3}).entropy()
+      {0, 2, 3}).entropy() + ie.jointPosterior({1, 2, 3}).entropy()
     byHandJMI -= ie.jointPosterior({0, 1}).entropy() + ie.jointPosterior({0, 2}).entropy() + ie.jointPosterior(
-        {0, 3}).entropy() + ie.jointPosterior({1, 2}).entropy() + ie.jointPosterior(
-        {1, 3}).entropy() + ie.jointPosterior({2, 3}).entropy()
+      {0, 3}).entropy() + ie.jointPosterior({1, 2}).entropy() + ie.jointPosterior(
+      {1, 3}).entropy() + ie.jointPosterior({2, 3}).entropy()
     byHandJMI += ie.posterior(0).entropy() + ie.posterior(1).entropy() + ie.posterior(2).entropy() + ie.posterior(
-        3).entropy()
+      3).entropy()
 
     ie2 = gum.LazyPropagation(bn)
     JMI = ie2.jointMutualInformation({0, 1, 2, 3})
     self.assertAlmostEqual(JMI, byHandJMI)
+
 
 ts = unittest.TestSuite()
 addTests(ts, LazyPropagationTestCase)

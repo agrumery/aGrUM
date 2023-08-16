@@ -106,7 +106,7 @@ class CausalModel:
     # simplest variable to add : only 2 modalities for latent variables
     id_latent = self.__causalBN.add(name, 2)
     self.__lat.add(id_latent)
-    self.__names[id_latent]=name
+    self.__names[id_latent] = name
 
     for item in lchild:
       j = self.__observationalBN.idFromName(

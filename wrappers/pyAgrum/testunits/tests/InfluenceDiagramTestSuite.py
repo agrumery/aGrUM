@@ -151,13 +151,12 @@ class InfluenceDiagramTestCase(pyAgrumTestCase):
     self.assertEqual(ie.optimalDecision("d"), gum.Potential().add(tst_id.variableFromName("d")).fillWith([0, 1]))
     self.assertEqual(ie.MEU()['mean'], 200)
 
-
   def testBugInferenceWithEvidenceWithSemiFastSyntax(self):
     tst_id = gum.InfluenceDiagram()
-    tst_id.addVariables(["c1","c","$u","*d"])
-    tst_id.addArcs([("c","c1"),
-                    ("c","u"),
-                    ("d","u")])
+    tst_id.addVariables(["c1", "c", "$u", "*d"])
+    tst_id.addArcs([("c", "c1"),
+                    ("c", "u"),
+                    ("d", "u")])
 
     tst_id.cpt("c").fillWith([0.5, 0.5])
 
@@ -180,6 +179,7 @@ class InfluenceDiagramTestCase(pyAgrumTestCase):
     ie.makeInference()
     self.assertEqual(ie.optimalDecision("d"), gum.Potential().add(tst_id.variableFromName("d")).fillWith([0, 1]))
     self.assertEqual(ie.MEU()['mean'], 200)
+
 
 ts = unittest.TestSuite()
 addTests(ts, InfluenceDiagramTestCase)

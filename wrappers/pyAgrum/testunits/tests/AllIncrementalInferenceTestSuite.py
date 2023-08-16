@@ -136,17 +136,17 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
 
     try:
       p = self.ie.posterior("D")
-      self.assertTrue(type(self.ie)==gum.VariableElimination)
+      self.assertTrue(type(self.ie) == gum.VariableElimination)
       self.assertEqual(p, self.joint.margSumIn(["D"]))
     except gum.UndefinedElement as e:
-      self.assertTrue(type(self.ie)!=gum.VariableElimination) # error not correctly caught by with ...
+      self.assertTrue(type(self.ie) != gum.VariableElimination)  # error not correctly caught by with ...
 
     try:
       p = self.ie.posterior("H")
-      self.assertTrue(type(self.ie)==gum.VariableElimination)
+      self.assertTrue(type(self.ie) == gum.VariableElimination)
       self.assertEqual(p, self.joint.margSumIn(["H"]))
     except gum.UndefinedElement as e:
-      self.assertTrue(type(self.ie)!=gum.VariableElimination) # error not correctly caught by with ...
+      self.assertTrue(type(self.ie) != gum.VariableElimination)  # error not correctly caught by with ...
 
   def testPriorWithTargetsEvidence(self):
     self.ie.eraseAllTargets()

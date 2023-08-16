@@ -25,7 +25,7 @@ from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 
 class TestGraph(pyAgrumTestCase):
-  def _testAddNodes(self,g):
+  def _testAddNodes(self, g):
     self.assertEqual(g.addNodes(6), set(range(6)))
     g.eraseNode(1)
     g.eraseNode(2)
@@ -45,50 +45,50 @@ class TestGraph(pyAgrumTestCase):
 
     ug.addNodes(4)
 
-    ug.addEdge(0,2)
-    ug.addEdge(1,2)
-    ug.addEdge(2,3)
+    ug.addEdge(0, 2)
+    ug.addEdge(1, 2)
+    ug.addEdge(2, 3)
 
     mixed_graph = gum.MixedGraph()
 
     mixed_graph.addNodes(4)
 
-    mixed_graph.addEdge(0,2)
-    mixed_graph.addEdge(1,2)
-    mixed_graph.addEdge(2,3)
+    mixed_graph.addEdge(0, 2)
+    mixed_graph.addEdge(1, 2)
+    mixed_graph.addEdge(2, 3)
 
     mg = gum.MixedGraph(ug)
 
     self.assertEqual(mixed_graph, mg)
 
   def testPath(self):
-    mg=gum.MixedGraph()
+    mg = gum.MixedGraph()
     mg.addNodes(5)
-    self.assertEqual(mg.mixedUnorientedPath(1,4),[])
-    self.assertEqual(mg.mixedOrientedPath(1,4),[])
-    mg.addArc(0,1)
-    mg.addEdge(1,2)
-    mg.addArc(3,2)
-    self.assertEqual(mg.mixedUnorientedPath(0,3),[0,1,2,3])
-    self.assertEqual(mg.mixedOrientedPath(0,3),[])
-    self.assertEqual(mg.mixedOrientedPath(0,2),[0,1,2])
+    self.assertEqual(mg.mixedUnorientedPath(1, 4), [])
+    self.assertEqual(mg.mixedOrientedPath(1, 4), [])
+    mg.addArc(0, 1)
+    mg.addEdge(1, 2)
+    mg.addArc(3, 2)
+    self.assertEqual(mg.mixedUnorientedPath(0, 3), [0, 1, 2, 3])
+    self.assertEqual(mg.mixedOrientedPath(0, 3), [])
+    self.assertEqual(mg.mixedOrientedPath(0, 2), [0, 1, 2])
 
   def testConstructorFromDG(self):
     dg = gum.DiGraph()
 
     dg.addNodes(4)
 
-    dg.addArc(0,2)
-    dg.addArc(1,2)
-    dg.addArc(2,3)
+    dg.addArc(0, 2)
+    dg.addArc(1, 2)
+    dg.addArc(2, 3)
 
     mixed_graph = gum.MixedGraph()
 
     mixed_graph.addNodes(4)
 
-    mixed_graph.addArc(0,2)
-    mixed_graph.addArc(1,2)
-    mixed_graph.addArc(2,3)
+    mixed_graph.addArc(0, 2)
+    mixed_graph.addArc(1, 2)
+    mixed_graph.addArc(2, 3)
 
     mg = gum.MixedGraph(dg)
 
@@ -99,14 +99,14 @@ class TestGraph(pyAgrumTestCase):
 
     mixed_graph.addNodes(4)
 
-    mixed_graph.addArc(0,2)
-    mixed_graph.addEdge(1,2)
-    mixed_graph.addArc(2,3)
+    mixed_graph.addArc(0, 2)
+    mixed_graph.addEdge(1, 2)
+    mixed_graph.addArc(2, 3)
 
-    self.assertEquals(mixed_graph.parents(2),{0})
-    self.assertEquals(mixed_graph.children(2),{3})
-    self.assertEquals(mixed_graph.neighbours(2),{1})
-    self.assertEquals(mixed_graph.boundary(2),{0,1,3})
+    self.assertEquals(mixed_graph.parents(2), {0})
+    self.assertEquals(mixed_graph.children(2), {3})
+    self.assertEquals(mixed_graph.neighbours(2), {1})
+    self.assertEquals(mixed_graph.boundary(2), {0, 1, 3})
 
     copy = mixed_graph
     self.assertEqual(mixed_graph, copy)
@@ -115,14 +115,14 @@ class TestGraph(pyAgrumTestCase):
     self.assertEqual(mixed_graph, copy)
 
   def testNonRegressionAddEdge(self):
-    ug=gum.UndiGraph()
+    ug = gum.UndiGraph()
     ug.addNodes(4)
     with self.assertRaises(gum.InvalidNode):
-      ug.addEdge(1,6)
+      ug.addEdge(1, 6)
     with self.assertRaises(gum.InvalidNode):
-      ug.addEdge(7,0)
+      ug.addEdge(7, 0)
     with self.assertRaises(gum.InvalidNode):
-      ug.addEdge(6,7)
+      ug.addEdge(6, 7)
 
 
 ts = unittest.TestSuite()
