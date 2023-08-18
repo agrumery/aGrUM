@@ -33,7 +33,7 @@ __project_url__ = 'http://agrum.org'
 
 from typing import List
 import warnings
-import numpy as np
+import os.path as ospath
 
 from .deprecated import *
 
@@ -94,8 +94,8 @@ __all__ = [
   'ShaferShenoyInference', 'VariableElimination',
   'PythonApproximationListener', 'PythonBNListener', 'PythonLoadListener', 'PythonDatabaseGeneratorListener',
   'BNGenerator', 'IDGenerator', 'JunctionTreeGenerator',
-  'BNLearner', 'InformationTheory'
-               'BNDatabaseGenerator',
+  'BNLearner', 'InformationTheory',
+  'BNDatabaseGenerator',
   'InfluenceDiagram', 'ShaferShenoyLIMIDInference',
   'CredalNet', 'CNMonteCarloSampling', 'CNLoopyPropagation',
   'PRMexplorer',
@@ -239,9 +239,9 @@ def loadBN(filename, listeners=None, verbose=False, **opts):
     [-1] + " unknown. Please use among " + availableBNExts())
 
   if verbose:
-    print(warns)
+    warnings.warn(warns)
 
-  bn.setProperty("name", filename)
+  bn.setProperty("name", ospath.splitext(ospath.basename(filename))[0])
   return bn
 
 
@@ -407,7 +407,7 @@ def loadID(filename):
   res = diag.loadBIFXML(filename)
 
   if not res:
-    raise Exception(f"Error(s) in {filename}")
+    raise IOError(f"Error(s) in {filename}")
 
   diag.setProperty("name", filename)
   return diag
@@ -757,7 +757,7 @@ def mutilateBN(bn, intervention=None, observation=None):
       hard = False
 
       if len(new_dis) == 0:  # soft 1)
-        new_dis = [1 / n for k in range(n)]
+        new_dis = [1 / n for _ in range(n)]
 
       elif str in [type(i) for i in new_dis]:  # hard - soft 3) 4)
         new_dis = [1 if bn.variable(var).labels()[i] == new_dis[0] else 0 for i in range(n)]
