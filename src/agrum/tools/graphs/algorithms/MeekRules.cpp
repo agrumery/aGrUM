@@ -17,8 +17,6 @@
 *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
 *
 */
-
-
 /** @file
 * @brief source implementations of simplicial set
 *
@@ -26,67 +24,21 @@
 */
 #include <agrum/agrum.h>
 #include <agrum/tools/graphs/mixedGraph.h>
-#include <agrum/tools/graphs/DAG.h>
 #include <agrum/tools/graphs/algorithms/MeekRules.h>
 
 namespace gum{
 
   /// default constructor
-  MeekRules::MeekRules(gum::MixedGraph g):_g_(g){ GUM_CONSTRUCTOR(MeekRules);}
+  MeekRules::MeekRules(){ GUM_CONSTRUCTOR(MeekRules);}
 
   /// destructor
   MeekRules::~MeekRules(){
     GUM_DESTRUCTOR(MeekRules);
   }
 
-  DAG MeekRules::learnDAG( MixedGraph initialGraph) {
-    MixedGraph pdag = learnPDAG(initialGraph);
-
-    // orientate remaining edges
-
-    const Sequence< NodeId > order = pdag.topologicalOrder();
-    propagatesOrientationInChainOfRemainingEdges_(pdag);
-
-    // then decide the orientation for double arcs
-    for (gum::NodeId x: order)
-      for (NodeId y: pdag.parents(x))
-        if (pdag.parents(y).contains(x)) {
-          // GUM_TRACE(" + Resolving double arcs (poorly)")
-          pdag.eraseArc(Arc(y, x));
-        }
-
-    DAG dag;
-    for (auto node: pdag) {
-      dag.addNodeWithId(node);
-    }
-    for (const Arc& arc: pdag.arcs()) {
-      dag.addArc(arc.tail(), arc.head());
-    }
-    return dag;
-  }
-
   /// Propagates MeekRules in a MixedGraph
-  MixedGraph MeekRules::learnPDAG(MixedGraph graph) {
+  MixedGraph MeekRules::propagatesOrientations(MixedGraph graph, std::vector< Arc > _latentCouples_) {
     const Sequence< NodeId > order = graph.topologicalOrder();
-
-    // first, forbidden arcs force arc in the other direction
-    for (NodeId x: order) {
-      const auto nei_x = graph.neighbours(x);
-      for (NodeId y: nei_x)
-        if (_isForbiddenArc_(x, y)) {
-          graph.eraseEdge(Edge(x, y));
-          if (_isForbiddenArc_(y, x)) {
-            // GUM_TRACE("Neither arc allowed for edge (" << x << "," << y << ")")
-          } else {
-            // GUM_TRACE("Forced orientation : " << y << "->" << x)
-            graph.addArc(y, x);
-          }
-        } else if (_isForbiddenArc_(y, x)) {
-          graph.eraseEdge(Edge(x, y));
-          // GUM_TRACE("Forced orientation : " << x << "->" << y)
-          graph.addArc(x, y);
-        }
-    }
 
     // Propagates existing orientations thanks to Meek rules
     bool newOrientation = true;
@@ -94,16 +46,39 @@ namespace gum{
       newOrientation = false;
       for (NodeId x: order) {
         if (!graph.parents(x).empty()) {
-          newOrientation |= propagatesRemainingOrientableEdges_(graph, x);
+          newOrientation |= propagatesRemainingOrientableEdges_(graph, x, _latentCouples_);
         }
       }
     }
     return graph;
   }
 
+  MixedGraph MeekRules::orientAllEdges(MixedGraph graph, std::vector< Arc > _latentCouples_){
+
+    const Sequence< NodeId > order = graph.topologicalOrder();
+
+    //Propagates existing orientations thanks to rules
+    bool newOrientation = true;
+    while (newOrientation) {
+      newOrientation = false;
+      for (NodeId x: order) {
+        if (!graph.parents(x).empty()) {
+          newOrientation |= propagatesRemainingOrientableEdges_(graph, x, _latentCouples_);
+        }
+      }
+    }
+
+    //GUM_TRACE(graph.toDot())
+    // Orient remaining edges
+    propagatesOrientationInChainOfRemainingEdges_(graph, _latentCouples_);
+
+    return graph;
+  }
+
   /// Propagates the orientation from a node to its neighbours
   bool MeekRules::propagatesRemainingOrientableEdges_(gum::MixedGraph& graph,
-                                                      NodeId xj) {
+                                                      NodeId xj,
+                                                      std::vector< Arc > _latentCouples_) {
     bool       res        = false;
     const auto neighbours = graph.neighbours(xj);
     for (auto& xi: neighbours) {
@@ -117,12 +92,12 @@ namespace gum{
       if (i_j) {
         graph.eraseEdge(Edge(xi, xj));
         graph.addArc(xi, xj);
-        propagatesRemainingOrientableEdges_(graph, xj);
+        propagatesRemainingOrientableEdges_(graph, xj, _latentCouples_);
       }
       if (j_i) {
         graph.eraseEdge(Edge(xi, xj));
         graph.addArc(xj, xi);
-        propagatesRemainingOrientableEdges_(graph, xi);
+        propagatesRemainingOrientableEdges_(graph, xi, _latentCouples_);
       }
       if (i_j && j_i) {
         // GUM_TRACE(" + add arc (" << xi << "," << xj << ")")
@@ -163,7 +138,7 @@ namespace gum{
   }
 
   /// Arbitrary propagation if we can't propagate thanks to MeekRules
-  void MeekRules::propagatesOrientationInChainOfRemainingEdges_(MixedGraph& essentialGraph) {
+  void MeekRules::propagatesOrientationInChainOfRemainingEdges_(MixedGraph& essentialGraph, std::vector< Arc > _latentCouples_) {
     // then decide the orientation for remaining edges
     while (!essentialGraph.edges().empty()) {
       const auto& edge               = *(essentialGraph.edges().begin());
@@ -201,15 +176,15 @@ namespace gum{
           // GUM_TRACE("n : "<< n)
           if (!stack.contains(n) && !visited.contains(n)) stack.insert(n);
           // GUM_TRACE(" + amap reasonably orientation for " << n << "->" << next);
-          if (propagatesRemainingOrientableEdges_(essentialGraph, next)) {
+          if (propagatesRemainingOrientableEdges_(essentialGraph, next, _latentCouples_)) {
             continue;
           } else {
             if (!essentialGraph.existsArc(next,
                                           n)) {   // Checking that we're not creating a
                                                   // doubly-oriented arc by adding a "random" arc.
               essentialGraph.eraseEdge(Edge(n, next));
-              // GUM_TRACE(" + add arc (" << n << "->" << next << ")")
               essentialGraph.addArc(n, next);
+              //GUM_TRACE(" + add arc (" << n << "->" << next << ")")
             }
           }
         }
@@ -251,16 +226,5 @@ namespace gum{
 
     return false;
   }
-
-  void MeekRules::setMandatoryGraph(const gum::DAG mandaGraph) { this->mandatoryGraph = mandaGraph; }
-
-  void MeekRules::setForbiddenGraph(const gum::DiGraph forbidGraph) { this->forbiddenGraph = forbidGraph; }
-
-  void MeekRules::setMaxIndegree(gum::Size n) { this->_maxIndegree_ = n; }
-
-  bool MeekRules::_isForbiddenArc_(MixedGraph graph, NodeId x, NodeId y) const {
-    return (forbiddenGraph.existsArc(x, y) or (graph.parents(x).size() >= _maxIndegree_) );
-  }
-
 
 } ///namespace gum

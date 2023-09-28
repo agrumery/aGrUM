@@ -18,40 +18,31 @@ namespace gum {
     /// @{
 
     /// default constructor
-    MeekRules(const gum::MixedGraph graph);
+    MeekRules();
 
     /// destructor
     virtual ~MeekRules();
 
     /// @}
 
+    /// Takes a partially oriented graph and orient all possible edges
+    MixedGraph orientAllEdges(MixedGraph graph, std::vector< Arc > _latentCouples_);
+
+    /// Takes a partially oriented graph and orient all the edges
+    MixedGraph propagatesOrientations(MixedGraph graph, std::vector< Arc > _latentCouples_);
+
     private:
-    /// an empty vector of arcs
-    std::vector< gum::Arc > _latentCouples_;
-    const gum::MixedGraph&  _g_;
-
-    /// maximum number of parents
-    gum::Size _maxIndegree_;
-    /// Graph that contains the mandatory arcs
-    gum::DAG mandatoryGraph;
-    /// Graph that contains the forbidden arcs
-    gum::DiGraph forbiddenGraph;
-
-    gum::DAG learnDAG(gum::MixedGraph graph);
-    gum::MixedGraph learnPDAG(gum::MixedGraph graph);
-
     /// Propagates the orientation from a node to its neighbours
-    bool propagatesRemainingOrientableEdges_(gum::MixedGraph& graph, gum::NodeId xj);
+    /** @param dag graph in which to which to propagate arcs
+      * @param node node on which neighbours to propagate th orientation
+      * @param force : true if an orientation has always to be found.
+     */
+    bool propagatesRemainingOrientableEdges_(MixedGraph& graph, NodeId xj, std::vector< Arc > _latentCouples_);
 
     /// heuristic for remaining edges when everything else has been tried
-    void propagatesOrientationInChainOfRemainingEdges_(gum::MixedGraph& graph);
+    void propagatesOrientationInChainOfRemainingEdges_(gum::MixedGraph& graph, std::vector< Arc > _latentCouples_);
 
     bool isOrientable_(const gum::MixedGraph& graph, gum::NodeId xi, gum::NodeId xj) const;
-    bool _isForbiddenArc_(MixedGraph graph, NodeId x, NodeId y) const;
-
-    void setForbiddenGraph(gum::DiGraph forbidGraph);
-    void setMandatoryGraph(gum::DAG mandaGraph);
-    void setMaxIndegree(gum::Size n);
 
     static bool _existsDirectedPath_(const MixedGraph& graph, NodeId n1, NodeId n2);
 

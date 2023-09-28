@@ -140,6 +140,7 @@ namespace gum {
 
       /// Set a ensemble of constraints for the orientation phase
       void addConstraints(HashTable< std::pair< NodeId, NodeId >, char > constraints);
+
       /// @}
 
       protected:
@@ -194,6 +195,11 @@ namespace gum {
          MixedGraph&                                                            graph,
          const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet);
       /// @}
+
+      void orientationLatents_(
+         CorrectedMutualInformation&                                            mutualInformation,
+         MixedGraph&                                                            graph,
+         const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet);
 
       /// finds the best contributor node for a pair given a conditioning set
       /**@param x first node

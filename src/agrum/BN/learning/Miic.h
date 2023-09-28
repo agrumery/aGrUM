@@ -47,6 +47,7 @@
 #include <agrum/tools/core/heap.h>
 #include <agrum/tools/graphs/PDAG.h>
 #include <agrum/tools/stattests/correctedMutualInformation.h>
+#include "agrum/tools/graphs/algorithms/MeekRules.h"
 
 #define GUM_SL_EMIT(x, y, action, explain)                                                \
   {                                                                                       \
@@ -135,6 +136,12 @@ namespace gum {
       // ##########################################################################
       /// @{
 
+      /// learns the skeleton of a MixedGraph (no orientation).
+      /** @param mutualInformation A mutual information instance that will do the
+       * computations and has loaded the database.
+       * @param graph the MixedGraph we start from for the learning
+       * */
+      MixedGraph learnSkeleton(CorrectedMutualInformation& mutualInformation, MixedGraph graph);
 
       /// learns the structure of a MixedGraph (Meek rules not used here).
       /** @param mutualInformation A mutual information instance that will do the
@@ -149,7 +156,7 @@ namespace gum {
        * computations and has loaded the database.
        * @param graph the MixedGraph we start from for the learning
        * */
-      MixedGraph learnPDAG(CorrectedMutualInformation& mutualInformation, MixedGraph graph);
+      PDAG learnPDAG(CorrectedMutualInformation& mutualInformation, MixedGraph graph);
 
       /// learns the structure of a Bayesian network, i.e. a DAG, by first learning
       /// an Essential graph and then directing the remaining edges.
@@ -264,7 +271,7 @@ namespace gum {
 
       /// gets the list of unshielded triples in the graph in decreasing value of
       ///|I'(x, y, z|{ui})|
-      /*@param graph graph in which to find the triples
+      /**@param graph graph in which to find the triples
        *@param I mutual information object to compute the scores
        *@param sep_set hashtable storing the separation sets for pairs of variables
        */
@@ -275,7 +282,7 @@ namespace gum {
 
       /// gets the list of unshielded triples in the graph in decreasing value of
       ///|I'(x, y, z|{ui})|, prepares the orientation matrix for MIIC
-      /*@param graph graph in which to find the triples
+      /**@param graph graph in which to find the triples
        *@param I mutual information object to compute the scores
        *@param sep_set hashtable storing the separation sets for pairs of variables
        * @param marks hashtable containing the orientation marks for edges
@@ -287,31 +294,26 @@ namespace gum {
          HashTable< std::pair< NodeId, NodeId >, char >&                        marks);
 
       /// Gets the orientation probabilities like MIIC for the orientation phase
-      /*@param graph graph in which to find the triples
+      /**@param graph graph in which to find the triples
        *@param proba_triples probabilities for the different triples to update
        */
       std::vector< ProbabilisticRanking >
          updateProbaTriples_(const MixedGraph&                   graph,
                              std::vector< ProbabilisticRanking > probaTriples);
 
-      /// Propagates the orientation from a node to its neighbours
-      /*@param dag graph in which to which to propagate arcs
-       *@param node node on which neighbours to propagate th orientation
-       *@param force : true if an orientation has always to be found.
+      /// Gets the orientation probabilities like MIIC for the orientation phase
+      /**@param MixedGraph mg the graph from which the double headed arcs will be oriented.
        */
-      bool propagatesRemainingOrientableEdges_(MixedGraph& graph, NodeId xj);
+      void orientDoubleHeadedArcs_(MixedGraph& mg);
 
-      /// heuristic for remaining edges when everything else has been tried
-      void propagatesOrientationInChainOfRemainingEdges_(MixedGraph& graph);
+      /// Object that can propagates orientations to non-oriented edges.
+      gum::MeekRules meekRules_;
 
-      protected:
-      bool isOrientable_(const MixedGraph& graph, NodeId xi, NodeId xj) const;
       /// Check constraints
-      bool _isForbiddenArc_(NodeId x, NodeId y) const;
-      bool _isForbiddenEdge_(NodeId x, NodeId y);
-      bool _isMandatoryArc_(NodeId x, NodeId y) const;
-      bool _isMaxIndegree_(MixedGraph graph, NodeId x);
-      bool _isArcValid_(MixedGraph graph, NodeId x, NodeId y);
+      bool isForbiddenArc_(NodeId x, NodeId y) const;
+      bool isForbiddenEdge_(NodeId x, NodeId y);
+      bool isMaxIndegree_(MixedGraph graph, NodeId x);
+      bool isArcValid_(MixedGraph graph, NodeId x, NodeId y);
 
       private:
       /// Fixes the maximum log that we accept in exponential computations
@@ -334,10 +336,10 @@ namespace gum {
       HashTable< std::pair< NodeId, NodeId >, char > _initialMarks_;
 
       /// Graph that contains the mandatories arcs
-      gum::DAG mandatoryGraph;
+      gum::DAG _mandatoryGraph_;
 
       /// Graph that contains the forbidden arcs
-      gum::DiGraph forbiddenGraph;
+      gum::DiGraph _forbiddenGraph_;
 
       /** @brief checks for directed paths in a graph, considering double arcs like
        * edges, not considering arc as a directed path.

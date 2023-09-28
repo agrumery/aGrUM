@@ -191,6 +191,136 @@ namespace gum {
      * Try to assess v-structures and propagate them.
      */
 
+    /// variant trying to propagate both orientations in a bidirected arc
+    void SimpleMiic::orientationLatents_(
+       CorrectedMutualInformation&                                            mutualInformation,
+       MixedGraph&                                                            graph,
+       const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet) {
+      std::vector< Ranking > triples      = unshieldedTriples_(graph, mutualInformation, sepSet);
+      Size                   steps_orient = triples.size();
+      Size                   past_steps   = current_step_;
+
+      NodeId i = 0;
+      // list of elements that we shouldnt read again, ie elements that are
+      // eligible to
+      // rule 0 after the first time they are tested, and elements on which rule 1
+      // has been applied
+      while (i < triples.size()) {
+        // if i not in do_not_reread
+        Ranking triple = triples[i];
+        NodeId  x, y, z;
+        x = std::get< 0 >(*triple.first);
+        y = std::get< 1 >(*triple.first);
+        z = std::get< 2 >(*triple.first);
+
+        std::vector< NodeId >       ui;
+        std::pair< NodeId, NodeId > key     = {x, y};
+        std::pair< NodeId, NodeId > rev_key = {y, x};
+        if (sepSet.exists(key)) {
+          ui = sepSet[key];
+        } else if (sepSet.exists(rev_key)) {
+          ui = sepSet[rev_key];
+        }
+        double Ixyz_ui = triple.second;
+        // try Rule 0
+        if (Ixyz_ui < 0) {
+          // if ( z not in Sep[x,y])
+          if (std::find(ui.begin(), ui.end(), z) == ui.end()) {
+            // if what we want to add already exists : pass
+            if ((graph.existsArc(x, z) || graph.existsArc(z, x))
+                && (graph.existsArc(y, z) || graph.existsArc(z, y))) {
+              ++i;
+            } else {
+              i = 0;
+              graph.eraseEdge(Edge(x, z));
+              graph.eraseEdge(Edge(y, z));
+              // checking for cycles
+              if (graph.existsArc(z, x)) {
+                graph.eraseArc(Arc(z, x));
+                try {
+                  std::vector< NodeId > path = graph.directedPath(z, x);
+                  // if we find a cycle, we force the competing edge
+                  _latentCouples_.emplace_back(z, x);
+                } catch (const gum::NotFound&) { graph.addArc(x, z); }
+                graph.addArc(z, x);
+              } else {
+                try {
+                  std::vector< NodeId > path = graph.directedPath(z, x);
+                  // if we find a cycle, we force the competing edge
+                  graph.addArc(z, x);
+                  _latentCouples_.emplace_back(z, x);
+                } catch (const gum::NotFound&) { graph.addArc(x, z); }
+              }
+              if (graph.existsArc(z, y)) {
+                graph.eraseArc(Arc(z, y));
+                try {
+                  std::vector< NodeId > path = graph.directedPath(z, y);
+                  // if we find a cycle, we force the competing edge
+                  _latentCouples_.emplace_back(z, y);
+                } catch (const gum::NotFound&) { graph.addArc(y, z); }
+                graph.addArc(z, y);
+              } else {
+                try {
+                  std::vector< NodeId > path = graph.directedPath(z, y);
+                  // if we find a cycle, we force the competing edge
+                  graph.addArc(z, y);
+                  _latentCouples_.emplace_back(z, y);
+
+                } catch (const gum::NotFound&) { graph.addArc(y, z); }
+              }
+              if (graph.existsArc(z, x) && _isNotLatentCouple_(z, x)) {
+                _latentCouples_.emplace_back(z, x);
+              }
+              if (graph.existsArc(z, y) && _isNotLatentCouple_(z, y)) {
+                _latentCouples_.emplace_back(z, y);
+              }
+            }
+          } else {
+            ++i;
+          }
+        } else {   // try Rule 1
+          bool reset{false};
+          if (graph.existsArc(x, z) && !graph.existsArc(z, y) && !graph.existsArc(y, z)) {
+            reset = true;
+            graph.eraseEdge(Edge(z, y));
+            try {
+              std::vector< NodeId > path = graph.directedPath(y, z);
+              // if we find a cycle, we force the competing edge
+              graph.addArc(y, z);
+              _latentCouples_.emplace_back(y, z);
+            } catch (const gum::NotFound&) { graph.addArc(z, y); }
+          }
+          if (graph.existsArc(y, z) && !graph.existsArc(z, x) && !graph.existsArc(x, z)) {
+            reset = true;
+            graph.eraseEdge(Edge(z, x));
+            try {
+              std::vector< NodeId > path = graph.directedPath(x, z);
+              // if we find a cycle, we force the competing edge
+              graph.addArc(x, z);
+              _latentCouples_.emplace_back(x, z);
+            } catch (const gum::NotFound&) { graph.addArc(z, x); }
+          }
+
+          if (reset) {
+            i = 0;
+          } else {
+            ++i;
+          }
+        }   // if rule 0 or rule 1
+        if (onProgress.hasListener()) {
+          GUM_EMIT3(onProgress,
+                    ((current_step_ + i) * 100) / (past_steps + steps_orient),
+                    0.,
+                    timer_.step());
+        }
+      }   // while
+
+      // erasing the the double headed arcs
+      for (const Arc& arc: _latentCouples_) {
+        graph.eraseArc(Arc(arc.head(), arc.tail()));
+      }
+    }
+
     /// Orientation protocol of MIIC
     void SimpleMiic::orientationMiic_(
        CorrectedMutualInformation&                                            mutualInformation,
