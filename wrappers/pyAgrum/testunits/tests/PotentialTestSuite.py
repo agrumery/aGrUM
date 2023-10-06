@@ -615,7 +615,7 @@ class TestOperators(pyAgrumTestCase):
 
     try:
       q = pot.extract({"x": 1})
-      self.assertEquals(pot, q)
+      self.assertEqual(pot, q)
     except gum.InvalidArgument:
       self.assertTrue(False)
 

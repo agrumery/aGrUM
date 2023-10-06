@@ -257,42 +257,42 @@ class MarkovRandomFieldTestCase(pyAgrumTestCase):
 
     # V0 should be the first
     mrf.addFactor(["V0", "V1"])
-    self.assertEquals(mrf.factor({"V0", "V1"}).variable(0).name(), "V0")
-    self.assertEquals(mrf.factor({"V1", "V0"}).variable(0).name(), "V0")
+    self.assertEqual(mrf.factor({"V0", "V1"}).variable(0).name(), "V0")
+    self.assertEqual(mrf.factor({"V1", "V0"}).variable(0).name(), "V0")
 
     # V2 should be the first
     mrf.addFactor(["V2", "V1"])
-    self.assertEquals(mrf.factor({"V2", "V1"}).variable(0).name(), "V2")
-    self.assertEquals(mrf.factor({"V1", "V2"}).variable(0).name(), "V2")
+    self.assertEqual(mrf.factor({"V2", "V1"}).variable(0).name(), "V2")
+    self.assertEqual(mrf.factor({"V1", "V2"}).variable(0).name(), "V2")
 
     # 2 should be the first
     mrf.addFactor({"V2", "V3"})
-    self.assertEquals(mrf.factor({"V3", "V2"}).variable(0).name(), "V2")
+    self.assertEqual(mrf.factor({"V3", "V2"}).variable(0).name(), "V2")
 
     # 1 should be the first
     mrf.addFactor({"V2", "V0"})
-    self.assertEquals(mrf.factor({"V2", "V0"}).variable(0).name(), "V0")
+    self.assertEqual(mrf.factor({"V2", "V0"}).variable(0).name(), "V0")
 
   def testOrderInsertionWithId(self):
     mrf = gum.fastMRF("V0;V1;V2;V3")
 
     # V0 should be the first
     mrf.addFactor([0, 1])
-    self.assertEquals(mrf.factor({0, 1}).variable(0).name(), "V0")
-    self.assertEquals(mrf.factor({1, 0}).variable(0).name(), "V0")
+    self.assertEqual(mrf.factor({0, 1}).variable(0).name(), "V0")
+    self.assertEqual(mrf.factor({1, 0}).variable(0).name(), "V0")
 
     # V2 should be the first
     mrf.addFactor([2, 1])
-    self.assertEquals(mrf.factor({2, 1}).variable(0).name(), "V2")
-    self.assertEquals(mrf.factor({1, 2}).variable(0).name(), "V2")
+    self.assertEqual(mrf.factor({2, 1}).variable(0).name(), "V2")
+    self.assertEqual(mrf.factor({1, 2}).variable(0).name(), "V2")
 
     # 2 should be the first
     mrf.addFactor({2, 3})
-    self.assertEquals(mrf.factor({2, 3}).variable(0).name(), mrf.variable(2).name())
+    self.assertEqual(mrf.factor({2, 3}).variable(0).name(), mrf.variable(2).name())
 
     # 1 should be the first
     mrf.addFactor({2, 0})
-    self.assertEquals(mrf.factor({2, 0}).variable(0).name(), mrf.variable(0).name())
+    self.assertEqual(mrf.factor({2, 0}).variable(0).name(), mrf.variable(0).name())
 
 
 ts = unittest.TestSuite()

@@ -116,12 +116,12 @@ class DiscreteVariableTestCase(VariablesTestCase):
       return set(x.__dir__()) - set(y.__dir__())
 
     # these methods are not down-exported in variables.i
-    self.assertEquals(not_imported_api("LabelizedVariable"), {'addLabel', 'eraseLabels', 'changeLabel'})
-    self.assertEquals(not_imported_api("RangeVariable"), {'setMinVal', 'setMaxVal'})
-    self.assertEquals(not_imported_api("NumericalDiscreteVariable"),
+    self.assertEqual(not_imported_api("LabelizedVariable"), {'addLabel', 'eraseLabels', 'changeLabel'})
+    self.assertEqual(not_imported_api("RangeVariable"), {'setMinVal', 'setMaxVal'})
+    self.assertEqual(not_imported_api("NumericalDiscreteVariable"),
                       {'eraseValue', 'eraseValues', 'addValue', 'changeValue'})
-    self.assertEquals(not_imported_api("DiscretizedVariable"), {'eraseTicks', 'setEmpirical', 'addTick'})
-    self.assertEquals(not_imported_api("IntegerVariable"), {'eraseValue', 'eraseValues', 'addValue', 'changeValue'})
+    self.assertEqual(not_imported_api("DiscretizedVariable"), {'eraseTicks', 'setEmpirical', 'addTick'})
+    self.assertEqual(not_imported_api("IntegerVariable"), {'eraseValue', 'eraseValues', 'addValue', 'changeValue'})
 
 
 class LabelizedVariableTestCase(VariablesTestCase):

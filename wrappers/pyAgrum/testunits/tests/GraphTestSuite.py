@@ -103,10 +103,10 @@ class TestGraph(pyAgrumTestCase):
     mixed_graph.addEdge(1, 2)
     mixed_graph.addArc(2, 3)
 
-    self.assertEquals(mixed_graph.parents(2), {0})
-    self.assertEquals(mixed_graph.children(2), {3})
-    self.assertEquals(mixed_graph.neighbours(2), {1})
-    self.assertEquals(mixed_graph.boundary(2), {0, 1, 3})
+    self.assertEqual(mixed_graph.parents(2), {0})
+    self.assertEqual(mixed_graph.children(2), {3})
+    self.assertEqual(mixed_graph.neighbours(2), {1})
+    self.assertEqual(mixed_graph.boundary(2), {0, 1, 3})
 
     copy = mixed_graph
     self.assertEqual(mixed_graph, copy)

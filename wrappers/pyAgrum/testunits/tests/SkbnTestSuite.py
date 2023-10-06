@@ -41,8 +41,8 @@ class SkbnTestCase(pyAgrumTestCase):
     classifier = skbn.BNClassifier()
     classifier.fit(X, y)
     res = classifier.preparedData(X, y)
-    self.assertEquals(str(res["X1"][1]), "2.6")
-    self.assertEquals(str(res["X3"][3]), "False")
+    self.assertEqual(str(res["X1"][1]), "2.6")
+    self.assertEqual(str(res["X3"][3]), "False")
 
     X = pd.DataFrame([[1, 0, "A", True]])
     y = [3]
@@ -60,8 +60,8 @@ class SkbnTestCase(pyAgrumTestCase):
     classifier = skbn.BNClassifier(discretizationThreshold=3, discretizationNbBins=3)
     classifier.fit(X, y)
     res = classifier.preparedData(X, y)
-    self.assertEquals(res["X1"][1], "[2.23333;3.14)")
-    self.assertEquals(str(res["X3"][3]), "False")
+    self.assertEqual(res["X1"][1], "[2.23333;3.14)")
+    self.assertEqual(str(res["X3"][3]), "False")
 
     X = pd.DataFrame([[1, 0, "A", True],
                       [1, 4, "B", False],
@@ -72,8 +72,8 @@ class SkbnTestCase(pyAgrumTestCase):
                       ])
     y = [3, 2, 3, 1, 2, 1]
     res = classifier.preparedData(X, y)
-    self.assertEquals(res["X1"][0], "(0.15;0.833333[")
-    self.assertEquals(str(res["X3"][2]), "True")
+    self.assertEqual(res["X1"][0], "(0.15;0.833333[")
+    self.assertEqual(str(res["X3"][2]), "True")
 
   def test_with_nparray(self):
     iris = datasets.load_iris()
@@ -83,21 +83,21 @@ class SkbnTestCase(pyAgrumTestCase):
     classifier.fit(X, y)
     res = classifier.preparedData(X, y)
     # X0 and X1 are discretized so the labels should start with '[' but the rest is random (chosen by load_iris)...
-    self.assertEquals(res["x0"][149][0], "[")
-    self.assertEquals(res["x1"][149][0], "[")
+    self.assertEqual(res["x0"][149][0], "[")
+    self.assertEqual(res["x1"][149][0], "[")
 
   def test_with_file(self):
     classifier = skbn.BNClassifier()
     classifier.fit(data=self.agrumSrcDir("miniasia.csv"), targetName="dyspnoea")
     res = classifier.preparedData(data=self.agrumSrcDir("miniasia.csv"))
-    self.assertEquals(str(res["lung_cancer"][0]), "0")
+    self.assertEqual(str(res["lung_cancer"][0]), "0")
 
   def test_with_df(self):
     classifier = skbn.BNClassifier()
     df = pd.read_csv(self.agrumSrcDir("miniasia.csv"))
     classifier.fit(data=df, targetName="dyspnoea")
     res = classifier.preparedData(data=df)
-    self.assertEquals(str(res["lung_cancer"][0]), "0")
+    self.assertEqual(str(res["lung_cancer"][0]), "0")
 
 
 ts = unittest.TestSuite()

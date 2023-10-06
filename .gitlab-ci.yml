@@ -14,7 +14,7 @@ variables:
 ################################################################################
 
 linux_agrum:
-  image: agrumery/ubuntu_py311
+  image: agrumery/ubuntu_py312
   tags:
     - docker
     - linux
@@ -44,8 +44,8 @@ linux_pyagrum_py38:
     - pip3 install -r wrappers/pyAgrum/testunits/requirements.txt
     - python3 act --no-fun test release pyAgrum -j halfexcept1 -t quick
 
-linux_pyagrum_py311:
-  image: agrumery/ubuntu_py311
+linux_pyagrum_py312:
+  image: agrumery/ubuntu_py312
   tags:
     - docker
     - linux
@@ -80,7 +80,7 @@ build_wheel_manylinux_py38:
   script:
     - bash $LINUX_WHEELHOUSE cp38-cp38
 
-build_wheel_manylinux_py311:
+build_wheel_manylinux_py312:
   only:
     - tags
     - master@agrumery/aGrUM
@@ -92,7 +92,7 @@ build_wheel_manylinux_py311:
     - manylinux1
   stage: build
   script:
-    - bash $LINUX_WHEELHOUSE cp311-cp311
+    - bash $LINUX_WHEELHOUSE cp312-cp312
 
 build_wheel_osx_py38:
   only:
@@ -106,7 +106,7 @@ build_wheel_osx_py38:
   script:
     - bash $OSX_WHEELHOUSE py38
 
-build_wheel_osx_py311:
+build_wheel_osx_py312:
   only:
     - tags
     - master@agrumery/aGrUM
@@ -116,7 +116,7 @@ build_wheel_osx_py311:
     - python3
   stage: build
   script:
-    - bash $OSX_WHEELHOUSE py311
+    - bash $OSX_WHEELHOUSE py312
   artifacts:
     name: "${CI_JOB_NAME}_${CI_COMMIT_REF_NAME}"
     when: on_success
@@ -146,7 +146,7 @@ build_wheel_windows_py38:
     - call conda.bat activate "py37"
     - call conda.bat remove -y -n "gitlab-ci-%CI_JOB_ID%" --all --force
 
-build_wheel_windows_py311:
+build_wheel_windows_py312:
   only:
     - tags
     - master@agrumery/aGrUM
@@ -159,8 +159,9 @@ build_wheel_windows_py311:
   variables:
     PATH: $PATH_64_MVSC22_AGRUMERIE2
   script:
-    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.11
+    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.12
     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
+    - call conda.bat install -y -c conda-forge pywinpty
     - pip install -r "%CI_PROJECT_DIR%\wrappers\pyAgrum\testunits\requirements.txt"
     - call conda.bat install -y -c conda-forge cmake
     - python %CI_PROJECT_DIR%\wrappers\pyAgrum\wheelhouse\scripts\update_version.py %CI_PROJECT_DIR% 0
@@ -190,7 +191,7 @@ macos_agrum:
       - build/
   script:
     - . /Users/agrum/miniconda3/etc/profile.d/conda.sh
-    - conda activate py311
+    - conda activate py312
     - python act clean
     - python act --no-fun test release aGrUM -j halfexcept1
     - conda deactivate
@@ -213,7 +214,7 @@ macos_pyagrum:
       - build/
   script:
     - . /Users/agrum/miniconda3/etc/profile.d/conda.sh
-    - conda activate py311
+    - conda activate py312
     - python act clean
     - python act --no-fun test release pyAgrum -t quick -j halfexcept1
     - conda deactivate
@@ -293,7 +294,7 @@ windows_agrum_2022:
 #       - build/
 #   stage: build
 #   script:
-#     - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.11
+#     - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.12
 #     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
 #     - call pip install -r wrappers\pyAgrum\testunits\requirements.txt
 #     - call pip install cmake
@@ -320,8 +321,9 @@ windows_pyagrum_2022:
       - build/
   stage: build
   script:
-    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.11
+    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.12
     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
+    - call conda.bat install -y -c conda-forge pywinpty
     - call pip install -r wrappers\pyAgrum\testunits\requirements.txt
     - call pip install cmake
     - python act clean
@@ -351,8 +353,9 @@ windows_pyagrum_mingw:
       - build/
   stage: build
   script:
-    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.11
+    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.12
     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
+    - call conda.bat install -y -c conda-forge pywinpty
     - call pip install -r wrappers\pyAgrum\testunits\requirements.txt
     - call pip install cmake
     - python act clean

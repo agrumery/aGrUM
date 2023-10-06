@@ -167,10 +167,10 @@ class TestInsertions(BayesNetTestCase):
     bn1.addArc("B", "C")
     bn1.addArc("C", "D")
     bn1.addArc("D", "E")
-    self.assertEquals(len(bn1.check()), 5)  # every cpt is faulty
+    self.assertEqual(len(bn1.check()), 5)  # every cpt is faulty
 
     bn2 = gum.fastBN("A->B{a|b|c}->C[4,7]->D{1|3|10}->E[1,1.5,3,3.14,15]", 3)
-    self.assertEquals(len(bn2.check()), 0)  # but random
+    self.assertEqual(len(bn2.check()), 0)  # but random
 
     bn3 = gum.BayesNet()
     bn3.add("A", 3)
@@ -182,7 +182,7 @@ class TestInsertions(BayesNetTestCase):
     bn3.addArc("B", "C")
     bn3.addArc("C", "D")
     bn3.addArc("D", "E")
-    self.assertEquals(len(bn3.check()), 5)  # every cpt is faulty
+    self.assertEqual(len(bn3.check()), 5)  # every cpt is faulty
 
     bn4 = gum.BayesNet()
     bn4.addVariables(["A",
@@ -195,12 +195,12 @@ class TestInsertions(BayesNetTestCase):
                  ("B", "C"),
                  ("C", "D"),
                  ("D", "E")])
-    self.assertEquals(len(bn4.check()), 5)  # every cpt is faulty
+    self.assertEqual(len(bn4.check()), 5)  # every cpt is faulty
 
     for name in "ABCDE":
-      self.assertEquals(bn1.variable(name), bn2.variable(name))
-      self.assertEquals(bn1.variable(name), bn3.variable(name))
-      self.assertEquals(bn1.variable(name), bn4.variable(name))
+      self.assertEqual(bn1.variable(name), bn2.variable(name))
+      self.assertEqual(bn1.variable(name), bn3.variable(name))
+      self.assertEqual(bn1.variable(name), bn4.variable(name))
 
 
 class TestFeatures(BayesNetTestCase):
@@ -540,20 +540,20 @@ class TestFeatures(BayesNetTestCase):
     bn2, _ = gum.mutilateBN(bn,
                             intervention={"N": ["1"]},
                             observation={})
-    self.assertEquals(bn2.sizeArcs(), 1)
-    self.assertEquals(bn2.size(), 5)
+    self.assertEqual(bn2.sizeArcs(), 1)
+    self.assertEqual(bn2.size(), 5)
 
     bn2, _ = gum.mutilateBN(bn,
                             intervention={},
                             observation={"N": [0, 1]})
-    self.assertEquals(bn2.sizeArcs(), 3)
-    self.assertEquals(bn2.size(), 6)
+    self.assertEqual(bn2.sizeArcs(), 3)
+    self.assertEqual(bn2.size(), 6)
 
     bn2, _ = gum.mutilateBN(bn,
                             intervention={'A': ["1"]},
                             observation={"N": [0.3, 0.7]})
-    self.assertEquals(bn2.sizeArcs(), 4)
-    self.assertEquals(bn2.size(), 5)
+    self.assertEqual(bn2.sizeArcs(), 4)
+    self.assertEqual(bn2.size(), 5)
 
   def testMutilateBN2(self):
     bn = gum.fastBN("P2->N<-P1;A->E2<-N->E1")
@@ -840,8 +840,8 @@ class TestRandomBN(BayesNetTestCase):
 class TestGraphicalConcepts(BayesNetTestCase):
   def testChildren(self):
     bn = gum.fastBN("A->B->C<-D->E;D->F->G<-A")
-    self.assertEquals(bn.children(1), {2})
-    self.assertEquals(bn.children("A"), {1, 6})
+    self.assertEqual(bn.children(1), {2})
+    self.assertEqual(bn.children("A"), {1, 6})
 
 
 ts = unittest.TestSuite()
