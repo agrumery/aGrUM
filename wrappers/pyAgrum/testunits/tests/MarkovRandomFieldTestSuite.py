@@ -267,12 +267,12 @@ class MarkovRandomFieldTestCase(pyAgrumTestCase):
 
     # V2 could not be the first
     mrf.addFactor({"V2", "V3"})
-    self.assertEquals({mrf.factor({"V3", "V2"}).variable(0).name(), mrf.factor({"V2", "V3"}).variable(1).name()},
+    self.assertEqual({mrf.factor({"V3", "V2"}).variable(0).name(), mrf.factor({"V2", "V3"}).variable(1).name()},
                       {"V2", "V3"})
 
     # V2 could not be the first
     mrf.addFactor({"V2", "V0"})
-    self.assertEquals({mrf.factor({"V2", "V0"}).variable(0).name(), mrf.factor({"V0", "V2"}).variable(1).name()},
+    self.assertEqual({mrf.factor({"V2", "V0"}).variable(0).name(), mrf.factor({"V0", "V2"}).variable(1).name()},
                       {"V2", "V0"})
 
   def testOrderInsertionWithId(self):
