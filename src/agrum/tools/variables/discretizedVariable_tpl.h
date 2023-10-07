@@ -21,6 +21,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 #  include <sstream>
+#  include <limits>
 
 #  include <agrum/tools/variables/discretizedVariable.h>
 
@@ -114,7 +115,7 @@ namespace gum {
 
   template < typename T_TICKS >
   INLINE DiscretizedVariable< T_TICKS >&
-     DiscretizedVariable< T_TICKS >::operator=(const DiscretizedVariable< T_TICKS >& aDRV) {
+         DiscretizedVariable< T_TICKS >::operator=(const DiscretizedVariable< T_TICKS >& aDRV) {
     copy_(aDRV);
     return *this;
   }
@@ -202,12 +203,19 @@ namespace gum {
     return ss.str();
   }
 
-  /// get a numerical representation of he indice-the value.
+
+  /**  get a numerical representation of he indice-the value.
+   *
+   * @param indice the index of the label we wish to return
+   * @throw OutOfBound if indice is not compatible
+   */
   template < typename T_TICKS >
   INLINE double DiscretizedVariable< T_TICKS >::numerical(Idx indice) const {
-    if (indice >= _ticks_size_ - 1) { GUM_ERROR(OutOfBounds, "inexisting label index") }
+    if (indice >= _ticks_size_ - 1) { GUM_ERROR(OutOfBounds, "Inexisting label index ("<<indice<<")") }
+    const auto& a = double(_ticks_[indice]);
+    const auto& b = double(_ticks_[indice + 1]);
 
-    return double((_ticks_[indice + 1] + _ticks_[indice]) / 2);
+    return double((b+a)/2.0);
   }
 
   template < typename T_TICKS >

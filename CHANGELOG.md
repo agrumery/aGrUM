@@ -1,5 +1,23 @@
 # aGrUM Changelog
 
+## Changelog for 1.10.0
+
+* aGrUM
+  * add contraints to `MIIC` BN learning algorithm.
+  * Fixing some minor bugs in `gum::BNLearner`.
+  * Removing old `3off2` BN learning algorithm (use MIIC instead).
+  * adding `pyAgrum::MIIC::learnPDAG` and give access to this method via `gum::BNLearner`.
+
+* pyAgrum
+  * package for python 3.12 !
+  * New configuration for specification of graphviz engine and rankdir .
+  * Constraint for `MIIC` algorithm in `pyAgrum.BNLearner`.
+  * Fixing minor bugs in `pyAgrum.BNLearner`.
+  * new method `pyAgrum.BNLearner.learnPDAG`.
+  * Back to classical representation of do() operator in `pyAgrum.causal`.
+  * Examples from the Book Of Why (Pearl) are now in the sphinx documentation.
+  * The name of a loaded BN should not include the complete path but only the name of the file (thanks to Jules Cassan).
+
 ## Changelog for 1.9.0
 
 * aGrUM

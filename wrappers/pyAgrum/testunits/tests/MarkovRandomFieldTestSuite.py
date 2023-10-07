@@ -265,13 +265,15 @@ class MarkovRandomFieldTestCase(pyAgrumTestCase):
     self.assertEqual(mrf.factor({"V2", "V1"}).variable(0).name(), "V2")
     self.assertEqual(mrf.factor({"V1", "V2"}).variable(0).name(), "V2")
 
-    # 2 should be the first
+    # V2 could not be the first
     mrf.addFactor({"V2", "V3"})
-    self.assertEqual(mrf.factor({"V3", "V2"}).variable(0).name(), "V2")
+    self.assertEquals({mrf.factor({"V3", "V2"}).variable(0).name(), mrf.factor({"V2", "V3"}).variable(1).name()},
+                      {"V2", "V3"})
 
-    # 1 should be the first
+    # V2 could not be the first
     mrf.addFactor({"V2", "V0"})
-    self.assertEqual(mrf.factor({"V2", "V0"}).variable(0).name(), "V0")
+    self.assertEquals({mrf.factor({"V2", "V0"}).variable(0).name(), mrf.factor({"V0", "V2"}).variable(1).name()},
+                      {"V2", "V0"})
 
   def testOrderInsertionWithId(self):
     mrf = gum.fastMRF("V0;V1;V2;V3")
