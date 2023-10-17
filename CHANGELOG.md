@@ -4,6 +4,7 @@
 
 * aGrUM
   * add contraints to `MIIC` BN learning algorithm.
+  * `MIIC` is now the default for `gum::BNLearner`.
   * Fixing some minor bugs in `gum::BNLearner`.
   * Removing old `3off2` BN learning algorithm (use MIIC instead).
   * adding `pyAgrum::MIIC::learnPDAG` and give access to this method via `gum::BNLearner`.
@@ -12,6 +13,7 @@
   * package for python 3.12 !
   * New configuration for specification of graphviz engine and rankdir .
   * Constraint for `MIIC` algorithm in `pyAgrum.BNLearner`.
+  * `MIIC` is now the default for `pyAgrum.BNLearner`.
   * Fixing minor bugs in `pyAgrum.BNLearner`.
   * new method `pyAgrum.BNLearner.learnPDAG`.
   * Back to classical representation of do() operator in `pyAgrum.causal`.
