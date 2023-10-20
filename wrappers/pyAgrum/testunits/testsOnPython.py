@@ -138,7 +138,7 @@ def runTests(local: bool, test_module) -> int:
       tl.append(BNClassifierTestSuite.ts)
       tl.append(SkbnTestSuite.ts)
     else:
-      sys.log("Pandas or sklearn not found.")
+      logging.warning("Pandas or sklearn not found.")
 
   tests = unittest.TestSuite(tl)
 
