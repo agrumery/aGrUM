@@ -33,17 +33,22 @@
 
 %pythonprepend gum::learning::BNLearner<double>::BNLearner %{
   if type(args[0]) is not str:
-    if hasattr(args[0],"to_csv"):
+    if hasattr(args[0],"to_csv") or hasattr(args[0],"write_csv"):
         import tempfile
         csvfile = tempfile.NamedTemporaryFile(delete=False)
         tmpfilename = csvfile.name
         csvfilename = tmpfilename + ".csv"
         csvfile.close()
-        args[0].to_csv(csvfilename,na_rep="?",index=False)
+
+        if hasattr(args[0],"to_csv"):
+          args[0].to_csv(csvfilename,na_rep="?",index=False)
+        else:
+          args[0].write_csv(csvfilename,null_value="?")
 
         self.__init__(csvfilename,*args[1:])
         return
-
+    else:
+      raise TypeError("first argument must be a string or a DataFrame")
 %}
 
 %define SETPROP_THEN_RETURN_SELF(methodname)

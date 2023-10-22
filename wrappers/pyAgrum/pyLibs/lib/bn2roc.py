@@ -315,18 +315,24 @@ def getROCpoints(bn, datasrc, target, label, with_labels=True, significant_digit
     List[Tuple[int,int]]
       the list of points (FalsePositifRate,TruePositifRate)
   """
-  if type(datasrc) is not str and hasattr(datasrc, "to_csv"):
-    import tempfile
-    csvfile = tempfile.NamedTemporaryFile(delete=False)
-    tmpfilename = csvfile.name
-    csvfilename = tmpfilename + CSV_TMP_SUFFIX
-    csvfile.close()
-    datasrc.to_csv(csvfilename, na_rep="?", index=False)
+  if type(datasrc) is not str:
+    if hasattr(datasrc, "to_csv")  or hasattr(datasrc,"write_csv"):
+      import tempfile
+      csvfile = tempfile.NamedTemporaryFile(delete=False)
+      tmpfilename = csvfile.name
+      csvfilename = tmpfilename + CSV_TMP_SUFFIX
+      csvfile.close()
+      if hasattr(datasrc, "to_csv"):
+        datasrc.to_csv(csvfilename, na_rep="?", index=False)
+      else:
+        datasrc.write_csv(csvfilename, na_rep="?", index=False)
 
-    l = getROCpoints(bn, csvfilename, target, label, with_labels=with_labels, significant_digits=significant_digits)
+      l = getROCpoints(bn, csvfilename, target, label, with_labels=with_labels, significant_digits=significant_digits)
 
-    os.remove(csvfilename)
-    return l
+      os.remove(csvfilename)
+      return l
+    else:
+      raise TypeError("first argument must be a string or a DataFrame")
 
   (res, totalP, totalN) = _computePoints(bn, datasrc, target,
                                          label, show_progress=False, with_labels=with_labels,
@@ -362,19 +368,24 @@ def getPRpoints(bn, datasrc, target, label, with_labels=True, significant_digits
     List[Tuple[float,float]]
       the list of points (precision,recall)
   """
-  if type(datasrc) is not str and hasattr(datasrc, "to_csv"):
-    import tempfile
-    csvfile = tempfile.NamedTemporaryFile(delete=False)
-    tmpfilename = csvfile.name
-    csvfilename = tmpfilename + CSV_TMP_SUFFIX
-    csvfile.close()
+  if type(datasrc) is not str:
+    if hasattr(datasrc, "to_csv")  or hasattr(datasrc,"write_csv"):
+      import tempfile
+      csvfile = tempfile.NamedTemporaryFile(delete=False)
+      tmpfilename = csvfile.name
+      csvfilename = tmpfilename + CSV_TMP_SUFFIX
+      csvfile.close()
+      if hasattr(datasrc, "to_csv"):
+        datasrc.to_csv(csvfilename, na_rep="?", index=False)
+      else:
+        datasrc.write_csv(csvfilename, na_rep="?", index=False)
 
-    datasrc.to_csv(csvfilename, na_rep="?", index=False)
+      l = getPRpoints(bn, csvfilename, target, label, with_labels=with_labels, significant_digits=significant_digits)
 
-    l = getPRpoints(bn, csvfilename, target, label, with_labels=with_labels, significant_digits=significant_digits)
-
-    os.remove(csvfilename)
-    return l
+      os.remove(csvfilename)
+      return l
+    else:
+      raise TypeError("first argument must be a string or a DataFrame")
 
   show_progress = False
   (res, totalP, totalN) = _computePoints(bn, datasrc, target,
@@ -559,20 +570,26 @@ def showROC_PR(bn, datasrc, target, label, *, beta=1, show_progress=True, show_f
 
   """
 
-  if type(datasrc) is not str and hasattr(datasrc, "to_csv"):
-    import tempfile
-    csvfile = tempfile.NamedTemporaryFile(delete=False)
-    tmpfilename = csvfile.name
-    csvfilename = tmpfilename + CSV_TMP_SUFFIX
-    csvfile.close()
-    datasrc.to_csv(csvfilename, na_rep="?", index=False)
+  if type(datasrc) is not str:
+    if hasattr(datasrc, "to_csv")  or hasattr(datasrc,"write_csv"):
+      import tempfile
+      csvfile = tempfile.NamedTemporaryFile(delete=False)
+      tmpfilename = csvfile.name
+      csvfilename = tmpfilename + CSV_TMP_SUFFIX
+      csvfile.close()
+      if hasattr(datasrc, "to_csv"):
+        datasrc.to_csv(csvfilename, na_rep="?", index=False)
+      else:
+        datasrc.write_csv(csvfilename, na_rep="?", index=False)
 
-    showROC_PR(bn, csvfilename, target, label, beta=beta, show_progress=show_progress, show_fig=show_fig,
-               save_fig=save_fig, with_labels=with_labels, show_ROC=show_ROC, show_PR=show_PR,
-               significant_digits=significant_digits)
+      showROC_PR(bn, csvfilename, target, label, beta=beta, show_progress=show_progress, show_fig=show_fig,
+                 save_fig=save_fig, with_labels=with_labels, show_ROC=show_ROC, show_PR=show_PR,
+                 significant_digits=significant_digits)
 
-    os.remove(csvfilename)
-    return
+      os.remove(csvfilename)
+      return
+    else:
+      raise TypeError("first argument must be a string or a DataFrame")
 
   filename = _getFilename(datasrc)
   (res, totalP, totalN) = _computePoints(bn, datasrc, target,
