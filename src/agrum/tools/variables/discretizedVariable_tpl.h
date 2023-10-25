@@ -137,6 +137,10 @@ namespace gum {
 
   template < typename T_TICKS >
   DiscretizedVariable< T_TICKS >& DiscretizedVariable< T_TICKS >::addTick(const T_TICKS& aTick) {
+    // check if aTick is a float or a special value (infinity or not a number)
+    if (! std::isfinite(aTick)) {
+      GUM_ERROR(DefaultInLabel, "Tick '" << aTick << "' is not allowed for variable " << name())
+    }
     if (isTick(aTick)) {
       GUM_ERROR(DefaultInLabel, "Tick '" << aTick << "' already used for variable " << name())
     }

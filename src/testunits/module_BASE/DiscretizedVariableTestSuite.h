@@ -62,10 +62,14 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(d.numerical(0), (2.0 + 3.1) / 2)
       TS_ASSERT_EQUALS(d.numerical(1), (4.0 + 3.1) / 2)
 
-      d.addTick(-std::numeric_limits< double >::infinity());
-      d.addTick(std::numeric_limits< double >::infinity());
+      TS_ASSERT_THROWS(d.addTick(-std::numeric_limits< double >::infinity()), const gum::DefaultInLabel&);
+      TS_ASSERT_THROWS(d.addTick(std::numeric_limits< double >::infinity()), const gum::DefaultInLabel&);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(d["2.5"])
+      TS_ASSERT_THROWS(d["0.5"], const gum::OutOfBounds&)
+      TS_ASSERT_THROWS(d["4.5"], const gum::OutOfBounds&)
+
+      d.setEmpirical(true);
+
       TS_GUM_ASSERT_THROWS_NOTHING(d["0.5"])
       TS_GUM_ASSERT_THROWS_NOTHING(d["4.5"])
     }
@@ -275,8 +279,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(d["0.5"], const gum::OutOfBounds&)
       TS_ASSERT_THROWS(d["4.5"], const gum::OutOfBounds&)
 
-      d.addTick(-std::numeric_limits< double >::infinity());
-      d.addTick(std::numeric_limits< double >::infinity());
+      d.setEmpirical(true);
 
       TS_GUM_ASSERT_THROWS_NOTHING(d["2.5"])
       TS_GUM_ASSERT_THROWS_NOTHING(d["0.5"])

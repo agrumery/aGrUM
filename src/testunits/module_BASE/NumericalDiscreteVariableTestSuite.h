@@ -233,6 +233,15 @@ namespace gum_tests {
       }
     }
 
+    GUM_ACTIVE_TEST(InfiniteValue) {
+      TS_ASSERT_THROWS(gum::NumericalDiscreteVariable(
+                          "var",
+                          "this is var2",
+                          {-std::numeric_limits< double >::infinity(), 0.0, 2.5, 3.7, 4.9}),
+                       const gum::DefaultInLabel&);
+
+    }
+
     GUM_ACTIVE_TEST(Positions) {
       gum::NumericalDiscreteVariable var("var", "this is var2", {-2.1, 0.0, 2.5, 3.7, 4.9});
       TS_ASSERT_EQUALS(var.closestIndex(-3.9), gum::Idx(0))

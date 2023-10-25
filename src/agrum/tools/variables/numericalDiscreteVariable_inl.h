@@ -156,6 +156,9 @@ namespace gum {
                 "Value" << new_value << " already belongs to the domain of the variable");
     }
 
+    if (!std::isfinite(new_value)) {
+      GUM_ERROR(DefaultInLabel, "Tick '" << new_value << "' is not allowed for variable " << name())
+    }
     eraseValue(old_value);
     addValue(new_value);
   }

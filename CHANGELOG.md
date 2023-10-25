@@ -12,6 +12,7 @@
   * Fixing a bug in `gum::BNLearner` : EM parameter estimation bug due to a cache used in record counters.
   * Fixing a bug in `gum::GibbsSampling` : some evidence may not be taken into account (thanks to Micromix@discord).
   * `gum::PDAG` must accept partially directed cycle (thanks to Kenneth Lee).
+  * 'infinities' is now forbidden in the definition of numerical `gum::DiscreteVariable`.
 
 * pyAgrum
   * Updating and adding 3.12 in metadatas.
@@ -23,6 +24,7 @@
   * Fixing a bug in frontdoor detection in a causal model  with multiple connected components.
   * Fixing some regexp expressions.
   * `pyAgrum.PDAG` must accept partially directed cycle (thanks to Kenneth Lee).
+  * 'infinities' is now forbidden in the definition of numerical `pyAgrum.DiscreteVariable`.
 
 ## Changelog for 1.10.0
 

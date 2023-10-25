@@ -39,6 +39,9 @@ namespace gum {
     // store the sorted values into a sequence
     _domain_.resize(dom.size());
     for (const double val: dom) {
+      if (!std::isfinite(val)) {
+        GUM_ERROR(DefaultInLabel, "Tick '" << val << "' is not allowed for variable " << name())
+      }
       _domain_ << val;
     }
 
@@ -57,6 +60,13 @@ namespace gum {
     if (nb < 2) GUM_ERROR(ArgumentError, "The size of the domain must be >2 (here :" << nb << ").")
     if (first >= last)
       GUM_ERROR(ArgumentError, "first (here :" << first << " must be <last (here :" << last << ").")
+
+    if (!std::isfinite(first)) {
+      GUM_ERROR(DefaultInLabel, "Tick '" << first << "' is not allowed for variable " << name())
+    }
+    if (!std::isfinite(last)) {
+      GUM_ERROR(DefaultInLabel, "Tick '" << last << "' is not allowed for variable " << name())
+    }
 
     _domain_.resize(nb);
     _domain_ << first;
@@ -102,6 +112,10 @@ namespace gum {
 
   /// add a new value to the domain size
   void NumericalDiscreteVariable::addValue(double value) {
+    if (!std::isfinite(value)) {
+      GUM_ERROR(DefaultInLabel, "Tick '" << value << "' is not allowed for variable " << name())
+    }
+
     const Size size = _domain_.size();
     if (size == Size(0) || (_domain_[size - 1] < value)) {
       _domain_.insert(value);
