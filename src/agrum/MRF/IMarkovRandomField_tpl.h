@@ -251,6 +251,11 @@ namespace gum {
 
     for (auto node: nodes()) {
       try {
+        const auto& v1=variable(node);
+        const auto& v2=from.variableFromName(variable(node).name());
+        if (v1!=v2)
+          return false;
+
         alignment.insert(&variable(node), &from.variableFromName(variable(node).name()));
       } catch (NotFound const&) {
         // a name is not found in from

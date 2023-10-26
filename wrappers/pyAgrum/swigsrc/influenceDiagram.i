@@ -113,6 +113,42 @@ def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdd
     nl.setWhenArcDeleted(whenArcDeleted)
 
   self._listeners.append(nl)
+
+
+def __getstate__(self):
+    state={
+          "chance":[self.variable(i).toFast() for i in self.nodes() if self.isChanceNode(i)],
+          "utility":[self.variable(i).toFast() for i in self.nodes() if self.isUtilityNode(i)],
+          "decision":[self.variable(i).toFast() for i in self.nodes() if self.isDecisionNode(i)],
+          "adj":{**{self.variable(i).name():list(self.cpt(i).names)[1:] for i in self.nodes()  if self.isChanceNode(i)},
+                 **{self.variable(i).name():list(self.utility(i).names)[1:] for i in self.nodes()  if self.isUtilityNode(i)},
+                 **{self.variable(i).name():[self.variable(j).name() for j in self.parents(i)] for i in self.nodes() if self.isDecisionNode(i)}},
+          "cpt":{self.variable(i).name():self.cpt(i)[:].flatten().tolist() for i in self.nodes() if self.isChanceNode(i)},
+          "reward":{self.variable(i).name():self.utility(i)[:].flatten().tolist() for i in self.nodes() if self.isUtilityNode(i)},
+          "properties":{k:self.property(k) for k in self.properties()}
+    }
+    return state
+
+def __setstate__(self,state):
+    self.__init__()
+    for fastvar in state['chance']:
+        self.addChanceNode(fastvar)
+    for fastvar in state['utility']:
+        self.addUtilityNode(fastvar)
+    for fastvar in state['decision']:
+        self.addDecisionNode(fastvar)
+    self.beginTopologyTransformation()
+    for son in state['adj']:
+        for father in state['adj'][son]:
+            self.addArc(father,son)
+    self.endTopologyTransformation()
+    for node in state['cpt']:
+        self.cpt(node).fillWith(state['cpt'][node])
+    for node in state['reward']:
+        self.utility(node).fillWith(state['reward'][node])
+    for prop in state['properties']:
+        self.setProperty(prop,state['properties'][prop])
+    return self
   }
 }
 

@@ -79,6 +79,7 @@ def runTests(local: bool, test_module) -> int:
   from tests import LoopyBeliefPropagationTestSuite
   from tests import MarkovBlanketTestSuite
   from tests import MarkovRandomFieldTestSuite
+  from tests import PicklerTestSuite
   from tests import PotentialTestSuite
   from tests import PRMexplorerTestSuite
   from tests import SamplingTestSuite
@@ -121,6 +122,7 @@ def runTests(local: bool, test_module) -> int:
     tl.append(LoopyBeliefPropagationTestSuite.ts)
     tl.append(MarkovBlanketTestSuite.ts)
     tl.append(MarkovRandomFieldTestSuite.ts)
+    tl.append(PicklerTestSuite.ts)
     tl.append(PotentialTestSuite.ts)
     tl.append(PRMexplorerTestSuite.ts)
     tl.append(SamplingTestSuite.ts)

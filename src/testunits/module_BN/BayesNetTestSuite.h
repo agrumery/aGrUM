@@ -1107,5 +1107,19 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(gum::Size(nbth), 20 * bn.maxVarDomainSize())
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
+
+    GUM_ACTIVE_TEST(operatorEqual) {
+      auto bn  = gum::BayesNet< double >::fastPrototype("A->B->C");
+      auto bn2 = gum::BayesNet< double >::fastPrototype("A{yes|no}->B{yes|no}->C{yes|no}");
+      auto bn3  = gum::BayesNet< double >::fastPrototype("A->B->C");
+      for(const auto i:bn.nodes()) {
+        bn.cpt(i).fillWith(1);
+        bn2.cpt(i).fillWith(1);
+        bn3.cpt(i).fillWith(1);
+      }
+      TS_ASSERT_EQUALS(bn, bn);
+      TS_ASSERT_DIFFERS(bn, bn2);
+      TS_ASSERT_EQUALS(bn, bn3);
+    }
   };
 }   // namespace gum_tests

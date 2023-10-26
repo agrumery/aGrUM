@@ -176,7 +176,7 @@ def MRF2FactorGraphdot(mrf, size=None, nodeColor=None, factorColor=None, cmapNod
   if cmapNode is None:
     cmapNode = plt.get_cmap(gum.config["notebook", "default_node_cmap"])
 
-  graph = dot.Dot(graph_type='graph', bgcolor="transparent", layout=gum.config["notebook", "factorgraph_layout"])
+  graph = dot.Dot(graph_type='graph', bgcolor="transparent", layout=gum.config["factorgraph","graph_layout"])
 
   for n in mrf.names():
     if nodeColor is None or n not in nodeColor:
@@ -399,9 +399,11 @@ def MRFinference2FactorGraphdot(mrf, size=None, engine=None, evs=None, targets=N
 
   from tempfile import mkdtemp
   temp_dir = mkdtemp("", "tmp", None)  # with TemporaryDirectory() as temp_dir:
-
-  dotstr = "graph {\n  layout=\""+ gum.config["notebook", "factorgraph_layout"]+"\";\n  fontcolor=\"" + \
-           gumcols.getBlackInTheme() + "\";bgcolor=\"transparent\";"
+  dotstr = f'''graph{{ 
+    layout="{gum.config["factorgraph","graph_layout"]}";
+    fontcolor="{gumcols.getBlackInTheme()}";
+    bgcolor="transparent";
+  '''
 
   if gum.config.asBool["notebook", "show_inference_time"]:
     dotstr += f'  label="Inference in {1000 * (stopTime - startTime):6.2f}ms";\n'

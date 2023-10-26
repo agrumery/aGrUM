@@ -361,4 +361,29 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
     writer.setAllowModification(allowModificationWhenSaving);
     writer.write( name, *self );
   };
+
+  %pythoncode {
+def __getstate__(self):
+    state={"nodes":[self.variable(i).toFast() for i in self.nodes()],
+           "adj":{self.variable(i).name():list(self.cpt(i).names)[1:] for i in self.nodes()},
+           "cpt":{self.variable(i).name():self.cpt(i)[:].flatten().tolist() for i in self.nodes()},
+           "properties":{k:self.property(k) for k in self.properties()}
+          }
+    return state
+
+def __setstate__(self,state):
+    self.__init__()
+    for fastvar in state['nodes']:
+        self.add(fastvar)
+    self.beginTopologyTransformation()
+    for son in state['adj']:
+        for father in state['adj'][son]:
+            self.addArc(father,son)
+    self.endTopologyTransformation()
+    for node in state['cpt']:
+        self.cpt(node).fillWith(state['cpt'][node])
+    for prop in state['properties']:
+        self.setProperty(prop,state['properties'][prop])
+    return self
+  }
 }

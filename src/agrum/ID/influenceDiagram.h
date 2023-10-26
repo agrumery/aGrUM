@@ -108,6 +108,8 @@ namespace gum {
     InfluenceDiagram< GUM_SCALAR >& operator=(const InfluenceDiagram< GUM_SCALAR >& source);
 
     /// @}
+    bool operator==(const InfluenceDiagram< GUM_SCALAR >& other) const;
+    bool operator!=(const InfluenceDiagram< GUM_SCALAR >& other) const { return !operator==(other); }
 
     /// @return Returns a dot representation of this Influence Diagram.
     std::string toDot() const;
@@ -486,6 +488,20 @@ namespace gum {
 
     /// @}
 
+    /**
+     * When inserting/removing arcs, node CPTs/utilities change their dimension with a
+     * cost in time.
+     * These functions delay the CPTs change to be done just once at the end of
+     * a* sequence of topology modification.
+     */
+    ///@{
+    /// begins a sequence of insertions/deletions of arcs without changing the
+    /// dimensions of the CPTs.
+    void beginTopologyTransformation();
+    /// terminates a sequence of insertions/deletions of arcs by adjusting all
+    /// CPTs/utilities dimensions.
+    void endTopologyTransformation();
+    ///@}
     protected:
     /// Returns the moral graph of this InfluenceDiagram.
     virtual void moralGraph_(UndiGraph& graph) const;

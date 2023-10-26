@@ -858,4 +858,79 @@ namespace gum {
       default : return addChanceNode(fast_description, default_nbrmod);
     }
   }
+
+
+  /// begin Multiple Change for all CPTs
+  template < typename GUM_SCALAR >
+  void InfluenceDiagram< GUM_SCALAR >::beginTopologyTransformation() {
+    for (const auto node: nodes())
+      if (isChanceNode(node)) _potentialMap_[node]->beginMultipleChanges();
+      else if (this->isUtilityNode(node)) _utilityMap_[node]->beginMultipleChanges();
+  }
+
+  /// end Multiple Change for all CPTs
+  template < typename GUM_SCALAR >
+  void InfluenceDiagram< GUM_SCALAR >::endTopologyTransformation() {
+    for (const auto node: nodes())
+      if (isChanceNode(node)) _potentialMap_[node]->endMultipleChanges();
+      else if (isUtilityNode(node)) _utilityMap_[node]->endMultipleChanges();
+  }
+
+
+  template < typename GUM_SCALAR >
+  bool InfluenceDiagram< GUM_SCALAR >::operator==(const InfluenceDiagram& from) const {
+    if (size() != from.size()) { return false; }
+
+    if (sizeArcs() != from.sizeArcs()) { return false; }
+
+    // alignment of variables between the 2 BNs
+    Bijection< const DiscreteVariable*, const DiscreteVariable* > alignment;
+
+    for (auto node: nodes()) {
+      try {
+        const auto& v1 = variable(node);
+        const auto& v2 = from.variableFromName(variable(node).name());
+        if (v1 != v2) { return false; }
+
+        if (isChanceNode(v1.name()) & !from.isChanceNode(v2.name())) { return false; }
+        if (isUtilityNode(v1.name()) & !from.isUtilityNode(v2.name())) { return false; }
+        if (isDecisionNode(v1.name()) & !from.isDecisionNode(v2.name())) { return false; }
+
+        alignment.insert(&variable(node), &from.variableFromName(variable(node).name()));
+      } catch (NotFound const&) {
+        // a name is not found in from
+        return false;
+      }
+    }
+
+    auto check_pot = [&](const gum::Potential< GUM_SCALAR >& p1,
+                         const gum::Potential< GUM_SCALAR >& p2) -> bool {
+      if (p1.nbrDim() != p2.nbrDim()) { return false; }
+
+      if (p1.domainSize() != p2.domainSize()) { return false; }
+
+      Instantiation i(p1);
+      Instantiation j(p2);
+
+      for (i.setFirst(); !i.end(); i.inc()) {
+        for (Idx indice = 0; indice < p1.nbrDim(); ++indice) {
+          const DiscreteVariable* p = &(i.variable(indice));
+          j.chgVal(*(alignment.second(p)), i.val(*p));
+        }
+
+        if (std::pow(p1.get(i) - p2.get(j), (GUM_SCALAR)2) > (GUM_SCALAR)1e-6) { return false; }
+      }
+      return true;
+    };
+    for (auto node: nodes()) {
+      NodeId fromnode = from.idFromName(variable(node).name());
+      if (isChanceNode(node)) {
+        if (!check_pot(cpt(node), from.cpt(fromnode))) { return false; }
+      } else if (isUtilityNode(node)) {
+        if (!check_pot(utility(node), from.utility(fromnode))) { return false; }
+      }
+    }
+
+    return true;
+  }
 }   // namespace gum

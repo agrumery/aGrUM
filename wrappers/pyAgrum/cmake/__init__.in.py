@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 `pyAgrum <http://agrum.org>`_ a scientific C++ and Python library dedicated to Bayesian Networks and other Probabilistic Graphical Models. Based on the C++ `aGrUM <https://agrum.lip6.fr>`_ library, it provides a high-level interface to the C++ part of aGrUM allowing to create, manage and perform efficient computations with Bayesian networks and others probabilsitic graphical models (Markov random fields, influence diagrams and LIMIDs, dynamic BN, probabilistic relational models).
 
@@ -164,7 +163,7 @@ def availableBNExts():
 
   :return: a string which lists all suffixes for supported BN file formats.
   """
-  return "bif|dsl|net|bifxml|o3prm|uai|xdsl"
+  return "bif|dsl|net|bifxml|o3prm|uai|xdsl|pkl"
 
 
 def loadBN(filename, listeners=None, verbose=False, **opts):
@@ -191,6 +190,8 @@ def loadBN(filename, listeners=None, verbose=False, **opts):
   Notes
   ----
       Listeners could be added in order to monitor its loading.
+
+      pkl suffix is used to load a pickled BN. In this case, listeners and options are ignored.
 
   Examples
   --------
@@ -236,6 +237,10 @@ def loadBN(filename, listeners=None, verbose=False, **opts):
                          opts.get('classpath', ''), listeners)
   elif extension == "UAI":
     warns = bn.loadUAI(filename, listeners)
+  elif extension == "PKL":
+    import pickle
+    with open(filename, "rb") as f:
+      bn = pickle.load(f)
   else:
     raise InvalidArgument("extension " + filename.split('.')
     [-1] + " unknown. Please use among " + availableBNExts())
@@ -243,8 +248,17 @@ def loadBN(filename, listeners=None, verbose=False, **opts):
   if verbose:
     warnings.warn(warns)
 
-  bn.setProperty("name", ospath.splitext(ospath.basename(filename))[0])
+  bn.setProperty("name", bn.propertyWithDefault("name", ospath.splitext(ospath.basename(filename))[0]))
   return bn
+
+
+def _add_properties_while_saving_(model):
+  if config.asBool["Pickle", "add_version"]:
+    model.setProperty("version", f"pyAgrum {__version__}")
+  if config.asBool["Pickle", "add_date"]:
+    from datetime import datetime
+    model.setProperty("creation", model.propertyWithDefault("creation", datetime.now().strftime("%Y-%m-%d %H:%M:%S%z")))
+    model.setProperty("lastModification", datetime.now().strftime("%Y-%m-%d %H:%M:%S%z"))
 
 
 def saveBN(bn, filename, allowModificationWhenSaving=None):
@@ -259,11 +273,17 @@ def saveBN(bn, filename, allowModificationWhenSaving=None):
     the name of the output file
   allowModificationWhenSaving: bool
       whether syntax errors in the BN should throw a FatalError or can be corrected. Also controlled by `pyAgrum.config["BN","allow_modification_when_saving"]`.
+
+  Notes
+  ----
+      pkl suffix is used to save a BN using pickle. In this case, options are ignored.
   """
   if allowModificationWhenSaving is None:
     allowModificationWhenSaving = config.asBool["BN", "allow_modification_when_saving"]
 
   extension = filename.split('.')[-1].upper()
+  _add_properties_while_saving_(bn)
+
   if extension == "BIF":
     bn.saveBIF(filename, allowModificationWhenSaving)
   elif extension == "BIFXML":
@@ -278,6 +298,10 @@ def saveBN(bn, filename, allowModificationWhenSaving=None):
     bn.saveUAI(filename, allowModificationWhenSaving)
   elif extension == "O3PRM":
     bn.saveO3PRM(filename, allowModificationWhenSaving)
+  elif extension == "PKL":
+    import pickle
+    with open(filename, "wb") as f:
+      pickle.dump(bn, f)
   else:
     raise InvalidArgument("[pyAgrum] extension " + filename.split('.')
     [-1] + " unknown. Please use among " + availableBNExts())
@@ -291,7 +315,7 @@ def availableMNExts():
   str
     a string which lists all suffixes for supported MRF file formats.
   """
-  return "uai"
+  return "uai|pkl"
 
 
 def loadMN(filename, listeners=None, verbose=False):
@@ -312,6 +336,8 @@ def loadMN(filename, listeners=None, verbose=False):
     a MRF from a file using one of the availableMNExts() suffixes.
 
   Listeners could be added in order to monitor its loading.
+
+  pkl suffix is used to save a BN using pickle. In this case, options are ignored.
 
   Examples
   --------
@@ -344,6 +370,10 @@ def loadMN(filename, listeners=None, verbose=False):
   extension = filename.split('.')[-1].upper()
   if extension == "UAI":
     warns = mn.loadUAI(filename, listeners)
+  elif extension == "PKL":
+    import pickle
+    with open(filename, "rb") as f:
+      mn = pickle.load(f)
   else:
     raise InvalidArgument("extension " + filename.split('.')
     [-1] + " unknown. Please use among " + availableBNExts())
@@ -351,7 +381,7 @@ def loadMN(filename, listeners=None, verbose=False):
   if verbose:
     print(warns)
 
-  mn.setProperty("name", filename)
+  mn.setProperty("name", mn.propertyWithDefault("name", ospath.splitext(ospath.basename(filename))[0]))
   return mn
 
 
@@ -367,12 +397,16 @@ def saveMN(mn, filename):
     the name of the output file
   """
   extension = filename.split('.')[-1].upper()
-  if extension not in availableMNExts():
-    raise InvalidArgument("[pyAgrum] extension " + filename.split('.')
-    [-1] + " unknown. Please use among " + availableMNExts())
+  _add_properties_while_saving_(mn)
 
-  # for now, just one format
-  mn.saveUAI(filename)
+  if extension == "UAI":
+    mn.saveUAI(filename)
+  elif extension == "PKL":
+    import pickle
+    with open(filename, "wb") as f:
+      pickle.dump(mn, f)
+  else:
+    raise InvalidArgument("extension " + filename.split('.')[-1] + " unknown. Please use among " + availableMNExts())
 
 
 def availableIDExts():
@@ -383,7 +417,7 @@ def availableIDExts():
   str
     a string which lists all suffixes for supported ID file formats.
   """
-  return "bifxml|xml"
+  return "xmlbif|bifxml|xml|pkl"
 
 
 def loadID(filename):
@@ -400,18 +434,23 @@ def loadID(filename):
   pyAgrum.InfluenceDiagram
     the InfluenceDiagram
   """
-  extension = filename.split('.')[-1].lower()
-  if extension not in availableIDExts().split("|"):
-    raise InvalidArgument(f"extension '{extension}' unknown. Please use among '{availableIDExts()}'")
+  extension = filename.split('.')[-1].upper()
 
-  diag = InfluenceDiagram()
-  # for now, just one format
-  res = diag.loadBIFXML(filename)
+  if extension in {"BIFXML", "XMLBIF", "XML"}:
+    diag = InfluenceDiagram()
+    # for now, just one format
+    res = diag.loadBIFXML(filename)
 
-  if not res:
-    raise IOError(f"Error(s) in {filename}")
+    if not res:
+      raise IOError(f"Error(s) in {filename}")
+  elif extension == "PKL":
+    import pickle
+    with open(filename, "rb") as f:
+      diag = pickle.load(f)
+  else:
+    raise InvalidArgument("extension " + filename.split('.')[-1] + " unknown. Please use among " + availableIDExts())
 
-  diag.setProperty("name", filename)
+  diag.setProperty("name", diag.propertyWithDefault("name", ospath.splitext(ospath.basename(filename))[0]))
   return diag
 
 
@@ -426,12 +465,17 @@ def saveID(infdiag, filename):
   filename : str
     the name of the output file
   """
-  extension = filename.split('.')[-1].lower()
-  if extension not in availableIDExts().split("|"):
-    raise InvalidArgument(f"[pyAgrum] extension {extension} unknown. Please use among {availableIDExts()}.")
+  extension = filename.split('.')[-1].upper()
+  _add_properties_while_saving_(infdiag)
 
-  # for now, just one format
-  infdiag.saveBIFXML(filename)
+  if extension in {"BIFXML", "BIFXML", "XML"}:
+    infdiag.saveBIFXML(filename)
+  elif extension == "PKL":
+    import pickle
+    with open(filename, "wb") as f:
+      pickle.dump(infdiag, f)
+  else:
+    raise InvalidArgument("extension " + filename.split('.')[-1] + " unknown. Please use among " + availableBNExts())
 
 
 def fastBN(structure, domain_size=2):

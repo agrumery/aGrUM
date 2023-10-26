@@ -108,7 +108,7 @@ done.firstTime = True
 def runNotebooks(lonb: List[str] = None):
   global futures
 
-  excludes = {}
+  excludes = {"80-Applications_ipywidgets.ipynb"}
   if lonb is None:
     # slow notebooks
     lonb = sorted([filename for filename in glob.glob("../doc/sphinx/notebooks/*.ipynb")

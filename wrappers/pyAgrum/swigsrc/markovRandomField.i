@@ -179,6 +179,29 @@ IMPROVE_CONCRETEMARKOVNET_API(MarkovRandomField<double>);
      writer.write( name, *self );
    };
 
+  %pythoncode {
+def __getstate__(self):
+    state={"nodes":[self.variable(i).toFast() for i in self.nodes()],
+           "factors":[[n for n in self.factor(factor).names] for factor in self.factors()],
+           "potential":{"-".join(self.factor(factor).names):self.factor(factor)[:].flatten().tolist() for factor in self.factors()},
+           "properties":{k:self.property(k) for k in self.properties()}
+          }
+    return state
+
+def __setstate__(self,state):
+    self.__init__()
+    for fastvar in state['nodes']:
+        self.add(fastvar)
+    self.beginTopologyTransformation()
+    for factor in state['factors']:
+         self.addFactor(factor)
+    self.endTopologyTransformation()
+    for cliq in state['potential']:
+        self.factor(cliq.split("-")).fillWith(state['potential'][cliq])
+    for prop in state['properties']:
+        self.setProperty(prop,state['properties'][prop])
+    return self
+  }
 %pythonappend gum::UGmodel::graph %{
     val = UndiGraph(val) # copying the graph
 %}

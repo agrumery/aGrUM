@@ -57,6 +57,14 @@ namespace gum {
   }
 
   INLINE
+  std::vector< std::string > GraphicalModel::properties() const {
+    std::vector< std::string > prop;
+    for (const auto& [p, v]: _propertiesMap_)
+      prop.push_back(p);
+    return prop;
+  }
+
+  INLINE
   void GraphicalModel::setProperty(const std::string& name, const std::string& value) {
     if (_propertiesMap_.exists(name)) _propertiesMap_[name] = value;
     else _propertiesMap_.insert(name, value);

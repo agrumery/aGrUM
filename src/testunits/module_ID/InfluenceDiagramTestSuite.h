@@ -870,5 +870,29 @@ namespace gum_tests {
         TS_ASSERT(infdiag.isUtilityNode("e"))
       }
     }
+
+
+    GUM_ACTIVE_TEST(operatorEqual) {
+      auto model  = gum::InfluenceDiagram< double >::fastPrototype("C<-A->*B<-C->D->$U<-B;*E->B");
+      auto model2 = gum::InfluenceDiagram< double >::fastPrototype(
+         "C{yes|no}<-A{yes|no}->*B{yes|no}<-C->D{yes|no}->$U<-B;*E{yes|no}->B");
+      auto model3 = gum::InfluenceDiagram< double >::fastPrototype("C<-A->*B<-C->D->$U<-B;*E->B");
+
+      for (const auto i: model.nodes()) {
+        if (model.isChanceNode(i)) {
+          model.cpt(i).fillWith(1);
+          model2.cpt(i).fillWith(1);
+          model3.cpt(i).fillWith(1);
+        } else if (model.isUtilityNode(i)) {
+          model.utility(i).fillWith(1);
+          model2.utility(i).fillWith(1);
+          model3.utility(i).fillWith(1);
+        }
+      }
+      
+      TS_ASSERT_EQUALS(model, model);
+      TS_ASSERT_DIFFERS(model, model2);
+      TS_ASSERT_EQUALS(model, model3);
+    }
   };
 }   // namespace gum_tests

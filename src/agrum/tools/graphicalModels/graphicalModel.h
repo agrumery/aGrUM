@@ -84,6 +84,11 @@ namespace gum {
      */
     void setProperty(const std::string& name, const std::string& value);
 
+    /**
+     * List of all the properties
+     */
+     std::vector<std::string> properties() const;
+
     /// @}
     /// @name Variable manipulation methods.
     /// @{

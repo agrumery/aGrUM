@@ -6571,6 +6571,9 @@ class GraphicalModel(object):
         """
         return _pyAgrum.GraphicalModel_setProperty(self, name, value)
 
+    def properties(self) -> List[str]:
+        return _pyAgrum.GraphicalModel_properties(self)
+
     def variableNodeMap(self) -> "pyAgrum.VariableNodeMap":
         return _pyAgrum.GraphicalModel_variableNodeMap(self)
 
@@ -11607,6 +11610,30 @@ class BayesNet(IBayesNet):
         """
         return _pyAgrum.BayesNet_saveUAI(self, name, allowModificationWhenSaving)
 
+    def __getstate__(self):
+        state={"nodes":[self.variable(i).toFast() for i in self.nodes()],
+               "adj":{self.variable(i).name():list(self.cpt(i).names)[1:] for i in self.nodes()},
+               "cpt":{self.variable(i).name():self.cpt(i)[:].flatten().tolist() for i in self.nodes()},
+               "properties":{k:self.property(k) for k in self.properties()}
+              }
+        return state
+
+    def __setstate__(self,state):
+        self.__init__()
+        for fastvar in state['nodes']:
+            self.add(fastvar)
+        self.beginTopologyTransformation()
+        for son in state['adj']:
+            for father in state['adj'][son]:
+                self.addArc(father,son)
+        self.endTopologyTransformation()
+        for node in state['cpt']:
+            self.cpt(node).fillWith(state['cpt'][node])
+        for prop in state['properties']:
+            self.setProperty(prop,state['properties'][prop])
+        return self
+
+
     def __repr__(self) -> str:
         return _pyAgrum.BayesNet___repr__(self)
 
@@ -12858,6 +12885,29 @@ class MarkovRandomField(IMarkovRandomField):
 
         """
         return _pyAgrum.MarkovRandomField_saveUAI(self, name)
+
+    def __getstate__(self):
+        state={"nodes":[self.variable(i).toFast() for i in self.nodes()],
+               "factors":[[n for n in self.factor(factor).names] for factor in self.factors()],
+               "potential":{"-".join(self.factor(factor).names):self.factor(factor)[:].flatten().tolist() for factor in self.factors()},
+               "properties":{k:self.property(k) for k in self.properties()}
+              }
+        return state
+
+    def __setstate__(self,state):
+        self.__init__()
+        for fastvar in state['nodes']:
+            self.add(fastvar)
+        self.beginTopologyTransformation()
+        for factor in state['factors']:
+             self.addFactor(factor)
+        self.endTopologyTransformation()
+        for cliq in state['potential']:
+            self.factor(cliq.split("-")).fillWith(state['potential'][cliq])
+        for prop in state['properties']:
+            self.setProperty(prop,state['properties'][prop])
+        return self
+
 
     def __repr__(self) -> str:
         return _pyAgrum.MarkovRandomField___repr__(self)
@@ -24845,6 +24895,12 @@ class InfluenceDiagram(DAGmodel):
     def __init__(self, *args):
         _pyAgrum.InfluenceDiagram_swiginit(self, _pyAgrum.new_InfluenceDiagram(*args))
 
+    def __eq__(self, other: "InfluenceDiagram") -> bool:
+        return _pyAgrum.InfluenceDiagram___eq__(self, other)
+
+    def __ne__(self, other: "InfluenceDiagram") -> bool:
+        return _pyAgrum.InfluenceDiagram___ne__(self, other)
+
     def toDot(self) -> str:
         r"""
 
@@ -25309,6 +25365,12 @@ class InfluenceDiagram(DAGmodel):
         """
         return _pyAgrum.InfluenceDiagram_existsPathBetween(self, *args)
 
+    def beginTopologyTransformation(self) -> None:
+        return _pyAgrum.InfluenceDiagram_beginTopologyTransformation(self)
+
+    def endTopologyTransformation(self) -> None:
+        return _pyAgrum.InfluenceDiagram_endTopologyTransformation(self)
+
     def loadBIFXML(self, *args) -> bool:
         r"""
 
@@ -25406,6 +25468,42 @@ class InfluenceDiagram(DAGmodel):
         nl.setWhenArcDeleted(whenArcDeleted)
 
       self._listeners.append(nl)
+
+
+    def __getstate__(self):
+        state={
+              "chance":[self.variable(i).toFast() for i in self.nodes() if self.isChanceNode(i)],
+              "utility":[self.variable(i).toFast() for i in self.nodes() if self.isUtilityNode(i)],
+              "decision":[self.variable(i).toFast() for i in self.nodes() if self.isDecisionNode(i)],
+              "adj":{**{self.variable(i).name():list(self.cpt(i).names)[1:] for i in self.nodes()  if self.isChanceNode(i)},
+                     **{self.variable(i).name():list(self.utility(i).names)[1:] for i in self.nodes()  if self.isUtilityNode(i)},
+                     **{self.variable(i).name():[self.variable(j).name() for j in self.parents(i)] for i in self.nodes() if self.isDecisionNode(i)}},
+              "cpt":{self.variable(i).name():self.cpt(i)[:].flatten().tolist() for i in self.nodes() if self.isChanceNode(i)},
+              "reward":{self.variable(i).name():self.utility(i)[:].flatten().tolist() for i in self.nodes() if self.isUtilityNode(i)},
+              "properties":{k:self.property(k) for k in self.properties()}
+        }
+        return state
+
+    def __setstate__(self,state):
+        self.__init__()
+        for fastvar in state['chance']:
+            self.addChanceNode(fastvar)
+        for fastvar in state['utility']:
+            self.addUtilityNode(fastvar)
+        for fastvar in state['decision']:
+            self.addDecisionNode(fastvar)
+        self.beginTopologyTransformation()
+        for son in state['adj']:
+            for father in state['adj'][son]:
+                self.addArc(father,son)
+        self.endTopologyTransformation()
+        for node in state['cpt']:
+            self.cpt(node).fillWith(state['cpt'][node])
+        for node in state['reward']:
+            self.utility(node).fillWith(state['reward'][node])
+        for prop in state['properties']:
+            self.setProperty(prop,state['properties'][prop])
+        return self
 
 
     def names(self) -> object:

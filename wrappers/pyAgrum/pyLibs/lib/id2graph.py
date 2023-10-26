@@ -93,9 +93,11 @@ def ID2dot(diag, size=None):
       res += '  "' + diag.variable(node).name() + '"->"' + \
              diag.variable(chi).name() + '"'
       if diag.isDecisionNode(chi):
-        res += f' [style="{gum.config["influenceDiagram", "decision_arc_style"]}"]'
+        res += f' [style="{gum.config["influenceDiagram", "decision_arc_style"]}", color = "{gumcols.getBlackInTheme()}"]'
       elif diag.isUtilityNode(chi):
-        res += f' [style="{gum.config["influenceDiagram", "utility_arc_style"]}"]'
+        res += f' [style="{gum.config["influenceDiagram", "utility_arc_style"]}", color = "{gumcols.getBlackInTheme()}"]'
+      else:
+        res += f' [color = "{gumcols.getBlackInTheme()}"]'
       res += ";\n"
   res += "}"
 

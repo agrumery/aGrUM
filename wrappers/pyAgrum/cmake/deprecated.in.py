@@ -1,11 +1,9 @@
-# - * - coding : utf - 8 - * -
 """
 Deprecated for older pyAgrum
 """
 import warnings
 import functools
 
-from .pyAgrum import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, CliqueGraph
 from .pyAgrum import MarkovRandomField, ShaferShenoyMRFInference
 from .pyAgrum import InformationTheory, LazyPropagation
 from .pyAgrum import InfluenceDiagram, ShaferShenoyLIMIDInference
