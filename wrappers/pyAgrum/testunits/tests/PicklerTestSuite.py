@@ -93,8 +93,6 @@ class TestPickler(pyAgrumTestCase):
   def testProperties(self):
     model = gum.randomBN(n=30, ratio_arc=1.3, domain_size=5)
     gum.config.asBool["Pickle", "add_version"] = True
-    gum.config.asBool["Pickle", "add_version"] = True
-
 
     filename = self.agrumSrcDir("pickled.pkl")
     gum.saveBN(model, filename)

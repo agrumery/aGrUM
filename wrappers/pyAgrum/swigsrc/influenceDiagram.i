@@ -116,6 +116,7 @@ def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdd
 
 
 def __getstate__(self):
+    _gum_add_properties_while_getstate_(self)
     state={
           "chance":[self.variable(i).toFast() for i in self.nodes() if self.isChanceNode(i)],
           "utility":[self.variable(i).toFast() for i in self.nodes() if self.isUtilityNode(i)],
