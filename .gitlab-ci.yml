@@ -1,122 +1,17 @@
-stages:
-- build
-- deploy
-
 variables:
   LINUX_64_IMAGE: "agrumery/manylinux_2_28_x86_64"
-  LINUX_WHEELHOUSE: "wrappers/pyAgrum/wheelhouse/build_wheels_manylinux.sh"
+  LINUX_BUILD: "wrappers/pyAgrum/wheelhouse/build_linux.sh"
+  LINUX_WHEELHOUSE: "wrappers/pyAgrum/wheelhouse/build_wheels_linux.sh"
+  OSX_BUILD: "wrappers/pyAgrum/wheelhouse/build_macos.sh"
   OSX_WHEELHOUSE: "wrappers/pyAgrum/wheelhouse/build_wheels_macos.sh"
-  ACT_OPTIONS: "--no-fun --compiler=mvsc22 -d build"
+  WINDOWS_BUILD: "wrappers/pyAgrum/wheelhouse/build_windows.ps1"
+  WINDOWS_WHEELHOUSE: "wrappers/pyAgrum/wheelhouse/build_wheels_windows.ps1"
 
+stages:
+  - build
+  - deploy
 
-################################################################################
-# Linux / gcc
-################################################################################
-
-linux_agrum:
-  image: agrumery/ubuntu_py312
-  tags:
-    - docker
-    - linux
-    - triskele
-  cache:
-    key: linux
-    paths:
-      - build/
-  stage: build
-  script:
-    - python3 act clean
-    - python3 act --no-fun test release aGrUM -j halfexcept1
-
-linux_pyagrum_py38:
-  image: agrumery/ubuntu_py38
-  tags:
-    - docker
-    - linux
-    - triskele
-  cache:
-    key: linux
-    paths:
-      - build/
-  stage: build
-  script:
-    - python3 act clean
-    - pip3 install -r wrappers/pyAgrum/testunits/requirements.txt
-    - python3 act --no-fun test release pyAgrum -j halfexcept1 -t quick
-
-linux_pyagrum_py312:
-  image: agrumery/ubuntu_py312
-  tags:
-    - docker
-    - linux
-    - triskele
-  cache:
-    key: linux
-    paths:
-      - build/
-  stage: build
-  script:
-    - python3 act clean
-    - pip3 install -r wrappers/pyAgrum/testunits/requirements.txt
-    - python3 act --no-fun test release pyAgrum -j halfexcept1 -t quick
-
-
-################################################################################
-# Wheels on tags and merge requests
-################################################################################
-
-
-build_wheel_manylinux_py38:
-  only:
-    - tags
-    - master@agrumery/aGrUM
-    - merge_requests
-  image: $LINUX_64_IMAGE
-  tags:
-    - docker
-    - linux
-    - manylinux1
-  stage: build
-  script:
-    - bash $LINUX_WHEELHOUSE cp38-cp38
-
-build_wheel_manylinux_py312:
-  only:
-    - tags
-    - master@agrumery/aGrUM
-    - merge_requests
-  image: $LINUX_64_IMAGE
-  tags:
-    - docker
-    - linux
-    - manylinux1
-  stage: build
-  script:
-    - bash $LINUX_WHEELHOUSE cp312-cp312
-
-build_wheel_osx_py38:
-  only:
-    - tags
-    - master@agrumery/aGrUM
-    - merge_requests
-  tags:
-    - macos
-    - python3
-  stage: build
-  script:
-    - bash $OSX_WHEELHOUSE py38
-
-build_wheel_osx_py312:
-  only:
-    - tags
-    - master@agrumery/aGrUM
-    - merge_requests
-  tags:
-    - macos
-    - python3
-  stage: build
-  script:
-    - bash $OSX_WHEELHOUSE py312
+.common_artifacts: &common_artifacts
   artifacts:
     name: "${CI_JOB_NAME}_${CI_COMMIT_REF_NAME}"
     when: on_success
@@ -124,247 +19,235 @@ build_wheel_osx_py312:
     paths:
       - wheels/*.whl
 
-build_wheel_windows_py38:
+################################################################################
+#                              TEMPLATES                                       #
+################################################################################
+
+.build_template: &build_template
+  stage: build
+  retry: 1
+
+.linux_build_template: &linux_build_template
+  <<: *build_template
+  tags:
+    - docker
+    - linux
+    - manylinux1
+
+.linux_wheel_template: &linux_wheel_template
+  <<: *common_artifacts
+  <<: *build_template
   only:
     - tags
     - master@agrumery/aGrUM
+    - web@agrumery/aGrUM
+    - merge_requests
+  image: $LINUX_64_IMAGE
+  tags:
+    - docker
+    - linux
+    - triskele
+
+.macos_build_template: &macos_build_template
+  <<: *common_artifacts
+  <<: *build_template
+  only:
+    - tags
+    - web@agrumery/aGrUM
+    - master@agrumery/aGrUM
+    - merge_requests
+  tags:
+    - macos
+    - conda
+  cache:
+    key: macos
+    paths:
+      - build/
+
+.windows_build_template: &windows_build_template
+  <<: *common_artifacts
+  <<: *build_template
+  only:
+    - tags
+    - master@agrumery/aGrUM
+    - web@agrumery/aGrUM
     - merge_requests
   tags:
     - windows
     - conda
-    - agrumerie2
-  stage: build
+    - agrumerie2-powershell
+  cache:
+    key: mvsc
+    paths:
+      - build/
+
+################################################################################
+#                                SCRIPTS                                       #
+################################################################################
+
+.windows_wheel_script: &windows_wheel_script
+  - powershell -File $WINDOWS_WHEELHOUSE -CI_JOB_ID $CI_JOB_ID -CI_PROJECT_DIR $CI_PROJECT_DIR -PYTHON_VERSION $PYTHON_VERSION
+
+.windows_build_script: &windows_build_script
+  - powershell -File $WINDOWS_BUILD -CI_JOB_ID $CI_JOB_ID -CI_PROJECT_DIR $CI_PROJECT_DIR -PYTHON_VERSION $PYTHON_VERSION -TARGET $TARGET -COMPILER $COMPILER
+
+################################################################################
+#                               ON PUSH                                        #
+################################################################################
+
+################################################################################
+# Linux / gcc
+################################################################################
+
+linux_agrum:
+  <<: *linux_build_template
+  image: agrumery/ubuntu_py312
+  script:
+    - bash $LINUX_BUILD aGrUM
+
+linux_pyagrum_py38:
+  <<: *linux_build_template
+  image: agrumery/ubuntu_py38
+  script:
+    - bash $LINUX_BUILD pyAgrum
+
+linux_pyagrum_py312:
+  <<: *linux_build_template
+  image: agrumery/ubuntu_py312
+  script:
+    - bash $LINUX_BUILD pyAgrum
+
+################################################################################
+#                        ON MERGE, MASTER AND TAGS                             #
+################################################################################
+
+################################################################################
+#                                 WHEELS                                       #
+################################################################################
+
+################################################################################
+# Linux x86_64 / gcc
+################################################################################
+
+build_wheel_linux_py38:
+  <<: *linux_wheel_template
+  script:
+    - bash $LINUX_WHEELHOUSE cp38-cp38
+
+build_wheel_linux_py312:
+  <<: *linux_wheel_template
+  script:
+    - bash $LINUX_WHEELHOUSE cp312-cp312
+
+################################################################################
+# MacOS
+################################################################################
+
+build_wheel_osx_py38:
+  <<: *macos_build_template
+  script:
+    - bash $OSX_WHEELHOUSE py38
+
+build_wheel_osx_py312:
+  <<: *macos_build_template
+  script:
+    - bash $OSX_WHEELHOUSE py312
+
+################################################################################
+# Windows / MVSC
+################################################################################
+
+build_wheel_windows_py38:
+  <<: *windows_build_template
   variables:
     PATH: $PATH_64_MVSC22_AGRUMERIE2
+    PYTHON_VERSION: "3.8"
   script:
-    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.8
-    - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
-    - call conda.bat install -y -c conda-forge --file "%CI_PROJECT_DIR%\wrappers\pyAgrum\testunits\requirements.txt"
-    - call conda.bat install -y -c conda-forge cmake
-    - python %CI_PROJECT_DIR%\wrappers\pyAgrum\wheelhouse\scripts\update_version.py %CI_PROJECT_DIR% 0
-    - cd "%CI_PROJECT_DIR%\aGrUM" & python act %ACT_OPTIONS% release wheel pyAgrum -j halfexcept1
-    - call conda.bat activate "py37"
-    - call conda.bat remove -y -n "gitlab-ci-%CI_JOB_ID%" --all --force
+    - *windows_wheel_script
 
 build_wheel_windows_py312:
-  only:
-    - tags
-    - master@agrumery/aGrUM
-    - merge_requests
-  tags:
-    - windows
-    - conda
-    - agrumerie2
-  stage: build
+  <<: *windows_build_template
   variables:
     PATH: $PATH_64_MVSC22_AGRUMERIE2
+    PYTHON_VERSION: "3.12"
   script:
-    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.12
-    - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
-    - call conda.bat install -y -c conda-forge pywinpty
-    - pip install -r "%CI_PROJECT_DIR%\wrappers\pyAgrum\testunits\requirements.txt"
-    - call conda.bat install -y -c conda-forge cmake
-    - python %CI_PROJECT_DIR%\wrappers\pyAgrum\wheelhouse\scripts\update_version.py %CI_PROJECT_DIR% 0
-    - cd "%CI_PROJECT_DIR%\aGrUM" & python act %ACT_OPTIONS% release wheel pyAgrum -j halfexcept1
-    - call conda.bat activate "py37"
-    - call conda.bat remove -y -n "gitlab-ci-%CI_JOB_ID%" --all --force
+    - *windows_wheel_script
+
+################################################################################
+#                                 BUILD                                        #
+################################################################################
 
 ################################################################################
 # MacOS / clang
 ################################################################################
 
 macos_agrum:
-  only:
-    - master@agrumery/aGrUM
-    - web@agrumery/aGrUM
-    - merge_requests
-  tags:
-    - macos
-    - conda
+  <<: *macos_build_template
   variables:
     CC: "/usr/bin/clang"
     CXX: "/usr/bin/clang++"
-  stage: build
-  cache:
-    key: macos
-    paths:
-      - build/
+    PYTHON_VERSION: "py312"
+    TARGET: "aGrUM"
   script:
-    - . /Users/agrum/miniconda3/etc/profile.d/conda.sh
-    - conda activate py312
-    - python act clean
-    - python act --no-fun test release aGrUM -j halfexcept1
-    - conda deactivate
+    - bash $OSX_BUILD $PYTHON_VERSION $TARGET
 
 macos_pyagrum:
-  only:
-    - master@agrumery/aGrUM
-    - web@agrumery/aGrUM
-    - merge_requests
-  tags:
-    - macos
-    - conda
+  <<: *macos_build_template
   variables:
     CC: "/usr/bin/clang"
     CXX: "/usr/bin/clang++"
-  stage: build
-  cache:
-    key: macos
-    paths:
-      - build/
+    PYTHON_VERSION: "py312"
+    TARGET: "pyAgrum"
   script:
-    - . /Users/agrum/miniconda3/etc/profile.d/conda.sh
-    - conda activate py312
-    - python act clean
-    - python act --no-fun test release pyAgrum -t quick -j halfexcept1
-    - conda deactivate
+    - bash $OSX_BUILD $PYTHON_VERSION $TARGET
 
 ################################################################################
 # Windows / MVSC
 ################################################################################
 
 windows_agrum_2019:
-  only:
-   - master@agrumery/aGrUM
-   - web@agrumery/aGrUM
-   - merge_requests
-  tags:
-    - windows
-    - conda
-    - agrumerie2
+  <<: *windows_build_template
   variables:
     PATH: $PATH_64_MVSC19_AGRUMERIE2
-  cache:
-    key: mvsc
-    paths:
-      - build/
-  stage: build
+    PYTHON_VERSION: "3.8"
+    TARGET: "aGrUM"
+    COMPILER: "mvsc19"
   script:
-    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.8
-    - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
-    - call conda.bat install -y -c conda-forge --file wrappers\pyAgrum\testunits\requirements.txt
-    - call pip install cmake
-    - python act clean
-    - python act --no-fun --compiler=mvsc19 -d build -j except1 test release aGrUM 
-    - call conda.bat deactivate
-    - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
-  retry: 1
+    - *windows_build_script
 
-windows_agrum_2022:
-  only:
-   - master@agrumery/aGrUM
-   - web@agrumery/aGrUM
-   - merge_requests
-  tags:
-    - windows
-    - conda
-    - agrumerie2
+windows_agrum_2022:  
+  <<: *windows_build_template
   variables:
     PATH: $PATH_64_MVSC22_AGRUMERIE2
-  cache:
-    key: mvsc
-    paths:
-      - build/
-  stage: build
+    PYTHON_VERSION: "3.8"
+    TARGET: "aGrUM"
+    COMPILER: "mvsc22"
   script:
-    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.8
-    - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
-    - call conda.bat install -y -c conda-forge --file wrappers\pyAgrum\testunits\requirements.txt
-    - call pip install cmake
-    - python act clean
-    - python act --no-fun --compiler=mvsc22 -d build -j except1 test release aGrUM 
-    - call conda.bat deactivate
-    - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
-  retry: 1
+    - *windows_build_script
 
-# windows_pyagrum_2019:
-#   only:
-#    - master@agrumery/aGrUM
-#    - web@agrumery/aGrUM
-#    - merge_requests
-#   tags:
-#     - windows
-#     - conda
-#     - agrumerie2
-#   variables:
-#     PATH: $PATH_64_MVSC19_AGRUMERIE2
-#   cache:
-#     key: mvsc19
-#     paths:
-#       - build/
-#   stage: build
-#   script:
-#     - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.12
-#     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
-#     - call pip install -r wrappers\pyAgrum\testunits\requirements.txt
-#     - call pip install cmake
-#     - python act clean
-#     - python act --no-fun test release pyAgrum --no-fun --compiler=mvsc19 -d build -j halfexcept1 -t quick
-#     - call conda.bat deactivate
-#     - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
-#   retry: 2
-
-windows_pyagrum_2022:
-  only:
-   - master@agrumery/aGrUM
-   - web@agrumery/aGrUM
-   - merge_requests
-  tags:
-    - windows
-    - conda
-    - agrumerie2
+windows_pyagrum_2022:  
+  <<: *windows_build_template
   variables:
     PATH: $PATH_64_MVSC22_AGRUMERIE2
-  cache:
-    key: mvsc
-    paths:
-      - build/
-  stage: build
+    PYTHON_VERSION: "3.12"
+    TARGET: "pyAgrum"
+    COMPILER: "mvsc22"
   script:
-    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.12
-    - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
-    - call conda.bat install -y -c conda-forge pywinpty
-    - call pip install -r wrappers\pyAgrum\testunits\requirements.txt
-    - call pip install cmake
-    - python act clean
-    - python act --no-fun test release pyAgrum --no-fun --compiler=mvsc22 -d build -j except1 -t quick
-    - call conda.bat deactivate
-    - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
-  retry: 1
+    - *windows_build_script
 
 ################################################################################
 # Windows / MINGW
 ################################################################################
 
-windows_pyagrum_mingw:
-  only:
-   - master@agrumery/aGrUM
-   - web@agrumery/aGrUM
-   - merge_requests
-  tags:
-    - windows
-    - conda
-    - agrumerie2
+windows_pyagrum_mingw:  
+  <<: *windows_build_template
   variables:
     PATH: $PATH_64_MINGW_AGRUMERIE2
-  cache:
-    key: mingw
-    paths:
-      - build/
-  stage: build
+    PYTHON_VERSION: "3.12"
+    TARGET: "pyAgrum"
+    COMPILER: "mingw64"
   script:
-    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.12
-    - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
-    - call conda.bat install -y -c conda-forge pywinpty
-    - call pip install -r wrappers\pyAgrum\testunits\requirements.txt
-    - call pip install cmake
-    - python act clean
-    - python act install release pyAgrum --compiler=mingw64 -d build -j except1 -t quick
-    - '@For %%A In (libgcc_s_seh-1 libgomp-1 libssp-0 libstdc++-6 libwinpthread-1) Do @Copy /-Y "C:\msys64\mingw64\bin\%%A.dll" %CD%"\build\pyAgrum\release\wrappers\pyAgrum"'
-    - python act test release pyAgrum
-    - call conda.bat deactivate
-    - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
-  retry: 1
+    - *windows_build_script
 
 ################################################################################
 # Deploy  wheels
