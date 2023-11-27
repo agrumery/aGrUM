@@ -51,11 +51,18 @@ namespace gum {
     return t1 * t2;
   }
 
-  // the function used to combine two tables
+  // the function used to combine two tables with summations
   template < typename GUM_SCALAR >
   INLINE static Potential< GUM_SCALAR > LPNewprojPotential(const Potential< GUM_SCALAR >& t1,
                                                            const gum::VariableSet& del_vars) {
     return t1.margSumOut(del_vars);
+  }
+
+  // the function used to combine two tables with max
+  template < typename GUM_SCALAR >
+  INLINE static Potential< GUM_SCALAR > LPMaxprojPotential(const Potential< GUM_SCALAR >& t1,
+                                                           const gum::VariableSet& del_vars) {
+    return t1.margMaxOut(del_vars);
   }
 
 
@@ -138,6 +145,13 @@ namespace gum {
 
     /// returns the probability of evidence
     GUM_SCALAR evidenceProbability() final;
+
+    /// computes the most probable explanation (given the evidence already entered)
+    /**
+     * @return an instantiation of all the variables, including those that
+     * received hard evidence, with the highest possible probability.
+     */
+    Instantiation mostProbableExplanation();
 
     /// @}
 

@@ -159,6 +159,9 @@ namespace gum {
     /// returns the list of marginal targets
     virtual const NodeSet& targets() const noexcept final;
 
+    /// indicates whether the inference is in a target mode
+    virtual bool isInTargetMode() const noexcept final;
+
     /// @}
 
     // ############################################################################

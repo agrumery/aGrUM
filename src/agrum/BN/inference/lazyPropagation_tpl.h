@@ -196,6 +196,7 @@ namespace gum {
     for (const auto& potset: _arc_to_created_potentials_)
       for (const auto pot: potset.second)
         delete pot;
+    _arc_to_created_potentials_.clear();
 
     // remove all the posteriors
     for (const auto& pot: _target_posteriors_)
@@ -2518,6 +2519,113 @@ namespace gum {
     _find_relevant_potential_type_ = old_relevant_type;
 
     return prob_ev;
+  }
+
+
+  template < typename GUM_SCALAR >
+  Instantiation LazyPropagation< GUM_SCALAR >::mostProbableExplanation() {
+    // here, we should check that _find_relevant_potential_type_ is equal to
+    // FIND_ALL. Otherwise, the computations could be wrong.
+    RelevantPotentialsFinderType old_relevant_type = _find_relevant_potential_type_;
+
+    // if the relevant potentials finder is not equal to FIND_ALL, all the
+    // current computations may lead to incorrect results, so we shall
+    // discard them
+    if (old_relevant_type != RelevantPotentialsFinderType::FIND_ALL) {
+      _find_relevant_potential_type_ = RelevantPotentialsFinderType::FIND_ALL;
+      _is_new_jt_needed_             = true;
+      this->setOutdatedStructureState_();
+    }
+
+    // here, we should enforce that the projections are max operators
+    auto old_projection_op = _projection_op_;
+    auto new_projection_op = LPMaxprojPotential<GUM_SCALAR>;
+    bool projection_op_changed = old_projection_op != new_projection_op;
+    if (projection_op_changed) {
+      this->_setProjectionFunction_(new_projection_op);
+    }
+
+    // make all nodes as targets and remove all the target sets
+    const auto in_target_mode = this->isInTargetMode();
+    NodeSet old_targets;
+    Set< NodeSet > old_joint_targets;
+    if (in_target_mode) {
+      old_targets = this->targets();
+      old_joint_targets = this->jointTargets();
+      this->eraseAllTargets();
+    }
+
+    // perform inference in each connected component
+    this->makeInference();
+
+    // keep track of the hard evidence
+    Instantiation instantiations;
+    for (const auto& ev: this->hardEvidence()) {
+      const auto& variable = this->BN().variable(ev.first);
+      instantiations.add(variable);
+      instantiations.chgVal(variable, ev.second);
+    }
+
+    // for each clique, get its argmax
+    NodeProperty< bool > clique2marked = _JT_->nodesProperty(false);
+    std::function< void(NodeId, NodeId) > diffuse_marks
+       = [&clique2marked, &diffuse_marks, &instantiations, this](NodeId clique,
+                                                                 NodeId clique_from) {
+           clique2marked[clique] = true;
+
+           // compute the joint of the clique potential and the messages that
+           // were sent by all its neighbors. Then extract only the variables
+           // that have no value yet
+           auto clique_nodes = _JT_->clique(clique);
+           auto pot = unnormalizedJointPosterior_(clique_nodes);
+           auto pot_argmax = pot->extract(instantiations).argmax();
+           delete pot;
+           const auto& new_instantiation = *(pot_argmax.first.begin());
+
+           // update the instantiation of the MPE variables
+           for (const auto node: clique_nodes) {
+             const auto& variable = this->BN().variable(node);
+             if (!instantiations.contains(variable)) {
+               instantiations.add(variable);
+               instantiations.chgVal(variable, new_instantiation.val(variable));
+             }
+           }
+
+           // go on with the diffusion on this connected component
+           for (const auto neigh: _JT_->neighbours(clique))
+             if ((neigh != clique_from) && !clique2marked[neigh])
+               diffuse_marks(neigh, clique);
+         };
+
+    // here we compute the values of the variables corresponding to MPE on every
+    // connected component
+    for (const auto& cliqueProp: clique2marked) {
+      const auto clique = cliqueProp.first;
+      if (!clique2marked[clique])
+        diffuse_marks(clique, clique);
+    }
+
+    // put back the relevant potential type selected by the user as well as the
+    // projection operator and the targets selected by the user
+    _find_relevant_potential_type_ = old_relevant_type;
+
+    // if we changed the projection operator, put back the old one
+    if (projection_op_changed) {
+      this->_setProjectionFunction_(old_projection_op);
+    }
+
+    // if, prior to the MPE request, we had targets, get them back
+    if (in_target_mode) {
+      for (const auto node: old_targets) {
+        this->addTarget(node);
+      }
+      for (const auto& set: old_joint_targets) {
+        this->addJointTarget(set);
+      }
+    }
+
+    // return the MPE instantiation as well as its probability
+    return instantiations;
   }
 
 } /* namespace gum */

@@ -1654,6 +1654,204 @@ namespace gum_tests {
       TS_GUM_POTENTIAL_DELTA(phard, psoft, TS_GUM_VERY_SMALL_ERROR)
     }
 
+    GUM_ACTIVE_TEST(MostProbableExplanation) {
+      gum::BayesNet< double > bn;
+
+      gum::LabelizedVariable n1("1", "", 2), n2("2", "", 2), n3("3", "", 3);
+      gum::LabelizedVariable n4("4", "", 4), n5("5", "", 3);
+
+      auto i1 = bn.add(n1);
+      auto i2 = bn.add(n2);
+      auto i3 = bn.add(n3);
+      auto i4 = bn.add(n4);
+      auto i5 = bn.add(n5);
+
+      bn.addArc(i1, i3);
+      bn.addArc(i1, i4);
+      bn.addArc(i3, i5);
+      bn.addArc(i4, i5);
+      bn.addArc(i2, i4);
+      bn.addArc(i2, i5);
+
+      for (const auto node: bn.dag()) {
+        bn.cpt(node).random().normalizeAsCPT();
+      }
+
+      // compute the joint
+      gum::Potential<double> joint(bn.cpt(i1));
+      for (const auto node: bn.dag()) {
+        if (node != i1)
+          joint *= bn.cpt(node);
+      }
+      auto marg5 = joint.margSumIn({&bn.variable(i5)}).normalize();
+
+      auto joint_argmax = joint.normalize().argmax();
+
+      // check singly connected component
+      gum::LazyPropagation< double > ie(&bn);
+      auto mpe = ie.mostProbableExplanation();
+      TS_ASSERT_EQUALS(mpe, *(joint_argmax.first.begin()))
+      //TS_ASSERT_DELTA(bn.log2JointProbability(mpe), std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
+
+      auto p5 = ie.posterior(i5);
+      TS_ASSERT(equalPotentials(marg5, p5))
+
+      // add hard evidence on n3
+      gum::Potential< double > e_i3;
+      e_i3 << bn.variable(i3);
+      e_i3.fill(0.0f);
+      gum::Instantiation inst_3(e_i3);
+      inst_3.chgVal(bn.variable(i3), 0);
+      e_i3.set(inst_3, 1.0f);
+      joint *= e_i3;
+      joint_argmax = joint.normalize().argmax();
+
+      ie.addEvidence(i3, 0);
+      mpe = ie.mostProbableExplanation();
+      TS_ASSERT_EQUALS(mpe, *(joint_argmax.first.begin()))
+      //TS_ASSERT_DELTA(bn.log2JointProbability(mpe), std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
+
+      marg5 = joint.margSumIn({&bn.variable(i5)}).normalize();
+      p5 = ie.posterior(i5);
+      TS_ASSERT(equalPotentials(marg5, p5))
+
+      gum::Potential< double > e_i4;
+      e_i4 << bn.variable(i4);
+      e_i4.fillWith({0.0, 1.0, 0.5, 0.0});
+      joint *= e_i4;
+      joint_argmax = joint.normalize().argmax();
+
+      ie.addEvidence(e_i4);
+      mpe = ie.mostProbableExplanation();
+      TS_ASSERT_EQUALS(mpe, *(joint_argmax.first.begin()))
+      //TS_ASSERT_DELTA(bn.log2JointProbability(mpe), std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
+
+      marg5 = joint.margSumIn({&bn.variable(i5)}).normalize();
+      p5 = ie.posterior(i5);
+      TS_ASSERT(equalPotentials(marg5, p5))
+
+      // checking multiply connected components
+      gum::LabelizedVariable n6("6", "", 2), n7("7", "", 3), n8("8", "", 3);
+      gum::LabelizedVariable n9("9", "", 4), n10("10", "", 3);
+
+      auto i6  = bn.add(n6);
+      auto i7  = bn.add(n7);
+      auto i8  = bn.add(n8);
+      auto i9  = bn.add(n9);
+      auto i10 = bn.add(n10);
+
+      bn.addArc(i6, i8);
+      bn.addArc(i6, i9);
+      bn.addArc(i7, i9);
+      bn.addArc(i9, i10);
+
+      for (auto node = i6; node <= i10; ++node) {
+        bn.cpt(node).random().normalizeAsCPT();
+        joint *= bn.cpt(node);
+      }
+      joint_argmax = joint.normalize().argmax();
+
+
+      gum::LazyPropagation< double > ie2(&bn);
+
+      // enter the previous evidence
+      ie2.addEvidence(i3, 0);
+      ie2.addEvidence(e_i4);
+
+      mpe = ie2.mostProbableExplanation();
+      TS_ASSERT_EQUALS(mpe, *(joint_argmax.first.begin()))
+      //TS_ASSERT_DELTA(bn.log2JointProbability(mpe), std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
+
+      marg5 = joint.margSumIn({&bn.variable(i5)}).normalize();
+      p5 = ie2.posterior(i5);
+      TS_ASSERT(equalPotentials(marg5, p5))
+
+      gum::Potential< double > e_i7;
+      e_i7 << bn.variable(i7);
+      e_i7.fillWith({0.2, 0.5, 0.1});
+      joint *= e_i7;
+      joint_argmax = joint.normalize().argmax();
+
+      ie2.addEvidence(e_i7);
+      mpe = ie2.mostProbableExplanation();
+      TS_ASSERT_EQUALS(mpe, *(joint_argmax.first.begin()))
+      //TS_ASSERT_DELTA(bn.log2JointProbability(mpe), std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
+
+      marg5 = joint.margSumIn({&bn.variable(i5)}).normalize();
+      p5 = ie2.posterior(i5);
+      auto marg9 = joint.margSumIn({&bn.variable(i9)}).normalize();
+      auto p9 = ie2.posterior(i9);
+      TS_ASSERT(equalPotentials(marg9, p9))
+
+      gum::Potential< double > e_i10;
+      e_i10 << bn.variable(i10);
+      e_i10.fillWith({0.0, 1.0, 0.0});
+      joint *= e_i10;
+      joint_argmax = joint.normalize().argmax();
+
+      ie2.addEvidence(e_i10);
+      mpe = ie2.mostProbableExplanation();
+      TS_ASSERT_EQUALS(mpe, *(joint_argmax.first.begin()))
+      //TS_ASSERT_DELTA(bn.log2JointProbability(mpe), std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
+
+      marg9 = joint.margSumIn({&bn.variable(i9)}).normalize();
+      p9 = ie2.posterior(i9);
+      TS_ASSERT(equalPotentials(marg9, p9))
+
+      auto marg10 = joint.margSumIn({&bn.variable(i10)}).normalize();
+      auto p10 = ie2.posterior(i10);
+      TS_ASSERT(equalPotentials(marg10, p10))
+
+      // what if we have a component in which all the nodes have received hard evidence
+      gum::LabelizedVariable n11("11", "", 2), n12("12", "", 3), n13("13", "", 3);
+
+      auto i11 = bn.add(n11);
+      auto i12 = bn.add(n12);
+      auto i13 = bn.add(n13);
+
+      //bn.addArc(i11, i12);
+      //bn.addArc(i12, i13);
+
+      for (auto node = i11; node <= i13; ++node) {
+        bn.cpt(node).random().normalizeAsCPT();
+        joint *= bn.cpt(node);
+      }
+      gum::Potential< double > e_i11;
+      e_i11 << bn.variable(i11);
+      e_i11.fillWith({0.0, 1.0});
+      joint *= e_i11;
+      gum::Potential< double > e_i12;
+      e_i12 << bn.variable(i12);
+      e_i12.fillWith({0.0, 0.0, 1.0});
+      joint *= e_i12;
+      gum::Potential< double > e_i13;
+      e_i13 << bn.variable(i13);
+      e_i13.fillWith({1.0, 0.0, 0.0});
+      joint *= e_i13;
+
+      joint_argmax = joint.argmax();
+
+      gum::LazyPropagation< double > ie3(&bn);
+
+      // enter the previous evidence
+      ie3.addEvidence(i3, 0);
+      ie3.addEvidence(e_i4);
+      ie3.addEvidence(e_i7);
+      ie3.addEvidence(e_i10);
+      ie3.addEvidence(e_i11);
+      ie3.addEvidence(e_i12);
+      ie3.addEvidence(e_i13);
+
+      mpe = ie3.mostProbableExplanation();
+      TS_ASSERT_EQUALS(mpe, *(joint_argmax.first.begin()))
+      //TS_ASSERT_DELTA(mpe.second, joint_argmax.second, TS_GUM_SMALL_ERROR)
+
+      marg9 = joint.margSumIn({&bn.variable(i9)}).normalize();
+      p9 = ie3.posterior(i9);
+      TS_ASSERT(equalPotentials(marg9, p9))
+    }
+
+
     private:
     void checkInference(gum::LazyPropagation< double >& ie,
                         const gum::Potential< double >& joint,

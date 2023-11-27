@@ -208,6 +208,11 @@ namespace gum {
     return _targets_.size();
   }
 
+  // indicates whether the inference is in a target mode
+  template < typename GUM_SCALAR >
+  INLINE bool MarginalTargetedInference< GUM_SCALAR >::isInTargetMode() const noexcept {
+    return _targeted_mode_;
+  }
 
   /// sets all the nodes of the Bayes net as targets
   template < typename GUM_SCALAR >
