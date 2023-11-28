@@ -450,6 +450,8 @@ namespace std {
 %template ( BNLearner) gum::learning::BNLearner<double>;
 %template ( BNDatabaseGenerator) gum::learning::BNDatabaseGenerator<double>;
 
+%template ( PairMPE ) std::pair<gum::Instantiation, double>;
+
 /* for debug */
 namespace gum {
   void statsObj(void);

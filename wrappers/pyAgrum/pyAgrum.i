@@ -52,7 +52,7 @@
 
 %include "std_vector.i"
 %include "std_string.i"
-
+%include "std_pair.i"
 %{
 #define SWIG_FILE_WITH_INIT
 

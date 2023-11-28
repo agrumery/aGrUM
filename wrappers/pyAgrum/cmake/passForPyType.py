@@ -80,6 +80,7 @@ def process_filters(src_filename: str, target_filename: str, debugmode: bool):
     ("std::vector< std::string >::value_type", "str"),
 
     # containers
+    ('std::pair< gum::Instantiation,double >', 'Tuple["pyAgrum.Instantiation",float]'),
     ('std::unique_ptr< gum::DiscreteVariable >', '"pyAgrum.DiscreteVariable"'),
     ("std::vector< gum::Idx,std::allocator< gum::Idx > >", 'List[int]'),
     ("std::vector< gum::NodeId,std::allocator< gum::NodeId > >", 'List[int]'),

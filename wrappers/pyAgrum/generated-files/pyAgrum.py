@@ -13793,6 +13793,32 @@ class LazyPropagation(object):
         """
         return _pyAgrum.LazyPropagation_evidenceProbability(self)
 
+    def mpe(self) -> "pyAgrum.Instantiation":
+        r"""
+
+        Find the Most Probable Explanation (MPE) using LazyPropagation using the evidence (if any)
+
+        Returns
+        -------
+        pyAgrum.Instantiation
+          An instantiation representing the Most Probable Explanation.
+
+        """
+        return _pyAgrum.LazyPropagation_mpe(self)
+
+    def mpeLog2Posterior(self) -> Tuple["pyAgrum.Instantiation",float]:
+        r"""
+
+        Find the Most Probable Explanation (MPE) using LazyPropagation and the (log) conditionnal probability of the solution (given the evidence if any)
+
+        Returns
+        -------
+        Tuple[pyAgrum.Instantiation, float]
+            A tuple with the instantiation representing the Most Probable Explanation and the (log) probability
+
+        """
+        return _pyAgrum.LazyPropagation_mpeLog2Posterior(self)
+
     def setEvidence(self, evidces):
         """
         Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
@@ -27186,6 +27212,32 @@ class BNDatabaseGenerator(object):
 
 # Register BNDatabaseGenerator in _pyAgrum:
 _pyAgrum.BNDatabaseGenerator_swigregister(BNDatabaseGenerator)
+class PairMPE(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _pyAgrum.PairMPE_swiginit(self, _pyAgrum.new_PairMPE(*args))
+    first = property(_pyAgrum.PairMPE_first_get, _pyAgrum.PairMPE_first_set)
+    second = property(_pyAgrum.PairMPE_second_get, _pyAgrum.PairMPE_second_set)
+    def __len__(self):
+        return 2
+    def __repr__(self):
+        return str((self.first, self.second))
+    def __getitem__(self, index): 
+        if not (index % 2):
+            return self.first
+        else:
+            return self.second
+    def __setitem__(self, index, val):
+        if not (index % 2):
+            self.first = val
+        else:
+            self.second = val
+    __swig_destroy__ = _pyAgrum.delete_PairMPE
+
+# Register PairMPE in _pyAgrum:
+_pyAgrum.PairMPE_swigregister(PairMPE)
 
 def statsObj() -> None:
     return _pyAgrum.statsObj()
