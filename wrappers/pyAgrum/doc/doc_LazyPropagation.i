@@ -9,20 +9,20 @@ LazyPropagation(bn) -> LazyPropagation
 
 %feature("docstring") gum::LazyPropagation<double>::mpe
 "
-Find the Most Probable Explanation (MPE) using LazyPropagation using the evidence (if any)
+Find the Most Probable Explanation (MPE) given the evidence (if any) added into LazyPropagation
 
 Returns
 -------
 pyAgrum.Instantiation
-  An instantiation representing the Most Probable Explanation.
+  An instantiation of all the variables of the Bayes net representing the Most Probable Explanation.
 "
 
 %feature("docstring") gum::LazyPropagation<double>::mpeLog2Posterior
 "
-Find the Most Probable Explanation (MPE) using LazyPropagation and the (log) conditionnal probability of the solution (given the evidence if any)
+Find the Most Probable Explanation (MPE) given the evidence (if any) added into LazyPropagation as well as the log2 of its posterior probability
 
 Returns
 -------
 Tuple[pyAgrum.Instantiation, float]
-    A tuple with the instantiation representing the Most Probable Explanation and the (log) probability
+    A tuple with the instantiation of all the variables of the Bayes net representing the Most Probable Explanation and the log2 of its posterior probability
 "
