@@ -2523,7 +2523,7 @@ namespace gum {
 
 
   template < typename GUM_SCALAR >
-  Instantiation LazyPropagation< GUM_SCALAR >::mostProbableExplanation() {
+  Instantiation LazyPropagation< GUM_SCALAR >::mpe() {
     // here, we should check that _find_relevant_potential_type_ is equal to
     // FIND_ALL. Otherwise, the computations could be wrong.
     RelevantPotentialsFinderType old_relevant_type = _find_relevant_potential_type_;
@@ -2567,35 +2567,33 @@ namespace gum {
     }
 
     // for each clique, get its argmax
-    NodeProperty< bool > clique2marked = _JT_->nodesProperty(false);
-    std::function< void(NodeId, NodeId) > diffuse_marks
-       = [&clique2marked, &diffuse_marks, &instantiations, this](NodeId clique,
-                                                                 NodeId clique_from) {
-           clique2marked[clique] = true;
+    NodeProperty< bool >                  clique2marked = _JT_->nodesProperty(false);
+    std::function< void(NodeId, NodeId) > diffuse_marks =
+       [&clique2marked, &diffuse_marks, &instantiations, this](NodeId clique, NodeId clique_from) {
+         clique2marked[clique] = true;
 
-           // compute the joint of the clique potential and the messages that
-           // were sent by all its neighbors. Then extract only the variables
-           // that have no value yet
-           auto clique_nodes = _JT_->clique(clique);
-           auto pot = unnormalizedJointPosterior_(clique_nodes);
-           auto pot_argmax = pot->extract(instantiations).argmax();
-           delete pot;
-           const auto& new_instantiation = *(pot_argmax.first.begin());
+         // compute the joint of the clique potential and the messages that
+         // were sent by all its neighbors. Then extract only the variables
+         // that have no value yet
+         auto clique_nodes = _JT_->clique(clique);
+         auto pot          = unnormalizedJointPosterior_(clique_nodes);
+         auto pot_argmax   = pot->extract(instantiations).argmax();
+         delete pot;
+         const auto& new_instantiation = *(pot_argmax.first.begin());
 
-           // update the instantiation of the MPE variables
-           for (const auto node: clique_nodes) {
-             const auto& variable = this->BN().variable(node);
-             if (!instantiations.contains(variable)) {
-               instantiations.add(variable);
-               instantiations.chgVal(variable, new_instantiation.val(variable));
-             }
+         // update the instantiation of the MPE variables
+         for (const auto node: clique_nodes) {
+           const auto& variable = this->BN().variable(node);
+           if (!instantiations.contains(variable)) {
+             instantiations.add(variable);
+             instantiations.chgVal(variable, new_instantiation.val(variable));
            }
+         }
 
-           // go on with the diffusion on this connected component
-           for (const auto neigh: _JT_->neighbours(clique))
-             if ((neigh != clique_from) && !clique2marked[neigh])
-               diffuse_marks(neigh, clique);
-         };
+         // go on with the diffusion on this connected component
+         for (const auto neigh: _JT_->neighbours(clique))
+           if ((neigh != clique_from) && !clique2marked[neigh]) diffuse_marks(neigh, clique);
+       };
 
     // here we compute the values of the variables corresponding to MPE on every
     // connected component
@@ -2627,6 +2625,42 @@ namespace gum {
     // return the MPE instantiation as well as its probability
     return instantiations;
   }
+
+  template < typename GUM_SCALAR >
+  std::pair< Instantiation, GUM_SCALAR > LazyPropagation< GUM_SCALAR >::mpeLog2Posterior() {
+    // get the instantiation of the variables w.r.t. MPE
+    const auto instantiation = mpe();
+
+    // here, we have the instantiation of all the variables. Now, we have to
+    // compute the posterior probability of this instantiation. To do so,
+    // we will extract from the CPTs the probas of the nodes, get their log2
+    // and add them (in order to get the log2 of the joint). We do this
+    // for all the nodes except those that received soft evidence: for them,
+    // we need to multiply their conditional probability given the values of
+    // their parents by their evidence vector.
+    auto proba = (GUM_SCALAR) 0.0;
+    auto node_proba = (GUM_SCALAR) 0.0;
+
+    for (const auto node: this->BN().dag()) {
+      const auto& cpt = this->BN().cpt(node);
+      if (!this->hasSoftEvidence(node)) {
+        node_proba = cpt[instantiation];
+      }
+      else {
+        const auto& ev = *(this->evidence()[node]);
+        node_proba     = cpt[instantiation] * ev[instantiation];
+      }
+
+      if (node_proba == (GUM_SCALAR)0)
+        return {instantiation, std::numeric_limits< GUM_SCALAR >::lowest()};
+      proba += (GUM_SCALAR) std::log2(node_proba);
+    }
+
+    if (!this->hasEvidence())
+      return {instantiation, proba};
+    else
+      return {instantiation, proba - std::log2(this->evidenceProbability())};
+ }
 
 } /* namespace gum */
 

@@ -146,12 +146,32 @@ namespace gum {
     /// returns the probability of evidence
     GUM_SCALAR evidenceProbability() final;
 
-    /// computes the most probable explanation (given the evidence already entered)
-    /**
+    /// returns the most probable explanation, i.e., X* = argmax_X P(X|e)
+    /** the MPE request corresponds to computing X* = argmax_X P(X|e), where X is
+     * the set of all the variables in the Bayesian network and e is the set of
+     * evidence entered into the network. Method mpe() returns X*, i.e., the
+     * instantiation of all the variables in the bayesian network with the
+     * highest posterior. If you also wish to get P(X*,e), use Method
+     * mpeLog2Posterior() instead.
      * @return an instantiation of all the variables, including those that
-     * received hard evidence, with the highest possible probability.
+     * received hard evidence, such that their joint has the highest possible
+     * probability.
      */
-    Instantiation mostProbableExplanation();
+    Instantiation mpe();
+
+    /** @brief returns the most probable explanation and its probability, i.e.,
+     * (X*, log2(P(X*|e))), where X* = argmax_X P(X|e)
+     *
+     * @return a pair such that:
+     * - its first element is an instantiation of all the variables, including
+     *   those that received hard evidence, such that their joint has the highest
+     *   possible probability.
+     * - its second element is the log2 of the posterior probability of this
+     *   instantiation.
+     * @warning if the posterior is equal to 0, the log2 value will be equal
+     * to std::numeric_limits< GUM_SCALAR >::lowest().
+     */
+    std::pair< Instantiation, GUM_SCALAR > mpeLog2Posterior();
 
     /// @}
 

@@ -1689,9 +1689,9 @@ namespace gum_tests {
 
       // check singly connected component
       gum::LazyPropagation< double > ie(&bn);
-      auto mpe = ie.mostProbableExplanation();
-      TS_ASSERT_EQUALS(mpe, *(joint_argmax.first.begin()))
-      //TS_ASSERT_DELTA(bn.log2JointProbability(mpe), std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
+      auto mpe = ie.mpeLog2Posterior();
+      TS_ASSERT_EQUALS(mpe.first, *(joint_argmax.first.begin()))
+      TS_ASSERT_DELTA(mpe.second, std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
 
       auto p5 = ie.posterior(i5);
       TS_ASSERT(equalPotentials(marg5, p5))
@@ -1707,9 +1707,9 @@ namespace gum_tests {
       joint_argmax = joint.normalize().argmax();
 
       ie.addEvidence(i3, 0);
-      mpe = ie.mostProbableExplanation();
-      TS_ASSERT_EQUALS(mpe, *(joint_argmax.first.begin()))
-      //TS_ASSERT_DELTA(bn.log2JointProbability(mpe), std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
+      mpe = ie.mpeLog2Posterior();
+      TS_ASSERT_EQUALS(mpe.first, *(joint_argmax.first.begin()))
+      TS_ASSERT_DELTA(mpe.second, std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
 
       marg5 = joint.margSumIn({&bn.variable(i5)}).normalize();
       p5 = ie.posterior(i5);
@@ -1722,9 +1722,9 @@ namespace gum_tests {
       joint_argmax = joint.normalize().argmax();
 
       ie.addEvidence(e_i4);
-      mpe = ie.mostProbableExplanation();
-      TS_ASSERT_EQUALS(mpe, *(joint_argmax.first.begin()))
-      //TS_ASSERT_DELTA(bn.log2JointProbability(mpe), std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
+      mpe = ie.mpeLog2Posterior();
+      TS_ASSERT_EQUALS(mpe.first, *(joint_argmax.first.begin()))
+      TS_ASSERT_DELTA(mpe.second, std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
 
       marg5 = joint.margSumIn({&bn.variable(i5)}).normalize();
       p5 = ie.posterior(i5);
@@ -1758,9 +1758,9 @@ namespace gum_tests {
       ie2.addEvidence(i3, 0);
       ie2.addEvidence(e_i4);
 
-      mpe = ie2.mostProbableExplanation();
-      TS_ASSERT_EQUALS(mpe, *(joint_argmax.first.begin()))
-      //TS_ASSERT_DELTA(bn.log2JointProbability(mpe), std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
+      mpe = ie2.mpeLog2Posterior();
+      TS_ASSERT_EQUALS(mpe.first, *(joint_argmax.first.begin()))
+      TS_ASSERT_DELTA(mpe.second, std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
 
       marg5 = joint.margSumIn({&bn.variable(i5)}).normalize();
       p5 = ie2.posterior(i5);
@@ -1773,9 +1773,9 @@ namespace gum_tests {
       joint_argmax = joint.normalize().argmax();
 
       ie2.addEvidence(e_i7);
-      mpe = ie2.mostProbableExplanation();
-      TS_ASSERT_EQUALS(mpe, *(joint_argmax.first.begin()))
-      //TS_ASSERT_DELTA(bn.log2JointProbability(mpe), std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
+      mpe = ie2.mpeLog2Posterior();
+      TS_ASSERT_EQUALS(mpe.first, *(joint_argmax.first.begin()))
+      TS_ASSERT_DELTA(mpe.second, std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
 
       marg5 = joint.margSumIn({&bn.variable(i5)}).normalize();
       p5 = ie2.posterior(i5);
@@ -1790,9 +1790,9 @@ namespace gum_tests {
       joint_argmax = joint.normalize().argmax();
 
       ie2.addEvidence(e_i10);
-      mpe = ie2.mostProbableExplanation();
-      TS_ASSERT_EQUALS(mpe, *(joint_argmax.first.begin()))
-      //TS_ASSERT_DELTA(bn.log2JointProbability(mpe), std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
+      mpe = ie2.mpeLog2Posterior();
+      TS_ASSERT_EQUALS(mpe.first, *(joint_argmax.first.begin()))
+      TS_ASSERT_DELTA(mpe.second, std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
 
       marg9 = joint.margSumIn({&bn.variable(i9)}).normalize();
       p9 = ie2.posterior(i9);
@@ -1808,9 +1808,6 @@ namespace gum_tests {
       auto i11 = bn.add(n11);
       auto i12 = bn.add(n12);
       auto i13 = bn.add(n13);
-
-      //bn.addArc(i11, i12);
-      //bn.addArc(i12, i13);
 
       for (auto node = i11; node <= i13; ++node) {
         bn.cpt(node).random().normalizeAsCPT();
@@ -1829,7 +1826,7 @@ namespace gum_tests {
       e_i13.fillWith({1.0, 0.0, 0.0});
       joint *= e_i13;
 
-      joint_argmax = joint.argmax();
+      joint_argmax = joint.normalize().argmax();
 
       gum::LazyPropagation< double > ie3(&bn);
 
@@ -1842,9 +1839,9 @@ namespace gum_tests {
       ie3.addEvidence(e_i12);
       ie3.addEvidence(e_i13);
 
-      mpe = ie3.mostProbableExplanation();
-      TS_ASSERT_EQUALS(mpe, *(joint_argmax.first.begin()))
-      //TS_ASSERT_DELTA(mpe.second, joint_argmax.second, TS_GUM_SMALL_ERROR)
+      mpe = ie3.mpeLog2Posterior();
+      TS_ASSERT_EQUALS(mpe.first, *(joint_argmax.first.begin()))
+      TS_ASSERT_DELTA(mpe.second, std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
 
       marg9 = joint.margSumIn({&bn.variable(i9)}).normalize();
       p9 = ie3.posterior(i9);
