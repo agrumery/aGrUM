@@ -255,7 +255,7 @@ namespace gum {
                                              const IdCondSet&             superset_ids,
                                              const std::vector< double >& superset_vect) {
       // get a mapping between the node Ids and their columns in the database.
-      // This should be stored into  _nodeId2columns_, except if the latter is
+      // This should be stored into _nodeId2columns_, except if the latter is
       // empty, in which case there is an identity mapping
       const auto nodeId2columns = _getNodeIds2Columns_(superset_ids);
 
@@ -268,15 +268,14 @@ namespace gum {
       }
 
       // we create the output vector
-      const std::size_t     subset_ids_size = std::size_t(subset_ids.size());
       std::vector< double > result_vect(result_vect_size, 0.0);
-
 
       // check if the subset_ids is the beginning of the sequence of superset_ids
       // if this is the case, then we can outer loop over the variables not in
       // subset_ids and, for each iteration of this loop add a vector of size
       // result_size to result_vect
-      bool subset_begin = true;
+      bool              subset_begin    = true;
+      const std::size_t subset_ids_size = std::size_t(subset_ids.size());
       for (std::size_t i = 0; i < subset_ids_size; ++i) {
         if (superset_ids.pos(subset_ids[i]) != i) {
           subset_begin = false;

@@ -215,7 +215,7 @@ namespace gum {
     INLINE std::size_t
            DBRowGeneratorEM< GUM_SCALAR >::computeRows_(const DBRow< DBTranslatedValue >& row) {
       // check if there are unobserved values among the columns of interest.
-      // If this is the case, set them as targets
+      // If this is the case, save in _missing_cols_ all the columns with unobserved values
       bool        found_unobserved = false;
       const auto& xrow             = row.row();
       for (const auto col: this->columns_of_interest_) {
@@ -243,7 +243,7 @@ namespace gum {
         }
       }
 
-      // if there is no unobserved value, make the  _input_row_ point to the row
+      // if there is no unobserved value, make the _input_row_ point to the row
       if (!found_unobserved) {
         _input_row_ = &row;
         return std::size_t(1);
@@ -289,7 +289,7 @@ namespace gum {
 
       ve.addJointTarget(target_set);
 
-      // add the evidence and the target
+      // add the evidence and the target into variable elimination
       const std::size_t row_size = xrow.size();
       if (this->nodeId2columns_.empty()) {
         for (std::size_t col = std::size_t(0); col < row_size; ++col) {

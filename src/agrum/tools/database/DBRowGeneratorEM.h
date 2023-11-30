@@ -157,10 +157,10 @@ namespace gum {
 
       /// the row that we return if there are missing values
       /** DBRowGeneratorSets produce new rows in advance. So, when they
-       * return a row, they have already computed the new row. To cope with
+       * return a row, they have already computed the next row. To cope with
        * this, the DBRowGeneratorEM should have 2 filled_row: one that will
        * be used for the first row returned and one for the next one. Hence
-       *  _filled_row1_ and  _filled_row2_, which are filled alternatively by
+       *  _filled_row1_ and _filled_row2_, which are filled alternatively by
        * the content of the probabilities computed. */
       DBRow< DBTranslatedValue > _filled_row1_;
 

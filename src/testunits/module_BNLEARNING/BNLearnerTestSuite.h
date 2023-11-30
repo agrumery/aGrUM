@@ -1949,6 +1949,41 @@ namespace gum_tests {
                       TS_GUM_SMALL_ERROR)
     }
 
+    GUM_ACTIVE_TEST(learnParametersEM) {
+      // default BN
+      gum::BayesNet< double > bn;
+
+      gum::LabelizedVariable b("b", "", 2), f("f", "", 2), w("w", "", 2), h("h", "", 2);
+      auto                   bb = bn.add(b);
+      auto                   ff = bn.add(f);
+      auto                   ww = bn.add(w);
+      auto                   hh = bn.add(h);
+      bn.addArc(bb, ff);
+      bn.addArc(bb, ww);
+      bn.addArc(bb, hh);
+
+      bn.cpt(bb).fillWith({0.5, 0.5});
+      bn.cpt(ww).fillWith({0.8, 0.2, 0.3, 0.7});
+      bn.cpt(ff).fillWith({0.8, 0.2, 0.3, 0.7});
+      bn.cpt(hh).fillWith({0.2, 0.8, 0.7, 0.3});
+
+      gum::learning::BNLearner learner(GET_RESSOURCES_PATH("csv/paramEM.csv"), bn);
+      TS_ASSERT_EQUALS(learner.hasMissingValues(), true)
+
+      learner.useEM(1e-2);
+      learner.useSmoothingPrior();
+      learner.setVerbosity(true);
+      auto bn1 = learner.learnParameters(bn.dag());
+      TS_ASSERT_LESS_THAN_EQUALS(1UL, learner.nbrIterations())
+
+      for (auto node : bn.dag()) {
+        const auto& cpt = bn1.cpt(node);
+        auto cpt2 = cpt;
+        cpt2.normalizeAsCPT();
+        TS_ASSERT_EQUALS(cpt, cpt2)
+      }
+    }
+
     private:
     void _test_dirichlet(const gum::BayesNet< double >& model) {
       gum::learning::BNLearner all(GET_RESSOURCES_PATH("dirichlet/dirichlet.csv"), model);

@@ -101,8 +101,19 @@ namespace gum {
                                                    const DAG&      dag) {
       // bootstrap EM by learning an initial model
       BayesNet< GUM_SCALAR > bn = createBN< GUM_SCALAR >(bootstrap_estimator, dag);
-      for (const auto& nod: bn.nodes()) {
-        bn.cpt(nod).noising(0.1);
+
+      // if there exist no missing value, there is no need to apply EM
+      if (!bootstrap_estimator.database().hasMissingValues()) {
+        // here we start/stop the approx scheme to be able to display the number
+        // of EM iterations
+        initApproximationScheme();
+        stopApproximationScheme();
+        return bn;
+      }
+
+
+      for (const auto& node: bn.nodes()) {
+        bn.cpt(node).noising(0.1).normalizeAsCPT();
       }
       general_estimator.setBayesNet(bn);
 
@@ -148,7 +159,6 @@ namespace gum {
 
       return bn;
     }   // namespace learning
-
 
   }   // namespace learning
 
