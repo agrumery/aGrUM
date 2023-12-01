@@ -17,8 +17,41 @@
 
 Used in aGrUM/pyAgrum with written permission of the author:
 David Avis
-Reiwa 1.5.6 (May 6, 2019)
+Reiwa 1.5.6 (November 09, 2023)
 Kyoto, Japan
+
+> On 2023/11/09, david avis wrote:
+> Dear Pierre-Henri,
+> 
+> [...]
+> 
+> I am willing to accept the new licence, so please go ahead.
+> 
+> [...]
+> 
+> Best regards,
+> -david
+> 
+> 
+> On November 8, 2023 8:15:56 p.m. GMT+09:00, Pierre-Henri Wuillemin <pierre-henri.wuillemin@lip6.fr> wrote:
+> > Dear David,
+> > 
+> > [...]
+> > 
+> > So we have the same request as the last time but for our new license policy :
+> > 
+> > Our request is that you accept to give a 'special permission' for our library aGrUM to include your code without being forced to be GPL but 
+> > only LGPLv3+MIT. It is for our library and only for it and does not change anything for the rest of the world.
+> > 
+> > [...]
+> > 
+> > If you agree, this statement will stay:
+> > 
+> > > If you use aGrUM/pyAgrum as a dependency of your own project, you are not contaminated by the GPL license of some of these third-party codes 
+> > > as long as you use only their aGrUM/pyAgrum interfaces and not their native interfaces.
+> > 
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
 
 On 06/05/2019 11:43, david avis wrote:
 > Dear Pierre-Henri,

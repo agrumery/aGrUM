@@ -1,23 +1,37 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-# ***************************************************************************
-# *   Copyright (c) 2015-2024 by Pierre-Henri WUILLEMIN                          *
-# *   {prenom.nom}_at_lip6.fr                                               *
-# *                                                                         *
-# *   "act" is free software; you can redistribute it and/or modify         *
-# *   it under the terms of the GNU General Public License as published by  *
-# *   the Free Software Foundation; either version 2 of the License, or     *
-# *   (at your option) any later version.                                   *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU General Public License for more details.                          *
-# *                                                                         *
-# *   You should have received a copy of the GNU General Public License     *
-# *   along with this program; if not, write to the                         *
-# *   Free Software Foundation, Inc.,                                       *
-# *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-# **************************************************************************
+############################################################################
+#   This file is part of the aGrUM/pyAgrum library.                        #
+#                                                                          #
+#   Copyright (c) 2005-2024 by                                             #
+#       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
+#       - Christophe GONZALES(_at_AMU)                                     #
+#                                                                          #
+#   The aGrUM/pyAgrum library is free software; you can redistribute it    #
+#   and/or modify it under the terms of either :                           #
+#                                                                          #
+#    - the GNU Lesser General Public License as published by               #
+#      the Free Software Foundation, either version 3 of the License,      #
+#      or (at your option) any later version.                              #
+#    - the MIT license (MIT)                                               #
+#    - or both in dual license, as here                                    #
+#                                                                          #
+#   This aGrUM/pyAgrum library is distributed in the hope that it will be  #
+#   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          #
+#   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS #
+#   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   #
+#   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER #
+#   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,        #
+#   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR  #
+#   OTHER DEALINGS IN THE SOFTWARE.                                        #
+#                                                                          #
+#   See the GNU Lesser General Public License (LICENSE.LGPL) and the MIT   #
+#   licence (LICENSE.MIT) for more details.                                #
+#                                                                          #
+#   Contact  : info_at_agrum_dot_org                                       #
+#   homepage : http://agrum.gitlab.io                                      #
+#   gitlab   : https://gitlab.com/agrumery/agrum                           #
+#                                                                          #
+############################################################################
+
 import os
 import sys
 from os.path import isdir
@@ -114,10 +128,20 @@ def recglob(path:str, mask:str)->Iterator[str]:
       yield item
 
 
-def srcAgrum()->Iterator[str]:
-  for i in recglob("src/agrum", "*.cpp"):
+def srcPyAgrum()->Iterator[str]:
+  for i in recglob("wrappers/pyAgrum/testunits", "*.py"):
     yield i
-  for i in recglob("src/agrum", "*.h"):
+  for i in recglob("wrappers/pyAgrum/cmake", "*.py"):
+    yield i
+  for i in recglob("wrappers/pyAgrum/pyLibs", "*.py"):
+    yield i
+  for i in recglob("acttools", "*.py"):
+    yield i
+
+def srcAgrum()->Iterator[str]:
+  for i in recglob("src/pyAgrum", "*.cpp"):
+    yield i
+  for i in recglob("src/pyAgrum", "*.h"):
     yield i
   for i in recglob("src/testunits", "*TestSuite.h"):
     yield i

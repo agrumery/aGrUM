@@ -1,41 +1,56 @@
-# ***************************************************************************
-# *   Copyright (c) 2015-2024 by Pierre-Henri WUILLEMIN                     *
-# *   {prenom.nom}_at_lip6.fr                                               *
-# *                                                                         *
-# *   "act" is free software; you can redistribute it and/or modify         *
-# *   it under the terms of the GNU General Public License as published by  *
-# *   the Free Software Foundation; either version 2 of the License, or     *
-# *   (at your option) any later version.                                   *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU General Public License for more details.                          *
-# *                                                                         *
-# *   You should have received a copy of the GNU General Public License     *
-# *   along with this program; if not, write to the                         *
-# *   Free Software Foundation, Inc.,                                       *
-# *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-# **************************************************************************
+############################################################################
+#   This file is part of the aGrUM/pyAgrum library.                        #
+#                                                                          #
+#   Copyright (c) 2005-2024 by                                             #
+#       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
+#       - Christophe GONZALES(_at_AMU)                                     #
+#                                                                          #
+#   The aGrUM/pyAgrum library is free software; you can redistribute it    #
+#   and/or modify it under the terms of either :                           #
+#                                                                          #
+#    - the GNU Lesser General Public License as published by               #
+#      the Free Software Foundation, either version 3 of the License,      #
+#      or (at your option) any later version.                              #
+#    - the MIT license (MIT)                                               #
+#    - or both in dual license, as here                                    #
+#                                                                          #
+#   This aGrUM/pyAgrum library is distributed in the hope that it will be  #
+#   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          #
+#   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS #
+#   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   #
+#   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER #
+#   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,        #
+#   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR  #
+#   OTHER DEALINGS IN THE SOFTWARE.                                        #
+#                                                                          #
+#   See the GNU Lesser General Public License (LICENSE.LGPL) and the MIT   #
+#   licence (LICENSE.MIT) for more details.                                #
+#                                                                          #
+#   Contact  : info_at_agrum_dot_org                                       #
+#   homepage : http://agrum.gitlab.io                                      #
+#   gitlab   : https://gitlab.com/agrumery/agrum                           #
+#                                                                          #
+############################################################################
+
 import os
+from datetime import datetime
+
 from subprocess import call
 
-from .utils import notif, error, recglob, srcAgrum, notif_oneline
+from .utils import notif, error, recglob, srcAgrum, srcPyAgrum, notif_oneline
 from .configuration import cfg
 
 from .missingDocs import missingDocs
 from .checkDependencies import check_gum_dependencies
 
 
-def _aff_errors(nb: int, typ: str) -> int:
-  if nb > 0:
-    error(f"{nb} {typ} error{'s' if nb > 1 else ''}{' ' * 40}")  # spaces to remove others possible characters
-  return nb
+def guideline(current: dict[str, str], correction=False) -> int:
+  def _aff_errors(nb: int, typ: str) -> int:
+    if nb > 0:
+      error(f"{nb} {typ} error{'s' if nb > 1 else ''}{' ' * 40}")  # spaces to remove others possible characters
+    return nb
 
-
-def guideline(current: dict[str, str], modif=False) -> int:
-  print(current)
-  if modif:
+  if correction:
     notif("[aGrUM guideline (with correction)]")
   else:
     notif("[aGrUM guideline]")
@@ -43,21 +58,22 @@ def guideline(current: dict[str, str], modif=False) -> int:
   nbrError = 0
 
   notif("  [(1) ]*.cpp[ file for every ]*.h[ file]")
-  nbrError += _aff_errors(_checkCppFileExists(modif), "missing cppfile")
-  notif("  [(2) check for ]LGPL[ license]")
-  nbrError += _aff_errors(_checkForLGPLlicense(modif), "missing LGPL licence")
+  nbrError += _aff_errors(_checkCppFileExists(correction), "missing cpp file")
+  notif("  [(2) check for ]LGPL+MIT[ license]")
+  nbrError += _aff_errors(_checkLGPL_MIT_license_CPP(correction), "missing LGPL+MIT licence")
+  nbrError += _aff_errors(_checkLGPL_MIT_license_py(correction), "missing LGPL+MIT licence")
   notif("  [(3) check for missing documentation in pyAgrum]")
-  nbrError += _aff_errors(_checkForMissingDocs(modif), "missing documentation")
+  nbrError += _aff_errors(_checkMissingDocs(correction), "missing documentation")
   notif("  [(4) check for deps]")
-  nbrError += _aff_errors(check_gum_dependencies(graph=current['build_graph'], correction=modif),
+  nbrError += _aff_errors(check_gum_dependencies(graph=current['build_graph'], correction=correction),
                           "redundant dependency")
   notif("  [(5) check for format]")
-  nbrError += _aff_errors(_checkForFormat(modif), "format")
+  nbrError += _aff_errors(_checkClangFormat(correction), "format")
 
   return nbrError
 
 
-def _checkForFormat(modif: bool) -> int:
+def _checkClangFormat(correction: bool) -> int:
   nbrError = 0
   if cfg.clangformat is None:
     error("No correct [clang-format] tool has been found.")
@@ -71,73 +87,145 @@ def _checkForFormat(modif: bool) -> int:
         line = cfg.clangformat + " " + src + " | cmp " + src + " -"
         if call(line, shell=True, stderr=blackhole, stdout=blackhole) == 1:
           nbrError += 1
-          if modif:
+          if correction:
             line = cfg.clangformat + " -i " + src
             call(line, shell=True)
-            notif(f"    [{src}] not correctly formatted : [changed]")
+            notif(f"Incorrect format [{src:80}] : [(✓)]")
           else:
-            notif(f"    [{src}] not correctly formatted")
+            notif(f"Incorrect format [{src}]")
         else:
-          notif_oneline(f"    [{src.split('/')[-1]}] OK")
+          notif_oneline(f"[{src.split('/')[-1]}] OK")
 
   return nbrError
 
 
-def __addLGPLatTop(filename: str):
-  with open(filename, "r") as origine:
-    codes = origine.read().split("***********/")
+def _LGPL_MIT_atTop_CPP(filename: str, correction: bool) -> int:
+  before = licence = code = ""
 
-  # removing old license if any
-  if len(codes) == 1:
-    code = codes[0]
-  elif len(codes) == 2:
-    code = codes[1]
-  else:
-    code = "***********/".join(codes[1:])
+  state = "before"  # before->inComment->after
+  in_error = False
 
-  with open(filename, "w") as dest:
-    dest.write(_template_license)
-    dest.write(code)
+  with open(filename, "r") as origin:
+    while line := origin.readline():
+      if line.strip() == "":
+        if state == "before":
+          if before != "":
+            before += line
+        elif state == "inComment":
+          licence += line
+        else:
+          code += line
+        continue
+
+      if state == "before":
+        if not line.startswith("/**"):
+          if not in_error:
+            in_error = True
+            notif(f"[{filename}] lines before the license.")
+          before += line
+        else:
+          licence += line
+          state = "inComment"
+      elif state == "inComment":
+        licence += line
+        if line.strip().endswith("*/"):
+          state = "after"
+      else:  # state == "after"
+        code += line
+
+    err = 0
+    if licence.strip() != _template_cpp_license.strip():
+      err = 1
+      res = f"[{filename:.<80}] missing up-to-date LGPL+MIT license"
+      if correction:
+        with open(filename, "w") as dest:
+          dest.write(before)
+          dest.write(_template_cpp_license)
+          dest.write(code)
+        res = f"{res} [(✓)]"
+
+      notif(res)
+
+  return err
 
 
-def _checkForLGPLlicense(modif: bool):
+def _LGPL_MIT_atTop_py(filename: str, correction: bool) -> int:
+  before = licence = code = ""
+
+  state = "before"  # before->inComment->after
+  in_error = False
+  with open(filename, "r") as origin:
+    while line := origin.readline():
+      if line.strip() == "":
+        if state == "before":
+          if before != "":
+            before += line
+        elif state == "inComment":
+          licence += line
+        else:
+          code += line
+        continue
+
+      if state == "before":
+        if line[0] != "#":
+          if not in_error:
+            in_error = True
+            notif(f"[{filename}] lines before the license.")
+          before += line
+        else:
+          licence += line
+          state = "inComment"
+      elif state == "inComment":
+        if line[0] != "#":
+          state = "after"
+          code += line
+        else:
+          licence += line
+      else:  # state == "after"
+        code += line
+
+  err = 0
+  if licence != _template_py_license:
+    err = 1
+    res = f"[{filename:.<80}] missing up-to-date LGPL+MIT license"
+    if correction:
+      with open(filename, "w") as dest:
+        dest.write(before)
+        dest.write(_template_py_license)
+        dest.write(code)
+      res = f"{res} [(✓)]"
+
+    notif(res)
+
+  return err
+
+
+def _checkLGPL_MIT_license_CPP(correction: bool) -> int:
   nbrError = 0
 
   exceptions = [f'{os.sep}mvsc{os.sep}', f'{os.sep}external{os.sep}', f'{os.sep}cxxtest{os.sep}', 'Parser', 'Scanner']
-  for agrumfile in srcAgrum():
-    if any(subs in agrumfile for subs in exceptions):
+  for gum_file in srcAgrum():
+    if any(subs in gum_file for subs in exceptions):
       continue
-
-    fragment = ""
-    nbr = 0
-    with open(agrumfile, "r", encoding="utf8") as f:
-      for line in f:
-        if nbr == 40:
-          continue
-        fragment += line
-        nbr += 1
-
-    if "GNU Lesser General Public License" not in fragment:
-      nbrError += 1
-      if modif:
-        __addLGPLatTop(agrumfile)
-        notif(
-          "    [" + agrumfile + "] has no LGPL copyright in its first lines : [changed]")
-      else:
-        notif("    [" + agrumfile + "] has no LGPL copyright in its first lines")
+    nbrError += _LGPL_MIT_atTop_CPP(gum_file, correction)
 
   return nbrError
 
 
-def __addCppFileForHeader(header: str):
-  subinclude = header[4:]  # remove the /src
-  cppfile = header[:-1] + "cpp"  # name
+def _checkLGPL_MIT_license_py(correction: bool) -> int:
+  nbrError = 0
 
-  with open(cppfile, 'w', encoding="utf8") as out:
-    out.write(_template_cpp.replace("{include_file}", subinclude))
+  exceptions = []
+  for pygum_file in srcPyAgrum():
+    notif_oneline(f"[{pygum_file.split('/')[-1]}]")
+    if any(subs in pygum_file for subs in exceptions):
+      continue
+    nbrError += _LGPL_MIT_atTop_py(pygum_file, correction)
+
+  return nbrError
 
 
-def _checkCppFileExists(modif: bool) -> int:
+def _checkCppFileExists(correction: bool) -> int:
   nbrError = 0
 
   exceptions = [f'{os.sep}mvsc{os.sep}', f'{os.sep}signal{os.sep}', f'{os.sep}external{os.sep}',
@@ -154,8 +242,10 @@ def _checkCppFileExists(modif: bool) -> int:
     cppfile = subs + "cpp"
     if not os.path.isfile(cppfile):
       nbrError += 1
-      if modif:
-        __addCppFileForHeader(header)
+      if correction:
+        with open(cppfile, "w") as dest:
+          dest.write(_template_cpp_license)
+          dest.write(f"\n#include \"{header[4:]}\"\n")
         error("No cpp file for [" + header + "h] : [added]")
       else:
         error("No cpp file for [" + header + "h]")
@@ -163,41 +253,63 @@ def _checkCppFileExists(modif: bool) -> int:
   return nbrError
 
 
-def _checkForMissingDocs(modif: bool) -> int:
-  return missingDocs(modif)
+def _checkMissingDocs(correction: bool) -> int:
+  return missingDocs(correction)
 
 
-_template_license = """
-/**
- *
- *  Copyright 2005-2024 Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
- *   {prenom.nom}_at_lip6.fr
- *
- *  This library is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Lesser General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU Lesser General Public License for more details.
- *
- *  You should have received a copy of the GNU Lesser General Public License
- *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
+def getTemplateLicense() -> tuple[str, str]:
+  """
+  Get the template license for python and c++ files
+  """
+  current_year = datetime.now().year
 
-"""
-_template_cpp = _template_license + """
+  template_license = f"""                                                                  
+  This file is part of the aGrUM/pyAgrum library.
+  
+  Copyright (c) 2005-{current_year} by                                            
+      - Pierre-Henri WUILLEMIN(_at_LIP6)                                
+      - Christophe GONZALES(_at_AMU)                                                
+                                                                        
+  The aGrUM/pyAgrum library is free software; you can redistribute it   
+  and/or modify it under the terms of either :                          
+                                                                        
+   - the GNU Lesser General Public License as published by              
+     the Free Software Foundation, either version 3 of the License,    
+     or (at your option) any later version.                                  
+   - the MIT license (MIT)                                              
+   - or both in dual license, as here                                   
+                                                                        
+  This aGrUM/pyAgrum library is distributed in the hope that it will be 
+  useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,         
+  INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS
+  FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE  
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,       
+  ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
+  OTHER DEALINGS IN THE SOFTWARE.                                       
+                                                                        
+  See the GNU Lesser General Public License (LICENSE.LGPL) and the MIT 
+  licence (LICENSE.MIT) for more details.                                    
+                                                                        
+  Contact  : info_at_agrum_dot_org
+  homepage : http://agrum.gitlab.io
+  gitlab   : https://gitlab.com/agrumery/agrum
+  """
+  width = max(len(line.rstrip()) for line in template_license.splitlines())
 
-/**
- * @file
- * @brief Class to include at least once this header
- *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
- */
+  template_py_license = "#" * (width + 4) + "\n"
+  template_cpp_license = "/" + ("*" * (width + 4)) + "\n"
 
-#include <{include_file}>
+  for n, l in enumerate(template_license.splitlines()):
+    if n == 0 and l.strip() == "":
+      continue
+    template_py_license += f"# {l.rstrip():{width}} #\n"
+    template_cpp_license += f" * {l.rstrip():{width}} *\n"
 
-"""
+  template_py_license += "#" * (width + 4) + "\n\n"
+  template_cpp_license += " " + "*" * (width + 4) + "/\n\n"
+
+  return template_py_license, template_cpp_license
+
+
+_template_py_license, _template_cpp_license = getTemplateLicense()
