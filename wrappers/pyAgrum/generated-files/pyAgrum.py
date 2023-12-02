@@ -13796,12 +13796,12 @@ class LazyPropagation(object):
     def mpe(self) -> "pyAgrum.Instantiation":
         r"""
 
-        Find the Most Probable Explanation (MPE) using LazyPropagation using the evidence (if any)
+        Find the Most Probable Explanation (MPE) given the evidence (if any) added into LazyPropagation
 
         Returns
         -------
         pyAgrum.Instantiation
-          An instantiation representing the Most Probable Explanation.
+          An instantiation of all the variables of the Bayes net representing the Most Probable Explanation.
 
         """
         return _pyAgrum.LazyPropagation_mpe(self)
@@ -13809,12 +13809,12 @@ class LazyPropagation(object):
     def mpeLog2Posterior(self) -> Tuple["pyAgrum.Instantiation",float]:
         r"""
 
-        Find the Most Probable Explanation (MPE) using LazyPropagation and the (log) conditionnal probability of the solution (given the evidence if any)
+        Find the Most Probable Explanation (MPE) given the evidence (if any) added into LazyPropagation as well as the log2 of its posterior probability
 
         Returns
         -------
         Tuple[pyAgrum.Instantiation, float]
-            A tuple with the instantiation representing the Most Probable Explanation and the (log) probability
+            A tuple with the instantiation of all the variables of the Bayes net representing the Most Probable Explanation and the log2 of its posterior probability
 
         """
         return _pyAgrum.LazyPropagation_mpeLog2Posterior(self)

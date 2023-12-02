@@ -182,6 +182,17 @@ class CausalModel:
     """
     return self.__observationalBN
 
+  def connectedComponents(self) -> Dict[int,NodeSet]:
+    """
+    Return a map of connected components and their nodes.
+
+    Returns
+    -------
+    Dict[int,NodeSet]:
+      thedisc of connected components
+    """
+    return self.__causalBN.connectedComponents()
+
   def parents(self, x: Union[NodeId, str]) -> NodeSet:
     """
     From a NodeId, returns its parent (as a set of NodeId)

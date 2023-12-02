@@ -87,7 +87,7 @@ class TestDSep(pyAgrumTestCase):
     self.assertEqual(r, self.tous - {self.iC, self.iE, self.iG})
 
 
-class TestDoors(pyAgrumTestCase):
+class TestBackDoors(pyAgrumTestCase):
 
   def getBackDoors(self, fbn: str, cause: int, effect: int, latent: Set[int] = None):
     bn = gum.fastBN(fbn)
@@ -159,8 +159,60 @@ class TestDoors(pyAgrumTestCase):
     self.assertTrue(self.hasAllBackDoors([['X3', 'X4'], ['X1', 'X4'], ['X4', 'X2'], ['X4', 'X5']],
                                          "Xi<-X3<-X1->X4<-X2->X5->Xj<-X6<-Xi<-X4->Xj", "Xi", "Xj"
                                          ))
+class TestFrontDoors(pyAgrumTestCase):
+  def getFrontDoors(self, fbn: str, cause: int, effect: int, latent: Set[int] = None):
+    bn = gum.fastBN(fbn)
+    return [[bn.variable(i).name() for i in bd]
+            for bd in csl.frontdoor_generator(bn.dag(),
+                                             bn.idFromName(cause),
+                                             bn.idFromName(effect),
+                                             latent)]
 
+  def hasFrontDoor(self, fbn: str, cause: int, effect: int, latent: Set[int] = None):
+    if self.verbose:
+      self.log.warning(f"{cause} to {effect} ?".format(cause, effect))
+    res = self.getFrontDoors(fbn, cause, effect, latent)
+    if len(res) == 0:
+      if self.verbose:
+        self.log.warning("error : no backdoor found")
+        return False
+    else:
+      if self.verbose:
+        self.log.warning("OK")
+      return True
+
+  def hasNoFrontDoor(self, fbn: str, cause: int, effect: int, latent: Set[int] = None) -> object:
+    if self.verbose:
+      self.log.warning(f"{cause} to {effect} ?".format(cause, effect))
+    res = self.getFrontDoors(fbn, cause, effect, latent)
+    if len(res) > 0:
+      if self.verbose:
+        self.log.warning(f"error : frontdoors={res}")
+      return False
+    else:
+      if self.verbose:
+        self.log.warning("OK")
+      return True
+
+  def hasAllFrontDoors(self, awaited: List[List[str]], fbn: str, cause: int, effect: int, latent: Set[int] = None):
+    if self.verbose:
+      self.log.warning(f"{cause} to {effect} ?".format(cause, effect))
+    res = self.getFrontDoors(fbn, cause, effect, latent)
+    if self.verbose:
+      self.log.warning(res)
+    if len(res) != len(awaited):
+      return False
+
+    for bd in res:
+      if bd not in awaited:
+        self.log.warning(f"ERROR : {res}!={awaited}")
+        return False
+    return True
+  def testFrontDoorYann(self):
+    self.verbose = True
+    self.assertTrue(self.hasNoFrontDoor("B->C;D", "C", "B"))
 
 ts = unittest.TestSuite()
 addTests(ts, TestDSep)
-addTests(ts, TestDoors)
+addTests(ts, TestBackDoors)
+addTests(ts, TestFrontDoors)

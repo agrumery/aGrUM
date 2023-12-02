@@ -229,6 +229,7 @@ def nodes_on_dipath(bn: "pyAgrum.BayesNet", x: NodeId, y: NodeId) -> Optional[No
   r = inner_nod(bn, x, y)
   if r:
     r.remove(x)
+
   return r
 
 
@@ -315,10 +316,19 @@ def frontdoor_generator(bn: "pyAgrum.BayesNet", x: NodeId, y: NodeId, not_fd: No
     not_fd = set()
 
   possible = nodes_on_dipath(bn, x, y)
+
   nodiPath = False
   if possible is None:
     nodiPath = True
-    possible = set(bn.nodes()) - {x, y}
+    possible=None
+    for _,cc in bn.connectedComponents().items():
+      if x in cc:
+        if y in cc:
+          possible=cc
+    if possible is None:
+      return
+    possible -= {x, y}
+
   possible -= backdoor_reach(bn, x)
   possible -= not_fd
   impossible = set()
