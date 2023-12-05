@@ -29,7 +29,7 @@
 #define GUM_MATH_H
 
 #include <cmath>
-
+#include <limits>
 
 #ifndef M_LOG2E
 #  define M_LOG2E 1.4426950408889634074 /* log_2 e */
@@ -48,4 +48,22 @@
 #endif
 
 #define GUM_LOG2_OR_0(x) ((x == 0.0) ? 0.0 : std::log2((x)))
+
+// redefined due to a strange bug in visual c++
+namespace gum {
+  template < typename T >
+  bool isfinite(T arg) {
+    if constexpr (std::numeric_limits< T >::has_infinity) {
+      if constexpr (std::numeric_limits< T >::is_signed) {
+        return arg == arg && arg != std::numeric_limits< T >::infinity()
+            && arg != -std::numeric_limits< T >::infinity(); // neither Nan, infty nor -infty
+      } else {
+        return arg == arg && arg != std::numeric_limits< T >::infinity(); // neither Nan nor inftty
+      }
+    } else {
+      return arg == arg; // not Nan
+    }
+  };
+}   // namespace gum
+
 #endif /* GUM_MATH_H */

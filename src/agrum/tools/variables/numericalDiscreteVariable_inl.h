@@ -30,6 +30,7 @@
 #include <string>
 
 #include <agrum/agrum.h>
+#include <agrum/tools/core/math/math_utils.h>
 
 #include <agrum/tools/core/hashTable.h>
 #include <agrum/tools/variables/discreteVariable.h>
@@ -156,7 +157,7 @@ namespace gum {
                 "Value" << new_value << " already belongs to the domain of the variable");
     }
 
-    if (!std::isfinite(new_value)) {
+    if (!gum::isfinite<double>(new_value)) {
       GUM_ERROR(DefaultInLabel, "Tick '" << new_value << "' is not allowed for variable " << name())
     }
     eraseValue(old_value);
