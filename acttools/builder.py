@@ -1,5 +1,3 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2015-2023 by Pierre-Henri WUILLEMIN                     *
 # *   {prenom.nom}_at_lip6.fr                                               *
@@ -22,7 +20,7 @@
 import platform
 import multiprocessing
 import os
-from distutils import sysconfig
+import sysconfig
 
 from .configuration import cfg
 from .multijobs import execCde

@@ -3,10 +3,7 @@ See:
 https://agrum.gitlab.io/
 """
 # Always prefer setuptools over distutils
-try:
-  from setuptools import setup, Extension
-except ImportError:
-  from distutils.core import setup, Extension
+from setuptools import setup, Extension
 
 from io import open
 
