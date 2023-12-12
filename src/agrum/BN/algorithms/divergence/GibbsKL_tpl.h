@@ -95,7 +95,6 @@ namespace gum {
   template < typename GUM_SCALAR >
   void GibbsBNdistance< GUM_SCALAR >::computeKL_() {
     auto Iq = q_.completeInstantiation();
-
     gum::Instantiation I = this->monteCarloSample();
     initApproximationScheme();
 
@@ -107,6 +106,7 @@ namespace gum {
     }
 
     // BURN IN
+    this->updateSamplingNodes_();
     for (Idx i = 0; i < burnIn(); i++)
       I = this->nextSample(I);
 

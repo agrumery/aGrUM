@@ -4,7 +4,7 @@
  *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Lesser General Public License as published by
+ *  it under the terms of the GNU Lesser General Public License published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
@@ -425,6 +425,66 @@ namespace gum_tests {
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
         TS_ASSERT(false)
+      }
+    }
+
+    GUM_ACTIVE_TEST(BugGibbs) {
+      auto         bn           = gum::BayesNet< double >::fastPrototype("d->g->l;s<-i->g");
+      const double RELEVANT_ERR = 0.02;
+      const double EPSILON      = 1e-2;
+      const double RATE         = 1e-6;
+
+      {
+        auto exact = gum::LazyPropagation(&bn);
+        exact.makeInference();
+
+        auto gibbs = gum::GibbsSampling(&bn);
+        gibbs.setEpsilon(EPSILON);
+        gibbs.setMinEpsilonRate(RATE);
+        gibbs.makeInference();
+
+        double err = 0.0;
+        for (const auto n: bn.nodes()) {
+          const double err_n = (exact.posterior(n) - gibbs.posterior(n)).abs().max();
+          if (err < err_n) err = err_n;
+        }
+        TS_ASSERT_LESS_THAN(err, RELEVANT_ERR);
+      }
+      {
+        auto exact = gum::LazyPropagation(&bn);
+        exact.addEvidence("d", 1);
+        exact.makeInference();
+
+        auto gibbs = gum::GibbsSampling(&bn);
+        gibbs.addEvidence("d", 1);
+        gibbs.setEpsilon(EPSILON);
+        gibbs.setMinEpsilonRate(RATE);
+        gibbs.makeInference();
+
+        double err = 0.0;
+        for (const auto n: bn.nodes()) {
+          const double err_n = (exact.posterior(n) - gibbs.posterior(n)).abs().max();
+          if (err < err_n) err = err_n;
+        }
+        TS_ASSERT_LESS_THAN(err, RELEVANT_ERR);
+      }
+      {
+        auto exact = gum::LazyPropagation(&bn);
+        exact.addEvidence("g", 1);
+        exact.makeInference();
+
+        auto gibbs = gum::GibbsSampling(&bn);
+        gibbs.addEvidence("g", 1);
+        gibbs.setEpsilon(EPSILON);
+        gibbs.setMinEpsilonRate(RATE);
+        gibbs.makeInference();
+
+        double err = 0.0;
+        for (const auto n: bn.nodes()) {
+          const double err_n = (exact.posterior(n) - gibbs.posterior(n)).abs().max();
+          if (err < err_n) err = err_n;
+        }
+        TS_ASSERT_LESS_THAN(err, RELEVANT_ERR);
       }
     }
   };

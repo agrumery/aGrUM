@@ -67,6 +67,10 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Instantiation GibbsSampling< GUM_SCALAR >::burnIn_() {
+    // we initialize the nodes with hard evidence
+    // hypothesis : burnIn_ is called at the beginning of makeInference
+    this->updateSamplingNodes_();
+
     gum::Instantiation Ip;
     if (this->burnIn() == 0) return Ip;
 

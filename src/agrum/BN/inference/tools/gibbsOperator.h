@@ -83,9 +83,10 @@ namespace gum {
     Size nbr_;
     bool atRandom_;
 
-    private:
-    void _updateSamplingNodes_();
+    protected:
+    void updateSamplingNodes_();
 
+    private:
     // adds a node to current instantiation
     void _drawVarMonteCarlo_(NodeId nod, Instantiation* I);
 

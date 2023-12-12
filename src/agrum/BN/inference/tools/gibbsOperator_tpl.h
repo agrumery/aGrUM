@@ -39,7 +39,6 @@ namespace gum {
                                              bool                           atRandom) :
       counting_(0),
       samplingBn_(BN), hardEv_(hardEv), nbr_(nbr), atRandom_(atRandom) {
-    _updateSamplingNodes_();
     GUM_CONSTRUCTOR(GibbsOperator);
   }
 
@@ -49,10 +48,12 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void GibbsOperator< GUM_SCALAR >::_updateSamplingNodes_() {
+  void GibbsOperator< GUM_SCALAR >::updateSamplingNodes_() {
     samplingNodes_.clear();
     for (const auto node: samplingBn_.nodes())
-      if (hardEv_ == nullptr || !hardEv_->exists(node)) samplingNodes_.insert(node);
+      if (hardEv_ == nullptr || !hardEv_->exists(node)) {
+        samplingNodes_.insert(node);
+      }
     if (samplingNodes_.size() == 0) {
       GUM_ERROR(InvalidArgument, "No node to sample (too many nodes or too much evidence)!")
     }
