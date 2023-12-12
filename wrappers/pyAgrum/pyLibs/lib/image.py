@@ -232,7 +232,7 @@ def prepareLinksForSVG(mainSvg):
 
   if len(__fragments) > 0:
     # replace image tags by svg tags
-    img2svg = re.sub(r"<image ([^>]*)/>", "<svg \g<1>>", mainSvg)
+    img2svg = re.sub(r"<image ([^>]*)/>", r"<svg \g<1>>", mainSvg)
 
     # insert secondaries into main
     def ___insertSecondarySvgs(matchObj):

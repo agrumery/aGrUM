@@ -256,7 +256,7 @@ ADD_MIXED_METHOD_TO_GRAPHCLASS(gum::PDAG);
         return " ".join([bn.variable(int(n)).name()
                          for n in m.group().split("-")])
       import re
-      m = re.compile('(?<=label=\")\d+[\-\d+]*')
+      m = re.compile(r'(?<=label=\")\d+[\-\d+]*')
       return m.sub(nameFromId,self.toDot())
     }
 };
