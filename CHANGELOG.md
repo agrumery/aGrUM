@@ -1,5 +1,25 @@
 # aGrUM Changelog
 
+## Changelog for 1.11.0
+
+* Internal
+  * Removing some warnings in CMakeLists.txt
+  * Refactoring CI, cleaning wheelhouse
+
+* aGrUM
+  * Fixing a bug in `gum::BNLearner` : EM parameter estimation bug due to a cache used in record counters
+  * Fixing a bug in `gum::GibbsSampling` : some evidence may not be taken into account (thanks to Micromix@discord)
+  * Adding `gum::LazyPropagation::mpe{Log2Posterior}` to compute the Most Probable Explanation with some evidence
+
+* pyAgrum
+  * Adding 3.12 in metadatas
+  * Removing reference to `sys.log` and to `setuptools`.
+  * Fixing a bug in `pyAgrum.BNLearner` : EM parameter estimation bug due to a cache used in record counters
+  * Fixing a bug in `pyAgrum.GibbsSampling` : some evidence may not be taken into account (thanks to discord)
+  * Adding `pyAgrum.LazyPropagation.mpe{Log2Posterior}` to compute the Most Probable Explanation with some evidence
+  * Fixing a bug in frontdoor detection in a causal model  with multiple connected components.
+  * Fixing some regexp expressions
+
 ## Changelog for 1.10.0
 
 * aGrUM
@@ -7,7 +27,7 @@
   * `MIIC` is now the default for `gum::BNLearner`.
   * Fixing some minor bugs in `gum::BNLearner`.
   * Removing old `3off2` BN learning algorithm (use MIIC instead).
-  * adding `pyAgrum::MIIC::learnPDAG` and give access to this method via `gum::BNLearner`.
+  * adding `gum::MIIC::learnPDAG` and give access to this method via `gum::BNLearner`.
 
 * pyAgrum
   * package for python 3.12 !
@@ -39,7 +59,6 @@
     * adding new functions `anim{ROC|PR}`.
   * `pyAgrum.skbn.Discretizer` can propose a set of labels (that includes the labels from the database) when `"NoDiscretization"` is selected. (see tutorial `52-Classifier_Discretizer`).
 
-
 ## Changelog for 1.8.3
 
 * aGrUM
@@ -63,7 +82,6 @@
   * Fixing a bug in `pyAgrum/{load|save}ID`.
   * Wrapping `gum::PDAG::moralizedAncestralGraph()`.
   * Adding a warning when importing `pyAgrum.lib.notebook` if graphviz is not installed.
-
 
 ## Changelog for 1.8.1
 
@@ -108,7 +126,6 @@
   * Initiating a new notebook about the interaction with ipywidget
   * Optimized and correctly wrapped `gum::PDAG::cSeparation` (thanks to Kenneth Lee).
   * New functions `pyAgrum.lib.explain.nestedMarkovBlankets` and `pyAgrum.lib.explain.nestedMarkovBlanketsNames`.
-
 
 ## Changelog for 1.7.1
 
