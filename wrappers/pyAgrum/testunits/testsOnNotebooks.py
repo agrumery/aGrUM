@@ -129,6 +129,7 @@ def runNotebooks(lonb: List[str] = None):
     fut.filename = notebook_filename
     futures.append(fut)
   concurrent.futures.wait(futures)
+  sys.exit()
 
   time.sleep(1)
 
@@ -143,12 +144,12 @@ def runNotebooks(lonb: List[str] = None):
   print(f"## Profiling : {total_time * 1000:.2f} ms ##")
   print(f"## Duration  : {elapsed_time * 1000:.2f} ms ##")
   print(f"Failed {errs} of {len(lonb)} tests")
-  print(f"Success rate: {100 * (1 - errs / len(lonb)):.2f}%")
+  print(f"Success rate: {100 * (1 - errs / len(lonb) if len(lonb)!=0 else 1):.2f}%")
 
   print("Python Test Suite Error : " + str(errs))
   return errs
 
 
 if __name__ == "__main__":
-  runNotebooks() #["01-Tutorial.ipynb"])
+  runNotebooks()
   sys.exit(0)
