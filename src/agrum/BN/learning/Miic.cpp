@@ -151,7 +151,7 @@ namespace gum {
       // Propagates existing orientations thanks to Meek rules
       const Sequence< NodeId > order = graph.topologicalOrder();
 
-      graph = meekRules_.propagatesOrientations(graph, _latentCouples_);
+      meekRules_.propagatesOrientations(graph, _latentCouples_);
 
       return graph;
     }
@@ -162,35 +162,13 @@ namespace gum {
 
     PDAG Miic::learnPDAG(CorrectedMutualInformation& I, MixedGraph initialGraph) {
       MixedGraph mg = learnMixedStructure(I, initialGraph);
-
-      PDAG pdag;
-      for (auto node: mg) {
-        pdag.addNodeWithId(node);
-      }
-      for (const Edge& edge: mg.edges()) {
-        pdag.addEdge(edge.first(), edge.second());
-      }
-      for (const Arc& arc: mg.arcs()) {
-        pdag.addArc(arc.tail(), arc.head());
-      }
+      PDAG pdag = meekRules_.orientToPDAG(mg,_latentCouples_);
       return pdag;
     }
 
     DAG Miic::learnStructure(CorrectedMutualInformation& I, MixedGraph initialGraph) {
       MixedGraph mg = learnMixedStructure(I, initialGraph);
-
-      mg = meekRules_.orientAllEdges(mg, _latentCouples_);
-
-      // Resolve double-headed arc while avoiding cycle creation.
-      orientDoubleHeadedArcs_(mg);
-
-      DAG dag;
-      for (auto node: mg.nodes()) {
-        dag.addNodeWithId(node);
-      }
-      for (const Arc& arc: mg.arcs()) {
-        dag.addArc(arc.tail(), arc.head());
-      }
+      DAG dag = meekRules_.orientToDAG(mg, _latentCouples_);
       return dag;
     }
 

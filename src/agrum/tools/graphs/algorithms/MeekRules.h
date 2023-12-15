@@ -8,6 +8,7 @@
 #include <agrum/agrum.h>
 #include <agrum/tools/graphs/mixedGraph.h>
 #include <agrum/tools/graphs/DAG.h>
+#include <agrum/tools/graphs/PDAG.h>
 
 namespace gum {
   class MeekRules {
@@ -25,24 +26,59 @@ namespace gum {
 
     /// @}
 
-    /// Takes a partially oriented graph and orient all possible edges
-    MixedGraph orientAllEdges(MixedGraph graph, std::vector< Arc > _latentCouples_);
+    /// Propagates the orientation of a MixedGraph (no double-headed arcs) and return a PDAG.
+    /** @param graph the graph in which to which to propagate arcs
+      * @param _latentCouples__ the set of arc with a latent variable.
+     */
+    PDAG orientToPDAG(MixedGraph graph, std::vector< Arc >& _latentCouples_);
 
-    /// Takes a partially oriented graph and orient all the edges
-    MixedGraph propagatesOrientations(MixedGraph graph, std::vector< Arc > _latentCouples_);
+    /// Propagates the orientation of a MixedGraph and return a DAG.
+    /** @param graph the graph in which to which to propagate arcs
+      * @param _latentCouples__ the set of arc with a latent variable.
+     */
+    DAG orientToDAG(MixedGraph graph, std::vector< Arc >& _latentCouples_);
+
+    /// Takes a partially oriented graph and orient all possible edges
+    /**
+     * @param graph graph in which to which to propagate arcs
+     * @param _latentCouples_ the set of arc with a latent variable
+     */
+    void orientAllEdges(MixedGraph& graph, std::vector< Arc >& _latentCouples_);
+
+    /// Takes a partially oriented graph and propagates the existing orientation
+    /**
+     * @param graph graph in which to which to propagate arcs
+     * @param _latentCouples_ the set of arc with a latent variable
+     */
+    void propagatesOrientations(MixedGraph& graph, std::vector< Arc >& _latentCouples_);
 
     private:
     /// Propagates the orientation from a node to its neighbours
-    /** @param dag graph in which to which to propagate arcs
+    /** @param graph graph in which to which to propagate arcs
       * @param node node on which neighbours to propagate th orientation
       * @param force : true if an orientation has always to be found.
      */
-    bool propagatesRemainingOrientableEdges_(MixedGraph& graph, NodeId xj, std::vector< Arc > _latentCouples_);
+    bool _propagatesRemainingOrientableEdges_(MixedGraph& graph, NodeId xj, std::vector< Arc >& _latentCouples_);
 
     /// heuristic for remaining edges when everything else has been tried
-    void propagatesOrientationInChainOfRemainingEdges_(gum::MixedGraph& graph, std::vector< Arc > _latentCouples_);
+    /** @param graph graph in which to which to propagate arcs
+     * @param _latentCouples_
+     */
+    void _propagatesOrientationInChainOfRemainingEdges_(gum::MixedGraph& graph, std::vector< Arc >& _latentCouples_);
 
-    bool isOrientable_(const gum::MixedGraph& graph, gum::NodeId xi, gum::NodeId xj) const;
+    /** Tells us if we can orient the edge xi - xj to xi -> xj
+     * @param graph the graph
+     * @param xi the tail of the arc
+     * @param xj the head of the arc
+     * @return true if we can orient xi to xj
+     */
+
+    /// Gets the orientation probabilities like MIIC for the orientation phase
+    /**@param mg the MixedGraph the graph from which the double headed arcs will be oriented.
+     */
+    void _orientDoubleHeadedArcs_(MixedGraph& mg);
+
+    bool _isOrientable_(const gum::MixedGraph& graph, gum::NodeId xi, gum::NodeId xj) const;
 
     static bool _existsDirectedPath_(const MixedGraph& graph, NodeId n1, NodeId n2);
 

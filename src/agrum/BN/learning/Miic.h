@@ -301,8 +301,8 @@ namespace gum {
          updateProbaTriples_(const MixedGraph&                   graph,
                              std::vector< ProbabilisticRanking > probaTriples);
 
-      /// Gets the orientation probabilities like MIIC for the orientation phase
-      /**@param MixedGraph mg the graph from which the double headed arcs will be oriented.
+      /// Orient double headed arcs to avoid cycles
+      /**@param mg the MixedGraph from which the double headed arcs will be oriented.
        */
       void orientDoubleHeadedArcs_(MixedGraph& mg);
 

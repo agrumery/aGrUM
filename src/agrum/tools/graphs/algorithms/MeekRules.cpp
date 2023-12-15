@@ -1,43 +1,140 @@
 /**
-*
-*   Copyright (c) 2005-2023  by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
-*   info_at_agrum_dot_org
-*
-*  This library is free software: you can redistribute it and/or modify
-*  it under the terms of the GNU Lesser General Public License as published by
-*  the Free Software Foundation, either version 3 of the License, or
-*  (at your option) any later version.
-*
-*  This library is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU Lesser General Public License for more details.
-*
-*  You should have received a copy of the GNU Lesser General Public License
-*  along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*
-*/
+ *
+ *   Copyright (c) 2005-2023  by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
+ *   info_at_agrum_dot_org
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public License
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 /** @file
-* @brief source implementations of simplicial set
-*
-* @author Mahdi HADJ ALI(_at_LIP6) and Pierre-Henri WUILLEMIN(_at_LIP6)
-*/
+ * @brief source implementations of simplicial set
+ *
+ * @author Mahdi HADJ ALI(_at_LIP6) and Pierre-Henri WUILLEMIN(_at_LIP6)
+ */
 #include <agrum/agrum.h>
-#include <agrum/tools/graphs/mixedGraph.h>
 #include <agrum/tools/graphs/algorithms/MeekRules.h>
 
-namespace gum{
+namespace gum {
 
   /// default constructor
-  MeekRules::MeekRules(){ GUM_CONSTRUCTOR(MeekRules);}
+  MeekRules::MeekRules() { GUM_CONSTRUCTOR(MeekRules); }
 
   /// destructor
-  MeekRules::~MeekRules(){
-    GUM_DESTRUCTOR(MeekRules);
+  MeekRules::~MeekRules() { GUM_DESTRUCTOR(MeekRules); }
+
+  /// Propagates the orientation of a MixedGraph (no double-headed arcs) and return a PDAG.
+  PDAG MeekRules::orientToPDAG(MixedGraph mg, std::vector< Arc >& _latentCouples_) {
+    propagatesOrientations(mg, _latentCouples_);
+
+    PDAG pdag;
+    for (auto node: mg) {
+      pdag.addNodeWithId(node);
+    }
+    for (const Edge& edge: mg.edges()) {
+      pdag.addEdge(edge.first(), edge.second());
+    }
+    for (const Arc& arc: mg.arcs()) {
+      pdag.addArc(arc.tail(), arc.head());
+    }
+    return pdag;
+  }
+
+  /// Propagates the orientation of a MixedGraph and return a DAG.
+  DAG MeekRules::orientToDAG(MixedGraph mg, std::vector< Arc >& _latentCouples_) {
+    // Orient all remaining  edges into arcs
+    orientAllEdges(mg, _latentCouples_);
+
+    // Resolve double-headed arc while avoiding cycle creation.
+    _orientDoubleHeadedArcs_(mg);
+
+    DAG dag;
+    for (auto node: mg.nodes()) {
+      dag.addNodeWithId(node);
+    }
+    for (const Arc& arc: mg.arcs()) {
+      dag.addArc(arc.tail(), arc.head());
+    }
+    return dag;
+  }
+
+  /// Orient double-headed arcs while avoiding cycles
+  void MeekRules::_orientDoubleHeadedArcs_(MixedGraph& mg) {
+    gum::ArcSet L;   // create a set of all double-headed arcs
+    for (gum::NodeId x: mg.nodes())
+      for (NodeId y: mg.parents(x))
+        // If there is a mutual parent-child relationship, add the arc to the set
+        if (mg.parents(y).contains(x)) {
+          if (x > y) {
+            continue;   // Avoid duplicate arcs by considering only one direction
+          } else {
+            L.insert(gum::Arc(x, y));
+          }
+        }
+
+    // If there are double-headed arcs
+    if (not L.empty()) {
+      while (true) {
+        bool withdrawFlag_L = false;
+        for (auto arc: ArcSet(L)) {
+          bool tail_head        = _existsDirectedPath_(mg, arc.tail(), arc.head());
+          bool head_tail        = _existsDirectedPath_(mg, arc.head(), arc.tail());
+          bool withdrawFlag_arc = false;
+
+          // Case 1: There is already a path from tail to head and no path from head to tail
+          if (tail_head && !head_tail) {
+            // Erase the arc from head to tail to avoid cycles
+            mg.eraseArc(Arc(arc.head(), arc.tail()));
+            withdrawFlag_arc = true;
+
+            // Case 2: There is already a path from head to tail and no path from tail to head
+          } else if (!tail_head && head_tail) {
+            // Erase the arc from tail to head to avoid cycles
+            mg.eraseArc(Arc(arc.tail(), arc.head()));
+            withdrawFlag_arc = true;
+
+            // Case 3: There is no path between tail and head
+          } else if (!tail_head && !head_tail) {
+            // Choose an arbitrary orientation and erase the corresponding arc
+            mg.eraseArc(Arc(arc.head(), arc.tail()));
+            withdrawFlag_arc = true;
+          }
+
+          // Remove the arc from the set if it was processed
+          if (withdrawFlag_arc) {
+            L.erase(arc);
+            withdrawFlag_L = true;
+          }
+        }
+        // If all double-headed arcs are processed, exit the loop
+        if (L.empty()) { break; }
+
+        // If no arcs were withdrawn, erase an arbitrary double arc in the graph (the first one in
+        // L). Hoping the situation will improve. ┐(￣ヘ￣)┌ If we arrive here, it's because the
+        // double-headed arc creates cycles in both directions
+        if (!withdrawFlag_L) {
+          auto it  = L.begin();
+          auto arc = *it;
+          mg.eraseArc(Arc(arc.head(), arc.tail()));
+          mg.eraseArc(Arc(arc.tail(), arc.head()));
+          L.erase(arc);
+        }
+      }
+    }
   }
 
   /// Propagates MeekRules in a MixedGraph
-  MixedGraph MeekRules::propagatesOrientations(MixedGraph graph, std::vector< Arc > _latentCouples_) {
+  void MeekRules::propagatesOrientations(MixedGraph& graph, std::vector< Arc >& _latentCouples_) {
     const Sequence< NodeId > order = graph.topologicalOrder();
 
     // Propagates existing orientations thanks to Meek rules
@@ -46,44 +143,40 @@ namespace gum{
       newOrientation = false;
       for (NodeId x: order) {
         if (!graph.parents(x).empty()) {
-          newOrientation |= propagatesRemainingOrientableEdges_(graph, x, _latentCouples_);
+          newOrientation |= _propagatesRemainingOrientableEdges_(graph, x, _latentCouples_);
         }
       }
     }
-    return graph;
   }
 
-  MixedGraph MeekRules::orientAllEdges(MixedGraph graph, std::vector< Arc > _latentCouples_){
-
+  void MeekRules::orientAllEdges(MixedGraph& graph, std::vector< Arc >& _latentCouples_) {
     const Sequence< NodeId > order = graph.topologicalOrder();
 
-    //Propagates existing orientations thanks to rules
+    // Propagates existing orientations thanks to rules
     bool newOrientation = true;
     while (newOrientation) {
       newOrientation = false;
       for (NodeId x: order) {
         if (!graph.parents(x).empty()) {
-          newOrientation |= propagatesRemainingOrientableEdges_(graph, x, _latentCouples_);
+          newOrientation |= _propagatesRemainingOrientableEdges_(graph, x, _latentCouples_);
         }
       }
     }
 
-    //GUM_TRACE(graph.toDot())
-    // Orient remaining edges
-    propagatesOrientationInChainOfRemainingEdges_(graph, _latentCouples_);
-
-    return graph;
+    // GUM_TRACE(graph.toDot())
+    //  Orient remaining edges
+    _propagatesOrientationInChainOfRemainingEdges_(graph, _latentCouples_);
   }
 
   /// Propagates the orientation from a node to its neighbours
-  bool MeekRules::propagatesRemainingOrientableEdges_(gum::MixedGraph& graph,
-                                                      NodeId xj,
-                                                      std::vector< Arc > _latentCouples_) {
+  bool MeekRules::_propagatesRemainingOrientableEdges_(gum::MixedGraph&    graph,
+                                                       NodeId              xj,
+                                                       std::vector< Arc >& _latentCouples_) {
     bool       res        = false;
     const auto neighbours = graph.neighbours(xj);
     for (auto& xi: neighbours) {
-      bool i_j = isOrientable_(graph, xi, xj);
-      bool j_i = isOrientable_(graph, xj, xi);
+      bool i_j = _isOrientable_(graph, xi, xj);
+      bool j_i = _isOrientable_(graph, xj, xi);
       if (i_j || j_i) {
         // GUM_SL_EMIT(xi, xj, "Removing Edge", "line 660")
         graph.eraseEdge(Edge(xi, xj));
@@ -92,12 +185,12 @@ namespace gum{
       if (i_j) {
         graph.eraseEdge(Edge(xi, xj));
         graph.addArc(xi, xj);
-        propagatesRemainingOrientableEdges_(graph, xj, _latentCouples_);
+        _propagatesRemainingOrientableEdges_(graph, xj, _latentCouples_);
       }
       if (j_i) {
         graph.eraseEdge(Edge(xi, xj));
         graph.addArc(xj, xi);
-        propagatesRemainingOrientableEdges_(graph, xi, _latentCouples_);
+        _propagatesRemainingOrientableEdges_(graph, xi, _latentCouples_);
       }
       if (i_j && j_i) {
         // GUM_TRACE(" + add arc (" << xi << "," << xj << ")")
@@ -107,7 +200,7 @@ namespace gum{
     return res;
   }
 
-  bool MeekRules::isOrientable_(const MixedGraph& graph, NodeId xi, NodeId xj) const {
+  bool MeekRules::_isOrientable_(const MixedGraph& graph, NodeId xi, NodeId xj) const {
     // no cycle
     if (_existsDirectedPath_(graph, xj, xi)) {
       // GUM_TRACE("cycle(" << xi << "-" << xj << ")")
@@ -138,7 +231,9 @@ namespace gum{
   }
 
   /// Arbitrary propagation if we can't propagate thanks to MeekRules
-  void MeekRules::propagatesOrientationInChainOfRemainingEdges_(MixedGraph& essentialGraph, std::vector< Arc > _latentCouples_) {
+  void MeekRules::_propagatesOrientationInChainOfRemainingEdges_(
+     MixedGraph&         essentialGraph,
+     std::vector< Arc >& _latentCouples_) {
     // then decide the orientation for remaining edges
     while (!essentialGraph.edges().empty()) {
       const auto& edge               = *(essentialGraph.edges().begin());
@@ -176,7 +271,7 @@ namespace gum{
           // GUM_TRACE("n : "<< n)
           if (!stack.contains(n) && !visited.contains(n)) stack.insert(n);
           // GUM_TRACE(" + amap reasonably orientation for " << n << "->" << next);
-          if (propagatesRemainingOrientableEdges_(essentialGraph, next, _latentCouples_)) {
+          if (_propagatesRemainingOrientableEdges_(essentialGraph, next, _latentCouples_)) {
             continue;
           } else {
             if (!essentialGraph.existsArc(next,
@@ -184,7 +279,7 @@ namespace gum{
                                                   // doubly-oriented arc by adding a "random" arc.
               essentialGraph.eraseEdge(Edge(n, next));
               essentialGraph.addArc(n, next);
-              //GUM_TRACE(" + add arc (" << n << "->" << next << ")")
+              // GUM_TRACE(" + add arc (" << n << "->" << next << ")")
             }
           }
         }
@@ -227,4 +322,4 @@ namespace gum{
     return false;
   }
 
-} ///namespace gum
+}   // namespace gum
