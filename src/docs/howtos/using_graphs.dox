@@ -125,7 +125,7 @@
  * g.addNode();
  * g.addNodeWithId();
  *
- * gum::NodeProperty<bool> is_id_odd=g.nodesProperty(is_it_odd);
+ * gum::NodeProperty<bool> is_id_odd=g.nodesPropertyFromVal(is_it_odd);
  *
  * std::cout<<is_id_odd<<std::endl<<std::endl;
  *
@@ -146,7 +146,7 @@
  * gum::List<gum::NodeId> nodeFIFO;
  * // mark[node] contains 0 if not visited
  * // mark[node]=predecessor if visited
- * gum::NodeProperty<gum::NodeId> mark=g.nodesProperty((gum::NodeId) 0 );
+ * gum::NodeProperty<gum::NodeId> mark=g.nodesPropertyFromVal((gum::NodeId) 0 );
  * gum::NodeId current;
  *
  * mark[n1]=n1;

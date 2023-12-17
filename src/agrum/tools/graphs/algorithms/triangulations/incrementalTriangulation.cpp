@@ -493,7 +493,7 @@ namespace gum {
 
     // check that all the nodes of the graph belong to the junction tree
     {
-      NodeProperty< bool > nodesProp = _graph_.nodesProperty< bool >(false);
+      NodeProperty< bool > nodesProp = _graph_.nodesPropertyFromVal< bool >(false);
 
       for (const auto cliq: _junction_tree_.nodes())
         for (const auto node: _junction_tree_.clique(cliq))
@@ -544,7 +544,7 @@ namespace gum {
 
     // check that all the nodes of the graph belong to the MPS tree
     {
-      NodeProperty< bool > nodesProp = _graph_.nodesProperty< bool >(false);
+      NodeProperty< bool > nodesProp = _graph_.nodesPropertyFromVal< bool >(false);
 
       for (const auto cliq: _T_mpd_.nodes())
         for (const auto node: _T_mpd_.clique(cliq))
@@ -1142,7 +1142,7 @@ namespace gum {
     if (_junction_tree_.size() == 0) { return _created_JT_cliques_; }
 
     // now we can use a collect algorithm to get the containing cliques
-    NodeProperty< bool > examined = _junction_tree_.nodesProperty< bool >(false);
+    NodeProperty< bool > examined = _junction_tree_.nodesPropertyFromVal< bool >(false);
 
     for (const auto& elt: examined)
       if (!elt.second) _collectJTCliques_(elt.first, elt.first, examined);
@@ -1246,7 +1246,7 @@ namespace gum {
     // now we can use a collect algorithm to get the elimination order
     Idx index = Idx(0);
 
-    NodeProperty< bool > examined = _junction_tree_.nodesProperty< bool >(false);
+    NodeProperty< bool > examined = _junction_tree_.nodesPropertyFromVal< bool >(false);
 
     for (const auto& elt: examined)
       if (!elt.second) _collectEliminationOrder_(elt.first, elt.first, examined, index);

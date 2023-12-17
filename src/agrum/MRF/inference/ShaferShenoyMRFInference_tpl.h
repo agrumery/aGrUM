@@ -1235,7 +1235,7 @@ namespace gum {
               });
 
     // pick up the clique with the smallest size in each connected component
-    NodeProperty< bool >                  marked = _JT_->nodesProperty(false);
+    NodeProperty< bool >                  marked = _JT_->nodesPropertyFromVal(false);
     std::function< void(NodeId, NodeId) > diffuse_marks
        = [&marked, &diffuse_marks, this](NodeId node, NodeId from) {
            if (!marked[node]) {

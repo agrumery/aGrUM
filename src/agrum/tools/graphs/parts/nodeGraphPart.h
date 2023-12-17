@@ -433,7 +433,7 @@ namespace gum {
      * method
      * will assign it for you. */
     template < typename VAL >
-    NodeProperty< VAL > nodesProperty(VAL (*f)(const NodeId&), Size size = 0) const;
+    NodeProperty< VAL > nodesPropertyFromFunction(VAL (*f)(const NodeId&), Size size = 0) const;
 
     /// a method to create a hashMap with key:NodeId and value:VAL
     /** for all nodes, the value stored is a. This method is a wrapper of the
@@ -447,7 +447,7 @@ namespace gum {
      * method
      * will assign it for you. */
     template < typename VAL >
-    NodeProperty< VAL > nodesProperty(const VAL& a, Size size = 0) const;
+    NodeProperty< VAL > nodesPropertyFromVal(const VAL& a, Size size = 0) const;
 
     /** @brief a method to create a list of VAL from a set of nodes
      * (using for every nodee, say x, the VAL f(x))

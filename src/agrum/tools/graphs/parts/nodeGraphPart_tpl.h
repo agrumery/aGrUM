@@ -33,13 +33,13 @@
 namespace gum {
 
   template < typename VAL >
-  INLINE NodeProperty< VAL > NodeGraphPart::nodesProperty(VAL (*f)(const NodeId&),
+  INLINE NodeProperty< VAL > NodeGraphPart::nodesPropertyFromFunction(VAL (*f)(const NodeId&),
                                                           Size size) const {
     return asNodeSet().hashMap(f, size);
   }
 
   template < typename VAL >
-  INLINE NodeProperty< VAL > NodeGraphPart::nodesProperty(const VAL& val, Size size) const {
+  INLINE NodeProperty< VAL > NodeGraphPart::nodesPropertyFromVal(const VAL& val, Size size) const {
     return asNodeSet().hashMap(val, size);
   }
 

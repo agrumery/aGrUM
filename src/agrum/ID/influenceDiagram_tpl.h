@@ -681,7 +681,7 @@ namespace gum {
     List< NodeId > nodeFIFO;
     // mark[node] contains 0 if not visited
     // mark[node] = predecessor if visited
-    NodeProperty< int > mark = dag_.nodesProperty(-1);
+    NodeProperty< int > mark = dag_.nodesPropertyFromVal(-1);
     NodeId              current;
 
     mark[src] = (int)src;
@@ -742,7 +742,7 @@ namespace gum {
 
     // mark[node] contains false if not visited
     // mark[node] contains true if visited
-    NodeProperty< bool > mark = dag_.nodesProperty(false);
+    NodeProperty< bool > mark = dag_.nodesPropertyFromVal(false);
 
     mark[parentDecision] = true;
 

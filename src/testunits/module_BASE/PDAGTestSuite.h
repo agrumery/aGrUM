@@ -402,7 +402,7 @@ namespace gum_tests {
       gum::PDAG graph;
       buildPDAG(graph);
 
-      auto hashmap = graph.nodesProperty(&simpleDoubleFunction);
+      auto hashmap = graph.nodesPropertyFromFunction(&simpleDoubleFunction);
       TS_ASSERT_EQUALS(hashmap.size(), graph.size())
 
       gum::Size sk = 0;
@@ -421,7 +421,7 @@ namespace gum_tests {
       buildPDAG(graph);
 
       gum::NodeProperty< gum::Size > hashmap;
-      TS_ASSERT_THROWS_ANYTHING(hashmap = graph.nodesProperty(&twistedMapFunction))
+      TS_ASSERT_THROWS_ANYTHING(hashmap = graph.nodesPropertyFromFunction(&twistedMapFunction))
 
       TS_ASSERT_EQUALS(hashmap.size(), (gum::Size)0)
     }

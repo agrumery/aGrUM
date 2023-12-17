@@ -286,7 +286,7 @@ namespace gum {
   /// returns the set of barren nodes
   NodeSet BarrenNodesFinder::barrenNodes() {
     // mark all the nodes in the dag as barren (true)
-    NodeProperty< bool > barren_mark = _dag_->nodesProperty(true);
+    NodeProperty< bool > barren_mark = _dag_->nodesPropertyFromVal(true);
 
     // mark all the ancestors of the evidence and targets as non-barren
     List< NodeId > nodes_to_examine;

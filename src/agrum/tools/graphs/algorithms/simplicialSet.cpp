@@ -718,8 +718,8 @@ namespace gum {
     // initialize the  _nb_triangles_ so that there is no need to check whether
     //  _nb_triangles_ need new insertions
     _nb_triangles_           = _graph_->edgesProperty(Size(0));
-    _nb_adjacent_neighbours_ = _graph_->nodesProperty(Size(0));
-    _containing_list_        = _graph_->nodesProperty(_Belong_::NO_LIST);
+    _nb_adjacent_neighbours_ = _graph_->nodesPropertyFromVal(Size(0));
+    _containing_list_        = _graph_->nodesPropertyFromVal(_Belong_::NO_LIST);
     _changed_status_         = _graph_->asNodeSet();
 
     // set the  _nb_triangles_ and the  _nb_adjacent_neighbours_: for each

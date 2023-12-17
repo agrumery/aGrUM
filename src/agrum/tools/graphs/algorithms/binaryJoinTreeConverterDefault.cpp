@@ -248,7 +248,7 @@ namespace gum {
     // assign an arbitrary root to it
     _roots_ = specified_roots;
 
-    NodeProperty< bool > mark = JT.nodesProperty(false, JT.sizeNodes());
+    NodeProperty< bool > mark = JT.nodesPropertyFromVal(false, JT.sizeNodes());
 
     // for each specified root, populate its connected component
     for (const auto root: specified_roots) {
@@ -276,7 +276,7 @@ namespace gum {
     // Now we can apply a recursive collect algorithm starting from root
     // that transforms each clique with more than 3 neighbors into a set of
     // cliques having at most 3 neighbors.
-    NodeProperty< bool > mark2 = JT.nodesProperty(false, JT.sizeNodes());
+    NodeProperty< bool > mark2 = JT.nodesPropertyFromVal(false, JT.sizeNodes());
 
     for (const auto root: _roots_)
       _convertConnectedComponent_(binJT, root, root, domain_sizes, mark2);

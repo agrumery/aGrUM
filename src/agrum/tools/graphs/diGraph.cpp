@@ -26,6 +26,7 @@
  *
  */
 #include <agrum/tools/graphs/diGraph.h>
+#include <agrum/tools/graphs/graphElements.h>
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/tools/graphs/diGraph_inl.h>
@@ -41,8 +42,7 @@ namespace gum {
       ArcGraphPart(arcs_size, arcs_resize_policy){GUM_CONSTRUCTOR(DiGraph)}
 
       DiGraph::DiGraph(const DiGraph& g) :
-      NodeGraphPart(g),
-      ArcGraphPart(g){GUM_CONS_CPY(DiGraph)}
+      NodeGraphPart(g), ArcGraphPart(g){GUM_CONS_CPY(DiGraph)}
 
       DiGraph::~DiGraph(){GUM_DESTRUCTOR(DiGraph)}
 
@@ -78,30 +78,33 @@ namespace gum {
 
   Sequence< NodeId > DiGraph::topologicalOrder() const {
     Sequence< NodeId > topologicalOrder;
-    auto               dag   = *this;
-    auto               roots = std::vector< NodeId >();
+    auto               dag    = *this;
+    auto               border = std::vector< NodeId >(dag.size() / 2);
+    auto               count  = dag.nodesPropertyFromVal< Size >(0, dag.size());
 
     for (const auto node: dag.nodes()) {
-      if (dag.parents(node).empty()) { roots.push_back(node); }
+      if (dag.parents(node).empty()) { border.push_back(node); }
+      count[node] = dag.parents(node).size();
     }
 
-    while (!roots.empty()) {
-      if (topologicalOrder.exists(roots.back())) {
+    while (!border.empty()) {
+      const auto root = border.back();
+      border.pop_back();
+
+      if (topologicalOrder.exists(root)) {
         GUM_ERROR(InvalidDirectedCycle, "cycles prevent the creation of a topological ordering.")
       }
-      topologicalOrder.insert(roots.back());
-      roots.pop_back();
+      topologicalOrder.insert(root);
 
-      while (!dag.children(topologicalOrder.back()).empty()) {
-        auto back  = topologicalOrder.back();
-        auto child = *(dag.children(back).begin());
-        dag.eraseArc(Arc(back, child));
-
-        if (dag.parents(child).empty()) { roots.push_back(child); }
+      for (const auto child: dag.children(root)) {
+        if (count[child] == 1) { border.push_back(child); }
+        if (count[child] == 0) {
+          GUM_ERROR(InvalidDirectedCycle, "cycles prevent the creation of a topological ordering.")
+        }
+        count[child]--;
       }
     }
 
-    GUM_ASSERT(dag.sizeArcs() == (gum::Size)(0))
     GUM_ASSERT(topologicalOrder.size() == dag.size())
 
     return topologicalOrder;

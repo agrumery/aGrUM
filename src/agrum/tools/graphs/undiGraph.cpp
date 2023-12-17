@@ -56,7 +56,7 @@ namespace gum {
 
   bool UndiGraph::hasUndirectedCycle() const {
     List< std::pair< NodeId, NodeId > > open_nodes;
-    NodeProperty< bool >                examined_nodes = nodesProperty(false);
+    NodeProperty< bool >                examined_nodes = nodesPropertyFromVal(false);
     std::pair< NodeId, NodeId >         thePair;
     NodeId                              current, from_current;
 

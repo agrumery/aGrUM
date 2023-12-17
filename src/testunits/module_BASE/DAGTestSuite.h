@@ -280,7 +280,7 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(HashMapNodes) {
       gum::DAG graph = buildGraph();
 
-      auto hashmap = graph.nodesProperty(&simpleDoubleFunction);
+      auto hashmap = graph.nodesPropertyFromFunction(&simpleDoubleFunction);
       TS_ASSERT_EQUALS(hashmap.size(), graph.size())
 
       gum::Size sk = 0;
@@ -298,7 +298,7 @@ namespace gum_tests {
       gum::DAG graph = buildGraph();
 
       gum::NodeProperty< gum::Size > hashmap;
-      TS_ASSERT_THROWS_ANYTHING(hashmap = graph.nodesProperty(&twistedMapFunction))
+      TS_ASSERT_THROWS_ANYTHING(hashmap = graph.nodesPropertyFromFunction(&twistedMapFunction))
 
       TS_ASSERT_EQUALS(hashmap.size(), (gum::Size)0)
     }
