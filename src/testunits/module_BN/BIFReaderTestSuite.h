@@ -952,7 +952,7 @@ namespace gum_tests {
       if (net) delete net;
     }
 
-    GUM_INACTIVE_TEST(BenchFillingCpt) {
+    GUM_ACTIVE_TEST(BenchFillingCpt) {
       std::string              file = GET_RESSOURCES_PATH("bif/Diabetes.bif");
       gum::BayesNet< double >  net;
       gum::BIFReader< double > reader(&net, file);
@@ -961,7 +961,6 @@ namespace gum_tests {
 
       gum::Timer t;
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
-      GUM_TRACE_VAR(t);
 
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)826)

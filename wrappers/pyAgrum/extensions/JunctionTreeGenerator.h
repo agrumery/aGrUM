@@ -99,7 +99,7 @@ class JunctionTreeGenerator {
                                   const gum::List< gum::NodeSet >& partial_order,
                                   gum::NodeProperty< gum::Size >   mods
                                   = gum::NodeProperty< gum::Size >()) const {
-    if (mods.size() == 0) { mods = g.nodesPropertyFromFunction(static_cast< gum::Size >(2)); }
+    if (mods.size() == 0) { mods = g.nodesPropertyFromVal(static_cast< gum::Size >(2)); }
     gum::StaticTriangulation* triangulation;
     if (partial_order.size() == 0) {
       triangulation = new gum::DefaultTriangulation(&g, &mods);
@@ -119,7 +119,7 @@ class JunctionTreeGenerator {
                                     = gum::NodeProperty< gum::Size >()) const {
     gum::BinaryJoinTreeConverterDefault bjtc;
     gum::NodeSet                        emptyset;
-    if (mods.size() == 0) { mods = g.nodesPropertyFromFunction(static_cast< gum::Size >(2)); }
+    if (mods.size() == 0) { mods = g.nodesPropertyFromVal(static_cast< gum::Size >(2)); }
 
     return bjtc.convert(junctionTree_(g, partial_order, mods), mods, emptyset);
   }
@@ -128,7 +128,7 @@ class JunctionTreeGenerator {
                               const gum::List< gum::NodeSet >& partial_order,
                               gum::NodeProperty< gum::Size >   mods
                               = gum::NodeProperty< gum::Size >()) const {
-    if (mods.size() == 0) { mods = g.nodesPropertyFromFunction(static_cast< gum::Size >(2)); }
+    if (mods.size() == 0) { mods = g.nodesPropertyFromVal(static_cast< gum::Size >(2)); }
     gum::StaticTriangulation* triangulation;
     if (partial_order.size() == 0) {
       triangulation = new gum::DefaultTriangulation(&g, &mods);

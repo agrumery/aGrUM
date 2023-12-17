@@ -117,7 +117,7 @@ namespace gum_tests {
       // GUM_TRACE(search.latentVariables())
     }
 
-    GUM_INACTIVE_TEST(_MIIC_asia_NMLcorr) {
+    GUM_ACTIVE_TEST(_MIIC_asia_NMLcorr) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -163,7 +163,7 @@ namespace gum_tests {
       gum::DAG dag = search.learnStructure(cI, graph);
     }
 
-    GUM_INACTIVE_TEST(_MIIC_asia_constraints) {
+    GUM_ACTIVE_TEST(_MIIC_asia_constraints) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();

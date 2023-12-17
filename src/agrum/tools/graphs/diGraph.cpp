@@ -78,13 +78,20 @@ namespace gum {
 
   Sequence< NodeId > DiGraph::topologicalOrder() const {
     Sequence< NodeId > topologicalOrder;
-    auto               dag    = *this;
-    auto               border = std::vector< NodeId >(dag.size() / 2);
-    auto               count  = dag.nodesPropertyFromVal< Size >(0, dag.size());
+    const auto&        dag    = *this;
 
+    if (dag.empty()) return topologicalOrder;
+
+    auto               border = std::vector< NodeId >();
+    border.reserve(dag.size() / 2);
+    auto count = dag.nodesPropertyFromVal< Size >(0, dag.size());
     for (const auto node: dag.nodes()) {
       if (dag.parents(node).empty()) { border.push_back(node); }
       count[node] = dag.parents(node).size();
+    }
+
+    if (border.empty()) {
+      GUM_ERROR(InvalidDirectedCycle, "cycles prevent the creation of a topological ordering.");
     }
 
     while (!border.empty()) {
@@ -92,21 +99,20 @@ namespace gum {
       border.pop_back();
 
       if (topologicalOrder.exists(root)) {
-        GUM_ERROR(InvalidDirectedCycle, "cycles prevent the creation of a topological ordering.")
+        GUM_ERROR(InvalidDirectedCycle, "cycles prevent the creation of a topological ordering.");
       }
       topologicalOrder.insert(root);
 
       for (const auto child: dag.children(root)) {
         if (count[child] == 1) { border.push_back(child); }
         if (count[child] == 0) {
-          GUM_ERROR(InvalidDirectedCycle, "cycles prevent the creation of a topological ordering.")
+          GUM_ERROR(InvalidDirectedCycle, "cycles prevent the creation of a topological ordering.");
         }
         count[child]--;
       }
     }
 
-    GUM_ASSERT(topologicalOrder.size() == dag.size())
-
+    GUM_ASSERT(topologicalOrder.size() == dag.size());
     return topologicalOrder;
   }
 

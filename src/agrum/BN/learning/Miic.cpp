@@ -147,7 +147,6 @@ namespace gum {
       iteration_(mutualInformation, graph, sep_set, rank);
 
       orientationMiic_(mutualInformation, graph, sep_set);
-
       // Propagates existing orientations thanks to Meek rules
       const Sequence< NodeId > order = graph.topologicalOrder();
 

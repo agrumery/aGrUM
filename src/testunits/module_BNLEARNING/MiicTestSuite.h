@@ -511,7 +511,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_INACTIVE_TEST(_MIIC_ms_order1_) {
+    GUM_ACTIVE_TEST(_MIIC_ms_order1_) {
       // filterlistener.filter = 6;
       // GUM_CONNECT(search,
       //             onStructuralModification,
@@ -571,7 +571,7 @@ namespace gum_tests {
 
     }
 
-    GUM_INACTIVE_TEST(_MIIC_ms_order2_) {
+    GUM_ACTIVE_TEST(_MIIC_ms_order2_) {
       // filterlistener.filter = 6;
       // GUM_CONNECT(search,
       //             onStructuralModification,

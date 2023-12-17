@@ -98,7 +98,7 @@
  * classes.
  * @code
  * gum::UndiGraph g;
- * gum::NodeProperty<bool> is_id_odd=g.nodesProperty( false );
+ * gum::NodeProperty<bool> is_id_odd=g.nodesPropertyFromVal( false );
  *
  * g.addNode();
  * g.addNode();

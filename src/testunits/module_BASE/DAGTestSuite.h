@@ -359,12 +359,13 @@ namespace gum_tests {
       //          0   1_          0 -> 2
       //         / \ / /          0 -> 3
       //        2   3 /           2 -> 4
-      //         \ / /            3 -> 5
+      //         \ / /            3 -> 4
       //          4_/             1 -> 3
       //                          1 -> 4
       gum::DAG graph = buildGraph();
       TS_ASSERT_EQUALS(graph.family(0), gum::NodeSet({0}))
       TS_ASSERT_EQUALS(graph.family(4), gum::NodeSet({1, 2, 3, 4}))
+      auto seq=graph.topologicalOrder();
     }
 
     GUM_ACTIVE_TEST(MonoCycle) {
@@ -372,5 +373,6 @@ namespace gum_tests {
       auto     x = graph.addNode();
       TS_ASSERT_THROWS(graph.addArc(x, x), const gum::Exception&)
     }
+
   };
 }   // namespace gum_tests
