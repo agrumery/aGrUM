@@ -708,6 +708,15 @@ namespace gum::learning {
     /// indicate that we wish to use MIIC
     void useMIIC();
 
+    /// indicate if the selected algorithm is constraint-based
+    bool isConstraintBased() const {
+      return selectedAlgo_ == AlgoType::MIIC;
+    }
+    /// indicate if the selected algorithm is score-based
+    bool isScoreBased() const {
+      return !isConstraintBased();
+    }
+
     /// @}
 
     // ##########################################################################

@@ -849,6 +849,8 @@ namespace gum::learning {
   }
 
   std::string IBNLearner::checkScorePriorCompatibility() const {
+    if (this->isConstraintBased()) return "";
+    
     const auto prior = getPriorType_();
 
     switch (scoreType_) {
