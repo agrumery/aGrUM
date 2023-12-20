@@ -202,7 +202,7 @@ namespace gum::learning {
 
 
   IBNLearner::IBNLearner(const IBNLearner& from) :
-      ThreadNumberManager(from), inducedTypes_(from.inducedTypes_), scoreType_(from.scoreType_),
+      IApproximationSchemeConfiguration(from), ThreadNumberManager(from), inducedTypes_(from.inducedTypes_), scoreType_(from.scoreType_),
       paramEstimatorType_(from.paramEstimatorType_), epsilonEM_(from.epsilonEM_),
       priorType_(from.priorType_), priorWeight_(from.priorWeight_),
       constraintSliceOrder_(from.constraintSliceOrder_),
@@ -850,7 +850,7 @@ namespace gum::learning {
 
   std::string IBNLearner::checkScorePriorCompatibility() const {
     if (this->isConstraintBased()) return "";
-    
+
     const auto prior = getPriorType_();
 
     switch (scoreType_) {

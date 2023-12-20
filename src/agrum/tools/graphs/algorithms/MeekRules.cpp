@@ -1,26 +1,28 @@
 /**
- *
- *   Copyright (c) 2005-2023  by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
- *   info_at_agrum_dot_org
- *
- *  This library is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Lesser General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU Lesser General Public License for more details.
- *
- *  You should have received a copy of the GNU Lesser General Public License
- *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
- *
+*
+*   Copyright (c) 2005-2023  by Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
+*   info_at_agrum_dot_org
+*
+*  This library is free software: you can redistribute it and/or modify
+*  it under the terms of the GNU Lesser General Public License as published by
+*  the Free Software Foundation, either version 3 of the License, or
+*  (at your option) any later version.
+*
+*  This library is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU Lesser General Public License for more details.
+*
+*  You should have received a copy of the GNU Lesser General Public License
+*  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+*
  */
+
+
 /** @file
- * @brief source implementations of simplicial set
- *
- * @author Mahdi HADJ ALI(_at_LIP6) and Pierre-Henri WUILLEMIN(_at_LIP6)
+* @brief Class for Meek Rules
+*
+* @author Mahdi Hadj Ali and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 #include <agrum/agrum.h>
 #include <agrum/tools/graphs/algorithms/MeekRules.h>
@@ -36,7 +38,6 @@ namespace gum {
   /// Propagates the orientation of a MixedGraph (no double-headed arcs) and return a PDAG.
   PDAG MeekRules::orientToPDAG(MixedGraph mg, std::vector< Arc >& _latentCouples_) {
     propagatesOrientations(mg, _latentCouples_);
-
     PDAG pdag;
     for (auto node: mg) {
       pdag.addNodeWithId(node);
@@ -135,13 +136,11 @@ namespace gum {
 
   /// Propagates MeekRules in a MixedGraph
   void MeekRules::propagatesOrientations(MixedGraph& graph, std::vector< Arc >& _latentCouples_) {
-    const Sequence< NodeId > order = graph.topologicalOrder();
-
     // Propagates existing orientations thanks to Meek rules
     bool newOrientation = true;
     while (newOrientation) {
       newOrientation = false;
-      for (NodeId x: order) {
+      for (NodeId x: graph.nodes()) {
         if (!graph.parents(x).empty()) {
           newOrientation |= _propagatesRemainingOrientableEdges_(graph, x, _latentCouples_);
         }
@@ -150,13 +149,11 @@ namespace gum {
   }
 
   void MeekRules::orientAllEdges(MixedGraph& graph, std::vector< Arc >& _latentCouples_) {
-    const Sequence< NodeId > order = graph.topologicalOrder();
-
     // Propagates existing orientations thanks to rules
     bool newOrientation = true;
     while (newOrientation) {
       newOrientation = false;
-      for (NodeId x: order) {
+      for (NodeId x: graph.nodes()) {
         if (!graph.parents(x).empty()) {
           newOrientation |= _propagatesRemainingOrientableEdges_(graph, x, _latentCouples_);
         }

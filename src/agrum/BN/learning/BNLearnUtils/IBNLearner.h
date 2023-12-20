@@ -83,7 +83,7 @@ namespace gum::learning {
    * LocalSearchWithTabuList also miic
    * @ingroup learning_group
    */
-  class IBNLearner: public gum::IApproximationSchemeConfiguration, public ThreadNumberManager {
+  class IBNLearner: public IApproximationSchemeConfiguration, public ThreadNumberManager {
     public:
     /// an enumeration enabling to select easily the score we wish to use
     enum class ScoreType {

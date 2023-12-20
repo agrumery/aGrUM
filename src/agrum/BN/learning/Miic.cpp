@@ -148,7 +148,6 @@ namespace gum {
 
       orientationMiic_(mutualInformation, graph, sep_set);
       // Propagates existing orientations thanks to Meek rules
-      const Sequence< NodeId > order = graph.topologicalOrder();
 
       meekRules_.propagatesOrientations(graph, _latentCouples_);
 
@@ -348,32 +347,6 @@ namespace gum {
           marks.insert({arc.head(), arc.tail()}, '>');
         }
       }
-
-      /*// forbidden arcs force arc in the other direction
-      const Sequence< NodeId > order = graph.topologicalOrder();
-      for (NodeId x: order) {
-        const auto nei_x = graph.neighbours(x);
-        for (NodeId y: nei_x)
-          if (isForbiddenArc_(x, y)) {
-            graph.eraseEdge(Edge(x, y));
-            if (isForbiddenArc_(y, x)) {
-              // GUM_TRACE("Neither arc allowed for edge (" << x << "," << y << ")")
-              continue;
-            } else {
-              // GUM_TRACE("Forced orientation : " << y << "->" << x)
-              graph.addArc(y, x);
-              marks[{y, x}] = '>';
-              marks[{x, y}] = '-';
-            }
-          } else if (isForbiddenArc_(y, x)) {
-            graph.eraseEdge(Edge(x, y));
-            // GUM_TRACE("Forced orientation : " << x << "->" << y)
-            graph.addArc(x, y);
-            marks[{x, y}] = '>';
-            marks[{y, x}] = '-';
-          }
-      }*/
-
 
       std::vector< ProbabilisticRanking > proba_triples
          = unshieldedTriplesMiic_(graph, mutualInformation, sepSet, marks);
@@ -934,8 +907,7 @@ namespace gum {
                                               const NodeId      n1,
                                               const NodeId      n2) {
       for (const auto parent: graph.parents(n2)) {
-        if (graph.existsArc(parent,
-                            n2))   // if there is a double arc, pass
+        if (graph.existsArc(n2,parent))   // if there is a double arc, pass
           continue;
         if (parent == n1)          // trivial directed path => not recognized
           continue;
