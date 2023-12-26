@@ -1,9 +1,0 @@
-libdir=/usr/local/lib
-includedir=/usr/local/include
-
-Name: aGrUM 1.8.2.9 (DEBUG)
-Description: C++ library designed for easily building applications using graphical models.
-Requires: 
-Version: 1.8.2.9
-Libs: -lagrum
-Cflags: 

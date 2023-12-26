@@ -96,3 +96,5 @@ wrappers/pyAgrum/doc/sphinx/notebooks/out/*
 # Pipenv files
 Pipfile
 Pipfile.lock
+!/cmake-build-debug-visual-studio/
+!/cmake-build-debug-visual-studio/
