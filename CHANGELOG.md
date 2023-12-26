@@ -7,8 +7,10 @@
   * Refactoring CI, cleaning wheelhouse
 
 * aGrUM
+  * Improving MIIC algorithm and application of Meek Rules in ordre to to better solve (partially) oriented cycle problems
   * Fixing a bug in `gum::BNLearner` : EM parameter estimation bug due to a cache used in record counters
   * Fixing a bug in `gum::GibbsSampling` : some evidence may not be taken into account (thanks to Micromix@discord)
+  * `gum::PDAG` must accept partially directed cycle (by definition). Thanks to Kenneth Lee.
   * Adding `gum::LazyPropagation::mpe{Log2Posterior}` to compute the Most Probable Explanation with some evidence
 
 * pyAgrum
