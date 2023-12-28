@@ -18,9 +18,9 @@
  *
  */
 
+#include <algorithm>
 #include <cstdio>
 #include <iostream>
-#include <algorithm>
 
 #include <agrum/tools/variables/allDiscreteVariables.h>
 
@@ -47,7 +47,7 @@ namespace gum {
         const auto& s_args
            = var_description.substr(posBrack + 1, var_description.size() - posBrack - 2);
         const auto& args = split(s_args, ",");
-        if (args.empty()) {   // n[]
+        if (args.empty()) {              // n[]
           GUM_ERROR(InvalidArgument, "Empty range for variable " << var_description)
         } else if (args.size() == 1) {   // n[4]
           int n = std::stoi(args[0]);

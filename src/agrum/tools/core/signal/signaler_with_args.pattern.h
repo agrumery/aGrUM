@@ -62,6 +62,7 @@ namespace gum {
       }
 
       MAKE_NAME(BasicSignaler)
+
       (const MAKE_NAME(BasicSignaler) & s) : ISignaler(s) {
         GUM_CONS_CPY(MAKE_NAME(BasicSignaler));
 
@@ -136,6 +137,7 @@ namespace gum {
       }
 
       MAKE_NAME(Connector)
+
       (TargetClass* target, void (TargetClass::*action)(const void*, LIST_CLASSES)) {
         GUM_CONSTRUCTOR(MAKE_NAME(Connector));
         _target_ = target;
@@ -143,6 +145,7 @@ namespace gum {
       }
 
       MAKE_NAME(Connector)
+
       (const MAKE_NAME(Connector) < TargetClass, LIST_CLASSES > *src) :
           MAKE_NAME(IConnector)< LIST_CLASSES >(src) {
         GUM_CONS_CPY(MAKE_NAME(Connector));
@@ -189,6 +192,7 @@ namespace gum {
     }
 
     MAKE_NAME(Signaler)
+
     (const MAKE_NAME(Signaler) & s) : __sig__::MAKE_NAME(BasicSignaler)< LIST_CLASSES >(s) {
       GUM_CONS_CPY(MAKE_NAME(Signaler));
     }

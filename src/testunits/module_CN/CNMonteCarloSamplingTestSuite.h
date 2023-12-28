@@ -22,16 +22,16 @@
 #include <iostream>
 #include <string>
 
-#include <agrum/CN/inference/CNMonteCarloSampling.h>
-#include <agrum/CN/credalNet.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
+
+#include <agrum/tools/core/approximations/approximationSchemeListener.h>
+#include <agrum/tools/core/threads/threads.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/tools/core/threads/threads.h>
-#include <agrum/tools/core/approximations/approximationSchemeListener.h>
-
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <agrum/CN/credalNet.h>
+#include <agrum/CN/inference/CNMonteCarloSampling.h>
 
 #define GET_CN_PATH_STR(x) xstrfy(GUM_SRC_PATH) "/testunits/ressources/cn/" #x
 
@@ -51,6 +51,7 @@ namespace gum_tests {
     std::string __msg;
 
     protected:
+
     public:
     CNMonteCarloSamplingListener(gum::ApproximationScheme& aS) :
         gum::ApproximationSchemeListener(aS), __nbr(0), __msg(""){};
@@ -69,7 +70,9 @@ namespace gum_tests {
   ////////////////////////////////////////////////////////////////
   class [[maybe_unused]] CNMonteCarloSamplingInferenceTestSuite: public CxxTest::TestSuite {
     private:
+
     protected:
+
     public:
     gum::credal::CredalNet< double >* cn;
 
@@ -330,6 +333,6 @@ namespace gum_tests {
       clearCNet();
     }   // end of : testCNMonteCarloSamplingListener
 
-  };   // end of : class CNMonteCarloSamplingInferenceTestSuite
+  };    // end of : class CNMonteCarloSamplingInferenceTestSuite
 
 }   // namespace gum_tests

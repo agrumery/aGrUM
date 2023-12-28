@@ -35,7 +35,6 @@ namespace gum {
   /// returns the current graph
   INLINE UndiGraph* EliminationSequenceStrategy::graph() const noexcept { return graph_; }
 
-
   /// returns the current domain sizes
   INLINE const NodeProperty< Size >* EliminationSequenceStrategy::domainSizes() const noexcept {
     return domain_sizes_;

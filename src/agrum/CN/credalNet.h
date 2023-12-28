@@ -28,10 +28,10 @@
  * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6) and Christophe GONZALES(_at_AMU)
  */
 
-#include <agrum/agrum.h>
-
 #include <iostream>
 #include <vector>
+
+#include <agrum/agrum.h>
 
 #ifdef HAVE_UNISTD_H
 #  include <unistd.h>
@@ -46,20 +46,18 @@
 #include <set>
 #include <sstream>
 #include <string>
-#include <sys/stat.h>
-
 #include <utility>   /// c++11 stuff, like declval ( decltype from prototype without a default constructor )
+
+#include <agrum/tools/core/exceptions.h>
+#include <agrum/tools/core/math/pow.h>   // custom pow functions with integers, faster implementation
+#include <agrum/tools/core/threads/threadExecutor.h>
+#include <agrum/tools/core/threads/threads.h>
 
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/BN/io/BIF/BIFWriter.h>
-#include <agrum/tools/core/exceptions.h>
-
-#include <agrum/tools/core/math/pow.h>   // custom pow functions with integers, faster implementation
-
 #include <agrum/CN/polytope/LrsWrapper.h>
 
-#include <agrum/tools/core/threads/threads.h>
-#include <agrum/tools/core/threads/threadExecutor.h>
+#include <sys/stat.h>
 
 // 64 bits for windows (long is 32 bits)
 #ifdef _MSC_VER
@@ -85,12 +83,7 @@ namespace gum {
     class CredalNet {
       public:
       /** @brief NodeType to speed-up computations in some algorithms */
-      enum class NodeType : char {
-        Precise,
-        Credal,
-        Vacuous,
-        Indic
-      };
+      enum class NodeType : char { Precise, Credal, Vacuous, Indic };
 
       /// @name Constructors / Destructors
       /// @{
@@ -535,6 +528,7 @@ namespace gum {
       /// @}
 
       protected:
+
       private:
       /** @brief 1e6 by default, used by  _fracC_ as precision. */
       GUM_SCALAR _precisionC_;   // = 1e6;

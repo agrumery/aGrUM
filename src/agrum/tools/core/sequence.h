@@ -29,13 +29,15 @@
 #ifndef GUM_SEQUENCE_H
 #define GUM_SEQUENCE_H
 
-#include <initializer_list>
 #include <limits>
-#include <type_traits>
 #include <vector>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/set.h>
+
+#include <initializer_list>
+#include <type_traits>
 
 namespace gum {
 
@@ -573,6 +575,7 @@ namespace gum {
     SequenceImplementation(SequenceImplementation< Key, true >&& aSeq);
 
     /// @}
+
     public:
     // ============================================================================
     /// @name Destructor
@@ -1050,6 +1053,7 @@ namespace gum {
     INLINE static const Key& op_star(const Key* x) {
       return *x;
     }
+
     template < typename Key >
     INLINE static const Key* op_arrow(const Key* x) {
       return x;
@@ -1062,6 +1066,7 @@ namespace gum {
     INLINE static const Key& op_star(const Key& x) {
       return x;
     }
+
     template < typename Key >
     INLINE static const Key* op_arrow(const Key& x) {
       return &x;

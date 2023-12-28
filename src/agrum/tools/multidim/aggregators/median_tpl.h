@@ -27,7 +27,6 @@
  */
 
 #include <sstream>
-
 #include <vector>
 
 // to ease parser in IDEs

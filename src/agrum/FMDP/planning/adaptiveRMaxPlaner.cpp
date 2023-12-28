@@ -33,9 +33,10 @@
 // #include <algorithm>
 // #include <utility>
 //  =========================================================================
-#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/core/functors.h>
 #include <agrum/tools/core/smallobjectallocator/smallObjectAllocator.h>
+
+#include <agrum/tools/core/math/math_utils.h>
 // =========================================================================
 #include <agrum/tools/multidim/implementations/multiDimFunctionGraph.h>
 #include <agrum/tools/multidim/instantiation.h>

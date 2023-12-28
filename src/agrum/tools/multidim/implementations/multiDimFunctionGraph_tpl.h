@@ -60,7 +60,7 @@ namespace gum {
   // Copy Operator.
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >&
-     MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::operator=(
+         MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::operator=(
         const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >& from) {
     copy(from);
     return *this;
@@ -119,6 +119,7 @@ namespace gum {
               "provides the framework to editaa "
               "Function Graph.")
   }
+
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE void MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::populate(
      std::initializer_list< GUM_SCALAR > l) const {
@@ -155,7 +156,6 @@ namespace gum {
   INLINE Size MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::realSize() const {
     return _internalNodeMap_.size();   // +  _valueMap_.size();
   }
-
 
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE void MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::changeNotification(
@@ -425,7 +425,6 @@ namespace gum {
       this->erase(**varIter);
     }
   }
-
 
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE std::string

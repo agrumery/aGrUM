@@ -88,13 +88,13 @@ namespace gum {
             // Parents existing in the instance type's DAG
             for (const auto par: inst->type().containerDag().parents(elt.second->id())) {
               switch (inst->type().get(par).elt_type()) {
-                case PRMClassElement< GUM_SCALAR >::prm_attribute:
-                case PRMClassElement< GUM_SCALAR >::prm_aggregate: {
+                case PRMClassElement< GUM_SCALAR >::prm_attribute :
+                case PRMClassElement< GUM_SCALAR >::prm_aggregate : {
                   data.graph.addEdge(node, data.node2attr.first(_str_(inst, inst->get(par))));
                   break;
                 }
 
-                case PRMClassElement< GUM_SCALAR >::prm_slotchain: {
+                case PRMClassElement< GUM_SCALAR >::prm_slotchain : {
                   for (const auto inst2: inst->getInstances(par))
                     if (match.exists(inst2))
                       data.graph.addEdge(node,
@@ -106,7 +106,7 @@ namespace gum {
                   break;
                 }
 
-                default: { /* Do nothing */
+                default : { /* Do nothing */
                 }
               }
             }
@@ -208,7 +208,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE SearchStrategy< GUM_SCALAR >&
-         SearchStrategy< GUM_SCALAR >::operator=(const SearchStrategy< GUM_SCALAR >& from) {
+             SearchStrategy< GUM_SCALAR >::operator=(const SearchStrategy< GUM_SCALAR >& from) {
         this->tree_ = from.tree_;
         return *this;
       }
@@ -242,7 +242,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE FrequenceSearch< GUM_SCALAR >&
-         FrequenceSearch< GUM_SCALAR >::operator=(const FrequenceSearch< GUM_SCALAR >& from) {
+             FrequenceSearch< GUM_SCALAR >::operator=(const FrequenceSearch< GUM_SCALAR >& from) {
         _freq_ = from._freq_;
         return *this;
       }
@@ -293,7 +293,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE StrictSearch< GUM_SCALAR >&
-         StrictSearch< GUM_SCALAR >::operator=(const StrictSearch< GUM_SCALAR >& from) {
+             StrictSearch< GUM_SCALAR >::operator=(const StrictSearch< GUM_SCALAR >& from) {
         _freq_ = from._freq_;
         return *this;
       }
@@ -396,7 +396,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE TreeWidthSearch< GUM_SCALAR >&
-         TreeWidthSearch< GUM_SCALAR >::operator=(const TreeWidthSearch< GUM_SCALAR >& from) {
+             TreeWidthSearch< GUM_SCALAR >::operator=(const TreeWidthSearch< GUM_SCALAR >& from) {
         return *this;
       }
 

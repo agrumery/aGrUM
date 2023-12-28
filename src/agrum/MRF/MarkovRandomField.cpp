@@ -19,8 +19,9 @@
  */
 
 
-#include <agrum/MRF/MarkovRandomField.h>
 #include <agrum/agrum.h>
+
+#include <agrum/MRF/MarkovRandomField.h>
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

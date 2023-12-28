@@ -29,9 +29,8 @@
 #ifndef GUM_FUNC_ATTRIBUTE_H
 #define GUM_FUNC_ATTRIBUTE_H
 
-#include <agrum/PRM/elements/PRMType.h>
-
 #include <agrum/PRM/elements/PRMScalarAttribute.h>
+#include <agrum/PRM/elements/PRMType.h>
 
 namespace gum {
   namespace prm {

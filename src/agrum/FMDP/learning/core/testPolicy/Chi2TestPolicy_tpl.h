@@ -27,6 +27,7 @@
  */
 // =========================================================================
 #include <agrum/FMDP/learning/core/testPolicy/Chi2TestPolicy.h>
+
 // =========================================================================
 
 
@@ -45,7 +46,6 @@ namespace gum {
     ITestPolicy< GUM_SCALAR >::addObservation(iattr, ivalue);
     _conTab_.add(iattr, ivalue);
   }
-
 
   // ############################################################################
   // @name Test result

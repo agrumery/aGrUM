@@ -31,13 +31,11 @@
 #define GUM_MULTI_DIM_FUNCTION_GRAPH_H
 
 #include <agrum/tools/core/types.h>
-
-#include <agrum/FMDP/learning/core/templateStrategy.h>
-
-
 #include <agrum/tools/multidim/implementations/multiDimFunctionGraphManager.h>
 #include <agrum/tools/multidim/implementations/multiDimImplementation.h>
 #include <agrum/tools/multidim/utils/FunctionGraphUtilities/terminalNodePolicies/ExactTerminalNodePolicy.h>
+
+#include <agrum/FMDP/learning/core/templateStrategy.h>
 
 namespace gum {
 

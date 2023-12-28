@@ -86,6 +86,7 @@ namespace gum {
       virtual std::string name() const;
 
       /// @}
+
       protected:
       // ========================================================================
       /// @name Private evidence handling methods and members.
@@ -115,6 +116,7 @@ namespace gum {
                           Potential< GUM_SCALAR >&                                         j);
 
       /// @}
+
       private:
       /// Copy constructor.
       GroundedInference(const GroundedInference& source);

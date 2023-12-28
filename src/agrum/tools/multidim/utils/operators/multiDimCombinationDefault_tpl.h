@@ -31,9 +31,9 @@
 #  include <limits>
 
 #  include <agrum/agrum.h>
+
 #  include <agrum/tools/core/priorityQueue.h>
 #  include <agrum/tools/multidim/utils/operators/multiDimCombinationDefault.h>
-
 
 namespace gum {
 
@@ -46,7 +46,6 @@ namespace gum {
     GUM_CONSTRUCTOR(MultiDimCombinationDefault);
   }
 
-
   /// copy constructor
   template < class TABLE >
   MultiDimCombinationDefault< TABLE >::MultiDimCombinationDefault(
@@ -57,7 +56,6 @@ namespace gum {
     GUM_CONS_CPY(MultiDimCombinationDefault);
   }
 
-
   /// destructor
   template < class TABLE >
   MultiDimCombinationDefault< TABLE >::~MultiDimCombinationDefault() {
@@ -65,13 +63,11 @@ namespace gum {
     GUM_DESTRUCTOR(MultiDimCombinationDefault);
   }
 
-
   /// virtual constructor
   template < class TABLE >
   MultiDimCombinationDefault< TABLE >* MultiDimCombinationDefault< TABLE >::clone() const {
     return new MultiDimCombinationDefault< TABLE >(_combine_);
   }
-
 
   /// changes the function used for combining two TABLES
   template < class TABLE >
@@ -80,14 +76,12 @@ namespace gum {
     _combine_ = combine;
   }
 
-
   /// returns the combination function currently used by the combinator
   template < class TABLE >
   INLINE TABLE (*MultiDimCombinationDefault< TABLE >::combinationFunction())(const TABLE&,
                                                                              const TABLE&) {
     return _combine_;
   }
-
 
   /// returns the result of the combination
   template < class TABLE >
@@ -97,7 +91,6 @@ namespace gum {
     container  = std::move(*res);
     delete (res);
   }
-
 
   /// returns the result of the combination
   template < class TABLE >
@@ -136,7 +129,6 @@ namespace gum {
     return result;
   }
 
-
   // returns the result of the combination
   template < class TABLE >
   double MultiDimCombinationDefault< TABLE >::nbOperations(
@@ -164,7 +156,6 @@ namespace gum {
     return nb_operations;
   }
 
-
   // returns the result of the combination
   template < class TABLE >
   double MultiDimCombinationDefault< TABLE >::nbOperations(const Set< const TABLE* >& set) const {
@@ -180,7 +171,6 @@ namespace gum {
 
     return nbOperations(var_set);
   }
-
 
   // returns the memory consumption used during the combination
   template < class TABLE >
@@ -214,7 +204,6 @@ namespace gum {
     return {max_memory, end_memory};
   }
 
-
   // returns the memory consumption used during the combination
   template < class TABLE >
   std::pair< double, double >
@@ -232,7 +221,6 @@ namespace gum {
     return memoryUsage(var_set);
   }
 
-
   // returns the domain size of the Cartesian product of the union of all the
   // variables in seq1 and seq2
   template < class TABLE >
@@ -247,7 +235,6 @@ namespace gum {
 
     return size;
   }
-
 
   // returns the set of operations to perform to make the combination
   template < class TABLE >
@@ -371,7 +358,6 @@ namespace gum {
     return {operations, resulting_table};
   }
 
-
   /// returns the set of operations to perform to make the combination
   template < class TABLE >
   std::pair< std::vector< ScheduleOperator* >, const IScheduleMultiDim* >
@@ -384,7 +370,6 @@ namespace gum {
     }
     return operations(vect, is_result_persistent);
   }
-
 
   /// free scheduing memory
   template < class TABLE >

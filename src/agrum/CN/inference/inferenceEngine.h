@@ -29,11 +29,11 @@
  */
 #include <map>
 
-#include <agrum/CN/tools/varMod2BNsMap.h>
 #include <agrum/tools/core/approximations/approximationScheme.h>
-
 #include <agrum/tools/core/threads/threadData.h>
 #include <agrum/tools/core/threads/threadNumberManager.h>
+
+#include <agrum/CN/tools/varMod2BNsMap.h>
 
 namespace gum {
   namespace credal {

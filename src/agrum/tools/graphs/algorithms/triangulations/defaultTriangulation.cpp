@@ -26,6 +26,7 @@
  */
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/graphs/algorithms/triangulations/defaultTriangulation.h>
 #include <agrum/tools/graphs/algorithms/triangulations/eliminationStrategies/defaultEliminationSequenceStrategy.h>
 #include <agrum/tools/graphs/algorithms/triangulations/junctionTreeStrategies/defaultJunctionTreeStrategy.h>

@@ -30,17 +30,17 @@
 #ifndef GUM_LEARNING_DB_TRANSLATOR_H
 #define GUM_LEARNING_DB_TRANSLATOR_H
 
-#include <string>
 #include <limits>
-#include <vector>
+#include <string>
 #include <utility>
+#include <vector>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/bijection.h>
 #include <agrum/tools/core/set.h>
-#include <agrum/tools/variables/variable.h>
 #include <agrum/tools/database/DBTranslatedValue.h>
-
+#include <agrum/tools/variables/variable.h>
 
 namespace gum {
 

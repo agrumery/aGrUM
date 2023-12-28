@@ -26,13 +26,9 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 
+#include <algorithm>
 #include <limits>
 #include <set>
-#include <algorithm>
-
-#include <agrum/MRF/MarkovRandomField.h>
-
-#include <agrum/tools/variables/allDiscreteVariables.h>
 
 #include <agrum/tools/multidim/aggregators/amplitude.h>
 #include <agrum/tools/multidim/aggregators/and.h>
@@ -43,14 +39,15 @@
 #include <agrum/tools/multidim/aggregators/median.h>
 #include <agrum/tools/multidim/aggregators/min.h>
 #include <agrum/tools/multidim/aggregators/or.h>
-
+#include <agrum/tools/multidim/ICIModels/multiDimLogit.h>
 #include <agrum/tools/multidim/ICIModels/multiDimNoisyAND.h>
 #include <agrum/tools/multidim/ICIModels/multiDimNoisyORCompound.h>
 #include <agrum/tools/multidim/ICIModels/multiDimNoisyORNet.h>
-
-#include <agrum/tools/multidim/ICIModels/multiDimLogit.h>
+#include <agrum/tools/variables/allDiscreteVariables.h>
 
 #include <agrum/BN/generator/simpleCPTGenerator.h>
+#include <agrum/MRF/MarkovRandomField.h>
+
 #include <agrum/tools/core/utils_string.h>
 
 namespace gum {
@@ -230,7 +227,6 @@ namespace gum {
     }
   }
 
-
   template < typename GUM_SCALAR >
   INLINE NodeId MarkovRandomField< GUM_SCALAR >::add(const DiscreteVariable& var) {
     return add(var, graph().nextNodeId());
@@ -301,13 +297,11 @@ namespace gum {
     _rebuildGraph_();
   }
 
-
   template < typename GUM_SCALAR >
   INLINE std::ostream& operator<<(std::ostream& output, const MarkovRandomField< GUM_SCALAR >& mn) {
     output << mn.toString();
     return output;
   }
-
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >&
@@ -346,7 +340,6 @@ namespace gum {
 
     return _addFactor_(sorted_nodes);
   }
-
 
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >&

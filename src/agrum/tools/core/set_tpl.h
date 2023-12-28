@@ -78,7 +78,7 @@ namespace gum {
   // assignment operator
   template < typename Key >
   INLINE SetIteratorSafe< Key >&
-     SetIteratorSafe< Key >::operator=(const SetIteratorSafe< Key >& from) {
+         SetIteratorSafe< Key >::operator=(const SetIteratorSafe< Key >& from) {
     _ht_iter_ = from._ht_iter_;
     return *this;
   }
@@ -93,7 +93,7 @@ namespace gum {
   // move operator
   template < typename Key >
   INLINE SetIteratorSafe< Key >&
-     SetIteratorSafe< Key >::operator=(SetIteratorSafe< Key >&& from) noexcept {
+         SetIteratorSafe< Key >::operator=(SetIteratorSafe< Key >&& from) noexcept {
     _ht_iter_ = std::move(from._ht_iter_);
     return *this;
   }
@@ -199,7 +199,7 @@ namespace gum {
   // assignment operator
   template < typename Key >
   INLINE SetIterator< Key >&
-     SetIterator< Key >::operator=(const SetIterator< Key >& from) noexcept {
+         SetIterator< Key >::operator=(const SetIterator< Key >& from) noexcept {
     _ht_iter_ = from._ht_iter_;
     return *this;
   }
@@ -477,7 +477,6 @@ namespace gum {
     return _inside_.exists(k);
   }
 
-
   template < typename Key >
   INLINE bool Set< Key >::isStrictSubsetOf(const Set< Key >& s) const {
     if (this->size() >= s.size()) { return false; }
@@ -492,7 +491,6 @@ namespace gum {
   INLINE bool Set< Key >::isStrictSupersetOf(const Set< Key >& s) const {
     return s.isStrictSubsetOf(*this);
   }
-
 
   template < typename Key >
   INLINE bool Set< Key >::isSubsetOrEqual(const Set< Key >& s) const {
@@ -636,7 +634,6 @@ namespace gum {
     return res;
   }
 
-
   // Intersection update operator
   template < typename Key >
   const Set< Key >& Set< Key >::operator*=(const Set< Key >& s2) {
@@ -650,7 +647,6 @@ namespace gum {
     return *this;
   }
 
-
   // Union update operator
   template < typename Key >
   const Set< Key >& Set< Key >::operator+=(const Set< Key >& s2) {
@@ -662,7 +658,6 @@ namespace gum {
 
     return *this;
   }
-
 
   // Union operator
   template < typename Key >
@@ -677,7 +672,6 @@ namespace gum {
 
     return res;
   }
-
 
   // Disjunction operator
   template < typename Key >
@@ -792,7 +786,6 @@ namespace gum {
 
     return h;
   }
-
 
   // Returns the hashed value of a key.
   template < typename T >

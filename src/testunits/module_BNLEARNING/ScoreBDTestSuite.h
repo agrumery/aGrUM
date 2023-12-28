@@ -19,14 +19,17 @@
  */
 
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
 #include <iostream>
+
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/core/math/gammaLog2.h>
 #include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/tools/database/DBTranslatorSet.h>
+
 #include <agrum/BN/learning/priors/smoothingPrior.h>
+
 #include <agrum/BN/learning/scores_and_tests/scoreBD.h>
 
 namespace gum_tests {
@@ -71,7 +74,6 @@ namespace gum_tests {
 
       return score;
     }
-
 
     bool _equal_(const double x, const double y) const {
       double dev = x >= y ? (x - y) / x : (y - x) / y;
@@ -205,7 +207,6 @@ namespace gum_tests {
 
       delete score4;
     }
-
 
     void _test_no_range_has_nodeId2col() {
       // create the translator set
@@ -345,7 +346,6 @@ namespace gum_tests {
       delete score4;
     }
 
-
     void _test_has_range_no_nodeId2col() {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
@@ -472,7 +472,6 @@ namespace gum_tests {
 
       delete score4;
     }
-
 
     void _test_has_range_has_nodeId2col() {
       // create the translator set
@@ -613,7 +612,6 @@ namespace gum_tests {
 
       delete score4;
     }
-
 
     GUM_ACTIVE_TEST(_multicore) {
       // create the translator set

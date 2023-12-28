@@ -49,7 +49,6 @@ namespace gum {
       return *this;
     }
 
-
     /// move operator
     Prior& Prior::operator=(Prior&& from) {
       if (this != &from) {

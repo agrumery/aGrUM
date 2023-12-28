@@ -24,7 +24,7 @@
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/variables/integerVariable.h>
 
@@ -202,7 +202,6 @@ namespace gum_tests {
 
       delete var5;
     }
-
 
     GUM_ACTIVE_TEST(SecondConstructor) {
       {

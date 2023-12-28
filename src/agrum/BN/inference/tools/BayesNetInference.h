@@ -31,10 +31,11 @@
 #define GUM_BAYES_NET_INFERENCE_H
 
 
-#include <agrum/BN/IBayesNet.h>
-#include <agrum/tools/graphicalModels/inference/graphicalModelInference.h>
 #include <agrum/agrum.h>
 
+#include <agrum/tools/graphicalModels/inference/graphicalModelInference.h>
+
+#include <agrum/BN/IBayesNet.h>
 
 namespace gum {
 
@@ -73,7 +74,6 @@ namespace gum {
   // this will be a friend of Inference
   template < typename GUM_SCALAR >
   class EvidenceInference;
-
 
   /**
    * @class BayesNetInference inference.h
@@ -240,7 +240,6 @@ namespace gum {
 
 
 }   // namespace gum
-
 
 #include <agrum/BN/inference/tools/BayesNetInference_tpl.h>
 

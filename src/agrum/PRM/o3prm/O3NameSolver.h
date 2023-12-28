@@ -30,8 +30,9 @@
 #include <algorithm>
 #include <string>
 
-#include <agrum/PRM/PRM.h>
 #include <agrum/PRM/o3prm/errors.h>
+#include <agrum/PRM/PRM.h>
+
 #include <agrum/tools/core/utils_string.h>
 
 #ifndef GUM_PRM_O3PRM_O3NAMESOLVER_H

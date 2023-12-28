@@ -27,10 +27,11 @@
 #ifndef GUM_SCHEDULE_MULTI_DIM_H
 #define GUM_SCHEDULE_MULTI_DIM_H
 
-#include <string>
 #include <memory>
+#include <string>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/graphicalModels/inference/scheduler/IScheduleMultiDim.h>
 
 namespace gum {
@@ -311,6 +312,7 @@ namespace gum {
     struct ElementType {
       using value_type = T;
     };
+
     template < template < typename, typename... > class CONTAINER, typename T, typename... Args >
     struct ElementType< CONTAINER< T, Args... > > {
       using value_type = T;

@@ -25,6 +25,7 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 #include <cstdio>
+
 #include <agrum/tools/database/DBCell.h>
 
 
@@ -41,7 +42,6 @@ namespace gum {
 
     // create the static members
     int DBCell::_string_max_index_ = 0;
-
 
     Bijection< std::string, int >& DBCell::_strings_() {
 #  ifdef GUM_DEBUG_MODE
@@ -61,7 +61,6 @@ namespace gum {
       static Bijection< std::string, int > strings;
       return strings;
     }
-
 
     // determines whether a string corresponds to an integer
     bool DBCell::isInteger(const std::string& str) {
@@ -83,7 +82,6 @@ namespace gum {
 
       return true;
     }
-
 
     // determines whether a string corresponds to an integer
     bool DBCell::isReal(const std::string& str) {
@@ -117,20 +115,19 @@ namespace gum {
       return true;
     }
 
-
     // try to convert the content of the DBCell into another type
     bool DBCell::convertType(const EltType new_type) {
       if (new_type == _type_) return true;
       switch (new_type) {
           // ===================================
-        case EltType::REAL:
+        case EltType::REAL :
           switch (_type_) {
-            case EltType::INTEGER:
+            case EltType::INTEGER :
               _val_real_ = float(_val_integer_);
               _type_     = EltType::REAL;
               return true;
 
-            case EltType::STRING:
+            case EltType::STRING :
               try {
                 const std::string& str = _strings_().first(_val_index_);
                 if (!isReal(str)) return false;
@@ -139,15 +136,15 @@ namespace gum {
                 return true;
               } catch (std::invalid_argument&) { return false; }
 
-            case EltType::MISSING: return false;
+            case EltType::MISSING : return false;
 
-            default: GUM_ERROR(NotImplementedYet, "type not supported by DBCell convertType")
+            default : GUM_ERROR(NotImplementedYet, "type not supported by DBCell convertType")
           }
 
           // ===================================
-        case EltType::INTEGER:
+        case EltType::INTEGER :
           switch (_type_) {
-            case EltType::REAL: {
+            case EltType::REAL : {
               const int nb = int(_val_real_);
               if (nb == _val_real_) {
                 _val_integer_ = nb;
@@ -156,7 +153,7 @@ namespace gum {
               } else return false;
             }
 
-            case EltType::STRING:
+            case EltType::STRING :
               try {
                 const std::string& str = _strings_().first(_val_index_);
                 if (!isInteger(str)) return false;
@@ -165,15 +162,15 @@ namespace gum {
                 return true;
               } catch (std::invalid_argument&) { return false; }
 
-            case EltType::MISSING: return false;
+            case EltType::MISSING : return false;
 
-            default: GUM_ERROR(NotImplementedYet, "type not supported by DBCell convertType")
+            default : GUM_ERROR(NotImplementedYet, "type not supported by DBCell convertType")
           }
 
           // ===================================
-        case EltType::STRING:
+        case EltType::STRING :
           switch (_type_) {
-            case EltType::REAL: {
+            case EltType::REAL : {
               char buffer[100];
               snprintf(buffer, 100, "%g", _val_real_);
               const std::string str(buffer);
@@ -188,7 +185,7 @@ namespace gum {
               _type_ = EltType::STRING;
               return true;
 
-            case EltType::INTEGER: {
+            case EltType::INTEGER : {
               const std::string str = std::to_string(_val_integer_);
               if (!_strings_().existsFirst(str)) {
                 _strings_().insert(str, _string_max_index_);
@@ -201,60 +198,60 @@ namespace gum {
               _type_ = EltType::STRING;
               return true;
 
-            case EltType::MISSING: return false;
+            case EltType::MISSING : return false;
 
-            default: GUM_ERROR(NotImplementedYet, "type not supported by DBCell convertType")
+            default : GUM_ERROR(NotImplementedYet, "type not supported by DBCell convertType")
           }
 
           // ===================================
-        case EltType::MISSING: _type_ = EltType::MISSING; return true;
+        case EltType::MISSING : _type_ = EltType::MISSING; return true;
 
-        default: GUM_ERROR(NotImplementedYet, "type not supported by DBCell convertType")
+        default : GUM_ERROR(NotImplementedYet, "type not supported by DBCell convertType")
       }
 
       return false;
     }
 
-
     // raises an appropriate exception when encountering a type error
     std::string DBCell::_typeErrorMsg_(const std::string& true_type) const {
       std::stringstream str;
       switch (_type_) {
-        case EltType::REAL:
+        case EltType::REAL :
           str << "The DBCell contains a real number instead of " << true_type;
           break;
 
-        case EltType::INTEGER:
+        case EltType::INTEGER :
           str << "The DBCell contains an integer instead of " << true_type;
           break;
 
-        case EltType::STRING: str << "The DBCell contains a string instead of " << true_type; break;
+        case EltType::STRING :
+          str << "The DBCell contains a string instead of " << true_type;
+          break;
 
-        case EltType::MISSING:
+        case EltType::MISSING :
           str << "The DBCell contains a missing value instead of " << true_type;
           break;
 
-        default: GUM_ERROR(NotImplementedYet, "DBCell type not implemented yet")
+        default : GUM_ERROR(NotImplementedYet, "DBCell type not implemented yet")
       }
 
       return str.str();
     }
 
-
     // returns the content of the DBCell as a string, whatever its type
     std::string DBCell::toString(const std::vector< std::string >& missingVals) const {
       switch (_type_) {
-        case EltType::STRING: return _strings_().first(_val_index_);
+        case EltType::STRING : return _strings_().first(_val_index_);
 
-        case EltType::REAL: {
+        case EltType::REAL : {
           char buffer[100];
           snprintf(buffer, 100, "%g", _val_real_);
           return std::string(buffer);
         }
 
-        case EltType::INTEGER: return std::to_string(_val_integer_);
+        case EltType::INTEGER : return std::to_string(_val_integer_);
 
-        case EltType::MISSING:
+        case EltType::MISSING :
           if (missingVals.size()) return missingVals[0];
           else GUM_ERROR(UndefinedElement, "no missing value symbol found")
       }

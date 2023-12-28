@@ -23,15 +23,15 @@
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
+
+#include <agrum/tools/core/approximations/approximationSchemeListener.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/loopyBeliefPropagation.h>
-#include <agrum/tools/variables/labelizedVariable.h>
-
 #include <agrum/BN/io/BIF/BIFReader.h>
-#include <agrum/tools/core/approximations/approximationSchemeListener.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3
@@ -51,15 +51,18 @@ namespace gum_tests {
     public:
     aSimpleLBPListener(gum::ApproximationScheme& sch) :
         gum::ApproximationSchemeListener(sch), __nbr(0), __mess(""){};
+
     void whenProgress(const void* buffer, const gum::Size a, const double b, const double c) {
       __nbr++;
     }
+
     void whenStop(const void* buffer, const std::string& s) {
       __nbr++;
       __mess = s;
     }
 
-    int         getNbr() { return __nbr; }
+    int getNbr() { return __nbr; }
+
     std::string getMess() { return __mess; }
   };
 
@@ -258,6 +261,7 @@ namespace gum_tests {
         }
       }
     }
+
     GUM_ACTIVE_TEST(LBPNaryTreeWithMultipleEvidence) {
       for (int i = 0; i < MAX_ITER; i++) {
         const auto bn = gum::BayesNet< double >::fastPrototype(
@@ -561,7 +565,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(agsl.getNbr() * inf.periodSize(), inf.nbrIterations())
       TS_ASSERT_DIFFERS(agsl.getMess(), std::string(""))
     }
-
 
     GUM_ACTIVE_TEST(AggregatorsInLBP) {
       gum::BayesNet< double > bn;

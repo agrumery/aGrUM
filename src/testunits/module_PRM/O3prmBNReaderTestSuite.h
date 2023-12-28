@@ -20,7 +20,7 @@
 
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/PRM/o3prm/O3prmBNReader.h>
@@ -115,7 +115,7 @@ namespace gum_tests {
       res = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(res = reader2.proceed())   // class plop not existing
       TS_ASSERT_EQUALS(reader2.errors(),
-                       (gum::Size)1);   // class plop not existing
+                       (gum::Size)1);                         // class plop not existing
       TS_ASSERT_EQUALS(bn.size(), (gum::Size)0)
     }
 
@@ -129,7 +129,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(res, (gum::Size)0)
       TS_ASSERT_EQUALS(bn.size(), (gum::Size)72)
     }
-
 
     GUM_ACTIVE_TEST(WithClassPathAndSystem) {
       gum::BayesNet< double >      bn;

@@ -35,9 +35,10 @@
 // =========================================================================
 // =========================================================================
 // =========================================================================
-#include <agrum/FMDP/SDyna/Strategies/IPlanningStrategy.h>
 #include <agrum/FMDP/planning/mddOperatorStrategy.h>
 #include <agrum/FMDP/planning/treeOperatorStrategy.h>
+#include <agrum/FMDP/SDyna/Strategies/IPlanningStrategy.h>
+
 // =========================================================================
 
 namespace gum {
@@ -63,6 +64,7 @@ namespace gum {
     /// @name
     // ###################################################################
     /// @{
+
     public:
     // ==========================================================================
     ///
@@ -94,6 +96,7 @@ namespace gum {
     /// @name Constructor & destructor.
     // ###################################################################
     /// @{
+
     protected:
     // ==========================================================================
     /// Default constructor
@@ -106,6 +109,7 @@ namespace gum {
     // ==========================================================================
     /// Default destructor
     // ==========================================================================
+
     public:
     virtual ~StructuredPlaner();
 
@@ -359,7 +363,6 @@ namespace gum {
   };
 
 } /* namespace gum */
-
 
 #include <agrum/FMDP/planning/structuredPlaner_tpl.h>
 

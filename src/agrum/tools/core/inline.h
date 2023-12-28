@@ -83,6 +83,6 @@
 #    define NEVER_INLINE
 #  endif /* GUM_NO_INLINE */
 
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+#endif   /* DOXYGEN_SHOULD_SKIP_THIS */
 
-#endif /* GUM_INLINE_H */
+#endif   /* GUM_INLINE_H */

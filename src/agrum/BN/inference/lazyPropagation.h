@@ -32,14 +32,14 @@
 #include <utility>
 
 #include <agrum/agrum.h>
+
+#include <agrum/tools/graphicalModels/inference/scheduler/scheduledInference.h>
+#include <agrum/tools/graphs/algorithms/triangulations/defaultTriangulation.h>
+
 #include <agrum/BN/algorithms/barrenNodesFinder.h>
 #include <agrum/BN/inference/tools/evidenceInference.h>
 #include <agrum/BN/inference/tools/jointTargetedInference.h>
 #include <agrum/BN/inference/tools/relevantPotentialsFinderType.h>
-#include <agrum/tools/graphs/algorithms/triangulations/defaultTriangulation.h>
-
-#include <agrum/tools/graphicalModels/inference/scheduler/scheduledInference.h>
-
 
 namespace gum {
 
@@ -64,7 +64,6 @@ namespace gum {
                                                            const gum::VariableSet& del_vars) {
     return t1.margMaxOut(del_vars);
   }
-
 
   /**
    * @class LazyPropagation lazyPropagation.h
@@ -405,11 +404,7 @@ namespace gum {
     NodeSet _hard_ev_nodes_;
 
     /// the possible types of evidence changes
-    enum EvidenceChangeType {
-      EVIDENCE_ADDED,
-      EVIDENCE_ERASED,
-      EVIDENCE_MODIFIED
-    };
+    enum EvidenceChangeType { EVIDENCE_ADDED, EVIDENCE_ERASED, EVIDENCE_MODIFIED };
 
     /** @brief indicates which nodes of the BN have evidence that changed
      * since the last inference */

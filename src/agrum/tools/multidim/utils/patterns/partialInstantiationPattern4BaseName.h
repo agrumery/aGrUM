@@ -43,6 +43,7 @@ namespace gum {
 
 #  ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME
 #    define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE GUM_SCALAR
+
   template < typename GUM_SCALAR >
   MultiDimImplementation< GUM_SCALAR >* GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME(
      const MultiDimImplementation< GUM_SCALAR >*      table,

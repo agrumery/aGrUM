@@ -23,16 +23,17 @@
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
+
+#include <agrum/tools/core/approximations/approximationSchemeListener.h>
+#include <agrum/tools/multidim/implementations/multiDimArray.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/GibbsSampling.h>
 #include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/tools/multidim/implementations/multiDimArray.h>
-#include <agrum/tools/variables/labelizedVariable.h>
-
 #include <agrum/BN/io/BIF/BIFReader.h>
-#include <agrum/tools/core/approximations/approximationSchemeListener.h>
+
 #include <gumtest/AgrumApproximationUtils.h>   // must be last include
 
 
@@ -56,11 +57,14 @@ namespace gum_tests {
     void whenProgress(const void* buffer, const gum::Size a, const double b, const double c) {
       __nbr++;
     }
+
     void whenStop(const void* buffer, const std::string& s) { __mess = s; }
 
-    int         getNbr() { return __nbr; }
+    int getNbr() { return __nbr; }
+
     std::string getMess() { return __mess; }
   };
+
   class [[maybe_unused]] GibbsSamplingTestSuite: public CxxTest::TestSuite {
     public:
     GUM_ACTIVE_TEST(GibbsSimpleBN) {
@@ -72,16 +76,17 @@ namespace gum_tests {
 
       try {
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::GibbsSampling< double > inf(&bn);
-        inf.setEpsilon(EPSILON_FOR_GIBBS);
-        inf.setVerbosity(false);
-        inf.makeInference();
+          gum::GibbsSampling< double > inf(&bn);
+          inf.setEpsilon(EPSILON_FOR_GIBBS);
+          inf.setVerbosity(false);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
         TS_ASSERT(false)
       }
     }
+
     GUM_ACTIVE_TEST(GibbsApproxBinaryTreeWithoutEvidence) {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
@@ -93,12 +98,12 @@ namespace gum_tests {
 
       try {
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::GibbsSampling< double > inf(&bn);
-        inf.addEvidence("d", 0);
-        inf.addEvidence("g", 1);
-        inf.setEpsilon(EPSILON_FOR_GIBBS);
-        inf.setVerbosity(false);
-        inf.makeInference();
+          gum::GibbsSampling< double > inf(&bn);
+          inf.addEvidence("d", 0);
+          inf.addEvidence("g", 1);
+          inf.setEpsilon(EPSILON_FOR_GIBBS);
+          inf.setVerbosity(false);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
@@ -117,11 +122,11 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::GibbsSampling< double > inf(&bn);
-        inf.addEvidence(bn.idFromName(ev), 0);
-        inf.setEpsilon(EPSILON_FOR_GIBBS);
-        inf.setVerbosity(false);
-        inf.makeInference();
+          gum::GibbsSampling< double > inf(&bn);
+          inf.addEvidence(bn.idFromName(ev), 0);
+          inf.setEpsilon(EPSILON_FOR_GIBBS);
+          inf.setVerbosity(false);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
@@ -141,11 +146,11 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::GibbsSampling< double > inf(&bn);
-        inf.addEvidence(bn.idFromName(ev), 0);
-        inf.setEpsilon(EPSILON_FOR_GIBBS);
-        inf.setVerbosity(false);
-        inf.makeInference();
+          gum::GibbsSampling< double > inf(&bn);
+          inf.addEvidence(bn.idFromName(ev), 0);
+          inf.setEpsilon(EPSILON_FOR_GIBBS);
+          inf.setVerbosity(false);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
@@ -164,11 +169,11 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::GibbsSampling< double > inf(&bn);
-        inf.addEvidence(bn.idFromName(ev), 0);
-        inf.setEpsilon(EPSILON_FOR_GIBBS);
-        inf.setVerbosity(false);
-        inf.makeInference();
+          gum::GibbsSampling< double > inf(&bn);
+          inf.addEvidence(bn.idFromName(ev), 0);
+          inf.setEpsilon(EPSILON_FOR_GIBBS);
+          inf.setVerbosity(false);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
@@ -188,13 +193,13 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::GibbsSampling< double > inf(&bn);
-        inf.addEvidence(bn.idFromName("e"), 0);
-        inf.addEvidence(bn.idFromName("b"), 1);
-        inf.addEvidence(bn.idFromName("h"), 0);
-        inf.setEpsilon(EPSILON_FOR_GIBBS);
-        inf.setVerbosity(false);
-        inf.makeInference();
+          gum::GibbsSampling< double > inf(&bn);
+          inf.addEvidence(bn.idFromName("e"), 0);
+          inf.addEvidence(bn.idFromName("b"), 1);
+          inf.addEvidence(bn.idFromName("h"), 0);
+          inf.setEpsilon(EPSILON_FOR_GIBBS);
+          inf.setVerbosity(false);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
@@ -215,13 +220,13 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::GibbsSampling< double > inf(&bn);
-        inf.addEvidence(bn.idFromName("e"), 0);
-        inf.addEvidence(bn.idFromName("b"), 1);
-        inf.addEvidence(bn.idFromName("h"), 0);
-        inf.setVerbosity(false);
-        inf.setEpsilon(EPSILON_FOR_GIBBS);
-        inf.makeInference();
+          gum::GibbsSampling< double > inf(&bn);
+          inf.addEvidence(bn.idFromName("e"), 0);
+          inf.addEvidence(bn.idFromName("b"), 1);
+          inf.addEvidence(bn.idFromName("h"), 0);
+          inf.setVerbosity(false);
+          inf.setEpsilon(EPSILON_FOR_GIBBS);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
@@ -238,10 +243,10 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::GibbsSampling< double > inf(&bn);
-        inf.setVerbosity(false);
-        inf.setEpsilon(EPSILON_FOR_GIBBS);
-        inf.makeInference();
+          gum::GibbsSampling< double > inf(&bn);
+          inf.setVerbosity(false);
+          inf.setEpsilon(EPSILON_FOR_GIBBS);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
@@ -254,11 +259,11 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::GibbsSampling< double > inf(&bn);
-        inf.addEvidence(bn.idFromName("a"), 0);
-        inf.setVerbosity(false);
-        inf.setEpsilon(EPSILON_FOR_GIBBS);
-        inf.makeInference();
+          gum::GibbsSampling< double > inf(&bn);
+          inf.addEvidence(bn.idFromName("a"), 0);
+          inf.setVerbosity(false);
+          inf.setEpsilon(EPSILON_FOR_GIBBS);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
@@ -271,11 +276,11 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::GibbsSampling< double > inf(&bn);
-        inf.addEvidence(bn.idFromName("d"), 0);
-        inf.setVerbosity(false);
-        inf.setEpsilon(EPSILON_FOR_GIBBS);
-        inf.makeInference();
+          gum::GibbsSampling< double > inf(&bn);
+          inf.addEvidence(bn.idFromName("d"), 0);
+          inf.setVerbosity(false);
+          inf.setEpsilon(EPSILON_FOR_GIBBS);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
@@ -294,10 +299,10 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::GibbsSampling< double > inf(&bn);
-        inf.setVerbosity(false);
-        inf.setEpsilon(EPSILON_FOR_GIBBS);
-        inf.makeInference();
+          gum::GibbsSampling< double > inf(&bn);
+          inf.setVerbosity(false);
+          inf.setEpsilon(EPSILON_FOR_GIBBS);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
@@ -310,11 +315,11 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::GibbsSampling< double > inf(&bn);
-        inf.addEvidence(bn.idFromName("a"), 0);
-        inf.setVerbosity(false);
-        inf.setEpsilon(EPSILON_FOR_GIBBS);
-        inf.makeInference();
+          gum::GibbsSampling< double > inf(&bn);
+          inf.addEvidence(bn.idFromName("a"), 0);
+          inf.setVerbosity(false);
+          inf.setEpsilon(EPSILON_FOR_GIBBS);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
@@ -327,11 +332,11 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::GibbsSampling< double > inf(&bn);
-        inf.addEvidence(bn.idFromName("d"), 0);
-        inf.setVerbosity(false);
-        inf.setEpsilon(EPSILON_FOR_GIBBS);
-        inf.makeInference();
+          gum::GibbsSampling< double > inf(&bn);
+          inf.addEvidence(bn.idFromName("d"), 0);
+          inf.setVerbosity(false);
+          inf.setEpsilon(EPSILON_FOR_GIBBS);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
@@ -351,11 +356,11 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::GibbsSampling< double > inf(&bn);
-        inf.setVerbosity(false);
-        inf.setEpsilon(EPSILON_FOR_HARD_GIBBS);
-        inf.setMinEpsilonRate(0.001);
-        inf.makeInference();
+          gum::GibbsSampling< double > inf(&bn);
+          inf.setVerbosity(false);
+          inf.setEpsilon(EPSILON_FOR_HARD_GIBBS);
+          inf.setMinEpsilonRate(0.001);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_GIBBS_HARD_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);

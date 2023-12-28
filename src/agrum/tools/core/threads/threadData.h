@@ -29,9 +29,10 @@
 #define GUM_THREAD_DATA_H
 
 #include <new>
-#include <type_traits>
 
 #include <agrum/agrum.h>
+
+#include <type_traits>
 
 namespace gum {
 
@@ -120,7 +121,6 @@ namespace gum {
     /// easy accessor
     data_type operator*() { return data; }
 
-
     using data_pointer =
        typename std::conditional< std::is_pointer< T_DATA >::value,
                                   T_DATA,
@@ -135,7 +135,6 @@ namespace gum {
     std::enable_if_t< !std::is_pointer< X >::value, data_pointer > operator->() {
       return &data;
     }
-
 
     /// the data we wish to store without cacheline parallel problem
     T_DATA data;

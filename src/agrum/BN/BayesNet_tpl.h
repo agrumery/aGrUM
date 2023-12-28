@@ -26,13 +26,9 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) and Lionel TORTI
  */
 
+#include <algorithm>
 #include <limits>
 #include <set>
-#include <algorithm>
-
-#include <agrum/BN/BayesNet.h>
-
-#include <agrum/tools/variables/allDiscreteVariables.h>
 
 #include <agrum/tools/multidim/aggregators/amplitude.h>
 #include <agrum/tools/multidim/aggregators/and.h>
@@ -44,14 +40,15 @@
 #include <agrum/tools/multidim/aggregators/min.h>
 #include <agrum/tools/multidim/aggregators/or.h>
 #include <agrum/tools/multidim/aggregators/sum.h>
-
+#include <agrum/tools/multidim/ICIModels/multiDimLogit.h>
 #include <agrum/tools/multidim/ICIModels/multiDimNoisyAND.h>
 #include <agrum/tools/multidim/ICIModels/multiDimNoisyORCompound.h>
 #include <agrum/tools/multidim/ICIModels/multiDimNoisyORNet.h>
+#include <agrum/tools/variables/allDiscreteVariables.h>
 
-#include <agrum/tools/multidim/ICIModels/multiDimLogit.h>
-
+#include <agrum/BN/BayesNet.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
+
 #include <agrum/tools/core/utils_string.h>
 
 namespace gum {
@@ -161,7 +158,6 @@ namespace gum {
 
     var->changeLabel(var->posLabel(old_label), new_label);
   }
-
 
   template < typename GUM_SCALAR >
   INLINE NodeId BayesNet< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
@@ -376,7 +372,6 @@ namespace gum {
   INLINE void BayesNet< GUM_SCALAR >::reverseArc(NodeId tail, NodeId head) {
     reverseArc(Arc(tail, head));
   }
-
 
   //==============================================
   // Aggregators

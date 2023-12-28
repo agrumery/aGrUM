@@ -206,13 +206,11 @@ namespace gum {
       }
     }
 
-
     /// learns a BN (its parameters) when its structure is known
     template < typename GUM_SCALAR >
     BayesNet< GUM_SCALAR > BNLearner< GUM_SCALAR >::learnParameters(bool take_into_account_score) {
       return learnParameters(initialDag_, take_into_account_score);
     }
-
 
     template < typename GUM_SCALAR >
     NodeProperty< Sequence< std::string > >
@@ -244,7 +242,6 @@ namespace gum {
 
       return modals;
     }
-
 
     template < typename GUM_SCALAR >
     std::string BNLearner< GUM_SCALAR >::toString() const {
@@ -289,10 +286,10 @@ namespace gum {
 
       key = "Algorithm";
       switch (selectedAlgo_) {
-        case AlgoType::GREEDY_HILL_CLIMBING:
+        case AlgoType::GREEDY_HILL_CLIMBING :
           vals.emplace_back(key, "Greedy Hill Climbing", "");
           break;
-        case AlgoType::K2: {
+        case AlgoType::K2 : {
           vals.emplace_back(key, "K2", "");
           const auto& k2order = algoK2_.order();
           vars                = "";
@@ -302,58 +299,60 @@ namespace gum {
           }
           vals.emplace_back("K2 order", vars, "");
         } break;
-        case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST:
+        case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST :
           vals.emplace_back(key, "Local Search with Tabu List", "");
           vals.emplace_back("Tabu list size", std::to_string(nbDecreasingChanges_), "");
           break;
-        case AlgoType::MIIC: vals.emplace_back(key, "MIIC", ""); break;
-        default: vals.emplace_back(key, "(unknown)", "?"); break;
+        case AlgoType::MIIC : vals.emplace_back(key, "MIIC", ""); break;
+        default : vals.emplace_back(key, "(unknown)", "?"); break;
       }
 
 
-      key = "Score";
+      key                                             = "Score";
       const std::string NotUsedForConstraintBasedAlgo = "Not used for constraint-based algorithms";
       switch (scoreType_) {
-        case ScoreType::K2: vals.emplace_back(key, "K2", NotUsedForConstraintBasedAlgo); break;
-        case ScoreType::AIC: vals.emplace_back(key, "AIC", NotUsedForConstraintBasedAlgo); break;
-        case ScoreType::BIC: vals.emplace_back(key, "BIC", NotUsedForConstraintBasedAlgo); break;
-        case ScoreType::BD: vals.emplace_back(key, "BD", NotUsedForConstraintBasedAlgo); break;
-        case ScoreType::BDeu: vals.emplace_back(key, "BDeu", NotUsedForConstraintBasedAlgo); break;
-        case ScoreType::LOG2LIKELIHOOD: vals.emplace_back(key, "Log2Likelihood", NotUsedForConstraintBasedAlgo); break;
-        default: vals.emplace_back(key, "(unknown)", "?"); break;
+        case ScoreType::K2 : vals.emplace_back(key, "K2", NotUsedForConstraintBasedAlgo); break;
+        case ScoreType::AIC : vals.emplace_back(key, "AIC", NotUsedForConstraintBasedAlgo); break;
+        case ScoreType::BIC : vals.emplace_back(key, "BIC", NotUsedForConstraintBasedAlgo); break;
+        case ScoreType::BD : vals.emplace_back(key, "BD", NotUsedForConstraintBasedAlgo); break;
+        case ScoreType::BDeu : vals.emplace_back(key, "BDeu", NotUsedForConstraintBasedAlgo); break;
+        case ScoreType::LOG2LIKELIHOOD :
+          vals.emplace_back(key, "Log2Likelihood", NotUsedForConstraintBasedAlgo);
+          break;
+        default : vals.emplace_back(key, "(unknown)", "?"); break;
       }
 
       key                                        = "Correction";
       const std::string NotUsedForScoreBasedAlgo = "Not used for score-based algorithms";
       switch (kmodeMiic_) {
-        case CorrectedMutualInformation::KModeTypes::MDL:
+        case CorrectedMutualInformation::KModeTypes::MDL :
           vals.emplace_back(key, "MDL", NotUsedForScoreBasedAlgo);
           break;
-        case CorrectedMutualInformation::KModeTypes::NML:
+        case CorrectedMutualInformation::KModeTypes::NML :
           vals.emplace_back(key, "NML", NotUsedForScoreBasedAlgo);
           break;
-        case CorrectedMutualInformation::KModeTypes::NoCorr:
+        case CorrectedMutualInformation::KModeTypes::NoCorr :
           vals.emplace_back(key, "No correction", "");
           break;
-        default: vals.emplace_back(key, "(unknown)", "?"); break;
+        default : vals.emplace_back(key, "(unknown)", "?"); break;
       }
 
 
       key     = "Prior";
       comment = checkScorePriorCompatibility();
       switch (priorType_) {
-        case BNLearnerPriorType::NO_prior: vals.emplace_back(key, "-", comment); break;
-        case BNLearnerPriorType::DIRICHLET_FROM_DATABASE:
+        case BNLearnerPriorType::NO_prior : vals.emplace_back(key, "-", comment); break;
+        case BNLearnerPriorType::DIRICHLET_FROM_DATABASE :
           vals.emplace_back(key, "Dirichlet", comment);
           vals.emplace_back("Dirichlet from database", priorDbname_, "");
           break;
-        case BNLearnerPriorType::DIRICHLET_FROM_BAYESNET:
+        case BNLearnerPriorType::DIRICHLET_FROM_BAYESNET :
           vals.emplace_back(key, "Dirichlet", comment);
           vals.emplace_back("Dirichlet from Bayesian network : ", _prior_bn_.toString(), "");
           break;
-        case BNLearnerPriorType::BDEU: vals.emplace_back(key, "BDEU", comment); break;
-        case BNLearnerPriorType::SMOOTHING: vals.emplace_back(key, "Smoothing", comment); break;
-        default: vals.emplace_back(key, "(unknown)", "?"); break;
+        case BNLearnerPriorType::BDEU : vals.emplace_back(key, "BDEU", comment); break;
+        case BNLearnerPriorType::SMOOTHING : vals.emplace_back(key, "Smoothing", comment); break;
+        default : vals.emplace_back(key, "(unknown)", "?"); break;
       }
 
       if (priorType_ != BNLearnerPriorType::NO_prior)
@@ -436,16 +435,16 @@ namespace gum {
 
       // create the new prior
       switch (priorType_) {
-        case BNLearnerPriorType::NO_prior:
+        case BNLearnerPriorType::NO_prior :
           prior_ = new NoPrior(scoreDatabase_.databaseTable(), scoreDatabase_.nodeId2Columns());
           break;
 
-        case BNLearnerPriorType::SMOOTHING:
+        case BNLearnerPriorType::SMOOTHING :
           prior_
              = new SmoothingPrior(scoreDatabase_.databaseTable(), scoreDatabase_.nodeId2Columns());
           break;
 
-        case BNLearnerPriorType::DIRICHLET_FROM_DATABASE:
+        case BNLearnerPriorType::DIRICHLET_FROM_DATABASE :
           if (priorDatabase_ != nullptr) {
             delete priorDatabase_;
             priorDatabase_ = nullptr;
@@ -459,16 +458,16 @@ namespace gum {
                                                   priorDatabase_->nodeId2Columns());
           break;
 
-        case BNLearnerPriorType::DIRICHLET_FROM_BAYESNET:
+        case BNLearnerPriorType::DIRICHLET_FROM_BAYESNET :
           prior_
              = new DirichletPriorFromBN< GUM_SCALAR >(scoreDatabase_.databaseTable(), &_prior_bn_);
           break;
 
-        case BNLearnerPriorType::BDEU:
+        case BNLearnerPriorType::BDEU :
           prior_ = new BDeuPrior(scoreDatabase_.databaseTable(), scoreDatabase_.nodeId2Columns());
           break;
 
-        default: GUM_ERROR(OperationNotAllowed, "The BNLearner does not support yet this prior")
+        default : GUM_ERROR(OperationNotAllowed, "The BNLearner does not support yet this prior")
       }
 
       // do not forget to assign a weight to the prior
@@ -477,7 +476,6 @@ namespace gum {
       // remove the old prior, if any
       if (old_prior != nullptr) delete old_prior;
     }
-
 
     template < typename GUM_SCALAR >
     INLINE std::ostream& operator<<(std::ostream& output, const BNLearner< GUM_SCALAR >& learner) {

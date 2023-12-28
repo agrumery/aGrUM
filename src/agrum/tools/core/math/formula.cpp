@@ -58,25 +58,25 @@ namespace gum {
 
   std::string func2str(FormulaPart::token_function func) {
     switch (func) {
-      case FormulaPart::token_function::exp: {
+      case FormulaPart::token_function::exp : {
         return "exp";
       }
-      case FormulaPart::token_function::log: {
+      case FormulaPart::token_function::log : {
         return "log";
       }
-      case FormulaPart::token_function::ln: {
+      case FormulaPart::token_function::ln : {
         return "ln";
       }
-      case FormulaPart::token_function::pow: {
+      case FormulaPart::token_function::pow : {
         return "pow";
       }
-      case FormulaPart::token_function::sqrt: {
+      case FormulaPart::token_function::sqrt : {
         return "sqrt";
       }
-      case FormulaPart::token_function::nil: {
+      case FormulaPart::token_function::nil : {
         return "nil";
       }
-      default: {
+      default : {
         GUM_ERROR(OperationNotAllowed, "unknown function")
       }
     }
@@ -143,13 +143,13 @@ namespace gum {
   std::string FormulaPart::str() const {
     std::ostringstream s;
     switch (type) {
-      case token_type::NUMBER: {
+      case token_type::NUMBER : {
         s << number;
         break;
       }
 
-      case token_type::PARENTHESIS:
-      case token_type::OPERATOR: {
+      case token_type::PARENTHESIS :
+      case token_type::OPERATOR : {
         if (character == '\0') {
           s << "\\0";
         } else {
@@ -158,12 +158,12 @@ namespace gum {
         break;
       }
 
-      case token_type::FUNCTION: {
+      case token_type::FUNCTION : {
         s << func2str(function);
         break;
       }
 
-      default: {
+      default : {
         GUM_ERROR(OperationNotAllowed, "unknown type")
       }
     }
@@ -298,18 +298,18 @@ namespace gum {
 
     for (auto item: _output_) {
       switch (item.type) {
-        case FormulaPart::token_type::NUMBER: {
+        case FormulaPart::token_type::NUMBER : {
           stack.push(item);
           break;
         }
 
-        case FormulaPart::token_type::OPERATOR:
-        case FormulaPart::token_type::FUNCTION: {
+        case FormulaPart::token_type::OPERATOR :
+        case FormulaPart::token_type::FUNCTION : {
           _reduceOperatorOrFunction_(item, stack);
           break;
         }
 
-        default: {
+        default : {
           GUM_ERROR(OperationNotAllowed, "expecting numbers, operators or functions")
         }
       }

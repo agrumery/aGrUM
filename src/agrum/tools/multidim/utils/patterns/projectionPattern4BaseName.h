@@ -41,6 +41,7 @@ namespace gum {
 
 #  ifdef GUM_MULTI_DIM_PROJECTION_NAME
 #    define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
+
   template < typename GUM_SCALAR >
   MultiDimImplementation< GUM_SCALAR >*
      GUM_MULTI_DIM_PROJECTION_NAME(const MultiDimImplementation< GUM_SCALAR >* table,

@@ -30,10 +30,12 @@
 #ifndef GUM_LEARNING_CORRECTED_MUTUAL_INFORMATION_H
 #define GUM_LEARNING_CORRECTED_MUTUAL_INFORMATION_H
 
-#include <agrum/config.h>
 #include <vector>
 
+#include <agrum/config.h>
+
 #include <agrum/tools/stattests/kNML.h>
+
 #include <agrum/BN/learning/scores_and_tests/scoreLog2Likelihood.h>
 #include <agrum/BN/learning/scores_and_tests/scoreMDL.h>
 
@@ -274,11 +276,7 @@ namespace gum {
 
 
       /// the description type for the complexity correction
-      enum class KModeTypes {
-        MDL,
-        NML,
-        NoCorr
-      };
+      enum class KModeTypes { MDL, NML, NoCorr };
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -355,7 +353,7 @@ namespace gum {
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
-  } /* namespace learning */
+  }    /* namespace learning */
 
 } /* namespace gum */
 

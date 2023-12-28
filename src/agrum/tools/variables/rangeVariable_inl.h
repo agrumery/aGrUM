@@ -60,7 +60,6 @@ namespace gum {
     return double(_minBound_ + static_cast< long >(indice));
   }
 
-
   INLINE Idx RangeVariable::index(const std::string& label) const {
     std::istringstream i(label);
     long               target;

@@ -48,7 +48,6 @@ namespace gum {
       return *this;
     }
 
-
     /// move operator
     ScoreLog2Likelihood& ScoreLog2Likelihood::operator=(ScoreLog2Likelihood&& from) {
       if (this != &from) {
@@ -57,7 +56,6 @@ namespace gum {
       }
       return *this;
     }
-
 
     /// indicates whether the prior is compatible (meaningful) with the score
     std::string ScoreLog2Likelihood::isPriorCompatible(PriorType prior_type, double weight) {
@@ -74,7 +72,6 @@ namespace gum {
           << "' is not yet compatible with the score 'Log2Likelihood'.";
       return msg.str();
     }
-
 
     /// returns the score corresponding to a given nodeset
     double ScoreLog2Likelihood::score_(const IdCondSet& idset) {

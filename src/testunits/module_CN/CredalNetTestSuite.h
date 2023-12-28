@@ -19,19 +19,18 @@
  */
 
 
+#include <cstdlib>   // rand
 #include <iostream>
 #include <string>
 
-#include <cstdlib>   // rand
-
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
-#include <agrum/CN/polytope/LpInterface.h>
-#include <agrum/CN/credalNet.h>
-
-#include <agrum/tools/core/threads/threads.h>
 #include <agrum/tools/core/threads/threadExecutor.h>
+#include <agrum/tools/core/threads/threads.h>
+
+#include <agrum/CN/credalNet.h>
+#include <agrum/CN/polytope/LpInterface.h>
 
 /**
  * @file
@@ -45,7 +44,9 @@ namespace gum_tests {
 
   class [[maybe_unused]] CredalNetTestSuite: public CxxTest::TestSuite {
     private:
+
     protected:
+
     public:
     gum::credal::CredalNet< double >* cn;
 
@@ -331,7 +332,6 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(valsmax[current.idFromName("B-v2")][i], (i == 2 ? 1.0 : 0.0))
       }
     }
-
 
     GUM_ACTIVE_TEST(BadMinMaxFile) {
       gum::BayesNet< double >  monBNa;

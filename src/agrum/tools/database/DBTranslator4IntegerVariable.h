@@ -27,15 +27,15 @@
 #ifndef GUM_LEARNING_DB_TRANSLATOR_4_INTEGER_VARIABLE_H
 #define GUM_LEARNING_DB_TRANSLATOR_4_INTEGER_VARIABLE_H
 
+#include <sstream>
 #include <utility>
 #include <vector>
-#include <sstream>
 
 #include <agrum/agrum.h>
+
+#include <agrum/tools/database/DBCell.h>
 #include <agrum/tools/database/DBTranslator.h>
 #include <agrum/tools/variables/integerVariable.h>
-#include <agrum/tools/database/DBCell.h>
-
 
 namespace gum {
 
@@ -260,7 +260,6 @@ namespace gum {
   } /* namespace learning */
 
 } /* namespace gum */
-
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE

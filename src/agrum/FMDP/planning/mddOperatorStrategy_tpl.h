@@ -34,8 +34,9 @@
 #include <utility>
 #include <vector>
 // =========================================================================
-#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/core/functors.h>
+
+#include <agrum/tools/core/math/math_utils.h>
 // =========================================================================
 #include <agrum/tools/multidim/potential.h>
 #include <agrum/tools/multidim/utils/FunctionGraphUtilities/operators/multiDimFunctionGraphOperator.h>
@@ -73,7 +74,6 @@ namespace gum {
   INLINE MDDOperatorStrategy< GUM_SCALAR >::~MDDOperatorStrategy() {
     GUM_DESTRUCTOR(MDDOperatorStrategy);
   }
-
 
   /* **************************************************************************************************
    * **/
@@ -154,7 +154,6 @@ namespace gum {
     this->deleteFunctionGraph_(f1, f2, del);
     return ret;
   }
-
 
   // ==========================================================================
   // ==========================================================================

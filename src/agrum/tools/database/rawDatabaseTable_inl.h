@@ -41,7 +41,6 @@ namespace gum {
       GUM_CONSTRUCTOR(RawDatabaseTable);
     }
 
-
     // default constructor
     INLINE RawDatabaseTable::RawDatabaseTable(
        const typename RawDatabaseTable::MissingValType& missing_symbols) :
@@ -49,13 +48,11 @@ namespace gum {
       GUM_CONSTRUCTOR(RawDatabaseTable);
     }
 
-
     // default constructor
     INLINE RawDatabaseTable::RawDatabaseTable() :
         IDatabaseTable< DBCell >(std::vector< std::string >(), std::vector< std::string >()) {
       GUM_CONSTRUCTOR(RawDatabaseTable);
     }
-
 
     // copy constructor
     INLINE RawDatabaseTable::RawDatabaseTable(const RawDatabaseTable& from) :
@@ -63,24 +60,20 @@ namespace gum {
       GUM_CONS_CPY(RawDatabaseTable);
     }
 
-
     // move constructor
     INLINE RawDatabaseTable::RawDatabaseTable(RawDatabaseTable&& from) :
         IDatabaseTable< DBCell >(std::move(from)), _ignored_cols_(std::move(from._ignored_cols_)) {
       GUM_CONS_MOV(RawDatabaseTable);
     }
 
-
     // destructor
     INLINE RawDatabaseTable::~RawDatabaseTable() { GUM_DESTRUCTOR(RawDatabaseTable); }
-
 
     /// returns  the set of ignored columns
     INLINE const typename RawDatabaseTable::template DBVector< std::size_t >
        RawDatabaseTable::ignoredColumns() const {
       return _ignored_cols_;
     }
-
 
     // translates a string into a DBCell and returns it
     INLINE DBCell RawDatabaseTable::_convert_(const std::string& elt) const {

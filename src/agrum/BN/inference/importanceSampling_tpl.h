@@ -29,7 +29,6 @@
 
 #include <agrum/BN/inference/importanceSampling.h>
 
-
 namespace gum {
 
   ///  default constructor
@@ -38,7 +37,6 @@ namespace gum {
       SamplingInference< GUM_SCALAR >(bn) {
     GUM_CONSTRUCTOR(ImportanceSampling);
   }
-
 
   ///  destructor
   template < typename GUM_SCALAR >
@@ -85,7 +83,6 @@ namespace gum {
     *w = pSurQ;
     return prev;
   }
-
 
   template < typename GUM_SCALAR >
   void ImportanceSampling< GUM_SCALAR >::unsharpenBN_(BayesNetFragment< GUM_SCALAR >* bn,

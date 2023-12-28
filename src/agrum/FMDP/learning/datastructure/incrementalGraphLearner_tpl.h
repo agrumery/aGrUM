@@ -29,15 +29,17 @@
 // =======================================================
 #include <queue>
 // =======================================================
-#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/core/multiPriorityQueue.h>
 #include <agrum/tools/core/types.h>
+
+#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/core/utils_random.h>
 // =======================================================
 #include <agrum/FMDP/learning/core/chiSquare.h>
 #include <agrum/FMDP/learning/datastructure/incrementalGraphLearner.h>
 // =======================================================
 #include <agrum/tools/variables/discreteVariable.h>
+
 // =======================================================
 
 namespace gum {
@@ -78,7 +80,6 @@ namespace gum {
                          new Set< const Observation* >());
   }
 
-
   // ############################################################################
   /// Default destructor
   // ############################################################################
@@ -101,7 +102,6 @@ namespace gum {
 
     GUM_DESTRUCTOR(IncrementalGraphLearner);
   }
-
 
   // ============================================================================
   /// @name New Observation insertion methods
@@ -134,7 +134,6 @@ namespace gum {
     leafDatabase_[currentNodeId]->insert(newObs);
   }
 
-
   // ============================================================================
   /// @name New Observation insertion methods
   // ============================================================================
@@ -155,7 +154,6 @@ namespace gum {
       nodIter = nni;
     }
   }
-
 
   // ############################################################################
   /**
@@ -193,7 +191,6 @@ namespace gum {
     transpose_(updatedNode, *varIter);
   }
 
-
   // ############################################################################
   /// Turns the given node into a leaf if not already so
   // ############################################################################
@@ -218,7 +215,6 @@ namespace gum {
       chgNodeBoundVar_(currentNodeId, value_);
     }
   }
-
 
   // ############################################################################
   /// Installs given variable to the given node, ensuring that the variable
@@ -326,7 +322,6 @@ namespace gum {
     chgNodeBoundVar_(currentNodeId, desiredVar);
   }
 
-
   // ############################################################################
   /**
    * inserts a new node in internal graph
@@ -349,7 +344,6 @@ namespace gum {
     return newNodeId;
   }
 
-
   // ############################################################################
   /**
    * inserts a new internal node in internal graph
@@ -369,7 +363,6 @@ namespace gum {
     return newNodeId;
   }
 
-
   // ############################################################################
   /**
    * inserts a new leaf node in internal graohs
@@ -388,7 +381,6 @@ namespace gum {
     leafDatabase_.insert(newNodeId, obsSet);
     return newNodeId;
   }
-
 
   // ############################################################################
   /**
@@ -418,7 +410,6 @@ namespace gum {
 
     needUpdate_ = true;
   }
-
 
   // ############################################################################
   /**

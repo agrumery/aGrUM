@@ -39,6 +39,7 @@
 #define GUM_LEARNING_STRUCTURAL_CONSTRAINT_SLICE_ORDER_H
 
 #include <agrum/agrum.h>
+
 #include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>
 
 namespace gum {

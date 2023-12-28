@@ -27,8 +27,9 @@
  */
 
 // to ease IDE parser
-#include <agrum/tools/core/utils_random.h>
 #include <random>
+
+#include <agrum/tools/core/utils_random.h>
 
 namespace gum {
 
@@ -49,7 +50,6 @@ namespace gum {
     std::uniform_real_distribution uni_real(0.0, 1.0);
     return uni_real(_rand_namespace_::Generator_);
   }
-
 
   INLINE
   void initRandom(unsigned int seed) {

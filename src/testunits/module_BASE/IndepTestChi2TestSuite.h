@@ -19,17 +19,19 @@
  */
 
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
 #include <iostream>
 
-#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
-#include <agrum/tools/database/DBRowGeneratorParser.h>
-#include <agrum/tools/database/DBInitializerFromCSV.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
+
 #include <agrum/tools/database/databaseTable.h>
+#include <agrum/tools/database/DBInitializerFromCSV.h>
+#include <agrum/tools/database/DBRowGeneratorParser.h>
+#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/tools/database/DBTranslatorSet.h>
-#include <agrum/BN/learning/priors/noPrior.h>
 #include <agrum/tools/stattests/indepTestChi2.h>
+
+#include <agrum/BN/learning/priors/noPrior.h>
 
 namespace gum_tests {
 
@@ -231,6 +233,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(stats.first, 2.0, 1e-3)
       TS_ASSERT_DELTA(stats.second, 0.7357588823428847, 1e-3)
     }
+
     GUM_ACTIVE_TEST(_statistics_4) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/indepXYZ.csv"));
       const auto&                         var_names = initializer.variableNames();

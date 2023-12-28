@@ -51,7 +51,6 @@ namespace gum {
       ApproximationPolicy< GUM_SCALAR >(md),
       epsilon_(md->epsilon_), nbInterval_(md->nbInterval_) {}
 
-
   // @brief Convert value to his approximation.
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR

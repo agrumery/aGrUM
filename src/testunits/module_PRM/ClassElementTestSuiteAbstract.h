@@ -22,7 +22,7 @@
 #define GUM_CLASSELEMENT_TEST_SUITE_H
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/core/exceptions.h>
 #include <agrum/PRM/elements/PRMClassElement.h>

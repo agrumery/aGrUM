@@ -48,7 +48,6 @@ namespace gum {
       return *this;
     }
 
-
     /// move operator
     ScoreBD& ScoreBD::operator=(ScoreBD&& from) {
       if (this != &from) {
@@ -57,7 +56,6 @@ namespace gum {
       }
       return *this;
     }
-
 
     /// indicates whether the prior is compatible (meaningful) with the score
     std::string ScoreBD::isPriorCompatible(PriorType prior_type, double weight) {
@@ -74,7 +72,6 @@ namespace gum {
           << "' is not yet compatible with the score 'BD'.";
       return msg.str();
     }
-
 
     /// returns the score corresponding to a given nodeset
     double ScoreBD::score_(const IdCondSet& idset) {

@@ -47,7 +47,6 @@ namespace gum {
     GUM_CONSTRUCTOR(ScheduleOperator);
   }
 
-
   /// copy constructor
   ScheduleOperator::ScheduleOperator(const ScheduleOperator& from) :
       _op_type_(from._op_type_), _imply_deletion_(from._imply_deletion_),
@@ -55,7 +54,6 @@ namespace gum {
     // for debugging purposes
     GUM_CONS_CPY(ScheduleOperator);
   }
-
 
   /// move constructor
   ScheduleOperator::ScheduleOperator(ScheduleOperator&& from) :
@@ -65,13 +63,11 @@ namespace gum {
     GUM_CONS_MOV(ScheduleOperator);
   }
 
-
   /// destructor
   ScheduleOperator::~ScheduleOperator() {
     // for debugging purposes
     GUM_DESTRUCTOR(ScheduleOperator);
   }
-
 
   /// copy operator
   ScheduleOperator& ScheduleOperator::operator=(const ScheduleOperator& from) {
@@ -80,7 +76,6 @@ namespace gum {
     _result_persistent_ = from._result_persistent_;
     return *this;
   }
-
 
   /// move operator
   ScheduleOperator& ScheduleOperator::operator=(ScheduleOperator&& from) {

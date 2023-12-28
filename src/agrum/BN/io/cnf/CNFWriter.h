@@ -37,8 +37,9 @@
 #include <sstream>
 #include <string>
 
-#include <agrum/BN/io/BNWriter.h>
 #include <agrum/agrum.h>
+
+#include <agrum/BN/io/BNWriter.h>
 
 // Ajout sur branche DDE pour pouvoir compiler (à retirer très probablement)
 // problème sur template <typename> class IApproximationPolicy = ExactPolicy
@@ -84,6 +85,7 @@ namespace gum {
     CNFWriter& operator=(CNFWriter&&) noexcept = default;
 
     /// @}
+
     protected:
     /**
      * Writes a Bayesian network in the output stream using the BN format.

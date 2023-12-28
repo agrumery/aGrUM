@@ -123,13 +123,13 @@ namespace gum {
       Arc arc(modif.tail(), modif.head());
 
       switch (modif.type()) {
-        case ChangeType::ARC_DELETION:
+        case ChangeType::ARC_DELETION :
           if (deletions.exists(arc)) ++deletions[arc];
           else deletions.insert(arc, 1);
 
           break;
 
-        case ChangeType::ARC_ADDITION:
+        case ChangeType::ARC_ADDITION :
           if (modif.tail() == modif.head()) return true;
 
           if (additions.exists(arc)) ++additions[arc];
@@ -137,7 +137,7 @@ namespace gum {
 
           break;
 
-        case ChangeType::ARC_REVERSAL:
+        case ChangeType::ARC_REVERSAL :
           if (deletions.exists(arc)) ++deletions[arc];
           else deletions.insert(arc, 1);
 
@@ -148,7 +148,7 @@ namespace gum {
 
           break;
 
-        default: GUM_ERROR(OperationNotAllowed, "undefined change type")
+        default : GUM_ERROR(OperationNotAllowed, "undefined change type")
       }
     }
 

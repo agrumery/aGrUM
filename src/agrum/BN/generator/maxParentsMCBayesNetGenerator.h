@@ -29,14 +29,13 @@
 #ifndef GUM_MAX_PARENTS_MC_BAYES_NET_GENERATOR
 #define GUM_MAX_PARENTS_MC_BAYES_NET_GENERATOR
 
-#include <agrum/agrum.h>
-
 #include <fstream>
 #include <iostream>
 #include <set>
+#include <sstream>
 #include <vector>
 
-#include <sstream>
+#include <agrum/agrum.h>
 
 #ifdef HAVE_DIRENT_H
 #  include <dirent.h>

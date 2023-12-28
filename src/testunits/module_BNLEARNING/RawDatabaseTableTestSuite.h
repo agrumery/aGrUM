@@ -19,9 +19,10 @@
  */
 
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
 #include <iostream>
+
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/core/threads/threads.h>
 #include <agrum/tools/database/rawDatabaseTable.h>
@@ -81,7 +82,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(db2.content().size(), (gum::Size)2)
     }
 
-
     GUM_ACTIVE_TEST(_db1_bis) {
       const std::vector< std::string > empty_miss;
       std::vector< std::string >       vnames{"v1", "v2", "v3"};
@@ -124,7 +124,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(db2.nbVariables(), (gum::Size)3)
       TS_ASSERT_EQUALS(db2.content().size(), (gum::Size)2)
     }
-
 
     GUM_ACTIVE_TEST(_db2) {
       gum::learning::RawDatabaseTable database;
@@ -265,7 +264,6 @@ namespace gum_tests {
       TS_ASSERT_THROWS(uxhandler2 = uhandler2, std::bad_cast&)
     }
 
-
     GUM_ACTIVE_TEST(_db3) {
       gum::learning::RawDatabaseTable database;
       TS_ASSERT_EQUALS(database.content().size(), (gum::Size)0)
@@ -317,7 +315,6 @@ namespace gum_tests {
       database.clear();
       TS_ASSERT_EQUALS(database.content().size(), (gum::Size)0)
     }
-
 
     GUM_ACTIVE_TEST(_db4) {
       gum::learning::RawDatabaseTable database;
@@ -393,7 +390,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(handler3.hasRows(), false)
     }
 
-
     GUM_ACTIVE_TEST(_db5) {
       gum::learning::RawDatabaseTable database;
       TS_ASSERT_EQUALS(database.content().size(), (gum::Size)0)
@@ -435,7 +431,6 @@ namespace gum_tests {
       }
       TS_ASSERT_EQUALS(x, 2)
     }
-
 
     GUM_ACTIVE_TEST(_db6) {
       gum::learning::RawDatabaseTable database;
@@ -479,7 +474,6 @@ namespace gum_tests {
       database.ignoreColumn(7);
       TS_GUM_ASSERT_THROWS_NOTHING(database.insertRow(row3))
     }
-
 
     GUM_ACTIVE_TEST(_db_parallel) {
       gum::learning::RawDatabaseTable database;
@@ -534,7 +528,6 @@ namespace gum_tests {
       }
     }
 
-
     GUM_ACTIVE_TEST(_db_parallel2) {
       gum::learning::RawDatabaseTable database;
       TS_ASSERT_EQUALS(database.content().size(), (gum::Size)0)
@@ -587,7 +580,6 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(nb[i], 6)
       }
     }
-
 
     GUM_ACTIVE_TEST(_iterators) {
       gum::learning::RawDatabaseTable database;
@@ -790,7 +782,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(dbnames.size(), (gum::Size)std::size_t(0))
       TS_ASSERT_EQUALS(database.content().size(), (gum::Size)std::size_t(0))
     }
-
 
     GUM_ACTIVE_TEST(_missing_vals) {
       std::vector< std::string >      missing{"?", "N/A", "???"};

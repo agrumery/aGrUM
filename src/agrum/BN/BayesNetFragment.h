@@ -124,6 +124,7 @@ namespace gum {
      * @throw NotFound If no variable's id matches varId.
      */
     const Potential< GUM_SCALAR >& cpt(NodeId varId) const final;
+
     const Potential< GUM_SCALAR >& cpt(const std::string& name) const {
       return cpt(idFromName(name));
     };
@@ -139,6 +140,7 @@ namespace gum {
      * @throw NotFound If no variable's id matches varId.
      */
     virtual const DiscreteVariable& variable(NodeId id) const final;
+
     virtual const DiscreteVariable& variable(const std::string& name) const final {
       return variable(idFromName(name));
     };
@@ -179,6 +181,7 @@ namespace gum {
      * check if a certain NodeId exists in the fragment
      */
     bool isInstalledNode(NodeId id) const;
+
     bool isInstalledNode(const std::string& name) const {
       return isInstalledNode(idFromName(name));
     };
@@ -190,6 +193,7 @@ namespace gum {
      * @warning nothing happens if the node is already installed
      */
     void installNode(NodeId id);
+
     void installNode(const std::string& name) { installNode(_bn_.idFromName(name)); }
 
     /**
@@ -199,6 +203,7 @@ namespace gum {
      * @warning nothing happens if the node is already installed
      */
     void installAscendants(NodeId id);
+
     void installAscendants(const std::string& name) { installAscendants(_bn_.idFromName(name)); }
 
     /**
@@ -207,6 +212,7 @@ namespace gum {
      * @warning nothing happens if the node is not installed
      */
     void uninstallNode(NodeId id);
+
     void uninstallNode(const std::string& name) { uninstallNode(idFromName(name)); }
 
     /**
@@ -220,6 +226,7 @@ namespace gum {
      *(or is not a marginal)
      **/
     void installMarginal(NodeId id, const Potential< GUM_SCALAR >& pot);
+
     void installMarginal(const std::string& name, const Potential< GUM_SCALAR >& pot) {
       installMarginal(_bn_.idFromName(name), pot);
     }
@@ -237,6 +244,7 @@ namespace gum {
      *variable or if  a variable in the CPT is not a parent in the referred bn.
      **/
     void installCPT(NodeId id, const Potential< GUM_SCALAR >& pot);
+
     void installCPT(const std::string& name, const Potential< GUM_SCALAR >& pot) {
       installCPT(_bn_.idFromName(name), pot);
     };
@@ -249,6 +257,7 @@ namespace gum {
      *not installed.
      */
     void uninstallCPT(NodeId id);
+
     void uninstallCPT(const std::string& name) { uninstallCPT(idFromName(name)); }
 
     /**
@@ -258,6 +267,7 @@ namespace gum {
      * @throw NotFound if the id is not in the fragment
      */
     bool checkConsistency(NodeId id) const;
+
     bool checkConsistency(const std::string& name) const {
       return checkConsistency(idFromName(name));
     }

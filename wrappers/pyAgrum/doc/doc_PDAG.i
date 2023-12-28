@@ -77,7 +77,4 @@ Raises
 ------
   pyAgrum.InvalidNode
     If n1 or n2 does not belong to the graph nodes.
-
-  PyAgrum.InvalidDirectedCycle
-    if the edge would create a (mixed) cycle.
 "

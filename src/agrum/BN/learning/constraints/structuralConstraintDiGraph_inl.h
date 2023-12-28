@@ -74,16 +74,16 @@ namespace gum {
     INLINE bool
        StructuralConstraintDiGraph::checkModificationAlone(const GraphChange& change) const {
       switch (change.type()) {
-        case GraphChangeType::ARC_ADDITION:
+        case GraphChangeType::ARC_ADDITION :
           return checkArcAdditionAlone(change.node1(), change.node2());
 
-        case GraphChangeType::ARC_DELETION:
+        case GraphChangeType::ARC_DELETION :
           return checkArcDeletionAlone(change.node1(), change.node2());
 
-        case GraphChangeType::ARC_REVERSAL:
+        case GraphChangeType::ARC_REVERSAL :
           return checkArcReversalAlone(change.node1(), change.node2());
 
-        default:
+        default :
           GUM_ERROR(OperationNotAllowed,
                     "edge modifications are not "
                     "supported by StructuralConstraintDiGraph");
@@ -109,19 +109,19 @@ namespace gum {
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintDiGraph::modifyGraphAlone(const GraphChange& change) {
       switch (change.type()) {
-        case GraphChangeType::ARC_ADDITION:
+        case GraphChangeType::ARC_ADDITION :
           modifyGraphAlone(reinterpret_cast< const ArcAddition& >(change));
           break;
 
-        case GraphChangeType::ARC_DELETION:
+        case GraphChangeType::ARC_DELETION :
           modifyGraphAlone(reinterpret_cast< const ArcDeletion& >(change));
           break;
 
-        case GraphChangeType::ARC_REVERSAL:
+        case GraphChangeType::ARC_REVERSAL :
           modifyGraphAlone(reinterpret_cast< const ArcReversal& >(change));
           break;
 
-        default:
+        default :
           GUM_ERROR(OperationNotAllowed,
                     "edge modifications are not supported by digraph constraint")
       }

@@ -19,14 +19,15 @@
  */
 
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
-
 #include <sstream>
 
-#include <agrum/PRM/elements/PRMSystem.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
+
 #include <agrum/tools/core/hashTable.h>
 #include <agrum/tools/variables/labelizedVariable.h>
+
+#include <agrum/PRM/elements/PRMSystem.h>
 
 /**
  * This class is used to test gum::prm::PRMClassElement, since it is an abstrac

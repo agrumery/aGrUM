@@ -31,7 +31,6 @@
 
 #include <list>
 
-
 #include <agrum/PRM/PRM.h>
 
 namespace gum {
@@ -108,6 +107,7 @@ namespace gum {
       virtual std::string toDot() const;
 
       /// @}
+
       private:
       /// Mapping between DiscreteVariable and their NodeId
       HashTable< const DiscreteVariable*, const PRMAttribute< GUM_SCALAR >* > _varNodeMap_;

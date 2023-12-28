@@ -20,7 +20,7 @@
 
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 #include <agrum/PRM/elements/PRMClass.h>
 #include <agrum/PRM/elements/PRMFormAttribute.h>
@@ -134,6 +134,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING(ref = new PRMReferenceSlot("ref", *_A_, true))
       delete ref;
     }
+
     /// @}
 
     /// Methods
@@ -200,6 +201,7 @@ namespace gum_tests {
       // Act & assert
       TS_ASSERT_THROWS(const_ref.cpf(), const gum::OperationNotAllowed&)
     }
+
     /// @}
 
     /// Add parents and children
@@ -227,6 +229,7 @@ namespace gum_tests {
       auto after = child.cpf().variablesSequence().size();
       TS_ASSERT_EQUALS(before, after)
     }
+
     /// @}
   };
 

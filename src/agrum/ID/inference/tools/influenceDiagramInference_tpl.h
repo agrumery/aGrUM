@@ -27,6 +27,7 @@
 
 // to ease parsers in IDE
 #include <agrum/tools/graphicalModels/inference/graphicalModelInference.h>
+
 #include <agrum/ID/inference/tools/influenceDiagramInference.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

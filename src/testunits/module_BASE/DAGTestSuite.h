@@ -20,10 +20,9 @@
 #include <iostream>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/graphs/DAG.h>
-#include <agrum/tools/graphs/graphElements.h>
 #include <agrum/tools/graphs/graphElements.h>
 
 // The graph used for the tests:
@@ -365,7 +364,7 @@ namespace gum_tests {
       gum::DAG graph = buildGraph();
       TS_ASSERT_EQUALS(graph.family(0), gum::NodeSet({0}))
       TS_ASSERT_EQUALS(graph.family(4), gum::NodeSet({1, 2, 3, 4}))
-      auto seq=graph.topologicalOrder();
+      auto seq = graph.topologicalOrder();
     }
 
     GUM_ACTIVE_TEST(MonoCycle) {
@@ -373,6 +372,5 @@ namespace gum_tests {
       auto     x = graph.addNode();
       TS_ASSERT_THROWS(graph.addArc(x, x), const gum::Exception&)
     }
-
   };
 }   // namespace gum_tests

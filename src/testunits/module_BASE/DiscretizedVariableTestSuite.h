@@ -24,7 +24,7 @@
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/core/list.h>
 #include <agrum/tools/variables/discretizedVariable.h>
@@ -210,7 +210,6 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["8"])
       TS_ASSERT_EQUALS(vv, (gum::Size)2)
     }
-
 
     GUM_ACTIVE_TEST(NormalLimitsWithNoEmpiricalInConstructor) {
       gum::DiscretizedVariable< unsigned int > v("var",

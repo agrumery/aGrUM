@@ -20,10 +20,9 @@
 
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 #include <agrum/PRM/inference/gspan.h>
-
 #include <agrum/PRM/o3prm/O3prmReader.h>
 
 namespace gum_tests {

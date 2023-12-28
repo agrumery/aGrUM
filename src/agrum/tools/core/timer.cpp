@@ -26,10 +26,11 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Jean-Philippe Dubus
  */
 
-#include <agrum/tools/core/timer.h>
 #include <chrono>
 #include <cmath>
 #include <sstream>
+
+#include <agrum/tools/core/timer.h>
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/tools/core/timer_inl.h>

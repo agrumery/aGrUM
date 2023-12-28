@@ -37,7 +37,6 @@ namespace gum {
     bn_     = nullptr;
   }
 
-
   template < typename GUM_SCALAR >
   Estimator< GUM_SCALAR >::Estimator(const IBayesNet< GUM_SCALAR >* bn) : Estimator() {
     bn_ = bn;
@@ -49,14 +48,12 @@ namespace gum {
     GUM_CONSTRUCTOR(Estimator);
   }
 
-
   template < typename GUM_SCALAR >
   INLINE Estimator< GUM_SCALAR >::~Estimator() {
     GUM_DESTRUCTOR(Estimator);
     // remove all the posteriors computed
     clear();
   }
-
 
   /* adds all potential target variables from a given BN to the Estimator */
 
@@ -135,14 +132,12 @@ namespace gum {
     return *p;
   }
 
-
   /* expected value considering a Bernouilli variable with parameter val */
 
   template < typename GUM_SCALAR >
   GUM_SCALAR Estimator< GUM_SCALAR >::EV(std::string name, Idx val) {
     return estimator_[name][val] / wtotal_;
   }
-
 
   /* variance considering a Bernouilli variable with parameter val */
 
@@ -151,7 +146,6 @@ namespace gum {
     GUM_SCALAR p = EV(name, val);
     return p * (1 - p);
   }
-
 
   /* returns maximum length of confidence intervals for each variable, each
    * parameter */

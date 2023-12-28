@@ -64,7 +64,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMFuncAttribute< GUM_SCALAR >&
-       PRMFuncAttribute< GUM_SCALAR >::operator=(const PRMFuncAttribute< GUM_SCALAR >& from) {
+           PRMFuncAttribute< GUM_SCALAR >::operator=(const PRMFuncAttribute< GUM_SCALAR >& from) {
       GUM_ERROR(FatalError, "illegal call to copy operator")
     }
 

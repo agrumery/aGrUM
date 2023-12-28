@@ -186,4 +186,4 @@ namespace gum {
 #  include <agrum/tools/graphs/DAG_inl.h>
 #endif   // GUM_NOINLINE
 
-#endif /* GUM_DAG_H */
+#endif   /* GUM_DAG_H */

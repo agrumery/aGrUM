@@ -27,8 +27,10 @@
  * GONZALES(_at_AMU)
  */
 // =======================================================
-#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/FMDP/learning/datastructure/leaves/fusionContext.h>
+
+#include <agrum/tools/core/math/math_utils.h>
+
 // =======================================================
 
 namespace gum {
@@ -122,7 +124,6 @@ namespace gum {
     return ptop != ctop;
   }
 
-
   // ############################################################################
   //
   // ############################################################################
@@ -162,7 +163,6 @@ namespace gum {
     return ptop != ctop;
   }
 
-
   // ############################################################################
   //
   // ############################################################################
@@ -178,7 +178,6 @@ namespace gum {
 
     return retBag;
   }
-
 
   template < bool isInitial >
   std::string FusionContext< isInitial >::toString() {

@@ -23,19 +23,19 @@
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
-#include <agrum/BN/BayesNet.h>
-#include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/config.h>
 
 #include <agrum/tools/multidim/implementations/multiDimArray.h>
 #include <agrum/tools/variables/labelizedVariable.h>
 
-#include <agrum/BN/inference/ShaferShenoyInference.h>
+#include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/tools/relevantPotentialsFinderType.h>
 #include <agrum/BN/inference/variableElimination.h>
+#include <agrum/BN/io/BIF/BIFReader.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3
@@ -218,7 +218,6 @@ namespace gum_tests {
       }
     }
 
-
     // testing information methods
     GUM_ACTIVE_TEST(InformationMethods) {
       fill(*bn);
@@ -241,7 +240,6 @@ namespace gum_tests {
 
       //@TODO : test computations and not only good behaviour
     }
-
 
     // Testing when there is no evidence
     GUM_ACTIVE_TEST(Joint) {
@@ -294,7 +292,6 @@ namespace gum_tests {
       }
     }
 
-
     GUM_ACTIVE_TEST(SmartManagementOfJointTarget) {
       fill(*bn);
 
@@ -311,7 +308,6 @@ namespace gum_tests {
       inf.addJointTarget(gum::NodeSet{2, 3, 4});
       TS_ASSERT_EQUALS(inf.nbrJointTargets(), (gum::Size)2)
     }
-
 
     GUM_ACTIVE_TEST(Asia) {
       std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
@@ -705,8 +701,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(res.nbrDim(), (gum::Size)2);   // 2 indep 0 given 1
 
       gum::VariableElimination< double > ie_0(&bn);
-      ie_0.addTarget(0);        // visit_to_asia
-      ie_0.addEvidence(1, 0);   // tuberculosis
+      ie_0.addTarget(0);                              // visit_to_asia
+      ie_0.addEvidence(1, 0);                         // tuberculosis
       ie_0.makeInference();
       gum::Potential< double > p_0 = ie_0.posterior(0);
 
@@ -747,8 +743,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(res.nbrDim(), (gum::Size)2);   // 2 indep 0 given 1
 
       gum::VariableElimination< double > ie_0(&bn);
-      ie_0.addTarget(0);        // visit_to_asia
-      ie_0.addEvidence(1, 0);   // tuberculosis
+      ie_0.addTarget(0);                              // visit_to_asia
+      ie_0.addEvidence(1, 0);                         // tuberculosis
       ie_0.makeInference();
       gum::Potential< double > p_0 = ie_0.posterior(0);
 
@@ -783,6 +779,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(res = ie.evidenceImpact("E", {"A", "B", "C", "D", "F"}))
       TS_ASSERT_EQUALS(res.nbrDim(), (gum::Size)4);   // MarkovBlanket(E)=(A,D,C)
     }
+
     GUM_ACTIVE_TEST(JointWithHardEvidence) {
       /*
       F  A
@@ -808,7 +805,6 @@ namespace gum_tests {
         TS_ASSERT(false)
       }
     }
-
 
     GUM_ACTIVE_TEST(ImplicitTargetAllCheck) {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->Y->E->F->G;W->E<-Z;X->E");
@@ -917,7 +913,7 @@ namespace gum_tests {
                               0.5f, 0.5f,
                               1.0f, 0.0f}   // clang-format on
       );
-      bn.cpt(i5).fillWith({// clang-format off
+      bn.cpt(i5).fillWith({        // clang-format off
                 0.3f, 0.6f, 0.1f,
                 0.5f, 0.5f, 0.0f,
                 0.5f, 0.5f, 0.0f,

@@ -32,7 +32,6 @@ namespace gum {
 
   DAGmodel::~DAGmodel() { GUM_DESTRUCTOR(DAGmodel); }
 
-
   DAGmodel& DAGmodel::operator=(const DAGmodel& source) {
     if (this != &source) {
       GraphicalModel::operator=(source);

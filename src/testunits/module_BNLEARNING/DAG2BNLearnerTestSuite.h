@@ -19,18 +19,20 @@
  */
 
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
 #include <iostream>
 
-#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
-#include <agrum/tools/database/DBTranslatorSet.h>
-#include <agrum/BN/learning/priors/noPrior.h>
-#include <agrum/BN/learning/priors/smoothingPrior.h>
-#include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
-#include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
+
 #include <agrum/tools/database/DBRowGenerator4CompleteRows.h>
 #include <agrum/tools/database/DBRowGeneratorEM.h>
+#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
+#include <agrum/tools/database/DBTranslatorSet.h>
+
+#include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
+#include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
+#include <agrum/BN/learning/priors/noPrior.h>
+#include <agrum/BN/learning/priors/smoothingPrior.h>
 
 namespace gum_tests {
 
@@ -132,7 +134,6 @@ namespace gum_tests {
       std::vector< double > xv02 = _xnormalize_({1201, 126, 76, 1, 1, 1, 1, 1, 1});
       TS_ASSERT_EQUALS(v02, xv02)
     }
-
 
     GUM_ACTIVE_TEST(EM) {
       gum::LabelizedVariable var("x", "", 0);

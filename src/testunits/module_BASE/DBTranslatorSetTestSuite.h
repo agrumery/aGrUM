@@ -19,18 +19,18 @@
  */
 
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
 #include <iostream>
-#include <vector>
 #include <string>
+#include <vector>
 
-#include <agrum/tools/database/DBTranslatorSet.h>
-#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
-#include <agrum/tools/database/DBTranslator4DiscretizedVariable.h>
-#include <agrum/tools/database/DBTranslator4RangeVariable.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
+
 #include <agrum/tools/database/DBTranslator4ContinuousVariable.h>
-
+#include <agrum/tools/database/DBTranslator4DiscretizedVariable.h>
+#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
+#include <agrum/tools/database/DBTranslator4RangeVariable.h>
+#include <agrum/tools/database/DBTranslatorSet.h>
 
 namespace gum_tests {
 
@@ -258,7 +258,6 @@ namespace gum_tests {
       }
     }
 
-
     GUM_ACTIVE_TEST(_trans3) {
       gum::learning::DBTranslatorSet set;
 
@@ -306,7 +305,6 @@ namespace gum_tests {
 
       delete set4;
     }
-
 
     GUM_ACTIVE_TEST(_trans4) {
       {
@@ -389,7 +387,6 @@ namespace gum_tests {
       }
     }
 
-
     GUM_ACTIVE_TEST(_trans5) {
       gum::learning::DBTranslatorSet set;
       std::size_t                    pos;
@@ -426,7 +423,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(set.translate(row3, 1).cont_val, 0.33f)
       TS_ASSERT_EQUALS(set.translate(row3, 2).discr_val, (std::size_t)1)
     }
-
 
     GUM_ACTIVE_TEST(_trans6) {
       gum::learning::DBTranslatorSet set;
@@ -521,7 +517,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(set.translate(row1, 1).cont_val, 0.33f)
       TS_ASSERT_EQUALS(set.translate(row1, 2).discr_val, (std::size_t)0)
     }
-
 
     GUM_ACTIVE_TEST(_trans8) {
       gum::learning::DBTranslatorSet set;

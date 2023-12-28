@@ -30,7 +30,6 @@
 #include <queue>
 
 #include <agrum/PRM/elements/PRMClass.h>
-
 #include <agrum/PRM/elements/PRMInterface.h>
 
 namespace gum {
@@ -85,7 +84,7 @@ namespace gum {
       // Adding other implementation
       if (_implements_ == nullptr) {   // super has not created  _implements_
         _implements_ = new Set< PRMInterface< GUM_SCALAR >* >(set);
-      } else {   // we just add the new implementations
+      } else {                         // we just add the new implementations
         for (const auto elt: set) {
           _implements_->insert(elt);
         }
@@ -428,7 +427,7 @@ namespace gum {
     bool PRMClass< GUM_SCALAR >::isSubTypeOf(
        const PRMClassElementContainer< GUM_SCALAR >& cec) const {
       switch (cec.obj_type()) {
-        case PRMObject::prm_type::CLASS: {
+        case PRMObject::prm_type::CLASS : {
           const PRMClass< GUM_SCALAR >* current = this;
 
           while (current != 0) {
@@ -440,7 +439,7 @@ namespace gum {
           return false;
         }
 
-        case PRMObject::prm_type::PRM_INTERFACE: {
+        case PRMObject::prm_type::PRM_INTERFACE : {
           if (_implements_ != nullptr) {
             const PRMInterface< GUM_SCALAR >& i
                = static_cast< const PRMInterface< GUM_SCALAR >& >(cec);
@@ -454,7 +453,7 @@ namespace gum {
           return false;
         }
 
-        default: {
+        default : {
           GUM_ERROR(FatalError, "unknown ClassElementContainer<GUM_SCALAR>")
         }
       }
@@ -611,7 +610,7 @@ namespace gum {
       }
 
       switch (elt->elt_type()) {
-        case PRMClassElement< GUM_SCALAR >::prm_attribute: {
+        case PRMClassElement< GUM_SCALAR >::prm_attribute : {
           _attributes_.insert(static_cast< PRMAttribute< GUM_SCALAR >* >(elt));
           _addCastDescendants_(static_cast< PRMAttribute< GUM_SCALAR >* >(elt));
 
@@ -623,7 +622,7 @@ namespace gum {
           break;
         }
 
-        case PRMClassElement< GUM_SCALAR >::prm_aggregate: {
+        case PRMClassElement< GUM_SCALAR >::prm_aggregate : {
           _aggregates_.insert(static_cast< PRMAggregate< GUM_SCALAR >* >(elt));
           _addCastDescendants_(static_cast< PRMAttribute< GUM_SCALAR >* >(elt));
 
@@ -635,7 +634,7 @@ namespace gum {
           break;
         }
 
-        case PRMClassElement< GUM_SCALAR >::prm_refslot: {
+        case PRMClassElement< GUM_SCALAR >::prm_refslot : {
           auto ref = static_cast< PRMReferenceSlot< GUM_SCALAR >* >(elt);
           _referenceSlots_.insert(ref);
 
@@ -644,17 +643,17 @@ namespace gum {
           break;
         }
 
-        case PRMClassElement< GUM_SCALAR >::prm_slotchain: {
+        case PRMClassElement< GUM_SCALAR >::prm_slotchain : {
           _slotChains_.insert(static_cast< PRMSlotChain< GUM_SCALAR >* >(elt));
           break;
         }
 
-        case PRMClassElement< GUM_SCALAR >::prm_parameter: {
+        case PRMClassElement< GUM_SCALAR >::prm_parameter : {
           _parameters_.insert(static_cast< PRMParameter< GUM_SCALAR >* >(elt));
           break;
         }
 
-        default: {
+        default : {
           GUM_ERROR(FatalError, "unknown ClassElement<GUM_SCALAR> type")
         }
       }
@@ -719,7 +718,7 @@ namespace gum {
       }
 
       switch (overloader->elt_type()) {
-        case PRMClassElement< GUM_SCALAR >::prm_attribute: {
+        case PRMClassElement< GUM_SCALAR >::prm_attribute : {
           auto overloader_attr = static_cast< PRMAttribute< GUM_SCALAR >* >(overloader);
           auto overloaded_attr = static_cast< PRMAttribute< GUM_SCALAR >* >(overloaded);
           _overloadAttribute_(overloader_attr, overloaded_attr);
@@ -727,13 +726,13 @@ namespace gum {
           break;
         }
 
-        case PRMClassElement< GUM_SCALAR >::prm_aggregate: {
+        case PRMClassElement< GUM_SCALAR >::prm_aggregate : {
           _overloadAggregate_(static_cast< PRMAggregate< GUM_SCALAR >* >(overloader), overloaded);
           _addIOInterfaceFlags_(overloader);
           break;
         }
 
-        case PRMClassElement< GUM_SCALAR >::prm_refslot: {
+        case PRMClassElement< GUM_SCALAR >::prm_refslot : {
           //  _checkOverloadLegality_ guaranties that overloaded is a
           // PRMReferenceSlot<GUM_SCALAR>
           auto overloader_ref = static_cast< PRMReferenceSlot< GUM_SCALAR >* >(overloader);
@@ -742,18 +741,18 @@ namespace gum {
           break;
         }
 
-        case PRMClassElement< GUM_SCALAR >::prm_slotchain: {
+        case PRMClassElement< GUM_SCALAR >::prm_slotchain : {
           GUM_ERROR(OperationNotAllowed, "SlotChain<GUM_SCALAR> can not be overloaded")
           break;
         }
 
-        case PRMClassElement< GUM_SCALAR >::prm_parameter: {
+        case PRMClassElement< GUM_SCALAR >::prm_parameter : {
           auto overloaded_param = static_cast< PRMParameter< GUM_SCALAR >* >(overloaded);
           auto overloader_param = static_cast< PRMParameter< GUM_SCALAR >* >(overloader);
           _overloadParameter_(overloader_param, overloaded_param);
           break;
         }
-        default: {
+        default : {
           GUM_ERROR(OperationNotAllowed, "unknown ClassElement<GUM_SCALAR> type")
         }
       }
@@ -1115,19 +1114,19 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
-       PRMClass< GUM_SCALAR >::operator[](NodeId id) const {
+                 PRMClass< GUM_SCALAR >::operator[](NodeId id) const {
       return get(id);
     }
 
     template < typename GUM_SCALAR >
     INLINE PRMClassElement< GUM_SCALAR >&
-       PRMClass< GUM_SCALAR >::operator[](const std::string& name) {
+           PRMClass< GUM_SCALAR >::operator[](const std::string& name) {
       return get(name);
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
-       PRMClass< GUM_SCALAR >::operator[](const std::string& name) const {
+                 PRMClass< GUM_SCALAR >::operator[](const std::string& name) const {
       return get(name);
     }
 
@@ -1146,12 +1145,12 @@ namespace gum {
       if (overloaded->elt_type() != overloader->elt_type()) { return false; }
 
       switch (overloaded->elt_type()) {
-        case PRMClassElement< GUM_SCALAR >::prm_attribute: {
+        case PRMClassElement< GUM_SCALAR >::prm_attribute : {
           if (!overloader->type().isSubTypeOf(overloaded->type())) { return false; }
           break;
         }
 
-        case PRMClassElement< GUM_SCALAR >::prm_refslot: {
+        case PRMClassElement< GUM_SCALAR >::prm_refslot : {
           const auto& new_slot_type
              = static_cast< const PRMReferenceSlot< GUM_SCALAR >* >(overloader)->slotType();
           const auto& old_slot_type
@@ -1162,7 +1161,7 @@ namespace gum {
           break;
         }
 
-        case PRMClassElement< GUM_SCALAR >::prm_parameter: {
+        case PRMClassElement< GUM_SCALAR >::prm_parameter : {
           auto overloaded_param = static_cast< const PRMParameter< GUM_SCALAR >* >(overloaded);
           auto overloader_param = static_cast< const PRMParameter< GUM_SCALAR >* >(overloader);
 
@@ -1170,7 +1169,7 @@ namespace gum {
           break;
         }
 
-        default: {
+        default : {
           return false;
         }
       }

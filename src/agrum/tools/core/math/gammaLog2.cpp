@@ -55,7 +55,6 @@ namespace gum {
     ;
   }
 
-
   // the Log2 (gamma (x)) for x varying from 0 to 50 by step of 1/100
   const std::vector< double > GammaLog2::_small_values_{std::numeric_limits< double >::max(),
                                                         6.635647,

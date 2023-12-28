@@ -23,16 +23,15 @@
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
-#include <agrum/CN/inference/CNLoopyPropagation.h>
-#include <agrum/CN/credalNet.h>
+#include <agrum/tools/core/approximations/approximationSchemeListener.h>
+#include <agrum/tools/core/threads/threadExecutor.h>
+#include <agrum/tools/core/threads/threads.h>
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/tools/core/approximations/approximationSchemeListener.h>
-
-#include <agrum/tools/core/threads/threads.h>
-#include <agrum/tools/core/threads/threadExecutor.h>
+#include <agrum/CN/credalNet.h>
+#include <agrum/CN/inference/CNLoopyPropagation.h>
 
 /**
  * @file
@@ -68,7 +67,9 @@ namespace gum_tests {
   ////////////////////////////////////////////////////////////////
   class [[maybe_unused]] CNLooopyPropagationTestSuite: public CxxTest::TestSuite {
     private:
+
     protected:
+
     public:
     gum::credal::CredalNet< double >* cn;
 

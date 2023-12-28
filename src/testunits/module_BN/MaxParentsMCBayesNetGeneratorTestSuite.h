@@ -24,15 +24,16 @@
 #include <vector>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
+
+#include <agrum/tools/core/exceptions.h>
+#include <agrum/tools/core/set.h>
 
 #include <agrum/BN/generator/maxParentsMCBayesNetGenerator.h>
 #include <agrum/BN/generator/simpleCPTDisturber.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
-#include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/tools/core/exceptions.h>
-#include <agrum/tools/core/set.h>
+#include <agrum/BN/inference/ShaferShenoyInference.h>
 
 namespace gum_tests {
 

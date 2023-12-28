@@ -46,7 +46,6 @@ namespace gum {
     GUM_CONSTRUCTOR(IntegerVariable)
   }
 
-
   /// constructor assigning a domain to the variable
   IntegerVariable::IntegerVariable(const std::string& aName,
                                    const std::string& aDesc,
@@ -81,10 +80,9 @@ namespace gum {
   bool IntegerVariable::operator==(const Variable& var) const {
     try {
       const IntegerVariable& xvar = dynamic_cast< const IntegerVariable& >(var);
-      return                 operator==(xvar);
+      return operator==(xvar);
     } catch (std::bad_cast&) { return false; }
   }
-
 
   /// Returns the domain as a string
   std::string IntegerVariable::domain() const {

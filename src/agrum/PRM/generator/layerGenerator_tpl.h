@@ -275,7 +275,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE LayerGenerator< GUM_SCALAR >&
-       LayerGenerator< GUM_SCALAR >::operator=(const LayerGenerator< GUM_SCALAR >& source) {
+           LayerGenerator< GUM_SCALAR >::operator=(const LayerGenerator< GUM_SCALAR >& source) {
       _layers_      = source._layers_;
       _domain_size_ = source._domain_size_;
       _max_parents_ = source._max_parents_;

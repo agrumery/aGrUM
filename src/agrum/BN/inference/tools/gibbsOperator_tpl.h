@@ -28,6 +28,7 @@
 
 
 #include <agrum/BN/inference/tools/gibbsOperator.h>
+
 #include <agrum/tools/core/utils_random.h>
 
 namespace gum {
@@ -51,9 +52,7 @@ namespace gum {
   void GibbsOperator< GUM_SCALAR >::updateSamplingNodes_() {
     samplingNodes_.clear();
     for (const auto node: samplingBn_.nodes())
-      if (hardEv_ == nullptr || !hardEv_->exists(node)) {
-        samplingNodes_.insert(node);
-      }
+      if (hardEv_ == nullptr || !hardEv_->exists(node)) { samplingNodes_.insert(node); }
     if (samplingNodes_.size() == 0) {
       GUM_ERROR(InvalidArgument, "No node to sample (too many nodes or too much evidence)!")
     }
@@ -86,7 +85,6 @@ namespace gum {
     I->chgVal(samplingBn_.variable(nod), samplingBn_.cpt(nod).extract(Itop).draw());
   }
 
-
   template < typename GUM_SCALAR >
   Instantiation GibbsOperator< GUM_SCALAR >::nextSample(Instantiation prev) {
     for (Idx i = 0; i < nbr_; i++) {
@@ -97,6 +95,7 @@ namespace gum {
     }
     return prev;
   }
+
   /// change in Instantiation I a new drawn value for id
 
   template < typename GUM_SCALAR >

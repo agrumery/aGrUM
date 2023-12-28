@@ -23,14 +23,14 @@
  * @brief A class to execute several threads by exploiting std::thread
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#include <agrum/tools/core/threads/threadExecutorSTL.h>
-
-#include <thread>
-#include <vector>
-#include <exception>
-#include <tuple>
 #include <algorithm>
+#include <exception>
 #include <functional>
+#include <thread>
+#include <tuple>
+#include <vector>
+
+#include <agrum/tools/core/threads/threadExecutorSTL.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -83,7 +83,6 @@ namespace gum {
         }
       }
     }
-
 
     /// executes in parallel a function and undoes it if execptions are raised
     template < typename FUNC1, typename FUNC2, typename... ARGS >

@@ -28,11 +28,11 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#  include <agrum/tools/core/math/variableLog2ParamComplexity.h>
-#  include <agrum/tools/core/math/gammaLog2.h>
 #  include <iostream>
 #  include <sstream>
 
+#  include <agrum/tools/core/math/gammaLog2.h>
+#  include <agrum/tools/core/math/variableLog2ParamComplexity.h>
 
 namespace gum {
 
@@ -40,7 +40,6 @@ namespace gum {
   INLINE VariableLog2ParamComplexity::VariableLog2ParamComplexity() : _cache_(1000) {
     GUM_CONSTRUCTOR(VariableLog2ParamComplexity);
   }
-
 
   /// copy constructor
   INLINE VariableLog2ParamComplexity::VariableLog2ParamComplexity(
@@ -50,7 +49,6 @@ namespace gum {
     GUM_CONS_CPY(VariableLog2ParamComplexity);
   }
 
-
   /// move constructor
   INLINE
   VariableLog2ParamComplexity::VariableLog2ParamComplexity(VariableLog2ParamComplexity&& from) :
@@ -58,18 +56,15 @@ namespace gum {
     GUM_CONS_MOV(VariableLog2ParamComplexity);
   }
 
-
   /// virtual copy constructor
   INLINE VariableLog2ParamComplexity* VariableLog2ParamComplexity::clone() const {
     return new VariableLog2ParamComplexity(*this);
   }
 
-
   /// destructor
   INLINE VariableLog2ParamComplexity::~VariableLog2ParamComplexity() {
     GUM_DESTRUCTOR(VariableLog2ParamComplexity);
   }
-
 
   /// copy operator
   INLINE VariableLog2ParamComplexity&
@@ -77,17 +72,14 @@ namespace gum {
     return *this;
   }
 
-
   /// move operator
   INLINE VariableLog2ParamComplexity&
      VariableLog2ParamComplexity::operator=(VariableLog2ParamComplexity&& from) {
     return *this;
   }
 
-
   /// indicates whether we wish to use a cache for the Cnr
   INLINE void VariableLog2ParamComplexity::useCache(const bool on_off) { _use_cache_ = on_off; }
-
 
   /// clears the current cache
   INLINE void VariableLog2ParamComplexity::clearCache() { _cache_.clear(); }

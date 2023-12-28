@@ -35,7 +35,6 @@ namespace gum {
   INLINE
   Parent::Parent(NodeId pi, Idx m) : parentId(pi), modality(m) {}
 
-
   INLINE
   Parent::Parent(const Parent& src) : parentId(src.parentId), modality(src.modality) {}
 

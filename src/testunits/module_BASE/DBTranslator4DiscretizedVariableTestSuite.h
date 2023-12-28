@@ -19,9 +19,10 @@
  */
 
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
 #include <iostream>
+
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/database/DBTranslator4DiscretizedVariable.h>
 
@@ -114,7 +115,6 @@ namespace gum_tests {
       TS_ASSERT_THROWS(gum::learning::DBTranslator4DiscretizedVariable translator4(var, missing, 1),
                        const gum::SizeError&)
     }
-
 
     GUM_ACTIVE_TEST(_trans2) {
       {
@@ -287,7 +287,6 @@ namespace gum_tests {
       }
     }
 
-
     void xtest_trans5() {
       {
         gum::DiscretizedVariable< double > var("X1", "");
@@ -426,7 +425,6 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(translator5.variable()->toString(), "X2<[1;2[,[2;3[,[3;4]>")
       }
     }
-
 
     GUM_ACTIVE_TEST(_trans6) {
       gum::DiscretizedVariable< double > var("X1", "");

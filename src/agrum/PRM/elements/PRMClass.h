@@ -32,9 +32,9 @@
 #include <utility>
 
 #include <agrum/agrum.h>
+
 #include <agrum/PRM/elements/PRMParameter.h>
 #include <agrum/PRM/elements/PRMSlotChain.h>
-
 
 namespace gum {
   namespace prm {
@@ -456,7 +456,6 @@ namespace gum {
 }   // namespace gum
 
 #include <agrum/PRM/elements/PRMClass_tpl.h>
-
 
 namespace gum {
 

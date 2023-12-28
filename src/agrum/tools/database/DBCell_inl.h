@@ -39,18 +39,15 @@ namespace gum {
       ;
     }
 
-
     /// constructor for a real number
     INLINE DBCell::DBCell(const float nb) : _type_(DBCell::EltType::REAL), _val_real_(nb) {
       GUM_CONSTRUCTOR(DBCell);
     }
 
-
     /// constructor for an integer number
     INLINE DBCell::DBCell(const int nb) : _type_(DBCell::EltType::INTEGER), _val_integer_(nb) {
       GUM_CONSTRUCTOR(DBCell);
     }
-
 
     /// constructor for a string
     INLINE DBCell::DBCell(const std::string& str) : _type_(DBCell::EltType::STRING) {
@@ -66,7 +63,6 @@ namespace gum {
       GUM_CONSTRUCTOR(DBCell);
     }
 
-
     /// copy constructor
     INLINE DBCell::DBCell(const DBCell& from) : _type_(from._type_) {
       std::memcpy(&_val_index_, &(from._val_index_), sizeof(UnionType));
@@ -74,7 +70,6 @@ namespace gum {
       // for debugging
       GUM_CONS_CPY(DBCell);
     }
-
 
     /// move constructor
     INLINE DBCell::DBCell(DBCell&& from) : _type_(from._type_) {
@@ -84,13 +79,11 @@ namespace gum {
       GUM_CONS_MOV(DBCell);
     }
 
-
     /// destructor
     INLINE DBCell::~DBCell() {
       GUM_DESTRUCTOR(DBCell);
       ;
     }
-
 
     /// copy operator
     INLINE DBCell& DBCell::operator=(const DBCell& from) {
@@ -102,7 +95,6 @@ namespace gum {
       return *this;
     }
 
-
     /// move operator
     INLINE DBCell& DBCell::operator=(DBCell&& from) {
       if (this != &from) {
@@ -113,7 +105,6 @@ namespace gum {
       return *this;
     }
 
-
     /// assignment operator
     INLINE DBCell& DBCell::operator=(const float x) {
       _type_     = EltType::REAL;
@@ -121,14 +112,12 @@ namespace gum {
       return *this;
     }
 
-
     /// assignment operator
     INLINE DBCell& DBCell::operator=(const int x) {
       _type_        = EltType::INTEGER;
       _val_integer_ = x;
       return *this;
     }
-
 
     /// assignment operator
     INLINE DBCell& DBCell::operator=(const std::string& str) {
@@ -144,7 +133,6 @@ namespace gum {
       return *this;
     }
 
-
     /// test of equality
     INLINE bool DBCell::operator==(const DBCell& from) const {
       return (_type_ == from._type_)
@@ -153,14 +141,11 @@ namespace gum {
               || (_val_integer_ == from._val_integer_));
     }
 
-
     /// test of inequality
     INLINE bool DBCell::operator!=(const DBCell& from) const { return !operator==(from); }
 
-
     /// returns the current type of the DBCell
     INLINE DBCell::EltType DBCell::type() const noexcept { return _type_; }
-
 
     /// returns the DBcell as a float
     INLINE float DBCell::real() const {
@@ -168,13 +153,11 @@ namespace gum {
       else GUM_ERROR(TypeError, _typeErrorMsg_("a real number"))
     }
 
-
     /// sets the content of the DBCell
     INLINE void DBCell::setReal(const float x) {
       _type_     = EltType::REAL;
       _val_real_ = x;
     }
-
 
     /// sets the content of the DBCell from a string
     INLINE void DBCell::setReal(const std::string& elt) {
@@ -183,20 +166,17 @@ namespace gum {
       _type_     = EltType::REAL;
     }
 
-
     /// returns the DBcell as an integer
     INLINE int DBCell::integer() const {
       if (_type_ == EltType::INTEGER) return _val_integer_;
       else GUM_ERROR(TypeError, _typeErrorMsg_("an integer"))
     }
 
-
     /// sets the content of the DBCell
     INLINE void DBCell::setInteger(const int x) {
       _type_        = EltType::INTEGER;
       _val_integer_ = x;
     }
-
 
     /// sets the content of the DBCell from a string
     INLINE void DBCell::setInteger(const std::string& elt) {
@@ -205,13 +185,11 @@ namespace gum {
       _type_        = EltType::INTEGER;
     }
 
-
     /// returns the DBcell as a string
     INLINE const std::string& DBCell::string() const {
       if (_type_ == EltType::STRING) return _strings_().first(_val_index_);
       else GUM_ERROR(TypeError, _typeErrorMsg_("a string"))
     }
-
 
     /// returns the DBcell as a string index (if it contains a string)
     INLINE int DBCell::stringIndex() const {
@@ -219,10 +197,8 @@ namespace gum {
       else GUM_ERROR(TypeError, _typeErrorMsg_("a string"))
     }
 
-
     /// returns the DBcell as a string (without checking its type)
     INLINE const std::string& DBCell::string(const int index) { return _strings_().first(index); }
-
 
     /// set the content of the DBCell from a string
     INLINE void DBCell::setString(const std::string& str) {
@@ -236,10 +212,8 @@ namespace gum {
       _type_ = EltType::STRING;
     }
 
-
     /// sets the DBCell as a missing element
     INLINE void DBCell::setMissingState() { _type_ = EltType::MISSING; }
-
 
     /// indicates whether the cell contains a missing value
     INLINE bool DBCell::isMissing() const { return _type_ == EltType::MISSING; }

@@ -37,29 +37,24 @@ namespace gum {
   IContinuousVariable::IContinuousVariable(const std::string& aName, const std::string& aDesc) :
       Variable(aName, aDesc) {}
 
-
   /// Copy Constructor
   INLINE
   IContinuousVariable::IContinuousVariable(const IContinuousVariable& from) : Variable(from) {}
-
 
   /// move constructor
   INLINE
   IContinuousVariable::IContinuousVariable(IContinuousVariable&& from) :
       Variable(std::move(from)) {}
 
-
   /// destructor
   INLINE
   IContinuousVariable::~IContinuousVariable() {}
-
 
   /// copy operator
   INLINE IContinuousVariable& IContinuousVariable::operator=(const IContinuousVariable& from) {
     Variable::operator=(from);
     return *this;
   }
-
 
   /// move operator
   INLINE IContinuousVariable& IContinuousVariable::operator=(IContinuousVariable&& from) {

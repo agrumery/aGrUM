@@ -32,12 +32,15 @@
 #include <iterator>
 
 #include <agrum/agrum.h>
-#include <agrum/BN/learning/BNLearnUtils/BNLearnerListener.h>
-#include <agrum/BN/learning/BNLearnUtils/IBNLearner.h>
+
 #include <agrum/tools/stattests/indepTestChi2.h>
 #include <agrum/tools/stattests/indepTestG2.h>
-#include <agrum/BN/learning/scores_and_tests/scoreLog2Likelihood.h>
 #include <agrum/tools/stattests/pseudoCount.h>
+
+#include <agrum/BN/learning/BNLearnUtils/BNLearnerListener.h>
+#include <agrum/BN/learning/BNLearnUtils/IBNLearner.h>
+
+#include <agrum/BN/learning/scores_and_tests/scoreLog2Likelihood.h>
 
 // include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
@@ -61,7 +64,6 @@ namespace gum::learning {
     _parser_ = new DBRowGeneratorParser(_database_.handler(), DBRowGeneratorSet());
   }
 
-
   IBNLearner::Database::Database(const std::string&                filename,
                                  const std::vector< std::string >& missing_symbols,
                                  const bool                        induceTypes) :
@@ -76,7 +78,6 @@ namespace gum::learning {
       }
     }
   }
-
 
   IBNLearner::Database::Database(const std::string&                CSV_filename,
                                  const Database&                   score_database,
@@ -134,7 +135,6 @@ namespace gum::learning {
     _parser_ = new DBRowGeneratorParser(_database_.handler(), DBRowGeneratorSet());
   }
 
-
   IBNLearner::Database::Database(const Database& from) :
       _database_(from._database_), _domain_sizes_(from._domain_sizes_),
       _nodeId2cols_(from._nodeId2cols_) {
@@ -142,14 +142,12 @@ namespace gum::learning {
     _parser_ = new DBRowGeneratorParser(_database_.handler(), DBRowGeneratorSet());
   }
 
-
   IBNLearner::Database::Database(Database&& from) :
       _database_(std::move(from._database_)), _domain_sizes_(std::move(from._domain_sizes_)),
       _nodeId2cols_(std::move(from._nodeId2cols_)) {
     // create the parser
     _parser_ = new DBRowGeneratorParser(_database_.handler(), DBRowGeneratorSet());
   }
-
 
   IBNLearner::Database::~Database() { delete _parser_; }
 
@@ -181,7 +179,6 @@ namespace gum::learning {
     return *this;
   }
 
-
   // ===========================================================================
 
   IBNLearner::IBNLearner(const std::string&                filename,
@@ -194,15 +191,14 @@ namespace gum::learning {
     GUM_CONSTRUCTOR(IBNLearner)
   }
 
-
   IBNLearner::IBNLearner(const DatabaseTable& db) : scoreDatabase_(db) {
     noPrior_ = new NoPrior(scoreDatabase_.databaseTable());
     GUM_CONSTRUCTOR(IBNLearner)
   }
 
-
   IBNLearner::IBNLearner(const IBNLearner& from) :
-      IApproximationSchemeConfiguration(from), ThreadNumberManager(from), inducedTypes_(from.inducedTypes_), scoreType_(from.scoreType_),
+      IApproximationSchemeConfiguration(from), ThreadNumberManager(from),
+      inducedTypes_(from.inducedTypes_), scoreType_(from.scoreType_),
       paramEstimatorType_(from.paramEstimatorType_), epsilonEM_(from.epsilonEM_),
       priorType_(from.priorType_), priorWeight_(from.priorWeight_),
       constraintSliceOrder_(from.constraintSliceOrder_),
@@ -359,7 +355,6 @@ namespace gum::learning {
     return *this;
   }
 
-
   DatabaseTable readFile(const std::string& filename) {
     // get the extension of the file
     if (auto filename_size = Size(filename.size()); filename_size < 4) {
@@ -397,7 +392,6 @@ namespace gum::learning {
     return database;
   }
 
-
   void IBNLearner::isCSVFileName_(const std::string& filename) {
     // get the extension of the file
 
@@ -414,7 +408,6 @@ namespace gum::learning {
       GUM_ERROR(OperationNotAllowed, "IBNLearner does not support yet this type of database file")
     }
   }
-
 
   DatabaseTable IBNLearner::readFile_(const std::string&                filename,
                                       const std::vector< std::string >& missing_symbols) {
@@ -447,49 +440,49 @@ namespace gum::learning {
 
     // create the new scoring function
     switch (scoreType_) {
-      case ScoreType::AIC:
+      case ScoreType::AIC :
         score_ = new ScoreAIC(scoreDatabase_.parser(),
                               *prior_,
                               ranges_,
                               scoreDatabase_.nodeId2Columns());
         break;
 
-      case ScoreType::BD:
+      case ScoreType::BD :
         score_ = new ScoreBD(scoreDatabase_.parser(),
                              *prior_,
                              ranges_,
                              scoreDatabase_.nodeId2Columns());
         break;
 
-      case ScoreType::BDeu:
+      case ScoreType::BDeu :
         score_ = new ScoreBDeu(scoreDatabase_.parser(),
                                *prior_,
                                ranges_,
                                scoreDatabase_.nodeId2Columns());
         break;
 
-      case ScoreType::BIC:
+      case ScoreType::BIC :
         score_ = new ScoreBIC(scoreDatabase_.parser(),
                               *prior_,
                               ranges_,
                               scoreDatabase_.nodeId2Columns());
         break;
 
-      case ScoreType::K2:
+      case ScoreType::K2 :
         score_ = new ScoreK2(scoreDatabase_.parser(),
                              *prior_,
                              ranges_,
                              scoreDatabase_.nodeId2Columns());
         break;
 
-      case ScoreType::LOG2LIKELIHOOD:
+      case ScoreType::LOG2LIKELIHOOD :
         score_ = new ScoreLog2Likelihood(scoreDatabase_.parser(),
                                          *prior_,
                                          ranges_,
                                          scoreDatabase_.nodeId2Columns());
         break;
 
-      default: GUM_ERROR(OperationNotAllowed, "IBNLearner does not support yet this score")
+      default : GUM_ERROR(OperationNotAllowed, "IBNLearner does not support yet this score")
     }
 
     // remove the old score, if any
@@ -506,7 +499,7 @@ namespace gum::learning {
 
     // create the new estimator
     switch (paramEstimatorType_) {
-      case ParamEstimatorType::ML:
+      case ParamEstimatorType::ML :
         if (take_into_account_score && (score_ != nullptr)) {
           param_estimator = new ParamEstimatorML(parser,
                                                  *prior_,
@@ -523,7 +516,7 @@ namespace gum::learning {
 
         break;
 
-      default:
+      default :
         GUM_ERROR(OperationNotAllowed,
                   "IBNLearner does not support "
                      << "yet this parameter estimator")
@@ -538,6 +531,7 @@ namespace gum::learning {
 
     return param_estimator;
   }
+
   /*  /// prepares the initial graph for miic
     MixedGraph IBNLearner::prepareSimpleMiic_() {
       // Initialize the mixed graph to the fully connected graph
@@ -688,10 +682,10 @@ namespace gum::learning {
                                                  scoreDatabase_.nodeId2Columns());
     switch (kmodeMiic_) {
       using enum CorrectedMutualInformation::KModeTypes;
-      case MDL: mutualInfo_->useMDL(); break;
-      case NML: mutualInfo_->useNML(); break;
-      case NoCorr: mutualInfo_->useNoCorr(); break;
-      default:
+      case MDL : mutualInfo_->useMDL(); break;
+      case NML : mutualInfo_->useNML(); break;
+      case NoCorr : mutualInfo_->useNoCorr(); break;
+      default :
         GUM_ERROR(NotImplementedYet,
                   "The BNLearner's corrected mutual information class does "
                      << "not implement yet this correction : " << int(kmodeMiic_))
@@ -726,7 +720,7 @@ namespace gum::learning {
 
     switch (selectedAlgo_) {
       // ========================================================================
-      case AlgoType::MIIC: {
+      case AlgoType::MIIC : {
         BNLearnerListener listener(this, algoMiic_);
         // create the mixedGraph and the corrected mutual information
         MixedGraph mgraph = this->prepareMiic_();
@@ -735,7 +729,7 @@ namespace gum::learning {
       }
 
       // ========================================================================
-      case AlgoType::GREEDY_HILL_CLIMBING: {
+      case AlgoType::GREEDY_HILL_CLIMBING : {
         BNLearnerListener listener(this, greedyHillClimbing_);
         StructuralConstraintSetStatic< StructuralConstraintMandatoryArcs,
                                        StructuralConstraintForbiddenArcs,
@@ -762,7 +756,7 @@ namespace gum::learning {
       }
 
       // ========================================================================
-      case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST: {
+      case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST : {
         BNLearnerListener listener(this, localSearchWithTabuList_);
         StructuralConstraintSetStatic< StructuralConstraintMandatoryArcs,
                                        StructuralConstraintForbiddenArcs,
@@ -792,7 +786,7 @@ namespace gum::learning {
       }
 
       // ========================================================================
-      case AlgoType::K2: {
+      case AlgoType::K2 : {
         BNLearnerListener listener(this, algoK2_.approximationScheme());
         StructuralConstraintSetStatic< StructuralConstraintMandatoryArcs,
                                        StructuralConstraintForbiddenArcs,
@@ -841,7 +835,7 @@ namespace gum::learning {
       }
 
       // ========================================================================
-      default:
+      default :
         GUM_ERROR(OperationNotAllowed,
                   "the learnDAG method has not been implemented for this "
                   "learning algorithm")
@@ -855,22 +849,21 @@ namespace gum::learning {
 
     switch (scoreType_) {
       using enum gum::learning::IBNLearner::ScoreType;
-      case AIC: return ScoreAIC::isPriorCompatible(prior, priorWeight_);
+      case AIC : return ScoreAIC::isPriorCompatible(prior, priorWeight_);
 
-      case BD: return ScoreBD::isPriorCompatible(prior, priorWeight_);
+      case BD : return ScoreBD::isPriorCompatible(prior, priorWeight_);
 
-      case BDeu: return ScoreBDeu::isPriorCompatible(prior, priorWeight_);
+      case BDeu : return ScoreBDeu::isPriorCompatible(prior, priorWeight_);
 
-      case BIC: return ScoreBIC::isPriorCompatible(prior, priorWeight_);
+      case BIC : return ScoreBIC::isPriorCompatible(prior, priorWeight_);
 
-      case K2: return ScoreK2::isPriorCompatible(prior, priorWeight_);
+      case K2 : return ScoreK2::isPriorCompatible(prior, priorWeight_);
 
-      case LOG2LIKELIHOOD: return ScoreLog2Likelihood::isPriorCompatible(prior, priorWeight_);
+      case LOG2LIKELIHOOD : return ScoreLog2Likelihood::isPriorCompatible(prior, priorWeight_);
 
-      default: return "IBNLearner does not support yet this score";
+      default : return "IBNLearner does not support yet this score";
     }
   }
-
 
   /// sets the ranges of rows to be used for cross-validation learning
   std::pair< std::size_t, std::size_t >
@@ -910,7 +903,6 @@ namespace gum::learning {
 
     return std::pair< std::size_t, std::size_t >(unfold_deb, unfold_end);
   }
-
 
   std::pair< double, double >
      IBNLearner::chi2(const NodeId id1, const NodeId id2, const std::vector< NodeId >& knowing) {
@@ -988,13 +980,13 @@ namespace gum::learning {
 
     switch (kmodeMiic_) {
       using enum gum::learning::CorrectedMutualInformation::KModeTypes;
-      case MDL: cmi.useMDL(); break;
+      case MDL : cmi.useMDL(); break;
 
-      case NML: cmi.useNML(); break;
+      case NML : cmi.useNML(); break;
 
-      case NoCorr: cmi.useNoCorr(); break;
+      case NoCorr : cmi.useNoCorr(); break;
 
-      default:
+      default :
         GUM_ERROR(NotImplementedYet,
                   "The BNLearner's corrected mutual information class does "
                      << "not implement yet this correction : " << int(kmodeMiic_))
@@ -1014,7 +1006,6 @@ namespace gum::learning {
 
     return correctedMutualInformation(this->idFromName(var1), this->idFromName(var2), knowingIds);
   }
-
 
   double IBNLearner::mutualInformation(const NodeId                 id1,
                                        const NodeId                 id2,
@@ -1057,7 +1048,6 @@ namespace gum::learning {
     return score(id, knowingIds);
   }
 
-
   std::vector< double > IBNLearner::rawPseudoCount(const std::vector< NodeId >& vars) {
     Potential< double > res;
 
@@ -1065,7 +1055,6 @@ namespace gum::learning {
     gum::learning::PseudoCount count(scoreDatabase_.parser(), *prior_, databaseRanges());
     return count.get(vars);
   }
-
 
   std::vector< double > IBNLearner::rawPseudoCount(const std::vector< std::string >& vars) {
     std::vector< NodeId > ids;
@@ -1075,7 +1064,6 @@ namespace gum::learning {
     std::transform(vars.begin(), vars.end(), std::back_inserter(ids), mapper);
     return rawPseudoCount(ids);
   }
-
 
   /// use a new set of database rows' ranges to perform learning
   void IBNLearner::useDatabaseRanges(

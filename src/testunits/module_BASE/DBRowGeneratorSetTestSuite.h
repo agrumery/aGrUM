@@ -19,17 +19,20 @@
  */
 
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
-#include <ressources/include/simpleDebugGenerator.h>
-#include <ressources/include/evenDebugGenerator.h>
 #include <iostream>
 
-#include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/tools/database/DBRowGeneratorIdentity.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
+
 #include <agrum/tools/database/DBRowGenerator4CompleteRows.h>
-#include <agrum/tools/database/DBRowGeneratorSet.h>
 #include <agrum/tools/database/DBRowGeneratorEM.h>
+#include <agrum/tools/database/DBRowGeneratorIdentity.h>
+#include <agrum/tools/database/DBRowGeneratorSet.h>
+
+#include <agrum/BN/inference/lazyPropagation.h>
+
+#include <ressources/include/evenDebugGenerator.h>
+#include <ressources/include/simpleDebugGenerator.h>
 
 namespace gum_tests {
 
@@ -298,7 +301,6 @@ namespace gum_tests {
       }
     }
 
-
     GUM_ACTIVE_TEST(_incomplete) {
       const std::vector< gum::learning::DBTranslatedValueType > col_types{
          gum::learning::DBTranslatedValueType::DISCRETE,
@@ -359,7 +361,6 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(nb_dup, std::size_t(1))
     }
-
 
     GUM_ACTIVE_TEST(_basic) {
       const std::vector< gum::learning::DBTranslatedValueType > col_types{

@@ -27,9 +27,9 @@
 #ifndef GUM_SCHEDULE_OPERATOR_H
 #define GUM_SCHEDULE_OPERATOR_H
 
+#include <memory>
 #include <string>
 #include <utility>
-#include <memory>
 
 #include <agrum/agrum.h>
 
@@ -54,7 +54,6 @@ namespace gum {
     /// store a multidimensional table outside of the scheduler
     STORE_MULTIDIM
   };
-
 
   /**
    * @class ScheduleOperator

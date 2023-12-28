@@ -26,8 +26,10 @@
  */
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/math/math_utils.h>
+
 #include <agrum/tools/graphs/algorithms/triangulations/eliminationStrategies/defaultEliminationSequenceStrategy.h>
+
+#include <agrum/tools/core/math/math_utils.h>
 
 namespace gum {
 

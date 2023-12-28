@@ -41,7 +41,6 @@ namespace gum {
       GUM_CONSTRUCTOR(KNML);
     }
 
-
     /// default constructor
     INLINE KNML::KNML(const DBRowGeneratorParser&             parser,
                       const Prior&                            prior,
@@ -50,13 +49,11 @@ namespace gum {
       GUM_CONSTRUCTOR(KNML);
     }
 
-
     /// copy constructor
     INLINE KNML::KNML(const KNML& from) :
         IndependenceTest(from), _param_complexity_(from._param_complexity_) {
       GUM_CONS_CPY(KNML);
     }
-
 
     /// move constructor
     INLINE KNML::KNML(KNML&& from) :
@@ -64,10 +61,8 @@ namespace gum {
       GUM_CONS_MOV(KNML);
     }
 
-
     /// virtual copy constructor
     INLINE KNML* KNML::clone() const { return new KNML(*this); }
-
 
     /// destructor
     INLINE KNML::~KNML() { GUM_DESTRUCTOR(KNML); }

@@ -20,8 +20,9 @@
 
 
 #include <iostream>
+
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/tools/database/DBTranslatorSet.h>
@@ -45,7 +46,7 @@ namespace gum_tests {
       gum::learning::IdCondSet idset1(node0, cond_empty);   // #3,#0
       std::vector< double >    vect(3, 10.0);
       prior.addJointPseudoCount(idset1, vect);
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[0], 43.33333)   // 10 + 0.3333*100
+      TS_GUM_ASSERT_ALMOST_EQUALS(vect[0], 43.33333)        // 10 + 0.3333*100
       TS_GUM_ASSERT_ALMOST_EQUALS(vect[1], 43.33333)
       TS_GUM_ASSERT_ALMOST_EQUALS(vect[2], 43.33333)
 
@@ -124,9 +125,9 @@ namespace gum_tests {
       vect.resize(3, 1);
       std::fill(vect.begin(), vect.end(), 1.0);
       prior.addConditioningPseudoCount(idset4, vect);
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[0], 34.33333)   // 1+ 100 * 1/3
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[1], 34.33333)   // 1+ 100 * 1/3
-      TS_GUM_ASSERT_ALMOST_EQUALS(vect[2], 34.33333)   // 1+ 100 * 1/3
+      TS_GUM_ASSERT_ALMOST_EQUALS(vect[0], 34.33333)           // 1+ 100 * 1/3
+      TS_GUM_ASSERT_ALMOST_EQUALS(vect[1], 34.33333)           // 1+ 100 * 1/3
+      TS_GUM_ASSERT_ALMOST_EQUALS(vect[2], 34.33333)           // 1+ 100 * 1/3
 
       std::vector< gum::NodeId > cond2{node3, node1};
       gum::learning::IdCondSet   idset5(node4, cond2, true);   // C|D,B = C|D

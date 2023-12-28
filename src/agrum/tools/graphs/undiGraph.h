@@ -203,4 +203,4 @@ namespace gum {
 #  include <agrum/tools/graphs/undiGraph_inl.h>
 #endif   // GUM_NOINLINE
 
-#endif /* GUM_UNDIGRAPH_H */
+#endif   /* GUM_UNDIGRAPH_H */

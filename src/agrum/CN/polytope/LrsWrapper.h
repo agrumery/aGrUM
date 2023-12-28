@@ -43,10 +43,11 @@
 #include <cstdio>
 #include <fcntl.h>
 #include <fstream>
-#include <unordered_set>
 #include <vector>
 
 #include <agrum/tools/core/math/rational.h>
+
+#include <unordered_set>
 
 // we force MP (not long or GMP)
 #undef LONG

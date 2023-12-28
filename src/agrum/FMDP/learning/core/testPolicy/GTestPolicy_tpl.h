@@ -26,8 +26,10 @@
  * @author Jean-Christophe MAGNAN
  */
 // =========================================================================
-#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/FMDP/learning/core/testPolicy/GTestPolicy.h>
+
+#include <agrum/tools/core/math/math_utils.h>
+
 // =========================================================================
 
 
@@ -46,7 +48,6 @@ namespace gum {
     ITestPolicy< GUM_SCALAR >::addObservation(iattr, ivalue);
     _conTab_.add(iattr, ivalue);
   }
-
 
   // ############################################################################
   // @name Test result

@@ -34,7 +34,6 @@
 #include <utility>
 #include <vector>
 
-
 #include <agrum/PRM/gspan/edgeGrowth.h>
 
 namespace gum {
@@ -203,6 +202,7 @@ namespace gum {
         double                                                   _outer_cost_(const Pattern* p);
         void                                                     _compute_costs_(const Pattern* p);
         HashTable< const Pattern*, std::pair< double, double > > _map_;
+
         /// Private structure to represent data about a pattern.
         struct PData {
           /// A yet to be triangulated undigraph
@@ -223,6 +223,7 @@ namespace gum {
           /// Returns the set of outputs nodes given all the matches of pattern
           NodeSet outputs;
         };
+
         std::string _dot_;
         std::string _str_(const PRMInstance< GUM_SCALAR >*  i,
                           const PRMAttribute< GUM_SCALAR >* a) const;

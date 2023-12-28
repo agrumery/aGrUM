@@ -27,8 +27,10 @@
  * GONZALES(_at_AMU)
  */
 // =======================================================
-#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/FMDP/learning/datastructure/leaves/leafAggregator.h>
+
+#include <agrum/tools/core/math/math_utils.h>
+
 // =======================================================
 
 namespace gum {
@@ -134,7 +136,6 @@ namespace gum {
     _needsUpdate_ = true;
   }
 
-
   // ============================================================================
   //
   // ============================================================================
@@ -178,7 +179,6 @@ namespace gum {
 
     return _needsUpdate_;
   }
-
 
   // ============================================================================
   //
@@ -231,7 +231,6 @@ namespace gum {
     _needsUpdate_ = true;
   }
 
-
   // ============================================================================
   //
   // ============================================================================
@@ -270,7 +269,6 @@ namespace gum {
     _needsUpdate_ = false;
   }
 
-
   HashTable< NodeId, AbstractLeaf* > LeafAggregator::leavesMap() {
     HashTable< NodeId, AbstractLeaf* > retMap;
     for (SequenceIteratorSafe< FusionContext< false >* > fusIter = _fusionSeq_.rbeginSafe();
@@ -304,7 +302,6 @@ namespace gum {
     return retMap;
   }
 
-
   std::string LeafAggregator::toString() {
     std::stringstream ss;
     ss << "################\nTas Initial : " << std::endl
@@ -335,7 +332,6 @@ namespace gum {
     _needsUpdate_ = true;
   }
 
-
   // ============================================================================
   //
   // ============================================================================
@@ -343,7 +339,6 @@ namespace gum {
     bool res = _initialContext_->addPair(p);
     if (res) _removeContext_(0);
   }
-
 
   // ============================================================================
   //

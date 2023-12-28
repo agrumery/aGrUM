@@ -30,11 +30,11 @@
 #include <string>
 #include <utility>
 
-
 #include <agrum/PRM/inference/PRMInference.h>
 
 #ifndef GUM_STRUCTURED_BB_H
 #  define GUM_STRUCTURED_BB_H
+
 namespace gum {
   namespace prm {
 

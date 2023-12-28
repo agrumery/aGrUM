@@ -241,4 +241,4 @@ namespace gum {
 #  include <agrum/tools/graphs/mixedGraph_inl.h>
 #endif   // GUM_NOINLINE
 
-#endif /* GUM_MIXEDGRAPH_H */
+#endif   /* GUM_MIXEDGRAPH_H */

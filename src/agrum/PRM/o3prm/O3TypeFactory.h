@@ -30,8 +30,8 @@
 #include <memory>
 #include <string>
 
-#include <agrum/PRM/PRMFactory.h>
 #include <agrum/PRM/o3prm/O3NameSolver.h>
+#include <agrum/PRM/PRMFactory.h>
 
 #ifndef GUM_PRM_O3PRM_O3TYPE_FACTORY_H
 #  define GUM_PRM_O3PRM_O3TYPE_FACTORY_H

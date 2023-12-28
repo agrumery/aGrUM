@@ -41,7 +41,6 @@ namespace gum {
       GUM_CONSTRUCTOR(IndependenceTest);
     }
 
-
     /// default constructor
     INLINE
     IndependenceTest::IndependenceTest(const DBRowGeneratorParser&             parser,
@@ -52,14 +51,12 @@ namespace gum {
       GUM_CONSTRUCTOR(IndependenceTest);
     }
 
-
     /// copy constructor
     INLINE IndependenceTest::IndependenceTest(const IndependenceTest& from) :
         prior_(from.prior_->clone()), counter_(from.counter_), cache_(from.cache_),
         use_cache_(from.use_cache_) {
       GUM_CONS_CPY(IndependenceTest);
     }
-
 
     /// move constructor
     INLINE IndependenceTest::IndependenceTest(IndependenceTest&& from) :
@@ -69,29 +66,24 @@ namespace gum {
       GUM_CONS_MOV(IndependenceTest);
     }
 
-
     /// destructor
     INLINE IndependenceTest::~IndependenceTest() {
       if (prior_ != nullptr) delete prior_;
       GUM_DESTRUCTOR(IndependenceTest);
     }
 
-
     /// changes the max number of threads used to parse the database
     INLINE void IndependenceTest::setNumberOfThreads(Size nb) { counter_.setNumberOfThreads(nb); }
-
 
     /// returns the number of threads used to parse the database
     INLINE Size IndependenceTest::getNumberOfThreads() const {
       return counter_.getNumberOfThreads();
     }
 
-
     /// indicates whether the user set herself the number of threads
     INLINE bool IndependenceTest::isGumNumberOfThreadsOverriden() const {
       return counter_.isGumNumberOfThreadsOverriden();
     }
-
 
     /** @brief changes the number min of rows a thread should process in a
      * multithreading context */
@@ -99,19 +91,16 @@ namespace gum {
       counter_.setMinNbRowsPerThread(nb);
     }
 
-
     /// returns the minimum of rows that each thread should process
     INLINE std::size_t IndependenceTest::minNbRowsPerThread() const {
       return counter_.minNbRowsPerThread();
     }
-
 
     /// returns the current ranges
     INLINE const std::vector< std::pair< std::size_t, std::size_t > >&
                  IndependenceTest::ranges() const {
       return counter_.ranges();
     }
-
 
     /// returns the score of a pair of nodes
     INLINE double IndependenceTest::score(const NodeId var1, const NodeId var2) {
@@ -127,7 +116,6 @@ namespace gum {
         return score_(std::move(idset));
       }
     }
-
 
     /// returns the score of a pair of nodes given some other nodes
     INLINE double IndependenceTest::score(const NodeId                 var1,
@@ -146,27 +134,22 @@ namespace gum {
       }
     }
 
-
     /// clears all the data structures from memory
     INLINE void IndependenceTest::clear() {
       counter_.clear();
       cache_.clear();
     }
 
-
     /// clears the current cache (clear nodesets as well)
     INLINE void IndependenceTest::clearCache() { cache_.clear(); }
 
-
     /// turn on/off the use of a cache of the previously computed score
     INLINE void IndependenceTest::useCache(const bool on_off) { use_cache_ = on_off; }
-
 
     /// return the mapping between the columns of the database and the node ids
     INLINE const Bijection< NodeId, std::size_t >& IndependenceTest::nodeId2Columns() const {
       return counter_.nodeId2Columns();
     }
-
 
     /// return the database used by the score
     INLINE const DatabaseTable& IndependenceTest::database() const { return counter_.database(); }

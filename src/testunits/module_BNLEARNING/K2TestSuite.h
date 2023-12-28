@@ -19,36 +19,33 @@
  */
 
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
 #include <iostream>
 
-#include <agrum/BN/BayesNet.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
+
+#include <agrum/tools/database/databaseTable.h>
+#include <agrum/tools/database/DBInitializerFromCSV.h>
+#include <agrum/tools/database/DBRowGeneratorParser.h>
+#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
+#include <agrum/tools/database/DBTranslatorSet.h>
 #include <agrum/tools/graphs/DAG.h>
 #include <agrum/tools/variables/labelizedVariable.h>
 
-#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
-#include <agrum/tools/database/DBRowGeneratorParser.h>
-#include <agrum/tools/database/DBInitializerFromCSV.h>
-#include <agrum/tools/database/databaseTable.h>
-#include <agrum/tools/database/DBTranslatorSet.h>
-
-#include <agrum/BN/learning/scores_and_tests/scoreBDeu.h>
-#include <agrum/BN/learning/scores_and_tests/scoreK2.h>
-
-#include <agrum/BN/learning/priors/smoothingPrior.h>
-
+#include <agrum/BN/BayesNet.h>
 #include <agrum/BN/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>
 #include <agrum/BN/learning/constraints/structuralConstraintIndegree.h>
 #include <agrum/BN/learning/constraints/structuralConstraintSetStatic.h>
 #include <agrum/BN/learning/constraints/structuralConstraintSliceOrder.h>
-
+#include <agrum/BN/learning/K2.h>
+#include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
+#include <agrum/BN/learning/priors/smoothingPrior.h>
 #include <agrum/BN/learning/structureUtils/graphChangesGenerator4K2.h>
 #include <agrum/BN/learning/structureUtils/graphChangesSelector4DiGraph.h>
 
-#include <agrum/BN/learning/K2.h>
-#include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
+#include <agrum/BN/learning/scores_and_tests/scoreBDeu.h>
+#include <agrum/BN/learning/scores_and_tests/scoreK2.h>
 
 namespace gum_tests {
 

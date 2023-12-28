@@ -30,13 +30,15 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <type_traits>
 #include <utility>
 #include <vector>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/sequence.h>
 #include <agrum/tools/graphs/graphElements.h>
+
+#include <type_traits>
 
 namespace gum {
 
@@ -44,7 +46,6 @@ namespace gum {
 
 
     class IdCondSet;
-
 
     /** @class IdCondSetIterator
      * @brief The iterators for IdSets
@@ -176,7 +177,6 @@ namespace gum {
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
-
 
     /** @class IdCondSet
      * @brief A class for storing a pair of sets of NodeIds, the second one
@@ -400,12 +400,10 @@ namespace gum {
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
-
     /// the display operator
     std::ostream& operator<<(std::ostream& stream, const IdCondSet& idset);
 
   } /* namespace learning */
-
 
   /// the hash function for idSets
   template <>
@@ -424,7 +422,6 @@ namespace gum {
 
 
 } /* namespace gum */
-
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE

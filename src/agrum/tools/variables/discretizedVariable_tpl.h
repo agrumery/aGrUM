@@ -20,8 +20,8 @@
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-#  include <sstream>
 #  include <limits>
+#  include <sstream>
 
 #  include <agrum/tools/variables/discretizedVariable.h>
 
@@ -145,7 +145,7 @@ namespace gum {
       _ticks_.resize(_ticks_size_ + 1);
     }
 
-    if (_ticks_size_ == 0) {   // special case for first tick
+    if (_ticks_size_ == 0) {          // special case for first tick
       _ticks_[0] = aTick;
     } else if (_ticks_size_ == 1) {   // special case for second tick
       if (_ticks_[0] < aTick) {
@@ -157,7 +157,7 @@ namespace gum {
     } else {
       if (aTick > _ticks_[_ticks_size_ - 1])   // new upper bound
         _ticks_[_ticks_size_] = aTick;
-      else if (aTick < _ticks_[0]) {   // new lower bound
+      else if (aTick < _ticks_[0]) {           // new lower bound
         for (Idx i = _ticks_size_; i >= 1; --i) {
           _ticks_[i] = _ticks_[i - 1];
         }
@@ -203,7 +203,6 @@ namespace gum {
     return ss.str();
   }
 
-
   /**  get a numerical representation of he indice-the value.
    *
    * @param indice the index of the label we wish to return
@@ -211,11 +210,13 @@ namespace gum {
    */
   template < typename T_TICKS >
   INLINE double DiscretizedVariable< T_TICKS >::numerical(Idx indice) const {
-    if (indice >= _ticks_size_ - 1) { GUM_ERROR(OutOfBounds, "Inexisting label index ("<<indice<<")") }
+    if (indice >= _ticks_size_ - 1) {
+      GUM_ERROR(OutOfBounds, "Inexisting label index (" << indice << ")")
+    }
     const auto& a = double(_ticks_[indice]);
     const auto& b = double(_ticks_[indice + 1]);
 
-    return double((b+a)/2.0);
+    return double((b + a) / 2.0);
   }
 
   template < typename T_TICKS >
@@ -269,7 +270,6 @@ namespace gum {
 
     return s.str();
   }
-
 
   template < typename T_TICKS >
   INLINE const std::vector< T_TICKS >& DiscretizedVariable< T_TICKS >::ticks() const {

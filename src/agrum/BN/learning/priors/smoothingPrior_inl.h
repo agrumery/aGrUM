@@ -38,33 +38,27 @@ namespace gum {
       GUM_CONSTRUCTOR(SmoothingPrior);
     }
 
-
     /// copy constructor
     INLINE SmoothingPrior::SmoothingPrior(const SmoothingPrior& from) : Prior(from) {
       GUM_CONS_CPY(SmoothingPrior);
     }
-
 
     /// move constructor
     INLINE SmoothingPrior::SmoothingPrior(SmoothingPrior&& from) noexcept : Prior(std::move(from)) {
       GUM_CONS_MOV(SmoothingPrior);
     }
 
-
     /// virtual copy constructor
     INLINE SmoothingPrior* SmoothingPrior::clone() const { return new SmoothingPrior(*this); }
 
-
     /// destructor
     INLINE SmoothingPrior::~SmoothingPrior() { GUM_DESTRUCTOR(SmoothingPrior); }
-
 
     /// copy operator
     INLINE SmoothingPrior& SmoothingPrior::operator=(const SmoothingPrior& from) {
       Prior::operator=(from);
       return *this;
     }
-
 
     /// move operator
     INLINE SmoothingPrior& SmoothingPrior::operator=(SmoothingPrior&& from) {
@@ -75,10 +69,8 @@ namespace gum {
     /// returns the type of the prior
     INLINE PriorType SmoothingPrior::getType() const { return PriorType::SmoothingPriorType; }
 
-
     /// indicates whether the prior is potentially informative
     INLINE bool SmoothingPrior::isInformative() const { return this->weight_ != 0.0; }
-
 
     /// returns the prior vector all the variables in the idset
     INLINE void SmoothingPrior::addJointPseudoCount(const IdCondSet&       idset,

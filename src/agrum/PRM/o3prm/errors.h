@@ -31,8 +31,9 @@
 #include <string>
 #include <vector>
 
-#include <agrum/PRM/o3prm/O3prm.h>
 #include <agrum/tools/core/errorsContainer.h>
+
+#include <agrum/PRM/o3prm/O3prm.h>
 
 #ifndef GUM_PRM_O3PRM_ERRORS_H
 #  define GUM_PRM_O3PRM_ERRORS_H
@@ -232,4 +233,4 @@ namespace gum {
 
 #  endif   // DOXYGEN_SHOULD_SKIP_THIS
 
-#endif   // GUM_PRM_O3PRM_ERRORS_H
+#endif     // GUM_PRM_O3PRM_ERRORS_H

@@ -34,24 +34,21 @@ namespace gum {
 
   template < int v >
   struct Int2Type {
-    enum {
-      value = v
-    };
+    enum { value = v };
   };
 
-  enum TESTNAME {
-    GTEST           = 1,
-    CHI2TEST        = 2,
-    LEASTSQUARETEST = 3
-  };
+  enum TESTNAME { GTEST = 1, CHI2TEST = 2, LEASTSQUARETEST = 3 };
+
   template < TESTNAME, class A, class B, class C >
   struct TestSelect {
     using type = A;
   };
+
   template < class A, class B, class C >
   struct TestSelect< CHI2TEST, A, B, C > {
     using type = B;
   };
+
   template < class A, class B, class C >
   struct TestSelect< LEASTSQUARETEST, A, B, C > {
     using type = C;
@@ -61,19 +58,19 @@ namespace gum {
   struct ValueSelect {
     using type = A;
   };
+
   template < class A, class B >
   struct ValueSelect< false, A, B > {
     using type = B;
   };
 
-  enum LEARNERNAME {
-    IMDDILEARNER = 1,
-    ITILEARNER   = 2
-  };
+  enum LEARNERNAME { IMDDILEARNER = 1, ITILEARNER = 2 };
+
   template < LEARNERNAME, class A, class B >
   struct LearnerSelect {
     using type = A;
   };
+
   template < class A, class B >
   struct LearnerSelect< ITILEARNER, A, B > {
     using type = B;

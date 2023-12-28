@@ -32,6 +32,7 @@
 #include <string>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/variables/variable.h>
 
 namespace gum {

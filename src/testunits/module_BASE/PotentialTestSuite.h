@@ -20,18 +20,16 @@
 
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/core/exceptions.h>
-
-#include <agrum/tools/variables/discretizedVariable.h>
-#include <agrum/tools/variables/labelizedVariable.h>
-#include <agrum/tools/variables/rangeVariable.h>
-
 #include <agrum/tools/multidim/ICIModels/multiDimLogit.h>
 #include <agrum/tools/multidim/implementations/multiDimArray.h>
 #include <agrum/tools/multidim/instantiation.h>
 #include <agrum/tools/multidim/potential.h>
+#include <agrum/tools/variables/discretizedVariable.h>
+#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/tools/variables/rangeVariable.h>
 
 namespace gum_tests {
 
@@ -835,7 +833,6 @@ namespace gum_tests {
       TS_ASSERT_LESS_THAN((tmp - res).abs().max(), 1e-7)
     }
 
-
     GUM_ACTIVE_TEST(LoopsForEmptyPotential) {
       gum::Potential< double > p;
       gum::Instantiation       inst(p);
@@ -1195,7 +1192,7 @@ namespace gum_tests {
       p.randomDistribution();
 
       TS_GUM_ASSERT_QUASI_EQUALS(
-         p.expectedValue([](const gum::Instantiation&) -> auto{ return 1.0; }),
+         p.expectedValue([](const gum::Instantiation&) -> auto { return 1.0; }),
          1.0)
 
       gum::Potential< double > q;
@@ -1211,7 +1208,7 @@ namespace gum_tests {
       }
 
       TS_GUM_ASSERT_QUASI_EQUALS(
-         q.expectedValue([](const gum::Instantiation& i) -> auto{ return double(i.val(0)); }),
+         q.expectedValue([](const gum::Instantiation& i) -> auto { return double(i.val(0)); }),
          mean);
     }
 

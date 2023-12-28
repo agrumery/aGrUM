@@ -73,14 +73,12 @@ namespace gum {
       GUM_CONSTRUCTOR(RecordCounter);
     }
 
-
     /// default constructor
     RecordCounter::RecordCounter(const DBRowGeneratorParser&             parser,
                                  const Bijection< NodeId, std::size_t >& nodeId2columns) :
         RecordCounter(parser,
                       std::vector< std::pair< std::size_t, std::size_t > >(),
                       nodeId2columns) {}
-
 
     /// copy constructor
     RecordCounter::RecordCounter(const RecordCounter& from) :
@@ -91,7 +89,6 @@ namespace gum {
         _min_nb_rows_per_thread_(from._min_nb_rows_per_thread_) {
       GUM_CONS_CPY(RecordCounter);
     }
-
 
     /// move constructor
     RecordCounter::RecordCounter(RecordCounter&& from) :
@@ -106,14 +103,11 @@ namespace gum {
       GUM_CONS_MOV(RecordCounter);
     }
 
-
     /// virtual copy constructor
     RecordCounter* RecordCounter::clone() const { return new RecordCounter(*this); }
 
-
     /// destructor
     RecordCounter::~RecordCounter() { GUM_DESTRUCTOR(RecordCounter); }
-
 
     /// copy operator
     RecordCounter& RecordCounter::operator=(const RecordCounter& from) {
@@ -132,7 +126,6 @@ namespace gum {
       return *this;
     }
 
-
     /// move operator
     RecordCounter& RecordCounter::operator=(RecordCounter&& from) {
       if (this != &from) {
@@ -150,7 +143,6 @@ namespace gum {
       return *this;
     }
 
-
     /// clears all the last database-parsed counts from memory
     void RecordCounter::clear() {
       _last_DB_counting_.clear();
@@ -159,14 +151,12 @@ namespace gum {
       _last_nonDB_ids_.clear();
     }
 
-
     // changes the number min of rows a thread should process in a
     // multithreading context
     void RecordCounter::setMinNbRowsPerThread(const std::size_t nb) const {
       if (nb == std::size_t(0)) _min_nb_rows_per_thread_ = std::size_t(1);
       else _min_nb_rows_per_thread_ = nb;
     }
-
 
     /// compute and raise the exception when some variables are continuous
     void RecordCounter::_raiseCheckException_(const std::vector< std::string >& bad_vars) const {
@@ -186,7 +176,6 @@ namespace gum {
       }
       GUM_ERROR(TypeError, msg.str())
     }
-
 
     /// check that all the variables in an idset are discrete
     void RecordCounter::_checkDiscreteVariables_(const IdCondSet& ids) const {
@@ -230,7 +219,6 @@ namespace gum {
       }
     }
 
-
     // returns a mapping from the nodes ids to the columns of the database
     // for a given sequence of ids
     HashTable< NodeId, std::size_t >
@@ -247,7 +235,6 @@ namespace gum {
       }
       return res;
     }
-
 
     /// extracts some new counts from previously computed ones
     std::vector< double >&
@@ -448,7 +435,6 @@ namespace gum {
       }
     }
 
-
     /// parse the database to produce new counts
     std::vector< double >& RecordCounter::_countFromDatabase_(const IdCondSet& ids) {
       // if the ids vector is empty or the database is empty, return an
@@ -573,7 +559,6 @@ namespace gum {
       return _last_DB_counting_;
     }
 
-
     /// checks that the ranges passed in argument are ok or raise an exception
     void RecordCounter::_checkRanges_(
        const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges) const {
@@ -599,7 +584,6 @@ namespace gum {
         GUM_ERROR(OutOfBounds, str.str())
       }
     }
-
 
     /// sets the ranges within which each thread should perform its computations
     void RecordCounter::_dispatchRangesToThreads_() {
@@ -652,7 +636,6 @@ namespace gum {
                 });
     }
 
-
     /// sets new ranges to perform the counts
     void RecordCounter::setRanges(
        const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges) {
@@ -673,7 +656,6 @@ namespace gum {
       // dispatch the ranges to the threads
       _dispatchRangesToThreads_();
     }
-
 
     /// reset the ranges to the one range corresponding to the whole database
     void RecordCounter::clearRanges() {

@@ -35,7 +35,6 @@
 #include <string>
 
 #include <agrum/BN/io/BNReader.h>
-
 #include <agrum/PRM/o3prm/O3prmReader.h>
 
 namespace gum {
@@ -70,14 +69,18 @@ namespace gum {
 
     /// # of errors
     Size errors() { return _errors_.error_count; }
+
     /// # of errors
     Size warnings() { return _errors_.warning_count; }
 
     Idx errLine(Idx i) { return _errors_.error(i).line; }
+
     /// col of ith error or warning
     Idx errCol(Idx i) { return _errors_.error(i).column; }
+
     /// type of ith error or warning
     bool errIsError(Idx i) { return _errors_.error(i).is_error; }
+
     /// message of ith error or warning
     std::string errMsg(Idx i) { return _errors_.error(i).msg; }
 
@@ -91,6 +94,7 @@ namespace gum {
 
     /// send on std::cerr the number of errors and the number of warnings
     void showErrorCounts(std::ostream& o = std::cerr) { _errors_.syntheticResults(o); }
+
     /// @}
 
     private:

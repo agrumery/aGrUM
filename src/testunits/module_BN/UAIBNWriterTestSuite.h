@@ -19,18 +19,19 @@
  */
 
 
-#include <sys/stat.h>
-
 #include <iostream>
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
+
+#include <agrum/tools/variables/labelizedVariable.h>
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/io/UAI/UAIBNWriter.h>
 #include <agrum/BN/io/UAI/UAIBNReader.h>
-#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/BN/io/UAI/UAIBNWriter.h>
+
+#include <sys/stat.h>
 
 // The graph used for the tests:
 //          0   1_          0 -> 2

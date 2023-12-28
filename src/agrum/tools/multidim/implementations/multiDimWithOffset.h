@@ -29,9 +29,11 @@
 #ifndef GUM_MULTI_DIM_WITH_OFFSET_H
 #define GUM_MULTI_DIM_WITH_OFFSET_H
 
-#include <agrum/agrum.h>
-#include <agrum/tools/multidim/implementations/multiDimImplementation.h>
 #include <vector>
+
+#include <agrum/agrum.h>
+
+#include <agrum/tools/multidim/implementations/multiDimImplementation.h>
 
 namespace gum {
   // ==========================================================================

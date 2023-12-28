@@ -27,8 +27,8 @@
 #ifndef GUM_MAG_H
 #define GUM_MAG_H
 
-#include <agrum/tools/graphs/mixedGraph.h>
 #include <agrum/tools/graphs/DAG.h>
+#include <agrum/tools/graphs/mixedGraph.h>
 
 namespace gum {
 
@@ -42,7 +42,7 @@ namespace gum {
    *
    *
    * This is the base class for partially directed acyclic graph : addArc and addEdge may throw a
-   * DirectedCycle if any (mixed) cycle is created by this arc/edge.
+   * DirectedCycle if any (directed) cycle is created by this arc/edge.
    *
    * @par exemple de code
    * @code
@@ -60,12 +60,9 @@ namespace gum {
    * //throw an InvalidNode
    * // g1.addArc( i1+i2+i3,i1 );
    *
-   * // throw an InvalidMixedCycle
+   * // throw an InvalidCycle
    * // g1.addArc( i3,i1 );
-   *
-   * // throw an InvalidMixedCycle
-   * // g1.addEdge( i3,i1 );
-   *
+   *   *
    * // copying graphs
    * gum::PDAG g3 = g1;
    * g2 = g1;
@@ -212,11 +209,19 @@ namespace gum {
     bool hasMixedReallyOrientedPath(NodeId n1, NodeId n2) const;
 
     /** check if node X and node Y are independent given nodes Z (in the sense of
-     * c-separation)*/
+     * c-separation)
+     *
+     * @warning cSeparation can be defined for PDAG but may seem relevant only for ChainGraph (PDAG
+     * with no partially directed cycle)
+     */
     bool cSeparation(NodeId X, NodeId Y, const NodeSet& Z) const;
 
     /** check if nodes X and nodes  Y are independent given Z (in the sense of
-     * d-separation)*/
+     * d-separation)
+     *
+     * @warning cSeparation can be defined for PDAG but may seem relevant only for chainGraph (PDAG
+     * with no partially directed cycle)
+     */
     bool cSeparation(const NodeSet& X, const NodeSet& Y, const NodeSet& Z) const;
 
     /// to friendly display mixed graph in DOT format
@@ -229,4 +234,4 @@ namespace gum {
 #  include <agrum/tools/graphs/PDAG_inl.h>
 #endif   // GUM_NOINLINE
 
-#endif /* GUM_MAG_H */
+#endif   /* GUM_MAG_H */

@@ -22,10 +22,11 @@
 #include <iostream>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
+
+#include <agrum/tools/core/math/gammaLog2.h>
 
 #include <agrum/tools/core/math/math_utils.h>
-#include <agrum/tools/core/math/gammaLog2.h>
 
 namespace gum_tests {
 

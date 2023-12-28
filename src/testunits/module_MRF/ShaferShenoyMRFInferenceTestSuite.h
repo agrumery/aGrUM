@@ -24,16 +24,17 @@
 #include <vector>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
-#include <agrum/MRF/inference/ShaferShenoyMRFInference.h>
-#include <agrum/MRF/MarkovRandomField.h>
-#include <agrum/BN/BayesNet.h>
-#include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/tools/multidim/potential.h>
+#include <agrum/tools/variables/discretizedVariable.h>
 #include <agrum/tools/variables/labelizedVariable.h>
 #include <agrum/tools/variables/rangeVariable.h>
-#include <agrum/tools/variables/discretizedVariable.h>
+
+#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/MRF/inference/ShaferShenoyMRFInference.h>
+#include <agrum/MRF/MarkovRandomField.h>
 
 namespace gum_tests {
   class [[maybe_unused]] ShaferShenoyMRFTestSuite: public CxxTest::TestSuite {
@@ -90,7 +91,6 @@ namespace gum_tests {
         TS_ASSERT_LESS_THAN((postbn - postmn).abs().max(), 1e-7)
       }
     }
-
 
     GUM_ACTIVE_TEST(CompareInferenceTreeWithEvidence) {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B<-C->D<-E;B->F;D->G;");
@@ -263,7 +263,6 @@ namespace gum_tests {
         }
       }
     }
-
 
     GUM_ACTIVE_TEST(IncrementalInferenceWithSoftEvidence) {
       auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;C--D;D--E--F;F--A");

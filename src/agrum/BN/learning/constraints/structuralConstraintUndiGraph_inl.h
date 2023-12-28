@@ -63,13 +63,13 @@ namespace gum {
     INLINE bool
        StructuralConstraintUndiGraph::checkModificationAlone(const GraphChange& change) const {
       switch (change.type()) {
-        case GraphChangeType::EDGE_ADDITION:
+        case GraphChangeType::EDGE_ADDITION :
           return checkEdgeAdditionAlone(change.node1(), change.node2());
 
-        case GraphChangeType::EDGE_DELETION:
+        case GraphChangeType::EDGE_DELETION :
           return checkEdgeDeletionAlone(change.node1(), change.node2());
 
-        default:
+        default :
           GUM_ERROR(OperationNotAllowed,
                     "arc modifications are not "
                     "supported by StructuralConstraintUndiGraph");
@@ -89,15 +89,15 @@ namespace gum {
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintUndiGraph::modifyGraphAlone(const GraphChange& change) {
       switch (change.type()) {
-        case GraphChangeType::EDGE_ADDITION:
+        case GraphChangeType::EDGE_ADDITION :
           modifyGraphAlone(reinterpret_cast< const EdgeAddition& >(change));
           break;
 
-        case GraphChangeType::EDGE_DELETION:
+        case GraphChangeType::EDGE_DELETION :
           modifyGraphAlone(reinterpret_cast< const EdgeDeletion& >(change));
           break;
 
-        default:
+        default :
           GUM_ERROR(OperationNotAllowed,
                     "arc modifications are not supported "
                     "by StructuralConstraintUndiGraph");

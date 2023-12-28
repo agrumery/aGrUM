@@ -18,36 +18,36 @@
  *
  */
 
-#include <agrum/BN/BayesNet.h>
+#include <iostream>
+
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
+
+#include <agrum/tools/core/approximations/approximationScheme.h>
+#include <agrum/tools/core/approximations/approximationSchemeListener.h>
+#include <agrum/tools/database/databaseTable.h>
+#include <agrum/tools/database/DBInitializerFromCSV.h>
+#include <agrum/tools/database/DBRowGeneratorIdentity.h>
+#include <agrum/tools/database/DBRowGeneratorParser.h>
+#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
+#include <agrum/tools/database/DBTranslatorSet.h>
 #include <agrum/tools/graphs/DAG.h>
 #include <agrum/tools/graphs/mixedGraph.h>
 #include <agrum/tools/variables/labelizedVariable.h>
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
-#include <iostream>
 
-#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
-#include <agrum/tools/database/DBRowGeneratorParser.h>
-#include <agrum/tools/database/DBRowGeneratorIdentity.h>
-#include <agrum/tools/database/DBInitializerFromCSV.h>
-#include <agrum/tools/database/databaseTable.h>
-#include <agrum/tools/database/DBTranslatorSet.h>
-
-#include <agrum/BN/learning/priors/noPrior.h>
-
+#include <agrum/BN/BayesNet.h>
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/BN/learning/Miic.h>
 #include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
-
-#include <agrum/tools/core/approximations/approximationScheme.h>
-#include <agrum/tools/core/approximations/approximationSchemeListener.h>
+#include <agrum/BN/learning/priors/noPrior.h>
 
 namespace gum_tests {
 
   class SimpleListenerForMiic: public gum::Listener {
     public:
     SimpleListenerForMiic(){};
+
     void whenStructuralModification(const void* src,
                                     gum::NodeId x,
                                     gum::NodeId y,
@@ -296,7 +296,6 @@ namespace gum_tests {
         auto dag = search.learnStructure(cI, graph);
         // GUM_TRACE_VAR(dag.toDot())
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
-
     }
 
     GUM_ACTIVE_TEST(_24_learn) {
@@ -390,7 +389,7 @@ namespace gum_tests {
         }
       }
 
-      //GUM_TRACE_VAR((gum::Edge(0,1) == gum::Edge(1,0)))
+      // GUM_TRACE_VAR((gum::Edge(0,1) == gum::Edge(1,0)))
 
       // adding constraints
       forbidGraph.addArc(2, 6);
@@ -454,7 +453,7 @@ namespace gum_tests {
       auto mg = search.learnMixedStructure(cI, graph);
       TS_ASSERT(mg.existsArc(3, 4))
 
-      auto dag=search.learnStructure(cI, graph);
+      auto dag = search.learnStructure(cI, graph);
       TS_ASSERT(dag.existsArc(3, 4))
     }
 
@@ -568,7 +567,6 @@ namespace gum_tests {
       }
       auto mg   = search.learnMixedStructure(cI, graph);
       auto pdag = search.learnPDAG(cI, graph);
-
     }
 
     GUM_ACTIVE_TEST(_MIIC_ms_order2_) {
@@ -628,7 +626,6 @@ namespace gum_tests {
       }
       auto mg   = search.learnMixedStructure(cI, graph);
       auto pdag = search.learnPDAG(cI, graph);
-
     }
 
     GUM_ACTIVE_TEST(_125_learn) {

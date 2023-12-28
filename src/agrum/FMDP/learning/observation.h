@@ -35,6 +35,7 @@
 #include <agrum/tools/core/smallobjectallocator/smallObjectAllocator.h>
 // =========================================================================
 #include <agrum/tools/variables/discreteVariable.h>
+
 // =========================================================================
 
 namespace gum {
@@ -76,7 +77,8 @@ namespace gum {
     /// Allocators and Deallocators redefinition
     // ============================================================================
     void* operator new(size_t s) { return SmallObjectAllocator::instance().allocate(s); }
-    void  operator delete(void* p) {
+
+    void operator delete(void* p) {
       SmallObjectAllocator::instance().deallocate(p, sizeof(Observation));
     }
 
@@ -95,6 +97,7 @@ namespace gum {
      */
     // ###################################################################
     INLINE Idx modality(const DiscreteVariable* var) const { return _varInst_[var]; }
+
     INLINE Idx rModality(const DiscreteVariable* var) const { return _rInst_[var]; }
 
     // ###################################################################
@@ -108,6 +111,7 @@ namespace gum {
     INLINE void setModality(const DiscreteVariable* var, Idx modality) {
       _varInst_.insert(var, modality);
     }
+
     INLINE void setRModality(const DiscreteVariable* var, Idx modality) {
       _rInst_.insert(var, modality);
     }

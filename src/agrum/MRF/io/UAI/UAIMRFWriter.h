@@ -36,8 +36,9 @@
 #include <sstream>
 #include <string>
 
-#include <agrum/MRF/io/MRFWriter.h>
 #include <agrum/agrum.h>
+
+#include <agrum/MRF/io/MRFWriter.h>
 
 namespace gum {
   /**

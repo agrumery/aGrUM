@@ -19,11 +19,11 @@
  */
 
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
-
 #include <iostream>
 #include <string>
+
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
 
 #ifdef HAVE_DIRENT_H
 #  include <dirent.h>
@@ -32,6 +32,7 @@
 #endif   // HAVE_DIRENT_H
 
 #include <agrum/tools/core/utils_misc.h>
+
 namespace gum_tests {
 
   class [[maybe_unused]] DirTestSuite: public CxxTest::TestSuite {

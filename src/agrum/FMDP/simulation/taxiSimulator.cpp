@@ -29,6 +29,7 @@
  */
 //======================================================================
 #include <agrum/FMDP/simulation/taxiSimulator.h>
+
 //======================================================================
 
 namespace gum {
@@ -114,7 +115,6 @@ namespace gum {
     }
   }
 
-
   // ==================================================================================================================
   // Reward according to the situation
   // ==================================================================================================================
@@ -138,7 +138,6 @@ namespace gum {
     return randy;
   }
 
-
   // ==================================================================================================================
   // Reward according to the situation
   // ==================================================================================================================
@@ -152,7 +151,6 @@ namespace gum {
 
     return false;
   }
-
 
   // ==================================================================================================================
   // Reward according to the situation
@@ -171,16 +169,15 @@ namespace gum {
     if (curFuelLevel > 0) currentState_.chgVal(_fuelLevel_, --curFuelLevel);
 
     switch (actionId) {
-      case GoNorth: return _performGoNorth_();
-      case GoEast: return _performGoEast_();
-      case GoSouth: return _performGoSouth_();
-      case GoWest: return _performGoWest_();
-      case PickUp: return _performPickUp_();
-      case PutDown: return _performPutDown_();
-      case FillUp: return _performFillUp_();
+      case GoNorth : return _performGoNorth_();
+      case GoEast : return _performGoEast_();
+      case GoSouth : return _performGoSouth_();
+      case GoWest : return _performGoWest_();
+      case PickUp : return _performPickUp_();
+      case PutDown : return _performPutDown_();
+      case FillUp : return _performFillUp_();
     }
   }
-
 
   // ==================================================================================================================
   // Transition if you go North
@@ -189,7 +186,6 @@ namespace gum {
     Idx curPos = this->currentState_.valFromPtr(_yPos_);
     if (curPos < 4) currentState_.chgVal(_yPos_, ++curPos);
   }
-
 
   // ==================================================================================================================
   // Transition if you go east
@@ -207,7 +203,6 @@ namespace gum {
     currentState_.chgVal(_xPos_, ++xCurPos);
   }
 
-
   // ==================================================================================================================
   // Transition if you go south
   // ==================================================================================================================
@@ -215,7 +210,6 @@ namespace gum {
     Idx curPos = this->currentState_.valFromPtr(_yPos_);
     if (curPos > 0) currentState_.chgVal(_yPos_, --curPos);
   }
-
 
   // ==================================================================================================================
   // Transition if you go west
@@ -233,7 +227,6 @@ namespace gum {
     currentState_.chgVal(_xPos_, --xCurPos);
   }
 
-
   // ==================================================================================================================
   // Transition if you go pick up sb
   // ==================================================================================================================
@@ -245,26 +238,25 @@ namespace gum {
     TaxiSimulationLandmark passPos
        = (TaxiSimulationLandmark)this->currentState_.valFromPtr(_passengerPos_);
     switch (passPos) {
-      case HOME: {
+      case HOME : {
         if (xCurPos == HOMEX && yCurPos == HOMEY) currentState_.chgVal(_passengerPos_, TAXI);
         return;
       }
-      case WORK: {
+      case WORK : {
         if (xCurPos == WORKX && yCurPos == WORKY) currentState_.chgVal(_passengerPos_, TAXI);
         return;
       }
-      case THEATER: {
+      case THEATER : {
         if (xCurPos == THEATERX && yCurPos == THEATERY) currentState_.chgVal(_passengerPos_, TAXI);
         return;
       }
-      case CLUB: {
+      case CLUB : {
         if (xCurPos == CLUBX && yCurPos == CLUBY) currentState_.chgVal(_passengerPos_, TAXI);
         return;
       }
-      case TAXI: return;
+      case TAXI : return;
     }
   }
-
 
   // ==================================================================================================================
   // Transition if you go put down sb
@@ -280,28 +272,27 @@ namespace gum {
        = (TaxiSimulationLandmark)this->currentState_.valFromPtr(_passengerDest_);
     if (passPos == TAXI) {
       switch (passDest) {
-        case HOME: {
+        case HOME : {
           if (xCurPos == HOMEX && yCurPos == HOMEY) currentState_.chgVal(_passengerPos_, HOME);
           return;
         }
-        case WORK: {
+        case WORK : {
           if (xCurPos == WORKX && yCurPos == WORKY) currentState_.chgVal(_passengerPos_, WORK);
           return;
         }
-        case THEATER: {
+        case THEATER : {
           if (xCurPos == THEATERX && yCurPos == THEATERY)
             currentState_.chgVal(_passengerPos_, THEATER);
           return;
         }
-        case CLUB: {
+        case CLUB : {
           if (xCurPos == CLUBX && yCurPos == CLUBY) currentState_.chgVal(_passengerPos_, CLUB);
           return;
         }
-        case TAXI: return;
+        case TAXI : return;
       }
     }
   }
-
 
   // ==================================================================================================================
   // Transition if you go reffill
@@ -314,7 +305,6 @@ namespace gum {
 
     if (xCurPos == STATIONX && yCurPos == STATIONY) currentState_.chgVal(_fuelLevel_, 13);
   }
-
 
   // ==================================================================================================================
   // Reward according to the situation
@@ -362,23 +352,23 @@ namespace gum {
                                         TaxiSimulationLandmarkX xCurPos,
                                         TaxiSimulationLandmarkY yCurPos) {
     switch (passDest) {
-      case HOME: {
+      case HOME : {
         if (xCurPos == HOMEX && yCurPos == HOMEY) return true;
         break;
       }
-      case WORK: {
+      case WORK : {
         if (xCurPos == WORKX && yCurPos == WORKY) return true;
         break;
       }
-      case THEATER: {
+      case THEATER : {
         if (xCurPos == THEATERX && yCurPos == THEATERY) return true;
         break;
       }
-      case CLUB: {
+      case CLUB : {
         if (xCurPos == CLUBX && yCurPos == CLUBY) return true;
         break;
       }
-      case TAXI: return false;
+      case TAXI : return false;
     }
     return false;
   }
@@ -387,23 +377,23 @@ namespace gum {
                                       TaxiSimulationLandmarkX xCurPos,
                                       TaxiSimulationLandmarkY yCurPos) {
     switch (passPos) {
-      case HOME: {
+      case HOME : {
         if (xCurPos == HOMEX && yCurPos == HOMEY) return true;
         break;
       }
-      case WORK: {
+      case WORK : {
         if (xCurPos == WORKX && yCurPos == WORKY) return true;
         break;
       }
-      case THEATER: {
+      case THEATER : {
         if (xCurPos == THEATERX && yCurPos == THEATERY) return true;
         break;
       }
-      case CLUB: {
+      case CLUB : {
         if (xCurPos == CLUBX && yCurPos == CLUBY) return true;
         break;
       }
-      case TAXI: return false;
+      case TAXI : return false;
     }
     return false;
   }

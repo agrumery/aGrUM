@@ -29,11 +29,12 @@
 
 #include <cstddef>
 #include <cstring>
-#include <initializer_list>
 #include <memory>
 #include <vector>
 
 #include <agrum/agrum.h>
+
+#include <initializer_list>
 
 namespace gum {
 

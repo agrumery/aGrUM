@@ -21,10 +21,11 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#  include <agrum/ID/io/BIFXML/BIFXMLIDReader.h>
 #  include <fstream>
 #  include <iostream>
 #  include <sstream>
+
+#  include <agrum/ID/io/BIFXML/BIFXMLIDReader.h>
 
 namespace gum {
   /*

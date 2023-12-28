@@ -34,6 +34,7 @@
 // =========================================================================
 #include <agrum/FMDP/learning/core/templateStrategy.h>
 #include <agrum/FMDP/learning/datastructure/leaves/leafPair.h>
+
 // =========================================================================
 
 namespace gum {
@@ -47,7 +48,6 @@ namespace gum {
    */
 
   using pair_iterator = HashTableConstIteratorSafe< LeafPair*, std::vector< Size > >;
-
 
   template < bool isInitial = false >
   class FusionContext {
@@ -71,7 +71,8 @@ namespace gum {
     /// Allocators and Deallocators redefinition
     // ============================================================================
     void* operator new(size_t s) { return SmallObjectAllocator::instance().allocate(s); }
-    void  operator delete(void* p) {
+
+    void operator delete(void* p) {
       SmallObjectAllocator::instance().deallocate(p, sizeof(FusionContext));
     }
 
@@ -85,6 +86,7 @@ namespace gum {
     // ###################################################################
     ///
     // ###################################################################
+
     public:
     bool containsAssociatedLeaf(AbstractLeaf* l) {
       return _containsAssociatedLeaf_(l, Int2Type< isInitial >());
@@ -94,22 +96,25 @@ namespace gum {
     bool _containsAssociatedLeaf_(AbstractLeaf* l, Int2Type< false >) {
       return _leaf2Pair_.exists(l);
     }
+
     bool _containsAssociatedLeaf_(AbstractLeaf*, Int2Type< true >) { return false; }
 
     // ###################################################################
     ///
     // ###################################################################
+
     public:
     bool associateLeaf(AbstractLeaf* l) { return _associateLeaf_(l, Int2Type< isInitial >()); }
 
     private:
     bool _associateLeaf_(AbstractLeaf*, Int2Type< false >);
-    bool _associateLeaf_(AbstractLeaf*, Int2Type< true >) { return false; }
 
+    bool _associateLeaf_(AbstractLeaf*, Int2Type< true >) { return false; }
 
     // ###################################################################
     ///
     // ###################################################################
+
     public:
     bool updateAssociatedLeaf(AbstractLeaf* l) {
       return _updateAssociatedLeaf_(l, Int2Type< isInitial >());
@@ -117,6 +122,7 @@ namespace gum {
 
     private:
     bool _updateAssociatedLeaf_(AbstractLeaf*, Int2Type< false >);
+
     bool _updateAssociatedLeaf_(AbstractLeaf*, Int2Type< true >) { return false; }
 
     public:
@@ -126,19 +132,21 @@ namespace gum {
 
     private:
     bool _updateAllAssociatedLeaves_(Int2Type< false >);
-    bool _updateAllAssociatedLeaves_(Int2Type< true >) { return false; }
 
+    bool _updateAllAssociatedLeaves_(Int2Type< true >) { return false; }
 
     // ###################################################################
     ///
     /// @warning : won't delete Associated Pair created (because subsequent
     /// fusioncontexts might be using it)
     // ###################################################################
+
     public:
     bool deassociateLeaf(AbstractLeaf* l) { return _deassociateLeaf_(l, Int2Type< isInitial >()); }
 
     private:
     bool _deassociateLeaf_(AbstractLeaf*, Int2Type< false >);
+
     bool _deassociateLeaf_(AbstractLeaf*, Int2Type< true >) { return false; }
 
     /// @}
@@ -164,8 +172,8 @@ namespace gum {
     // ###################################################################
     bool removePair(LeafPair* p);
 
-
     pair_iterator beginPairs() { return _pairsHeap_.allValues().beginSafe(); }
+
     pair_iterator endPairs() { return _pairsHeap_.allValues().endSafe(); }
 
     /// @}
@@ -205,12 +213,15 @@ namespace gum {
     // ###################################################################
     ///
     // ###################################################################
+
     public:
     Set< LeafPair* > associatedPairs() { return _associatedPairs_(Int2Type< isInitial >()); }
 
     private:
     Set< LeafPair* > _associatedPairs_(Int2Type< false >);
+
     Set< LeafPair* > _associatedPairs_(Int2Type< true >) { return Set< LeafPair* >(); }
+
     /// @}
 
     public:

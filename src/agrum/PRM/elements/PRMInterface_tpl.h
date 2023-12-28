@@ -25,9 +25,8 @@
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
-#include <agrum/PRM/elements/PRMInterface.h>
-
 #include <agrum/PRM/elements/PRMClass.h>
+#include <agrum/PRM/elements/PRMInterface.h>
 
 namespace gum {
   namespace prm {
@@ -161,25 +160,25 @@ namespace gum {
         GUM_ERROR(OperationNotAllowed, "illegal overload")
 
       switch (overloader->elt_type()) {
-        case PRMClassElement< GUM_SCALAR >::prm_attribute: {
+        case PRMClassElement< GUM_SCALAR >::prm_attribute : {
           auto attr_overloader = static_cast< PRMAttribute< GUM_SCALAR >* >(overloader);
           auto attr_overloaded = static_cast< PRMAttribute< GUM_SCALAR >* >(overloaded);
           _overloadAttribute_(attr_overloader, attr_overloaded);
           break;
         }
 
-        case PRMClassElement< GUM_SCALAR >::prm_refslot: {
+        case PRMClassElement< GUM_SCALAR >::prm_refslot : {
           auto ref_overloader = static_cast< PRMReferenceSlot< GUM_SCALAR >* >(overloader);
           auto ref_overloaded = static_cast< PRMReferenceSlot< GUM_SCALAR >* >(overloaded);
           _overloadReferenceSlot_(ref_overloader, ref_overloaded);
           break;
         }
 
-        case PRMClassElement< GUM_SCALAR >::prm_aggregate:
-        case PRMClassElement< GUM_SCALAR >::prm_slotchain:
+        case PRMClassElement< GUM_SCALAR >::prm_aggregate :
+        case PRMClassElement< GUM_SCALAR >::prm_slotchain :
           GUM_ERROR(OperationNotAllowed,
                     "Element " << overloader->name() << " can not be overloaded")
-        default:
+        default :
           GUM_ERROR(FatalError, "Unknown ClassElement<GUM_SCALAR> type for " << overloader->name())
       }
 
@@ -272,11 +271,11 @@ namespace gum {
     bool PRMInterface< GUM_SCALAR >::isSubTypeOf(
        const PRMClassElementContainer< GUM_SCALAR >& cec) const {
       switch (cec.obj_type()) {
-        case PRMClassElement< GUM_SCALAR >::prm_type::CLASS: {
+        case PRMClassElement< GUM_SCALAR >::prm_type::CLASS : {
           return false;
         }
 
-        case PRMClassElement< GUM_SCALAR >::prm_type::PRM_INTERFACE: {
+        case PRMClassElement< GUM_SCALAR >::prm_type::PRM_INTERFACE : {
           const PRMInterface* current = this;
 
           while (current != 0) {
@@ -288,7 +287,7 @@ namespace gum {
           return false;
         }
 
-        default: {
+        default : {
           GUM_ERROR(FatalError, "unknown ClassElementContainer<GUM_SCALAR>")
         }
       }
@@ -367,19 +366,19 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
-       PRMInterface< GUM_SCALAR >::operator[](NodeId id) const {
+                 PRMInterface< GUM_SCALAR >::operator[](NodeId id) const {
       return get(id);
     }
 
     template < typename GUM_SCALAR >
     INLINE PRMClassElement< GUM_SCALAR >&
-       PRMInterface< GUM_SCALAR >::operator[](const std::string& name) {
+           PRMInterface< GUM_SCALAR >::operator[](const std::string& name) {
       return get(name);
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
-       PRMInterface< GUM_SCALAR >::operator[](const std::string& name) const {
+                 PRMInterface< GUM_SCALAR >::operator[](const std::string& name) const {
       return get(name);
     }
 

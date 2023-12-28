@@ -31,8 +31,9 @@
 #ifndef GUM_INFLUENCE_DIAGRAM_INFERENCE_H
 #define GUM_INFLUENCE_DIAGRAM_INFERENCE_H
 
-#include <agrum/ID/influenceDiagram.h>
 #include <agrum/tools/graphicalModels/inference/graphicalModelInference.h>
+
+#include <agrum/ID/influenceDiagram.h>
 
 namespace gum {
   /**

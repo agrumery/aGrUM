@@ -26,9 +26,9 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 
-#include <agrum/agrum.h>
 #include <algorithm>
 
+#include <agrum/agrum.h>
 
 namespace gum {
 
@@ -52,15 +52,17 @@ namespace gum {
       MultiDimAdressable(src) {
     GUM_CONS_CPY(MultiDimContainer);
   }
+
   template < typename GUM_SCALAR >
   INLINE MultiDimContainer< GUM_SCALAR >&
-     MultiDimContainer< GUM_SCALAR >::operator=(const MultiDimContainer< GUM_SCALAR >& from) {
+         MultiDimContainer< GUM_SCALAR >::operator=(const MultiDimContainer< GUM_SCALAR >& from) {
     MultiDimAdressable::operator=(from);
     return *this;
   }
+
   template < typename GUM_SCALAR >
   INLINE MultiDimContainer< GUM_SCALAR >&
-     MultiDimContainer< GUM_SCALAR >::operator=(MultiDimContainer< GUM_SCALAR >&& from) {
+         MultiDimContainer< GUM_SCALAR >::operator=(MultiDimContainer< GUM_SCALAR >&& from) {
     GUM_OP_MOV(MultiDimContainer);
     MultiDimAdressable::operator=(std::forward< MultiDimAdressable >(from));
     return *this;
@@ -198,7 +200,6 @@ namespace gum {
     }
     return tmp;
   }
-
 
   template < typename GUM_SCALAR >
   void MultiDimContainer< GUM_SCALAR >::copyFrom(const MultiDimContainer< GUM_SCALAR >& src,

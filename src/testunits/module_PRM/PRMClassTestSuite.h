@@ -19,13 +19,14 @@
  */
 
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
-
 #include <sstream>
 
-#include <agrum/PRM/elements/PRMClass.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
+
 #include <agrum/tools/variables/labelizedVariable.h>
+
+#include <agrum/PRM/elements/PRMClass.h>
 
 /**
  * This class is used to test gum::prm::PRMClassElement, since it is an abstrac
@@ -129,6 +130,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(subclass->slotChains().size(), (gum::Size)0)
       delete subclass;
     }
+
     /// @}
     /// Belongs and exists tests
     /// @{
@@ -646,6 +648,7 @@ namespace gum_tests {
         TS_ASSERT(knGate.isOutputNode(knGate.get("state")))
       } catch (gum::Exception& e) { TS_FAIL(e.errorContent()); }
     }
+
     /// @}
   };
 

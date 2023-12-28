@@ -22,17 +22,15 @@
 #include <iostream>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
-
-#include <agrum/tools/graphs/graphElements.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/graphs/DAG.h>
+#include <agrum/tools/graphs/graphElements.h>
 #include <agrum/tools/graphs/mixedGraph.h>
-#include <agrum/tools/graphs/undiGraph.h>
-
 #include <agrum/tools/graphs/parts/listeners/diGraphListener.h>
 #include <agrum/tools/graphs/parts/listeners/mixedGraphListener.h>
 #include <agrum/tools/graphs/parts/listeners/undiGraphListener.h>
+#include <agrum/tools/graphs/undiGraph.h>
 
 // The graph used for the tests:
 //          0   1_          0 -> 2
@@ -503,7 +501,7 @@ namespace gum_tests {
 
       DiGraphCounter c(&g);
 
-      buildDAG(g);   // 5 nodes/6 arcs for g
+      buildDAG(g);                                         // 5 nodes/6 arcs for g
 
       TS_ASSERT_THROWS(g.addArc(id5, id2),
                        const gum::InvalidDirectedCycle&)   // should throw

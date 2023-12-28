@@ -27,11 +27,10 @@
  * GONZALES(_at_AMU)
  */
 
-#include <agrum/FMDP/fmdpFactory.h>
-
 #include <agrum/tools/multidim/implementations/multiDimImplementation.h>
 #include <agrum/tools/multidim/potential.h>
 
+#include <agrum/FMDP/fmdpFactory.h>
 
 // #define FMDP_VERBOSITY(x) {  if (isVerbose()) std::cerr << "[FMDP factory]
 // "<< x << std::endl; }
@@ -61,7 +60,6 @@ namespace gum {
     resetVerbose();
     _actionIdcpt_ = 1;
   }
-
 
   // Destructor
 
@@ -93,7 +91,6 @@ namespace gum {
     return _fmdp_;
   }
 
-
   // Returns the current state of the factory.
 
   template < typename GUM_SCALAR >
@@ -102,7 +99,6 @@ namespace gum {
     // FMDPfactory_state::NONE in the stack.
     return _states_.back();
   }
-
 
   // Returns a constant reference on a variable given it's name.
   // @throw NotFound Raised if no variable matches the name.
@@ -117,7 +113,6 @@ namespace gum {
 
     return nullptr;
   }
-
 
   /* ****************************************************************************************************
    * **/
@@ -143,7 +138,6 @@ namespace gum {
     //       VERBOSITY ( "  starting variable" );
   }
 
-
   // Tells the factory the current variable's name.
 
   template < typename GUM_SCALAR >
@@ -158,7 +152,6 @@ namespace gum {
     }
   }
 
-
   // Tells the factory the current variable's description.
 
   template < typename GUM_SCALAR >
@@ -169,7 +162,6 @@ namespace gum {
       _stringBag_[1] = desc;
     }
   }
-
 
   // Adds a modality to the current variable.
   // @throw DuplicateElement If the current variable already has a modality
@@ -184,7 +176,6 @@ namespace gum {
     }
   }
 
-
   // Check if in  _stringBag_ there is no other modality with the same name.
 
   template < typename GUM_SCALAR >
@@ -193,7 +184,6 @@ namespace gum {
       if (mod == _stringBag_[i])
         GUM_ERROR(DuplicateElement, "Modality" << mod << " already exists.")
   }
-
 
   // Tells the factory that we're out of a variable declaration.
 
@@ -236,7 +226,6 @@ namespace gum {
     }
   }
 
-
   /* ****************************************************************************************************
    * **/
   /* ** **/
@@ -260,7 +249,6 @@ namespace gum {
     //       VERBOSITY ( "starting action declaration" );
   }
 
-
   // Tells the factory to add an action
 
   template < typename GUM_SCALAR >
@@ -271,7 +259,6 @@ namespace gum {
       _fmdp_->addAction(_actionIdcpt_++, action);
     }
   }
-
 
   // Tells the factory that we're out of an action declaration.
 
@@ -285,7 +272,6 @@ namespace gum {
 
     //       VERBOSITY ( "action OK" );
   }
-
 
   /* ****************************************************************************************************
    * **/
@@ -310,7 +296,6 @@ namespace gum {
     this->_initializeFunctionGraph_();
   }
 
-
   // Tells the factory to add an action
 
   template < typename GUM_SCALAR >
@@ -324,7 +309,6 @@ namespace gum {
       _fmdp_->addTransitionForAction(_fmdp_->actionId(_stringBag_[0]), _varNameMap_[var], t);
     else _fmdp_->addTransition(_varNameMap_[var], t);
   }
-
 
   // Tells the factory to add a transition table to the current fmdp.
   // This transition table will be extracted from incorporated
@@ -347,7 +331,6 @@ namespace gum {
     }
   }
 
-
   // Tells the factory that we're out of a transition declaration.
 
   template < typename GUM_SCALAR >
@@ -357,7 +340,6 @@ namespace gum {
 
     //       VERBOSITY ( "transition OK" );
   }
-
 
   /* ****************************************************************************************************
    * **/
@@ -382,7 +364,6 @@ namespace gum {
     this->_initializeFunctionGraph_();
   }
 
-
   // Tells the factory to add a cost
 
   template < typename GUM_SCALAR >
@@ -394,7 +375,6 @@ namespace gum {
     else if (_foo_flag_) _fmdp_->addCostForAction(_fmdp_->actionId(_stringBag_[0]), c);
     else _fmdp_->addCost(c);
   }
-
 
   // Tells the factory to add a cost
   // This cost table will be extracted from incorporated multiDimFunctionGraph.
@@ -411,7 +391,6 @@ namespace gum {
     }
   }
 
-
   // Tells the factory that we're out of a cost declaration.
 
   template < typename GUM_SCALAR >
@@ -421,7 +400,6 @@ namespace gum {
 
     //       VERBOSITY ( "Cost OK" );
   }
-
 
   /* ****************************************************************************************************
    * **/
@@ -446,7 +424,6 @@ namespace gum {
     this->_initializeFunctionGraph_();
   }
 
-
   // Tells the factory that we're in a reward declaration mode where the global
   // reward diagram is an operation between simplier dd
 
@@ -456,7 +433,6 @@ namespace gum {
     std::string ot(operationType);
     _stringBag_.push_back(ot);
   }
-
 
   // Tells the factory to add a reward
 
@@ -468,7 +444,6 @@ namespace gum {
     if (state() != FMDPfactory_state::REWARD) _illegalStateError_("addReward");
     else _fmdp_->addReward(r);
   }
-
 
   // Tells the factory to add a reward
   // This reward table will be extracted from incorporated
@@ -486,7 +461,6 @@ namespace gum {
     }
   }
 
-
   // Tells the factory that we're out of a reward declaration.
 
   template < typename GUM_SCALAR >
@@ -501,15 +475,15 @@ namespace gum {
           temp = res;
 
           switch (_stringBag_[0][0]) {
-            case '+': res = add2MultiDimFunctionGraphs(res, elt); break;
+            case '+' : res = add2MultiDimFunctionGraphs(res, elt); break;
 
-            case '-': res = subtract2MultiDimFunctionGraphs(res, elt); break;
+            case '-' : res = subtract2MultiDimFunctionGraphs(res, elt); break;
 
-            case '*': res = multiply2MultiDimFunctionGraphs(res, elt); break;
+            case '*' : res = multiply2MultiDimFunctionGraphs(res, elt); break;
 
-            case '/': res = divide2MultiDimFunctionGraphs(res, elt); break;
+            case '/' : res = divide2MultiDimFunctionGraphs(res, elt); break;
 
-            default: break;
+            default : break;
           }
 
           delete elt;
@@ -525,7 +499,6 @@ namespace gum {
     }
     //       VERBOSITY ( "reward OK" );
   }
-
 
   /* ****************************************************************************************************
    * **/
@@ -547,7 +520,6 @@ namespace gum {
     //       VERBOSITY ( "starting discount declaration" );
   }
 
-
   // Tells the factory to add a discount
 
   template < typename GUM_SCALAR >
@@ -556,7 +528,6 @@ namespace gum {
     //    else
     //       _fmdp_->setDiscount ( ( GUM_SCALAR ) discount );
   }
-
 
   // Tells the factory that we're out of a discount declaration.
 
@@ -567,7 +538,6 @@ namespace gum {
 
     //       VERBOSITY ( "discount OK" );
   }
-
 
   /* ****************************************************************************************************
    * **/
@@ -587,7 +557,6 @@ namespace gum {
     return _FunctionGraph_->manager()->addInternalNode(variable(name_of_var));
   }
 
-
   // Insert in diagram a terminal node
 
   template < typename GUM_SCALAR >
@@ -595,13 +564,11 @@ namespace gum {
     return _FunctionGraph_->manager()->addTerminalNode((GUM_SCALAR)value);
   }
 
-
   // Insert an arc in diagram
   template < typename GUM_SCALAR >
   INLINE void FMDPFactory< GUM_SCALAR >::addArc(NodeId from, NodeId to, Idx modality) {
     _FunctionGraph_->manager()->setSon(from, modality, to);
   }
-
 
   template < typename GUM_SCALAR >
   INLINE void FMDPFactory< GUM_SCALAR >::setRoot(NodeId rootId) {
@@ -626,26 +593,25 @@ namespace gum {
     msg += ") in state ";
 
     switch (state()) {
-      case FMDPfactory_state::NONE: msg += "FMDPfactory_state::NONE"; break;
+      case FMDPfactory_state::NONE : msg += "FMDPfactory_state::NONE"; break;
 
-      case FMDPfactory_state::VARIABLE: msg += "FMDPfactory_state::VARIABLE"; break;
+      case FMDPfactory_state::VARIABLE : msg += "FMDPfactory_state::VARIABLE"; break;
 
-      case FMDPfactory_state::ACTION: msg += "FMDPfactory_state::ACTION"; break;
+      case FMDPfactory_state::ACTION : msg += "FMDPfactory_state::ACTION"; break;
 
-      case FMDPfactory_state::TRANSITION: msg += "FMDPfactory_state::TRANSITION"; break;
+      case FMDPfactory_state::TRANSITION : msg += "FMDPfactory_state::TRANSITION"; break;
 
-      case FMDPfactory_state::COST: msg += "FMDPfactory_state::COST"; break;
+      case FMDPfactory_state::COST : msg += "FMDPfactory_state::COST"; break;
 
-      case FMDPfactory_state::REWARD: msg += "FMDPfactory_state::REWARD"; break;
+      case FMDPfactory_state::REWARD : msg += "FMDPfactory_state::REWARD"; break;
 
-      case FMDPfactory_state::DISCOUNT: msg += "FMDPfactory_state::DISCOUNT"; break;
+      case FMDPfactory_state::DISCOUNT : msg += "FMDPfactory_state::DISCOUNT"; break;
 
-      default: msg += "Unknown state";
+      default : msg += "Unknown state";
     }
 
     GUM_ERROR(OperationNotAllowed, msg)
   }
-
 
   // Reset the different parts used to constructed the IBayesNet.
 
@@ -656,7 +622,6 @@ namespace gum {
     _stringBag_.clear();
     _ddBag_.clear();
   }
-
 
   template < typename GUM_SCALAR >
   INLINE void FMDPFactory< GUM_SCALAR >::_initializeFunctionGraph_() {
@@ -671,7 +636,6 @@ namespace gum {
       _FunctionGraph_->add(*(_fmdp_->main2prime(*varIter)));
     }
   }
-
 
   template < typename GUM_SCALAR >
   INLINE void FMDPFactory< GUM_SCALAR >::_finalizeFunctionGraph_() {
@@ -696,7 +660,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE FMDPFactory< GUM_SCALAR >&
-     FMDPFactory< GUM_SCALAR >::operator=(const FMDPFactory< GUM_SCALAR >& source) {
+         FMDPFactory< GUM_SCALAR >::operator=(const FMDPFactory< GUM_SCALAR >& source) {
     GUM_ERROR(FatalError, "Illegal!")
     // For noisy compilers
     return *this;

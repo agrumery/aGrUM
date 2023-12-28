@@ -24,10 +24,10 @@
  *
  * @author Christophe GONZALES(_at_AMU) & Pierre-Henri WUILLEMIN(_at_LIP6)
  */
+#include <algorithm>
 #include <ostream>
 #include <sstream>
 #include <string>
-#include <algorithm>
 
 #include <agrum/agrum.h>
 
@@ -48,14 +48,12 @@ namespace gum {
     GUM_CONSTRUCTOR(IntegerVariable);
   }
 
-
   /// copy constructor
   INLINE IntegerVariable::IntegerVariable(const IntegerVariable& from) :
       DiscreteVariable(from), _domain_(from._domain_) {
     // for debugging purposes
     GUM_CONS_CPY(IntegerVariable);
   }
-
 
   /// move constructor
   INLINE IntegerVariable::IntegerVariable(IntegerVariable&& from) noexcept :
@@ -65,14 +63,11 @@ namespace gum {
     GUM_CONSTRUCTOR(IntegerVariable);
   }
 
-
   /// virtual copy constructor
   INLINE IntegerVariable* IntegerVariable::clone() const { return new IntegerVariable(*this); }
 
-
   /// destructor
   INLINE IntegerVariable::~IntegerVariable() { GUM_DESTRUCTOR(IntegerVariable); }
-
 
   /// copy operator
   INLINE IntegerVariable& IntegerVariable::operator=(const IntegerVariable& from) {
@@ -85,13 +80,11 @@ namespace gum {
     return *this;
   }
 
-
   INLINE std::string IntegerVariable::toFast() const {
     std::stringstream s;
     s << name() << domain();
     return s.str();
   }
-
 
   /// move operator
   INLINE IntegerVariable& IntegerVariable::operator=(IntegerVariable&& from) {
@@ -112,18 +105,16 @@ namespace gum {
 
   /// inequality operator
   INLINE bool IntegerVariable::operator!=(const Variable& var) const { return !operator==(var); }
+
   INLINE bool IntegerVariable::operator!=(const IntegerVariable& var) const {
     return !operator==(var);
   }
 
-
   /// returns the domain size of the discrete random variable
   INLINE Size IntegerVariable::domainSize() const { return _domain_.size(); }
 
-
   /// returns the type of variable
   INLINE VarType IntegerVariable::varType() const { return VarType::Integer; }
-
 
   /// returns the index of a given label
   INLINE Idx IntegerVariable::index(const std::string& aLabel) const {
@@ -134,7 +125,6 @@ namespace gum {
     }
   }
 
-
   /// returns the ith label
   INLINE std::string IntegerVariable::label(Idx i) const {
     // note that if i is outside the domain, Sequence _domain_ will raise
@@ -142,15 +132,14 @@ namespace gum {
     return std::to_string(_domain_[i]);
   }
 
-
   /// get a numerical representation of the indice-th value.
   INLINE double IntegerVariable::numerical(Idx i) const { return double(_domain_[i]); }
-
 
   /// returns the domain as a sequence of values
   INLINE const Sequence< int >& IntegerVariable::integerDomain() const { return _domain_; }
 
   INLINE bool IntegerVariable::isValue(int value) const { return _domain_.exists(value); }
+
   /// substitute a value by another one
   INLINE void IntegerVariable::changeValue(int old_value, int new_value) {
     if (!_domain_.exists(old_value)) return;
@@ -163,10 +152,8 @@ namespace gum {
     addValue(new_value);
   }
 
-
   /// erase a value from the domain of the variable
   INLINE void IntegerVariable::eraseValue(int value) { _domain_.erase(value); }
-
 
   /// clear the domain of the variable
   INLINE void IntegerVariable::eraseValues() { _domain_.clear(); }

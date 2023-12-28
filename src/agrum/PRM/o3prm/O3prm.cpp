@@ -72,14 +72,17 @@ namespace gum {
         return *this;
       }
 
-      std::string&       O3Position::file() { return _file_; }
+      std::string& O3Position::file() { return _file_; }
+
       const std::string& O3Position::file() const { return _file_; }
 
       int& O3Position::line() { return _line_; }
-      int  O3Position::line() const { return _line_; }
+
+      int O3Position::line() const { return _line_; }
 
       int& O3Position::column() { return _column_; }
-      int  O3Position::column() const { return _column_; }
+
+      int O3Position::column() const { return _column_; }
 
       O3Integer::O3Integer() : _pos_(), _value_(0) {
         GUM_CONSTRUCTOR(O3Integer);
@@ -119,9 +122,11 @@ namespace gum {
       }
 
       const O3Position& O3Integer::position() const { return _pos_; }
-      O3Position&       O3Integer::position() { return _pos_; }
 
-      int  O3Integer::value() const { return _value_; }
+      O3Position& O3Integer::position() { return _pos_; }
+
+      int O3Integer::value() const { return _value_; }
+
       int& O3Integer::value() { return _value_; }
 
       O3Float::O3Float() {
@@ -162,9 +167,11 @@ namespace gum {
       }
 
       const O3Position& O3Float::position() const { return _pos_; }
-      O3Position&       O3Float::position() { return _pos_; }
 
-      float  O3Float::value() const { return _value_; }
+      O3Position& O3Float::position() { return _pos_; }
+
+      float O3Float::value() const { return _value_; }
+
       float& O3Float::value() { return _value_; }
 
       O3Formula::O3Formula() : _pos_(), _formula_(std::unique_ptr< Formula >(new Formula(""))) {
@@ -206,10 +213,12 @@ namespace gum {
       }
 
       const O3Position& O3Formula::position() const { return _pos_; }
-      O3Position&       O3Formula::position() { return _pos_; }
+
+      O3Position& O3Formula::position() { return _pos_; }
 
       const Formula& O3Formula::formula() const { return *_formula_; }
-      Formula&       O3Formula::formula() { return *_formula_; }
+
+      Formula& O3Formula::formula() { return *_formula_; }
 
       O3Label::O3Label() : _pos_(), _label_() {
         GUM_CONSTRUCTOR(O3Label);
@@ -250,10 +259,12 @@ namespace gum {
       }
 
       const O3Position& O3Label::position() const { return _pos_; }
-      O3Position&       O3Label::position() { return _pos_; }
+
+      O3Position& O3Label::position() { return _pos_; }
 
       const std::string& O3Label::label() const { return _label_; }
-      std::string&       O3Label::label() { return _label_; }
+
+      std::string& O3Label::label() { return _label_; }
 
       O3Type::O3Type() : _dep_flag_(false) {
         GUM_CONSTRUCTOR(O3Type);
@@ -298,19 +309,24 @@ namespace gum {
         return *this;
       }
 
-      O3Label&       O3Type::name() { return _name_; }
+      O3Label& O3Type::name() { return _name_; }
+
       const O3Label& O3Type::name() const { return _name_; }
 
-      O3Label&       O3Type::superLabel() { return _superLabel_; }
+      O3Label& O3Type::superLabel() { return _superLabel_; }
+
       const O3Label& O3Type::superLabel() const { return _superLabel_; }
 
-      O3Type::LabelMap&       O3Type::labels() { return _labels_; }
+      O3Type::LabelMap& O3Type::labels() { return _labels_; }
+
       const O3Type::LabelMap& O3Type::labels() const { return _labels_; }
 
-      O3Position&       O3Type::position() { return _pos_; }
+      O3Position& O3Type::position() { return _pos_; }
+
       const O3Position& O3Type::position() const { return _pos_; }
 
-      bool&       O3Type::deprecated() { return _dep_flag_; }
+      bool& O3Type::deprecated() { return _dep_flag_; }
+
       const bool& O3Type::deprecated() const { return _dep_flag_; }
 
       O3IntType::O3IntType() : _dep_flag_(false) {
@@ -356,19 +372,24 @@ namespace gum {
         return *this;
       }
 
-      O3Label&       O3IntType::name() { return _name_; }
+      O3Label& O3IntType::name() { return _name_; }
+
       const O3Label& O3IntType::name() const { return _name_; }
 
-      O3Integer&       O3IntType::start() { return _start_; }
+      O3Integer& O3IntType::start() { return _start_; }
+
       const O3Integer& O3IntType::start() const { return _start_; }
 
-      O3Integer&       O3IntType::end() { return _end_; }
+      O3Integer& O3IntType::end() { return _end_; }
+
       const O3Integer& O3IntType::end() const { return _end_; }
 
-      O3Position&       O3IntType::position() { return _pos_; }
+      O3Position& O3IntType::position() { return _pos_; }
+
       const O3Position& O3IntType::position() const { return _pos_; }
 
-      bool&       O3IntType::deprecated() { return _dep_flag_; }
+      bool& O3IntType::deprecated() { return _dep_flag_; }
+
       const bool& O3IntType::deprecated() const { return _dep_flag_; }
 
       O3RealType::O3RealType() : _dep_flag_(false) {
@@ -412,16 +433,20 @@ namespace gum {
         return *this;
       }
 
-      O3Position&       O3RealType::position() { return _pos_; }
+      O3Position& O3RealType::position() { return _pos_; }
+
       const O3Position& O3RealType::position() const { return _pos_; }
 
-      O3Label&       O3RealType::name() { return _name_; }
+      O3Label& O3RealType::name() { return _name_; }
+
       const O3Label& O3RealType::name() const { return _name_; }
 
-      std::vector< O3Float >&       O3RealType::values() { return _values_; }
+      std::vector< O3Float >& O3RealType::values() { return _values_; }
+
       const std::vector< O3Float >& O3RealType::values() const { return _values_; }
 
-      bool&       O3RealType::deprecated() { return _dep_flag_; }
+      bool& O3RealType::deprecated() { return _dep_flag_; }
+
       const bool& O3RealType::deprecated() const { return _dep_flag_; }
 
       O3PRM::O3PRM() {
@@ -515,16 +540,20 @@ namespace gum {
         return *this;
       }
 
-      O3PRM::O3TypeList&       O3PRM::types() { return _types_; }
+      O3PRM::O3TypeList& O3PRM::types() { return _types_; }
+
       const O3PRM::O3TypeList& O3PRM::types() const { return _types_; }
 
-      O3PRM::O3IntTypeList&       O3PRM::int_types() { return _int_types_; }
+      O3PRM::O3IntTypeList& O3PRM::int_types() { return _int_types_; }
+
       const O3PRM::O3IntTypeList& O3PRM::int_types() const { return _int_types_; }
 
-      O3PRM::O3RealTypeList&       O3PRM::real_types() { return _real_types_; }
+      O3PRM::O3RealTypeList& O3PRM::real_types() { return _real_types_; }
+
       const O3PRM::O3RealTypeList& O3PRM::real_types() const { return _real_types_; }
 
-      O3PRM::O3InterfaceList&       O3PRM::interfaces() { return _interfaces_; }
+      O3PRM::O3InterfaceList& O3PRM::interfaces() { return _interfaces_; }
+
       const O3PRM::O3InterfaceList& O3PRM::interfaces() const { return _interfaces_; }
 
       O3PRM::O3ClassList& O3PRM::classes() { return _classes_; }
@@ -580,14 +609,17 @@ namespace gum {
         return *this;
       }
 
-      O3Label&       O3InterfaceElement::type() { return _type_; }
+      O3Label& O3InterfaceElement::type() { return _type_; }
+
       const O3Label& O3InterfaceElement::type() const { return _type_; }
 
-      O3Label&       O3InterfaceElement::name() { return _name_; }
+      O3Label& O3InterfaceElement::name() { return _name_; }
+
       const O3Label& O3InterfaceElement::name() const { return _name_; }
 
       bool& O3InterfaceElement::isArray() { return _isArray_; }
-      bool  O3InterfaceElement::isArray() const { return _isArray_; }
+
+      bool O3InterfaceElement::isArray() const { return _isArray_; }
 
       O3Interface::O3Interface() : _elts_(new O3InterfaceElementList()) {
         GUM_CONSTRUCTOR(O3Interface);
@@ -630,16 +662,20 @@ namespace gum {
         return *this;
       }
 
-      O3Position&       O3Interface::position() { return _pos_; }
+      O3Position& O3Interface::position() { return _pos_; }
+
       const O3Position& O3Interface::position() const { return _pos_; }
 
-      O3Label&       O3Interface::name() { return _name_; }
+      O3Label& O3Interface::name() { return _name_; }
+
       const O3Label& O3Interface::name() const { return _name_; }
 
-      O3Label&       O3Interface::superLabel() { return _superLabel_; }
+      O3Label& O3Interface::superLabel() { return _superLabel_; }
+
       const O3Label& O3Interface::superLabel() const { return _superLabel_; }
 
-      O3Interface::O3InterfaceElementList&       O3Interface::elements() { return *_elts_; }
+      O3Interface::O3InterfaceElementList& O3Interface::elements() { return *_elts_; }
+
       const O3Interface::O3InterfaceElementList& O3Interface::elements() const { return *_elts_; }
 
       O3Attribute::O3Attribute() {
@@ -687,13 +723,16 @@ namespace gum {
         return *this;
       }
 
-      O3Label&       O3Attribute::type() { return _type_; }
+      O3Label& O3Attribute::type() { return _type_; }
+
       const O3Label& O3Attribute::type() const { return _type_; }
 
-      O3Label&       O3Attribute::name() { return _name_; }
+      O3Label& O3Attribute::name() { return _name_; }
+
       const O3Label& O3Attribute::name() const { return _name_; }
 
-      O3Attribute::O3LabelList&       O3Attribute::parents() { return _parents_; }
+      O3Attribute::O3LabelList& O3Attribute::parents() { return _parents_; }
+
       const O3Attribute::O3LabelList& O3Attribute::parents() const { return _parents_; }
 
       O3RawCPT::O3RawCPT() : O3Attribute(), _values_{new O3FormulaList{}} {
@@ -728,8 +767,8 @@ namespace gum {
       O3RawCPT& O3RawCPT::operator=(const O3RawCPT& src) {
         if (this == &src) { return *this; }
         O3Attribute::operator=(src);
-        auto         copy = new O3FormulaList(*(src._values_));
-        _values_          = std::unique_ptr< O3FormulaList >(copy);
+        auto copy = new O3FormulaList(*(src._values_));
+        _values_  = std::unique_ptr< O3FormulaList >(copy);
         return *this;
       }
 
@@ -792,7 +831,8 @@ namespace gum {
         return *this;
       }
 
-      O3RuleCPT::O3RuleList&       O3RuleCPT::rules() { return *_rules_; }
+      O3RuleCPT::O3RuleList& O3RuleCPT::rules() { return *_rules_; }
+
       const O3RuleCPT::O3RuleList& O3RuleCPT::rules() const { return *_rules_; }
 
       std::unique_ptr< O3Attribute > O3RuleCPT::copy() const {
@@ -894,28 +934,35 @@ namespace gum {
       }
 
       const O3Position& O3Class::position() const { return _pos_; }
-      O3Position&       O3Class::position() { return _pos_; }
+
+      O3Position& O3Class::position() { return _pos_; }
 
       const O3Label& O3Class::name() const { return _name_; }
-      O3Label&       O3Class::name() { return _name_; }
+
+      O3Label& O3Class::name() { return _name_; }
 
       const O3Label& O3Class::superLabel() const { return _superLabel_; }
-      O3Label&       O3Class::superLabel() { return _superLabel_; }
+
+      O3Label& O3Class::superLabel() { return _superLabel_; }
 
       const O3Class::O3LabelList& O3Class::interfaces() const { return *_interfaces_; }
-      O3Class::O3LabelList&       O3Class::interfaces() { return *_interfaces_; }
+
+      O3Class::O3LabelList& O3Class::interfaces() { return *_interfaces_; }
 
       const O3Class::O3ParameterList& O3Class::parameters() const { return *_params_; }
-      O3Class::O3ParameterList&       O3Class::parameters() { return *_params_; }
+
+      O3Class::O3ParameterList& O3Class::parameters() { return *_params_; }
 
       const O3Class::O3ReferenceSlotList& O3Class::referenceSlots() const { return *_refs_; }
-      O3Class::O3ReferenceSlotList&       O3Class::referenceSlots() { return *_refs_; }
+
+      O3Class::O3ReferenceSlotList& O3Class::referenceSlots() { return *_refs_; }
 
       O3Class::O3AttributeList& O3Class::attributes() { return *_attrs_; }
 
       const O3Class::O3AttributeList& O3Class::attributes() const { return *_attrs_; }
 
-      O3Class::O3AggregateList&       O3Class::aggregates() { return *_aggs_; }
+      O3Class::O3AggregateList& O3Class::aggregates() { return *_aggs_; }
+
       const O3Class::O3AggregateList& O3Class::aggregates() const { return *_aggs_; }
 
       O3Parameter::O3Parameter() : _type_(O3Parameter::PRMType::NONE) {
@@ -968,15 +1015,19 @@ namespace gum {
       }
 
       O3Parameter::PRMType& O3Parameter::type() { return _type_; }
-      O3Parameter::PRMType  O3Parameter::type() const { return _type_; }
 
-      O3Position&       O3Parameter::position() { return _pos_; }
+      O3Parameter::PRMType O3Parameter::type() const { return _type_; }
+
+      O3Position& O3Parameter::position() { return _pos_; }
+
       const O3Position& O3Parameter::position() const { return _pos_; }
 
-      O3Label&       O3Parameter::name() { return _name_; }
+      O3Label& O3Parameter::name() { return _name_; }
+
       const O3Label& O3Parameter::name() const { return _name_; }
 
-      O3Float&       O3Parameter::value() { return _value_; }
+      O3Float& O3Parameter::value() { return _value_; }
+
       const O3Float& O3Parameter::value() const { return _value_; }
 
       O3ReferenceSlot::O3ReferenceSlot() {
@@ -1021,14 +1072,17 @@ namespace gum {
         return *this;
       }
 
-      O3Label&       O3ReferenceSlot::type() { return _type_; }
+      O3Label& O3ReferenceSlot::type() { return _type_; }
+
       const O3Label& O3ReferenceSlot::type() const { return _type_; }
 
-      O3Label&       O3ReferenceSlot::name() { return _name_; }
+      O3Label& O3ReferenceSlot::name() { return _name_; }
+
       const O3Label& O3ReferenceSlot::name() const { return _name_; }
 
       bool& O3ReferenceSlot::isArray() { return _isArray_; }
-      bool  O3ReferenceSlot::isArray() const { return _isArray_; }
+
+      bool O3ReferenceSlot::isArray() const { return _isArray_; }
 
       O3Aggregate::O3Aggregate() :
           _variableType_(), _aggregateType_(), _name_(), _parents_(), _parameters_() {
@@ -1217,7 +1271,8 @@ namespace gum {
 
       const O3Label& O3Increment::rightInstance() const { return _rightInstance_; }
 
-      O3Integer&       O3Increment::rightIndex() { return _rightIndex_; }
+      O3Integer& O3Increment::rightIndex() { return _rightIndex_; }
+
       const O3Integer& O3Increment::rightIndex() const { return _rightIndex_; }
 
       O3Label& O3Increment::rightInstance() { return _rightInstance_; }

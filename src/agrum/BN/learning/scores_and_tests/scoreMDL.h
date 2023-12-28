@@ -29,8 +29,8 @@
 #define GUM_LEARNING_SCORE_MDL_H
 
 #include <agrum/agrum.h>
-#include <agrum/BN/learning/scores_and_tests/scoreBIC.h>
 
+#include <agrum/BN/learning/scores_and_tests/scoreBIC.h>
 
 namespace gum {
 

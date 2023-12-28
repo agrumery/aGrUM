@@ -34,7 +34,6 @@
 
 #include <agrum/agrum.h>
 
-
 #include <agrum/BN/IBayesNet.h>
 
 namespace gum {
@@ -51,6 +50,7 @@ namespace gum {
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
+
     private:
     /// Default constructor.
     BayesBall();
@@ -59,6 +59,7 @@ namespace gum {
     ~BayesBall();
 
     /// @}
+
     public:
     // ############################################################################
     /// @name Accessors / Modifiers

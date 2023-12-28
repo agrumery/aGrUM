@@ -27,6 +27,7 @@
  */
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/graphs/algorithms/triangulations/eliminationStrategies/eliminationSequenceStrategy.h>
 
 #ifdef GUM_NO_INLINE

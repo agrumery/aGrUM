@@ -27,8 +27,9 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#  include <agrum/BN/learning/scores_and_tests/scoreLog2Likelihood.h>
 #  include <sstream>
+
+#  include <agrum/BN/learning/scores_and_tests/scoreLog2Likelihood.h>
 
 namespace gum {
 
@@ -45,7 +46,6 @@ namespace gum {
       GUM_CONSTRUCTOR(ScoreLog2Likelihood);
     }
 
-
     /// default constructor
     INLINE ScoreLog2Likelihood::ScoreLog2Likelihood(
        const DBRowGeneratorParser&             parser,
@@ -56,13 +56,11 @@ namespace gum {
       GUM_CONSTRUCTOR(ScoreLog2Likelihood);
     }
 
-
     /// copy constructor
     INLINE ScoreLog2Likelihood::ScoreLog2Likelihood(const ScoreLog2Likelihood& from) :
         Score(from), _internal_prior_(from._internal_prior_) {
       GUM_CONS_CPY(ScoreLog2Likelihood);
     }
-
 
     /// move constructor
     INLINE ScoreLog2Likelihood::ScoreLog2Likelihood(ScoreLog2Likelihood&& from) :
@@ -70,32 +68,26 @@ namespace gum {
       GUM_CONS_MOV(ScoreLog2Likelihood);
     }
 
-
     /// virtual copy constructor
     INLINE ScoreLog2Likelihood* ScoreLog2Likelihood::clone() const {
       return new ScoreLog2Likelihood(*this);
     }
 
-
     /// destructor
     INLINE ScoreLog2Likelihood::~ScoreLog2Likelihood() { GUM_DESTRUCTOR(ScoreLog2Likelihood); }
-
 
     /// indicates whether the prior is compatible (meaningful) with the score
     INLINE std::string ScoreLog2Likelihood::isPriorCompatible(const Prior& prior) {
       return isPriorCompatible(prior.getType(), prior.weight());
     }
 
-
     /// indicates whether the prior is compatible (meaningful) with the score
     INLINE std::string ScoreLog2Likelihood::isPriorCompatible() const {
       return isPriorCompatible(*(this->prior_));
     }
 
-
     /// returns the internal prior of the score
     INLINE const Prior& ScoreLog2Likelihood::internalPrior() const { return _internal_prior_; }
-
 
     /// returns the score corresponding to a given nodeset
     INLINE double ScoreLog2Likelihood::score(const IdCondSet& idset) { return score_(idset); }

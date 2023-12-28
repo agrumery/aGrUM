@@ -28,9 +28,9 @@
 #define GUM_LEARNING_DB_TRANSLATOR_4_DISCRETIZED_VARIABLE_H
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/database/DBTranslator.h>
 #include <agrum/tools/variables/discretizedVariable.h>
-
 
 namespace gum {
 
@@ -301,7 +301,6 @@ namespace gum {
   } /* namespace learning */
 
 } /* namespace gum */
-
 
 // always include the template implementation
 #include <agrum/tools/database/DBTranslator4DiscretizedVariable_tpl.h>

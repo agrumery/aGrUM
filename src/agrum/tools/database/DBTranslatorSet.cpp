@@ -49,7 +49,6 @@ namespace gum {
       _highest_column_ = std::size_t(0);
     }
 
-
     /// copy the content of another translator set
     void DBTranslatorSet::_copy_(const DBTranslatorSet& from) {
       if (_translators_.size() != 0) clear();
@@ -78,7 +77,6 @@ namespace gum {
       _highest_column_ = from._highest_column_;
     }
 
-
     /// copy operator
     DBTranslatorSet& DBTranslatorSet::operator=(const DBTranslatorSet& from) {
       if (this != &from) {
@@ -88,7 +86,6 @@ namespace gum {
 
       return *this;
     }
-
 
     /// returns a new translator corresponding to a variable and some missing symbols
 
@@ -108,7 +105,6 @@ namespace gum {
 
       return index;
     }
-
 
     /// inserts a new translator at the end of the translator set
     std::size_t DBTranslatorSet::insertTranslator(const DBTranslator& translator,
@@ -143,7 +139,6 @@ namespace gum {
 
       return size;
     }
-
 
     /// erase the kth translator
     void DBTranslatorSet::eraseTranslator(const std::size_t k, const bool k_is_input_col) {

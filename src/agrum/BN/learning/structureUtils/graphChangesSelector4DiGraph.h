@@ -31,6 +31,7 @@
 #include <vector>
 
 #include <agrum/agrum.h>
+
 #include <agrum/BN/learning/scores_and_tests/score.h>
 
 namespace gum {

@@ -77,15 +77,13 @@ namespace gum {
     GUM_CONSTRUCTOR(NumericalDiscreteVariable);
   }
 
-
   /// equality operator
   bool NumericalDiscreteVariable::operator==(const Variable& var) const {
     try {
       const NumericalDiscreteVariable& xvar = dynamic_cast< const NumericalDiscreteVariable& >(var);
-      return                           operator==(xvar);
+      return operator==(xvar);
     } catch (std::bad_cast&) { return false; }
   }
-
 
   /// Returns the domain as a string
   std::string NumericalDiscreteVariable::domain() const {
@@ -101,7 +99,6 @@ namespace gum {
     s << "}";
     return s.str();
   }
-
 
   /// add a new value to the domain size
   void NumericalDiscreteVariable::addValue(double value) {

@@ -95,7 +95,7 @@ namespace gum {
       PRMClassElement< GUM_SCALAR >* new_elt = nullptr;
 
       switch (_chain_->back()->elt_type()) {
-        case PRMClassElement< GUM_SCALAR >::prm_attribute: {
+        case PRMClassElement< GUM_SCALAR >::prm_attribute : {
           auto old_attr = static_cast< const PRMAttribute< GUM_SCALAR >* >(_chain_->back());
 
           Bijection< const DiscreteVariable*, const DiscreteVariable* > bij;
@@ -107,7 +107,7 @@ namespace gum {
           break;
         }
 
-        case PRMClassElement< GUM_SCALAR >::prm_aggregate: {
+        case PRMClassElement< GUM_SCALAR >::prm_aggregate : {
           const PRMAggregate< GUM_SCALAR >* c_agg
              = static_cast< const PRMAggregate< GUM_SCALAR >* >(_chain_->back());
           PRMAggregate< GUM_SCALAR >* agg = new PRMAggregate< GUM_SCALAR >(c_agg->name(),
@@ -118,7 +118,7 @@ namespace gum {
           break;
         }
 
-        default: {
+        default : {
           GUM_ERROR(WrongClassElement, "last element of chain is not valid")
         }
       }

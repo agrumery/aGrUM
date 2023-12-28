@@ -27,6 +27,7 @@
  */
 // =========================================================================
 #include <agrum/FMDP/learning/datastructure/nodeDatabase.h>
+
 // =========================================================================
 
 namespace gum {
@@ -52,7 +53,6 @@ namespace gum {
     _nbObservation_ = 0;
   }
 
-
   // ###################################################################
   // Default destructor
   // ###################################################################
@@ -63,7 +63,6 @@ namespace gum {
 
     GUM_DESTRUCTOR(NodeDatabase);
   }
-
 
   // ==========================================================================
   // Observation handling methods
@@ -103,7 +102,6 @@ namespace gum {
     else _valueCount_.insert(newObs->modality(_value_), 1);
   }
 
-
   // ==========================================================================
   // Aggregation Methods
   // ==========================================================================
@@ -128,7 +126,6 @@ namespace gum {
     return *this;
   }
 
-
   template < TESTNAME AttributeSelection, bool isScalar >
   std::string NodeDatabase< AttributeSelection, isScalar >::toString() const {
     std::stringstream ss;
@@ -141,7 +138,6 @@ namespace gum {
     return ss.str();
   }
 }   // End of namespace gum
-
 
 // LEFT HERE ON PURPOSE
 // NOT TO BE DELETED

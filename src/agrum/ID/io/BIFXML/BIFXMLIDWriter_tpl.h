@@ -159,13 +159,13 @@ namespace gum {
     str << "<VARIABLE TYPE=\"";
 
     switch (varType) {
-      case 1: str << "decision"; break;
+      case 1 : str << "decision"; break;
 
-      case 2: str << "nature"; break;
+      case 2 : str << "nature"; break;
 
-      case 3: str << "utility"; break;
+      case 3 : str << "utility"; break;
 
-      default: break;
+      default : break;
     }
 
     str << "\">" << std::endl;
@@ -222,12 +222,12 @@ namespace gum {
           str << "\t<GIVEN>" << (*parentListIte) << "</GIVEN>" << std::endl;
       } else if (infdiag.isChanceNode(varNodeId))   // finding the parents in the cpt
         for (Idx i = infdiag.cpt(varNodeId).nbrDim(); i > 1;
-             i--)   // the first dimension is not a parent
+             i--)                                   // the first dimension is not a parent
           str << "\t<GIVEN>" << infdiag.cpt(varNodeId).variable(i - 1).name() << "</GIVEN>"
               << std::endl;
-      else if (infdiag.isUtilityNode(varNodeId))   // finding the parents in the utility
+      else if (infdiag.isUtilityNode(varNodeId))    // finding the parents in the utility
         for (Idx i = infdiag.utility(varNodeId).nbrDim(); i > 1;
-             i--)   // the first dimension is not a parent
+             i--)                                   // the first dimension is not a parent
           str << "\t<GIVEN>" << infdiag.utility(varNodeId).variable(i - 1).name() << "</GIVEN>"
               << std::endl;
 

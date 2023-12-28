@@ -35,6 +35,7 @@
 #include <agrum/FMDP/learning/core/testPolicy/ITestPolicy.h>
 // ============================================================================
 #include <agrum/tools/multidim/utils/FunctionGraphUtilities/link.h>
+
 // ============================================================================
 
 namespace gum {
@@ -67,7 +68,8 @@ namespace gum {
     /// Allocators and Deallocators redefinition
     // ============================================================================
     void* operator new(size_t s) { return SmallObjectAllocator::instance().allocate(s); }
-    void  operator delete(void* p) {
+
+    void operator delete(void* p) {
       SmallObjectAllocator::instance().deallocate(p, sizeof(LeastSquareTestPolicy));
     }
 
@@ -136,7 +138,6 @@ namespace gum {
     /// given instance
     // ============================================================================
     void add(const LeastSquareTestPolicy< GUM_SCALAR >& src);
-
 
     // ============================================================================
     /// Returns global sum (needed for the merging)

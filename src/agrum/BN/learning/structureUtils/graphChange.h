@@ -35,6 +35,7 @@
 #include <string>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/graphs/parts/nodeGraphPart.h>
 
 namespace gum {
@@ -42,13 +43,7 @@ namespace gum {
   namespace learning {
 
     /// the type of modification that can be applied to the graph
-    enum GraphChangeType {
-      ARC_ADDITION,
-      ARC_DELETION,
-      ARC_REVERSAL,
-      EDGE_ADDITION,
-      EDGE_DELETION
-    };
+    enum GraphChangeType { ARC_ADDITION, ARC_DELETION, ARC_REVERSAL, EDGE_ADDITION, EDGE_DELETION };
 
     /* =========================================================================
      */
@@ -575,4 +570,4 @@ namespace gum {
 #  include <agrum/BN/learning/structureUtils/graphChange_inl.h>
 #endif   // GUM_NOINLINE
 
-#endif /* GUM_LEARNING_GRAPH_CHANGE_H */
+#endif   /* GUM_LEARNING_GRAPH_CHANGE_H */

@@ -35,7 +35,6 @@
 #include <agrum/agrum.h>
 
 #include <agrum/tools/core/sequence.h>
-
 #include <agrum/tools/variables/discreteVariable.h>
 
 namespace gum {
@@ -220,4 +219,4 @@ namespace gum {
 #  include <agrum/tools/multidim/implementations/multiDimInterface_inl.h>
 #endif   // GUM_NO_INLINE
 
-#endif /* GUM_MULTIDIM_INTERFACE_H */
+#endif   /* GUM_MULTIDIM_INTERFACE_H */

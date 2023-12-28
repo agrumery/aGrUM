@@ -32,19 +32,15 @@
 //======================================================================
 //======================================================================
 #include <agrum/FMDP/simulation/abstractSimulator.h>
+
 //======================================================================
 //======================================================================
 
 namespace gum {
 
 
-  enum FactorySimulationLandmark : Idx {
-    HOME    = 0,
-    WORK    = 1,
-    THEATER = 2,
-    CLUB    = 3,
-    Factory = 4
-  };
+  enum FactorySimulationLandmark : Idx { HOME = 0, WORK = 1, THEATER = 2, CLUB = 3, Factory = 4 };
+
   enum FactorySimulationLandmarkX : Idx {
     HOMEX    = 0,
     WORKX    = 0,
@@ -52,6 +48,7 @@ namespace gum {
     CLUBX    = 4,
     STATIONX = 2
   };
+
   enum FactorySimulationLandmarkY : Idx {
     HOMEY    = 0,
     WORKY    = 4,
@@ -59,6 +56,7 @@ namespace gum {
     CLUBY    = 4,
     STATIONY = 1
   };
+
   enum FactorySimulationAction : Idx {
     GoNorth = 0,
     GoEast  = 1,
@@ -126,6 +124,7 @@ namespace gum {
     SequenceIteratorSafe< const DiscreteVariable* > beginVariables() {
       return _FactoryVars_.beginSafe();
     }
+
     SequenceIteratorSafe< const DiscreteVariable* > endVariables() {
       return _FactoryVars_.endSafe();
     }
@@ -141,8 +140,8 @@ namespace gum {
 
     /// Iteration over the variables of the simulated probleme
     SequenceIteratorSafe< Idx > beginActions() { return _FactoryActions_.beginSafe(); }
-    SequenceIteratorSafe< Idx > endActions() { return _FactoryActions_.endSafe(); }
 
+    SequenceIteratorSafe< Idx > endActions() { return _FactoryActions_.endSafe(); }
 
     /// @}
 

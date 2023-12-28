@@ -48,7 +48,6 @@ namespace gum {
       GUM_CONSTRUCTOR(DBRowGeneratorEM);
     }
 
-
     /// copy constructor
     template < typename GUM_SCALAR >
     DBRowGeneratorEM< GUM_SCALAR >::DBRowGeneratorEM(const DBRowGeneratorEM< GUM_SCALAR >& from) :
@@ -68,7 +67,6 @@ namespace gum {
 
       GUM_CONS_CPY(DBRowGeneratorEM);
     }
-
 
     /// move constructor
     template < typename GUM_SCALAR >
@@ -90,13 +88,11 @@ namespace gum {
       GUM_CONS_MOV(DBRowGeneratorEM);
     }
 
-
     /// virtual copy constructor
     template < typename GUM_SCALAR >
     DBRowGeneratorEM< GUM_SCALAR >* DBRowGeneratorEM< GUM_SCALAR >::clone() const {
       return new DBRowGeneratorEM< GUM_SCALAR >(*this);
     }
-
 
     /// destructor
     template < typename GUM_SCALAR >
@@ -104,7 +100,6 @@ namespace gum {
       if (_joint_inst_ != nullptr) delete _joint_inst_;
       GUM_DESTRUCTOR(DBRowGeneratorEM);
     }
-
 
     /// copy operator
     template < typename GUM_SCALAR >
@@ -139,7 +134,6 @@ namespace gum {
       return *this;
     }
 
-
     /// move operator
     template < typename GUM_SCALAR >
     DBRowGeneratorEM< GUM_SCALAR >&
@@ -172,7 +166,6 @@ namespace gum {
 
       return *this;
     }
-
 
     /// generates new lines from those the generator gets in input
     template < typename GUM_SCALAR >
@@ -209,7 +202,6 @@ namespace gum {
       }
     }
 
-
     /// computes the rows it will provide in output
     template < typename GUM_SCALAR >
     INLINE std::size_t
@@ -220,7 +212,7 @@ namespace gum {
       const auto& xrow             = row.row();
       for (const auto col: this->columns_of_interest_) {
         switch (this->column_types_[col]) {
-          case DBTranslatedValueType::DISCRETE:
+          case DBTranslatedValueType::DISCRETE :
             if (xrow[col].discr_val == std::numeric_limits< std::size_t >::max()) {
               if (!found_unobserved) {
                 _missing_cols_.clear();
@@ -230,13 +222,13 @@ namespace gum {
             }
             break;
 
-          case DBTranslatedValueType::CONTINUOUS:
+          case DBTranslatedValueType::CONTINUOUS :
             GUM_ERROR(NotImplementedYet,
                       "The BDRowGeneratorEM does not handle yet continuous "
                          << "variables. But the variable in column" << col << " is continuous.");
             break;
 
-          default:
+          default :
             GUM_ERROR(NotImplementedYet,
                       "DBTranslatedValueType " << int(this->column_types_[col])
                                                << " is not supported yet");
@@ -294,20 +286,20 @@ namespace gum {
       if (this->nodeId2columns_.empty()) {
         for (std::size_t col = std::size_t(0); col < row_size; ++col) {
           switch (this->column_types_[col]) {
-            case DBTranslatedValueType::DISCRETE:
+            case DBTranslatedValueType::DISCRETE :
               // only observed values are evidence
               if (xrow[col].discr_val != std::numeric_limits< std::size_t >::max()) {
                 ve.addEvidence(NodeId(col), xrow[col].discr_val);
               }
               break;
 
-            case DBTranslatedValueType::CONTINUOUS:
+            case DBTranslatedValueType::CONTINUOUS :
               GUM_ERROR(NotImplementedYet,
                         "The BDRowGeneratorEM does not handle yet continuous "
                            << "variables. But the variable in column" << col << " is continuous.");
               break;
 
-            default:
+            default :
               GUM_ERROR(NotImplementedYet,
                         "DBTranslatedValueType " << int(this->column_types_[col])
                                                  << " is not supported yet");
@@ -316,20 +308,20 @@ namespace gum {
       } else {
         for (std::size_t col = std::size_t(0); col < row_size; ++col) {
           switch (this->column_types_[col]) {
-            case DBTranslatedValueType::DISCRETE:
+            case DBTranslatedValueType::DISCRETE :
               // only observed values are evidence
               if (xrow[col].discr_val != std::numeric_limits< std::size_t >::max()) {
                 ve.addEvidence(this->nodeId2columns_.first(col), xrow[col].discr_val);
               }
               break;
 
-            case DBTranslatedValueType::CONTINUOUS:
+            case DBTranslatedValueType::CONTINUOUS :
               GUM_ERROR(NotImplementedYet,
                         "The BDRowGeneratorEM does not handle yet continuous "
                            << "variables. But the variable in column" << col << " is continuous.");
               break;
 
-            default:
+            default :
               GUM_ERROR(NotImplementedYet,
                         "DBTranslatedValueType " << int(this->column_types_[col])
                                                  << " is not supported yet");
@@ -359,7 +351,6 @@ namespace gum {
 
       return std::size_t(_joint_proba_.domainSize());
     }
-
 
     /// assign a new Bayes net to the generator
     template < typename GUM_SCALAR >

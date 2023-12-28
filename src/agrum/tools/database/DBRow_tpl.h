@@ -27,6 +27,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #  include <algorithm>
+
 #  include <agrum/tools/database/DBRow.h>
 
 namespace gum {
@@ -39,7 +40,6 @@ namespace gum {
       GUM_CONSTRUCTOR(DBRow);
     }
 
-
     /// constructor with a given size for the row
     template < typename T_DATA >
     INLINE DBRow< T_DATA >::DBRow(const std::size_t size,
@@ -49,7 +49,6 @@ namespace gum {
         weight_(weight) {
       GUM_CONSTRUCTOR(DBRow);
     }
-
 
     /// constructor with a given size for the row
     template < typename T_DATA >
@@ -63,7 +62,6 @@ namespace gum {
       GUM_CONSTRUCTOR(DBRow);
     }
 
-
     /// sets a new row
     template < typename T_DATA >
     INLINE void DBRow< T_DATA >::setRow(const std::vector< T_DATA >& new_row) {
@@ -76,13 +74,11 @@ namespace gum {
       }
     }
 
-
     /// sets a new row
     template < typename T_DATA >
     INLINE void DBRow< T_DATA >::setRow(std::vector< T_DATA >&& new_row) {
       row_ = std::move(new_row);
     }
-
 
     /// initializer from a vector of cells
     template < typename T_DATA >
@@ -92,14 +88,12 @@ namespace gum {
       GUM_CONSTRUCTOR(DBRow);
     }
 
-
     /// initializer from a vector of cells
     template < typename T_DATA >
     INLINE DBRow< T_DATA >::DBRow(std::vector< T_DATA >&& cells, const double weight) :
         row_(std::move(cells)), weight_(weight) {
       GUM_CONSTRUCTOR(DBRow);
     }
-
 
     /// copy constructor
     template < typename T_DATA >
@@ -108,7 +102,6 @@ namespace gum {
       GUM_CONS_CPY(DBRow);
     }
 
-
     /// move constructor
     template < typename T_DATA >
     INLINE DBRow< T_DATA >::DBRow(DBRow< T_DATA >&& from) :
@@ -116,20 +109,17 @@ namespace gum {
       GUM_CONS_MOV(DBRow);
     }
 
-
     /// virtual copy constructor
     template < typename T_DATA >
     INLINE DBRow< T_DATA >* DBRow< T_DATA >::clone() const {
       return new DBRow< T_DATA >(*this);
     }
 
-
     /// destructor
     template < typename T_DATA >
     INLINE DBRow< T_DATA >::~DBRow() {
       GUM_DESTRUCTOR(DBRow);
     }
-
 
     /// copy operator
     template < typename T_DATA >
@@ -140,7 +130,6 @@ namespace gum {
       }
       return *this;
     }
-
 
     /// move operator
     template < typename T_DATA >

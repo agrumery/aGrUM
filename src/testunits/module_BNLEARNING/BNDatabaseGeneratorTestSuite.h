@@ -26,15 +26,15 @@
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
-#include <agrum/BN/BayesNet.h>
-#include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/tools/variables/labelizedVariable.h>
 
+#include <agrum/BN/BayesNet.h>
 #include <agrum/BN/database/BNDatabaseGenerator.h>
-#include <agrum/BN/learning/BNLearner.h>
 #include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/BN/io/BIF/BIFReader.h>
+#include <agrum/BN/learning/BNLearner.h>
 
 namespace gum_tests {
 
@@ -48,12 +48,13 @@ namespace gum_tests {
         gum::ProgressListener(notif), _nbr_(0), _mess_(""){};
 
     void whenProgress(const void* buffer, const gum::Size a, const double c) { _nbr_ += a; }
+
     void whenStop(const void* buffer, const std::string& s) { _mess_ = s; }
 
-    gum::Size   getNbr() { return _nbr_; }
+    gum::Size getNbr() { return _nbr_; }
+
     std::string getMess() { return _mess_; }
   };
-
 
   class [[maybe_unused]] BNDatabaseGeneratorTestSuite: public CxxTest::TestSuite {
     public:
@@ -528,7 +529,7 @@ namespace gum_tests {
 
       gum::Instantiation filter;
       filter.add(bn.variable("B"));
-      filter.setFirst();   // evs={B:0} => imposible
+      filter.setFirst();                            // evs={B:0} => imposible
       dbgen.drawSamples(100, filter);
       TS_ASSERT_EQUALS(dbgen.samplesNbRows(), 0u)   // some samples have been rejected
     }

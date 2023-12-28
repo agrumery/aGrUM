@@ -29,7 +29,6 @@
 
 #include <agrum/BN/inference/weightedSampling.h>
 
-
 namespace gum {
 
 
@@ -40,13 +39,11 @@ namespace gum {
     GUM_CONSTRUCTOR(WeightedSampling)
   }
 
-
   /// Destructor
   template < typename GUM_SCALAR >
   WeightedSampling< GUM_SCALAR >::~WeightedSampling() {
     GUM_DESTRUCTOR(WeightedSampling)
   }
-
 
   /// No burn in needed for Weighted sampling
   template < typename GUM_SCALAR >
@@ -54,7 +51,6 @@ namespace gum {
     gum::Instantiation I;
     return I;
   }
-
 
   template < typename GUM_SCALAR >
   Instantiation WeightedSampling< GUM_SCALAR >::draw_(GUM_SCALAR* w, Instantiation prev) {

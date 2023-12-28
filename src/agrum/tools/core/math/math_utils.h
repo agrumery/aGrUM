@@ -43,7 +43,7 @@
 #  define M_LN2 0.69314718055994530942 /* log_e 2 */
 #endif
 
-#ifndef GUM_LOG_SQRT_2PI   // std::log ( std::sqrt ( 2pi ) )
+#ifndef GUM_LOG_SQRT_2PI               // std::log ( std::sqrt ( 2pi ) )
 #  define GUM_LOG_SQRT_2PI .91893853320467274177
 #endif
 

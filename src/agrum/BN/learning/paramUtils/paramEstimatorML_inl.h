@@ -41,7 +41,6 @@ namespace gum {
       GUM_CONSTRUCTOR(ParamEstimatorML);
     }
 
-
     /// default constructor
     INLINE
     ParamEstimatorML::ParamEstimatorML(const DBRowGeneratorParser&             parser,
@@ -52,19 +51,16 @@ namespace gum {
       GUM_CONSTRUCTOR(ParamEstimatorML);
     }
 
-
     /// copy constructor
     INLINE ParamEstimatorML::ParamEstimatorML(const ParamEstimatorML& from) : ParamEstimator(from) {
       GUM_CONS_CPY(ParamEstimatorML);
     }
-
 
     /// move constructor
     INLINE ParamEstimatorML::ParamEstimatorML(ParamEstimatorML&& from) :
         ParamEstimator(std::move(from)) {
       GUM_CONS_MOV(ParamEstimatorML);
     }
-
 
     /// virtual copy constructor
     INLINE ParamEstimatorML* ParamEstimatorML::clone() const { return new ParamEstimatorML(*this); }

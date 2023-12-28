@@ -80,19 +80,19 @@ namespace gum {
     INLINE bool
        StructuralConstraintSliceOrder::isAlwaysInvalidAlone(const GraphChange& change) const {
       switch (change.type()) {
-        case GraphChangeType::ARC_ADDITION:
+        case GraphChangeType::ARC_ADDITION :
           try {
             return (_SliceOrder_order_[change.node1()] > _SliceOrder_order_[change.node2()]);
           } catch (const Exception&) { return false; }
 
-        case GraphChangeType::ARC_DELETION: return false;
+        case GraphChangeType::ARC_DELETION : return false;
 
-        case GraphChangeType::ARC_REVERSAL:
+        case GraphChangeType::ARC_REVERSAL :
           try {
             return (_SliceOrder_order_[change.node1()] != _SliceOrder_order_[change.node2()]);
           } catch (const Exception&) { return false; }
 
-        default:
+        default :
           GUM_ERROR(OperationNotAllowed,
                     "edge modifications are not "
                     "supported by SliceOrder constraints");
@@ -121,16 +121,16 @@ namespace gum {
     INLINE bool
        StructuralConstraintSliceOrder::checkModificationAlone(const GraphChange& change) const {
       switch (change.type()) {
-        case GraphChangeType::ARC_ADDITION:
+        case GraphChangeType::ARC_ADDITION :
           return checkArcAdditionAlone(change.node1(), change.node2());
 
-        case GraphChangeType::ARC_DELETION:
+        case GraphChangeType::ARC_DELETION :
           return checkArcDeletionAlone(change.node1(), change.node2());
 
-        case GraphChangeType::ARC_REVERSAL:
+        case GraphChangeType::ARC_REVERSAL :
           return checkArcReversalAlone(change.node1(), change.node2());
 
-        default:
+        default :
           GUM_ERROR(OperationNotAllowed,
                     "edge modifications are not "
                     "supported by StructuralConstraintSliceOrder");

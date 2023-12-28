@@ -34,12 +34,14 @@
 #include <utility>
 #include <vector>
 // =========================================================================
-#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/multidim/instantiation.h>
+
+#include <agrum/tools/core/math/math_utils.h>
 // =========================================================================
-#include <agrum/FMDP/planning/treeOperatorStrategy.h>
 #include <agrum/tools/multidim/utils/FunctionGraphUtilities/operators/treeOperator.h>
 #include <agrum/tools/multidim/utils/FunctionGraphUtilities/operators/treeRegress.h>
+
+#include <agrum/FMDP/planning/treeOperatorStrategy.h>
 // =========================================================================
 
 /// For shorter line and hence more comprehensive code only
@@ -71,7 +73,6 @@ namespace gum {
   INLINE TreeOperatorStrategy< GUM_SCALAR >::~TreeOperatorStrategy() {
     GUM_DESTRUCTOR(TreeOperatorStrategy);
   }
-
 
   /* **************************************************************************************************
    * **/
@@ -154,7 +155,6 @@ namespace gum {
     this->deleteFunctionGraph_(f1, f2, del);
     return ret;
   }
-
 
   // ==========================================================================
   /// ArgMaximizes between f2 and f1

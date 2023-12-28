@@ -54,6 +54,7 @@ namespace gum {
     MultiDimInterface::operator=(from);
     return *this;
   }
+
   INLINE MultiDimAdressable& MultiDimAdressable::operator=(MultiDimAdressable&& from) noexcept {
     GUM_OP_MOV(MultiDimAdressable);
     MultiDimInterface::operator=(std::forward< MultiDimInterface >(from));

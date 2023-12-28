@@ -805,19 +805,19 @@ namespace gum {
       // First step we add Attributes and Aggregators
       for (const auto node: c.containerDag().nodes()) {
         switch (c.get(node).elt_type()) {
-          case PRMClassElement< GUM_SCALAR >::prm_attribute: {
+          case PRMClassElement< GUM_SCALAR >::prm_attribute : {
             pool.insert(&(const_cast< Potential< GUM_SCALAR >& >(c.get(node).cpf())));
             // break omited : We want to execute the next block
             // for attributes
           }
 
-          case PRMClassElement< GUM_SCALAR >::prm_aggregate: {
+          case PRMClassElement< GUM_SCALAR >::prm_aggregate : {
             moral_graph.addNodeWithId(node);
             mods.insert(node, c.get(node).type()->domainSize());
             break;
           }
 
-          default: { /* do nothing */
+          default : { /* do nothing */
           }
         }
       }
@@ -846,7 +846,7 @@ namespace gum {
 
         // Adding nodes to the partial ordering
         switch (c.get(node).elt_type()) {
-          case PRMClassElement< GUM_SCALAR >::prm_aggregate: {
+          case PRMClassElement< GUM_SCALAR >::prm_aggregate : {
             if (c.isOutputNode(c.get(node))) outputs().insert(node);
             else aggregators().insert(node);
 
@@ -867,7 +867,7 @@ namespace gum {
             break;
           }
 
-          case PRMClassElement< GUM_SCALAR >::prm_attribute: {
+          case PRMClassElement< GUM_SCALAR >::prm_attribute : {
             pool.insert(const_cast< Potential< GUM_SCALAR >* >(&(c.get(node).cpf())));
 
             if (c.isOutputNode(c.get(node))) outputs().insert(node);
@@ -876,7 +876,7 @@ namespace gum {
             break;
           }
 
-          default: { /* Do nothing */
+          default : { /* Do nothing */
           }
         }
       }

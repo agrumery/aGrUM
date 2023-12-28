@@ -19,20 +19,21 @@
  */
 
 #include <iostream>
-#include <vector>
 #include <string>
-#include "agrum/tools/multidim/potential.h"
-#include "cxxtest/TestSuite.h"
+#include <vector>
 
-#include "testunits/gumtest/AgrumTestSuite.h"
-#include "testunits/gumtest/testsuite_utils.h"
+#include <agrum/tools/graphicalModels/algorithms/informationTheory.h>
 
+#include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
+#include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/MRF/inference/ShaferShenoyMRFInference.h>
 #include <agrum/MRF/MarkovRandomField.h>
-#include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/BN/io/BIF/BIFReader.h>
-#include <agrum/tools/graphicalModels/algorithms/informationTheory.h>
+
+#include "agrum/tools/multidim/potential.h"
+#include "cxxtest/TestSuite.h"
+#include "testunits/gumtest/AgrumTestSuite.h"
+#include "testunits/gumtest/utils.h"
 
 namespace gum_tests {
 
@@ -130,7 +131,6 @@ namespace gum_tests {
         TS_GUM_ASSERT_ALMOST_EQUALS(it.mutualInformationXY(), 0.0279145343902076)
       }
     }
-
 
     GUM_ACTIVE_TEST(CheckConsistency) {
       const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C");

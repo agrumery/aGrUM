@@ -32,6 +32,7 @@
 #define O4DGCONTEXT_H
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/multidim/implementations/multiDimFunctionGraph.h>
 
 namespace gum {
@@ -89,6 +90,7 @@ namespace gum {
 
     /// Get DG2 diagram current explored Node
     const NodeId& DG2Node() const { return _DG2ExploredNode_; }
+
     /// @}
 
     // ============================================================================
@@ -136,6 +138,6 @@ namespace gum {
 
 #ifndef GUM_NO_INLINE
 #  include <agrum/tools/multidim/utils/FunctionGraphUtilities/operators/o4DGContext_inl.h>
-#endif /* GUM_NO_INLINE */
+#endif   /* GUM_NO_INLINE */
 
 #endif   // O4DGCONTEXT_H

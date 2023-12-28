@@ -37,13 +37,11 @@ namespace gum {
     GUM_CONSTRUCTOR(BayesNetInference);
   }
 
-
   // Default Constructor
   template < typename GUM_SCALAR >
   BayesNetInference< GUM_SCALAR >::BayesNetInference() {
     GUM_CONSTRUCTOR(BayesNetInference);
   }
-
 
   // Destructor
   template < typename GUM_SCALAR >
@@ -51,20 +49,17 @@ namespace gum {
     GUM_DESTRUCTOR(BayesNetInference);
   }
 
-
   // Returns a constant reference over the IBayesNet referenced by this class
   template < typename GUM_SCALAR >
   INLINE const IBayesNet< GUM_SCALAR >& BayesNetInference< GUM_SCALAR >::BN() const {
     return static_cast< const IBayesNet< GUM_SCALAR >& >(this->model());
   }
 
-
   // assigns a new BN to the inference engine
   template < typename GUM_SCALAR >
   void BayesNetInference< GUM_SCALAR >::setBN(const IBayesNet< GUM_SCALAR >* bn) {
     this->setModel_(bn);
   }
-
 
   // assigns a BN to a newly constructed inference engine
   template < typename GUM_SCALAR >

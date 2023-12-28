@@ -23,11 +23,11 @@
 #define GUM_ALL_DISCRETE_VARIABLE_H
 #include <memory>
 
-#include <agrum/tools/variables/rangeVariable.h>
-#include <agrum/tools/variables/labelizedVariable.h>
-#include <agrum/tools/variables/integerVariable.h>
-#include <agrum/tools/variables/numericalDiscreteVariable.h>
 #include <agrum/tools/variables/discretizedVariable.h>
+#include <agrum/tools/variables/integerVariable.h>
+#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/tools/variables/numericalDiscreteVariable.h>
+#include <agrum/tools/variables/rangeVariable.h>
 
 namespace gum {
   /**

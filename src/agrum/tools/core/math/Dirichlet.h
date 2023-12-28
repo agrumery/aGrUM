@@ -31,6 +31,7 @@
 #include <vector>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/utils_random.h>
 
 namespace gum {

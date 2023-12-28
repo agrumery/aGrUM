@@ -39,7 +39,6 @@ namespace gum {
       return *_input_row_;
     }
 
-
     /// computes the rows it will provide in output
     INLINE std::size_t DBRowGeneratorIdentity::computeRows_(const DBRow< DBTranslatedValue >& row) {
       _input_row_ = &row;

@@ -25,12 +25,12 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
+#include <sstream>
 #include <utility>
 #include <vector>
-#include <sstream>
 
-#include <agrum/tools/database/DBTranslator4DiscretizedVariable.h>
 #include <agrum/tools/database/DBCell.h>
+#include <agrum/tools/database/DBTranslator4DiscretizedVariable.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -97,7 +97,6 @@ namespace gum {
 
       GUM_CONSTRUCTOR(DBTranslator4DiscretizedVariable);
     }
-
 
     /// default constructor with a discretized variable as translator
     template < typename GUM_SCALAR >

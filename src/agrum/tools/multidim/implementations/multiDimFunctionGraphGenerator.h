@@ -32,6 +32,7 @@
 #define GUM_MULTI_DIM_FUNCTION_GRAPH_GENERATOR_H
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/multidim/implementations/multiDimFunctionGraph.h>
 
 namespace gum {

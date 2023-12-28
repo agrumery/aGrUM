@@ -34,12 +34,10 @@ namespace gum {
     // ask the child class for the names of the variables
     INLINE std::vector< std::string > DBInitializerFromCSV::variableNames_() { return _var_names_; }
 
-
     // asks the child class for the content of the current row using strings
     INLINE const std::vector< std::string >& DBInitializerFromCSV::currentStringRow_() {
       return _parser_.current();
     }
-
 
     // indicates whether there is a next row to read (and point on it)
     INLINE bool DBInitializerFromCSV::nextRow_() { return _parser_.next(); }

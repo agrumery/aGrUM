@@ -23,11 +23,12 @@
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
-#include <agrum/MRF/MarkovRandomField.h>
-#include <agrum/MRF/io/UAI/UAIMRFReader.h>
 #include <agrum/tools/variables/labelizedVariable.h>
+
+#include <agrum/MRF/io/UAI/UAIMRFReader.h>
+#include <agrum/MRF/MarkovRandomField.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3

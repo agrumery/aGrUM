@@ -30,8 +30,8 @@
 #define GUM_SCALAR_ATTRIBUTE_H
 
 #include <agrum/agrum.h>
-#include <agrum/PRM/elements/PRMAttribute.h>
 
+#include <agrum/PRM/elements/PRMAttribute.h>
 
 namespace gum {
   namespace prm {
@@ -127,6 +127,7 @@ namespace gum {
       virtual void swap(const PRMType& old_type, const PRMType& new_type);
 
       /// @}
+
       protected:
       /// Copy constructor. Don't use it.
       PRMScalarAttribute(const PRMScalarAttribute& source);

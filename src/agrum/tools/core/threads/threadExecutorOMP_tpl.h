@@ -73,7 +73,6 @@ namespace gum {
 #  endif   // _OPENMP
     }
 
-
     /// executes in parallel a function and undoes it if execptions are raised
     template < typename FUNC1, typename FUNC2, typename... ARGS >
     void ThreadExecutor::executeOrUndo(std::size_t nb_threads,
@@ -155,7 +154,7 @@ namespace gum {
 #  endif   // _OPENMP
     }
 
-  } /* namespace threadsOMP */
+  }        /* namespace threadsOMP */
 
 } /* namespace gum */
 

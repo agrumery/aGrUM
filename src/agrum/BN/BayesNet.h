@@ -33,7 +33,6 @@
 
 #include <agrum/agrum.h>
 
-
 #include <agrum/BN/IBayesNet.h>
 
 namespace gum {
@@ -461,9 +460,11 @@ namespace gum {
      * would induce a directed cycle. */
     /// @{
     void reverseArc(NodeId tail, NodeId head);
+
     void reverseArc(const std::string& tail, const std::string& head) {
       reverseArc(idFromName(tail), idFromName(head));
     }
+
     void reverseArc(const Arc& arc);
     /// @}
 
@@ -625,6 +626,7 @@ namespace gum {
     void addWeightedArc(const std::string& tail, const std::string& head, GUM_SCALAR causalWeight) {
       addWeightedArc(idFromName(tail), idFromName(head), causalWeight);
     };
+
     /// @}
 
     /// randomly generates CPTs for a given structure
@@ -632,6 +634,7 @@ namespace gum {
 
     /// randomly generate CPT for a given node in a given structure
     void generateCPT(NodeId node) const;
+
     void generateCPT(const std::string& name) const { generateCPT(idFromName(name)); };
 
     /// change the CPT associated to nodeId to newPot

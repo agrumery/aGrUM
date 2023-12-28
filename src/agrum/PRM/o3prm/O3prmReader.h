@@ -37,13 +37,14 @@
 #include <string>
 #include <vector>
 
+#include <agrum/agrum.h>
+
+#include <agrum/PRM/o3prm/cocoR/Parser.h>
+#include <agrum/PRM/o3prm/cocoR/Scanner.h>
 #include <agrum/PRM/o3prm/O3ClassFactory.h>
 #include <agrum/PRM/o3prm/O3InterfaceFactory.h>
 #include <agrum/PRM/o3prm/O3SystemFactory.h>
 #include <agrum/PRM/o3prm/O3TypeFactory.h>
-#include <agrum/PRM/o3prm/cocoR/Parser.h>
-#include <agrum/PRM/o3prm/cocoR/Scanner.h>
-#include <agrum/agrum.h>
 
 namespace gum {
   namespace prm {
@@ -99,7 +100,8 @@ namespace gum {
          */
         void addClassPath(const std::string& class_path);
 
-        gum::prm::PRM< GUM_SCALAR >*       prm() { return _prm_; }
+        gum::prm::PRM< GUM_SCALAR >* prm() { return _prm_; }
+
         const gum::prm::PRM< GUM_SCALAR >* prm() const { return _prm_; }
 
         /// @{

@@ -31,8 +31,8 @@
 #include <sstream>
 #include <string>
 
-#include <agrum/PRM/PRM.h>
 #include <agrum/PRM/generator/nameGenerator.h>
+#include <agrum/PRM/PRM.h>
 
 namespace gum {
   namespace prm {
@@ -75,6 +75,7 @@ namespace gum {
       virtual PRM< GUM_SCALAR >* generate() = 0;
 
       /// @}
+
       protected:
       /// The name generator used by this class.
       NameGenerator name_gen_;

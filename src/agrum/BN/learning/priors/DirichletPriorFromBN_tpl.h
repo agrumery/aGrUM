@@ -38,14 +38,12 @@ namespace gum::learning {
     GUM_CONSTRUCTOR(DirichletPriorFromBN)
   }
 
-
   /// copy constructor
   template < typename GUM_SCALAR >
   DirichletPriorFromBN< GUM_SCALAR >::DirichletPriorFromBN(const DirichletPriorFromBN& from) :
       Prior(from), _prior_bn_(from._prior_bn_) {
     GUM_CONS_CPY(DirichletPriorFromBN)
   }
-
 
   /// move constructor
   template < typename GUM_SCALAR >
@@ -54,13 +52,11 @@ namespace gum::learning {
     GUM_CONS_MOV(DirichletPriorFromBN)
   }
 
-
   /// virtual copy constructor
   template < typename GUM_SCALAR >
   DirichletPriorFromBN< GUM_SCALAR >* DirichletPriorFromBN< GUM_SCALAR >::clone() const {
     return new DirichletPriorFromBN(*this);
   }
-
 
   /// destructor
 
@@ -68,7 +64,6 @@ namespace gum::learning {
   DirichletPriorFromBN< GUM_SCALAR >::~DirichletPriorFromBN() {
     GUM_DESTRUCTOR(DirichletPriorFromBN)
   }
-
 
   /// copy operator
   template < typename GUM_SCALAR >
@@ -81,7 +76,6 @@ namespace gum::learning {
     return *this;
   }
 
-
   /// move operator
   template < typename GUM_SCALAR >
   DirichletPriorFromBN< GUM_SCALAR >&
@@ -93,14 +87,12 @@ namespace gum::learning {
     return *this;
   }
 
-
   /// returns the type of the prior
 
   template < typename GUM_SCALAR >
   INLINE PriorType DirichletPriorFromBN< GUM_SCALAR >::getType() const {
     return PriorType::DirichletPriorType;
   }
-
 
   /// indicates whether the prior is potentially informative
 
@@ -109,13 +101,11 @@ namespace gum::learning {
     return (this->weight_ != 0.0);
   }
 
-
   /// sets the weight of the a prior(kind of effective sample size)
   template < typename GUM_SCALAR >
   INLINE void DirichletPriorFromBN< GUM_SCALAR >::setWeight(const double weight) {
     Prior::setWeight(weight);
   }
-
 
   /// returns the prior vector all the variables in the idset
   template < typename GUM_SCALAR >
@@ -132,7 +122,6 @@ namespace gum::learning {
 
     _addCountsForJoint_(Ijoint, X + Y, counts);
   }
-
 
   /// returns the prior vector over only the conditioning set of an idset
   template < typename GUM_SCALAR >

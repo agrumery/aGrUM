@@ -23,11 +23,12 @@
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
+
+#include <agrum/tools/variables/labelizedVariable.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/UAI/UAIBNReader.h>
-#include <agrum/tools/variables/labelizedVariable.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3
@@ -486,6 +487,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed())
       TS_ASSERT_EQUALS(nbErr, (gum::Size)0)
     }
+
     GUM_ACTIVE_TEST(AsiaRead) {
       std::string                file = GET_RESSOURCES_PATH("uai/asia.uai");
       gum::BayesNet< double >    net;

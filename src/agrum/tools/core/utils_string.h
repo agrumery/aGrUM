@@ -29,11 +29,11 @@
 #ifndef GUM_UTILS_STRING_H
 #define GUM_UTILS_STRING_H
 
+#include <cctype>
 #include <cstdlib>
 #include <sstream>
 #include <string>
 #include <vector>
-#include <cctype>
 
 #include <agrum/agrum.h>
 
@@ -141,6 +141,7 @@ namespace gum {
     s << value;
     return s.str();
   }
+
   /// @}
 } /* namespace gum */
 
@@ -148,4 +149,4 @@ namespace gum {
 #  include <agrum/tools/core/utils_string_inl.h>
 #endif   // GUM_NO_INLINE
 
-#endif /* GUM_UTILS_STRING_H */
+#endif   /* GUM_UTILS_STRING_H */

@@ -108,6 +108,7 @@ namespace gum {
      MaxParentsMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::maxParents() const {
     return maxParents_;
   }
+
   template < typename GUM_SCALAR,
              template < class >
              class ICPTGenerator,

@@ -41,6 +41,7 @@ namespace gum {
 
 #  ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME
 #    define GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE GUM_SCALAR
+
   template < typename GUM_SCALAR >
   GUM_SCALAR
      GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME(const MultiDimImplementation< GUM_SCALAR >* table,
@@ -148,7 +149,7 @@ namespace gum {
       }
 
       return current_val;
-#  endif /* GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER */
+#  endif   /* GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER */
     }
   }
 

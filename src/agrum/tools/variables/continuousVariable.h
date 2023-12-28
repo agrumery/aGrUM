@@ -34,6 +34,7 @@
 #include <string>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/variables/IContinuousVariable.h>
 
 namespace gum {
@@ -179,7 +180,6 @@ namespace gum {
     template < typename TX_VAL >
     friend class ContinuousVariable;
   };
-
 
   /// for friendly displaying the content of the variable
   template < typename T_VAL >

@@ -19,5 +19,6 @@
  */
 
 
-#include <agrum/BN/inference/tools/evidenceInference.h>
 #include <agrum/agrum.h>
+
+#include <agrum/BN/inference/tools/evidenceInference.h>

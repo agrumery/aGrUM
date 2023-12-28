@@ -35,7 +35,6 @@
 #include <agrum/tools/graphs/algorithms/triangulations/junctionTreeStrategies/junctionTreeStrategy.h>
 #include <agrum/tools/graphs/algorithms/triangulations/triangulation.h>
 
-
 namespace gum {
 
 
@@ -327,4 +326,4 @@ namespace gum {
 #  include <agrum/tools/graphs/algorithms/triangulations/staticTriangulation_inl.h>
 #endif   // GUM_NO_INLINE
 
-#endif /* GUM_STATIC_TRIANGULATION_H */
+#endif   /* GUM_STATIC_TRIANGULATION_H */

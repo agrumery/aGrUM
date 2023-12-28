@@ -31,7 +31,6 @@
 
 #include <string>
 
-
 #include <agrum/PRM/PRM.h>
 
 namespace gum {
@@ -174,6 +173,7 @@ namespace gum {
       void clearEvidence();
 
       /// @}
+
       protected:
       // ========================================================================
       /// @name Protected members.

@@ -40,7 +40,6 @@ namespace gum {
       GUM_CONSTRUCTOR(Score);
     }
 
-
     /// default constructor
     INLINE Score::Score(const DBRowGeneratorParser&             parser,
                         const Prior&                            prior,
@@ -50,14 +49,12 @@ namespace gum {
       GUM_CONSTRUCTOR(Score);
     }
 
-
     /// copy constructor
     INLINE Score::Score(const Score& from) :
         prior_(from.prior_->clone()), counter_(from.counter_), cache_(from.cache_),
         use_cache_(from.use_cache_) {
       GUM_CONS_CPY(Score);
     }
-
 
     /// move constructor
     INLINE Score::Score(Score&& from) :
@@ -67,27 +64,22 @@ namespace gum {
       GUM_CONS_MOV(Score);
     }
 
-
     /// destructor
     INLINE Score::~Score() {
       if (prior_ != nullptr) delete prior_;
       GUM_DESTRUCTOR(Score);
     }
 
-
     /// changes the max number of threads used to parse the database
     INLINE void Score::setNumberOfThreads(Size nb) { counter_.setNumberOfThreads(nb); }
 
-
     /// returns the current max number of threads of the scheduler
     INLINE Size Score::getNumberOfThreads() const { return counter_.getNumberOfThreads(); }
-
 
     /// indicates whether the user set herself the number of threads
     INLINE bool Score::isGumNumberOfThreadsOverriden() const {
       return counter_.isGumNumberOfThreadsOverriden();
     }
-
 
     /** @brief changes the number min of rows a thread should process in a
      * multithreading context */
@@ -95,16 +87,13 @@ namespace gum {
       counter_.setMinNbRowsPerThread(nb);
     }
 
-
     /// returns the minimum of rows that each thread should process
     INLINE std::size_t Score::minNbRowsPerThread() const { return counter_.minNbRowsPerThread(); }
-
 
     /// returns the current ranges
     INLINE const std::vector< std::pair< std::size_t, std::size_t > >& Score::ranges() const {
       return counter_.ranges();
     }
-
 
     /// returns the score of a single node
     INLINE double Score::score(const NodeId var) {
@@ -120,7 +109,6 @@ namespace gum {
         return score_(std::move(idset));
       }
     }
-
 
     /// returns the score of a single node given some other nodes
     /** @param var1 the variable on the left side of the conditioning bar
@@ -140,31 +128,25 @@ namespace gum {
       }
     }
 
-
     /// clears all the data structures from memory
     INLINE void Score::clear() {
       counter_.clear();
       cache_.clear();
     }
 
-
     /// clears the current cache (clear nodesets as well)
     INLINE void Score::clearCache() { cache_.clear(); }
-
 
     /// turn on/off the use of a cache of the previously computed score
     INLINE void Score::useCache(const bool on_off) { use_cache_ = on_off; }
 
-
     /// indicates whether the score uses a cache
     INLINE bool Score::isUsingCache() const { return use_cache_; }
-
 
     /// return the mapping between the columns of the database and the node ids
     INLINE const Bijection< NodeId, std::size_t >& Score::nodeId2Columns() const {
       return counter_.nodeId2Columns();
     }
-
 
     /// return the database used by the score
     INLINE const DatabaseTable& Score::database() const { return counter_.database(); }

@@ -44,10 +44,7 @@ namespace gum {
   //    these pointer rather than the static variables themselves (this avoids
   //    having a lot of strict-aliasing rule warnings). See the very end of
   //    file AVLTree.h for an example.
-  enum class StaticInitializer : char {
-    CONSTINIT,
-    CONSTEXPR
-  };
+  enum class StaticInitializer : char { CONSTINIT, CONSTEXPR };
 
 }   // namespace gum
 

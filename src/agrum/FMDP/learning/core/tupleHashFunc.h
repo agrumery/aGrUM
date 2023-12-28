@@ -30,8 +30,9 @@
 #ifndef GUM_TUPLE_HASH_FUNC_H
 #define GUM_TUPLE_HASH_FUNC_H
 
-#include <agrum/tools/core/hashFunc.h>
 #include <tuple>
+
+#include <agrum/tools/core/hashFunc.h>
 
 namespace gum {
 

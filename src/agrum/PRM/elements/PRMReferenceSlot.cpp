@@ -27,9 +27,8 @@
  *
  */
 
-#include <agrum/PRM/elements/PRMReferenceSlot.h>
-
 #include <agrum/PRM/elements/PRMClassElementContainer.h>
+#include <agrum/PRM/elements/PRMReferenceSlot.h>
 
 namespace gum {
   namespace prm {

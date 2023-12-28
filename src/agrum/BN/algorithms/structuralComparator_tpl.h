@@ -21,8 +21,9 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#  include <agrum/BN/algorithms/essentialGraph.h>
 #  include <agrum/tools/graphs/PDAG.h>
+
+#  include <agrum/BN/algorithms/essentialGraph.h>
 
 namespace gum {
 

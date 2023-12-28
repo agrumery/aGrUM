@@ -22,14 +22,9 @@
 #include <sstream>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
-#include <agrum/BN/BayesNet.h>
 #include <agrum/tools/core/exceptions.h>
-#include <agrum/tools/multidim/potential.h>
-#include <agrum/tools/variables/labelizedVariable.h>
-#include <agrum/tools/variables/rangeVariable.h>
-
 #include <agrum/tools/multidim/aggregators/amplitude.h>
 #include <agrum/tools/multidim/aggregators/and.h>
 #include <agrum/tools/multidim/aggregators/count.h>
@@ -40,6 +35,11 @@
 #include <agrum/tools/multidim/aggregators/min.h>
 #include <agrum/tools/multidim/aggregators/or.h>
 #include <agrum/tools/multidim/aggregators/sum.h>
+#include <agrum/tools/multidim/potential.h>
+#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/tools/variables/rangeVariable.h>
+
+#include <agrum/BN/BayesNet.h>
 
 namespace gum_tests {
 
@@ -71,7 +71,7 @@ namespace gum_tests {
 
       if (b <= c) {
         if (c <= d) {
-          tmp = c;   // b<=c<=d
+          tmp = c;     // b<=c<=d
         } else {
           if (b <= d) {
             tmp = d;   // b<=d<c
@@ -79,10 +79,10 @@ namespace gum_tests {
             tmp = b;   // d<b<c
           }
         }
-      } else {   // b>c
+      } else {         // b>c
         if (c >= d) {
-          tmp = c;   // b>c>=d
-        } else {     // d>b
+          tmp = c;     // b>c>=d
+        } else {       // d>b
           if (b >= d) {
             tmp = d;   // b>=d>c
           } else {
@@ -184,7 +184,6 @@ namespace gum_tests {
       tmp = hh - ll;
       return (tmp == a) ? (float)1 : (float)0;
     }
-
 
     float _is_count_2_(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp;

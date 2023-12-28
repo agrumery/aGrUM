@@ -25,6 +25,7 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 #include <agrum/agrum.h>
+
 #include <agrum/tools/multidim/potential.h>
 
 

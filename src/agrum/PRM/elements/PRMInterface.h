@@ -30,14 +30,13 @@
 #define GUM_INTERFACE_H
 
 #include <set>
-#include <utility>
 #include <string>
+#include <utility>
 
 #include <agrum/agrum.h>
 
 #include <agrum/PRM/elements/PRMReferenceSlot.h>
 #include <agrum/PRM/elements/PRMScalarAttribute.h>
-
 
 namespace gum {
   namespace prm {
@@ -62,6 +61,7 @@ namespace gum {
       // ========================================================================
       friend class PRMClass< GUM_SCALAR >;
       // ========================================================================
+
       public:
       // ========================================================================
       /// @name Constructor & destructor.
@@ -282,6 +282,7 @@ namespace gum {
       const const_ClassEltIterator& end() const;
 
       /// @}
+
       protected:
       /// Returns a constant reference over this PRMInterface's DAG.
       const DAG& dag_() const;

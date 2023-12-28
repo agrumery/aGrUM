@@ -31,9 +31,9 @@
 #define GUM_MARKOV_RANDOM_FIELD_JOINT_TARGETED_INFERENCE_H
 
 
-#include <agrum/MRF/inference/tools/marginalTargetedMRFInference.h>
 #include <agrum/agrum.h>
 
+#include <agrum/MRF/inference/tools/marginalTargetedMRFInference.h>
 
 namespace gum {
 
@@ -312,7 +312,6 @@ namespace gum {
 
 
 }   // namespace gum
-
 
 #include <agrum/MRF/inference/tools/jointTargetedMRFInference_tpl.h>
 

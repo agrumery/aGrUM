@@ -80,7 +80,6 @@ namespace gum {
     return table;
   }
 
-
   // add to a given schedule the set of operations needed to perform the combination
   template < class TABLE >
   INLINE const IScheduleMultiDim*

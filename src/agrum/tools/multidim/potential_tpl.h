@@ -26,8 +26,10 @@
  */
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/math/math_utils.h>
+
 #include <agrum/tools/multidim/potential.h>
+
+#include <agrum/tools/core/math/math_utils.h>
 
 namespace gum {
 
@@ -46,6 +48,7 @@ namespace gum {
     // for debugging purposes
     GUM_CONSTRUCTOR(Potential);
   }
+
   // copy constructor
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >::Potential(const Potential< GUM_SCALAR >& src) :
@@ -125,6 +128,7 @@ namespace gum {
     }
     return gum::projectSum(*this->content());
   }
+
   // product of all elements in this
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR Potential< GUM_SCALAR >::product() const {
@@ -133,6 +137,7 @@ namespace gum {
     }
     return gum::projectProduct(*this->content());
   }
+
   // max of all elements in this
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR Potential< GUM_SCALAR >::max() const {
@@ -141,6 +146,7 @@ namespace gum {
     }
     return gum::projectMax(*this->content());
   }
+
   // min of all elements in this
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR Potential< GUM_SCALAR >::min() const {
@@ -301,6 +307,7 @@ namespace gum {
     this->apply([](GUM_SCALAR x) { return std::log2(x); });
     return *this;
   }
+
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::sgn() const {
     this->apply([](GUM_SCALAR x) { return (GUM_SCALAR(0) < x) - (x < GUM_SCALAR(0)); });
@@ -697,12 +704,14 @@ namespace gum {
     }
     return res;
   }
+
   // argmax of all elements in this
   template < typename GUM_SCALAR >
   INLINE std::pair< Set< Instantiation >, GUM_SCALAR > Potential< GUM_SCALAR >::argmax() const {
     auto m = max();
     return std::pair(findAll(m), m);
   }
+
   // argmin of all elements in this
   template < typename GUM_SCALAR >
   INLINE std::pair< Set< Instantiation >, GUM_SCALAR > Potential< GUM_SCALAR >::argmin() const {
@@ -774,7 +783,6 @@ namespace gum {
     return *this;
   }
 
-
   /// the function to be used to add two Potentials
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
@@ -838,6 +846,7 @@ namespace gum {
     }
     return Potential< GUM_SCALAR >(*this->content() / *p2.content());
   }
+
   /// the function to be used to divide a Potential by a scalar
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR > Potential< GUM_SCALAR >::operator/(const GUM_SCALAR& v) const {
@@ -907,7 +916,6 @@ namespace gum {
   bool Potential< GUM_SCALAR >::operator!=(const Potential< GUM_SCALAR >& r) const {
     return !operator==(r);
   }
-
 
   template < typename GUM_SCALAR >
   std::string Potential< GUM_SCALAR >::toString() const {

@@ -27,6 +27,7 @@
  */
 
 #include <agrum/BN/inference/tools/aggregatorDecomposition.h>
+
 namespace gum {
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

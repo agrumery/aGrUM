@@ -28,6 +28,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #  include <agrum/agrum.h>
+
 #  include <agrum/tools/graphicalModels/inference/scheduler/scheduleProjection.h>
 
 namespace gum {
@@ -61,7 +62,6 @@ namespace gum {
     GUM_CONSTRUCTOR(ScheduleProjection);
   }
 
-
   /// copy constructor
   template < typename TABLE >
   ScheduleProjection< TABLE >::ScheduleProjection(const ScheduleProjection< TABLE >& from) :
@@ -77,7 +77,6 @@ namespace gum {
     // for debugging purposes
     GUM_CONS_CPY(ScheduleProjection);
   }
-
 
   /// move constructor
   template < typename TABLE >
@@ -96,13 +95,11 @@ namespace gum {
     GUM_CONS_MOV(ScheduleProjection);
   }
 
-
   /// virtual copy constructor
   template < typename TABLE >
   INLINE ScheduleProjection< TABLE >* ScheduleProjection< TABLE >::clone() const {
     return new ScheduleProjection< TABLE >(*this);
   }
-
 
   /// destructor
   template < typename TABLE >
@@ -112,7 +109,6 @@ namespace gum {
     // for debugging purposes
     GUM_DESTRUCTOR(ScheduleProjection);
   }
-
 
   /// copy operator
   template < typename TABLE >
@@ -137,7 +133,6 @@ namespace gum {
     return *this;
   }
 
-
   /// move operator
   template < typename TABLE >
   ScheduleProjection< TABLE >&
@@ -160,13 +155,11 @@ namespace gum {
     return *this;
   }
 
-
   /// operator ==
   template < typename TABLE >
   INLINE bool ScheduleProjection< TABLE >::operator==(const ScheduleProjection< TABLE >& op) const {
     return (_project_ == op._project_) && (*_arg_ == *op._arg_) && (_del_vars_ == op._del_vars_);
   }
-
 
   /// operator ==
   template < typename TABLE >
@@ -180,13 +173,11 @@ namespace gum {
     } catch (std::bad_cast&) { return false; }
   }
 
-
   /// operator !=
   template < typename TABLE >
   INLINE bool ScheduleProjection< TABLE >::operator!=(const ScheduleOperator& op) const {
     return !ScheduleProjection< TABLE >::operator==(op);
   }
-
 
   /// operator !=
   template < typename TABLE >
@@ -194,14 +185,12 @@ namespace gum {
     return !ScheduleProjection< TABLE >::operator==(op);
   }
 
-
   /// checks whether two ScheduleOperator have similar parameters
   template < typename TABLE >
   INLINE bool
      ScheduleProjection< TABLE >::hasSimilarArguments(const ScheduleProjection< TABLE >& op) const {
     return (_arg_->hasSameVariables(*op._arg_) && (_del_vars_ == op._del_vars_));
   }
-
 
   /// checks whether two ScheduleOperator have similar parameters
   template < typename TABLE >
@@ -213,7 +202,6 @@ namespace gum {
     } catch (std::bad_cast&) { return false; }
   }
 
-
   /// checks whether two ScheduleOperator have the same parameters
   template < typename TABLE >
   INLINE bool
@@ -221,7 +209,6 @@ namespace gum {
     return (_arg_->hasSameVariables(*op._arg_) && _arg_->hasSameContent(*op._arg_)
             && (_del_vars_ == op._del_vars_));
   }
-
 
   /// checks whether two ScheduleOperator have the same parameters
   template < typename TABLE >
@@ -233,14 +220,12 @@ namespace gum {
     } catch (std::bad_cast&) { return false; }
   }
 
-
   /// checks whether two ScheduleOperator perform the same operation
   template < typename TABLE >
   INLINE bool
      ScheduleProjection< TABLE >::isSameOperator(const ScheduleProjection< TABLE >& op) const {
     return _project_ == op._project_;
   }
-
 
   /// checks whether two ScheduleOperator perform the same operation
   template < typename TABLE >
@@ -252,13 +237,11 @@ namespace gum {
     } catch (std::bad_cast&) { return false; }
   }
 
-
   /// returns the argument of the projection
   template < typename TABLE >
   INLINE const ScheduleMultiDim< TABLE >& ScheduleProjection< TABLE >::arg() const {
     return *_arg_;
   }
-
 
   /// returns the sequence of arguments passed to the operator
   template < typename TABLE >
@@ -266,20 +249,17 @@ namespace gum {
     return _args_;
   }
 
-
   /// returns the result of the projection
   template < typename TABLE >
   INLINE const ScheduleMultiDim< TABLE >& ScheduleProjection< TABLE >::result() const {
     return *_result_;
   }
 
-
   /// returns the result of the projection
   template < typename TABLE >
   INLINE const Sequence< const IScheduleMultiDim* >& ScheduleProjection< TABLE >::results() const {
     return _results_;
   }
-
 
   /// modifies the arguments of the operator
   template < typename TABLE >
@@ -320,13 +300,11 @@ namespace gum {
     _args_ << _arg_;
   }
 
-
   /// indicates whether the operator has been executed
   template < typename TABLE >
   bool ScheduleProjection< TABLE >::isExecuted() const {
     return !_result_->isAbstract();
   }
-
 
   /// executes the operator
   template < typename TABLE >
@@ -342,13 +320,11 @@ namespace gum {
     }
   }
 
-
   /// undo a previous execution, if any
   template < typename TABLE >
   void ScheduleProjection< TABLE >::undo() {
     _result_->makeAbstract();
   }
-
 
   /** @brief returns an estimation of the number of elementary operations
    * needed to perform the ScheduleOperator */
@@ -356,7 +332,6 @@ namespace gum {
   INLINE double ScheduleProjection< TABLE >::nbOperations() const {
     return double(_arg_->domainSize());
   }
-
 
   /// returns the memory consumption used during the operator
   template < typename TABLE >
@@ -366,14 +341,12 @@ namespace gum {
     return {domsize, domsize};
   }
 
-
   /// displays the content of the operator
   template < typename TABLE >
   std::string ScheduleProjection< TABLE >::toString() const {
     return _result_->toString() + " = project ( " + _arg_->toString() + " , "
          + _del_vars_.toString() + " )";
   }
-
 
   /// use a new projection function
   template < typename TABLE >

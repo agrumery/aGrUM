@@ -58,7 +58,6 @@ namespace gum {
 
   PDAG::~PDAG() { GUM_DESTRUCTOR(PDAG); }
 
-
   UndiGraph PDAG::moralGraph() const {
     UndiGraph mg;
     mg.populateNodes(*this);
@@ -90,6 +89,7 @@ namespace gum {
     }
     return mg;
   }
+
   bool rec_hasMixedReallyOrientedPath(const PDAG& gr,
                                       NodeSet&    marked,
                                       NodeId      node,
@@ -104,6 +104,7 @@ namespace gum {
       if (rec_hasMixedReallyOrientedPath(gr, marked, nod, goal, alreadyOriented)) return true;
     return false;
   }
+
   bool PDAG::hasMixedReallyOrientedPath(gum::NodeId n1, gum::NodeId n2) const {
     if (n1 == n2) return false;
     NodeSet marked;   // marked as already explored
@@ -176,7 +177,6 @@ namespace gum {
         Ycc.insert(cc[node]);
     return (Xcc * Ycc).empty();
   }
-
 
   std::string PDAG::toDot() const {
     std::stringstream output;

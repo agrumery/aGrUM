@@ -29,8 +29,9 @@
 #include <algorithm>
 #include <iterator>
 
-#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/graphicalModels/graphicalModel.h>
+
+#include <agrum/tools/core/math/math_utils.h>
 
 namespace gum {
 
@@ -60,7 +61,6 @@ namespace gum {
     if (_propertiesMap_.exists(name)) _propertiesMap_[name] = value;
     else _propertiesMap_.insert(name, value);
   }
-
 
   INLINE
   double GraphicalModel::log10DomainSize() const {

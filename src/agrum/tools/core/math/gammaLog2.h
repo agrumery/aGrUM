@@ -34,6 +34,7 @@
 #include <vector>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/math/math_utils.h>
 
 namespace gum {
@@ -128,4 +129,4 @@ namespace gum {
 #  include <agrum/tools/core/math/gammaLog2_inl.h>
 #endif   // GUM_NO_INLINE
 
-#endif /* GUM_GAMMA_LOG2_H */
+#endif   /* GUM_GAMMA_LOG2_H */

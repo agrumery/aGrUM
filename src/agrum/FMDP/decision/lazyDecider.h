@@ -33,6 +33,7 @@
 #define GUM_LAZY_DECIDER_H
 // =========================================================================
 #include <agrum/FMDP/SDyna/Strategies/IDecisionStrategy.h>
+
 // =========================================================================
 
 namespace gum {
@@ -51,6 +52,7 @@ namespace gum {
     /// @name Constructor & destructor.
     // ###################################################################
     /// @{
+
     public:
     // ==========================================================================
     /// Constructor
@@ -69,6 +71,7 @@ namespace gum {
     /// @name Incremental methods
     // ###################################################################
     /// @{
+
     public:
     void checkState(const Instantiation& newState, Idx actionId) {}
   };

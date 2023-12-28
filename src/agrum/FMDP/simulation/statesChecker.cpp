@@ -21,7 +21,6 @@
 
 #include <agrum/FMDP/simulation/statesChecker.h>
 
-
 namespace gum {
 
   StatesChecker::StatesChecker() :

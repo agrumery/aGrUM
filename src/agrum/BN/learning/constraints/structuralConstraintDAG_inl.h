@@ -27,7 +27,9 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #  include <agrum/agrum.h>
+
 #  include <agrum/tools/graphs/algorithms/DAGCycleDetector.h>
+
 #  include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>
 
 namespace gum {
@@ -92,16 +94,16 @@ namespace gum {
     /// checks whether the constraints enable to perform a graph change
     INLINE bool StructuralConstraintDAG::checkModificationAlone(const GraphChange& change) const {
       switch (change.type()) {
-        case GraphChangeType::ARC_ADDITION:
+        case GraphChangeType::ARC_ADDITION :
           return checkArcAdditionAlone(change.node1(), change.node2());
 
-        case GraphChangeType::ARC_DELETION:
+        case GraphChangeType::ARC_DELETION :
           return checkArcDeletionAlone(change.node1(), change.node2());
 
-        case GraphChangeType::ARC_REVERSAL:
+        case GraphChangeType::ARC_REVERSAL :
           return checkArcReversalAlone(change.node1(), change.node2());
 
-        default:
+        default :
           GUM_ERROR(OperationNotAllowed,
                     "edge modifications are not "
                     "supported by StructuralConstraintDAG");
@@ -126,19 +128,19 @@ namespace gum {
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintDAG::modifyGraphAlone(const GraphChange& change) {
       switch (change.type()) {
-        case GraphChangeType::ARC_ADDITION:
+        case GraphChangeType::ARC_ADDITION :
           modifyGraphAlone(reinterpret_cast< const ArcAddition& >(change));
           break;
 
-        case GraphChangeType::ARC_DELETION:
+        case GraphChangeType::ARC_DELETION :
           modifyGraphAlone(reinterpret_cast< const ArcDeletion& >(change));
           break;
 
-        case GraphChangeType::ARC_REVERSAL:
+        case GraphChangeType::ARC_REVERSAL :
           modifyGraphAlone(reinterpret_cast< const ArcReversal& >(change));
           break;
 
-        default:
+        default :
           GUM_ERROR(OperationNotAllowed, "edge modifications are not supported by DAG constraints")
       }
     }

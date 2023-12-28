@@ -27,9 +27,10 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#  include <agrum/tools/graphicalModels/variableNodeMap.h>
 #  include <iostream>
 #  include <sstream>
+
+#  include <agrum/tools/graphicalModels/variableNodeMap.h>
 
 #  ifdef GUM_NO_INLINE
 #    include <agrum/tools/graphicalModels/variableNodeMap_inl.h>

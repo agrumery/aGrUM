@@ -45,7 +45,6 @@ namespace gum {
     return _pdag_.neighbours(id);
   }
 
-
   INLINE Size EssentialGraph::sizeArcs() const { return _pdag_.sizeArcs(); }
 
   INLINE const ArcSet& EssentialGraph::arcs() const { return _pdag_.arcs(); }

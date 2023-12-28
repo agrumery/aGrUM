@@ -36,16 +36,13 @@
 #include <agrum/agrum.h>
 
 #include <agrum/tools/core/exceptions.h>
-
+#include <agrum/tools/graphs/algorithms/triangulations/defaultTriangulation.h>
 #include <agrum/tools/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
-
 #include <agrum/tools/multidim/implementations/multiDimBucket.h>
 #include <agrum/tools/multidim/implementations/multiDimSparse.h>
+
 #include <agrum/ID/inference/tools/decisionPotential.h>
-
 #include <agrum/ID/inference/tools/influenceDiagramInference.h>
-#include <agrum/tools/graphs/algorithms/triangulations/defaultTriangulation.h>
-
 
 namespace gum {
 
@@ -92,6 +89,7 @@ namespace gum {
     void addNoForgettingAssumption(const std::vector< NodeId >& ids);
     void addNoForgettingAssumption(const std::vector< std::string >& names);
     bool hasNoForgettingAssumption() const;
+
     ///@}
 
     DAG reducedGraph() const { return reduced_; };
@@ -104,6 +102,7 @@ namespace gum {
 
 
     gum::Potential< GUM_SCALAR > optimalDecision(NodeId decisionId) final;
+
     gum::Potential< GUM_SCALAR > optimalDecision(const std::string& decisionName) final {
       return optimalDecision(this->influenceDiagram().idFromName(decisionName));
     };
@@ -115,7 +114,8 @@ namespace gum {
      * @return the posterior probability
      */
     virtual const Potential< GUM_SCALAR >& posterior(NodeId node) final;
-    const Potential< GUM_SCALAR >&         posterior(const std::string& name) final {
+
+    const Potential< GUM_SCALAR >& posterior(const std::string& name) final {
       return posterior(this->influenceDiagram().idFromName(name));
     };
 
@@ -126,6 +126,7 @@ namespace gum {
      * @return the posterior utility of a node
      */
     virtual const Potential< GUM_SCALAR >& posteriorUtility(NodeId node) final;
+
     virtual const Potential< GUM_SCALAR >& posteriorUtility(const std::string& name) final {
       return posteriorUtility(this->influenceDiagram().idFromName(name));
     };
@@ -137,7 +138,8 @@ namespace gum {
      * @return the pair (mean,variance) for a node
      */
     virtual std::pair< GUM_SCALAR, GUM_SCALAR > meanVar(NodeId node) final;
-    std::pair< GUM_SCALAR, GUM_SCALAR >         meanVar(const std::string& name) final {
+
+    std::pair< GUM_SCALAR, GUM_SCALAR > meanVar(const std::string& name) final {
       return meanVar(this->influenceDiagram().idFromName(name));
     };
 

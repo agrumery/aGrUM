@@ -24,11 +24,11 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <sstream>
 #include <string>
 // =============================================================================
 #include <gumtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+
+#include <utils.h>
 // =============================================================================
 #include <agrum/tools/multidim/implementations/multiDimFunctionGraph.h>
 #include <agrum/tools/multidim/implementations/multiDimFunctionGraphGenerator.h>
@@ -36,6 +36,7 @@
 #include <agrum/tools/multidim/potential.h>
 // =============================================================================
 #include <agrum/tools/variables/labelizedVariable.h>
+
 // =============================================================================
 
 namespace gum_tests {
@@ -56,7 +57,6 @@ namespace gum_tests {
     /// Defines the number of iteration on randomly generated diagram we perform
     static const gum::Idx nbIter = 100;
 
-
     // *****************************************************************************************************
     /// Génération fixe d'une liste de variable
     // *****************************************************************************************************
@@ -69,7 +69,6 @@ namespace gum_tests {
 
       return ret;
     }
-
 
     // *****************************************************************************************************
     /// Génération aléatoire d'une liste de 10 variables
@@ -87,7 +86,6 @@ namespace gum_tests {
       return ret;
     }
 
-
     // *****************************************************************************************************
     /// Brassage aléatoire d'une liste de 10 variables
     // *****************************************************************************************************
@@ -95,7 +93,6 @@ namespace gum_tests {
       for (gum::Idx j = 0; j < 10; j++)
         varList->swap(rand() % (varList->size()), rand() % (varList->size()));
     }
-
 
     // *****************************************************************************************************
     /// Génération fixe de diagramme de décision
@@ -132,7 +129,6 @@ namespace gum_tests {
       return generatedFunctionGraph;
     }
 
-
     // *****************************************************************************************************
     /// Génération fixe de diagramme de décision
     // *****************************************************************************************************
@@ -164,7 +160,6 @@ namespace gum_tests {
       return generatedFunctionGraph;
     }
 
-
     // *****************************************************************************************************
     /// Génération aléatoire de diagramme de décision
     // *****************************************************************************************************
@@ -176,7 +171,6 @@ namespace gum_tests {
 
       return gene.generate();
     }
-
 
     // *****************************************************************************************************
     /// Sauvegarde des diagrammes générant une erreur dans un fichier log
@@ -234,7 +228,6 @@ namespace gum_tests {
       if (output.fail()) GUM_ERROR(gum::IOError, "Writting in the ostream failed.")
     }
 
-
     // *****************************************************************************************************
     /// Evals given in parameter operation. Returned boolean parameter indicates
     /// if all went well or not
@@ -255,23 +248,23 @@ namespace gum_tests {
       // Generation du diagramme résultat
 
       switch (operationId) {
-        case 1:   // Test addition
+        case 1 :   // Test addition
           TS_GUM_ASSERT_THROWS_NOTHING(a3 = add2MultiDimFunctionGraphs(a1, a2))
           break;
 
-        case 2:   // Test Substraction
+        case 2 :   // Test Substraction
           TS_GUM_ASSERT_THROWS_NOTHING(a3 = subtract2MultiDimFunctionGraphs(a1, a2))
           break;
 
-        case 3:   // Test Multiplication
+        case 3 :   // Test Multiplication
           TS_GUM_ASSERT_THROWS_NOTHING(a3 = multiply2MultiDimFunctionGraphs(a1, a2))
           break;
 
-        case 4:   // Test Maximum
+        case 4 :   // Test Maximum
           TS_GUM_ASSERT_THROWS_NOTHING(a3 = maximize2MultiDimFunctionGraphs(a1, a2))
           break;
 
-        default:   // Should not happen
+        default :   // Should not happen
           GUM_ERROR(gum::OperationNotAllowed, "HEU .....")
       }
 
@@ -289,26 +282,26 @@ namespace gum_tests {
 
         for (inst.setFirst(); !inst.end() && hasNoError; ++inst) {
           switch (operationId) {
-            case 1:   // Test addition
+            case 1 :   // Test addition
               TS_ASSERT_DELTA(a3->get(inst), a1->get(inst) + a2->get(inst), delta)
               if (a3->get(inst) != a1->get(inst) + a2->get(inst)) hasNoError = false;
               break;
 
-            case 2:   // Test Substraction
+            case 2 :   // Test Substraction
               TS_ASSERT_DELTA(a3->get(inst), a1->get(inst) - a2->get(inst), delta)
 
               if (a3->get(inst) != a1->get(inst) - a2->get(inst)) hasNoError = false;
 
               break;
 
-            case 3:   // Test Multiplication
+            case 3 :   // Test Multiplication
               TS_ASSERT_DELTA(a3->get(inst), a1->get(inst) * a2->get(inst), delta)
 
               if (a3->get(inst) != a1->get(inst) * a2->get(inst)) hasNoError = false;
 
               break;
 
-            case 4:   // Test Maximum
+            case 4 :   // Test Maximum
               TS_ASSERT_DELTA(a3->get(inst),
                               a1->get(inst) > a2->get(inst) ? a1->get(inst) : a2->get(inst),
                               delta);
@@ -318,7 +311,7 @@ namespace gum_tests {
 
               break;
 
-            default:   // Should not happen
+            default :   // Should not happen
               GUM_ERROR(gum::OperationNotAllowed, "HEU .....")
           }
         }
@@ -582,7 +575,6 @@ namespace gum_tests {
     }
   };
 }   // namespace gum_tests
-
 
 // =================================================================================
 // Code for doing random operation

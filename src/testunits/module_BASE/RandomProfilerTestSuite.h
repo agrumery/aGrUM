@@ -20,12 +20,15 @@
 
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 #include <agrum/config.h>
-#include <agrum/tools/core/utils_random.h>
+
 #include <agrum/tools/core/timer.h>
+
 #include <agrum/BN/generator/MCBayesNetGenerator.h>
+
+#include <agrum/tools/core/utils_random.h>
 
 namespace gum_tests {
 

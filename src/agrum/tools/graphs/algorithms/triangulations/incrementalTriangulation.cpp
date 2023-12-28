@@ -29,11 +29,12 @@
 #include <utility>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/math/math_utils.h>
 
 #include <agrum/tools/core/list.h>
 #include <agrum/tools/graphs/algorithms/triangulations/incrementalTriangulation.h>
 #include <agrum/tools/graphs/undiGraph.h>
+
+#include <agrum/tools/core/math/math_utils.h>
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/tools/graphs/algorithms/triangulations/incrementalTriangulation_inl.h>

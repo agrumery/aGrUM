@@ -179,7 +179,7 @@
 #  define DT_LNK     S_IFLNK
 
 /* Macros for converting between st_mode and d_type */
-#  define IFTODT(mode) ((mode)&S_IFMT)
+#  define IFTODT(mode) ((mode) & S_IFMT)
 #  define DTTOIF(type) (type)
 
 /*
@@ -189,25 +189,25 @@
  * on Windows.
  */
 #  if !defined(S_ISFIFO)
-#    define S_ISFIFO(mode) (((mode)&S_IFMT) == S_IFIFO)
+#    define S_ISFIFO(mode) (((mode) & S_IFMT) == S_IFIFO)
 #  endif
 #  if !defined(S_ISDIR)
-#    define S_ISDIR(mode) (((mode)&S_IFMT) == S_IFDIR)
+#    define S_ISDIR(mode) (((mode) & S_IFMT) == S_IFDIR)
 #  endif
 #  if !defined(S_ISREG)
-#    define S_ISREG(mode) (((mode)&S_IFMT) == S_IFREG)
+#    define S_ISREG(mode) (((mode) & S_IFMT) == S_IFREG)
 #  endif
 #  if !defined(S_ISLNK)
-#    define S_ISLNK(mode) (((mode)&S_IFMT) == S_IFLNK)
+#    define S_ISLNK(mode) (((mode) & S_IFMT) == S_IFLNK)
 #  endif
 #  if !defined(S_ISSOCK)
-#    define S_ISSOCK(mode) (((mode)&S_IFMT) == S_IFSOCK)
+#    define S_ISSOCK(mode) (((mode) & S_IFMT) == S_IFSOCK)
 #  endif
 #  if !defined(S_ISCHR)
-#    define S_ISCHR(mode) (((mode)&S_IFMT) == S_IFCHR)
+#    define S_ISCHR(mode) (((mode) & S_IFMT) == S_IFCHR)
 #  endif
 #  if !defined(S_ISBLK)
-#    define S_ISBLK(mode) (((mode)&S_IFMT) == S_IFBLK)
+#    define S_ISBLK(mode) (((mode) & S_IFMT) == S_IFBLK)
 #  endif
 
 /* Return the exact length of d_namlen without zero terminator */
@@ -272,7 +272,6 @@ static void             _wrewinddir(_WDIR* dirp);
 #  define wreaddir   _wreaddir
 #  define wclosedir  _wclosedir
 #  define wrewinddir _wrewinddir
-
 
 /* Multi-byte character versions */
 struct dirent {
@@ -367,14 +366,14 @@ static _WDIR* _wopendir(const wchar_t* dirname) {
         p = dirp->patt + n;
         if (dirp->patt < p) {
           switch (p[-1]) {
-            case '\\':
-            case '/':
-            case ':':
+            case '\\' :
+            case '/' :
+            case ':' :
                /* Directory ends in path separator, e.g. c:\temp\ */
                /*NOP*/;
               break;
 
-            default:
+            default :
               /* Directory name doesn't end in path separator */
               *p++ = '\\';
           }

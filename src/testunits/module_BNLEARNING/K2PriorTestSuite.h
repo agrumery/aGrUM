@@ -19,12 +19,14 @@
  */
 
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
 #include <iostream>
+
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/tools/database/DBTranslatorSet.h>
+
 #include <agrum/BN/learning/priors/K2Prior.h>
 
 namespace gum_tests {
@@ -75,9 +77,9 @@ namespace gum_tests {
 
       gum::learning::IdCondSet idset1(node0, cond_empty);   // #3,#0
       gum::learning::IdCondSet idset2(node0, node1, cond_empty,
-                                      true);   // #12,#0
+                                      true);                // #12,#0
       gum::learning::IdCondSet idset3(node1, node0, cond1, true,
-                                      true);   // #576,#48
+                                      true);                // #576,#48
 
       std::vector< double > vect(3, 1.0);
       prior.addJointPseudoCount(idset1, vect);
@@ -309,7 +311,6 @@ namespace gum_tests {
       }
     }
 
-
     GUM_ACTIVE_TEST(2) {
       // create the translator set
       gum::LabelizedVariable var1("X1", "", 0);
@@ -367,9 +368,9 @@ namespace gum_tests {
 
       gum::learning::IdCondSet idset1(node0, cond_empty);   // #4,#0
       gum::learning::IdCondSet idset2(node0, node1, cond_empty,
-                                      true);   // #16,#0
+                                      true);                // #16,#0
       gum::learning::IdCondSet idset3(node1, node0, cond1, true,
-                                      true);   // #576,#36
+                                      true);                // #576,#36
 
       std::vector< double > vect(4, 1.0);
       prior.addJointPseudoCount(idset1, vect);

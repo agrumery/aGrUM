@@ -37,8 +37,9 @@
 #include <sstream>
 #include <string>
 
-#include <agrum/BN/io/cnf/CNFWriter.h>
 #include <agrum/agrum.h>
+
+#include <agrum/BN/io/cnf/CNFWriter.h>
 
 namespace gum {
 
@@ -69,6 +70,7 @@ namespace gum {
     ~GeneralizedCNFWriter();
 
     /// @}
+
     protected:
     /**
      * Writes a Bayesian network in the output stream using the BN format.

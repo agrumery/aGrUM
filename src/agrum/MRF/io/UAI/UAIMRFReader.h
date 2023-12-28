@@ -30,10 +30,12 @@
 #ifndef UAI_MRF_READER_H
 #define UAI_MRF_READER_H
 
-#include <agrum/MRF/io/MRFReader.h>
-#include <agrum/agrum.h>
 #include <iostream>
 #include <string>
+
+#include <agrum/agrum.h>
+
+#include <agrum/MRF/io/MRFReader.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // including coco-generated PARSER and SCANNER

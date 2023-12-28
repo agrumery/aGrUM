@@ -36,13 +36,11 @@ namespace gum::learning {
     GUM_CONSTRUCTOR(Prior);
   }
 
-
   /// copy constructor
   INLINE Prior::Prior(const Prior& from) :
       weight_(from.weight_), database_(from.database_), nodeId2columns_(from.nodeId2columns_) {
     GUM_CONS_CPY(Prior);
   }
-
 
   /// move constructor
   INLINE Prior::Prior(Prior&& from) :
@@ -51,10 +49,8 @@ namespace gum::learning {
     GUM_CONS_MOV(Prior);
   }
 
-
   /// destructor
   INLINE Prior::~Prior() { GUM_DESTRUCTOR(Prior); }
-
 
   /// sets the weight of the a prior(kind of effective sample size)
   INLINE void Prior::setWeight(const double weight) {
@@ -63,7 +59,6 @@ namespace gum::learning {
     }
     weight_ = weight;
   }
-
 
   /// returns the weight assigned to the prior
   INLINE double Prior::weight() const { return weight_; }

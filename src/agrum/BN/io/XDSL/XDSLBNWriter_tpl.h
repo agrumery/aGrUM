@@ -122,6 +122,7 @@ namespace gum {
     output << "    <genie version=\"1.0\" app=\"aGrUM " << GUM_VERSION << "\" name=\""
            << bn.propertyWithDefault("name", "unnamedBN") << "\">" << std::endl;
   }
+
   /*
    * Send to output a bloc defining a variable in the XDSL format.
    */
@@ -203,6 +204,7 @@ namespace gum {
     output << "    </genie>" << std::endl;
     output << "  </extensions>" << std::endl;
   }
+
   /*
    * Send to output the end of the XDSL file.
    */

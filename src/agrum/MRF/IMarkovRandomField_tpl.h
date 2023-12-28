@@ -28,10 +28,12 @@
 
 #include <limits>
 
-#include <agrum/MRF/IMarkovRandomField.h>
 #include <agrum/tools/multidim/potential.h>
 
+#include <agrum/MRF/IMarkovRandomField.h>
+
 #define EF get
+
 namespace gum {
 
   // IMarkovRandomField
@@ -186,7 +188,6 @@ namespace gum {
     return output.str();
   }
 
-
   template < typename GUM_SCALAR >
   std::string IMarkovRandomField< GUM_SCALAR >::toDotAsFactorGraph() const {
     std::stringstream output;
@@ -323,7 +324,6 @@ namespace gum {
         _minimalCondSetVisit_(neig, soids, minimal, alreadyVisited);
     }
   }
-
 
   template < typename GUM_SCALAR >
   NodeSet IMarkovRandomField< GUM_SCALAR >::minimalCondSet(NodeId         target,

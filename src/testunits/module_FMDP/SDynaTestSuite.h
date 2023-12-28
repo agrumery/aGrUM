@@ -25,13 +25,15 @@
 #include <string>
 // ==============================================================================
 #include <gumtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+
+#include <utils.h>
 // ==============================================================================
-#include <agrum/FMDP/SDyna/sdyna.h>
 #include <agrum/FMDP/fmdp.h>
 #include <agrum/FMDP/io/dat/fmdpDatReader.h>
+#include <agrum/FMDP/SDyna/sdyna.h>
 #include <agrum/FMDP/simulation/fmdpSimulator.h>
 #include <agrum/FMDP/simulation/taxiSimulator.h>
+
 // ==============================================================================
 
 namespace gum_tests {
@@ -101,7 +103,6 @@ namespace gum_tests {
       // Lancement
       run(sim);
     }
-
 
     // *******************************************************************************
     // Run the tests on a Taxi instance

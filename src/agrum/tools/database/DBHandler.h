@@ -28,12 +28,13 @@
 #define GUM_LEARNING_DB_HANDLER_H
 
 #include <cstddef>
-#include <utility>
 #include <memory>
-#include <vector>
 #include <string>
+#include <utility>
+#include <vector>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/database/DBRow.h>
 
 namespace gum {
@@ -237,7 +238,7 @@ namespace gum {
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
-  } /* namespace learning */
+  }    /* namespace learning */
 
 } /* namespace gum */
 

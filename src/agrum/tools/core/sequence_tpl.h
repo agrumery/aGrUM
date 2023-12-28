@@ -122,7 +122,7 @@ namespace gum {
   // move operator
   template < typename Key >
   INLINE SequenceIteratorSafe< Key >&
-     SequenceIteratorSafe< Key >::operator=(SequenceIteratorSafe< Key >&& source) noexcept {
+         SequenceIteratorSafe< Key >::operator=(SequenceIteratorSafe< Key >&& source) noexcept {
     _iterator_ = source._iterator_;
     _seq_      = source._seq_;
     return *this;
@@ -333,7 +333,7 @@ namespace gum {
   // move operator
   template < typename Key, bool Gen >
   INLINE SequenceImplementation< Key, Gen >&
-     SequenceImplementation< Key, Gen >::operator=(SequenceImplementation< Key, Gen >&& aSeq) {
+         SequenceImplementation< Key, Gen >::operator=(SequenceImplementation< Key, Gen >&& aSeq) {
     // avoid self assignment
     if (&aSeq != this) {
       _h_ = std::move(aSeq._h_);
@@ -381,7 +381,7 @@ namespace gum {
   // insert k in the sequence (synonym for insert)
   template < typename Key, bool Gen >
   INLINE SequenceImplementation< Key, Gen >&
-     SequenceImplementation< Key, Gen >::operator<<(const Key& k) {
+         SequenceImplementation< Key, Gen >::operator<<(const Key& k) {
     insert(k);
     return *this;
   }
@@ -389,7 +389,7 @@ namespace gum {
   // insert k in the sequence (synonym for insert)
   template < typename Key, bool Gen >
   INLINE SequenceImplementation< Key, Gen >&
-     SequenceImplementation< Key, Gen >::operator<<(Key&& k) {
+         SequenceImplementation< Key, Gen >::operator<<(Key&& k) {
     insert(std::move(k));
     return *this;
   }
@@ -435,7 +435,7 @@ namespace gum {
   // remove k in the sequence (synonym for erase)
   template < typename Key, bool Gen >
   INLINE SequenceImplementation< Key, Gen >&
-     SequenceImplementation< Key, Gen >::operator>>(const Key& k) {
+         SequenceImplementation< Key, Gen >::operator>>(const Key& k) {
     erase(k);
     return *this;
   }
@@ -754,7 +754,7 @@ namespace gum {
   // insert k in the sequence (synonym for insert)
   template < typename Key >
   INLINE SequenceImplementation< Key, true >&
-     SequenceImplementation< Key, true >::operator<<(Key k) {
+         SequenceImplementation< Key, true >::operator<<(Key k) {
     insert(k);
     return *this;
   }
@@ -800,7 +800,7 @@ namespace gum {
   // remove k in the sequence (synonym for erase)
   template < typename Key >
   INLINE SequenceImplementation< Key, true >&
-     SequenceImplementation< Key, true >::operator>>(Key k) {
+         SequenceImplementation< Key, true >::operator>>(Key k) {
     erase(k);
     return *this;
   }

@@ -19,8 +19,9 @@
  */
 
 
-#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/BN/algorithms/divergence/GibbsBNdistance.h>
+
+#include <agrum/tools/core/math/math_utils.h>
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

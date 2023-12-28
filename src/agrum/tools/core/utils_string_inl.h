@@ -30,6 +30,7 @@
 
 // to ease IDE parser
 #include <agrum/tools/core/utils_string.h>
+
 namespace gum {
 
   INLINE

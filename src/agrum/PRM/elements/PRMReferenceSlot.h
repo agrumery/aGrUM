@@ -141,6 +141,7 @@ namespace gum {
       virtual PRMAttribute< GUM_SCALAR >* getCastDescendant() const;
 
       /// @}
+
       private:
       // ========================================================================
       /// @name Private methods

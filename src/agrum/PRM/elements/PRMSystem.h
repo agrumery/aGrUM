@@ -29,14 +29,12 @@
 #ifndef GUM_SYSTEM_H
 #define GUM_SYSTEM_H
 
-#include <utility>
 #include <string>
-
+#include <utility>
 
 #include <agrum/tools/variables/integerVariable.h>
 
 #include <agrum/BN/BayesNetFactory.h>
-
 #include <agrum/PRM/elements/PRMInstance.h>
 
 namespace gum {
@@ -240,6 +238,7 @@ namespace gum {
       const const_array_iterator& end(const std::string& a) const;
 
       /// @}
+
       protected:
       /// Copy constructor. Don't use it.
       PRMSystem(const PRMSystem< GUM_SCALAR >& from);

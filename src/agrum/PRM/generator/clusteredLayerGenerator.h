@@ -36,7 +36,6 @@
 #include <string>
 #include <vector>
 
-
 #include <agrum/PRM/generator/layerGenerator.h>
 
 namespace gum {
@@ -108,6 +107,7 @@ namespace gum {
       virtual PRM< GUM_SCALAR >* generate();
 
       /// @}
+
       private:
       std::vector< typename LayerGenerator< GUM_SCALAR >::LayerData > _layers_;
       Size                                                            _domain_size_;

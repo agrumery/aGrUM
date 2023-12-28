@@ -24,11 +24,11 @@
 #include <vector>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 < < < < < < < < HEAD : src / testunits / module_MRF / MarkovNetLegacyTestSuite.h
-#include "agrum/MN/MarkovNet.h"
 #include "agrum/MN/inference/ShaferShenoyMNInference.h"
+#include "agrum/MN/MarkovNet.h"
 
                 == == == ==
 #include <agrum/MRF/MarkovRandomField.h>
@@ -39,9 +39,9 @@
     / testunits / module_MRF
     / MarkovRandomFieldTestSuite.h
 #include <agrum/tools/multidim/potential.h>
+#include <agrum/tools/variables/discretizedVariable.h>
 #include <agrum/tools/variables/labelizedVariable.h>
 #include <agrum/tools/variables/rangeVariable.h>
-#include <agrum/tools/variables/discretizedVariable.h>
 
       // The graph used for the tests:
       //          1   2_
@@ -52,6 +52,7 @@
       //
 
       namespace gum_tests {
+
   < < < < < < < < HEAD:
       src
       / testunits
@@ -375,7 +376,6 @@
         TS_ASSERT(!mn.isIndependent("G", "A", {"C", "F"}))
         TS_ASSERT(mn.isIndependent("G", "A", {"D", "E"}))
       }
-
 
       GUM_TEST(FastPrototypeVarType) {
         auto mn = gum::MarkovRandomField< float >::fastPrototype(

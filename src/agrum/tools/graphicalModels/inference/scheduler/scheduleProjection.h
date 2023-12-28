@@ -28,8 +28,8 @@
 #ifndef GUM_SCHEDULE_PROJECTION_H
 #define GUM_SCHEDULE_PROJECTION_H
 
-#include <string>
 #include <memory>
+#include <string>
 
 #include <agrum/agrum.h>
 

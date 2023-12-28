@@ -42,7 +42,8 @@ namespace gum {
       ArcGraphPart(arcs_size, arcs_resize_policy){GUM_CONSTRUCTOR(DiGraph)}
 
       DiGraph::DiGraph(const DiGraph& g) :
-      NodeGraphPart(g), ArcGraphPart(g){GUM_CONS_CPY(DiGraph)}
+      NodeGraphPart(g),
+      ArcGraphPart(g){GUM_CONS_CPY(DiGraph)}
 
       DiGraph::~DiGraph(){GUM_DESTRUCTOR(DiGraph)}
 
@@ -78,11 +79,11 @@ namespace gum {
 
   Sequence< NodeId > DiGraph::topologicalOrder() const {
     Sequence< NodeId > topologicalOrder;
-    const auto&        dag    = *this;
+    const auto&        dag = *this;
 
     if (dag.empty()) return topologicalOrder;
 
-    auto               border = std::vector< NodeId >();
+    auto border = std::vector< NodeId >();
     border.reserve(dag.size() / 2);
     auto count = dag.nodesPropertyFromVal< Size >(0, dag.size());
     for (const auto node: dag.nodes()) {

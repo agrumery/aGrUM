@@ -24,10 +24,10 @@
 #include <vector>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
-#include <agrum/BN/BayesNet.h>
 #include <agrum/BN/algorithms/essentialGraph.h>
+#include <agrum/BN/BayesNet.h>
 
 namespace gum_tests {
   class [[maybe_unused]] EssentialGraphTestSuite: public CxxTest::TestSuite {
@@ -49,6 +49,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(eg.sizeArcs(), 2u)
       TS_ASSERT_EQUALS(eg.sizeEdges(), 0u)
     }
+
     GUM_ACTIVE_TEST(CaseD) {
       auto bn = gum::BayesNet< float >::fastPrototype("a->b;c1->b;c2->b;a->c1;a->c2");
       auto eg = gum::EssentialGraph(bn);
@@ -67,6 +68,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(eg.sizeArcs(), 8u)
       TS_ASSERT_EQUALS(eg.sizeEdges(), 5u)
     }
+
     GUM_ACTIVE_TEST(Notebook2) {
       auto bn = gum::BayesNet< float >::fastPrototype("A->B;C->B;C->D;B->D;A->C");
       auto eg = gum::EssentialGraph(bn);
@@ -75,6 +77,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(eg.sizeArcs(), 0u)
       TS_ASSERT_EQUALS(eg.sizeEdges(), 5u)
     }
+
     GUM_ACTIVE_TEST(Notebook3) {
       auto bn = gum::BayesNet< float >::fastPrototype("Z->X->U;Y->X;Y->W");
       auto eg = gum::EssentialGraph(bn);
@@ -83,6 +86,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(eg.sizeArcs(), 3u)
       TS_ASSERT_EQUALS(eg.sizeEdges(), 1u)
     }
+
     GUM_ACTIVE_TEST(Skeleton) {
       auto bn   = gum::BayesNet< float >::fastPrototype("Z->X->U;Y->X;Y->W");
       auto eg   = gum::EssentialGraph(bn);
@@ -92,6 +96,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(eg.sizeEdges(), 1u)
       TS_ASSERT_EQUALS(eg.sizeArcs(), 3u)
     }
+
     GUM_ACTIVE_TEST(NonRegression1) {
       auto bn   = gum::BayesNet< float >::fastPrototype("0->1->2<-0");
       auto eg   = gum::EssentialGraph(bn);
@@ -101,6 +106,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(eg.sizeEdges(), 3u)
       TS_ASSERT_EQUALS(eg.sizeArcs(), 0u)
     }
+
     GUM_ACTIVE_TEST(NonRegression2) {
       auto bn   = gum::BayesNet< float >::fastPrototype("0->1->2<-0;3->1");
       auto eg   = gum::EssentialGraph(bn);
@@ -110,6 +116,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(eg.sizeEdges(), 0u)
       TS_ASSERT_EQUALS(eg.sizeArcs(), 4u)
     }
+
     GUM_ACTIVE_TEST(NonRegression3) {
       auto bn   = gum::BayesNet< float >::fastPrototype("0->1->2->3<-4<-2<-5");
       auto eg   = gum::EssentialGraph(bn);

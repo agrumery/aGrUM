@@ -30,9 +30,9 @@
 #define GUM_D_SEPARATION_ALGORITHM_H
 
 
-#include <agrum/BN/IBayesNet.h>
 #include <agrum/agrum.h>
 
+#include <agrum/BN/IBayesNet.h>
 
 namespace gum {
 

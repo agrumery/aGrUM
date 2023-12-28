@@ -49,7 +49,6 @@ namespace gum {
       return set;
     }
 
-
     /// erase a node in the idset
     void IdCondSet::erase(const NodeId id) {
       // search for id in Sequence  _ids_
@@ -66,7 +65,6 @@ namespace gum {
         _end_safe_._gotoEnd_();
       }
     }
-
 
     /// returns the content of the set as a string
     std::string IdCondSet::toString() const {
@@ -106,7 +104,6 @@ namespace gum {
       return {left, right};
     }
 
-
     /// indicates whether the IdCondSet contains the IdCondSet passed in argument
     bool IdCondSet::contains(const IdCondSet& set) const {
       if (set._ids_.size() > _ids_.size()) return false;
@@ -116,14 +113,12 @@ namespace gum {
       return true;
     }
 
-
     // the display operator
     std::ostream& operator<<(std::ostream& stream, const IdCondSet& idset) {
       return stream << idset.toString();
     }
 
   } /* namespace learning */
-
 
   // Returns the value of a key as a Size.
   Size HashFunc< learning::IdCondSet >::castToSize(const learning::IdCondSet& key) {

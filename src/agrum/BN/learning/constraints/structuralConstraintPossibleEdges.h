@@ -29,6 +29,7 @@
 #define GUM_LEARNING_STRUCTURAL_CONSTRAINT_POSSIBLE_EDGES_H
 
 #include <agrum/agrum.h>
+
 #include <agrum/BN/learning/constraints/structuralConstraint.h>
 
 namespace gum {

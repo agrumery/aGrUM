@@ -41,11 +41,7 @@ namespace gum {
    * rate
    * of that very instance.
    */
-  enum class Complexity : char {
-    Heavy,
-    Difficult,
-    Correct
-  };
+  enum class Complexity : char { Heavy, Difficult, Correct };
 
   /**
    * @class KL
@@ -71,6 +67,7 @@ namespace gum {
 // difficulty is chosen w.r.t the log10DomainSize of the BN
 #define GAP_COMPLEXITY_KL_HEAVY_DIFFICULT   double(12.0)
 #define GAP_COMPLEXITY_KL_DIFFICULT_CORRECT double(7.0)
+
     public:
     /** constructor must give 2 BNs
      * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize

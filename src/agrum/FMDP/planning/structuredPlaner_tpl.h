@@ -33,8 +33,9 @@
 // #include <algorithm>
 // #include <utility>
 //  =========================================================================
-#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/core/functors.h>
+
+#include <agrum/tools/core/math/math_utils.h>
 // =========================================================================
 #include <agrum/tools/multidim/implementations/multiDimFunctionGraph.h>
 #include <agrum/tools/multidim/instantiation.h>
@@ -87,7 +88,6 @@ namespace gum {
 
     delete operator_;
   }
-
 
   /* **************************************************************************************************
    * **/
@@ -208,7 +208,6 @@ namespace gum {
     return output.str();
   }
 
-
   /* **************************************************************************************************
    * **/
   /* ** **/
@@ -236,7 +235,6 @@ namespace gum {
     optimalPolicy_ = operator_->getAggregatorInstance();
     _firstTime_    = true;
   }
-
 
   // ===========================================================================
   // Performs a value iteration
@@ -282,7 +280,6 @@ namespace gum {
     // *****************************************************************************************
     this->evalPolicy_();
   }
-
 
   // ===========================================================================
   // Performs a single step of value iteration
@@ -332,7 +329,6 @@ namespace gum {
     return newVFunction;
   }
 
-
   // ===========================================================================
   // Evals the q function for current fmdp action
   // ===========================================================================
@@ -347,7 +343,6 @@ namespace gum {
 
     return operator_->regress(Vold, actionId, this->fmdp_, this->elVarSeq_);
   }
-
 
   // ===========================================================================
   // Maximise the AAction to iobtain the vFunction
@@ -367,7 +362,6 @@ namespace gum {
     return newVFunction;
   }
 
-
   // ===========================================================================
   // Maximise the AAction to iobtain the vFunction
   // ===========================================================================
@@ -385,7 +379,6 @@ namespace gum {
 
     return newVFunction;
   }
-
 
   // ===========================================================================
   // Updates the value function by multiplying by discount and adding reward
@@ -406,7 +399,6 @@ namespace gum {
 
     return newVFunction;
   }
-
 
   /* **************************************************************************************************
    * **/
@@ -452,7 +444,6 @@ namespace gum {
     extractOptimalPolicy_(argMaxVFunction);
   }
 
-
   // ===========================================================================
   // Creates a copy of given in parameter decision Graph and replaces leaves
   // of that Graph by a pair containing value of the leaf and action to which
@@ -479,7 +470,6 @@ namespace gum {
     delete qAction;
     return amcpy;
   }
-
 
   // ==========================================================================
   // Recursion part for the createArgMaxCopy
@@ -509,7 +499,6 @@ namespace gum {
     visitedNodes.insert(currentNodeId, nody);
     return nody;
   }
-
 
   // ===========================================================================
   // Performs argmax_a Q(s,a)
@@ -558,7 +547,6 @@ namespace gum {
 
     delete argMaxOptimalValueFunction;
   }
-
 
   // ==========================================================================
   // Recursion part for the createArgMaxCopy

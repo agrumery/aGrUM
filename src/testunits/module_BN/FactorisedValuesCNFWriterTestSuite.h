@@ -23,12 +23,13 @@
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
+
+#include <agrum/tools/core/approximations/linearApproximationPolicy.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/cnf/FactorisedValuesCNFWriter.h>
-#include <agrum/tools/core/approximations/linearApproximationPolicy.h>
-#include <agrum/tools/variables/labelizedVariable.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3
@@ -80,6 +81,7 @@ namespace gum_tests {
       // Uncomment this to check the ouput
       // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn))
     }
+
     GUM_ACTIVE_TEST(Writer_ostream_With_Approximation) {
       gum::FactorisedValuesCNFWriter< double, gum::LinearApproximationPolicy > writer;
       writer.setEpsilon(0.2);

@@ -25,6 +25,7 @@
  */
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/threads/threadNumberManager.h>
 
 // include the inlined functions if necessary

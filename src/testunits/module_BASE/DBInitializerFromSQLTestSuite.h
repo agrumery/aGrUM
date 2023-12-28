@@ -20,20 +20,20 @@
 
 
 #include <algorithm>
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
 #include <iostream>
 #include <locale>
 #include <string>
 #include <vector>
 
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
+
+#include <agrum/tools/database/databaseTable.h>
 #include <agrum/tools/database/DBInitializerFromSQL.h>
 #include <agrum/tools/database/DBTranslator4ContinuousVariable.h>
 #include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/tools/database/DBTranslatorSet.h>
-#include <agrum/tools/database/databaseTable.h>
 #include <agrum/tools/database/rawDatabaseTable.h>
-
 
 namespace gum_tests {
 
@@ -243,7 +243,6 @@ namespace gum_tests {
       }
 #endif   // ODBC_
     }
-
 
     GUM_ACTIVE_TEST(_init_sqlite) {
 #ifdef ODBC_

@@ -68,7 +68,6 @@ namespace gum {
       _parser_ = new DBRowGeneratorParser(_database_.handler(), DBRowGeneratorSet());
     }
 
-
     template < typename GUM_SCALAR >
     BayesNet< GUM_SCALAR > IBNLearner::Database::_BNVars_() const {
       BayesNet< GUM_SCALAR > bn;
@@ -80,7 +79,6 @@ namespace gum {
       }
       return bn;
     }
-
 
     template < typename GUM_SCALAR >
     IBNLearner::IBNLearner(const std::string&                 filename,

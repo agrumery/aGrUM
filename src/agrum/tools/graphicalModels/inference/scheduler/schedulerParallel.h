@@ -27,19 +27,21 @@
 #ifndef GUM_SCHEDULER_PARALLEL_H
 #define GUM_SCHEDULER_PARALLEL_H
 
-#include <vector>
 #include <algorithm>
-#include <memory>
-#include <thread>
-#include <mutex>
 #include <atomic>
-#include <condition_variable>
 #include <chrono>
+#include <memory>
+#include <mutex>
+#include <thread>
+#include <vector>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/priorityQueue.h>
 #include <agrum/tools/core/threads/threadExecutor.h>
 #include <agrum/tools/graphicalModels/inference/scheduler/schedulerSequential.h>
+
+#include <condition_variable>
 
 namespace gum {
 

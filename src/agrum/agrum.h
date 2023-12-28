@@ -53,6 +53,7 @@ namespace gum {
 #include <agrum/tools/core/exceptions.h>
 #include <agrum/tools/core/inline.h>
 #include <agrum/tools/core/types.h>
+
 #include <agrum/tools/core/utils_misc.h>
 
 #endif   // GUM_AGRUM_H

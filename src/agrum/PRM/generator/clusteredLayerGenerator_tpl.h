@@ -126,7 +126,7 @@ namespace gum {
       switch (randomValue(2)) {
         // Shape A->B
         // v == [first, second, second.ref -> first]
-        case 0: {
+        case 0 : {
           v = new std::vector< std::string >();
           _generateClass_(f, type, l, lvl, i);
           first = l[lvl].c.back();
@@ -183,7 +183,7 @@ namespace gum {
 
         // Shape A -> B -> C
         // v == [first, second, second.ref -> first, third, third.ref -> second]
-        case 1: {
+        case 1 : {
           v = new std::vector< std::string >();
           _generateClass_(f, type, l, lvl, i);
           {
@@ -291,7 +291,7 @@ namespace gum {
           break;
         }
 
-        default: {
+        default : {
           GUM_ERROR(OperationNotAllowed, "unexpected value")
         }
       }
@@ -428,7 +428,7 @@ namespace gum {
             v = _cluster_map_[c];
 
             switch (v->size()) {
-              case 3: {
+              case 3 : {
                 first = this->name_gen_.nextName(PRMObject::prm_type::INSTANCE);
                 factory.addInstance(c, first);
                 second = this->name_gen_.nextName(PRMObject::prm_type::INSTANCE);
@@ -439,7 +439,7 @@ namespace gum {
                 break;
               }
 
-              case 5: {
+              case 5 : {
                 first = this->name_gen_.nextName(PRMObject::prm_type::INSTANCE);
                 factory.addInstance(c, first);
                 second = this->name_gen_.nextName(PRMObject::prm_type::INSTANCE);
@@ -454,7 +454,7 @@ namespace gum {
                 break;
               }
 
-              default: {
+              default : {
                 GUM_ERROR(OperationNotAllowed, "unexpected vector size")
               }
             }

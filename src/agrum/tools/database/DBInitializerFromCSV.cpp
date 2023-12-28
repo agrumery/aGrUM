@@ -64,7 +64,6 @@ namespace gum {
       GUM_CONSTRUCTOR(DBInitializerFromCSV);
     }
 
-
     /// copy constructor
     DBInitializerFromCSV::DBInitializerFromCSV(const DBInitializerFromCSV& from) :
         DBInitializerFromCSV(from._filename_,
@@ -72,7 +71,6 @@ namespace gum {
                              from._delimiter_,
                              from._quote_marker_,
                              from._comment_marker_) {}
-
 
     /// move constructor
     DBInitializerFromCSV::DBInitializerFromCSV(DBInitializerFromCSV&& from) :
@@ -82,16 +80,13 @@ namespace gum {
                              from._quote_marker_,
                              from._comment_marker_) {}
 
-
     /// virtual copy constructor
     DBInitializerFromCSV* DBInitializerFromCSV::clone() const {
       return new DBInitializerFromCSV(*this);
     }
 
-
     /// destructor
     DBInitializerFromCSV::~DBInitializerFromCSV() { GUM_DESTRUCTOR(DBInitializerFromCSV); }
-
 
     /// copy operator
     DBInitializerFromCSV& DBInitializerFromCSV::operator=(const DBInitializerFromCSV& from) {
@@ -124,7 +119,6 @@ namespace gum {
 
       return *this;
     }
-
 
     /// move operator
     DBInitializerFromCSV& DBInitializerFromCSV::operator=(DBInitializerFromCSV&& from) {

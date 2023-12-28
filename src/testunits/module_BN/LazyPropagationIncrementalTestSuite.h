@@ -19,20 +19,20 @@
  */
 
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
-
 #include <memory>
 #include <vector>
-#include "agrum/tools/core/exceptions.h"
-#include "cxxtest/TestSuite.h"
 
-#include <agrum/BN/BayesNet.h>
-#include <agrum/BN/io/BIF/BIFReader.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
 
-#include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/tools/variables/labelizedVariable.h>
 
+#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/BN/io/BIF/BIFReader.h>
+
+#include "agrum/tools/core/exceptions.h"
+#include "cxxtest/TestSuite.h"
 
 // The graph used for the tests, the ids and the domain sizes:
 /*
@@ -75,7 +75,6 @@ namespace gum_tests {
       return proba;
     }
 
-
     // ============================================================================
     gum::Potential< double > posterior_joint(const gum::Potential< double >&             joint,
                                              gum::Set< const gum::Potential< double >* > evidence) {
@@ -87,14 +86,12 @@ namespace gum_tests {
       return joint_pot;
     }
 
-
     // ============================================================================
     gum::Potential< double > get_marginal(const gum::Potential< double >& joint,
                                           const gum::NodeId               target_id,
                                           const gum::BayesNet< double >&  bn) {
       return joint.margSumIn({&bn.variable(target_id)}).normalize();
     }
-
 
     // ============================================================================
     gum::Potential< double > get_joint(const gum::Potential< double > joint,
@@ -106,7 +103,6 @@ namespace gum_tests {
         kept.insert(&bn.variable(n));
       return joint.margSumIn(kept).normalize();
     }
-
 
     // ============================================================================
     bool equalPotentials(const gum::Potential< double >& p1, const gum::Potential< double >& p2) {
@@ -124,7 +120,6 @@ namespace gum_tests {
 
       return true;
     }
-
 
     // ============================================================================
     // ============================================================================
@@ -175,7 +170,6 @@ namespace gum_tests {
       TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("B")), pb))
     }
 
-
     // ============================================================================
     // ============================================================================
     GUM_ACTIVE_TEST(_prior_with_targets_evidence) {
@@ -205,7 +199,6 @@ namespace gum_tests {
       TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("A")), pa))
       TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("F")), pf))
     }
-
 
     // ============================================================================
     // ============================================================================
@@ -238,7 +231,6 @@ namespace gum_tests {
       TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("A")), pa))
       TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("D")), pd))
     }
-
 
     // ============================================================================
     // ============================================================================
@@ -366,7 +358,6 @@ namespace gum_tests {
       }
     }
 
-
     // ============================================================================
     // ============================================================================
     GUM_ACTIVE_TEST(_prior_with_targets_hard_evidence_values_changed) {
@@ -489,7 +480,6 @@ namespace gum_tests {
         TS_ASSERT(equalPotentials(inf.posterior(bn.idFromName("D")), pd))
       }
     }
-
 
     // ============================================================================
     // ============================================================================

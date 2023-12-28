@@ -56,7 +56,6 @@ namespace gum {
     else GUM_ERROR(OutOfBounds, "the value does not belong to the domain of the variable")
   }
 
-
   /// returns the GUM_SCALAR corresponding to a string, specialized for doubles
   template <>
   INLINE double ContinuousVariable< double >::operator[](const std::string& str) const {

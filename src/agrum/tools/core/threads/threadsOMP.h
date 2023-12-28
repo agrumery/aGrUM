@@ -33,8 +33,8 @@
 #endif
 
 #include <thread>
-#include <vector>
 #include <utility>
+#include <vector>
 
 #include <agrum/agrum.h>
 
@@ -164,6 +164,6 @@ namespace gum {
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
 #  include <agrum/tools/core/threads/threadsOMP_inl.h>
-#endif /* GUM_NO_INLINE */
+#endif   /* GUM_NO_INLINE */
 
 #endif   // GUM_THREADS_OPENMP_H

@@ -40,7 +40,6 @@ namespace gum {
     GUM_CONSTRUCTOR(EvidenceMRFInference);
   }
 
-
   // Destructor
   template < typename GUM_SCALAR >
   EvidenceMRFInference< GUM_SCALAR >::~EvidenceMRFInference() {

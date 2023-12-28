@@ -32,7 +32,6 @@
 #include <agrum/agrum.h>
 
 #include <agrum/BN/inference/lazyPropagation.h>
-
 #include <agrum/BN/learning/priors/prior.h>
 
 namespace gum::learning {
@@ -134,6 +133,7 @@ namespace gum::learning {
                              const Set< NodeId >&   joint,
                              std::vector< double >& counts);
   };
+
   /* namespace learning */
 
 }   // namespace gum::learning

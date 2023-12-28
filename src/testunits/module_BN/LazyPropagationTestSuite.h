@@ -22,18 +22,19 @@
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
-#include <agrum/tools/core/math/math_utils.h>
-#include <agrum/BN/BayesNet.h>
-#include <agrum/BN/io/BIF/BIFReader.h>
-
-#include <agrum/BN/inference/ShaferShenoyInference.h>
-#include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/BN/inference/tools/relevantPotentialsFinderType.h>
-#include <agrum/BN/inference/variableElimination.h>
 #include <agrum/tools/multidim/implementations/multiDimArray.h>
 #include <agrum/tools/variables/labelizedVariable.h>
+
+#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/BN/inference/ShaferShenoyInference.h>
+#include <agrum/BN/inference/tools/relevantPotentialsFinderType.h>
+#include <agrum/BN/inference/variableElimination.h>
+#include <agrum/BN/io/BIF/BIFReader.h>
+
+#include <agrum/tools/core/math/math_utils.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3
@@ -316,6 +317,7 @@ namespace gum_tests {
 
       //@TODO : test computations and not only good behaviour
     }
+
     GUM_ACTIVE_TEST(InformationMethodsWithNames) {
       fill(*_bn);
 
@@ -409,7 +411,6 @@ namespace gum_tests {
 
       TS_ASSERT_DELTA(proba, proba2, TS_GUM_SMALL_ERROR)
     }
-
 
     GUM_ACTIVE_TEST(Asia) {
       std::string             file = GET_RESSOURCES_PATH("bif/asia.bif");
@@ -803,8 +804,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(res.nbrDim(), (gum::Size)2)   // 2 indep 0 given 1
 
       gum::LazyPropagation ie_0(&bn);
-      ie_0.addTarget(0);        // visit_to_asia
-      ie_0.addEvidence(1, 0);   // tuberculosis
+      ie_0.addTarget(0);                             // visit_to_asia
+      ie_0.addEvidence(1, 0);                        // tuberculosis
       ie_0.makeInference();
       gum::Potential< double > p_0 = ie_0.posterior(0);
 
@@ -845,8 +846,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(res.nbrDim(), (gum::Size)2)   // 2 indep 0 given 1
 
       gum::LazyPropagation ie_0(&bn);
-      ie_0.addTarget(0);        // visit_to_asia
-      ie_0.addEvidence(1, 0);   // tuberculosis
+      ie_0.addTarget(0);                             // visit_to_asia
+      ie_0.addEvidence(1, 0);                        // tuberculosis
       ie_0.makeInference();
       gum::Potential< double > p_0 = ie_0.posterior(0);
 
@@ -891,6 +892,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(res, pADCE / pADC)
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
+
     GUM_ACTIVE_TEST(JointWithHardEvidence) {
       /*
       F  A
@@ -916,6 +918,7 @@ namespace gum_tests {
         TS_ASSERT(false)
       }
     }
+
     GUM_ACTIVE_TEST(JointEvidenceImpact) {
       /*
       F  A
@@ -1090,7 +1093,6 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
        */
     }
-
 
     GUM_ACTIVE_TEST(AdaptiveNbThreads) {
       fill(*_bn);
@@ -1513,7 +1515,6 @@ namespace gum_tests {
       TS_GUM_POTENTIAL_DELTA(p1, p2, 1e-8)   // no diff !
     }
 
-
     GUM_ACTIVE_TEST(ImplicitTarget2) {
       // there always is a clique containing the parents of the same node
       auto bn = gum::BayesNet< double >::fastPrototype("A->B<-C->D");
@@ -1678,10 +1679,9 @@ namespace gum_tests {
       }
 
       // compute the joint
-      gum::Potential<double> joint(bn.cpt(i1));
+      gum::Potential< double > joint(bn.cpt(i1));
       for (const auto node: bn.dag()) {
-        if (node != i1)
-          joint *= bn.cpt(node);
+        if (node != i1) joint *= bn.cpt(node);
       }
       auto marg5 = joint.margSumIn({&bn.variable(i5)}).normalize();
 
@@ -1689,7 +1689,7 @@ namespace gum_tests {
 
       // check singly connected component
       gum::LazyPropagation< double > ie(&bn);
-      auto mpe = ie.mpeLog2Posterior();
+      auto                           mpe = ie.mpeLog2Posterior();
       TS_ASSERT_EQUALS(mpe.first, *(joint_argmax.first.begin()))
       TS_ASSERT_DELTA(mpe.second, std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
 
@@ -1712,7 +1712,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(mpe.second, std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
 
       marg5 = joint.margSumIn({&bn.variable(i5)}).normalize();
-      p5 = ie.posterior(i5);
+      p5    = ie.posterior(i5);
       TS_ASSERT(equalPotentials(marg5, p5))
 
       gum::Potential< double > e_i4;
@@ -1727,7 +1727,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(mpe.second, std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
 
       marg5 = joint.margSumIn({&bn.variable(i5)}).normalize();
-      p5 = ie.posterior(i5);
+      p5    = ie.posterior(i5);
       TS_ASSERT(equalPotentials(marg5, p5))
 
       // checking multiply connected components
@@ -1763,7 +1763,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(mpe.second, std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
 
       marg5 = joint.margSumIn({&bn.variable(i5)}).normalize();
-      p5 = ie2.posterior(i5);
+      p5    = ie2.posterior(i5);
       TS_ASSERT(equalPotentials(marg5, p5))
 
       gum::Potential< double > e_i7;
@@ -1777,10 +1777,10 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(mpe.first, *(joint_argmax.first.begin()))
       TS_ASSERT_DELTA(mpe.second, std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
 
-      marg5 = joint.margSumIn({&bn.variable(i5)}).normalize();
-      p5 = ie2.posterior(i5);
+      marg5      = joint.margSumIn({&bn.variable(i5)}).normalize();
+      p5         = ie2.posterior(i5);
       auto marg9 = joint.margSumIn({&bn.variable(i9)}).normalize();
-      auto p9 = ie2.posterior(i9);
+      auto p9    = ie2.posterior(i9);
       TS_ASSERT(equalPotentials(marg9, p9))
 
       gum::Potential< double > e_i10;
@@ -1795,11 +1795,11 @@ namespace gum_tests {
       TS_ASSERT_DELTA(mpe.second, std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
 
       marg9 = joint.margSumIn({&bn.variable(i9)}).normalize();
-      p9 = ie2.posterior(i9);
+      p9    = ie2.posterior(i9);
       TS_ASSERT(equalPotentials(marg9, p9))
 
       auto marg10 = joint.margSumIn({&bn.variable(i10)}).normalize();
-      auto p10 = ie2.posterior(i10);
+      auto p10    = ie2.posterior(i10);
       TS_ASSERT(equalPotentials(marg10, p10))
 
       // what if we have a component in which all the nodes have received hard evidence
@@ -1844,7 +1844,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(mpe.second, std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
 
       marg9 = joint.margSumIn({&bn.variable(i9)}).normalize();
-      p9 = ie3.posterior(i9);
+      p9    = ie3.posterior(i9);
       TS_ASSERT(equalPotentials(marg9, p9))
     }
 

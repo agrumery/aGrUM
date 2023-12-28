@@ -32,13 +32,11 @@
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/tools/BayesNetInference.h>
 #include <agrum/BN/inference/variableElimination.h>
-
+#include <agrum/PRM/inference/groundedInference.h>
 #include <agrum/PRM/inference/SVE.h>
 #include <agrum/PRM/inference/SVED.h>
-#include <agrum/PRM/inference/groundedInference.h>
-#include <agrum/PRM/o3prmr/O3prmrInterpreter.h>
-
 #include <agrum/PRM/o3prmr/cocoR/Parser.h>
+#include <agrum/PRM/o3prmr/O3prmrInterpreter.h>
 
 namespace gum {
 
@@ -234,23 +232,23 @@ namespace gum {
 
             try {
               switch (command->type()) {
-                case O3prmrCommand::RequestType::Observe:
+                case O3prmrCommand::RequestType::Observe :
                   result = observe((ObserveCommand< double >*)command);
                   break;
 
-                case O3prmrCommand::RequestType::Unobserve:
+                case O3prmrCommand::RequestType::Unobserve :
                   result = unobserve((UnobserveCommand< double >*)command);
                   break;
 
-                case O3prmrCommand::RequestType::SetEngine:
+                case O3prmrCommand::RequestType::SetEngine :
                   setEngine((SetEngineCommand*)command);
                   break;
 
-                case O3prmrCommand::RequestType::SetGndEngine:
+                case O3prmrCommand::RequestType::SetGndEngine :
                   setGndEngine((SetGndEngineCommand*)command);
                   break;
 
-                case O3prmrCommand::RequestType::Query:
+                case O3prmrCommand::RequestType::Query :
                   query((QueryCommand< double >*)command);
                   break;
               }
@@ -329,27 +327,27 @@ namespace gum {
 
             try {
               switch (command->type()) {
-                case O3prmrCommand::RequestType::SetEngine:
+                case O3prmrCommand::RequestType::SetEngine :
                   result = checkSetEngine((SetEngineCommand*)command);
                   break;
 
-                case O3prmrCommand::RequestType::SetGndEngine:
+                case O3prmrCommand::RequestType::SetGndEngine :
                   result = checkSetGndEngine((SetGndEngineCommand*)command);
                   break;
 
-                case O3prmrCommand::RequestType::Observe:
+                case O3prmrCommand::RequestType::Observe :
                   result = checkObserve((ObserveCommand< double >*)command);
                   break;
 
-                case O3prmrCommand::RequestType::Unobserve:
+                case O3prmrCommand::RequestType::Unobserve :
                   result = checkUnobserve((UnobserveCommand< double >*)command);
                   break;
 
-                case O3prmrCommand::RequestType::Query:
+                case O3prmrCommand::RequestType::Query :
                   result = checkQuery((QueryCommand< double >*)command);
                   break;
 
-                default:
+                default :
                   addError("Error : Unknow command : " + command->toString()
                            + "\n -> Command not processed.");
                   result = false;

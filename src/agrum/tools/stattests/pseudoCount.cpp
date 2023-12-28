@@ -53,7 +53,6 @@ namespace gum {
       return *this;
     }
 
-
     /// move operator
     PseudoCount& PseudoCount::operator=(PseudoCount&& from) {
       if (this != &from) {
@@ -63,7 +62,6 @@ namespace gum {
       }
       return *this;
     }
-
 
     /// sets new ranges to perform the counts used by the score
     /** @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
@@ -79,13 +77,11 @@ namespace gum {
       if (old_ranges != ranges()) clear();
     }
 
-
     /// reset the ranges to the one range corresponding to the whole database
     void PseudoCount::clearRanges() {
       std::vector< std::pair< std::size_t, std::size_t > > old_ranges = ranges();
       counter_.clearRanges();
     }
-
 
     /// returns a counting vector where variables are marginalized from N_xyz
     /** @param node_2_marginalize indicates which node(s) shall be marginalized:

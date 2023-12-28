@@ -19,42 +19,39 @@
  */
 
 
-#include <agrum/BN/BayesNet.h>
-#include <agrum/tools/graphs/DAG.h>
-#include <agrum/tools/variables/labelizedVariable.h>
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
 #include <iostream>
 
-#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
-#include <agrum/tools/database/DBRowGeneratorParser.h>
-#include <agrum/tools/database/DBInitializerFromCSV.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
+
+#include <agrum/tools/core/approximations/approximationScheme.h>
+#include <agrum/tools/core/approximations/approximationSchemeListener.h>
 #include <agrum/tools/database/databaseTable.h>
+#include <agrum/tools/database/DBInitializerFromCSV.h>
+#include <agrum/tools/database/DBRowGeneratorParser.h>
+#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/tools/database/DBTranslatorSet.h>
+#include <agrum/tools/graphs/DAG.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
-#include <agrum/BN/learning/scores_and_tests/scoreBDeu.h>
-#include <agrum/BN/learning/scores_and_tests/scoreK2.h>
-#include <agrum/BN/learning/scores_and_tests/scoreBIC.h>
-
-#include <agrum/BN/learning/priors/smoothingPrior.h>
-#include <agrum/BN/learning/priors/DirichletPriorFromDatabase.h>
-
+#include <agrum/BN/BayesNet.h>
 #include <agrum/BN/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>
 #include <agrum/BN/learning/constraints/structuralConstraintIndegree.h>
 #include <agrum/BN/learning/constraints/structuralConstraintSetStatic.h>
 #include <agrum/BN/learning/constraints/structuralConstraintSliceOrder.h>
-
+#include <agrum/BN/learning/greedyHillClimbing.h>
+#include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
+#include <agrum/BN/learning/priors/DirichletPriorFromDatabase.h>
+#include <agrum/BN/learning/priors/smoothingPrior.h>
 #include <agrum/BN/learning/structureUtils/graphChangesGenerator4DiGraph.h>
 #include <agrum/BN/learning/structureUtils/graphChangesGenerator4UndiGraph.h>
 #include <agrum/BN/learning/structureUtils/graphChangesGeneratorOnSubDiGraph.h>
 #include <agrum/BN/learning/structureUtils/graphChangesSelector4DiGraph.h>
 
-#include <agrum/BN/learning/greedyHillClimbing.h>
-#include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
-
-#include <agrum/tools/core/approximations/approximationScheme.h>
-#include <agrum/tools/core/approximations/approximationSchemeListener.h>
+#include <agrum/BN/learning/scores_and_tests/scoreBDeu.h>
+#include <agrum/BN/learning/scores_and_tests/scoreBIC.h>
+#include <agrum/BN/learning/scores_and_tests/scoreK2.h>
 
 namespace gum_tests {
 
@@ -78,7 +75,6 @@ namespace gum_tests {
 
     std::string getMess() { return _mess_; }
   };
-
 
   class [[maybe_unused]] GreedyHillClimbingTestSuite: public CxxTest::TestSuite {
     private:
@@ -163,17 +159,17 @@ namespace gum_tests {
 
       // apply the best change
       switch (changes[best_i].first.type()) {
-        case gum::learning::GraphChangeType::ARC_ADDITION:
+        case gum::learning::GraphChangeType::ARC_ADDITION :
           dag.addArc(changes[best_i].first.node1(), changes[best_i].first.node2());
           current_scores[changes[best_i].first.node2()] += changes[best_i].second;
           break;
 
-        case gum::learning::GraphChangeType::ARC_DELETION:
+        case gum::learning::GraphChangeType::ARC_DELETION :
           dag.eraseArc(gum::Arc(changes[best_i].first.node1(), changes[best_i].first.node2()));
           current_scores[changes[best_i].first.node2()] += changes[best_i].second;
           break;
 
-        case gum::learning::GraphChangeType::ARC_REVERSAL:
+        case gum::learning::GraphChangeType::ARC_REVERSAL :
           dag.eraseArc(gum::Arc(changes[best_i].first.node1(), changes[best_i].first.node2()));
           dag.addArc(changes[best_i].first.node2(), changes[best_i].first.node1());
           current_scores[changes[best_i].first.node1()]
@@ -182,7 +178,7 @@ namespace gum_tests {
              = _score_(score, changes[best_i].first.node2(), dag);
           break;
 
-        default: break;
+        default : break;
       }
 
       return true;
@@ -325,7 +321,6 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(var.label(1), s1)
       }
     }
-
 
     GUM_ACTIVE_TEST(_alarm_with_ordered_values) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/alarm.csv"));
@@ -473,7 +468,6 @@ namespace gum_tests {
       }
     }
 
-
     GUM_ACTIVE_TEST(_dirichlet) {
       // read the learning database
       gum::learning::DBInitializerFromCSV initializer(
@@ -554,7 +548,6 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xdag, dag)
       }
     }
-
 
     void xtest_alarm1() {
       /*

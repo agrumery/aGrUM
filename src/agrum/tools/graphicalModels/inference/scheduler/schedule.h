@@ -28,20 +28,19 @@
 #define GUM_SCHEDULE_H
 
 #include <atomic>
-#include <string>
-#include <sstream>
-#include <utility>
 #include <memory>
+#include <sstream>
+#include <string>
+#include <utility>
 
 #include <agrum/agrum.h>
 
 #include <agrum/tools/core/bijection.h>
-#include <agrum/tools/graphs/DAG.h>
-
 #include <agrum/tools/graphicalModels/inference/scheduler/scheduleBinaryCombination.h>
 #include <agrum/tools/graphicalModels/inference/scheduler/scheduleDeletion.h>
 #include <agrum/tools/graphicalModels/inference/scheduler/scheduleProjection.h>
 #include <agrum/tools/graphicalModels/inference/scheduler/scheduleStorage.h>
+#include <agrum/tools/graphs/DAG.h>
 
 namespace gum {
 

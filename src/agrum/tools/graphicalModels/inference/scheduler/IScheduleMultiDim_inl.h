@@ -31,18 +31,16 @@
 #  include <string>
 
 #  include <agrum/agrum.h>
-#  include <agrum/tools/graphicalModels/inference/scheduler/IScheduleMultiDim.h>
 
+#  include <agrum/tools/graphicalModels/inference/scheduler/IScheduleMultiDim.h>
 
 namespace gum {
 
   /// returns a new distinct ScheduleMultiDim ID
   INLINE Idx IScheduleMultiDim::_newId_() { return ++_multidim_id_; }
 
-
   /// reset the ScheduleMultiDim ID generator to 0
   INLINE void IScheduleMultiDim::resetIdGenerator() { _multidim_id_ = Idx(0); }
-
 
   /// constructs a IScheduleMultiDim
   INLINE IScheduleMultiDim::IScheduleMultiDim(const Idx id) :
@@ -54,13 +52,11 @@ namespace gum {
     GUM_CONSTRUCTOR(IScheduleMultiDim);
   }
 
-
   /// copy constructor
   INLINE IScheduleMultiDim::IScheduleMultiDim(const IScheduleMultiDim& from) : id_(from.id_) {
     // for debugging purposes
     GUM_CONS_CPY(IScheduleMultiDim);
   }
-
 
   /// move constructor
   INLINE IScheduleMultiDim::IScheduleMultiDim(IScheduleMultiDim&& from) : id_(from.id_) {
@@ -68,13 +64,11 @@ namespace gum {
     GUM_CONS_MOV(IScheduleMultiDim);
   }
 
-
   /// destructor
   INLINE IScheduleMultiDim::~IScheduleMultiDim() {
     // for debugging purposes
     GUM_DESTRUCTOR(IScheduleMultiDim);
   }
-
 
   /// copy operator
   INLINE IScheduleMultiDim& IScheduleMultiDim::operator=(const IScheduleMultiDim& from) {
@@ -82,25 +76,21 @@ namespace gum {
     return *this;
   }
 
-
   /// move operator
   INLINE IScheduleMultiDim& IScheduleMultiDim::operator=(IScheduleMultiDim&& from) {
     id_ = from.id_;
     return *this;
   }
 
-
   /// operator ==
   INLINE bool IScheduleMultiDim::operator==(const IScheduleMultiDim& m) const {
     return id_ == m.id_;
   }
 
-
   /// operator !=
   INLINE bool IScheduleMultiDim::operator!=(const IScheduleMultiDim& m) const {
     return id_ != m.id_;
   }
-
 
   /// returns the id of the ScheduleMultiDim
   INLINE Idx IScheduleMultiDim::id() const { return id_; }

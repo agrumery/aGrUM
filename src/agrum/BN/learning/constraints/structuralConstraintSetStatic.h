@@ -40,11 +40,13 @@
 #ifndef GUM_LEARNING_STRUCTURAL_CONSTRAINT_SET_STATIC_H
 #define GUM_LEARNING_STRUCTURAL_CONSTRAINT_SET_STATIC_H
 
-#include <type_traits>
-
 #include <agrum/agrum.h>
+
 #include <agrum/tools/graphs/diGraph.h>
+
 #include <agrum/BN/learning/structureUtils/graphChange.h>
+
+#include <type_traits>
 
 namespace gum {
 
@@ -564,7 +566,7 @@ namespace gum {
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
-  } /* namespace learning */
+  }    /* namespace learning */
 
 } /* namespace gum */
 

@@ -26,20 +26,18 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) and Lionel TORTI
  */
 
-#include <limits>
 #include <cmath>
-
-#include <agrum/BN/IBayesNet.h>
+#include <limits>
 
 #include <agrum/tools/multidim/aggregators/and.h>
 #include <agrum/tools/multidim/aggregators/or.h>
-
 #include <agrum/tools/multidim/ICIModels/multiDimNoisyAND.h>
 #include <agrum/tools/multidim/ICIModels/multiDimNoisyORCompound.h>
 #include <agrum/tools/multidim/ICIModels/multiDimNoisyORNet.h>
+#include <agrum/tools/multidim/potential.h>
 
 #include <agrum/BN/generator/simpleCPTGenerator.h>
-#include <agrum/tools/multidim/potential.h>
+#include <agrum/BN/IBayesNet.h>
 
 namespace gum {
 
@@ -320,7 +318,6 @@ namespace gum {
         _minimalCondSetVisitDn_(chil, soids, minimal, alreadyVisitedUp, alreadyVisitedDn);
     }
   }
-
 
   template < typename GUM_SCALAR >
   NodeSet IBayesNet< GUM_SCALAR >::minimalCondSet(NodeId target, const NodeSet& soids) const {

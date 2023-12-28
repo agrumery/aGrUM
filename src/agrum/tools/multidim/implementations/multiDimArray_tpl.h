@@ -77,7 +77,6 @@ namespace gum {
     return std::accumulate(values_.begin(), values_.end(), base, f);
   }
 
-
   // data access operator
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR& MultiDimArray< GUM_SCALAR >::get_(const Instantiation& i) const {

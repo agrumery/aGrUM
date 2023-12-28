@@ -28,13 +28,13 @@
 #ifndef GUM_LEARNING_IDB_INITILIALIZER_H
 #define GUM_LEARNING_IDB_INITILIALIZER_H
 
-#include <vector>
 #include <string>
+#include <vector>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/database/DBCell.h>
 #include <agrum/tools/database/DBRow.h>
-
 
 namespace gum {
 
@@ -116,10 +116,7 @@ namespace gum {
       public:
       /** @brief the enumeration indicating the type of the data the
        * IDBInitializer expects as input data */
-      enum class InputType : char {
-        STRING,
-        DBCELL
-      };
+      enum class InputType : char { STRING, DBCELL };
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -215,7 +212,7 @@ namespace gum {
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
-  } /* namespace learning */
+  }    /* namespace learning */
 
 } /* namespace gum */
 

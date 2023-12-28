@@ -29,11 +29,13 @@
 #include <sstream>
 #include <string>
 
-#include <agrum/PRM/elements/PRMObject.h>
 #include <agrum/agrum.h>
+
+#include <agrum/PRM/elements/PRMObject.h>
 
 #ifndef GUM_NAME_GENERATOR_H
 #  define GUM_NAME_GENERATOR_H
+
 namespace gum {
   namespace prm {
 
@@ -75,6 +77,7 @@ namespace gum {
       std::string nextName(PRMObject::prm_type type);
 
       /// @}
+
       private:
       /// The vector of counters.
       std::vector< Size > _counters_;

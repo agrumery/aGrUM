@@ -30,14 +30,15 @@
 #define GUM_MULTIDIM_CONTAINER_H
 
 #include <functional>
-#include <initializer_list>
 #include <iostream>
 #include <vector>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/math/math_utils.h>
 
 #include <agrum/tools/multidim/implementations/multiDimAdressable.h>
+
+#include <agrum/tools/core/math/math_utils.h>
+#include <initializer_list>
 
 namespace gum {
   // needed for content()

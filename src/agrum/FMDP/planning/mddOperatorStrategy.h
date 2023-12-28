@@ -32,6 +32,7 @@
 #define GUM_MDD_OPERATOR_STRATEGY_H
 // =========================================================================
 #include <agrum/FMDP/planning/IOperatorStrategy.h>
+
 // =========================================================================
 
 namespace gum {
@@ -75,11 +76,13 @@ namespace gum {
     MultiDimFunctionGraph< GUM_SCALAR, ExactTerminalNodePolicy >* getFunctionInstance() {
       return MultiDimFunctionGraph< GUM_SCALAR >::getReducedAndOrderedInstance();
     }
+
     MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
        getArgMaxFunctionInstance() {
       return MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
                                     SetTerminalNodePolicy >::getReducedAndOrderedInstance();
     }
+
     MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* getAggregatorInstance() {
       return MultiDimFunctionGraph< ActionSet,
                                     SetTerminalNodePolicy >::getReducedAndOrderedInstance();
@@ -174,7 +177,6 @@ namespace gum {
     }
   };
 } /* namespace gum */
-
 
 #include <agrum/FMDP/planning/mddOperatorStrategy_tpl.h>
 

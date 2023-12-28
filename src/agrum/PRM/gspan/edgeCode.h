@@ -31,6 +31,7 @@
 #include <ostream>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/graphs/graphElements.h>
 
 namespace gum {
@@ -147,4 +148,4 @@ namespace gum {
 #  include <agrum/PRM/gspan/edgeCode_inl.h>
 #endif   // GUM_NO_INLINE
 
-#endif /* GUM_EDGE_CODE_H */
+#endif   /* GUM_EDGE_CODE_H */

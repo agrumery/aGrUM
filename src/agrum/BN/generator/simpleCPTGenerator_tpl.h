@@ -25,9 +25,9 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) and Lionel TORTI and Ariele-Paolo MAESANO
  *
  */
-#include <agrum/BN/generator/simpleCPTGenerator.h>
-
 #include <ctime>
+
+#include <agrum/BN/generator/simpleCPTGenerator.h>
 
 namespace gum {
 

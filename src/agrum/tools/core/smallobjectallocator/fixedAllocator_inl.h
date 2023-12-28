@@ -29,6 +29,7 @@
  */
 // ============================================================================
 #include <agrum/tools/core/smallobjectallocator/fixedAllocator.h>
+
 // ============================================================================
 
 namespace gum {
@@ -117,7 +118,6 @@ namespace gum {
   // Releases the allocated memory
   // ============================================================================
   INLINE void FixedAllocator::_Chunk_::_release_() { delete[] _pData_; }
-
 
   // ############################################################################
   // @name Constructors / Destructors

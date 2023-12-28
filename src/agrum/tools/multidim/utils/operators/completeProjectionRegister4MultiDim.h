@@ -30,10 +30,10 @@
 #ifndef GUM_COMPLETE_PROJECTION_REGISTER_4_MULTI_DIM_H
 #define GUM_COMPLETE_PROJECTION_REGISTER_4_MULTI_DIM_H
 
+#include <atomic>
 #include <iostream>
 #include <string>
 #include <utility>
-#include <atomic>
 
 #include <agrum/tools/multidim/instantiation.h>
 

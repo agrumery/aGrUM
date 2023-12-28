@@ -33,7 +33,6 @@
 
 #include <agrum/agrum.h>
 
-
 #include <agrum/tools/graphicalModels/UGmodel.h>
 #include <agrum/tools/multidim/potential.h>
 

@@ -26,8 +26,9 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 
-#include <agrum/tools/multidim/aggregators/count.h>
 #include <sstream>
+
+#include <agrum/tools/multidim/aggregators/count.h>
 
 namespace gum {
 

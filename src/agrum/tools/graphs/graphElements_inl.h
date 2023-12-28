@@ -80,7 +80,6 @@ namespace gum {
   // returns the second extremal node
   INLINE NodeId Edge::second() const { return n2; }
 
-
   // Returns the value of a key as a Size
   INLINE Size HashFunc< Edge >::castToSize(const Edge& key) {
     return Size(key.first()) * HashFuncConst::pi + Size(key.second()) * HashFuncConst::gold;
@@ -90,7 +89,6 @@ namespace gum {
   INLINE Size HashFunc< Edge >::operator()(const Edge& key) const {
     return castToSize(key) & this->hash_mask_;
   }
-
 
   /* ========================================================================*/
   /* ========================================================================*/
@@ -153,7 +151,6 @@ namespace gum {
     n1            = n2;
     n2            = n_temp;
   }
-
 
   // Returns the value of a key as a Size
   INLINE Size HashFunc< Arc >::castToSize(const Arc& key) {

@@ -299,7 +299,6 @@ namespace gum {
     return out << static_cast< const MultiDimContainer< GUM_SCALAR >& >(array);
   }
 
-
   // protected access to content_
   template < typename GUM_SCALAR >
   INLINE MultiDimImplementation< GUM_SCALAR >* MultiDimImplementation< GUM_SCALAR >::content() {

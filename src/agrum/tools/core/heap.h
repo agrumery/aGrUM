@@ -31,11 +31,12 @@
 #define GUM_HEAP_H
 
 #include <functional>
-#include <initializer_list>
 #include <utility>
 #include <vector>
 
 #include <agrum/agrum.h>
+
+#include <initializer_list>
 
 namespace gum {
 

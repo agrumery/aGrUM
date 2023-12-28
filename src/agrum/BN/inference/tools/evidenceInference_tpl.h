@@ -41,7 +41,6 @@ namespace gum {
     GUM_CONSTRUCTOR(EvidenceInference);
   }
 
-
   // Destructor
   template < typename GUM_SCALAR >
   EvidenceInference< GUM_SCALAR >::~EvidenceInference() {

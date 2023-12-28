@@ -31,6 +31,7 @@
 #include <vector>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/database/databaseTable.h>
 #include <agrum/tools/stattests/idCondSet.h>
 
@@ -46,14 +47,13 @@ namespace gum {
 
     constexpr const char* priorTypeToString(PriorType e) noexcept {
       switch (e) {
-        case PriorType::NoPriorType: return "No prior";
-        case PriorType::DirichletPriorType: return "Dirichlet prior";
-        case PriorType::SmoothingPriorType: return "TriSmoothing prior";
-        case PriorType::BDeuPriorType: return "BDeu prior";
+        case PriorType::NoPriorType : return "No prior";
+        case PriorType::DirichletPriorType : return "Dirichlet prior";
+        case PriorType::SmoothingPriorType : return "TriSmoothing prior";
+        case PriorType::BDeuPriorType : return "BDeu prior";
       }
       return "Error in prior";
     }
-
 
     /** @class Prior
      * @brief the base class for all a priori

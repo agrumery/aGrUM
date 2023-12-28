@@ -27,8 +27,8 @@
 #ifndef GUM_SCHEDULE_BINARY_COMBINATION_H
 #define GUM_SCHEDULE_BINARY_COMBINATION_H
 
-#include <string>
 #include <memory>
+#include <string>
 
 #include <agrum/agrum.h>
 

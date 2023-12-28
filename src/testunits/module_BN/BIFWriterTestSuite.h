@@ -25,11 +25,12 @@
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
+
+#include <agrum/tools/variables/labelizedVariable.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFWriter.h>
-#include <agrum/tools/variables/labelizedVariable.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3
@@ -64,6 +65,7 @@ namespace gum_tests {
                               0.0, 0.0, 1.0} );
       // clang-format on
     }
+
     static bool _compareFile_(const std::string& f1, const std::string& f2) {
       std::ifstream file1;
       std::ifstream file2;
@@ -165,7 +167,6 @@ namespace gum_tests {
     }
 
     void tearDown() final { delete bn; }
-
 
     GUM_ACTIVE_TEST(Constuctor) {
       gum::BIFWriter< double >* writer = nullptr;

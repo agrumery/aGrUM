@@ -193,7 +193,7 @@ namespace gum {
   // Copy operator
   template < typename Val >
   INLINE ListConstIterator< Val >&
-     ListConstIterator< Val >::operator=(const ListConstIterator< Val >& src) noexcept {
+         ListConstIterator< Val >::operator=(const ListConstIterator< Val >& src) noexcept {
     // for debugging purposes
     GUM_OP_CPY(ListConstIterator);
 
@@ -204,7 +204,7 @@ namespace gum {
   // move operator
   template < typename Val >
   INLINE ListConstIterator< Val >&
-     ListConstIterator< Val >::operator=(ListConstIterator< Val >&& src) noexcept {
+         ListConstIterator< Val >::operator=(ListConstIterator< Val >&& src) noexcept {
     // for debugging purposes
     GUM_OP_MOV(ListConstIterator);
     _bucket_ = src._bucket_;
@@ -377,7 +377,7 @@ namespace gum {
   // Copy operator
   template < typename Val >
   INLINE ListIterator< Val >&
-     ListIterator< Val >::operator=(const ListIterator< Val >& src) noexcept {
+         ListIterator< Val >::operator=(const ListIterator< Val >& src) noexcept {
     GUM_OP_CPY(ListIterator);
     ListConstIterator< Val >::operator=(src);
     return *this;
@@ -419,7 +419,7 @@ namespace gum {
   // makes the iterator point to i elements further in the List
   template < typename Val >
   INLINE ListIterator< Val >&
-     ListIterator< Val >::operator+=(typename ListIterator< Val >::difference_type i) noexcept {
+         ListIterator< Val >::operator+=(typename ListIterator< Val >::difference_type i) noexcept {
     ListConstIterator< Val >::operator+=(i);
     return *this;
   }
@@ -434,7 +434,7 @@ namespace gum {
   // makes the iterator point to i elements before in the List
   template < typename Val >
   INLINE ListIterator< Val >&
-     ListIterator< Val >::operator-=(typename ListIterator< Val >::difference_type i) noexcept {
+         ListIterator< Val >::operator-=(typename ListIterator< Val >::difference_type i) noexcept {
     ListConstIterator< Val >::operator-=(i);
     return *this;
   }
@@ -442,14 +442,14 @@ namespace gum {
   // returns a new iterator
   template < typename Val >
   INLINE ListIterator< Val >
-     ListIterator< Val >::operator+(typename ListIterator< Val >::difference_type i) noexcept {
+         ListIterator< Val >::operator+(typename ListIterator< Val >::difference_type i) noexcept {
     return ListIterator< Val >(*this) += i;
   }
 
   // returns a new iterator
   template < typename Val >
   INLINE ListIterator< Val >
-     ListIterator< Val >::operator-(typename ListIterator< Val >::difference_type i) noexcept {
+         ListIterator< Val >::operator-(typename ListIterator< Val >::difference_type i) noexcept {
     return ListIterator< Val >(*this) -= i;
   }
 
@@ -476,7 +476,6 @@ namespace gum {
   INLINE const Val& ListIterator< Val >::operator*() const {
     return ListConstIterator< Val >::operator*();
   }
-
 
   // ===========================================================================
   // ===========================================================================
@@ -982,7 +981,7 @@ namespace gum {
   // Copy operator
   template < typename Val >
   INLINE ListIteratorSafe< Val >&
-     ListIteratorSafe< Val >::operator=(const ListIteratorSafe< Val >& src) {
+         ListIteratorSafe< Val >::operator=(const ListIteratorSafe< Val >& src) {
     // for debugging purposes
     GUM_OP_CPY(ListIteratorSafe);
     ListConstIteratorSafe< Val >::operator=(src);
@@ -992,7 +991,7 @@ namespace gum {
   // move operator
   template < typename Val >
   INLINE ListIteratorSafe< Val >&
-     ListIteratorSafe< Val >::operator=(ListIteratorSafe< Val >&& src) {
+         ListIteratorSafe< Val >::operator=(ListIteratorSafe< Val >&& src) {
     // for debugging purposes
     GUM_OP_MOV(ListIteratorSafe);
     ListConstIteratorSafe< Val >::operator=(std::move(src));
@@ -1084,7 +1083,6 @@ namespace gum {
   INLINE const Val& ListIteratorSafe< Val >::operator*() const {
     return ListConstIteratorSafe< Val >::operator*();
   }
-
 
   // ===========================================================================
   // ===========================================================================
@@ -1178,8 +1176,8 @@ namespace gum {
   template < typename Val >
   INLINE List< Val >::List(List< Val >&& src) noexcept :
       _deb_list_{std::move(src._deb_list_)}, _end_list_{std::move(src._end_list_)},
-      _nb_elements_{std::move(src._nb_elements_)}, _safe_iterators_{
-                                                      std::move(src._safe_iterators_)} {
+      _nb_elements_{std::move(src._nb_elements_)},
+      _safe_iterators_{std::move(src._safe_iterators_)} {
     // for debugging purposes
     GUM_CONS_MOV(List);
 
@@ -1596,11 +1594,11 @@ namespace gum {
       return _pushBack_(new_elt);
     } else {
       switch (place) {
-        case location::BEFORE: return _insertBefore_(new_elt, ptr);
+        case location::BEFORE : return _insertBefore_(new_elt, ptr);
 
-        case location::AFTER: return _insertAfter_(new_elt, ptr);
+        case location::AFTER : return _insertAfter_(new_elt, ptr);
 
-        default: GUM_ERROR(FatalError, "List insertion for this location unimplemented")
+        default : GUM_ERROR(FatalError, "List insertion for this location unimplemented")
       }
     }
   }
@@ -1618,11 +1616,11 @@ namespace gum {
       return _pushBack_(new_elt);
     } else {
       switch (place) {
-        case location::BEFORE: return _insertBefore_(new_elt, ptr);
+        case location::BEFORE : return _insertBefore_(new_elt, ptr);
 
-        case location::AFTER: return _insertAfter_(new_elt, ptr);
+        case location::AFTER : return _insertAfter_(new_elt, ptr);
 
-        default: GUM_ERROR(FatalError, "List insertion for this location unimplemented")
+        default : GUM_ERROR(FatalError, "List insertion for this location unimplemented")
       }
     }
   }

@@ -43,10 +43,12 @@
 #include <vector>
 
 #include <agrum/config.h>
+
 #include <agrum/tools/core/approximations/approximationScheme.h>
 #include <agrum/tools/core/heap.h>
 #include <agrum/tools/graphs/PDAG.h>
 #include <agrum/tools/stattests/correctedMutualInformation.h>
+
 #include "agrum/tools/graphs/algorithms/MeekRules.h"
 
 #define GUM_SL_EMIT(x, y, action, explain)                                                \

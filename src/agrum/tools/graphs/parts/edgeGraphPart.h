@@ -23,12 +23,12 @@
 #define GUM_EDGE_GRAPH_PART_H
 
 
-#include <agrum/agrum.h>
 #include <algorithm>
 #include <utility>
 
-#include <agrum/tools/core/signal/signalers.h>
+#include <agrum/agrum.h>
 
+#include <agrum/tools/core/signal/signalers.h>
 #include <agrum/tools/graphs/graphElements.h>
 
 namespace gum {

@@ -25,20 +25,17 @@
 #include <vector>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
-#include <agrum/ID/influenceDiagram.h>
-
-#include <agrum/BN/BayesNet.h>
-#include <agrum/BN/inference/lazyPropagation.h>
-
-#include <agrum/ID/generator/influenceDiagramGenerator.h>
-
-#include <agrum/ID/inference/ShaferShenoyLIMIDInference.h>
-#include <agrum/ID/io/BIFXML/BIFXMLIDWriter.h>
 #include <agrum/tools/graphs/graphElements.h>
 #include <agrum/tools/variables/discreteVariable.h>
 #include <agrum/tools/variables/labelizedVariable.h>
+
+#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/ID/generator/influenceDiagramGenerator.h>
+#include <agrum/ID/inference/ShaferShenoyLIMIDInference.h>
+#include <agrum/ID/influenceDiagram.h>
 #include <agrum/ID/io/BIFXML/BIFXMLIDReader.h>
 #include <agrum/ID/io/BIFXML/BIFXMLIDWriter.h>
 
@@ -169,6 +166,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(dIDI.MEU().first, 20, TS_GUM_SMALL_ERROR)
       TS_ASSERT_DELTA(dIDI.MEU().second, 10800, TS_GUM_SMALL_ERROR)
     }
+
     GUM_ACTIVE_TEST(InferenceWithOilWildCaterWithEvidenceOnChanceNode) {
       std::string                     file = GET_RESSOURCES_PATH("ID/OilWildcatter.xml");
       gum::InfluenceDiagram< double > net;
@@ -223,6 +221,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(dIDI.MEU().first, 50, TS_GUM_SMALL_ERROR)
       TS_ASSERT_DELTA(dIDI.MEU().second, 0, TS_GUM_SMALL_ERROR)
     }
+
     GUM_ACTIVE_TEST(InferenceWithDecAsia) {
       std::string                     file = GET_RESSOURCES_PATH("ID/decAsia.xml");
       gum::InfluenceDiagram< double > net;
@@ -617,7 +616,6 @@ namespace gum_tests {
          TS_GUM_SMALL_ERROR)
     }
 
-
     GUM_ACTIVE_TEST(BugWithEvidence3) {
       auto net = gum::InfluenceDiagram< double >::fastPrototype("c1<-c->$u<-*d");
       net.cpt("c").fillWith({0.5, 0.5});
@@ -641,7 +639,6 @@ namespace gum_tests {
          (gum::Potential< double >() << net.variableFromName("d")).fillWith({0, 110.5}),
          TS_GUM_SMALL_ERROR)
     }
-
 
     GUM_ACTIVE_TEST(BugWithEvidence4) {
       auto net = gum::InfluenceDiagram< double >::fastPrototype("c1<-c->$u<-*d");
@@ -741,7 +738,6 @@ namespace gum_tests {
          (gum::Potential< double >() << defer2.variableFromName("D")).fillWith({-0.1818, -0.0818}),
          1e-4)
     }
-
 
     GUM_ACTIVE_TEST(OtherNonRegression) {
       auto infdiag

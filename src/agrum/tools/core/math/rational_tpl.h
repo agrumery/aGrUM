@@ -27,6 +27,7 @@
 
 // To help IDE Parsers
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/math/rational.h>
 
 namespace gum {

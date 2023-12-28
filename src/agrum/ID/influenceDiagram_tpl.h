@@ -27,9 +27,9 @@
  * GONZALES(_at_AMU)
  */
 
+#include <algorithm>
 #include <cstdio>
 #include <iostream>
-#include <algorithm>
 
 #include <agrum/tools/variables/allDiscreteVariables.h>
 
@@ -46,16 +46,16 @@ namespace gum {
     gum::Size default_ds = default_domain_size;
 
     switch (*(node.begin())) {
-      case '*':
+      case '*' :
         isDeci = true;
         node.erase(0, 1);
         break;
-      case '$':
+      case '$' :
         isUtil     = true;
         default_ds = 1;
         node.erase(0, 1);
         break;
-      default: isChanc = true;
+      default : isChanc = true;
     }
     auto v = fastVariable< GUM_SCALAR >(node, default_ds);
 
@@ -73,7 +73,6 @@ namespace gum {
 
     return res;
   }
-
 
   template < typename GUM_SCALAR >
   InfluenceDiagram< GUM_SCALAR >
@@ -112,6 +111,7 @@ namespace gum {
     infdiag.setProperty("name", "fastPrototype");
     return infdiag;
   }
+
   // ===========================================================================
   // Constructors / Destructors
   // ===========================================================================
@@ -853,9 +853,9 @@ namespace gum {
                                              unsigned int       default_nbrmod) {
     std::string node = fast_description;
     switch (*(node.begin())) {
-      case '*': node.erase(0, 1); return addDecisionNode(node, default_nbrmod);
-      case '$': node.erase(0, 1); return addUtilityNode(node);
-      default: return addChanceNode(fast_description, default_nbrmod);
+      case '*' : node.erase(0, 1); return addDecisionNode(node, default_nbrmod);
+      case '$' : node.erase(0, 1); return addUtilityNode(node);
+      default : return addChanceNode(fast_description, default_nbrmod);
     }
   }
 }   // namespace gum

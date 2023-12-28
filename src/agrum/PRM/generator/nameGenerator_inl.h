@@ -53,38 +53,38 @@ namespace gum {
       std::stringstream s;
 
       switch (type) {
-        case PRMObject::prm_type::ALL:
-        case PRMObject::prm_type::CLASS: {
+        case PRMObject::prm_type::ALL :
+        case PRMObject::prm_type::CLASS : {
           s << "class_" << ++(_counters_[0]);
           break;
         }
 
-        case PRMObject::prm_type::PRM_INTERFACE: {
+        case PRMObject::prm_type::PRM_INTERFACE : {
           s << "iface_" << ++(_counters_[0]);
           break;
         }
 
-        case PRMObject::prm_type::SYSTEM: {
+        case PRMObject::prm_type::SYSTEM : {
           s << "sys_" << ++(_counters_[0]);
           break;
         }
 
-        case PRMObject::prm_type::TYPE: {
+        case PRMObject::prm_type::TYPE : {
           s << "type_" << ++(_counters_[0]);
           break;
         }
 
-        case PRMObject::prm_type::CLASS_ELT: {
+        case PRMObject::prm_type::CLASS_ELT : {
           s << "elt_" << ++(_counters_[1]);
           break;
         }
 
-        case PRMObject::prm_type::INSTANCE: {
+        case PRMObject::prm_type::INSTANCE : {
           s << "inst_" << ++(_counters_[2]);
           break;
         }
 
-        default: {
+        default : {
           GUM_ERROR(FatalError, "unknown PRMObject type")
         }
       }

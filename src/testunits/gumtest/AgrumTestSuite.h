@@ -22,8 +22,9 @@
 #ifndef AGRUM_TEST_SUITE_H
 #define AGRUM_TEST_SUITE_H
 
+#include <gumtest/utils.h>
+
 #include <agrum/agrum.h>
-#include <gumtest/testsuite_utils.h>
 
 #include <cxxtest/TestSuite.h>
 

@@ -24,11 +24,13 @@
 #include <string>
 // ==============================================================================
 #include <gumtest/AgrumTestSuite.h>
-#include <testsuite_utils.h>
+
+#include <utils.h>
 // ==============================================================================
 #include <agrum/FMDP/fmdp.h>
 #include <agrum/FMDP/io/dat/fmdpDatReader.h>
 #include <agrum/FMDP/planning/structuredPlaner.h>
+
 // ==============================================================================
 
 namespace gum_tests {

@@ -30,14 +30,16 @@
 #define GUM_MULTI_PRIORITY_QUEUE_H
 
 #include <functional>
-#include <initializer_list>
 #include <sstream>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/hashTable.h>
+
+#include <initializer_list>
 
 namespace gum {
 

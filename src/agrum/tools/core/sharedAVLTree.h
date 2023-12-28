@@ -31,6 +31,7 @@
 #define GUM_SHARED_AVL_TREE_H
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/AVLTree.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -243,7 +244,6 @@ namespace gum {
     friend reverse_iterator_safe;
   };
 
-
   /**
    * @class SharedAVLTreeIterator
    * @headerfile sharedAVLTree.h <agrum/tools/core/sharedAVLTree.h>
@@ -358,7 +358,6 @@ namespace gum {
     friend SharedAVLTree< Val, Cmp >;
   };
 
-
   /**
    * @class SharedAVLTreeIteratorSafe
    * @headerfile sharedAVLTree.h <agrum/tools/core/sharedAVLTree.h>
@@ -472,7 +471,6 @@ namespace gum {
     friend AVLTree< Val, Cmp >;
     friend SharedAVLTree< Val, Cmp >;
   };
-
 
   /**
    * @class SharedAVLTreeReverseIterator
@@ -590,7 +588,6 @@ namespace gum {
     friend SharedAVLTree< Val, Cmp >;
   };
 
-
   /**
    * @class SharedAVLTreeReverseIteratorSafe
    * @headerfile AVLTree.h <agrum/tools/core/AVLTree.h>
@@ -705,7 +702,6 @@ namespace gum {
     friend AVLTree< Val, Cmp >;
     friend SharedAVLTree< Val, Cmp >;
   };
-
 
   /// display the content of a tree
   template < typename Val, typename Cmp >

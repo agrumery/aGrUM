@@ -31,14 +31,13 @@
 
 #define NB_INIT_ITERATIONS 5000
 
-#include <agrum/agrum.h>
-
 #include <fstream>
 #include <iostream>
 #include <set>
+#include <sstream>
 #include <vector>
 
-#include <sstream>
+#include <agrum/agrum.h>
 
 #ifdef HAVE_DIRENT_H
 #  include <dirent.h>
@@ -280,6 +279,7 @@ namespace gum {
     void setQ(Idx q);
 
     /// @}
+
     protected:
     Size iteration_;
     Idx  p_, q_;

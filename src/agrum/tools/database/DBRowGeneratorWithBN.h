@@ -31,8 +31,10 @@
 #include <vector>
 
 #include <agrum/agrum.h>
-#include <agrum/BN/inference/variableElimination.h>
+
 #include <agrum/tools/database/DBRowGenerator.h>
+
+#include <agrum/BN/inference/variableElimination.h>
 
 namespace gum {
 
@@ -136,7 +138,6 @@ namespace gum {
   } /* namespace learning */
 
 } /* namespace gum */
-
 
 // always include the template implementation
 #include <agrum/tools/database/DBRowGeneratorWithBN_tpl.h>

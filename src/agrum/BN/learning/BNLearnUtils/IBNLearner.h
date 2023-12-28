@@ -32,8 +32,8 @@
 #ifndef GUM_LEARNING_GENERIC_BN_LEARNER_H
 #define GUM_LEARNING_GENERIC_BN_LEARNER_H
 
-#include <sstream>
 #include <memory>
+#include <sstream>
 
 #include <agrum/agrum.h>
 
@@ -42,34 +42,27 @@
 #include <agrum/tools/database/DBRowGeneratorEM.h>
 
 #include <agrum/BN/algorithms/essentialGraph.h>
+#include <agrum/BN/learning/constraints/structuralConstraintDAG.h>
+#include <agrum/BN/learning/constraints/structuralConstraintForbiddenArcs.h>
+#include <agrum/BN/learning/constraints/structuralConstraintIndegree.h>
+#include <agrum/BN/learning/constraints/structuralConstraintMandatoryArcs.h>
+#include <agrum/BN/learning/constraints/structuralConstraintPossibleEdges.h>
+#include <agrum/BN/learning/constraints/structuralConstraintSliceOrder.h>
+#include <agrum/BN/learning/constraints/structuralConstraintTabuList.h>
+#include <agrum/BN/learning/K2.h>
+#include <agrum/BN/learning/localSearchWithTabuList.h>
+#include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
+#include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
+#include <agrum/BN/learning/priors/DirichletPriorFromDatabase.h>
+#include <agrum/BN/learning/SimpleMiic.h>
+#include <agrum/BN/learning/structureUtils/graphChangesGenerator4DiGraph.h>
+#include <agrum/BN/learning/structureUtils/graphChangesGenerator4K2.h>
+#include <agrum/BN/learning/structureUtils/graphChangesSelector4DiGraph.h>
 
 #include <agrum/BN/learning/scores_and_tests/scoreAIC.h>
 #include <agrum/BN/learning/scores_and_tests/scoreBD.h>
 #include <agrum/BN/learning/scores_and_tests/scoreBDeu.h>
 #include <agrum/BN/learning/scores_and_tests/scoreK2.h>
-
-#include <agrum/BN/learning/priors/DirichletPriorFromDatabase.h>
-
-#include <agrum/BN/learning/constraints/structuralConstraintDAG.h>
-#include <agrum/BN/learning/constraints/structuralConstraintForbiddenArcs.h>
-#include <agrum/BN/learning/constraints/structuralConstraintPossibleEdges.h>
-#include <agrum/BN/learning/constraints/structuralConstraintIndegree.h>
-#include <agrum/BN/learning/constraints/structuralConstraintMandatoryArcs.h>
-#include <agrum/BN/learning/constraints/structuralConstraintSliceOrder.h>
-#include <agrum/BN/learning/constraints/structuralConstraintTabuList.h>
-
-#include <agrum/BN/learning/structureUtils/graphChangesGenerator4DiGraph.h>
-#include <agrum/BN/learning/structureUtils/graphChangesGenerator4K2.h>
-#include <agrum/BN/learning/structureUtils/graphChangesSelector4DiGraph.h>
-
-#include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
-#include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
-
-
-#include <agrum/BN/learning/K2.h>
-#include <agrum/BN/learning/SimpleMiic.h>
-#include <agrum/BN/learning/localSearchWithTabuList.h>
-
 
 namespace gum::learning {
 
@@ -86,20 +79,11 @@ namespace gum::learning {
   class IBNLearner: public IApproximationSchemeConfiguration, public ThreadNumberManager {
     public:
     /// an enumeration enabling to select easily the score we wish to use
-    enum class ScoreType {
-      AIC,
-      BD,
-      BDeu,
-      BIC,
-      K2,
-      LOG2LIKELIHOOD
-    };
+    enum class ScoreType { AIC, BD, BDeu, BIC, K2, LOG2LIKELIHOOD };
 
     /// an enumeration to select the type of parameter estimation we shall
     /// apply
-    enum class ParamEstimatorType {
-      ML
-    };
+    enum class ParamEstimatorType { ML };
 
     /// an enumeration to select the prior
     enum class BNLearnerPriorType {
@@ -111,13 +95,7 @@ namespace gum::learning {
     };
 
     /// an enumeration to select easily the learning algorithm to use
-    enum class AlgoType {
-      K2,
-      GREEDY_HILL_CLIMBING,
-      LOCAL_SEARCH_WITH_TABU_LIST,
-      MIIC
-    };
-
+    enum class AlgoType { K2, GREEDY_HILL_CLIMBING, LOCAL_SEARCH_WITH_TABU_LIST, MIIC };
 
     /// a helper to easily read databases
     class Database {
@@ -709,13 +687,10 @@ namespace gum::learning {
     void useMIIC();
 
     /// indicate if the selected algorithm is constraint-based
-    bool isConstraintBased() const {
-      return selectedAlgo_ == AlgoType::MIIC;
-    }
+    bool isConstraintBased() const { return selectedAlgo_ == AlgoType::MIIC; }
+
     /// indicate if the selected algorithm is score-based
-    bool isScoreBased() const {
-      return !isConstraintBased();
-    }
+    bool isScoreBased() const { return !isConstraintBased(); }
 
     /// @}
 
@@ -997,6 +972,7 @@ namespace gum::learning {
 
       if (onStop.hasListener()) GUM_EMIT1(onStop, message);
     };
+
     /// @}
 
     /// Given that we approximate f(t), stopping criterion on |f(t+1)-f(t)|
@@ -1038,6 +1014,7 @@ namespace gum::learning {
       if (currentAlgorithm_ != nullptr) return currentAlgorithm_->isEnabledEpsilon();
       else GUM_ERROR(FatalError, "No chosen algorithm for learning")
     }
+
     /// @}
 
     /// Given that we approximate f(t), stopping criterion on
@@ -1065,6 +1042,7 @@ namespace gum::learning {
       localSearchWithTabuList_.disableMinEpsilonRate();
       Dag2BN_.disableMinEpsilonRate();
     };
+
     /// Enable stopping criterion on epsilon rate
     void enableMinEpsilonRate() override {
       algoK2_.approximationScheme().enableMinEpsilonRate();
@@ -1072,12 +1050,14 @@ namespace gum::learning {
       localSearchWithTabuList_.enableMinEpsilonRate();
       Dag2BN_.enableMinEpsilonRate();
     };
+
     /// @return true if stopping criterion on epsilon rate is enabled, false
     /// otherwise
     bool isEnabledMinEpsilonRate() const override {
       if (currentAlgorithm_ != nullptr) return currentAlgorithm_->isEnabledMinEpsilonRate();
       else GUM_ERROR(FatalError, "No chosen algorithm for learning")
     }
+
     /// @}
 
     /// stopping criterion on number of iterations
@@ -1105,6 +1085,7 @@ namespace gum::learning {
       localSearchWithTabuList_.disableMaxIter();
       Dag2BN_.disableMaxIter();
     };
+
     /// Enable stopping criterion on max iterations
     void enableMaxIter() override {
       algoK2_.approximationScheme().enableMaxIter();
@@ -1112,12 +1093,14 @@ namespace gum::learning {
       localSearchWithTabuList_.enableMaxIter();
       Dag2BN_.enableMaxIter();
     };
+
     /// @return true if stopping criterion on max iterations is enabled, false
     /// otherwise
     bool isEnabledMaxIter() const override {
       if (currentAlgorithm_ != nullptr) return currentAlgorithm_->isEnabledMaxIter();
       else GUM_ERROR(FatalError, "No chosen algorithm for learning")
     }
+
     /// @}
 
     /// stopping criterion on timeout
@@ -1152,18 +1135,21 @@ namespace gum::learning {
       localSearchWithTabuList_.disableMaxTime();
       Dag2BN_.disableMaxTime();
     };
+
     void enableMaxTime() override {
       algoK2_.approximationScheme().enableMaxTime();
       greedyHillClimbing_.enableMaxTime();
       localSearchWithTabuList_.enableMaxTime();
       Dag2BN_.enableMaxTime();
     };
+
     /// @return true if stopping criterion on timeout is enabled, false
     /// otherwise
     bool isEnabledMaxTime() const override {
       if (currentAlgorithm_ != nullptr) return currentAlgorithm_->isEnabledMaxTime();
       else GUM_ERROR(FatalError, "No chosen algorithm for learning")
     }
+
     /// @}
 
     /// how many samples between 2 stopping isEnableds
@@ -1180,6 +1166,7 @@ namespace gum::learning {
       if (currentAlgorithm_ != nullptr) return currentAlgorithm_->periodSize();
       else GUM_ERROR(FatalError, "No chosen algorithm for learning")
     }
+
     /// @}
 
     /// verbosity
@@ -1195,6 +1182,7 @@ namespace gum::learning {
       if (currentAlgorithm_ != nullptr) return currentAlgorithm_->verbosity();
       else GUM_ERROR(FatalError, "No chosen algorithm for learning")
     }
+
     /// @}
 
     /// history
@@ -1216,6 +1204,7 @@ namespace gum::learning {
       if (currentAlgorithm_ != nullptr) return currentAlgorithm_->history();
       else GUM_ERROR(FatalError, "No chosen algorithm for learning")
     }
+
     /// @}
   };
 

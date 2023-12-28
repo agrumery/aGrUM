@@ -19,19 +19,19 @@
  */
 
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
-#include <iostream>
-#include <vector>
-#include <string>
 #include <algorithm>
+#include <iostream>
+#include <string>
+#include <vector>
 
-#include <agrum/tools/database/DBInitializerFromCSV.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
+
 #include <agrum/tools/database/databaseTable.h>
-#include <agrum/tools/database/rawDatabaseTable.h>
-#include <agrum/tools/database/DBTranslatorSet.h>
+#include <agrum/tools/database/DBInitializerFromCSV.h>
 #include <agrum/tools/database/DBTranslator4ContinuousVariable.h>
-
+#include <agrum/tools/database/DBTranslatorSet.h>
+#include <agrum/tools/database/rawDatabaseTable.h>
 
 namespace gum_tests {
 

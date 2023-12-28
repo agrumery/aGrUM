@@ -31,15 +31,11 @@
 
 #include <vector>
 
-
 #include <agrum/tools/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
 
 #include <agrum/BN/inference/variableElimination.h>
-
-
-#include <agrum/PRM/inference/PRMInference.h>
-
 #include <agrum/PRM/classBayesNet.h>
+#include <agrum/PRM/inference/PRMInference.h>
 #include <agrum/PRM/instanceBayesNet.h>
 
 namespace gum {
@@ -77,6 +73,7 @@ namespace gum {
       virtual std::string name() const;
 
       /// @}
+
       protected:
       // ========================================================================
       /// @name Query methods.
@@ -99,6 +96,7 @@ namespace gum {
       virtual void joint_(const std::vector< Chain >& queries, Potential< GUM_SCALAR >& j);
 
       /// @}
+
       private:
       /// Code alias
       using BucketSet         = Set< Potential< GUM_SCALAR >* >;

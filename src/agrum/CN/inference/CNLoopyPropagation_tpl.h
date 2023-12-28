@@ -440,7 +440,6 @@ namespace gum::credal {
     }
   }
 
-
   /**
    * comme precedemment mais pour message parent, vraisemblance prise en
    * compte
@@ -529,7 +528,6 @@ namespace gum::credal {
     real_msg_l_max = msg_l_max;
   }
 
-
   template < typename GUM_SCALAR >
   void CNLoopyPropagation< GUM_SCALAR >::makeInference() {
     if (InferenceUpToDate_) { return; }
@@ -539,11 +537,11 @@ namespace gum::credal {
     _infE_::initApproximationScheme();
 
     switch (_inferenceType_) {
-      case InferenceType::nodeToNeighbours: makeInferenceNodeToNeighbours_(); break;
+      case InferenceType::nodeToNeighbours : makeInferenceNodeToNeighbours_(); break;
 
-      case InferenceType::ordered: makeInferenceByOrderedArcs_(); break;
+      case InferenceType::ordered : makeInferenceByOrderedArcs_(); break;
 
-      case InferenceType::randomOrder: makeInferenceByRandomOrder_(); break;
+      case InferenceType::randomOrder : makeInferenceByRandomOrder_(); break;
     }
 
     //_updateMarginals();
@@ -887,7 +885,7 @@ namespace gum::credal {
 
       }   // end of : node has children & no evidence
 
-    }   // end of : if update_l
+    }     // end of : if update_l
 
     GUM_SCALAR lmin = NodesL_min_[Y];
     GUM_SCALAR lmax;
@@ -1307,7 +1305,7 @@ namespace gum::credal {
         }
       }   // end of update_p
 
-    }   // end of : for each node
+    }     // end of : for each node
   }
 
   template < typename GUM_SCALAR >

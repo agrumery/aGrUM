@@ -37,8 +37,9 @@
 #include <string>
 #include <vector>
 
-#include <agrum/BN/BayesNet.h>
 #include <agrum/tools/core/approximations/approximationScheme.h>
+
+#include <agrum/BN/BayesNet.h>
 
 namespace gum {
 

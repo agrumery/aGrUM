@@ -45,7 +45,6 @@ namespace gum {
 
   DAG::~DAG() { GUM_DESTRUCTOR(DAG); }
 
-
   UndiGraph DAG::moralGraph() const {
     UndiGraph moralgraph;
     moralgraph.populateNodes(*this);
@@ -68,7 +67,6 @@ namespace gum {
     }
     return moralgraph;
   }
-
 
   UndiGraph DAG::moralizedAncestralGraph(const NodeSet& nodes) const {
     UndiGraph res;

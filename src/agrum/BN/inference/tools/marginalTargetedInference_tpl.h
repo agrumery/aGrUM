@@ -48,13 +48,11 @@ namespace gum {
     GUM_CONSTRUCTOR(MarginalTargetedInference);
   }
 
-
   // Destructor
   template < typename GUM_SCALAR >
   MarginalTargetedInference< GUM_SCALAR >::~MarginalTargetedInference() {
     GUM_DESTRUCTOR(MarginalTargetedInference);
   }
-
 
   // fired when a new BN is assigned to the inference engine
   template < typename GUM_SCALAR >
@@ -62,7 +60,6 @@ namespace gum {
     _targeted_mode_ = true;
     _setAllMarginalTargets_();
   }
-
 
   // ##############################################################################
   // Targets
@@ -89,7 +86,6 @@ namespace gum {
     return isTarget(this->BN().idFromName(nodeName));
   }
 
-
   // Clear all previously defined targets (single targets and sets of targets)
   template < typename GUM_SCALAR >
   INLINE void MarginalTargetedInference< GUM_SCALAR >::eraseAllTargets() {
@@ -100,7 +96,6 @@ namespace gum {
 
     this->setState_(GraphicalModelInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
   }
-
 
   // Add a single target to the list of targets
   template < typename GUM_SCALAR >
@@ -124,7 +119,6 @@ namespace gum {
     }
   }
 
-
   // Add all nodes as targets
   template < typename GUM_SCALAR >
   void MarginalTargetedInference< GUM_SCALAR >::addAllTargets() {
@@ -145,7 +139,6 @@ namespace gum {
     }
   }
 
-
   // Add a single target to the list of targets
   template < typename GUM_SCALAR >
   void MarginalTargetedInference< GUM_SCALAR >::addTarget(const std::string& nodeName) {
@@ -157,7 +150,6 @@ namespace gum {
 
     addTarget(this->BN().idFromName(nodeName));
   }
-
 
   // removes an existing target
   template < typename GUM_SCALAR >
@@ -182,7 +174,6 @@ namespace gum {
     }
   }
 
-
   // Add a single target to the list of targets
   template < typename GUM_SCALAR >
   void MarginalTargetedInference< GUM_SCALAR >::eraseTarget(const std::string& nodeName) {
@@ -194,7 +185,6 @@ namespace gum {
 
     eraseTarget(this->BN().idFromName(nodeName));
   }
-
 
   // returns the list of single targets
   template < typename GUM_SCALAR >
@@ -223,7 +213,6 @@ namespace gum {
       onAllMarginalTargetsAdded_();
     }
   }
-
 
   // ##############################################################################
   // Inference
@@ -267,7 +256,6 @@ namespace gum {
     return H(this->BN().idFromName(nodeName));
   }
 
-
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
      MarginalTargetedInference< GUM_SCALAR >::evidenceImpact(NodeId target, const NodeSet& evs) {
@@ -307,7 +295,6 @@ namespace gum {
     return res;
   }
 
-
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR > MarginalTargetedInference< GUM_SCALAR >::evidenceImpact(
      const std::string&                target,
@@ -316,11 +303,11 @@ namespace gum {
     return evidenceImpact(bn.idFromName(target), bn.nodeset(evs));
   }
 
-
   template < typename GUM_SCALAR >
   INLINE bool MarginalTargetedInference< GUM_SCALAR >::isTargetedMode_() const {
     return _targeted_mode_;
   }
+
   template < typename GUM_SCALAR >
   INLINE void MarginalTargetedInference< GUM_SCALAR >::setTargetedMode_() {
     if (!_targeted_mode_) {

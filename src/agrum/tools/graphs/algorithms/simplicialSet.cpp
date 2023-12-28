@@ -24,13 +24,13 @@
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
-#include <agrum/tools/core/math/math_utils.h>
+#include <limits>
+#include <sstream>
+
 #include <agrum/tools/graphs/algorithms/simplicialSet.h>
 #include <agrum/tools/graphs/graphElements.h>
-#include <limits>
-#include <limits>
-#include <sstream>
-#include <sstream>
+
+#include <agrum/tools/core/math/math_utils.h>
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/tools/graphs/algorithms/simplicialSet_inl.h>
@@ -356,11 +356,11 @@ namespace gum {
       if (_changed_status_.contains(id)) _changed_status_.erase(id);
 
       switch (_containing_list_[id]) {
-        case _Belong_::ALMOST_SIMPLICIAL: _almost_simplicial_nodes_.erase(id); break;
+        case _Belong_::ALMOST_SIMPLICIAL : _almost_simplicial_nodes_.erase(id); break;
 
-        case _Belong_::QUASI_SIMPLICIAL: _quasi_simplicial_nodes_.erase(id); break;
+        case _Belong_::QUASI_SIMPLICIAL : _quasi_simplicial_nodes_.erase(id); break;
 
-        default: break;
+        default : break;
       }
 
       _simplicial_nodes_.insert(id, (*_log_weights_)[id]);
@@ -404,13 +404,13 @@ namespace gum {
     _log_tree_width_ = std::max(_log_tree_width_, (*_log_weights_)[id]);
 
     switch (_containing_list_[id]) {
-      case _Belong_::SIMPLICIAL: _simplicial_nodes_.erase(id); break;
+      case _Belong_::SIMPLICIAL : _simplicial_nodes_.erase(id); break;
 
-      case _Belong_::ALMOST_SIMPLICIAL: _almost_simplicial_nodes_.erase(id); break;
+      case _Belong_::ALMOST_SIMPLICIAL : _almost_simplicial_nodes_.erase(id); break;
 
-      case _Belong_::QUASI_SIMPLICIAL: _quasi_simplicial_nodes_.erase(id); break;
+      case _Belong_::QUASI_SIMPLICIAL : _quasi_simplicial_nodes_.erase(id); break;
 
-      default: break;
+      default : break;
     }
 
     _nb_adjacent_neighbours_.erase(id);
@@ -435,13 +435,13 @@ namespace gum {
       eraseEdge(Edge(*iter, id));
 
     switch (_containing_list_[id]) {
-      case _Belong_::SIMPLICIAL: _simplicial_nodes_.erase(id); break;
+      case _Belong_::SIMPLICIAL : _simplicial_nodes_.erase(id); break;
 
-      case _Belong_::ALMOST_SIMPLICIAL: _almost_simplicial_nodes_.erase(id); break;
+      case _Belong_::ALMOST_SIMPLICIAL : _almost_simplicial_nodes_.erase(id); break;
 
-      case _Belong_::QUASI_SIMPLICIAL: _quasi_simplicial_nodes_.erase(id); break;
+      case _Belong_::QUASI_SIMPLICIAL : _quasi_simplicial_nodes_.erase(id); break;
 
-      default: break;
+      default : break;
     }
 
     _nb_adjacent_neighbours_.erase(id);

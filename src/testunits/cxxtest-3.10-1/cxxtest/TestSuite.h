@@ -25,6 +25,7 @@ namespace CxxTest {
   };
 
   class AbortTest {};
+
   void doAbortTest();
 #define TS_ABORT() CxxTest::doAbortTest()
 
@@ -223,7 +224,7 @@ namespace CxxTest {
         (CxxTest::tracker()).failedTest(f, l, e.what()); \
       }                                                  \
       _TSM_LAST_CATCH(f, l, m)
-#  else   // !_CXXTEST_HAVE_STD
+#  else    // !_CXXTEST_HAVE_STD
 #    define __TSM__CATCH(f, l, m) _TSM_LAST_CATCH(f, l, m)
 #  endif   // _CXXTEST_HAVE_STD
 #  define __TSM_CATCH(f, l, m)  \

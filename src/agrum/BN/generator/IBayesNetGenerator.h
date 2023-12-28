@@ -35,12 +35,12 @@
 #include <vector>
 
 #include <agrum/agrum.h>
-#include <agrum/BN/BayesNet.h>
-#include <agrum/BN/generator/simpleCPTGenerator.h>
 
 #include <agrum/tools/variables/labelizedVariable.h>
 
 #include <agrum/BN/algorithms/divergence/BNdistance.h>
+#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/generator/simpleCPTGenerator.h>
 
 namespace gum {
 
@@ -158,6 +158,7 @@ namespace gum {
     void setMaxModality(Size maxModality);
 
     /// @}
+
     protected:
     // The Conditional Probability Table generator
     //  CPTGenerator * cptGenerator_;

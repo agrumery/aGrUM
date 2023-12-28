@@ -34,6 +34,7 @@
 #include <agrum/FMDP/learning/datastructure/incrementalGraphLearner.h>
 #include <agrum/FMDP/learning/datastructure/leaves/leafAggregator.h>
 #include <agrum/FMDP/learning/datastructure/variableselector.h>
+
 // =========================================================================
 // =========================================================================
 
@@ -148,6 +149,7 @@ namespace gum {
 
     /// @}
     ///
+
     public:
     void insertSetOfVars(MultiDimFunctionGraph< double >* ret) const {
       for (SequenceIteratorSafe< const DiscreteVariable* > varIter = _varOrder_.beginSafe();

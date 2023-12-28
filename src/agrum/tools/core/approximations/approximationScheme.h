@@ -35,6 +35,7 @@
 #define GUM_APPROXIMATION_SCHEME_H
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/approximations/IApproximationSchemeConfiguration.h>
 
 namespace gum {

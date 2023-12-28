@@ -59,11 +59,10 @@ namespace gum {
 
 } /* namespace gum */
 
-
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
 #  include <agrum/tools/core/threads/threadExecutorBase_inl.h>
-#endif /* GUM_NO_INLINE */
+#endif   /* GUM_NO_INLINE */
 
 
 #endif   // AGRUM_THREADEXECUTOR_BASE_H

@@ -19,13 +19,16 @@
  */
 
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
 #include <iostream>
-#include <ressources/include/simpleDebugGenerator.h>
+
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
+
+#include <agrum/tools/database/DBRowGeneratorEM.h>
 
 #include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/tools/database/DBRowGeneratorEM.h>
+
+#include <ressources/include/simpleDebugGenerator.h>
 
 namespace gum_tests {
 

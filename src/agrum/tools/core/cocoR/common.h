@@ -51,8 +51,6 @@ Coco/R itself) does not fall under the GNU General Public License.
 #define COCO_R_COMMON_H
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-#  include <agrum/agrum.h>
-
 #  include <climits>
 #  include <cstdio>
 #  include <cstdlib>
@@ -60,9 +58,10 @@ Coco/R itself) does not fall under the GNU General Public License.
 #  include <cwchar>
 #  include <iostream>
 #  include <locale>
-#  include <locale>
 #  include <sstream>
 #  include <string>
+
+#  include <agrum/agrum.h>
 
 // io.h and fcntl are used to ensure binary read from streams on windows
 #  if _MSC_VER >= 1300
@@ -89,7 +88,6 @@ Coco/R itself) does not fall under the GNU General Public License.
 #  define MAX_BUFFER_LENGTH            (64 * MIN_BUFFER_LENGTH)
 #  define HEAP_BLOCK_SIZE              (64 * 1024)
 #  define COCO_CPP_NAMESPACE_SEPARATOR L':'
-
 
 namespace gum {
 
@@ -147,6 +145,7 @@ namespace gum {
     istr >> res;
     return res;
   }
+
   inline int coco_atoi(const wchar_t* c) {
     int                res;
     std::istringstream istr(narrow(c));

@@ -41,6 +41,7 @@ namespace gum {
 
 #  ifdef GUM_MULTI_DIM_OPERATOR_NAME
 #    define GUM_MULTI_DIM_OPERATOR_TYPE T
+
   template < typename T >
   MultiDimImplementation< T >* GUM_MULTI_DIM_OPERATOR_NAME(const MultiDimImplementation< T >* t1,
                                                            const MultiDimImplementation< T >* t2)

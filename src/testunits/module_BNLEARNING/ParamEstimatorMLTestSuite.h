@@ -19,17 +19,19 @@
  */
 
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
 #include <iostream>
 
-#include <agrum/BN/inference/lazyPropagation.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
+
 #include <agrum/tools/database/DBRowGeneratorEM.h>
 #include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/tools/database/DBTranslatorSet.h>
+
+#include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
 #include <agrum/BN/learning/priors/noPrior.h>
 #include <agrum/BN/learning/priors/smoothingPrior.h>
-#include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
 
 namespace gum_tests {
 
@@ -214,7 +216,6 @@ namespace gum_tests {
       delete param_estimator4;
     }
 
-
     GUM_ACTIVE_TEST(2) {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
@@ -348,7 +349,6 @@ namespace gum_tests {
 
       delete param_estimator4;
     }
-
 
     GUM_ACTIVE_TEST(3) {
       // create the translator set
@@ -489,7 +489,6 @@ namespace gum_tests {
 
       delete param_estimator4;
     }
-
 
     GUM_ACTIVE_TEST(4) {
       // create the translator set
@@ -793,7 +792,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bv21, xv21)
     }
 
-
     GUM_ACTIVE_TEST(EM) {
       gum::LabelizedVariable var("x", "", 0);
       var.addLabel("0");
@@ -944,7 +942,6 @@ namespace gum_tests {
       TS_ASSERT_THROWS(param_estimator.parameters(gum::NodeId(1), {gum::NodeId(0)}),
                        const gum::DatabaseError&)
     }
-
 
     GUM_ACTIVE_TEST(_multicore) {
       // create the translator set

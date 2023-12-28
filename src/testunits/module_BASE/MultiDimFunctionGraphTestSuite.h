@@ -26,8 +26,9 @@
 #include <sstream>
 #include <vector>
 // =========================================================================
-#include "testsuite_utils.h"
 #include <gumtest/AgrumTestSuite.h>
+
+#include "utils.h"
 // =========================================================================
 #include <agrum/tools/multidim/implementations/multiDimArray.h>
 #include <agrum/tools/multidim/implementations/multiDimFunctionGraph.h>
@@ -36,6 +37,7 @@
 #include <agrum/tools/multidim/instantiation.h>
 // =========================================================================
 #include <agrum/tools/variables/labelizedVariable.h>
+
 // =========================================================================
 
 namespace gum_tests {
@@ -57,26 +59,26 @@ namespace gum_tests {
 
         idList->insert(factory->manager()->addInternalNode(Cprimevar));   // 1
         factory->manager()->setRootNode((*idList)[0]);
-        idList->insert(factory->manager()->addInternalNode(Cvar));     // 2
-        idList->insert(factory->manager()->addInternalNode(PLvar));    // 3
-        idList->insert(factory->manager()->addInternalNode(APUvar));   // 4
-        idList->insert(factory->manager()->addInternalNode(BPUvar));   // 5
-        idList->insert(factory->manager()->addInternalNode(ADRvar));   // 6
-        idList->insert(factory->manager()->addInternalNode(BDRvar));   // 7
-        idList->insert(factory->manager()->addInternalNode(BOvar));    // 8
+        idList->insert(factory->manager()->addInternalNode(Cvar));        // 2
+        idList->insert(factory->manager()->addInternalNode(PLvar));       // 3
+        idList->insert(factory->manager()->addInternalNode(APUvar));      // 4
+        idList->insert(factory->manager()->addInternalNode(BPUvar));      // 5
+        idList->insert(factory->manager()->addInternalNode(ADRvar));      // 6
+        idList->insert(factory->manager()->addInternalNode(BDRvar));      // 7
+        idList->insert(factory->manager()->addInternalNode(BOvar));       // 8
 
-        idList->insert(factory->manager()->addInternalNode(Cvar));     // 9
-        idList->insert(factory->manager()->addInternalNode(PLvar));    // 10
-        idList->insert(factory->manager()->addInternalNode(APUvar));   // 11
-        idList->insert(factory->manager()->addInternalNode(BPUvar));   // 12
-        idList->insert(factory->manager()->addInternalNode(ADRvar));   // 13
-        idList->insert(factory->manager()->addInternalNode(BDRvar));   // 14
-        idList->insert(factory->manager()->addInternalNode(BOvar));    // 15
+        idList->insert(factory->manager()->addInternalNode(Cvar));        // 9
+        idList->insert(factory->manager()->addInternalNode(PLvar));       // 10
+        idList->insert(factory->manager()->addInternalNode(APUvar));      // 11
+        idList->insert(factory->manager()->addInternalNode(BPUvar));      // 12
+        idList->insert(factory->manager()->addInternalNode(ADRvar));      // 13
+        idList->insert(factory->manager()->addInternalNode(BDRvar));      // 14
+        idList->insert(factory->manager()->addInternalNode(BOvar));       // 15
 
-        idList->insert(factory->manager()->addTerminalNode(0));    // 16
-        idList->insert(factory->manager()->addTerminalNode(10));   // 17
-        idList->insert(factory->manager()->addTerminalNode(9));    // 18
-        idList->insert(factory->manager()->addTerminalNode(1));    // 19
+        idList->insert(factory->manager()->addTerminalNode(0));           // 16
+        idList->insert(factory->manager()->addTerminalNode(10));          // 17
+        idList->insert(factory->manager()->addTerminalNode(9));           // 18
+        idList->insert(factory->manager()->addTerminalNode(1));           // 19
 
 
         factory->manager()->setSon((*idList)[0], 1, (*idList)[1]);
@@ -131,7 +133,6 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-
     void tearDown() {
       try {
         delete Cvar;
@@ -144,7 +145,6 @@ namespace gum_tests {
         delete BOvar;
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
-
 
     /**
      * **********************************************************************************/
@@ -174,7 +174,6 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph)
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
-
 
     /**
      * **********************************************************************************/
@@ -232,7 +231,6 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-
     /**
      * **********************************************************************************/
     /** Testing export method */
@@ -265,7 +263,6 @@ namespace gum_tests {
         delete functionGraph;
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
-
 
     /**
      * *******************************************************************************/
@@ -338,7 +335,6 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph)
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
-
 
     /**
      * **********************************************************************************/
@@ -523,7 +519,6 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-
     /**
      * **********************************************************************************/
     /**   Tests on Function Graph implementation of MultiDimImplementation */
@@ -577,7 +572,6 @@ namespace gum_tests {
         delete lv;
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
-
 
     /**
      * **********************************************************************************/
@@ -681,7 +675,6 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-
     /**
      * **********************************************************************************/
     /**   Tests on several miscelleanous methods */
@@ -730,7 +723,6 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(delete dg3)
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
-
 
     /**
      * **********************************************************************************/

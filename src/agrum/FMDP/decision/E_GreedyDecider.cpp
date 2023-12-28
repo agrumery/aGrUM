@@ -30,8 +30,9 @@
 // =========================================================================
 #include <cstdlib>
 // =========================================================================
-#include <agrum/tools/core/utils_random.h>
 #include <agrum/FMDP/decision/E_GreedyDecider.h>
+#include <agrum/tools/core/utils_random.h>
+
 // =========================================================================
 
 namespace gum {
@@ -51,7 +52,6 @@ namespace gum {
     _sss_ = 1.0;
   }
 
-
   // ###################################################################
   /**
    *
@@ -61,7 +61,6 @@ namespace gum {
     GUM_DESTRUCTOR(E_GreedyDecider);
     ;
   }
-
 
   // ==========================================================================
   // Initialization
@@ -77,7 +76,6 @@ namespace gum {
     for (auto varIter = fmdp->beginVariables(); varIter != fmdp->endVariables(); ++varIter)
       _sss_ *= (double)(*varIter)->domainSize();
   }
-
 
   // ==========================================================================
   // Incremental methods

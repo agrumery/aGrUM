@@ -30,9 +30,8 @@
 #define GUM_PARAMETER_H
 
 
-#include <agrum/PRM/elements/PRMType.h>
 #include <agrum/PRM/elements/PRMAttribute.h>
-
+#include <agrum/PRM/elements/PRMType.h>
 
 namespace gum {
   namespace prm {
@@ -48,10 +47,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     class PRMParameter: public PRMClassElement< GUM_SCALAR > {
       public:
-      enum ParameterType {
-        INT,
-        REAL
-      };
+      enum ParameterType { INT, REAL };
 
       // ========================================================================
       /// @name Constructor & destructor.
@@ -108,6 +104,7 @@ namespace gum {
       virtual PRMAttribute< GUM_SCALAR >* getCastDescendant() const;
 
       /// @}
+
       protected:
       /// Copy constructor. Don't use it.
       PRMParameter(const PRMParameter< GUM_SCALAR >& source);

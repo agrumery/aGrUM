@@ -33,10 +33,11 @@
 #include <iostream>
 #include <vector>
 
+#include <agrum/tools/variables/labelizedVariable.h>
+
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/ID/generator/simpleUTGenerator.h>
 #include <agrum/ID/influenceDiagram.h>
-#include <agrum/tools/variables/labelizedVariable.h>
 
 namespace gum {
 
@@ -117,6 +118,7 @@ namespace gum {
                                                Size       max_modality = 2);
 
     /// @}
+
     private:
     // Check if a temporal order exists and creates ones if not
     void _checkTemporalOrder_(InfluenceDiagram< GUM_SCALAR >* infdiag);

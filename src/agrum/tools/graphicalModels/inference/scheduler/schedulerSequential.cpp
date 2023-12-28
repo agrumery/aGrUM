@@ -43,13 +43,11 @@ namespace gum {
     GUM_CONSTRUCTOR(SchedulerSequential);
   }
 
-
   /// copy constructor
   SchedulerSequential::SchedulerSequential(const SchedulerSequential& from) : Scheduler(from) {
     // for debugging purposes
     GUM_CONS_CPY(SchedulerSequential);
   }
-
 
   /// move constructor
   SchedulerSequential::SchedulerSequential(SchedulerSequential&& from) :
@@ -58,17 +56,14 @@ namespace gum {
     GUM_CONS_MOV(SchedulerSequential);
   }
 
-
   /// virtual copy constructor
   SchedulerSequential* SchedulerSequential::clone() const { return new SchedulerSequential(*this); }
-
 
   /// destructor
   SchedulerSequential::~SchedulerSequential() {
     // for debugging purposes
     GUM_DESTRUCTOR(SchedulerSequential);
   }
-
 
   /// execute all the operations of a given schedule
   void SchedulerSequential::execute(Schedule& schedule) {
@@ -96,7 +91,6 @@ namespace gum {
     }
   }
 
-
   /** @bried returns an estimation of the number of elementary operations needed
    * to perform a given schedule */
   double SchedulerSequential::nbOperations(const Schedule& schedule) {
@@ -109,14 +103,12 @@ namespace gum {
     return nb_ops;
   }
 
-
   /// the comparison function used to sort unexecutable operations
   bool SchedulerSequential::_cmp_(const UnexecutedOperation& a, const UnexecutedOperation& b) {
     if (a.max_memory_usage < b.max_memory_usage) return true;
     if (b.max_memory_usage < a.max_memory_usage) return false;
     return (a.end_memory_usage < b.end_memory_usage);
   }
-
 
   /// returns the memory consumption used during the execution of a schedule
   std::pair< double, double > SchedulerSequential::memoryUsage(const Schedule& schedule) {
@@ -126,7 +118,6 @@ namespace gum {
 
     return _memory_usage_;
   }
-
 
   /// add the currently executable operations into the set of available operations
   Size SchedulerSequential::_addExecutableOps_(
@@ -189,7 +180,6 @@ namespace gum {
     return i_op + i_del;
   }
 
-
   /// simulate the update of the schedule's DAG resulting from the execution
   /// of an operation
   void SchedulerSequential::_simulateDAGUpdate_(DAG&                   dag,
@@ -206,7 +196,6 @@ namespace gum {
     // remove node_exec
     dag.eraseNode(node);
   }
-
 
   /// execute one operation
   void SchedulerSequential::_simulateExecuteOneOperation_(
@@ -231,7 +220,6 @@ namespace gum {
       if (_schedule_->operation(new_node).implyDeletion()) available_nodes.pushFront(new_node);
     }
   }
-
 
   /// returns the memory consumption used during the execution of a schedule
   void SchedulerSequential::_simulateExecution_() {

@@ -33,7 +33,6 @@
 #include <agrum/tools/multidim/utils/operators/multiDimCombinationDefault.h>
 #include <agrum/tools/multidim/utils/operators/multiDimProjection.h>
 
-
 namespace gum {
 
   // clang-format off

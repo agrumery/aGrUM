@@ -19,20 +19,22 @@
  */
 
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
 #include <iostream>
 #include <sstream>
 
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
+
 #include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/tools/database/DBTranslatorSet.h>
-#include <agrum/BN/learning/priors/smoothingPrior.h>
-#include <agrum/BN/learning/scores_and_tests/scoreK2.h>
-#include <agrum/BN/learning/structureUtils/graphChangesSelector4DiGraph.h>
 
 #include <agrum/BN/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>
+#include <agrum/BN/learning/priors/smoothingPrior.h>
 #include <agrum/BN/learning/structureUtils/graphChangesGenerator4DiGraph.h>
+#include <agrum/BN/learning/structureUtils/graphChangesSelector4DiGraph.h>
+
+#include <agrum/BN/learning/scores_and_tests/scoreK2.h>
 
 namespace gum_tests {
 

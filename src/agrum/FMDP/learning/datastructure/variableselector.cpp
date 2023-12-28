@@ -27,6 +27,7 @@
  */
 // =========================================================================
 #include <agrum/FMDP/learning/datastructure/variableselector.h>
+
 // =========================================================================
 
 namespace gum {
@@ -56,7 +57,6 @@ namespace gum {
   // ###################################################################
   VariableSelector::~VariableSelector() { GUM_DESTRUCTOR(VariableSelector) }
 
-
   // ###################################################################
   //
   // ###################################################################
@@ -69,7 +69,6 @@ namespace gum {
     _remainingVarsOtherScore_[var] += secondaryscore;
   }
 
-
   // ###################################################################
   //
   // ###################################################################
@@ -81,7 +80,6 @@ namespace gum {
     _addVar_(var);
     _remainingVarsOtherScore_[var] -= secondaryscore;
   }
-
 
   // ###################################################################
   // Select the most relevant variable
@@ -103,7 +101,6 @@ namespace gum {
     return bestVar;
   }
 
-
   // ###################################################################
   // Select the most relevant variable
   // ###################################################################
@@ -116,7 +113,6 @@ namespace gum {
     }
     _remainingVarsByScore_[varScore]->insert(var);
   }
-
 
   // ###################################################################
   // Select the most relevant variable

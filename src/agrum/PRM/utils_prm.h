@@ -27,9 +27,9 @@
 
 #include <agrum/agrum.h>
 
+#include <agrum/tools/multidim/aggregators/multiDimAggregator.h>
 #include <agrum/tools/multidim/ICIModels/multiDimNoisyORCompound.h>
 #include <agrum/tools/multidim/ICIModels/multiDimNoisyORNet.h>
-#include <agrum/tools/multidim/aggregators/multiDimAggregator.h>
 #include <agrum/tools/multidim/implementations/multiDimBijArray.h>
 #include <agrum/tools/multidim/implementations/multiDimBucket.h>
 #include <agrum/tools/multidim/implementations/multiDimSparse.h>

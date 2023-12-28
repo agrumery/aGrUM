@@ -24,17 +24,17 @@
 #include <vector>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
+
+#include <agrum/tools/graphs/graphElements.h>
+#include <agrum/tools/variables/discreteVariable.h>
+#include <agrum/tools/variables/discretizedVariable.h>
+#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/tools/variables/rangeVariable.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/generator/maxParentsMCBayesNetGenerator.h>
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
-#include <agrum/tools/graphs/graphElements.h>
-#include <agrum/tools/variables/discreteVariable.h>
-#include <agrum/tools/variables/labelizedVariable.h>
-#include <agrum/tools/variables/rangeVariable.h>
-#include <agrum/tools/variables/discretizedVariable.h>
-
 #include <agrum/BN/io/BIFXML/BIFXMLBNReader.h>
 
 // The graph used for the tests:
@@ -83,7 +83,7 @@ namespace gum_tests {
             {0.4f, 0.6f,
              0.5f, 0.5f,
              0.5f, 0.5f,
-             1.0f, 0.0f});   // clang-format on
+             1.0f, 0.0f});                     // clang-format on
 
         bn.cpt(idList[4]).fillWith(   // clang-format off
             {0.3f, 0.6f, 0.1f,
@@ -496,7 +496,6 @@ namespace gum_tests {
         TS_ASSERT_THROWS(bn.eraseArc("B", "C"), const gum::NotFound&)
       } catch (const gum::Exception& e) { GUM_SHOWERROR(e) }
     }
-
 
     GUM_ACTIVE_TEST(Iterator) {
       gum::BayesNet< double >  bn;

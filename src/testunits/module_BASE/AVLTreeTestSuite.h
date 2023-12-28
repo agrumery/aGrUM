@@ -19,13 +19,14 @@
  */
 
 
+#include <algorithm>
+#include <string>
+
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/core/AVLTree.h>
 #include <agrum/tools/core/heap.h>
-#include <string>
-#include <algorithm>
 
 namespace gum_tests {
 

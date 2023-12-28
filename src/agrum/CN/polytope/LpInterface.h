@@ -33,8 +33,10 @@
 #include <sstream>
 #include <string>
 
-#include <agrum/CN/polytope/LrsWrapper.h>
 #include <agrum/tools/core/hashTable.h>
+
+#include <agrum/CN/polytope/LrsWrapper.h>
+
 #include <agrum/tools/core/utils_misc.h>
 
 namespace gum {
@@ -155,6 +157,7 @@ namespace gum {
         std::string toString() const;
 
         protected:
+
         private:
         /** @brief %Variable id. */
         unsigned int _id_;
@@ -162,7 +165,7 @@ namespace gum {
 
     }   // end of namespace lp
 
-  }   // end of namespace credal
+  }     // end of namespace credal
 
 }   // end of namespace gum
 
@@ -405,6 +408,7 @@ namespace gum {
         /// @}
 
         protected:
+
         private:
         /** @brief \c True if this expression has a non-empty left side L : L <=
          * M <=
@@ -580,6 +584,7 @@ namespace gum {
         std::string toString() const;
 
         protected:
+
         private:
         /** @brief The constant of the linear inequality. */
         double _cste_;
@@ -742,6 +747,7 @@ namespace gum {
         void clearRows();
 
         protected:
+
         private:
         /** @brief Rows of the problem. */
         std::vector< LpRow* > _rows_;
@@ -1008,7 +1014,7 @@ namespace gum {
 
     }   // end of namespace lp
 
-  }   // namespace credal
+  }     // namespace credal
 
 }   // end of namespace gum
 

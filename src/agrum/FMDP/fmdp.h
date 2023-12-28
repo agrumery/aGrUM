@@ -34,6 +34,7 @@
 //======================================================================
 //======================================================================
 #include <agrum/tools/multidim/implementations/multiDimFunctionGraph.h>
+
 //======================================================================
 
 namespace gum {
@@ -286,7 +287,6 @@ namespace gum {
 
 
 } /* namespace gum */
-
 
 #include <agrum/FMDP/fmdp_tpl.h>
 

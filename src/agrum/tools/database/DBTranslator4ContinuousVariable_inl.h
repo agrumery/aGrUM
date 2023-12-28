@@ -33,7 +33,6 @@ namespace gum {
       GUM_DESTRUCTOR(DBTranslator4ContinuousVariable);
     }
 
-
     /// returns the original value for a given translation
     INLINE std::string DBTranslator4ContinuousVariable::translateBack(
        const DBTranslatedValue translated_val) const {
@@ -56,22 +55,18 @@ namespace gum {
       return std::string(buffer);
     }
 
-
     /// indicates whether the translations should be reordered
     INLINE bool DBTranslator4ContinuousVariable::needsReordering() const { return false; }
-
 
     /// returns a mapping to reorder the current dictionary and updates it
     INLINE HashTable< std::size_t, std::size_t > DBTranslator4ContinuousVariable::reorder() {
       return HashTable< std::size_t, std::size_t >();
     }
 
-
     /// returns the domain size of a variable corresponding to the translations
     INLINE std::size_t DBTranslator4ContinuousVariable::domainSize() const {
       return std::numeric_limits< std::size_t >::max();
     }
-
 
     /// returns the variable stored into the translator
     INLINE const IContinuousVariable* DBTranslator4ContinuousVariable::variable() const {
@@ -79,7 +74,6 @@ namespace gum {
       _real_variable_->setUpperBoundFromDouble(_variable_.upperBound());
       return _real_variable_;
     }
-
 
     /// returns the translation of a missing value
     INLINE DBTranslatedValue DBTranslator4ContinuousVariable::missingValue() const {

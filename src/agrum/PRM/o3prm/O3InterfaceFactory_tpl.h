@@ -79,7 +79,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE O3InterfaceFactory< GUM_SCALAR >&
-         O3InterfaceFactory< GUM_SCALAR >::operator=(O3InterfaceFactory< GUM_SCALAR >&& src) {
+             O3InterfaceFactory< GUM_SCALAR >::operator=(O3InterfaceFactory< GUM_SCALAR >&& src) {
         if (this == &src) { return *this; }
         _prm_    = std::move(src._prm_);
         _o3_prm_ = std::move(src._o3_prm_);

@@ -27,14 +27,16 @@
  * GONZALES(_at_AMU)
  */
 // =======================================================
-#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/core/priorityQueue.h>
 #include <agrum/tools/core/types.h>
+
+#include <agrum/tools/core/math/math_utils.h>
 // =======================================================
 #include <agrum/FMDP/learning/core/chiSquare.h>
 #include <agrum/FMDP/learning/datastructure/imddi.h>
 // =======================================================
 #include <agrum/tools/variables/labelizedVariable.h>
+
 // =======================================================
 
 
@@ -90,7 +92,6 @@ namespace gum {
       delete leafIter.val();
   }
 
-
   // ############################################################################
   // Incrementals methods
   // ############################################################################
@@ -109,7 +110,6 @@ namespace gum {
        currentNodeId);
     if (this->nodeVarMap_[currentNodeId] == this->value_) _lg_.updateLeaf(_leafMap_[currentNodeId]);
   }
-
 
   // ============================================================================
   // Updates the tree after a new observation has been added
@@ -150,7 +150,6 @@ namespace gum {
     if (_lg_.needsUpdate()) _lg_.update();
   }
 
-
   // ############################################################################
   // Updating methods
   // ############################################################################
@@ -187,7 +186,6 @@ namespace gum {
                      weight * this->nodeId2Database_[nody]->testValue(var),
                      weight * this->nodeId2Database_[nody]->testOtherCriterion(var));
   }
-
 
   // ============================================================================
   // For each node in the given set, this methods checks whether or not
@@ -230,7 +228,6 @@ namespace gum {
     }
   }
 
-
   // ============================================================================
   // Insert a new node with given associated database, var and maybe sons
   // ============================================================================
@@ -249,7 +246,6 @@ namespace gum {
     return currentNodeId;
   }
 
-
   // ============================================================================
   // Changes var associated to a node
   // ============================================================================
@@ -264,7 +260,6 @@ namespace gum {
     if (desiredVar == this->value_) _addLeaf_(currentNodeId);
   }
 
-
   // ============================================================================
   // Remove node from graph
   // ============================================================================
@@ -273,7 +268,6 @@ namespace gum {
     if (this->nodeVarMap_[currentNodeId] == this->value_) _removeLeaf_(currentNodeId);
     IncrementalGraphLearner< AttributeSelection, isScalar >::removeNode_(currentNodeId);
   }
-
 
   // ============================================================================
   // Add leaf to aggregator
@@ -288,7 +282,6 @@ namespace gum {
     _lg_.addLeaf(_leafMap_[currentNodeId]);
   }
 
-
   // ============================================================================
   // Remove leaf from aggregator
   // ============================================================================
@@ -298,7 +291,6 @@ namespace gum {
     delete _leafMap_[currentNodeId];
     _leafMap_.erase(currentNodeId);
   }
-
 
   // ============================================================================
   // Computes the Reduced and Ordered Function Graph  associated to this ordered
@@ -311,7 +303,6 @@ namespace gum {
     this->needUpdate_ = false;
     //      }
   }
-
 
   // ============================================================================
   // Performs the leaves merging
@@ -369,7 +360,6 @@ namespace gum {
     this->target_->manager()->clean();
   }
 
-
   // ============================================================================
   // Performs the leaves merging
   // ============================================================================
@@ -383,7 +373,6 @@ namespace gum {
     if (leaf->total()) value /= (double)leaf->total();
     return this->target_->manager()->addTerminalNode(value);
   }
-
 
   // ============================================================================
   // Performs the leaves merging

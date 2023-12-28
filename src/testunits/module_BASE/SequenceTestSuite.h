@@ -19,11 +19,12 @@
  */
 
 
+#include <string>
+
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/core/sequence.h>
-#include <string>
 
 namespace gum_tests {
   class [[maybe_unused]] SequenceTestSuite: public CxxTest::TestSuite {

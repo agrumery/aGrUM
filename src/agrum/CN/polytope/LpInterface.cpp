@@ -190,7 +190,6 @@ namespace gum {
         return *this;
       }
 
-
       LpExpr& LpExpr::operator+=(const LpCol& rhs) {
         if (_ileft_ || _iright_)
           GUM_ERROR(OperationNotAllowed, "expr::operator+= (expr) : <= present on one side of expr")
@@ -264,7 +263,6 @@ namespace gum {
 
         return *this;
       }
-
 
       void LpExpr::_addSide_(const LpCol& from) {
         if (!_ileft_) {
@@ -452,7 +450,6 @@ namespace gum {
                     ") : too many <= ; no free side");
       }
 
-
       void LpExpr::clear() {
         _lCoeffs_->clear();
         _mCoeffs_->clear();
@@ -497,7 +494,6 @@ namespace gum {
 
         return s.str();
       }
-
 
       /**
        * class LpRow

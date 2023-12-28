@@ -99,7 +99,6 @@ namespace gum {
     GUM_DESTRUCTOR(FMDP);
   }
 
-
   /* **************************************************************************************************
    * **/
   /* ** **/
@@ -126,7 +125,6 @@ namespace gum {
     primeVar->setName(var->name() + "'");
     _main2primed_.insert(var, primeVar);
   }
-
 
   /* **************************************************************************************************
    * **/
@@ -164,7 +162,6 @@ namespace gum {
     _actionSeq_.insert(actionId);
   }
 
-
   /* **************************************************************************************************
    * **/
   /* ** **/
@@ -198,7 +195,6 @@ namespace gum {
     _actionTransitionTable_[actionId]->insert(var, transition);
   }
 
-
   // ===========================================================================
   // Returns transition associated to given in parameter variable and given
   // action
@@ -214,7 +210,6 @@ namespace gum {
     else
       return (*_actionTransitionTable_[0]).exists(v) ? (*_actionTransitionTable_[0])[v] : nullptr;
   }
-
 
   /* **************************************************************************************************
    * **/
@@ -242,7 +237,6 @@ namespace gum {
     _actionCostTable_[actionId] = cost;
   }
 
-
   // ===========================================================================
   // Returns transition associated to given in parameter variable and given
   // action
@@ -255,7 +249,6 @@ namespace gum {
     if (_actionCostTable_[actionId]) return _actionCostTable_[actionId];
     return _actionCostTable_[0];
   }
-
 
   /* **************************************************************************************************
    * **/
@@ -283,7 +276,6 @@ namespace gum {
     _actionRewardTable_[actionId] = reward;
   }
 
-
   // ===========================================================================
   // Returns transition associated to given in parameter variable and given
   // action
@@ -297,7 +289,6 @@ namespace gum {
     if (_actionRewardTable_[actionId]) return _actionRewardTable_[actionId];
     return _actionRewardTable_[0];
   }
-
 
   /* **************************************************************************************************
    * **/
@@ -331,7 +322,6 @@ namespace gum {
     GUM_ERROR(NotFound, " Action " << action << " has not been declared before.")
   }
 
-
   template < typename GUM_SCALAR >
   INLINE std::string FMDP< GUM_SCALAR >::toString() const {
     std::stringstream fmdpCore;
@@ -350,7 +340,6 @@ namespace gum {
     if (this->reward()) fmdpCore << RECAST(this->reward())->toDot() << std::endl;
     return fmdpCore.str();
   }
-
 
   template < typename GUM_SCALAR >
   INLINE Size FMDP< GUM_SCALAR >::size() const {

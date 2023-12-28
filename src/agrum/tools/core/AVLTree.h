@@ -29,13 +29,15 @@
 #ifndef GUM_AVL_TREE_H
 #define GUM_AVL_TREE_H
 
-#include <initializer_list>
-#include <string>
 #include <algorithm>
+#include <string>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/hashFunc.h>
 #include <agrum/tools/core/staticInitializer.h>
+
+#include <initializer_list>
 
 namespace gum {
 
@@ -50,7 +52,6 @@ namespace gum {
   class AVLTreeReverseIterator;
   template < typename Val, typename Cmp >
   class AVLTreeReverseIteratorSafe;
-
 
   /// the nodes of the AVL tree used to sort the elements of the queue
   template < typename Val >
@@ -67,14 +68,14 @@ namespace gum {
     Val value;
 
     // a class to enabling emplacing values in AVLNodes
-    enum class Emplace {
-      EMPLACE
-    };
+    enum class Emplace { EMPLACE };
 
     explicit AVLTreeNode(const Val& val) : value(val) { GUM_CONSTRUCTOR(AVLTreeNode); };
+
     explicit AVLTreeNode(Val&& val) noexcept : value(std::move(val)) {
       GUM_CONSTRUCTOR(AVLTreeNode);
     };
+
     template < typename... Args >
     explicit AVLTreeNode(const Emplace& emplace, Args&&... args) :
         value(std::forward< Args >(args)...) {
@@ -86,6 +87,7 @@ namespace gum {
         height(from.height), value(from.value) {
       GUM_CONS_CPY(AVLTreeNode);
     }
+
     AVLTreeNode(AVLTreeNode< Val >&& from) :
         parent(from.parent), left_child(from.left_child), right_child(from.right_child),
         height(from.height), value(std::move(from.value)) {
@@ -98,13 +100,11 @@ namespace gum {
     bool operator==(const AVLTreeNode< Val >& from) const { return value == from.value; }
   };
 
-
   /// the content of an AVLTreeNode is just the value it contains
   template < typename Val >
   std::ostream& operator<<(std::ostream& stream, const AVLTreeNode< Val >& node) {
     return stream << '<' << node.value << '>';
   }
-
 
   /// the hash function for AVLTreeNodes
   template < typename Val >
@@ -120,6 +120,7 @@ namespace gum {
     }
 
     /// computes the hashed value of a key
+
     private:   // best attempt to get rid of overloaded virtual warnings
     using HashFunc< Val >::operator();
 
@@ -421,7 +422,6 @@ namespace gum {
     friend reverse_iterator_safe;
   };
 
-
   /**
    * @class AVLTreeIterator
    * @headerfile AVLTree.h <agrum/tools/core/AVLTree.h>
@@ -559,7 +559,6 @@ namespace gum {
     friend AVLTree< Val, Cmp >;
   };
 
-
   /**
    * @class AVLTreeIteratorSafe
    * @headerfile AVLTree.h <agrum/tools/core/AVLTree.h>
@@ -667,7 +666,6 @@ namespace gum {
     /// allow AVL trees to access the content of the iterators
     friend AVLTree< Val, Cmp >;
   };
-
 
   /**
    * @class AVLTreeReverseIterator
@@ -780,7 +778,6 @@ namespace gum {
     friend AVLTree< Val, Cmp >;
   };
 
-
   /**
    * @class AVLTreeReverseIteratorSafe
    * @headerfile AVLTree.h <agrum/tools/core/AVLTree.h>
@@ -890,7 +887,6 @@ namespace gum {
     friend AVLTree< Val, Cmp >;
   };
 
-
   /// display the content of a tree
   template < typename Val, typename Cmp >
   std::ostream& operator<<(std::ostream& stream, const AVLTree< Val, Cmp >& tree) {
@@ -920,7 +916,6 @@ namespace gum {
 
 
 }   // namespace gum
-
 
 // always include the implementation of the templates
 #include <agrum/tools/core/AVLTree_tpl.h>

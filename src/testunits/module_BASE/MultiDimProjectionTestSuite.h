@@ -25,15 +25,16 @@
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/core/set.h>
-#include <agrum/tools/core/utils_random.h>
 #include <agrum/tools/multidim/implementations/multiDimArray.h>
 #include <agrum/tools/multidim/potential.h>
 #include <agrum/tools/multidim/utils/operators/multiDimProjection.h>
 #include <agrum/tools/multidim/utils/operators/projections4MultiDim.h>
 #include <agrum/tools/variables/labelizedVariable.h>
+
+#include <agrum/tools/core/utils_random.h>
 
 namespace gum_tests {
 
@@ -118,12 +119,10 @@ namespace gum_tests {
       delete t;
     }
 
-
     static gum::Potential< double > myMax(const gum::Potential< double >& table,
                                           const gum::VariableSet&         del_vars) {
       return table.margMaxOut(del_vars);
     }
-
 
     static gum::Potential< double > mySum(const gum::Potential< double >& table,
                                           const gum::VariableSet&         del_vars) {
@@ -1131,7 +1130,6 @@ namespace gum_tests {
         delete (vars[i]);
     }
 
-
     GUM_ACTIVE_TEST(_persistence) {
       std::vector< gum::LabelizedVariable* > vars(10);
 
@@ -1267,7 +1265,6 @@ namespace gum_tests {
       for (gum::Idx i = 0; i < vars.size(); ++i)
         delete vars[i];
     }
-
 
     GUM_ACTIVE_TEST(_MultiDimSumProjection) {
       std::vector< gum::LabelizedVariable* > vars(10);

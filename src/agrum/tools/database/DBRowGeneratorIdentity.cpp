@@ -45,13 +45,11 @@ namespace gum {
       GUM_CONSTRUCTOR(DBRowGeneratorIdentity);
     }
 
-
     /// copy constructor
     DBRowGeneratorIdentity::DBRowGeneratorIdentity(const DBRowGeneratorIdentity& from) :
         DBRowGenerator(from), _input_row_(from._input_row_) {
       GUM_CONS_CPY(DBRowGeneratorIdentity);
     }
-
 
     /// move constructor
     DBRowGeneratorIdentity::DBRowGeneratorIdentity(DBRowGeneratorIdentity&& from) :
@@ -59,16 +57,13 @@ namespace gum {
       GUM_CONS_MOV(DBRowGeneratorIdentity);
     }
 
-
     /// virtual copy constructor
     DBRowGeneratorIdentity* DBRowGeneratorIdentity::clone() const {
       return new DBRowGeneratorIdentity(*this);
     }
 
-
     /// destructor
     DBRowGeneratorIdentity::~DBRowGeneratorIdentity() { GUM_DESTRUCTOR(DBRowGeneratorIdentity); }
-
 
     /// copy operator
     DBRowGeneratorIdentity& DBRowGeneratorIdentity::operator=(const DBRowGeneratorIdentity& from) {
@@ -76,7 +71,6 @@ namespace gum {
       _input_row_ = from._input_row_;
       return *this;
     }
-
 
     /// move operator
     DBRowGeneratorIdentity& DBRowGeneratorIdentity::operator=(DBRowGeneratorIdentity&& from) {

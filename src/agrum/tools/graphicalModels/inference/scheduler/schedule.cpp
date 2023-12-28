@@ -40,7 +40,6 @@ namespace gum {
   // the version number of the schedules
   std::atomic< Idx > Schedule::_overall_version_number_ = Idx(0);
 
-
   /// returns the graph that would obtain when no operation is performed
   DAG Schedule::_fullDAG_() const {
     // if no operation has been performed yet, return _dag_
@@ -88,7 +87,6 @@ namespace gum {
 
     return dag;
   }
-
 
   /// a function to copy the content of a schedule into another one
   void Schedule::_copy_(const Schedule& from) {
@@ -170,7 +168,6 @@ namespace gum {
     }
   }
 
-
   /// a function to delete from memory the allocated content of a schedule
   void Schedule::_destroy_() {
     // remove all the operations of the schedule
@@ -186,7 +183,6 @@ namespace gum {
       }
     }
   }
-
 
   /// empty the schedule, i.e., remove its content
   void Schedule::clear() {
@@ -207,7 +203,6 @@ namespace gum {
     _version_number_ = _newVersionNumber_();
   }
 
-
   /// default constructor (construct an empty set of operations)
   Schedule::Schedule(const Size nb_ops) :
       _dag_(nb_ops, true, 2 * nb_ops, true), _node2op_(nb_ops), _multidim_location_(2 * nb_ops),
@@ -226,7 +221,6 @@ namespace gum {
     // for debugging purposes
     GUM_CONS_CPY(Schedule)
   }
-
 
   /// move constructor
   Schedule::Schedule(Schedule&& from) :
@@ -251,7 +245,6 @@ namespace gum {
     GUM_CONS_MOV(Schedule)
   }
 
-
   /// destructor
   Schedule::~Schedule() {
     // really destroy all the allocated objects contained into the schedule
@@ -260,7 +253,6 @@ namespace gum {
     // for debugging purposes
     GUM_DESTRUCTOR(Schedule)
   }
-
 
   /// copy operator
   Schedule& Schedule::operator=(const Schedule& from) {
@@ -275,7 +267,6 @@ namespace gum {
 
     return *this;
   }
-
 
   /// move operator
   Schedule& Schedule::operator=(Schedule&& from) {
@@ -308,7 +299,6 @@ namespace gum {
 
     return *this;
   }
-
 
   /// operator ==
   bool Schedule::operator==(const Schedule& from) const {
@@ -389,7 +379,6 @@ namespace gum {
     return true;
   }
 
-
   /// inserts an already constructed ScheduleMultiDim
   const IScheduleMultiDim* Schedule::insertScheduleMultiDim(const IScheduleMultiDim& multidim) {
     // check that the ScheduleMultiDim neither already belongs to the schedule
@@ -419,7 +408,6 @@ namespace gum {
     return new_multidim;
   }
 
-
   /// inserts an already constructed ScheduleMultiDim
   void Schedule::emplaceScheduleMultiDim(const IScheduleMultiDim& multidim) {
     // check that the ScheduleMultiDim neither already belongs to the schedule
@@ -447,7 +435,6 @@ namespace gum {
     ++_version_number_;
   }
 
-
   /// returns the adjective corresponding to a parameter index (1st, 2nd, etc.)
   std::string Schedule::_paramString_(Idx i) {
     if (i == 0) return "1st";
@@ -458,7 +445,6 @@ namespace gum {
     str << (i + 1) << "th";
     return str.str();
   }
-
 
   /// inserts an operation into the schedule
   const ScheduleOperator& Schedule::insertOperation(const ScheduleOperator& op,
@@ -610,7 +596,6 @@ namespace gum {
     return *new_op;
   }
 
-
   /// returns the set of ScheduleOperations that can be executed at once
   NodeSet Schedule::availableOperations() const {
     NodeSet available_nodes;
@@ -628,7 +613,6 @@ namespace gum {
     }
     return available_nodes;
   }
-
 
   /// updates the DAG after a given operation has been executed
   void Schedule::updateAfterExecution(const NodeId           exec_node,

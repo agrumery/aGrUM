@@ -653,6 +653,7 @@ namespace gum {
      MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::setIteration(Size iteration) {
     iteration_ = iteration;
   }
+
   template < typename GUM_SCALAR,
              template < typename >
              class ICPTGenerator,
@@ -665,6 +666,7 @@ namespace gum {
       GUM_ERROR(OperationNotAllowed,
                 "the sum of the probabilities p and q must be at most equal to 100");
   }
+
   template < typename GUM_SCALAR,
              template < typename >
              class ICPTGenerator,

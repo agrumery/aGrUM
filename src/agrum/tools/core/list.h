@@ -30,14 +30,16 @@
 #define GUM_LIST_H
 
 #include <cstddef>
-#include <initializer_list>
 #include <iostream>
 #include <sstream>
 #include <vector>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/refPtr.h>
 #include <agrum/tools/core/staticInitializer.h>
+
+#include <initializer_list>
 
 #define GUM_DEFAULT_ITERATOR_NUMBER 4
 
@@ -62,7 +64,7 @@ namespace gum {
   template < typename Val >
   class List;
 
-#endif   // DOXYGEN_SHOULD_SKIP_THIS
+#endif         // DOXYGEN_SHOULD_SKIP_THIS
 
 #ifndef SWIG   // SWIG cannot read these lines
   /// an << operator for List
@@ -96,9 +98,7 @@ namespace gum {
      *
      * This type is used to prevent the list emplace (int) to compile.
      */
-    enum class Emplace {
-      EMPLACE
-    };
+    enum class Emplace { EMPLACE };
 
     public:
     // ============================================================================
@@ -375,10 +375,7 @@ namespace gum {
 
     /// Locations around iterators where insertions of new elements can take /
     /// place.
-    enum class location {
-      BEFORE,
-      AFTER
-    };
+    enum class location { BEFORE, AFTER };
 
     // ============================================================================
     /// @name Constructors / Destructors

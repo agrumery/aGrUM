@@ -32,10 +32,12 @@
 #ifndef GUM_MN_READER_H
 #define GUM_MN_READER_H
 
-#include <agrum/MRF/MarkovRandomField.h>
-#include <agrum/agrum.h>
 #include <iostream>
 #include <string>
+
+#include <agrum/agrum.h>
+
+#include <agrum/MRF/MarkovRandomField.h>
 
 namespace gum {
   /* =========================================================================*/

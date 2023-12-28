@@ -28,14 +28,12 @@ namespace gum {
     GUM_CONSTRUCTOR(BarrenNodesFinder);
   }
 
-
   /// copy constructor
   INLINE BarrenNodesFinder::BarrenNodesFinder(const BarrenNodesFinder& from) :
       _dag_(from._dag_), _observed_nodes_(from._observed_nodes_),
       _target_nodes_(from._target_nodes_) {   // for debugging purposes
     GUM_CONS_CPY(BarrenNodesFinder);
   }
-
 
   /// move constructor
   INLINE BarrenNodesFinder::BarrenNodesFinder(BarrenNodesFinder&& from) noexcept :
@@ -45,14 +43,13 @@ namespace gum {
     GUM_CONS_MOV(BarrenNodesFinder);
   }
 
-
   /// destructor
   INLINE BarrenNodesFinder::~BarrenNodesFinder(){// for debugging purposes
                                                  GUM_DESTRUCTOR(BarrenNodesFinder)}
 
 
   /// copy operator
-  INLINE BarrenNodesFinder& BarrenNodesFinder::operator=(const BarrenNodesFinder& from) {
+  INLINE BarrenNodesFinder& BarrenNodesFinder::operator=(const BarrenNodesFinder & from) {
     if (this != &from) {
       _dag_            = from._dag_;
       _observed_nodes_ = from._observed_nodes_;
@@ -60,7 +57,6 @@ namespace gum {
     }
     return *this;
   }
-
 
   /// move operator
   INLINE BarrenNodesFinder& BarrenNodesFinder::operator=(BarrenNodesFinder&& from) {
@@ -72,16 +68,13 @@ namespace gum {
     return *this;
   }
 
-
   /// sets a new DAG
   INLINE void BarrenNodesFinder::setDAG(const DAG* new_dag) { _dag_ = new_dag; }
-
 
   /// sets the observed nodes in the DAG
   INLINE void BarrenNodesFinder::setEvidence(const NodeSet* observed_nodes) {
     _observed_nodes_ = observed_nodes;
   }
-
 
   /// sets the set of target nodes we are interested in
   INLINE void BarrenNodesFinder::setTargets(const NodeSet* target_nodes) {

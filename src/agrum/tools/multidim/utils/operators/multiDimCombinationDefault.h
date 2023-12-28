@@ -29,8 +29,8 @@
 #define GUM_MULTI_DIM_COMBINATION_DEFAULT_H
 
 #include <agrum/agrum.h>
-#include <agrum/tools/multidim/utils/operators/multiDimCombination.h>
 
+#include <agrum/tools/multidim/utils/operators/multiDimCombination.h>
 
 namespace gum {
 

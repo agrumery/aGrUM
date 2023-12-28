@@ -23,16 +23,17 @@
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
-#include <agrum/BN/BayesNet.h>
-#include <agrum/BN/inference/ShaferShenoyInference.h>
-#include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/BN/inference/loopySamplingInference.h>
-#include <agrum/BN/inference/variableElimination.h>
-#include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/tools/multidim/implementations/multiDimArray.h>
 #include <agrum/tools/variables/labelizedVariable.h>
+
+#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/BN/inference/loopySamplingInference.h>
+#include <agrum/BN/inference/ShaferShenoyInference.h>
+#include <agrum/BN/inference/variableElimination.h>
+#include <agrum/BN/io/BIF/BIFReader.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3

@@ -27,9 +27,9 @@
  * @author Paul ALAM & Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#include <agrum/BN/BayesNetFragment.h>
 #include <agrum/BN/algorithms/barrenNodesFinder.h>
 #include <agrum/BN/algorithms/dSeparationAlgorithm.h>
+#include <agrum/BN/BayesNetFragment.h>
 #include <agrum/BN/inference/tools/samplingInference.h>
 
 
@@ -39,7 +39,6 @@
 #define DEFAULT_TIMEOUT          6000
 #define DEFAULT_EPSILON          1e-2
 #define DEFAULT_MIN_EPSILON_RATE 1e-5
-
 
 namespace gum {
 
@@ -54,7 +53,6 @@ namespace gum {
     this->setMaxTime(DEFAULT_TIMEOUT);
     GUM_CONSTRUCTOR(SamplingInference);
   }
-
 
   template < typename GUM_SCALAR >
   SamplingInference< GUM_SCALAR >::~SamplingInference() {
@@ -72,6 +70,7 @@ namespace gum {
     if (_samplingBN_ == nullptr) return this->BN();
     else return *_samplingBN_;
   }
+
   template < typename GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::setEstimatorFromBN_() {
     _estimator_.setFromBN(&samplingBN(), this->hardEvidenceNodes());
@@ -85,7 +84,6 @@ namespace gum {
     _estimator_.setFromLBP(lbp, this->hardEvidenceNodes(), virtualLBPSize);
     this->isSetEstimator = true;
   }
-
 
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >& SamplingInference< GUM_SCALAR >::currentPosterior(NodeId id) {
@@ -124,7 +122,7 @@ namespace gum {
     dsep.requisiteNodes(this->BN().dag(),
                         this->BN().nodes().asNodeSet(),   // no target for approximateInference
                         this->hardEvidenceNodes(),
-                        this->softEvidenceNodes(),   // should be empty
+                        this->softEvidenceNodes(),        // should be empty
                         requisite);
     requisite += this->hardEvidenceNodes();
 
@@ -145,7 +143,6 @@ namespace gum {
     this->isContextualized = true;
     this->onContextualize_(_samplingBN_);
   }
-
 
   template < typename GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::makeInference_() {
@@ -173,7 +170,6 @@ namespace gum {
     this->isSetEstimator = false;
   }
 
-
   template < typename GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::addVarSample_(NodeId nod, Instantiation* I) {
     gum::Instantiation Itop = gum::Instantiation(*I);
@@ -184,7 +180,6 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::onContextualize_(BayesNetFragment< GUM_SCALAR >* bn) {}
-
 
   template < typename GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::onEvidenceAdded_(const NodeId id, bool isHardEvidence) {

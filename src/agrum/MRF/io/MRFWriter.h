@@ -32,10 +32,12 @@
 #ifndef GUM_MN_WRITER_H
 #define GUM_MN_WRITER_H
 
-#include <agrum/MRF/IMarkovRandomField.h>
-#include <agrum/agrum.h>
 #include <iostream>
 #include <string>
+
+#include <agrum/agrum.h>
+
+#include <agrum/MRF/IMarkovRandomField.h>
 
 namespace gum {
 

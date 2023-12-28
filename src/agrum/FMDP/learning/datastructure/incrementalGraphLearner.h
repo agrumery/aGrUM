@@ -35,6 +35,7 @@
 // =========================================================================
 #include <agrum/FMDP/learning/datastructure/IVisitableGraphLearner.h>
 #include <agrum/FMDP/learning/datastructure/nodeDatabase.h>
+
 // =========================================================================
 // =========================================================================
 
@@ -114,6 +115,7 @@ namespace gum {
     /// @name New Observation insertion methods
     // ###################################################################
     /// @{
+
     public:
     // ==========================================================================
     /**
@@ -129,13 +131,14 @@ namespace gum {
      */
     // ==========================================================================
     void _assumeValue_(const Observation* obs) { _assumeValue_(obs, Int2Type< isScalar >()); }
+
     void _assumeValue_(const Observation* obs, Int2Type< true >) {
       if (!valueAssumed_.exists(obs->reward())) valueAssumed_ << obs->reward();
     }
+
     void _assumeValue_(const Observation* obs, Int2Type< false >) {
       if (!valueAssumed_.exists(obs->modality(value_))) valueAssumed_ << obs->modality(value_);
     }
-
 
     // ==========================================================================
     /**
@@ -145,9 +148,11 @@ namespace gum {
     Idx _branchObs_(const Observation* obs, const DiscreteVariable* var) {
       return _branchObs_(obs, var, Int2Type< isScalar >());
     }
+
     Idx _branchObs_(const Observation* obs, const DiscreteVariable* var, Int2Type< true >) {
       return obs->rModality(var);
     }
+
     Idx _branchObs_(const Observation* obs, const DiscreteVariable* var, Int2Type< false >) {
       return obs->modality(var);
     }
@@ -271,6 +276,7 @@ namespace gum {
     /// @name Function Graph Updating methods
     // ###################################################################
     /// @{
+
     public:
     // ==========================================================================
     /// Updates target to currently learned graph structure
@@ -286,11 +292,11 @@ namespace gum {
     // ==========================================================================
     Size size() { return nodeVarMap_.size(); }
 
-
     // ###################################################################
     /// @name Visit Methods
     // ###################################################################
     /// @{
+
     public:
     // ==========================================================================
     ///
@@ -326,6 +332,7 @@ namespace gum {
            ++varIter)
         ret->add(**varIter);
     }
+
     /// @}
 
     protected:

@@ -35,6 +35,7 @@
 // =========================================================================
 #include <agrum/FMDP/learning/datastructure/leaves/concreteLeaf.h>
 #include <agrum/FMDP/learning/datastructure/leaves/fusionContext.h>
+
 // =========================================================================
 
 namespace gum {

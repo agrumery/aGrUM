@@ -42,20 +42,17 @@ namespace gum {
     /// destructor
     ParamEstimatorML::~ParamEstimatorML() { GUM_DESTRUCTOR(ParamEstimatorML); }
 
-
     /// copy operator
     ParamEstimatorML& ParamEstimatorML::operator=(const ParamEstimatorML& from) {
       ParamEstimator::operator=(from);
       return *this;
     }
 
-
     /// move operator
     ParamEstimatorML& ParamEstimatorML::operator=(ParamEstimatorML&& from) {
       ParamEstimator::operator=(std::move(from));
       return *this;
     }
-
 
     /// returns the CPT's parameters corresponding to a given set of nodes
     std::vector< double >
@@ -67,9 +64,9 @@ namespace gum {
 
       // get the counts for all the nodes in the idset and add the external and
       // score internal priors
-      this->counter_.clear(); // for EM estimations, we need to disable caches
+      this->counter_.clear();   // for EM estimations, we need to disable caches
       std::vector< double > N_ijk(this->counter_.counts(idset, true));
-      const bool informative_external_prior       = this->external_prior_->isInformative();
+      const bool            informative_external_prior = this->external_prior_->isInformative();
       const bool informative_score_internal_prior = this->score_internal_prior_->isInformative();
       if (informative_external_prior) this->external_prior_->addJointPseudoCount(idset, N_ijk);
       if (informative_score_internal_prior)

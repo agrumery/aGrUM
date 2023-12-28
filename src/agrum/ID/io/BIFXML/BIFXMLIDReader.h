@@ -79,10 +79,12 @@ GONZALES(_at_AMU)
 #include <sstream>
 #include <string>
 
-#include <agrum/ID/io/IDReader.h>
 #include <agrum/agrum.h>
+
 #include <agrum/tools/external/tinyxml/ticpp/ticpp.h>
 #include <agrum/tools/variables/labelizedVariable.h>
+
+#include <agrum/ID/io/IDReader.h>
 
 namespace gum {
   /**

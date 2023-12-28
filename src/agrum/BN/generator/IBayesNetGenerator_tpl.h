@@ -27,6 +27,7 @@
  *
  */
 #include <agrum/tools/variables/rangeVariable.h>
+
 #include <agrum/BN/generator/IBayesNetGenerator.h>
 
 namespace gum {
@@ -44,8 +45,7 @@ namespace gum {
     if (maxArcs < nbrNodes - 1 || maxArcs > (nbrNodes * (nbrNodes - 1)) / 2)
       GUM_ERROR(OperationNotAllowed, " maxArcs value not possible ")
 
-    if (maxModality < 2)
-      GUM_ERROR(OperationNotAllowed, " maxModality must be at least equal to 2 ")
+    if (maxModality < 2) GUM_ERROR(OperationNotAllowed, " maxModality must be at least equal to 2 ")
 
     maxArcs_     = maxArcs;
     maxModality_ = maxModality;
@@ -86,6 +86,7 @@ namespace gum {
 
     maxModality_ = maxModality;
   }
+
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
   INLINE void IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::setNbrNodes(Size nbrNodes) {
     if ((maxArcs_ < nbrNodes - 1) || (maxArcs_ > (nbrNodes * (nbrNodes - 1)) / 2))
@@ -101,6 +102,7 @@ namespace gum {
 
     maxArcs_ = maxArcs;
   }
+
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
   INLINE void IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::fromDAG(BayesNet< GUM_SCALAR >& bn) {
     bn.clear();

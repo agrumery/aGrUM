@@ -38,13 +38,11 @@ namespace gum {
       GUM_CONSTRUCTOR(IDBInitializer);
     }
 
-
     /// copy constructor
     INLINE IDBInitializer::IDBInitializer(const IDBInitializer& from) :
         _var_names_(from._var_names_), _input_type_(from._input_type_) {
       GUM_CONS_CPY(IDBInitializer);
     }
-
 
     /// move constructor
     INLINE IDBInitializer::IDBInitializer(IDBInitializer&& from) :
@@ -52,13 +50,11 @@ namespace gum {
       GUM_CONS_MOV(IDBInitializer);
     }
 
-
     /// returns the names of the variables in the input database
     INLINE const std::vector< std::string >& IDBInitializer::variableNames() {
       if (_var_names_.empty()) _var_names_ = this->variableNames_();
       return _var_names_;
     }
-
 
     /// asks the child class for the content of the current row using strings
     INLINE const std::vector< std::string >& IDBInitializer::currentStringRow_() {
@@ -66,7 +62,6 @@ namespace gum {
                 "Method currentStringRow_ should not be used or it should be "
                 "overloaded in children classes.");
     }
-
 
     /// asks the child class for the content of the current row using dbcells
     INLINE const DBRow< DBCell >& IDBInitializer::currentDBCellRow_() {

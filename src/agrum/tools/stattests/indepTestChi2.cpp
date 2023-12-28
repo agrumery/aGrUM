@@ -48,7 +48,6 @@ namespace gum {
       return *this;
     }
 
-
     /// move operator
     IndepTestChi2& IndepTestChi2::operator=(IndepTestChi2&& from) {
       if (this != &from) {
@@ -57,7 +56,6 @@ namespace gum {
       }
       return *this;
     }
-
 
     /// returns the pair <statistics,pvalue> corresponding to a given IdCondSet
     std::pair< double, double > IndepTestChi2::statistics_(const IdCondSet& idset) {

@@ -27,6 +27,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #  include <agrum/agrum.h>
+
 #  include <agrum/tools/graphicalModels/inference/scheduler/scheduleOperator.h>
 
 namespace gum {
@@ -36,32 +37,26 @@ namespace gum {
     return (_op_type_ == op._op_type_);
   }
 
-
   /// operator !=
   INLINE bool ScheduleOperator::operator!=(const ScheduleOperator& op) const {
     return !ScheduleOperator::operator==(op);
   }
-
 
   /// checks whether two ScheduleOperator are similar
   INLINE bool ScheduleOperator::isSameOperator(const ScheduleOperator& op) const {
     return (_op_type_ == op._op_type_);
   }
 
-
   /// returns the name of the operator
   INLINE ScheduleOperatorType ScheduleOperator::type() const { return _op_type_; }
 
-
   /// indicates whether the operator deletes some of its arguments
   INLINE bool ScheduleOperator::implyDeletion() const { return _imply_deletion_; }
-
 
   /// makes the results of the operator persistent or not
   INLINE void ScheduleOperator::makeResultsPersistent(const bool is_persistent) {
     _result_persistent_ = is_persistent;
   }
-
 
   /// shows whether the operator has persistent results
   INLINE bool ScheduleOperator::hasPersistentResults() const { return _result_persistent_; }

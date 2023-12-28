@@ -30,18 +30,20 @@
 #ifndef GUM_SORTED_PRIORITY_QUEUE_H
 #define GUM_SORTED_PRIORITY_QUEUE_H
 
+#include <cstddef>
 #include <functional>
-#include <initializer_list>
 #include <sstream>
 #include <string>
-#include <type_traits>
 #include <utility>
 #include <vector>
-#include <cstddef>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/sharedAVLTree.h>
+
 #include <agrum/tools/core/priorityQueue.h>
+#include <agrum/tools/core/sharedAVLTree.h>
+
+#include <initializer_list>
+#include <type_traits>
 
 namespace gum {
 
@@ -54,7 +56,6 @@ namespace gum {
   class SortedPriorityQueueReverseIterator;
   template < typename Val, typename Priority, typename Cmp >
   class SortedPriorityQueueReverseIteratorSafe;
-
 
   /**
    * @class SortedPriorityQueue
@@ -436,7 +437,9 @@ namespace gum {
     /// the comparison function used to sort the elements in the tree
     struct TreeCmp {
       TreeCmp() = default;
+
       TreeCmp(const Cmp& cmp) : _cmp_(cmp) {}
+
       TreeCmp(Cmp&& cmp) : _cmp_(std::move(cmp)) {}
 
       // get the priority associated with a given AVLTreeNode value. It turns out
@@ -505,6 +508,7 @@ namespace gum {
     // to make this discrimination at compile time.
     template < typename T >
     struct is_basic_string: std::false_type {};
+
     template < typename T1, typename T2, typename T3 >
     struct is_basic_string< std::basic_string< T1, T2, T3 > >: std::true_type {};
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
@@ -515,7 +519,6 @@ namespace gum {
     friend iterator_safe;
     friend reverse_iterator_safe;
   };
-
 
   /**
    * @class SortedPriorityQueueIterator
@@ -635,7 +638,6 @@ namespace gum {
     friend SortedPriorityQueue< Val, Priority, Cmp >;
   };
 
-
   /**
    * @class SortedPriorityQueueIteratorSafe
    * @headerfile sortedPriorityQueue.h <agrum/tools/core/sortedPriorityQueue.h>
@@ -753,7 +755,6 @@ namespace gum {
     /// allow sorted priority queues to access the content of the iterators
     friend SortedPriorityQueue< Val, Cmp >;
   };
-
 
   /**
    * @class SortedPriorityQueueReverseIterator
@@ -876,7 +877,6 @@ namespace gum {
     friend SortedPriorityQueue< Val, Priority, Cmp >;
   };
 
-
   /**
    * @class SortedPriorityQueueReverseIteratorSafe
    * @headerfile sortedPriorityQueue.h <agrum/tools/core/sortedPriorityQueue.h>
@@ -998,7 +998,6 @@ namespace gum {
     friend SortedPriorityQueue< Val, Cmp >;
   };
 
-
   /// display the content of a sorted priority queue
   template < typename Val, typename Priority, typename Cmp >
   std::ostream& operator<<(std::ostream&                                    stream,
@@ -1037,7 +1036,6 @@ namespace gum {
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 } /* namespace gum */
-
 
 // always include the implementation of the templates
 #include <agrum/tools/core/sortedPriorityQueue_tpl.h>

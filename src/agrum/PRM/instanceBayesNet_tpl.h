@@ -73,7 +73,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE InstanceBayesNet< GUM_SCALAR >&
-       InstanceBayesNet< GUM_SCALAR >::operator=(const InstanceBayesNet& from) {
+           InstanceBayesNet< GUM_SCALAR >::operator=(const InstanceBayesNet& from) {
       if (this != &from) {
         IBayesNet< GUM_SCALAR >::operator=(from);
 

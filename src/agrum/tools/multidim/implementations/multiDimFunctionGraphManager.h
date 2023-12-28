@@ -32,6 +32,7 @@
 #  define GUM_MULTI_DIM_FUNCTION_GRAPH_MANAGER_H
 
 #  include <agrum/agrum.h>
+
 #  include <agrum/tools/graphs/parts/nodeGraphPart.h>
 #  include <agrum/tools/multidim/utils/FunctionGraphUtilities/internalNode.h>
 
@@ -94,6 +95,7 @@ namespace gum {
      * You have to call MultiDimFunctionGraph::getManager() to get the instance
      * of MultiDimFunctionGraphManager bound to your function graph.
      */
+
     protected:
     explicit MultiDimFunctionGraphManager(
        MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* master);

@@ -23,13 +23,14 @@
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
-#include <agrum/ID/influenceDiagram.h>
-#include <agrum/ID/io/BIFXML/BIFXMLIDWriter.h>
-#include <agrum/ID/io/BIFXML/BIFXMLIDReader.h>
 #include <agrum/tools/variables/labelizedVariable.h>
+
 #include <agrum/ID/generator/influenceDiagramGenerator.h>
+#include <agrum/ID/influenceDiagram.h>
+#include <agrum/ID/io/BIFXML/BIFXMLIDReader.h>
+#include <agrum/ID/io/BIFXML/BIFXMLIDWriter.h>
 
 // The graph used for the tests:
 //           D1
@@ -174,7 +175,6 @@ namespace gum_tests {
 
       if (output.fail()) { GUM_ERROR(gum::IOError, "Writing in the ostream failed.") }
     }
-
 
     GUM_ACTIVE_TEST(GenerationReadWrite) {
       gum::InfluenceDiagramGenerator< double > gen;

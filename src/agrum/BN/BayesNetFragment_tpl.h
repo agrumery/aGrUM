@@ -25,9 +25,10 @@
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
+#include <agrum/tools/multidim/potential.h>
+
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/BayesNetFragment.h>
-#include <agrum/tools/multidim/potential.h>
 
 namespace gum {
   template < typename GUM_SCALAR >
@@ -50,15 +51,18 @@ namespace gum {
   INLINE void BayesNetFragment< GUM_SCALAR >::whenNodeAdded(const void* src, NodeId id) {
     // nothing to do
   }
+
   template < typename GUM_SCALAR >
   INLINE void BayesNetFragment< GUM_SCALAR >::whenNodeDeleted(const void* src, NodeId id) {
     uninstallNode(id);
   }
+
   template < typename GUM_SCALAR >
   INLINE void
      BayesNetFragment< GUM_SCALAR >::whenArcAdded(const void* src, NodeId from, NodeId to) {
     // nothing to do
   }
+
   template < typename GUM_SCALAR >
   INLINE void
      BayesNetFragment< GUM_SCALAR >::whenArcDeleted(const void* src, NodeId from, NodeId to) {

@@ -19,27 +19,27 @@
  */
 
 
-#include <agrum/BN/BayesNet.h>
+#include <iostream>
+
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
+
+#include <agrum/tools/database/databaseTable.h>
+#include <agrum/tools/database/DBInitializerFromCSV.h>
+#include <agrum/tools/database/DBRowGeneratorIdentity.h>
+#include <agrum/tools/database/DBRowGeneratorParser.h>
+#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
+#include <agrum/tools/database/DBTranslatorSet.h>
 #include <agrum/tools/graphs/DAG.h>
 #include <agrum/tools/graphs/mixedGraph.h>
 #include <agrum/tools/variables/labelizedVariable.h>
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
-#include <iostream>
 
-#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
-#include <agrum/tools/database/DBRowGeneratorParser.h>
-#include <agrum/tools/database/DBRowGeneratorIdentity.h>
-#include <agrum/tools/database/DBInitializerFromCSV.h>
-#include <agrum/tools/database/databaseTable.h>
-#include <agrum/tools/database/DBTranslatorSet.h>
-
-#include <agrum/BN/learning/priors/noPrior.h>
-
+#include <agrum/BN/BayesNet.h>
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
-#include <agrum/BN/learning/SimpleMiic.h>
 #include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
+#include <agrum/BN/learning/priors/noPrior.h>
+#include <agrum/BN/learning/SimpleMiic.h>
 
 namespace gum_tests {
 
@@ -216,7 +216,6 @@ namespace gum_tests {
       TS_ASSERT(graph.existsArc(4, 3))
       TS_ASSERT(graph.existsEdge(5, 7))
     }
-
 
     void xtest_tonda() {
       /*

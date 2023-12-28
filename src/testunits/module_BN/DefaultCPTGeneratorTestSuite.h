@@ -23,10 +23,11 @@
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
+
+#include <agrum/tools/variables/labelizedVariable.h>
 
 #include <agrum/BN/generator/simpleCPTGenerator.h>
-#include <agrum/tools/variables/labelizedVariable.h>
 
 namespace gum_tests {
 

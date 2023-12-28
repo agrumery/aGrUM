@@ -18,27 +18,29 @@
  *
  */
 
+#include <ctime>
 #include <iostream>
 #include <string>
-#include <ctime>
 // #include <experimental/filesystem>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
+
+#include <agrum/tools/variables/discretizedVariable.h>
+
+#include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/BN/inference/tools/aggregatorDecomposition.h>
+#include <agrum/BN/inference/variableElimination.h>
+#include <agrum/BN/io/BIF/BIFWriter.h>
+#include <agrum/BN/io/BIFXML/BIFXMLBNReader.h>
+#include <agrum/BN/io/BIFXML/BIFXMLBNWriter.h>
+#include <agrum/PRM/inference/groundedInference.h>
+#include <agrum/PRM/o3prm/O3prm.h>
+#include <agrum/PRM/o3prm/O3prmBNReader.h>
+#include <agrum/PRM/o3prm/O3prmReader.h>
+#include <agrum/PRM/PRM.h>
 
 #include <agrum/tools/core/math/math_utils.h>
-#include <agrum/BN/inference/tools/aggregatorDecomposition.h>
-#include <agrum/PRM/PRM.h>
-#include <agrum/PRM/o3prm/O3prm.h>
-#include <agrum/PRM/o3prm/O3prmReader.h>
-#include <agrum/tools/variables/discretizedVariable.h>
-#include <agrum/PRM/inference/groundedInference.h>
-#include <agrum/BN/inference/variableElimination.h>
-#include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/BN/io/BIF/BIFWriter.h>
-#include <agrum/BN/io/BIFXML/BIFXMLBNWriter.h>
-#include <agrum/BN/io/BIFXML/BIFXMLBNReader.h>
-#include <agrum/PRM/o3prm/O3prmBNReader.h>
 
 namespace gum_tests {
 

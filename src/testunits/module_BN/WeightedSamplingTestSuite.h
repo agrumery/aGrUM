@@ -22,16 +22,16 @@
 #include <iostream>
 #include <string>
 
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
+
+#include <agrum/tools/core/approximations/approximationSchemeListener.h>
+#include <agrum/tools/variables/labelizedVariable.h>
+
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/weightedSampling.h>
-#include <agrum/tools/variables/labelizedVariable.h>
-
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
-
 #include <agrum/BN/io/BIF/BIFReader.h>
-#include <agrum/tools/core/approximations/approximationSchemeListener.h>
 
 #include <gumtest/AgrumApproximationUtils.h>   // must be last include
 
@@ -47,15 +47,18 @@ namespace gum_tests {
     public:
     explicit aSimpleWeightedListener(gum::ApproximationScheme& sch) :
         gum::ApproximationSchemeListener(sch){};
+
     void whenProgress(const void* buffer, const gum::Size a, const double b, const double c) final {
       _nbr_++;
     }
+
     void whenStop(const void* buffer, const std::string& s) final {
       _nbr_++;
       _mess_ = s;
     }
 
-    int         getNbr() { return _nbr_; }
+    int getNbr() { return _nbr_; }
+
     std::string getMess() { return _mess_; }
   };
 
@@ -70,9 +73,9 @@ namespace gum_tests {
 
       try {
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::WeightedSampling< double > inf(&bn);
-        inf.setEpsilon(EPSILON_FOR_WEIGHTED);
-        inf.makeInference();
+          gum::WeightedSampling< double > inf(&bn);
+          inf.setEpsilon(EPSILON_FOR_WEIGHTED);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_WEIGHTED_SIMPLE_TEST);
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
@@ -92,10 +95,10 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::WeightedSampling< double > inf(&bn);
-        inf.addEvidence(bn.idFromName(ev), 0);
-        inf.setEpsilon(EPSILON_FOR_WEIGHTED);
-        inf.makeInference();
+          gum::WeightedSampling< double > inf(&bn);
+          inf.addEvidence(bn.idFromName(ev), 0);
+          inf.setEpsilon(EPSILON_FOR_WEIGHTED);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_WEIGHTED_SIMPLE_TEST);
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
@@ -114,11 +117,11 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::WeightedSampling< double > inf(&bn);
-        inf.addEvidence(bn.idFromName(ev), 0);
-        inf.setEpsilon(EPSILON_FOR_WEIGHTED);
-        inf.setVerbosity(false);
-        inf.makeInference();
+          gum::WeightedSampling< double > inf(&bn);
+          inf.addEvidence(bn.idFromName(ev), 0);
+          inf.setEpsilon(EPSILON_FOR_WEIGHTED);
+          inf.setVerbosity(false);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_WEIGHTED_SIMPLE_TEST);
 
       } catch (gum::Exception& e) {
@@ -138,11 +141,11 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::WeightedSampling< double > inf(&bn);
-        inf.addEvidence(bn.idFromName(ev), 0);
-        inf.setEpsilon(EPSILON_FOR_WEIGHTED);
-        inf.setVerbosity(false);
-        inf.makeInference();
+          gum::WeightedSampling< double > inf(&bn);
+          inf.addEvidence(bn.idFromName(ev), 0);
+          inf.setEpsilon(EPSILON_FOR_WEIGHTED);
+          inf.setVerbosity(false);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_WEIGHTED_SIMPLE_TEST);
 
       } catch (gum::Exception& e) {
@@ -163,13 +166,13 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::WeightedSampling< double > inf(&bn);
-        inf.addEvidence(bn.idFromName("e"), 0);
-        inf.addEvidence(bn.idFromName("b"), 1);
-        inf.addEvidence(bn.idFromName("h"), 0);
-        inf.setEpsilon(EPSILON_FOR_WEIGHTED);
-        inf.setVerbosity(false);
-        inf.makeInference();
+          gum::WeightedSampling< double > inf(&bn);
+          inf.addEvidence(bn.idFromName("e"), 0);
+          inf.addEvidence(bn.idFromName("b"), 1);
+          inf.addEvidence(bn.idFromName("h"), 0);
+          inf.setEpsilon(EPSILON_FOR_WEIGHTED);
+          inf.setVerbosity(false);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_WEIGHTED_SIMPLE_TEST);
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
@@ -190,13 +193,13 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::WeightedSampling< double > inf(&bn);
-        inf.addEvidence(bn.idFromName("e"), 0);
-        inf.addEvidence(bn.idFromName("b"), 1);
-        inf.addEvidence(bn.idFromName("h"), 0);
-        inf.setVerbosity(false);
-        inf.setEpsilon(EPSILON_FOR_WEIGHTED);
-        inf.makeInference();
+          gum::WeightedSampling< double > inf(&bn);
+          inf.addEvidence(bn.idFromName("e"), 0);
+          inf.addEvidence(bn.idFromName("b"), 1);
+          inf.addEvidence(bn.idFromName("h"), 0);
+          inf.setVerbosity(false);
+          inf.setEpsilon(EPSILON_FOR_WEIGHTED);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_WEIGHTED_SIMPLE_TEST);
 
       } catch (gum::Exception& e) {
@@ -204,7 +207,6 @@ namespace gum_tests {
         TS_ASSERT(false)
       }
     }
-
 
     GUM_ACTIVE_TEST(WeightedSimpleBN) {
       auto bn = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
@@ -215,10 +217,10 @@ namespace gum_tests {
         lazy.makeInference();
         ;
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::WeightedSampling< double > inf(&bn);
-        inf.setVerbosity(false);
-        inf.setEpsilon(EPSILON_FOR_WEIGHTED);
-        inf.makeInference();
+          gum::WeightedSampling< double > inf(&bn);
+          inf.setVerbosity(false);
+          inf.setEpsilon(EPSILON_FOR_WEIGHTED);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_WEIGHTED_SIMPLE_TEST);
 
       } catch (gum::Exception& e) {
@@ -232,11 +234,11 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::WeightedSampling< double > inf(&bn);
-        inf.addEvidence(bn.idFromName("a"), 0);
-        inf.setVerbosity(false);
-        inf.setEpsilon(EPSILON_FOR_WEIGHTED);
-        inf.makeInference();
+          gum::WeightedSampling< double > inf(&bn);
+          inf.addEvidence(bn.idFromName("a"), 0);
+          inf.setVerbosity(false);
+          inf.setEpsilon(EPSILON_FOR_WEIGHTED);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_WEIGHTED_SIMPLE_TEST);
 
 
@@ -251,11 +253,11 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::WeightedSampling< double > inf(&bn);
-        inf.addEvidence(bn.idFromName("d"), 0);
-        inf.setVerbosity(false);
-        inf.setEpsilon(EPSILON_FOR_WEIGHTED);
-        inf.makeInference();
+          gum::WeightedSampling< double > inf(&bn);
+          inf.addEvidence(bn.idFromName("d"), 0);
+          inf.setVerbosity(false);
+          inf.setEpsilon(EPSILON_FOR_WEIGHTED);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_WEIGHTED_SIMPLE_TEST);
 
       } catch (gum::Exception& e) {
@@ -263,7 +265,6 @@ namespace gum_tests {
         TS_ASSERT(false)
       }
     }
-
 
     GUM_ACTIVE_TEST(WeightedCplxBN) {
       auto bn = gum::BayesNet< double >::fastPrototype(
@@ -276,10 +277,10 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::WeightedSampling< double > inf(&bn);
-        inf.setVerbosity(false);
-        inf.setEpsilon(EPSILON_FOR_WEIGHTED);
-        inf.makeInference();
+          gum::WeightedSampling< double > inf(&bn);
+          inf.setVerbosity(false);
+          inf.setEpsilon(EPSILON_FOR_WEIGHTED);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_WEIGHTED_SIMPLE_TEST);
 
       } catch (gum::Exception& e) {
@@ -293,11 +294,11 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::WeightedSampling< double > inf(&bn);
-        inf.addEvidence(bn.idFromName("a"), 0);
-        inf.setVerbosity(false);
-        inf.setEpsilon(EPSILON_FOR_WEIGHTED);
-        inf.makeInference();
+          gum::WeightedSampling< double > inf(&bn);
+          inf.addEvidence(bn.idFromName("a"), 0);
+          inf.setVerbosity(false);
+          inf.setEpsilon(EPSILON_FOR_WEIGHTED);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_WEIGHTED_SIMPLE_TEST);
 
       } catch (gum::Exception& e) {
@@ -311,11 +312,11 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::WeightedSampling< double > inf(&bn);
-        inf.addEvidence(bn.idFromName("d"), 0);
-        inf.setVerbosity(false);
-        inf.setEpsilon(EPSILON_FOR_WEIGHTED);
-        inf.makeInference();
+          gum::WeightedSampling< double > inf(&bn);
+          inf.addEvidence(bn.idFromName("d"), 0);
+          inf.setVerbosity(false);
+          inf.setEpsilon(EPSILON_FOR_WEIGHTED);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_WEIGHTED_SIMPLE_TEST);
 
       } catch (gum::Exception& e) {
@@ -336,10 +337,10 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::WeightedSampling< double > inf(&bn);
-        inf.setVerbosity(false);
-        inf.setEpsilon(EPSILON_FOR_WEIGHTED);
-        inf.makeInference();
+          gum::WeightedSampling< double > inf(&bn);
+          inf.setVerbosity(false);
+          inf.setEpsilon(EPSILON_FOR_WEIGHTED);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_WEIGHTED_SIMPLE_TEST);
 
       } catch (gum::Exception& e) {
@@ -347,7 +348,6 @@ namespace gum_tests {
         TS_ASSERT(false)
       }
     }
-
 
     GUM_ACTIVE_TEST(WeightedAlarm) {
       gum::BayesNet< double >  bn;
@@ -361,10 +361,10 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::WeightedSampling< double > inf(&bn);
-        inf.setVerbosity(false);
-        inf.setEpsilon(EPSILON_FOR_WEIGHTED);
-        inf.makeInference();
+          gum::WeightedSampling< double > inf(&bn);
+          inf.setVerbosity(false);
+          inf.setEpsilon(EPSILON_FOR_WEIGHTED);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_WEIGHTED_SIMPLE_TEST);
 
       } catch (gum::Exception& e) {
@@ -372,7 +372,6 @@ namespace gum_tests {
         TS_ASSERT(false)
       }
     }
-
 
     GUM_ACTIVE_TEST(WeightedInfListener) {
       gum::BayesNet< double >  bn;
@@ -392,7 +391,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(agsl.getNbr() * inf.periodSize(), inf.nbrIterations())
       TS_ASSERT_DIFFERS(agsl.getMess(), std::string(""))
     }
-
 
     GUM_ACTIVE_TEST(EvidenceAsTargetOnCplxBN) {
       auto bn = gum::BayesNet< double >::fastPrototype(

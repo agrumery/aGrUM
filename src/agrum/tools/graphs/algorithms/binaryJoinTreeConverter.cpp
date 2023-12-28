@@ -26,6 +26,7 @@
  */
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/graphs/algorithms/binaryJoinTreeConverter.h>
 
 namespace gum {

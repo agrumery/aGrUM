@@ -29,7 +29,9 @@
 #define GUM_LEARNING_STRUCTURAL_CONSTRAINT_UNDIGRAPH_H
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/graphs/undiGraph.h>
+
 #include <agrum/BN/learning/constraints/structuralConstraint.h>
 
 namespace gum {

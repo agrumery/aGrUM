@@ -19,16 +19,18 @@
  */
 
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
 #include <iostream>
 
-#include <agrum/BN/BayesNet.h>
-#include <agrum/BN/algorithms/structuralComparator.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
+
 #include <agrum/tools/graphs/DAG.h>
 #include <agrum/tools/graphs/diGraph.h>
 #include <agrum/tools/graphs/PDAG.h>
 #include <agrum/tools/graphs/undiGraph.h>
+
+#include <agrum/BN/algorithms/structuralComparator.h>
+#include <agrum/BN/BayesNet.h>
 
 namespace gum_tests {
 

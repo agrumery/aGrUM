@@ -36,7 +36,6 @@
 #else
 
 #  include <agrum/tools/core/functors.h>
-
 #  include <agrum/tools/multidim/utils/FunctionGraphUtilities/operators/multiDimFunctionGraphOperator.h>
 
 namespace gum {
@@ -49,6 +48,7 @@ namespace gum {
 
 #  ifdef GUM_MULTI_DIM_OPERATOR_NAME
 #    define GUM_MULTI_DIM_OPERATOR_TYPE GUM_SCALAR
+
   template < typename GUM_SCALAR >
   MultiDimFunctionGraph< GUM_SCALAR >*
      GUM_MULTI_DIM_OPERATOR_NAME(const MultiDimFunctionGraph< GUM_SCALAR >* dg1,
@@ -81,6 +81,7 @@ namespace gum {
 
     return ope.compute();
   }
+
 #  undef GUM_MULTI_DIM_OPERATOR_TYPE
 
 }   // End of namespace gum

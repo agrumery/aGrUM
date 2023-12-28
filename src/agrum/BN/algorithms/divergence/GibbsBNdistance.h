@@ -33,10 +33,10 @@
 #ifndef GUM_GIBBS_KL2_H
 #define GUM_GIBBS_KL2_H
 
-#include <agrum/BN/algorithms/divergence/BNdistance.h>
-#include <agrum/BN/inference/tools/gibbsOperator.h>
 #include <agrum/tools/core/approximations/approximationScheme.h>
 
+#include <agrum/BN/algorithms/divergence/BNdistance.h>
+#include <agrum/BN/inference/tools/gibbsOperator.h>
 
 namespace gum {
 

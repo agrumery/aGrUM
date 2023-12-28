@@ -65,7 +65,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE O3TypeFactory< GUM_SCALAR >&
-         O3TypeFactory< GUM_SCALAR >::operator=(const O3TypeFactory< GUM_SCALAR >& src) {
+             O3TypeFactory< GUM_SCALAR >::operator=(const O3TypeFactory< GUM_SCALAR >& src) {
         if (this == &src) { return *this; }
         _prm_    = src._prm_;
         _o3_prm_ = src._o3_prm_;
@@ -77,7 +77,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE O3TypeFactory< GUM_SCALAR >&
-         O3TypeFactory< GUM_SCALAR >::operator=(O3TypeFactory< GUM_SCALAR >&& src) {
+             O3TypeFactory< GUM_SCALAR >::operator=(O3TypeFactory< GUM_SCALAR >&& src) {
         if (this == &src) { return *this; }
         _prm_    = std::move(src._prm_);
         _o3_prm_ = std::move(src._o3_prm_);

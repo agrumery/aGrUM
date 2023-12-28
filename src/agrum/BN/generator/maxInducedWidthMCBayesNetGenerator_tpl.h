@@ -129,6 +129,7 @@ namespace gum {
      maxlog10InducedWidth() const {
     return maxlog10InducedWidth_;
   }
+
   template < typename GUM_SCALAR,
              template < typename >
              class ICPTGenerator,

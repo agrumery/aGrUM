@@ -19,13 +19,14 @@
  */
 
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
-
 #include <sstream>
 
-#include <agrum/PRM/elements/PRMInstance.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
+
 #include <agrum/tools/variables/labelizedVariable.h>
+
+#include <agrum/PRM/elements/PRMInstance.h>
 
 /**
  * This class is used to test gum::prm::PRMClassElement, since it is an abstrac
@@ -95,6 +96,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING(i = new PRMInstance("i", *_classA_))
       TS_ASSERT_THROWS_NOTHING(delete i)
     }
+
     /// @}
 
     /// Getters & setters
@@ -268,6 +270,7 @@ namespace gum_tests {
       // Assert
       TS_ASSERT_EQUALS(expected, actual)
     }
+
     /// @}
 
     /// Instantiation methods
@@ -295,6 +298,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bij->first(i_a), var_a)
       TS_ASSERT_EQUALS(bij->first(i_b), var_b)
     }
+
     /// @}
 
     /// Reference

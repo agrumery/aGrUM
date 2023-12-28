@@ -22,7 +22,7 @@
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/core/hashFunc.h>
 #include <agrum/tools/core/multiPriorityQueue.h>

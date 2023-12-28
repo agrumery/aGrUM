@@ -46,7 +46,6 @@ namespace gum {
       GUM_CONSTRUCTOR(DBRowGenerator4CompleteRows);
     }
 
-
     /// copy constructor
     DBRowGenerator4CompleteRows::DBRowGenerator4CompleteRows(
        const DBRowGenerator4CompleteRows& from) :
@@ -55,25 +54,21 @@ namespace gum {
       GUM_CONS_CPY(DBRowGenerator4CompleteRows);
     }
 
-
     /// move constructor
     DBRowGenerator4CompleteRows::DBRowGenerator4CompleteRows(DBRowGenerator4CompleteRows&& from) :
         DBRowGenerator(std::move(from)), _input_row_(from._input_row_) {
       GUM_CONS_MOV(DBRowGenerator4CompleteRows);
     }
 
-
     /// virtual copy constructor
     DBRowGenerator4CompleteRows* DBRowGenerator4CompleteRows::clone() const {
       return new DBRowGenerator4CompleteRows(*this);
     }
 
-
     /// destructor
     DBRowGenerator4CompleteRows::~DBRowGenerator4CompleteRows() {
       GUM_DESTRUCTOR(DBRowGenerator4CompleteRows);
     }
-
 
     /// copy operator
     DBRowGenerator4CompleteRows&
@@ -82,7 +77,6 @@ namespace gum {
       _input_row_ = from._input_row_;
       return *this;
     }
-
 
     /// move operator
     DBRowGenerator4CompleteRows&

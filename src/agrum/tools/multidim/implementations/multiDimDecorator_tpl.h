@@ -29,12 +29,11 @@
 #include <mutex>
 
 // include the operators that will be used by the decorators
+#include <agrum/tools/multidim/implementations/multiDimDecorator.h>
 #include <agrum/tools/multidim/utils/operators/completeProjections4MultiDim.h>
 #include <agrum/tools/multidim/utils/operators/operators4MultiDim.h>
 #include <agrum/tools/multidim/utils/operators/projections4MultiDim.h>
 #include <agrum/tools/multidim/utils/partialInstantiation4MultiDim.h>
-
-#include <agrum/tools/multidim/implementations/multiDimDecorator.h>
 
 namespace gum {
   // instrumental and non-API function
@@ -82,10 +81,9 @@ namespace gum {
     content()->copy(from.content());
   }
 
-
   template < typename GUM_SCALAR >
   INLINE MultiDimDecorator< GUM_SCALAR >&
-     MultiDimDecorator< GUM_SCALAR >::operator=(MultiDimDecorator< GUM_SCALAR >&& from) {
+         MultiDimDecorator< GUM_SCALAR >::operator=(MultiDimDecorator< GUM_SCALAR >&& from) {
     MultiDimContainer< GUM_SCALAR >::operator=(
        std::forward< MultiDimContainer< GUM_SCALAR > >(from));
     GUM_OP_MOV(MultiDimDecorator);
@@ -100,7 +98,6 @@ namespace gum {
     return *this;
   }
 
-
   template < typename GUM_SCALAR >
   INLINE MultiDimDecorator< GUM_SCALAR >::MultiDimDecorator(
      MultiDimDecorator< GUM_SCALAR >&& from) noexcept :
@@ -111,7 +108,6 @@ namespace gum {
     content_      = from.content_;
     from.content_ = nullptr;
   }
-
 
   template < typename GUM_SCALAR >
   INLINE MultiDimDecorator< GUM_SCALAR >& MultiDimDecorator< GUM_SCALAR >::operator=(
@@ -125,7 +121,6 @@ namespace gum {
     MultiDimDecorator< GUM_SCALAR >::content()->copy(*from.content());
     return *this;
   }
-
 
   // destructor
 
@@ -382,13 +377,11 @@ namespace gum {
     }
   }
 
-
   // string representation of internal data about i in this.
   template < typename GUM_SCALAR >
   INLINE std::string MultiDimDecorator< GUM_SCALAR >::toString(const Instantiation* i) const {
     return content_->toString(i);
   }
-
 
   template < typename GUM_SCALAR >
   INLINE void MultiDimDecorator< GUM_SCALAR >::replace_(const DiscreteVariable* x,

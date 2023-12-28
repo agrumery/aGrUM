@@ -99,6 +99,7 @@ namespace gum {
       const NodeProperty< Size >& modalities() const;
 
       /// @}
+
       private:
       /// Build the class dependency graph.
       void _buildGraph_(const PRM< GUM_SCALAR >& prm);

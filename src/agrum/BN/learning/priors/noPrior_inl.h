@@ -41,22 +41,17 @@ namespace gum {
       GUM_CONSTRUCTOR(NoPrior);
     }
 
-
     /// copy constructor
     INLINE NoPrior::NoPrior(const NoPrior& from) : Prior(from) { GUM_CONS_CPY(NoPrior); }
-
 
     /// move constructor
     INLINE NoPrior::NoPrior(NoPrior&& from) : Prior(std::move(from)) { GUM_CONS_MOV(NoPrior); }
 
-
     /// virtual copy constructor
     INLINE NoPrior* NoPrior::clone() const { return new NoPrior(*this); }
 
-
     /// destructor
     INLINE NoPrior::~NoPrior() { GUM_DESTRUCTOR(NoPrior); }
-
 
     /// copy operator
     INLINE NoPrior& NoPrior::operator=(const NoPrior& from) {
@@ -64,13 +59,11 @@ namespace gum {
       return *this;
     }
 
-
     /// move operator
     INLINE NoPrior& NoPrior::operator=(NoPrior&& from) {
       Prior::operator=(std::move(from));
       return *this;
     }
-
 
     /// sets the weight of the a priori
     INLINE void NoPrior::setWeight(const double) {}
@@ -78,15 +71,12 @@ namespace gum {
     /// returns the type of the prior
     INLINE PriorType NoPrior::getType() const { return PriorType::NoPriorType; }
 
-
     /// indicates whether the prior is potentially informative
     INLINE bool NoPrior::isInformative() const { return false; }
-
 
     /// returns the prior vector all the variables in the idset
     INLINE void NoPrior::addJointPseudoCount(const IdCondSet&       idset,
                                              std::vector< double >& counts) {}
-
 
     /// returns the prior vector over only the conditioning set of an idset
     INLINE void NoPrior::addConditioningPseudoCount(const IdCondSet&       idset,

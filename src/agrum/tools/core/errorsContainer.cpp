@@ -60,7 +60,7 @@ namespace gum {
   ParseError::ParseError(const ParseError& err) {
     is_error = err.is_error;
     line     = err.line;
-    column   = err.column;   // default 0
+    column   = err.column;     // default 0
     msg      = err.msg;
     filename = err.filename;   // default ""
     code     = err.code;       // default ""
@@ -70,7 +70,7 @@ namespace gum {
     if (this != &err) {
       is_error = err.is_error;
       line     = err.line;
-      column   = err.column;   // default 0
+      column   = err.column;     // default 0
       msg      = err.msg;
       filename = err.filename;   // default ""
       code     = err.code;       // default ""

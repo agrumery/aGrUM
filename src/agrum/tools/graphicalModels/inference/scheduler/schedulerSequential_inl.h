@@ -38,7 +38,6 @@ namespace gum {
     }
   }
 
-
   /// sets a new schedule
   INLINE void SchedulerSequential::_setSchedule_(const Schedule& schedule) {
     if (&schedule != _schedule_) { _schedule_ = const_cast< Schedule* >(&schedule); }

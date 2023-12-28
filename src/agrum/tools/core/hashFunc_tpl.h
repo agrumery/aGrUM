@@ -27,9 +27,9 @@
  */
 
 // to help IDE parser
-#include <agrum/tools/core/hashFunc.h>
-
 #include <cstring>
+
+#include <agrum/tools/core/hashFunc.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 

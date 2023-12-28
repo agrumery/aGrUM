@@ -168,7 +168,6 @@ namespace gum {
     return errors();
   }
 
-
   template < typename GUM_SCALAR >
   void O3prmBNReader< GUM_SCALAR >::_generateBN_(prm::PRMSystem< GUM_SCALAR >& system) {
     system.instantiate();

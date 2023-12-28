@@ -32,9 +32,11 @@
 #include <agrum/agrum.h>
 
 #include <agrum/tools/stattests/recordCounter.h>
-#include <agrum/BN/learning/scores_and_tests/scoringCache.h>
+
 #include <agrum/BN/learning/priors/prior.h>
 #include <agrum/BN/learning/structureUtils/graphChange.h>
+
+#include <agrum/BN/learning/scores_and_tests/scoringCache.h>
 
 namespace gum {
 

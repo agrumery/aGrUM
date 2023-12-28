@@ -30,11 +30,10 @@
 
 
 #include <thread>
-#include <vector>
 #include <utility>
+#include <vector>
 
 #include <agrum/agrum.h>
-
 
 namespace gum {
 
@@ -89,7 +88,6 @@ namespace gum {
   }   // namespace threadsSTL
 
 } /* namespace gum */
-
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE

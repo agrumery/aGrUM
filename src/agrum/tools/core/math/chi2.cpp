@@ -43,7 +43,7 @@
 #  define GUM_BIGX        20.0                          // max value to represent exp (x)
 #  define _gum_ex(x)      (((x) < -GUM_BIGX) ? 0.0 : std::exp(x))
 
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+#endif                                                  /* DOXYGEN_SHOULD_SKIP_THIS */
 
 // include the inlined functions if necessary
 #ifdef GUM_NO_INLINE

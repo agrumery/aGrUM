@@ -27,8 +27,9 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#  include <agrum/BN/learning/scores_and_tests/scoreAIC.h>
 #  include <sstream>
+
+#  include <agrum/BN/learning/scores_and_tests/scoreAIC.h>
 
 namespace gum {
 
@@ -44,7 +45,6 @@ namespace gum {
       GUM_CONSTRUCTOR(ScoreAIC);
     }
 
-
     /// default constructor
     INLINE ScoreAIC::ScoreAIC(const DBRowGeneratorParser&             parser,
                               const Prior&                            prior,
@@ -54,13 +54,11 @@ namespace gum {
       GUM_CONSTRUCTOR(ScoreAIC);
     }
 
-
     /// copy constructor
     INLINE ScoreAIC::ScoreAIC(const ScoreAIC& from) :
         Score(from), _internal_prior_(from._internal_prior_) {
       GUM_CONS_CPY(ScoreAIC);
     }
-
 
     /// move constructor
     INLINE ScoreAIC::ScoreAIC(ScoreAIC&& from) :
@@ -68,26 +66,21 @@ namespace gum {
       GUM_CONS_MOV(ScoreAIC);
     }
 
-
     /// virtual copy constructor
     INLINE ScoreAIC* ScoreAIC::clone() const { return new ScoreAIC(*this); }
 
-
     /// destructor
     INLINE ScoreAIC::~ScoreAIC() { GUM_DESTRUCTOR(ScoreAIC); }
-
 
     /// indicates whether the prior is compatible (meaningful) with the score
     INLINE std::string ScoreAIC::isPriorCompatible(const Prior& prior) {
       return isPriorCompatible(prior.getType(), prior.weight());
     }
 
-
     /// indicates whether the prior is compatible (meaningful) with the score
     INLINE std::string ScoreAIC::isPriorCompatible() const {
       return isPriorCompatible(*(this->prior_));
     }
-
 
     /// returns the internal prior of the score
     INLINE const Prior& ScoreAIC::internalPrior() const { return _internal_prior_; }

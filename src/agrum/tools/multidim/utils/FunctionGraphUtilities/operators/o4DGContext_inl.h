@@ -67,6 +67,7 @@ namespace gum {
   INLINE void O4DGContext::operator delete(void* p) {
     SmallObjectAllocator::instance().deallocate(p, sizeof(O4DGContext));
   }
+
   /// @}
 
 

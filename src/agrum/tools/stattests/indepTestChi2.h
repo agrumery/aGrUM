@@ -32,6 +32,7 @@
 
 #include <agrum/tools/core/math/chi2.h>
 #include <agrum/tools/stattests/independenceTest.h>
+
 #include <agrum/BN/learning/priors/noPrior.h>
 
 namespace gum {
@@ -164,7 +165,7 @@ namespace gum {
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
-  } /* namespace learning */
+  }    /* namespace learning */
 
 } /* namespace gum */
 

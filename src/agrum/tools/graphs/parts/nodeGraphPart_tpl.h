@@ -34,7 +34,7 @@ namespace gum {
 
   template < typename VAL >
   INLINE NodeProperty< VAL > NodeGraphPart::nodesPropertyFromFunction(VAL (*f)(const NodeId&),
-                                                          Size size) const {
+                                                                      Size size) const {
     return asNodeSet().hashMap(f, size);
   }
 

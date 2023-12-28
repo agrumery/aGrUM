@@ -267,4 +267,4 @@ namespace gum {
 #  include <agrum/tools/graphs/algorithms/triangulations/incrementalTriangulation_inl.h>
 #endif   // GUM_NO_INLINE
 
-#endif /* GUM_INCREMENTAL_TRIANGULATION_H */
+#endif   /* GUM_INCREMENTAL_TRIANGULATION_H */

@@ -24,9 +24,10 @@
  * @brief Implementation of the non pure virtual methods of class
  * JointTargetedMRFInference.
  */
-#include <agrum/MRF/inference/tools/jointTargetedMRFInference.h>
-#include <agrum/tools/variables/rangeVariable.h>
 #include <agrum/tools/graphicalModels/algorithms/informationTheory.h>
+#include <agrum/tools/variables/rangeVariable.h>
+
+#include <agrum/MRF/inference/tools/jointTargetedMRFInference.h>
 
 namespace gum {
 
@@ -41,13 +42,11 @@ namespace gum {
     GUM_CONSTRUCTOR(JointTargetedMRFInference);
   }
 
-
   // Destructor
   template < typename GUM_SCALAR >
   JointTargetedMRFInference< GUM_SCALAR >::~JointTargetedMRFInference() {
     GUM_DESTRUCTOR(JointTargetedMRFInference);
   }
-
 
   // assigns a new MRF to the inference engine
   template < typename GUM_SCALAR >
@@ -56,7 +55,6 @@ namespace gum {
     onAllJointTargetsErased_();
     _joint_targets_.clear();
   }
-
 
   // ##############################################################################
   // Targets
@@ -80,13 +78,11 @@ namespace gum {
     return _joint_targets_.contains(vars);
   }
 
-
   // Clear all previously defined single targets
   template < typename GUM_SCALAR >
   INLINE void JointTargetedMRFInference< GUM_SCALAR >::eraseAllMarginalTargets() {
     MarginalTargetedMRFInference< GUM_SCALAR >::eraseAllTargets();
   }
-
 
   // Clear all previously defined targets (single targets and sets of targets)
   template < typename GUM_SCALAR >
@@ -99,14 +95,12 @@ namespace gum {
     }
   }
 
-
   // Clear all previously defined targets (single and joint targets)
   template < typename GUM_SCALAR >
   INLINE void JointTargetedMRFInference< GUM_SCALAR >::eraseAllTargets() {
     eraseAllMarginalTargets();
     eraseAllJointTargets();
   }
-
 
   // Add a set of nodes as a new target
   template < typename GUM_SCALAR >
@@ -145,7 +139,6 @@ namespace gum {
     this->setState_(MRFInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
   }
 
-
   // removes an existing set target
   template < typename GUM_SCALAR >
   void JointTargetedMRFInference< GUM_SCALAR >::eraseJointTarget(const NodeSet& joint_target) {
@@ -173,7 +166,6 @@ namespace gum {
     }
   }
 
-
   /// returns the list of target sets
   template < typename GUM_SCALAR >
   INLINE const Set< NodeSet >&
@@ -186,7 +178,6 @@ namespace gum {
   INLINE Size JointTargetedMRFInference< GUM_SCALAR >::nbrJointTargets() const noexcept {
     return _joint_targets_.size();
   }
-
 
   // ##############################################################################
   // Inference
@@ -220,7 +211,6 @@ namespace gum {
     if (found_exact_target) return jointPosterior_(real_nodes);
     else { return jointPosterior_(real_nodes, super_target); }
   }
-
 
   // Compute the posterior of a node
   template < typename GUM_SCALAR >
@@ -259,7 +249,6 @@ namespace gum {
     return it.variationOfInformationXY();
   }
 
-
   /* Mutual information between X and Y
    * @see http://en.wikipedia.org/wiki/Mutual_information
    *
@@ -273,7 +262,6 @@ namespace gum {
     return it.mutualInformationXY();
   }
 
-
   /** Variation of information between X and Y
    * @see http://en.wikipedia.org/wiki/Variation_of_information
    *
@@ -286,7 +274,6 @@ namespace gum {
     InformationTheory it(*this, NodeSet{X}, NodeSet{Y});
     return it.variationOfInformationXY();
   }
-
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
@@ -337,7 +324,6 @@ namespace gum {
     const auto& mn = this->MRF();
     return evidenceJointImpact(mn.nodeset(targets), mn.nodeset(evs));
   }
-
 
   template < typename GUM_SCALAR >
   GUM_SCALAR

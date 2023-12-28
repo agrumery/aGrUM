@@ -24,10 +24,10 @@
  *
  * @author Christophe GONZALES(_at_AMU) & Pierre-Henri WUILLEMIN(_at_LIP6)
  */
+#include <algorithm>
 #include <ostream>
 #include <sstream>
 #include <string>
-#include <algorithm>
 
 #include <agrum/agrum.h>
 
@@ -49,7 +49,6 @@ namespace gum {
     GUM_CONSTRUCTOR(NumericalDiscreteVariable);
   }
 
-
   /// copy constructor
   INLINE
   NumericalDiscreteVariable::NumericalDiscreteVariable(const NumericalDiscreteVariable& from) :
@@ -57,7 +56,6 @@ namespace gum {
     // for debugging purposes
     GUM_CONS_CPY(NumericalDiscreteVariable);
   }
-
 
   /// move constructor
   INLINE NumericalDiscreteVariable::NumericalDiscreteVariable(NumericalDiscreteVariable&& from) :
@@ -67,18 +65,15 @@ namespace gum {
     GUM_CONSTRUCTOR(NumericalDiscreteVariable);
   }
 
-
   /// virtual copy constructor
   INLINE NumericalDiscreteVariable* NumericalDiscreteVariable::clone() const {
     return new NumericalDiscreteVariable(*this);
   }
 
-
   /// destructor
   INLINE NumericalDiscreteVariable::~NumericalDiscreteVariable() {
     GUM_DESTRUCTOR(NumericalDiscreteVariable);
   }
-
 
   /// copy operator
   INLINE NumericalDiscreteVariable&
@@ -91,7 +86,6 @@ namespace gum {
 
     return *this;
   }
-
 
   /// move operator
   INLINE NumericalDiscreteVariable&
@@ -115,18 +109,16 @@ namespace gum {
   INLINE bool NumericalDiscreteVariable::operator!=(const Variable& var) const {
     return !operator==(var);
   }
+
   INLINE bool NumericalDiscreteVariable::operator!=(const NumericalDiscreteVariable& var) const {
     return !operator==(var);
   }
 
-
   /// returns the domain size of the discrete random variable
   INLINE Size NumericalDiscreteVariable::domainSize() const { return _domain_.size(); }
 
-
   /// returns the type of variable
   INLINE VarType NumericalDiscreteVariable::varType() const { return VarType::Numerical; }
-
 
   /// returns the index of a given label
   INLINE Idx NumericalDiscreteVariable::index(const std::string& aLabel) const {
@@ -137,7 +129,6 @@ namespace gum {
     }
   }
 
-
   /// returns the ith label
   INLINE std::string NumericalDiscreteVariable::label(Idx i) const {
     // note that if i is outside the domain, Sequence _domain_ will raise
@@ -145,10 +136,8 @@ namespace gum {
     return _generateLabel(_domain_.atPos(i));
   }
 
-
   /// get a numerical representation of the indice-th value.
   INLINE double NumericalDiscreteVariable::numerical(Idx i) const { return double(_domain_[i]); }
-
 
   /// returns the domain as a sequence of values
   INLINE const Sequence< double >& NumericalDiscreteVariable::numericalDomain() const {
@@ -158,6 +147,7 @@ namespace gum {
   INLINE bool NumericalDiscreteVariable::isValue(double value) const {
     return _domain_.exists(value);
   }
+
   /// substitute a value by another one
   INLINE void NumericalDiscreteVariable::changeValue(double old_value, double new_value) {
     if (!_domain_.exists(old_value)) return;
@@ -169,7 +159,6 @@ namespace gum {
     eraseValue(old_value);
     addValue(new_value);
   }
-
 
   /// erase a value from the domain of the variable
   INLINE void NumericalDiscreteVariable::eraseValue(double value) { _domain_.erase(value); }

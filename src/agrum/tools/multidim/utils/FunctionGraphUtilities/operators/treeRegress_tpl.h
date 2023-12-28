@@ -83,7 +83,6 @@ namespace gum {
     return ret;
   }
 
-
   template < typename GUM_SCALAR,
              template < typename >
              class COMBINEOPERATOR,

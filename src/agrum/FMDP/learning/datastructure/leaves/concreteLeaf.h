@@ -36,6 +36,7 @@
 // =========================================================================
 #include <agrum/FMDP/learning/datastructure/leaves/abstractLeaf.h>
 #include <agrum/FMDP/learning/datastructure/nodeDatabase.h>
+
 // =========================================================================
 
 namespace gum {
@@ -82,7 +83,8 @@ namespace gum {
     /// Allocators and Deallocators redefinition
     // ============================================================================
     void* operator new(size_t s) { return SmallObjectAllocator::instance().allocate(s); }
-    void  operator delete(void* p) {
+
+    void operator delete(void* p) {
       SmallObjectAllocator::instance().deallocate(p, sizeof(ConcreteLeaf));
     }
 
@@ -97,6 +99,7 @@ namespace gum {
     double _effectif_(Idx moda, Int2Type< true >) const {
       return (double)_n1_->effectif(Idx(_valueDomain_->atPos(moda)));
     }
+
     double _effectif_(Idx moda, Int2Type< false >) const { return (double)_n1_->effectif(moda); }
 
     public:
@@ -106,6 +109,7 @@ namespace gum {
 
     private:
     Idx _nbModa_(Int2Type< true >) const { return _valueDomain_->size(); }
+
     Idx _nbModa_(Int2Type< false >) const { return _n1_->valueDomain(); }
 
     public:

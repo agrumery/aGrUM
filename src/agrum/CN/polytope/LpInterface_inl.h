@@ -40,7 +40,6 @@ namespace gum {
     return (castToSize(key) * gum::HashFuncConst::gold) & this->hash_mask_;
   }
 
-
   namespace credal {
     namespace lp {
       /**
@@ -71,13 +70,11 @@ namespace gum {
         return res.append(std::to_string(_id_));
       }
 
-
       INLINE void swap(HashTable< LpCol, double >*& a, HashTable< LpCol, double >*& b) {
         HashTable< LpCol, double >* tmp(a);
         a = b;
         b = tmp;
       }
-
 
       INLINE std::ostream& operator<<(std::ostream& out, const LpExpr& expr) {
         out << expr.toString();
@@ -85,7 +82,7 @@ namespace gum {
       }
     }   // namespace lp
 
-  }   // namespace credal
+  }     // namespace credal
 
 } /* namespace gum */
 

@@ -19,13 +19,13 @@
  */
 
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
-
 #include <algorithm>
 #include <iterator>
 #include <list>
 #include <vector>
+
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/core/list.h>
 

@@ -28,10 +28,10 @@
 
 #include <sstream>
 
-#include <agrum/PRM/utils_prm.h>
-
 #include <agrum/PRM/elements/PRMAttribute.h>
 #include <agrum/PRM/elements/PRMType.h>
+
+#include <agrum/PRM/utils_prm.h>
 
 namespace gum {
   namespace prm {

@@ -25,11 +25,11 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#include <type_traits>
-
 #include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
 #include <agrum/BN/learning/structureUtils/graphChange.h>
 #include <agrum/BN/learning/structureUtils/graphChangesGenerator4K2.h>
+
+#include <type_traits>
 
 namespace gum {
 

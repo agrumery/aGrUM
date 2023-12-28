@@ -31,9 +31,10 @@
 #define GUM_FMDP_LEARNER_H
 // =========================================================================
 // =========================================================================
-#include <agrum/FMDP/SDyna/Strategies/ILearningStrategy.h>
 #include <agrum/FMDP/learning/datastructure/imddi.h>
 #include <agrum/FMDP/learning/datastructure/iti.h>
+#include <agrum/FMDP/SDyna/Strategies/ILearningStrategy.h>
+
 // =========================================================================
 // =========================================================================
 
@@ -86,6 +87,7 @@ namespace gum {
     /// @name Initialization
     // ###################################################################
     /// @{
+
     public:
     // ==========================================================================
     /// Initializes the learner
@@ -107,7 +109,6 @@ namespace gum {
     MultiDimFunctionGraph< double >* _instantiateFunctionGraph_(Int2Type< ITILEARNER >) {
       return MultiDimFunctionGraph< double, ExactTerminalNodePolicy >::getTreeInstance();
     }
-
 
     // ==========================================================================
     ///
@@ -139,7 +140,6 @@ namespace gum {
       return new VariableLearnerType(target, _learningThreshold_, mainVariables, learnedVar);
     }
 
-
     // ==========================================================================
     ///
     // ==========================================================================
@@ -170,6 +170,7 @@ namespace gum {
     /// @name Incremental methods
     // ###################################################################
     /// @{
+
     public:
     // ==========================================================================
     /**
@@ -197,6 +198,7 @@ namespace gum {
     /// @name Miscelleanous methods
     // ###################################################################
     /// @{
+
     public:
     // ==========================================================================
     /**

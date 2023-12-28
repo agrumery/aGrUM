@@ -31,11 +31,13 @@
 // utility provides the std::pair <> template
 #include <climits>
 #include <string>
-#include <type_traits>
 #include <utility>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/refPtr.h>
+
+#include <type_traits>
 
 namespace gum {
 
@@ -80,7 +82,6 @@ namespace gum {
        = sizeof(Size) == 4 ? Size(4294967295UL) : Size(18446744073709551615UL);
     static constexpr Size offset = sizeof(Size) == 4 ? Size(32) : Size(64);
   };
-
 
   // ===========================================================================
   // ===             BASE CLASS SHARED BY ALL THE HASH FUNCTIONS             ===
@@ -225,7 +226,6 @@ namespace gum {
     unsigned int right_shift_{0};
   };
 
-
   // ===========================================================================
   // ===                GENERIC HASH FUNCTIONS FOR SIMPLE TYPES              ===
   // ===========================================================================
@@ -257,13 +257,13 @@ namespace gum {
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
+
     private:   // best attempt to get rid of overloaded virtual warnings
     using HashFuncBase< Key >::operator();
 
     public:
     virtual Size operator()(const Key& key) const override final;
   };
-
 
   /**
    * @class HashFuncSmallCastKey
@@ -303,7 +303,6 @@ namespace gum {
     static constexpr Size small_key_mask_{(Size(1) << (8 * sizeof(Key))) - Size(1)};
   };
 
-
   /**
    * @class HashFuncMediumCastKey
    * @headerfile hashFunc.h <agrum/tools/core/hashFunc.h>
@@ -334,7 +333,6 @@ namespace gum {
      */
     virtual Size operator()(const Key& key) const override final;
   };
-
 
   /**
    * @class HashFuncLargeCastKey
@@ -367,7 +365,6 @@ namespace gum {
     virtual Size operator()(const Key& key) const override final;
   };
 
-
   /**
    * @class HashFuncCastKey
    * @headerfile hashFunc.h <agrum/tools/core/hashFunc.h>
@@ -396,7 +393,6 @@ namespace gum {
                                                                 void >::type >::type >::type >::
        type;
   };
-
 
   // ===========================================================================
   // ===   CLASSES FOR NOT DEFINING SEVERAL TIMES THE SAME HASH FUNCTIONS    ===
@@ -452,7 +448,6 @@ namespace gum {
        typename HashFuncConditionalType< KEY_TYPE, OTHER_TYPES... >::type >::type;
   };
 
-
   // ===========================================================================
   // ===                  HASH FUNCTIONS FOR PAIRS OF KEYS                   ===
   // ===========================================================================
@@ -496,7 +491,6 @@ namespace gum {
      */
     virtual Size operator()(const std::pair< Key1, Key2 >& key) const override final;
   };
-
 
   // ===========================================================================
   // ===                      WIDELY USED HASH FUNCTIONS                     ===
@@ -599,7 +593,6 @@ namespace gum {
     virtual Size operator()(const std::string& key) const override final;
   };
 
-
   /**
    * @headerfile hashFunc.h <agrum/tools/core/hashFunc.h>
    * @brief Hash function for vectors of gum::Idx.
@@ -622,7 +615,6 @@ namespace gum {
      */
     virtual Size operator()(const std::vector< Idx >& key) const override final;
   };
-
 
   /**
    * @headerfile hashFunc.h <agrum/tools/core/hashFunc.h>
@@ -650,7 +642,6 @@ namespace gum {
     friend class HashFunc;
   };
 
-
   /**
    * @headerfile hashFunc.h <agrum/tools/core/hashFunc.h>
    * @brief Hash function for RefPtr.
@@ -676,7 +667,6 @@ namespace gum {
   };
 
 } /* namespace gum */
-
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE

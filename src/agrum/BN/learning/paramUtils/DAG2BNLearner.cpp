@@ -42,7 +42,6 @@ namespace gum {
     /// default constructor
     DAG2BNLearner::DAG2BNLearner() { GUM_CONSTRUCTOR(DAG2BNLearner); }
 
-
     /// copy constructor
     DAG2BNLearner::DAG2BNLearner(const DAG2BNLearner& from) : ApproximationScheme(from) {
       GUM_CONS_CPY(DAG2BNLearner);
@@ -53,21 +52,17 @@ namespace gum {
       GUM_CONS_MOV(DAG2BNLearner);
     }
 
-
     /// virtual copy constructor
     DAG2BNLearner* DAG2BNLearner::clone() const { return new DAG2BNLearner(*this); }
 
-
     /// destructor
     DAG2BNLearner::~DAG2BNLearner() { GUM_DESTRUCTOR(DAG2BNLearner); }
-
 
     /// copy operator
     DAG2BNLearner& DAG2BNLearner::operator=(const DAG2BNLearner& from) {
       ApproximationScheme::operator=(from);
       return *this;
     }
-
 
     /// move operator
     DAG2BNLearner& DAG2BNLearner::operator=(DAG2BNLearner&& from) {

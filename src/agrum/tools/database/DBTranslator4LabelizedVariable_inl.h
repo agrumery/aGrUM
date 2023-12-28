@@ -28,8 +28,8 @@
 #include <utility>
 #include <vector>
 
-#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/tools/database/DBCell.h>
+#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -45,7 +45,6 @@ namespace gum {
       GUM_CONS_CPY(DBTranslator4LabelizedVariable);
     }
 
-
     /// move constructor
     INLINE DBTranslator4LabelizedVariable::DBTranslator4LabelizedVariable(
        DBTranslator4LabelizedVariable&& from) :
@@ -54,12 +53,10 @@ namespace gum {
       GUM_CONS_MOV(DBTranslator4LabelizedVariable);
     }
 
-
     /// destructor
     INLINE DBTranslator4LabelizedVariable::~DBTranslator4LabelizedVariable() {
       GUM_DESTRUCTOR(DBTranslator4LabelizedVariable);
     }
-
 
     /// returns the original value for a given translation
     INLINE std::string
@@ -78,18 +75,15 @@ namespace gum {
       }
     }
 
-
     /// returns the domain size of a variable corresponding to the translations
     INLINE std::size_t DBTranslator4LabelizedVariable::domainSize() const {
       return _variable_.domainSize();
     }
 
-
     /// returns the variable stored into the translator
     INLINE const LabelizedVariable* DBTranslator4LabelizedVariable::variable() const {
       return &_variable_;
     }
-
 
     /// returns the translation of a missing value
     INLINE DBTranslatedValue DBTranslator4LabelizedVariable::missingValue() const {

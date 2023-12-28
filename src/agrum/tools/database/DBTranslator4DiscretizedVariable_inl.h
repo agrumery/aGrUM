@@ -33,7 +33,6 @@ namespace gum {
       GUM_DESTRUCTOR(DBTranslator4DiscretizedVariable);
     }
 
-
     /// returns the translation of a string, as found in the current dictionary
     INLINE DBTranslatedValue DBTranslator4DiscretizedVariable::translate(const std::string& str) {
       // try to get the index of str within the discretized variable.
@@ -62,7 +61,6 @@ namespace gum {
       }
     }
 
-
     /// returns the original value for a given translation
     INLINE std::string DBTranslator4DiscretizedVariable::translateBack(
        const DBTranslatedValue translated_val) const {
@@ -80,36 +78,29 @@ namespace gum {
       }
     }
 
-
     /// indicates whether the translator has an editable dictionary or not
     INLINE bool DBTranslator4DiscretizedVariable::hasEditableDictionary() const { return false; }
-
 
     /// sets/unset the editable dictionary mode
     INLINE void DBTranslator4DiscretizedVariable::setEditableDictionaryMode(bool) {}
 
-
     /// indicates whether the translations should be reordered
     INLINE bool DBTranslator4DiscretizedVariable::needsReordering() const { return false; }
-
 
     /// returns a mapping to reorder the current dictionary and updates it
     INLINE HashTable< std::size_t, std::size_t > DBTranslator4DiscretizedVariable::reorder() {
       return HashTable< std::size_t, std::size_t >();
     }
 
-
     /// returns the domain size of a variable corresponding to the translations
     INLINE std::size_t DBTranslator4DiscretizedVariable::domainSize() const {
       return _variable_.domainSize();
     }
 
-
     /// returns the variable stored into the translator
     INLINE const IDiscretizedVariable* DBTranslator4DiscretizedVariable::variable() const {
       return _real_variable_;
     }
-
 
     /// returns the translation of a missing value
     INLINE DBTranslatedValue DBTranslator4DiscretizedVariable::missingValue() const {

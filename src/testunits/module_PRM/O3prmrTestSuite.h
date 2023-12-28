@@ -23,7 +23,7 @@
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 #include <agrum/PRM/o3prmr/O3prmrInterpreter.h>
 

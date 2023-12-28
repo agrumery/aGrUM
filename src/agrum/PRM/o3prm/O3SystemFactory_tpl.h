@@ -67,7 +67,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE O3SystemFactory< GUM_SCALAR >&
-         O3SystemFactory< GUM_SCALAR >::operator=(const O3SystemFactory< GUM_SCALAR >& src) {
+             O3SystemFactory< GUM_SCALAR >::operator=(const O3SystemFactory< GUM_SCALAR >& src) {
         if (this == &src) { return *this; }
         _prm_    = src._prm_;
         _o3_prm_ = src._o3_prm_;
@@ -78,7 +78,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE O3SystemFactory< GUM_SCALAR >&
-         O3SystemFactory< GUM_SCALAR >::operator=(O3SystemFactory< GUM_SCALAR >&& src) {
+             O3SystemFactory< GUM_SCALAR >::operator=(O3SystemFactory< GUM_SCALAR >&& src) {
         if (this == &src) { return *this; }
         _prm_    = std::move(src._prm_);
         _o3_prm_ = std::move(src._o3_prm_);
@@ -230,7 +230,7 @@ namespace gum {
              = static_cast< const PRMParameter< GUM_SCALAR >& >(type.get(param.name().label()));
 
           switch (type_param.valueType()) {
-            case PRMParameter< GUM_SCALAR >::ParameterType::INT: {
+            case PRMParameter< GUM_SCALAR >::ParameterType::INT : {
               if (!param.isInteger()) {
                 O3PRM_SYSTEM_PARAMETER_NOT_INT(param, *_errors_);
                 return false;
@@ -238,7 +238,7 @@ namespace gum {
               break;
             }
 
-            case PRMParameter< GUM_SCALAR >::ParameterType::REAL: {
+            case PRMParameter< GUM_SCALAR >::ParameterType::REAL : {
               if (param.isInteger()) {
                 O3PRM_SYSTEM_PARAMETER_NOT_FLOAT(param, *_errors_);
                 return false;
@@ -246,7 +246,7 @@ namespace gum {
               break;
             }
 
-            default: {
+            default : {
               GUM_ERROR(FatalError, "unknown parameter type")
             }
           }

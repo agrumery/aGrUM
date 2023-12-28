@@ -24,12 +24,13 @@
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
+
+#include <agrum/tools/graphicalModels/inference/scheduler/scheduleMultiDim.h>
 
 #include <agrum/BN/algorithms/BayesBall.h>
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
-#include <agrum/tools/graphicalModels/inference/scheduler/scheduleMultiDim.h>
 
 namespace gum_tests {
 

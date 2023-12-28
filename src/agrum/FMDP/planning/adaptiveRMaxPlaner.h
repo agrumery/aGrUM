@@ -31,10 +31,11 @@
 #ifndef GUM_ADAPTIVE_RMAX_PLANER_H
 #define GUM_ADAPTIVE_RMAX_PLANER_H
 // =========================================================================
-#include <agrum/FMDP/SDyna/Strategies/IDecisionStrategy.h>
 #include <agrum/FMDP/learning/fmdpLearner.h>
 #include <agrum/FMDP/planning/structuredPlaner.h>
+#include <agrum/FMDP/SDyna/Strategies/IDecisionStrategy.h>
 #include <agrum/FMDP/simulation/statesCounter.h>
+
 // =========================================================================
 
 namespace gum {
@@ -54,6 +55,7 @@ namespace gum {
     /// @name
     // ###################################################################
     /// @{
+
     public:
     // ==========================================================================
     ///
@@ -89,6 +91,7 @@ namespace gum {
     /// @name Constructor & destructor.
     // ###################################################################
     /// @{
+
     private:
     // ==========================================================================
     /// Default constructor
@@ -102,6 +105,7 @@ namespace gum {
     // ==========================================================================
     /// Default destructor
     // ==========================================================================
+
     public:
     ~AdaptiveRMaxPlaner();
 
@@ -193,6 +197,7 @@ namespace gum {
     /// @name Incremental methods
     // ###################################################################
     /// @{
+
     public:
     void checkState(const Instantiation& newState, Idx actionId) {
       if (!_initializedTable_[actionId]) {

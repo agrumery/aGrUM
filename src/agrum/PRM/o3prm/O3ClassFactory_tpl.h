@@ -68,7 +68,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE O3ClassFactory< GUM_SCALAR >&
-         O3ClassFactory< GUM_SCALAR >::operator=(const O3ClassFactory< GUM_SCALAR >& src) {
+             O3ClassFactory< GUM_SCALAR >::operator=(const O3ClassFactory< GUM_SCALAR >& src) {
         if (this == &src) { return *this; }
         _prm_       = src._prm_;
         _o3_prm_    = src._o3_prm_;
@@ -84,7 +84,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE O3ClassFactory< GUM_SCALAR >&
-         O3ClassFactory< GUM_SCALAR >::operator=(O3ClassFactory< GUM_SCALAR >&& src) {
+             O3ClassFactory< GUM_SCALAR >::operator=(O3ClassFactory< GUM_SCALAR >&& src) {
         if (this == &src) { return *this; }
         _prm_       = std::move(src._prm_);
         _o3_prm_    = std::move(src._o3_prm_);
@@ -308,17 +308,17 @@ namespace gum {
                                                                 O3Class&                  c) {
         for (auto& p: c.parameters()) {
           switch (p.type()) {
-            case O3Parameter::PRMType::INT: {
+            case O3Parameter::PRMType::INT : {
               factory.addParameter("int", p.name().label(), p.value().value());
               break;
             }
 
-            case O3Parameter::PRMType::FLOAT: {
+            case O3Parameter::PRMType::FLOAT : {
               factory.addParameter("real", p.name().label(), p.value().value());
               break;
             }
 
-            default: {
+            default : {
               GUM_ERROR(FatalError, "unknown O3Parameter type")
             }
           }
@@ -702,7 +702,6 @@ namespace gum {
         }
       }
 
-
       template < typename GUM_SCALAR >
       INLINE bool
          O3ClassFactory< GUM_SCALAR >::_checkRuleCPTSumsTo1_(const PRMClass< GUM_SCALAR >& c,
@@ -963,25 +962,25 @@ namespace gum {
         bool ok = false;
 
         switch (gum::prm::PRMAggregate< GUM_SCALAR >::str2enum(agg.aggregateType().label())) {
-          case PRMAggregate< GUM_SCALAR >::AggregateType::MIN:
-          case PRMAggregate< GUM_SCALAR >::AggregateType::MAX:
-          case PRMAggregate< GUM_SCALAR >::AggregateType::AMPLITUDE:
-          case PRMAggregate< GUM_SCALAR >::AggregateType::MEDIAN:
-          case PRMAggregate< GUM_SCALAR >::AggregateType::OR:
-          case PRMAggregate< GUM_SCALAR >::AggregateType::SUM:
-          case PRMAggregate< GUM_SCALAR >::AggregateType::AND: {
+          case PRMAggregate< GUM_SCALAR >::AggregateType::MIN :
+          case PRMAggregate< GUM_SCALAR >::AggregateType::MAX :
+          case PRMAggregate< GUM_SCALAR >::AggregateType::AMPLITUDE :
+          case PRMAggregate< GUM_SCALAR >::AggregateType::MEDIAN :
+          case PRMAggregate< GUM_SCALAR >::AggregateType::OR :
+          case PRMAggregate< GUM_SCALAR >::AggregateType::SUM :
+          case PRMAggregate< GUM_SCALAR >::AggregateType::AND : {
             ok = _checkParametersNumber_(agg, 0);
             break;
           }
 
-          case PRMAggregate< GUM_SCALAR >::AggregateType::FORALL:
-          case PRMAggregate< GUM_SCALAR >::AggregateType::EXISTS:
-          case PRMAggregate< GUM_SCALAR >::AggregateType::COUNT: {
+          case PRMAggregate< GUM_SCALAR >::AggregateType::FORALL :
+          case PRMAggregate< GUM_SCALAR >::AggregateType::EXISTS :
+          case PRMAggregate< GUM_SCALAR >::AggregateType::COUNT : {
             ok = _checkParametersNumber_(agg, 1);
             break;
           }
 
-          default: {
+          default : {
             GUM_ERROR(FatalError, "unknown aggregate type")
           }
         }
@@ -990,14 +989,14 @@ namespace gum {
 
         // Checking parameters type
         switch (gum::prm::PRMAggregate< GUM_SCALAR >::str2enum(agg.aggregateType().label())) {
-          case PRMAggregate< GUM_SCALAR >::AggregateType::FORALL:
-          case PRMAggregate< GUM_SCALAR >::AggregateType::EXISTS:
-          case PRMAggregate< GUM_SCALAR >::AggregateType::COUNT: {
+          case PRMAggregate< GUM_SCALAR >::AggregateType::FORALL :
+          case PRMAggregate< GUM_SCALAR >::AggregateType::EXISTS :
+          case PRMAggregate< GUM_SCALAR >::AggregateType::COUNT : {
             ok = _checkParameterValue_(agg, *t);
             break;
           }
 
-          default: { /* Nothing to do */
+          default : { /* Nothing to do */
           }
         }
 

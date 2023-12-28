@@ -31,10 +31,9 @@
 #ifndef GUM_CONTINGENCY_TABLE_H
 #define GUM_CONTINGENCY_TABLE_H
 
-#include <agrum/tools/core/math/math_utils.h>
-
 #include <agrum/FMDP/learning/observation.h>
 
+#include <agrum/tools/core/math/math_utils.h>
 
 namespace gum {
 
@@ -70,7 +69,8 @@ namespace gum {
     /// Allocators and Deallocators redefinition
     // ============================================================================
     void* operator new(size_t s) { return SmallObjectAllocator::instance().allocate(s); }
-    void  operator delete(void* p) {
+
+    void operator delete(void* p) {
       SmallObjectAllocator::instance().deallocate(p, sizeof(ContingencyTable));
     }
 
@@ -86,7 +86,6 @@ namespace gum {
 
     void add(GUM_SCALAR_A valueA, GUM_SCALAR_B valueB);
 
-
     /// Returns the number of samples for case (iattr, ivalue)
 
     Idx joint(GUM_SCALAR_A valueA, GUM_SCALAR_B valueB) const {
@@ -95,20 +94,17 @@ namespace gum {
               : 0;
     }
 
-
     /// Returns the number of samples for case (iattr, ivalue)
 
     Idx attrAMarginal(GUM_SCALAR_A valueA) const {
       return _attrAMarginalTable_.exists(valueA) ? _attrAMarginalTable_[valueA] : 0;
     }
 
-
     /// Returns the number of samples for case (iattr, ivalue)
 
     Idx attrBMarginal(GUM_SCALAR_B valueB) const {
       return _attrAMarginalTable_.exists(valueB) ? _attrAMarginalTable_[valueB] : 0;
     }
-
 
     /// Returns the number of samples for line iattr
 
@@ -117,10 +113,10 @@ namespace gum {
     HashTableConstIteratorSafe< GUM_SCALAR_A, Idx > attrABeginSafe() const {
       return _attrAMarginalTable_.cbeginSafe();
     }
+
     HashTableConstIteratorSafe< GUM_SCALAR_A, Idx > attrAEndSafe() const {
       return _attrAMarginalTable_.cendSafe();
     }
-
 
     /// Returns the number of samples for column ivalue
 
@@ -129,15 +125,14 @@ namespace gum {
     HashTableConstIteratorSafe< GUM_SCALAR_B, Idx > attrBBeginSafe() const {
       return _attrBMarginalTable_.cbeginSafe();
     }
+
     HashTableConstIteratorSafe< GUM_SCALAR_B, Idx > attrBEndSafe() const {
       return _attrBMarginalTable_.cendSafe();
     }
 
-
     /// Returns the number of samples for line iattr
 
     Idx attrASize() const { return _attrAMarginalTable_.size(); }
-
 
     /// Returns the number of samples for column ivalue
 

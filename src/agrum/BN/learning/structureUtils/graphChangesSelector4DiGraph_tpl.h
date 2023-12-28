@@ -62,7 +62,6 @@ namespace gum {
       GUM_CONS_CPY(GraphChangesSelector4DiGraph);
     }
 
-
     /// move constructor
     template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
     GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::
@@ -83,7 +82,6 @@ namespace gum {
       GUM_CONS_MOV(GraphChangesSelector4DiGraph);
     }
 
-
     /// destructor
     template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
     INLINE
@@ -92,7 +90,6 @@ namespace gum {
       if (_score_ != nullptr) delete _score_;
       GUM_DESTRUCTOR(GraphChangesSelector4DiGraph);
     }
-
 
     /// copy operator
     template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
@@ -149,7 +146,6 @@ namespace gum {
       return *this;
     }
 
-
     /// indicates whether a given change is valid or not
     template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
     INLINE bool GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::
@@ -157,14 +153,12 @@ namespace gum {
       return _constraint_->checkModification(change);
     }
 
-
     /// indicates whether a given change is valid or not
     template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
     INLINE bool GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::
        _isChangeValid_(const std::size_t index) const {
       return isChangeValid(_changes_[index]);
     }
-
 
     /// sets the graph from which scores are computed
     template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
@@ -279,7 +273,7 @@ namespace gum {
           const GraphChange& change = _changes_[i];
 
           switch (change.type()) {
-            case GraphChangeType::ARC_ADDITION: {
+            case GraphChangeType::ARC_ADDITION : {
               auto& parents = _parents_[change.node2()];
               parents.push_back(change.node1());
               const double delta
@@ -290,7 +284,7 @@ namespace gum {
               _change_queue_per_node_[change.node2()].insert(i, delta);
             } break;
 
-            case GraphChangeType::ARC_DELETION: {
+            case GraphChangeType::ARC_DELETION : {
               auto& parents = _parents_[change.node2()];
               for (auto& par: parents) {
                 if (par == change.node1()) {
@@ -307,7 +301,7 @@ namespace gum {
               _change_queue_per_node_[change.node2()].insert(i, delta);
             } break;
 
-            case GraphChangeType::ARC_REVERSAL: {
+            case GraphChangeType::ARC_REVERSAL : {
               // remove arc ( node1 -> node2 )
               auto& parents2 = _parents_[change.node2()];
               for (auto& par: parents2) {
@@ -338,7 +332,7 @@ namespace gum {
 
             } break;
 
-            default: {
+            default : {
               GUM_ERROR(NotImplementedYet,
                         "Method setGraph of GraphChangesSelector4DiGraph "
                            << "does not handle yet graph change of type " << change.type());
@@ -358,7 +352,6 @@ namespace gum {
       _queues_valid_ = true;
       _queues_to_update_.clear();
     }
-
 
     /// put a change into the illegal set
     template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
@@ -391,7 +384,6 @@ namespace gum {
       _illegal_changes_.insert(change_index);
     }
 
-
     /// indicates whether the selector still contain graph changes
     template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
     bool GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::empty() {
@@ -409,7 +401,6 @@ namespace gum {
 
       return _node_queue_.topPriority() == std::numeric_limits< double >::min();
     }
-
 
     /// indicates whether the selector still contain graph changes
     /// in the ith queue
@@ -431,7 +422,6 @@ namespace gum {
       return _change_queue_per_node_[node].empty();
     }
 
-
     /// returns the best graph change to examine
     template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
     INLINE const GraphChange&
@@ -440,7 +430,6 @@ namespace gum {
       if (!empty()) return _changes_[_change_queue_per_node_[_node_queue_.top()].top()];
       else GUM_ERROR(NotFound, "there exists no graph change applicable")
     }
-
 
     /// returns the best graph change to examine in the ith queue
     template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
@@ -451,7 +440,6 @@ namespace gum {
       else GUM_ERROR(NotFound, "there exists no graph change applicable")
     }
 
-
     /// return the score of the best graph change
     template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
     INLINE double
@@ -459,7 +447,6 @@ namespace gum {
       if (!empty()) return _change_queue_per_node_[_node_queue_.top()].topPriority();
       else GUM_ERROR(NotFound, "there exists no graph change applicable")
     }
-
 
     /// return the score of the best graph change in the ith queue
     template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
@@ -469,7 +456,6 @@ namespace gum {
       if (!empty(node)) return _change_queue_per_node_[node].topPriority();
       else GUM_ERROR(NotFound, "there exists no graph change applicable")
     }
-
 
     /// remove the now legal changes from the illegal set
     template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
@@ -491,7 +477,6 @@ namespace gum {
       }
     }
 
-
     /// finds the changes that are affected by a given node modification
     template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
     void GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::
@@ -510,7 +495,6 @@ namespace gum {
       }
     }
 
-
     /// perform the necessary updates of the scores
     template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
     void GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::
@@ -521,7 +505,7 @@ namespace gum {
         const GraphChange& change = _changes_[change_index];
 
         switch (change.type()) {
-          case GraphChangeType::ARC_ADDITION: {
+          case GraphChangeType::ARC_ADDITION : {
             // add the arc
             auto& parents = _parents_[change.node2()];
             parents.push_back(change.node1());
@@ -538,7 +522,7 @@ namespace gum {
             modified_nodes.insert(change.node2());
           } break;
 
-          case GraphChangeType::ARC_DELETION: {
+          case GraphChangeType::ARC_DELETION : {
             // remove the arc
             auto& parents = _parents_[change.node2()];
             for (auto& par: parents) {
@@ -561,7 +545,7 @@ namespace gum {
             modified_nodes.insert(change.node2());
           } break;
 
-          case GraphChangeType::ARC_REVERSAL: {
+          case GraphChangeType::ARC_REVERSAL : {
             // remove arc ( node1 -> node2 )
             auto& parents2 = _parents_[change.node2()];
             for (auto& par: parents2) {
@@ -597,7 +581,7 @@ namespace gum {
             modified_nodes.insert(change.node2());
           } break;
 
-          default: {
+          default : {
             GUM_ERROR(NotImplementedYet,
                       "Method  _updateScores_ of GraphChangesSelector4DiGraph "
                          << "does not handle yet graph change of type " << change.type());
@@ -613,7 +597,6 @@ namespace gum {
                                     : _change_queue_per_node_[node].topPriority());
       }
     }
-
 
     /// get from the graph change generator a new set of changes
     template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
@@ -638,7 +621,6 @@ namespace gum {
       _changes_generator_->notifyGetCompleted();
     }
 
-
     /// indicate to the selector that its best score has been applied
     template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
     void
@@ -650,7 +632,7 @@ namespace gum {
       // perform the change
       Set< std::size_t > changes_to_recompute;
       switch (change.type()) {
-        case GraphChangeType::ARC_ADDITION: {
+        case GraphChangeType::ARC_ADDITION : {
           // update the current score
           _node_current_scores_[change.node2()] += _change_scores_[change_index].second;
           _parents_[change.node2()].push_back(change.node1());
@@ -675,7 +657,7 @@ namespace gum {
           _updateScores_(changes_to_recompute);
         } break;
 
-        case GraphChangeType::ARC_DELETION: {
+        case GraphChangeType::ARC_DELETION : {
           // update the current score
           _node_current_scores_[change.node2()] += _change_scores_[change_index].second;
           auto& parents = _parents_[change.node2()];
@@ -707,7 +689,7 @@ namespace gum {
           _updateScores_(changes_to_recompute);
         } break;
 
-        case GraphChangeType::ARC_REVERSAL: {
+        case GraphChangeType::ARC_REVERSAL : {
           // update the current score
           _node_current_scores_[change.node1()] += _change_scores_[change_index].first;
           _node_current_scores_[change.node2()] += _change_scores_[change_index].second;
@@ -742,7 +724,7 @@ namespace gum {
           _updateScores_(changes_to_recompute);
         } break;
 
-        default:
+        default :
           GUM_ERROR(NotImplementedYet,
                     "Method applyChange of GraphChangesSelector4DiGraph "
                        << "does not handle yet graph change of type " << change.type());
@@ -750,7 +732,6 @@ namespace gum {
 
       _queues_valid_ = false;
     }
-
 
     /// applies several changes at a time
     template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
@@ -761,7 +742,7 @@ namespace gum {
 
       // perform the change
       switch (change.type()) {
-        case GraphChangeType::ARC_ADDITION: {
+        case GraphChangeType::ARC_ADDITION : {
           // update the current score
           _node_current_scores_[change.node2()] += _change_scores_[change_index].second;
           _parents_[change.node2()].push_back(change.node1());
@@ -787,7 +768,7 @@ namespace gum {
           _queues_to_update_.insert(change.node2());
         } break;
 
-        case GraphChangeType::ARC_DELETION: {
+        case GraphChangeType::ARC_DELETION : {
           // update the current score
           _node_current_scores_[change.node2()] += _change_scores_[change_index].second;
           auto& parents = _parents_[change.node2()];
@@ -820,7 +801,7 @@ namespace gum {
           _queues_to_update_.insert(change.node2());
         } break;
 
-        case GraphChangeType::ARC_REVERSAL: {
+        case GraphChangeType::ARC_REVERSAL : {
           // update the current score
           _node_current_scores_[change.node1()] += _change_scores_[change_index].first;
           _node_current_scores_[change.node2()] += _change_scores_[change_index].second;
@@ -856,14 +837,13 @@ namespace gum {
           _queues_to_update_.insert(change.node2());
         } break;
 
-        default:
+        default :
           GUM_ERROR(NotImplementedYet,
                     "Method applyChangeWithoutScoreUpdate of "
                        << "GraphChangesSelector4DiGraph "
                        << "does not handle yet graph change of type " << change.type());
       }
     }
-
 
     /// applies several changes at a time
     template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
@@ -905,7 +885,6 @@ namespace gum {
       _queues_valid_ = false;
     }
 
-
     /// returns the set of queues sorted by decreasing top priority
     template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
     std::vector< std::pair< NodeId, double > >
@@ -925,7 +904,6 @@ namespace gum {
       return result;
     }
 
-
     /// returns the set of queues sorted by decreasing top priority
     template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
     std::vector< std::pair< NodeId, double > >
@@ -939,7 +917,6 @@ namespace gum {
 
       return result;
     }
-
 
     /// returns the generator used by the selector
     template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >

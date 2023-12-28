@@ -27,10 +27,11 @@
 #include <utility>
 
 #include <agrum/tools/core/exceptions.h>
-#include <agrum/tools/core/math/math_utils.h>
-
 #include <agrum/tools/graphicalModels/algorithms/informationTheory.h>
+
 #include <agrum/BN/inference/lazyPropagation.h>
+
+#include <agrum/tools/core/math/math_utils.h>
 
 #define INFORMATION_THEORY_TEMPLATE                        \
   template < template < typename > class INFERENCE_ENGINE, \
@@ -153,6 +154,7 @@ namespace gum {
       return GUM_LOG2_OR_0(pxy / py);
     });
   }
+
   INFORMATION_THEORY_TEMPLATE
   GUM_SCALAR InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::entropyYgivenX() {
     return -pXY_.expectedValue([this](const gum::Instantiation& i) -> GUM_SCALAR {
@@ -181,6 +183,7 @@ namespace gum {
       return GUM_LOG2_OR_0(pxz / pz);
     });
   }
+
   INFORMATION_THEORY_TEMPLATE
   GUM_SCALAR InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::entropyYgivenZ() {
     if (Z_.empty()) GUM_ERROR(ArgumentError, "Z has not been specified.")
@@ -262,5 +265,6 @@ namespace gum {
       return GUM_LOG2_OR_0(pzpxyz / pxzpyz);
     });
   }
+
 #undef INFORMATION_THEORY_TEMPLATE
 }   // namespace gum

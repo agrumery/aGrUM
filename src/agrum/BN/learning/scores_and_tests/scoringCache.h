@@ -36,6 +36,7 @@
 #include <utility>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/stattests/idCondSet.h>
 
 namespace gum {
@@ -146,7 +147,7 @@ namespace gum {
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
-  } /* namespace learning */
+  }    /* namespace learning */
 
 } /* namespace gum */
 

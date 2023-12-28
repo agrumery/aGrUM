@@ -29,6 +29,7 @@
 #include <numeric>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/graphs/algorithms/triangulations/junctionTreeStrategies/defaultJunctionTreeStrategy.h>
 #include <agrum/tools/graphs/algorithms/triangulations/staticTriangulation.h>
 
@@ -85,7 +86,7 @@ namespace gum {
         auto new_strategy            = new DefaultJunctionTreeStrategy(*this);   // case 1/
         new_strategy->triangulation_ = tr;
         return new_strategy;
-      } else {   // case 2/
+      } else {                                                                   // case 2/
         auto new_strategy = new DefaultJunctionTreeStrategy;
         new_strategy->setTriangulation(tr);
         return new_strategy;

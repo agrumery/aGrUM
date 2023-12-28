@@ -181,8 +181,8 @@ namespace gum {
 
       };   // class O3prmrInterpreter
 
-    }   // namespace o3prmr
-  }     // namespace prm
+    }      // namespace o3prmr
+  }        // namespace prm
 }   // namespace gum
 
 #endif   // GUM_SKOORINTERPRETER_H

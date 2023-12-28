@@ -30,8 +30,8 @@
 #define GUM_DAGMODEL_H
 
 #include <agrum/agrum.h>
-#include <agrum/tools/graphicalModels/graphicalModel.h>
 
+#include <agrum/tools/graphicalModels/graphicalModel.h>
 
 namespace gum {
 
@@ -190,6 +190,7 @@ namespace gum {
                        const std::vector< std::string >& Znames) const {
       return isIndependent(nodeset(Xnames), nodeset(Ynames), nodeset(Znames));
     };
+
     /**
      * The node's id are coherent with the variables and nodes of the topology.
      */

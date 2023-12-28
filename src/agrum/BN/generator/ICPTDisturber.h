@@ -28,8 +28,9 @@
 #ifndef GUM_I_CPT_DISTURBER_H
 #define GUM_I_CPT_DISTURBER_H
 
-#include <agrum/BN/BayesNet.h>
 #include <agrum/agrum.h>
+
+#include <agrum/BN/BayesNet.h>
 
 namespace gum {
   /** @class ICPTDisturber

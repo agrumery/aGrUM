@@ -30,6 +30,7 @@
 #include <sstream>
 
 #include <agrum/agrum.h>
+
 #include <agrum/BN/learning/paramUtils/paramEstimator.h>
 
 namespace gum {

@@ -197,9 +197,11 @@ namespace gum {
   void Instantiation::_masterIncNotification_() const {
     if (_master_) _master_->setIncNotification(*this);
   }
+
   void Instantiation::_masterLastNotification_() const {
     if (_master_) _master_->setLastNotification(*this);
   }
+
   void Instantiation::_masterDecNotification_() const {
     if (_master_) _master_->setDecNotification(*this);
   }
@@ -212,12 +214,14 @@ namespace gum {
     }
     return true;
   }
+
   // force the variables sequence order to be the same as the master one
   void Instantiation::synchronizeWithMaster(const MultiDimAdressable* m) {
     if (m != _master_) { GUM_ERROR(OperationNotAllowed, "only master can do this") }
 
     _reorder_(_master_->variablesSequence());
   }
+
   // erase new dim by master
   void Instantiation::eraseWithMaster(const MultiDimAdressable* m, const DiscreteVariable& v) {
     if (m != _master_) { GUM_ERROR(OperationNotAllowed, "only master can do this") }

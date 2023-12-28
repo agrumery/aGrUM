@@ -31,15 +31,17 @@
 #define GUM_PRIORITY_QUEUE_H
 
 #include <functional>
-#include <initializer_list>
 #include <sstream>
 #include <string>
-#include <type_traits>
 #include <utility>
 #include <vector>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/hashTable.h>
+
+#include <initializer_list>
+#include <type_traits>
 
 namespace gum {
 

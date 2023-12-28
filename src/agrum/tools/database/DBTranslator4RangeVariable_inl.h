@@ -25,13 +25,13 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
+#include <cstdio>
+#include <limits>
 #include <utility>
 #include <vector>
-#include <limits>
-#include <cstdio>
 
-#include <agrum/tools/database/DBTranslator4RangeVariable.h>
 #include <agrum/tools/database/DBCell.h>
+#include <agrum/tools/database/DBTranslator4RangeVariable.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -43,7 +43,6 @@ namespace gum {
     INLINE DBTranslator4RangeVariable::~DBTranslator4RangeVariable() {
       GUM_DESTRUCTOR(DBTranslator4RangeVariable);
     }
-
 
     /// returns the original value for a given translation
     INLINE std::string
@@ -62,7 +61,6 @@ namespace gum {
                                                << "\" could not be found");
       }
     }
-
 
     /// returns a mapping to reorder the current dictionary and updates it
     INLINE HashTable< std::size_t, std::size_t > DBTranslator4RangeVariable::reorder() {
@@ -94,16 +92,13 @@ namespace gum {
       return mapping;
     }
 
-
     /// returns the domain size of a variable corresponding to the translations
     INLINE std::size_t DBTranslator4RangeVariable::domainSize() const {
       return _variable_.domainSize();
     }
 
-
     /// returns the variable stored into the translator
     INLINE const RangeVariable* DBTranslator4RangeVariable::variable() const { return &_variable_; }
-
 
     /// returns the translation of a missing value
     INLINE DBTranslatedValue DBTranslator4RangeVariable::missingValue() const {

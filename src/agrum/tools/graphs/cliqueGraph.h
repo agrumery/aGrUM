@@ -319,4 +319,4 @@ namespace gum {
 #  include <agrum/tools/graphs/cliqueGraph_inl.h>
 #endif   // GUM_NOINLINE
 
-#endif /* GUM_CLIQUE_GRAPH_H */
+#endif   /* GUM_CLIQUE_GRAPH_H */

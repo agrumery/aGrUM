@@ -37,6 +37,7 @@
 #include <vector>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/hashTable.h>
 
 namespace gum {
@@ -58,24 +59,10 @@ namespace gum {
   class FormulaPart {
     public:
     /// The tokens constituting a formula.
-    enum token_type {
-      NUMBER,
-      OPERATOR,
-      PARENTHESIS,
-      NIL,
-      FUNCTION,
-      ARG_SEP
-    };
+    enum token_type { NUMBER, OPERATOR, PARENTHESIS, NIL, FUNCTION, ARG_SEP };
 
     /// The functions allowed in a formula.
-    enum token_function {
-      exp,
-      log,
-      ln,
-      pow,
-      sqrt,
-      nil
-    };
+    enum token_function { exp, log, ln, pow, sqrt, nil };
 
     /// The token_type stored by this gum::FormulaPart.
     token_type type;
@@ -548,4 +535,4 @@ namespace gum {
 #  include <agrum/tools/core/math/formula_inl.h>
 #endif   // GUM_NO_INLINE
 
-#endif /* GUM_MATH_FORMULA_H */
+#endif   /* GUM_MATH_FORMULA_H */

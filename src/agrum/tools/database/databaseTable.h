@@ -31,17 +31,19 @@
 #ifndef GUM_DATABASE_TABLE_H
 #define GUM_DATABASE_TABLE_H
 
-#include <numeric>
 #include <algorithm>
-#include <functional>
 #include <exception>
-#include <vector>
+#include <functional>
 #include <memory>
+#include <numeric>
+#include <vector>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/math/math_utils.h>
-#include <agrum/tools/database/IDatabaseTable.h>
+
 #include <agrum/tools/database/DBTranslatorSet.h>
+#include <agrum/tools/database/IDatabaseTable.h>
+
+#include <agrum/tools/core/math/math_utils.h>
 
 namespace gum {
 
@@ -770,7 +772,7 @@ namespace gum {
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
-  } /* namespace learning */
+  }    /* namespace learning */
 
 } /* namespace gum */
 

@@ -19,15 +19,17 @@
  */
 
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
 #include <iostream>
 
-#include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
-#include <agrum/tools/database/DBRowGeneratorParser.h>
-#include <agrum/tools/stattests/recordCounter.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
+
 #include <agrum/tools/database/DBRowGeneratorEM.h>
+#include <agrum/tools/database/DBRowGeneratorParser.h>
+#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
+#include <agrum/tools/stattests/recordCounter.h>
+
+#include <agrum/BN/inference/lazyPropagation.h>
 
 namespace gum_tests {
 
@@ -267,7 +269,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(counts[8], double(0));     // A=2, B=2
     }
 
-
     void _test_no_range_has_nodeId2col() {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
@@ -503,7 +504,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(counts[8], double(0));     // A=2, B=2
     }
 
-
     GUM_ACTIVE_TEST(_partial_nodes) {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
@@ -584,7 +584,6 @@ namespace gum_tests {
       gum::learning::IdCondSet ids4(5, std::vector< gum::NodeId >(), true);
       TS_ASSERT_THROWS(counts = counter.counts(ids4), const gum::NotFound&)
     }
-
 
     GUM_ACTIVE_TEST(_has_range_no_nodeId2col) {
       // create the translator set
@@ -796,7 +795,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(counts[7], double(0));     // A=1, B=2
       TS_ASSERT_EQUALS(counts[8], double(0));     // A=2, B=2
     }
-
 
     GUM_ACTIVE_TEST(_multicore) {
       // create the translator set

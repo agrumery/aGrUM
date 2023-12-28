@@ -26,8 +26,9 @@
  * GONZALES(_at_AMU)
  *
  */
-#include <agrum/tools/core/utils_random.h>
 #include <agrum/ID/generator/influenceDiagramGenerator.h>
+
+#include <agrum/tools/core/utils_random.h>
 
 namespace gum {
 

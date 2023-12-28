@@ -43,7 +43,6 @@ namespace gum {
       GUM_CONSTRUCTOR(ScorefNML);
     }
 
-
     /// default constructor
     INLINE ScorefNML::ScorefNML(const DBRowGeneratorParser&             parser,
                                 const Prior&                            prior,
@@ -53,13 +52,11 @@ namespace gum {
       GUM_CONSTRUCTOR(ScorefNML);
     }
 
-
     /// copy constructor
     INLINE ScorefNML::ScorefNML(const ScorefNML& from) :
         Score(from), _internal_prior_(from._internal_prior_) {
       GUM_CONS_CPY(ScorefNML);
     }
-
 
     /// move constructor
     INLINE ScorefNML::ScorefNML(ScorefNML&& from) :
@@ -67,26 +64,21 @@ namespace gum {
       GUM_CONS_MOV(ScorefNML);
     }
 
-
     /// virtual copy constructor
     INLINE ScorefNML* ScorefNML::clone() const { return new ScorefNML(*this); }
 
-
     /// destructor
     INLINE ScorefNML::~ScorefNML() { GUM_DESTRUCTOR(ScorefNML); }
-
 
     /// indicates whether the prior is compatible (meaningful) with the score
     INLINE std::string ScorefNML::isPriorCompatible(const Prior& prior) {
       return isPriorCompatible(prior.getType(), prior.weight());
     }
 
-
     /// indicates whether the prior is compatible (meaningful) with the score
     INLINE std::string ScorefNML::isPriorCompatible() const {
       return isPriorCompatible(*(this->prior_));
     }
-
 
     /// returns the internal prior of the score
     INLINE const Prior& ScorefNML::internalPrior() const { return _internal_prior_; }

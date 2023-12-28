@@ -30,9 +30,9 @@
 #include <string>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/database/DBTranslator.h>
 #include <agrum/tools/variables/continuousVariable.h>
-
 
 namespace gum {
 
@@ -346,10 +346,9 @@ namespace gum {
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
-  } /* namespace learning */
+  }    /* namespace learning */
 
 } /* namespace gum */
-
 
 // always include the template implementation
 #include <agrum/tools/database/DBTranslator4ContinuousVariable_tpl.h>

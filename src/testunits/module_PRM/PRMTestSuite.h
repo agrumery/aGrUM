@@ -20,23 +20,22 @@
 
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
-#include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/variableElimination.h>
-
 #include <agrum/PRM/classBayesNet.h>
-#include <agrum/PRM/inference/SVE.h>
-#include <agrum/PRM/inference/SVED.h>
 #include <agrum/PRM/inference/groundedInference.h>
 #include <agrum/PRM/inference/structuredBayesBall.h>
 #include <agrum/PRM/inference/structuredInference.h>
+#include <agrum/PRM/inference/SVE.h>
+#include <agrum/PRM/inference/SVED.h>
 #include <agrum/PRM/instanceBayesNet.h>
-
 #include <agrum/PRM/o3prm/O3prmReader.h>
 
 #define GET_RESSOURCES_PATH_O3PRM(x) xstrfy(GUM_SRC_PATH) "/testunits/ressources/o3prm/" #x
+
 namespace gum_tests {
 
   class [[maybe_unused]] PRMTestSuite: public CxxTest::TestSuite {

@@ -22,15 +22,17 @@
 #include <iostream>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
+
+#include <agrum/config.h>
+
+#include <agrum/tools/multidim/instantiation.h>
+#include <agrum/tools/multidim/potential.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 #include <agrum/BN/BayesNetFragment.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/config.h>
-#include <agrum/tools/multidim/instantiation.h>
-#include <agrum/tools/multidim/potential.h>
-#include <agrum/tools/variables/labelizedVariable.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3
@@ -602,7 +604,6 @@ namespace gum_tests {
       for (II.setFirst(), JJ.setFirst(); !II.end(); ++II, ++JJ)
         TS_ASSERT_DELTA(p1[II], p2[JJ], 1e-6)
     }
-
 
     GUM_ACTIVE_TEST(CopyToBN) {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;E<-C<-F;");

@@ -19,12 +19,14 @@
  */
 
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
 #include <iostream>
-#include <ressources/include/simpleDebugGenerator.h>
+
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/database/DBRowGeneratorIdentity.h>
+
+#include <ressources/include/simpleDebugGenerator.h>
 
 namespace gum_tests {
 
@@ -193,7 +195,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(zoutput_row9[2].cont_val, 4.5f)
       TS_ASSERT(!generator9.hasRows())
     }
-
 
     GUM_ACTIVE_TEST(_duplications) {
       const std::vector< gum::learning::DBTranslatedValueType > col_types{

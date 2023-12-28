@@ -102,6 +102,7 @@ namespace gum {
 
       return s.str();
     }
+
     template < typename GUM_SCALAR >
     void MultiDimAggregator< GUM_SCALAR >::copyFrom(
        const MultiDimContainer< GUM_SCALAR >& src) const {
@@ -121,7 +122,6 @@ namespace gum {
     INLINE bool MultiDimAggregator< GUM_SCALAR >::isDecomposable() const {
       return decomposable_;
     }
-
 
     // returns the name of the implementation
     template < typename GUM_SCALAR >

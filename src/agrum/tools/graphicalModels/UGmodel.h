@@ -30,8 +30,8 @@
 #define GUM_UGMODEL_H
 
 #include <agrum/agrum.h>
-#include <agrum/tools/graphicalModels/graphicalModel.h>
 
+#include <agrum/tools/graphicalModels/graphicalModel.h>
 
 namespace gum {
 
@@ -126,6 +126,7 @@ namespace gum {
                        const std::vector< std::string >& Znames) const {
       return isIndependent(idFromName(Xname), idFromName(Yname), nodeset(Znames));
     };
+
     bool isIndependent(const std::vector< std::string >& Xnames,
                        const std::vector< std::string >& Ynames,
                        const std::vector< std::string >& Znames) const {

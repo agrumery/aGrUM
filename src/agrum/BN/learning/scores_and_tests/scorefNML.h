@@ -31,9 +31,12 @@
 #include <string>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/math/variableLog2ParamComplexity.h>
-#include <agrum/BN/learning/scores_and_tests/score.h>
+
 #include <agrum/BN/learning/priors/noPrior.h>
+
+#include <agrum/BN/learning/scores_and_tests/score.h>
 
 namespace gum {
 

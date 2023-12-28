@@ -19,19 +19,20 @@
  */
 
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
 #include <iostream>
-#include <vector>
 #include <string>
+#include <vector>
+
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/core/threads/threads.h>
 #include <agrum/tools/database/databaseTable.h>
-#include <agrum/tools/database/DBTranslatorSet.h>
-#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
-#include <agrum/tools/database/DBTranslator4DiscretizedVariable.h>
-#include <agrum/tools/database/DBTranslator4RangeVariable.h>
 #include <agrum/tools/database/DBTranslator4ContinuousVariable.h>
+#include <agrum/tools/database/DBTranslator4DiscretizedVariable.h>
+#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
+#include <agrum/tools/database/DBTranslator4RangeVariable.h>
+#include <agrum/tools/database/DBTranslatorSet.h>
 
 namespace gum_tests {
 
@@ -395,7 +396,6 @@ namespace gum_tests {
       }
     }
 
-
     GUM_ACTIVE_TEST(_db4) {
       gum::learning::DBTranslatorSet                 set;
       std::vector< std::string >                     missing{"?", "N/A", "???"};
@@ -488,7 +488,6 @@ namespace gum_tests {
       handler3.nextRow();
       TS_ASSERT_EQUALS(handler3.hasRows(), false)
     }
-
 
     GUM_ACTIVE_TEST(_db5) {
       {
@@ -1010,7 +1009,6 @@ namespace gum_tests {
       }
     }
 
-
     GUM_ACTIVE_TEST(_insert_translators) {
       std::vector< std::string >   missing{"?", "N/A", "???"};
       gum::learning::DatabaseTable database;
@@ -1078,7 +1076,6 @@ namespace gum_tests {
       database.insertRows(std::move(vecty), is_miss);
       TS_ASSERT_EQUALS(database.content().size(), (gum::Size)13)
     }
-
 
     GUM_ACTIVE_TEST(_reordering) {
       std::vector< std::string >   missing{"?", "N/A", "???"};
@@ -1166,7 +1163,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(content[2][1].discr_val, (std::size_t)0)
       TS_ASSERT_EQUALS(content[2][2].discr_val, (std::size_t)1)
     }
-
 
     GUM_ACTIVE_TEST(_missing_vals) {
       std::vector< std::string >   missing{"?", "N/A", "???"};
@@ -1265,7 +1261,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(database.hasMissingValues(), false)
     }
 
-
     GUM_ACTIVE_TEST(_threads) {
       std::vector< std::string >                     missing{"?", "N/A", "???"};
       gum::ContinuousVariable< double >              var("var", "");
@@ -1311,7 +1306,6 @@ namespace gum_tests {
       database.setMinNbRowsPerThread(10000);
       database.insertTranslator(translator, 2, false);
     }
-
 
     GUM_ACTIVE_TEST(_changeTranslator) {
       gum::learning::DBTranslatorSet                set;

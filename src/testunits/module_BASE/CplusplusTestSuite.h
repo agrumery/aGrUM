@@ -20,8 +20,8 @@
 
 
 #include <iostream>
-#include <string>
 #include <limits>
+#include <string>
 
 #include <gumtest/AgrumTestSuite.h>
 
@@ -46,8 +46,8 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(_CPP17_enumInit) {
-      enum byte : unsigned char {
-      };
+      enum byte : unsigned char {};
+
       byte b0 [[maybe_unused]]{0};
       byte b1 [[maybe_unused]] = byte{255};
     }
@@ -87,6 +87,7 @@ namespace gum_tests {
         int x{1};
         int y{[&] { return x + 1; }()};   // OK, captures 'this'
       };
+
       S s;
       TS_ASSERT_EQUALS(s.y, 2);
     }

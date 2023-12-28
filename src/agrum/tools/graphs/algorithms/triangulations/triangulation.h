@@ -30,9 +30,9 @@
 #include <vector>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/sequence.h>
 #include <agrum/tools/graphs/cliqueGraph.h>
-#include <vector>
 
 namespace gum {
 
@@ -178,4 +178,4 @@ namespace gum {
 #endif   // GUM_NO_INLINE
 
 
-#endif /* GUM_TRIANGULATION_H */
+#endif   /* GUM_TRIANGULATION_H */

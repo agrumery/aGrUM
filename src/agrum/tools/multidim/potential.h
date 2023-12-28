@@ -27,10 +27,11 @@
 #ifndef GUM_POTENTIAL_H
 #define GUM_POTENTIAL_H
 
-#include <vector>
 #include <functional>
+#include <vector>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/multidim/implementations/multiDimDecorator.h>
 
 namespace gum {

@@ -33,6 +33,7 @@
 #include <sstream>
 #include <stdlib.h>
 #include <vector>
+
 #include <agrum/tools/core/math/math_utils.h>
 
 // 64 bits for windows (long is 32 bits)

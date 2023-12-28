@@ -40,6 +40,7 @@
 #include <vector>
 
 #include <agrum/config.h>
+
 #include <agrum/BN/learning/Miic.h>
 
 namespace gum {

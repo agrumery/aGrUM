@@ -26,8 +26,10 @@
  */
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/math/math_utils.h>
+
 #include <agrum/tools/graphs/algorithms/triangulations/triangulation.h>
+
+#include <agrum/tools/core/math/math_utils.h>
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/tools/graphs/algorithms/triangulations/triangulation_inl.h>

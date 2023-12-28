@@ -27,6 +27,7 @@
 
 // to ease automatic parsers
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/threads/threadsSTL.h>
 
 // include the inlined functions if necessary
@@ -42,11 +43,9 @@ namespace gum {
     // the number of threads used the next time we enter into a parallel region
     static unsigned int _nb_threads_{getMaxNumberOfThreads()};
 
-
     // returns the max number of threads used by default when entering the
     // next parallel region
     unsigned int getNumberOfThreads() { return _nb_threads_; }
-
 
     // Set the max number of threads to be used.
     void setNumberOfThreads(unsigned int number) {

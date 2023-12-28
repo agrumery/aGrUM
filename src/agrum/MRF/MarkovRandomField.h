@@ -33,10 +33,8 @@
 
 #include <agrum/agrum.h>
 
-
-#include <agrum/MRF/IMarkovRandomField.h>
-
 #include <agrum/BN/BayesNet.h>
+#include <agrum/MRF/IMarkovRandomField.h>
 
 namespace gum {
 

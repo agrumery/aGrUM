@@ -268,7 +268,6 @@ namespace gum {
       l_marginalSets_[tId][id] = lrsWrapper.getOutput();
     }
 
-
     template < typename GUM_SCALAR, class BNInferenceEngine >
     inline void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::updateMarginals_() {
       // compute the max number of threads to use (avoid nested threads)

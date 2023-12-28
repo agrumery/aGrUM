@@ -27,6 +27,7 @@
  */
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/graphs/algorithms/triangulations/eliminationStrategies/unconstrainedEliminationSequenceStrategy.h>
 #include <agrum/tools/graphs/algorithms/triangulations/unconstrainedTriangulation.h>
 

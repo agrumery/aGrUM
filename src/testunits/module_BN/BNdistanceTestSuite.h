@@ -25,13 +25,12 @@
 #include <vector>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
+#include <agrum/BN/algorithms/divergence/exactBNdistance.h>
+#include <agrum/BN/algorithms/divergence/GibbsBNdistance.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
-
-#include <agrum/BN/algorithms/divergence/GibbsBNdistance.h>
-#include <agrum/BN/algorithms/divergence/exactBNdistance.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3
@@ -204,10 +203,10 @@ namespace gum_tests {
         if (fabs(kl.jsd() - 0.0696153) >= 1e-1) continue;            // next try
         if (fabs(kl.bhattacharya() - 0.0529255) >= 1e-1) continue;   // next try
         if (kl.history().size() - (kl.nbrIterations() - kl.burnIn()) / kl.periodSize() >= 2)
-          continue;   // next try
+          continue;                                                  // next try
 
         break;   // everything is ok : can stop the loop
       }
     }
-  };   // namespace gum_tests
+  };             // namespace gum_tests
 }   // namespace gum_tests

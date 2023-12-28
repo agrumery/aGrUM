@@ -52,6 +52,7 @@ namespace gum {
     // within class DiGraph
     MixedGraph::addArc(tail, head);
   }
+
   INLINE void PDAG::addEdge(const NodeId tail, const NodeId head) {
     if (head == tail) { GUM_ERROR(InvalidDirectedCycle, "Add a mono-cycle in a PDAG !") }
 

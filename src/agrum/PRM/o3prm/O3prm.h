@@ -32,6 +32,7 @@
 #include <vector>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/math/formula.h>
 
 #ifndef GUM_PRM_O3PRM_PRM_H
@@ -391,11 +392,7 @@ namespace gum {
        */
       class O3Parameter {
         public:
-        enum class PRMType {
-          NONE,
-          INT,
-          FLOAT
-        };
+        enum class PRMType { NONE, INT, FLOAT };
 
         O3Parameter();
         O3Parameter(const O3Position& pos, const O3Label& name, const O3Integer& value);

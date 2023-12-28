@@ -121,7 +121,6 @@ namespace gum {
     return container;
   }
 
-
   // Default constructor: creates an empty register
   template < typename GUM_SCALAR >
   OperatorRegister4MultiDim< GUM_SCALAR >::OperatorRegister4MultiDim() {}

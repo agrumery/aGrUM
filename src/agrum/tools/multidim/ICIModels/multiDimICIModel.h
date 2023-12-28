@@ -152,6 +152,7 @@ namespace gum {
     virtual const std::string& name() const override;
 
     /// @}
+
     protected:
     /// \f$ p_0 \f$ in Henrion (89).
     mutable GUM_SCALAR _external_weight_;

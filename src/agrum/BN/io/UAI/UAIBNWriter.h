@@ -37,8 +37,9 @@
 #include <sstream>
 #include <string>
 
-#include <agrum/BN/io/BNWriter.h>
 #include <agrum/agrum.h>
+
+#include <agrum/BN/io/BNWriter.h>
 
 namespace gum {
   /**
@@ -73,6 +74,7 @@ namespace gum {
     UAIBNWriter& operator=(UAIBNWriter&&) noexcept = default;
 
     /// @}
+
     protected:
     /**
      * Writes an bayes net in the given ouput stream.

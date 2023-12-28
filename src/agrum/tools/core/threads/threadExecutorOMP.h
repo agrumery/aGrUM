@@ -27,14 +27,15 @@
 #ifndef GUM_THREAD_EXECUTOR_OMP_H
 #define GUM_THREAD_EXECUTOR_OMP_H
 
-#include <vector>
-#include <exception>
 #include <algorithm>
+#include <exception>
 #include <functional>
+#include <vector>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/threads/threadsOMP.h>
+
 #include <agrum/tools/core/threads/threadExecutorBase.h>
+#include <agrum/tools/core/threads/threadsOMP.h>
 
 namespace gum {
 
@@ -82,7 +83,6 @@ namespace gum {
   } /* namespace threadsOMP */
 
 } /* namespace gum */
-
 
 /// always include the templated implementations
 #include <agrum/tools/core/threads/threadExecutorOMP_tpl.h>

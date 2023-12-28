@@ -58,12 +58,10 @@ namespace gum {
     GUM_DESTRUCTOR(GibbsSampling);
   }
 
-
   template < typename GUM_SCALAR >
   Instantiation GibbsSampling< GUM_SCALAR >::monteCarloSample_() {
     return GibbsOperator< GUM_SCALAR >::monteCarloSample();
   }
-
 
   template < typename GUM_SCALAR >
   Instantiation GibbsSampling< GUM_SCALAR >::burnIn_() {

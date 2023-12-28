@@ -152,7 +152,6 @@ namespace gum {
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
-
       void O3PRM_CLASS_ATTR_IMPLEMENTATION(const O3Label&   c,
                                            const O3Label&   i,
                                            const O3Label&   attr,
@@ -188,7 +187,6 @@ namespace gum {
             << " does not respect interface " << i.label();
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
-
 
       void O3PRM_CLASS_MISSING_ATTRIBUTES(const O3Label&   c,
                                           const O3Label&   i,

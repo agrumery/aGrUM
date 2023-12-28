@@ -28,8 +28,9 @@
 #ifndef GUM_MULTI_DIM_COMPLETE_PROJECTION_H
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_H
 
-#include <agrum/tools/multidim/instantiation.h>
 #include <utility>
+
+#include <agrum/tools/multidim/instantiation.h>
 
 namespace gum {
 

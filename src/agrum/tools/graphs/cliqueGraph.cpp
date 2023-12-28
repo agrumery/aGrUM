@@ -24,8 +24,8 @@
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
-#include <sstream>
 #include <algorithm>
+#include <sstream>
 
 #include <agrum/tools/graphs/cliqueGraph.h>
 
@@ -58,8 +58,8 @@ namespace gum {
       /// copy constructor
 
       CliqueGraph::CliqueGraph(const CliqueGraph& from) :
-      NodeGraphPart(from),   // needed because NodeGraphPart is a virtual inherited
-      UndiGraph(from),       // class (see C++ FAQ Lite #25.12 for details)
+      NodeGraphPart(from),            // needed because NodeGraphPart is a virtual inherited
+      UndiGraph(from),                // class (see C++ FAQ Lite #25.12 for details)
       _cliques_(from._cliques_),
       _separators_(from._separators_){// for debugging purposes
                                       GUM_CONS_CPY(CliqueGraph)}
@@ -298,6 +298,7 @@ namespace gum {
     stream << '(' << n << ") " << expandCliqueContent(clique);
     return stream.str();
   }
+
   std::string expandSeparator(const NodeId   n1,
                               const NodeSet& clique1,
                               const NodeId   n2,
@@ -306,7 +307,6 @@ namespace gum {
     stream << expandClique(n1, clique1) << "^" << expandClique(n2, clique2);
     return stream.str();
   }
-
 
   std::string CliqueGraph::toDot() const {
     std::stringstream stream;

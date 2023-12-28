@@ -40,6 +40,7 @@ namespace gum {
 
 #  ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME
 #    define GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE GUM_SCALAR
+
   template < typename GUM_SCALAR >
   GUM_SCALAR GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME(const MultiDimArray< GUM_SCALAR >* table,
                                                     Instantiation* instantiation)

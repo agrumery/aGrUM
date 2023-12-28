@@ -23,18 +23,19 @@
 #include <iostream>
 #include <string>
 
-#include "testsuite_utils.h"
 #include <gumtest/AgrumTestSuite.h>
 
 #include <agrum/tools/core/smallobjectallocator/fixedAllocator.h>
 #include <agrum/tools/core/smallobjectallocator/smallObjectAllocator.h>
 #include <agrum/tools/core/timer.h>
 
+#include "utils.h"
 
 namespace gum_tests {
 
   class [[maybe_unused]] SmallObjectAllocatorTestSuite: public CxxTest::TestSuite {
     private:
+
     public:
     // ==============================================================================
     // Test CREATION et DESTRUCTION dun Fixed Allocator

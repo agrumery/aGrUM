@@ -25,17 +25,15 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#include <agrum/PRM/PRMFactory.h>
-
 #include <iostream>
 #include <sstream>
 
 #include <agrum/tools/core/math/formula.h>
-
 #include <agrum/tools/variables/allDiscreteVariables.h>
 
 #include <agrum/PRM/elements/PRMFormAttribute.h>
 #include <agrum/PRM/elements/PRMFuncAttribute.h>
+#include <agrum/PRM/PRMFactory.h>
 
 namespace gum {
 
@@ -108,8 +106,8 @@ namespace gum {
               std::string name = i->get(node).name();
 
               switch (i->get(node).elt_type()) {
-                case PRMClassElement< GUM_SCALAR >::prm_aggregate:
-                case PRMClassElement< GUM_SCALAR >::prm_attribute: {
+                case PRMClassElement< GUM_SCALAR >::prm_aggregate :
+                case PRMClassElement< GUM_SCALAR >::prm_attribute : {
                   if ((c->get(name).elt_type() == PRMClassElement< GUM_SCALAR >::prm_attribute)
                       || (c->get(name).elt_type()
                           == PRMClassElement< GUM_SCALAR >::prm_aggregate)) {
@@ -127,7 +125,7 @@ namespace gum {
                   break;
                 }
 
-                case PRMClassElement< GUM_SCALAR >::prm_refslot: {
+                case PRMClassElement< GUM_SCALAR >::prm_refslot : {
                   if (c->get(name).elt_type() == PRMClassElement< GUM_SCALAR >::prm_refslot) {
                     const PRMReferenceSlot< GUM_SCALAR >& ref_i
                        = static_cast< const PRMReferenceSlot< GUM_SCALAR >& >(i->get(name));
@@ -148,12 +146,12 @@ namespace gum {
                   break;
                 }
 
-                case PRMClassElement< GUM_SCALAR >::prm_slotchain: {
+                case PRMClassElement< GUM_SCALAR >::prm_slotchain : {
                   // Nothing to check: they are automatically inherited
                   break;
                 }
 
-                default: {
+                default : {
                   std::string msg = "unexpected ClassElement<GUM_SCALAR> in interface ";
                   GUM_ERROR(FatalError, msg + i->name())
                 }
@@ -239,13 +237,13 @@ namespace gum {
         PRMClassElement< GUM_SCALAR >& elt = c->get(name);
 
         switch (elt.elt_type()) {
-          case PRMClassElement< GUM_SCALAR >::prm_refslot: {
+          case PRMClassElement< GUM_SCALAR >::prm_refslot : {
             GUM_ERROR(OperationNotAllowed,
                       "can not add a reference slot as a parent of an attribute")
             break;
           }
 
-          case PRMClassElement< GUM_SCALAR >::prm_slotchain: {
+          case PRMClassElement< GUM_SCALAR >::prm_slotchain : {
             if (static_cast< PRMSlotChain< GUM_SCALAR >& >(elt).isMultiple()) {
               GUM_ERROR(OperationNotAllowed, "can not add a multiple slot chain to an attribute")
             }
@@ -255,13 +253,13 @@ namespace gum {
             break;
           }
 
-          case PRMClassElement< GUM_SCALAR >::prm_attribute:
-          case PRMClassElement< GUM_SCALAR >::prm_aggregate: {
+          case PRMClassElement< GUM_SCALAR >::prm_attribute :
+          case PRMClassElement< GUM_SCALAR >::prm_aggregate : {
             c->addArc(name, a->name());
             break;
           }
 
-          default: {
+          default : {
             GUM_ERROR(FatalError, "unknown ClassElement<GUM_SCALAR>")
           }
         }
@@ -283,7 +281,6 @@ namespace gum {
         }
       }
     }
-
 
     template < typename GUM_SCALAR >
     INLINE void PRMFactory< GUM_SCALAR >::addParent(const std::string& name) {
@@ -558,16 +555,16 @@ namespace gum {
       } catch (DuplicateElement const&) { c->overload(agg); }
 
       switch (agg->agg_type()) {
-        case PRMAggregate< GUM_SCALAR >::AggregateType::COUNT:
-        case PRMAggregate< GUM_SCALAR >::AggregateType::EXISTS:
-        case PRMAggregate< GUM_SCALAR >::AggregateType::FORALL: {
+        case PRMAggregate< GUM_SCALAR >::AggregateType::COUNT :
+        case PRMAggregate< GUM_SCALAR >::AggregateType::EXISTS :
+        case PRMAggregate< GUM_SCALAR >::AggregateType::FORALL : {
           if (params.size() != 1) {
             GUM_ERROR(OperationNotAllowed, "aggregate requires a parameter")
           }
           agg->setLabel(params.front());
           break;
         }
-        default: {
+        default : {
           // Nothing to do
         }
       }
@@ -596,8 +593,8 @@ namespace gum {
       _retrieveInputs_(c, chains, inputs);
 
       switch (agg->agg_type()) {
-        case PRMAggregate< GUM_SCALAR >::AggregateType::OR:
-        case PRMAggregate< GUM_SCALAR >::AggregateType::AND: {
+        case PRMAggregate< GUM_SCALAR >::AggregateType::OR :
+        case PRMAggregate< GUM_SCALAR >::AggregateType::AND : {
           if (inputs.front()->type() != *(_retrieveType_("boolean"))) {
             GUM_ERROR(TypeError, "expected booleans")
           }
@@ -605,9 +602,9 @@ namespace gum {
           break;
         }
 
-        case PRMAggregate< GUM_SCALAR >::AggregateType::COUNT:
-        case PRMAggregate< GUM_SCALAR >::AggregateType::EXISTS:
-        case PRMAggregate< GUM_SCALAR >::AggregateType::FORALL: {
+        case PRMAggregate< GUM_SCALAR >::AggregateType::COUNT :
+        case PRMAggregate< GUM_SCALAR >::AggregateType::EXISTS :
+        case PRMAggregate< GUM_SCALAR >::AggregateType::FORALL : {
           if (!agg->hasLabel()) {
             auto param     = agg->labelValue();
             Idx  label_idx = 0;
@@ -628,15 +625,15 @@ namespace gum {
           break;
         }
 
-        case PRMAggregate< GUM_SCALAR >::AggregateType::SUM:
-        case PRMAggregate< GUM_SCALAR >::AggregateType::MEDIAN:
-        case PRMAggregate< GUM_SCALAR >::AggregateType::AMPLITUDE:
-        case PRMAggregate< GUM_SCALAR >::AggregateType::MIN:
-        case PRMAggregate< GUM_SCALAR >::AggregateType::MAX: {
+        case PRMAggregate< GUM_SCALAR >::AggregateType::SUM :
+        case PRMAggregate< GUM_SCALAR >::AggregateType::MEDIAN :
+        case PRMAggregate< GUM_SCALAR >::AggregateType::AMPLITUDE :
+        case PRMAggregate< GUM_SCALAR >::AggregateType::MIN :
+        case PRMAggregate< GUM_SCALAR >::AggregateType::MAX : {
           break;
         }
 
-        default: {
+        default : {
           GUM_ERROR(FatalError, "Unknown aggregator.")
         }
       }
@@ -687,8 +684,8 @@ namespace gum {
       PRMAggregate< GUM_SCALAR >* agg = nullptr;
 
       switch (PRMAggregate< GUM_SCALAR >::str2enum(agg_type)) {
-        case PRMAggregate< GUM_SCALAR >::AggregateType::OR:
-        case PRMAggregate< GUM_SCALAR >::AggregateType::AND: {
+        case PRMAggregate< GUM_SCALAR >::AggregateType::OR :
+        case PRMAggregate< GUM_SCALAR >::AggregateType::AND : {
           if (inputs.front()->type() != *(_retrieveType_("boolean"))) {
             GUM_ERROR(TypeError, "expected booleans")
           }
@@ -701,8 +698,8 @@ namespace gum {
           break;
         }
 
-        case PRMAggregate< GUM_SCALAR >::AggregateType::EXISTS:
-        case PRMAggregate< GUM_SCALAR >::AggregateType::FORALL: {
+        case PRMAggregate< GUM_SCALAR >::AggregateType::EXISTS :
+        case PRMAggregate< GUM_SCALAR >::AggregateType::FORALL : {
           if (params.size() != 1) { GUM_ERROR(OperationNotAllowed, "invalid number of parameters") }
 
           Idx label_idx = 0;
@@ -727,11 +724,11 @@ namespace gum {
           break;
         }
 
-        case PRMAggregate< GUM_SCALAR >::AggregateType::SUM:
-        case PRMAggregate< GUM_SCALAR >::AggregateType::MEDIAN:
-        case PRMAggregate< GUM_SCALAR >::AggregateType::AMPLITUDE:
-        case PRMAggregate< GUM_SCALAR >::AggregateType::MIN:
-        case PRMAggregate< GUM_SCALAR >::AggregateType::MAX: {
+        case PRMAggregate< GUM_SCALAR >::AggregateType::SUM :
+        case PRMAggregate< GUM_SCALAR >::AggregateType::MEDIAN :
+        case PRMAggregate< GUM_SCALAR >::AggregateType::AMPLITUDE :
+        case PRMAggregate< GUM_SCALAR >::AggregateType::MIN :
+        case PRMAggregate< GUM_SCALAR >::AggregateType::MAX : {
           if (params.size() != 0) { GUM_ERROR(OperationNotAllowed, "invalid number of parameters") }
 
           auto output_type = _retrieveType_(type);
@@ -744,7 +741,7 @@ namespace gum {
           break;
         }
 
-        case PRMAggregate< GUM_SCALAR >::AggregateType::COUNT: {
+        case PRMAggregate< GUM_SCALAR >::AggregateType::COUNT : {
           if (params.size() != 1) { GUM_ERROR(OperationNotAllowed, "invalid number of parameters") }
 
           Idx label_idx = 0;
@@ -770,7 +767,7 @@ namespace gum {
           break;
         }
 
-        default: {
+        default : {
           GUM_ERROR(FatalError, "Unknown aggregator.")
         }
       }
@@ -924,14 +921,14 @@ namespace gum {
       for (size_t i = 0; i < v.size(); ++i) {
         try {
           switch (current->get(v[i]).elt_type()) {
-            case PRMClassElement< GUM_SCALAR >::prm_refslot:
+            case PRMClassElement< GUM_SCALAR >::prm_refslot :
               ref = &(static_cast< PRMReferenceSlot< GUM_SCALAR >& >(current->get(v[i])));
               elts.insert(ref);
               current = &(/*const_cast<PRMClassElementContainer<GUM_SCALAR>&>*/ (ref->slotType()));
               break;
 
-            case PRMClassElement< GUM_SCALAR >::prm_aggregate:
-            case PRMClassElement< GUM_SCALAR >::prm_attribute:
+            case PRMClassElement< GUM_SCALAR >::prm_aggregate :
+            case PRMClassElement< GUM_SCALAR >::prm_attribute :
 
               if (i == v.size() - 1) {
                 elts.insert(&(current->get(v[i])));
@@ -940,7 +937,7 @@ namespace gum {
                 return nullptr;
               }
 
-            default: {
+            default : {
               return nullptr;
             }
           }
@@ -1811,7 +1808,6 @@ namespace gum {
        const std::vector< PRMClassElement< GUM_SCALAR >* >& elts) {
       return *(_retrieveCommonType_(elts));
     }
-
 
     template < typename GUM_SCALAR >
     INLINE bool PRMFactory< GUM_SCALAR >::isClassOrInterface(const std::string& type) const {

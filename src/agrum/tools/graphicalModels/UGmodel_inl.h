@@ -27,8 +27,9 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 
-#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/graphicalModels/UGmodel.h>
+
+#include <agrum/tools/core/math/math_utils.h>
 
 namespace gum {
   INLINE
@@ -51,11 +52,13 @@ namespace gum {
   }
 
   INLINE const NodeSet& UGmodel::neighbours(const NodeId id) const { return graph_.neighbours(id); }
+
   INLINE const NodeSet& UGmodel::neighbours(const std::string& name) const {
     return neighbours(idFromName(name));
   }
 
   INLINE bool UGmodel::exists(NodeId node) const { return graph_.exists(node); }
+
   INLINE bool UGmodel::exists(const std::string& name) const {
     try {
       return exists(idFromName(name));

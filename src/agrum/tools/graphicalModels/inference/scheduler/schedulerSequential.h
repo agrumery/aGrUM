@@ -27,8 +27,8 @@
 #ifndef GUM_SCHEDULER_SEQUENTIAL_H
 #define GUM_SCHEDULER_SEQUENTIAL_H
 
-#include <vector>
 #include <algorithm>
+#include <vector>
 
 #include <agrum/agrum.h>
 
@@ -106,7 +106,6 @@ namespace gum {
     /// is the set of operations up to date
     bool _operations_up_to_date_{false};
 
-
     /** @brief a structure to keep informations about operations that could not be
      * executed due to memory usage limitations */
     struct UnexecutedOperation {
@@ -114,7 +113,6 @@ namespace gum {
       double end_memory_usage;
       NodeId node;
     };
-
 
     /// sets a schedule and updates the set of operations if necessary
     void _setSchedule_(const Schedule& schedule);

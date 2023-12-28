@@ -57,7 +57,6 @@ namespace gum {
       return *this;
     }
 
-
     /// move operator
     Score& Score::operator=(Score&& from) {
       if (this != &from) {
@@ -69,7 +68,6 @@ namespace gum {
       }
       return *this;
     }
-
 
     /// sets new ranges to perform the counts used by the score
     /** @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
@@ -84,14 +82,12 @@ namespace gum {
       if (old_ranges != ranges()) clear();
     }
 
-
     /// reset the ranges to the one range corresponding to the whole database
     void Score::clearRanges() {
       std::vector< std::pair< std::size_t, std::size_t > > old_ranges = ranges();
       counter_.clearRanges();
       if (old_ranges != ranges()) clear();
     }
-
 
     /// returns a counting vector where variables are marginalized from N_xyz
     /** @param X_size the domain size of the variable to marginalize (this

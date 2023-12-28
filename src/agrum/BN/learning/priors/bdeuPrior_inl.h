@@ -50,24 +50,21 @@ namespace gum::learning {
     return new BDeuPrior(*this);
   }
 
-
   /// destructor
   INLINE BDeuPrior::~BDeuPrior(){GUM_DESTRUCTOR(BDeuPrior)}
 
 
   /// copy operator
-  INLINE BDeuPrior& BDeuPrior::operator=(const BDeuPrior& from) {
+  INLINE BDeuPrior& BDeuPrior::operator=(const BDeuPrior & from) {
     Prior::operator=(from);
     return *this;
   }
-
 
   /// move operator
   INLINE BDeuPrior& BDeuPrior::operator=(BDeuPrior&& from) noexcept {
     Prior::operator=(std::move(from));
     return *this;
   }
-
 
   /// sets the effective sample size N' (alias of setEffectiveSampleSize ())
   INLINE void BDeuPrior::setWeight(const double weight) {
@@ -77,18 +74,14 @@ namespace gum::learning {
     this->weight_ = weight;
   }
 
-
   /// sets the effective sample size N'
   INLINE void BDeuPrior::setEffectiveSampleSize(const double weight) { setWeight(weight); }
-
 
   /// returns the type of the prior
   INLINE PriorType BDeuPrior::getType() const { return PriorType::BDeuPriorType; }
 
-
   /// indicates whether the prior is potentially informative
   INLINE bool BDeuPrior::isInformative() const { return this->weight_ != 0.0; }
-
 
   /// returns the prior vector all the variables in the idset
   INLINE void BDeuPrior::addJointPseudoCount(const IdCondSet&       idset,

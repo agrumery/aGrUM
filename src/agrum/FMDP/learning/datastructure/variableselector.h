@@ -33,6 +33,7 @@
 #include <agrum/tools/core/multiPriorityQueue.h>
 // =========================================================================
 #include <agrum/tools/variables/discreteVariable.h>
+
 // =========================================================================
 
 namespace gum {
@@ -85,9 +86,12 @@ namespace gum {
 
     bool isEmpty() const { return _remainingVars_.empty(); }
 
-    void                    begin() { _rvi_ = _remainingVars_.beginSafe(); }
-    bool                    hasNext() const { return _rvi_ != _remainingVars_.endSafe(); }
-    void                    next() { ++_rvi_; }
+    void begin() { _rvi_ = _remainingVars_.beginSafe(); }
+
+    bool hasNext() const { return _rvi_ != _remainingVars_.endSafe(); }
+
+    void next() { ++_rvi_; }
+
     const DiscreteVariable* current() const { return *_rvi_; }
 
     private:

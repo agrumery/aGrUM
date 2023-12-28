@@ -29,9 +29,11 @@
 #ifndef GUM_LINEAR_APPROXIMATION_POLICY_H
 #define GUM_LINEAR_APPROXIMATION_POLICY_H
 
-#include <agrum/agrum.h>
-#include <agrum/tools/core/approximations/approximationPolicy.h>
 #include <typeinfo>
+
+#include <agrum/agrum.h>
+
+#include <agrum/tools/core/approximations/approximationPolicy.h>
 
 namespace gum {
 

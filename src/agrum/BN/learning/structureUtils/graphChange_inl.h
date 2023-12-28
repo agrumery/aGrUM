@@ -342,7 +342,6 @@ namespace gum {
 
   } /* namespace learning */
 
-
   // ===========================================================================
 
   // Returns the value of a key as a Size.
@@ -356,7 +355,6 @@ namespace gum {
     return castToSize(key) >> this->right_shift_;
   }
 
-
   // Returns the value of a key as a Size.
   INLINE Size HashFunc< learning::ArcAddition >::castToSize(const learning::ArcAddition& key) {
     return Size(key.node1()) * HashFuncConst::gold + Size(key.node2()) * HashFuncConst::pi;
@@ -367,7 +365,6 @@ namespace gum {
      HashFunc< learning::ArcAddition >::operator()(const learning::ArcAddition& key) const {
     return castToSize(key) >> this->right_shift_;
   }
-
 
   // Returns the value of a key as a Size.
   INLINE Size HashFunc< learning::ArcDeletion >::castToSize(const learning::ArcDeletion& key) {
@@ -380,7 +377,6 @@ namespace gum {
     return castToSize(key) >> this->right_shift_;
   }
 
-
   // Returns the value of a key as a Size.
   INLINE Size HashFunc< learning::ArcReversal >::castToSize(const learning::ArcReversal& key) {
     return Size(key.node1()) * HashFuncConst::gold + Size(key.node2()) * HashFuncConst::pi;
@@ -392,7 +388,6 @@ namespace gum {
     return castToSize(key) >> this->right_shift_;
   }
 
-
   // Returns the value of a key as a Size.
   INLINE Size HashFunc< learning::EdgeAddition >::castToSize(const learning::EdgeAddition& key) {
     return Size(key.node1()) * HashFuncConst::gold + Size(key.node2()) * HashFuncConst::pi;
@@ -403,7 +398,6 @@ namespace gum {
      HashFunc< learning::EdgeAddition >::operator()(const learning::EdgeAddition& key) const {
     return castToSize(key) >> this->right_shift_;
   }
-
 
   // Returns the value of a key as a Size.
   INLINE Size HashFunc< learning::EdgeDeletion >::castToSize(const learning::EdgeDeletion& key) {

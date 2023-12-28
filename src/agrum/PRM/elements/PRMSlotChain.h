@@ -31,7 +31,6 @@
 
 #include <string>
 
-
 #include <agrum/PRM/elements/PRMAggregate.h>
 #include <agrum/PRM/elements/PRMReferenceSlot.h>
 
@@ -184,6 +183,7 @@ namespace gum {
       /// See gum::PRMClassElement<GUM_SCALAR>::getCastDescendant()
       virtual PRMAttribute< GUM_SCALAR >* getCastDescendant() const;
       /// @}
+
       private:
       /// Copy operator. Don't use it.
       PRMSlotChain& operator=(const PRMSlotChain& source);

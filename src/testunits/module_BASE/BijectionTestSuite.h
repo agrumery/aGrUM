@@ -23,7 +23,7 @@
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/core/bijection.h>
 #include <agrum/tools/graphs/graphElements.h>

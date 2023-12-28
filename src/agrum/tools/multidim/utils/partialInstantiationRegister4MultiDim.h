@@ -29,11 +29,12 @@
 #ifndef GUM_PARTIAL_INSTANTIATION_REGISTER_4_MULTI_DIM_H
 #define GUM_PARTIAL_INSTANTIATION_REGISTER_4_MULTI_DIM_H
 
-#include <agrum/tools/variables/discreteVariable.h>
+#include <atomic>
 #include <iostream>
 #include <string>
 #include <utility>
-#include <atomic>
+
+#include <agrum/tools/variables/discreteVariable.h>
 
 namespace gum {
 

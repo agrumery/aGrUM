@@ -207,15 +207,15 @@ namespace gum {
       _illegalStateError_("variableType");
     } else {
       switch (type) {
-        case VarType::Discretized: _stringBag_[2] = "D"; break;
-        case VarType::Range: _stringBag_[2] = "R"; break;
-        case VarType::Integer: _stringBag_[2] = "I"; break;
-        case VarType::Labelized: _stringBag_[2] = "L"; break;
-        case VarType::Continuous:
+        case VarType::Discretized : _stringBag_[2] = "D"; break;
+        case VarType::Range : _stringBag_[2] = "R"; break;
+        case VarType::Integer : _stringBag_[2] = "I"; break;
+        case VarType::Labelized : _stringBag_[2] = "L"; break;
+        case VarType::Continuous :
           GUM_ERROR(OperationNotAllowed,
                     "Continuous variable (" + _stringBag_[0]
                        + ") are not supported in Bayesian networks.")
-        default: GUM_ERROR(OperationNotAllowed, "Unknown type for (" + _stringBag_[0] + ")")
+        default : GUM_ERROR(OperationNotAllowed, "Unknown type for (" + _stringBag_[0] + ")")
       }
     }
   }
@@ -820,42 +820,42 @@ namespace gum {
     msg += ") in state ";
 
     switch (state()) {
-      case factory_state::NONE: {
+      case factory_state::NONE : {
         msg += "NONE";
         break;
       }
 
-      case factory_state::NETWORK: {
+      case factory_state::NETWORK : {
         msg += "NETWORK";
         break;
       }
 
-      case factory_state::VARIABLE: {
+      case factory_state::VARIABLE : {
         msg += "VARIABLE";
         break;
       }
 
-      case factory_state::PARENTS: {
+      case factory_state::PARENTS : {
         msg += "PARENTS";
         break;
       }
 
-      case factory_state::RAW_CPT: {
+      case factory_state::RAW_CPT : {
         msg += "RAW_CPT";
         break;
       }
 
-      case factory_state::FACT_CPT: {
+      case factory_state::FACT_CPT : {
         msg += "FACT_CPT";
         break;
       }
 
-      case factory_state::FACT_ENTRY: {
+      case factory_state::FACT_ENTRY : {
         msg += "FACT_ENTRY";
         break;
       }
 
-      default: {
+      default : {
         msg += "Unknown state";
       }
     }

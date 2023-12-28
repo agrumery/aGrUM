@@ -40,18 +40,21 @@ namespace gum {
     // @param type The type of this object.
     // ==========================================================================
     PRMObject::PRMObject(const std::string& name) : _name_(name) { GUM_CONSTRUCTOR(PRMObject); }
+
     // ==========================================================================
     // Copy constructor.
     // ==========================================================================
     PRMObject::PRMObject(const PRMObject& source) : _name_(source._name_) {
       GUM_CONS_CPY(PRMObject);
     }
+
     // ==========================================================================
     // Move constructor.
     // ==========================================================================
     PRMObject::PRMObject(PRMObject&& source) : _name_(std::move(source._name_)) {
       GUM_CONS_CPY(PRMObject);
     }
+
     // ==========================================================================
     // Destructor.
     // ==========================================================================
@@ -78,6 +81,7 @@ namespace gum {
     std::ostream& operator<<(std::ostream& out, PRMObject::prm_type obj_type) {
       return (out << PRMObject::enum2str(obj_type));
     }
+
     // ==========================================================================
   } /* namespace prm */
 } /* namespace gum */

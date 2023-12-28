@@ -34,6 +34,7 @@
 // =========================================================================
 // =========================================================================
 #include <agrum/FMDP/planning/actionSet.h>
+
 // =========================================================================
 // =========================================================================
 
@@ -51,6 +52,7 @@ namespace gum {
     /// @name Constructor & destructor.
     // ###################################################################
     /// @{
+
     public:
     // ==========================================================================
     /// Destructor (virtual and empty since it's an interface)
@@ -63,6 +65,7 @@ namespace gum {
     /// @name Initialization
     // ###################################################################
     /// @{
+
     public:
     // ==========================================================================
     /// Initializes the learner
@@ -73,6 +76,7 @@ namespace gum {
         for (auto actionIter = fmdp->beginActions(); actionIter != fmdp->endActions(); ++actionIter)
           allActions_ += *actionIter;
     }
+
     /// @}
 
 
@@ -80,6 +84,7 @@ namespace gum {
     /// @name Incremental methods
     // ###################################################################
     /// @{
+
     public:
     virtual void checkState(const Instantiation& newState, Idx actionId) = 0;
 

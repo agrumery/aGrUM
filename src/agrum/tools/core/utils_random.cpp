@@ -28,6 +28,7 @@
 #include <chrono>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/utils_misc.h>
 
 #ifdef GUM_NO_INLINE

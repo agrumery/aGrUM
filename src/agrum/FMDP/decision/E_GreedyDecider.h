@@ -36,6 +36,7 @@
 #include <agrum/FMDP/SDyna/Strategies/IDecisionStrategy.h>
 #include <agrum/FMDP/SDyna/Strategies/IPlanningStrategy.h>
 #include <agrum/FMDP/simulation/statesChecker.h>
+
 // =========================================================================
 // =========================================================================
 
@@ -54,6 +55,7 @@ namespace gum {
     /// @name Constructor & destructor.
     // ###################################################################
     /// @{
+
     public:
     // ==========================================================================
     /// Constructor
@@ -71,6 +73,7 @@ namespace gum {
     /// @name Initialization
     // ###################################################################
     /// @{
+
     public:
     // ==========================================================================
     /// Initializes the learner
@@ -84,6 +87,7 @@ namespace gum {
     /// @name Incremental methods
     // ###################################################################
     /// @{
+
     public:
     void checkState(const Instantiation& newState, Idx actionId);
 

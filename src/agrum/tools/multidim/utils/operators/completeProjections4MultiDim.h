@@ -30,9 +30,10 @@
 #ifndef GUM_COMPLETE_PROJECTIONS_4_MULTI_DIM_H
 #define GUM_COMPLETE_PROJECTIONS_4_MULTI_DIM_H
 
-#include <agrum/tools/multidim/implementations/multiDimArray.h>
 #include <atomic>
 #include <mutex>
+
+#include <agrum/tools/multidim/implementations/multiDimArray.h>
 
 namespace gum {
 

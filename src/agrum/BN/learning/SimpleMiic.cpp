@@ -26,15 +26,16 @@
  * @author Quentin FALCAND, Marvin LASSERRE and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/core/hashTable.h>
 #include <agrum/tools/core/heap.h>
 #include <agrum/tools/core/timer.h>
 #include <agrum/tools/graphs/mixedGraph.h>
-#include <agrum/BN/learning/SimpleMiic.h>
-#include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
 #include <agrum/tools/stattests/correctedMutualInformation.h>
 
+#include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
+#include <agrum/BN/learning/SimpleMiic.h>
+
+#include <agrum/tools/core/math/math_utils.h>
 
 namespace gum {
 
@@ -812,7 +813,6 @@ namespace gum {
                                                    learnStructure(selector, initial_dag));
     }
 
-
     void SimpleMiic::addConstraints(HashTable< std::pair< NodeId, NodeId >, char > constraints) {
       this->_initialMarks_ = constraints;
     }
@@ -824,7 +824,7 @@ namespace gum {
         if (graph.existsArc(parent,
                             n2))   // if there is a double arc, pass
           continue;
-        if (parent == n1)   // trivial directed path => not recognized
+        if (parent == n1)          // trivial directed path => not recognized
           continue;
         if (_existsDirectedPath_(graph, n1, parent)) return true;
       }
@@ -961,7 +961,6 @@ namespace gum {
         }
       }
     }
-
 
     void SimpleMiic::_propagatingOrientationMiic_(
        MixedGraph&                                     graph,

@@ -26,8 +26,10 @@
  * @author Jean-Christophe MAGNAN
  */
 // =========================================================================
-#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/FMDP/learning/core/chiSquare.h>
+
+#include <agrum/tools/core/math/math_utils.h>
+
 // =========================================================================
 
 
@@ -104,7 +106,6 @@ namespace gum {
     //      return  _ZCache_[z];
     return (z > 0.0 ? ((x + 1.0) * 0.5) : ((1.0 - x) * 0.5));
   }
-
 
   // ==========================================================================
   /// computes the probability of chi2 value (used by the cache)

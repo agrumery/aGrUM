@@ -22,11 +22,12 @@
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
+
+#include <agrum/tools/core/exceptions.h>
 
 #include <agrum/PRM/elements/PRMClass.h>
 #include <agrum/PRM/elements/PRMType.h>
-#include <agrum/tools/core/exceptions.h>
 
 #include <module_PRM/ClassElementTestSuiteAbstract.h>
 

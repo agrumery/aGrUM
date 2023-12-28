@@ -27,12 +27,13 @@
 #ifndef GUM_THREADS_H
 #define GUM_THREADS_H
 
-#include <vector>
 #include <utility>
+#include <vector>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/threads/threadsSTL.h>
+
 #include <agrum/tools/core/threads/threadsOMP.h>
+#include <agrum/tools/core/threads/threadsSTL.h>
 
 namespace gum {
 

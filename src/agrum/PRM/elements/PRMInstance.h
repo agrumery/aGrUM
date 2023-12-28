@@ -32,7 +32,6 @@
 #include <set>
 #include <utility>
 
-
 #include <agrum/PRM/elements/PRMClass.h>
 
 namespace gum {
@@ -443,6 +442,7 @@ namespace gum {
       const InvRefConstIterator& endInvRef() const;
 
       /// @}
+
       private:
       /// Copy constructor.
       PRMInstance(const PRMInstance< GUM_SCALAR >& source);

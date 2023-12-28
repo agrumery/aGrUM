@@ -19,9 +19,10 @@
  */
 
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
 #include <iostream>
+
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/database/DBTranslator4RangeVariable.h>
 
@@ -162,7 +163,6 @@ namespace gum_tests {
                        const gum::UnknownLabelInDatabase&)
     }
 
-
     GUM_ACTIVE_TEST(_trans2) {
       gum::learning::DBTranslator4RangeVariable translator;
       TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("3"))
@@ -302,7 +302,6 @@ namespace gum_tests {
       TS_ASSERT_THROWS(translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
                        const gum::UnknownLabelInDatabase&)
     }
-
 
     GUM_ACTIVE_TEST(_trans4) {
       {
@@ -575,7 +574,6 @@ namespace gum_tests {
       }
     }
 
-
     void xtest_trans5() {
       gum::learning::DBTranslator4RangeVariable translator(1000);
       TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("3"))
@@ -768,7 +766,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(translator5.translate("4").discr_val, (std::size_t)1)
       TS_ASSERT_EQUALS(translator5.translate("5").discr_val, (std::size_t)2)
     }
-
 
     GUM_ACTIVE_TEST(_trans6) {
       gum::RangeVariable         var("X1", "", 2, 4);

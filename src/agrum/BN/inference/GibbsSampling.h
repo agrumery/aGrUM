@@ -32,7 +32,6 @@
 
 #include <agrum/BN/inference/tools/samplingInference.h>
 
-
 namespace gum {
 
   /**

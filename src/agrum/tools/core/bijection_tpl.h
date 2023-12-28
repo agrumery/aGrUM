@@ -553,7 +553,7 @@ namespace gum {
   // Copy operator
   template < typename T1, typename T2 >
   INLINE BijectionImplementation< T1, T2, true >&
-     BijectionImplementation< T1, T2, true >::operator=(
+         BijectionImplementation< T1, T2, true >::operator=(
         const BijectionImplementation< T1, T2, true >& toCopy) {
     // avoid self assignment
     if (this != &toCopy) {
@@ -570,7 +570,7 @@ namespace gum {
   // move operator
   template < typename T1, typename T2 >
   INLINE BijectionImplementation< T1, T2, true >&
-     BijectionImplementation< T1, T2, true >::operator=(
+         BijectionImplementation< T1, T2, true >::operator=(
         BijectionImplementation< T1, T2, true >&& toCopy) {
     // avoid self assignment
     if (this != &toCopy) {
@@ -799,7 +799,7 @@ namespace gum {
   /// Copy operator
   template < typename T1, typename T2 >
   INLINE BijectionIteratorSafe< T1, T2 >&
-     BijectionIteratorSafe< T1, T2 >::operator=(const BijectionIteratorSafe< T1, T2 >& toCopy) {
+         BijectionIteratorSafe< T1, T2 >::operator=(const BijectionIteratorSafe< T1, T2 >& toCopy) {
     _iter_ = toCopy._iter_;
     return *this;
   }
@@ -822,7 +822,7 @@ namespace gum {
   /// moves the iterator by nb elements
   template < typename T1, typename T2 >
   INLINE BijectionIteratorSafe< T1, T2 >&
-     BijectionIteratorSafe< T1, T2 >::operator+=(Size nb) noexcept {
+         BijectionIteratorSafe< T1, T2 >::operator+=(Size nb) noexcept {
     _iter_ += nb;
     return *this;
   }
@@ -830,7 +830,7 @@ namespace gum {
   /// returns a new iterator
   template < typename T1, typename T2 >
   INLINE BijectionIteratorSafe< T1, T2 >
-     BijectionIteratorSafe< T1, T2 >::operator+(Size nb) noexcept {
+         BijectionIteratorSafe< T1, T2 >::operator+(Size nb) noexcept {
     return BijectionIteratorSafe< T1, T2 >{*this} += nb;
   }
 
@@ -913,7 +913,7 @@ namespace gum {
   /// Copy operator
   template < typename T1, typename T2 >
   INLINE BijectionIterator< T1, T2 >&
-     BijectionIterator< T1, T2 >::operator=(const BijectionIterator< T1, T2 >& toCopy) {
+         BijectionIterator< T1, T2 >::operator=(const BijectionIterator< T1, T2 >& toCopy) {
     _iter_ = toCopy._iter_;
     return *this;
   }
@@ -921,7 +921,7 @@ namespace gum {
   /// move operator
   template < typename T1, typename T2 >
   INLINE BijectionIterator< T1, T2 >&
-     BijectionIterator< T1, T2 >::operator=(BijectionIterator< T1, T2 >&& toCopy) noexcept {
+         BijectionIterator< T1, T2 >::operator=(BijectionIterator< T1, T2 >&& toCopy) noexcept {
     _iter_ = std::move(toCopy._iter_);
     return *this;
   }

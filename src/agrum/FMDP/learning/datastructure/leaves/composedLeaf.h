@@ -31,6 +31,7 @@
 #define GUM_COMPOSED_LEAF_H
 // =========================================================================
 #include <agrum/FMDP/learning/datastructure/leaves/abstractLeaf.h>
+
 // =========================================================================
 
 namespace gum {
@@ -71,7 +72,8 @@ namespace gum {
     /// Allocators and Deallocators redefinition
     // ============================================================================
     void* operator new(size_t s) { return SmallObjectAllocator::instance().allocate(s); }
-    void  operator delete(void* p) {
+
+    void operator delete(void* p) {
       SmallObjectAllocator::instance().deallocate(p, sizeof(ComposedLeaf));
     }
 
@@ -81,6 +83,7 @@ namespace gum {
     /// Gaves the leaf effectif for given modality
     // ###################################################################
     double effectif(Idx moda) const { return _l1_->effectif(moda) + _l2_->effectif(moda); }
+
     double total() const { return _l1_->total() + _l2_->total(); }
 
     // ###################################################################

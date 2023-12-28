@@ -71,16 +71,16 @@ namespace gum {
     INLINE bool
        StructuralConstraintMandatoryArcs::checkModificationAlone(const GraphChange& change) const {
       switch (change.type()) {
-        case GraphChangeType::ARC_ADDITION:
+        case GraphChangeType::ARC_ADDITION :
           return checkArcAdditionAlone(change.node1(), change.node2());
 
-        case GraphChangeType::ARC_DELETION:
+        case GraphChangeType::ARC_DELETION :
           return checkArcDeletionAlone(change.node1(), change.node2());
 
-        case GraphChangeType::ARC_REVERSAL:
+        case GraphChangeType::ARC_REVERSAL :
           return checkArcReversalAlone(change.node1(), change.node2());
 
-        default:
+        default :
           GUM_ERROR(OperationNotAllowed,
                     "edge modifications are not "
                     "supported by StructuralConstraintMandatoryArcs");
@@ -103,15 +103,15 @@ namespace gum {
     INLINE bool
        StructuralConstraintMandatoryArcs::isAlwaysInvalidAlone(const GraphChange& change) const {
       switch (change.type()) {
-        case GraphChangeType::ARC_ADDITION: return false;
+        case GraphChangeType::ARC_ADDITION : return false;
 
-        case GraphChangeType::ARC_DELETION:
+        case GraphChangeType::ARC_DELETION :
           return !checkArcDeletionAlone(change.node1(), change.node2());
 
-        case GraphChangeType::ARC_REVERSAL:
+        case GraphChangeType::ARC_REVERSAL :
           return !checkArcReversalAlone(change.node1(), change.node2());
 
-        default:
+        default :
           GUM_ERROR(OperationNotAllowed,
                     "edge modifications are not supported "
                     "by StructuralConstraintMandatoryArcs");

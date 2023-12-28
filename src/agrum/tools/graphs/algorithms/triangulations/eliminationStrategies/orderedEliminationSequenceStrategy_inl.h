@@ -34,7 +34,6 @@ namespace gum {
     return _order_;
   }
 
-
   // indicates whether a new complete ordering is needed
   INLINE bool OrderedEliminationSequenceStrategy::isOrderNeeded() const noexcept {
     return _order_needed_;

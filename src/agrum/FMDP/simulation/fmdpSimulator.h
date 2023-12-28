@@ -31,6 +31,7 @@
 //======================================================================
 //======================================================================
 #include <agrum/FMDP/simulation/abstractSimulator.h>
+
 //======================================================================
 
 namespace gum {
@@ -88,6 +89,7 @@ namespace gum {
     SequenceIteratorSafe< const DiscreteVariable* > beginVariables() {
       return _fmdp_->beginVariables();
     }
+
     SequenceIteratorSafe< const DiscreteVariable* > endVariables() {
       return _fmdp_->endVariables();
     }
@@ -103,7 +105,9 @@ namespace gum {
 
     /// Iteration over the variables of the simulated probleme
     SequenceIteratorSafe< Idx > beginActions() { return _fmdp_->beginActions(); }
+
     SequenceIteratorSafe< Idx > endActions() { return _fmdp_->endActions(); }
+
     /// @}
 
     protected:

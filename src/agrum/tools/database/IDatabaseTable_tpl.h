@@ -44,7 +44,6 @@ namespace gum {
       GUM_CONSTRUCTOR(IDatabaseTable::Handler);
     }
 
-
     // copy constructor
     template < typename T_DATA >
     INLINE IDatabaseTable< T_DATA >::Handler::Handler(
@@ -54,7 +53,6 @@ namespace gum {
         _end_index_(h._end_index_) {
       GUM_CONS_CPY(IDatabaseTable::Handler);
     }
-
 
     // move constructor
     template < typename T_DATA >
@@ -66,13 +64,11 @@ namespace gum {
       GUM_CONS_MOV(IDatabaseTable::Handler);
     }
 
-
     // destructor
     template < typename T_DATA >
     INLINE IDatabaseTable< T_DATA >::Handler::~Handler() {
       GUM_DESTRUCTOR(IDatabaseTable::Handler);
     }
-
 
     // copy operator
     template < typename T_DATA >
@@ -86,7 +82,6 @@ namespace gum {
       return *this;
     }
 
-
     // move operator
     template < typename T_DATA >
     INLINE typename IDatabaseTable< T_DATA >::Handler& IDatabaseTable< T_DATA >::Handler::operator=(
@@ -99,7 +94,6 @@ namespace gum {
       return *this;
     }
 
-
     // returns the current row pointed to by the handler
     template < typename T_DATA >
     INLINE typename IDatabaseTable< T_DATA >::Handler::const_reference
@@ -107,14 +101,12 @@ namespace gum {
       return _row_->operator[](_index_);
     }
 
-
     // Dereferences the value pointed to by the handler (unsafe version)
     template < typename T_DATA >
     INLINE typename IDatabaseTable< T_DATA >::Handler::const_pointer
        IDatabaseTable< T_DATA >::Handler::operator->() const {
       return &(_row_->operator[](_index_));
     }
-
 
     // makes the handler point to the next row
     template < typename T_DATA >
@@ -124,7 +116,6 @@ namespace gum {
       return *this;
     }
 
-
     // makes the handler point to the previous row
     template < typename T_DATA >
     INLINE typename IDatabaseTable< T_DATA >::Handler&
@@ -133,7 +124,6 @@ namespace gum {
       return *this;
     }
 
-
     //  moves the handler by i rows
     template < typename T_DATA >
     INLINE typename IDatabaseTable< T_DATA >::Handler&
@@ -141,7 +131,6 @@ namespace gum {
       _index_ += i;
       return *this;
     }
-
 
     //  moves back the handler by i rows
     template < typename T_DATA >
@@ -152,13 +141,11 @@ namespace gum {
       return *this;
     }
 
-
     // checks whether two handlers point on the same row
     template < typename T_DATA >
     INLINE bool IDatabaseTable< T_DATA >::Handler::operator==(const Handler& handler) const {
       return _index_ == handler._index_;
     }
-
 
     // checks whether two handlers point to different rows
     template < typename T_DATA >
@@ -166,13 +153,11 @@ namespace gum {
       return _index_ != handler._index_;
     }
 
-
     // returns the number of rows managed by the handler
     template < typename T_DATA >
     INLINE std::size_t IDatabaseTable< T_DATA >::Handler::size() const {
       return _end_index_ - _begin_index_;
     }
-
 
     // return the number of rows of the whole database
     template < typename T_DATA >
@@ -180,7 +165,6 @@ namespace gum {
       if (_row_ != nullptr) return _row_->size();
       else return std::size_t(0);
     }
-
 
     // returns the current row pointed to by the handler
     template < typename T_DATA >
@@ -191,7 +175,6 @@ namespace gum {
       return _row_->operator[](_index_);
     }
 
-
     // returns the current row pointed to by the handler
     template < typename T_DATA >
     INLINE typename IDatabaseTable< T_DATA >::Handler::reference
@@ -201,14 +184,12 @@ namespace gum {
       return const_cast< Matrix< T_DATA >* >(_row_)->operator[](_index_);
     }
 
-
     // returns the current row pointed to by the handler (unsafe version)
     template < typename T_DATA >
     INLINE typename IDatabaseTable< T_DATA >::Handler::const_reference
        IDatabaseTable< T_DATA >::Handler::row() const {
       return _row_->operator[](_index_);
     }
-
 
     // returns the current row pointed to by the handler (unsafe version)
     template < typename T_DATA >
@@ -217,13 +198,11 @@ namespace gum {
       return const_cast< Matrix< T_DATA >* >(_row_)->operator[](_index_);
     }
 
-
     // makes the handler point to the next row
     template < typename T_DATA >
     INLINE void IDatabaseTable< T_DATA >::Handler::nextRow() {
       ++_index_;
     }
-
 
     // returns the number of the current row
     template < typename T_DATA >
@@ -243,7 +222,6 @@ namespace gum {
       _index_ = _begin_index_;
     }
 
-
     // returns a new handler that points to the beginning of the
     // database area of the current handler */
     template < typename T_DATA >
@@ -254,7 +232,6 @@ namespace gum {
       return handler;
     }
 
-
     // returns a new handler that points to the end of the
     // database area of the current handler */
     template < typename T_DATA >
@@ -264,7 +241,6 @@ namespace gum {
       handler._index_ = _end_index_;
       return handler;
     }
-
 
     // sets the area in the database the handler will handle
     template < typename T_DATA >
@@ -284,13 +260,11 @@ namespace gum {
       _index_       = first;
     }
 
-
     // returns the current range of the handler
     template < typename T_DATA >
     INLINE std::pair< std::size_t, std::size_t > IDatabaseTable< T_DATA >::Handler::range() const {
       return std::pair< std::size_t, std::size_t >(_begin_index_, _end_index_);
     }
-
 
     // returns the names of the variables
     template < typename T_DATA >
@@ -299,14 +273,12 @@ namespace gum {
       return _db_->variableNames();
     }
 
-
     // returns the number of variables (columns) of the database
     template < typename T_DATA >
     INLINE std::size_t IDatabaseTable< T_DATA >::Handler::nbVariables() const {
       if (_db_ != nullptr) return _db_->variableNames().size();
       else return 0;
     }
-
 
     // returns a pointer on the database
     template < typename T_DATA >
@@ -316,7 +288,6 @@ namespace gum {
       }
       return *_db_;
     }
-
 
     // ===========================================================================
     // Safe handlers
@@ -328,13 +299,11 @@ namespace gum {
       if (this->_db_ != nullptr) { this->_db_->_attachHandler_(this); }
     }
 
-
     // detach a handler
     template < typename T_DATA >
     INLINE void IDatabaseTable< T_DATA >::HandlerSafe::_detachHandler_() {
       if (this->_db_ != nullptr) { this->_db_->_detachHandler_(this); }
     }
-
 
     // default constructor
     template < typename T_DATA >
@@ -343,7 +312,6 @@ namespace gum {
       _attachHandler_();
       GUM_CONSTRUCTOR(IDatabaseTable::HandlerSafe);
     }
-
 
     // copy constructor
     template < typename T_DATA >
@@ -354,7 +322,6 @@ namespace gum {
       GUM_CONS_CPY(IDatabaseTable::HandlerSafe);
     }
 
-
     // move constructor
     template < typename T_DATA >
     INLINE IDatabaseTable< T_DATA >::HandlerSafe::HandlerSafe(
@@ -364,14 +331,12 @@ namespace gum {
       GUM_CONS_MOV(IDatabaseTable::HandlerSafe);
     }
 
-
     // destructor
     template < typename T_DATA >
     INLINE IDatabaseTable< T_DATA >::HandlerSafe::~HandlerSafe() {
       _detachHandler_();
       GUM_DESTRUCTOR(IDatabaseTable::HandlerSafe);
     }
-
 
     // copy operator
     template < typename T_DATA >
@@ -388,7 +353,6 @@ namespace gum {
       return *this;
     }
 
-
     // copy operator
     template < typename T_DATA >
     INLINE typename IDatabaseTable< T_DATA >::HandlerSafe&
@@ -396,7 +360,6 @@ namespace gum {
           const typename IDatabaseTable< T_DATA >::Handler& h) {
       return this->operator=(dynamic_cast< const IDatabaseTable< T_DATA >::HandlerSafe& >(h));
     }
-
 
     // move operator
     template < typename T_DATA >
@@ -413,7 +376,6 @@ namespace gum {
       return *this;
     }
 
-
     // move operator
     template < typename T_DATA >
     INLINE typename IDatabaseTable< T_DATA >::HandlerSafe&
@@ -421,7 +383,6 @@ namespace gum {
           typename IDatabaseTable< T_DATA >::Handler&& h) {
       return this->operator=(std::move(dynamic_cast< IDatabaseTable< T_DATA >::HandlerSafe& >(h)));
     }
-
 
     // ===========================================================================
     // Database Tables
@@ -439,7 +400,6 @@ namespace gum {
       }
     }
 
-
     // default constructor
     template < typename T_DATA >
     IDatabaseTable< T_DATA >::IDatabaseTable(
@@ -452,7 +412,6 @@ namespace gum {
 
       GUM_CONSTRUCTOR(IDatabaseTable);
     }
-
 
     // copy constructor
     template < typename T_DATA >
@@ -467,7 +426,6 @@ namespace gum {
       GUM_CONS_CPY(IDatabaseTable);
     }
 
-
     // move constructor
     template < typename T_DATA >
     IDatabaseTable< T_DATA >::IDatabaseTable(IDatabaseTable< T_DATA >&& from) :
@@ -481,7 +439,6 @@ namespace gum {
 
       GUM_CONS_MOV(IDatabaseTable);
     }
-
 
     // destructor
     template < typename T_DATA >
@@ -501,7 +458,6 @@ namespace gum {
 
       GUM_DESTRUCTOR(IDatabaseTable);
     }
-
 
     // copy operator
     template < typename T_DATA >
@@ -537,7 +493,6 @@ namespace gum {
       return *this;
     }
 
-
     // move operator
     template < typename T_DATA >
     IDatabaseTable< T_DATA >& IDatabaseTable< T_DATA >::operator=(IDatabaseTable< T_DATA >&& from) {
@@ -570,13 +525,11 @@ namespace gum {
       return *this;
     }
 
-
     // returns a new unsafe handler pointing to the beginning of the database
     template < typename T_DATA >
     INLINE typename IDatabaseTable< T_DATA >::Handler IDatabaseTable< T_DATA >::begin() const {
       return Handler(*this);
     }
-
 
     // returns a new safe handler pointing to the beginning of the database
     template < typename T_DATA >
@@ -585,14 +538,12 @@ namespace gum {
       return HandlerSafe(*this);
     }
 
-
     // returns a new unsafe handler pointing to the end of the database
     template < typename T_DATA >
     INLINE const typename IDatabaseTable< T_DATA >::Handler&
        IDatabaseTable< T_DATA >::end() const noexcept {
       return *_end_;
     }
-
 
     /// returns a new safe handler pointing to the beginning of the database
     template < typename T_DATA >
@@ -601,13 +552,11 @@ namespace gum {
       return *_end_safe_;
     }
 
-
     // returns a new unsafe handler on the database
     template < typename T_DATA >
     INLINE typename IDatabaseTable< T_DATA >::Handler IDatabaseTable< T_DATA >::handler() const {
       return Handler(*this);
     }
-
 
     // returns a new safe handler on the database
     template < typename T_DATA >
@@ -616,14 +565,12 @@ namespace gum {
       return HandlerSafe(*this);
     }
 
-
     // returns the content of the database
     template < typename T_DATA >
     INLINE const typename IDatabaseTable< T_DATA >::template Matrix< T_DATA >&
        IDatabaseTable< T_DATA >::content() const noexcept {
       return rows_;
     }
-
 
     /// indicates whether the database contains some missing values
     template < typename T_DATA >
@@ -633,13 +580,11 @@ namespace gum {
       return false;
     }
 
-
     /// indicates whether the kth row contains some missing values
     template < typename T_DATA >
     INLINE bool IDatabaseTable< T_DATA >::hasMissingValues(const std::size_t k) const {
       return has_row_missing_val_[k] == IsMissing::True;
     }
-
 
     // returns the variable names for all the columns
     template < typename T_DATA >
@@ -648,7 +593,6 @@ namespace gum {
       return variable_names_;
     }
 
-
     /// returns the name of the kth column of the database
     template < typename T_DATA >
     INLINE const std::string& IDatabaseTable< T_DATA >::variableName(const std::size_t k) const {
@@ -656,7 +600,6 @@ namespace gum {
         GUM_ERROR(OutOfBounds, "the database does not contain Column #" << k)
       return variable_names_[k];
     }
-
 
     /// returns the index of the column whose name is passed in argument
     template < typename T_DATA >
@@ -668,7 +611,6 @@ namespace gum {
 
       GUM_ERROR(UndefinedElement, "the database contains no column whose name is " << name)
     }
-
 
     /// returns the indices of the columns whose name is passed in argument
     template < typename T_DATA >
@@ -685,13 +627,11 @@ namespace gum {
       return cols;
     }
 
-
     // returns the number of variables (columns) of the database
     template < typename T_DATA >
     INLINE std::size_t IDatabaseTable< T_DATA >::nbVariables() const noexcept {
       return variable_names_.size();
     }
-
 
     // returns the number of records in the database
     template < typename T_DATA >
@@ -699,20 +639,17 @@ namespace gum {
       return rows_.size();
     }
 
-
     // returns the number of records in the database
     template < typename T_DATA >
     INLINE std::size_t IDatabaseTable< T_DATA >::nbRows() const noexcept {
       return rows_.size();
     }
 
-
     // indicates whether the database contains some records or not
     template < typename T_DATA >
     INLINE bool IDatabaseTable< T_DATA >::empty() const noexcept {
       return rows_.empty();
     }
-
 
     // update the handlers when the size of the database changes
     template < typename T_DATA >
@@ -737,7 +674,6 @@ namespace gum {
       _end_safe_->_end_index_ = new_size;
     }
 
-
     // attach a new handler to the database
     template < typename T_DATA >
     INLINE void IDatabaseTable< T_DATA >::_attachHandler_(HandlerSafe* handler) const {
@@ -745,7 +681,6 @@ namespace gum {
       _list_of_safe_handlers_.push_back(handler);
       _safe_handlers_mutex_.unlock();
     }
-
 
     // detach a handler
     template < typename T_DATA >
@@ -764,13 +699,11 @@ namespace gum {
       _safe_handlers_mutex_.unlock();
     }
 
-
     // checks whether a new row has the same size as the rest of the database
     template < typename T_DATA >
     INLINE bool IDatabaseTable< T_DATA >::isRowSizeOK_(const std::size_t size) const {
       return (size == variable_names_.size());
     }
-
 
     // insert a new DBRow at the end of the database
     template < typename T_DATA >
@@ -781,7 +714,6 @@ namespace gum {
       this->insertRow(typename IDatabaseTable< T_DATA >::template Row< T_DATA >(row),
                       contains_missing);
     }
-
 
     // insert a new DBRow at the end of the database
     template < typename T_DATA >
@@ -804,7 +736,6 @@ namespace gum {
         throw;
       }
     }
-
 
     // insert a set of new DBRow at the end of the database
     template < typename T_DATA >
@@ -854,7 +785,6 @@ namespace gum {
 
       _updateHandlers_(new_db_size);
     }
-
 
     // insert a set of new DBRow at the end of the database
     template < typename T_DATA >
@@ -907,7 +837,6 @@ namespace gum {
       _updateHandlers_(db_size);
     }
 
-
     // erase a given row
     template < typename T_DATA >
     INLINE void IDatabaseTable< T_DATA >::eraseRow(std::size_t index) {
@@ -919,7 +848,6 @@ namespace gum {
         has_row_missing_val_.erase(has_row_missing_val_.begin() + index);
       }
     }
-
 
     // erase the last row
     template < typename T_DATA >
@@ -933,7 +861,6 @@ namespace gum {
       }
     }
 
-
     // erase the first row
     template < typename T_DATA >
     INLINE void IDatabaseTable< T_DATA >::eraseFirstRow() {
@@ -946,7 +873,6 @@ namespace gum {
       }
     }
 
-
     // erase all the rows
     template < typename T_DATA >
     INLINE void IDatabaseTable< T_DATA >::eraseAllRows() {
@@ -954,7 +880,6 @@ namespace gum {
       rows_.clear();
       has_row_missing_val_.clear();
     }
-
 
     // erase the k first rows
     template < typename T_DATA >
@@ -971,7 +896,6 @@ namespace gum {
       }
     }
 
-
     // erase the k last rows
     template < typename T_DATA >
     INLINE void IDatabaseTable< T_DATA >::eraseLastRows(const std::size_t nb_rows) {
@@ -986,7 +910,6 @@ namespace gum {
                                    has_row_missing_val_.begin() + db_size);
       }
     }
-
 
     // erase the rows from the debth to the endth (not included)
     template < typename T_DATA >
@@ -1009,7 +932,6 @@ namespace gum {
       }
     }
 
-
     // erase the content of the database, including the names of the variables
     template < typename T_DATA >
     INLINE void IDatabaseTable< T_DATA >::clear() {
@@ -1019,13 +941,11 @@ namespace gum {
       variable_names_.clear();
     }
 
-
     // returns the set of symbols for the missing values
     template < typename T_DATA >
     INLINE const std::vector< std::string >& IDatabaseTable< T_DATA >::missingSymbols() const {
       return missing_symbols_;
     }
-
 
     /// changes the max number of threads that a database can use
     template < typename T_DATA >
@@ -1034,13 +954,11 @@ namespace gum {
       else max_nb_threads_ = nb;
     }
 
-
     /// returns the number of threads used to parse the database
     template < typename T_DATA >
     INLINE std::size_t IDatabaseTable< T_DATA >::nbThreads() const {
       return max_nb_threads_;
     }
-
 
     /** @brief changes the number min of rows a thread should process in a
      * multithreading context */
@@ -1050,13 +968,11 @@ namespace gum {
       else min_nb_rows_per_thread_ = nb;
     }
 
-
     /// returns the minimum of rows that each thread should process
     template < typename T_DATA >
     INLINE std::size_t IDatabaseTable< T_DATA >::minNbRowsPerThread() const {
       return min_nb_rows_per_thread_;
     }
-
 
     /// returns the number of threads used to process the current database content
     template < typename T_DATA >
@@ -1068,7 +984,6 @@ namespace gum {
 
       return nb_threads;
     }
-
 
     /// returns the ranges that threads should process
     template < typename T_DATA >
@@ -1094,7 +1009,6 @@ namespace gum {
 
       return ranges;
     }
-
 
     /// assign a given weight to all the rows of the database
     template < typename T_DATA >
@@ -1141,7 +1055,6 @@ namespace gum {
       rows_[i].setWeight(weight);
     }
 
-
     /// returns the weight of the ith record
     template < typename T_DATA >
     double IDatabaseTable< T_DATA >::weight(const std::size_t i) const {
@@ -1155,7 +1068,6 @@ namespace gum {
 
       return rows_[i].weight();
     }
-
 
     /// returns the weight of the whole database
     template < typename T_DATA >

@@ -27,8 +27,9 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#  include <agrum/BN/learning/scores_and_tests/scoreBDeu.h>
 #  include <sstream>
+
+#  include <agrum/BN/learning/scores_and_tests/scoreBDeu.h>
 
 namespace gum {
 
@@ -44,7 +45,6 @@ namespace gum {
       GUM_CONSTRUCTOR(ScoreBDeu);
     }
 
-
     /// default constructor
     INLINE ScoreBDeu::ScoreBDeu(const DBRowGeneratorParser&             parser,
                                 const Prior&                            prior,
@@ -54,13 +54,11 @@ namespace gum {
       GUM_CONSTRUCTOR(ScoreBDeu);
     }
 
-
     /// copy constructor
     INLINE ScoreBDeu::ScoreBDeu(const ScoreBDeu& from) :
         Score(from), _internal_prior_(from._internal_prior_), _gammalog2_(from._gammalog2_) {
       GUM_CONS_CPY(ScoreBDeu);
     }
-
 
     /// move constructor
     INLINE ScoreBDeu::ScoreBDeu(ScoreBDeu&& from) :
@@ -69,30 +67,24 @@ namespace gum {
       GUM_CONS_MOV(ScoreBDeu);
     }
 
-
     /// virtual copy constructor
     INLINE ScoreBDeu* ScoreBDeu::clone() const { return new ScoreBDeu(*this); }
 
-
     /// destructor
     INLINE ScoreBDeu::~ScoreBDeu() { GUM_DESTRUCTOR(ScoreBDeu); }
-
 
     /// indicates whether the prior is compatible (meaningful) with the score
     INLINE std::string ScoreBDeu::isPriorCompatible(const Prior& prior) {
       return isPriorCompatible(prior.getType(), prior.weight());
     }
 
-
     /// indicates whether the prior is compatible (meaningful) with the score
     INLINE std::string ScoreBDeu::isPriorCompatible() const {
       return isPriorCompatible(*(this->prior_));
     }
 
-
     /// returns the internal prior of the score
     INLINE const Prior& ScoreBDeu::internalPrior() const { return _internal_prior_; }
-
 
     /// sets the effective sample size of the internal prior
     INLINE void ScoreBDeu::setEffectiveSampleSize(double ess) {

@@ -30,9 +30,10 @@
 #ifdef GUM_NO_INLINE
 #  include <agrum/tools/graphs/undiGraph_inl.h>
 #endif   // GUM_NOINLINE
-#include "graphElements.h"
 #include <cstdio>
 #include <iostream>
+
+#include "graphElements.h"
 
 namespace gum {
 

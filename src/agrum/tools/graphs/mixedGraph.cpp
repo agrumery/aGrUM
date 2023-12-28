@@ -237,6 +237,7 @@ namespace gum {
 
     return v;
   }
+
   NodeSet MixedGraph::chainComponent(NodeId node) const {
     NodeSet res;
     NodeSet stack{node};

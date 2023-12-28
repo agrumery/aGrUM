@@ -145,7 +145,7 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE HashTableList< Key, Val >&
-     HashTableList< Key, Val >::operator=(const HashTableList< Key, Val >& from) {
+         HashTableList< Key, Val >::operator=(const HashTableList< Key, Val >& from) {
     // avoid self assignment
     if (this != &from) {
       clear();
@@ -157,7 +157,7 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE HashTableList< Key, Val >&
-     HashTableList< Key, Val >::operator=(HashTableList< Key, Val >&& from) noexcept {
+         HashTableList< Key, Val >::operator=(HashTableList< Key, Val >&& from) noexcept {
     // avoid self assignment
     if (this != &from) {
       _deb_list_      = from._deb_list_;
@@ -1386,7 +1386,7 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE HashTableConstIteratorSafe< Key, Val >
-     HashTableConstIteratorSafe< Key, Val >::operator+(Size nb) const {
+         HashTableConstIteratorSafe< Key, Val >::operator+(Size nb) const {
     return HashTableConstIteratorSafe< Key, Val >{*this} += nb;
   }
 
@@ -1486,7 +1486,7 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE HashTableIteratorSafe< Key, Val >&
-     HashTableIteratorSafe< Key, Val >::operator=(const HashTableIterator< Key, Val >& from) {
+         HashTableIteratorSafe< Key, Val >::operator=(const HashTableIterator< Key, Val >& from) {
     GUM_OP_CPY(HashTableIteratorSafe);
     HashTableConstIteratorSafe< Key, Val >::operator=(from);
     return *this;
@@ -1501,21 +1501,21 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE HashTableIteratorSafe< Key, Val >&
-     HashTableIteratorSafe< Key, Val >::operator++() noexcept {
+         HashTableIteratorSafe< Key, Val >::operator++() noexcept {
     HashTableConstIteratorSafe< Key, Val >::operator++();
     return *this;
   }
 
   template < typename Key, typename Val >
   INLINE HashTableIteratorSafe< Key, Val >&
-     HashTableIteratorSafe< Key, Val >::operator+=(Size nb) noexcept {
+         HashTableIteratorSafe< Key, Val >::operator+=(Size nb) noexcept {
     HashTableConstIteratorSafe< Key, Val >::operator+=(nb);
     return *this;
   }
 
   template < typename Key, typename Val >
   INLINE HashTableIteratorSafe< Key, Val >
-     HashTableIteratorSafe< Key, Val >::operator+(Size nb) const {
+         HashTableIteratorSafe< Key, Val >::operator+(Size nb) const {
     HashTableIteratorSafe< Key, Val > iter{*this};
     iter += nb;
     return iter;
@@ -1785,7 +1785,7 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE HashTableConstIterator< Key, Val >
-     HashTableConstIterator< Key, Val >::operator+(Size nb) const noexcept {
+         HashTableConstIterator< Key, Val >::operator+(Size nb) const noexcept {
     return HashTableConstIterator< Key, Val >{*this} += nb;
   }
 
@@ -1878,7 +1878,7 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE HashTableIterator< Key, Val >&
-     HashTableIterator< Key, Val >::operator=(HashTableIterator< Key, Val >&& from) noexcept {
+         HashTableIterator< Key, Val >::operator=(HashTableIterator< Key, Val >&& from) noexcept {
     HashTableConstIterator< Key, Val >::operator=(std::move(from));
     return *this;
   }
@@ -1891,14 +1891,14 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE HashTableIterator< Key, Val >&
-     HashTableIterator< Key, Val >::operator+=(Size nb) noexcept {
+         HashTableIterator< Key, Val >::operator+=(Size nb) noexcept {
     HashTableConstIterator< Key, Val >::operator+=(nb);
     return *this;
   }
 
   template < typename Key, typename Val >
   INLINE HashTableIterator< Key, Val >
-     HashTableIterator< Key, Val >::operator+(Size nb) const noexcept {
+         HashTableIterator< Key, Val >::operator+(Size nb) const noexcept {
     HashTableIterator< Key, Val > iter{*this};
     iter += nb;
     return iter;

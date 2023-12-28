@@ -84,7 +84,7 @@ namespace gum {
         double log2Cnr2 = VariableLog2ParamComplexityCTable[2][xn];   // log(C_n^4)
         double log2Cnr  = 0.0;
         double k_r      = std::exp((log2Cnr2 - log2Cnr1) * M_LN2);
-        double q_r      = 1.0 + k_r * n / (6.0 - 2.0);   // we first compute C_n^6
+        double q_r      = 1.0 + k_r * n / (6.0 - 2.0);                // we first compute C_n^6
         for (std::size_t i = std::size_t(6); i <= r; ++i) {
           log2Cnr  = log2Cnr1 + std::log2(q_r);
           log2Cnr1 = log2Cnr;
@@ -131,7 +131,6 @@ namespace gum {
       return log2Cnr;
     }
   }
-
 
   /// the function used to write the cpp file with the values of log2(Cnr)
   void VariableLog2ParamComplexity::CnrToFile(const std::string& filename) {
@@ -224,7 +223,6 @@ namespace gum {
     outfile << "} /* namespace gum */\n";
     outfile.close();
   }
-
 
   // the CTable cache for log2(Cnr), n < 1000 and r in {2,3,4,5}
   const double VariableLog2ParamComplexityCTable[4][1000] = {{0,

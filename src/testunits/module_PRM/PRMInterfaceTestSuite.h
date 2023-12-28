@@ -19,13 +19,14 @@
  */
 
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
-
 #include <sstream>
 
-#include <agrum/PRM/elements/PRMClass.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
+
 #include <agrum/tools/variables/labelizedVariable.h>
+
+#include <agrum/PRM/elements/PRMClass.h>
 
 /**
  * This class is used to test gum::prm::PRMInterface, since it is an abstrac
@@ -96,6 +97,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(subclass->referenceSlots().size(), (gum::Size)1)
       delete subclass;
     }
+
     /// @}
     /// Belongs and exists tests
     /// @{
@@ -427,6 +429,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(c_4.referenceSlots().size(), (gum::Size)1)
       delete sub_ref;
     }
+
     /// @}
     /// Input, output and inner nodes methods.
     /// @{
@@ -520,6 +523,7 @@ namespace gum_tests {
       TS_ASSERT(!c.isInputNode(*a))
       TS_ASSERT(!c.isOutputNode(*a))
     }
+
     /// @}
     /// Get operator
   };

@@ -22,10 +22,12 @@
 #ifndef NETREADER_H
 #define NETREADER_H
 
-#include <agrum/BN/io/BNReader.h>
-#include <agrum/agrum.h>
 #include <iostream>
 #include <string>
+
+#include <agrum/agrum.h>
+
+#include <agrum/BN/io/BNReader.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // including coco-generated PARSER and SCANNER

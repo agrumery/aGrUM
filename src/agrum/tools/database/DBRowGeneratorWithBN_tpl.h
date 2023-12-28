@@ -44,7 +44,6 @@ namespace gum {
       GUM_CONSTRUCTOR(DBRowGeneratorWithBN);
     }
 
-
     /// copy constructor
     template < typename GUM_SCALAR >
     DBRowGeneratorWithBN< GUM_SCALAR >::DBRowGeneratorWithBN(
@@ -53,7 +52,6 @@ namespace gum {
         bn_(from.bn_), nodeId2columns_(from.nodeId2columns_) {
       GUM_CONS_CPY(DBRowGeneratorWithBN);
     }
-
 
     /// move constructor
     template < typename GUM_SCALAR >
@@ -64,13 +62,11 @@ namespace gum {
       GUM_CONS_MOV(DBRowGeneratorWithBN);
     }
 
-
     /// destructor
     template < typename GUM_SCALAR >
     DBRowGeneratorWithBN< GUM_SCALAR >::~DBRowGeneratorWithBN() {
       GUM_DESTRUCTOR(DBRowGeneratorWithBN);
     }
-
 
     /// copy operator
     template < typename GUM_SCALAR >
@@ -85,7 +81,6 @@ namespace gum {
       return *this;
     }
 
-
     /// move operator
     template < typename GUM_SCALAR >
     DBRowGeneratorWithBN< GUM_SCALAR >&
@@ -99,14 +94,12 @@ namespace gum {
       return *this;
     }
 
-
     /// assign a new Bayes net to the generator
     template < typename GUM_SCALAR >
     INLINE void
        DBRowGeneratorWithBN< GUM_SCALAR >::setBayesNet(const BayesNet< GUM_SCALAR >& new_bn) {
       bn_ = &new_bn;
     }
-
 
     /// returns the Bayes net used by the generator
     template < typename GUM_SCALAR >

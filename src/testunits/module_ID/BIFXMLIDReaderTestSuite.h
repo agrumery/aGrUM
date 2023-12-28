@@ -20,16 +20,16 @@
 
 #include <fstream>
 #include <iostream>
-#include <iostream>
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
+
+#include <agrum/tools/graphs/graphElements.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 #include <agrum/ID/influenceDiagram.h>
 #include <agrum/ID/io/BIFXML/BIFXMLIDReader.h>
-#include <agrum/tools/graphs/graphElements.h>
-#include <agrum/tools/variables/labelizedVariable.h>
 
 // The graph used for the tests:
 //           D1
@@ -54,12 +54,14 @@ namespace gum_tests {
 
     public:
     aSimpleListener() : _nbr_(0){};
+
     void whenProceeding(const void* buffer, int percent, std::string status) {
       _nbr_ = percent;
       // std::cout << "Progress : " << percent << "%" << " Status : " << status
       // <<
       // std::endl;
     }
+
     int getNbr() { return _nbr_; };
   };
 

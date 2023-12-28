@@ -29,10 +29,10 @@
 
 
 #include <agrum/agrum.h>
-#include <agrum/tools/database/DBTranslator.h>
-#include <agrum/tools/database/DBCell.h>
-#include <agrum/tools/variables/labelizedVariable.h>
 
+#include <agrum/tools/database/DBCell.h>
+#include <agrum/tools/database/DBTranslator.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 namespace gum {
 

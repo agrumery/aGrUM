@@ -24,13 +24,14 @@
 #include <vector>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
-#include <agrum/MRF/MarkovRandomField.h>
 #include <agrum/tools/multidim/potential.h>
+#include <agrum/tools/variables/discretizedVariable.h>
 #include <agrum/tools/variables/labelizedVariable.h>
 #include <agrum/tools/variables/rangeVariable.h>
-#include <agrum/tools/variables/discretizedVariable.h>
+
+#include <agrum/MRF/MarkovRandomField.h>
 
 // The graph used for the tests:
 //          1   2_
@@ -336,7 +337,6 @@ namespace gum_tests {
       TS_ASSERT(!mn.isIndependent("G", "A", {"C", "F"}))
       TS_ASSERT(mn.isIndependent("G", "A", {"D", "E"}))
     }
-
 
     GUM_ACTIVE_TEST(FastPrototypeVarType) {
       auto mn = gum::MarkovRandomField< float >::fastPrototype(

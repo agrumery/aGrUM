@@ -25,8 +25,9 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) and Lionel TORTI and Ariele-Paolo MAESANO
  *
  */
-#include <agrum/tools/core/utils_random.h>
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
+
+#include <agrum/tools/core/utils_random.h>
 
 namespace gum {
 
@@ -86,7 +87,7 @@ namespace gum {
       }
     }
 
-      this->fromDAG(bayesNet);
-      this->fillCPT(bayesNet);
-    }
-  } /* namespace gum */
+    this->fromDAG(bayesNet);
+    this->fillCPT(bayesNet);
+  }
+} /* namespace gum */

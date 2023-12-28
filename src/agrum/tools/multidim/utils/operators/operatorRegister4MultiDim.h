@@ -37,7 +37,6 @@
 
 #include <agrum/tools/core/hashTable.h>
 
-
 namespace gum {
 
   // the base object used by combinations

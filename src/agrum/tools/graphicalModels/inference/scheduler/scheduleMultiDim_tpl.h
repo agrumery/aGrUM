@@ -32,7 +32,6 @@
 
 #  include <agrum/tools/graphicalModels/inference/scheduler/scheduleMultiDim.h>
 
-
 namespace gum {
 
 
@@ -42,7 +41,6 @@ namespace gum {
     if (_table_contained_ && (_table_ != nullptr)) delete _table_;
     _table_ = nullptr;
   }
-
 
   /// constructs a ScheduleMultiDim containing an already built table
   template < typename TABLE >
@@ -64,7 +62,6 @@ namespace gum {
     GUM_CONSTRUCTOR(ScheduleMultiDim);
   }
 
-
   /// constructs a ScheduleMultiDim containing an already built table
   template < typename TABLE >
   ScheduleMultiDim< TABLE >::ScheduleMultiDim(TABLE&& table, const Idx id) : IScheduleMultiDim(id) {
@@ -76,7 +73,6 @@ namespace gum {
     // for debugging purposes
     GUM_CONSTRUCTOR(ScheduleMultiDim);
   }
-
 
   /// constructs a ScheduleMultiDim containing an already built table
   template < typename TABLE >
@@ -94,7 +90,6 @@ namespace gum {
     // for debugging purposes
     GUM_CONSTRUCTOR(ScheduleMultiDim);
   }
-
 
   /// copy constructor
   template < typename TABLE >
@@ -114,7 +109,6 @@ namespace gum {
     GUM_CONS_CPY(ScheduleMultiDim);
   }
 
-
   /// move constructor
   template < typename TABLE >
   ScheduleMultiDim< TABLE >::ScheduleMultiDim(ScheduleMultiDim< TABLE >&& from) :
@@ -129,13 +123,11 @@ namespace gum {
     GUM_CONS_MOV(ScheduleMultiDim);
   }
 
-
   /// virtual copy constructor
   template < typename TABLE >
   INLINE ScheduleMultiDim< TABLE >* ScheduleMultiDim< TABLE >::clone() const {
     return new ScheduleMultiDim< TABLE >(*this);
   }
-
 
   /// virtual copy constructor enabling to forcing a copy of the content
   template < typename TABLE >
@@ -154,7 +146,6 @@ namespace gum {
     return new_sched;
   }
 
-
   /// destructor
   template < typename TABLE >
   ScheduleMultiDim< TABLE >::~ScheduleMultiDim() {
@@ -163,7 +154,6 @@ namespace gum {
     // for debugging purposes
     GUM_DESTRUCTOR(ScheduleMultiDim);
   }
-
 
   /// copy operator
   template < typename TABLE >
@@ -212,7 +202,6 @@ namespace gum {
     return *this;
   }
 
-
   /// move operator
   template < typename TABLE >
   ScheduleMultiDim< TABLE >&
@@ -233,13 +222,11 @@ namespace gum {
     return *this;
   }
 
-
   /// checks whether two ScheduleMultiDim have exactly the same ID
   template < typename TABLE >
   INLINE bool ScheduleMultiDim< TABLE >::operator==(const ScheduleMultiDim< TABLE >& m) const {
     return IScheduleMultiDim::operator==(m);
   }
-
 
   /// checks whether two ScheduleMultiDim have the same ID and type
   template < typename TABLE >
@@ -250,13 +237,11 @@ namespace gum {
     } catch (std::bad_cast&) { return false; }
   }
 
-
   /// checks whether two ScheduleMultiDim have different IDs
   template < typename TABLE >
   INLINE bool ScheduleMultiDim< TABLE >::operator!=(const ScheduleMultiDim< TABLE >& m) const {
     return !ScheduleMultiDim< TABLE >::operator==(m);
   }
-
 
   /// checks whether two ScheduleMultiDim have different IDs or types
   template < typename TABLE >
@@ -264,14 +249,12 @@ namespace gum {
     return !ScheduleMultiDim< TABLE >::operator==(m);
   }
 
-
   /// checks whether two ScheduleMultiDim have the same variables
   template < typename TABLE >
   INLINE bool
      ScheduleMultiDim< TABLE >::hasSameVariables(const ScheduleMultiDim< TABLE >& m) const {
     return ((_domain_size_ == m._domain_size_) && (_var_sequence_ == m._var_sequence_));
   }
-
 
   /// checks whether two ScheduleMultiDim have the same variables and types
   template < typename TABLE >
@@ -281,7 +264,6 @@ namespace gum {
       return ScheduleMultiDim< TABLE >::hasSameVariables(real_m);
     } catch (std::bad_cast&) { return false; }
   }
-
 
   /// checks whether two ScheduleMultiDim contain the same table
   template < typename TABLE >
@@ -295,7 +277,6 @@ namespace gum {
     }
   }
 
-
   /// checks whether two IScheduleMultiDim are related to the same table
   template < typename TABLE >
   bool ScheduleMultiDim< TABLE >::hasSameContent(const IScheduleMultiDim& m) const {
@@ -304,7 +285,6 @@ namespace gum {
       return ScheduleMultiDim< TABLE >::hasSameContent(real_m);
     } catch (std::bad_cast&) { return false; }
   }
-
 
   /// returns the multiDimImplementation actually contained in the
   /// ScheduleMultiDim
@@ -318,13 +298,11 @@ namespace gum {
     return *_table_;
   }
 
-
   /// returns whether the ScheduleMultiDim contains a real table
   template < typename TABLE >
   INLINE bool ScheduleMultiDim< TABLE >::isAbstract() const {
     return (_table_ == nullptr);
   }
-
 
   /// indicates whether the ScheduleMultiDim contains a table and possess it
   template < typename TABLE >
@@ -332,13 +310,11 @@ namespace gum {
     return _table_contained_ && (_table_ != nullptr);
   }
 
-
   /// if the ScheduleMultiDim is not abstract, make it abstract again
   template < typename TABLE >
   INLINE void ScheduleMultiDim< TABLE >::makeAbstract() {
     _removeTable_();
   }
-
 
   /// returns the contained table and make the ScheduleMultiDim abstract
   template < typename TABLE >
@@ -360,7 +336,6 @@ namespace gum {
     return table;
   }
 
-
   /// returns the set of variables involved in the multidim
   template < typename TABLE >
   INLINE const Sequence< const DiscreteVariable* >&
@@ -368,20 +343,17 @@ namespace gum {
     return _var_sequence_;
   }
 
-
   /// returns the domain size of the multidim
   template < typename TABLE >
   INLINE Size ScheduleMultiDim< TABLE >::domainSize() const {
     return _domain_size_;
   }
 
-
   /// returns the sizeof of the elements stored into the ScheduleMultiDim
   template < typename TABLE >
   INLINE double ScheduleMultiDim< TABLE >::sizeOfContent() const {
     return double(sizeof(typename ElementType< TABLE >::value_type));
   }
-
 
   /// sets a new table inside the wrapper
   template < typename TABLE >
@@ -420,7 +392,6 @@ namespace gum {
     _domain_size_  = _table_->domainSize();
   }
 
-
   /// sets a new table inside the wrapper
   template < typename TABLE >
   void ScheduleMultiDim< TABLE >::setMultiDim(TABLE&& table) {
@@ -450,7 +421,6 @@ namespace gum {
     _var_sequence_    = _table_->variablesSequence();
     _domain_size_     = _table_->domainSize();
   }
-
 
   /// displays the content of the multidim
   template < typename TABLE >

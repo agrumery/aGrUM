@@ -32,7 +32,9 @@
 
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/graphicalModels/inference/graphicalModelInference.h>
+
 #include <agrum/MRF/IMarkovRandomField.h>
 
 namespace gum {
@@ -54,7 +56,6 @@ namespace gum {
   // this will be a friend of Inference
   template < typename GUM_SCALAR >
   class EvidenceMRFInference;
-
 
   /**
    * @class MRFInference inference.h
@@ -205,7 +206,6 @@ namespace gum {
 
 
 }   // namespace gum
-
 
 #include <agrum/MRF/inference/tools/MRFInference_tpl.h>
 

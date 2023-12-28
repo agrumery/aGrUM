@@ -24,7 +24,7 @@
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/variables/numericalDiscreteVariable.h>
 
@@ -203,7 +203,6 @@ namespace gum_tests {
       delete var5;
     }
 
-
     GUM_ACTIVE_TEST(SecondConstructor) {
       {
         gum::NumericalDiscreteVariable var("var", "this is var2", 0.0, 2.5, gum::Size(6));
@@ -244,7 +243,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(var.closestIndex(-1.05), gum::Idx(0))   // arbitrary
       TS_ASSERT_EQUALS(var.closestIndex(4.8), gum::Idx(4))
       TS_ASSERT_EQUALS(var.closestIndex(3.8), gum::Idx(3))
-      TS_ASSERT_EQUALS(var.closestIndex(4.3), gum::Idx(3))   // arbitrary
+      TS_ASSERT_EQUALS(var.closestIndex(4.3), gum::Idx(3))     // arbitrary
 
       gum::NumericalDiscreteVariable v("v", "v", 4, 14, 300);
       TS_ASSERT_EQUALS(v.closestLabel(9.0), "8.9833")

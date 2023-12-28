@@ -82,6 +82,7 @@ namespace gum {
       addLabel(oss.str());
     }
   }
+
   INLINE
   LabelizedVariable::LabelizedVariable(const std::string&                aName,
                                        const std::string&                aDesc,
@@ -135,7 +136,6 @@ namespace gum {
   // get a numerical representation of the indice-th value.
   INLINE double LabelizedVariable::numerical(Idx indice) const { return double(indice); }
 
-
   INLINE Idx LabelizedVariable::index(const std::string& aLabel) const {
     try {
       return _labels_.pos(aLabel);
@@ -148,7 +148,6 @@ namespace gum {
   INLINE Size LabelizedVariable::domainSize() const { return _labels_.size(); }
 
   INLINE VarType LabelizedVariable::varType() const { return VarType::Labelized; }
-
 
   INLINE std::string LabelizedVariable::toFast() const {
     std::stringstream s;

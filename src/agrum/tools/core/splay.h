@@ -33,6 +33,7 @@
 // #include <stdlib.h>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/hashTable.h>
 
 namespace gum {

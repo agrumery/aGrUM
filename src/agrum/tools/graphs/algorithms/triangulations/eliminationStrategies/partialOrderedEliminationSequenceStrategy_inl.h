@@ -39,7 +39,6 @@ namespace gum {
     return subsets_;
   }
 
-
   // indicates if a new partial ordering is needed
   INLINE bool PartialOrderedEliminationSequenceStrategy::isPartialOrderNeeded() const noexcept {
     return partial_order_needed_;

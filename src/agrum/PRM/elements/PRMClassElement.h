@@ -33,7 +33,6 @@
 
 #include <agrum/agrum.h>
 
-
 #include <agrum/PRM/utils_prm.h>
 
 namespace gum {
@@ -97,17 +96,17 @@ namespace gum {
 
       static std::string enum2str(ClassElementType type) {
         switch (type) {
-          case prm_attribute: return "prm_attribute";
+          case prm_attribute : return "prm_attribute";
 
-          case prm_aggregate: return "prm_aggregate";
+          case prm_aggregate : return "prm_aggregate";
 
-          case prm_refslot: return "prm_refslot";
+          case prm_refslot : return "prm_refslot";
 
-          case prm_slotchain: return "prm_slotchain";
+          case prm_slotchain : return "prm_slotchain";
 
-          case prm_parameter: return "prm_parameter";
+          case prm_parameter : return "prm_parameter";
 
-          default: return "unknown";
+          default : return "unknown";
         }
       }
 
@@ -249,6 +248,7 @@ namespace gum {
       virtual const Potential< GUM_SCALAR >& cpf() const = 0;
 
       /// @}
+
       protected:
       /// The safe name of this PRMClassElement.
       std::string safeName_;

@@ -33,8 +33,10 @@
 #include <vector>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/approximations/approximationScheme.h>
 #include <agrum/tools/core/approximations/approximationSchemeListener.h>
+
 #include <agrum/BN/learning/paramUtils/paramEstimator.h>
 
 namespace gum {
@@ -124,7 +126,7 @@ namespace gum {
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
-  } /* namespace learning */
+  }    /* namespace learning */
 
 } /* namespace gum */
 

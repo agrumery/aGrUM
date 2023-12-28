@@ -26,14 +26,14 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 
-#include <agrum/agrum.h>
-
 #include <algorithm>
 #include <iomanip>
 #include <iostream>
+#include <mutex>
 #include <string>
 #include <vector>
-#include <mutex>
+
+#include <agrum/agrum.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -46,13 +46,11 @@ namespace gum {
   namespace __debug__ {
     using DEBUG_MAP = std::map< std::string, int >;
 
-
     static std::mutex& _debug_mutex_() {
       // Here, this initialization is thread-safe due to Meyer’s Singleton property
       static std::mutex debug_mutex;
       return debug_mutex;
     }
-
 
     // this static hashtable only on debug mode.
     static DEBUG_MAP& _sizeof_() {
@@ -61,7 +59,6 @@ namespace gum {
       return sizeOf;
     }
 
-
     // this static hashtable only on debug mode.
     static DEBUG_MAP& _creation_() {
       // Here, this initialization is thread-safe due to Meyer’s Singleton property
@@ -69,19 +66,16 @@ namespace gum {
       return creation;
     }
 
-
     static DEBUG_MAP& _deletion_() {
       // Here, this initialization is thread-safe due to Meyer’s Singleton property
       static DEBUG_MAP deletion;
       return deletion;
     }
 
-
     std::string _getFile_(const char* f) {
       std::string s(f);
       return s.erase(0, s.rfind('/') + 1);
     }
-
 
     void _show_trace_(const char* zeKey,
                       const char* zeFile,
@@ -94,7 +88,6 @@ namespace gum {
                 << zeKey << "> [" << std::hex << zePtr << "]" << std::dec << std::endl;
 #    endif   // TRACE_CONSTRUCTION_ON
     }
-
 
     void _inc_creation_(const char* zeKey,
                         const char* zeFile,
@@ -266,7 +259,7 @@ namespace gum {
       _deletion_().clear();
     }
 
-  }   // namespace  __debug__
+  }        // namespace  __debug__
 
 #  endif   // GUM_DEBUG_MODE
 

@@ -26,15 +26,16 @@
  * @author Quentin FALCAND, Marvin LASSERRE and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/core/hashTable.h>
 #include <agrum/tools/core/heap.h>
 #include <agrum/tools/core/timer.h>
 #include <agrum/tools/graphs/mixedGraph.h>
-#include <agrum/BN/learning/Miic.h>
-#include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
 #include <agrum/tools/stattests/correctedMutualInformation.h>
 
+#include <agrum/BN/learning/Miic.h>
+#include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
+
+#include <agrum/tools/core/math/math_utils.h>
 
 namespace gum {
 
@@ -70,7 +71,6 @@ namespace gum {
       ApproximationScheme::operator=(std::move(from));
       return *this;
     }
-
 
     bool GreaterPairOn2nd::operator()(const CondRanking& e1, const CondRanking& e2) const {
       return e1.second > e2.second;
@@ -159,14 +159,14 @@ namespace gum {
     /// in the other methods of the MIIC class.
 
     PDAG Miic::learnPDAG(CorrectedMutualInformation& I, MixedGraph initialGraph) {
-      MixedGraph mg = learnMixedStructure(I, initialGraph);
-      PDAG pdag = meekRules_.orientToPDAG(mg,_latentCouples_);
+      MixedGraph mg   = learnMixedStructure(I, initialGraph);
+      PDAG       pdag = meekRules_.orientToPDAG(mg, _latentCouples_);
       return pdag;
     }
 
     DAG Miic::learnStructure(CorrectedMutualInformation& I, MixedGraph initialGraph) {
-      MixedGraph mg = learnMixedStructure(I, initialGraph);
-      DAG dag = meekRules_.orientToDAG(mg, _latentCouples_);
+      MixedGraph mg  = learnMixedStructure(I, initialGraph);
+      DAG        dag = meekRules_.orientToDAG(mg, _latentCouples_);
       return dag;
     }
 
@@ -178,7 +178,6 @@ namespace gum {
       return DAG2BNLearner::createBN< GUM_SCALAR >(estimator,
                                                    learnStructure(selector, initial_dag));
     }
-
 
     /*
      * PHASE 1 : INITIATION
@@ -198,7 +197,7 @@ namespace gum {
       for (const Edge& edge: edges) {
         x = edge.first();
         y = edge.second();
-        if (isForbiddenEdge_(x, y)) { // Erase Forbidden edges
+        if (isForbiddenEdge_(x, y)) {   // Erase Forbidden edges
           GUM_SL_EMIT(x, y, "Remove " << x << " - " << y, " Constraints : Forbidden edge")
           graph.eraseEdge(edge);
         }
@@ -327,18 +326,18 @@ namespace gum {
         } else {
           // If the edge doesn't exist we add the arc as is to graph
           graph.addArc(arc.tail(), arc.head());
-          marks.insert({arc.tail(), arc.head()},  '>');
+          marks.insert({arc.tail(), arc.head()}, '>');
           marks.insert({arc.head(), arc.tail()}, '-');
         }
       }
 
-      for (Arc arc:_forbiddenGraph_.arcs()) {
+      for (Arc arc: _forbiddenGraph_.arcs()) {
         // Check if the edge exists in graph
-        if (graph.existsEdge(Edge(arc.tail(), arc.head()))){
+        if (graph.existsEdge(Edge(arc.tail(), arc.head()))) {
           graph.eraseEdge(Edge(arc.tail(), arc.head()));
 
           // Arc is forced in the other direction
-          graph.addArc(arc.head(),arc.tail());
+          graph.addArc(arc.head(), arc.tail());
           GUM_SL_EMIT(arc.head(),
                       arc.tail(),
                       "Add Arc" << arc.head() << "->" << arc.tail(),
@@ -531,7 +530,6 @@ namespace gum {
       }
     }
 
-
     void Miic::_propagatingOrientationMiic_(MixedGraph&                                     graph,
                                             HashTable< std::pair< NodeId, NodeId >, char >& marks,
                                             NodeId                                          x,
@@ -638,14 +636,13 @@ namespace gum {
     }
 
     void Miic::orientDoubleHeadedArcs_(MixedGraph& mg) {
-
       gum::ArcSet L;   // create a set of all double-headed arcs
       for (gum::NodeId x: mg.nodes())
         for (NodeId y: mg.parents(x))
           // If there is a mutual parent-child relationship, add the arc to the set
           if (mg.parents(y).contains(x)) {
             if (x > y) {
-              continue; // Avoid duplicate arcs by considering only one direction
+              continue;   // Avoid duplicate arcs by considering only one direction
             } else {
               L.insert(gum::Arc(x, y));
             }
@@ -666,7 +663,7 @@ namespace gum {
               mg.eraseArc(Arc(arc.head(), arc.tail()));
               withdrawFlag_arc = true;
 
-            // Case 2: There is already a path from head to tail and no path from tail to head
+              // Case 2: There is already a path from head to tail and no path from tail to head
             } else if (!tail_head && head_tail) {
               // Erase the arc from tail to head to avoid cycles
               mg.eraseArc(Arc(arc.tail(), arc.head()));
@@ -688,20 +685,19 @@ namespace gum {
           // If all double-headed arcs are processed, exit the loop
           if (L.empty()) { break; }
 
-          // If no arcs were withdrawn, erase an arbitrary double arc in the graph (the first one in L).
-          // Hoping the situation will improve. ┐(￣ヘ￣)┌
-          // If we arrive here, it's because the double-headed arc creates cycles in both directions
+          // If no arcs were withdrawn, erase an arbitrary double arc in the graph (the first one in
+          // L). Hoping the situation will improve. ┐(￣ヘ￣)┌ If we arrive here, it's because the
+          // double-headed arc creates cycles in both directions
           if (!withdrawFlag_L) {
-            auto it = L.begin();
+            auto it  = L.begin();
             auto arc = *it;
-            mg.eraseArc(Arc(arc.head(),arc.tail()));
+            mg.eraseArc(Arc(arc.head(), arc.tail()));
             mg.eraseArc(Arc(arc.tail(), arc.head()));
             L.erase(arc);
           }
         }
       }
     }
-
 
     /// finds the best contributor node for a pair given a conditioning set
     void Miic::findBestContributor_(NodeId                                 x,
@@ -907,9 +903,9 @@ namespace gum {
                                               const NodeId      n1,
                                               const NodeId      n2) {
       for (const auto parent: graph.parents(n2)) {
-        if (graph.existsArc(n2,parent))   // if there is a double arc, pass
+        if (graph.existsArc(n2, parent))   // if there is a double arc, pass
           continue;
-        if (parent == n1)          // trivial directed path => not recognized
+        if (parent == n1)                  // trivial directed path => not recognized
           continue;
         if (_existsDirectedPath_(graph, n1, parent)) return true;
       }

@@ -39,7 +39,6 @@ constexpr auto LBP_DEFAULT_VERBOSITY        = false;
 // to ease parsing for IDE
 #  include <agrum/BN/inference/loopyBeliefPropagation.h>
 
-
 namespace gum {
 
   /// default constructor
@@ -64,7 +63,6 @@ namespace gum {
     GUM_DESTRUCTOR(LoopyBeliefPropagation)
   }
 
-
   template < typename GUM_SCALAR >
   void LoopyBeliefPropagation< GUM_SCALAR >::_init_messages_() {
     _messages_.clear();
@@ -84,7 +82,6 @@ namespace gum {
   void LoopyBeliefPropagation< GUM_SCALAR >::updateOutdatedStructure_() {
     _init_messages_();
   }
-
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR > LoopyBeliefPropagation< GUM_SCALAR >::_computeProdPi_(NodeId X) {
@@ -111,7 +108,6 @@ namespace gum {
     piXexcept = piXexcept.margSumIn({&varX, &varExcept});
     return piXexcept;
   }
-
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR > LoopyBeliefPropagation< GUM_SCALAR >::_computeProdLambda_(NodeId X) {
@@ -145,7 +141,6 @@ namespace gum {
 
     return lamXexcept;
   }
-
 
   template < typename GUM_SCALAR >
   GUM_SCALAR LoopyBeliefPropagation< GUM_SCALAR >::_updateNodeMessage_(NodeId X) {
@@ -204,7 +199,6 @@ namespace gum {
     }
   }
 
-
   /// Returns the probability of the variables.
   template < typename GUM_SCALAR >
   void LoopyBeliefPropagation< GUM_SCALAR >::makeInference_() {
@@ -227,7 +221,6 @@ namespace gum {
       }
     } while (this->continueApproximationScheme(error));
   }
-
 
   /// Returns the probability of the variable.
   template < typename GUM_SCALAR >

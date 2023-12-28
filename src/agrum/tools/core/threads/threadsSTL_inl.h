@@ -27,6 +27,7 @@
 
 // to ease automatic parsers
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/threads/threadsSTL.h>
 
 namespace gum {
@@ -36,7 +37,6 @@ namespace gum {
 
     // returns the maximum number of threads possible
     INLINE unsigned int getMaxNumberOfThreads() { return std::thread::hardware_concurrency(); }
-
 
     // returns the number of logical processors.
     INLINE unsigned int getNumberOfLogicalProcessors() {

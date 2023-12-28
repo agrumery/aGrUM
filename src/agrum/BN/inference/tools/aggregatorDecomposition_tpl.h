@@ -26,9 +26,10 @@
  * @author Gaspard Ducamp
  *
  */
-#include <agrum/BN/inference/tools/aggregatorDecomposition.h>
-#include <typeinfo>
 #include <list>
+#include <typeinfo>
+
+#include <agrum/BN/inference/tools/aggregatorDecomposition.h>
 
 namespace gum {
 
@@ -338,7 +339,6 @@ namespace gum {
       return addDepthLayer_(bn, newAggs, initialAggregator, j);
     }
   }
-
 
   template < typename GUM_SCALAR >
   INLINE void AggregatorDecomposition< GUM_SCALAR >::setMaximumArity(gum::Size arity) {

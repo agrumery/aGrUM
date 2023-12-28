@@ -44,6 +44,7 @@ namespace gum {
 
 #  ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME
 #    define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE GUM_SCALAR
+
   template < typename GUM_SCALAR >
   MultiDimArray< GUM_SCALAR >* GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME(
      const MultiDimArray< GUM_SCALAR >*               table,

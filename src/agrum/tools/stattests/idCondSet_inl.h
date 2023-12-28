@@ -37,12 +37,10 @@ namespace gum {
     /// default constructor
     INLINE IdCondSetIterator::IdCondSetIterator() { GUM_CONSTRUCTOR(IdCondSetIterator); }
 
-
     /// Constructor for a begin
     INLINE IdCondSetIterator::IdCondSetIterator(const IdCondSet& idset) : _seq_(&(idset.ids())) {
       GUM_CONSTRUCTOR(IdCondSetIterator);
     }
-
 
     /// Copy constructor.
     INLINE IdCondSetIterator::IdCondSetIterator(const IdCondSetIterator& from) :
@@ -50,24 +48,20 @@ namespace gum {
       GUM_CONS_CPY(IdCondSetIterator);
     }
 
-
     /// move constructor
     INLINE IdCondSetIterator::IdCondSetIterator(IdCondSetIterator&& from) :
         _seq_(from._seq_), _index_(from._index_) {
       GUM_CONS_MOV(IdCondSetIterator);
     }
 
-
     /// destructor
     INLINE IdCondSetIterator::~IdCondSetIterator() { GUM_DESTRUCTOR(IdCondSetIterator); }
-
 
     /// places the index to the end of the sequence
     INLINE void IdCondSetIterator::_gotoEnd_() {
       if (_seq_ != nullptr) _index_ = _seq_->size();
       else _index_ = std::size_t(0);
     }
-
 
     /// copy operator
     INLINE IdCondSetIterator& IdCondSetIterator::operator=(const IdCondSetIterator& from) {
@@ -76,7 +70,6 @@ namespace gum {
       return *this;
     }
 
-
     /// move operator
     INLINE IdCondSetIterator& IdCondSetIterator::operator=(IdCondSetIterator&& from) {
       _seq_   = from._seq_;
@@ -84,22 +77,18 @@ namespace gum {
       return *this;
     }
 
-
     /// Gives access to the content of the iterator.
     INLINE NodeId IdCondSetIterator::operator*() const { return _seq_->operator[](_index_); }
-
 
     /// Checks whether two iterators point toward different elements.
     INLINE bool IdCondSetIterator::operator!=(const IdCondSetIterator& from) const {
       return (_index_ != from._index_) || (_seq_ != from._seq_);
     }
 
-
     /// Checks whether two iterators point toward the same elements.
     INLINE bool IdCondSetIterator::operator==(const IdCondSetIterator& from) const {
       return !operator!=(from);
     }
-
 
     /// Makes the iterator point to the next element in the IdCondSet
     INLINE IdCondSetIterator& IdCondSetIterator::operator++() {
@@ -107,13 +96,11 @@ namespace gum {
       return *this;
     }
 
-
     /// Makes the iterator point to i elements further in the IdCondSet
     INLINE IdCondSetIterator& IdCondSetIterator::operator+=(const std::size_t i) {
       _index_ += i;
       return *this;
     }
-
 
     /// Returns a new iterator pointing to i further elements in the IdCondSet
     INLINE IdCondSetIterator IdCondSetIterator::operator+(const std::size_t i) {
@@ -121,7 +108,6 @@ namespace gum {
       res += i;
       return res;
     }
-
 
     /// Returns the position of the iterator in the IdCondSet
     INLINE std::size_t IdCondSetIterator::pos() const {
@@ -135,14 +121,12 @@ namespace gum {
       return _index_;
     }
 
-
     /// ==========================================================================
     /// ==========================================================================
 
 
     /// default constructor
     INLINE IdCondSet::IdCondSet() : _end_safe_(*this) { GUM_CONSTRUCTOR(IdCondSet); }
-
 
     /// default constructor with no variable on the left side
     INLINE IdCondSet::IdCondSet(const std::vector< NodeId >& ids,
@@ -171,7 +155,6 @@ namespace gum {
       GUM_CONSTRUCTOR(IdCondSet);
     }
 
-
     /// default constructor with one variable on the left side
     INLINE IdCondSet::IdCondSet(NodeId                       var1,
                                 const std::vector< NodeId >& rhs_ids,
@@ -198,7 +181,6 @@ namespace gum {
 
       GUM_CONSTRUCTOR(IdCondSet);
     }
-
 
     /// default constructor with two variables on the left side
     INLINE IdCondSet::IdCondSet(NodeId                       var1,
@@ -233,7 +215,6 @@ namespace gum {
 
       GUM_CONSTRUCTOR(IdCondSet);
     }
-
 
     /// default constructor with three variables on the left side
     INLINE IdCondSet::IdCondSet(NodeId                       var1,
@@ -275,14 +256,12 @@ namespace gum {
       GUM_CONSTRUCTOR(IdCondSet);
     }
 
-
     /// copy constructor
     INLINE IdCondSet::IdCondSet(const IdCondSet& from) :
         _ids_(from._ids_), _nb_lhs_ids_(from._nb_lhs_ids_), _end_safe_(*this) {
       _end_safe_._gotoEnd_();
       GUM_CONS_CPY(IdCondSet);
     }
-
 
     /// move constructor
     INLINE IdCondSet::IdCondSet(IdCondSet&& from) :
@@ -291,14 +270,11 @@ namespace gum {
       GUM_CONS_MOV(IdCondSet);
     }
 
-
     /// virtual copy constructor
     INLINE IdCondSet* IdCondSet::clone() const { return new IdCondSet(*this); }
 
-
     /// destructor
     INLINE IdCondSet::~IdCondSet() { GUM_DESTRUCTOR(IdCondSet); }
-
 
     /// copy operator
     INLINE IdCondSet& IdCondSet::operator=(const IdCondSet& from) {
@@ -310,7 +286,6 @@ namespace gum {
       return *this;
     }
 
-
     /// move operator
     INLINE IdCondSet& IdCondSet::operator=(IdCondSet&& from) {
       if (this != &from) {
@@ -321,12 +296,10 @@ namespace gum {
       return *this;
     }
 
-
     /// returns the id stored at a given index
     INLINE NodeId IdCondSet::operator[](const std::size_t index) const {
       return _ids_.atPos(index);
     }
-
 
     /// returns true if both sets are equal
     INLINE bool IdCondSet::operator==(const IdCondSet& from) const {
@@ -343,44 +316,35 @@ namespace gum {
       return true;
     }
 
-
     /// returns true if the sets differ
     INLINE bool IdCondSet::operator!=(const IdCondSet& from) const { return !operator==(from); }
-
 
     /// Returns a safe begin iterator.
     INLINE typename IdCondSet::iterator_safe IdCondSet::beginSafe() const {
       return IdCondSetIterator(*this);
     }
 
-
     /// Returns the safe end iterator.
     INLINE const typename IdCondSet::iterator_safe& IdCondSet::endSafe() const {
       return _end_safe_;
     }
-
 
     /// Returns an unsafe begin iterator.
     INLINE typename IdCondSet::iterator IdCondSet::begin() const {
       return IdCondSetIterator(*this);
     }
 
-
     /// Returns the unsafe end iterator.
     INLINE const typename IdCondSet::iterator& IdCondSet::end() const { return _end_safe_; }
-
 
     /// returns the set of ids contained in the object
     INLINE const Sequence< NodeId >& IdCondSet::ids() const { return _ids_; }
 
-
     /// returns the number of left hand side ids
     INLINE std::size_t IdCondSet::nbLHSIds() const { return _nb_lhs_ids_; }
 
-
     /// returns the number of right hand side ids
     INLINE std::size_t IdCondSet::nbRHSIds() const { return _ids_.size() - _nb_lhs_ids_; }
-
 
     /// removes all the nodes from the IdCondSet
     INLINE void IdCondSet::clear() {
@@ -389,28 +353,22 @@ namespace gum {
       _end_safe_._gotoEnd_();
     }
 
-
     /// returns the number of variables (both left and right hand side)
     INLINE std::size_t IdCondSet::size() const { return _ids_.size(); }
-
 
     /// returns the position of a given node in the IdCondSet
     INLINE std::size_t IdCondSet::pos(const NodeId id) const { return _ids_.pos(id); }
 
-
     /// indicates whether a given id is contained in the IdCondSet
     INLINE bool IdCondSet::exists(const NodeId id) const { return _ids_.exists(id); }
 
-
     /// indicates whether the idset contains a non-empty conditioning set
     INLINE bool IdCondSet::hasConditioningSet() const { return _nb_lhs_ids_ != _ids_.size(); }
-
 
     /// indicates whether the IdCondSet contains some nodes or not
     INLINE bool IdCondSet::empty() const { return _ids_.empty(); }
 
   } /* namespace learning */
-
 
   // the hash function for idSets
   INLINE Size HashFunc< learning::IdCondSet >::operator()(const learning::IdCondSet& key) const {

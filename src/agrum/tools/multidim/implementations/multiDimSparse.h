@@ -28,9 +28,11 @@
 #ifndef GUM_MULTI_DIM_SPARSE_H
 #define GUM_MULTI_DIM_SPARSE_H
 
-#include <agrum/agrum.h>
-#include <agrum/tools/multidim/implementations/multiDimWithOffset.h>
 #include <vector>
+
+#include <agrum/agrum.h>
+
+#include <agrum/tools/multidim/implementations/multiDimWithOffset.h>
 
 namespace gum {
 

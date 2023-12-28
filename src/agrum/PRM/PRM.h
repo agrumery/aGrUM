@@ -31,9 +31,7 @@
 
 #include <string>
 
-
 #include <agrum/PRM/elements/PRMFuncAttribute.h>
-
 #include <agrum/PRM/elements/PRMSystem.h>
 
 namespace gum {
@@ -43,6 +41,7 @@ namespace gum {
     class PRMSystem;
     template < typename GUM_SCALAR >
     class PRMFactory;
+
     /**
      * @class PRM
      * @headerfile PRM.h <agrum/PRM/PRM.h>
@@ -174,6 +173,7 @@ namespace gum {
       const Set< PRMSystem< GUM_SCALAR >* >& systems() const;
 
       /// @}
+
       private:
       // ========================================================================
       /// @name Private methods.

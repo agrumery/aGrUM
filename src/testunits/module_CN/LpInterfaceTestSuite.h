@@ -19,13 +19,12 @@
  */
 
 
+#include <cstdlib>   // rand
 #include <iostream>
 #include <string>
 
-#include <cstdlib>   // rand
-
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 #include <agrum/CN/polytope/LpInterface.h>
 
@@ -41,6 +40,7 @@ namespace gum_tests {
       gum::credal::lp::LpExpr expr = 2 + a <= 5;
       gum::credal::lp::LpRow  row(expr, v);
     }
+
     GUM_ACTIVE_TEST(LpCreation) {
       gum::credal::lp::LpInterface< double > pl;
 

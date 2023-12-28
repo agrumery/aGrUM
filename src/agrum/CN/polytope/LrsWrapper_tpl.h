@@ -21,8 +21,9 @@
 
 #include <string.h>
 
-#include <agrum/CN/polytope/LrsWrapper.h>
 #include <agrum/agrum.h>
+
+#include <agrum/CN/polytope/LrsWrapper.h>
 
 namespace gum {
   namespace credal {
@@ -681,7 +682,7 @@ namespace gum {
         free(_dat_->jsave);
       }
 
-      auto savem = _dic_->m; /* need this to clear  _dat_*/
+      auto savem = _dic_->m;      /* need this to clear  _dat_*/
 
       lrs_free_dic(_dic_, _dat_); /* deallocate lrs_dic */
 
@@ -721,5 +722,5 @@ namespace gum {
 #endif   // _MSC_VER
     }
 
-  }   // namespace credal
+  }      // namespace credal
 }   // namespace gum

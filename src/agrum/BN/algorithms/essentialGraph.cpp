@@ -36,10 +36,12 @@ namespace gum {
   EssentialGraph::EssentialGraph(const DAGmodel& m) : _dagmodel_(&m) { _buildEssentialGraph_(); }
 
   EssentialGraph::EssentialGraph(const DAGmodel& m, const PDAG& mg) : _dagmodel_(&m), _pdag_(mg) {}
+
   EssentialGraph::EssentialGraph(const EssentialGraph& g) {
     _dagmodel_ = g._dagmodel_;
     _buildEssentialGraph_();
   }
+
   EssentialGraph& EssentialGraph::operator=(const EssentialGraph& g) {
     if (&g != this) {
       _dagmodel_ = g._dagmodel_;

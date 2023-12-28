@@ -29,6 +29,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #  include <agrum/agrum.h>
+
 #  include <agrum/tools/multidim/utils/partialInstantiationRegister4MultiDim.h>
 
 namespace gum {
@@ -118,7 +119,6 @@ namespace gum {
 
     return container;
   }
-
 
   // Default constructor: creates an empty register
   template < typename GUM_SCALAR >

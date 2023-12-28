@@ -28,7 +28,9 @@
 #define GUM_LEARNING_STRUCTURAL_CONSTRAINT_DAG_H
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/graphs/algorithms/DAGCycleDetector.h>
+
 #include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>
 
 namespace gum {

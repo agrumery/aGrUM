@@ -32,8 +32,9 @@
 #include <cstdlib>
 
 #include <agrum/tools/core/priorityQueue.h>
-#include <agrum/tools/core/utils_random.h>
 #include <agrum/tools/multidim/implementations/multiDimFunctionGraphGenerator.h>
+
+#include <agrum/tools/core/utils_random.h>
 
 namespace gum {
   // Constructor

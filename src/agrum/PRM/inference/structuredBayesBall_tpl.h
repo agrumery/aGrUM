@@ -95,7 +95,7 @@ namespace gum {
 
       // Sending message to parents
       switch (i->type().get(n).elt_type()) {
-        case PRMClassElement< GUM_SCALAR >::prm_slotchain: {
+        case PRMClassElement< GUM_SCALAR >::prm_slotchain : {
           if (!_getMark_(marks, i, n).first) {
             _getMark_(marks, i, n).first = true;
 
@@ -113,8 +113,8 @@ namespace gum {
           break;
         }
 
-        case PRMClassElement< GUM_SCALAR >::prm_aggregate:
-        case PRMClassElement< GUM_SCALAR >::prm_attribute: {
+        case PRMClassElement< GUM_SCALAR >::prm_aggregate :
+        case PRMClassElement< GUM_SCALAR >::prm_attribute : {
           if (!_getMark_(marks, i, n).first) {
             _getMark_(marks, i, n).first = true;
 
@@ -144,7 +144,7 @@ namespace gum {
           break;
         }
 
-        default: {
+        default : {
           // We shouldn't reach any other PRMClassElement<GUM_DATA> than
           // PRMAttribute
           // or

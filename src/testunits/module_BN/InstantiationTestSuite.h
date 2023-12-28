@@ -20,13 +20,14 @@
 
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
-#include <agrum/BN/BayesNet.h>
 #include <agrum/tools/multidim/implementations/multiDimArray.h>
 #include <agrum/tools/multidim/instantiation.h>
 #include <agrum/tools/variables/discretizedVariable.h>
 #include <agrum/tools/variables/labelizedVariable.h>
+
+#include <agrum/BN/BayesNet.h>
 
 namespace gum_tests {
 

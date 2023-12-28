@@ -54,7 +54,6 @@ namespace gum {
       _output_row_ = nullptr;
     }
 
-
     /// inserts a new generator at the end of the set
     template < class Generator >
     void DBRowGeneratorSet::insertGenerator(const Generator& generator, const std::size_t i) {
@@ -77,7 +76,6 @@ namespace gum {
       ++_nb_generators_;
       _output_row_ = nullptr;
     }
-
 
     /// assign a new Bayes net to all the generators that depend on a BN
     template < typename GUM_SCALAR >

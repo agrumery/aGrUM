@@ -33,8 +33,8 @@
 #define GUM_ELIMINATION_SEQUENCE_STRATEGY_H
 
 #include <agrum/agrum.h>
-#include <agrum/tools/graphs/undiGraph.h>
 
+#include <agrum/tools/graphs/undiGraph.h>
 
 namespace gum {
 
@@ -193,4 +193,4 @@ namespace gum {
 #endif   // GUM_NOINLINE
 
 
-#endif /* GUM_ELIMINATION_SEQUENCE_STRATEGY_H */
+#endif   /* GUM_ELIMINATION_SEQUENCE_STRATEGY_H */

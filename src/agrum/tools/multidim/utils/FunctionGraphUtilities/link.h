@@ -34,6 +34,7 @@
 #include <agrum/agrum.h>
 // ============================================================================
 #include <agrum/tools/core/smallobjectallocator/smallObjectAllocator.h>
+
 // ============================================================================
 
 namespace gum {

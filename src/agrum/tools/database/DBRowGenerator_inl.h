@@ -40,7 +40,6 @@ namespace gum {
       GUM_CONSTRUCTOR(DBRowGenerator);
     }
 
-
     /// copy constructor
     INLINE DBRowGenerator::DBRowGenerator(const DBRowGenerator& from) :
         nb_remaining_output_rows_(from.nb_remaining_output_rows_),
@@ -48,7 +47,6 @@ namespace gum {
         goal_(from.goal_) {
       GUM_CONS_CPY(DBRowGenerator);
     }
-
 
     /// move constructor
     INLINE DBRowGenerator::DBRowGenerator(DBRowGenerator&& from) :
@@ -58,10 +56,8 @@ namespace gum {
       GUM_CONS_MOV(DBRowGenerator);
     }
 
-
     /// destructor
     INLINE DBRowGenerator::~DBRowGenerator() { GUM_DESTRUCTOR(DBRowGenerator); }
-
 
     /// copy operator
     INLINE DBRowGenerator& DBRowGenerator::operator=(const DBRowGenerator& from) {
@@ -72,7 +68,6 @@ namespace gum {
       return *this;
     }
 
-
     /// move operator
     INLINE DBRowGenerator& DBRowGenerator::operator=(DBRowGenerator&& from) {
       nb_remaining_output_rows_ = from.nb_remaining_output_rows_;
@@ -82,10 +77,8 @@ namespace gum {
       return *this;
     }
 
-
     /// returns true if there are still rows that can be output by the RowFilter
     INLINE bool DBRowGenerator::hasRows() { return nb_remaining_output_rows_ != std::size_t(0); }
-
 
     /// sets the input row from which the generator will create new rows
     INLINE bool DBRowGenerator::setInputRow(const DBRow< DBTranslatedValue >& row) {
@@ -93,14 +86,11 @@ namespace gum {
       return hasRows();
     }
 
-
     /// decrease the number of remaining output rows
     INLINE void DBRowGenerator::decreaseRemainingRows() { --nb_remaining_output_rows_; }
 
-
     /// resets the filter
     INLINE void DBRowGenerator::reset() { nb_remaining_output_rows_ = 0; }
-
 
     // sets the columns of interest: the output DBRow needs only
     // contain values fot these columns
@@ -109,7 +99,6 @@ namespace gum {
       columns_of_interest_ = cols_of_interest;
     }
 
-
     // sets the columns of interest: the output DBRow needs only
     // contain values fot these columns
     INLINE void
@@ -117,12 +106,10 @@ namespace gum {
       columns_of_interest_ = std::move(cols_of_interest);
     }
 
-
     /// returns the current set of columns of interest
     INLINE const std::vector< std::size_t >& DBRowGenerator::columnsOfInterest() const {
       return columns_of_interest_;
     }
-
 
     /// returns the goal of the DBRowGenerator
     INLINE DBRowGeneratorGoal DBRowGenerator::goal() const { return goal_; }

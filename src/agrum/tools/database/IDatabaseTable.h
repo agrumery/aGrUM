@@ -31,20 +31,20 @@
 #define GUM_IDATABASE_TABLE_H
 
 #include <cstddef>
-#include <utility>
-#include <string>
 #include <cstring>
 #include <memory>
-#include <vector>
 #include <mutex>
+#include <string>
+#include <utility>
+#include <vector>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/threads/threads.h>
+
 #include <agrum/tools/core/threads/threadExecutor.h>
+#include <agrum/tools/core/threads/threads.h>
 #include <agrum/tools/database/DBCell.h>
 #include <agrum/tools/database/DBHandler.h>
 #include <agrum/tools/database/DBTranslator.h>
-
 
 namespace gum {
 
@@ -96,7 +96,6 @@ namespace gum {
       virtual void insertRows(const DBVector< DBVector< std::string > >& new_rows);
     };
 
-
     template <>
     struct IDatabaseTableInsert4DBCell< false > {
       template < typename TX_DATA >
@@ -118,7 +117,6 @@ namespace gum {
        * database. So they must contain data for the ignored columns. */
       virtual void insertRows(const DBVector< DBVector< std::string > >& new_rows);
     };
-
 
     /** @class IDatabaseTable
      * @headerfile IDatabaseTable.h <agrum/BN/learning/IDatabaseTable.h>
@@ -264,11 +262,7 @@ namespace gum {
 
       using MissingValType = std::vector< std::string >;
 
-      enum IsMissing : char {
-        False,
-        True
-      };
-
+      enum IsMissing : char { False, True };
 
       /** @class Handler
        * @headerfile IDatabaseTable.h <agrum/BN/learning/IDatabaseTable.h>
@@ -585,7 +579,6 @@ namespace gum {
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
       };
 
-
       /** @class HandlerSafe
        * @headerfile IDatabaseTable.h <agrum/BN/learning/IDatabaseTable.h>
        * @brief the safe handler of the tabular databases
@@ -744,7 +737,6 @@ namespace gum {
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
       };
-
 
       /// Types for STL compliance.
       /// @{

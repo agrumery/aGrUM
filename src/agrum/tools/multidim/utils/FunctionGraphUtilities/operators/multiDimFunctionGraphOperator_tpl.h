@@ -77,7 +77,6 @@ namespace gum {
     if (_nbVar_ != 0) SOA_DEALLOCATE(_default_, sizeof(short int) * _nbVar_);
   }
 
-
   // This function is the main function. To be call every time an operation
   // between the two given Function Graphs is required
   template < typename GUM_SCALAR,
@@ -226,7 +225,6 @@ namespace gum {
     return dist;
   }
 
-
   // This function computes for every nodes if any retrograde variable is
   // present below
   template < typename GUM_SCALAR,
@@ -298,7 +296,6 @@ namespace gum {
     }
     nodesVarDescendant.clear();
   }
-
 
   /// Main recursion function, called every time we move on a node to determine
   /// what we have to do

@@ -20,6 +20,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 #  include <agrum/BN/io/XDSL/XDSLBNReader.h>
+
 #  include <agrum/tools/core/utils_string.h>
 
 namespace gum {

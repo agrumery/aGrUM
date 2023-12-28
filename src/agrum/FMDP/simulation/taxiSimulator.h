@@ -34,18 +34,14 @@
 #include <agrum/FMDP/simulation/abstractSimulator.h>
 //======================================================================
 #include <agrum/tools/variables/labelizedVariable.h>
+
 //======================================================================
 
 namespace gum {
 
 
-  enum TaxiSimulationLandmark : Idx {
-    HOME    = 0,
-    WORK    = 1,
-    THEATER = 2,
-    CLUB    = 3,
-    TAXI    = 4
-  };
+  enum TaxiSimulationLandmark : Idx { HOME = 0, WORK = 1, THEATER = 2, CLUB = 3, TAXI = 4 };
+
   enum TaxiSimulationLandmarkX : Idx {
     HOMEX    = 0,
     WORKX    = 0,
@@ -53,6 +49,7 @@ namespace gum {
     CLUBX    = 4,
     STATIONX = 2
   };
+
   enum TaxiSimulationLandmarkY : Idx {
     HOMEY    = 0,
     WORKY    = 4,
@@ -60,6 +57,7 @@ namespace gum {
     CLUBY    = 4,
     STATIONY = 1
   };
+
   enum TaxiSimulationAction : Idx {
     GoNorth = 1,
     GoEast  = 2,
@@ -124,6 +122,7 @@ namespace gum {
     SequenceIteratorSafe< const DiscreteVariable* > beginVariables() {
       return _taxiVars_.beginSafe();
     }
+
     SequenceIteratorSafe< const DiscreteVariable* > endVariables() { return _taxiVars_.endSafe(); }
 
     /// @}
@@ -137,8 +136,8 @@ namespace gum {
 
     /// Iteration over the variables of the simulated probleme
     SequenceIteratorSafe< Idx > beginActions() { return _taxiActions_.beginSafe(); }
-    SequenceIteratorSafe< Idx > endActions() { return _taxiActions_.endSafe(); }
 
+    SequenceIteratorSafe< Idx > endActions() { return _taxiActions_.endSafe(); }
 
     void perform(Idx);
 
@@ -157,6 +156,7 @@ namespace gum {
     /// @name Rewards
     // ===========================================================================
     /// @{
+
     public:
     double reward();
 

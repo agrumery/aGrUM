@@ -27,8 +27,9 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/graphicalModels/DAGmodel.h>
+
+#include <agrum/tools/core/math/math_utils.h>
 
 namespace gum {
   INLINE
@@ -63,6 +64,7 @@ namespace gum {
   }
 
   INLINE const NodeSet& DAGmodel::children(const NodeId id) const { return dag_.children(id); }
+
   INLINE const NodeSet& DAGmodel::children(const std::string& name) const {
     return dag_.children(idFromName(name));
   }
@@ -80,6 +82,7 @@ namespace gum {
   }
 
   INLINE bool DAGmodel::exists(NodeId node) const { return dag_.exists(node); }
+
   INLINE bool DAGmodel::exists(const std::string& name) const {
     try {
       return exists(idFromName(name));
@@ -102,12 +105,10 @@ namespace gum {
     return ancestors(idFromName(name));
   }
 
-
   INLINE UndiGraph
      DAGmodel::moralizedAncestralGraph(const std::vector< std::string >& nodenames) const {
     return moralizedAncestralGraph(nodeset(nodenames));
   }
-
 
   INLINE UndiGraph DAGmodel::moralizedAncestralGraph(const NodeSet& nodes) const {
     return dag().moralizedAncestralGraph(nodes);

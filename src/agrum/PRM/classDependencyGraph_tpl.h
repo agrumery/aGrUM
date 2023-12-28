@@ -74,7 +74,7 @@ namespace gum {
        NodeId                                                     node,
        HashTable< const PRMClassElement< GUM_SCALAR >*, NodeId >& map) {
       switch (c.get(node).elt_type()) {
-        case PRMClassElement< GUM_SCALAR >::prm_slotchain: {
+        case PRMClassElement< GUM_SCALAR >::prm_slotchain : {
           const PRMSlotChain< GUM_SCALAR >& sc
              = static_cast< const PRMSlotChain< GUM_SCALAR >& >(c.get(node));
 
@@ -85,15 +85,15 @@ namespace gum {
           break;
         }
 
-        case PRMClassElement< GUM_SCALAR >::prm_aggregate:
-        case PRMClassElement< GUM_SCALAR >::prm_attribute: {
+        case PRMClassElement< GUM_SCALAR >::prm_aggregate :
+        case PRMClassElement< GUM_SCALAR >::prm_attribute : {
           for (const auto chi: c.containerDag().children(node))
             _graph_.addArc(map[&(c.get(node))], map[&(c.get(chi))]);
 
           break;
         }
 
-        default: { /* do nothing */ break;
+        default : { /* do nothing */ break;
         }
       }
     }
@@ -146,8 +146,8 @@ namespace gum {
        const PRMClassElementContainer< GUM_SCALAR >* c,
        const PRMClassElement< GUM_SCALAR >&          elt) {
       switch (elt.elt_type()) {
-        case PRMClassElement< GUM_SCALAR >::prm_attribute:
-        case PRMClassElement< GUM_SCALAR >::prm_aggregate: {
+        case PRMClassElement< GUM_SCALAR >::prm_attribute :
+        case PRMClassElement< GUM_SCALAR >::prm_aggregate : {
           NodeId id = _graph_.addNode();
           _elt_map_.insert(id, new ClassDependencyGraph< GUM_SCALAR >::EltPair(c, &elt));
           _node_map_[c]->insert(&elt, id);
@@ -155,7 +155,7 @@ namespace gum {
           break;
         }
 
-        default: { /* do nothing */ break;
+        default : { /* do nothing */ break;
         }
       }
     }

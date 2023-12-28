@@ -446,18 +446,18 @@ namespace gum {
 
       for (const auto node: _bb_.requisiteNodes(i)) {
         switch (i->type().get(node).elt_type()) {
-          case PRMClassElement< GUM_SCALAR >::prm_aggregate:
-          case PRMClassElement< GUM_SCALAR >::prm_attribute: {
+          case PRMClassElement< GUM_SCALAR >::prm_aggregate :
+          case PRMClassElement< GUM_SCALAR >::prm_attribute : {
             attr_set->insert(node);
             break;
           }
 
-          case PRMClassElement< GUM_SCALAR >::prm_slotchain: {
+          case PRMClassElement< GUM_SCALAR >::prm_slotchain : {
             sc_set->insert(node);
             break;
           }
 
-          default: {
+          default : {
             GUM_ERROR(FatalError,
                       "There should not be elements other"
                       " than PRMAttribute<GUM_SCALAR> and SlotChain.");
@@ -476,7 +476,6 @@ namespace gum {
         _class_elim_order_(0), _bb_(*this) {
       GUM_CONSTRUCTOR(SVED);
     }
-
 
     template < typename GUM_SCALAR >
     INLINE void SVED< GUM_SCALAR >::_insertEvidence_(const PRMInstance< GUM_SCALAR >* i,

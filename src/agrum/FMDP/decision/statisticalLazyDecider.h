@@ -34,6 +34,7 @@
 // =========================================================================
 #include <agrum/FMDP/decision/lazyDecider.h>
 #include <agrum/FMDP/simulation/statesCounter.h>
+
 // =========================================================================
 
 namespace gum {
@@ -55,6 +56,7 @@ namespace gum {
     /// @name Constructor & destructor.
     // ###################################################################
     /// @{
+
     public:
     // ==========================================================================
     /// Constructor
@@ -78,6 +80,7 @@ namespace gum {
     /// @name Incremental methods
     // ###################################################################
     /// @{
+
     public:
     void checkState(const Instantiation& newState, Idx actionId = 0) {
       if (!_initialized_) {

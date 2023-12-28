@@ -24,9 +24,10 @@
  * @brief Implementation of the non pure virtual methods of class
  * JointTargetedInference.
  */
-#include <agrum/BN/inference/tools/jointTargetedInference.h>
-#include <agrum/tools/variables/rangeVariable.h>
 #include <agrum/tools/graphicalModels/algorithms/informationTheory.h>
+#include <agrum/tools/variables/rangeVariable.h>
+
+#include <agrum/BN/inference/tools/jointTargetedInference.h>
 
 namespace gum {
 
@@ -42,13 +43,11 @@ namespace gum {
     GUM_CONSTRUCTOR(JointTargetedInference);
   }
 
-
   // Destructor
   template < typename GUM_SCALAR >
   JointTargetedInference< GUM_SCALAR >::~JointTargetedInference() {
     GUM_DESTRUCTOR(JointTargetedInference);
   }
-
 
   // assigns a new BN to the inference engine
   template < typename GUM_SCALAR >
@@ -57,7 +56,6 @@ namespace gum {
     onAllJointTargetsErased_();
     _joint_targets_.clear();
   }
-
 
   // ##############################################################################
   // Targets
@@ -79,13 +77,11 @@ namespace gum {
     return _joint_targets_.contains(vars);
   }
 
-
   // Clear all previously defined single targets
   template < typename GUM_SCALAR >
   INLINE void JointTargetedInference< GUM_SCALAR >::eraseAllMarginalTargets() {
     MarginalTargetedInference< GUM_SCALAR >::eraseAllTargets();
   }
-
 
   // Clear all previously defined targets (single targets and sets of targets)
   template < typename GUM_SCALAR >
@@ -98,14 +94,12 @@ namespace gum {
     }
   }
 
-
   // Clear all previously defined targets (single and joint targets)
   template < typename GUM_SCALAR >
   INLINE void JointTargetedInference< GUM_SCALAR >::eraseAllTargets() {
     eraseAllMarginalTargets();
     eraseAllJointTargets();
   }
-
 
   // Add a set of nodes as a new target
   template < typename GUM_SCALAR >
@@ -144,7 +138,6 @@ namespace gum {
     this->setState_(GraphicalModelInference< GUM_SCALAR >::StateOfInference::OutdatedStructure);
   }
 
-
   // removes an existing set target
   template < typename GUM_SCALAR >
   void JointTargetedInference< GUM_SCALAR >::eraseJointTarget(const NodeSet& joint_target) {
@@ -172,7 +165,6 @@ namespace gum {
     }
   }
 
-
   /// returns the list of target sets
   template < typename GUM_SCALAR >
   INLINE const Set< NodeSet >& JointTargetedInference< GUM_SCALAR >::jointTargets() const noexcept {
@@ -184,7 +176,6 @@ namespace gum {
   INLINE Size JointTargetedInference< GUM_SCALAR >::nbrJointTargets() const noexcept {
     return _joint_targets_.size();
   }
-
 
   // ##############################################################################
   // Inference
@@ -221,7 +212,6 @@ namespace gum {
     if (found_exact_target || set.empty()) return jointPosterior_(nodes);
     else return jointPosterior_(nodes, set);
   }
-
 
   // Compute the posterior of a node
   template < typename GUM_SCALAR >
@@ -272,7 +262,6 @@ namespace gum {
     return it.mutualInformationXY();
   }
 
-
   /** Variation of information between X and Y
    * @see http://en.wikipedia.org/wiki/Variation_of_information
    *
@@ -285,7 +274,6 @@ namespace gum {
     InformationTheory it(*this, NodeSet{X}, NodeSet{Y});
     return it.variationOfInformationXY();
   }
-
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
@@ -336,7 +324,6 @@ namespace gum {
     const auto& bn = this->BN();
     return evidenceJointImpact(bn.nodeset(targets), bn.nodeset(evs));
   }
-
 
   template < typename GUM_SCALAR >
   GUM_SCALAR JointTargetedInference< GUM_SCALAR >::jointMutualInformation(const NodeSet& targets) {

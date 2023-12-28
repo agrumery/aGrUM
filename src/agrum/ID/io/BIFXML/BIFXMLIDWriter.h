@@ -39,8 +39,9 @@
 #include <sstream>
 #include <string>
 
-#include <agrum/ID/io/IDWriter.h>
 #include <agrum/agrum.h>
+
+#include <agrum/ID/io/IDWriter.h>
 
 namespace gum {
 

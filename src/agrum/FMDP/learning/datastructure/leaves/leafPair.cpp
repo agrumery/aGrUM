@@ -27,9 +27,11 @@
  * GONZALES(_at_AMU)
  */
 // =======================================================
-#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/FMDP/learning/core/chiSquare.h>
 #include <agrum/FMDP/learning/datastructure/leaves/leafPair.h>
+
+#include <agrum/tools/core/math/math_utils.h>
+
 // =======================================================
 
 

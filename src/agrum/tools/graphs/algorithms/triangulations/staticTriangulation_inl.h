@@ -39,7 +39,6 @@ namespace gum {
     return _elim_order_;
   }
 
-
   /** @brief returns the index of a given node in the elimination order
    * (0 = first node eliminated) */
   INLINE
@@ -48,7 +47,6 @@ namespace gum {
 
     return _reverse_elim_order_[id];
   }
-
 
   /** @brief returns the number of a given node in the elimination order
    * (0 = first node eliminated) */
@@ -59,7 +57,6 @@ namespace gum {
     return _reverse_elim_order_;
   }
 
-
   /// returns the elimination tree of a compatible ordering
   INLINE
   const CliqueGraph& StaticTriangulation::eliminationTree() {
@@ -67,7 +64,6 @@ namespace gum {
 
     return _elim_tree_;
   }
-
 
   /// returns a compatible junction tree
   INLINE
@@ -81,7 +77,6 @@ namespace gum {
     return *_junction_tree_;
   }
 
-
   /// returns a junction tree of maximal prime subgraphs
   INLINE
   const CliqueGraph& StaticTriangulation::maxPrimeSubgraphTree() {
@@ -89,7 +84,6 @@ namespace gum {
 
     return _max_prime_junction_tree_;
   }
-
 
   /** @brief returns the Id of the maximal prime subgraph created by the
    * elimination of a given node during the triangulation process */
@@ -100,14 +94,12 @@ namespace gum {
     return _node_2_max_prime_clique_[id];
   }
 
-
   /** @brief returns the Id of the clique created by the
    * elimination of a given node during the triangulation process */
   INLINE
   NodeId StaticTriangulation::createdJunctionTreeClique(const NodeId id) {
     return junction_tree_strategy_->createdClique(id);
   }
-
 
   /** @brief returns the Ids of the cliques of the junction tree created by the
    * elimination of the nodes */
@@ -116,7 +108,6 @@ namespace gum {
     return junction_tree_strategy_->createdCliques();
   }
 
-
   /// sets/unset the fill-ins storage in the standard triangulation procedure
   INLINE
   void StaticTriangulation::setFillIns(bool b) {
@@ -124,23 +115,19 @@ namespace gum {
     elimination_sequence_strategy_->askFillIns(b);
   }
 
-
   /// returns the graph to be triangulated
   INLINE
   const UndiGraph* StaticTriangulation::originalGraph() const { return _original_graph_; }
-
 
   /// returns the elimination sequence strategy used by the triangulation
   INLINE EliminationSequenceStrategy& StaticTriangulation::eliminationSequenceStrategy() const {
     return *elimination_sequence_strategy_;
   }
 
-
   /// returns the junction tree strategy used by the triangulation
   INLINE JunctionTreeStrategy& StaticTriangulation::junctionTreeStrategy() const {
     return *junction_tree_strategy_;
   }
-
 
   /// indicates wether minimality is required
   INLINE bool StaticTriangulation::isMinimalityRequired() const { return _minimality_required_; }

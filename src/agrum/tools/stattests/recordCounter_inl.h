@@ -31,18 +31,15 @@ namespace gum {
       return _min_nb_rows_per_thread_;
     }
 
-
     /// returns the mapping from ids to column positions in the database
     INLINE const Bijection< NodeId, std::size_t >& RecordCounter::nodeId2Columns() const {
       return _nodeId2columns_;
     }
 
-
     /// returns the database on which we perform the counts
     INLINE const DatabaseTable& RecordCounter::database() const {
       return _parsers_[0].data.database();
     }
-
 
     /// returns the counts for a given set of nodes
     INLINE const std::vector< double >& RecordCounter::counts(const IdCondSet& ids,
@@ -66,13 +63,11 @@ namespace gum {
       }
     }
 
-
     /// returns the current ranges
     INLINE const std::vector< std::pair< std::size_t, std::size_t > >&
                  RecordCounter::ranges() const {
       return _ranges_;
     }
-
 
     /// sets the number max of threads that can be used
     INLINE void RecordCounter::setNumberOfThreads(Size nb) {

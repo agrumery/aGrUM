@@ -34,4 +34,4 @@
 #    include <agrum/tools/database/DBRowGenerator_inl.h>
 #  endif /* GUM_NO_INLINE */
 
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+#endif   /* DOXYGEN_SHOULD_SKIP_THIS */

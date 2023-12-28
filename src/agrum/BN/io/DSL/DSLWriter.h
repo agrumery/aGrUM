@@ -27,8 +27,9 @@
 #include <sstream>
 #include <string>
 
-#include <agrum/BN/io/BNWriter.h>
 #include <agrum/agrum.h>
+
+#include <agrum/BN/io/BNWriter.h>
 
 namespace gum {
 
@@ -68,6 +69,7 @@ namespace gum {
     DSLWriter& operator=(DSLWriter&&) noexcept = default;
 
     /// @}
+
     protected:
     /**
      * Writes a Bayesian network in the output stream using the DSL format.

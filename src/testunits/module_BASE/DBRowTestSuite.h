@@ -19,12 +19,13 @@
  */
 
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
 #include <iostream>
 
-#include <agrum/tools/database/DBRow.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
+
 #include <agrum/tools/database/DBCell.h>
+#include <agrum/tools/database/DBRow.h>
 
 namespace gum_tests {
 
@@ -119,7 +120,6 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(row2.size(), (gum::Size)10)
       }
     }
-
 
     GUM_ACTIVE_TEST(_row2) {
       {

@@ -32,7 +32,6 @@
 
 #include <agrum/PRM/utils_prm.h>
 
-
 namespace gum {
   namespace prm {
 

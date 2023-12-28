@@ -18,8 +18,9 @@
  *
  */
 
-#include <agrum/CN/inference/CNMonteCarloSampling.h>
 #include <agrum/tools/core/exceptions.h>
+
+#include <agrum/CN/inference/CNMonteCarloSampling.h>
 
 namespace gum::credal {
 
@@ -90,7 +91,7 @@ namespace gum::credal {
 
         this->updateApproximationScheme(int(psize));
 
-        this->updateMarginals_();   // fusion threads + update margi
+        this->updateMarginals_();        // fusion threads + update margi
 
         eps = this->computeEpsilon_();   // also updates oldMargi
 
@@ -149,7 +150,6 @@ namespace gum::credal {
 
     this->initApproximationScheme();
   }
-
 
   template < typename GUM_SCALAR, class BNInferenceEngine >
   void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_mcThreadDataCopy_() {

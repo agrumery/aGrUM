@@ -31,7 +31,6 @@
 
 #include <agrum/agrum.h>
 
-
 #include <agrum/PRM/gspan/DFSCode.h>
 #include <agrum/PRM/gspan/interfaceGraph.h>
 
@@ -250,4 +249,4 @@ namespace gum {
 #  include <agrum/PRM/gspan/pattern_inl.h>
 #endif   // GUM_NO_INLINE
 
-#endif /* GUM_PATTERN_H */
+#endif   /* GUM_PATTERN_H */

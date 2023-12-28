@@ -23,10 +23,11 @@
 #include <iostream>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
+
+#include <agrum/tools/graphs/algorithms/DAGCycleDetector.h>
 
 #include <agrum/tools/core/utils_random.h>
-#include <agrum/tools/graphs/algorithms/DAGCycleDetector.h>
 
 namespace gum_tests {
 
@@ -67,7 +68,7 @@ namespace gum_tests {
         gum::Idx chgt_type = gum::randomValue(2);
 
         switch (chgt_type) {
-          case 0: {   // deletions
+          case 0 : {   // deletions
             float nb_arcs = (float)gg.sizeArcs();
             if (!nb_arcs) {
               ++length;
@@ -85,7 +86,7 @@ namespace gum_tests {
             }
           } break;
 
-          case 1: {   // additions
+          case 1 : {   // additions
             gum::NodeId node1, node2;
             while (true) {
               node1 = gum::randomValue(g.size());
@@ -98,7 +99,7 @@ namespace gum_tests {
             }
           } break;
 
-          case 2: {   // reversal
+          case 2 : {   // reversal
             float nb_arcs = float(gg.sizeArcs());
             if (!nb_arcs) {
               ++length;
@@ -126,17 +127,17 @@ namespace gum_tests {
         gum::Arc arc(modif.tail(), modif.head());
 
         switch (modif.type()) {
-          case gum::DAGCycleDetector::ChangeType::ARC_DELETION:
+          case gum::DAGCycleDetector::ChangeType::ARC_DELETION :
             if (deletions.exists(arc)) ++deletions[arc];
             else deletions.insert(arc, 1);
             break;
 
-          case gum::DAGCycleDetector::ChangeType::ARC_ADDITION:
+          case gum::DAGCycleDetector::ChangeType::ARC_ADDITION :
             if (additions.exists(arc)) ++additions[arc];
             else additions.insert(arc, 1);
             break;
 
-          case gum::DAGCycleDetector::ChangeType::ARC_REVERSAL:
+          case gum::DAGCycleDetector::ChangeType::ARC_REVERSAL :
             if (deletions.exists(arc)) ++deletions[arc];
             else deletions.insert(arc, 1);
             arc = gum::Arc(modif.head(), modif.tail());
@@ -144,7 +145,7 @@ namespace gum_tests {
             else additions.insert(arc, 1);
             break;
 
-          default: GUM_ERROR(gum::OperationNotAllowed, "undefined change type")
+          default : GUM_ERROR(gum::OperationNotAllowed, "undefined change type")
         }
       }
 
@@ -270,15 +271,15 @@ namespace gum_tests {
             gum::DiGraph gg = g;
             for (auto& chgt: del_add_changes) {
               switch (chgt.type()) {
-                case gum::DAGCycleDetector::ChangeType::ARC_DELETION:
+                case gum::DAGCycleDetector::ChangeType::ARC_DELETION :
                   gg.eraseArc(gum::Arc(chgt.tail(), chgt.head()));
                   break;
 
-                case gum::DAGCycleDetector::ChangeType::ARC_ADDITION:
+                case gum::DAGCycleDetector::ChangeType::ARC_ADDITION :
                   gg.addArc(chgt.tail(), chgt.head());
                   break;
 
-                default: GUM_ERROR(gum::NotFound, "del_add_changes")
+                default : GUM_ERROR(gum::NotFound, "del_add_changes")
               }
             }
 
@@ -320,23 +321,23 @@ namespace gum_tests {
 
           for (auto& chgt: changes) {
             switch (chgt.type()) {
-              case gum::DAGCycleDetector::ChangeType::ARC_DELETION:
+              case gum::DAGCycleDetector::ChangeType::ARC_DELETION :
                 g.eraseArc(gum::Arc(chgt.tail(), chgt.head()));
                 detector1.eraseArc(chgt.tail(), chgt.head());
                 break;
 
-              case gum::DAGCycleDetector::ChangeType::ARC_ADDITION:
+              case gum::DAGCycleDetector::ChangeType::ARC_ADDITION :
                 g.addArc(chgt.tail(), chgt.head());
                 detector1.addArc(chgt.tail(), chgt.head());
                 break;
 
-              case gum::DAGCycleDetector::ChangeType::ARC_REVERSAL:
+              case gum::DAGCycleDetector::ChangeType::ARC_REVERSAL :
                 g.eraseArc(gum::Arc(chgt.tail(), chgt.head()));
                 g.addArc(chgt.head(), chgt.tail());
                 detector1.reverseArc(chgt.tail(), chgt.head());
                 break;
 
-              default: GUM_ERROR(gum::NotFound, "del_add_changes")
+              default : GUM_ERROR(gum::NotFound, "del_add_changes")
             }
             detector2.setDAG(g);
           }
@@ -364,22 +365,22 @@ namespace gum_tests {
 
           for (auto& chgt: changes) {
             switch (chgt.type()) {
-              case gum::DAGCycleDetector::ChangeType::ARC_DELETION:
+              case gum::DAGCycleDetector::ChangeType::ARC_DELETION :
                 TS_ASSERT_EQUALS(detector1.hasCycleFromDeletion(chgt.tail(), chgt.head()),
                                  detector2.hasCycleFromModifications(changes));
                 break;
 
-              case gum::DAGCycleDetector::ChangeType::ARC_ADDITION:
+              case gum::DAGCycleDetector::ChangeType::ARC_ADDITION :
                 TS_ASSERT_EQUALS(detector1.hasCycleFromAddition(chgt.tail(), chgt.head()),
                                  detector2.hasCycleFromModifications(changes));
                 break;
 
-              case gum::DAGCycleDetector::ChangeType::ARC_REVERSAL:
+              case gum::DAGCycleDetector::ChangeType::ARC_REVERSAL :
                 TS_ASSERT_EQUALS(detector1.hasCycleFromReversal(chgt.tail(), chgt.head()),
                                  detector2.hasCycleFromModifications(changes));
                 break;
 
-              default: GUM_ERROR(gum::NotFound, "del_add_changes")
+              default : GUM_ERROR(gum::NotFound, "del_add_changes")
             }
           }
         }

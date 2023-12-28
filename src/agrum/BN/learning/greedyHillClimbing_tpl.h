@@ -62,7 +62,7 @@ namespace gum {
 
             // perform the change
             switch (change.type()) {
-              case GraphChangeType::ARC_ADDITION:
+              case GraphChangeType::ARC_ADDITION :
                 if (!impacted_queues[change.node2()] && selector.isChangeValid(change)) {
                   delta_score += selector.bestScore(i);
                   dag.addArc(change.node1(), change.node2());
@@ -73,7 +73,7 @@ namespace gum {
 
                 break;
 
-              case GraphChangeType::ARC_DELETION:
+              case GraphChangeType::ARC_DELETION :
                 if (!impacted_queues[change.node2()] && selector.isChangeValid(change)) {
                   delta_score += selector.bestScore(i);
                   dag.eraseArc(Arc(change.node1(), change.node2()));
@@ -84,7 +84,7 @@ namespace gum {
 
                 break;
 
-              case GraphChangeType::ARC_REVERSAL:
+              case GraphChangeType::ARC_REVERSAL :
                 if ((!impacted_queues[change.node1()]) && (!impacted_queues[change.node2()])
                     && selector.isChangeValid(change)) {
                   delta_score += selector.bestScore(i);
@@ -98,7 +98,7 @@ namespace gum {
 
                 break;
 
-              default:
+              default :
                 GUM_ERROR(OperationNotAllowed,
                           "edge modifications are not supported by local search")
             }

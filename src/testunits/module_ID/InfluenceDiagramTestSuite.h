@@ -24,15 +24,14 @@
 #include <vector>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
-#include <agrum/ID/generator/influenceDiagramGenerator.h>
-#include <agrum/ID/influenceDiagram.h>
 #include <agrum/tools/graphs/graphElements.h>
 #include <agrum/tools/variables/discreteVariable.h>
 #include <agrum/tools/variables/labelizedVariable.h>
 
-#include <gumtest/testsuite_utils.h>
+#include <agrum/ID/generator/influenceDiagramGenerator.h>
+#include <agrum/ID/influenceDiagram.h>
 
 // The graph used for the tests:
 //           D1
@@ -96,8 +95,8 @@ namespace gum_tests {
         id.cpt(idList[7]).populate({0.4f, 0.6f, 0.5f, 0.5f});                           // C4
         id.cpt(idList[8]).populate({0.4f, 0.6f, 0.8f, 0.2f, 0.4f, 0.6f, 0.3f, 0.7f});   // C5
 
-        id.utility(idList[9]).populate({42.0f, 69.0f, 666.0f, 84.0f});     // U1
-        id.utility(idList[10]).populate({42.0f, -69.0f, 666.0f, 84.0f});   // U2
+        id.utility(idList[9]).populate({42.0f, 69.0f, 666.0f, 84.0f});                  // U1
+        id.utility(idList[10]).populate({42.0f, -69.0f, 666.0f, 84.0f});                // U2
       } catch (const gum::Exception& e) {
         std::cerr << std::endl << e.errorContent() << std::endl;
         throw;
@@ -814,7 +813,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(infdiag.decisionNodeSize(), (gum::Size)1)
       TS_ASSERT_EQUALS(infdiag.sizeArcs(), (gum::Size)4)
     }
-
 
     GUM_ACTIVE_TEST(FastPrototypeVarType) {
       auto infdiag = gum::InfluenceDiagram< float >::fastPrototype(

@@ -51,14 +51,12 @@ namespace gum {
       GUM_CONSTRUCTOR(DBTranslator4LabelizedVariable);
     }
 
-
     /// default constructor without missing symbols
     DBTranslator4LabelizedVariable::DBTranslator4LabelizedVariable(std::size_t max_dico_entries) :
         DBTranslator(DBTranslatedValueType::DISCRETE, true, true, max_dico_entries),
         _variable_("var", "", 0) {
       GUM_CONSTRUCTOR(DBTranslator4LabelizedVariable);
     }
-
 
     /// default constructor with a labelized variable as translator
     DBTranslator4LabelizedVariable::DBTranslator4LabelizedVariable(
@@ -92,7 +90,6 @@ namespace gum {
       GUM_CONSTRUCTOR(DBTranslator4LabelizedVariable);
     }
 
-
     /// default constructor with a labelized variable as translator
     DBTranslator4LabelizedVariable::DBTranslator4LabelizedVariable(const LabelizedVariable& var,
                                                                    const bool  editable_dictionary,
@@ -115,12 +112,10 @@ namespace gum {
       GUM_CONSTRUCTOR(DBTranslator4LabelizedVariable);
     }
 
-
     /// virtual copy constructor
     DBTranslator4LabelizedVariable* DBTranslator4LabelizedVariable::clone() const {
       return new DBTranslator4LabelizedVariable(*this);
     }
-
 
     /// copy operator
     DBTranslator4LabelizedVariable&
@@ -133,7 +128,6 @@ namespace gum {
       return *this;
     }
 
-
     /// move operator
     DBTranslator4LabelizedVariable&
        DBTranslator4LabelizedVariable::operator=(DBTranslator4LabelizedVariable&& from) {
@@ -144,7 +138,6 @@ namespace gum {
 
       return *this;
     }
-
 
     /// returns the translation of a string, as found in the current dictionary
     DBTranslatedValue DBTranslator4LabelizedVariable::translate(const std::string& str) {
@@ -176,7 +169,6 @@ namespace gum {
       }
     }
 
-
     /// indicates whether the translations should be reordered
     bool DBTranslator4LabelizedVariable::needsReordering() const {
       // if the variable contains only numbers, they should be increasing
@@ -205,7 +197,6 @@ namespace gum {
 
       return false;
     }
-
 
     /// returns a mapping to reorder the current dictionary and updates it
     HashTable< std::size_t, std::size_t > DBTranslator4LabelizedVariable::reorder() {

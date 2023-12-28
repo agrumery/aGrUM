@@ -38,7 +38,6 @@ namespace gum {
     GUM_CONSTRUCTOR(ScheduledInference);
   }
 
-
   // copy constructor
   ScheduledInference::ScheduledInference(const ScheduledInference& from) :
       ThreadNumberManager(from), _scheduler_parallel_(from._scheduler_parallel_),
@@ -47,7 +46,6 @@ namespace gum {
     GUM_CONS_CPY(ScheduledInference);
   }
 
-
   // move constructor
   ScheduledInference::ScheduledInference(ScheduledInference&& from) :
       ThreadNumberManager(std::move(from)), _scheduler_parallel_(from._scheduler_parallel_),
@@ -55,7 +53,6 @@ namespace gum {
     // for debugging purposes
     GUM_CONS_MOV(ScheduledInference);
   }
-
 
   // copy operator
   ScheduledInference& ScheduledInference::operator=(const ScheduledInference& from) {
@@ -83,17 +80,14 @@ namespace gum {
     return *this;
   }
 
-
   // virtual copy constructor
   ScheduledInference* ScheduledInference::clone() const { return new ScheduledInference(*this); }
-
 
   // destructor
   ScheduledInference::~ScheduledInference() {
     // for debugging purposes
     GUM_DESTRUCTOR(ScheduledInference);
   }
-
 
   // sets a new scheduler
   /*

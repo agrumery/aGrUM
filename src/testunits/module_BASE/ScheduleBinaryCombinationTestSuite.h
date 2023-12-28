@@ -20,14 +20,15 @@
 
 
 #include <sstream>
-#include "cxxtest/TestSuite.h"
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/graphicalModels/inference/scheduler/scheduleBinaryCombination.h>
 #include <agrum/tools/multidim/potential.h>
 #include <agrum/tools/variables/labelizedVariable.h>
+
+#include "cxxtest/TestSuite.h"
 
 namespace gum_tests {
 

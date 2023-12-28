@@ -34,10 +34,12 @@
 #include <agrum/agrum.h>
 // =========================================================================
 // =========================================================================
-#include <agrum/FMDP/decision/E_GreedyDecider.h>
 #include <agrum/FMDP/decision/randomDecider.h>
 #include <agrum/FMDP/decision/statisticalLazyDecider.h>
 #include <agrum/FMDP/planning/adaptiveRMaxPlaner.h>
+
+#include <agrum/FMDP/decision/E_GreedyDecider.h>
+
 // =========================================================================
 
 namespace gum {
@@ -57,6 +59,7 @@ namespace gum {
     /// @name
     // ###################################################################
     /// @
+
     public:
     // ==========================================================================
     ///
@@ -178,7 +181,6 @@ namespace gum {
       return new SDYNA(ls, ps, ds, observationPhaseLenght, nbValueIterationStep, actionReward);
     }
 
-
     /// @}
 
     // ###################################################################
@@ -193,6 +195,7 @@ namespace gum {
      * @return an instance of SDyna architecture
      */
     // ==========================================================================
+
     private:
     SDYNA(ILearningStrategy*           learner,
           IPlanningStrategy< double >* planer,
@@ -205,6 +208,7 @@ namespace gum {
     // ==========================================================================
     /// Destructor
     // ==========================================================================
+
     public:
     ~SDYNA();
 
@@ -215,6 +219,7 @@ namespace gum {
     /// @name Problem specification methods
     // ###################################################################
     /// @{
+
     public:
     // ==========================================================================
     /**
@@ -247,6 +252,7 @@ namespace gum {
     /// @name Initialization
     // ###################################################################
     /// @{
+
     public:
     // ==========================================================================
     /**
@@ -271,6 +277,7 @@ namespace gum {
     /// @name Incremental methods
     // ###################################################################
     /// @{
+
     public:
     // ==========================================================================
     /**
@@ -351,13 +358,13 @@ namespace gum {
 
     std::string optimalPolicy2String() { return _planer_->optimalPolicy2String(); }
 
-
     // ###################################################################
     /// @name Size methods
     /// @brief just to get the size of the different data structure for
     /// performance evaluation purposes only
     // ###################################################################
     /// @{
+
     public:
     // ==========================================================================
     /**

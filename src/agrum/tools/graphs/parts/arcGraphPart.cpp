@@ -168,7 +168,6 @@ namespace gum {
     return res;
   }
 
-
   NodeSet ArcGraphPart::ancestors(NodeId id) const {
     NodeSet res;
     NodeSet tmp;
@@ -185,7 +184,6 @@ namespace gum {
     }
     return res;
   }
-
 
   std::vector< NodeId > ArcGraphPart::directedPath(NodeId n1, NodeId n2) const {
     // not recursive version => use a FIFO for simulating the recursion

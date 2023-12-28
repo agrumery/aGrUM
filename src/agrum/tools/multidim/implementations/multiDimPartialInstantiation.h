@@ -28,9 +28,10 @@
 #ifndef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_H
 #define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_H
 
+#include <utility>
+
 #include <agrum/tools/multidim/implementations/multiDimDecorator.h>
 #include <agrum/tools/multidim/utils/partialInstantiationRegister4MultiDim.h>
-#include <utility>
 
 namespace gum {
 

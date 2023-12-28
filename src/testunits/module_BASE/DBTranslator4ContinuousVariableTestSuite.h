@@ -19,10 +19,11 @@
  */
 
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
 #include <iostream>
 #include <string>
+
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/database/DBTranslator4ContinuousVariable.h>
 
@@ -126,7 +127,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(translator5.needsReordering(), false)
       TS_ASSERT(translator5.reorder().empty())
     }
-
 
     GUM_ACTIVE_TEST(_trans2) {
       {

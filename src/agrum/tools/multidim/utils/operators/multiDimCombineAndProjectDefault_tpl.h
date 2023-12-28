@@ -107,7 +107,6 @@ namespace gum {
     return result;
   }
 
-
   // changes the function used for combining two TABLES
   template < class TABLE >
   INLINE void MultiDimCombineAndProjectDefault< TABLE >::setCombinationFunction(
@@ -242,7 +241,6 @@ namespace gum {
     return memoryUsage(var_set, del_vars);
   }
 
-
   /// returns the set of operations to perform to make all the combinations
   /// and projections
   template < class TABLE >
@@ -257,7 +255,6 @@ namespace gum {
     }
     return operations(tables_set, del_vars, is_result_persistent);
   }
-
 
   /// returns the set of operations to perform to make all the combinations
   /// and projections
@@ -516,7 +513,6 @@ namespace gum {
 
     return {ops, tables};
   }
-
 
   /// free scheduing memory
   template < class TABLE >

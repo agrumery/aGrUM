@@ -35,6 +35,7 @@
 // ============================================================================
 #include <agrum/tools/core/hashTable.h>
 #include <agrum/tools/core/smallobjectallocator/fixedAllocator.h>
+
 // ============================================================================
 
 
@@ -73,6 +74,7 @@ namespace gum {
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
+
     private:
     // ============================================================================
     /**
@@ -130,6 +132,7 @@ namespace gum {
     }
 
     Idx nbAlloc() { return nbAllocation; }
+
     Idx nbDealloc() { return nbDeallocation; }
 
     private:

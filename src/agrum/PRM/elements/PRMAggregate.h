@@ -32,10 +32,8 @@
 #include <memory>
 #include <string>
 
-
-#include <agrum/PRM/elements/PRMType.h>
 #include <agrum/PRM/elements/PRMScalarAttribute.h>
-
+#include <agrum/PRM/elements/PRMType.h>
 
 namespace gum {
   namespace prm {
@@ -236,6 +234,7 @@ namespace gum {
 
       virtual PRMAttribute< GUM_SCALAR >* getCastDescendant() const;
       /// @}
+
       private:
       // ========================================================================
       /// @name Private methods.

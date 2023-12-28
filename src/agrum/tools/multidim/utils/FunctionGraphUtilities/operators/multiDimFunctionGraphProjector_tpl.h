@@ -51,7 +51,6 @@ namespace gum {
     _rd_ = MultiDimFunctionGraph< GUM_SCALAR >::getReducedAndOrderedInstance();
   }
 
-
   // DESTRUCTOR
   template < typename GUM_SCALAR,
              template < typename >
@@ -62,7 +61,6 @@ namespace gum {
      ~MultiDimFunctionGraphProjector() {
     GUM_DESTRUCTOR(MultiDimFunctionGraphProjector);
   }
-
 
   // This function is the main function. To be call every time an Projection
   // between the two given Function Graphs is required

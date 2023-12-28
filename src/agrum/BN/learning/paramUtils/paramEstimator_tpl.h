@@ -83,7 +83,6 @@ namespace gum {
       }
     }
 
-
     /// sets the CPT's parameters corresponding to a given nodeset
     template < typename GUM_SCALAR >
     INLINE typename std::enable_if< !std::is_same< GUM_SCALAR, double >::value, void >::type
@@ -103,7 +102,6 @@ namespace gum {
       pot.fillWith(xparams);
     }
 
-
     /// sets the CPT's parameters corresponding to a given nodeset
     template < typename GUM_SCALAR >
     INLINE typename std::enable_if< std::is_same< GUM_SCALAR, double >::value, void >::type
@@ -116,7 +114,6 @@ namespace gum {
       pot.fillWith(params);
     }
 
-
     /// sets the CPT's parameters corresponding to a given nodeset
     template < typename GUM_SCALAR >
     INLINE void ParamEstimator::setParameters(const NodeId                 target_node,
@@ -124,7 +121,6 @@ namespace gum {
                                               Potential< GUM_SCALAR >&     pot) {
       _setParameters_(target_node, conditioning_nodes, pot);
     }
-
 
     /// assign a new Bayes net to all the counter's generators depending on a BN
     template < typename GUM_SCALAR >

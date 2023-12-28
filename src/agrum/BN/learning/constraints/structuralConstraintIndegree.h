@@ -31,6 +31,7 @@
 #include <limits>
 
 #include <agrum/agrum.h>
+
 #include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>
 
 namespace gum {
@@ -191,7 +192,8 @@ namespace gum {
       bool checkModificationAlone(const GraphChange& change) const;
 
       Size maxIndegree() const { return _Indegree_max_indegree_; };
-        /// @}
+
+      /// @}
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // include the set of methods that enable the structural constraint to

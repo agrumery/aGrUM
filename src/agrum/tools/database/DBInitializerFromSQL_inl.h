@@ -34,7 +34,6 @@
 
 #    include <agrum/tools/database/DBInitializerFromSQL.h>
 
-
 namespace gum {
 
   namespace learning {
@@ -42,12 +41,10 @@ namespace gum {
     /// returns the names of the variables
     INLINE std::vector< std::string > DBInitializerFromSQL::variableNames_() { return _var_names_; }
 
-
     /// returns the content of the current row using strings
     INLINE const std::vector< std::string >& DBInitializerFromSQL::currentStringRow_() {
       return _parser_.current();
     }
-
 
     /// indicates whether there is a next row to read (and point on it)
     INLINE bool DBInitializerFromSQL::nextRow_() { return _parser_.next(); }
@@ -59,4 +56,4 @@ namespace gum {
 
 #  endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
-#endif /* _ODBC */
+#endif   /* _ODBC */

@@ -67,10 +67,12 @@
 #ifndef GUM_BN_DATABASE_GENERATOR
 #define GUM_BN_DATABASE_GENERATOR
 
-#include <agrum/BN/BayesNet.h>
+#include <fstream>
+
 #include <agrum/tools/core/progressNotification.h>
 #include <agrum/tools/database/databaseTable.h>
-#include <fstream>
+
+#include <agrum/BN/BayesNet.h>
 
 namespace gum {
 
@@ -160,6 +162,7 @@ namespace gum {
 
       /// return const ref to the Bayes Net
       const BayesNet< GUM_SCALAR >& bn(void) { return _bn_; };
+
       /// @}
 
       private:

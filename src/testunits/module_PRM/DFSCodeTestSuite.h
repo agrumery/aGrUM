@@ -21,10 +21,11 @@
 
 #include <iostream>
 
-#include "testsuite_utils.h"
 #include <gumtest/AgrumTestSuite.h>
 
 #include <agrum/PRM/gspan/DFSCode.h>
+
+#include "utils.h"
 
 /*
  * Test of gum::prm::gspan::DFSCode and gum::prm::gspan::EdgeCode.

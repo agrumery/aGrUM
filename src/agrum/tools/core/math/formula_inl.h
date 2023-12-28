@@ -31,21 +31,21 @@ namespace gum {
   INLINE
   bool FormulaPart::isLeftAssociative() const {
     switch (character) {
-      case '+':
-      case '-':
-      case '*':
-      case '/': {
+      case '+' :
+      case '-' :
+      case '*' :
+      case '/' : {
         return true;
       }
 
-      case '_': {
+      case '_' : {
         return false;
       }
-      case '^': {
+      case '^' : {
         return false;
       }
 
-      default: {
+      default : {
         GUM_ERROR(OperationNotAllowed, "A - not an operator")
       }
     }
@@ -54,10 +54,10 @@ namespace gum {
   INLINE
   bool FormulaPart::isRightAssociative() const {
     switch (character) {
-      case '_': {
+      case '_' : {
         return false;
       }
-      default: {
+      default : {
         return !isLeftAssociative();
       }
     }
@@ -66,25 +66,25 @@ namespace gum {
   INLINE
   int FormulaPart::precedence() const {
     switch (character) {
-      case '+':
-      case '-': {
+      case '+' :
+      case '-' : {
         return 2;
       }
 
-      case '*':
-      case '/': {
+      case '*' :
+      case '/' : {
         return 3;
       }
 
-      case '^': {
+      case '^' : {
         return 4;
       }
 
-      case '_': {
+      case '_' : {
         return 5;
       }
 
-      default: {
+      default : {
         GUM_ERROR(OperationNotAllowed, "B - not an operator")
       }
     }
@@ -93,15 +93,15 @@ namespace gum {
   INLINE
   size_t FormulaPart::argc() const {
     switch (type) {
-      case OPERATOR: {
+      case OPERATOR : {
         return _operator_argc_();
       }
 
-      case FUNCTION: {
+      case FUNCTION : {
         return _function_argc_();
       }
 
-      default: {
+      default : {
         GUM_ERROR(OperationNotAllowed, "expecting a function or an operator")
       }
     }
@@ -110,18 +110,18 @@ namespace gum {
   INLINE
   size_t FormulaPart::_operator_argc_() const {
     switch (character) {
-      case '_': {
+      case '_' : {
         return (size_t)1;
       }
-      case '+':
-      case '-':
-      case '*':
-      case '/':
-      case '^': {
+      case '+' :
+      case '-' :
+      case '*' :
+      case '/' :
+      case '^' : {
         return (size_t)2;
       }
 
-      default: {
+      default : {
         GUM_ERROR(OperationNotAllowed, "C - not an operator")
       }
     }
@@ -130,23 +130,23 @@ namespace gum {
   INLINE
   size_t FormulaPart::_function_argc_() const {
     switch (function) {
-      case FormulaPart::token_function::exp: {
+      case FormulaPart::token_function::exp : {
         return 1;
       }
-      case FormulaPart::token_function::log: {
+      case FormulaPart::token_function::log : {
         return 1;
       }
-      case FormulaPart::token_function::ln: {
+      case FormulaPart::token_function::ln : {
         return 1;
       }
-      case FormulaPart::token_function::pow: {
+      case FormulaPart::token_function::pow : {
         return 2;
       }
-      case FormulaPart::token_function::sqrt: {
+      case FormulaPart::token_function::sqrt : {
         return 1;
       }
       // case FormulaPart::token_function::nil: { return "nil"; }
-      default: {
+      default : {
         GUM_ERROR(OperationNotAllowed, "unknown function")
       }
     }
@@ -156,31 +156,31 @@ namespace gum {
   INLINE
   double FormulaPart::_operator_eval_(const std::vector< FormulaPart >& args) const {
     switch (character) {
-      case '+': {
+      case '+' : {
         return args[1].number + args[0].number;
       }
 
-      case '-': {
+      case '-' : {
         return args[1].number - args[0].number;
       }
 
-      case '*': {
+      case '*' : {
         return args[1].number * args[0].number;
       }
 
-      case '/': {
+      case '/' : {
         return args[1].number / args[0].number;
       }
 
-      case '^': {
+      case '^' : {
         return std::pow(args[1].number, args[0].number);
       }
 
-      case '_': {
+      case '_' : {
         return 0 - args[0].number;
       }
 
-      default: {
+      default : {
         GUM_ERROR(OperationNotAllowed, "D - not an operator")
       }
     }
@@ -190,23 +190,23 @@ namespace gum {
   INLINE
   double FormulaPart::_function_eval_(const std::vector< FormulaPart >& args) const {
     switch (function) {
-      case FormulaPart::token_function::exp: {
+      case FormulaPart::token_function::exp : {
         return std::exp(args[0].number);
       }
-      case FormulaPart::token_function::log: {
+      case FormulaPart::token_function::log : {
         return std::log(args[0].number);
       }
-      case FormulaPart::token_function::ln: {
+      case FormulaPart::token_function::ln : {
         return std::log2(args[0].number);
       }
-      case FormulaPart::token_function::pow: {
+      case FormulaPart::token_function::pow : {
         return std::pow(args[1].number, args[0].number);
       }
-      case FormulaPart::token_function::sqrt: {
+      case FormulaPart::token_function::sqrt : {
         return std::sqrt(args[0].number);
       }
       // case FormulaPart::token_function::nil: { return "nil"; }
-      default: {
+      default : {
         GUM_ERROR(OperationNotAllowed, "unknown function")
       }
     }
@@ -216,15 +216,15 @@ namespace gum {
   INLINE
   FormulaPart FormulaPart::eval(const std::vector< FormulaPart >& args) const {
     switch (type) {
-      case OPERATOR: {
+      case OPERATOR : {
         return FormulaPart(token_type::NUMBER, _operator_eval_(args));
       }
 
-      case FUNCTION: {
+      case FUNCTION : {
         return FormulaPart(token_type::NUMBER, _function_eval_(args));
       }
 
-      default: {
+      default : {
         GUM_ERROR(OperationNotAllowed, "cannot evaluate expression")
       }
     }
@@ -274,17 +274,17 @@ namespace gum {
   INLINE
   bool Formula::_isUnaryOperator_(char o) {
     switch (_last_token_.type) {
-      case FormulaPart::token_type::OPERATOR:
-      case FormulaPart::token_type::NIL:
-      case FormulaPart::token_type::ARG_SEP: {
+      case FormulaPart::token_type::OPERATOR :
+      case FormulaPart::token_type::NIL :
+      case FormulaPart::token_type::ARG_SEP : {
         return o == '-';
       }
 
-      case FormulaPart::token_type::PARENTHESIS: {
+      case FormulaPart::token_type::PARENTHESIS : {
         return (o == '-') && (_last_token_.character == '(');
       }
 
-      default: {
+      default : {
         return false;
       }
     }

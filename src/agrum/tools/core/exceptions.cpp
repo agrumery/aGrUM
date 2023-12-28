@@ -25,6 +25,7 @@
 #include <utility>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/exceptions.h>
 #ifdef GUM_DEBUG_MODE
 #  ifdef HAVE_EXECINFO_H
@@ -52,6 +53,7 @@ namespace gum {
 #  endif   // GUM_FOR_SWIG
     return stream.str();
   }
+
   Exception::Exception(const Exception& e) :
       std::exception(e), msg_(e.msg_), type_(e.type_), what_(e.what_) {}
 
@@ -60,7 +62,7 @@ namespace gum {
 #  ifdef GUM_FOR_SWIG
     what_ = "[pyAgrum] " + type_ + ": " + msg_;
 #  else    // GUM_FOR_SWIG
-    what_      = type_ + ": " + msg_;
+    what_ = type_ + ": " + msg_;
 #  endif   // GUM_FOR_SWIG
 
 #  ifdef GUM_DEBUG_MODE

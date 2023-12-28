@@ -38,7 +38,6 @@ namespace gum {
       GUM_CONS_CPY(DirichletPriorFromDatabase);
     }
 
-
     /// move constructor
     INLINE
     DirichletPriorFromDatabase::DirichletPriorFromDatabase(
@@ -48,18 +47,15 @@ namespace gum {
       GUM_CONS_MOV(DirichletPriorFromDatabase);
     }
 
-
     /// virtual copy constructor
     INLINE DirichletPriorFromDatabase* DirichletPriorFromDatabase::clone() const {
       return new DirichletPriorFromDatabase(*this);
     }
 
-
     /// destructor
     INLINE DirichletPriorFromDatabase::~DirichletPriorFromDatabase() {
       GUM_DESTRUCTOR(DirichletPriorFromDatabase);
     }
-
 
     /// copy operator
     INLINE DirichletPriorFromDatabase&
@@ -72,7 +68,6 @@ namespace gum {
       return *this;
     }
 
-
     /// move operator
     INLINE DirichletPriorFromDatabase&
        DirichletPriorFromDatabase::operator=(DirichletPriorFromDatabase&& from) {
@@ -84,16 +79,13 @@ namespace gum {
       return *this;
     }
 
-
     /// returns the type of the prior
     INLINE PriorType DirichletPriorFromDatabase::getType() const {
       return PriorType::DirichletPriorType;
     }
 
-
     /// indicates whether the prior is potentially informative
     INLINE bool DirichletPriorFromDatabase::isInformative() const { return (this->weight_ != 0.0); }
-
 
     /// sets the weight of the a prior(kind of effective sample size)
     INLINE void DirichletPriorFromDatabase::setWeight(const double weight) {
@@ -101,7 +93,6 @@ namespace gum {
       if (_counter_.database().nbRows() == 0) _internal_weight_ = 0.0;
       else _internal_weight_ = this->weight_ / double(_counter_.database().nbRows());
     }
-
 
     /// returns the prior vector all the variables in the idset
     INLINE void DirichletPriorFromDatabase::addJointPseudoCount(const IdCondSet&       idset,
@@ -120,7 +111,6 @@ namespace gum {
         }
       }
     }
-
 
     /// returns the prior vector over only the conditioning set of an idset
     INLINE void

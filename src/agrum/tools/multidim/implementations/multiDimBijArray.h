@@ -30,11 +30,10 @@
 #ifndef GUM_MULTIDIMBIJARRAY_H
 #define GUM_MULTIDIMBIJARRAY_H
 
-#include <initializer_list>
-
 #include <agrum/tools/core/bijection.h>
-
 #include <agrum/tools/multidim/implementations/multiDimArray.h>
+
+#include <initializer_list>
 
 namespace gum {
 

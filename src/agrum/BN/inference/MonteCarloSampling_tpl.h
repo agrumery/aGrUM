@@ -30,7 +30,6 @@
 
 #include <agrum/BN/inference/MonteCarloSampling.h>
 
-
 namespace gum {
 
   /// Default constructor
@@ -52,7 +51,6 @@ namespace gum {
     gum::Instantiation I;
     return I;
   }
-
 
   template < typename GUM_SCALAR >
   Instantiation MonteCarloSampling< GUM_SCALAR >::draw_(GUM_SCALAR* w, Instantiation prev) {

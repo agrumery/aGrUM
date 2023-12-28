@@ -19,8 +19,9 @@
  */
 
 
-#include <agrum/tools/variables/discreteVariable.h>
 #include <sstream>
+
+#include <agrum/tools/variables/discreteVariable.h>
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/tools/variables/discreteVariable_inl.h>

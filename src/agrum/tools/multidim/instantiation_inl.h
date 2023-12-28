@@ -191,9 +191,9 @@ namespace gum {
   INLINE Idx Instantiation::val(const DiscreteVariable& var) const {
     return _vals_[_vars_.pos(&var)];
   }
+
   // returns the current value of a given variable
   INLINE Idx Instantiation::val(const std::string& name) const { return val(variable(name)); }
-
 
   // returns the current value of a given variable
   INLINE Idx Instantiation::valFromPtr(const DiscreteVariable* pvar) const {
@@ -202,6 +202,7 @@ namespace gum {
 
   // returns the variable at position i in the tuple
   INLINE const DiscreteVariable& Instantiation::variable(Idx i) const { return *(_vars_.atPos(i)); }
+
   // returns the variable with name in the tuple
   INLINE const DiscreteVariable& Instantiation::variable(const std::string& name) const {
     for (const auto& v: _vars_) {
@@ -695,7 +696,6 @@ namespace gum {
     return _vars_;
   }
 
-
   // replace 2 vars in the Instantiation
   INLINE void Instantiation::_swap_(Idx i, Idx j) {
     if (i == j) return;
@@ -735,14 +735,12 @@ namespace gum {
     }
   }
 
-
   // add new dim by master
   INLINE void Instantiation::addWithMaster(const MultiDimAdressable* m, const DiscreteVariable& v) {
     if (m != _master_) { GUM_ERROR(OperationNotAllowed, "only master can do this") }
 
     _add_(v);
   }
-
 
   // adds a new var to the sequence of vars
   INLINE void Instantiation::_add_(const DiscreteVariable& v) {

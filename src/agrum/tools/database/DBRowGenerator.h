@@ -30,6 +30,7 @@
 #include <vector>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/database/DBRow.h>
 #include <agrum/tools/database/DBTranslatedValue.h>
 
@@ -50,7 +51,6 @@ namespace gum {
       // the generator does something else than just missing values
       OTHER_THINGS_THAN_REMOVE_MISSING_VALUES
     };
-
 
     /** @class DBRowGenerator
      * @headerfile DBRowGenerator.h <agrum/tools/database/DBRowGenerator.h>
@@ -330,7 +330,6 @@ namespace gum {
   } /* namespace learning */
 
 } /* namespace gum */
-
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE

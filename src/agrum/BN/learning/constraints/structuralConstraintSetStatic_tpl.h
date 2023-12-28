@@ -57,7 +57,7 @@ namespace gum {
     /// copy operator
     template < typename CONSTRAINT1, typename... OTHER_CONSTRAINTS >
     INLINE _StructuralConstraintSetStatic_< CONSTRAINT1, OTHER_CONSTRAINTS... >&
-       _StructuralConstraintSetStatic_< CONSTRAINT1, OTHER_CONSTRAINTS... >::operator=(
+           _StructuralConstraintSetStatic_< CONSTRAINT1, OTHER_CONSTRAINTS... >::operator=(
           const _StructuralConstraintSetStatic_< CONSTRAINT1, OTHER_CONSTRAINTS... >& from) {
       if (this != &from) {
         next_constraints::operator=(from);
@@ -201,7 +201,7 @@ namespace gum {
     /// copy operator
     template < typename CONSTRAINT >
     INLINE _StructuralConstraintSetStatic_< CONSTRAINT >&
-       _StructuralConstraintSetStatic_< CONSTRAINT >::operator=(
+           _StructuralConstraintSetStatic_< CONSTRAINT >::operator=(
           const _StructuralConstraintSetStatic_< CONSTRAINT >& from) {
       if (this != &from) { CONSTRAINT::operator=(from); }
 
@@ -326,7 +326,7 @@ namespace gum {
     /// copy operator
     template < typename CONSTRAINT1, typename... OTHER_CONSTRAINTS >
     INLINE StructuralConstraintSetStatic< CONSTRAINT1, OTHER_CONSTRAINTS... >&
-       StructuralConstraintSetStatic< CONSTRAINT1, OTHER_CONSTRAINTS... >::operator=(
+           StructuralConstraintSetStatic< CONSTRAINT1, OTHER_CONSTRAINTS... >::operator=(
           const StructuralConstraintSetStatic< CONSTRAINT1, OTHER_CONSTRAINTS... >& from) {
       if (this != &from) { constraints::operator=(from); }
 
@@ -443,19 +443,19 @@ namespace gum {
     INLINE void StructuralConstraintSetStatic< CONSTRAINT1, OTHER_CONSTRAINTS... >::modifyGraph(
        const GraphChange& change) {
       switch (change.type()) {
-        case GraphChangeType::ARC_ADDITION:
+        case GraphChangeType::ARC_ADDITION :
           modifyGraph(reinterpret_cast< const ArcAddition& >(change));
           break;
 
-        case GraphChangeType::ARC_DELETION:
+        case GraphChangeType::ARC_DELETION :
           modifyGraph(reinterpret_cast< const ArcDeletion& >(change));
           break;
 
-        case GraphChangeType::ARC_REVERSAL:
+        case GraphChangeType::ARC_REVERSAL :
           modifyGraph(reinterpret_cast< const ArcReversal& >(change));
           break;
 
-        default:
+        default :
           GUM_ERROR(OperationNotAllowed,
                     "edge modifications are not "
                     "currently supported by constraint sets");
@@ -494,7 +494,7 @@ namespace gum {
     /// copy operator
     template < typename CONSTRAINT >
     INLINE StructuralConstraintSetStatic< CONSTRAINT >&
-       StructuralConstraintSetStatic< CONSTRAINT >::operator=(
+           StructuralConstraintSetStatic< CONSTRAINT >::operator=(
           const StructuralConstraintSetStatic< CONSTRAINT >& from) {
       if (this != &from) { constraints::operator=(from); }
 
@@ -600,19 +600,19 @@ namespace gum {
     INLINE void
        StructuralConstraintSetStatic< CONSTRAINT >::modifyGraph(const GraphChange& change) {
       switch (change.type()) {
-        case GraphChangeType::ARC_ADDITION:
+        case GraphChangeType::ARC_ADDITION :
           modifyGraph(reinterpret_cast< const ArcAddition& >(change));
           break;
 
-        case GraphChangeType::ARC_DELETION:
+        case GraphChangeType::ARC_DELETION :
           modifyGraph(reinterpret_cast< const ArcDeletion& >(change));
           break;
 
-        case GraphChangeType::ARC_REVERSAL:
+        case GraphChangeType::ARC_REVERSAL :
           modifyGraph(reinterpret_cast< const ArcReversal& >(change));
           break;
 
-        default:
+        default :
           GUM_ERROR(OperationNotAllowed,
                     "edge modifications are not "
                     "currently supported by constraint sets");

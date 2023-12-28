@@ -26,7 +26,7 @@
 #include <vector>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/core/set.h>
 #include <agrum/tools/multidim/potential.h>
@@ -596,7 +596,6 @@ namespace gum_tests {
       for (gum::Idx i = 0; i < vars.size(); ++i)
         delete vars[i];
     }
-
 
     GUM_ACTIVE_TEST(Constants) {
       gum::MultiDimCombineAndProjectDefault< gum::Potential< float > > projcomb(multPot, mySum);

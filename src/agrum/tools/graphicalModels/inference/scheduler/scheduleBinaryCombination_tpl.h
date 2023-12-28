@@ -27,9 +27,11 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#  include <agrum/agrum.h>
-#  include <agrum/tools/graphicalModels/inference/scheduler/scheduleBinaryCombination.h>
 #  include <limits>
+
+#  include <agrum/agrum.h>
+
+#  include <agrum/tools/graphicalModels/inference/scheduler/scheduleBinaryCombination.h>
 
 namespace gum {
 
@@ -61,7 +63,6 @@ namespace gum {
     GUM_CONSTRUCTOR(ScheduleBinaryCombination);
   }
 
-
   /// copy constructor
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::ScheduleBinaryCombination(
@@ -78,7 +79,6 @@ namespace gum {
     // for debugging purposes
     GUM_CONS_CPY(ScheduleBinaryCombination);
   }
-
 
   /// move constructor
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
@@ -98,14 +98,12 @@ namespace gum {
     GUM_CONS_MOV(ScheduleBinaryCombination);
   }
 
-
   /// virtual copy constructor
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   INLINE ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >*
          ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::clone() const {
     return new ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >(*this);
   }
-
 
   /// destructor
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
@@ -116,7 +114,6 @@ namespace gum {
     // for debugging purposes
     GUM_DESTRUCTOR(ScheduleBinaryCombination);
   }
-
 
   /// copy operator
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
@@ -135,7 +132,6 @@ namespace gum {
     }
     return *this;
   }
-
 
   /// move operator
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
@@ -158,14 +154,12 @@ namespace gum {
     return *this;
   }
 
-
   /// operator ==
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   INLINE bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::operator==(
      const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >& op) const {
     return (_combine_ == op._combine_) && (*_arg1_ == *op._arg1_) && (*_arg2_ == *op._arg2_);
   }
-
 
   /// operator ==
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
@@ -180,7 +174,6 @@ namespace gum {
     } catch (std::bad_cast&) { return false; }
   }
 
-
   /// operator !=
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   INLINE bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::operator!=(
@@ -188,14 +181,12 @@ namespace gum {
     return !ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::operator==(op);
   }
 
-
   /// operator !=
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   INLINE bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::operator!=(
      const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >& op) const {
     return !ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::operator==(op);
   }
-
 
   /// checks whether two ScheduleCombination have the same parameters
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
@@ -204,7 +195,6 @@ namespace gum {
     return (_arg1_->hasSameVariables(*op._arg1_) && _arg2_->hasSameVariables(*op._arg2_)
             && _arg1_->hasSameContent(*op._arg1_) && _arg2_->hasSameContent(*op._arg2_));
   }
-
 
   /// checks whether two ScheduleCombination have the same parameters
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
@@ -217,14 +207,12 @@ namespace gum {
     } catch (std::bad_cast&) { return false; }
   }
 
-
   /// checks whether two ScheduleCombination have similar parameters
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   INLINE bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::hasSimilarArguments(
      const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >& op) const {
     return (_arg1_->hasSameVariables(*op._arg1_) && _arg2_->hasSameVariables(*op._arg2_));
   }
-
 
   /// checks whether two ScheduleCombination have similar parameters
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
@@ -237,14 +225,12 @@ namespace gum {
     } catch (std::bad_cast&) { return false; }
   }
 
-
   /// checks whether two ScheduleOperator perform the same set of operations
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::isSameOperator(
      const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >& op) const {
     return _combine_ == op._combine_;
   }
-
 
   /// checks whether two ScheduleOperator perform the same set of operations
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
@@ -257,14 +243,12 @@ namespace gum {
     } catch (std::bad_cast&) { return false; }
   }
 
-
   /// returns the first argument of the combination
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   INLINE const ScheduleMultiDim< TABLE1 >&
                ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::arg1() const {
     return *_arg1_;
   }
-
 
   /// returns the second argument of the combination
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
@@ -273,14 +257,12 @@ namespace gum {
     return *_arg2_;
   }
 
-
   /// returns the sequence of arguments passed to the operator
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   INLINE const Sequence< const IScheduleMultiDim* >&
                ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::args() const {
     return _args_;
   }
-
 
   /// returns the result of the combination
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
@@ -289,14 +271,12 @@ namespace gum {
     return *_result_;
   }
 
-
   /// returns the sequence of ScheduleMultidim output by the operator
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   INLINE const Sequence< const IScheduleMultiDim* >&
                ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::results() const {
     return _results_;
   }
-
 
   /// modifies the arguments of the operator
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
@@ -337,13 +317,11 @@ namespace gum {
     _result_->makeAbstract();
   }
 
-
   /// indicates whether the operator has been executed
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   INLINE bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::isExecuted() const {
     return !_result_->isAbstract();
   }
-
 
   /// executes the operator
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
@@ -359,13 +337,11 @@ namespace gum {
     }
   }
 
-
   /// undo a previous execution, if any
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   void ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::undo() {
     _result_->makeAbstract();
   }
-
 
   /** @brief returns an estimation of the number of elementary operations
    * needed to perform the ScheduleOperator */
@@ -373,7 +349,6 @@ namespace gum {
   double ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::nbOperations() const {
     return double(_result_->domainSize());
   }
-
 
   /// returns the memory consumption used during the execution of the operator
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
@@ -384,14 +359,12 @@ namespace gum {
     return {domsize, domsize};
   }
 
-
   /// displays the content of the operator
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   std::string ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::toString() const {
     return _result_->toString() + " = combine ( " + _arg1_->toString() + " , " + _arg2_->toString()
          + " )";
   }
-
 
   /// use a new combination function
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >

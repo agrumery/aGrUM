@@ -44,9 +44,9 @@
 
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/graphs/algorithms/simplicialSet.h>
 #include <agrum/tools/graphs/algorithms/triangulations/eliminationStrategies/unconstrainedEliminationSequenceStrategy.h>
-
 
 namespace gum {
 

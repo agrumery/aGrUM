@@ -34,8 +34,9 @@
 #include <iostream>
 #include <vector>
 
-#include <agrum/BN/generator/IBayesNetGenerator.h>
 #include <agrum/agrum.h>
+
+#include <agrum/BN/generator/IBayesNetGenerator.h>
 
 namespace gum {
 

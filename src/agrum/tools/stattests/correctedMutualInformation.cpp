@@ -51,7 +51,6 @@ namespace gum {
       GUM_CONSTRUCTOR(CorrectedMutualInformation);
     }
 
-
     /// default constructor
     CorrectedMutualInformation::CorrectedMutualInformation(
        const DBRowGeneratorParser&             parser,
@@ -62,7 +61,6 @@ namespace gum {
       GUM_CONSTRUCTOR(CorrectedMutualInformation);
     }
 
-
     /// copy constructor
     CorrectedMutualInformation::CorrectedMutualInformation(const CorrectedMutualInformation& from) :
         _NH_(from._NH_), _k_NML_(from._k_NML_), _score_MDL_(from._score_MDL_),
@@ -71,7 +69,6 @@ namespace gum {
         _ICache_(from._ICache_), _KCache_(from._KCache_) {
       GUM_CONS_CPY(CorrectedMutualInformation);
     }
-
 
     /// move constructor
     CorrectedMutualInformation::CorrectedMutualInformation(CorrectedMutualInformation&& from) :
@@ -83,19 +80,16 @@ namespace gum {
       GUM_CONS_MOV(CorrectedMutualInformation);
     }
 
-
     /// virtual copy constructor
     CorrectedMutualInformation* CorrectedMutualInformation::clone() const {
       return new CorrectedMutualInformation(*this);
     }
-
 
     /// destructor
     CorrectedMutualInformation::~CorrectedMutualInformation() {
       // for debugging purposes
       GUM_DESTRUCTOR(CorrectedMutualInformation);
     }
-
 
     /// copy operator
     CorrectedMutualInformation&
@@ -115,7 +109,6 @@ namespace gum {
       return *this;
     }
 
-
     /// move operator
     CorrectedMutualInformation&
        CorrectedMutualInformation::operator=(CorrectedMutualInformation&& from) {
@@ -133,7 +126,6 @@ namespace gum {
       }
       return *this;
     }
-
 
     /// sets new ranges to perform the counts used by the score
     /** @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
@@ -153,7 +145,6 @@ namespace gum {
       if (old_ranges != ranges()) clear();
     }
 
-
     /// reset the ranges to the one range corresponding to the whole database
     void CorrectedMutualInformation::clearRanges() {
       std::vector< std::pair< std::size_t, std::size_t > > old_ranges = ranges();
@@ -162,7 +153,6 @@ namespace gum {
       _score_MDL_.clearRanges();
       if (old_ranges != ranges()) clear();
     }
-
 
     /// return N times the mutual information for conditioned pairs of variables
     double CorrectedMutualInformation::_NI_score_(NodeId                       var_x,
@@ -255,7 +245,6 @@ namespace gum {
       return score;
     }
 
-
     /// 2pt penalty
     double CorrectedMutualInformation::_K_score_(NodeId                       var1,
                                                  NodeId                       var2,
@@ -276,7 +265,7 @@ namespace gum {
       size_t ry;
       size_t rui;
       switch (_kmode_) {
-        case KModeTypes::MDL: {
+        case KModeTypes::MDL : {
           const auto& database  = _NH_.database();
           const auto& node2cols = _NH_.nodeId2Columns();
 
@@ -301,9 +290,9 @@ namespace gum {
           score = 0.5 * (rx - 1) * (ry - 1) * rui * std::log2(N);
         } break;
 
-        case KModeTypes::NML: score = _k_NML_.score(var1, var2, conditioning_ids); break;
+        case KModeTypes::NML : score = _k_NML_.score(var1, var2, conditioning_ids); break;
 
-        default:
+        default :
           GUM_ERROR(NotImplementedYet,
                     "CorrectedMutualInformation mode does "
                     "not support yet this correction");

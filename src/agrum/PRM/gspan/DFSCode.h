@@ -163,4 +163,4 @@ namespace gum {
 #    include <agrum/PRM/gspan/DFSCode_inl.h>
 #  endif   // GUM_NO_INLINE
 
-#endif /* GUM_DFS_CODE_H */
+#endif     /* GUM_DFS_CODE_H */

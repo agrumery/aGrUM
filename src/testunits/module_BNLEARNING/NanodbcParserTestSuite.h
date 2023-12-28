@@ -23,7 +23,7 @@
 #include <agrum/tools/database/nanodbcParser.h>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 
 namespace gum_tests {
@@ -164,7 +164,7 @@ namespace gum_tests {
 #endif  // ODBC_
     }
 
-    
+
     GUM_ACTIVE_TEST(AlarmSQL) {
 #ifdef ODBC_
       const std::string driver_name = "SQLite3";
@@ -185,7 +185,7 @@ namespace gum_tests {
         // no database. see e.what()
         std::cout << "[SQLite error]" << e.what();
       }
-      
+
 #endif  // ODBC_
     }
 
@@ -227,16 +227,16 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(row_count.get< int >(0), 3)
 
         const std::string query = "select * from asia;";
-  
+
         auto row = nanodbc::execute(connection, query);
         row.next();
         TS_ASSERT_EQUALS(row.column_name(0), "smoking")
         TS_ASSERT_EQUALS(row.columns(), 8)
-        
+
         TS_ASSERT_EQUALS(row.get< int >(0, 5), 1)
         TS_ASSERT_EQUALS(row.get< std::string >(6), "toto titi")
         TS_ASSERT_EQUALS(row.get< double >(7), -1.2)
-        
+
         gum::learning::NanodbcParser parser(connection, query);
         TS_ASSERT_EQUALS(parser.nbColumns(), std::size_t(8))
 
@@ -334,7 +334,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(parser.columnName(std::size_t(7)), "positive_XraY")
 
         TS_ASSERT_EQUALS(parser.next(), false)
-        
+
       } catch (nanodbc::database_error& e) {
         // no database. see e.what()
         std::cout << "[SQLite error]";

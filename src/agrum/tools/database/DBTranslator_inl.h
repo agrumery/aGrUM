@@ -35,10 +35,8 @@ namespace gum {
     /// returns the type of values handled by the translator
     INLINE DBTranslatedValueType DBTranslator::getValType() const { return val_type_; }
 
-
     /// returns a Boolean indicating whether the translation is lossless or not
     INLINE bool DBTranslator::isLossless() const { return is_lossless_; }
-
 
     /// default constructor
     INLINE DBTranslator::DBTranslator(DBTranslatedValueType             val_type,
@@ -62,7 +60,6 @@ namespace gum {
       GUM_CONSTRUCTOR(DBTranslator);
     }
 
-
     /// default constructor
     INLINE DBTranslator::DBTranslator(DBTranslatedValueType val_type,
                                       const bool            is_lossless,
@@ -74,7 +71,6 @@ namespace gum {
       GUM_CONSTRUCTOR(DBTranslator);
     }
 
-
     /// copy constructor
     INLINE DBTranslator::DBTranslator(const DBTranslator& from) :
         is_lossless_(from.is_lossless_), is_dictionary_dynamic_(from.is_dictionary_dynamic_),
@@ -82,7 +78,6 @@ namespace gum {
         back_dico_(from.back_dico_), val_type_(from.val_type_) {
       GUM_CONS_CPY(DBTranslator);
     }
-
 
     /// move constructor
     INLINE DBTranslator::DBTranslator(DBTranslator&& from) :
@@ -93,10 +88,8 @@ namespace gum {
       GUM_CONS_MOV(DBTranslator);
     }
 
-
     /// destructor
     INLINE DBTranslator::~DBTranslator() { GUM_DESTRUCTOR(DBTranslator); }
-
 
     /// copy operator
     INLINE DBTranslator& DBTranslator::operator=(const DBTranslator& from) {
@@ -111,7 +104,6 @@ namespace gum {
       return *this;
     }
 
-
     /// move operator
     INLINE DBTranslator& DBTranslator::operator=(DBTranslator&& from) {
       is_lossless_           = from.is_lossless_;
@@ -124,69 +116,59 @@ namespace gum {
       return *this;
     }
 
-
     /// alias for method translate
     INLINE DBTranslatedValue DBTranslator::operator<<(const std::string& str) {
       return translate(str);
     }
-
 
     /// alias for method translateBack
     INLINE std::string DBTranslator::operator>>(const DBTranslatedValue translated_val) {
       return translateBack(translated_val);
     }
 
-
     /// indicates whether the translator has an editable dictionary or not
     INLINE bool DBTranslator::hasEditableDictionary() const { return is_dictionary_dynamic_; }
-
 
     /// sets/unset the editable dictionary mode
     INLINE void DBTranslator::setEditableDictionaryMode(bool new_mode) {
       is_dictionary_dynamic_ = new_mode;
     }
 
-
     /// returns the translation from database indices to input strings
     INLINE const Bijection< std::size_t, std::string >& DBTranslator::getDictionary() const {
       return back_dico_;
     }
-
 
     /// returns the set of missing symbols taken into account by the translator
     INLINE const Set< std::string >& DBTranslator::missingSymbols() const {
       return missing_symbols_;
     }
 
-
     /// indicates whether a string corresponds to a missing symbol
     INLINE bool DBTranslator::isMissingSymbol(const std::string& str) const {
       return missing_symbols_.exists(str);
     }
-
 
     /// sets the name of the variable stored into the translator
     INLINE void DBTranslator::setVariableName(const std::string& str) const {
       const_cast< Variable* >(this->variable())->setName(str);
     }
 
-
     /// sets the name of the variable stored into the translator
     INLINE void DBTranslator::setVariableDescription(const std::string& str) const {
       const_cast< Variable* >(this->variable())->setDescription(str);
     }
 
-
     /// indicates whether a translated value corresponds to a missing value
     INLINE bool DBTranslator::isMissingValue(const DBTranslatedValue& value) const {
       switch (val_type_) {
-        case DBTranslatedValueType::DISCRETE:
+        case DBTranslatedValueType::DISCRETE :
           return value.discr_val == std::numeric_limits< std::size_t >::max();
 
-        case DBTranslatedValueType::CONTINUOUS:
+        case DBTranslatedValueType::CONTINUOUS :
           return value.cont_val == std::numeric_limits< float >::max();
 
-        default:
+        default :
           GUM_ERROR(NotImplementedYet,
                     "No missing value interpretation for this "
                     "translated value type");

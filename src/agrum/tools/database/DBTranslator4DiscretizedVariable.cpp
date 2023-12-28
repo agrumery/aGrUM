@@ -96,7 +96,6 @@ namespace gum {
       GUM_CONSTRUCTOR(DBTranslator4DiscretizedVariable);
     }
 
-
     /// default constructor with a IDiscretized variable as translator
     DBTranslator4DiscretizedVariable::DBTranslator4DiscretizedVariable(
        const IDiscretizedVariable& var,
@@ -127,7 +126,6 @@ namespace gum {
       GUM_CONSTRUCTOR(DBTranslator4DiscretizedVariable);
     }
 
-
     /// copy constructor
     DBTranslator4DiscretizedVariable::DBTranslator4DiscretizedVariable(
        const DBTranslator4DiscretizedVariable& from) :
@@ -138,7 +136,6 @@ namespace gum {
 
       GUM_CONS_CPY(DBTranslator4DiscretizedVariable);
     }
-
 
     /// move constructor
     DBTranslator4DiscretizedVariable::DBTranslator4DiscretizedVariable(
@@ -152,12 +149,10 @@ namespace gum {
       GUM_CONS_MOV(DBTranslator4DiscretizedVariable);
     }
 
-
     /// virtual copy constructor
     DBTranslator4DiscretizedVariable* DBTranslator4DiscretizedVariable::clone() const {
       return new DBTranslator4DiscretizedVariable(*this);
     }
-
 
     /// copy operator
     DBTranslator4DiscretizedVariable&
@@ -172,7 +167,6 @@ namespace gum {
 
       return *this;
     }
-
 
     /// move operator
     DBTranslator4DiscretizedVariable&

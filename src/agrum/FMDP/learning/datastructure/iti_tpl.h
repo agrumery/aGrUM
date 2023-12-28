@@ -27,14 +27,16 @@
  * GONZALES(_at_AMU)
  */
 // =======================================================
-#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/core/priorityQueue.h>
 #include <agrum/tools/core/types.h>
+
+#include <agrum/tools/core/math/math_utils.h>
 // =======================================================
 #include <agrum/FMDP/learning/core/chiSquare.h>
 #include <agrum/FMDP/learning/datastructure/iti.h>
 // =======================================================
 #include <agrum/tools/variables/labelizedVariable.h>
+
 // =======================================================
 
 
@@ -93,7 +95,6 @@ namespace gum {
     _staleTable_.insert(this->root_, false);
   }
 
-
   // ==========================================================================
   /// @name New Observation insertion methods
   // ==========================================================================
@@ -126,7 +127,6 @@ namespace gum {
        currentNodeId);
     _staleTable_[currentNodeId] = true;
   }
-
 
   // ============================================================================
   /// @name Graph Structure update methods
@@ -188,7 +188,6 @@ namespace gum {
       delete nodeIter.val();
   }
 
-
   // ############################################################################
   /**
    * inserts a new node in internal graohs
@@ -205,7 +204,6 @@ namespace gum {
     _staleTable_.insert(n, true);
     return n;
   }
-
 
   // ############################################################################
   /**
@@ -224,7 +222,6 @@ namespace gum {
     }
   }
 
-
   // ############################################################################
   /**
    * Removes a node from the internal graph
@@ -236,7 +233,6 @@ namespace gum {
     IncrementalGraphLearner< AttributeSelection, isScalar >::removeNode_(currentNodeId);
     _staleTable_.erase(currentNodeId);
   }
-
 
   // ============================================================================
   /// @name Function Graph Updating methods
@@ -250,7 +246,6 @@ namespace gum {
     this->target_->clear();
     this->target_->manager()->setRootNode(this->_insertNodeInFunctionGraph_(this->root_));
   }
-
 
   // ############################################################################
   /**
@@ -278,7 +273,6 @@ namespace gum {
 
     return nody;
   }
-
 
   // ############################################################################
   /**
@@ -308,7 +302,6 @@ namespace gum {
     NodeId nody = this->target_->manager()->addInternalNode(this->value_, sonsMap);
     return nody;
   }
-
 
   // ############################################################################
   /**

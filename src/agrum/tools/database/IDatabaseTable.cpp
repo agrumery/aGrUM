@@ -41,7 +41,6 @@ namespace gum {
         this->insertRow(new_row);
     }
 
-
     /// insert new rows at the end of the database
     void IDatabaseTableInsert4DBCell< false >::insertRows(
        const typename IDatabaseTableInsert4DBCell< false >::template DBVector<

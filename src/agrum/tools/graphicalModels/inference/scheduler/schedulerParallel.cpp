@@ -25,8 +25,8 @@
  * @author Christophe GONZALES(@AMU) & Pierre-Henri WUILLEMIN(@LIP6)
  */
 
-#include <agrum/tools/graphicalModels/inference/scheduler/schedulerParallel.h>
 #include <agrum/tools/core/threads/threadData.h>
+#include <agrum/tools/graphicalModels/inference/scheduler/schedulerParallel.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -45,14 +45,12 @@ namespace gum {
     GUM_CONSTRUCTOR(SchedulerParallel);
   }
 
-
   /// copy constructor
   SchedulerParallel::SchedulerParallel(const SchedulerParallel& from) :
       Scheduler(from), _sequential_scheduler_(from._sequential_scheduler_) {
     // for debugging purposes
     GUM_CONS_CPY(SchedulerParallel);
   }
-
 
   /// move constructor
   SchedulerParallel::SchedulerParallel(SchedulerParallel&& from) :
@@ -61,17 +59,14 @@ namespace gum {
     GUM_CONS_MOV(SchedulerParallel);
   }
 
-
   /// virtual copy constructor
   SchedulerParallel* SchedulerParallel::clone() const { return new SchedulerParallel(*this); }
-
 
   /// destructor
   SchedulerParallel::~SchedulerParallel() {
     // for debugging purposes
     GUM_DESTRUCTOR(SchedulerParallel);
   }
-
 
   /// execute all the operations of a given schedule
   void SchedulerParallel::execute(Schedule& schedule) {

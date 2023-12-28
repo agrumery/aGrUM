@@ -32,6 +32,7 @@
 #include <functional>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/list.h>
 #include <agrum/tools/core/signal/signaler.h>
 
@@ -103,7 +104,7 @@ namespace gum {
       void (TargetClass::*_action_)(const void*);
     };
 
-  }   // namespace  __sig__
+  }      // namespace  __sig__
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 

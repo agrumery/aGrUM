@@ -30,11 +30,13 @@
 #include <cstring>
 #include <stdexcept>
 #include <string>
-#include <type_traits>
 #include <utility>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/bijection.h>
+
+#include <type_traits>
 
 namespace gum {
 
@@ -71,12 +73,7 @@ namespace gum {
     class DBCell {
       public:
       /// the set of types possibly taken by the last element read
-      enum class EltType : unsigned char {
-        REAL,
-        INTEGER,
-        STRING,
-        MISSING
-      };
+      enum class EltType : unsigned char { REAL, INTEGER, STRING, MISSING };
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -264,7 +261,6 @@ namespace gum {
         float _val_real_;
       };
 
-
       // determine the longest type of the union. This is used for fast
       // copying/moving DBCells
       using UnionType = typename std::conditional< sizeof(int) < sizeof(float), float, int >::type;
@@ -282,7 +278,7 @@ namespace gum {
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
-  } /* namespace learning */
+  }    /* namespace learning */
 
 } /* namespace gum */
 

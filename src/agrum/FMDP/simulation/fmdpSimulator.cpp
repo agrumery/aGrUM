@@ -34,6 +34,7 @@
 //======================================================================
 #include <agrum/FMDP/io/dat/fmdpDatReader.h>
 #include <agrum/FMDP/simulation/fmdpSimulator.h>
+
 //======================================================================
 
 namespace gum {
@@ -66,7 +67,6 @@ namespace gum {
     GUM_DESTRUCTOR(FMDPSimulator);
     if (_loaded_) delete _fmdp_;
   }
-
 
   // ===========================================================================
   //

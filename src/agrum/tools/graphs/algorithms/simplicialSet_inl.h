@@ -30,8 +30,9 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to ease IDE parser
-#  include <agrum/tools/core/math/math_utils.h>
 #  include <agrum/tools/graphs/algorithms/triangulations/eliminationStrategies/defaultPartialOrderedEliminationSequenceStrategy.h>
+
+#  include <agrum/tools/core/math/math_utils.h>
 
 namespace gum {
 
@@ -56,7 +57,6 @@ namespace gum {
     return _simplicial_nodes_.contains(id);
   }
 
-
   /// gets a simplicial node
   INLINE
   NodeId SimplicialSet::bestSimplicialNode() {
@@ -64,7 +64,6 @@ namespace gum {
 
     return _simplicial_nodes_.top();
   }
-
 
   /// gets an almost simplicial node
   INLINE
@@ -76,7 +75,6 @@ namespace gum {
     return _almost_simplicial_nodes_.top();
   }
 
-
   /// gets a quasi simplicial node
   INLINE
   NodeId SimplicialSet::bestQuasiSimplicialNode() {
@@ -86,7 +84,6 @@ namespace gum {
 
     return _quasi_simplicial_nodes_.top();
   }
-
 
   /// put all the nodes in their appropriate list
   INLINE
@@ -99,14 +96,12 @@ namespace gum {
     }
   }
 
-
   /// returns all the simplicial nodes
   INLINE
   const PriorityQueue< NodeId, double >& SimplicialSet::allSimplicialNodes() {
     _updateAllNodes_();
     return _simplicial_nodes_;
   }
-
 
   /// returns all the almost simplicial nodes
   INLINE
@@ -115,7 +110,6 @@ namespace gum {
     return _almost_simplicial_nodes_;
   }
 
-
   /// returns all the quasi simplicial nodes
   INLINE
   const PriorityQueue< NodeId, double >& SimplicialSet::allQuasiSimplicialNodes() {
@@ -123,11 +117,9 @@ namespace gum {
     return _quasi_simplicial_nodes_;
   }
 
-
   /// sets/unset the fill-ins storage in the standard triangulation procedure
   INLINE
   void SimplicialSet::setFillIns(bool b) { _we_want_fill_ins_ = b; }
-
 
   /// returns the set of fill-ins
   INLINE

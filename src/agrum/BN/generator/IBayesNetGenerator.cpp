@@ -25,5 +25,6 @@
  * @author Christophe GONZALES(_at_AMU), Pierre-Henri WUILLEMIN(_at_LIP6), Lionel TORTI
  * and Ariele-Paolo MAESANO
  */
-#include <agrum/BN/generator/IBayesNetGenerator.h>
 #include <agrum/agrum.h>
+
+#include <agrum/BN/generator/IBayesNetGenerator.h>

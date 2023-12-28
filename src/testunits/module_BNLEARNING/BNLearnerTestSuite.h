@@ -20,19 +20,18 @@
 
 // floating point env
 #include <cfenv>
-#include <vector>
-#include <string>
 #include <iostream>
+#include <string>
+#include <vector>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
-
-#include <agrum/tools/variables/allDiscreteVariables.h>
-#include <agrum/BN/learning/BNLearner.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/core/approximations/approximationSchemeListener.h>
+#include <agrum/tools/variables/allDiscreteVariables.h>
 
 #include <agrum/BN/database/BNDatabaseGenerator.h>
+#include <agrum/BN/learning/BNLearner.h>
 
 namespace gum_tests {
 
@@ -206,7 +205,6 @@ namespace gum_tests {
       }
     }
 
-
     GUM_ACTIVE_TEST(_guill){TS_ASSERT_THROWS(
        gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3_withguill.csv")),
        gum::SyntaxError&)}
@@ -357,7 +355,6 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
-
     GUM_ACTIVE_TEST(_alarm_constraintMiic) {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/alarm.csv"));
 
@@ -438,7 +435,6 @@ namespace gum_tests {
       }
 #endif   // _ODBC
     }
-
 
     GUM_ACTIVE_TEST(_asia_with_domain_sizes) {
       gum::learning::BNLearner< double > learn(GET_RESSOURCES_PATH("csv/asia3.csv"));
@@ -605,7 +601,6 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(bn2.dag().arcs().size(), bn.dag().arcs().size())
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
-
 
     GUM_ACTIVE_TEST(_asia_param_float) {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"));
@@ -915,7 +910,6 @@ namespace gum_tests {
                        "wl_0:Labelized({0|1|2|3})")
     }
 
-
     GUM_ACTIVE_TEST(_asia_with_missing_values) {
       int nb = 0;
       try {
@@ -951,12 +945,12 @@ namespace gum_tests {
       std::vector< std::string > varTer{"NBC",
                                         "MED",
                                         "DEM",
-                                        "SP"};   // ternary variables for the bN
+                                        "SP"};                // ternary variables for the bN
 
       std::vector< std::string > varContinuous{"A", "ADL"};   // continuous variables for the BN
 
 
-      std::vector< gum::NodeId > nodeList;   // nodes list for the BN
+      std::vector< gum::NodeId > nodeList;                    // nodes list for the BN
 
       for (const auto& var: varBool)
         nodeList.push_back(templ.add(gum::LabelizedVariable(var,
@@ -1026,7 +1020,7 @@ namespace gum_tests {
       std::vector< std::string > varContinuous{"A", "ADL"};   // les variables continues du RB
 
 
-      std::vector< gum::NodeId > nodeList;   // Liste des noeuds du RB
+      std::vector< gum::NodeId > nodeList;                    // Liste des noeuds du RB
 
       for (const auto& var: varBool)
         nodeList.push_back(templ.add(
@@ -1122,7 +1116,6 @@ namespace gum_tests {
         gum::BayesNet< double > bn3 = learner.learnBN();
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
-
 
     GUM_ACTIVE_TEST(_dirichlet2) {
       // read the learning database
@@ -1328,20 +1321,20 @@ namespace gum_tests {
       double siz = -1.0 * learner.database().size();
       learner.useNoPrior();
 
-      auto stat = learner.logLikelihood({"A"}) / siz;   // LL=-N.H
+      auto stat = learner.logLikelihood({"A"}) / siz;                  // LL=-N.H
       TS_ASSERT_DELTA(stat, 0.99943499, TS_GUM_SMALL_ERROR)
-      stat = learner.logLikelihood({"B"}) / siz;   // LL=-N.H
+      stat = learner.logLikelihood({"B"}) / siz;                       // LL=-N.H
       TS_ASSERT_DELTA(stat, 0.9986032, TS_GUM_SMALL_ERROR)
-      stat = learner.logLikelihood({std::string("A"), "B"}) / siz;   // LL=-N.H
+      stat = learner.logLikelihood({std::string("A"), "B"}) / siz;     // LL=-N.H
       TS_ASSERT_DELTA(stat, 1.9668973, TS_GUM_SMALL_ERROR)
       stat = learner.logLikelihood({std::string("A")}, {"B"}) / siz;   // LL=-N.H
       TS_ASSERT_DELTA(stat, 1.9668973 - 0.9986032, TS_GUM_SMALL_ERROR)
 
-      stat = learner.logLikelihood({"C"}) / siz;   // LL=-N.H
+      stat = learner.logLikelihood({"C"}) / siz;                       // LL=-N.H
       TS_ASSERT_DELTA(stat, 0.99860302, TS_GUM_SMALL_ERROR)
-      stat = learner.logLikelihood({"D"}) / siz;   // LL=-N.H
+      stat = learner.logLikelihood({"D"}) / siz;                       // LL=-N.H
       TS_ASSERT_DELTA(stat, 0.40217919, TS_GUM_SMALL_ERROR)
-      stat = learner.logLikelihood({std::string("C"), "D"}) / siz;   // LL=-N.H
+      stat = learner.logLikelihood({std::string("C"), "D"}) / siz;     // LL=-N.H
       TS_ASSERT_DELTA(stat, 1.40077995, TS_GUM_SMALL_ERROR)
       stat = learner.logLikelihood({std::string("C")}, {"D"}) / siz;   // LL=-N.H
       TS_ASSERT_DELTA(stat, 1.40077995 - 0.40217919, TS_GUM_SMALL_ERROR)
@@ -1928,6 +1921,7 @@ namespace gum_tests {
                       0.0292368,
                       TS_GUM_SMALL_ERROR)
     }
+
     GUM_ACTIVE_TEST(ConditionalMutualInformation) {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"));
 
@@ -2018,7 +2012,7 @@ namespace gum_tests {
         gum::learning::BNLearner learner(parts[num_part], model);
         if (num_part == 0) {   // first part
           learner.useNoPrior();
-        } else {   // other parts, using partial(i-1) as prior
+        } else {               // other parts, using partial(i-1) as prior
           learner.useDirichletPrior(partial, double(nb_elt));
         }
         partial = learner.learnParameters(model.dag(), true);
@@ -2042,14 +2036,14 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(NoCycleTest24) {
-      gum::learning::BNLearner<double> learner(GET_RESSOURCES_PATH("csv/24.csv"));
+      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/24.csv"));
       // used to raise a undirected cycle exception
-      TS_GUM_ASSERT_THROWS_NOTHING(auto bn=learner.learnBN(););
+      TS_GUM_ASSERT_THROWS_NOTHING(auto bn = learner.learnBN(););
     }
 
     GUM_ACTIVE_TEST(NoCycleTest125) {
-      gum::learning::BNLearner<double> learner(GET_RESSOURCES_PATH("csv/bn125.csv"));
-      TS_GUM_ASSERT_THROWS_NOTHING(auto bn=learner.learnBN(););
+      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/bn125.csv"));
+      TS_GUM_ASSERT_THROWS_NOTHING(auto bn = learner.learnBN(););
     }
   };   // class BNLearnerTestSuite
 } /* namespace gum_tests */

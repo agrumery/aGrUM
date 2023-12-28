@@ -24,10 +24,10 @@
 #include <vector>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
-#include <agrum/BN/BayesNet.h>
 #include <agrum/BN/algorithms/MarkovBlanket.h>
+#include <agrum/BN/BayesNet.h>
 
 namespace gum_tests {
   class [[maybe_unused]] MarkovBlanketTestSuite: public CxxTest::TestSuite {

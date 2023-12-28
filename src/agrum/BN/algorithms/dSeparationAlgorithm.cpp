@@ -26,8 +26,9 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#include <agrum/BN/algorithms/dSeparationAlgorithm.h>
 #include <agrum/tools/core/list.h>
+
+#include <agrum/BN/algorithms/dSeparationAlgorithm.h>
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/BN/algorithms/dSeparationAlgorithm_inl.h>

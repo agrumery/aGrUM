@@ -36,9 +36,8 @@
 #include <vector>
 
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
-
-#include <agrum/PRM/PRMFactory.h>
 #include <agrum/PRM/generator/PRMGenerator.h>
+#include <agrum/PRM/PRMFactory.h>
 
 namespace gum {
   namespace prm {
@@ -121,6 +120,7 @@ namespace gum {
       virtual PRM< GUM_SCALAR >* generate();
 
       /// @}
+
       private:
       std::vector< LayerData > _layers_;
       Size                     _domain_size_;

@@ -34,6 +34,7 @@
 #include <agrum/FMDP/learning/core/contingencyTable.h>
 #include <agrum/FMDP/learning/core/testPolicy/ITestPolicy.h>
 #include <agrum/FMDP/learning/core/tupleHashFunc.h>
+
 // ============================================================================
 
 namespace gum {
@@ -143,7 +144,6 @@ namespace gum {
     /// instances)
     // ============================================================================
     const ContingencyTable< Idx, GUM_SCALAR >& ct() const { return _conTab_; }
-
 
     /// @}
 

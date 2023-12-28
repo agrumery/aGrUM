@@ -21,10 +21,11 @@
 #include <iostream>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/tools/database/DBTranslatorSet.h>
+
 #include <agrum/BN/learning/priors/DirichletPriorFromDatabase.h>
 
 namespace gum_tests {
@@ -409,7 +410,6 @@ namespace gum_tests {
 
       delete prior4;
     }
-
 
     GUM_ACTIVE_TEST(2) {
       // create the translator set

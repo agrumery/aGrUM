@@ -24,7 +24,7 @@
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/variables/labelizedVariable.h>
 
@@ -93,7 +93,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(var1.numerical(2), 2)
       TS_ASSERT_EQUALS(var1.numerical(3), 3)
     }
-
 
     GUM_ACTIVE_TEST(AndConstructorWithLabels) {
       gum::LabelizedVariable var1("var1", "this is var1", {"rouge", "vert", "bleu"});

@@ -27,6 +27,7 @@
  */
 // =========================================================================
 #include <agrum/FMDP/learning/core/testPolicy/leastSquareTestPolicy.h>
+
 // =========================================================================
 
 
@@ -39,7 +40,6 @@ namespace gum {
 
     GUM_DESTRUCTOR(LeastSquareTestPolicy);
   }
-
 
   // ##########################################################################
   //
@@ -62,7 +62,6 @@ namespace gum {
     if (!_obsTable_.exists(attr)) _obsTable_.insert(attr, new LinkedList< double >());
     _obsTable_[attr]->addLink(value);
   }
-
 
   // ############################################################################
   // @name Test result

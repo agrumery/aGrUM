@@ -166,7 +166,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE O3prmReader< GUM_SCALAR >&
-         O3prmReader< GUM_SCALAR >::operator=(const O3prmReader& src) {
+             O3prmReader< GUM_SCALAR >::operator=(const O3prmReader& src) {
         if (this == &src) { return *this; }
         _prm_        = src._prm_;
         _o3_prm_     = std::unique_ptr< O3PRM >(new O3PRM(*(src._o3_prm_)));

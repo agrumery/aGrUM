@@ -317,12 +317,7 @@ namespace gum {
 
     /** @brief indicates for each node to which list (simplicial, almost
      * simplicial, quasi simplicial) it belongs */
-    enum class _Belong_ : char {
-      SIMPLICIAL,
-      ALMOST_SIMPLICIAL,
-      QUASI_SIMPLICIAL,
-      NO_LIST
-    };
+    enum class _Belong_ : char { SIMPLICIAL, ALMOST_SIMPLICIAL, QUASI_SIMPLICIAL, NO_LIST };
     NodeProperty< _Belong_ > _containing_list_;
 
     /** @brief for each edge, keep track of the number of triangles passing

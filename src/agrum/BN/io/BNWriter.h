@@ -35,8 +35,9 @@
 #include <iostream>
 #include <string>
 
-#include <agrum/BN/IBayesNet.h>
 #include <agrum/agrum.h>
+
+#include <agrum/BN/IBayesNet.h>
 
 namespace gum {
 

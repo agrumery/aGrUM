@@ -28,8 +28,9 @@
 #ifndef AGRUM_AGGREGATORDECOMPOSITION_H
 #define AGRUM_AGGREGATORDECOMPOSITION_H
 
-#include <agrum/BN/BayesNet.h>
 #include <ctime>
+
+#include <agrum/BN/BayesNet.h>
 
 namespace gum {
   /**
@@ -66,6 +67,7 @@ namespace gum {
     void setMaximumArity(gum::Size arity);
 
     /// @}
+
     protected:
     // ========================================================================
     /// @name Private evidence handling methods and members.

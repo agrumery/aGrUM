@@ -26,8 +26,9 @@
 
 #include <algorithm>
 
-#include <agrum/CN/inference/inferenceEngine.h>
 #include <agrum/agrum.h>
+
+#include <agrum/CN/inference/inferenceEngine.h>
 
 namespace gum {
   namespace credal {
@@ -120,6 +121,7 @@ namespace gum {
     bool InferenceEngine< GUM_SCALAR >::repetitiveInd() const {
       return repetitiveInd_;
     }
+
     /*
         template< typename GUM_SCALAR >
         int InferenceEngine< GUM_SCALAR >::iterStop () const {
@@ -175,7 +177,7 @@ namespace gum {
         while (p != nullptr) {
           values.push_back(GUM_SCALAR(atof(p)));
           p = strtok(nullptr, " ");
-        }   // end of : line
+        }                             // end of : line
 
         modal_.insert(tmp, values);   //[tmp] = values;
 

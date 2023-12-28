@@ -61,8 +61,10 @@
 #define GUM_LEARNING_GRAPH_CHANGES_GENERATOR_4_DIGRAPH_H
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/threads/threads.h>
+
 #include <agrum/tools/core/threads/threadExecutor.h>
+#include <agrum/tools/core/threads/threads.h>
+
 #include <agrum/BN/learning/structureUtils/IGraphChangesGenerator4DiGraph.h>
 
 namespace gum {

@@ -36,6 +36,7 @@
 #include <agrum/FMDP/learning/core/testPolicy/Chi2TestPolicy.h>
 #include <agrum/FMDP/learning/core/testPolicy/GTestPolicy.h>
 #include <agrum/FMDP/learning/core/testPolicy/leastSquareTestPolicy.h>
+
 // =========================================================================
 // =========================================================================
 
@@ -80,7 +81,8 @@ namespace gum {
     /// Allocators and Deallocators redefinition
     // ============================================================================
     void* operator new(size_t s) { return SmallObjectAllocator::instance().allocate(s); }
-    void  operator delete(void* p) {
+
+    void operator delete(void* p) {
       SmallObjectAllocator::instance().deallocate(p, sizeof(NodeDatabase));
     }
 
@@ -167,6 +169,7 @@ namespace gum {
     const HashTableConstIteratorSafe< ValueType, Idx > cbeginValues() const {
       return _valueCount_.cbeginSafe();
     }
+
     const HashTableConstIteratorSafe< ValueType, Idx > cendValues() const {
       return _valueCount_.cendSafe();
     }
@@ -185,6 +188,7 @@ namespace gum {
 
     private:
     Idx _valueDomain_(Int2Type< true >) const { return _valueCount_.size(); }
+
     Idx _valueDomain_(Int2Type< false >) const { return _value_->domainSize(); }
 
     std::string toString() const;

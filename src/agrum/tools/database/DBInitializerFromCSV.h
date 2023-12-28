@@ -28,15 +28,16 @@
 #ifndef GUM_LEARNING_DB_INITILIALIZER_FROM_CSV_H
 #define GUM_LEARNING_DB_INITILIALIZER_FROM_CSV_H
 
-#include <vector>
-#include <string>
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <string>
+#include <vector>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/database/IDBInitializer.h>
+
 #include <agrum/tools/database/CSVParser.h>
+#include <agrum/tools/database/IDBInitializer.h>
 
 namespace gum {
 
@@ -227,7 +228,7 @@ namespace gum {
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
-  } /* namespace learning */
+  }    /* namespace learning */
 
 } /* namespace gum */
 

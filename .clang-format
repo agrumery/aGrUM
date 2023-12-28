@@ -1,9 +1,9 @@
 #
-# aGrUM clang-format specification (version clang-format-11)
+# aGrUM clang-format specification (version clang-format-14)
 # Pierre-Henri Wuillemin - 2016-2021
 #
 BasedOnStyle: LLVM
-
+Language: Cpp
 Standard: c++20
 
 ColumnLimit: 100
@@ -13,6 +13,7 @@ ReflowComments: true
 CommentPragmas: "\\@headerfile"
 
 IndentPPDirectives: AfterHash
+SeparateDefinitionBlocks: Always
 BreakBeforeBraces: Attach
 AlwaysBreakTemplateDeclarations: Yes
 BreakBeforeBinaryOperators: All
@@ -35,6 +36,7 @@ AccessModifierOffset: 0
 IndentCaseLabels: true
 IndentWrappedFunctionNames: true
 NamespaceIndentation: All
+EmptyLineBeforeAccessModifier: Always
 
 SpacesInAngles: true
 Cpp11BracedListStyle: true
@@ -53,7 +55,7 @@ SpaceBeforeInheritanceColon: false
 SpaceBeforeCtorInitializerColon: true
 SpaceBeforeCpp11BracedList: false
 SpaceAfterLogicalNot: false
-
+SpaceBeforeCaseColon: true
 
 PointerAlignment: Left
 AlignAfterOpenBracket: Align
@@ -62,7 +64,9 @@ AlignConsecutiveMacros: Consecutive
 AlignConsecutiveDeclarations: Consecutive
 AlignOperands: AlignAfterOperator
 
-AlignTrailingComments: true
+AlignTrailingComments:
+  Kind: Always
+  OverEmptyLines: 2
 
 AllowAllParametersOfDeclarationOnNextLine: false
 AllowAllArgumentsOnNextLine: false
@@ -78,17 +82,33 @@ AllowShortLoopsOnASingleLine: false
 AllowShortBlocksOnASingleLine: Always
 AllowShortLambdasOnASingleLine: All
 AllowShortCaseLabelsOnASingleLine: true
-AllowShortEnumsOnASingleLine: false
-
+AllowShortEnumsOnASingleLine: true
+LambdaBodyIndentation: Signature
 
 SortUsingDeclarations: false
-SortIncludes: Never
+SortIncludes: CaseInsensitive
 IncludeBlocks: Regroup
+
 # see https://www.regextester.com/
 IncludeCategories:
-  - Regex:           '<agrum\/[[:alnum:]|\/]+\.h>'
-    Priority:        1
   - Regex:           '<[[:alnum:].]+>'
+    Priority:        1
+  - Regex:           '<gumtest\/AgrumTestSuite\.h>'
     Priority:        2
-  - Regex:           '"[^.]+\.h"'
+  - Regex:           '<gumtest\/utils\.h>'
+    Priority:        2
+  - Regex:           '<agrum\/agrum\.h>'
     Priority:        3
+  - Regex:           '<agrum\/config\.h>'
+    Priority:        3
+  - Regex:           '<gumtest\/AgrumApproximationUtils\.h>'
+    Priority:        7
+  - Regex:           '<agrum\/tools\/[[:alnum:]|\/]+\.h>'
+    Priority:        4
+  - Regex:           '<agrum\/[[:alnum:]|\/]+\.h>'
+    Priority:        5
+  - Regex:           '"[^.]+\.h"'
+    Priority:        6
+
+MacroBlockBegin: '^GUM_APPROX_TEST_BEGIN_ITERATION'
+MacroBlockEnd: '^GUM_APPROX_TEST_END_ITERATION'

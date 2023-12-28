@@ -340,6 +340,6 @@ namespace gum {
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
 #  include <agrum/tools/core/errorsContainer_inl.h>
-#endif /* GUM_NO_INLINE */
+#endif   /* GUM_NO_INLINE */
 
 #endif   // GUM_ERRORS_CONTAINERS_H

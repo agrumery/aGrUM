@@ -240,10 +240,12 @@ namespace gum {
     _parser_->errors().addError(s, _streamName_, lig, col);
     GUM_ERROR(gum::OperationNotAllowed, "")
   }
+
   template < typename GUM_SCALAR >
   INLINE void UAIBNReader< GUM_SCALAR >::_addError_(Idx lig, Idx col, const std::string& s) {
     _parser_->errors().addError(s, _streamName_, lig, col);
   }
+
   template < typename GUM_SCALAR >
   INLINE void UAIBNReader< GUM_SCALAR >::_addWarning_(Idx lig, Idx col, const std::string& s) {
     _parser_->errors().addWarning(s, _streamName_, lig, col);

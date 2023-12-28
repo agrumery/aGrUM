@@ -22,7 +22,7 @@
 #include <fstream>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 #include <agrum/PRM/generator/clusteredLayerGenerator.h>
 #include <agrum/PRM/generator/layerGenerator.h>
@@ -31,6 +31,7 @@ namespace gum_tests {
 
   class [[maybe_unused]] PRMGeneratorTestSuite: public CxxTest::TestSuite {
     private:
+
     public:
     void setUp() {
       // std::cerr << std::endl;

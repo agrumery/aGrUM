@@ -38,7 +38,6 @@
 #include <agrum/tools/core/timer.h>
 
 #include <agrum/BN/inference/variableElimination.h>
-
 #include <agrum/PRM/gspan/DFSTree.h>
 
 namespace gum {
@@ -203,6 +202,7 @@ namespace gum {
       // double sve_cost() const;
 
       ///@}
+
       private:
       // ========================================================================
       /// @name Private Members.

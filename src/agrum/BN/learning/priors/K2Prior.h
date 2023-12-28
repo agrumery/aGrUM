@@ -30,6 +30,7 @@
 #include <vector>
 
 #include <agrum/agrum.h>
+
 #include <agrum/BN/learning/priors/smoothingPrior.h>
 
 namespace gum {

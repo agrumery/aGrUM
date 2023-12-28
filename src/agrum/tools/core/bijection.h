@@ -32,13 +32,14 @@
 #ifndef GUM_BIJECTION_H
 #define GUM_BIJECTION_H
 
-#include <initializer_list>
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <type_traits>
 
 #include <agrum/tools/core/hashTable.h>
+
+#include <initializer_list>
+#include <type_traits>
 
 namespace gum {
 

@@ -29,10 +29,10 @@
 #define AGRUM_GRAPHICALMODELINFERENCE_H
 
 
-#include <agrum/tools/graphicalModels/graphicalModel.h>
-#include <agrum/tools/multidim/potential.h>
 #include <agrum/agrum.h>
 
+#include <agrum/tools/graphicalModels/graphicalModel.h>
+#include <agrum/tools/multidim/potential.h>
 
 namespace gum {
 
@@ -103,12 +103,7 @@ namespace gum {
      *   still remain a few light computations to perform to get the posterior
      *   potentials we need.
      */
-    enum class StateOfInference {
-      OutdatedStructure,
-      OutdatedPotentials,
-      ReadyForInference,
-      Done
-    };
+    enum class StateOfInference { OutdatedStructure, OutdatedPotentials, ReadyForInference, Done };
 
 
     // ############################################################################

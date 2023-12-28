@@ -45,13 +45,11 @@ namespace gum {
       this->_var_->setName(ss.str());
     }
 
-
     PRMType::PRMType(const DiscreteVariable& var) :
         PRMObject(var.name()), _var_(var.clone()), _superType_(0), _label_map_(0) {
       GUM_CONSTRUCTOR(PRMType);
       this->_updateName_();
     }
-
 
     PRMType::PRMType(PRMType&                  super_type,
                      const std::vector< Idx >& label_map,
@@ -69,7 +67,6 @@ namespace gum {
       }
     }
 
-
     PRMType::PRMType(const PRMType& from) :
         PRMObject(from), _var_(from._var_->clone()), _superType_(from._superType_), _label_map_(0) {
       GUM_CONS_CPY(PRMType);
@@ -78,19 +75,16 @@ namespace gum {
       if (_superType_) { _label_map_ = new std::vector< Idx >(from.label_map()); }
     }
 
-
     PRMType::PRMType(PRMType&& from) : PRMObject(from) {
       GUM_CONS_MOV(PRMType);
       GUM_ERROR(FatalError, "Move constructor must not be used")
     }
-
 
     PRMType::~PRMType() {
       GUM_DESTRUCTOR(PRMType);
       delete _var_;
       if (_label_map_) { delete _label_map_; }
     }
-
 
     PRMType& PRMType::operator=(const PRMType& from){
        GUM_ERROR(FatalError, "Copy operator must not be used")}
@@ -99,7 +93,6 @@ namespace gum {
     PRMType& PRMType::operator=(PRMType&& from) {
       GUM_ERROR(FatalError, "Move operator must not be used")
     }
-
 
     bool PRMType::isSubTypeOf(const PRMType& super) const {
       if ((*this) == super) {
@@ -110,7 +103,6 @@ namespace gum {
         return false;
       }
     }
-
 
     bool PRMType::_isValid_() const {
       if (!_superType_) { return _var_->domainSize() > 1; }

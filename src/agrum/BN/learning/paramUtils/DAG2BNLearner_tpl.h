@@ -158,8 +158,8 @@ namespace gum {
                                    // has been notified of the end of loop
 
       return bn;
-    }   // namespace learning
+    }                              // namespace learning
 
-  }   // namespace learning
+  }                                // namespace learning
 
 } /* namespace gum */

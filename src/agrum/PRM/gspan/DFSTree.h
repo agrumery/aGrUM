@@ -34,7 +34,6 @@
 #include <utility>
 #include <vector>
 
-
 #include <agrum/PRM/gspan/searchStrategy.h>
 
 namespace gum {

@@ -55,7 +55,6 @@ namespace gum {
       GUM_CONSTRUCTOR(DatabaseTable);
     }
 
-
     // default constructor
     DatabaseTable::DatabaseTable(const DBTranslatorSet& translators) :
         IDatabaseTable< DBTranslatedValue >(std::vector< std::string >(),
@@ -73,10 +72,8 @@ namespace gum {
       GUM_CONSTRUCTOR(DatabaseTable);
     }
 
-
     // virtual copy constructor
     DatabaseTable* DatabaseTable::clone() const { return new DatabaseTable(*this); }
-
 
     // copy operator
     DatabaseTable& DatabaseTable::operator=(const DatabaseTable& from) {
@@ -89,7 +86,6 @@ namespace gum {
       return *this;
     }
 
-
     // move constructor
     DatabaseTable& DatabaseTable::operator=(DatabaseTable&& from) {
       if (this != &from) {
@@ -100,7 +96,6 @@ namespace gum {
 
       return *this;
     }
-
 
     /// insert a new translator into the database
     std::size_t DatabaseTable::insertTranslator(const DBTranslator& translator,
@@ -176,7 +171,6 @@ namespace gum {
       return pos;
     }
 
-
     /// insert a new translator into the database
     std::size_t DatabaseTable::insertTranslator(const Variable&   var,
                                                 const std::size_t input_column,
@@ -229,7 +223,6 @@ namespace gum {
 
       return pos;
     }
-
 
     /// insert a new translator into the database
     std::size_t DatabaseTable::insertTranslator(const Variable&            var,
@@ -306,7 +299,6 @@ namespace gum {
       return pos;
     }
 
-
     // erases the kth translator or all those parsing the kth column of
     // the input dataset
     void DatabaseTable::eraseTranslators(const std::size_t k, const bool k_is_input_col) {
@@ -347,7 +339,6 @@ namespace gum {
         _translators_.eraseTranslator(kk);
       }
     }
-
 
     /// change the translator of a database column
     void DatabaseTable::changeTranslator(DBTranslator&     new_translator,
@@ -566,7 +557,6 @@ namespace gum {
       _translators_.changeTranslator(new_translator, kk);
     }
 
-
     /// change the translator of a database column
     void DatabaseTable::changeTranslator(const Variable&                   var,
                                          const std::size_t                 k,
@@ -612,7 +602,6 @@ namespace gum {
       delete new_translator;
     }
 
-
     /// propose a set with translators better suited for the content of the database
     std::vector< std::pair< Idx, std::shared_ptr< DBTranslator > > >
        DatabaseTable::betterTranslators() const {
@@ -622,14 +611,14 @@ namespace gum {
         switch (_translators_[i].variable()->varType()) {
           // if the translator is discretized, range or continuous, we cannot
           // improve it
-          case VarType::Continuous:
-          case VarType::Numerical:
-          case VarType::Discretized:
-          case VarType::Range: break;
+          case VarType::Continuous :
+          case VarType::Numerical :
+          case VarType::Discretized :
+          case VarType::Range : break;
 
           // if the translator can only translate integers ans all the numbers
           // are consecutive, prefer a range variable
-          case VarType::Integer: {
+          case VarType::Integer : {
             const IntegerVariable& var
                = static_cast< const IntegerVariable& >(*(_translators_[i].variable()));
 
@@ -676,7 +665,7 @@ namespace gum {
           // prefer a RangeVariable; if they are integers but not consecutive,
           // prefer an IntegerVariable, else check whether a continuous
           // variable could be ok
-          case VarType::Labelized: {
+          case VarType::Labelized : {
             const LabelizedVariable& var
                = static_cast< const LabelizedVariable& >(*(_translators_[i].variable()));
             if (!var.domainSize()) break;   // we cannot get a better translator
@@ -784,7 +773,6 @@ namespace gum {
       return better;
     }
 
-
     /// returns the kth translator of the database
     const DBTranslator& DatabaseTable::translator(const std::size_t k,
                                                   const bool        k_is_input_col) const {
@@ -809,7 +797,6 @@ namespace gum {
       return _translators_.translator(kk);
     }
 
-
     /// returns the kth variable of the database
     const Variable& DatabaseTable::variable(const std::size_t k, const bool k_is_input_col) const {
       // find the position of the translator that contains the variable.
@@ -832,7 +819,6 @@ namespace gum {
 
       return _translators_.variable(kk);
     }
-
 
     /// sets the names of the variables
     void DatabaseTable::setVariableNames(const std::vector< std::string >& names,
@@ -873,7 +859,6 @@ namespace gum {
       }
     }
 
-
     /** @brief indicates that we should ignore the kth column of the original
      * database when inserting new rows */
     void DatabaseTable::ignoreColumn(const std::size_t k, const bool k_is_input_col) {
@@ -897,7 +882,6 @@ namespace gum {
       // remove all the translators corresponding to k
       eraseTranslators(k, k_is_input_col);
     }
-
 
     /// returns  the set of ignored columns
     const typename DatabaseTable::template DBVector< std::size_t >
@@ -937,7 +921,6 @@ namespace gum {
       return ignored_cols;
     }
 
-
     /// returns the set of columns parsed
     const typename DatabaseTable::template DBVector< std::size_t >
        DatabaseTable::inputColumns() const {
@@ -950,7 +933,6 @@ namespace gum {
       }
       return input_cols;
     }
-
 
     /// returns the domain size of the kth variable
     std::size_t DatabaseTable::domainSize(const std::size_t k, const bool k_is_input_col) const {
@@ -974,7 +956,6 @@ namespace gum {
       return _translators_.domainSize(kk);
     }
 
-
     // indicates whether a reordering is needed to make the kth
     // translator sorted by lexicographical order
     bool DatabaseTable::needsReordering(const std::size_t k, const bool k_is_input_col) const {
@@ -997,7 +978,6 @@ namespace gum {
 
       return _translators_.needsReordering(kk);
     }
-
 
     // performs a reordering of the kth translator or of the first
     // translator corresponding to the kth column of the input database
@@ -1053,7 +1033,6 @@ namespace gum {
       this->_threadProcessDatabase_(newtrans_lambda, undo_newtrans_lambda);
     }
 
-
     /// insert a new row at the end of the database
     void DatabaseTable::insertRow(const std::vector< std::string >& new_row) {
       // check that the row can be fully translated, i.e., it contains enough
@@ -1082,7 +1061,6 @@ namespace gum {
       this->insertRow(std::move(dbrow), has_missing_val ? IsMissing::True : IsMissing::False);
     }
 
-
     /** @brief check that a row's values are compatible with those of the
      * translators' variables */
     bool DatabaseTable::_isRowCompatible_(
@@ -1094,13 +1072,13 @@ namespace gum {
       const auto& translators = _translators_.translators();
       for (std::size_t i = std::size_t(0); i < row_size; ++i) {
         switch (translators[i]->getValType()) {
-          case DBTranslatedValueType::DISCRETE:
+          case DBTranslatedValueType::DISCRETE :
             if ((row[i].discr_val >= translators[i]->domainSize())
                 && (row[i].discr_val != std::numeric_limits< std::size_t >::max()))
               return false;
             break;
 
-          case DBTranslatedValueType::CONTINUOUS: {
+          case DBTranslatedValueType::CONTINUOUS : {
             const IContinuousVariable& var
                = static_cast< const IContinuousVariable& >(*(translators[i]->variable()));
             if (((var.lowerBoundAsDouble() > (double)row[i].cont_val)
@@ -1110,25 +1088,22 @@ namespace gum {
             break;
           }
 
-          default: GUM_ERROR(NotImplementedYet, "Translated value type not supported yet")
+          default : GUM_ERROR(NotImplementedYet, "Translated value type not supported yet")
         }
       }
 
       return true;
     }
 
-
     // insert a new DBRow of DBCells at the end of the database
     void DatabaseTable::insertRow(const typename DatabaseTable::template Row< DBCell >& new_row) {
       GUM_ERROR(NotImplementedYet, "not implemented yet")
     }
 
-
     // insert a new DBRow of DBCells at the end of the database
     void DatabaseTable::insertRow(typename DatabaseTable::template Row< DBCell >&& new_row) {
       GUM_ERROR(NotImplementedYet, "not implemented yet")
     }
-
 
     /// insert a set of new DBRows at the end of the database
     void DatabaseTable::insertRows(
@@ -1152,7 +1127,6 @@ namespace gum {
       IDatabaseTable< DBTranslatedValue >::insertRows(std::move(rows), rows_have_missing_vals);
     }
 
-
     /// insert a set of new DBRows at the end of the database
     void DatabaseTable::insertRows(
        const typename DatabaseTable::template Matrix< DBTranslatedValue >& new_rows,
@@ -1175,19 +1149,16 @@ namespace gum {
       IDatabaseTable< DBTranslatedValue >::insertRows(new_rows, rows_have_missing_vals);
     }
 
-
     /// insert a set of new DBRows at the end of the database
     void DatabaseTable::insertRows(typename DatabaseTable::template Matrix< DBCell >&& new_rows) {
       GUM_ERROR(NotImplementedYet, "not implemented yet")
     }
-
 
     /// insert a set of new DBRows at the end of the database
     void DatabaseTable::insertRows(
        const typename DatabaseTable::template Matrix< DBCell >& new_rows) {
       GUM_ERROR(NotImplementedYet, "not implemented yet")
     }
-
 
     /// erase the content of the database, including the names of the variables
     void DatabaseTable::clear() {

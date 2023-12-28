@@ -168,6 +168,7 @@ namespace gum {
       bool isDecomposable() const;
 
       /// @}
+
       protected:
       /// by default, buildValue_ uses a "fold" scheme and the user has to
       /// implement neutralElt_ and fold_

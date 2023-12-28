@@ -93,7 +93,6 @@ namespace gum {
       }
     }
 
-
     /// default constructor
     DBInitializerFromSQL::DBInitializerFromSQL(const std::string& connection_string,
                                                const std::string& query,
@@ -122,7 +121,6 @@ namespace gum {
       GUM_CONSTRUCTOR(DBInitializerFromSQL);
     }
 
-
     /// default constructor
     DBInitializerFromSQL::DBInitializerFromSQL(const std::string& dataSource,
                                                const std::string& login,
@@ -134,26 +132,21 @@ namespace gum {
                              query,
                              timeout) {}
 
-
     /// copy constructor
     DBInitializerFromSQL::DBInitializerFromSQL(const DBInitializerFromSQL& from) :
         DBInitializerFromSQL(from._connection_string_, from._query_, from._timeout_) {}
 
-
     /// move constructor
     DBInitializerFromSQL::DBInitializerFromSQL(DBInitializerFromSQL&& from) :
         DBInitializerFromSQL(from._connection_string_, from._query_, from._timeout_) {}
-
 
     /// virtual copy constructor
     DBInitializerFromSQL* DBInitializerFromSQL::clone() const {
       return new DBInitializerFromSQL(*this);
     }
 
-
     /// destructor
     DBInitializerFromSQL::~DBInitializerFromSQL() { GUM_DESTRUCTOR(DBInitializerFromSQL); }
-
 
     /// copy operator
     DBInitializerFromSQL& DBInitializerFromSQL::operator=(const DBInitializerFromSQL& from) {
@@ -186,7 +179,6 @@ namespace gum {
 
       return *this;
     }
-
 
     /// move operator
     DBInitializerFromSQL& DBInitializerFromSQL::operator=(DBInitializerFromSQL&& from) {

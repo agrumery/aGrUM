@@ -48,7 +48,6 @@ namespace gum {
       return *this;
     }
 
-
     /// move operator
     ScoreBIC& ScoreBIC::operator=(ScoreBIC&& from) {
       if (this != &from) {
@@ -57,7 +56,6 @@ namespace gum {
       }
       return *this;
     }
-
 
     /// indicates whether the prior is compatible (meaningful) with the score
     std::string ScoreBIC::isPriorCompatible(PriorType prior_type, double weight) {
@@ -74,7 +72,6 @@ namespace gum {
           << "' is not yet compatible with the score 'BIC'.";
       return msg.str();
     }
-
 
     /// returns the score corresponding to a given nodeset
     double ScoreBIC::score_(const IdCondSet& idset) {
@@ -149,7 +146,6 @@ namespace gum {
         return score;
       }
     }
-
 
     /// returns the size of the database w.r.t. a given idset
     double ScoreBIC::N(const IdCondSet& idset) {

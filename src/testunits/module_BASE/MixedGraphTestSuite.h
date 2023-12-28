@@ -19,16 +19,17 @@
  */
 
 
-#include "agrum/tools/graphs/graphElements.h"
 #include <iostream>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
-#include <agrum/tools/graphs/graphElements.h>
-#include <agrum/tools/graphs/undiGraph.h>
 #include <agrum/tools/graphs/diGraph.h>
+#include <agrum/tools/graphs/graphElements.h>
 #include <agrum/tools/graphs/mixedGraph.h>
+#include <agrum/tools/graphs/undiGraph.h>
+
+#include "agrum/tools/graphs/graphElements.h"
 
 // The graph used for the tests:
 //          0   1_          0 -- 2
@@ -390,7 +391,8 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(HashMapNodes) {
       gum::MixedGraph graph = buildGraph();
 
-      gum::NodeProperty< gum::Size > hashmap = graph.nodesPropertyFromFunction(&simpleDoubleFunction);
+      gum::NodeProperty< gum::Size > hashmap
+         = graph.nodesPropertyFromFunction(&simpleDoubleFunction);
       TS_ASSERT_EQUALS(hashmap.size(), graph.size())
 
       gum::Size sk = 0;

@@ -39,13 +39,11 @@ namespace gum {
     GUM_CONSTRUCTOR(GraphicalModelInference);
   }
 
-
   // Default Constructor
   template < typename GUM_SCALAR >
   GraphicalModelInference< GUM_SCALAR >::GraphicalModelInference() {
     GUM_CONSTRUCTOR(GraphicalModelInference);
   }
-
 
   // Destructor
   template < typename GUM_SCALAR >
@@ -62,29 +60,30 @@ namespace gum {
     GUM_DESTRUCTOR(GraphicalModelInference);
   }
 
-
   // returns whether the inference object is in a ready state
   template < typename GUM_SCALAR >
   INLINE bool GraphicalModelInference< GUM_SCALAR >::isInferenceReady() const noexcept {
     return (_state_ == StateOfInference::ReadyForInference);
   }
+
   // returns whether the inference object is in a OutdatedStructure state
   template < typename GUM_SCALAR >
   INLINE bool GraphicalModelInference< GUM_SCALAR >::isInferenceOutdatedStructure() const noexcept {
     return (_state_ == StateOfInference::OutdatedStructure);
   }
+
   // returns whether the inference object is in a OutdatedPotential state
   template < typename GUM_SCALAR >
   INLINE bool
      GraphicalModelInference< GUM_SCALAR >::isInferenceOutdatedPotentials() const noexcept {
     return (_state_ == StateOfInference::OutdatedPotentials);
   }
+
   // returns whether the inference object is in a InferenceDone state
   template < typename GUM_SCALAR >
   INLINE bool GraphicalModelInference< GUM_SCALAR >::isInferenceDone() const noexcept {
     return (_state_ == StateOfInference::Done);
   }
-
 
   // returns the state of the inference engine
   template < typename GUM_SCALAR >
@@ -112,7 +111,6 @@ namespace gum {
     return *_model_;
   }
 
-
   // assigns a new BN to the inference engine
   template < typename GUM_SCALAR >
   void GraphicalModelInference< GUM_SCALAR >::setModel_(const GraphicalModel* model) {
@@ -123,7 +121,6 @@ namespace gum {
     setState_(StateOfInference::OutdatedStructure);
   }
 
-
   // assigns a BN to a newly constructed inference engine
   template < typename GUM_SCALAR >
   void GraphicalModelInference< GUM_SCALAR >::setModelDuringConstruction_(
@@ -133,14 +130,12 @@ namespace gum {
     setState_(StateOfInference::OutdatedStructure);
   }
 
-
   // clears all the data structures allocated for the last inference
   template < typename GUM_SCALAR >
   INLINE void GraphicalModelInference< GUM_SCALAR >::clear() {
     eraseAllEvidence();
     setState_(StateOfInference::OutdatedStructure);
   }
-
 
   /// computes the domain sizes of the random variables
   template < typename GUM_SCALAR >
@@ -153,13 +148,11 @@ namespace gum {
     }
   }
 
-
   // get the domain sizes of the random variables of the BN
   template < typename GUM_SCALAR >
   INLINE const NodeProperty< Size >& GraphicalModelInference< GUM_SCALAR >::domainSizes() const {
     return _domain_sizes_;
   }
-
 
   // ##############################################################################
   // Evidence
@@ -195,7 +188,6 @@ namespace gum {
     return pot;
   }
 
-
   // checks wether a potential corresponds to a hard evidence
   template < typename GUM_SCALAR >
   bool GraphicalModelInference< GUM_SCALAR >::_isHardEvidence_(const Potential< GUM_SCALAR >& pot,
@@ -221,7 +213,6 @@ namespace gum {
 
     return true;   // pot is deterministic
   }
-
 
   // adds a new hard evidence on node id
   template < typename GUM_SCALAR >
@@ -318,7 +309,6 @@ namespace gum {
     onEvidenceAdded_(id, is_hard_evidence);
   }
 
-
   // adds a new evidence on node id (might be soft or hard)
   template < typename GUM_SCALAR >
   INLINE void
@@ -326,7 +316,6 @@ namespace gum {
     Potential< GUM_SCALAR > new_pot(pot);
     addEvidence(std::move(new_pot));
   }
-
 
   /// adds a new list of evidence
   template < typename GUM_SCALAR >
@@ -336,7 +325,6 @@ namespace gum {
       addEvidence(*pot);
   }
 
-
   /// adds a new set of evidence
   template < typename GUM_SCALAR >
   INLINE void GraphicalModelInference< GUM_SCALAR >::addSetOfEvidence(
@@ -345,13 +333,11 @@ namespace gum {
       addEvidence(*pot);
   }
 
-
   // indicates whether some node(s) have received evidence
   template < typename GUM_SCALAR >
   INLINE bool GraphicalModelInference< GUM_SCALAR >::hasEvidence() const {
     return !_evidence_.empty();
   }
-
 
   // indicates whether node id has received an evidence
   template < typename GUM_SCALAR >
@@ -359,20 +345,17 @@ namespace gum {
     return _evidence_.exists(id);
   }
 
-
   // indicates whether node id has received a hard evidence
   template < typename GUM_SCALAR >
   INLINE bool GraphicalModelInference< GUM_SCALAR >::hasHardEvidence(NodeId id) const {
     return _hard_evidence_nodes_.exists(id);
   }
 
-
   // indicates whether node id has received a soft evidence
   template < typename GUM_SCALAR >
   INLINE bool GraphicalModelInference< GUM_SCALAR >::hasSoftEvidence(NodeId id) const {
     return _soft_evidence_nodes_.exists(id);
   }
-
 
   // indicates whether node id has received an evidence
   template < typename GUM_SCALAR >
@@ -381,14 +364,12 @@ namespace gum {
     return hasEvidence(this->model().idFromName(nodeName));
   }
 
-
   // indicates whether node id has received a hard evidence
   template < typename GUM_SCALAR >
   INLINE bool
      GraphicalModelInference< GUM_SCALAR >::hasHardEvidence(const std::string& nodeName) const {
     return hasHardEvidence(this->model().idFromName(nodeName));
   }
-
 
   // indicates whether node id has received a soft evidence
   template < typename GUM_SCALAR >
@@ -458,7 +439,6 @@ namespace gum {
     chgEvidence(this->model().idFromName(nodeName), vals);
   }
 
-
   // change the value of an already existing evidence (might be soft or hard)
   template < typename GUM_SCALAR >
   void GraphicalModelInference< GUM_SCALAR >::chgEvidence(const Potential< GUM_SCALAR >& pot) {
@@ -521,7 +501,6 @@ namespace gum {
     onEvidenceChanged_(id, hasChangedSoftHard);
   }
 
-
   // removed the evidence, if any, corresponding to node id
   template < typename GUM_SCALAR >
   INLINE void GraphicalModelInference< GUM_SCALAR >::eraseEvidence(NodeId id) {
@@ -541,12 +520,12 @@ namespace gum {
       _evidence_.erase(id);
     }
   }
+
   // removed the evidence, if any, corresponding to node of name nodeName
   template < typename GUM_SCALAR >
   INLINE void GraphicalModelInference< GUM_SCALAR >::eraseEvidence(const std::string& nodeName) {
     eraseEvidence(this->model().idFromName(nodeName));
   }
-
 
   // removes all the evidence entered into the network
   template < typename GUM_SCALAR >
@@ -570,13 +549,11 @@ namespace gum {
     }
   }
 
-
   // returns the number of evidence entered into the Bayesian network
   template < typename GUM_SCALAR >
   INLINE Size GraphicalModelInference< GUM_SCALAR >::nbrEvidence() const {
     return _evidence_.size();
   }
-
 
   // returns the number of hard evidence entered into the Bayesian network
   template < typename GUM_SCALAR >
@@ -584,20 +561,17 @@ namespace gum {
     return _hard_evidence_nodes_.size();
   }
 
-
   // returns the number of soft evidence entered into the Bayesian network
   template < typename GUM_SCALAR >
   INLINE Size GraphicalModelInference< GUM_SCALAR >::nbrSoftEvidence() const {
     return _soft_evidence_nodes_.size();
   }
 
-
   // indicate for each node with hard evidence which value it took
   template < typename GUM_SCALAR >
   INLINE const NodeProperty< Idx >& GraphicalModelInference< GUM_SCALAR >::hardEvidence() const {
     return _hard_evidence_;
   }
-
 
   // the set of evidence entered into the network
   template < typename GUM_SCALAR >
@@ -606,20 +580,17 @@ namespace gum {
     return _evidence_;
   }
 
-
   /// the set of nodes that received soft evidence
   template < typename GUM_SCALAR >
   INLINE const NodeSet& GraphicalModelInference< GUM_SCALAR >::softEvidenceNodes() const {
     return _soft_evidence_nodes_;
   }
 
-
   /// the set of nodes that received hard evidence
   template < typename GUM_SCALAR >
   INLINE const NodeSet& GraphicalModelInference< GUM_SCALAR >::hardEvidenceNodes() const {
     return _hard_evidence_nodes_;
   }
-
 
   // ##############################################################################
   // Inference
@@ -631,14 +602,12 @@ namespace gum {
     setState_(StateOfInference::OutdatedStructure);
   }
 
-
   /** puts the inference into an OutdatedPotentials state if it is not
    *  already in an OutdatedStructure state */
   template < typename GUM_SCALAR >
   INLINE void GraphicalModelInference< GUM_SCALAR >::setOutdatedPotentialsState_() {
     setState_(StateOfInference::OutdatedPotentials);
   }
-
 
   // prepare the internal inference structures for the next inference
   template < typename GUM_SCALAR >
@@ -655,7 +624,6 @@ namespace gum {
 
     setState_(StateOfInference::ReadyForInference);
   }
-
 
   // perform the heavy computations needed to compute the targets' posteriors
   template < typename GUM_SCALAR >

@@ -23,14 +23,15 @@
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
-#include <agrum/BN/BayesNet.h>
-#include <agrum/BN/inference/ShaferShenoyInference.h>
-#include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/tools/core/hashTable.h>
 #include <agrum/tools/multidim/implementations/multiDimArray.h>
 #include <agrum/tools/variables/labelizedVariable.h>
+
+#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/BN/inference/ShaferShenoyInference.h>
 
 namespace gum_tests {
 

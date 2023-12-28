@@ -28,13 +28,12 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
+#include <agrum/tools/database/DBTranslator4ContinuousVariable.h>
 #include <agrum/tools/database/DBTranslator4DiscretizedVariable.h>
 #include <agrum/tools/database/DBTranslator4IntegerVariable.h>
-#include <agrum/tools/database/DBTranslator4RangeVariable.h>
-#include <agrum/tools/database/DBTranslator4ContinuousVariable.h>
+#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/tools/database/DBTranslator4NumericalDiscreteVariable.h>
-
+#include <agrum/tools/database/DBTranslator4RangeVariable.h>
 
 namespace gum {
 
@@ -99,13 +98,13 @@ namespace gum {
 
     } /* namespace DBTranslators */
 
-  } /* namespace learning */
+  }   /* namespace learning */
 
 } /* namespace gum */
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
 #  include <agrum/tools/database/DBTranslatorUtils_inl.h>
-#endif /* GUM_NO_INLINE */
+#endif   /* GUM_NO_INLINE */
 
 #endif   // GUM_DB_TRANSLATOR_UTILS_H

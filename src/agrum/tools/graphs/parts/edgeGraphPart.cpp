@@ -64,6 +64,7 @@ namespace gum {
   }
 
   void EdgeGraphPart::clearEdges() { _clearEdges_(); }
+
   void EdgeGraphPart::_clearEdges_() {
     for (const auto& elt: _neighbours_)
       delete elt.second;

@@ -31,12 +31,12 @@
 #include <agrum/tools/multidim/aggregators/amplitude.h>
 #include <agrum/tools/multidim/aggregators/and.h>
 #include <agrum/tools/multidim/aggregators/count.h>
-#include <agrum/tools/multidim/aggregators/or.h>
 #include <agrum/tools/multidim/aggregators/exists.h>
 #include <agrum/tools/multidim/aggregators/forall.h>
 #include <agrum/tools/multidim/aggregators/max.h>
 #include <agrum/tools/multidim/aggregators/median.h>
 #include <agrum/tools/multidim/aggregators/min.h>
+#include <agrum/tools/multidim/aggregators/or.h>
 #include <agrum/tools/multidim/aggregators/sum.h>
 
 namespace gum {
@@ -127,37 +127,37 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE bool PRMAggregate< GUM_SCALAR >::isDecomposable() const {
       switch (agg_type()) {
-        case AggregateType::MIN: {
+        case AggregateType::MIN : {
           return aggregator::Min< GUM_SCALAR >().isDecomposable();
         }
-        case AggregateType::MAX: {
+        case AggregateType::MAX : {
           return aggregator::Max< GUM_SCALAR >().isDecomposable();
         }
-        case AggregateType::OR: {
+        case AggregateType::OR : {
           return aggregator::Or< GUM_SCALAR >().isDecomposable();
         }
-        case AggregateType::AND: {
+        case AggregateType::AND : {
           return aggregator::And< GUM_SCALAR >().isDecomposable();
         }
-        case AggregateType::AMPLITUDE: {
+        case AggregateType::AMPLITUDE : {
           return aggregator::Amplitude< GUM_SCALAR >().isDecomposable();
         }
-        case AggregateType::MEDIAN: {
+        case AggregateType::MEDIAN : {
           return aggregator::Median< GUM_SCALAR >().isDecomposable();
         }
-        case AggregateType::EXISTS: {
+        case AggregateType::EXISTS : {
           return aggregator::Exists< GUM_SCALAR >(label()).isDecomposable();
         }
-        case AggregateType::FORALL: {
+        case AggregateType::FORALL : {
           return aggregator::Forall< GUM_SCALAR >(label()).isDecomposable();
         }
-        case AggregateType::COUNT: {
+        case AggregateType::COUNT : {
           return aggregator::Count< GUM_SCALAR >(label()).isDecomposable();
         }
-        case AggregateType::SUM: {
+        case AggregateType::SUM : {
           return aggregator::Sum< GUM_SCALAR >().isDecomposable();
         }
-        default: {
+        default : {
           GUM_ERROR(OperationNotAllowed, "Unknown aggregator.")
         }
       }
@@ -186,43 +186,42 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE MultiDimImplementation< GUM_SCALAR >* PRMAggregate< GUM_SCALAR >::buildImpl() const {
       switch (agg_type()) {
-        case AggregateType::MIN: {
+        case AggregateType::MIN : {
           return new aggregator::Min< GUM_SCALAR >();
         }
-        case AggregateType::MAX: {
+        case AggregateType::MAX : {
           return new aggregator::Max< GUM_SCALAR >();
         }
-        case AggregateType::OR: {
+        case AggregateType::OR : {
           return new aggregator::Or< GUM_SCALAR >();
         }
-        case AggregateType::AND: {
+        case AggregateType::AND : {
           return new aggregator::And< GUM_SCALAR >();
         }
-        case AggregateType::AMPLITUDE: {
+        case AggregateType::AMPLITUDE : {
           return new aggregator::Amplitude< GUM_SCALAR >();
         }
-        case AggregateType::MEDIAN: {
+        case AggregateType::MEDIAN : {
           return new aggregator::Median< GUM_SCALAR >();
         }
-        case AggregateType::EXISTS: {
+        case AggregateType::EXISTS : {
           return new aggregator::Exists< GUM_SCALAR >(label());
         }
-        case AggregateType::FORALL: {
+        case AggregateType::FORALL : {
           return new aggregator::Forall< GUM_SCALAR >(label());
         }
-        case AggregateType::COUNT: {
+        case AggregateType::COUNT : {
           return new aggregator::Count< GUM_SCALAR >(label());
         }
-        case AggregateType::SUM: {
+        case AggregateType::SUM : {
           return new aggregator::Sum< GUM_SCALAR >();
         }
-        default: {
+        default : {
           GUM_ERROR(OperationNotAllowed, "Unknown aggregator.")
         }
       }
       return nullptr;
     }
-
 
     // See gum::PRMClassElement<GUM_SCALAR>::addParent_().
     template < typename GUM_SCALAR >

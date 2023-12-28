@@ -19,8 +19,9 @@
  */
 
 
-#include <agrum/BN/BayesNet.h>
 #include <agrum/agrum.h>
+
+#include <agrum/BN/BayesNet.h>
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

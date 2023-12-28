@@ -216,25 +216,25 @@ namespace gum {
       template < typename GUM_SCALAR >
       void O3prmrSession< GUM_SCALAR >::addCommand(const O3prmrCommand* command) {
         switch (command->type()) {
-          case O3prmrCommand::RequestType::SetEngine:
+          case O3prmrCommand::RequestType::SetEngine :
             m_commands.push_back(new SetEngineCommand(*(SetEngineCommand*)command));
             break;
 
-          case O3prmrCommand::RequestType::SetGndEngine:
+          case O3prmrCommand::RequestType::SetGndEngine :
             m_commands.push_back(new SetGndEngineCommand(*(SetGndEngineCommand*)command));
             break;
 
-          case O3prmrCommand::RequestType::Observe:
+          case O3prmrCommand::RequestType::Observe :
             m_commands.push_back(
                new ObserveCommand< GUM_SCALAR >(*(ObserveCommand< GUM_SCALAR >*)command));
             break;
 
-          case O3prmrCommand::RequestType::Unobserve:
+          case O3prmrCommand::RequestType::Unobserve :
             m_commands.push_back(
                new UnobserveCommand< GUM_SCALAR >(*(UnobserveCommand< GUM_SCALAR >*)command));
             break;
 
-          case O3prmrCommand::RequestType::Query:
+          case O3prmrCommand::RequestType::Query :
             m_commands.push_back(
                new QueryCommand< GUM_SCALAR >(*(QueryCommand< GUM_SCALAR >*)command));
             break;

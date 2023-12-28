@@ -21,8 +21,9 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/tools/core/utils_string.h>
 #include <agrum/CN/credalNet.h>
+
+#include <agrum/tools/core/utils_string.h>
 
 namespace gum {
   namespace credal {
@@ -533,9 +534,9 @@ namespace gum {
             ++ins_max;
           }   // end of : for each modality
 
-        }   // end of : for each entry
+        }     // end of : for each entry
 
-      }   // end of : for each variable
+      }       // end of : for each variable
 
       _epsilonMin_ = epsi_min;
       _epsilonMax_ = epsi_max;
@@ -590,7 +591,7 @@ namespace gum {
 
         }   // end of : for each entry
 
-      }   // end of : for each variable
+      }     // end of : for each variable
     }
 
     template < typename GUM_SCALAR >
@@ -655,9 +656,9 @@ namespace gum {
             ++ins_max;
           }   // end of : for each modality
 
-        }   // end of : for each entry
+        }     // end of : for each entry
 
-      }   // end of : for each variable
+      }       // end of : for each variable
 
       _epsilonMin_ = GUM_SCALAR(s);
       _epsilonMax_ = GUM_SCALAR(s);
@@ -1141,7 +1142,7 @@ namespace gum {
 
         }   // end of bit i
 
-      }   // end of old variable
+      }     // end of old variable
 
       bin_bn->beginTopologyTransformation();
 
@@ -1775,7 +1776,7 @@ namespace gum {
                   elem[probability - vertex->begin()] = true;
                   break;
                 }
-              }   // end of : for each modality
+              }        // end of : for each modality
 
               break;   // not vacuous
             }          // end of : for each vertex
@@ -1802,5 +1803,5 @@ namespace gum {
       }   // end of : for each variable
     }
 
-  }   // namespace credal
+  }       // namespace credal
 }   // namespace gum

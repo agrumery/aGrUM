@@ -30,14 +30,14 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 #  include <algorithm>
 
-#  include <agrum/BN/algorithms/BayesBall.h>
-#  include <agrum/BN/algorithms/barrenNodesFinder.h>
-#  include <agrum/BN/algorithms/dSeparationAlgorithm.h>
 #  include <agrum/tools/graphs/algorithms/binaryJoinTreeConverterDefault.h>
 #  include <agrum/tools/multidim/instantiation.h>
 #  include <agrum/tools/multidim/utils/operators/multiDimCombineAndProjectDefault.h>
 #  include <agrum/tools/multidim/utils/operators/multiDimProjection.h>
 
+#  include <agrum/BN/algorithms/barrenNodesFinder.h>
+#  include <agrum/BN/algorithms/BayesBall.h>
+#  include <agrum/BN/algorithms/dSeparationAlgorithm.h>
 
 namespace gum {
   // default constructor
@@ -61,7 +61,6 @@ namespace gum {
     // for debugging purposes
     GUM_CONSTRUCTOR(ShaferShenoyInference);
   }
-
 
   // destructor
   template < typename GUM_SCALAR >
@@ -99,7 +98,6 @@ namespace gum {
     GUM_DESTRUCTOR(ShaferShenoyInference);
   }
 
-
   /// set a new triangulation algorithm
   template < typename GUM_SCALAR >
   void
@@ -109,7 +107,6 @@ namespace gum {
     _is_new_jt_needed_ = true;
     this->setOutdatedStructureState_();
   }
-
 
   /// returns the current join tree used
   template < typename GUM_SCALAR >
@@ -127,34 +124,33 @@ namespace gum {
     return _junctionTree_;
   }
 
-
   /// sets how we determine the relevant potentials to combine
   template < typename GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::setRelevantPotentialsFinderType(
      RelevantPotentialsFinderType type) {
     if (type != _find_relevant_potential_type_) {
       switch (type) {
-        case RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS:
+        case RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS :
           _findRelevantPotentials_
              = &ShaferShenoyInference< GUM_SCALAR >::_findRelevantPotentialsWithdSeparation2_;
           break;
 
-        case RelevantPotentialsFinderType::DSEP_BAYESBALL_NODES:
+        case RelevantPotentialsFinderType::DSEP_BAYESBALL_NODES :
           _findRelevantPotentials_
              = &ShaferShenoyInference< GUM_SCALAR >::_findRelevantPotentialsWithdSeparation_;
           break;
 
-        case RelevantPotentialsFinderType::DSEP_KOLLER_FRIEDMAN_2009:
+        case RelevantPotentialsFinderType::DSEP_KOLLER_FRIEDMAN_2009 :
           _findRelevantPotentials_
              = &ShaferShenoyInference< GUM_SCALAR >::_findRelevantPotentialsWithdSeparation3_;
           break;
 
-        case RelevantPotentialsFinderType::FIND_ALL:
+        case RelevantPotentialsFinderType::FIND_ALL :
           _findRelevantPotentials_
              = &ShaferShenoyInference< GUM_SCALAR >::_findRelevantPotentialsGetAll_;
           break;
 
-        default:
+        default :
           GUM_ERROR(InvalidArgument,
                     "setRelevantPotentialsFinderType for type " << (unsigned int)type
                                                                 << " is not implemented yet");
@@ -168,7 +164,6 @@ namespace gum {
     }
   }
 
-
   /// sets the operator for performing the projections
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::_setProjectionFunction_(
@@ -179,7 +174,6 @@ namespace gum {
     // the change in of the projection operator
     _invalidateAllMessages_();
   }
-
 
   /// sets the operator for performing the combinations
   template < typename GUM_SCALAR >
@@ -192,7 +186,6 @@ namespace gum {
     // the change of the combination operator
     _invalidateAllMessages_();
   }
-
 
   /// invalidate all messages, posteriors and created potentials
   template < typename GUM_SCALAR >
@@ -221,7 +214,6 @@ namespace gum {
     if (this->isInferenceReady() || this->isInferenceDone()) this->setOutdatedPotentialsState_();
   }
 
-
   /// sets how we determine barren nodes
   template < typename GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::setFindBarrenNodesType(FindBarrenNodesType type) {
@@ -229,10 +221,10 @@ namespace gum {
       // WARNING: if a new type is added here, method  _createJT_ should certainly
       // be updated as well, in particular its step 2.
       switch (type) {
-        case FindBarrenNodesType::FIND_BARREN_NODES:
-        case FindBarrenNodesType::FIND_NO_BARREN_NODES: break;
+        case FindBarrenNodesType::FIND_BARREN_NODES :
+        case FindBarrenNodesType::FIND_NO_BARREN_NODES : break;
 
-        default:
+        default :
           GUM_ERROR(InvalidArgument,
                     "setFindBarrenNodesType for type " << (unsigned int)type
                                                        << " is not implemented yet");
@@ -244,7 +236,6 @@ namespace gum {
       this->setOutdatedStructureState_();
     }
   }
-
 
   /// fired when a new evidence is inserted
   template < typename GUM_SCALAR >
@@ -266,7 +257,6 @@ namespace gum {
       }
     }
   }
-
 
   /// fired when an evidence is removed
   template < typename GUM_SCALAR >
@@ -291,7 +281,6 @@ namespace gum {
     }
   }
 
-
   /// fired when all the evidence are erased
   template < typename GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::onAllEvidenceErased_(bool has_hard_evidence) {
@@ -314,7 +303,6 @@ namespace gum {
     }
   }
 
-
   /// fired when an evidence is changed
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::onEvidenceChanged_(const NodeId id,
@@ -331,11 +319,9 @@ namespace gum {
     }
   }
 
-
   /// fired after a new Bayes net has been assigned to the engine
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::onModelChanged_(const GraphicalModel* bn) {}
-
 
   /// fired after a new target is inserted
   template < typename GUM_SCALAR >
@@ -347,11 +333,9 @@ namespace gum {
     if (!_graph_.exists(id) && !_hard_ev_nodes_.contains(id)) { _is_new_jt_needed_ = true; }
   }
 
-
   /// fired before a target is removed
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::onMarginalTargetErased_(const NodeId id) {}
-
 
   /// fired after a new set target is inserted
   template < typename GUM_SCALAR >
@@ -402,11 +386,9 @@ namespace gum {
     }
   }
 
-
   /// fired before a set target is removed
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::onJointTargetErased_(const NodeSet& set) {}
-
 
   /// fired after all the nodes of the BN are added as single targets
   template < typename GUM_SCALAR >
@@ -423,21 +405,17 @@ namespace gum {
     }
   }
 
-
   /// fired before a all the single_targets are removed
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::onAllMarginalTargetsErased_() {}
-
 
   /// fired before a all the joint_targets are removed
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::onAllJointTargetsErased_() {}
 
-
   /// fired before a all the single and joint_targets are removed
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::onAllTargetsErased_() {}
-
 
   // check whether a new junction tree is really needed for the next inference
   template < typename GUM_SCALAR >
@@ -504,7 +482,6 @@ namespace gum {
     return false;
   }
 
-
   /// create a new junction tree as well as its related data structures
   template < typename GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::_createNewJT_() {
@@ -569,8 +546,8 @@ namespace gum {
       NodeSet requisite_nodes;
       bool    dsep_analysis = false;
       switch (_find_relevant_potential_type_) {
-        case RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS:
-        case RelevantPotentialsFinderType::DSEP_BAYESBALL_NODES: {
+        case RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS :
+        case RelevantPotentialsFinderType::DSEP_BAYESBALL_NODES : {
           BayesBall::requisiteNodes(bn.dag(),
                                     target_nodes,
                                     this->hardEvidenceNodes(),
@@ -579,7 +556,7 @@ namespace gum {
           dsep_analysis = true;
         } break;
 
-        case RelevantPotentialsFinderType::DSEP_KOLLER_FRIEDMAN_2009: {
+        case RelevantPotentialsFinderType::DSEP_KOLLER_FRIEDMAN_2009 : {
           dSeparationAlgorithm dsep;
           dsep.requisiteNodes(bn.dag(),
                               target_nodes,
@@ -589,9 +566,9 @@ namespace gum {
           dsep_analysis = true;
         } break;
 
-        case RelevantPotentialsFinderType::FIND_ALL: break;
+        case RelevantPotentialsFinderType::FIND_ALL : break;
 
-        default: GUM_ERROR(FatalError, "not implemented yet")
+        default : GUM_ERROR(FatalError, "not implemented yet")
       }
 
       // remove all the nodes that are not requisite
@@ -841,7 +818,6 @@ namespace gum {
     _is_new_jt_needed_ = false;
   }
 
-
   /// put all the CPTs into the cliques when creating the JT without using a schedule
   template < typename GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::_initializeJTCliques_() {
@@ -958,7 +934,6 @@ namespace gum {
       }
     }
   }
-
 
   /// put all the CPTs into the cliques when creating the JT using a schedule
   template < typename GUM_SCALAR >
@@ -1084,7 +1059,6 @@ namespace gum {
     this->scheduler().execute(schedule);
   }
 
-
   /// prepare the inference structures w.r.t. new targets, soft/hard evidence
   template < typename GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::updateOutdatedStructure_() {
@@ -1098,7 +1072,6 @@ namespace gum {
       updateOutdatedPotentials_();
     }
   }
-
 
   /// invalidate all the messages sent from a given clique
   template < typename GUM_SCALAR >
@@ -1126,7 +1099,6 @@ namespace gum {
       }
     }
   }
-
 
   /// update the potentials stored in the cliques and invalidate outdated
   /// messages
@@ -1438,7 +1410,6 @@ namespace gum {
     _evidence_changes_.clear();
   }
 
-
   /// compute a root for each connected component of  _JT_
   template < typename GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::_computeJoinTreeRoots_() {
@@ -1498,13 +1469,11 @@ namespace gum {
     }
   }
 
-
   // find the potentials d-connected to a set of variables
   template < typename GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::_findRelevantPotentialsGetAll_(
      Set< const IScheduleMultiDim* >& pot_list,
      gum::VariableSet&                kept_vars) {}
-
 
   // find the potentials d-connected to a set of variables
   template < typename GUM_SCALAR >
@@ -1539,7 +1508,6 @@ namespace gum {
     }
   }
 
-
   // find the potentials d-connected to a set of variables
   template < typename GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::_findRelevantPotentialsWithdSeparation2_(
@@ -1559,7 +1527,6 @@ namespace gum {
                                   this->softEvidenceNodes(),
                                   pot_list);
   }
-
 
   // find the potentials d-connected to a set of variables
   template < typename GUM_SCALAR >
@@ -1582,33 +1549,31 @@ namespace gum {
                             pot_list);
   }
 
-
   // find the potentials d-connected to a set of variables
   template < typename GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::_findRelevantPotentialsXX_(
      Set< const IScheduleMultiDim* >& pot_list,
      gum::VariableSet&                kept_vars) {
     switch (_find_relevant_potential_type_) {
-      case RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS:
+      case RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS :
         _findRelevantPotentialsWithdSeparation2_(pot_list, kept_vars);
         break;
 
-      case RelevantPotentialsFinderType::DSEP_BAYESBALL_NODES:
+      case RelevantPotentialsFinderType::DSEP_BAYESBALL_NODES :
         _findRelevantPotentialsWithdSeparation_(pot_list, kept_vars);
         break;
 
-      case RelevantPotentialsFinderType::DSEP_KOLLER_FRIEDMAN_2009:
+      case RelevantPotentialsFinderType::DSEP_KOLLER_FRIEDMAN_2009 :
         _findRelevantPotentialsWithdSeparation3_(pot_list, kept_vars);
         break;
 
-      case RelevantPotentialsFinderType::FIND_ALL:
+      case RelevantPotentialsFinderType::FIND_ALL :
         _findRelevantPotentialsGetAll_(pot_list, kept_vars);
         break;
 
-      default: GUM_ERROR(FatalError, "not implemented yet")
+      default : GUM_ERROR(FatalError, "not implemented yet")
     }
   }
-
 
   // remove barren variables using schedules
   template < typename GUM_SCALAR >
@@ -1644,7 +1609,7 @@ namespace gum {
     HashTable< const IScheduleMultiDim*, gum::VariableSet > pot2barren_var;
     gum::VariableSet                                        empty_var_set;
     for (const auto& elt: var2pots) {
-      if (elt.second.size() == 1) {   // here we have a barren variable
+      if (elt.second.size() == 1) {              // here we have a barren variable
         const IScheduleMultiDim* pot = *(elt.second.begin());
         if (!pot2barren_var.exists(pot)) { pot2barren_var.insert(pot, empty_var_set); }
         pot2barren_var[pot].insert(elt.first);   // insert the barren variable
@@ -1675,7 +1640,6 @@ namespace gum {
 
     return projected_pots;
   }
-
 
   // remove barren variables directly without schedules
   template < typename GUM_SCALAR >
@@ -1710,7 +1674,7 @@ namespace gum {
     HashTable< const Potential< GUM_SCALAR >*, gum::VariableSet > pot2barren_var;
     gum::VariableSet                                              empty_var_set;
     for (const auto& elt: var2pots) {
-      if (elt.second.size() == 1) {   // here we have a barren variable
+      if (elt.second.size() == 1) {              // here we have a barren variable
         const Potential< GUM_SCALAR >* pot = *(elt.second.begin());
         if (!pot2barren_var.exists(pot)) { pot2barren_var.insert(pot, empty_var_set); }
         pot2barren_var[pot].insert(elt.first);   // insert the barren variable
@@ -1739,7 +1703,6 @@ namespace gum {
     return projected_pots;
   }
 
-
   // performs the collect phase of Shafer-Shenoy using schedules
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::_collectMessage_(Schedule& schedule,
@@ -1755,7 +1718,6 @@ namespace gum {
     }
   }
 
-
   // performs the collect phase of Shafer-Shenoy without schedules
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::_collectMessage_(NodeId id, NodeId from) {
@@ -1765,7 +1727,6 @@ namespace gum {
 
     if ((id != from) && !_messages_computed_[Arc(id, from)]) { _produceMessage_(id, from); }
   }
-
 
   // remove variables del_vars from the list of potentials pot_list
   template < typename GUM_SCALAR >
@@ -1811,7 +1772,6 @@ namespace gum {
     MultiDimCombinationDefault< Potential< GUM_SCALAR > > fast_combination(_combination_op_);
     return fast_combination.schedule(schedule, new_pot_list);
   }
-
 
   // remove variables del_vars from the list of potentials pot_list
   template < typename GUM_SCALAR >
@@ -1875,7 +1835,6 @@ namespace gum {
     return res_pot;
   }
 
-
   // creates the message sent by clique from_id to clique to_id
   template < typename GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::_produceMessage_(Schedule& schedule,
@@ -1928,7 +1887,6 @@ namespace gum {
     _messages_computed_[arc]    = true;
   }
 
-
   // creates the message sent by clique from_id to clique to_id
   template < typename GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::_produceMessage_(NodeId from_id, NodeId to_id) {
@@ -1975,7 +1933,6 @@ namespace gum {
     _messages_computed_[arc]    = true;
   }
 
-
   // performs a whole inference
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::makeInference_() {
@@ -2021,7 +1978,6 @@ namespace gum {
     }
   }
 
-
   /// returns a fresh potential equal to P(1st arg,evidence)
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >*
@@ -2033,7 +1989,6 @@ namespace gum {
       return _unnormalizedJointPosterior_(id);
     }
   }
-
 
   /// returns a fresh potential equal to P(1st arg,evidence)
   template < typename GUM_SCALAR >
@@ -2111,7 +2066,6 @@ namespace gum {
     return joint;
   }
 
-
   /// returns a fresh potential equal to P(1st arg,evidence)
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >*
@@ -2184,7 +2138,6 @@ namespace gum {
     return joint;
   }
 
-
   /// returns the posterior of a given variable
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >& ShaferShenoyInference< GUM_SCALAR >::posterior_(NodeId id) {
@@ -2200,7 +2153,6 @@ namespace gum {
     return *joint;
   }
 
-
   /// returns the marginal a posteriori proba of a given node
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >*
@@ -2212,7 +2164,6 @@ namespace gum {
       return _unnormalizedJointPosterior_(set);
     }
   }
-
 
   /// returns the marginal a posteriori proba of a given node
   template < typename GUM_SCALAR >
@@ -2395,7 +2346,6 @@ namespace gum {
     return joint;
   }
 
-
   /// returns the marginal a posteriori proba of a given node
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >*
@@ -2566,7 +2516,6 @@ namespace gum {
     return joint;
   }
 
-
   /// returns the posterior of a given set of variables
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
@@ -2581,7 +2530,6 @@ namespace gum {
 
     return *joint;
   }
-
 
   /// returns the posterior of a given set of variables
   template < typename GUM_SCALAR >
@@ -2611,7 +2559,6 @@ namespace gum {
 
     return *pot;
   }
-
 
   template < typename GUM_SCALAR >
   GUM_SCALAR ShaferShenoyInference< GUM_SCALAR >::evidenceProbability() {

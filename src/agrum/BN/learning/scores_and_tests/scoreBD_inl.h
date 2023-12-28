@@ -27,8 +27,9 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#  include <agrum/BN/learning/scores_and_tests/scoreBD.h>
 #  include <sstream>
+
+#  include <agrum/BN/learning/scores_and_tests/scoreBD.h>
 
 namespace gum {
 
@@ -44,7 +45,6 @@ namespace gum {
       GUM_CONSTRUCTOR(ScoreBD);
     }
 
-
     /// default constructor
     INLINE ScoreBD::ScoreBD(const DBRowGeneratorParser&             parser,
                             const Prior&                            prior,
@@ -54,13 +54,11 @@ namespace gum {
       GUM_CONSTRUCTOR(ScoreBD);
     }
 
-
     /// copy constructor
     INLINE ScoreBD::ScoreBD(const ScoreBD& from) :
         Score(from), _internal_prior_(from._internal_prior_), _gammalog2_(from._gammalog2_) {
       GUM_CONS_CPY(ScoreBD);
     }
-
 
     /// move constructor
     INLINE ScoreBD::ScoreBD(ScoreBD&& from) :
@@ -69,26 +67,21 @@ namespace gum {
       GUM_CONS_MOV(ScoreBD);
     }
 
-
     /// virtual copy constructor
     INLINE ScoreBD* ScoreBD::clone() const { return new ScoreBD(*this); }
 
-
     /// destructor
     INLINE ScoreBD::~ScoreBD() { GUM_DESTRUCTOR(ScoreBD); }
-
 
     /// indicates whether the prior is compatible (meaningful) with the score
     INLINE std::string ScoreBD::isPriorCompatible(const Prior& prior) {
       return isPriorCompatible(prior.getType(), prior.weight());
     }
 
-
     /// indicates whether the prior is compatible (meaningful) with the score
     INLINE std::string ScoreBD::isPriorCompatible() const {
       return isPriorCompatible(*(this->prior_));
     }
-
 
     /// returns the internal prior of the score
     INLINE const Prior& ScoreBD::internalPrior() const { return _internal_prior_; }

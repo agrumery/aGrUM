@@ -33,7 +33,6 @@ namespace gum {
       GUM_CONS_CPY(DatabaseTable);
     }
 
-
     // move constructor
     INLINE DatabaseTable::DatabaseTable(DatabaseTable&& from) :
         IDatabaseTable< DBTranslatedValue >(std::move(from)),
@@ -42,10 +41,8 @@ namespace gum {
       GUM_CONS_MOV(DatabaseTable);
     }
 
-
     // destructor
     INLINE DatabaseTable::~DatabaseTable() { GUM_DESTRUCTOR(DatabaseTable); }
-
 
     /** @brief returns the indices corresponding either to the kth translator
      * or to all those that parse the kth column of the input dataset
@@ -66,10 +63,8 @@ namespace gum {
       }
     }
 
-
     /// returns the set of translators
     INLINE const DBTranslatorSet& DatabaseTable::translatorSet() const { return _translators_; }
-
 
     /** @brief returns the index corresponding either to the kth translator or
      * to that of the first translator parsing the kth column of the
@@ -87,7 +82,6 @@ namespace gum {
       }
     }
 
-
     /// returns the domain sizes of all the variables in the database table
     INLINE std::vector< std::size_t > DatabaseTable::domainSizes() const {
       const std::size_t          nb_trans = _translators_.size();
@@ -98,14 +92,12 @@ namespace gum {
       return dom;
     }
 
-
     /// performs a reordering of all the columns
     INLINE void DatabaseTable::reorder() {
       const std::size_t nb_trans = _translators_.size();
       for (std::size_t i = std::size_t(0); i < nb_trans; ++i)
         reorder(i, false);
     }
-
 
     /// insert a new DBRow at the end of the database
     INLINE void
@@ -126,7 +118,6 @@ namespace gum {
 
       IDatabaseTable< DBTranslatedValue >::insertRow(std::move(new_row), contains_missing_data);
     }
-
 
     /// insert a new row at the end of the database
     INLINE void DatabaseTable::insertRow(

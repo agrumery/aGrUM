@@ -20,11 +20,10 @@
 #include <iostream>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
+#include <agrum/tools/graphs/graphElements.h>
 #include <agrum/tools/graphs/PDAG.h>
-#include <agrum/tools/graphs/graphElements.h>
-#include <agrum/tools/graphs/graphElements.h>
 
 // The graph used for the tests:
 //  1 -> 3
@@ -463,7 +462,6 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(sk, sv)
     }
-
 
     GUM_ACTIVE_TEST(ListMapEdges) {
       gum::PDAG graph;

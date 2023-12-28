@@ -32,13 +32,13 @@
 #include <utility>
 
 #include <agrum/agrum.h>
+
+#include <agrum/tools/graphicalModels/inference/scheduler/scheduledInference.h>
+#include <agrum/tools/graphs/algorithms/triangulations/defaultTriangulation.h>
+
 #include <agrum/BN/algorithms/barrenNodesFinder.h>
 #include <agrum/BN/inference/tools/jointTargetedInference.h>
 #include <agrum/BN/inference/tools/relevantPotentialsFinderType.h>
-#include <agrum/tools/graphs/algorithms/triangulations/defaultTriangulation.h>
-
-#include <agrum/tools/graphicalModels/inference/scheduler/scheduledInference.h>
-
 
 namespace gum {
 
@@ -56,7 +56,6 @@ namespace gum {
                                                            const gum::VariableSet& del_vars) {
     return t1.margSumOut(del_vars);
   }
-
 
   /**
    * @class VariableElimination VariableElimination.h

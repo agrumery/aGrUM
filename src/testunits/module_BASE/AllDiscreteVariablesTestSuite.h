@@ -24,7 +24,7 @@
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/variables/allDiscreteVariables.h>
 
@@ -128,29 +128,29 @@ namespace gum_tests {
 
 GUM_ACTIVE_TEST(CreationNumerical) {
   try {
-      {
-        auto a = gum::fastVariable< double >("A{1|1.5|6|2.9|3.14}", 4);
-        TS_ASSERT_EQUALS(a->toString(), "A:NumericalDiscrete({1|1.5|2.9|3.14|6})")
-      }
-      TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A{3.14}", 4),
-                       const gum::InvalidArgument&) {
-        auto a = gum::fastVariable< double >("A{3.14}", 1);
-        TS_ASSERT_EQUALS(a->toString(), "A:NumericalDiscrete({3.14})")
-      }
-      {
-        auto a = gum::fastVariable< double >("A{1.2:5.2:5}", 5);
-        TS_ASSERT_EQUALS(a->toString(), "A:NumericalDiscrete({1.2|2.2|3.2|4.2|5.2})")
-      }
-      {
-        auto a = gum::fastVariable< double >("A{1.2:5.2:2}", 2);
-        TS_ASSERT_EQUALS(a->toString(), "A:NumericalDiscrete({1.2|5.2})")
-        auto b = gum::fastVariable< double >("A{1.2|5.2}", 2);
-        TS_ASSERT_EQUALS(b->toString(), "A:NumericalDiscrete({1.2|5.2})")
-      }
-      {
-        auto a = gum::fastVariable< double >("A{1.2:5.2:2.8}", 2);
-        TS_ASSERT_EQUALS(a->toString(), "A:NumericalDiscrete({1.2|5.2})")
-      }
+    {
+      auto a = gum::fastVariable< double >("A{1|1.5|6|2.9|3.14}", 4);
+      TS_ASSERT_EQUALS(a->toString(), "A:NumericalDiscrete({1|1.5|2.9|3.14|6})")
+    }
+    TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A{3.14}", 4),
+                     const gum::InvalidArgument&) {
+      auto a = gum::fastVariable< double >("A{3.14}", 1);
+      TS_ASSERT_EQUALS(a->toString(), "A:NumericalDiscrete({3.14})")
+    }
+    {
+      auto a = gum::fastVariable< double >("A{1.2:5.2:5}", 5);
+      TS_ASSERT_EQUALS(a->toString(), "A:NumericalDiscrete({1.2|2.2|3.2|4.2|5.2})")
+    }
+    {
+      auto a = gum::fastVariable< double >("A{1.2:5.2:2}", 2);
+      TS_ASSERT_EQUALS(a->toString(), "A:NumericalDiscrete({1.2|5.2})")
+      auto b = gum::fastVariable< double >("A{1.2|5.2}", 2);
+      TS_ASSERT_EQUALS(b->toString(), "A:NumericalDiscrete({1.2|5.2})")
+    }
+    {
+      auto a = gum::fastVariable< double >("A{1.2:5.2:2.8}", 2);
+      TS_ASSERT_EQUALS(a->toString(), "A:NumericalDiscrete({1.2|5.2})")
+    }
   } catch (gum::Exception const& e) { GUM_SHOWERROR(e) GUM_TRACE(e.errorCallStack()) }
 }
 

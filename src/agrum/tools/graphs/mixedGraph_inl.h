@@ -39,7 +39,7 @@ namespace gum {
       // fill the new graph
       NodeGraphPart::operator=(g);
       EdgeGraphPart::operator=(g);
-      ArcGraphPart:: operator=(g);
+      ArcGraphPart::operator=(g);
     }
 
     return *this;
@@ -60,7 +60,7 @@ namespace gum {
 
   INLINE bool MixedGraph::operator==(const MixedGraph& g) const {
     return ArcGraphPart::operator==(g) && EdgeGraphPart::operator==(g)
-        && NodeGraphPart::                               operator==(g);
+        && NodeGraphPart::operator==(g);
   }
 
   INLINE NodeSet MixedGraph::boundary(NodeId node) const {

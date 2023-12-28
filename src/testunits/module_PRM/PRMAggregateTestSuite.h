@@ -20,7 +20,7 @@
 
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/multidim/aggregators/and.h>
 #include <agrum/tools/multidim/aggregators/count.h>
@@ -186,6 +186,7 @@ namespace gum_tests {
       // Act & Assert
       _classEltTestSuite_->testCast(agg, boolean);
     }
+
     /// @}
 
     /// Constructors & destructors
@@ -211,6 +212,7 @@ namespace gum_tests {
         TS_ASSERT_THROWS_NOTHING(delete agg)
       }
     }
+
     /// @}
 
     /// Getters & setters
@@ -361,6 +363,7 @@ namespace gum_tests {
       TS_ASSERT(dynamic_cast< gum::aggregator::And< double >* >(impl))
       TS_ASSERT_THROWS_NOTHING(delete impl)
     }
+
     /// @}
   };
 

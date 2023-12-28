@@ -38,7 +38,6 @@
 
 #include <agrum/FMDP/IfmdpFactory.h>
 
-
 namespace gum {
 
   /**
@@ -316,7 +315,6 @@ namespace gum {
 #endif
 
 } /* namespace gum */
-
 
 #include <agrum/FMDP/fmdpFactory_tpl.h>
 

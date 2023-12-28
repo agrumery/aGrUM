@@ -33,8 +33,8 @@
 #define GUM_LEARNING_DB_TRANSLATED_VALUE_H
 
 #include <cstddef>
-#include <agrum/agrum.h>
 
+#include <agrum/agrum.h>
 
 namespace gum {
 
@@ -71,7 +71,6 @@ namespace gum {
 
       /// the field for storing continuous values
       float cont_val;
-
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -117,10 +116,7 @@ namespace gum {
      *
      * @ingroup learning_database
      */
-    enum class DBTranslatedValueType : char {
-      DISCRETE,
-      CONTINUOUS
-    };
+    enum class DBTranslatedValueType : char { DISCRETE, CONTINUOUS };
 
 
   } /* namespace learning */

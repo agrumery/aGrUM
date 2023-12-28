@@ -42,7 +42,6 @@ namespace gum {
       GUM_CONSTRUCTOR(IndepTestG2);
     }
 
-
     /// default constructor
     INLINE IndepTestG2::IndepTestG2(const DBRowGeneratorParser&             parser,
                                     const Prior&                            prior,
@@ -52,13 +51,11 @@ namespace gum {
       GUM_CONSTRUCTOR(IndepTestG2);
     }
 
-
     /// copy constructor
     INLINE IndepTestG2::IndepTestG2(const IndepTestG2& from) :
         IndependenceTest(from), _chi2_(_domain_sizes_) {
       GUM_CONS_CPY(IndepTestG2);
     }
-
 
     /// move constructor
     INLINE IndepTestG2::IndepTestG2(IndepTestG2&& from) :
@@ -67,14 +64,11 @@ namespace gum {
       GUM_CONS_MOV(IndepTestG2);
     }
 
-
     /// virtual copy constructor
     INLINE IndepTestG2* IndepTestG2::clone() const { return new IndepTestG2(*this); }
 
-
     /// destructor
     INLINE IndepTestG2::~IndepTestG2() { GUM_DESTRUCTOR(IndepTestG2); }
-
 
     /// returns the pair <statistics,pvalue> corresponding to a given IdCondSet
     INLINE std::pair< double, double >

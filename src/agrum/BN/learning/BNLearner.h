@@ -30,8 +30,8 @@
 #ifndef GUM_LEARNING_BN_LEARNER_H
 #define GUM_LEARNING_BN_LEARNER_H
 
-#include <sstream>
 #include <algorithm>
+#include <sstream>
 #include <vector>
 
 #include <agrum/agrum.h>
@@ -165,50 +165,62 @@ namespace gum {
         IBNLearner::setInitialDAG(dag);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& useEM(const double epsilon) {
         IBNLearner::useEM(epsilon);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& useScoreAIC() {
         IBNLearner::useScoreAIC();
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& useScoreBD() {
         IBNLearner::useScoreBD();
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& useScoreBDeu() {
         IBNLearner::useScoreBDeu();
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& useScoreBIC() {
         IBNLearner::useScoreBIC();
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& useScoreK2() {
         IBNLearner::useScoreK2();
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& useScoreLog2Likelihood() {
         IBNLearner::useScoreLog2Likelihood();
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& useNoPrior() {
         IBNLearner::useNoPrior();
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& useBDeuPrior(double weight = 1.0) {
         IBNLearner::useBDeuPrior(weight);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& useSmoothingPrior(double weight = 1) {
         IBNLearner::useSmoothingPrior(weight);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& useDirichletPrior(const std::string& filename, double weight = 1) {
         IBNLearner::useDirichletPrior(filename, weight);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& useDirichletPrior(const gum::BayesNet< GUM_SCALAR >& bn,
                                                  double                             weight = 1) {
         if (weight < 0) { GUM_ERROR(OutOfBounds, "the weight of the prior must be positive") }
@@ -231,127 +243,158 @@ namespace gum {
         IBNLearner::useLocalSearchWithTabuList(tabu_size, nb_decrease);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& useK2(const Sequence< NodeId >& order) {
         IBNLearner::useK2(order);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& useK2(const std::vector< NodeId >& order) {
         IBNLearner::useK2(order);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& useMIIC() {
         IBNLearner::useMIIC();
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& useNMLCorrection() {
         IBNLearner::useNMLCorrection();
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& useMDLCorrection() {
         IBNLearner::useMDLCorrection();
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& useNoCorrection() {
         IBNLearner::useNoCorrection();
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& setMaxIndegree(Size max_indegree) {
         IBNLearner::setMaxIndegree(max_indegree);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& setSliceOrder(const NodeProperty< NodeId >& slice_order) {
         IBNLearner::setSliceOrder(slice_order);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >&
          setSliceOrder(const std::vector< std::vector< std::string > >& slices) {
         IBNLearner::setSliceOrder(slices);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& setForbiddenArcs(const ArcSet& set) {
         IBNLearner::setForbiddenArcs(set);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& addForbiddenArc(const Arc& arc) {
         IBNLearner::addForbiddenArc(arc);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& addForbiddenArc(const NodeId tail, const NodeId head) {
         IBNLearner::addForbiddenArc(tail, head);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& addForbiddenArc(const std::string& tail, const std::string& head) {
         IBNLearner::addForbiddenArc(tail, head);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& eraseForbiddenArc(const Arc& arc) {
         IBNLearner::eraseForbiddenArc(arc);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& eraseForbiddenArc(const NodeId tail, const NodeId head) {
         IBNLearner::eraseForbiddenArc(tail, head);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& eraseForbiddenArc(const std::string& tail, const std::string& head) {
         IBNLearner::eraseForbiddenArc(tail, head);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& addMandatoryArc(const Arc& arc) {
         IBNLearner::addMandatoryArc(arc);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& addMandatoryArc(const NodeId tail, const NodeId head) {
         IBNLearner::addMandatoryArc(tail, head);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& addMandatoryArc(const std::string& tail, const std::string& head) {
         IBNLearner::addMandatoryArc(tail, head);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& eraseMandatoryArc(const Arc& arc) {
         IBNLearner::eraseMandatoryArc(arc);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& eraseMandatoryArc(const NodeId tail, const NodeId head) {
         IBNLearner::eraseMandatoryArc(tail, head);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& eraseMandatoryArc(const std::string& tail, const std::string& head) {
         IBNLearner::eraseMandatoryArc(tail, head);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& addPossibleEdge(const Edge& edge) {
         IBNLearner::addPossibleEdge(edge);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& addPossibleEdge(const NodeId tail, const NodeId head) {
         IBNLearner::addPossibleEdge(tail, head);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& addPossibleEdge(const std::string& tail, const std::string& head) {
         IBNLearner::addPossibleEdge(tail, head);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& erasePossibleEdge(const Edge& edge) {
         IBNLearner::erasePossibleEdge(edge);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& erasePossibleEdge(const NodeId tail, const NodeId head) {
         IBNLearner::erasePossibleEdge(tail, head);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& erasePossibleEdge(const std::string& tail, const std::string& head) {
         IBNLearner::erasePossibleEdge(tail, head);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& setMandatoryArcs(const ArcSet& set) {
         IBNLearner::setMandatoryArcs(set);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& setPossibleEdges(const EdgeSet& set) {
         IBNLearner::setPossibleEdges(set);
         return *this;
       }
+
       BNLearner< GUM_SCALAR >& setPossibleSkeleton(const UndiGraph& skeleton) {
         IBNLearner::setPossibleSkeleton(skeleton);
         return *this;

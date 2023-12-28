@@ -107,4 +107,4 @@ namespace gum {
 #endif   // GUM_NO_INLINE
 
 #include <agrum/tools/core/utils_random_tpl.h>
-#endif /* GUM_UTILS_RANDOM_H */
+#endif   /* GUM_UTILS_RANDOM_H */

@@ -234,6 +234,7 @@ namespace gum {
 
       /// @}
       // ==========================================================================
+
       private:
       // ==========================================================================
       /// @name Private methods
@@ -290,4 +291,4 @@ namespace gum {
 #  include <agrum/PRM/elements/PRMType_inl.h>
 #endif   // GUM_NO_INLINE
 
-#endif /* GUM_CLASS_H */
+#endif   /* GUM_CLASS_H */

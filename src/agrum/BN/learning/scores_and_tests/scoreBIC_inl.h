@@ -27,8 +27,9 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#  include <agrum/BN/learning/scores_and_tests/scoreBIC.h>
 #  include <sstream>
+
+#  include <agrum/BN/learning/scores_and_tests/scoreBIC.h>
 
 namespace gum {
 
@@ -44,7 +45,6 @@ namespace gum {
       GUM_CONSTRUCTOR(ScoreBIC);
     }
 
-
     /// default constructor
     INLINE ScoreBIC::ScoreBIC(const DBRowGeneratorParser&             parser,
                               const Prior&                            prior,
@@ -54,13 +54,11 @@ namespace gum {
       GUM_CONSTRUCTOR(ScoreBIC);
     }
 
-
     /// copy constructor
     INLINE ScoreBIC::ScoreBIC(const ScoreBIC& from) :
         Score(from), _internal_prior_(from._internal_prior_) {
       GUM_CONS_CPY(ScoreBIC);
     }
-
 
     /// move constructor
     INLINE ScoreBIC::ScoreBIC(ScoreBIC&& from) :
@@ -68,26 +66,21 @@ namespace gum {
       GUM_CONS_MOV(ScoreBIC);
     }
 
-
     /// virtual copy constructor
     INLINE ScoreBIC* ScoreBIC::clone() const { return new ScoreBIC(*this); }
 
-
     /// destructor
     INLINE ScoreBIC::~ScoreBIC() { GUM_DESTRUCTOR(ScoreBIC); }
-
 
     /// indicates whether the prior is compatible (meaningful) with the score
     INLINE std::string ScoreBIC::isPriorCompatible(const Prior& prior) {
       return isPriorCompatible(prior.getType(), prior.weight());
     }
 
-
     /// indicates whether the prior is compatible (meaningful) with the score
     INLINE std::string ScoreBIC::isPriorCompatible() const {
       return isPriorCompatible(*(this->prior_));
     }
-
 
     /// returns the internal prior of the score
     INLINE const Prior& ScoreBIC::internalPrior() const { return _internal_prior_; }

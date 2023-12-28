@@ -37,13 +37,11 @@ namespace gum {
     GUM_CONSTRUCTOR(MRFInference);
   }
 
-
   // Default Constructor
   template < typename GUM_SCALAR >
   MRFInference< GUM_SCALAR >::MRFInference() {
     GUM_CONSTRUCTOR(MRFInference);
   }
-
 
   // Destructor
   template < typename GUM_SCALAR >
@@ -51,20 +49,17 @@ namespace gum {
     GUM_DESTRUCTOR(MRFInference);
   }
 
-
   // Returns a constant reference over the IMarkovRandomField referenced by this class
   template < typename GUM_SCALAR >
   INLINE const IMarkovRandomField< GUM_SCALAR >& MRFInference< GUM_SCALAR >::MRF() const {
     return static_cast< const IMarkovRandomField< GUM_SCALAR >& >(this->model());
   }
 
-
   // assigns a new MRF to the inference engine
   template < typename GUM_SCALAR >
   void MRFInference< GUM_SCALAR >::setMRF(const IMarkovRandomField< GUM_SCALAR >* mrf) {
     this->setModel_(mrf);
   }
-
 
   // assigns a MRF to a newly constructed inference engine
   template < typename GUM_SCALAR >

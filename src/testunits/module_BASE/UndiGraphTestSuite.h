@@ -22,7 +22,7 @@
 #include <iostream>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/graphs/graphElements.h>
 #include <agrum/tools/graphs/undiGraph.h>
@@ -296,7 +296,8 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(HashMapNodes) {
       gum::UndiGraph graph = buildGraph();
 
-      gum::NodeProperty< gum::Size > hashmap = graph.nodesPropertyFromFunction(&simpleDoubleFunction);
+      gum::NodeProperty< gum::Size > hashmap
+         = graph.nodesPropertyFromFunction(&simpleDoubleFunction);
       TS_ASSERT_EQUALS(hashmap.size(), graph.size())
 
       gum::Size sk = 0;
@@ -393,6 +394,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(cc[0], cc[2])
       TS_ASSERT_EQUALS(cc[3], cc[4])
     }
+
     GUM_ACTIVE_TEST(ConnexComponents2) {
       gum::UndiGraph g;
       g.addNodes(6);

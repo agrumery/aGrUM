@@ -30,9 +30,9 @@
 #ifndef GUM_MARKOV_RANDOM_FIELD_EVIDENCE_INFERENCE_H
 #define GUM_MARKOV_RANDOM_FIELD_EVIDENCE_INFERENCE_H
 
-#include <agrum/MRF/inference/tools/MRFInference.h>
 #include <agrum/agrum.h>
 
+#include <agrum/MRF/inference/tools/MRFInference.h>
 
 namespace gum {
 
@@ -79,7 +79,6 @@ namespace gum {
 
 
 }   // namespace gum
-
 
 #include <agrum/MRF/inference/tools/evidenceMRFInference_tpl.h>
 

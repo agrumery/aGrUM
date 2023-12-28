@@ -60,7 +60,7 @@
         std::cout << std::endl << __FILE__ << ":" << __LINE__ << " " << (e).what() << std::endl; \
         std::cout << (e).errorCallStack() << std::endl;                                          \
       }
-#  else   // GUM_DEBUG_MODE
+#  else    // GUM_DEBUG_MODE
 #    define GUM_SHOWERROR(e) \
       { std::cout << std::endl << __FILE__ << ":" << __LINE__ << " " << (e).what() << std::endl; }
 #  endif   // GUM_DEBUG_MODE
@@ -593,7 +593,9 @@ namespace gum {
     }
 
     GUM_NODISCARD Size col() const { return noCol_; };
+
     GUM_NODISCARD Size line() const { return noLine_; };
+
     GUM_NODISCARD std::string filename() const { return filename_; };
   };
 #endif   // DOXYGEN_SHOULD_SKIP_THIS

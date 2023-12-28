@@ -48,7 +48,6 @@ namespace gum {
       return *this;
     }
 
-
     /// move operator
     ScoreAIC& ScoreAIC::operator=(ScoreAIC&& from) {
       if (this != &from) {
@@ -57,7 +56,6 @@ namespace gum {
       }
       return *this;
     }
-
 
     /// indicates whether the prior is compatible (meaningful) with the score
     std::string ScoreAIC::isPriorCompatible(PriorType prior_type, double weight) {
@@ -74,7 +72,6 @@ namespace gum {
           << "' is not yet compatible with the score 'AIC'.";
       return msg.str();
     }
-
 
     /// returns the score corresponding to a given nodeset
     double ScoreAIC::score_(const IdCondSet& idset) {

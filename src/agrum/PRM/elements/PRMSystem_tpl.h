@@ -26,14 +26,13 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN(_at_LIP6)
  *
  */
-#include <agrum/PRM/elements/PRMSystem.h>
-
-#include <agrum/PRM/elements/PRMInstance.h>
-
 #include <agrum/tools/multidim/aggregators/exists.h>
 #include <agrum/tools/multidim/aggregators/forall.h>
 #include <agrum/tools/multidim/aggregators/max.h>
 #include <agrum/tools/multidim/aggregators/min.h>
+
+#include <agrum/PRM/elements/PRMInstance.h>
+#include <agrum/PRM/elements/PRMSystem.h>
 
 namespace gum {
   namespace prm {
@@ -110,7 +109,7 @@ namespace gum {
         // instantiated as PRMAttribute<GUM_SCALAR> in an
         // PRMInstance<GUM_SCALAR>
         switch (instance.type().get(node).elt_type()) {
-          case PRMClassElement< GUM_SCALAR >::prm_attribute: {
+          case PRMClassElement< GUM_SCALAR >::prm_attribute : {
             // TODO: make a special case for noisy-or
             std::stringstream elt_name;
             elt_name << instance.name() << "." << instance.type().get(node).safeName();
@@ -121,14 +120,14 @@ namespace gum {
             break;
           }
 
-          case PRMClassElement< GUM_SCALAR >::prm_aggregate: {
+          case PRMClassElement< GUM_SCALAR >::prm_aggregate : {
             std::stringstream elt_name;
             elt_name << instance.name() << "." << instance.type().get(node).safeName();
             _groundAgg_(instance.type().get(node), elt_name.str(), factory);
             break;
           }
 
-          default:
+          default :
             break;
             /* Do nothing */;
         }
@@ -149,41 +148,41 @@ namespace gum {
       factory.variableType(var_type);
 
       switch (var_type) {
-        case VarType::Labelized: {
+        case VarType::Labelized : {
           const auto l = static_cast< const LabelizedVariable& >(agg_var);
           for (Idx i = 0; i < l.domainSize(); ++i) {
             factory.addModality(l.label(i));
           }
           break;
         }
-        case VarType::Integer: {
+        case VarType::Integer : {
           const auto l = static_cast< const IntegerVariable& >(agg_var);
           for (Idx i = 0; i < l.domainSize(); ++i) {
             factory.addModality(l.label(i));
           }
           break;
         }
-        case VarType::Numerical: {
+        case VarType::Numerical : {
           const auto l = static_cast< const NumericalDiscreteVariable& >(agg_var);
           for (Idx i = 0; i < l.domainSize(); ++i) {
             factory.addModality(l.label(i));
           }
           break;
         }
-        case VarType::Discretized: {
+        case VarType::Discretized : {
           const auto d = static_cast< const DiscretizedVariable< GUM_SCALAR >& >(agg_var);
           for (Idx i = 0; i < d.domainSize(); ++i) {
             factory.addTick(d.tick(i));
           }
           break;
         }
-        case VarType::Range: {
+        case VarType::Range : {
           const auto r = static_cast< const RangeVariable& >(agg_var);
           factory.addMin(r.minVal());
           factory.addMax(r.maxVal());
           break;
         }
-        case VarType::Continuous: {
+        case VarType::Continuous : {
           GUM_ERROR(NotImplementedYet,
                     "PRM aggregator grounding does not support yet continuous variables");
         }
@@ -192,57 +191,57 @@ namespace gum {
       const PRMAggregate< GUM_SCALAR >& agg = static_cast< const PRMAggregate< GUM_SCALAR >& >(elt);
 
       switch (agg.agg_type()) {
-        case PRMAggregate< GUM_SCALAR >::AggregateType::MIN: {
+        case PRMAggregate< GUM_SCALAR >::AggregateType::MIN : {
           factory.setVariableCPTImplementation(new aggregator::Min< GUM_SCALAR >());
           break;
         }
 
-        case PRMAggregate< GUM_SCALAR >::AggregateType::MAX: {
+        case PRMAggregate< GUM_SCALAR >::AggregateType::MAX : {
           factory.setVariableCPTImplementation(new aggregator::Max< GUM_SCALAR >());
           break;
         }
 
-        case PRMAggregate< GUM_SCALAR >::AggregateType::EXISTS: {
+        case PRMAggregate< GUM_SCALAR >::AggregateType::EXISTS : {
           factory.setVariableCPTImplementation(new aggregator::Exists< GUM_SCALAR >(agg.label()));
           break;
         }
 
-        case PRMAggregate< GUM_SCALAR >::AggregateType::FORALL: {
+        case PRMAggregate< GUM_SCALAR >::AggregateType::FORALL : {
           factory.setVariableCPTImplementation(new aggregator::Forall< GUM_SCALAR >(agg.label()));
           break;
         }
 
-        case PRMAggregate< GUM_SCALAR >::AggregateType::COUNT: {
+        case PRMAggregate< GUM_SCALAR >::AggregateType::COUNT : {
           factory.setVariableCPTImplementation(new aggregator::Count< GUM_SCALAR >(agg.label()));
           break;
         }
 
-        case PRMAggregate< GUM_SCALAR >::AggregateType::MEDIAN: {
+        case PRMAggregate< GUM_SCALAR >::AggregateType::MEDIAN : {
           factory.setVariableCPTImplementation(new aggregator::Median< GUM_SCALAR >());
           break;
         }
 
-        case PRMAggregate< GUM_SCALAR >::AggregateType::AMPLITUDE: {
+        case PRMAggregate< GUM_SCALAR >::AggregateType::AMPLITUDE : {
           factory.setVariableCPTImplementation(new aggregator::Amplitude< GUM_SCALAR >());
           break;
         }
 
-        case PRMAggregate< GUM_SCALAR >::AggregateType::OR: {
+        case PRMAggregate< GUM_SCALAR >::AggregateType::OR : {
           factory.setVariableCPTImplementation(new aggregator::Or< GUM_SCALAR >());
           break;
         }
 
-        case PRMAggregate< GUM_SCALAR >::AggregateType::AND: {
+        case PRMAggregate< GUM_SCALAR >::AggregateType::AND : {
           factory.setVariableCPTImplementation(new aggregator::And< GUM_SCALAR >());
           break;
         }
 
-        case PRMAggregate< GUM_SCALAR >::AggregateType::SUM: {
+        case PRMAggregate< GUM_SCALAR >::AggregateType::SUM : {
           factory.setVariableCPTImplementation(new aggregator::Sum< GUM_SCALAR >());
           break;
         }
 
-        default: GUM_ERROR(OperationNotAllowed, "Aggregator not handled yet for " << agg.name())
+        default : GUM_ERROR(OperationNotAllowed, "Aggregator not handled yet for " << agg.name())
       }
 
       factory.endVariableDeclaration();
@@ -258,15 +257,15 @@ namespace gum {
 
         for (const auto par: instance.type().containerDag().parents(elt.second->id())) {
           switch (instance.type().get(par).elt_type()) {
-            case PRMClassElement< GUM_SCALAR >::prm_aggregate:
-            case PRMClassElement< GUM_SCALAR >::prm_attribute: {
+            case PRMClassElement< GUM_SCALAR >::prm_aggregate :
+            case PRMClassElement< GUM_SCALAR >::prm_attribute : {
               std::stringstream parent_name;
               parent_name << instance.name() << "." << instance.get(par).safeName();
               factory.addParent(parent_name.str());
               break;
             }
 
-            case PRMClassElement< GUM_SCALAR >::prm_slotchain: {
+            case PRMClassElement< GUM_SCALAR >::prm_slotchain : {
               std::string parent_name
                  = static_cast< const PRMSlotChain< GUM_SCALAR >& >(instance.type().get(par))
                       .lastElt()
@@ -285,7 +284,7 @@ namespace gum {
               break;
             }
 
-            default:
+            default :
               break;
               /* nothing to do by default */
           }
@@ -312,8 +311,8 @@ namespace gum {
 
       for (const auto parent: instance.type().containerDag().parents(attr.id())) {
         switch (instance.type().get(parent).elt_type()) {
-          case PRMClassElement< GUM_SCALAR >::prm_aggregate:
-          case PRMClassElement< GUM_SCALAR >::prm_attribute: {
+          case PRMClassElement< GUM_SCALAR >::prm_aggregate :
+          case PRMClassElement< GUM_SCALAR >::prm_attribute : {
             std::stringstream parent_name;
             parent_name << instance.name() << "." << instance.get(parent).safeName();
             bijection.insert(&(instance.get(parent).type().variable()),
@@ -321,7 +320,7 @@ namespace gum {
             break;
           }
 
-          case PRMClassElement< GUM_SCALAR >::prm_slotchain: {
+          case PRMClassElement< GUM_SCALAR >::prm_slotchain : {
             std::stringstream                 parent_name;
             const PRMSlotChain< GUM_SCALAR >& sc
                = static_cast< const PRMSlotChain< GUM_SCALAR >& >(instance.type().get(parent));
@@ -332,7 +331,7 @@ namespace gum {
             break;
           }
 
-          default: {
+          default : {
             GUM_ERROR(FatalError, "invalid ClassElement<GUM_SCALAR> type as parent.")
             break;
           }

@@ -29,8 +29,9 @@
  */
 
 // to help IDE parser
-#include <agrum/BN/learning/BNLearnUtils/IBNLearner.h>
 #include <agrum/tools/graphs/undiGraph.h>
+
+#include <agrum/BN/learning/BNLearnUtils/IBNLearner.h>
 
 namespace gum::learning {
 
@@ -66,7 +67,6 @@ namespace gum::learning {
     }
   }
 
-
   // returns the variable name corresponding to a given node id
   INLINE const std::string& IBNLearner::Database::nameFromId(NodeId id) const {
     try {
@@ -77,46 +77,37 @@ namespace gum::learning {
     }
   }
 
-
   /// returns the internal database table
   INLINE const DatabaseTable& IBNLearner::Database::databaseTable() const { return _database_; }
-
 
   /// returns the set of missing symbols taken into account
   INLINE const std::vector< std::string >& IBNLearner::Database::missingSymbols() const {
     return _database_.missingSymbols();
   }
 
-
   /// returns the mapping between node ids and their columns in the database
   INLINE const Bijection< NodeId, std::size_t >& IBNLearner::Database::nodeId2Columns() const {
     return _nodeId2cols_;
   }
 
-
   /// returns the number of records in the database
   INLINE std::size_t IBNLearner::Database::nbRows() const { return _database_.nbRows(); }
 
-
   /// returns the number of records in the database
   INLINE std::size_t IBNLearner::Database::size() const { return _database_.size(); }
-
 
   /// sets the weight of the ith record
   INLINE void IBNLearner::Database::setWeight(const std::size_t i, const double weight) {
     _database_.setWeight(i, weight);
   }
 
-
   /// returns the weight of the ith record
   INLINE double IBNLearner::Database::weight(const std::size_t i) const {
     return _database_.weight(i);
   }
 
-
   /// returns the weight of the whole database
   INLINE double IBNLearner::Database::weight() const { return _database_.weight(); }
-
 
   // ===========================================================================
 
@@ -245,7 +236,6 @@ namespace gum::learning {
   /// use The EM algorithm to learn paramters
   INLINE void IBNLearner::useEM(const double epsilon) { epsilonEM_ = epsilon; }
 
-
   INLINE bool IBNLearner::hasMissingValues() const {
     return scoreDatabase_.databaseTable().hasMissingValues();
   }
@@ -254,6 +244,7 @@ namespace gum::learning {
   INLINE void IBNLearner::setPossibleEdges(const EdgeSet& set) {
     constraintPossibleEdges_.setEdges(set);
   }
+
   // assign a set of forbidden edges from an UndiGraph
   INLINE void IBNLearner::setPossibleSkeleton(const gum::UndiGraph& g) {
     setPossibleEdges(g.edges());
@@ -407,7 +398,6 @@ namespace gum::learning {
     checkScorePriorCompatibility();
   }
 
-
   // use the prior BDeu
   INLINE void IBNLearner::useBDeuPrior(double weight) {
     if (weight < 0) { GUM_ERROR(OutOfBounds, "the weight of the prior must be positive") }
@@ -418,17 +408,16 @@ namespace gum::learning {
     checkScorePriorCompatibility();
   }
 
-
   // returns the type (as a string) of a given prior
   INLINE PriorType IBNLearner::getPriorType_() const {
     switch (priorType_) {
       using enum gum::learning::IBNLearner::BNLearnerPriorType;
-      case NO_prior: return PriorType::NoPriorType;
-      case SMOOTHING: return PriorType::SmoothingPriorType;
-      case DIRICHLET_FROM_DATABASE:
-      case DIRICHLET_FROM_BAYESNET: return PriorType::DirichletPriorType;
-      case BDEU: return PriorType::BDeuPriorType;
-      default:
+      case NO_prior : return PriorType::NoPriorType;
+      case SMOOTHING : return PriorType::SmoothingPriorType;
+      case DIRICHLET_FROM_DATABASE :
+      case DIRICHLET_FROM_BAYESNET : return PriorType::DirichletPriorType;
+      case BDEU : return PriorType::BDeuPriorType;
+      default :
         GUM_ERROR(OperationNotAllowed,
                   "IBNLearner getPriorType does "
                   "not support yet this prior")
@@ -447,6 +436,7 @@ namespace gum::learning {
 
   // returns the modalities  of a variable in the database
   INLINE Size IBNLearner::domainSize(NodeId var) const { return scoreDatabase_.domainSizes()[var]; }
+
   // returns the modalities  of a variables in the database
   INLINE Size IBNLearner::domainSize(const std::string& var) const {
     return scoreDatabase_.domainSizes()[idFromName(var)];

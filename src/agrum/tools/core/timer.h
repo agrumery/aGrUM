@@ -31,7 +31,6 @@
 
 #include <agrum/agrum.h>
 
-
 namespace gum {
 
   /**

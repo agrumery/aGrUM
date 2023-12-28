@@ -30,6 +30,7 @@
 // ============================================================================
 #include <agrum/tools/core/smallobjectallocator/fixedAllocator.h>
 #include <agrum/tools/core/smallobjectallocator/smallObjectAllocator.h>
+
 // ============================================================================
 
 

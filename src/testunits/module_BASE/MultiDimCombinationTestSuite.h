@@ -25,7 +25,7 @@
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/multidim/potential.h>
 #include <agrum/tools/multidim/utils/operators/multiDimCombinationDefault.h>
@@ -178,7 +178,6 @@ namespace gum_tests {
           delete vars[i];
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
-
 
     GUM_ACTIVE_TEST(Constants) {
       gum::Potential< double > t1, t2;

@@ -19,15 +19,13 @@
  */
 
 
+#include <gumtest/AgrumTestSuite.h>
+
 #include <agrum/BN/algorithms/BayesBall.h>
 #include <agrum/BN/inference/variableElimination.h>
-
-#include <agrum/PRM/inference/SVE.h>
 #include <agrum/PRM/inference/structuredBayesBall.h>
-
+#include <agrum/PRM/inference/SVE.h>
 #include <agrum/PRM/o3prm/O3prmReader.h>
-
-#include <gumtest/AgrumTestSuite.h>
 
 namespace gum_tests {
   class [[maybe_unused]] StructuredBayesBallTestSuite: public CxxTest::TestSuite {

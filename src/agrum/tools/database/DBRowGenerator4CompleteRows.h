@@ -29,6 +29,7 @@
 #define GUM_LEARNING_DBROW_GENERATOR_4_COMPLETE_ROWS_H
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/database/DBRowGenerator.h>
 
 namespace gum {
@@ -145,10 +146,9 @@ namespace gum {
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
-  } /* namespace learning */
+  }    /* namespace learning */
 
 } /* namespace gum */
-
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE

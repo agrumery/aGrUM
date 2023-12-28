@@ -48,6 +48,7 @@
 #define BNLEARNERLISTENER_H
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/approximations/approximationScheme.h>
 #include <agrum/tools/core/approximations/approximationSchemeListener.h>
 

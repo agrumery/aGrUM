@@ -31,6 +31,7 @@
 #define GUM_MULTI_DIM_FUNCTION_GRAPH_INTERNAL_NODE_H
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/graphs/graphElements.h>
 #include <agrum/tools/multidim/utils/FunctionGraphUtilities/link.h>
 #include <agrum/tools/variables/discreteVariable.h>

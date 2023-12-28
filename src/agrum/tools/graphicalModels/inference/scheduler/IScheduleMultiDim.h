@@ -28,10 +28,11 @@
 #define GUM_ISCHEDULE_MULTI_DIM_H
 
 #include <atomic>
-#include <string>
 #include <memory>
+#include <string>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/sequence.h>
 #include <agrum/tools/variables/discreteVariable.h>
 

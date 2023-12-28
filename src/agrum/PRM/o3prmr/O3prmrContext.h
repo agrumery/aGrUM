@@ -33,7 +33,6 @@
 #include <string>
 #include <vector>
 
-
 #include <agrum/PRM/inference/PRMInference.h>
 
 namespace gum {
@@ -48,16 +47,12 @@ namespace gum {
       class O3prmrCommand {
         public:
         int line;
-        enum class RequestType : char {
-          Observe,
-          Unobserve,
-          Query,
-          SetEngine,
-          SetGndEngine
-        };
+        enum class RequestType : char { Observe, Unobserve, Query, SetEngine, SetGndEngine };
 
         explicit O3prmrCommand(int line) : line(line) {}
+
         O3prmrCommand(const O3prmrCommand& c) : line(c.line) {}
+
         virtual ~O3prmrCommand() {}
 
         virtual RequestType type() const     = 0;
@@ -69,6 +64,7 @@ namespace gum {
         public:
         ImportCommand(int line, const std::string& value, const std::string& alias) :
             line(line), value(value), alias(alias) {}
+
         ImportCommand(const ImportCommand& c) : line(c.line), value(c.value), alias(c.alias) {}
 
         int         line;
@@ -84,11 +80,13 @@ namespace gum {
       class SetEngineCommand: public O3prmrCommand {
         public:
         SetEngineCommand(int line, const std::string& value) : O3prmrCommand(line), value(value) {}
+
         SetEngineCommand(const SetEngineCommand& c) : O3prmrCommand(c), value(c.value) {}
 
         std::string value;
 
         RequestType type() const { return RequestType::SetEngine; }
+
         std::string toString() const { return "engine " + value + ";"; }
       };
 
@@ -97,11 +95,13 @@ namespace gum {
         public:
         SetGndEngineCommand(int line, const std::string& value) :
             O3prmrCommand(line), value(value) {}
+
         SetGndEngineCommand(const SetGndEngineCommand& c) : O3prmrCommand(c), value(c.value) {}
 
         std::string value;
 
         RequestType type() const { return RequestType::SetGndEngine; }
+
         std::string toString() const { return "grd_engine " + value + ";"; }
       };
 
@@ -111,6 +111,7 @@ namespace gum {
         public:
         ObserveCommand(int line, const std::string& leftValue, const std::string& rightValue) :
             O3prmrCommand(line), leftValue(leftValue), rightValue(rightValue), system(0) {}
+
         ObserveCommand(const ObserveCommand& c) :
             O3prmrCommand(c), leftValue(c.leftValue), rightValue(c.rightValue), system(c.system),
             chain(c.chain) {}
@@ -122,6 +123,7 @@ namespace gum {
         Potential< GUM_SCALAR >                    potentiel;
 
         RequestType type() const { return RequestType::Observe; }
+
         std::string toString() const { return leftValue + " = " + rightValue + ";"; }
       };
 
@@ -135,10 +137,12 @@ namespace gum {
 
         UnobserveCommand(int line, const std::string& value) :
             O3prmrCommand(line), value(value), system(0) {}
+
         UnobserveCommand(const UnobserveCommand& c) :
             O3prmrCommand(c), value(c.value), system(c.system), chain(c.chain) {}
 
         RequestType type() const { return RequestType::Unobserve; }
+
         std::string toString() const { return "unobserve " + value + ";"; }
       };
 
@@ -154,6 +158,7 @@ namespace gum {
         typename PRMInference< GUM_SCALAR >::Chain chain;
 
         RequestType type() const { return RequestType::Query; }
+
         std::string toString() const { return "? " + value + ";"; }
       };
 
@@ -219,6 +224,7 @@ namespace gum {
         std::vector< ImportCommand* > imports() const;
         void addImport(int line, const std::string& import, const std::string& alias);
         void addImport(int line, const std::string& import, bool ismain);
+
         void addImport(const ImportCommand& i) {
           m_imports.push_back(new ImportCommand(i.line, i.value, i.alias));
 

@@ -30,12 +30,14 @@
 #define GUM_VARIABLE_LOG2_PARAM_COMPLEXITY_H
 
 #include <cstddef>
-#include <string>
 #include <fstream>
+#include <string>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/math/math_utils.h>
+
 #include <agrum/tools/core/hashTable.h>
+
+#include <agrum/tools/core/math/math_utils.h>
 
 namespace gum {
 
@@ -48,7 +50,6 @@ namespace gum {
 
   // the size in n of the CTable cache
   constexpr std::size_t VariableLog2ParamComplexityCTableNSize{std::size_t(1000)};
-
 
   /** @class VariableLog2ParamComplexity
    * @brief the class for computing the log2 of the parametric complexity
@@ -156,4 +157,4 @@ namespace gum {
 #  include <agrum/tools/core/math/variableLog2ParamComplexity_inl.h>
 #endif   // GUM_NO_INLINE
 
-#endif /* GUM_VARIABLE_LOG2_PARAM_COMPLEXITY_H */
+#endif   /* GUM_VARIABLE_LOG2_PARAM_COMPLEXITY_H */

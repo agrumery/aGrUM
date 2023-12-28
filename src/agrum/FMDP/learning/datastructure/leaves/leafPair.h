@@ -32,6 +32,7 @@
 // =========================================================================
 // =========================================================================
 #include <agrum/FMDP/learning/datastructure/leaves/composedLeaf.h>
+
 // =========================================================================
 
 namespace gum {
@@ -69,7 +70,8 @@ namespace gum {
     /// Allocators and Deallocators redefinition
     // ============================================================================
     void* operator new(size_t s) { return SmallObjectAllocator::instance().allocate(s); }
-    void  operator delete(void* p) {
+
+    void operator delete(void* p) {
       SmallObjectAllocator::instance().deallocate(p, sizeof(LeafPair));
     }
 
@@ -96,6 +98,7 @@ namespace gum {
     ///
     // ###################################################################
     AbstractLeaf* firstLeaf() { return _l1_; }
+
     AbstractLeaf* secondLeaf() { return _l2_; }
 
     // ###################################################################

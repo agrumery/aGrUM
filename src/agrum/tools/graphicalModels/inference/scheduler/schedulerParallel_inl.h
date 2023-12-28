@@ -36,20 +36,17 @@ namespace gum {
     _sequential_scheduler_.setMaxMemory(megabytes);
   }
 
-
   /// sets the number max of threads that can be used
   INLINE void SchedulerParallel::setNumberOfThreads(Size nb) {
     Scheduler::setNumberOfThreads(nb);
     _sequential_scheduler_.setNumberOfThreads(nb);
   }
 
-
   /** @bried returns an estimation of the number of elementary operations needed
    * to perform a given schedule */
   INLINE double SchedulerParallel::nbOperations(const Schedule& schedule) {
     return _sequential_scheduler_.nbOperations(schedule);
   }
-
 
   /// returns the memory consumption used during the execution of a schedule
   INLINE std::pair< double, double > SchedulerParallel::memoryUsage(const Schedule& schedule) {

@@ -26,9 +26,9 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#include <agrum/PRM/elements/PRMInstance.h>
-
 #include <agrum/tools/multidim/implementations/multiDimSparse.h>
+
+#include <agrum/PRM/elements/PRMInstance.h>
 
 namespace gum {
   namespace prm {
@@ -160,7 +160,7 @@ namespace gum {
       }
 
       switch (elt->elt_type()) {
-        case PRMClassElement< GUM_SCALAR >::prm_refslot: {
+        case PRMClassElement< GUM_SCALAR >::prm_refslot : {
           PRMReferenceSlot< GUM_SCALAR >* ref = static_cast< PRMReferenceSlot< GUM_SCALAR >* >(elt);
 
           // Checking if instance's type is legal
@@ -180,7 +180,7 @@ namespace gum {
           break;
         }
 
-        case PRMClassElement< GUM_SCALAR >::prm_slotchain: {
+        case PRMClassElement< GUM_SCALAR >::prm_slotchain : {
           PRMSlotChain< GUM_SCALAR >& sc
              = static_cast< PRMSlotChain< GUM_SCALAR >& >(type().get(id));
 
@@ -202,7 +202,7 @@ namespace gum {
           break;
         }
 
-        default: {
+        default : {
           if (!type().isOutputNode(*elt)) {
             GUM_ERROR(WrongClassElement, "given ClassElement<GUM_SCALAR> is not an output node")
           }
@@ -252,7 +252,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMInstance< GUM_SCALAR >& /**/
-       PRMInstance< GUM_SCALAR >::operator=(const PRMClass< GUM_SCALAR >& from) {
+           PRMInstance< GUM_SCALAR >::operator=(const PRMClass< GUM_SCALAR >& from) {
       GUM_ERROR(FatalError, "do not copy Instance")
     }
 
@@ -519,13 +519,13 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const PRMInstance< GUM_SCALAR >&
-       PRMInstance< GUM_SCALAR >::RefConstIterator::operator*() const {
+                 PRMInstance< GUM_SCALAR >::RefConstIterator::operator*() const {
       return **_iter_;
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMInstance< GUM_SCALAR >*
-       PRMInstance< GUM_SCALAR >::RefConstIterator::operator->() const {
+                 PRMInstance< GUM_SCALAR >::RefConstIterator::operator->() const {
       return *_iter_;
     }
 

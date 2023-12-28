@@ -27,12 +27,13 @@
  */
 
 // to help IDE parser
-#include <agrum/tools/core/utils_misc.h>
 #include <algorithm>
 #include <functional>
 #include <iostream>
 #include <string>
 #include <tuple>
+
+#include <agrum/tools/core/utils_misc.h>
 #include <type_traits>
 
 namespace std {
@@ -68,6 +69,7 @@ namespace std {
       os << ", " << quote << std::get< N >(t) << quote;
       _auxiliary_print_tuple_< N + 1 >::print(os, t);
     }
+
     template < typename... T >
     static typename std::enable_if< !(N < sizeof...(T)) >::type print(std::ostream&,
                                                                       const std::tuple< T... >&) {}

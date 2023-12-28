@@ -28,8 +28,9 @@
 #define GUM_THREAD_EXECUTOR_STL_H
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/threads/threadsSTL.h>
+
 #include <agrum/tools/core/threads/threadExecutorBase.h>
+#include <agrum/tools/core/threads/threadsSTL.h>
 
 namespace gum {
 
@@ -76,7 +77,6 @@ namespace gum {
   } /* namespace threadsSTL */
 
 } /* namespace gum */
-
 
 /// always include the templated implementations
 #include <agrum/tools/core/threads/threadExecutorSTL_tpl.h>

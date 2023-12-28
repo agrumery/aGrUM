@@ -48,7 +48,6 @@ namespace gum {
       return *this;
     }
 
-
     /// move operator
     IndepTestG2& IndepTestG2::operator=(IndepTestG2&& from) {
       if (this != &from) {
@@ -172,7 +171,6 @@ namespace gum {
       double pValue = _chi2_.probaChi2(cumulStat, df);
       return std::pair< double, double >(cumulStat, pValue);
     }
-
 
     /// returns the score corresponding to a given nodeset
     double IndepTestG2::score_(const IdCondSet& idset) {

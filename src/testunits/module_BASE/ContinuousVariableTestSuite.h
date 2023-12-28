@@ -25,7 +25,7 @@
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/variables/continuousVariable.h>
 
@@ -75,7 +75,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(var4.lowerBound(), -10.0)
       TS_ASSERT_EQUALS(var4.upperBound(), 10.0)
     }
-
 
     GUM_ACTIVE_TEST(_methods) {
       gum::ContinuousVariable<> var1("x1", "");

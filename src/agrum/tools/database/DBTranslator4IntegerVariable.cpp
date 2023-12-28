@@ -83,7 +83,6 @@ namespace gum {
       GUM_CONSTRUCTOR(DBTranslator4IntegerVariable);
     }
 
-
     /// default constructor with an integer variable as translator but no missing value
     DBTranslator4IntegerVariable::DBTranslator4IntegerVariable(const IntegerVariable& var,
                                                                std::size_t max_dico_entries) :
@@ -105,7 +104,6 @@ namespace gum {
       GUM_CONSTRUCTOR(DBTranslator4IntegerVariable);
     }
 
-
     /// copy constructor
     DBTranslator4IntegerVariable::DBTranslator4IntegerVariable(
        const DBTranslator4IntegerVariable& from) :
@@ -114,7 +112,6 @@ namespace gum {
       // for debugging purposes
       GUM_CONS_CPY(DBTranslator4IntegerVariable);
     }
-
 
     /// move constructor
     DBTranslator4IntegerVariable::DBTranslator4IntegerVariable(
@@ -125,12 +122,10 @@ namespace gum {
       GUM_CONS_MOV(DBTranslator4IntegerVariable);
     }
 
-
     /// virtual copy constructor
     DBTranslator4IntegerVariable* DBTranslator4IntegerVariable::clone() const {
       return new DBTranslator4IntegerVariable(*this);
     }
-
 
     /// copy operator
     DBTranslator4IntegerVariable&
@@ -142,7 +137,6 @@ namespace gum {
 
       return *this;
     }
-
 
     /// move operator
     DBTranslator4IntegerVariable&

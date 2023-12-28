@@ -65,14 +65,12 @@ namespace gum {
       GUM_CONSTRUCTOR(DBTranslator4RangeVariable);
     }
 
-
     /// default constructor
     DBTranslator4RangeVariable::DBTranslator4RangeVariable(std::size_t max_dico_entries) :
         DBTranslator(DBTranslatedValueType::DISCRETE, true, true, max_dico_entries),
         _variable_("var", "", 1, 0) {
       GUM_CONSTRUCTOR(DBTranslator4RangeVariable);
     }
-
 
     /// default constructor with a range variable as translator
     DBTranslator4RangeVariable::DBTranslator4RangeVariable(
@@ -137,7 +135,6 @@ namespace gum {
       GUM_CONSTRUCTOR(DBTranslator4RangeVariable);
     }
 
-
     /// default constructor with a range variable as translator
     DBTranslator4RangeVariable::DBTranslator4RangeVariable(const RangeVariable& var,
                                                            const bool           editable_dictionary,
@@ -165,7 +162,6 @@ namespace gum {
       GUM_CONSTRUCTOR(DBTranslator4RangeVariable);
     }
 
-
     /// copy constructor
     DBTranslator4RangeVariable::DBTranslator4RangeVariable(const DBTranslator4RangeVariable& from) :
         DBTranslator(from), _variable_(from._variable_),
@@ -174,7 +170,6 @@ namespace gum {
         _nonint_missing_symbol_(from._nonint_missing_symbol_) {
       GUM_CONS_CPY(DBTranslator4RangeVariable);
     }
-
 
     /// move constructor
     DBTranslator4RangeVariable::DBTranslator4RangeVariable(DBTranslator4RangeVariable&& from) :
@@ -185,12 +180,10 @@ namespace gum {
       GUM_CONS_MOV(DBTranslator4RangeVariable);
     }
 
-
     /// virtual copy constructor
     DBTranslator4RangeVariable* DBTranslator4RangeVariable::clone() const {
       return new DBTranslator4RangeVariable(*this);
     }
-
 
     /// copy operator
     DBTranslator4RangeVariable&
@@ -206,7 +199,6 @@ namespace gum {
       return *this;
     }
 
-
     /// move operator
     DBTranslator4RangeVariable&
        DBTranslator4RangeVariable::operator=(DBTranslator4RangeVariable&& from) {
@@ -220,7 +212,6 @@ namespace gum {
 
       return *this;
     }
-
 
     /// returns the translation of a string, as found in the current dictionary
     DBTranslatedValue DBTranslator4RangeVariable::translate(const std::string& str) {
@@ -375,7 +366,6 @@ namespace gum {
         }
       }
     }
-
 
     /// indicates whether the translations should be reordered
     bool DBTranslator4RangeVariable::needsReordering() const {

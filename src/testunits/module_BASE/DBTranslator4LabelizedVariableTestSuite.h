@@ -19,9 +19,10 @@
  */
 
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
 #include <iostream>
+
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
 
@@ -94,7 +95,6 @@ namespace gum_tests {
       TS_ASSERT(translator3.missingSymbols().exists(back))
     }
 
-
     GUM_ACTIVE_TEST(_trans2) {
       gum::learning::DBTranslator4LabelizedVariable translator;
       TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("toto"))
@@ -156,7 +156,6 @@ namespace gum_tests {
                    gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()})
                 == "?");
     }
-
 
     GUM_ACTIVE_TEST(_trans3) {
       gum::LabelizedVariable var("X1", "", 0);
@@ -229,7 +228,6 @@ namespace gum_tests {
          gum::learning::DBTranslator4LabelizedVariable translator4(var, missing, true, 2),
          const gum::SizeError&)
     }
-
 
     GUM_ACTIVE_TEST(_trans4) {
       {
@@ -367,7 +365,6 @@ namespace gum_tests {
       }
     }
 
-
     void xtest_trans5() {
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("1");
@@ -502,7 +499,6 @@ namespace gum_tests {
                        "4");
       TS_ASSERT_EQUALS(translator5.variable()->toString(), "X2:Labelized({1|2|4})")
     }
-
 
     GUM_ACTIVE_TEST(_trans6) {
       gum::LabelizedVariable var("X1", "", 0);

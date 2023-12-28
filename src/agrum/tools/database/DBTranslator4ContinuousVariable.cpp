@@ -72,7 +72,6 @@ namespace gum {
       GUM_CONSTRUCTOR(DBTranslator4ContinuousVariable);
     }
 
-
     /// default constructor
     DBTranslator4ContinuousVariable::DBTranslator4ContinuousVariable(const bool fit_range) :
         DBTranslator(DBTranslatedValueType::CONTINUOUS, true, fit_range, 1), _variable_("var", ""),
@@ -87,7 +86,6 @@ namespace gum {
 
       GUM_CONSTRUCTOR(DBTranslator4ContinuousVariable);
     }
-
 
     /// default constructor with a IContinuous variable as translator
     DBTranslator4ContinuousVariable::DBTranslator4ContinuousVariable(
@@ -124,7 +122,6 @@ namespace gum {
       GUM_CONSTRUCTOR(DBTranslator4ContinuousVariable);
     }
 
-
     /// default constructor with a IContinuous variable as translator
     DBTranslator4ContinuousVariable::DBTranslator4ContinuousVariable(const IContinuousVariable& var,
                                                                      const bool fit_range) :
@@ -142,7 +139,6 @@ namespace gum {
       GUM_CONSTRUCTOR(DBTranslator4ContinuousVariable);
     }
 
-
     /// copy constructor
     DBTranslator4ContinuousVariable::DBTranslator4ContinuousVariable(
        const DBTranslator4ContinuousVariable& from) :
@@ -155,7 +151,6 @@ namespace gum {
 
       GUM_CONS_CPY(DBTranslator4ContinuousVariable);
     }
-
 
     /// move constructor
     DBTranslator4ContinuousVariable::DBTranslator4ContinuousVariable(
@@ -172,12 +167,10 @@ namespace gum {
       GUM_CONS_MOV(DBTranslator4ContinuousVariable);
     }
 
-
     /// virtual copy constructor
     DBTranslator4ContinuousVariable* DBTranslator4ContinuousVariable::clone() const {
       return new DBTranslator4ContinuousVariable(*this);
     }
-
 
     /// copy operator
     DBTranslator4ContinuousVariable&
@@ -196,7 +189,6 @@ namespace gum {
       return *this;
     }
 
-
     /// move operator
     DBTranslator4ContinuousVariable&
        DBTranslator4ContinuousVariable::operator=(DBTranslator4ContinuousVariable&& from) {
@@ -214,7 +206,6 @@ namespace gum {
 
       return *this;
     }
-
 
     /// returns the translation of a string, as found in the current dictionary
     DBTranslatedValue DBTranslator4ContinuousVariable::translate(const std::string& str) {

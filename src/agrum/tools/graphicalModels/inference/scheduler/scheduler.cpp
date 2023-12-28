@@ -47,14 +47,12 @@ namespace gum {
     GUM_CONSTRUCTOR(Scheduler);
   }
 
-
   /// copy constructor
   Scheduler::Scheduler(const Scheduler& from) :
       ThreadNumberManager(from), _max_memory(from._max_memory) {
     // for debugging purposes
     GUM_CONS_CPY(Scheduler);
   }
-
 
   /// move constructor
   Scheduler::Scheduler(Scheduler&& from) :
@@ -63,13 +61,11 @@ namespace gum {
     GUM_CONS_MOV(Scheduler);
   }
 
-
   /// destructor
   Scheduler::~Scheduler() {
     // for debugging purposes
     GUM_DESTRUCTOR(Scheduler);
   }
-
 
   /// copy operator
   Scheduler& Scheduler::operator=(const Scheduler& from) {
@@ -80,7 +76,6 @@ namespace gum {
 
     return *this;
   }
-
 
   /// move operator
   Scheduler& Scheduler::operator=(Scheduler&& from) {

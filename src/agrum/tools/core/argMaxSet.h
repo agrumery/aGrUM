@@ -40,6 +40,7 @@
 // =========================================================================
 #include <agrum/tools/core/sequence.h>
 #include <agrum/tools/core/smallobjectallocator/smallObjectAllocator.h>
+
 // =========================================================================
 
 namespace gum {
@@ -88,7 +89,8 @@ namespace gum {
     /// Allocators and Deallocators redefinition
     // ============================================================================
     void* operator new(size_t s) { return SmallObjectAllocator::instance().allocate(s); }
-    void  operator delete(void* p) {
+
+    void operator delete(void* p) {
       SmallObjectAllocator::instance().deallocate(
          p,
          sizeof(ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >));
@@ -138,6 +140,7 @@ namespace gum {
     /// Compares two ArgMaxSet to check if they are equals
     // ============================================================================
     bool operator==(const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& compared) const;
+
     bool operator!=(const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& compared) const {
       return !(*this == compared);
     }
@@ -148,12 +151,15 @@ namespace gum {
     bool operator<(const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& compared) const {
       return _val_ < compared.value() ? true : false;
     }
+
     bool operator>(const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& compared) const {
       return compared < *this;
     }
+
     bool operator<=(const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& compared) const {
       return !(*this > compared);
     }
+
     bool operator>=(const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& compared) const {
       return !(*this < compared);
     }

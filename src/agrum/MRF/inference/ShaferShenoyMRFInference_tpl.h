@@ -29,13 +29,13 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 #  include <algorithm>
-#  include <agrum/MRF/inference/ShaferShenoyMRFInference.h>
 
 #  include <agrum/tools/graphs/algorithms/binaryJoinTreeConverterDefault.h>
 #  include <agrum/tools/multidim/instantiation.h>
 #  include <agrum/tools/multidim/utils/operators/multiDimCombineAndProjectDefault.h>
 #  include <agrum/tools/multidim/utils/operators/multiDimProjection.h>
 
+#  include <agrum/MRF/inference/ShaferShenoyMRFInference.h>
 
 namespace gum {
   // default constructor
@@ -63,7 +63,6 @@ namespace gum {
     // for debugging purposes
     GUM_CONSTRUCTOR(ShaferShenoyMRFInference);
   }
-
 
   // destructor
   template < typename GUM_SCALAR >
@@ -101,7 +100,6 @@ namespace gum {
     GUM_DESTRUCTOR(ShaferShenoyMRFInference);
   }
 
-
   /// set a new triangulation algorithm
   template < typename GUM_SCALAR >
   void ShaferShenoyMRFInference< GUM_SCALAR >::setTriangulation(
@@ -111,7 +109,6 @@ namespace gum {
     _is_new_jt_needed_ = true;
     this->setOutdatedStructureState_();
   }
-
 
   /// returns the current join tree used
   template < typename GUM_SCALAR >
@@ -129,7 +126,6 @@ namespace gum {
     return _junctionTree_;
   }
 
-
   /// sets the operator for performing the projections
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::_setProjectionFunction_(
@@ -140,7 +136,6 @@ namespace gum {
     // the change in of the projection operator
     _invalidateAllMessages_();
   }
-
 
   /// sets the operator for performing the combinations
   template < typename GUM_SCALAR >
@@ -153,7 +148,6 @@ namespace gum {
     // the change of the combination operator
     _invalidateAllMessages_();
   }
-
 
   /// invalidate all messages, posteriors and created potentials
   template < typename GUM_SCALAR >
@@ -182,7 +176,6 @@ namespace gum {
     if (this->isInferenceReady() || this->isInferenceDone()) this->setOutdatedPotentialsState_();
   }
 
-
   /// fired when a new evidence is inserted
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::onEvidenceAdded_(const NodeId id,
@@ -203,7 +196,6 @@ namespace gum {
       }
     }
   }
-
 
   /// fired when an evidence is removed
   template < typename GUM_SCALAR >
@@ -228,7 +220,6 @@ namespace gum {
     }
   }
 
-
   /// fired when all the evidence are erased
   template < typename GUM_SCALAR >
   void ShaferShenoyMRFInference< GUM_SCALAR >::onAllEvidenceErased_(bool has_hard_evidence) {
@@ -251,7 +242,6 @@ namespace gum {
     }
   }
 
-
   /// fired when an evidence is changed
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::onEvidenceChanged_(const NodeId id,
@@ -268,31 +258,25 @@ namespace gum {
     }
   }
 
-
   /// fired after a new target is inserted
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::onMarginalTargetAdded_(const NodeId id) {}
-
 
   /// fired before a target is removed
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::onMarginalTargetErased_(const NodeId id) {}
 
-
   /// fired after a new set target is inserted
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::onJointTargetAdded_(const NodeSet& set) {}
-
 
   /// fired before a set target is removed
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::onJointTargetErased_(const NodeSet& set) {}
 
-
   /// fired after all the nodes of the MRF are added as single targets
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::onAllMarginalTargetsAdded_() {}
-
 
   /// fired before a all the single_targets are removed
   template < typename GUM_SCALAR >
@@ -307,11 +291,9 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::onAllJointTargetsErased_() {}
 
-
   /// fired before a all the single and joint_targets are removed
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::onAllTargetsErased_() {}
-
 
   // check whether a new junction tree is really needed for the next inference
   template < typename GUM_SCALAR >
@@ -375,7 +357,6 @@ namespace gum {
     // here, the current JT is exactly what we need for the next inference
     return false;
   }
-
 
   /// create a new junction tree as well as its related data structures
   template < typename GUM_SCALAR >
@@ -610,7 +591,6 @@ namespace gum {
     _is_new_jt_needed_ = false;
   }
 
-
   /// put all the CPTs into the cliques when creating the JT without using a schedule
   template < typename GUM_SCALAR >
   void ShaferShenoyMRFInference< GUM_SCALAR >::_initializeJTCliques_() {
@@ -725,7 +705,6 @@ namespace gum {
       }
     }
   }
-
 
   /// put all the CPTs into the cliques when creating the JT using a schedule
   template < typename GUM_SCALAR >
@@ -849,7 +828,6 @@ namespace gum {
     this->scheduler().execute(schedule);
   }
 
-
   /// prepare the inference structures w.r.t. new targets, soft/hard evidence
   template < typename GUM_SCALAR >
   void ShaferShenoyMRFInference< GUM_SCALAR >::updateOutdatedStructure_() {
@@ -863,7 +841,6 @@ namespace gum {
       updateOutdatedPotentials_();
     }
   }
-
 
   /// invalidate all the messages sent from a given clique
   template < typename GUM_SCALAR >
@@ -891,7 +868,6 @@ namespace gum {
       }
     }
   }
-
 
   /// update the potentials stored in the cliques and invalidate outdated
   /// messages
@@ -1194,7 +1170,6 @@ namespace gum {
     _evidence_changes_.clear();
   }
 
-
   /// compute a root for each connected component of  _JT_
   template < typename GUM_SCALAR >
   void ShaferShenoyMRFInference< GUM_SCALAR >::_computeJoinTreeRoots_() {
@@ -1254,7 +1229,6 @@ namespace gum {
     }
   }
 
-
   // performs the collect phase of Shafer-Shenoy using schedules
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::_collectMessage_(Schedule& schedule,
@@ -1270,7 +1244,6 @@ namespace gum {
     }
   }
 
-
   // performs the collect phase of Shafer-Shenoy without schedules
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::_collectMessage_(NodeId id, NodeId from) {
@@ -1280,7 +1253,6 @@ namespace gum {
 
     if ((id != from) && !_messages_computed_[Arc(id, from)]) { _produceMessage_(id, from); }
   }
-
 
   // remove variables del_vars from the list of potentials pot_list
   template < typename GUM_SCALAR >
@@ -1307,7 +1279,6 @@ namespace gum {
     MultiDimCombinationDefault< Potential< GUM_SCALAR > > fast_combination(_combination_op_);
     return fast_combination.schedule(schedule, new_pot_list);
   }
-
 
   // remove variables del_vars from the list of potentials pot_list
   template < typename GUM_SCALAR >
@@ -1353,7 +1324,6 @@ namespace gum {
 
     return res_pot;
   }
-
 
   // creates the message sent by clique from_id to clique to_id
   template < typename GUM_SCALAR >
@@ -1407,7 +1377,6 @@ namespace gum {
     _messages_computed_[arc]    = true;
   }
 
-
   // creates the message sent by clique from_id to clique to_id
   template < typename GUM_SCALAR >
   void ShaferShenoyMRFInference< GUM_SCALAR >::_produceMessage_(NodeId from_id, NodeId to_id) {
@@ -1454,13 +1423,11 @@ namespace gum {
     _messages_computed_[arc]    = true;
   }
 
-
   // fired after a new Markov net has been assigned to the inference engine
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::onModelChanged_(const GraphicalModel* mn) {
     JointTargetedMRFInference< GUM_SCALAR >::onModelChanged_(mn);
   }
-
 
   // performs a whole inference
   template < typename GUM_SCALAR >
@@ -1507,7 +1474,6 @@ namespace gum {
     }
   }
 
-
   /// returns a fresh potential equal to P(1st arg,evidence)
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >*
@@ -1519,7 +1485,6 @@ namespace gum {
       return _unnormalizedJointPosterior_(id);
     }
   }
-
 
   /// returns a fresh potential equal to P(1st arg,evidence)
   template < typename GUM_SCALAR >
@@ -1597,7 +1562,6 @@ namespace gum {
     return joint;
   }
 
-
   /// returns a fresh potential equal to P(1st arg,evidence)
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >*
@@ -1670,7 +1634,6 @@ namespace gum {
     return joint;
   }
 
-
   /// returns the posterior of a given variable
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >& ShaferShenoyMRFInference< GUM_SCALAR >::posterior_(NodeId id) {
@@ -1686,7 +1649,6 @@ namespace gum {
     return *joint;
   }
 
-
   /// returns the marginal a posteriori proba of a given node
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >*
@@ -1698,7 +1660,6 @@ namespace gum {
       return _unnormalizedJointPosterior_(set);
     }
   }
-
 
   /// returns the marginal a posteriori proba of a given node
   template < typename GUM_SCALAR >
@@ -1865,7 +1826,6 @@ namespace gum {
     return joint;
   }
 
-
   /// returns the marginal a posteriori proba of a given node
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >*
@@ -2020,7 +1980,6 @@ namespace gum {
     return joint;
   }
 
-
   /// returns the posterior of a given set of variables
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
@@ -2035,7 +1994,6 @@ namespace gum {
 
     return *joint;
   }
-
 
   /// returns the posterior of a given set of variables
   template < typename GUM_SCALAR >
@@ -2068,7 +2026,6 @@ namespace gum {
     return *pot;
   }
 
-
   template < typename GUM_SCALAR >
   GUM_SCALAR ShaferShenoyMRFInference< GUM_SCALAR >::evidenceProbability() {
     // perform inference in each connected component
@@ -2094,7 +2051,6 @@ namespace gum {
 
     return prob_ev;
   }
-
 
   template < typename GUM_SCALAR >
   bool ShaferShenoyMRFInference< GUM_SCALAR >::isExactJointComputable_(const NodeSet& vars) {

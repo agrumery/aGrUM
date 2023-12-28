@@ -40,7 +40,6 @@ namespace gum {
       GUM_CONS_CPY(ParamEstimator);
     }
 
-
     /// move constructor
     INLINE ParamEstimator::ParamEstimator(ParamEstimator&& from) :
         external_prior_(from.external_prior_), score_internal_prior_(from.score_internal_prior_),
@@ -50,24 +49,19 @@ namespace gum {
       GUM_CONS_MOV(ParamEstimator);
     }
 
-
     /// clears all the data structures from memory
     INLINE void ParamEstimator::clear() { counter_.clear(); }
-
 
     /// changes the max number of threads used to parse the database
     INLINE void ParamEstimator::setNumberOfThreads(Size nb) { counter_.setNumberOfThreads(nb); }
 
-
     /// returns the current max number of threads of the scheduler
     INLINE Size ParamEstimator::getNumberOfThreads() const { return counter_.getNumberOfThreads(); }
-
 
     /// indicates whether the user set herself the number of threads
     INLINE bool ParamEstimator::isGumNumberOfThreadsOverriden() const {
       return counter_.isGumNumberOfThreadsOverriden();
     }
-
 
     /** @brief changes the number min of rows a thread should process in a
      * multithreading context */
@@ -75,12 +69,10 @@ namespace gum {
       counter_.setMinNbRowsPerThread(nb);
     }
 
-
     /// returns the minimum of rows that each thread should process
     INLINE std::size_t ParamEstimator::minNbRowsPerThread() const {
       return counter_.minNbRowsPerThread();
     }
-
 
     /// returns the current ranges
     INLINE const std::vector< std::pair< std::size_t, std::size_t > >&
@@ -88,18 +80,15 @@ namespace gum {
       return counter_.ranges();
     }
 
-
     /// returns the CPT's parameters corresponding to a given target node
     INLINE std::vector< double > ParamEstimator::parameters(const NodeId target_node) {
       return parameters(target_node, empty_nodevect_);
     }
 
-
     /// returns the mapping from ids to column positions in the database
     INLINE const Bijection< NodeId, std::size_t >& ParamEstimator::nodeId2Columns() const {
       return counter_.nodeId2Columns();
     }
-
 
     /// returns the database on which we perform the counts
     INLINE const DatabaseTable& ParamEstimator::database() const { return counter_.database(); }

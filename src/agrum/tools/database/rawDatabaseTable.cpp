@@ -41,7 +41,6 @@ namespace gum {
     // virtual copy constructor
     RawDatabaseTable* RawDatabaseTable::clone() const { return new RawDatabaseTable(*this); }
 
-
     // copy operator
     RawDatabaseTable& RawDatabaseTable::operator=(const RawDatabaseTable& from) {
       if (this != &from) {
@@ -51,7 +50,6 @@ namespace gum {
       return *this;
     }
 
-
     // move constructor
     RawDatabaseTable& RawDatabaseTable::operator=(RawDatabaseTable&& from) {
       if (this != &from) {
@@ -60,7 +58,6 @@ namespace gum {
       }
       return *this;
     }
-
 
     // sets the names of the variables
     void RawDatabaseTable::setVariableNames(const std::vector< std::string >& names,
@@ -113,7 +110,6 @@ namespace gum {
         }
       }
     }
-
 
     /// makes the database table ignore from now on the kth column
     void RawDatabaseTable::ignoreColumn(const std::size_t k, const bool from_external_object) {
@@ -178,7 +174,6 @@ namespace gum {
       _ignored_cols_[i] = kk;
     }
 
-
     /// returns the set of columns parsed
     const typename RawDatabaseTable::template DBVector< std::size_t >
        RawDatabaseTable::inputColumns() const {
@@ -217,7 +212,6 @@ namespace gum {
 
       return cols;
     }
-
 
     // insert a new row at the end of the database
     void RawDatabaseTable::insertRow(const std::vector< std::string >& new_row) {
@@ -275,7 +269,6 @@ namespace gum {
       IDatabaseTable< DBCell >::insertRow(std::move(dbrow),
                                           has_missing_val ? IsMissing::True : IsMissing::False);
     }
-
 
     // erase the content of the database, including the names of the variables
     void RawDatabaseTable::clear() {

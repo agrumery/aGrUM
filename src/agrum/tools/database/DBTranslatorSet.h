@@ -36,12 +36,14 @@
 #ifndef GUM_LEARNING_DB_TRANSLATOR_SET_H
 #define GUM_LEARNING_DB_TRANSLATOR_SET_H
 
-#include <vector>
 #include <limits>
-#include <type_traits>
+#include <vector>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/database/DBTranslatorUtils.h>
+
+#include <type_traits>
 
 namespace gum {
 
@@ -460,7 +462,7 @@ namespace gum {
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
-  } /* namespace learning */
+  }    /* namespace learning */
 
 } /* namespace gum */
 

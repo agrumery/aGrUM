@@ -22,7 +22,7 @@
 #include <iostream>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 #include <agrum/tools/core/exceptions.h>
 #include <agrum/tools/core/math/formula.h>

@@ -26,12 +26,14 @@
  * @author Paul ALAM & Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#include <agrum/tools/core/math/math_utils.h>
-#include <agrum/BN/IBayesNet.h>
-#include <agrum/BN/algorithms/divergence/GibbsBNdistance.h>
-#include <agrum/BN/inference/tools/gibbsOperator.h>
 #include <agrum/tools/core/approximations/approximationScheme.h>
 #include <agrum/tools/core/hashTable.h>
+
+#include <agrum/BN/algorithms/divergence/GibbsBNdistance.h>
+#include <agrum/BN/IBayesNet.h>
+#include <agrum/BN/inference/tools/gibbsOperator.h>
+
+#include <agrum/tools/core/math/math_utils.h>
 
 #define GIBBSKL_DEFAULT_MAXITER          10000000
 #define GIBBSKL_DEFAULT_EPSILON          1e-10
@@ -51,11 +53,11 @@ namespace gum {
   GibbsBNdistance< GUM_SCALAR >::GibbsBNdistance(const IBayesNet< GUM_SCALAR >& P,
                                                  const IBayesNet< GUM_SCALAR >& Q) :
       BNdistance< GUM_SCALAR >(P, Q),
-      ApproximationScheme(), GibbsOperator< GUM_SCALAR >(
-                                P,
-                                nullptr,
-                                1 + (P.size() * GIBBSKL_POURCENT_DRAWN_SAMPLE / 100),
-                                GIBBSKL_DRAWN_AT_RANDOM) {
+      ApproximationScheme(),
+      GibbsOperator< GUM_SCALAR >(P,
+                                  nullptr,
+                                  1 + (P.size() * GIBBSKL_POURCENT_DRAWN_SAMPLE / 100),
+                                  GIBBSKL_DRAWN_AT_RANDOM) {
     GUM_CONSTRUCTOR(GibbsBNdistance);
 
     setEpsilon(GIBBSKL_DEFAULT_EPSILON);
@@ -94,8 +96,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void GibbsBNdistance< GUM_SCALAR >::computeKL_() {
-    auto Iq = q_.completeInstantiation();
-    gum::Instantiation I = this->monteCarloSample();
+    auto               Iq = q_.completeInstantiation();
+    gum::Instantiation I  = this->monteCarloSample();
     initApproximationScheme();
 
     // map between particle() variables and q_ variables (using name of vars)

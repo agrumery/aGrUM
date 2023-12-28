@@ -120,6 +120,7 @@ namespace gum {
 
     return str.str();
   }
+
   template < typename GUM_SCALAR >
   INLINE std::string UAIBNWriter< GUM_SCALAR >::_cptBloc_(const IBayesNet< GUM_SCALAR >& bn,
                                                           NodeId                         node) {

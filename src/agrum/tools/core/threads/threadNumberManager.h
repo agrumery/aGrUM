@@ -28,8 +28,9 @@
 #define AGRUM_THREAD_NUMBER_MANAGER_H
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/threads/threads.h>
+
 #include <agrum/tools/core/IThreadNumberManager.h>
+#include <agrum/tools/core/threads/threads.h>
 
 namespace gum {
 
@@ -109,6 +110,6 @@ namespace gum {
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
 #  include <agrum/tools/core/threads/threadNumberManager_inl.h>
-#endif /* GUM_NO_INLINE */
+#endif   /* GUM_NO_INLINE */
 
 #endif   // AGRUM_THREAD_NUMBER_MANAGER_H

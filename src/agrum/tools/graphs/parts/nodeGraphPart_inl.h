@@ -179,7 +179,7 @@ namespace gum {
     //  avoid self assignment
     if (&it != this) {
       NodeGraphPartIterator::operator=(it);
-      Listener::             operator=(it);
+      Listener::operator=(it);
       GUM_OP_CPY(NodeGraphPartIteratorSafe);
     }
 
@@ -192,7 +192,7 @@ namespace gum {
     //  avoid self assignment
     if (&it != this) {
       NodeGraphPartIterator::operator=(std::move(it));
-      Listener::             operator=(std::move(it));
+      Listener::operator=(std::move(it));
       GUM_OP_MOV(NodeGraphPartIteratorSafe);
     }
 
@@ -259,7 +259,6 @@ namespace gum {
       v.push_back(this->addNode());
     return v;
   }
-
 
   INLINE Size NodeGraphPart::sizeNodes() const {
     return (_holes_) ? (_boundVal_ - _holes_->size()) : _boundVal_;

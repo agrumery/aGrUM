@@ -50,10 +50,8 @@ namespace gum {
       GUM_CONS_CPY(DBRowGeneratorSet);
     }
 
-
     /// virtual copy constructor
     DBRowGeneratorSet* DBRowGeneratorSet::clone() const { return new DBRowGeneratorSet(*this); }
-
 
     /// removes all the generators
     void DBRowGeneratorSet::clear() {
@@ -69,13 +67,11 @@ namespace gum {
       _setInputRow_performed_.clear();
     }
 
-
     /// destructor
     DBRowGeneratorSet::~DBRowGeneratorSet() {
       GUM_DESTRUCTOR(DBRowGeneratorSet);
       clear();
     }
-
 
     /// copy operator
     DBRowGeneratorSet& DBRowGeneratorSet::operator=(const DBRowGeneratorSet& from) {
@@ -107,7 +103,6 @@ namespace gum {
       return *this;
     }
 
-
     /// move operator
     DBRowGeneratorSet& DBRowGeneratorSet::operator=(DBRowGeneratorSet&& from) {
       if (this != &from) {
@@ -120,7 +115,6 @@ namespace gum {
       }
       return *this;
     }
-
 
     // try to produce a new row
     bool DBRowGeneratorSet::_produceNextRow_(const DBRow< DBTranslatedValue >* input_row,

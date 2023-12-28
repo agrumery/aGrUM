@@ -24,14 +24,14 @@
 #include <sstream>
 #include <string>
 
-#include <agrum/tools/core/sequence.h>
-#include <agrum/tools/core/utils_random.h>
-
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
+#include <agrum/tools/core/sequence.h>
 #include <agrum/tools/multidim/potential.h>
 #include <agrum/tools/variables/labelizedVariable.h>
+
+#include <agrum/tools/core/utils_random.h>
 
 namespace gum_tests {
 
@@ -794,7 +794,6 @@ namespace gum_tests {
       }
     }
 
-
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
@@ -824,7 +823,6 @@ namespace gum_tests {
       for (i.setFirst(); !i.end(); ++i)
         t.set(i, gum::randomProba());
     }
-
 
     // ==========================================================================
     // ==========================================================================

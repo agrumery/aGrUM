@@ -32,8 +32,8 @@
 #include <utility>
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/sequence.h>
 
+#include <agrum/tools/core/sequence.h>
 #include <agrum/tools/graphs/parts/arcGraphPart.h>
 #include <agrum/tools/graphs/parts/nodeGraphPart.h>
 
@@ -213,4 +213,4 @@ namespace gum {
 #  include <agrum/tools/graphs/diGraph_inl.h>
 #endif   // GUM_NOINLINE
 
-#endif /* GUM_DIGRAPH_H */
+#endif   /* GUM_DIGRAPH_H */

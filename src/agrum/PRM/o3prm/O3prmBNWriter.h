@@ -38,10 +38,11 @@
 #include <sstream>
 #include <string>
 
-#include <agrum/BN/io/BNWriter.h>
 #include <agrum/agrum.h>
 
 #include <agrum/tools/variables/allDiscreteVariables.h>
+
+#include <agrum/BN/io/BNWriter.h>
 
 namespace gum {
   /**
@@ -72,6 +73,7 @@ namespace gum {
     ~O3prmBNWriter() override;
 
     /// @}
+
     protected:
     /**
      * Writes an bayes net in the given ouput stream.

@@ -30,17 +30,14 @@ namespace gum {
   IDiscretizedVariable::IDiscretizedVariable(const std::string& aName, const std::string& aDesc) :
       DiscreteVariable(aName, aDesc) {}
 
-
   /// Copy Constructor
   INLINE
   IDiscretizedVariable::IDiscretizedVariable(const IDiscretizedVariable& from) :
       DiscreteVariable(from) {}
 
-
   /// destructor
   INLINE
   IDiscretizedVariable::~IDiscretizedVariable() {}
-
 
   /// copy assignment
   INLINE
@@ -50,7 +47,6 @@ namespace gum {
   }
 
   INLINE bool IDiscretizedVariable::isEmpirical() const { return _is_empirical; }
-
 
   INLINE void IDiscretizedVariable::setEmpirical(bool state) { _is_empirical = state; }
 } /* namespace gum */

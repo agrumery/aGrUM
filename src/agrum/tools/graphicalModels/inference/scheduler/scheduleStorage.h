@@ -28,7 +28,6 @@
 #ifndef GUM_SCHEDULE_STORAGE_H
 #define GUM_SCHEDULE_STORAGE_H
 
-#include <type_traits>
 #include <string>
 #include <vector>
 
@@ -37,6 +36,8 @@
 #include <agrum/tools/core/exceptions.h>
 #include <agrum/tools/graphicalModels/inference/scheduler/scheduleMultiDim.h>
 #include <agrum/tools/graphicalModels/inference/scheduler/scheduleOperator.h>
+
+#include <type_traits>
 
 namespace gum {
 
@@ -75,7 +76,7 @@ namespace gum {
       void execute(TABLE& table, std::vector< TABLE >& container);
     };
 
-  }   // namespace ScheduleStorageMethod
+  }    // namespace ScheduleStorageMethod
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 

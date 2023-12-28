@@ -39,6 +39,7 @@
 #include <agrum/tools/multidim/utils/FunctionGraphUtilities/terminalNodePolicies/SetTerminalNodePolicy.h>
 // =========================================================================
 #include <agrum/FMDP/fmdp.h>
+
 // =========================================================================
 
 namespace gum {
@@ -70,7 +71,6 @@ namespace gum {
     private:
     mutable GUM_SCALAR _temp_;
   };
-
 
   /**
    * @class ActionSet
@@ -123,7 +123,8 @@ namespace gum {
     /// Allocators and Deallocators redefinition
     // ============================================================================
     void* operator new(size_t s) { return SmallObjectAllocator::instance().allocate(s); }
-    void  operator delete(void* p) {
+
+    void operator delete(void* p) {
       SmallObjectAllocator::instance().deallocate(p, sizeof(ActionSet));
     }
 
@@ -192,6 +193,7 @@ namespace gum {
         if (!compared.exists(*iter)) return false;
       return true;
     }
+
     bool operator!=(const ActionSet& compared) const { return !(*this == compared); }
 
     /// @}

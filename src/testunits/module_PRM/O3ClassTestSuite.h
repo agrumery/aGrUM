@@ -23,13 +23,15 @@
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
-#include <agrum/tools/core/math/math_utils.h>
-#include <agrum/PRM/PRM.h>
+#include <agrum/tools/variables/discretizedVariable.h>
+
 #include <agrum/PRM/o3prm/O3prm.h>
 #include <agrum/PRM/o3prm/O3prmReader.h>
-#include <agrum/tools/variables/discretizedVariable.h>
+#include <agrum/PRM/PRM.h>
+
+#include <agrum/tools/core/math/math_utils.h>
 
 namespace gum_tests {
 
@@ -1812,7 +1814,6 @@ namespace gum_tests {
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
       TS_ASSERT_EQUALS(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::SUM)
     }
-
 
     GUM_ACTIVE_TEST(OrAggregateWithErrors1) {
       // Arrange

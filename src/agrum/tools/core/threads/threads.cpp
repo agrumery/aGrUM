@@ -25,6 +25,7 @@
  */
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/threads/threads.h>
 
 namespace gum {
@@ -39,7 +40,6 @@ namespace gum {
     threadsOMP::setNumberOfThreads(number);
 #endif
   }
-
 
   // indicates whether aGrUM uses openMP or STL threads
   bool isOMP() {

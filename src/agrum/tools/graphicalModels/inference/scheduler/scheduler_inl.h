@@ -37,7 +37,6 @@ namespace gum {
     if (_max_memory < 0.0) _max_memory = 0.0;
   }
 
-
   /// returns the Max memory (in megabytes) available for executing schedules
   INLINE double Scheduler::maxMemory() const {
     return _max_memory / 1048576.0;   // 1048576 = 1024 * 1024 = 1Mb

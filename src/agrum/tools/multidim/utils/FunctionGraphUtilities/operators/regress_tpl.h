@@ -84,7 +84,6 @@ namespace gum {
     if (_nbVar_ != 0) DEALLOCATE(_default_, sizeof(short int) * _nbVar_);
   }
 
-
   // This function is the main function. To be call every time an operation
   // between the two given Function Graphs is required
   template < typename GUM_SCALAR,

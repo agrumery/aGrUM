@@ -18,18 +18,19 @@
  */
 
 
-#include <sys/stat.h>
-
 #include <iostream>
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
+
+#include <agrum/tools/variables/labelizedVariable.h>
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/io/XDSL/XDSLBNWriter.h>
 #include <agrum/BN/io/XDSL/XDSLBNReader.h>
-#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/BN/io/XDSL/XDSLBNWriter.h>
+
+#include <sys/stat.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3
@@ -85,7 +86,6 @@ namespace gum_tests {
       std::string outfile = GET_RESSOURCES_PATH("outputs/benefits_out.xdsl");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(outfile, *bn))
     }
-
 
     GUM_ACTIVE_TEST(Read_file2) {
       std::string                 outfile = GET_RESSOURCES_PATH("outputs/benefits_out.xdsl");

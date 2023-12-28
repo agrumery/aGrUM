@@ -24,15 +24,16 @@
 #include <vector>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
+
+#include <agrum/tools/variables/labelizedVariable.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/BayesNetFactory.h>
-#include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/BN/io/BIF/BIFWriter.h>
-#include <agrum/tools/variables/labelizedVariable.h>
 
 namespace gum_tests {
   class [[maybe_unused]] DocumentationTestSuite: public CxxTest::TestSuite {
@@ -78,7 +79,7 @@ namespace gum_tests {
               0.05f,
               0.01f,   // visitToAsia == True
               0.95f,
-              0.99f   // visitToAsia == False
+              0.99f    // visitToAsia == False
            });
         bn.cpt(hasLungCancer)
            .fillWith({
@@ -86,7 +87,7 @@ namespace gum_tests {
               0.10f,
               0.90f,   // smoker == True
               0.01f,
-              0.99f   // smoker == False
+              0.99f    // smoker == False
            });
         bn.cpt(tubOrCancer)
            .fillWith({
@@ -98,14 +99,14 @@ namespace gum_tests {
               1.00f,
               0.00f,   // hasTuberculosis == True,  hasLungCancer == False
               0.00f,
-              1.00f   // hasTuberculosis == False, hasLungCancer == False
+              1.00f    // hasTuberculosis == False, hasLungCancer == False
            });
         bn.cpt(xray).fillWith({
            // True | False  == xray
            0.98f,
            0.02f,   // tubOrCancer == 0
            0.05f,
-           0.95f   // tubOrCancer == 1
+           0.95f    // tubOrCancer == 1
         });
         bn.cpt(dyspnea).fillWith({
            // True | False  == dyspnea
@@ -116,7 +117,7 @@ namespace gum_tests {
            0.80f,
            0.20f,   // tubOrCancer == True,  hasBronchitis == False
            0.10f,
-           0.90f   // tubOrCancer == False, hasBronchitis == False
+           0.90f    // tubOrCancer == False, hasBronchitis == False
         });
       } catch (gum::Exception& e) { TS_FAIL(e.errorContent()); }
     }

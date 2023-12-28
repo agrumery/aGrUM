@@ -19,9 +19,10 @@
  */
 
 
+#include <sstream>
+
 #include <agrum/tools/multidim/implementations/multiDimAdressable.h>
 #include <agrum/tools/multidim/setInst.h>
-#include <sstream>
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/tools/multidim/setInst_inl.h>
@@ -177,10 +178,12 @@ namespace gum {
     aStream << i.toString();
     return aStream;
   }
+
   gum::SetInst& operator<<(gum::SetInst& inst, const gum::DiscreteVariable& i) {
     inst.add(i);
     return inst;
   }
+
   gum::SetInst& operator>>(gum::SetInst& inst, const gum::DiscreteVariable& i) {
     inst.erase(i);
     return inst;

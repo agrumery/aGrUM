@@ -84,7 +84,6 @@ namespace gum {
       GUM_CONSTRUCTOR(DBTranslator4NumericalDiscreteVariable);
     }
 
-
     /// default constructor with an integer variable as translator but no missing value
     DBTranslator4NumericalDiscreteVariable::DBTranslator4NumericalDiscreteVariable(
        const NumericalDiscreteVariable& var,
@@ -107,7 +106,6 @@ namespace gum {
       GUM_CONSTRUCTOR(DBTranslator4NumericalDiscreteVariable);
     }
 
-
     /// copy constructor
     DBTranslator4NumericalDiscreteVariable::DBTranslator4NumericalDiscreteVariable(
        const DBTranslator4NumericalDiscreteVariable& from) :
@@ -116,7 +114,6 @@ namespace gum {
       // for debugging purposes
       GUM_CONS_CPY(DBTranslator4NumericalDiscreteVariable);
     }
-
 
     /// move constructor
     DBTranslator4NumericalDiscreteVariable::DBTranslator4NumericalDiscreteVariable(
@@ -127,12 +124,10 @@ namespace gum {
       GUM_CONS_MOV(DBTranslator4NumericalDiscreteVariable);
     }
 
-
     /// virtual copy constructor
     DBTranslator4NumericalDiscreteVariable* DBTranslator4NumericalDiscreteVariable::clone() const {
       return new DBTranslator4NumericalDiscreteVariable(*this);
     }
-
 
     /// copy operator
     DBTranslator4NumericalDiscreteVariable& DBTranslator4NumericalDiscreteVariable::operator=(
@@ -144,7 +139,6 @@ namespace gum {
 
       return *this;
     }
-
 
     /// move operator
     DBTranslator4NumericalDiscreteVariable& DBTranslator4NumericalDiscreteVariable::operator=(

@@ -25,8 +25,9 @@
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
-#include <agrum/PRM/classBayesNet.h>   // to ease IDE parser
 #include <agrum/tools/core/inline.h>
+
+#include <agrum/PRM/classBayesNet.h>   // to ease IDE parser
 
 namespace gum {
   namespace prm {
@@ -76,7 +77,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE ClassBayesNet< GUM_SCALAR >&
-       ClassBayesNet< GUM_SCALAR >::operator=(const ClassBayesNet< GUM_SCALAR >& from) {
+           ClassBayesNet< GUM_SCALAR >::operator=(const ClassBayesNet< GUM_SCALAR >& from) {
       if (this != &from) {
         IBayesNet< GUM_SCALAR >::operator=(from);
 

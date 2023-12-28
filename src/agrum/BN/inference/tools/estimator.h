@@ -28,8 +28,9 @@
 #ifndef GUM_ESTIMATOR_H
 #define GUM_ESTIMATOR_H
 
-#include <agrum/BN/inference/loopyBeliefPropagation.h>
 #include <vector>
+
+#include <agrum/BN/inference/loopyBeliefPropagation.h>
 
 namespace gum {
 

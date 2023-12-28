@@ -25,10 +25,9 @@
  * @author Santiago Cortijo and Pierre-Henri Wuillemin
  */
 
-#include <agrum/BN/database/BNDatabaseGenerator.h>
-
 #include <agrum/tools/core/timer.h>
 
+#include <agrum/BN/database/BNDatabaseGenerator.h>
 
 namespace gum::learning {
 
@@ -56,7 +55,6 @@ namespace gum::learning {
   BNDatabaseGenerator< GUM_SCALAR >::~BNDatabaseGenerator() {
     GUM_DESTRUCTOR(BNDatabaseGenerator)
   }
-
 
   /// draw instances from  _bn_
   template < typename GUM_SCALAR >
@@ -150,6 +148,7 @@ namespace gum::learning {
 
     return _database_.size();
   }
+
   template < typename GUM_SCALAR >
   INLINE Size BNDatabaseGenerator< GUM_SCALAR >::samplesNbCols() const {
     if (!_drawnSamples_) { GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.") }
@@ -289,7 +288,6 @@ namespace gum::learning {
     return db;
   }
 
-
   /// returns database using specified data order
   template < typename GUM_SCALAR >
   std::vector< std::vector< Idx > > BNDatabaseGenerator< GUM_SCALAR >::database() const {
@@ -376,7 +374,6 @@ namespace gum::learning {
     std::shuffle(varOrder.begin(), varOrder.end(), gum::randomGenerator());
     setVarOrder(varOrder);
   }
-
 
   /// returns variable order indexes
   template < typename GUM_SCALAR >

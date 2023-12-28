@@ -53,7 +53,6 @@ namespace gum {
     return new_multidim;
   }
 
-
   /// emplace a new schedule binary combination operator
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   const ScheduleOperator&
@@ -68,7 +67,6 @@ namespace gum {
        is_result_persistent);
   }
 
-
   /// emplace a new schedule projection operator
   template < typename TABLE >
   const ScheduleOperator& Schedule::emplaceProjection(const ScheduleMultiDim< TABLE >& table,
@@ -82,7 +80,6 @@ namespace gum {
                            is_result_persistent);
   }
 
-
   /// emplace a new schedule deletion operation
   template < typename TABLE >
   const ScheduleOperator& Schedule::emplaceDeletion(const ScheduleMultiDim< TABLE >& table) {
@@ -90,7 +87,6 @@ namespace gum {
     // to the schedule
     return insertOperation(ScheduleDeletion< TABLE >(table), false);
   }
-
 
   /// emplace a new schedule storage operation
   template < typename TABLE, template < typename... > class CONTAINER >

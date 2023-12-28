@@ -32,9 +32,9 @@
 
 #include <string>
 
-#include <agrum/MRF/inference/tools/MRFInference.h>
 #include <agrum/agrum.h>
 
+#include <agrum/MRF/inference/tools/MRFInference.h>
 
 namespace gum {
 
@@ -251,7 +251,6 @@ namespace gum {
 
 
 }   // namespace gum
-
 
 #include <agrum/MRF/inference/tools/marginalTargetedMRFInference_tpl.h>
 

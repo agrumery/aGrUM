@@ -33,9 +33,7 @@
 #include <string>
 #include <vector>
 
-
 #include <agrum/FMDP/fmdp.h>
-
 
 namespace gum {
 
@@ -271,6 +269,7 @@ namespace gum {
     void resetVerbose() { _verbose_ = false; }
 
     bool isVerbose() { return _verbose_; }
+
     /// @}
 
     private:

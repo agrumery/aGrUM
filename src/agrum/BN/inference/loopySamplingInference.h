@@ -31,8 +31,8 @@
 #ifndef GUM_LOOPY_INFERENCE_H
 #define GUM_LOOPY_INFERENCE_H
 #include <agrum/BN/inference/GibbsSampling.h>
-#include <agrum/BN/inference/MonteCarloSampling.h>
 #include <agrum/BN/inference/importanceSampling.h>
+#include <agrum/BN/inference/MonteCarloSampling.h>
 #include <agrum/BN/inference/weightedSampling.h>
 
 namespace gum {

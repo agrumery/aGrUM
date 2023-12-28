@@ -31,6 +31,7 @@
 #define GUM_TreeOperatorStrategy_H
 // =========================================================================
 #include <agrum/FMDP/planning/IOperatorStrategy.h>
+
 // =========================================================================
 
 namespace gum {
@@ -51,6 +52,7 @@ namespace gum {
     /// @name Constructor & destructor.
     // ###################################################################
     /// @{
+
     public:
     // ==========================================================================
     /// Default constructor
@@ -69,15 +71,18 @@ namespace gum {
     /// @name
     // ###################################################################
     /// @{
+
     public:
     MultiDimFunctionGraph< GUM_SCALAR, ExactTerminalNodePolicy >* getFunctionInstance() {
       return MultiDimFunctionGraph< GUM_SCALAR >::getTreeInstance();
     }
+
     MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
        getArgMaxFunctionInstance() {
       return MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
                                     SetTerminalNodePolicy >::getTreeInstance();
     }
+
     MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* getAggregatorInstance() {
       return MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >::getTreeInstance();
     }
@@ -151,7 +156,6 @@ namespace gum {
     /// @}
   };
 } /* namespace gum */
-
 
 #include <agrum/FMDP/planning/treeOperatorStrategy_tpl.h>
 

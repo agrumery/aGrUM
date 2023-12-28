@@ -59,7 +59,6 @@ namespace gum {
       GUM_CONSTRUCTOR(ParamEstimator);
     }
 
-
     /// default constructor
     ParamEstimator::ParamEstimator(const DBRowGeneratorParser&             parser,
                                    const Prior&                            external_prior,
@@ -78,7 +77,6 @@ namespace gum {
       GUM_CONSTRUCTOR(ParamEstimator);
     }
 
-
     /// destructor
     ParamEstimator::~ParamEstimator() {
       if (external_prior_ != nullptr) delete external_prior_;
@@ -86,7 +84,6 @@ namespace gum {
 
       GUM_DESTRUCTOR(ParamEstimator);
     }
-
 
     /// copy operator
     ParamEstimator& ParamEstimator::operator=(const ParamEstimator& from) {
@@ -108,7 +105,6 @@ namespace gum {
       return *this;
     }
 
-
     /// move operator
     ParamEstimator& ParamEstimator::operator=(ParamEstimator&& from) {
       if (this != &from) {
@@ -120,7 +116,6 @@ namespace gum {
       }
       return *this;
     }
-
 
     /// sets new ranges to perform the counts used by the score
     /** @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
@@ -135,7 +130,6 @@ namespace gum {
       counter_.setRanges(new_ranges);
       if (old_ranges != ranges()) clear();
     }
-
 
     /// reset the ranges to the one range corresponding to the whole database
     void ParamEstimator::clearRanges() {

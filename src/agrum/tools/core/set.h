@@ -28,7 +28,6 @@
 #ifndef GUM_SET_H
 #define GUM_SET_H
 
-#include <initializer_list>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -36,6 +35,8 @@
 #include <agrum/tools/core/debug.h>
 #include <agrum/tools/core/hashTable.h>
 #include <agrum/tools/core/list.h>
+
+#include <initializer_list>
 
 namespace gum {
 
@@ -533,7 +534,6 @@ namespace gum {
     Set(const HashTable< Key, bool >& h);
   };
 
-
   // ===========================================================================
   // ===                          SAFE SET ITERATORS                         ===
   // ===========================================================================
@@ -582,16 +582,14 @@ namespace gum {
     using pointer           = value_type*;
     using const_pointer     = const value_type*;
     using difference_type   = std::ptrdiff_t;
+
     /// @}
 
     /**
      * @brief An enumeration to position the iterator at the beginning or the
      * end of the set.
      */
-    enum Position {
-      BEGIN,
-      END
-    };
+    enum Position { BEGIN, END };
 
     // ============================================================================
     /// @name Constructors / Destructors
@@ -802,16 +800,14 @@ namespace gum {
     using pointer           = value_type*;
     using const_pointer     = const value_type*;
     using difference_type   = std::ptrdiff_t;
+
     /// @}
 
     /**
      * @brief An enumeration to position the iterator at the beginning or the
      * end of the set.
      */
-    enum Position {
-      BEGIN,
-      END
-    };
+    enum Position { BEGIN, END };
 
     // ============================================================================
     /// @name Constructors / Destructors
@@ -958,11 +954,9 @@ namespace gum {
     HashTableConstIterator< Key, bool > _ht_iter_;
   };
 
-
   /// @brief A << operator for HashTableList.
   template < typename Key >
   std::ostream& operator<<(std::ostream&, const Set< Key >&);
-
 
   /// the hash function for sets of int
   template < typename T >

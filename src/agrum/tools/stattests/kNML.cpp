@@ -48,7 +48,6 @@ namespace gum {
       return *this;
     }
 
-
     /// move operator
     KNML& KNML::operator=(KNML&& from) {
       if (this != &from) {
@@ -58,13 +57,11 @@ namespace gum {
       return *this;
     }
 
-
     /// clears all the data structures from memory, including the cache
     void KNML::clear() {
       IndependenceTest::clear();
       _param_complexity_.clearCache();
     }
-
 
     /// clears the current cache
     void KNML::clearCache() {
@@ -72,13 +69,11 @@ namespace gum {
       _param_complexity_.clearCache();
     }
 
-
     /// turn on/off the use of a cache of the previously computed score
     void KNML::useCache(const bool on_off) {
       IndependenceTest::useCache(on_off);
       _param_complexity_.useCache(on_off);
     }
-
 
     /// returns the score corresponding to a given nodeset
     double KNML::score_(const IdCondSet& idset) {

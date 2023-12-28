@@ -30,6 +30,7 @@
 //======================================================================
 //======================================================================
 #include <agrum/FMDP/fmdp.h>
+
 //======================================================================
 //======================================================================
 
@@ -69,7 +70,8 @@ namespace gum {
 
     /// Sets the intial statefrom which we begun the simulation
     INLINE void setInitialState(const Instantiation& initialState) { currentState_ = initialState; }
-    void        setInitialStateRandomly();
+
+    void setInitialStateRandomly();
 
     protected:
     /// Choses a random state as the first test for a run

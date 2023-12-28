@@ -108,7 +108,6 @@ namespace gum {
       GUM_ERROR(OperationNotAllowed, "This is a ReferenceSlot.")
     }
 
-
     template < typename GUM_SCALAR >
     INLINE void
        PRMReferenceSlot< GUM_SCALAR >::addParent(const PRMClassElement< GUM_SCALAR >& elt) {}

@@ -22,19 +22,9 @@
 #include <sstream>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
-#include <agrum/tools/multidim/potential.h>
-
-#include <agrum/BN/BayesNet.h>
-#include <agrum/BN/inference/variableElimination.h>
-#include <agrum/BN/inference/ShaferShenoyInference.h>
-#include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/BN/inference/loopyBeliefPropagation.h>
 #include <agrum/tools/core/exceptions.h>
-#include <agrum/tools/multidim/ICIModels/multiDimNoisyAND.h>
-#include <agrum/tools/multidim/ICIModels/multiDimNoisyORCompound.h>
-#include <agrum/tools/multidim/ICIModels/multiDimNoisyORNet.h>
 #include <agrum/tools/multidim/aggregators/amplitude.h>
 #include <agrum/tools/multidim/aggregators/and.h>
 #include <agrum/tools/multidim/aggregators/count.h>
@@ -44,9 +34,18 @@
 #include <agrum/tools/multidim/aggregators/median.h>
 #include <agrum/tools/multidim/aggregators/min.h>
 #include <agrum/tools/multidim/aggregators/or.h>
+#include <agrum/tools/multidim/ICIModels/multiDimNoisyAND.h>
+#include <agrum/tools/multidim/ICIModels/multiDimNoisyORCompound.h>
+#include <agrum/tools/multidim/ICIModels/multiDimNoisyORNet.h>
 #include <agrum/tools/multidim/potential.h>
 #include <agrum/tools/variables/labelizedVariable.h>
 #include <agrum/tools/variables/rangeVariable.h>
+
+#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/BN/inference/loopyBeliefPropagation.h>
+#include <agrum/BN/inference/ShaferShenoyInference.h>
+#include <agrum/BN/inference/variableElimination.h>
 
 namespace gum_tests {
 

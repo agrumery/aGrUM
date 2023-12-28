@@ -44,7 +44,6 @@ namespace gum {
       GUM_CONSTRUCTOR(IndepTestChi2);
     }
 
-
     /// default constructor
     INLINE IndepTestChi2::IndepTestChi2(const DBRowGeneratorParser&             parser,
                                         const Prior&                            prior,
@@ -54,13 +53,11 @@ namespace gum {
       GUM_CONSTRUCTOR(IndepTestChi2);
     }
 
-
     /// copy constructor
     INLINE IndepTestChi2::IndepTestChi2(const IndepTestChi2& from) :
         IndependenceTest(from), _domain_sizes_(from._domain_sizes_), _chi2_(_domain_sizes_) {
       GUM_CONS_CPY(IndepTestChi2);
     }
-
 
     /// move constructor
     INLINE IndepTestChi2::IndepTestChi2(IndepTestChi2&& from) :
@@ -69,21 +66,17 @@ namespace gum {
       GUM_CONS_MOV(IndepTestChi2);
     }
 
-
     /// virtual copy constructor
     INLINE IndepTestChi2* IndepTestChi2::clone() const { return new IndepTestChi2(*this); }
 
-
     /// destructor
     INLINE IndepTestChi2::~IndepTestChi2() { GUM_DESTRUCTOR(IndepTestChi2); }
-
 
     /// returns the pair <statistics,pvalue> corresponding to a given IdCondSet
     INLINE std::pair< double, double >
        IndepTestChi2::statistics(NodeId var1, NodeId var2, const std::vector< NodeId >& rhs_ids) {
       return statistics_(IdCondSet(var1, var2, rhs_ids, false));
     }
-
 
     /// returns the score corresponding to a given nodeset
     INLINE double IndepTestChi2::score_(const IdCondSet& idset) {

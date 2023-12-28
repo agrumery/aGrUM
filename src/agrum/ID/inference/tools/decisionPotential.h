@@ -134,7 +134,6 @@ namespace gum {
       return DecisionPotential< GUM_SCALAR >::marginalization(*this, ontonames);
     }
 
-
     static Potential< GUM_SCALAR > divideEvenZero(const Potential< GUM_SCALAR >& p1,
                                                   const Potential< GUM_SCALAR >& p2) {
       Potential< GUM_SCALAR > res(p1);

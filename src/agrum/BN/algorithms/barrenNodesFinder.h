@@ -29,10 +29,11 @@
 #define GUM_BARREN_NODES_FINDER_H
 
 
-#include <agrum/BN/BayesNet.h>
 #include <agrum/agrum.h>
+
 #include <agrum/tools/graphs/cliqueGraph.h>
 
+#include <agrum/BN/BayesNet.h>
 
 namespace gum {
 

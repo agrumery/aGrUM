@@ -30,13 +30,13 @@
 // to ease parsing by IDE
 #  include <limits>
 
+#  include <agrum/tools/multidim/potential.h>
+
 #  include <agrum/ID/inference/ShaferShenoyLIMIDInference.h>
 #  include <agrum/ID/inference/tools/decisionPotential.h>
-#  include <agrum/tools/multidim/potential.h>
 
 #  define GUM_SSLI_TRACE_ON(x)             // GUM_TRACE(x)
 #  define GUM_SSLI_POTENTIAL_TRACE_ON(x)   // GUM_TRACE(x)
-
 
 namespace gum {
 
@@ -52,6 +52,7 @@ namespace gum {
   ShaferShenoyLIMIDInference< GUM_SCALAR >::~ShaferShenoyLIMIDInference() {
     GUM_DESTRUCTOR(ShaferShenoyLIMIDInference);
   }
+
   template < typename GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::clear() {
     GraphicalModelInference< GUM_SCALAR >::clear();
@@ -64,8 +65,10 @@ namespace gum {
     strategies_.clear();
     reversePartialOrder_.clear();
   }
+
   template < typename GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::onStateChanged_() {}
+
   template < typename GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::onEvidenceAdded_(const NodeId id,
                                                                   bool         isHardEvidence) {
@@ -75,15 +78,19 @@ namespace gum {
       if (!isHardEvidence) GUM_ERROR(InvalidNode, "No soft evidence on a decision node.")
     }
   }
+
   template < typename GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::onEvidenceErased_(const NodeId id,
                                                                    bool         isHardEvidence) {}
+
   template < typename GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::onAllEvidenceErased_(bool contains_hard_evidence) {
   }
+
   template < typename GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::onEvidenceChanged_(const NodeId id,
                                                                     bool hasChangedSoftHard) {}
+
   template < typename GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::onModelChanged_(const GraphicalModel* model) {
     createReduced_();
@@ -93,6 +100,7 @@ namespace gum {
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::updateOutdatedStructure_() {
     createReduced_();
   }
+
   template < typename GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::updateOutdatedPotentials_() {}
 
@@ -258,7 +266,6 @@ namespace gum {
     return strategies_[decisionId];
   }
 
-
   template < typename GUM_SCALAR >
   bool ShaferShenoyLIMIDInference< GUM_SCALAR >::isSolvable() const {
     return (!solvabilityOrder_.empty());
@@ -306,8 +313,8 @@ namespace gum {
       for (auto node: noForgettingOrder_)
         if (node == last)   // first one
           continue;
-        else {   // we deal with last->node
-                 // adding the whole family of last as parents of node
+        else {              // we deal with last->node
+                            // adding the whole family of last as parents of node
           if (!reduced_.existsArc(last, node)) { reduced_.addArc(last, node); }
           for (auto par: reduced_.parents(last)) {
             if (!reduced_.existsArc(par, node)) reduced_.addArc(par, node);
@@ -427,6 +434,7 @@ namespace gum {
   std::vector< NodeSet > ShaferShenoyLIMIDInference< GUM_SCALAR >::reversePartialOrder() const {
     return reversePartialOrder_;
   }
+
   template < typename GUM_SCALAR >
   bool ShaferShenoyLIMIDInference< GUM_SCALAR >::hasNoForgettingAssumption() const {
     return !noForgettingOrder_.empty();
@@ -455,6 +463,7 @@ namespace gum {
     noForgettingOrder_ = ids;
     createReduced_();
   }
+
   template < typename GUM_SCALAR >
   NodeSet ShaferShenoyLIMIDInference< GUM_SCALAR >::nonRequisiteNodes_(NodeId d) const {
     const InfluenceDiagram< GUM_SCALAR >& infdiag = this->influenceDiagram();
@@ -512,7 +521,6 @@ namespace gum {
     return res;
   }
 
-
   template < typename GUM_SCALAR >
   const JunctionTree* ShaferShenoyLIMIDInference< GUM_SCALAR >::junctionTree() const {
     if (!isSolvable()) { GUM_ERROR(FatalError, "This LIMID/Influence Diagram is not solvable.") }
@@ -539,6 +547,7 @@ namespace gum {
       parcours(nei, rootClique);
     }
   }
+
   template < typename GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::collectingToFollowingRoot_(PhiNodeProperty& phi,
                                                                             PsiArcProperty&  psi,
@@ -597,7 +606,7 @@ namespace gum {
       if (sev.size() == 0) {                        // deterministic decision node
         unconditionalDecisions_.set(decisionNode, dp);
       } else if (dp.probPot.margSumIn(sev).normalize().max()
-                 == 1) {   // with deterministic posterior probability
+                 == 1) {                            // with deterministic posterior probability
         // we can use marginalization because we know that dp is deterministic
         unconditionalDecisions_.set(
            decisionNode,
@@ -805,7 +814,6 @@ namespace gum {
      ShaferShenoyLIMIDInference< GUM_SCALAR >::posteriorUtility(NodeId node) {
     return posteriors_[node].utilPot;
   }
-
 
   template < typename GUM_SCALAR >
   std::pair< GUM_SCALAR, GUM_SCALAR >

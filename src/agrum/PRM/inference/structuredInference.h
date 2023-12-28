@@ -31,9 +31,8 @@
 
 #include <string>
 
-
-#include <agrum/PRM/inference/PRMInference.h>
 #include <agrum/PRM/inference/gspan.h>
+#include <agrum/PRM/inference/PRMInference.h>
 
 namespace gum {
   namespace prm {
@@ -89,6 +88,7 @@ namespace gum {
       void searchPatterns();
 
       /// @}
+
       protected:
       // ========================================================================
       /// @name Protected members.
@@ -110,6 +110,7 @@ namespace gum {
                           Potential< GUM_SCALAR >&                                         j);
 
       /// @}
+
       private:
       /// Private structure to represent data about a reduced graph.
       struct RGData {
@@ -128,8 +129,10 @@ namespace gum {
         RGData();
         /// Destructor.
         ~RGData();
+
         /// Returns the set of outputs nodes (which will be eliminated).
         inline NodeSet& outputs() { return partial_order[0]; }
+
         /// Returns the set of query nodes (which will not be eliminated).
         inline NodeSet& queries() { return partial_order[1]; }
       };
@@ -166,15 +169,20 @@ namespace gum {
         PData(const PData& source);
         /// Destructor
         ~PData();
+
         /// Returns the set of inner nodes
         inline NodeSet& inners() { return _partial_order_[0]; }
+
         /// Returns the set of inner and observed nodes given all the matches of
         /// pattern
         inline NodeSet& obs() { return _partial_order_[1]; }
+
         /// Returns the set of outputs nodes given all the matches of pattern
         inline NodeSet& outputs() { return _partial_order_[2]; }
+
         /// Returns the set of queried nodes given all the matches of pattern
         inline NodeSet& queries() { return _partial_order_[3]; }
+
         // We use the first match for computations
         // inline const Sequence<PRMInstance<GUM_SCALAR>*>& match() const {
         // return
@@ -210,12 +218,16 @@ namespace gum {
         CData(const PRMClass< GUM_SCALAR >& c);
         /// Destructor.
         ~CData();
+
         /// Returns the set of inner nodes.
         inline NodeSet& inners() { return _inners_; }
+
         /// Returns the set of aggregators and their parents.
         inline NodeSet& aggregators() { return _aggregators_; }
+
         /// Returns the set of outputs nodes.
         inline NodeSet& outputs() { return _outputs_; }
+
         /// The elimination order for nodes of this class
         inline std::vector< NodeId >& elim_order() { return _elim_order_; }
 

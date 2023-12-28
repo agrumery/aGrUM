@@ -32,9 +32,11 @@
 #define GUM_APPROXIMATION_SCHEME_CONFIGURATION_H
 
 #include <agrum/agrum.h>
-#include <agrum/tools/core/math/math_utils.h>
+
 #include <agrum/tools/core/signal/signalers.h>
 #include <agrum/tools/core/timer.h>
+
+#include <agrum/tools/core/math/math_utils.h>
 
 namespace gum {
 

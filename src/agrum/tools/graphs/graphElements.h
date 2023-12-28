@@ -332,7 +332,6 @@ namespace gum {
     Size operator()(const Edge& key) const final;
   };
 
-
   template <>
   class HashFunc< Arc >: public HashFuncBase< Arc > {
     public:
@@ -395,6 +394,6 @@ extern template class gum::HashFunc< gum::NodeSet >;
 
 #ifndef GUM_NO_INLINE
 #  include <agrum/tools/graphs/graphElements_inl.h>
-#endif /* GUM_NO_INLINE */
+#endif   /* GUM_NO_INLINE */
 
 #endif   // GUM_GRAPH_ELEMENTS_H

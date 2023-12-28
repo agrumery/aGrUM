@@ -44,12 +44,10 @@ namespace gum {
     GUM_CONSTRUCTOR(LoopySamplingInference);
   }
 
-
   template < typename GUM_SCALAR, template < typename > class APPROX >
   LoopySamplingInference< GUM_SCALAR, APPROX >::~LoopySamplingInference() {
     GUM_DESTRUCTOR(LoopySamplingInference);
   }
-
 
   template < typename GUM_SCALAR, template < typename > class APPROX >
   void LoopySamplingInference< GUM_SCALAR, APPROX >::makeInference_() {

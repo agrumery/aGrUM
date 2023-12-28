@@ -40,24 +40,19 @@ namespace gum {
       GUM_CONSTRUCTOR(K2Prior);
     }
 
-
     /// copy constructor
     INLINE K2Prior::K2Prior(const K2Prior& from) : SmoothingPrior(from) { GUM_CONS_CPY(K2Prior); }
-
 
     /// move constructor
     INLINE K2Prior::K2Prior(K2Prior&& from) : SmoothingPrior(std::move(from)) {
       GUM_CONS_MOV(K2Prior);
     }
 
-
     /// virtual copy constructor
     INLINE K2Prior* K2Prior::clone() const { return new K2Prior(*this); }
 
-
     /// destructor
     INLINE K2Prior::~K2Prior() { GUM_DESTRUCTOR(K2Prior); }
-
 
     /// copy operator
     INLINE K2Prior& K2Prior::operator=(const K2Prior& from) {
@@ -65,13 +60,11 @@ namespace gum {
       return *this;
     }
 
-
     /// move operator
     INLINE K2Prior& K2Prior::operator=(K2Prior&& from) {
       SmoothingPrior::operator=(std::move(from));
       return *this;
     }
-
 
     /// dummy set weight function: in K2, weights are always equal to 1
     INLINE void K2Prior::setWeight(const double weight) {}

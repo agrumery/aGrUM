@@ -42,27 +42,27 @@ namespace gum {
     std::string GraphChange::toString() const {
       std::stringstream stream;
       switch (type()) {
-        case GraphChangeType::ARC_ADDITION:
+        case GraphChangeType::ARC_ADDITION :
           stream << "ArcAddition ( " << node1() << " , " << node2() << " )";
           return stream.str();
 
-        case GraphChangeType::ARC_DELETION:
+        case GraphChangeType::ARC_DELETION :
           stream << "ArcDeletion ( " << node1() << " , " << node2() << " )";
           return stream.str();
 
-        case GraphChangeType::ARC_REVERSAL:
+        case GraphChangeType::ARC_REVERSAL :
           stream << "ArcReversal ( " << node1() << " , " << node2() << " )";
           return stream.str();
 
-        case GraphChangeType::EDGE_ADDITION:
+        case GraphChangeType::EDGE_ADDITION :
           stream << "EdgeAddition ( " << node1() << " , " << node2() << " )";
           return stream.str();
 
-        case GraphChangeType::EDGE_DELETION:
+        case GraphChangeType::EDGE_DELETION :
           stream << "EdgeDeletion ( " << node1() << " , " << node2() << " )";
           return stream.str();
 
-        default: GUM_ERROR(OperationNotAllowed, "this graph modification is not supported yet")
+        default : GUM_ERROR(OperationNotAllowed, "this graph modification is not supported yet")
       }
     }
 

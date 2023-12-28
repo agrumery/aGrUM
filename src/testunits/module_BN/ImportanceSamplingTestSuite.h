@@ -23,21 +23,21 @@
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
+
+#include <agrum/tools/core/approximations/approximationSchemeListener.h>
+#include <agrum/tools/multidim/potential.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/importanceSampling.h>
 #include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/tools/multidim/potential.h>
-#include <agrum/tools/variables/labelizedVariable.h>
-
 #include <agrum/BN/io/BIF/BIFReader.h>
-#include <agrum/tools/core/approximations/approximationSchemeListener.h>
+
 #include <gumtest/AgrumApproximationUtils.h>   // must be last include
 
 #define EPSILON_FOR_IMPORTANCE_SIMPLE_TEST 15e-2
 #define EPSILON_FOR_IMPORTANCE             7e-2
-
 
 namespace gum_tests {
 
@@ -49,15 +49,18 @@ namespace gum_tests {
     public:
     aSimpleImportanceListener(gum::ApproximationScheme& sch) :
         gum::ApproximationSchemeListener(sch), __nbr(0), __mess(""){};
+
     void whenProgress(const void* buffer, const gum::Size a, const double b, const double c) {
       __nbr++;
     }
+
     void whenStop(const void* buffer, const std::string& s) {
       __nbr++;
       __mess = s;
     }
 
-    int         getNbr() { return __nbr; }
+    int getNbr() { return __nbr; }
+
     std::string getMess() { return __mess; }
   };
 
@@ -73,10 +76,10 @@ namespace gum_tests {
 
       try {
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::ImportanceSampling< double > inf(&bn);
+          gum::ImportanceSampling< double > inf(&bn);
 
-        inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
-        inf.makeInference();
+          inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_IMPORTANCE_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
@@ -84,7 +87,6 @@ namespace gum_tests {
         TS_ASSERT(false)
       }
     }
-
 
     GUM_ACTIVE_TEST(ImportanceBinaryTreeWithEvidenceOnRoot) {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
@@ -97,17 +99,16 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::ImportanceSampling< double > inf(&bn);
-        inf.addEvidence(bn.idFromName(ev), 0);
-        inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
-        inf.makeInference();
+          gum::ImportanceSampling< double > inf(&bn);
+          inf.addEvidence(bn.idFromName(ev), 0);
+          inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_IMPORTANCE_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
         TS_ASSERT(false)
       }
     }
-
 
     GUM_ACTIVE_TEST(ImportanceBinaryTreeWithEvidenceOnLeaf) {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
@@ -120,11 +121,11 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::ImportanceSampling< double > inf(&bn);
-        inf.addEvidence(bn.idFromName(ev), 0);
-        inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
-        inf.setVerbosity(false);
-        inf.makeInference();
+          gum::ImportanceSampling< double > inf(&bn);
+          inf.addEvidence(bn.idFromName(ev), 0);
+          inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
+          inf.setVerbosity(false);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_IMPORTANCE_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
@@ -144,11 +145,11 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::ImportanceSampling< double > inf(&bn);
-        inf.addEvidence(bn.idFromName(ev), 0);
-        inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
-        inf.setVerbosity(false);
-        inf.makeInference();
+          gum::ImportanceSampling< double > inf(&bn);
+          inf.addEvidence(bn.idFromName(ev), 0);
+          inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
+          inf.setVerbosity(false);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_IMPORTANCE_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
@@ -156,7 +157,6 @@ namespace gum_tests {
         TS_ASSERT(false)
       }
     }
-
 
     GUM_ACTIVE_TEST(ImportanceBinaryTreeWithMultipleEvidence) {
       auto bn = gum::BayesNet< double >::fastPrototype("a->d->f;b->d->g;b->e->h;c->e;i->j->h");
@@ -170,13 +170,13 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::ImportanceSampling< double > inf(&bn);
-        inf.addEvidence(bn.idFromName("e"), 0);
-        inf.addEvidence(bn.idFromName("b"), 1);
-        inf.addEvidence(bn.idFromName("h"), 0);
-        inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
-        inf.setVerbosity(false);
-        inf.makeInference();
+          gum::ImportanceSampling< double > inf(&bn);
+          inf.addEvidence(bn.idFromName("e"), 0);
+          inf.addEvidence(bn.idFromName("b"), 1);
+          inf.addEvidence(bn.idFromName("h"), 0);
+          inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
+          inf.setVerbosity(false);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_IMPORTANCE_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
@@ -184,7 +184,6 @@ namespace gum_tests {
         TS_ASSERT(false)
       }
     }
-
 
     GUM_ACTIVE_TEST(ImportanceNaryTreeWithMultipleEvidence) {
       auto bn = gum::BayesNet< double >::fastPrototype(
@@ -199,13 +198,13 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::ImportanceSampling< double > inf(&bn);
-        inf.addEvidence(bn.idFromName("e"), 0);
-        inf.addEvidence(bn.idFromName("b"), 1);
-        inf.addEvidence(bn.idFromName("h"), 0);
-        inf.setVerbosity(false);
-        inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
-        inf.makeInference();
+          gum::ImportanceSampling< double > inf(&bn);
+          inf.addEvidence(bn.idFromName("e"), 0);
+          inf.addEvidence(bn.idFromName("b"), 1);
+          inf.addEvidence(bn.idFromName("h"), 0);
+          inf.setVerbosity(false);
+          inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_IMPORTANCE_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
@@ -213,7 +212,6 @@ namespace gum_tests {
         TS_ASSERT(false)
       }
     }
-
 
     GUM_ACTIVE_TEST(ImportanceSimpleBN) {
       auto bn = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
@@ -224,10 +222,10 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::ImportanceSampling< double > inf(&bn);
-        inf.setVerbosity(false);
-        inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
-        inf.makeInference();
+          gum::ImportanceSampling< double > inf(&bn);
+          inf.setVerbosity(false);
+          inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_IMPORTANCE_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
@@ -241,11 +239,11 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::ImportanceSampling< double > inf(&bn);
-        inf.addEvidence(bn.idFromName("a"), 0);
-        inf.setVerbosity(false);
-        inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
-        inf.makeInference();
+          gum::ImportanceSampling< double > inf(&bn);
+          inf.addEvidence(bn.idFromName("a"), 0);
+          inf.setVerbosity(false);
+          inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_IMPORTANCE_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
@@ -259,11 +257,11 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::ImportanceSampling< double > inf(&bn);
-        inf.addEvidence(bn.idFromName("d"), 0);
-        inf.setVerbosity(false);
-        inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
-        inf.makeInference();
+          gum::ImportanceSampling< double > inf(&bn);
+          inf.addEvidence(bn.idFromName("d"), 0);
+          inf.setVerbosity(false);
+          inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_IMPORTANCE_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
@@ -271,7 +269,6 @@ namespace gum_tests {
         TS_ASSERT(false)
       }
     }
-
 
     GUM_ACTIVE_TEST(ImportanceCplxBN) {
       auto bn = gum::BayesNet< double >::fastPrototype(
@@ -284,10 +281,10 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::ImportanceSampling< double > inf(&bn);
-        inf.setVerbosity(false);
-        inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
-        inf.makeInference();
+          gum::ImportanceSampling< double > inf(&bn);
+          inf.setVerbosity(false);
+          inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_IMPORTANCE_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
@@ -301,11 +298,11 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::ImportanceSampling< double > inf(&bn);
-        inf.addEvidence(bn.idFromName("a"), 0);
-        inf.setVerbosity(false);
-        inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
-        inf.makeInference();
+          gum::ImportanceSampling< double > inf(&bn);
+          inf.addEvidence(bn.idFromName("a"), 0);
+          inf.setVerbosity(false);
+          inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_IMPORTANCE_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
@@ -320,11 +317,11 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::ImportanceSampling< double > inf(&bn);
-        inf.addEvidence(bn.idFromName("d"), 0);
-        inf.setVerbosity(false);
-        inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
-        inf.makeInference();
+          gum::ImportanceSampling< double > inf(&bn);
+          inf.addEvidence(bn.idFromName("d"), 0);
+          inf.setVerbosity(false);
+          inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_IMPORTANCE_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
@@ -369,10 +366,10 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::ImportanceSampling< double > inf(&bn);
-        inf.setVerbosity(false);
-        inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
-        inf.makeInference();
+          gum::ImportanceSampling< double > inf(&bn);
+          inf.setVerbosity(false);
+          inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_IMPORTANCE_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
@@ -380,7 +377,6 @@ namespace gum_tests {
         TS_ASSERT(false)
       }
     }
-
 
     GUM_ACTIVE_TEST(ImportanceAlarm) {
       gum::BayesNet< double >  bn;
@@ -394,10 +390,10 @@ namespace gum_tests {
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::ImportanceSampling< double > inf(&bn);
-        inf.setVerbosity(false);
-        inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
-        inf.makeInference();
+          gum::ImportanceSampling< double > inf(&bn);
+          inf.setVerbosity(false);
+          inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
+          inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_IMPORTANCE_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
@@ -426,7 +422,6 @@ namespace gum_tests {
       }
       TS_ASSERT(true)
     }
-
 
     GUM_ACTIVE_TEST(ImportanceInfListener) {
       gum::BayesNet< double >  bn;

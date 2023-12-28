@@ -28,6 +28,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #  include <agrum/agrum.h>
+
 #  include <agrum/tools/graphicalModels/inference/scheduler/scheduleDeletion.h>
 
 namespace gum {
@@ -45,7 +46,6 @@ namespace gum {
     GUM_CONSTRUCTOR(ScheduleDeletion);
   }
 
-
   /// copy constructor
   template < typename TABLE >
   ScheduleDeletion< TABLE >::ScheduleDeletion(const ScheduleDeletion< TABLE >& from) :
@@ -56,7 +56,6 @@ namespace gum {
     // for debugging purposes
     GUM_CONS_CPY(ScheduleDeletion);
   }
-
 
   /// move constructor
   template < typename TABLE >
@@ -69,13 +68,11 @@ namespace gum {
     GUM_CONS_MOV(ScheduleDeletion);
   }
 
-
   /// virtual copy constructor
   template < typename TABLE >
   INLINE ScheduleDeletion< TABLE >* ScheduleDeletion< TABLE >::clone() const {
     return new ScheduleDeletion< TABLE >(*this);
   }
-
 
   /// destructor
   template < typename TABLE >
@@ -83,7 +80,6 @@ namespace gum {
     // for debugging purposes
     GUM_DESTRUCTOR(ScheduleDeletion);
   }
-
 
   /// copy operator
   template < typename TABLE >
@@ -97,7 +93,6 @@ namespace gum {
     return *this;
   }
 
-
   /// move operator
   template < typename TABLE >
   ScheduleDeletion< TABLE >&
@@ -109,13 +104,11 @@ namespace gum {
     return *this;
   }
 
-
   /// operator ==
   template < typename TABLE >
   INLINE bool ScheduleDeletion< TABLE >::operator==(const ScheduleDeletion< TABLE >& op) const {
     return (*_arg_ == *op._arg_);
   }
-
 
   /// operator ==
   template < typename TABLE >
@@ -127,13 +120,11 @@ namespace gum {
     } catch (std::bad_cast&) { return false; }
   }
 
-
   /// operator !=
   template < typename TABLE >
   INLINE bool ScheduleDeletion< TABLE >::operator!=(const ScheduleDeletion< TABLE >& op) const {
     return !ScheduleDeletion< TABLE >::operator==(op);
   }
-
 
   /// operator !=
   template < typename TABLE >
@@ -141,14 +132,12 @@ namespace gum {
     return !ScheduleDeletion< TABLE >::operator==(op);
   }
 
-
   /// checks whether two ScheduleOperator have similar parameters
   template < typename TABLE >
   INLINE bool
      ScheduleDeletion< TABLE >::hasSimilarArguments(const ScheduleDeletion< TABLE >& op) const {
     return _arg_->hasSameVariables(*op._arg_);
   }
-
 
   /// checks whether two ScheduleOperator have similar parameters
   template < typename TABLE >
@@ -160,14 +149,12 @@ namespace gum {
     } catch (std::bad_cast&) { return false; }
   }
 
-
   /// checks whether two ScheduleOperator have the same parameters
   template < typename TABLE >
   INLINE bool
      ScheduleDeletion< TABLE >::hasSameArguments(const ScheduleDeletion< TABLE >& op) const {
     return _arg_->hasSameVariables(*op._arg_) && _arg_->hasSameContent(*op._arg_);
   }
-
 
   /// checks whether two ScheduleOperator have the same parameters
   template < typename TABLE >
@@ -179,13 +166,11 @@ namespace gum {
     } catch (std::bad_cast&) { return false; }
   }
 
-
   /// checks whether two ScheduleOperator perform the same operation
   template < typename TABLE >
   INLINE bool ScheduleDeletion< TABLE >::isSameOperator(const ScheduleDeletion< TABLE >& op) const {
     return true;
   }
-
 
   /// checks whether two ScheduleOperator perform the same operator
   template < typename TABLE >
@@ -197,13 +182,11 @@ namespace gum {
     } catch (std::bad_cast&) { return false; }
   }
 
-
   /// returns the argument of the deletion
   template < typename TABLE >
   INLINE const ScheduleMultiDim< TABLE >& ScheduleDeletion< TABLE >::arg() const {
     return *_arg_;
   }
-
 
   /// returns the sequence of arguments passed to the operator
   template < typename TABLE >
@@ -211,13 +194,11 @@ namespace gum {
     return _args_;
   }
 
-
   /// returns the result of the combination
   template < typename TABLE >
   INLINE const Sequence< const IScheduleMultiDim* >& ScheduleDeletion< TABLE >::results() const {
     return _results_;
   }
-
 
   /// modifies the arguments of the operator
   template < typename TABLE >
@@ -246,13 +227,11 @@ namespace gum {
     _is_executed_ = false;
   }
 
-
   /// indicates whether the operator has been executed
   template < typename TABLE >
   INLINE bool ScheduleDeletion< TABLE >::isExecuted() const {
     return _is_executed_;
   }
-
 
   /// executes the operator
   template < typename TABLE >
@@ -261,13 +240,11 @@ namespace gum {
     _is_executed_ = true;
   }
 
-
   /// undo a previous execution, if any
   template < typename TABLE >
   void ScheduleDeletion< TABLE >::undo() {
     GUM_ERROR(OperationNotAllowed, "ScheduleDeletion cannot be undone.");
   }
-
 
   /** @brief returns an estimation of the number of elementary operations
    * needed to perform the ScheduleOperator */
@@ -276,14 +253,12 @@ namespace gum {
     return 1.0;
   }
 
-
   /// returns the memory consumption used during the operator
   template < typename TABLE >
   INLINE std::pair< double, double > ScheduleDeletion< TABLE >::memoryUsage() const {
     const double size_table = double(_arg_->domainSize()) * _arg_->sizeOfContent() + sizeof(TABLE);
     return {-size_table, -size_table};
   }
-
 
   /// displays the content of the operator
   template < typename TABLE >

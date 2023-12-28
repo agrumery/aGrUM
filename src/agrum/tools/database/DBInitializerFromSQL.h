@@ -31,6 +31,7 @@
 #    define GUM_LEARNING_DB_INITILIALIZER_FROM_SQL_H
 
 #    include <agrum/agrum.h>
+
 #    include <agrum/tools/database/IDBInitializer.h>
 #    include <agrum/tools/database/nanodbcParser.h>
 
@@ -244,16 +245,15 @@ namespace gum {
 #    endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
-  } /* namespace learning */
+  }        /* namespace learning */
 
 } /* namespace gum */
-
 
 // include the inlined functions if necessary
 #    ifndef GUM_NO_INLINE
 #      include <agrum/tools/database/DBInitializerFromSQL_inl.h>
 #    endif /* GUM_NO_INLINE */
 
-#  endif /* GUM_LEARNING_DB_INITILIALIZER_FROM_SQL_H */
+#  endif   /* GUM_LEARNING_DB_INITILIALIZER_FROM_SQL_H */
 
-#endif /* _ODBC */
+#endif     /* _ODBC */

@@ -28,7 +28,6 @@ namespace gum {
     /// default constructor
     INLINE DBRowGeneratorSet::DBRowGeneratorSet() { GUM_CONSTRUCTOR(DBRowGeneratorSet); }
 
-
     /// move constructor
     INLINE DBRowGeneratorSet::DBRowGeneratorSet(DBRowGeneratorSet&& from) :
         _generators_(std::move(from._generators_)), _nb_generators_(from._nb_generators_),
@@ -37,30 +36,24 @@ namespace gum {
       GUM_CONS_MOV(DBRowGeneratorSet);
     }
 
-
     /// returns the ith generator
     INLINE DBRowGenerator& DBRowGeneratorSet::operator[](const std::size_t i) {
       return *(_generators_[i]);
     }
-
 
     /// returns the ith generator
     INLINE const DBRowGenerator& DBRowGeneratorSet::operator[](const std::size_t i) const {
       return *(_generators_[i]);
     }
 
-
     /// returns the number of generators
     INLINE std::size_t DBRowGeneratorSet::nbGenerators() const noexcept { return _nb_generators_; }
-
 
     /// returns the number of generators (alias for nbGenerators)
     INLINE std::size_t DBRowGeneratorSet::size() const noexcept { return _nb_generators_; }
 
-
     /// returns true if there are still rows that can be output by the RowFilter
     INLINE bool DBRowGeneratorSet::hasRows() { return _output_row_ != nullptr; }
-
 
     /// sets the input row from which the generator will create new rows
     INLINE bool DBRowGeneratorSet::setInputRow(const DBRow< DBTranslatedValue >& input_row) {
@@ -73,7 +66,6 @@ namespace gum {
       return _produceNextRow_(&input_row, std::size_t(0));
     }
 
-
     /// generate new rows from the input row
     INLINE const DBRow< DBTranslatedValue >& DBRowGeneratorSet::generate() {
       // get the row that we should return
@@ -85,7 +77,6 @@ namespace gum {
       return *row;
     }
 
-
     /// resets the filter
     INLINE void DBRowGeneratorSet::reset() {
       for (auto gen: _generators_)
@@ -94,7 +85,6 @@ namespace gum {
         performed = 0;
       _output_row_ = nullptr;
     }
-
 
     /// sets the columns of interest: the output DBRow needs only
     /// contain values fot these columns
@@ -109,7 +99,6 @@ namespace gum {
         gen->setColumnsOfInterest(cols_of_interest);
     }
 
-
     /// sets the columns of interest: the output DBRow needs only
     /// contain values fot these columns
     INLINE void
@@ -121,7 +110,6 @@ namespace gum {
       for (auto gen: _generators_)
         gen->setColumnsOfInterest(cols_of_interest);
     }
-
 
     /// returns the current set of columns of interest
     INLINE const std::vector< std::size_t >& DBRowGeneratorSet::columnsOfInterest() const {

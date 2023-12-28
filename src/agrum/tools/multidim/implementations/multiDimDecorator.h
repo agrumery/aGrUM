@@ -31,6 +31,7 @@
 #include <mutex>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/multidim/implementations/multiDimArray.h>
 
 namespace gum {
@@ -233,6 +234,7 @@ namespace gum {
     virtual MultiDimImplementation< GUM_SCALAR >* content() final;
 
     /// @}
+
     protected:
     virtual void replace_(const DiscreteVariable* x, const DiscreteVariable* y);
 

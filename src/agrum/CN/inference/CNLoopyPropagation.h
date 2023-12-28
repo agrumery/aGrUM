@@ -64,16 +64,16 @@ namespace gum {
                              inference type. A step is going through the
                              node-set. */
 
-        ordered, /**< Chooses an arc ordering and sends messages accordingly at
-                    all
-                    steps. Avoid it since it can give slightly worse results
-                    than
-                    other inference types. A step is going through all arcs. */
+        ordered,          /**< Chooses an arc ordering and sends messages accordingly at
+                             all
+                             steps. Avoid it since it can give slightly worse results
+                             than
+                             other inference types. A step is going through all arcs. */
 
-        randomOrder /**< Chooses a random arc ordering and sends messages
-                       accordingly. A new order is set at each step. A step is
-                       going
-                       through all arcs. */
+        randomOrder       /**< Chooses a random arc ordering and sends messages
+                             accordingly. A new order is set at each step. A step is
+                             going
+                             through all arcs. */
       };
 
       /// @name Public algorithm methods
@@ -369,6 +369,7 @@ namespace gum {
       const IBayesNet< GUM_SCALAR >* _bnet_;
 
       // cnfunc getCN = &infE::getCN;
+
       public:
       virtual void insertEvidenceFile(const std::string& path) {
         InferenceEngine< GUM_SCALAR >::insertEvidenceFile(path);

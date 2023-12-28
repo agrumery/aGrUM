@@ -29,18 +29,19 @@
 #ifndef GUM_HASHTABLE_H
 #define GUM_HASHTABLE_H
 
-#include <limits>
-
 #include <cstddef>
-#include <initializer_list>
 #include <iostream>
+#include <limits>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/hashFunc.h>
 #include <agrum/tools/core/staticInitializer.h>
+
+#include <initializer_list>
 
 namespace gum {
 
@@ -205,9 +206,7 @@ namespace gum {
      * @brief A dummy type for the emplace constructor.
      * This type is used to prevent the Bucket emplace (int,...) to compile.
      */
-    enum class Emplace {
-      EMPLACE
-    };
+    enum class Emplace { EMPLACE };
 
     /**
      * Class constructor.
@@ -1532,7 +1531,6 @@ namespace gum {
      */
     void _insert_(Bucket* bucket);
   };
-
 
   // ===========================================================================
   // ===                   SAFE HASH TABLES CONST ITERATORS                  ===

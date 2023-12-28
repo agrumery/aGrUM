@@ -20,7 +20,7 @@
 
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 #include <agrum/PRM/elements/PRMClass.h>
 #include <agrum/PRM/elements/PRMFormAttribute.h>
@@ -166,6 +166,7 @@ namespace gum_tests {
       // Act & Assert
       _classEltTestSuite_->testCast(slot, *_boolean_);
     }
+
     /// @}
 
     /// Constructors & destructors
@@ -201,6 +202,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING(slot = new PRMSlotChain(_stateChain_, "slot"))
       TS_ASSERT_THROWS_NOTHING(delete slot)
     }
+
     /// @}
 
     /// Methods
@@ -326,6 +328,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(before, after)
       TS_ASSERT(!parent.cpf().contains(child.type().variable()))
     }
+
     /// @}
   };
 

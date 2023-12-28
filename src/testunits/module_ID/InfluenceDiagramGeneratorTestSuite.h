@@ -24,7 +24,7 @@
 #include <vector>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/ID/generator/influenceDiagramGenerator.h>

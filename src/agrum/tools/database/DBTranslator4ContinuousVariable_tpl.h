@@ -26,12 +26,12 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+#  include <limits>
 #  include <utility>
 #  include <vector>
-#  include <limits>
 
-#  include <agrum/tools/database/DBTranslator4ContinuousVariable.h>
 #  include <agrum/tools/database/DBCell.h>
+#  include <agrum/tools/database/DBTranslator4ContinuousVariable.h>
 
 namespace gum {
 
@@ -72,7 +72,6 @@ namespace gum {
 
       GUM_CONSTRUCTOR(DBTranslator4ContinuousVariable);
     }
-
 
     /// default constructor with a continuous variable as translator
     template < typename GUM_SCALAR >

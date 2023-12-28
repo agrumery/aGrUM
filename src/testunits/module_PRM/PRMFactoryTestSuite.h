@@ -20,11 +20,11 @@
 
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/testsuite_utils.h>
+#include <gumtest/utils.h>
 
-#include <agrum/PRM/PRMFactory.h>
 #include <agrum/PRM/elements/PRMClassElement.h>
 #include <agrum/PRM/elements/PRMParameter.h>
+#include <agrum/PRM/PRMFactory.h>
 
 namespace gum_tests {
   class [[maybe_unused]] PRMFactoryTestSuite: public CxxTest::TestSuite {

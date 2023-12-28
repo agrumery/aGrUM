@@ -27,6 +27,7 @@
 
 // to ease automatic parsers
 #include <agrum/agrum.h>
+
 #include <agrum/tools/core/threads/threadsOMP.h>
 
 namespace gum {
@@ -41,7 +42,6 @@ namespace gum {
 #endif
     }
 
-
     INLINE unsigned int getMaxNumberOfThreads() {
 #ifdef _OPENMP
       return omp_get_max_threads();
@@ -49,7 +49,6 @@ namespace gum {
       return 1;
 #endif
     }
-
 
     INLINE unsigned int getNumberOfLogicalProcessors() {
 #ifdef _OPENMP
@@ -59,7 +58,6 @@ namespace gum {
 #endif
     }
 
-
     INLINE unsigned int getThreadNumber() {
 #ifdef _OPENMP
       return omp_get_thread_num();
@@ -68,7 +66,6 @@ namespace gum {
 #endif
     }
 
-
     INLINE unsigned int getNumberOfRunningThreads() {
 #ifdef _OPENMP
       return omp_get_num_threads();
@@ -76,7 +73,6 @@ namespace gum {
       return 1;
 #endif
     }
-
 
     INLINE void setNestedParallelism(bool value) {
 #ifdef _OPENMP
@@ -88,7 +84,6 @@ namespace gum {
 #endif
     }
 
-
     INLINE bool getNestedParallelism() {
 #ifdef _OPENMP
       return ((omp_get_nested() == 0) ? false : true);
@@ -96,7 +91,6 @@ namespace gum {
       return false;
 #endif
     }
-
 
     INLINE void setDynamicThreadsNumber(bool value) {
 #ifdef _OPENMP
@@ -108,7 +102,6 @@ namespace gum {
                 "threads !)");
 #endif
     }
-
 
     INLINE bool getDynamicThreadsNumber() {
 #ifdef _OPENMP

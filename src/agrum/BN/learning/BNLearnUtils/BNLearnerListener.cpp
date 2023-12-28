@@ -71,6 +71,7 @@ namespace gum {
                                       error,
                                       time);
     }
+
     void BNLearnerListener::whenStop(const void* src, const std::string& message) {
       _bnlearner_->distributeStop(static_cast< const ApproximationScheme* >(src), message);
     }

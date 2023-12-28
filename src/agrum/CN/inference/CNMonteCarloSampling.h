@@ -29,10 +29,10 @@
 #ifndef __CN_MC_SAMPLING__H__
 #define __CN_MC_SAMPLING__H__
 
-#include <thread>
-#include <agrum/CN/inference/multipleInferenceEngine.h>
 #include <limits>
+#include <thread>
 
+#include <agrum/CN/inference/multipleInferenceEngine.h>
 
 namespace gum {
   namespace credal {
@@ -99,6 +99,7 @@ namespace gum {
       /// @}
 
       protected:
+
       public:
       /// @name Constructors / Destructors
       /// @{

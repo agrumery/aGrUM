@@ -119,6 +119,7 @@ namespace gum {
     s << ")";
     return s.str();
   }
+
   template < typename GUM_SCALAR >
   void MultiDimICIModel< GUM_SCALAR >::copyFrom(const MultiDimContainer< GUM_SCALAR >& src) const {
     auto p = dynamic_cast< const MultiDimICIModel< GUM_SCALAR >* >(&src);
