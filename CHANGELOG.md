@@ -14,13 +14,15 @@
   * Adding `gum::LazyPropagation::mpe{Log2Posterior}` to compute the Most Probable Explanation with some evidence
 
 * pyAgrum
-  * Adding 3.12 in metadatas
+  * Updating and adding 3.12 in metadatas
   * Removing reference to `sys.log` and to `setuptools`.
+  * Removing legacy setuptools related files  
   * Fixing a bug in `pyAgrum.BNLearner` : EM parameter estimation bug due to a cache used in record counters
   * Fixing a bug in `pyAgrum.GibbsSampling` : some evidence may not be taken into account (thanks to discord)
   * Adding `pyAgrum.LazyPropagation.mpe{Log2Posterior}` to compute the Most Probable Explanation with some evidence
   * Fixing a bug in frontdoor detection in a causal model  with multiple connected components.
   * Fixing some regexp expressions
+  * `pyAgrum.PDAG` must accept partially directed cycle (by definition). Thanks to Kenneth Lee.
 
 ## Changelog for 1.10.0
 

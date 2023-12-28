@@ -8,10 +8,7 @@ wrappers/pyAgrum/sphinx/_build
 CMakeCache.txt
 CMakeFiles
 build
-cmake-build-debug
-cmake-build-release
-cmake-build-debug-visual-studio
-cmake-build-release-visual-studio
+cmake-build-*
 .options.act2.py.db
 aGrUM-dev.kdev
 *.kdev4
@@ -96,5 +93,3 @@ wrappers/pyAgrum/doc/sphinx/notebooks/out/*
 # Pipenv files
 Pipfile
 Pipfile.lock
-!/cmake-build-debug-visual-studio/
-!/cmake-build-debug-visual-studio/
