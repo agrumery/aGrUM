@@ -7,22 +7,22 @@
   * Refactoring CI, cleaning wheelhouse
 
 * aGrUM
-  * Improving MIIC algorithm and application of Meek Rules in ordre to to better solve (partially) oriented cycle problems
-  * Fixing a bug in `gum::BNLearner` : EM parameter estimation bug due to a cache used in record counters
-  * Fixing a bug in `gum::GibbsSampling` : some evidence may not be taken into account (thanks to Micromix@discord)
-  * `gum::PDAG` must accept partially directed cycle (by definition). Thanks to Kenneth Lee.
-  * Adding `gum::LazyPropagation::mpe{Log2Posterior}` to compute the Most Probable Explanation with some evidence
+  * Adding `gum::LazyPropagation::mpe{Log2Posterior}` to compute the Most Probable Explanation with some evidence.
+  * Improving MIIC algorithm and application of Meek Rules in ordre to to better solve (partially) oriented cycle problems.
+  * Fixing a bug in `gum::BNLearner` : EM parameter estimation bug due to a cache used in record counters.
+  * Fixing a bug in `gum::GibbsSampling` : some evidence may not be taken into account (thanks to Micromix@discord).
+  * `gum::PDAG` must accept partially directed cycle (thanks to Kenneth Lee).
 
 * pyAgrum
-  * Updating and adding 3.12 in metadatas
+  * Updating and adding 3.12 in metadatas.
+  * Adding `pyAgrum.LazyPropagation.mpe{Log2Posterior}` to compute the Most Probable Explanation with some evidence.
   * Removing reference to `sys.log` and to `setuptools`.
-  * Removing legacy setuptools related files  
-  * Fixing a bug in `pyAgrum.BNLearner` : EM parameter estimation bug due to a cache used in record counters
-  * Fixing a bug in `pyAgrum.GibbsSampling` : some evidence may not be taken into account (thanks to discord)
-  * Adding `pyAgrum.LazyPropagation.mpe{Log2Posterior}` to compute the Most Probable Explanation with some evidence
+  * Removing legacy setuptools related files.
+  * Fixing a bug in `pyAgrum.BNLearner` : EM parameter estimation bug due to a cache used in record counters.
+  * Fixing a bug in `pyAgrum.GibbsSampling` : some evidence may not be taken into account (thanks to Micromix@discord).
   * Fixing a bug in frontdoor detection in a causal model  with multiple connected components.
-  * Fixing some regexp expressions
-  * `pyAgrum.PDAG` must accept partially directed cycle (by definition). Thanks to Kenneth Lee.
+  * Fixing some regexp expressions.
+  * `pyAgrum.PDAG` must accept partially directed cycle (thanks to Kenneth Lee).
 
 ## Changelog for 1.10.0
 
