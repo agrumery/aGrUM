@@ -266,8 +266,10 @@ def _reprGraph(gr, size, asString, format=None):
   """
   if size is not None:
     gr.set_size(size)
-  gr.set_rankdir(gum.config["notebook", "graph_rankdir"])
-  gr.set_layout(gum.config["notebook", "graph_layout"])
+  if gr.get_rankdir() is None:
+    gr.set_rankdir(gum.config["notebook", "graph_rankdir"])
+  if gr.get_layout() is None:
+    gr.set_layout(gum.config["notebook", "graph_layout"])
 
   if format is None:
     format = gum.config["notebook", "graph_format"]
