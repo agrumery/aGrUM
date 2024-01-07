@@ -2,6 +2,7 @@ variables:
   LINUX_64_IMAGE: "agrumery/manylinux_2_28_x86_64"
   LINUX_BUILD: "wrappers/pyAgrum/wheelhouse/build_linux.sh"
   LINUX_WHEELHOUSE: "wrappers/pyAgrum/wheelhouse/build_wheels_linux.sh"
+  LINUX_NIGHTLY_WHEELHOUSE: "wrappers/pyAgrum/wheelhouse/build_nightly_wheels_linux.sh"
   OSX_BUILD: "wrappers/pyAgrum/wheelhouse/build_macos.sh"
   OSX_WHEELHOUSE: "wrappers/pyAgrum/wheelhouse/build_wheels_macos.sh"
   WINDOWS_BUILD: "wrappers/pyAgrum/wheelhouse/build_windows.ps1"
@@ -138,6 +139,11 @@ build_wheel_linux_py312:
   <<: *linux_wheel_template
   script:
     - bash $LINUX_WHEELHOUSE cp312-cp312
+
+build_nightly_wheel_linux_py312:
+  <<: *linux_wheel_template
+  script:
+    - bash $LINUX_NIGHTLY_WHEELHOUSE cp312-cp312
 
 ################################################################################
 # MacOS

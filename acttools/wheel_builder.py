@@ -299,7 +299,7 @@ def sha256_checksum(file_path, block_size=65536):
 
 def update_metadata(dist_info_dir, version):
   replace(join(dist_info_dir, 'METADATA'),
-          'Name: pyagrum', 'Name: pyagrum-nightly')
+          'Name: pyAgrum', 'Name: pyAgrum-nightly')
   commit_time = os.popen('git log -1 --format="%at"').read().split('\n')[0]
   replace(join(dist_info_dir, 'METADATA'), f'Version: {version}',
           f"Version: {version}.dev{datetime.today().strftime('%Y%m%d')}{commit_time}")
