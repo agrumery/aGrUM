@@ -56,6 +56,7 @@ from .pyAgrum import BNDatabaseGenerator
 from .pyAgrum import InfluenceDiagram, ShaferShenoyLIMIDInference
 from .pyAgrum import CredalNet, CNMonteCarloSampling, CNLoopyPropagation
 from .pyAgrum import PRMexplorer
+from .pyAgrum import MeekRules
 
 from .pyAgrum import ApproximationScheme
 from .pyAgrum import fastVariable
@@ -99,6 +100,7 @@ __all__ = [
   'InfluenceDiagram', 'ShaferShenoyLIMIDInference',
   'CredalNet', 'CNMonteCarloSampling', 'CNLoopyPropagation',
   'PRMexplorer',
+  'MeekRules',
 
   'ApproximationScheme',
   'fastVariable',
@@ -801,3 +803,70 @@ def mutilateBN(bn, intervention=None, observation=None):
         del evidence[var]
 
   return (inter_bn, evidence)
+
+def fastGraph(msg:str):
+  """
+  Create a graph with a dot-like syntax which specifies the structure 'a->b->c;b--d<-e;' where ab,c,d,e,.. are int
+
+  Parameters
+  ----------
+    msg : str
+      the string containing the specification
+
+  Returns
+  -------
+    pyAgrum.DiGraph ou pyAgrum.UndiGraph ou pyAgrum.MixedGraph
+  """
+  is_arc="->" in msg or "<-" in msg
+  is_edge="--" in msg
+  if is_arc:
+    if is_edge:
+      m=gum.MixedGraph()
+    else:
+      m=gum.DiGraph()
+  else:
+    m=gum.UndiGraph()
+
+  def addEdgeIn(m,msg):
+    t=msg.split("--")
+    if len(t)==1:
+      n1=int(msg)
+      deb=n1
+      if not m.existsNode(n1):
+        m.addNodeWithId(n1)
+    else:
+      deb,n1=addEdgeIn(m,t[0])
+      for i in range(1,len(t)):
+        d,f=addEdgeIn(m,t[i])
+        m.addEdge(n1,d)
+        n1=f
+    return deb,n1
+  def addRevArcsIn(m,msg):
+    t=msg.split("<-")
+    if len(t)==1:
+      deb,n1=addEdgeIn(m,msg)
+    else:
+      deb,fin=addEdgeIn(m,t[0])
+      n1=fin
+      for i in range(1,len(t)):
+        d,f=addEdgeIn(m,t[i])
+        m.addArc(d,n1)
+        n1=f
+    return deb,n1
+  def addArcsIn(m,msg):
+    t=msg.split("->")
+    if len(t)==1:
+      deb,n1=addRevArcsIn(m,msg)
+    else:
+      deb,fin=addRevArcsIn(m,t[0])
+      n1=fin
+      for i in range(1,len(t)):
+        d,f=addRevArcsIn(m,t[i])
+        m.addArc(n1,d)
+        n1=f
+    return deb,n1
+
+  for l in msg.split(";"):
+    t=addArcsIn(m,l)
+
+  return m

@@ -51,3 +51,13 @@
     PyList_Append($result, PyAgrumHelper::PySetFromNodeSet(kv.first));
   }
 }
+
+
+// for gum::IMarkovRandomField::factors
+%typemap(out) const gum::FactorTable<double> & {
+  $result = PyList_New(0);
+
+  for (auto kv : *$1) {
+    PyList_Append($result, PyAgrumHelper::PySetFromNodeSet(kv.first));
+  }
+}

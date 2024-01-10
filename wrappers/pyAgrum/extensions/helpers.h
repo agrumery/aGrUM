@@ -411,6 +411,29 @@ namespace PyAgrumHelper {
     return q;
   }
 
+  std::vector<gum::Arc> populateArcVectFromPyList(PyObject* arcseq) {
+    std::vector<gum::Arc> res;
+    if (PyList_Check(arcseq)) {
+      auto siz = PyList_Size(arcseq);
+      for (int i = 0; i < siz; i++) {
+        PyObject* item = PyList_GetItem(arcseq, i);
+        if (PyTuple_Check(item)) {
+          if (PyTuple_Size(item) == 2) {
+            res.push_back(gum::Arc(PyLong_AsLong(PyTuple_GetItem(item, 0)),
+                                   PyLong_AsLong(PyTuple_GetItem(item, 1))));
+          } else {
+            GUM_ERROR(gum::InvalidArgument, "An element in the list is not a tuple of size 2")
+          }
+        } else {
+          GUM_ERROR(gum::InvalidArgument, "An element in the list is not a tuple")
+        }
+      }
+    } else {
+      GUM_ERROR(gum::InvalidArgument, "Argument is not a list")
+    }
+    return res;
+  }
+
   PyObject* PyListFromSequenceOfInt(const gum::Sequence< int >& seq) {
     PyObject* q = PyList_New(0);
     for (const auto& val: seq) {

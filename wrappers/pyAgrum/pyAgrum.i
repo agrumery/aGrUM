@@ -105,6 +105,7 @@
 
 %include "prm.i"
 
+%include "MeekRules.i"
 
 //////////////////////////////////////////////////////////////////
 /* extraction of the API for all wrappers */

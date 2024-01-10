@@ -74,6 +74,7 @@
 #include <agrum/tools/graphs/PDAG.h>
 #include <agrum/tools/graphs/cliqueGraph.h>
 #include <agrum/tools/graphs/algorithms/triangulations/defaultTriangulation.h>
+#include <agrum/tools/graphs/algorithms/MeekRules.h>
 #include <agrum/tools/variables/discreteVariable.h>
 #include <agrum/tools/variables/allDiscreteVariables.h>
 
@@ -316,6 +317,7 @@ namespace std {
 %include <agrum/tools/graphs/cliqueGraph.h>
 %import <agrum/tools/graphs/algorithms/triangulations/defaultTriangulation.h>
 %import <agrum/tools/graphs/algorithms/triangulations/triangulation.h>
+%include <agrum/tools/graphs/algorithms/MeekRules.h>
 
 
 %import <agrum/tools/multidim/implementations/multiDimInterface.h>
