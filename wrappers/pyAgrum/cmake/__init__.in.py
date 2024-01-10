@@ -821,11 +821,11 @@ def fastGraph(msg:str):
   is_edge="--" in msg
   if is_arc:
     if is_edge:
-      m=gum.MixedGraph()
+      m=pyAgrum.MixedGraph()
     else:
-      m=gum.DiGraph()
+      m=pyAgrum.DiGraph()
   else:
-    m=gum.UndiGraph()
+    m=pyAgrum.UndiGraph()
 
   def addEdgeIn(m,msg):
     t=msg.split("--")

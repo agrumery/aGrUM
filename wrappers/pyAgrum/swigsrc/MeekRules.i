@@ -19,17 +19,44 @@
 */
 // defines some macro for MeekRules classe
 %extend gum::MeekRules {
-  gum::PDAG orientToPDAG(gum::MixedGraph graph, PyObject* latentCouples) {
-    std::vector< gum::Arc > _latentCouples_=PyAgrumHelper::populateArcVectFromPyList(latentCouples);
+  gum::PDAG orientToPDAG(gum::MixedGraph graph, PyObject* latentCouples=nullptr) {
+    std::vector< gum::Arc > _latentCouples_;
+    if (latentCouples!=nullptr) {
+      _latentCouples_=PyAgrumHelper::populateArcVectFromPyList(latentCouples);
+    }
 
     return self->orientToPDAG(graph,_latentCouples_);
   }
 
-  gum::DAG orientToDAG(gum::MixedGraph graph, PyObject* latentCouples) {
-    std::vector< gum::Arc > _latentCouples_=PyAgrumHelper::populateArcVectFromPyList(latentCouples);
+  gum::DAG orientToDAG(gum::MixedGraph graph, PyObject* latentCouples=nullptr) {
+    std::vector< gum::Arc > _latentCouples_;
+    if (latentCouples!=nullptr) {
+      _latentCouples_=PyAgrumHelper::populateArcVectFromPyList(latentCouples);
+    }
 
     return self->orientToDAG(graph,_latentCouples_);
   }
+
+  void orientAllEdges(gum::MixedGraph& graph, PyObject* latentCouples=nullptr) {
+    std::vector< gum::Arc > _latentCouples_;
+    if (latentCouples!=nullptr) {
+      _latentCouples_=PyAgrumHelper::populateArcVectFromPyList(latentCouples);
+    }
+
+    self->orientAllEdges(graph,_latentCouples_);
+  }
+
+  void propagatesOrientations(gum::MixedGraph& graph, PyObject* latentCouples=nullptr) {
+    std::vector< gum::Arc > _latentCouples_;
+    if (latentCouples!=nullptr) {
+      _latentCouples_=PyAgrumHelper::populateArcVectFromPyList(latentCouples);
+    }
+
+    self->propagatesOrientations(graph,_latentCouples_);
+  }
+
 }
 %ignore gum::MeekRules::orientToPDAG(gum::MixedGraph graph, std::vector< Arc >& _latentCouples_);
 %ignore gum::MeekRules::orientToDAG(gum::MixedGraph graph, std::vector< Arc >& _latentCouples_);
+%ignore gum::MeekRules::orientAllEdges(gum::MixedGraph& graph, std::vector< Arc >& _latentCouples_);
+%ignore gum::MeekRules::propagatesOrientations(gum::MixedGraph& graph, std::vector< Arc >& _latentCouples_);
