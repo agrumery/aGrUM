@@ -98,7 +98,7 @@ class BNDiscretizer():
     Sets the number of continuous variables and the total number of bins created by this discretizer to 0. If
     clearDiscretizationParameters is True, also clears the the parameters for discretization the user has set for each
     variable.
-    
+
     Parameters
     ----------
       clearDiscretizationParameters: bool
@@ -120,15 +120,16 @@ class BNDiscretizer():
           default for this BNClassifier.
       method: str
           The method of discretization used for this variable. Type "NoDiscretization" if you do not want to discretize this
-          variable. Possible values are: 'NoDiscretization', 'quantile', 'uniform', 'kmeans', 'NML', 'CAIM' and 'MDLP'
+          variable. Possible values are: 'NoDiscretization', 'quantile', 'uniform', 'kmeans', 'NML', 'CAIM', 'MDLP' and 'expert'
       paramDiscretizationMethod:
-          sets the number of bins if the method used is quantile, kmeans, uniform. In this case this parameter can also
-          be set to the string 'elbowMethod' so that the best number of bins is found automatically.
-          if the method used is NML, this parameter sets the the maximum number of bins up to which the NML algorithm
-          searches for the optimal number of bins. In this case this parameter must be an int
-          If the method is NoDiscretization, this parameter can 
-          If any other discretization method is used, this parameter is ignored.
-  
+          Each method of discretization has a parameter that can be set.
+          - 'quantile': the number of bins
+          - 'kmeans', 'uniform': the number of bins. The parameter can also be set to the string 'elbowMethod' so that the best number of bins is found automatically.
+          - 'NML': this parameter sets the the maximum number of bins up to which the NML algorithm searches for the optimal number of bins.
+          - 'MDLP', 'CAIM': this parameter is ignored
+          - 'expert': this parameter is the set of ticks proposed by the expert.
+          - 'NoDiscretization': this parameter is a superset of the values for the variable found in the database.
+
     """
     if variableName in self.discretizationParametersDictionary:
       oldParamDiscretizationMethod = self.discretizationParametersDictionary[variableName]['param']
@@ -140,20 +141,19 @@ class BNDiscretizer():
     if method is None:
       method = oldMethod
 
-    if paramDiscretizationMethod is None and method != 'NoDiscretization':
+    if paramDiscretizationMethod is None and method not in {'NoDiscretization', 'expert'}:
       paramDiscretizationMethod = oldParamDiscretizationMethod
 
-    if method not in {'kmeans', 'uniform', 'quantile', 'NML', 'MDLP', 'CAIM', 'NoDiscretization'}:
+    if method not in {'kmeans', 'uniform', 'quantile', 'NML', 'MDLP', 'CAIM', 'NoDiscretization', 'expert'}:
       raise ValueError(
         "This discretization method is not recognized! Possible values are kmeans, uniform, quantile, NML, "
-        "CAIM and MDLP. You have entered " + str(
-          method))
+        "CAIM, MDLP, NoDiscretization or expert. You have entered " + str( method))
 
     if paramDiscretizationMethod == 'elbowMethod':
       if method == "NML":
         raise ValueError(
           "The elbow Method cannot be used as the number of bins for the algorithm NML. Please select an integer value")
-    elif method != 'NoDiscretization':
+    elif method not in {'NoDiscretization', 'expert'}:
       try:
         paramDiscretizationMethod = int(paramDiscretizationMethod)
       except:
@@ -163,8 +163,7 @@ class BNDiscretizer():
     else:
       if paramDiscretizationMethod is not None and not isinstance(paramDiscretizationMethod, list):
         raise ValueError(
-          "For a NotDiscretized variable, the parameter has to be None or a list of values (labels) but not '" + str(
-            paramDiscretizationMethod)) + "'."
+          "For a NotDiscretized/expert method, the parameter has to be None or a list of values but not '" + str(paramDiscretizationMethod)) + "'."
 
     if variableName is None:
       self.defaultMethod = method
@@ -180,7 +179,7 @@ class BNDiscretizer():
     be discretized, as well as the discretization algorithm that will be used to discretize them The parameters which
     are suggested will be used when creating the variables. To change this the user can manually set discretization
     parameters for each variable using the setDiscretizationParameters function.
-   
+
     parameters:
       X: {array-like, sparse matrix} of shape (n_samples, n_features)
           training data
@@ -673,7 +672,7 @@ class BNDiscretizer():
   def createVariable(self, variableName, X, y=None, possibleValuesY=None):
     """
     Creates a variable for the column passed in as a parameter
-    
+
     Parameters
     ----------
         variableName:
@@ -713,7 +712,7 @@ class BNDiscretizer():
         self.discretizationParametersDictionary[variableName] = {}
         self.discretizationParametersDictionary[variableName]['method'] = "NoDiscretization"
       usingDefaultParameters = True
-    else:
+    else:  # The user has manually set the discretization parameters for this variable
       usingDefaultParameters = False
       if self.discretizationParametersDictionary[variableName]['method'] != "NoDiscretization" and not isNumeric:
         raise ValueError("The variable " + variableName + " is not numeric and cannot be discretized!")
@@ -763,7 +762,9 @@ class BNDiscretizer():
           var = gum.LabelizedVariable(variableName, variableName, sorted([str(v) for v in possibleValuesX]))
     else:
       self.numberOfContinuous += 1
-      if self.discretizationParametersDictionary[variableName]['method'] == "CAIM":
+      if self.discretizationParametersDictionary[variableName]['method'] == "expert":
+        binEdges = self.discretizationParametersDictionary[variableName]['param']
+      elif self.discretizationParametersDictionary[variableName]['method'] == "CAIM":
         if y is None:
           raise ValueError(
             "The CAIM discretization method requires a list of the associated classes for each data vector since it "
@@ -802,9 +803,6 @@ class BNDiscretizer():
           variableName) + "gave only 1 bin. Try increasing the number of bins used by this variable using "
                           "setDiscretizationParameters to avoid this error")
 
-      # we replace infinity as min and max by the new empirical flag.
-      # binEdges[0] = -math.inf
-      # binEdges[-1] = math.inf
       self.totalNumberOfBins += len(binEdges) - 1
       var = gum.DiscretizedVariable(variableName, variableName, binEdges)
       var.setEmpirical(True)
