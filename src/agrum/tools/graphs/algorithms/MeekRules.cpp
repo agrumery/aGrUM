@@ -39,6 +39,11 @@ namespace gum {
   /// Propagates the orientation of a MixedGraph (no double-headed arcs) and return a PDAG.
   PDAG MeekRules::orientToPDAG(MixedGraph mg, std::vector< Arc >& _latentCouples_) {
     propagatesOrientations(mg, _latentCouples_);
+
+    // Resolve double-headed arc while avoiding cycle creation.
+    _orientDoubleHeadedArcs_(mg);
+    GUM_TRACE(mg.toDot())
+
     PDAG pdag;
     for (auto node: mg) {
       pdag.addNodeWithId(node);
