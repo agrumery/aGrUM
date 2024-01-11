@@ -45,7 +45,7 @@ namespace gum {
     }
     if (this->hasDirectedPath(head, tail)) {
       GUM_ERROR(InvalidDirectedCycle,
-                "Add a partially directed cycle in a PDAG : between " << head << " and " << tail)
+                "Add a directed cycle in a PDAG : between " << head << " and " << tail)
     }
 
     // checking whether tail and head do belong to the graph is performed

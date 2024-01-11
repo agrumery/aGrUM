@@ -892,9 +892,9 @@ namespace gum {
         const auto& v2 = from.variableFromName(variable(node).name());
         if (v1 != v2) { return false; }
 
-        if (isChanceNode(v1.name()) & !from.isChanceNode(v2.name())) { return false; }
-        if (isUtilityNode(v1.name()) & !from.isUtilityNode(v2.name())) { return false; }
-        if (isDecisionNode(v1.name()) & !from.isDecisionNode(v2.name())) { return false; }
+        if (isChanceNode(v1.name()) && !from.isChanceNode(v2.name())) { return false; }
+        if (isUtilityNode(v1.name()) && !from.isUtilityNode(v2.name())) { return false; }
+        if (isDecisionNode(v1.name()) && !from.isDecisionNode(v2.name())) { return false; }
 
         alignment.insert(&variable(node), &from.variableFromName(variable(node).name()));
       } catch (NotFound const&) {

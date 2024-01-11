@@ -50,46 +50,47 @@ namespace gum {
 
     /// Propagates the orientation of a MixedGraph (no double-headed arcs) and return a PDAG.
     /** @param graph the graph in which to which to propagate arcs
-     * @param _latentCouples__ the set of arc with a latent variable.
+     * @warning propagates may create double arcs
      */
-    PDAG orientToPDAG(MixedGraph graph, std::vector< Arc >& _latentCouples_);
+    MixedGraph propagates(const MixedGraph& mg);
 
-    /// Propagates the orientation of a MixedGraph and return a DAG.
+    /// Propagates the orientation of a MixedGraph (no double-headed arcs) and return a PDAG.
     /** @param graph the graph in which to which to propagate arcs
-     * @param _latentCouples__ the set of arc with a latent variable.
+     * @warning propagatesToPDAG may have to select between double arcs created by propagates
      */
-    DAG orientToDAG(MixedGraph graph, std::vector< Arc >& _latentCouples_);
+    PDAG propagatesToPDAG(const MixedGraph& mg);
 
-    /// Takes a partially oriented graph and orient all possible edges
-    /**
-     * @param graph graph in which to which to propagate arcs
-     * @param _latentCouples_ the set of arc with a latent variable
+    /// Propagates the orientation of a MixedGraph and completes it as a DAG.
+    /** @param graph the graph in which to which to propagate arcs
+     * @warning propagatesToDAG may have to select between double arcs created by propagates
      */
-    void orientAllEdges(MixedGraph& graph, std::vector< Arc >& _latentCouples_);
+    DAG propagatesToDAG(const MixedGraph& mg);
 
-    /// Takes a partially oriented graph and propagates the existing orientation
     /**
-     * @param graph graph in which to which to propagate arcs
-     * @param _latentCouples_ the set of arc with a latent variable
+     * @brief Get the Choices object : the list of arcs that the algorithm has to choose from a
+     * double arc or a double non-arc.
+     *
+     * @return  std::vector< Arc >
      */
-    void propagatesOrientations(MixedGraph& graph, std::vector< Arc >& _latentCouples_);
+    std::vector< Arc > choices() const { return _choices_; };
 
     private:
+    MixedGraph _propagates_(const MixedGraph& graph);
+
+    std::vector< Arc > _choices_;
+
     /// Propagates the orientation from a node to its neighbours
     /** @param graph graph in which to which to propagate arcs
      * @param node node on which neighbours to propagate th orientation
      * @param force : true if an orientation has always to be found.
      */
-    bool _propagatesRemainingOrientableEdges_(MixedGraph&         graph,
-                                              NodeId              xj,
-                                              std::vector< Arc >& _latentCouples_);
+    bool _applyMeekRules_(MixedGraph& graph, NodeId xj);
 
     /// heuristic for remaining edges when everything else has been tried
     /** @param graph graph in which to which to propagate arcs
      * @param _latentCouples_
      */
-    void _propagatesOrientationInChainOfRemainingEdges_(gum::MixedGraph&    graph,
-                                                        std::vector< Arc >& _latentCouples_);
+    void _propagatesOrientationInChainOfRemainingEdges_(gum::MixedGraph& graph);
 
     /** Tells us if we can orient the edge xi - xj to xi -> xj
      * @param graph the graph
@@ -107,6 +108,7 @@ namespace gum {
 
     static bool _existsDirectedPath_(const MixedGraph& graph, NodeId n1, NodeId n2);
 
+    void _complete_(MixedGraph& graph);
   };   /// class MeekRules
 
 }   // namespace gum

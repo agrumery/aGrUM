@@ -40,6 +40,7 @@ from .pyAgrum import mutilateBN
 from .pyAgrum import getPosterior
 from .pyAgrum import log2
 from .pyAgrum import statsObj
+from .pyAgrum import fastGraph
 
 from .pyAgrum import config
 
@@ -76,6 +77,7 @@ from .pyAgrum import DefaultInLabel, DuplicateElement, DuplicateLabel, GumExcept
   NotFound, NullElement, OperationNotAllowed, OutOfBounds, ArgumentError, SizeError, SyntaxError, UndefinedElement, \
   UndefinedIteratorKey, UndefinedIteratorValue, UnknownLabelInDatabase, CPTError
 
+
 # selection of imports extracted from dir(pyAgrum)
 __all__ = [
   'about',
@@ -88,6 +90,7 @@ __all__ = [
   'getPosterior',
   'log2',
   'statsObj',
+  'fastGraph',
 
   'config',
 

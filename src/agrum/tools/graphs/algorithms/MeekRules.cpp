@@ -36,40 +36,53 @@ namespace gum {
   /// destructor
   MeekRules::~MeekRules() { GUM_DESTRUCTOR(MeekRules); }
 
+  /// Propagates MeekRules in a MixedGraph
+  MixedGraph MeekRules::propagates(const MixedGraph& graph) {
+    _choices_.clear();
+    return _propagates_(graph);
+  }
+
   /// Propagates the orientation of a MixedGraph (no double-headed arcs) and return a PDAG.
-  PDAG MeekRules::orientToPDAG(MixedGraph mg, std::vector< Arc >& _latentCouples_) {
-    propagatesOrientations(mg, _latentCouples_);
+  PDAG MeekRules::propagatesToPDAG(const MixedGraph& mg) {
+    _choices_.clear();
+
+    MixedGraph graph = _propagates_(mg);
 
     // Resolve double-headed arc while avoiding cycle creation.
-    _orientDoubleHeadedArcs_(mg);
-    GUM_TRACE(mg.toDot())
+    _orientDoubleHeadedArcs_(graph);
 
+    // cycle have been resolved above, so we can safely convert to PDAG
     PDAG pdag;
-    for (auto node: mg) {
+    for (auto node: graph) {
       pdag.addNodeWithId(node);
     }
-    for (const Edge& edge: mg.edges()) {
+    for (const Edge& edge: graph.edges()) {
       pdag.addEdge(edge.first(), edge.second());
     }
-    for (const Arc& arc: mg.arcs()) {
+    for (const Arc& arc: graph.arcs()) {
       pdag.addArc(arc.tail(), arc.head());
     }
     return pdag;
   }
 
   /// Propagates the orientation of a MixedGraph and return a DAG.
-  DAG MeekRules::orientToDAG(MixedGraph mg, std::vector< Arc >& _latentCouples_) {
+  DAG MeekRules::propagatesToDAG(const gum::MixedGraph& mg) {
+    _choices_.clear();
     // Orient all remaining  edges into arcs
-    orientAllEdges(mg, _latentCouples_);
+    MixedGraph graph = _propagates_(mg);
+
+    // complete remaining edges
+    _complete_(graph);
 
     // Resolve double-headed arc while avoiding cycle creation.
-    _orientDoubleHeadedArcs_(mg);
+    _orientDoubleHeadedArcs_(graph);
+
 
     DAG dag;
-    for (auto node: mg.nodes()) {
+    for (auto node: graph.nodes()) {
       dag.addNodeWithId(node);
     }
-    for (const Arc& arc: mg.arcs()) {
+    for (const Arc& arc: graph.arcs()) {
       dag.addArc(arc.tail(), arc.head());
     }
     return dag;
@@ -140,41 +153,40 @@ namespace gum {
     }
   }
 
-  /// Propagates MeekRules in a MixedGraph
-  void MeekRules::propagatesOrientations(MixedGraph& graph, std::vector< Arc >& _latentCouples_) {
+  MixedGraph MeekRules::_propagates_(const MixedGraph& mg) {
+    MixedGraph graph(mg);
     // Propagates existing orientations thanks to Meek rules
     bool newOrientation = true;
     while (newOrientation) {
       newOrientation = false;
       for (NodeId x: graph.nodes()) {
         if (!graph.parents(x).empty()) {
-          newOrientation |= _propagatesRemainingOrientableEdges_(graph, x, _latentCouples_);
+          newOrientation |= _applyMeekRules_(graph, x);
         }
       }
     }
+    return graph;
   }
 
-  void MeekRules::orientAllEdges(MixedGraph& graph, std::vector< Arc >& _latentCouples_) {
+  void MeekRules::_complete_(MixedGraph& graph) {
     // Propagates existing orientations thanks to rules
     bool newOrientation = true;
     while (newOrientation) {
       newOrientation = false;
       for (NodeId x: graph.nodes()) {
         if (!graph.parents(x).empty()) {
-          newOrientation |= _propagatesRemainingOrientableEdges_(graph, x, _latentCouples_);
+          newOrientation |= _applyMeekRules_(graph, x);
         }
       }
     }
 
     // GUM_TRACE(graph.toDot())
     //  Orient remaining edges
-    _propagatesOrientationInChainOfRemainingEdges_(graph, _latentCouples_);
+    _propagatesOrientationInChainOfRemainingEdges_(graph);
   }
 
   /// Propagates the orientation from a node to its neighbours
-  bool MeekRules::_propagatesRemainingOrientableEdges_(gum::MixedGraph&    graph,
-                                                       NodeId              xj,
-                                                       std::vector< Arc >& _latentCouples_) {
+  bool MeekRules::_applyMeekRules_(MixedGraph& graph, NodeId xj) {
     bool       res        = false;
     const auto neighbours = graph.neighbours(xj);
     for (auto& xi: neighbours) {
@@ -188,16 +200,16 @@ namespace gum {
       if (i_j) {
         graph.eraseEdge(Edge(xi, xj));
         graph.addArc(xi, xj);
-        _propagatesRemainingOrientableEdges_(graph, xj, _latentCouples_);
+        _applyMeekRules_(graph, xj);
       }
       if (j_i) {
         graph.eraseEdge(Edge(xi, xj));
         graph.addArc(xj, xi);
-        _propagatesRemainingOrientableEdges_(graph, xi, _latentCouples_);
+        _applyMeekRules_(graph, xi);
       }
       if (i_j && j_i) {
         // GUM_TRACE(" + add arc (" << xi << "," << xj << ")")
-        _latentCouples_.emplace_back(xi, xj);
+        _choices_.emplace_back(xi, xj);
       }
     }
     return res;
@@ -234,9 +246,7 @@ namespace gum {
   }
 
   /// Arbitrary propagation if we can't propagate thanks to MeekRules
-  void MeekRules::_propagatesOrientationInChainOfRemainingEdges_(
-     MixedGraph&         essentialGraph,
-     std::vector< Arc >& _latentCouples_) {
+  void MeekRules::_propagatesOrientationInChainOfRemainingEdges_(MixedGraph& essentialGraph) {
     // then decide the orientation for remaining edges
     while (!essentialGraph.edges().empty()) {
       const auto& edge               = *(essentialGraph.edges().begin());
@@ -274,7 +284,7 @@ namespace gum {
           // GUM_TRACE("n : "<< n)
           if (!stack.contains(n) && !visited.contains(n)) stack.insert(n);
           // GUM_TRACE(" + amap reasonably orientation for " << n << "->" << next);
-          if (_propagatesRemainingOrientableEdges_(essentialGraph, next, _latentCouples_)) {
+          if (_applyMeekRules_(essentialGraph, next)) {
             continue;
           } else {
             if (!essentialGraph.existsArc(next,
@@ -282,6 +292,7 @@ namespace gum {
                                                   // doubly-oriented arc by adding a "random" arc.
               essentialGraph.eraseEdge(Edge(n, next));
               essentialGraph.addArc(n, next);
+              _choices_.emplace_back(n, next);
               // GUM_TRACE(" + add arc (" << n << "->" << next << ")")
             }
           }

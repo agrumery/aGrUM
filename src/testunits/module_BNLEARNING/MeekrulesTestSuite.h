@@ -31,15 +31,15 @@
 #include <agrum/tools/database/DBRowGeneratorParser.h>
 #include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/tools/database/DBTranslatorSet.h>
+#include <agrum/tools/graphs/algorithms/MeekRules.h>
 #include <agrum/tools/graphs/DAG.h>
-#include <agrum/tools/graphs/PDAG.h>
 #include <agrum/tools/graphs/mixedGraph.h>
+#include <agrum/tools/graphs/PDAG.h>
 #include <agrum/tools/variables/labelizedVariable.h>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
-#include <agrum/tools/graphs/algorithms/MeekRules.h>
 #include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
 #include <agrum/BN/learning/priors/noPrior.h>
 
@@ -52,20 +52,19 @@ namespace gum_tests {
       for (unsigned int i = 0; i < 6; ++i) {
         pdag.addNodeWithId(i);
       }
-      pdag.addArc(0,1);
-      pdag.addArc(1,2);
+      pdag.addArc(0, 1);
+      pdag.addArc(1, 2);
 
-      pdag.addEdge(2,3);
-      pdag.addEdge(3,5);
-      pdag.addEdge(5,4);
-      pdag.addEdge(2,1);
-      pdag.addEdge(4,1);
+      pdag.addEdge(2, 3);
+      pdag.addEdge(3, 5);
+      pdag.addEdge(5, 4);
+      pdag.addEdge(2, 1);
+      pdag.addEdge(4, 1);
 
       gum::MeekRules mr;
 
-      std::vector< gum::Arc > _latent_;
-      mr.orientToPDAG(pdag, _latent_);
-
-      }
+      const auto res1 = mr.propagatesToPDAG(pdag);
+      const auto res2 = mr.propagatesToDAG(pdag);
+    }
   };   // MeekrulesTestSuite
 }   // namespace gum_tests
