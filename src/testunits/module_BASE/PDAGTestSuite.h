@@ -132,8 +132,6 @@ namespace gum_tests {
 
       TS_ASSERT_THROWS(graph.addArc(1000, id1), const gum::InvalidNode&)
       TS_ASSERT_THROWS(graph.addArc(id1, 1000), const gum::InvalidNode&)
-
-      GUM_TRACE(graph.toDot())
     }
 
     GUM_ACTIVE_TEST(CopyConstructor) {

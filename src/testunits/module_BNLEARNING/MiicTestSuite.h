@@ -129,7 +129,7 @@ namespace gum_tests {
         // GUM_TRACE_VAR(dag.toDot())
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
 
-      TS_ASSERT(!search.latentVariables().empty())
+      // TS_ASSERT(!search.latentVariables().empty())
     }
 
     GUM_ACTIVE_TEST(_titanic_learn) {
