@@ -130,6 +130,7 @@ namespace gum {
 
     explicit PDAG(const UndiGraph& g);
     explicit PDAG(const DAG& g);
+    explicit PDAG(const MixedGraph& g);
 
     /// copy constructor
     /** @param g the PDAG to copy */

@@ -175,6 +175,20 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(g.sizeEdges(), 0u)
     }
 
+    GUM_ACTIVE_TEST(MixedGraphCopyConstructor) {
+      gum::MixedGraph dag;
+      dag.addNodes(10);
+      dag.addArc(1, 2);
+      dag.addArc(1, 3);
+      dag.addEdge(3, 2);
+      dag.addEdge(4, 5);
+
+      gum::PDAG g(dag);
+      TS_ASSERT_EQUALS(g.size(), 10u)
+      TS_ASSERT_EQUALS(g.sizeArcs(), 2u)
+      TS_ASSERT_EQUALS(g.sizeEdges(), 2u)
+    }
+
     GUM_ACTIVE_TEST(EmptyNodes) {
       gum::PDAG graph;
 
