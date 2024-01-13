@@ -79,7 +79,7 @@ namespace gum_tests {
 
   class MiicTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_INACTIVE_TEST(_latent_var_) {
+    GUM_ACTIVE_TEST(_latent_var_) {
       gum::learning::DBInitializerFromCSV initializer(
          GET_RESSOURCES_PATH("csv/latent_variable.csv"));
       const auto&       var_names = initializer.variableNames();
@@ -132,7 +132,7 @@ namespace gum_tests {
       // TS_ASSERT(!search.latentVariables().empty())
     }
 
-    GUM_INACTIVE_TEST(_titanic_learn) {
+    GUM_ACTIVE_TEST(_titanic_learn) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/titanic.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -186,7 +186,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
-    GUM_INACTIVE_TEST(_alarm_learn) {
+    GUM_ACTIVE_TEST(_alarm_learn) {
       FilterListenerForMiic filterlistener;
       filterlistener.filter = 24;
 
@@ -243,7 +243,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
-    GUM_INACTIVE_TEST(_census_learn) {
+    GUM_ACTIVE_TEST(_census_learn) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/Census01.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -298,7 +298,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
-    GUM_INACTIVE_TEST(_24_learn) {
+    GUM_ACTIVE_TEST(_24_learn) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/24.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -352,7 +352,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
-    GUM_INACTIVE_TEST(_asia_ForbiddenGraph) {
+    GUM_ACTIVE_TEST(_asia_ForbiddenGraph) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -409,7 +409,7 @@ namespace gum_tests {
       TS_ASSERT(!dag.existsArc(1, 5))
     }
 
-    GUM_INACTIVE_TEST(_asia_MandatoryGraph) {
+    GUM_ACTIVE_TEST(_asia_MandatoryGraph) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -457,7 +457,7 @@ namespace gum_tests {
       TS_ASSERT(dag.existsArc(3, 4))
     }
 
-    GUM_INACTIVE_TEST(_alarm_MaxIndegree_) {
+    GUM_ACTIVE_TEST(_alarm_MaxIndegree_) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/alarm.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -510,7 +510,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_INACTIVE_TEST(_MIIC_ms_order1_) {
+    GUM_ACTIVE_TEST(_MIIC_ms_order1_) {
       // filterlistener.filter = 6;
       // GUM_CONNECT(search,
       //             onStructuralModification,
@@ -569,7 +569,7 @@ namespace gum_tests {
       auto pdag = search.learnPDAG(cI, graph);
     }
 
-    GUM_INACTIVE_TEST(_MIIC_ms_order2_) {
+    GUM_ACTIVE_TEST(_MIIC_ms_order2_) {
       // filterlistener.filter = 6;
       // GUM_CONNECT(search,
       //             onStructuralModification,
@@ -628,7 +628,7 @@ namespace gum_tests {
       auto pdag = search.learnPDAG(cI, graph);
     }
 
-    GUM_INACTIVE_TEST(_125_learn) {
+    GUM_ACTIVE_TEST(_125_learn) {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/bn125.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();

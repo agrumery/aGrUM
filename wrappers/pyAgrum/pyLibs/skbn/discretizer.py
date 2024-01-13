@@ -112,24 +112,28 @@ class BNDiscretizer():
   @gum.deprecated_arg(newA="paramDiscretizationMethod", oldA="numberOfBins", version="1.9.0")
   def setDiscretizationParameters(self, variableName=None, method=None, paramDiscretizationMethod=None):
     """
-    Sets the discretization parameters for a variable. If variableName is None, sets the default parameters for this
+    Sets the discretization parameters for a variable. If variableName is None, sets the default parameters.
 
-    parameters:
+    Parameters
+    ----------
       variableName: str
           the name of the variable you want to set the discretization parameters of. Set to None to set the new
           default for this BNClassifier.
       method: str
-          The method of discretization used for this variable. Type "NoDiscretization" if you do not want to discretize this
+          The method of discretization used for this variable. Use "NoDiscretization" if you do not want to discretize this
           variable. Possible values are: 'NoDiscretization', 'quantile', 'uniform', 'kmeans', 'NML', 'CAIM', 'MDLP' and 'expert'
       paramDiscretizationMethod:
           Each method of discretization has a parameter that can be set.
           - 'quantile': the number of bins
-          - 'kmeans', 'uniform': the number of bins. The parameter can also be set to the string 'elbowMethod' so that the best number of bins is found automatically.
-          - 'NML': this parameter sets the the maximum number of bins up to which the NML algorithm searches for the optimal number of bins.
+          - 'kmeans', 'uniform': the number of bins. The parameter can also be set to the string 'elbowMethod' so that the best
+          number of bins is found automatically.
+          - 'NML': this parameter sets the the maximum number of bins up to which the NML algorithm searches for the optimal
+          number of bins.
           - 'MDLP', 'CAIM': this parameter is ignored
-          - 'expert': this parameter is the set of ticks proposed by the expert.
+          - 'expert': this parameter is the set of ticks proposed by the expert. The discretized variable will set the flag
+          'empirical' which means that if the values found in the data are not in the proposed intervals, they did not raise
+          any exception but  are nevertheless accepted (as belonging to the smallest or biggest interval).
           - 'NoDiscretization': this parameter is a superset of the values for the variable found in the database.
-
     """
     if variableName in self.discretizationParametersDictionary:
       oldParamDiscretizationMethod = self.discretizationParametersDictionary[variableName]['param']
@@ -147,7 +151,7 @@ class BNDiscretizer():
     if method not in {'kmeans', 'uniform', 'quantile', 'NML', 'MDLP', 'CAIM', 'NoDiscretization', 'expert'}:
       raise ValueError(
         "This discretization method is not recognized! Possible values are kmeans, uniform, quantile, NML, "
-        "CAIM, MDLP, NoDiscretization or expert. You have entered " + str( method))
+        "CAIM, MDLP, NoDiscretization or expert. You have entered " + str(method))
 
     if paramDiscretizationMethod == 'elbowMethod':
       if method == "NML":
@@ -163,7 +167,8 @@ class BNDiscretizer():
     else:
       if paramDiscretizationMethod is not None and not isinstance(paramDiscretizationMethod, list):
         raise ValueError(
-          "For a NotDiscretized/expert method, the parameter has to be None or a list of values but not '" + str(paramDiscretizationMethod)) + "'."
+          "For a NotDiscretized/expert method, the parameter has to be None or a list of values but not '" + str(
+            paramDiscretizationMethod)) + "'."
 
     if variableName is None:
       self.defaultMethod = method
@@ -180,7 +185,63 @@ class BNDiscretizer():
     are suggested will be used when creating the variables. To change this the user can manually set discretization
     parameters for each variable using the setDiscretizationParameters function.
 
-    parameters:
+    Parameters
+    ----------
+      X: {array-like, pandas or polars dataframe} of shape (n_samples, n_features)
+          training data
+      y: {array-like, pandas or polars dataframe} of shape (n_samples,)
+          Target values
+    Returns
+    -------
+      Dict
+        for each variable, the proposition of audit
+     """
+    if hasattr(X, "to_pandas"):  # for instance, polars dataframe
+      Xp = X.to_pandas()
+    else:
+      Xp = X
+
+    if y is not None and hasattr(y, "to_pandas"):  # for instance, polars dataframe
+      yp = y.to_pandas()
+    else:
+      yp = y
+
+    return self._audit(Xp, yp)
+
+  def auditCSV(self, csvFile, classname=None):
+    """
+    Audits the passed csv file. Tells us which columns in X we think are already discrete and which need to
+    be discretized, as well as the discretization algorithm that will be used to discretize them The parameters which
+    are suggested will be used when creating the variables. To change this the user can manually set discretization
+    parameters for each variable using the setDiscretizationParameters function.
+
+    Parameters
+    ----------
+      csvFile: str
+          path to the csv file
+      classname: str
+          name of the column containing the class
+    Returns
+    -------
+      Dict
+        for each variable, the proposition of audit
+     """
+    df = pandas.read_csv(csvFile)
+    if classname not in None:
+      X = df.drop(classname, axis=1)
+      y = df[classname]
+
+    return self._audit(X, y)
+
+  def _audit(self, X, y=None):
+    """
+    Audits the passed values of X and y. Tells us which columns in X we think are already discrete and which need to
+    be discretized, as well as the discretization algorithm that will be used to discretize them The parameters which
+    are suggested will be used when creating the variables. To change this the user can manually set discretization
+    parameters for each variable using the setDiscretizationParameters function.
+
+        Parameters
+    ----------
       X: {array-like, sparse matrix} of shape (n_samples, n_features)
           training data
       y: array-like of shape (n_samples,)
@@ -219,6 +280,7 @@ class BNDiscretizer():
     if len(possibleValues[d]) > 2:
       raise ValueError(
         "BNClassifier is a binary classifier! There are more than 2 possible values for y in the data provided")
+
     for i in range(d):
       variable = variableNames[i]
       auditDict[variable] = {}
@@ -231,7 +293,6 @@ class BNDiscretizer():
         auditDict[variable] = self.discretizationParametersDictionary[variable]
         if self.discretizationParametersDictionary[variable]['method'] != "NoDiscretization" and not isNumeric:
           raise ValueError("The variable " + variable + " is not numeric and cannot be discretized!")
-
       else:
         if len(possibleValues[i]) > self.discretizationThreshold and isNumeric:
           auditDict[variable]['method'] = self.defaultMethod
@@ -239,10 +300,13 @@ class BNDiscretizer():
         else:
           auditDict[variable]['method'] = 'NoDiscretization'
           auditDict[variable]['values'] = possibleValues[i]
+
       if auditDict[variable]['method'] == "NoDiscretization":
         auditDict[variable]['type'] = 'Discrete'
       else:
         auditDict[variable]['type'] = 'Continuous'
+        auditDict[variable]['minInData'] = min(possibleValues[i])
+        auditDict[variable]['maxInData'] = max(possibleValues[i])
 
     return auditDict
 
@@ -866,14 +930,39 @@ class BNDiscretizer():
 
   def discretizedBN(self, X, y=None, possibleValuesY=None):
     """
-    return a BN discretized using the suggestion of the Discretized for date source X and for target y. This BN only contains the discretized variables. For instance, it can be used as a template for a BNLearner.
+    return a BN discretized using the suggestion of the Discretized for date source X and for target y.
+    This BN only contains the discretized variables. For instance, it can be used as a template for a BNLearner.
+
+    Parameters
+    ----------
+        X: {array-like, sparse matrix, pandas or polars dataframe} of shape (n_samples, n_features)
+            training data
+        y: array-like, pandas or polars dataframe of shape (n_samples,)
+            Target values
+        possibleValuesY: ndarray
+            An ndarray containing all the unique values of y
+
+    Returns
+    -------
+        pyagrum.BayesNet
+          the discretized BN
 
     Example
     -------
     >>> discretizer=skbn.BNDiscretizer(defaultDiscretizationMethod='uniform',defaultParamDiscretizationMethod=7,discretizationThreshold=10)
     >>> learner=gum.BNLearner(data,discretizer.discretizedBN(data))
     """
+    if hasattr(X, "to_pandas"):
+      Xp = X.to_pandas()
+    else:
+      Xp = X
+
+    if y is not None and hasattr(y, "to_pandas"):
+      yp = y.to_pandas()
+    else:
+      yp = y
+
     template = gum.BayesNet()
-    for name in X:
-      template.add(self.createVariable(name, X[name], y, possibleValuesY))
+    for name in Xp:
+      template.add(self.createVariable(name, Xp[name], yp, possibleValuesY))
     return template

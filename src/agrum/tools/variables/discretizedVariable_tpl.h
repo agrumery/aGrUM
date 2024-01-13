@@ -30,7 +30,7 @@ namespace gum {
   INLINE void DiscretizedVariable< T_TICKS >::copy_(const DiscretizedVariable< T_TICKS >& aDRV) {
     eraseTicks();
     IDiscretizedVariable::copy_(aDRV);
-
+    _is_empirical = aDRV._is_empirical;
     for (Idx i = 0; i < aDRV._ticks_size_; ++i) {
       addTick((T_TICKS)aDRV._ticks_[i]);
     }
@@ -55,12 +55,12 @@ namespace gum {
 
     if (target < _ticks_[0]) {
       if (_is_empirical) return 0;
-      else GUM_ERROR(OutOfBounds, "less than first range")
+      else GUM_ERROR(OutOfBounds, "less than first range : is_empirical="<<_is_empirical);
     }
 
     if (target > _ticks_[_ticks_size_ - 1]) {
       if (_is_empirical) return _ticks_size_ - 2;
-      else GUM_ERROR(OutOfBounds, "more than last range")
+      else GUM_ERROR(OutOfBounds, "more than last range : is_empirical="<<_is_empirical);
     }
 
     if (target == _ticks_[_ticks_size_ - 1])   // special case for upper limit
@@ -98,8 +98,6 @@ namespace gum {
   DiscretizedVariable< T_TICKS >::DiscretizedVariable(const DiscretizedVariable< T_TICKS >& aDRV) :
       IDiscretizedVariable(aDRV) {
     GUM_CONS_CPY(DiscretizedVariable);
-    _is_empirical = aDRV._is_empirical;
-    _ticks_.reserve(1);
     copy_(aDRV);
   }
 

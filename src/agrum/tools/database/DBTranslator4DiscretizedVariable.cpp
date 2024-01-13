@@ -59,6 +59,9 @@ namespace gum {
       for (const auto tick: ticks) {
         _variable_.addTick((float)tick);
       }
+      // copy the isEmpirical
+      // (why not using clone ?)
+      _variable_.setEmpirical(var.isEmpirical());
 
       // the bounds of the discretized variable
       const auto lower_bound = float(ticks[0]);

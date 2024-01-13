@@ -38,7 +38,7 @@ namespace gum {
       // try to get the index of str within the discretized variable.
       try {
         return DBTranslatedValue{std::size_t(_variable_[str])};
-      } catch (gum::Exception&) {
+      } catch (gum::Exception& e) {
         // check for a missing symbol
         if (this->isMissingSymbol(str))
           return DBTranslatedValue{std::numeric_limits< std::size_t >::max()};
@@ -48,14 +48,14 @@ namespace gum {
         // without raising an exception
         try {
           return DBTranslatedValue{this->back_dico_.first(str)};
-        } catch (gum::Exception&) {
+        } catch (const gum::Exception&) {
           if (!DBCell::isReal(str)) {
             GUM_ERROR(TypeError,
                       "String \"" << str << "\" cannot be translated because it is not a value for "
                                   << _variable_);
           } else {
             GUM_ERROR(UnknownLabelInDatabase,
-                      "The translation of \"" << str << "\" could not be found")
+                      "The translation of \"" << str << "\" could not be found : "<<e.what()<<" for variable "<<_variable_);
           }
         }
       }
