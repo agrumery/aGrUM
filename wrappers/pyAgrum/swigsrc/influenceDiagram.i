@@ -30,6 +30,8 @@
 %}
 
 
+IMPROVE_DIRECTED_GRAPHICAL_MODEL_API(gum::InfluenceDiagram);
+
 %extend gum::InfluenceDiagram {
    bool loadBIFXML(std::string name, PyObject *l=(PyObject*)0) {
     try {
@@ -121,7 +123,7 @@ def __getstate__(self):
           "chance":[self.variable(i).toFast() for i in self.nodes() if self.isChanceNode(i)],
           "utility":[self.variable(i).toFast() for i in self.nodes() if self.isUtilityNode(i)],
           "decision":[self.variable(i).toFast() for i in self.nodes() if self.isDecisionNode(i)],
-          "adj":{**{self.variable(i).name():list(self.cpt(i).names)[1:] for i in self.nodes()  if self.isChanceNode(i)},
+          "parents":{**{self.variable(i).name():list(self.cpt(i).names)[1:] for i in self.nodes()  if self.isChanceNode(i)},
                  **{self.variable(i).name():list(self.utility(i).names)[1:] for i in self.nodes()  if self.isUtilityNode(i)},
                  **{self.variable(i).name():[self.variable(j).name() for j in self.parents(i)] for i in self.nodes() if self.isDecisionNode(i)}},
           "cpt":{self.variable(i).name():self.cpt(i)[:].flatten().tolist() for i in self.nodes() if self.isChanceNode(i)},
@@ -139,8 +141,8 @@ def __setstate__(self,state):
     for fastvar in state['decision']:
         self.addDecisionNode(fastvar)
     self.beginTopologyTransformation()
-    for son in state['adj']:
-        for father in state['adj'][son]:
+    for son in state['parents']:
+        for father in state['parents'][son]:
             self.addArc(father,son)
     self.endTopologyTransformation()
     for node in state['cpt']:
@@ -152,5 +154,3 @@ def __setstate__(self,state):
     return self
   }
 }
-
-IMPROVE_DIRECTED_GRAPHICAL_MODEL_API(gum::InfluenceDiagram);

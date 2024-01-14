@@ -20,32 +20,15 @@
 
 #include <iostream>
 
-#include <gumtest/AgrumTestSuite.h>
-#include <gumtest/utils.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
-#include <agrum/tools/core/approximations/approximationScheme.h>
-#include <agrum/tools/core/approximations/approximationSchemeListener.h>
-#include <agrum/tools/database/databaseTable.h>
-#include <agrum/tools/database/DBInitializerFromCSV.h>
-#include <agrum/tools/database/DBRowGeneratorIdentity.h>
-#include <agrum/tools/database/DBRowGeneratorParser.h>
-#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
-#include <agrum/tools/database/DBTranslatorSet.h>
 #include <agrum/tools/graphs/algorithms/MeekRules.h>
-#include <agrum/tools/graphs/DAG.h>
-#include <agrum/tools/graphs/mixedGraph.h>
 #include <agrum/tools/graphs/PDAG.h>
-#include <agrum/tools/variables/labelizedVariable.h>
-
-#include <agrum/BN/BayesNet.h>
-#include <agrum/BN/generator/simpleBayesNetGenerator.h>
-#include <agrum/BN/generator/simpleCPTGenerator.h>
-#include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
-#include <agrum/BN/learning/priors/noPrior.h>
 
 namespace gum_tests {
 
-  class MeekrulesTestSuite: public CxxTest::TestSuite {
+  class MeekRulesTestSuite: public CxxTest::TestSuite {
     public:
     GUM_ACTIVE_TEST(test_cycle_PDAG) {
       gum::PDAG pdag;

@@ -72,6 +72,33 @@
   };
 
 %pythoncode {
+
+  def __getstate__(self):
+      state=dict()
+      if hasattr(self,'arcs'):
+          state['arcs']=self.arcs()
+      if hasattr(self,'edges'):
+        state['edges']=self.edges()
+      return state
+
+  def __setstate__(self,state):
+      self.__init__()
+      if 'arcs' in state:
+          for x,y in state['arcs']:
+            if not self.existsNode(x):
+              self.addNodeWithId(x)
+            if not self.existsNode(y):
+              self.addNodeWithId(y)
+            self.addArc(x,y)
+      if 'edges' in state:
+          for x,y in state['edges']:
+            if not self.existsNode(x):
+              self.addNodeWithId(x)
+            if not self.existsNode(y):
+              self.addNodeWithId(y)
+            self.addEdge(x,y)
+      return self
+
   def connectedComponents(self):
     """ connected components from a graph/BN
 
@@ -121,7 +148,7 @@
 };
 %enddef // ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS
 
-ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::DiGraph); // add for the sub-classes (including MixedGraph and pdag)
+ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::DiGraph); // add for the sub-classes (including DAG, MixedGraph and pdag)
 ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::UndiGraph);
 ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::EssentialGraph);
 ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::MarkovBlanket);

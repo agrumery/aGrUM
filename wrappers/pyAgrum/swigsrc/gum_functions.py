@@ -743,7 +743,12 @@ def mutilateBN(bn, intervention=None, observation=None):
 
 def fastGraph(msg:str):
   """
-  Create a graph with a dot-like syntax which specifies the structure 'a->b->c;b--d<-e;' where ab,c,d,e,.. are int
+  Create a graph with a dot-like syntax which specifies the structure 'a->b->c;b-d<-e;' where a,b,c,d,e,.. are unsigned int
+
+  Warnings
+  --------
+    The choice of "-" for edges is unambiguous because "-" is not a valid character for a node id (unsigned int).
+    Moreover, "--" is already used by `pyAgrum.fastMRF` to specify factors.
 
   Parameters
   ----------
@@ -755,7 +760,7 @@ def fastGraph(msg:str):
     pyAgrum.DiGraph ou pyAgrum.UndiGraph ou pyAgrum.MixedGraph
   """
   is_arc="->" in msg or "<-" in msg
-  is_edge="--" in msg
+  is_edge="-" in msg
   if is_arc:
     if is_edge:
       m=pyAgrum.MixedGraph()
@@ -765,7 +770,7 @@ def fastGraph(msg:str):
     m=pyAgrum.UndiGraph()
 
   def addEdgeIn(m,msg):
-    t=msg.split("--")
+    t=msg.split("-")
     if len(t)==1:
       n1=int(msg)
       deb=n1

@@ -3,16 +3,17 @@
 ## Changelog for 1.12.0
 
 * aGrUM
-  * add and complete the new class `gum::MeekRules` to complete a learned PDAG to CPADG or BN.
+  * adding and completing the new class `gum::MeekRules` to complete a learned PDAG to CPADG or BN.
   * Preventing 'infinities' in the definition of numerical discrete variable.
+  * Adding a new constructor for `gum::PDAG` from`gum::MixedGraph`.
 
 * pyAgrum
   * Preventing 'infinities' in the definition of numerical discrete variable.
-  * add a new `expert` discretization method to `pyAgrum.skbn.BNDiscretizer`.
+  * add a new `expert` discretization method to `pyAgrum.skbn.BNDiscretizer` (thanks to Ahmed Mabrouk).
   * add `pyAgrum.skbn.BNDiscretizer.auditCSV` to directly audit a csv file.
   * add `pyAgrum.fastGraph` to create `pyAgrum.{Di|Undi|Mixed}Graph`.
-  * Dataframe can now come from `pandas` or `polars` (tahnks to Mads Linksou).
-  * pickle for graphicals models !
+  * Dataframe can now come from `pandas` or `polars` (thanks to Mads Linksou).
+  * pickle for graphs and graphicals models !
 
 ## Changelog for 1.11.0
 
