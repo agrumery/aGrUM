@@ -42,7 +42,8 @@ namespace gum {
       // Note that we need to initialize the NodeGraphPart by ourselves
       // because
       // it is a virtual inherited class (see C++ FAQ Lite #25.12 for details)
-      NodeGraphPart(nodes_size, nodes_resize_policy), UndiGraph(edges_size, edges_resize_policy),
+      NodeGraphPart(nodes_size, nodes_resize_policy),
+      UndiGraph(edges_size, edges_resize_policy),
       DiGraph(arcs_size, arcs_resize_policy) {   // for debugging purposes
     GUM_CONSTRUCTOR(MixedGraph);
   }

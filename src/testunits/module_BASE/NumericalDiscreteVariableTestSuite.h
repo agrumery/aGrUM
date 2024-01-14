@@ -239,7 +239,6 @@ namespace gum_tests {
                           "this is var2",
                           {-std::numeric_limits< double >::infinity(), 0.0, 2.5, 3.7, 4.9}),
                        const gum::DefaultInLabel&);
-
     }
 
     GUM_ACTIVE_TEST(Positions) {

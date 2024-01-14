@@ -160,9 +160,7 @@ namespace gum {
     while (newOrientation) {
       newOrientation = false;
       for (NodeId x: graph.nodes()) {
-        if (!graph.parents(x).empty()) {
-          newOrientation |= _applyMeekRules_(graph, x);
-        }
+        if (!graph.parents(x).empty()) { newOrientation |= _applyMeekRules_(graph, x); }
       }
     }
     return graph;
@@ -174,9 +172,7 @@ namespace gum {
     while (newOrientation) {
       newOrientation = false;
       for (NodeId x: graph.nodes()) {
-        if (!graph.parents(x).empty()) {
-          newOrientation |= _applyMeekRules_(graph, x);
-        }
+        if (!graph.parents(x).empty()) { newOrientation |= _applyMeekRules_(graph, x); }
       }
     }
 

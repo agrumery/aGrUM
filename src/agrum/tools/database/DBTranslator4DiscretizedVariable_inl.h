@@ -55,7 +55,8 @@ namespace gum {
                                   << _variable_);
           } else {
             GUM_ERROR(UnknownLabelInDatabase,
-                      "The translation of \"" << str << "\" could not be found : "<<e.what()<<" for variable "<<_variable_);
+                      "The translation of \"" << str << "\" could not be found : " << e.what()
+                                              << " for variable " << _variable_);
           }
         }
       }

@@ -871,7 +871,6 @@ namespace gum_tests {
       }
     }
 
-
     GUM_ACTIVE_TEST(operatorEqual) {
       auto model  = gum::InfluenceDiagram< double >::fastPrototype("C<-A->*B<-C->D->$U<-B;*E->B");
       auto model2 = gum::InfluenceDiagram< double >::fastPrototype(
@@ -889,7 +888,7 @@ namespace gum_tests {
           model3.utility(i).fillWith(1);
         }
       }
-      
+
       TS_ASSERT_EQUALS(model, model);
       TS_ASSERT_DIFFERS(model, model2);
       TS_ASSERT_EQUALS(model, model3);

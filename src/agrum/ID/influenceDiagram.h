@@ -109,7 +109,10 @@ namespace gum {
 
     /// @}
     bool operator==(const InfluenceDiagram< GUM_SCALAR >& other) const;
-    bool operator!=(const InfluenceDiagram< GUM_SCALAR >& other) const { return !operator==(other); }
+
+    bool operator!=(const InfluenceDiagram< GUM_SCALAR >& other) const {
+      return !operator==(other);
+    }
 
     /// @return Returns a dot representation of this Influence Diagram.
     std::string toDot() const;
@@ -502,6 +505,7 @@ namespace gum {
     /// CPTs/utilities dimensions.
     void endTopologyTransformation();
     ///@}
+
     protected:
     /// Returns the moral graph of this InfluenceDiagram.
     virtual void moralGraph_(UndiGraph& graph) const;

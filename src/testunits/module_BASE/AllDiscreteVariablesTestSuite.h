@@ -156,7 +156,7 @@ namespace gum_tests {
       } catch (gum::Exception const& e) {
         GUM_SHOWERROR(e);
         GUM_TRACE(e.errorCallStack());
-    }
+      }
     }
 
     GUM_ACTIVE_TEST(ToFastMethod) {
@@ -189,7 +189,7 @@ namespace gum_tests {
       s = "A[2,inf]";
       TS_ASSERT_THROWS(gum::fastVariable< double >(s), const std::invalid_argument&);   // Range
       s = "A[inf,2,3,4,5,6]";
-      TS_ASSERT_THROWS(gum::fastVariable< double >(s), const gum::DefaultInLabel&);   // Integer
+      TS_ASSERT_THROWS(gum::fastVariable< double >(s), const gum::DefaultInLabel&);     // Integer
     }
   };
 }   // namespace gum_tests

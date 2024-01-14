@@ -23,9 +23,9 @@
 #include <iostream>
 #include <string>
 // =====================================================================
-#include <gumtest/AgrumTestSuite.h>
-
 #include <utils.h>
+
+#include <gumtest/AgrumTestSuite.h>
 // =====================================================================
 #include <agrum/tools/core/set.h>
 // =====================================================================

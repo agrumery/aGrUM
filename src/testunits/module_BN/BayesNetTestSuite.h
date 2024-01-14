@@ -1111,8 +1111,8 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(operatorEqual) {
       auto bn  = gum::BayesNet< double >::fastPrototype("A->B->C");
       auto bn2 = gum::BayesNet< double >::fastPrototype("A{yes|no}->B{yes|no}->C{yes|no}");
-      auto bn3  = gum::BayesNet< double >::fastPrototype("A->B->C");
-      for(const auto i:bn.nodes()) {
+      auto bn3 = gum::BayesNet< double >::fastPrototype("A->B->C");
+      for (const auto i: bn.nodes()) {
         bn.cpt(i).fillWith(1);
         bn2.cpt(i).fillWith(1);
         bn3.cpt(i).fillWith(1);

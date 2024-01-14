@@ -859,7 +859,6 @@ namespace gum {
     }
   }
 
-
   /// begin Multiple Change for all CPTs
   template < typename GUM_SCALAR >
   void InfluenceDiagram< GUM_SCALAR >::beginTopologyTransformation() {
@@ -875,7 +874,6 @@ namespace gum {
       if (isChanceNode(node)) _potentialMap_[node]->endMultipleChanges();
       else if (isUtilityNode(node)) _utilityMap_[node]->endMultipleChanges();
   }
-
 
   template < typename GUM_SCALAR >
   bool InfluenceDiagram< GUM_SCALAR >::operator==(const InfluenceDiagram& from) const {

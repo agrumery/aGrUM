@@ -52,7 +52,7 @@ namespace gum {
         } else if (args.size() == 1) {   // n[4]
           int n = std::stoi(args[0]);
           if (n < 2)
-            if (default_domain_size>1)
+            if (default_domain_size > 1)
               GUM_ERROR(InvalidArgument, n << " is not >=2 for variable " << var_description)
           ds        = static_cast< Size >(n);
           range_min = 0;

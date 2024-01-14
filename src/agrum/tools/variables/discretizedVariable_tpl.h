@@ -55,12 +55,12 @@ namespace gum {
 
     if (target < _ticks_[0]) {
       if (_is_empirical) return 0;
-      else GUM_ERROR(OutOfBounds, "less than first range : is_empirical="<<_is_empirical);
+      else GUM_ERROR(OutOfBounds, "less than first range : is_empirical=" << _is_empirical);
     }
 
     if (target > _ticks_[_ticks_size_ - 1]) {
       if (_is_empirical) return _ticks_size_ - 2;
-      else GUM_ERROR(OutOfBounds, "more than last range : is_empirical="<<_is_empirical);
+      else GUM_ERROR(OutOfBounds, "more than last range : is_empirical=" << _is_empirical);
     }
 
     if (target == _ticks_[_ticks_size_ - 1])   // special case for upper limit
@@ -136,7 +136,7 @@ namespace gum {
   template < typename T_TICKS >
   DiscretizedVariable< T_TICKS >& DiscretizedVariable< T_TICKS >::addTick(const T_TICKS& aTick) {
     // check if aTick is a float or a special value (infinity or not a number)
-    if (! std::isfinite(aTick)) {
+    if (!std::isfinite(aTick)) {
       GUM_ERROR(DefaultInLabel, "Tick '" << aTick << "' is not allowed for variable " << name())
     }
     if (isTick(aTick)) {
