@@ -80,13 +80,17 @@ def __limits(p):
 
   mi = 0 if nzmin in [-1, None] else nzmin
   ma = l if nzmax in [-1, None] else nzmax
+  if mi>0:
+    mi -= 1
+  if ma<l:
+    ma += 1
 
   res = range(mi, ma + 1)
   lres = la[mi:ma + 1]
   if nzmin not in [-1, None]:
-    lres[0] = "..."
+    lres[0] = "..." + str(nzmin)
   if nzmax not in [-1, None]:
-    lres[-1] = "..."
+    lres[-1] = str(nzmax) + "..."
 
   return res, [v[i] for i in res], lres
 
@@ -111,12 +115,12 @@ def _getProbaLine(p, scale=1.0, txtcolor="black"):
   """
 
   var = p.variable(0)
-  # if gum.config['notebook', 'histogram_mode'] == "compact":
-  #  ra, v, lv = __limits(p)
-  # else:
-  lv = [var.label(int(i)) for i in np.arange(var.domainSize())]
-  v = p.tolist()
-  ra = range(var.domainSize())
+  if gum.config['notebook', 'histogram_mode'] == "compact":
+    ra, v, lv = __limits(p)
+  else:
+    lv = [var.label(int(i)) for i in np.arange(var.domainSize())]
+    v = p.tolist()
+    ra = range(var.domainSize())
   if var.domainSize() > 15:
     step = int(var.domainSize() / 15)
   else:
@@ -288,18 +292,32 @@ def _getHistoForDiscretized(p, scale=1.0, txtcolor="Black"):
   widths = [vx[i + 1] - vx[i] for i in range(len(vx) - 1)]
   vals = [v / w for v, w in zip(p.tolist(), widths)]
 
+  lim1 = 0
+  lim2 = len(vals) - 1
+  if gum.config['notebook', 'histogram_mode'] == "compact":
+    while vals[lim1] <= gum.config.asFloat['notebook', 'histogram_epsilon']:
+      lim1 += 1
+    if lim1 > 0:
+      lim1 -= 1
+
+    while vals[lim2] <= gum.config.asFloat['notebook', 'histogram_epsilon']:
+      lim2 -= 1
+    if lim2 < len(vals)-1:
+      lim2 += 1
+
   fig = plt.figure()
-  fig.set_figwidth(scale * max(15, len(vx)) / 8)
+  fig.set_figwidth(scale * max(15, (lim2-lim1)) / 8)
   fig.set_figheight(scale)
 
   ax = fig.add_subplot(111)
   ax.set_facecolor('white')
-  ax.set_xticks([vx[0], (vx[-1] + vx[0]) / 2, vx[-1]])
+  ax.set_xticks([vx[lim1], (vx[lim2] + vx[lim1]) / 2, vx[lim2]])
   ax.xaxis.set_minor_locator(AutoMinorLocator())
   ax.tick_params(which="minor", length=4)
+  ax.set_ylim(bottom=0, top=1.05 * max(vals))
   ax.get_xaxis().grid(True, which="minor", zorder=0)
 
-  bars = ax.bar(vx[:-1], height=vals, width=widths,
+  bars = ax.bar(vx[lim1:1 + lim2], height=vals[lim1:1 + lim2], width=widths[lim1:1 + lim2],
                 align='edge',
                 color=gum.config['notebook', 'histogram_color'],
                 edgecolor=gum.config['notebook', 'histogram_edge_color'], zorder=3)
