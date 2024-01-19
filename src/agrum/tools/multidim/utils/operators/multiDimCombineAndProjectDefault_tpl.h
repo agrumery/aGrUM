@@ -31,7 +31,6 @@
 #  include <limits>
 
 #  include <agrum/agrum.h>
-
 #  include <agrum/tools/multidim/utils/operators/multiDimCombineAndProjectDefault.h>
 
 namespace gum {
@@ -52,8 +51,8 @@ namespace gum {
   template < class TABLE >
   MultiDimCombineAndProjectDefault< TABLE >::MultiDimCombineAndProjectDefault(
      const MultiDimCombineAndProjectDefault< TABLE >& from) :
-      MultiDimCombineAndProject< TABLE >(),
-      _combination_(from._combination_->clone()), _projection_(from._projection_->clone()) {
+      MultiDimCombineAndProject< TABLE >(), _combination_(from._combination_->clone()),
+      _projection_(from._projection_->clone()) {
     // for debugging purposes
     GUM_CONS_CPY(MultiDimCombineAndProjectDefault);
   }
@@ -273,9 +272,14 @@ namespace gum {
            {res.first},
            {res.second});
       } else {
+        std::string names;
+        for(const auto &v: original_del_vars) {
+          names += v->name() + ", ";
+        }
         GUM_ERROR(OperationNotAllowed,
                   "MultiDimCombineAndProject need at least one table to "
-                  "have some work to do.");
+                  "have some work to do (original_del_vars ="
+                     << names  << ").");
       }
     }
 
