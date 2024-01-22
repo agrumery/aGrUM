@@ -46,8 +46,34 @@ namespace gum_tests {
 
       gum::MeekRules mr;
 
-      const auto res1 = mr.propagatesToPDAG(pdag);
-      const auto res2 = mr.propagatesToDAG(pdag);
+      const auto res_cpdag = mr.propagatesToPDAG(pdag);
+      const auto res_dag = mr.propagatesToDAG(pdag);
+
+      TS_ASSERT(res_cpdag.existsArc(2,3));
+      TS_ASSERT_EQUALS(res_cpdag.edges().size(),0);
+
+    }
+
+    GUM_ACTIVE_TEST(critereMinParents1) {
+      gum::MixedGraph graph;
+      gum::MixedGraph graph2;
+      for (unsigned int i = 0; i < 7; ++i) {
+        graph.addNodeWithId(i);
+      }
+      graph.addArc(0, 3);
+      graph.addArc(1, 3);
+      graph.addArc(2, 3);
+      graph.addArc(5, 4);
+      graph.addArc(6, 4);
+
+      graph.addEdge(5,4);
+
+      gum::MeekRules mr;
+
+      const auto res_cpdag = mr.propagatesToPDAG(graph);
+
+      TS_ASSERT(res_cpdag.existsArc(5,4));
+
     }
   };   // MeekrulesTestSuite
 }   // namespace gum_tests

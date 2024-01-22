@@ -126,7 +126,8 @@ namespace gum {
             // Case 3: There is no path between tail and head
           } else if (!tail_head && !head_tail) {
             // Choose an arbitrary orientation and erase the corresponding arc
-            mg.eraseArc(Arc(arc.head(), arc.tail()));
+            // mg.eraseArc(Arc(arc.head(), arc.tail()));
+            mg.eraseArc(_critereMinParents_(mg, arc.tail(), arc.head()));
             withdrawFlag_arc = true;
           }
 
@@ -209,6 +210,23 @@ namespace gum {
       }
     }
     return res;
+  }
+
+  gum::Arc MeekRules::_critereMinParents_(const gum::MixedGraph& graph, gum::NodeId x, gum::NodeId y) {
+    //If the number of parents of x is less than the number of parents of y.
+    if (graph.parents(x).size() < graph.parents(y).size()) {
+      // If the number of parents of x is less than the number of parents of y.
+      // We want to keep y->x, so we return x->y for erasure.
+      return Arc(x, y);
+    } else if (graph.parents(x).size() > graph.parents(y).size()) {
+      return Arc(y, x);
+    } else { //If they have the same number of parents, we choose the one with less neighbours.
+      if (graph.neighbours(x).size() < graph.neighbours(y).size()) {
+        return Arc(x, y);
+      } else {
+        return Arc(y, x);
+      }
+    }
   }
 
   bool MeekRules::_isOrientable_(const MixedGraph& graph, NodeId xi, NodeId xj) const {

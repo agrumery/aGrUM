@@ -109,6 +109,14 @@ namespace gum {
     static bool _existsDirectedPath_(const MixedGraph& graph, NodeId n1, NodeId n2);
 
     void _complete_(MixedGraph& graph);
+
+    /**
+     * @brief
+     * When resolving double-headed arcs, prioritize selecting the option that minimizes the number of parent nodes in the graph.
+     *
+     * @return  gum::Arc the arc that should be earased.
+     */
+    gum::Arc _critereMinParents_(const gum::MixedGraph& graph, gum::NodeId x, gum::NodeId y);
   };   /// class MeekRules
 
 }   // namespace gum
