@@ -135,6 +135,10 @@ Parameters
 name : str
 	The variable's name from which the id is returned.
 
+Notes
+-----
+  A convenient shortcut for `g.variableFromName(name)` is `g[name]`.
+  
 Returns
 -------
 int :

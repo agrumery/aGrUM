@@ -481,6 +481,10 @@ Returns
 pyAgrum.DiscreteVariable
 	the variable
 
+Notes
+-----
+  A convenient shortcut for `g.variableFromName(name)` is `g[name]`.
+
 Raises
 ------
 pyAgrum.IndexError

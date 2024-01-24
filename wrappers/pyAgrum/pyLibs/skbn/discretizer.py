@@ -167,8 +167,7 @@ class BNDiscretizer():
     else:
       if paramDiscretizationMethod is not None and not isinstance(paramDiscretizationMethod, list):
         raise ValueError(
-          "For a NotDiscretized/expert method, the parameter has to be None or a list of values but not '" + str(
-            paramDiscretizationMethod)) + "'."
+          f"For a NotDiscretized/expert method, the parameter has to be None or a list of values but not '{paramDiscretizationMethod}'.")
 
     if variableName is None:
       self.defaultMethod = method
