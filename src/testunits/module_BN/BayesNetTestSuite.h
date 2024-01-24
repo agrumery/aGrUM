@@ -644,6 +644,7 @@ namespace gum_tests {
       for (const auto node: bn.nodes()) {
         TS_ASSERT_EQUALS(bn.idFromName(bn.variable(node).name()), node)
         TS_ASSERT_EQUALS(&bn.variableFromName(bn.variable(node).name()), &bn.variable(node))
+        TS_ASSERT_EQUALS(&bn.variableFromName(bn.variable(node).name()), &bn.variable(node))
       }
 
       TS_ASSERT_THROWS(bn.idFromName("choucroute"), const gum::NotFound&)

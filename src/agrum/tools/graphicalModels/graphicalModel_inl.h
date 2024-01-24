@@ -126,8 +126,8 @@ namespace gum {
   }
 
   INLINE
-  gum::VariableSet GraphicalModel::variables(const std::vector< std::string >& l) const {
-    gum::VariableSet       s;
+  VariableSet GraphicalModel::variables(const std::vector< std::string >& l) const {
+    VariableSet            s;
     const VariableNodeMap& v = variableNodeMap();
     for (const auto& name: l) {
       s.insert(&v.variableFromName(name));
@@ -136,8 +136,8 @@ namespace gum {
   }
 
   INLINE
-  gum::VariableSet GraphicalModel::variables(const NodeSet& l) const {
-    gum::VariableSet       s;
+  VariableSet GraphicalModel::variables(const NodeSet& l) const {
+    VariableSet            s;
     const VariableNodeMap& v = variableNodeMap();
     for (const auto& node: l) {
       s.insert(&v.get(node));

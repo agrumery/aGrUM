@@ -10159,6 +10159,15 @@ class IBayesNet(DAGmodel):
         """
         return _pyAgrum.IBayesNet_names(self)
 
+    def __getitem__(self, key):
+      if isinstance(key, int):
+        return self.variable(key)
+      elif isinstance(key, str):
+        return self.variableFromName(key)
+      else:
+        raise TypeError("key must be an int or a string")
+
+
     def nodes(self) -> object:
         r"""
 
@@ -11294,6 +11303,15 @@ class BayesNet(IBayesNet):
         """
         return _pyAgrum.BayesNet_names(self)
 
+    def __getitem__(self, key):
+      if isinstance(key, int):
+        return self.variable(key)
+      elif isinstance(key, str):
+        return self.variableFromName(key)
+      else:
+        raise TypeError("key must be an int or a string")
+
+
     def nodes(self) -> object:
         r"""
 
@@ -12317,6 +12335,15 @@ class BayesNetFragment(IBayesNet, ):
         """
         return _pyAgrum.BayesNetFragment_names(self)
 
+    def __getitem__(self, key):
+      if isinstance(key, int):
+        return self.variable(key)
+      elif isinstance(key, str):
+        return self.variableFromName(key)
+      else:
+        raise TypeError("key must be an int or a string")
+
+
     def nodes(self) -> object:
         r"""
 
@@ -12657,6 +12684,15 @@ class IMarkovRandomField(UGmodel):
 
         """
         return _pyAgrum.IMarkovRandomField_names(self)
+
+    def __getitem__(self, key):
+      if isinstance(key, int):
+        return self.variable(key)
+      elif isinstance(key, str):
+        return self.variableFromName(key)
+      else:
+        raise TypeError("key must be an int or a string")
+
 
     def nodes(self) -> object:
         return _pyAgrum.IMarkovRandomField_nodes(self)
@@ -13027,6 +13063,15 @@ class MarkovRandomField(IMarkovRandomField):
 
         """
         return _pyAgrum.MarkovRandomField_names(self)
+
+    def __getitem__(self, key):
+      if isinstance(key, int):
+        return self.variable(key)
+      elif isinstance(key, str):
+        return self.variableFromName(key)
+      else:
+        raise TypeError("key must be an int or a string")
+
 
     def nodes(self) -> object:
         return _pyAgrum.MarkovRandomField_nodes(self)
@@ -25694,6 +25739,15 @@ class InfluenceDiagram(DAGmodel):
 
         """
         return _pyAgrum.InfluenceDiagram_names(self)
+
+    def __getitem__(self, key):
+      if isinstance(key, int):
+        return self.variable(key)
+      elif isinstance(key, str):
+        return self.variableFromName(key)
+      else:
+        raise TypeError("key must be an int or a string")
+
 
     def nodes(self) -> object:
         r"""

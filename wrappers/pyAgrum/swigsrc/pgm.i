@@ -34,8 +34,18 @@
      }
      return q;
   };
-}
 
+
+%pythoncode {
+  def __getitem__(self, key):
+    if isinstance(key, int):
+      return self.variable(key)
+    elif isinstance(key, str):
+      return self.variableFromName(key)
+    else:
+      raise TypeError("key must be an int or a string")
+}
+};
 // macro from graphs.i
 ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(classname);
 %enddef
