@@ -46,7 +46,7 @@ namespace gum_tests {
 
       gum::MeekRules mr;
 
-      const auto res_cpdag = mr.propagatesToPDAG(pdag);
+      const auto res_cpdag = mr.propagatesToCPDAG(pdag);
       const auto res_dag = mr.propagatesToDAG(pdag);
 
       TS_ASSERT(res_cpdag.existsArc(2,3));
@@ -70,7 +70,7 @@ namespace gum_tests {
 
       gum::MeekRules mr;
 
-      const auto res_cpdag = mr.propagatesToPDAG(graph);
+      const auto res_cpdag = mr.propagatesToCPDAG(graph);
 
       TS_ASSERT(res_cpdag.existsArc(5,4));
 

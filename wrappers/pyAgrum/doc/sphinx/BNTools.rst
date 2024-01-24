@@ -14,6 +14,7 @@ with Bayesian networks.
   BNToolsRandom
   BNToolsGener
   BNToolsInformationTheory
+  BNToolsMeekRules
   BNToolsCompar
   BNToolsExplain
   BNToolsFragment

@@ -25,6 +25,7 @@
 %include "doc_BayesNetFragment.i"
 %include "doc_EssentialGraph.i"
 %include "doc_MarkovBlanket.i"
+%include "doc_MeekRules.i"
 
 %include "doc_BNdistance.i"
 %include "doc_GibbsBNdistance.i"
