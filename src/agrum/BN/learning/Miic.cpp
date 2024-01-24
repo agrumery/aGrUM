@@ -158,7 +158,7 @@ namespace gum {
     /// in the other methods of the MIIC class.
 
     PDAG Miic::learnPDAG(CorrectedMutualInformation& I, MixedGraph initialGraph) {
-      return meekRules_.propagatesToPDAG(learnMixedStructure(I, initialGraph));
+      return meekRules_.propagatesToCPDAG(learnMixedStructure(I, initialGraph));
       // @todo: check the meekRules.choices()
     }
 

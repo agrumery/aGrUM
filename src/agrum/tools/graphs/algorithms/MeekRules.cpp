@@ -43,7 +43,7 @@ namespace gum {
   }
 
   /// Propagates the orientation of a MixedGraph (no double-headed arcs) and return a PDAG.
-  PDAG MeekRules::propagatesToPDAG(const MixedGraph& mg) {
+  PDAG MeekRules::propagatesToCPDAG(const MixedGraph& mg) {
     _choices_.clear();
 
     MixedGraph graph = _propagates_(mg);

@@ -56,9 +56,9 @@ namespace gum {
 
     /// Propagates the orientation of a MixedGraph (no double-headed arcs) and return a PDAG.
     /** @param graph the graph in which to which to propagate arcs
-     * @warning propagatesToPDAG may have to select between double arcs created by propagates
+     * @warning propagatesToCPDAG may have to select between double arcs created by propagates
      */
-    PDAG propagatesToPDAG(const MixedGraph& mg);
+    PDAG propagatesToCPDAG(const MixedGraph& mg);
 
     /// Propagates the orientation of a MixedGraph and completes it as a DAG.
     /** @param graph the graph in which to which to propagate arcs
