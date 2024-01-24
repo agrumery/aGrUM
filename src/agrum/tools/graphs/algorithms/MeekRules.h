@@ -112,7 +112,8 @@ namespace gum {
 
     /**
      * @brief
-     * When resolving double-headed arcs, prioritize selecting the option that minimizes the number of parent nodes in the graph.
+     * When resolving double-headed arcs, prioritize selecting the option that minimizes the number
+     * of parent nodes in the graph.
      *
      * @return  gum::Arc the arc that should be earased.
      */

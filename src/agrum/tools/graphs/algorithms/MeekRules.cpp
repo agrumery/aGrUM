@@ -212,15 +212,16 @@ namespace gum {
     return res;
   }
 
-  gum::Arc MeekRules::_critereMinParents_(const gum::MixedGraph& graph, gum::NodeId x, gum::NodeId y) {
-    //If the number of parents of x is less than the number of parents of y.
+  gum::Arc
+     MeekRules::_critereMinParents_(const gum::MixedGraph& graph, gum::NodeId x, gum::NodeId y) {
+    // If the number of parents of x is less than the number of parents of y.
     if (graph.parents(x).size() < graph.parents(y).size()) {
       // If the number of parents of x is less than the number of parents of y.
       // We want to keep y->x, so we return x->y for erasure.
       return Arc(x, y);
     } else if (graph.parents(x).size() > graph.parents(y).size()) {
       return Arc(y, x);
-    } else { //If they have the same number of parents, we choose the one with less neighbours.
+    } else {   // If they have the same number of parents, we choose the one with less neighbours.
       if (graph.neighbours(x).size() < graph.neighbours(y).size()) {
         return Arc(x, y);
       } else {
