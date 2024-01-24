@@ -759,6 +759,13 @@ def fastGraph(msg:str):
   -------
     pyAgrum.DiGraph ou pyAgrum.UndiGraph ou pyAgrum.MixedGraph
   """
+  # regexp to recognize strings with only unsigned int, ";", "-" followed by ">" or ">"
+
+
+  import re
+  if not re.match(r"^[\d;\-><]+$", msg):
+    raise InvalidArgument("fastGraph only accepts strings with only unsigned int, ';', '->' and '<-'")
+
   is_arc="->" in msg or "<-" in msg
   is_edge="-" in msg
   if is_arc:
@@ -809,7 +816,8 @@ def fastGraph(msg:str):
     return deb,n1
 
   for l in msg.split(";"):
-    t=addArcsIn(m,l)
+    if len(l)>0:
+      t=addArcsIn(m,l)
 
   return m
 

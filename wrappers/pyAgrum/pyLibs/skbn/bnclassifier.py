@@ -132,7 +132,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     beta: float
         if you choose the Precision-Recall curve's threshold, the F-beta score is maximized. By default, beta=1
         to have the F1 score. A value inferior of 1 will give more weight to precision. A value superior of 1
-        will give more weight to recall. For example, beta = 0.5 makes precision twice as important as recall, 
+        will give more weight to recall. For example, beta = 0.5 makes precision twice as important as recall,
         while beta = 2 does the opposite.
 
             significant_digit:
@@ -143,7 +143,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
   def __init__(self, learningMethod="MIIC", prior=None, scoringType="BIC", constraints=None, priorWeight=1,
                possibleSkeleton=None, DirichletCsv=None, discretizationStrategy="quantile", discretizationNbBins=5,
                discretizationThreshold=25, usePR=False, beta=1, significant_digit=10):
-    """ 
+    """
     Parameters
     ----------
             learningMethod: str
@@ -401,7 +401,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     self.bn.add(var)
 
     for i in range(d):
-      var = self.discretizer.createVariable(
+      var = self.discretizer._createVariable(
         variableNames[i], X[:, i], y, possibleValuesY)
       self.bn.add(var)
 
