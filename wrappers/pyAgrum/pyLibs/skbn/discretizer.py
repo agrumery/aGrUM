@@ -180,58 +180,37 @@ class BNDiscretizer():
 
   def audit(self, X, y=None):
     """
-    Audits the passed values of X and y. Tells us which columns in X we think are already discrete and which need to
+    Audits the passed values of X and y. Guess which columns in X are already discrete and which need to
     be discretized, as well as the discretization algorithm that will be used to discretize them The parameters which
     are suggested will be used when creating the variables. To change this the user can manually set discretization
     parameters for each variable using the setDiscretizationParameters function.
 
     Parameters
     ----------
-      X: {array-like, pandas or polars dataframe} of shape (n_samples, n_features)
+      X: {array-like, pandas or polars dataframe} of shape (n_samples, n_features) or str (filename)
           training data
-      y: {array-like, pandas or polars dataframe} of shape (n_samples,)
+      y: {array-like, pandas or polars dataframe} of shape (n_samples,) or str (classname)
           Target values
     Returns
     -------
       Dict
         for each variable, the proposition of audit
      """
-    if hasattr(X, "to_pandas"):  # for instance, polars dataframe
+    if isinstance(X, str):
+      Xp = pandas.read_csv(X)
+    elif hasattr(X, "to_pandas"):  # for instance, polars dataframe
       Xp = X.to_pandas()
     else:
       Xp = X
 
-    if y is not None and hasattr(y, "to_pandas"):  # for instance, polars dataframe
+    if isinstance(y, str):
+      yp = Xp[y]
+    elif y is not None and hasattr(y, "to_pandas"):  # for instance, polars dataframe
       yp = y.to_pandas()
     else:
       yp = y
 
     return self._audit(Xp, yp)
-
-  def auditCSV(self, csvFile, classname=None):
-    """
-    Audits the passed csv file. Tells us which columns in X we think are already discrete and which need to
-    be discretized, as well as the discretization algorithm that will be used to discretize them The parameters which
-    are suggested will be used when creating the variables. To change this the user can manually set discretization
-    parameters for each variable using the setDiscretizationParameters function.
-
-    Parameters
-    ----------
-      csvFile: str
-          path to the csv file
-      classname: str
-          name of the column containing the class
-    Returns
-    -------
-      Dict
-        for each variable, the proposition of audit
-     """
-    df = pandas.read_csv(csvFile)
-    if classname not in None:
-      X = df.drop(classname, axis=1)
-      y = df[classname]
-
-    return self._audit(X, y)
 
   def _audit(self, X, y=None):
     """
@@ -311,7 +290,7 @@ class BNDiscretizer():
     return auditDict
 
   @staticmethod
-  def discretizationElbowMethodRotation(discretizationStrategy, X):
+  def _discretizationElbowMethodRotation(discretizationStrategy, X):
     """
     Calculates the sum of squared errors as a function of the number of clusters using the discretization strategy
     that is passed as a parameter. Returns the bins that are optimal for minimizing the variation and the number of
@@ -377,7 +356,7 @@ class BNDiscretizer():
     # we return the list of bin edges found using said optimal number of k
     return binEdgeMatrix[int(round(minimumVector[0]))]
 
-  def discretizationMDLP(self, X, y, possibleValuesX, possibleValuesY):
+  def _discretizationMDLP(self, X, y, possibleValuesX, possibleValuesY):
     """
     Uses the MDLP algorithm described in Fayyad, 1995 to discretize the values of x.
 
@@ -509,7 +488,7 @@ class BNDiscretizer():
     return binEdges
 
   @staticmethod
-  def discretizationCAIM(X, y, possibleValuesX, possibleValuesY):
+  def _discretizationCAIM(X, y, possibleValuesX, possibleValuesY):
     """
     Applies the CAIM algorithm to discretize the values of x
 
@@ -631,7 +610,7 @@ class BNDiscretizer():
     return binEdges
 
   @staticmethod
-  def discretizationNML(X, possibleValuesX, kMax=10, epsilon=None):
+  def _discretizationNML(X, possibleValuesX, kMax=10, epsilon=None):
     """
     Uses the discretization algorithm described in "MDL Histogram Density Estimator", Kontkaken and Myllymaki, 2007 to
     discretize.
@@ -733,7 +712,7 @@ class BNDiscretizer():
 
     return cutpoints
 
-  def createVariable(self, variableName, X, y=None, possibleValuesY=None):
+  def _createVariable(self, variableName, X, y=None, possibleValuesY=None):
     """
     Creates a variable for the column passed in as a parameter
 
@@ -835,8 +814,8 @@ class BNDiscretizer():
             "is a supervised discretization method. You should pass it as y.")
         if possibleValuesY is None:
           possibleValuesY = numpy.unique(y)
-        binEdges = self.discretizationCAIM(Xtransformed.reshape(n, 1), y.reshape(n, 1), numpy.unique(Xtransformed),
-                                           possibleValuesY)
+        binEdges = self._discretizationCAIM(Xtransformed.reshape(n, 1), y.reshape(n, 1), numpy.unique(Xtransformed),
+                                            possibleValuesY)
       elif self.discretizationParametersDictionary[variableName]['method'] == "MDLP":
         if y is None:
           raise ValueError(
@@ -844,14 +823,14 @@ class BNDiscretizer():
             "is a supervised discretization method. You should pass it as y.")
         if possibleValuesY is None:
           possibleValuesY = numpy.unique(y)
-        binEdges = self.discretizationMDLP(Xtransformed.reshape(n, 1), y.reshape(n, 1), numpy.unique(Xtransformed),
-                                           possibleValuesY)
+        binEdges = self._discretizationMDLP(Xtransformed.reshape(n, 1), y.reshape(n, 1), numpy.unique(Xtransformed),
+                                            possibleValuesY)
       elif self.discretizationParametersDictionary[variableName]['method'] == "NML":
-        binEdges = self.discretizationNML(Xtransformed.flatten(), numpy.unique(Xtransformed),
-                                          kMax=self.discretizationParametersDictionary[variableName]["param"])
+        binEdges = self._discretizationNML(Xtransformed.flatten(), numpy.unique(Xtransformed),
+                                           kMax=self.discretizationParametersDictionary[variableName]["param"])
       else:
         if self.discretizationParametersDictionary[variableName]['param'] == 'elbowMethod':
-          binEdges = self.discretizationElbowMethodRotation(
+          binEdges = self._discretizationElbowMethodRotation(
             self.discretizationParametersDictionary[variableName]['method'], Xtransformed.flatten())
         else:
           discre = skp.KBinsDiscretizer(self.discretizationParametersDictionary[variableName]['param'],
@@ -935,9 +914,9 @@ class BNDiscretizer():
 
     Parameters
     ----------
-        X: {array-like, sparse matrix, pandas or polars dataframe} of shape (n_samples, n_features)
+        X: {array-like, sparse matrix, pandas or polars dataframe} of shape (n_samples, n_features)) or str (filename)
             training data
-        y: array-like, pandas or polars dataframe of shape (n_samples,)
+        y: array-like, pandas or polars dataframe of shape (n_samples,) or str (classname)
             Target values
         possibleValuesY: ndarray
             An ndarray containing all the unique values of y
@@ -952,17 +931,21 @@ class BNDiscretizer():
     >>> discretizer=skbn.BNDiscretizer(defaultDiscretizationMethod='uniform',defaultParamDiscretizationMethod=7,discretizationThreshold=10)
     >>> learner=gum.BNLearner(data,discretizer.discretizedBN(data))
     """
-    if hasattr(X, "to_pandas"):
+    if isinstance(X, str):
+      Xp = pandas.read_csv(X)
+    elif hasattr(X, "to_pandas"):
       Xp = X.to_pandas()
     else:
       Xp = X
 
-    if y is not None and hasattr(y, "to_pandas"):
+    if isinstance(y, str):
+      yp = Xp[y]
+    elif y is not None and hasattr(y, "to_pandas"):
       yp = y.to_pandas()
     else:
       yp = y
 
     template = gum.BayesNet()
     for name in Xp:
-      template.add(self.createVariable(name, Xp[name], yp, possibleValuesY))
+      template.add(self._createVariable(name, Xp[name], yp, possibleValuesY))
     return template
