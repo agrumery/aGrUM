@@ -34,6 +34,18 @@
 
 namespace gum {
 
+  DiGraph DiGraph::completeGraph(int n) {
+    DiGraph g;
+    g.addNodes(n);
+
+    for (int j = 0; j < n; ++j) {
+      for (int k = j + 1; k < n; ++k) {
+        g.addArc(j, k);
+      }
+    }
+    return g;
+  }
+
   DiGraph::DiGraph(Size nodes_size,
                    bool nodes_resize_policy,
                    Size arcs_size,
@@ -42,8 +54,7 @@ namespace gum {
       ArcGraphPart(arcs_size, arcs_resize_policy){GUM_CONSTRUCTOR(DiGraph)}
 
       DiGraph::DiGraph(const DiGraph& g) :
-      NodeGraphPart(g),
-      ArcGraphPart(g){GUM_CONS_CPY(DiGraph)}
+      NodeGraphPart(g), ArcGraphPart(g){GUM_CONS_CPY(DiGraph)}
 
       DiGraph::~DiGraph(){GUM_DESTRUCTOR(DiGraph)}
 

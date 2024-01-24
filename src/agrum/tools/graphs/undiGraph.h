@@ -129,6 +129,13 @@ namespace gum {
     /// destructor
     virtual ~UndiGraph();
 
+    /**
+     * @brief create a complete UndiGraph with n nodes
+     * @param n int
+     * @return  the complete UndiGraph
+     */
+    static UndiGraph completeGraph(int n);
+
     /// @}
 
     // ############################################################################

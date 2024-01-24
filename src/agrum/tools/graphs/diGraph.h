@@ -131,6 +131,13 @@ namespace gum {
     /// destructor
     virtual ~DiGraph();
 
+    /**
+     * @brief Build a complete DiGraph with n nodes
+     * @param int n
+     * @return the complete DiGraph
+     */
+    static DiGraph completeGraph(int n);
+
     /// @}
 
     // ############################################################################

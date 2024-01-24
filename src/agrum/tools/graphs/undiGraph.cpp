@@ -37,6 +37,18 @@
 
 namespace gum {
 
+  UndiGraph UndiGraph::completeGraph(int n) {
+    UndiGraph g;
+    g.addNodes(n);
+
+    for (int j = 0; j < n; ++j) {
+      for (int k = j + 1; k < n; ++k) {
+        g.addEdge(j, k);
+      }
+    }
+    return g;
+  }
+
   UndiGraph::UndiGraph(Size nodes_size,
                        bool nodes_resize_policy,
                        Size edges_size,
