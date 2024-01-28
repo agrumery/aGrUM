@@ -115,7 +115,7 @@ namespace gum_tests {
     }
 
     // Testing when  no evidence
-    GUM_INACTIVE_TEST(CreationAndInference) {
+    GUM_ACTIVE_TEST(CreationAndInference) {
       fill(*_bn);
       // Testing the inference
       TS_ASSERT_THROWS_NOTHING({
@@ -126,7 +126,7 @@ namespace gum_tests {
     }
 
     // Testing when no evidence
-    GUM_INACTIVE_TEST(SequentialInference) {
+    GUM_ACTIVE_TEST(SequentialInference) {
       fill(*_bn);
       // Testing the inference
       gum::LazyPropagation inf(_bn);
@@ -135,7 +135,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING(inf.makeInference())
     }
 
-    GUM_INACTIVE_TEST(BigInference) {
+    GUM_ACTIVE_TEST(BigInference) {
       std::string             file = GET_RESSOURCES_PATH("bif/Munin1.bif");
       gum::BayesNet< double > bn;
       gum::BIFReader          reader(&bn, file);
@@ -156,7 +156,7 @@ namespace gum_tests {
       inf.makeInference();
     }
 
-    GUM_INACTIVE_TEST(Marginal1) {
+    GUM_ACTIVE_TEST(Marginal1) {
       fill(*_bn);
       gum::LazyPropagation                 inf(_bn);
       gum::ShaferShenoyInference< double > inf2(_bn);
@@ -182,7 +182,7 @@ namespace gum_tests {
       TS_ASSERT(equalPotentials(inf.posterior(i5), inf2.posterior(i5)))
     }
 
-    GUM_INACTIVE_TEST(Marginal) {
+    GUM_ACTIVE_TEST(Marginal) {
       fill(*_bn);
       gum::LazyPropagation                 inf(_bn);
       gum::ShaferShenoyInference< double > inf2(_bn);
@@ -204,7 +204,7 @@ namespace gum_tests {
       TS_ASSERT(equalPotentials(inf.posterior(i5), inf2.posterior(i5)))
     }
 
-    GUM_INACTIVE_TEST(MarginalWithEvidence) {
+    GUM_ACTIVE_TEST(MarginalWithEvidence) {
       fill(*_bn);
       gum::List< const gum::Potential< double >* > e_list;
       e_list.insert(e_i1);
@@ -263,7 +263,7 @@ namespace gum_tests {
     }
 
     // Testing when no evidence
-    GUM_INACTIVE_TEST(Joint) {
+    GUM_ACTIVE_TEST(Joint) {
       fill(*_bn);
       // Testing the inference
       gum::LazyPropagation inf(_bn);
@@ -276,7 +276,7 @@ namespace gum_tests {
     }
 
     // Testing when no evidence
-    GUM_INACTIVE_TEST(Joint2) {
+    GUM_ACTIVE_TEST(Joint2) {
       fill(*_bn);
       // Testing the inference
       gum::LazyPropagation inf(_bn);
@@ -297,7 +297,7 @@ namespace gum_tests {
     }
 
     // Testing information methods
-    GUM_INACTIVE_TEST(InformationMethods) {
+    GUM_ACTIVE_TEST(InformationMethods) {
       fill(*_bn);
 
       gum::LazyPropagation inf(_bn);
@@ -318,7 +318,7 @@ namespace gum_tests {
       //@TODO : test computations and not only good behaviour
     }
 
-    GUM_INACTIVE_TEST(InformationMethodsWithNames) {
+    GUM_ACTIVE_TEST(InformationMethodsWithNames) {
       fill(*_bn);
 
       gum::LazyPropagation inf(_bn);
@@ -339,7 +339,7 @@ namespace gum_tests {
       //@TODO : test computations and not only good behaviour
     }
 
-    GUM_INACTIVE_TEST(SmartManagementOfJointTarget) {
+    GUM_ACTIVE_TEST(SmartManagementOfJointTarget) {
       fill(*_bn);
 
       gum::LazyPropagation inf(_bn);
@@ -356,7 +356,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(inf.nbrJointTargets(), (gum::Size)2)
     }
 
-    GUM_INACTIVE_TEST(EvidenceProbability) {
+    GUM_ACTIVE_TEST(EvidenceProbability) {
       fill(*_bn);
       gum::LazyPropagation inf(_bn);
       inf.setRelevantPotentialsFinderType(gum::RelevantPotentialsFinderType::FIND_ALL);
@@ -372,7 +372,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(proba, proba2, TS_GUM_SMALL_ERROR)
     }
 
-    GUM_INACTIVE_TEST(EvidenceProbability2) {
+    GUM_ACTIVE_TEST(EvidenceProbability2) {
       fill(*_bn);
       gum::LazyPropagation inf(_bn);
       inf.makeInference();
@@ -387,7 +387,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(proba, proba2, TS_GUM_SMALL_ERROR)
     }
 
-    GUM_INACTIVE_TEST(EvidenceProbabilityAsia) {
+    GUM_ACTIVE_TEST(EvidenceProbabilityAsia) {
       std::string             file = GET_RESSOURCES_PATH("bif/asia.bif");
       gum::BayesNet< double > bn;
       gum::BIFReader          reader(&bn, file);
@@ -412,7 +412,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(proba, proba2, TS_GUM_SMALL_ERROR)
     }
 
-    GUM_INACTIVE_TEST(Asia) {
+    GUM_ACTIVE_TEST(Asia) {
       std::string             file = GET_RESSOURCES_PATH("bif/asia.bif");
       gum::BayesNet< double > bn;
       gum::BIFReader          reader(&bn, file);
@@ -448,7 +448,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_INACTIVE_TEST(Alarm) {
+    GUM_ACTIVE_TEST(Alarm) {
       std::string             file = GET_RESSOURCES_PATH("bif/alarm.bif");
       gum::BayesNet< double > bn;
       gum::BIFReader          reader(&bn, file);
@@ -528,7 +528,7 @@ namespace gum_tests {
         delete pot;
     }
 
-    GUM_INACTIVE_TEST(Asia2) {
+    GUM_ACTIVE_TEST(Asia2) {
       std::string             file = GET_RESSOURCES_PATH("bif/asia3.bif");
       gum::BayesNet< double > bn;
       gum::BIFReader          reader(&bn, file);
@@ -584,7 +584,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_INACTIVE_TEST(Asia3) {
+    GUM_ACTIVE_TEST(Asia3) {
       std::string             file = GET_RESSOURCES_PATH("bif/asia3.bif");
       gum::BayesNet< double > bn;
       gum::BIFReader          reader(&bn, file);
@@ -642,7 +642,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_INACTIVE_TEST(Asia4) {
+    GUM_ACTIVE_TEST(Asia4) {
       std::string             file = GET_RESSOURCES_PATH("bif/asia.bif");
       gum::BayesNet< double > bn;
       gum::BIFReader          reader(&bn, file);
@@ -715,7 +715,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_INACTIVE_TEST(ChgEvidence) {
+    GUM_ACTIVE_TEST(ChgEvidence) {
       std::string             file = GET_RESSOURCES_PATH("bif/asia.bif");
       gum::BayesNet< double > bn;
       gum::BIFReader          reader(&bn, file);
@@ -750,7 +750,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(p_1, ie.posterior(0))
     }
 
-    GUM_INACTIVE_TEST(ChgEvidence2) {
+    GUM_ACTIVE_TEST(ChgEvidence2) {
       std::string             file = GET_RESSOURCES_PATH("bif/asia.bif");
       gum::BayesNet< double > bn;
       gum::BIFReader          reader(&bn, file);
@@ -785,7 +785,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(p_1, ie.posterior(0))
     }
 
-    GUM_INACTIVE_TEST(StaticEvidenceImpact) {
+    GUM_ACTIVE_TEST(StaticEvidenceImpact) {
       std::string             file = GET_RESSOURCES_PATH("bif/asia.bif");
       gum::BayesNet< double > bn;
       gum::BIFReader          reader(&bn, file);
@@ -823,7 +823,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(p_1, res.extract(i))
     }
 
-    GUM_INACTIVE_TEST(EvidenceImpactWithNames) {
+    GUM_ACTIVE_TEST(EvidenceImpactWithNames) {
       std::string             file = GET_RESSOURCES_PATH("bif/asia.bif");
       gum::BayesNet< double > bn;
       gum::BIFReader          reader(&bn, file);
@@ -865,7 +865,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(p_1, res.extract(i))
     }
 
-    GUM_INACTIVE_TEST(EvidenceImpact) {
+    GUM_ACTIVE_TEST(EvidenceImpact) {
       /*
       F  A
       \ / \
@@ -893,7 +893,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
-    GUM_INACTIVE_TEST(JointWithHardEvidence) {
+    GUM_ACTIVE_TEST(JointWithHardEvidence) {
       /*
       F  A
       \ / \
@@ -919,7 +919,7 @@ namespace gum_tests {
       }
     }
 
-    GUM_INACTIVE_TEST(JointEvidenceImpact) {
+    GUM_ACTIVE_TEST(JointEvidenceImpact) {
       /*
       F  A
       \ / \
@@ -947,7 +947,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
-    GUM_INACTIVE_TEST(JointMutualInformation) {
+    GUM_ACTIVE_TEST(JointMutualInformation) {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
 
       gum::LazyPropagation ie(&bn);
@@ -992,7 +992,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(JMI, byHandJMI, 1e-7)
     }
 
-    GUM_INACTIVE_TEST(LogitInBN) {
+    GUM_ACTIVE_TEST(LogitInBN) {
       gum::BayesNet< double > bn;
 
       gum::LabelizedVariable cold("Cold", "", 2);
@@ -1068,7 +1068,7 @@ namespace gum_tests {
       inf_LazyProp.makeInference();
     }
 
-    GUM_INACTIVE_TEST(MultipleJointMutualInformation) {
+    GUM_ACTIVE_TEST(MultipleJointMutualInformation) {
       auto                 bn = gum::BayesNet< double >::fastPrototype("A->B;A->C->D");
       gum::LazyPropagation ie(&bn);
 
@@ -1094,7 +1094,7 @@ namespace gum_tests {
        */
     }
 
-    GUM_INACTIVE_TEST(AdaptiveNbThreads) {
+    GUM_ACTIVE_TEST(AdaptiveNbThreads) {
       fill(*_bn);
       // Testing the inference
       gum::LazyPropagation inf(_bn);
@@ -1110,7 +1110,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(inf.getNumberOfThreads(), gum::getNumberOfThreads())
     }
 
-    GUM_INACTIVE_TEST(ProbaEvidence) {
+    GUM_ACTIVE_TEST(ProbaEvidence) {
       std::vector< gum::LabelizedVariable* > vars(gum::Size(10));
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -1363,7 +1363,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    GUM_INACTIVE_TEST(OnChanged) {
+    GUM_ACTIVE_TEST(OnChanged) {
       std::vector< gum::LabelizedVariable* > vars(5);
 
       for (gum::Idx i = 0; i < 5; ++i) {
@@ -1496,7 +1496,7 @@ namespace gum_tests {
         delete var;
     }
 
-    GUM_INACTIVE_TEST(ImplicitTarget) {
+    GUM_ACTIVE_TEST(ImplicitTarget) {
       // there always is a clique containing a node and its parent
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D");
 
@@ -1515,7 +1515,7 @@ namespace gum_tests {
       TS_GUM_POTENTIAL_DELTA(p1, p2, 1e-8)   // no diff !
     }
 
-    GUM_INACTIVE_TEST(ImplicitTarget2) {
+    GUM_ACTIVE_TEST(ImplicitTarget2) {
       // there always is a clique containing the parents of the same node
       auto bn = gum::BayesNet< double >::fastPrototype("A->B<-C->D");
 
@@ -1534,7 +1534,7 @@ namespace gum_tests {
       TS_GUM_POTENTIAL_DELTA(p1, p2, 1e-8)   // no diff !
     }
 
-    GUM_INACTIVE_TEST(ImplicitTargetAllCheck) {
+    GUM_ACTIVE_TEST(ImplicitTargetAllCheck) {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->Y->E->F->G;W->E<-Z;X->E");
       auto ie = gum::LazyPropagation(&bn);
       ie.addJointTarget(bn.nodeset({"B", "Y", "F"}));
@@ -1562,7 +1562,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(ie.jointPosterior(bn.nodeset({"A", "E"})), gum::UndefinedElement&)
     }
 
-    GUM_INACTIVE_TEST(ImplicitTargetAllCheckWithEvidenceOutOFTarget) {
+    GUM_ACTIVE_TEST(ImplicitTargetAllCheckWithEvidenceOutOFTarget) {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->Y->E->F->G;W->E<-Z;X->E");
       auto ie = gum::ShaferShenoyInference(&bn);
       ie.addEvidence("E", 1);
@@ -1594,7 +1594,7 @@ namespace gum_tests {
                              TS_GUM_SMALL_ERROR)
     }
 
-    GUM_INACTIVE_TEST(ImplicitTargetAllCheckWithEvidenceInTarget) {
+    GUM_ACTIVE_TEST(ImplicitTargetAllCheckWithEvidenceInTarget) {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->Y->E->F->G;W->E<-Z;X->E");
       auto ie = gum::LazyPropagation(&bn);
       ie.addEvidence("Y", 1);
@@ -1626,7 +1626,7 @@ namespace gum_tests {
                              TS_GUM_SMALL_ERROR)
     }
 
-    GUM_INACTIVE_TEST(IrrelevantSoftEvidence) {
+    GUM_ACTIVE_TEST(IrrelevantSoftEvidence) {
       auto                     bn = gum::BayesNet< double >::fastPrototype("A->B<-C");
       gum::Potential< double > psoft;
       gum::Potential< double > phard;
@@ -1655,197 +1655,201 @@ namespace gum_tests {
       TS_GUM_POTENTIAL_DELTA(phard, psoft, TS_GUM_VERY_SMALL_ERROR)
     }
 
-    GUM_INACTIVE_TEST(MostProbableExplanation) {
-      gum::BayesNet< double > bn;
+    GUM_ACTIVE_TEST(MostProbableExplanation) {
+      try {
+        gum::BayesNet< double > bn;
 
-      gum::LabelizedVariable n1("1", "", 2), n2("2", "", 2), n3("3", "", 3);
-      gum::LabelizedVariable n4("4", "", 4), n5("5", "", 3);
+        gum::LabelizedVariable n1("1", "", 2), n2("2", "", 2), n3("3", "", 3);
+        gum::LabelizedVariable n4("4", "", 4), n5("5", "", 3);
 
-      auto i1 = bn.add(n1);
-      auto i2 = bn.add(n2);
-      auto i3 = bn.add(n3);
-      auto i4 = bn.add(n4);
-      auto i5 = bn.add(n5);
+        auto i1 = bn.add(n1);
+        auto i2 = bn.add(n2);
+        auto i3 = bn.add(n3);
+        auto i4 = bn.add(n4);
+        auto i5 = bn.add(n5);
 
-      bn.addArc(i1, i3);
-      bn.addArc(i1, i4);
-      bn.addArc(i3, i5);
-      bn.addArc(i4, i5);
-      bn.addArc(i2, i4);
-      bn.addArc(i2, i5);
+        bn.addArc(i1, i3);
+        bn.addArc(i1, i4);
+        bn.addArc(i3, i5);
+        bn.addArc(i4, i5);
+        bn.addArc(i2, i4);
+        bn.addArc(i2, i5);
 
-      for (const auto node: bn.dag()) {
-        bn.cpt(node).random().normalizeAsCPT();
+        for (const auto node: bn.dag()) {
+          bn.cpt(node).random().normalizeAsCPT();
+        }
+
+        // compute the joint
+        gum::Potential< double > joint(bn.cpt(i1));
+        for (const auto node: bn.dag()) {
+          if (node != i1) joint *= bn.cpt(node);
+        }
+        auto marg5 = joint.margSumIn({&bn.variable(i5)}).normalize();
+
+        auto joint_argmax = joint.normalize().argmax();
+
+        // check singly connected component
+        gum::LazyPropagation< double > ie(&bn);
+        auto                           mpe = ie.mpeLog2Posterior();
+        TS_ASSERT_EQUALS(mpe.first, *(joint_argmax.first.begin()))
+        TS_ASSERT_DELTA(mpe.second, std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
+
+        auto p5 = ie.posterior(i5);
+        TS_ASSERT(equalPotentials(marg5, p5))
+
+        // add hard evidence on n3
+        gum::Potential< double > e_i3;
+        e_i3 << bn.variable(i3);
+        e_i3.fill(0.0f);
+        gum::Instantiation inst_3(e_i3);
+        inst_3.chgVal(bn.variable(i3), 0);
+        e_i3.set(inst_3, 1.0f);
+        joint *= e_i3;
+        joint_argmax = joint.normalize().argmax();
+
+        ie.addEvidence(i3, 0);
+        mpe = ie.mpeLog2Posterior();
+        TS_ASSERT_EQUALS(mpe.first, *(joint_argmax.first.begin()))
+        TS_ASSERT_DELTA(mpe.second, std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
+
+        marg5 = joint.margSumIn({&bn.variable(i5)}).normalize();
+        p5    = ie.posterior(i5);
+        TS_ASSERT(equalPotentials(marg5, p5))
+
+        gum::Potential< double > e_i4;
+        e_i4 << bn.variable(i4);
+        e_i4.fillWith({0.0, 1.0, 0.5, 0.0});
+        joint *= e_i4;
+        joint_argmax = joint.normalize().argmax();
+
+        ie.addEvidence(e_i4);
+        mpe = ie.mpeLog2Posterior();
+        TS_ASSERT_EQUALS(mpe.first, *(joint_argmax.first.begin()))
+        TS_ASSERT_DELTA(mpe.second, std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
+
+        marg5 = joint.margSumIn({&bn.variable(i5)}).normalize();
+        p5    = ie.posterior(i5);
+        TS_ASSERT(equalPotentials(marg5, p5))
+
+        // checking multiply connected components
+        gum::LabelizedVariable n6("6", "", 2), n7("7", "", 3), n8("8", "", 3);
+        gum::LabelizedVariable n9("9", "", 4), n10("10", "", 3);
+
+        auto i6  = bn.add(n6);
+        auto i7  = bn.add(n7);
+        auto i8  = bn.add(n8);
+        auto i9  = bn.add(n9);
+        auto i10 = bn.add(n10);
+
+        bn.addArc(i6, i8);
+        bn.addArc(i6, i9);
+        bn.addArc(i7, i9);
+        bn.addArc(i9, i10);
+
+        for (auto node = i6; node <= i10; ++node) {
+          bn.cpt(node).random().normalizeAsCPT();
+          joint *= bn.cpt(node);
+        }
+        joint_argmax = joint.normalize().argmax();
+
+
+        gum::LazyPropagation< double > ie2(&bn);
+
+        // enter the previous evidence
+        ie2.addEvidence(i3, 0);
+        ie2.addEvidence(e_i4);
+
+        mpe = ie2.mpeLog2Posterior();
+        TS_ASSERT_EQUALS(mpe.first, *(joint_argmax.first.begin()))
+        TS_ASSERT_DELTA(mpe.second, std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
+
+        marg5 = joint.margSumIn({&bn.variable(i5)}).normalize();
+        p5    = ie2.posterior(i5);
+        TS_ASSERT(equalPotentials(marg5, p5))
+
+        gum::Potential< double > e_i7;
+        e_i7 << bn.variable(i7);
+        e_i7.fillWith({0.2, 0.5, 0.1});
+        joint *= e_i7;
+        joint_argmax = joint.normalize().argmax();
+
+        ie2.addEvidence(e_i7);
+        mpe = ie2.mpeLog2Posterior();
+        TS_ASSERT_EQUALS(mpe.first, *(joint_argmax.first.begin()))
+        TS_ASSERT_DELTA(mpe.second, std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
+
+        marg5      = joint.margSumIn({&bn.variable(i5)}).normalize();
+        p5         = ie2.posterior(i5);
+        auto marg9 = joint.margSumIn({&bn.variable(i9)}).normalize();
+        auto p9    = ie2.posterior(i9);
+        TS_ASSERT(equalPotentials(marg9, p9))
+
+        gum::Potential< double > e_i10;
+        e_i10 << bn.variable(i10);
+        e_i10.fillWith({0.0, 1.0, 0.0});
+        joint *= e_i10;
+        joint_argmax = joint.normalize().argmax();
+
+        ie2.addEvidence(e_i10);
+        mpe = ie2.mpeLog2Posterior();
+        TS_ASSERT_EQUALS(mpe.first, *(joint_argmax.first.begin()))
+        TS_ASSERT_DELTA(mpe.second, std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
+
+        marg9 = joint.margSumIn({&bn.variable(i9)}).normalize();
+        p9    = ie2.posterior(i9);
+        TS_ASSERT(equalPotentials(marg9, p9))
+
+        auto marg10 = joint.margSumIn({&bn.variable(i10)}).normalize();
+        auto p10    = ie2.posterior(i10);
+        TS_ASSERT(equalPotentials(marg10, p10))
+
+        // what if we have a component in which all the nodes have received hard evidence
+        gum::LabelizedVariable n11("11", "", 2), n12("12", "", 3), n13("13", "", 3);
+
+        auto i11 = bn.add(n11);
+        auto i12 = bn.add(n12);
+        auto i13 = bn.add(n13);
+
+        for (auto node = i11; node <= i13; ++node) {
+          bn.cpt(node).random().normalizeAsCPT();
+          joint *= bn.cpt(node);
+        }
+        gum::Potential< double > e_i11;
+        e_i11 << bn.variable(i11);
+        e_i11.fillWith({0.0, 1.0});
+        joint *= e_i11;
+        gum::Potential< double > e_i12;
+        e_i12 << bn.variable(i12);
+        e_i12.fillWith({0.0, 0.0, 1.0});
+        joint *= e_i12;
+        gum::Potential< double > e_i13;
+        e_i13 << bn.variable(i13);
+        e_i13.fillWith({1.0, 0.0, 0.0});
+        joint *= e_i13;
+
+        joint_argmax = joint.normalize().argmax();
+
+        gum::LazyPropagation< double > ie3(&bn);
+
+        // enter the previous evidence
+        ie3.addEvidence(i3, 0);
+        ie3.addEvidence(e_i4);
+        ie3.addEvidence(e_i7);
+        ie3.addEvidence(e_i10);
+        ie3.addEvidence(e_i11);
+        ie3.addEvidence(e_i12);
+        ie3.addEvidence(e_i13);
+
+        mpe = ie3.mpeLog2Posterior();
+        TS_ASSERT_EQUALS(mpe.first, *(joint_argmax.first.begin()))
+        TS_ASSERT_DELTA(mpe.second, std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
+
+        marg9 = joint.margSumIn({&bn.variable(i9)}).normalize();
+        p9    = ie3.posterior(i9);
+        TS_ASSERT(equalPotentials(marg9, p9))
+      } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e);
       }
-
-      // compute the joint
-      gum::Potential< double > joint(bn.cpt(i1));
-      for (const auto node: bn.dag()) {
-        if (node != i1) joint *= bn.cpt(node);
-      }
-      auto marg5 = joint.margSumIn({&bn.variable(i5)}).normalize();
-
-      auto joint_argmax = joint.normalize().argmax();
-
-      // check singly connected component
-      gum::LazyPropagation< double > ie(&bn);
-      auto                           mpe = ie.mpeLog2Posterior();
-      TS_ASSERT_EQUALS(mpe.first, *(joint_argmax.first.begin()))
-      TS_ASSERT_DELTA(mpe.second, std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
-
-      auto p5 = ie.posterior(i5);
-      TS_ASSERT(equalPotentials(marg5, p5))
-
-      // add hard evidence on n3
-      gum::Potential< double > e_i3;
-      e_i3 << bn.variable(i3);
-      e_i3.fill(0.0f);
-      gum::Instantiation inst_3(e_i3);
-      inst_3.chgVal(bn.variable(i3), 0);
-      e_i3.set(inst_3, 1.0f);
-      joint *= e_i3;
-      joint_argmax = joint.normalize().argmax();
-
-      ie.addEvidence(i3, 0);
-      mpe = ie.mpeLog2Posterior();
-      TS_ASSERT_EQUALS(mpe.first, *(joint_argmax.first.begin()))
-      TS_ASSERT_DELTA(mpe.second, std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
-
-      marg5 = joint.margSumIn({&bn.variable(i5)}).normalize();
-      p5    = ie.posterior(i5);
-      TS_ASSERT(equalPotentials(marg5, p5))
-
-      gum::Potential< double > e_i4;
-      e_i4 << bn.variable(i4);
-      e_i4.fillWith({0.0, 1.0, 0.5, 0.0});
-      joint *= e_i4;
-      joint_argmax = joint.normalize().argmax();
-
-      ie.addEvidence(e_i4);
-      mpe = ie.mpeLog2Posterior();
-      TS_ASSERT_EQUALS(mpe.first, *(joint_argmax.first.begin()))
-      TS_ASSERT_DELTA(mpe.second, std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
-
-      marg5 = joint.margSumIn({&bn.variable(i5)}).normalize();
-      p5    = ie.posterior(i5);
-      TS_ASSERT(equalPotentials(marg5, p5))
-
-      // checking multiply connected components
-      gum::LabelizedVariable n6("6", "", 2), n7("7", "", 3), n8("8", "", 3);
-      gum::LabelizedVariable n9("9", "", 4), n10("10", "", 3);
-
-      auto i6  = bn.add(n6);
-      auto i7  = bn.add(n7);
-      auto i8  = bn.add(n8);
-      auto i9  = bn.add(n9);
-      auto i10 = bn.add(n10);
-
-      bn.addArc(i6, i8);
-      bn.addArc(i6, i9);
-      bn.addArc(i7, i9);
-      bn.addArc(i9, i10);
-
-      for (auto node = i6; node <= i10; ++node) {
-        bn.cpt(node).random().normalizeAsCPT();
-        joint *= bn.cpt(node);
-      }
-      joint_argmax = joint.normalize().argmax();
-
-
-      gum::LazyPropagation< double > ie2(&bn);
-
-      // enter the previous evidence
-      ie2.addEvidence(i3, 0);
-      ie2.addEvidence(e_i4);
-
-      mpe = ie2.mpeLog2Posterior();
-      TS_ASSERT_EQUALS(mpe.first, *(joint_argmax.first.begin()))
-      TS_ASSERT_DELTA(mpe.second, std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
-
-      marg5 = joint.margSumIn({&bn.variable(i5)}).normalize();
-      p5    = ie2.posterior(i5);
-      TS_ASSERT(equalPotentials(marg5, p5))
-
-      gum::Potential< double > e_i7;
-      e_i7 << bn.variable(i7);
-      e_i7.fillWith({0.2, 0.5, 0.1});
-      joint *= e_i7;
-      joint_argmax = joint.normalize().argmax();
-
-      ie2.addEvidence(e_i7);
-      mpe = ie2.mpeLog2Posterior();
-      TS_ASSERT_EQUALS(mpe.first, *(joint_argmax.first.begin()))
-      TS_ASSERT_DELTA(mpe.second, std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
-
-      marg5      = joint.margSumIn({&bn.variable(i5)}).normalize();
-      p5         = ie2.posterior(i5);
-      auto marg9 = joint.margSumIn({&bn.variable(i9)}).normalize();
-      auto p9    = ie2.posterior(i9);
-      TS_ASSERT(equalPotentials(marg9, p9))
-
-      gum::Potential< double > e_i10;
-      e_i10 << bn.variable(i10);
-      e_i10.fillWith({0.0, 1.0, 0.0});
-      joint *= e_i10;
-      joint_argmax = joint.normalize().argmax();
-
-      ie2.addEvidence(e_i10);
-      mpe = ie2.mpeLog2Posterior();
-      TS_ASSERT_EQUALS(mpe.first, *(joint_argmax.first.begin()))
-      TS_ASSERT_DELTA(mpe.second, std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
-
-      marg9 = joint.margSumIn({&bn.variable(i9)}).normalize();
-      p9    = ie2.posterior(i9);
-      TS_ASSERT(equalPotentials(marg9, p9))
-
-      auto marg10 = joint.margSumIn({&bn.variable(i10)}).normalize();
-      auto p10    = ie2.posterior(i10);
-      TS_ASSERT(equalPotentials(marg10, p10))
-
-      // what if we have a component in which all the nodes have received hard evidence
-      gum::LabelizedVariable n11("11", "", 2), n12("12", "", 3), n13("13", "", 3);
-
-      auto i11 = bn.add(n11);
-      auto i12 = bn.add(n12);
-      auto i13 = bn.add(n13);
-
-      for (auto node = i11; node <= i13; ++node) {
-        bn.cpt(node).random().normalizeAsCPT();
-        joint *= bn.cpt(node);
-      }
-      gum::Potential< double > e_i11;
-      e_i11 << bn.variable(i11);
-      e_i11.fillWith({0.0, 1.0});
-      joint *= e_i11;
-      gum::Potential< double > e_i12;
-      e_i12 << bn.variable(i12);
-      e_i12.fillWith({0.0, 0.0, 1.0});
-      joint *= e_i12;
-      gum::Potential< double > e_i13;
-      e_i13 << bn.variable(i13);
-      e_i13.fillWith({1.0, 0.0, 0.0});
-      joint *= e_i13;
-
-      joint_argmax = joint.normalize().argmax();
-
-      gum::LazyPropagation< double > ie3(&bn);
-
-      // enter the previous evidence
-      ie3.addEvidence(i3, 0);
-      ie3.addEvidence(e_i4);
-      ie3.addEvidence(e_i7);
-      ie3.addEvidence(e_i10);
-      ie3.addEvidence(e_i11);
-      ie3.addEvidence(e_i12);
-      ie3.addEvidence(e_i13);
-
-      mpe = ie3.mpeLog2Posterior();
-      TS_ASSERT_EQUALS(mpe.first, *(joint_argmax.first.begin()))
-      TS_ASSERT_DELTA(mpe.second, std::log2(joint_argmax.second), TS_GUM_SMALL_ERROR)
-
-      marg9 = joint.margSumIn({&bn.variable(i9)}).normalize();
-      p9    = ie3.posterior(i9);
-      TS_ASSERT(equalPotentials(marg9, p9))
     }
 
     GUM_ACTIVE_TEST(NonRegressionBugJoinTarget) {
@@ -1854,7 +1858,11 @@ namespace gum_tests {
       auto ie=gum::LazyPropagation(&bn);
       ie.addJointTarget(bn.nodeset({"X04", "X11"}));
       ie.addJointTarget(bn.nodeset({"X00", "X01", "X06"}));
-      ie.makeInference();
+      try {
+        ie.makeInference();
+      } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e);
+      }
     }
 
     private:

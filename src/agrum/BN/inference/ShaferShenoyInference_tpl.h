@@ -1787,11 +1787,28 @@ namespace gum {
     // use d-separation analysis to check which potentials shall be combined
     // _findRelevantPotentialsXX_(pot_list, kept_vars);
 
+    // if pot list is empty, do nothing. This may happen when there are many barren variables
+    if (pot_list.empty()) {
+      std::cout << "yeepee empty" << std::endl;
+      Potential< GUM_SCALAR > empty_pot;
+      auto res_pot = new ScheduleMultiDim< Potential< GUM_SCALAR > >(std::move(empty_pot));
+      return res_pot;
+    }
+
     // remove the potentials corresponding to barren variables if we want
     // to exploit barren nodes
     _PotentialSet_ barren_projected_potentials;
     if (_barren_nodes_type_ == FindBarrenNodesType::FIND_BARREN_NODES) {
       barren_projected_potentials = _removeBarrenVariables_(xpot_list, del_vars);
+
+      // if there remains no potential after the removal of the barren variables,
+      // the resulting set of Schedule Multidims is empty. So just return it
+      if (barren_projected_potentials.empty()) {
+        std::cout << "==============================>>>" << std::endl;
+        Potential< GUM_SCALAR > empty_pot;
+        auto res_pot = new ScheduleMultiDim< Potential< GUM_SCALAR > >(std::move(empty_pot));
+        return res_pot;
+      }
     }
 
     // create a combine and project operator that will perform the
