@@ -162,17 +162,32 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(ToFastMethod) {
       std::string s;
       s = "A{On|Off|Defun}";
+      GUM_TRACE_VAR(s);
+      GUM_TRACE_VAR(gum::fastVariable< double >(s)->stype());
       TS_ASSERT_EQUALS(s, (gum::fastVariable< double >(s)->toFast()));   // labelized
-      s = "A{0|1.15|3.14}";
+      s = "A{0|1.15|2.3}";
+      GUM_TRACE_VAR(s);
+      GUM_TRACE_VAR(gum::fastVariable< double >(s)->stype());
       TS_ASSERT_EQUALS(s, (gum::fastVariable< double >(s)->toFast()));   // NumericalDiscrete
-      s = "A{1|3|9}";
+      TS_ASSERT_EQUALS(s, (gum::fastVariable< double >("A{0:2.3:3}")->toFast()));   // NumericalDiscrete
+      s = "A{1|3|5}";
+      GUM_TRACE_VAR(s);
+      GUM_TRACE_VAR(gum::fastVariable< double >(s)->stype());
       TS_ASSERT_EQUALS(s, (gum::fastVariable< double >(s)->toFast()));   // Integer
+      TS_ASSERT_EQUALS(s, (gum::fastVariable< double >("A{1:5:3")->toFast()));   // Integer
       s = "A[3,5]";
+      GUM_TRACE_VAR(s);
+      GUM_TRACE_VAR(gum::fastVariable< double >(s)->stype());
       TS_ASSERT_EQUALS(s, (gum::fastVariable< double >(s)->toFast()));   // Range
       s = "A[5]";
-      TS_ASSERT_EQUALS(s, (gum::fastVariable< double >(s)->toFast()));   // RAnge
+      GUM_TRACE_VAR(s);
+      GUM_TRACE_VAR(gum::fastVariable< double >(s)->stype());
+      TS_ASSERT_EQUALS(s, (gum::fastVariable< double >(s)->toFast()));   // Range
       s = "A[1,2,3,4,5,6]";
+      GUM_TRACE_VAR(s);
+      GUM_TRACE_VAR(gum::fastVariable< double >(s)->stype());
       TS_ASSERT_EQUALS(s, (gum::fastVariable< double >(s)->toFast()));   // Discretized
+      TS_ASSERT_EQUALS(s, (gum::fastVariable< double >("A[1:6:5]")->toFast()));   // Discretized
     }
 
     GUM_ACTIVE_TEST(FastNumericalWithoutInfinity) {
@@ -201,6 +216,10 @@ namespace gum_tests {
                 != *gum::fastVariable< double >("A{Off|On|Defun}"));
       TS_ASSERT(*gum::fastVariable< double >("A{On|Off|Defun}")
                 != *gum::fastVariable< double >("A{On|Off|beurk}"));
+    }
+
+    GUM_ACTIVE_TEST(ClosestIndex) {
+
     }
   };
 }   // namespace gum_tests

@@ -54,8 +54,7 @@ namespace gum {
       ArcGraphPart(arcs_size, arcs_resize_policy){GUM_CONSTRUCTOR(DiGraph)}
 
       DiGraph::DiGraph(const DiGraph& g) :
-      NodeGraphPart(g),
-      ArcGraphPart(g){GUM_CONS_CPY(DiGraph)}
+      NodeGraphPart(g), ArcGraphPart(g){GUM_CONS_CPY(DiGraph)}
 
       DiGraph::~DiGraph(){GUM_DESTRUCTOR(DiGraph)}
 

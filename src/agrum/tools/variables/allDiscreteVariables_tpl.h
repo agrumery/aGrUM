@@ -93,15 +93,28 @@ namespace gum {
           if (fmax <= fmin) { GUM_ERROR(InvalidArgument, "last<=first in " << var_description) }
           if (nbr <= 1) { GUM_ERROR(InvalidArgument, "nbr<=1 in " << var_description) }
           const double step = double((fmax - fmin) / (nbr - 1));
-          labels.clear();
-          ds       = nbr;
-          double v = fmin;
-          numerical_values.push_back(v);
-          for (auto i = 1; i < nbr - 1; i++) {
-            v += step;
+
+          if ((trunc(step) == step) && (trunc(fmin) == fmin)
+              && (trunc(fmax) == fmax)) {   // b{1:6:5} => IntegerVariable
+            labels.clear();
+            numerical_values.clear();
+            auto v = fmin;
+            for (auto i = 1; i < nbr; i++) {
+              labels.push_back(std::to_string(v));
+              v += step;
+            }
+          } else {   // b{1.3:6.3:5} => NumericalDiscreteVariable
+            labels.clear();
+            numerical_values.clear();
+            ds       = nbr;
+            double v = fmin;
             numerical_values.push_back(v);
+            for (auto i = 1; i < nbr - 1; i++) {
+              v += step;
+              numerical_values.push_back(v);
+            }
+            numerical_values.push_back(fmax);
           }
-          numerical_values.push_back(fmax);
         } else {
           labels
              = split(var_description.substr(posBrack + 1, var_description.size() - posBrack - 2),
