@@ -9889,6 +9889,10 @@ class IBayesNet(DAGmodel):
         name : str
         	The variable's name from which the id is returned.
 
+        Notes
+        -----
+          A convenient shortcut for `g.variableFromName(name)` is `g[name]`.
+
         Returns
         -------
         int :
@@ -10631,6 +10635,10 @@ class BayesNet(IBayesNet):
         ----------
         name : str
         	The variable's name from which the id is returned.
+
+        Notes
+        -----
+          A convenient shortcut for `g.variableFromName(name)` is `g[name]`.
 
         Returns
         -------
@@ -12010,6 +12018,10 @@ class BayesNetFragment(IBayesNet, ):
         ----------
         name : str
         	The variable's name from which the id is returned.
+
+        Notes
+        -----
+          A convenient shortcut for `g.variableFromName(name)` is `g[name]`.
 
         Returns
         -------
@@ -25475,6 +25487,10 @@ class InfluenceDiagram(DAGmodel):
         -------
         pyAgrum.DiscreteVariable
         	the variable
+
+        Notes
+        -----
+          A convenient shortcut for `g.variableFromName(name)` is `g[name]`.
 
         Raises
         ------
