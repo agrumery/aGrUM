@@ -50,14 +50,30 @@ namespace gum {
         const auto& args = split(s_args, ",");
         if (args.empty()) {              // n[]
           GUM_ERROR(InvalidArgument, "Empty range for variable " << var_description)
-        } else if (args.size() == 1) {   // n[4]
-          int n = std::stoi(args[0]);
-          if (n < 2)
-            if (default_domain_size > 1)
-              GUM_ERROR(InvalidArgument, n << " is not >=2 for variable " << var_description)
-          ds        = static_cast< Size >(n);
-          range_min = 0;
-          range_max = long(ds) - 1;
+        } else if (args.size() == 1) {   // n[4] or n[0:5.5:10]
+
+         const auto& labels = split(args[0],":");
+
+          if (labels.size() == 3) {   // b{1.1:3.31:5}
+            const auto fmin = std::stod(labels[0]);
+            const auto fmax = std::stod(labels[1]);
+            const int  nbr  = std::stoi(labels[2]);
+
+            if (fmax <= fmin) { GUM_ERROR(InvalidArgument, "last<=first in " << var_description) }
+            if (nbr <= 1) { GUM_ERROR(InvalidArgument, "nbr<=1 in " << var_description) }
+            const double step = double((fmax - fmin) / nbr);
+            for(int i=0; i<nbr+1; i++) {
+              ticks.push_back(fmin + i*step);
+            }
+          } else {   // n[4]
+            int n = std::stoi(args[0]);
+            if (n < 2)
+              if (default_domain_size > 1)
+                GUM_ERROR(InvalidArgument, n << " is not >=2 for variable " << var_description)
+            ds        = static_cast< Size >(n);
+            range_min = 0;
+            range_max = long(ds) - 1;
+          }
         } else if (args.size() == 2) {   // n[5,10]
           range_min = std::stol(args[0]);
           range_max = std::stol(args[1]);
@@ -99,7 +115,7 @@ namespace gum {
             labels.clear();
             numerical_values.clear();
             auto v = fmin;
-            for (auto i = 1; i < nbr; i++) {
+            for (auto i = 1; i <= nbr; i++) {
               labels.push_back(std::to_string(v));
               v += step;
             }

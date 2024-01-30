@@ -250,7 +250,13 @@ class DiscretizedVariableTestCase(VariablesTestCase):
               for n in range(1, 7):
                 if (i + j + k + l + m + n == 21) & (i * j * k * l * m * n == 720):
                   _testOrderTicks(i, j, k, l, m, n)
+  
+  def testFastSyntax(self):
+    var = gum.fastVariable("A[1,2,3,4,5,6]", 4)
+    self.assertEqual(str(var), "A:Discretized(<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>)")
 
+    var = gum.fastVariable("A[1:6:5]", 4)
+    self.assertEqual(str(var), "A:Discretized(<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>)")
 
 class NumericalDiscreteVariableTestCase(VariablesTestCase):
   def testAddValue(self):

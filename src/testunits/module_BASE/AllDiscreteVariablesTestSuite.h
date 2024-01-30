@@ -125,7 +125,21 @@ namespace gum_tests {
 
       TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A[0.3]", 4), gum::InvalidArgument&);
       TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A[0.3]", 1), gum::InvalidArgument&);
-    }   // namespace gum_tests
+    }
+
+    GUM_ACTIVE_TEST(CreationDiscretized2) {
+      {
+        auto a = gum::fastVariable< double >("A[1:6:5]", 4);
+        TS_ASSERT_EQUALS(a->toString(), "A:Discretized(<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>)");
+      }
+      {
+        auto a = gum::fastVariable< double >("A[1:6:2]", 4);
+        GUM_TRACE(a->toString());
+        TS_ASSERT_EQUALS(a->toString(), "A:Discretized(<[1;3.5[,[3.5;6]>)");
+      }
+
+      TS_ASSERT_THROWS(auto a = gum::fastVariable< double >("A[1:6:1]", 4), gum::InvalidArgument&);
+    }
 
     GUM_ACTIVE_TEST(CreationNumerical) {
       try {
@@ -174,7 +188,7 @@ namespace gum_tests {
       GUM_TRACE_VAR(s);
       GUM_TRACE_VAR(gum::fastVariable< double >(s)->stype());
       TS_ASSERT_EQUALS(s, (gum::fastVariable< double >(s)->toFast()));   // Integer
-      TS_ASSERT_EQUALS(s, (gum::fastVariable< double >("A{1:5:3")->toFast()));   // Integer
+      TS_ASSERT_EQUALS(s, (gum::fastVariable< double >("A{1:5:3}")->toFast()));   // Integer
       s = "A[3,5]";
       GUM_TRACE_VAR(s);
       GUM_TRACE_VAR(gum::fastVariable< double >(s)->stype());
