@@ -141,6 +141,9 @@ namespace gum {
      * @throw NotFound */
     Idx index(const std::string& label) const final;
 
+    ///  returns the closest index of the value
+    Idx closestIndex(double val) const final;
+
     /// returns a string corresponding to the ith value of the domain
     std::string label(Idx index) const final;
 

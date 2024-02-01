@@ -102,6 +102,11 @@ namespace gum {
     /// get a numerical representation of the indice-th value.
     virtual double numerical(Idx indice) const = 0;
 
+    /// for numerical variables, returns the closest index for the value
+    virtual Idx closestIndex(double val) const = 0;
+    /// for numerical variables, returns the closest label for the value
+    const std::string closestLabel(double val) const;
+
     /// returns the varType of variable
     VarType varType() const override = 0;
 

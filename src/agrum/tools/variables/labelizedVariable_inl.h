@@ -136,6 +136,11 @@ namespace gum {
   // get a numerical representation of the indice-th value.
   INLINE double LabelizedVariable::numerical(Idx indice) const { return double(indice); }
 
+  ///  returns the closest index of the value
+  INLINE Idx LabelizedVariable::closestIndex(double val) const {
+    GUM_ERROR(NotImplementedYet, "closestIndex has no meaning for LabelizedVariable")
+  }
+
   INLINE Idx LabelizedVariable::index(const std::string& aLabel) const {
     try {
       return _labels_.pos(aLabel);

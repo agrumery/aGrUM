@@ -65,6 +65,10 @@ namespace gum {
   // empty() <==> domainSize()<2
   INLINE bool DiscreteVariable::empty() const { return domainSize() < 2; }
 
+  INLINE const std::string DiscreteVariable::closestLabel(double val) const {
+    return label(closestIndex(val));
+  }
+
   // vector of labels
   INLINE std::vector< std::string > DiscreteVariable::labels() const {
     std::vector< std::string > v;

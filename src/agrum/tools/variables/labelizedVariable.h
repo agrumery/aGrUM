@@ -156,6 +156,9 @@ namespace gum {
     /// get a numerical representation of the index-the value.
     double numerical(Idx index) const final;
 
+    ///  returns the closest index of the value
+    Idx closestIndex(double val) const final;
+
     /// returns the size of the random discrete variable domain
     Size domainSize() const final;
 

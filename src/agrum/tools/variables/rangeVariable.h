@@ -136,6 +136,9 @@ namespace gum {
      */
     Idx index(const std::string&) const final;
 
+    ///  returns the closest index of the value
+    Idx closestIndex(double val) const final;
+
     /// @}
 
     /// @name Operators

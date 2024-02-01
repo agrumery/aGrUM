@@ -192,6 +192,9 @@ namespace gum {
     /// return the list of ticks as a vector of doubles
     std::vector< double > ticksAsDoubles() const final;
 
+    ///  returns the closest index of the value
+    Idx closestIndex(double val) const final;
+
     // returns the variable in fast syntax
     std::string toFast() const final;
   };

@@ -2505,6 +2505,12 @@ class DiscreteVariable(Variable):
         """
         return _pyAgrum.DiscreteVariable_numerical(self, indice)
 
+    def closestIndex(self, val: float) -> int:
+        return _pyAgrum.DiscreteVariable_closestIndex(self, val)
+
+    def closestLabel(self, val: float) -> str:
+        return _pyAgrum.DiscreteVariable_closestLabel(self, val)
+
     def varType(self) -> int:
         r"""
 
@@ -2648,17 +2654,7 @@ class DiscreteVariable(Variable):
       try:
         return self.asNumericalDiscreteVar().numericalDomain()
       except pyAgrum.OperationNotAllowed :
-         raise NotImplementedError(f"numericalDomain not implemented for {self}")
-    def closestLabel(self,x):
-      try:
-        return self.asNumericalDiscreteVar().closestLabel(x)
-      except pyAgrum.OperationNotAllowed :
-         raise NotImplementedError(f"closestLabel not implemented for {self}")
-    def closestIndex(self,x):
-      try:
-        return self.asNumericalDiscreteVar().closestIndex(x)
-      except pyAgrum.OperationNotAllowed :
-         raise NotImplementedError(f"closestIndex not implemented for {self}")
+         raise NotImplementedError(f"numericalDomain not implemented for {self}")  
     def isValue(self,x):
       try:
         return self.asNumericalDiscreteVar().isValue(x)
@@ -2976,6 +2972,9 @@ class LabelizedVariable(DiscreteVariable):
         """
         return _pyAgrum.LabelizedVariable_numerical(self, index)
 
+    def closestIndex(self, val: float) -> int:
+        return _pyAgrum.LabelizedVariable_closestIndex(self, val)
+
     def domainSize(self) -> int:
         r"""
 
@@ -3247,6 +3246,9 @@ class RangeVariable(DiscreteVariable):
         """
         return _pyAgrum.RangeVariable_index(self, arg2)
 
+    def closestIndex(self, val: float) -> int:
+        return _pyAgrum.RangeVariable_closestIndex(self, val)
+
     def domain(self) -> str:
         r"""
 
@@ -3379,6 +3381,9 @@ class IntegerVariable(DiscreteVariable):
 
         """
         return _pyAgrum.IntegerVariable_index(self, label)
+
+    def closestIndex(self, val: float) -> int:
+        return _pyAgrum.IntegerVariable_closestIndex(self, val)
 
     def label(self, index: int) -> str:
         r"""
@@ -8458,6 +8463,9 @@ class DiscretizedVariable(IDiscretizedVariable):
 
         """
         return _pyAgrum.DiscretizedVariable_ticks(self)
+
+    def closestIndex(self, val: float) -> int:
+        return _pyAgrum.DiscretizedVariable_closestIndex(self, val)
 
     def toFast(self) -> str:
         return _pyAgrum.DiscretizedVariable_toFast(self)

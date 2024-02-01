@@ -134,7 +134,6 @@ namespace gum_tests {
       }
       {
         auto a = gum::fastVariable< double >("A[1:6:2]", 4);
-        GUM_TRACE(a->toString());
         TS_ASSERT_EQUALS(a->toString(), "A:Discretized(<[1;3.5[,[3.5;6]>)");
       }
 
@@ -176,31 +175,21 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(ToFastMethod) {
       std::string s;
       s = "A{On|Off|Defun}";
-      GUM_TRACE_VAR(s);
-      GUM_TRACE_VAR(gum::fastVariable< double >(s)->stype());
       TS_ASSERT_EQUALS(s, (gum::fastVariable< double >(s)->toFast()));   // labelized
       s = "A{0|1.15|2.3}";
-      GUM_TRACE_VAR(s);
-      GUM_TRACE_VAR(gum::fastVariable< double >(s)->stype());
       TS_ASSERT_EQUALS(s, (gum::fastVariable< double >(s)->toFast()));   // NumericalDiscrete
-      TS_ASSERT_EQUALS(s, (gum::fastVariable< double >("A{0:2.3:3}")->toFast()));   // NumericalDiscrete
+      TS_ASSERT_EQUALS(
+         s,
+         (gum::fastVariable< double >("A{0:2.3:3}")->toFast()));         // NumericalDiscrete
       s = "A{1|3|5}";
-      GUM_TRACE_VAR(s);
-      GUM_TRACE_VAR(gum::fastVariable< double >(s)->stype());
       TS_ASSERT_EQUALS(s, (gum::fastVariable< double >(s)->toFast()));   // Integer
       TS_ASSERT_EQUALS(s, (gum::fastVariable< double >("A{1:5:3}")->toFast()));   // Integer
       s = "A[3,5]";
-      GUM_TRACE_VAR(s);
-      GUM_TRACE_VAR(gum::fastVariable< double >(s)->stype());
-      TS_ASSERT_EQUALS(s, (gum::fastVariable< double >(s)->toFast()));   // Range
+      TS_ASSERT_EQUALS(s, (gum::fastVariable< double >(s)->toFast()));            // Range
       s = "A[5]";
-      GUM_TRACE_VAR(s);
-      GUM_TRACE_VAR(gum::fastVariable< double >(s)->stype());
-      TS_ASSERT_EQUALS(s, (gum::fastVariable< double >(s)->toFast()));   // Range
+      TS_ASSERT_EQUALS(s, (gum::fastVariable< double >(s)->toFast()));            // Range
       s = "A[1,2,3,4,5,6]";
-      GUM_TRACE_VAR(s);
-      GUM_TRACE_VAR(gum::fastVariable< double >(s)->stype());
-      TS_ASSERT_EQUALS(s, (gum::fastVariable< double >(s)->toFast()));   // Discretized
+      TS_ASSERT_EQUALS(s, (gum::fastVariable< double >(s)->toFast()));            // Discretized
       TS_ASSERT_EQUALS(s, (gum::fastVariable< double >("A[1:6:5]")->toFast()));   // Discretized
     }
 
@@ -233,7 +222,64 @@ namespace gum_tests {
     }
 
     GUM_ACTIVE_TEST(ClosestIndex) {
+      TS_ASSERT_THROWS(gum::fastVariable< double >("A{On|Off|Defun}")->closestIndex(1.5),
+                       gum::NotImplementedYet);
 
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A{0|1.15|2.3}")->closestIndex(-1.0), 0)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A{0|1.15|2.3}")->closestIndex(0.0), 0)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A{0|1.15|2.3}")->closestIndex(0.575), 0)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A{0|1.15|2.3}")->closestIndex(1.2), 1)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A{0|1.15|2.3}")->closestIndex(1.15), 1)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A{0|1.15|2.3}")->closestIndex(3.0), 2)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A{0|1.15|2.3}")->closestIndex(2.0), 2)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A{0|1.15|2.3}")->closestIndex(2.3), 2)
+
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A{1|3|5}")->closestIndex(0.1), 0)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A{1|3|5}")->closestIndex(1.0), 0)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A{1|3|5}")->closestIndex(1.5), 0)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A{1|3|5}")->closestIndex(2.0), 0)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A{1|3|5}")->closestIndex(2.5), 1)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A{1|3|5}")->closestIndex(3.1), 1)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A{1|3|5}")->closestIndex(3.0), 1)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A{1|3|5}")->closestIndex(3.9), 1)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A{1|3|5}")->closestIndex(4.9), 2)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A{1|3|5}")->closestIndex(5.0), 2)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A{1|3|5}")->closestIndex(9.9), 2)
+
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[3,5]")->closestIndex(1.5), 0)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[3,5]")->closestIndex(3.0), 0)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[3,5]")->closestIndex(3.2), 0)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[3,5]")->closestIndex(3.5), 0)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[3,5]")->closestIndex(3.8), 1)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[3,5]")->closestIndex(4.0), 1)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[3,5]")->closestIndex(4.2), 1)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[3,5]")->closestIndex(4.5), 1)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[3,5]")->closestIndex(4.7), 2)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[3,5]")->closestIndex(5.0), 2)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[3,5]")->closestIndex(9.0), 2)
+
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[-5,-3]")->closestIndex(-1.5), 2)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[-5,-3]")->closestIndex(-3.2), 2)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[-5,-3]")->closestIndex(-3.5), 1)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[-5,-3]")->closestIndex(-3.8), 1)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[-5,-3]")->closestIndex(-4.0), 1)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[-5,-3]")->closestIndex(-4.2), 1)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[-5,-3]")->closestIndex(-4.5), 0)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[-5,-3]")->closestIndex(-4.7), 0)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[-5,-3]")->closestIndex(-5.0), 0)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[-5,-3]")->closestIndex(-9.0), 0)
+
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[1,2,3,4,5,6]")->closestIndex(0.5), 0)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[1,2,3,4,5,6]")->closestIndex(1.0), 0)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[1,2,3,4,5,6]")->closestIndex(1.3), 0)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[1,2,3,4,5,6]")->closestIndex(1.5), 0)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[1,2,3,4,5,6]")->closestIndex(1.7), 0)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[1,2,3,4,5,6]")->closestIndex(2.0), 1)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[1,2,3,4,5,6]")->closestIndex(2.5), 1)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[1,2,3,4,5,6]")->closestIndex(3.0), 2)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[1,2,3,4,5,6]")->closestIndex(5.5), 4)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[1,2,3,4,5,6]")->closestIndex(6.0), 4)
+      TS_ASSERT_EQUALS(gum::fastVariable< double >("A[1,2,3,4,5,6]")->closestIndex(9.9), 4)
     }
   };
 }   // namespace gum_tests

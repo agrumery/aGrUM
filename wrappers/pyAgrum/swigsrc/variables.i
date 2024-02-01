@@ -67,17 +67,7 @@
       try:
         return self.asNumericalDiscreteVar().numericalDomain()
       except pyAgrum.OperationNotAllowed :
-         raise NotImplementedError(f"numericalDomain not implemented for {self}")
-    def closestLabel(self,x):
-      try:
-        return self.asNumericalDiscreteVar().closestLabel(x)
-      except pyAgrum.OperationNotAllowed :
-         raise NotImplementedError(f"closestLabel not implemented for {self}")
-    def closestIndex(self,x):
-      try:
-        return self.asNumericalDiscreteVar().closestIndex(x)
-      except pyAgrum.OperationNotAllowed :
-         raise NotImplementedError(f"closestIndex not implemented for {self}")
+         raise NotImplementedError(f"numericalDomain not implemented for {self}")  
     def isValue(self,x):
       try:
         return self.asNumericalDiscreteVar().isValue(x)
