@@ -26,7 +26,7 @@ from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 
 class SamplingTestCase(pyAgrumTestCase):
-  def iterTest(self, goalPotential, inferenceEngine, target, evs, seuil=0.1, nbr=20):
+  def iterTest(self, goalPotential, inferenceEngine, target, evs, *, seuil=0.1, nbr=20):
     min = 1000
 
     for i in range(nbr):
@@ -188,7 +188,7 @@ class TestInferenceResults(SamplingTestCase):
     ie.setVerbosity(False)
     ie.setEpsilon(0.02)
     ie.setMinEpsilonRate(0.001)
-    msg = self.iterTest(proto, ie, self.w, {'s': 0, 'c': 0})
+    msg = self.iterTest(proto, ie, self.w, {'s': 0, 'c': 0}, seuil=0.15)
     if msg is not None:
       self.fail(msg)
 

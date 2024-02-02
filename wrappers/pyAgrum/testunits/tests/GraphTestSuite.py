@@ -19,6 +19,7 @@
 # ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
 # OR PERFORMANCE OF THIS SOFTWARE!
 import unittest
+import numpy as np
 
 import pyAgrum as gum
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
@@ -122,8 +123,28 @@ class TestGraph(pyAgrumTestCase):
     with self.assertRaises(gum.InvalidNode):
       ug.addEdge(7, 0)
     with self.assertRaises(gum.InvalidNode):
-      ug.addEdge(6, 7)
-
+      ug.addEdge(6, 7)      
+  def testAdjancecyMatrix(self):
+    mg = gum.MixedGraph()
+    mg.addNodes(4)
+    mg.addArc(0, 1)
+    mg.addArc(1, 2)
+    mg.addEdge(2, 3)
+    self.assertTrue(np.array_equal(mg.adjacencyMatrix(), np.array([[0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1], [0, 0, 1, 0]])))
+    
+    mg = gum.DAG()
+    mg.addNodes(4)
+    mg.addArc(0, 1)
+    mg.addArc(1, 2)
+    mg.addArc(2, 3)
+    self.assertTrue(np.array_equal(mg.adjacencyMatrix(), np.array([[0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1], [0, 0, 0, 0]])))
+    
+    mg = gum.UndiGraph()
+    mg.addNodes(4)
+    mg.addEdge(0, 1)
+    mg.addEdge(1, 2)
+    mg.addEdge(2, 3)
+    self.assertTrue(np.array_equal(mg.adjacencyMatrix(), np.array([[0, 1, 0, 0], [1, 0, 1, 0], [0, 1, 0, 1], [0, 0, 1, 0]])))
 
 ts = unittest.TestSuite()
 addTests(ts, TestGraph)

@@ -4102,37 +4102,10 @@ class UndiGraph(object):
         """
         return _pyAgrum.UndiGraph_nodes(self)
 
-
-    def __getstate__(self):
-        state=dict()
-        if hasattr(self,'arcs'):
-            state['arcs']=self.arcs()
-        if hasattr(self,'edges'):
-          state['edges']=self.edges()
-        return state
-
-    def __setstate__(self,state):
-        self.__init__()
-        if 'arcs' in state:
-            for x,y in state['arcs']:
-              if not self.existsNode(x):
-                self.addNodeWithId(x)
-              if not self.existsNode(y):
-                self.addNodeWithId(y)
-              self.addArc(x,y)
-        if 'edges' in state:
-            for x,y in state['edges']:
-              if not self.existsNode(x):
-                self.addNodeWithId(x)
-              if not self.existsNode(y):
-                self.addNodeWithId(y)
-              self.addEdge(x,y)
-        return self
-
     def connectedComponents(self):
-      """ connected components from a graph/BN
+      """ connected components from a graph/graphical models
 
-      Compute the connected components of a pyAgrum's graph or Bayesian Network
+      Compute the connected components of a pyAgrum's graph or graphical models
       (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
 
       The firstly visited node for each component is called a 'root' and is used as a key for the component.
@@ -4174,6 +4147,33 @@ class UndiGraph(object):
           connected_components[root]=parcours(root,None)
       return connected_components
 
+    def adjacencyMatrix(self):
+      """ adjacency matrix from a graph/graphical models
+
+      Compute the adjacency matrix of a pyAgrum's graph or graphical models
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+
+      Returns
+      -------
+      numpy.ndarray
+        adjacency matrix (as numpy.ndarray) with nodeId as key.
+
+      """
+      import numpy as np
+      nodes=self.nodes()
+      n=self.size()
+      am=np.zeros((n,n))
+
+      for node in nodes:
+          if hasattr(self,'children'):
+              for children in self.children(node):
+                  am[children,node]=1
+          if hasattr(self,'neighbours'):
+              for neighbour in self.neighbours(node):
+                  adj[node,neighbour]=1
+                  adj[neighbour,node]=1
+      return am
+
 
     def addNodes(self, n: int) -> object:
         r"""
@@ -4192,6 +4192,33 @@ class UndiGraph(object):
 
         """
         return _pyAgrum.UndiGraph_addNodes(self, n)
+
+    def __getstate__(self):
+        state=dict()
+        if hasattr(self,'arcs'):
+            state['arcs']=self.arcs()
+        if hasattr(self,'edges'):
+          state['edges']=self.edges()
+        return state
+
+    def __setstate__(self,state):
+        self.__init__()
+        if 'arcs' in state:
+            for x,y in state['arcs']:
+              if not self.existsNode(x):
+                self.addNodeWithId(x)
+              if not self.existsNode(y):
+                self.addNodeWithId(y)
+              self.addArc(x,y)
+        if 'edges' in state:
+            for x,y in state['edges']:
+              if not self.existsNode(x):
+                self.addNodeWithId(x)
+              if not self.existsNode(y):
+                self.addNodeWithId(y)
+              self.addEdge(x,y)
+        return self
+
 
     def edges(self) -> object:
         r"""
@@ -4502,37 +4529,10 @@ class DiGraph(object):
         """
         return _pyAgrum.DiGraph_nodes(self)
 
-
-    def __getstate__(self):
-        state=dict()
-        if hasattr(self,'arcs'):
-            state['arcs']=self.arcs()
-        if hasattr(self,'edges'):
-          state['edges']=self.edges()
-        return state
-
-    def __setstate__(self,state):
-        self.__init__()
-        if 'arcs' in state:
-            for x,y in state['arcs']:
-              if not self.existsNode(x):
-                self.addNodeWithId(x)
-              if not self.existsNode(y):
-                self.addNodeWithId(y)
-              self.addArc(x,y)
-        if 'edges' in state:
-            for x,y in state['edges']:
-              if not self.existsNode(x):
-                self.addNodeWithId(x)
-              if not self.existsNode(y):
-                self.addNodeWithId(y)
-              self.addEdge(x,y)
-        return self
-
     def connectedComponents(self):
-      """ connected components from a graph/BN
+      """ connected components from a graph/graphical models
 
-      Compute the connected components of a pyAgrum's graph or Bayesian Network
+      Compute the connected components of a pyAgrum's graph or graphical models
       (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
 
       The firstly visited node for each component is called a 'root' and is used as a key for the component.
@@ -4574,6 +4574,33 @@ class DiGraph(object):
           connected_components[root]=parcours(root,None)
       return connected_components
 
+    def adjacencyMatrix(self):
+      """ adjacency matrix from a graph/graphical models
+
+      Compute the adjacency matrix of a pyAgrum's graph or graphical models
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+
+      Returns
+      -------
+      numpy.ndarray
+        adjacency matrix (as numpy.ndarray) with nodeId as key.
+
+      """
+      import numpy as np
+      nodes=self.nodes()
+      n=self.size()
+      am=np.zeros((n,n))
+
+      for node in nodes:
+          if hasattr(self,'children'):
+              for children in self.children(node):
+                  am[children,node]=1
+          if hasattr(self,'neighbours'):
+              for neighbour in self.neighbours(node):
+                  adj[node,neighbour]=1
+                  adj[neighbour,node]=1
+      return am
+
 
     def addNodes(self, n: int) -> object:
         r"""
@@ -4592,6 +4619,33 @@ class DiGraph(object):
 
         """
         return _pyAgrum.DiGraph_addNodes(self, n)
+
+    def __getstate__(self):
+        state=dict()
+        if hasattr(self,'arcs'):
+            state['arcs']=self.arcs()
+        if hasattr(self,'edges'):
+          state['edges']=self.edges()
+        return state
+
+    def __setstate__(self,state):
+        self.__init__()
+        if 'arcs' in state:
+            for x,y in state['arcs']:
+              if not self.existsNode(x):
+                self.addNodeWithId(x)
+              if not self.existsNode(y):
+                self.addNodeWithId(y)
+              self.addArc(x,y)
+        if 'edges' in state:
+            for x,y in state['edges']:
+              if not self.existsNode(x):
+                self.addNodeWithId(x)
+              if not self.existsNode(y):
+                self.addNodeWithId(y)
+              self.addEdge(x,y)
+        return self
+
 
     def arcs(self) -> object:
         r"""
@@ -4883,6 +4937,33 @@ class DAG(DiGraph):
     def addNodes(self, n: int) -> object:
         return _pyAgrum.DAG_addNodes(self, n)
 
+    def __getstate__(self):
+        state=dict()
+        if hasattr(self,'arcs'):
+            state['arcs']=self.arcs()
+        if hasattr(self,'edges'):
+          state['edges']=self.edges()
+        return state
+
+    def __setstate__(self,state):
+        self.__init__()
+        if 'arcs' in state:
+            for x,y in state['arcs']:
+              if not self.existsNode(x):
+                self.addNodeWithId(x)
+              if not self.existsNode(y):
+                self.addNodeWithId(y)
+              self.addArc(x,y)
+        if 'edges' in state:
+            for x,y in state['edges']:
+              if not self.existsNode(x):
+                self.addNodeWithId(x)
+              if not self.existsNode(y):
+                self.addNodeWithId(y)
+              self.addEdge(x,y)
+        return self
+
+
     def arcs(self) -> object:
         return _pyAgrum.DAG_arcs(self)
 
@@ -5019,6 +5100,33 @@ class MixedGraph(UndiGraph, DiGraph):
 
         """
         return _pyAgrum.MixedGraph_addNodes(self, n)
+
+    def __getstate__(self):
+        state=dict()
+        if hasattr(self,'arcs'):
+            state['arcs']=self.arcs()
+        if hasattr(self,'edges'):
+          state['edges']=self.edges()
+        return state
+
+    def __setstate__(self,state):
+        self.__init__()
+        if 'arcs' in state:
+            for x,y in state['arcs']:
+              if not self.existsNode(x):
+                self.addNodeWithId(x)
+              if not self.existsNode(y):
+                self.addNodeWithId(y)
+              self.addArc(x,y)
+        if 'edges' in state:
+            for x,y in state['edges']:
+              if not self.existsNode(x):
+                self.addNodeWithId(x)
+              if not self.existsNode(y):
+                self.addNodeWithId(y)
+              self.addEdge(x,y)
+        return self
+
 
     def arcs(self) -> object:
         return _pyAgrum.MixedGraph_arcs(self)
@@ -5394,6 +5502,33 @@ class PDAG(MixedGraph):
 
     def addNodes(self, n: int) -> object:
         return _pyAgrum.PDAG_addNodes(self, n)
+
+    def __getstate__(self):
+        state=dict()
+        if hasattr(self,'arcs'):
+            state['arcs']=self.arcs()
+        if hasattr(self,'edges'):
+          state['edges']=self.edges()
+        return state
+
+    def __setstate__(self,state):
+        self.__init__()
+        if 'arcs' in state:
+            for x,y in state['arcs']:
+              if not self.existsNode(x):
+                self.addNodeWithId(x)
+              if not self.existsNode(y):
+                self.addNodeWithId(y)
+              self.addArc(x,y)
+        if 'edges' in state:
+            for x,y in state['edges']:
+              if not self.existsNode(x):
+                self.addNodeWithId(x)
+              if not self.existsNode(y):
+                self.addNodeWithId(y)
+              self.addEdge(x,y)
+        return self
+
 
     def arcs(self) -> object:
         return _pyAgrum.PDAG_arcs(self)
@@ -7309,37 +7444,10 @@ class EssentialGraph(object):
     def nodes(self) -> object:
         return _pyAgrum.EssentialGraph_nodes(self)
 
-
-    def __getstate__(self):
-        state=dict()
-        if hasattr(self,'arcs'):
-            state['arcs']=self.arcs()
-        if hasattr(self,'edges'):
-          state['edges']=self.edges()
-        return state
-
-    def __setstate__(self,state):
-        self.__init__()
-        if 'arcs' in state:
-            for x,y in state['arcs']:
-              if not self.existsNode(x):
-                self.addNodeWithId(x)
-              if not self.existsNode(y):
-                self.addNodeWithId(y)
-              self.addArc(x,y)
-        if 'edges' in state:
-            for x,y in state['edges']:
-              if not self.existsNode(x):
-                self.addNodeWithId(x)
-              if not self.existsNode(y):
-                self.addNodeWithId(y)
-              self.addEdge(x,y)
-        return self
-
     def connectedComponents(self):
-      """ connected components from a graph/BN
+      """ connected components from a graph/graphical models
 
-      Compute the connected components of a pyAgrum's graph or Bayesian Network
+      Compute the connected components of a pyAgrum's graph or graphical models
       (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
 
       The firstly visited node for each component is called a 'root' and is used as a key for the component.
@@ -7380,6 +7488,33 @@ class EssentialGraph(object):
           root=nodes.pop()
           connected_components[root]=parcours(root,None)
       return connected_components
+
+    def adjacencyMatrix(self):
+      """ adjacency matrix from a graph/graphical models
+
+      Compute the adjacency matrix of a pyAgrum's graph or graphical models
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+
+      Returns
+      -------
+      numpy.ndarray
+        adjacency matrix (as numpy.ndarray) with nodeId as key.
+
+      """
+      import numpy as np
+      nodes=self.nodes()
+      n=self.size()
+      am=np.zeros((n,n))
+
+      for node in nodes:
+          if hasattr(self,'children'):
+              for children in self.children(node):
+                  am[children,node]=1
+          if hasattr(self,'neighbours'):
+              for neighbour in self.neighbours(node):
+                  adj[node,neighbour]=1
+                  adj[neighbour,node]=1
+      return am
 
 
     def arcs(self) -> object:
@@ -7560,37 +7695,10 @@ class MarkovBlanket(object):
         """
         return _pyAgrum.MarkovBlanket_nodes(self)
 
-
-    def __getstate__(self):
-        state=dict()
-        if hasattr(self,'arcs'):
-            state['arcs']=self.arcs()
-        if hasattr(self,'edges'):
-          state['edges']=self.edges()
-        return state
-
-    def __setstate__(self,state):
-        self.__init__()
-        if 'arcs' in state:
-            for x,y in state['arcs']:
-              if not self.existsNode(x):
-                self.addNodeWithId(x)
-              if not self.existsNode(y):
-                self.addNodeWithId(y)
-              self.addArc(x,y)
-        if 'edges' in state:
-            for x,y in state['edges']:
-              if not self.existsNode(x):
-                self.addNodeWithId(x)
-              if not self.existsNode(y):
-                self.addNodeWithId(y)
-              self.addEdge(x,y)
-        return self
-
     def connectedComponents(self):
-      """ connected components from a graph/BN
+      """ connected components from a graph/graphical models
 
-      Compute the connected components of a pyAgrum's graph or Bayesian Network
+      Compute the connected components of a pyAgrum's graph or graphical models
       (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
 
       The firstly visited node for each component is called a 'root' and is used as a key for the component.
@@ -7631,6 +7739,33 @@ class MarkovBlanket(object):
           root=nodes.pop()
           connected_components[root]=parcours(root,None)
       return connected_components
+
+    def adjacencyMatrix(self):
+      """ adjacency matrix from a graph/graphical models
+
+      Compute the adjacency matrix of a pyAgrum's graph or graphical models
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+
+      Returns
+      -------
+      numpy.ndarray
+        adjacency matrix (as numpy.ndarray) with nodeId as key.
+
+      """
+      import numpy as np
+      nodes=self.nodes()
+      n=self.size()
+      am=np.zeros((n,n))
+
+      for node in nodes:
+          if hasattr(self,'children'):
+              for children in self.children(node):
+                  am[children,node]=1
+          if hasattr(self,'neighbours'):
+              for neighbour in self.neighbours(node):
+                  adj[node,neighbour]=1
+                  adj[neighbour,node]=1
+      return am
 
 
     def arcs(self) -> object:
@@ -10195,37 +10330,10 @@ class IBayesNet(DAGmodel):
         """
         return _pyAgrum.IBayesNet_nodes(self)
 
-
-    def __getstate__(self):
-        state=dict()
-        if hasattr(self,'arcs'):
-            state['arcs']=self.arcs()
-        if hasattr(self,'edges'):
-          state['edges']=self.edges()
-        return state
-
-    def __setstate__(self,state):
-        self.__init__()
-        if 'arcs' in state:
-            for x,y in state['arcs']:
-              if not self.existsNode(x):
-                self.addNodeWithId(x)
-              if not self.existsNode(y):
-                self.addNodeWithId(y)
-              self.addArc(x,y)
-        if 'edges' in state:
-            for x,y in state['edges']:
-              if not self.existsNode(x):
-                self.addNodeWithId(x)
-              if not self.existsNode(y):
-                self.addNodeWithId(y)
-              self.addEdge(x,y)
-        return self
-
     def connectedComponents(self):
-      """ connected components from a graph/BN
+      """ connected components from a graph/graphical models
 
-      Compute the connected components of a pyAgrum's graph or Bayesian Network
+      Compute the connected components of a pyAgrum's graph or graphical models
       (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
 
       The firstly visited node for each component is called a 'root' and is used as a key for the component.
@@ -10266,6 +10374,33 @@ class IBayesNet(DAGmodel):
           root=nodes.pop()
           connected_components[root]=parcours(root,None)
       return connected_components
+
+    def adjacencyMatrix(self):
+      """ adjacency matrix from a graph/graphical models
+
+      Compute the adjacency matrix of a pyAgrum's graph or graphical models
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+
+      Returns
+      -------
+      numpy.ndarray
+        adjacency matrix (as numpy.ndarray) with nodeId as key.
+
+      """
+      import numpy as np
+      nodes=self.nodes()
+      n=self.size()
+      am=np.zeros((n,n))
+
+      for node in nodes:
+          if hasattr(self,'children'):
+              for children in self.children(node):
+                  am[children,node]=1
+          if hasattr(self,'neighbours'):
+              for neighbour in self.neighbours(node):
+                  adj[node,neighbour]=1
+                  adj[neighbour,node]=1
+      return am
 
 
     def arcs(self) -> object:
@@ -11343,37 +11478,10 @@ class BayesNet(IBayesNet):
         """
         return _pyAgrum.BayesNet_nodes(self)
 
-
-    def __getstate__(self):
-        state=dict()
-        if hasattr(self,'arcs'):
-            state['arcs']=self.arcs()
-        if hasattr(self,'edges'):
-          state['edges']=self.edges()
-        return state
-
-    def __setstate__(self,state):
-        self.__init__()
-        if 'arcs' in state:
-            for x,y in state['arcs']:
-              if not self.existsNode(x):
-                self.addNodeWithId(x)
-              if not self.existsNode(y):
-                self.addNodeWithId(y)
-              self.addArc(x,y)
-        if 'edges' in state:
-            for x,y in state['edges']:
-              if not self.existsNode(x):
-                self.addNodeWithId(x)
-              if not self.existsNode(y):
-                self.addNodeWithId(y)
-              self.addEdge(x,y)
-        return self
-
     def connectedComponents(self):
-      """ connected components from a graph/BN
+      """ connected components from a graph/graphical models
 
-      Compute the connected components of a pyAgrum's graph or Bayesian Network
+      Compute the connected components of a pyAgrum's graph or graphical models
       (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
 
       The firstly visited node for each component is called a 'root' and is used as a key for the component.
@@ -11414,6 +11522,33 @@ class BayesNet(IBayesNet):
           root=nodes.pop()
           connected_components[root]=parcours(root,None)
       return connected_components
+
+    def adjacencyMatrix(self):
+      """ adjacency matrix from a graph/graphical models
+
+      Compute the adjacency matrix of a pyAgrum's graph or graphical models
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+
+      Returns
+      -------
+      numpy.ndarray
+        adjacency matrix (as numpy.ndarray) with nodeId as key.
+
+      """
+      import numpy as np
+      nodes=self.nodes()
+      n=self.size()
+      am=np.zeros((n,n))
+
+      for node in nodes:
+          if hasattr(self,'children'):
+              for children in self.children(node):
+                  am[children,node]=1
+          if hasattr(self,'neighbours'):
+              for neighbour in self.neighbours(node):
+                  adj[node,neighbour]=1
+                  adj[neighbour,node]=1
+      return am
 
 
     def arcs(self) -> object:
@@ -12379,37 +12514,10 @@ class BayesNetFragment(IBayesNet, ):
         """
         return _pyAgrum.BayesNetFragment_nodes(self)
 
-
-    def __getstate__(self):
-        state=dict()
-        if hasattr(self,'arcs'):
-            state['arcs']=self.arcs()
-        if hasattr(self,'edges'):
-          state['edges']=self.edges()
-        return state
-
-    def __setstate__(self,state):
-        self.__init__()
-        if 'arcs' in state:
-            for x,y in state['arcs']:
-              if not self.existsNode(x):
-                self.addNodeWithId(x)
-              if not self.existsNode(y):
-                self.addNodeWithId(y)
-              self.addArc(x,y)
-        if 'edges' in state:
-            for x,y in state['edges']:
-              if not self.existsNode(x):
-                self.addNodeWithId(x)
-              if not self.existsNode(y):
-                self.addNodeWithId(y)
-              self.addEdge(x,y)
-        return self
-
     def connectedComponents(self):
-      """ connected components from a graph/BN
+      """ connected components from a graph/graphical models
 
-      Compute the connected components of a pyAgrum's graph or Bayesian Network
+      Compute the connected components of a pyAgrum's graph or graphical models
       (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
 
       The firstly visited node for each component is called a 'root' and is used as a key for the component.
@@ -12450,6 +12558,33 @@ class BayesNetFragment(IBayesNet, ):
           root=nodes.pop()
           connected_components[root]=parcours(root,None)
       return connected_components
+
+    def adjacencyMatrix(self):
+      """ adjacency matrix from a graph/graphical models
+
+      Compute the adjacency matrix of a pyAgrum's graph or graphical models
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+
+      Returns
+      -------
+      numpy.ndarray
+        adjacency matrix (as numpy.ndarray) with nodeId as key.
+
+      """
+      import numpy as np
+      nodes=self.nodes()
+      n=self.size()
+      am=np.zeros((n,n))
+
+      for node in nodes:
+          if hasattr(self,'children'):
+              for children in self.children(node):
+                  am[children,node]=1
+          if hasattr(self,'neighbours'):
+              for neighbour in self.neighbours(node):
+                  adj[node,neighbour]=1
+                  adj[neighbour,node]=1
+      return am
 
 
     def arcs(self) -> object:
@@ -12721,37 +12856,10 @@ class IMarkovRandomField(UGmodel):
     def nodes(self) -> object:
         return _pyAgrum.IMarkovRandomField_nodes(self)
 
-
-    def __getstate__(self):
-        state=dict()
-        if hasattr(self,'arcs'):
-            state['arcs']=self.arcs()
-        if hasattr(self,'edges'):
-          state['edges']=self.edges()
-        return state
-
-    def __setstate__(self,state):
-        self.__init__()
-        if 'arcs' in state:
-            for x,y in state['arcs']:
-              if not self.existsNode(x):
-                self.addNodeWithId(x)
-              if not self.existsNode(y):
-                self.addNodeWithId(y)
-              self.addArc(x,y)
-        if 'edges' in state:
-            for x,y in state['edges']:
-              if not self.existsNode(x):
-                self.addNodeWithId(x)
-              if not self.existsNode(y):
-                self.addNodeWithId(y)
-              self.addEdge(x,y)
-        return self
-
     def connectedComponents(self):
-      """ connected components from a graph/BN
+      """ connected components from a graph/graphical models
 
-      Compute the connected components of a pyAgrum's graph or Bayesian Network
+      Compute the connected components of a pyAgrum's graph or graphical models
       (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
 
       The firstly visited node for each component is called a 'root' and is used as a key for the component.
@@ -12792,6 +12900,33 @@ class IMarkovRandomField(UGmodel):
           root=nodes.pop()
           connected_components[root]=parcours(root,None)
       return connected_components
+
+    def adjacencyMatrix(self):
+      """ adjacency matrix from a graph/graphical models
+
+      Compute the adjacency matrix of a pyAgrum's graph or graphical models
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+
+      Returns
+      -------
+      numpy.ndarray
+        adjacency matrix (as numpy.ndarray) with nodeId as key.
+
+      """
+      import numpy as np
+      nodes=self.nodes()
+      n=self.size()
+      am=np.zeros((n,n))
+
+      for node in nodes:
+          if hasattr(self,'children'):
+              for children in self.children(node):
+                  am[children,node]=1
+          if hasattr(self,'neighbours'):
+              for neighbour in self.neighbours(node):
+                  adj[node,neighbour]=1
+                  adj[neighbour,node]=1
+      return am
 
 
     def neighbours(self, norid: object) -> object:
@@ -13100,37 +13235,10 @@ class MarkovRandomField(IMarkovRandomField):
     def nodes(self) -> object:
         return _pyAgrum.MarkovRandomField_nodes(self)
 
-
-    def __getstate__(self):
-        state=dict()
-        if hasattr(self,'arcs'):
-            state['arcs']=self.arcs()
-        if hasattr(self,'edges'):
-          state['edges']=self.edges()
-        return state
-
-    def __setstate__(self,state):
-        self.__init__()
-        if 'arcs' in state:
-            for x,y in state['arcs']:
-              if not self.existsNode(x):
-                self.addNodeWithId(x)
-              if not self.existsNode(y):
-                self.addNodeWithId(y)
-              self.addArc(x,y)
-        if 'edges' in state:
-            for x,y in state['edges']:
-              if not self.existsNode(x):
-                self.addNodeWithId(x)
-              if not self.existsNode(y):
-                self.addNodeWithId(y)
-              self.addEdge(x,y)
-        return self
-
     def connectedComponents(self):
-      """ connected components from a graph/BN
+      """ connected components from a graph/graphical models
 
-      Compute the connected components of a pyAgrum's graph or Bayesian Network
+      Compute the connected components of a pyAgrum's graph or graphical models
       (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
 
       The firstly visited node for each component is called a 'root' and is used as a key for the component.
@@ -13171,6 +13279,33 @@ class MarkovRandomField(IMarkovRandomField):
           root=nodes.pop()
           connected_components[root]=parcours(root,None)
       return connected_components
+
+    def adjacencyMatrix(self):
+      """ adjacency matrix from a graph/graphical models
+
+      Compute the adjacency matrix of a pyAgrum's graph or graphical models
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+
+      Returns
+      -------
+      numpy.ndarray
+        adjacency matrix (as numpy.ndarray) with nodeId as key.
+
+      """
+      import numpy as np
+      nodes=self.nodes()
+      n=self.size()
+      am=np.zeros((n,n))
+
+      for node in nodes:
+          if hasattr(self,'children'):
+              for children in self.children(node):
+                  am[children,node]=1
+          if hasattr(self,'neighbours'):
+              for neighbour in self.neighbours(node):
+                  adj[node,neighbour]=1
+                  adj[neighbour,node]=1
+      return am
 
 
     def neighbours(self, norid: object) -> object:
@@ -25788,37 +25923,10 @@ class InfluenceDiagram(DAGmodel):
         """
         return _pyAgrum.InfluenceDiagram_nodes(self)
 
-
-    def __getstate__(self):
-        state=dict()
-        if hasattr(self,'arcs'):
-            state['arcs']=self.arcs()
-        if hasattr(self,'edges'):
-          state['edges']=self.edges()
-        return state
-
-    def __setstate__(self,state):
-        self.__init__()
-        if 'arcs' in state:
-            for x,y in state['arcs']:
-              if not self.existsNode(x):
-                self.addNodeWithId(x)
-              if not self.existsNode(y):
-                self.addNodeWithId(y)
-              self.addArc(x,y)
-        if 'edges' in state:
-            for x,y in state['edges']:
-              if not self.existsNode(x):
-                self.addNodeWithId(x)
-              if not self.existsNode(y):
-                self.addNodeWithId(y)
-              self.addEdge(x,y)
-        return self
-
     def connectedComponents(self):
-      """ connected components from a graph/BN
+      """ connected components from a graph/graphical models
 
-      Compute the connected components of a pyAgrum's graph or Bayesian Network
+      Compute the connected components of a pyAgrum's graph or graphical models
       (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
 
       The firstly visited node for each component is called a 'root' and is used as a key for the component.
@@ -25859,6 +25967,33 @@ class InfluenceDiagram(DAGmodel):
           root=nodes.pop()
           connected_components[root]=parcours(root,None)
       return connected_components
+
+    def adjacencyMatrix(self):
+      """ adjacency matrix from a graph/graphical models
+
+      Compute the adjacency matrix of a pyAgrum's graph or graphical models
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+
+      Returns
+      -------
+      numpy.ndarray
+        adjacency matrix (as numpy.ndarray) with nodeId as key.
+
+      """
+      import numpy as np
+      nodes=self.nodes()
+      n=self.size()
+      am=np.zeros((n,n))
+
+      for node in nodes:
+          if hasattr(self,'children'):
+              for children in self.children(node):
+                  am[children,node]=1
+          if hasattr(self,'neighbours'):
+              for neighbour in self.neighbours(node):
+                  adj[node,neighbour]=1
+                  adj[neighbour,node]=1
+      return am
 
 
     def arcs(self) -> object:

@@ -72,37 +72,10 @@
   };
 
 %pythoncode {
-
-  def __getstate__(self):
-      state=dict()
-      if hasattr(self,'arcs'):
-          state['arcs']=self.arcs()
-      if hasattr(self,'edges'):
-        state['edges']=self.edges()
-      return state
-
-  def __setstate__(self,state):
-      self.__init__()
-      if 'arcs' in state:
-          for x,y in state['arcs']:
-            if not self.existsNode(x):
-              self.addNodeWithId(x)
-            if not self.existsNode(y):
-              self.addNodeWithId(y)
-            self.addArc(x,y)
-      if 'edges' in state:
-          for x,y in state['edges']:
-            if not self.existsNode(x):
-              self.addNodeWithId(x)
-            if not self.existsNode(y):
-              self.addNodeWithId(y)
-            self.addEdge(x,y)
-      return self
-
   def connectedComponents(self):
-    """ connected components from a graph/BN
+    """ connected components from a graph/graphical models
 
-    Compute the connected components of a pyAgrum's graph or Bayesian Network
+    Compute the connected components of a pyAgrum's graph or graphical models
     (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
 
     The firstly visited node for each component is called a 'root' and is used as a key for the component.
@@ -143,6 +116,32 @@
         root=nodes.pop()
         connected_components[root]=parcours(root,None)
     return connected_components
+
+  def adjacencyMatrix(self):
+    """ adjacency matrix from a graph/graphical models
+
+    Compute the adjacency matrix of a pyAgrum's graph or graphical models
+    (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+
+    Returns
+    -------
+    numpy.ndarray
+      adjacency matrix (as numpy.ndarray) with nodeId as key.
+
+    """
+    import numpy as np
+    nodes=self.nodes()
+    n=self.size()
+    am=np.zeros((n,n)).astype(int)
+
+    for node in nodes:
+        if hasattr(self,'children'):
+            for children in self.children(node):
+                am[node,children]=1
+        if hasattr(self,'neighbours'):
+            for neighbour in self.neighbours(node):
+                am[node,neighbour]=1
+    return am
 }
 
 };
@@ -156,7 +155,7 @@ ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::MarkovBlanket);
 %ignore gum::EssentialGraph::nodes const;
 %ignore gum::MarkovBlanket::nodes const;
 
-%define ADD_NODES_METHOD_TO_GRAPHCLASS(classname)
+%define ADD_METHOD_TO_GRAPH_ONLY_CLASS(classname)
 %ignore classname::addNodes(gum::Size n);
 %extend classname {
   PyObject *addNodes(gum::Size n) const {
@@ -168,15 +167,44 @@ ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::MarkovBlanket);
 
     return q;
   };
+
+
+%pythoncode {
+  def __getstate__(self):
+      state=dict()
+      if hasattr(self,'arcs'):
+          state['arcs']=self.arcs()
+      if hasattr(self,'edges'):
+        state['edges']=self.edges()
+      return state
+
+  def __setstate__(self,state):
+      self.__init__()
+      if 'arcs' in state:
+          for x,y in state['arcs']:
+            if not self.existsNode(x):
+              self.addNodeWithId(x)
+            if not self.existsNode(y):
+              self.addNodeWithId(y)
+            self.addArc(x,y)
+      if 'edges' in state:
+          for x,y in state['edges']:
+            if not self.existsNode(x):
+              self.addNodeWithId(x)
+            if not self.existsNode(y):
+              self.addNodeWithId(y)
+            self.addEdge(x,y)
+      return self
+   }
 };
 %enddef
-ADD_NODES_METHOD_TO_GRAPHCLASS(gum::DiGraph);
-ADD_NODES_METHOD_TO_GRAPHCLASS(gum::DAG);
-ADD_NODES_METHOD_TO_GRAPHCLASS(gum::UndiGraph);
-ADD_NODES_METHOD_TO_GRAPHCLASS(gum::MixedGraph);
-ADD_NODES_METHOD_TO_GRAPHCLASS(gum::PDAG);
+ADD_METHOD_TO_GRAPH_ONLY_CLASS(gum::DiGraph);
+ADD_METHOD_TO_GRAPH_ONLY_CLASS(gum::DAG);
+ADD_METHOD_TO_GRAPH_ONLY_CLASS(gum::UndiGraph);
+ADD_METHOD_TO_GRAPH_ONLY_CLASS(gum::MixedGraph);
+ADD_METHOD_TO_GRAPH_ONLY_CLASS(gum::PDAG);
 // automatically done for subclass
-//ADD_NODES_METHOD_TO_GRAPHCLASS(gum::DAG);
+//ADD_METHOD_TO_GRAPH_ONLY_CLASS(gum::DAG);
 
 %define ADD_DI_METHOD_TO_GRAPHCLASS(classname)
 %extend classname {
