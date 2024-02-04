@@ -127,27 +127,19 @@ namespace gum {
 
   INLINE Idx IntegerVariable::closestIndex(double val) const {
     Idx i;
-    if (val<=_domain_.atPos(0)) {
-      return 0;
-    }
-    if (val>=_domain_.atPos(_domain_.size()-1)) {
-      return _domain_.size()-1;
-    }
-    for(i=1; i<_domain_.size(); ++i) {
+    if (val <= _domain_.atPos(0)) { return 0; }
+    if (val >= _domain_.atPos(_domain_.size() - 1)) { return _domain_.size() - 1; }
+    for (i = 1; i < _domain_.size(); ++i) {
       const auto& v = _domain_.atPos(i);
-      if (val == v) {
-         return i;
-      }
-      if (val < v) {
-        break;
-      }
+      if (val == v) { return i; }
+      if (val < v) { break; }
     }
 
     // now _domain_[i-1] < val < _domain_[i]
-    if (_domain_.atPos(i)-val < val-_domain_.atPos(i-1)) {
+    if (_domain_.atPos(i) - val < val - _domain_.atPos(i - 1)) {
       return i;
     } else {
-      return i-1;
+      return i - 1;
     }
   }
 

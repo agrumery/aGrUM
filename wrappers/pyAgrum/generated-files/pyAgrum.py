@@ -4162,16 +4162,15 @@ class UndiGraph(object):
       import numpy as np
       nodes=self.nodes()
       n=self.size()
-      am=np.zeros((n,n))
+      am=np.zeros((n,n)).astype(int)
 
       for node in nodes:
           if hasattr(self,'children'):
               for children in self.children(node):
-                  am[children,node]=1
+                  am[node,children]=1
           if hasattr(self,'neighbours'):
               for neighbour in self.neighbours(node):
-                  adj[node,neighbour]=1
-                  adj[neighbour,node]=1
+                  am[node,neighbour]=1
       return am
 
 
@@ -4589,16 +4588,15 @@ class DiGraph(object):
       import numpy as np
       nodes=self.nodes()
       n=self.size()
-      am=np.zeros((n,n))
+      am=np.zeros((n,n)).astype(int)
 
       for node in nodes:
           if hasattr(self,'children'):
               for children in self.children(node):
-                  am[children,node]=1
+                  am[node,children]=1
           if hasattr(self,'neighbours'):
               for neighbour in self.neighbours(node):
-                  adj[node,neighbour]=1
-                  adj[neighbour,node]=1
+                  am[node,neighbour]=1
       return am
 
 
@@ -7504,16 +7502,15 @@ class EssentialGraph(object):
       import numpy as np
       nodes=self.nodes()
       n=self.size()
-      am=np.zeros((n,n))
+      am=np.zeros((n,n)).astype(int)
 
       for node in nodes:
           if hasattr(self,'children'):
               for children in self.children(node):
-                  am[children,node]=1
+                  am[node,children]=1
           if hasattr(self,'neighbours'):
               for neighbour in self.neighbours(node):
-                  adj[node,neighbour]=1
-                  adj[neighbour,node]=1
+                  am[node,neighbour]=1
       return am
 
 
@@ -7755,16 +7752,15 @@ class MarkovBlanket(object):
       import numpy as np
       nodes=self.nodes()
       n=self.size()
-      am=np.zeros((n,n))
+      am=np.zeros((n,n)).astype(int)
 
       for node in nodes:
           if hasattr(self,'children'):
               for children in self.children(node):
-                  am[children,node]=1
+                  am[node,children]=1
           if hasattr(self,'neighbours'):
               for neighbour in self.neighbours(node):
-                  adj[node,neighbour]=1
-                  adj[neighbour,node]=1
+                  am[node,neighbour]=1
       return am
 
 
@@ -10390,16 +10386,15 @@ class IBayesNet(DAGmodel):
       import numpy as np
       nodes=self.nodes()
       n=self.size()
-      am=np.zeros((n,n))
+      am=np.zeros((n,n)).astype(int)
 
       for node in nodes:
           if hasattr(self,'children'):
               for children in self.children(node):
-                  am[children,node]=1
+                  am[node,children]=1
           if hasattr(self,'neighbours'):
               for neighbour in self.neighbours(node):
-                  adj[node,neighbour]=1
-                  adj[neighbour,node]=1
+                  am[node,neighbour]=1
       return am
 
 
@@ -11538,16 +11533,15 @@ class BayesNet(IBayesNet):
       import numpy as np
       nodes=self.nodes()
       n=self.size()
-      am=np.zeros((n,n))
+      am=np.zeros((n,n)).astype(int)
 
       for node in nodes:
           if hasattr(self,'children'):
               for children in self.children(node):
-                  am[children,node]=1
+                  am[node,children]=1
           if hasattr(self,'neighbours'):
               for neighbour in self.neighbours(node):
-                  adj[node,neighbour]=1
-                  adj[neighbour,node]=1
+                  am[node,neighbour]=1
       return am
 
 
@@ -12574,16 +12568,15 @@ class BayesNetFragment(IBayesNet, ):
       import numpy as np
       nodes=self.nodes()
       n=self.size()
-      am=np.zeros((n,n))
+      am=np.zeros((n,n)).astype(int)
 
       for node in nodes:
           if hasattr(self,'children'):
               for children in self.children(node):
-                  am[children,node]=1
+                  am[node,children]=1
           if hasattr(self,'neighbours'):
               for neighbour in self.neighbours(node):
-                  adj[node,neighbour]=1
-                  adj[neighbour,node]=1
+                  am[node,neighbour]=1
       return am
 
 
@@ -12916,16 +12909,15 @@ class IMarkovRandomField(UGmodel):
       import numpy as np
       nodes=self.nodes()
       n=self.size()
-      am=np.zeros((n,n))
+      am=np.zeros((n,n)).astype(int)
 
       for node in nodes:
           if hasattr(self,'children'):
               for children in self.children(node):
-                  am[children,node]=1
+                  am[node,children]=1
           if hasattr(self,'neighbours'):
               for neighbour in self.neighbours(node):
-                  adj[node,neighbour]=1
-                  adj[neighbour,node]=1
+                  am[node,neighbour]=1
       return am
 
 
@@ -13295,16 +13287,15 @@ class MarkovRandomField(IMarkovRandomField):
       import numpy as np
       nodes=self.nodes()
       n=self.size()
-      am=np.zeros((n,n))
+      am=np.zeros((n,n)).astype(int)
 
       for node in nodes:
           if hasattr(self,'children'):
               for children in self.children(node):
-                  am[children,node]=1
+                  am[node,children]=1
           if hasattr(self,'neighbours'):
               for neighbour in self.neighbours(node):
-                  adj[node,neighbour]=1
-                  adj[neighbour,node]=1
+                  am[node,neighbour]=1
       return am
 
 
@@ -25983,16 +25974,15 @@ class InfluenceDiagram(DAGmodel):
       import numpy as np
       nodes=self.nodes()
       n=self.size()
-      am=np.zeros((n,n))
+      am=np.zeros((n,n)).astype(int)
 
       for node in nodes:
           if hasattr(self,'children'):
               for children in self.children(node):
-                  am[children,node]=1
+                  am[node,children]=1
           if hasattr(self,'neighbours'):
               for neighbour in self.neighbours(node):
-                  adj[node,neighbour]=1
-                  adj[neighbour,node]=1
+                  am[node,neighbour]=1
       return am
 
 

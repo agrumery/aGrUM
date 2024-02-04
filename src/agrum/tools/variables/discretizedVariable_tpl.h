@@ -75,7 +75,8 @@ namespace gum {
   template < typename T_TICKS >
   INLINE DiscretizedVariable< T_TICKS >::DiscretizedVariable(const std::string& aName,
                                                              const std::string& aDesc) :
-      IDiscretizedVariable(aName, aDesc), _ticks_size_((Size)0) {
+      IDiscretizedVariable(aName, aDesc),
+      _ticks_size_((Size)0) {
     GUM_CONSTRUCTOR(DiscretizedVariable);
     _is_empirical = false;
     _ticks_.reserve(1);
@@ -86,7 +87,8 @@ namespace gum {
                                                              const std::string&            aDesc,
                                                              const std::vector< T_TICKS >& ticks,
                                                              bool is_empirical) :
-      IDiscretizedVariable(aName, aDesc), _ticks_size_((Size)0) {
+      IDiscretizedVariable(aName, aDesc),
+      _ticks_size_((Size)0) {
     GUM_CONSTRUCTOR(DiscretizedVariable);
     _is_empirical = is_empirical;
     _ticks_.reserve(ticks.size());
@@ -235,12 +237,8 @@ namespace gum {
 
   template < typename T_TICKS >
   INLINE Idx DiscretizedVariable< T_TICKS >::closestIndex(double val) const {
-    if (val<=_ticks_[0]) {
-      return 0;
-    }
-    if (val>=_ticks_[_ticks_size_-1]) {
-      return _ticks_size_-2;
-    }
+    if (val <= _ticks_[0]) { return 0; }
+    if (val >= _ticks_[_ticks_size_ - 1]) { return _ticks_size_ - 2; }
     return pos_((T_TICKS)val);
   }
 

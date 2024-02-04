@@ -25,8 +25,8 @@
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
-#include <sstream>
 #include <cmath>
+#include <sstream>
 
 // to ease IDE parsing
 #include <agrum/tools/variables/rangeVariable.h>
@@ -74,11 +74,11 @@ namespace gum {
 
   INLINE Idx RangeVariable::closestIndex(double val) const {
     int res = static_cast< int >(std::rint(val));
-    if (res-val==0.5) res--;
+    if (res - val == 0.5) res--;
 
-    if (res< _minBound_) {
+    if (res < _minBound_) {
       return 0;
-    } else if (res> _maxBound_) {
+    } else if (res > _maxBound_) {
       return domainSize() - 1;
     } else {
       return res - _minBound_;

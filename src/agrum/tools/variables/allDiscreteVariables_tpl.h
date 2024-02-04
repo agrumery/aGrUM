@@ -52,7 +52,7 @@ namespace gum {
           GUM_ERROR(InvalidArgument, "Empty range for variable " << var_description)
         } else if (args.size() == 1) {   // n[4] or n[0:5.5:10]
 
-         const auto& labels = split(args[0],":");
+          const auto& labels = split(args[0], ":");
 
           if (labels.size() == 3) {   // b{1.1:3.31:5}
             const auto fmin = std::stod(labels[0]);
@@ -62,8 +62,8 @@ namespace gum {
             if (fmax <= fmin) { GUM_ERROR(InvalidArgument, "last<=first in " << var_description) }
             if (nbr <= 1) { GUM_ERROR(InvalidArgument, "nbr<=1 in " << var_description) }
             const double step = double((fmax - fmin) / nbr);
-            for(int i=0; i<nbr+1; i++) {
-              ticks.push_back(fmin + i*step);
+            for (int i = 0; i < nbr + 1; i++) {
+              ticks.push_back(fmin + i * step);
             }
           } else {   // n[4]
             int n = std::stoi(args[0]);

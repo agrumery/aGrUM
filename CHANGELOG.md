@@ -3,18 +3,31 @@
 ## Changelog for 1.12.0
 
 * aGrUM
-  * adding and completing the new class `gum::MeekRules` to complete a learned PDAG to CPADG or BN.
+  * Adding a new class `gum::MeekRules` to complete a learned PDAG to CPADG or BN.
   * Preventing 'infinities' in the definition of numerical discrete variable.
   * Adding a new constructor for `gum::PDAG` from`gum::MixedGraph`.
+  * Better (stricter) `operator==` between `gum::DiscreteVariable`.
+  * Adding a new static constructor `gum::{Undi|Di}Graph::completeGraph(int n)`.
+  * Adding `closestIndex()` and `closestLabel()` methods for all numerical `gum::DiscreteVariable`.
 
 * pyAgrum
   * Preventing 'infinities' in the definition of numerical discrete variable.
-  * add a new `expert` discretization method to `pyAgrum.skbn.BNDiscretizer` (thanks to Ahmed Mabrouk).
-  * add `pyAgrum.skbn.BNDiscretizer.auditCSV` to directly audit a csv file.
-  * add `pyAgrum.fastGraph` to create `pyAgrum.{Di|Undi|Mixed}Graph`.
-  * Dataframe can now come from `pandas` or `polars` (thanks to Mads Linksou).
-  * pickle for graphs and graphicals models !
-
+  * Adding a new class `pyAgrum.MeekRules` to complete a learned PDAG to CPADG or BN.
+  * Better (stricter) `operator==` between `pyAgrum.DiscreteVariable`.
+  * Adding a new constructor for `pyAgrum.PDAG` from`pyAgrum.MixedGraph`.
+  * Adding a new `expert` discretization method to `pyAgrum.skbn.BNDiscretizer` (thanks to Ahmed Mabrouk).
+  * `pyAgrum.skbn.BNDiscretizer` can now take csv filename for input.
+  * Adding `pyAgrum.fastGraph` to create `pyAgrum.{Di|Undi|Mixed}Graph`.
+  * Dataframes can now come from `pandas` or `polars` (thanks to Mads Linksou).
+  * Pickle for graphs and graphicals models !
+  * Adding a 'compact' mode for histogram for discretized variable.
+  * Adding a new static constructor `pyAgrum.{Undi|Di}Graph::completeGraph(int n)`.
+  * Adding subscripting to graphical models : `g[name]` gives now a direct access to the `pyAgrum.DiscreteVariable` by its
+name.
+  * New syntax for `pyAgrum.fast{Var|BN|ID|MRF}` : `[a:b:n]` = `pyAgrum.DiscretizedVariable` with n intervalls from a to b.
+  * Adding `closestIndex()` and `closestLabel()` methods for all numerical `pyAgrum.DiscreteVariable`.
+  * Adding `g.adjacencyMatrix()` for all graphs and graphical models (thanks to Kenneth  Lee).
+  
 ## Changelog for 1.11.0
 
 * Internal
