@@ -69,7 +69,7 @@ def checkCompatibility(bn, fields, csv_name):
   return res
 
 
-def computeScores(bn_name, csv_name, visible=False):
+def computeScores(bn_name, csv_name, visible=False, dialect=None):
   """
   Compute scores (likelihood, aic, bic, mdl, etc.) from a bn w.r.t to a csv
 
@@ -81,6 +81,8 @@ def computeScores(bn_name, csv_name, visible=False):
      a filename for the CSV database
   visible: bool
     do we show the progress
+  dialect: csv.Dialect
+    if not provided, dialect will be inferred using csv.Sniffer().sniff(csvfile.read(1024))
 
   Returns
   -------
@@ -94,8 +96,9 @@ def computeScores(bn_name, csv_name, visible=False):
 
   nbr_lines = lines_count(csv_name) - 1
 
-  with open(csv_name, "r") as csvfile:
-    dialect = csv.Sniffer().sniff(csvfile.read(1024))
+  if dialect is None:
+    with open(csv_name, "r") as csvfile:
+      dialect = csv.Sniffer().sniff(csvfile.read(1024))
 
   nbr_insignificant = 0
   num_ligne = 1
