@@ -316,7 +316,7 @@ def getROCpoints(bn, datasrc, target, label, with_labels=True, significant_digit
       the list of points (FalsePositifRate,TruePositifRate)
   """
   if type(datasrc) is not str:
-    if hasattr(datasrc, "to_csv")  or hasattr(datasrc,"write_csv"):
+    if hasattr(datasrc, "to_csv") or hasattr(datasrc, "write_csv"):
       import tempfile
       csvfile = tempfile.NamedTemporaryFile(delete=False)
       tmpfilename = csvfile.name
@@ -369,7 +369,7 @@ def getPRpoints(bn, datasrc, target, label, with_labels=True, significant_digits
       the list of points (precision,recall)
   """
   if type(datasrc) is not str:
-    if hasattr(datasrc, "to_csv")  or hasattr(datasrc,"write_csv"):
+    if hasattr(datasrc, "to_csv") or hasattr(datasrc, "write_csv"):
       import tempfile
       csvfile = tempfile.NamedTemporaryFile(delete=False)
       tmpfilename = csvfile.name
@@ -532,7 +532,7 @@ def _drawPR(points, zeTitle, fbeta_PR, beta, AUC_PR, thresholds, thresholds_to_s
 
 @gum.deprecated_arg(newA="datasrc", oldA="csvname", version="1.8.3")
 def showROC_PR(bn, datasrc, target, label, *, beta=1, show_progress=True, show_fig=True, save_fig=False,
-               with_labels=True, show_ROC=True, show_PR=True, significant_digits=10):
+               with_labels=True, show_ROC=True, show_PR=True, significant_digits=10, bgcolor=None):
   """
   Compute the ROC curve and save the result in the folder of the csv file.
 
@@ -561,7 +561,9 @@ def showROC_PR(bn, datasrc, target, label, *, beta=1, show_progress=True, show_f
   show_PR: bool
     whether we show the PR figure
   significant_digits:
-    number of significant digits when computing probabilitie
+    number of significant digits when computing probabilities
+  bgcolor:
+    HTML background color for the figure (default: None if transparent)
 
   Returns
   -------
@@ -569,9 +571,8 @@ def showROC_PR(bn, datasrc, target, label, *, beta=1, show_progress=True, show_f
     (pointsROC, thresholdROC, pointsPR, thresholdPR)
 
   """
-
   if type(datasrc) is not str:
-    if hasattr(datasrc, "to_csv")  or hasattr(datasrc,"write_csv"):
+    if hasattr(datasrc, "to_csv") or hasattr(datasrc, "write_csv"):
       import tempfile
       csvfile = tempfile.NamedTemporaryFile(delete=False)
       tmpfilename = csvfile.name
@@ -590,6 +591,10 @@ def showROC_PR(bn, datasrc, target, label, *, beta=1, show_progress=True, show_f
       return
     else:
       raise TypeError("first argument must be a string or a DataFrame")
+
+  if bgcolor is not None:
+    oldcol = gum.config["notebook", "figure_facecolor"]
+    gum.config["notebook", "figure_facecolor"] = bgcolor
 
   filename = _getFilename(datasrc)
   (res, totalP, totalN) = _computePoints(bn, datasrc, target,
@@ -632,10 +637,13 @@ def showROC_PR(bn, datasrc, target, label, *, beta=1, show_progress=True, show_f
             thresholds_to_show=[thresholdPR], rate=rate)
 
   if save_fig:
-    pylab.savefig(figname, dpi=300)
+    pylab.savefig(figname, dpi=300, transparent=(bgcolor is None))
 
   if show_fig:
     pylab.show()
+
+  if bgcolor is not None:
+    gum.config["notebook", "figure_facecolor"] = oldcol
 
   return AUC_ROC, thresholdROC, AUC_PR, thresholdPR
 
