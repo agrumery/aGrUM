@@ -176,12 +176,17 @@ namespace gum {
 
     /// @}
 
+
+    private:
+    /// check the domain
+    /**
+     * this function use the assumption that the concrete type of the variable is the same as *this
+     */
+    bool _checkSameDomain_(const Variable& aRV) const final;
+
     protected:
     /// (protected) Default constructor
-    LabelizedVariable() {
-      GUM_CONSTRUCTOR(LabelizedVariable);
-      ;
-    }
+    LabelizedVariable() { GUM_CONSTRUCTOR(LabelizedVariable) }
 
     /// copies the content of aLDRV
 

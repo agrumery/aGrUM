@@ -69,7 +69,53 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(gum::ExactBNdistance< double > kl(net1, net1))
       TS_ASSERT_THROWS(gum::ExactBNdistance< double > kl(net1, net2),
                        const gum::OperationNotAllowed&)
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::ExactBNdistance< double > kl(net2, net3))
+      TS_ASSERT_THROWS(gum::ExactBNdistance< double > kl(net2, net3),
+                       const gum::OperationNotAllowed&)
+    }
+
+    GUM_ACTIVE_TEST(ComparableBNsForAnyDiscreteVariables) {
+      {
+        const std::string typevar = "";
+        auto bn1 = gum::BayesNet< double >::fastPrototype("A" + typevar + "->B" + typevar);
+        auto bn2 = gum::BayesNet< double >::fastPrototype("A" + typevar + "->B" + typevar);
+        gum::ExactBNdistance< double > kl(bn1, bn2);
+      }
+      {
+        const std::string typevar = "{yes|no}";
+        auto bn1 = gum::BayesNet< double >::fastPrototype("A" + typevar + "->B" + typevar);
+        auto bn2 = gum::BayesNet< double >::fastPrototype("A" + typevar + "->B" + typevar);
+        gum::ExactBNdistance< double > kl(bn1, bn2);
+      }
+      {
+        const std::string typevar = "{1|2|3|4|5}";
+        auto bn1 = gum::BayesNet< double >::fastPrototype("A" + typevar + "->B" + typevar);
+        auto bn2 = gum::BayesNet< double >::fastPrototype("A" + typevar + "->B" + typevar);
+        gum::ExactBNdistance< double > kl(bn1, bn2);
+      }
+      {
+        const std::string typevar = "{1.2|5.4|5.5|6.3}";
+        auto bn1 = gum::BayesNet< double >::fastPrototype("A" + typevar + "->B" + typevar);
+        auto bn2 = gum::BayesNet< double >::fastPrototype("A" + typevar + "->B" + typevar);
+        gum::ExactBNdistance< double > kl(bn1, bn2);
+      }
+      {
+        const std::string typevar = "[5]";
+        auto bn1 = gum::BayesNet< double >::fastPrototype("A" + typevar + "->B" + typevar);
+        auto bn2 = gum::BayesNet< double >::fastPrototype("A" + typevar + "->B" + typevar);
+        gum::ExactBNdistance< double > kl(bn1, bn2);
+      }
+      {
+        const std::string typevar = "[2,5]";
+        auto bn1 = gum::BayesNet< double >::fastPrototype("A" + typevar + "->B" + typevar);
+        auto bn2 = gum::BayesNet< double >::fastPrototype("A" + typevar + "->B" + typevar);
+        gum::ExactBNdistance< double > kl(bn1, bn2);
+      }
+      {
+        const std::string typevar = "[1.4,2.5,4.5,7.7]";
+        auto bn1 = gum::BayesNet< double >::fastPrototype("A" + typevar + "->B" + typevar);
+        auto bn2 = gum::BayesNet< double >::fastPrototype("A" + typevar + "->B" + typevar);
+        gum::ExactBNdistance< double > kl(bn1, bn2);
+      }
     }
 
     GUM_ACTIVE_TEST(Difficulty1) {
@@ -102,9 +148,9 @@ namespace gum_tests {
         reader.proceed();
       }
 
-      double vkl = 0.0;
-
+      double                         vkl = 0.0;
       gum::ExactBNdistance< double > stupid_bfkl(net3, net3);
+      TS_ASSERT_EQUALS(stupid_bfkl.difficulty(), gum::Complexity::Correct)
       TS_GUM_ASSERT_THROWS_NOTHING(vkl = stupid_bfkl.klPQ())
       TS_ASSERT_EQUALS(vkl, 0.0)
       TS_GUM_ASSERT_THROWS_NOTHING(vkl = stupid_bfkl.klQP())
@@ -117,15 +163,21 @@ namespace gum_tests {
         reader.proceed();
       }
 
-      gum::BNdistance< double > kl(net3, net4);
-      TS_ASSERT_EQUALS(kl.difficulty(), gum::Complexity::Correct)
+      TS_ASSERT_THROWS(gum::BNdistance< double > kl(net3, net4), const gum::OperationNotAllowed&);
 
+      gum::BayesNet< double > net5;
       {
-        gum::ExactBNdistance< double > bfkl(kl);
-        TS_GUM_ASSERT_THROWS_NOTHING(vkl = bfkl.klPQ())
+        gum::BIFReader< double > reader(&net5, GET_RESSOURCES_PATH("bif/BIFReader_file5.bif"));
+        reader.trace(false);
+        reader.proceed();
+      }
+      gum::BNdistance< double > kl(net3, net5);
+      TS_ASSERT_EQUALS(kl.difficulty(), gum::Complexity::Correct)
+      {
+        gum::ExactBNdistance< double > gkl(kl);
+        TS_GUM_ASSERT_THROWS_NOTHING(vkl = gkl.klPQ())
         TS_ASSERT_DIFFERS(vkl, (float)0.0)
       }
-
       {
         gum::GibbsBNdistance< double > gkl(kl);
         gkl.setMaxIter(40);

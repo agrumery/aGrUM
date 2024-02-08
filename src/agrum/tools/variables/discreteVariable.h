@@ -126,20 +126,6 @@ namespace gum {
 
     DiscreteVariable& operator=(const DiscreteVariable& aRV);
 
-    private:   // best attempt to get rid of overloaded virtual warnings
-    using Variable::operator==;
-
-    public:
-    /// equality operator
-    virtual bool operator==(const DiscreteVariable& aRV) const;
-
-    private:   // best attempt to get rid of overloaded virtual warnings
-    using Variable::operator!=;
-
-    public:
-    /// inequality operator
-    virtual bool operator!=(const DiscreteVariable& aRV) const;
-
     /// @}
 
     /// from the label to its index in var.

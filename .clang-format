@@ -112,3 +112,8 @@ IncludeCategories:
 
 MacroBlockBegin: '^GUM_APPROX_TEST_BEGIN_ITERATION'
 MacroBlockEnd: '^GUM_APPROX_TEST_END_ITERATION'
+StatementMacros: ['TS_ASSERT_EQUALS','TS_ASSERT_DIFFERS','TS_ASSERT_THROWS','TS_ASSERT',
+                  'GUM_CHECKPOINT','GUM_TRACE','GUM_TRACE_VAR',
+                  'GUM_ASSERT',
+                  'GUM_CONSTRUCTOR','GUM_DESTRUCTOR','GUM_CONS_CPY','GUM_CONS_MOV','GUM_OP_CPY','GUM_OP_MOV',
+                  'GUM_DEBUG_ONLY']

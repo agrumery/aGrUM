@@ -194,11 +194,12 @@ namespace gum_tests {
       fill(*bn);
 
       gum::VariableElimination< double > inf(bn);
-      gum::NodeSet                       nodeset;
 
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::InformationTheory itheo(inf,gum::NodeSet({2}),gum::NodeSet({4})))
+      gum::InformationTheory itheo(inf,gum::NodeSet({2}),gum::NodeSet({4}));
       TS_GUM_ASSERT_THROWS_NOTHING(inf.H((gum::NodeId)2))
+      TS_GUM_ASSERT_THROWS_NOTHING(itheo.mutualInformationXY())
 
-      //@TODO : test computations and not only good behaviour
     }
 
     // Testing when there is no evidence

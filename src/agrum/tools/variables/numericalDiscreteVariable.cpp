@@ -35,17 +35,14 @@ namespace gum {
                                                        const std::vector< double >& domain) :
       DiscreteVariable(aName, aDesc) {
     // get the values in increasing order
-    std::vector< double > dom = domain;
-    std::sort(dom.begin(), dom.end());
-
-    // store the sorted values into a sequence
-    _domain_.resize(dom.size());
-    for (const double val: dom) {
-      if (!gum::isfinite< double >(val)) {
-        GUM_ERROR(DefaultInLabel, "Tick '" << val << "' is not allowed for variable " << name())
+    for (const auto value: domain) {
+      if (!gum::isfinite< double >(value)) {
+        GUM_ERROR(DefaultInLabel,
+                  "Value '" << value << "' is not allowed for variable " << toString())
       }
-      _domain_ << val;
+      if (!isValue(value)) { _domain_.push_back(value); }
     }
+    std::sort(_domain_.begin(), _domain_.end());
 
     // for debugging purposes
     GUM_CONSTRUCTOR(NumericalDiscreteVariable);
@@ -56,8 +53,7 @@ namespace gum {
                                                        const std::string& aDesc,
                                                        double             first,
                                                        double             last,
-                                                       Size               nb) :
-      DiscreteVariable(aName, aDesc) {
+                                                       Size nb) : DiscreteVariable(aName, aDesc) {
     // store the sorted values into a sequence
     if (nb < 2) GUM_ERROR(ArgumentError, "The size of the domain must be >2 (here :" << nb << ").")
     if (first >= last)
@@ -71,30 +67,23 @@ namespace gum {
     }
 
     _domain_.resize(nb);
-    _domain_ << first;
+    _domain_.clear();
+
     const double step = (last - first) / (double(nb) - 1);
-
-    // now we try to find a significatif number of digits for the value (at least 4 otherwise 2+nbr
-    // digit in step)
     const double mask = std::pow(10, std::max(4, int(2 + std::abs(-std::log10(step)))));
-
     double current = first;
-    for (Idx i = 1; i < nb - 1; i++) {
+
+    _domain_.push_back(first);
+    for (Idx i = 1; i < nb-1 ; i++) {
       current += step;
-      _domain_ << std::round(current * mask) / mask;
+      _domain_.push_back( (std::round(current * mask) / mask));
     }
-    _domain_ << last;
+    _domain_.push_back(last);
+
+    std::sort(_domain_.begin(), _domain_.end());
 
     // for debugging purposes
     GUM_CONSTRUCTOR(NumericalDiscreteVariable);
-  }
-
-  /// equality operator
-  bool NumericalDiscreteVariable::operator==(const Variable& var) const {
-    try {
-      const NumericalDiscreteVariable& xvar = dynamic_cast< const NumericalDiscreteVariable& >(var);
-      return operator==(xvar);
-    } catch (std::bad_cast&) { return false; }
   }
 
   /// Returns the domain as a string
@@ -110,44 +99,5 @@ namespace gum {
     }
     s << "}";
     return s.str();
-  }
-
-  /// add a new value to the domain size
-  void NumericalDiscreteVariable::addValue(double value) {
-    if (!gum::isfinite< double >(value)) {
-      GUM_ERROR(DefaultInLabel, "Tick '" << value << "' is not allowed for variable " << name())
-    }
-
-    const Size size = _domain_.size();
-    if (size == Size(0) || (_domain_[size - 1] < value)) {
-      _domain_.insert(value);
-    } else {
-      // here, the value must not be inserted at the end of the sequence.
-      // it is faster to reconstruct the sequence from scratch
-      std::vector< double > values;
-      values.reserve(_domain_.size() + 1);
-      for (const auto val: _domain_)
-        values.push_back(val);
-      values.push_back(value);
-      std::sort(values.begin(), values.end());
-
-      Sequence< double > new_domain(_domain_.size() + 1);
-      for (const auto val: values)
-        new_domain.insert(val);
-      _domain_ = std::move(new_domain);
-    }
-  }
-
-  Idx NumericalDiscreteVariable::dichotomy_(double target, Idx min, Idx max) const {
-    if (max - min < 2) {   // max==min surely
-      return (target <= (_domain_.atPos(min) + _domain_.atPos(min + 1)) / 2) ? min : min + 1;
-    } else {
-      const Idx     mid = std::midpoint(min, max);
-      const double& val = _domain_.atPos(mid);
-
-      if (target < val) return this->dichotomy_(target, min, mid);
-      if (target > val) return this->dichotomy_(target, mid, max);
-      return mid;
-    }
   }
 }   // namespace gum

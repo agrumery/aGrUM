@@ -53,7 +53,7 @@
 namespace gum {
   template < typename GUM_SCALAR >
   NodeId build_node_for_MN(MarkovRandomField< GUM_SCALAR >& mn,
-                           std::string                      node,
+                           const std::string&               node,
                            Size                             default_domain_size) {
     auto v = fastVariable< GUM_SCALAR >(node, default_domain_size);
 
@@ -73,7 +73,6 @@ namespace gum {
     for (const auto& clikchain: split(remove_newline(dotlike), ";")) {
       NodeSet cliq;
       for (auto& node: split(clikchain, "--")) {
-        trim(node);
         auto idVar = build_node_for_MN(mn, node, domainSize);
         cliq.insert(idVar);
       }

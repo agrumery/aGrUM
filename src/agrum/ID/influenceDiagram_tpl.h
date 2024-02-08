@@ -85,7 +85,6 @@ namespace gum {
       for (const auto& souschaine: split(chaine, "->")) {
         bool forward = true;
         for (auto& node: split(souschaine, "<-")) {
-          trim(node);
           auto idVar = build_node_for_ID(infdiag, node, domainSize);
           if (notfirst) {
             if (forward) {

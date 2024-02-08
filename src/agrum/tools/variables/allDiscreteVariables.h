@@ -40,7 +40,7 @@ namespace gum {
    * @return an unique_ptr on the new variable.
    */
   template < typename GUM_SCALAR = double >
-  std::unique_ptr< DiscreteVariable > fastVariable(const std::string& var_description,
+  std::unique_ptr< DiscreteVariable > fastVariable(std::string var_description,
                                                    Size               default_domain_size = 2);
 }   // namespace gum
 

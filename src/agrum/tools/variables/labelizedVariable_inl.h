@@ -159,6 +159,16 @@ namespace gum {
     return s.str();
   }
 
+  INLINE bool LabelizedVariable::_checkSameDomain_(const gum::Variable& aRV) const {
+    // we can assume that aRV is a LabelizedVariable
+    // we ask for a strict equality, label by label
+    const auto& cv = static_cast< const LabelizedVariable& >(aRV);
+    if (domainSize() != cv.domainSize()) return false;
+    for (Idx i = 0; i < domainSize(); ++i)
+      if (label(i) != cv.label(i)) return false;
+    return true;
+  }
+
 } /* namespace gum */
 
 #endif /* DOXYGEN SHOULD SKIP THIS */

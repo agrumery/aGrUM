@@ -54,7 +54,7 @@
 namespace gum {
   template < typename GUM_SCALAR >
   NodeId
-     build_node(gum::BayesNet< GUM_SCALAR >& bn, std::string node, gum::Size default_domain_size) {
+     build_node(gum::BayesNet< GUM_SCALAR >& bn, const std::string& node, gum::Size default_domain_size) {
     auto v = fastVariable< GUM_SCALAR >(node, default_domain_size);
 
     NodeId res;
@@ -75,7 +75,6 @@ namespace gum {
       for (const auto& souschaine: split(chaine, "->")) {
         bool forward = true;
         for (auto& node: split(souschaine, "<-")) {
-          trim(node);
           auto idVar = build_node(bn, node, domainSize);
           if (notfirst) {
             if (forward) {

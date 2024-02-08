@@ -79,11 +79,11 @@ namespace gum {
 
   /// equality operator
 
-  INLINE bool Variable::operator==(const Variable& aRV) const { return (_name_ == aRV._name_); }
-
-  /// inequality operator
-
-  INLINE bool Variable::operator!=(const Variable& aRV) const { return (!operator==(aRV)); }
+  INLINE bool Variable::operator==(const Variable& aRV) const {
+      if (varType() != aRV.varType()) return false;
+      if (name() != aRV.name()) return false;
+      return _checkSameDomain_(aRV);
+    }
 
 } /* namespace gum */
 

@@ -27,13 +27,8 @@
 #ifndef GUM_NUMERICAL_DISCRETE_VARIABLE_H
 #define GUM_NUMERICAL_DISCRETE_VARIABLE_H
 
-#include <iostream>
-#include <sstream>
-#include <string>
-
 #include <agrum/agrum.h>
 
-#include <agrum/tools/core/sequence.h>
 #include <agrum/tools/variables/discreteVariable.h>
 
 namespace gum {
@@ -109,15 +104,6 @@ namespace gum {
     /// move operator
     /** @param from the numerical discrete random variable we copy */
     NumericalDiscreteVariable& operator=(NumericalDiscreteVariable&& from);
-
-    /// equality operator
-    bool operator==(const NumericalDiscreteVariable& var) const;
-    bool operator==(const Variable& var) const final;
-
-    /// inequality operator
-    bool operator!=(const NumericalDiscreteVariable& var) const;
-    bool operator!=(const Variable& var) const final;
-
     /// @}
 
 
@@ -141,6 +127,14 @@ namespace gum {
      * @throw NotFound */
     Idx index(const std::string& label) const final;
 
+    /**
+     * gives the index of the value closest to val
+     *
+     * @param val the desired double
+     * @return the index
+     */
+    Idx closestIndex(double val) const final;
+
     /// returns a string corresponding to the ith value of the domain
     std::string label(Idx index) const final;
 
@@ -154,7 +148,7 @@ namespace gum {
     std::string stype() const final { return "NumericalDiscrete"; };
 
     /// returns the domain as a sequence of values
-    const Sequence< double >& numericalDomain() const;
+    const std::vector< double >& numericalDomain() const;
 
     /// add a new value to the domain size
     /** @throw DuplicateElement is raised if the variable already contains the value
@@ -173,13 +167,6 @@ namespace gum {
     /// clear the domain of the variable
     void eraseValues();
 
-    /**
-     * gives the index of the value closest to val
-     *
-     * @param val the desired double
-     * @return the index
-     */
-    Idx closestIndex(double val) const;
 
     /**
      * gives the value closets to val
@@ -192,10 +179,10 @@ namespace gum {
 
     private:
     /// the domain of the variable
-    Sequence< double > _domain_;
+    std::vector< double > _domain_;
 
-    Idx         dichotomy_(double target, Idx min, Idx max) const;
-    std::string _generateLabel(double f) const;
+    bool        _checkSameDomain_(const Variable& aRV) const final;
+    std::string _generateLabel_(double f) const;
   };
 
 } /* namespace gum */

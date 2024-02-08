@@ -157,8 +157,13 @@ namespace gum {
     std::string stype() const final { return "Range"; };
 
     private:
-    /// @name Private Members.
+    /// check the domain
+    /**
+     * this function use the assumption that the concrete type of the variable is the same as *this
+     */
+    bool _checkSameDomain_(const Variable& aRV) const final;
 
+/// @name Private Members.
     /// @{
     /// The lower bound.
     long _minBound_;

@@ -113,4 +113,11 @@ namespace gum {
 
   INLINE VarType RangeVariable::varType() const { return VarType::Range; }
 
+  INLINE bool RangeVariable::_checkSameDomain_(const gum::Variable& aRV) const {
+    // we can assume that aRV is a RangeVariable
+    const auto& cv = static_cast< const RangeVariable& >(aRV);
+    if (_minBound_ != cv._minBound_) return false;
+    if (_maxBound_ != cv._maxBound_) return false;
+    return true;
+  }
 } /* namespace gum */

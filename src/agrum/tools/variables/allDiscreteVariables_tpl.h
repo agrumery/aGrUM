@@ -26,8 +26,8 @@
 
 namespace gum {
   template < typename GUM_SCALAR >
-  std::unique_ptr< DiscreteVariable > fastVariable(const std::string& var_description,
-                                                   Size               default_domain_size) {
+  std::unique_ptr< DiscreteVariable > fastVariable(std::string var_description,
+                                                   Size        default_domain_size) {
     if (default_domain_size == 0) GUM_ERROR(InvalidArgument, "default_domain_size can not be 0")
 
     Size                       ds        = default_domain_size;
@@ -40,6 +40,7 @@ namespace gum {
     std::vector< int >    values;
     std::vector< double > numerical_values;
 
+    trim(var_description);
     // [1,3,5]...
     if (*(var_description.rbegin()) == ']') {
       auto posBrack = var_description.find('[');
@@ -62,7 +63,7 @@ namespace gum {
             if (fmax <= fmin) { GUM_ERROR(InvalidArgument, "last<=first in " << var_description) }
             if (nbr <= 1) { GUM_ERROR(InvalidArgument, "nbr<=1 in " << var_description) }
             const double step = double((fmax - fmin) / nbr);
-            for (int i = 0; i < nbr + 1; i++) {
+            for (double i = 0.0; i < nbr + 1; i += 1.0) {
               ticks.push_back(fmin + i * step);
             }
           } else {   // n[4]
@@ -114,10 +115,10 @@ namespace gum {
               && (trunc(fmax) == fmax)) {   // b{1:6:5} => IntegerVariable
             labels.clear();
             numerical_values.clear();
-            auto v = fmin;
-            for (auto i = 1; i <= nbr; i++) {
+            int v = int(fmin);
+            for (int i = 1; i <= nbr; i++) {
               labels.push_back(std::to_string(v));
-              v += step;
+              v += int(step);
             }
           } else {   // b{1.3:6.3:5} => NumericalDiscreteVariable
             labels.clear();
@@ -186,10 +187,18 @@ namespace gum {
     if (!values.empty()) {
       return std::make_unique< IntegerVariable >(name, name, values);
     } else if (!numerical_values.empty()) {
+      if (! std::all_of(numerical_values.cbegin(),
+                      numerical_values.cend(),
+                      gum::isfinite< double >)) {
+        GUM_ERROR(DefaultInLabel, "Infinite value is not allowed for variable " << name)
+      }
       return std::make_unique< NumericalDiscreteVariable >(name, name, numerical_values);
     } else if (!labels.empty()) {
       return std::make_unique< LabelizedVariable >(name, name, labels);
     } else if (!ticks.empty()) {
+      if (! std::all_of(ticks.cbegin(), ticks.cend(), gum::isfinite< double >)) {
+        GUM_ERROR(DefaultInLabel, "Infinite value is not allowed for variable " << name)
+      }
       return std::make_unique< DiscretizedVariable< GUM_SCALAR > >(name, name, ticks);
     } else {
       return std::make_unique< RangeVariable >(name, name, range_min, range_max);

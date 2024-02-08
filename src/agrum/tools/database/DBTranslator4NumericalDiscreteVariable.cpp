@@ -60,7 +60,7 @@ namespace gum {
         if (DBCell::isReal(*iter)) {
           char*        endptr      = nullptr;
           const double missing_val = std::strtod(iter->c_str(), &endptr);
-          if (_variable_.numericalDomain().exists(missing_val)) {
+          if (_variable_.isValue(missing_val)) {
             this->missing_symbols_.erase(iter);
           }
         }

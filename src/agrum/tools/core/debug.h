@@ -120,9 +120,9 @@
 #    define GUM_CONSTRUCTOR(x) ;
 #    define GUM_DESTRUCTOR(x)  ;
 #    define GUM_CONS_CPY(x)    ;
-#    define GUM_CONS_MOV(x)
-#    define GUM_OP_CPY(x)
-#    define GUM_OP_MOV(x)
+#    define GUM_CONS_MOV(x)    ;
+#    define GUM_OP_CPY(x)      ;
+#    define GUM_OP_MOV(x)      ;
 
 #    define GUM_DEBUG_ONLY(x)
 /////////////////////////////////////////////////////////////

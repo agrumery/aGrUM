@@ -122,41 +122,25 @@ namespace gum {
   // check if the 2 BNs are compatible
   template < typename GUM_SCALAR >
   bool BNdistance< GUM_SCALAR >::_checkCompatibility_() const {
-    for (auto node: p_.nodes()) {
-      const DiscreteVariable& vp = p_.variable(node);
-
-      try {
-        const DiscreteVariable& vq = q_.variableFromName(vp.name());
-
-        if (vp.domainSize() != vq.domainSize())
-          GUM_ERROR(OperationNotAllowed,
-                    "BNdistance : the 2 BNs are not compatible "
-                    "(not the same domainSize for "
-                       + vp.name() + ")");
-
-        for (Idx i = 0; i < vp.domainSize(); i++) {
-          try {
-            vq[vp.label(i)];
-            vp[vq.label(i)];
-
-          } catch (OutOfBounds const&) {
-            GUM_ERROR(OperationNotAllowed,
-                      "BNdistance : the 2 BNs are not compatible F(not the same "
-                      "labels for "
-                         + vp.name() + ")");
-          }
-        }
-      } catch (NotFound const&) {
-        GUM_ERROR(OperationNotAllowed,
-                  "BNdistance : the 2 BNs are not compatible (not the same vars : " + vp.name()
-                     + ")");
-      }
-    }
-
     // should not be used
     if (p_.size() != q_.size())
       GUM_ERROR(OperationNotAllowed,
                 "BNdistance : the 2 BNs are not compatible (not the same size)")
+
+    for (auto node: p_.nodes()) {
+      const DiscreteVariable& vp = p_.variable(node);
+      try {
+        const DiscreteVariable& vq = q_.variableFromName(vp.name());
+        if (vp!=vq)
+          GUM_ERROR(OperationNotAllowed,
+                    "BNdistance : the 2 BNs are not compatible "
+                    "(not the same variable for the same name : "
+                       + vp.toString() + "and "+vq.toString()+")");
+      } catch (NotFound const&) {
+        GUM_ERROR(OperationNotAllowed,
+                  "BNdistance : the 2 BNs are not compatible (variable : " + vp.name() + ")");
+      }
+    }
 
     if (std::fabs(p_.log10DomainSize() - q_.log10DomainSize()) > 1e-14) {
       GUM_ERROR(OperationNotAllowed,

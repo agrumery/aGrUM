@@ -27,13 +27,8 @@
 #ifndef GUM_INTEGER_DISCRETE_VARIABLE_H
 #define GUM_INTEGER_DISCRETE_VARIABLE_H
 
-#include <iostream>
-#include <sstream>
-#include <string>
-
 #include <agrum/agrum.h>
 
-#include <agrum/tools/core/sequence.h>
 #include <agrum/tools/variables/discreteVariable.h>
 
 namespace gum {
@@ -110,13 +105,6 @@ namespace gum {
     /** @param from the integer discrete random variable we copy */
     IntegerVariable& operator=(IntegerVariable&& from);
 
-    /// equality operator
-    bool         operator==(const IntegerVariable& var) const;
-    virtual bool operator==(const Variable& var) const;
-
-    /// inequality operator
-    bool         operator!=(const IntegerVariable& var) const;
-    virtual bool operator!=(const Variable& var) const;
 
     /// @}
 
@@ -157,7 +145,7 @@ namespace gum {
     std::string stype() const final { return "Integer"; };
 
     /// returns the domain as a sequence of values
-    const Sequence< int >& integerDomain() const;
+    const std::vector< int >& integerDomain() const;
 
     /// add a new value to the domain size
     /** @throw DuplicateElement is raised if the variable already contains the value
@@ -176,11 +164,25 @@ namespace gum {
     /// clear the domain of the variable
     void eraseValues();
 
+    /**
+     * gives the value closets to val
+     *
+     * @param val the desired value
+     * @return the value
+     */
+    std::string closestLabel(double val) const;
+
     /// @}
 
     private:
+    /// check the domain
+    /**
+     * this function use the assumption that the concrete type of the variable is the same as *this
+     */
+    bool _checkSameDomain_(const Variable& aRV) const final;
+
     /// the domain of the variable
-    Sequence< int > _domain_;
+    std::vector< int > _domain_;
   };
 
 } /* namespace gum */

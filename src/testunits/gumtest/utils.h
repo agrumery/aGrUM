@@ -11,6 +11,8 @@
 #define XGET_RESSOURCES_PATH( x ) \
   xstrfy( GUM_SRC_PATH ) "/testunits/ressources/" xstrfy( x )
 
+#define FASTVARDBL gum::fastVariable< double >
+
 namespace gum_tests {
   const std::string waiter[]{"[*  ]", "[ * ]", "[  *]", "[ * ]"};
   const std::string backst = "\b\b\b\b\b";

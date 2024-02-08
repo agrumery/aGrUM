@@ -37,24 +37,24 @@ namespace gum_tests {
       gum::NumericalDiscreteVariable var2("var2", "this is var2", {1.0, 9.45, 7.0});
 
       TS_ASSERT_EQUALS(var1.domainSize(), (gum::Size)0)
-      const gum::Sequence< double >& vect1 = var1.numericalDomain();
+      const auto& vect1 = var1.numericalDomain();
       TS_ASSERT_EQUALS(vect1.size(), (gum::Size)(gum::Size)0)
       TS_ASSERT_EQUALS(var2.domainSize(), (gum::Size)3)
-      const gum::Sequence< double >& vect2 = var2.numericalDomain();
+      const auto& vect2 = var2.numericalDomain();
       TS_ASSERT_EQUALS(vect2[0], 1.0)
       TS_ASSERT_EQUALS(vect2[1], 7.0)
       TS_ASSERT_EQUALS(vect2[2], 9.45)
 
       gum::NumericalDiscreteVariable var3(var2);
       TS_ASSERT_EQUALS(var3.domainSize(), (gum::Size)3)
-      const gum::Sequence< double >& vect3 = var3.numericalDomain();
+      const auto& vect3 = var3.numericalDomain();
       TS_ASSERT_EQUALS(vect3[0], 1.0)
       TS_ASSERT_EQUALS(vect3[1], 7.0)
       TS_ASSERT_EQUALS(vect3[2], 9.45)
 
       gum::NumericalDiscreteVariable var4(std::move(var3));
       TS_ASSERT_EQUALS(var4.domainSize(), (gum::Size)3)
-      const gum::Sequence< double >& vect4 = var4.numericalDomain();
+      const auto& vect4 = var4.numericalDomain();
       TS_ASSERT_EQUALS(vect4[0], 1.0)
       TS_ASSERT_EQUALS(vect4[1], 7.0)
       TS_ASSERT_EQUALS(vect4[2], 9.45)
@@ -63,7 +63,7 @@ namespace gum_tests {
 
       gum::NumericalDiscreteVariable* var5 = var4.clone();
       TS_ASSERT_EQUALS(var5->domainSize(), (gum::Size)3)
-      const gum::Sequence< double >& vect5 = var5->numericalDomain();
+      const auto& vect5 = var5->numericalDomain();
       TS_ASSERT_EQUALS(vect5[0], 1.0)
       TS_ASSERT_EQUALS(vect5[1], 7.0)
       TS_ASSERT_EQUALS(vect5[2], 9.45)
@@ -73,7 +73,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(var7.domainSize(), (gum::Size)3)
       var7 = var6;
       TS_ASSERT_EQUALS(var7.domainSize(), (gum::Size)4)
-      const gum::Sequence< double >& vect7 = var7.numericalDomain();
+      const auto& vect7 = var7.numericalDomain();
       TS_ASSERT_EQUALS(vect7[0], -2)
       TS_ASSERT_EQUALS(vect7[1], -1)
       TS_ASSERT_EQUALS(vect7[2], 4.25)
@@ -103,13 +103,13 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(var3.label(1), "-1")
       TS_ASSERT_EQUALS(var3.label(2), "4.25")
       TS_ASSERT_EQUALS(var3.label(3), "8")
-      TS_ASSERT_THROWS(var3.label(4), const gum::NotFound&)
+      TS_ASSERT_THROWS(var3.label(4), const gum::OutOfBounds&)
 
       TS_ASSERT_EQUALS(var3.numerical(0), -2.0)
       TS_ASSERT_EQUALS(var3.numerical(1), -1.0)
       TS_ASSERT_EQUALS(var3.numerical(2), 4.25)
       TS_ASSERT_EQUALS(var3.numerical(3), 8.0)
-      TS_ASSERT_THROWS(var3.numerical(4), const gum::NotFound&)
+      TS_ASSERT_THROWS(var3.numerical(4), const gum::OutOfBounds&)
 
       TS_ASSERT_EQUALS(var3.domain(), "{-2|-1|4.25|8}")
       TS_ASSERT_EQUALS(var1.domain(), "{}")
@@ -187,7 +187,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(vect1[1], 10)
       TS_ASSERT_EQUALS(vect1[2], 12.25)
 
-      TS_ASSERT_THROWS_NOTHING(var1.eraseValue(22))
+      TS_GUM_ASSERT_THROWS_NOTHING(var1.eraseValue(22))
       var1.eraseValue(2);
       TS_ASSERT_EQUALS(vect1.size(), (gum::Size)2)
       TS_ASSERT_EQUALS(vect1[0], 10)
@@ -208,7 +208,7 @@ namespace gum_tests {
         gum::NumericalDiscreteVariable var("var", "this is var2", 0.0, 2.5, gum::Size(6));
 
         TS_ASSERT_EQUALS(var.domainSize(), (gum::Size)6)
-        const gum::Sequence< double >& vect = var.numericalDomain();
+        const auto& vect = var.numericalDomain();
         TS_ASSERT_EQUALS(vect.size(), (gum::Size)(gum::Size)6)
         TS_ASSERT_EQUALS(vect[0], 0.0)
         TS_ASSERT_EQUALS(vect[1], 0.5)
@@ -221,7 +221,7 @@ namespace gum_tests {
         gum::NumericalDiscreteVariable var("var", "this is var2", 0.0, 2.5, gum::Size(7));
 
         TS_ASSERT_EQUALS(var.domainSize(), (gum::Size)7)
-        const gum::Sequence< double >& vect = var.numericalDomain();
+        const auto& vect = var.numericalDomain();
         TS_ASSERT_EQUALS(vect.size(), (gum::Size)(gum::Size)7)
         TS_ASSERT_EQUALS(vect[0], 0.0)
         TS_ASSERT_EQUALS(vect[1], 0.4167)

@@ -21,6 +21,8 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+#include <algorithm>
+
 // to ease parsers in IDE
 #  include <agrum/tools/variables/discreteVariable.h>
 
@@ -50,16 +52,6 @@ namespace gum {
     if (&aRV != this) { Variable::operator=(aRV); }
 
     return *this;
-  }
-
-  // equality operator
-  INLINE bool DiscreteVariable::operator==(const DiscreteVariable& aRV) const {
-    return (Variable::operator==(aRV) && (stype() == aRV.stype()) && (labels() == aRV.labels()));
-  }
-
-  // inequality operator
-  INLINE bool DiscreteVariable::operator!=(const DiscreteVariable& aRV) const {
-    return (!operator==(aRV));
   }
 
   // empty() <==> domainSize()<2

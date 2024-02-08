@@ -39,11 +39,6 @@ namespace gum {
 
   enum class VarType : char { Discretized, Labelized, Integer, Numerical, Range, Continuous };
 
-  class Variable;
-
-  /// for friendly displaying the content of the variable
-
-  std::ostream& operator<<(std::ostream& s, const Variable& LDRV);
 
   /* ===========================================================================
    */
@@ -91,12 +86,8 @@ namespace gum {
     Variable& operator=(const Variable& aRV);
 
     /// equality operator
+    bool operator==(const Variable& aRV) const;
 
-    virtual bool operator==(const Variable& aRV) const;
-
-    /// inequality operator
-
-    virtual bool operator!=(const Variable& aRV) const;
 
     /// @}
 
@@ -153,9 +144,19 @@ namespace gum {
     /// since description is not a characteristic of a variable, we allow the
     /// description to be changed even in a const reference.
     mutable std::string _description_;
+
+    /// check the domain
+    /**
+     * this function use the assumption that the concrete type of the variable is the same as *this
+     */
+    virtual bool _checkSameDomain_(const Variable& aRV) const = 0;
   };
 
 } /* namespace gum */
+
+
+/// for friendly displaying the content of the variable
+std::ostream& operator<<(std::ostream& s, const gum::Variable& LDRV);
 
 #ifndef GUM_NO_INLINE
 #  include <agrum/tools/variables/variable_inl.h>

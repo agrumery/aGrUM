@@ -21,6 +21,8 @@
 
 #include <agrum/tools/variables/integerVariable.h>
 
+#include <agrum/tools/core/math/math_utils.h>
+
 #ifdef GUM_NO_INLINE
 #  include <agrum/tools/variables/integerVariable_inl.h>
 #endif /* GUM_NO_INLINE */
@@ -33,14 +35,14 @@ namespace gum {
                                    const std::vector< int >& domain) :
       DiscreteVariable(aName, aDesc) {
     // get the values in increasing order
-    std::vector< int > dom = domain;
-    std::sort(dom.begin(), dom.end());
-
-    // store the sorted values into a sequence
-    _domain_.resize(dom.size());
-    for (const int val: dom) {
-      _domain_ << val;
+    for (const auto value: domain) {
+      if (!gum::isfinite< double >(value)) {
+        GUM_ERROR(DefaultInLabel,
+                  "Value '" << value << "' is not allowed for variable " << toString())
+      }
+      if (!isValue(value)) { _domain_.push_back(value); }
     }
+    std::sort(_domain_.begin(), _domain_.end());
 
     // for debugging purposes
     GUM_CONSTRUCTOR(IntegerVariable)
@@ -51,8 +53,7 @@ namespace gum {
                                    const std::string& aDesc,
                                    int                first,
                                    int                last,
-                                   Size               nb) :
-      DiscreteVariable(aName, aDesc) {
+                                   Size               nb) : DiscreteVariable(aName, aDesc) {
     // store the sorted values into a sequence
     if (nb < 2) GUM_ERROR(ArgumentError, "The size of the domain must be >2 (here :" << nb << ").")
     if (first >= last)
@@ -64,24 +65,20 @@ namespace gum {
                 "With nb=" << nb << ", increment is less (or equal) than 1 ! (" << step << ")")
 
     _domain_.resize(nb);
-    _domain_ << first;
+    _domain_.clear();
+
+    _domain_.push_back(first);
     double current = first;
     for (Idx i = 1; i < nb - 1; i++) {
       current += step;
-      _domain_ << int(current);
+      _domain_.push_back(int(current));
     }
-    _domain_ << last;
+    _domain_.push_back(last);
+
+    std::sort(_domain_.begin(), _domain_.end());
 
     // for debugging purposes
     GUM_CONSTRUCTOR(IntegerVariable)
-  }
-
-  /// equality operator
-  bool IntegerVariable::operator==(const Variable& var) const {
-    try {
-      const IntegerVariable& xvar = dynamic_cast< const IntegerVariable& >(var);
-      return operator==(xvar);
-    } catch (std::bad_cast&) { return false; }
   }
 
   /// Returns the domain as a string
@@ -98,27 +95,4 @@ namespace gum {
     s << "}";
     return s.str();
   }
-
-  /// add a new value to the domain size
-  void IntegerVariable::addValue(int value) {
-    const Size size = _domain_.size();
-    if (size == Size(0) || (_domain_[size - 1] < value)) {
-      _domain_.insert(value);
-    } else {
-      // here, the value must not be inserted at the end of the sequence.
-      // it is faster to reconstruct the sequence from scratch
-      std::vector< int > values;
-      values.reserve(_domain_.size() + 1);
-      for (const auto val: _domain_)
-        values.push_back(val);
-      values.push_back(value);
-      std::sort(values.begin(), values.end());
-
-      Sequence< int > new_domain(_domain_.size() + 1);
-      for (const auto val: values)
-        new_domain.insert(val);
-      _domain_ = std::move(new_domain);
-    }
-  }
-
 }   // namespace gum

@@ -59,7 +59,7 @@ namespace gum {
            ++iter) {
         if (DBCell::isInteger(*iter)) {
           const int missing_val = std::stoi(*iter);
-          if (_variable_.integerDomain().exists(missing_val)) {
+          if (_variable_.isValue(missing_val)) {
             this->missing_symbols_.erase(iter);
           }
         }

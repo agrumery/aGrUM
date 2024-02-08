@@ -60,7 +60,7 @@ namespace gum {
       DiscreteVariable(std::move(from)), _domain_(std::move(from._domain_)) {
     from._domain_.clear();
     // for debugging purposes
-    GUM_CONSTRUCTOR(IntegerVariable);
+    GUM_CONS_MOV(IntegerVariable);
   }
 
   /// virtual copy constructor
@@ -80,12 +80,6 @@ namespace gum {
     return *this;
   }
 
-  INLINE std::string IntegerVariable::toFast() const {
-    std::stringstream s;
-    s << name() << domain();
-    return s.str();
-  }
-
   /// move operator
   INLINE IntegerVariable& IntegerVariable::operator=(IntegerVariable&& from) {
     // avoid self assignment
@@ -98,18 +92,6 @@ namespace gum {
     return *this;
   }
 
-  /// equality operator
-  INLINE bool IntegerVariable::operator==(const IntegerVariable& var) const {
-    return Variable::operator==(var) && (var._domain_ == _domain_);
-  }
-
-  /// inequality operator
-  INLINE bool IntegerVariable::operator!=(const Variable& var) const { return !operator==(var); }
-
-  INLINE bool IntegerVariable::operator!=(const IntegerVariable& var) const {
-    return !operator==(var);
-  }
-
   /// returns the domain size of the discrete random variable
   INLINE Size IntegerVariable::domainSize() const { return _domain_.size(); }
 
@@ -118,28 +100,26 @@ namespace gum {
 
   /// returns the index of a given label
   INLINE Idx IntegerVariable::index(const std::string& aLabel) const {
-    try {
-      return _domain_.pos(std::stoi(aLabel));
-    } catch (...) {
-      GUM_ERROR(NotFound, "label '" << aLabel << "' is unknown in " << this->toString());
+    const auto x   = std::stoi(aLabel);
+    const Idx  ind = std::lower_bound(_domain_.begin(), _domain_.end(), x) - _domain_.begin();
+
+    if (ind != _domain_.size() && _domain_[ind] == x) {
+      return ind;
+    } else {
+      GUM_ERROR(NotFound, "label '" << aLabel << "' is unknown in " << toString());
     }
   }
 
   INLINE Idx IntegerVariable::closestIndex(double val) const {
-    Idx i;
-    if (val <= _domain_.atPos(0)) { return 0; }
-    if (val >= _domain_.atPos(_domain_.size() - 1)) { return _domain_.size() - 1; }
-    for (i = 1; i < _domain_.size(); ++i) {
-      const auto& v = _domain_.atPos(i);
-      if (val == v) { return i; }
-      if (val < v) { break; }
-    }
+    const Idx ind = std::lower_bound(_domain_.begin(), _domain_.end(), val) - _domain_.begin();
 
-    // now _domain_[i-1] < val < _domain_[i]
-    if (_domain_.atPos(i) - val < val - _domain_.atPos(i - 1)) {
-      return i;
+    if (ind == _domain_.size()) return _domain_.size() - 1;
+    if (ind == 0) return 0;
+
+    if (_domain_[ind] - val < val - _domain_[ind - 1]) {
+      return ind;
     } else {
-      return i - 1;
+      return ind - 1;
     }
   }
 
@@ -147,21 +127,30 @@ namespace gum {
   INLINE std::string IntegerVariable::label(Idx i) const {
     // note that if i is outside the domain, Sequence _domain_ will raise
     // an exception
+    if (i < 0 || i >= _domain_.size())
+      GUM_ERROR(OutOfBounds, "Index out of bounds : " << i << "for variable " << toString() << ".")
     return std::to_string(_domain_[i]);
   }
 
   /// get a numerical representation of the indice-th value.
-  INLINE double IntegerVariable::numerical(Idx i) const { return double(_domain_[i]); }
+  INLINE double IntegerVariable::numerical(Idx i) const {
+    if (i < 0 || i >= _domain_.size())
+      GUM_ERROR(OutOfBounds, "Index out of bounds : " << i << "for variable " << toString() << ".")
+    return double(_domain_[i]);
+  }
 
   /// returns the domain as a sequence of values
-  INLINE const Sequence< int >& IntegerVariable::integerDomain() const { return _domain_; }
+  INLINE const std::vector< int >& IntegerVariable::integerDomain() const { return _domain_; }
 
-  INLINE bool IntegerVariable::isValue(int value) const { return _domain_.exists(value); }
+  INLINE bool IntegerVariable::isValue(int value) const {
+    const Idx ind = std::lower_bound(_domain_.begin(), _domain_.end(), value) - _domain_.begin();
+    return (ind != _domain_.size() && _domain_[ind] == value);
+  }
 
   /// substitute a value by another one
   INLINE void IntegerVariable::changeValue(int old_value, int new_value) {
-    if (!_domain_.exists(old_value)) return;
-    if (_domain_.exists(new_value)) {
+    if (!isValue(old_value)) return;
+    if (isValue(new_value)) {
       GUM_ERROR(DuplicateElement,
                 "Value" << new_value << " already belongs to the domain of the variable");
     }
@@ -171,12 +160,41 @@ namespace gum {
   }
 
   /// erase a value from the domain of the variable
-  INLINE void IntegerVariable::eraseValue(int value) { _domain_.erase(value); }
+  INLINE void IntegerVariable::eraseValue(int value) {
+    const Idx ind = std::lower_bound(_domain_.begin(), _domain_.end(), value) - _domain_.begin();
+    if (ind != _domain_.size() && _domain_[ind] == value) {
+      _domain_.erase(_domain_.begin() + ind);
+    }
+  }
 
   /// clear the domain of the variable
   INLINE void IntegerVariable::eraseValues() { _domain_.clear(); }
 
+  INLINE bool IntegerVariable::_checkSameDomain_(const gum::Variable& aRV) const {
+    // we can assume that aRV is a IntegerVariable
+    const auto& cv = static_cast< const IntegerVariable& >(aRV);
+    if (domainSize() != cv.domainSize()) return false;
+    return cv._domain_ == _domain_;
+  }
 
+  INLINE void IntegerVariable::addValue(int value) {
+    if (isValue(value)) {
+      GUM_ERROR(DuplicateElement,
+                "Value " << value << " already belongs to the domain of the variable");
+    }
+    _domain_.push_back(value);
+    std::sort(_domain_.begin(), _domain_.end());
+  }
+
+  INLINE std::string IntegerVariable::closestLabel(double val) const {
+    return label(closestIndex(val));
+  }
+
+  INLINE std::string IntegerVariable::toFast() const {
+    std::stringstream s;
+    s << name() << domain();
+    return s.str();
+  }
 } /* namespace gum */
 
 #endif /* DOXYGEN SHOULD SKIP THIS */
