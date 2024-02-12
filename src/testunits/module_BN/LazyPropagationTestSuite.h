@@ -97,17 +97,24 @@ namespace gum_tests {
       delete e_i4;
     }
 
+    [[nodiscard]] gum::Potential< double > joint(const gum::BayesNet< double >& bn) {
+      gum::Potential< double > pot;
+      for (const auto node: bn.dag()) {
+        pot *= bn.cpt(node);
+      }
+      return pot;
+    }
+
     [[nodiscard]] bool equalPotentials(const gum::Potential< double >& p1,
                                        const gum::Potential< double >& p2) const {
-      gum::Instantiation ii1(p1);
-      gum::Instantiation ii2(p2);
+      gum::Instantiation ii(p1);
 
-      for (ii1.setFirst(), ii2.setFirst(); !ii1.end(); ii1.inc(), ii2.inc()) {
-        if ((p1[ii1] == 0) && (std::fabs(p2[ii2]) > TS_GUM_SMALL_ERROR)) return false;
-        if (p1[ii1] > p2[ii2]) {
-          if (std::fabs((p1[ii1] - p2[ii2]) / p1[ii1]) > TS_GUM_SMALL_ERROR) return false;
+      for (ii.setFirst(); !ii.end(); ii.inc()) {
+        if ((p1[ii] == 0) && (std::fabs(p2[ii]) > TS_GUM_SMALL_ERROR)) return false;
+        if (p1[ii] > p2[ii]) {
+          if (std::fabs((p1[ii] - p2[ii]) / p1[ii]) > TS_GUM_SMALL_ERROR) return false;
         } else {
-          if (std::fabs((p1[ii1] - p2[ii2]) / p1[ii2]) > TS_GUM_SMALL_ERROR) return false;
+          if (std::fabs((p1[ii] - p2[ii]) / p1[ii]) > TS_GUM_SMALL_ERROR) return false;
         }
       }
 
@@ -158,50 +165,51 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(Marginal1) {
       fill(*_bn);
-      gum::LazyPropagation                 inf(_bn);
-      gum::ShaferShenoyInference< double > inf2(_bn);
-
+      gum::LazyPropagation       inf(_bn);
+      gum::ShaferShenoyInference inf2(_bn);
       inf.setNumberOfThreads(1);
 
       TS_ASSERT_THROWS_NOTHING(inf.makeInference())
-      TS_ASSERT_THROWS_NOTHING(inf.posterior(i1))
-      TS_ASSERT_THROWS_NOTHING(inf.posterior(i2))
-      TS_ASSERT_THROWS_NOTHING(inf.posterior(i3))
-      TS_ASSERT_THROWS_NOTHING(inf.posterior(i4))
-      TS_ASSERT_THROWS_NOTHING(inf.posterior(i5))
+      for (const auto node: _bn->dag()) {
+        TS_ASSERT_THROWS_NOTHING(inf.posterior(node))
+      }
 
       inf.makeInference();
-
-
       inf2.makeInference();
 
-      TS_ASSERT(equalPotentials(inf.posterior(i1), inf2.posterior(i1)))
-      TS_ASSERT(equalPotentials(inf.posterior(i2), inf2.posterior(i2)))
-      TS_ASSERT(equalPotentials(inf.posterior(i3), inf2.posterior(i3)))
-      TS_ASSERT(equalPotentials(inf.posterior(i4), inf2.posterior(i4)))
-      TS_ASSERT(equalPotentials(inf.posterior(i5), inf2.posterior(i5)))
+      const auto bn_joint = this->joint(*_bn);
+      gum::Set< const gum::DiscreteVariable* > vars;
+
+      for (const auto node: _bn->dag()) {
+        vars.insert(&(_bn->variable(node)));
+        TS_ASSERT(equalPotentials(inf.posterior(node), bn_joint.margSumIn(vars)))
+        TS_ASSERT(equalPotentials(inf.posterior(node), inf2.posterior(node)))
+        vars.clear();
+      }
     }
 
-    GUM_ACTIVE_TEST(Marginal) {
+    GUM_ACTIVE_TEST(MarginalThreaded) {
       fill(*_bn);
       gum::LazyPropagation                 inf(_bn);
       gum::ShaferShenoyInference< double > inf2(_bn);
 
       TS_ASSERT_THROWS_NOTHING(inf.makeInference())
-      TS_ASSERT_THROWS_NOTHING(inf.posterior(i1))
-      TS_ASSERT_THROWS_NOTHING(inf.posterior(i2))
-      TS_ASSERT_THROWS_NOTHING(inf.posterior(i3))
-      TS_ASSERT_THROWS_NOTHING(inf.posterior(i4))
-      TS_ASSERT_THROWS_NOTHING(inf.posterior(i5))
+      for (const auto node: _bn->dag()) {
+        TS_ASSERT_THROWS_NOTHING(inf.posterior(node))
+      }
 
       inf.makeInference();
       inf2.makeInference();
 
-      TS_ASSERT(equalPotentials(inf.posterior(i1), inf2.posterior(i1)))
-      TS_ASSERT(equalPotentials(inf.posterior(i2), inf2.posterior(i2)))
-      TS_ASSERT(equalPotentials(inf.posterior(i3), inf2.posterior(i3)))
-      TS_ASSERT(equalPotentials(inf.posterior(i4), inf2.posterior(i4)))
-      TS_ASSERT(equalPotentials(inf.posterior(i5), inf2.posterior(i5)))
+      const auto bn_joint = this->joint(*_bn);
+      gum::Set< const gum::DiscreteVariable* > vars;
+
+      for (const auto node: _bn->dag()) {
+        vars.insert(&(_bn->variable(node)));
+        TS_ASSERT(equalPotentials(inf.posterior(node), bn_joint.margSumIn(vars)))
+        TS_ASSERT(equalPotentials(inf.posterior(node), inf2.posterior(node)))
+        vars.clear();
+      }
     }
 
     GUM_ACTIVE_TEST(MarginalWithEvidence) {
@@ -210,56 +218,68 @@ namespace gum_tests {
       e_list.insert(e_i1);
       e_list.insert(e_i4);
 
-      gum::LazyPropagation                 inf(_bn);
-      gum::ShaferShenoyInference< double > infX(_bn);
+      gum::LazyPropagation       inf(_bn);
+      gum::ShaferShenoyInference infX(_bn);
+      auto bn_joint = this->joint(*_bn);
 
       for (auto pot: e_list) {
         TS_ASSERT_THROWS_NOTHING(inf.addEvidence(*pot))
         TS_ASSERT_THROWS_NOTHING(infX.addEvidence(*pot))
+        bn_joint *= *pot;
       }
 
       TS_ASSERT_THROWS_NOTHING(inf.makeInference())
+      for (const auto node: _bn->dag()) {
+        TS_ASSERT_THROWS_NOTHING(inf.posterior(node))
+      }
+
       TS_ASSERT_THROWS_NOTHING(infX.makeInference())
-      TS_ASSERT_THROWS_NOTHING(inf.posterior(i1))
-      TS_ASSERT_THROWS_NOTHING(inf.posterior(i2))
-      TS_ASSERT_THROWS_NOTHING(inf.posterior(i3))
 
-      TS_ASSERT_THROWS_NOTHING(inf.posterior(i4))
-      TS_ASSERT_THROWS_NOTHING(inf.posterior(i5))
+      gum::Set< const gum::DiscreteVariable* > vars;
+      for (const auto node: _bn->dag()) {
+        vars.insert(&(_bn->variable(node)));
+        TS_ASSERT(equalPotentials(inf.posterior(node), bn_joint.margSumIn(vars).normalize()))
+        TS_ASSERT(equalPotentials(inf.posterior(node), infX.posterior(node)))
+        vars.clear();
+      }
 
-      TS_ASSERT(equalPotentials(inf.posterior(i1), infX.posterior(i1)))
-      TS_ASSERT(equalPotentials(inf.posterior(i2), infX.posterior(i2)))
-      TS_ASSERT(equalPotentials(inf.posterior(i3), infX.posterior(i3)))
-      TS_ASSERT(equalPotentials(inf.posterior(i4), infX.posterior(i4)))
-      TS_ASSERT(equalPotentials(inf.posterior(i5), infX.posterior(i5)))
+      gum::LazyPropagation       inf2(_bn);
+      gum::ShaferShenoyInference inf2X(_bn);
+      bn_joint = this->joint(*_bn);
 
-      gum::LazyPropagation                 inf2(_bn);
-      gum::ShaferShenoyInference< double > inf2X(_bn);
-
+      gum::Potential< double > ev1;
+      const auto& var1 = _bn->variable(i1);
+      ev1 << var1;
+      ev1.fillWith(0.0);
+      gum::Instantiation inst1(ev1);
+      inst1.chgVal(var1, 0);
+      ev1.set(inst1, 1);
       TS_ASSERT_THROWS_NOTHING(inf2.addEvidence(i1, 0))
-      TS_ASSERT_THROWS_NOTHING(inf2.addEvidence(i4, 1))
       TS_ASSERT_THROWS_NOTHING(inf2X.addEvidence(i1, 0))
+      bn_joint *= ev1;
+
+      gum::Potential< double > ev4;
+      const auto& var4 = _bn->variable(i4);
+      ev4 << var4;
+      ev4.fillWith(0.0);
+      gum::Instantiation inst4(ev4);
+      inst4.chgVal(var4, 1);
+      ev4.set(inst4, 1);
+      TS_ASSERT_THROWS_NOTHING(inf2.addEvidence(i4, 1))
       TS_ASSERT_THROWS_NOTHING(inf2X.addEvidence(i4, 1))
+      bn_joint *= ev4;
 
       TS_ASSERT_THROWS_NOTHING(inf2.makeInference())
       TS_ASSERT_THROWS_NOTHING(inf2X.makeInference())
-      TS_ASSERT_THROWS_NOTHING(inf2.posterior(i1))
-      TS_ASSERT_THROWS_NOTHING(inf2.posterior(i2))
-      TS_ASSERT_THROWS_NOTHING(inf2.posterior(i3))
-      TS_ASSERT_THROWS_NOTHING(inf2.posterior(i4))
-      TS_ASSERT_THROWS_NOTHING(inf2.posterior(i5))
 
-      TS_ASSERT_EQUALS(inf.posterior(i1), inf2.posterior(i1))
-      TS_ASSERT_EQUALS(inf.posterior(i2), inf2.posterior(i2))
-      TS_ASSERT_EQUALS(inf.posterior(i3), inf2.posterior(i3))
-      TS_ASSERT_EQUALS(inf.posterior(i4), inf2.posterior(i4))
-      TS_ASSERT_EQUALS(inf.posterior(i5), inf2.posterior(i5))
-
-      TS_ASSERT(equalPotentials(inf2.posterior(i1), inf2X.posterior(i1)))
-      TS_ASSERT(equalPotentials(inf2.posterior(i2), inf2X.posterior(i2)))
-      TS_ASSERT(equalPotentials(inf2.posterior(i3), inf2X.posterior(i3)))
-      TS_ASSERT(equalPotentials(inf2.posterior(i4), inf2X.posterior(i4)))
-      TS_ASSERT(equalPotentials(inf2.posterior(i5), inf2X.posterior(i5)))
+      for (const auto node: _bn->dag()) {
+        vars.insert(&(_bn->variable(node)));
+        TS_ASSERT_THROWS_NOTHING(inf2.posterior(node))
+        TS_ASSERT(equalPotentials(inf2.posterior(node), bn_joint.margSumIn(vars).normalize()))
+        TS_ASSERT_EQUALS(inf.posterior(node), inf2.posterior(node))
+        TS_ASSERT(equalPotentials(inf2.posterior(node), inf2X.posterior(node)))
+        vars.clear();
+      }
     }
 
     // Testing when no evidence
@@ -273,6 +293,12 @@ namespace gum_tests {
       inf.addJointTarget(nodeset);
 
       TS_ASSERT_THROWS_NOTHING(inf.jointPosterior(nodeset))
+
+      const auto bn_joint = this->joint(*_bn);
+      gum::Set< const gum::DiscreteVariable* > vars;
+      vars.insert(&(_bn->variable(2)));
+      vars.insert(&(_bn->variable(4)));
+      TS_ASSERT(equalPotentials(inf.jointPosterior(nodeset), bn_joint.margSumIn(vars)))
     }
 
     // Testing when no evidence
@@ -292,8 +318,22 @@ namespace gum_tests {
       nodeset2.insert(2);
       nodeset2.insert(4);
 
+      const auto bn_joint = this->joint(*_bn);
+      gum::Set< const gum::DiscreteVariable* > vars;
+      vars.insert(&(_bn->variable(2)));
+      vars.insert(&(_bn->variable(4)));
       TS_ASSERT_THROWS_NOTHING(inf.jointPosterior(nodeset2))
+      TS_ASSERT(equalPotentials(inf.jointPosterior(nodeset2), bn_joint.margSumIn(vars)))
+
       TS_ASSERT_THROWS_NOTHING(inf.posterior(3))
+      vars.clear();
+      vars.insert(&(_bn->variable(3)));
+      TS_ASSERT(equalPotentials(inf.posterior(3), bn_joint.margSumIn(vars)))
+
+      vars.insert(&(_bn->variable(1)));
+      vars.insert(&(_bn->variable(2)));
+      vars.insert(&(_bn->variable(4)));
+      TS_ASSERT(equalPotentials(inf.jointPosterior(nodeset), bn_joint.margSumIn(vars)))
     }
 
     // Testing information methods
@@ -303,17 +343,6 @@ namespace gum_tests {
       gum::LazyPropagation inf(_bn);
 
       TS_GUM_ASSERT_THROWS_NOTHING(inf.H((gum::NodeId)2))
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.I((gum::NodeId)2, (gum::NodeId)4))
-      TS_ASSERT_THROWS(inf.I((gum::NodeId)2, (gum::NodeId)2), const gum::OperationNotAllowed&)
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.VI((gum::NodeId)2, (gum::NodeId)4))
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.I((gum::NodeId)0, (gum::NodeId)4))
-
-      for (const auto node: _bn->dag()) {
-        for (const auto par: _bn->dag().parents(node)) {
-          TS_GUM_ASSERT_THROWS_NOTHING(inf.I(node, par))
-          TS_GUM_ASSERT_THROWS_NOTHING(inf.I(par, node))
-        }
-      }
 
       //@TODO : test computations and not only good behaviour
     }
@@ -323,18 +352,6 @@ namespace gum_tests {
 
       gum::LazyPropagation inf(_bn);
       TS_GUM_ASSERT_THROWS_NOTHING(inf.H(_bn->variable(2).name()))
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.I(_bn->variable(2).name(), _bn->variable(4).name()))
-      TS_ASSERT_THROWS(inf.I(_bn->variable(2).name(), _bn->variable(2).name()),
-                       const gum::OperationNotAllowed&)
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.VI(_bn->variable(2).name(), _bn->variable(4).name()))
-      TS_GUM_ASSERT_THROWS_NOTHING(inf.I(_bn->variable(0).name(), _bn->variable(4).name()))
-
-      for (const auto node: _bn->dag()) {
-        for (const auto par: _bn->dag().parents(node)) {
-          TS_GUM_ASSERT_THROWS_NOTHING(inf.I(_bn->variable(node).name(), _bn->variable(par).name()))
-          TS_GUM_ASSERT_THROWS_NOTHING(inf.I(_bn->variable(par).name(), _bn->variable(node).name()))
-        }
-      }
 
       //@TODO : test computations and not only good behaviour
     }
@@ -354,6 +371,29 @@ namespace gum_tests {
       // should remove {2,3} since {2,3,4} includes {2,3}
       inf.addJointTarget(gum::NodeSet{2, 3, 4});
       TS_ASSERT_EQUALS(inf.nbrJointTargets(), (gum::Size)2)
+
+      auto bn_joint = this->joint(*_bn);
+      gum::Set< const gum::DiscreteVariable* > vars;
+      vars.insert(&(_bn->variable(0)));
+      vars.insert(&(_bn->variable(1)));
+      vars.insert(&(_bn->variable(2)));
+      TS_ASSERT(equalPotentials(inf.jointPosterior(gum::NodeSet{0, 1, 2}), bn_joint.margSumIn(vars).normalize()))
+
+      vars.clear();
+      vars.insert(&(_bn->variable(2)));
+      vars.insert(&(_bn->variable(3)));
+      TS_ASSERT(equalPotentials(inf.jointPosterior(gum::NodeSet{2, 3}), bn_joint.margSumIn(vars)))
+
+      vars.clear();
+      vars.insert(&(_bn->variable(0)));
+      vars.insert(&(_bn->variable(1)));
+      TS_ASSERT(equalPotentials(inf.jointPosterior(gum::NodeSet{0, 1}), bn_joint.margSumIn(vars)))
+
+      vars.clear();
+      vars.insert(&(_bn->variable(2)));
+      vars.insert(&(_bn->variable(3)));
+      vars.insert(&(_bn->variable(4)));
+      TS_ASSERT(equalPotentials(inf.jointPosterior(gum::NodeSet{2, 3, 4}), bn_joint.margSumIn(vars)))
     }
 
     GUM_ACTIVE_TEST(EvidenceProbability) {
@@ -370,6 +410,19 @@ namespace gum_tests {
       auto proba2 = inf.evidenceProbability();
 
       TS_ASSERT_DELTA(proba, proba2, TS_GUM_SMALL_ERROR)
+
+      auto bn_joint = this->joint(*_bn);
+      gum::Potential< double > ev0;
+      const auto& var0 = _bn->variable(0);
+      ev0 << var0;
+      ev0.fillWith(0.0);
+      gum::Instantiation inst0(ev0);
+      inst0.chgVal(var0, 0);
+      ev0.set(inst0, 1);
+      bn_joint *= ev0;
+      const auto proba3 = bn_joint.margSumIn({&var0}).sum();
+
+      TS_ASSERT_DELTA(proba, proba3, TS_GUM_SMALL_ERROR)
     }
 
     GUM_ACTIVE_TEST(EvidenceProbability2) {
@@ -385,6 +438,19 @@ namespace gum_tests {
       auto proba2 = inf.evidenceProbability();
 
       TS_ASSERT_DELTA(proba, proba2, TS_GUM_SMALL_ERROR)
+
+      auto bn_joint = this->joint(*_bn);
+      gum::Potential< double > ev0;
+      const auto& var0 = _bn->variable(0);
+      ev0 << var0;
+      ev0.fillWith(0.0);
+      gum::Instantiation inst0(ev0);
+      inst0.chgVal(var0, 0);
+      ev0.set(inst0, 1);
+      bn_joint *= ev0;
+      const auto proba3 = bn_joint.margSumIn({&var0}).sum();
+
+      TS_ASSERT_DELTA(proba, proba3, TS_GUM_SMALL_ERROR)
     }
 
     GUM_ACTIVE_TEST(EvidenceProbabilityAsia) {
@@ -410,6 +476,19 @@ namespace gum_tests {
       auto proba2 = inf.evidenceProbability();
 
       TS_ASSERT_DELTA(proba, proba2, TS_GUM_SMALL_ERROR)
+
+      auto bn_joint = this->joint(bn);
+      gum::Potential< double > ev0;
+      const auto& var0 = bn.variable(id);
+      ev0 << var0;
+      ev0.fillWith(0.0);
+      gum::Instantiation inst0(ev0);
+      inst0.chgVal(var0, 0);
+      ev0.set(inst0, 1);
+      bn_joint *= ev0;
+      const auto proba3 = bn_joint.margSumIn({&var0}).sum();
+
+      TS_ASSERT_DELTA(proba, proba3, TS_GUM_SMALL_ERROR)
     }
 
     GUM_ACTIVE_TEST(Asia) {
@@ -420,6 +499,8 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+
+      const auto bn_joint = this->joint(bn);
 
       for (auto node: bn.dag()) {
         const auto&              variable = bn.variable(node);
@@ -434,13 +515,17 @@ namespace gum_tests {
           ev_pot.set(inst, 1.0f);
           gum::LazyPropagation                 inf1(&bn);
           gum::ShaferShenoyInference< double > inf2(&bn);
+          auto joint = bn_joint;
+
           for (auto pot: evidences) {
             TS_ASSERT_THROWS_NOTHING(inf1.addEvidence(*pot))
             TS_ASSERT_THROWS_NOTHING(inf2.addEvidence(*pot))
+            joint *= *pot;
           }
           TS_ASSERT_THROWS_NOTHING(inf1.makeInference())
           TS_ASSERT_THROWS_NOTHING(inf2.makeInference())
           for (auto node2: bn.dag()) {
+            TS_ASSERT(equalPotentials(inf1.posterior(node2), joint.margSumIn({&bn.variable(node2)}).normalize()))
             TS_ASSERT(equalPotentials(inf1.posterior(node2), inf2.posterior(node2)))
           }
           ev_pot.set(inst, (float)0);
@@ -537,6 +622,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
+      const auto bn_joint = this->joint(bn);
+
       for (auto node: bn.dag()) {
         const auto&              variable = bn.variable(node);
         gum::Potential< double > ev_pot;
@@ -564,14 +651,17 @@ namespace gum_tests {
 
                 gum::LazyPropagation                 inf1(&bn);
                 gum::ShaferShenoyInference< double > inf2(&bn);
+                auto joint = bn_joint;
                 for (auto pot: evidences) {
                   TS_ASSERT_THROWS_NOTHING(inf1.addEvidence(*pot))
                   TS_ASSERT_THROWS_NOTHING(inf2.addEvidence(*pot))
+                  joint *= *pot;
                 }
                 TS_ASSERT_THROWS_NOTHING(inf1.makeInference())
                 TS_ASSERT_THROWS_NOTHING(inf2.makeInference())
 
                 for (auto xnode: bn.dag()) {
+                  TS_ASSERT(equalPotentials(inf1.posterior(xnode), joint.margSumIn({&bn.variable(xnode)}).normalize()))
                   TS_ASSERT(equalPotentials(inf1.posterior(xnode), inf2.posterior(xnode)))
                 }
                 ev_pot2.set(inst2, 0.0f);
@@ -592,6 +682,8 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+
+      const auto bn_joint = this->joint(bn);
 
       for (auto node: bn.dag()) {
         const auto&              variable = bn.variable(node);
@@ -622,14 +714,17 @@ namespace gum_tests {
                 inf1.setRelevantPotentialsFinderType(
                    gum::RelevantPotentialsFinderType::DSEP_BAYESBALL_NODES);
                 gum::ShaferShenoyInference< double > inf2(&bn);
+                auto joint = bn_joint;
                 for (auto pot: evidences) {
                   TS_ASSERT_THROWS_NOTHING(inf1.addEvidence(*pot))
                   TS_ASSERT_THROWS_NOTHING(inf2.addEvidence(*pot))
+                  joint *= *pot;
                 }
                 TS_ASSERT_THROWS_NOTHING(inf1.makeInference())
                 TS_ASSERT_THROWS_NOTHING(inf2.makeInference())
 
                 for (auto xnode: bn.dag()) {
+                  TS_ASSERT(equalPotentials(inf1.posterior(xnode), joint.margSumIn({&bn.variable(xnode)}).normalize()))
                   TS_ASSERT(equalPotentials(inf1.posterior(xnode), inf2.posterior(xnode)))
                 }
                 ev_pot2.set(inst2, 0.0f);
@@ -650,6 +745,8 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed())
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
+
+      const auto bn_joint = this->joint(bn);
 
       for (auto node: bn.dag()) {
         const auto&              variable = bn.variable(node);
@@ -677,20 +774,27 @@ namespace gum_tests {
               int                inst2_index = 0;
               for (inst2.setFirst(); !inst2.end(); ++inst2, ++inst2_index) {
                 ev_pot2.set(inst2, 1.0f);
-
                 gum::LazyPropagation inf1(&bn);
                 inf1.setRelevantPotentialsFinderType(
                    gum::RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS);
                 gum::LazyPropagation inf2(&bn);
+                auto joint = bn_joint;
+
                 for (auto pot: evidences) {
                   TS_ASSERT_THROWS_NOTHING(inf1.addEvidence(*pot))
                   TS_ASSERT_THROWS_NOTHING(inf2.addEvidence(*pot))
+                  joint *= *pot;
                 }
                 TS_ASSERT_THROWS_NOTHING(inf1.makeInference())
                 TS_ASSERT_THROWS_NOTHING(inf2.makeInference())
 
                 for (auto xnode: bn.dag()) {
                   try {
+                    const auto res = joint.margSumIn({&bn.variable(xnode)});
+                    if (res.sum() > TS_GUM_SMALL_ERROR) {
+                      TS_ASSERT(equalPotentials(inf1.posterior(xnode),
+                                                joint.margSumIn({&bn.variable(xnode)}).normalize()))
+                    }
                     [[maybe_unused]] auto f
                        = equalPotentials(inf1.posterior(xnode), inf2.posterior(xnode));
                   } catch (gum::IncompatibleEvidence&) {
@@ -725,29 +829,48 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
+      const auto bn_joint = this->joint(bn);
 
       gum::LazyPropagation ie_0(&bn);
       ie_0.addTarget(0);        // visit_to_asia
       ie_0.addEvidence(1, 0);   // tuberculosis
       ie_0.makeInference();
       gum::Potential< double > p_0 = ie_0.posterior(0);
+      gum::Potential< double > ev_pot0;
+      const auto& var1 = bn.variable(1);
+      ev_pot0 << var1;
+      ev_pot0.fillWith(0.0);
+      gum::Instantiation inst0(ev_pot0);
+      inst0.chgVal(var1, 0);
+      ev_pot0.set(inst0, 1);
+      auto joint0 = bn_joint * ev_pot0;
 
       gum::LazyPropagation ie_1(&bn);
       ie_1.addTarget(0);
       ie_1.addEvidence(1, 1);
       ie_1.makeInference();
       gum::Potential< double > p_1 = ie_1.posterior(0);
+      gum::Potential< double > ev_pot1;
+      ev_pot1 << var1;
+      ev_pot1.fillWith(0.0);
+      gum::Instantiation inst1(ev_pot1);
+      inst1.chgVal(var1, 1);
+      ev_pot1.set(inst1, 1);
+      auto joint1 = bn_joint * ev_pot1;
 
       gum::LazyPropagation ie(&bn);
       ie.addTarget(0);
       ie.addEvidence(1, 0);
       ie.makeInference();
       TS_ASSERT_EQUALS(p_0, ie.posterior(0))
+      const auto& var0 = bn.variable(0);
+      TS_ASSERT(equalPotentials(ie.posterior(0), joint0.margSumIn({&var0}).normalize()))
 
       ie.chgEvidence(1, 1);
       ie.makeInference();
       TS_ASSERT_DIFFERS(p_0, ie.posterior(0))
       TS_ASSERT_EQUALS(p_1, ie.posterior(0))
+      TS_ASSERT(equalPotentials(ie.posterior(0), joint1.margSumIn({&var0}).normalize()))
     }
 
     GUM_ACTIVE_TEST(ChgEvidence2) {
@@ -759,18 +882,34 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(nbrErr, (gum::Size)0)
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0)
 
+      const auto bn_joint = this->joint(bn);
 
       gum::LazyPropagation ie_0(&bn);
       ie_0.addTarget(0);        // visit_to_asia
       ie_0.addEvidence(1, 0);   // tuberculosis
       ie_0.makeInference();
       gum::Potential< double > p_0 = ie_0.posterior(0);
+      gum::Potential< double > ev_pot0;
+      const auto& var1 = bn.variable(1);
+      ev_pot0 << var1;
+      ev_pot0.fillWith(0.0);
+      gum::Instantiation inst0(ev_pot0);
+      inst0.chgVal(var1, 0);
+      ev_pot0.set(inst0, 1);
+      auto joint0 = bn_joint * ev_pot0;
 
       gum::LazyPropagation ie_1(&bn);
       ie_1.addTarget(0);
       ie_1.addEvidence(1, 1);
       ie_1.makeInference();
       gum::Potential< double > p_1 = ie_1.posterior(0);
+      gum::Potential< double > ev_pot1;
+      ev_pot1 << var1;
+      ev_pot1.fillWith(0.0);
+      gum::Instantiation inst1(ev_pot1);
+      inst1.chgVal(var1, 1);
+      ev_pot1.set(inst1, 1);
+      auto joint1 = bn_joint * ev_pot1;
 
       gum::LazyPropagation ie(&bn);
       ie.eraseAllTargets();
@@ -778,11 +917,14 @@ namespace gum_tests {
       ie.addEvidence(1, 0);
       ie.makeInference();
       TS_ASSERT_EQUALS(p_0, ie.posterior(0))
+      const auto& var0 = bn.variable(0);
+      TS_ASSERT(equalPotentials(ie.posterior(0), joint0.margSumIn({&var0}).normalize()))
 
       ie.chgEvidence(1, 1);
       ie.makeInference();
       TS_ASSERT_DIFFERS(p_0, ie.posterior(0))
       TS_ASSERT_EQUALS(p_1, ie.posterior(0))
+      TS_ASSERT(equalPotentials(ie.posterior(0), joint1.margSumIn({&var0}).normalize()))
     }
 
     GUM_ACTIVE_TEST(StaticEvidenceImpact) {
@@ -908,11 +1050,23 @@ namespace gum_tests {
       gum::LazyPropagation ie(&bn);
       ie.addEvidence("B", 0);
       gum::NodeSet joint{bn.idFromName("A"), bn.idFromName("B"), bn.idFromName("D")};
+      gum::Set< const gum::DiscreteVariable* >
+         xjoint{&bn.variableFromName("A"),&bn.variableFromName("B"),&bn.variableFromName("D")};
+
+      gum::Potential< double > ev_potB;
+      const auto& varB = bn.variableFromName("B");
+      ev_potB << varB;
+      ev_potB.fillWith(0.0);
+      gum::Instantiation instB(ev_potB);
+      instB.chgVal(varB, 0);
+      ev_potB.set(instB, 1);
+      const auto pjoint = this->joint(bn) * ev_potB;
 
       ie.addJointTarget(joint);
       ie.makeInference();
       try {
         auto p = ie.jointPosterior(joint);
+        TS_ASSERT(equalPotentials(p, pjoint.margSumIn(xjoint).normalize()))
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e)
         TS_ASSERT(false)
@@ -954,7 +1108,6 @@ namespace gum_tests {
       ie.makeInference();
 
       TS_ASSERT_THROWS(ie.jointMutualInformation(gum::NodeSet{0}), const gum::InvalidArgument&)
-      TS_ASSERT_DELTA(ie.I(0, 1), ie.jointMutualInformation(gum::NodeSet{0, 1}), 1e-7)
 
       ie.addJointTarget({1, 4, 3});
       ie.makeInference();
@@ -1072,6 +1225,8 @@ namespace gum_tests {
       auto                 bn = gum::BayesNet< double >::fastPrototype("A->B;A->C->D");
       gum::LazyPropagation ie(&bn);
 
+      const auto bn_joint = this->joint(bn);
+
       try {
         for (const auto& a: bn.arcs()) {
           ie.eraseAllTargets();
@@ -1081,6 +1236,9 @@ namespace gum_tests {
           // GUM_TRACE_VAR(ie.jointTargets());
           ie.makeInference();
           const auto po = ie.jointPosterior({a.first(), a.second()});
+
+          gum::Set< const gum::DiscreteVariable* > set{&bn.variable(a.first()), &bn.variable(a.second())};
+          TS_ASSERT(equalPotentials(po, bn_joint.margSumIn(set).normalize()))
         }
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
       /*
@@ -1564,7 +1722,7 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(ImplicitTargetAllCheckWithEvidenceOutOFTarget) {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->Y->E->F->G;W->E<-Z;X->E");
-      auto ie = gum::ShaferShenoyInference(&bn);
+      auto ie = gum::LazyPropagation(&bn);
       ie.addEvidence("E", 1);
       ie.addJointTarget(bn.nodeset({"B", "Y", "F"}));
 
@@ -1630,10 +1788,13 @@ namespace gum_tests {
       auto                     bn = gum::BayesNet< double >::fastPrototype("A->B<-C");
       gum::Potential< double > psoft;
       gum::Potential< double > phard;
+      const auto bn_joint = this->joint(bn);
+      gum::Potential< double > jointhard, jointsoft;
       {
         auto hardev = gum::Potential< double >();
         hardev.add(bn.variable("A"));
         hardev.fillWith({0, 1});
+        jointhard = bn_joint * hardev;
 
         gum::LazyPropagation ie(&bn);
         ie.addEvidence(hardev);
@@ -1645,6 +1806,7 @@ namespace gum_tests {
         auto softev = gum::Potential< double >();
         softev.add(bn.variable("A"));
         softev.fillWith({0.5, 1});
+        jointsoft = bn_joint * softev;
 
         gum::LazyPropagation ie(&bn);
         ie.addEvidence(softev);
@@ -1653,6 +1815,8 @@ namespace gum_tests {
         psoft = gum::Potential(ie.posterior("C"));
       }
       TS_GUM_POTENTIAL_DELTA(phard, psoft, TS_GUM_VERY_SMALL_ERROR)
+      TS_ASSERT(equalPotentials(phard, jointhard.margSumIn({&bn.variableFromName("C")}).normalize()))
+      TS_ASSERT(equalPotentials(psoft, jointsoft.margSumIn({&bn.variableFromName("C")}).normalize()))
     }
 
     GUM_ACTIVE_TEST(MostProbableExplanation) {
@@ -1858,8 +2022,14 @@ namespace gum_tests {
       auto ie=gum::LazyPropagation(&bn);
       ie.addJointTarget(bn.nodeset({"X04", "X11"}));
       ie.addJointTarget(bn.nodeset({"X00", "X01", "X06"}));
+      const auto bn_joint = this->joint(bn);
+
       try {
         ie.makeInference();
+        gum::Set< const gum::DiscreteVariable* > set{&bn.variableFromName("X04"), &bn.variable("X11")};
+        TS_ASSERT(equalPotentials(ie.jointPosterior(bn.nodeset({"X04", "X11"})), bn_joint.margSumIn(set).normalize()))
+        set = {&bn.variableFromName("X00"), &bn.variable("X01"), &bn.variable("X06")};
+        TS_ASSERT(equalPotentials(ie.jointPosterior(bn.nodeset({"X00", "X01", "X06"})), bn_joint.margSumIn(set).normalize()))
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
       }

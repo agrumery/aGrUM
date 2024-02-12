@@ -776,7 +776,7 @@ namespace gum {
         clique_size *= this->domainSizes()[node];
       overall_size += clique_size;
     }
-    _use_schedules_ = (overall_size > _schedule_threshold_) || true; // @TODO TOO
+    _use_schedules_ = (overall_size > _schedule_threshold_);
 
     // put all the CPTs of the Bayes net nodes into the cliques
     // here, beware: all the potentials that are defined over some nodes
@@ -1586,9 +1586,8 @@ namespace gum {
     // use d-separation analysis to check which potentials shall be combined
     // _findRelevantPotentialsXX_(pot_list, kept_vars);
 
-    // if pot list is empty, do nothing. This may happen when there are many barren variables
+    // if pot list is empty, do nothing. This may happen when there are only barren variables
     if (pot_list.empty()) {
-      std::cout << "yeepee empty" << std::endl;
       return _ScheduleMultiDimSet_();
     }
 
@@ -1611,7 +1610,6 @@ namespace gum {
       MultiDimProjection< Potential< GUM_SCALAR > > projector(_projection_op_);
       auto xpot = projector.schedule(schedule, *(pot_list.begin()), del_vars);
       new_pot_list.insert(xpot);
-      std::cout << "\\\\\\\\\\\\\\\\\\\\\\\\\\" << std::endl;
     }
     else if (pot_list.size() > 1) {
       // create a combine and project operator that will perform the
@@ -1642,19 +1640,13 @@ namespace gum {
                                                      gum::VariableSet&                kept_vars) {
     // if pot list is empty, do nothing. This may happen when there are many barren variables
     if (pot_list.empty()) {
-      std::cout << "yeepee empty" << std::endl;
       return _ScheduleMultiDimSet_();
     }
 
-    Set< const Potential< GUM_SCALAR >* > xpot_list(pot_list.size());
+    _PotentialSet_ xpot_list(pot_list.size());
     for (auto pot: pot_list)
       xpot_list.insert(
          &(static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(pot)->multiDim()));
-    std::cout << "==============================>>>" << std::endl;
-    for (const auto pot: xpot_list) {
-      std::cout << pot->variablesSequence() << std::endl;
-    }
-    std::cout << "==============================<<<" << std::endl;
 
     // use d-separation analysis to check which potentials shall be combined
     // _findRelevantPotentialsXX_(pot_list, kept_vars);
@@ -1688,15 +1680,7 @@ namespace gum {
       MultiDimCombineAndProjectDefault< Potential< GUM_SCALAR > > combine_and_project(
          _combination_op_,
          _projection_op_);
-      std::cout << "||||||||||||||||||||||||||||||" << std::endl;
-      std::cout << "del_vars:" << del_vars << std::endl;
-      std::cout << "kept_vars:" << kept_vars << std::endl;
-      for (const auto pot: xpot_list) {
-        std::cout << pot->variablesSequence() << std::endl;
-      }
-      std::cout << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << std::endl;
       xnew_pot_list = combine_and_project.execute(xpot_list, del_vars);
-      std::cout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << std::endl;
 
       for (auto xpot: xnew_pot_list) {
         ScheduleMultiDim< Potential< GUM_SCALAR > >* pot;
@@ -1926,7 +1910,6 @@ namespace gum {
     ScheduleMultiDim< Potential< GUM_SCALAR > >* resulting_pot = nullptr;
 
     if (new_pot_list.size() == 0) {
-      std::cout << "unnormalized zero" << std::endl;
       joint = new Potential< GUM_SCALAR >;
       for (const auto var : kept_vars)
         *joint << *var;
@@ -2013,7 +1996,6 @@ namespace gum {
     Potential< GUM_SCALAR >* joint        = nullptr;
 
     if (new_pot_list.size() == 0) {
-      std::cout << "unnormalized zero" << std::endl;
       joint = new Potential< GUM_SCALAR >;
       for (const auto var : kept_vars)
         *joint << *var;
@@ -2226,9 +2208,6 @@ namespace gum {
     // => combine the messages
     _ScheduleMultiDimSet_ new_pot_list = _marginalizeOut_(schedule, pot_list, del_vars, kept_vars);
     ScheduleMultiDim< Potential< GUM_SCALAR > >* resulting_pot = nullptr;
-
-    std::cout << " size size " << new_pot_list.size() << std::endl;
-
     Potential< GUM_SCALAR >* joint = nullptr;
 
     if (new_pot_list.size() == 0) {
@@ -2399,17 +2378,10 @@ namespace gum {
       }
     }
 
-    std::cout << "AAAAAAAAAAAAAAAAAAAAAAAA" << std::endl;
-    std::cout << pot_list << std::endl;
-    std::cout << "BBBBBBBBBBBBBBBBBBBBBBBB" << std::endl;
-
     // pot_list now contains all the potentials to multiply and marginalize
     // => combine the messages
     _ScheduleMultiDimSet_    new_pot_list = _marginalizeOut_(pot_list, del_vars, kept_vars);
     Potential< GUM_SCALAR >* joint        = nullptr;
-
-    std::cout << "SIZE SIZE " << new_pot_list.size() << std::endl;
-
     if (new_pot_list.empty()) {
       joint = new Potential< GUM_SCALAR >();
       for (const auto var: kept_vars)
