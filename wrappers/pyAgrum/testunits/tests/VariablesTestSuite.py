@@ -97,16 +97,28 @@ class DiscreteVariableTestCase(VariablesTestCase):
     self.assertEqual(bn.variable("C").belongs(1), True)
     self.assertEqual(bn.variable("C").minVal(), 0)
     self.assertEqual(bn.variable("C").maxVal(), 1)
-    self.assertEqual(bn.variable("B").numericalDomain(), [3.14, 5.0, 9.2, 10.])
+    self.assertEqual(bn.variable("B").numericalDomain(), (3.14, 5.0, 9.2, 10.))
     self.assertEqual(bn.variable("B").closestLabel(3), '3.14')
     self.assertEqual(bn.variable("B").closestIndex(3), 0)
     self.assertEqual(bn.variable("B").isValue(3), False)
-    self.assertEqual(bn.variable("D").integerDomain(), [1, 3, 5, 9])
+    self.assertEqual(bn.variable("D").integerDomain(), (1, 3, 5, 9))
     self.assertEqual(bn.variable("D").isValue(3), True)
     self.assertEqual(bn.variable("E").isTick(3.14), False)
     self.assertEqual(bn.variable("E").ticks(), (1.0, 3.15, 4.5, 9.23))
     self.assertEqual(bn.variable("E").isEmpirical(), False)
     self.assertEqual(bn.variable("E").tick(1), 3.15)
+
+  def testEquality(self):
+    bn = gum.fastBN("A{yes|no}->B{3.14|5|10|9.2}->C->D{1|3|9|5}->E[1,3.15,9.23,4.5]")
+    bn2 = gum.fastBN("A{yes|no}->B{3.14|5|10|9.2}->C->D{1|3|9|5}->E[1,3.15,9.23,4.5]")
+    for name in bn2.names():
+      self.assertEqual(bn2.variable(name),bn.variable(name))
+      self.assertTrue(bn2.variable(name) == bn.variable(name))
+      self.assertFalse(bn2.variable(name) != bn.variable(name))
+
+    self.assertTrue(bn2.variable("A") != bn.variable("C"))
+
+
 
   def testCheckDerivedReadOnlyAPIforDiscreteVariable(self):
     def not_imported_api(typ: str):
@@ -119,7 +131,7 @@ class DiscreteVariableTestCase(VariablesTestCase):
     self.assertEqual(not_imported_api("LabelizedVariable"), {'addLabel', 'eraseLabels', 'changeLabel'})
     self.assertEqual(not_imported_api("RangeVariable"), {'setMinVal', 'setMaxVal'})
     self.assertEqual(not_imported_api("NumericalDiscreteVariable"),
-                      {'eraseValue', 'eraseValues', 'addValue', 'changeValue'})
+                     {'eraseValue', 'eraseValues', 'addValue', 'changeValue'})
     self.assertEqual(not_imported_api("DiscretizedVariable"), {'eraseTicks', 'setEmpirical', 'addTick'})
     self.assertEqual(not_imported_api("IntegerVariable"), {'eraseValue', 'eraseValues', 'addValue', 'changeValue'})
 
@@ -250,13 +262,14 @@ class DiscretizedVariableTestCase(VariablesTestCase):
               for n in range(1, 7):
                 if (i + j + k + l + m + n == 21) & (i * j * k * l * m * n == 720):
                   _testOrderTicks(i, j, k, l, m, n)
-  
+
   def testFastSyntax(self):
     var = gum.fastVariable("A[1,2,3,4,5,6]", 4)
     self.assertEqual(str(var), "A:Discretized(<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>)")
 
     var = gum.fastVariable("A[1:6:5]", 4)
     self.assertEqual(str(var), "A:Discretized(<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>)")
+
 
 class NumericalDiscreteVariableTestCase(VariablesTestCase):
   def testAddValue(self):

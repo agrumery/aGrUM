@@ -37,8 +37,10 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       gum.BNLearner("shouldNotExist.csv")
 
   def testHillClimbingAccurate(self):
-    learner = gum.BNLearner(self.agrumSrcDir(
-      'asia.csv'))
+    reference = gum.loadBN(self.agrumSrcDir(
+      'asia2.bif'), verbose=False)
+
+    learner = gum.BNLearner(self.agrumSrcDir('asia.csv'), reference)
 
     witness = ['smoking?',
                'lung_cancer?',
@@ -56,10 +58,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     learner.useGreedyHillClimbing()
     bn = learner.learnBN()
 
-    ref = gum.loadBN(self.agrumSrcDir(
-      'asia2.bif'), verbose=False)
-
-    f = gum.ExactBNdistance(bn, ref)
+    f = gum.ExactBNdistance(bn, reference)
     res = f.compute()
     self.assertAlmostEqual(res['klPQ'], 0.5, delta=0.5)
 
@@ -68,16 +67,11 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       gum.BNLearner("shouldNotExist.csv")
 
   def testLocalSearchWithTabuAccurate(self):
-    learner = gum.BNLearner(self.agrumSrcDir(
-      'asia.csv'))
+    reference = gum.loadBN(self.agrumSrcDir('asia2.bif'), verbose=False)
+    learner = gum.BNLearner(self.agrumSrcDir('asia.csv'), reference)
     learner.useLocalSearchWithTabuList()
-
     bn = learner.learnBN()
-
-    ref = gum.loadBN(self.agrumSrcDir(
-      'asia2.bif'), verbose=False)
-
-    f = gum.ExactBNdistance(bn, ref)
+    f = gum.ExactBNdistance(bn, reference)
     res = f.compute()
     self.assertAlmostEqual(res['klPQ'], 0.5, delta=0.5)
 

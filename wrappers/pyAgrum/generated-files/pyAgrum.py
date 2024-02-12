@@ -2373,9 +2373,6 @@ class Variable(object):
     def __eq__(self, aRV: "pyAgrum.Variable") -> bool:
         return _pyAgrum.Variable___eq__(self, aRV)
 
-    def __ne__(self, aRV: "pyAgrum.Variable") -> bool:
-        return _pyAgrum.Variable___ne__(self, aRV)
-
     def setName(self, theValue: str) -> None:
         r"""
 
@@ -2529,12 +2526,6 @@ class DiscreteVariable(Variable):
     def toFast(self) -> str:
         return _pyAgrum.DiscreteVariable_toFast(self)
 
-    def __eq__(self, aRV: "pyAgrum.DiscreteVariable") -> bool:
-        return _pyAgrum.DiscreteVariable___eq__(self, aRV)
-
-    def __ne__(self, aRV: "pyAgrum.DiscreteVariable") -> bool:
-        return _pyAgrum.DiscreteVariable___ne__(self, aRV)
-
     def index(self, label: str) -> int:
         r"""
 
@@ -2612,7 +2603,7 @@ class DiscreteVariable(Variable):
         return _pyAgrum.DiscreteVariable___str__(self)
 
     def __hash__(self):
-        return hash(self.name())
+        return hash(self.name()+self.domain())
 
     def __getitem__(self,label):   # adding the y() function here
         return self.index(label)
@@ -2654,7 +2645,7 @@ class DiscreteVariable(Variable):
       try:
         return self.asNumericalDiscreteVar().numericalDomain()
       except pyAgrum.OperationNotAllowed :
-         raise NotImplementedError(f"numericalDomain not implemented for {self}")  
+         raise NotImplementedError(f"numericalDomain not implemented for {self}")
     def isValue(self,x):
       try:
         return self.asNumericalDiscreteVar().isValue(x)
@@ -3331,12 +3322,6 @@ class IntegerVariable(DiscreteVariable):
         return _pyAgrum.IntegerVariable_clone(self)
     __swig_destroy__ = _pyAgrum.delete_IntegerVariable
 
-    def __eq__(self, *args) -> bool:
-        return _pyAgrum.IntegerVariable___eq__(self, *args)
-
-    def __ne__(self, *args) -> bool:
-        return _pyAgrum.IntegerVariable___ne__(self, *args)
-
     def domainSize(self) -> int:
         r"""
 
@@ -3444,6 +3429,17 @@ class IntegerVariable(DiscreteVariable):
         """
         return _pyAgrum.IntegerVariable_stype(self)
 
+    def integerDomain(self) -> List[int]:
+        r"""
+
+        Returns
+        -------
+        Tuple[int]
+            the tuple of integer values that form the domain of this variable
+
+        """
+        return _pyAgrum.IntegerVariable_integerDomain(self)
+
     def addValue(self,*args):
         """
         Add a value to the list of values for the variable.
@@ -3517,22 +3513,14 @@ class IntegerVariable(DiscreteVariable):
         """
         return _pyAgrum.IntegerVariable_eraseValues(self)
 
+    def closestLabel(self, val: float) -> str:
+        return _pyAgrum.IntegerVariable_closestLabel(self, val)
+
     def __repr__(self) -> str:
         return _pyAgrum.IntegerVariable___repr__(self)
 
     def __str__(self) -> str:
         return _pyAgrum.IntegerVariable___str__(self)
-
-    def integerDomain(self) -> object:
-        r"""
-
-        Returns
-        -------
-        list[int]
-            the list of integer values that form the domain of this variable
-
-        """
-        return _pyAgrum.IntegerVariable_integerDomain(self)
 
 # Register IntegerVariable in _pyAgrum:
 _pyAgrum.IntegerVariable_swigregister(IntegerVariable)
@@ -3599,12 +3587,6 @@ class NumericalDiscreteVariable(DiscreteVariable):
         return _pyAgrum.NumericalDiscreteVariable_clone(self)
     __swig_destroy__ = _pyAgrum.delete_NumericalDiscreteVariable
 
-    def __eq__(self, *args) -> bool:
-        return _pyAgrum.NumericalDiscreteVariable___eq__(self, *args)
-
-    def __ne__(self, *args) -> bool:
-        return _pyAgrum.NumericalDiscreteVariable___ne__(self, *args)
-
     def domainSize(self) -> int:
         r"""
 
@@ -3649,6 +3631,9 @@ class NumericalDiscreteVariable(DiscreteVariable):
 
         """
         return _pyAgrum.NumericalDiscreteVariable_index(self, label)
+
+    def closestIndex(self, val: float) -> int:
+        return _pyAgrum.NumericalDiscreteVariable_closestIndex(self, val)
 
     def label(self, index: int) -> str:
         r"""
@@ -3708,6 +3693,17 @@ class NumericalDiscreteVariable(DiscreteVariable):
 
         """
         return _pyAgrum.NumericalDiscreteVariable_stype(self)
+
+    def numericalDomain(self) -> List[float]:
+        r"""
+
+        Returns
+        -------
+        Tuple[float]
+            the tuple of float values that form the domain of this variable
+
+        """
+        return _pyAgrum.NumericalDiscreteVariable_numericalDomain(self)
 
     def addValue(self,*args):
         """
@@ -3782,9 +3778,6 @@ class NumericalDiscreteVariable(DiscreteVariable):
         """
         return _pyAgrum.NumericalDiscreteVariable_eraseValues(self)
 
-    def closestIndex(self, val: float) -> int:
-        return _pyAgrum.NumericalDiscreteVariable_closestIndex(self, val)
-
     def closestLabel(self, val: float) -> str:
         return _pyAgrum.NumericalDiscreteVariable_closestLabel(self, val)
 
@@ -3793,17 +3786,6 @@ class NumericalDiscreteVariable(DiscreteVariable):
 
     def __str__(self) -> str:
         return _pyAgrum.NumericalDiscreteVariable___str__(self)
-
-    def numericalDomain(self) -> object:
-        r"""
-
-        Returns
-        -------
-        list[float]
-            the list of float values that form the domain of this variable
-
-        """
-        return _pyAgrum.NumericalDiscreteVariable_numericalDomain(self)
 
 # Register NumericalDiscreteVariable in _pyAgrum:
 _pyAgrum.NumericalDiscreteVariable_swigregister(NumericalDiscreteVariable)

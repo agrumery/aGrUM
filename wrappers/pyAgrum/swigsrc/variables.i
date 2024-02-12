@@ -25,7 +25,7 @@
 %extend gum::DiscreteVariable {
   %pythoncode %{
     def __hash__(self):
-        return hash(self.name())
+        return hash(self.name()+self.domain())
 
     def __getitem__(self,label):   # adding the y() function here
         return self.index(label)
@@ -67,7 +67,7 @@
       try:
         return self.asNumericalDiscreteVar().numericalDomain()
       except pyAgrum.OperationNotAllowed :
-         raise NotImplementedError(f"numericalDomain not implemented for {self}")  
+         raise NotImplementedError(f"numericalDomain not implemented for {self}")
     def isValue(self,x):
       try:
         return self.asNumericalDiscreteVar().isValue(x)
@@ -176,13 +176,6 @@ def addValue(self,*args):
     return self
 %}
 
-%extend gum::IntegerVariable {
-PyObject *integerDomain() const {
-  return PyAgrumHelper::PyListFromSequenceOfInt(self->integerDomain());
-}
-}
-%ignore gum::IntegerVariable::integerDomain;
-
 
 %feature("shadow") gum::NumericalDiscreteVariable::addValue(double value) %{
 def addValue(self,*args):
@@ -207,10 +200,3 @@ def addValue(self,*args):
     $action(self,*args)
     return self
 %}
-
-%extend gum::NumericalDiscreteVariable {
-PyObject *numericalDomain() const {
-  return PyAgrumHelper::PyListFromSequenceOfDouble(self->numericalDomain());
-}
-}
-%ignore gum::NumericalDiscreteVariable::numericalDomain;

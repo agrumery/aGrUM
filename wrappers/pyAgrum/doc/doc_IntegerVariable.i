@@ -35,8 +35,8 @@ b:Integer(<1,34,142>)
 "
 Returns
 -------
-list[int]
-    the list of integer values that form the domain of this variable
+Tuple[int]
+    the tuple of integer values that form the domain of this variable
 "
 
 
