@@ -717,14 +717,14 @@ namespace gum {
     _ScheduleMultiDimSet_ res;
     const auto&           bn = this->BN();
 
-    // get the CPT's of the node
-    // beware: all the potentials that are defined over some nodes
-    // including hard evidence must be projected so that these nodes are
-    // removed from the potential
-    // also beware that the CPT of a hard evidence node may be defined over
+    // get the CPT of the node
+    // Beware: all the potentials that are defined over some nodes that
+    // received hard evidence must be projected so that these nodes are
+    // removed from the potential.
+    // Also beware that the CPT of a hard evidence node may be defined over
     // parents that do not belong to _graph_ and that are not hard evidence.
     // In this case, those parents have been removed by d-separation and it is
-    // easy to show that, in this case all the parents have been removed, so
+    // easy to show that, in this case, all the parents have been removed, so
     // that the CPT does not need to be taken into account
     const auto& evidence      = this->evidence();
     const auto& hard_evidence = this->hardEvidence();
@@ -1016,6 +1016,12 @@ namespace gum {
      Set< const Potential< GUM_SCALAR >* > pot_list,
      gum::VariableSet&                     del_vars,
      gum::VariableSet&                     kept_vars) {
+
+   // if pot list is empty, do nothing. This may happen when there are many barren variables
+    if (pot_list.empty()) {
+      return _PotentialSet_();
+    }
+
     // use d-separation analysis to check which potentials shall be combined
     // _findRelevantPotentialsXX_(pot_list, kept_vars);
 
@@ -1026,12 +1032,21 @@ namespace gum {
       barren_projected_potentials = _removeBarrenVariables_(pot_list, del_vars);
     }
 
-    // create a combine and project operator that will perform the
-    // marginalization
-    MultiDimCombineAndProjectDefault< Potential< GUM_SCALAR > > combine_and_project(
-       _combination_op_,
-       _projection_op_);
-    _PotentialSet_ new_pot_list = combine_and_project.execute(pot_list, del_vars);
+    // Combine and project the remaining potentials
+    _PotentialSet_ new_pot_list;
+    if (pot_list.size() == 1) {
+      MultiDimProjection< Potential< GUM_SCALAR > > projector(_projection_op_);
+      auto pot = projector.execute(**(pot_list.begin()), del_vars);
+      new_pot_list.insert(pot);
+    }
+    else if (pot_list.size() > 1) {
+      // create a combine and project operator that will perform the
+      // marginalization
+      MultiDimCombineAndProjectDefault< Potential< GUM_SCALAR > > combine_and_project(
+         _combination_op_,
+         _projection_op_);
+      new_pot_list = combine_and_project.execute(pot_list, del_vars);
+    }
 
     // remove all the potentials that were created due to projections of
     // barren nodes and that are not part of the new_pot_list: these
@@ -1052,8 +1067,19 @@ namespace gum {
                                                          Set< const IScheduleMultiDim* > pot_list,
                                                          gum::VariableSet&               del_vars,
                                                          gum::VariableSet& kept_vars) {
+    // if pot list is empty, do nothing. This may happen when there are only barren variables
+    if (pot_list.empty()) {
+      return _ScheduleMultiDimSet_();
+    }
+
     // use d-separation analysis to check which potentials shall be combined
     // _findRelevantPotentialsXX_(pot_list, kept_vars);
+
+    // now, let's guarantee that all the potentials to be combined and projected
+    // belong to the schedule
+    for (const auto pot: pot_list) {
+      if (!schedule.existsScheduleMultiDim(pot->id())) schedule.emplaceScheduleMultiDim(*pot);
+    }
 
     // remove the potentials corresponding to barren variables if we want
     // to exploit barren nodes
@@ -1062,12 +1088,21 @@ namespace gum {
       barren_projected_potentials = _removeBarrenVariables_(schedule, pot_list, del_vars);
     }
 
-    // create a combine and project operator that will perform the
-    // marginalization
-    MultiDimCombineAndProjectDefault< Potential< GUM_SCALAR > > combine_and_project(
-       _combination_op_,
-       _projection_op_);
-    _ScheduleMultiDimSet_ new_pot_list = combine_and_project.schedule(schedule, pot_list, del_vars);
+    // Combine and project the potentials
+    _ScheduleMultiDimSet_ new_pot_list;
+    if (pot_list.size() == 1) { // only one potential, so just project it
+      MultiDimProjection< Potential< GUM_SCALAR > > projector(_projection_op_);
+      auto xpot = projector.schedule(schedule, *(pot_list.begin()), del_vars);
+      new_pot_list.insert(xpot);
+    }
+    else if (pot_list.size() > 1) {
+      // create a combine and project operator that will perform the
+      // marginalization
+      MultiDimCombineAndProjectDefault< Potential< GUM_SCALAR > > combine_and_project(
+         _combination_op_,
+         _projection_op_);
+      new_pot_list = combine_and_project.schedule(schedule, pot_list, del_vars);
+    }
 
     // remove all the potentials that were created due to projections of
     // barren nodes and that are not part of the new_pot_list: these
@@ -1143,20 +1178,27 @@ namespace gum {
     _PotentialSet_           new_pot_list = _marginalizeOut_(pot_list.first, del_vars, kept_vars);
     Potential< GUM_SCALAR >* joint        = nullptr;
 
-    if (new_pot_list.size() == 1) {
-      joint = const_cast< Potential< GUM_SCALAR >* >(*(new_pot_list.begin()));
-      // if joint already existed, create a copy, so that we can put it into
-      // the _target_posterior_ property
-      if (pot_list.first.exists(joint)) {
-        joint = new Potential< GUM_SCALAR >(*joint);
+    if (new_pot_list.size() == 0) {
+      joint = new Potential< GUM_SCALAR >;
+      for (const auto var : kept_vars)
+        *joint << *var;
+    }
+    else {
+      if (new_pot_list.size() == 1) {
+        joint = const_cast< Potential< GUM_SCALAR >* >(*(new_pot_list.begin()));
+        // if joint already existed, create a copy, so that we can put it into
+        // the _target_posterior_ property
+        if (pot_list.first.exists(joint)) {
+          joint = new Potential< GUM_SCALAR >(*joint);
+        } else {
+          // remove the joint from new_pot_list so that it will not be
+          // removed just after the else block
+          new_pot_list.clear();
+        }
       } else {
-        // remove the joint from new_pot_list so that it will not be
-        // removed just after the else block
-        new_pot_list.clear();
+        MultiDimCombinationDefault< Potential< GUM_SCALAR > > fast_combination(_combination_op_);
+        joint = fast_combination.execute(new_pot_list);
       }
-    } else {
-      MultiDimCombinationDefault< Potential< GUM_SCALAR > > fast_combination(_combination_op_);
-      joint = fast_combination.execute(new_pot_list);
     }
 
     // remove the potentials that were created in new_pot_list
@@ -1212,25 +1254,33 @@ namespace gum {
     Potential< GUM_SCALAR >*                     joint         = nullptr;
     ScheduleMultiDim< Potential< GUM_SCALAR > >* resulting_pot = nullptr;
 
-    auto& scheduler = this->scheduler();
-    if (new_pot_list.size() == 1) {
-      scheduler.execute(schedule);
-      resulting_pot = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
-         static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(*new_pot_list.begin()));
-    } else {
-      MultiDimCombinationDefault< Potential< GUM_SCALAR > > fast_combination(_combination_op_);
-      const IScheduleMultiDim* pot = fast_combination.schedule(schedule, new_pot_list);
-      scheduler.execute(schedule);
-      resulting_pot = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
-         static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(pot));
+    if (new_pot_list.size() == 0) {
+      joint = new Potential< GUM_SCALAR >;
+      for (const auto var : kept_vars)
+        *joint << *var;
     }
+    else {
+      auto& scheduler = this->scheduler();
+      if (new_pot_list.size() == 1) {
+        scheduler.execute(schedule);
+        resulting_pot = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
+           static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
+              *new_pot_list.begin()));
+      } else {
+        MultiDimCombinationDefault< Potential< GUM_SCALAR > > fast_combination(_combination_op_);
+        const IScheduleMultiDim* pot = fast_combination.schedule(schedule, new_pot_list);
+        scheduler.execute(schedule);
+        resulting_pot = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
+           static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(pot));
+      }
 
-    // if resulting_pot already existed, create a copy, so that we can put it into
-    // the _target_posteriors_ property
-    if (pot_list.exists(resulting_pot)) {
-      joint = new Potential< GUM_SCALAR >(resulting_pot->multiDim());
-    } else {
-      joint = resulting_pot->exportMultiDim();
+      // if resulting_pot already existed, create a copy, so that we can put it into
+      // the _target_posteriors_ property
+      if (pot_list.exists(resulting_pot)) {
+        joint = new Potential< GUM_SCALAR >(resulting_pot->multiDim());
+      } else {
+        joint = resulting_pot->exportMultiDim();
+      }
     }
 
     // check that the joint posterior is different from a 0 vector: this would
