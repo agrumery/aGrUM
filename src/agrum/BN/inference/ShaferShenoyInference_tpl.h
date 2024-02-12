@@ -1758,12 +1758,11 @@ namespace gum {
 
     // Combine and project the potentials
     _ScheduleMultiDimSet_ new_pot_list;
-    if (pot_list.size() == 1) { // only one potential, so just project it
+    if (pot_list.size() == 1) {   // only one potential, so just project it
       MultiDimProjection< Potential< GUM_SCALAR > > projector(_projection_op_);
       auto xpot = projector.schedule(schedule, *(pot_list.begin()), del_vars);
       new_pot_list.insert(xpot);
-    }
-    else if (pot_list.size() > 1) {
+    } else if (pot_list.size() > 1) {
       // create a combine and project operator that will perform the
       // marginalization
       MultiDimCombineAndProjectDefault< Potential< GUM_SCALAR > > combine_and_project(
@@ -1784,12 +1783,10 @@ namespace gum {
     // combine all the remaining potentials in order to create only one resulting potential
     if (new_pot_list.empty())
       return new ScheduleMultiDim< Potential< GUM_SCALAR > >(Potential< GUM_SCALAR >());
-    if (new_pot_list.size() == 1)
-      return *(new_pot_list.begin());
+    if (new_pot_list.size() == 1) return *(new_pot_list.begin());
     MultiDimCombinationDefault< Potential< GUM_SCALAR > > fast_combination(_combination_op_);
     return fast_combination.schedule(schedule, new_pot_list);
   }
-
 
   // remove variables del_vars from the list of potentials pot_list
   template < typename GUM_SCALAR >
@@ -1823,8 +1820,7 @@ namespace gum {
       MultiDimProjection< Potential< GUM_SCALAR > > projector(_projection_op_);
       auto xpot = projector.execute(**(xpot_list.begin()), del_vars);
       xnew_pot_list.insert(xpot);
-    }
-    else if (xpot_list.size() > 1) {
+    } else if (xpot_list.size() > 1) {
       // create a combine and project operator that will perform the
       // marginalization
       MultiDimCombineAndProjectDefault< Potential< GUM_SCALAR > > combine_and_project(
@@ -1834,7 +1830,7 @@ namespace gum {
     }
 
     // combine all the remaining potentials in order to create only one resulting potential
-    const Potential< GUM_SCALAR >* xres_pot;
+    const Potential< GUM_SCALAR >*               xres_pot;
     ScheduleMultiDim< Potential< GUM_SCALAR > >* res_pot;
     if (xnew_pot_list.size() == 1) {
       xres_pot = *(xnew_pot_list.begin());

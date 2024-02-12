@@ -20,11 +20,11 @@
 
 #include <iostream>
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
 #include <agrum/tools/graphs/algorithms/MeekRules.h>
 #include <agrum/tools/graphs/PDAG.h>
+
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 namespace gum_tests {
 

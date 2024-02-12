@@ -95,8 +95,8 @@ namespace gum {
   {
 
 #  ifdef GUM_MULTI_DIM_OPERATOR_IMPL2ARRAY_NAME
-    const MultiDimArray< T >* t1 = reinterpret_cast< const MultiDimArray< T >* >(tt1);
-    const MultiDimArray< T >* t2 = reinterpret_cast< const MultiDimArray< T >* >(tt2);
+    const MultiDimArray< T >*  t1 = reinterpret_cast< const MultiDimArray< T >* >(tt1);
+    const MultiDimArray< T >*  t2 = reinterpret_cast< const MultiDimArray< T >* >(tt2);
 #  endif
 
 #  ifdef GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME

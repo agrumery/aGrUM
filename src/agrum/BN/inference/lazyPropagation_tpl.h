@@ -1587,9 +1587,7 @@ namespace gum {
     // _findRelevantPotentialsXX_(pot_list, kept_vars);
 
     // if pot list is empty, do nothing. This may happen when there are only barren variables
-    if (pot_list.empty()) {
-      return _ScheduleMultiDimSet_();
-    }
+    if (pot_list.empty()) { return _ScheduleMultiDimSet_(); }
 
     // now, let's guarantee that all the potentials to be combined and projected
     // belong to the schedule
@@ -1606,12 +1604,11 @@ namespace gum {
 
     // Combine and project the potentials
     _ScheduleMultiDimSet_ new_pot_list;
-    if (pot_list.size() == 1) { // only one potential, so just project it
+    if (pot_list.size() == 1) {   // only one potential, so just project it
       MultiDimProjection< Potential< GUM_SCALAR > > projector(_projection_op_);
       auto xpot = projector.schedule(schedule, *(pot_list.begin()), del_vars);
       new_pot_list.insert(xpot);
-    }
-    else if (pot_list.size() > 1) {
+    } else if (pot_list.size() > 1) {
       // create a combine and project operator that will perform the
       // marginalization
       MultiDimCombineAndProjectDefault< Potential< GUM_SCALAR > > combine_and_project(
@@ -1639,9 +1636,7 @@ namespace gum {
                                                      gum::VariableSet&                del_vars,
                                                      gum::VariableSet&                kept_vars) {
     // if pot list is empty, do nothing. This may happen when there are many barren variables
-    if (pot_list.empty()) {
-      return _ScheduleMultiDimSet_();
-    }
+    if (pot_list.empty()) { return _ScheduleMultiDimSet_(); }
 
     _PotentialSet_ xpot_list(pot_list.size());
     for (auto pot: pot_list)
@@ -1659,7 +1654,7 @@ namespace gum {
     }
 
     // Combine and project the remaining potentials
-    _PotentialSet_ xnew_pot_list;
+    _PotentialSet_        xnew_pot_list;
     _ScheduleMultiDimSet_ new_pot_list;
     if (xpot_list.size() == 1) {
       MultiDimProjection< Potential< GUM_SCALAR > > projector(_projection_op_);
@@ -1673,8 +1668,7 @@ namespace gum {
         delete xpot;
       }
       new_pot_list.insert(pot);
-    }
-    else if (xpot_list.size() > 1) {
+    } else if (xpot_list.size() > 1) {
       // create a combine and project operator that will perform the
       // marginalization
       MultiDimCombineAndProjectDefault< Potential< GUM_SCALAR > > combine_and_project(
@@ -1911,10 +1905,9 @@ namespace gum {
 
     if (new_pot_list.size() == 0) {
       joint = new Potential< GUM_SCALAR >;
-      for (const auto var : kept_vars)
+      for (const auto var: kept_vars)
         *joint << *var;
-    }
-    else {
+    } else {
       if (new_pot_list.size() == 1) {
         scheduler.execute(schedule);
         resulting_pot = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
@@ -1997,10 +1990,9 @@ namespace gum {
 
     if (new_pot_list.size() == 0) {
       joint = new Potential< GUM_SCALAR >;
-      for (const auto var : kept_vars)
+      for (const auto var: kept_vars)
         *joint << *var;
-    }
-    else if (new_pot_list.size() == 1) {
+    } else if (new_pot_list.size() == 1) {
       auto sched_joint = const_cast< ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
          static_cast< const ScheduleMultiDim< Potential< GUM_SCALAR > >* >(
             *(new_pot_list.begin())));
@@ -2208,12 +2200,12 @@ namespace gum {
     // => combine the messages
     _ScheduleMultiDimSet_ new_pot_list = _marginalizeOut_(schedule, pot_list, del_vars, kept_vars);
     ScheduleMultiDim< Potential< GUM_SCALAR > >* resulting_pot = nullptr;
-    Potential< GUM_SCALAR >* joint = nullptr;
+    Potential< GUM_SCALAR >*                     joint         = nullptr;
 
     if (new_pot_list.size() == 0) {
-        joint = new Potential< GUM_SCALAR >();
-        for (const auto var : kept_vars)
-          *joint << *var;
+      joint = new Potential< GUM_SCALAR >();
+      for (const auto var: kept_vars)
+        *joint << *var;
     } else {
       if ((new_pot_list.size() == 1) && hard_ev_nodes.empty()) {
         scheduler.execute(schedule);

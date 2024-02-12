@@ -19,8 +19,9 @@
  */
 
 
-#include <agrum/tools/core/math/math_utils.h>
 #include <agrum/tools/variables/numericalDiscreteVariable.h>
+
+#include <agrum/tools/core/math/math_utils.h>
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/tools/variables/numericalDiscreteVariable_inl.h>
@@ -40,7 +41,7 @@ namespace gum {
     // store the sorted values into a sequence
     _domain_.resize(dom.size());
     for (const double val: dom) {
-      if (!gum::isfinite<double>(val)) {
+      if (!gum::isfinite< double >(val)) {
         GUM_ERROR(DefaultInLabel, "Tick '" << val << "' is not allowed for variable " << name())
       }
       _domain_ << val;
@@ -62,10 +63,10 @@ namespace gum {
     if (first >= last)
       GUM_ERROR(ArgumentError, "first (here :" << first << " must be <last (here :" << last << ").")
 
-    if (!gum::isfinite<double>(first)) {
+    if (!gum::isfinite< double >(first)) {
       GUM_ERROR(DefaultInLabel, "Tick '" << first << "' is not allowed for variable " << name())
     }
-    if (!gum::isfinite<double>(last)) {
+    if (!gum::isfinite< double >(last)) {
       GUM_ERROR(DefaultInLabel, "Tick '" << last << "' is not allowed for variable " << name())
     }
 
@@ -113,7 +114,7 @@ namespace gum {
 
   /// add a new value to the domain size
   void NumericalDiscreteVariable::addValue(double value) {
-    if (!gum::isfinite<double>(value)) {
+    if (!gum::isfinite< double >(value)) {
       GUM_ERROR(DefaultInLabel, "Tick '" << value << "' is not allowed for variable " << name())
     }
 

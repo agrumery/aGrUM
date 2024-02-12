@@ -24,7 +24,8 @@
 #  include <sstream>
 
 #  include <agrum/tools/variables/discretizedVariable.h>
-#include <agrum/tools/core/math/math_utils.h>
+
+#  include <agrum/tools/core/math/math_utils.h>
 
 namespace gum {
   template < typename T_TICKS >
@@ -137,7 +138,7 @@ namespace gum {
   template < typename T_TICKS >
   DiscretizedVariable< T_TICKS >& DiscretizedVariable< T_TICKS >::addTick(const T_TICKS& aTick) {
     // check if aTick is a float or a special value (infinity or not a number)
-    if (! gum::isfinite(aTick)) {
+    if (!gum::isfinite(aTick)) {
       GUM_ERROR(DefaultInLabel, "Tick '" << aTick << "' is not allowed for variable " << name())
     }
     if (isTick(aTick)) {

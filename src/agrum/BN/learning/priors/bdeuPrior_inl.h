@@ -55,7 +55,7 @@ namespace gum::learning {
 
 
   /// copy operator
-  INLINE BDeuPrior& BDeuPrior::operator=(const BDeuPrior & from) {
+  INLINE BDeuPrior& BDeuPrior::operator=(const BDeuPrior& from) {
     Prior::operator=(from);
     return *this;
   }

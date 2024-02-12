@@ -56,12 +56,13 @@ namespace gum {
     if constexpr (std::numeric_limits< T >::has_infinity) {
       if constexpr (std::numeric_limits< T >::is_signed) {
         return arg == arg && arg != std::numeric_limits< T >::infinity()
-            && arg != -std::numeric_limits< T >::infinity(); // neither Nan, infty nor -infty
+            && arg != -std::numeric_limits< T >::infinity();   // neither Nan, infty nor -infty
       } else {
-        return arg == arg && arg != std::numeric_limits< T >::infinity(); // neither Nan nor inftty
+        return arg == arg
+            && arg != std::numeric_limits< T >::infinity();    // neither Nan nor inftty
       }
     } else {
-      return arg == arg; // not Nan
+      return arg == arg;                                       // not Nan
     }
   };
 }   // namespace gum

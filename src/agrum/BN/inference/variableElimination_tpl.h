@@ -1016,11 +1016,8 @@ namespace gum {
      Set< const Potential< GUM_SCALAR >* > pot_list,
      gum::VariableSet&                     del_vars,
      gum::VariableSet&                     kept_vars) {
-
-   // if pot list is empty, do nothing. This may happen when there are many barren variables
-    if (pot_list.empty()) {
-      return _PotentialSet_();
-    }
+    // if pot list is empty, do nothing. This may happen when there are many barren variables
+    if (pot_list.empty()) { return _PotentialSet_(); }
 
     // use d-separation analysis to check which potentials shall be combined
     // _findRelevantPotentialsXX_(pot_list, kept_vars);
@@ -1038,8 +1035,7 @@ namespace gum {
       MultiDimProjection< Potential< GUM_SCALAR > > projector(_projection_op_);
       auto pot = projector.execute(**(pot_list.begin()), del_vars);
       new_pot_list.insert(pot);
-    }
-    else if (pot_list.size() > 1) {
+    } else if (pot_list.size() > 1) {
       // create a combine and project operator that will perform the
       // marginalization
       MultiDimCombineAndProjectDefault< Potential< GUM_SCALAR > > combine_and_project(
@@ -1068,9 +1064,7 @@ namespace gum {
                                                          gum::VariableSet&               del_vars,
                                                          gum::VariableSet& kept_vars) {
     // if pot list is empty, do nothing. This may happen when there are only barren variables
-    if (pot_list.empty()) {
-      return _ScheduleMultiDimSet_();
-    }
+    if (pot_list.empty()) { return _ScheduleMultiDimSet_(); }
 
     // use d-separation analysis to check which potentials shall be combined
     // _findRelevantPotentialsXX_(pot_list, kept_vars);
@@ -1090,12 +1084,11 @@ namespace gum {
 
     // Combine and project the potentials
     _ScheduleMultiDimSet_ new_pot_list;
-    if (pot_list.size() == 1) { // only one potential, so just project it
+    if (pot_list.size() == 1) {   // only one potential, so just project it
       MultiDimProjection< Potential< GUM_SCALAR > > projector(_projection_op_);
       auto xpot = projector.schedule(schedule, *(pot_list.begin()), del_vars);
       new_pot_list.insert(xpot);
-    }
-    else if (pot_list.size() > 1) {
+    } else if (pot_list.size() > 1) {
       // create a combine and project operator that will perform the
       // marginalization
       MultiDimCombineAndProjectDefault< Potential< GUM_SCALAR > > combine_and_project(
@@ -1180,10 +1173,9 @@ namespace gum {
 
     if (new_pot_list.size() == 0) {
       joint = new Potential< GUM_SCALAR >;
-      for (const auto var : kept_vars)
+      for (const auto var: kept_vars)
         *joint << *var;
-    }
-    else {
+    } else {
       if (new_pot_list.size() == 1) {
         joint = const_cast< Potential< GUM_SCALAR >* >(*(new_pot_list.begin()));
         // if joint already existed, create a copy, so that we can put it into
@@ -1256,10 +1248,9 @@ namespace gum {
 
     if (new_pot_list.size() == 0) {
       joint = new Potential< GUM_SCALAR >;
-      for (const auto var : kept_vars)
+      for (const auto var: kept_vars)
         *joint << *var;
-    }
-    else {
+    } else {
       auto& scheduler = this->scheduler();
       if (new_pot_list.size() == 1) {
         scheduler.execute(schedule);
