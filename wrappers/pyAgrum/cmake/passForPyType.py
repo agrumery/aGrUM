@@ -46,12 +46,12 @@ def process_filters(src_filename: str, target_filename: str, debugmode: bool):
     (
       "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >",
       '"pyAgrum.YetUnWrapped"'),
-    (
-      "std::vector< std::vector< gum::Idx,std::allocator< gum::Idx > >,std::allocator< std::vector< gum::Idx,std::allocator< gum::Idx > > > >",
-      '"pyAgrum.YetUnWrapped"'),
+    #(
+    #  "std::vector< std::vector< gum::Idx,std::allocator< gum::Idx > >,std::allocator< std::vector< gum::Idx,std::allocator< gum::Idx > > > >",
+    #  '"pyAgrum.YetUnWrapped"'),
     ("gum::IApproximationSchemeConfiguration::ApproximationSchemeSTATE", "int"),
     ("gum::IApproximationSchemeConfiguration", '"pyAgrum.YetUnWrapped"'),
-    ("gum::learning::DatabaseTable", '"pyAgrum.YetUnWrapped"'),
+    #("gum::learning::DatabaseTable", '"pyAgrum.YetUnWrapped"'),
     ("std::vector< gum::NodeSet,std::allocator< gum::NodeSet > >", '"pyAgrum.YetUnWrapped"'),
 
     # complicated std types
@@ -82,7 +82,7 @@ def process_filters(src_filename: str, target_filename: str, debugmode: bool):
     # containers
     ('std::pair< gum::Instantiation,double >', 'Tuple["pyAgrum.Instantiation",float]'),
     ('std::unique_ptr< gum::DiscreteVariable >', '"pyAgrum.DiscreteVariable"'),
-    ("std::vector< gum::Idx,std::allocator< gum::Idx > >", 'List[int]'),
+    #("std::vector< gum::Idx,std::allocator< gum::Idx > >", 'List[int]'),
     ("std::vector< gum::NodeId,std::allocator< gum::NodeId > >", 'List[int]'),
     ("std::vector< double,std::allocator< double > >", "List[float]"),
     ("std::vector< int,std::allocator< int > >", "List[int]"),
@@ -90,7 +90,7 @@ def process_filters(src_filename: str, target_filename: str, debugmode: bool):
     ("std::vector< std::string,std::allocator< std::string > >", "List[str]"),
     ("\"Vector_string\"", "List[str]"),
     ("std::vector< PythonLoadListener,std::allocator< PythonLoadListener > >", 'List["pyAgrum.PythonLoadListener"]'),
-    ("std::vector< gum::Arc,std::allocator< gum::Arc > >", 'List[Tuple[int,int]]'),
+    #("std::vector< gum::Arc,std::allocator< gum::Arc > >", 'List[Tuple[int,int]]'),
     ("gum::NodeProperty< gum::NodeId >", "Dict[int,int]"),
     ("gum::NodeSet", "List[int]"),
     ("gum::Set< gum::Instantiation >", "List[Dict[str,int]]"),
@@ -104,7 +104,7 @@ def process_filters(src_filename: str, target_filename: str, debugmode: bool):
     # removing templates and correct namespace for pyAgrum's classes
     ("gum::Potential< double >", '"pyAgrum.Potential"'),
     ("gum::BayesNet< double >", '"pyAgrum.BayesNet"'),
-    ("gum::MarkovNet< double >", '"pyAgrum.MarkovRandomField"'),
+    #("gum::MarkovNet< double >", '"pyAgrum.MarkovRandomField"'),
     ("gum::MarkovRandomField< double >", '"pyAgrum.MarkovRandomField"'),
     ("gum::InfluenceDiagram< double >", '"pyAgrum.InfluenceDiagram"'),
     ("gum::DiscreteVariable", '"pyAgrum.DiscreteVariable"'),
@@ -119,7 +119,7 @@ def process_filters(src_filename: str, target_filename: str, debugmode: bool):
     ("gum::credal::CredalNet< double >", '"pyAgrum.CredalNet"'),
     ("gum::credal::CNLoopyPropagation< double >::InferenceType", 'int'),
     ("gum::credal::CNLoopyPropagation< double >", '"pyAgrum.CNLoopyPropagation"'),
-    ("gum::DAG", '"pyAgrum.DAG"'),
+    #("gum::DAG", '"pyAgrum.DAG"'),
     ("gum::UndiGraph", '"pyAgrum.UndiGraph"'),
     ("gum::MixedGraph", '"pyAgrum.MixedGraph"'),
     ("gum::PDAG", '"pyAgrum.PDAG"'),
@@ -144,7 +144,7 @@ def process_filters(src_filename: str, target_filename: str, debugmode: bool):
     ('"Arc"', '"pyAgrum.Arc"'),
     ('"Edge"', '"pyAgrum.Edge"'),
     ('"UndiGraph"', '"pyAgrum.UndiGraph"'),
-    ('"DiscreteVariable"', '"pyAgrum.DiscreteVariable"'),
+    #('"DiscreteVariable"', '"pyAgrum.DiscreteVariable"'),
     ('"DiscretizedVariable"', '"pyAgrum.DiscretizedVariable"'),
     ('"Variable"', '"pyAgrum.Variable"'),
     ('"BayesNet"', '"pyAgrum.BayesNet"'),
@@ -176,10 +176,13 @@ def process_filters(src_filename: str, target_filename: str, debugmode: bool):
     ("\\bdouble\\b", "float"),
 
     # keep correct comment with template
-    ("< float >", "< double >"),
+    #("< float >", "< double >"),
     ("gum::BayesNet", 'pyAgrum.BayesNet'),
     ("gum::Potential", 'pyAgrum.Potential'),
-    ("gum::MarkovNet", 'pyAgrum.MarkovRandomField'),
+    #("gum::MarkovNet", 'pyAgrum.MarkovRandomField'),
+    ( "gum::DiGraph",'"pyAgrum.DiGraph"'),
+    ( "gum::","pyAgrum."),
+    ( "gum\\.","pyAgrum."),
   ]
 
   rules = {f"R{i + 1}": cpl for i, cpl in enumerate(list_rules)}

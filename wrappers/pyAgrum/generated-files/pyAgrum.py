@@ -241,12 +241,12 @@ class PythonBNListener(object):
 
     Listener for Bayesian Network's modifications. This listener is notified when the structure of the BN is changed.
 
-    PythonBNListener(bn:gum.BayesNet,vnm:gum.VariableNodeMap) -> PythonBNListener
+    PythonBNListener(bn:pyAgrum.BayesNet,vnm:pyAgrum.VariableNodeMap) -> PythonBNListener
         default constructor
 
     Note
     ----
-        This class est mainly automatically instantiated using the method gum.BayesNet.addStructureListener.
+        This class est mainly automatically instantiated using the method pyAgrum.BayesNet.addStructureListener.
 
     Parameters
     ----------
@@ -265,12 +265,12 @@ class PythonBNListener(object):
 
         Listener for Bayesian Network's modifications. This listener is notified when the structure of the BN is changed.
 
-        PythonBNListener(bn:gum.BayesNet,vnm:gum.VariableNodeMap) -> PythonBNListener
+        PythonBNListener(bn:pyAgrum.BayesNet,vnm:pyAgrum.VariableNodeMap) -> PythonBNListener
             default constructor
 
         Note
         ----
-            This class est mainly automatically instantiated using the method gum.BayesNet.addStructureListener.
+            This class est mainly automatically instantiated using the method pyAgrum.BayesNet.addStructureListener.
 
         Parameters
         ----------
@@ -1023,7 +1023,7 @@ class PRMexplorer(object):
         Raises
         ------
         pyAgrum.OperationNotAllowed
-        	If the class element doesn't have any pyAgrum.Potential (like a gum::PRMReferenceSlot).
+        	If the class element doesn't have any pyAgrum.Potential (like a pyAgrum.PRMReferenceSlot).
         pyAgrum.IndexError
         	If the class is not in the PRM
         pyAgrum.IndexError
@@ -2686,16 +2686,16 @@ class DiscreteVariable(Variable):
     def asLabelizedVar(self) -> "pyAgrum.LabelizedVariable":
         r"""
 
-        Tries to cast the variable as a `gum.LabelizedVar`.
+        Tries to cast the variable as a `pyAgrum.LabelizedVar`.
 
         Raises
         ------
-        gum.OperationNotAllowed if this is not possible
+        pyAgrum.OperationNotAllowed if this is not possible
 
         Returns
         -------
-        gum.LabelizedVar
-          the variable as a gum.LabelizedVar
+        pyAgrum.LabelizedVar
+          the variable as a pyAgrum.LabelizedVar
 
         """
         return _pyAgrum.DiscreteVariable_asLabelizedVar(self)
@@ -2703,16 +2703,16 @@ class DiscreteVariable(Variable):
     def asRangeVar(self) -> "pyAgrum.RangeVariable":
         r"""
 
-        Tries to cast the variable as a `gum.RangeVar`.
+        Tries to cast the variable as a `pyAgrum.RangeVar`.
 
         Raises
         ------
-        gum.OperationNotAllowed if this is not possible
+        pyAgrum.OperationNotAllowed if this is not possible
 
         Returns
         -------
-        gum.RangeVar
-          the variable as a gum.RangeVar
+        pyAgrum.RangeVar
+          the variable as a pyAgrum.RangeVar
 
         """
         return _pyAgrum.DiscreteVariable_asRangeVar(self)
@@ -2720,16 +2720,16 @@ class DiscreteVariable(Variable):
     def asIntegerVar(self) -> "pyAgrum.IntegerVariable":
         r"""
 
-        Tries to cast the variable as a `gum.IntegerVar`.
+        Tries to cast the variable as a `pyAgrum.IntegerVar`.
 
         Raises
         ------
-        gum.OperationNotAllowed if this is not possible
+        pyAgrum.OperationNotAllowed if this is not possible
 
         Returns
         -------
-        gum.IntegerVar
-          the variable as a gum.IntegerVar
+        pyAgrum.IntegerVar
+          the variable as a pyAgrum.IntegerVar
 
         """
         return _pyAgrum.DiscreteVariable_asIntegerVar(self)
@@ -2737,16 +2737,16 @@ class DiscreteVariable(Variable):
     def asNumericalDiscreteVar(self) -> "pyAgrum.NumericalDiscreteVariable":
         r"""
 
-        Tries to cast the variable as a `gum.NumericalDiscreteVar`.
+        Tries to cast the variable as a `pyAgrum.NumericalDiscreteVar`.
 
         Raises
         ------
-        gum.OperationNotAllowed if this is not possible
+        pyAgrum.OperationNotAllowed if this is not possible
 
         Returns
         -------
-        gum.NumericalDiscreteVar
-          the variable as a gum.NumericalDiscreteVar
+        pyAgrum.NumericalDiscreteVar
+          the variable as a pyAgrum.NumericalDiscreteVar
 
         """
         return _pyAgrum.DiscreteVariable_asNumericalDiscreteVar(self)
@@ -2754,16 +2754,16 @@ class DiscreteVariable(Variable):
     def asDiscretizedVar(self) -> "pyAgrum.DiscretizedVariable":
         r"""
 
-        Tries to cast the variable as a `gum.DiscretizedVar`.
+        Tries to cast the variable as a `pyAgrum.DiscretizedVar`.
 
         Raises
         ------
-        gum.OperationNotAllowed if this is not possible
+        pyAgrum.OperationNotAllowed if this is not possible
 
         Returns
         -------
-        gum.DiscretizedVar
-          the variable as a gum.DiscretizedVar
+        pyAgrum.DiscretizedVar
+          the variable as a pyAgrum.DiscretizedVar
 
         """
         return _pyAgrum.DiscreteVariable_asDiscretizedVar(self)
@@ -2795,7 +2795,7 @@ class LabelizedVariable(DiscreteVariable):
     --------
     >>> import pyAgrum as gum
     >>> # creating a variable with 3 labels : '0', '1' and '2'
-    >>> va=gum.LabelizedVariable('a','a labelized variable',3)
+    >>> va=pyAgrum.LabelizedVariable('a','a labelized variable',3)
     >>> print(va)
     a:Labelized(<0,1,2>)
     >>> va.addLabel('foo')
@@ -2803,7 +2803,7 @@ class LabelizedVariable(DiscreteVariable):
     >>> va.changeLabel(1,'bar')
     >>> print(va)
     a:Labelized(<0,bar,2,foo>)
-    >>> vb=gum.LabelizedVariable('b','b',0).addLabel('A').addLabel('B').addLabel('C')
+    >>> vb=pyAgrum.LabelizedVariable('b','b',0).addLabel('A').addLabel('B').addLabel('C')
     >>> print(vb)
     b:Labelized(<A,B,C>)
     >>> vb.labels()
@@ -2812,7 +2812,7 @@ class LabelizedVariable(DiscreteVariable):
     False
     >>> vb.label(2)
     'C'
-    >>> vc=gum.LabelizedVariable('b','b',['one','two','three'])
+    >>> vc=pyAgrum.LabelizedVariable('b','b',['one','two','three'])
     >>> vc
     ("pyAgrum.LabelizedVariable"@0x7fc4c840c130) b:Labelized(<one,two,three>)
 
@@ -3051,7 +3051,7 @@ class RangeVariable(DiscreteVariable):
     Examples
     --------
     >>> import pyAgrum as gum
-    >>> vI=gum.RangeVariable('I','I in [4,10]',4,10)
+    >>> vI=pyAgrum.RangeVariable('I','I in [4,10]',4,10)
     >>> print(vI)
     I:Range([4,10])
     >>> vI.maxVal()
@@ -3289,7 +3289,7 @@ class IntegerVariable(DiscreteVariable):
     --------
     >>> import pyAgrum as gum
     >>> # creating a variable with 3 values : 1,34,142
-    >>> va=gum.IntegerVariable('a','a integer variable',[1,34,142])
+    >>> va=pyAgrum.IntegerVariable('a','a integer variable',[1,34,142])
     >>> print(va)
     a:Integer(<1,34,142>)
     >>> va.addValue(25)
@@ -3297,7 +3297,7 @@ class IntegerVariable(DiscreteVariable):
     >>> va.changeValue(34,43)
     >>> print(va)
     a:Integer(<1,25,43,142>)
-    >>> vb=gum.IntegerVariable('b','b').addValue(34).addValue(142).addValue(1)
+    >>> vb=pyAgrum.IntegerVariable('b','b').addValue(34).addValue(142).addValue(1)
     >>> print(vb)
     b:Integer(<1,34,142>)
     >>> vb.labels()
@@ -3551,7 +3551,7 @@ class NumericalDiscreteVariable(DiscreteVariable):
     --------
     >>> import pyAgrum as gum
     >>> # creating a variable with 3 values : 1.5,3.14,1.42
-    >>> va=gum.NumericalDiscreteVariable('a','a numerica variable',[1.5,3.14,1.42])
+    >>> va=pyAgrum.NumericalDiscreteVariable('a','a numerica variable',[1.5,3.14,1.42])
     >>> print(va)
     a:NumericalDiscrete({1.42|1.5|3.14})
     >>> va.addValue(2.01)
@@ -3559,12 +3559,12 @@ class NumericalDiscreteVariable(DiscreteVariable):
     >>> va.changeValue(3.14,3.1415)
     >>> print(va)
     a:NumericalDiscrete({1.42|1.5|2.01|3.1415})
-    >>> vb=gum.NumericalDiscreteVariable('b','b').addValue(3.14).addValue(1.42).addValue(1.5)
+    >>> vb=pyAgrum.NumericalDiscreteVariable('b','b').addValue(3.14).addValue(1.42).addValue(1.5)
     >>> print(vb)
     b:NumericalDiscrete({1.42|1.5|3.14})
     >>> vb.labels()
     ('1.42', '1.5', '3.14')
-    >>>> vc=gum.NumericalDiscreteVariable('c','c',1.2,3.8,5)
+    >>>> vc=pyAgrum.NumericalDiscreteVariable('c','c',1.2,3.8,5)
     >>> print(vc)
     c:NumericalDiscrete({1.2|1.85|2.5|3.15|3.8})
 
@@ -4416,7 +4416,7 @@ class DiGraph(object):
     __swig_destroy__ = _pyAgrum.delete_DiGraph
 
     @staticmethod
-    def completeGraph(n: int) -> "gum::DiGraph":
+    def completeGraph(n: int) -> "pyAgrum.DiGraph":
         return _pyAgrum.DiGraph_completeGraph(n)
 
     def __eq__(self, g: "DiGraph") -> bool:
@@ -4873,11 +4873,11 @@ class DAG(DiGraph):
     def moralGraph(self) -> "pyAgrum.UndiGraph":
         r"""
 
-        Creates the `gum.UndiGraph` corresponding to the moralization of the DAG
+        Creates the `pyAgrum.UndiGraph` corresponding to the moralization of the DAG
 
         Returns
         -------
-        gum.UndiGraph
+        pyAgrum.UndiGraph
             the moral graph
 
         """
@@ -6101,7 +6101,7 @@ class Instantiation(object):
         """
         return _pyAgrum.Instantiation_nbrDim(self)
 
-    def add(self, v: "pyAgrum.DiscreteVariable") -> None:
+    def add(self, v: "DiscreteVariable") -> None:
         r"""
 
         Adds a new variable in the Instantiation.
@@ -6161,7 +6161,7 @@ class Instantiation(object):
         """
         return _pyAgrum.Instantiation_domainSize(self)
 
-    def pos(self, v: "pyAgrum.DiscreteVariable") -> int:
+    def pos(self, v: "DiscreteVariable") -> int:
         r"""
 
         Returns
@@ -6430,7 +6430,7 @@ class Instantiation(object):
         """
         return _pyAgrum.Instantiation_decOut(self, i)
 
-    def incNotVar(self, v: "pyAgrum.DiscreteVariable") -> None:
+    def incNotVar(self, v: "DiscreteVariable") -> None:
         r"""
 
         Operator ++ for vars which are not v.
@@ -6443,7 +6443,7 @@ class Instantiation(object):
         """
         return _pyAgrum.Instantiation_incNotVar(self, v)
 
-    def decNotVar(self, v: "pyAgrum.DiscreteVariable") -> None:
+    def decNotVar(self, v: "DiscreteVariable") -> None:
         r"""
 
         Operator -- for vars which are not v.
@@ -6456,7 +6456,7 @@ class Instantiation(object):
         """
         return _pyAgrum.Instantiation_decNotVar(self, v)
 
-    def incVar(self, v: "pyAgrum.DiscreteVariable") -> None:
+    def incVar(self, v: "DiscreteVariable") -> None:
         r"""
 
         Operator ++ for variable v only.
@@ -6474,7 +6474,7 @@ class Instantiation(object):
         """
         return _pyAgrum.Instantiation_incVar(self, v)
 
-    def decVar(self, v: "pyAgrum.DiscreteVariable") -> None:
+    def decVar(self, v: "DiscreteVariable") -> None:
         r"""
 
         Operator -- for variable v only.
@@ -6560,7 +6560,7 @@ class Instantiation(object):
         """
         return _pyAgrum.Instantiation_setLastOut(self, i)
 
-    def setFirstNotVar(self, v: "pyAgrum.DiscreteVariable") -> None:
+    def setFirstNotVar(self, v: "DiscreteVariable") -> None:
         r"""
 
         Assign the first values to variables different of v.
@@ -6573,7 +6573,7 @@ class Instantiation(object):
         """
         return _pyAgrum.Instantiation_setFirstNotVar(self, v)
 
-    def setLastNotVar(self, v: "pyAgrum.DiscreteVariable") -> None:
+    def setLastNotVar(self, v: "DiscreteVariable") -> None:
         r"""
 
         Assign the last values to variables different of v.
@@ -6586,7 +6586,7 @@ class Instantiation(object):
         """
         return _pyAgrum.Instantiation_setLastNotVar(self, v)
 
-    def setFirstVar(self, v: "pyAgrum.DiscreteVariable") -> None:
+    def setFirstVar(self, v: "DiscreteVariable") -> None:
         r"""
 
         Assign the first value in the Instantiation for var v.
@@ -6599,7 +6599,7 @@ class Instantiation(object):
         """
         return _pyAgrum.Instantiation_setFirstVar(self, v)
 
-    def setLastVar(self, v: "pyAgrum.DiscreteVariable") -> None:
+    def setLastVar(self, v: "DiscreteVariable") -> None:
         r"""
 
         Assign the last value in the Instantiation for var v.
@@ -6921,7 +6921,7 @@ class GraphicalModel(object):
     def variable(self, id: int) -> "pyAgrum.DiscreteVariable":
         return _pyAgrum.GraphicalModel_variable(self, id)
 
-    def nodeId(self, var: "pyAgrum.DiscreteVariable") -> int:
+    def nodeId(self, var: "DiscreteVariable") -> int:
         return _pyAgrum.GraphicalModel_nodeId(self, var)
 
     def idFromName(self, name: str) -> int:
@@ -7166,11 +7166,11 @@ class DAGmodel(GraphicalModel):
 
         Warnings
         --------
-          gum.UndiGraph only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph
+          pyAgrum.UndiGraph only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph
 
         Returns
         -------
-        gum.UndiGraph
+        pyAgrum.UndiGraph
           the moralized ancestral graph of the nodes
 
         """
@@ -8298,7 +8298,7 @@ def fastVariable(var_description: str, default_domain_size: int=2) -> "pyAgrum.D
 
     Raises
     ------
-    gum.NotAllowed 
+    pyAgrum.NotAllowed 
 
     Parameters
     ----------
@@ -8310,21 +8310,21 @@ def fastVariable(var_description: str, default_domain_size: int=2) -> "pyAgrum.D
 
     Examples
     --------
-    >>> print(gum.fastVariable('A{On|Off|Defun}'))
+    >>> print(pyAgrum.fastVariable('A{On|Off|Defun}'))
     A:Labelized({On|Off|Defun})
-    >>> print(gum.fastVariable('A{3.14|0|1.15}'))
+    >>> print(pyAgrum.fastVariable('A{3.14|0|1.15}'))
     A:NumericalDiscrete({0|1.15|3.14})
-    >>> print(gum.fastVariable('A{1.2:5.2:5}}'))
+    >>> print(pyAgrum.fastVariable('A{1.2:5.2:5}}'))
     A:NumericalDiscrete({1.2|2.2|3.2|4.2|5.2})
-    >>> print(gum.fastVariable('A{1|3|9}'))
+    >>> print(pyAgrum.fastVariable('A{1|3|9}'))
     A:Integer({1|3|9})
-    >>> print(gum.fastVariable('A[4,6]'))
+    >>> print(pyAgrum.fastVariable('A[4,6]'))
     A:Range([4,6])
-    >>> print(gum.fastVariable('A[5]'))
+    >>> print(pyAgrum.fastVariable('A[5]'))
     A:Range([0,4])
-    >>> print(gum.fastVariable('A[4,6,10]'))
+    >>> print(pyAgrum.fastVariable('A[4,6,10]'))
     A:Discretized(<[4;6[,[6;10]>)
-    >>> print(gum.fastVariable('A[1:6:5]'))
+    >>> print(pyAgrum.fastVariable('A[1:6:5]'))
     A:Discretized(<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>)
 
 
@@ -8366,7 +8366,7 @@ class DiscretizedVariable(IDiscretizedVariable):
     Examples
     --------
     >>> import pyAgrum as gum
-    >>> vX=gum.DiscretizedVariable('X','X has been discretized').addTick(1).addTick(2).addTick(3).addTick(3.1415)
+    >>> vX=pyAgrum.DiscretizedVariable('X','X has been discretized').addTick(1).addTick(2).addTick(3).addTick(3.1415)
     >>> print(vX)
     X:Discretized(<[1;2[,[2;3[,[3;3.1415]>)
     >>> vX.isTick(4)
@@ -9147,7 +9147,7 @@ class Potential(object):
         Parameters
         ----------
         func : function(Dict[str,int])->float
-            A function that takes a single argument, representing the value of a python representation of a `gum.Instantiation` (as a dictionary), and returns a float.
+            A function that takes a single argument, representing the value of a python representation of a `pyAgrum.Instantiation` (as a dictionary), and returns a float.
 
         Warnings
         --------
@@ -9417,7 +9417,7 @@ class Potential(object):
       Examples
       --------
       >>> import pyAgrum as gum
-      >>> bn=gum.fastBN("A[3]->B[3]<-C[3]")
+      >>> bn=pyAgrum.fastBN("A[3]->B[3]<-C[3]")
       >>> for i in bn.cpt("B").loopIn():
             print(i)
             print(bn.cpt("B").get(i))
@@ -9441,7 +9441,7 @@ class Potential(object):
       Examples
       --------
       >>> import pyAgrum as gum
-      >>> bn=gum.fastBN("A[3]->B[3]<-C[3]")
+      >>> bn=pyAgrum.fastBN("A[3]->B[3]<-C[3]")
       >>> bn.cpt("B").fillWithFunction("(A+C)/2")
 
       Parameters
@@ -9686,7 +9686,7 @@ class Potential(object):
 
         Warnings
         --------
-            This methods is deprecated. Please use gum.Potential.names and note the change in the order !
+            This methods is deprecated. Please use pyAgrum.Potential.names and note the change in the order !
 
             var_names return a list in the reverse order of the enumeration order of the variables.
         """
@@ -9703,7 +9703,7 @@ class Potential(object):
 
         Warnings
         --------
-            This methods is deprecated. Please use gum.Potential.shape and note the change in the order !
+            This methods is deprecated. Please use pyAgrum.Potential.shape and note the change in the order !
 
             var_dims return a list in the reverse order of the enumeration order of the variables.
         """
@@ -9781,7 +9781,7 @@ class Potential(object):
         """
         return _pyAgrum.Potential_empty(self)
 
-    def pos(self, v: "pyAgrum.DiscreteVariable") -> int:
+    def pos(self, v: "DiscreteVariable") -> int:
         r"""
 
         Parameters
@@ -9801,7 +9801,7 @@ class Potential(object):
         """
         return _pyAgrum.Potential_pos(self, v)
 
-    def contains(self, v: "pyAgrum.DiscreteVariable") -> bool:
+    def contains(self, v: "DiscreteVariable") -> bool:
         r"""
 
         Parameters
@@ -9837,7 +9837,7 @@ class Potential(object):
         """
         return _pyAgrum.Potential_variable(self, *args)
 
-    def remove(self, var: "pyAgrum.DiscreteVariable") -> None:
+    def remove(self, var: "DiscreteVariable") -> None:
         r"""
 
         Parameters
@@ -9863,7 +9863,7 @@ class Potential(object):
         return val
 
 
-    def add(self, v: "pyAgrum.DiscreteVariable") -> None:
+    def add(self, v: "DiscreteVariable") -> None:
         r"""
 
         Add a discrete variable to the potential.
@@ -9983,7 +9983,7 @@ class IBayesNet(DAGmodel):
         """
         return _pyAgrum.IBayesNet_variable(self, id)
 
-    def nodeId(self, var: "pyAgrum.DiscreteVariable") -> int:
+    def nodeId(self, var: "DiscreteVariable") -> int:
         r"""
 
         Parameters
@@ -10489,11 +10489,11 @@ class IBayesNet(DAGmodel):
 
         Warnings
         --------
-          gum.UndiGraph only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph
+          pyAgrum.UndiGraph only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph
 
         Returns
         -------
-        gum.UndiGraph
+        pyAgrum.UndiGraph
           the moralized ancestral graph of the nodes
 
         """
@@ -10729,7 +10729,7 @@ class BayesNet(IBayesNet):
         """
         return _pyAgrum.BayesNet_changeVariableLabel(self, *args)
 
-    def nodeId(self, var: "pyAgrum.DiscreteVariable") -> int:
+    def nodeId(self, var: "DiscreteVariable") -> int:
         r"""
 
         Parameters
@@ -11033,7 +11033,7 @@ class BayesNet(IBayesNet):
         """
         return _pyAgrum.BayesNet_addLogit(self, *args)
 
-    def addOR(self, var: "pyAgrum.DiscreteVariable") -> int:
+    def addOR(self, var: "DiscreteVariable") -> int:
         r"""
 
         Add a variable, it's associate node and an OR implementation.
@@ -11062,7 +11062,7 @@ class BayesNet(IBayesNet):
         """
         return _pyAgrum.BayesNet_addOR(self, var)
 
-    def addAND(self, var: "pyAgrum.DiscreteVariable") -> int:
+    def addAND(self, var: "DiscreteVariable") -> int:
         r"""
 
         Add a variable, it's associate node and an AND implementation.
@@ -11087,7 +11087,7 @@ class BayesNet(IBayesNet):
         """
         return _pyAgrum.BayesNet_addAND(self, var)
 
-    def addAMPLITUDE(self, var: "pyAgrum.DiscreteVariable") -> int:
+    def addAMPLITUDE(self, var: "DiscreteVariable") -> int:
         r"""
 
         Others aggregators
@@ -11105,7 +11105,7 @@ class BayesNet(IBayesNet):
         """
         return _pyAgrum.BayesNet_addAMPLITUDE(self, var)
 
-    def addCOUNT(self, var: "pyAgrum.DiscreteVariable", value: int=1) -> int:
+    def addCOUNT(self, var: "DiscreteVariable", value: int=1) -> int:
         r"""
 
         Others aggregators
@@ -11123,7 +11123,7 @@ class BayesNet(IBayesNet):
         """
         return _pyAgrum.BayesNet_addCOUNT(self, var, value)
 
-    def addEXISTS(self, var: "pyAgrum.DiscreteVariable", value: int=1) -> int:
+    def addEXISTS(self, var: "DiscreteVariable", value: int=1) -> int:
         r"""
 
         Others aggregators
@@ -11141,7 +11141,7 @@ class BayesNet(IBayesNet):
         """
         return _pyAgrum.BayesNet_addEXISTS(self, var, value)
 
-    def addFORALL(self, var: "pyAgrum.DiscreteVariable", value: int=1) -> int:
+    def addFORALL(self, var: "DiscreteVariable", value: int=1) -> int:
         r"""
 
         Others aggregators
@@ -11159,7 +11159,7 @@ class BayesNet(IBayesNet):
         """
         return _pyAgrum.BayesNet_addFORALL(self, var, value)
 
-    def addMAX(self, var: "pyAgrum.DiscreteVariable") -> int:
+    def addMAX(self, var: "DiscreteVariable") -> int:
         r"""
 
         Others aggregators
@@ -11177,7 +11177,7 @@ class BayesNet(IBayesNet):
         """
         return _pyAgrum.BayesNet_addMAX(self, var)
 
-    def addMEDIAN(self, var: "pyAgrum.DiscreteVariable") -> int:
+    def addMEDIAN(self, var: "DiscreteVariable") -> int:
         r"""
 
         Others aggregators
@@ -11195,7 +11195,7 @@ class BayesNet(IBayesNet):
         """
         return _pyAgrum.BayesNet_addMEDIAN(self, var)
 
-    def addMIN(self, var: "pyAgrum.DiscreteVariable") -> int:
+    def addMIN(self, var: "DiscreteVariable") -> int:
         r"""
 
         Others aggregators
@@ -11213,7 +11213,7 @@ class BayesNet(IBayesNet):
         """
         return _pyAgrum.BayesNet_addMIN(self, var)
 
-    def addSUM(self, var: "pyAgrum.DiscreteVariable") -> int:
+    def addSUM(self, var: "DiscreteVariable") -> int:
         r"""
 
         Others aggregators
@@ -11636,11 +11636,11 @@ class BayesNet(IBayesNet):
 
         Warnings
         --------
-          gum.UndiGraph only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph
+          pyAgrum.UndiGraph only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph
 
         Returns
         -------
-        gum.UndiGraph
+        pyAgrum.UndiGraph
           the moralized ancestral graph of the nodes
 
         """
@@ -12111,7 +12111,7 @@ class BayesNetFragment(IBayesNet, ):
         """
         return _pyAgrum.BayesNetFragment_variable(self, *args)
 
-    def nodeId(self, var: "pyAgrum.DiscreteVariable") -> int:
+    def nodeId(self, var: "DiscreteVariable") -> int:
         r"""
 
         Parameters
@@ -12671,11 +12671,11 @@ class BayesNetFragment(IBayesNet, ):
 
         Warnings
         --------
-          gum.UndiGraph only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph
+          pyAgrum.UndiGraph only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph
 
         Returns
         -------
-        gum.UndiGraph
+        pyAgrum.UndiGraph
           the moralized ancestral graph of the nodes
 
         """
@@ -12767,7 +12767,7 @@ class IMarkovRandomField(UGmodel):
     def variable(self, id: int) -> "pyAgrum.DiscreteVariable":
         return _pyAgrum.IMarkovRandomField_variable(self, id)
 
-    def nodeId(self, var: "pyAgrum.DiscreteVariable") -> int:
+    def nodeId(self, var: "DiscreteVariable") -> int:
         return _pyAgrum.IMarkovRandomField_nodeId(self, var)
 
     def idFromName(self, name: str) -> int:
@@ -13056,9 +13056,9 @@ class MarkovRandomField(IMarkovRandomField):
     def erase(self, *args) -> None:
         r"""
 
-        Remove a variable from the gum::MarkovRandomField.
+        Remove a variable from the pyAgrum.MarkovRandomField.
 
-        Removes the corresponding variable from the gum::MarkovRandomField and from all of it's children pyAgrum.Potential.
+        Removes the corresponding variable from the pyAgrum.MarkovRandomField and from all of it's children pyAgrum.Potential.
 
         If no variable matches the given id, then nothing is done.
 
@@ -13076,9 +13076,9 @@ class MarkovRandomField(IMarkovRandomField):
     def changeVariableName(self, *args) -> None:
         r"""
 
-        Changes a variable's name in the gum::MarkovRandomField.
+        Changes a variable's name in the pyAgrum.MarkovRandomField.
 
-        This will change the "pyAgrum.DiscreteVariable" names in the gum::MarkovRandomField.
+        This will change the "pyAgrum.DiscreteVariable" names in the pyAgrum.MarkovRandomField.
 
         Parameters
         ---------- 
@@ -13119,7 +13119,7 @@ class MarkovRandomField(IMarkovRandomField):
         """
         return _pyAgrum.MarkovRandomField_changeVariableLabel(self, *args)
 
-    def nodeId(self, var: "pyAgrum.DiscreteVariable") -> int:
+    def nodeId(self, var: "DiscreteVariable") -> int:
         return _pyAgrum.MarkovRandomField_nodeId(self, var)
 
     def idFromName(self, name: str) -> int:
@@ -25551,7 +25551,7 @@ class InfluenceDiagram(DAGmodel):
         """
         return _pyAgrum.InfluenceDiagram_variable(self, *args)
 
-    def nodeId(self, var: "pyAgrum.DiscreteVariable") -> int:
+    def nodeId(self, var: "DiscreteVariable") -> int:
         r"""
 
         Parameters
@@ -26077,11 +26077,11 @@ class InfluenceDiagram(DAGmodel):
 
         Warnings
         --------
-          gum.UndiGraph only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph
+          pyAgrum.UndiGraph only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph
 
         Returns
         -------
-        gum.UndiGraph
+        pyAgrum.UndiGraph
           the moralized ancestral graph of the nodes
 
         """
@@ -27469,7 +27469,7 @@ class BNLearner(object):
         Warnings
         --------
         This function gives the 'raw' mutual information. If you want a version taking into account correction and prior, use
-        gum.BNLearner.correctedMutualInformation
+        pyAgrum.BNLearner.correctedMutualInformation
 
         Parameters
         ----------
@@ -27498,7 +27498,7 @@ class BNLearner(object):
         Warnings
         --------
         This function takes into account correction and prior. If you want the 'raw' mutual information, use
-        gum.BNLearner.mutualInformation
+        pyAgrum.BNLearner.mutualInformation
 
 
         Parameters
@@ -27757,7 +27757,7 @@ class BNDatabaseGenerator(object):
         Raises
         ------
         pyAgrum.OperationNotAllowed
-          if nothing has been sampled yet (using `gum.BNDatabaseGenerator.drawSamples()` for instance)
+          if nothing has been sampled yet (using `pyAgrum.BNDatabaseGenerator.drawSamples()` for instance)
 
         Returns
         -------
@@ -27818,8 +27818,8 @@ class BNDatabaseGenerator(object):
         Examples
         --------
         >>> import pyAgrum as gum
-        >>> bn=gum.fastBN('A->B{yes|maybe|no}<-C->D->E<-F<-B')
-        >>> g=gum.BNDatabaseGenerator(bn)
+        >>> bn=pyAgrum.fastBN('A->B{yes|maybe|no}<-C->D->E<-F<-B')
+        >>> g=pyAgrum.BNDatabaseGenerator(bn)
         >>> g.setRandomVarOrder()
         >>> g.drawSamples(100,{'B':'yes','E':'1'})
         -233.16554130404904
@@ -27999,7 +27999,7 @@ def loadBN(filename, listeners=None, verbose=False, **opts):
   >>>        print('50%')
   >>>
   >>> # loadBN with list of listeners
-  >>> gum.loadBN('./bn.bif',listeners=[foo_listener,bar_listener])
+  >>> pyAgrum.loadBN('./bn.bif',listeners=[foo_listener,bar_listener])
   >>> # .........#.........#.........#.........#..50%
   >>> # .......#.........#.........#.........#.........#.........% | bn loaded
   """
@@ -28136,7 +28136,7 @@ def loadMN(filename, listeners=None, verbose=False):
   >>>        print('50%')
   >>>
   >>> # loadBN with list of listeners
-  >>> gum.loadMN('./bn.uai',listeners=[foo_listener,bar_listener])
+  >>> pyAgrum.loadMN('./bn.uai',listeners=[foo_listener,bar_listener])
   >>> # .........#.........#.........#.........#..50%
   >>> # .......#.........#.........#.........#.........#.........% | bn loaded
   """
@@ -28196,7 +28196,7 @@ def availableIDExts():
 
 def loadID(filename):
   """
-  read a gum.InfluenceDiagram from a ID file
+  read a pyAgrum.InfluenceDiagram from a ID file
 
   Parameters
   ----------
@@ -28260,7 +28260,7 @@ def fastBN(structure, domain_size=2):
   Examples
   --------
   >>> import pyAgrum as gum
-  >>> bn=gum.fastBN('A->B[1,3]<-C{yes|No}->D[2,4]<-E[1,2.5,3.9]',6)
+  >>> bn=pyAgrum.fastBN('A->B[1,3]<-C{yes|No}->D[2,4]<-E[1,2.5,3.9]',6)
 
   Parameters
   ----------
@@ -28294,7 +28294,7 @@ def fastMRF(structure, domain_size=2):
   Examples
   --------
   >>> import pyAgrum as gum
-  >>> bn=gum.fastMRF('A--B[1,3]--C{yes|No};C--D[2,4]--E[1,2.5,3.9]',6)
+  >>> bn=pyAgrum.fastMRF('A--B[1,3]--C{yes|No};C--D[2,4]--E[1,2.5,3.9]',6)
 
   Parameters
   ----------
@@ -28324,7 +28324,7 @@ def fastID(structure, domain_size=2):
   Examples
   --------
   >>> import pyAgrum as gum
-  >>> bn=gum.fastID('A->B[1,3]<-*C{yes|No}->$D<-E[1,2.5,3.9]',6)
+  >>> bn=pyAgrum.fastID('A->B[1,3]<-*C{yes|No}->$D<-E[1,2.5,3.9]',6)
 
   Parameters
   ----------
@@ -28445,10 +28445,10 @@ def randomBN(*, n: int = 5, names: List[str] = None, ratio_arc: float = 1.2, dom
 
   Examples
   --------
-  >>> bn=gum.randomBN()
-  >>> bn=gum.randomBN(n=10)
-  >>> bn=gum.randomBN(names="ABCDEF")
-  >>> bn=gum.randomBN(names=["Asia","Tuberculosis","Smoking"],ratio_arc=1.5,domain_size=3)
+  >>> bn=pyAgrum.randomBN()
+  >>> bn=pyAgrum.randomBN(n=10)
+  >>> bn=pyAgrum.randomBN(names="ABCDEF")
+  >>> bn=pyAgrum.randomBN(names=["Asia","Tuberculosis","Smoking"],ratio_arc=1.5,domain_size=3)
 
   Warnings
   --------
