@@ -28,33 +28,43 @@ namespace gum_tests {
 
   class [[maybe_unused]] UtilsStringTestSuite: public CxxTest::TestSuite {
     public:
-    GUM_ACTIVE_TEST(IsInteger){
-       TS_ASSERT(gum::isInteger("12")) TS_ASSERT(!gum::isInteger("foo"))
-          TS_ASSERT(!gum::isInteger("12foo")) TS_ASSERT(!gum::isInteger("foo12"))
-             TS_ASSERT(!gum::isInteger("foo12bar"))
+    GUM_ACTIVE_TEST(IsInteger) {
+      TS_ASSERT(gum::isInteger("12"))
+      TS_ASSERT(!gum::isInteger("foo"))
+      TS_ASSERT(!gum::isInteger("12foo"))
+      TS_ASSERT(!gum::isInteger("foo12"))
+      TS_ASSERT(!gum::isInteger("foo12bar"))
 
-                TS_ASSERT(gum::isInteger("+12")) TS_ASSERT(!gum::isInteger("1+2"))
+      TS_ASSERT(gum::isInteger("+12"))
+      TS_ASSERT(!gum::isInteger("1+2"))
 
-                   TS_ASSERT(gum::isInteger("-12")) TS_ASSERT(!gum::isInteger("1-2"))}
+      TS_ASSERT(gum::isInteger("-12"))
+      TS_ASSERT(!gum::isInteger("1-2"))
+    }
 
-    GUM_ACTIVE_TEST(isNumerical){
-       TS_ASSERT(gum::isNumerical("12")) TS_ASSERT(!gum::isNumerical("foo"))
-          TS_ASSERT(!gum::isNumerical("12foo")) TS_ASSERT(!gum::isNumerical("foo12"))
-             TS_ASSERT(!gum::isNumerical("foo12bar"))
+    GUM_ACTIVE_TEST(isNumerical) {
+      TS_ASSERT(gum::isNumerical("12"))
+      TS_ASSERT(!gum::isNumerical("foo"))
+      TS_ASSERT(!gum::isNumerical("12foo"))
+      TS_ASSERT(!gum::isNumerical("foo12"))
+      TS_ASSERT(!gum::isNumerical("foo12bar"))
 
-                TS_ASSERT(gum::isNumerical("12.5")) TS_ASSERT(!gum::isNumerical("12.5foo"))
-                   TS_ASSERT(!gum::isNumerical("foo12.5"))
-                      TS_ASSERT(!gum::isNumerical("foo12.5bar"))
+      TS_ASSERT(gum::isNumerical("12.5"))
+      TS_ASSERT(!gum::isNumerical("12.5foo"))
+      TS_ASSERT(!gum::isNumerical("foo12.5"))
+      TS_ASSERT(!gum::isNumerical("foo12.5bar"))
 
-                         TS_ASSERT(gum::isNumerical("+12")) TS_ASSERT(!gum::isNumerical("1+2"))
+      TS_ASSERT(gum::isNumerical("+12"))
+      TS_ASSERT(!gum::isNumerical("1+2"))
 
-                            TS_ASSERT(gum::isNumerical("-12")) TS_ASSERT(!gum::isNumerical("1-2"))
+      TS_ASSERT(gum::isNumerical("-12"))
+      TS_ASSERT(!gum::isNumerical("1-2"))
 
-                               TS_ASSERT(gum::isNumerical("-1.2"))
-                                  TS_ASSERT(gum::isNumerical("1.2"))
-                                     TS_ASSERT(gum::isNumerical("+1.2"))
-                                        TS_ASSERT(gum::isNumerical("1.2e-8"))}
-
+      TS_ASSERT(gum::isNumerical("-1.2"))
+      TS_ASSERT(gum::isNumerical("1.2"))
+      TS_ASSERT(gum::isNumerical("+1.2"))
+      TS_ASSERT(gum::isNumerical("1.2e-8"))
+    }
 
     GUM_ACTIVE_TEST(IsIntegerWithResult) {
       int res;

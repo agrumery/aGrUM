@@ -51,15 +51,15 @@ namespace gum {
                    Size arcs_size,
                    bool arcs_resize_policy) :
       NodeGraphPart(nodes_size, nodes_resize_policy),
-      ArcGraphPart(arcs_size, arcs_resize_policy){GUM_CONSTRUCTOR(DiGraph)}
+      ArcGraphPart(arcs_size, arcs_resize_policy) {
+    GUM_CONSTRUCTOR(DiGraph)
+  }
 
-      DiGraph::DiGraph(const DiGraph& g) :
-      NodeGraphPart(g),
-      ArcGraphPart(g){GUM_CONS_CPY(DiGraph)}
+  DiGraph::DiGraph(const DiGraph& g) : NodeGraphPart(g), ArcGraphPart(g) { GUM_CONS_CPY(DiGraph) }
 
-      DiGraph::~DiGraph(){GUM_DESTRUCTOR(DiGraph)}
+  DiGraph::~DiGraph() { GUM_DESTRUCTOR(DiGraph) }
 
-      std::string DiGraph::toString() const {
+  std::string DiGraph::toString() const {
     std::string s = NodeGraphPart::toString();
     s += " , ";
     s += ArcGraphPart::toString();

@@ -44,9 +44,9 @@ namespace gum {
   }
 
   /// destructor
-  INLINE BarrenNodesFinder::~BarrenNodesFinder(){// for debugging purposes
-                                                 GUM_DESTRUCTOR(BarrenNodesFinder)}
-
+  INLINE BarrenNodesFinder::~BarrenNodesFinder() {   // for debugging purposes
+    GUM_DESTRUCTOR(BarrenNodesFinder)
+  }
 
   /// copy operator
   INLINE BarrenNodesFinder& BarrenNodesFinder::operator=(const BarrenNodesFinder& from) {

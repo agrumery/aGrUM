@@ -26,11 +26,9 @@
 #endif /* GUM_NO_INLINE */
 
 namespace gum {
-  GraphicalModel::GraphicalModel(){GUM_CONSTRUCTOR(GraphicalModel)}
+  GraphicalModel::GraphicalModel() { GUM_CONSTRUCTOR(GraphicalModel) }
 
-  GraphicalModel::GraphicalModel(const GraphicalModel& from) {
-    GUM_CONS_CPY(GraphicalModel);
-  }
+  GraphicalModel::GraphicalModel(const GraphicalModel& from) { GUM_CONS_CPY(GraphicalModel); }
 
   GraphicalModel::~GraphicalModel() { GUM_DESTRUCTOR(GraphicalModel); }
 

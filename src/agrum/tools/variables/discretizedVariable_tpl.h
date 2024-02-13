@@ -236,10 +236,10 @@ namespace gum {
   }
 
   template < typename T_TICKS >
-  INLINE bool  DiscretizedVariable< T_TICKS >::_checkSameDomain_(const gum::Variable& aRV) const {
+  INLINE bool DiscretizedVariable< T_TICKS >::_checkSameDomain_(const gum::Variable& aRV) const {
     // we can assume that aRV is a ContinuousVariable
-    const auto& cv = static_cast<const DiscretizedVariable< T_TICKS >&>(aRV);
-    if (domainSize()!=cv.domainSize()) return false;
+    const auto& cv = static_cast< const DiscretizedVariable< T_TICKS >& >(aRV);
+    if (domainSize() != cv.domainSize()) return false;
     return cv._ticks_ == _ticks_ && cv._is_empirical == _is_empirical;
   }
 

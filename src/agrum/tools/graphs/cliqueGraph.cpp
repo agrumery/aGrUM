@@ -51,29 +51,30 @@ namespace gum {
                            Size edges_size,
                            bool edges_resize_policy) :
       NodeGraphPart(nodes_size, nodes_resize_policy),
-      UndiGraph(nodes_size, nodes_resize_policy, edges_size, edges_resize_policy){
-         // for debugging purposes
-         GUM_CONSTRUCTOR(CliqueGraph)}
+      UndiGraph(nodes_size, nodes_resize_policy, edges_size, edges_resize_policy) {
+    // for debugging purposes
+    GUM_CONSTRUCTOR(CliqueGraph)
+  }
 
-      /// copy constructor
+  /// copy constructor
 
-      CliqueGraph::CliqueGraph(const CliqueGraph& from) :
-      NodeGraphPart(from),            // needed because NodeGraphPart is a virtual inherited
-      UndiGraph(from),                // class (see C++ FAQ Lite #25.12 for details)
-      _cliques_(from._cliques_),
-      _separators_(from._separators_){// for debugging purposes
-                                      GUM_CONS_CPY(CliqueGraph)}
+  CliqueGraph::CliqueGraph(const CliqueGraph& from) :
+      NodeGraphPart(from),   // needed because NodeGraphPart is a virtual inherited
+      UndiGraph(from),       // class (see C++ FAQ Lite #25.12 for details)
+      _cliques_(from._cliques_), _separators_(from._separators_) {   // for debugging purposes
+    GUM_CONS_CPY(CliqueGraph)
+  }
 
-      /// destructor
+  /// destructor
 
-      CliqueGraph::~CliqueGraph(){// for debugging purposes
-                                  GUM_DESTRUCTOR(CliqueGraph)}
+  CliqueGraph::~CliqueGraph() {   // for debugging purposes
+    GUM_DESTRUCTOR(CliqueGraph)
+  }
 
-      /// returns a path from a clique containing node1 to a clique containing
-      /// node2
+  /// returns a path from a clique containing node1 to a clique containing
+  /// node2
 
-      std::vector< NodeId > CliqueGraph::containerPath(const NodeId node1,
-                                                       const NodeId node2) const {
+  std::vector< NodeId > CliqueGraph::containerPath(const NodeId node1, const NodeId node2) const {
     // get a path from a  _clique_ containing node1 to a  _clique_ containing
     // node2
     std::vector< NodeId > path = undirectedPath(container(node1), container(node2));

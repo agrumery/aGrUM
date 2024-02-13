@@ -39,7 +39,6 @@ namespace gum {
 
   enum class VarType : char { Discretized, Labelized, Integer, Numerical, Range, Continuous };
 
-
   /* ===========================================================================
    */
   /* ===========================================================================
@@ -153,7 +152,6 @@ namespace gum {
   };
 
 } /* namespace gum */
-
 
 /// for friendly displaying the content of the variable
 std::ostream& operator<<(std::ostream& s, const gum::Variable& LDRV);

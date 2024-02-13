@@ -155,7 +155,9 @@ namespace gum_tests {
       _nodeMap_->insert(name, id);
     }
 
-    GUM_ACTIVE_TEST(ClassConstruction){TS_ASSERT_EQUALS(_asia_->attributes().size(), (gum::Size)8)}
+    GUM_ACTIVE_TEST(ClassConstruction) {
+      TS_ASSERT_EQUALS(_asia_->attributes().size(), (gum::Size)8)
+    }
 
     GUM_ACTIVE_TEST(AddInstance) {
       // Arrange

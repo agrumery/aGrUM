@@ -62,7 +62,7 @@ namespace gum {
 #  ifdef GUM_FOR_SWIG
     what_ = "[pyAgrum] " + type_ + ": " + msg_;
 #  else    // GUM_FOR_SWIG
-    what_      = type_ + ": " + msg_;
+    what_ = type_ + ": " + msg_;
 #  endif   // GUM_FOR_SWIG
 
 #  ifdef GUM_DEBUG_MODE

@@ -106,7 +106,8 @@ namespace gum_tests {
       nb = 2;
       queue1.setPriority("BBB", nb);
       TS_ASSERT_EQUALS(queue1.bottom(), "BBB")
-      TS_ASSERT_EQUALS(queue1.bottomPriority(), 2) {
+      TS_ASSERT_EQUALS(queue1.bottomPriority(), 2)
+      {
         std::string str2 = "[(EEE, 24) ; (AAA, 8) ; (BBB, 2)]";
         TS_GUM_ASSERT_EQUALS(queue1.toString(), str2)
       }

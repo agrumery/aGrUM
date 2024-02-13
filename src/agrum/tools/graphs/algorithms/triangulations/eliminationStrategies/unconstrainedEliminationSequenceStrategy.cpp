@@ -55,11 +55,12 @@ namespace gum {
   /// move constructor
   UnconstrainedEliminationSequenceStrategy::UnconstrainedEliminationSequenceStrategy(
      UnconstrainedEliminationSequenceStrategy&& from) :
-      EliminationSequenceStrategy(std::move(from)){
-         GUM_CONS_MOV(UnconstrainedEliminationSequenceStrategy)}
+      EliminationSequenceStrategy(std::move(from)) {
+    GUM_CONS_MOV(UnconstrainedEliminationSequenceStrategy)
+  }
 
-      /// destructor
-      UnconstrainedEliminationSequenceStrategy::~UnconstrainedEliminationSequenceStrategy() {
+  /// destructor
+  UnconstrainedEliminationSequenceStrategy::~UnconstrainedEliminationSequenceStrategy() {
     GUM_DESTRUCTOR(UnconstrainedEliminationSequenceStrategy);
   }
 

@@ -41,10 +41,11 @@
 
 #define TS_GUM_POTENTIAL_DELTA(p1, p2, delta) TS_ASSERT_LESS_THAN(((p1) - (p2)).abs().max(), delta)
 
-#define TS_GUM_POTENTIAL_SHOW_DELTA(p1, p2, delta)           \
-  {                                                          \
-    GUM_TRACE_NEWLINE GUM_TRACE_VAR(p1) GUM_TRACE_VAR(p2)    \
-       TS_ASSERT_LESS_THAN(((p1) - (p2)).abs().max(), delta) \
+#define TS_GUM_POTENTIAL_SHOW_DELTA(p1, p2, delta)        \
+  {                                                       \
+    GUM_TRACE_NEWLINE GUM_TRACE_VAR(p1)                   \
+    GUM_TRACE_VAR(p2)                                     \
+    TS_ASSERT_LESS_THAN(((p1) - (p2)).abs().max(), delta) \
   }
 
 #define TS_GUM_SMALL_ERROR      (1e-5)

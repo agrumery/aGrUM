@@ -53,7 +53,8 @@ namespace gum {
                                                        const std::string& aDesc,
                                                        double             first,
                                                        double             last,
-                                                       Size nb) : DiscreteVariable(aName, aDesc) {
+                                                       Size               nb) :
+      DiscreteVariable(aName, aDesc) {
     // store the sorted values into a sequence
     if (nb < 2) GUM_ERROR(ArgumentError, "The size of the domain must be >2 (here :" << nb << ").")
     if (first >= last)
@@ -69,14 +70,14 @@ namespace gum {
     _domain_.resize(nb);
     _domain_.clear();
 
-    const double step = (last - first) / (double(nb) - 1);
-    const double mask = std::pow(10, std::max(4, int(2 + std::abs(-std::log10(step)))));
-    double current = first;
+    const double step    = (last - first) / (double(nb) - 1);
+    const double mask    = std::pow(10, std::max(4, int(2 + std::abs(-std::log10(step)))));
+    double       current = first;
 
     _domain_.push_back(first);
-    for (Idx i = 1; i < nb-1 ; i++) {
+    for (Idx i = 1; i < nb - 1; i++) {
       current += step;
-      _domain_.push_back( (std::round(current * mask) / mask));
+      _domain_.push_back((std::round(current * mask) / mask));
     }
     _domain_.push_back(last);
 

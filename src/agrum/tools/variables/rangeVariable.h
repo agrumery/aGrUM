@@ -163,7 +163,7 @@ namespace gum {
      */
     bool _checkSameDomain_(const Variable& aRV) const final;
 
-/// @name Private Members.
+    /// @name Private Members.
     /// @{
     /// The lower bound.
     long _minBound_;

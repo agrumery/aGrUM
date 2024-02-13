@@ -189,18 +189,18 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(FastNumericalWithoutInfinity) {
       std::string s;
-      s = "A{0|1.15|inf}";      // NumericalDiscrete
+      s = "A{0|1.15|inf}";   // NumericalDiscrete
       TS_ASSERT_THROWS(FASTVARDBL(s), const gum::DefaultInLabel&)
-      s = "A{1|3|inf}";         // Integer
+      s = "A{1|3|inf}";      // Integer
       TS_ASSERT_THROWS(FASTVARDBL(s), const gum::DefaultInLabel&)
-      s = "A[3,2.5,inf]";       // Discretized
-      //TS_ASSERT_THROWS(FASTVARDBL(s), const gum::DefaultInLabel&)
+      s = "A[3,2.5,inf]";    // Discretized
+      // TS_ASSERT_THROWS(FASTVARDBL(s), const gum::DefaultInLabel&)
       s = "A[inf]";             // Range
       TS_ASSERT_THROWS(FASTVARDBL(s), const std::invalid_argument&)
       s = "A[2,inf]";           // Range
       TS_ASSERT_THROWS(FASTVARDBL(s), const std::invalid_argument&)
       s = "A[inf,2,3,4,5,6]";   // Integer
-      //TS_ASSERT_THROWS(FASTVARDBL(s), const gum::DefaultInLabel&)
+      // TS_ASSERT_THROWS(FASTVARDBL(s), const gum::DefaultInLabel&)
     }
 
     GUM_ACTIVE_TEST(LabelizedComparison) {

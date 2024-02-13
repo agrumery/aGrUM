@@ -53,8 +53,9 @@
 
 namespace gum {
   template < typename GUM_SCALAR >
-  NodeId
-     build_node(gum::BayesNet< GUM_SCALAR >& bn, const std::string& node, gum::Size default_domain_size) {
+  NodeId build_node(gum::BayesNet< GUM_SCALAR >& bn,
+                    const std::string&           node,
+                    gum::Size                    default_domain_size) {
     auto v = fastVariable< GUM_SCALAR >(node, default_domain_size);
 
     NodeId res;

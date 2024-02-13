@@ -21,7 +21,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <algorithm>
+#  include <algorithm>
 
 // to ease parsers in IDE
 #  include <agrum/tools/variables/discreteVariable.h>

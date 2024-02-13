@@ -208,13 +208,12 @@ namespace gum {
       _dag_(nb_ops, true, 2 * nb_ops, true), _node2op_(nb_ops), _multidim_location_(2 * nb_ops),
       _multidim2id_(2 * nb_ops), _emplaced_multidims_(2 * nb_ops), _multidim2nodes_(2 * nb_ops),
       _deleted_multidim2node_(2 * nb_ops),
-      _version_number_(_newVersionNumber_()){// for debugging purposes
-                                             GUM_CONSTRUCTOR(Schedule)}
+      _version_number_(_newVersionNumber_()) {   // for debugging purposes
+    GUM_CONSTRUCTOR(Schedule)
+  }
 
-
-      /// copy constructor
-      Schedule::Schedule(const Schedule& from) :
-      _version_number_(from._version_number_) {
+  /// copy constructor
+  Schedule::Schedule(const Schedule& from) : _version_number_(from._version_number_) {
     // really perform the copy
     _copy_(from);
 

@@ -187,16 +187,16 @@ namespace gum {
     if (!values.empty()) {
       return std::make_unique< IntegerVariable >(name, name, values);
     } else if (!numerical_values.empty()) {
-      if (! std::all_of(numerical_values.cbegin(),
-                      numerical_values.cend(),
-                      gum::isfinite< double >)) {
+      if (!std::all_of(numerical_values.cbegin(),
+                       numerical_values.cend(),
+                       gum::isfinite< double >)) {
         GUM_ERROR(DefaultInLabel, "Infinite value is not allowed for variable " << name)
       }
       return std::make_unique< NumericalDiscreteVariable >(name, name, numerical_values);
     } else if (!labels.empty()) {
       return std::make_unique< LabelizedVariable >(name, name, labels);
     } else if (!ticks.empty()) {
-      if (! std::all_of(ticks.cbegin(), ticks.cend(), gum::isfinite< double >)) {
+      if (!std::all_of(ticks.cbegin(), ticks.cend(), gum::isfinite< double >)) {
         GUM_ERROR(DefaultInLabel, "Infinite value is not allowed for variable " << name)
       }
       return std::make_unique< DiscretizedVariable< GUM_SCALAR > >(name, name, ticks);

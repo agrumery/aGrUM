@@ -100,17 +100,29 @@ namespace gum_tests {
       delete gamma;
     }
 
-    GUM_ACTIVE_TEST(LesserThan){
-       TS_ASSERT((*gamma) < (*alpha)) TS_ASSERT((*gamma) < (*beta)) TS_ASSERT((*alpha) < (*beta))
-          TS_ASSERT(!((*alpha) < (*alpha))) TS_ASSERT(!((*beta) < (*beta)))
-             TS_ASSERT(!((*gamma) < (*gamma))) TS_ASSERT(!((*alpha) < (*gamma)))
-                TS_ASSERT(!((*beta) < (*gamma))) TS_ASSERT(!((*beta) < (*alpha)))}
+    GUM_ACTIVE_TEST(LesserThan) {
+      TS_ASSERT((*gamma) < (*alpha))
+      TS_ASSERT((*gamma) < (*beta))
+      TS_ASSERT((*alpha) < (*beta))
+      TS_ASSERT(!((*alpha) < (*alpha)))
+      TS_ASSERT(!((*beta) < (*beta)))
+      TS_ASSERT(!((*gamma) < (*gamma)))
+      TS_ASSERT(!((*alpha) < (*gamma)))
+      TS_ASSERT(!((*beta) < (*gamma)))
+      TS_ASSERT(!((*beta) < (*alpha)))
+    }
 
-    GUM_ACTIVE_TEST(LesserOrEqualThan){
-       TS_ASSERT((*gamma) <= (*alpha)) TS_ASSERT((*gamma) <= (*beta)) TS_ASSERT((*alpha) <= (*beta))
-          TS_ASSERT((*alpha) <= (*alpha)) TS_ASSERT((*beta) <= (*beta))
-             TS_ASSERT((*gamma) <= (*gamma)) TS_ASSERT(!((*alpha) <= (*gamma)))
-                TS_ASSERT(!((*beta) <= (*gamma))) TS_ASSERT(!((*beta) <= (*alpha)))}
+    GUM_ACTIVE_TEST(LesserOrEqualThan) {
+      TS_ASSERT((*gamma) <= (*alpha))
+      TS_ASSERT((*gamma) <= (*beta))
+      TS_ASSERT((*alpha) <= (*beta))
+      TS_ASSERT((*alpha) <= (*alpha))
+      TS_ASSERT((*beta) <= (*beta))
+      TS_ASSERT((*gamma) <= (*gamma))
+      TS_ASSERT(!((*alpha) <= (*gamma)))
+      TS_ASSERT(!((*beta) <= (*gamma)))
+      TS_ASSERT(!((*beta) <= (*alpha)))
+    }
 
     GUM_ACTIVE_TEST(AlphaNeighbors) {
       for (gum::prm::gspan::DFSCode::iterator iter = alpha->codes.begin() + 1;

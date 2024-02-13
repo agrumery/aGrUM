@@ -205,9 +205,11 @@ namespace gum_tests {
       }
     }
 
-    GUM_ACTIVE_TEST(_guill){TS_ASSERT_THROWS(
-       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3_withguill.csv")),
-       gum::SyntaxError&)}
+    GUM_ACTIVE_TEST(_guill) {
+      TS_ASSERT_THROWS(
+         gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3_withguill.csv")),
+         gum::SyntaxError&)
+    }
 
     GUM_ACTIVE_TEST(_ranges) {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"));

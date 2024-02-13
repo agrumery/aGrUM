@@ -212,7 +212,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE bool ContinuousVariable< GUM_SCALAR >::_checkSameDomain_(const gum::Variable& aRV) const {
     // we can assume that aRV is a ContinuousVariable
-    const auto& cv = static_cast<const ContinuousVariable<GUM_SCALAR>&>(aRV);
+    const auto& cv = static_cast< const ContinuousVariable< GUM_SCALAR >& >(aRV);
     return cv._lower_bound_ == _lower_bound_ && cv._upper_bound_ == _upper_bound_;
   }
 

@@ -199,10 +199,9 @@ namespace gum {
     std::string toFast() const final;
 
     private:
-
     /// check the domain
     /**
-         * this function use the assumption that the concrete type of the variable is the same as *this
+     * this function use the assumption that the concrete type of the variable is the same as *this
      */
     bool _checkSameDomain_(const Variable& aRV) const final;
   };

@@ -31,28 +31,23 @@ namespace gum::learning {
   /// default constructor
   INLINE BDeuPrior::BDeuPrior(const DatabaseTable&                    database,
                               const Bijection< NodeId, std::size_t >& nodeId2columns) :
-      Prior(database, nodeId2columns){GUM_CONSTRUCTOR(BDeuPrior)}
-
-
-      /// copy constructor
-      INLINE BDeuPrior::BDeuPrior(const BDeuPrior& from) :
-      Prior(from){GUM_CONS_CPY(BDeuPrior)}
-
-
-      /// move constructor
-      INLINE BDeuPrior::BDeuPrior(BDeuPrior && from) noexcept :
-      Prior(std::move(from)){GUM_CONS_MOV(BDeuPrior)}
-
-
-      /// virtual copy constructor
-      INLINE BDeuPrior
-      * BDeuPrior::clone() const {
-    return new BDeuPrior(*this);
+      Prior(database, nodeId2columns) {
+    GUM_CONSTRUCTOR(BDeuPrior)
   }
 
-  /// destructor
-  INLINE BDeuPrior::~BDeuPrior(){GUM_DESTRUCTOR(BDeuPrior)}
+  /// copy constructor
+  INLINE BDeuPrior::BDeuPrior(const BDeuPrior& from) : Prior(from) { GUM_CONS_CPY(BDeuPrior) }
 
+  /// move constructor
+  INLINE BDeuPrior::BDeuPrior(BDeuPrior&& from) noexcept : Prior(std::move(from)) {
+    GUM_CONS_MOV(BDeuPrior)
+  }
+
+  /// virtual copy constructor
+  INLINE BDeuPrior* BDeuPrior::clone() const { return new BDeuPrior(*this); }
+
+  /// destructor
+  INLINE BDeuPrior::~BDeuPrior() { GUM_DESTRUCTOR(BDeuPrior) }
 
   /// copy operator
   INLINE BDeuPrior& BDeuPrior::operator=(const BDeuPrior& from) {

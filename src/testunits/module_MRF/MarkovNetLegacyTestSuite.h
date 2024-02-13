@@ -126,12 +126,12 @@
                mn2.toString(),
                "MRF{nodes: 5, edges: 6, domainSize: 567, dim: 102}")
 
-                 TS_GUM_ASSERT_THROWS_NOTHING({
-                   for (const auto n: mn.nodes()) {
-                     TS_ASSERT_EQUALS(mn.variable(n).name(), mn2.variable(n).name())
-                     TS_ASSERT_EQUALS(mn.neighbours(n), mn2.neighbours(n))
-                   }
-                 });
+        TS_GUM_ASSERT_THROWS_NOTHING({
+          for (const auto n: mn.nodes()) {
+            TS_ASSERT_EQUALS(mn.variable(n).name(), mn2.variable(n).name())
+            TS_ASSERT_EQUALS(mn.neighbours(n), mn2.neighbours(n))
+          }
+        });
       }
 
       GUM_TEST(CopyOperator) {

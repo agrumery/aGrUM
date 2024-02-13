@@ -131,11 +131,11 @@ namespace gum {
       const DiscreteVariable& vp = p_.variable(node);
       try {
         const DiscreteVariable& vq = q_.variableFromName(vp.name());
-        if (vp!=vq)
+        if (vp != vq)
           GUM_ERROR(OperationNotAllowed,
                     "BNdistance : the 2 BNs are not compatible "
                     "(not the same variable for the same name : "
-                       + vp.toString() + "and "+vq.toString()+")");
+                       + vp.toString() + "and " + vq.toString() + ")");
       } catch (NotFound const&) {
         GUM_ERROR(OperationNotAllowed,
                   "BNdistance : the 2 BNs are not compatible (variable : " + vp.name() + ")");
