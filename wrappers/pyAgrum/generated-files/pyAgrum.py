@@ -26750,14 +26750,10 @@ class BNLearner(object):
         ----------
         arc : pyAgrum.Arc
         	an arc
-        head :
-        	a variable's id (int)
-        tail :
-        	a variable's id (int)
-        head :
-        	a variable's name (str)
-        tail :
-        	a variable's name (str)
+        head : int str
+        	a variable's id or name
+        tail : int str
+        	a variable's id or name
 
         """
         return _pyAgrum.BNLearner_addForbiddenArc(self, *args)
@@ -26771,14 +26767,10 @@ class BNLearner(object):
         ----------
         arc: pyAgrum.Arc
         	an arc
-        head :
-        	a variable's id (int)
-        tail :
-        	a variable's id (int)
-        head :
-        	a variable's name (str)
-        tail :
-        	a variable's name (str)
+        head : int str
+        	a variable's id or name
+        tail : int str
+        	a variable's id or name
 
         """
         return _pyAgrum.BNLearner_eraseForbiddenArc(self, *args)
@@ -26792,14 +26784,10 @@ class BNLearner(object):
         ----------
         arc : pyAgrum.Arc
         	an arc
-        head :
-        	a variable's id (int)
-        tail :
-        	a variable's id (int)
-        head :
-        	a variable's name (str)
-        tail :
-        	a variable's name (str)
+        head : int str
+        	a variable's id or name
+        tail : int str
+        	a variable's id or name
 
         Raises
         ------
@@ -26816,14 +26804,10 @@ class BNLearner(object):
         ----------
         arc: pyAgrum.Arc
         	an arc
-        head :
-        	a variable's id (int)
-        tail :
-        	a variable's id (int)
-        head :
-        	a variable's name (str)
-        tail :
-        	a variable's name (str)
+        head : int str
+        	a variable's id or name
+        tail : int str
+        	a variable's id or name
 
         """
         return _pyAgrum.BNLearner_eraseMandatoryArc(self, *args)
@@ -26842,14 +26826,10 @@ class BNLearner(object):
         ----------
         arc : pyAgrum.Arc
         	an arc
-        head :
-        	a variable's id (int)
-        tail :
-        	a variable's id (int)
-        head :
-        	a variable's name (str)
-        tail :
-        	a variable's name (str)
+        head : int str
+        	a variable's id or name
+        tail : int str
+        	a variable's id or name
 
         """
         return _pyAgrum.BNLearner_addPossibleEdge(self, *args)
@@ -26863,14 +26843,10 @@ class BNLearner(object):
         ----------
         arc : pyAgrum.Arc
         	an arc
-        head :
-        	a variable's id (int)
-        tail :
-        	a variable's id (int)
-        head :
-        	a variable's name (str)
-        tail :
-        	a variable's name (str)
+        head : int str
+        	a variable's id or name
+        tail : int str
+        	a variable's id or name
 
         """
         return _pyAgrum.BNLearner_erasePossibleEdge(self, *args)

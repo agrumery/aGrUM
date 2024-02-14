@@ -278,14 +278,10 @@ Parameters
 ----------
 arc : pyAgrum.Arc
 	an arc
-head :
-	a variable's id (int)
-tail :
-	a variable's id (int)
-head :
-	a variable's name (str)
-tail :
-	a variable's name (str)
+head : int | str
+	a variable's id or name
+tail : int | str
+	a variable's id or name
 "
 %feature("docstring") gum::learning::BNLearner::eraseForbiddenArc
 "
@@ -295,14 +291,10 @@ Parameters
 ----------
 arc: pyAgrum.Arc
 	an arc
-head :
-	a variable's id (int)
-tail :
-	a variable's id (int)
-head :
-	a variable's name (str)
-tail :
-	a variable's name (str)
+head : int | str
+	a variable's id or name
+tail : int | str
+	a variable's id or name
 "
 
 %feature("docstring") gum::learning::BNLearner::eraseMandatoryArc
@@ -311,14 +303,10 @@ Parameters
 ----------
 arc: pyAgrum.Arc
 	an arc
-head :
-	a variable's id (int)
-tail :
-	a variable's id (int)
-head :
-	a variable's name (str)
-tail :
-	a variable's name (str)
+head : int | str
+	a variable's id or name
+tail : int | str
+	a variable's id or name
 "
 
 %feature("docstring") gum::learning::BNLearner::addForbiddenArc
@@ -329,14 +317,10 @@ Parameters
 ----------
 arc : pyAgrum.Arc
 	an arc
-head :
-	a variable's id (int)
-tail :
-	a variable's id (int)
-head :
-	a variable's name (str)
-tail :
-	a variable's name (str)
+head : int | str
+	a variable's id or name
+tail : int | str
+	a variable's id or name
 "
 
 %feature("docstring") gum::learning::BNLearner::setForbiddenArcs
@@ -365,14 +349,10 @@ Parameters
 ----------
 arc : pyAgrum.Arc
 	an arc
-head :
-	a variable's id (int)
-tail :
-	a variable's id (int)
-head :
-	a variable's name (str)
-tail :
-	a variable's name (str)
+head : int | str
+	a variable's id or name
+tail : int | str
+	a variable's id or name
 
 Raises
 ------
@@ -394,14 +374,10 @@ Parameters
 ----------
 arc : pyAgrum.Arc
 	an arc
-head :
-	a variable's id (int)
-tail :
-	a variable's id (int)
-head :
-	a variable's name (str)
-tail :
-	a variable's name (str)
+head : int | str
+	a variable's id or name
+tail : int | str
+	a variable's id or name
 "
 
 %feature("docstring") gum::learning::IBNLearner::nameFromId
