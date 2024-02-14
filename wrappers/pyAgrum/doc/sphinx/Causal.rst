@@ -10,12 +10,12 @@ Causality in pyAgrum mainly consists in the ability to build a causal model, i.e
 Causality is a set of pure python3 scripts based on pyAgrum's tools.
 
 .. note::
-    As it can be seen in the figure above, `pyAgrum.causal` module uses a LaTeX special arrow (:math:`\hookrightarrow`) to compactly represent an intervention. If you prefer the classical "do" notation, you can change this behavior by using:
+    In the figure above, `pyAgrum.causal` module can use a LaTeX special arrow (:math:`\hookrightarrow`) to compactly represent an intervention. By default, it uses the classical "do" notation. You can change this behavior to anything you want by using the following configuration keys:
 
     .. code::
 
-            gum.config["causal","latex_do_prefix"]="do("
-            gum.config["causal","latex_do_suffix"]=")"
+            pyAgrum.config["causal","latex_do_prefix"]="\hookrightarrow("
+            pyAgrum.config["causal","latex_do_suffix"]=")"
 
 
 **Tutorials**

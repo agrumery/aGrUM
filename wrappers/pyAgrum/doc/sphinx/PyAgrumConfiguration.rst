@@ -1,7 +1,7 @@
 Configuration for pyAgrum
 =========================
 
-Configuration for pyAgrum is centralized in an object ``gum.config``, singleton of the class ``PyAgrumConfiguration``.
+Configuration for pyAgrum is centralized in an object ``pyAgrum.config``, singleton of the (hidden) class ``PyAgrumConfiguration``.
 
 
-.. autoclass:: pyAgrum.PyAgrumConfiguration
+.. autoclass:: pyAgrum.config.PyAgrumConfiguration

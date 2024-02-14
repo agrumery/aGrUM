@@ -8,6 +8,7 @@ It is used to represent probabilities and utilities tables in aGrUMs' multidimen
 
 .. code-block:: python
 
+    >>> import pyAgrum as gum
     >>> a=gum.RangeVariable("A","variable A",1,3)
     >>> b=gum.RangeVariable("B","variable B",1,2)
     >>> p=gum.Potential().add(a).add(b).fillWith([1,2,3,4,5,6])

@@ -39,16 +39,16 @@ pyAgrum.PDAG
 
 %feature("docstring") gum::MeekRules::propagatesToDAG
 "
-Call propagatesToCPDAG and then orients the remaining edges arbitratily according to some heuristics. `pyAgrum.MeekRules.Choices` returns the list of the arbitrary choices made by the last execution of `pyAgrum.MeekRules.progagatesToDAG`.
+Call propagatesToCPDAG and then orients the remaining edges arbitrarily according to some heuristics. `pyAgrum.MeekRules.Choices` returns the list of the arbitrary choices made by the last execution of `pyAgrum.MeekRules.progagatesToDAG`.
 
 Parameters
 ----------
-mg : pyAgrum.MixedGraph or pyAgrum.PDAG
+mg : `pyAgrum.MixedGraph` or `pyAgrum.PDAG`
     The graph to be completed.
 
 Returns
 -------
-pyAgrum.DAG
+`pyAgrum.DAG`
     The completed `pyAgrum.DAG`.
 "
 

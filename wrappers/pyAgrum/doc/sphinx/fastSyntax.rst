@@ -18,7 +18,7 @@ The type of the random variables can be specifiy with different syntaxes:
       - with ``a{-0.5:3.1415:5}``, the variable is a :class:`pyAgrum.NumericalDiscreteVariable` using the values from -0.5 to 3.1415 in 5 steps (the domain size is 5).
 
 .. autofunction:: pyAgrum.fastVariable
-  
+
 Quick specification of (randomly parameterized) graphical models
 ----------------------------------------------------------------
 
@@ -26,7 +26,7 @@ These `fastPrototype` aGrUM's methods have also been wrapped in functions of pyA
 
 .. code:: python
 
-    gum.fastBN("A[10]->B<-C{top|middle|bottom};B->D")
+    pyAgrum.fastBN("A[10]->B<-C{top|middle|bottom};B->D")
 
 .. note::
   - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
