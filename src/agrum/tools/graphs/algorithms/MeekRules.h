@@ -52,19 +52,19 @@ namespace gum {
     /** @param graph the graph in which to which to propagate arcs
      * @warning propagates may create double arcs
      */
-    MixedGraph propagates(const MixedGraph& mg);
+    MixedGraph propagate(const MixedGraph& mg);
 
     /// Propagates the orientation of a MixedGraph (no double-headed arcs) and return a PDAG.
     /** @param graph the graph in which to which to propagate arcs
-     * @warning propagatesToCPDAG may have to select between double arcs created by propagates
+     * @warning propagateToCPDAG may have to select between double arcs created by propagates
      */
-    PDAG propagatesToCPDAG(const MixedGraph& mg);
+    PDAG propagateToCPDAG(const MixedGraph& mg);
 
     /// Propagates the orientation of a MixedGraph and completes it as a DAG.
     /** @param graph the graph in which to which to propagate arcs
-     * @warning propagatesToDAG may have to select between double arcs created by propagates
+     * @warning propagateToDAG may have to select between double arcs created by propagates
      */
-    DAG propagatesToDAG(const MixedGraph& mg);
+    DAG propagateToDAG(const MixedGraph& mg);
 
     /**
      * @brief Get the Choices object : the list of arcs that the algorithm has to choose from a

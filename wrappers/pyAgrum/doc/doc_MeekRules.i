@@ -20,7 +20,7 @@ pyAgrum.MixedGraph
     The completed graph, with possible double orientations.
 "
 
-%feature("docstring") gum::MeekRules::propagatesToCPDAG
+%feature("docstring") gum::MeekRules::propagateToCPDAG
 "
 Propagates orientation constraints in the graph according to the Meek rules. The Meek rules are applied iteratively until no more orientation constraints can be propagated. And then arbitratily resolves double orientations. This method returns a `pyAgrum.PDAG` with the properties of CPDAG.
 
@@ -37,9 +37,9 @@ pyAgrum.PDAG
     The completed `pyAgrum.PDAG` (CPDAG).
 "
 
-%feature("docstring") gum::MeekRules::propagatesToDAG
+%feature("docstring") gum::MeekRules::propagateToDAG
 "
-Call propagatesToCPDAG and then orients the remaining edges arbitrarily according to some heuristics. `pyAgrum.MeekRules.Choices` returns the list of the arbitrary choices made by the last execution of `pyAgrum.MeekRules.progagatesToDAG`.
+Call propagateToCPDAG and then orients the remaining edges arbitrarily according to some heuristics. `pyAgrum.MeekRules.Choices` returns the list of the arbitrary choices made by the last execution of `pyAgrum.MeekRules.progagatesToDAG`.
 
 Parameters
 ----------

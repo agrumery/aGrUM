@@ -5983,25 +5983,10 @@ class MeekRules(object):
         _pyAgrum.MeekRules_swiginit(self, _pyAgrum.new_MeekRules())
     __swig_destroy__ = _pyAgrum.delete_MeekRules
 
-    def propagates(self, mg: "MixedGraph") -> "pyAgrum.MixedGraph":
-        r"""
+    def propagate(self, mg: "MixedGraph") -> "pyAgrum.MixedGraph":
+        return _pyAgrum.MeekRules_propagate(self, mg)
 
-        Propagates orientation constraints in the graph according to the Meek rules. The Meek rules are applied iteratively until no more orientation constraints can be propagated. This may lead to float orientation that are not resolved by the Meek rules. Then this method returns just a pyAgrum.MixedGraph.
-
-        Parameters
-        ----------
-        mg : pyAgrum.MixedGraph
-            The graph to be completed.
-
-        Returns
-        -------
-        pyAgrum.MixedGraph
-            The completed graph, with possible float orientations.
-
-        """
-        return _pyAgrum.MeekRules_propagates(self, mg)
-
-    def propagatesToCPDAG(self, mg: "MixedGraph") -> "pyAgrum.PDAG":
+    def propagateToCPDAG(self, mg: "MixedGraph") -> "pyAgrum.PDAG":
         r"""
 
         Propagates orientation constraints in the graph according to the Meek rules. The Meek rules are applied iteratively until no more orientation constraints can be propagated. And then arbitratily resolves float orientations. This method returns a `pyAgrum.PDAG` with the properties of CPDAG.
@@ -6019,25 +6004,25 @@ class MeekRules(object):
             The completed `pyAgrum.PDAG` (CPDAG).
 
         """
-        return _pyAgrum.MeekRules_propagatesToCPDAG(self, mg)
+        return _pyAgrum.MeekRules_propagateToCPDAG(self, mg)
 
-    def propagatesToDAG(self, mg: "MixedGraph") -> "pyAgrum.DAG":
+    def propagateToDAG(self, mg: "MixedGraph") -> "pyAgrum.DAG":
         r"""
 
-        Call propagatesToCPDAG and then orients the remaining edges arbitratily according to some heuristics. `pyAgrum.MeekRules.Choices` returns the list of the arbitrary choices made by the last execution of `pyAgrum.MeekRules.progagatesToDAG`.
+        Call propagateToCPDAG and then orients the remaining edges arbitrarily according to some heuristics. `pyAgrum.MeekRules.Choices` returns the list of the arbitrary choices made by the last execution of `pyAgrum.MeekRules.progagatesToDAG`.
 
         Parameters
         ----------
-        mg : pyAgrum.MixedGraph or pyAgrum.PDAG
+        mg : `pyAgrum.MixedGraph` or `pyAgrum.PDAG`
             The graph to be completed.
 
         Returns
         -------
-        pyAgrum.DAG
+        `pyAgrum.DAG`
             The completed `pyAgrum.DAG`.
 
         """
-        return _pyAgrum.MeekRules_propagatesToDAG(self, mg)
+        return _pyAgrum.MeekRules_propagateToDAG(self, mg)
 
     def choices(self) -> object:
         r"""
@@ -26470,8 +26455,8 @@ class BNLearner(object):
     BNLearner(filename,inducedTypes=True) -> BNLearner
         Parameters:
             - **source** (*str* or *pandas.DataFrame*) -- the data to learn from
-            - **missingSymbols** ( *List[str]* ) -- list of strings that will be interpreted as missing values (by default : `?`)
-            - **inducedTypes** ( *Bool* ) -- whether BNLearner should try to automatically find the type of each variable
+            - **missingSymbols** (*List[str]*) -- list of strings that will be interpreted as missing values (by default : `?`)
+            - **inducedTypes** (*Bool*) -- whether BNLearner should try to automatically find the type of each variable
 
     BNLearner(filename,src) -> BNLearner
         Parameters:

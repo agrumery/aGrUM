@@ -149,7 +149,7 @@ namespace gum {
       orientationMiic_(mutualInformation, graph, sep_set);
       // Propagates existing orientations thanks to Meek rules
 
-      return meekRules_.propagates(graph);
+      return meekRules_.propagate(graph);
       // todo : check meekRules_.choices()
     }
 
@@ -158,12 +158,12 @@ namespace gum {
     /// in the other methods of the MIIC class.
 
     PDAG Miic::learnPDAG(CorrectedMutualInformation& I, MixedGraph initialGraph) {
-      return meekRules_.propagatesToCPDAG(learnMixedStructure(I, initialGraph));
+      return meekRules_.propagateToCPDAG(learnMixedStructure(I, initialGraph));
       // @todo: check the meekRules.choices()
     }
 
     DAG Miic::learnStructure(CorrectedMutualInformation& I, MixedGraph initialGraph) {
-      return meekRules_.propagatesToDAG(learnMixedStructure(I, initialGraph));
+      return meekRules_.propagateToDAG(learnMixedStructure(I, initialGraph));
       // @todo: check the meekRules.choices()
     }
 

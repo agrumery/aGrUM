@@ -37,13 +37,13 @@ namespace gum {
   MeekRules::~MeekRules() { GUM_DESTRUCTOR(MeekRules); }
 
   /// Propagates MeekRules in a MixedGraph
-  MixedGraph MeekRules::propagates(const MixedGraph& graph) {
+  MixedGraph MeekRules::propagate(const MixedGraph& graph) {
     _choices_.clear();
     return _propagates_(graph);
   }
 
   /// Propagates the orientation of a MixedGraph (no double-headed arcs) and return a PDAG.
-  PDAG MeekRules::propagatesToCPDAG(const MixedGraph& mg) {
+  PDAG MeekRules::propagateToCPDAG(const MixedGraph& mg) {
     _choices_.clear();
 
     MixedGraph graph = _propagates_(mg);
@@ -66,7 +66,7 @@ namespace gum {
   }
 
   /// Propagates the orientation of a MixedGraph and return a DAG.
-  DAG MeekRules::propagatesToDAG(const gum::MixedGraph& mg) {
+  DAG MeekRules::propagateToDAG(const gum::MixedGraph& mg) {
     _choices_.clear();
     // Orient all remaining  edges into arcs
     MixedGraph graph = _propagates_(mg);
