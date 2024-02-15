@@ -1,5 +1,6 @@
 variables:
   LINUX_64_IMAGE: "agrumery/manylinux_2_28_x86_64"
+  BUILD_DOC: "wrappers/pyAgrum/wheelhouse/build_doc.sh"
   LINUX_BUILD: "wrappers/pyAgrum/wheelhouse/build_linux.sh"
   LINUX_WHEELHOUSE: "wrappers/pyAgrum/wheelhouse/build_wheels_linux.sh"
   LINUX_NIGHTLY_WHEELHOUSE: "wrappers/pyAgrum/wheelhouse/build_nightly_wheels_linux.sh"
@@ -275,3 +276,13 @@ linux_build:
     - apt-get install -y curl
     - curl -X POST -F token=${AGRUM_DEPLOY_TOKEN} -F ref=master -F "variables[AGRUM_TAG]=${CI_COMMIT_TAG}" -F "variables[AGRUM_BUILD]=1" -F "variables[DEPLOY_TO_PYPI]=TRUE" -F "variables[DEPLOY_DOC]=TRUE"  https://gitlab.com/api/v4/projects/4935470/trigger/pipeline
   retry: 1
+
+################################################################################
+#                                  RTD                                         #
+################################################################################
+
+build_doc:
+  <<: *linux_wheel_template
+  image: agrumery/ubuntu_py38
+  script:
+    - bash $BUILD_DOC
