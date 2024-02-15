@@ -1,5 +1,15 @@
 # aGrUM Changelog
 
+## Changelog for 1.12.1
+
+* aGrUM
+  * Adding a new job during CI for sphinx documentation.
+  * Fixing a typo in `gum::MeeRules::propagate(s)`.
+* pyAgrum
+  * Fixing a typo in `pyAgrum.MeekRules.propagate(s)`.
+  * Adding new rules for 'python typification' of generated files.
+  * Fixing and updating documentations and notebooks.
+
 ## Changelog for 1.12.0
 
 * aGrUM
