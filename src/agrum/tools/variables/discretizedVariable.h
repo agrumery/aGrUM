@@ -59,7 +59,6 @@ namespace gum {
   class DiscretizedVariable final: public IDiscretizedVariable {
     private:
     std::vector< T_TICKS > _ticks_;   // Array from 0 to domainSize-2
-    Size                   _ticks_size_;
 
     protected:
     /**
@@ -67,17 +66,6 @@ namespace gum {
      * @param aDRV  the copied object
      */
     void copy_(const DiscretizedVariable< T_TICKS >& aDRV);
-
-    /**
-     * perform a dichotomy on ticks
-     * @param target T_TICKS value
-     * @param min first index
-     * @param max last index
-     * @return either the index of target, either the index of the predecessor
-     of
-     target in ticks
-    */
-    Idx dichotomy_(const T_TICKS& target, Idx min, Idx max) const;
 
     /**
      * seach the class of target (internally use dichotomy_)
@@ -170,6 +158,9 @@ namespace gum {
     /// from the label to its index in var.
     /// @throws NotFound
     Idx index(const std::string& label) const final;
+    /// from the T+TICKS to its index in var.
+    /// @throws NotFound
+    Idx index(const T_TICKS tick) const;
 
     /**
      *

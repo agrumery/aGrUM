@@ -35,17 +35,18 @@ namespace gum {
                                                        const std::vector< double >& domain) :
       DiscreteVariable(aName, aDesc) {
     // get the values in increasing order
+    _domain_.reserve(domain.size());
     for (const auto value: domain) {
       if (!gum::isfinite< double >(value)) {
         GUM_ERROR(DefaultInLabel,
-                  "Value '" << value << "' is not allowed for variable " << toString())
+                  "Value '" << value << "' is not allowed for variable " << aName)
       }
       if (!isValue(value)) { _domain_.push_back(value); }
     }
     std::sort(_domain_.begin(), _domain_.end());
 
     // for debugging purposes
-    GUM_CONSTRUCTOR(NumericalDiscreteVariable);
+    GUM_CONSTRUCTOR(NumericalDiscreteVariable)
   }
 
   /// constructor assigning a domain to the variable

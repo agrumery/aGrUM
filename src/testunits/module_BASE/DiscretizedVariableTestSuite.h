@@ -54,7 +54,6 @@ namespace gum_tests {
 
     GUM_ACTIVE_TEST(ConstructorWithTicks) {
       gum::DiscretizedVariable< double > d("d", "Discretized variable", {3.1, 2.0, 4.0});
-
       TS_GUM_ASSERT_THROWS_NOTHING(d["2.5"])
       TS_ASSERT_THROWS(d["0.5"], const gum::OutOfBounds&)
       TS_ASSERT_THROWS(d["4.5"], const gum::OutOfBounds&)
@@ -319,6 +318,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(copy.domainSize(), 2u)
       TS_ASSERT_EQUALS(copy.toString(), "angle:Discretized(<[0;90[,[90;180]>)")
       TS_ASSERT(!copy.empty())
+      TS_ASSERT_EQUALS(copy["[0;90["], (gum::Size)0)
+      TS_ASSERT_EQUALS(copy.index("[0;90["), (gum::Size)0)
     }
 
     GUM_ACTIVE_TEST(CopyEmptyVariableWithoutZeros) {
