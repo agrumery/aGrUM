@@ -50,8 +50,8 @@ namespace gum {
 
   template < typename T_TICKS >
   INLINE Idx DiscretizedVariable< T_TICKS >::index(const T_TICKS target) const {
-    const auto ind =  std::lower_bound(_ticks_.begin(), _ticks_.end(), target) - _ticks_.begin();
-    if (ind >= _ticks_.size() - 1) {
+    const Idx ind =  std::lower_bound(_ticks_.begin(), _ticks_.end(), target) - _ticks_.begin();
+    if (ind+1 >= _ticks_.size() ) {
       GUM_ERROR(OutOfBounds, target << " is not a tick in " << *this)
     }
     if (_ticks_[ind] == target) return ind;
