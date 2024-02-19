@@ -80,9 +80,9 @@ def __limits(p):
 
   mi = 0 if nzmin in [-1, None] else nzmin
   ma = l if nzmax in [-1, None] else nzmax
-  if mi>0:
+  if mi > 0:
     mi -= 1
-  if ma<l:
+  if ma < l:
     ma += 1
 
   res = range(mi, ma + 1)
@@ -302,16 +302,20 @@ def _getHistoForDiscretized(p, scale=1.0, txtcolor="Black"):
 
     while vals[lim2] <= gum.config.asFloat['notebook', 'histogram_epsilon']:
       lim2 -= 1
-    if lim2 < len(vals)-1:
+    if lim2 < len(vals) - 1:
       lim2 += 1
+    if lim2 >= len(vx):
+      lim2 -= 1
 
   fig = plt.figure()
-  fig.set_figwidth(scale * max(15, (lim2-lim1)) / 8)
+  fig.set_figwidth(scale * max(15, (lim2 - lim1)) / 8)
   fig.set_figheight(scale)
 
   ax = fig.add_subplot(111)
   ax.set_facecolor('white')
-  ax.set_xticks([vx[lim1], (vx[lim2] + vx[lim1]) / 2, vx[lim2]])
+  delta = 0.025 * (vx[lim2 + 1] - vx[lim1])
+  ax.set_xlim(vx[lim1] - delta, vx[lim2 + 1] + delta)
+  ax.set_xticks([vx[lim1], (vx[lim2 + 1] + vx[lim1]) / 2, vx[lim2 + 1]])
   ax.xaxis.set_minor_locator(AutoMinorLocator())
   ax.tick_params(which="minor", length=4)
   ax.set_ylim(bottom=0, top=1.05 * max(vals))
