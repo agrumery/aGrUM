@@ -419,6 +419,12 @@ namespace gum {
     Potential< GUM_SCALAR >& operator/=(const Potential< GUM_SCALAR >& r);
     Potential< GUM_SCALAR >& operator/=(const GUM_SCALAR& v);
 
+    // these operations are only defined for boolean-like Potential (evidence/likelihood)
+    bool isEvidence() const;
+    Potential< GUM_SCALAR >  operator|(const Potential< GUM_SCALAR >& p2) const;
+    Potential< GUM_SCALAR >  operator&(const Potential< GUM_SCALAR >& p2) const;
+    Potential< GUM_SCALAR >  operator!() const;
+
     bool operator==(const Potential< GUM_SCALAR >& r) const;
 
     bool operator!=(const Potential< GUM_SCALAR >& r) const;

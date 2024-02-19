@@ -36,16 +36,16 @@ namespace gum {
   // Default constructor
   INLINE DiscreteVariable::DiscreteVariable(const std::string& aName, const std::string& aDesc) :
       Variable(aName, aDesc) {
-    GUM_CONSTRUCTOR(DiscreteVariable);
+    GUM_CONSTRUCTOR(DiscreteVariable)
   }
 
   // Copy constructor
   INLINE DiscreteVariable::DiscreteVariable(const DiscreteVariable& aDRV) : Variable(aDRV) {
-    GUM_CONSTRUCTOR(DiscreteVariable);
+    GUM_CONSTRUCTOR(DiscreteVariable)
   }
 
   // destructor
-  INLINE DiscreteVariable::~DiscreteVariable() { GUM_DESTRUCTOR(DiscreteVariable); }
+  INLINE DiscreteVariable::~DiscreteVariable() { GUM_DESTRUCTOR(DiscreteVariable) }
 
   // Copy operator
   INLINE DiscreteVariable& DiscreteVariable::operator=(const DiscreteVariable& aRV) {
@@ -54,10 +54,10 @@ namespace gum {
     return *this;
   }
 
-  // empty() <==> domainSize()<2
+  // empty <==> domainSize()<2
   INLINE bool DiscreteVariable::empty() const { return domainSize() < 2; }
 
-  INLINE const std::string DiscreteVariable::closestLabel(double val) const {
+  INLINE std::string DiscreteVariable::closestLabel(double val) const {
     return label(closestIndex(val));
   }
 

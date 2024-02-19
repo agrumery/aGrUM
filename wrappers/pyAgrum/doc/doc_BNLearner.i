@@ -327,7 +327,7 @@ tail : int | str
 "
 assign a set of forbidden arcs
 
-Parameters
+Parameters                          
 ----------
 arcs: Set[Tuple[int|str,int|str]]
 "

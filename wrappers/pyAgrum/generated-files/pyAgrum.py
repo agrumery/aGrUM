@@ -6647,7 +6647,7 @@ class Instantiation(object):
     def isMutable(self) -> bool:
         return _pyAgrum.Instantiation_isMutable(self)
 
-    def todict(self, withLabels: bool=True) -> object:
+    def todict(self, withLabels: bool=False) -> object:
         r"""
 
         Create a dictionary `{variable_name:value}` from an instantiation
@@ -8482,7 +8482,7 @@ class DiscretizedVariable(IDiscretizedVariable):
         """
         return _pyAgrum.DiscretizedVariable_numerical(self, indice)
 
-    def index(self, label: str) -> int:
+    def index(self, *args) -> int:
         r"""
 
         Parameters
@@ -8496,7 +8496,7 @@ class DiscretizedVariable(IDiscretizedVariable):
         	the indice of the label
 
         """
-        return _pyAgrum.DiscretizedVariable_index(self, label)
+        return _pyAgrum.DiscretizedVariable_index(self, *args)
 
     def domainSize(self) -> int:
         r"""
@@ -9120,6 +9120,15 @@ class Potential(object):
     __idiv__ = __itruediv__
 
 
+
+    def isEvidence(self) -> bool:
+        return _pyAgrum.Potential_isEvidence(self)
+
+    def __or__(self, p2: "Potential") -> "pyAgrum.Potential":
+        return _pyAgrum.Potential___or__(self, p2)
+
+    def __and__(self, p2: "Potential") -> "pyAgrum.Potential":
+        return _pyAgrum.Potential___and__(self, p2)
 
     def __repr__(self) -> str:
         return _pyAgrum.Potential___repr__(self)
