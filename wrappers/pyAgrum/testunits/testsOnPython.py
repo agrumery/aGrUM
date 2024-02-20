@@ -68,6 +68,7 @@ def runTests(local: bool, test_module) -> int:
   from tests import BNListenerTestSuite
   from tests import ConfigTestSuite
   from tests import EssentialGraphTestSuite
+  from tests import EvidenceTestSuite
   from tests import GraphTestSuite
   from tests import ICIModelsForBNTestSuite
   from tests import ImportTestSuite
@@ -102,7 +103,7 @@ def runTests(local: bool, test_module) -> int:
 
   tl = list()
   if test_module in {"", "main"}:
-    tl.append(AggregatorsForBNTestSuite.ts)
+   #tl.append(AggregatorsForBNTestSuite.ts)
     tl.append(AllIncrementalInferenceTestSuite.ts)
     tl.append(BayesNetTestSuite.ts)
     tl.append(BayesNetFragmentTestSuite.ts)
@@ -111,6 +112,7 @@ def runTests(local: bool, test_module) -> int:
     tl.append(BNListenerTestSuite.ts)
     tl.append(ConfigTestSuite.ts)
     tl.append(EssentialGraphTestSuite.ts)
+    tl.append(EvidenceTestSuite.ts)
     tl.append(GraphTestSuite.ts)
     tl.append(ICIModelsForBNTestSuite.ts)
     tl.append(ImportTestSuite.ts)

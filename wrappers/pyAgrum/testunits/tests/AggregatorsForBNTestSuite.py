@@ -25,8 +25,6 @@ from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 
 class AggregatorsForBNTestCase(pyAgrumTestCase):
-  def setUp(self):
-    pass
 
   def testAnd(self):
     bn = gum.BayesNet()

@@ -423,7 +423,7 @@ namespace gum {
     bool isEvidence() const;
     Potential< GUM_SCALAR >  operator|(const Potential< GUM_SCALAR >& p2) const;
     Potential< GUM_SCALAR >  operator&(const Potential< GUM_SCALAR >& p2) const;
-    Potential< GUM_SCALAR >  operator!() const;
+    Potential< GUM_SCALAR >  operator~() const;
 
     bool operator==(const Potential< GUM_SCALAR >& r) const;
 

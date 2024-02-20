@@ -9130,6 +9130,9 @@ class Potential(object):
     def __and__(self, p2: "Potential") -> "pyAgrum.Potential":
         return _pyAgrum.Potential___and__(self, p2)
 
+    def __invert__(self) -> "pyAgrum.Potential":
+        return _pyAgrum.Potential___invert__(self)
+
     def __repr__(self) -> str:
         return _pyAgrum.Potential___repr__(self)
 

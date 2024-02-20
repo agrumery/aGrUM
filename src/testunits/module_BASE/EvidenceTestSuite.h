@@ -72,10 +72,10 @@ namespace gum_tests {
       TS_ASSERT_LESS_THAN_EQUALS(1, (p1 | p2).sum())
       TS_ASSERT_LESS_THAN_EQUALS((p1 & p2).sum(), 1)
 
-      TS_ASSERT_EQUALS(1 - p1.max(), (!p1).min())
-      TS_ASSERT_EQUALS(1 - p1.min(), (!p1).max())
+      TS_ASSERT_EQUALS(1 - p1.max(), (~p1).min())
+      TS_ASSERT_EQUALS(1 - p1.min(), (~p1).max())
       GUM_TRACE_VAR(p1)
-      TS_ASSERT_EQUALS(10 - 1, (!p1).sum())
+      TS_ASSERT_EQUALS(10 - 1, (~p1).sum())
     }
   };
 }   // namespace gum_tests

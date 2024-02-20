@@ -53,7 +53,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >::Potential(const Potential< GUM_SCALAR >& src) :
       Potential< GUM_SCALAR >(
-       static_cast< MultiDimImplementation< GUM_SCALAR >* >(src.content() -> newFactory()),
+       static_cast< MultiDimImplementation< GUM_SCALAR >* >(src.content()->newFactory()),
        *(src.content())) {
     this->empty_value_ = src.empty_value_;
     // GUM_CONS_CPY not here because in called Potential
@@ -841,7 +841,7 @@ namespace gum {
 
   // complement function between two evidence
   template < typename GUM_SCALAR >
-  Potential< GUM_SCALAR > Potential< GUM_SCALAR >::operator!() const {
+  Potential< GUM_SCALAR > Potential< GUM_SCALAR >::operator~() const {
     if (!isEvidence()) GUM_ERROR(InvalidArgument, "The potential is not an evidence.")
 
     Potential< GUM_SCALAR > res(*this);
