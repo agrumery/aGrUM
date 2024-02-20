@@ -8279,7 +8279,7 @@ _pyAgrum.ApproximationScheme_swigregister(ApproximationScheme)
 FindBarrenNodesType_FIND_NO_BARREN_NODES = _pyAgrum.FindBarrenNodesType_FIND_NO_BARREN_NODES
 FindBarrenNodesType_FIND_BARREN_NODES = _pyAgrum.FindBarrenNodesType_FIND_BARREN_NODES
 
-def fastVariable(var_description: str, default_domain_size: int=2) -> "pyAgrum.DiscreteVariable":
+def fastVariable(*args) -> "pyAgrum.DiscreteVariable":
     r"""
 
     Use *fast* syntax to add a variable in the BayesNet.
@@ -8318,7 +8318,7 @@ def fastVariable(var_description: str, default_domain_size: int=2) -> "pyAgrum.D
 
 
     """
-    return _pyAgrum.fastVariable(var_description, default_domain_size)
+    return _pyAgrum.fastVariable(*args)
 
 def randomDistribution(n: int) -> List[float]:
     r"""
@@ -10533,7 +10533,7 @@ class BayesNet(IBayesNet):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
 
     @staticmethod
-    def fastPrototype(dotlike: str, domainSize: int=2) -> "pyAgrum.BayesNet":
+    def fastPrototype(*args) -> "pyAgrum.BayesNet":
         r"""
 
         Create a Bayesian network with a dot-like syntax which specifies:
@@ -10563,8 +10563,8 @@ class BayesNet(IBayesNet):
         ----------
         dotlike : str
                 the string containing the specification
-        domainSize : int
-                the default domain size for variables
+        domainSize : int or str
+                the default domain size or the default domain for variables
 
         Returns
         -------
@@ -10572,7 +10572,7 @@ class BayesNet(IBayesNet):
                 the resulting Bayesian network
 
         """
-        return _pyAgrum.BayesNet_fastPrototype(dotlike, domainSize)
+        return _pyAgrum.BayesNet_fastPrototype(*args)
     __swig_destroy__ = _pyAgrum.delete_BayesNet
 
     def __init__(self, *args):
@@ -12976,7 +12976,7 @@ class MarkovRandomField(IMarkovRandomField):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
 
     @staticmethod
-    def fastPrototype(dotlike: str, domainSize: int=2) -> "pyAgrum.MarkovRandomField":
+    def fastPrototype(*args) -> "pyAgrum.MarkovRandomField":
         r"""
 
         Create a Markov random field with a modified dot-like syntax which specifies:
@@ -12992,8 +12992,8 @@ class MarkovRandomField(IMarkovRandomField):
         ----------
         dotlike : str
                 the string containing the specification
-        domainSize : int
-                the default domain size for variables
+        domainSize : int or str
+                the default domain size or the default domain for variables
 
         Returns
         -------
@@ -13001,7 +13001,7 @@ class MarkovRandomField(IMarkovRandomField):
                 the resulting Markov random field
 
         """
-        return _pyAgrum.MarkovRandomField_fastPrototype(dotlike, domainSize)
+        return _pyAgrum.MarkovRandomField_fastPrototype(*args)
 
     @staticmethod
     def fromBN(bn: "pyAgrum.BayesNet") -> "pyAgrum.MarkovRandomField":
@@ -13089,7 +13089,7 @@ class MarkovRandomField(IMarkovRandomField):
         This will change the "pyAgrum.DiscreteVariable" names in the pyAgrum.MarkovRandomField.
 
         Parameters
-        ---------- 
+        ----------
         car :Union[int,str]
         	a variable's id (int) or name
         new_name : str
@@ -25342,7 +25342,7 @@ class InfluenceDiagram(DAGmodel):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
 
     @staticmethod
-    def fastPrototype(dotlike: str, domainSize: int=2) -> "pyAgrum.InfluenceDiagram":
+    def fastPrototype(*args) -> "pyAgrum.InfluenceDiagram":
         r"""
 
         Create an Influence Diagram with a dot-like syntax which specifies:
@@ -25378,8 +25378,8 @@ class InfluenceDiagram(DAGmodel):
         ----------
         dotlike : str
                 the string containing the specification
-        domainSize : int
-                the default domain size for variables
+        domainSize :int or str
+                the default domain size or the default domain for variables
 
         Returns
         -------
@@ -25387,7 +25387,7 @@ class InfluenceDiagram(DAGmodel):
                 the resulting Influence Diagram
 
         """
-        return _pyAgrum.InfluenceDiagram_fastPrototype(dotlike, domainSize)
+        return _pyAgrum.InfluenceDiagram_fastPrototype(*args)
     __swig_destroy__ = _pyAgrum.delete_InfluenceDiagram
 
     def __init__(self, *args):
@@ -28233,7 +28233,7 @@ def saveID(infdiag, filename):
     raise InvalidArgument("extension " + filename.split('.')[-1] + " unknown. Please use among " + availableBNExts())
 
 
-def fastBN(structure, domain_size=2):
+def fastBN(structure:str, domain="[2]"):
   """
   Create a Bayesian network with a dot-like syntax which specifies:
       - the structure 'a->b->c;b->d<-e;',
@@ -28248,26 +28248,26 @@ def fastBN(structure, domain_size=2):
   ----------
   structure : str
           the string containing the specification
-  domain_size : int
-          the default domain size for variables
+  domain : int or str
+          the default domain size (int) or domain specification (str) for variables (default is "[2]"
 
   Returns
   -------
   pyAgrum.BayesNet
           the resulting bayesian network
   """
-  return BayesNet.fastPrototype(structure, domain_size)
+  return BayesNet.fastPrototype(structure, domain)
 
 
-def fastMN(structure, domain_size=2):
+def fastMN(structure, domain="[2]"):
   warnings.warn("""
 ** pyAgrum.fastMN is deprecated in pyAgrum>1.5.2.
 ** pyAgrum.fastMRF is called instead.
 """, DeprecationWarning, stacklevel=2)
-  return fastMRF(structure, domain_size)
+  return fastMRF(structure, domain)
 
 
-def fastMRF(structure, domain_size=2):
+def fastMRF(structure, domain="[2]"):
   """
   Create a Markov random field with a modified dot-like syntax which specifies:
       - the structure 'a-b-c;b-d;c-e;' where each chain 'a-b-c' specifies a factor,
@@ -28282,18 +28282,18 @@ def fastMRF(structure, domain_size=2):
   ----------
   structure : str
           the string containing the specification
-  domain_size : int
-          the default domain size for variables
+  domain: int or str
+          the default domain size (int) or domain specification (str) for variables (default is "[2]"
 
   Returns
   -------
   pyAgrum.MarkovRandomField
           the resulting Markov random field
   """
-  return MarkovRandomField.fastPrototype(structure, domain_size)
+  return MarkovRandomField.fastPrototype(structure, domain)
 
 
-def fastID(structure, domain_size=2):
+def fastID(structure, domain="[2]"):
   """
   Create an Influence Diagram with a modified dot-like syntax which specifies:
       - the structure and the type of the variables following :ref:`fast syntax<Quick specification of (randomly parameterized) graphical models>`,
@@ -28312,15 +28312,15 @@ def fastID(structure, domain_size=2):
   ----------
   structure : str
           the string containing the specification
-  domain_size : int
-          the default domain size for variables
+  domain: int or str
+          the default domain size (int) or domain specification (str) for variables (default is "[2]"
 
   Returns
   -------
   pyAgrum.InfluenceDiagram
           the resulting Influence Diagram
   """
-  return InfluenceDiagram.fastPrototype(structure, domain_size)
+  return InfluenceDiagram.fastPrototype(structure, domain)
 
 
 def getPosterior(model, *, target, evs=None):

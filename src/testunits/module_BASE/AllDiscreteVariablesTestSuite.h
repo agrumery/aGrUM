@@ -35,40 +35,40 @@ namespace gum_tests {
     GUM_ACTIVE_TEST(CreationRange) {
       try {
         {
-          auto a = FASTVARDBL("A", 2);
-          TS_ASSERT_EQUALS(a->toString(), "A:Range([0,1])");
+          auto a = FASTVARDBL("A1", 2);
+          TS_ASSERT_EQUALS(a->toString(), "A1:Range([0,1])");
         }
         {
           // a way to create a variable with only one value
-          auto a = FASTVARDBL("A", 1);
-          TS_ASSERT_EQUALS(a->toString(), "A:Range([0,0])");
+          auto a = FASTVARDBL("A2", 1);
+          TS_ASSERT_EQUALS(a->toString(), "A2:Range([0,0])");
         }
         {
-          auto a = FASTVARDBL("A", 4);
-          TS_ASSERT_EQUALS(a->toString(), "A:Range([0,3])");
+          auto a = FASTVARDBL("A3", 4);
+          TS_ASSERT_EQUALS(a->toString(), "A3:Range([0,3])");
         }
         {
-          auto a = FASTVARDBL("A[3]", 4);
-          TS_ASSERT_EQUALS(a->toString(), "A:Range([0,2])");
+          auto a = FASTVARDBL("A4[3]", 4);
+          TS_ASSERT_EQUALS(a->toString(), "A4:Range([0,2])");
         }
         {
-          auto a = FASTVARDBL("A[3,7]", 4);
-          TS_ASSERT_EQUALS(a->toString(), "A:Range([3,7])");
+          auto a = FASTVARDBL("A5[3,7]", 4);
+          TS_ASSERT_EQUALS(a->toString(), "A5:Range([3,7])");
         }
         {
-          auto a = FASTVARDBL("A[-7,-3]", 4);
-          TS_ASSERT_EQUALS(a->toString(), "A:Range([-7,-3])");
+          auto a = FASTVARDBL("A6[-7,-3]", 4);
+          TS_ASSERT_EQUALS(a->toString(), "A6:Range([-7,-3])");
         }
 
-        TS_ASSERT_THROWS(auto a = FASTVARDBL("A[7,3]", 4), const gum::InvalidArgument&);
+        TS_ASSERT_THROWS(auto a = FASTVARDBL("A7[7,3]", 4), const gum::InvalidArgument&);
 
-        TS_ASSERT_THROWS(auto a = FASTVARDBL("A[-5]", 4), const gum::InvalidArgument&);
+        TS_ASSERT_THROWS(auto a = FASTVARDBL("A8[-5]", 4), const gum::InvalidArgument&);
 
-        TS_ASSERT_THROWS(auto a = FASTVARDBL("A[1,1]", 4), const gum::InvalidArgument&);
+        TS_ASSERT_THROWS(auto a = FASTVARDBL("A9[1,1]", 4), const gum::InvalidArgument&);
 
         {
-          auto a = FASTVARDBL("A[1,1]", 1);
-          TS_ASSERT_EQUALS(a->toString(), "A:Range([1,1])");
+          auto a = FASTVARDBL("AA[1,1]", 1);
+          TS_ASSERT_EQUALS(a->toString(), "AA:Range([1,1])");
         }
       } catch (gum::Exception const& e) GUM_SHOWERROR(e);
     }

@@ -55,8 +55,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   NodeId build_node(gum::BayesNet< GUM_SCALAR >& bn,
                     const std::string&           node,
-                    gum::Size                    default_domain_size) {
-    auto v = fastVariable< GUM_SCALAR >(node, default_domain_size);
+                    const std::string&           default_domain) {
+    auto v = fastVariable< GUM_SCALAR >(node, default_domain);
 
     NodeId res;
     try {
@@ -68,6 +68,12 @@ namespace gum {
   template < typename GUM_SCALAR >
   BayesNet< GUM_SCALAR > BayesNet< GUM_SCALAR >::fastPrototype(const std::string& dotlike,
                                                                Size               domainSize) {
+    return fastPrototype(dotlike, "[" + std::to_string(domainSize) + "]");
+  }
+
+  template < typename GUM_SCALAR >
+  BayesNet< GUM_SCALAR > BayesNet< GUM_SCALAR >::fastPrototype(const std::string& dotlike,
+                                                               const std::string& domain) {
     gum::BayesNet< GUM_SCALAR > bn;
 
     for (const auto& chaine: split(remove_newline(dotlike), ";")) {
@@ -76,7 +82,7 @@ namespace gum {
       for (const auto& souschaine: split(chaine, "->")) {
         bool forward = true;
         for (auto& node: split(souschaine, "<-")) {
-          auto idVar = build_node(bn, node, domainSize);
+          auto idVar = build_node(bn, node, domain);
           if (notfirst) {
             if (forward) {
               bn.addArc(lastId, idVar);
@@ -154,7 +160,7 @@ namespace gum {
       GUM_ERROR(NotFound, "Variable " << id << " is not a LabelizedVariable.")
 
     LabelizedVariable const* var
-       = dynamic_cast< LabelizedVariable* >(const_cast< DiscreteVariable* >(&variable(id)));
+     = dynamic_cast< LabelizedVariable* >(const_cast< DiscreteVariable* >(&variable(id)));
 
     var->changeLabel(var->posLabel(old_label), new_label);
   }
@@ -224,7 +230,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE const DiscreteVariable&
-     BayesNet< GUM_SCALAR >::variableFromName(const std::string& name) const {
+   BayesNet< GUM_SCALAR >::variableFromName(const std::string& name) const {
     return _varMap_.variableFromName(name);
   }
 
@@ -587,14 +593,14 @@ namespace gum {
       GUM_ERROR(OperationNotAllowed,
                 "cannot exchange potentials with different "
                 "dimensions for variable with id "
-                   << id)
+                 << id)
     }
 
     for (Idx i = 0; i < cpt(id).nbrDim(); i++) {
       if (&cpt(id).variable(i) != &(newPot->variable(i))) {
         GUM_ERROR(OperationNotAllowed,
                   "cannot exchange potentials because, for variable with id "
-                     << id << ", dimension " << i << " differs. ")
+                   << id << ", dimension " << i << " differs. ")
       }
     }
 

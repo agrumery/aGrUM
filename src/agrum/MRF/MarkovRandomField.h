@@ -90,7 +90,9 @@ namespace gum {
      * @return the resulting Bayesian network
      */
     static MarkovRandomField< GUM_SCALAR > fastPrototype(const std::string& dotlike,
-                                                         Size               domainSize = 2);
+                                                         Size               domainSize);
+    static MarkovRandomField< GUM_SCALAR > fastPrototype(const std::string& dotlike,
+                                                         const std::string& domain = "[2]");
 
     /**
      * build a Markov random field from a Bayesian network
@@ -156,7 +158,7 @@ namespace gum {
     virtual const Potential< GUM_SCALAR >& factor(const NodeSet& varIds) const final;
 
     virtual const Potential< GUM_SCALAR >&
-       factor(const std::vector< std::string >& varnames) const final;
+     factor(const std::vector< std::string >& varnames) const final;
 
     /**
      * Returns a factor that contains this variable

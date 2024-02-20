@@ -515,8 +515,8 @@ Parameters
 ----------
 dotlike : str
         the string containing the specification
-domainSize : int
-        the default domain size for variables
+domainSize : int or str
+        the default domain size or the default domain for variables
 
 Returns
 -------

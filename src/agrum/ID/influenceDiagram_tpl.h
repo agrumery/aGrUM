@@ -39,12 +39,11 @@ namespace gum {
   template < typename GUM_SCALAR >
   NodeId build_node_for_ID(gum::InfluenceDiagram< GUM_SCALAR >& infdiag,
                            std::string                          node,
-                           gum::Size                            default_domain_size) {
+                           const std::string& domain) {
     bool      isUtil     = false;
     bool      isDeci     = false;
     bool      isChanc    = false;
-    gum::Size default_ds = default_domain_size;
-
+    std::string ds=domain;
     switch (*(node.begin())) {
       case '*' :
         isDeci = true;
@@ -52,12 +51,12 @@ namespace gum {
         break;
       case '$' :
         isUtil     = true;
-        default_ds = 1;
+        ds = "[1]";
         node.erase(0, 1);
         break;
       default : isChanc = true;
     }
-    auto v = fastVariable< GUM_SCALAR >(node, default_ds);
+    auto v = fastVariable< GUM_SCALAR >(node, ds);
 
     NodeId res;
     try {
@@ -74,9 +73,14 @@ namespace gum {
     return res;
   }
 
-  template < typename GUM_SCALAR >
-  InfluenceDiagram< GUM_SCALAR >
+    template < typename GUM_SCALAR >
+    InfluenceDiagram< GUM_SCALAR >
      InfluenceDiagram< GUM_SCALAR >::fastPrototype(const std::string& dotlike, Size domainSize) {
+      return fastPrototype(dotlike, "["+std::to_string(domainSize)+"]");
+    }
+      template < typename GUM_SCALAR >
+      InfluenceDiagram< GUM_SCALAR >
+       InfluenceDiagram< GUM_SCALAR >::fastPrototype(const std::string& dotlike, const std::string&  domain) {
     gum::InfluenceDiagram< GUM_SCALAR > infdiag;
 
     for (const auto& chaine: split(remove_newline(dotlike), ";")) {
@@ -85,7 +89,7 @@ namespace gum {
       for (const auto& souschaine: split(chaine, "->")) {
         bool forward = true;
         for (auto& node: split(souschaine, "<-")) {
-          auto idVar = build_node_for_ID(infdiag, node, domainSize);
+          auto idVar = build_node_for_ID(infdiag, node, domain);
           if (notfirst) {
             if (forward) {
               infdiag.addArc(lastId, idVar);

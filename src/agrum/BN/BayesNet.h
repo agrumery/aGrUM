@@ -97,7 +97,8 @@ namespace gum {
      * @param domainSize the default domain size for variables
      * @return the resulting Bayesian network
      */
-    static BayesNet< GUM_SCALAR > fastPrototype(const std::string& dotlike, Size domainSize = 2);
+    static BayesNet< GUM_SCALAR > fastPrototype(const std::string& dotlike, Size domainSize);
+    static BayesNet< GUM_SCALAR > fastPrototype(const std::string& dotlike, const std::string& domainSize = "[2]");
 
     // ===========================================================================
     /// @name Constructors and Destructor

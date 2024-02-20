@@ -28,11 +28,19 @@ namespace gum {
   template < typename GUM_SCALAR >
   std::unique_ptr< DiscreteVariable > fastVariable(std::string var_description,
                                                    Size        default_domain_size) {
-    if (default_domain_size == 0) GUM_ERROR(InvalidArgument, "default_domain_size can not be 0")
+    if (default_domain_size < 1)
+      GUM_ERROR(InvalidArgument, "default_domain_size can not be less than 1")
 
-    Size                       ds        = default_domain_size;
+    const std::string domain = "[" + std::to_string(default_domain_size) + "]";
+    return fastVariable< GUM_SCALAR >(var_description, domain);
+  }
+
+  template < typename GUM_SCALAR >
+  std::unique_ptr< DiscreteVariable > fastVariable(std::string var_description,
+                                                   const std::string& default_domain) {
+    long                       ds=0;
     long                       range_min = 0;
-    long                       range_max = long(ds) - 1;
+    long                       range_max = 11;
     std::vector< std::string > labels;
     std::vector< GUM_SCALAR >  ticks;
     std::string                name;
@@ -41,13 +49,26 @@ namespace gum {
     std::vector< double > numerical_values;
 
     trim(var_description);
+
+    if (default_domain.size() == 0) GUM_ERROR(InvalidArgument, "default_domain can not be empty")
+
+    auto t = *default_domain.begin();
+    if (t != '[' && t != '{')
+      GUM_ERROR(InvalidArgument,
+                "default_domain (" << default_domain << ") must start with '[' or '{'")
+
+    if (var_description.find('[') == std::string::npos
+        && var_description.find('{') == std::string::npos) {
+      var_description += default_domain;
+    }
+
     // [1,3,5]...
     if (*(var_description.rbegin()) == ']') {
       auto posBrack = var_description.find('[');
       if (posBrack != std::string::npos) {
         name = var_description.substr(0, posBrack);
         const auto& s_args
-           = var_description.substr(posBrack + 1, var_description.size() - posBrack - 2);
+         = var_description.substr(posBrack + 1, var_description.size() - posBrack - 2);
         const auto& args = split(s_args, ",");
         if (args.empty()) {              // n[]
           GUM_ERROR(InvalidArgument, "Empty range for variable " << var_description)
@@ -66,10 +87,11 @@ namespace gum {
             for (double i = 0.0; i < nbr + 1; i += 1.0) {
               ticks.push_back(fmin + i * step);
             }
+            ds=ticks.size();
           } else {   // n[4]
             int n = std::stoi(args[0]);
             if (n < 2)
-              if (default_domain_size > 1)
+              if (default_domain != "[1]")
                 GUM_ERROR(InvalidArgument, n << " is not >=2 for variable " << var_description)
             ds        = static_cast< Size >(n);
             range_min = 0;
@@ -82,10 +104,10 @@ namespace gum {
           if (range_max < range_min)
             GUM_ERROR(InvalidArgument,
                       "Invalid range for variable " << var_description << ": max<min")
-          if (range_max == range_min && default_domain_size > 1)
+          if (range_max == range_min && default_domain != "[1]")
             GUM_ERROR(InvalidArgument,
                       "Invalid range for variable "
-                         << var_description << ": max==min not allowed if default_domain_size>1")
+                       << var_description << ": max==min not allowed if default_domain_size>1")
 
           ds = static_cast< Size >(1 + range_max - range_min);
         } else {   // n[3.14,5,10,12]
@@ -99,9 +121,9 @@ namespace gum {
     } else if (*(var_description.rbegin()) == '}') {
       auto posBrack = var_description.find('{');
       if (posBrack != std::string::npos) {
-        name   = var_description.substr(0, posBrack);
-        labels = split(var_description.substr(posBrack + 1, var_description.size() - posBrack - 2),
-                       ":");
+        name = var_description.substr(0, posBrack);
+        labels
+         = split(var_description.substr(posBrack + 1, var_description.size() - posBrack - 2), ":");
         if (labels.size() == 3) {   // b{1.1:3.31:5}
           const auto fmin = std::stod(labels[0]);
           const auto fmax = std::stod(labels[1]);
@@ -120,6 +142,7 @@ namespace gum {
               labels.push_back(std::to_string(v));
               v += int(step);
             }
+            ds = labels.size();
           } else {   // b{1.3:6.3:5} => NumericalDiscreteVariable
             labels.clear();
             numerical_values.clear();
@@ -134,10 +157,11 @@ namespace gum {
           }
         } else {
           labels
-             = split(var_description.substr(posBrack + 1, var_description.size() - posBrack - 2),
-                     "|");
+           = split(var_description.substr(posBrack + 1, var_description.size() - posBrack - 2),
+                   "|");
           if (labels.size() < 2) {
-            if (labels.size() != default_domain_size)   // 1 is ok if default_domain_size==1
+            if (labels.size() == 1
+                && default_domain != "[1]")   // 1 is ok if default_domain_size==1
               GUM_ERROR(InvalidArgument, "Not enough labels in var_description " << var_description)
           }
           if (!hasUniqueElts(labels)) {
@@ -153,7 +177,7 @@ namespace gum {
     if (ds == 0) {
       GUM_ERROR(InvalidArgument, "No value for variable " << var_description << ".")
     } else if (ds == 1) {
-      if (default_domain_size != 1)
+      if (default_domain != "[1]")
         GUM_ERROR(InvalidArgument,
                   "Only one value for variable " << var_description << " (2 at least are needed).")
     }

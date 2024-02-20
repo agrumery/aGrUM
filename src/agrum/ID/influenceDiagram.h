@@ -80,7 +80,9 @@ namespace gum {
      * @return the resulting influence diagram
      */
     static InfluenceDiagram< GUM_SCALAR > fastPrototype(const std::string& dotlike,
-                                                        Size               domainSize = 2);
+                                                        Size               domainSize );
+    static InfluenceDiagram< GUM_SCALAR > fastPrototype(const std::string& dotlike,
+                                                        const std::string& domain = "[2]");
 
     // ===========================================================================
     /// @name Constructors / Destructors

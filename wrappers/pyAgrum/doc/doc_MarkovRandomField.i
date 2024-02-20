@@ -58,7 +58,7 @@ Changes a variable's name in the gum::MarkovRandomField.
 This will change the gum::DiscreteVariable names in the gum::MarkovRandomField.
 
 Parameters
----------- 
+----------
 car :Union[int,str]
 	a variable's id (int) or name
 new_name : str
@@ -151,8 +151,8 @@ Parameters
 ----------
 dotlike : str
         the string containing the specification
-domainSize : int
-        the default domain size for variables
+domainSize : int or str
+        the default domain size or the default domain for variables
 
 Returns
 -------
