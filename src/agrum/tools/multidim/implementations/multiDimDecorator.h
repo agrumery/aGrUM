@@ -35,6 +35,7 @@
 #include <agrum/tools/multidim/implementations/multiDimArray.h>
 
 namespace gum {
+  class DiscreteVariable;
 
   // ===========================================================================
   // ===                         MULTIDIM DECORATOR                          ===

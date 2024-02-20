@@ -180,7 +180,7 @@ namespace PyAgrumHelper {
       }
 
       inst.add(*(namesToVars[name]));
-      inst.chgVal(namesToVars[name], v);
+      inst.chgVal(*namesToVars[name], v);
     }
   }
 

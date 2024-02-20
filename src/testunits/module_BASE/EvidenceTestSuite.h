@@ -74,8 +74,44 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(1 - p1.max(), (~p1).min())
       TS_ASSERT_EQUALS(1 - p1.min(), (~p1).max())
-      GUM_TRACE_VAR(p1)
-      TS_ASSERT_EQUALS(10 - 1, (~p1).sum())
+      TS_ASSERT_DELTA(10 - 1, (~p1).sum(), TS_GUM_SMALL_ERROR)
+    }
+
+    GUM_ACTIVE_TEST(Likelihood) {
+      const auto bn = gum::BayesNet< double >::fastPrototype(
+       "A[10];B[1,10];C{1.0:20.0:10};D{1:100:10};E[1.0:20.0:10];X{A1|A2|A3|A4|A5|A6|A7|A8|A9|A10}");
+      for (auto i: bn.nodes()) {
+        TS_ASSERT_EQUALS(bn.variable(i).domainSize(), 10)
+      }
+
+
+      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evEq(bn.variable("A"), 4)),
+                       "....1.....")
+      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evEq(bn.variable("B"), 4)),
+                       "...1......")
+      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evEq(bn.variable("C"), 4)),
+                       ".1........")
+      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evEq(bn.variable("D"), 4)),
+                       "1.........")
+      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evEq(bn.variable("E"), 4)),
+                       ".1........")
+
+      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evEq(bn.variable("A"), 4)
+                                    | gum::Potential< double >::evEq(bn.variable("A"), 8)),
+                       "....1...1.")
+      TS_ASSERT_EQUALS(toBoolString(gum::Potential< double >::evIn(bn.variable("A"), 4, 8)),
+                       "....11111.")
+      TS_ASSERT_EQUALS(toBoolString(~gum::Potential< double >::evIn(bn.variable("A"), 4, 8)),
+                       "1111.....1")
+    }
+
+    private:
+    std::string toBoolString(const gum::Potential< double >& p) {
+      std::string        s = "";
+      gum::Instantiation I(p);
+      for (I.setFirst(); !I.end(); I.inc())
+        s += p.get(I) == 0 ? "." : "1";
+      return s;
     }
   };
 }   // namespace gum_tests

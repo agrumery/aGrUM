@@ -166,7 +166,7 @@ namespace gum {
     _evalReward_();
 
     Idx curFuelLevel = currentState_.valFromPtr(_fuelLevel_);
-    if (curFuelLevel > 0) currentState_.chgVal(_fuelLevel_, --curFuelLevel);
+    if (curFuelLevel > 0) currentState_.chgVal(*_fuelLevel_, --curFuelLevel);
 
     switch (actionId) {
       case GoNorth : return _performGoNorth_();
@@ -184,7 +184,7 @@ namespace gum {
   // ==================================================================================================================
   void TaxiSimulator::_performGoNorth_() {
     Idx curPos = this->currentState_.valFromPtr(_yPos_);
-    if (curPos < 4) currentState_.chgVal(_yPos_, ++curPos);
+    if (curPos < 4) currentState_.chgVal(*_yPos_, ++curPos);
   }
 
   // ==================================================================================================================
@@ -200,7 +200,7 @@ namespace gum {
     if (xCurPos == 1)
       if (yCurPos == 3 || yCurPos == 4) return;
 
-    currentState_.chgVal(_xPos_, ++xCurPos);
+    currentState_.chgVal(*_xPos_, ++xCurPos);
   }
 
   // ==================================================================================================================
@@ -208,7 +208,7 @@ namespace gum {
   // ==================================================================================================================
   void TaxiSimulator::_performGoSouth_() {
     Idx curPos = this->currentState_.valFromPtr(_yPos_);
-    if (curPos > 0) currentState_.chgVal(_yPos_, --curPos);
+    if (curPos > 0) currentState_.chgVal(*_yPos_, --curPos);
   }
 
   // ==================================================================================================================
@@ -224,7 +224,7 @@ namespace gum {
     if (xCurPos == 2)
       if (yCurPos == 3 || yCurPos == 4) return;
 
-    currentState_.chgVal(_xPos_, --xCurPos);
+    currentState_.chgVal(*_xPos_, --xCurPos);
   }
 
   // ==================================================================================================================
@@ -239,19 +239,19 @@ namespace gum {
        = (TaxiSimulationLandmark)this->currentState_.valFromPtr(_passengerPos_);
     switch (passPos) {
       case HOME : {
-        if (xCurPos == HOMEX && yCurPos == HOMEY) currentState_.chgVal(_passengerPos_, TAXI);
+        if (xCurPos == HOMEX && yCurPos == HOMEY) currentState_.chgVal(*_passengerPos_, TAXI);
         return;
       }
       case WORK : {
-        if (xCurPos == WORKX && yCurPos == WORKY) currentState_.chgVal(_passengerPos_, TAXI);
+        if (xCurPos == WORKX && yCurPos == WORKY) currentState_.chgVal(*_passengerPos_, TAXI);
         return;
       }
       case THEATER : {
-        if (xCurPos == THEATERX && yCurPos == THEATERY) currentState_.chgVal(_passengerPos_, TAXI);
+        if (xCurPos == THEATERX && yCurPos == THEATERY) currentState_.chgVal(*_passengerPos_, TAXI);
         return;
       }
       case CLUB : {
-        if (xCurPos == CLUBX && yCurPos == CLUBY) currentState_.chgVal(_passengerPos_, TAXI);
+        if (xCurPos == CLUBX && yCurPos == CLUBY) currentState_.chgVal(*_passengerPos_, TAXI);
         return;
       }
       case TAXI : return;
@@ -273,20 +273,20 @@ namespace gum {
     if (passPos == TAXI) {
       switch (passDest) {
         case HOME : {
-          if (xCurPos == HOMEX && yCurPos == HOMEY) currentState_.chgVal(_passengerPos_, HOME);
+          if (xCurPos == HOMEX && yCurPos == HOMEY) currentState_.chgVal(*_passengerPos_, HOME);
           return;
         }
         case WORK : {
-          if (xCurPos == WORKX && yCurPos == WORKY) currentState_.chgVal(_passengerPos_, WORK);
+          if (xCurPos == WORKX && yCurPos == WORKY) currentState_.chgVal(*_passengerPos_, WORK);
           return;
         }
         case THEATER : {
           if (xCurPos == THEATERX && yCurPos == THEATERY)
-            currentState_.chgVal(_passengerPos_, THEATER);
+            currentState_.chgVal(*_passengerPos_, THEATER);
           return;
         }
         case CLUB : {
-          if (xCurPos == CLUBX && yCurPos == CLUBY) currentState_.chgVal(_passengerPos_, CLUB);
+          if (xCurPos == CLUBX && yCurPos == CLUBY) currentState_.chgVal(*_passengerPos_, CLUB);
           return;
         }
         case TAXI : return;
@@ -303,7 +303,7 @@ namespace gum {
     TaxiSimulationLandmarkY yCurPos
        = (TaxiSimulationLandmarkY)this->currentState_.valFromPtr(_yPos_);
 
-    if (xCurPos == STATIONX && yCurPos == STATIONY) currentState_.chgVal(_fuelLevel_, 13);
+    if (xCurPos == STATIONX && yCurPos == STATIONY) currentState_.chgVal(*_fuelLevel_, 13);
   }
 
   // ==================================================================================================================

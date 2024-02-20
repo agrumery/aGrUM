@@ -25,6 +25,8 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 
+#include <algorithm>
+
 #include <agrum/agrum.h>
 
 #include <agrum/tools/multidim/potential.h>
@@ -38,7 +40,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >::Potential() :
       MultiDimDecorator< GUM_SCALAR >(new MultiDimArray< GUM_SCALAR >(), GUM_SCALAR(1)) {
-    GUM_CONSTRUCTOR(Potential);
+    GUM_CONSTRUCTOR(Potential)
   }
 
   // constructor using aContent as content
@@ -46,14 +48,14 @@ namespace gum {
   INLINE Potential< GUM_SCALAR >::Potential(MultiDimImplementation< GUM_SCALAR >* aContent) :
       MultiDimDecorator< GUM_SCALAR >(aContent, GUM_SCALAR(1)) {
     // for debugging purposes
-    GUM_CONSTRUCTOR(Potential);
+    GUM_CONSTRUCTOR(Potential)
   }
 
   // copy constructor
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >::Potential(const Potential< GUM_SCALAR >& src) :
       Potential< GUM_SCALAR >(
-       static_cast< MultiDimImplementation< GUM_SCALAR >* >(src.content()->newFactory()),
+       static_cast< MultiDimImplementation< GUM_SCALAR >* >(src.content() -> newFactory()),
        *(src.content())) {
     this->empty_value_ = src.empty_value_;
     // GUM_CONS_CPY not here because in called Potential
@@ -64,7 +66,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >::Potential(Potential< GUM_SCALAR >&& from) :
       MultiDimDecorator< GUM_SCALAR >(std::forward< MultiDimDecorator< GUM_SCALAR > >(from)) {
-    GUM_CONS_MOV(Potential);
+    GUM_CONS_MOV(Potential)
   }
 
   // complex copy constructor : we choose the implementation
@@ -73,7 +75,7 @@ namespace gum {
                                      const MultiDimContainer< GUM_SCALAR >& src) :
       MultiDimDecorator< GUM_SCALAR >(aContent) {
     // for debugging purposes
-    GUM_CONSTRUCTOR(Potential);
+    GUM_CONSTRUCTOR(Potential)
 
     if (!src.empty()) {
       this->beginMultipleChanges();
@@ -87,19 +89,19 @@ namespace gum {
     }
   }
 
-  // operator = copy
+  // operator= (copy)
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::operator=(const Potential< GUM_SCALAR >& src) {
-    GUM_OP_CPY(Potential);
+    GUM_OP_CPY(Potential)
     if (&src == this) return *this;
     MultiDimDecorator< GUM_SCALAR >::operator=(src);
     return *this;
   }
 
-  // operator = move
+  // operator= (move)
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::operator=(Potential< GUM_SCALAR >&& src) {
-    GUM_OP_MOV(Potential);
+    GUM_OP_MOV(Potential)
     if (&src == this) return *this;
     MultiDimDecorator< GUM_SCALAR >::operator=(
      std::forward< MultiDimDecorator< GUM_SCALAR > >(src));
@@ -111,7 +113,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >::~Potential() {
     // for debugging purposes
-    GUM_DESTRUCTOR(Potential);
+    GUM_DESTRUCTOR(Potential)
   }
 
   template < typename GUM_SCALAR >
@@ -156,7 +158,7 @@ namespace gum {
     return gum::projectMin(*this->content());
   }
 
-  // max of all non one elements in this
+  // max of all non-one elements in this
   // warning can return 1 if no other value than 1 ...
   template < typename GUM_SCALAR >
   GUM_SCALAR Potential< GUM_SCALAR >::maxNonOne() const {
@@ -177,7 +179,7 @@ namespace gum {
     return res;
   }
 
-  // min of all non zero elements in this
+  // min of all non-zero elements in this
   // warning can return 0 if no other value than 0 ...
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR Potential< GUM_SCALAR >::minNonZero() const {
@@ -248,7 +250,7 @@ namespace gum {
     for (const auto& v: this->variablesSequence()) {
       if (!son.contains(v->name())) {
         GUM_ERROR(InvalidArgument,
-                  "Variable <" << v->name() << "> not present in src (" << son << ").");
+                  "Variable <" << v->name() << "> not present in src (" << son << ").")
       }
       // we check size, labels and order of labels in the same time
       if (v->toString() != src.variable(v->name()).toString()) {
@@ -283,7 +285,7 @@ namespace gum {
       if (src.variable(mapSrc[i]).domainSize() != this->variable(i).domainSize()) {
         GUM_ERROR(InvalidArgument,
                   "Variables " << mapSrc[i] << " (in the argument) and " << this->variable(i).name()
-                               << " have not the same dimension.");
+                               << " have not the same dimension.")
       } else {
         Isrc.add(src.variable(mapSrc[i]));
       }
@@ -318,7 +320,7 @@ namespace gum {
   INLINE GUM_SCALAR Potential< GUM_SCALAR >::KL(const Potential< GUM_SCALAR >& p) const {
     if (this->nbrDim() != p.nbrDim())
       GUM_ERROR(InvalidArgument,
-                "BNdistance between potentials with different numbers of dimensions");
+                "BNdistance between potentials with different numbers of dimensions")
     for (const auto var: p.variablesSequence()) {
       if (!this->contains(*var))
         GUM_ERROR(InvalidArgument, "A variable in the argument does not belong to the potential.")
@@ -329,7 +331,7 @@ namespace gum {
     }
 
     Instantiation inst(*this);
-    GUM_SCALAR    res = static_cast< GUM_SCALAR >(0);
+    auto          res = static_cast< GUM_SCALAR >(0);
     for (inst.setFirst(); !inst.end(); inst.inc()) {
       GUM_SCALAR x = this->get(inst);
       GUM_SCALAR y = p.get(inst);
@@ -388,7 +390,7 @@ namespace gum {
       const auto&   v = this->variable(varId);
 
       for (inst.setFirst(); !inst.end(); inst.incNotVar(v)) {
-        GUM_SCALAR s = (GUM_SCALAR)0.0;
+        auto s = (GUM_SCALAR)0.0;
         for (inst.setFirstVar(v); !inst.end(); inst.incVar(v))
           s += this->get(inst);
         if (s == (GUM_SCALAR)0.0) {
@@ -597,7 +599,7 @@ namespace gum {
     if (vars.size() != this->nbrDim())
       GUM_ERROR(InvalidArgument,
                 "The argument contains " << vars.size() << " variables instead of "
-                                         << this->nbrDim() << ".");
+                                         << this->nbrDim() << ".")
     for (const auto var: vars) {
       if (!this->contains(*var))
         GUM_ERROR(InvalidArgument, "A variable in the argument does not belong to the potential.")
@@ -625,7 +627,7 @@ namespace gum {
     for (const auto& name: vars) {
       if (!namesToVars.exists(name)) {
         GUM_ERROR(gum::InvalidArgument,
-                  "'" << name << "' is a not a name of a variable in this potential");
+                  "'" << name << "' is a not a name of a variable in this potential")
       }
       res.push_back(namesToVars[name]);
     }
@@ -658,7 +660,7 @@ namespace gum {
       }
     if (var == nullptr)
       GUM_ERROR(InvalidArgument,
-                "The variable '" << varname << "' to put first does not belong to the potential");
+                "The variable '" << varname << "' to put first does not belong to the potential")
     return this->putFirst(var);
   }
 
@@ -676,7 +678,7 @@ namespace gum {
       GUM_ERROR(FatalError, "To draw from a potential, the dimension must be 1")
     }
 
-    GUM_SCALAR    r = static_cast< GUM_SCALAR >(randomProba());
+    auto          r = static_cast< GUM_SCALAR >(randomProba());
     Instantiation Ip(*this);
     for (Ip.setFirst(); !Ip.end(); Ip.inc()) {
       r -= this->get(Ip);
@@ -966,11 +968,6 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  bool Potential< GUM_SCALAR >::operator!=(const Potential< GUM_SCALAR >& r) const {
-    return !operator==(r);
-  }
-
-  template < typename GUM_SCALAR >
   std::string Potential< GUM_SCALAR >::toString() const {
     auto              table = this->content();
     std::stringstream ss;
@@ -1021,7 +1018,7 @@ namespace gum {
     ss << std::endl;
     Instantiation I(*table);
 
-    auto drawligne = [&]() {
+    const auto drawligne = [&]() {
       if (nbparents > 0) {
         for (Idx i = 1; i <= nbparents; i++)
           ss << std::setw(colwidth) << table->variable(i).label(I.val(i)).substr(0, colwidth)
@@ -1034,8 +1031,7 @@ namespace gum {
       ss << std::endl;
     };
 
-    Size nbrLig = table->domainSize() / var.domainSize();
-    if (nbrLig < nbrLigMax * 2 + 1) {
+    if (const Size nbrLig = table->domainSize() / var.domainSize(); nbrLig < nbrLigMax * 2 + 1) {
       for (I.setFirst(); !I.end(); I.incNotVar(var))
         drawligne();
     } else {
@@ -1055,5 +1051,39 @@ namespace gum {
     }
 
     return ss.str();
+  }
+
+  template < typename GUM_SCALAR >
+  Potential< GUM_SCALAR > Potential< GUM_SCALAR >::evEq(const DiscreteVariable& v, double val) {
+    const auto i = v.closestIndex(val);
+
+    gum::Potential< GUM_SCALAR > p;
+    p.add(v);
+    p.fillWith(0);
+    Instantiation I(p);
+    I.chgVal(0, i);
+    p.set(I, 1);
+    return p;
+  }
+
+  template < typename GUM_SCALAR >
+  Potential< GUM_SCALAR >
+   Potential< GUM_SCALAR >::evIn(const DiscreteVariable& v, double val1, double val2) {
+    if (val2 < val1) {
+      GUM_ERROR(InvalidArgument,
+                "val2 (" << val2 << ") must be greater than val1 (" << val1 << ").")
+    }
+    const auto i1 = v.closestIndex(val1);
+    const auto i2 = v.closestIndex(val2);
+
+    gum::Potential< GUM_SCALAR > p;
+    p.add(v);
+    p.fillWith(0);
+    Instantiation I(p);
+    for (Idx i = i1; i <= i2; i++) {
+      I.chgVal(0, i);
+      p.set(I, 1);
+    }
+    return p;
   }
 } /* namespace gum */

@@ -364,27 +364,6 @@ namespace gum {
     Instantiation& chgVal(const DiscreteVariable& v, Idx newval);
 
     /**
-     * @brief Assign newval to variable v in the Instantiation.
-     *
-     * Consider the values of v as an array indexed from 0 to n of values
-     * (which might be anything from real numbers to strings, etc). Parameter
-     * newval indicates the index in this array of the new value taken by v.
-     *
-     * In addition to modifying the value of the variable, the Instantiation
-     * informs its master of the modification. This function also unsets the
-     * overflow flag.
-     *
-     * @param v The variable whose value is assigned.
-     * @param newval The index of the value assigned.
-     * @return Returns a reference to *this in order to chain the chgVal.
-     *
-     * @throw NotFound Raised if variable v does not belong to the
-     * instantiation.
-     * @throw OutOfBounds Raised if newval is not a possible value for v.
-     */
-    Instantiation& chgVal(const DiscreteVariable* v, Idx newval);
-
-    /**
      * @brief Assign newval to variable at position varPos in the Instantiation.
      *
      * Consider the values of v as an array indexed from 0 to n of values

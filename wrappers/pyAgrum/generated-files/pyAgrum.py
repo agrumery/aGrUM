@@ -9133,6 +9133,14 @@ class Potential(object):
     def __invert__(self) -> "pyAgrum.Potential":
         return _pyAgrum.Potential___invert__(self)
 
+    @staticmethod
+    def evEq(v: "DiscreteVariable", val: float) -> "pyAgrum.Potential":
+        return _pyAgrum.Potential_evEq(v, val)
+
+    @staticmethod
+    def evIn(v: "DiscreteVariable", val1: float, val2: float) -> "pyAgrum.Potential":
+        return _pyAgrum.Potential_evIn(v, val1, val2)
+
     def __repr__(self) -> str:
         return _pyAgrum.Potential___repr__(self)
 
@@ -9381,8 +9389,8 @@ class Potential(object):
     def __eq__(self, *args) -> bool:
         return _pyAgrum.Potential___eq__(self, *args)
 
-    def __ne__(self, *args) -> bool:
-        return _pyAgrum.Potential___ne__(self, *args)
+    def __ne__(self, b: "Potential") -> bool:
+        return _pyAgrum.Potential___ne__(self, b)
 
     def __radd__(self,other):
       return self.__add__(other)

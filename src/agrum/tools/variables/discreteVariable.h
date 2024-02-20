@@ -77,7 +77,7 @@ namespace gum {
     DiscreteVariable(const DiscreteVariable& aDRV);
 
     /// destructor
-    virtual ~DiscreteVariable();
+    ~DiscreteVariable() override;
 
     /// Copy Factory.
     /// @return Returns a pointer on a new copy of this.
@@ -155,7 +155,6 @@ namespace gum {
 
     /// string represent the type of the variable
     virtual std::string stype() const = 0;
-
 
     protected:
     /// (protected) Default constructor

@@ -181,7 +181,7 @@ namespace gum_tests {
       t_out->endMultipleChanges();
 
       for (const auto& elt: inst_vars)
-        partial_inst.chgVal(elt.first, elt.second);
+        partial_inst.chgVal(*elt.first, elt.second);
 
       // fill the table
       gum::Instantiation inst_in(t_in);
@@ -218,7 +218,7 @@ namespace gum_tests {
       t_out->endMultipleChanges();
 
       for (const auto& elt: inst_vars)
-        partial_inst.chgVal(elt.first, elt.second);
+        partial_inst.chgVal(*elt.first, elt.second);
 
       // fill the table
       gum::Instantiation inst_in(t_in);
@@ -255,7 +255,7 @@ namespace gum_tests {
       t_out->endMultipleChanges();
 
       for (const auto& elt: inst_vars)
-        partial_inst.chgVal(elt.first, elt.second);
+        partial_inst.chgVal(*elt.first, elt.second);
 
       // fill the table
       gum::Instantiation inst_in(t_in);
@@ -292,7 +292,7 @@ namespace gum_tests {
       t_out->endMultipleChanges();
 
       for (const auto& elt: inst_vars)
-        partial_inst.chgVal(elt.first, elt.second);
+        partial_inst.chgVal(*elt.first, elt.second);
 
       // fill the table
       gum::Instantiation inst_in(t_in);

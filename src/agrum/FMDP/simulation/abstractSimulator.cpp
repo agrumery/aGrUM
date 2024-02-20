@@ -71,7 +71,7 @@ namespace gum {
     Instantiation retState;
     for (auto varIter = this->beginVariables(); varIter != this->endVariables(); ++varIter) {
       retState.add(**varIter);
-      retState.chgVal(*varIter, randomValue((*varIter)->domainSize()));
+      retState.chgVal(**varIter, randomValue((*varIter)->domainSize()));
     }
     return retState;
   }

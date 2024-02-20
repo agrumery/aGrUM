@@ -35,7 +35,6 @@
 #include <agrum/tools/multidim/implementations/multiDimDecorator.h>
 
 namespace gum {
-
   // ==========================================================================
   // ===                          POTENTIAL                                 ===
   // ==========================================================================
@@ -105,7 +104,7 @@ namespace gum {
     /**
      * @brief Destructor.
      */
-    ~Potential();
+    ~Potential() final;
 
     /// @}
     // ========================================================================
@@ -113,7 +112,7 @@ namespace gum {
     // ========================================================================
     /// @{
 
-    virtual Potential< GUM_SCALAR >* newFactory() const;
+    Potential< GUM_SCALAR >* newFactory() const final;
 
     /// @}
     // ========================================================================
@@ -389,12 +388,12 @@ namespace gum {
     /**
      * @brief the function to inverse (each value of) *this
      */
-    const Potential< GUM_SCALAR >& inverse(void) const;
+    const Potential< GUM_SCALAR >& inverse() const;
 
     /**
      * @brief get a value at random from a 1-D distribution
      */
-    Idx draw() const;
+    [[nodiscard]] Idx draw() const;
 
     ///@}
 
@@ -420,23 +419,25 @@ namespace gum {
     Potential< GUM_SCALAR >& operator/=(const GUM_SCALAR& v);
 
     // these operations are only defined for boolean-like Potential (evidence/likelihood)
-    bool isEvidence() const;
+    [[nodiscard]] bool isEvidence() const;
     Potential< GUM_SCALAR >  operator|(const Potential< GUM_SCALAR >& p2) const;
     Potential< GUM_SCALAR >  operator&(const Potential< GUM_SCALAR >& p2) const;
     Potential< GUM_SCALAR >  operator~() const;
 
     bool operator==(const Potential< GUM_SCALAR >& r) const;
 
-    bool operator!=(const Potential< GUM_SCALAR >& r) const;
-
     Potential< GUM_SCALAR >& operator<<(const DiscreteVariable& v);
 
-    std::string toString() const final;
+    [[nodiscard]] std::string toString() const final;
 
     ///@}
-
+    ///@{
+    /// numerical evidence generator
+    static Potential< GUM_SCALAR >  evEq(const DiscreteVariable& v, double val);
+    static Potential< GUM_SCALAR >  evIn(const DiscreteVariable& v, double val1, double val2);
+    ///@}
     protected:
-    gum::VariableSet complementVars_(const gum::VariableSet& del_vars) const;
+    [[nodiscard]] gum::VariableSet complementVars_(const gum::VariableSet& del_vars) const;
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

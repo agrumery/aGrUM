@@ -859,7 +859,7 @@ namespace gum {
           if (hard_nodes.size() == variables.size()) {
             Instantiation inst(cpt);
             for (Size i = 0; i < hard_nodes.size(); ++i) {
-              inst.chgVal(variables[i], hard_evidence[bn.nodeId(*(variables[i]))]);
+              inst.chgVal(*variables[i], hard_evidence[bn.nodeId(*(variables[i]))]);
             }
             _constants_.insert(node, cpt.get(inst));
           } else {
@@ -976,7 +976,7 @@ namespace gum {
           if (hard_nodes.size() == variables.size()) {
             Instantiation inst(cpt);
             for (Size i = 0; i < hard_nodes.size(); ++i) {
-              inst.chgVal(variables[i], hard_evidence[bn.nodeId(*(variables[i]))]);
+              inst.chgVal(*variables[i], hard_evidence[bn.nodeId(*(variables[i]))]);
             }
             _constants_.insert(node, cpt.get(inst));
           } else {
@@ -1401,7 +1401,7 @@ namespace gum {
       for (const auto var: variables)
         inst << *var;
       for (const auto var: variables) {
-        inst.chgVal(var, hard_evidence[bn.nodeId(*var)]);
+        inst.chgVal(*var, hard_evidence[bn.nodeId(*var)]);
       }
       node_cst.second = cpt.get(inst);
     }

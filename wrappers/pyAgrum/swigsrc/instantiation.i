@@ -72,7 +72,7 @@
           GUM_ERROR(gum::InvalidArgument,
                     "The value " << v << " is not in the domain of " << name);
         }
-        self->chgVal(namesToVars[name], v);
+        self->chgVal(*namesToVars[name], v);
       }
     }
   }

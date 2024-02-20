@@ -630,7 +630,7 @@ namespace gum {
         if (hard_nodes.size() == factor_nodes.size()) {
           Instantiation inst(pot);
           for (Size i = 0; i < hard_nodes.size(); ++i) {
-            inst.chgVal(variables[i], hard_evidence[mn.nodeId(*(variables[i]))]);
+            inst.chgVal(*variables[i], hard_evidence[mn.nodeId(*(variables[i]))]);
           }
           _constants_.insert(&pot, pot.get(inst));
         } else {
@@ -745,7 +745,7 @@ namespace gum {
         if (hard_nodes.size() == factor_nodes.size()) {
           Instantiation inst(pot);
           for (Size i = 0; i < hard_nodes.size(); ++i) {
-            inst.chgVal(variables[i], hard_evidence[mn.nodeId(*(variables[i]))]);
+            inst.chgVal(*variables[i], hard_evidence[mn.nodeId(*(variables[i]))]);
           }
           _constants_.insert(&pot, pot.get(inst));
         } else {
@@ -1161,7 +1161,7 @@ namespace gum {
       const Potential< GUM_SCALAR >& pot = *(node_cst.first);
       Instantiation                  inst(pot);
       for (const auto var: pot.variablesSequence()) {
-        inst.chgVal(var, hard_evidence[mn.nodeId(*var)]);
+        inst.chgVal(*var, hard_evidence[mn.nodeId(*var)]);
       }
       node_cst.second = pot.get(inst);
     }
