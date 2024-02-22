@@ -1448,32 +1448,32 @@ namespace gum::credal {
   }
 
   template < typename GUM_SCALAR >
-  CNLoopyPropagation< GUM_SCALAR >::CNLoopyPropagation(const CredalNet< GUM_SCALAR >& cnet) :
-      InferenceEngine< GUM_SCALAR >::InferenceEngine(cnet) {
-    if (!cnet.isSeparatelySpecified()) {
+  CNLoopyPropagation< GUM_SCALAR >::CNLoopyPropagation(const CredalNet< GUM_SCALAR >& credalNet) :
+      InferenceEngine< GUM_SCALAR >::InferenceEngine(credalNet) {
+    if (!credalNet.isSeparatelySpecified()) {
       GUM_ERROR(OperationNotAllowed,
                 "CNLoopyPropagation is only available "
                 "with separately specified nets");
     }
 
     // test for binary cn
-    for (auto node: cnet.current_bn().nodes())
-      if (cnet.current_bn().variable(node).domainSize() != 2) {
+    for (auto node: credalNet.current_bn().nodes())
+      if (credalNet.current_bn().variable(node).domainSize() != 2) {
         GUM_ERROR(OperationNotAllowed,
                   "CNLoopyPropagation is only available "
                   "with binary credal networks")
       }
 
     // test if compute CPTMinMax has been called
-    if (!cnet.hasComputedBinaryCPTMinMax()) {
+    if (!credalNet.hasComputedBinaryCPTMinMax()) {
       GUM_ERROR(OperationNotAllowed,
                 "CNLoopyPropagation only works when "
                 "\"computeBinaryCPTMinMax()\" has been called for "
                 "this credal net")
     }
 
-    _cn_   = &cnet;
-    _bnet_ = &cnet.current_bn();
+    _cn_   = &credalNet;
+    _bnet_ = &credalNet.current_bn();
 
     _inferenceType_    = InferenceType::nodeToNeighbours;
     InferenceUpToDate_ = false;

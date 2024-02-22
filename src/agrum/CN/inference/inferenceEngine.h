@@ -335,6 +335,74 @@ namespace gum {
       bool storeBNOpt() const;
       /// @}
 
+      /// adds a new hard evidence on node id
+      /**
+       * @throw UndefinedElement if id does not belong to the Bayesian network
+       * @throw InvalidArgument if val is not a value for id
+       * @throw InvalidArgument if id already has an evidence
+       */
+      virtual void addEvidence(NodeId id, const Idx val) final;
+
+      /// adds a new hard evidence on node named nodeName
+      /**
+       * @throw UndefinedElement if nodeName does not belong to the Bayesian network
+       * @throw InvalidArgument if val is not a value for id
+       * @throw InvalidArgument if nodeName already has an evidence
+       */
+      virtual void addEvidence(const std::string& nodeName, const Idx val) final;
+
+      /// adds a new hard evidence on node id
+      /**
+       * @throw UndefinedElement if id does not belong to the Bayesian network
+       * @throw InvalidArgument if val is not a value for id
+       * @throw InvalidArgument if id already has an evidence
+       */
+      virtual void addEvidence(NodeId id, const std::string& label) final;
+
+      /// adds a new hard evidence on node named nodeName
+      /**
+       * @throw UndefinedElement if nodeName does not belong to the Bayesian network
+       * @throw InvalidArgument if val is not a value for id
+       * @throw InvalidArgument if nodeName already has an evidence
+       */
+      virtual void addEvidence(const std::string& nodeName, const std::string& label) final;
+
+      /// adds a new evidence on node id (might be soft or hard)
+      /**
+       * @throw UndefinedElement if id does not belong to the Bayesian network
+       * @throw InvalidArgument if id already has an evidence
+       * @throw FatalError if vals=[0,0,...,0]
+       * @throw InvalidArgument if the size of vals is different from the domain
+       *        size of node id
+       */
+      virtual void addEvidence(NodeId id, const std::vector< GUM_SCALAR >& vals) final;
+
+      /// adds a new evidence on node named nodeName (might be soft or hard)
+      /**
+       * @throw UndefinedElement if id does not belong to the Bayesian network
+       * @throw InvalidArgument if nodeName already has an evidence
+       * @throw FatalError if vals=[0,0,...,0]
+       * @throw InvalidArgument if the size of vals is different from the domain
+       *        size of node nodeName
+       */
+      virtual void addEvidence(const std::string&               nodeName,
+                               const std::vector< GUM_SCALAR >& vals) final;
+
+      /// adds a new evidence on node id (might be soft or hard)
+      /**
+       * @throw UndefinedElement if the potential is defined over several nodes
+       * @throw UndefinedElement if the node on which the potential is defined
+       * does not belong to the Bayesian network
+       * @throw InvalidArgument if the node of the potential already has an
+       * evidence
+       * @throw FatalError if pot=[0,0,...,0]
+       */
+      virtual void addEvidence(const Potential< GUM_SCALAR >& pot) final;
+
+
+      /// removes all the evidence entered into the network
+      virtual void eraseAllEvidence();
+
       /// @name Pre-inference initialization methods
       /// @{
       /**
@@ -383,14 +451,6 @@ namespace gum {
 
       /// @name Post-inference methods
       /// @{
-      /**
-       * Erase all inference related data to perform another one. You need to
-       * insert
-       * evidence again if needed but modalities are kept. You can insert new
-       * ones by
-       * using the appropriate method which will delete the old ones.
-       */
-      virtual void eraseAllEvidence();
 
       /**
        * Get the lower marginals of a given node id.

@@ -238,7 +238,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void GraphicalModelInference< GUM_SCALAR >::addEvidence(const std::string& nodeName,
                                                                  const std::string& label) {
-    NodeId id = this->model().idFromName(nodeName);
+    const NodeId id = this->model().idFromName(nodeName);
     addEvidence(id, this->model().variable(id)[label]);
   }
 

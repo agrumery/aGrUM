@@ -24868,6 +24868,39 @@ class CNMonteCarloSampling(object):
         """
         return _pyAgrum.CNMonteCarloSampling_insertEvidenceFile(self, path)
 
+    def setEvidence(self, evidces):
+      """
+      Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
+
+      Parameters
+      ----------
+      evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+       a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
+
+      Raises
+      ------
+      pyAgrum.InvalidArgument
+         If one value is not a value for the node
+       pyAgrum.InvalidArgument
+         If the size of a value is different from the domain side of the node
+       pyAgrum.FatalError
+         If one value is a vector of 0s
+       pyAgrum.UndefinedElement
+         If one node does not belong to the Bayesian network
+      """
+      if isinstance(evidces, dict):
+        self.eraseAllEvidence()
+        for k,v in evidces.items():
+          self.addEvidence(k,v)
+        return
+      elif isinstance(evidces, list):#should be a list of Potential
+        self.eraseAllEvidence()
+        for p in evidces:
+          self.addEvidence(p)
+        return
+      raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
+
+
     def setVerbosity(self, v: bool) -> None:
         r"""
 
@@ -25251,10 +25284,10 @@ class CNLoopyPropagation(object):
         """
         return _pyAgrum.CNLoopyPropagation_saveInference(self, path)
 
-    def __init__(self, cnet: "CredalNet"):
-        _pyAgrum.CNLoopyPropagation_swiginit(self, _pyAgrum.new_CNLoopyPropagation(cnet))
+    def __init__(self, credalNet: "CredalNet"):
+        _pyAgrum.CNLoopyPropagation_swiginit(self, _pyAgrum.new_CNLoopyPropagation(credalNet))
 
-        self._model=cnet
+        self._model=credalNet
 
 
 
@@ -25272,6 +25305,39 @@ class CNLoopyPropagation(object):
 
         """
         return _pyAgrum.CNLoopyPropagation_insertEvidenceFile(self, path)
+
+    def setEvidence(self, evidces):
+      """
+      Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
+
+      Parameters
+      ----------
+      evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+       a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
+
+      Raises
+      ------
+      pyAgrum.InvalidArgument
+         If one value is not a value for the node
+       pyAgrum.InvalidArgument
+         If the size of a value is different from the domain side of the node
+       pyAgrum.FatalError
+         If one value is a vector of 0s
+       pyAgrum.UndefinedElement
+         If one node does not belong to the Bayesian network
+      """
+      if isinstance(evidces, dict):
+        self.eraseAllEvidence()
+        for k,v in evidces.items():
+          self.addEvidence(k,v)
+        return
+      elif isinstance(evidces, list):#should be a list of Potential
+        self.eraseAllEvidence()
+        for p in evidces:
+          self.addEvidence(p)
+        return
+      raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
+
 
     def setVerbosity(self, v: bool) -> None:
         r"""
