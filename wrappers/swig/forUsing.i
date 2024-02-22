@@ -87,6 +87,8 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::IBNLearner,gum::learning::BNLearner<d
   using gum::learning::IBNLearner::nbRows;
   using gum::learning::IBNLearner::nbCols;
   using gum::learning::IBNLearner::domainSize;
+  using gum::learning::IBNLearner::evEq;
+  using gum::learning::IBNLearner::evIn;
 
   using gum::learning::IBNLearner::setNumberOfThreads;
 
@@ -320,6 +322,9 @@ ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNLoopyPropagation<double>)
                                 const std::vector<double>& vals ) {
     self->baseclassname::addEvidence(nodeName,vals);
   }
+  void addEvidence(const gum::Potential<double>& p) {
+    self->baseclassname::addEvidence(p);
+  }
 
 
   void chgEvidence( const NodeId id, const Idx val ) {
@@ -334,6 +339,9 @@ ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNLoopyPropagation<double>)
   }
   void chgEvidence( const std::string& nodeName, const std::string& val ) {
     self->baseclassname::chgEvidence(nodeName,val);
+  }
+  void chgEvidence(const gum::Potential<double>& p) {
+    self->baseclassname::chgEvidence(p);
   }
 
 

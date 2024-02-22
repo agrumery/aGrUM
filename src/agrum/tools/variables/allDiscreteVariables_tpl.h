@@ -38,9 +38,9 @@ namespace gum {
   template < typename GUM_SCALAR >
   std::unique_ptr< DiscreteVariable > fastVariable(std::string var_description,
                                                    const std::string& default_domain) {
-    long                       ds=0;
+    Size                       ds=0;
     long                       range_min = 0;
-    long                       range_max = 11;
+    long                       range_max = 1;
     std::vector< std::string > labels;
     std::vector< GUM_SCALAR >  ticks;
     std::string                name;
@@ -77,14 +77,14 @@ namespace gum {
           const auto& labels = split(args[0], ":");
 
           if (labels.size() == 3) {   // b{1.1:3.31:5}
-            const auto fmin = std::stod(labels[0]);
-            const auto fmax = std::stod(labels[1]);
+            const double fmin = std::stod(labels[0]);
+            const double fmax = std::stod(labels[1]);
             const int  nbr  = std::stoi(labels[2]);
 
             if (fmax <= fmin) { GUM_ERROR(InvalidArgument, "last<=first in " << var_description) }
             if (nbr <= 1) { GUM_ERROR(InvalidArgument, "nbr<=1 in " << var_description) }
             const double step = double((fmax - fmin) / nbr);
-            for (double i = 0.0; i < nbr + 1; i += 1.0) {
+            for (double i = 0.0; i < nbr + 1.0; i += 1.0) {
               ticks.push_back(fmin + i * step);
             }
             ds=ticks.size();

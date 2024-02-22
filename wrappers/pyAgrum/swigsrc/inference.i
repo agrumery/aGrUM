@@ -31,8 +31,8 @@ def setEvidence(self, evidces):
 
     Parameters
     ----------
-    evidces : dict
-      a dict of evidences
+    evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+      a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
     Raises
     ------
@@ -45,11 +45,17 @@ def setEvidence(self, evidces):
       pyAgrum.UndefinedElement
         If one node does not belong to the Bayesian network
     """
-    if not isinstance(evidces, dict):
-        raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
-    self.eraseAllEvidence()
-    for k,v in evidces.items():
+    if isinstance(evidces, dict):
+      self.eraseAllEvidence()
+      for k,v in evidces.items():
         self.addEvidence(k,v)
+      return
+    elif isinstance(evidces, list): # should be a list of Potential
+      self.eraseAllEvidence()
+      for p in evidces:
+        self.addEvidence(p)
+      return
+    raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
 %}
 
 %feature("shadow") gum::classname::updateEvidence %{
@@ -59,8 +65,8 @@ def updateEvidence(self, evidces):
 
     Parameters
     ----------
-    evidces : dict
-      a dict of evidences
+    evidces : Dict[str,Union[int,str,List[float]]] or List[pyAgrum.Potential]
+      a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
     Raises
     ------
@@ -73,14 +79,23 @@ def updateEvidence(self, evidces):
       pyAgrum.UndefinedElement
         If one node does not belong to the Bayesian network
     """
-    if not isinstance(evidces, dict):
-        raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+    if isinstance(evidces, dict):
+      for k,v in evidces.items():
+          if self.hasEvidence(k):
+              self.chgEvidence(k,v)
+          else:
+              self.addEvidence(k,v)
+      return
+    elif isinstance(evidces, list): # should be a list of Potential
+      for p in evidces:
+          k=p.variable(0)
+          if self.hasEvidence(k):
+              self.chgEvidence(p)
+          else:
+              self.addEvidence(p)
+      return
 
-    for k,v in evidces.items():
-        if self.hasEvidence(k):
-            self.chgEvidence(k,v)
-        else:
-            self.addEvidence(k,v)
+    raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
 %}
 
 %feature("shadow") gum::classname::setTargets %{

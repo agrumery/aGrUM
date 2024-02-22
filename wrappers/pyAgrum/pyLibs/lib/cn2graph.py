@@ -198,7 +198,7 @@ def CNinference2dot(cn, size=None, engine=None, evs=None, targets=None, nodeColo
     ie = gum.CNMonteCarloSampling(cn)
   else:
     ie = engine
-  # ie.setEvidence(evs)
+  ie.setEvidence(evs)
   ie.makeInference()
   stopTime = time.time()
 
@@ -229,7 +229,7 @@ def CNinference2dot(cn, size=None, engine=None, evs=None, targets=None, nodeColo
       fgcol = gumcols.proba2fgcolor(nodeColor[name], cmapNode)
 
     # 'hard' colour for evidence (?)
-    if name in evs or nid in evs:
+    if nid in ie.hardEvidenceNodes()|ie.softEvidenceNodes():
       bgcol = gum.config["notebook", "evidence_bgcolor"]
       fgcol = gum.config["notebook", "evidence_fgcolor"]
 

@@ -232,6 +232,18 @@ namespace gum {
      */
     NodeSet minimalCondSet(const NodeSet& targets, const NodeSet& soids) const;
 
+    /**
+     * @return a Potential for a (numerical) discrete variable representing an evidence with a float
+     * as observed value
+     */
+    Potential< GUM_SCALAR > evEq(const std::string& name, double value) const;
+
+    /**
+     * @return a Potential for a (numerical) discrete variable representing an evidence with a
+     * interval of float as observed value
+     */
+    Potential< GUM_SCALAR > evIn(const std::string& name, double val1, double val2) const;
+
     private:
     void _minimalCondSetVisitUp_(NodeId         node,
                                  const NodeSet& soids,

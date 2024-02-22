@@ -455,7 +455,7 @@ Create a dictionary `{variable_name:value}` from an instantiation
 Parameters
 ----------
 withLabels : boolean
-	The value will be a label (string) if True. It will be a position (int) if False.
+	The value will be a label (string) if True. It will be a position (int) if False. Default is False
 
 Returns
 -------

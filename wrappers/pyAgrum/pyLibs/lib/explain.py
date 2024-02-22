@@ -212,7 +212,7 @@ def getInformationGraph(bn, evs=None, size=None, cmap=_INFOcmap, withMinMax=Fals
   ie.setEvidence(evs)
   ie.makeInference()
 
-  idEvs = {bn.idFromName(name) for name in evs}
+  idEvs = ie.hardEvidenceNodes()|ie.softEvidenceNodes()
 
   nodevals = dict()
   for n in bn.nodes():

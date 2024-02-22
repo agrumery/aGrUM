@@ -61,7 +61,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   IBayesNet< GUM_SCALAR >&
-     IBayesNet< GUM_SCALAR >::operator=(const IBayesNet< GUM_SCALAR >& source) {
+   IBayesNet< GUM_SCALAR >::operator=(const IBayesNet< GUM_SCALAR >& source) {
     if (this != &source) { DAGmodel::operator=(source); }
 
     return *this;
@@ -418,6 +418,18 @@ namespace gum {
     }
 
     return comments;
+  }
+
+  template < typename GUM_SCALAR >
+  Potential< GUM_SCALAR > IBayesNet< GUM_SCALAR >::evEq(const std::string& name,
+                                                        double             value) const {
+    return Potential< GUM_SCALAR >::evEq(variableFromName(name), value);
+  }
+
+  template < typename GUM_SCALAR >
+  Potential< GUM_SCALAR >
+   IBayesNet< GUM_SCALAR >::evIn(const std::string& name, double val1, double val2) const {
+    return Potential< GUM_SCALAR >::evIn(variableFromName(name), val1, val2);
   }
 
 } /* namespace gum */

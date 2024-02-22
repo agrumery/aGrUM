@@ -184,7 +184,7 @@ def LIMIDinference2dot(diag, size, engine, evs, targets):
       shape = gum.config["influenceDiagram", "utility_shape"]
 
     # 'hard' colour for evidence (?)
-    if name in evs or nid in evs:
+    if nid in ie.hardEvidenceNodes()|ie.softEvidenceNodes():
       bgcolor = gum.config["notebook", "evidence_bgcolor"]
       fgcolor = gum.config["notebook", "evidence_fgcolor"]
 

@@ -312,7 +312,7 @@ def MRFinference2UGdot(mrf, size=None, engine=None, evs=None, targets=None, node
       fgcol = gumcols.proba2fgcolor(nodeColor[name], cmapNode)
 
     # 'hard' colour for evidence (?)
-    if name in evs or nid in evs:
+    if nid in ie.hardEvidenceNodes()|ie.softEvidenceNodes():
       bgcol = gum.config["notebook", "evidence_bgcolor"]
       fgcol = gum.config["notebook", "evidence_fgcolor"]
 
@@ -412,7 +412,7 @@ def MRFinference2FactorGraphdot(mrf, size=None, engine=None, evs=None, targets=N
             '", style=filled,color="' + \
             gum.config["notebook", "default_node_fgcolor"] + '"];' + "\n"
   dotstr += '  edge [color="' + gumcols.getBlackInTheme() + '"];' + "\n"
-  
+
   for nid in mrf.nodes():
     name = mrf.variable(nid).name()
 
@@ -427,7 +427,7 @@ def MRFinference2FactorGraphdot(mrf, size=None, engine=None, evs=None, targets=N
       fgcol = gumcols.proba2fgcolor(nodeColor[name], cmapNode)
 
     # 'hard' colour for evidence (?)
-    if name in evs or nid in evs:
+    if nid in ie.hardEvidenceNodes()|ie.softEvidenceNodes():
       bgcol = gum.config["notebook", "evidence_bgcolor"]
       fgcol = gum.config["notebook", "evidence_fgcolor"]
 
