@@ -98,7 +98,17 @@ def computeScores(bn_name, csv_name, visible=False, dialect=None):
 
   if dialect is None:
     with open(csv_name, "r") as csvfile:
-      dialect = csv.Sniffer().sniff(csvfile.read(1024))
+      k = 1024
+      buffer = ""
+      while True:
+        buffer += csvfile.read(k)
+        dialect = csv.Sniffer().sniff(buffer)
+        break
+      except csv.Error:
+        if k==-1:
+          raise gum.DatabaseError("csv.Sniffer could not determine delimiter even with the whole file")
+        if len(buffer)>16384:
+          k=-1
 
   nbr_insignificant = 0
   num_ligne = 1
@@ -125,9 +135,10 @@ def computeScores(bn_name, csv_name, visible=False, dialect=None):
     for data in batchReader:
       num_ligne += 1
 
-      for i in range(inst.nbrDim()):
+      for i in positions.keys():
         try:
-          inst.chgVal(i, _getIdLabel(inst, i, data[positions[i]]))
+          name = bn.variable(i).name()
+          inst.chgVal(name, _getIdLabel(inst, name, data[positions[i]]))
         except gum.OutOfBounds:
           print(
             f"Out of bounds for ({i},{positions[i]}) : unknown id or label '{data[positions[i]]}' for the variable {inst.variable(i)}")
