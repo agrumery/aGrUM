@@ -242,6 +242,7 @@ if len(args)>1:
         i.inc()
       return
 
+
     def fillWithFunction(self,s,noise=None):
       """
       Automatically fills the potential as a (quasi) deterministic CPT with the evaluation of the expression s.
@@ -260,12 +261,14 @@ if len(args)>1:
       ----------
       s : str
           an expression using the name of the last variables of the Potential and giving a value to the first variable of the Potential
-      noise : list
-          an (odd) list of numerics giving a pattern of 'probabilistic noise' around the value.
 
       Warning
       -------
           The expression may have any numerical values, but will be then transformed to the closest correct value for the range of the variable.
+
+      Note
+      ----
+          Deprecated. Please use pyAgrum.Potential.fillFromFunction instead.
 
       Returns
       -------
@@ -275,44 +278,114 @@ if len(args)>1:
       Raises
       ------
         pyAgrum.InvalidArgument
-        If the first variable is Labelized or Integer, or if the len of the noise is not odd.
+          If the first variable is Labelized or Integer, or if the len of the noise is not odd.
       """
-      if self.variable(0).varType()==VarType_Labelized:
-        raise InvalidArgument("[pyAgrum] The variable "+self.variable(0).name()+" is a LabelizedVariable")
-      if self.variable(0).varType()==VarType_Integer:
-        raise InvalidArgument("[pyAgrum] The variable "+self.variable(0).name()+" is neither Range nor Discretized variable.")
 
-      if noise==None:
-        mid=0
-      else:
-        if len(noise)%2==0:
-          raise InvalidArgument("[pyAgrum] len(noise) must not be even")
-        mid=int((len(noise)-1)/2)
+      warnings.warn("""
+        ** pyAgrum.fillWithFunction is deprecated from pyAgrum>1.12.1. Please use pyAgrum.fillFromFunction instead (Noise is not used anymore).
+      """, DeprecationWarning, stacklevel=2)
+      return self.fillFromFunction(s)
+
+
+    def fillFromFunction(self,s_fn):
+      """
+      Automatically fills the potential as a deterministic CPT with the evaluation of the expression s_fn.
+
+      The symbolic expression s_fn gives a value for the first variable, depending on the following variables.
+      The computed CPT is deterministic.
+
+      Examples
+      --------
+      >>> import pyAgrum as gum
+      >>> bn=gum.fastBN('A[3]->B[3]<-C[3]')
+      >>> bn.cpt('B').fillFromFunction('(A+C)/2')
+
+      Parameters
+      ----------
+      s_fn : str
+          a symbolic expression using the name of the second and following variables of the Potential and giving a value to the first variable of the Potential
+
+      Warning
+      -------
+          The expression may have any numerical values, but will be then transformed to the closest correct value for the range of the variable.
+
+
+      Returns
+      -------
+      pyAgrum.Potential
+            a reference to the modified potential
+
+      Raises
+      ------
+        pyAgrum.InvalidArgument
+          If the first variable is Labelized.
+      """
+      if self.variable(0).varType()== gum.VarType_Labelized:
+        raise InvalidArgument("[pyAgrum] The variable "+self.variable(0).name()+" is a LabelizedVariable")
 
       self.fillWith(0)
-      mi=self.variable(0).numerical(0)
-      ma=self.variable(0).numerical(self.variable(0).domainSize()-1)
-
-      I=Instantiation(self)
+      I=gum.Instantiation(self)
+      code=float(s_fn) if isinstance(s_fn, (int, float)) else compile(s_fn,"<string>","eval")
 
       I.setFirst()
       while not I.end():
         vars={self.variable(i).name():self.variable(i).numerical(I.val(i)) for i in range(1,self.nbrDim())}
-        res=eval(s,None,vars)
-        if res<mi:
-          res=mi
-        if res>ma:
-          res=ma
-        pos=self.variable(0).index(str(res))
-        if mid==0:
-          I.chgVal(0,pos)
-          self.set(I,1)
-        else:
-          for i,v in enumerate(noise):
-            if 0<=pos+i-mid<self.variable(0).domainSize():
-              I.chgVal(0,pos+i-mid)
-              self.set(I,v)
+        res=s_fn if isinstance(s_fn, (int, float)) else eval(code,{"__builtins__": {}},vars)
+        pos=self.variable(0).closestIndex(res)
+        I.chgVal(0,pos)
+        self.set(I,1)
         I.incNotVar(self.variable(0))
+
+      self.normalizeAsCPT()
+      return self
+
+
+    def fillFromDistribution(self,distribution,**s_fns):
+      """
+      Automatically fills the potential as a familly of distributions whose parameters are found using evaluation of the expressions s_fns.
+
+      The symbolic expressions s_fns gives a value for the named parameters of the distributions.
+
+      Examples
+      --------
+      >>> import pyAgrum as gum
+      >>> bn=gum.fastBN('A[3]->B[3]<-C[3]')
+      >>> bn.cpt('B').fillFromFunction('(A+C)/2')
+
+      Parameters
+      ----------
+      s_fns : a list of named arguments (str)
+          the named arguments with an evalation of the expresions in s_fns are pased as argument for the chosen distribution.
+
+      Returns
+      -------
+      pyAgrum.Potential
+            a reference to the modified potential
+
+      Raises
+      ------
+        pyAgrum.InvalidArgument
+          If the first variable is Labelized.
+      """
+      var=self.variable(0)
+      if var.varType()== gum.VarType_Labelized:
+        raise InvalidArgument("[pyAgrum] The variable "+self.variable(0).name()+" is a LabelizedVariable")
+
+      codes={k:float(s_fns[k]) if isinstance(s_fns[k], (int, float)) else compile(s_fns[k],"<string>","eval") for k in s_fns.keys()}
+
+      I=gum.Instantiation()
+      for i in range(1,self.nbrDim()):
+        I.add(self.variable(i))
+
+      d=distribution
+      I.setFirst()
+      vals=[var.numerical(i) for i in range(var.domainSize())]
+      while not I.end():
+        vars={self.variable(i).name():self.variable(i).numerical(I.val(i-1)) for i in range(1,self.nbrDim())}
+        args={k:float(s_fns[k]) if isinstance(s_fns[k], (int, float)) else eval(codes[k],{"__builtins__": {}},vars) for k in s_fns.keys()}
+        di=I.todict()
+        self[di]=d.pdf(vals,**args)
+        I.inc()
       self.normalizeAsCPT()
       return self
 
