@@ -188,7 +188,7 @@ class TestCausalModel(pyAgrumTestCase):
     # education : 0,1,2 (low, medium, high), a prior[0.4,0.40.2]
     # experience : [0,20]
     # salaire : [65,150]
-
+    import math
     edex = gum.fastBN(
       "Ux[-2,10]->experience[0,20]<-education{low|medium|high}->salary[65,150]<-Us[0,25];experience->salary")
     edex.cpt("Us").fillWith(1).normalize()

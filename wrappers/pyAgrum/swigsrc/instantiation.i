@@ -40,7 +40,7 @@
   }
 
 
-  void fromdict(PyObject* dict) {
+  Instantiation& fromdict(PyObject* dict) {
     if (!PyDict_Check(dict)) {
       GUM_ERROR(gum::InvalidArgument, "Argument is not a dictionary")
     }
@@ -75,6 +75,8 @@
         self->chgVal(*namesToVars[name], v);
       }
     }
+
+    return *self;
   }
 
 %pythoncode {

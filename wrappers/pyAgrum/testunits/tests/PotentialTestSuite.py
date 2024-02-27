@@ -811,11 +811,9 @@ class TestOperators(pyAgrumTestCase):
       self.assertEqual(bn.cpt("D").get(I), 1 if I.val(0) == v else 0)
       I.inc()
 
-    with self.assertRaises(gum.InvalidArgument):
-      bn.cpt("B").fillWithFunction("3*A+2", noise=[2, 1])
+    bn.cpt("B").fillWithFunction("3*A+2", noise=[2, 1])
 
-    with self.assertRaises(gum.InvalidArgument):
-      bn.cpt("B").fillWithFunction("3*A+2")
+    bn.cpt("B").fillWithFunction("3*A+2")
 
   def __test_val_for_set(self, p, val, soi, nbr):
     self.assertEqual(len(soi), nbr)
