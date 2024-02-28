@@ -303,7 +303,7 @@ if len(args)>1:
       Parameters
       ----------
       s_fn : str
-          a symbolic expression using the name of the second and following variables of the Potential and giving a value to the first variable of the Potential
+          a symbolic expression using the name of the second and following variables of the Potential and giving a value to the first variable of the Potential. This evaluation is done in a context that inclides 'math' module.
 
       Warning
       -------
@@ -320,17 +320,23 @@ if len(args)>1:
         pyAgrum.InvalidArgument
           If the first variable is Labelized.
       """
+      import math
+      forbidden=frozenset(['__import__','__class__'])
+
       if self.variable(0).varType()== gum.VarType_Labelized:
         raise InvalidArgument("[pyAgrum] The variable "+self.variable(0).name()+" is a LabelizedVariable")
 
       self.fillWith(0)
       I=gum.Instantiation(self)
       code=float(s_fn) if isinstance(s_fn, (int, float)) else compile(s_fn,"<string>","eval")
+      if not isinstance(s_fn, (int, float)):
+        if forbidden & set(code.co_names):
+          raise InvalidArgument("[pyAgrum] '__import__' is not allowed in the expression '"+s_fn+"'")
 
       I.setFirst()
       while not I.end():
         vars={self.variable(i).name():self.variable(i).numerical(I.val(i)) for i in range(1,self.nbrDim())}
-        res=s_fn if isinstance(s_fn, (int, float)) else eval(code,{},vars)
+        res=s_fn if isinstance(s_fn, (int, float)) else eval(code,{'math':math},vars)
         pos=self.variable(0).closestIndex(res)
         I.chgVal(0,pos)
         self.set(I,1)
@@ -367,11 +373,18 @@ if len(args)>1:
         pyAgrum.InvalidArgument
           If the first variable is Labelized.
       """
+      import math
+      forbidden=frozenset(['__import__','__class__'])
+
       var=self.variable(0)
       if var.varType()== gum.VarType_Labelized:
         raise InvalidArgument("[pyAgrum] The variable "+self.variable(0).name()+" is a LabelizedVariable")
 
       codes={k:float(s_fns[k]) if isinstance(s_fns[k], (int, float)) else compile(s_fns[k],"<string>","eval") for k in s_fns.keys()}
+      for code in codes:
+        if not isinstance(s_fns[k], (int, float)):
+          if forbidden & set(codes[code].co_names):
+            raise InvalidArgument("[pyAgrum] '__import__' is not allowed in the expression '"+s_fns[code]+"'")
 
       I=gum.Instantiation()
       for i in range(1,self.nbrDim()):
@@ -382,7 +395,7 @@ if len(args)>1:
       vals=[var.numerical(i) for i in range(var.domainSize())]
       while not I.end():
         vars={self.variable(i).name():self.variable(i).numerical(I.val(i-1)) for i in range(1,self.nbrDim())}
-        args={k:float(s_fns[k]) if isinstance(s_fns[k], (int, float)) else eval(codes[k],{},vars) for k in s_fns.keys()}
+        args={k:float(s_fns[k]) if isinstance(s_fns[k], (int, float)) else eval(codes[k],{'math':math},vars) for k in s_fns.keys()}
         di=I.todict()
         self[di]=d.pdf(vals,**args)
         I.inc()
